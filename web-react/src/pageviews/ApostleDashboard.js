@@ -4,6 +4,7 @@ import {
   APOSTLE_MEMBER_COUNT,
   APOSTLE_PASTOR_COUNT,
   APOSTLE_CAMPUSTOWN_COUNT,
+  APOSTLE_SONTA_MEMBER_COUNT,
 } from '../queries/CountQueries'
 import { DISPLAY_APOSTLE_NAME } from '../queries/DisplayQueries'
 import { NavBar } from '../components/NavBar'
@@ -19,6 +20,13 @@ const ApostleDashboard = () => {
     error: memberCountError,
     loading: memberCountLoading,
   } = useQuery(APOSTLE_MEMBER_COUNT, {
+    variables: { apostleID: apostleID },
+  })
+  const {
+    data: sontaMemberCount,
+    error: sontaMemberCountError,
+    loading: sontaMemberCountLoading,
+  } = useQuery(APOSTLE_SONTA_MEMBER_COUNT, {
     variables: { apostleID: apostleID },
   })
   const {
@@ -45,6 +53,7 @@ const ApostleDashboard = () => {
 
   if (
     memberCountLoading ||
+    sontaMemberCountLoading ||
     pastorCountLoading ||
     churchCountLoading ||
     apostleLoading
@@ -107,6 +116,7 @@ const ApostleDashboard = () => {
   }
   if (
     memberCountError ||
+    sontaMemberCountError ||
     pastorCountError ||
     churchCountError ||
     apostleError
@@ -201,7 +211,14 @@ const ApostleDashboard = () => {
           <div className="col">
             <DashboardCard
               name="Ministries"
-              number="0"
+              number={`${sontaMemberCount.apostleSontaMemberCount} (${
+                Math.round(
+                  (sontaMemberCount.apostleSontaMemberCount /
+                    member.apostleMemberCount) *
+                    100 *
+                    100
+                ) / 100
+              }%)`}
               cardLink="/sonta/displayall"
             />
           </div>

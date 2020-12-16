@@ -18,15 +18,15 @@ export const NavBar = () => {
           className="nav-item nav-link d-flex align-items-center flex-column"
           to="/"
         >
-          <span className="fas fa-home fa-2x  px-1" />
-          <span className="d-none d-md-inline">Dashboard</span>
+          <span className="fas fa-user fa-2x  px-1" />
+          <span className="d-none d-md-inline">Apostle</span>
         </Link>
         <Link
           className="nav-item nav-link d-flex align-items-center flex-column"
-          to="/members"
+          to="/dashboard"
         >
-          <span className="fas fa-users fa-2x px-1" />
-          <span className="d-none d-md-inline">Members</span>
+          <span className="fas fa-home fa-2x  px-1" />
+          <span className="d-none d-md-inline">Dashboard</span>
         </Link>
         <Link
           className="nav-item nav-link d-flex align-items-center flex-column"
@@ -43,6 +43,13 @@ export const NavBar = () => {
         >
           <span className="fas fa-church fa-2x px-1" />
           <span className="d-none d-md-inline">Ministries</span>
+        </Link>
+        <Link
+          className="nav-item nav-link d-flex align-items-center flex-column"
+          to="/members"
+        >
+          <span className="fas fa-users fa-2x px-1" />
+          <span className="d-none d-md-inline">Members</span>
         </Link>
         <Link
           className="nav-item nav-link d-flex align-items-center flex-column"

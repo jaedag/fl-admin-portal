@@ -3,7 +3,7 @@ import { useQuery } from '@apollo/client'
 import { DisplayChurchDetails } from '../components/DisplayChurchDetails'
 import { NavBar } from '../components/NavBar'
 import { ErrorScreen, LoadingScreen } from '../components/StatusScreens'
-import { DISPLAY_CENTRE } from '../queries/DisplayQueries'
+import { DISPLAY_SONTA } from '../queries/DisplayQueries'
 import { SontaContext } from '../context/ChurchContext'
 
 export const DisplaySontaDetails = () => {
@@ -13,10 +13,9 @@ export const DisplaySontaDetails = () => {
     data: sontaData,
     error: sontaError,
     loading: sontaLoading,
-  } = useQuery(DISPLAY_CENTRE, {
+  } = useQuery(DISPLAY_SONTA, {
     variables: { sontaID: sontaID },
   })
-  console.log(sontaData)
 
   if (sontaError) {
     return <ErrorScreen />
@@ -24,19 +23,24 @@ export const DisplaySontaDetails = () => {
     // Spinner Icon for Loading Screens
     return <LoadingScreen />
   }
+
   return (
     <div>
       <NavBar />
       <DisplayChurchDetails
-        name={sontaData.displayCentre.name}
-        leaderTitle="Centre Leader"
-        leaderName={`${sontaData.displayCentre.leader.firstName} ${sontaData.displayCentre.leader.lastName}`}
-        membership={sontaData.centreMemberCount}
-        churchHeading="No of Bacentas"
-        churchNo="2"
-        subChurch="Bacenta"
+        name={sontaData.displaySonta.name}
+        leaderTitle="Sonta Leader"
+        leaderName={
+          sontaData.displaySonta.leader
+            ? `${sontaData.displaySonta.leader.firstName} ${sontaData.displaySonta.leader.lastName}`
+            : '-'
+        }
+        membership={sontaData.sontaMemberCount}
+        churchHeading="No of Basonta Leaders"
+        churchNo={sontaData.displaySonta.basontas.length}
+        subChurch="Basonta"
         subChurchSetter=""
-        churchType="Centre"
+        churchType=""
         buttons={['']}
       />
     </div>

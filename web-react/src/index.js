@@ -16,7 +16,7 @@ import { AddMember } from './pageviews/AddMember'
 import AddCentre from './pageviews/AddCentre'
 import AddCommunity from './pageviews/AddCommunity'
 import AddHall from './pageviews/AddHall'
-import AddTown from './pageviews/AddTown'
+import AddTownCampus from './pageviews/AddTownCampus'
 import { DisplayCentreDetails } from './pageviews/DisplayCentreDetails'
 import { DisplayCommunityDetails } from './pageviews/DisplayCommunityDetails'
 import { DisplayHallDetails } from './pageviews/DisplayHallDetails'
@@ -31,7 +31,7 @@ import {
   CentreContext,
   SontaContext,
 } from './context/ChurchContext'
-import { DisplayAllSontaTowns } from './pageviews/DisplayAllSontaTowns'
+import { DisplayAllTownSontas } from './pageviews/DisplayAllTownSontas'
 import { DisplayAllCentres } from './pageviews/DisplayAllCentres'
 import { DisplayAllCommunities } from './pageviews/DisplayAllCommunities'
 import { DisplayAllHalls } from './pageviews/DisplayAllHalls'
@@ -56,8 +56,15 @@ const PastorsAdmin = () => {
   const capitalise = (str) => {
     return str.charAt(0).toUpperCase() + str.slice(1)
   }
+  const parsePhoneNum = (phoneNumber) => {
+    phoneNumber
+      .replace(/\s/g, '')
+      .replace('+', '')
+      .replace('(', '')
+      .replace(')', '')
+  }
   const [apostleID, setApostleID] = useState(
-    'ce059b26-66f0-497b-aa23-3361594a5027'
+    '7aba440f-784d-4c70-9ed3-42d3aba2e530'
   )
   const [townID, setTownID] = useState('7f9f647d-1528-4eff-9b91-6869de496bef')
   const [campusID, setCampusID] = useState(
@@ -79,7 +86,9 @@ const PastorsAdmin = () => {
 
   return (
     <Router>
-      <ChurchContext.Provider value={{ church, setChurch, capitalise }}>
+      <ChurchContext.Provider
+        value={{ church, setChurch, capitalise, parsePhoneNum }}
+      >
         <ApostleContext.Provider value={{ apostleID, setApostleID }}>
           <CampusTownContext.Provider
             value={{ townID, setTownID, campusID, setCampusID }}
@@ -119,7 +128,7 @@ const PastorsAdmin = () => {
                         />
                         <Route
                           path="/sonta/displayall"
-                          component={DisplayAllSontaTowns}
+                          component={DisplayAllTownSontas}
                           exact
                         />
                         <Route
@@ -188,7 +197,16 @@ const PastorsAdmin = () => {
                           component={DisplayCampusTownDetails}
                           exact
                         />
-                        <Route path="/town/addtown" component={AddTown} exact />
+                        <Route
+                          path="/town/addtown"
+                          component={AddTownCampus}
+                          exact
+                        />
+                        <Route
+                          path="/campus/addcampus"
+                          component={AddTownCampus}
+                          exact
+                        />
                       </Switch>
                     </SearchContext.Provider>
                   </MemberContext.Provider>

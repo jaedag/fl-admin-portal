@@ -318,8 +318,10 @@ export const DisplayMemberDetails = () => {
                       </div>
                       <div className="col">
                         <p className="font-weight-bold card-text">
-                          {memberData.displayMember.sonta.leader
-                            ? `${memberData.displayMember.sonta.leader.firstName} ${memberData.displayMember.sonta.leader.lastName}`
+                          {memberData.displayMember.sonta
+                            ? memberData.displayMember.sonta.leader
+                              ? `${memberData.displayMember.sonta.leader.firstName} ${memberData.displayMember.sonta.leader.lastName}`
+                              : null
                             : null}
                         </p>
                       </div>

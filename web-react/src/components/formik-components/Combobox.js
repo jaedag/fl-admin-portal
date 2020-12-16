@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Autosuggest from 'react-autosuggest'
 import { useQuery } from '@apollo/client'
 import { ErrorMessage } from 'formik'
@@ -18,13 +18,23 @@ function Combobox(props) {
   } = props
 
   const [searchString, setSearchString] = useState('')
+  const [debouncedText, setDebouncedText] = useState(searchString)
   const [suggestions, setSuggestions] = useState([])
 
   const { data } = useQuery(optionsQuery, {
     variables: {
-      [`${queryVariable}`]: searchString,
+      [`${queryVariable}`]: debouncedText,
     },
   })
+  // console.log('Options', data)
+  useEffect(() => {
+    const timerId = setTimeout(() => {
+      setDebouncedText(searchString)
+    }, 500)
+    return () => {
+      clearTimeout(timerId)
+    }
+  }, [searchString])
 
   return (
     <div>
@@ -47,7 +57,6 @@ function Combobox(props) {
             setSuggestions([])
           }
           try {
-            // console.log(data)
             setSuggestions(
               data[`${dataset}`].map((row) => ({
                 name: row[`${suggestionText}`],
@@ -66,7 +75,7 @@ function Combobox(props) {
             event.preventDefault()
           }
           setSearchString(suggestion.name)
-          console.log(suggestion)
+          // console.log(suggestion)
           setFieldValue(`${name}`, suggestion.id)
         }}
         getSuggestionValue={(suggestion) => suggestion.name}

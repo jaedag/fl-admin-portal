@@ -35,14 +35,15 @@ export const APOSTLE_MEMBER_COUNT = gql`
   }
 `
 
-export const APOSTLE_TSONTA_MEMBER_COUNT = gql`
-  query apostleTSontaMemberCount($apostleID: ID) {
-    apostleTSontaMemberCount(apostleID: $apostleID)
-  }
-`
 export const APOSTLE_SONTA_MEMBER_COUNT = gql`
   query apostleSontaMemberCount($apostleID: ID) {
     apostleSontaMemberCount(apostleID: $apostleID)
+  }
+`
+
+export const APOSTLE_TSONTA_MEMBER_COUNT = gql`
+  query apostleTSontaMemberCount($apostleID: ID) {
+    apostleTSontaMemberCount(apostleID: $apostleID)
   }
 `
 

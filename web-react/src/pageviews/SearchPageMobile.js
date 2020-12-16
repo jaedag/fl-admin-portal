@@ -5,9 +5,12 @@ import { ErrorScreen, LoadingScreen } from '../components/StatusScreens'
 import { MobileSearchNav } from '../components/MobileSearchNav'
 import { GLOBAL_SEARCH } from '../queries/SearchQuery'
 import { SearchContext, MemberContext } from '../context/MemberContext'
+import { ApostleContext, ChurchContext } from '../context/ChurchContext'
 
 export const SearchPageMobile = () => {
   const { searchKey } = useContext(SearchContext)
+  const { setChurch } = useContext(ChurchContext)
+  const { setApostleID } = useContext(ApostleContext)
   const { setMemberID } = useContext(MemberContext)
   let history = useHistory()
 
@@ -44,6 +47,19 @@ export const SearchPageMobile = () => {
                 key={index}
                 className="card mobile-search-card p-2 py-3 my-4"
                 onClick={() => {
+                  if (searchResult.centre) {
+                    if (searchResult.centre.hall) {
+                      setChurch({ church: 'campus', subChurch: 'hall' })
+                      setApostleID(
+                        searchResult.centre.hall.campus.apostle.memberID
+                      )
+                    } else if (searchResult.centre.community) {
+                      setChurch({ church: 'town', subChurch: 'community' })
+                      setApostleID(
+                        searchResult.centre.community.town.apostle.memberID
+                      )
+                    }
+                  }
                   setMemberID(searchResult.memberID)
                   history.push('/members/displaydetails')
                 }}

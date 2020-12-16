@@ -124,3 +124,20 @@ export const CREATE_TOWN_MUTATION = gql`
     }
   }
 `
+
+export const CREATE_CAMPUS_MUTATION = gql`
+  mutation AddCampus(
+    $campusName: String
+    $lWhatsappNumber: String
+    $apostleID: ID
+  ) {
+    AddCampus(
+      campusName: $townName
+      lWhatsappNumber: $lWhatsappNumber
+      apostleID: $apostleID
+    ) {
+      campusID
+      name
+    }
+  }
+`

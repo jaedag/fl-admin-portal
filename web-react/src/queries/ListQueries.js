@@ -163,6 +163,15 @@ export const GET_TOWN_SONTA_LEADERS = gql`
   }
 `
 
+export const GET_TOWN_SONTAS = gql`
+  query($townID: ID) {
+    townSontaList(townID: $townID) {
+      sontaID
+      name
+    }
+  }
+`
+
 export const GET_CAMPUSES = gql`
   query($apostleID: ID) {
     campusList(apostleID: $apostleID) {
@@ -174,6 +183,7 @@ export const GET_CAMPUSES = gql`
         lastName
       }
       sontas {
+        sontaID
         name
       }
       apostle {
@@ -196,6 +206,7 @@ export const GET_TOWNS = gql`
         lastName
       }
       sontas {
+        sontaID
         name
       }
       apostle {
@@ -217,6 +228,33 @@ export const GET_APOSTLES = gql`
       town {
         name
       }
+      campus {
+        name
+      }
+    }
+  }
+`
+export const GET_TOWN_APOSTLES = gql`
+  query {
+    apostlesListTown {
+      memberID
+      firstName
+      lastName
+      pictureUrl
+      town {
+        name
+      }
+    }
+  }
+`
+
+export const GET_CAMPUS_APOSTLES = gql`
+  query {
+    apostlesListCampus {
+      memberID
+      firstName
+      lastName
+      pictureUrl
       campus {
         name
       }

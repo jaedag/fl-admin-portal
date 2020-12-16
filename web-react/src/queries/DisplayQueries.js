@@ -101,6 +101,27 @@ export const DISPLAY_CENTRE = gql`
     centreMemberCount(centreID: $centreID)
   }
 `
+export const DISPLAY_SONTA = gql`
+  query displaySonta($sontaID: ID) {
+    displaySonta(sontaID: $sontaID) {
+      sontaID
+      name
+      basontas {
+        name
+      }
+      leader {
+        firstName
+        lastName
+        title {
+          Title {
+            title
+          }
+        }
+      }
+    }
+    sontaMemberCount(sontaID: $sontaID)
+  }
+`
 
 export const DISPLAY_COMMUNITY = gql`
   query displayCommunity($communityID: ID) {

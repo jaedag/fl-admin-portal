@@ -55,7 +55,7 @@
 .navbar {
   background-color: var(--body-bg-color);
   border-bottom: 1px solid var(--border-color);
-  height: 8vh;
+  height: 10vh;
 }
 
 .mobile-search-nav{
@@ -127,10 +127,8 @@
 }
 
 .image-card {
-  width: 120px;
-  height: 115px;
+  width: 100%;
   border-radius: 7%;
-  background-color: var(--card-color);
 }
 
 .grid-card {
@@ -149,6 +147,7 @@
 .card {
   background-color: var(--card-color);
   border: 1px solid var(--border-color);
+  overflow-wrap: normal;
 }
 
 .mobile-search-card {
@@ -186,6 +185,7 @@
 
 .profile-img {
   width: 200px;
+  height: 200px;
 }
 
 .fa-user-circle-o {

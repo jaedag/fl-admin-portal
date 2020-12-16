@@ -88,7 +88,7 @@ MERGE(t:Town {name: apoc.text.capitalizeAll(toLower(trim(line.`TOWN`)))})
 	t.townID = apoc.create.uuid()
 
 with line,t
-MATCH (m: Member {lastName: line.`APOSTLE`})
+MATCH (m: Member {whatsappNumber: line.`APOSTLE`})
 MERGE (title: Title{title:'Apostle'})
 MERGE (m)-[:HAS_TITLE]-> (title)
 MERGE (t)<-[:HAS_TOWN]-(m)
@@ -123,7 +123,7 @@ MERGE(camp:Campus {name: apoc.text.capitalizeAll(toLower(trim(line.`CAMPUS`)))})
 	camp.campusID = apoc.create.uuid()
 
 with line,camp
-MATCH (m: Member {lastName: line.`APOSTLE`})
+MATCH (m: Member {whatsappNumber: line.`APOSTLE`})
 MERGE (title: Title{title:'Apostle'})
 MERGE (m)-[:HAS_TITLE]-> (title)
 MERGE (camp)<-[:HAS_CAMPUS]-(m)

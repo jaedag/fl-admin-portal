@@ -48,9 +48,19 @@ function AddCentre() {
   })
 
   const { apostleID } = useContext(ApostleContext)
-  const { townID, setTownID } = useContext(CampusTownContext)
+  const { townID } = useContext(CampusTownContext)
   const { centreID, setCentreID } = useContext(CentreContext)
+  const history = useHistory()
   // const { positionLoading, setPositionLoading } = useState(true)
+  const { data: townListData, loading: townListLoading } = useQuery(GET_TOWNS, {
+    variables: { apostleID: apostleID },
+  })
+  const { data: communityListData, loading: communityListLoading } = useQuery(
+    GET_COMMUNITIES,
+    {
+      variables: { townID: townID },
+    }
+  )
   const [AddCentre, { data: newCentreData }] = useMutation(
     CREATE_CENTRE_MUTATION,
     {
@@ -60,18 +70,6 @@ function AddCentre() {
     }
   )
   console.log(newCentreData)
-  const history = useHistory()
-
-  const { data: townListData, loading: townListLoading } = useQuery(GET_TOWNS, {
-    variables: { apostleID: apostleID },
-  })
-
-  const { data: communityListData, loading: communityListLoading } = useQuery(
-    GET_COMMUNITIES,
-    {
-      variables: { townID: townID },
-    }
-  )
 
   if (communityListData && townListData) {
     const communityOptions = communityListData.communityList.map((comm) => ({
@@ -129,9 +127,6 @@ function AddCentre() {
                             control="select"
                             name="townSelect"
                             options={townOptions}
-                            onChange={(e) => {
-                              setTownID(e.target.value)
-                            }}
                             defaultOption="Select a Town"
                           />
                           <FormikControl
@@ -268,7 +263,7 @@ function AddCentre() {
                     </div>
                   </div>
                 </div>
-                <div className="d-flex justify-content-center m">
+                <div className="d-flex justify-content-center ">
                   <button
                     type="submit"
                     disabled={!formik.isValid || formik.isSubmitting}

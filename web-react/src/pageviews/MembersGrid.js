@@ -25,8 +25,8 @@ export const MembersGrid = () => {
         </div>
 
         <div className="col px-2">
-          <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-2 mb-3 border-bottom">
-            <h3 className="h3">Search Results</h3>
+          <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-2 mb-5 border-bottom">
+            <h3 className="h3 ">Search Results</h3>
             <div className="btn-toolbar mb-2 mb-md-0 position-fixedd">
               <div className="btn-group mr-2" />
               <Link
