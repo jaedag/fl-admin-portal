@@ -16,15 +16,23 @@ const BishopDashboard = () => {
     return (
       <div>
         <NavBar />
-        <div className="container">
+        <div className="container ">
+          <h4 className="py-4">Loading...</h4>
           <div className="row row-cols-2 row-cols-lg-4">
             <div className="col">
-              <DashboardCard name="Members" number="Loading..." />
+              <DashboardCard
+                name="Members"
+                number="Loading..."
+                cardLink="/members"
+              />
             </div>
             <div className="col">
-              <DashboardCard name="Pastors" number="Loading..." cardLink="#" />
+              <DashboardCard
+                name="Pastors"
+                number="Loading..."
+                cardLink="/pastors"
+              />
             </div>
-
             <div className="col">
               <DashboardCard
                 name={
@@ -56,6 +64,12 @@ const BishopDashboard = () => {
               <DashboardButton
                 btnText="Start a Bacenta"
                 btnLink="/bacenta/addbacenta"
+              />
+            </div>
+            <div className="col-sm-12 col-md">
+              <DashboardButton
+                btnText="Start a Centre"
+                btnLink="/centre/addcentre"
               />
             </div>
             <div className="col-sm-12 col-md">

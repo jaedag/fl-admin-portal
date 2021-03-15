@@ -10,7 +10,7 @@ import {
   GET_TOWN_CENTRES,
   GET_CENTRE_BACENTAS,
 } from '../queries/ListQueries'
-import { UPDATE_TOWN_MUTATION } from '../queries/UpdateMutations'
+import { UPDATE_CENTRE_MUTATION } from '../queries/UpdateMutations'
 import { NavBar } from '../components/NavBar'
 import { ErrorScreen, LoadingScreen } from '../components/StatusScreens'
 import { ChurchContext } from '../contexts/ChurchContext'
@@ -58,7 +58,7 @@ export const UpdateCentre = () => {
     ),
   })
 
-  const [UpdateCentre] = useMutation(UPDATE_TOWN_MUTATION, {
+  const [UpdateCentre, AddCentreTown] = useMutation(UPDATE_CENTRE_MUTATION, {
     refetchQueries: [
       { query: DISPLAY_CENTRE, variables: { id: centreID } },
       { query: GET_TOWN_CENTRES, variables: { id: townID } },
@@ -69,13 +69,7 @@ export const UpdateCentre = () => {
       { query: GET_CENTRE_BACENTAS, variables: { id: '01' } },
     ],
   })
-
-  // const {
-  //   data: centreData,
-  //   loading: centreLoading,
-  //   error: centreError,
-  // } = useQuery(GET_BISHOPS)
-
+  console.log(UpdateCentre, AddCentreTown)
   if (centreError) {
     return <ErrorScreen />
   } else if (centreLoading) {
@@ -87,10 +81,16 @@ export const UpdateCentre = () => {
 
       UpdateCentre({
         variables: {
-          centreID: townID,
+          centreId: centreID,
           centreName: values.campusTownName,
-          leaderWhatsapp: parsePhoneNum(values.leaderWhatsapp),
-          townCampusSelect: values.centreSelect,
+        },
+      })
+      AddCentreTown({
+        variables: {
+          centreId: centreID,
+          centreName: values.campusTownName,
+          leaderId: parsePhoneNum(values.leaderWhatsapp),
+          townCampusId: values.centreSelect,
           bacentas: values.bacentas.map((centre) => {
             return centre.id
           }),

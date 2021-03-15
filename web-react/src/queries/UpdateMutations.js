@@ -83,22 +83,17 @@ export const UPDATE_CAMPUS_MUTATION = gql`
 `
 
 export const UPDATE_CENTRE_MUTATION = gql`
-  mutation UpdateCentre(
-    $centreID: ID
-    $centreName: String
-    $lWhatsappNumber: String
-    $bishopID: ID
-    $bacentas: [ID]
-  ) {
-    Updatecentre(
-      centreID: $centreID
-      centreName: $centreName
-      lWhatsappNumber: $lWhatsappNumber
-      bishopID: $bishopID
-      bacentas: $bacentas
-    ) {
-      id
+  mutation UpdateCentre($centreId: ID!, $centreName: String) {
+    UpdateCentre(id: $centreId, name: $centreName) {
       name
+      id
+    }
+  }
+  mutation AddCentreTown($centreId: ID!, $townCampusId: ID!) {
+    AddCentreTown(from: { id: $townCampusId }, to: { id: $centreId }) {
+      to {
+        name
+      }
     }
   }
 `
