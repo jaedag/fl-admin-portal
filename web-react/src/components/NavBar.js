@@ -18,7 +18,7 @@ export const NavBar = () => {
           className="nav-item nav-link d-flex align-items-center flex-column"
           to="/"
         >
-          <span className="fas fa-home fa-2x  px-1" />
+          <span className="fas fa-home fa-2x px-1" />
           <span className="d-none d-md-inline">Home</span>
         </Link>
         {church.church && (
