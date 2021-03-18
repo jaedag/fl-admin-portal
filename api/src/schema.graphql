@@ -173,11 +173,17 @@ input pastoralHistory {
     historyDate: String
 }
 
+enum Role {
+  superadmin
+  user
+  admin
+}
+
 #Query Definitions
 type Query {
 
 #At the Federal Level
-	bishopsList: [Member] @cypher(statement:"MATCH ()<-[:HAS_CAMPUS|:HAS_TOWN]-(m:Member) RETURN DISTINCT m")
+	bishopsList: [Member] @isAuthenticated @cypher(statement:"MATCH ()<-[:HAS_CAMPUS|:HAS_TOWN]-(m:Member) RETURN DISTINCT m")
 	bishopsListCampus: [Member] @cypher(statement:"MATCH ()<-[:HAS_CAMPUS]-(m:Member) RETURN DISTINCT m")
 	bishopsListTown: [Member] @cypher(statement:"MATCH ()<-[:HAS_TOWN]-(m:Member) RETURN DISTINCT m")
 	ministryList: [Ministry] @cypher (statement:"MATCH (m:Ministry) RETURN m")
@@ -587,7 +593,7 @@ type Mutation {
 		pictureUrl: String!
 		pastoralAppointment: [pastoralAppointment]
 		pastoralHistory: [pastoralHistory]
-	): Member 
+	): Member
 	@cypher(statement:
 	"""
 	MATCH (m:Member {id:$id})

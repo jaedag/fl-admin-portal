@@ -37,14 +37,14 @@ import { UpdateCentre } from './pages/UpdateCentre'
 import { DisplaySontasByCampusTown } from './pages/DisplaySontasByCampusTown'
 
 const AppWithApollo = () => {
-  // const [ accessToken, setAccessToken ] = useState()
+  const [accessToken, setAccessToken] = useState()
   const { getAccessTokenSilently } = useAuth0()
 
   const getAccessToken = useCallback(async () => {
     try {
       const token = await getAccessTokenSilently()
-      // setAccessToken(token)
-      localStorage.setItem('token', token)
+      setAccessToken(token)
+      // localStorage.setItem('token', token)
     } catch (err) {
       // loginWithRedirect()
     }
@@ -60,13 +60,13 @@ const AppWithApollo = () => {
 
   const authLink = setContext((_, { headers }) => {
     // get the authentication token from local storage if it exists
-    const token = localStorage.getItem('token')
+    // const token = localStorage.getItem('token')
 
     // return the headers to the context so httpLink can read them
     return {
       headers: {
         ...headers,
-        Authorization: token ? `Bearer ${token}` : '',
+        Authorization: `Bearer ${accessToken}`,
       },
     }
   })
