@@ -38,17 +38,18 @@ import { DisplaySontasByCampusTown } from './pages/DisplaySontasByCampusTown'
 
 const AppWithApollo = () => {
   const [accessToken, setAccessToken] = useState()
-  const { getAccessTokenSilently } = useAuth0()
+  const { getAccessTokenSilently, loginWithRedirect, isLoading } = useAuth0()
 
   const getAccessToken = useCallback(async () => {
     try {
       const token = await getAccessTokenSilently()
+      console.log(token)
       setAccessToken(token)
       // localStorage.setItem('token', token)
     } catch (err) {
-      // loginWithRedirect()
+      isLoading && loginWithRedirect()
     }
-  }, [getAccessTokenSilently])
+  }, [getAccessTokenSilently, loginWithRedirect])
 
   useEffect(() => {
     getAccessToken()

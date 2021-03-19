@@ -6,6 +6,8 @@ import { AuthButton } from './DashboardButton'
 function UserProfile() {
   const { user, isAuthenticated } = useAuth0()
 
+  console.log(user)
+
   return (
     <div>
       {isAuthenticated && (
