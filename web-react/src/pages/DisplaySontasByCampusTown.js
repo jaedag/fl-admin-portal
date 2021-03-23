@@ -6,34 +6,23 @@ import { NavBar } from '../components/NavBar'
 import { ErrorScreen, LoadingScreen } from '../components/StatusScreens'
 import { GET_SONTAS_BY_CAMPUSTOWN } from '../queries/ListQueries'
 import { ChurchContext } from '../contexts/ChurchContext'
+import { MemberContext } from '../contexts/MemberContext'
 
 export const DisplaySontasByCampusTown = () => {
-  const {
-    capitalise,
-    church,
-    campusID,
-    townID,
-    bishopID,
-    setTownID,
-    setCampusID,
-    setSontaID,
-  } = useContext(ChurchContext)
+  const { church, bishopId, setSontaId } = useContext(ChurchContext)
+  const { setMemberID } = useContext(MemberContext)
 
   const { data: sontaData, loading: sontaLoading } = useQuery(
     GET_SONTAS_BY_CAMPUSTOWN,
     {
-      variables: { id: bishopID },
+      variables: { id: bishopId },
     }
   )
-
-  const campusCentreData = 0
-  const townCentreData = 0
 
   if (sontaLoading) {
     // Spinner Icon for Loading Screens
     return <LoadingScreen />
   } else if (sontaData && church.church === 'campus') {
-    console.log(sontaData)
     return (
       <div>
         <NavBar />
@@ -42,9 +31,9 @@ export const DisplaySontasByCampusTown = () => {
             <div className="row justify-content-between">
               <div className="col-auto">
                 <Link
-                  to={`/${church.church}/displaydetails`}
+                  to={`/member/displaydetails`}
                   onClick={() => {
-                    setCampusID(campusID)
+                    setMemberID(bishopId)
                   }}
                 >
                   {' '}
@@ -64,11 +53,10 @@ export const DisplaySontasByCampusTown = () => {
             <div className="row justify-content-between">
               <Link
                 className="py-1 px-2 m-2 card"
-                to="/centre/displayall"
-              >{`Towns: ${sontaData.campusList.length}`}</Link>
-              {/* <div className="py-1 px-2 m-2 card">{`Sontas: ${sontaData.campusSontaList
-								.length}`}</div> */}
-              <div className="py-1 px-2 m-2 card">{`Membership:${campusCentreData.campusMemberCount}`}</div>
+                to="/campus/displayall"
+              >{`Campuses: ${sontaData.campusList.length}`}</Link>
+
+              <div className="py-1 px-2 m-2 card">{`Membership: ${sontaData.bishopSontaMemberCount}`}</div>
             </div>
           </div>
 
@@ -78,7 +66,7 @@ export const DisplaySontasByCampusTown = () => {
                 <h4>{campus.name}</h4>
                 <DisplayChurchList
                   data={campus.sontas}
-                  setter={setSontaID}
+                  setter={setSontaId}
                   churchType="Sonta"
                 />
               </div>
@@ -88,7 +76,6 @@ export const DisplaySontasByCampusTown = () => {
       </div>
     )
   } else if (sontaData && church.church === 'town') {
-    console.log(sontaData)
     return (
       <div>
         <NavBar />
@@ -97,15 +84,13 @@ export const DisplaySontasByCampusTown = () => {
             <div className="row justify-content-between">
               <div className="col-auto">
                 <Link
-                  to={`/${church.church}/displaydetails`}
+                  to={`/member/displaydetails`}
                   onClick={() => {
-                    setTownID(townID)
+                    setMemberID(bishopId)
                   }}
                 >
                   {' '}
-                  <h4>{`${
-                    townCentreData.townCentreList[0].town.name
-                  } ${capitalise(church.church)}`}</h4>
+                  <h4>{`${sontaData.townList[0].bishop.firstName} ${sontaData.townList[0].bishop.lastName}'s Sontas`}</h4>
                 </Link>
               </div>
               <div className="col-auto">
@@ -117,32 +102,29 @@ export const DisplaySontasByCampusTown = () => {
                 </Link>
               </div>
             </div>
-            <div className="row">
-              <div className="col">
-                <h6 className="text-muted">
-                  Constituency Overseer:
-                  {townCentreData.townCentreList[0].town.leader
-                    ? ` ${townCentreData.townCentreList[0].town.leader.firstName} ${townCentreData.townCentreList[0].town.leader.lastName}`
-                    : null}
-                </h6>
-              </div>
-            </div>
 
             <div className="row justify-content-between">
               <Link
-                className="py-1 px-2 m-2 card text-white"
-                to="/centre/displayall"
-              >{`Centres: ${townCentreData.townCentreList.length}`}</Link>
-              <div className="py-1 px-2 m-2 card">{`Sontas: ${townCentreData.townSontaList.length}`}</div>
-              <div className="py-1 px-2 m-2 card">{`Membership: ${townCentreData.townMemberCount}`}</div>
+                className="py-1 px-2 m-2 card"
+                to="/town/displayall"
+              >{`Towns: ${sontaData.townList.length}`}</Link>
+
+              <div className="py-1 px-2 m-2 card">{`Membership: ${sontaData.bishopSontaMemberCount}`}</div>
             </div>
           </div>
 
-          <DisplayChurchList
-            data={townCentreData.townSontaList}
-            setter={setSontaID}
-            churchType="Sonta"
-          />
+          {sontaData.townList.map((town, index) => {
+            return (
+              <div key={index}>
+                <h4>{town.name}</h4>
+                <DisplayChurchList
+                  data={town.sontas}
+                  setter={setSontaId}
+                  churchType="Sonta"
+                />
+              </div>
+            )
+          })}
         </div>
       </div>
     )

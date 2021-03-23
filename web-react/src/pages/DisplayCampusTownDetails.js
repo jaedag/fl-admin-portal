@@ -7,17 +7,17 @@ import { DISPLAY_TOWN, DISPLAY_CAMPUS } from '../queries/DisplayQueries'
 import { ChurchContext } from '../contexts/ChurchContext'
 
 export const DisplayCampusTownDetails = () => {
-  const { church, capitalise, townID, campusID, setCentreID } = useContext(
+  const { church, capitalise, townId, campusId, setCentreId } = useContext(
     ChurchContext
   )
 
   const { data: townData, loading: townLoading } = useQuery(DISPLAY_TOWN, {
-    variables: { id: townID },
+    variables: { id: townId },
   })
   const { data: campusData, loading: campusLoading } = useQuery(
     DISPLAY_CAMPUS,
     {
-      variables: { id: campusID },
+      variables: { id: campusId },
     }
   )
 
@@ -37,14 +37,13 @@ export const DisplayCampusTownDetails = () => {
               ? `${townData.displayTown.leader.firstName} ${townData.displayTown.leader.lastName}`
               : null
           }
-          leaderID={
-            townData.displayTown.leader ? townData.displayTown.leader.id : null
-          }
+          leaderId={townData.displayTown.leader?.id}
           churchHeading="No of Centres"
           churchNo={townData.townCentreCount}
+          admin={townData.displayTown.admin}
           churchType={`${capitalise(church.church)}`}
           subChurch={`${capitalise(church.subChurch)}`}
-          subChurchSetter={setCentreID}
+          subChurchSetter={setCentreId}
           buttons={townData.displayTown.centres}
           editlink="/town/edittown"
         />
@@ -63,16 +62,17 @@ export const DisplayCampusTownDetails = () => {
               ? `${campusData.displayCampus.leader.firstName} ${campusData.displayCampus.leader.lastName}`
               : '-'
           }
-          leaderID={
+          leaderId={
             campusData.displayCampus.leader
               ? campusData.displayCampus.leader.id
               : null
           }
           churchHeading="No of Centres"
           churchNo={campusData.campusCentreCount}
+          admin={campusData.displayCampus.admin}
           churchType={`${capitalise(church.church)}`}
           subChurch="Centre"
-          subChurchSetter={setCentreID}
+          subChurchSetter={setCentreId}
           buttons={campusData.displayCampus.centres}
           editlink="/campus/editcampus"
         />

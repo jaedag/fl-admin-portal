@@ -42,17 +42,17 @@ export const UPDATE_MEMBER_MUTATION = gql`
 
 export const UPDATE_TOWN_MUTATION = gql`
   mutation UpdateTown(
-    $townID: ID!
+    $townId: ID!
     $townName: String
     $lWhatsappNumber: String
-    $bishopID: ID
+    $bishopId: ID
     $centres: [ID]
   ) {
     UpdateTown(
-      townID: $townID
+      townId: $townId
       townName: $townName
       lWhatsappNumber: $lWhatsappNumber
-      bishopID: $bishopID
+      bishopId: $bishopId
       centres: $centres
     ) {
       id
@@ -63,17 +63,17 @@ export const UPDATE_TOWN_MUTATION = gql`
 
 export const UPDATE_CAMPUS_MUTATION = gql`
   mutation UpdateCampus(
-    $campusID: ID
+    $campusId: ID
     $campusName: String
     $lWhatsappNumber: String
-    $bishopID: ID
+    $bishopId: ID
     $centres: [ID]
   ) {
     UpdateCampus(
-      campusID: $campusID
+      campusId: $campusId
       campusName: $campusName
       lWhatsappNumber: $lWhatsappNumber
-      bishopID: $bishopID
+      bishopId: $bishopId
       centres: $centres
     ) {
       id
@@ -83,8 +83,19 @@ export const UPDATE_CAMPUS_MUTATION = gql`
 `
 
 export const UPDATE_CENTRE_MUTATION = gql`
-  mutation UpdateCentre($centreId: ID!, $centreName: String) {
-    UpdateCentre(id: $centreId, name: $centreName) {
+  mutation UpdateCentre(
+    $centreId: ID
+    $centreName: String
+    $lWhatsappNumber: String
+    $campusTownID: ID
+  ) {
+    UpdateCentre(
+      centreId: $centreId
+      centreName: $centreName
+      lWhatsappNumber: $lWhatsappNumber
+      campusTownID: $campusTownID
+    ) {
+      id
       name
       id
     }
@@ -92,6 +103,84 @@ export const UPDATE_CENTRE_MUTATION = gql`
   mutation AddCentreTown($centreId: ID!, $townCampusId: ID!) {
     AddCentreTown(from: { id: $townCampusId }, to: { id: $centreId }) {
       to {
+        name
+      }
+    }
+  }
+`
+
+export const ADD_CENTRE_BACENTAS = gql`
+  mutation AddCentreBacentas($centreId: ID!, $bacentaId: ID!) {
+    AddCentreBacentas(from: { id: $centreId }, to: { id: $bacentaId }) {
+      from {
+        id
+        name
+        bacentas {
+          name
+        }
+      }
+    }
+  }
+`
+export const REMOVE_CENTRE_BACENTAS = gql`
+  mutation RemoveCentreBacentas($centreId: ID!, $bacentaId: ID!) {
+    RemoveCentreBacentas(from: { id: $centreId }, to: { id: $bacentaId }) {
+      from {
+        id
+        name
+        bacentas {
+          name
+        }
+      }
+    }
+  }
+`
+
+export const REMOVE_BACENTA_CENTRE = gql`
+  mutation RemoveBacentaCentre($centreId: ID!, $bacentaId: ID!) {
+    RemoveBacentaCentre(from: { id: $centreId }, to: { id: $bacentaId }) {
+      from {
+        id
+        name
+        bacentas {
+          name
+        }
+      }
+    }
+  }
+`
+
+export const UPDATE_BACENTA = gql`
+  mutation UpdateBacenta(
+    $id: ID
+    $name: String
+    $lWhatsappNumber: String
+    $meetingDay: String
+    $venueLatitude: Float
+    $venueLongitude: Float
+  ) {
+    UpdateBacenta(
+      id: $id
+      name: $name
+      lWhatsappNumber: $lWhatsappNumber
+      meetingDay: $meetingDay
+      venueLatitude: $venueLatitude
+      venueLongitude: $venueLongitude
+    ) {
+      id
+      name
+      meetingDay {
+        day
+      }
+    }
+  }
+`
+
+export const ADD_BACENTA_CENTRE = gql`
+  mutation AddBacentaCentre($centreId: ID!, $bacentaId: ID!) {
+    AddBacentaCentre(from: { id: $centreId }, to: { id: $bacentaId }) {
+      from {
+        id
         name
       }
     }

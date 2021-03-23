@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { useQuery, useMutation } from '@apollo/client'
 import { Formik, Form } from 'formik'
@@ -6,40 +6,59 @@ import * as Yup from 'yup'
 import FormikControl from '../components/formik-components/FormikControl'
 
 import {
-  GET_CAMPUSES,
-  GET_TOWN_CENTRES,
+  GET_CENTRE_BACENTAS,
   GET_CAMPUS_CENTRES,
+  GET_TOWN_CENTRES,
   GET_TOWNS,
+  GET_CAMPUSES,
 } from '../queries/ListQueries'
-import { CREATE_BACENTA_MUTATION } from '../queries/CreateMutations'
+import {
+  ADD_BACENTA_CENTRE,
+  REMOVE_BACENTA_CENTRE,
+  UPDATE_BACENTA,
+} from '../queries/UpdateMutations'
 import { NavBar } from '../components/NavBar'
-import { ChurchContext } from '../contexts/ChurchContext'
 import { ErrorScreen, LoadingScreen } from '../components/StatusScreens'
+import { ChurchContext } from '../contexts/ChurchContext'
+import { DISPLAY_BACENTA } from '../queries/DisplayQueries'
 import Spinner from '../components/Spinner'
+import { LOG_BACENTA_HISTORY } from '../queries/LogMutations'
 
-export const CreateBacenta = () => {
-  const initialValues = {
-    bacentaName: '',
-    leaderName: '',
-    leaderWhatsapp: '',
-    townSelect: '',
-    centreSelect: '',
-    meetingDay: '',
-    venueLatitude: '',
-    venueLongitude: '',
-  }
-
+export const UpdateBacenta = () => {
   const {
     church,
-    capitalise,
     makeSelectOptions,
     parsePhoneNum,
-    bishopId,
-    setBacentaId,
+    capitalise,
     phoneRegExp,
-  } = useContext(ChurchContext)
+    bishopId,
 
+    centreId,
+    setCentreId,
+    bacentaId,
+  } = useContext(ChurchContext)
   let townCampusIdVar
+  const { data: bacentaData, loading: bacentaLoading } = useQuery(
+    DISPLAY_BACENTA,
+    {
+      variables: { id: bacentaId },
+    }
+  )
+
+  const history = useHistory()
+  const [positionLoading, setPositionLoading] = useState(false)
+
+  const initialValues = {
+    bacentaName: bacentaData?.displayBacenta?.name,
+    leaderName: `${bacentaData?.displayBacenta?.leader.firstName} ${bacentaData?.displayBacenta?.leader.lastName} `,
+    leaderWhatsapp: `+${bacentaData?.displayBacenta?.leader.whatsappNumber}`,
+    centreSelect: bacentaData?.displayBacenta?.centre,
+    townCampusSelect: bacentaData?.displayBacenta?.centre.town.id,
+    meetingDay: bacentaData?.displayBacenta?.meetingDay?.day,
+    venueLatitude: bacentaData?.displayBacenta?.location?.latitude,
+    venueLongitude: bacentaData?.displayBacenta?.location?.longitude,
+  }
+
   const serviceDayOptions = [
     { key: 'Tuesday', value: 'Tuesday' },
     { key: 'Wednesday', value: 'Wednesday' },
@@ -49,65 +68,109 @@ export const CreateBacenta = () => {
   ]
 
   const validationSchema = Yup.object({
-    bacentaName: Yup.string().required('Bacenta Name is a required field'),
-    leaderName: Yup.string().required('This is a required field'),
-    leaderWhatsapp: Yup.string()
-      .matches(
-        phoneRegExp,
-        `Phone Number must start with + and country code (eg. '+233')`
-      )
-      .required('Phone Number is required'),
-    meetingDay: Yup.string().required('Meeting Day is a required field'),
-    venueLatitude: Yup.string().required('Please fill in your location info'),
-    venueLongitude: Yup.string().required('Please fill in your location info'),
+    bacentaName: Yup.string().required(
+      `${capitalise(church.subChurch)} Name is a required field`
+    ),
+    leaderWhatsapp: Yup.string().matches(
+      phoneRegExp,
+      `Phone Number must start with + and country code (eg. '+233')`
+    ),
   })
 
-  const history = useHistory()
-  const [positionLoading, setPositionLoading] = useState(false)
-  const [CreateBacenta] = useMutation(CREATE_BACENTA_MUTATION, {
-    onCompleted: (newBacentaData) => {
-      setBacentaId(newBacentaData.CreateBacenta.id)
-      history.push('/bacenta/displaydetails')
-    },
-  })
-
-  const { data: townListData, loading: townListLoading } = useQuery(GET_TOWNS, {
+  const { data: townListData } = useQuery(GET_TOWNS, {
     variables: { id: bishopId },
   })
-  const { data: campusListData, loading: campusListLoading } = useQuery(
-    GET_CAMPUSES,
-    {
-      variables: { id: bishopId },
-    }
-  )
+  const { data: campusListData } = useQuery(GET_CAMPUSES, {
+    variables: { id: bishopId },
+  })
 
-  //onSubmit receives the form state as argument
-  const onSubmit = (values, onSubmitProps) => {
-    CreateBacenta({
-      variables: {
-        bacentaName: values.bacentaName,
-        lWhatsappNumber: parsePhoneNum(values.leaderWhatsapp),
-        centreId: values.centreSelect,
-        meetingDay: values.meetingDay,
-        venueLongitude: parseFloat(values.venueLongitude),
-        venueLatitude: parseFloat(values.venueLatitude),
+  const [UpdateBacenta] = useMutation(UPDATE_BACENTA, {
+    refetchQueries: [
+      { query: DISPLAY_BACENTA, variables: { id: bacentaId } },
+      { query: GET_CENTRE_BACENTAS, variables: { id: centreId } },
+      {
+        query: GET_CENTRE_BACENTAS,
+        variables: { id: initialValues.centreSelect?.id },
       },
-    })
+    ],
+  })
+  let newCentreName
+  const [AddBacentaCentre] = useMutation(ADD_BACENTA_CENTRE, {
+    onCompleted: (newCentre) => {
+      newCentreName = newCentre.AddBacentaCentre.from.name
+    },
+  })
+  const [RemoveBacentaCentre] = useMutation(REMOVE_BACENTA_CENTRE)
+  const [LogBacentaHistory] = useMutation(LOG_BACENTA_HISTORY)
 
-    // console.log('Form data', values)
-    onSubmitProps.setSubmitting(false)
-    onSubmitProps.resetForm()
-  }
-
-  if (townListLoading || campusListLoading) {
+  if (bacentaLoading) {
     return <LoadingScreen />
-  } else if (townListData && campusListData) {
+  } else if (bacentaData) {
     const townOptions = townListData
       ? makeSelectOptions(townListData.townList)
       : []
     const campusOptions = campusListData
       ? makeSelectOptions(campusListData.campusList)
       : []
+
+    //onSubmit receives the form state as argument
+    const onSubmit = (values, onSubmitProps) => {
+      setCentreId(values.centreSelect)
+
+      UpdateBacenta({
+        variables: {
+          id: bacentaId,
+          name: values.bacentaName,
+          lWhatsappNumber: parsePhoneNum(values.leaderWhatsapp),
+          meetingDay: values.meetingDay,
+          venueLongitude: parseFloat(values.venueLongitude),
+          venueLatitude: parseFloat(values.venueLongitude),
+        },
+      })
+
+      //Log If The Centre Changes
+      if (values.centreSelect !== initialValues.centreSelect.id) {
+        console.log(newCentreName)
+        RemoveBacentaCentre({
+          variables: {
+            centreId: initialValues.centreSelect.id,
+            bacentaId: bacentaId,
+          },
+        })
+        AddBacentaCentre({
+          variables: {
+            centreId: values.centreSelect,
+            bacentaId: bacentaId,
+          },
+        })
+        LogBacentaHistory({
+          variables: {
+            bacentaId: bacentaId,
+            historyRecord: `${values.bacentaName} has been moved from ${initialValues.centreSelect.name} Centre to ${newCentreName} Centre`,
+          },
+        })
+      }
+
+      //STUFF THAT IS LEFT TO DO
+      //Log if the Leader Changes
+      // if(values.leaderWhatsapp !== initialValues.leaderWhatsapp){
+
+      // }
+
+      //Log if the Meeting Day Changes
+      // if(values.meetingDay.day !== initialValues.meetingDay){
+
+      // }
+
+      //Log if the Venue Changes
+      // if(values.venueLongitude !== initialValues.venueLongitude || values.venueLatitude !== initialValues.venueLatitude){
+
+      // }
+
+      onSubmitProps.setSubmitting(false)
+      onSubmitProps.resetForm()
+      history.push(`/bacenta/displaydetails`)
+    }
 
     return (
       <div>
@@ -119,7 +182,7 @@ export const CreateBacenta = () => {
         >
           {(formik) => (
             <div className="body-card py-4 container mt-5">
-              <div className="container infobar">Start a New Bacenta</div>
+              <div className="container infobar">Bacenta Update Form</div>
               <Form>
                 <div className="form-group">
                   <div className="row row-cols-1 row-cols-md-2">
@@ -130,17 +193,19 @@ export const CreateBacenta = () => {
                           <FormikControl
                             className="form-control"
                             control="select"
-                            name="townSelect"
+                            name="townCampusSelect"
+                            label={`Select a ${capitalise(church.church)}`}
                             options={
                               church.church === 'town'
                                 ? townOptions
                                 : campusOptions
                             }
                             onChange={(e) => {
-                              formik.setFieldValue('townSelect', e.target.value)
+                              formik.setFieldValue(
+                                'townCampusSelect',
+                                e.target.value
+                              )
                               townCampusIdVar = e.target.value
-
-                              console.log('Town', townCampusIdVar)
                             }}
                             defaultOption={`Select a ${capitalise(
                               church.church
@@ -161,8 +226,13 @@ export const CreateBacenta = () => {
                                 ? 'townCentreList'
                                 : 'campusCentreList'
                             }
-                            varValue={townCampusIdVar}
+                            varValue={
+                              townCampusIdVar
+                                ? townCampusIdVar
+                                : initialValues.townCampusSelect
+                            }
                             defaultOption="Select a Centre"
+                            label="Select a Centre"
                           />
                         </div>
                       </div>

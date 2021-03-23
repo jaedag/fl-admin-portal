@@ -3,10 +3,14 @@ import { resolvers } from './resolvers'
 import { ApolloServer } from 'apollo-server-express'
 import express from 'express'
 import neo4j from 'neo4j-driver'
-import { makeAugmentedSchema } from 'neo4j-graphql-js'
+import {
+  makeAugmentedSchema,
+  searchSchema,
+  assertSchema,
+} from 'neo4j-graphql-js'
 import dotenv from 'dotenv'
 import { initializeDatabase } from './initialize'
-import jwt from 'express-jwt'
+// import jwt from 'express-jwt'
 
 // set environment variables from .env
 dotenv.config()
@@ -51,6 +55,9 @@ const driver = neo4j.driver(
   }
 )
 
+searchSchema({ schema, driver, debug: true })
+assertSchema({ schema, driver, debug: true })
+
 /*
  * Perform any database initialization steps such as
  * creating constraints or ensuring indexes are online
@@ -90,13 +97,13 @@ const port = process.env.GRAPHQL_SERVER_PORT || 4001
 const path = process.env.GRAPHQL_SERVER_PATH || '/graphql'
 const host = process.env.GRAPHQL_SERVER_HOST || '0.0.0.0'
 
-app.use(
-  jwt({
-    secret: process.env.JWT_SECRET,
-    algorithms: ['RS256'],
-    credentialsRequired: false,
-  })
-)
+// app.use(
+//   jwt({
+//     secret: process.env.JWT_SECRET,
+//     algorithms: ['RS256'],
+//     credentialsRequired: false,
+//   })
+// )
 
 /*
  * Optionally, apply Express middleware for authentication, etc

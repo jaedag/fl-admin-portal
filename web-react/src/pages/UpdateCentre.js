@@ -5,12 +5,12 @@ import { Formik, Form, FieldArray } from 'formik'
 import * as Yup from 'yup'
 import FormikControl from '../components/formik-components/FormikControl'
 
+import { BACENTA_DROPDOWN, GET_TOWN_CENTRES } from '../queries/ListQueries'
 import {
-  CENTRE_DROPDOWN,
-  GET_TOWN_CENTRES,
-  GET_CENTRE_BACENTAS,
-} from '../queries/ListQueries'
-import { UPDATE_CENTRE_MUTATION } from '../queries/UpdateMutations'
+  ADD_CENTRE_BACENTAS,
+  REMOVE_BACENTA_CENTRE,
+  UPDATE_CENTRE_MUTATION,
+} from '../queries/UpdateMutations'
 import { NavBar } from '../components/NavBar'
 import { ErrorScreen, LoadingScreen } from '../components/StatusScreens'
 import { ChurchContext } from '../contexts/ChurchContext'
@@ -22,9 +22,9 @@ export const UpdateCentre = () => {
     parsePhoneNum,
     capitalise,
     phoneRegExp,
-    townID,
-    centreID,
-    setBishopID,
+    townId,
+    centreId,
+    setBishopId,
   } = useContext(ChurchContext)
 
   const {
@@ -32,7 +32,7 @@ export const UpdateCentre = () => {
     error: centreError,
     loading: centreLoading,
   } = useQuery(DISPLAY_CENTRE, {
-    variables: { id: centreID },
+    variables: { id: centreId },
   })
 
   const history = useHistory()
@@ -58,18 +58,19 @@ export const UpdateCentre = () => {
     ),
   })
 
-  const [UpdateCentre, AddCentreTown] = useMutation(UPDATE_CENTRE_MUTATION, {
+  const [UpdateCentre] = useMutation(UPDATE_CENTRE_MUTATION, {
     refetchQueries: [
-      { query: DISPLAY_CENTRE, variables: { id: centreID } },
-      { query: GET_TOWN_CENTRES, variables: { id: townID } },
+      { query: DISPLAY_CENTRE, variables: { id: centreId } },
+      { query: GET_TOWN_CENTRES, variables: { id: townId } },
       {
         query: GET_TOWN_CENTRES,
         variables: { id: initialValues.townCampusSelect },
       },
-      { query: GET_CENTRE_BACENTAS, variables: { id: '01' } },
     ],
   })
-  console.log(UpdateCentre, AddCentreTown)
+  const [AddCentreBacentas] = useMutation(ADD_CENTRE_BACENTAS)
+  const [RemoveBacentaCentre] = useMutation(REMOVE_BACENTA_CENTRE)
+
   if (centreError) {
     return <ErrorScreen />
   } else if (centreLoading) {
@@ -77,24 +78,53 @@ export const UpdateCentre = () => {
   } else {
     //onSubmit receives the form state as argument
     const onSubmit = (values, onSubmitProps) => {
-      setBishopID(values.centreSelect)
+      setBishopId(values.centreSelect)
 
       UpdateCentre({
         variables: {
-          centreId: centreID,
-          centreName: values.campusTownName,
+          centreId: centreId,
+          centreName: values.centreName,
+          lWhatsappNumber: parsePhoneNum(values.leaderWhatsapp),
+          campusTownID: values.townCampusSelect,
         },
       })
-      AddCentreTown({
-        variables: {
-          centreId: centreID,
-          centreName: values.campusTownName,
-          leaderId: parsePhoneNum(values.leaderWhatsapp),
-          townCampusId: values.centreSelect,
-          bacentas: values.bacentas.map((centre) => {
-            return centre.id
-          }),
-        },
+
+      const oldBacentaList = initialValues.bacentas.map((bacenta) => {
+        return bacenta.id
+      })
+
+      const newBacentaList = values.bacentas.map((bacenta) => {
+        return bacenta.id ? bacenta.id : bacenta
+      })
+      const removeBacentas = oldBacentaList.filter(function (value) {
+        return !newBacentaList.includes(value)
+      })
+
+      const addBacentas = newBacentaList.filter(function (value) {
+        return !oldBacentaList.includes(value)
+      })
+
+      removeBacentas.forEach((bacenta) => {
+        RemoveBacentaCentre({
+          variables: {
+            centreId: centreId,
+            bacentaId: bacenta,
+          },
+        })
+      })
+      addBacentas.forEach((bacenta) => {
+        RemoveBacentaCentre({
+          variables: {
+            centreId: centreId,
+            bacentaId: bacenta,
+          },
+        })
+        AddCentreBacentas({
+          variables: {
+            centreId: centreId,
+            bacentaId: bacenta,
+          },
+        })
       })
 
       onSubmitProps.setSubmitting(false)
@@ -112,32 +142,20 @@ export const UpdateCentre = () => {
         >
           {(formik) => (
             <div className="body-card py-4 container mt-5">
-              <div className="container infobar">{`Start a New ${capitalise(
+              <div className="container infobar">{`${capitalise(
                 church.subChurch
-              )}`}</div>
+              )} Update Form`}</div>
               <Form>
                 <div className="form-group">
                   <div className="row row-cols-1 row-cols-md-2">
                     {/* <!-- Basic Info Div --> */}
                     <div className="col mb-2">
-                      <div className="form-row row-cols-2">
-                        <div className="col-8">
-                          <FormikControl
-                            className="form-control"
-                            control="select"
-                            name="centreSelect"
-                            options={'yes'}
-                            defaultOption="Select a Bishop"
-                          />
-                        </div>
-                      </div>
-
                       <div className="form-row row-cols-3">
                         <div className="col-9">
                           <FormikControl
                             className="form-control"
                             control="input"
-                            name="campusTownName"
+                            name="centreName"
                             placeholder={`Name of ${capitalise(
                               church.subChurch
                             )}`}
@@ -185,26 +203,24 @@ export const UpdateCentre = () => {
 
                           return (
                             <div>
-                              {bacentas.map((centre, index) => (
+                              {bacentas.map((bacenta, index) => (
                                 <div key={index} className="form-row row-cols">
                                   <div className="col-9">
                                     <FormikControl
                                       control="combobox"
                                       name={`bacentas[${index}]`}
                                       placeholder={
-                                        centre
-                                          ? centre.name
-                                          : 'Enter Centre Name'
+                                        bacenta
+                                          ? bacenta.name
+                                          : 'Enter Bacenta Name'
                                       }
                                       setFieldValue={formik.setFieldValue}
-                                      optionsQuery={CENTRE_DROPDOWN}
-                                      queryVariable={`${church.subChurch}Name`}
+                                      optionsQuery={BACENTA_DROPDOWN}
+                                      queryVariable="bacentaName"
                                       suggestionText="name"
                                       suggestionID="id"
-                                      dataset={`${church.subChurch}Dropdown`}
-                                      aria-describedby={`${capitalise(
-                                        church.subChurch
-                                      )} Name`}
+                                      dataset="bacentaDropdown"
+                                      aria-describedby="Bacenta Name"
                                       className="form-control"
                                     />
                                   </div>

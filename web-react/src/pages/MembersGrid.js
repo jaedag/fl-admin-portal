@@ -7,17 +7,21 @@ import { MemberTable } from '../components/MemberTable'
 import { GET_BISHOP_MEMBERS } from '../queries/ListQueries'
 import { ChurchContext } from '../contexts/ChurchContext'
 
-export const MembersGrid = () => {
-  const { bishopID } = useContext(ChurchContext)
+export const MembersGridBishop = () => {
+  const { memberFilter, filters, bishopId } = useContext(ChurchContext)
   const [offset, setOffset] = useState(0)
   const {
     data: memberData,
     error: memberError,
     loading: memberLoading,
-    fetchMore,
   } = useQuery(GET_BISHOP_MEMBERS, {
-    variables: { id: bishopID, offset: offset },
+    variables: { id: bishopId },
   })
+
+  const numberOfRecords = 25
+  const memberDataLoaded = memberData
+    ? memberFilter(memberData?.bishopMemberList, filters)
+    : null
 
   return (
     <div>
@@ -28,8 +32,13 @@ export const MembersGrid = () => {
         </div>
 
         <div className="col px-2">
-          <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-2 mb-3 border-bottom">
-            <h3 className="h3">Search Results</h3>
+          <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-2 border-bottom">
+            <h3 className="h3">
+              {memberData
+                ? `${memberDataLoaded.length} Search Results`
+                : 'SearchResults'}
+            </h3>
+
             <div className="btn-toolbar mb-2 mb-md-0">
               <div className="btn-group mr-2" />
               <Link to="/member/addmember" className="btn btn-primary p-2 mx-1">
@@ -38,12 +47,7 @@ export const MembersGrid = () => {
               <button
                 className="btn btn-primary p-2 mx-1"
                 onClick={async () => {
-                  setOffset(offset ? offset - 24 : null)
-                  await fetchMore({
-                    variables: {
-                      offset: offset,
-                    },
-                  })
+                  setOffset(offset ? offset - numberOfRecords : 0)
                 }}
               >
                 <i className="fas fa-chevron-left" /> Back
@@ -51,23 +55,33 @@ export const MembersGrid = () => {
               <button
                 className="btn btn-primary p-2 mx-1"
                 onClick={async () => {
-                  setOffset(offset + 24)
-                  await fetchMore({
-                    variables: {
-                      offset: offset,
-                    },
-                  })
+                  setOffset(
+                    offset + numberOfRecords > memberDataLoaded.length
+                      ? offset
+                      : offset + numberOfRecords
+                  )
                 }}
               >
                 Next <i className="fas fa-chevron-right" />
               </button>
             </div>
           </div>
+          <div>
+            <small className="text-secondary">
+              {memberDataLoaded &&
+                `Page ${offset / numberOfRecords + 1} of ${
+                  memberDataLoaded &&
+                  Math.ceil(memberDataLoaded?.length / numberOfRecords)
+                }`}
+            </small>
+          </div>
+
           <MemberTable
-            memberData={memberData}
+            memberData={memberDataLoaded}
             memberError={memberError}
             memberLoading={memberLoading}
-            list="bishopMemberList"
+            offset={offset}
+            numberOfRecords={numberOfRecords}
           />
         </div>
       </div>

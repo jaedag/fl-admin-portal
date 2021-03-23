@@ -11,9 +11,10 @@ import {
 import { setContext } from '@apollo/client/link/context'
 import { Auth0Provider, useAuth0 } from '@auth0/auth0-react'
 import './index.css'
+
 import BishopSelect from './pages/BishopSelect'
 import BishopDashboard from './pages/BishopDashboard'
-import { MembersGrid } from './pages/MembersGrid'
+import { MembersGridBishop } from './pages/MembersGrid'
 import { PastorsGrid } from './pages/PastorsGrid'
 import { SearchPageMobile } from './pages/SearchPageMobile'
 import { DisplayMemberDetails } from './pages/DisplayMemberDetails'
@@ -35,19 +36,21 @@ import { DisplayAllTownCampuses } from './pages/DisplayAllTownCampuses'
 import { CreateBacenta } from './pages/CreateBacenta'
 import { UpdateCentre } from './pages/UpdateCentre'
 import { DisplaySontasByCampusTown } from './pages/DisplaySontasByCampusTown'
+import { UpdateBacenta } from './pages/UpdateBacenta'
+// import ProtectedRoute from './auth/ProtectedRoute'
+import Loading from './components/index/Loading'
 
 const AppWithApollo = () => {
   const [accessToken, setAccessToken] = useState()
-  const { getAccessTokenSilently, loginWithRedirect, isLoading } = useAuth0()
+  const { getAccessTokenSilently, isLoading, loginWithRedirect } = useAuth0()
 
   const getAccessToken = useCallback(async () => {
     try {
       const token = await getAccessTokenSilently()
-      console.log(token)
       setAccessToken(token)
-      // localStorage.setItem('token', token)
+      sessionStorage.setItem('token', token)
     } catch (err) {
-      isLoading && loginWithRedirect()
+      !isLoading && loginWithRedirect()
     }
   }, [getAccessTokenSilently, loginWithRedirect])
 
@@ -61,13 +64,15 @@ const AppWithApollo = () => {
 
   const authLink = setContext((_, { headers }) => {
     // get the authentication token from local storage if it exists
-    // const token = localStorage.getItem('token')
+    const token = sessionStorage.getItem('token')
+      ? sessionStorage.getItem('token')
+      : accessToken
 
     // return the headers to the context so httpLink can read them
     return {
       headers: {
         ...headers,
-        Authorization: `Bearer ${accessToken}`,
+        Authorization: `Bearer ${token}`,
       },
     }
   })
@@ -85,21 +90,51 @@ const AppWithApollo = () => {
 }
 
 const PastorsAdmin = () => {
+  const { isLoading } = useAuth0()
   const [church, setChurch] = useState({
     church: '',
     subChurch: '',
   })
-  const [bishopID, setBishopID] = useState('')
-  const [townID, setTownID] = useState('')
-  const [campusID, setCampusID] = useState('')
-  const [bacentaID, setBacentaID] = useState('')
-  const [centreID, setCentreID] = useState('')
-  const [sontaID, setSontaID] = useState('')
-  const [ministryID, setMinistryID] = useState('')
+
+  const [bishopId, setBishopId] = useState('')
+  const [townId, setTownId] = useState('')
+  const [campusId, setCampusId] = useState('')
+  const [bacentaId, setBacentaId] = useState('')
+  const [centreId, setCentreId] = useState('')
+  const [sontaId, setSontaId] = useState('')
+  const [ministryId, setMinistryId] = useState('')
   const [memberID, setMemberID] = useState('')
+  const [currentUser, setCurrentUser] = useState({
+    id: '',
+    firstName: '',
+    lastName: '',
+    email: '',
+    bishop: '',
+    constituency: '',
+    roles: [],
+  })
   const [searchKey, setSearchKey] = useState('')
+  const [filters, setFilters] = useState({
+    gender: '',
+    maritalStatus: '',
+    occupation: '',
+    leaderRank: [],
+    ministry: '',
+  })
   const capitalise = (str) => {
-    return str.charAt(0).toUpperCase() + str.slice(1)
+    return str?.charAt(0).toUpperCase() + str?.slice(1)
+  }
+  const plural = (church) => {
+    switch (church) {
+      case 'town':
+        return 'towns'
+      case 'campus':
+        return 'campuses'
+      case 'senior high school':
+        return 'senior high schools'
+      default:
+        return
+    }
   }
   const phoneRegExp = /^[+][(]{0,1}[1-9]{1,4}[)]{0,1}[-\s/0-9]*$/
   const parsePhoneNum = (phoneNumber) => {
@@ -109,11 +144,207 @@ const PastorsAdmin = () => {
       .replace('(', '')
       .replace(')', '')
   }
+
   const makeSelectOptions = (data) => {
     return data.map((data) => ({
       value: data.id,
       key: data.name ? data.name : data.firstName + ' ' + data.lastName,
     }))
+  }
+
+  const memberFilter = (memberData, filters) => {
+    let filteredData = memberData
+
+    const filterFor = (data, field, subfield, criteria) => {
+      data = data.filter((member) => {
+        if (
+          subfield
+            ? member[`${field}`] &&
+              member[`${field}`][`${subfield}`] === criteria
+            : member[`${field}`][0]
+        ) {
+          return member
+        }
+        return null
+      })
+
+      return data
+    }
+
+    //Filter for Gender
+    switch (filters.gender) {
+      case 'Male':
+        filteredData = filterFor(filteredData, 'gender', 'gender', 'Male')
+        break
+      case 'Female':
+        filteredData = filterFor(filteredData, 'gender', 'gender', 'Female')
+        break
+      default:
+        //do nothing
+        break
+    }
+
+    //Filter for Marital Status
+    switch (filters.maritalStatus) {
+      case 'Single':
+        filteredData = filterFor(
+          filteredData,
+          'maritalStatus',
+          'status',
+          'Single'
+        )
+
+        break
+      case 'Married':
+        filteredData = filterFor(
+          filteredData,
+          'maritalStatus',
+          'status',
+          'Married'
+        )
+        break
+      default:
+        //do nothing
+        break
+    }
+
+    //Filter for Ministry
+    switch (filters.ministry) {
+      case 'Greater Love Choir':
+        filteredData = filterFor(
+          filteredData,
+          'ministry',
+          'name',
+          'Greater Love Choir'
+        )
+
+        break
+      case 'Dancing Stars':
+        filteredData = filterFor(
+          filteredData,
+          'ministry',
+          'name',
+          'Dancing Stars'
+        )
+        break
+
+      case 'Film Stars':
+        filteredData = filterFor(filteredData, 'ministry', 'name', 'Film Stars')
+        break
+      case 'Ushers':
+        filteredData = filterFor(filteredData, 'ministry', 'name', 'Ushers')
+        break
+      case 'Culinary Stars':
+        filteredData = filterFor(
+          filteredData,
+          'ministry',
+          'name',
+          'Culinary Stars'
+        )
+        break
+      case 'Arrivals':
+        filteredData = filterFor(filteredData, 'ministry', 'name', 'Arrivals')
+        break
+      case 'Fragrance':
+        filteredData = filterFor(filteredData, 'ministry', 'name', 'Fragrance')
+        break
+      case 'Telepastors':
+        filteredData = filterFor(
+          filteredData,
+          'ministry',
+          'name',
+          'Telepastors'
+        )
+        break
+      case 'Seeing and Hearing':
+        filteredData = filterFor(
+          filteredData,
+          'ministry',
+          'name',
+          'Seeing and Hearing'
+        )
+        break
+      case 'Understanding Campaign':
+        filteredData = filterFor(
+          filteredData,
+          'ministry',
+          'name',
+          'Understanding Campaign'
+        )
+        break
+      case 'BENMP':
+        filteredData = filterFor(filteredData, 'ministry', 'name', 'BENMP')
+        break
+      case 'Still Photography':
+        filteredData = filterFor(
+          filteredData,
+          'ministry',
+          'name',
+          'Still Photography'
+        )
+        break
+      default:
+        //do nothing
+        break
+    }
+
+    //Filter for Leadership Rank
+    let leaderData = {
+      basontaLeaders: [],
+      sontaLeaders: [],
+      bacentaLeaders: [],
+      centreLeaders: [],
+      cOs: [],
+    }
+
+    if (filters.leaderRank.includes('Basonta Leader')) {
+      leaderData.basontaLeaders = filterFor(filteredData, 'leadsBasonta')
+    }
+    if (filters.leaderRank.includes('Sonta Leader')) {
+      leaderData.sontaLeaders = filterFor(filteredData, 'leadsSonta')
+    }
+    if (filters.leaderRank.includes('Bacenta Leader')) {
+      leaderData.bacentaLeaders = filterFor(filteredData, 'leadsBacenta')
+    }
+    if (filters.leaderRank.includes('Centre Leader')) {
+      leaderData.centreLeaders = filterFor(filteredData, 'leadsCentre')
+    }
+    if (filters.leaderRank.includes('CO')) {
+      leaderData.cOs = filteredData.filter((member) => {
+        if (member.townGSO[0] || member.campusGSO[0]) {
+          return member
+        }
+        return null
+      })
+    }
+
+    //Merge the Arrays without duplicates
+    if (filters.leaderRank[0]) {
+      filteredData = [
+        ...new Set([
+          ...leaderData.basontaLeaders,
+          ...leaderData.sontaLeaders,
+          ...leaderData.bacentaLeaders,
+          ...leaderData.centreLeaders,
+          ...leaderData.cOs,
+        ]),
+      ]
+    }
+
+    //Code for finding duplicates
+    // let duplicates = [...yourArray]
+    // yourArrayWithoutDuplicates.forEach((item) => {
+    //   const i = duplicates.indexOf(item)
+    //   duplicates = duplicates
+    //     .slice(0, i)
+    //     .concat(duplicates.slice(i + 1, duplicates.length))
+    // })
+
+    // console.log("duplicates",duplicates) //[ 1, 5 ]
+
+    // console.log("FIltered",filteredData)
+
+    return filteredData
   }
 
   const determineChurch = (member) => {
@@ -123,37 +354,43 @@ const PastorsAdmin = () => {
       }
       if (member.townBishop[0]) {
         setChurch({ church: 'town', subChurch: 'centre' })
-        setBishopID(member.id)
+        setBishopId(member.id)
         return
       } else if (member.campusBishop[0]) {
         setChurch({ church: 'campus', subChurch: 'centre' })
-        setBishopID(member.id)
+        setBishopId(member.id)
         return
       } else {
         return
       }
     }
-    if (member.bacenta && member.bacenta.centre && member.bacenta.centre.town) {
+    if (member?.bacenta?.centre?.town) {
       setChurch({ church: 'town', subChurch: 'centre' })
-      setBishopID(member.bacenta.centre.town.bishop.id)
+      setBishopId(member.bacenta.centre.town.bishop.id)
       return
     } else if (member.townGSO && member.townGSO[0]) {
       setChurch({ church: 'town', subChurch: 'centre' })
-      setBishopID(member.townGSO[0].bishop.id)
+      setBishopId(member.townGSO[0].bishop.id)
       return
-    } else if (
-      member.bacenta &&
-      member.bacenta.centre &&
-      member.bacenta.centre.campus
-    ) {
+    } else if (member?.bacenta?.centre?.campus) {
       setChurch({ church: 'campus', subChurch: 'centre' })
-      setBishopID(member.bacenta.centre.campus.bishop.id)
+      setBishopId(member?.bacenta?.centre?.campus?.bishop?.id)
       return
-    } else if (member.campusGSO && member.campusGSO[0]) {
+    } else if (member?.campusGSO[0]) {
       setChurch({ church: 'campus', subChurch: 'centre' })
-      setBishopID(member.campusGSO[0].bishop.id)
+      setBishopId(member.campusGSO[0].bishop.id)
       return
     }
+  }
+
+  const clickMember = (member) => {
+    setMemberID(member.id)
+    sessionStorage.setItem('memberId', member.id)
+    determineChurch(member)
+  }
+
+  if (isLoading) {
+    return <Loading />
   }
 
   return (
@@ -161,35 +398,42 @@ const PastorsAdmin = () => {
       <ChurchContext.Provider
         value={{
           capitalise,
+          plural,
+          clickMember,
           phoneRegExp,
           parsePhoneNum,
           makeSelectOptions,
           determineChurch,
+          filters,
+          setFilters,
+          memberFilter,
           church,
           setChurch,
-          bishopID,
-          setBishopID,
-          townID,
-          setTownID,
-          campusID,
-          setCampusID,
-          centreID,
-          setCentreID,
-          bacentaID,
-          setBacentaID,
-          sontaID,
-          setSontaID,
-          ministryID,
-          setMinistryID,
+          bishopId,
+          setBishopId,
+          townId,
+          setTownId,
+          campusId,
+          setCampusId,
+          centreId,
+          setCentreId,
+          bacentaId,
+          setBacentaId,
+          sontaId,
+          setSontaId,
+          ministryId,
+          setMinistryId,
         }}
       >
-        <MemberContext.Provider value={{ memberID, setMemberID }}>
+        <MemberContext.Provider
+          value={{ memberID, setMemberID, currentUser, setCurrentUser }}
+        >
           <SearchContext.Provider value={{ searchKey, setSearchKey }}>
             <Switch>
               <Route path="/" component={BishopSelect} exact />
               <Route path="/dashboard" component={BishopDashboard} exact />
-              <Route path="/membersearch" component={SearchPageMobile} exact />
-              <Route path="/members" component={MembersGrid} exact />
+              <Route path="/member-search" component={SearchPageMobile} exact />
+              <Route path="/members" component={MembersGridBishop} exact />
               <Route path="/pastors" component={PastorsGrid} exact />
               <Route path="/member/addmember" component={CreateMember} exact />
               <Route
@@ -210,6 +454,11 @@ const PastorsAdmin = () => {
               <Route
                 path="/bacenta/addbacenta"
                 component={CreateBacenta}
+                exact
+              />
+              <Route
+                path="/bacenta/editbacenta"
+                component={UpdateBacenta}
                 exact
               />
               <Route
@@ -240,12 +489,12 @@ const PastorsAdmin = () => {
                 exact
               />
               <Route
-                path="/town/sonta/displayall"
+                path="/town/display-sontas"
                 component={DisplaySontasByCampusTown}
                 exact
               />
               <Route
-                path="/campus/sonta/displayall"
+                path="/campus/display-sontas"
                 component={DisplaySontasByCampusTown}
                 exact
               />

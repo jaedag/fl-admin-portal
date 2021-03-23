@@ -11,7 +11,7 @@ import { HeadingBar } from '../components/HeadingBar'
 import { NavBar } from '../components/NavBar'
 import { ErrorScreen, LoadingScreen } from '../components/StatusScreens'
 import Spinner from '../components/Spinner'
-import { MINISTRY_LIST, BACENTA_DROPDOWN } from '../queries/ListQueries'
+import { GET_MINISTRIES, BACENTA_DROPDOWN } from '../queries/ListQueries'
 import { MemberContext } from '../contexts/MemberContext'
 import { ChurchContext } from '../contexts/ChurchContext'
 
@@ -98,7 +98,7 @@ export const UpdateMemberDetails = () => {
   const history = useHistory()
 
   const validationSchema = Yup.object({
-    firstName: Yup.string().required('Name is a required field'),
+    firstName: Yup.string().required('This is a required field'),
     lastName: Yup.string().required('This is a required field'),
     gender: Yup.string().required('This is a required field'),
     email: Yup.string().email('Please enter a valid email address'),
@@ -120,7 +120,7 @@ export const UpdateMemberDetails = () => {
     data: ministryListData,
     loading: ministryListLoading,
     error: ministryListError,
-  } = useQuery(MINISTRY_LIST)
+  } = useQuery(GET_MINISTRIES)
 
   const [UpdateMemberDetails] = useMutation(UPDATE_MEMBER_MUTATION, {
     refetchQueries: [{ query: DISPLAY_MEMBER, variables: { id: memberID } }],
@@ -249,7 +249,7 @@ export const UpdateMemberDetails = () => {
                           className="form-control"
                           control="input"
                           name="firstName"
-                          placeholder="First Name"
+                          placeholder="First Name*"
                           aria-describedby="firstNameHelp"
                         />
                       </div>

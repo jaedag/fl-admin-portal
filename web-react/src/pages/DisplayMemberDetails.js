@@ -7,6 +7,7 @@ import { DISPLAY_MEMBER } from '../queries/DisplayQueries'
 import { ErrorScreen, LoadingScreen } from '../components/StatusScreens'
 import { MemberContext } from '../contexts/MemberContext'
 import { ChurchContext } from '../contexts/ChurchContext'
+import userIcon from '../img/user.png'
 
 export const DisplayMemberDetails = () => {
   const monthNames = [
@@ -26,11 +27,11 @@ export const DisplayMemberDetails = () => {
   const { memberID } = useContext(MemberContext)
   const {
     church,
-    setBacentaID,
-    setCentreID,
-    setTownID,
-    setCampusID,
-    setSontaID,
+    setBacentaId,
+    setCentreId,
+    setTownId,
+    setCampusId,
+    setSontaId,
   } = useContext(ChurchContext)
 
   const {
@@ -54,21 +55,21 @@ export const DisplayMemberDetails = () => {
     rank.push({
       desc: `Bacenta Leader of ${memberData.displayMember.leadsBacenta[0].name}`,
       link: '/bacenta/displaydetails',
-      setter: { setBacentaID },
+      setter: { setBacentaId },
     })
   }
   if (memberData.displayMember.leadsCentre[0]) {
     rank.push({
       desc: `Centre Leader of ${memberData.displayMember.leadsCentre.name}`,
       link: '/centre/displaydetails',
-      setter: { setCentreID },
+      setter: { setCentreId },
     })
   }
   if (memberData.displayMember.townGSO[0]) {
     rank.push({
       desc: `Con Rep of ${memberData.displayMember.townGSO.name}`,
       link: '/town/displaydetails',
-      set: { setTownID },
+      set: { setTownId },
     })
   }
   if (memberData.displayMember.campusGSO[0]) {
@@ -76,7 +77,7 @@ export const DisplayMemberDetails = () => {
       detail: memberData.displayMember.campusGSO.map((campus) => ({
         desc: `Con Rep of ${campus.name}`,
         memberID: campus.memberID,
-        setter: { setCampusID },
+        setter: { setCampusId },
       })),
       link: '/campus/displaydetails',
     })
@@ -88,14 +89,14 @@ export const DisplayMemberDetails = () => {
         memberID: sonta.memberID,
       })),
       link: '/sonta/displaydetails',
-      setter: { setSontaID },
+      setter: { setSontaId },
     })
   }
   if (memberData.displayMember.leadsMinistry[0]) {
     rank.push({
       desc: `Ministry Leader of ${memberData.displayMember.leadsMinistry.name}`,
       link: '',
-      setMinistryID: '',
+      setMinistryId: '',
     })
   }
   if (memberData.displayMember.townBishop[0]) {
@@ -137,7 +138,11 @@ export const DisplayMemberDetails = () => {
                   <div className="row row-cols-1 my-2">
                     <div className="col d-flex justify-content-center">
                       <img
-                        src={`${memberData.displayMember.pictureUrl}`}
+                        src={
+                          memberData.displayMember.pictureUrl
+                            ? memberData.displayMember.pictureUrl
+                            : userIcon
+                        }
                         className="m-2 rounded profile-img"
                         alt={`${memberData.displayMember.firstName} ${memberData.displayMember.lastName}`}
                       />
@@ -233,7 +238,7 @@ export const DisplayMemberDetails = () => {
                           {memberData.displayMember.dob
                             ? `${memberData.displayMember.dob.date.day} ${
                                 monthNames[
-                                  memberData.displayMember.dob.date.month
+                                  memberData.displayMember.dob.date.month - 1
                                 ]
                               } ${memberData.displayMember.dob.date.year}`
                             : null}
@@ -314,13 +319,13 @@ export const DisplayMemberDetails = () => {
 
           <div className="col">
             {/* Leadership History Timeline */}
-            {memberData.displayMember.leadershipHistory[0] ? (
+            {memberData.displayMember.history[0] ? (
               <div className="row">
                 <div className="col">
                   <MemberCard title="History Timeline" editlink="#">
                     <div className="row">
                       <ul className="timeline">
-                        {memberData.displayMember.leadershipHistory.map(
+                        {memberData.displayMember.history.map(
                           (element, index) =>
                             index < 3 && (
                               <li key={index}>
@@ -355,8 +360,10 @@ export const DisplayMemberDetails = () => {
                       </div>
                       <div className="col">
                         <p className="font-weight-bold card-text">
-                          {memberData.displayMember.bacenta
-                            ? memberData.displayMember.bacenta.name
+                          {memberData.displayMember?.bacenta?.centre
+                            ? memberData.displayMember?.bacenta?.centre[
+                                `${church.church}`
+                              ]?.bishop
                               ? `${
                                   memberData.displayMember.bacenta.centre[
                                     `${church.church}`

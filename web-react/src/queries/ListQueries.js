@@ -12,8 +12,8 @@ export const ALL_MEMBERS = gql`
 `
 
 export const GET_BISHOP_MEMBERS = gql`
-  query($id: ID, $offset: Int) {
-    bishopMemberList(id: $id, offset: $offset, first: 24) {
+  query($id: ID) {
+    bishopMemberList(id: $id, orderBy: firstName_asc) {
       id
       firstName
       lastName
@@ -22,6 +22,39 @@ export const GET_BISHOP_MEMBERS = gql`
         name
       }
       ministry {
+        name
+      }
+      maritalStatus {
+        status
+      }
+      gender {
+        gender
+      }
+      leadsBacenta {
+        name
+      }
+      leadsCentre {
+        name
+      }
+      leadsMinistry {
+        name
+      }
+      leadsSonta {
+        name
+      }
+      leadsBasonta {
+        name
+      }
+      townGSO {
+        name
+      }
+      campusGSO {
+        name
+      }
+      townBishop {
+        name
+      }
+      campusBishop {
         name
       }
     }
@@ -163,25 +196,6 @@ export const GET_CAMPUS_CENTRES = gql`
   }
 `
 
-export const GET_CENTRE_BACENTAS = gql`
-  query($centreId: ID) {
-    townSontaLeader(centreId: $centreId) {
-      id
-      firstName
-      lastName
-      leadsSonta {
-        ministry {
-          name
-        }
-        name
-        town {
-          name
-        }
-      }
-    }
-  }
-`
-
 export const GET_SONTAS_BY_CAMPUSTOWN = gql`
   query($id: ID) {
     townList(id: $id) {
@@ -200,6 +214,7 @@ export const GET_SONTAS_BY_CAMPUSTOWN = gql`
         }
       }
     }
+    bishopSontaMemberCount(id: $id)
     campusList(id: $id) {
       id
       name
@@ -229,6 +244,11 @@ export const GET_CAMPUSES = gql`
         firstName
         lastName
       }
+      admin {
+        id
+        firstName
+        lastName
+      }
       sontas {
         id
         name
@@ -237,6 +257,27 @@ export const GET_CAMPUSES = gql`
         id
         firstName
         lastName
+        hasAdmin {
+          id
+          firstName
+          lastName
+          bacenta {
+            centre {
+              town {
+                name
+                bishop {
+                  id
+                }
+              }
+              campus {
+                name
+                bishop {
+                  id
+                }
+              }
+            }
+          }
+        }
       }
     }
   }
@@ -260,6 +301,27 @@ export const GET_TOWNS = gql`
         id
         firstName
         lastName
+        hasAdmin {
+          id
+          firstName
+          lastName
+          bacenta {
+            centre {
+              town {
+                name
+                bishop {
+                  id
+                }
+              }
+              campus {
+                name
+                bishop {
+                  id
+                }
+              }
+            }
+          }
+        }
       }
     }
   }
@@ -292,7 +354,7 @@ export const GET_BISHOPS = gql`
   }
 `
 
-export const MINISTRY_LIST = gql`
+export const GET_MINISTRIES = gql`
   query {
     ministryList {
       id
@@ -301,7 +363,7 @@ export const MINISTRY_LIST = gql`
   }
 `
 
-export const CENTRE_BACENTA_LIST = gql`
+export const GET_CENTRE_BACENTAS = gql`
   query($id: ID) {
     centreBacentaList(id: $id) {
       id

@@ -11,23 +11,23 @@ export const DisplayAllCentres = () => {
   const {
     capitalise,
     church,
-    townID,
-    campusID,
-    setCentreID,
-    setTownID,
-    setCampusID,
+    townId,
+    campusId,
+    setCentreId,
+    setTownId,
+    setCampusId,
   } = useContext(ChurchContext)
 
   const { data: townCentreData, loading: townLoading } = useQuery(
     GET_TOWN_CENTRES,
     {
-      variables: { id: townID },
+      variables: { id: townId },
     }
   )
   const { data: campusCentreData, loading: campusLoading } = useQuery(
     GET_CAMPUS_CENTRES,
     {
-      variables: { id: campusID },
+      variables: { id: campusId },
     }
   )
 
@@ -46,8 +46,8 @@ export const DisplayAllCentres = () => {
                   to={`/${church.church}/displaydetails`}
                   onClick={() => {
                     church.church === 'town'
-                      ? setTownID(townID)
-                      : setCampusID(campusID)
+                      ? setTownId(townId)
+                      : setCampusId(campusId)
                   }}
                 >
                   {' '}
@@ -88,7 +88,7 @@ export const DisplayAllCentres = () => {
 
           <DisplayChurchList
             data={campusCentreData.campusCentreList}
-            setter={setCentreID}
+            setter={setCentreId}
             churchType="Centre"
           />
         </div>
@@ -106,8 +106,8 @@ export const DisplayAllCentres = () => {
                   to={`/${church.church}/displaydetails`}
                   onClick={() => {
                     church.church === 'town'
-                      ? setTownID(townID)
-                      : setCampusID(campusID)
+                      ? setTownId(townId)
+                      : setCampusId(campusId)
                   }}
                 >
                   {' '}
@@ -148,12 +148,12 @@ export const DisplayAllCentres = () => {
 
           <DisplayChurchList
             data={townCentreData.townCentreList}
-            setter={setCentreID}
+            setter={setCentreId}
             churchType="Centre"
           />
           {/* <DisplayChurchList
             data={townCentreData.townSontaList}
-            setter={setSontaID}
+            setter={setSontaId}
             churchType="Sonta"
           /> */}
         </div>
