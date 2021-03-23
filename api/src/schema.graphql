@@ -32,6 +32,8 @@ type Member {
   hasAdmin: Member @relation(name: "IS_ADMIN_FOR", direction: IN)
 }
 
+# @jaedag
+
 type Gender {
   gender: String
   members: [Member] @relation(name: "HAS_GENDER", direction: IN)
