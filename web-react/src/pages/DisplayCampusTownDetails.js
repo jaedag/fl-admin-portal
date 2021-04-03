@@ -25,12 +25,13 @@ export const DisplayCampusTownDetails = () => {
     // Spinner Icon for Loading Screens
     return <LoadingScreen />
   } else if (church.church === 'town' && townData) {
+    let breadcrumb = [townData.displayTown?.bishop, townData.displayTown]
     return (
       <div>
         <NavBar />
         <DisplayChurchDetails
           name={townData.displayTown.name}
-          leaderTitle={'Town GSO'}
+          leaderTitle={'Town CO'}
           membership={townData.townMemberCount}
           leaderName={
             townData.displayTown.leader
@@ -46,6 +47,7 @@ export const DisplayCampusTownDetails = () => {
           subChurchSetter={setCentreId}
           buttons={townData.displayTown.centres}
           editlink="/town/edittown"
+          breadcrumb={breadcrumb && breadcrumb}
         />
       </div>
     )
@@ -55,7 +57,7 @@ export const DisplayCampusTownDetails = () => {
         <NavBar />
         <DisplayChurchDetails
           name={campusData.displayCampus.name}
-          leaderTitle={'Campus GSO'}
+          leaderTitle={'Campus CO'}
           membership={campusData.campusMemberCount}
           leaderName={
             campusData.displayCampus.leader
@@ -78,6 +80,7 @@ export const DisplayCampusTownDetails = () => {
         />
       </div>
     )
+  } else {
+    return <ErrorScreen />
   }
-  return <ErrorScreen />
 }

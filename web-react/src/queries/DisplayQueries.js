@@ -12,6 +12,7 @@ export const DISPLAY_BISHOP_NAME = gql`
 export const DISPLAY_MEMBER = gql`
   query displayMember($id: ID) {
     displayMember(id: $id) {
+      id
       firstName
       lastName
       email
@@ -86,16 +87,62 @@ export const DISPLAY_MEMBER = gql`
       leadsBacenta {
         id
         name
+        leader {
+          firstName
+          lastName
+        }
+        centre {
+          id
+          name
+          town {
+            name
+            bishop {
+              firstName
+              lastName
+            }
+          }
+          campus {
+            id
+            name
+            bishop {
+              firstName
+              lastName
+            }
+          }
+        }
       }
       leadsCentre {
         id
         name
+        town {
+          id
+          name
+          bishop {
+            id
+            firstName
+            lastName
+          }
+        }
+        campus {
+          id
+          name
+          bishop {
+            id
+            firstName
+            lastName
+          }
+        }
       }
-      townGSO {
+      leadsTown {
         id
         name
+        bishop {
+          id
+          firstName
+          lastName
+        }
       }
-      campusGSO {
+      leadsCampus {
         id
         name
         bishop {
@@ -105,6 +152,10 @@ export const DISPLAY_MEMBER = gql`
         }
       }
       leadsSonta {
+        id
+        name
+      }
+      leadsBasonta {
         id
         name
       }
@@ -142,6 +193,15 @@ export const DISPLAY_BACENTA = gql`
         town {
           id
           name
+          bishop {
+            id
+            firstName
+            lastName
+          }
+        }
+        campus {
+          id
+          name
         }
       }
       leader {
@@ -155,8 +215,46 @@ export const DISPLAY_BACENTA = gql`
           }
         }
       }
+      history {
+        HistoryLog {
+          id
+          created_at {
+            date {
+              formatted
+            }
+          }
+          historyRecord
+        }
+      }
     }
     bacentaMemberCount(id: $id)
+  }
+`
+
+export const DISPLAY_SONTA = gql`
+  query displaySonta($id: ID) {
+    displaySonta(id: $id) {
+      id
+      name
+      leader {
+        id
+        firstName
+        lastName
+        whatsappNumber
+        title {
+          Title {
+            title
+          }
+        }
+      }
+    }
+    sontaMemberCount(id: $id)
+
+    sontaBasontaLeaderList(id: $id) {
+      id
+      firstName
+      lastName
+    }
   }
 `
 
@@ -172,10 +270,20 @@ export const DISPLAY_CENTRE = gql`
       town {
         id
         name
+        bishop {
+          id
+          firstName
+          lastName
+        }
       }
       campus {
         id
         name
+        bishop {
+          id
+          firstName
+          lastName
+        }
       }
       leader {
         id

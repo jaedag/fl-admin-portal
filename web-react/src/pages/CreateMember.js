@@ -38,7 +38,15 @@ export const CreateMember = () => {
     ],
     pastoralAppointment: [
       {
-        title: '',
+        title: 'Pastor',
+        date: '',
+      },
+      {
+        title: 'Reverend',
+        date: '',
+      },
+      {
+        title: 'Bishop',
         date: '',
       },
     ],
@@ -62,10 +70,10 @@ export const CreateMember = () => {
   const { phoneRegExp, parsePhoneNum, makeSelectOptions } = useContext(
     ChurchContext
   )
-  const { setMemberID } = useContext(MemberContext)
+  const { setMemberId } = useContext(MemberContext)
 
   const validationSchema = Yup.object({
-    firstName: Yup.string().required('Name is a required field'),
+    firstName: Yup.string().required('This is a required field'),
     lastName: Yup.string().required('This is a required field'),
     gender: Yup.string().required('This is a required field'),
     email: Yup.string().email('Please enter a valid email address'),
@@ -81,8 +89,8 @@ export const CreateMember = () => {
       phoneRegExp,
       `Phone Number must start with + and country code (eg. '+233')`
     ),
-    bacenta: Yup.string().required('This is a required field'),
-    ministry: Yup.string().required('This is a required field'),
+    // bacenta: Yup.string().required('This is a required field'),
+    // ministry: Yup.string().required('This is a required field'),
   })
 
   //All of the Hooks!
@@ -94,7 +102,7 @@ export const CreateMember = () => {
 
   const [CreateMember] = useMutation(CREATE_MEMBER_MUTATION, {
     onCompleted: (newMemberData) => {
-      setMemberID(newMemberData.CreateMember.id)
+      setMemberId(newMemberData.CreateMember.id)
     },
   })
 
@@ -130,6 +138,15 @@ export const CreateMember = () => {
     //Formatting of phone number fields
     values.phoneNumber = parsePhoneNum(values.phoneNumber)
     values.whatsappNumber = parsePhoneNum(values.whatsappNumber)
+
+    values.pastoralAppointment = values.pastoralAppointment.filter(
+      (pastoralAppointment) => {
+        if (pastoralAppointment.date) {
+          return pastoralAppointment
+        }
+        return null
+      }
+    )
 
     CreateMember({
       variables: {
@@ -211,9 +228,15 @@ export const CreateMember = () => {
                         </p>
                       </label>
                     </div>
+                    <p className="text-center text-danger">
+                      <small>
+                        Please note that * are required to submit the form
+                      </small>
+                    </p>
                     <div className="form-row row-cols-2">
                       <div className="col">
                         <FormikControl
+                          label="First Name*"
                           className="form-control"
                           control="input"
                           name="firstName"
@@ -223,6 +246,7 @@ export const CreateMember = () => {
                       </div>
                       <div className="col">
                         <FormikControl
+                          label="Middle Name"
                           className="form-control"
                           control="input"
                           name="middleName"
@@ -232,6 +256,7 @@ export const CreateMember = () => {
                       </div>
                       <div className="col">
                         <FormikControl
+                          label="Last Name*"
                           className="form-control"
                           control="input"
                           name="lastName"
@@ -241,6 +266,7 @@ export const CreateMember = () => {
                       </div>
                       <div className="col">
                         <FormikControl
+                          label="Gender*"
                           className="form-control"
                           control="select"
                           name="gender"
@@ -251,6 +277,7 @@ export const CreateMember = () => {
                       </div>
                       <div className="col">
                         <FormikControl
+                          label="Phone Number*"
                           className="form-control"
                           control="input"
                           placeholder="Enter phone number"
@@ -260,6 +287,7 @@ export const CreateMember = () => {
                       </div>
                       <div className="col">
                         <FormikControl
+                          label="WhatsApp Number*"
                           className="form-control"
                           control="input"
                           placeholder="Enter Your WhatsApp number"
@@ -272,6 +300,7 @@ export const CreateMember = () => {
                     <div className="form-row row-cols-2">
                       <div className="col">
                         <FormikControl
+                          label="Marital Status*"
                           className="form-control"
                           control="select"
                           name="maritalStatus"
@@ -282,6 +311,7 @@ export const CreateMember = () => {
                       </div>
                       <div className="col">
                         <FormikControl
+                          label="Occupation"
                           className="form-control"
                           control="input"
                           name="occupation"
@@ -293,6 +323,7 @@ export const CreateMember = () => {
                     <div className="form-row">
                       <div className="col-8">
                         <FormikControl
+                          label="Email Address"
                           className="form-control"
                           control="input"
                           name="email"
@@ -301,10 +332,7 @@ export const CreateMember = () => {
                         />
                       </div>
                       <div className="col-8">
-                        <small
-                          htmlFor="dateofbirth"
-                          className="form-text text-muted"
-                        >
+                        <small htmlFor="dateofbirth" className="form-text ">
                           Date of Birth
                         </small>
                         <FormikControl
@@ -328,6 +356,7 @@ export const CreateMember = () => {
                       <div className="col">
                         <FormikControl
                           control="combobox"
+                          label="Bacenta*"
                           name="bacenta"
                           // label="Bacenta"
                           placeholder="Bacenta"
@@ -343,6 +372,7 @@ export const CreateMember = () => {
                       <div className="col">
                         <FormikControl
                           className="form-control"
+                          label="Ministry*"
                           control="select"
                           name="ministry"
                           options={ministryOptions}
@@ -358,7 +388,7 @@ export const CreateMember = () => {
                     <HeadingBar title="Pastoral Appointments (if any)" />
                     <FieldArray name="pastoralAppointment">
                       {(fieldArrayProps) => {
-                        const { push, remove, form } = fieldArrayProps
+                        const { remove, form } = fieldArrayProps
                         const { values } = form
                         const { pastoralAppointment } = values
 
@@ -386,30 +416,6 @@ export const CreateMember = () => {
                                     />
                                   </div>
                                   <div className="col d-flex">
-                                    {index < 3 && (
-                                      <button
-                                        className="plus-button rounded mr-2"
-                                        type="button"
-                                        onClick={() => push()}
-                                      >
-                                        <svg
-                                          aria-hidden="true"
-                                          focusable="false"
-                                          data-prefix="fas"
-                                          data-icon="plus"
-                                          className="svg-inline--fa fa-plus fa-w-14"
-                                          role="img"
-                                          xmlns="http://www.w3.org/2000/svg"
-                                          viewBox="0 0 448 512"
-                                        >
-                                          <path
-                                            fill="currentColor"
-                                            d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"
-                                          />
-                                        </svg>
-                                      </button>
-                                    )}
-
                                     {index > 0 && (
                                       <button
                                         className="plus-button rounded"
@@ -478,7 +484,9 @@ export const CreateMember = () => {
                                   <button
                                     className="plus-button rounded mr-2"
                                     type="button"
-                                    onClick={() => push()}
+                                    onClick={() => {
+                                      push()
+                                    }}
                                   >
                                     <svg
                                       aria-hidden="true"

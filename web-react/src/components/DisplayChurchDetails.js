@@ -21,17 +21,55 @@ export const DisplayChurchDetails = (props) => {
     membership,
     buttons,
     editlink,
+    history,
+    breadcrumb,
   } = props
 
   const { isAuthenticated } = useAuth0()
-  const { setMemberID } = useContext(MemberContext)
-  const { clickMember } = useContext(ChurchContext)
+  const { setMemberId } = useContext(MemberContext)
+  const { clickCard } = useContext(ChurchContext)
 
   return (
     <div>
       <NavBar />
       <div className=" py-2 top-heading title-bar mt-4">
         <div className="container ">
+          {breadcrumb
+            ? breadcrumb.map((bread, i) => {
+                if (i === breadcrumb.length - 1) {
+                  return (
+                    <small
+                      key={i}
+                      to={`/${bread?.__typename.toLowerCase()}/displaydetails`}
+                      className="label text-secondary"
+                      // onClick={() => {
+                      //   clickCard(bread)
+                      // }}
+                    >
+                      {bread?.name
+                        ? `${bread?.name} ${bread?.__typename}`
+                        : `Bishop ${bread?.firstName} ${bread?.lastName}`}
+                    </small>
+                  )
+                } else {
+                  return (
+                    <Link
+                      key={i}
+                      to={`/${bread?.__typename.toLowerCase()}/displaydetails`}
+                      className=" label text-secondary"
+                      onClick={() => {
+                        clickCard(bread)
+                      }}
+                    >
+                      {bread?.name
+                        ? `${bread?.name} ${bread?.__typename}`
+                        : `Bishop ${bread?.firstName} ${bread?.lastName}`}
+                      {' >'}{' '}
+                    </Link>
+                  )
+                }
+              })
+            : null}
           <h3 className="mx-3 mt-3 font-weight-bold">
             {`${name} ${churchType}`}
             {!isAuthenticated && (
@@ -47,7 +85,7 @@ export const DisplayChurchDetails = (props) => {
             <Link
               to="/member/displaydetails"
               onClick={() => {
-                clickMember(admin)
+                clickCard(admin)
               }}
               className="mx-3 mb-2 text-muted font-weight-bold"
             >
@@ -60,13 +98,16 @@ export const DisplayChurchDetails = (props) => {
       <div className="container">
         <div className="row detail-top-margin ml-2 text-secondary">Details</div>
         <div className="row row-cols-3 detail-bottom-margin">
-          <div className="col-9 col-md-6 col-lg-4">
+          <Link
+            className="col-9 col-md-6 col-lg-4"
+            to={`/${churchType.toLowerCase()}/members`}
+          >
             <DetailsCard heading="Membership" detail={membership} />
-          </div>
+          </Link>
           <Link
             to="/member/displaydetails"
             onClick={() => {
-              setMemberID(leaderId)
+              setMemberId(leaderId)
             }}
             className="col-9 col-md-6 col-lg-4"
           >
@@ -132,6 +173,28 @@ export const DisplayChurchDetails = (props) => {
           </div>
         </React.Fragment>
       ) : null}
+
+      {history && (
+        <div className="container px-3">
+          <h5>Church History</h5>
+          <ul className="timeline">
+            {history.map(
+              (element, index) =>
+                index < 5 && (
+                  <li key={index}>
+                    <p className="timeline-text">
+                      {element.HistoryLog.historyRecord}
+                      <br />
+                      <small className="text-secondary">
+                        {element.HistoryLog.created_at.date?.formatted}
+                      </small>
+                    </p>
+                  </li>
+                )
+            )}
+          </ul>
+        </div>
+      )}
     </div>
   )
 }

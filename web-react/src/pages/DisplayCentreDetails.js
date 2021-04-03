@@ -20,27 +20,36 @@ export const DisplayCentreDetails = () => {
     return <LoadingScreen />
   } else if (centreData) {
     const { displayCentre, centreMemberCount, centreBacentaCount } = centreData
+    let breadcrumb = [
+      displayCentre.town
+        ? displayCentre.town.bishop
+        : displayCentre.campus.bishop,
+      displayCentre.town ? displayCentre.town : displayCentre.campus,
+      displayCentre,
+    ]
+
     return (
       <div>
         <NavBar />
         <DisplayChurchDetails
-          name={displayCentre.name}
+          name={displayCentre?.name}
           // leaderTitle={displayCentre.leader.title[0].Title.title}
           leaderTitle="Centre Leader"
           membership={centreMemberCount}
           leaderName={
-            displayCentre.leader
+            displayCentre?.leader
               ? `${displayCentre.leader.firstName} ${displayCentre.leader.lastName}`
               : '-'
           }
-          leaderId={displayCentre.leader ? displayCentre.leader.id : null}
+          leaderId={displayCentre?.leader ? displayCentre.leader.id : null}
           churchHeading="No of Bacentas"
           churchType="Centre"
           subChurch="Bacenta"
           subChurchSetter={setBacentaId}
           churchNo={centreBacentaCount}
-          buttons={displayCentre.bacentas}
+          buttons={displayCentre ? displayCentre.bacentas : []}
           editlink="/centre/editcentre"
+          breadcrumb={breadcrumb && breadcrumb}
         />
       </div>
     )

@@ -32,18 +32,21 @@ export const UpdateBacenta = () => {
     capitalise,
     phoneRegExp,
     bishopId,
-
     centreId,
     setCentreId,
     bacentaId,
   } = useContext(ChurchContext)
+
   let townCampusIdVar
+
   const { data: bacentaData, loading: bacentaLoading } = useQuery(
     DISPLAY_BACENTA,
     {
       variables: { id: bacentaId },
     }
   )
+
+  const [newLeaderInfo, setNewLeaderInfo] = useState({})
 
   const history = useHistory()
   const [positionLoading, setPositionLoading] = useState(false)
@@ -52,11 +55,19 @@ export const UpdateBacenta = () => {
     bacentaName: bacentaData?.displayBacenta?.name,
     leaderName: `${bacentaData?.displayBacenta?.leader.firstName} ${bacentaData?.displayBacenta?.leader.lastName} `,
     leaderWhatsapp: `+${bacentaData?.displayBacenta?.leader.whatsappNumber}`,
-    centreSelect: bacentaData?.displayBacenta?.centre,
-    townCampusSelect: bacentaData?.displayBacenta?.centre.town.id,
+
+    townCampusSelect:
+      church.church === 'town'
+        ? bacentaData?.displayBacenta?.centre?.town?.id
+        : bacentaData?.displayBacenta?.centre?.campus?.id,
+    centreSelect: bacentaData?.displayBacenta?.centre.id,
     meetingDay: bacentaData?.displayBacenta?.meetingDay?.day,
-    venueLatitude: bacentaData?.displayBacenta?.location?.latitude,
-    venueLongitude: bacentaData?.displayBacenta?.location?.longitude,
+    venueLatitude: bacentaData?.displayBacenta?.location?.latitude
+      ? bacentaData?.displayBacenta?.location?.latitude
+      : '',
+    venueLongitude: bacentaData?.displayBacenta?.location?.longitude
+      ? bacentaData?.displayBacenta?.location?.longitude
+      : '',
   }
 
   const serviceDayOptions = [
@@ -85,23 +96,46 @@ export const UpdateBacenta = () => {
   })
 
   const [UpdateBacenta] = useMutation(UPDATE_BACENTA, {
+    onCompleted: (updatedInfo) => {
+      setNewLeaderInfo(updatedInfo.UpdateBacenta?.leader)
+    },
     refetchQueries: [
-      { query: DISPLAY_BACENTA, variables: { id: bacentaId } },
       { query: GET_CENTRE_BACENTAS, variables: { id: centreId } },
       {
         query: GET_CENTRE_BACENTAS,
-        variables: { id: initialValues.centreSelect?.id },
+        variables: { id: initialValues.centreSelect },
       },
     ],
   })
-  let newCentreName
+
+  const [RemoveBacentaCentre] = useMutation(REMOVE_BACENTA_CENTRE)
+  const [LogBacentaHistory] = useMutation(LOG_BACENTA_HISTORY, {
+    onCompleted: (newLog) => {
+      newLog.LogBacentaHistory.history.map((history) =>
+        console.log('History ', history.HistoryLog)
+      )
+    },
+    refetchQueries: [{ query: DISPLAY_BACENTA, variables: { id: bacentaId } }],
+  })
+
   const [AddBacentaCentre] = useMutation(ADD_BACENTA_CENTRE, {
     onCompleted: (newCentre) => {
-      newCentreName = newCentre.AddBacentaCentre.from.name
+      //After Adding the bacenta to a centre, then you log that change.
+      LogBacentaHistory({
+        variables: {
+          bacentaId: bacentaId,
+          leaderId: '',
+          newCentreId: newCentre.AddBacentaCentre.from
+            ? newCentre.AddBacentaCentre.from.id
+            : '',
+          oldCentreId: bacentaData?.displayBacenta?.centre
+            ? bacentaData?.displayBacenta?.centre.id
+            : null,
+          historyRecord: `${initialValues.bacentaName} has been moved from ${bacentaData?.displayBacenta?.centre.name} Centre to ${newCentre.AddBacentaCentre.from.name} Centre`,
+        },
+      })
     },
   })
-  const [RemoveBacentaCentre] = useMutation(REMOVE_BACENTA_CENTRE)
-  const [LogBacentaHistory] = useMutation(LOG_BACENTA_HISTORY)
 
   if (bacentaLoading) {
     return <LoadingScreen />
@@ -129,11 +163,10 @@ export const UpdateBacenta = () => {
       })
 
       //Log If The Centre Changes
-      if (values.centreSelect !== initialValues.centreSelect.id) {
-        console.log(newCentreName)
+      if (values.centreSelect !== initialValues.centreSelect) {
         RemoveBacentaCentre({
           variables: {
-            centreId: initialValues.centreSelect.id,
+            centreId: initialValues.centreSelect,
             bacentaId: bacentaId,
           },
         })
@@ -143,29 +176,62 @@ export const UpdateBacenta = () => {
             bacentaId: bacentaId,
           },
         })
+      }
+
+      //Log if the Leader Changes
+      if (values.leaderWhatsapp !== initialValues.leaderWhatsapp) {
         LogBacentaHistory({
           variables: {
             bacentaId: bacentaId,
-            historyRecord: `${values.bacentaName} has been moved from ${initialValues.centreSelect.name} Centre to ${newCentreName} Centre`,
+            leaderId: newLeaderInfo.id,
+            oldCentreId: '',
+            newCentreId: '',
+            historyRecord: `${newLeaderInfo.firstName} ${newLeaderInfo.lastName} was transferred to become the new Bacenta Leader for ${values.bacentaName}`,
           },
         })
       }
 
-      //STUFF THAT IS LEFT TO DO
-      //Log if the Leader Changes
-      // if(values.leaderWhatsapp !== initialValues.leaderWhatsapp){
+      //Log if the Bacenta Name Changes
+      if (values.bacentaName !== initialValues.bacentaName) {
+        LogBacentaHistory({
+          variables: {
+            bacentaId: bacentaId,
+            leaderId: '',
+            oldCentreId: '',
+            newCentreId: '',
+            historyRecord: `The Bacenta name has been changed from ${initialValues.bacentaName} to ${values.bacentaName}`,
+          },
+        })
+      }
 
-      // }
-
-      //Log if the Meeting Day Changes
-      // if(values.meetingDay.day !== initialValues.meetingDay){
-
-      // }
+      // Log if the Meeting Day Changes
+      if (values.meetingDay !== initialValues.meetingDay) {
+        LogBacentaHistory({
+          variables: {
+            bacentaId: bacentaId,
+            leaderId: '',
+            oldCentreId: '',
+            newCentreId: '',
+            historyRecord: `${values.bacentaName} has changed their meeting day from ${initialValues.meetingDay} to ${values.meetingDay}`,
+          },
+        })
+      }
 
       //Log if the Venue Changes
-      // if(values.venueLongitude !== initialValues.venueLongitude || values.venueLatitude !== initialValues.venueLatitude){
-
-      // }
+      if (
+        values.venueLongitude !== initialValues.venueLongitude ||
+        values.venueLatitude !== initialValues.venueLatitude
+      ) {
+        LogBacentaHistory({
+          variables: {
+            bacentaId: bacentaId,
+            leaderId: '',
+            oldCentreId: '',
+            newCentreId: '',
+            historyRecord: `${values.bacentaName} has changed their venue`,
+          },
+        })
+      }
 
       onSubmitProps.setSubmitting(false)
       onSubmitProps.resetForm()
@@ -206,6 +272,8 @@ export const UpdateBacenta = () => {
                                 e.target.value
                               )
                               townCampusIdVar = e.target.value
+                              //Set centreSelect to empty string so that the value is set back to the default option when a user changes the townCampus var
+                              formik.setFieldValue('centreSelect', '')
                             }}
                             defaultOption={`Select a ${capitalise(
                               church.church
@@ -231,6 +299,12 @@ export const UpdateBacenta = () => {
                                 ? townCampusIdVar
                                 : initialValues.townCampusSelect
                             }
+                            onChange={(e) => {
+                              formik.setFieldValue(
+                                'centreSelect',
+                                e.target.value
+                              )
+                            }}
                             defaultOption="Select a Centre"
                             label="Select a Centre"
                           />
@@ -318,7 +392,6 @@ export const UpdateBacenta = () => {
                                     .getElementById('venueLatitude')
                                     .blur()
                                   setPositionLoading(false)
-                                  //console.log(formik.values)
                                 }
                               )
                             }}
