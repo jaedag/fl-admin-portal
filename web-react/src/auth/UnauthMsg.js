@@ -10,7 +10,7 @@ export const UnauthMsg = () => {
       <NavBar />
       <div className="container body-container">
         {/* <!--Web Logo and text--> */}
-        <div className="row d-flex align-items-center justify-content-center d-lg-none">
+        <div className="row d-flex align-items-center justify-content-center">
           <div className="col-12 col-lg-6 justify-content-center">
             {`Heya! Looks like you're trying to view some information that is not
             meant for you. Please contact the system administrator for more
