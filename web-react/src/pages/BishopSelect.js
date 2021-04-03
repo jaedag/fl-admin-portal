@@ -15,7 +15,7 @@ const BishopSelect = () => {
   const { determineChurch, clickCard } = useContext(ChurchContext)
   const { currentUser, setCurrentUser } = useContext(MemberContext)
   const { user, isAuthenticated } = useAuth0()
-  const { data, loading } = useQuery(GET_BISHOPS)
+  const { data, loading, error } = useQuery(GET_BISHOPS)
   useQuery(GET_LOGGED_IN_USER, {
     variables: {
       email: currentUser?.email,
@@ -142,6 +142,7 @@ const BishopSelect = () => {
       </React.Fragment>
     )
   } else {
+    console.log(error)
     return (
       <React.Fragment>
         <div className="container body-container d-none d-lg-block">

@@ -39,7 +39,7 @@ import { CreateBacenta } from './pages/CreateBacenta'
 import { UpdateCentre } from './pages/UpdateCentre'
 import { DisplaySontasByCampusTown } from './pages/DisplaySontasByCampusTown'
 import { UpdateBacenta } from './pages/UpdateBacenta'
-// import ProtectedRoute from './auth/ProtectedRoute'
+import ProtectedRoute from './auth/ProtectedRoute'
 import Loading from './components/index/Loading'
 import { MemberFiltersMobile } from './pages/MemberFiltersMobile'
 import { MemberTableMobile } from './components/MemberTableMobile'
@@ -633,7 +633,12 @@ const PastorsAdmin = () => {
           <SearchContext.Provider value={{ searchKey, setSearchKey }}>
             <Switch>
               <Route path="/" component={BishopSelect} exact />
-              <Route path="/dashboard" component={BishopDashboard} exact />
+              <ProtectedRoute
+                path="/dashboard"
+                component={BishopDashboard}
+                roles={['superadmin']}
+                exact
+              />
               <Route path="/member-search" component={SearchPageMobile} exact />
               <Route
                 path="/filter-members"

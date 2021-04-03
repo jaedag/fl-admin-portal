@@ -227,7 +227,7 @@ type Basonta {
 type Query {
   #At the Federal Level
   bishopsList: [Member]
-    @isAuthenticated
+    # @isAuthenticated
     @cypher(
       statement: "MATCH ()<-[:HAS_CAMPUS|:HAS_TOWN]-(m:Member) RETURN DISTINCT m"
     )

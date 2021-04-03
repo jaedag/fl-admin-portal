@@ -5,7 +5,7 @@ import FormikControl from '../components/formik-components/FormikControl'
 import { SearchContext } from '../contexts/MemberContext'
 
 export const MobileSearchNav = () => {
-  let history = useHistory()
+  const history = useHistory()
   const { setSearchKey } = useContext(SearchContext)
 
   const initialValues = {
