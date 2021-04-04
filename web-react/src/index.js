@@ -56,7 +56,7 @@ const AppWithApollo = () => {
     } catch (err) {
       !isLoading && loginWithRedirect()
     }
-  }, [getAccessTokenSilently, loginWithRedirect])
+  }, [getAccessTokenSilently, loginWithRedirect, isLoading])
 
   useEffect(() => {
     getAccessToken()

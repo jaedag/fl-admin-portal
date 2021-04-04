@@ -1,5 +1,6 @@
 import React, { useContext } from 'react'
 import { Link, useLocation } from 'react-router-dom'
+import RoleView from '../auth/RoleView'
 import SearchBox from './SearchBox'
 import UserProfile from './UserProfile'
 import { ChurchContext } from '../contexts/ChurchContext'
@@ -11,15 +12,18 @@ export const NavBar = () => {
   return (
     <nav className="navbar navbar-dark navbar-expand fixed-top">
       <div className="navbar-nav">
-        <Link
-          className={`nav-item nav-link d-flex align-items-center flex-column ${
-            location.pathname === '/' && 'active'
-          }`}
-          to="/"
-        >
-          <span className="fas fa-home fa-2x px-1" />
-          <span className="d-none d-md-inline">Home</span>
-        </Link>
+        <RoleView authRoles={['superadmin']}>
+          <Link
+            className={`nav-item nav-link d-flex align-items-center flex-column ${
+              location.pathname === '/' && 'active'
+            }`}
+            to="/"
+          >
+            <span className="fas fa-home fa-2x px-1" />
+            <span className="d-none d-md-inline">Home</span>
+          </Link>{' '}
+        </RoleView>
+
         {church.church && (
           <Link
             className={`nav-item nav-link d-flex align-items-center flex-column ${
@@ -31,6 +35,7 @@ export const NavBar = () => {
             <span className="d-none d-md-inline">Bishop</span>
           </Link>
         )}
+
         {!(location.pathname === '/members') && church.church ? (
           <Link
             className="nav-item nav-link d-flex align-items-center flex-column"

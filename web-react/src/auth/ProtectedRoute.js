@@ -6,10 +6,9 @@ import Loading from '../components/index/Loading'
 import { MemberContext } from '../contexts/MemberContext'
 
 const ProtectedRoute = ({ component, roles, ...args }) => {
-  console.log(roles)
   const { currentUser } = useContext(MemberContext)
 
-  if (currentUser.roles.includes('superadmin')) {
+  if (roles.some((r) => currentUser.roles.includes(r))) {
     return (
       <Route
         component={withAuthenticationRequired(component, {
