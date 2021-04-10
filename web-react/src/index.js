@@ -40,7 +40,6 @@ import { UpdateCentre } from './pages/UpdateCentre'
 import { DisplaySontasByCampusTown } from './pages/DisplaySontasByCampusTown'
 import { UpdateBacenta } from './pages/UpdateBacenta'
 import ProtectedRoute from './auth/ProtectedRoute'
-import Loading from './components/index/Loading'
 import { MemberFiltersMobile } from './pages/MemberFiltersMobile'
 import { MemberTableMobile } from './components/MemberTableMobile'
 
@@ -94,33 +93,47 @@ const AppWithApollo = () => {
 }
 
 const PastorsAdmin = () => {
-  const { isLoading } = useAuth0()
-
   const [church, setChurch] = useState(
     sessionStorage.getItem('church')
       ? JSON.parse(sessionStorage.getItem('church'))
       : { church: '', subChurch: '' }
   )
-  const [bishopId, setBishopId] = useState(sessionStorage.getItem('bishopId'))
-  const [townId, setTownId] = useState(sessionStorage.getItem('townId'))
-  const [campusId, setCampusId] = useState(sessionStorage.getItem('campusId'))
+  const [bishopId, setBishopId] = useState(
+    sessionStorage.getItem('bishopId') ? sessionStorage.getItem('bishopId') : ''
+  )
+  const [townId, setTownId] = useState(
+    sessionStorage.getItem('townId') ? sessionStorage.getItem('townId') : ''
+  )
+  const [campusId, setCampusId] = useState(
+    sessionStorage.getItem('campusId') ? sessionStorage.getItem('campusId') : ''
+  )
   const [bacentaId, setBacentaId] = useState(
     sessionStorage.getItem('bacentaId')
+      ? sessionStorage.getItem('bacentaId')
+      : ''
   )
-  const [centreId, setCentreId] = useState(sessionStorage.getItem('centreId'))
-  const [sontaId, setSontaId] = useState(sessionStorage.getItem('sontaId'))
+  const [centreId, setCentreId] = useState(
+    sessionStorage.getItem('centreId') ? sessionStorage.getItem('centreId') : ''
+  )
+  const [sontaId, setSontaId] = useState(
+    sessionStorage.getItem('sontaId') ? sessionStorage.getItem('sontaId') : ''
+  )
   const [ministryId, setMinistryId] = useState(
     sessionStorage.getItem('ministryId')
+      ? sessionStorage.getItem('ministryId')
+      : ''
   )
-  const [memberId, setMemberId] = useState(sessionStorage.getItem('memberId'))
+  const [memberId, setMemberId] = useState(
+    sessionStorage.getItem('memberId') ? sessionStorage.getItem('memberId') : ''
+  )
   const [currentUser, setCurrentUser] = useState({
-    id: '',
-    firstName: '',
-    lastName: '',
-    email: '',
-    bishop: '',
-    constituency: '',
-    roles: [],
+    id: '3fc349a5-ce5f-4502-85c9-063622764c56',
+    firstName: 'John Dag',
+    lastName: 'Addy',
+    email: 'jaedagy@gmail.com',
+    bishop: '5c221a24-8f6f-4bff-82dd-81b9c2315400',
+    constituency: '58dfe3ae-83de-49fd-a11d-49043e375133',
+    roles: ['superadmin'],
   })
 
   const [searchKey, setSearchKey] = useState('a')
@@ -155,6 +168,24 @@ const PastorsAdmin = () => {
       .replace('+', '')
       .replace('(', '')
       .replace(')', '')
+  }
+
+  const parseDate = (date) => {
+    // Get today's date
+    let todaysDate = new Date()
+
+    // Create date from input value
+    let inputDate = new Date(date)
+
+    // call setHours to take the time out of the comparison
+    if (inputDate.toDateString() === todaysDate.toDateString()) {
+      // Date equals today's date
+      return 'Today'
+    } else if (inputDate.getDate() === todaysDate.getDate() - 1) {
+      // Date equals yesterday's date
+      return 'Yesterday'
+    }
+    return inputDate.toDateString()
   }
 
   const makeSelectOptions = (data) => {
@@ -397,21 +428,11 @@ const PastorsAdmin = () => {
       ]
     }
 
-    //Code for finding duplicates
-    // let duplicates = [...yourArray]
-    // yourArrayWithoutDuplicates.forEach((item) => {
-    //   const i = duplicates.indexOf(item)
-    //   duplicates = duplicates
-    //     .slice(0, i)
-    //     .concat(duplicates.slice(i + 1, duplicates.length))
-    // })
-
-    // console.log("duplicates",duplicates) //[ 1, 5 ]
-
     return filteredData
   }
 
   const determineChurch = (member) => {
+    //switch case for other church types
     switch (member.__typename) {
       case 'Town':
         setChurch({ church: 'town', subChurch: 'centre' })
@@ -423,6 +444,7 @@ const PastorsAdmin = () => {
           })
         )
         setBishopId(member.bishop?.id)
+        sessionStorage.setItem('bishopId', member.bishop?.id)
         break
       case 'Campus':
         setChurch({ church: 'campus', subChurch: 'centre' })
@@ -434,6 +456,7 @@ const PastorsAdmin = () => {
           })
         )
         setBishopId(member.bishop?.id)
+        sessionStorage.setItem('bishopId', member.bishop?.id)
         break
       case 'Centre':
         setChurch({
@@ -450,6 +473,10 @@ const PastorsAdmin = () => {
         setBishopId(
           member.campus ? member.campus.bishop.id : member.town.bishop.id
         )
+        sessionStorage.setItem(
+          'bishopId',
+          member.campus ? member.campus.bishop.id : member.town.bishop.id
+        )
         break
       case 'Bacenta':
         setChurch({ church: member.centre?.town ? 'town' : 'campus' })
@@ -460,6 +487,12 @@ const PastorsAdmin = () => {
           })
         )
         setBishopId(
+          member.centre?.town
+            ? member.centre?.town.bishop.id
+            : member.centre?.campus.bishop.id
+        )
+        sessionStorage.setItem(
+          'bishopId',
           member.centre?.town
             ? member.centre?.town.bishop.id
             : member.centre?.campus.bishop.id
@@ -591,16 +624,13 @@ const PastorsAdmin = () => {
     }
   }
 
-  if (isLoading) {
-    return <Loading />
-  }
-
   return (
     <Router>
       <ChurchContext.Provider
         value={{
           capitalise,
           plural,
+          parseDate,
           clickCard,
           phoneRegExp,
           parsePhoneNum,

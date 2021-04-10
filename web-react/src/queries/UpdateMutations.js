@@ -46,17 +46,21 @@ export const UPDATE_TOWN_MUTATION = gql`
     $townName: String
     $lWhatsappNumber: String
     $bishopId: ID
-    $centres: [ID]
   ) {
     UpdateTown(
       townId: $townId
       townName: $townName
       lWhatsappNumber: $lWhatsappNumber
       bishopId: $bishopId
-      centres: $centres
     ) {
       id
       name
+      leader {
+        id
+        firstName
+        lastName
+        whatsappNumber
+      }
     }
   }
 `
@@ -67,17 +71,21 @@ export const UPDATE_CAMPUS_MUTATION = gql`
     $campusName: String
     $lWhatsappNumber: String
     $bishopId: ID
-    $centres: [ID]
   ) {
     UpdateCampus(
       campusId: $campusId
       campusName: $campusName
       lWhatsappNumber: $lWhatsappNumber
       bishopId: $bishopId
-      centres: $centres
     ) {
       id
       name
+      leader {
+        id
+        firstName
+        lastName
+        whatsappNumber
+      }
     }
   }
 `
@@ -97,6 +105,7 @@ export const UPDATE_CENTRE_MUTATION = gql`
     ) {
       id
       name
+<<<<<<< HEAD
       id
     }
   }
@@ -104,6 +113,13 @@ export const UPDATE_CENTRE_MUTATION = gql`
     AddCentreTown(from: { id: $townCampusId }, to: { id: $centreId }) {
       to {
         name
+=======
+      leader {
+        id
+        firstName
+        lastName
+        whatsappNumber
+>>>>>>> develop
       }
     }
   }
@@ -150,6 +166,10 @@ export const REMOVE_CENTRE_TOWN = gql`
           name
         }
       }
+      to {
+        id
+        name
+      }
     }
   }
 `
@@ -165,6 +185,10 @@ export const REMOVE_CENTRE_CAMPUS = gql`
           name
         }
       }
+      to {
+        id
+        name
+      }
     }
   }
 `
@@ -178,6 +202,10 @@ export const ADD_CENTRE_BACENTAS = gql`
         bacentas {
           name
         }
+      }
+      to {
+        id
+        name
       }
     }
   }
@@ -203,6 +231,14 @@ export const REMOVE_BACENTA_CENTRE = gql`
         id
         name
         bacentas {
+          name
+        }
+      }
+      to {
+        id
+        name
+        centre {
+          id
           name
         }
       }
@@ -236,6 +272,7 @@ export const UPDATE_BACENTA = gql`
         id
         firstName
         lastName
+        whatsappNumber
       }
     }
   }
@@ -245,6 +282,101 @@ export const ADD_BACENTA_CENTRE = gql`
   mutation AddBacentaCentre($centreId: ID!, $bacentaId: ID!) {
     AddBacentaCentre(from: { id: $centreId }, to: { id: $bacentaId }) {
       from {
+        id
+        name
+      }
+    }
+  }
+`
+
+//Updating Campus/Town Mutations
+export const ADD_TOWN_BISHOP = gql`
+  mutation AddTownBishop($townId: ID!, $bishopId: ID!) {
+    AddTownBishop(from: { id: $bishopId }, to: { id: $townId }) {
+      from {
+        id
+        firstName
+        lastName
+      }
+      to {
+        id
+        name
+      }
+    }
+  }
+`
+
+export const REMOVE_TOWN_BISHOP = gql`
+  mutation RemoveTownBishop($townId: ID!, $bishopId: ID!) {
+    RemoveTownBishop(from: { id: $bishopId }, to: { id: $townId }) {
+      from {
+        id
+        firstName
+        lastName
+      }
+      to {
+        id
+        name
+      }
+    }
+  }
+`
+
+export const ADD_CAMPUS_BISHOP = gql`
+  mutation AddCampusBishop($campusId: ID!, $bishopId: ID!) {
+    AddCampusBishop(from: { id: $bishopId }, to: { id: $campusId }) {
+      from {
+        id
+        firstName
+        lastName
+      }
+      to {
+        id
+        name
+      }
+    }
+  }
+`
+
+export const REMOVE_CAMPUS_BISHOP = gql`
+  mutation RemoveCampusBishop($campusId: ID!, $bishopId: ID!) {
+    RemoveCampusBishop(from: { id: $bishopId }, to: { id: $campusId }) {
+      from {
+        id
+        firstName
+        lastName
+      }
+      to {
+        id
+        name
+      }
+    }
+  }
+`
+
+export const ADD_CAMPUS_CENTRES = gql`
+  mutation AddCampusCentres($campusId: ID!, $centreId: ID!) {
+    AddCampusCentres(from: { id: $campusId }, to: { id: $centreId }) {
+      from {
+        id
+        name
+      }
+      to {
+        id
+        name
+      }
+    }
+  }
+`
+
+export const ADD_TOWN_CENTRES = gql`
+  mutation AddTownCentres($townId: ID!, $centreId: ID!) {
+    AddTownCentres(from: { id: $townId }, to: { id: $centreId }) {
+      from {
+        id
+        name
+      }
+      to {
         id
         name
       }

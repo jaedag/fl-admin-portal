@@ -8,6 +8,7 @@ import { ErrorScreen, LoadingScreen } from '../components/StatusScreens'
 import { MemberContext } from '../contexts/MemberContext'
 import { ChurchContext } from '../contexts/ChurchContext'
 import userIcon from '../img/user.png'
+import { Timeline } from '../components/Timeline'
 
 export const DisplayMemberDetails = () => {
   const monthNames = [
@@ -202,14 +203,6 @@ export const DisplayMemberDetails = () => {
                           )}
                         </div>
                       </div>
-                      <div className="col d-flex justify-content-center  mt-2">
-                        <button
-                          type="submit"
-                          className="btn btn-primary mt-2 p-3 card-text text-center"
-                        >
-                          Make Leader
-                        </button>
-                      </div>
                     </div>
                   </MemberCard>
                 </div>
@@ -350,22 +343,10 @@ export const DisplayMemberDetails = () => {
                   <div className="col">
                     <MemberCard title="History Timeline" editlink="#">
                       <div className="row">
-                        <ul className="timeline">
-                          {memberData.displayMember.history.map(
-                            (element, index) =>
-                              index < 3 && (
-                                <li key={index}>
-                                  <p className="timeline-text">
-                                    {element.historyRecord}
-                                    <br />
-                                    <small>
-                                      {element.historyStartDate?.date.formatted}
-                                    </small>
-                                  </p>
-                                </li>
-                              )
-                          )}
-                        </ul>
+                        <Timeline
+                          record={memberData.displayMember.history}
+                          limit={3}
+                        />
                       </div>
                     </MemberCard>
                   </div>

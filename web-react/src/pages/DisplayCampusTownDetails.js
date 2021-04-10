@@ -47,11 +47,19 @@ export const DisplayCampusTownDetails = () => {
           subChurchSetter={setCentreId}
           buttons={townData.displayTown.centres}
           editlink="/town/edittown"
+          history={
+            townData.displayTown?.history.length !== 0 &&
+            townData.displayTown?.history
+          }
           breadcrumb={breadcrumb && breadcrumb}
         />
       </div>
     )
   } else if (church.church === 'campus' && campusData) {
+    let breadcrumb = [
+      campusData.displayCampus?.bishop,
+      campusData.displayCampus,
+    ]
     return (
       <div>
         <NavBar />
@@ -76,6 +84,11 @@ export const DisplayCampusTownDetails = () => {
           subChurch="Centre"
           subChurchSetter={setCentreId}
           buttons={campusData.displayCampus.centres}
+          breadcrumb={breadcrumb && breadcrumb}
+          history={
+            campusData.displayCampus?.history.length !== 0 &&
+            campusData.displayCampus?.history
+          }
           editlink="/campus/editcampus"
         />
       </div>

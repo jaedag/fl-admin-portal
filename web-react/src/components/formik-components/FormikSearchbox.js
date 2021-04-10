@@ -37,10 +37,17 @@ function FormikSearchbox(props) {
           __typename: row.__typename,
           firstName: row.firstName,
           lastName: row.lastName,
+          bacenta: row.bacenta,
           centre: row.centre,
           town: row.town,
           campus: row.campus,
           bishop: row.bishop,
+          leadsBacenta: row.leadsBacenta,
+          leadsCentre: row.leadsCentre,
+          leadsCampus: row.leadsCampus,
+          leadsTown: row.leadsTown,
+          townBishop: row.townBishop,
+          campusBishop: row.campusBishop,
           id: row.id,
         }))
       )

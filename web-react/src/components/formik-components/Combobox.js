@@ -56,6 +56,9 @@ function Combobox(props) {
               data[`${dataset}`].map((row) => ({
                 name: row[`${suggestionText}`],
                 id: row[`${suggestionID}`],
+                centre: row.centre,
+                campus: row.campus,
+                town: row.town,
               }))
             )
           } catch (error) {
@@ -70,7 +73,7 @@ function Combobox(props) {
             event.preventDefault()
           }
           setSearchString(suggestion.name)
-          setFieldValue(`${name}`, suggestion.id)
+          setFieldValue(`${name}`, suggestion)
         }}
         getSuggestionValue={(suggestion) => suggestion.name}
         highlightFirstSuggestion={true}

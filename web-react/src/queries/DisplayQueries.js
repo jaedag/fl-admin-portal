@@ -77,10 +77,19 @@ export const DISPLAY_MEMBER = gql`
         }
       }
       history {
+        timeStamp {
+          hour
+          minute
+        }
         created_at {
           date {
             formatted
           }
+        }
+        loggedBy {
+          id
+          firstName
+          lastName
         }
         historyRecord
       }
@@ -218,10 +227,19 @@ export const DISPLAY_BACENTA = gql`
       history {
         HistoryLog {
           id
+          timeStamp {
+            hour
+            minute
+          }
           created_at {
             date {
               formatted
             }
+          }
+          loggedBy {
+            id
+            firstName
+            lastName
           }
           historyRecord
         }
@@ -247,6 +265,26 @@ export const DISPLAY_SONTA = gql`
           }
         }
       }
+      history {
+        HistoryLog {
+          id
+          timeStamp {
+            hour
+            minute
+          }
+          created_at {
+            date {
+              formatted
+            }
+          }
+          loggedBy {
+            id
+            firstName
+            lastName
+          }
+          historyRecord
+        }
+      }
     }
     sontaMemberCount(id: $id)
 
@@ -266,6 +304,10 @@ export const DISPLAY_CENTRE = gql`
       bacentas {
         id
         name
+        centre {
+          id
+          name
+        }
       }
       town {
         id
@@ -294,6 +336,26 @@ export const DISPLAY_CENTRE = gql`
           Title {
             title
           }
+        }
+      }
+      history {
+        HistoryLog {
+          id
+          timeStamp {
+            hour
+            minute
+          }
+          created_at {
+            date {
+              formatted
+            }
+          }
+          loggedBy {
+            id
+            firstName
+            lastName
+          }
+          historyRecord
         }
       }
     }
@@ -351,6 +413,27 @@ export const DISPLAY_TOWN = gql`
           }
         }
       }
+      history {
+        HistoryLog {
+          id
+          timeStamp {
+            hour
+            minute
+          }
+
+          created_at {
+            date {
+              formatted
+            }
+          }
+          loggedBy {
+            id
+            firstName
+            lastName
+          }
+          historyRecord
+        }
+      }
     }
     townMemberCount(id: $id)
     townCentreCount(id: $id)
@@ -405,6 +488,27 @@ export const DISPLAY_CAMPUS = gql`
           Title {
             title
           }
+        }
+      }
+      history {
+        HistoryLog {
+          id
+          timeStamp {
+            hour
+            minute
+          }
+
+          created_at {
+            date {
+              formatted
+            }
+          }
+          loggedBy {
+            id
+            firstName
+            lastName
+          }
+          historyRecord
         }
       }
     }
