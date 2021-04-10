@@ -105,7 +105,7 @@ export const UPDATE_CENTRE_MUTATION = gql`
     ) {
       id
       name
-<<<<<<< HEAD
+
       id
     }
   }
@@ -113,13 +113,12 @@ export const UPDATE_CENTRE_MUTATION = gql`
     AddCentreTown(from: { id: $townCampusId }, to: { id: $centreId }) {
       to {
         name
-=======
       leader {
         id
         firstName
         lastName
         whatsappNumber
->>>>>>> develop
+
       }
     }
   }
