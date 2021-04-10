@@ -47,6 +47,7 @@ export const DisplayCampusTownDetails = () => {
           subChurchSetter={setCentreId}
           buttons={townData.displayTown.centres}
           editlink="/town/edittown"
+          editRoles={['superAdmin', 'bishopAdmin']}
           history={
             townData.displayTown?.history.length !== 0 &&
             townData.displayTown?.history
@@ -90,6 +91,7 @@ export const DisplayCampusTownDetails = () => {
             campusData.displayCampus?.history
           }
           editlink="/campus/editcampus"
+          editRoles={['superAdmin', 'bishopAdmin']}
         />
       </div>
     )

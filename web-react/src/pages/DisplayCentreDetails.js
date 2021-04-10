@@ -49,6 +49,7 @@ export const DisplayCentreDetails = () => {
           churchNo={centreBacentaCount}
           buttons={displayCentre ? displayCentre.bacentas : []}
           editlink="/centre/editcentre"
+          editRoles={['superAdmin', 'bishopAdmin', 'coAdmin']}
           history={
             centreData.displayCentre?.history.length !== 0 &&
             centreData.displayCentre?.history

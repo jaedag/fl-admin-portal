@@ -45,7 +45,7 @@ const BishopDashboard = () => {
     campusTownCount = `${data.bishopCampusTownCount} ${capitalise(
       plural(church.church)
     )} | ${data.bishopCentreCount} Centres`
-    bacentaCount = `${data.bishopBacentaCount} Bacentas`
+    bacentaCount = data ? `${data.bishopBacentaCount} Bacentas` : null
     sontaMemberCount = `${data.bishopSontaMemberCount} Members in Ministries`
   } else {
     bishopName = errorText
@@ -96,7 +96,7 @@ const BishopDashboard = () => {
           </div>
           <div className="col-sm-12 col-md">
             <DashboardCard
-              name={capitalise(plural(church.church))}
+              name={church.church && capitalise(plural(church.church))}
               detail1={campusTownCount}
               detail2={bacentaCount}
               cardLink={`/${church.church}/displayall`}

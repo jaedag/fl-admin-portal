@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext } from 'react'
 import { useQuery } from '@apollo/client'
 import { useHistory } from 'react-router-dom'
 import { ChurchContext } from '../contexts/ChurchContext'
@@ -8,39 +8,11 @@ import Spinner from '../components/Spinner'
 import { AuthButton } from '../components/DashboardButton'
 import Logo from '../img/flc-logo-small.png'
 import { MemberContext } from '../contexts/MemberContext'
-import { GET_LOGGED_IN_USER } from '../queries/SearchQuery'
-import { useAuth0 } from '@auth0/auth0-react'
 
 const BishopSelect = () => {
-  const { determineChurch, clickCard } = useContext(ChurchContext)
-  const { currentUser, setCurrentUser } = useContext(MemberContext)
-  const { user, isAuthenticated } = useAuth0()
+  const { clickCard } = useContext(ChurchContext)
+  const { currentUser } = useContext(MemberContext)
   const { data, loading, error } = useQuery(GET_BISHOPS)
-  useQuery(GET_LOGGED_IN_USER, {
-    variables: {
-      email: currentUser?.email,
-    },
-    onCompleted: (data) => {
-      determineChurch(data.memberByEmail)
-      setCurrentUser({
-        ...currentUser,
-        id: data.memberByEmail.id,
-        firstName: data.memberByEmail.firstName,
-        lastName: data.memberByEmail.lastName,
-        constituency: data.memberByEmail.bacenta.centre?.town
-          ? data.memberByEmail.bacenta.centre?.town.id
-          : data.memberByEmail.bacenta.centre?.campus.id,
-      })
-    },
-  })
-  useEffect(() => {
-    setCurrentUser({
-      ...currentUser,
-      email: user?.email,
-      roles: user ? user[`https://flcadmin.netlify.app/roles`] : [],
-    })
-    // eslint-disable-next-line
-  }, [isAuthenticated])
 
   const history = useHistory()
 
@@ -103,7 +75,7 @@ const BishopSelect = () => {
             className="img-fluid mx-auto"
             style={{ maxWidth: '30%' }}
           />
-          {currentUser?.roles.includes('superadmin') && (
+          {currentUser?.roles.includes('superAdmin') && (
             <h3>FLC Admin Dashboard</h3>
           )}
 

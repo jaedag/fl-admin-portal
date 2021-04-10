@@ -219,7 +219,7 @@ type Basonta {
 }
 
 # enum Role {
-#   superadmin
+#   superAdmin
 #   user
 #   admin
 # }
@@ -607,6 +607,7 @@ type Mutation {
     ministry: String
     pictureUrl: String!
   ): Member
+    @hasScope(scopes: ["Member:Create"])
     @cypher(
       statement: """
       CREATE (m:Member {whatsappNumber:$whatsappNumber})
@@ -676,6 +677,7 @@ type Mutation {
     id: ID
     centres: [ID]
   ): Town
+    @hasScope(scopes: ["Town:Create"])
     @cypher(
       statement: """
       CREATE (t:Town {name:$townName})
@@ -715,6 +717,7 @@ type Mutation {
     id: ID
     centres: [ID]
   ): Campus
+    @hasScope(scopes: ["Campus:Create"])
     @cypher(
       statement: """
       CREATE (t:Campus {name:$campusName})
@@ -754,6 +757,7 @@ type Mutation {
     townCampusId: ID
     bacentas: [ID]
   ): Centre
+    @hasScope(scopes: ["Centre:Create"])
     @cypher(
       statement: """
       CREATE (c:Centre {name:$centreName})
@@ -796,6 +800,7 @@ type Mutation {
     venueLongitude: Float
     venueLatitude: Float
   ): Bacenta
+    @hasScope(scopes: ["Bacenta:Create"])
     @cypher(
       statement: """
       CREATE (b:Bacenta {name:$bacentaName,location: point({latitude:toFloat($venueLatitude), longitude:toFloat($venueLongitude), crs:'WGS-84'})})
@@ -849,6 +854,7 @@ type Mutation {
     ministry: String
     pictureUrl: String!
   ): Member
+    @hasScope(scopes: ["Member:Update"])
     @cypher(
       statement: """
       MATCH (m:Member {id:$id})
@@ -930,6 +936,7 @@ type Mutation {
     lWhatsappNumber: String
     bishopId: ID
   ): Town
+    @hasScope(scopes: ["Town:Update"])
     @cypher(
       statement: """
       MATCH (t:Town {id: $townId})
@@ -965,6 +972,7 @@ type Mutation {
     bishopId: ID
     centres: [ID]
   ): Campus
+    @hasScope(scopes: ["Campus:Update"])
     @cypher(
       statement: """
       MATCH (t:Campus {id: $campusId})
@@ -1001,6 +1009,7 @@ type Mutation {
     lWhatsappNumber: String
     campusTownID: ID
   ): Centre
+    @hasScope(scopes: ["Centre:Update"])
     @cypher(
       statement: """
       MATCH (c:Centre {id: $centreId})
@@ -1039,6 +1048,7 @@ type Mutation {
     venueLongitude: Float
     venueLatitude: Float
   ): Bacenta
+    @hasScope(scopes: ["Bacenta:Update"])
     @cypher(
       statement: """
                MATCH (b:Bacenta {id: $id})
@@ -1078,6 +1088,7 @@ type Mutation {
     newCentreId: ID
     loggedBy: ID
   ): Bacenta
+    @hasScope(scopes: ["History:Create"])
     @cypher(
       statement: """
        MATCH  (b:Bacenta {id: $bacentaId})
@@ -1146,6 +1157,7 @@ type Mutation {
     oldCampusTownId: ID
     loggedBy: ID
   ): Centre
+    @hasScope(scopes: ["History:Create"])
     @cypher(
       statement: """
        MATCH  (c:Centre {id: $centreId})
@@ -1214,6 +1226,7 @@ type Mutation {
     oldBishopId: ID
     loggedBy: ID
   ): Campus
+    @hasScope(scopes: ["History:Create"])
     @cypher(
       statement: """
       MATCH  (c:Campus {id: $campusId})
@@ -1282,6 +1295,7 @@ type Mutation {
     oldBishopId: ID
     loggedBy: ID
   ): Town
+    @hasScope(scopes: ["History:Create"])
     @cypher(
       statement: """
       MATCH  (c:Town {id: $townId})

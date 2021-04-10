@@ -6,6 +6,7 @@ import { MemberContext } from '../contexts/MemberContext'
 import { ChurchContext } from '../contexts/ChurchContext'
 import { Timeline } from './Timeline'
 import { EditButton } from './EditButton'
+import RoleView from '../auth/RoleView'
 
 export const DisplayChurchDetails = (props) => {
   const {
@@ -22,6 +23,7 @@ export const DisplayChurchDetails = (props) => {
     membership,
     buttons,
     editlink,
+    editRoles,
     history,
     breadcrumb,
   } = props
@@ -80,7 +82,9 @@ export const DisplayChurchDetails = (props) => {
             : null}
           <h3 className="mx-3 mt-3 font-weight-bold">
             {`${name} ${churchType}`}
-            <EditButton link={editlink} />
+            <RoleView roles={editRoles}>
+              <EditButton link={editlink} />
+            </RoleView>
           </h3>
           {admin && (
             <Link
