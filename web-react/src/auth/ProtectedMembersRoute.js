@@ -7,9 +7,10 @@ import { ChurchContext } from '../contexts/ChurchContext'
 import { GridBishopMembers } from '../pages/GridPages/GridBishopMembers'
 import { GridCampusTownMembers } from '../pages/GridPages/GridCampusTownMembers'
 import { LoadingScreen } from '../components/StatusScreens'
+import { isAuthorised } from '../global-utils'
 
 const ProtectedMembersRoute = ({ component, roles, ...args }) => {
-  const { currentUser, isAuthorised } = useContext(MemberContext)
+  const { currentUser } = useContext(MemberContext)
   const { setBishopId, setTownId, setCampusId, setChurch } = useContext(
     ChurchContext
   )

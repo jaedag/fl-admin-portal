@@ -44,7 +44,7 @@ const driver = neo4j.driver(
   process.env.NEO4J_URI || 'bolt://localhost:7687',
   neo4j.auth.basic(
     process.env.NEO4J_USER || 'jd_addy',
-    process.env.NEO4J_PASSWORD || 'pneumatik0s'
+    process.env.NEO4J_PASSWORD || 'letmein'
   ),
   {
     encrypted: process.env.NEO4J_ENCRYPTED ? 'ENCRYPTION_ON' : 'ENCRYPTION_OFF',
@@ -108,5 +108,6 @@ const host = process.env.GRAPHQL_SERVER_HOST || '0.0.0.0'
 server.applyMiddleware({ app, path })
 
 app.listen({ host, port, path }, () => {
+  // eslint-disable-next-line
   console.log(`GraphQL server ready at http://${host}:${port}${path}`)
 })

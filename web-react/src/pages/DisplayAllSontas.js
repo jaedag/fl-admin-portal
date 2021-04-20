@@ -1,22 +1,17 @@
 import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { useQuery } from '@apollo/client'
-import { DisplayChurchList } from '../components/DisplayChurchList'
-import { NavBar } from '../components/NavBar'
+import { capitalise } from '../global-utils'
+import DisplayChurchList from '../components/DisplayChurchList'
+import { NavBar } from '../components/nav/NavBar.jsx'
 import { ErrorScreen, LoadingScreen } from '../components/StatusScreens'
 import { GET_CAMPUS_CENTRES, GET_TOWN_CENTRES } from '../queries/ListQueries'
 import { ChurchContext } from '../contexts/ChurchContext'
 
 export const DisplayAllSontas = () => {
-  const {
-    capitalise,
-    church,
-    townId,
-    campusId,
-    setTownId,
-    setCampusId,
-    setSontaId,
-  } = useContext(ChurchContext)
+  const { church, townId, campusId, setTownId, setCampusId } = useContext(
+    ChurchContext
+  )
 
   const { data: townCentreData, loading: townLoading } = useQuery(
     GET_TOWN_CENTRES,
@@ -36,7 +31,7 @@ export const DisplayAllSontas = () => {
     return <LoadingScreen />
   } else if (campusCentreData && church.church === 'campus') {
     return (
-      <div>
+      <>
         <NavBar />
         <div className="body-container container">
           <div className="mb-4 border-bottom">
@@ -86,15 +81,14 @@ export const DisplayAllSontas = () => {
 
           <DisplayChurchList
             data={campusCentreData.campusSontaList}
-            setter={setSontaId}
             churchType="Sonta"
           />
         </div>
-      </div>
+      </>
     )
   } else if (townCentreData && church.church === 'town') {
     return (
-      <div>
+      <>
         <NavBar />
         <div className="body-container container">
           <div className="mb-4 border-bottom">
@@ -144,11 +138,10 @@ export const DisplayAllSontas = () => {
 
           <DisplayChurchList
             data={townCentreData.townSontaList}
-            setter={setSontaId}
             churchType="Sonta"
           />
         </div>
-      </div>
+      </>
     )
   } else {
     return <ErrorScreen />

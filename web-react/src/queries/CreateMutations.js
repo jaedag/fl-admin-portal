@@ -34,6 +34,48 @@ export const CREATE_MEMBER_MUTATION = gql`
       id
       firstName
       lastName
+      bacenta {
+        id
+        centre {
+          id
+          town {
+            id
+            bishop {
+              id
+            }
+          }
+          campus {
+            id
+            bishop {
+              id
+            }
+          }
+        }
+      }
+    }
+  }
+`
+
+export const ADD_MEMBER_TITLE_MUTATION = gql`
+  mutation AddMemberTitle(
+    $memberId: ID!
+    $title: String!
+    $status: Boolean
+    $date: String
+  ) {
+    AddMemberTitle(
+      from: { id: $memberId }
+      to: { title: $title }
+      data: { status: $status, yearAppointed: { formatted: $date } }
+    ) {
+      from {
+        id
+        firstName
+        lastName
+      }
+      to {
+        title
+      }
     }
   }
 `
@@ -41,6 +83,7 @@ export const CREATE_MEMBER_MUTATION = gql`
 export const ADD_LEADER_HISTORY_MUTATION = gql`
   mutation($id: ID, $pastoralHistory: [pastoralHistory]) {
     AddLeaderHistory(id: $id, pastoralHistory: $pastoralHistory) {
+      id
       historyRecord
       created_at {
         formatted
@@ -49,26 +92,18 @@ export const ADD_LEADER_HISTORY_MUTATION = gql`
   }
 `
 
-export const ADD_LEADER_TITLE_MUTATION = gql`
-  mutation($id: ID!, $pastoralAppointment: [pastoralAppointment]) {
-    CreateLeaderTitle(id: $id, pastoralAppointment: $pastoralAppointment) {
-      title
-    }
-  }
-`
-
 export const CREATE_BACENTA_MUTATION = gql`
   mutation CreateBacenta(
     $bacentaName: String!
-    $lWhatsappNumber: String
-    $centreId: ID
+    $leaderId: ID!
+    $centreId: ID!
     $meetingDay: String!
     $venueLongitude: Float
     $venueLatitude: Float
   ) {
     CreateBacenta(
       bacentaName: $bacentaName
-      lWhatsappNumber: $lWhatsappNumber
+      leaderId: $leaderId
       centreId: $centreId
       meetingDay: $meetingDay
       venueLongitude: $venueLongitude
@@ -82,16 +117,14 @@ export const CREATE_BACENTA_MUTATION = gql`
 
 export const CREATE_CENTRE_MUTATION = gql`
   mutation CreateCentre(
-    $centreName: String
-    $lWhatsappNumber: String
-    $townCampusId: ID
-    $bacentas: [ID]
+    $centreName: String!
+    $leaderId: ID!
+    $townCampusId: ID!
   ) {
     CreateCentre(
       centreName: $centreName
-      lWhatsappNumber: $lWhatsappNumber
+      leaderId: $leaderId
       townCampusId: $townCampusId
-      bacentas: $bacentas
     ) {
       id
       name
@@ -100,18 +133,8 @@ export const CREATE_CENTRE_MUTATION = gql`
 `
 
 export const CREATE_TOWN_MUTATION = gql`
-  mutation CreateTown(
-    $townName: String
-    $lWhatsappNumber: String
-    $id: ID
-    $centres: [ID]
-  ) {
-    CreateTown(
-      townName: $townName
-      lWhatsappNumber: $lWhatsappNumber
-      id: $id
-      centres: $centres
-    ) {
+  mutation CreateTown($townName: String!, $leaderId: ID!, $id: ID!) {
+    CreateTown(townName: $townName, leaderId: $leaderId, id: $id) {
       id
       name
     }
@@ -119,18 +142,8 @@ export const CREATE_TOWN_MUTATION = gql`
 `
 
 export const CREATE_CAMPUS_MUTATION = gql`
-  mutation CreateCampus(
-    $campusName: String
-    $lWhatsappNumber: String
-    $id: ID
-    $centres: [ID]
-  ) {
-    CreateCampus(
-      campusName: $campusName
-      lWhatsappNumber: $lWhatsappNumber
-      id: $id
-      centres: $centres
-    ) {
+  mutation CreateCampus($campusName: String!, $leaderId: ID!, $id: ID!) {
+    CreateCampus(campusName: $campusName, leaderId: $leaderId, id: $id) {
       id
       name
     }

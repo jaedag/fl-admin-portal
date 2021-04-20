@@ -1,35 +1,19 @@
 import React, { useContext } from 'react'
 import { useQuery } from '@apollo/client'
 import { useHistory } from 'react-router-dom'
-import { NavBar } from '../components/NavBar'
-import { MemberCard } from '../components/MemberCard'
-import { DISPLAY_MEMBER } from '../queries/DisplayQueries'
+import { NavBar } from '../components/nav/NavBar.jsx'
+import { MemberDetailsCard } from '../components/card/MemberDetailsCard.jsx'
+import { DISPLAY_MEMBER } from '../queries/ReadQueries'
 import { ErrorScreen, LoadingScreen } from '../components/StatusScreens'
 import { MemberContext } from '../contexts/MemberContext'
 import { ChurchContext } from '../contexts/ChurchContext'
 import userIcon from '../img/user.png'
-import { Timeline } from '../components/Timeline'
+import { Timeline } from '../components/timeline/Timeline.jsx'
+import { getNameWithTitle, MONTH_NAMES, capitalise } from '../global-utils'
 
 export const DisplayMemberDetails = () => {
-  const monthNames = [
-    'Jan',
-    'Feb',
-    'Mar',
-    'Apr',
-    'May',
-    'June',
-    'July',
-    'Aug',
-    'Sept',
-    'Oct',
-    'Nov',
-    'Dec',
-  ]
-
   const { memberId } = useContext(MemberContext)
-  const { church, capitalise, determineChurch, clickCard } = useContext(
-    ChurchContext
-  )
+  const { church, determineChurch, clickCard } = useContext(ChurchContext)
   const history = useHistory()
 
   const { data: memberData, loading: memberLoading } = useQuery(
@@ -43,6 +27,11 @@ export const DisplayMemberDetails = () => {
     // Spinner Icon for Loading Screens
     return <LoadingScreen />
   } else if (memberData && memberId) {
+    const { displayMember } = memberData
+
+    let nameAndTitle = getNameWithTitle(displayMember)
+
+    //To Display Ranks on the Member Card
     let rank = {
       bishop: [],
       campusLeader: [],
@@ -98,31 +87,30 @@ export const DisplayMemberDetails = () => {
       return null
     }
 
-    if (memberData.displayMember.leadsBacenta[0]) {
-      updateRank(memberData.displayMember, 'bacenta')
+    if (displayMember.leadsBacenta[0]) {
+      updateRank(displayMember, 'bacenta')
     }
-    if (memberData.displayMember.leadsCentre[0]) {
-      updateRank(memberData.displayMember, 'centre')
+    if (displayMember.leadsCentre[0]) {
+      updateRank(displayMember, 'centre')
     }
-    if (memberData.displayMember.leadsTown[0]) {
-      updateRank(memberData.displayMember, 'town')
+    if (displayMember.leadsTown[0]) {
+      updateRank(displayMember, 'town')
     }
-    if (memberData.displayMember.leadsCampus[0]) {
-      updateRank(memberData.displayMember, 'campus')
+    if (displayMember.leadsCampus[0]) {
+      updateRank(displayMember, 'campus')
     }
-    if (memberData.displayMember.leadsSonta[0]) {
-      updateRank(memberData.displayMember, 'sonta')
+    if (displayMember.leadsSonta[0]) {
+      updateRank(displayMember, 'sonta')
     }
-    if (memberData.displayMember.leadsBasonta[0]) {
-      updateRank(memberData.displayMember, 'basonta')
+    if (displayMember.leadsBasonta[0]) {
+      updateRank(displayMember, 'basonta')
     }
-    if (memberData.displayMember.leadsMinistry[0]) {
-      updateRank(memberData.displayMember, 'ministry')
+    if (displayMember.leadsMinistry[0]) {
+      updateRank(displayMember, 'ministry')
     }
-    if (memberData.displayMember.townBishop[0]) {
-      updateRank(memberData.displayMember, 'bishop')
+    if (displayMember.townBishop[0]) {
+      updateRank(displayMember, 'bishop')
     }
-    // console.log(rank)
 
     return (
       <div className="container pt-5">
@@ -141,36 +129,34 @@ export const DisplayMemberDetails = () => {
             <div className="col">
               <div className="row">
                 <div className="col">
-                  <MemberCard
+                  <MemberDetailsCard
                     editlink="/member/editmember"
-                    title={`${memberData.displayMember.firstName} ${memberData.displayMember.lastName}`}
+                    title={nameAndTitle}
                   >
                     <div className="row row-cols-1 my-2">
                       <div className="col d-flex justify-content-center">
                         <img
                           src={
-                            memberData.displayMember.pictureUrl
-                              ? memberData.displayMember.pictureUrl
+                            displayMember.pictureUrl
+                              ? displayMember.pictureUrl
                               : userIcon
                           }
                           className="m-2 rounded profile-img"
-                          alt={`${memberData.displayMember.firstName} ${memberData.displayMember.lastName}`}
+                          alt={`${displayMember.firstName} ${displayMember.lastName}`}
                         />
                       </div>
 
                       <div className="col d-flex justify-content-center mt-2">
                         <h5 className="font-weight-bold ">
-                          {memberData.displayMember.title.title}
-
-                          {`${memberData.displayMember.firstName} ${memberData.displayMember.lastName}`}
+                          {`${displayMember.firstName} ${displayMember.lastName}`}
                         </h5>
                       </div>
                       <div className="col d-flex justify-content-center mb-2">
                         <div className="font-weight-light card-text text-center">
-                          {memberData.displayMember.townBishop[0] ? (
+                          {displayMember.townBishop[0] ? (
                             <span
                               onClick={() => {
-                                determineChurch(memberData.displayMember)
+                                determineChurch(displayMember)
                                 history.push('/dashboard')
                               }}
                             >{`Bishop in the First Love Centre`}</span>
@@ -204,13 +190,13 @@ export const DisplayMemberDetails = () => {
                         </div>
                       </div>
                     </div>
-                  </MemberCard>
+                  </MemberDetailsCard>
                 </div>
               </div>
               <div className="row">
                 <div className="col">
                   {/* Bio Information */}
-                  <MemberCard title="Bio" editlink="/member/editmember">
+                  <MemberDetailsCard title="Bio" editlink="/member/editmember">
                     <div className="container p-2">
                       <div className="row py-2">
                         <div className="col ">
@@ -218,7 +204,19 @@ export const DisplayMemberDetails = () => {
                         </div>
                         <div className="col">
                           <p className="font-weight-bold card-text">
-                            {memberData.displayMember.firstName}
+                            {displayMember.firstName}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="row py-2">
+                        <div className="col ">
+                          <p className="text-secondary card-text">
+                            Middle Name
+                          </p>
+                        </div>
+                        <div className="col">
+                          <p className="font-weight-bold card-text">
+                            {displayMember.middleName}
                           </p>
                         </div>
                       </div>
@@ -228,7 +226,7 @@ export const DisplayMemberDetails = () => {
                         </div>
                         <div className="col">
                           <p className="font-weight-bold card-text">
-                            {memberData.displayMember.lastName}
+                            {displayMember.lastName}
                           </p>
                         </div>
                       </div>
@@ -240,7 +238,7 @@ export const DisplayMemberDetails = () => {
                         </div>
                         <div className="col-6">
                           <p className="font-weight-bold card-text text-truncate">
-                            {memberData.displayMember.email}
+                            {displayMember.email}
                           </p>
                         </div>
                       </div>
@@ -252,12 +250,10 @@ export const DisplayMemberDetails = () => {
                         </div>
                         <div className="col">
                           <p className="font-weight-bold card-text">
-                            {memberData.displayMember.dob
-                              ? `${memberData.displayMember.dob.date.day} ${
-                                  monthNames[
-                                    memberData.displayMember.dob.date.month - 1
-                                  ]
-                                } ${memberData.displayMember.dob.date.year}`
+                            {displayMember.dob
+                              ? `${displayMember.dob.date.day} ${
+                                  MONTH_NAMES[displayMember.dob.date.month - 1]
+                                } ${displayMember.dob.date.year}`
                               : null}
                           </p>
                         </div>
@@ -268,8 +264,8 @@ export const DisplayMemberDetails = () => {
                         </div>
                         <div className="col">
                           <p className="font-weight-bold card-text">
-                            {memberData.displayMember.gender
-                              ? memberData.displayMember.gender.gender
+                            {displayMember.gender
+                              ? displayMember.gender.gender
                               : null}
                           </p>
                         </div>
@@ -282,8 +278,8 @@ export const DisplayMemberDetails = () => {
                         </div>
                         <div className="col">
                           <p className="font-weight-bold card-text">
-                            {memberData.displayMember.maritalStatus
-                              ? memberData.displayMember.maritalStatus.status
+                            {displayMember.maritalStatus
+                              ? displayMember.maritalStatus.status
                               : null}
                           </p>
                         </div>
@@ -294,8 +290,8 @@ export const DisplayMemberDetails = () => {
                         </div>
                         <div className="col">
                           <p className="font-weight-bold card-text">
-                            {memberData.displayMember.occupation
-                              ? memberData.displayMember.occupation.occupation
+                            {displayMember.occupation
+                              ? displayMember.occupation.occupation
                               : '-'}
                           </p>
                         </div>
@@ -309,9 +305,9 @@ export const DisplayMemberDetails = () => {
                         <div className="col">
                           <a
                             className="font-weight-bold card-text"
-                            href={`tel:${memberData.displayMember.phoneNumber}`}
+                            href={`tel:${displayMember.phoneNumber}`}
                           >
-                            {memberData.displayMember.phoneNumber}
+                            {displayMember.phoneNumber}
                           </a>
                         </div>
                       </div>
@@ -324,31 +320,28 @@ export const DisplayMemberDetails = () => {
                         <div className="col">
                           <a
                             className="font-weight-bold card-text"
-                            href={`https://wa.me/${memberData.displayMember.whatsappNumber}`}
+                            href={`https://wa.me/${displayMember.whatsappNumber}`}
                           >
-                            {memberData.displayMember.whatsappNumber}
+                            {displayMember.whatsappNumber}
                           </a>
                         </div>
                       </div>
                     </div>
-                  </MemberCard>
+                  </MemberDetailsCard>
                 </div>
               </div>
             </div>
 
             <div className="col">
               {/* Leadership History Timeline */}
-              {memberData.displayMember.history[0] ? (
+              {displayMember.history[0] ? (
                 <div className="row">
                   <div className="col">
-                    <MemberCard title="History Timeline" editlink="#">
+                    <MemberDetailsCard title="History Timeline" editlink="#">
                       <div className="row">
-                        <Timeline
-                          record={memberData.displayMember.history}
-                          limit={3}
-                        />
+                        <Timeline record={displayMember.history} limit={3} />
                       </div>
-                    </MemberCard>
+                    </MemberDetailsCard>
                   </div>
                 </div>
               ) : null}
@@ -356,7 +349,7 @@ export const DisplayMemberDetails = () => {
               {/* Current Church Status */}
               <div className="row">
                 <div className="col">
-                  <MemberCard
+                  <MemberDetailsCard
                     title="Current Church Activity"
                     editlink="/member/editmember"
                   >
@@ -367,16 +360,16 @@ export const DisplayMemberDetails = () => {
                         </div>
                         <div className="col">
                           <p className="font-weight-bold card-text">
-                            {memberData.displayMember?.bacenta?.centre
-                              ? memberData.displayMember?.bacenta?.centre[
+                            {displayMember?.bacenta?.centre
+                              ? displayMember?.bacenta?.centre[
                                   `${church.church}`
                                 ]?.bishop
                                 ? `${
-                                    memberData.displayMember.bacenta.centre[
+                                    displayMember.bacenta.centre[
                                       `${church.church}`
                                     ].bishop.firstName
                                   } ${
-                                    memberData.displayMember.bacenta.centre[
+                                    displayMember.bacenta.centre[
                                       `${church.church}`
                                     ].bishop.lastName
                                   }`
@@ -391,9 +384,9 @@ export const DisplayMemberDetails = () => {
                         </div>
                         <div className="col">
                           <p className="font-weight-bold card-text">
-                            {memberData.displayMember.bacenta
-                              ? memberData.displayMember.bacenta.name
-                                ? memberData.displayMember.bacenta.name
+                            {displayMember.bacenta
+                              ? displayMember.bacenta.name
+                                ? displayMember.bacenta.name
                                 : null
                               : null}
                           </p>
@@ -405,13 +398,13 @@ export const DisplayMemberDetails = () => {
                         </div>
                         <div className="col">
                           <p className="font-weight-bold card-text">
-                            {memberData.displayMember.ministry
-                              ? `${memberData.displayMember.ministry.name}`
+                            {displayMember.ministry
+                              ? `${displayMember.ministry.name}`
                               : null}
                           </p>
                         </div>
                       </div>
-                      {memberData.displayMember.title[0] ? (
+                      {displayMember.title[0] ? (
                         <div>
                           <div className="row mb-2">
                             <div className="col">
@@ -419,7 +412,7 @@ export const DisplayMemberDetails = () => {
                             </div>
                             <div className="col">
                               <p className="font-weight-bold card-text">
-                                {memberData.displayMember.title[0].Title.title}
+                                {displayMember.title[0].Title.title}
                               </p>
                             </div>
                           </div>
@@ -431,17 +424,14 @@ export const DisplayMemberDetails = () => {
                             </div>
                             <div className="col">
                               <p className="font-weight-bold card-text">
-                                {
-                                  memberData.displayMember.title[0]
-                                    .yearAppointed.year
-                                }
+                                {`${displayMember.title[0].yearAppointed.year}`}
                               </p>
                             </div>
                           </div>
                         </div>
                       ) : null}
                     </div>
-                  </MemberCard>
+                  </MemberDetailsCard>
                 </div>
               </div>
             </div>

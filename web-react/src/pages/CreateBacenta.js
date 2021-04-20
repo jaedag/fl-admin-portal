@@ -3,16 +3,18 @@ import { useHistory } from 'react-router-dom'
 import { useQuery, useMutation } from '@apollo/client'
 import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
-import FormikControl from '../components/formik-components/FormikControl'
+import { capitalise, makeSelectOptions } from '../global-utils'
+import FormikControl from '../components/formik-components/FormikControl.jsx'
 
 import {
   GET_CAMPUSES,
   GET_TOWN_CENTRES,
   GET_CAMPUS_CENTRES,
   GET_TOWNS,
+  BISHOP_MEMBER_DROPDOWN,
 } from '../queries/ListQueries'
 import { CREATE_BACENTA_MUTATION } from '../queries/CreateMutations'
-import { NavBar } from '../components/NavBar'
+import { NavBar } from '../components/nav/NavBar.jsx'
 import { ChurchContext } from '../contexts/ChurchContext'
 import { ErrorScreen, LoadingScreen } from '../components/StatusScreens'
 import Spinner from '../components/Spinner'
@@ -20,8 +22,7 @@ import Spinner from '../components/Spinner'
 export const CreateBacenta = () => {
   const initialValues = {
     bacentaName: '',
-    leaderName: '',
-    leaderWhatsapp: '',
+    leaderId: '',
     townSelect: '',
     centreSelect: '',
     meetingDay: '',
@@ -29,15 +30,7 @@ export const CreateBacenta = () => {
     venueLongitude: '',
   }
 
-  const {
-    church,
-    capitalise,
-    makeSelectOptions,
-    parsePhoneNum,
-    bishopId,
-    setBacentaId,
-    phoneRegExp,
-  } = useContext(ChurchContext)
+  const { church, bishopId, setBacentaId } = useContext(ChurchContext)
 
   let townCampusIdVar
   const serviceDayOptions = [
@@ -50,13 +43,9 @@ export const CreateBacenta = () => {
 
   const validationSchema = Yup.object({
     bacentaName: Yup.string().required('Bacenta Name is a required field'),
-    leaderName: Yup.string().required('This is a required field'),
-    leaderWhatsapp: Yup.string()
-      .matches(
-        phoneRegExp,
-        `Phone Number must start with + and country code (eg. '+233')`
-      )
-      .required('Phone Number is required'),
+    leaderId: Yup.string().required(
+      'Please choose a leader from the drop down'
+    ),
     meetingDay: Yup.string().required('Meeting Day is a required field'),
     venueLatitude: Yup.string().required('Please fill in your location info'),
     venueLongitude: Yup.string().required('Please fill in your location info'),
@@ -86,17 +75,17 @@ export const CreateBacenta = () => {
     CreateBacenta({
       variables: {
         bacentaName: values.bacentaName,
-        lWhatsappNumber: parsePhoneNum(values.leaderWhatsapp),
+        leaderId: values.leaderId,
         centreId: values.centreSelect,
         meetingDay: values.meetingDay,
         venueLongitude: parseFloat(values.venueLongitude),
         venueLatitude: parseFloat(values.venueLatitude),
       },
+    }).then(() => {
+      // console.log('Form data', values)
+      onSubmitProps.setSubmitting(false)
+      onSubmitProps.resetForm()
     })
-
-    // console.log('Form data', values)
-    onSubmitProps.setSubmitting(false)
-    onSubmitProps.resetForm()
   }
 
   if (townListLoading || campusListLoading) {
@@ -110,7 +99,7 @@ export const CreateBacenta = () => {
       : []
 
     return (
-      <div>
+      <>
         <NavBar />
         <Formik
           initialValues={initialValues}
@@ -124,6 +113,7 @@ export const CreateBacenta = () => {
                 <div className="form-group">
                   <div className="row row-cols-1 row-cols-md-2">
                     {/* <!-- Basic Info Div --> */}
+
                     <div className="col mb-2">
                       <div className="form-row row-cols-2">
                         <div className="col-8">
@@ -139,8 +129,6 @@ export const CreateBacenta = () => {
                             onChange={(e) => {
                               formik.setFieldValue('townSelect', e.target.value)
                               townCampusIdVar = e.target.value
-
-                              console.log('Town', townCampusIdVar)
                             }}
                             defaultOption={`Select a ${capitalise(
                               church.church
@@ -187,23 +175,26 @@ export const CreateBacenta = () => {
                         </div>
                         <div className="col-9">
                           <FormikControl
+                            control="combobox2"
+                            name="leaderId"
+                            placeholder="Select a Leader"
+                            setFieldValue={formik.setFieldValue}
+                            optionsQuery={BISHOP_MEMBER_DROPDOWN}
+                            queryVariable1="id"
+                            variable1={bishopId}
+                            queryVariable2="nameSearch"
+                            suggestionText="name"
+                            suggestionID="id"
+                            dataset="bishopMemberDropdown"
+                            aria-describedby="Bishop Member List"
                             className="form-control"
-                            control="input"
-                            name="leaderName"
-                            placeholder="Leader Name"
-                          />
-                        </div>
-                        <div className="col-9">
-                          <FormikControl
-                            className="form-control"
-                            control="input"
-                            name="leaderWhatsapp"
-                            placeholder="Leader WhatsApp No."
                           />
                         </div>
                       </div>
-                      <div className="row row-cols-2 d-flex align-items-center" />
-                      <small className="text-muted">Enter Your Location</small>
+                      <small className="text-muted">
+                        Enter The Coordinates for the Service Venue
+                      </small>
+
                       <div className="row row-cols-2 d-flex align-items-center">
                         <div className="col">
                           <FormikControl
@@ -248,7 +239,6 @@ export const CreateBacenta = () => {
                                     .getElementById('venueLatitude')
                                     .blur()
                                   setPositionLoading(false)
-                                  //console.log(formik.values)
                                 }
                               )
                             }}
@@ -265,7 +255,7 @@ export const CreateBacenta = () => {
                       </div>
                       <small className="text-muted">
                         Click this button if you are currently at your bacenta
-                        location
+                        service venue
                       </small>
                     </div>
                   </div>
@@ -283,7 +273,7 @@ export const CreateBacenta = () => {
             </div>
           )}
         </Formik>
-      </div>
+      </>
     )
   } else {
     return <ErrorScreen />

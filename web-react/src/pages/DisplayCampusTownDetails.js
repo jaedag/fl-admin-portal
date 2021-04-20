@@ -1,15 +1,14 @@
 import React, { useContext } from 'react'
 import { useQuery } from '@apollo/client'
+import { capitalise } from '../global-utils'
 import { DisplayChurchDetails } from '../components/DisplayChurchDetails'
-import { NavBar } from '../components/NavBar'
+import { NavBar } from '../components/nav/NavBar.jsx'
 import { ErrorScreen, LoadingScreen } from '../components/StatusScreens'
-import { DISPLAY_TOWN, DISPLAY_CAMPUS } from '../queries/DisplayQueries'
+import { DISPLAY_TOWN, DISPLAY_CAMPUS } from '../queries/ReadQueries'
 import { ChurchContext } from '../contexts/ChurchContext'
 
 export const DisplayCampusTownDetails = () => {
-  const { church, capitalise, townId, campusId, setCentreId } = useContext(
-    ChurchContext
-  )
+  const { church, townId, campusId } = useContext(ChurchContext)
 
   const { data: townData, loading: townLoading } = useQuery(DISPLAY_TOWN, {
     variables: { id: townId },
@@ -27,7 +26,7 @@ export const DisplayCampusTownDetails = () => {
   } else if (church.church === 'town' && townData) {
     let breadcrumb = [townData.displayTown?.bishop, townData.displayTown]
     return (
-      <div>
+      <>
         <NavBar />
         <DisplayChurchDetails
           name={townData.displayTown.name}
@@ -44,7 +43,6 @@ export const DisplayCampusTownDetails = () => {
           admin={townData.displayTown.admin}
           churchType={`${capitalise(church.church)}`}
           subChurch={`${capitalise(church.subChurch)}`}
-          subChurchSetter={setCentreId}
           buttons={townData.displayTown.centres}
           editlink="/town/edittown"
           editRoles={['superAdmin', 'bishopAdmin']}
@@ -54,7 +52,7 @@ export const DisplayCampusTownDetails = () => {
           }
           breadcrumb={breadcrumb && breadcrumb}
         />
-      </div>
+      </>
     )
   } else if (church.church === 'campus' && campusData) {
     let breadcrumb = [
@@ -62,7 +60,7 @@ export const DisplayCampusTownDetails = () => {
       campusData.displayCampus,
     ]
     return (
-      <div>
+      <>
         <NavBar />
         <DisplayChurchDetails
           name={campusData.displayCampus.name}
@@ -83,7 +81,6 @@ export const DisplayCampusTownDetails = () => {
           admin={campusData.displayCampus.admin}
           churchType={`${capitalise(church.church)}`}
           subChurch="Centre"
-          subChurchSetter={setCentreId}
           buttons={campusData.displayCampus.centres}
           breadcrumb={breadcrumb && breadcrumb}
           history={
@@ -93,7 +90,7 @@ export const DisplayCampusTownDetails = () => {
           editlink="/campus/editcampus"
           editRoles={['superAdmin', 'bishopAdmin']}
         />
-      </div>
+      </>
     )
   } else {
     return <ErrorScreen />

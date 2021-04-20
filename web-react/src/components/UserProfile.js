@@ -2,10 +2,11 @@ import React, { useContext, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useQuery } from '@apollo/client'
 import { useAuth0 } from '@auth0/auth0-react'
-import { AuthButton } from './DashboardButton'
-import { MemberContext } from '../contexts/MemberContext'
-import { ChurchContext } from '../contexts/ChurchContext'
-import { GET_LOGGED_IN_USER } from '../queries/SearchQuery'
+import { AuthButton } from './buttons/DashboardButton.jsx'
+import './UserProfile.css'
+import { MemberContext } from '../contexts/MemberContext.js'
+import { ChurchContext } from '../contexts/ChurchContext.js'
+import { GET_LOGGED_IN_USER } from '../queries/SearchQuery.js'
 
 function UserProfile() {
   const { user, isAuthenticated } = useAuth0()

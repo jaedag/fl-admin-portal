@@ -3,42 +3,35 @@ import { useHistory } from 'react-router-dom'
 import { useQuery, useMutation } from '@apollo/client'
 import { Formik, Form, FieldArray } from 'formik'
 import * as Yup from 'yup'
-import FormikControl from '../components/formik-components/FormikControl'
+import { capitalise, makeSelectOptions } from '../global-utils'
+import FormikControl from '../components/formik-components/FormikControl.jsx'
 import {
   GET_BISHOPS,
   GET_TOWNS,
   GET_CAMPUSES,
-  CENTRE_DROPDOWN,
+  BISHOP_MEMBER_DROPDOWN,
+  BISHOP_CENTRE_DROPDOWN,
 } from '../queries/ListQueries'
 import {
   CREATE_TOWN_MUTATION,
   CREATE_CAMPUS_MUTATION,
 } from '../queries/CreateMutations'
-import { NavBar } from '../components/NavBar'
+import { NavBar } from '../components/nav/NavBar.jsx'
 import { ErrorScreen, LoadingScreen } from '../components/StatusScreens'
 import { ChurchContext } from '../contexts/ChurchContext'
-import PlusSign from '../components/PlusSign'
-import MinusSign from '../components/MinusSign'
+import PlusSign from '../components/buttons/PlusSign.jsx'
+import MinusSign from '../components/buttons/MinusSign.jsx'
 
 function AddTownCampus() {
-  const {
-    church,
-    capitalise,
-    makeSelectOptions,
-    parsePhoneNum,
-    phoneRegExp,
-    bishopId,
-    setTownId,
-    setCampusId,
-    setBishopId,
-  } = useContext(ChurchContext)
+  const { church, bishopId, setTownId, setCampusId, setBishopId } = useContext(
+    ChurchContext
+  )
 
   const history = useHistory()
 
   const initialValues = {
     campusTownName: '',
-    leaderName: '',
-    leaderWhatsapp: '',
+    leaderId: '',
     bishopSelect: '',
     centres: [''],
   }
@@ -47,10 +40,7 @@ function AddTownCampus() {
     campusTownName: Yup.string().required(
       `${capitalise(church.church)} Name is a required field`
     ),
-    leaderWhatsapp: Yup.string().matches(
-      phoneRegExp,
-      `Phone Number must start with + and country code (eg. '+233')`
-    ),
+    leaderId: Yup.string().required('Please choose a leader'),
   })
 
   const [CreateTown] = useMutation(CREATE_TOWN_MUTATION, {
@@ -94,7 +84,7 @@ function AddTownCampus() {
         CreateTown({
           variables: {
             townName: values.campusTownName,
-            lWhatsappNumber: parsePhoneNum(values.leaderWhatsapp),
+            leaderId: values.leaderId,
             id: values.bishopSelect,
             centres: values.centres,
           },
@@ -103,7 +93,7 @@ function AddTownCampus() {
         CreateCampus({
           variables: {
             campusName: values.campusTownName,
-            lWhatsappNumber: values.leaderWhatsapp,
+            leaderId: values.leaderId,
             id: values.bishopSelect,
             centres: values.centres,
           },
@@ -115,7 +105,7 @@ function AddTownCampus() {
     }
 
     return (
-      <div>
+      <>
         <NavBar />
         <Formik
           initialValues={initialValues}
@@ -161,25 +151,23 @@ function AddTownCampus() {
                       <div className="row d-flex align-items-center">
                         <div className="col">
                           <FormikControl
+                            control="combobox2"
+                            name="leaderId"
+                            placeholder="Select a Leader"
+                            setFieldValue={formik.setFieldValue}
+                            optionsQuery={BISHOP_MEMBER_DROPDOWN}
+                            queryVariable1="id"
+                            variable1={bishopId}
+                            queryVariable2="nameSearch"
+                            suggestionText="name"
+                            suggestionID="id"
+                            dataset="bishopMemberDropdown"
+                            aria-describedby="Bishop Member List"
                             className="form-control"
-                            control="input"
-                            name="leaderName"
-                            placeholder={`Name of ${capitalise(
-                              church.church
-                            )} CO`}
                           />
                         </div>
                       </div>
-                      <div className="form-row row-cols-3">
-                        <div className="col-9">
-                          <FormikControl
-                            className="form-control"
-                            control="input"
-                            name="leaderWhatsapp"
-                            placeholder="Enter Leader WhatsApp No"
-                          />
-                        </div>
-                      </div>
+
                       <small className="pt-2">
                         {`Select any ${
                           church.church === 'town' ? 'Centres' : 'centres'
@@ -199,39 +187,27 @@ function AddTownCampus() {
                                 <div key={index} className="form-row row-cols">
                                   <div className="col-9">
                                     <FormikControl
-                                      control="combobox"
+                                      control="combobox2"
                                       name={`centres[${index}]`}
-                                      placeholder={`${capitalise(
-                                        church.subChurch
-                                      )} Name`}
+                                      placeholder="Centre Name"
                                       setFieldValue={formik.setFieldValue}
-                                      optionsQuery={CENTRE_DROPDOWN}
-                                      queryVariable={`${church.subChurch}Name`}
+                                      optionsQuery={BISHOP_CENTRE_DROPDOWN}
+                                      queryVariable1="id"
+                                      variable1={bishopId}
+                                      queryVariable2="nameSearch"
                                       suggestionText="name"
                                       suggestionID="id"
-                                      dataset={`${church.subChurch}Dropdown`}
-                                      aria-describedby={`${capitalise(
-                                        church.subChurch
-                                      )} Name`}
+                                      dataset="bishopCentreDropdown"
+                                      aria-describedby="Centre Name"
                                       className="form-control"
                                     />
                                   </div>
                                   <div className="col d-flex">
-                                    <button
-                                      className="plus-button rounded mr-2"
-                                      type="button"
-                                      onClick={() => push()}
-                                    >
-                                      <PlusSign />
-                                    </button>
+                                    <PlusSign onClick={() => push()} />
                                     {index > 0 && (
-                                      <button
-                                        className="plus-button rounded"
-                                        type="button"
+                                      <MinusSign
                                         onClick={() => remove(index)}
-                                      >
-                                        <MinusSign />
-                                      </button>
+                                      />
                                     )}
                                   </div>
                                 </div>
@@ -256,7 +232,7 @@ function AddTownCampus() {
             </div>
           )}
         </Formik>
-      </div>
+      </>
     )
   }
 }

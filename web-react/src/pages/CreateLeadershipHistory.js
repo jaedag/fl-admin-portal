@@ -3,16 +3,16 @@ import { useHistory } from 'react-router-dom'
 
 import { useQuery, useMutation } from '@apollo/client'
 import { Formik, Form, FieldArray } from 'formik'
-import FormikControl from '../components/formik-components/FormikControl'
+import FormikControl from '../components/formik-components/FormikControl.jsx'
 
 import { ADD_LEADER_HISTORY_MUTATION } from '../queries/CreateMutations'
-import { DISPLAY_MEMBER } from '../queries/DisplayQueries'
-import { HeadingBar } from '../components/HeadingBar'
-import { NavBar } from '../components/NavBar'
+import { DISPLAY_MEMBER } from '../queries/ReadQueries'
+import { HeadingBar } from '../components/HeadingBar.jsx'
+import { NavBar } from '../components/nav/NavBar.jsx'
 import { ErrorScreen, LoadingScreen } from '../components/StatusScreens'
 import { ChurchContext } from '../context/ChurchContext'
-import PlusSign from '../components/PlusSign'
-import MinusSign from '../components/MinusSign'
+import PlusSign from '../components/buttons/PlusSign.jsx'
+import MinusSign from '../components/buttons/MinusSign.jsx'
 
 export const AddLeadershipHistory = () => {
   const initialValues = {
@@ -95,21 +95,9 @@ export const AddLeadershipHistory = () => {
                                 />
                               </div>
                               <div className="col d-flex">
-                                <button
-                                  className="plus-button rounded mr-2"
-                                  type="button"
-                                  onClick={() => push()}
-                                >
-                                  <PlusSign />
-                                </button>
+                                <PlusSign onClick={() => push()} />
                                 {index > 0 && (
-                                  <button
-                                    className="plus-button rounded"
-                                    type="button"
-                                    onClick={() => remove(index)}
-                                  >
-                                    <MinusSign />
-                                  </button>
+                                  <MinusSign onClick={() => remove(index)} />
                                 )}
                               </div>
                             </div>

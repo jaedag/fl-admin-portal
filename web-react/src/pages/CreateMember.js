@@ -3,18 +3,25 @@ import { useHistory } from 'react-router-dom'
 import { useQuery, useMutation } from '@apollo/client'
 import { Formik, Form, FieldArray } from 'formik'
 import * as Yup from 'yup'
-import FormikControl from '../components/formik-components/FormikControl'
-
-import { CREATE_MEMBER_MUTATION } from '../queries/CreateMutations'
-import { HeadingBar } from '../components/HeadingBar'
-import { NavBar } from '../components/NavBar'
+import {
+  makeSelectOptions,
+  parsePhoneNum,
+  PHONE_NUM_REGEX_VALIDATION,
+} from '../global-utils'
+import FormikControl from '../components/formik-components/FormikControl.jsx'
+import {
+  ADD_MEMBER_TITLE_MUTATION,
+  CREATE_MEMBER_MUTATION,
+} from '../queries/CreateMutations'
+import { HeadingBar } from '../components/HeadingBar.jsx'
+import { NavBar } from '../components/nav/NavBar.jsx'
 import { ErrorScreen, LoadingScreen } from '../components/StatusScreens'
 import Spinner from '../components/Spinner'
-import { GET_MINISTRIES, BACENTA_DROPDOWN } from '../queries/ListQueries'
+import { GET_MINISTRIES, BISHOP_BACENTA_DROPDOWN } from '../queries/ListQueries'
 import { ChurchContext } from '../contexts/ChurchContext'
 import { MemberContext } from '../contexts/MemberContext'
-import PlusSign from '../components/PlusSign'
-import MinusSign from '../components/MinusSign'
+import PlusSign from '../components/buttons/PlusSign.jsx'
+import MinusSign from '../components/buttons/MinusSign.jsx'
 
 export const CreateMember = () => {
   const initialValues = {
@@ -69,30 +76,28 @@ export const CreateMember = () => {
     { key: 'Bishop', value: 'Bishop' },
   ]
 
-  const { phoneRegExp, parsePhoneNum, makeSelectOptions } = useContext(
-    ChurchContext
-  )
+  const { clickCard, bishopId } = useContext(ChurchContext)
   const { setMemberId } = useContext(MemberContext)
 
   const validationSchema = Yup.object({
-    firstName: Yup.string().required('This is a required field'),
-    lastName: Yup.string().required('This is a required field'),
-    gender: Yup.string().required('This is a required field'),
+    firstName: Yup.string().required('First Name is a required field'),
+    lastName: Yup.string().required('Last Name is a required field'),
+    gender: Yup.string().required('Gender is a required field'),
     email: Yup.string().email('Please enter a valid email address'),
-    maritalStatus: Yup.string().required('This is a required field'),
-    dob: Yup.string().required('This is a required field'),
+    maritalStatus: Yup.string().required('Marital Status is a required field'),
+    dob: Yup.string().required('Date of Birth is a required field'),
     phoneNumber: Yup.string()
       .matches(
-        phoneRegExp,
+        PHONE_NUM_REGEX_VALIDATION,
         `Phone Number must start with + and country code (eg. '+233')`
       )
       .required('Phone Number is required'),
     whatsappNumber: Yup.string().matches(
-      phoneRegExp,
+      PHONE_NUM_REGEX_VALIDATION,
       `Phone Number must start with + and country code (eg. '+233')`
     ),
-    // bacenta: Yup.string().required('This is a required field'),
-    // ministry: Yup.string().required('This is a required field'),
+    bacenta: Yup.string().required('Bacenta is a required field'),
+    ministry: Yup.string().required('Ministry is a required field'),
   })
 
   //All of the Hooks!
@@ -104,9 +109,12 @@ export const CreateMember = () => {
 
   const [CreateMember] = useMutation(CREATE_MEMBER_MUTATION, {
     onCompleted: (newMemberData) => {
+      clickCard(newMemberData.CreateMember)
       setMemberId(newMemberData.CreateMember.id)
     },
   })
+
+  const [AddMemberTitle] = useMutation(ADD_MEMBER_TITLE_MUTATION)
 
   const [image, setImage] = useState('')
   const [loading, setLoading] = useState(false)
@@ -134,14 +142,11 @@ export const CreateMember = () => {
   }
 
   const onSubmit = async (values, onSubmitProps) => {
+    const { setSubmitting, resetForm } = onSubmitProps
     // Variables that are not controlled by formik
     values.pictureUrl = image
 
-    //Formatting of phone number fields
-    values.phoneNumber = parsePhoneNum(values.phoneNumber)
-    values.whatsappNumber = parsePhoneNum(values.whatsappNumber)
-
-    values.pastoralAppointment = values.pastoralAppointment.filter(
+    let pastoralAppointment = values.pastoralAppointment.filter(
       (pastoralAppointment) => {
         if (pastoralAppointment.date) {
           return pastoralAppointment
@@ -156,8 +161,8 @@ export const CreateMember = () => {
         middleName: values.middleName,
         lastName: values.lastName,
         gender: values.gender,
-        phoneNumber: values.phoneNumber,
-        whatsappNumber: values.whatsappNumber,
+        phoneNumber: parsePhoneNum(values.phoneNumber),
+        whatsappNumber: parsePhoneNum(values.whatsappNumber),
         email: values.email,
         dob: values.dob,
         maritalStatus: values.maritalStatus,
@@ -166,14 +171,22 @@ export const CreateMember = () => {
 
         bacenta: values.bacenta,
         ministry: values.ministry,
-
-        pastoralAppointment: values.pastoralAppointment,
-        pastoralHistory: values.pastoralHistory,
       },
+    }).then((res) => {
+      pastoralAppointment.forEach((apppointmentDetails) => {
+        AddMemberTitle({
+          variables: {
+            memberId: res.data.CreateMember.id,
+            title: apppointmentDetails.title,
+            status: true,
+            date: apppointmentDetails.date,
+          },
+        })
+      })
     })
 
-    onSubmitProps.setSubmitting(false)
-    onSubmitProps.resetForm()
+    setSubmitting(false)
+    resetForm()
     history.push('/member/displaydetails')
   }
 
@@ -185,7 +198,7 @@ export const CreateMember = () => {
     const ministryOptions = makeSelectOptions(ministryListData.ministryList)
 
     return (
-      <div>
+      <>
         <NavBar />
         <Formik
           initialValues={initialValues}
@@ -235,8 +248,8 @@ export const CreateMember = () => {
                         Please note that * are required to submit the form
                       </small>
                     </p>
-                    <div className="form-row row-cols-2">
-                      <div className="col">
+                    <div className="form-row row-cols-1 row-cols-md-2">
+                      <div className="col-10">
                         <FormikControl
                           label="First Name*"
                           className="form-control"
@@ -246,7 +259,7 @@ export const CreateMember = () => {
                           aria-describedby="firstNameHelp"
                         />
                       </div>
-                      <div className="col">
+                      <div className="col-10">
                         <FormikControl
                           label="Middle Name"
                           className="form-control"
@@ -256,7 +269,7 @@ export const CreateMember = () => {
                           aria-describedby="middleNameHelp"
                         />
                       </div>
-                      <div className="col">
+                      <div className="col-10">
                         <FormikControl
                           label="Last Name*"
                           className="form-control"
@@ -266,7 +279,7 @@ export const CreateMember = () => {
                           aria-describedby="lastNameHelp"
                         />
                       </div>
-                      <div className="col">
+                      <div className="col-10">
                         <FormikControl
                           label="Gender*"
                           className="form-control"
@@ -277,30 +290,30 @@ export const CreateMember = () => {
                           defaultOption="Gender"
                         />
                       </div>
-                      <div className="col">
+                      <div className="col-10">
                         <FormikControl
                           label="Phone Number*"
                           className="form-control"
                           control="input"
-                          placeholder="Enter phone number"
+                          placeholder="Eg. +233 241 23 456"
                           id="phoneNumber"
                           name="phoneNumber"
                         />
                       </div>
-                      <div className="col">
+                      <div className="col-10">
                         <FormikControl
                           label="WhatsApp Number*"
                           className="form-control"
                           control="input"
-                          placeholder="Enter Your WhatsApp number"
+                          placeholder="Eg. +233 241 23 456"
                           id="whatsappNumber"
                           name="whatsappNumber"
                         />
                       </div>
                     </div>
 
-                    <div className="form-row row-cols-2">
-                      <div className="col">
+                    <div className="form-row row-cols-1 row-cols-md-2">
+                      <div className="col-10">
                         <FormikControl
                           label="Marital Status*"
                           className="form-control"
@@ -311,7 +324,7 @@ export const CreateMember = () => {
                           defaultOption="Marital Status"
                         />
                       </div>
-                      <div className="col">
+                      <div className="col-10">
                         <FormikControl
                           label="Occupation"
                           className="form-control"
@@ -323,9 +336,9 @@ export const CreateMember = () => {
                       </div>
                     </div>
                     <div className="form-row">
-                      <div className="col-8">
+                      <div className="col-10">
                         <FormikControl
-                          label="Email Address"
+                          label="Email Address*"
                           className="form-control"
                           control="input"
                           name="email"
@@ -333,9 +346,10 @@ export const CreateMember = () => {
                           aria-describedby="emailHelp"
                         />
                       </div>
-                      <div className="col-8">
+                      <div className="col-10">
                         <small htmlFor="dateofbirth" className="form-text ">
-                          Date of Birth
+                          Date of Birth*{' '}
+                          <i className="text-secondary">(Day/Month/Year)</i>
                         </small>
                         <FormikControl
                           className="form-control"
@@ -354,24 +368,26 @@ export const CreateMember = () => {
                   <div className="col my-4">
                     <HeadingBar title="Church Info" />
 
-                    <div className="form-row row-cols-2">
-                      <div className="col">
+                    <div className="form-row row-cols-1 row-cols-md-2">
+                      <div className="col-10">
                         <FormikControl
-                          control="combobox"
-                          label="Bacenta*"
+                          control="combobox2"
                           name="bacenta"
-                          // label="Bacenta"
+                          label="Bacenta*"
                           placeholder="Bacenta"
                           setFieldValue={formik.setFieldValue}
-                          optionsQuery={BACENTA_DROPDOWN}
-                          queryVariable="bacentaName"
+                          optionsQuery={BISHOP_BACENTA_DROPDOWN}
+                          queryVariable1="id"
+                          variable1={bishopId}
+                          queryVariable2="bacentaName"
                           suggestionText="name"
                           suggestionID="id"
-                          dataset="bacentaDropdown"
+                          dataset="bishopBacentaDropdown"
                           aria-describedby="Bacenta Name"
+                          className="form-control"
                         />
                       </div>
-                      <div className="col">
+                      <div className="col-10">
                         <FormikControl
                           className="form-control"
                           label="Ministry*"
@@ -398,8 +414,8 @@ export const CreateMember = () => {
                           <div>
                             {pastoralAppointment.map(
                               (pastoralAppointment, index) => (
-                                <div key={index} className="form-row row-cols">
-                                  <div className="col">
+                                <div key={index} className="form-row">
+                                  <div className="col-auto">
                                     <FormikControl
                                       className="form-control"
                                       control="select"
@@ -419,13 +435,7 @@ export const CreateMember = () => {
                                   </div>
                                   <div className="col d-flex">
                                     {index > 0 && (
-                                      <button
-                                        className="plus-button rounded"
-                                        type="button"
-                                        onClick={() => remove(index)}
-                                      >
-                                        <PlusSign />
-                                      </button>
+                                      <MinusSign onClick={() => remove()} />
                                     )}
                                   </div>
                                 </div>
@@ -468,23 +478,9 @@ export const CreateMember = () => {
                                   />
                                 </div>
                                 <div className="col d-flex">
-                                  <button
-                                    className="plus-button rounded mr-2"
-                                    type="button"
-                                    onClick={() => {
-                                      push()
-                                    }}
-                                  >
-                                    <PlusSign />
-                                  </button>
+                                  <PlusSign onClick={() => push()} />
                                   {index > 0 && (
-                                    <button
-                                      className="plus-button rounded"
-                                      type="button"
-                                      onClick={() => remove(index)}
-                                    >
-                                      <MinusSign />
-                                    </button>
+                                    <MinusSign onClick={() => remove(index)} />
                                   )}
                                 </div>
                               </div>
@@ -511,7 +507,7 @@ export const CreateMember = () => {
             </div>
           )}
         </Formik>
-      </div>
+      </>
     )
   }
 }

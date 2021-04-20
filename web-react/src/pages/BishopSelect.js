@@ -1,24 +1,57 @@
-import React, { useContext } from 'react'
-import { useQuery } from '@apollo/client'
+import React, { useContext, useEffect } from 'react'
+import { useQuery, useLazyQuery } from '@apollo/client'
 import { useHistory } from 'react-router-dom'
 import { ChurchContext } from '../contexts/ChurchContext'
 import { GET_BISHOPS } from '../queries/ListQueries'
-import { NavBar } from '../components/NavBar'
+import { NavBar } from '../components/nav/NavBar.jsx'
 import Spinner from '../components/Spinner'
-import { AuthButton } from '../components/DashboardButton'
+import { AuthButton } from '../components/buttons/DashboardButton.jsx'
 import Logo from '../img/flc-logo-small.png'
 import { MemberContext } from '../contexts/MemberContext'
+import { useAuth0 } from '@auth0/auth0-react'
+import { GET_LOGGED_IN_USER } from '../queries/SearchQuery'
 
 const BishopSelect = () => {
-  const { clickCard } = useContext(ChurchContext)
-  const { currentUser } = useContext(MemberContext)
-  const { data, loading, error } = useQuery(GET_BISHOPS)
+  const { determineChurch } = useContext(ChurchContext)
+  const { currentUser, setCurrentUser } = useContext(MemberContext)
+  const { user, isAuthenticated } = useAuth0()
+  const { data, loading } = useQuery(GET_BISHOPS)
+  const [memberByEmail] = useLazyQuery(GET_LOGGED_IN_USER, {
+    onCompleted: (data) => {
+      determineChurch(data?.memberByEmail)
+      setCurrentUser({
+        ...currentUser,
+        id: data.memberByEmail.id,
+        firstName: data.memberByEmail.firstName,
+        lastName: data.memberByEmail.lastName,
+        constituency: data.memberByEmail.bacenta.centre?.town
+          ? data.memberByEmail.bacenta.centre?.town.id
+          : data.memberByEmail.bacenta.centre?.campus.id,
+      })
+    },
+  })
+
+  useEffect(() => {
+    user &&
+      memberByEmail({
+        variables: {
+          email: currentUser?.email,
+        },
+      })
+    setCurrentUser({
+      ...currentUser,
+      email: user?.email,
+      roles: user ? user[`https://flcadmin.netlify.app/roles`] : [],
+    })
+    // eslint-disable-next-line
+  }, [isAuthenticated])
 
   const history = useHistory()
+  const version = 'v0.1.0'
 
   if (loading) {
     return (
-      <React.Fragment>
+      <>
         <NavBar />
         <div className="container text-center my-5  d-none d-lg-block">
           <img
@@ -27,7 +60,9 @@ const BishopSelect = () => {
             className="img-fluid mx-auto"
             style={{ maxWidth: '30%' }}
           />
-          <h3>FLC Admin Dashboard</h3>
+          <h3>
+            FLC Admin Dashboard<sub>{version}</sub>
+          </h3>
           <h5 className="text-secondary">Loading...</h5>
           <div className="spinner-border-center full-center" role="status">
             <Spinner />
@@ -62,11 +97,11 @@ const BishopSelect = () => {
             </div>
           </div>
         </div>
-      </React.Fragment>
+      </>
     )
   } else if (data) {
     return (
-      <React.Fragment>
+      <>
         <NavBar />
         <div className="container text-center my-3">
           <img
@@ -75,9 +110,13 @@ const BishopSelect = () => {
             className="img-fluid mx-auto"
             style={{ maxWidth: '30%' }}
           />
-          {currentUser?.roles.includes('superAdmin') && (
-            <h3>FLC Admin Dashboard</h3>
-          )}
+
+          <h3>
+            FLC Admin Dashboard{' '}
+            <sup>
+              <small>{version}</small>
+            </sup>
+          </h3>
 
           <h5 className="text-secondary">Select Your Bishop</h5>
         </div>
@@ -88,7 +127,7 @@ const BishopSelect = () => {
                 key={index}
                 className="col-sm-12 col-lg card mobile-search-card p-2 m-1"
                 onClick={() => {
-                  clickCard(soul)
+                  determineChurch(soul)
                   history.push('/dashboard')
                 }}
               >
@@ -111,12 +150,11 @@ const BishopSelect = () => {
             )
           })}
         </div>
-      </React.Fragment>
+      </>
     )
   } else {
-    console.log(error)
     return (
-      <React.Fragment>
+      <>
         <div className="container body-container d-none d-lg-block">
           {/* <!--Web Logo and text--> */}
           <div className="row align-self-center">
@@ -160,7 +198,7 @@ const BishopSelect = () => {
             <div className="d-lg-none flex-grow-1" />
           </div>
         </div>
-      </React.Fragment>
+      </>
     )
   }
 }

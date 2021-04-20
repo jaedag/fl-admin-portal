@@ -1,9 +1,9 @@
 import React, { useContext } from 'react'
 import { useQuery } from '@apollo/client'
 import { DisplayChurchDetails } from '../components/DisplayChurchDetails'
-import { NavBar } from '../components/NavBar'
+import { NavBar } from '../components/nav/NavBar.jsx'
 import { ErrorScreen, LoadingScreen } from '../components/StatusScreens'
-import { DISPLAY_BACENTA } from '../queries/DisplayQueries'
+import { DISPLAY_BACENTA } from '../queries/ReadQueries'
 import { ChurchContext } from '../contexts/ChurchContext'
 
 export const DisplayBacentaDetails = () => {
@@ -35,7 +35,7 @@ export const DisplayBacentaDetails = () => {
     }
 
     return (
-      <div>
+      <>
         <NavBar />
         <DisplayChurchDetails
           name={bacentaData.displayBacenta?.name}
@@ -45,7 +45,7 @@ export const DisplayBacentaDetails = () => {
               ? `${bacentaData.displayBacenta.leader.firstName} ${bacentaData.displayBacenta.leader.lastName}`
               : '-'
           }
-          leaderId={bacentaData.displayBacenta?.leader.id}
+          leaderId={bacentaData.displayBacenta?.leader?.id}
           membership={bacentaData.bacentaMemberCount}
           churchHeading="Meeting Day"
           churchNo={bacentaData.displayBacenta?.meetingDay.day}
@@ -58,7 +58,7 @@ export const DisplayBacentaDetails = () => {
           }
           breadcrumb={breadcrumb && breadcrumb}
         />
-      </div>
+      </>
     )
   } else {
     return <ErrorScreen />

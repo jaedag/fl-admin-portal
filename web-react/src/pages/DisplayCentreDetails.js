@@ -1,13 +1,13 @@
 import React, { useContext } from 'react'
 import { useQuery } from '@apollo/client'
 import { DisplayChurchDetails } from '../components/DisplayChurchDetails'
-import { NavBar } from '../components/NavBar'
+import { NavBar } from '../components/nav/NavBar.jsx'
 import { ErrorScreen, LoadingScreen } from '../components/StatusScreens'
-import { DISPLAY_CENTRE } from '../queries/DisplayQueries'
+import { DISPLAY_CENTRE } from '../queries/ReadQueries'
 import { ChurchContext } from '../contexts/ChurchContext'
 
 export const DisplayCentreDetails = () => {
-  const { centreId, setBacentaId } = useContext(ChurchContext)
+  const { centreId } = useContext(ChurchContext)
   const { data: centreData, loading: centreLoading } = useQuery(
     DISPLAY_CENTRE,
     {
@@ -29,25 +29,22 @@ export const DisplayCentreDetails = () => {
     ]
 
     return (
-      <div>
+      <>
         <NavBar />
         <DisplayChurchDetails
           name={displayCentre?.name}
-          // leaderTitle={displayCentre.leader.title[0].Title.title}
           leaderTitle="Centre Leader"
-          membership={centreMemberCount}
           leaderName={
             displayCentre?.leader
               ? `${displayCentre.leader.firstName} ${displayCentre.leader.lastName}`
               : '-'
           }
-          leaderId={displayCentre?.leader ? displayCentre.leader.id : null}
+          leaderId={displayCentre?.leader.id}
           churchHeading="No of Bacentas"
           churchType="Centre"
           subChurch="Bacenta"
-          subChurchSetter={setBacentaId}
+          membership={centreMemberCount}
           churchNo={centreBacentaCount}
-          buttons={displayCentre ? displayCentre.bacentas : []}
           editlink="/centre/editcentre"
           editRoles={['superAdmin', 'bishopAdmin', 'coAdmin']}
           history={
@@ -55,8 +52,9 @@ export const DisplayCentreDetails = () => {
             centreData.displayCentre?.history
           }
           breadcrumb={breadcrumb && breadcrumb}
+          buttons={displayCentre ? displayCentre.bacentas : []}
         />
-      </div>
+      </>
     )
   } else {
     return <ErrorScreen />

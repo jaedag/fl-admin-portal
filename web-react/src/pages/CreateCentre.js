@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom'
 import { useQuery, useMutation } from '@apollo/client'
 import { Formik, Form, FieldArray } from 'formik'
 import * as Yup from 'yup'
-import FormikControl from '../components/formik-components/FormikControl'
+import FormikControl from '../components/formik-components/FormikControl.jsx'
 
 import {
   GET_CAMPUSES,
@@ -11,55 +11,41 @@ import {
   BISHOP_BACENTA_DROPDOWN,
   GET_CAMPUS_CENTRES,
   GET_TOWN_CENTRES,
-} from '../queries/ListQueries'
+  BISHOP_MEMBER_DROPDOWN,
+} from '../queries/ListQueries.js'
 import { CREATE_CENTRE_MUTATION } from '../queries/CreateMutations'
-import { NavBar } from '../components/NavBar'
+import { NavBar } from '../components/nav/NavBar.jsx'
 import { ErrorScreen, LoadingScreen } from '../components/StatusScreens'
 import { ChurchContext } from '../contexts/ChurchContext'
-import PlusSign from '../components/PlusSign'
-import MinusSign from '../components/MinusSign'
+import PlusSign from '../components/buttons/PlusSign.jsx'
+import MinusSign from '../components/buttons/MinusSign.jsx'
+import { capitalise, makeSelectOptions } from '../global-utils'
 
 function CreateCentre() {
   const initialValues = {
     centreName: '',
-    leaderName: '',
-    leaderWhatsapp: '',
+    leaderId: '',
     campusTownSelect: '',
     bacentas: [''],
   }
 
-  const {
-    church,
-    capitalise,
-    phoneRegExp,
-    parsePhoneNum,
-    makeSelectOptions,
-    bishopId,
-    setTownId,
-    setCampusId,
-    setCentreId,
-  } = useContext(ChurchContext)
+  const { church, bishopId, setTownId, setCampusId, setCentreId } = useContext(
+    ChurchContext
+  )
   const history = useHistory()
 
   const validationSchema = Yup.object({
     centreName: Yup.string().required('Centre Name is a required field'),
-    leaderWhatsapp: Yup.string()
-      .required('Phone Number is required')
-      .matches(
-        phoneRegExp,
-        `Phone Number must start with + and country code (eg. '+233')`
-      ),
   })
 
   const [CreateCentre] = useMutation(CREATE_CENTRE_MUTATION, {
+    onCompleted: (data) => {
+      setCentreId(data.CreateCentre.id)
+    },
     refetchQueries: [
       { query: GET_CAMPUS_CENTRES, variables: { id: bishopId } },
       { query: GET_TOWN_CENTRES, variables: { id: bishopId } },
     ],
-    onCompleted: (newCentreData) => {
-      setCentreId(newCentreData.CreateCentre.id)
-      history.push('/centre/displaydetails')
-    },
   })
 
   const { data: townListData, loading: townListLoading } = useQuery(GET_TOWNS, {
@@ -87,18 +73,19 @@ function CreateCentre() {
       CreateCentre({
         variables: {
           centreName: values.centreName,
-          lWhatsappNumber: parsePhoneNum(values.leaderWhatsapp),
+          leaderId: values.leaderId,
           townCampusId: values.campusTownSelect,
           bacentas: values.bacentas,
         },
+      }).then(() => {
+        onSubmitProps.setSubmitting(false)
+        onSubmitProps.resetForm()
+        history.push('/centre/displaydetails')
       })
-
-      onSubmitProps.setSubmitting(false)
-      onSubmitProps.resetForm()
     }
 
     return (
-      <div>
+      <>
         <NavBar />
         <Formik
           initialValues={initialValues}
@@ -144,23 +131,23 @@ function CreateCentre() {
                       <div className="row d-flex align-items-center">
                         <div className="col">
                           <FormikControl
+                            control="combobox2"
+                            name="leaderId"
+                            placeholder="Select a Leader"
+                            setFieldValue={formik.setFieldValue}
+                            optionsQuery={BISHOP_MEMBER_DROPDOWN}
+                            queryVariable1="id"
+                            variable1={bishopId}
+                            queryVariable2="nameSearch"
+                            suggestionText="name"
+                            suggestionID="id"
+                            dataset="bishopMemberDropdown"
+                            aria-describedby="Bishop Member List"
                             className="form-control"
-                            control="input"
-                            name="leaderName"
-                            placeholder="Name of Centre Leader"
                           />
                         </div>
                       </div>
-                      <div className="form-row row-cols-3">
-                        <div className="col-9">
-                          <FormikControl
-                            className="form-control"
-                            control="input"
-                            name="leaderWhatsapp"
-                            placeholder="Enter Leader WhatsApp No"
-                          />
-                        </div>
-                      </div>
+
                       <small className="pt-2">
                         List any Bacentas that are being moved to this Centre
                       </small>
@@ -192,21 +179,11 @@ function CreateCentre() {
                                     />
                                   </div>
                                   <div className="col d-flex">
-                                    <button
-                                      className="plus-button rounded mr-2"
-                                      type="button"
-                                      onClick={() => push()}
-                                    >
-                                      <PlusSign />
-                                    </button>
+                                    <PlusSign onClick={() => push()} />
                                     {index > 0 && (
-                                      <button
-                                        className="plus-button rounded"
-                                        type="button"
+                                      <MinusSign
                                         onClick={() => remove(index)}
-                                      >
-                                        <MinusSign />
-                                      </button>
+                                      />
                                     )}
                                   </div>
                                 </div>
@@ -231,7 +208,7 @@ function CreateCentre() {
             </div>
           )}
         </Formik>
-      </div>
+      </>
     )
   } else if (townListLoading || campusListLoading) {
     return <LoadingScreen />
