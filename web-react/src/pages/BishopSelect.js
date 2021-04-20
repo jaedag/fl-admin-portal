@@ -28,10 +28,12 @@ const BishopSelect = () => {
           ? data.memberByEmail.bacenta.centre?.town.id
           : data.memberByEmail.bacenta.centre?.campus.id,
       })
+      // console.log("use query fires");
     },
   })
 
   useEffect(() => {
+    // console.log("use effect fires");
     user &&
       memberByEmail({
         variables: {

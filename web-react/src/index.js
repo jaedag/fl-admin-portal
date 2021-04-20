@@ -111,7 +111,7 @@ const PastorsAdmin = () => {
   const [church, setChurch] = useState(
     sessionStorage.getItem('church')
       ? JSON.parse(sessionStorage.getItem('church'))
-      : { church: '', subChurch: '' }
+      : { church: 'town', subChurch: 'centre' }
   )
   const [bishopId, setBishopId] = useState(
     sessionStorage.getItem('bishopId') ? sessionStorage.getItem('bishopId') : ''

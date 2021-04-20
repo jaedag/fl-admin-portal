@@ -14,7 +14,9 @@ export const MONTH_NAMES = [
   'Nov',
   'Dec',
 ]
-
+export const isAuthorised = (roles, userRoles) => {
+  return roles.some((r) => userRoles.includes(r))
+}
 export const capitalise = (str) => {
   return str?.charAt(0).toUpperCase() + str?.slice(1)
 }
