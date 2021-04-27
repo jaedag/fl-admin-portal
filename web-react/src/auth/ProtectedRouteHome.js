@@ -8,7 +8,7 @@ import BishopDashboard from '../pages/BishopDashboard'
 import { ChurchContext } from '../contexts/ChurchContext'
 import { DisplayCampusTownDetails } from '../pages/DisplayCampusTownDetails'
 
-const ProtectedRoute = ({ component, roles, ...args }) => {
+const ProtectedRouteHome = ({ component, roles, ...args }) => {
   const { currentUser } = useContext(MemberContext)
   const { setBishopId, setTownId, setCampusId, setChurch } = useContext(
     ChurchContext
@@ -47,4 +47,4 @@ const ProtectedRoute = ({ component, roles, ...args }) => {
   }
 }
 
-export default ProtectedRoute
+export default ProtectedRouteHome

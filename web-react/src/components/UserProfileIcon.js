@@ -13,6 +13,10 @@ function UserProfileIcon() {
   const [memberByEmail] = useLazyQuery(GET_LOGGED_IN_USER, {
     onCompleted: (data) => {
       // determineChurch(data?.memberByEmail)
+
+      let isTown
+      data.memberByEmail.bacenta?.centre?.town && (isTown = true)
+
       setCurrentUser({
         ...currentUser,
         id: data.memberByEmail.id,
@@ -22,6 +26,12 @@ function UserProfileIcon() {
         constituency: data.memberByEmail.bacenta?.centre?.town
           ? data.memberByEmail.bacenta?.centre?.town.id
           : data.memberByEmail.bacenta?.centre?.campus.id,
+        bishop: isTown
+          ? data.memberByEmail.bacenta?.centre?.town.bishop.id
+          : data.memberByEmail.bacenta?.centre?.campus.bishop.id,
+        church: isTown
+          ? { church: 'town', subChurch: 'centre' }
+          : { church: 'campus', subChurch: 'centre' },
       })
     },
   })
@@ -38,6 +48,7 @@ function UserProfileIcon() {
       email: user?.email,
       roles: user ? user[`https://flcadmin.netlify.app/roles`] : [],
     })
+
     // eslint-disable-next-line
   }, [isAuthenticated])
 

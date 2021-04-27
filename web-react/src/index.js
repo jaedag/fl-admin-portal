@@ -150,6 +150,7 @@ const PastorsAdmin = () => {
     lastName: '',
     email: '',
     bishop: '',
+    church: { church: '', subChurch: '' },
     constituency: '',
     roles: [''],
   })
