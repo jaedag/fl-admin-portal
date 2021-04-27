@@ -6,6 +6,7 @@ export const GET_LOGGED_IN_USER = gql`
       id
       firstName
       lastName
+      pictureUrl
       bacenta {
         centre {
           campus {
@@ -32,6 +33,7 @@ export const GLOBAL_SEARCH = gql`
       id
       name
       town {
+        id
         bishop {
           id
         }
@@ -60,11 +62,13 @@ export const GLOBAL_SEARCH = gql`
       id
       name
       town {
+        id
         bishop {
           id
         }
       }
       campus {
+        id
         bishop {
           id
         }
@@ -75,11 +79,13 @@ export const GLOBAL_SEARCH = gql`
       name
       centre {
         town {
+          id
           bishop {
             id
           }
         }
         campus {
+          id
           bishop {
             id
           }

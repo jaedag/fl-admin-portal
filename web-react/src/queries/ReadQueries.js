@@ -46,6 +46,7 @@ export const DISPLAY_MEMBER = gql`
           id
           name
           town {
+            id
             name
             bishop {
               firstName
@@ -110,6 +111,7 @@ export const DISPLAY_MEMBER = gql`
           id
           name
           town {
+            id
             name
             bishop {
               firstName
@@ -173,6 +175,9 @@ export const DISPLAY_MEMBER = gql`
       leadsBasonta {
         id
         name
+        sonta {
+          id
+        }
       }
       leadsMinistry {
         id
@@ -331,11 +336,13 @@ export const DISPLAY_CENTRE = gql`
           id
           name
           town {
+            id
             bishop {
               id
             }
           }
           campus {
+            id
             bishop {
               id
             }
@@ -400,17 +407,20 @@ export const DISPLAY_CENTRE = gql`
 export const DISPLAY_TOWN = gql`
   query displayTown($id: ID) {
     displayTown(id: $id) {
+      id
       name
       centres {
         id
         name
         town {
+          id
           name
           bishop {
             id
           }
         }
         campus {
+          id
           name
           bishop {
             id
@@ -498,12 +508,14 @@ export const DISPLAY_CAMPUS = gql`
         id
         name
         town {
+          id
           name
           bishop {
             id
           }
         }
         campus {
+          id
           name
           bishop {
             id

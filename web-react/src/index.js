@@ -44,6 +44,7 @@ import ProtectedRouteHome from './auth/ProtectedRouteHome'
 import ProtectedMembersRoute from './auth/ProtectedMembersRoute'
 import { MemberFiltersMobile } from './pages/MemberFiltersMobile'
 import { MemberTableMobile } from './components/MemberTableMobile'
+import UserProfilePage from './pages/UserProfilePage'
 
 const AppWithApollo = () => {
   const [accessToken, setAccessToken] = useState()
@@ -143,6 +144,7 @@ const PastorsAdmin = () => {
   )
   const [currentUser, setCurrentUser] = useState({
     id: '',
+    picture: '',
     firstName: '',
     lastName: '',
     email: '',
@@ -345,10 +347,16 @@ const PastorsAdmin = () => {
         setCampusId(card.id)
         sessionStorage.setItem('campusId', card.id)
         break
+      case 'Basonta':
+        setSontaId(card.sonta.id)
+        sessionStorage.setItem('sontaId', card.sonta.id)
+        break
       default:
         break
     }
-
+    if (card.__typename === 'Basonta') {
+      card.link = '/sonta/displaydetails'
+    }
     if (card.link === '') {
       card.link = `/${card.__typename.toLowerCase()}/displaydetails`
     }
@@ -400,6 +408,12 @@ const PastorsAdmin = () => {
                 path="/dashboard"
                 component={BishopDashboard}
                 roles={['superAdmin', 'bishopAdmin']}
+                exact
+              />
+              <ProtectedRoute
+                path="/user-profile"
+                component={UserProfilePage}
+                roles={['all']}
                 exact
               />
               <ProtectedRoute

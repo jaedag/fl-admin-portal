@@ -15,6 +15,29 @@ export const MONTH_NAMES = [
   'Dec',
 ]
 
+export const GENDER_OPTIONS = [
+  { key: 'Male', value: 'Male' },
+  { key: 'Female', value: 'Female' },
+]
+export const MARITAL_STATUS_OPTIONS = [
+  { key: 'Single', value: 'Single' },
+  { key: 'Married', value: 'Married' },
+]
+
+export const TITLE_OPTIONS = [
+  { key: 'Pastor', value: 'Pastor' },
+  { key: 'Reverend', value: 'Reverend' },
+  { key: 'Bishop', value: 'Bishop' },
+]
+
+export const SERVICE_DAY_OPTIONS = [
+  { key: 'Tuesday', value: 'Tuesday' },
+  { key: 'Wednesday', value: 'Wednesday' },
+  { key: 'Thursday', value: 'Thursday' },
+  { key: 'Friday', value: 'Friday' },
+  { key: 'Saturday', value: 'Saturday' },
+]
+
 export const capitalise = (str) => {
   return str?.charAt(0).toUpperCase() + str?.slice(1)
 }

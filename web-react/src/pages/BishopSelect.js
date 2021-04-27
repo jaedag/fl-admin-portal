@@ -1,5 +1,5 @@
-import React, { useContext, useEffect } from 'react'
-import { useQuery, useLazyQuery } from '@apollo/client'
+import React, { useContext } from 'react'
+import { useQuery } from '@apollo/client'
 import { useHistory } from 'react-router-dom'
 import { ChurchContext } from '../contexts/ChurchContext'
 import { GET_BISHOPS } from '../queries/ListQueries'
@@ -8,46 +8,14 @@ import Spinner from '../components/Spinner'
 import { AuthButton } from '../components/buttons/DashboardButton.jsx'
 import Logo from '../img/flc-logo-small.png'
 import { MemberContext } from '../contexts/MemberContext'
-import { useAuth0 } from '@auth0/auth0-react'
-import { GET_LOGGED_IN_USER } from '../queries/SearchQuery'
 
 const BishopSelect = () => {
   const { determineChurch } = useContext(ChurchContext)
-  const { currentUser, setCurrentUser } = useContext(MemberContext)
-  const { user, isAuthenticated } = useAuth0()
+  const { currentUser } = useContext(MemberContext)
   const { data, loading } = useQuery(GET_BISHOPS)
-  const [memberByEmail] = useLazyQuery(GET_LOGGED_IN_USER, {
-    onCompleted: (data) => {
-      determineChurch(data?.memberByEmail)
-      setCurrentUser({
-        ...currentUser,
-        id: data.memberByEmail.id,
-        firstName: data.memberByEmail.firstName,
-        lastName: data.memberByEmail.lastName,
-        constituency: data.memberByEmail.bacenta.centre?.town
-          ? data.memberByEmail.bacenta.centre?.town.id
-          : data.memberByEmail.bacenta.centre?.campus.id,
-      })
-    },
-  })
-
-  useEffect(() => {
-    user &&
-      memberByEmail({
-        variables: {
-          email: currentUser?.email,
-        },
-      })
-    setCurrentUser({
-      ...currentUser,
-      email: user?.email,
-      roles: user ? user[`https://flcadmin.netlify.app/roles`] : [],
-    })
-    // eslint-disable-next-line
-  }, [isAuthenticated])
 
   const history = useHistory()
-  const version = 'v0.1.0'
+  const version = 'v0.1.5'
 
   if (loading) {
     return (
@@ -61,7 +29,10 @@ const BishopSelect = () => {
             style={{ maxWidth: '30%' }}
           />
           <h3>
-            FLC Admin Dashboard<sub>{version}</sub>
+            FLC Admin Dashboard{' '}
+            <sup>
+              <small>{version}</small>
+            </sup>
           </h3>
           <h5 className="text-secondary">Loading...</h5>
           <div className="spinner-border-center full-center" role="status">
@@ -117,7 +88,7 @@ const BishopSelect = () => {
               <small>{version}</small>
             </sup>
           </h3>
-
+          <h4>{`Hi There ${currentUser.firstName}`}</h4>
           <h5 className="text-secondary">Select Your Bishop</h5>
         </div>
         <div className="row row-cols-sm-1 row-cols-lg-4 d-flex justify-content-center px-5">

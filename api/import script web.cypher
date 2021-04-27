@@ -12,6 +12,7 @@ CREATE (m:Member {whatsappNumber:line.`WhatsApp Number (if different)`})
     m.lastName = apoc.text.capitalizeAll(toLower(trim(line.`Last Name`))),
     m.phoneNumber = line.`Phone Number`,
     m.areaOfResidence = line.`Area of Residence`,
+    m.emailAddress = line.`Email`,
     m.pictureUrl   = line.pictureUrl
 
    
@@ -50,8 +51,19 @@ CREATE CONSTRAINT ON (b:Bacenta) ASSERT b.id IS UNIQUE;
 CREATE CONSTRAINT ON (b:Centre) ASSERT b.id IS UNIQUE;
 CREATE CONSTRAINT ON (b:Town) ASSERT b.id IS UNIQUE;
 CREATE CONSTRAINT ON (b:Campus) ASSERT b.id IS UNIQUE;
-// CREATE CONSTRAINT ON (m:Member) ASSERT m.whatsappNumber IS UNIQUE;
-CREATE INDEX FOR (n:Member) ON (n.whatsappNumber);
+CREATE CONSTRAINT ON (b:HistoryLog) ASSERT b.id IS UNIQUE;
+CREATE CONSTRAINT ON (b:Ministry) ASSERT b.id IS UNIQUE;
+CREATE CONSTRAINT ON (b:Sonta) ASSERT b.id IS UNIQUE;
+
+CREATE CONSTRAINT ON (m:Member) ASSERT m.whatsappNumber IS UNIQUE;
+CREATE CONSTRAINT ON (m:Member) ASSERT m.email IS UNIQUE;
+CREATE INDEX FOR (n:Member) ON (n.firstName);
+CREATE INDEX FOR (n:Member) ON (n.lastName);
+CREATE INDEX FOR (n:Bacenta) ON (n.name);
+CREATE INDEX FOR (n:Centre) ON (n.name);
+CREATE INDEX FOR (n:Campus) ON (n.name);
+CREATE INDEX FOR (n:Town) ON (n.name);
+CREATE INDEX FOR (n:Sonta) ON (n.name);
 CREATE INDEX FOR (n:TimeGraph) ON (n.date);
 
 
@@ -65,6 +77,7 @@ MERGE (m:Member {whatsappNumber: line.`WhatsApp Number (if different)`})
     m.lastName = line.`Last Name`,
     m.phoneNumber = line.`Phone Number`,
     m.areaOfResidence = line.`Area of Residence`,
+    m.email = line.`Email`,
     m.pictureUrl = line.picture
 
 with line,m WHERE line.Gender is not null

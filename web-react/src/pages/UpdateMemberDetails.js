@@ -7,9 +7,11 @@ import {
   makeSelectOptions,
   parsePhoneNum,
   PHONE_NUM_REGEX_VALIDATION,
+  GENDER_OPTIONS,
+  MARITAL_STATUS_OPTIONS,
+  TITLE_OPTIONS,
 } from '../global-utils'
 import FormikControl from '../components/formik-components/FormikControl.jsx'
-
 import { UPDATE_MEMBER_MUTATION } from '../queries//UpdateMutations'
 import { DISPLAY_MEMBER } from '../queries/ReadQueries'
 import { HeadingBar } from '../components/HeadingBar.jsx'
@@ -88,39 +90,30 @@ export const UpdateMemberDetails = () => {
       },
     ],
   }
-  const genderOptions = [
-    { key: 'Male', value: 'Male' },
-    { key: 'Female', value: 'Female' },
-  ]
-  const maritalStatusOptions = [
-    { key: 'Single', value: 'Single' },
-    { key: 'Married', value: 'Married' },
-  ]
-
-  const titleOptions = [
-    { key: 'Pastor', value: 'Pastor' },
-    { key: 'Reverend', value: 'Reverend' },
-    { key: 'Bishop', value: 'Bishop' },
-  ]
 
   const history = useHistory()
 
   const validationSchema = Yup.object({
-    firstName: Yup.string().required('This is a required field'),
-    lastName: Yup.string().required('This is a required field'),
-    gender: Yup.string().required('This is a required field'),
+    firstName: Yup.string().required('First Name is a required field'),
+    lastName: Yup.string().required('Last Name is a required field'),
+    gender: Yup.string().required('Gender is a required field'),
     email: Yup.string().email('Please enter a valid email address'),
-    phoneNumber: Yup.string().matches(
-      PHONE_NUM_REGEX_VALIDATION,
-      `Phone Number must start with + and country code (eg. '+233')`
-    ),
-    whatsappNumber: Yup.string()
+    maritalStatus: Yup.string().required('Marital Status is a required field'),
+    dob: Yup.date()
+      .max(new Date(), "You can't be born after today")
+      .required('Date of Birth is a required field'),
+    phoneNumber: Yup.string()
       .matches(
         PHONE_NUM_REGEX_VALIDATION,
         `Phone Number must start with + and country code (eg. '+233')`
       )
-      .required('WhatsApp Number is required'),
-    ministry: Yup.string().required('This is a required field'),
+      .required('Phone Number is required'),
+    whatsappNumber: Yup.string().matches(
+      PHONE_NUM_REGEX_VALIDATION,
+      `Phone Number must start with + and country code (eg. '+233')`
+    ),
+    bacenta: Yup.string().required('Please pick a bacenta from the dropdown'),
+    ministry: Yup.string().required('Ministry is a required field'),
   })
 
   //All of the Hooks!
@@ -140,6 +133,7 @@ export const UpdateMemberDetails = () => {
   const uploadImage = async (e) => {
     const files = e.target.files
     const data = new FormData()
+
     data.append('file', files[0])
     data.append('upload_preset', 'admin-portal')
 
@@ -285,7 +279,7 @@ export const UpdateMemberDetails = () => {
                           control="select"
                           name="gender"
                           placeholder="Gender"
-                          options={genderOptions}
+                          options={GENDER_OPTIONS}
                           defaultOption="Gender"
                         />
                       </div>
@@ -319,7 +313,7 @@ export const UpdateMemberDetails = () => {
                           control="select"
                           name="maritalStatus"
                           placeholder="Marital Status"
-                          options={maritalStatusOptions}
+                          options={MARITAL_STATUS_OPTIONS}
                           defaultOption="Marital Status"
                         />
                       </div>
@@ -418,7 +412,7 @@ export const UpdateMemberDetails = () => {
                                     <FormikControl
                                       className="form-control"
                                       control="select"
-                                      options={titleOptions}
+                                      options={TITLE_OPTIONS}
                                       defaultOption="Title"
                                       name={`pastoralAppointment[${index}].title`}
                                     />
