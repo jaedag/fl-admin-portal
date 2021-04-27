@@ -135,3 +135,160 @@ export const getNameWithTitle = (displayMember) => {
     return displayName.name
   }
 }
+
+export const determineChurch = (member, setters) => {
+  const { setChurch, setBishopId } = setters
+  //switch case for other church types
+  switch (member?.__typename) {
+    case 'Town':
+      setChurch({ church: 'town', subChurch: 'centre' })
+      sessionStorage.setItem(
+        'church',
+        JSON.stringify({
+          church: 'town',
+          subChurch: 'centre',
+        })
+      )
+      setBishopId(member.bishop?.id)
+      sessionStorage.setItem('bishopId', member.bishop?.id)
+      break
+    case 'Campus':
+      setChurch({ church: 'campus', subChurch: 'centre' })
+      sessionStorage.setItem(
+        'church',
+        JSON.stringify({
+          church: 'campus',
+          subChurch: 'centre',
+        })
+      )
+      setBishopId(member.bishop?.id)
+      sessionStorage.setItem('bishopId', member.bishop?.id)
+      break
+    case 'Centre':
+      setChurch({
+        church: member.campus ? 'campus' : 'town',
+        subChurch: 'centre',
+      })
+      sessionStorage.setItem(
+        'church',
+        JSON.stringify({
+          church: member.campus ? 'campus' : 'town',
+          subChurch: 'centre',
+        })
+      )
+      setBishopId(
+        member.campus ? member.campus.bishop.id : member.town.bishop.id
+      )
+      sessionStorage.setItem(
+        'bishopId',
+        member.campus ? member.campus.bishop.id : member.town.bishop.id
+      )
+      break
+    case 'Bacenta':
+      setChurch({ church: member.centre?.town ? 'town' : 'campus' })
+      sessionStorage.setItem(
+        'church',
+        JSON.stringify({
+          church: member.centre?.town ? 'town' : 'campus',
+        })
+      )
+      setBishopId(
+        member.centre?.town
+          ? member.centre?.town.bishop.id
+          : member.centre?.campus.bishop.id
+      )
+      sessionStorage.setItem(
+        'bishopId',
+        member.centre?.town
+          ? member.centre?.town.bishop.id
+          : member.centre?.campus.bishop.id
+      )
+      break
+    default:
+  }
+
+  if (!member.bacenta) {
+    if (!member.townBishop) {
+      return
+    }
+    if (member.townBishop[0]) {
+      setChurch({ church: 'town', subChurch: 'centre' })
+      sessionStorage.setItem(
+        'church',
+        JSON.stringify({
+          church: 'town',
+          subChurch: 'centre',
+        })
+      )
+      setBishopId(member.id)
+      sessionStorage.setItem('bishopId', member.id)
+      return
+    } else if (member.campusBishop[0]) {
+      setChurch({ church: 'campus', subChurch: 'centre' })
+      sessionStorage.setItem(
+        'church',
+        JSON.stringify({
+          church: 'campus',
+          subChurch: 'centre',
+        })
+      )
+      setBishopId(member.id)
+      sessionStorage.setItem('bishopId', member.id)
+      return
+    } else {
+      return
+    }
+  }
+  if (member?.bacenta?.centre?.town) {
+    setChurch({ church: 'town', subChurch: 'centre' })
+    sessionStorage.setItem(
+      'church',
+      JSON.stringify({
+        church: 'town',
+        subChurch: 'centre',
+      })
+    )
+    setBishopId(member.bacenta.centre.town.bishop.id)
+    sessionStorage.setItem('bishopId', member.bacenta.centre.town.bishop.id)
+    return
+  } else if (member.leadsTown && member.leadsTown[0]) {
+    setChurch({ church: 'town', subChurch: 'centre' })
+    sessionStorage.setItem(
+      'church',
+      JSON.stringify({
+        church: 'town',
+        subChurch: 'centre',
+      })
+    )
+    setBishopId(member.leadsTown[0].bishop?.id)
+    sessionStorage.setItem('bishopId', member.leadsTown[0].bishop?.id)
+    return
+  } else if (member?.bacenta?.centre?.campus) {
+    setChurch({ church: 'campus', subChurch: 'centre' })
+    sessionStorage.setItem(
+      'church',
+      JSON.stringify({
+        church: 'campus',
+        subChurch: 'centre',
+      })
+    )
+    setBishopId(member?.bacenta?.centre?.campus?.bishop?.id)
+    sessionStorage.setItem(
+      'bishopId',
+      member?.bacenta?.centre?.campus?.bishop?.id
+    )
+    return
+  } else if (member?.leadsCampus[0]) {
+    setChurch({ church: 'campus', subChurch: 'centre' })
+    sessionStorage.setItem(
+      'church',
+      JSON.stringify({
+        church: 'campus',
+        subChurch: 'centre',
+      })
+    )
+    setBishopId(member.leadsCampus[0].bishop?.id)
+    sessionStorage.setItem('bishopId', member.leadsCampus[0].bishop?.id)
+    return
+  }
+}

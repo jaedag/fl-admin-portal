@@ -10,7 +10,7 @@ import Logo from '../img/flc-logo-small.png'
 import { MemberContext } from '../contexts/MemberContext'
 
 const BishopSelect = () => {
-  const { determineChurch } = useContext(ChurchContext)
+  const { clickCard } = useContext(ChurchContext)
   const { currentUser } = useContext(MemberContext)
   const { data, loading } = useQuery(GET_BISHOPS)
 
@@ -98,7 +98,7 @@ const BishopSelect = () => {
                 key={index}
                 className="col-sm-12 col-lg card mobile-search-card p-2 m-1"
                 onClick={() => {
-                  determineChurch(soul)
+                  clickCard(soul)
                   history.push('/dashboard')
                 }}
               >
