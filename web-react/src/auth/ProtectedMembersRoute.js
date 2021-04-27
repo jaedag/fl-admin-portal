@@ -4,8 +4,8 @@ import { withAuthenticationRequired } from '@auth0/auth0-react'
 import { UnauthMsg } from './UnauthMsg'
 import { MemberContext } from '../contexts/MemberContext'
 import { ChurchContext } from '../contexts/ChurchContext'
-import { BishopMembers } from '../pages/grids/BishopMembers'
-import { CampusTownMembers } from '../pages/grids/CampusTownMembers'
+import { GridBishopMembers } from '../pages/GridPages/GridBishopMembers'
+import { GridCampusTownMembers } from '../pages/GridPages/GridCampusTownMembers'
 import { LoadingScreen } from '../components/StatusScreens'
 import { isAuthorised } from '../global-utils'
 
@@ -38,11 +38,11 @@ const ProtectedMembersRoute = ({ component, roles, ...args }) => {
   } else if (currentUser.roles.includes('bishopAdmin')) {
     //if the user does not have permission but is a Bishop's Admin
 
-    return <BishopMembers />
+    return <GridBishopMembers />
   } else if (currentUser.roles.includes('coAdmin')) {
     //If the user does not have permission but is a CO Admin
 
-    return <CampusTownMembers />
+    return <GridCampusTownMembers />
   } else {
     return <UnauthMsg />
   }
