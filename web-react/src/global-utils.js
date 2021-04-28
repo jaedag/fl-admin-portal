@@ -1,5 +1,6 @@
 //Global Constants
 export const PHONE_NUM_REGEX_VALIDATION = /^[+][(]{0,1}[1-9]{1,4}[)]{0,1}[-\s/0-9]*$/
+
 export const MONTH_NAMES = [
   'Jan',
   'Feb',
