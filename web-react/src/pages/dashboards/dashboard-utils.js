@@ -55,6 +55,12 @@ export const menuItems = [
     ],
   },
   {
+    name: 'Maps',
+    to: '/maps',
+    Icon: FlagFill,
+    roles: ['all'],
+  },
+  {
     name: 'Reconciliation',
     to: '/recon',
     Icon: JournalCheck,
