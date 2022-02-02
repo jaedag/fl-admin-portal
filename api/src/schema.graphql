@@ -214,6 +214,9 @@ type ServiceLog @auth(rules: [{ isAuthenticated: true }]) {
   # bacentaFellowshipRecords(bacentaId: ID!): [BacentaFellowshipServiceRecords]
   constituency: [Constituency] @relationship(type: "HAS_HISTORY", direction: IN)
   sonta: [Sonta] @relationship(type: "HAS_HISTORY", direction: IN)
+  equipmentCampaign: [EquipmentConstituencyCampaign] @relationship(type:"HAS_HISTORY", direction: IN)
+  equipmentFellowshipRecord: [FellowshipEquipmentRecord] @relationship(type:"HAS_RECORD", direction: OUT)
+  equipmentConstituencyRecord: [ConstituencyEquipmentRecord] @relationship(type:"HAS_RECORD", direction: OUT)
 }
 
 type ComponentServiceAggregate {
@@ -1021,6 +1024,35 @@ type Basonta {
   leader: Member @relationship(type: "LEADS", direction: IN)
   bacenta: Bacenta @relationship(type: "HAS_BASONTA", direction: IN)
   sonta: Sonta @relationship(type: "HAS_BASONTA", direction: IN)
+}
+
+######Campaighn Types#######
+
+type EquipmentConstituencyCampaign {
+  id: ID!
+  serviceLog: [ServiceLog] @relationship(type: "HAS_HISTORY", direction: OUT)
+  constituency: Constituency @relationship(type: "HAS_CAMPAIGN", direction: IN)
+  leader: Member @relationship(type: "LEADS", direction: IN)
+  target: ConstituencyCampaignTarget @relationship(type: "HAS_TARGET", direction: OUT)
+}
+
+type ConstituencyCampaignTarget {
+  target: Int
+  campaign: EquipmentConstituencyCampaign @relationship(type: "HAS_TARGET", direction: IN)
+}
+
+type FellowshipEquipmentRecord {
+  id: ID!
+  offeringBags: Int!
+  date: Date!
+  serviceLog: ServiceLog @relationship(type: "HAS_RECORD", direction: IN)
+}
+
+type ConstituencyEquipmentRecord {
+  id: ID!
+  pulpits: Int!
+  date: Date!
+  serviceLog: ServiceLog @relationship(type: "HAS_RECORD", direction: IN)
 }
 
 #Query Definitions
