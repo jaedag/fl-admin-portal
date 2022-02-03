@@ -1,0 +1,131 @@
+type Member {
+  id: ID!
+  auth_id: String
+  firstName: String #@search
+  middleName: String
+  lastName: String
+  fullName: String @ignore
+  email: String
+  phoneNumber: String
+  whatsappNumber: String
+  pictureUrl: String
+  gender: Gender @relationship(type: "HAS_GENDER", direction: OUT)
+  maritalStatus: MaritalStatus
+    @relationship(type: "HAS_MARITAL_STATUS", direction: OUT)
+  dob: TimeGraph @relationship(type: "WAS_BORN_ON", direction: OUT)
+  title: [Title]
+    @relationship(type: "HAS_TITLE", properties: "HasTitle", direction: OUT)
+  ministry: Ministry @relationship(type: "BELONGS_TO", direction: OUT)
+  occupation: Occupation @relationship(type: "HAS_OCCUPATION", direction: OUT)
+  stream_name: String
+    @cypher(
+      statement: """
+      MATCH (this)-[:BELONGS_TO]->(:Fellowship)<-[:HAS*4]-(stream:Stream)
+      RETURN DISTINCT toLower(stream.name)
+      """
+    )
+  # Church Details
+  members: [Member]
+    @cypher(
+      statement: """
+      MATCH (this)-[:LEADS|HAS|IS_ADMIN_FOR*1..6]->(:Fellowship)-[:BELONGS_TO]-(members)
+      RETURN DISTINCT members
+      """
+    )
+  memberCount: Int
+    @cypher(
+      statement: """
+      MATCH (this)-[:LEADS|HAS|IS_ADMIN_FOR*1..6]->(:Fellowship)-[:BELONGS_TO]-(members)
+      RETURN COUNT(DISTINCT members)
+      """
+    )
+  basontaMembers: [Member]
+    @cypher(
+      statement: """
+      MATCH (this)-[:LEADS|HAS|IS_ADMIN_FOR*1..6]->(:Fellowship)-[:BELONGS_TO]-(members)
+      MATCH (members)-[:BELONGS_TO]->(:Ministry)
+      RETURN DISTINCT members
+      """
+    )
+  basontaMembershipCount: Int
+    @cypher(
+      statement: """
+      MATCH (this)-[:LEADS|HAS|IS_ADMIN_FOR*1..6]->(:Fellowship)-[:BELONGS_TO]-(members)
+      MATCH (members)-[:BELONGS_TO]->(:Ministry)
+      RETURN COUNT(DISTINCT members)
+      """
+    )
+  history: [HistoryLog] @relationship(type: "HAS_HISTORY", direction: OUT)
+  loggedHistory: [HistoryLog] @relationship(type: "LOGGED_BY", direction: IN)
+  fellowship: Fellowship @relationship(type: "BELONGS_TO", direction: OUT)
+  leadsFellowship: [Fellowship] @relationship(type: "LEADS", direction: OUT)
+  leadsFellowshipCount: Int
+    @cypher(
+      statement: """
+      MATCH (this)-[:LEADS]->(fellowships:Fellowship)
+      RETURN COUNT(fellowships)
+      """
+    )
+  leadsBacenta: [Bacenta] @relationship(type: "LEADS", direction: OUT)
+  leadsBacentaCount: Int
+    @cypher(
+      statement: """
+      MATCH (this)-[:LEADS]->(bacentas:Bacenta)
+      RETURN COUNT(bacentas)
+      """
+    )
+  leadsMinistry: [Ministry] @relationship(type: "LEADS", direction: OUT)
+  leadsSonta: [Sonta] @relationship(type: "LEADS", direction: OUT)
+  leadsBasonta: [Basonta] @relationship(type: "LEADS", direction: OUT)
+  leadsConstituency: [Constituency] @relationship(type: "LEADS", direction: OUT)
+  leadsConstituencyCount: Int
+    @cypher(
+      statement: """
+      MATCH (this)-[:LEADS|IS_ADMIN_FOR]->(constituency:Constituency)
+      RETURN COUNT(DISTINCT constituency)
+      """
+    )
+  leadsCouncil: [Council] @relationship(type: "LEADS", direction: OUT)
+  leadsCouncilCount: Int
+    @cypher(
+      statement: """
+      MATCH (this)-[:LEADS|HAS|IS_ADMIN_FOR]->(council:Council)
+      RETURN COUNT(DISTINCT council)
+      """
+    )
+  leadsStream: [Stream] @relationship(type: "LEADS", direction: OUT)
+  leadsStreamCount: Int
+    @cypher(
+      statement: """
+      MATCH (this)-[:LEADS|IS_ADMIN_FOR]->(stream:Stream)
+      RETURN COUNT(DISTINCT stream)
+      """
+    )
+  leadsGatheringService: [GatheringService]
+    @relationship(type: "LEADS", direction: OUT)
+  leadsGatheringServiceCount: Int
+    @cypher(
+      statement: """
+      MATCH (this)-[:LEADS|HAS|IS_ADMIN_FOR]->(gatheringService:GatheringService)
+      RETURN COUNT(DISTINCT gatheringService)
+      """
+    )
+  isAdminForGatheringService: [GatheringService]
+    @relationship(type: "IS_ADMIN_FOR", direction: OUT)
+  isAdminForStream: [Stream] @relationship(type: "IS_ADMIN_FOR", direction: OUT)
+  isAdminForCouncil: [Council]
+    @relationship(type: "IS_ADMIN_FOR", direction: OUT)
+  isAdminForConstituency: [Constituency]
+    @relationship(type: "IS_ADMIN_FOR", direction: OUT)
+
+  isAdminForCouncilArrivals: [Council]
+    @relationship(type: "IS_ARRIVALS_FOR", direction: OUT)
+  isAdminForConstituencyArrivals: [Constituency]
+    @relationship(type: "IS_ARRIVALS_FOR", direction: OUT)
+
+  #OTHER WORKS
+  was_treasurer_for: [ServiceRecord]!
+    @relationship(type: "WAS_TREASURER_FOR", direction: OUT)
+}
+
+extend type Member @auth(rules: [{ isAuthenticated: true }])
