@@ -40,6 +40,10 @@ const campaigns = fs
   .readFileSync(path.join(__dirname, 'campaigns.graphql'))
   .toString('utf-8')
 
+const campaignsEquipment = fs
+  .readFileSync(path.join(__dirname, 'campaigns-equipment.graphql'))
+  .toString('utf-8')
+
 export const typeDefs =
   schema +
   ' ' +
@@ -56,4 +60,6 @@ export const typeDefs =
   arrivals +
   ' ' +
   campaigns +
+  ' ' +
+  campaignsEquipment +
   ' '

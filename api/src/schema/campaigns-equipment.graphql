@@ -1,0 +1,46 @@
+extend type ServiceLog {
+  equipmentConstituencyCampaign: [EquipmentConstituencyCampaign]
+    @relationship(type: "HAS_HISTORY", direction: IN)
+  equipmentFellowshipRecord: [FellowshipEquipmentRecord]
+    @relationship(type: "HAS_RECORD", direction: OUT)
+  equipmentConstituencyRecord: [ConstituencyEquipmentRecord]
+    @relationship(type: "HAS_RECORD", direction: OUT)
+}
+
+extend type Constituency {
+  equipmentCampaign: EquipmentConstituencyCampaign!
+    @relationship(type: "HAS_CAMPAIGN", direction: IN)
+}
+
+extend type Fellowship {
+  equipmentCampaign: EquipmentConstituencyCampaign!
+    @relationship(type: "HAS_CAMPAIGN", direction: IN)
+}
+
+###### CAMPAIGN TYPES #######
+type EquipmentConstituencyCampaign implements Campaign {
+  id: ID!
+  name: String!
+  serviceLog: [ServiceLog] @relationship(type: "HAS_HISTORY", direction: OUT)
+  constituency: Constituency @relationship(type: "HAS_CAMPAIGN", direction: IN)
+  leader: Member @relationship(type: "LEADS", direction: IN)
+  target: Target @relationship(type: "HAS_TARGET", direction: OUT)
+}
+
+type FellowshipEquipmentRecord {
+  id: ID!
+  offeringBags: Int!
+  date: Date!
+  serviceLog: ServiceLog @relationship(type: "HAS_RECORD", direction: IN)
+  constituencyRecord: ConstituencyEquipmentRecord
+    @relationship(type: "HAS", direction: IN)
+}
+
+type ConstituencyEquipmentRecord {
+  id: ID!
+  pulpits: Int!
+  date: Date!
+  serviceLog: ServiceLog @relationship(type: "HAS_RECORD", direction: IN)
+  fellowshipRecords: [FellowshipEquipmentRecord]
+    @relationship(type: "HAS", direction: IN)
+}

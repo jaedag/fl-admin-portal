@@ -1,0 +1,12 @@
+interface Campaign {
+  id: ID!
+  serviceLog: [ServiceLog] @relationship(type: "HAS_HISTORY", direction: OUT)
+  leader: Member @relationship(type: "LEADS", direction: IN)
+  target: Target @relationship(type: "HAS_TARGET", direction: OUT)
+}
+
+type Target {
+  percentage: Int!
+  campaign: EquipmentConstituencyCampaign
+    @relationship(type: "HAS_TARGET", direction: IN)
+}
