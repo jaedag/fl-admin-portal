@@ -2,14 +2,13 @@
 // as a lambda function
 
 const { ApolloServer } = require('apollo-server-lambda')
-import { Neo4jGraphQL } from '@neo4j/graphql'
-import { merge } from 'lodash'
+const { Neo4jGraphQL } = require('@neo4j/graphql')
 const neo4j = require('neo4j-driver')
 
 // This module is copied during the build step
 // Be sure to run `npm run build`
 const { typeDefs } = require('./schema/graphql-schema')
-const { resolvers } = require('../../resolvers')
+const { resolvers } = require('../../resolvers/resolvers')
 const { serviceResolvers } = require('../../resolvers/service-resolvers')
 
 const driver = neo4j.driver(
@@ -22,7 +21,7 @@ const driver = neo4j.driver(
 
 const neoSchema = new Neo4jGraphQL({
   typeDefs,
-  resolvers: merge(resolvers, serviceResolvers),
+  resolvers: { ...resolvers, ...serviceResolvers },
   driver,
   config: {
     jwt: {
