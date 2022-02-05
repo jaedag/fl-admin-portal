@@ -1,12 +1,34 @@
 interface Campaign {
   id: ID!
+  name: String!
+  type: String!
   serviceLog: [ServiceLog] @relationship(type: "HAS_HISTORY", direction: OUT)
   leader: Member @relationship(type: "LEADS", direction: IN)
   target: Target @relationship(type: "HAS_TARGET", direction: OUT)
 }
 
 type Target {
-  percentage: Int!
-  campaign: EquipmentConstituencyCampaign
-    @relationship(type: "HAS_TARGET", direction: IN)
+  id: ID!
+  campaign: String!
+  percentage: Float!
+}
+
+extend type GatheringService {
+  campaigns: [Campaign] @relationship(type: "HAS_CAMPAIGN", direction: OUT)
+}
+
+extend type Stream {
+  campaigns: [Campaign] @relationship(type: "HAS_CAMPAIGN", direction: OUT)
+}
+
+extend type Constituency {
+  campaigns: [Campaign] @relationship(type: "HAS_CAMPAIGN", direction: OUT)
+}
+
+extend type Council {
+  campaigns: [Campaign] @relationship(type: "HAS_CAMPAIGN", direction: OUT)
+}
+
+extend type Fellowship {
+  campaigns: [Campaign] @relationship(type: "HAS_CAMPAIGN", direction: OUT)
 }

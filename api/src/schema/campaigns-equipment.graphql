@@ -1,32 +1,16 @@
 extend type ServiceLog {
-  equipmentConstituencyCampaign: [EquipmentConstituencyCampaign]
-    @relationship(type: "HAS_HISTORY", direction: IN)
-  equipmentFellowshipRecord: [FellowshipEquipmentRecord]
-    @relationship(type: "HAS_RECORD", direction: OUT)
   equipmentConstituencyRecord: [ConstituencyEquipmentRecord]
     @relationship(type: "HAS_RECORD", direction: OUT)
-}
-
-extend type Constituency {
-  equipmentCampaign: EquipmentConstituencyCampaign!
-    @relationship(type: "HAS_CAMPAIGN", direction: IN)
-}
-
-extend type Fellowship {
-  equipmentCampaign: EquipmentConstituencyCampaign!
-    @relationship(type: "HAS_CAMPAIGN", direction: IN)
+  equipmentConstituencyCampaign: [EquipmentConstituencyCampaign]
+    @relationship(type: "HAS_HISTORY", direction: IN)
+  equipmentBacentaRecord: [FellowshipEquipmentRecord]
+    @relationship(type: "HAS_RECORD", direction: OUT)
+  equipmentFellowshipRecord: [FellowshipEquipmentRecord]
+    @relationship(type: "HAS_RECORD", direction: OUT)
 }
 
 ###### CAMPAIGN TYPES #######
-type EquipmentConstituencyCampaign implements Campaign {
-  id: ID!
-  name: String!
-  serviceLog: [ServiceLog] @relationship(type: "HAS_HISTORY", direction: OUT)
-  constituency: Constituency @relationship(type: "HAS_CAMPAIGN", direction: IN)
-  leader: Member @relationship(type: "LEADS", direction: IN)
-  target: Target @relationship(type: "HAS_TARGET", direction: OUT)
-}
- 
+
 type FellowshipEquipmentRecord {
   id: ID!
   offeringBags: Int!
@@ -42,5 +26,152 @@ type ConstituencyEquipmentRecord {
   date: Date!
   serviceLog: ServiceLog @relationship(type: "HAS_RECORD", direction: IN)
   fellowshipRecords: [FellowshipEquipmentRecord]
+    @relationship(type: "HAS", direction: OUT)
+}
+
+type EquipmentFellowshipCampaign implements Campaign {
+  id: ID!
+  name: String!
+    @cypher(
+      statement: "MATCH (this)<-[:HAS_CAMPAIGN]-(fellowship:Fellowship) RETURN fellowship.name+ ' Fellowship Equipment Campaign'"
+    )
+  type: String! @cypher(statement: "RETURN 'Equipment Campaign'")
+  serviceLog: [ServiceLog] @relationship(type: "HAS_HISTORY", direction: OUT)
+  fellowship: Fellowship @relationship(type: "HAS_CAMPAIGN", direction: IN)
+  leader: Member @relationship(type: "LEADS", direction: IN)
+  target: Target @relationship(type: "HAS_TARGET", direction: OUT)
+  constituencyCampaign: EquipmentConstituencyCampaign
     @relationship(type: "HAS", direction: IN)
+}
+
+type EquipmentConstituencyCampaign implements Campaign {
+  id: ID!
+  name: String!
+    @cypher(
+      statement: "MATCH (this)<-[:HAS_CAMPAIGN]-(constituency:Constituency) RETURN constituency.name+ ' Constituency Equipment Campaign'"
+    )
+  type: String! @cypher(statement: "RETURN 'Equipment Campaign'")
+  serviceLog: [ServiceLog] @relationship(type: "HAS_HISTORY", direction: OUT)
+  constituency: Constituency @relationship(type: "HAS_CAMPAIGN", direction: IN)
+  leader: Member @relationship(type: "LEADS", direction: IN)
+  target: Target @relationship(type: "HAS_TARGET", direction: OUT)
+  councilCampaign: EquipmentCouncilCampaign
+    @relationship(type: "HAS", direction: IN)
+  fellowshipCampaign: EquipmentFellowshipCampaign
+    @relationship(type: "HAS", direction: OUT)
+}
+
+type EquipmentCouncilCampaign implements Campaign {
+  id: ID!
+  name: String!
+    @cypher(
+      statement: "MATCH (this)<-[:HAS_CAMPAIGN]-(council:Council) RETURN council.name+ ' Council Equipment Campaign'"
+    )
+  type: String! @cypher(statement: "RETURN 'Equipment Campaign'")
+  serviceLog: [ServiceLog] @relationship(type: "HAS_HISTORY", direction: OUT)
+  council: Fellowship @relationship(type: "HAS_CAMPAIGN", direction: IN)
+  leader: Member @relationship(type: "LEADS", direction: IN)
+  target: Target @relationship(type: "HAS_TARGET", direction: OUT)
+  streamCampaign: EquipmentStreamCampaign
+    @relationship(type: "HAS", direction: IN)
+  constituencyCampaign: EquipmentConstituencyCampaign
+    @relationship(type: "HAS", direction: OUT)
+}
+
+type EquipmentStreamCampaign implements Campaign {
+  id: ID!
+  name: String!
+    @cypher(
+      statement: "MATCH (this)<-[:HAS_CAMPAIGN]-(stream:Stream) RETURN stream.name+ ' Stream Equipment Campaign'"
+    )
+  type: String! @cypher(statement: "RETURN 'Equipment Campaign'")
+  serviceLog: [ServiceLog] @relationship(type: "HAS_HISTORY", direction: OUT)
+  stream: Stream @relationship(type: "HAS_CAMPAIGN", direction: IN)
+  leader: Member @relationship(type: "LEADS", direction: IN)
+  target: Target @relationship(type: "HAS_TARGET", direction: OUT)
+  gatheringCampaign: EquipmentGatheringServiceCampaign
+    @relationship(type: "HAS", direction: IN)
+  councilCampaign: EquipmentCouncilCampaign
+    @relationship(type: "HAS", direction: OUT)
+}
+
+type EquipmentGatheringServiceCampaign implements Campaign {
+  id: ID!
+  name: String!
+    @cypher(
+      statement: "MATCH (this)<-[:HAS_CAMPAIGN]-(gatheringService:GatheringService) RETURN gatheringService.name+ ' GatheringService Equipment Campaign'"
+    )
+  type: String! @cypher(statement: "RETURN 'Equipment Campaign'")
+  serviceLog: [ServiceLog] @relationship(type: "HAS_HISTORY", direction: OUT)
+  gatheringService: GatheringService
+    @relationship(type: "HAS_CAMPAIGN", direction: IN)
+  leader: Member @relationship(type: "LEADS", direction: IN)
+  target: Target @relationship(type: "HAS_TARGET", direction: OUT)
+  streamCampaign: EquipmentStreamCampaign
+    @relationship(type: "HAS", direction: OUT)
+}
+
+extend type Mutation {
+  CreateFellowshipEquipmentRecord(
+    fellowshipID: ID!
+    offeringBags: Int!
+    date: Date!
+    ): FellowshipEquipmentRecord
+    @cypher(
+      statement: """
+      
+      """
+    )
+
+  CreateEquipmentConstituencyCampaign(
+    constituencyID: ID!
+    leaderID: ID!
+    gatheringServiceCampaignID: ID!
+  ): EquipmentConstituencyCampaign
+    @cypher(
+      statement: """
+
+      """
+    )
+
+  CreateEquipmentStreamCampaign(
+    streamID: ID!
+    leaderID: ID!
+    gatheringServiceCampaignID: ID!
+  ): EquipmentConstituencyCampaign
+    @cypher(
+      statement: """
+
+      """
+    )
+
+  CreateEquipmentGatheringServiceCampaign(
+    gatheringServiceID: ID!
+    leaderID: ID!
+    campaignTarget: Int!
+  ): EquipmentGatheringServiceCampaign
+    @cypher(
+      statement: """
+            CREATE (gatheringServiceCampaign:EquipmentGatheringServiceCampaign)
+      SET
+      gatheringServiceCampaign.id = apoc.create.uuid()
+      WITH gatheringServiceCampaign
+      MATCH (gatheringService:GatheringService {id:$gatheringServiceID})
+      MATCH (leader:Member {id:$leaderID})
+      SET
+      gatheringServiceCampaign.name = gatheringService.name + ' Equipment Campaign'
+          CREATE (log:ServiceLog)
+            SET log.id = apoc.create.uuid(),
+             log.timeStamp = datetime(),
+             log.historyRecord = gatheringServiceCampaign.name +' History Begins'
+      MERGE (gatheringServiceCampaign)-[:HAS_HISTORY]->(log)
+      MERGE (gatheringServiceCampaign)<-[:HAS_CAMPAIGN]-(gatheringService)
+      MERGE (gatheringServiceCampaign)<-[:LEADS]-(leader)
+      MERGE (gatheringServiceCampaign)-[:HAS_TARGET]->(target:Target)
+      ON CREATE
+      SET target.percentage = $campaignTarget
+
+      return gatheringServiceCampaign
+      """
+    )
 }
