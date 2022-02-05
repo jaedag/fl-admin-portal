@@ -2,7 +2,7 @@ export const makeFellowshipLeader = `
 MATCH (leader:Member {id:$leaderId})
 MATCH (fellowship:Fellowship {id:$fellowshipId})
 MATCH (fellowship)<-[:HAS]-(bacenta:Bacenta)
-CREATE (log:HistoryLog:ServiceLog)
+CREATE (log:HistoryLog)
   SET leader.auth_id = $auth_id,
    log.id = apoc.create.uuid(),
    log.timeStamp = datetime(),
@@ -43,7 +43,7 @@ WITH log,fellowship,oldLeader,leader
    REMOVE oldFellowshipHistory.current
 
    RETURN leader.id AS id, leader.auth_id AS auth_id, leader.firstName AS firstName, leader.lastName AS lastName
-`
+`;
 
 export const makeBacentaLeader = `
 MATCH (leader:Member {id:$leaderId})
@@ -91,7 +91,7 @@ WITH log,bacenta,oldLeader,leader, constituency
    REMOVE oldBacentaHistory.current
 
    RETURN leader.id AS id, leader.auth_id AS auth_id, leader.firstName AS firstName, leader.lastName AS lastName
-`
+`;
 
 export const makeConstituencyLeader = `
 MATCH (leader:Member {id:$leaderId})
@@ -138,7 +138,7 @@ WITH log,constituency,oldLeader,leader
    REMOVE oldConstituencyHistory.current 
    
    RETURN leader.id AS id, leader.auth_id AS auth_id, leader.firstName AS firstName, leader.lastName AS lastName
-`
+`;
 
 export const makeCouncilLeader = `
 MATCH (leader:Member {id:$leaderId})
@@ -185,7 +185,7 @@ WITH log,council,oldLeader,leader
    REMOVE oldCouncilHistory.current 
    
    RETURN leader.id AS id, leader.auth_id AS auth_id, leader.firstName AS firstName, leader.lastName AS lastName
-`
+`;
 
 export const makeStreamLeader = `
 MATCH (leader:Member {id:$leaderId})
@@ -232,7 +232,7 @@ WITH log,stream,oldLeader,leader
    REMOVE oldStreamHistory.current 
    
    RETURN leader.id AS id, leader.auth_id AS auth_id, leader.firstName AS firstName, leader.lastName AS lastName
-`
+`;
 
 // MAKE AN ADMIN
 
@@ -272,7 +272,7 @@ WITH log,stream,oldAdmin,admin
    SET r1.current = true,
    r2.current = true
    RETURN admin.id AS id, admin.auth_id AS auth_id, admin.firstName AS firstName, admin.lastName AS lastName
-`
+`;
 
 export const makeCouncilAdmin = `
 MATCH (admin:Member {id:$adminId})
@@ -310,12 +310,12 @@ WITH log,council,oldAdmin,admin
    SET r1.current = true,
    r2.current = true
    RETURN admin.id AS id, admin.auth_id AS auth_id, admin.firstName AS firstName, admin.lastName AS lastName
-`
+`;
 
 export const makeConstituencyAdmin = `
 MATCH (admin:Member {id:$adminId})
 MATCH (constituency:Constituency {id:$constituencyId})
-CREATE (log:HistoryLog:ServiceLog)
+CREATE (log:HistoryLog)
   SET admin.auth_id = $auth_id,
    log.id = apoc.create.uuid(),
    log.timeStamp = datetime(),
@@ -349,7 +349,7 @@ WITH log,constituency,oldAdmin,admin
    r2.current = true
    
    RETURN admin.id AS id, admin.auth_id AS auth_id, admin.firstName AS firstName, admin.lastName AS lastName
-`
+`;
 
 //MAKE AN ARRIVALS ADMINISTRATOR
 
@@ -357,7 +357,7 @@ WITH log,constituency,oldAdmin,admin
 export const makeConstituencyArrivalsAdmin = `
 MATCH (admin:Member {id:$adminId})
 MATCH (constituency:Constituency {id:$constituencyId})
-CREATE (log:HistoryLog:ServiceLog)
+CREATE (log:HistoryLog)
   SET admin.auth_id = $auth_id,
    log.id = apoc.create.uuid(),
    log.timeStamp = datetime(),
@@ -391,4 +391,4 @@ WITH log,constituency,oldAdmin,admin
    r2.current = true
    
    RETURN admin.id AS id, admin.auth_id AS auth_id, admin.firstName AS firstName, admin.lastName AS lastName
-`
+`;
