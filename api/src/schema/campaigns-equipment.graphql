@@ -1,41 +1,45 @@
 extend type ServiceLog {
-  equipmentConstituencyRecord: [ConstituencyEquipmentRecord]
-    @relationship(type: "HAS_RECORD", direction: OUT)
-  equipmentCampaign: [EquipmentCampaign]
-    @relationship(type: "HAS_HISTORY", direction: IN)
-  equipmentBacentaRecord: [FellowshipEquipmentRecord]
-    @relationship(type: "HAS_RECORD", direction: OUT)
-  equipmentFellowshipRecord: [FellowshipEquipmentRecord]
+  equpmentRecord: [EquipmentRecord]
     @relationship(type: "HAS_RECORD", direction: OUT)
 }
 
-interface EquipmentRecord {
-  id: ID!
-  created_at: DateTime!
-  equipmentDate: TimeGraph!
-  serviceLog: ServiceLog @relationship(type: "HAS_RECORD", direction: IN)
-}
+# interface EquipmentRecord {
+#   id: ID!
+#   created_at: DateTime!
+#   equipmentDate: TimeGraph!
+#   serviceLog: ServiceLog @relationship(type: "HAS_RECORD", direction: IN)
+# }
 
 ###### CAMPAIGN TYPES #######
-type FellowshipEquipmentRecord implements EquipmentRecord {
+type EquipmentRecord {
   id: ID!
   created_at: DateTime!
   equipmentDate: TimeGraph!
-  offeringBags: Int!
+    @relationship(type: "HAS_EQUIPMENT_DATE", direction: OUT)
+  offeringBags: Int
+  pulpits: Int
   serviceLog: ServiceLog @relationship(type: "HAS_RECORD", direction: IN)
-  constituencyRecord: ConstituencyEquipmentRecord
-    @relationship(type: "HAS", direction: IN)
+  constituencyRecord: EquipmentRecord @relationship(type: "HAS", direction: IN)
+  church_name: String
+    @cypher(
+      statement: """
+      MATCH (this)<-[:HAS_RECORD]-(:ServiceLog)<-[:HAS_HISTORY]-(:EquipmentCampaign)<-[:HAS_CAMPAIGN]-(church)
+      WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:GatheringService
+      UNWIND labels(church) AS church_name
+      RETURN church.name + ' ' + church_name 
+      """
+    )
 }
 
-type ConstituencyEquipmentRecord implements EquipmentRecord {
-  id: ID!
-  created_at: DateTime!
-  equipmentDate: TimeGraph!
-  pulpits: Int!
-  serviceLog: ServiceLog @relationship(type: "HAS_RECORD", direction: IN)
-  fellowshipRecords: [FellowshipEquipmentRecord]
-    @relationship(type: "HAS", direction: OUT)
-}
+# type ConstituencyEquipmentRecord implements EquipmentRecord {
+#   id: ID!
+#   created_at: DateTime!
+#   equipmentDate: TimeGraph!
+#   pulpits: Int!
+#   serviceLog: ServiceLog @relationship(type: "HAS_RECORD", direction: IN)
+#   fellowshipRecords: [EquipmentRecord]
+#     @relationship(type: "HAS", direction: OUT)
+# }
 
 type EquipmentCampaign implements Campaign {
   id: ID!
@@ -65,32 +69,31 @@ extend type Mutation {
     fellowshipID: ID!
     offeringBags: Int!
     date: Date!
-  ): FellowshipEquipmentRecord
+  ): EquipmentRecord
     @cypher(
       statement: """
+      MATCH (fellowship:Fellowship {id:$fellowshipID})
+      MATCH (fellowship)-[:HAS_CAMPAIGN]->(:EquipmentCampaign)-[:HAS_HISTORY]->(:HistoryLog)-[:HAS_RECORD]->(record:EquipmentRecord)
+      SET
+      record.offeringBags = $offeringBags
 
+      return record
       """
     )
 
-  CreateEquipmentConstituencyCampaign(
+  CreateConstituencyEquipmentRecord(
     constituencyID: ID!
-    leaderId: ID!
-    gatheringServiceCampaignID: ID!
-  ): EquipmentCampaign
+    pulpits: Int!
+    date: Date!
+  ): EquipmentRecord
     @cypher(
       statement: """
+      MATCH (constituency:Constituency {id:$constituencyID})
+      MATCH (constituency)-[:HAS_CAMPAIGN]->(:EquipmentCampaign)-[:HAS_HISTORY]->(:HistoryLog)-[:HAS_RECORD]->(record:EquipmentRecord)
+      SET
+      record.pulpits = $pulpits
 
-      """
-    )
-
-  CreateEquipmentStreamCampaign(
-    streamID: ID!
-    leaderId: ID!
-    gatheringServiceCampaignID: ID!
-  ): EquipmentCampaign
-    @cypher(
-      statement: """
-
+      return record
       """
     )
 

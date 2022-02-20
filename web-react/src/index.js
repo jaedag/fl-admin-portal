@@ -1,49 +1,49 @@
-import React, { useCallback, useEffect, useState } from 'react'
-import ReactDOM from 'react-dom'
+import React, { useCallback, useEffect, useState } from "react";
+import ReactDOM from "react-dom";
 import {
   ApolloClient,
   ApolloProvider,
   createHttpLink,
   InMemoryCache,
-} from '@apollo/client'
-import { setContext } from '@apollo/client/link/context'
-import { Auth0Provider, useAuth0 } from '@auth0/auth0-react'
-import CacheBuster from 'CacheBuster'
+} from "@apollo/client";
+import { setContext } from "@apollo/client/link/context";
+import { Auth0Provider, useAuth0 } from "@auth0/auth0-react";
+import CacheBuster from "CacheBuster";
 // import registerServiceWorker from './registerServiceWorker'
-import 'bootstrap/dist/css/bootstrap.min.css'
-import './index.css'
-import PastorsAdmin from 'App'
+import "bootstrap/dist/css/bootstrap.min.css";
+import "./index.css";
+import PastorsAdmin from "App";
 
 const AppWithApollo = () => {
-  const [accessToken, setAccessToken] = useState()
-  const { getAccessTokenSilently } = useAuth0()
+  const [accessToken, setAccessToken] = useState();
+  const { getAccessTokenSilently } = useAuth0();
 
   const getAccessToken = useCallback(async () => {
     try {
       const token = await getAccessTokenSilently({
-        audience: 'https://flcadmin.netlify.app/graphql',
-        scope: 'read:current_user',
-      })
+        audience: "https://flcadmin.netlify.app/graphql",
+        scope: "read:current_user",
+      });
 
-      setAccessToken(token)
-      sessionStorage.setItem('token', token)
+      setAccessToken(token);
+      sessionStorage.setItem("token", token);
     } catch (err) {
       // eslint-disable-next-line
-      console.error(err)
+      console.error(err);
     }
-  }, [getAccessTokenSilently])
+  }, [getAccessTokenSilently]);
 
   useEffect(() => {
-    getAccessToken()
-  }, [getAccessToken])
+    getAccessToken();
+  }, [getAccessToken]);
 
   const httpLink = createHttpLink({
-    uri: process.env.REACT_APP_GRAPHQL_URI || '/graphql',
-  })
+    uri: process.env.REACT_APP_GRAPHQL_URI || "/graphql",
+  });
 
   const authLink = setContext((_, { headers }) => {
     // get the authentication token from local storage if it exists
-    const token = sessionStorage.getItem('token') || accessToken
+    const token = sessionStorage.getItem("token") || accessToken;
 
     // return the headers to the context so httpLink can read them
     return {
@@ -51,28 +51,28 @@ const AppWithApollo = () => {
         ...headers,
         Authorization: `Bearer ${token}`,
       },
-    }
-  })
+    };
+  });
 
   const client = new ApolloClient({
-    uri: process.env.REACT_APP_GRAPHQL_URI || '/graphql',
+    uri: process.env.REACT_APP_GRAPHQL_URI || "/graphql",
     link: authLink.concat(httpLink),
     cache: new InMemoryCache(),
-  })
+  });
 
   return (
     <ApolloProvider client={client}>
       <PastorsAdmin />
     </ApolloProvider>
-  )
-}
+  );
+};
 
 const App = () => (
   <CacheBuster>
     {({ loading, isLatestVersion, refreshCacheAndReload }) => {
-      if (loading) return null
+      if (loading) return null;
       if (!loading && !isLatestVersion) {
-        refreshCacheAndReload()
+        refreshCacheAndReload();
       }
 
       return (
@@ -85,10 +85,10 @@ const App = () => (
         >
           <AppWithApollo />
         </Auth0Provider>
-      )
+      );
     }}
   </CacheBuster>
-)
+);
 
-ReactDOM.render(<App />, document.getElementById('root'))
+ReactDOM.render(<App />, document.getElementById("root"));
 // registerServiceWorker()
