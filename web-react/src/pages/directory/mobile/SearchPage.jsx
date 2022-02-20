@@ -1,6 +1,6 @@
-import React, { useContext, useEffect, useState } from 'react'
-import { useLazyQuery } from '@apollo/client'
-import MobileSearchNav from '../../../components/MobileSearchNav.jsx'
+import React, { useContext, useEffect, useState } from "react";
+import { useLazyQuery } from "@apollo/client";
+import MobileSearchNav from "../../../components/MobileSearchNav.jsx";
 import {
   STREAM_SEARCH,
   COUNCIL_SEARCH,
@@ -8,17 +8,17 @@ import {
   FEDERAL_SEARCH,
   BACENTA_SEARCH,
   FELLOWSHIP_SEARCH,
-} from './SearchQuery'
-import { MemberContext, SearchContext } from '../../../contexts/MemberContext'
-import MemberDisplayCard from '../../../components/card/MemberDisplayCard'
-import { isAuthorised, throwErrorMsg } from 'global-utils.js'
-import { Container, Spinner } from 'react-bootstrap'
+} from "./SearchQuery";
+import { MemberContext, SearchContext } from "../../../contexts/MemberContext";
+import MemberDisplayCard from "../../../components/card/MemberDisplayCard";
+import { isAuthorised, throwErrorMsg } from "global-utils.js";
+import { Container, Spinner } from "react-bootstrap";
 
 const SearchPageMobile = () => {
-  const { searchKey } = useContext(SearchContext)
-  const { currentUser } = useContext(MemberContext)
+  const { searchKey } = useContext(SearchContext);
+  const { currentUser } = useContext(MemberContext);
 
-  const [combinedData, setCombinedData] = useState([])
+  const [combinedData, setCombinedData] = useState([]);
 
   const [federalSearch, { loading: federalLoading, error: federalError }] =
     useLazyQuery(FEDERAL_SEARCH, {
@@ -31,10 +31,10 @@ const SearchPageMobile = () => {
           ...data.federalSontaSearch,
           ...data.federalBacentaSearch,
           ...data.federalFellowshipSearch,
-        ])
-        return
+        ]);
+        return;
       },
-    })
+    });
 
   const [streamSearch, { loading: streamLoading, error: streamError }] =
     useLazyQuery(STREAM_SEARCH, {
@@ -46,10 +46,10 @@ const SearchPageMobile = () => {
           ...data.streamSontaSearch,
           ...data.streamBacentaSearch,
           ...data.streamFellowshipSearch,
-        ])
-        return
+        ]);
+        return;
       },
-    })
+    });
 
   const [councilSearch, { loading: councilLoading, error: councilError }] =
     useLazyQuery(COUNCIL_SEARCH, {
@@ -60,10 +60,10 @@ const SearchPageMobile = () => {
           ...data.councilSontaSearch,
           ...data.councilBacentaSearch,
           ...data.councilFellowshipSearch,
-        ])
-        return
+        ]);
+        return;
       },
-    })
+    });
   const [
     constituencySearch,
     { loading: constituencyLoading, error: constituencyError },
@@ -74,10 +74,10 @@ const SearchPageMobile = () => {
         ...data.constituencySontaSearch,
         ...data.constituencyBacentaSearch,
         ...data.constituencyFellowshipSearch,
-      ])
-      return
+      ]);
+      return;
     },
-  })
+  });
 
   const [bacentaSearch, { loading: bacentaLoading, error: bacentaError }] =
     useLazyQuery(BACENTA_SEARCH, {
@@ -85,28 +85,28 @@ const SearchPageMobile = () => {
         setCombinedData([
           ...data.bacentaMemberSearch,
           ...data.bacentaFellowshipSearch,
-        ])
-        return
+        ]);
+        return;
       },
-    })
+    });
 
   const [
     fellowshipSearch,
     { loading: fellowshipLoading, error: fellowshipError },
   ] = useLazyQuery(FELLOWSHIP_SEARCH, {
     onCompleted: (data) => {
-      setCombinedData([...data.fellowshipMemberSearch])
-      return
+      setCombinedData([...data.fellowshipMemberSearch]);
+      return;
     },
-  })
+  });
   const error =
     federalError ||
     streamError ||
     councilError ||
     constituencyError ||
     bacentaError ||
-    fellowshipError
-  throwErrorMsg(error)
+    fellowshipError;
+  throwErrorMsg(error);
 
   const loading =
     federalLoading ||
@@ -114,34 +114,34 @@ const SearchPageMobile = () => {
     councilLoading ||
     constituencyLoading ||
     bacentaLoading ||
-    fellowshipLoading
+    fellowshipLoading;
 
   const whichSearch = (searchString) => {
-    if (isAuthorised(['adminGatheringService'], currentUser.roles)) {
+    if (isAuthorised(["adminGatheringService"], currentUser.roles)) {
       federalSearch({
         variables: { searchKey: searchString?.trim() },
-      })
+      });
     } else if (
-      isAuthorised(['adminStream', 'leaderStream'], currentUser.roles)
+      isAuthorised(["adminStream", "leaderStream"], currentUser.roles)
     ) {
       streamSearch({
         variables: {
           streamId: currentUser.stream,
           searchKey: searchString?.trim(),
         },
-      })
+      });
     } else if (
-      isAuthorised(['adminCouncil', 'leaderCouncil'], currentUser.roles)
+      isAuthorised(["adminCouncil", "leaderCouncil"], currentUser.roles)
     ) {
       councilSearch({
         variables: {
           councilId: currentUser.council,
           searchKey: searchString?.trim(),
         },
-      })
+      });
     } else if (
       isAuthorised(
-        ['adminConstituency', 'leaderConstituency'],
+        ["adminConstituency", "leaderConstituency"],
         currentUser.roles
       )
     ) {
@@ -150,27 +150,27 @@ const SearchPageMobile = () => {
           constituencyId: currentUser.constituency,
           searchKey: searchString?.trim(),
         },
-      })
-    } else if (isAuthorised(['leaderBacenta'], currentUser.roles)) {
+      });
+    } else if (isAuthorised(["leaderBacenta"], currentUser.roles)) {
       bacentaSearch({
         variables: {
           bacentaId: currentUser.bacenta,
           searchKey: searchString?.trim(),
         },
-      })
-    } else if (isAuthorised(['leaderFellowship'], currentUser.roles)) {
+      });
+    } else if (isAuthorised(["leaderFellowship"], currentUser.roles)) {
       fellowshipSearch({
         variables: {
           fellowshipId: currentUser.fellowship,
           searchKey: searchString?.trim(),
         },
-      })
+      });
     }
-  }
+  };
 
   useEffect(() => {
-    whichSearch(searchKey)
-  }, [searchKey])
+    whichSearch(searchKey);
+  }, [searchKey]);
 
   return (
     <>
@@ -195,11 +195,11 @@ const SearchPageMobile = () => {
                 index={index}
                 member={searchResult}
               />
-            )
+            );
           })}
       </Container>
     </>
-  )
-}
+  );
+};
 
-export default SearchPageMobile
+export default SearchPageMobile;
