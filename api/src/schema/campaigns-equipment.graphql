@@ -26,7 +26,7 @@ type EquipmentRecord {
       MATCH (this)<-[:HAS_RECORD]-(:ServiceLog)<-[:HAS_HISTORY]-(:EquipmentCampaign)<-[:HAS_CAMPAIGN]-(church)
       WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:GatheringService
       UNWIND labels(church) AS church_name
-      RETURN church.name + ' ' + church_name 
+      RETURN church.name + ' ' + church_name
       """
     )
 }
@@ -124,6 +124,142 @@ extend type Mutation {
       SET target.percentage = $campaignTarget
 
       return gatheringServiceCampaign
+      """
+    )
+
+  CreateEquipmentCampaignDate(date: Date!): EquipmentCampaign
+    @cypher(
+      statement: """
+      MATCH (gs:GatheringService)-[:HAS_CAMPAIGN]->(e:EquipmentCampaign)
+      MATCH (gs:GatheringService)<-[:LEADS]-(m:Member)
+      MATCH (e:EquipmentCampaign)-[:HAS_HISTORY]->(historyLog:HistoryLog)
+
+      WITH gs, m, e, historyLog
+      CREATE (gatheringServiceRecord:EquipmentRecord)
+      SET
+      gatheringServiceRecord.historyRecord = gs.name + ' ' + ' Equipment Campaign created an Equipment Record on this '+datetime(),
+      gatheringServiceRecord.id = apoc.create.uuid(),
+      gatheringServiceRecord.date = date()
+
+      MERGE (historyLog)-[:HAS_RECORD]->(gatheringServiceRecord)
+      MERGE (m)-[:HAS_HISTORY]->(historyLog)
+      MERGE (equimpentDate:TimeGraph {date:$date})
+      MERGE (gatheringServiceRecord)-[:HAS_EQUIPMENT_DATE]->(equimpentDate)
+
+      return gatheringServiceRecord, gs LIMIT 2;
+
+
+
+      MATCH (stream:Stream)-[:HAS_CAMPAIGN]->(e:EquipmentCampaign)
+      MATCH (stream:Stream)<-[:LEADS]-(m:Member)
+      MATCH (e:EquipmentCampaign)-[:HAS_HISTORY]->(historyLog:HistoryLog)
+      MATCH (stream:Stream)<-[:HAS]-(gatheringService:GatheringService)-[:HAS_CAMPAIGN]->(gsc:EquipmentCampaign)-[:HAS_HISTORY]->(:HistoryLog)-[:HAS_RECORD]->(gatheringRecord:EquipmentRecord)
+
+      WITH stream, m, gatheringRecord, e, historyLog
+      CREATE (streamRecord:EquipmentRecord)
+      SET
+      streamRecord.historyRecord = stream.name + ' ' + ' Equipment Campaign created an Equipment Record on this '+ datetime(),
+      streamRecord.id = apoc.create.uuid(),
+      streamRecord.date = date()
+
+      MERGE (historyLog)-[:HAS_RECORD]->(streamRecord)
+      MERGE (m)-[:HAS_HISTORY]->(historyLog)
+      MERGE (equimpentDate:TimeGraph {date:$date})
+      MERGE (streamRecord)-[:HAS_EQUIPMENT_DATE]->(equimpentDate)
+      MERGE (streamRecord)<-[:HAS]-(gatheringRecord)
+
+
+      return streamRecord, stream limit 2;
+
+
+      MATCH (council:Council)-[:HAS_CAMPAIGN]->(e:EquipmentCampaign)
+      MATCH (council:Council)<-[:LEADS]-(m:Member)
+      MATCH (e:EquipmentCampaign)-[:HAS_HISTORY]->(historyLog:HistoryLog)
+      MATCH (council:Council)<-[:HAS]-(stream:Stream)-[:HAS_CAMPAIGN]->(sc:EquipmentCampaign)-[:HAS_HISTORY]->(:HistoryLog)-[:HAS_RECORD]->(streamRecord:EquipmentRecord)
+
+      WITH council, m, streamRecord, e, historyLog
+
+      CREATE (councilRecord:EquipmentRecord)
+      SET
+      councilRecord.historyRecord = council.name + ' ' + ' Equipment Campaign created an Equipment Record on this '+ datetime(),
+      councilRecord.id = apoc.create.uuid(),
+      councilRecord.date = datetime()
+
+      MERGE (historyLog)-[:HAS_RECORD]->(councilRecord)
+      MERGE (m)-[:HAS_HISTORY]->(historyLog)
+      MERGE (equimpentDate:TimeGraph {date:$date})
+      MERGE (councilRecord)-[:HAS_EQUIPMENT_DATE]->(equimpentDate)
+      MERGE (councilRecord)<-[:HAS]-(streamRecord)
+
+
+      return  councilRecord, council limit 2;
+
+
+      MATCH (conn:Constituency)-[:HAS_CAMPAIGN]->(e:EquipmentCampaign)
+      MATCH (conn:Constituency)<-[:LEADS]->(m:Member)
+      MATCH (e:EquipmentCampaign)-[:HAS_HISTORY]->(historyLog:HistoryLog)
+      MATCH (conn:Constituency)<-[:HAS]-(council:Council)-[:HAS_CAMPAIGN]->(conc:EquipmentCampaign)-[:HAS_HISTORY]->(:HistoryLog)-[:HAS_RECORD]->(councilRecord:EquipmentRecord)
+
+      WITH conn, m, councilRecord, e, historyLog
+      CREATE (connRecord:EquipmentRecord)
+      SET
+      connRecord.historyRecord = conn.name + ' ' + ' Equipment Campaign created an Equipment Record on this '+datetime(),
+      connRecord.id = apoc.create.uuid(),
+      connRecord.date = datetime()
+
+      MERGE (historyLog)-[:HAS_RECORD]->(connRecord)
+      MERGE (m)-[:HAS_HISTORY]->(historyLog)
+      MERGE (equimpentDate:TimeGraph {date:$date})
+      MERGE (connRecord)-[:HAS_EQUIPMENT_DATE]->(equimpentDate)
+      MERGE (connRecord)<-[:HAS]-(councilRecord)
+
+      return connRecord, conn limit 2;
+
+
+
+      MATCH (bacenta:Bacenta)-[:HAS_CAMPAIGN]->(e:EquipmentCampaign)
+      MATCH (bacenta:Bacenta)<-[:LEADS]->(m:Member)
+      MATCH (e:EquipmentCampaign)-[:HAS_HISTORY]->(historyLog:HistoryLog)
+      MATCH (bacenta:Bacenta)<-[:HAS]-(constituency:Constituency)-[:HAS_CAMPAIGN]->(bc:EquipmentCampaign)-[:HAS_HISTORY]->(:HistoryLog)-[:HAS_RECORD]->(constituencyRecord:EquipmentRecord)
+
+      WITH bacenta, m, constituencyRecord, e, historyLog
+      CREATE (bacentaRecord:EquipmentRecord)
+      SET
+      bacentaRecord.historyRecord = bacenta.name + ' ' + ' Equipment Campaign created an Equipment Record on this '+datetime(),
+      bacentaRecord.id = apoc.create.uuid(),
+      bacentaRecord.date = datetime()
+
+      MERGE (historyLog)-[:HAS_RECORD]->(bacentaRecord)
+      MERGE (m)-[:HAS_HISTORY]->(historyLog)
+      MERGE (equimpentDate:TimeGraph {date:$date})
+      MERGE (bacentaRecord)-[:HAS_EQUIPMENT_DATE]->(equimpentDate)
+      MERGE (bacentaRecord)<-[:HAS]-(constituencyRecord)
+
+
+      return bacentaRecord, bacenta limit 2;
+
+
+
+      MATCH (fellowship:Fellowship)-[:HAS_CAMPAIGN]->(e:EquipmentCampaign)
+      MATCH (fellowship:Fellowship)<-[:LEADS]->(m:Member)
+      MATCH (e:EquipmentCampaign)-[:HAS_HISTORY]->(historyLog:HistoryLog)
+      MATCH (fellowship:Fellowship)<-[:HAS]-(bacenta:Bacenta)-[:HAS_CAMPAIGN]->(fc:EquipmentCampaign)-[:HAS_HISTORY]->(:HistoryLog)-[:HAS_RECORD]->(bacentaRecord:EquipmentRecord)
+
+      WITH fellowship, m, bacentaRecord, e, historyLog
+      CREATE (fellowshipRecord:EquipmentRecord)
+      SET
+      fellowshipRecord.historyRecord = fellowship.name + ' ' + ' Equipment Campaign created an Equipment Record on this '+datetime(),
+      fellowshipRecord.id = apoc.create.uuid(),
+      fellowshipRecord.date = datetime()
+
+      MERGE (historyLog)-[:HAS_RECORD]->(fellowshipRecord)
+      MERGE (m)-[:HAS_HISTORY]->(historyLog)
+      MERGE (equimpentDate:TimeGraph {date:$date})
+      MERGE (fellowshipRecord)-[:HAS_EQUIPMENT_DATE]->(equimpentDate)
+      MERGE (fellowshipRecord)<-[:HAS]-(bacentaRecord)
+
+
+      return fellowshipRecord, fellowship limit 2;
       """
     )
 }
