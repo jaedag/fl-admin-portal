@@ -70,6 +70,7 @@ extend type Mutation {
     offeringBags: Int!
     date: Date!
   ): EquipmentRecord
+  @auth(rules: [{ roles: ["leaderFellowship"] }])
     @cypher(
       statement: """
       MATCH (fellowship:Fellowship {id:$fellowshipID})
@@ -86,6 +87,7 @@ extend type Mutation {
     pulpits: Int!
     date: Date!
   ): EquipmentRecord
+  @auth(rules: [{ roles: ["adminConstituency, leaderConstituency"] }])
     @cypher(
       statement: """
       MATCH (constituency:Constituency {id:$constituencyID})
