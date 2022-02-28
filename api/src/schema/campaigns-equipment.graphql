@@ -3,12 +3,26 @@ extend type ServiceLog {
     @relationship(type: "HAS_RECORD", direction: OUT)
 }
 
-# interface EquipmentRecord {
-#   id: ID!
-#   created_at: DateTime!
-#   equipmentDate: TimeGraph!
-#   serviceLog: ServiceLog @relationship(type: "HAS_RECORD", direction: IN)
-# }
+extend type Constituency {
+  pulpits: Int
+    @cypher(
+      statement: """
+      MATCH (this)<-[:HAS_RECORD]-(:ServiceLog)<-[:HAS_HISTORY]-(:EquipmentCampaign)<-[:HAS_CAMPAIGN]-(church)
+      WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:GatheringService
+      UNWIND labels(church) AS church_name
+      RETURN church.name + ' ' + church_name
+      """
+    )
+  offeringBags: Int
+    @cypher(
+      statement: """
+      MATCH (this)<-[:HAS_RECORD]-(:ServiceLog)<-[:HAS_HISTORY]-(:EquipmentCampaign)<-[:HAS_CAMPAIGN]-(church)
+      WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:GatheringService
+      UNWIND labels(church) AS church_name
+      RETURN church.name + ' ' + church_name
+      """
+    )
+}
 
 ###### CAMPAIGN TYPES #######
 type EquipmentRecord {
@@ -21,6 +35,23 @@ type EquipmentRecord {
   serviceLog: ServiceLog @relationship(type: "HAS_RECORD", direction: IN)
   constituencyRecord: EquipmentRecord @relationship(type: "HAS", direction: IN)
   church_name: String
+    @auth(
+      rules: [
+        {
+          roles: [
+            "leaderFellowship"
+            "leaderConstituency"
+            "leaderCouncil"
+            "leaderStream"
+            "leaderGatheringService"
+            "adminConstituency"
+            "adminCouncil"
+            "adminStream"
+            "adminGatheringService"
+          ]
+        }
+      ]
+    )
     @cypher(
       statement: """
       MATCH (this)<-[:HAS_RECORD]-(:ServiceLog)<-[:HAS_HISTORY]-(:EquipmentCampaign)<-[:HAS_CAMPAIGN]-(church)
@@ -51,6 +82,23 @@ type EquipmentCampaign implements Campaign {
       RETURN church.name+ ' ' +churchLevel + ' Equipment Campaign'
       """
     )
+    @auth(
+      rules: [
+        {
+          roles: [
+            "leaderFellowship"
+            "leaderConstituency"
+            "leaderCouncil"
+            "leaderStream"
+            "leaderGatheringService"
+            "adminConstituency"
+            "adminCouncil"
+            "adminStream"
+            "adminGatheringService"
+          ]
+        }
+      ]
+    )
   type: String! @cypher(statement: "RETURN 'Equipment Campaign'")
   serviceLog: [ServiceLog] @relationship(type: "HAS_HISTORY", direction: OUT)
   fellowship: Fellowship @relationship(type: "HAS_CAMPAIGN", direction: IN)
@@ -66,11 +114,11 @@ type EquipmentCampaign implements Campaign {
 
 extend type Mutation {
   CreateFellowshipEquipmentRecord(
-    fellowshipID: ID!
+    fellowshipId: ID!
     offeringBags: Int!
     date: Date!
   ): EquipmentRecord
-  @auth(rules: [{ roles: ["leaderFellowship"] }])
+    @auth(rules: [{ roles: ["leaderFellowship"] }])
     @cypher(
       statement: """
       MATCH (fellowship:Fellowship {id:$fellowshipID})
@@ -83,11 +131,11 @@ extend type Mutation {
     )
 
   CreateConstituencyEquipmentRecord(
-    constituencyID: ID!
+    constituencyId: ID!
     pulpits: Int!
     date: Date!
   ): EquipmentRecord
-  @auth(rules: [{ roles: ["adminConstituency, leaderConstituency"] }])
+    @auth(rules: [{ roles: ["adminConstituency, leaderConstituency"] }])
     @cypher(
       statement: """
       MATCH (constituency:Constituency {id:$constituencyID})
