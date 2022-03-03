@@ -3,26 +3,106 @@ extend type ServiceLog {
     @relationship(type: "HAS_RECORD", direction: OUT)
 }
 
-extend type Constituency {
+extend type GatheringService {
   pulpits: Int
     @cypher(
       statement: """
-      MATCH (this)<-[:HAS_RECORD]-(:ServiceLog)<-[:HAS_HISTORY]-(:EquipmentCampaign)<-[:HAS_CAMPAIGN]-(church)
-      WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:GatheringService
-      UNWIND labels(church) AS church_name
-      RETURN church.name + ' ' + church_name
+      match (this)-[:HAS_CAMPAIGN]->(:EquipmentCampaign)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_RECORD]->(record:EquipmentRecord)
+      match (record)-[:HAS*3]->(constituencyRecord:EquipmentRecord)
+      return sum(constituencyRecord.pulpits)
       """
     )
   offeringBags: Int
     @cypher(
       statement: """
-      MATCH (this)<-[:HAS_RECORD]-(:ServiceLog)<-[:HAS_HISTORY]-(:EquipmentCampaign)<-[:HAS_CAMPAIGN]-(church)
-      WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:GatheringService
-      UNWIND labels(church) AS church_name
-      RETURN church.name + ' ' + church_name
+      match (this)-[:HAS_CAMPAIGN]->(:EquipmentCampaign)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_RECORD]->(record:EquipmentRecord)
+      match (record)-[:HAS*5]->(fellowshipRecord:EquipmentRecord)
+      return sum(fellowshipRecord.offeringBags)
       """
     )
 }
+
+extend type Stream {
+  pulpits: Int
+    @cypher(
+      statement: """
+      match (this)-[:HAS_CAMPAIGN]->(:EquipmentCampaign)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_RECORD]->(record:EquipmentRecord)
+      match (record)-[:HAS*2]->(constituencyRecord:EquipmentRecord)
+      return sum(constituencyRecord.pulpits)
+      """
+    )
+  offeringBags: Int
+    @cypher(
+      statement: """
+      match (this)-[:HAS_CAMPAIGN]->(:EquipmentCampaign)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_RECORD]->(record:EquipmentRecord)
+      match (record)-[:HAS*4]->(fellowshipRecord:EquipmentRecord)
+      return sum(fellowshipRecord.offeringBags)
+      """
+    )
+}
+
+extend type Council {
+  pulpits: Int
+    @cypher(
+      statement: """
+      match (this)-[:HAS_CAMPAIGN]->(:EquipmentCampaign)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_RECORD]->(record:EquipmentRecord)
+      match (record)-[:HAS]->(constituencyRecord:EquipmentRecord)
+      return sum(constituencyRecord.pulpits)
+      """
+    )
+  offeringBags: Int
+    @cypher(
+      statement: """
+      match (this)-[:HAS_CAMPAIGN]->(:EquipmentCampaign)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_RECORD]->(record:EquipmentRecord)
+      match (record)-[:HAS*3]->(fellowshipRecord:EquipmentRecord)
+      return sum(fellowshipRecord.offeringBags)
+      """
+    )
+}
+
+
+extend type Constituency {
+  pulpits: Int
+    @cypher(
+      statement: """
+      match (this)-[:HAS_CAMPAIGN]->(:EquipmentCampaign)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_RECORD]->(record:EquipmentRecord)
+      return record.pulpits
+      """
+    )
+  offeringBags: Int
+    @cypher(
+      statement: """
+      match (this)-[:HAS_CAMPAIGN]->(:EquipmentCampaign)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_RECORD]->(record:EquipmentRecord)
+      match (record)-[:HAS]->(br:EquipmentRecord)-[:HAS]->(fellowshipRecord:EquipmentRecord)
+      return sum(fellowshipRecord.offeringBags)
+      """
+    )
+}
+
+
+extend type Bacenta {
+  offeringBags: Int
+    @cypher(
+      statement: """
+      match (this)-[:HAS_CAMPAIGN]->(:EquipmentCampaign)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_RECORD]->(record:EquipmentRecord)
+      match (record)-[:HAS*2]->(fellowshipRecord:EquipmentRecord)
+      return sum(fellowshipRecord.offeringBags)
+      """
+    )
+}
+
+
+
+extend type Fellowship {
+  offeringBags: Int
+    @cypher(
+      statement: """
+      match (this)-[:HAS_CAMPAIGN]->(:EquipmentCampaign)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_RECORD]->(record:EquipmentRecord)
+      return fellowshipRecord.offeringBags
+      """
+    )
+}
+
 
 ###### CAMPAIGN TYPES #######
 type EquipmentRecord {
