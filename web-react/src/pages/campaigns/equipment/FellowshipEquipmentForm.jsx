@@ -7,25 +7,25 @@ import HeadingSecondary from "components/HeadingSecondary";
 import { HeadingPrimary } from "components/HeadingPrimary/HeadingPrimary";
 import { MemberContext } from "contexts/MemberContext";
 import { useMutation } from "@apollo/client";
-import { CONSTITUENCY_EQUIPMENT_RECORD_CREATION } from "../CampaignQueries";
+import { FELLOWSHIP_EQUIPMENT_RECORD_CREATION } from "../CampaignQueries";
 import { ChurchContext } from "contexts/ChurchContext";
 //import { useNavigate } from 'react-router'
 
-const ConstituencyEquipmentForm = () => {
+const FellowshipEquipmentForm = () => {
   const { currentUser } = useContext(MemberContext);
-  const { constituencyId } = useContext(ChurchContext);
+  const { fellowshipId } = useContext(ChurchContext);
   const church = currentUser.currentChurch;
   const churchType = currentUser.currentChurch?.__typename;
 
   const [CreateEquipmentRecord] = useMutation(
-    CONSTITUENCY_EQUIPMENT_RECORD_CREATION
+    FELLOWSHIP_EQUIPMENT_RECORD_CREATION
   );
   const { theme } = useContext(MemberContext);
   //const navigate = useNavigate()
 
   const initialValues = {
-    constituencyId: " ",
-    pulpits: " ",
+    fellowshipId: " ",
+    offeringBags: "",
     date: new Date().toISOString().slice(0, 10),
   };
 
@@ -33,8 +33,8 @@ const ConstituencyEquipmentForm = () => {
     onSubmitProps.setSubmitting(true);
     CreateEquipmentRecord({
       variables: {
-        constituencyId: constituencyId,
-        pulpits: parseInt(values.pulpits),
+        fellowshipId: fellowshipId,
+        offeringBags: parseInt(values.offeringBags),
         date: values.date,
       },
     }).then(() => {
@@ -72,12 +72,12 @@ const ConstituencyEquipmentForm = () => {
                   placeholder="dd/mm/yyyy"
                 />
                 <small htmlFor="date" className="form-text ">
-                  Number of Pulpits*{" "}
+                  Number of Offering Bags*{" "}
                 </small>
                 <FormikControl
                   className="form-control"
                   control="input"
-                  name="pulpits"
+                  name="offeringBags"
                   placeholder="0"
                 />
                 <div className="d-flex justify-content-center pt-2">
@@ -100,4 +100,4 @@ const ConstituencyEquipmentForm = () => {
   );
 };
 
-export default ConstituencyEquipmentForm;
+export default FellowshipEquipmentForm;

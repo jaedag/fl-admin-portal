@@ -201,7 +201,7 @@ extend type Mutation {
     @auth(rules: [{ roles: ["leaderFellowship"] }])
     @cypher(
       statement: """
-      MATCH (fellowship:Fellowship {id:$fellowshipID})
+      MATCH (fellowship:Fellowship {id:$fellowshipId})
       MATCH (fellowship)-[:HAS_CAMPAIGN]->(:EquipmentCampaign)-[:HAS_HISTORY]->(:HistoryLog)-[:HAS_RECORD]->(record:EquipmentRecord)
       SET
       record.offeringBags = $offeringBags
@@ -218,7 +218,7 @@ extend type Mutation {
     @auth(rules: [{ roles: ["adminConstituency, leaderConstituency"] }])
     @cypher(
       statement: """
-      MATCH (constituency:Constituency {id:$constituencyID})
+      MATCH (constituency:Constituency {id:$constituencyId})
       MATCH (constituency)-[:HAS_CAMPAIGN]->(:EquipmentCampaign)-[:HAS_HISTORY]->(:HistoryLog)-[:HAS_RECORD]->(record:EquipmentRecord)
       SET
       record.pulpits = $pulpits

@@ -7,7 +7,7 @@ import { CONSTITUENCY_CAMPAIGN_LIST } from "./CampaignQueries";
 import { ChurchContext } from "contexts/ChurchContext";
 import BaseComponent from "components/base-component/BaseComponent";
 
-const Campaigns = () => {
+const ConstituencyCampaigns = () => {
   const { constituencyId } = useContext(ChurchContext);
 
   const { data, loading, error } = useQuery(CONSTITUENCY_CAMPAIGN_LIST, {
@@ -39,4 +39,4 @@ const Campaigns = () => {
   );
 };
 
-export default Campaigns;
+export default ConstituencyCampaigns;

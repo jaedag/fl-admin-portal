@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { Container } from "react-bootstrap";
-import MenuButton from "../components/buttons/MenuButton";
+import MenuButton from "./components/buttons/MenuButton";
 import { ChurchContext } from "contexts/ChurchContext";
 import { MemberContext } from "contexts/MemberContext";
 import { useNavigate } from "react-router";
@@ -29,7 +29,7 @@ const CampaignChurchList = () => {
                       ...currentUser,
                       currentChurch: church,
                     });
-                    navigate("/campaigns");
+                    navigate("/campaigns/constituency");
                   }}
                 />
               ))
