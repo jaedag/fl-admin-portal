@@ -234,7 +234,7 @@ extend type Mutation {
   ): EquipmentCampaign
     @cypher(
       statement: """
-            CREATE (gatheringServiceCampaign:EquipmentCampaign)
+      CREATE (gatheringServiceCampaign:EquipmentCampaign)
       SET
       gatheringServiceCampaign.id = apoc.create.uuid()
       WITH gatheringServiceCampaign
