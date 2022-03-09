@@ -29,7 +29,7 @@ const CampaignChurchList = () => {
                       ...currentUser,
                       currentChurch: church,
                     });
-                    navigate("/campaigns/constituency");
+                    navigate("/campaigns/fellowship");
                   }}
                 />
               ))
