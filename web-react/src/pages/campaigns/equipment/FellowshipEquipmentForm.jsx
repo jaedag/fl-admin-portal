@@ -1,49 +1,49 @@
-import React, { useContext } from "react";
-import FormikControl from "components/formik-components/FormikControl";
-import { Formik, Form } from "formik";
-import { Col, Container, Row, Button } from "react-bootstrap";
-import HeadingSecondary from "components/HeadingSecondary";
+import React, { useContext } from 'react'
+import FormikControl from 'components/formik-components/FormikControl'
+import { Formik, Form } from 'formik'
+import { Col, Container, Row, Button } from 'react-bootstrap'
+import HeadingSecondary from 'components/HeadingSecondary'
 //import BaseComponent from 'components/base-component/BaseComponent'
-import { HeadingPrimary } from "components/HeadingPrimary/HeadingPrimary";
-import { MemberContext } from "contexts/MemberContext";
-import { useMutation } from "@apollo/client";
-import { FELLOWSHIP_EQUIPMENT_RECORD_CREATION } from "../CampaignQueries";
-import { ChurchContext } from "contexts/ChurchContext";
-//import { useNavigate } from 'react-router'
+import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
+import { MemberContext } from 'contexts/MemberContext'
+import { useMutation } from '@apollo/client'
+import { FELLOWSHIP_EQUIPMENT_RECORD_CREATION } from '../CampaignQueries'
+import { ChurchContext } from 'contexts/ChurchContext'
+import { useNavigate } from 'react-router'
 
 const FellowshipEquipmentForm = () => {
-  const { currentUser } = useContext(MemberContext);
-  const { fellowshipId } = useContext(ChurchContext);
-  const church = currentUser.currentChurch;
-  const churchType = currentUser.currentChurch?.__typename;
+  const { currentUser } = useContext(MemberContext)
+  const { fellowshipId } = useContext(ChurchContext)
+  const church = currentUser.currentChurch
+  const churchType = currentUser.currentChurch?.__typename
 
   const [CreateEquipmentRecord] = useMutation(
     FELLOWSHIP_EQUIPMENT_RECORD_CREATION
-  );
-  const { theme } = useContext(MemberContext);
-  //const navigate = useNavigate()
+  )
+  const { theme } = useContext(MemberContext)
+  const navigate = useNavigate()
 
   const initialValues = {
-    fellowshipId: " ",
-    offeringBags: "",
+    fellowshipId: ' ',
+    offeringBags: '',
     date: new Date().toISOString().slice(0, 10),
-  };
+  }
 
   const onSubmit = (values, onSubmitProps) => {
-    onSubmitProps.setSubmitting(true);
+    onSubmitProps.setSubmitting(true)
     CreateEquipmentRecord({
       variables: {
         fellowshipId: fellowshipId,
         offeringBags: parseInt(values.offeringBags),
         date: values.date,
       },
-    }).then(() => {
-      onSubmitProps.setSubmitting(false);
-      onSubmitProps.resetForm();
-
-      // navigate(`/`)
-    });
-  };
+    }).then(res => {
+      onSubmitProps.setSubmitting(false)
+      onSubmitProps.resetForm()
+      navigate('/campaigns/fellowship/equipment/form-details')
+      console.log(res)
+    })
+  }
 
   return (
     <Formik
@@ -52,7 +52,7 @@ const FellowshipEquipmentForm = () => {
       onSubmit={onSubmit}
       validateOnMount={true}
     >
-      {(formik) => (
+      {formik => (
         <Container>
           <HeadingPrimary className="text-center">
             Equipment Campaign Form
@@ -72,7 +72,7 @@ const FellowshipEquipmentForm = () => {
                   placeholder="dd/mm/yyyy"
                 />
                 <small htmlFor="date" className="form-text ">
-                  Number of Offering Bags*{" "}
+                  Number of Offering Bags*{' '}
                 </small>
                 <FormikControl
                   className="form-control"
@@ -97,7 +97,7 @@ const FellowshipEquipmentForm = () => {
         </Container>
       )}
     </Formik>
-  );
-};
+  )
+}
 
-export default FellowshipEquipmentForm;
+export default FellowshipEquipmentForm
