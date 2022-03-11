@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client'
 
 export const RECORD_SERVICE = gql`
   mutation RecordService(
@@ -37,7 +37,7 @@ export const RECORD_SERVICE = gql`
       }
     }
   }
-`;
+`
 
 export const RECORD_CANCELLED_SERVICE = gql`
   mutation RecordCancelledService(
@@ -62,7 +62,7 @@ export const RECORD_CANCELLED_SERVICE = gql`
       }
     }
   }
-`;
+`
 
 export const RECORD_SERVICE_NO_OFFERING = gql`
   mutation RecordServiceNoOffering(
@@ -80,7 +80,7 @@ export const RECORD_SERVICE_NO_OFFERING = gql`
       id
     }
   }
-`;
+`
 
 export const DISPLAY_FELLOWSHIP_SERVICE = gql`
   query DisplayServiceRecords($serviceId: ID!, $fellowshipId: ID!) {
@@ -115,7 +115,7 @@ export const DISPLAY_FELLOWSHIP_SERVICE = gql`
       name
     }
   }
-`;
+`
 
 export const DISPLAY_BACENTA_SERVICE = gql`
   query DisplayServiceRecords($serviceId: ID!, $bacentaId: ID!) {
@@ -150,7 +150,7 @@ export const DISPLAY_BACENTA_SERVICE = gql`
       name
     }
   }
-`;
+`
 
 export const DISPLAY_SONTA_SERVICE = gql`
   query DisplayServiceRecords($serviceId: ID!, $sontaId: ID!) {
@@ -177,7 +177,7 @@ export const DISPLAY_SONTA_SERVICE = gql`
       name
     }
   }
-`;
+`
 
 export const DISPLAY_CONSTITUENCY_SERVICE = gql`
   query DisplayServiceRecords($serviceId: ID!, $constituencyId: ID!) {
@@ -212,7 +212,7 @@ export const DISPLAY_CONSTITUENCY_SERVICE = gql`
       name
     }
   }
-`;
+`
 
 export const DISPLAY_COUNCIL_SERVICE = gql`
   query DisplayServiceRecords($serviceId: ID!, $councilId: ID!) {
@@ -247,4 +247,74 @@ export const DISPLAY_COUNCIL_SERVICE = gql`
       name
     }
   }
-`;
+`
+
+export const DISPLAY_STREAM_SERVICE = gql`
+  query DisplayServiceRecords($serviceId: ID!, $streamId: ID!) {
+    serviceRecords(where: { id: $serviceId }) {
+      id
+      created_at
+      created_by {
+        id
+        firstName
+        lastName
+        fullName
+      }
+      serviceDate {
+        date
+      }
+      noServiceReason
+      attendance
+      income
+      foreignCurrency
+      treasurerSelfie
+      servicePicture
+      bankingSlip
+      treasurers {
+        id
+        firstName
+        lastName
+        fullName
+      }
+    }
+    streams(where: { id: $streamId }) {
+      id
+      name
+    }
+  }
+`
+
+export const DISPLAY_GATHERINGSERVICE_SERVICE = gql`
+  query DisplayServiceRecords($serviceId: ID!, $gatheringServiceId: ID!) {
+    serviceRecords(where: { id: $serviceId }) {
+      id
+      created_at
+      created_by {
+        id
+        firstName
+        lastName
+        fullName
+      }
+      serviceDate {
+        date
+      }
+      noServiceReason
+      attendance
+      income
+      foreignCurrency
+      treasurerSelfie
+      servicePicture
+      bankingSlip
+      treasurers {
+        id
+        firstName
+        lastName
+        fullName
+      }
+    }
+    gatheringServices(where: { id: $gatheringServiceId }) {
+      id
+      name
+    }
+  }
+`

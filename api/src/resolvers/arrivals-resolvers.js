@@ -1,1 +1,1 @@
-export const arrivalsResolvers = {};
+export const arrivalsResolvers = {}

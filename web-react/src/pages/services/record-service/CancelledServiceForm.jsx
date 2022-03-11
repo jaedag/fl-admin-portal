@@ -1,37 +1,37 @@
-import FormikControl from "components/formik-components/FormikControl";
-import { Form, Formik } from "formik";
-import * as Yup from "yup";
-import React, { useContext } from "react";
-import { useNavigate } from "react-router";
-import { ServiceContext } from "contexts/ServiceContext";
-import { RECORD_CANCELLED_SERVICE } from "./RecordServiceMutations";
-import { useMutation } from "@apollo/client";
-import { Button, Col, Container, Row } from "react-bootstrap";
-import { HeadingPrimary } from "components/HeadingPrimary/HeadingPrimary";
-import HeadingSecondary from "components/HeadingSecondary";
-import { MemberContext } from "contexts/MemberContext";
+import FormikControl from 'components/formik-components/FormikControl'
+import { Form, Formik } from 'formik'
+import * as Yup from 'yup'
+import React, { useContext } from 'react'
+import { useNavigate } from 'react-router'
+import { ServiceContext } from 'contexts/ServiceContext'
+import { RECORD_CANCELLED_SERVICE } from './RecordServiceMutations'
+import { useMutation } from '@apollo/client'
+import { Button, Col, Container, Row } from 'react-bootstrap'
+import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
+import HeadingSecondary from 'components/HeadingSecondary'
+import { MemberContext } from 'contexts/MemberContext'
 
 const CancelledServiceForm = ({ church, churchId, churchType }) => {
-  const { theme } = useContext(MemberContext);
-  const { setServiceRecordId } = useContext(ServiceContext);
-  const navigate = useNavigate();
+  const { theme } = useContext(MemberContext)
+  const { setServiceRecordId } = useContext(ServiceContext)
+  const navigate = useNavigate()
 
-  const [RecordCancelledService] = useMutation(RECORD_CANCELLED_SERVICE);
+  const [RecordCancelledService] = useMutation(RECORD_CANCELLED_SERVICE)
 
   const initialValues = {
     serviceDate: new Date().toISOString().slice(0, 10),
-    noServiceReason: "",
-  };
+    noServiceReason: '',
+  }
 
   const validationSchema = Yup.object({
     serviceDate: Yup.date()
-      .max(new Date(), "Service could not possibly have happened after today")
-      .required("Date is a required field"),
-    noServiceReason: Yup.string().required("You must take give a reason"),
-  });
+      .max(new Date(), 'Service could not possibly have happened after today')
+      .required('Date is a required field'),
+    noServiceReason: Yup.string().required('You must take give a reason'),
+  })
 
   const onSubmit = (values, onSubmitProps) => {
-    onSubmitProps.setSubmitting(true);
+    onSubmitProps.setSubmitting(true)
     RecordCancelledService({
       variables: {
         id: churchId,
@@ -39,12 +39,12 @@ const CancelledServiceForm = ({ church, churchId, churchType }) => {
         noServiceReason: values.noServiceReason,
       },
     }).then((res) => {
-      onSubmitProps.setSubmitting(false);
-      onSubmitProps.resetForm();
-      setServiceRecordId(res.data.RecordCancelledService.id);
-      navigate(`/${churchType}/service-details`);
-    });
-  };
+      onSubmitProps.setSubmitting(false)
+      onSubmitProps.resetForm()
+      setServiceRecordId(res.data.RecordCancelledService.id)
+      navigate(`/${churchType}/service-details`)
+    })
+  }
 
   return (
     <Formik
@@ -68,7 +68,6 @@ const CancelledServiceForm = ({ church, churchId, churchType }) => {
                       <i className="text-secondary">(Day/Month/Year)</i>
                     </small>
                     <FormikControl
-                      className="form-control"
                       control="input"
                       name="serviceDate"
                       type="date"
@@ -79,7 +78,6 @@ const CancelledServiceForm = ({ church, churchId, churchType }) => {
                       control="input"
                       name="noServiceReason"
                       label="Reason"
-                      className="form-control"
                     />
 
                     <div className="d-flex justify-content-center mt-5">
@@ -101,7 +99,7 @@ const CancelledServiceForm = ({ church, churchId, churchType }) => {
         </Container>
       )}
     </Formik>
-  );
-};
+  )
+}
 
-export default CancelledServiceForm;
+export default CancelledServiceForm

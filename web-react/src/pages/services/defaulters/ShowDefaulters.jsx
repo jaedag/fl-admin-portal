@@ -1,22 +1,22 @@
-import React, { useContext } from "react";
-import { MemberContext } from "contexts/MemberContext";
-import DefaultersDashboard from "./DefaultersDashboard";
+import React, { useContext } from 'react'
+import { MemberContext } from 'contexts/MemberContext'
+import DefaultersDashboard from './DefaultersDashboard'
 
 const ShowDefaulters = () => {
-  const { currentUser } = useContext(MemberContext);
+  const { currentUser } = useContext(MemberContext)
 
   switch (currentUser?.currentChurch?.__typename) {
-    case "Constituency":
-      return <DefaultersDashboard churchLevel="Constituency" />;
-    case "Council":
-      return <DefaultersDashboard churchLevel="Council" />;
-    case "Stream":
-      return <DefaultersDashboard churchLevel="Stream" />;
-    case "GatheringService":
-      return <DefaultersDashboard churchLevel="GatheringService" />;
+    case 'Constituency':
+      return <DefaultersDashboard churchLevel="Constituency" />
+    case 'Council':
+      return <DefaultersDashboard churchLevel="Council" />
+    case 'Stream':
+      return <DefaultersDashboard churchLevel="Stream" />
+    case 'GatheringService':
+      return <DefaultersDashboard churchLevel="GatheringService" />
     default:
-      break;
+      break
   }
-};
+}
 
-export default ShowDefaulters;
+export default ShowDefaulters

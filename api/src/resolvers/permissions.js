@@ -1,12 +1,9 @@
-export const permitMeAndThoseAbove = (churchType) => {
+// Permissions Things
+export const permitLeader = (churchLevel) => {
   let permittedFor = []
-  switch (churchType) {
-    case 'Fellowship':
+  switch (churchLevel.toLowerCase()) {
+    case 'fellowship':
       permittedFor = [
-        'adminGatheringService',
-        'adminStream',
-        'adminCouncil',
-        'adminConstituency',
         'leaderGatheringService',
         'leaderStream',
         'leaderCouncil',
@@ -15,12 +12,8 @@ export const permitMeAndThoseAbove = (churchType) => {
         'leaderFellowship',
       ]
       break
-    case 'Bacenta':
+    case 'bacenta':
       permittedFor = [
-        'adminGatheringService',
-        'adminStream',
-        'adminCouncil',
-        'adminConstituency',
         'leaderGatheringService',
         'leaderStream',
         'leaderCouncil',
@@ -28,12 +21,8 @@ export const permitMeAndThoseAbove = (churchType) => {
         'leaderBacenta',
       ]
       break
-    case 'Sonta':
+    case 'sonta':
       permittedFor = [
-        'adminGatheringService',
-        'adminStream',
-        'adminCouncil',
-        'adminConstituency',
         'leaderGatheringService',
         'leaderStream',
         'leaderCouncil',
@@ -41,38 +30,22 @@ export const permitMeAndThoseAbove = (churchType) => {
         'leaderSonta',
       ]
       break
-    case 'Constituency':
+    case 'constituency':
       permittedFor = [
-        'adminGatheringService',
-        'adminStream',
-        'adminCouncil',
-        'adminConstituency',
         'leaderGatheringService',
         'leaderStream',
         'leaderCouncil',
         'leaderConstituency',
       ]
       break
-    case 'Council':
-      permittedFor = [
-        'adminGatheringService',
-        'adminStream',
-        'adminCouncil',
-        'leaderGatheringService',
-        'leaderStream',
-        'leaderCouncil',
-      ]
+    case 'council':
+      permittedFor = ['leaderGatheringService', 'leaderStream', 'leaderCouncil']
       break
-    case 'Stream':
-      permittedFor = [
-        'adminGatheringService',
-        'adminStream',
-        'leaderGatheringService',
-        'leaderStream',
-      ]
+    case 'stream':
+      permittedFor = ['leaderGatheringService', 'leaderStream']
       break
-    case 'GatheringService':
-      permittedFor = ['adminGatheringService', 'leaderGatheringService']
+    case 'gatheringservice':
+      permittedFor = ['leaderGatheringService']
       break
     default:
       permittedFor = []
@@ -80,4 +53,85 @@ export const permitMeAndThoseAbove = (churchType) => {
   }
 
   return permittedFor
+}
+
+export const permitAdmin = (churchLevel) => {
+  let permittedFor = []
+  switch (churchLevel) {
+    case 'Fellowship':
+    case 'Bacenta':
+    case 'Sonta':
+    case 'Constituency':
+      permittedFor = [
+        'adminGatheringService',
+        'adminStream',
+        'adminCouncil',
+        'adminConstituency',
+      ]
+      break
+
+    case 'Council':
+      permittedFor = ['adminGatheringService', 'adminStream', 'adminCouncil']
+      break
+    case 'Stream':
+      permittedFor = ['adminGatheringService', 'adminStream']
+      break
+    case 'GatheringService':
+      permittedFor = ['adminGatheringService']
+      break
+    default:
+      permittedFor = []
+      break
+  }
+
+  return permittedFor
+}
+
+export const permitLeaderAdmin = (churchLevel) => {
+  return [...permitLeader(churchLevel), ...permitAdmin(churchLevel)]
+}
+
+export const permitMe = (churchLevel) => {
+  return [...permitLeaderAdmin(churchLevel), ...permitArrivals(churchLevel)]
+}
+
+export const permitArrivals = (churchLevel) => {
+  let permittedFor = []
+  switch (churchLevel) {
+    case 'Fellowship':
+    case 'Bacenta':
+      permittedFor = [
+        'arrivalsAdminGatheringService',
+        'arrivalsAdminStream',
+        'arrivalsAdminCouncil',
+        'arrivalsAdminConstituency',
+      ]
+      break
+    case 'Constituency':
+      permittedFor = [
+        'arrivalsAdminGatheringService',
+        'arrivalsAdminStream',
+        'arrivalsAdminCouncil',
+        'arrivalsAdminConstituency',
+      ]
+      break
+    case 'Council':
+      permittedFor = [
+        'arrivalsAdminGatheringService',
+        'arrivalsAdminStream',
+        'arrivalsAdminCouncil',
+      ]
+      break
+    case 'Stream':
+      permittedFor = ['arrivalsAdminGatheringService', 'arrivalsAdminStream']
+      break
+    case 'GatheringService':
+      permittedFor = ['arrivalsAdminGatheringService']
+      break
+    default:
+      permittedFor = []
+      break
+  }
+
+  return [...permitAdmin(churchLevel), ...permittedFor]
 }

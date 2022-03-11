@@ -1,9 +1,9 @@
-import FormikControl from "components/formik-components/FormikControl";
-import { Form, Formik } from "formik";
-import * as Yup from "yup";
-import React, { useContext } from "react";
-import { useNavigate } from "react-router";
-import { ServiceContext } from "contexts/ServiceContext";
+import FormikControl from 'components/formik-components/FormikControl'
+import { Form, Formik } from 'formik'
+import * as Yup from 'yup'
+import React, { useContext } from 'react'
+import { useNavigate } from 'react-router'
+import { ServiceContext } from 'contexts/ServiceContext'
 
 const ServiceFormNoOffering = ({
   church,
@@ -11,31 +11,31 @@ const ServiceFormNoOffering = ({
   churchType,
   RecordServiceMutation,
 }) => {
-  const { setServiceRecordId } = useContext(ServiceContext);
-  const navigate = useNavigate();
+  const { setServiceRecordId } = useContext(ServiceContext)
+  const navigate = useNavigate()
 
   const initialValues = {
     serviceDate: new Date().toISOString().slice(0, 10),
-    attendance: "",
-    servicePicture: "",
-  };
+    attendance: '',
+    servicePicture: '',
+  }
 
   const validationSchema = Yup.object({
     serviceDate: Yup.date()
-      .max(new Date(), "Service could not possibly have happened after today")
-      .required("Date is a required field"),
+      .max(new Date(), 'Service could not possibly have happened after today')
+      .required('Date is a required field'),
     attendance: Yup.number()
-      .typeError("Please enter a valid number")
+      .typeError('Please enter a valid number')
       .positive()
-      .integer("You cannot have attendance with decimals!")
-      .required("You cannot submit this form without entering your attendance"),
+      .integer('You cannot have attendance with decimals!')
+      .required('You cannot submit this form without entering your attendance'),
     servicePicture: Yup.string().required(
-      "Please submit a picture of your service"
+      'Please submit a picture of your service'
     ),
-  });
+  })
 
   const onSubmit = (values, onSubmitProps) => {
-    onSubmitProps.setSubmitting(true);
+    onSubmitProps.setSubmitting(true)
     RecordServiceMutation({
       variables: {
         id: churchId,
@@ -44,12 +44,12 @@ const ServiceFormNoOffering = ({
         servicePicture: values.servicePicture,
       },
     }).then((res) => {
-      onSubmitProps.setSubmitting(false);
-      onSubmitProps.resetForm();
-      setServiceRecordId(res.data.RecordServiceNoOffering.id);
-      navigate(`/${churchType}/service-details`);
-    });
-  };
+      onSubmitProps.setSubmitting(false)
+      onSubmitProps.resetForm()
+      setServiceRecordId(res.data.RecordServiceNoOffering.id)
+      navigate(`/${churchType}/service-details`)
+    })
+  }
 
   return (
     <Formik
@@ -72,7 +72,6 @@ const ServiceFormNoOffering = ({
                       <i className="text-secondary">(Day/Month/Year)</i>
                     </small>
                     <FormikControl
-                      className="form-control"
                       control="input"
                       name="serviceDate"
                       type="date"
@@ -83,7 +82,6 @@ const ServiceFormNoOffering = ({
                       control="input"
                       name="attendance"
                       label="Attendance"
-                      className="form-control"
                     />
                     <FormikControl
                       control="imageUpload"
@@ -110,7 +108,7 @@ const ServiceFormNoOffering = ({
         </div>
       )}
     </Formik>
-  );
-};
+  )
+}
 
-export default ServiceFormNoOffering;
+export default ServiceFormNoOffering

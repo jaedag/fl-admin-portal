@@ -49,7 +49,6 @@ function FormikSearchbox(props) {
       const combinedData = [
         ...data.federalMemberSearch,
         ...data.federalConstituencySearch,
-        ...data.federalSontaSearch,
         ...data.federalBacentaSearch,
         ...data.federalFellowshipSearch,
       ]
@@ -64,7 +63,6 @@ function FormikSearchbox(props) {
         ...data.streamMemberSearch,
         ...data.streamCouncilSearch,
         ...data.streamConstituencySearch,
-        ...data.streamSontaSearch,
         ...data.streamBacentaSearch,
         ...data.streamFellowshipSearch,
       ]

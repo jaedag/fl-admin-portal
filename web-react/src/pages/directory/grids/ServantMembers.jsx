@@ -1,15 +1,15 @@
-import { useQuery } from "@apollo/client";
-import MembersGrid from "components/members-grids/MembersGrid";
-import { MemberContext } from "contexts/MemberContext";
-import React, { useContext } from "react";
-import { GET_SERVANT_MEMBERS } from "./GridQueries";
+import { useQuery } from '@apollo/client'
+import MembersGrid from 'components/members-grids/MembersGrid'
+import { MemberContext } from 'contexts/MemberContext'
+import React, { useContext } from 'react'
+import { GET_SERVANT_MEMBERS } from './GridQueries'
 
 const ServantMembers = () => {
-  const { currentUser } = useContext(MemberContext);
+  const { currentUser } = useContext(MemberContext)
 
   const { data, loading, error } = useQuery(GET_SERVANT_MEMBERS, {
     variables: { id: currentUser.id },
-  });
+  })
 
   return (
     <MembersGrid
@@ -18,7 +18,7 @@ const ServantMembers = () => {
       loading={loading}
       error={error}
     />
-  );
-};
+  )
+}
 
-export default ServantMembers;
+export default ServantMembers

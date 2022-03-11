@@ -1,24 +1,24 @@
-import ServantsDashboard from "pages/dashboards/ServantsDashboard";
-import UserDashboard from "pages/dashboards/UserDashboard";
-import Maps from "pages/maps/Maps";
+import ServantsDashboard from 'pages/dashboards/ServantsDashboard'
+import UserDashboard from 'pages/dashboards/UserDashboard'
+import Maps from 'pages/maps/Maps'
 
 export const dashboards = [
   {
-    path: "/",
+    path: '/',
     element: UserDashboard,
     placeholder: true,
-    roles: ["all"],
+    roles: ['all'],
   },
   {
-    path: "/dashboard/servants",
+    path: '/dashboard/servants',
     element: ServantsDashboard,
     placeholder: true,
-    roles: ["all"],
+    roles: ['all'],
   },
   {
-    path: "/maps",
+    path: '/maps',
     element: Maps,
     placeholder: true,
-    roles: ["all"],
+    roles: ['all'],
   },
-];
+]

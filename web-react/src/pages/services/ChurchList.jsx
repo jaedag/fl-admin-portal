@@ -1,29 +1,29 @@
-import MenuButton from "components/buttons/MenuButton";
-import { ChurchContext } from "contexts/ChurchContext";
-import { MemberContext } from "contexts/MemberContext";
-import { parseMemberCount } from "global-utils";
-import React, { useContext } from "react";
-import { useNavigate } from "react-router";
-import MemberIcon from "../../assets/people-svgrepo-com-2.svg";
+import MenuButton from 'components/buttons/MenuButton'
+import { ChurchContext } from 'contexts/ChurchContext'
+import { MemberContext } from 'contexts/MemberContext'
+import { parseMemberCount } from 'global-utils'
+import React, { useContext } from 'react'
+import { useNavigate } from 'react-router'
+import MemberIcon from '../../assets/people-svgrepo-com-2.svg'
 
 const ChurchList = ({ color, link }) => {
-  const { currentUser, setCurrentUser, userJobs } = useContext(MemberContext);
-  const { clickCard } = useContext(ChurchContext);
-  const navigate = useNavigate();
+  const { currentUser, setCurrentUser, userJobs } = useContext(MemberContext)
+  const { clickCard } = useContext(ChurchContext)
+  const navigate = useNavigate()
 
   return (
     <div className="d-grid gap-2 text-left">
       {userJobs?.jobs.length ? (
         userJobs.jobs.map((role) => {
           return role.church.map((church, index) => {
-            if (color === "arrivals") {
-              if (["Fellowship"].includes(church.__typename)) {
-                return null;
+            if (color === 'arrivals') {
+              if (['Fellowship'].includes(church.__typename)) {
+                return null
               }
             }
-            if (color === "defaulters") {
-              if (["Fellowship", "Bacenta"].includes(church.__typename)) {
-                return null;
+            if (color === 'defaulters') {
+              if (['Fellowship', 'Bacenta'].includes(church.__typename)) {
+                return null
               }
             }
             return (
@@ -35,30 +35,30 @@ const ChurchList = ({ color, link }) => {
                 iconBg={true}
                 iconCaption={church.__typename}
                 onClick={() => {
-                  clickCard(church);
+                  clickCard(church)
                   setCurrentUser({
                     ...currentUser,
                     currentChurch: church,
-                  });
+                  })
 
                   sessionStorage.setItem(
-                    "currentUser",
+                    'currentUser',
                     JSON.stringify({
                       ...currentUser,
                       currentChurch: church,
                     })
-                  );
+                  )
 
-                  if (color === "arrivals") {
-                    navigate(`/arrivals/${church.__typename.toLowerCase()}`);
+                  if (color === 'arrivals') {
+                    navigate(`/arrivals/${church.__typename.toLowerCase()}`)
                   } else {
-                    navigate(link);
+                    navigate(link)
                   }
                 }}
                 color={color}
               />
-            );
-          });
+            )
+          })
         })
       ) : (
         <>
@@ -69,7 +69,7 @@ const ChurchList = ({ color, link }) => {
         </>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default ChurchList;
+export default ChurchList

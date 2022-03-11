@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client'
 
 export const SET_VACATION_FELLOWSHIP = gql`
   mutation SetVacationFellowship($fellowshipId: ID!) {
@@ -12,7 +12,7 @@ export const SET_VACATION_FELLOWSHIP = gql`
       }
     }
   }
-`;
+`
 
 export const SET_ACTIVE_FELLOWSHIP = gql`
   mutation SetActiveFellowship($fellowshipId: ID!) {
@@ -26,7 +26,7 @@ export const SET_ACTIVE_FELLOWSHIP = gql`
       }
     }
   }
-`;
+`
 
 export const SET_VACATION_BACENTA = gql`
   mutation SetVacationBacenta($bacentaId: ID!) {
@@ -40,7 +40,7 @@ export const SET_VACATION_BACENTA = gql`
       }
     }
   }
-`;
+`
 
 export const SET_ACTIVE_BACENTA = gql`
   mutation SetActiveBacenta($bacentaId: ID!) {
@@ -54,7 +54,7 @@ export const SET_ACTIVE_BACENTA = gql`
       }
     }
   }
-`;
+`
 
 export const MAKE_BACENTA_IC = gql`
   mutation MakeBacentaIC($bacentaId: ID!) {
@@ -79,7 +79,7 @@ export const MAKE_BACENTA_IC = gql`
       }
     }
   }
-`;
+`
 
 export const MAKE_BACENTA_GRADUATED = gql`
   mutation MakeBacentaGraduated($bacentaId: ID!) {
@@ -103,4 +103,4 @@ export const MAKE_BACENTA_GRADUATED = gql`
       }
     }
   }
-`;
+`

@@ -1,8 +1,11 @@
+import { permitAdmin, permitArrivals, permitLeaderAdmin } from './permissions'
+
+/* eslint-disable no-console */
 const dotenv = require('dotenv')
 const axios = require('axios').default
 const cypher = require('./cypher/resolver-cypher')
 const closeChurchCypher = require('./cypher/close-church-cypher')
-const servantCypher = require('./cypher/servant-cypher')
+
 const {
   isAuth,
   throwErrorMsg,
@@ -10,6 +13,10 @@ const {
   errorHandling,
   rearrangeCypherObject,
   parseForCache,
+  churchInEmail,
+  makeServantCypher,
+  parseForCache_Removal,
+  removeServantCypher,
 } = require('./resolver-utils')
 
 const auth0 = require('./auth0-utils')
@@ -75,10 +82,7 @@ const notifyMember = (
   mg.messages
     .create('mg.firstlovecenter.com', {
       from: 'FL Accra Admin <no-reply@firstlovecenter.org>',
-      to: process.env.TEST_EMAIL_ADDRESS || [
-        member.email,
-        'admin@firstlovecenter.com',
-      ],
+      to: process.env.TEST_EMAIL_ADDRESS || member.email,
       subject: subject,
       text: body,
       html: html || null, //HTML Version of the Message for Better Styling
@@ -187,9 +191,18 @@ const MakeServant = async (
   servantType
 ) => {
   //Set Up
-  let churchLower = churchType.toLowerCase().replace('arrivals', '')
+  let churchLower = churchType.toLowerCase()
+  let servantLower = servantType.toLowerCase()
 
-  const servantLower = servantType.toLowerCase()
+  let verb = `leads${churchType}`
+  if (servantType === 'Admin') {
+    verb = `isAdminFor${churchType}`
+  }
+  if (servantType === 'ArrivalsAdmin') {
+    verb = `isArrivalsAdminFor${churchType}`
+    servantLower = 'arrivalsAdmin'
+  }
+
   isAuth(permittedRoles, context.auth.roles)
   noEmptyArgsValidation([
     `${churchLower}Id`,
@@ -198,23 +211,25 @@ const MakeServant = async (
     args[`${servantLower}Id`],
   ])
 
-  let verb = `leads${churchType}`
-  if (servantType === 'Admin') {
-    verb = `isAdminFor${churchType}`
-  }
-
   const session = context.driver.session()
 
-  const churchResponse = await session.run(cypher.matchChurchQuery, {
-    id: args[`${churchLower}Id`],
-  })
-  const church = rearrangeCypherObject(churchResponse)
+  const church = rearrangeCypherObject(
+    await session.run(cypher.matchChurchQuery, {
+      id: args[`${churchLower}Id`],
+    })
+  )
   const churchInEmail = `${church.name} ${church.type[0]}`
 
-  const servantResponse = await session.run(cypher.matchMemberQuery, {
-    id: args[`${servantLower}Id`],
-  })
-  let servant = rearrangeCypherObject(servantResponse)
+  let servant = rearrangeCypherObject(
+    await session.run(cypher.matchMemberQuery, {
+      id: args[`${servantLower}Id`],
+    })
+  )
+  let oldServant = rearrangeCypherObject(
+    await session.run(cypher.matchMemberQuery, {
+      id: args[`old${servantType}Id`] ?? '',
+    })
+  )
 
   errorHandling(servant)
 
@@ -236,7 +251,7 @@ const MakeServant = async (
         servant,
         'Your Account Has Been Created On The FL Admin Portal',
         null,
-        `<p>Hi ${servant.firstName} ${servant.lastName},<br/><br/>Congratulations on being made the <b>${churchType} ${servantType}</b> for <b>${churchInEmail}</b>.<br/><br/>Your account has just been created on the First Love Church Administrative Portal. Please set up your password by clicking <b><a href=${passwordTicketResponse.data.ticket}>this link</a></b>. After setting up your password, you can log in by clicking <b>https://flcadmin.netlify.app/</b><br/><br/>Please go through ${texts.html.helpdesk} to find guidelines and instructions on how to use it as well as answers to questions you may have.</p>${texts.html.subscription}`,
+        `<p>Hi ${servant.firstName} ${servant.lastName},<br/><br/>Congratulations on being made the <b>${churchType} ${servantType}</b> for <b>${churchInEmail}</b>.<br/><br/>Your account has just been created on the First Love Church Administrative Portal. Please set up your password by clicking <b><a href=${passwordTicketResponse.data.ticket}>this link</a></b>. After setting up your password, you can log in by clicking <b>https://admin.firstlovecenter.com/</b><br/><br/>Please go through ${texts.html.helpdesk} to find guidelines and instructions on how to use it as well as answers to questions you may have.</p>${texts.html.subscription}`,
         'servant_account_created',
         [servant.firstName, passwordTicketResponse?.data?.ticket]
       )
@@ -252,12 +267,15 @@ const MakeServant = async (
       )
 
       //Write Auth0 ID of Leader to Neo4j DB
-      await session.run(servantCypher[`make${churchType}${servantType}`], {
-        [`${servantLower}Id`]: servant.id,
-        [`${churchLower}Id`]: church.id,
-        auth_id: servant.auth_id,
-        auth: context.auth,
-      })
+      makeServantCypher(
+        context,
+        args,
+        churchType,
+        servantType,
+        servant,
+        oldServant,
+        church
+      )
     } catch (error) {
       throwErrorMsg(error)
     }
@@ -272,15 +290,19 @@ const MakeServant = async (
     const roles = userRoleResponse.data.map((role) => role.name)
 
     assignRoles(servant, roles, [authRoles[`${servantLower}${churchType}`].id])
-    //Write Auth0 ID of Admin to Neo4j DB
-    await session.run(servantCypher[`make${churchType}${servantType}`], {
-      [`${servantLower}Id`]: servant.id,
-      [`${churchLower}Id`]: church.id,
-      auth_id: servant.auth_id,
-      auth: context.auth,
-    })
+    //Write Auth0 ID of Servant to Neo4j DB
 
-    //Send Email Using Mailgun
+    makeServantCypher(
+      context,
+      args,
+      churchType,
+      servantType,
+      servant,
+      oldServant,
+      church
+    )
+
+    //Send Notifications
     notifyMember(
       servant,
       'FL Servanthood Status Update',
@@ -309,9 +331,18 @@ const RemoveServant = async (
   servantType
 ) => {
   //Set Up
-  let churchLower = churchType.toLowerCase().replace('arrivals', '')
+  let churchLower = churchType.toLowerCase()
+  let servantLower = servantType.toLowerCase()
 
-  const servantLower = servantType.toLowerCase()
+  let verb = `leads${churchType}`
+  if (servantType === 'Admin') {
+    verb = `isAdminFor${churchType}`
+  }
+  if (servantType === 'ArrivalsAdmin') {
+    verb = `isArrivalsAdminFor${churchType}`
+    servantLower = 'arrivalsAdmin'
+  }
+
   isAuth(permittedRoles, context.auth.roles)
   noEmptyArgsValidation([
     `${churchLower}Id`,
@@ -320,34 +351,19 @@ const RemoveServant = async (
     args[`${servantLower}Id`],
   ])
 
-  let verb = `leads${churchType}`
-  if (servantType === 'Admin') {
-    verb = `isAdminFor${churchType}`
-  }
-
   const session = context.driver.session()
 
-  const churchResponse = await session.run(cypher.matchChurchQuery, {
-    id: args[`${churchLower}Id`],
-  })
-  const church = rearrangeCypherObject(churchResponse)
+  const church = rearrangeCypherObject(
+    await session.run(cypher.matchChurchQuery, {
+      id: args[`${churchLower}Id`],
+    })
+  )
 
-  const churchInEmail = () => {
-    if (church.type[0] === 'ClosedFellowship') {
-      return `${church.name} Fellowship which has been closed`
-    }
-
-    if (church.type[0] === 'ClosedBacenta') {
-      return `${church.name} Bacenta which has been closed`
-    }
-
-    return `${church.name} ${church.type[0]}`
-  }
-
-  const servantResponse = await session.run(cypher.matchMemberQuery, {
-    id: args[`${servantLower}Id`],
-  })
-  const servant = rearrangeCypherObject(servantResponse)
+  const servant = rearrangeCypherObject(
+    await session.run(cypher.matchMemberQuery, {
+      id: args[`${servantLower}Id`],
+    })
+  )
 
   if (Object.keys(servant).length === 0) {
     return
@@ -356,6 +372,7 @@ const RemoveServant = async (
 
   if (!servant.auth_id) {
     //if he has no auth_id then there is nothing to do
+    removeServantCypher(context, churchType, servantType, servant, church)
     return
   }
   if (servant[`${verb}`].length > 1) {
@@ -364,21 +381,27 @@ const RemoveServant = async (
       `${servant.firstName} ${servant.lastName} leads more than one ${churchType}`
     )
 
+    //Disconnect him from the Church
+    removeServantCypher(context, churchType, servantType, servant, church)
+
     //Send a Mail to That Effect
     notifyMember(
       servant,
       'You Have Been Removed!',
-      `Hi ${servant.firstName} ${
-        servant.lastName
-      },\n\nWe regret to inform you that you have been removed as the ${churchType} ${servantType} for ${churchInEmail()}.\n\nWe however encourage you to strive to serve the Lord faithfully in your other roles. Do not be discouraged by this removal; as you work hard we hope and pray that you will soon be restored to your service to him.${
-        texts.string.subscription
-      }`,
+
       null,
+      `<p>Hi ${servant.firstName} ${
+        servant.lastName
+      },<br/><br/>We regret to inform you that you have been removed as the <b>${churchType} ${servantType}</b> for <b>${churchInEmail(
+        church
+      )}<b>.<br/><br/>We however encourage you to strive to serve the Lord faithfully in your other roles. Do not be discouraged by this removal; as you work hard we hope and pray that you will soon be restored to your service to him.</p>${
+        texts.html.subscription
+      }`,
       'servant_account_deleted',
       [servant.firstName, churchType, servantType, church.name, church.type[0]]
     )
 
-    return
+    return parseForCache_Removal(servant, church, verb, servantLower)
   }
 
   //Check auth0 roles and remove roles 'leaderBacenta'
@@ -395,6 +418,7 @@ const RemoveServant = async (
       `Auth0 Account successfully deleted for ${servant.firstName} ${servant.lastName}`
     )
     //Remove Auth0 ID of Leader from Neo4j DB
+    removeServantCypher(context, churchType, servantType, servant, church)
     await session.run(cypher.removeMemberAuthId, {
       log: `${servant.firstName} ${servant.lastName} was removed as a ${churchType} ${servantType}`,
       auth_id: servant.auth_id,
@@ -405,14 +429,16 @@ const RemoveServant = async (
     notifyMember(
       servant,
       'Your Servant Account Has Been Deleted',
+      null,
       `Hi ${servant.firstName} ${
         servant.lastName
-      },\n\nThis is to inform you that your servant account has been deleted from the First Love Admin Portal. You will no longer have access to any data\n\nThis is due to the fact that you have been removed as a ${churchType} ${servantType} for ${churchInEmail()}.\n\nWe however encourage you to strive to serve the Lord faithfully. Do not be discouraged from loving God by this removal; we hope it is just temporary.${
+      },\n\nThis is to inform you that your servant account has been deleted from the First Love Admin Portal. You will no longer have access to any data\n\nThis is due to the fact that you have been removed as a ${churchType} ${servantType} for ${churchInEmail(
+        church
+      )}.\n\nWe however encourage you to strive to serve the Lord faithfully. Do not be discouraged from loving God by this removal; we hope it is just temporary.${
         texts.string.subscription
-      }`,
-      null
+      }`
     )
-    return
+    return parseForCache_Removal(servant, church, verb, servantLower)
   }
 
   //If the person is a bacenta leader as well as any other position, remove role bacenta leader
@@ -422,16 +448,18 @@ const RemoveServant = async (
     notifyMember(
       servant,
       'You Have Been Removed!',
-      `Hi ${servant.firstName} ${
+      null,
+      `<p>Hi ${servant.firstName} ${
         servant.lastName
-      },\n\nWe regret to inform you that you have been removed as the ${churchType} ${servantType} for ${churchInEmail()}.\n\nWe however encourage you to strive to serve the Lord faithfully in your other roles. Do not be discouraged by this removal; as you work hard we hope and pray that you will soon be restored to your service to him.${
-        texts.string.subscription
+      },<br/><br/>We regret to inform you that you have been removed as the <b>${churchType} ${servantType}</b> for <b>${churchInEmail(
+        church
+      )}</b>.<br/><br/>We however encourage you to strive to serve the Lord faithfully in your other roles. Do not be discouraged by this removal; as you work hard we hope and pray that you will soon be restored to your service to him</p>.${
+        texts.html.subscription
       }`
     )
   }
 
-  //Relationship in Neo4j will be removed when the replacement leader is being added
-  return parseForCache(servant, church, verb, servantLower)
+  return parseForCache_Removal(servant, church, verb, servantLower)
 }
 
 export const resolvers = {
@@ -441,25 +469,12 @@ export const resolvers = {
   // Context: Context object, database connection, API, etc
   // GraphQLResolveInfo
   Member: {
-    fullName: (obj) => {
-      return `${obj.firstName} ${obj.lastName}`
-    },
+    fullName: (obj) => `${obj.firstName} ${obj.lastName}`,
   },
 
   Mutation: {
     CreateMember: async (object, args, context) => {
-      isAuth(
-        [
-          'adminGatheringService',
-          'adminCouncil',
-          'adminConstituency',
-          'leaderFellowship',
-          'leaderBacenta',
-
-          'leaderConstituency',
-        ],
-        context.auth.roles
-      )
+      isAuth(permitLeaderAdmin('Fellowship'), context.auth.roles)
 
       const session = context.driver.session()
       const memberResponse = await session.run(
@@ -497,17 +512,33 @@ export const resolvers = {
 
       return member
     },
-    CloseDownFellowship: async (object, args, context) => {
-      isAuth(
-        [
-          'adminGatheringService',
-          'adminStream',
-          'adminCouncil',
-          'adminConstituency',
-          'leaderConstituency',
-        ],
-        context.auth.roles
+    UpdateMemberEmail: async (object, args, context) => {
+      isAuth(permitAdmin('Fellowship'), context.auth.roles)
+
+      const session = context.driver.session()
+
+      const member = rearrangeCypherObject(
+        await session.run(cypher.matchMemberQuery, {
+          id: args.id,
+        })
       )
+
+      const updatedMember = rearrangeCypherObject(
+        await session.run(cypher.updateMemberEmail, {
+          id: args.id,
+          email: args.email,
+        })
+      )
+
+      if (member.auth_id) {
+        //Update a user's Auth Profile with Picture and Name Details
+        await axios(auth0.updateAuthUserConfig(updatedMember, authToken))
+      }
+
+      return updatedMember
+    },
+    CloseDownFellowship: async (object, args, context) => {
+      isAuth(permitAdmin('Constituency'), context.auth.roles)
 
       const session = context.driver.session()
 
@@ -557,15 +588,7 @@ export const resolvers = {
     },
 
     CloseDownBacenta: async (object, args, context) => {
-      isAuth(
-        [
-          'adminGatheringService',
-          'adminStream',
-          'adminCouncil',
-          'adminConstituency',
-        ],
-        context.auth.roles
-      )
+      isAuth(permitAdmin('Constituency'), context.auth.roles)
 
       const session = context.driver.session()
 
@@ -586,12 +609,7 @@ export const resolvers = {
         await RemoveServant(
           context,
           args,
-          [
-            'adminGatheringService',
-            'adminStream',
-            'adminCouncil',
-            'adminConstituency',
-          ],
+          permitAdmin('Constituency'),
           'Bacenta',
           'Leader'
         )
@@ -616,7 +634,7 @@ export const resolvers = {
       return MakeServant(
         context,
         args,
-        ['adminGatheringService'],
+        permitAdmin('GatheringService'),
         'Stream',
         'Admin'
       )
@@ -625,7 +643,7 @@ export const resolvers = {
       return RemoveServant(
         context,
         args,
-        ['adminGatheringService'],
+        permitAdmin('GatheringService'),
         'Stream',
         'Admin'
       )
@@ -634,7 +652,7 @@ export const resolvers = {
       return MakeServant(
         context,
         args,
-        ['adminGatheringService', 'adminStream'],
+        permitAdmin('Stream'),
         'Council',
         'Admin'
       )
@@ -643,7 +661,7 @@ export const resolvers = {
       return RemoveServant(
         context,
         args,
-        ['adminGatheringService', 'adminStream'],
+        permitAdmin('Stream'),
         'Council',
         'Admin'
       )
@@ -652,7 +670,7 @@ export const resolvers = {
       return MakeServant(
         context,
         args,
-        ['adminGatheringService', 'adminStream', 'adminStream', 'adminCouncil'],
+        permitAdmin('Council'),
         'Constituency',
         'Admin'
       )
@@ -661,7 +679,7 @@ export const resolvers = {
       return RemoveServant(
         context,
         args,
-        ['adminGatheringService', 'adminStream', 'adminCouncil'],
+        permitAdmin('Council'),
         'Constituency',
         'Admin'
       )
@@ -672,12 +690,7 @@ export const resolvers = {
       return MakeServant(
         context,
         args,
-        [
-          'adminGatheringService',
-          'adminStream',
-          'adminCouncil',
-          'adminConstituency',
-        ],
+        permitAdmin('Bacenta'),
         'Fellowship',
         'Leader'
       )
@@ -686,12 +699,7 @@ export const resolvers = {
       return RemoveServant(
         context,
         args,
-        [
-          'adminGatheringService',
-          'adminStream',
-          'adminCouncil',
-          'adminConstituency',
-        ],
+        permitAdmin('Bacenta'),
         'Fellowship',
         'Leader'
       )
@@ -700,12 +708,7 @@ export const resolvers = {
       return MakeServant(
         context,
         args,
-        [
-          'adminGatheringService',
-          'adminStream',
-          'adminCouncil',
-          'adminConstituency',
-        ],
+        permitAdmin('Constituency'),
         'Sonta',
         'Leader'
       )
@@ -714,12 +717,7 @@ export const resolvers = {
       return RemoveServant(
         context,
         args,
-        [
-          'adminGatheringService',
-          'adminStream',
-          'adminCouncil',
-          'adminConstituency',
-        ],
+        permitAdmin('Constituency'),
         'Sonta',
         'Leader'
       )
@@ -728,12 +726,7 @@ export const resolvers = {
       return MakeServant(
         context,
         args,
-        [
-          'adminGatheringService',
-          'adminStream',
-          'adminCouncil',
-          'adminConstituency',
-        ],
+        permitAdmin('Constituency'),
         'Bacenta',
         'Leader'
       )
@@ -742,12 +735,7 @@ export const resolvers = {
       return RemoveServant(
         context,
         args,
-        [
-          'adminGatheringService',
-          'adminStream',
-          'adminCouncil',
-          'adminConstituency',
-        ],
+        permitAdmin('Constituency'),
         'Bacenta',
         'Leader'
       )
@@ -756,7 +744,7 @@ export const resolvers = {
       return MakeServant(
         context,
         args,
-        ['adminGatheringService', 'adminStream', 'adminCouncil'],
+        permitAdmin('Council'),
         'Constituency',
         'Leader'
       )
@@ -765,7 +753,7 @@ export const resolvers = {
       return RemoveServant(
         context,
         args,
-        ['adminGatheringService', 'adminStream', 'adminCouncil'],
+        permitAdmin('Council'),
         'Constituency',
         'Leader'
       )
@@ -774,7 +762,7 @@ export const resolvers = {
       return MakeServant(
         context,
         args,
-        ['adminGatheringService', 'adminStream'],
+        permitAdmin('Stream'),
         'Council',
         'Leader'
       )
@@ -783,7 +771,7 @@ export const resolvers = {
       return RemoveServant(
         context,
         args,
-        ['adminGatheringService', 'adminStream'],
+        permitAdmin('Stream'),
         'Council',
         'Leader'
       )
@@ -792,7 +780,7 @@ export const resolvers = {
       return MakeServant(
         context,
         args,
-        ['adminGatheringService'],
+        permitAdmin('GatheringService'),
         'Stream',
         'Leader'
       )
@@ -801,7 +789,7 @@ export const resolvers = {
       return RemoveServant(
         context,
         args,
-        ['adminGatheringService'],
+        permitAdmin('GatheringService'),
         'Stream',
         'Leader'
       )
@@ -810,7 +798,7 @@ export const resolvers = {
       return MakeServant(
         context,
         args,
-        ['adminGatheringService'],
+        permitAdmin('Denomination'),
         'GatheringService',
         'Leader'
       )
@@ -819,24 +807,86 @@ export const resolvers = {
       return RemoveServant(
         context,
         args,
-        ['adminGatheringService'],
+        permitAdmin('Denomination'),
         'GatheringService',
         'Leader'
       )
     },
-    //Arrivals Mutations
+
+    //ARRIVALS MUTATIONS
     MakeConstituencyArrivalsAdmin: async (object, args, context) => {
       return MakeServant(
         context,
         args,
-        [
-          'adminGatheringService',
-          'adminStream',
-          'adminCouncil',
-          'adminConstituency',
-        ],
-        'ConstituencyArrivals',
-        'Admin'
+        [...permitAdmin('Constituency'), ...permitArrivals('Council')],
+        'Constituency',
+        'ArrivalsAdmin'
+      )
+    },
+    RemoveConstituencyArrivalsAdmin: async (object, args, context) => {
+      return RemoveServant(
+        context,
+        args,
+        [...permitAdmin('Constituency'), ...permitArrivals('Council')],
+        'Constituency',
+        'ArrivalsAdmin'
+      )
+    },
+
+    MakeCouncilArrivalsAdmin: async (object, args, context) => {
+      return MakeServant(
+        context,
+        args,
+        [...permitAdmin('Council'), ...permitArrivals('Stream')],
+        'Council',
+        'ArrivalsAdmin'
+      )
+    },
+    RemoveCouncilArrivalsAdmin: async (object, args, context) => {
+      return RemoveServant(
+        context,
+        args,
+        [...permitAdmin('Council'), ...permitArrivals('Stream')],
+        'Council',
+        'ArrivalsAdmin'
+      )
+    },
+
+    MakeStreamArrivalsAdmin: async (object, args, context) => {
+      return MakeServant(
+        context,
+        args,
+        [...permitAdmin('Stream'), ...permitArrivals('GatheringService')],
+        'Stream',
+        'ArrivalsAdmin'
+      )
+    },
+    RemoveStreamArrivalsAdmin: async (object, args, context) => {
+      return RemoveServant(
+        context,
+        args,
+        [...permitAdmin('Stream'), ...permitArrivals('GatheringService')],
+        'Stream',
+        'ArrivalsAdmin'
+      )
+    },
+
+    MakeGatheringServiceArrivalsAdmin: async (object, args, context) => {
+      return MakeServant(
+        context,
+        args,
+        [...permitAdmin('GatheringService'), ...permitArrivals('Denomination')],
+        'GatheringService',
+        'ArrivalsAdmin'
+      )
+    },
+    RemoveGatheringServiceArrivalsAdmin: async (object, args, context) => {
+      return RemoveServant(
+        context,
+        args,
+        [...permitAdmin('GatheringService'), ...permitArrivals('Denomination')],
+        'GatheringService',
+        'ArrivalsAdmin'
       )
     },
   },

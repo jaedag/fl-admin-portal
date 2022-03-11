@@ -1,24 +1,24 @@
-import React, { useContext } from "react";
+import React, { useContext } from 'react'
 
-import { ChurchContext } from "../../../contexts/ChurchContext";
-import { useQuery } from "@apollo/client";
-import { getServiceGraphData, getMonthlyStatAverage } from "./report-utils";
-import ChurchGraph from "../../../components/ChurchGraph/ChurchGraph";
-import { STREAM_REPORT } from "./ReportQueries";
-import MembershipCard from "./CompMembershipCard";
-import StatDisplay from "./CompStatDisplay";
-import BaseComponent from "components/base-component/BaseComponent";
-import { Col, Container, Row } from "react-bootstrap";
-import PlaceholderCustom from "components/Placeholder";
+import { ChurchContext } from '../../../contexts/ChurchContext'
+import { useQuery } from '@apollo/client'
+import { getServiceGraphData, getMonthlyStatAverage } from './report-utils'
+import ChurchGraph from '../../../components/ChurchGraph/ChurchGraph'
+import { STREAM_REPORT } from './ReportQueries'
+import MembershipCard from './CompMembershipCard'
+import StatDisplay from './CompStatDisplay'
+import BaseComponent from 'components/base-component/BaseComponent'
+import { Col, Container, Row } from 'react-bootstrap'
+import PlaceholderCustom from 'components/Placeholder'
 
 const StreamReport = () => {
-  const { streamId } = useContext(ChurchContext);
+  const { streamId } = useContext(ChurchContext)
 
   const { data, loading, error } = useQuery(STREAM_REPORT, {
     variables: { streamId: streamId },
-  });
+  })
 
-  const churchData = getServiceGraphData(data?.streams[0]);
+  const churchData = getServiceGraphData(data?.streams[0])
 
   return (
     <BaseComponent loading={loading} error={error} data={data} placeholder>
@@ -44,15 +44,15 @@ const StreamReport = () => {
         <Row className="mt-3">
           <Col>
             <StatDisplay
-              title="Avg Attendance"
-              statistic={getMonthlyStatAverage(churchData, "attendance")}
+              title="Avg Weekly Attendance"
+              statistic={getMonthlyStatAverage(churchData, 'attendance')}
             />
           </Col>
 
           <Col>
             <StatDisplay
-              title="Avg Income"
-              statistic={getMonthlyStatAverage(churchData, "income")}
+              title="Avg Weekly Income"
+              statistic={getMonthlyStatAverage(churchData, 'income')}
             />
           </Col>
         </Row>
@@ -65,7 +65,7 @@ const StreamReport = () => {
         />
       </Container>
     </BaseComponent>
-  );
-};
+  )
+}
 
-export default StreamReport;
+export default StreamReport

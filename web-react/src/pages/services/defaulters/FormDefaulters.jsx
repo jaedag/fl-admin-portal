@@ -1,85 +1,75 @@
-import { useLazyQuery } from "@apollo/client";
-import { HeadingPrimary } from "components/HeadingPrimary/HeadingPrimary";
-import HeadingSecondary from "components/HeadingSecondary";
-import PlaceholderCustom from "components/Placeholder";
-import { MemberContext } from "contexts/MemberContext";
-import { getWeekNumber, isAuthorised } from "global-utils";
-import React, { useContext, useEffect, useState } from "react";
-import { Col, Container, Row } from "react-bootstrap";
+import { useLazyQuery } from '@apollo/client'
+import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
+import HeadingSecondary from 'components/HeadingSecondary'
+import PlaceholderCustom from 'components/Placeholder'
+import { MemberContext } from 'contexts/MemberContext'
+import { getWeekNumber } from 'global-utils'
+import React, { useContext, useEffect, useState } from 'react'
+import { Col, Container, Row } from 'react-bootstrap'
 import {
   CONSTITUENCY_FORM_DEFAULTERS_LIST,
   COUNCIL_FORM_DEFAULTERS_LIST,
   STREAM_FORM_DEFAULTERS_LIST,
   GATHERINGSERVICE_FORM_DEFAULTERS_LIST,
-} from "./DefaultersQueries";
-import DefaulterCard from "./DefaulterCard";
-import PlaceholderDefaulter from "./PlaceholderDefaulter";
+} from './DefaultersQueries'
+import DefaulterCard from './DefaulterCard'
+import PlaceholderDefaulter from './PlaceholderDefaulter'
 
 const FormDefaulters = () => {
-  const { currentUser } = useContext(MemberContext);
-  const [church, setChurch] = useState(null);
+  const { currentUser } = useContext(MemberContext)
+  const [church, setChurch] = useState(null)
   const [constituencyFormDefaulters, { data: constituencyData }] = useLazyQuery(
     CONSTITUENCY_FORM_DEFAULTERS_LIST
-  );
+  )
   const [councilFormDefaulters, { data: councilData }] = useLazyQuery(
     COUNCIL_FORM_DEFAULTERS_LIST
-  );
+  )
   const [streamFormDefaulters, { data: streamData }] = useLazyQuery(
     STREAM_FORM_DEFAULTERS_LIST
-  );
+  )
   const [gatheringServiceFormDefaulters, { data: gatheringServiceData }] =
-    useLazyQuery(GATHERINGSERVICE_FORM_DEFAULTERS_LIST);
+    useLazyQuery(GATHERINGSERVICE_FORM_DEFAULTERS_LIST)
 
   useEffect(() => {
-    if (
-      isAuthorised(
-        ["adminConstituency", "leaderConstituency"],
-        currentUser.roles
-      )
-    ) {
+    if (currentUser.currentChurch.__typename === 'Constituency') {
       constituencyFormDefaulters({
         variables: {
-          id: currentUser.constituency,
+          id: currentUser.currentChurch.id,
         },
-      });
-      setChurch(constituencyData?.constituencies[0]);
+      })
+      setChurch(constituencyData?.constituencies[0])
     }
-    if (isAuthorised(["adminCouncil", "leaderCouncil"], currentUser.roles)) {
+    if (currentUser.currentChurch.__typename === 'Council') {
       councilFormDefaulters({
         variables: {
-          id: currentUser.council,
+          id: currentUser.currentChurch.id,
         },
-      });
-      setChurch(councilData?.councils[0]);
+      })
+      setChurch(councilData?.councils[0])
     }
-    if (isAuthorised(["adminStream", "leaderStream"], currentUser.roles)) {
+    if (currentUser.currentChurch.__typename === 'Stream') {
       streamFormDefaulters({
         variables: {
-          id: currentUser.stream,
+          id: currentUser.currentChurch.id,
         },
-      });
-      setChurch(streamData?.streams[0]);
+      })
+      setChurch(streamData?.streams[0])
     }
-    if (
-      isAuthorised(
-        ["adminGatheringService", "leaderGatheringService"],
-        currentUser.roles
-      )
-    ) {
+    if (currentUser.currentChurch.__typename === 'GatheringService') {
       gatheringServiceFormDefaulters({
         variables: {
-          id: currentUser.gatheringService,
+          id: currentUser.currentChurch.id,
         },
-      });
-      setChurch(gatheringServiceData?.gatheringServices[0]);
+      })
+      setChurch(gatheringServiceData?.gatheringServices[0])
     }
   }, [
-    currentUser.constituency,
+    currentUser.currentChurch,
     constituencyData,
     councilData,
     streamData,
     gatheringServiceData,
-  ]);
+  ])
 
   return (
     <Container>
@@ -106,7 +96,7 @@ const FormDefaulters = () => {
         {!church && <PlaceholderDefaulter />}
       </Row>
     </Container>
-  );
-};
+  )
+}
 
-export default FormDefaulters;
+export default FormDefaulters

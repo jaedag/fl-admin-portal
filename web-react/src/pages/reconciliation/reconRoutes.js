@@ -1,9 +1,9 @@
-import Reconciliation from "pages/reconciliation/Reconciliation";
+import Reconciliation from 'pages/reconciliation/Reconciliation'
 
 export const reconciliation = [
   {
-    path: "/recon",
+    path: '/recon',
     element: Reconciliation,
     placeholder: true,
   },
-];
+]

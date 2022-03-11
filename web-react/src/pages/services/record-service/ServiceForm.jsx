@@ -1,14 +1,14 @@
-import MinusSign from "components/buttons/PlusMinusSign/MinusSign";
-import PlusSign from "components/buttons/PlusMinusSign/PlusSign";
-import FormikControl from "components/formik-components/FormikControl";
-import { FieldArray, Form, Formik } from "formik";
-import * as Yup from "yup";
-import React, { useContext } from "react";
-import { useNavigate } from "react-router";
-import { ServiceContext } from "contexts/ServiceContext";
-import { Col, Container, Row } from "react-bootstrap";
-import { HeadingPrimary } from "components/HeadingPrimary/HeadingPrimary";
-import SubmitButton from "components/formik-components/SubmitButton";
+import MinusSign from 'components/buttons/PlusMinusSign/MinusSign'
+import PlusSign from 'components/buttons/PlusMinusSign/PlusSign'
+import FormikControl from 'components/formik-components/FormikControl'
+import { FieldArray, Form, Formik } from 'formik'
+import * as Yup from 'yup'
+import React, { useContext } from 'react'
+import { useNavigate } from 'react-router'
+import { ServiceContext } from 'contexts/ServiceContext'
+import { Col, Container, Row } from 'react-bootstrap'
+import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
+import SubmitButton from 'components/formik-components/SubmitButton'
 
 const ServiceForm = ({
   church,
@@ -16,51 +16,51 @@ const ServiceForm = ({
   churchType,
   RecordServiceMutation,
 }) => {
-  const { setServiceRecordId } = useContext(ServiceContext);
-  const navigate = useNavigate();
+  const { setServiceRecordId } = useContext(ServiceContext)
+  const navigate = useNavigate()
 
   const initialValues = {
     serviceDate: new Date().toISOString().slice(0, 10),
-    cediIncome: "",
-    foreignCurrency: "",
-    numberOfTithers: "",
-    attendance: "",
-    treasurers: [""],
-    treasurerSelfie: "",
-    servicePicture: "",
-  };
+    cediIncome: '',
+    foreignCurrency: '',
+    numberOfTithers: '',
+    attendance: '',
+    treasurers: [''],
+    treasurerSelfie: '',
+    servicePicture: '',
+  }
 
   const validationSchema = Yup.object({
     serviceDate: Yup.date()
-      .max(new Date(), "Service could not possibly have happened after today")
-      .required("Date is a required field"),
+      .max(new Date(), 'Service could not possibly have happened after today')
+      .required('Date is a required field'),
     cediIncome: Yup.number()
-      .typeError("Please enter a valid number")
+      .typeError('Please enter a valid number')
       .positive()
-      .required("You cannot submit this form without entering your income"),
+      .required('You cannot submit this form without entering your income'),
     foreignCurrency: Yup.string(),
     numberOfTithers: Yup.number()
-      .typeError("Please enter a valid number")
-      .integer("You cannot enter decimals here")
+      .typeError('Please enter a valid number')
+      .integer('You cannot enter decimals here')
       .required(
-        "You cannot submit this form without entering your number of tithers"
+        'You cannot submit this form without entering your number of tithers'
       ),
     attendance: Yup.number()
-      .typeError("Please enter a valid number")
+      .typeError('Please enter a valid number')
       .positive()
-      .integer("You cannot have attendance with decimals!")
-      .required("You cannot submit this form without entering your attendance"),
-    treasurerSelfie: Yup.string().required("You must take a treasurers selfie"),
+      .integer('You cannot have attendance with decimals!')
+      .required('You cannot submit this form without entering your attendance'),
+    treasurerSelfie: Yup.string().required('You must take a treasurers selfie'),
     servicePicture: Yup.string().required(
-      "Please submit a picture of your service"
+      'Please submit a picture of your service'
     ),
     treasurers: Yup.array()
-      .min(2, "You must have at least two treasurers")
-      .of(Yup.string().required("Please pick a name from the dropdown")),
-  });
+      .min(2, 'You must have at least two treasurers')
+      .of(Yup.string().required('Please pick a name from the dropdown')),
+  })
 
   const onSubmit = (values, onSubmitProps) => {
-    onSubmitProps.setSubmitting(true);
+    onSubmitProps.setSubmitting(true)
     RecordServiceMutation({
       variables: {
         id: churchId,
@@ -74,12 +74,12 @@ const ServiceForm = ({
         servicePicture: values.servicePicture,
       },
     }).then((res) => {
-      onSubmitProps.setSubmitting(false);
-      onSubmitProps.resetForm();
-      setServiceRecordId(res.data.RecordService.id);
-      navigate(`/${churchType}/service-details`);
-    });
-  };
+      onSubmitProps.setSubmitting(false)
+      onSubmitProps.resetForm()
+      setServiceRecordId(res.data.RecordService.id)
+      navigate(`/${churchType}/service-details`)
+    })
+  }
 
   return (
     <Formik
@@ -104,7 +104,6 @@ const ServiceForm = ({
                       <i className="text-secondary">(Day/Month/Year)</i>
                     </small>
                     <FormikControl
-                      className="form-control"
                       control="input"
                       name="serviceDate"
                       type="date"
@@ -115,34 +114,30 @@ const ServiceForm = ({
                       control="input"
                       name="attendance"
                       label="Attendance*"
-                      className="form-control"
                     />
                     <FormikControl
                       control="input"
                       name="cediIncome"
                       label="Income (in Cedis)*"
-                      className="form-control"
                     />
                     <FormikControl
                       control="input"
                       name="foreignCurrency"
                       label="Foreign Currency (if any)*"
-                      className="form-control"
                     />
                     <FormikControl
                       control="input"
                       name="numberOfTithers"
                       label="Number of Tithers*"
-                      className="form-control"
                     />
                     <small className="label">Treasurers (minimum of 2)</small>
                     <FieldArray name="treasurers">
                       {(fieldArrayProps) => {
-                        const { push, remove, form } = fieldArrayProps;
-                        const { values } = form;
-                        const { treasurers } = values;
+                        const { push, remove, form } = fieldArrayProps
+                        const { values } = form
+                        const { treasurers } = values
                         {
-                          formik.values.treasurers;
+                          formik.values.treasurers
                         }
                         return (
                           <>
@@ -155,7 +150,6 @@ const ServiceForm = ({
                                     placeholder="Start typing"
                                     setFieldValue={formik.setFieldValue}
                                     aria-describedby="Member List"
-                                    className="form-control"
                                     error={
                                       !Array.isArray(formik.errors.treasurers)
                                         ? formik.errors.treasurers
@@ -174,7 +168,7 @@ const ServiceForm = ({
                               </Row>
                             ))}
                           </>
-                        );
+                        )
                       }}
                     </FieldArray>
                     <Col className="my-2 mt-5">
@@ -214,7 +208,7 @@ const ServiceForm = ({
         </Container>
       )}
     </Formik>
-  );
-};
+  )
+}
 
-export default ServiceForm;
+export default ServiceForm

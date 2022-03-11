@@ -3,10 +3,13 @@ import BaseComponent from 'components/base-component/BaseComponent'
 import { FieldArray, Form, Formik } from 'formik'
 import * as Yup from 'yup'
 import {
+  BUSSING_STATUS_OPTIONS,
+  BUSSING_ZONE_OPTIONS,
   makeSelectOptions,
-  permitAdminAndThoseAbove,
   throwErrorMsg,
+  VACATION_OPTIONS,
 } from 'global-utils'
+import { permitAdmin } from 'permission-utils'
 import { GET_COUNCIL_CONSTITUENCIES } from 'queries/ListQueries'
 import React, { useContext } from 'react'
 import { ChurchContext } from 'contexts/ChurchContext'
@@ -54,6 +57,12 @@ const BacentaForm = ({ initialValues, onSubmit, title, newBacenta }) => {
       : Yup.array().of(
           Yup.object().required('Please pick a fellowship from the dropdown')
         ),
+    graduationStatus: Yup.string().required(
+      'Graduation Status is a required field'
+    ),
+    vacationStatus: Yup.string().required(
+      'Vacation Status is a required field'
+    ),
   })
 
   return (
@@ -78,28 +87,47 @@ const BacentaForm = ({ initialValues, onSubmit, title, newBacenta }) => {
                   <Col className="mb-2">
                     <Row className="form-row">
                       <Col>
+                        <RoleView roles={permitAdmin('Council')}>
+                          <FormikControl
+                            control="select"
+                            label={`Select a Constituency`}
+                            name="constituency"
+                            options={constituencyOptions}
+                            defaultOption={`Select a Constituency`}
+                          />
+                        </RoleView>
                         <FormikControl
-                          className="form-control"
-                          control="select"
-                          label={`Select a Constituency`}
-                          name="constituency"
-                          options={constituencyOptions}
-                          defaultOption={`Select a Constituency`}
-                        />
-                        <FormikControl
-                          className="form-control"
                           control="input"
                           name="name"
                           label="Name of Bacenta"
                           placeholder="Enter Name Here"
                         />
+                        <FormikControl
+                          control="select"
+                          name="graduationStatus"
+                          options={BUSSING_STATUS_OPTIONS}
+                          defaultOption="Choose Graduation Status"
+                          label="Status"
+                        />
+                        <FormikControl
+                          control="select"
+                          name="vacationStatus"
+                          options={VACATION_OPTIONS}
+                          defaultOption="Choose Vacation Status"
+                          label="Status"
+                        />
+                        <FormikControl
+                          control="select"
+                          name="zone"
+                          options={BUSSING_ZONE_OPTIONS}
+                          defaultOption="Pick a Zone"
+                          label="Bussing Zone"
+                        />
                       </Col>
                     </Row>
 
                     <Row className="d-flex align-items-center mb-3">
-                      <RoleView
-                        roles={permitAdminAndThoseAbove('Constituency')}
-                      >
+                      <RoleView roles={permitAdmin('Constituency')}>
                         <Col>
                           <FormikControl
                             control="memberSearch"
@@ -109,7 +137,6 @@ const BacentaForm = ({ initialValues, onSubmit, title, newBacenta }) => {
                             label="Select a Leader"
                             setFieldValue={formik.setFieldValue}
                             aria-describedby="Member Search Box"
-                            className="form-control"
                             error={formik.errors.leaderId}
                           />
                         </Col>
@@ -137,7 +164,6 @@ const BacentaForm = ({ initialValues, onSubmit, title, newBacenta }) => {
                                     placeholder="Enter Fellowship Name"
                                     setFieldValue={formik.setFieldValue}
                                     aria-describedby="Fellowship Name"
-                                    className="form-control"
                                     error={
                                       formik.errors.fellowships &&
                                       formik.errors.fellowships[index]

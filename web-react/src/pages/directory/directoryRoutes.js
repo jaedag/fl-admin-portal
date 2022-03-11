@@ -1,320 +1,316 @@
-import Directory from "pages/dashboards/Directory";
-import Churches from "pages/directory/Churches";
-import UserDisplayPage from "pages/directory/user-profile/DisplayPage";
-import DisplayMember from "pages/directory/display/DetailsMember";
-import UserProfileEditPage from "pages/directory/user-profile/EditPage";
-import CreateMember from "pages/directory/create/CreateMember";
-import UpdateMember from "pages/directory/update/UpdateMember";
-import SearchPageMobile from "pages/directory/mobile/SearchPage";
-import CouncilMembers from "pages/directory/grids/CouncilMembers";
-import ConstituencyMembers from "pages/directory/grids/ConstituencyMembers";
-import BacentaMembers from "pages/directory/grids/BacentaMembers";
-import FellowshipMembers from "pages/directory/grids/FellowshipMembers";
-import SontaMembers from "pages/directory/grids/SontaMembers";
-import DetailsFellowship from "pages/directory/display/DetailsFellowship";
-import DetailsBacenta from "pages/directory/display/DetailsBacenta";
-import DetailsConstituency from "pages/directory/display/DetailsConstituency";
-import DetailsCouncil from "pages/directory/display/DetailsCouncil";
-import DetailsStream from "pages/directory/display/DetailsStream";
-import DetailsSonta from "pages/directory/display/DetailsSonta";
-import DisplayAllBacentas from "pages/directory/display/AllBacentas";
-import DisplayAllSontas from "pages/directory/display/AllSontas";
-import DisplaySontasByConstituency from "pages/directory/display/SontasByConstituency";
-import DisplayAllConstituencies from "pages/directory/display/AllConstituencies";
-import DisplayAllFellowships from "pages/directory/display/AllFellowships";
-import CreateConstituency from "pages/directory/create/CreateConstituency";
-import CreateBacenta from "pages/directory/create/CreateBacenta";
-import CreateFellowship from "pages/directory/create/CreateFellowship";
-import CreateSonta from "pages/directory/create/CreateSonta";
-import UpdateFellowship from "pages/directory/update/UpdateFellowship";
-import UpdateBacenta from "pages/directory/update/UpdateBacenta";
-import UpdateSonta from "pages/directory/update/UpdateSonta";
-import UpdateConstituency from "pages/directory/update/UpdateConstituency";
-import DetailsGatheringService from "pages/directory/display/DetailsGatheringService.jsx";
-import DisplayAllCouncils from "pages/directory/display/AllCouncils";
-import DisplayAllStreams from "pages/directory/display/AllStreams";
-import CreateCouncil from "pages/directory/create/CreateCouncil";
-import GatheringServiceConstituencies from "pages/directory/display/GatheringServiceConstituencies";
-import UpdateCouncil from "pages/directory/update/UpdateCouncil";
-import CreateStream from "pages/directory/create/CreateStream";
-import UpdateStream from "pages/directory/update/UpdateStream";
-import GatheringServiceMembers from "pages/directory/grids/GatheringServiceMembers";
-import StreamMembers from "pages/directory/grids/StreamMembers";
-import {
-  permitAdmin,
-  permitArrivals,
-  permitLeaderAdmin,
-} from "permission-utils";
-import ServantMembers from "./grids/ServantMembers";
+import Directory from 'pages/dashboards/Directory'
+import Churches from 'pages/directory/Churches'
+import UserDisplayPage from 'pages/directory/user-profile/DisplayPage'
+import DisplayMember from 'pages/directory/display/DetailsMember'
+import UserProfileEditPage from 'pages/directory/user-profile/EditPage'
+import CreateMember from 'pages/directory/create/CreateMember'
+import UpdateMember from 'pages/directory/update/UpdateMember'
+import SearchPageMobile from 'pages/directory/mobile/SearchPage'
+import CouncilMembers from 'pages/directory/grids/CouncilMembers'
+import ConstituencyMembers from 'pages/directory/grids/ConstituencyMembers'
+import BacentaMembers from 'pages/directory/grids/BacentaMembers'
+import FellowshipMembers from 'pages/directory/grids/FellowshipMembers'
+import SontaMembers from 'pages/directory/grids/SontaMembers'
+import DetailsFellowship from 'pages/directory/display/DetailsFellowship'
+import DetailsBacenta from 'pages/directory/display/DetailsBacenta'
+import DetailsConstituency from 'pages/directory/display/DetailsConstituency'
+import DetailsCouncil from 'pages/directory/display/DetailsCouncil'
+import DetailsStream from 'pages/directory/display/DetailsStream'
+import DetailsSonta from 'pages/directory/display/DetailsSonta'
+import DisplayAllBacentas from 'pages/directory/display/AllBacentas'
+import DisplayAllSontas from 'pages/directory/display/AllSontas'
+import DisplaySontasByConstituency from 'pages/directory/display/SontasByConstituency'
+import DisplayAllConstituencies from 'pages/directory/display/AllConstituencies'
+import DisplayAllFellowships from 'pages/directory/display/AllFellowships'
+import CreateConstituency from 'pages/directory/create/CreateConstituency'
+import CreateBacenta from 'pages/directory/create/CreateBacenta'
+import CreateFellowship from 'pages/directory/create/CreateFellowship'
+import CreateSonta from 'pages/directory/create/CreateSonta'
+import UpdateFellowship from 'pages/directory/update/UpdateFellowship'
+import UpdateBacenta from 'pages/directory/update/UpdateBacenta'
+import UpdateSonta from 'pages/directory/update/UpdateSonta'
+import UpdateConstituency from 'pages/directory/update/UpdateConstituency'
+import DetailsGatheringService from 'pages/directory/display/DetailsGatheringService.jsx'
+import DisplayAllCouncils from 'pages/directory/display/AllCouncils'
+import DisplayAllStreams from 'pages/directory/display/AllStreams'
+import CreateCouncil from 'pages/directory/create/CreateCouncil'
+import GatheringServiceConstituencies from 'pages/directory/display/GatheringServiceConstituencies'
+import UpdateCouncil from 'pages/directory/update/UpdateCouncil'
+import CreateStream from 'pages/directory/create/CreateStream'
+import UpdateStream from 'pages/directory/update/UpdateStream'
+import GatheringServiceMembers from 'pages/directory/grids/GatheringServiceMembers'
+import StreamMembers from 'pages/directory/grids/StreamMembers'
+import { permitAdmin, permitMe, permitLeaderAdmin } from 'permission-utils'
+import ServantMembers from './grids/ServantMembers'
 
 export const memberDirectory = [
   {
-    path: "/directory/members",
+    path: '/directory/members',
     element: ServantMembers,
-    roles: ["all"],
+    roles: ['all'],
   },
-];
+]
 export const memberGrids = [
   {
-    path: "/gatheringservice/members",
+    path: '/gatheringservice/members',
     element: GatheringServiceMembers,
-    roles: permitLeaderAdmin("GatheringService"),
+    roles: permitLeaderAdmin('GatheringService'),
   },
   {
-    path: "/stream/members",
+    path: '/stream/members',
     element: StreamMembers,
-    roles: permitLeaderAdmin("Stream"),
+    roles: permitLeaderAdmin('Stream'),
   },
   {
-    path: "/council/members",
+    path: '/council/members',
     element: CouncilMembers,
-    roles: permitLeaderAdmin("Council"),
+    roles: permitLeaderAdmin('Council'),
   },
   {
-    path: "/constituency/members",
+    path: '/constituency/members',
     element: ConstituencyMembers,
-    roles: permitLeaderAdmin("Constituency"),
+    roles: permitLeaderAdmin('Constituency'),
   },
 
   {
-    path: "/bacenta/members",
+    path: '/bacenta/members',
     element: BacentaMembers,
-    roles: permitLeaderAdmin("Bacenta"),
+    roles: permitLeaderAdmin('Bacenta'),
   },
   {
-    path: "/fellowship/members",
+    path: '/fellowship/members',
     element: FellowshipMembers,
-    roles: permitLeaderAdmin("Fellowship"),
+    roles: permitLeaderAdmin('Fellowship'),
   },
   {
-    path: "/sonta/members",
+    path: '/sonta/members',
     element: SontaMembers,
-    roles: permitLeaderAdmin("Sonta"),
+    roles: permitLeaderAdmin('Sonta'),
   },
-];
+]
 
 export const directory = [
   {
-    path: "/directory",
+    path: '/directory',
     element: Directory,
     placeholder: true,
-    roles: permitArrivals("Fellowship"),
+    roles: permitMe('Fellowship'),
   },
   {
-    path: "/directory/churches",
+    path: '/directory/churches',
     element: Churches,
-    roles: permitArrivals("Fellowship"),
+    roles: permitMe('Fellowship'),
   },
   // Member Display and Edit Pages
   {
-    path: "/user-profile",
+    path: '/user-profile',
     element: UserDisplayPage,
-    roles: ["all"],
+    roles: ['all'],
     placeholder: true,
   },
   {
-    path: "/member/displaydetails",
+    path: '/member/displaydetails',
     element: DisplayMember,
-    roles: permitArrivals("Fellowship"),
+    roles: permitMe('Fellowship'),
     placeholder: true,
   },
   {
-    path: "/user-profile/edit",
+    path: '/user-profile/edit',
     element: UserProfileEditPage,
-    roles: ["all"],
+    roles: ['all'],
     placeholder: true,
   },
   {
-    path: "/member/addmember",
+    path: '/member/addmember',
     element: CreateMember,
-    roles: permitLeaderAdmin("Fellowship"),
+    roles: permitLeaderAdmin('Fellowship'),
     placeholder: true,
   },
   {
-    path: "/member/editmember",
+    path: '/member/editmember',
     element: UpdateMember,
-    roles: permitLeaderAdmin("Constituency"),
+    roles: permitLeaderAdmin('Constituency'),
     placeholder: true,
   },
 
   //Search Routes
   {
-    path: "/search-results",
+    path: '/search-results',
     element: SearchPageMobile,
-    roles: ["all"],
+    roles: ['all'],
     placeholder: true,
   },
 
   //Display Church Details
   {
-    path: "/fellowship/displaydetails",
+    path: '/fellowship/displaydetails',
     element: DetailsFellowship,
-    roles: permitLeaderAdmin("Fellowship"),
+    roles: permitLeaderAdmin('Fellowship'),
     placeholder: true,
   },
   {
-    path: "/bacenta/displaydetails",
+    path: '/bacenta/displaydetails',
     element: DetailsBacenta,
-    roles: permitArrivals("Bacenta"),
+    roles: permitMe('Bacenta'),
     placeholder: true,
   },
   {
-    path: "/constituency/displaydetails",
+    path: '/constituency/displaydetails',
     element: DetailsConstituency,
-    roles: permitArrivals("Constituency"),
+    roles: permitMe('Constituency'),
     placeholder: true,
   },
 
   {
-    path: "/council/displaydetails",
+    path: '/council/displaydetails',
     element: DetailsCouncil,
-    roles: permitArrivals("Council"),
+    roles: permitMe('Council'),
     placeholder: true,
   },
   {
-    path: "/stream/displaydetails",
+    path: '/stream/displaydetails',
     element: DetailsStream,
-    roles: permitArrivals("Stream"),
+    roles: permitMe('Stream'),
     placeholder: false,
   },
   {
-    path: "/gatheringservice/displaydetails",
+    path: '/gatheringservice/displaydetails',
     element: DetailsGatheringService,
-    roles: permitArrivals("GatheringService"),
+    roles: permitMe('GatheringService'),
     placeholder: false,
   },
   {
-    path: "/gatheringservice/constituencies",
+    path: '/gatheringservice/constituencies',
     element: GatheringServiceConstituencies,
-    roles: permitArrivals("GatheringService"),
+    roles: permitMe('GatheringService'),
     placeholder: false,
   },
   {
-    path: "/sonta/displaydetails",
+    path: '/sonta/displaydetails',
     element: DetailsSonta,
-    roles: permitLeaderAdmin("Sonta"),
+    roles: permitLeaderAdmin('Sonta'),
     placeholder: true,
   },
 
   //Display Lists in the Directory
   {
-    path: "/bacenta/displayall",
+    path: '/bacenta/displayall',
     element: DisplayAllBacentas,
-    roles: permitArrivals("Constituency"),
+    roles: permitMe('Constituency'),
     placeholder: false,
   },
   {
-    path: "/sonta/displayall",
+    path: '/sonta/displayall',
     element: DisplayAllSontas,
-    roles: permitLeaderAdmin("Constituency"),
+    roles: permitLeaderAdmin('Constituency'),
     placeholder: false,
   },
   {
-    path: "/constituency/display-sontas",
+    path: '/constituency/display-sontas',
     element: DisplaySontasByConstituency,
-    roles: permitLeaderAdmin("Council"),
+    roles: permitLeaderAdmin('Council'),
     placeholder: false,
   },
 
   {
-    path: "/constituency/displayall",
+    path: '/constituency/displayall',
     element: DisplayAllConstituencies,
-    roles: permitArrivals("Council"),
+    roles: permitMe('Council'),
     placeholder: false,
   },
 
   {
-    path: "/fellowship/displayall",
+    path: '/fellowship/displayall',
     element: DisplayAllFellowships,
-    roles: permitArrivals("Bacenta"),
+    roles: permitMe('Bacenta'),
     placeholder: false,
   },
   {
-    path: "/council/displayall",
+    path: '/council/displayall',
     element: DisplayAllCouncils,
-    roles: permitArrivals("Stream"),
+    roles: permitMe('Stream'),
     placeholder: false,
   },
   {
-    path: "/stream/displayall",
+    path: '/stream/displayall',
     element: DisplayAllStreams,
-    roles: permitLeaderAdmin("GatheringService"),
+    roles: permitLeaderAdmin('GatheringService'),
     placeholder: false,
   },
 
   //Creation Pages
   {
-    path: "/fellowship/addfellowship",
+    path: '/fellowship/addfellowship',
     element: CreateFellowship,
-    roles: permitAdmin("Constituency"),
+    roles: permitAdmin('Constituency'),
     placeholder: false,
   },
   {
-    path: "/bacenta/addbacenta",
+    path: '/bacenta/addbacenta',
     element: CreateBacenta,
-    roles: permitAdmin("Constituency"),
+    roles: permitAdmin('Constituency'),
     placeholder: false,
   },
   {
-    path: "/sonta/addsonta",
+    path: '/sonta/addsonta',
     element: CreateSonta,
-    roles: permitAdmin("Constituency"),
+    roles: permitAdmin('Constituency'),
     placeholder: false,
   },
   {
-    path: "/constituency/addconstituency",
+    path: '/constituency/addconstituency',
     element: CreateConstituency,
-    roles: permitAdmin("Council"),
+    roles: permitAdmin('Council'),
     placeholder: false,
   },
   {
-    path: "/council/addcouncil",
+    path: '/council/addcouncil',
     element: CreateCouncil,
-    roles: permitAdmin("Stream"),
+    roles: permitAdmin('Stream'),
     placeholder: false,
   },
   {
-    path: "/stream/addstream",
+    path: '/stream/addstream',
     element: CreateStream,
-    roles: permitAdmin("GatheringService"),
+    roles: permitAdmin('GatheringService'),
     placeholder: false,
   },
 
   //Pages to Update the Directory
   {
-    path: "/fellowship/editfellowship",
+    path: '/fellowship/editfellowship',
     element: UpdateFellowship,
-    roles: permitAdmin("Constituency"),
+    roles: permitAdmin('Constituency'),
     placeholder: false,
   },
   {
-    path: "/bacenta/editbacenta",
+    path: '/bacenta/editbacenta',
     element: UpdateBacenta,
-    roles: permitArrivals("Constituency"),
+    roles: permitMe('Constituency'),
     placeholder: false,
   },
   {
-    path: "/sonta/editsonta",
+    path: '/sonta/editsonta',
     element: UpdateSonta,
-    roles: permitAdmin("Constituency"),
+    roles: permitAdmin('Constituency'),
     placeholder: false,
   },
   {
-    path: "/constituency/editconstituency",
+    path: '/constituency/editconstituency',
     element: UpdateConstituency,
-    roles: permitAdmin("Council"),
+    roles: permitAdmin('Council'),
     placeholder: false,
   },
   {
-    path: "/council/editcouncil",
+    path: '/council/editcouncil',
     element: UpdateCouncil,
-    roles: permitAdmin("Stream"),
+    roles: permitAdmin('Stream'),
     placeholder: false,
   },
   {
-    path: "/stream/editstream",
+    path: '/stream/editstream',
     element: UpdateStream,
-    roles: permitAdmin("GatheringService"),
+    roles: permitAdmin('GatheringService'),
     placeholder: false,
   },
-];
+]
