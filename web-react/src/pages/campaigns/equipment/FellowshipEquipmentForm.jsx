@@ -9,7 +9,8 @@ import { MemberContext } from 'contexts/MemberContext'
 import { useMutation } from '@apollo/client'
 import { FELLOWSHIP_EQUIPMENT_RECORD_CREATION } from '../CampaignQueries'
 import { ChurchContext } from 'contexts/ChurchContext'
-import { useNavigate } from 'react-router'
+//import { useNavigate } from 'react-router'
+import { CampaignContext } from 'contexts/CampaignContext'
 
 const FellowshipEquipmentForm = () => {
   const { currentUser } = useContext(MemberContext)
@@ -17,11 +18,13 @@ const FellowshipEquipmentForm = () => {
   const church = currentUser.currentChurch
   const churchType = currentUser.currentChurch?.__typename
 
+  const { setEquipmentRecordId } = useContext(CampaignContext)
+
   const [CreateEquipmentRecord] = useMutation(
     FELLOWSHIP_EQUIPMENT_RECORD_CREATION
   )
   const { theme } = useContext(MemberContext)
-  const navigate = useNavigate()
+  //const navigate = useNavigate()
 
   const initialValues = {
     fellowshipId: ' ',
@@ -37,10 +40,12 @@ const FellowshipEquipmentForm = () => {
         offeringBags: parseInt(values.offeringBags),
         date: values.date,
       },
-    }).then(res => {
+    }).then((res) => {
       onSubmitProps.setSubmitting(false)
       onSubmitProps.resetForm()
-      navigate('/campaigns/fellowship/equipment/form-details')
+      console.log(res.data)
+      setEquipmentRecordId(res.data)
+      //navigate('/campaigns/fellowship/equipment/form-details')
       console.log(res)
     })
   }
@@ -52,7 +57,7 @@ const FellowshipEquipmentForm = () => {
       onSubmit={onSubmit}
       validateOnMount={true}
     >
-      {formik => (
+      {(formik) => (
         <Container>
           <HeadingPrimary className="text-center">
             Equipment Campaign Form

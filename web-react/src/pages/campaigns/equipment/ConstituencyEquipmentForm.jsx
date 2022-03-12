@@ -52,7 +52,7 @@ const ConstituencyEquipmentForm = () => {
       onSubmit={onSubmit}
       validateOnMount={true}
     >
-      {formik => (
+      {(formik) => (
         <Container>
           <HeadingPrimary className="text-center">
             Equipment Campaign Form

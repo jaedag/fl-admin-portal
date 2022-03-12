@@ -24,7 +24,7 @@ export const menuItems = [
   },
   {
     name: 'Campaigns',
-    to: '/campaigns',
+    to: '/campaigns/churchList',
     roles: permitLeaderAdmin('Constituency'),
   },
   {
