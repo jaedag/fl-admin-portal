@@ -60,7 +60,6 @@ extend type Council {
     )
 }
 
-
 extend type Constituency {
   pulpits: Int
     @cypher(
@@ -81,20 +80,17 @@ extend type Constituency {
     )
 }
 
-
 extend type Bacenta {
   offeringBags: Int
     @cypher(
       statement: """
       match (dates:TimeGraph)<-[:HAS_EQUIPMENT_DATE]-(:EquipmentRecord)
       with max(dates.date) as lastDate
-      match (this)-[:HAS_CAMPAIGN]->(:EquipmentCampaign)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_RECORD]->(record:EquipmentRecord)-[:HAS]->(fellowshipRecord:EquipmentRecord)-[:HAS_EQUIPMENT_DATE]->(date:TimeGraph {date:lastDate}) 
+      match (this)-[:HAS_CAMPAIGN]->(:EquipmentCampaign)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_RECORD]->(record:EquipmentRecord)-[:HAS]->(fellowshipRecord:EquipmentRecord)-[:HAS_EQUIPMENT_DATE]->(date:TimeGraph {date:lastDate})
       return sum(fellowshipRecord.offeringBags)
       """
     )
 }
-
-
 
 extend type Fellowship {
   offeringBags: Int
@@ -106,7 +102,6 @@ extend type Fellowship {
       """
     )
 }
-
 
 ###### CAMPAIGN TYPES #######
 type EquipmentRecord {
@@ -206,7 +201,7 @@ extend type Mutation {
     @cypher(
       statement: """
       MATCH (fellowship:Fellowship {id:$fellowshipId})
-      MATCH (fellowship)-[:HAS_CAMPAIGN]->(:EquipmentCampaign)-[:HAS_HISTORY]->(:HistoryLog)-[:HAS_RECORD]->(record:EquipmentRecord)
+      MATCH (fellowship)-[:HAS_CAMPAIGN]->(:EquipmentCampaign)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_RECORD]->(record:EquipmentRecord)
       SET
       record.offeringBags = $offeringBags
 
@@ -223,7 +218,7 @@ extend type Mutation {
     @cypher(
       statement: """
       MATCH (constituency:Constituency {id:$constituencyId})
-      MATCH (constituency)-[:HAS_CAMPAIGN]->(:EquipmentCampaign)-[:HAS_HISTORY]->(:HistoryLog)-[:HAS_RECORD]->(record:EquipmentRecord)
+      MATCH (constituency)-[:HAS_CAMPAIGN]->(:EquipmentCampaign)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_RECORD]->(record:EquipmentRecord)
       SET
       record.pulpits = $pulpits
 
