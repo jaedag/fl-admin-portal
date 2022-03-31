@@ -13,9 +13,14 @@ import { ChurchContext } from 'contexts/ChurchContext'
 import BaseComponent from 'components/base-component/BaseComponent'
 import PlusSign from 'components/buttons/PlusMinusSign/PlusSign'
 import MinusSign from 'components/buttons/PlusMinusSign/MinusSign'
-import { RECORD_BUSSING_FROM_BACENTA } from './arrivalsMutations'
-import { MOMO_NUM_REGEX, parseDate } from 'global-utils'
+import {
+  RECORD_BUSSING_FROM_BACENTA,
+  SET_BUSSING_SUPPORT,
+} from './arrivalsMutations'
+import { MOMO_NUM_REGEX } from 'global-utils'
+import { parseDate } from 'date-utils'
 import { ServiceContext } from 'contexts/ServiceContext'
+import { MOBILE_NETWORK_OPTIONS } from './arrivals-utils'
 
 const FormOnTheWaySubmission = () => {
   const navigate = useNavigate()
@@ -25,9 +30,9 @@ const FormOnTheWaySubmission = () => {
     attendance: '',
     bussingPictures: [''],
     bussingCost: '',
-    offeringRaised: '',
     numberOfBusses: '',
     numberOfCars: '',
+    mobileNetwork: '',
     momoName: '',
     momoNumber: '',
   }
@@ -38,6 +43,7 @@ const FormOnTheWaySubmission = () => {
 
   const bacenta = data?.bacentas[0]
   const [RecordBussingFromBacenta] = useMutation(RECORD_BUSSING_FROM_BACENTA)
+  const [SetBussingSupport] = useMutation(SET_BUSSING_SUPPORT)
 
   const validationSchema = Yup.object({
     attendance: Yup.number()
@@ -49,10 +55,6 @@ const FormOnTheWaySubmission = () => {
       .max(4, 'You cannot upload more than four pictures per bacenta')
       .of(Yup.string().required('You must upload a bussing picture')),
     bussingCost: Yup.number()
-      .typeError('Please enter a valid number')
-      .positive()
-      .required('This is a required field'),
-    offeringRaised: Yup.number()
       .typeError('Please enter a valid number')
       .positive()
       .required('This is a required field'),
@@ -73,6 +75,10 @@ const FormOnTheWaySubmission = () => {
       is: (momoNumber) => momoNumber && momoNumber.length > 0,
       then: Yup.string().required('Please enter the Momo Name'),
     }),
+    mobileNetwork: Yup.string().when('momoNumber', {
+      is: (momoNumber) => momoNumber && momoNumber.length > 0,
+      then: Yup.string().required('Please enter the Mobile Network'),
+    }),
   })
 
   const onSubmit = (values, onSubmitProps) => {
@@ -83,14 +89,20 @@ const FormOnTheWaySubmission = () => {
         bussingRecordId: bussingRecordId,
         bussingPictures: values.bussingPictures,
         bussingCost: parseFloat(values.bussingCost),
-        offeringRaised: parseFloat(values.offeringRaised),
         numberOfBusses: parseInt(values.numberOfBusses),
         numberOfCars: parseInt(values.numberOfCars || 0),
+        mobileNetwork: values.mobileNetwork,
         momoName: values.momoName,
         momoNumber: values.momoNumber,
       },
-    }).then((res) => {
+    }).then(async (res) => {
       clickCard(res.data.RecordBussingFromBacenta)
+      await SetBussingSupport({
+        variables: {
+          bussingRecordId: bussingRecordId,
+        },
+      })
+
       onSubmitProps.resetForm()
       onSubmitProps.setSubmitting(false)
       navigate(`/bacenta/bussing-details`)
@@ -140,11 +152,7 @@ const FormOnTheWaySubmission = () => {
                     name="bussingCost"
                     label="Bussing Cost (in Cedis)*"
                   />
-                  <FormikControl
-                    control="input"
-                    name="offeringRaised"
-                    label="Offering Raised (in Cedis)*"
-                  />
+
                   <FormikControl
                     control="input"
                     name="numberOfBusses"
@@ -156,9 +164,16 @@ const FormOnTheWaySubmission = () => {
                     label="Number of Cars"
                   />
                   <FormikControl
+                    control="select"
+                    name="mobileNetwork"
+                    label="Mobile Network"
+                    options={MOBILE_NETWORK_OPTIONS}
+                  />
+                  <FormikControl
                     control="input"
                     name="momoNumber"
                     label="MoMo Number"
+                    defaultOption="Choose a Network"
                   />
                   <FormikControl
                     control="input"

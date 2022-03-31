@@ -6,7 +6,6 @@ import PlaceholderCustom from 'components/Placeholder'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { ServiceContext } from 'contexts/ServiceContext'
 import { Formik, Form } from 'formik'
-import { transformCloudinaryImg } from 'global-utils'
 import React from 'react'
 import * as Yup from 'yup'
 import { useContext } from 'react'
@@ -18,6 +17,7 @@ import FormikControl from 'components/formik-components/FormikControl'
 import SubmitButton from 'components/formik-components/SubmitButton'
 import { useState } from 'react'
 import { useEffect } from 'react'
+import CloudinaryImage from 'components/CloudinaryImage'
 
 const FormAttendanceConfirmation = () => {
   const navigate = useNavigate()
@@ -39,7 +39,7 @@ const FormAttendanceConfirmation = () => {
   const [bussingMoney, setBussingMoney] = useState(0)
 
   useEffect(() => {
-    setBussingMoney(data?.bacentas[0]?.zone.bussingTopUp)
+    setBussingMoney(data?.bacentas[0]?.normalBussingTopUp)
   }, [data])
 
   const validationSchema = Yup.object({
@@ -86,10 +86,11 @@ const FormAttendanceConfirmation = () => {
         <h6>Bussing Pictures</h6>
         {bussing?.bussingPictures.map((picture, index) => {
           return (
-            <img
+            <CloudinaryImage
               key={index}
+              src={picture}
               className="report-picture"
-              src={transformCloudinaryImg(picture, 'large')}
+              large
             />
           )
         })}
@@ -98,7 +99,7 @@ const FormAttendanceConfirmation = () => {
         <Card>
           <Card.Body>
             <div className="text-secondary">
-              Bussing Cost:{' '}
+              Total Bussing Cost:{' '}
               <span className="fw-bold text-info">
                 GHS {bussing?.bussingCost}
               </span>
@@ -124,20 +125,20 @@ const FormAttendanceConfirmation = () => {
                 onChange={(e) => {
                   formik.setFieldValue('attendance', e.target.value)
                   if (e.target.value > 20) {
-                    setBussingMoney(bacenta?.zone.bussingTopUp * 1.5)
+                    setBussingMoney(bacenta?.normalBussingTopUp * 1.5)
                   }
                   if (e.target.value < 20) {
-                    setBussingMoney(bacenta?.zone.bussingTopUp)
+                    setBussingMoney(bacenta?.normalBussingTopUp)
                   }
                 }}
               />
 
-              <div>{`Zone ${bacenta?.zone.number} usually receives ${bacenta?.zone.bussingTopUp} GHS`}</div>
+              <div>{`This bacenta usually receives ${bacenta?.normalBussingTopUp} GHS on a normal day and ${bacenta?.swellBussingTopUp} on a swell day`}</div>
 
               <FormikControl
                 control="input"
                 name="bussingTopUp"
-                label="Bussing Top Up Given From the Church* (in GHS)"
+                label="Bussing Top Up From Church* (in GHS)"
                 placeholder={`${bussingMoney}`}
               />
               <FormikControl

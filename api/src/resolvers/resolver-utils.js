@@ -2,7 +2,7 @@ const servantCypher = require('./cypher/servant-cypher')
 
 export const isAuth = (permittedRoles, userRoles) => {
   if (!permittedRoles.some((r) => userRoles.includes(r))) {
-    throw 'You are not permitted to run this mutation'
+    throwErrorMsg('You are not permitted to run this mutation')
   }
 }
 
@@ -16,9 +16,13 @@ export const throwErrorMsg = (message, error) => {
     errorVar = error?.response?.data?.message
   }
 
+  if (error?.response?.statusText) {
+    errorVar = error.response.status + ' ' + error.response.statusText
+  }
+
   // eslint-disable-next-line no-console
   console.error(message, errorVar)
-  throw `${message} ${errorVar}`
+  throw new Error(`${message} ${errorVar}`)
 }
 
 export const noEmptyArgsValidation = (args) => {
@@ -35,7 +39,9 @@ export const noEmptyArgsValidation = (args) => {
 
 export const errorHandling = (member) => {
   if (!member.email) {
-    throw `${member.firstName} ${member.lastName} does not have a valid email address. Please add an email address and then try again`
+    throwErrorMsg(
+      `${member.firstName} ${member.lastName} does not have a valid email address. Please add an email address and then try again`
+    )
   }
   return
 }
@@ -46,6 +52,12 @@ export const rearrangeCypherObject = (response) => {
   response.records[0]?.keys.forEach(
     (key, i) => (member[key] = response.records[0]._fields[i])
   )
+
+  response.records.map((record, index) => {
+    record?.keys.forEach(
+      (key, j) => (member[key] = response.records[index]._fields[j])
+    )
+  })
 
   return member?.member || member
 }
@@ -103,6 +115,8 @@ export const nextHigherChurch = (churchLevel) => {
       return 'Stream'
     case 'Stream':
       return 'Gathering Service'
+    case 'Gathering Service':
+      return 'Denomination'
     default:
       break
   }
@@ -137,12 +151,16 @@ export const historyRecordString = ({
     return `${servant.firstName} ${servant.lastName} was removed as the ${churchType} ${servantType} for  ${church.name} ${churchType}`
   }
 
-  if (args.oldLeaderId || args.oldAdminId) {
+  if (args.oldLeaderId || args.oldAdminId || args.oldArrivalsAdminId) {
     return `${servant.firstName} ${servant.lastName} became the ${servantType} of ${church.name} ${churchType} replacing ${oldServant.firstName} ${oldServant.lastName}`
   }
 
   if (args.adminId) {
     return `${servant.firstName} ${servant.lastName} became the admin for ${church.name} ${churchType}`
+  }
+
+  if (args.arrivalsAdminId) {
+    return `${servant.firstName} ${servant.lastName} became the arrivals admin for ${church.name} ${churchType}`
   }
 
   return `${servant.firstName} ${servant.lastName} started ${church.name} ${churchType} under ${higherChurch.name} ${higherChurch.type}`
@@ -157,10 +175,9 @@ export const makeServantCypher = async (
   oldServant,
   church
 ) => {
-  let servantLower = servantType.toLowerCase()
-  if (servantType === 'ArrivalsAdmin') {
-    servantLower = 'arrivalsAdmin'
-  }
+  const terms = formatting(churchType, servantType)
+  let servantLower = terms.servantLower
+
   const session = context.driver.session()
   //Connect Leader to Church
 
@@ -172,7 +189,7 @@ export const makeServantCypher = async (
       auth: context.auth,
     })
   )
-  console.log(`connectChurch${servantType}`, connectedChurchRes)
+
   const historyRecordStringArgs = {
     servant: servant,
     servantType: servantType,
@@ -226,7 +243,8 @@ export const removeServantCypher = async (
   servant,
   church
 ) => {
-  const servantLower = servantType.toLowerCase()
+  const terms = formatting(churchType, servantType)
+  const servantLower = terms.servantLower
   const session = context.driver.session()
 
   //Disconnect him from the Church
@@ -259,4 +277,32 @@ export const removeServantCypher = async (
     logId: historyLogRes.id,
     auth: context.auth,
   })
+}
+
+export const formatting = (churchType, servantType) => {
+  let churchLower = churchType.toLowerCase()
+  let servantLower = servantType.toLowerCase()
+
+  let verb = `leads${churchType}`
+  if (servantType === 'Admin') {
+    verb = `isAdminFor${churchType}`
+  }
+  if (servantType === 'ArrivalsAdmin') {
+    verb = `isArrivalsAdminFor${churchType}`
+    servantLower = 'arrivalsAdmin'
+  }
+  if (servantType === 'ArrivalsHelper') {
+    verb = `isArrivalsHelperFor${churchType}`
+    servantLower = 'arrivalsHelper'
+  }
+
+  if (churchType === 'GatheringService') {
+    churchLower = 'gatheringService'
+  }
+
+  return {
+    verb,
+    servantLower,
+    churchLower,
+  }
 }

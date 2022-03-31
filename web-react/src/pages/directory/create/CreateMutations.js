@@ -136,14 +136,12 @@ export const CREATE_BACENTA_MUTATION = gql`
     $constituencyId: ID!
     $leaderId: ID!
     $fellowships: [ID]
-    $zone: Int!
   ) {
     CreateBacenta(
       name: $name
       constituencyId: $constituencyId
       leaderId: $leaderId
       fellowships: $fellowships
-      zone: $zone
     ) {
       id
       name

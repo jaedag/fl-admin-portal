@@ -42,8 +42,6 @@ const UpdateBacenta = () => {
     leaderId: bacenta?.leader?.id || '',
     constituency: bacenta?.constituency?.id,
     fellowships: bacenta?.fellowships.length ? bacenta?.fellowships : [''],
-    zone: bacenta?.zone.number,
-    graduationStatus: bacenta?.graduationStatus,
     vacationStatus: bacenta?.vacationStatus,
   }
 
@@ -165,7 +163,6 @@ const UpdateBacenta = () => {
         name: values.name,
         leaderId: values.leaderId,
         constituencyId: values.constituency,
-        zone: parseInt(values.zone),
       },
     })
       .then(() => {
@@ -179,19 +176,6 @@ const UpdateBacenta = () => {
               oldConstituencyId: '',
               newConstituencyId: '',
               historyRecord: `Bacenta name has been changed from ${initialValues.name} to ${values.name}`,
-            },
-          })
-        }
-
-        if (values.zone !== initialValues.zone) {
-          LogBacentaHistory({
-            variables: {
-              bacentaId: bacentaId,
-              newLeaderId: '',
-              oldLeaderId: '',
-              oldConstituencyId: '',
-              newConstituencyId: '',
-              historyRecord: `Bacenta has been moved from Zone ${initialValues.zone} to Zone ${values.zone}`,
             },
           })
         }

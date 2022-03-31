@@ -10,37 +10,32 @@ import * as Yup from 'yup'
 import React from 'react'
 import { useContext } from 'react'
 import { Button, Col, Container, Row } from 'react-bootstrap'
-import { CONSTIUENCY_ARRIVALS_DASHBOARD } from './arrivalsQueries'
+import { COUNCIL_ARRIVALS_DASHBOARD } from './arrivalsQueries'
 import { useNavigate } from 'react-router'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import RoleView from 'auth/RoleView'
 import { throwErrorMsg } from 'global-utils'
-import { MAKE_CONSTITUENCYARRIVALS_ADMIN } from './arrivalsMutations'
+import { MAKE_COUNCILARRIVALS_ADMIN } from './arrivalsMutations'
 import { permitAdmin, permitArrivals } from 'permission-utils'
 import HeadingSecondary from 'components/HeadingSecondary'
-import {
-  CashStack,
-  PersonCheck,
-  Forward,
-  Download,
-} from 'react-bootstrap-icons'
+import DefaulterInfoCard from 'pages/services/defaulters/DefaulterInfoCard'
+import { MemberContext } from 'contexts/MemberContext'
 
-const ConstituencyDashboard = () => {
-  const { isOpen, togglePopup, constituencyId } = useContext(ChurchContext)
+const CouncilDashboard = () => {
+  const { isOpen, togglePopup } = useContext(ChurchContext)
+  const { currentUser } = useContext(MemberContext)
   const navigate = useNavigate()
-  const { data, loading, error } = useQuery(CONSTIUENCY_ARRIVALS_DASHBOARD, {
-    variables: { id: constituencyId },
+  const { data, loading, error } = useQuery(COUNCIL_ARRIVALS_DASHBOARD, {
+    variables: { id: currentUser?.currentChurch.id },
   })
-  const [MakeConstituencyArrivalsAdmin] = useMutation(
-    MAKE_CONSTITUENCYARRIVALS_ADMIN
-  )
-  const constituency = data?.constituencies[0]
+  const [MakeCouncilArrivalsAdmin] = useMutation(MAKE_COUNCILARRIVALS_ADMIN)
+  const council = data?.councils[0]
 
   const initialValues = {
-    adminName: constituency?.arrivalsAdmin
-      ? `${constituency?.arrivalsAdmin?.fullName}`
+    adminName: council?.arrivalsAdmin
+      ? `${council?.arrivalsAdmin?.firstName} ${council?.arrivalsAdmin?.lastName}`
       : '',
-    adminSelect: constituency?.arrivalsAdmin?.id ?? '',
+    adminSelect: council?.arrivalsAdmin?.id ?? '',
   }
   const validationSchema = Yup.object({
     adminSelect: Yup.string().required(
@@ -51,9 +46,9 @@ const ConstituencyDashboard = () => {
   const onSubmit = (values, onSubmitProps) => {
     onSubmitProps.setSubmitting(true)
 
-    MakeConstituencyArrivalsAdmin({
+    MakeCouncilArrivalsAdmin({
       variables: {
-        constituencyId: constituencyId,
+        councilId: currentUser?.currentChurch.id,
         newAdminId: values.adminSelect,
         oldAdminId: initialValues.adminSelect || 'no-old-admin',
       },
@@ -61,22 +56,30 @@ const ConstituencyDashboard = () => {
       .then(() => {
         togglePopup()
         onSubmitProps.setSubmitting(false)
-        alert('Constituency Arrivals Admin has been changed successfully')
+        alert('Council Arrivals Admin has been changed successfully')
       })
       .catch((e) => throwErrorMsg(e))
+  }
+
+  const aggregates = {
+    title: 'Constituencies',
+    data: council?.constituencyCount,
+    link: `/arrivals/council-by-constituency`,
   }
 
   return (
     <BaseComponent data={data} loading={loading} error={error}>
       <Container>
         <HeadingPrimary loading={loading}>
-          {constituency?.name} Constituency Arrivals
+          {council?.name} Council Arrivals Summary
         </HeadingPrimary>
-        <HeadingSecondary>{`Arrivals Rep: ${constituency?.arrivalsAdmin?.fullName}`}</HeadingSecondary>
+        <HeadingSecondary>{`Arrivals Rep: ${
+          council?.arrivalsAdmin?.fullName ?? 'None'
+        }`}</HeadingSecondary>
         {isOpen && (
           <Popup handleClose={togglePopup}>
             <b>Change Arrivals Admin</b>
-            <p>Please enter the name of the new administrator</p>
+            <p>Please enter the name of the new arrivals rep</p>
 
             <Formik
               initialValues={initialValues}
@@ -108,10 +111,7 @@ const ConstituencyDashboard = () => {
 
         <div className="d-grid gap-2">
           <RoleView
-            roles={[
-              ...permitAdmin('Constituency'),
-              ...permitArrivals('Council'),
-            ]}
+            roles={[...permitAdmin('Council'), ...permitArrivals('Stream')]}
           >
             <Button
               variant="outline-secondary my-3"
@@ -120,52 +120,69 @@ const ConstituencyDashboard = () => {
               Change Arrivals Admin
             </Button>
           </RoleView>
+
+          <DefaulterInfoCard defaulter={aggregates} />
           <MenuButton
             title="Bacentas With No Activity"
             onClick={() => navigate('/arrivals/bacentas-no-activity')}
-            number={`12`}
+            number={council?.bacentasNoActivityCount.toString()}
+            color="red"
             iconBg
             noCaption
           />
           <MenuButton
             title="Bacentas Mobilising"
             onClick={() => navigate('/arrivals/bacentas-mobilising')}
-            number={`12`}
+            number={council?.bacentasMobilisingCount.toString()}
+            color="orange"
             iconBg
             noCaption
           />
           <MenuButton
             title="Bacentas On The Way"
             onClick={() => navigate('/arrivals/bacentas-on-the-way')}
-            iconComponent={Forward}
+            number={council?.bacentasOnTheWayCount.toString()}
+            color="yellow"
             iconBg
             noCaption
           />
+
           <MenuButton
-            title="Bacentas That Have Been Counted"
-            onClick={() => navigate('/arrivals/bacentas-have-been-counted')}
-            iconComponent={PersonCheck}
+            title="Confirm Bacenta Arrival"
+            onClick={() => navigate('/arrivals/confirm-bacenta-arrival')}
+            number={council?.bacentasOnTheWayCount.toString()}
             iconBg
             noCaption
           />
+
           <MenuButton
             title="Bacentas That Have Arrived"
-            onClick={() => navigate('/arrivals/bacentas-arrived')}
-            iconComponent={Download}
+            onClick={() => navigate('/arrivals/bacentas-have-arrived')}
+            number={council?.bacentasHaveArrivedCount.toString()}
+            color="green"
             iconBg
             noCaption
           />
-          <MenuButton
-            title="Bacentas That Have Money Sent"
-            onClick={() => navigate('/arrivals/bacentas-arrived')}
-            iconComponent={CashStack}
-            iconBg
-            noCaption
-          />
+          <div className="mt-5 d-grid gap-2">
+            <MenuButton
+              title="Members On The Way"
+              number={council?.bussingMembersOnTheWayCount.toString()}
+              color="yellow"
+              iconBg
+              noCaption
+            />
+            <MenuButton
+              title="Members That Have Arrived"
+              number={council?.bussingMembersHaveArrivedCount.toString()}
+              color="green"
+              iconBg
+              noCaption
+            />
+          </div>
         </div>
       </Container>
     </BaseComponent>
   )
 }
 
-export default ConstituencyDashboard
+export default CouncilDashboard

@@ -40,8 +40,14 @@ import CreateStream from 'pages/directory/create/CreateStream'
 import UpdateStream from 'pages/directory/update/UpdateStream'
 import GatheringServiceMembers from 'pages/directory/grids/GatheringServiceMembers'
 import StreamMembers from 'pages/directory/grids/StreamMembers'
-import { permitAdmin, permitMe, permitLeaderAdmin } from 'permission-utils'
+import {
+  permitAdmin,
+  permitMe,
+  permitLeaderAdmin,
+  permitAdminArrivals,
+} from 'permission-utils'
 import ServantMembers from './grids/ServantMembers'
+import UpdateBacentaBussing from './update/UpdateBacentaBussing'
 
 export const memberDirectory = [
   {
@@ -54,28 +60,28 @@ export const memberGrids = [
   {
     path: '/gatheringservice/members',
     element: GatheringServiceMembers,
-    roles: permitLeaderAdmin('GatheringService'),
+    roles: permitMe('GatheringService'),
   },
   {
     path: '/stream/members',
     element: StreamMembers,
-    roles: permitLeaderAdmin('Stream'),
+    roles: permitMe('Stream'),
   },
   {
     path: '/council/members',
     element: CouncilMembers,
-    roles: permitLeaderAdmin('Council'),
+    roles: permitMe('Council'),
   },
   {
     path: '/constituency/members',
     element: ConstituencyMembers,
-    roles: permitLeaderAdmin('Constituency'),
+    roles: permitMe('Constituency'),
   },
 
   {
     path: '/bacenta/members',
     element: BacentaMembers,
-    roles: permitLeaderAdmin('Bacenta'),
+    roles: permitMe('Bacenta'),
   },
   {
     path: '/fellowship/members',
@@ -288,6 +294,12 @@ export const directory = [
     element: UpdateBacenta,
     roles: permitMe('Constituency'),
     placeholder: false,
+  },
+  {
+    path: '/bacenta/editbussing',
+    element: UpdateBacentaBussing,
+    roles: permitAdminArrivals('Stream'),
+    placeholder: true,
   },
   {
     path: '/sonta/editsonta',

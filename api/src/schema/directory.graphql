@@ -28,21 +28,29 @@ type Member @auth(rules: [{ isAuthenticated: true }]) {
   members: [Member]
     @cypher(
       statement: """
-      MATCH (this)-[:LEADS|HAS|DOES_ARRIVALS_FOR|IS_ADMIN_FOR*1..6]->(:Fellowship)-[:BELONGS_TO]-(members)
+      MATCH (this)-[:LEADS|HAS|DOES_ARRIVALS_FOR|IS_ADMIN_FOR*1..6]->(:Fellowship)<-[:BELONGS_TO]-(members:Member)
       RETURN DISTINCT members ORDER BY toLower(members.lastName), toLower(members.firstName)
+      """
+    )
+  memberSearch(key: String!, limit: Int! = 5): [Member]
+    @cypher(
+      statement: """
+      MATCH (this)-[:LEADS|HAS|DOES_ARRIVALS_FOR|IS_ADMIN_FOR*1..6]->(:Fellowship)<-[:BELONGS_TO]-(members:Member)
+      WHERE toLower(members.firstName+ ' ' + members.lastName) CONTAINS toLower($key)
+      RETURN DISTINCT members ORDER BY toLower(members.lastName), toLower(members.firstName) LIMIT $limit
       """
     )
   memberCount: Int
     @cypher(
       statement: """
-      MATCH (this)-[:LEADS|HAS|DOES_ARRIVALS_FOR|IS_ADMIN_FOR*1..6]->(:Fellowship)-[:BELONGS_TO]-(members)
+      MATCH (this)-[:LEADS|HAS|DOES_ARRIVALS_FOR|IS_ADMIN_FOR*1..6]->(:Fellowship)<-[:BELONGS_TO]-(members:Member)
       RETURN COUNT(DISTINCT members)
       """
     )
   basontaMembers: [Member]
     @cypher(
       statement: """
-      MATCH (this)-[:LEADS|HAS|IS_ADMIN_FOR*1..6]->(:Fellowship)-[:BELONGS_TO]-(members)
+      MATCH (this)-[:LEADS|HAS|IS_ADMIN_FOR*1..6]->(:Fellowship)<-[:BELONGS_TO]-(members:Member)
       MATCH (members)-[:BELONGS_TO]->(:Ministry)
       RETURN DISTINCT members ORDER BY toLower(members.lastName), toLower(members.firstName)
       """
@@ -50,7 +58,7 @@ type Member @auth(rules: [{ isAuthenticated: true }]) {
   basontaMembershipCount: Int
     @cypher(
       statement: """
-      MATCH (this)-[:LEADS|HAS|IS_ADMIN_FOR*1..6]->(:Fellowship)-[:BELONGS_TO]-(members)
+      MATCH (this)-[:LEADS|HAS|IS_ADMIN_FOR*1..6]->(:Fellowship)<-[:BELONGS_TO]-(members:Member)
       MATCH (members)-[:BELONGS_TO]->(:Ministry)
       RETURN COUNT(DISTINCT members)
       """
@@ -118,11 +126,6 @@ type Member @auth(rules: [{ isAuthenticated: true }]) {
   isAdminForConstituency: [Constituency]
     @relationship(type: "IS_ADMIN_FOR", direction: OUT)
 
-  isArrivalsAdminForCouncil: [Council]
-    @relationship(type: "DOES_ARRIVALS_FOR", direction: OUT)
-  isArrivalsAdminForConstituency: [Constituency]
-    @relationship(type: "DOES_ARRIVALS_FOR", direction: OUT)
-
   #OTHER WORKS
   was_treasurer_for: [ServiceRecord]!
     @relationship(type: "WAS_TREASURER_FOR", direction: OUT)
@@ -153,8 +156,29 @@ interface HasTitle @relationshipProperties {
   date: Date
 }
 
-type TimeGraph @auth(rules: [{ isAuthenticated: true }]) {
+interface TimeGraphNode {
   date: Date
+}
+
+type TimeGraph implements TimeGraphNode
+  @auth(rules: [{ isAuthenticated: true }]) {
+  id: ID
+    @cypher(
+      statement: """
+      MATCH (this)
+      RETURN toString(this.date)
+      """
+    )
+  date: Date
+  swell: Boolean
+    @cypher(
+      statement: """
+      MATCH (this)
+      UNWIND labels(this) AS swellStatus
+      WITH swellStatus WHERE swellStatus ='SwellDate'
+      RETURN true
+      """
+    )
   memberDob: Member @relationship(type: "WAS_BORN_ON", direction: IN)
   # titleAppointmentDate: Member @relationship(type: "APPOINTED_ON", direction: IN)
   leaderHistoryStartDate: Member
@@ -164,6 +188,7 @@ type TimeGraph @auth(rules: [{ isAuthenticated: true }]) {
   historyDate: Member @relationship(type: "RECORDED_ON", direction: OUT)
   serviceDate: [ServiceRecord]
     @relationship(type: "SERVICE_HELD_ON", direction: IN)
+  bussingDate: [BussingRecord] @relationship(type: "BUSSED_ON", direction: IN)
 }
 
 type HistoryLog @auth(rules: [{ isAuthenticated: true }]) {
@@ -255,6 +280,10 @@ type GatheringService implements Church {
   bacentaCount: Int
     @cypher(
       statement: "MATCH (this)-[:HAS*4]->(bacentas:Bacenta) RETURN COUNT(DISTINCT bacentas)"
+    )
+  activeBacentaCount: Int
+    @cypher(
+      statement: "MATCH (this)-[:HAS*4]->(bacentas:Bacenta:Active) RETURN COUNT(DISTINCT bacentas)"
     )
   fellowshipCount: Int
     @cypher(
@@ -356,6 +385,10 @@ type Stream implements Church {
     @cypher(
       statement: "MATCH (this)-[:HAS*3]->(bacentas:Bacenta) RETURN COUNT(DISTINCT bacentas)"
     )
+  activeBacentaCount: Int
+    @cypher(
+      statement: "MATCH (this)-[:HAS*3]->(bacentas:Bacenta:Active) RETURN COUNT(DISTINCT bacentas)"
+    )
   bacentaSearch(key: String!, limit: Int!): [Fellowship]
     @cypher(
       statement: """
@@ -448,6 +481,10 @@ type Council implements Church {
   bacentaCount: Int
     @cypher(
       statement: "MATCH (this)-[:HAS*2]->(bacentas:Bacenta) RETURN COUNT(DISTINCT bacentas)"
+    )
+  activeBacentaCount: Int
+    @cypher(
+      statement: "MATCH (this)-[:HAS*2]->(bacentas:Bacenta:Active) RETURN COUNT(DISTINCT bacentas)"
     )
   bacentaSearch(key: String!, limit: Int!): [Fellowship]
     @cypher(

@@ -1,15 +1,16 @@
 import { useQuery } from '@apollo/client'
 import BaseComponent from 'components/base-component/BaseComponent'
-import PlaceholderCustom from 'components/Placeholder'
 import { ChurchContext } from 'contexts/ChurchContext'
 import React, { useContext } from 'react'
-import { Card, Col, Container, Row, Button } from 'react-bootstrap'
+import { Card, Col, Row, Button, Container } from 'react-bootstrap'
 import { TelephoneFill, Whatsapp } from 'react-bootstrap-icons'
 import { useNavigate } from 'react-router'
 import { STREAM_BY_COUNCIL } from './DefaultersQueries'
 import './Defaulters.css'
+import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
+import PlaceholderDefaulterList from './PlaceholderDefaulterList'
 
-const StreamByStream = () => {
+const StreamByCouncil = () => {
   const { streamId, clickCard } = useContext(ChurchContext)
   const { data, loading, error } = useQuery(STREAM_BY_COUNCIL, {
     variables: {
@@ -20,17 +21,13 @@ const StreamByStream = () => {
   const navigate = useNavigate()
   return (
     <BaseComponent data={data} loading={loading} error={error} placeholder>
-      <PlaceholderCustom
-        loading={loading || !data?.streams[0]?.name}
-        className={`fw-bold large-number pb-3`}
-      >
-        <Container
-          className={`fw-bold large-number pb-3`}
-        >{`${data?.streams[0].name} Stream By Council`}</Container>
-      </PlaceholderCustom>
-      <Row>
-        {data?.streams.length
-          ? data?.streams[0].councils.map((council, i) => (
+      <Container>
+        <HeadingPrimary loading={loading || !data?.streams[0]?.name}>
+          {`${data?.streams[0].name} Stream By Council`}
+        </HeadingPrimary>
+        <Row>
+          {data?.streams.length ? (
+            data?.streams[0].councils.map((council, i) => (
               <Col key={i} xs={12} className="mb-3">
                 <Card>
                   <Card.Header className="fw-bold">{`${council.name} Council`}</Card.Header>
@@ -40,10 +37,10 @@ const StreamByStream = () => {
                       navigate('/services/council-by-constituency')
                     }}
                   >
-                    <div>
+                    <div className="fw-bold">
                       Active Fellowships {council.activeFellowshipCount}
                     </div>
-                    <div>
+                    <div className="good">
                       Services This Week {council.servicesThisWeekCount}
                     </div>
                     <div
@@ -59,6 +56,8 @@ const StreamByStream = () => {
                         council.bankedThisWeekCount ===
                         council.servicesThisWeekCount
                           ? 'good'
+                          : council.bankedThisWeekCount > 0
+                          ? 'yellow'
                           : 'bad'
                       }
                     >
@@ -102,41 +101,13 @@ const StreamByStream = () => {
                 </Card>
               </Col>
             ))
-          : [1, 2, 3].map((placeholder, i) => (
-              <Col key={i} xs={12} className="mb-3">
-                <Card>
-                  <Card.Header className="fw-bold">
-                    <PlaceholderCustom
-                      loading={loading}
-                      className="fw-bold"
-                    ></PlaceholderCustom>
-                  </Card.Header>
-                  <Card.Body>
-                    <PlaceholderCustom loading={loading} as="div" />
-                    <PlaceholderCustom loading={loading} as="div" />
-                    <PlaceholderCustom loading={loading} as="div" />
-                    <PlaceholderCustom loading={loading} as="div" />
-                  </Card.Body>
-                  <Card.Footer>
-                    <PlaceholderCustom
-                      variant="primary"
-                      loading={loading}
-                      className="btn-call"
-                      button
-                    />
-                    <PlaceholderCustom
-                      variant="success"
-                      className="btn-whatsapp"
-                      loading={loading}
-                      button
-                    />
-                  </Card.Footer>
-                </Card>
-              </Col>
-            ))}
-      </Row>
+          ) : (
+            <PlaceholderDefaulterList loading={loading} />
+          )}
+        </Row>
+      </Container>
     </BaseComponent>
   )
 }
 
-export default StreamByStream
+export default StreamByCouncil

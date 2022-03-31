@@ -3,20 +3,8 @@ export const PHONE_NUM_REGEX = /^[+][(]{0,1}[1-9]{1,4}[)]{0,1}[-\s/0-9]*$/
 export const MOMO_NUM_REGEX = /^[0][\s/0-9]{9}$/
 export const DECIMAL_NUM_REGEX = /^-?\d*\.{1}\d*$/
 export const DECIMAL_NUM_REGEX_POSITIVE_ONLY = /^\d*\.{1}\d*$/
+export const USER_PLACEHOLDER = 'v1627893621/user_qvwhs7.png'
 export const DEBOUNCE_TIMER = 500
-export const ARRIVALS_CUTOFF = [14, 30, 0]
-
-export const getTime = (time) => {
-  return `${time.getHours()}:${time.getMinutes()}:${time.getSeconds()}`
-}
-export const setTime = (timeArray) => {
-  const now = new Date()
-  now.setHours(timeArray[0])
-  now.setMinutes(timeArray[1])
-  now.setMilliseconds(timeArray[2])
-
-  return now
-}
 
 export const GENDER_OPTIONS = [
   { key: 'Male', value: 'Male' },
@@ -44,13 +32,7 @@ export const SERVICE_DAY_OPTIONS = [
   { key: 'Friday', value: 'Friday' },
   { key: 'Saturday', value: 'Saturday' },
 ]
-export const BUSSING_ZONE_OPTIONS = [
-  { key: '1', value: '1' },
-  { key: '2', value: '2' },
-  { key: '3', value: '3' },
-  { key: '4', value: '4' },
-  { key: '5', value: '5' },
-]
+
 export const BUSSING_STATUS_OPTIONS = [
   { key: 'IC', value: 'IC' },
   { key: 'Graduated', value: 'Graduated' },
@@ -58,6 +40,21 @@ export const BUSSING_STATUS_OPTIONS = [
 
 export const throwErrorMsg = (message, error) => {
   if (!message && !error) {
+    return
+  }
+  if (!error) {
+    // eslint-disable-next-line no-console
+    console.error(message)
+    // eslint-disable-next-line no-alert
+    alert(`${message}`)
+    return
+  }
+
+  if (!message) {
+    // eslint-disable-next-line no-console
+    console.error(error)
+    // eslint-disable-next-line no-alert
+    alert(`${error}`)
     return
   }
 
@@ -87,19 +84,6 @@ export const authorisedLink = (currentUser, permittedRoles, link) => {
   return '#'
 }
 
-export const transformCloudinaryImg = (url, size) => {
-  if (size === 'large') {
-    return url?.replace(
-      'https://res.cloudinary.com/firstlovecenter/image/upload/',
-      'https://res.cloudinary.com/firstlovecenter/image/upload/c_fill,g_face,h_300,w_300/'
-    )
-  }
-
-  return url?.replace(
-    'https://res.cloudinary.com/firstlovecenter/image/upload/',
-    'https://res.cloudinary.com/firstlovecenter/image/upload/c_thumb,g_face,h_150,w_150,z_0.7/'
-  )
-}
 export const capitalise = (str) => {
   return str?.charAt(0).toUpperCase() + str?.slice(1)
 }
@@ -162,6 +146,10 @@ export const repackDecimals = (decimal) => {
   return parseFloat(decimal)
 }
 
+export const arrayOr = (array) => {
+  return array.some((element) => element)
+}
+
 export const makeSelectOptions = (initialArray) => {
   if (!initialArray) {
     return null
@@ -171,51 +159,6 @@ export const makeSelectOptions = (initialArray) => {
     value: data.id,
     key: data.name ? data.name : data.fullName,
   }))
-}
-
-export const parseNeoTime = (time) => {
-  if (!time) {
-    return
-  }
-  const data = new Date(time)
-  let hrs = data.getHours()
-  let mins = data.getMinutes()
-  if (hrs <= 9) hrs = `0${hrs}`
-  if (mins < 10) mins = `0${mins}`
-  const postTime = `${hrs}:${mins}`
-  return postTime
-}
-
-export const parseDate = (date) => {
-  // Receives the current date and returns text "Today, Yesterday,etc"
-
-  // Get today's date
-  const todaysDate = new Date()
-
-  // Create date from input value
-  const inputDate = new Date(date)
-
-  // To calculate the time difference of two dates
-  const differenceInTime = todaysDate.getTime() - inputDate.getTime()
-
-  // To calculate the no. of days between two dates
-  const differenceInDays = differenceInTime / (1000 * 3600 * 24)
-
-  // call setHours to take the time out of the comparison
-  if (inputDate.toDateString() === todaysDate.toDateString()) {
-    // Date equals today's date
-    return 'Today'
-  }
-  if (Math.floor(differenceInDays) === 1) {
-    // Date equals yesterday's date
-    return 'Yesterday'
-  }
-  if (Math.floor(differenceInDays) < 7) {
-    // Date equals yesterday's date
-    return `${Math.floor(differenceInDays)} days ago`
-  }
-
-  return inputDate.toDateString()
 }
 
 // debouncing function
@@ -282,27 +225,6 @@ export const getNameWithTitle = (member) => {
     return `${displayName.title} ${displayName.name}`
   }
   return displayName.name
-}
-
-export const getHumanReadableDate = (date) => {
-  if (!date) {
-    return
-  }
-  return new Date(date).toLocaleDateString('en-gb', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  })
-}
-
-export const getMemberDob = (displayMember) => {
-  if (!displayMember) {
-    return
-  }
-  if (displayMember.dob?.date) {
-    return getHumanReadableDate(displayMember.dob?.date)
-  }
-  return null
 }
 
 export const average = (array) => {
@@ -407,23 +329,17 @@ export const getChurchCount = (servant) => {
   return churchesCount
 }
 
-export const getWeekNumber = (date) => {
-  const currentdate = date ? new Date(date) : new Date()
-  const oneJan = new Date(currentdate.getFullYear(), 0, 1)
-  const adjustedForMonday = 8 - oneJan.getDay() // Checking the number of days till Monday when the week starts
-  oneJan.setDate(oneJan.getDate() + adjustedForMonday)
-  const numberOfDays = Math.floor(
-    (currentdate - oneJan) / (24 * 60 * 60 * 1000)
-  )
-
-  const result = Math.ceil(numberOfDays / 7)
-
-  return result
-}
-
-export const last3Weeks = () => {
-  const lastWeek = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
-  const last2Weeks = new Date(Date.now() - 14 * 24 * 60 * 60 * 1000)
-
-  return [getWeekNumber(), getWeekNumber(lastWeek), getWeekNumber(last2Weeks)]
+export const getSubChurchLevel = (churchType) => {
+  switch (churchType) {
+    case 'Constituency':
+      return 'Bacenta'
+    case 'Council':
+      return 'Constituency'
+    case 'Stream':
+      return 'Council'
+    case 'GatheringService':
+      return 'Stream'
+    default:
+      break
+  }
 }

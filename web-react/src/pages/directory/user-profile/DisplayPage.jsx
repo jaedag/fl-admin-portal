@@ -1,9 +1,8 @@
 import React, { useContext } from 'react'
-import { Row, Col, Image, Accordion, Stack } from 'react-bootstrap'
+import { Row, Col, Accordion, Stack } from 'react-bootstrap'
 import { useQuery } from '@apollo/client'
-import userIcon from '../../../assets/user.png'
 import { MemberContext } from '../../../contexts/MemberContext'
-import { getMemberDob, transformCloudinaryImg } from '../../../global-utils'
+import { getMemberDob } from 'date-utils'
 import Timeline from '../../../components/Timeline/Timeline'
 import BaseComponent from 'components/base-component/BaseComponent'
 import {
@@ -13,6 +12,8 @@ import {
 import PlaceholderCustom from 'components/Placeholder'
 import './UserProfile.css'
 import AuthButton from 'components/buttons/AuthButton'
+import CloudinaryImage from 'components/CloudinaryImage'
+import { USER_PLACEHOLDER } from 'global-utils'
 
 const DisplayPage = () => {
   const { currentUser, theme } = useContext(MemberContext)
@@ -50,15 +51,10 @@ const DisplayPage = () => {
                   loading={!member?.pictureUrl}
                   className="img bg-secondary m-2"
                 >
-                  <Image
-                    src={
-                      transformCloudinaryImg(member?.pictureUrl, 'large') ||
-                      userIcon
-                    }
-                    fluid
-                    rounded
-                    className="rounded-circle bg-secondary ml-auto mr-auto"
-                    style={{ objectFit: 'cover' }}
+                  <CloudinaryImage
+                    src={member?.pictureUrl || USER_PLACEHOLDER}
+                    className="img bg-secondary m-2 rounded-circle"
+                    large
                   />
                 </PlaceholderCustom>
               </Col>

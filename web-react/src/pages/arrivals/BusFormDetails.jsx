@@ -11,15 +11,11 @@ import { useContext } from 'react'
 import { Container, Row, Col, Table, Button } from 'react-bootstrap'
 import { DISPLAY_BUSSING_RECORDS } from './arrivalsQueries'
 import '../services/record-service/ServiceDetails.css'
-import {
-  ARRIVALS_CUTOFF,
-  parseDate,
-  setTime,
-  transformCloudinaryImg,
-} from 'global-utils'
 import { useNavigate } from 'react-router'
 import RoleView from 'auth/RoleView'
-import { permitMe } from 'permission-utils'
+import { permitArrivalsHelper, permitMe } from 'permission-utils'
+import CloudinaryImage from 'components/CloudinaryImage'
+import { beforeArrivalDeadline } from './arrivals-utils'
 
 const BusFormDetails = () => {
   const { bacentaId } = useContext(ChurchContext)
@@ -32,23 +28,6 @@ const BusFormDetails = () => {
   const bussing = data?.bussingRecords[0]
   const church = data?.bacentas[0]
 
-  const changeCondition = () => {
-    const today = new Date()
-    const arrivalsCutoff = setTime(ARRIVALS_CUTOFF)
-    if (bussing?.bussingPictures?.length) {
-      if (
-        parseDate(bussing?.created_at) === 'Today' &&
-        today < arrivalsCutoff
-      ) {
-        //If the record was created today
-        //And if the time is less than the arrivals cutoff time
-        return true
-      }
-      // return false
-      return true
-    }
-    return false
-  }
   return (
     <BaseComponent loading={loading} error={error} data={data} placeholder>
       <Container>
@@ -119,6 +98,42 @@ const BusFormDetails = () => {
                       </PlaceholderCustom>
                     </td>
                   </tr>
+
+                  <tr>
+                    <td>Bussing Top Up</td>
+                    <td>
+                      <PlaceholderCustom loading={loading}>
+                        {bussing?.bussingTopUp}
+                      </PlaceholderCustom>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>Number of Busses</td>
+                    <td>
+                      <PlaceholderCustom loading={loading}>
+                        {bussing?.numberOfBusses}
+                      </PlaceholderCustom>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Number of Cars</td>
+                    <td>
+                      <PlaceholderCustom loading={loading}>
+                        {bussing?.numberOfCars}
+                      </PlaceholderCustom>
+                    </td>
+                  </tr>
+                  {bussing?.mobileNetwork && (
+                    <tr>
+                      <td>Mobile Network</td>
+                      <td>
+                        <PlaceholderCustom loading={loading}>
+                          {bussing?.mobileNetwork}
+                        </PlaceholderCustom>
+                      </td>
+                    </tr>
+                  )}
                   {bussing?.momoNumber && (
                     <tr>
                       <td>Momo Number</td>
@@ -139,39 +154,6 @@ const BusFormDetails = () => {
                       </td>
                     </tr>
                   )}
-
-                  <tr>
-                    <td>Bussing Top Up</td>
-                    <td>
-                      <PlaceholderCustom loading={loading}>
-                        {bussing?.bussingTopUp}
-                      </PlaceholderCustom>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Offering Raised</td>
-                    <td>
-                      <PlaceholderCustom loading={loading}>
-                        {bussing?.offeringRaised}
-                      </PlaceholderCustom>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Number of Busses</td>
-                    <td>
-                      <PlaceholderCustom loading={loading}>
-                        {bussing?.numberOfBusses}
-                      </PlaceholderCustom>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Number of Cars</td>
-                    <td>
-                      <PlaceholderCustom loading={loading}>
-                        {bussing?.numberOfCars}
-                      </PlaceholderCustom>
-                    </td>
-                  </tr>
                   {bussing?.comments && (
                     <tr>
                       <td>Comments</td>
@@ -190,9 +172,10 @@ const BusFormDetails = () => {
                 {bussing?.bussingPictures?.map((picture, index) => {
                   return (
                     <Col key={index}>
-                      <img
+                      <CloudinaryImage
                         className="report-picture"
-                        src={transformCloudinaryImg(picture, 'large')}
+                        src={picture}
+                        large
                       />
                     </Col>
                   )
@@ -202,8 +185,8 @@ const BusFormDetails = () => {
           </Col>
         </Row>
         <div className="d-grid gap-2">
-          <RoleView roles={['arrivalsAdminConstituency']}>
-            {changeCondition() && (
+          <RoleView roles={permitArrivalsHelper('Stream')}>
+            {beforeArrivalDeadline(bussing, church) && (
               <Button
                 onClick={() => navigate('/arrivals/submit-bus-attendance')}
               >

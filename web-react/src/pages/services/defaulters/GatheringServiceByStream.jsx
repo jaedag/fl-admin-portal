@@ -1,13 +1,14 @@
 import { useQuery } from '@apollo/client'
 import BaseComponent from 'components/base-component/BaseComponent'
-import PlaceholderCustom from 'components/Placeholder'
 import { ChurchContext } from 'contexts/ChurchContext'
 import React, { useContext } from 'react'
-import { Card, Col, Container, Row, Button } from 'react-bootstrap'
+import { Card, Col, Row, Button, Container } from 'react-bootstrap'
 import { TelephoneFill, Whatsapp } from 'react-bootstrap-icons'
 import { useNavigate } from 'react-router'
 import { GATHERINGSERVICE_BY_STREAM } from './DefaultersQueries'
 import './Defaulters.css'
+import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
+import PlaceholderDefaulterList from './PlaceholderDefaulterList'
 
 const GatheringServiceByStream = () => {
   const { gatheringServiceId, clickCard } = useContext(ChurchContext)
@@ -20,17 +21,14 @@ const GatheringServiceByStream = () => {
   const navigate = useNavigate()
   return (
     <BaseComponent data={data} loading={loading} error={error} placeholder>
-      <PlaceholderCustom
-        loading={loading || !data?.gatheringServices[0]?.name}
-        className={`fw-bold large-number pb-3`}
-      >
-        <Container
-          className={`fw-bold large-number pb-3`}
-        >{`${data?.gatheringServices[0]?.name} Gathering Service By Streams`}</Container>
-      </PlaceholderCustom>
-      <Row>
-        {data?.gatheringServices.length
-          ? data?.gatheringServices[0]?.streams.map((stream, i) => (
+      <Container>
+        <HeadingPrimary
+          loading={loading || !data?.gatheringServices[0]?.name}
+        >{`${data?.gatheringServices[0]?.name} Gathering Service By Streams`}</HeadingPrimary>
+
+        <Row>
+          {data?.gatheringServices.length ? (
+            data?.gatheringServices[0]?.streams.map((stream, i) => (
               <Col key={i} xs={12} className="mb-3">
                 <Card>
                   <Card.Header className="fw-bold">{`${stream.name} Stream`}</Card.Header>
@@ -40,8 +38,12 @@ const GatheringServiceByStream = () => {
                       navigate('/services/stream-by-council')
                     }}
                   >
-                    <div>Active Fellowships {stream.activeFellowshipCount}</div>
-                    <div>Services This Week {stream.servicesThisWeekCount}</div>
+                    <div className="fw-bold">
+                      Active Fellowships {stream.activeFellowshipCount}
+                    </div>
+                    <div className="good">
+                      Services This Week {stream.servicesThisWeekCount}
+                    </div>
                     <div
                       className={
                         stream.formDefaultersThisWeekCount ? 'bad' : 'good'
@@ -55,6 +57,8 @@ const GatheringServiceByStream = () => {
                         stream.bankedThisWeekCount ===
                         stream.servicesThisWeekCount
                           ? 'good'
+                          : stream.bankedThisWeekCount > 0
+                          ? 'yellow'
                           : 'bad'
                       }
                     >
@@ -96,39 +100,11 @@ const GatheringServiceByStream = () => {
                 </Card>
               </Col>
             ))
-          : [1, 2, 3].map((placeholder, i) => (
-              <Col key={i} xs={12} className="mb-3">
-                <Card>
-                  <Card.Header className="fw-bold">
-                    <PlaceholderCustom
-                      loading={loading}
-                      className="fw-bold"
-                    ></PlaceholderCustom>
-                  </Card.Header>
-                  <Card.Body>
-                    <PlaceholderCustom loading={loading} as="div" />
-                    <PlaceholderCustom loading={loading} as="div" />
-                    <PlaceholderCustom loading={loading} as="div" />
-                    <PlaceholderCustom loading={loading} as="div" />
-                  </Card.Body>
-                  <Card.Footer>
-                    <PlaceholderCustom
-                      variant="primary"
-                      loading={loading}
-                      className="btn-call"
-                      button
-                    />
-                    <PlaceholderCustom
-                      variant="success"
-                      className="btn-whatsapp"
-                      loading={loading}
-                      button
-                    />
-                  </Card.Footer>
-                </Card>
-              </Col>
-            ))}
-      </Row>
+          ) : (
+            <PlaceholderDefaulterList loading={loading} />
+          )}
+        </Row>
+      </Container>
     </BaseComponent>
   )
 }

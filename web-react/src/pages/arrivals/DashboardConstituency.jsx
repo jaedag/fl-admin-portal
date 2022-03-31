@@ -9,29 +9,34 @@ import { Form, Formik } from 'formik'
 import * as Yup from 'yup'
 import React from 'react'
 import { useContext } from 'react'
-import { Button, Card, Col, Container, Row } from 'react-bootstrap'
-import { COUNCIL_ARRIVALS_DASHBOARD } from './arrivalsQueries'
+import { Button, Col, Container, Row } from 'react-bootstrap'
+import { CONSTITUENCY_ARRIVALS_DASHBOARD } from './arrivalsQueries'
 import { useNavigate } from 'react-router'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import RoleView from 'auth/RoleView'
 import { throwErrorMsg } from 'global-utils'
-import { MAKE_COUNCILARRIVALS_ADMIN } from './arrivalsMutations'
+import { MAKE_CONSTITUENCYARRIVALS_ADMIN } from './arrivalsMutations'
 import { permitAdmin, permitArrivals } from 'permission-utils'
+import HeadingSecondary from 'components/HeadingSecondary'
+import { MemberContext } from 'contexts/MemberContext'
 
-const CouncilDashboard = () => {
-  const { isOpen, togglePopup, councilId } = useContext(ChurchContext)
+const ConstituencyDashboard = () => {
+  const { isOpen, togglePopup } = useContext(ChurchContext)
+  const { currentUser } = useContext(MemberContext)
   const navigate = useNavigate()
-  const { data, loading, error } = useQuery(COUNCIL_ARRIVALS_DASHBOARD, {
-    variables: { id: councilId },
+  const { data, loading, error } = useQuery(CONSTITUENCY_ARRIVALS_DASHBOARD, {
+    variables: { id: currentUser?.currentChurch.id },
   })
-  const [MakeCouncilArrivalsAdmin] = useMutation(MAKE_COUNCILARRIVALS_ADMIN)
-  const council = data?.councils[0]
+  const [MakeConstituencyArrivalsAdmin] = useMutation(
+    MAKE_CONSTITUENCYARRIVALS_ADMIN
+  )
+  const constituency = data?.constituencies[0]
 
   const initialValues = {
-    adminName: council?.arrivvalsAdmin
-      ? `${council?.arrivvalsAdmin?.firstName} ${council?.arrivvalsAdmin?.lastName}`
+    adminName: constituency?.arrivalsAdmin
+      ? `${constituency?.arrivalsAdmin?.fullName}`
       : '',
-    adminSelect: council?.arrivvalsAdmin?.id ?? '',
+    adminSelect: constituency?.arrivalsAdmin?.id ?? '',
   }
   const validationSchema = Yup.object({
     adminSelect: Yup.string().required(
@@ -42,9 +47,9 @@ const CouncilDashboard = () => {
   const onSubmit = (values, onSubmitProps) => {
     onSubmitProps.setSubmitting(true)
 
-    MakeCouncilArrivalsAdmin({
+    MakeConstituencyArrivalsAdmin({
       variables: {
-        councilId: councilId,
+        constituencyId: currentUser?.currentChurch.id,
         newAdminId: values.adminSelect,
         oldAdminId: initialValues.adminSelect || 'no-old-admin',
       },
@@ -52,7 +57,7 @@ const CouncilDashboard = () => {
       .then(() => {
         togglePopup()
         onSubmitProps.setSubmitting(false)
-        alert('Council Arrivals Admin has been changed successfully')
+        alert('Constituency Arrivals Admin has been changed successfully')
       })
       .catch((e) => throwErrorMsg(e))
   }
@@ -61,12 +66,15 @@ const CouncilDashboard = () => {
     <BaseComponent data={data} loading={loading} error={error}>
       <Container>
         <HeadingPrimary loading={loading}>
-          {council?.name} Council Arrivals
+          {constituency?.name} Constituency Arrivals Summary
         </HeadingPrimary>
+        <HeadingSecondary>{`Arrivals Rep: ${
+          constituency?.arrivalsAdmin?.fullName ?? 'None'
+        }`}</HeadingSecondary>
         {isOpen && (
           <Popup handleClose={togglePopup}>
             <b>Change Arrivals Admin</b>
-            <p>Please enter the name of the new arrivals rep</p>
+            <p>Please enter the name of the new administrator</p>
 
             <Formik
               initialValues={initialValues}
@@ -96,46 +104,73 @@ const CouncilDashboard = () => {
           </Popup>
         )}
 
-        <Card>
-          <Card.Header>Arrivals Summary</Card.Header>
-        </Card>
         <div className="d-grid gap-2">
           <RoleView
-            roles={[...permitAdmin('Council'), ...permitArrivals('Stream')]}
+            roles={[
+              ...permitAdmin('Constituency'),
+              ...permitArrivals('Council'),
+            ]}
           >
             <Button
-              variant="outline-secondary"
-              size="lg"
+              variant="outline-secondary my-3"
               onClick={() => togglePopup()}
             >
               Change Arrivals Admin
             </Button>
           </RoleView>
           <MenuButton
-            title="Bacentas Yet to Submit"
+            title="Bacentas With No Activity"
             onClick={() => navigate('/arrivals/bacentas-no-activity')}
-            icon
+            number={constituency?.bacentasNoActivityCount.toString()}
+            color="red"
             iconBg
             noCaption
           />
           <MenuButton
-            title="Bacentas That Have Submitted"
+            title="Bacentas Mobilising"
+            onClick={() => navigate('/arrivals/bacentas-mobilising')}
+            number={constituency?.bacentasMobilisingCount.toString()}
+            color="orange"
+            iconBg
+            noCaption
+          />
+          <MenuButton
+            title="Bacentas On The Way"
             onClick={() => navigate('/arrivals/bacentas-on-the-way')}
-            icon
+            number={constituency?.bacentasOnTheWayCount.toString()}
+            color="yellow"
             iconBg
             noCaption
           />
+
           <MenuButton
-            title="Bacentas That Have Been Counted"
-            onClick={() => navigate('/arrivals/bacentas-have-been-counted')}
-            icon
+            title="Bacentas That Have Arrived"
+            onClick={() => navigate('/arrivals/bacentas-have-arrived')}
+            number={constituency?.bacentasHaveArrivedCount.toString()}
+            color="green"
             iconBg
             noCaption
           />
+          <div className="mt-5 d-grid gap-2">
+            <MenuButton
+              title="Members On The Way"
+              number={constituency?.bussingMembersOnTheWayCount.toString()}
+              color="yellow"
+              iconBg
+              noCaption
+            />
+            <MenuButton
+              title="Members That Have Arrived"
+              number={constituency?.bussingMembersHaveArrivedCount.toString()}
+              color="green"
+              iconBg
+              noCaption
+            />
+          </div>
         </div>
       </Container>
     </BaseComponent>
   )
 }
 
-export default CouncilDashboard
+export default ConstituencyDashboard

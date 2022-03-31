@@ -15,7 +15,7 @@ import HeadingSecondary from 'components/HeadingSecondary'
 import BaseComponent from 'components/base-component/BaseComponent'
 import { useNavigate } from 'react-router'
 import { ChurchContext } from 'contexts/ChurchContext'
-import { getHumanReadableDate } from 'global-utils'
+import { getHumanReadableDate } from 'date-utils'
 
 const ConstituencyBankingSlipSubmission = () => {
   const { serviceRecordId } = useContext(ServiceContext)
@@ -66,7 +66,10 @@ const ConstituencyBankingSlipSubmission = () => {
             <HeadingSecondary>{constituency?.name}</HeadingSecondary>
             <p>
               Date of Joint Service Code:{' '}
-              {getHumanReadableDate(data.serviceRecords[0].serviceDate.date)}
+              {getHumanReadableDate(
+                data.serviceRecords[0].serviceDate.date,
+                'weekday'
+              )}
             </p>
             <p>Expected Income: {data.serviceRecords[0].income}</p>
             <Form>

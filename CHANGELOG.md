@@ -1,3 +1,42 @@
+#### 0.7.5 (2022-03-14)
+
+##### Bug Fixes
+
+*  fixed breaking change in code ([0011d9d5](https://github.com/jaedag/fl-admin-portal/commit/0011d9d5ffd49b13297c7fdae09f04ea5eb140a7))
+*  fixed bug preventing leaders from being changed ([86bbece8](https://github.com/jaedag/fl-admin-portal/commit/86bbece8298763d16b30a5812f4e22e852791781))
+
+#### 0.7.4 (2022-03-12)
+
+##### New Features
+
+*  prevented users from selecting the same treasurer twice to fill the form ([0f535e7e](https://github.com/jaedag/fl-admin-portal/commit/0f535e7e69cb66bcce7d6ac340ec1aed0a7a0a1d))
+
+##### Bug Fixes
+
+*  implemented arrivals dummy sheet ([7b49d008](https://github.com/jaedag/fl-admin-portal/commit/7b49d008ae415820ec477be782dbc10bd8e64717))
+*  fixed bug where exceptions thrown in nodejs prefixed with 'unexpected error' ([f2cf8b4a](https://github.com/jaedag/fl-admin-portal/commit/f2cf8b4a048dfd535cfb9331cb317d2d7326ba75))
+*  admin-45 final touches to this issue ([b9b3fb7d](https://github.com/jaedag/fl-admin-portal/commit/b9b3fb7d971655cd288a750a6d68e252b4006779))
+*  fixed bug where leaders were not being changed in db ADMIN-45 ([1171161b](https://github.com/jaedag/fl-admin-portal/commit/1171161b1ca265ff4ec3133a0dc0b48ece0148ba))
+*  admin-45 fixed bug where leaders were not being changed in db ([5f55f91f](https://github.com/jaedag/fl-admin-portal/commit/5f55f91f0feb3724cdfd98707df222bab7fe6a1a))
+
+#### 0.7.3 (2022-03-11)
+
+##### Chores
+
+*  edited prettier config ([1f540a96](https://github.com/jaedag/fl-admin-portal/commit/1f540a96d8e0cf68b45178d561ff348026884db2))
+*  added the cypher file ([4c33a1c2](https://github.com/jaedag/fl-admin-portal/commit/4c33a1c2d60c2832996d1f7e73512529a17028f7))
+*  updated prettier settings ([cc3aa026](https://github.com/jaedag/fl-admin-portal/commit/cc3aa02608efe24c97ade95947aca350119fe504))
+
+##### New Features
+
+* **arrivals:**  disabled arrivals flow for members ([b1c2e0f2](https://github.com/jaedag/fl-admin-portal/commit/b1c2e0f2433fc88f2fb8333183ec74058f38038a))
+
+##### Bug Fixes
+
+*  fixed bug where leader roles were not being changed in the database ([f7a6a8b9](https://github.com/jaedag/fl-admin-portal/commit/f7a6a8b952173acd2df373804f00a42267e1753a))
+*  fixed bug where leaders could not view church details ([b504399c](https://github.com/jaedag/fl-admin-portal/commit/b504399c82ca123c532530137d9ad09572c0b81d))
+*  fixed error with stream search ([ba2aeeec](https://github.com/jaedag/fl-admin-portal/commit/ba2aeeecd96f4a26015f2cdaea0a85dab8180a58))
+
 #### 0.7.2 (2022-03-04)
 
 ##### Bug Fixes

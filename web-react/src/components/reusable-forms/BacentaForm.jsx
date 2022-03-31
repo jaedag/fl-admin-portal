@@ -4,7 +4,6 @@ import { FieldArray, Form, Formik } from 'formik'
 import * as Yup from 'yup'
 import {
   BUSSING_STATUS_OPTIONS,
-  BUSSING_ZONE_OPTIONS,
   makeSelectOptions,
   throwErrorMsg,
   VACATION_OPTIONS,
@@ -70,7 +69,11 @@ const BacentaForm = ({ initialValues, onSubmit, title, newBacenta }) => {
       <Container>
         <HeadingPrimary>{title}</HeadingPrimary>
         <HeadingSecondary>{initialValues.name}</HeadingSecondary>
+        <Button onClick={() => navigate('/bacenta/editbussing')}>
+          Edit Bussing Details
+        </Button>
       </Container>
+
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
@@ -115,13 +118,6 @@ const BacentaForm = ({ initialValues, onSubmit, title, newBacenta }) => {
                           options={VACATION_OPTIONS}
                           defaultOption="Choose Vacation Status"
                           label="Status"
-                        />
-                        <FormikControl
-                          control="select"
-                          name="zone"
-                          options={BUSSING_ZONE_OPTIONS}
-                          defaultOption="Pick a Zone"
-                          label="Bussing Zone"
                         />
                       </Col>
                     </Row>

@@ -1,15 +1,14 @@
 import React from 'react'
 import { useQuery } from '@apollo/client'
-import userIcon from '../../assets/user.png'
 import Timeline from '../../components/Timeline/Timeline'
 import MemberRoleList from '../../components/MemberRoleList'
 import {
   getNameWithTitle,
-  getMemberDob,
-  transformCloudinaryImg,
   throwErrorMsg,
   getHighestTitle,
+  USER_PLACEHOLDER,
 } from '../../global-utils'
+import { getMemberDob } from 'date-utils'
 import {
   DISPLAY_MEMBER_ADMIN,
   DISPLAY_MEMBER_BIO,
@@ -23,6 +22,7 @@ import EditButton from 'components/buttons/EditButton'
 import RoleView from 'auth/RoleView'
 import ViewAll from 'components/buttons/ViewAll'
 import { permitAdmin } from 'permission-utils'
+import CloudinaryImage from 'components/CloudinaryImage'
 
 const MemberDisplay = ({ memberId }) => {
   const {
@@ -63,15 +63,12 @@ const MemberDisplay = ({ memberId }) => {
           loading={!member || loading}
           xs={12}
         >
-          <div>
-            <img
-              src={
-                transformCloudinaryImg(member?.pictureUrl, 'large') || userIcon
-              }
-              className="profile-img"
-              alt={`${member?.fullName}`}
-            />
-          </div>
+          <CloudinaryImage
+            className="profile-img"
+            src={member?.pictureUrl || USER_PLACEHOLDER}
+            alt={`${member?.fullName}`}
+            large
+          />
         </PlaceholderCustom>
       </div>
 
