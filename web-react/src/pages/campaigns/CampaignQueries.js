@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client'
 
 export const CONSTITUENCY_CAMPAIGN_LIST = gql`
   query constituencyCampaigns($constituencyId: ID) {
@@ -11,7 +11,7 @@ export const CONSTITUENCY_CAMPAIGN_LIST = gql`
       }
     }
   }
-`;
+`
 
 export const FELLOWSHIP_CAMPAIGN_LIST = gql`
   query fellowshipCampaigns($fellowshipId: ID) {
@@ -24,24 +24,30 @@ export const FELLOWSHIP_CAMPAIGN_LIST = gql`
       }
     }
   }
-`;
+`
 
 export const CONSTITUENCY_EQUIPMENT_RECORD_CREATION = gql`
   mutation CreateConstituencyEquipmentRecord(
-    $constituencyId: ID!
+    $constituencyRecordId: ID!
     $pulpits: Int!
-    $date: Date!
   ) {
     CreateConstituencyEquipmentRecord(
-      constituencyId: $constituencyId
+      constituencyRecordId: $constituencyRecordId
       pulpits: $pulpits
-      date: $date
     ) {
       id
       pulpits
     }
   }
-`;
+`
+// Should return the id of the latest equipment record
+export const LATEST_EQUIPMENT_DATE = gql`
+  query LatestEquipmentRecord($constituencyId: ID!) {
+    LatestEquipmentRecord(constituencyId: $constituencyId) {
+      id
+    }
+  }
+`
 
 export const FELLOWSHIP_EQUIPMENT_RECORD_CREATION = gql`
   mutation CreateFellowshipEquipmentRecord(
@@ -58,4 +64,4 @@ export const FELLOWSHIP_EQUIPMENT_RECORD_CREATION = gql`
       offeringBags
     }
   }
-`;
+`

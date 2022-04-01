@@ -1,21 +1,22 @@
-import React, { useContext } from "react";
-import { Container } from "react-bootstrap";
-import MenuButton from "./components/buttons/MenuButton";
-import { useNavigate } from "react-router";
-import { useQuery } from "@apollo/client";
-import { CONSTITUENCY_CAMPAIGN_LIST } from "./CampaignQueries";
-import { ChurchContext } from "contexts/ChurchContext";
-import BaseComponent from "components/base-component/BaseComponent";
+import React, { useContext } from 'react'
+import { Container } from 'react-bootstrap'
+import MenuButton from './components/buttons/MenuButton'
+import { useNavigate } from 'react-router'
+import { useQuery } from '@apollo/client'
+import { CONSTITUENCY_CAMPAIGN_LIST } from './CampaignQueries'
+import { ChurchContext } from 'contexts/ChurchContext'
+import BaseComponent from 'components/base-component/BaseComponent'
 
 const ConstituencyCampaigns = () => {
-  const { constituencyId } = useContext(ChurchContext);
+  const { constituencyId } = useContext(ChurchContext)
 
   const { data, loading, error } = useQuery(CONSTITUENCY_CAMPAIGN_LIST, {
     variables: { constituencyId: constituencyId },
-  });
+  })
 
-  const navigate = useNavigate();
-  const campaigns = data?.constituencies[0]?.campaigns;
+  const navigate = useNavigate()
+  const campaigns = data?.constituencies[0]?.campaigns
+  console.log(campaigns)
 
   return (
     <BaseComponent loading={loading} error={error} data={data}>
@@ -36,7 +37,7 @@ const ConstituencyCampaigns = () => {
         </Container>
       </div>
     </BaseComponent>
-  );
-};
+  )
+}
 
-export default ConstituencyCampaigns;
+export default ConstituencyCampaigns

@@ -43,5 +43,9 @@
     "url": "git://github.com/jaedag/fl-admin-portal.git"
   },
   "license": "Apache-2.0",
-  "version": "0.7.5"
+  "version": "0.7.2",
+  "dependencies": {
+    "@cloudinary/react": "^1.2.2",
+    "@cloudinary/url-gen": "^1.7.0"
+  }
 }

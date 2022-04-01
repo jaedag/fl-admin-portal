@@ -83,7 +83,7 @@ const FellowshipEquipmentForm = () => {
                   className="form-control"
                   control="input"
                   name="offeringBags"
-                  placeholder="0"
+                  placeholder="Enter a number"
                 />
                 <div className="d-flex justify-content-center pt-2">
                   <Button
