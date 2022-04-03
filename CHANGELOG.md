@@ -1,21 +1,20 @@
-#### 2.7.2 (2022-05-20)
-
-##### New Features
-
-*  admin-125 Members Ministry can now be set to 'None' ([cc8df027](https://github.com/firstlovecenter/fl-admin-portal/commit/cc8df027c92ef2d3d566f877e39bc477486b7089))
-*  filter vacation churched in church list ([#155](https://github.com/firstlovecenter/fl-admin-portal/pull/155)) ([85a82fe9](https://github.com/firstlovecenter/fl-admin-portal/commit/85a82fe95b7b5ebf5aea49588aefa2229e3c4b17))
-
-##### Bug Fixes
-
-*  fixed unnecessary history log of fellowship movement on member update ([2c6075b9](https://github.com/firstlovecenter/fl-admin-portal/commit/2c6075b9c27db31b56ccc6f04794973a755fe838))
-
-#### 2.7.1 (2022-05-20)
+#### 1.0.1 (2022-04-03)
 
 ##### Chores
 
-*  pull remote meta.json file ([a5f28709](https://github.com/firstlovecenter/fl-admin-portal/commit/a5f287090ff1411c3d5ad31c9f833c5758a2294d))
+*  update @neo4j/graphql and graphql libraries ([f6c0c814](https://github.com/jaedag/fl-admin-portal/commit/f6c0c81406799c040d610146bbc003458820897f))
 
-### 2.8.0 (2022-05-20)
+##### Bug Fixes
+
+*  tightened phoneNumber validation to prevent using a duplicate number with '+2330' syntax ([662096bf](https://github.com/jaedag/fl-admin-portal/commit/662096bf057b87b68b71bf63f97e384d93d40b5b))
+*  added missing 'id' to leaders in ListQueries ([46be6f0d](https://github.com/jaedag/fl-admin-portal/commit/46be6f0dfafe54a776b3583f41f451ccbc098822))
+*  fixed member and church icons on search flow ([e4aa088e](https://github.com/jaedag/fl-admin-portal/commit/e4aa088e74a93e366f1128a7e0a4ef7651a591c8))
+*  fixed bug breaking the update member page ([d656aaed](https://github.com/jaedag/fl-admin-portal/commit/d656aaedf8e8f4100f1b5e7279d1d3ae46032322))
+*  fixed create member submission ([56ddcf4f](https://github.com/jaedag/fl-admin-portal/commit/56ddcf4fd580cc89d2965755628e7aa84310926d))
+*  improved bacenta form for non stream admins ([175d5556](https://github.com/jaedag/fl-admin-portal/commit/175d5556e3119264dbc9a242024a519299a78e6f))
+*  fixed bug where emails could not be changed ([54f64770](https://github.com/jaedag/fl-admin-portal/commit/54f6477063560fcefe05070220a626e4993cd757))
+
+## 1.0.0 (2022-03-31)
 
 ##### Chores
 
