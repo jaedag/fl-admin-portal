@@ -1,5 +1,5 @@
 extend type ServiceLog {
-  equpmentRecord: [EquipmentRecord]
+  equpmentRecord: [EquipmentRecord!]!
     @relationship(type: "HAS_RECORD", direction: OUT)
 }
 
@@ -156,7 +156,7 @@ type EquipmentRecord {
 #   equipmentDate: TimeGraph!
 #   pulpits: Int!
 #   serviceLog: ServiceLog @relationship(type: "HAS_RECORD", direction: IN)
-#   fellowshipRecords: [EquipmentRecord]
+#   fellowshipRecords: [EquipmentRecord!]!
 #     @relationship(type: "HAS", direction: OUT)
 # }
 
@@ -188,7 +188,7 @@ type EquipmentCampaign implements Campaign {
       ]
     )
   type: String! @cypher(statement: "RETURN 'Equipment Campaign'")
-  serviceLog: [ServiceLog] @relationship(type: "HAS_HISTORY", direction: OUT)
+  serviceLog: [ServiceLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
   fellowship: Fellowship @relationship(type: "HAS_CAMPAIGN", direction: IN)
   bacenta: Bacenta @relationship(type: "HAS_CAMPAIGN", direction: IN)
   constituency: Constituency @relationship(type: "HAS_CAMPAIGN", direction: IN)
@@ -249,12 +249,14 @@ extend type Mutation {
   ): EquipmentCampaign
     @cypher(
       statement: """
+
       """
     )
 
   CreateEquipmentCampaignDate(date: Date!): EquipmentCampaign
     @cypher(
       statement: """
+
       """
     )
 }

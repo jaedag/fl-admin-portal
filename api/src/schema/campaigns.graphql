@@ -2,7 +2,7 @@ interface Campaign {
   id: ID!
   name: String!
   type: String!
-  serviceLog: [ServiceLog] @relationship(type: "HAS_HISTORY", direction: OUT)
+  serviceLog: [ServiceLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
   leader: Member @relationship(type: "LEADS", direction: IN)
   target: Target @relationship(type: "HAS_TARGET", direction: OUT)
 }
@@ -14,25 +14,25 @@ type Target {
 }
 
 extend type GatheringService {
-  campaigns: [Campaign] @relationship(type: "HAS_CAMPAIGN", direction: OUT)
+  campaigns: [Campaign!]! @relationship(type: "HAS_CAMPAIGN", direction: OUT)
 }
 
 extend type Stream {
-  campaigns: [Campaign] @relationship(type: "HAS_CAMPAIGN", direction: OUT)
+  campaigns: [Campaign!]! @relationship(type: "HAS_CAMPAIGN", direction: OUT)
 }
 
 extend type Council {
-  campaigns: [Campaign] @relationship(type: "HAS_CAMPAIGN", direction: OUT)
+  campaigns: [Campaign!]! @relationship(type: "HAS_CAMPAIGN", direction: OUT)
 }
 
 extend type Constituency {
-  campaigns: [Campaign] @relationship(type: "HAS_CAMPAIGN", direction: OUT)
+  campaigns: [Campaign!]! @relationship(type: "HAS_CAMPAIGN", direction: OUT)
 }
 
 extend type Bacenta {
-  campaigns: [Campaign] @relationship(type: "HAS_CAMPAIGN", direction: OUT)
+  campaigns: [Campaign!]! @relationship(type: "HAS_CAMPAIGN", direction: OUT)
 }
 
 extend type Fellowship {
-  campaigns: [Campaign] @relationship(type: "HAS_CAMPAIGN", direction: OUT)
+  campaigns: [Campaign!]! @relationship(type: "HAS_CAMPAIGN", direction: OUT)
 }
