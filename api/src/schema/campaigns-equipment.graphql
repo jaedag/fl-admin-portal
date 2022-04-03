@@ -1,0 +1,260 @@
+extend type ServiceLog {
+  equpmentRecord: [EquipmentRecord]
+    @relationship(type: "HAS_RECORD", direction: OUT)
+}
+
+extend type GatheringService {
+  pulpits: Int
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS_CAMPAIGN]->(:EquipmentCampaign)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_RECORD]->(record:EquipmentRecord)
+      MATCH (record)-[:HAS*3]->(constituencyRecord:EquipmentRecord)
+      RETURN sum(constituencyRecord.pulpits)
+      """
+    )
+  offeringBags: Int
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS_CAMPAIGN]->(:EquipmentCampaign)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_RECORD]->(record:EquipmentRecord)
+      MATCH (record)-[:HAS*5]->(fellowshipRecord:EquipmentRecord)
+      RETURN sum(fellowshipRecord.offeringBags)
+      """
+    )
+}
+
+extend type Stream {
+  pulpits: Int
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS_CAMPAIGN]->(:EquipmentCampaign)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_RECORD]->(record:EquipmentRecord)
+      MATCH (record)-[:HAS*2]->(constituencyRecord:EquipmentRecord)
+      RETURN sum(constituencyRecord.pulpits)
+      """
+    )
+  offeringBags: Int
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS_CAMPAIGN]->(:EquipmentCampaign)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_RECORD]->(record:EquipmentRecord)
+      MATCH (record)-[:HAS*4]->(fellowshipRecord:EquipmentRecord)
+      RETURN sum(fellowshipRecord.offeringBags)
+      """
+    )
+}
+
+extend type Council {
+  pulpits: Int
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS_CAMPAIGN]->(:EquipmentCampaign)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_RECORD]->(record:EquipmentRecord)
+      MATCH (record)-[:HAS]->(constituencyRecord:EquipmentRecord)
+      RETURN sum(constituencyRecord.pulpits)
+      """
+    )
+  offeringBags: Int
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS_CAMPAIGN]->(:EquipmentCampaign)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_RECORD]->(record:EquipmentRecord)
+      MATCH (record)-[:HAS*3]->(fellowshipRecord:EquipmentRecord)
+      RETURN sum(fellowshipRecord.offeringBags)
+      """
+    )
+}
+
+extend type Constituency {
+  pulpits: Int
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS_CAMPAIGN]->(:EquipmentCampaign)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_RECORD]->(record:EquipmentRecord)
+      RETURN record.pulpits
+      order by record.date desc limit 1
+      """
+    )
+  offeringBags: Int
+    @cypher(
+      statement: """
+       MATCH (this)-[:HAS_CAMPAIGN]->(:EquipmentCampaign)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_RECORD]->(record:EquipmentRecord)-[:HAS*2]->(fellowshipRecord:EquipmentRecord)
+      MATCH (fellowshipRecord)-[:HAS_EQUIPMENT_DATE]->(date:TimeGraph)
+       WITH max(date.date) as lastDate, fellowshipRecord
+        MATCH (date {date:lastDate})<-[:HAS_EQUIPMENT_DATE]-(fellowshipRecord:EquipmentRecord)
+       RETURN sum(fellowshipRecord.offeringBags)
+      """
+    )
+  lastEquipmentDate: String
+    @cypher(
+      statement: """
+       MATCH (this)-[:HAS_CAMPAIGN]->(:EquipmentCampaign)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_RECORD]->(record:EquipmentRecord)-[:HAS*2]->(fellowshipRecord:EquipmentRecord)
+      MATCH (fellowshipRecord)-[:HAS_EQUIPMENT_DATE]->(date:TimeGraph)
+       RETURN max(date.date) as lastDate
+      """
+    )
+}
+
+extend type Bacenta {
+  offeringBags: Int
+    @cypher(
+      statement: """
+      MATCH (dates:TimeGraph)<-[:HAS_EQUIPMENT_DATE]-(:EquipmentRecord)
+      WITH max(dates.date) as lastDate
+      MATCH (this)-[:HAS_CAMPAIGN]->(:EquipmentCampaign)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_RECORD]->(record:EquipmentRecord)-[:HAS]->(fellowshipRecord:EquipmentRecord)-[:HAS_EQUIPMENT_DATE]->(date:TimeGraph {date:lastDate})
+      RETURN lastDate, sum(fellowshipRecord.offeringBags)
+      """
+    )
+}
+
+extend type Fellowship {
+  offeringBags: Int
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS_CAMPAIGN]->(:EquipmentCampaign)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_RECORD]->(record:EquipmentRecord)
+      RETURN fellowshipRecord.offeringBags
+      order by record.date limit 1
+      """
+    )
+}
+
+###### CAMPAIGN TYPES #######
+type EquipmentRecord {
+  id: ID!
+  created_at: DateTime!
+  equipmentDate: TimeGraph!
+    @relationship(type: "HAS_EQUIPMENT_DATE", direction: OUT)
+  offeringBags: Int
+  pulpits: Int
+  serviceLog: ServiceLog @relationship(type: "HAS_RECORD", direction: IN)
+  constituencyRecord: EquipmentRecord @relationship(type: "HAS", direction: IN)
+  church_name: String
+    @auth(
+      rules: [
+        {
+          roles: [
+            "leaderFellowship"
+            "leaderConstituency"
+            "leaderCouncil"
+            "leaderStream"
+            "leaderGatheringService"
+            "adminConstituency"
+            "adminCouncil"
+            "adminStream"
+            "adminGatheringService"
+          ]
+        }
+      ]
+    )
+    @cypher(
+      statement: """
+      MATCH (this)<-[:HAS_RECORD]-(:ServiceLog)<-[:HAS_HISTORY]-(:EquipmentCampaign)<-[:HAS_CAMPAIGN]-(church)
+      WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:GatheringService
+      UNWIND labels(church) AS church_name
+      RETURN church.name + ' ' + church_name
+      """
+    )
+}
+
+# type ConstituencyEquipmentRecord implements EquipmentRecord {
+#   id: ID!
+#   created_at: DateTime!
+#   equipmentDate: TimeGraph!
+#   pulpits: Int!
+#   serviceLog: ServiceLog @relationship(type: "HAS_RECORD", direction: IN)
+#   fellowshipRecords: [EquipmentRecord]
+#     @relationship(type: "HAS", direction: OUT)
+# }
+
+type EquipmentCampaign implements Campaign {
+  id: ID!
+  name: String!
+    @cypher(
+      statement: """
+      MATCH (this)<-[:HAS_CAMPAIGN]-(church) WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:GatheringService
+      UNWIND labels(church) AS churchLevel
+      RETURN church.name+ ' ' +churchLevel + ' Equipment Campaign'
+      """
+    )
+    @auth(
+      rules: [
+        {
+          roles: [
+            "leaderFellowship"
+            "leaderConstituency"
+            "leaderCouncil"
+            "leaderStream"
+            "leaderGatheringService"
+            "adminConstituency"
+            "adminCouncil"
+            "adminStream"
+            "adminGatheringService"
+          ]
+        }
+      ]
+    )
+  type: String! @cypher(statement: "RETURN 'Equipment Campaign'")
+  serviceLog: [ServiceLog] @relationship(type: "HAS_HISTORY", direction: OUT)
+  fellowship: Fellowship @relationship(type: "HAS_CAMPAIGN", direction: IN)
+  bacenta: Bacenta @relationship(type: "HAS_CAMPAIGN", direction: IN)
+  constituency: Constituency @relationship(type: "HAS_CAMPAIGN", direction: IN)
+  council: Council @relationship(type: "HAS_CAMPAIGN", direction: IN)
+  stream: Stream @relationship(type: "HAS_CAMPAIGN", direction: IN)
+  gatheringService: GatheringService
+    @relationship(type: "HAS_CAMPAIGN", direction: IN)
+  leader: Member @relationship(type: "LEADS", direction: IN)
+  target: Target @relationship(type: "HAS_TARGET", direction: OUT)
+}
+
+extend type Mutation {
+  CreateFellowshipEquipmentRecord(
+    fellowshipId: ID!
+    offeringBags: Int!
+  ): EquipmentRecord
+    @auth(rules: [{ roles: ["leaderFellowship"] }])
+    @cypher(
+      statement: """
+      MATCH (fellowship:Fellowship {id: $fellowshipId})-[:HAS_CAMPAIGN]->(:EquipmentCampaign)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_RECORD]->(record:EquipmentRecord)
+       MATCH (record)-[:HAS_EQUIPMENT_DATE]->(date:TimeGraph)
+       WITH max(date.date) as lastDate, record
+       MATCH (date {date:lastDate})<-[:HAS_EQUIPMENT_DATE]-(record:EquipmentRecord)
+       SET
+       record.offeringBags = $offeringBags
+       RETURN record
+      """
+    )
+
+  CreateConstituencyEquipmentRecord(
+    constituencyId: ID!
+    pulpits: Int!
+  ): EquipmentRecord
+    @auth(rules: [{ roles: ["adminConstituency", "leaderConstituency"] }])
+    @cypher(
+      statement: """
+      MATCH (constituency:Constituency {id: $constituencyId})-[:HAS_CAMPAIGN]->(:EquipmentCampaign)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_RECORD]->(record:EquipmentRecord)
+      MATCH (record)-[:HAS_EQUIPMENT_DATE]->(date:TimeGraph)
+      WITH max(date.date) as lastDate, record
+      MATCH (date {date:lastDate})<-[:HAS_EQUIPMENT_DATE]-(record:EquipmentRecord)
+      set
+      record.pulpits = $pulpits
+      RETURN record
+      """
+    )
+
+  CreateEquipmentCampaign(churchId: ID!): EquipmentCampaign
+    @cypher(
+      statement: """
+      MATCH (church:Church {id:$churchId})
+      """
+    )
+
+  CreateEquipmentGatheringServiceCampaign(
+    gatheringServiceId: ID!
+    leaderId: ID!
+    campaignTarget: Int!
+  ): EquipmentCampaign
+    @cypher(
+      statement: """
+      """
+    )
+
+  CreateEquipmentCampaignDate(date: Date!): EquipmentCampaign
+    @cypher(
+      statement: """
+      """
+    )
+}

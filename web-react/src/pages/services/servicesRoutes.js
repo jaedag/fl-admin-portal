@@ -61,7 +61,7 @@ export const services = [
   },
   {
     path: '/fellowship/record-service',
-    element: FellowshipService,
+    element: Fellowship,
     roles: permitLeaderAdmin('Fellowship'),
     placeholder: true,
   },
@@ -74,7 +74,7 @@ export const services = [
   {
     path: '/services/bacenta',
     element: BacentaJoint,
-    roles: ['all'],
+    roles: permitLeaderAdmin('Bacenta'),
     placeholder: true,
   },
   {

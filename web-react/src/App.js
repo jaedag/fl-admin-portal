@@ -23,6 +23,7 @@ import { reconciliation } from 'pages/reconciliation/reconRoutes.js'
 import PageNotFound from 'pages/page-not-found/PageNotFound'
 import SetPermissions from 'auth/SetPermissions'
 import { permitMe } from 'permission-utils'
+import { CampaignContext } from 'contexts/CampaignContext'
 
 const PastorsAdmin = () => {
   const [church, setChurch] = useState(
@@ -57,6 +58,9 @@ const PastorsAdmin = () => {
   )
   const [bussingRecordId, setBussingRecordId] = useState(
     sessionStorage.getItem('bussingRecordId') ?? ''
+  )
+  const [equipmentRecordId, setEquipmentRecordId] = useState(
+    sessionStorage.getItem('equipmentRecordId') ?? ''
   )
 
   const [sontaId, setSontaId] = useState(
@@ -346,6 +350,10 @@ const PastorsAdmin = () => {
         setBussingRecordId(card.id)
         sessionStorage.setItem('bussingRecordId', card.id)
         break
+      case 'EquipmentRecord':
+        setEquipmentRecordId(card.id)
+        sessionStorage.setItem('equipmentRecordId', card.id)
+        break
       default:
         break
     }
@@ -406,90 +414,97 @@ const PastorsAdmin = () => {
             setUserJobs,
           }}
         >
-          <SearchContext.Provider value={{ searchKey, setSearchKey }}>
-            <ServiceContext.Provider
-              value={{
-                serviceRecordId,
-                setServiceRecordId,
-                bussingRecordId,
-                setBussingRecordId,
-              }}
-            >
-              <SetPermissions>
-                <Navigation />
-                <div className={`bg ${theme}`}>
-                  <Routes>
-                    {[
-                      ...dashboards,
-                      ...directory,
-                      ...services,
-                      ...arrivals,
-                      ...campaigns,
-                      ...reconciliation,
-                      ...reports,
-                    ].map((route, i) => (
+          <CampaignContext.Provider
+            value={{
+              equipmentRecordId,
+              setEquipmentRecordId,
+            }}
+          >
+            <SearchContext.Provider value={{ searchKey, setSearchKey }}>
+              <ServiceContext.Provider
+                value={{
+                  serviceRecordId,
+                  setServiceRecordId,
+                  bussingRecordId,
+                  setBussingRecordId,
+                }}
+              >
+                <SetPermissions>
+                  <Navigation />
+                  <div className={`bg ${theme}`}>
+                    <Routes>
+                      {[
+                        ...dashboards,
+                        ...directory,
+                        ...services,
+                        ...arrivals,
+                        ...campaigns,
+                        ...reconciliation,
+                        ...reports,
+                      ].map((route, i) => (
+                        <Route
+                          key={i}
+                          path={route.path}
+                          element={
+                            <ProtectedRoute
+                              roles={route.roles ?? ['all']}
+                              placeholder={route.placeholder}
+                            >
+                              <route.element />
+                            </ProtectedRoute>
+                          }
+                        />
+                      ))}
+                      {[...memberDirectory, ...memberGrids].map((route, i) => (
+                        <Route
+                          key={i}
+                          path={route.path}
+                          element={
+                            <MembersDirectoryRoute
+                              roles={route.roles}
+                              placeholder={route.placeholder}
+                            >
+                              <route.element />
+                            </MembersDirectoryRoute>
+                          }
+                        />
+                      ))}
+
                       <Route
-                        key={i}
-                        path={route.path}
+                        path="/services/trends"
+                        element={
+                          <ProtectedReports roles={['all']} placeholder exact />
+                        }
+                      />
+                      <Route
+                        path="/dashboard/servants"
+                        element={
+                          <ProtectedRouteHome
+                            roles={permitMe('Fellowship')}
+                            placeholder
+                          >
+                            <ServantsDashboard />
+                          </ProtectedRouteHome>
+                        }
+                      />
+                      <Route
+                        path="/servants/church-list"
                         element={
                           <ProtectedRoute
-                            roles={route.roles ?? ['all']}
-                            placeholder={route.placeholder}
+                            roles={permitMe('Fellowship')}
+                            placeholder
                           >
-                            <route.element />
+                            <ServantsChurchList />
                           </ProtectedRoute>
                         }
                       />
-                    ))}
-                    {[...memberDirectory, ...memberGrids].map((route, i) => (
-                      <Route
-                        key={i}
-                        path={route.path}
-                        element={
-                          <MembersDirectoryRoute
-                            roles={route.roles}
-                            placeholder={route.placeholder}
-                          >
-                            <route.element />
-                          </MembersDirectoryRoute>
-                        }
-                      />
-                    ))}
-
-                    <Route
-                      path="/services/trends"
-                      element={
-                        <ProtectedReports roles={['all']} placeholder exact />
-                      }
-                    />
-                    <Route
-                      path="/dashboard/servants"
-                      element={
-                        <ProtectedRouteHome
-                          roles={permitMe('Fellowship')}
-                          placeholder
-                        >
-                          <ServantsDashboard />
-                        </ProtectedRouteHome>
-                      }
-                    />
-                    <Route
-                      path="/servants/church-list"
-                      element={
-                        <ProtectedRoute
-                          roles={permitMe('Fellowship')}
-                          placeholder
-                        >
-                          <ServantsChurchList />
-                        </ProtectedRoute>
-                      }
-                    />
-                    <Route path="*" element={<PageNotFound />} />
-                  </Routes>
-                </div>
-              </SetPermissions>
-            </ServiceContext.Provider>
-          </SearchContext.Provider>
+                      <Route path="*" element={<PageNotFound />} />
+                    </Routes>
+                  </div>
+                </SetPermissions>
+              </ServiceContext.Provider>
+            </SearchContext.Provider>
+          </CampaignContext.Provider>
         </MemberContext.Provider>
       </ChurchContext.Provider>
     </Router>

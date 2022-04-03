@@ -62,7 +62,11 @@ extend type Mutation {
       MERGE (bacenta)-[:HAS_HISTORY]->(log)
 
       SET fellowship:Vacation
+<<<<<<< HEAD
+      REMOVE fellowship:Active:Fellowship
+=======
       REMOVE fellowship:Active
+>>>>>>> b1c2e0f2433fc88f2fb8333183ec74058f38038a
 
       RETURN fellowship
       """
@@ -366,7 +370,6 @@ extend type Mutation {
        MERGE (log)-[:LOGGED_BY]->(currentUser)
        MERGE (log)-[:RECORDED_ON]->(date)
        MERGE (constituency)-[r1:HAS_HISTORY]->(log)
-
 
        WITH bacenta
       CALL {

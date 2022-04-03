@@ -24,7 +24,6 @@ export const FEDERAL_SEARCH = gql`
         fullName
       }
     }
-
     federalConstituencySearch(searchKey: $searchKey) {
       id
       name
