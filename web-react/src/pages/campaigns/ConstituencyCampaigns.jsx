@@ -16,7 +16,6 @@ const ConstituencyCampaigns = () => {
 
   const navigate = useNavigate()
   const campaigns = data?.constituencies[0]?.campaigns
-  console.log(campaigns)
 
   return (
     <BaseComponent loading={loading} error={error} data={data}>

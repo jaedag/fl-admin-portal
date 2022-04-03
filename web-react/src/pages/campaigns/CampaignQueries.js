@@ -26,6 +26,25 @@ export const FELLOWSHIP_CAMPAIGN_LIST = gql`
   }
 `
 
+export const CONSTITUENCY_TRENDS = gql`
+  query constituenciesTrends($constituencyId: ID) {
+    constituencies(where: { id: $constituencyId }) {
+      id
+      name
+      offeringBags
+      pulpits
+      activeFellowshipCount
+      campaigns {
+        ... on EquipmentCampaign {
+          target {
+            percentage
+          }
+        }
+      }
+    }
+  }
+`
+
 export const CONSTITUENCY_EQUIPMENT_RECORD_CREATION = gql`
   mutation CreateConstituencyEquipmentRecord(
     $constituencyRecordId: ID!

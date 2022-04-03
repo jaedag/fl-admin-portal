@@ -43,10 +43,8 @@ const FellowshipEquipmentForm = () => {
     }).then((res) => {
       onSubmitProps.setSubmitting(false)
       onSubmitProps.resetForm()
-      console.log(res.data)
       setEquipmentRecordId(res.data)
       //navigate('/campaigns/fellowship/equipment/form-details')
-      console.log(res)
     })
   }
 
