@@ -518,11 +518,31 @@ extend type Mutation {
 }
 
 extend type Query {
-  LatestEquipmentRecord(constituencyId: ID!): EquipmentRecord!
-    @auth(rules: [{ roles: ["leaderConstituency", "adminConstituency"] }])
+  LatestEquipmentRecord(churchId: ID!): EquipmentRecord!
+    @auth(
+      rules: [
+        {
+          roles: [
+            "leaderConstituency"
+            "leaderFellowship"
+            "leaderBacenta"
+            "leaderCouncil"
+            "leaderStream"
+            "leaderGatheringService"
+            "adminConstituency"
+            "leaderFellowship"
+            "adminCouncil"
+            "adminStream"
+            "adminGatheringService"
+          ]
+        }
+      ]
+    )
     @cypher(
       statement: """
-      MATCH (constituency:Constituency {id: $constituencyId})-[:HAS_CAMPAIGN]->(:EquipmentCampaign)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_RECORD]->(record:EquipmentRecord)
+      MATCH (church {id:$churchId})
+      WHERE church:Constituency OR church:Council OR church:Stream OR church:GatheringService OR church:Bacenta OR church:Fellowship
+      MATCH (church)-[:HAS_CAMPAIGN]->(:EquipmentCampaign)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_RECORD]->(record:EquipmentRecord)
       MATCH (record)-[:HAS_EQUIPMENT_DATE]->(date:TimeGraph)
       WITH max(date.date) as lastDate, record
       MATCH (date {date:lastDate})<-[:HAS_EQUIPMENT_DATE]-(record:EquipmentRecord)
