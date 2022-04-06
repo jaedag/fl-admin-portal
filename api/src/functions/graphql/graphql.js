@@ -27,29 +27,23 @@ const neoSchema = new Neo4jGraphQL({
   driver,
   plugins: {
     auth: new Neo4jGraphQLAuthJWTPlugin({
-      secret: process.env.JWT_SECRET,
+      secret: process.env.JWT_SECRET.replace(/\\n/gm, '\n'),
       rolesPath: 'https://flcadmin\\.netlify\\.app/roles',
     }),
   },
 })
 
-const startServer = async () => {
+export const handler = async (event, context, ...args) => {
   const schema = await neoSchema.getSchema()
 
   const server = new ApolloServer({
-    context: ({ req }) => req,
+    context: ({ event }) => ({ req: event }),
     introspection: true,
     schema,
   })
 
-  return server
-}
+  const apolloHandler = server.createHandler()
 
-// exports.handler = server.createHandler()
-
-const apolloHandler = startServer().createHandler()
-
-export const handler = (event, context, ...args) => {
   return apolloHandler(
     {
       ...event,
