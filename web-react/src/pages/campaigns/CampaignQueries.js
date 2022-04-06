@@ -60,10 +60,14 @@ export const CONSTITUENCY_EQUIPMENT_RECORD_CREATION = gql`
   }
 `
 // Should return the id of the latest equipment record
-export const LATEST_EQUIPMENT_DATE = gql`
-  query LatestEquipmentRecord($constituencyId: ID!) {
-    LatestEquipmentRecord(constituencyId: $constituencyId) {
+export const LATEST_EQUIPMENT_RECORD = gql`
+  query LatestEquipmentRecord($churchId: ID!) {
+    latestEquipmentRecord(churchId: $churchId) {
       id
+      pulpits
+      equipmentDate {
+        date
+      }
     }
   }
 `

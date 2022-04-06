@@ -9,7 +9,7 @@ import { MemberContext } from 'contexts/MemberContext'
 import { useMutation, useQuery } from '@apollo/client'
 import {
   CONSTITUENCY_EQUIPMENT_RECORD_CREATION,
-  LATEST_EQUIPMENT_DATE,
+  LATEST_EQUIPMENT_RECORD,
 } from '../CampaignQueries'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { useNavigate } from 'react-router'
@@ -21,13 +21,16 @@ const ConstituencyEquipmentForm = () => {
   const church = currentUser.currentChurch
   const churchType = currentUser.currentChurch?.__typename
 
-  const { data, loading, error } = useQuery(LATEST_EQUIPMENT_DATE, {
+  const { data, loading, error } = useQuery(LATEST_EQUIPMENT_RECORD, {
     variables: {
-      constituencyId,
+      churchId: constituencyId,
     },
   })
 
-  const constituencyRecordId = data //The record id
+  const constituencyRecordId = data?.latestEquipmentRecord?.id
+  const equipmentDate = data?.latestEquipmentRecord?.equipmentDate?.date
+  const pulpits = data?.latestEquipmentRecord?.pulpits
+
   const [CreateEquipmentRecord] = useMutation(
     CONSTITUENCY_EQUIPMENT_RECORD_CREATION
   )
@@ -35,9 +38,9 @@ const ConstituencyEquipmentForm = () => {
   const navigate = useNavigate()
 
   const initialValues = {
-    constituencyId: ' ',
-    pulpits: '',
-    date: new Date().toISOString().slice(0, 10),
+    //constituencyId: '',
+    pulpits: pulpits,
+    date: equipmentDate?.slice(0, 10),
   }
 
   const validationSchema = Yup.object({
@@ -45,7 +48,9 @@ const ConstituencyEquipmentForm = () => {
       .typeError('Please enter a valid number')
       .positive()
       .integer('You cannot have pulpits with decimals!')
-      .required('You cannot submit this form without entering your attendance'),
+      .required(
+        'You cannot submit this form without entering the number of pulpits'
+      ),
   })
 
   const onSubmit = (values, onSubmitProps) => {
@@ -97,7 +102,7 @@ const ConstituencyEquipmentForm = () => {
                     className="form-control"
                     control="input"
                     name="pulpits"
-                    placeholder="Enter a number"
+                    //placeholder={pulpits}
                   />
                   <div className="d-flex justify-content-center pt-2">
                     <Button

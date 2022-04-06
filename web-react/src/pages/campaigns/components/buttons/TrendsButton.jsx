@@ -12,9 +12,9 @@ const TrendsButton = (props) => {
   const offeringBags = data?.constituencies[0]?.offeringBags
   const pulpits = data?.constituencies[0]?.pulpits
   const name = data?.constituencies[0]?.name
-  const total = data?.constituencies[0]?.activeFellowshipCount
+  const total = data?.constituencies[0]?.activeFellowshipCount * 2
   const offeringBagsPercentage = ((offeringBags / total) * 100).toFixed()
-  const pulpitsPercentage = ((pulpits / total) * 100).toFixed()
+  const pulpitsPercentage = ((pulpits / 1) * 100).toFixed()
 
   return (
     <Button variant="secondary" className={`${theme} button`}>
@@ -27,7 +27,7 @@ const TrendsButton = (props) => {
         </div>
         <ProgressBar percentage={offeringBagsPercentage} />
         <div className="lowercase-text">
-          Total Pulpits: {pulpits}/{total}
+          Total Pulpits: {pulpits}/{1}
         </div>
         <ProgressBar percentage={pulpitsPercentage} />
       </div>

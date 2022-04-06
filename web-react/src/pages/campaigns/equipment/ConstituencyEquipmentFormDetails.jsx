@@ -1,40 +1,67 @@
 import React, { useContext } from 'react'
-import { Container, Row, Table } from 'react-bootstrap'
+import { Container, Row, Table, Button } from 'react-bootstrap'
 import HeadingSecondary from 'components/HeadingSecondary'
-//import BaseComponent from 'components/base-component/BaseComponent'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import { MemberContext } from 'contexts/MemberContext'
-//import { useNavigate } from 'react-router'
+import { ChurchContext } from 'contexts/ChurchContext'
+import BaseComponent from 'components/base-component/BaseComponent'
+import { useQuery } from '@apollo/client'
+import { LATEST_EQUIPMENT_RECORD } from '../CampaignQueries'
+import { useNavigate } from 'react-router'
 
 const ConstituencyEquipmentFormDetails = () => {
   const { currentUser } = useContext(MemberContext)
+  const { constituencyId } = useContext(ChurchContext)
   const church = currentUser.currentChurch
   const churchType = currentUser.currentChurch?.__typename
 
   const { theme } = useContext(MemberContext)
-  //const navigate = useNavigate()
+  const navigate = useNavigate()
+
+  const { data, loading, error } = useQuery(LATEST_EQUIPMENT_RECORD, {
+    variables: {
+      churchId: constituencyId,
+    },
+  })
+
+  const equipmentDate = data?.latestEquipmentRecord?.equipmentDate?.date
+  const pulpits = data?.latestEquipmentRecord?.pulpits
 
   return (
-    <Container>
-      <HeadingPrimary className="text-center">
-        Equipment Campaign
-      </HeadingPrimary>
-      <HeadingSecondary className="text-center pb-4">{`${church?.name} ${churchType}`}</HeadingSecondary>
-      <Row>
-        <Table variant={theme} striped bordered>
-          <tbody>
-            <tr>
-              <td>Date :</td>
-              <td>26 Jan 2022</td>
-            </tr>
-            <tr>
-              <td>Number of Offering Bags :</td>
-              <td>30</td>
-            </tr>
-          </tbody>
-        </Table>
-      </Row>
-    </Container>
+    <BaseComponent data={data} loading={loading} error={error}>
+      <Container>
+        <HeadingPrimary className="text-center">
+          Equipment Campaign
+        </HeadingPrimary>
+        <HeadingSecondary className="text-center pb-4">{`${church?.name} ${churchType}`}</HeadingSecondary>
+        <Row>
+          <Table variant={theme} striped bordered>
+            <tbody>
+              <tr>
+                <td>Date :</td>
+                <td>{equipmentDate?.slice(0, 10)}</td>
+              </tr>
+              <tr>
+                <td>Number of Pulpits :</td>
+                <td>{pulpits}</td>
+              </tr>
+            </tbody>
+          </Table>
+        </Row>
+
+        <div className="d-flex justify-content-center pt-5">
+          <Button
+            variant="danger"
+            size="lg"
+            type="submit"
+            className={`btn-main ${theme}`}
+            onClick={() => navigate(`/campaigns/constituency/equipment/trends`)}
+          >
+            Continue
+          </Button>
+        </div>
+      </Container>
+    </BaseComponent>
   )
 }
 
