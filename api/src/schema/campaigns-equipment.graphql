@@ -7,7 +7,10 @@ extend type GatheringService {
   pulpits: Int
     @cypher(
       statement: """
-      MATCH (this)-[:HAS_CAMPAIGN]->(:EquipmentCampaign)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_RECORD]->(record:EquipmentRecord)
+      MATCH (this)-[:HAS_CAMPAIGN]->(:EquipmentCampaign)-[:HAS_RECORD]->(record:EquipmentRecord)
+      MATCH (record)-[:HAS_EQUIPMENT_DATE]->(date:TimeGraph)
+      WITH MAX(date.date) as lastDate, record limit 1
+      MATCH (date {date:lastDate})<-[:HAS_EQUIPMENT_DATE]-(record)
       MATCH (record)-[:HAS*3]->(constituencyRecord:EquipmentRecord)
       RETURN sum(constituencyRecord.pulpits)
       """
@@ -15,9 +18,12 @@ extend type GatheringService {
   offeringBags: Int
     @cypher(
       statement: """
-      MATCH (this)-[:HAS_CAMPAIGN]->(:EquipmentCampaign)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_RECORD]->(record:EquipmentRecord)
+      MATCH (this)-[:HAS_CAMPAIGN]->(campaign:EquipmentCampaign)-[:HAS_RECORD]->(record:EquipmentRecord)
+      MATCH (record)-[:HAS_EQUIPMENT_DATE]->(date:TimeGraph)
+      WITH  MAX(date.date) as lastDate, record limit 1
+      MATCH (date:TimeGraph {date:lastDate})<-[:HAS_EQUIPMENT_DATE]-(record)
       MATCH (record)-[:HAS*5]->(fellowshipRecord:EquipmentRecord)
-      RETURN sum(fellowshipRecord.offeringBags)
+      return sum(fellowshipRecord.offeringBags)
       """
     )
 }
@@ -26,7 +32,10 @@ extend type Stream {
   pulpits: Int
     @cypher(
       statement: """
-      MATCH (this)-[:HAS_CAMPAIGN]->(:EquipmentCampaign)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_RECORD]->(record:EquipmentRecord)
+      MATCH (this)-[:HAS_CAMPAIGN]->(:EquipmentCampaign)-[:HAS_RECORD]->(record:EquipmentRecord)
+      MATCH (record)-[:HAS_EQUIPMENT_DATE]->(date:TimeGraph)
+      WITH MAX(date.date) as lastDate, record limit 1
+      MATCH (date {date:lastDate})<-[:HAS_EQUIPMENT_DATE]-(record)
       MATCH (record)-[:HAS*2]->(constituencyRecord:EquipmentRecord)
       RETURN sum(constituencyRecord.pulpits)
       """
@@ -34,9 +43,12 @@ extend type Stream {
   offeringBags: Int
     @cypher(
       statement: """
-      MATCH (this)-[:HAS_CAMPAIGN]->(:EquipmentCampaign)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_RECORD]->(record:EquipmentRecord)
+      MATCH (this)-[:HAS_CAMPAIGN]->(campaign:EquipmentCampaign)-[:HAS_RECORD]->(record:EquipmentRecord)
+      MATCH (record)-[:HAS_EQUIPMENT_DATE]->(date:TimeGraph)
+      WITH  MAX(date.date) as lastDate, record limit 1
+      MATCH (date:TimeGraph {date:lastDate})<-[:HAS_EQUIPMENT_DATE]-(record)
       MATCH (record)-[:HAS*4]->(fellowshipRecord:EquipmentRecord)
-      RETURN sum(fellowshipRecord.offeringBags)
+      return sum(fellowshipRecord.offeringBags)
       """
     )
 }
@@ -45,19 +57,22 @@ extend type Council {
   pulpits: Int
     @cypher(
       statement: """
-      MATCH (this)-[:HAS_CAMPAIGN]->(:EquipmentCampaign)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_RECORD]->(record:EquipmentRecord)
-      MATCH (record)-[:HAS]->(constituencyRecord:EquipmentRecord)
-      RETURN sum(constituencyRecord.pulpits)
+      MATCH (this)-[:HAS_CAMPAIGN]->(:EquipmentCampaign)-[:HAS_RECORD]->(record:EquipmentRecord)
+       MATCH (record)-[:HAS_EQUIPMENT_DATE]->(date:TimeGraph)
+       WITH MAX(date.date) as lastDate, record limit 1
+       MATCH (date {date:lastDate})<-[:HAS_EQUIPMENT_DATE]-(record)
+       MATCH (record)-[:HAS]->(constituencyRecord:EquipmentRecord)
+       RETURN sum(constituencyRecord.pulpits)
       """
     )
   offeringBags: Int
     @cypher(
       statement: """
-      MATCH (this)-[:HAS_CAMPAIGN]->(:EquipmentCampaign)-[:HAS_RECORD]->(record:EquipmentRecord)
-      MATCH (records)-[:HAS_EQUIPMENT_DATE]->(date:TimeGraph)
-      WITH MAX(date.date) as lastDate
-      MATCH (date {date:lastDate})<-[:HAS_EQUIPMENT_DATE]-(latestRecord:EquipmentRecord)
-      MATCH (latestRecord)-[:HAS*3]->(fellowshipRecord:EquipmentRecord)
+      MATCH (this)-[:HAS_CAMPAIGN]->(campaign:EquipmentCampaign)-[:HAS_RECORD]->(record:EquipmentRecord)
+      MATCH (record)-[:HAS_EQUIPMENT_DATE]->(date:TimeGraph)
+      WITH  MAX(date.date) as lastDate, record limit 1
+      MATCH (date:TimeGraph {date:lastDate})<-[:HAS_EQUIPMENT_DATE]-(record)
+      MATCH (record)-[:HAS*3]->(fellowshipRecord:EquipmentRecord)
       return sum(fellowshipRecord.offeringBags)
       """
     )
@@ -77,11 +92,11 @@ extend type Constituency {
   offeringBags: Int
     @cypher(
       statement: """
-       MATCH (this)-[:HAS_CAMPAIGN]->(:EquipmentCampaign)-[:HAS_RECORD]->(record:EquipmentRecord)
-      MATCH (records)-[:HAS_EQUIPMENT_DATE]->(date:TimeGraph)
-      WITH MAX(date.date) as lastDate
-      MATCH (date {date:lastDate})<-[:HAS_EQUIPMENT_DATE]-(latestRecord:EquipmentRecord)
-      MATCH (latestRecord)-[:HAS*2]->(fellowshipRecord:EquipmentRecord)
+      MATCH (this)-[:HAS_CAMPAIGN]->(campaign:EquipmentCampaign)-[:HAS_RECORD]->(record:EquipmentRecord)
+      MATCH (record)-[:HAS_EQUIPMENT_DATE]->(date:TimeGraph)
+      WITH  MAX(date.date) as lastDate, record limit 1
+      MATCH (date:TimeGraph {date:lastDate})<-[:HAS_EQUIPMENT_DATE]-(record)
+      MATCH (record)-[:HAS*2]->(fellowshipRecord:EquipmentRecord)
       return sum(fellowshipRecord.offeringBags)
       """
     )
@@ -535,7 +550,7 @@ extend type Mutation {
 }
 
 extend type Query {
-  LatestEquipmentRecord(churchId: ID!): EquipmentRecord!
+  latestEquipmentRecord(churchId: ID!): EquipmentRecord!
     @auth(
       rules: [
         {
