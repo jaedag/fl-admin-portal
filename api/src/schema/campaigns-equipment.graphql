@@ -77,11 +77,12 @@ extend type Constituency {
   offeringBags: Int
     @cypher(
       statement: """
-       MATCH (this)-[:HAS_CAMPAIGN]->(:EquipmentCampaign)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_RECORD]->(record:EquipmentRecord)-[:HAS*2]->(fellowshipRecord:EquipmentRecord)
-      MATCH (fellowshipRecord)-[:HAS_EQUIPMENT_DATE]->(date:TimeGraph)
-       WITH max(date.date) as lastDate, fellowshipRecord
-        MATCH (date {date:lastDate})<-[:HAS_EQUIPMENT_DATE]-(fellowshipRecord:EquipmentRecord)
-       RETURN sum(fellowshipRecord.offeringBags)
+       MATCH (this)-[:HAS_CAMPAIGN]->(:EquipmentCampaign)-[:HAS_RECORD]->(record:EquipmentRecord)
+      MATCH (records)-[:HAS_EQUIPMENT_DATE]->(date:TimeGraph)
+      WITH MAX(date.date) as lastDate
+      MATCH (date {date:lastDate})<-[:HAS_EQUIPMENT_DATE]-(latestRecord:EquipmentRecord)
+      MATCH (latestRecord)-[:HAS*2]->(fellowshipRecord:EquipmentRecord)
+      return sum(fellowshipRecord.offeringBags)
       """
     )
   latestEquipmenRecord: EquipmentRecord
