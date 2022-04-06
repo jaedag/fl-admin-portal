@@ -571,6 +571,10 @@ type Constituency implements Church {
     @cypher(
       statement: "MATCH (this)-[:HAS]-(:Bacenta)-[:HAS]->(fellowship:Fellowship) RETURN COUNT(fellowship)"
     )
+  fellowships: [Fellowship]
+    @cypher(
+      statement: "MATCH (this)-[:HAS]->(:Bacenta)-[:HAS]->(fellowship:Fellowship) RETURN fellowship"
+    )
   fellowshipSearch(key: String!, limit: Int!): [Fellowship!]!
     @cypher(
       statement: """
