@@ -219,44 +219,334 @@ extend type Mutation {
     )
 
   CreateConstituencyEquipmentRecord(
-    constituencyId: ID!
+    constituencyRecordId: ID!
     pulpits: Int!
   ): EquipmentRecord
     @auth(rules: [{ roles: ["adminConstituency", "leaderConstituency"] }])
     @cypher(
       statement: """
-      MATCH (constituency:Constituency {id: $constituencyId})-[:HAS_CAMPAIGN]->(:EquipmentCampaign)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_RECORD]->(record:EquipmentRecord)
-      MATCH (record)-[:HAS_EQUIPMENT_DATE]->(date:TimeGraph)
-      WITH max(date.date) as lastDate, record
-      MATCH (date {date:lastDate})<-[:HAS_EQUIPMENT_DATE]-(record:EquipmentRecord)
+      MATCH (constituencyRecord:EquipmentRecord {id: $constituencyRecordId})
       set
-      record.pulpits = $pulpits
-      RETURN record
+      constituencyRecord.pulpits = $pulpits
+      RETURN constituencyRecord
       """
     )
 
-  CreateEquipmentCampaign(churchId: ID!): EquipmentCampaign
-    @cypher(
-      statement: """
-      MATCH (church:Church {id:$churchId})
-      """
-    )
-
-  CreateEquipmentGatheringServiceCampaign(
+  CreateGatheringServiceEquipmentCampaign(
     gatheringServiceId: ID!
-    leaderId: ID!
-    campaignTarget: Int!
   ): EquipmentCampaign
+    @auth(rules: [{ roles: ["adminGatheringService"] }])
     @cypher(
       statement: """
+      MATCH (target:Target {campaign:"Equipment"})
+      MATCH (gatheringService:GatheringService {id: $gatheringServiceId})
+      MATCH (log:ServiceLog)<-[:HAS_HISTORY {current:true}]-(gatheringService)
+      MATCH (leader:Member)-[:LEADS]->(gatheringService)
 
+      WITH target, gatheringService, log, leader
+
+      CREATE (gatheringServiceCampaign:EquipmentCampaign {id: apoc.create.uuid()})
+       SET gatheringServiceCampaign.name = gatheringService.name + ' Gathering Service'
+
+      MERGE (gatheringService)-[:HAS_CAMPAIGN]->(gatheringServiceCampaign)
+      MERGE (gatheringServiceCampaign)<-[:LEADS]-(leader)
+      MERGE (gatheringServiceCampaign)-[:HAS_HISTORY]->(log)
+      MERGE (gatheringServiceCampaign)-[:HAS_TARGET]->(target)
+      return gatheringServiceCampaign
+      """
+    )
+
+  CreateStreamEquipmentCampaign(streamId: ID!): EquipmentCampaign
+    @auth(rules: [{ roles: ["adminGatheringService", "adminStream"] }])
+    @cypher(
+      statement: """
+           MATCH (target:Target {campaign:"Equipment"})
+      MATCH (stream:Stream {id: $streamId})<-[:HAS]-(gatheringService:GatheringService)-[:HAS_CAMPAIGN]->(gatheringServiceCampaign:EquipmentCampaign)
+      MATCH (log:ServiceLog)<-[:HAS_HISTORY {current:true}]-(stream)
+      MATCH (leader:Member)-[:LEADS]->(stream)
+
+      WITH target, stream, gatheringServiceCampaign, log, leader
+      CREATE (streamCampaign:EquipmentCampaign {id: apoc.create.uuid()})
+      SET streamCampaign.name = stream.name + ' Stream'
+
+      MERGE (stream)-[:HAS_CAMPAIGN]->(streamCampaign)
+      MERGE (streamCampaign)<-[:LEADS]-(leader)
+      // WITH stream, log, streamCampaign, leader,target,gatheringServiceCampaign
+      MERGE (streamCampaign)-[:HAS_HISTORY]->(log)
+      MERGE (streamCampaign)-[:HAS_TARGET]->(target)
+      MERGE (streamCampaign)<-[:HAS]-(gatheringServiceCampaign)
+      return streamCampaign;
+      """
+    )
+
+  CreateCouncilEquipmentCampaign(councilId: ID!): EquipmentCampaign
+    @auth(
+      rules: [
+        { roles: ["adminGatheringService", "adminStream", "adminCouncil"] }
+      ]
+    )
+    @cypher(
+      statement: """
+      MATCH (target:Target {campaign:"Equipment"})
+      MATCH (council:Council {id: $councilId})<-[:HAS]-(stream:Stream)-[:HAS_CAMPAIGN]->(streamCampaign:EquipmentCampaign)
+      MATCH (log:ServiceLog)<-[:HAS_HISTORY {current:true}]-(council)
+      MATCH (leader:Member)-[:LEADS]->(council)
+      WITH target, council, streamCampaign, log, leader
+
+      CREATE (councilCampaign:EquipmentCampaign {id: apoc.create.uuid()})
+      SET councilCampaign.name = council.name + ' Council'
+
+      MERGE (council)-[:HAS_CAMPAIGN]->(councilCampaign)
+      MERGE (councilCampaign)<-[:LEADS]-(leader)
+      MERGE (councilCampaign)-[:HAS_HISTORY]->(log)
+      MERGE (councilCampaign)-[:HAS_TARGET]->(target)
+      MERGE (councilCampaign)<-[:HAS]-(streamCampaign)
+
+      return councilCampaign;
+      """
+    )
+
+  CreateConstituencyEquipmentCampaign(constituencyId: ID!): EquipmentCampaign
+    @auth(
+      rules: [
+        {
+          roles: [
+            "adminGatheringService"
+            "adminStream"
+            "adminCouncil"
+            "adminConstituency"
+          ]
+        }
+      ]
+    )
+    @cypher(
+      statement: """
+            MATCH (target:Target {campaign:"Equipment"})
+      MATCH (constituency:Constituency {id: $constituencyId })<-[:HAS]-(council:Council)-[:HAS_CAMPAIGN]->(councilCampaign:EquipmentCampaign)
+      MATCH (log:ServiceLog)<-[:HAS_HISTORY {current:true}]-(constituency)
+      MATCH (leader:Member)-[:LEADS]->(constituency)
+      WITH target, constituency, councilCampaign, log, leader
+
+      CREATE (constituencyCampaign:EquipmentCampaign {id: apoc.create.uuid()})
+      SET constituencyCampaign.name = constituency.name + ' Constituency'
+
+      MERGE (constituency)-[:HAS_CAMPAIGN]->(constituencyCampaign)
+      MERGE (constituencyCampaign)-[:HAS_HISTORY]->(log)
+      MERGE (constituencyCampaign)<-[:LEADS]-(leader)
+      MERGE (constituencyCampaign)-[:HAS_TARGET]->(target)
+      MERGE (constituencyCampaign)<-[:HAS]-(councilCampaign)
+
+      return constituencyCampaign;
+      """
+    )
+
+  CreateBacentaEquipmentCampaign(bacentaId: ID!): EquipmentCampaign
+    @auth(
+      rules: [
+        {
+          roles: [
+            "adminGatheringService"
+            "adminStream"
+            "adminCouncil"
+            "adminConstituency"
+          ]
+        }
+      ]
+    )
+    @cypher(
+      statement: """
+            MATCH (target:Target {campaign:"Equipment"})
+      MATCH (bacenta:Bacenta {id: $bacnetaId})<-[:HAS]-(constituency:Constituency)-[:HAS_CAMPAIGN]->(constituencyCampaign:EquipmentCampaign)
+      MATCH (log:ServiceLog)<-[:HAS_HISTORY {current:true}]-(bacenta)
+      MATCH (leader:Member)-[:LEADS]->(bacenta)
+      WITH target, bacenta, constituencyCampaign, log, leader
+
+      CREATE (bacentaCampaign:EquipmentCampaign {id: apoc.create.uuid()})
+      SET bacentaCampaign.name = bacenta.name + ' Bacenta'
+
+      MERGE (bacenta)-[:HAS_CAMPAIGN]->(bacentaCampaign)
+      MERGE (bacentaCampaign)-[:HAS_HISTORY]->(log)
+      MERGE (bacentaCampaign)-[:HAS_TARGET]->(target)
+      MERGE (bacentaCampaign)<-[:LEADS]-(leader)
+      MERGE (bacentaCampaign)<-[:HAS]-(constituencyCampaign)
+
+      return bacentaCampaign;
+      """
+    )
+
+  CreateFellowshipEquipmentCampaign(fellowshipId: ID!): EquipmentCampaign
+    @cypher(
+      statement: """
+         MATCH (target:Target {campaign:"Equipment"})
+      MATCH (fellowship:Fellowship {id: $fellowshipId})<-[:HAS]-(bacenta:Bacenta)-[:HAS_CAMPAIGN]->(bacentaCampaign:EquipmentCampaign)
+      MATCH (log:ServiceLog)<-[:HAS_HISTORY {current:true}]-(fellowship)
+      MATCH (leader:Member)-[:LEADS]->(fellowship)
+      WITH target, fellowship, bacentaCampaign, log, leader
+
+      CREATE (fellowshipCampaign:EquipmentCampaign {id: apoc.create.uuid()})
+      SET fellowshipCampaign.name = fellowship.name + ' Fellowship'
+
+      MERGE (fellowship)-[:HAS_CAMPAIGN]->(fellowshipCampaign)
+      MERGE (fellowshipCampaign)-[:HAS_HISTORY]->(log)
+      MERGE (fellowshipCampaign)<-[:LEADS]-(leader)
+      MERGE (fellowshipCampaign)-[:HAS_TARGET]->(target)
+      MERGE (fellowshipCampaign)<-[:HAS]-(bacentaCampaign)
+
+      return fellowshipCampaign;
       """
     )
 
   CreateEquipmentCampaignDate(date: Date!): EquipmentCampaign
     @cypher(
       statement: """
+      MATCH (gatheringService:GatheringService)-[:HAS_CAMPAIGN]->(EquipmentCampaign:EquipmentCampaign)
+      MATCH (log:ServiceLog)<-[:HAS_HISTORY {current:true}]-(gatheringService)
+      WITH log, gatheringService, EquipmentCampaign
 
+      CREATE (gatheringServiceRecord:EquipmentRecord)
+      SET
+      gatheringServiceRecord.historyRecord = gatheringService.name + ' ' + ' Equipment Campaign created an Equipment Record on this '+datetime(),
+      gatheringServiceRecord.id = apoc.create.uuid(),
+      gatheringServiceRecord.date = date()
+
+      MERGE (gatheringServiceRecord)<-[:HAS_RECORD]-(log)
+      MERGE (equimpentDate:TimeGraph {date:$equipmentDate})
+      MERGE (EquipmentCampaign)-[:HAS_RECORD]->(gatheringServiceRecord)
+      MERGE (gatheringServiceRecord)-[:HAS_EQUIPMENT_DATE]->(equimpentDate)
+      return log,gatheringService, gatheringServiceRecord;
+
+
+      //Create Stream Equipment Record
+      MATCH (stream:Stream)-[:HAS_CAMPAIGN]->(EquipmentCampaign:EquipmentCampaign)<-[:HAS]-(gatheringServiceCampaign:EquipmentCampaign)-[:HAS_RECORD]->(gatheringServiceRecord:EquipmentRecord)-[:HAS_EQUIPMENT_DATE]->(equimpentDate:TimeGraph {date:$equipmentDate})
+      MATCH (log:ServiceLog)<-[:HAS_HISTORY {current:true}]-(stream)
+      WITH log, stream, EquipmentCampaign, gatheringServiceRecord
+
+      CREATE (streamRecord:EquipmentRecord)
+      SET
+      streamRecord.historyRecord = stream.name + ' ' + ' Equipment Campaign created an Equipment Record on this '+datetime(),
+      streamRecord.id = apoc.create.uuid(),
+      streamRecord.date = date()
+
+      MERGE (streamRecord)<-[:HAS_RECORD]-(log)
+      MERGE (equimpentDate:TimeGraph {date:$equipmentDate})
+      MERGE (EquipmentCampaign)-[:HAS_RECORD]->(streamRecord)
+      MERGE (streamRecord)-[:HAS_EQUIPMENT_DATE]->(equimpentDate)
+      MERGE (gatheringServiceRecord)-[:HAS]->(streamRecord)
+      return log,stream, streamRecord limit 2;
+
+
+      //Create Council Equipment Record
+      MATCH (council:Council)-[:HAS_CAMPAIGN]->(EquipmentCampaign:EquipmentCampaign)<-[:HAS]-(streamCampaign:EquipmentCampaign)-[:HAS_RECORD]->(streamRecord:EquipmentRecord)-[:HAS_EQUIPMENT_DATE]->(equimpentDate:TimeGraph {date:$equipmentDate})
+      MATCH (log:ServiceLog)<-[:HAS_HISTORY {current:true}]-(council)
+      WITH log, council, EquipmentCampaign, streamRecord
+
+      CREATE (councilRecord:EquipmentRecord)
+      SET
+      councilRecord.historyRecord = council.name + ' ' + ' Equipment Campaign created an Equipment Record on this '+datetime(),
+      councilRecord.id = apoc.create.uuid(),
+      councilRecord.date = date()
+
+      MERGE (councilRecord)<-[:HAS_RECORD]-(log)
+      MERGE (equimpentDate:TimeGraph {date:$equipmentDate})
+      MERGE (EquipmentCampaign)-[:HAS_RECORD]->(councilRecord)
+      MERGE (councilRecord)-[:HAS_EQUIPMENT_DATE]->(equimpentDate)
+      MERGE (streamRecord)-[:HAS]->(councilRecord)
+      return log,council, councilRecord limit 2;
+
+
+      //Create Constituency Equipment Record
+      MATCH (constituency:Constituency)-[:HAS_CAMPAIGN]->(EquipmentCampaign:EquipmentCampaign)<-[:HAS]-(councilCampaign:EquipmentCampaign)-[:HAS_RECORD]->(councilRecord:EquipmentRecord)-[:HAS_EQUIPMENT_DATE]->(equimpentDate:TimeGraph {date:$equipmentDate})
+      MATCH (log:ServiceLog)<-[:HAS_HISTORY {current:true}]-(constituency)
+      WITH log, constituency, EquipmentCampaign, councilRecord
+
+      CREATE (constituencyRecord:EquipmentRecord)
+      SET
+      constituencyRecord.historyRecord = constituency.name + ' ' + 'Equipment Campaign created an Equipment Record on this '+datetime(),
+      constituencyRecord.id = apoc.create.uuid(),
+      constituencyRecord.date = date(),
+      constituencyRecord.pulpits = 0
+
+      MERGE (constituencyRecord)<-[:HAS_RECORD]-(log)
+      MERGE (equimpentDate:TimeGraph {date:$equipmentDate})
+      MERGE (EquipmentCampaign)-[:HAS_RECORD]->(constituencyRecord)
+      MERGE (constituencyRecord)-[:HAS_EQUIPMENT_DATE]->(equimpentDate)
+      MERGE (councilRecord)-[:HAS]->(constituencyRecord)
+      return log,constituency, constituencyRecord limit 2;
+
+
+
+      //Create Bacenta Equipment Record
+      MATCH (bacenta:Bacenta)-[:HAS_CAMPAIGN]->(EquipmentCampaign:EquipmentCampaign)<-[:HAS]-(constituencyCampaign:EquipmentCampaign)-[:HAS_RECORD]->(constituencyRecord:EquipmentRecord)-[:HAS_EQUIPMENT_DATE]->(equimpentDate:TimeGraph {date:$equipmentDate})
+      MATCH (log:ServiceLog)<-[:HAS_HISTORY {current:true}]-(bacenta)
+      WITH log, bacenta, EquipmentCampaign, constituencyRecord
+
+      CREATE (bacentaRecord:EquipmentRecord)
+      SET
+      bacentaRecord.historyRecord = bacenta.name + ' ' + 'Equipment Campaign created an Equipment Record on this '+datetime(),
+      bacentaRecord.id = apoc.create.uuid(),
+      bacentaRecord.date = date()
+
+      MERGE (bacentaRecord)<-[:HAS_RECORD]-(log)
+      MERGE (equimpentDate:TimeGraph {date:$equipmentDate})
+      MERGE (EquipmentCampaign)-[:HAS_RECORD]->(bacentaRecord)
+      MERGE (bacentaRecord)-[:HAS_EQUIPMENT_DATE]->(equimpentDate)
+      MERGE (constituencyRecord)-[:HAS]->(bacentaRecord)
+      return log,bacenta, bacentaRecord limit 2;
+
+
+
+      //Create Fellowship Campaigns
+      MATCH (fellowship:Fellowship)-[:HAS_CAMPAIGN]->(EquipmentCampaign:EquipmentCampaign)<-[:HAS]-(bacentaCampaign:EquipmentCampaign)-[:HAS_RECORD]->(bacentaRecord:EquipmentRecord)-[:HAS_EQUIPMENT_DATE]->(equimpentDate:TimeGraph {date:$equipmentDate})
+      MATCH (log:ServiceLog)<-[:HAS_HISTORY {current:true}]-(fellowship)
+      WITH log, fellowship, EquipmentCampaign, bacentaRecord
+
+      CREATE (fellowshipRecord:EquipmentRecord)
+      SET
+      fellowshipRecord.historyRecord = fellowship.name + ' ' + 'Equipment Campaign created an Equipment Record on this '+datetime(),
+      fellowshipRecord.id = apoc.create.uuid(),
+      fellowshipRecord.date = date(),
+      fellowshipRecord.offeringBags = 0
+
+      MERGE (fellowshipRecord)<-[:HAS_RECORD]-(log)
+      MERGE (equimpentDate:TimeGraph {date:$equipmentDate})
+      MERGE (EquipmentCampaign)-[:HAS_RECORD]->(fellowshipRecord)
+      MERGE (fellowshipRecord)-[:HAS_EQUIPMENT_DATE]->(equimpentDate)
+      MERGE (bacentaRecord)-[:HAS]->(fellowshipRecord)
+      return log,fellowship, fellowshipRecord limit 2;
+      """
+    )
+}
+
+extend type Query {
+  LatestEquipmentRecord(churchId: ID!): EquipmentRecord!
+    @auth(
+      rules: [
+        {
+          roles: [
+            "leaderConstituency"
+            "leaderFellowship"
+            "leaderBacenta"
+            "leaderCouncil"
+            "leaderStream"
+            "leaderGatheringService"
+            "adminConstituency"
+            "leaderFellowship"
+            "adminCouncil"
+            "adminStream"
+            "adminGatheringService"
+          ]
+        }
+      ]
+    )
+    @cypher(
+      statement: """
+      MATCH (church {id:$churchId})
+      WHERE church:Constituency OR church:Council OR church:Stream OR church:GatheringService OR church:Bacenta OR church:Fellowship
+      MATCH (church)-[:HAS_CAMPAIGN]->(:EquipmentCampaign)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_RECORD]->(record:EquipmentRecord)
+      MATCH (record)-[:HAS_EQUIPMENT_DATE]->(date:TimeGraph)
+      WITH max(date.date) as lastDate, record
+      MATCH (date {date:lastDate})<-[:HAS_EQUIPMENT_DATE]-(record:EquipmentRecord)
+      RETURN record limit 1
       """
     )
 }
