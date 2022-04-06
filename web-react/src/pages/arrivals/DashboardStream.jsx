@@ -127,6 +127,13 @@ const StreamDashboard = () => {
             >
               Arrivals Helpers
             </Button>
+            <Button
+              variant="outline-secondary"
+              size="lg"
+              onClick={() => navigate('/stream/arrival-times')}
+            >
+              Arrivals Times
+            </Button>
           </RoleView>
 
           <DefaulterInfoCard defaulter={aggregates} />
