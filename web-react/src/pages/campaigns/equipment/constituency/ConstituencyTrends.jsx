@@ -1,9 +1,9 @@
 import React, { useContext } from 'react'
 import { Container } from 'react-bootstrap'
-import TrendsButton from '../components/buttons/TrendsButton'
+import TrendsButton from '../../components/buttons/TrendsButton'
 import { MemberContext } from 'contexts/MemberContext'
 import { useQuery } from '@apollo/client'
-import { CONSTITUENCY_TRENDS } from '../CampaignQueries'
+import { CONSTITUENCY_TRENDS } from '../../CampaignQueries'
 import BaseComponent from 'components/base-component/BaseComponent'
 import { ChurchContext } from 'contexts/ChurchContext'
 

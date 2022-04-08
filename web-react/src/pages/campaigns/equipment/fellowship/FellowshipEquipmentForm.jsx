@@ -4,52 +4,51 @@ import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
 import { Col, Container, Row, Button } from 'react-bootstrap'
 import HeadingSecondary from 'components/HeadingSecondary'
+import BaseComponent from 'components/base-component/BaseComponent'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import { MemberContext } from 'contexts/MemberContext'
 import { useMutation, useQuery } from '@apollo/client'
 import {
-  CONSTITUENCY_EQUIPMENT_RECORD_CREATION,
+  FELLOWSHIP_EQUIPMENT_RECORD_CREATION,
   LATEST_EQUIPMENT_RECORD,
-} from '../CampaignQueries'
+} from '../../CampaignQueries'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { useNavigate } from 'react-router'
-import BaseComponent from 'components/base-component/BaseComponent'
 
-const ConstituencyEquipmentForm = () => {
+const FellowshipEquipmentForm = () => {
   const { currentUser } = useContext(MemberContext)
-  const { constituencyId } = useContext(ChurchContext)
+  const { fellowshipId } = useContext(ChurchContext)
   const church = currentUser.currentChurch
   const churchType = currentUser.currentChurch?.__typename
 
   const { data, loading, error } = useQuery(LATEST_EQUIPMENT_RECORD, {
     variables: {
-      churchId: constituencyId,
+      churchId: fellowshipId,
     },
   })
 
-  const constituencyRecordId = data?.latestEquipmentRecord?.id
+  const fellowshipRecordId = data?.latestEquipmentRecord?.id
   const equipmentDate = data?.latestEquipmentRecord?.equipmentDate?.date
-  const pulpits = data?.latestEquipmentRecord?.pulpits
+  const offeringBags = data?.latestEquipmentRecord?.offeringBags
 
   const [CreateEquipmentRecord] = useMutation(
-    CONSTITUENCY_EQUIPMENT_RECORD_CREATION
+    FELLOWSHIP_EQUIPMENT_RECORD_CREATION
   )
   const { theme } = useContext(MemberContext)
   const navigate = useNavigate()
 
   const initialValues = {
-    //constituencyId: '',
-    pulpits: pulpits,
+    offeringBags: offeringBags,
     date: equipmentDate?.slice(0, 10),
   }
 
   const validationSchema = Yup.object({
-    pulpits: Yup.number()
+    offeringBags: Yup.number()
       .typeError('Please enter a valid number')
       .positive()
-      .integer('You cannot have pulpits with decimals!')
+      .integer('You cannot have offering bags with decimals!')
       .required(
-        'You cannot submit this form without entering the number of pulpits'
+        'You cannot submit this form without entering the number of offerigBags'
       ),
   })
 
@@ -57,14 +56,13 @@ const ConstituencyEquipmentForm = () => {
     onSubmitProps.setSubmitting(true)
     CreateEquipmentRecord({
       variables: {
-        constituencyRecordId: constituencyRecordId,
-        pulpits: parseInt(values.pulpits),
+        fellowshipRecordId: fellowshipRecordId,
+        offeringBags: parseInt(values.offeringBags),
       },
     }).then(() => {
       onSubmitProps.setSubmitting(false)
       onSubmitProps.resetForm()
-
-      navigate('/campaigns/constituency/equipment/form-details')
+      navigate('/campaigns/fellowship/equipment/form-details')
     })
   }
 
@@ -96,13 +94,12 @@ const ConstituencyEquipmentForm = () => {
                     placeholder="dd/mm/yyyy"
                   />
                   <small htmlFor="date" className="form-text ">
-                    Number of Pulpits*{' '}
+                    Number of Offering Bags*{' '}
                   </small>
                   <FormikControl
                     className="form-control"
                     control="input"
-                    name="pulpits"
-                    //placeholder={pulpits}
+                    name="offeringBags"
                   />
                   <div className="d-flex justify-content-center pt-2">
                     <Button
@@ -125,4 +122,4 @@ const ConstituencyEquipmentForm = () => {
   )
 }
 
-export default ConstituencyEquipmentForm
+export default FellowshipEquipmentForm

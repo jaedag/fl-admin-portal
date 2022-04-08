@@ -6,12 +6,12 @@ import { MemberContext } from 'contexts/MemberContext'
 import { ChurchContext } from 'contexts/ChurchContext'
 import BaseComponent from 'components/base-component/BaseComponent'
 import { useQuery } from '@apollo/client'
-import { LATEST_EQUIPMENT_RECORD } from '../CampaignQueries'
+import { LATEST_EQUIPMENT_RECORD } from '../../CampaignQueries'
 import { useNavigate } from 'react-router'
 
-const ConstituencyEquipmentFormDetails = () => {
+const FellowshipEquipmentFormDetails = () => {
   const { currentUser } = useContext(MemberContext)
-  const { constituencyId } = useContext(ChurchContext)
+  const { fellowshipId } = useContext(ChurchContext)
   const church = currentUser.currentChurch
   const churchType = currentUser.currentChurch?.__typename
 
@@ -20,12 +20,12 @@ const ConstituencyEquipmentFormDetails = () => {
 
   const { data, loading, error } = useQuery(LATEST_EQUIPMENT_RECORD, {
     variables: {
-      churchId: constituencyId,
+      churchId: fellowshipId,
     },
   })
 
   const equipmentDate = data?.latestEquipmentRecord?.equipmentDate?.date
-  const pulpits = data?.latestEquipmentRecord?.pulpits
+  const offeringBags = data?.latestEquipmentRecord?.offeringBags
 
   return (
     <BaseComponent data={data} loading={loading} error={error}>
@@ -38,12 +38,12 @@ const ConstituencyEquipmentFormDetails = () => {
           <Table variant={theme} striped bordered>
             <tbody>
               <tr>
-                <td>Date :</td>
+                <td>Date </td>
                 <td>{equipmentDate?.slice(0, 10)}</td>
               </tr>
               <tr>
-                <td>Number of Pulpits :</td>
-                <td>{pulpits}</td>
+                <td>Number of Offering Bags </td>
+                <td>{offeringBags}</td>
               </tr>
             </tbody>
           </Table>
@@ -51,11 +51,10 @@ const ConstituencyEquipmentFormDetails = () => {
 
         <div className="d-flex justify-content-center pt-5">
           <Button
-            variant="danger"
             size="lg"
             type="submit"
-            className={`btn-main ${theme}`}
-            onClick={() => navigate(`/campaigns/constituency/equipment/trends`)}
+            className={`btn-main ${theme} px-5`}
+            onClick={() => navigate(`/campaigns/fellowship/equipment/trends`)}
           >
             Continue
           </Button>
@@ -65,4 +64,4 @@ const ConstituencyEquipmentFormDetails = () => {
   )
 }
 
-export default ConstituencyEquipmentFormDetails
+export default FellowshipEquipmentFormDetails
