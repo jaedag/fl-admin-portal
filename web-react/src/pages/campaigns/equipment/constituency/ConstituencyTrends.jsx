@@ -1,9 +1,9 @@
 import React, { useContext } from 'react'
 import { Container } from 'react-bootstrap'
-import TrendsButton from '../components/buttons/TrendsButton'
+import TrendsButton from '../../components/buttons/TrendsButton'
 import { MemberContext } from 'contexts/MemberContext'
 import { useQuery } from '@apollo/client'
-import { CONSTITUENCY_TRENDS } from '../CampaignQueries'
+import { CONSTITUENCY_TRENDS } from '../../CampaignQueries'
 import BaseComponent from 'components/base-component/BaseComponent'
 import { ChurchContext } from 'contexts/ChurchContext'
 
@@ -17,11 +17,6 @@ const ConstituencyEquipmentTrends = () => {
   const { data, loading, error } = useQuery(CONSTITUENCY_TRENDS, {
     variables: { constituencyId: constituencyId },
   })
-  // const offeringBags = data?.constituencies[0]?.offeringBags
-  // const pulpits = data?.constituencies[0]?.pulpits
-
-  //console.log(data?.constituencies[0])
-
   return (
     <BaseComponent data={data} loading={loading} error={error}>
       <div className="d-flex align-items-center justify-content-center ">

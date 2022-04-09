@@ -1,13 +1,15 @@
-import ConstituencyEquipmentCampaign from 'pages/campaigns/equipment/ConstituencyEquipmentCampaign'
-import ConstituencyEquipmentForm from 'pages/campaigns/equipment/ConstituencyEquipmentForm'
+import ConstituencyEquipmentCampaign from 'pages/campaigns/equipment/constituency/ConstituencyEquipmentCampaign'
+import ConstituencyEquipmentForm from 'pages/campaigns/equipment/constituency/ConstituencyEquipmentForm'
 import CampaignChurchList from 'pages/campaigns/ChurchList'
-import ConstituencyEquipmentTrends from 'pages/campaigns/equipment/ConstituencyTrends'
+import ConstituencyEquipmentTrends from 'pages/campaigns/equipment/constituency/ConstituencyTrends'
 import ConstituencyCampaigns from 'pages/campaigns/ConstituencyCampaigns'
-import FellowshipEquipmentCampaign from 'pages/campaigns/equipment/FellowshipEquipmentCampaign'
-import FellowshipEquipmentForm from 'pages/campaigns/equipment/FellowshipEquipmentForm'
+import FellowshipEquipmentCampaign from 'pages/campaigns/equipment/fellowship/FellowshipEquipmentCampaign'
+import FellowshipEquipmentForm from 'pages/campaigns/equipment/fellowship/FellowshipEquipmentForm'
 import FellowshipCampaigns from 'pages/campaigns/FellowshipCampaigns'
-import ConstituencyEquipmentFormDetails from 'pages/campaigns/equipment/ConstituencyEquipmentFormDetails'
-import FellowshipEquipmentFormDetails from 'pages/campaigns/equipment/FellowshipEquipmentFormDetails'
+import ConstituencyEquipmentFormDetails from 'pages/campaigns/equipment/constituency/ConstituencyEquipmentFormDetails'
+import FellowshipEquipmentFormDetails from 'pages/campaigns/equipment/fellowship/FellowshipEquipmentFormDetails'
+import ConstituencyFellowshipTrends from './equipment/constituency/ConstituencyFellowshipTrends'
+import FellowshipTrends from './equipment/fellowship/FellowshipTrends'
 
 export const campaigns = [
   {
@@ -31,6 +33,12 @@ export const campaigns = [
   {
     path: '/campaigns/constituency/equipment/trends',
     element: ConstituencyEquipmentTrends,
+    roles: ['leaderConstituency', 'adminConstituency'],
+    placeholder: true,
+  },
+  {
+    path: '/campaigns/constituency/equipment/trends/fellowship',
+    element: ConstituencyFellowshipTrends,
     roles: ['leaderConstituency', 'adminConstituency'],
     placeholder: true,
   },
@@ -67,6 +75,12 @@ export const campaigns = [
   {
     path: '/campaigns/fellowship',
     element: FellowshipCampaigns,
+    roles: ['leaderFellowship'],
+    placeholder: true,
+  },
+  {
+    path: '/campaigns/fellowship/equipment/trends',
+    element: FellowshipTrends,
     roles: ['leaderFellowship'],
     placeholder: true,
   },
