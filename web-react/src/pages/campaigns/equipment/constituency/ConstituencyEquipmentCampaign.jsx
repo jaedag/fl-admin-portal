@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import { Container } from 'react-bootstrap'
-import MenuButton from '../components/buttons/MenuButton'
+import MenuButton from '../../components/buttons/MenuButton'
 import { useNavigate } from 'react-router'
 import { MemberContext } from 'contexts/MemberContext'
 

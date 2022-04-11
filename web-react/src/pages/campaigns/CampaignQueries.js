@@ -26,6 +26,19 @@ export const FELLOWSHIP_CAMPAIGN_LIST = gql`
   }
 `
 
+export const FELLOWSHIP_RECORDS_PER_CONSTITUENCY = gql`
+  query Constituencies($constituencyId: ID) {
+    constituencies(where: { id: $constituencyId }) {
+      bacentas {
+        fellowships {
+          name
+          offeringBags
+        }
+      }
+    }
+  }
+`
+
 export const CONSTITUENCY_TRENDS = gql`
   query constituenciesTrends($constituencyId: ID) {
     constituencies(where: { id: $constituencyId }) {
@@ -34,6 +47,23 @@ export const CONSTITUENCY_TRENDS = gql`
       offeringBags
       pulpits
       activeFellowshipCount
+      campaigns {
+        ... on EquipmentCampaign {
+          target {
+            percentage
+          }
+        }
+      }
+    }
+  }
+`
+
+export const FELLOWSHIP_TRENDS = gql`
+  query fellowshipTrends($fellowshipId: ID) {
+    fellowships(where: { id: $fellowshipId }) {
+      id
+      name
+      offeringBags
       campaigns {
         ... on EquipmentCampaign {
           target {
@@ -60,24 +90,27 @@ export const CONSTITUENCY_EQUIPMENT_RECORD_CREATION = gql`
   }
 `
 // Should return the id of the latest equipment record
-export const LATEST_EQUIPMENT_DATE = gql`
-  query LatestEquipmentRecord($constituencyId: ID!) {
-    LatestEquipmentRecord(constituencyId: $constituencyId) {
+export const LATEST_EQUIPMENT_RECORD = gql`
+  query LatestEquipmentRecord($churchId: ID!) {
+    latestEquipmentRecord(churchId: $churchId) {
       id
+      pulpits
+      offeringBags
+      equipmentDate {
+        date
+      }
     }
   }
 `
 
 export const FELLOWSHIP_EQUIPMENT_RECORD_CREATION = gql`
   mutation CreateFellowshipEquipmentRecord(
-    $fellowshipId: ID!
+    $fellowshipRecordId: ID!
     $offeringBags: Int!
-    $date: Date!
   ) {
     CreateFellowshipEquipmentRecord(
-      fellowshipId: $fellowshipId
+      fellowshipRecordId: $fellowshipRecordId
       offeringBags: $offeringBags
-      date: $date
     ) {
       id
       offeringBags

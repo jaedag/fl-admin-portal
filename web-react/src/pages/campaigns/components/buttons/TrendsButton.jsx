@@ -3,21 +3,30 @@ import { MemberContext } from 'contexts/MemberContext'
 import { Button } from 'react-bootstrap'
 import './TrendsButton.css'
 import ProgressBar from './ProgressBar'
+import { useNavigate } from 'react-router'
 
 const TrendsButton = (props) => {
   const { theme } = useContext(MemberContext)
+  const navigate = useNavigate()
 
   const data = props.data
+  const constituencies = data?.constituencies[0]
 
-  const offeringBags = data?.constituencies[0]?.offeringBags
-  const pulpits = data?.constituencies[0]?.pulpits
-  const name = data?.constituencies[0]?.name
-  const total = data?.constituencies[0]?.activeFellowshipCount
+  const offeringBags = constituencies?.offeringBags
+  const pulpits = constituencies?.pulpits
+  const name = constituencies?.name
+  const total = constituencies?.activeFellowshipCount * 2
   const offeringBagsPercentage = ((offeringBags / total) * 100).toFixed()
-  const pulpitsPercentage = ((pulpits / total) * 100).toFixed()
+  const pulpitsPercentage = ((pulpits / 1) * 100).toFixed()
 
   return (
-    <Button variant="secondary" className={`${theme} button`}>
+    <Button
+      variant="secondary"
+      className={`${theme} button`}
+      onClick={() =>
+        navigate(`/campaigns/constituency/equipment/trends/fellowship`)
+      }
+    >
       <div className="pb-3 pt-2">
         <div className="text">TOTAL {name.toUpperCase()}</div>
       </div>
@@ -27,7 +36,7 @@ const TrendsButton = (props) => {
         </div>
         <ProgressBar percentage={offeringBagsPercentage} />
         <div className="lowercase-text">
-          Total Pulpits: {pulpits}/{total}
+          Total Pulpits: {pulpits}/{1}
         </div>
         <ProgressBar percentage={pulpitsPercentage} />
       </div>
