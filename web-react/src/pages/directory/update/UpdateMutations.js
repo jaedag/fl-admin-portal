@@ -87,6 +87,43 @@ export const UPDATE_MEMBER_EMAIL = gql`
   }
 `
 
+export const UPDATE_MEMBER_FELLOWSHIP = gql`
+  mutation UpdateMemberFellowship(
+    $memberId: ID!
+    $fellowshipId: ID!
+    $ids: [ID]
+    $historyRecord: String!
+  ) {
+    UpdateMemberFellowship(memberId: $memberId, fellowshipId: $fellowshipId) {
+      id
+      firstName
+      lastName
+      fellowship {
+        id
+        name
+      }
+    }
+    LogMemberHistory(ids: $ids, historyRecord: $historyRecord) {
+      id
+      firstName
+      lastName
+      history(options: { limit: 3 }) {
+        id
+        timeStamp
+        created_at {
+          date
+        }
+        loggedBy {
+          id
+          firstName
+          lastName
+          stream_name
+        }
+        historyRecord
+      }
+    }
+  }
+`
 export const UPDATE_STREAM_MUTATION = gql`
   mutation UpdateStream(
     $streamId: ID!
@@ -643,13 +680,15 @@ export const ADD_STREAM_COUNCILS = gql`
   mutation AddStreamCouncils($streamId: ID!, $councilId: ID!) {
     updateCouncils(
       where: { id: $councilId }
-      connect: { councils: { where: { node: { id: $councilId } } } }
+      connect: { stream: { where: { node: { id: $streamId } } } }
     ) {
-      streams {
+      councils {
         id
-        name
-        councils {
+        stream {
           id
+          councils {
+            id
+          }
         }
       }
     }

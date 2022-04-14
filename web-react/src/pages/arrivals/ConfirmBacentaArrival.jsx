@@ -24,9 +24,11 @@ import {
 import CloudinaryImage from 'components/CloudinaryImage'
 import useChurchLevel from 'hooks/useChurchLevel'
 import NoData from './CompNoData'
+import usePopup from 'hooks/usePopup'
 
 const ConfirmBacentaArrival = () => {
-  const { clickCard, isOpen, togglePopup } = useContext(ChurchContext)
+  const { clickCard } = useContext(ChurchContext)
+  const { togglePopup, isOpen } = usePopup()
   const { theme } = useContext(MemberContext)
   const { bussingRecordId } = useContext(ServiceContext)
   const [isSubmitting, setSubmitting] = useState(false)
@@ -52,7 +54,7 @@ const ConfirmBacentaArrival = () => {
   const initialValues = {
     bacentaSearch: '',
   }
-  const bacentaDataLoaded = church ? church?.bacentasHaveBeenCounted : []
+  const bacentaDataLoaded = church ? church?.bacentasOnTheWay : []
   const [bacentaData, setBacentaData] = useState([])
 
   useEffect(() => {
@@ -63,7 +65,7 @@ const ConfirmBacentaArrival = () => {
     onSubmitProps.setSubmitting(true)
     const searchTerm = values.bacentaSearch.toLowerCase()
     setBacentaData(
-      church?.bacentasHaveBeenCounted.filter((bacenta) => {
+      church?.bacentasOnTheWay.filter((bacenta) => {
         if (bacenta.name.toLowerCase().includes(searchTerm)) {
           return true
         } else if (bacenta.leader.fullName.toLowerCase().includes(searchTerm)) {
@@ -105,16 +107,16 @@ const ConfirmBacentaArrival = () => {
                       bussingRecordId: bussingRecordId,
                     },
                   })
-
+                  const bussingData = arrivalRes.data.RecordArrivalTime
                   if (
-                    !arrivalRes.data.RecordArrivalTime.bussingTopUp ||
+                    !bussingData.bussingTopUp ||
                     church?.stream_name === 'Anagkazo'
                   ) {
                     //if there is no value for the bussing top up
                     return
                   }
 
-                  if (arrivalRes.data.RecordArrivalTime.confirmed_by.id) {
+                  if (bussingData.confirmed_by?.id) {
                     //If Attendance has been confrimed then send bussing support
                     try {
                       const supportRes = await SendBussingSupport({
@@ -128,12 +130,17 @@ const ConfirmBacentaArrival = () => {
                         'Money Successfully Sent to ' +
                           supportRes.data.SendBussingSupport.momoNumber
                       )
-                      setSubmitting(false)
                     } catch (error) {
-                      setSubmitting(false)
                       throwErrorMsg(error)
                     }
+                  } else {
+                    alertMsg(
+                      'Money will be sent when attendance is counted and confirmed'
+                    )
                   }
+
+                  setSubmitting(false)
+                  navigate('/bacenta/bussing-details')
                 } catch (error) {
                   setSubmitting(false)
                   throwErrorMsg(

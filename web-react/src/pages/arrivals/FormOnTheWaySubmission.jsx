@@ -81,9 +81,9 @@ const FormOnTheWaySubmission = () => {
     }),
   })
 
-  const onSubmit = (values, onSubmitProps) => {
+  const onSubmit = async (values, onSubmitProps) => {
     onSubmitProps.setSubmitting(true)
-    RecordBussingFromBacenta({
+    const res = await RecordBussingFromBacenta({
       variables: {
         attendance: parseInt(values.attendance),
         bussingRecordId: bussingRecordId,
@@ -95,18 +95,18 @@ const FormOnTheWaySubmission = () => {
         momoName: values.momoName,
         momoNumber: values.momoNumber,
       },
-    }).then(async (res) => {
-      clickCard(res.data.RecordBussingFromBacenta)
-      await SetBussingSupport({
-        variables: {
-          bussingRecordId: bussingRecordId,
-        },
-      })
-
-      onSubmitProps.resetForm()
-      onSubmitProps.setSubmitting(false)
-      navigate(`/bacenta/bussing-details`)
     })
+
+    clickCard(res.data.RecordBussingFromBacenta)
+    await SetBussingSupport({
+      variables: {
+        bussingRecordId: bussingRecordId,
+      },
+    })
+
+    onSubmitProps.resetForm()
+    onSubmitProps.setSubmitting(false)
+    navigate(`/bacenta/bussing-details`)
   }
 
   return (
@@ -158,6 +158,7 @@ const FormOnTheWaySubmission = () => {
                     name="numberOfBusses"
                     label="Number of Busses *"
                   />
+
                   <FormikControl
                     control="input"
                     name="numberOfCars"
@@ -187,6 +188,7 @@ const FormOnTheWaySubmission = () => {
                       const { bussingPictures } = values
 
                       const pictureLimit = 4
+
                       return (
                         <>
                           {bussingPictures.map((bussingPicture, index) => (

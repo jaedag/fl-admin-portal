@@ -9,7 +9,7 @@ import React, { useContext } from 'react'
 import { Card, Col, Container, Row } from 'react-bootstrap'
 import { CheckCircleFill, XCircleFill } from 'react-bootstrap-icons'
 import { useNavigate } from 'react-router'
-import { CONSTITUENCY_BANKING_SLIP_QUERIES } from '../ServicesQueries'
+import { CONSTITUENCY_BANKING_SLIP_QUERIES } from '../../ServicesQueries'
 
 const ConstituencyBankingSlipView = () => {
   const { constituencyId } = useContext(ChurchContext)
@@ -37,7 +37,7 @@ const ConstituencyBankingSlipView = () => {
             className="mb-2"
             onClick={() => {
               setServiceRecordId(service.id)
-              !service.bankingSlip &&
+              !service.bankingProof &&
                 navigate('/constituency/banking-slip/submission')
             }}
           >

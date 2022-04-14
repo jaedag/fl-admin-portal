@@ -6,7 +6,7 @@ import PlaceholderCustom from 'components/Placeholder'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { ServiceContext } from 'contexts/ServiceContext'
 import { Formik, Form } from 'formik'
-import React from 'react'
+import React, { useState } from 'react'
 import * as Yup from 'yup'
 import { useContext } from 'react'
 import { Card, Container } from 'react-bootstrap'
@@ -18,15 +18,17 @@ import {
 import { useNavigate } from 'react-router'
 import FormikControl from 'components/formik-components/FormikControl'
 import SubmitButton from 'components/formik-components/SubmitButton'
-import { useState } from 'react'
-import { useEffect } from 'react'
 import CloudinaryImage from 'components/CloudinaryImage'
 import { alertMsg, throwErrorMsg } from 'global-utils'
+import Popup from 'components/Popup/Popup'
+import usePopup from 'hooks/usePopup'
 
 const FormAttendanceConfirmation = () => {
   const navigate = useNavigate()
   const { bacentaId } = useContext(ChurchContext)
   const { bussingRecordId } = useContext(ServiceContext)
+  const { isOpen, togglePopup } = usePopup()
+  const [picturePopup, setPicturePopup] = useState('')
 
   const { data, loading, error } = useQuery(DISPLAY_BUSSING_RECORDS, {
     variables: { bussingRecordId: bussingRecordId, bacentaId: bacentaId },
@@ -41,17 +43,8 @@ const FormAttendanceConfirmation = () => {
     bussingTopUp: '',
     comments: '',
   }
-  const [bussingMoney, setBussingMoney] = useState(0)
-
-  useEffect(() => {
-    setBussingMoney(data?.bacentas[0]?.normalBussingTopUp)
-  }, [data])
 
   const validationSchema = Yup.object({
-    bussingTopUp: Yup.number()
-      .typeError('Please enter a valid number')
-      .positive()
-      .required('This is a required field'),
     attendance: Yup.number()
       .typeError('Please enter a valid number')
       .positive()
@@ -66,12 +59,18 @@ const FormAttendanceConfirmation = () => {
       variables: {
         bussingRecordId: bussingRecordId,
         attendance: parseInt(values.attendance),
-        bussingTopUp: parseFloat(values.bussingTopUp),
         comments: values.comments,
       },
     })
 
-    if (res.data.ConfirmBussingByAdmin.arrivalTime) {
+    const bussingData = res.data.ConfirmBussingByAdmin
+
+    if (!bussingData.bussingTopUp || bacenta?.stream_name === 'Anagkazo') {
+      //if there is no value for the bussing top up
+      return
+    }
+
+    if (bussingData.arrivalTime) {
       //If arrival time has been logged then send bussing support
       try {
         const supportRes = await SendBussingSupport({
@@ -108,16 +107,40 @@ const FormAttendanceConfirmation = () => {
 
       <div className="text-center">
         <h6>Bussing Pictures</h6>
-        {bussing?.bussingPictures.map((picture, index) => {
-          return (
+        {isOpen && (
+          <Popup handleClose={togglePopup}>
             <CloudinaryImage
-              key={index}
-              src={picture}
-              className="report-picture"
-              large
+              src={picturePopup}
+              className="full-width"
+              size="fullWidth"
             />
-          )
-        })}
+          </Popup>
+        )}
+        <div className="container card-button-row">
+          <table>
+            <tbody>
+              <tr>
+                {bussing?.bussingPictures.map((picture, index) => (
+                  <td
+                    onClick={() => {
+                      setPicturePopup(picture)
+                      togglePopup()
+                    }}
+                    key={index}
+                  >
+                    {' '}
+                    <CloudinaryImage
+                      key={index}
+                      src={picture}
+                      className="report-picture"
+                      size="large"
+                    />
+                  </td>
+                ))}
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <Container>
         <Card>
@@ -125,7 +148,7 @@ const FormAttendanceConfirmation = () => {
             <div className="text-secondary">
               Total Bussing Cost:{' '}
               <span className="fw-bold text-info">
-                GHS {bussing?.bussingCost}
+                GHS {bussing?.bussingCost || 0}
               </span>
             </div>
           </Card.Body>
@@ -146,25 +169,8 @@ const FormAttendanceConfirmation = () => {
                 name="attendance"
                 label="Attendance (from Picture)*"
                 placeholder={bussing?.attendance}
-                onChange={(e) => {
-                  formik.setFieldValue('attendance', e.target.value)
-                  if (e.target.value > 20) {
-                    setBussingMoney(bacenta?.normalBussingTopUp * 1.5)
-                  }
-                  if (e.target.value < 20) {
-                    setBussingMoney(bacenta?.normalBussingTopUp)
-                  }
-                }}
               />
 
-              <div>{`This bacenta usually receives ${bacenta?.normalBussingTopUp} GHS on a normal day and ${bacenta?.swellBussingTopUp} on a swell day`}</div>
-
-              <FormikControl
-                control="input"
-                name="bussingTopUp"
-                label="Bussing Top Up From Church* (in GHS)"
-                placeholder={`${bussingMoney}`}
-              />
               <FormikControl
                 control="textarea"
                 name="comments"

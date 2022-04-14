@@ -198,6 +198,7 @@ export const RECORD_BUSSING_FROM_BACENTA = gql`
       attendance
       bussingPictures
       bussingCost
+      leaderDeclaration
       numberOfBusses
       numberOfCars
       momoName
@@ -221,13 +222,11 @@ export const CONFIRM_BUSSING_BY_ADMIN = gql`
   mutation ConfirmBussingByAdmin(
     $bussingRecordId: ID!
     $attendance: Int!
-    $bussingTopUp: Float!
     $comments: String
   ) {
     ConfirmBussingByAdmin(
       bussingRecordId: $bussingRecordId
       attendance: $attendance
-      bussingTopUp: $bussingTopUp
       comments: $comments
     ) {
       id

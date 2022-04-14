@@ -8,6 +8,7 @@ import { permitMe } from 'permission-utils'
 import { UnauthMsg } from './UnauthMsg'
 import LoadingScreen from 'components/base-component/LoadingScreen'
 import Login from 'components/Login'
+import Sabbath from './Sabbath'
 
 const ProtectedRoute = ({ children, roles, roleBased, placeholder }) => {
   const { currentUser } = useContext(MemberContext)
@@ -17,6 +18,9 @@ const ProtectedRoute = ({ children, roles, roleBased, placeholder }) => {
   const location = useLocation()
   const atHome = location?.pathname === '/'
 
+  if (new Date().getDay() === 1) {
+    return <Sabbath />
+  }
   if (atHome && !isAuthenticated) {
     //Unauthenticated and home
     return <Login />

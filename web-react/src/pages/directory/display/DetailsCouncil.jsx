@@ -5,9 +5,11 @@ import { ChurchContext } from 'contexts/ChurchContext'
 import { permitAdmin } from 'permission-utils'
 import React, { useContext, useEffect } from 'react'
 import { DISPLAY_COUNCIL } from './ReadQueries'
+import useClickCard from 'hooks/useClickCard'
 
 const DetailsCouncil = () => {
-  const { councilId, setChurch } = useContext(ChurchContext)
+  const { councilId } = useContext(ChurchContext)
+  const { setChurch } = useClickCard()
 
   const { data, loading, error } = useQuery(DISPLAY_COUNCIL, {
     variables: { id: councilId },
@@ -20,6 +22,7 @@ const DetailsCouncil = () => {
   }, [council?.stream_name])
 
   const details = [
+    { title: 'Target', number: council?.target, link: '#' },
     { title: 'Pastors', number: council?.pastorCount, link: '#' },
     {
       title: 'Bacentas',

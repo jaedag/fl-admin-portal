@@ -4,7 +4,7 @@ import { FieldArray, Form, Formik } from 'formik'
 import * as Yup from 'yup'
 import { makeSelectOptions } from 'global-utils'
 import { permitAdmin } from 'permission-utils'
-import { COUNCIL_DROPDOWN, GET_GATHERINGSERVICES } from 'queries/ListQueries'
+import { GET_GATHERINGSERVICES } from 'queries/ListQueries'
 import React, { useContext } from 'react'
 import { ChurchContext } from 'contexts/ChurchContext'
 import FormikControl from 'components/formik-components/FormikControl'
@@ -19,11 +19,12 @@ import { MemberContext } from 'contexts/MemberContext'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import HeadingSecondary from 'components/HeadingSecondary'
 import SubmitButton from 'components/formik-components/SubmitButton'
+import usePopup from 'hooks/usePopup'
 
 const StreamForm = ({ initialValues, onSubmit, title, newStream }) => {
-  const { togglePopup, isOpen, clickCard, streamId } = useContext(ChurchContext)
+  const { clickCard, streamId } = useContext(ChurchContext)
   const { theme } = useContext(MemberContext)
-
+  const { togglePopup, isOpen } = usePopup()
   const navigate = useNavigate()
   const { data, loading, error } = useQuery(GET_GATHERINGSERVICES)
   const [CloseDownStream] = useMutation(MAKE_STREAM_INACTIVE)
@@ -43,7 +44,7 @@ const StreamForm = ({ initialValues, onSubmit, title, newStream }) => {
   })
 
   return (
-    <BaseComponent loading={loading} error={error} data={data}>
+    <BaseComponent loading={loading} error={error} data={data && initialValues}>
       <Container>
         <HeadingPrimary>{title}</HeadingPrimary>
         <HeadingSecondary>{initialValues.name + ' Stream'}</HeadingSecondary>
@@ -98,7 +99,6 @@ const StreamForm = ({ initialValues, onSubmit, title, newStream }) => {
                         </Col>
                       </RoleView>
                     </Row>
-
                     <small className="pt-2">
                       {`Select any councils that are being moved to this Stream`}
                     </small>
@@ -114,19 +114,12 @@ const StreamForm = ({ initialValues, onSubmit, title, newStream }) => {
                               <Row key={index} className="form-row">
                                 <Col>
                                   <FormikControl
-                                    control="combobox"
+                                    control="councilSearch"
                                     name={`councils[${index}]`}
                                     placeholder="Council Name"
                                     initialValue={council?.name}
                                     setFieldValue={formik.setFieldValue}
-                                    optionsQuery={COUNCIL_DROPDOWN}
-                                    queryVariable="nameSearch"
-                                    suggestionText="name"
-                                    suggestionID="id"
-                                    dataset="councilDropdown"
-                                    church="bacenta"
-                                    returnObject={!newStream && true}
-                                    aria-describedby="Bacenta Name"
+                                    aria-describedby="Constituency Name"
                                     error={
                                       formik.errors.councils &&
                                       formik.errors.councils[index]
