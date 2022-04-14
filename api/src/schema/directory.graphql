@@ -598,6 +598,15 @@ type Bacenta implements Church {
     )
   stream: Stream
     @cypher(statement: "MATCH (this)<-[:HAS*3]-(stream:Stream) RETURN stream")
+
+  fellowshipCount: Int
+    @cypher(
+      statement: "MATCH (this)-[:HAS]->(fellowship:Fellowship) RETURN COUNT(fellowship)"
+    )
+  activeFellowshipCount: Int
+    @cypher(
+      statement: "MATCH (this)-[:HAS]->(fellowship:Active:Fellowship) RETURN COUNT(fellowship)"
+    )
 }
 
 # Shared Units: Fellowship, Fellowship, Sonta

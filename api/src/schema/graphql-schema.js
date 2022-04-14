@@ -64,5 +64,6 @@ exports.typeDefs =
   campaigns +
   ' ' +
   equipmentCampaign +
+  ' ' +
+  banking +
   ' '
-banking
