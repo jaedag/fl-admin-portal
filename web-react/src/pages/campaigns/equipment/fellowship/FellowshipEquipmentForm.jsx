@@ -9,8 +9,8 @@ import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import { MemberContext } from 'contexts/MemberContext'
 import { useMutation, useQuery } from '@apollo/client'
 import {
-  FELLOWSHIP_EQUIPMENT_RECORD_CREATION,
-  LATEST_EQUIPMENT_RECORD,
+  CREATE_FELLOWSHIP_EQUIPMENT_RECORD,
+  FELLOWSHIP_LATEST_EQUIPMENT_RECORD,
 } from '../../CampaignQueries'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { useNavigate } from 'react-router'
@@ -21,18 +21,23 @@ const FellowshipEquipmentForm = () => {
   const church = currentUser.currentChurch
   const churchType = currentUser.currentChurch?.__typename
 
-  const { data, loading, error } = useQuery(LATEST_EQUIPMENT_RECORD, {
-    variables: {
-      churchId: fellowshipId,
-    },
-  })
+  const { data, loading, error } = useQuery(
+    FELLOWSHIP_LATEST_EQUIPMENT_RECORD,
+    {
+      variables: {
+        fellowshipId: fellowshipId,
+      },
+    }
+  )
 
-  const fellowshipRecordId = data?.latestEquipmentRecord?.id
-  const equipmentDate = data?.latestEquipmentRecord?.equipmentDate?.date
-  const offeringBags = data?.latestEquipmentRecord?.offeringBags
+  const fellowship = data?.fellowships[0]
+
+  const fellowshipRecordId = fellowship?.latestEquipmenRecord?.id
+  const equipmentDate = fellowship?.latestEquipmenRecord?.equipmentDate?.date
+  const offeringBags = fellowship?.latestEquipmenRecord?.offeringBags
 
   const [CreateEquipmentRecord] = useMutation(
-    FELLOWSHIP_EQUIPMENT_RECORD_CREATION
+    CREATE_FELLOWSHIP_EQUIPMENT_RECORD
   )
   const { theme } = useContext(MemberContext)
   const navigate = useNavigate()

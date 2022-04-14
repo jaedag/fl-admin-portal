@@ -3,23 +3,23 @@ import { Container } from 'react-bootstrap'
 import MenuButton from './components/buttons/MenuButton'
 import { useNavigate } from 'react-router'
 import { useQuery } from '@apollo/client'
-import { CONSTITUENCY_CAMPAIGN_LIST } from './CampaignQueries'
+import { COUNCIL_CAMPAIGN_LIST } from './CampaignQueries'
 import { ChurchContext } from 'contexts/ChurchContext'
 import BaseComponent from 'components/base-component/BaseComponent'
 import { MemberContext } from 'contexts/MemberContext'
 
-const ConstituencyCampaigns = () => {
-  const { constituencyId } = useContext(ChurchContext)
+const CouncilCampaigns = () => {
+  const { councilId } = useContext(ChurchContext)
   const { currentUser } = useContext(MemberContext)
   const church = currentUser.currentChurch
   const churchType = currentUser.currentChurch?.__typename
 
-  const { data, loading, error } = useQuery(CONSTITUENCY_CAMPAIGN_LIST, {
-    variables: { constituencyId: constituencyId },
+  const { data, loading, error } = useQuery(COUNCIL_CAMPAIGN_LIST, {
+    variables: { councilId: councilId },
   })
 
   const navigate = useNavigate()
-  const campaigns = data?.constituencies[0]?.campaigns
+  const campaigns = data?.councils[0]?.campaigns
 
   return (
     <BaseComponent loading={loading} error={error} data={data}>
@@ -34,7 +34,7 @@ const ConstituencyCampaigns = () => {
               <MenuButton
                 key={index}
                 name={campaign.__typename}
-                onClick={() => navigate(`/campaigns/constituency/equipment`)}
+                onClick={() => navigate(`/campaigns/council/equipment`)}
               />
             ))}
           </div>
@@ -44,4 +44,4 @@ const ConstituencyCampaigns = () => {
   )
 }
 
-export default ConstituencyCampaigns
+export default CouncilCampaigns

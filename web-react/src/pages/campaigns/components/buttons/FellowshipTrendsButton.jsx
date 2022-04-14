@@ -7,21 +7,28 @@ import ProgressBar from './ProgressBar'
 const FellowshipTrendsButton = (props) => {
   const { theme } = useContext(MemberContext)
 
-  const fellowship = props.fellowship
-  const name = fellowship?.name
-  console.log(fellowship?.offeringBags)
-
-  const offeringBags = fellowship?.offeringBags
-  const offeringBagsPercentage = ((offeringBags / 2) * 100).toFixed()
+  const church = props.church
+  const name = church?.name
+  const churchType = church?.__typename
+  const offeringBags = church?.offeringBags
+  const total =
+    churchType === 'Fellowship' ? 2 : church?.activeFellowshipCount * 2
+  const offeringBagsPercentage = ((offeringBags / total) * 100).toFixed()
 
   return (
-    <Button variant="secondary" className={`${theme} button`}>
+    <Button
+      variant="secondary"
+      className={`${theme} button`}
+      onClick={props.onClick}
+    >
       <div className="pb-3 pt-2">
-        <div className="text">{name} </div>
+        <div className="text">
+          {name.toUpperCase()} {churchType.toUpperCase()}{' '}
+        </div>
       </div>
       <div className="d-grid gap-1 pb-3">
         <div className="lowercase-text text-secondary">
-          Total Offering Bags: {offeringBags} / 2
+          Total Offering Bags: {offeringBags} / {total}
         </div>
         <ProgressBar percentage={offeringBagsPercentage} />
       </div>

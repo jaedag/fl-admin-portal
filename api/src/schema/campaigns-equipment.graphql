@@ -116,10 +116,12 @@ extend type Bacenta {
   offeringBags: Int
     @cypher(
       statement: """
-      MATCH (dates:TimeGraph)<-[:HAS_EQUIPMENT_DATE]-(:EquipmentRecord)
-      WITH max(dates.date) as lastDate
-      MATCH (this)-[:HAS_CAMPAIGN]->(:EquipmentCampaign)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_RECORD]->(record:EquipmentRecord)-[:HAS]->(fellowshipRecord:EquipmentRecord)-[:HAS_EQUIPMENT_DATE]->(date:TimeGraph {date:lastDate})
-      RETURN sum(fellowshipRecord.offeringBags)
+      MATCH (this)-[:HAS_CAMPAIGN]->(campaign:EquipmentCampaign)-[:HAS_RECORD]->(record:EquipmentRecord)
+      MATCH (record)-[:HAS_EQUIPMENT_DATE]->(date:TimeGraph)
+      WITH  MAX(date.date) as lastDate, record limit 1
+      MATCH (date:TimeGraph {date:lastDate})<-[:HAS_EQUIPMENT_DATE]-(record)
+      MATCH (record)-[:HAS]->(fellowshipRecord:EquipmentRecord)
+      return sum(fellowshipRecord.offeringBags)
       """
     )
 }

@@ -20,7 +20,6 @@ const FellowshipTrends = () => {
 
   const fellowship = data?.fellowships[0]
 
-  console.log(fellowship)
   return (
     <BaseComponent data={data} loading={loading} error={error}>
       <div className="d-flex align-items-center justify-content-center ">
@@ -30,7 +29,7 @@ const FellowshipTrends = () => {
             <h6>{`${church?.name} ${churchType}`}</h6>
           </div>
           <div className="d-grid gap-2 mt-4 text-center px-2">
-            <FellowshipTrendsButton fellowship={fellowship} />
+            <FellowshipTrendsButton church={fellowship} />
           </div>
         </Container>
       </div>

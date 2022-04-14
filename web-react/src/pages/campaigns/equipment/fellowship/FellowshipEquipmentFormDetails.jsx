@@ -6,7 +6,7 @@ import { MemberContext } from 'contexts/MemberContext'
 import { ChurchContext } from 'contexts/ChurchContext'
 import BaseComponent from 'components/base-component/BaseComponent'
 import { useQuery } from '@apollo/client'
-import { LATEST_EQUIPMENT_RECORD } from '../../CampaignQueries'
+import { FELLOWSHIP_LATEST_EQUIPMENT_RECORD } from '../../CampaignQueries'
 import { useNavigate } from 'react-router'
 
 const FellowshipEquipmentFormDetails = () => {
@@ -18,14 +18,19 @@ const FellowshipEquipmentFormDetails = () => {
   const { theme } = useContext(MemberContext)
   const navigate = useNavigate()
 
-  const { data, loading, error } = useQuery(LATEST_EQUIPMENT_RECORD, {
-    variables: {
-      churchId: fellowshipId,
-    },
-  })
+  const { data, loading, error } = useQuery(
+    FELLOWSHIP_LATEST_EQUIPMENT_RECORD,
+    {
+      variables: {
+        fellowshipId: fellowshipId,
+      },
+    }
+  )
 
-  const equipmentDate = data?.latestEquipmentRecord?.equipmentDate?.date
-  const offeringBags = data?.latestEquipmentRecord?.offeringBags
+  const fellowship = data?.fellowships[0]
+
+  const equipmentDate = fellowship?.latestEquipmenRecord?.equipmentDate?.date
+  const offeringBags = fellowship?.latestEquipmenRecord?.offeringBags
 
   return (
     <BaseComponent data={data} loading={loading} error={error}>
