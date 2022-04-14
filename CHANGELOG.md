@@ -1,3 +1,9 @@
+## 3.0.0 (2022-04-14)
+
+##### Documentation Changes
+
+*  updated CHANGELOG.md ([86a8a0f5](https://github.com/firstlovecenter/fl-admin-portal/commit/86a8a0f521a81f0022de56550abfb6441bdfca57))
+
 ## 2.0.0 (2022-04-14)
 
 ### 1.4.0 (2022-04-14)
