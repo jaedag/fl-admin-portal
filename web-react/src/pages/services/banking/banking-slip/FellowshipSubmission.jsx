@@ -8,25 +8,26 @@ import { Col, Container, Row, Button } from 'react-bootstrap'
 import {
   BANKING_SLIP_SUBMISSION,
   FELLOWSHIP_SERVICE_RECORDS,
-} from '../ServicesQueries'
+} from '../../ServicesQueries'
 import { MemberContext } from 'contexts/MemberContext'
 import { useMutation, useQuery } from '@apollo/client'
 import HeadingSecondary from 'components/HeadingSecondary'
 import BaseComponent from 'components/base-component/BaseComponent'
 import { useNavigate } from 'react-router'
 import { ChurchContext } from 'contexts/ChurchContext'
+import { throwErrorMsg } from 'global-utils'
 
 const FellowshipBankingSlipSubmission = () => {
   const { serviceRecordId } = useContext(ServiceContext)
   const { theme } = useContext(MemberContext)
-  const { setFellowshipId } = useContext(ChurchContext)
+  const { clickCard } = useContext(ChurchContext)
   const navigate = useNavigate()
 
   const { data, loading, error } = useQuery(FELLOWSHIP_SERVICE_RECORDS, {
     variables: { serviceId: serviceRecordId },
   })
   const fellowship = data?.serviceRecords[0]?.serviceLog?.fellowship[0]
-  setFellowshipId(fellowship?.id)
+
   const initialValues = {
     bankingSlip: '',
   }
@@ -36,19 +37,22 @@ const FellowshipBankingSlipSubmission = () => {
     bankingSlip: Yup.string().required('You must upload a banking slip'),
   })
 
-  const onSubmit = (values, onSubmitProps) => {
+  const onSubmit = async (values, onSubmitProps) => {
     onSubmitProps.setSubmitting(true)
-    SubmitBankingSlip({
-      variables: {
-        serviceRecordId: serviceRecordId,
-        bankingSlip: values.bankingSlip,
-      },
-    }).then(() => {
+    try {
+      await SubmitBankingSlip({
+        variables: {
+          serviceRecordId: serviceRecordId,
+          bankingSlip: values.bankingSlip,
+        },
+      })
       onSubmitProps.setSubmitting(false)
       onSubmitProps.resetForm()
-
+      clickCard(fellowship)
       navigate(`/fellowship/service-details`)
-    })
+    } catch (error) {
+      throwErrorMsg(error)
+    }
   }
 
   return (

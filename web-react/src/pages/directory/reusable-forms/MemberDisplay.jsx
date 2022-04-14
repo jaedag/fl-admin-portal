@@ -1,13 +1,13 @@
 import React from 'react'
 import { useQuery } from '@apollo/client'
-import Timeline from '../../components/Timeline/Timeline'
-import MemberRoleList from '../../components/MemberRoleList'
+import Timeline from '../../../components/Timeline/Timeline'
+import MemberRoleList from '../../../components/MemberRoleList'
 import {
   getNameWithTitle,
   throwErrorMsg,
   getHighestTitle,
   USER_PLACEHOLDER,
-} from '../../global-utils'
+} from '../../../global-utils'
 import { getMemberDob } from 'date-utils'
 import {
   DISPLAY_MEMBER_ADMIN,
@@ -67,7 +67,7 @@ const MemberDisplay = ({ memberId }) => {
             className="profile-img"
             src={member?.pictureUrl || USER_PLACEHOLDER}
             alt={`${member?.fullName}`}
-            large
+            size="large"
           />
         </PlaceholderCustom>
       </div>

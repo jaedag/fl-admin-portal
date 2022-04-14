@@ -1,7 +1,24 @@
-import { permitAdmin, permitAdminArrivals, permitArrivals } from './permissions'
-import { isAuth, rearrangeCypherObject, throwErrorMsg } from './resolver-utils'
-import { MakeServant, RemoveServant } from './resolvers'
-const cypher = require('./cypher/arrivals-cypher')
+/* eslint-disable no-console */
+const {
+  getMobileCode,
+  padNumbers,
+  getStreamFinancials,
+} = require('../financial-utils')
+const { createRole, deleteRole } = require('../auth0-utils')
+const {
+  permitAdmin,
+  permitAdminArrivals,
+  permitArrivals,
+  permitArrivalsHelpers,
+} = require('../permissions')
+const {
+  isAuth,
+  noEmptyArgsValidation,
+  rearrangeCypherObject,
+  throwErrorMsg,
+} = require('../resolver-utils')
+const { MakeServant, RemoveServant } = require('../resolvers')
+const cypher = require('./arrivals-cypher')
 const axios = require('axios').default
 
 export const arrivalsMutation = {
@@ -71,23 +88,81 @@ export const arrivalsMutation = {
     ),
 
   //ARRIVALS HELPERS
-  MakeStreamArrivalsHelper: async (object, args, context) =>
+  MakeStreamArrivalsCounter: async (object, args, context) =>
     MakeServant(
       context,
       args,
       [...permitAdmin('Stream'), ...permitArrivals('Stream')],
       'Stream',
-      'ArrivalsHelper'
+      'ArrivalsCounter'
     ),
-  RemoveStreamArrivalsHelper: async (object, args, context) =>
+  RemoveStreamArrivalsCounter: async (object, args, context) =>
     RemoveServant(
       context,
       args,
       [...permitAdmin('Stream'), ...permitArrivals('Stream')],
       'Stream',
-      'ArrivalsHelper'
+      'ArrivalsCounter'
     ),
 
+  MakeStreamArrivalsConfirmer: async (object, args, context) =>
+    MakeServant(
+      context,
+      args,
+      [...permitAdmin('Stream'), ...permitArrivals('Stream')],
+      'Stream',
+      'ArrivalsConfirmer'
+    ),
+  RemoveStreamArrivalsConfirmer: async (object, args, context) =>
+    RemoveServant(
+      context,
+      args,
+      [...permitAdmin('Stream'), ...permitArrivals('Stream')],
+      'Stream',
+      'ArrivalsConfirmer'
+    ),
+  RemoveAllStreamArrivalsHelpers: async (object, args, context) => {
+    isAuth(permitAdminArrivals('Stream'), context.auth.roles)
+    noEmptyArgsValidation(['streamId'])
+
+    const session = context.driver.session()
+
+    try {
+      await axios(deleteRole('arrivalsConfirmerStream'))
+      await axios(deleteRole('arrivalsCounterStream'))
+
+      // eslint-disable-next-line no-console
+      console.log('Arrivals Helper Roles Deleted Successfully')
+    } catch (error) {
+      throwErrorMsg('There was an error deleting arrivals helper roles', error)
+    }
+
+    try {
+      await axios(
+        createRole(
+          'arrivalsConfirmerStream',
+          'A person who confirms the arrival of bacentas'
+        )
+      )
+      await axios(
+        createRole(
+          'arrivalsCounterStream',
+          'A person who confirms the attendance of bacentas'
+        )
+      )
+      console.log('Arrivals Helper Roles Created Successfully')
+    } catch (error) {
+      throwErrorMsg('There was an error creating arrivals helper roles')
+    }
+
+    const stream = rearrangeCypherObject(
+      await session.run(cypher.RemoveAllStreamArrivalsHelpers, {
+        streamId: args?.streamId,
+      })
+    )
+
+    return stream?.record.properties
+  },
   SetBussingSupport: async (object, args, context) => {
     const session = context.driver.session()
 
@@ -95,36 +170,34 @@ export const arrivalsMutation = {
       await session.run(cypher.getBussingRecordWithDate, args)
     )
 
-    let bussingRecord
+    let bussingRecord = 0
 
-    if (response.dateLabels.includes('SwellDate')) {
-      bussingRecord = rearrangeCypherObject(
-        await session.run(cypher.setSwellBussingTopUp, args)
-      )
-    } else {
-      bussingRecord = rearrangeCypherObject(
-        await session.run(cypher.setNormalBussingTopUp, args)
-      )
+    if (response.attendance >= 8) {
+      if (response.dateLabels.includes('SwellDate')) {
+        bussingRecord = rearrangeCypherObject(
+          await session.run(cypher.setSwellBussingTopUp, args)
+        )
+      } else {
+        bussingRecord = rearrangeCypherObject(
+          await session.run(cypher.setNormalBussingTopUp, args)
+        )
+      }
     }
 
-    return bussingRecord.record.properties
+    return bussingRecord?.record.properties
   },
   SendBussingSupport: async (object, args, context) => {
-    isAuth(permitAdminArrivals('Council'), context.auth.roles)
+    isAuth(permitArrivalsHelpers(), context.auth.roles)
     const session = context.driver.session()
 
-    if (args.stream_name === 'Anagkazo') {
-      throwErrorMsg(
-        'Anagkazo is not entitled to bussing support using this application'
-      )
-    }
+    const { merchantId, auth, passcode } = getStreamFinancials(args.stream_name)
     const transactionResponse = rearrangeCypherObject(
       await session.run(cypher.checkTransactionId, args)
     )
 
     if (transactionResponse?.transactionId) {
       throwErrorMsg('Money has already been sent to this bacenta')
-    } else if (!transactionResponse?.arrivalTime || !transactionResponse) {
+    } else if (!transactionResponse?.arrivalTime) {
       //If record has not been confirmed, it will return null
       throwErrorMsg('This bacenta is not eligible to receive money')
     }
@@ -135,46 +208,26 @@ export const arrivalsMutation = {
 
     const bussingRecord = cypherResponse.record.properties
 
-    const getMobileCode = (network) => {
-      switch (network) {
-        case 'MTN':
-          return 'MTN'
-        case 'Vodafone':
-          return 'VDF'
-        case 'AirtelTigo':
-          return 'ATL'
-        case 'Airtel':
-          return 'ATL'
-        case 'Tigo':
-          return 'TGO'
-        default:
-          break
-      }
-    }
-
-    const padNumbers = (number) => {
-      return number.toString().padStart(12, '0')
-    }
-
     const sendBussingSupport = {
       method: 'post',
       url: `https://prod.theteller.net/v1.1/transaction/process`,
       headers: {
         'content-type': 'application/json',
-        Authorization: process.env.PAYSWITCH_AUTH,
+        Authorization: auth,
       },
       data: {
-        merchant_id: process.env.PAYSWITCH_MERCHANT_ID,
+        merchant_id: merchantId,
         transaction_id: padNumbers(bussingRecord.transactionId),
         amount: padNumbers(bussingRecord.bussingTopUp * 100),
         processing_code: '404000',
         'r-switch': 'FLT',
-        desc: cypherResponse.bacentaName + ' ' + cypherResponse.date,
-        pass_code: process.env.PAYSWITCH_PASSCODE,
+        desc: `${cypherResponse.bacentaName} ${cypherResponse.leaderName} ${cypherResponse.date}`,
+        pass_code: passcode,
         account_number: bussingRecord.momoNumber,
         account_issuer: getMobileCode(bussingRecord.mobileNetwork),
       },
     }
+
     try {
       const res = await axios(sendBussingSupport)
 

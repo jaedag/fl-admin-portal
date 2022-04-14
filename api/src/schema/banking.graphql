@@ -1,0 +1,17 @@
+extend type Mutation {
+  BankServiceOffering(
+    stream_name: String!
+    serviceRecordId: ID!
+    mobileNetwork: String!
+    mobileNumber: String!
+  ): ServiceRecord
+  ConfirmOfferingPayment(
+    stream_name: String!
+    serviceRecordId: ID!
+  ): ServiceRecord
+}
+
+extend type ServiceRecord {
+  transactionTime: DateTime
+  transactionStatus: String
+}

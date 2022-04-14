@@ -7,8 +7,8 @@ import React, { useContext } from 'react'
 import { Col, Container, Row, Button } from 'react-bootstrap'
 import {
   BANKING_SLIP_SUBMISSION,
-  COUNCIL_SERVICE_RECORDS,
-} from '../ServicesQueries'
+  CONSTITUENCY_SERVICE_RECORDS,
+} from '../../ServicesQueries'
 import { MemberContext } from 'contexts/MemberContext'
 import { useMutation, useQuery } from '@apollo/client'
 import HeadingSecondary from 'components/HeadingSecondary'
@@ -16,18 +16,19 @@ import BaseComponent from 'components/base-component/BaseComponent'
 import { useNavigate } from 'react-router'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { getHumanReadableDate } from 'date-utils'
+import { throwErrorMsg } from 'global-utils'
 
-const CouncilBankingSlipSubmission = () => {
+const ConstituencyBankingSlipSubmission = () => {
   const { serviceRecordId } = useContext(ServiceContext)
   const { theme } = useContext(MemberContext)
-  const { setCouncilId } = useContext(ChurchContext)
+  const { clickCard } = useContext(ChurchContext)
   const navigate = useNavigate()
 
-  const { data, loading, error } = useQuery(COUNCIL_SERVICE_RECORDS, {
+  const { data, loading, error } = useQuery(CONSTITUENCY_SERVICE_RECORDS, {
     variables: { serviceId: serviceRecordId },
   })
-  const council = data?.serviceRecords[0]?.serviceLog?.council[0]
-  setCouncilId(council?.id)
+  const constituency = data?.serviceRecords[0]?.serviceLog?.constituency[0]
+  clickCard(constituency)
   const initialValues = {
     bankingSlip: '',
   }
@@ -37,23 +38,26 @@ const CouncilBankingSlipSubmission = () => {
     bankingSlip: Yup.string().required('You must upload a banking slip'),
   })
 
-  const onSubmit = (values, onSubmitProps) => {
+  const onSubmit = async (values, onSubmitProps) => {
     onSubmitProps.setSubmitting(true)
-    SubmitBankingSlip({
-      variables: {
-        serviceRecordId: serviceRecordId,
-        bankingSlip: values.bankingSlip,
-      },
-    }).then(() => {
+    try {
+      await SubmitBankingSlip({
+        variables: {
+          serviceRecordId: serviceRecordId,
+          bankingSlip: values.bankingSlip,
+        },
+      })
       onSubmitProps.setSubmitting(false)
       onSubmitProps.resetForm()
 
-      navigate(`/council/service-details`)
-    })
+      navigate(`/constituency/service-details`)
+    } catch (error) {
+      throwErrorMsg(error)
+    }
   }
 
   return (
-    <BaseComponent loading={loading} error={error} data={data && council}>
+    <BaseComponent loading={loading} error={error} data={data && constituency}>
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
@@ -63,7 +67,7 @@ const CouncilBankingSlipSubmission = () => {
         {(formik) => (
           <Container>
             <HeadingPrimary>Banking Slip Submission</HeadingPrimary>
-            <HeadingSecondary>{council?.name}</HeadingSecondary>
+            <HeadingSecondary>{constituency?.name}</HeadingSecondary>
             <p>
               Date of Joint Service Code:{' '}
               {getHumanReadableDate(
@@ -106,4 +110,4 @@ const CouncilBankingSlipSubmission = () => {
   )
 }
 
-export default CouncilBankingSlipSubmission
+export default ConstituencyBankingSlipSubmission

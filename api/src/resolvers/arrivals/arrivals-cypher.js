@@ -19,7 +19,7 @@ RETURN record, bacenta.name AS bacentaName, date.date AS date
 export const getBussingRecordWithDate = `
 MATCH (record:BussingRecord {id: $bussingRecordId})
 MATCH (record)-[:BUSSED_ON]->(date:TimeGraph)
-RETURN record.id AS bussingRecordId,  labels(date) AS dateLabels
+RETURN record.id AS bussingRecordId, record.attendance AS attendance,  labels(date) AS dateLabels
 `
 
 export const checkTransactionId = `
@@ -45,4 +45,19 @@ export const setNormalBussingTopUp = `
 MATCH (record:BussingRecord {id: $bussingRecordId})<-[:HAS_BUSSING]-(:ServiceLog)<-[:HAS_HISTORY]-(bacenta:Bacenta)
 SET record.bussingTopUp = bacenta.normalBussingCost - bacenta.normalPersonalContribution
 RETURN record
+`
+
+export const RemoveAllStreamArrivalsHelpers = `
+MATCH (church {id: $streamId})
+WHERE church:Stream
+OPTIONAL MATCH (church)<-[oldHelpers:COUNTS_ARRIVALS_FOR|CONFIRMS_ARRIVALS_FOR]-(admin:Member)
+DELETE oldHelpers
+
+WITH church, admin
+
+MATCH (church)-[oldHistory:HAS_HISTORY]->(:ServiceLog)<-[oldAdminHistory:HAS_HISTORY]-(admin)
+REMOVE oldHistory.current, oldAdminHistory.current
+
+
+RETURN church
 `

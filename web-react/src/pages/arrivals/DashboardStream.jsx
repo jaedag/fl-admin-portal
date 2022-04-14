@@ -1,6 +1,5 @@
 import { useMutation, useQuery } from '@apollo/client'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
-import { ChurchContext } from 'contexts/ChurchContext'
 import React, { useContext } from 'react'
 import * as Yup from 'yup'
 import { useNavigate } from 'react-router'
@@ -17,15 +16,17 @@ import RoleView from 'auth/RoleView'
 import {
   permitAdmin,
   permitArrivals,
-  permitArrivalsHelper,
+  permitArrivalsConfirmer,
+  permitArrivalsCounter,
 } from 'permission-utils'
 import MenuButton from 'components/buttons/MenuButton'
 import DefaulterInfoCard from 'pages/services/defaulters/DefaulterInfoCard'
 import { MemberContext } from 'contexts/MemberContext'
 import { CheckAll } from 'react-bootstrap-icons'
+import usePopup from 'hooks/usePopup'
 
 const StreamDashboard = () => {
-  const { isOpen, togglePopup } = useContext(ChurchContext)
+  const { isOpen, togglePopup } = usePopup()
   const { currentUser } = useContext(MemberContext)
   const navigate = useNavigate()
   const { data, loading, error } = useQuery(STREAM_ARRIVALS_DASHBOARD, {
@@ -161,7 +162,7 @@ const StreamDashboard = () => {
             iconBg
             noCaption
           />
-          <RoleView roles={permitArrivalsHelper('Stream')}>
+          <RoleView roles={permitArrivalsCounter('Stream')}>
             <MenuButton
               title="Bacentas To Be Counted"
               onClick={() => navigate('/arrivals/bacentas-to-count')}
@@ -171,13 +172,15 @@ const StreamDashboard = () => {
               noCaption
             />
           </RoleView>
-          <MenuButton
-            title="Confirm Bacenta Arrival"
-            onClick={() => navigate('/arrivals/confirm-bacenta-arrival')}
-            iconComponent={CheckAll}
-            iconBg
-            noCaption
-          />
+          <RoleView roles={permitArrivalsConfirmer('Stream')}>
+            <MenuButton
+              title="Confirm Bacenta Arrival"
+              onClick={() => navigate('/arrivals/confirm-bacenta-arrival')}
+              iconComponent={CheckAll}
+              iconBg
+              noCaption
+            />
+          </RoleView>
 
           <MenuButton
             title="Bacentas That Have Arrived"

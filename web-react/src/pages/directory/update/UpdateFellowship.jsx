@@ -11,12 +11,12 @@ import { ChurchContext } from '../../../contexts/ChurchContext'
 import { DISPLAY_FELLOWSHIP } from '../display/ReadQueries'
 import { LOG_FELLOWSHIP_HISTORY } from './LogMutations'
 import { MAKE_FELLOWSHIP_LEADER } from './ChangeLeaderMutations'
-import FellowshipForm from 'components/reusable-forms/FellowshipForm'
+import FellowshipForm from 'pages/directory/reusable-forms/FellowshipForm'
 import { alertMsg, repackDecimals, throwErrorMsg } from 'global-utils'
 import { SET_VACATION_FELLOWSHIP, SET_ACTIVE_FELLOWSHIP } from './StatusChanges'
 
 const UpdateFellowship = () => {
-  const { setBacentaId, fellowshipId } = useContext(ChurchContext)
+  const { clickCard, fellowshipId } = useContext(ChurchContext)
   const {
     data: fellowshipData,
     loading: fellowshipLoading,
@@ -84,7 +84,7 @@ const UpdateFellowship = () => {
   //onSubmit receives the form state as argument
   const onSubmit = (values, onSubmitProps) => {
     onSubmitProps.setSubmitting(true)
-    setBacentaId(values.bacenta)
+    clickCard({ id: values.bacenta, __typename: 'Bacenta' })
     values.venueLongitude = parseFloat(values.venueLongitude)
     values.venueLatitude = parseFloat(values.venueLatitude)
 
