@@ -39,6 +39,7 @@ export const GATHERING_SERVICE_BY_STREAM = gql`
   query gatheringServiceByStream($gatheringServiceId: ID) {
     gatheringServices(where: { id: $gatheringServiceId }) {
       id
+      name
       streams {
         id
         name
@@ -90,6 +91,7 @@ export const STREAM_BY_COUNCIL = gql`
   query streamByCouncil($streamId: ID) {
     streams(where: { id: $streamId }) {
       id
+      name
       councils {
         id
         name
@@ -141,6 +143,7 @@ export const COUNCIL_BY_CONSTITUENCY = gql`
   query councilByConstituency($councilId: ID) {
     councils(where: { id: $councilId }) {
       id
+      name
       constituencies {
         id
         name
@@ -221,6 +224,7 @@ export const CONSTITUENCY_BY_BACENTA = gql`
   query constituencyByBacenta($constituencyId: ID) {
     constituencies(where: { id: $constituencyId }) {
       id
+      name
       bacentas {
         id
         name
@@ -245,7 +249,6 @@ export const BACENTA_CAMPAIGN_LIST = gql`
   }
 `
 
-//add activeFellowship count
 export const BACENTA_TRENDS = gql`
   query bacentaTrends($bacentaId: ID) {
     bacentas(where: { id: $bacentaId }) {
@@ -265,11 +268,11 @@ export const BACENTA_TRENDS = gql`
   }
 `
 
-//add activeFellowship count
 export const BACENTA_BY_FELLOWSHIP = gql`
   query bacentaByFellowship($bacentaId: ID) {
     bacentas(where: { id: $bacentaId }) {
       id
+      name
       activeFellowshipCount
       fellowships {
         id
