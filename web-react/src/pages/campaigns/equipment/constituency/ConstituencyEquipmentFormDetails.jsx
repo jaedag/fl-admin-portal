@@ -6,7 +6,7 @@ import { MemberContext } from 'contexts/MemberContext'
 import { ChurchContext } from 'contexts/ChurchContext'
 import BaseComponent from 'components/base-component/BaseComponent'
 import { useQuery } from '@apollo/client'
-import { LATEST_EQUIPMENT_RECORD } from '../../CampaignQueries'
+import { CONSTITUENCY_LATEST_EQUIPMENT_RECORD } from '../../CampaignQueries'
 import { useNavigate } from 'react-router'
 
 const ConstituencyEquipmentFormDetails = () => {
@@ -18,14 +18,19 @@ const ConstituencyEquipmentFormDetails = () => {
   const { theme } = useContext(MemberContext)
   const navigate = useNavigate()
 
-  const { data, loading, error } = useQuery(LATEST_EQUIPMENT_RECORD, {
-    variables: {
-      churchId: constituencyId,
-    },
-  })
+  const { data, loading, error } = useQuery(
+    CONSTITUENCY_LATEST_EQUIPMENT_RECORD,
+    {
+      variables: {
+        constituencyId: constituencyId,
+      },
+    }
+  )
 
-  const equipmentDate = data?.latestEquipmentRecord?.equipmentDate?.date
-  const pulpits = data?.latestEquipmentRecord?.pulpits
+  const constituency = data?.constituencies[0]
+
+  const equipmentDate = constituency?.latestEquipmenRecord?.equipmentDate?.date
+  const pulpits = constituency?.latestEquipmenRecord?.pulpits
 
   return (
     <BaseComponent data={data} loading={loading} error={error}>

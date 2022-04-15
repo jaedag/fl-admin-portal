@@ -8,8 +8,8 @@ import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import { MemberContext } from 'contexts/MemberContext'
 import { useMutation, useQuery } from '@apollo/client'
 import {
-  CONSTITUENCY_EQUIPMENT_RECORD_CREATION,
-  LATEST_EQUIPMENT_RECORD,
+  CONSTITUENCY_LATEST_EQUIPMENT_RECORD,
+  CREATE_CONSTITUENCY_EQUIPMENT_RECORD,
 } from '../../CampaignQueries'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { useNavigate } from 'react-router'
@@ -21,18 +21,23 @@ const ConstituencyEquipmentForm = () => {
   const church = currentUser.currentChurch
   const churchType = currentUser.currentChurch?.__typename
 
-  const { data, loading, error } = useQuery(LATEST_EQUIPMENT_RECORD, {
-    variables: {
-      churchId: constituencyId,
-    },
-  })
+  const { data, loading, error } = useQuery(
+    CONSTITUENCY_LATEST_EQUIPMENT_RECORD,
+    {
+      variables: {
+        constituencyId: constituencyId,
+      },
+    }
+  )
 
-  const constituencyRecordId = data?.latestEquipmentRecord?.id
-  const equipmentDate = data?.latestEquipmentRecord?.equipmentDate?.date
-  const pulpits = data?.latestEquipmentRecord?.pulpits
+  const constituency = data?.constituencies[0]
+
+  const constituencyRecordId = constituency?.latestEquipmenRecord?.id
+  const equipmentDate = constituency?.latestEquipmenRecord?.equipmentDate?.date
+  const pulpits = constituency?.latestEquipmenRecord?.pulpits
 
   const [CreateEquipmentRecord] = useMutation(
-    CONSTITUENCY_EQUIPMENT_RECORD_CREATION
+    CREATE_CONSTITUENCY_EQUIPMENT_RECORD
   )
   const { theme } = useContext(MemberContext)
   const navigate = useNavigate()
