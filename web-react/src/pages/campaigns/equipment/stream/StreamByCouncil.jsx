@@ -2,25 +2,24 @@ import React, { useContext } from 'react'
 import { Container } from 'react-bootstrap'
 import { MemberContext } from 'contexts/MemberContext'
 import { useQuery } from '@apollo/client'
-import { FELLOWSHIP_RECORDS_PER_CONSTITUENCY } from '../../CampaignQueries'
+import { STREAM_BY_COUNCIL } from '../../CampaignQueries'
 import BaseComponent from 'components/base-component/BaseComponent'
 import { ChurchContext } from 'contexts/ChurchContext'
-import FellowshipTrendsButton from '../../components/buttons/FellowshipTrendsButton'
+import { useNavigate } from 'react-router'
+import TrendsButton from 'pages/campaigns/components/buttons/TrendsButton'
 
-const ConstituencyFellowshipTrends = () => {
+const StreamByCouncil = () => {
   const { currentUser } = useContext(MemberContext)
-  const { constituencyId } = useContext(ChurchContext)
+  const { streamId, clickCard } = useContext(ChurchContext)
+  const navigate = useNavigate()
 
   const church = currentUser.currentChurch
   const churchType = currentUser.currentChurch?.__typename
 
-  const { data, loading, error } = useQuery(
-    FELLOWSHIP_RECORDS_PER_CONSTITUENCY,
-    {
-      variables: { constituencyId: constituencyId },
-    }
-  )
-  const fellowships = data?.constituencies[0]?.bacentas[0]?.fellowships
+  const { data, loading, error } = useQuery(STREAM_BY_COUNCIL, {
+    variables: { streamId: streamId },
+  })
+  const councils = data?.streams[0]?.councils
 
   return (
     <BaseComponent data={data} loading={loading} error={error}>
@@ -31,8 +30,15 @@ const ConstituencyFellowshipTrends = () => {
             <h6>{`${church?.name} ${churchType}`}</h6>
           </div>
           <div className="d-grid gap-2 mt-4 text-center px-2">
-            {fellowships?.map((fellowship, index) => (
-              <FellowshipTrendsButton key={index} church={fellowship} />
+            {councils?.map((council, index) => (
+              <TrendsButton
+                key={index}
+                church={council}
+                onClick={() => {
+                  clickCard(council)
+                  navigate(`/campaigns/equipment/council/constituency`)
+                }}
+              />
             ))}
           </div>
         </Container>
@@ -41,4 +47,4 @@ const ConstituencyFellowshipTrends = () => {
   )
 }
 
-export default ConstituencyFellowshipTrends
+export default StreamByCouncil

@@ -2,26 +2,24 @@ import React, { useContext } from 'react'
 import { Container } from 'react-bootstrap'
 import { MemberContext } from 'contexts/MemberContext'
 import { useQuery } from '@apollo/client'
-import { FELLOWSHIP_RECORDS_PER_CONSTITUENCY } from '../../CampaignQueries'
+import { BACENTA_TRENDS } from '../../CampaignQueries'
 import BaseComponent from 'components/base-component/BaseComponent'
 import { ChurchContext } from 'contexts/ChurchContext'
-import FellowshipTrendsButton from '../../components/buttons/FellowshipTrendsButton'
+import { useNavigate } from 'react-router'
+import FellowshipTrendsButton from 'pages/campaigns/components/buttons/FellowshipTrendsButton'
 
-const ConstituencyFellowshipTrends = () => {
+const BacentaTrends = () => {
   const { currentUser } = useContext(MemberContext)
-  const { constituencyId } = useContext(ChurchContext)
+  const { bacentaId } = useContext(ChurchContext)
+  const navigate = useNavigate()
 
   const church = currentUser.currentChurch
   const churchType = currentUser.currentChurch?.__typename
 
-  const { data, loading, error } = useQuery(
-    FELLOWSHIP_RECORDS_PER_CONSTITUENCY,
-    {
-      variables: { constituencyId: constituencyId },
-    }
-  )
-  const fellowships = data?.constituencies[0]?.bacentas[0]?.fellowships
-
+  const { data, loading, error } = useQuery(BACENTA_TRENDS, {
+    variables: { bacentaId: bacentaId },
+  })
+  const bacenta = data?.bacentas[0]
   return (
     <BaseComponent data={data} loading={loading} error={error}>
       <div className="d-flex align-items-center justify-content-center ">
@@ -31,9 +29,12 @@ const ConstituencyFellowshipTrends = () => {
             <h6>{`${church?.name} ${churchType}`}</h6>
           </div>
           <div className="d-grid gap-2 mt-4 text-center px-2">
-            {fellowships?.map((fellowship, index) => (
-              <FellowshipTrendsButton key={index} church={fellowship} />
-            ))}
+            <FellowshipTrendsButton
+              church={bacenta}
+              onClick={() =>
+                navigate(`/campaigns/equipment/bacenta/fellowship`)
+              }
+            />
           </div>
         </Container>
       </div>
@@ -41,4 +42,4 @@ const ConstituencyFellowshipTrends = () => {
   )
 }
 
-export default ConstituencyFellowshipTrends
+export default BacentaTrends
