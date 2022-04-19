@@ -224,7 +224,7 @@ type EquipmentCampaign implements Campaign {
         }
       ]
     )
-  type: String! @cypher(statement: "RETURN 'Equipment Campaign'")
+  type: String! @cypher(statement: "RETURN 'Equipment'")
   serviceLog: [ServiceLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
   fellowship: Fellowship @relationship(type: "HAS_CAMPAIGN", direction: IN)
   bacenta: Bacenta @relationship(type: "HAS_CAMPAIGN", direction: IN)
