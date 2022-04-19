@@ -261,7 +261,7 @@ extend type Mutation {
       statement: """
       MATCH (constituencyRecord:EquipmentRecord {id: $constituencyRecordId})
       set
-      constituencyRecord.pulpits = $pulpits
+      constituencyRecord.pulpits = $pulpitspp
       RETURN constituencyRecord
       """
     )
