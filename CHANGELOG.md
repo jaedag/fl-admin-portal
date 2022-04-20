@@ -1,3 +1,30 @@
+#### 2.0.5 (2022-04-20)
+
+##### Bug Fixes
+
+*  admin-98 fixed bug preventing users from switching the upper church for fellowship, bacenta ([c7536fee](https://github.com/firstlovecenter/fl-admin-portal/commit/c7536feef5f4681c945c80ed33e5489d2f4279a3))
+
+##### Other Changes
+
+*   stream ([3a1e23a0](https://github.com/firstlovecenter/fl-admin-portal/commit/3a1e23a057d86c7adeba33ebe0b6dc8315965b2f))
+
+#### 2.0.4 (2022-04-19)
+
+##### Bug Fixes
+
+*  admin-100 fixed bug with changing councils of a constituency ([50368aca](https://github.com/firstlovecenter/fl-admin-portal/commit/50368acaeb19e626dbb764ae8df3c3d780dd396c))
+*  admin-101 replaced setStreamId with generic ClickCard function ([4a161812](https://github.com/firstlovecenter/fl-admin-portal/commit/4a1618129800236db4439d182d18203b3bde647d))
+*  admin-99 adjusted cypher query for catching banking defaulters by introducing parentheses ([69a57e84](https://github.com/firstlovecenter/fl-admin-portal/commit/69a57e84cc23d9be10df04944b4e7459cc92bf1c))
+
+#### 2.0.3 (2022-04-19)
+
+##### Bug Fixes
+
+*  admin-99 some slight improvements in the self-banking feature ux ([7fe91fdb](https://github.com/firstlovecenter/fl-admin-portal/commit/7fe91fdb52fb699a7373e3fd6d96bd68dbb7d4fa))
+*  admin-99 defaulters screens should only show banking data for the week we are in ([1c6e29c5](https://github.com/firstlovecenter/fl-admin-portal/commit/1c6e29c52d247542c14b2786fe4879a36f31868d))
+*  admin-55 rewrote cypher for service aggregates to eliminate duplicates ([f9c63394](https://github.com/firstlovecenter/fl-admin-portal/commit/f9c63394f93dade69c5ab2732935e5e6b4ab6c07))
+*  admin-96 implmented scenario in clickCard for NoService ([b4ac3f11](https://github.com/firstlovecenter/fl-admin-portal/commit/b4ac3f11a6325a1d1bf070c6584f0476b8abd3ea))
+
 #### 2.0.2 (2022-04-15)
 
 ##### Bug Fixes
