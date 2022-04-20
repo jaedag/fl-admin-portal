@@ -3,6 +3,7 @@ import { serviceMutation } from './service-resolvers'
 import { arrivalsMutation } from './arrivals/arrivals-resolvers'
 import { directoryMutation } from './directory-resolvers'
 import { bankingMutation } from './banking/banking-resolver'
+import { campaignsMutations } from './campaigns/campaigns'
 
 /* eslint-disable no-console */
 const dotenv = require('dotenv')
@@ -730,5 +731,6 @@ export const resolvers = {
     ...serviceMutation,
     ...directoryMutation,
     ...bankingMutation,
+    ...campaignsMutations,
   },
 }

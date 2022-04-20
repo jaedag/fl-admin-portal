@@ -52,3 +52,5 @@ export const campaignsMutations = {
     },
   },
 }
+
+export const arrivalsResolvers = {}
