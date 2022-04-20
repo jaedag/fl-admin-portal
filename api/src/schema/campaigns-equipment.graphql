@@ -243,6 +243,7 @@ extend type Mutation {
     offeringBags: Int!
   ): EquipmentRecord
     @auth(rules: [{ roles: ["leaderFellowship", "adminConstituency"] }])
+    # @auth(rules: [{ roles: ["leaderFellowship", "adminConstituency"] }])
     @cypher(
       statement: """
       MATCH (fellowshipRecord:EquipmentRecord {id: $fellowshipRecordId})
@@ -261,7 +262,7 @@ extend type Mutation {
       statement: """
       MATCH (constituencyRecord:EquipmentRecord {id: $constituencyRecordId})
       set
-      constituencyRecord.pulpits = $pulpitspp
+      constituencyRecord.pulpits = $pulpits
       RETURN constituencyRecord
       """
     )
