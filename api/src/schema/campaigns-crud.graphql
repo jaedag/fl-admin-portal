@@ -1,0 +1,6 @@
+extend type Mutation {
+  CreateConstituencyCampaigns(id: ID!): Constituency
+
+  # Equipment Campaigns #
+  CreateConstituencyEquipmentCampaign(id: ID!): Constituency
+}
