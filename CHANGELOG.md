@@ -1,3 +1,26 @@
+#### 2.0.8 (2022-04-22)
+
+##### Bug Fixes
+
+*  admin-103 added permissions for leaders as well as admins to search ([3278c476](https://github.com/firstlovecenter/fl-admin-portal/commit/3278c4762915308c3879caf4f9663312b2f966a1))
+
+##### Performance Improvements
+
+*  name of momo sender now shows in desc sent to theTeller API ([cb4ac34f](https://github.com/firstlovecenter/fl-admin-portal/commit/cb4ac34fe5b374144ccca2c40eeb5669bfb24bce))
+
+#### 2.0.7 (2022-04-21)
+
+##### Bug Fixes
+
+*  fixed issue where method used for assessing bacentas money is wrong ([0303f05b](https://github.com/firstlovecenter/fl-admin-portal/commit/0303f05bf1457acfc9e0cf03a0de9f6c8d44f382))
+*  admin-103 removed sonta search which was breaking search at consttiuency level ([48acbd7b](https://github.com/firstlovecenter/fl-admin-portal/commit/48acbd7bb9d1798941aa36f88e34fa6d4bd41093))
+
+#### 2.0.6 (2022-04-20)
+
+##### Bug Fixes
+
+*  admin-102 fixed bug where creating a bacenta was returning an error ([576ef7f2](https://github.com/firstlovecenter/fl-admin-portal/commit/576ef7f2e6e66298b322b21dbaa35f4c62542212))
+
 #### 2.0.5 (2022-04-20)
 
 ##### Bug Fixes
