@@ -267,7 +267,7 @@ extend type Mutation {
       """
     )
 
- 
+
 
   CreateEquipmentCampaignDate(date: Date!): EquipmentCampaign
     @cypher(

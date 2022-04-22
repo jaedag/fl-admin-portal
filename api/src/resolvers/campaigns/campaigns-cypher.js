@@ -1,6 +1,6 @@
 export const createEquipmentCampaign = `
 MATCH (target:Target {campaign:"Equipment"})
-MATCH (church {id:$churchId}) WHERE church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:GatheringService
+MATCH (church {id:$id}) WHERE church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:GatheringService
 MATCH (log:ServiceLog)<-[:HAS_HISTORY {current:true}]-(church)
 MATCH (leader:Member)-[:LEADS]->(church)
 UNWIND labels(church) as churchType
@@ -16,13 +16,13 @@ return churchCampaign;
 `
 
 export const equipmentUpwardConnection = ` 
-MATCH (campaign:EquipmentCampaign {id:$campaignId})
+MATCH (campaign:EquipmentCampaign {id:$id})
 MATCH (campaign)<-[:HAS_CAMPAIGN]-(church) WHERE church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:GatheringService
 MATCH (church)<-[:HAS]-(upperChurch) WHERE church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:GatheringService
 MATCH (upperChurch)-[:HAS_CAMPAIGN]->(upperCampaign:EquipmentCampaign)
 MERGE (campaign)<-[:HAS]-(upperCampaign)
 
-return campaign, upperCampaign
+return church
 `
 export const createFellowshipEquipmentCampaign = `
       MATCH (target:Target {campaign:"Equipment"})

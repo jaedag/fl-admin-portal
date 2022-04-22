@@ -46,6 +46,10 @@ const equipmentCampaign = fs
   .readFileSync(path.join(__dirname, 'campaigns-equipment.graphql'))
   .toString('utf-8')
 
+const campaignsCrud = fs
+  .readFileSync(path.join(__dirname, 'campaigns-crud.graphql'))
+  .toString('utf-8')
+
 exports.typeDefs =
   schema +
   ' ' +
@@ -66,4 +70,6 @@ exports.typeDefs =
   equipmentCampaign +
   ' ' +
   banking +
+  ' ' +
+  campaignsCrud +
   ' '
