@@ -2,5 +2,10 @@ extend type Mutation {
   CreateConstituencyCampaigns(id: ID!): Constituency
 
   # Equipment Campaigns #
+  CreateGatheringServiceEquipmentCampaign(id: ID!): GatheringService
+  CreateStreamEquipmentCampaign(id: ID!): Stream
+  CreateCouncilEquipmentCampaign(id: ID!): Council
   CreateConstituencyEquipmentCampaign(id: ID!): Constituency
+  CreateBacentaEquipmentCampaign(id: ID!): Bacenta
+  CreateFellowshipEquipmentCampaign(id: ID!): Fellowship
 }

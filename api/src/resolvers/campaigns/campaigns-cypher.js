@@ -41,7 +41,7 @@ export const createFellowshipEquipmentCampaign = `
 `
 export const createGatheringServiceEquipmentCampaign = `
 MATCH (target:Target {campaign:"Equipment"})
-MATCH (gatheringService:GatheringService {id: $gatheringServiceId})
+MATCH (gatheringService:GatheringService {id: $id})
 MATCH (log:ServiceLog)<-[:HAS_HISTORY {current:true}]-(gatheringService)
 MATCH (leader:Member)-[:LEADS]->(gatheringService)
 WITH target, gatheringService, log, leader
