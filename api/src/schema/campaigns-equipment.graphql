@@ -267,31 +267,7 @@ extend type Mutation {
       """
     )
 
-  SetEquipmentCampaignDate(
-    startDate: Date!
-    endDate: Date!
-    date: Date!
-  ): EquipmentRecord
-    @cypher(
-      statement: """
-      MATCH (gatheringService:GatheringService)-[:HAS_CAMPAIGN]->(EquipmentCampaign:EquipmentCampaign)
-      MATCH (log:ServiceLog)<-[:HAS_HISTORY {current:true}]-(gatheringService)
-      WITH log, gatheringService, EquipmentCampaign
-
-      MERGE (gatheringServiceRecord:EquipmentRecord)
-      ON CREATE
-      SET
-      gatheringServiceRecord.historyRecord = gatheringService.name + ' ' + ' Equipment Campaign created an Equipment Record on this '+datetime(),
-      gatheringServiceRecord.id = apoc.create.uuid(),
-      gatheringServiceRecord.date = date()
-
-      MERGE (gatheringServiceRecord)<-[:HAS_RECORD]-(log)
-      MERGE (equimpentDate:TimeGraph {date:$date})
-      MERGE (EquipmentCampaign)-[:HAS_RECORD]->(gatheringServiceRecord)
-      MERGE (gatheringServiceRecord)-[:HAS_EQUIPMENT_DATE]->(equimpentDate)
-      return gatheringServiceRecord;
-      """
-    )
+  SetEquipmentDeadline(startDate: Date!, endDate: Date!, id: ID!): TimeGraph
 }
 
 extend type Query {

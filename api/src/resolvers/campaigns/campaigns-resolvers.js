@@ -224,6 +224,40 @@ export const campaignsMutation = {
       name: equipmentUpwardConnectionResponse.church.properties.name,
     }
   },
+  SetEquipmentDeadline: async (object, args, context) => {
+    isAuth(permitAdmin('GatheringService'), context.auth.roles)
+
+    const session = context.driver.session()
+
+    let equipmentDateSet, setEquipmentDuration
+    try {
+      equipmentDateSet = rearrangeCypherObject(
+        await session.run(campaignsCypher.equipmentDateSet, {
+          date: args.startDate,
+        })
+      )
+      // eslint-disable-next-line no-console
+      console.log(equipmentDateSet.date)
+    } catch (error) {
+      throwErrorMsg(error)
+    }
+
+    try {
+      setEquipmentDuration = rearrangeCypherObject(
+        await session.run(campaignsCypher.setEquipmentDuration, args)
+      )
+    } catch (error) {
+      throwErrorMsg(error)
+    }
+
+    // eslint-disable-next-line no-console
+    console.log(setEquipmentDuration)
+
+    return {
+      date: equipmentDateSet.date,
+      id: setEquipmentDuration.gatheringService.properties.id,
+    }
+  },
 }
 
 export const arrivalsResolvers = {}

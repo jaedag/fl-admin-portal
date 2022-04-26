@@ -25,8 +25,8 @@ MERGE (campaign)<-[:HAS]-(upperCampaign)
 return church
 `
 export const createFellowshipEquipmentCampaign = `
-      MATCH (target:Target {campaign:"Equipment"})
-      MATCH (fellowship:Fellowship {id: $fellowshipId})<-[:HAS]-(bacenta:Bacenta)-[:HAS_CAMPAIGN]->(bacentaCampaign:EquipmentCampaign)
+MATCH (target:Target {campaign:"Equipment"})
+MATCH (fellowship:Fellowship {id: $fellowshipId})<-[:HAS]-(bacenta:Bacenta)-[:HAS_CAMPAIGN]->(bacentaCampaign:EquipmentCampaign)
       MATCH (log:ServiceLog)<-[:HAS_HISTORY {current:true}]-(fellowship)
       MATCH (leader:Member)-[:LEADS]->(fellowship)
       WITH target, fellowship, bacentaCampaign, log, leader
@@ -52,4 +52,27 @@ MERGE (gatheringServiceCampaign)<-[:LEADS]-(leader)
 MERGE (gatheringServiceCampaign)-[:HAS_HISTORY]->(log)
 MERGE (gatheringServiceCampaign)-[:HAS_TARGET]->(target)
 return gatheringServiceCampaign
+`
+
+export const setEquipmentDate = `
+MERGE (equipmentDate:TimeGraph {date:$startDate})
+ON CREATE
+SET
+equipmentDate.date = $startDate
+return equipmentDate
+`
+
+export const setEquipmentDuration = `
+MATCH (gatheringService:GatheringService {id:$id})-[:HAS_CAMPAIGN]->(gsCampaign:EquipmentCampaign)
+set 
+gsCampaign.equipmentStartDate = $startDate,
+gsCampaign.equipmentEndDate = $endDate
+return gatheringService
+`
+export const equipmentDateSet = `
+MERGE (equipmentDate:TimeGraph {date:$date})
+ON CREATE
+SET
+equipmentDate.date = $date
+return toString(equipmentDate.date) as date
 `
