@@ -38,11 +38,7 @@ export const PAY_OFFERING_MUTATION = gql`
       mobileNetwork: $mobileNetwork
       mobileNumber: $mobileNumber
       momoName: $momoName
-    ) {
-      id
-      income
-      transactionId
-    }
+    )
   }
 `
 export const CONFIRM_OFFERING_PAYMENT = gql`
@@ -53,6 +49,7 @@ export const CONFIRM_OFFERING_PAYMENT = gql`
     ) {
       id
       income
+      transactionId
       transactionStatus
       offeringBankedBy {
         id
@@ -81,7 +78,9 @@ export const SELF_BANKING_RECEIPT = gql`
       sourceNetwork
       sourceNumber
       desc
+      transactionId
       transactionTime
+      transactionStatus
     }
   }
 `
