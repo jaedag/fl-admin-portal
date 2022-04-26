@@ -8,6 +8,7 @@
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.20.0",
+    "eslint-plugin-react-hooks": "^4.4.0",
     "execa": "^4.0.2",
     "generate-changelog": "^1.8.0",
     "grandstack": "^0.1.7",
@@ -42,7 +43,7 @@
     "url": "git://github.com/firstlovecenter/fl-admin-portal.git"
   },
   "license": "Apache-2.0",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "dependencies": {
     "neo4j-driver": "^4.4.5"
   }

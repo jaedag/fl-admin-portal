@@ -265,6 +265,7 @@ const DisplayChurchDetails = (props) => {
             bgNone
           />
         </Link>
+
         <Row>
           <Col>
             <DetailsCard
@@ -301,6 +302,24 @@ const DisplayChurchDetails = (props) => {
           </Row>
         )}
 
+        {props.churchType === 'Bacenta' && (
+          <div className="d-grid gap-2">
+            <PlaceholderCustom
+              loading={props.loading}
+              className={`btn-trends ${theme}`}
+              button
+            >
+              <Button
+                className={`${theme}`}
+                onClick={() => {
+                  navigate(`/${props.churchType.toLowerCase()}/editbussing`)
+                }}
+              >
+                Bus Payment Details
+              </Button>
+            </PlaceholderCustom>
+          </div>
+        )}
         <hr />
         <div className="d-grid gap-2">
           <PlaceholderCustom
