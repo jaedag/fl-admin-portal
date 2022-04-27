@@ -70,9 +70,9 @@ gsCampaign.equipmentEndDate = $endDate
 return gatheringService
 `
 export const equipmentDateSet = `
-MERGE (equipmentDate:TimeGraph {date:$date})
+MERGE (equipmentDate:TimeGraph {date:$startDate})
 ON CREATE
 SET
-equipmentDate.date = $date
+equipmentDate.date = $startDate
 return toString(equipmentDate.date) as date
 `

@@ -26,11 +26,12 @@ import StreamByCouncil from './equipment/stream/StreamByCouncil'
 import CouncilByConstituency from './equipment/council/CouncilByConstituency'
 import ConstituencyByBacenta from './equipment/constituency/ConstituencyByBacenta'
 import BacentaByFellowship from './equipment/bacenta/BacentaByFellowship'
+import GatheringServiceEquipmentDeadline from './equipment/gathering-service/GatheringServiceEquipmentDeadline'
 
 export const campaigns = [
   //gathering-service routes
   {
-    path: '/campaigns/gathering-service',
+    path: '/campaigns/gatheringservice',
     element: GatheringServiceCampaigns,
     roles: ['leaderGatheringService', 'adminGatheringService'],
     placeholder: true,
@@ -50,6 +51,12 @@ export const campaigns = [
   {
     path: '/campaigns/equipment/gathering-service/stream',
     element: GatheringServiceByStream,
+    roles: ['leaderGatheringService', 'adminGatheringService'],
+    placeholder: true,
+  },
+  {
+    path: '/campaigns/gathering-service/set-equipment-deadline',
+    element: GatheringServiceEquipmentDeadline,
     roles: ['leaderGatheringService', 'adminGatheringService'],
     placeholder: true,
   },

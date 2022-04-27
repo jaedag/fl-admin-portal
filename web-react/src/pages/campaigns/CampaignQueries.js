@@ -52,6 +52,22 @@ export const GATHERING_SERVICE_BY_STREAM = gql`
   }
 `
 
+export const SET_EQUIPMENT_DEADLINE = gql`
+  mutation SetEquipmentDeadline(
+    $startDate: Date!
+    $endDate: Date!
+    $gatheringServiceId: ID!
+  ) {
+    SetEquipmentDeadline(
+      startDate: $startDate
+      endDate: $endDate
+      id: $gatheringServiceId
+    ) {
+      id
+    }
+  }
+`
+
 //Streams Queries and Mutations
 export const STREAM_CAMPAIGN_LIST = gql`
   query streamCampaigns($streamId: ID) {

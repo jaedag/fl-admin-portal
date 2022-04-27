@@ -232,9 +232,7 @@ export const campaignsMutation = {
     let equipmentDateSet, setEquipmentDuration
     try {
       equipmentDateSet = rearrangeCypherObject(
-        await session.run(campaignsCypher.equipmentDateSet, {
-          date: args.startDate,
-        })
+        await session.run(campaignsCypher.equipmentDateSet, args)
       )
       // eslint-disable-next-line no-console
       console.log(equipmentDateSet.date)

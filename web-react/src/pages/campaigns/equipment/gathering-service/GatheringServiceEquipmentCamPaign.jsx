@@ -24,6 +24,12 @@ const GatheringServiceEquipmentCampaign = () => {
               navigate(`/campaigns/gathering-service/equipment/trends`)
             }
           />
+          <MenuButton
+            name="Set Deadline"
+            onClick={() =>
+              navigate(`/campaigns/gathering-service/set-equipment-deadline`)
+            }
+          />
         </div>
       </Container>
     </div>
