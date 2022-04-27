@@ -29,6 +29,7 @@ export const PAY_OFFERING_MUTATION = gql`
     $serviceRecordId: ID!
     $stream_name: String!
     $mobileNetwork: String!
+    $momoName: String!
     $mobileNumber: String!
   ) {
     BankServiceOffering(
@@ -36,11 +37,8 @@ export const PAY_OFFERING_MUTATION = gql`
       stream_name: $stream_name
       mobileNetwork: $mobileNetwork
       mobileNumber: $mobileNumber
-    ) {
-      id
-      income
-      transactionId
-    }
+      momoName: $momoName
+    )
   }
 `
 export const CONFIRM_OFFERING_PAYMENT = gql`
@@ -51,6 +49,7 @@ export const CONFIRM_OFFERING_PAYMENT = gql`
     ) {
       id
       income
+      transactionId
       transactionStatus
       offeringBankedBy {
         id
@@ -79,7 +78,9 @@ export const SELF_BANKING_RECEIPT = gql`
       sourceNetwork
       sourceNumber
       desc
+      transactionId
       transactionTime
+      transactionStatus
     }
   }
 `

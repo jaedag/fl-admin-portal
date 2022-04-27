@@ -1,3 +1,100 @@
+### 2.2.0 (2022-04-26)
+
+##### Chores
+
+*  removed all eslint warnings ([505d253d](https://github.com/firstlovecenter/fl-admin-portal/commit/505d253d92ce70e95c0f6f319fe5615010f27240))
+
+##### New Features
+
+* **arrivals:**  implemented phone number verification for bacenta leaders ([27120cf4](https://github.com/firstlovecenter/fl-admin-portal/commit/27120cf4e1fb2af4aff8b1110d711ea0bbabbb91))
+*  implemented restriction so that confirmation can only be done on the day of bussing ([112ee594](https://github.com/firstlovecenter/fl-admin-portal/commit/112ee59483fd824cda4658865d630a3de782b25e))
+
+##### Bug Fixes
+
+*  fixed issue preventing the constituency level search from working ([06b6df62](https://github.com/firstlovecenter/fl-admin-portal/commit/06b6df620e1d104d2dd53b74e5021cef07eef8f9))
+
+### 2.1.0 (2022-04-23)
+
+##### New Features
+
+* **self-banking:**  admin-99 users can now bank for services even if they have previously not banked ([61514864](https://github.com/firstlovecenter/fl-admin-portal/commit/615148649a23968e929a867fc3bacedee6ae83eb))
+
+##### Bug Fixes
+
+* **self-banking:**
+  *  fixed object structure with confirm Service state ([a57dff2b](https://github.com/firstlovecenter/fl-admin-portal/commit/a57dff2b40196d8648aa05c56ce257ec61b5c7aa))
+  *  console logging response from confirm payment mutation ([afe12b23](https://github.com/firstlovecenter/fl-admin-portal/commit/afe12b2340574c6f092ac7dac906165e14157737))
+
+#### 2.0.9 (2022-04-22)
+
+##### New Features
+
+* **self-banking:**
+  *  you can no longer bank if you have a previous pending transaction ([1afb879a](https://github.com/firstlovecenter/fl-admin-portal/commit/1afb879a6d0a3c6f005b787e5561aa16d4ea9db8))
+  *  improved UX by handling for error states ([b524f86f](https://github.com/firstlovecenter/fl-admin-portal/commit/b524f86f68731220204c4f3e267f042443bcece8))
+
+#### 2.0.8 (2022-04-22)
+
+##### Bug Fixes
+
+*  admin-103 added permissions for leaders as well as admins to search ([3278c476](https://github.com/firstlovecenter/fl-admin-portal/commit/3278c4762915308c3879caf4f9663312b2f966a1))
+
+##### Performance Improvements
+
+*  name of momo sender now shows in desc sent to theTeller API ([cb4ac34f](https://github.com/firstlovecenter/fl-admin-portal/commit/cb4ac34fe5b374144ccca2c40eeb5669bfb24bce))
+
+#### 2.0.7 (2022-04-21)
+
+##### Bug Fixes
+
+*  fixed issue where method used for assessing bacentas money is wrong ([0303f05b](https://github.com/firstlovecenter/fl-admin-portal/commit/0303f05bf1457acfc9e0cf03a0de9f6c8d44f382))
+*  admin-103 removed sonta search which was breaking search at consttiuency level ([48acbd7b](https://github.com/firstlovecenter/fl-admin-portal/commit/48acbd7bb9d1798941aa36f88e34fa6d4bd41093))
+
+#### 2.0.6 (2022-04-20)
+
+##### Bug Fixes
+
+*  admin-102 fixed bug where creating a bacenta was returning an error ([576ef7f2](https://github.com/firstlovecenter/fl-admin-portal/commit/576ef7f2e6e66298b322b21dbaa35f4c62542212))
+
+#### 2.0.5 (2022-04-20)
+
+##### Bug Fixes
+
+*  admin-98 fixed bug preventing users from switching the upper church for fellowship, bacenta ([c7536fee](https://github.com/firstlovecenter/fl-admin-portal/commit/c7536feef5f4681c945c80ed33e5489d2f4279a3))
+
+##### Other Changes
+
+*   stream ([3a1e23a0](https://github.com/firstlovecenter/fl-admin-portal/commit/3a1e23a057d86c7adeba33ebe0b6dc8315965b2f))
+
+#### 2.0.4 (2022-04-19)
+
+##### Bug Fixes
+
+*  admin-100 fixed bug with changing councils of a constituency ([50368aca](https://github.com/firstlovecenter/fl-admin-portal/commit/50368acaeb19e626dbb764ae8df3c3d780dd396c))
+*  admin-101 replaced setStreamId with generic ClickCard function ([4a161812](https://github.com/firstlovecenter/fl-admin-portal/commit/4a1618129800236db4439d182d18203b3bde647d))
+*  admin-99 adjusted cypher query for catching banking defaulters by introducing parentheses ([69a57e84](https://github.com/firstlovecenter/fl-admin-portal/commit/69a57e84cc23d9be10df04944b4e7459cc92bf1c))
+
+#### 2.0.3 (2022-04-19)
+
+##### Bug Fixes
+
+*  admin-99 some slight improvements in the self-banking feature ux ([7fe91fdb](https://github.com/firstlovecenter/fl-admin-portal/commit/7fe91fdb52fb699a7373e3fd6d96bd68dbb7d4fa))
+*  admin-99 defaulters screens should only show banking data for the week we are in ([1c6e29c5](https://github.com/firstlovecenter/fl-admin-portal/commit/1c6e29c52d247542c14b2786fe4879a36f31868d))
+*  admin-55 rewrote cypher for service aggregates to eliminate duplicates ([f9c63394](https://github.com/firstlovecenter/fl-admin-portal/commit/f9c63394f93dade69c5ab2732935e5e6b4ab6c07))
+*  admin-96 implmented scenario in clickCard for NoService ([b4ac3f11](https://github.com/firstlovecenter/fl-admin-portal/commit/b4ac3f11a6325a1d1bf070c6584f0476b8abd3ea))
+
+#### 2.0.2 (2022-04-15)
+
+##### Bug Fixes
+
+*  admin-96 fixed bug where after filling service form a person gets returned to the form page ([196fc563](https://github.com/firstlovecenter/fl-admin-portal/commit/196fc563d61fc46ede52c2dab0ea58072a2350fa))
+*  admin-95 updated fellowship variables to match with the refactored fellowship search query ([8d17433a](https://github.com/firstlovecenter/fl-admin-portal/commit/8d17433ad3eb6ff11da6528acc2c3c1b1d548a6d))
+*  third iteration of the banking defaulters cypher script ([bcf4402e](https://github.com/firstlovecenter/fl-admin-portal/commit/bcf4402ec44252d2cccbc8788a51d403f963f2bd))
+
+##### Tests
+
+*  wrote a successful test using the MockedProvider from Apollo Client ([697f190a](https://github.com/firstlovecenter/fl-admin-portal/commit/697f190a2f70f43b53507c966eeb55ddbc0e8ebd))
+
 #### 2.0.1 (2022-04-14)
 
 ##### Bug Fixes

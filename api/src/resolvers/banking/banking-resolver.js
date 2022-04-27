@@ -2,6 +2,7 @@ const {
   getMobileCode,
   padNumbers,
   getStreamFinancials,
+  handlePaymentError,
 } = require('../financial-utils')
 const { permitLeader } = require('../permissions')
 const cypher = require('./banking-cypher')
@@ -20,14 +21,23 @@ export const bankingMutation = {
 
     const { merchantId, auth } = getStreamFinancials(args.stream_name)
 
-    // This code checks if transaction ID already exists.
-    // const transactionResponse = rearrangeCypherObject(
-    //   await session.run(cypher.checkTransactionId, args)
-    // )
+    // This code checks if there has already been a successful transaction
+    const transactionResponse = rearrangeCypherObject(
+      await session.run(cypher.checkTransactionId, args)
+    )
 
-    // if (transactionResponse?.record.transactionId) {
-    //   throwErrorMsg('Banking has already been done for this service')
-    // }
+    const transactionStatus =
+      transactionResponse?.record.properties.transactionStatus
+    if (transactionStatus === 'success') {
+      throwErrorMsg('Banking has already been done for this service')
+    }
+
+    if (transactionStatus === 'pending') {
+      throwErrorMsg(
+        'Please confirm your initial payment before attempting another one'
+      )
+    }
+
     const cypherResponse = rearrangeCypherObject(
       await session.run(cypher.setServiceRecordTransactionId, {
         auth: context.auth,
@@ -50,15 +60,23 @@ export const bankingMutation = {
         amount: padNumbers(serviceRecord?.income * 100),
         processing_code: '000200',
         'r-switch': getMobileCode(args.mobileNetwork),
-        desc: `${cypherResponse.churchName} ${cypherResponse.churchLevel} ${cypherResponse.date}`,
+        desc: `${cypherResponse.churchName} ${cypherResponse.churchLevel} ${args.momoName}`,
         subscriber_number: args.mobileNumber,
         voucher: '',
       },
     }
-    axios(payOffering).catch((e) => throwErrorMsg(e))
+
+    try {
+      const paymentResponse = await axios(payOffering)
+
+      handlePaymentError(paymentResponse)
+    } catch (error) {
+      throwErrorMsg(error)
+    }
 
     return
   },
+
   ConfirmOfferingPayment: async (object, args, context) => {
     isAuth(permitLeader('Fellowship'), context.auth.roles)
     const session = context.driver.session()
@@ -70,15 +88,17 @@ export const bankingMutation = {
 
     const record = transactionResponse?.record?.properties
     const banker = transactionResponse?.banker?.properties
+
+    // eslint-disable-next-line no-console
+    console.log('response', transactionResponse)
     if (!record?.transactionId) {
       throwErrorMsg(
         'It looks like there was a problem. Please try sending again!'
       )
     }
 
-    const paddedTransactionId = padNumbers(
-      transactionResponse?.record.properties.transactionId
-    )
+    const paddedTransactionId = padNumbers(record?.transactionId)
+
     const confirmPaymentBody = {
       method: 'get',
       url: `https://prod.theteller.net/v1.1/users/transactions/${paddedTransactionId}/status`,
@@ -92,9 +112,18 @@ export const bankingMutation = {
     const confirmationResponse = await axios(confirmPaymentBody)
 
     if (confirmationResponse.data.code.toString() === '111') {
-      throwErrorMsg(
-        'Payment is still pending. Please wait for the prompt or try again'
-      )
+      return {
+        id: record.id,
+        transactionId: record.transactionId,
+        transactionStatus: 'pending',
+        income: record.income,
+        offeringBankedBy: {
+          id: banker.id,
+          firstName: banker.firstName,
+          lastName: banker.lastName,
+          fullName: banker.firstName + ' ' + banker.fullName,
+        },
+      }
     }
 
     if (confirmationResponse.data.code.toString() === '104') {
@@ -105,7 +134,7 @@ export const bankingMutation = {
       }
     }
 
-    if (confirmationResponse.data.code.toString() !== '000') {
+    if (!['000', '111'].includes(confirmationResponse.data.code.toString())) {
       try {
         await session.run(cypher.removeBankingRecordTransactionId, args)
       } catch (error) {
@@ -124,9 +153,6 @@ export const bankingMutation = {
         throwErrorMsg(error)
       }
     }
-
-    // eslint-disable-next-line no-console
-    console.log('Payment Verified Successfully!')
 
     return {
       id: record.id,

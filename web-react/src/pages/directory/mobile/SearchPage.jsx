@@ -69,7 +69,6 @@ const SearchPageMobile = () => {
     onCompleted: (data) => {
       setCombinedData([
         ...data.constituencyMemberSearch,
-        ...data.constituencySontaSearch,
         ...data.constituencyBacentaSearch,
         ...data.constituencyFellowshipSearch,
       ])
@@ -114,61 +113,70 @@ const SearchPageMobile = () => {
     bacentaLoading ||
     fellowshipLoading
 
-  const whichSearch = (searchString) => {
-    if (isAuthorised(['adminGatheringService'], currentUser.roles)) {
-      federalSearch({
-        variables: { searchKey: searchString?.trim() },
-      })
-    } else if (
-      isAuthorised(['adminStream', 'leaderStream'], currentUser.roles)
-    ) {
-      streamSearch({
-        variables: {
-          streamId: currentUser.stream,
-          searchKey: searchString?.trim(),
-        },
-      })
-    } else if (
-      isAuthorised(['adminCouncil', 'leaderCouncil'], currentUser.roles)
-    ) {
-      councilSearch({
-        variables: {
-          councilId: currentUser.council,
-          searchKey: searchString?.trim(),
-        },
-      })
-    } else if (
-      isAuthorised(
-        ['adminConstituency', 'leaderConstituency'],
-        currentUser.roles
-      )
-    ) {
-      constituencySearch({
-        variables: {
-          constituencyId: currentUser.constituency,
-          searchKey: searchString?.trim(),
-        },
-      })
-    } else if (isAuthorised(['leaderBacenta'], currentUser.roles)) {
-      bacentaSearch({
-        variables: {
-          bacentaId: currentUser.bacenta,
-          searchKey: searchString?.trim(),
-        },
-      })
-    } else if (isAuthorised(['leaderFellowship'], currentUser.roles)) {
-      fellowshipSearch({
-        variables: {
-          fellowshipId: currentUser.fellowship,
-          searchKey: searchString?.trim(),
-        },
-      })
-    }
-  }
-
   useEffect(() => {
+    const whichSearch = (searchString) => {
+      if (isAuthorised(['adminGatheringService'], currentUser.roles)) {
+        federalSearch({
+          variables: { searchKey: searchString?.trim() },
+        })
+      } else if (
+        isAuthorised(['adminStream', 'leaderStream'], currentUser.roles)
+      ) {
+        streamSearch({
+          variables: {
+            streamId: currentUser.stream,
+            searchKey: searchString?.trim(),
+          },
+        })
+      } else if (
+        isAuthorised(['adminCouncil', 'leaderCouncil'], currentUser.roles)
+      ) {
+        councilSearch({
+          variables: {
+            councilId: currentUser.council,
+            searchKey: searchString?.trim(),
+          },
+        })
+      } else if (
+        isAuthorised(
+          ['adminConstituency', 'leaderConstituency'],
+          currentUser.roles
+        )
+      ) {
+        constituencySearch({
+          variables: {
+            constituencyId: currentUser.constituency,
+            searchKey: searchString?.trim(),
+          },
+        })
+      } else if (isAuthorised(['leaderBacenta'], currentUser.roles)) {
+        bacentaSearch({
+          variables: {
+            bacentaId: currentUser.bacenta,
+            searchKey: searchString?.trim(),
+          },
+        })
+      } else if (isAuthorised(['leaderFellowship'], currentUser.roles)) {
+        fellowshipSearch({
+          variables: {
+            fellowshipId: currentUser.fellowship,
+            searchKey: searchString?.trim(),
+          },
+        })
+      }
+    }
+
     whichSearch(searchKey)
-  }, [searchKey])
+  }, [
+    searchKey,
+    currentUser,
+    bacentaSearch,
+    constituencySearch,
+    councilSearch,
+    streamSearch,
+    federalSearch,
+    fellowshipSearch,
+  ])
 
   return (
     <>

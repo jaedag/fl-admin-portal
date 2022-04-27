@@ -4,11 +4,22 @@ extend type Mutation {
     serviceRecordId: ID!
     mobileNetwork: String!
     mobileNumber: String!
-  ): ServiceRecord
+    momoName: String!
+  ): String
   ConfirmOfferingPayment(
     stream_name: String!
     serviceRecordId: ID!
   ): ServiceRecord
+}
+
+extend type ServiceRecord {
+  # Self Banking Properties
+  offeringBankedBy: Member
+    @relationship(type: "OFFERING_BANKED_BY", direction: OUT)
+  sourceNumber: String
+  sourceNetwork: String
+  desc: String
+  transactionTime: DateTime
 }
 
 extend type ServiceRecord {

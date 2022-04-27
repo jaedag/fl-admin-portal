@@ -542,16 +542,15 @@ export const REMOVE_FELLOWSHIP_BACENTA = gql`
       fellowships {
         id
         name
-        bacenta {
-          id
-          name
-        }
       }
     }
     updateBacentas(where: { id: $bacentaId }) {
       bacentas {
         id
         fellowships {
+          id
+        }
+        constituency {
           id
         }
       }
@@ -588,6 +587,9 @@ export const ADD_CONSTITUENCY_COUNCIL = gql`
         council {
           id
           name
+          constituencies {
+            id
+          }
         }
       }
     }

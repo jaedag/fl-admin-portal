@@ -54,20 +54,21 @@ const PayOffering = (props) => {
 
     setSubmitting(true)
     try {
-      await BankServiceOffering({
+      BankServiceOffering({
         variables: {
           serviceRecordId: serviceRecordId,
           stream_name: service.stream_name,
           mobileNetwork: values.mobileNetwork,
           mobileNumber: values.mobileNumber,
+          momoName: values.momoName,
         },
       })
     } catch (error) {
       throwErrorMsg(error)
     }
-    setSubmitting(false)
 
     navigate('/self-banking/confirm-payment')
+    setSubmitting(false)
   }
 
   return (
