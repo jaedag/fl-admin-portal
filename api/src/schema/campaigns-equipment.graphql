@@ -246,7 +246,7 @@ extend type Mutation {
   ): EquipmentRecord
 
   CreateConstituencyEquipmentRecord(
-    constituencyRecordId: ID!
+    id: ID!
     pulpits: Int!
     date: Date!
   ): EquipmentRecord
