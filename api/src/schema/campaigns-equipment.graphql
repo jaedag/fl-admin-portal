@@ -238,36 +238,18 @@ type EquipmentCampaign implements Campaign {
 }
 
 extend type Mutation {
+  SetEquipmentDeadline(startDate: Date!, endDate: Date!, id: ID!): TimeGraph
   CreateFellowshipEquipmentRecord(
-    fellowshipRecordId: ID!
+    id: ID!
     offeringBags: Int!
+    date: Date!
   ): EquipmentRecord
-    @auth(rules: [{ roles: ["leaderFellowship", "adminConstituency"] }])
-    # @auth(rules: [{ roles: ["leaderFellowship", "adminConstituency"] }])
-    @cypher(
-      statement: """
-      MATCH (fellowshipRecord:EquipmentRecord {id: $fellowshipRecordId})
-       SET
-       fellowshipRecord.offeringBags = $offeringBags
-       RETURN fellowshipRecord
-      """
-    )
 
   CreateConstituencyEquipmentRecord(
     constituencyRecordId: ID!
     pulpits: Int!
+    date: Date!
   ): EquipmentRecord
-    @auth(rules: [{ roles: ["adminConstituency", "leaderConstituency"] }])
-    @cypher(
-      statement: """
-      MATCH (constituencyRecord:EquipmentRecord {id: $constituencyRecordId})
-      set
-      constituencyRecord.pulpits = $pulpits
-      RETURN constituencyRecord
-      """
-    )
-
-  SetEquipmentDeadline(startDate: Date!, endDate: Date!, id: ID!): TimeGraph
 }
 
 extend type Query {

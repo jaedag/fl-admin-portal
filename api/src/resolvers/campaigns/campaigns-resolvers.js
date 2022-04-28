@@ -232,12 +232,8 @@ export const campaignsMutation = {
     let equipmentDateSet, setEquipmentDuration
     try {
       equipmentDateSet = rearrangeCypherObject(
-        await session.run(campaignsCypher.equipmentDateSet, {
-          date: args.startDate,
-        })
+        await session.run(campaignsCypher.equipmentDateSet, args)
       )
-      // eslint-disable-next-line no-console
-      console.log(equipmentDateSet.date)
     } catch (error) {
       throwErrorMsg(error)
     }
@@ -250,13 +246,47 @@ export const campaignsMutation = {
       throwErrorMsg(error)
     }
 
-    // eslint-disable-next-line no-console
-    console.log(setEquipmentDuration)
+    try {
+      await session.run(
+        campaignsCypher.createGatheringServiceEquipmentRecords,
+        args
+      )
+      await session.run(campaignsCypher.createStreamEquipmentRecords, args)
+      await session.run(campaignsCypher.createCouncilEquipmentRecords, args)
+    } catch (error) {
+      throwErrorMsg(error)
+    }
 
     return {
       date: equipmentDateSet.date,
       id: setEquipmentDuration.gatheringService.properties.id,
     }
+  },
+  CreateConstituencyEquipmentRecord: async (object, args, context) => {
+    isAuth(permitAdmin('Constituency'), context.auth.roles)
+
+    const session = context.driver.session()
+
+    let constituencyRecord
+
+    try {
+      constituencyRecord = rearrangeCypherObject(
+        await session.run(
+          campaignsCypher.createConstituencyEquipmentRecord,
+          args
+        )
+      )
+    } catch (error) {
+      throwErrorMsg(error)
+    }
+
+    try {
+      await session.run(campaignsCypher.equipmentRecordUpwardConnection, args)
+    } catch (error) {
+      throwErrorMsg(error)
+    }
+
+    return constituencyRecord
   },
 }
 
