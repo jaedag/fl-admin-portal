@@ -24,6 +24,17 @@ MERGE (campaign)<-[:HAS]-(upperCampaign)
 
 return church
 `
+
+export const equipmentRecordUpwardConnection = ` 
+MATCH (record:EquipmentRecord {id:$id})
+MATCH (record)<-[:HAS_RECORD]-(campaign:EquipmentCampaign)<-[:HAS_CAMPAIGN]-(church) WHERE church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:GatheringService
+MATCH (church)<-[:HAS]-(upperChurch) WHERE church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:GatheringService
+MATCH (upperChurch)-[:HAS_CAMPAIGN]->(upperCampaign:EquipmentCampaign)-[:HAS_RECORD]->(upperRecord:EquipmentRecord {date:record.date})
+MERGE (record)<-[:HAS]-(upperRecord)
+
+return church
+`
+
 export const createFellowshipEquipmentCampaign = `
 MATCH (target:Target {campaign:"Equipment"})
 MATCH (fellowship:Fellowship {id: $fellowshipId})<-[:HAS]-(bacenta:Bacenta)-[:HAS_CAMPAIGN]->(bacentaCampaign:EquipmentCampaign)
@@ -54,19 +65,12 @@ MERGE (gatheringServiceCampaign)-[:HAS_TARGET]->(target)
 return gatheringServiceCampaign
 `
 
-export const setEquipmentDate = `
-MERGE (equipmentDate:TimeGraph {date:$startDate})
-ON CREATE
-SET
-equipmentDate.date = $startDate
-return equipmentDate
-`
-
 export const setEquipmentDuration = `
 MATCH (gatheringService:GatheringService {id:$id})-[:HAS_CAMPAIGN]->(gsCampaign:EquipmentCampaign)
 set 
 gsCampaign.equipmentStartDate = $startDate,
-gsCampaign.equipmentEndDate = $endDate
+gsCampaign.equipmentEndDate = $endDate,
+gsCampaign.equipmentDate = $startDate
 return gatheringService
 `
 export const equipmentDateSet = `
@@ -75,4 +79,74 @@ ON CREATE
 SET
 equipmentDate.date = $startDate
 return toString(equipmentDate.date) as date
+`
+export const createFellowshipEquipmentRecord = `
+
+`
+export const createConstituencyEquipmentRecord = `
+MATCH (con:Constituency {id:$id})-[:HAS_CAMPAIGN]->(campaign:EquipmentCampaign)
+MATCH (con)-[:HAS_HISTORY {current:true}]->(log:ServiceLog)
+MATCH (date:TimeGraph {date:$date})
+MERGE (campaign)-[:HAS_EQUIPMENT_RECORD]->(record:EquipmentRecord)-[:HAS_EQUIPMENT_DATE]->(date)
+ON CREATE
+SET 
+record.id = apoc.create.uuid(),
+record.pulpits = $pulpits
+with record, log
+
+MERGE (log)-[:HAS_RECORD]->(record)
+return record
+`
+
+export const createGatheringServiceEquipmentRecords = `
+MATCH (gatheringService:GatheringService)-[:HAS_CAMPAIGN]->(EquipmentCampaign:EquipmentCampaign)
+MATCH (log:ServiceLog)<-[:HAS_HISTORY {current:true}]-(gatheringService)
+MATCH (equipmentDate:TimeGraph {date:date($startDate)})
+WITH log, gatheringService, EquipmentCampaign, equipmentDate
+
+CREATE (gatheringServiceRecord:EquipmentRecord)
+SET
+gatheringServiceRecord.historyRecord = gatheringService.name + ' ' + ' Equipment Campaign created an Equipment Record on this '+datetime(),
+gatheringServiceRecord.id = apoc.create.uuid(),
+gatheringServiceRecord.date = $startDate
+        
+MERGE (gatheringServiceRecord)<-[:HAS_RECORD]-(log)
+MERGE (EquipmentCampaign)-[:HAS_RECORD]->(gatheringServiceRecord)
+MERGE (gatheringServiceRecord)-[:HAS_EQUIPMENT_DATE]->(equipmentDate)
+return gatheringServiceRecord;
+
+`
+export const createStreamEquipmentRecords = `
+MATCH (stream:Stream)-[:HAS_CAMPAIGN]->(EquipmentCampaign:EquipmentCampaign)<-[:HAS]-(gatheringServiceCampaign:EquipmentCampaign)-[:HAS_RECORD]->(gatheringServiceRecord:EquipmentRecord)-[:HAS_EQUIPMENT_DATE]->(equipmentDate:TimeGraph {date:date($startDate)})
+MATCH (log:ServiceLog)<-[:HAS_HISTORY {current:true}]-(stream)
+WITH log, stream, EquipmentCampaign, gatheringServiceRecord, equipmentDate
+
+CREATE (streamRecord:EquipmentRecord)
+SET
+streamRecord.historyRecord = stream.name + ' ' + ' Equipment Campaign created an Equipment Record on this '+datetime(),
+streamRecord.id = apoc.create.uuid(),
+streamRecord.date = $startDate
+        
+MERGE (streamRecord)<-[:HAS_RECORD]-(log)
+MERGE (EquipmentCampaign)-[:HAS_RECORD]->(streamRecord)
+MERGE (streamRecord)-[:HAS_EQUIPMENT_DATE]->(equipmentDate)
+MERGE (gatheringServiceRecord)-[:HAS]->(streamRecord)
+return streamRecord limit 2;
+`
+export const createCouncilEquipmentRecords = `
+MATCH (council:Council)-[:HAS_CAMPAIGN]->(EquipmentCampaign:EquipmentCampaign)<-[:HAS]-(streamCampaign:EquipmentCampaign)-[:HAS_RECORD]->(streamRecord:EquipmentRecord)-[:HAS_EQUIPMENT_DATE]->(equipmentDate:TimeGraph {date:date($startDate)})
+MATCH (log:ServiceLog)<-[:HAS_HISTORY {current:true}]-(council)
+WITH log, council, EquipmentCampaign, streamRecord, equipmentDate
+
+CREATE (councilRecord:EquipmentRecord)
+SET
+councilRecord.historyRecord = council.name + ' ' + ' Equipment Campaign created an Equipment Record on this '+datetime(),
+councilRecord.id = apoc.create.uuid(),
+councilRecord.date = $startDate
+        
+MERGE (councilRecord)<-[:HAS_RECORD]-(log)
+MERGE (EquipmentCampaign)-[:HAS_RECORD]->(councilRecord)
+MERGE (councilRecord)-[:HAS_EQUIPMENT_DATE]->(equipmentDate)
+MERGE (streamRecord)-[:HAS]->(councilRecord)
+return councilRecord limit 2;
 `
