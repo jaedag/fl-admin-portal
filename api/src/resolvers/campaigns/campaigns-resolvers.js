@@ -267,6 +267,20 @@ export const campaignsMutation = {
 
     const session = context.driver.session()
 
+    let equipmentRecordExists
+    try {
+      equipmentRecordExists = rearrangeCypherObject(
+        await session.run(campaignsCypher.checkExistingEquipmentRecord, args)
+      )
+    } catch (error) {
+      throwErrorMsg(error)
+    }
+
+    if (Object.keys(equipmentRecordExists).length !== 0) {
+      throwErrorMsg('You have already filled your constituency equipment form!')
+      return
+    }
+
     let constituencyRecord
 
     try {
@@ -276,6 +290,9 @@ export const campaignsMutation = {
           args
         )
       )
+
+      // eslint-disable-next-line no-console
+      console.log(constituencyRecord)
     } catch (error) {
       throwErrorMsg(error)
     }
@@ -286,8 +303,11 @@ export const campaignsMutation = {
       throwErrorMsg(error)
     }
 
-    return constituencyRecord
+    return {
+      id: constituencyRecord.record.properties.id,
+      pulpits: constituencyRecord.record.properties.pulpits,
+    }
   },
 }
 
-export const arrivalsResolvers = {}
+export const campaignsResolvers = {}

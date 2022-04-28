@@ -83,14 +83,22 @@ return toString(equipmentDate.date) as date
 export const createFellowshipEquipmentRecord = `
 
 `
+
+export const checkExistingEquipmentRecord = `
+MATCH (church {id:$id}) where church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:GatheringService OR church:ClosedFellowship OR church:ClosedBacenta
+MATCH (church)
+WHERE EXISTS {
+      MATCH (church)-[:HAS_CAMPAIGN]->(campaign:EquipmentCampaign)-[:HAS_RECORD]->(record:EquipmentRecord)-[:HAS_EQUIPMENT_DATE]->(t:TimeGraph {date:date($date)})}
+RETURN church
+`
 export const createConstituencyEquipmentRecord = `
 MATCH (con:Constituency {id:$id})-[:HAS_CAMPAIGN]->(campaign:EquipmentCampaign)
 MATCH (con)-[:HAS_HISTORY {current:true}]->(log:ServiceLog)
-MATCH (date:TimeGraph {date:$date})
-MERGE (campaign)-[:HAS_EQUIPMENT_RECORD]->(record:EquipmentRecord)-[:HAS_EQUIPMENT_DATE]->(date)
+MATCH (date:TimeGraph {date:date($date)})
+MERGE (campaign)-[:HAS_RECORD]->(record:EquipmentRecord)-[:HAS_EQUIPMENT_DATE]->(date)
 ON CREATE
 SET 
-record.id = apoc.create.uuid(),
+record.id = apoc.create.uuid(),p
 record.pulpits = $pulpits
 with record, log
 
