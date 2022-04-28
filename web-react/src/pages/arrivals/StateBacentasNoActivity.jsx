@@ -13,6 +13,7 @@ import {
 } from './bussingStatusQueries'
 import useChurchLevel from '../../hooks/useChurchLevel'
 import NoData from './CompNoData'
+import PlaceholderDefaulterList from 'pages/services/defaulters/PlaceholderDefaulterList'
 
 const BacentasNoActiviity = () => {
   const [constituencyBacentasNoActivity] = useLazyQuery(
@@ -53,6 +54,10 @@ const BacentasNoActiviity = () => {
             contact
           />
         ))}
+
+        {!church?.bacentasNoActivity.length && loading && (
+          <PlaceholderDefaulterList />
+        )}
       </Container>
     </BaseComponent>
   )
