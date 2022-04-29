@@ -267,45 +267,76 @@ export const campaignsMutation = {
 
     const session = context.driver.session()
 
-    let equipmentRecordExists
+    let equipmentCampaign
     try {
-      equipmentRecordExists = rearrangeCypherObject(
-        await session.run(campaignsCypher.checkExistingEquipmentRecord, args)
+      equipmentCampaign = rearrangeCypherObject(
+        await session.run(campaignsCypher.getEquipmentCampaign)
       )
     } catch (error) {
       throwErrorMsg(error)
     }
 
-    if (Object.keys(equipmentRecordExists).length !== 0) {
-      throwErrorMsg('You have already filled your constituency equipment form!')
-      return
-    }
+    const currentDate = args.date
+    const startDate = equipmentCampaign.campaign.properties.equipmentStartDate
+    const endDate = equipmentCampaign.campaign.properties.equipmentEndDate
 
-    let constituencyRecord
+    if (currentDate >= startDate && currentDate <= endDate) {
+      // eslint-disable-next-line no-console
+      //console.log('it is between')
+      args.date = startDate
 
-    try {
-      constituencyRecord = rearrangeCypherObject(
-        await session.run(
-          campaignsCypher.createConstituencyEquipmentRecord,
-          args
+      let equipmentRecordExists
+      try {
+        equipmentRecordExists = rearrangeCypherObject(
+          await session.run(campaignsCypher.checkExistingEquipmentRecord, args)
         )
-      )
+      } catch (error) {
+        throwErrorMsg(error)
+      }
+
+      if (Object.keys(equipmentRecordExists).length !== 0) {
+        throwErrorMsg(
+          'You have already filled your constituency equipment form!'
+        )
+        return
+      }
+
+      let constituencyRecord
+
+      try {
+        constituencyRecord = rearrangeCypherObject(
+          await session.run(
+            campaignsCypher.createConstituencyEquipmentRecord,
+            args
+          )
+        )
+      } catch (error) {
+        throwErrorMsg(error)
+      }
+
+      try {
+        await session.run(campaignsCypher.equipmentRecordUpwardConnection, args)
+      } catch (error) {
+        throwErrorMsg(error)
+      }
+
+      try {
+        await session.run(campaignsCypher.createBacentaEquipmentRecord, args)
+      } catch (error) {
+        throwErrorMsg(error)
+      }
 
       // eslint-disable-next-line no-console
-      console.log(constituencyRecord)
-    } catch (error) {
-      throwErrorMsg(error)
-    }
+      //console.log(constituencyRecord)
 
-    try {
-      await session.run(campaignsCypher.equipmentRecordUpwardConnection, args)
-    } catch (error) {
-      throwErrorMsg(error)
-    }
-
-    return {
-      id: constituencyRecord.record.properties.id,
-      pulpits: constituencyRecord.record.properties.pulpits,
+      return {
+        id: constituencyRecord.record.properties.id,
+        pulpits: constituencyRecord.record.properties.pulpits,
+      }
+    } else {
+      // eslint-disable-next-line no-console
+      //console.log('The deadline is over')
+      throwErrorMsg('Equipment Deadline is up')
     }
   },
 }
