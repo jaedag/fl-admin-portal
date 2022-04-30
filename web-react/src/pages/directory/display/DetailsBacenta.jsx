@@ -23,13 +23,13 @@ const DetailsBacenta = () => {
 
   const details = [
     {
-      title: 'Status',
+      title: 'Grad. Status',
       number: bacenta?.graduationStatus,
       link: `#`,
       width: 'auto',
     },
     {
-      title: 'Vacation Status',
+      title: 'Status',
       number: bacenta?.vacationStatus,
       link: '#',
       width: 'auto',
@@ -52,13 +52,25 @@ const DetailsBacenta = () => {
       link: `#`,
       width: 'auto',
     },
+    {
+      title: 'Momo Number',
+      number: bacenta?.momoNumber || '-',
+      link: `#`,
+      width: 'auto',
+    },
   ]
+
+  if (!bacenta?.normalBussingTopUp && !bacenta?.swellBussingTopUp) {
+    details.pop()
+  }
 
   return (
     <BaseComponent loading={loading} error={error} data={data} placeholder>
       <DisplayChurchDetails
         details={details}
         loading={loading}
+        church={bacenta}
+        momoNumber={bacenta?.momoNumber}
         name={bacenta?.name}
         leaderTitle="Bacenta Leader"
         leader={bacenta?.leader}

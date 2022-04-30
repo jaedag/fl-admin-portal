@@ -1,3 +1,61 @@
+#### 2.2.6 (2022-04-30)
+
+##### New Features
+
+*  implemented a custom resolver such that you need momo details before uploading pre mobilisati ([f9aaaf8f](https://github.com/firstlovecenter/fl-admin-portal/commit/f9aaaf8f94be1043283835c3fe2386e503dfd447))
+
+##### Bug Fixes
+
+*  fixed bug preventing counters from counting ([f6b3fa06](https://github.com/firstlovecenter/fl-admin-portal/commit/f6b3fa065c6e0eccc277597980e3f0c9bda51651))
+*  fixed error where mobilising bacentas were showing up as bacentas to be counted ([f149bc29](https://github.com/firstlovecenter/fl-admin-portal/commit/f149bc29b996113ed1ac1f4cd92527d6266575f9))
+*  minor improvements ([10bb9f22](https://github.com/firstlovecenter/fl-admin-portal/commit/10bb9f226ef442b38803d890440dfd53ea136ea4))
+*  fixed error in counting and listing the number of bacentas mobilising ([7a7573a0](https://github.com/firstlovecenter/fl-admin-portal/commit/7a7573a079909f04cb9a709f4975181d9d1fd003))
+
+#### 2.2.5 (2022-04-29)
+
+##### New Features
+
+* **arrivals:**
+  *  you cannot fill your forms if you have bussing top up without momo number ([3c13f96e](https://github.com/firstlovecenter/fl-admin-portal/commit/3c13f96e4a98b44a452ea67b845170cb204f193c))
+  *  final preparations for an end to end test ([a915cb3b](https://github.com/firstlovecenter/fl-admin-portal/commit/a915cb3bb52b9e01e31afb1002f6544062d1f043))
+* **directory:**  if you don't take money, you will not be trouble with payment things ([35d7e536](https://github.com/firstlovecenter/fl-admin-portal/commit/35d7e53626c433fdbed0dafcfb363d90647b3ebd))
+
+##### Bug Fixes
+
+*  improved error handling for less than 8 bussing ([2fe3e933](https://github.com/firstlovecenter/fl-admin-portal/commit/2fe3e933ad1bb6226ab64b9f4e593a922d2baf74))
+
+#### 2.2.4 (2022-04-29)
+
+##### New Features
+
+* **directory:**  you can now see the momo number on the bacenta details page ([a2524d4f](https://github.com/firstlovecenter/fl-admin-portal/commit/a2524d4f50dddf60733a5f4d10480f7c88c5e048))
+* **arrivals:**  added a message to alert leaders that they do not have a valid number for sending ([a976b81e](https://github.com/firstlovecenter/fl-admin-portal/commit/a976b81e7ced307baf9fe88663f1d0b136cb01d0))
+
+##### Bug Fixes
+
+* **arrivals:**  slightly improved ux for verifying momo Number ([0cff9f17](https://github.com/firstlovecenter/fl-admin-portal/commit/0cff9f170f93c9f4bc1e2c40a73995acfe7d6b21))
+
+#### 2.2.3 (2022-04-29)
+
+##### Bug Fixes
+
+*  removed bus payment details button for anagkazo ([6a588a50](https://github.com/firstlovecenter/fl-admin-portal/commit/6a588a502a7ff60180b9c79c0e6423736b9c1d9e))
+* **self-banking:**  admin-112 removed self banking option for anagkazo ([2cc829f1](https://github.com/firstlovecenter/fl-admin-portal/commit/2cc829f1d07ad915d2f22c8ae97ecf79e3c9d8aa))
+
+##### Performance Improvements
+
+*  tidied up useAuth custom hook ([24433eb7](https://github.com/firstlovecenter/fl-admin-portal/commit/24433eb7a293d4f78d86b171e6d94b435077650e))
+
+#### 2.2.2 (2022-04-29)
+
+##### Chores
+
+*  merge improvements into deploy branch ([2c1c6791](https://github.com/firstlovecenter/fl-admin-portal/commit/2c1c6791fff4958f19796551bd070276ec11f906))
+
+##### Bug Fixes
+
+* **self-banking:**  fixed bug with self banking feature and improved error handling ([1d1668f4](https://github.com/firstlovecenter/fl-admin-portal/commit/1d1668f48e8fd0ddf4775d6431edf6fe7f955ed7))
+
 #### 2.2.1 (2022-04-27)
 
 ##### New Features

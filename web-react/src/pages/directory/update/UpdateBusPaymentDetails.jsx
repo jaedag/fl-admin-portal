@@ -25,7 +25,7 @@ import {
 import { MOBILE_NETWORK_OPTIONS } from 'pages/arrivals/arrivals-utils'
 import RoleView from 'auth/RoleView'
 import { permitAdminArrivals } from 'permission-utils'
-import useMyAuth from 'auth/useMyAuth'
+import useAuth from 'auth/useAuth'
 import Popup from 'components/Popup/Popup'
 import usePopup from 'hooks/usePopup'
 import { MemberContext } from 'contexts/MemberContext'
@@ -34,7 +34,7 @@ const UpdateBusPayment = () => {
   const { bacentaId } = useContext(ChurchContext)
   const { theme } = useContext(MemberContext)
   const { isOpen, togglePopup } = usePopup()
-  const { isAuthorised } = useMyAuth()
+  const { isAuthorised } = useAuth()
   const [otp] = useState(randomOTPGenerator())
   const [submitting, setSubmitting] = useState(false)
   const navigate = useNavigate()
@@ -64,7 +64,6 @@ const UpdateBusPayment = () => {
     mobileNetwork: bacenta?.mobileNetwork ?? '',
     momoName: bacenta?.momoName ?? '',
     momoNumber: bacenta?.momoNumber ?? '',
-    verifiedMomoNumber: bacenta?.momoNumber ?? '',
     verificationCode: '',
   }
 
@@ -94,7 +93,6 @@ const UpdateBusPayment = () => {
 
   const onSubmit = async (values, onSubmitProps) => {
     onSubmitProps.setSubmitting(true)
-
     if (isAuthorised(permitAdminArrivals('Stream'))) {
       await UpdateBacentaBussingDetails({
         variables: {
@@ -110,11 +108,16 @@ const UpdateBusPayment = () => {
           ),
         },
       })
-      navigate(`/bacenta/displaydetails`)
+      if (initialValues.momoNumber === values.momoNumber)
+        navigate(`/bacenta/displaydetails`)
     }
 
-    if (values.mobileNetwork) {
-      togglePopup()
+    if (!values.mobileNetwork || !values.momoName || !values.momoNumber) {
+      throwErrorMsg('No bussing details')
+      return
+    }
+
+    if (initialValues.momoNumber !== values.momoNumber) {
       await SendMobileVerificationNumber({
         variables: {
           firstName: bacenta?.leader.firstName,
@@ -122,10 +125,8 @@ const UpdateBusPayment = () => {
           code: otp,
         },
       })
+      togglePopup()
     }
-
-    onSubmitProps.setSubmitting(false)
-    onSubmitProps.resetForm()
   }
 
   return (
@@ -186,7 +187,10 @@ const UpdateBusPayment = () => {
                         </Col>
                       </Row>
                     </RoleView>
-                    <RoleView roles={['leaderBacenta']}>
+                    <RoleView
+                      roles={['leaderBacenta']}
+                      verifyId={bacenta?.leader.id}
+                    >
                       {isOpen && (
                         <Popup handleClose={togglePopup}>
                           <div className="my-2">
@@ -209,6 +213,7 @@ const UpdateBusPayment = () => {
                               disabled={submitting}
                               onClick={async () => {
                                 setSubmitting(true)
+
                                 if (formik.values.verificationCode !== otp) {
                                   throwErrorMsg(
                                     'Your verification code is wrong! Try again 😡'
@@ -220,12 +225,11 @@ const UpdateBusPayment = () => {
                                 try {
                                   await UpdateBusPaymentDetails({
                                     variables: {
-                                      bacentaId: bacentaId,
+                                      bacentaId,
                                       mobileNetwork:
                                         formik.values.mobileNetwork,
-                                      momoName: formik.values.momoName,
-                                      momoNumber:
-                                        formik.values.verifiedMomoNumber,
+                                      momoName: formik.values.momoName.trim(),
+                                      momoNumber: formik.values.momoNumber,
                                     },
                                   })
 
@@ -237,7 +241,7 @@ const UpdateBusPayment = () => {
                                 } catch (error) {
                                   setSubmitting(false)
                                   throwErrorMsg(
-                                    'There was a problem sending your verification message 😔'
+                                    'There was a problem updating your momo number 😔'
                                   )
                                 }
                               }}
