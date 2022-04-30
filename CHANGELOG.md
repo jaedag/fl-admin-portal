@@ -1,3 +1,9 @@
+#### 2.2.9 (2022-04-30)
+
+##### Bug Fixes
+
+*  fixed full name bug and what not ([34521752](https://github.com/firstlovecenter/fl-admin-portal/commit/34521752dc48ada0b80698957c6009086304144f))
+
 #### 2.2.8 (2022-04-30)
 
 ##### Bug Fixes
