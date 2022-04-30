@@ -1,3 +1,9 @@
+#### 2.2.8 (2022-04-30)
+
+##### Bug Fixes
+
+*  temporary fix ([e532ba69](https://github.com/firstlovecenter/fl-admin-portal/commit/e532ba69add4fbd46e4c49bf382f0cd79787477d))
+
 #### 2.2.7 (2022-04-30)
 
 ##### Bug Fixes
