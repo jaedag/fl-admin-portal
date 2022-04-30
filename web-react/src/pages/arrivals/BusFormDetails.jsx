@@ -46,7 +46,7 @@ const BusFormDetails = () => {
         </PlaceholderCustom>
         <PlaceholderCustom as="h6" loading={loading}>
           <HeadingSecondary>{`${church?.name} ${church?.__typename}`}</HeadingSecondary>
-          <p>{`Recorded by ${bussing?.created_by.fullName}`}</p>
+          <p>{`Recorded by ${bussing?.created_by?.fullName}`}</p>
 
           {bussing?.confirmed_by && (
             <p>
