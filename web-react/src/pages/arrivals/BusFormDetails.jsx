@@ -35,8 +35,8 @@ const BusFormDetails = () => {
   })
 
   const navigate = useNavigate()
-  const bussing = data?.bacentas[0] //data?.bussingRecords[0]
-  const church = data?.bacentas[0]?.bussing[0].id
+  const bussing = data?.bacentas[0]?.bussing[0] //data?.bussingRecords[0]
+  const church = data?.bacentas[0]
 
   return (
     <BaseComponent loading={loading} error={error} data={data} placeholder>

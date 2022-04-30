@@ -269,14 +269,42 @@ export const BACENTA_ARRIVALS = gql`
 
       arrivalsCodeOfTheDay
       bussing(limit: 1) {
+        # id
+        # created_at
+        # serviceDate {
+        #   date
+        # }
+        # week
+        # mobilisationPicture
+        # bussingPictures
+        # arrivalTime
         id
         created_at
+        created_by {
+          id
+          firstName
+          lastName
+          fullName
+        }
+        confirmed_by {
+          id
+          firstName
+          lastName
+          fullName
+        }
         serviceDate {
           date
         }
         week
         mobilisationPicture
+        leaderDeclaration
+        attendance
         bussingPictures
+        bussingCost
+        bussingTopUp
+        numberOfBusses
+        numberOfCars
+        comments
         arrivalTime
       }
     }
