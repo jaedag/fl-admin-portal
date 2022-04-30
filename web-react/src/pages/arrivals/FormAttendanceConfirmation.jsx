@@ -64,16 +64,18 @@ const FormAttendanceConfirmation = () => {
         attendance: parseInt(values.attendance),
         comments: values.comments,
       },
-    }).catch((error) =>
+    }).catch((error) => {
+      navigate(`/bacenta/bussing-details`)
       throwErrorMsg('There was an error confirming bussing', error)
-    )
+    })
     await SetBussingSupport({
       variables: {
         bussingRecordId: bussingRecordId,
       },
-    }).catch((error) =>
+    }).catch((error) => {
+      navigate(`/bacenta/bussing-details`)
       throwErrorMsg('There was an error setting bussing support', error)
-    )
+    })
 
     const bussingData = res.data.ConfirmBussingByAdmin
 
