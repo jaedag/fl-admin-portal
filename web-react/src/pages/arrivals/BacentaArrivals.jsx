@@ -59,7 +59,7 @@ const BacentaArrivals = () => {
       !bussing?.bussingPictures?.length
     )
   }
-
+  console.log(bussing)
   return (
     <BaseComponent data={data} loading={loading} error={error}>
       <Container>
@@ -114,6 +114,7 @@ const BacentaArrivals = () => {
             disabled={!canFillOnTheWay()}
             onClick={() => {
               clickCard(bacenta)
+              clickCard(bussing)
               navigate('/arrivals/submit-on-the-way')
             }}
           >

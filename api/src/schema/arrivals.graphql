@@ -674,25 +674,25 @@ extend type Constituency {
   bacentasNotCounted: [Bacenta!]!
     @cypher(
       statement: """
-      MATCH (this)-[:HAS]->(bacentas:Active:Bacenta)
-      MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
-     WHERE date(date.date)=date() AND bussing.leaderDeclaration IS NOT NULL
-      AND NOT EXISTS {
-       MATCH (bussing)-[:CONFIRMED_BY]->(:Member)
-      }
-      RETURN DISTINCT bacentas
+       MATCH (this)-[:HAS]->(bacentas:Active:Bacenta)
+       MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
+      WHERE date(date.date)=date() AND bussing.leaderDeclaration IS NOT NULL
+       AND NOT EXISTS {
+        MATCH (bussing)-[:CONFIRMED_BY]->(:Member)
+       }
+       RETURN DISTINCT bacentas
       """
     )
   bacentasNotCountedCount: Int
     @cypher(
       statement: """
-      MATCH (this)-[:HAS]->(bacentas:Active:Bacenta)
-      MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
-     WHERE date(date.date)=date() AND bussing.leaderDeclaration IS NOT NULL
-      AND NOT EXISTS {
-        MATCH (bussing)-[:CONFIRMED_BY]->(:Member)
-      }
-      RETURN COUNT(DISTINCT bacentas)
+       MATCH (this)-[:HAS]->(bacentas:Active:Bacenta)
+       MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
+      WHERE date(date.date)=date() AND bussing.leaderDeclaration IS NOT NULL
+       AND NOT EXISTS {
+         MATCH (bussing)-[:CONFIRMED_BY]->(:Member)
+       }
+       RETURN COUNT(DISTINCT bacentas)
       """
     )
   bacentasHaveArrived: [Bacenta!]!
@@ -1061,11 +1061,6 @@ extend type Mutation {
     serviceDate: String!
     mobilisationPicture: String!
   ): BussingRecord
-    @cypher(
-      statement: """
-
-      """
-    )
 
   #Bussing Records Entries
   RecordBussingFromBacenta(
