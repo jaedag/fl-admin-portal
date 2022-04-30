@@ -101,6 +101,7 @@ const BacentaArrivals = () => {
             }
             onClick={() => {
               clickCard(bacenta)
+              clickCard(bussing)
               navigate('/arrivals/submit-mobilisation-picture')
             }}
           >
