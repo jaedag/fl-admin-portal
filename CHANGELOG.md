@@ -1,3 +1,10 @@
+#### 2.2.7 (2022-04-30)
+
+##### Bug Fixes
+
+*  push something to log bussing ([1849742e](https://github.com/firstlovecenter/fl-admin-portal/commit/1849742e0e40a2875149ac6634e781b80dc3f3cd))
+*  fixed bug where some leaders were not able to fill their on-the-way forms ([fc421a3a](https://github.com/firstlovecenter/fl-admin-portal/commit/fc421a3a431226677f46c31d05d6c740dcd74362))
+
 #### 2.2.6 (2022-04-30)
 
 ##### New Features
