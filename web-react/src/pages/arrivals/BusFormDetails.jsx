@@ -54,7 +54,7 @@ const BusFormDetails = () => {
               <RoleView roles={permitAdminArrivals('Stream')}>
                 {` by `}
                 <span className="fw-bold good">
-                  {bussing?.confirmed_by.fullName}
+                  {bussing?.confirmed_by?.fullName}
                 </span>
               </RoleView>
             </p>
@@ -74,7 +74,9 @@ const BusFormDetails = () => {
                       loading={loading}
                       className="td-placeholder"
                     >
-                      <td>{getHumanReadableDate(bussing?.serviceDate.date)}</td>
+                      <td>
+                        {getHumanReadableDate(bussing?.serviceDate?.date)}
+                      </td>
                     </PlaceholderCustom>
                   </tr>
                   <tr>
