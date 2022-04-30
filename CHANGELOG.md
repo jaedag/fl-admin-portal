@@ -1,3 +1,9 @@
+#### 2.2.14 (2022-04-30)
+
+##### Bug Fixes
+
+*  improved the UX for the counters ([af778fe4](https://github.com/firstlovecenter/fl-admin-portal/commit/af778fe4386b1d0f6f044f887129b56d28a65dd0))
+
 #### 2.2.13 (2022-04-30)
 
 ##### Bug Fixes
