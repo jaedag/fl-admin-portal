@@ -1,3 +1,9 @@
+#### 2.2.13 (2022-04-30)
+
+##### Bug Fixes
+
+*  further improvements to the arrivals patch ([d254c15c](https://github.com/firstlovecenter/fl-admin-portal/commit/d254c15c1426737977f5f0bc1c2614e6de5131f2))
+
 #### 2.2.10 (2022-04-30)
 
 ##### Bug Fixes
