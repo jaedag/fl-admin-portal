@@ -59,7 +59,7 @@ const BacentaArrivals = () => {
       !bussing?.bussingPictures?.length
     )
   }
-  console.log(bussing)
+
   return (
     <BaseComponent data={data} loading={loading} error={error}>
       <Container>
@@ -101,7 +101,6 @@ const BacentaArrivals = () => {
             }
             onClick={() => {
               clickCard(bacenta)
-              clickCard(bussing)
               navigate('/arrivals/submit-mobilisation-picture')
             }}
           >
@@ -126,6 +125,7 @@ const BacentaArrivals = () => {
               size="lg"
               onClick={() => {
                 clickCard(bacenta)
+                clickCard(bussing)
                 navigate('/bacenta/bussing-details')
               }}
             >

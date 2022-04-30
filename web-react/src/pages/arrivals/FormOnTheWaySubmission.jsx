@@ -15,13 +15,13 @@ import PlusSign from 'components/buttons/PlusMinusSign/PlusSign'
 import MinusSign from 'components/buttons/PlusMinusSign/MinusSign'
 import { RECORD_BUSSING_FROM_BACENTA } from './arrivalsMutations'
 import { parseDate } from 'date-utils'
-import { ServiceContext } from 'contexts/ServiceContext'
+// import { ServiceContext } from 'contexts/ServiceContext'
 import { throwErrorMsg } from 'global-utils'
 
 const FormOnTheWaySubmission = () => {
   const navigate = useNavigate()
   const { bacentaId, clickCard } = useContext(ChurchContext)
-  const { bussingRecordId } = useContext(ServiceContext)
+  // const { bussingRecordId } = useContext(ServiceContext)
   const initialValues = {
     attendance: '',
     bussingPictures: [''],
@@ -66,7 +66,7 @@ const FormOnTheWaySubmission = () => {
       const res = await RecordBussingFromBacenta({
         variables: {
           attendance: parseInt(values.attendance),
-          bussingRecordId: bussingRecordId,
+          bussingRecordId: bacenta?.bussing[0].id,
           bussingPictures: values.bussingPictures,
           bussingCost: parseFloat(values.bussingCost),
           numberOfBusses: parseInt(values.numberOfBusses),

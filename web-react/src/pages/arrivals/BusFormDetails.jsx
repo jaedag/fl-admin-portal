@@ -5,11 +5,11 @@ import HeadingSecondary from 'components/HeadingSecondary'
 import PlaceholderCustom from 'components/Placeholder'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { MemberContext } from 'contexts/MemberContext'
-import { ServiceContext } from 'contexts/ServiceContext'
+// import { ServiceContext } from 'contexts/ServiceContext'
 import React, { useState } from 'react'
 import { useContext } from 'react'
 import { Container, Row, Col, Table, Button } from 'react-bootstrap'
-import { DISPLAY_BUSSING_RECORDS } from './arrivalsQueries'
+import { BACENTA_ARRIVALS } from './arrivalsQueries'
 import '../services/record-service/ServiceDetails.css'
 import { useNavigate } from 'react-router'
 import RoleView from 'auth/RoleView'
@@ -24,15 +24,19 @@ import { getHumanReadableDate } from 'date-utils'
 const BusFormDetails = () => {
   const { bacentaId } = useContext(ChurchContext)
   const { theme } = useContext(MemberContext)
-  const { bussingRecordId } = useContext(ServiceContext)
+  // const { bussingRecordId } = useContext(ServiceContext)
   const { isOpen, togglePopup } = usePopup()
   const [picturePopup, setPicturePopup] = useState('')
-  const { data, loading, error } = useQuery(DISPLAY_BUSSING_RECORDS, {
-    variables: { bussingRecordId: bussingRecordId, bacentaId: bacentaId },
+  // const { data, loading, error } = useQuery(DISPLAY_BUSSING_RECORDS, {
+  //   // variables: { bussingRecordId: bussingRecordId, bacentaId: bacentaId },
+  // })
+  const { data, loading, error } = useQuery(BACENTA_ARRIVALS, {
+    variables: { id: bacentaId },
   })
+
   const navigate = useNavigate()
-  const bussing = data?.bussingRecords[0]
-  const church = data?.bacentas[0]
+  const bussing = data?.bacentas[0] //data?.bussingRecords[0]
+  const church = data?.bacentas[0]?.bussing[0].id
 
   return (
     <BaseComponent loading={loading} error={error} data={data} placeholder>
