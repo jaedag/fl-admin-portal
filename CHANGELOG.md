@@ -1,3 +1,9 @@
+#### 2.2.10 (2022-04-30)
+
+##### Bug Fixes
+
+*  little bug fixes ([27d5f493](https://github.com/firstlovecenter/fl-admin-portal/commit/27d5f4936676702b747f64a595897b5241a71f06))
+
 #### 2.2.9 (2022-04-30)
 
 ##### Bug Fixes
