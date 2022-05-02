@@ -27,7 +27,7 @@ return church
 
 export const equipmentRecordUpwardConnection = ` 
 MATCH (record:EquipmentRecord {id:$id})
-MATCH (record)<-[:HAS_RECORD]-(campaign:EquipmentCampaign)<-[:HAS_CAMPAIGN]-(church) WHERE church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:GatheringService
+MATCH (record)<-[:HAS_RECORD]-(campaign:EquipmentCampaign)<-[:HAS_CAMPAIGN]-(church) WHERE church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:GatheringService OR church:Fellowshipa
 MATCH (church)<-[:HAS]-(upperChurch) WHERE church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:GatheringService
 MATCH (upperChurch)-[:HAS_CAMPAIGN]->(upperCampaign:EquipmentCampaign)-[:HAS_RECORD]->(upperRecord:EquipmentRecord {date:record.date})
 MERGE (record)<-[:HAS]-(upperRecord)
@@ -81,7 +81,19 @@ equipmentDate.date = $startDate
 return toString(equipmentDate.date) as date
 `
 export const createFellowshipEquipmentRecord = `
+MATCH (fellowship:Fellowship {id:$id})-[:HAS_CAMPAIGN]->(campaign:EquipmentCampaign)
+MATCH (fellowship)-[:HAS_HISTORY {current:true}]->(log:ServiceLog)
+MATCH (date:TimeGraph {date:date($date)})
+MERGE (campaign)-[:HAS_RECORD]->(record:EquipmentRecord)-[:HAS_EQUIPMENT_DATE]->(date)
+ON CREATE
+SET
+record.historyRecord = fellowship.name + ' ' + 'Equipment Campaign created an Equipment Record on this '+datetime(),
+record.id = apoc.create.uuid(),
+record.offeringBags = $offeringBags
+with record, log
 
+MERGE (log)-[:HAS_RECORD]->(record)
+RETURN record limit 1
 `
 
 export const checkExistingEquipmentRecord = `

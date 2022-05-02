@@ -339,6 +339,73 @@ export const campaignsMutation = {
       throwErrorMsg('Equipment Deadline is up')
     }
   },
+  CreateFellowshipEquipmentRecord: async (object, args, context) => {
+    isAuth(permitAdmin('Constituency'), context.auth.roles)
+
+    const session = context.driver.session()
+
+    let equipmentCampaign
+    try {
+      equipmentCampaign = rearrangeCypherObject(
+        await session.run(campaignsCypher.getEquipmentCampaign)
+      )
+    } catch (error) {
+      throwErrorMsg(error)
+    }
+
+    const currentDate = args.date
+    const startDate = equipmentCampaign.campaign.properties.equipmentStartDate
+    const endDate = equipmentCampaign.campaign.properties.equipmentEndDate
+
+    if (currentDate >= startDate && currentDate <= endDate) {
+      // eslint-disable-next-line no-console
+      //console.log('it is between')
+      args.date = startDate
+
+      let equipmentRecordExists
+      try {
+        equipmentRecordExists = rearrangeCypherObject(
+          await session.run(campaignsCypher.checkExistingEquipmentRecord, args)
+        )
+      } catch (error) {
+        throwErrorMsg(error)
+      }
+
+      if (Object.keys(equipmentRecordExists).length !== 0) {
+        throwErrorMsg('You have already filled your fellowship equipment form!')
+        return
+      }
+
+      let fellowshipRecord
+
+      try {
+        fellowshipRecord = rearrangeCypherObject(
+          await session.run(
+            campaignsCypher.createFellowshipEquipmentRecord,
+            args
+          )
+        )
+      } catch (error) {
+        throwErrorMsg(error)
+      }
+
+      try {
+        await session.run(campaignsCypher.equipmentRecordUpwardConnection, args)
+      } catch (error) {
+        throwErrorMsg(error)
+      }
+
+      // eslint-disable-next-line no-console
+      console.log(fellowshipRecord)
+
+      return {
+        id: fellowshipRecord.record.properties.id,
+        offeringBags: fellowshipRecord.record.properties.offeringBags,
+      }
+    } else {
+      throwErrorMsg('Equipment Deadline is up')
+    }
+  },
 }
 
 export const campaignsResolvers = {}
