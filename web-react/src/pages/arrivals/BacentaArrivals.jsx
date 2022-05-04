@@ -114,6 +114,7 @@ const BacentaArrivals = () => {
             disabled={!canFillOnTheWay()}
             onClick={() => {
               clickCard(bacenta)
+              clickCard(bussing)
               navigate('/arrivals/submit-on-the-way')
             }}
           >
@@ -125,6 +126,7 @@ const BacentaArrivals = () => {
               size="lg"
               onClick={() => {
                 clickCard(bacenta)
+                clickCard(bussing)
                 navigate('/bacenta/bussing-details')
               }}
             >

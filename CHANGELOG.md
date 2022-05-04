@@ -1,3 +1,33 @@
+#### 2.2.19 (2022-05-01)
+
+##### Chores
+
+*  version bump ([e60fd17d](https://github.com/firstlovecenter/fl-admin-portal/commit/e60fd17d9e5fa3f72880ea56bafe0ed384be70e7))
+
+#### 2.2.18 (2022-05-01)
+
+#### 2.2.17 (2022-05-01)
+
+#### 2.2.16 (2022-05-01)
+
+#### 2.2.15 (2022-05-01)
+
+##### Chores
+
+*  version bump ([4b5af4b6](https://github.com/firstlovecenter/fl-admin-portal/commit/4b5af4b66dea37603dfbae4b286a53b1cfeade0a))
+
+#### 2.2.10 (2022-05-01)
+
+#### 2.2.9 (2022-05-01)
+
+#### 2.2.8 (2022-05-01)
+
+#### 2.2.7 (2022-05-01)
+
+##### Bug Fixes
+
+*  solved minor issues after campus test run of the system ([32f40bc0](https://github.com/firstlovecenter/fl-admin-portal/commit/32f40bc08f430c5ea9bf91146153d60d441c2b4b))
+
 #### 2.2.6 (2022-04-30)
 
 ##### New Features
