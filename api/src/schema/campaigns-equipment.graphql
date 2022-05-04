@@ -250,6 +250,12 @@ extend type Mutation {
     pulpits: Int!
     date: Date!
   ): EquipmentRecord
+
+  CreateFellowshipEquipmentRecord(
+    id: ID!
+    offeringBags: Int!
+    date: Date!
+  ): EquipmentRecord
 }
 
 extend type Query {
