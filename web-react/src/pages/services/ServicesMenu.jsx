@@ -11,6 +11,7 @@ import {
   FileEarmarkArrowUpFill,
 } from 'react-bootstrap-icons'
 import { useNavigate } from 'react-router'
+import RoleView from 'auth/RoleView'
 
 const Services = () => {
   const { currentUser, theme } = useContext(MemberContext)
@@ -83,16 +84,19 @@ const Services = () => {
                   )
                 }}
               />
-
-              <MenuButton
-                iconComponent={Coin}
-                title="Self Banking Option"
-                color="banking"
-                noCaption
-                onClick={() =>
-                  navigate(`/services/${churchType.toLowerCase()}/self-banking`)
-                }
-              />
+              <RoleView permittedStream={['Campus', 'Town']}>
+                <MenuButton
+                  iconComponent={Coin}
+                  title="Self Banking Option"
+                  color="banking"
+                  noCaption
+                  onClick={() =>
+                    navigate(
+                      `/services/${churchType.toLowerCase()}/self-banking`
+                    )
+                  }
+                />
+              </RoleView>
             </>
           )}
         </div>

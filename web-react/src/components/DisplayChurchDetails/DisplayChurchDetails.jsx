@@ -302,11 +302,20 @@ const DisplayChurchDetails = (props) => {
           </Row>
         )}
 
-        {props.churchType === 'Bacenta' && (
+        {props.churchType === 'Bacenta' &&
+        (props.church?.normalBussingTopUp ||
+          props.church?.swellBussingTopUp) ? (
           <RoleView
-            roles={['leaderBacenta', 'leaderGatheringService']}
+            roles={['leaderBacenta']}
+            stream={['Campus', 'Town']}
             verifyId={props?.leader?.id}
           >
+            {!props.momoNumber && (
+              <p className="my-1 bad fw-bold text-center">
+                There is no valid Mobile Money Number! Please update!
+              </p>
+            )}
+
             <div className="d-grid gap-2">
               <PlaceholderCustom
                 loading={props.loading}
@@ -324,7 +333,7 @@ const DisplayChurchDetails = (props) => {
               </PlaceholderCustom>
             </div>
           </RoleView>
-        )}
+        ) : null}
         <hr />
         <div className="d-grid gap-2">
           <PlaceholderCustom
@@ -390,7 +399,7 @@ const DisplayChurchDetails = (props) => {
                     className={`${week.filled ? 'filled' : 'not-filled'}`}
                   >{`${week.filled ? 'Filled' : 'Not Filled'}`}</span>
                 </p>
-                {week.banked && (
+                {week.filled && (
                   <p>
                     Banking Slip -{' '}
                     <span
