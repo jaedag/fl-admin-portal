@@ -281,8 +281,6 @@ export const campaignsMutation = {
     const endDate = equipmentCampaign.campaign.properties.equipmentEndDate
 
     if (currentDate >= startDate && currentDate <= endDate) {
-      // eslint-disable-next-line no-console
-      //console.log('it is between')
       args.date = startDate
 
       let equipmentRecordExists
@@ -330,9 +328,6 @@ export const campaignsMutation = {
         throwErrorMsg(error)
       }
 
-      // eslint-disable-next-line no-console
-      //console.log(constituencyRecord)
-
       return {
         id: constituencyRecord.record.properties.id,
         pulpits: constituencyRecord.record.properties.pulpits,
@@ -375,8 +370,6 @@ export const campaignsMutation = {
     const endDate = equipmentCampaign.campaign.properties.equipmentEndDate
 
     if (currentDate >= startDate && currentDate <= endDate) {
-      // eslint-disable-next-line no-console
-      //console.log('it is between')
       args.date = startDate
 
       let equipmentRecordExists
@@ -414,9 +407,6 @@ export const campaignsMutation = {
       } catch (error) {
         throwErrorMsg(error)
       }
-
-      // eslint-disable-next-line no-console
-      console.log(fellowshipRecord)
 
       return {
         id: fellowshipRecord.record.properties.id,
