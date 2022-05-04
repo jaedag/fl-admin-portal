@@ -286,6 +286,7 @@ export const campaignsMutation = {
       args.date = startDate
 
       let equipmentRecordExists
+
       try {
         equipmentRecordExists = rearrangeCypherObject(
           await session.run(campaignsCypher.checkExistingEquipmentRecord, args)
@@ -315,7 +316,10 @@ export const campaignsMutation = {
       }
 
       try {
-        await session.run(campaignsCypher.equipmentRecordUpwardConnection, args)
+        await session.run(campaignsCypher.equipmentRecordUpwardConnection, {
+          id: constituencyRecord.record.properties.id,
+          date: args.date,
+        })
       } catch (error) {
         throwErrorMsg(error)
       }
@@ -344,7 +348,20 @@ export const campaignsMutation = {
 
     const session = context.driver.session()
 
-    let equipmentCampaign
+    let equipmentCampaign, constituencyRecordExists
+
+    try {
+      constituencyRecordExists = rearrangeCypherObject(
+        await session.run(campaignsCypher.checkHasConstituencyRecord, args)
+      )
+    } catch (error) {
+      throwErrorMsg(error)
+    }
+
+    if (Object.keys(constituencyRecordExists).length == 0) {
+      throwErrorMsg('Your constituency form has not been filled!')
+      return
+    }
     try {
       equipmentCampaign = rearrangeCypherObject(
         await session.run(campaignsCypher.getEquipmentCampaign)
@@ -390,7 +407,10 @@ export const campaignsMutation = {
       }
 
       try {
-        await session.run(campaignsCypher.equipmentRecordUpwardConnection, args)
+        await session.run(campaignsCypher.equipmentRecordUpwardConnection, {
+          id: fellowshipRecord.record.properties.id,
+          date: args.date,
+        })
       } catch (error) {
         throwErrorMsg(error)
       }

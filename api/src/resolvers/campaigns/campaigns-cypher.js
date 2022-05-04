@@ -17,8 +17,8 @@ return churchCampaign;
 
 export const equipmentUpwardConnection = ` 
 MATCH (campaign:EquipmentCampaign {id:$id})
-MATCH (campaign)<-[:HAS_CAMPAIGN]-(church) WHERE church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:GatheringService
-MATCH (church)<-[:HAS]-(upperChurch) WHERE church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:GatheringService
+MATCH (campaign)<-[:HAS_CAMPAIGN]-(church) WHERE church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:GatheringService OR church:Fellowship
+MATCH (church)<-[:HAS]-(upperChurch) WHERE upperChurch:Bacenta OR upperChurch:Constituency OR upperChurch:Council OR upperChurch:Stream OR upperChurch:GatheringService
 MATCH (upperChurch)-[:HAS_CAMPAIGN]->(upperCampaign:EquipmentCampaign)
 MERGE (campaign)<-[:HAS]-(upperCampaign)
 
@@ -27,12 +27,12 @@ return church
 
 export const equipmentRecordUpwardConnection = ` 
 MATCH (record:EquipmentRecord {id:$id})
-MATCH (record)<-[:HAS_RECORD]-(campaign:EquipmentCampaign)<-[:HAS_CAMPAIGN]-(church) WHERE church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:GatheringService OR church:Fellowshipa
-MATCH (church)<-[:HAS]-(upperChurch) WHERE church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:GatheringService
-MATCH (upperChurch)-[:HAS_CAMPAIGN]->(upperCampaign:EquipmentCampaign)-[:HAS_RECORD]->(upperRecord:EquipmentRecord {date:record.date})
+MATCH (record)<-[:HAS_RECORD]-(campaign:EquipmentCampaign)<-[:HAS_CAMPAIGN]-(church) WHERE church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:GatheringService OR church:Fellowship
+MATCH (church)<-[:HAS]-(upperChurch) WHERE upperChurch:Bacenta OR upperChurch:Constituency OR upperChurch:Council OR upperChurch:Stream OR upperChurch:GatheringService
+MATCH (upperChurch)-[:HAS_CAMPAIGN]->(upperCampaign:EquipmentCampaign)-[:HAS_RECORD]->(upperRecord:EquipmentRecord)-[:HAS_EQUIPMENT_DATE]->(t:TimeGraph  {date:date($date)})
 MERGE (record)<-[:HAS]-(upperRecord)
 
-return church
+return  record
 `
 
 export const createFellowshipEquipmentCampaign = `
@@ -198,6 +198,6 @@ export const checkHasConstituencyRecord = `
 MATCH (fellowship:Fellowship {id:$id})
 MATCH (fellowship)
 WHERE EXISTS {
-(fellowship)<-[:HAS*2]-(con:Constituency)-[:HAS_CAMPAIGN](campaign:EquipmentCampaign)-[:HAS_RECORD]->(record:EquipmentRecord)-[:HAS_EQUIPMENT_DATE]->(t:TimeGraph {date:date($date)})}
+(fellowship)<-[:HAS*2]-(con:Constituency)-[:HAS_CAMPAIGN]->(campaign:EquipmentCampaign)-[:HAS_RECORD]->(record:EquipmentRecord)-[:HAS_EQUIPMENT_DATE]->(t:TimeGraph {date:date($date)})}
 RETURN fellowship
 `
