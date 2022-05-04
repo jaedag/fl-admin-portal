@@ -193,3 +193,11 @@ MERGE (bacentaRecord)-[:HAS_EQUIPMENT_DATE]->(equipmentDate)
 MERGE (constituencyRecord)-[:HAS]->(bacentaRecord)
 return log,bacenta, bacentaRecord limit 2;
 `
+
+export const checkHasConstituencyRecord = `
+MATCH (fellowship:Fellowship {id:$id})
+MATCH (fellowship)
+WHERE EXISTS {
+(fellowship)<-[:HAS*2]-(con:Constituency)-[:HAS_CAMPAIGN](campaign:EquipmentCampaign)-[:HAS_RECORD]->(record:EquipmentRecord)-[:HAS_EQUIPMENT_DATE]->(t:TimeGraph {date:date($date)})}
+RETURN fellowship
+`
