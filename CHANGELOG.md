@@ -1,3 +1,9 @@
+#### 2.3.1 (2022-05-05)
+
+##### Bug Fixes
+
+*  corrected the fellowship details page to show accurate banking data ([fcd53010](https://github.com/firstlovecenter/fl-admin-portal/commit/fcd530106ecf297bac1fc832851473746aa8ce31))
+
 ### 2.3.0 (2022-05-05)
 
 ##### New Features
