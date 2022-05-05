@@ -1,6 +1,6 @@
 export const createEquipmentCampaign = `
 MATCH (target:Target {campaign:"Equipment"})
-MATCH (church {id:$id}) WHERE church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:GatheringService
+MATCH (church {id:$id}) WHERE church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:GatheringService OR church:Fellowship
 MATCH (log:HistoryLog)<-[:HAS_HISTORY {current:true}]-(church)
 MATCH (leader:Member)-[:LEADS]->(church)
 UNWIND labels(church) as churchType
