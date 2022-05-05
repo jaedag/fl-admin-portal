@@ -36,7 +36,7 @@ const DetailsFellowship = () => {
 
   const lastFilledServices = history?.services.map((service) => service.week)
   const lastFilledBanking = history?.services.map(
-    (service) => service.bankingSlip
+    (service) => service.bankingProof
   )
 
   const check = last3Weeks()?.map((week, i) => {
