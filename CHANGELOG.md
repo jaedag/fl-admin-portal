@@ -1,3 +1,19 @@
+### 2.3.0 (2022-05-05)
+
+##### New Features
+
+*  when a leader fills no number of cars and busses, it means no top up for that day ([964e7503](https://github.com/firstlovecenter/fl-admin-portal/commit/964e7503ff63a1b9fb68f418aacfe75a850dc3d5))
+*  implemented a feature adding a list to show bacentas under 8 for stream ([8eaec827](https://github.com/firstlovecenter/fl-admin-portal/commit/8eaec8270d96cce8271bbb609f19689324c98b51))
+
+##### Bug Fixes
+
+*  implemented resolver in the backend to ensure that nobody can be confirmed when the time is up ([c23b3558](https://github.com/firstlovecenter/fl-admin-portal/commit/c23b355830bc778c95719c994cd5760fc1dc97c2))
+*  improved ux for deleting arrivals helpers as well us cleaning history record ([06da13d7](https://github.com/firstlovecenter/fl-admin-portal/commit/06da13d742c31e038f220fe74a66b6af0210e78c))
+
+##### Performance Improvements
+
+*  improved image clarity when opened on full view on bus form details ([5170b3b7](https://github.com/firstlovecenter/fl-admin-portal/commit/5170b3b78f0ac915c5a2351b0c59b7c1a89c3817))
+
 #### 2.2.19 (2022-05-01)
 
 ##### Chores
