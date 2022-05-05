@@ -1,18 +1,17 @@
 export const createEquipmentCampaign = `
 MATCH (target:Target {campaign:"Equipment"})
-MATCH (church {id:$id}) WHERE church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:GatheringService
+MATCH (church {id:$id}) WHERE church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:GatheringService OR church:Fellowship
 MATCH (log:HistoryLog)<-[:HAS_HISTORY {current:true}]-(church)
 MATCH (leader:Member)-[:LEADS]->(church)
-UNWIND labels(church) as churchType
 
-WITH target, church, log, leader, churchType
+WITH target, church, log, leader
 CREATE (churchCampaign:EquipmentCampaign {id: apoc.create.uuid()})
-SET churchCampaign.name = church.name + ' '+churchType
+SET churchCampaign.name = church.name 
 MERGE (church)-[:HAS_CAMPAIGN]->(churchCampaign)
 MERGE (churchCampaign)<-[:LEADS]-(leader)
 MERGE (churchCampaign)-[:HAS_HISTORY]->(log)
 MERGE (churchCampaign)-[:HAS_TARGET]->(target)
-return churchCampaign;
+return churchCampaign LIMIT 1;
 `
 
 export const equipmentUpwardConnection = ` 
