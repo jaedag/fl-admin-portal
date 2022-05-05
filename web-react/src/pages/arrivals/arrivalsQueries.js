@@ -83,6 +83,8 @@ export const STREAM_ARRIVALS_DASHBOARD = gql`
       bacentasHaveArrivedCount
       bussingMembersOnTheWayCount
       bussingMembersHaveArrivedCount
+
+      bacentasBelow8Count
     }
   }
 `
@@ -141,7 +143,7 @@ export const CONFIRM_CONSTITUENCY_ARRIVALS = gql`
         }
         bussing(limit: 1) {
           id
-          confirmed_by {
+          counted_by {
             id
             firstName
             lastName
@@ -173,7 +175,7 @@ export const CONFIRM_COUNCIL_ARRIVALS = gql`
         }
         bussing(limit: 1) {
           id
-          confirmed_by {
+          counted_by {
             id
             firstName
             lastName
@@ -205,7 +207,7 @@ export const CONFIRM_STREAM_ARRIVALS = gql`
         }
         bussing(limit: 1) {
           id
-          confirmed_by {
+          counted_by {
             id
             firstName
             lastName
@@ -237,7 +239,7 @@ export const CONFIRM_GATHERINGSERVICE_ARRIVALS = gql`
         }
         bussing(limit: 1) {
           id
-          confirmed_by {
+          counted_by {
             id
             firstName
             lastName
@@ -250,7 +252,7 @@ export const CONFIRM_GATHERINGSERVICE_ARRIVALS = gql`
 `
 
 export const BACENTA_ARRIVALS = gql`
-  query ($id: ID!) {
+  query ($id: ID!, $date: Date) {
     bacentas(where: { id: $id }, options: { limit: 1 }) {
       id
       name
@@ -263,6 +265,10 @@ export const BACENTA_ARRIVALS = gql`
         arrivalStartTime
         arrivalEndTime
       }
+      momoNumber
+      normalBussingTopUp
+      swellBussingTopUp
+
       arrivalsCodeOfTheDay
       bussing(limit: 1) {
         id
@@ -275,6 +281,11 @@ export const BACENTA_ARRIVALS = gql`
         bussingPictures
         arrivalTime
       }
+    }
+    timeGraphs(where: { date: $date }) {
+      id
+      date
+      swell
     }
   }
 `
@@ -366,7 +377,13 @@ export const DISPLAY_BUSSING_RECORDS = gql`
         lastName
         fullName
       }
-      confirmed_by {
+      counted_by {
+        id
+        firstName
+        lastName
+        fullName
+      }
+      arrival_confirmed_by {
         id
         firstName
         lastName

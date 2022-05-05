@@ -8,7 +8,7 @@ export const menuItems = [
   { name: 'Home', to: '/', roles: ['all'] },
   {
     name: 'Directory',
-    exact: true,
+    exact: 'true',
     to: '/directory',
     subMenus: [
       { name: 'Members', to: '/directory/members' },
@@ -38,11 +38,6 @@ export const menuItems = [
   {
     name: 'Maps',
     to: '/maps',
-    roles: ['adminGatheringService'],
-  },
-  {
-    name: 'Reconciliation',
-    to: '/recon',
     roles: ['adminGatheringService'],
   },
 ]

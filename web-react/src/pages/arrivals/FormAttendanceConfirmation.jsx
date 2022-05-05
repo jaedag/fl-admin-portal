@@ -14,6 +14,7 @@ import { DISPLAY_BUSSING_RECORDS } from './arrivalsQueries'
 import {
   CONFIRM_BUSSING_BY_ADMIN,
   SEND_BUSSING_SUPPORT,
+  SET_BUSSING_SUPPORT,
 } from './arrivalsMutations'
 import { useNavigate } from 'react-router'
 import FormikControl from 'components/formik-components/FormikControl'
@@ -34,6 +35,7 @@ const FormAttendanceConfirmation = () => {
     variables: { bussingRecordId: bussingRecordId, bacentaId: bacentaId },
   })
   const [ConfirmBussingByAdmin] = useMutation(CONFIRM_BUSSING_BY_ADMIN)
+  const [SetBussingSupport] = useMutation(SET_BUSSING_SUPPORT)
   const [SendBussingSupport] = useMutation(SEND_BUSSING_SUPPORT)
 
   const bussing = data?.bussingRecords[0]
@@ -50,24 +52,40 @@ const FormAttendanceConfirmation = () => {
       .positive()
       .integer('You cannot have attendance with decimals!')
       .required('This is a required field'),
+    comments: Yup.string().when('attendance', {
+      is: (attendance) => attendance !== bussing?.leaderDeclaration,
+      then: Yup.string().required(
+        'You need to explain if the numbers are different'
+      ),
+    }),
   })
 
   const onSubmit = async (values, onSubmitProps) => {
     const { setSubmitting } = onSubmitProps
     setSubmitting(true)
+
     const res = await ConfirmBussingByAdmin({
       variables: {
         bussingRecordId: bussingRecordId,
         attendance: parseInt(values.attendance),
         comments: values.comments,
       },
-    })
+    }).catch((error) =>
+      throwErrorMsg('There was an error confirming bussing', error)
+    )
+    await SetBussingSupport({
+      variables: {
+        bussingRecordId: bussingRecordId,
+      },
+    }).catch((error) =>
+      throwErrorMsg('There was an error setting bussing support', error)
+    )
 
     const bussingData = res.data.ConfirmBussingByAdmin
 
     if (!bussingData.bussingTopUp || bacenta?.stream_name === 'Anagkazo') {
       //if there is no value for the bussing top up
-      return
+      navigate(`/bacenta/bussing-details`)
     }
 
     if (bussingData.arrivalTime) {
@@ -89,9 +107,9 @@ const FormAttendanceConfirmation = () => {
       } catch (error) {
         setSubmitting(false)
         throwErrorMsg(error)
-        navigate(`/bacenta/bussing-details`)
       }
     }
+    navigate(`/bacenta/bussing-details`)
   }
 
   return (
@@ -160,7 +178,9 @@ const FormAttendanceConfirmation = () => {
         initialValues={initialValues}
         validationSchema={validationSchema}
         onSubmit={onSubmit}
-        validateOnMount={true}
+        initialErrors={{
+          comments: true,
+        }}
       >
         {(formik) => (
           <Container>

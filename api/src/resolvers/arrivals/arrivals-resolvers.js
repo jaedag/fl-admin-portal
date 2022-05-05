@@ -10,6 +10,7 @@ const {
   permitAdminArrivals,
   permitArrivals,
   permitArrivalsHelpers,
+  permitArrivalsConfirmer,
 } = require('../permissions')
 const {
   isAuth,
@@ -17,7 +18,7 @@ const {
   rearrangeCypherObject,
   throwErrorMsg,
 } = require('../resolver-utils')
-const { MakeServant, RemoveServant } = require('../resolvers')
+import { MakeServant, RemoveServant } from '../resolvers'
 const cypher = require('./arrivals-cypher')
 const axios = require('axios').default
 
@@ -163,43 +164,116 @@ export const arrivalsMutation = {
 
     return stream?.record.properties
   },
-  SetBussingSupport: async (object, args, context) => {
+  UploadMobilisationPicture: async (object, args, context) => {
     const session = context.driver.session()
-
-    const response = rearrangeCypherObject(
-      await session.run(cypher.getBussingRecordWithDate, args)
+    isAuth(['leaderBacenta'], context.auth.roles)
+    const checkBacentaMomo = rearrangeCypherObject(
+      await session.run(cypher.checkBacentaMomoDetails, args)
     )
 
-    let bussingRecord = 0
-
-    if (response.attendance >= 8) {
-      if (response.dateLabels.includes('SwellDate')) {
-        bussingRecord = rearrangeCypherObject(
-          await session.run(cypher.setSwellBussingTopUp, args)
-        )
-      } else {
-        bussingRecord = rearrangeCypherObject(
-          await session.run(cypher.setNormalBussingTopUp, args)
-        )
-      }
+    if (
+      !checkBacentaMomo.momoNumber &&
+      (checkBacentaMomo.normalTopUp || checkBacentaMomo.swellTopUp)
+    ) {
+      throwErrorMsg('You need a mobile money number before filling this form')
     }
 
-    return bussingRecord?.record.properties
+    const response = rearrangeCypherObject(
+      await session.run(cypher.uploadMobilisationPicture, {
+        ...args,
+        auth: context.auth,
+      })
+    )
+
+    const bacenta = response.bacenta.properties
+    const bussingRecord = response.bussingRecord.properties
+    const date = response.date.properties
+
+    const returnToCache = {
+      id: bussingRecord.id,
+      attendance: bussingRecord.attendance,
+      mobilisationPicture: bussingRecord.mobilisationPicture,
+      serviceLog: {
+        bacenta: [
+          {
+            id: bacenta.id,
+            stream_name: response.stream_name,
+            bussing: [
+              {
+                id: bussingRecord.id,
+                serviceDate: {
+                  date: date.date,
+                },
+                week: response.week,
+                mobilisationPicture: bussingRecord.mobilisationPicture,
+              },
+            ],
+          },
+        ],
+      },
+    }
+
+    return returnToCache
+  },
+  SetBussingSupport: async (object, args, context) => {
+    const session = context.driver.session()
+    try {
+      const response = rearrangeCypherObject(
+        await session.run(cypher.getBussingRecordWithDate, args)
+      )
+
+      let bussingRecord
+
+      if (
+        response.attendance < 8 ||
+        (response.numberOfBusses === 0 && response.numberOfCars === 0)
+      ) {
+        try {
+          rearrangeCypherObject(await session.run(cypher.noBussingTopUp, args))
+        } catch (error) {
+          console.log(error)
+        } finally {
+          throwErrorMsg("Today's Bussing doesn't merit a top up")
+        }
+      }
+
+      if (response.attendance >= 8) {
+        if (
+          response.attendance >= response.target &&
+          response.dateLabels.includes('SwellDate')
+        ) {
+          bussingRecord = rearrangeCypherObject(
+            await session.run(cypher.setSwellBussingTopUp, args)
+          )
+        } else {
+          bussingRecord = rearrangeCypherObject(
+            await session.run(cypher.setNormalBussingTopUp, args)
+          )
+        }
+      }
+
+      return bussingRecord?.record.properties
+    } catch (error) {
+      throwErrorMsg(error)
+    }
   },
   SendBussingSupport: async (object, args, context) => {
     isAuth(permitArrivalsHelpers(), context.auth.roles)
     const session = context.driver.session()
 
     const { merchantId, auth, passcode } = getStreamFinancials(args.stream_name)
-    const transactionResponse = rearrangeCypherObject(
+    const recordResponse = rearrangeCypherObject(
       await session.run(cypher.checkTransactionId, args)
-    ).record.properties
+    )
+
+    const transactionResponse = recordResponse.record.properties
 
     if (transactionResponse?.transactionId) {
       throwErrorMsg('Money has already been sent to this bacenta')
     } else if (
       !transactionResponse?.arrivalTime ||
-      transactionResponse?.attendance === 0
+      transactionResponse?.attendance < 8 ||
+      !transactionResponse?.bussingTopUp
     ) {
       //If record has not been confirmed, it will return null
       throwErrorMsg('This bacenta is not eligible to receive money')
@@ -224,7 +298,7 @@ export const arrivalsMutation = {
         amount: padNumbers(bussingRecord.bussingTopUp * 100),
         processing_code: '404000',
         'r-switch': 'FLT',
-        desc: `${cypherResponse.bacentaName} Bacenta ${transactionResponse.momoName}`,
+        desc: `${cypherResponse.bacentaName} Bacenta ${bussingRecord.momoName}`,
         pass_code: passcode,
         account_number: bussingRecord.momoNumber,
         account_issuer: getMobileCode(bussingRecord.mobileNetwork),
@@ -251,7 +325,33 @@ export const arrivalsMutation = {
       throwErrorMsg(error, 'Money could not be sent!')
     }
   },
+  RecordArrivalTime: async (object, args, context) => {
+    isAuth(permitArrivalsConfirmer(), context.auth.roles)
+    const session = context.driver.session()
 
+    const recordResponse = rearrangeCypherObject(
+      await session.run(cypher.checkTransactionId, args)
+    )
+
+    const stream = recordResponse.stream.properties
+    const arrivalEndTime = new Date(
+      new Date().toISOString().slice(0, 10) + stream.arrivalEndTime?.slice(10)
+    )
+    const today = new Date()
+
+    if (today > arrivalEndTime) {
+      throwErrorMsg('It is now past the time for arrivals. Thank you!')
+    }
+
+    const response = rearrangeCypherObject(
+      await session.run(cypher.recordArrivalTime, {
+        ...args,
+        auth: context.auth,
+      })
+    )
+    console.log(response)
+    return response.bussingRecord
+  },
   SetSwellDate: async (object, args, context) => {
     isAuth(permitAdminArrivals('GatheringService'), context.auth.roles)
 

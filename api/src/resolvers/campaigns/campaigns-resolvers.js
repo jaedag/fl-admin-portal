@@ -281,11 +281,10 @@ export const campaignsMutation = {
     const endDate = equipmentCampaign.campaign.properties.equipmentEndDate
 
     if (currentDate >= startDate && currentDate <= endDate) {
-      // eslint-disable-next-line no-console
-      //console.log('it is between')
       args.date = startDate
 
       let equipmentRecordExists
+
       try {
         equipmentRecordExists = rearrangeCypherObject(
           await session.run(campaignsCypher.checkExistingEquipmentRecord, args)
@@ -315,7 +314,10 @@ export const campaignsMutation = {
       }
 
       try {
-        await session.run(campaignsCypher.equipmentRecordUpwardConnection, args)
+        await session.run(campaignsCypher.equipmentRecordUpwardConnection, {
+          id: constituencyRecord.record.properties.id,
+          date: args.date,
+        })
       } catch (error) {
         throwErrorMsg(error)
       }
@@ -325,9 +327,6 @@ export const campaignsMutation = {
       } catch (error) {
         throwErrorMsg(error)
       }
-
-      // eslint-disable-next-line no-console
-      //console.log(constituencyRecord)
 
       return {
         id: constituencyRecord.record.properties.id,
@@ -344,7 +343,20 @@ export const campaignsMutation = {
 
     const session = context.driver.session()
 
-    let equipmentCampaign
+    let equipmentCampaign, constituencyRecordExists
+
+    try {
+      constituencyRecordExists = rearrangeCypherObject(
+        await session.run(campaignsCypher.checkHasConstituencyRecord, args)
+      )
+    } catch (error) {
+      throwErrorMsg(error)
+    }
+
+    if (Object.keys(constituencyRecordExists).length == 0) {
+      throwErrorMsg('Your constituency form has not been filled!')
+      return
+    }
     try {
       equipmentCampaign = rearrangeCypherObject(
         await session.run(campaignsCypher.getEquipmentCampaign)
@@ -358,8 +370,6 @@ export const campaignsMutation = {
     const endDate = equipmentCampaign.campaign.properties.equipmentEndDate
 
     if (currentDate >= startDate && currentDate <= endDate) {
-      // eslint-disable-next-line no-console
-      //console.log('it is between')
       args.date = startDate
 
       let equipmentRecordExists
@@ -390,13 +400,13 @@ export const campaignsMutation = {
       }
 
       try {
-        await session.run(campaignsCypher.equipmentRecordUpwardConnection, args)
+        await session.run(campaignsCypher.equipmentRecordUpwardConnection, {
+          id: fellowshipRecord.record.properties.id,
+          date: args.date,
+        })
       } catch (error) {
         throwErrorMsg(error)
       }
-
-      // eslint-disable-next-line no-console
-      console.log(fellowshipRecord)
 
       return {
         id: fellowshipRecord.record.properties.id,

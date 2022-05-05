@@ -1,4 +1,6 @@
-import FormikControl from 'components/formik-components/FormikControl'
+import FormikControl, {
+  arrayError,
+} from 'components/formik-components/FormikControl'
 import SubmitButton from 'components/formik-components/SubmitButton'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import HeadingSecondary from 'components/HeadingSecondary'
@@ -13,12 +15,10 @@ import { ChurchContext } from 'contexts/ChurchContext'
 import BaseComponent from 'components/base-component/BaseComponent'
 import PlusSign from 'components/buttons/PlusMinusSign/PlusSign'
 import MinusSign from 'components/buttons/PlusMinusSign/MinusSign'
-import {
-  RECORD_BUSSING_FROM_BACENTA,
-  SET_BUSSING_SUPPORT,
-} from './arrivalsMutations'
+import { RECORD_BUSSING_FROM_BACENTA } from './arrivalsMutations'
 import { parseDate } from 'date-utils'
 import { ServiceContext } from 'contexts/ServiceContext'
+import { throwErrorMsg } from 'global-utils'
 
 const FormOnTheWaySubmission = () => {
   const navigate = useNavigate()
@@ -38,8 +38,7 @@ const FormOnTheWaySubmission = () => {
 
   const bacenta = data?.bacentas[0]
   const [RecordBussingFromBacenta] = useMutation(RECORD_BUSSING_FROM_BACENTA)
-  const [SetBussingSupport] = useMutation(SET_BUSSING_SUPPORT)
-
+  const pictureLimit = 5
   const validationSchema = Yup.object({
     attendance: Yup.number()
       .typeError('Please enter a valid number')
@@ -47,7 +46,10 @@ const FormOnTheWaySubmission = () => {
       .integer('You cannot have attendance with decimals!')
       .required('This is a required field'),
     bussingPictures: Yup.array()
-      .max(4, 'You cannot upload more than four pictures per bacenta')
+      .max(
+        pictureLimit,
+        `You cannot upload more than ${pictureLimit} pictures per bacenta`
+      )
       .of(Yup.string().required('You must upload a bussing picture')),
     bussingCost: Yup.number()
       .typeError('Please enter a valid number')
@@ -55,38 +57,35 @@ const FormOnTheWaySubmission = () => {
       .required('This is a required field'),
     numberOfBusses: Yup.number()
       .typeError('Please enter a valid number')
-      .positive()
       .integer('You cannot have busses with decimals!')
       .required('This is a required field'),
     numberOfCars: Yup.number()
       .typeError('Please enter a valid number')
-      .positive()
-      .integer('You cannot have busses with decimals!'),
+      .integer('You cannot have a decimal number of cars!'),
   })
 
   const onSubmit = async (values, onSubmitProps) => {
     onSubmitProps.setSubmitting(true)
-    const res = await RecordBussingFromBacenta({
-      variables: {
-        attendance: parseInt(values.attendance),
-        bussingRecordId: bussingRecordId,
-        bussingPictures: values.bussingPictures,
-        bussingCost: parseFloat(values.bussingCost),
-        numberOfBusses: parseInt(values.numberOfBusses),
-        numberOfCars: parseInt(values.numberOfCars || 0),
-      },
-    })
+    try {
+      const res = await RecordBussingFromBacenta({
+        variables: {
+          attendance: parseInt(values.attendance),
+          bussingRecordId: bussingRecordId,
+          bussingPictures: values.bussingPictures,
+          bussingCost: parseFloat(values.bussingCost),
+          numberOfBusses: parseInt(values.numberOfBusses),
+          numberOfCars: parseInt(values.numberOfCars || 0),
+        },
+      })
 
-    clickCard(res.data.RecordBussingFromBacenta)
-    await SetBussingSupport({
-      variables: {
-        bussingRecordId: bussingRecordId,
-      },
-    })
+      clickCard(res.data.RecordBussingFromBacenta)
 
-    onSubmitProps.resetForm()
-    onSubmitProps.setSubmitting(false)
-    navigate(`/bacenta/bussing-details`)
+      onSubmitProps.resetForm()
+      onSubmitProps.setSubmitting(false)
+      navigate(`/bacenta/bussing-details`)
+    } catch (error) {
+      throwErrorMsg('There was a problem submitting your form', error)
+    }
   }
 
   return (
@@ -95,7 +94,6 @@ const FormOnTheWaySubmission = () => {
         initialValues={initialValues}
         validationSchema={validationSchema}
         onSubmit={onSubmit}
-        validateOnMount={true}
       >
         {(formik) => (
           <Container>
@@ -132,7 +130,6 @@ const FormOnTheWaySubmission = () => {
                     name="bussingCost"
                     label="Bussing Cost (in Cedis)*"
                   />
-
                   <FormikControl
                     control="input"
                     name="numberOfBusses"
@@ -150,8 +147,6 @@ const FormOnTheWaySubmission = () => {
                       const { values } = form
                       const { bussingPictures } = values
 
-                      const pictureLimit = 4
-
                       return (
                         <>
                           {bussingPictures.map((bussingPicture, index) => (
@@ -165,6 +160,10 @@ const FormOnTheWaySubmission = () => {
                                     process.env.REACT_APP_CLOUDINARY_BUSSING
                                   }
                                   placeholder="Choose"
+                                  error={arrayError(
+                                    formik.errors.bussingPictures,
+                                    index
+                                  )}
                                   setFieldValue={formik.setFieldValue}
                                   aria-describedby="UploadBussingPicture"
                                 />
@@ -173,7 +172,7 @@ const FormOnTheWaySubmission = () => {
                                 {index < pictureLimit - 1 && (
                                   <PlusSign
                                     onClick={() =>
-                                      bussingPictures.length < pictureLimit &&
+                                      bussingPictures.length <= pictureLimit &&
                                       push()
                                     }
                                   />
