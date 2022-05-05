@@ -1,7 +1,7 @@
 export const createEquipmentCampaign = `
 MATCH (target:Target {campaign:"Equipment"})
 MATCH (church {id:$id}) WHERE church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:GatheringService
-MATCH (log:ServiceLog)<-[:HAS_HISTORY {current:true}]-(church)
+MATCH (log:HistoryLog)<-[:HAS_HISTORY {current:true}]-(church)
 MATCH (leader:Member)-[:LEADS]->(church)
 UNWIND labels(church) as churchType
 
@@ -38,7 +38,7 @@ return  record
 export const createFellowshipEquipmentCampaign = `
 MATCH (target:Target {campaign:"Equipment"})
 MATCH (fellowship:Fellowship {id: $fellowshipId})<-[:HAS]-(bacenta:Bacenta)-[:HAS_CAMPAIGN]->(bacentaCampaign:EquipmentCampaign)
-      MATCH (log:ServiceLog)<-[:HAS_HISTORY {current:true}]-(fellowship)
+      MATCH (log:HistoryLog)<-[:HAS_HISTORY {current:true}]-(fellowship)
       MATCH (leader:Member)-[:LEADS]->(fellowship)
       WITH target, fellowship, bacentaCampaign, log, leader
       CREATE (fellowshipCampaign:EquipmentCampaign {id: apoc.create.uuid()})
@@ -53,7 +53,7 @@ MATCH (fellowship:Fellowship {id: $fellowshipId})<-[:HAS]-(bacenta:Bacenta)-[:HA
 export const createGatheringServiceEquipmentCampaign = `
 MATCH (target:Target {campaign:"Equipment"})
 MATCH (gatheringService:GatheringService {id: $id})
-MATCH (log:ServiceLog)<-[:HAS_HISTORY {current:true}]-(gatheringService)
+MATCH (log:HistoryLog)<-[:HAS_HISTORY {current:true}]-(gatheringService)
 MATCH (leader:Member)-[:LEADS]->(gatheringService)
 WITH target, gatheringService, log, leader
 CREATE (gatheringServiceCampaign:EquipmentCampaign {id: apoc.create.uuid()})
@@ -82,7 +82,7 @@ return toString(equipmentDate.date) as date
 `
 export const createFellowshipEquipmentRecord = `
 MATCH (fellowship:Fellowship {id:$id})-[:HAS_CAMPAIGN]->(campaign:EquipmentCampaign)
-MATCH (fellowship)-[:HAS_HISTORY {current:true}]->(log:ServiceLog)
+MATCH (fellowship)-[:HAS_HISTORY {current:true}]->(log:HistoryLog)
 MATCH (date:TimeGraph {date:date($date)})
 MERGE (campaign)-[:HAS_RECORD]->(record:EquipmentRecord)-[:HAS_EQUIPMENT_DATE]->(date)
 ON CREATE
@@ -105,7 +105,7 @@ RETURN church
 `
 export const createConstituencyEquipmentRecord = `
 MATCH (con:Constituency {id:$id})-[:HAS_CAMPAIGN]->(campaign:EquipmentCampaign)
-MATCH (con)-[:HAS_HISTORY {current:true}]->(log:ServiceLog)
+MATCH (con)-[:HAS_HISTORY {current:true}]->(log:HistoryLog)
 MATCH (date:TimeGraph {date:date($date)})
 MERGE (campaign)-[:HAS_RECORD]->(record:EquipmentRecord)-[:HAS_EQUIPMENT_DATE]->(date)
 ON CREATE
@@ -126,7 +126,7 @@ return campaign
 
 export const createGatheringServiceEquipmentRecords = `
 MATCH (gatheringService:GatheringService)-[:HAS_CAMPAIGN]->(EquipmentCampaign:EquipmentCampaign)
-MATCH (log:ServiceLog)<-[:HAS_HISTORY {current:true}]-(gatheringService)
+MATCH (log:HistoryLog)<-[:HAS_HISTORY {current:true}]-(gatheringService)
 MATCH (equipmentDate:TimeGraph {date:date($startDate)})
 WITH log, gatheringService, EquipmentCampaign, equipmentDate
 
@@ -144,7 +144,7 @@ return gatheringServiceRecord;
 `
 export const createStreamEquipmentRecords = `
 MATCH (stream:Stream)-[:HAS_CAMPAIGN]->(EquipmentCampaign:EquipmentCampaign)<-[:HAS]-(gatheringServiceCampaign:EquipmentCampaign)-[:HAS_RECORD]->(gatheringServiceRecord:EquipmentRecord)-[:HAS_EQUIPMENT_DATE]->(equipmentDate:TimeGraph {date:date($startDate)})
-MATCH (log:ServiceLog)<-[:HAS_HISTORY {current:true}]-(stream)
+MATCH (log:HistoryLog)<-[:HAS_HISTORY {current:true}]-(stream)
 WITH log, stream, EquipmentCampaign, gatheringServiceRecord, equipmentDate
 
 CREATE (streamRecord:EquipmentRecord)
@@ -161,7 +161,7 @@ return streamRecord limit 2;
 `
 export const createCouncilEquipmentRecords = `
 MATCH (council:Council)-[:HAS_CAMPAIGN]->(EquipmentCampaign:EquipmentCampaign)<-[:HAS]-(streamCampaign:EquipmentCampaign)-[:HAS_RECORD]->(streamRecord:EquipmentRecord)-[:HAS_EQUIPMENT_DATE]->(equipmentDate:TimeGraph {date:date($startDate)})
-MATCH (log:ServiceLog)<-[:HAS_HISTORY {current:true}]-(council)
+MATCH (log:HistoryLog)<-[:HAS_HISTORY {current:true}]-(council)
 WITH log, council, EquipmentCampaign, streamRecord, equipmentDate
 
 CREATE (councilRecord:EquipmentRecord)
@@ -178,7 +178,7 @@ return councilRecord limit 2;
 `
 export const createBacentaEquipmentRecord = `
 MATCH (con:Constituency {id:$id})-[:HAS]->(bacenta:Bacenta)-[:HAS_CAMPAIGN]->(EquipmentCampaign:EquipmentCampaign)<-[:HAS]-(constituencyCampaign:EquipmentCampaign)-[:HAS_RECORD]->(constituencyRecord:EquipmentRecord)-[:HAS_EQUIPMENT_DATE]->(equipmentDate:TimeGraph {date:date($date)})
-MATCH (log:ServiceLog)<-[:HAS_HISTORY {current:true}]-(bacenta)
+MATCH (log:HistoryLog)<-[:HAS_HISTORY {current:true}]-(bacenta)
 WITH log, bacenta, EquipmentCampaign, constituencyRecord, equipmentDate
 
 CREATE (bacentaRecord:EquipmentRecord)
