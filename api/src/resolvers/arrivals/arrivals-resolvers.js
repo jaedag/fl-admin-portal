@@ -10,6 +10,7 @@ const {
   permitAdminArrivals,
   permitArrivals,
   permitArrivalsHelpers,
+  permitArrivalsConfirmer,
 } = require('../permissions')
 const {
   isAuth,
@@ -223,9 +224,12 @@ export const arrivalsMutation = {
 
       let bussingRecord
 
-      if (response.attendance < 8) {
+      if (
+        response.attendance < 8 ||
+        (response.numberOfBusses === 0 && response.numberOfCars === 0)
+      ) {
         try {
-          rearrangeCypherObject(await session.run(cypher.lessThanEight, args))
+          rearrangeCypherObject(await session.run(cypher.noBussingTopUp, args))
         } catch (error) {
           console.log(error)
         } finally {
@@ -258,9 +262,11 @@ export const arrivalsMutation = {
     const session = context.driver.session()
 
     const { merchantId, auth, passcode } = getStreamFinancials(args.stream_name)
-    const transactionResponse = rearrangeCypherObject(
+    const recordResponse = rearrangeCypherObject(
       await session.run(cypher.checkTransactionId, args)
-    ).record.properties
+    )
+
+    const transactionResponse = recordResponse.record.properties
 
     if (transactionResponse?.transactionId) {
       throwErrorMsg('Money has already been sent to this bacenta')
@@ -319,7 +325,33 @@ export const arrivalsMutation = {
       throwErrorMsg(error, 'Money could not be sent!')
     }
   },
+  RecordArrivalTime: async (object, args, context) => {
+    isAuth(permitArrivalsConfirmer(), context.auth.roles)
+    const session = context.driver.session()
 
+    const recordResponse = rearrangeCypherObject(
+      await session.run(cypher.checkTransactionId, args)
+    )
+
+    const stream = recordResponse.stream.properties
+    const arrivalEndTime = new Date(
+      new Date().toISOString().slice(0, 10) + stream.arrivalEndTime?.slice(10)
+    )
+    const today = new Date()
+
+    if (today > arrivalEndTime) {
+      throwErrorMsg('It is now past the time for arrivals. Thank you!')
+    }
+
+    const response = rearrangeCypherObject(
+      await session.run(cypher.recordArrivalTime, {
+        ...args,
+        auth: context.auth,
+      })
+    )
+    console.log(response)
+    return response.bussingRecord
+  },
   SetSwellDate: async (object, args, context) => {
     isAuth(permitAdminArrivals('GatheringService'), context.auth.roles)
 

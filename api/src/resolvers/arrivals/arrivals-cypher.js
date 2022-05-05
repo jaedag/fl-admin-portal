@@ -3,7 +3,9 @@ MATCH (record:BussingRecord {id: $bussingRecordId})<-[:HAS_BUSSING]-(:ServiceLog
 MATCH (record)-[:BUSSED_ON]->(date:TimeGraph)
 MATCH (transaction: LastPaySwitchTransactionId)
 SET record.transactionId = transaction.id + 1,
-transaction.id = record.transactionId
+transaction.id = record.transactionId,
+record.transactionTime = datetime(),
+record.transactionStatus = "pending"
 
 RETURN record, bacenta.name AS bacentaName, date.date AS date
 `
@@ -11,7 +13,7 @@ RETURN record, bacenta.name AS bacentaName, date.date AS date
 export const removeBussingRecordTransactionId = `
 MATCH (record:BussingRecord {id: $bussingRecordId})<-[:HAS_BUSSING]-(:ServiceLog)<-[:HAS_HISTORY]-(bacenta:Bacenta)
 MATCH (record)-[:BUSSED_ON]->(date:TimeGraph)
-REMOVE record.transactionId
+REMOVE record.transactionId, record.transactionTime, record.transactionStatus
 
 RETURN record, bacenta.name AS bacentaName, date.date AS date
 `
@@ -21,14 +23,20 @@ MATCH (record:BussingRecord {id: $bussingRecordId})<-[:HAS_BUSSING]-(:ServiceLog
 MATCH (record)-[:BUSSED_ON]->(date:TimeGraph)
 SET record.target = bacenta.target
 
-RETURN record.id AS bussingRecordId, record.target, record.attendance AS attendance,  labels(date) AS dateLabels
+RETURN record.id AS bussingRecordId,
+record.target,
+record.attendance AS attendance, 
+record.numberOfBusses AS numberOfBusses,
+record.numberOfCars AS numberOfCars,
+labels(date) AS dateLabels
 `
 
 export const checkTransactionId = `
-MATCH (record:BussingRecord {id: $bussingRecordId})
-MATCH (record)-[:CONFIRMED_BY]->(admin:Member)
+MATCH (record:BussingRecord {id: $bussingRecordId})<-[:HAS_BUSSING]-(:ServiceLog)<-[:HAS_HISTORY]-(bacenta:Bacenta)
+MATCH (bacenta)<-[:HAS*3]-(stream:Stream)
+MATCH (record)-[:COUNTED_BY]->(admin:Member)
 
-RETURN record
+RETURN record, stream
 `
 
 export const setSwellDate = `
@@ -47,7 +55,7 @@ record.momoName = bacenta.momoName
 RETURN record
 `
 
-export const lessThanEight = `
+export const noBussingTopUp = `
 MATCH (record:BussingRecord {id: $bussingRecordId})
 SET record.bussingTopUp = 0
 
@@ -111,4 +119,30 @@ WITH bussingRecord, bacenta, serviceDate,  date($serviceDate).week AS week
     serviceDate AS date, 
     week AS week,
     stream.name AS stream_name
+`
+
+export const recordArrivalTime = `
+MATCH (bussingRecord:BussingRecord {id: $bussingRecordId})
+SET bussingRecord.arrivalTime = datetime()
+
+WITH bussingRecord
+MATCH (admin:Member {auth_id: $auth.jwt.sub})
+OPTIONAL MATCH (bussingRecord)-[:COUNTED_BY]->(counter)
+MERGE (bussingRecord)-[:ARRIVAL_LOGGED_BY]->(admin)
+
+RETURN bussingRecord {
+    .id,
+    .bussingTopUp,
+    .arrivalTime,
+    counted_by: counter {
+        .id,
+        .firstName,
+        .lastName
+    },
+       arrival_confirmed_by:  admin {
+           .id,
+           .firstName,
+           .lastName
+       }
+}
 `
