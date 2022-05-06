@@ -207,13 +207,11 @@ export const CONSTITUENCY_TRENDS = gql`
 
 export const CREATE_CONSTITUENCY_EQUIPMENT_RECORD = gql`
   mutation CreateConstituencyEquipmentRecord(
-    $constituencyRecordId: ID!
+    $id: ID!
     $pulpits: Int!
+    $date: Date!
   ) {
-    CreateConstituencyEquipmentRecord(
-      constituencyRecordId: $constituencyRecordId
-      pulpits: $pulpits
-    ) {
+    CreateConstituencyEquipmentRecord(id: $id, pulpits: $pulpits, date: $date) {
       id
       pulpits
     }
@@ -221,10 +219,10 @@ export const CREATE_CONSTITUENCY_EQUIPMENT_RECORD = gql`
 `
 
 export const CONSTITUENCY_LATEST_EQUIPMENT_RECORD = gql`
-  query LatestEquipmenRecord($constituencyId: ID) {
+  query LatestEquipmentRecord($constituencyId: ID) {
     constituencies(where: { id: $constituencyId }) {
       id
-      latestEquipmenRecord {
+      latestEquipmentRecord {
         id
         offeringBags
         pulpits
@@ -332,12 +330,14 @@ export const FELLOWSHIP_TRENDS = gql`
 `
 export const CREATE_FELLOWSHIP_EQUIPMENT_RECORD = gql`
   mutation CreateFellowshipEquipmentRecord(
-    $fellowshipRecordId: ID!
+    $id: ID!
     $offeringBags: Int!
+    $date: Date!
   ) {
     CreateFellowshipEquipmentRecord(
-      fellowshipRecordId: $fellowshipRecordId
+      id: $id
       offeringBags: $offeringBags
+      date: $date
     ) {
       id
       offeringBags

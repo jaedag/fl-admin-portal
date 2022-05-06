@@ -29,8 +29,8 @@ const ConstituencyEquipmentFormDetails = () => {
 
   const constituency = data?.constituencies[0]
 
-  const equipmentDate = constituency?.latestEquipmenRecord?.equipmentDate?.date
-  const pulpits = constituency?.latestEquipmenRecord?.pulpits
+  const equipmentDate = constituency?.latestEquipmentRecord?.equipmentDate?.date
+  const pulpits = constituency?.latestEquipmentRecord?.pulpits
 
   return (
     <BaseComponent data={data} loading={loading} error={error}>

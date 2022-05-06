@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import FormikControl from 'components/formik-components/FormikControl'
 import { Formik, Form } from 'formik'
-import * as Yup from 'yup'
+//import * as Yup from 'yup'
 import { Col, Container, Row, Button } from 'react-bootstrap'
 import HeadingSecondary from 'components/HeadingSecondary'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
@@ -12,25 +12,7 @@ import { ChurchContext } from 'contexts/ChurchContext'
 import { useNavigate } from 'react-router'
 
 const GatheringServiceEquipmentDeadline = () => {
-  const { currentUser } = useContext(MemberContext)
   const { gatheringServiceId } = useContext(ChurchContext)
-  //const church = currentUser.currentChurch
-  //const churchType = currentUser.currentChurch?.__typename
-
-  //   const { data, loading, error } = useQuery(
-  //     CONSTITUENCY_LATEST_EQUIPMENT_RECORD,
-  //     {
-  //       variables: {
-  //         constituencyId: constituencyId,
-  //       },
-  //     }
-  //   )
-
-  //   const constituency = data?.constituencies[0]
-
-  //   const constituencyRecordId = constituency?.latestEquipmenRecord?.id
-  //   const equipmentDate = constituency?.latestEquipmenRecord?.equipmentDate?.date
-  //   const pulpits = constituency?.latestEquipmenRecord?.pulpits
 
   const [SetEquipmentDealine] = useMutation(SET_EQUIPMENT_DEADLINE)
   const { theme } = useContext(MemberContext)
@@ -41,15 +23,15 @@ const GatheringServiceEquipmentDeadline = () => {
     endDate: '',
   }
 
-  const validationSchema = Yup.object({
-    // pulpits: Yup.number()
-    //   .typeError('Please enter a valid number')
-    //   .positive()
-    //   .integer('You cannot have pulpits with decimals!')
-    //   .required(
-    //     'You cannot submit this form without entering the number of pulpits'
-    //   ),
-  })
+  // const validationSchema = Yup.object({
+  //   pulpits: Yup.number()
+  //     .typeError('Please enter a valid number')
+  //     .positive()
+  //     .integer('You cannot have pulpits with decimals!')
+  //     .required(
+  //       'You cannot submit this form without entering the number of pulpits'
+  //     ),
+  // })
 
   const onSubmit = (values, onSubmitProps) => {
     onSubmitProps.setSubmitting(true)
