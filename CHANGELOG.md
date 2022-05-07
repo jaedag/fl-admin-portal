@@ -1,3 +1,13 @@
+#### 2.3.2 (2022-05-07)
+
+##### New Features
+
+*  if you report 0 for your bussing cost, no top up will be sent to you ([d41d46a0](https://github.com/firstlovecenter/fl-admin-portal/commit/d41d46a07e7ba105d0ebeda15dd0f3a6e2e8c92c))
+
+##### Bug Fixes
+
+*  fixed bug where a person could not be confirmed if they did not arrive ([0757ea0d](https://github.com/firstlovecenter/fl-admin-portal/commit/0757ea0d7e1a96146568f06958baceb71f7ee248))
+
 #### 2.3.1 (2022-05-05)
 
 ##### Bug Fixes
