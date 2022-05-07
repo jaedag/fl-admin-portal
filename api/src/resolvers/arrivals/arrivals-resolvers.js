@@ -226,12 +226,13 @@ export const arrivalsMutation = {
 
       if (
         response.attendance < 8 ||
+        response.bussingCost === 0 ||
         (response.numberOfBusses === 0 && response.numberOfCars === 0)
       ) {
         try {
           rearrangeCypherObject(await session.run(cypher.noBussingTopUp, args))
         } catch (error) {
-          console.log(error)
+          throwErrorMsg(error)
         } finally {
           throwErrorMsg("Today's Bussing doesn't merit a top up")
         }

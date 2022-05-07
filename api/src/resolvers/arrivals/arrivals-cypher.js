@@ -28,6 +28,7 @@ record.target,
 record.attendance AS attendance, 
 record.numberOfBusses AS numberOfBusses,
 record.numberOfCars AS numberOfCars,
+record.bussingCost AS bussingCost,
 labels(date) AS dateLabels
 `
 
