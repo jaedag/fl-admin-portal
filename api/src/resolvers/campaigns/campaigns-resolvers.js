@@ -190,35 +190,44 @@ export const campaignsMutation = {
     isAuth(permitAdmin('Constituency'), context.auth.roles)
 
     const session = context.driver.session()
-
-    //Create Equipment Campaign
     let equipmentCampaign, equipmentUpwardConnectionResponse
+    // eslint-disable-next-line no-console
+    console.log(args)
+
+    const fellowshipId = args.id
+    // eslint-disable-next-line no-console
+    console.log(fellowshipId)
+    try {
+      // eslint-disable-next-line no-console
+      console.log('trycatch', args)
+      equipmentCampaign = rearrangeCypherObject(
+        await session.run(
+          campaignsCypher.createFellowshipEquipmentCampaign,
+          args
+        )
+      )
+    } catch (error) {
+      throwErrorMsg(error)
+    }
+    // eslint-disable-next-line no-console
+    console.log(equipmentCampaign.churchCampaign.properties.id)
 
     try {
-      equipmentCampaign = rearrangeCypherObject(
-        await session.run(campaignsCypher.createEquipmentCampaign, args)
+      equipmentUpwardConnectionResponse = rearrangeCypherObject(
+        await session.run(campaignsCypher.equipmentUpwardConnection, {
+          id: equipmentCampaign.churchCampaign.properties.id,
+        })
       )
-
-      try {
-        equipmentUpwardConnectionResponse = rearrangeCypherObject(
-          await session.run(campaignsCypher.equipmentUpwardConnection, {
-            id: equipmentCampaign.churchCampaign.properties.id,
-          })
-        )
-      } catch (error) {
-        throwErrorMsg(error)
-      }
-
-      // eslint-disable-next-line no-console
-      //console.log(equipmentUpwardConnectionResponse)
-
-      if (!equipmentUpwardConnectionResponse) {
-        throwErrorMsg('not created')
-      }
     } catch (error) {
       throwErrorMsg(error)
     }
 
+    // eslint-disable-next-line no-console
+    console.log(equipmentUpwardConnectionResponse)
+
+    if (!equipmentUpwardConnectionResponse) {
+      throwErrorMsg('Upward connection not created')
+    }
     return {
       id: equipmentUpwardConnectionResponse.church.properties.id,
       name: equipmentUpwardConnectionResponse.church.properties.name,

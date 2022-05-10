@@ -2,6 +2,7 @@ import React, { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useMutation } from '@apollo/client'
 import { CREATE_BACENTA_MUTATION } from './CreateMutations'
+import { CREATE_BACENTA_EQUIPMENT_CAMPAIGN } from '../../campaigns/CampaignQueries'
 import { ChurchContext } from '../../../contexts/ChurchContext'
 import { NEW_BACENTA_LEADER } from './MakeLeaderMutations'
 import BacentaForm from '../reusable-forms/BacentaForm'
@@ -22,11 +23,14 @@ const CreateBacenta = () => {
 
   const [NewBacentaLeader] = useMutation(NEW_BACENTA_LEADER)
   const [CreateBacenta] = useMutation(CREATE_BACENTA_MUTATION)
+  const [CreateEquipmentCampaign] = useMutation(
+    CREATE_BACENTA_EQUIPMENT_CAMPAIGN
+  )
 
   //onSubmit receives the form state as argument
   const onSubmit = async (values, onSubmitProps) => {
     onSubmitProps.setSubmitting(true)
-    clickCard({ id: values.constituency, __typename: 'Bacenta' })
+    clickCard({ id: values.constituency, __typename: 'Constituency' })
     try {
       const res = await CreateBacenta({
         variables: {
@@ -47,6 +51,16 @@ const CreateBacenta = () => {
         })
       } catch (error) {
         throwErrorMsg('There was an error adding leader', error)
+      }
+
+      try {
+        await CreateEquipmentCampaign({
+          variables: {
+            bacentaId: res.data.CreateBacenta.id,
+          },
+        })
+      } catch (error) {
+        throwErrorMsg('There was an error creating a campaign', error)
       }
 
       onSubmitProps.setSubmitting(false)

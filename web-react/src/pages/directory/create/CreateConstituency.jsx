@@ -4,6 +4,7 @@ import { useMutation } from '@apollo/client'
 import { throwErrorMsg } from '../../../global-utils'
 import { GET_COUNCIL_CONSTITUENCIES } from '../../../queries/ListQueries'
 import { CREATE_CONSTITUENCY_MUTATION } from './CreateMutations'
+import { CREATE_CONSTITUENCY_EQUIPMENT_CAMPAIGN } from '../../campaigns/CampaignQueries'
 import { ChurchContext } from '../../../contexts/ChurchContext'
 import { NEW_CONSTITUENCY_LEADER } from './MakeLeaderMutations'
 import ConstituencyForm from '../reusable-forms/ConstituencyForm'
@@ -21,6 +22,9 @@ const CreateConstituency = () => {
   }
 
   const [NewConstituencyLeader] = useMutation(NEW_CONSTITUENCY_LEADER)
+  const [CreateEquipmentCampaign] = useMutation(
+    CREATE_CONSTITUENCY_EQUIPMENT_CAMPAIGN
+  )
   const [CreateConstituency] = useMutation(CREATE_CONSTITUENCY_MUTATION, {
     refetchQueries: [
       { query: GET_COUNCIL_CONSTITUENCIES, variables: { id: councilId } },
@@ -57,6 +61,17 @@ const CreateConstituency = () => {
         })
       } catch (error) {
         throwErrorMsg('There was an error adding the leader', error)
+      }
+
+      try {
+        await CreateEquipmentCampaign({
+          variables: {
+            constituencyId:
+              res.data.CreateConstituency.council.constituencies[0].id,
+          },
+        })
+      } catch (error) {
+        throwErrorMsg('There was an error creating a campaign', error)
       }
 
       onSubmitProps.setSubmitting(false)

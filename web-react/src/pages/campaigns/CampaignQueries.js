@@ -120,6 +120,14 @@ export const STREAM_BY_COUNCIL = gql`
   }
 `
 
+export const CREATE_STREAM_EQUIPMENT_CAMPAIGN = gql`
+  mutation CreateStreamEquipmentCampaign($streamId: ID!) {
+    CreateStreamEquipmentCampaign(id: $streamId) {
+      id
+    }
+  }
+`
+
 //Councils Queries and Mutations
 export const COUNCIL_CAMPAIGN_LIST = gql`
   query councilsCampaigns($councilId: ID) {
@@ -167,6 +175,14 @@ export const COUNCIL_BY_CONSTITUENCY = gql`
         pulpits
         activeFellowshipCount
       }
+    }
+  }
+`
+
+export const CREATE_COUNCIL_EQUIPMENT_CAMPAIGN = gql`
+  mutation CreateCouncilEquipmentCampaign($councilId: ID!) {
+    CreateCouncilEquipmentCampaign(id: $councilId) {
+      id
     }
   }
 `
@@ -249,6 +265,14 @@ export const CONSTITUENCY_BY_BACENTA = gql`
   }
 `
 
+export const CREATE_CONSTITUENCY_EQUIPMENT_CAMPAIGN = gql`
+  mutation CreateConstituencyEquipmentCampaign($constituencyId: ID!) {
+    CreateConstituencyEquipmentCampaign(id: $constituencyId) {
+      id
+    }
+  }
+`
+
 //Bacenta Queries and Mutation
 export const BACENTA_CAMPAIGN_LIST = gql`
   query bacentaCampaigns($bacentaId: ID) {
@@ -293,6 +317,13 @@ export const BACENTA_BY_FELLOWSHIP = gql`
         name
         offeringBags
       }
+    }
+  }
+`
+export const CREATE_BACENTA_EQUIPMENT_CAMPAIGN = gql`
+  mutation CreateBacentaEquipmentCampaign($bacentaId: ID!) {
+    CreateBacentaEquipmentCampaign(id: $bacentaId) {
+      id
     }
   }
 `
@@ -374,6 +405,13 @@ export const FELLOWSHIP_RECORDS_PER_CONSTITUENCY = gql`
           offeringBags
         }
       }
+    }
+  }
+`
+export const CREATE_FELLOWSHIP_EQUIPMENT_CAMPAIGN = gql`
+  mutation CreateFellowshipEquipmentCampaign($fellowshipId: ID!) {
+    CreateFellowshipEquipmentCampaign(id: $fellowshipId) {
+      id
     }
   }
 `

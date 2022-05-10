@@ -14,6 +14,22 @@ MERGE (churchCampaign)-[:HAS_TARGET]->(target)
 return churchCampaign LIMIT 1;
 `
 
+export const createFellowshipEquipmentCampaign = `
+MATCH (target:Target {campaign:"Equipment"})
+MATCH (fellowship:Fellowship {id:$id})
+MATCH (log:HistoryLog)<-[:HAS_HISTORY {current:true}]-(fellowship)
+MATCH (leader:Member)-[:LEADS]->(fellowship)
+
+WITH target, fellowship, log, leader
+CREATE (churchCampaign:EquipmentCampaign {id: apoc.create.uuid()})
+SET churchCampaign.name = fellowship.name 
+MERGE (fellowship)-[:HAS_CAMPAIGN]->(churchCampaign)
+MERGE (churchCampaign)<-[:LEADS]-(leader)
+MERGE (churchCampaign)-[:HAS_HISTORY]->(log)
+MERGE (churchCampaign)-[:HAS_TARGET]->(target)
+return churchCampaign LIMIT 1;
+`
+
 export const equipmentUpwardConnection = ` 
 MATCH (campaign:EquipmentCampaign {id:$id})
 MATCH (campaign)<-[:HAS_CAMPAIGN]-(church) WHERE church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:GatheringService OR church:Fellowship
@@ -34,21 +50,6 @@ MERGE (record)<-[:HAS]-(upperRecord)
 return  record
 `
 
-export const createFellowshipEquipmentCampaign = `
-MATCH (target:Target {campaign:"Equipment"})
-MATCH (fellowship:Fellowship {id: $fellowshipId})<-[:HAS]-(bacenta:Bacenta)-[:HAS_CAMPAIGN]->(bacentaCampaign:EquipmentCampaign)
-      MATCH (log:HistoryLog)<-[:HAS_HISTORY {current:true}]-(fellowship)
-      MATCH (leader:Member)-[:LEADS]->(fellowship)
-      WITH target, fellowship, bacentaCampaign, log, leader
-      CREATE (fellowshipCampaign:EquipmentCampaign {id: apoc.create.uuid()})
-      SET fellowshipCampaign.name = fellowship.name + ' Fellowship'
-      MERGE (fellowship)-[:HAS_CAMPAIGN]->(fellowshipCampaign)
-      MERGE (fellowshipCampaign)-[:HAS_HISTORY]->(log)
-      MERGE (fellowshipCampaign)<-[:LEADS]-(leader)
-      MERGE (fellowshipCampaign)-[:HAS_TARGET]->(target)
-      MERGE (fellowshipCampaign)<-[:HAS]-(bacentaCampaign)
-      return fellowshipCampaign;
-`
 export const createGatheringServiceEquipmentCampaign = `
 MATCH (target:Target {campaign:"Equipment"})
 MATCH (gatheringService:GatheringService {id: $id})

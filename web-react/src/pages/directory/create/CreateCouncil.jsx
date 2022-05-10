@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useMutation } from '@apollo/client'
 import { throwErrorMsg } from '../../../global-utils'
 import { CREATE_COUNCIL_MUTATION } from './CreateMutations'
+import { CREATE_COUNCIL_EQUIPMENT_CAMPAIGN } from '../../campaigns/CampaignQueries'
 import { ChurchContext } from '../../../contexts/ChurchContext'
 import { NEW_COUNCIL_LEADER } from './MakeLeaderMutations'
 import CouncilForm from 'pages/directory/reusable-forms/CouncilForm'
@@ -21,6 +22,9 @@ const CreateCouncil = () => {
 
   const [NewCouncilLeader] = useMutation(NEW_COUNCIL_LEADER)
   const [CreateCouncil] = useMutation(CREATE_COUNCIL_MUTATION)
+  const [CreateEquipmentCampaign] = useMutation(
+    CREATE_COUNCIL_EQUIPMENT_CAMPAIGN
+  )
 
   //onSubmit receives the form state as argument
   const onSubmit = async (values, onSubmitProps) => {
@@ -46,6 +50,16 @@ const CreateCouncil = () => {
         })
       } catch (error) {
         throwErrorMsg('There was an error adding leader', error)
+      }
+
+      try {
+        await CreateEquipmentCampaign({
+          variables: {
+            councilId: res.data.CreateCouncil.id,
+          },
+        })
+      } catch (error) {
+        throwErrorMsg('There was an error creating a campaign', error)
       }
     } catch (error) {
       throwErrorMsg('There was an error creating council', error)
