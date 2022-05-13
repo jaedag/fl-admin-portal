@@ -1,3 +1,9 @@
+### 2.5.0 (2022-05-13)
+
+##### New Features
+
+*  admin-106 redesigned login screen ([775c9dbc](https://github.com/firstlovecenter/fl-admin-portal/commit/775c9dbc9757b37dd341e5cc55f221f6b5c609e2))
+
 #### 2.4.1 (2022-05-13)
 
 ##### Bug Fixes
