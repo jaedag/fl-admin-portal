@@ -5,8 +5,12 @@ import Logo from '../assets/flc-logo-small.png'
 import MobileView from './responsive-design/MobileView'
 import TabletDesktopView from './responsive-design/TabletDesktopView'
 import { Container } from 'react-bootstrap'
+import flcBackground from '../assets/flc-bg.jpg'
+import './Login.css'
 
 const Login = () => {
+  const catchPhrase = 'A church full of young people on fire for the Lord'
+
   return (
     <>
       <TabletDesktopView>
@@ -19,10 +23,10 @@ const Login = () => {
               <div className="m-5">
                 <div className="col-auto my-3">
                   <img src={Logo} alt="logo" className="img-fluid" />{' '}
-                  <div className="">
-                    First Love Church is a church full of young people on fire
-                    for the Lord
-                  </div>
+                  <div className="mb-3">{catchPhrase}</div>
+                  <p className="text-secondary mb-3">
+                    Click to log in to your servants portal
+                  </p>
                 </div>
                 <UserProfileIcon />
               </div>
@@ -32,24 +36,27 @@ const Login = () => {
       </TabletDesktopView>
 
       {/* <!--Mobile--> */}
-      <MobileView>
-        <Container className="text-center">
-          <div className="col-12 col-lg-6">
-            <img
-              src={Logo}
-              alt="logo"
-              className="img-fluid mx-auto d-block "
-              style={{ maxWidth: '30%' }}
-            />
+      <MobileView className="bg-wrapper">
+        <img src={flcBackground} className="bg-image" />
+        <Container className="text-center mt-5 bg-content">
+          <img
+            src={Logo}
+            alt="logo"
+            className="img-fluid mx-auto d-block logo"
+          />
 
-            <h2 className="font-weight-bold">First Love Church</h2>
+          <div className="mb-5">
+            <h4 className="mt-2">First Love Church</h4>
+            <p>
+              <i>{catchPhrase}</i>
+            </p>
+          </div>
 
-            <div className="col-auto my-3 align-items-center text-center">
-              Please log in to your first love servants portal
-            </div>
-            <div className="col-auto text-center">
-              <AuthButton mobileFullSize="true" />
-            </div>
+          <p className="text-secondary mb-3">
+            Click to log in to your servants portal
+          </p>
+          <div className="col-auto text-center">
+            <AuthButton mobileFullSize="true" />
           </div>
 
           <div className="col-12 col-lg-6 d-flex justify-content-center my-3 ">

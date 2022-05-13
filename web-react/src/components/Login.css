@@ -1,0 +1,21 @@
+.logo {
+  max-width: 50$;
+}
+
+.bg-wrapper {
+  overflow: hidden;
+  position: relative;
+}
+
+.bg-image {
+  opacity: 0.12;
+  position: absolute;
+  left: -70%;
+  top: 0;
+  width: 1000px;
+  height: auto;
+}
+
+.bg-content {
+  position: relative;
+}

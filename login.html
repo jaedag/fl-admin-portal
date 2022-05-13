@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>Sign In with Auth0</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+    />
+  </head>
+  <style>
+    h2 {
+      font-size: 32px;
+    }
+    h4 {
+      font-size: 13px;
+      font-style: italic;
+    }
+         body,
+         html {
+           height: 100%;
+           background-color: #181818;
+           color: #909090;
+         }
+         .login-container {
+           position: relative;
+           height: 100%;
+           color: #FFFFFF;
+         }
+         .login-box {
+           position: absolute;
+           top: 40%;
+           transform: translateY(-50%);
+           padding: 15px;
+           /* background-color: #212121; */
+           /* box-shadow: 0px 5px 5px #690c13; */
+           border-radius: 5px;
+           /* border-top: 1px solid #3d3d3dc5; */
+           he
+         }
+         .form-control {
+           background-color: #404040;
+           color: #BABABA;
+           font-size: 16px ;
+           border: 1px solid #3d3d3dc5;
+           border-radius: 5px;
+           margin: 5px 5px 5px 0px;
+           height: 64px
+         }
+         .login-header {
+           text-align: center;
+         }
+         .login-header img {
+           width: 200px;
+         }
+         .btn-primary {
+           color: #fff;
+           background-color: #BB1A1A;
+           border-color: #3d3d3dc5;
+           border-radius: 10px;
+           border: 0px;
+           margin-bottom: 15px;
+           height: 64px;
+           font-size: 24px;
+         }
+         .btn-primary:hover,
+         .btn-primary:focus,
+         .btn-primary:active,
+         .open > .dropdown-toggle.btn-primary {
+           color: #fff;
+           background-color: #921B19;
+    font-size: 24px;
+           border-color: none;
+         }
+         #error-message {
+           display: none;
+         }
+  </style>
+  <body>
+    <div class="login-container">
+      <div class="col-xs-12 col-sm-4 col-sm-offset- login-box">
+        <div class="login-header">
+          <img
+            src="https://jaedag.github.io/firstlovecenter-clone/images/flc-logo-small.png"
+          />
+          <h2>Servants Portal</h2>
+          <h4>
+            FirstLove church is a church full <br />
+            of young people on fire for the Lord
+          </h4>
+        </div>
+        <br />
+        <div class="captcha-container form-group"></div>
+        <button type="submit" id="btn-login" class="btn btn-primary btn-block">
+          Login
+        </button>
+      </div>
+    </div>
+    <!--[if IE 8]>
+      <script src="//cdnjs.cloudflare.com/ajax/libs/ie8/0.2.5/ie8.js"></script>
+    <![endif]-->
+    <!--[if lte IE 9]>
+      <script src="https://cdn.auth0.com/js/polyfills/1.0/base64.min.js"></script>
+      <script src="https://cdn.auth0.com/js/polyfills/1.0/es5-shim.min.js"></script>
+    <![endif]-->
+    <script src="https://cdn.auth0.com/js/auth0/9.14/auth0.min.js"></script>
+    <script src="https://cdn.auth0.com/js/polyfills/1.0/object-assign.min.js"></script>
+  </body>
+</html>
