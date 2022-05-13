@@ -1,3 +1,14 @@
+### 2.4.0 (2022-05-13)
+
+##### New Features
+
+*  implemented a basic graphing feature for bussing data ([57f9c387](https://github.com/firstlovecenter/fl-admin-portal/commit/57f9c387fb5f8818fd656e327b7113a59bfb1ec9))
+*  various minor improvements for admin-115 ([3c67cbf9](https://github.com/firstlovecenter/fl-admin-portal/commit/3c67cbf997061eb79c54d4028900107660ecbc95))
+
+##### Refactors
+
+*  changed the word 'report' to 'trends' for clarity ([6f105ddb](https://github.com/firstlovecenter/fl-admin-portal/commit/6f105ddbb72e5495c89f869daa997db4d9963c36))
+
 #### 2.3.2 (2022-05-07)
 
 ##### New Features
