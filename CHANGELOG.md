@@ -1,3 +1,9 @@
+#### 2.4.1 (2022-05-13)
+
+##### Bug Fixes
+
+*  fixed bug where some fellowships services were appearing in bussing graph ([903306c1](https://github.com/firstlovecenter/fl-admin-portal/commit/903306c1475ed85482768086eb51e34307a6c91e))
+
 ### 2.4.0 (2022-05-13)
 
 ##### New Features
