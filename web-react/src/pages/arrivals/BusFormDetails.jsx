@@ -264,7 +264,7 @@ const BusFormDetails = () => {
               </>
             )}
 
-            {beforeArrivalDeadline(null, church) && (
+            {beforeArrivalDeadline(bussing, church) && (
               <Button
                 variant="danger"
                 onClick={() => navigate('/arrivals/confirm-bacenta-arrival')}

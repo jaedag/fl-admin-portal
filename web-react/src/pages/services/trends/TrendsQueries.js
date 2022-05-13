@@ -47,6 +47,15 @@ export const BACENTA_TRENDS = gql`
           date
         }
       }
+      bussing(limit: 4) {
+        id
+        created_at
+        attendance
+        week
+        serviceDate {
+          date
+        }
+      }
 
       componentServiceAggregate {
         week

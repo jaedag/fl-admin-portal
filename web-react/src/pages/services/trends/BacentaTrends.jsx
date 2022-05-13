@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 
 import { ChurchContext } from '../../../contexts/ChurchContext'
 import { useQuery } from '@apollo/client'
@@ -8,19 +8,25 @@ import { BACENTA_TRENDS } from './TrendsQueries'
 import MembershipCard from './CompMembershipCard'
 import StatDisplay from './CompStatDisplay'
 import BaseComponent from 'components/base-component/BaseComponent'
+import { Button, Col, Container, Row } from 'react-bootstrap'
 
 export const BacentaTrends = () => {
   const { bacentaId } = useContext(ChurchContext)
+  const [bussing, setBussing] = useState(true)
+  const [churchData, setChurchData] = useState(
+    getServiceGraphData(data?.bacentas[0], 'bussing')
+  )
 
   const { data, loading, error } = useQuery(BACENTA_TRENDS, {
     variables: { bacentaId: bacentaId },
+    onCompleted: (data) => {
+      setChurchData(getServiceGraphData(data?.bacentas[0], 'bussing'))
+    },
   })
-
-  const churchData = getServiceGraphData(data?.bacentas[0])
 
   return (
     <BaseComponent loading={loading} error={error} data={data}>
-      <div className="container">
+      <Container>
         <div className=" my-3">
           <h5 className="mb-0">{`${data?.bacentas[0].name} Bacenta`}</h5>{' '}
           <p>
@@ -29,37 +35,63 @@ export const BacentaTrends = () => {
           </p>
         </div>
 
-        <div className="row">
-          <div className="col">
+        <Row>
+          <Col>
             <MembershipCard
               link="/bacenta/members"
               title="Membership"
               count={data?.bacentas[0].memberCount}
             />
-          </div>
-        </div>
-        <div className="row mt-3">
-          <div className="col">
+          </Col>
+          <Col>
+            <div className="d-grid gap-2">
+              <Button
+                variant="success"
+                onClick={() => {
+                  setBussing(true)
+                  setChurchData(
+                    getServiceGraphData(data?.bacentas[0], 'bussing')
+                  )
+                }}
+              >
+                Bussing
+              </Button>
+              <Button
+                variant="danger"
+                onClick={() => {
+                  setBussing(false)
+                  setChurchData(getServiceGraphData(data?.bacentas[0]))
+                }}
+              >
+                Fellowship Services
+              </Button>
+            </div>
+          </Col>
+        </Row>
+        <Row className="mt-3">
+          <Col>
             <StatDisplay
-              title="Avg Weekly Attendance"
+              title={`Avg Weekly ${bussing ? 'Bussing' : 'Attendance'}`}
               statistic={getMonthlyStatAverage(churchData, 'attendance')}
             />
-          </div>
-
-          <div className="col">
-            <StatDisplay
-              title="Avg Weekly Income"
-              statistic={getMonthlyStatAverage(churchData, 'income')}
-            />
-          </div>
-        </div>
+          </Col>
+          {(!bussing || loading) && (
+            <Col>
+              <StatDisplay
+                title="Avg Weekly Income"
+                statistic={getMonthlyStatAverage(churchData, 'income')}
+              />
+            </Col>
+          )}
+        </Row>
         <ChurchGraph
           stat1="attendance"
-          stat2="income"
+          stat2={!bussing ? 'income' : null}
           churchData={churchData}
           church="bacenta"
+          bussing={true}
         />
-      </div>
+      </Container>
     </BaseComponent>
   )
 }

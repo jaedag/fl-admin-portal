@@ -10,11 +10,6 @@
   border-bottom: 1px solid var(--border);
 }
 
-.btn-trends {
-  height: 50px;
-  font-size: 20px;
-}
-
 .filled {
   color: var(--good);
 }

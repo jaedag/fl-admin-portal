@@ -8,6 +8,7 @@ import { CONSTITUENCY_TRENDS } from './TrendsQueries'
 import MembershipCard from './CompMembershipCard'
 import StatDisplay from './CompStatDisplay'
 import BaseComponent from 'components/base-component/BaseComponent'
+import { Col, Container, Row } from 'react-bootstrap'
 
 export const ConstituencyReport = () => {
   const { constituencyId } = useContext(ChurchContext)
@@ -20,7 +21,7 @@ export const ConstituencyReport = () => {
 
   return (
     <BaseComponent loading={loading} error={error} data={data}>
-      <div className="container">
+      <Container>
         <div className=" my-3">
           <h5 className="mb-0">{`${data?.constituencies[0].name} Constituency`}</h5>{' '}
           <p>
@@ -29,37 +30,37 @@ export const ConstituencyReport = () => {
           </p>
         </div>
 
-        <div className="row">
-          <div className="col">
+        <Row>
+          <Col>
             <MembershipCard
               link="/constituency/members"
               title="Membership"
               count={data?.constituencies[0].memberCount}
             />
-          </div>
-        </div>
-        <div className="row mt-3">
-          <div className="col">
+          </Col>
+        </Row>
+        <Row className="mt-3">
+          <Col>
             <StatDisplay
               title="Avg Weekly Attendance"
               statistic={getMonthlyStatAverage(churchData, 'attendance')}
             />
-          </div>
+          </Col>
 
-          <div className="col">
+          <Col>
             <StatDisplay
               title="Avg Weekly Income"
               statistic={getMonthlyStatAverage(churchData, 'income')}
             />
-          </div>
-        </div>
+          </Col>
+        </Row>
         <ChurchGraph
           stat1="attendance"
           stat2="income"
           churchData={churchData}
           church="constituency"
         />
-      </div>
+      </Container>
     </BaseComponent>
   )
 }
