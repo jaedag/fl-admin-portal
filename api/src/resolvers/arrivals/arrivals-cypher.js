@@ -10,6 +10,13 @@ record.transactionStatus = "pending"
 RETURN record, bacenta.name AS bacentaName, date.date AS date
 `
 
+export const setBussingRecordTransactionSuccessful = `
+MATCH (record:BussingRecord {id: $bussingRecordId})
+SET record.transactionStatus = "success"
+
+RETURN record
+`
+
 export const removeBussingRecordTransactionId = `
 MATCH (record:BussingRecord {id: $bussingRecordId})<-[:HAS_BUSSING]-(:ServiceLog)<-[:HAS_HISTORY]-(bacenta:Bacenta)
 MATCH (record)-[:BUSSED_ON]->(date:TimeGraph)

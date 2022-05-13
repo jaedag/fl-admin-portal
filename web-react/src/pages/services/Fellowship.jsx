@@ -30,7 +30,7 @@ const Fellowship = () => {
           />
           <MenuButton
             iconComponent={XCircleFill}
-            title="No Service"
+            title="Cancel Service"
             color="members"
             onClick={() => navigate(`/services/fellowship/no-service`)}
             noCaption
