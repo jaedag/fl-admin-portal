@@ -1,7 +1,7 @@
 import { useAuth0 } from '@auth0/auth0-react'
 import React from 'react'
 import { Placeholder } from 'react-bootstrap'
-import '../pages/services/reports/Report.css'
+import '../pages/services/trends/Trends.css'
 
 const PlaceholderCustom = (props) => {
   const { isAuthenticated } = useAuth0()

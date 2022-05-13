@@ -9,14 +9,14 @@ import ServantsChurchList from 'pages/dashboards/ServantsChurchList'
 import { ServiceContext } from 'contexts/ServiceContext'
 import MembersDirectoryRoute from './pages/directory/MembersDirectoryRoute.jsx'
 import Navigation from 'pages/dashboards/Navigation.jsx'
-import ProtectedReports from 'pages/services/reports/ProtectedReports.jsx'
+import ProtectedTrends from 'pages/services/trends/ProtectedTrends.jsx'
 import { dashboards } from 'pages/dashboards/dashboardRoutes.js'
 import {
   directory,
   memberDirectory,
   memberGrids,
 } from 'pages/directory/directoryRoutes.js'
-import { reports, services } from 'pages/services/servicesRoutes.js'
+import { trends, services } from 'pages/services/servicesRoutes.js'
 import { arrivals } from 'pages/arrivals/arrivalsRoutes.js'
 import { campaigns } from 'pages/campaigns/campaignsRoutes.js'
 import { reconciliation } from 'pages/reconciliation/reconRoutes.js'
@@ -125,7 +125,7 @@ const PastorsAdmin = () => {
                       ...arrivals,
                       ...campaigns,
                       ...reconciliation,
-                      ...reports,
+                      ...trends,
                     ].map((route, i) => (
                       <Route
                         key={i}
@@ -158,7 +158,7 @@ const PastorsAdmin = () => {
                     <Route
                       path="/services/trends"
                       element={
-                        <ProtectedReports roles={['all']} placeholder exact />
+                        <ProtectedTrends roles={['all']} placeholder exact />
                       }
                     />
                     <Route

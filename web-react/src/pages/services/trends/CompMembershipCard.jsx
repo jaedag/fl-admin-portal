@@ -1,7 +1,7 @@
 import React from 'react'
 import { PeopleFill } from 'react-bootstrap-icons'
 import { Link } from 'react-router-dom'
-import './Report.css'
+import './Trends.css'
 
 const MembershipCard = ({ link, title, count }) => {
   return (

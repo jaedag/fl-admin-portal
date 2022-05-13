@@ -117,7 +117,7 @@ const ServiceDetails = ({ service, church, loading }) => {
                   <Button
                     className={`btn-trends ${theme}`}
                     onClick={() => {
-                      navigate(`/${church?.__typename.toLowerCase()}/reports`)
+                      navigate(`/${church?.__typename.toLowerCase()}/trends`)
                     }}
                   >
                     View Trends

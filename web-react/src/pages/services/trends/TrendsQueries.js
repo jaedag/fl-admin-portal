@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client'
 
-export const FELLOWSHIP_REPORT = gql`
-  query fellowshipReports($fellowshipId: ID) {
+export const FELLOWSHIP_TRENDS = gql`
+  query fellowshipTrends($fellowshipId: ID) {
     fellowships(where: { id: $fellowshipId }) {
       id
       name
@@ -26,8 +26,8 @@ export const FELLOWSHIP_REPORT = gql`
   }
 `
 
-export const BACENTA_REPORT = gql`
-  query bacentaReports($bacentaId: ID!) {
+export const BACENTA_TRENDS = gql`
+  query bacentaTrends($bacentaId: ID!) {
     bacentas(where: { id: $bacentaId }) {
       id
       name
@@ -58,8 +58,8 @@ export const BACENTA_REPORT = gql`
   }
 `
 
-export const SONTA_REPORT = gql`
-  query sontaReports($sontaId: ID!) {
+export const SONTA_TRENDS = gql`
+  query sontaTrends($sontaId: ID!) {
     sontas(where: { id: $sontaId }) {
       id
       name
@@ -85,8 +85,8 @@ export const SONTA_REPORT = gql`
   }
 `
 
-export const CONSTITUENCY_REPORT = gql`
-  query constiutencyReports($id: ID!) {
+export const CONSTITUENCY_TRENDS = gql`
+  query constiutencyTrends($id: ID!) {
     constituencies(where: { id: $id }) {
       id
       name
@@ -117,8 +117,8 @@ export const CONSTITUENCY_REPORT = gql`
   }
 `
 
-export const COUNCIL_REPORT = gql`
-  query councilReports($councilId: ID!) {
+export const COUNCIL_TRENDS = gql`
+  query councilTrends($councilId: ID!) {
     councils(where: { id: $councilId }) {
       id
       name
@@ -149,8 +149,8 @@ export const COUNCIL_REPORT = gql`
   }
 `
 
-export const STREAM_REPORT = gql`
-  query streamReports($streamId: ID!) {
+export const STREAM_TRENDS = gql`
+  query streamTrends($streamId: ID!) {
     streams(where: { id: $streamId }) {
       id
       name
@@ -181,8 +181,8 @@ export const STREAM_REPORT = gql`
   }
 `
 
-export const GATHERINGSERVICE_REPORT = gql`
-  query gatheringServiceReports($gatheringServiceId: ID!) {
+export const GATHERINGSERVICE_TRENDS = gql`
+  query gatheringServiceTrends($gatheringServiceId: ID!) {
     gatheringServices(where: { id: $gatheringServiceId }) {
       id
       name

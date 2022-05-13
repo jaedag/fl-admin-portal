@@ -2,65 +2,66 @@ import React, { useContext } from 'react'
 
 import { ChurchContext } from '../../../contexts/ChurchContext'
 import { useQuery } from '@apollo/client'
-import { getServiceGraphData, getMonthlyStatAverage } from './report-utils'
+import { getServiceGraphData, getMonthlyStatAverage } from './trends-utils'
 import ChurchGraph from '../../../components/ChurchGraph/ChurchGraph'
-import { SONTA_REPORT } from './ReportQueries'
+import { CONSTITUENCY_TRENDS } from './TrendsQueries'
 import MembershipCard from './CompMembershipCard'
 import StatDisplay from './CompStatDisplay'
 import BaseComponent from 'components/base-component/BaseComponent'
 
-export const SontaReport = () => {
-  const { sontaId } = useContext(ChurchContext)
+export const ConstituencyReport = () => {
+  const { constituencyId } = useContext(ChurchContext)
 
-  const { data, loading, error } = useQuery(SONTA_REPORT, {
-    variables: { sontaId: sontaId },
+  const { data, loading, error } = useQuery(CONSTITUENCY_TRENDS, {
+    variables: { id: constituencyId },
   })
 
-  const churchData = getServiceGraphData(data?.sontas[0])
+  const churchData = getServiceGraphData(data?.constituencies[0])
 
   return (
     <BaseComponent loading={loading} error={error} data={data}>
       <div className="container">
         <div className=" my-3">
-          <h5 className="mb-0">{`${data?.sontas[0].name} Sonta`}</h5>{' '}
+          <h5 className="mb-0">{`${data?.constituencies[0].name} Constituency`}</h5>{' '}
           <p>
             <span className="text-secondary font-weight-bold">Leader: </span>
-            {`${data?.sontas[0].leader.fullName}`}
+            {`${data?.constituencies[0].leader.fullName}`}
           </p>
         </div>
 
         <div className="row">
           <div className="col">
             <MembershipCard
-              link="/sonta/members"
+              link="/constituency/members"
               title="Membership"
-              count={data?.sontas[0].memberCount}
+              count={data?.constituencies[0].memberCount}
             />
           </div>
         </div>
-        <div className="row row-cols-2 mt-3">
+        <div className="row mt-3">
           <div className="col">
             <StatDisplay
-              title="Avg Rehearsal Attendance"
-              statistic={getMonthlyStatAverage(churchData, 'rehearsal')}
+              title="Avg Weekly Attendance"
+              statistic={getMonthlyStatAverage(churchData, 'attendance')}
             />
           </div>
 
           <div className="col">
             <StatDisplay
-              title="Avg Service Attendance"
-              statistic={getMonthlyStatAverage(churchData, 'sunday')}
+              title="Avg Weekly Income"
+              statistic={getMonthlyStatAverage(churchData, 'income')}
             />
           </div>
         </div>
         <ChurchGraph
           stat1="attendance"
-          // stat2="service"
+          stat2="income"
           churchData={churchData}
+          church="constituency"
         />
       </div>
     </BaseComponent>
   )
 }
 
-export default SontaReport
+export default ConstituencyReport

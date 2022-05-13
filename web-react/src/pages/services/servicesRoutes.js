@@ -7,11 +7,11 @@ import FellowshipServiceCancelled from 'pages/services/record-service/Fellowship
 import FellowshipServiceDetails from 'pages/services/record-service/FellowshipServiceDetails'
 import SontaService from 'pages/services/record-service/SontaService'
 import SontaServiceDetails from 'pages/services/record-service/SontaServiceDetails'
-import BacentaReport from 'pages/services/reports/BacentaReport'
-import ConstituencyReport from 'pages/services/reports/ConstituencyReport'
-import CouncilReport from 'pages/services/reports/CouncilReport'
-import FellowshipReport from 'pages/services/reports/FellowshipReport'
-import SontaReport from 'pages/services/reports/SontaReport'
+import BacentaReport from 'pages/services/trends/BacentaTrends'
+import ConstituencyReport from 'pages/services/trends/ConstituencyTrends'
+import CouncilReport from 'pages/services/trends/CouncilTrends'
+import FellowshipReport from 'pages/services/trends/FellowshipTrends'
+import SontaReport from 'pages/services/trends/SontaTrends'
 import BacentaJoint from 'pages/services/BacentaJoint'
 import FellowshipBankingSlipSubmission from 'pages/services/banking/banking-slip/FellowshipSubmission'
 import FellowshipBankingSlipView from 'pages/services/banking/banking-slip/FellowshipView'
@@ -25,8 +25,8 @@ import ServicesThisWeek from 'pages/services/defaulters/ServicesThisWeek'
 import Fellowship from 'pages/services/Fellowship'
 import ServicesChurchList from 'pages/services/ServicesChurchList'
 import ServicesMenu from 'pages/services/ServicesMenu'
-import StreamReport from 'pages/services/reports/StreamReport'
-import GatheringServiceReport from 'pages/services/reports/GatheringServiceReport'
+import StreamReport from 'pages/services/trends/StreamTrends'
+import GatheringServiceReport from 'pages/services/trends/GatheringServiceTrends'
 import StreamByCouncil from 'pages/services/defaulters/StreamByCouncil'
 import GatheringServiceByStream from 'pages/services/defaulters/GatheringServiceByStream'
 import { permitLeaderAdmin } from 'permission-utils'
@@ -143,46 +143,46 @@ export const services = [
   },
 ]
 
-export const reports = [
+export const trends = [
   {
-    path: '/fellowship/reports',
+    path: '/fellowship/trends',
     element: FellowshipReport,
     roles: permitLeaderAdmin('Fellowship'),
     placeholder: true,
   },
   {
-    path: '/bacenta/reports',
+    path: '/bacenta/trends',
     element: BacentaReport,
     roles: permitLeaderAdmin('Bacenta'),
     placeholder: true,
   },
   {
-    path: '/sonta/reports',
+    path: '/sonta/trends',
     element: SontaReport,
     roles: permitLeaderAdmin('Sonta'),
     placeholder: true,
   },
   {
-    path: '/constituency/reports',
+    path: '/constituency/trends',
     element: ConstituencyReport,
     roles: permitLeaderAdmin('Constituency'),
     placeholder: true,
   },
 
   {
-    path: '/council/reports',
+    path: '/council/trends',
     element: CouncilReport,
     roles: permitLeaderAdmin('Council'),
     placeholder: true,
   },
   {
-    path: '/stream/reports',
+    path: '/stream/trends',
     element: StreamReport,
     roles: permitLeaderAdmin('Stream'),
     placeholder: true,
   },
   {
-    path: '/gatheringservice/reports',
+    path: '/gatheringservice/trends',
     element: GatheringServiceReport,
     roles: permitLeaderAdmin('GatheringService'),
     placeholder: true,

@@ -2,39 +2,39 @@ import React, { useContext } from 'react'
 
 import { ChurchContext } from '../../../contexts/ChurchContext'
 import { useQuery } from '@apollo/client'
-import { getServiceGraphData, getMonthlyStatAverage } from './report-utils'
+import { getServiceGraphData, getMonthlyStatAverage } from './trends-utils'
 import ChurchGraph from '../../../components/ChurchGraph/ChurchGraph'
-import { FELLOWSHIP_REPORT } from './ReportQueries'
+import { BACENTA_TRENDS } from './TrendsQueries'
 import MembershipCard from './CompMembershipCard'
 import StatDisplay from './CompStatDisplay'
 import BaseComponent from 'components/base-component/BaseComponent'
 
-export const FellowshipReport = () => {
-  const { fellowshipId } = useContext(ChurchContext)
+export const BacentaTrends = () => {
+  const { bacentaId } = useContext(ChurchContext)
 
-  const { data, loading, error } = useQuery(FELLOWSHIP_REPORT, {
-    variables: { fellowshipId: fellowshipId },
+  const { data, loading, error } = useQuery(BACENTA_TRENDS, {
+    variables: { bacentaId: bacentaId },
   })
 
-  const serviceData = getServiceGraphData(data?.fellowships[0])
+  const churchData = getServiceGraphData(data?.bacentas[0])
 
   return (
     <BaseComponent loading={loading} error={error} data={data}>
       <div className="container">
         <div className=" my-3">
-          <h5 className="mb-0">{`${data?.fellowships[0].name} Fellowship`}</h5>{' '}
+          <h5 className="mb-0">{`${data?.bacentas[0].name} Bacenta`}</h5>{' '}
           <p>
             <span className="text-secondary font-weight-bold">Leader: </span>
-            {`${data?.fellowships[0].leader?.fullName}`}
+            {`${data?.bacentas[0].leader.fullName}`}
           </p>
         </div>
 
         <div className="row">
           <div className="col">
             <MembershipCard
-              link="/fellowship/members"
+              link="/bacenta/members"
               title="Membership"
-              count={data?.fellowships[0].memberCount}
+              count={data?.bacentas[0].memberCount}
             />
           </div>
         </div>
@@ -42,26 +42,26 @@ export const FellowshipReport = () => {
           <div className="col">
             <StatDisplay
               title="Avg Weekly Attendance"
-              statistic={getMonthlyStatAverage(serviceData, 'attendance')}
+              statistic={getMonthlyStatAverage(churchData, 'attendance')}
             />
           </div>
 
           <div className="col">
             <StatDisplay
               title="Avg Weekly Income"
-              statistic={getMonthlyStatAverage(serviceData, 'income')}
+              statistic={getMonthlyStatAverage(churchData, 'income')}
             />
           </div>
         </div>
         <ChurchGraph
           stat1="attendance"
           stat2="income"
-          churchData={serviceData}
-          church="fellowship"
+          churchData={churchData}
+          church="bacenta"
         />
       </div>
     </BaseComponent>
   )
 }
 
-export default FellowshipReport
+export default BacentaTrends
