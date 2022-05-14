@@ -5,7 +5,6 @@ import Logo from '../assets/flc-logo-small.png'
 import MobileView from './responsive-design/MobileView'
 import TabletDesktopView from './responsive-design/TabletDesktopView'
 import { Container } from 'react-bootstrap'
-import flcBackground from '../assets/flc-bg.jpg'
 import './Login.css'
 
 const Login = () => {
@@ -37,7 +36,6 @@ const Login = () => {
 
       {/* <!--Mobile--> */}
       <MobileView className="bg-wrapper">
-        <img src={flcBackground} className="bg-image" />
         <Container className="text-center mt-5 bg-content">
           <img
             src={Logo}
@@ -46,7 +44,6 @@ const Login = () => {
           />
 
           <div className="mb-5">
-            <h4 className="mt-2">First Love Church</h4>
             <p>
               <i>{catchPhrase}</i>
             </p>
