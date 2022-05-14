@@ -1,3 +1,9 @@
+#### 2.5.1 (2022-05-14)
+
+##### Bug Fixes
+
+*  removed login background image ([4b6f0030](https://github.com/firstlovecenter/fl-admin-portal/commit/4b6f00301f4a92a4fdf675d31a6a161054670e53))
+
 ### 2.5.0 (2022-05-13)
 
 ##### New Features
