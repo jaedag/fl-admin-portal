@@ -1,43 +1,45 @@
 import React, { useContext } from 'react'
 
-import { ChurchContext } from '../../../contexts/ChurchContext'
+// import { ChurchContext } from '../../../contexts/ChurchContext'
 import { useQuery } from '@apollo/client'
-import { getServiceGraphData, getMonthlyStatAverage } from './report-utils'
+import { getServiceGraphData, getMonthlyStatAverage } from './trends-utils'
 import ChurchGraph from '../../../components/ChurchGraph/ChurchGraph'
-import { STREAM_REPORT } from './ReportQueries'
+import { COUNCIL_TRENDS } from './TrendsQueries'
 import MembershipCard from './CompMembershipCard'
 import StatDisplay from './CompStatDisplay'
 import BaseComponent from 'components/base-component/BaseComponent'
 import { Col, Container, Row } from 'react-bootstrap'
 import PlaceholderCustom from 'components/Placeholder'
+import { ChurchContext } from 'contexts/ChurchContext'
 
-const StreamReport = () => {
-  const { streamId } = useContext(ChurchContext)
+const CouncilReport = () => {
+  // const { councilId } = useContext(ChurchContext)
+  const { councilId } = useContext(ChurchContext)
 
-  const { data, loading, error } = useQuery(STREAM_REPORT, {
-    variables: { streamId: streamId },
+  const { data, loading, error } = useQuery(COUNCIL_TRENDS, {
+    variables: { councilId: councilId },
   })
 
-  const churchData = getServiceGraphData(data?.streams[0])
+  const churchData = getServiceGraphData(data?.councils[0])
 
   return (
     <BaseComponent loading={loading} error={error} data={data} placeholder>
       <Container>
         <PlaceholderCustom loading={loading} as="h5" xs={10}>
-          <h5 className="mb-0">{`${data?.streams[0]?.name} Stream`}</h5>
+          <h5 className="mb-0">{`${data?.councils[0]?.name} Council`}</h5>
         </PlaceholderCustom>
         <PlaceholderCustom loading={loading} as="span" xs={10}>
           <span className="text-secondary font-weight-bold">
-            {`Leader: ${data?.streams[0]?.leader.fullName}`}
+            {`Leader: ${data?.councils[0]?.leader.fullName}`}
           </span>
         </PlaceholderCustom>
 
         <Row className="mt-3">
           <Col>
             <MembershipCard
-              link="/stream/members"
+              link="/council/members"
               title="Membership"
-              count={data?.streams[0]?.memberCount}
+              count={data?.councils[0]?.memberCount}
             />
           </Col>
         </Row>
@@ -61,11 +63,11 @@ const StreamReport = () => {
           stat1="attendance"
           stat2="income"
           churchData={churchData}
-          church="stream"
+          church="council"
         />
       </Container>
     </BaseComponent>
   )
 }
 
-export default StreamReport
+export default CouncilReport

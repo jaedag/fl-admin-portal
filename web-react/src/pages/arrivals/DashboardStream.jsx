@@ -24,6 +24,7 @@ import DefaulterInfoCard from 'pages/services/defaulters/DefaulterInfoCard'
 import { MemberContext } from 'contexts/MemberContext'
 import { CheckAll } from 'react-bootstrap-icons'
 import usePopup from 'hooks/usePopup'
+import HeadingSecondary from 'components/HeadingSecondary'
 
 const StreamDashboard = () => {
   const { isOpen, togglePopup } = usePopup()
@@ -77,6 +78,9 @@ const StreamDashboard = () => {
         <HeadingPrimary loading={loading}>
           {stream?.name} Stream Arrivals Summary
         </HeadingPrimary>
+        <HeadingSecondary loading={loading}>
+          Arrivals Admin: {stream?.arrivalsAdmin?.fullName}
+        </HeadingSecondary>
         {isOpen && (
           <Popup handleClose={togglePopup}>
             <b>Change Arrivals Admin</b>
@@ -109,7 +113,6 @@ const StreamDashboard = () => {
             </Formik>
           </Popup>
         )}
-
         <div className="d-grid gap-2">
           <RoleView
             roles={[...permitAdmin('Stream'), ...permitArrivals('Stream')]}
@@ -181,6 +184,15 @@ const StreamDashboard = () => {
               noCaption
             />
           </RoleView>
+
+          <MenuButton
+            title="Bacentas Below 8"
+            onClick={() => navigate('/arrivals/bacentas-below-8')}
+            number={stream?.bacentasBelow8Count.toString()}
+            iconBg
+            color="red"
+            noCaption
+          />
 
           <MenuButton
             title="Bacentas That Have Arrived"

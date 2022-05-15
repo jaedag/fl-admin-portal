@@ -21,7 +21,7 @@ CREATE (serviceRecord:ServiceRecord {created_at:datetime()})
         serviceRecord.servicePicture = $servicePicture
       WITH serviceRecord
 
-      MATCH (church {id:$churchId}) WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream
+      MATCH (church {id: $churchId}) WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream
       MATCH (church)-[has_history:HAS_HISTORY {current: true}]->(log:ServiceLog)
 
       MATCH (leader:Member {auth_id: $auth.jwt.sub})

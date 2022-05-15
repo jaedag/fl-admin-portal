@@ -117,7 +117,7 @@ const ServiceDetails = ({ service, church, loading }) => {
                   <Button
                     className={`btn-trends ${theme}`}
                     onClick={() => {
-                      navigate(`/${church?.__typename.toLowerCase()}/reports`)
+                      navigate(`/${church?.__typename.toLowerCase()}/trends`)
                     }}
                   >
                     View Trends
@@ -128,7 +128,7 @@ const ServiceDetails = ({ service, church, loading }) => {
           )}
           {service?.noServiceReason && (
             <>
-              <div>{`No Service was held on ${new Date(
+              <div>{`Cancelled Service was held on ${new Date(
                 service?.serviceDate.date
               ).toDateString()}`}</div>
               <div>{`Reason: ${service?.noServiceReason}`}</div>

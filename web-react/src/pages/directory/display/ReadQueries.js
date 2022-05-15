@@ -489,6 +489,7 @@ export const DISPLAY_STREAM = gql`
       id
       name
       target
+      councilCount
       constituencyCount
       activeBacentaCount
       activeFellowshipCount

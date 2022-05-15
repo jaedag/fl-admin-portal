@@ -151,7 +151,12 @@ export const historyRecordString = ({
     return `${servant.firstName} ${servant.lastName} was removed as the ${churchType} ${servantType} for  ${church.name} ${churchType}`
   }
 
-  if (args.oldLeaderId || args.oldAdminId || args.oldArrivalsAdminId) {
+  if (
+    oldServant ||
+    args.oldLeaderId ||
+    args.oldAdminId ||
+    args.oldArrivalsAdminId
+  ) {
     return `${servant.firstName} ${servant.lastName} became the ${servantType} of ${church.name} ${churchType} replacing ${oldServant.firstName} ${oldServant.lastName}`
   }
 
@@ -161,6 +166,12 @@ export const historyRecordString = ({
 
   if (args.arrivalsAdminId) {
     return `${servant.firstName} ${servant.lastName} became the arrivals admin for ${church.name} ${churchType}`
+  }
+  if (args.arrivalsCounterId) {
+    return `${servant.firstName} ${servant.lastName} became the arrivals counter for ${church.name} ${churchType}`
+  }
+  if (args.arrivalsConfirmerId) {
+    return `${servant.firstName} ${servant.lastName} became the arrivals confirmer for ${church.name} ${churchType}`
   }
 
   return `${servant.firstName} ${servant.lastName} started ${church.name} ${churchType} under ${higherChurch.name} ${higherChurch.type}`
@@ -205,12 +216,17 @@ export const makeServantCypher = async (
   }
 
   const serviceLogRes = rearrangeCypherObject(
-    await session.run(servantCypher.createServiceLog, {
+    await session.run(servantCypher.createHistoryLog, {
       id: servant.id,
       churchType: churchType,
       historyRecord: historyRecordString(historyRecordStringArgs),
     })
   )
+  if (servantType === 'Leader') {
+    await session.run(servantCypher.makeHistoryServiceLog, {
+      logId: serviceLogRes.id,
+    })
+  }
 
   await session.run(servantCypher.connectServiceLog, {
     churchId: church.id,

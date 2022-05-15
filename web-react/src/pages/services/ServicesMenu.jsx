@@ -68,7 +68,7 @@ const Services = () => {
             title="Trends"
             color="members"
             noCaption
-            onClick={() => navigate(`/${churchType.toLowerCase()}/reports`)}
+            onClick={() => navigate(`/${churchType.toLowerCase()}/trends`)}
           />
           {['Council', 'Constituency', 'Fellowship'].includes(churchType) && (
             <>

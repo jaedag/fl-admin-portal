@@ -9,12 +9,15 @@ export const COUNCIL_BY_CONSTITUENCY_ARRIVALS = gql`
       constituencies {
         id
         name
-        activeFellowshipCount
+        activeBacentaCount
         bacentasNoActivityCount
         bacentasMobilisingCount
         bacentasOnTheWayCount
-        bacentasHaveBeenCountedCount
         bacentasHaveArrivedCount
+        bacentasBelow8Count
+
+        bussingMembersOnTheWayCount
+        bussingMembersHaveArrivedCount
       }
     }
   }
@@ -29,12 +32,15 @@ export const STREAM_BY_COUNCIL_ARRIVALS = gql`
       councils {
         id
         name
-        activeFellowshipCount
+        activeBacentaCount
         bacentasNoActivityCount
         bacentasMobilisingCount
         bacentasOnTheWayCount
-        bacentasHaveBeenCountedCount
         bacentasHaveArrivedCount
+        bacentasBelow8Count
+
+        bussingMembersOnTheWayCount
+        bussingMembersHaveArrivedCount
       }
     }
   }
@@ -49,12 +55,15 @@ export const GATHERINGSERVICE_BY_STREAM_ARRIVALS = gql`
       streams {
         id
         name
-        activeFellowshipCount
+        activeBacentaCount
         bacentasNoActivityCount
         bacentasMobilisingCount
         bacentasOnTheWayCount
-        bacentasHaveBeenCountedCount
         bacentasHaveArrivedCount
+        bacentasBelow8Count
+
+        bussingMembersOnTheWayCount
+        bussingMembersHaveArrivedCount
       }
     }
   }

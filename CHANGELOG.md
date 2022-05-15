@@ -1,3 +1,94 @@
+#### 2.5.1 (2022-05-14)
+
+##### Bug Fixes
+
+*  removed login background image ([4b6f0030](https://github.com/firstlovecenter/fl-admin-portal/commit/4b6f00301f4a92a4fdf675d31a6a161054670e53))
+
+### 2.5.0 (2022-05-13)
+
+##### New Features
+
+*  admin-106 redesigned login screen ([775c9dbc](https://github.com/firstlovecenter/fl-admin-portal/commit/775c9dbc9757b37dd341e5cc55f221f6b5c609e2))
+
+#### 2.4.1 (2022-05-13)
+
+##### Bug Fixes
+
+*  fixed bug where some fellowships services were appearing in bussing graph ([903306c1](https://github.com/firstlovecenter/fl-admin-portal/commit/903306c1475ed85482768086eb51e34307a6c91e))
+
+### 2.4.0 (2022-05-13)
+
+##### New Features
+
+*  implemented a basic graphing feature for bussing data ([57f9c387](https://github.com/firstlovecenter/fl-admin-portal/commit/57f9c387fb5f8818fd656e327b7113a59bfb1ec9))
+*  various minor improvements for admin-115 ([3c67cbf9](https://github.com/firstlovecenter/fl-admin-portal/commit/3c67cbf997061eb79c54d4028900107660ecbc95))
+
+##### Refactors
+
+*  changed the word 'report' to 'trends' for clarity ([6f105ddb](https://github.com/firstlovecenter/fl-admin-portal/commit/6f105ddbb72e5495c89f869daa997db4d9963c36))
+
+#### 2.3.2 (2022-05-07)
+
+##### New Features
+
+*  if you report 0 for your bussing cost, no top up will be sent to you ([d41d46a0](https://github.com/firstlovecenter/fl-admin-portal/commit/d41d46a07e7ba105d0ebeda15dd0f3a6e2e8c92c))
+
+##### Bug Fixes
+
+*  fixed bug where a person could not be confirmed if they did not arrive ([0757ea0d](https://github.com/firstlovecenter/fl-admin-portal/commit/0757ea0d7e1a96146568f06958baceb71f7ee248))
+
+#### 2.3.1 (2022-05-05)
+
+##### Bug Fixes
+
+*  corrected the fellowship details page to show accurate banking data ([fcd53010](https://github.com/firstlovecenter/fl-admin-portal/commit/fcd530106ecf297bac1fc832851473746aa8ce31))
+
+### 2.3.0 (2022-05-05)
+
+##### New Features
+
+*  when a leader fills no number of cars and busses, it means no top up for that day ([964e7503](https://github.com/firstlovecenter/fl-admin-portal/commit/964e7503ff63a1b9fb68f418aacfe75a850dc3d5))
+*  implemented a feature adding a list to show bacentas under 8 for stream ([8eaec827](https://github.com/firstlovecenter/fl-admin-portal/commit/8eaec8270d96cce8271bbb609f19689324c98b51))
+
+##### Bug Fixes
+
+*  implemented resolver in the backend to ensure that nobody can be confirmed when the time is up ([c23b3558](https://github.com/firstlovecenter/fl-admin-portal/commit/c23b355830bc778c95719c994cd5760fc1dc97c2))
+*  improved ux for deleting arrivals helpers as well us cleaning history record ([06da13d7](https://github.com/firstlovecenter/fl-admin-portal/commit/06da13d742c31e038f220fe74a66b6af0210e78c))
+
+##### Performance Improvements
+
+*  improved image clarity when opened on full view on bus form details ([5170b3b7](https://github.com/firstlovecenter/fl-admin-portal/commit/5170b3b78f0ac915c5a2351b0c59b7c1a89c3817))
+
+#### 2.2.19 (2022-05-01)
+
+##### Chores
+
+*  version bump ([e60fd17d](https://github.com/firstlovecenter/fl-admin-portal/commit/e60fd17d9e5fa3f72880ea56bafe0ed384be70e7))
+
+#### 2.2.18 (2022-05-01)
+
+#### 2.2.17 (2022-05-01)
+
+#### 2.2.16 (2022-05-01)
+
+#### 2.2.15 (2022-05-01)
+
+##### Chores
+
+*  version bump ([4b5af4b6](https://github.com/firstlovecenter/fl-admin-portal/commit/4b5af4b66dea37603dfbae4b286a53b1cfeade0a))
+
+#### 2.2.10 (2022-05-01)
+
+#### 2.2.9 (2022-05-01)
+
+#### 2.2.8 (2022-05-01)
+
+#### 2.2.7 (2022-05-01)
+
+##### Bug Fixes
+
+*  solved minor issues after campus test run of the system ([32f40bc0](https://github.com/firstlovecenter/fl-admin-portal/commit/32f40bc08f430c5ea9bf91146153d60d441c2b4b))
+
 #### 2.2.6 (2022-04-30)
 
 ##### New Features

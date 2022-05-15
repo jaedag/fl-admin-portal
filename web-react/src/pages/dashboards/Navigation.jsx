@@ -4,7 +4,7 @@ import UserProfileIcon from 'components/UserProfileIcon/UserProfileIcon'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { MemberContext } from 'contexts/MemberContext'
 import { authorisedLink, capitalise, plural } from 'global-utils'
-import { getServiceGraphData } from 'pages/services/reports/report-utils'
+import { getServiceGraphData } from 'pages/services/trends/trends-utils'
 import React, { useContext, useEffect } from 'react'
 import { Container, Nav, Navbar, Offcanvas, Row, Col } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
@@ -311,7 +311,7 @@ const Navigator = () => {
                 <Nav.Link
                   as={Link}
                   eventKey={menuItems.length}
-                  exact
+                  exact="true"
                   to="/user-profile"
                 >
                   <UserProfileIcon />

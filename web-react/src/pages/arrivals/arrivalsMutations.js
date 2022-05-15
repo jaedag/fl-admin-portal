@@ -227,7 +227,7 @@ export const CONFIRM_BUSSING_BY_ADMIN = gql`
       momoName
       momoNumber
       week
-      confirmed_by {
+      counted_by {
         id
         firstName
         lastName
@@ -245,10 +245,12 @@ export const RECORD_ARRIVAL_TIME = gql`
       id
       bussingTopUp
       arrivalTime
-      confirmed_by {
+      counted_by {
         id
+        firstName
+        lastName
       }
-      arrivalTime_Logged_By {
+      arrival_confirmed_by {
         id
         firstName
         lastName

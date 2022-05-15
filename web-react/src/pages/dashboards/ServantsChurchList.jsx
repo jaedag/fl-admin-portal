@@ -11,7 +11,7 @@ import {
 import {
   getMonthlyStatAverage,
   getServiceGraphData,
-} from 'pages/services/reports/report-utils'
+} from 'pages/services/trends/trends-utils'
 import MenuButton from 'components/buttons/MenuButton'
 import { Container } from 'react-bootstrap'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'

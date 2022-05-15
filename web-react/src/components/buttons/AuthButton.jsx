@@ -1,9 +1,11 @@
 import React from 'react'
 import { useAuth0 } from '@auth0/auth0-react'
 import Popup from '../Popup/Popup'
-import { Button, Spinner } from 'react-bootstrap'
+import { Button, Container, Spinner } from 'react-bootstrap'
 import { useLocation } from 'react-router'
 import usePopup from 'hooks/usePopup'
+import './AuthButton.css'
+import { BoxArrowInLeft, BoxArrowRight } from 'react-bootstrap-icons'
 
 const AuthButton = (props) => {
   const { loginWithRedirect, logout, isAuthenticated } = useAuth0()
@@ -13,12 +15,16 @@ const AuthButton = (props) => {
 
   if (!isAuthenticated) {
     return (
-      <>
+      <Container className="d-grid gap-2">
         <Button
-          className={`${!mobileFullSize && `d-none d-md-inline`} px-5 p-3`}
+          variant="primary"
+          size="lg"
+          className={`login auth-button ${
+            !mobileFullSize && `d-none d-md-inline`
+          }`}
           onClick={() => loginWithRedirect()}
         >
-          Log In
+          Log In <BoxArrowInLeft />
         </Button>
         {!mobileFullSize && (
           <i
@@ -26,7 +32,7 @@ const AuthButton = (props) => {
             onClick={() => loginWithRedirect()}
           />
         )}
-      </>
+      </Container>
     )
   }
 
@@ -41,31 +47,37 @@ const AuthButton = (props) => {
 
   if (isAuthenticated) {
     return (
-      <>
-        <input
-          type="button"
-          className={`btn btn-primary text-nowrap px-4 ${
-            !mobileFullSize && `d-none d-md-inline`
-          }`}
-          value="Logout"
-          onClick={togglePopup}
-        />
+      <Container>
+        <div className="d-grid gap-2">
+          <Button
+            size="lg"
+            variant="danger"
+            className={`auth-button logout text-nowrap ${
+              !mobileFullSize && `d-none d-md-inline`
+            }`}
+            onClick={togglePopup}
+          >
+            Log Out <BoxArrowRight />
+          </Button>
+        </div>
         {isOpen && (
           <Popup handleClose={togglePopup}>
             <>
               <b>Confirm Log Out</b>
-              <p>Are you sure you want to Log Out?</p>
-              <button
-                className={`btn btn-primary text-nowrap px-4 ${
-                  !mobileFullSize && `d-none d-md-inline`
-                }`}
-                onClick={() => {
-                  logout({ returnTo: window.location.origin })
-                  togglePopup()
-                }}
-              >
-                Log Out
-              </button>
+              <p className="mt-2">Are you sure you want to Log Out?</p>
+              <div className="d-grid gap-2">
+                <Button
+                  className={`auth-button logout mt-3 ${
+                    !mobileFullSize && `d-none d-md-inline`
+                  }`}
+                  onClick={() => {
+                    logout({ returnTo: window.location.origin })
+                    togglePopup()
+                  }}
+                >
+                  Log Out
+                </Button>
+              </div>
             </>
           </Popup>
         )}
@@ -76,7 +88,7 @@ const AuthButton = (props) => {
             onClick={() => logout({ returnTo: window.location.origin })}
           />
         )}
-      </>
+      </Container>
     )
   }
 }

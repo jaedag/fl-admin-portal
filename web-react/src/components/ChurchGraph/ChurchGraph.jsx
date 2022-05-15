@@ -16,7 +16,7 @@ import { capitalise } from '../../global-utils'
 import './ChurchGraph.css'
 
 const ChurchGraph = (props) => {
-  const { loading, stat1, stat2, churchData, secondaryTitle } = props
+  const { loading, stat1, stat2, churchData, secondaryTitle, bussing } = props
   const { clickCard } = useContext(ChurchContext)
   const navigate = useNavigate()
 
@@ -76,7 +76,7 @@ const ChurchGraph = (props) => {
           <p className="chart-title font-weight-bold m-0">
             {stat2
               ? `${capitalise(stat1)} and ${capitalise(stat2)}`
-              : `${capitalise(stat1)} Graph`}
+              : `${bussing && 'Bussing'} ${capitalise(stat1)} Graph`}
           </p>
         </PlaceholderCustom>
         {secondaryTitle && (
@@ -133,7 +133,10 @@ const ChurchGraph = (props) => {
                 yAxisId="left"
                 fill="url(#colorPrimary)"
                 onClick={(data) => {
-                  if (data.id) {
+                  if (data.id && bussing) {
+                    clickCard({ ...data, __typename: 'BussingRecord' })
+                    navigate(`/${props.church}/bussing-details`)
+                  } else if (data.id) {
                     clickCard({ ...data, __typename: 'ServiceRecord' })
                     navigate(`/${props.church}/service-details`)
                   }
@@ -154,7 +157,10 @@ const ChurchGraph = (props) => {
                   yAxisId="right"
                   fill="url(#colorSecondary)"
                   onClick={(data) => {
-                    if (data.id) {
+                    if (data.id && bussing) {
+                      clickCard({ ...data, __typename: 'BussingRecord' })
+                      navigate(`/${props.church}/bussing-details`)
+                    } else if (data.id) {
                       clickCard({ ...data, __typename: 'ServiceRecord' })
                       navigate(`/${props.church}/service-details`)
                     }

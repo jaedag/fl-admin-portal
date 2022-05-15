@@ -96,8 +96,7 @@ const DefaultersDashboard = () => {
 
   const aggregates = {
     title: plural(subChurch),
-    data: church && church[`${subChurch?.toLowerCase()}Count`],
-    // color: church?.cancelledServicesThisWeekCount ? 'bad' : 'good',
+    data: church ? church[`${subChurch?.toLowerCase()}Count`] : null,
     link: `/services/${church?.__typename?.toLowerCase()}-by-${subChurch?.toLowerCase()}`,
   }
 

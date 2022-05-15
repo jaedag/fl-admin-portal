@@ -1,6 +1,6 @@
 import PlaceholderCustom from 'components/Placeholder'
 import React from 'react'
-import './Report.css'
+import './Trends.css'
 
 const StatDisplay = ({ title, statistic, loading }) => {
   if (isNaN(statistic)) {

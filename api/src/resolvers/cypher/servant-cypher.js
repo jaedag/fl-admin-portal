@@ -125,17 +125,6 @@ MERGE (admin)-[:CONFIRMS_ARRIVALS_FOR]->(church)
 RETURN church.id AS id, church.name AS name, higherChurch.id AS higherChurchId, higherChurch.name AS higherChurchName
 `
 //Create the service log and returns its ID
-export const createServiceLog = `
-MATCH (church {id:$id}) WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:GatheringService OR church:Sonta OR church:Ministry OR church:Member 
-OR church:ClosedFellowship OR church:ClosedBacenta
-
-CREATE (log:HistoryLog:ServiceLog)
-  SET log.id = apoc.create.uuid(),
-   log.timeStamp = datetime(),
-   log.historyRecord = $historyRecord
-
-   RETURN log.id AS id
-`
 
 export const createHistoryLog = `
 MATCH (church {id:$id}) WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:GatheringService OR church:Sonta OR church:Ministry OR church:Member 
@@ -147,6 +136,12 @@ CREATE (log:HistoryLog)
    log.historyRecord = $historyRecord
 
    RETURN log.id AS id
+`
+
+export const makeHistoryServiceLog = `
+MATCH (log:HistoryLog {id: $logId})
+SET log:ServiceLog
+RETURN log AS log
 `
 
 //Connect log to leader, new church, and old leader

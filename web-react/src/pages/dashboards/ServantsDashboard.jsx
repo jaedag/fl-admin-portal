@@ -13,9 +13,9 @@ import RoleCard from './RoleCard'
 import {
   getServiceGraphData,
   getMonthlyStatAverage,
-} from '../services/reports/report-utils'
+} from '../services/trends/trends-utils'
 import { ChurchContext } from 'contexts/ChurchContext'
-import StatDisplay from 'pages/services/reports/CompStatDisplay'
+import StatDisplay from 'pages/services/trends/CompStatDisplay'
 import { authorisedLink, isAuthorised, plural } from 'global-utils'
 import { permitMe } from 'permission-utils'
 import BaseComponent from 'components/base-component/BaseComponent'
