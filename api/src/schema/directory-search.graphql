@@ -1,8 +1,239 @@
+extend type Member {
+  memberSearch(key: String!, limit: Int! = 5): [Member!]!
+    @cypher(
+      statement: """
+      MATCH (this)-[:LEADS|HAS|DOES_ARRIVALS_FOR|IS_ADMIN_FOR*1..6]->(:Fellowship)<-[:BELONGS_TO]-(members:Member)
+      WHERE toLower(members.firstName+ ' ' + members.lastName) CONTAINS toLower($key)
+      RETURN DISTINCT members ORDER BY toLower(members.lastName), toLower(members.firstName) LIMIT $limit
+      """
+    )
+  fellowshipSearch(key: String!, limit: Int! = 5): [Fellowship!]!
+    @cypher(
+      statement: """
+      MATCH (this)-[:LEADS|HAS|DOES_ARRIVALS_FOR|IS_ADMIN_FOR*1..6]->(fellowship:Fellowship)
+      WHERE toLower(fellowship.name) CONTAINS toLower($key)
+      RETURN DISTINCT fellowship LIMIT $limit
+      """
+    )
+  bacentaSearch(key: String!, limit: Int! = 5): [Bacenta!]!
+    @cypher(
+      statement: """
+      MATCH (this)-[:LEADS|HAS|DOES_ARRIVALS_FOR|IS_ADMIN_FOR*1..5]->(bacenta:Bacenta)
+      WHERE toLower(bacenta.name) CONTAINS toLower($key)
+      RETURN DISTINCT bacenta LIMIT $limit
+      """
+    )
+  constituencySearch(key: String!, limit: Int! = 5): [Constituency!]!
+    @cypher(
+      statement: """
+      MATCH (this)-[:LEADS|HAS|DOES_ARRIVALS_FOR|IS_ADMIN_FOR*1..4]->(constituency:Constituency)
+      WHERE toLower(constituency.name) CONTAINS toLower($key)
+      RETURN DISTINCT constituency LIMIT $limit
+      """
+    )
+  councilSearch(key: String!, limit: Int! = 5): [Council!]!
+    @cypher(
+      statement: """
+      MATCH (this)-[:LEADS|HAS|DOES_ARRIVALS_FOR|IS_ADMIN_FOR*1..3]->(council:Council)
+      WHERE toLower(council.name) CONTAINS toLower($key)
+      RETURN DISTINCT council LIMIT $limit
+      """
+    )
+}
+
+extend type GatheringService {
+  memberSearch(key: String!, limit: Int!): [Member!]!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS*5]->(:Fellowship)<-[:BELONGS_TO]-(members:Member)
+      WHERE toLower(members.firstName+ ' ' + members.lastName) CONTAINS toLower($key)
+      RETURN DISTINCT members ORDER BY toLower(members.lastName), toLower(members.firstName) LIMIT $limit
+      """
+    )
+  fellowshipSearch(key: String!, limit: Int!): [Fellowship!]!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS*5]->(fellowship:Fellowship)
+      WHERE toLower(fellowship.name) CONTAINS toLower($key)
+      RETURN DISTINCT fellowship LIMIT $limit
+      """
+    )
+  bacentaSearch(key: String!, limit: Int!): [Bacenta!]!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS*4]->(bacenta:Bacenta)
+      WHERE toLower(bacenta.name) CONTAINS toLower($key)
+      RETURN DISTINCT bacenta LIMIT $limit
+      """
+    )
+  constituencySearch(key: String!, limit: Int!): [Constituency!]!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS*3]->(constituency:Constituency)
+      WHERE toLower(constituency.name) CONTAINS toLower($key)
+      RETURN DISTINCT constituency LIMIT $limit
+      """
+    )
+  councilSearch(key: String!, limit: Int!): [Council!]!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS*2]->(council:Council)
+      WHERE toLower(council.name) CONTAINS toLower($key)
+      RETURN DISTINCT council LIMIT $limit
+      """
+    )
+  streamSearch(key: String!, limit: Int!): [Stream!]!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS]->(stream:Stream)
+      WHERE toLower(stream.name) CONTAINS toLower($key)
+      RETURN DISTINCT stream LIMIT $limit
+      """
+    )
+}
+
+extend type Stream {
+  memberSearch(key: String!, limit: Int!): [Member!]!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS*4]->(:Fellowship)<-[:BELONGS_TO]-(members:Member)
+      WHERE toLower(members.firstName+ ' ' + members.lastName) CONTAINS toLower($key)
+      RETURN DISTINCT members ORDER BY toLower(members.lastName), toLower(members.firstName)  LIMIT $limit
+      """
+    )
+  fellowshipSearch(key: String!, limit: Int!): [Fellowship!]!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS*4]->(fellowship:Fellowship)
+      WHERE toLower(fellowship.name) CONTAINS toLower($key)
+      RETURN DISTINCT fellowship LIMIT $limit
+      """
+    )
+  bacentaSearch(key: String!, limit: Int!): [Bacenta!]!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS*3]->(bacenta:Bacenta)
+      WHERE toLower(bacenta.name) CONTAINS toLower($key)
+      RETURN DISTINCT bacenta LIMIT $limit
+      """
+    )
+  constituencySearch(key: String!, limit: Int!): [Constituency!]!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS*2]->(constituency:Constituency)
+      WHERE toLower(constituency.name) CONTAINS toLower($key)
+      RETURN DISTINCT constituency LIMIT $limit
+      """
+    )
+  councilSearch(key: String!, limit: Int!): [Council!]!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS]->(council:Council)
+      WHERE toLower(council.name) CONTAINS toLower($key)
+      RETURN DISTINCT council LIMIT $limit
+      """
+    )
+}
+
+extend type Council {
+  memberSearch(key: String!, limit: Int!): [Member!]!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS*3]->(:Fellowship)<-[:BELONGS_TO]-(members:Member)
+      WHERE toLower(members.firstName+ ' ' + members.lastName) CONTAINS toLower($key)
+      RETURN DISTINCT members ORDER BY toLower(members.lastName), toLower(members.firstName)  LIMIT $limit
+      """
+    )
+  fellowshipSearch(key: String!, limit: Int!): [Fellowship!]!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS*3]->(fellowship:Fellowship)
+      WHERE toLower(fellowship.name) CONTAINS toLower($key)
+      RETURN DISTINCT fellowship LIMIT $limit
+      """
+    )
+  bacentaSearch(key: String!, limit: Int!): [Bacenta!]!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS*2]->(bacenta:Bacenta)
+      WHERE toLower(bacenta.name) CONTAINS toLower($key)
+      RETURN DISTINCT bacenta LIMIT $limit
+      """
+    )
+  constituencySearch(key: String!, limit: Int!): [Constituency!]!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS]->(constituency:Constituency)
+      WHERE toLower(constituency.name) CONTAINS toLower($key)
+      RETURN DISTINCT constituency LIMIT $limit
+      """
+    )
+}
+
+extend type Constituency {
+  memberSearch(key: String!, limit: Int!): [Member!]!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS*2]->(:Fellowship)<-[:BELONGS_TO]-(members:Member)
+      WHERE toLower(members.firstName+ ' ' + members.lastName) CONTAINS toLower($key)
+      RETURN DISTINCT members ORDER BY toLower(members.lastName), toLower(members.firstName)  LIMIT $limit
+      """
+    )
+  fellowshipSearch(key: String!, limit: Int!): [Fellowship!]!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS]->(:Bacenta)-[:HAS]->(fellowship:Fellowship)
+      WHERE toLower(fellowship.name) CONTAINS toLower($key)
+      RETURN DISTINCT fellowship LIMIT $limit
+      """
+    )
+  bacentaSearch(key: String!, limit: Int!): [Bacenta!]!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS]->(bacenta:Bacenta)
+      WHERE toLower(bacenta.name) CONTAINS toLower($key)
+      RETURN DISTINCT bacenta LIMIT $limit
+      """
+    )
+}
+
+extend type Bacenta {
+  memberSearch(key: String!, limit: Int!): [Member!]!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS]->(:Fellowship)<-[:BELONGS_TO]-(members:Member)
+      WHERE toLower(members.firstName+ ' ' + members.lastName) CONTAINS toLower($key)
+      RETURN DISTINCT members ORDER BY toLower(members.lastName), toLower(members.firstName)  LIMIT $limit
+      """
+    )
+  fellowshipSearch(key: String!, limit: Int!): [Fellowship!]!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS]->(fellowship:Fellowship)
+      WHERE toLower(fellowship.name) CONTAINS toLower($key)
+      RETURN DISTINCT fellowship LIMIT $limit
+      """
+    )
+}
+
+extend type Fellowship {
+  memberSearch(key: String!, limit: Int!): [Member!]!
+    @cypher(
+      statement: """
+      MATCH (this)<-[:BELONGS_TO]-(members:Member)
+      WHERE toLower(members.firstName+ ' ' + members.lastName) CONTAINS toLower($key)
+      RETURN DISTINCT members ORDER BY toLower(members.lastName), toLower(members.firstName)  LIMIT $limit
+      """
+    )
+}
+
 extend type Query {
   ###Member Searches%####
 
   federalMemberSearch(searchKey: String): [Member!]!
-    @auth(rules: [{ roles: ["adminGatheringService"] }])
+    @auth(
+      rules: [{ roles: ["adminGatheringService", "leaderGatheringService"] }]
+    )
     @cypher(
       statement: """
       MATCH (member:Member)
@@ -15,7 +246,7 @@ extend type Query {
       """
     )
   streamMemberSearch(searchKey: String, streamId: ID!): [Member!]!
-    @auth(rules: [{ roles: ["adminStream"] }])
+    @auth(rules: [{ roles: ["adminStream", "leaderStream"] }])
     @cypher(
       statement: """
       MATCH (stream:Stream {id: $streamId})-[:HAS]->(:Council)-[:HAS]->(:Constituency)-[:HAS]->(:Bacenta)-[:HAS]->(:Fellowship)<-[:BELONGS_TO]-(member:Member)
@@ -29,7 +260,7 @@ extend type Query {
       """
     )
   councilMemberSearch(searchKey: String, councilId: ID!): [Member!]!
-    @auth(rules: [{ roles: ["adminCouncil"] }])
+    @auth(rules: [{ roles: ["adminCouncil", "leaderCouncil"] }])
     @cypher(
       statement: """
       MATCH (council:Council {id: $councilId})-[:HAS]->(:Constituency)-[:HAS]->(:Bacenta)-[:HAS]->(:Fellowship)<-[:BELONGS_TO*]-(member:Member)
@@ -43,7 +274,7 @@ extend type Query {
       """
     )
   constituencyMemberSearch(searchKey: String, constituencyId: ID!): [Member!]!
-    @auth(rules: [{ roles: ["adminConstituency"] }])
+    @auth(rules: [{ roles: ["adminConstituency", "leaderConstituency"] }])
     @cypher(
       statement: """
       MATCH (constituency:Constituency {id:$constituencyId})
@@ -89,7 +320,9 @@ extend type Query {
   ### Fellowship Search ###
 
   federalFellowshipSearch(searchKey: String): [Fellowship!]!
-    @auth(rules: [{ roles: ["adminGatheringService"] }])
+    @auth(
+      rules: [{ roles: ["adminGatheringService", "leaderGatheringService"] }]
+    )
     @cypher(
       statement: """
       MATCH (fellowship:Fellowship)
@@ -100,7 +333,7 @@ extend type Query {
     )
 
   streamFellowshipSearch(searchKey: String, streamId: ID!): [Fellowship!]!
-    @auth(rules: [{ roles: ["adminStream"] }])
+    @auth(rules: [{ roles: ["adminStream", "leaderStream"] }])
     @cypher(
       statement: """
       MATCH (stream:Stream {id: $streamId})-[:HAS*4]->(fellowship:Fellowship)
@@ -112,7 +345,7 @@ extend type Query {
     )
 
   councilFellowshipSearch(searchKey: String, councilId: ID!): [Fellowship!]!
-    @auth(rules: [{ roles: ["adminCouncil"] }])
+    @auth(rules: [{ roles: ["adminCouncil", "leaderCouncil"] }])
     @cypher(
       statement: """
       MATCH (council:Council {id: $councilId})-[:HAS*3]->(fellowship:Fellowship)
@@ -126,7 +359,7 @@ extend type Query {
     searchKey: String
     constituencyId: ID!
   ): [Fellowship!]!
-    @auth(rules: [{ roles: ["adminConstituency"] }])
+    @auth(rules: [{ roles: ["adminConstituency", "leaderConstituency"] }])
     @cypher(
       statement: """
       MATCH (constituency:Constituency {id:$constituencyId})-[:HAS*2]->(fellowship:Fellowship)
@@ -150,7 +383,9 @@ extend type Query {
   ### Bacenta Search ###
 
   federalBacentaSearch(searchKey: String): [Bacenta]
-    @auth(rules: [{ roles: ["adminGatheringService"] }])
+    @auth(
+      rules: [{ roles: ["adminGatheringService", "leaderGatheringService"] }]
+    )
     @cypher(
       statement: """
       MATCH (bacenta:Bacenta)
@@ -160,7 +395,7 @@ extend type Query {
       """
     )
   streamBacentaSearch(searchKey: String, streamId: ID!): [Bacenta]
-    @auth(rules: [{ roles: ["adminStream"] }])
+    @auth(rules: [{ roles: ["adminStream", "leaderStream"] }])
     @cypher(
       statement: """
       MATCH (stream:Stream {id: $streamId})-[:HAS*3]->(bacenta:Bacenta)
@@ -171,7 +406,7 @@ extend type Query {
       """
     )
   councilBacentaSearch(searchKey: String, councilId: ID!): [Bacenta]
-    @auth(rules: [{ roles: ["adminCouncil"] }])
+    @auth(rules: [{ roles: ["adminCouncil", "leaderCouncil"] }])
     @cypher(
       statement: """
       MATCH (council:Council {id: $councilId})-[:HAS*2]->(bacenta:Bacenta)
@@ -182,7 +417,7 @@ extend type Query {
       """
     )
   councilSontaSearch(searchKey: String, councilId: ID!): [Bacenta]
-    @auth(rules: [{ roles: ["adminCouncil"] }])
+    @auth(rules: [{ roles: ["adminCouncil", "leaderCouncil"] }])
     @cypher(
       statement: """
       MATCH (council:Council {id: $councilId})-[:HAS*2]->(bacenta:Bacenta)
@@ -196,7 +431,7 @@ extend type Query {
     searchKey: String
     constituencyId: ID!
   ): [Fellowship!]!
-    @auth(rules: [{ roles: ["adminConstituency"] }])
+    @auth(rules: [{ roles: ["adminConstituency", "leaderConstituency"] }])
     @cypher(
       statement: """
       MATCH (constituency:Constituency {id:$constituencyId})
@@ -211,7 +446,9 @@ extend type Query {
   ### Constituency Search ###
 
   federalConstituencySearch(searchKey: String): [Constituency!]!
-    @auth(rules: [{ roles: ["adminGatheringService"] }])
+    @auth(
+      rules: [{ roles: ["adminGatheringService", "leaderGatheringService"] }]
+    )
     @cypher(
       statement: """
       MATCH (constituency:Constituency)
@@ -221,7 +458,7 @@ extend type Query {
       """
     )
   streamConstituencySearch(searchKey: String, streamId: ID!): [Constituency!]!
-    @auth(rules: [{ roles: ["adminStream"] }])
+    @auth(rules: [{ roles: ["adminStream", "leaderStream"] }])
     @cypher(
       statement: """
       MATCH (stream:Stream {id: $streamId})-[:HAS]->(council:Council)-[:HAS]->(constituency:Constituency)
@@ -235,7 +472,7 @@ extend type Query {
     searchKey: String
     councilId: ID!
   ): [Constituency!]!
-    @auth(rules: [{ roles: ["adminCouncil"] }])
+    @auth(rules: [{ roles: ["adminCouncil","leaderCouncil"] }])
     @cypher(
       statement: """
       MATCH (council:Council {id: $councilId})-[:HAS]->(constituency:Constituency)
@@ -249,7 +486,7 @@ extend type Query {
   ### Council Search ###
 
   federalCouncilSearch(searchKey: String): [Council!]!
-    @auth(rules: [{ roles: ["adminGatheringService"] }])
+    @auth(rules: [{ roles: ["adminGatheringService","leaderGatheringService"] }])
     @cypher(
       statement: """
       MATCH (council:Council)
@@ -259,7 +496,7 @@ extend type Query {
       """
     )
   streamCouncilSearch(searchKey: String, streamId: ID!): [Council!]!
-    @auth(rules: [{ roles: ["adminStream"] }])
+    @auth(rules: [{ roles: ["adminStream", "leaderStream"] }])
     @cypher(
       statement: """
       MATCH (stream:Stream {id: $streamId})-[:HAS]->(council:Council)
@@ -272,7 +509,9 @@ extend type Query {
 
   ### Stream Search ###
   federalStreamSearch(searchKey: String): [Stream!]!
-    @auth(rules: [{ roles: ["adminGatheringService"] }])
+    @auth(
+      rules: [{ roles: ["adminGatheringService", "leaderGatheringService"] }]
+    )
     @cypher(
       statement: """
       MATCH (stream:Stream)

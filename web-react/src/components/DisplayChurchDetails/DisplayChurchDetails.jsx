@@ -27,8 +27,12 @@ import PlaceholderCustom from 'components/Placeholder'
 import { Geo, PencilSquare } from 'react-bootstrap-icons'
 import ViewAll from 'components/buttons/ViewAll'
 import { permitAdmin } from 'permission-utils'
+import useSetUserChurch from 'hooks/useSetUserChurch'
+import usePopup from 'hooks/usePopup'
 
 const DisplayChurchDetails = (props) => {
+  const { setUser } = useSetUserChurch()
+
   const navigate = useNavigate()
   let needsAdmin
 
@@ -52,16 +56,11 @@ const DisplayChurchDetails = (props) => {
       break
   }
 
-  const { theme, setCurrentUser, currentUser } = useContext(MemberContext)
+  const { theme } = useContext(MemberContext)
   const [submitting, setSubmitting] = useState(false)
-  const {
-    clickCard,
-    togglePopup,
-    isOpen,
-    constituencyId,
-    councilId,
-    streamId,
-  } = useContext(ChurchContext)
+  const { clickCard, constituencyId, councilId, streamId } =
+    useContext(ChurchContext)
+  const { togglePopup, isOpen } = usePopup()
 
   //Change Admin Initialised
   const [MakeConstituencyAdmin] = useMutation(MAKE_CONSTITUENCY_ADMIN)
@@ -266,6 +265,7 @@ const DisplayChurchDetails = (props) => {
             bgNone
           />
         </Link>
+
         <Row>
           <Col>
             <DetailsCard
@@ -302,6 +302,38 @@ const DisplayChurchDetails = (props) => {
           </Row>
         )}
 
+        {props.churchType === 'Bacenta' &&
+        (props.church?.normalBussingTopUp ||
+          props.church?.swellBussingTopUp) ? (
+          <RoleView
+            roles={['leaderBacenta']}
+            stream={['Campus', 'Town']}
+            verifyId={props?.leader?.id}
+          >
+            {!props.momoNumber && (
+              <p className="my-1 bad fw-bold text-center">
+                There is no valid Mobile Money Number! Please update!
+              </p>
+            )}
+
+            <div className="d-grid gap-2">
+              <PlaceholderCustom
+                loading={props.loading}
+                className={`btn-trends ${theme}`}
+                button
+              >
+                <Button
+                  className={`${theme}`}
+                  onClick={() => {
+                    navigate(`/${props.churchType.toLowerCase()}/editbussing`)
+                  }}
+                >
+                  Bus Payment Details
+                </Button>
+              </PlaceholderCustom>
+            </div>
+          </RoleView>
+        ) : null}
         <hr />
         <div className="d-grid gap-2">
           <PlaceholderCustom
@@ -327,25 +359,11 @@ const DisplayChurchDetails = (props) => {
               <Button
                 className={`btn-trends ${theme}`}
                 onClick={() => {
-                  setCurrentUser({
-                    ...currentUser,
-                    currentChurch: {
-                      id: props.churchId,
-                      name: props.name,
-                      __typename: props.churchType,
-                    },
+                  setUser({
+                    id: props.churchId,
+                    name: props.name,
+                    __typename: props.churchType,
                   })
-                  sessionStorage.setItem(
-                    'currentUser',
-                    JSON.stringify({
-                      ...currentUser,
-                      currentChurch: {
-                        id: props.churchId,
-                        name: props.name,
-                        __typename: props.churchType,
-                      },
-                    })
-                  )
 
                   navigate(`/services/${props.churchType.toLowerCase()}`)
                 }}
@@ -381,7 +399,7 @@ const DisplayChurchDetails = (props) => {
                     className={`${week.filled ? 'filled' : 'not-filled'}`}
                   >{`${week.filled ? 'Filled' : 'Not Filled'}`}</span>
                 </p>
-                {week.banked && (
+                {week.filled && (
                   <p>
                     Banking Slip -{' '}
                     <span

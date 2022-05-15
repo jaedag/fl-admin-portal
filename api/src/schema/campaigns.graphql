@@ -36,3 +36,5 @@ extend type Bacenta {
 extend type Fellowship {
   campaigns: [Campaign!]! @relationship(type: "HAS_CAMPAIGN", direction: OUT)
 }
+
+

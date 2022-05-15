@@ -6,9 +6,13 @@ import { useQuery } from '@apollo/client'
 import { CONSTITUENCY_CAMPAIGN_LIST } from './CampaignQueries'
 import { ChurchContext } from 'contexts/ChurchContext'
 import BaseComponent from 'components/base-component/BaseComponent'
+import { MemberContext } from 'contexts/MemberContext'
 
 const ConstituencyCampaigns = () => {
   const { constituencyId } = useContext(ChurchContext)
+  const { currentUser } = useContext(MemberContext)
+  const church = currentUser.currentChurch
+  const churchType = currentUser.currentChurch?.__typename
 
   const { data, loading, error } = useQuery(CONSTITUENCY_CAMPAIGN_LIST, {
     variables: { constituencyId: constituencyId },
@@ -23,12 +27,13 @@ const ConstituencyCampaigns = () => {
         <Container>
           <div className="text-center">
             <h1 className="mb-0 ">SSMG Campaigns</h1>
+            <h6>{`${church?.name} ${churchType}`}</h6>
           </div>
           <div className="d-grid gap-2 mt-4 text-center px-4">
             {campaigns?.map((campaign, index) => (
               <MenuButton
                 key={index}
-                name={campaign.name}
+                name={campaign.__typename}
                 onClick={() => navigate(`/campaigns/constituency/equipment`)}
               />
             ))}

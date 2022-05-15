@@ -10,68 +10,74 @@ const useChurchLevel = (props) => {
   const subChurchLevel = getSubChurchLevel(currentChurch?.__typename)
 
   const [church, setChurch] = useState(null)
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
 
-  useEffect(async () => {
-    switch (churchLevel) {
-      case 'Constituency':
-        {
-          const res = await props.constituencyFunction({
-            variables: {
-              id: currentChurch?.id,
-            },
-          })
+  useEffect(() => {
+    const whichQuery = async () => {
+      switch (churchLevel) {
+        case 'Constituency':
+          {
+            const res = await props.constituencyFunction({
+              variables: {
+                id: currentChurch?.id,
+              },
+            })
 
-          setChurch(res.data?.constituencies[0])
-          setLoading(res.loading)
-          setError(res.error)
-        }
-        break
-      case 'Council':
-        {
-          const res = await props.councilFunction({
-            variables: {
-              id: currentChurch?.id,
-            },
-          })
+            setChurch(res.data?.constituencies[0])
+            setLoading(res.loading)
+            setError(res.error)
+          }
+          break
+        case 'Council':
+          {
+            const res = await props.councilFunction({
+              variables: {
+                id: currentChurch?.id,
+              },
+            })
 
-          setChurch(res?.data?.councils[0])
-          setLoading(res.loading)
-          setError(res.error)
-        }
+            setChurch(res?.data?.councils[0])
+            setLoading(res.loading)
+            setError(res.error)
+          }
 
-        break
-      case 'Stream':
-        {
-          const res = await props.streamFunction({
-            variables: {
-              id: currentChurch?.id,
-            },
-          })
-          setChurch(res?.data?.streams[0])
-          setLoading(res.loading)
-          setError(res.error)
-        }
-        break
+          break
+        case 'Stream':
+          {
+            const res = await props.streamFunction({
+              variables: {
+                id: currentChurch?.id,
+              },
+            })
+            setChurch(res?.data?.streams[0])
+            setLoading(res.loading)
+            setError(res.error)
+          }
+          break
 
-      case 'GatheringService':
-        {
-          const res = await props.gatheringServiceFunction({
-            variables: {
-              id: currentChurch?.id,
-            },
-          })
+        case 'GatheringService':
+          {
+            const res = await props.gatheringServiceFunction({
+              variables: {
+                id: currentChurch?.id,
+              },
+            })
 
-          setChurch(res?.data?.gatheringServices[0])
-          setLoading(res.loading)
-          setError(res.error)
-        }
-        break
-      default:
-        break
+            setChurch(res?.data?.gatheringServices[0])
+            setLoading(res.loading)
+            setError(res.error)
+          }
+          break
+        default:
+          break
+      }
     }
-  }, [setChurch, currentChurch])
+
+    whichQuery()
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [setChurch])
 
   return { church, subChurchLevel, loading, error }
 }

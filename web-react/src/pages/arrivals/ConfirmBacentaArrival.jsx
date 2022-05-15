@@ -10,7 +10,6 @@ import { MemberContext } from 'contexts/MemberContext'
 import { ServiceContext } from 'contexts/ServiceContext'
 import { Form, Formik } from 'formik'
 import { alertMsg, throwErrorMsg } from 'global-utils'
-import PlaceholderMemberDisplay from 'pages/services/defaulters/PlaceholderDefaulter'
 import React, { useContext, useEffect, useState } from 'react'
 import { Button, Card, Container, Spinner } from 'react-bootstrap'
 import { useNavigate } from 'react-router'
@@ -24,9 +23,12 @@ import {
 import CloudinaryImage from 'components/CloudinaryImage'
 import useChurchLevel from 'hooks/useChurchLevel'
 import NoData from './CompNoData'
+import usePopup from 'hooks/usePopup'
+import PlaceholderDefaulterList from 'pages/services/defaulters/PlaceholderDefaulterList'
 
 const ConfirmBacentaArrival = () => {
-  const { clickCard, isOpen, togglePopup } = useContext(ChurchContext)
+  const { clickCard } = useContext(ChurchContext)
+  const { togglePopup, isOpen } = usePopup()
   const { theme } = useContext(MemberContext)
   const { bussingRecordId } = useContext(ServiceContext)
   const [isSubmitting, setSubmitting] = useState(false)
@@ -52,18 +54,19 @@ const ConfirmBacentaArrival = () => {
   const initialValues = {
     bacentaSearch: '',
   }
-  const bacentaDataLoaded = church ? church?.bacentasHaveBeenCounted : []
+  const bacentaDataLoaded = church ? church?.bacentasOnTheWay : []
   const [bacentaData, setBacentaData] = useState([])
 
   useEffect(() => {
     setBacentaData(bacentaDataLoaded)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [church])
 
   const onSubmit = (values, onSubmitProps) => {
     onSubmitProps.setSubmitting(true)
     const searchTerm = values.bacentaSearch.toLowerCase()
     setBacentaData(
-      church?.bacentasHaveBeenCounted.filter((bacenta) => {
+      church?.bacentasOnTheWay.filter((bacenta) => {
         if (bacenta.name.toLowerCase().includes(searchTerm)) {
           return true
         } else if (bacenta.leader.fullName.toLowerCase().includes(searchTerm)) {
@@ -105,16 +108,19 @@ const ConfirmBacentaArrival = () => {
                       bussingRecordId: bussingRecordId,
                     },
                   })
+                  const bussingData = arrivalRes.data.RecordArrivalTime
 
                   if (
-                    !arrivalRes.data.RecordArrivalTime.bussingTopUp ||
+                    !bussingData.bussingTopUp ||
                     church?.stream_name === 'Anagkazo'
                   ) {
                     //if there is no value for the bussing top up
-                    return
+                    alertMsg(
+                      'Money will be sent when attendance is counted and confirmed'
+                    )
                   }
 
-                  if (arrivalRes.data.RecordArrivalTime.confirmed_by.id) {
+                  if (bussingData.counted_by?.id) {
                     //If Attendance has been confrimed then send bussing support
                     try {
                       const supportRes = await SendBussingSupport({
@@ -128,12 +134,13 @@ const ConfirmBacentaArrival = () => {
                         'Money Successfully Sent to ' +
                           supportRes.data.SendBussingSupport.momoNumber
                       )
-                      setSubmitting(false)
                     } catch (error) {
-                      setSubmitting(false)
                       throwErrorMsg(error)
                     }
                   }
+
+                  setSubmitting(false)
+                  navigate('/bacenta/bussing-details')
                 } catch (error) {
                   setSubmitting(false)
                   throwErrorMsg(
@@ -217,11 +224,12 @@ const ConfirmBacentaArrival = () => {
             </Card.Footer>
           </Card>
         ))}
-        {!bacentaData?.length && (
+
+        {!bacentaData?.length && !loading && (
           <NoData text="There is no data to display for you" />
         )}
 
-        {loading && <PlaceholderMemberDisplay />}
+        {loading && <PlaceholderDefaulterList />}
       </Container>
     </BaseComponent>
   )

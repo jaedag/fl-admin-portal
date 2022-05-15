@@ -1,6 +1,5 @@
 import { useMutation, useQuery } from '@apollo/client'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
-import { ChurchContext } from 'contexts/ChurchContext'
 import React, { useContext } from 'react'
 import * as Yup from 'yup'
 import { useNavigate } from 'react-router'
@@ -24,9 +23,10 @@ import HeadingSecondary from 'components/HeadingSecondary'
 import { getHumanReadableDate } from 'date-utils'
 import DefaulterInfoCard from 'pages/services/defaulters/DefaulterInfoCard'
 import { MemberContext } from 'contexts/MemberContext'
+import usePopup from 'hooks/usePopup'
 
 const GatheringServiceDashboard = () => {
-  const { isOpen, togglePopup } = useContext(ChurchContext)
+  const { isOpen, togglePopup } = usePopup()
   const { currentUser } = useContext(MemberContext)
   const navigate = useNavigate()
   const today = new Date().toISOString().slice(0, 10)
@@ -191,14 +191,6 @@ const GatheringServiceDashboard = () => {
             onClick={() => navigate('/arrivals/bacentas-on-the-way')}
             number={gatheringService?.bacentasOnTheWayCount.toString()}
             color="yellow"
-            iconBg
-            noCaption
-          />
-
-          <MenuButton
-            title="Confirm Bacenta Arrival"
-            onClick={() => navigate('/arrivals/confirm-bacenta-arrival')}
-            number={gatheringService?.bacentasOnTheWayCount.toString()}
             iconBg
             noCaption
           />

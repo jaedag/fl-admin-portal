@@ -11,6 +11,7 @@
   background-color: #0000;
 }
 
-.td-placeholder {
-  min-width: 100px;
+.full-width {
+  width: 100%;
+  min-height: 20vh;
 }

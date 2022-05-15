@@ -8,9 +8,11 @@ import { getMonthlyStatAverage } from '../services/reports/report-utils'
 import StatDisplay from 'pages/services/reports/CompStatDisplay'
 import { Col, Row, Table, Container } from 'react-bootstrap'
 import Placeholder from '../../components/Placeholder'
+import { ChurchContext } from 'contexts/ChurchContext'
 
 const UserDashboard = () => {
-  const { currentUser, userJobs, setMemberId } = useContext(MemberContext)
+  const { currentUser, userJobs } = useContext(MemberContext)
+  const { clickCard } = useContext(ChurchContext)
   const navigate = useNavigate()
 
   return (
@@ -33,8 +35,8 @@ const UserDashboard = () => {
                       className="col-auto p-0"
                       key={i}
                       onClick={() => {
-                        setMemberId(currentUser.id)
-                        role.clickCard()
+                        clickCard(currentUser)
+                        clickCard(role.church[0])
                         navigate(role.link)
                       }}
                     >

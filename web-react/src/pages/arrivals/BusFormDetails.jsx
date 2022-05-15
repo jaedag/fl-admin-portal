@@ -6,21 +6,27 @@ import PlaceholderCustom from 'components/Placeholder'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { MemberContext } from 'contexts/MemberContext'
 import { ServiceContext } from 'contexts/ServiceContext'
-import React from 'react'
+import React, { useState } from 'react'
 import { useContext } from 'react'
 import { Container, Row, Col, Table, Button } from 'react-bootstrap'
 import { DISPLAY_BUSSING_RECORDS } from './arrivalsQueries'
 import '../services/record-service/ServiceDetails.css'
 import { useNavigate } from 'react-router'
 import RoleView from 'auth/RoleView'
-import { permitArrivalsHelper, permitMe } from 'permission-utils'
+import { permitAdminArrivals, permitArrivalsCounter } from 'permission-utils'
+import { parseNeoTime } from 'date-utils'
 import CloudinaryImage from 'components/CloudinaryImage'
-import { beforeArrivalDeadline } from './arrivals-utils'
+import { beforeArrivalDeadline, beforeCountingDeadline } from './arrivals-utils'
+import usePopup from 'hooks/usePopup'
+import Popup from 'components/Popup/Popup'
+import { getHumanReadableDate } from 'date-utils'
 
 const BusFormDetails = () => {
   const { bacentaId } = useContext(ChurchContext)
   const { theme } = useContext(MemberContext)
   const { bussingRecordId } = useContext(ServiceContext)
+  const { isOpen, togglePopup } = usePopup()
+  const [picturePopup, setPicturePopup] = useState('')
   const { data, loading, error } = useQuery(DISPLAY_BUSSING_RECORDS, {
     variables: { bussingRecordId: bussingRecordId, bacentaId: bacentaId },
   })
@@ -37,16 +43,28 @@ const BusFormDetails = () => {
         <PlaceholderCustom as="h6" loading={loading}>
           <HeadingSecondary>{`${church?.name} ${church?.__typename}`}</HeadingSecondary>
           <p>{`Recorded by ${bussing?.created_by.fullName}`}</p>
-          <RoleView roles={permitMe('Constituency')}>
-            {bussing?.confirmed_by && (
-              <p>
-                {`Confirmed by `}
+          {bussing?.counted_by && (
+            <p className="mb-0">
+              {`Counted`}
+              <RoleView roles={permitAdminArrivals('Stream')}>
+                {` by `}
                 <span className="fw-bold good">
-                  {bussing?.confirmed_by.fullName}
+                  {bussing?.counted_by.fullName}
                 </span>
-              </p>
-            )}
-          </RoleView>
+              </RoleView>
+            </p>
+          )}
+          {bussing?.arrival_confirmed_by && (
+            <p>
+              {`Arrival Confirmed`}
+              <RoleView roles={permitAdminArrivals('Stream')}>
+                {` by `}
+                <span className="fw-bold good">
+                  {bussing?.arrival_confirmed_by.fullName}
+                </span>
+              </RoleView>
+            </p>
+          )}{' '}
         </PlaceholderCustom>
 
         <Row>
@@ -62,9 +80,7 @@ const BusFormDetails = () => {
                       loading={loading}
                       className="td-placeholder"
                     >
-                      <td>
-                        {new Date(bussing?.serviceDate.date).toDateString()}
-                      </td>
+                      <td>{getHumanReadableDate(bussing?.serviceDate.date)}</td>
                     </PlaceholderCustom>
                   </tr>
                   <tr>
@@ -79,6 +95,14 @@ const BusFormDetails = () => {
                         >
                           <u>Click Here To View</u>
                         </span>
+                      </PlaceholderCustom>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Leader Declaration</td>
+                    <td>
+                      <PlaceholderCustom loading={loading}>
+                        {bussing?.leaderDeclaration}
                       </PlaceholderCustom>
                     </td>
                   </tr>
@@ -116,14 +140,16 @@ const BusFormDetails = () => {
                       </PlaceholderCustom>
                     </td>
                   </tr>
-                  <tr>
-                    <td>Number of Cars</td>
-                    <td>
-                      <PlaceholderCustom loading={loading}>
-                        {bussing?.numberOfCars}
-                      </PlaceholderCustom>
-                    </td>
-                  </tr>
+                  {bussing?.numberOfCars ? (
+                    <tr>
+                      <td>Number of Cars</td>
+                      <td>
+                        <PlaceholderCustom loading={loading}>
+                          {bussing?.numberOfCars}
+                        </PlaceholderCustom>
+                      </td>
+                    </tr>
+                  ) : null}
                   {bussing?.mobileNetwork && (
                     <tr>
                       <td>Mobile Network</td>
@@ -158,8 +184,20 @@ const BusFormDetails = () => {
                     <tr>
                       <td>Comments</td>
                       <td>
+                        <i>
+                          <PlaceholderCustom loading={loading}>
+                            {bussing?.comments}
+                          </PlaceholderCustom>
+                        </i>
+                      </td>
+                    </tr>
+                  )}
+                  {bussing?.arrivalTime && (
+                    <tr>
+                      <td>Arrival Time</td>
+                      <td className="fw-bold good">
                         <PlaceholderCustom loading={loading}>
-                          {bussing?.comments}
+                          {parseNeoTime(bussing?.arrivalTime)}
                         </PlaceholderCustom>
                       </td>
                     </tr>
@@ -167,30 +205,71 @@ const BusFormDetails = () => {
                 </tbody>
               </Table>
               <Row className="text-center">
+                {isOpen && (
+                  <Popup handleClose={togglePopup}>
+                    <CloudinaryImage
+                      src={picturePopup}
+                      className="full-width"
+                      size="respond"
+                    />
+                  </Popup>
+                )}
                 <h6>Bussing Pictures</h6>
-
-                {bussing?.bussingPictures?.map((picture, index) => {
-                  return (
-                    <Col key={index}>
-                      <CloudinaryImage
-                        className="report-picture"
-                        src={picture}
-                        large
-                      />
-                    </Col>
-                  )
-                })}
+                <div className="container card-button-row">
+                  <table>
+                    <tbody>
+                      <tr>
+                        {bussing?.bussingPictures?.map((picture, index) => (
+                          <td
+                            onClick={() => {
+                              setPicturePopup(picture)
+                              togglePopup()
+                            }}
+                            key={index}
+                          >
+                            <CloudinaryImage
+                              className="report-picture"
+                              src={picture}
+                              size="respond"
+                            />
+                          </td>
+                        ))}
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
               </Row>
             </Row>
           </Col>
         </Row>
+
         <div className="d-grid gap-2">
-          <RoleView roles={permitArrivalsHelper('Stream')}>
-            {beforeArrivalDeadline(bussing, church) && (
+          <RoleView roles={permitArrivalsCounter('Stream')}>
+            {beforeCountingDeadline(bussing, church) && (
+              <>
+                {!bussing?.attendance && (
+                  <Button
+                    variant="success"
+                    onClick={() => navigate('/arrivals/submit-bus-attendance')}
+                  >
+                    Confirm Attendance
+                  </Button>
+                )}
+                <Button
+                  variant="danger"
+                  onClick={() => navigate('/arrivals/bacentas-to-count')}
+                >
+                  Continue Counting
+                </Button>
+              </>
+            )}
+
+            {beforeArrivalDeadline(null, church) && (
               <Button
-                onClick={() => navigate('/arrivals/submit-bus-attendance')}
+                variant="danger"
+                onClick={() => navigate('/arrivals/confirm-bacenta-arrival')}
               >
-                Enter Attendance
+                Continue Confirming Arrivals
               </Button>
             )}
           </RoleView>

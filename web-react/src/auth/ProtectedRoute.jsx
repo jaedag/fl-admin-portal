@@ -8,6 +8,7 @@ import { permitMe } from 'permission-utils'
 import { UnauthMsg } from './UnauthMsg'
 import LoadingScreen from 'components/base-component/LoadingScreen'
 import Login from 'components/Login'
+import Sabbath from './Sabbath'
 
 const ProtectedRoute = ({ children, roles, roleBased, placeholder }) => {
   const { currentUser } = useContext(MemberContext)
@@ -17,13 +18,16 @@ const ProtectedRoute = ({ children, roles, roleBased, placeholder }) => {
   const location = useLocation()
   const atHome = location?.pathname === '/'
 
+  if (new Date().getDay() === 1) {
+    return <Sabbath />
+  }
   if (atHome && !isAuthenticated) {
     //Unauthenticated and home
     return <Login />
   }
 
   if (isAuthorised(roles, currentUser.roles)) {
-    //if the user has permission to access the route
+    //if the user has permission to access the initialTouchedroute
     return children
   } else if (placeholder && !isAuthenticated && roleBased) {
     //User has no permission but there is a placeholder, and he's authenticated so let's load the screen

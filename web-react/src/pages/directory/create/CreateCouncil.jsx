@@ -3,12 +3,13 @@ import { useNavigate } from 'react-router-dom'
 import { useMutation } from '@apollo/client'
 import { throwErrorMsg } from '../../../global-utils'
 import { CREATE_COUNCIL_MUTATION } from './CreateMutations'
+import { CREATE_COUNCIL_EQUIPMENT_CAMPAIGN } from '../../campaigns/CampaignQueries'
 import { ChurchContext } from '../../../contexts/ChurchContext'
 import { NEW_COUNCIL_LEADER } from './MakeLeaderMutations'
-import CouncilForm from 'components/reusable-forms/CouncilForm'
+import CouncilForm from 'pages/directory/reusable-forms/CouncilForm'
 
 const CreateCouncil = () => {
-  const { clickCard, streamId, setStreamId } = useContext(ChurchContext)
+  const { clickCard, streamId } = useContext(ChurchContext)
 
   const navigate = useNavigate()
 
@@ -21,37 +22,52 @@ const CreateCouncil = () => {
 
   const [NewCouncilLeader] = useMutation(NEW_COUNCIL_LEADER)
   const [CreateCouncil] = useMutation(CREATE_COUNCIL_MUTATION)
+  const [CreateEquipmentCampaign] = useMutation(
+    CREATE_COUNCIL_EQUIPMENT_CAMPAIGN
+  )
 
   //onSubmit receives the form state as argument
-  const onSubmit = (values, onSubmitProps) => {
+  const onSubmit = async (values, onSubmitProps) => {
     onSubmitProps.setSubmitting(true)
-    setStreamId(values.stream)
+    clickCard({ id: values.stream, __typename: 'Stream' })
+    try {
+      const res = await CreateCouncil({
+        variables: {
+          name: values.name,
+          leaderId: values.leaderId,
+          streamId: values.stream,
+          constituencies: values.constituencies,
+        },
+      })
+      clickCard(res.data.CreateCouncil)
 
-    CreateCouncil({
-      variables: {
-        name: values.name,
-        leaderId: values.leaderId,
-        streamId: values.stream,
-        constituencies: values.constituencies,
-      },
-    })
-      .then((res) => {
-        clickCard(res.data.CreateCouncil)
-        NewCouncilLeader({
+      try {
+        await NewCouncilLeader({
           variables: {
             leaderId: values.leaderId,
             councilId: res.data.CreateCouncil.id,
           },
-        }).catch((error) => {
-          throwErrorMsg('There was an error adding leader', error)
         })
-        onSubmitProps.setSubmitting(false)
-        onSubmitProps.resetForm()
-        navigate(`/council/displaydetails`)
-      })
-      .catch((error) => {
-        throwErrorMsg('There was an error creating council', error)
-      })
+      } catch (error) {
+        throwErrorMsg('There was an error adding leader', error)
+      }
+
+      try {
+        await CreateEquipmentCampaign({
+          variables: {
+            councilId: res.data.CreateCouncil.id,
+          },
+        })
+      } catch (error) {
+        throwErrorMsg('There was an error creating a campaign', error)
+      }
+    } catch (error) {
+      throwErrorMsg('There was an error creating council', error)
+    }
+
+    onSubmitProps.setSubmitting(false)
+    onSubmitProps.resetForm()
+    navigate(`/council/displaydetails`)
   }
 
   return (

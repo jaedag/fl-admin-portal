@@ -2,12 +2,12 @@
 export const componentServiceAggregates = `
  MATCH (church {id:$id}) WHERE church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:GatheringService
   
-  MATCH (church)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS*1..5]->(componentServices:ServiceLog)
+  MATCH (church)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_COMPONENT*1..5]->(componentServices:ServiceLog)
   MATCH (componentServices)-[:HAS_SERVICE]->(componentRecords:ServiceRecord)
 
   MATCH (componentRecords)-[:SERVICE_HELD_ON]->(date:TimeGraph)
   WHERE date.date > date() - duration({months: 2})
-  WITH DISTINCT componentServices,componentRecords, date(date.date).week AS week ORDER BY week
+  WITH  DISTINCT componentRecords, date(date.date).week AS week ORDER BY week
 
 RETURN week AS week,SUM(componentRecords.attendance) AS attendance, SUM(componentRecords.income) AS income ORDER BY week DESC LIMIT toInteger($limit)
 `
@@ -15,15 +15,12 @@ RETURN week AS week,SUM(componentRecords.attendance) AS attendance, SUM(componen
 export const componentBacentaServiceAggregates = `
  MATCH (church:Bacenta {id:$id})
   
-  MATCH (church)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS]->(componentServices:ServiceLog)
+  MATCH (church)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_COMPONENT]->(componentServices:ServiceLog)
   MATCH (componentServices)-[:HAS_SERVICE]->(componentRecords:ServiceRecord)
-  WHERE EXISTS {
-    MATCH (church)-[:HAS]->(downChurch:Fellowship)-[:HAS_HISTORY]->(componentServices)
-  }
 
   MATCH (componentRecords)-[:SERVICE_HELD_ON]->(date:TimeGraph)
   WHERE date.date > date() - duration({months: 2})
-  WITH DISTINCT componentServices,componentRecords, date(date.date).week AS week ORDER BY week
+  WITH DISTINCT componentRecords, date(date.date).week AS week ORDER BY week
 
 RETURN week AS week,SUM(componentRecords.attendance) AS attendance, SUM(componentRecords.income) AS income ORDER BY week DESC LIMIT toInteger($limit)
 `
@@ -31,25 +28,25 @@ RETURN week AS week,SUM(componentRecords.attendance) AS attendance, SUM(componen
 export const componentConstituencyServiceAggregates = `
  MATCH (church:Constituency {id:$id})
   
-  MATCH (church)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS*1..2]->(componentServices:ServiceLog)
+  MATCH (church)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_COMPONENT*1..2]->(componentServices:ServiceLog)
   MATCH (componentServices)-[:HAS_SERVICE]->(componentRecords:ServiceRecord)
 
   MATCH (componentRecords)-[:SERVICE_HELD_ON]->(date:TimeGraph)
   WHERE date.date > date() - duration({months: 2})
-  WITH DISTINCT componentServices,componentRecords, date(date.date).week AS week ORDER BY week
+  WITH DISTINCT componentRecords, date(date.date).week AS week ORDER BY week
 
-RETURN week AS week,SUM(componentRecords.attendance) AS attendance, SUM(componentRecords.income) AS income ORDER BY week DESC LIMIT toInteger($limit)
+RETURN week AS week, SUM(componentRecords.attendance) AS attendance, SUM(componentRecords.income) AS income ORDER BY week DESC LIMIT toInteger($limit)
 `
 
 export const componentCouncilServiceAggregates = `
  MATCH (church:Council {id:$id})
   
-  MATCH (church)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS*1..3]->(componentServices:ServiceLog)
+  MATCH (church)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_COMPONENT*1..3]->(componentServices:ServiceLog)
   MATCH (componentServices)-[:HAS_SERVICE]->(componentRecords:ServiceRecord)
 
   MATCH (componentRecords)-[:SERVICE_HELD_ON]->(date:TimeGraph)
   WHERE date.date > date() - duration({months: 2})
-  WITH DISTINCT componentServices,componentRecords, date(date.date).week AS week ORDER BY week
+  WITH DISTINCT componentRecords, date(date.date).week AS week ORDER BY week
 
 RETURN week AS week,SUM(componentRecords.attendance) AS attendance, SUM(componentRecords.income) AS income ORDER BY week DESC LIMIT toInteger($limit)
 `
@@ -57,12 +54,12 @@ RETURN week AS week,SUM(componentRecords.attendance) AS attendance, SUM(componen
 export const componentStreamServiceAggregates = `
  MATCH (church:Stream {id:$id})
   
-  MATCH (church)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS*1..4]->(componentServices:ServiceLog)
+  MATCH (church)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_COMPONENT*1..4]->(componentServices:ServiceLog)
   MATCH (componentServices)-[:HAS_SERVICE]->(componentRecords:ServiceRecord)
 
   MATCH (componentRecords)-[:SERVICE_HELD_ON]->(date:TimeGraph)
   WHERE date.date > date() - duration({months: 2})
-  WITH DISTINCT componentServices,componentRecords, date(date.date).week AS week ORDER BY week
+  WITH DISTINCT componentRecords, date(date.date).week AS week ORDER BY week
 
 RETURN week AS week,SUM(componentRecords.attendance) AS attendance, SUM(componentRecords.income) AS income ORDER BY week DESC LIMIT toInteger($limit)
 `
@@ -70,12 +67,12 @@ RETURN week AS week,SUM(componentRecords.attendance) AS attendance, SUM(componen
 export const componentGatheringServiceServiceAggregates = `
  MATCH (church:GatheringService {id:$id})
   
-  MATCH (church)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS*1..5]->(componentServices:ServiceLog)
+  MATCH (church)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_COMPONENT*1..5]->(componentServices:ServiceLog)
   MATCH (componentServices)-[:HAS_SERVICE]->(componentRecords:ServiceRecord)
 
   MATCH (componentRecords)-[:SERVICE_HELD_ON]->(date:TimeGraph)
   WHERE date.date > date() - duration({months: 2})
-  WITH DISTINCT componentServices,componentRecords, date(date.date).week AS week ORDER BY week
+  WITH DISTINCT componentRecords, date(date.date).week AS week ORDER BY week
 
-RETURN week AS week,SUM(componentRecords.attendance) AS attendance, SUM(componentRecords.income) AS income ORDER BY week DESC LIMIT toInteger($limit)
+RETURN week AS week, SUM(componentRecords.attendance) AS attendance, SUM(componentRecords.income) AS income ORDER BY week DESC LIMIT toInteger($limit)
 `

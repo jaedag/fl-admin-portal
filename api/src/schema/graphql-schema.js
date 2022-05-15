@@ -31,8 +31,11 @@ const services = fs
   .readFileSync(path.join(__dirname, 'services.graphql'))
   .toString('utf-8')
 
+const banking = fs
+  .readFileSync(path.join(__dirname, './banking.graphql'))
+  .toString('utf-8')
 const arrivals = fs
-  .readFileSync(path.join(__dirname, 'arrivals.graphql'))
+  .readFileSync(path.join(__dirname, './arrivals.graphql'))
   .toString('utf-8')
 
 const campaigns = fs
@@ -41,6 +44,10 @@ const campaigns = fs
 
 const equipmentCampaign = fs
   .readFileSync(path.join(__dirname, 'campaigns-equipment.graphql'))
+  .toString('utf-8')
+
+const campaignsCrud = fs
+  .readFileSync(path.join(__dirname, 'campaigns-crud.graphql'))
   .toString('utf-8')
 
 exports.typeDefs =
@@ -61,4 +68,8 @@ exports.typeDefs =
   campaigns +
   ' ' +
   equipmentCampaign +
+  ' ' +
+  banking +
+  ' ' +
+  campaignsCrud +
   ' '

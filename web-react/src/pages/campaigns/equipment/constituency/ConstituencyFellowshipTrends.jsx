@@ -32,7 +32,7 @@ const ConstituencyFellowshipTrends = () => {
           </div>
           <div className="d-grid gap-2 mt-4 text-center px-2">
             {fellowships?.map((fellowship, index) => (
-              <FellowshipTrendsButton key={index} fellowship={fellowship} />
+              <FellowshipTrendsButton key={index} church={fellowship} />
             ))}
           </div>
         </Container>

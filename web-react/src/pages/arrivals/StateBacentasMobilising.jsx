@@ -3,7 +3,7 @@ import BaseComponent from 'components/base-component/BaseComponent'
 import MemberDisplayCard from 'components/card/MemberDisplayCard'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import HeadingSecondary from 'components/HeadingSecondary'
-import React from 'react'
+import React, { useContext } from 'react'
 import { Container } from 'react-bootstrap'
 import {
   CONSTITUENCY_BACENTAS_MOBILISING,
@@ -13,8 +13,13 @@ import {
 } from './bussingStatusQueries'
 import useChurchLevel from '../../hooks/useChurchLevel'
 import NoData from './CompNoData'
+import PlaceholderDefaulterList from 'pages/services/defaulters/PlaceholderDefaulterList'
+import { ChurchContext } from 'contexts/ChurchContext'
+import { useNavigate } from 'react-router'
 
 const BacentasMobilising = () => {
+  const { clickCard } = useContext(ChurchContext)
+  const navigate = useNavigate()
   const [constituencyBacentasMobilising] = useLazyQuery(
     CONSTITUENCY_BACENTAS_MOBILISING
   )
@@ -50,9 +55,18 @@ const BacentasMobilising = () => {
               member={bacenta}
               leader={bacenta.leader}
               contact
+              onClick={() => {
+                clickCard(bacenta)
+                clickCard(bacenta.bussing[0])
+                navigate('/bacenta/bussing-details')
+              }}
             />
           )
         })}
+
+        {!church?.bacentasMobilising.length && loading && (
+          <PlaceholderDefaulterList loading={true} />
+        )}
       </Container>
     </BaseComponent>
   )

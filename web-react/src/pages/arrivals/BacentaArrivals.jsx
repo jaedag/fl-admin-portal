@@ -13,16 +13,30 @@ import {
   beforeMobilisationDeadline,
 } from './arrivals-utils'
 import { isToday } from 'date-utils'
+import HeadingSecondary from 'components/HeadingSecondary'
 
 const BacentaArrivals = () => {
   const { clickCard, bacentaId } = useContext(ChurchContext)
   const navigate = useNavigate()
+  const today = new Date().toISOString().slice(0, 10)
   const { data, loading, error } = useQuery(BACENTA_ARRIVALS, {
-    variables: { id: bacentaId },
+    variables: { id: bacentaId, date: today },
   })
 
   const bacenta = data?.bacentas[0]
+  const date = data?.timeGraphs[0]
+
   let bussing
+
+  const isMomoCleared = (bacenta) => {
+    if (bacenta?.normalBussingTopUp || bacenta?.swellBussingTopUp) {
+      if (bacenta?.momoNumber) {
+        return true
+      }
+      return false
+    }
+    return true
+  }
 
   data?.bacentas[0].bussing.map((data) => {
     if (isToday(data.serviceDate.date)) {
@@ -38,27 +52,56 @@ const BacentaArrivals = () => {
     if (!bussing) {
       return false
     }
+
     return (
       beforeArrivalDeadline(bussing, bacenta) &&
-      (bussing?.mobilisationPicture || !bussing?.bussingPictures?.length)
+      bussing?.mobilisationPicture &&
+      !bussing?.bussingPictures?.length
     )
   }
 
-  beforeMobilisationDeadline(bussing, bacenta)
   return (
     <BaseComponent data={data} loading={loading} error={error}>
       <Container>
         <HeadingPrimary loading={loading}>
           {bacenta?.name} Arrivals
         </HeadingPrimary>
+        {date?.swell && (
+          <HeadingSecondary loading={loading}>
+            <h3 className="fw-bold text-center yellow">Swollen Weekend!!!</h3>
+          </HeadingSecondary>
+        )}
+        <div className="text-center text-seconday">
+          <p>Code of the Day: </p>
+          <h4 className="fw-bold">{`${bacenta?.arrivalsCodeOfTheDay}`}</h4>
+        </div>
 
         <div className="d-grid gap-2 mt-5">
+          {!isMomoCleared(bacenta) && (
+            <>
+              <Button
+                variant="danger"
+                size="lg"
+                onClick={() => navigate('/bacenta/editbussing')}
+              >
+                Please update your payment details
+              </Button>
+              <p className="text-center fw-bold">
+                You will need this to fill your forms
+              </p>
+            </>
+          )}
+
           <Button
             variant="primary"
             size="lg"
-            disabled={!beforeMobilisationDeadline(bussing, bacenta)}
+            disabled={
+              !beforeMobilisationDeadline(bussing, bacenta) ||
+              !isMomoCleared(bacenta)
+            }
             onClick={() => {
               clickCard(bacenta)
+              clickCard(bussing)
               navigate('/arrivals/submit-mobilisation-picture')
             }}
           >
@@ -71,11 +114,25 @@ const BacentaArrivals = () => {
             disabled={!canFillOnTheWay()}
             onClick={() => {
               clickCard(bacenta)
+              clickCard(bussing)
               navigate('/arrivals/submit-on-the-way')
             }}
           >
             Submit On-The-Way Picture
           </Button>
+          {bussing && (
+            <Button
+              variant="primary"
+              size="lg"
+              onClick={() => {
+                clickCard(bacenta)
+                clickCard(bussing)
+                navigate('/bacenta/bussing-details')
+              }}
+            >
+              {`Today's Bussing`}
+            </Button>
+          )}
 
           {bussing?.arrivalTime && (
             <Card>

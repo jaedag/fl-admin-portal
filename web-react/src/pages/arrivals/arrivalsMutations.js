@@ -179,9 +179,6 @@ export const RECORD_BUSSING_FROM_BACENTA = gql`
     $bussingCost: Float!
     $numberOfBusses: Int!
     $numberOfCars: Int!
-    $mobileNetwork: String!
-    $momoName: String!
-    $momoNumber: String!
   ) {
     RecordBussingFromBacenta(
       bussingRecordId: $bussingRecordId
@@ -190,18 +187,14 @@ export const RECORD_BUSSING_FROM_BACENTA = gql`
       bussingCost: $bussingCost
       numberOfBusses: $numberOfBusses
       numberOfCars: $numberOfCars
-      mobileNetwork: $mobileNetwork
-      momoName: $momoName
-      momoNumber: $momoNumber
     ) {
       id
       attendance
       bussingPictures
       bussingCost
+      leaderDeclaration
       numberOfBusses
       numberOfCars
-      momoName
-      momoNumber
 
       serviceLog {
         bacenta {
@@ -221,13 +214,11 @@ export const CONFIRM_BUSSING_BY_ADMIN = gql`
   mutation ConfirmBussingByAdmin(
     $bussingRecordId: ID!
     $attendance: Int!
-    $bussingTopUp: Float!
     $comments: String
   ) {
     ConfirmBussingByAdmin(
       bussingRecordId: $bussingRecordId
       attendance: $attendance
-      bussingTopUp: $bussingTopUp
       comments: $comments
     ) {
       id
@@ -236,7 +227,7 @@ export const CONFIRM_BUSSING_BY_ADMIN = gql`
       momoName
       momoNumber
       week
-      confirmed_by {
+      counted_by {
         id
         firstName
         lastName
@@ -254,10 +245,12 @@ export const RECORD_ARRIVAL_TIME = gql`
       id
       bussingTopUp
       arrivalTime
-      confirmed_by {
+      counted_by {
         id
+        firstName
+        lastName
       }
-      arrivalTime_Logged_By {
+      arrival_confirmed_by {
         id
         firstName
         lastName

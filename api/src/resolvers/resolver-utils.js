@@ -162,6 +162,12 @@ export const historyRecordString = ({
   if (args.arrivalsAdminId) {
     return `${servant.firstName} ${servant.lastName} became the arrivals admin for ${church.name} ${churchType}`
   }
+  if (args.arrivalsCounterId) {
+    return `${servant.firstName} ${servant.lastName} became the arrivals counter for ${church.name} ${churchType}`
+  }
+  if (args.arrivalsConfirmerId) {
+    return `${servant.firstName} ${servant.lastName} became the arrivals confirmer for ${church.name} ${churchType}`
+  }
 
   return `${servant.firstName} ${servant.lastName} started ${church.name} ${churchType} under ${higherChurch.name} ${higherChurch.type}`
 }
@@ -291,11 +297,15 @@ export const formatting = (churchType, servantType) => {
     verb = `isArrivalsAdminFor${churchType}`
     servantLower = 'arrivalsAdmin'
   }
-  if (servantType === 'ArrivalsHelper') {
-    verb = `isArrivalsHelperFor${churchType}`
-    servantLower = 'arrivalsHelper'
+  if (servantType === 'ArrivalsCounter') {
+    verb = `isArrivalsCounterFor${churchType}`
+    servantLower = 'arrivalsCounter'
   }
 
+  if (servantType === 'ArrivalsConfirmer') {
+    verb = `isArrivalsConfirmerFor${churchType}`
+    servantLower = 'arrivalsConfirmer'
+  }
   if (churchType === 'GatheringService') {
     churchLower = 'gatheringService'
   }

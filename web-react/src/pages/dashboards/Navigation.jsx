@@ -3,7 +3,7 @@ import RoleView from 'auth/RoleView'
 import UserProfileIcon from 'components/UserProfileIcon/UserProfileIcon'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { MemberContext } from 'contexts/MemberContext'
-import { authorisedLink, plural } from 'global-utils'
+import { authorisedLink, capitalise, plural } from 'global-utils'
 import { getServiceGraphData } from 'pages/services/reports/report-utils'
 import React, { useContext, useEffect } from 'react'
 import { Container, Nav, Navbar, Offcanvas, Row, Col } from 'react-bootstrap'
@@ -48,6 +48,7 @@ const Navigator = () => {
 
       setCurrentUser({
         ...currentUser,
+        __typename: 'Member',
         id: data.memberByEmail.id,
         firstName: data.memberByEmail.firstName,
         lastName: data.memberByEmail.lastName,
@@ -60,6 +61,7 @@ const Navigator = () => {
           data.memberByEmail?.fellowship?.bacenta.constituency?.council.id,
         constituency: data.memberByEmail?.fellowship?.bacenta.constituency?.id,
         church: { church: church, subChurch: 'bacenta' },
+        stream_name: capitalise(data?.memberByEmail?.stream_name),
         stream:
           data.memberByEmail?.fellowship?.bacenta.constituency?.council.stream
             .id,
@@ -108,8 +110,12 @@ const Navigator = () => {
       case 'ArrivalsAdmin':
         verb = `isArrivalsAdminFor${churchType}`
         break
-      case 'ArrivalsHelper':
-        verb = `isArrivalsHelperFor${churchType}`
+      case 'ArrivalsCounter':
+        verb = `isArrivalsCounterFor${churchType}`
+        break
+
+      case 'ArrivalsConfirmer':
+        verb = `isArrivalsConfirmerFor${churchType}`
         break
       default:
         break
@@ -117,7 +123,10 @@ const Navigator = () => {
 
     const permittedForLink = permitMe(churchType)
 
-    if (servantType === 'ArrivalsHelper') {
+    if (
+      servantType === 'ArrivalsConfirmer' ||
+      servantType === 'ArrivalsCounter'
+    ) {
       const adminsOneChurch = servant[`${verb}`].length === 1 ?? false
       roles.push({
         name: adminsOneChurch
@@ -125,9 +134,6 @@ const Navigator = () => {
           : plural(churchType) + ' ' + servantType,
         church: servant[`${verb}`],
         number: servant[`${verb}`].length,
-        clickCard: () => {
-          clickCard(servant[`${verb}`][0])
-        },
         link: authorisedLink(currentUser, permittedForLink, `/arrivals`),
       })
 
@@ -220,8 +226,11 @@ const Navigator = () => {
     if (servantArrivals?.isArrivalsAdminForStream?.length) {
       setServantRoles(servantArrivals, 'ArrivalsAdmin', 'Stream')
     }
-    if (servantArrivals?.isArrivalsHelperForStream?.length) {
-      setServantRoles(servantArrivals, 'ArrivalsHelper', 'Stream')
+    if (servantArrivals?.isArrivalsCounterForStream?.length) {
+      setServantRoles(servantArrivals, 'ArrivalsCounter', 'Stream')
+    }
+    if (servantArrivals?.isArrivalsConfirmerForStream?.length) {
+      setServantRoles(servantArrivals, 'ArrivalsConfirmer', 'Stream')
     }
     if (servantLeader?.leadsGatheringService?.length) {
       setServantRoles(servantLeader, 'Leader', 'GatheringService')
@@ -302,7 +311,7 @@ const Navigator = () => {
                 <Nav.Link
                   as={Link}
                   eventKey={menuItems.length}
-                  exact
+                  exact="true"
                   to="/user-profile"
                 >
                   <UserProfileIcon />

@@ -1,18 +1,22 @@
 import MenuButton from 'components/buttons/MenuButton'
 import PlaceholderCustom from 'components/Placeholder'
 import { MemberContext } from 'contexts/MemberContext'
+import { ChurchContext } from 'contexts/ChurchContext'
 import React, { useContext } from 'react'
 import { Container } from 'react-bootstrap'
 import {
   BarChartFill,
   Book,
+  Coin,
   FileEarmarkArrowUpFill,
 } from 'react-bootstrap-icons'
 import { useNavigate } from 'react-router'
+import RoleView from 'auth/RoleView'
 
 const Services = () => {
   const { currentUser, theme } = useContext(MemberContext)
   const navigate = useNavigate()
+  const { clickCard } = useContext(ChurchContext)
 
   const church = currentUser.currentChurch
   const churchType = currentUser.currentChurch?.__typename
@@ -28,15 +32,16 @@ const Services = () => {
         </PlaceholderCustom>
 
         <div className="d-grid gap-2 mt-5 text-left">
-          {churchType === 'Fellowship' && (
-            <MenuButton
-              iconComponent={Book}
-              title="Fellowship Service"
-              color="members"
-              onClick={() => navigate(`/services/fellowship`)}
-              noCaption
-            />
-          )}
+          {churchType === 'Fellowship' &&
+            church?.vacationStatus === 'Active' && (
+              <MenuButton
+                iconComponent={Book}
+                title="Fellowship Service"
+                color="members"
+                onClick={() => navigate(`/services/fellowship`)}
+                noCaption
+              />
+            )}
           {churchType === 'Bacenta' && (
             <MenuButton
               iconComponent={Book}
@@ -66,15 +71,33 @@ const Services = () => {
             onClick={() => navigate(`/${churchType.toLowerCase()}/reports`)}
           />
           {['Council', 'Constituency', 'Fellowship'].includes(churchType) && (
-            <MenuButton
-              iconComponent={FileEarmarkArrowUpFill}
-              title="Banking Slips"
-              color="members"
-              noCaption
-              onClick={() =>
-                navigate(`/services/${churchType.toLowerCase()}/banking-slips`)
-              }
-            />
+            <>
+              <MenuButton
+                iconComponent={FileEarmarkArrowUpFill}
+                title="Upload Banking Slips"
+                color="banking"
+                noCaption
+                onClick={() => {
+                  clickCard(church)
+                  navigate(
+                    `/services/${churchType.toLowerCase()}/banking-slips`
+                  )
+                }}
+              />
+              <RoleView permittedStream={['Campus', 'Town']}>
+                <MenuButton
+                  iconComponent={Coin}
+                  title="Self Banking Option"
+                  color="banking"
+                  noCaption
+                  onClick={() =>
+                    navigate(
+                      `/services/${churchType.toLowerCase()}/self-banking`
+                    )
+                  }
+                />
+              </RoleView>
+            </>
           )}
         </div>
       </Container>

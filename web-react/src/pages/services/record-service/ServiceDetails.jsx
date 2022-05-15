@@ -2,9 +2,10 @@ import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import HeadingSecondary from 'components/HeadingSecondary'
 import PlaceholderCustom from 'components/Placeholder'
 import SpinnerPage from 'components/SpinnerPage'
+import TableFromArrays from 'components/TableFromArrays/TableFromArrays'
 import { MemberContext } from 'contexts/MemberContext'
-import React, { useContext } from 'react'
-import { Col, Container, Row, Table, Button } from 'react-bootstrap'
+import React, { useContext, useEffect } from 'react'
+import { Col, Container, Row, Button } from 'react-bootstrap'
 import { useNavigate } from 'react-router'
 import './ServiceDetails.css'
 
@@ -12,13 +13,24 @@ const ServiceDetails = ({ service, church, loading }) => {
   const { theme } = useContext(MemberContext)
   const navigate = useNavigate()
 
-  if (!service) {
-    navigate(-1)
-  }
-
+  useEffect(() => {
+    if (!service) {
+      navigate(-1)
+    }
+  }, [service, navigate])
   if (loading) {
     return <SpinnerPage />
   }
+
+  const table = [
+    ['Date of Service', new Date(service.serviceDate.date).toDateString()],
+    ['Attendance', service.attendance],
+    ['Income', service.income],
+    ...service.treasurers.map((treasurer, i) => [
+      `Treasurer ${i + 1}`,
+      treasurer.fullName,
+    ]),
+  ]
 
   return (
     <Container>
@@ -28,56 +40,18 @@ const ServiceDetails = ({ service, church, loading }) => {
       <PlaceholderCustom as="h6" loading={loading}>
         <HeadingSecondary>{`${church?.name} ${church?.__typename}`}</HeadingSecondary>
         <p>{`Recorded by ${service?.created_by.fullName}`}</p>
+        {service?.bankingSlipUploader && (
+          <p className="fw-bold">{`Banking Slip Uploaded by ${service?.bankingSlipUploader.fullName}`}</p>
+        )}
+        {service?.offeringBankedBy && (
+          <p className="fw-bold">{`Offering Banked by ${service?.offeringBankedBy.fullName}`}</p>
+        )}
       </PlaceholderCustom>
       <Row>
         <Col>
           {service?.attendance && (
             <Row className="d-flex justify-content-center">
-              <Table variant={theme} striped bordered>
-                <tbody>
-                  <tr>
-                    <td>Date of Service</td>
-                    <PlaceholderCustom
-                      as="td"
-                      xs={12}
-                      loading={loading}
-                      className="td-placeholder"
-                    >
-                      <td>
-                        {new Date(service.serviceDate.date).toDateString()}
-                      </td>
-                    </PlaceholderCustom>
-                  </tr>
-                  <tr>
-                    <td>Attendance</td>
-                    <td>
-                      <PlaceholderCustom loading={loading}>
-                        {service.attendance}
-                      </PlaceholderCustom>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Income</td>
-                    <td>
-                      <PlaceholderCustom loading={loading}>
-                        {service.income}
-                      </PlaceholderCustom>
-                    </td>
-                  </tr>
-                  {service.treasurers.map((treasurer, i) => {
-                    return (
-                      <tr key={i}>
-                        <td>{`Treasurer ${i + 1}`}</td>
-                        <td>
-                          <PlaceholderCustom loading={loading}>
-                            {treasurer.fullName}
-                          </PlaceholderCustom>
-                        </td>
-                      </tr>
-                    )
-                  })}
-                </tbody>
-              </Table>
+              <TableFromArrays tableArray={table} loading={loading} />
               <div className="text-center">
                 <h6>Treasurer Selfie</h6>
                 <div>
@@ -92,7 +66,6 @@ const ServiceDetails = ({ service, church, loading }) => {
                     />
                   </PlaceholderCustom>
                 </div>
-
                 <h6>Service Picture</h6>
                 <div>
                   <PlaceholderCustom
@@ -106,9 +79,21 @@ const ServiceDetails = ({ service, church, loading }) => {
                     />
                   </PlaceholderCustom>
                 </div>
-                {service?.bankingSlip ? (
+                {service?.offeringBankedBy && (
+                  <div className="mb-4">
+                    {`${service?.offeringBankedBy.fullName} used the Self Banking Feature. Click this button to see
+                    Details`}
+                    <div>
+                      <Button onClick={() => navigate('/self-banking/receipt')}>
+                        View Banking Details
+                      </Button>
+                    </div>
+                  </div>
+                )}
+                {service?.bankingSlip && (
                   <>
                     <h6>Banking Slip</h6>
+
                     <div>
                       <PlaceholderCustom
                         loading={loading}
@@ -122,12 +107,12 @@ const ServiceDetails = ({ service, church, loading }) => {
                       </PlaceholderCustom>
                     </div>
                   </>
-                ) : (
+                )}{' '}
+                {!service?.bankingProof && (
                   <p className="fw-bold text-danger">
                     You Have Not Submitted Your Banking Slip!!!
                   </p>
                 )}
-
                 <div className="d-grid gap-2">
                   <Button
                     className={`btn-trends ${theme}`}

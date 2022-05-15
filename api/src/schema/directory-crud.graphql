@@ -347,7 +347,8 @@ extend type Mutation {
     @cypher(
       statement: """
       CREATE (bacenta:Bacenta:IC:Active {name:$name})
-        SET	bacenta.id = apoc.create.uuid()
+        SET	bacenta.id = apoc.create.uuid(),
+        bacenta.target = 10
       WITH bacenta
        MATCH (leader:Member {id:$leaderId})
        MATCH (constituency:Constituency {id:$constituencyId})
@@ -488,6 +489,18 @@ extend type Mutation {
 ### UPDATE OPERATIONS ###
 extend type Mutation {
   UpdateMemberEmail(id: ID!, email: String!): Member
+  UpdateMemberFellowship(memberId: ID!, fellowshipId: ID!): Member
+    @cypher(
+      statement: """
+      MATCH (member:Member {id: $memberId})
+      MATCH (fellowship:Fellowship {id: $fellowshipId})
+
+      OPTIONAL MATCH (member)-[previous:BELONGS_TO]-> (:Fellowship)
+      DELETE previous
+      MERGE (member)-[:BELONGS_TO]-> (fellowship)
+      RETURN member
+      """
+    )
 
   UpdateMemberDetails(
     id: ID!
@@ -581,16 +594,8 @@ extend type Mutation {
       	MERGE (member)-[:HAS_OCCUPATION]-> (occupation)
          	RETURN count(member)
          	}
-      WITH member
-      CALL {
-         	WITH member
-         	WITH member  WHERE $fellowship IS NOT NULL
-         	MATCH (fellowship:Fellowship {id: $fellowship})
-      	OPTIONAL MATCH (member)-[r0:BELONGS_TO]-> (:Fellowship)
-      	DELETE r0
-      	MERGE (member)-[:BELONGS_TO]-> (fellowship)
-        RETURN count(member)
-         	}
+
+
       WITH member
       CALL {
          	WITH member
@@ -790,32 +795,8 @@ extend type Mutation {
   MakeMemberInactive(id: ID!): Member
   CloseDownFellowship(fellowshipId: ID!, leaderId: ID!): Bacenta
   CloseDownBacenta(bacentaId: ID!, leaderId: ID!): Constituency
+  CloseDownConstituency(constituencyId: ID!, leaderId: ID!): Council
 
-  CloseDownConstituency(constituencyId: ID!): Constituency
-    @cypher(
-      statement: """
-      MATCH (constituency:Constituency {id:$constituencyId})
-      MATCH (admin:Member {auth_id: $auth.jwt.sub})
-      MATCH (constituency)<-[:HAS]-(council:Council)
-      OPTIONAL MATCH (constituency)-[:HAS]->(bacentas)-[:HAS]->(fellowships)
-
-      CREATE (log:HistoryLog {id:apoc.create.uuid()})
-        SET log.timeStamp = datetime(),
-        log.historyRecord = constituency.name + ' Constituency was closed down under ' + council.name +' Council'
-
-
-      MERGE (date:TimeGraph {date:date()})
-      MERGE (log)-[:LOGGED_BY]->(admin)
-      MERGE (log)-[:RECORDED_ON]->(date)
-      MERGE (council)-[:HAS_HISTORY]->(log)
-      MERGE (council)-[:HAS_HISTORY]->(log)
-
-      SET constituency:ClosedConstituency, bacentas:ClosedBacenta, fellowships:ClosedFellowship
-      REMOVE constituency:Constituency,bacentas:Bacenta,fellowships:Fellowship
-
-      RETURN constituency
-      """
-    )
   CloseDownCouncil(councilId: ID!): Council
     @cypher(
       statement: """
