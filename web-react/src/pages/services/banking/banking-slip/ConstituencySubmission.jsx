@@ -4,31 +4,28 @@ import { ServiceContext } from 'contexts/ServiceContext'
 import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
 import React, { useContext } from 'react'
-import { Col, Container, Row, Button } from 'react-bootstrap'
+import { Col, Container, Row } from 'react-bootstrap'
 import {
   BANKING_SLIP_SUBMISSION,
   CONSTITUENCY_SERVICE_RECORDS,
 } from '../../ServicesQueries'
-import { MemberContext } from 'contexts/MemberContext'
 import { useMutation, useQuery } from '@apollo/client'
 import HeadingSecondary from 'components/HeadingSecondary'
 import BaseComponent from 'components/base-component/BaseComponent'
 import { useNavigate } from 'react-router'
-import { ChurchContext } from 'contexts/ChurchContext'
 import { getHumanReadableDate } from 'date-utils'
 import { throwErrorMsg } from 'global-utils'
+import SubmitButton from 'components/formik-components/SubmitButton'
 
 const ConstituencyBankingSlipSubmission = () => {
   const { serviceRecordId } = useContext(ServiceContext)
-  const { theme } = useContext(MemberContext)
-  const { clickCard } = useContext(ChurchContext)
   const navigate = useNavigate()
 
   const { data, loading, error } = useQuery(CONSTITUENCY_SERVICE_RECORDS, {
     variables: { serviceId: serviceRecordId },
   })
   const constituency = data?.serviceRecords[0]?.serviceLog?.constituency[0]
-  clickCard(constituency)
+
   const initialValues = {
     bankingSlip: '',
   }
@@ -89,19 +86,8 @@ const ConstituencyBankingSlipSubmission = () => {
                     setFieldValue={formik.setFieldValue}
                     aria-describedby="UploadBankingSlip"
                   />
+                  <SubmitButton formik={formik} />
                 </Col>
-
-                <div className="d-flex justify-content-center">
-                  <Button
-                    variant="primary"
-                    size="lg"
-                    type="submit"
-                    className={`btn-main ${theme}`}
-                    disabled={!formik.isValid || formik.isSubmitting}
-                  >
-                    Submit
-                  </Button>
-                </div>
               </Row>
             </Form>
           </Container>

@@ -20,8 +20,11 @@ export const getMondayThisWeek = (date) => {
   const firstDate = new Date(date)
   const numberOfDaysBefore = date.getDay()
 
-  firstDate.setDate(firstDate.getDate() - numberOfDaysBefore)
-
+  if (numberOfDaysBefore === 0) {
+    firstDate.setDate(firstDate.getDate() - 6)
+  } else {
+    firstDate.setDate(firstDate.getDate() - numberOfDaysBefore + 1)
+  }
   return firstDate
 }
 
