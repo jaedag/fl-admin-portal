@@ -27,7 +27,7 @@ MERGE (fellowship)-[:HAS_CAMPAIGN]->(churchCampaign)
 MERGE (churchCampaign)<-[:LEADS]-(leader)
 MERGE (churchCampaign)-[:HAS_HISTORY]->(log)
 MERGE (churchCampaign)-[:HAS_TARGET]->(target)
-return churchCampaign LIMIT 1;
+RETURN churchCampaign 
 `
 
 export const equipmentUpwardConnection = ` 
