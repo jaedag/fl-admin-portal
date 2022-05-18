@@ -2,9 +2,9 @@ import React, { useContext } from 'react'
 
 import { ChurchContext } from '../../../contexts/ChurchContext'
 import { useQuery } from '@apollo/client'
-import { getServiceGraphData, getMonthlyStatAverage } from './report-utils'
+import { getServiceGraphData, getMonthlyStatAverage } from './trends-utils'
 import ChurchGraph from '../../../components/ChurchGraph/ChurchGraph'
-import { SONTA_REPORT } from './ReportQueries'
+import { SONTA_TRENDS } from './TrendsQueries'
 import MembershipCard from './CompMembershipCard'
 import StatDisplay from './CompStatDisplay'
 import BaseComponent from 'components/base-component/BaseComponent'
@@ -12,7 +12,7 @@ import BaseComponent from 'components/base-component/BaseComponent'
 export const SontaReport = () => {
   const { sontaId } = useContext(ChurchContext)
 
-  const { data, loading, error } = useQuery(SONTA_REPORT, {
+  const { data, loading, error } = useQuery(SONTA_TRENDS, {
     variables: { sontaId: sontaId },
   })
 

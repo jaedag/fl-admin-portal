@@ -127,7 +127,7 @@ const GatheringServiceDashboard = () => {
             <h4>
               {getHumanReadableDate(data?.timeGraphs[0]?.date, 'weekday')}
             </h4>
-            <h5>{data?.timeGraphs[0].swell && `Swollen Weekend!`}</h5>
+            <h5>{data?.timeGraphs[0].swell && `Swell Weekend!`}</h5>
           </>
         ) : null}
 

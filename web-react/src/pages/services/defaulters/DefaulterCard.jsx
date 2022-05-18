@@ -56,7 +56,9 @@ const DefaulterCard = ({ defaulter, link }) => {
             )}
             {serviceDetails?.noServiceReason && (
               <div>
-                <span className="text-muted">Reason for No Service: </span>
+                <span className="text-muted">
+                  Reason for Cancelled Service:{' '}
+                </span>
                 {serviceDetails?.noServiceReason}
               </div>
             )}

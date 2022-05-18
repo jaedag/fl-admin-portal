@@ -226,12 +226,13 @@ export const arrivalsMutation = {
 
       if (
         response.attendance < 8 ||
+        response.bussingCost === 0 ||
         (response.numberOfBusses === 0 && response.numberOfCars === 0)
       ) {
         try {
           rearrangeCypherObject(await session.run(cypher.noBussingTopUp, args))
         } catch (error) {
-          console.log(error)
+          throwErrorMsg(error)
         } finally {
           throwErrorMsg("Today's Bussing doesn't merit a top up")
         }
@@ -268,7 +269,7 @@ export const arrivalsMutation = {
 
     const transactionResponse = recordResponse.record.properties
 
-    if (transactionResponse?.transactionId) {
+    if (transactionResponse?.transactionStatus === 'success') {
       throwErrorMsg('Money has already been sent to this bacenta')
     } else if (
       !transactionResponse?.arrivalTime ||
@@ -314,6 +315,11 @@ export const arrivalsMutation = {
         await session.run(cypher.removeBussingRecordTransactionId, args)
         throwErrorMsg(res.data.code + ' ' + res.data.reason)
       }
+
+      await session
+        .run(cypher.setBussingRecordTransactionSuccessful, args)
+        .catch((error) => throwErrorMsg(error))
+
       // eslint-disable-next-line no-console
       console.log(
         'Money Sent Successfully to',

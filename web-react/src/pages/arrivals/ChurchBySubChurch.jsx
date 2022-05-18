@@ -46,61 +46,85 @@ const ChurchBySubChurch = () => {
         <Row>
           {church &&
             church[`${plural(subChurchLevel?.toLowerCase())}`]?.map(
-              (subChurch, i) => (
-                <Col key={i} xs={12} className="mb-3">
-                  <Card>
-                    <Card.Header className="fw-bold">{`${subChurch.name} ${subChurch.__typename}`}</Card.Header>
-                    <Card.Body
-                      onClick={() => {
-                        clickCard(subChurch)
-                        setUser(subChurch)
-                        navigate(`/arrivals/${subChurchLevel}`)
-                      }}
-                    >
-                      <div>
-                        Active Fellowships {subChurch.activeFellowshipCount}
-                      </div>
-                      <div>
-                        Bacentas With No Activity{' '}
-                        {subChurch.bacentasNoActivityCount}
-                      </div>
-                      <div
-                        className={
-                          subChurch.bacentasMobilisingCount ? 'orange' : 'bad'
-                        }
+              (subChurch, i) => {
+                const array = [
+                  {
+                    title: 'Active Bacentas',
+                    number: subChurch.activeBacentaCount,
+                    color: null,
+                  },
+                  {
+                    title: 'Bacentas With No Activity',
+                    number: subChurch.bacentasNoActivityCount,
+                    color: 'red',
+                  },
+                  {
+                    title: 'Bacentas Mobilising',
+                    number: subChurch.bacentasMobilisingCount,
+                    color: 'orange',
+                  },
+                  {
+                    title: 'Bacentas On The Way',
+                    number: subChurch.bacentasOnTheWayCount,
+                    color: 'yellow',
+                  },
+                  {
+                    title: 'Bacentas Below 8',
+                    number: subChurch.bacentasBelow8Count,
+                    color: 'red',
+                  },
+                  {
+                    title: 'Bacentas That Have Arrived',
+                    number: subChurch.bacentasHaveArrivedCount,
+                    color: 'green',
+                  },
+                ]
+                const membersArray = [
+                  {
+                    title: 'Members On The Way',
+                    number: subChurch.bussingMembersOnTheWayCount,
+                    color: 'yellow',
+                  },
+                  {
+                    title: 'Members Arrived',
+                    number: subChurch.bussingMembersHaveArrivedCount,
+                    color: 'green',
+                  },
+                ]
+
+                return (
+                  <Col key={i} xs={12} className="mb-3">
+                    <Card>
+                      <Card.Header className="fw-bold">{`${subChurch.name} ${subChurch.__typename}`}</Card.Header>
+                      <Card.Body
+                        onClick={() => {
+                          clickCard(subChurch)
+                          setUser(subChurch)
+                          navigate(`/arrivals/${subChurchLevel}`)
+                        }}
                       >
-                        Bacentas Mobilising {subChurch.bacentasMobilisingCount}
-                      </div>
-                      <div
-                        className={
-                          subChurch.bacentasOnTheWayCount ? 'yellow' : 'bad'
-                        }
-                      >
-                        Bacentas On The Way {subChurch.bacentasOnTheWayCount}
-                      </div>
-                      <div
-                        className={
-                          subChurch.bacentasHaveBeenCountedCount
-                            ? 'good'
-                            : 'bad'
-                        }
-                      >
-                        Bacentas That Have Been Counted{' '}
-                        {subChurch.bacentasHaveBeenCountedCount}
-                      </div>
-                      <div
-                        className={
-                          subChurch.bacentasHaveArrivedCount ? 'good' : 'bad'
-                        }
-                      >
-                        Bacentas That Have Arrived{' '}
-                        {subChurch.bacentasHaveArrivedCount}
-                      </div>
-                    </Card.Body>
-                  </Card>
-                </Col>
-              )
+                        <div className="mb-3">
+                          {array.map((col, index) => (
+                            <div key={index} className={col.color}>
+                              {`${col.title} - ${col.number}`}
+                            </div>
+                          ))}
+                        </div>
+                        <hr />
+                        <div>
+                          {membersArray.map((col, index) => (
+                            <div key={index} className={col.color}>
+                              {`${col.title} - ${col.number}`}
+                            </div>
+                          ))}
+                        </div>
+                      </Card.Body>
+                    </Card>
+                  </Col>
+                )
+              }
             )}
+
           {(loading || !church) &&
             [1, 2, 3].map((placeholder, i) => (
               <Col key={i} xs={12} className="mb-3">

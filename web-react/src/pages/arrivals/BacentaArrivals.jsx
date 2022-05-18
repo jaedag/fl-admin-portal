@@ -14,9 +14,11 @@ import {
 } from './arrivals-utils'
 import { isToday } from 'date-utils'
 import HeadingSecondary from 'components/HeadingSecondary'
+import { MemberContext } from 'contexts/MemberContext'
 
 const BacentaArrivals = () => {
   const { clickCard, bacentaId } = useContext(ChurchContext)
+  const { theme } = useContext(MemberContext)
   const navigate = useNavigate()
   const today = new Date().toISOString().slice(0, 10)
   const { data, loading, error } = useQuery(BACENTA_ARRIVALS, {
@@ -68,7 +70,7 @@ const BacentaArrivals = () => {
         </HeadingPrimary>
         {date?.swell && (
           <HeadingSecondary loading={loading}>
-            <h3 className="fw-bold text-center yellow">Swollen Weekend!!!</h3>
+            <h3 className="fw-bold text-center yellow">Swell Weekend!!!</h3>
           </HeadingSecondary>
         )}
         <div className="text-center text-seconday">
@@ -91,7 +93,12 @@ const BacentaArrivals = () => {
               </p>
             </>
           )}
-
+          <Button
+            className={`btn-trends ${theme}`}
+            onClick={() => navigate(`/bacenta/trends`)}
+          >
+            View Trends
+          </Button>
           <Button
             variant="primary"
             size="lg"

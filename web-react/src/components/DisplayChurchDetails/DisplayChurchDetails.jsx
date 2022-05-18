@@ -344,7 +344,7 @@ const DisplayChurchDetails = (props) => {
             <Button
               className={`btn-trends ${theme}`}
               onClick={() => {
-                navigate(`/${props.churchType.toLowerCase()}/reports`)
+                navigate(`/${props.churchType.toLowerCase()}/trends`)
               }}
             >
               View Trends

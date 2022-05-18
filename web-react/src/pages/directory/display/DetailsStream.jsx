@@ -44,7 +44,7 @@ const DetailsStream = () => {
         leader={stream?.leader}
         admin={stream?.admin}
         churchHeading="Councils"
-        churchCount={stream?.councils.length}
+        churchCount={stream?.councilCount}
         churchType={stream?.__typename}
         subChurch={capitalise('council')}
         membership={stream?.memberCount}

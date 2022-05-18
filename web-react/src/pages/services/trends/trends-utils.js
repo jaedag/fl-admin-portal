@@ -39,7 +39,7 @@ export const sortingFunction = (key, order = 'asc') => {
   }
 }
 
-export const getServiceGraphData = (church) => {
+export const getServiceGraphData = (church, category) => {
   if (!church) {
     return
   }
@@ -89,10 +89,14 @@ export const getServiceGraphData = (church) => {
     })
   }
 
-  pushIntoData(church.componentServiceAggregate) //Push in Service Aggregates
-
+  if (category === 'bussing') {
+    pushIntoData(church.bussing)
+  }
   //Pushing in direct service data eg. Joint Services and Fellowship Services
-  pushIntoData(church.services)
+  else {
+    pushIntoData(church.componentServiceAggregate) //Push in Service Aggregates
+    pushIntoData(church.services)
+  }
 
   data = data.sort(sortingFunction('week'))
 

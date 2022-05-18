@@ -1,3 +1,48 @@
+#### 2.5.1 (2022-05-14)
+
+##### Bug Fixes
+
+*  removed login background image ([4b6f0030](https://github.com/firstlovecenter/fl-admin-portal/commit/4b6f00301f4a92a4fdf675d31a6a161054670e53))
+
+### 2.5.0 (2022-05-13)
+
+##### New Features
+
+*  admin-106 redesigned login screen ([775c9dbc](https://github.com/firstlovecenter/fl-admin-portal/commit/775c9dbc9757b37dd341e5cc55f221f6b5c609e2))
+
+#### 2.4.1 (2022-05-13)
+
+##### Bug Fixes
+
+*  fixed bug where some fellowships services were appearing in bussing graph ([903306c1](https://github.com/firstlovecenter/fl-admin-portal/commit/903306c1475ed85482768086eb51e34307a6c91e))
+
+### 2.4.0 (2022-05-13)
+
+##### New Features
+
+*  implemented a basic graphing feature for bussing data ([57f9c387](https://github.com/firstlovecenter/fl-admin-portal/commit/57f9c387fb5f8818fd656e327b7113a59bfb1ec9))
+*  various minor improvements for admin-115 ([3c67cbf9](https://github.com/firstlovecenter/fl-admin-portal/commit/3c67cbf997061eb79c54d4028900107660ecbc95))
+
+##### Refactors
+
+*  changed the word 'report' to 'trends' for clarity ([6f105ddb](https://github.com/firstlovecenter/fl-admin-portal/commit/6f105ddbb72e5495c89f869daa997db4d9963c36))
+
+#### 2.3.2 (2022-05-07)
+
+##### New Features
+
+*  if you report 0 for your bussing cost, no top up will be sent to you ([d41d46a0](https://github.com/firstlovecenter/fl-admin-portal/commit/d41d46a07e7ba105d0ebeda15dd0f3a6e2e8c92c))
+
+##### Bug Fixes
+
+*  fixed bug where a person could not be confirmed if they did not arrive ([0757ea0d](https://github.com/firstlovecenter/fl-admin-portal/commit/0757ea0d7e1a96146568f06958baceb71f7ee248))
+
+#### 2.3.1 (2022-05-05)
+
+##### Bug Fixes
+
+*  corrected the fellowship details page to show accurate banking data ([fcd53010](https://github.com/firstlovecenter/fl-admin-portal/commit/fcd530106ecf297bac1fc832851473746aa8ce31))
+
 ### 2.3.0 (2022-05-05)
 
 ##### New Features

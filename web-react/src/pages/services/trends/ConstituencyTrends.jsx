@@ -2,66 +2,67 @@ import React, { useContext } from 'react'
 
 import { ChurchContext } from '../../../contexts/ChurchContext'
 import { useQuery } from '@apollo/client'
-import { getServiceGraphData, getMonthlyStatAverage } from './report-utils'
+import { getServiceGraphData, getMonthlyStatAverage } from './trends-utils'
 import ChurchGraph from '../../../components/ChurchGraph/ChurchGraph'
-import { BACENTA_REPORT } from './ReportQueries'
+import { CONSTITUENCY_TRENDS } from './TrendsQueries'
 import MembershipCard from './CompMembershipCard'
 import StatDisplay from './CompStatDisplay'
 import BaseComponent from 'components/base-component/BaseComponent'
+import { Col, Container, Row } from 'react-bootstrap'
 
-export const BacentaReport = () => {
-  const { bacentaId } = useContext(ChurchContext)
+export const ConstituencyReport = () => {
+  const { constituencyId } = useContext(ChurchContext)
 
-  const { data, loading, error } = useQuery(BACENTA_REPORT, {
-    variables: { bacentaId: bacentaId },
+  const { data, loading, error } = useQuery(CONSTITUENCY_TRENDS, {
+    variables: { id: constituencyId },
   })
 
-  const churchData = getServiceGraphData(data?.bacentas[0])
+  const churchData = getServiceGraphData(data?.constituencies[0])
 
   return (
     <BaseComponent loading={loading} error={error} data={data}>
-      <div className="container">
+      <Container>
         <div className=" my-3">
-          <h5 className="mb-0">{`${data?.bacentas[0].name} Bacenta`}</h5>{' '}
+          <h5 className="mb-0">{`${data?.constituencies[0].name} Constituency`}</h5>{' '}
           <p>
             <span className="text-secondary font-weight-bold">Leader: </span>
-            {`${data?.bacentas[0].leader.fullName}`}
+            {`${data?.constituencies[0].leader.fullName}`}
           </p>
         </div>
 
-        <div className="row">
-          <div className="col">
+        <Row>
+          <Col>
             <MembershipCard
-              link="/bacenta/members"
+              link="/constituency/members"
               title="Membership"
-              count={data?.bacentas[0].memberCount}
+              count={data?.constituencies[0].memberCount}
             />
-          </div>
-        </div>
-        <div className="row mt-3">
-          <div className="col">
+          </Col>
+        </Row>
+        <Row className="mt-3">
+          <Col>
             <StatDisplay
               title="Avg Weekly Attendance"
               statistic={getMonthlyStatAverage(churchData, 'attendance')}
             />
-          </div>
+          </Col>
 
-          <div className="col">
+          <Col>
             <StatDisplay
               title="Avg Weekly Income"
               statistic={getMonthlyStatAverage(churchData, 'income')}
             />
-          </div>
-        </div>
+          </Col>
+        </Row>
         <ChurchGraph
           stat1="attendance"
           stat2="income"
           churchData={churchData}
-          church="bacenta"
+          church="constituency"
         />
-      </div>
+      </Container>
     </BaseComponent>
   )
 }
 
-export default BacentaReport
+export default ConstituencyReport

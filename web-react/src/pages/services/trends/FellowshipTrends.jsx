@@ -2,9 +2,9 @@ import React, { useContext } from 'react'
 
 import { ChurchContext } from '../../../contexts/ChurchContext'
 import { useQuery } from '@apollo/client'
-import { getServiceGraphData, getMonthlyStatAverage } from './report-utils'
+import { getServiceGraphData, getMonthlyStatAverage } from './trends-utils'
 import ChurchGraph from '../../../components/ChurchGraph/ChurchGraph'
-import { FELLOWSHIP_REPORT } from './ReportQueries'
+import { FELLOWSHIP_TRENDS } from './TrendsQueries'
 import MembershipCard from './CompMembershipCard'
 import StatDisplay from './CompStatDisplay'
 import BaseComponent from 'components/base-component/BaseComponent'
@@ -12,7 +12,7 @@ import BaseComponent from 'components/base-component/BaseComponent'
 export const FellowshipReport = () => {
   const { fellowshipId } = useContext(ChurchContext)
 
-  const { data, loading, error } = useQuery(FELLOWSHIP_REPORT, {
+  const { data, loading, error } = useQuery(FELLOWSHIP_TRENDS, {
     variables: { fellowshipId: fellowshipId },
   })
 
