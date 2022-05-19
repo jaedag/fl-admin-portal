@@ -1,0 +1,41 @@
+:root {
+  --primary-color: #4de531;
+  --text-small: 11px;
+  --text-name: 23px;
+  --text-number: 25pt;
+}
+
+.church-search {
+  width: 100%;
+  background: #383838;
+  border-radius: 20px;
+  display: inline-block;
+  padding-left: 40px;
+  border: 0;
+  outline: none;
+}
+
+.search-center {
+  display: flex;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.church-title {
+  font-size: var(--text-name);
+  color: var(--primary-color);
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+.text-small {
+  font-size: var(--text-small);
+}
+
+.text-title {
+  color: var(--primary-color);
+}
+
+.card-padding{
+  padding: 1rem 0.8rem;
+}
