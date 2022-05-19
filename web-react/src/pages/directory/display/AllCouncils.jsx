@@ -1,13 +1,14 @@
 import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { useQuery } from '@apollo/client'
-import DisplayChurchList from '../../../components/DisplayChurchList'
 import { GET_STREAM_COUNCILS } from '../../../queries/ListQueries'
 import { ChurchContext } from '../../../contexts/ChurchContext'
 import RoleView from '../../../auth/RoleView'
 import BaseComponent from 'components/base-component/BaseComponent'
-import { Container, Row, Col, Button } from 'react-bootstrap'
+import { Container, Row, Col } from 'react-bootstrap'
 import { permitAdmin } from 'permission-utils'
+import AllChurchesSummary from 'components/AllChurchesSummary'
+import ChurchSearch from 'components/ChurchSearch'
 
 const DisplayAllCouncils = () => {
   const { clickCard, streamId } = useContext(ChurchContext)
@@ -22,61 +23,59 @@ const DisplayAllCouncils = () => {
   return (
     <BaseComponent data={data} loading={loading} error={error}>
       <Container>
-        <div className="mb-4 border-bottom">
-          <Row className="mb-2">
-            <Col>
+        <Row className="mb-2">
+          <Col>
+            <Link
+              to="/stream/displaydetails"
+              onClick={() => {
+                clickCard(stream)
+              }}
+            >
+              <h2 className="text-white">{`${stream?.name} Councils`}</h2>
+            </Link>
+            <Link
+              to="/member/displaydetails"
+              onClick={() => {
+                clickCard(stream?.leader)
+              }}
+            >
+              <h6 className="text-white d-block text-small">
+                <span className="text-muted">Overseer:</span>
+
+                {stream?.leader ? ` ${stream.leader.fullName}` : null}
+              </h6>
+            </Link>
+            {stream?.admin ? (
               <Link
-                to="/stream/displaydetails"
-                onClick={() => {
-                  clickCard(stream)
-                }}
-              >
-                <h4>{`${stream?.name} Councils`}</h4>
-              </Link>
-              <Link
+                className="pb-1 text-white d-block text-small"
                 to="/member/displaydetails"
                 onClick={() => {
-                  clickCard(stream?.leader)
+                  clickCard(stream?.admin)
                 }}
               >
-                <h6 className="text-muted">
-                  Overseer:
-                  {stream?.leader ? ` ${stream.leader.fullName}` : null}
-                </h6>
+                <span className="text-muted">Admin:</span>
+                {` ${stream?.admin?.fullName}`}
               </Link>
-              {stream?.admin ? (
-                <Link
-                  className="pb-4"
-                  to="/member/displaydetails"
-                  onClick={() => {
-                    clickCard(stream?.admin)
-                  }}
-                >
-                  {`Admin: ${stream?.admin?.fullName}`}
-                </Link>
-              ) : null}
-            </Col>
-            <RoleView roles={permitAdmin('Stream')}>
-              <Col className="col-auto">
-                <Link to="/council/addcouncil" className="btn btn-primary">
-                  Add Council
-                </Link>
-              </Col>
-            </RoleView>
-          </Row>
-
-          <Row className="justify-content-between mb-2">
-            <Col>
-              <Button>{`Councils: ${councils?.length}`}</Button>
-            </Col>
+            ) : null}
+          </Col>
+          <RoleView roles={permitAdmin('Stream')}>
             <Col className="col-auto">
-              <Link to="/stream/members">
-                <Button>{`Membership: ${stream?.memberCount}`}</Button>
+              <Link to="/council/addcouncil" className="btn btn-danger">
+                Add Council
               </Link>
             </Col>
-          </Row>
-        </div>
-        <DisplayChurchList data={councils} churchType="Council" />
+          </RoleView>
+        </Row>
+
+        <AllChurchesSummary
+          church={councils}
+          memberCount={stream?.memberCount}
+          numberOfChurchesBelow={councils?.length}
+          churchType="Council"
+          route="stream"
+        />
+
+        <ChurchSearch data={councils} churchType="Council" />
       </Container>
     </BaseComponent>
   )

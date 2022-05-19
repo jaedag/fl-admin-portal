@@ -339,7 +339,7 @@ const DisplayChurchDetails = (props) => {
           <PlaceholderCustom
             loading={props.loading}
             className={`btn-trends ${theme}`}
-            button
+            button="button"
           >
             <Button
               className={`btn-trends ${theme}`}
@@ -354,7 +354,7 @@ const DisplayChurchDetails = (props) => {
             <PlaceholderCustom
               loading={props.loading}
               className={`btn-trends ${theme}`}
-              button
+              button="button"
             >
               <Button
                 className={`btn-trends ${theme}`}
@@ -460,7 +460,7 @@ const DisplayChurchDetails = (props) => {
               loading={props.loading}
               className="btn-trends"
               variant={theme}
-              button
+              button="button"
             >
               <Button
                 className="btn-trends"
