@@ -8,8 +8,7 @@ import FellowshipForm from 'pages/directory/reusable-forms/FellowshipForm'
 import { throwErrorMsg } from 'global-utils'
 
 const CreateFellowship = () => {
-  const { clickCard, constituencyId, bacentaId, setFellowshipId } =
-    useContext(ChurchContext)
+  const { clickCard, constituencyId, bacentaId } = useContext(ChurchContext)
   const navigate = useNavigate()
 
   const initialValues = {
@@ -55,7 +54,7 @@ const CreateFellowship = () => {
             throwErrorMsg('There was an error setting the leader', error)
           )
 
-        setFellowshipId(res.data.CreateFellowship.id)
+        clickCard(res.data.CreateFellowship)
         navigate('/fellowship/displaydetails')
       })
       .catch((error) =>

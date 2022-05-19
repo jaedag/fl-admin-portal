@@ -89,7 +89,6 @@ const BacentaForm = ({ initialValues, onSubmit, title, newBacenta }) => {
               <div className="form-group">
                 <Row className="row-cols-1 row-cols-md-2">
                   {/* <!-- Basic Info Div --> */}
-
                   <Col className="mb-2">
                     <Row className="form-row">
                       <Col>
@@ -142,45 +141,53 @@ const BacentaForm = ({ initialValues, onSubmit, title, newBacenta }) => {
                       </RoleView>
                     </Row>
 
-                    <small>
-                      List any Fellowships that are being moved to this Bacenta
-                    </small>
-                    <FieldArray name="fellowships">
-                      {(fieldArrayProps) => {
-                        const { push, remove, form } = fieldArrayProps
-                        const { values } = form
-                        const { fellowships } = values
+                    {!newBacenta && (
+                      <>
+                        <small>
+                          List any Fellowships that are being moved to this
+                          Bacenta
+                        </small>
+                        <FieldArray name="fellowships">
+                          {(fieldArrayProps) => {
+                            const { push, remove, form } = fieldArrayProps
+                            const { values } = form
+                            const { fellowships } = values
 
-                        return (
-                          <>
-                            {fellowships.map((fellowship, index) => (
-                              <Row key={index} className="form-row">
-                                <Col>
-                                  <FormikControl
-                                    control="fellowshipSearch"
-                                    name={`fellowships[${index}]`}
-                                    initialValue={fellowship?.name}
-                                    placeholder="Enter Fellowship Name"
-                                    setFieldValue={formik.setFieldValue}
-                                    aria-describedby="Fellowship Name"
-                                    error={
-                                      formik.errors.fellowships &&
-                                      formik.errors.fellowships[index]
-                                    }
-                                  />
-                                </Col>
-                                <Col className="col-auto d-flex">
-                                  <PlusSign onClick={() => push()} />
-                                  {index > 0 && (
-                                    <MinusSign onClick={() => remove(index)} />
-                                  )}
-                                </Col>
-                              </Row>
-                            ))}
-                          </>
-                        )
-                      }}
-                    </FieldArray>
+                            return (
+                              <>
+                                {fellowships.map((fellowship, index) => (
+                                  <Row key={index} className="form-row">
+                                    <Col>
+                                      <FormikControl
+                                        control="fellowshipSearch"
+                                        name={`fellowships[${index}]`}
+                                        initialValue={fellowship?.name}
+                                        placeholder="Enter Fellowship Name"
+                                        setFieldValue={formik.setFieldValue}
+                                        aria-describedby="Fellowship Name"
+                                        error={
+                                          formik.errors.fellowships &&
+                                          formik.errors.fellowships[index]
+                                        }
+                                      />
+                                    </Col>
+                                    <Col className="col-auto d-flex">
+                                      <PlusSign onClick={() => push()} />
+                                      {(index > 0 ||
+                                        fellowships?.length !== 1) && (
+                                        <MinusSign
+                                          onClick={() => remove(index)}
+                                        />
+                                      )}
+                                    </Col>
+                                  </Row>
+                                ))}
+                              </>
+                            )
+                          }}
+                        </FieldArray>
+                      </>
+                    )}
                   </Col>
                 </Row>
               </div>
@@ -208,8 +215,6 @@ const BacentaForm = ({ initialValues, onSubmit, title, newBacenta }) => {
                         navigate(`/constituency/displaydetails`)
                       })
                       .catch((error) => {
-                        // eslint-disable-next-line no-console
-                        console.error(error)
                         throwErrorMsg(
                           'There was an error closing down this bacenta',
                           error

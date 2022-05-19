@@ -15,7 +15,7 @@ import { DISPLAY_STREAM } from '../display/ReadQueries'
 import { LOG_STREAM_HISTORY, LOG_COUNCIL_HISTORY } from './LogMutations'
 import { MAKE_STREAM_LEADER } from './ChangeLeaderMutations'
 import StreamForm from 'pages/directory/reusable-forms/StreamForm'
-import { getChurchIdsFromObject } from './update-utils'
+import { getChurchIdsFromObject } from './directory-utils'
 import { MAKE_COUNCIL_INACTIVE } from './CloseChurchMutations'
 
 const UpdateStream = () => {

@@ -235,7 +235,6 @@ const MemberForm = ({ initialValues, onSubmit, title, loading, update }) => {
                     </Col>
                   </div>
                 </div>
-                {/* <!-- End of Church Info Section--> */}
 
                 <SubmitButton formik={formik} />
               </Row>

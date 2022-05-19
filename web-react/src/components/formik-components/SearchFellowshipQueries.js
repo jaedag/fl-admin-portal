@@ -67,6 +67,10 @@ export const MEMBER_FELLOWSHIP_SEARCH = gql`
       fellowshipSearch(key: $key) {
         id
         name
+        bacenta {
+          id
+          name
+        }
       }
     }
   }

@@ -547,6 +547,7 @@ export const REMOVE_FELLOWSHIP_BACENTA = gql`
     updateBacentas(where: { id: $bacentaId }) {
       bacentas {
         id
+        name
         fellowships {
           id
         }
