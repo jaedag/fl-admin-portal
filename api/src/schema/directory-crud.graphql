@@ -410,8 +410,6 @@ extend type Mutation {
        MATCH (ministry:Ministry {id:$ministryId})
        MATCH (leader:Member {id: $leaderId})
        MATCH (constituency:Constituency {id:$constituencyId})
-
-       MATCH (currentUser:Member {auth_id:$auth.jwt.sub})
        UNWIND labels(constituency) AS stream
 
        CREATE (log:HistoryLog:ServiceLog)
@@ -473,7 +471,6 @@ extend type Mutation {
       WITH fellowship
       MATCH (bacenta:Bacenta {id: $bacentaId})
       MATCH (leader:Member {id:$leaderId})
-      MATCH (currentUser:Member {auth_id:$auth.jwt.sub})
       MATCH (meetingDay:ServiceDay {day: $meetingDay})
 
       MERGE (bacenta)-[:HAS]->(fellowship)

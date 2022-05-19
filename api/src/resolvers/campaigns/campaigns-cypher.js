@@ -1,14 +1,12 @@
 export const createEquipmentCampaign = `
 MATCH (target:Target {campaign:"Equipment"})
 MATCH (church {id:$id}) WHERE church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:GatheringService OR church:Fellowship
-MATCH (log:HistoryLog)<-[:HAS_HISTORY {current:true}]-(church)
-MATCH (leader:Member)-[:LEADS]->(church)
+MATCH (log:ServiceLog)<-[:HAS_HISTORY {current:true}]-(church)
 
-WITH target, church, log, leader
+WITH target, church, log
 CREATE (churchCampaign:EquipmentCampaign {id: apoc.create.uuid()})
 SET churchCampaign.name = church.name 
 MERGE (church)-[:HAS_CAMPAIGN]->(churchCampaign)
-MERGE (churchCampaign)<-[:LEADS]-(leader)
 MERGE (churchCampaign)-[:HAS_HISTORY]->(log)
 MERGE (churchCampaign)-[:HAS_TARGET]->(target)
 RETURN churchCampaign;
@@ -17,14 +15,12 @@ RETURN churchCampaign;
 export const createFellowshipEquipmentCampaign = `
 MATCH (target:Target {campaign:"Equipment"})
 MATCH (fellowship:Fellowship {id:$id})
-MATCH (log:HistoryLog)<-[:HAS_HISTORY {current:true}]-(fellowship)
-MATCH (leader:Member)-[:LEADS]->(fellowship)
+MATCH (log:ServiceLog)<-[:HAS_HISTORY {current:true}]-(fellowship)
 
-WITH target, fellowship, log, leader
+WITH target, fellowship, log
 CREATE (churchCampaign:EquipmentCampaign {id: apoc.create.uuid()})
 SET churchCampaign.name = fellowship.name 
 MERGE (fellowship)-[:HAS_CAMPAIGN]->(churchCampaign)
-MERGE (churchCampaign)<-[:LEADS]-(leader)
 MERGE (churchCampaign)-[:HAS_HISTORY]->(log)
 MERGE (churchCampaign)-[:HAS_TARGET]->(target)
 RETURN churchCampaign;

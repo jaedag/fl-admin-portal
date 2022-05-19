@@ -125,6 +125,8 @@ export const campaignsMutation = {
         await session.run(campaignsCypher.createEquipmentCampaign, args)
       )
 
+      // eslint-disable-next-line no-console
+      console.log('response from campaign creation ', equipmentCampaign)
       const equipmentUpwardConnectionResponse = rearrangeCypherObject(
         await session.run(campaignsCypher.equipmentUpwardConnection, {
           id: equipmentCampaign.churchCampaign.properties.id,
@@ -145,12 +147,14 @@ export const campaignsMutation = {
     const session = context.driver.session()
 
     try {
+      // eslint-disable-next-line no-console
+      console.log('capturing args ', args)
       const equipmentCampaign = rearrangeCypherObject(
-        await session.run(
-          campaignsCypher.createFellowshipEquipmentCampaign,
-          args
-        )
+        await session.run(campaignsCypher.createEquipmentCampaign, args)
       )
+
+      // eslint-disable-next-line no-console
+      console.log('response from campaign creation ', equipmentCampaign)
 
       const equipmentUpwardConnectionResponse = rearrangeCypherObject(
         await session.run(campaignsCypher.equipmentUpwardConnection, {
