@@ -8,8 +8,7 @@ import { NEW_STREAM_LEADER } from './MakeLeaderMutations'
 import StreamForm from 'pages/directory/reusable-forms/StreamForm'
 
 const CreateStream = () => {
-  const { clickCard, gatheringServiceId, setGatheringServiceId, setStreamId } =
-    useContext(ChurchContext)
+  const { clickCard, gatheringServiceId } = useContext(ChurchContext)
 
   const navigate = useNavigate()
 
@@ -17,7 +16,6 @@ const CreateStream = () => {
     name: '',
     leaderId: '',
     gatheringService: gatheringServiceId,
-    councils: [''],
   }
 
   const [NewStreamLeader] = useMutation(NEW_STREAM_LEADER)
@@ -26,14 +24,13 @@ const CreateStream = () => {
   //onSubmit receives the form state as argument
   const onSubmit = (values, onSubmitProps) => {
     onSubmitProps.setSubmitting(true)
-    setGatheringServiceId(values.gatheringService)
+    clickCard({ id: values.gatheringService, __typename: 'GatheringService' })
 
     CreateStream({
       variables: {
         name: values.name,
         leaderId: values.leaderId,
         gatheringServiceId: values.gatheringService,
-        councils: values.councils,
       },
     })
       .then((res) => {
@@ -47,7 +44,7 @@ const CreateStream = () => {
           throwErrorMsg('There was an error adding leader', error)
         })
 
-        setStreamId(res.data.CreateStream.id)
+        clickCard(res.data.CreateStream)
         onSubmitProps.setSubmitting(false)
         onSubmitProps.resetForm()
         navigate(`/stream/displaydetails`)
