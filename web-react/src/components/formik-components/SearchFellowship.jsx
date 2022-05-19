@@ -20,7 +20,7 @@ const SearchFellowship = (props) => {
   const { currentUser } = useContext(MemberContext)
   const [suggestions, setSuggestions] = useState([])
   const [searchString, setSearchString] = useState(props.initialValue ?? '')
-  const [debounced, setDebounced] = useState(searchString)
+
   const [gatheringServiceSearch, { error: gatheringServiceError }] =
     useLazyQuery(GATHERINGSERVICE_FELLOWSHIP_SEARCH, {
       onCompleted: (data) => {
@@ -133,17 +133,20 @@ const SearchFellowship = (props) => {
   }
 
   useEffect(() => {
+    setSearchString(initialise(props.initialValue, searchString))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [props.initialValue])
+
+  useEffect(() => {
     const timerId = setTimeout(() => {
       whichSearch(searchString)
     }, DEBOUNCE_TIMER)
-
-    setDebounced(initialise(props.initialValue, searchString))
 
     return () => {
       clearTimeout(timerId)
     }
     // eslint-disable-next-line
-  }, [searchString, props.initialValue])
+  }, [searchString])
 
   return (
     <div>
@@ -157,7 +160,7 @@ const SearchFellowship = (props) => {
           placeholder: props.placeholder,
           id: name,
           autoComplete: 'off',
-          value: debounced,
+          value: searchString,
           name: name,
           className: 'form-control',
           onChange: (_event, { newValue }) => {

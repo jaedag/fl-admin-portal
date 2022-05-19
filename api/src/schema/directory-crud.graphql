@@ -164,12 +164,7 @@ extend type Mutation {
     pictureUrl: String!
   ): Member
 
-  CreateStream(
-    name: String!
-    leaderId: ID!
-    gatheringServiceId: ID!
-    councils: [ID]
-  ): Stream
+  CreateStream(name: String!, leaderId: ID!, gatheringServiceId: ID!): Stream
     @auth(rules: [{ roles: ["adminGatheringService"] }])
     @cypher(
       statement: """
@@ -199,29 +194,12 @@ extend type Mutation {
         SET r2.current = true,
         r3.current = true
 
-      WITH stream, gatheringService
-      CALL {
-        WITH stream
-        WITH stream WHERE $councils <> []
-        UNWIND $councils AS councilIds
-        MATCH (council:Council {id:councilIds})
-        OPTIONAL MATCH (oldStream)-[r:HAS]->(council)
-        DELETE r
-
-        MERGE (stream)-[:HAS]->(council)
-        RETURN count(stream)
-      }
 
       RETURN stream
       """
     )
 
-  CreateCouncil(
-    name: String!
-    leaderId: ID!
-    streamId: ID!
-    constituencies: [ID]
-  ): Council
+  CreateCouncil(name: String!, leaderId: ID!, streamId: ID!): Council
     @auth(rules: [{ roles: ["adminGatheringService", "adminStream"] }])
     @cypher(
       statement: """
@@ -252,18 +230,6 @@ extend type Mutation {
         r2.current = true,
         r3.current = true
 
-      WITH council, stream
-      CALL {
-        WITH council
-        WITH council WHERE $constituencies <> []
-        UNWIND $constituencies AS constituencyIds
-        MATCH (constituency:Constituency {id:constituencyIds})
-        OPTIONAL MATCH (oldCouncil)-[r:HAS]->(constituency)
-        DELETE r
-
-        MERGE (council)-[:HAS]->(constituency)
-        RETURN count(council)
-      }
 
       RETURN council
       """
@@ -273,7 +239,6 @@ extend type Mutation {
     name: String!
     leaderId: ID!
     councilId: ID!
-    bacentas: [ID]
   ): Constituency
     @auth(
       rules: [
@@ -309,29 +274,11 @@ extend type Mutation {
         r2.current = true,
         r3.current = true
 
-      WITH constituency, council
-      CALL {
-        WITH constituency
-        WITH constituency WHERE $bacentas <> []
-        UNWIND $bacentas AS bacentaIds
-        MATCH (bacenta:Bacenta {id:bacentaIds})
-        OPTIONAL MATCH (oldconstituency)-[r:HAS]->(bacenta)
-        DELETE r
-
-        MERGE (constituency)-[:HAS]->(bacenta)
-        RETURN count(constituency)
-      }
-
       RETURN constituency
       """
     )
 
-  CreateBacenta(
-    name: String!
-    constituencyId: ID!
-    leaderId: ID!
-    fellowships: [ID]
-  ): Bacenta  #Return constituency and drill down to get bacenta info
+  CreateBacenta(name: String!, constituencyId: ID!, leaderId: ID!): Bacenta  #Return constituency and drill down to get bacenta info
     @auth(
       rules: [
         {
@@ -368,19 +315,6 @@ extend type Mutation {
        MERGE (log)-[:RECORDED_ON]->(date)
        MERGE (constituency)-[r1:HAS_HISTORY]->(log)
 
-
-       WITH bacenta
-      CALL {
-        WITH bacenta
-        WITH bacenta WHERE $fellowships <> []
-        UNWIND $fellowships AS fellowshipIds
-        MATCH (fellowship:Fellowship {id:fellowshipIds})
-        OPTIONAL MATCH (oldBacenta)-[r:HAS]->(fellowship)
-        DELETE r
-
-        MERGE (bacenta)-[:HAS]->(fellowship)
-        RETURN count(bacenta)
-      }
 
       RETURN bacenta
       """

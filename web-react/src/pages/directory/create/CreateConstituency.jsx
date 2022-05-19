@@ -17,7 +17,6 @@ const CreateConstituency = () => {
     name: '',
     leaderId: '',
     council: councilId,
-    bacentas: [''],
   }
 
   const [NewConstituencyLeader] = useMutation(NEW_CONSTITUENCY_LEADER)
@@ -42,7 +41,6 @@ const CreateConstituency = () => {
           name: values.name,
           leaderId: values.leaderId,
           councilId: values.council,
-          bacentas: values.bacentas,
         },
       })
 

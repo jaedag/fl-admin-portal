@@ -102,46 +102,51 @@ const CouncilForm = ({ initialValues, onSubmit, title, newCouncil }) => {
                         </Col>
                       </RoleView>
                     </Row>
+                    {!newCouncil && (
+                      <>
+                        <small className="pt-2">
+                          {`Select any constituencies that are being moved to this Council`}
+                        </small>
+                        <FieldArray name="constituencies">
+                          {(fieldArrayProps) => {
+                            const { push, remove, form } = fieldArrayProps
+                            const { values } = form
+                            const { constituencies } = values
 
-                    <small className="pt-2">
-                      {`Select any constituencies that are being moved to this Council`}
-                    </small>
-                    <FieldArray name="constituencies">
-                      {(fieldArrayProps) => {
-                        const { push, remove, form } = fieldArrayProps
-                        const { values } = form
-                        const { constituencies } = values
-
-                        return (
-                          <>
-                            {constituencies.map((constituency, index) => (
-                              <Row key={index} className="form-row">
-                                <Col>
-                                  <FormikControl
-                                    control="constituencySearch"
-                                    name={`constituencies[${index}]`}
-                                    placeholder="Constituency Name"
-                                    initialValue={constituency?.name}
-                                    setFieldValue={formik.setFieldValue}
-                                    aria-describedby="Constituency Name"
-                                    error={arrayError(
-                                      formik.errors.constituencies,
-                                      index
-                                    )}
-                                  />
-                                </Col>
-                                <Col className="col-auto d-flex">
-                                  <PlusSign onClick={() => push()} />
-                                  {index > 0 && (
-                                    <MinusSign onClick={() => remove(index)} />
-                                  )}
-                                </Col>
-                              </Row>
-                            ))}
-                          </>
-                        )
-                      }}
-                    </FieldArray>
+                            return (
+                              <>
+                                {constituencies.map((constituency, index) => (
+                                  <Row key={index} className="form-row">
+                                    <Col>
+                                      <FormikControl
+                                        control="constituencySearch"
+                                        name={`constituencies[${index}]`}
+                                        placeholder="Constituency Name"
+                                        initialValue={constituency?.name}
+                                        setFieldValue={formik.setFieldValue}
+                                        aria-describedby="Constituency Name"
+                                        error={arrayError(
+                                          formik.errors.constituencies,
+                                          index
+                                        )}
+                                      />
+                                    </Col>
+                                    <Col className="col-auto d-flex">
+                                      <PlusSign onClick={() => push()} />
+                                      {index > 0 && (
+                                        <MinusSign
+                                          onClick={() => remove(index)}
+                                        />
+                                      )}
+                                    </Col>
+                                  </Row>
+                                ))}
+                              </>
+                            )
+                          }}
+                        </FieldArray>
+                      </>
+                    )}
                   </Col>
                 </Row>
               </div>

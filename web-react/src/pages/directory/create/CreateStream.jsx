@@ -16,7 +16,6 @@ const CreateStream = () => {
     name: '',
     leaderId: '',
     gatheringService: gatheringServiceId,
-    councils: [''],
   }
 
   const [NewStreamLeader] = useMutation(NEW_STREAM_LEADER)
@@ -32,7 +31,6 @@ const CreateStream = () => {
         name: values.name,
         leaderId: values.leaderId,
         gatheringServiceId: values.gatheringService,
-        councils: values.councils,
       },
     })
       .then((res) => {

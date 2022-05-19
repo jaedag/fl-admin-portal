@@ -5,6 +5,7 @@ import { DEBOUNCE_TIMER, isAuthorised, throwErrorMsg } from 'global-utils'
 import { permitMe } from 'permission-utils'
 import React, { useContext, useEffect, useState } from 'react'
 import Autosuggest from 'react-autosuggest'
+import { initialise } from './search-utils'
 import {
   COUNCIL_BACENTA_SEARCH,
   GATHERINGSERVICE_BACENTA_SEARCH,
@@ -114,6 +115,11 @@ const SearchBacenta = (props) => {
   }
 
   useEffect(() => {
+    setSearchString(initialise(props.initialValue, searchString))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [props.initialValue])
+
+  useEffect(() => {
     const timerId = setTimeout(() => {
       whichSearch(searchString)
     }, DEBOUNCE_TIMER)
@@ -122,7 +128,7 @@ const SearchBacenta = (props) => {
       clearTimeout(timerId)
     }
     // eslint-disable-next-line
-  }, [searchString])
+  }, [searchString, props.initialValue])
 
   return (
     <div>
