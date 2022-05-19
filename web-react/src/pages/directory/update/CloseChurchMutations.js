@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client'
 
 export const MAKE_FELLOWSHIP_INACTIVE = gql`
-  mutation CloseDownFellowship($fellowshipId: ID!, $leaderId: ID!) {
-    CloseDownFellowship(fellowshipId: $fellowshipId, leaderId: $leaderId) {
+  mutation CloseDownFellowship($id: ID!, $leaderId: ID!) {
+    CloseDownFellowship(fellowshipId: $id, leaderId: $leaderId) {
       #Returns Bacenta
       id
       name

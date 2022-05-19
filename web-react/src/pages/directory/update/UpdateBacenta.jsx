@@ -23,7 +23,7 @@ import {
   SET_ACTIVE_BACENTA,
   SET_VACATION_BACENTA,
 } from './StatusChanges'
-import { getChurchIdsFromObject } from './update-utils'
+import { addNewChurches, removeOldChurches } from './directory-utils'
 
 const UpdateBacenta = () => {
   const { church, bacentaId, clickCard } = useContext(ChurchContext)
@@ -241,67 +241,33 @@ const UpdateBacenta = () => {
       })
     }
     //For the adding and removing of fellowships
-    const oldFellowshipList = initialValues.fellowships.map(
+    const oldFellowships = initialValues.fellowships.map(
       (fellowship) => fellowship
     )
 
-    const newFellowshipList = values.fellowships.map((fellowship) => fellowship)
+    const newFellowships = values.fellowships.map((fellowship) => fellowship)
 
-    const removeFellowships = oldFellowshipList.filter((value) => {
-      return !getChurchIdsFromObject(newFellowshipList).includes(value.id)
-    })
-
-    const addFellowships = values.fellowships.filter(function (value) {
-      return !getChurchIdsFromObject(newFellowshipList).includes(value.id)
-    })
-
-    if (removeFellowships.length) {
-      removeFellowships.forEach(async (fellowship) => {
-        try {
-          await CloseDownFellowship({
-            variables: {
-              fellowshipId: fellowship?.id ?? '',
-              leaderId: fellowship?.leader?.id,
-            },
-          })
-        } catch (error) {
-          throwErrorMsg(error)
-        }
-      })
-
-      if (addFellowships.length) {
-        addFellowships.forEach(async (fellowship) => {
-          if (fellowship.bacenta) {
-            await RemoveFellowshipFromBacenta({
-              variables: {
-                bacentaId: fellowship.bacenta.id,
-                fellowshipIds: [fellowship.id],
-              },
-            })
-          } else {
-            //Fellowship has no previous bacenta and is now joining. ie. CloseDownFellowship won't run
-            await LogFellowshipHistory({
-              variables: {
-                fellowshipId: fellowship.id,
-                newLeaderId: '',
-                oldLeaderId: '',
-                newBacentaId: bacentaId,
-                oldBacentaId: '',
-                historyRecord: `${fellowship.name} 
-              Fellowship has been started again under ${initialValues.name} Bacenta`,
-              },
-            })
-          }
-
-          await AddBacentaFellowships({
-            variables: {
-              bacentaId: bacentaId,
-              fellowshipId: [fellowship.id],
-            },
-          })
-        })
-      }
+    const lists = {
+      oldChurches: oldFellowships,
+      newChurches: newFellowships,
     }
+
+    const mutations = {
+      closeDownChurch: CloseDownFellowship,
+      removeChurch: RemoveFellowshipFromBacenta,
+      addChurch: AddBacentaFellowships,
+      logChurchHistory: LogFellowshipHistory,
+    }
+
+    const args = {
+      initialValues,
+      bacentaId,
+    }
+    Promise.all([
+      await removeOldChurches(lists, mutations),
+      await addNewChurches(lists, mutations, args),
+    ])
+
     onSubmitProps.setSubmitting(false)
     onSubmitProps.resetForm()
 

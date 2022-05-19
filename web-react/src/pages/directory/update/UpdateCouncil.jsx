@@ -15,7 +15,7 @@ import { DISPLAY_COUNCIL } from '../display/ReadQueries'
 import { LOG_COUNCIL_HISTORY, LOG_CONSTITUENCY_HISTORY } from './LogMutations'
 import { MAKE_COUNCIL_LEADER } from './ChangeLeaderMutations'
 import CouncilForm from 'pages/directory/reusable-forms/CouncilForm'
-import { getChurchIdsFromObject } from './update-utils'
+import { getChurchIdsFromObject } from './directory-utils'
 import { MAKE_CONSTITUENCY_INACTIVE } from './CloseChurchMutations'
 
 const UpdateCouncil = () => {

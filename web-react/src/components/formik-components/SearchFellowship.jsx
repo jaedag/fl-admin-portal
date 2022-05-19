@@ -5,6 +5,7 @@ import { DEBOUNCE_TIMER, isAuthorised, throwErrorMsg } from 'global-utils'
 import { permitMe } from 'permission-utils'
 import React, { useContext, useEffect, useState } from 'react'
 import Autosuggest from 'react-autosuggest'
+import { initialise } from './search-utils'
 import {
   COUNCIL_FELLOWSHIP_SEARCH,
   GATHERINGSERVICE_FELLOWSHIP_SEARCH,
@@ -19,7 +20,7 @@ const SearchFellowship = (props) => {
   const { currentUser } = useContext(MemberContext)
   const [suggestions, setSuggestions] = useState([])
   const [searchString, setSearchString] = useState(props.initialValue ?? '')
-
+  const [debounced, setDebounced] = useState(searchString)
   const [gatheringServiceSearch, { error: gatheringServiceError }] =
     useLazyQuery(GATHERINGSERVICE_FELLOWSHIP_SEARCH, {
       onCompleted: (data) => {
@@ -136,11 +137,13 @@ const SearchFellowship = (props) => {
       whichSearch(searchString)
     }, DEBOUNCE_TIMER)
 
+    setDebounced(initialise(props.initialValue, searchString))
+
     return () => {
       clearTimeout(timerId)
     }
     // eslint-disable-next-line
-  }, [searchString])
+  }, [searchString, props.initialValue])
 
   return (
     <div>
@@ -154,7 +157,7 @@ const SearchFellowship = (props) => {
           placeholder: props.placeholder,
           id: name,
           autoComplete: 'off',
-          value: searchString,
+          value: debounced,
           name: name,
           className: 'form-control',
           onChange: (_event, { newValue }) => {

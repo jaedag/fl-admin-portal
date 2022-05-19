@@ -15,7 +15,6 @@ const CreateBacenta = () => {
     name: '',
     leaderId: '',
     constituency: constituencyId ?? '',
-    fellowships: [''],
     graduationStatus: '',
     vacationStatus: '',
   }
@@ -27,13 +26,13 @@ const CreateBacenta = () => {
   const onSubmit = async (values, onSubmitProps) => {
     onSubmitProps.setSubmitting(true)
     clickCard({ id: values.constituency, __typename: 'Bacenta' })
+
     try {
       const res = await CreateBacenta({
         variables: {
           name: values.name,
           constituencyId: values.constituency,
           leaderId: values.leaderId,
-          fellowships: values.fellowships,
         },
       })
 

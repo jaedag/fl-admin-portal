@@ -16,7 +16,7 @@ import { LOG_CONSTITUENCY_HISTORY, LOG_BACENTA_HISTORY } from './LogMutations'
 import { MAKE_CONSTITUENCY_LEADER } from './ChangeLeaderMutations'
 import ConstituencyForm from 'pages/directory/reusable-forms/ConstituencyForm'
 import { MAKE_BACENTA_INACTIVE } from './CloseChurchMutations'
-import { getChurchIdsFromObject } from './update-utils'
+import { getChurchIdsFromObject } from './directory-utils'
 
 const UpdateConstituency = () => {
   const { constituencyId, clickCard } = useContext(ChurchContext)
