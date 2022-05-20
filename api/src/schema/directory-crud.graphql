@@ -732,7 +732,7 @@ extend type Mutation {
   CloseDownBacenta(bacentaId: ID!, leaderId: ID!): Constituency
   CloseDownConstituency(constituencyId: ID!, leaderId: ID!): Council
 
-  CloseDownCouncil(councilId: ID!): Council
+  CloseDownCouncil(councilId: ID!, leaderId: ID!): Stream
     @cypher(
       statement: """
       MATCH (council:Council {id:$councilId})
@@ -754,10 +754,10 @@ extend type Mutation {
       SET council:ClosedCouncil, constituencies:ClosedConstituency, bacentas:ClosedBacenta, fellowships:ClosedFellowship
       REMOVE council:Council,constituencies:Constituency,bacentas:Bacenta, fellowships:Fellowship
 
-      RETURN council
+      RETURN stream
       """
     )
-  CloseDownStream(streamId: ID!): Stream
+  CloseDownStream(streamId: ID!): GatheringService
     @cypher(
       statement: """
       MATCH (stream:Stream {id:$streamId})
@@ -779,7 +779,7 @@ extend type Mutation {
       SET stream:ClosedStream, councils:ClosedCouncil, constituencies:Closedconstituency, bacentas:ClosedBacenta, fellowships:ClosedFellowship
       REMOVE stream:Stream, council:Council, constituencies:Constituency,bacentas:Bacenta,fellowships:Fellowship
 
-      RETURN stream
+      RETURN gatheringService
       """
     )
 }

@@ -130,7 +130,8 @@ const StreamForm = ({ initialValues, onSubmit, title, newStream }) => {
                                     </Col>
                                     <Col className="col-auto d-flex">
                                       <PlusSign onClick={() => push()} />
-                                      {index > 0 && (
+                                      {(index > 0 ||
+                                        councils?.length !== 1) && (
                                         <MinusSign
                                           onClick={() => remove(index)}
                                         />

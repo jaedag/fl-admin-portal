@@ -670,10 +670,10 @@ export const ADD_COUNCIL_STREAM = gql`
 `
 
 export const REMOVE_COUNCIL_STREAM = gql`
-  mutation RemoveCouncilStream($councilId: ID!, $streamId: ID!) {
+  mutation RemoveCouncilStream($lowerChurch: [ID]!, $higherChurch: ID!) {
     updateCouncils(
-      where: { id: $councilId }
-      disconnect: { stream: { where: { node: { id: $streamId } } } }
+      where: { id_IN: $lowerChurch }
+      disconnect: { stream: { where: { node: { id: $higherChurch } } } }
     ) {
       councils {
         id
@@ -685,9 +685,9 @@ export const REMOVE_COUNCIL_STREAM = gql`
 
 //Update Stream Mutations
 export const ADD_STREAM_COUNCILS = gql`
-  mutation AddStreamCouncils($streamId: ID!, $councilId: ID!) {
+  mutation AddStreamCouncils($streamId: ID!, $councilId: [ID]!) {
     updateCouncils(
-      where: { id: $councilId }
+      where: { id_IN: $councilId }
       connect: { stream: { where: { node: { id: $streamId } } } }
     ) {
       councils {
