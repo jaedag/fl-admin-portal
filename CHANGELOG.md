@@ -1,3 +1,14 @@
+#### 2.7.2 (2022-05-20)
+
+##### New Features
+
+*  admin-125 Members Ministry can now be set to 'None' ([cc8df027](https://github.com/firstlovecenter/fl-admin-portal/commit/cc8df027c92ef2d3d566f877e39bc477486b7089))
+*  filter vacation churched in church list ([#155](https://github.com/firstlovecenter/fl-admin-portal/pull/155)) ([85a82fe9](https://github.com/firstlovecenter/fl-admin-portal/commit/85a82fe95b7b5ebf5aea49588aefa2229e3c4b17))
+
+##### Bug Fixes
+
+*  fixed unnecessary history log of fellowship movement on member update ([2c6075b9](https://github.com/firstlovecenter/fl-admin-portal/commit/2c6075b9c27db31b56ccc6f04794973a755fe838))
+
 #### 2.7.1 (2022-05-20)
 
 ##### Chores
