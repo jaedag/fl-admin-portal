@@ -219,10 +219,6 @@ type GatheringService implements Church {
   id: ID @id
   name: String!
   leader: Member @relationship(type: "LEADS", direction: IN)
-  target: Int
-    @cypher(
-      statement: "MATCH (this)-[:HAS*4]->(bacentas:Bacenta) WITH DISTINCT bacentas RETURN SUM(bacentas.target)"
-    )
   streams: [Stream!]! @relationship(type: "HAS", direction: OUT)
   councils: [Council!]!
     @cypher(
@@ -302,10 +298,6 @@ type GatheringService implements Church {
 type Stream implements Church {
   id: ID @id
   name: String!
-  target: Int
-    @cypher(
-      statement: "MATCH (this)-[:HAS*3]->(bacentas:Bacenta) WITH DISTINCT bacentas RETURN SUM(bacentas.target)"
-    )
   leader: Member @relationship(type: "LEADS", direction: IN)
   councils: [Council!]! @relationship(type: "HAS", direction: OUT)
   gatheringService: GatheringService @relationship(type: "HAS", direction: IN)
@@ -389,10 +381,6 @@ type Council implements Church {
   id: ID @id
   name: String!
   leader: Member @relationship(type: "LEADS", direction: IN)
-  target: Int
-    @cypher(
-      statement: "MATCH (this)-[:HAS*2]->(bacentas:Bacenta) WITH DISTINCT bacentas RETURN SUM(bacentas.target)"
-    )
   stream_name: String
     @cypher(
       statement: """
@@ -466,10 +454,6 @@ type Council implements Church {
 type Constituency implements Church {
   id: ID @id
   name: String!
-  target: Int
-    @cypher(
-      statement: "MATCH (this)-[:HAS]->(bacentas:Bacenta) WITH DISTINCT bacentas RETURN SUM(bacentas.target)"
-    )
   stream_name: String
     @cypher(
       statement: """
