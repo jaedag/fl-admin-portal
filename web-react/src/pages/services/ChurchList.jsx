@@ -17,39 +17,43 @@ const ChurchList = ({ color, link }) => {
     <div className="d-grid gap-2 text-left">
       {userJobs?.jobs.length ? (
         userJobs.jobs.map((role) => {
-          return role.church.map((church, index) => {
-            if (color === 'arrivals') {
-              if (['Fellowship'].includes(church.__typename)) {
-                return null
+          return role.church
+            .filter((church) => {
+              return church?.vacationStatus !== 'Vacation'
+            })
+            .map((church, index) => {
+              if (color === 'arrivals') {
+                if (['Fellowship'].includes(church.__typename)) {
+                  return null
+                }
               }
-            }
-            if (color === 'defaulters') {
-              if (['Fellowship', 'Bacenta'].includes(church.__typename)) {
-                return null
+              if (color === 'defaulters') {
+                if (['Fellowship', 'Bacenta'].includes(church.__typename)) {
+                  return null
+                }
               }
-            }
-            return (
-              <MenuButton
-                key={index}
-                title={church.name}
-                caption={parseMemberCount(church.memberCount)}
-                icon={MemberIcon}
-                iconBg={true}
-                iconCaption={church.__typename}
-                onClick={() => {
-                  clickCard(church)
-                  setUser(church)
+              return (
+                <MenuButton
+                  key={index}
+                  title={church.name}
+                  caption={parseMemberCount(church.memberCount)}
+                  icon={MemberIcon}
+                  iconBg={true}
+                  iconCaption={church.__typename}
+                  onClick={() => {
+                    clickCard(church)
+                    setUser(church)
 
-                  if (color === 'arrivals') {
-                    navigate(`/arrivals/${church.__typename.toLowerCase()}`)
-                  } else {
-                    navigate(link)
-                  }
-                }}
-                color={color}
-              />
-            )
-          })
+                    if (color === 'arrivals') {
+                      navigate(`/arrivals/${church.__typename.toLowerCase()}`)
+                    } else {
+                      navigate(link)
+                    }
+                  }}
+                  color={color}
+                />
+              )
+            })
         })
       ) : (
         <>
