@@ -477,10 +477,10 @@ export const ADD_BACENTA_CONSTITUENCY = gql`
 `
 
 export const REMOVE_BACENTA_CONSTITUENCY = gql`
-  mutation RemoveBacentaConstituency($constituencyId: ID!, $bacentaId: ID!) {
+  mutation RemoveBacentaConstituency($higherChurch: ID!, $lowerChurch: [ID]!) {
     updateBacentas(
-      where: { id: $bacentaId }
-      disconnect: { constituency: { where: { node: { id: $constituencyId } } } }
+      where: { id_IN: $lowerChurch }
+      disconnect: { constituency: { where: { node: { id: $higherChurch } } } }
     ) {
       bacentas {
         id
@@ -491,7 +491,7 @@ export const REMOVE_BACENTA_CONSTITUENCY = gql`
         }
       }
     }
-    updateConstituencies(where: { id: $constituencyId }) {
+    updateConstituencies(where: { id: $higherChurch }) {
       constituencies {
         id
         name
@@ -534,17 +534,20 @@ export const REMOVE_BACENTA_FELLOWSHIPS = gql`
 `
 
 export const REMOVE_FELLOWSHIP_BACENTA = gql`
-  mutation RemoveFellowshipFromBacenta($bacentaId: ID!, $fellowshipIds: [ID!]) {
+  mutation RemoveFellowshipFromBacenta(
+    $higherChurch: ID!
+    $lowerChurch: [ID!]
+  ) {
     updateFellowships(
-      where: { id_IN: $fellowshipIds }
-      disconnect: { bacenta: { where: { node: { id: $bacentaId } } } }
+      where: { id_IN: $lowerChurch }
+      disconnect: { bacenta: { where: { node: { id: $higherChurch } } } }
     ) {
       fellowships {
         id
         name
       }
     }
-    updateBacentas(where: { id: $bacentaId }) {
+    updateBacentas(where: { id: $higherChurch }) {
       bacentas {
         id
         name
@@ -612,10 +615,10 @@ export const REMOVE_CONSTITUENCY_COUNCIL = gql`
 `
 
 export const ADD_CONSTITUENCY_BACENTAS = gql`
-  mutation AddConstituencyBacentas($constituencyId: ID!, $bacentaId: ID!) {
+  mutation AddConstituencyBacentas($constituencyId: ID!, $bacentaId: [ID]!) {
     updateConstituencies(
       where: { id: $constituencyId }
-      connect: { bacentas: { where: { node: { id: $bacentaId } } } }
+      connect: { bacentas: { where: { node: { id_IN: $bacentaId } } } }
     ) {
       constituencies {
         id

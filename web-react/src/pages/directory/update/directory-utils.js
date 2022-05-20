@@ -1,4 +1,42 @@
-import { throwErrorMsg } from 'global-utils'
+import { capitalise, throwErrorMsg } from 'global-utils'
+
+export const nextHigherChurch = (churchLevel) => {
+  switch (churchLevel) {
+    case 'Fellowship':
+      return 'Bacenta'
+    case 'Bacenta':
+      return 'Constituency'
+    case 'Constituency':
+      return 'Council'
+    case 'Council':
+      return 'Stream'
+    case 'Stream':
+      return 'Gathering Service'
+    case 'Gathering Service':
+      return 'Denomination'
+    default:
+      break
+  }
+}
+
+export const nextLowerChurch = (churchLevel) => {
+  switch (churchLevel) {
+    case 'Fellowship':
+      return 'Fellowship'
+    case 'Bacenta':
+      return 'Fellowship'
+    case 'Constituency':
+      return 'Bacenta'
+    case 'Council':
+      return 'Constituency'
+    case 'Stream':
+      return 'Council'
+    case 'Gathering Service':
+      return 'Stream'
+    default:
+      break
+  }
+}
 
 export const getChurchIdsFromObject = (churchList) => {
   const newArray = churchList.map((churchList) => churchList.id)
@@ -7,24 +45,26 @@ export const getChurchIdsFromObject = (churchList) => {
 }
 
 export const removeOldChurches = async (lists, mutations) => {
+  //Remove Lower Churches
   if (!lists || !mutations) {
     return
   }
-  const removeFellowships = lists.oldChurches.filter((value) => {
+  const removeChurches = lists.oldChurches.filter((value) => {
     return !getChurchIdsFromObject(lists.newChurches).includes(value.id)
   })
-  if (removeFellowships.length) {
+
+  if (removeChurches.length) {
     await Promise.all(
-      removeFellowships.map(async (fellowship) => {
+      removeChurches.map(async (church) => {
         try {
           await mutations.closeDownChurch({
             variables: {
-              id: fellowship?.id ?? '',
-              leaderId: fellowship?.leader?.id,
+              id: church?.id ?? '',
+              leaderId: church?.leader?.id,
             },
           })
         } catch (error) {
-          throwErrorMsg(error)
+          throwErrorMsg('There was a problem closing down the church', error)
         }
       })
     )
@@ -38,40 +78,47 @@ export const addNewChurches = async (lists, mutations, args) => {
     return
   }
 
-  const addFellowships = lists.newChurches.filter(
+  const addChurches = lists.newChurches.filter(
     (value) => !getChurchIdsFromObject(lists.oldChurches).includes(value.id)
   )
 
-  if (addFellowships.length) {
+  if (!addChurches.length) return
+
+  const churchLevel = addChurches[0].__typename?.toLowerCase()
+  const higherChurch = nextHigherChurch(
+    addChurches[0]?.__typename
+  )?.toLowerCase()
+
+  if (addChurches.length) {
     await Promise.all(
-      addFellowships.map(async (fellowship) => {
-        if (fellowship.bacenta) {
+      addChurches.map(async (church) => {
+        if (church[`${higherChurch}`]) {
           await mutations.removeChurch({
             variables: {
-              bacentaId: fellowship.bacenta.id,
-              fellowshipIds: [fellowship.id],
+              higherChurch: church[`${higherChurch}`].id,
+              lowerChurch: [church.id],
             },
           })
         }
 
-        if (!fellowship.bacenta) {
+        if (!church[`${higherChurch}`]) {
           //Fellowship has no previous bacenta and is now joining. ie. CloseDownFellowship won't run
           await mutations.logChurchHistory({
             variables: {
-              fellowshipId: fellowship.id,
+              fellowshipId: church.id,
               newLeaderId: '',
               oldLeaderId: '',
-              newBacentaId: args.bacentaId,
-              oldBacentaId: '',
-              historyRecord: `${fellowship.name} ${fellowship.__typename} has been started again under ${args.initialValues.name} Bacenta`,
+              [`new${capitalise(higherChurch)}Id`]: args.bacentaId,
+              [`old${capitalise(higherChurch)}Id`]: '',
+              historyRecord: `${church.name} ${church.__typename} has been started again under ${args.initialValues.name} Bacenta`,
             },
           })
         }
 
         await mutations.addChurch({
           variables: {
-            bacentaId: args.bacentaId,
-            fellowshipId: [fellowship.id],
+            [`${higherChurch}Id`]: args[`${higherChurch}Id`],
+            [`${churchLevel}Id`]: [church.id],
           },
         })
       })

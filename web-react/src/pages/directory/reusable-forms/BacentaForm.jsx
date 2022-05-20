@@ -205,7 +205,7 @@ const BacentaForm = ({ initialValues, onSubmit, title, newBacenta }) => {
                   onClick={() => {
                     CloseDownBacenta({
                       variables: {
-                        bacentaId: bacentaId,
+                        id: bacentaId,
                         leaderId: initialValues.leaderId,
                       },
                     })

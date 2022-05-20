@@ -164,7 +164,8 @@ const CouncilForm = ({ initialValues, onSubmit, title, newCouncil }) => {
                   onClick={() => {
                     CloseDownCouncil({
                       variables: {
-                        councilId: councilId,
+                        id: councilId,
+                        leaderId: initialValues.leaderId,
                       },
                     })
                       .then((res) => {

@@ -16,7 +16,7 @@ import { LOG_CONSTITUENCY_HISTORY, LOG_BACENTA_HISTORY } from './LogMutations'
 import { MAKE_CONSTITUENCY_LEADER } from './ChangeLeaderMutations'
 import ConstituencyForm from 'pages/directory/reusable-forms/ConstituencyForm'
 import { MAKE_BACENTA_INACTIVE } from './CloseChurchMutations'
-import { getChurchIdsFromObject } from './directory-utils'
+import { addNewChurches, removeOldChurches } from './directory-utils'
 
 const UpdateConstituency = () => {
   const { constituencyId, clickCard } = useContext(ChurchContext)
@@ -85,34 +85,7 @@ const UpdateConstituency = () => {
       })
     },
   })
-  const [CloseDownBacenta] = useMutation(MAKE_BACENTA_INACTIVE, {
-    onCompleted: (data) => {
-      const prevConstituency = data.updateConstituencies.constituencies[0]
-      const bacenta = data.updateBacentas.bacentas[0]
-      let newConstituencyId = ''
-      let oldConstituencyId = ''
-      let historyRecord
-
-      if (prevConstituency?.id === constituencyId) {
-        //Bacenta has previous constituency which is current constituency and is going
-        oldConstituencyId = constituencyId
-        newConstituencyId = ''
-        historyRecord = `${bacenta.name} Bacenta has been closed down under ${initialValues.name} Constituency`
-      }
-
-      //After removing the bacenta from a constituency, then you log that change.
-      LogBacentaHistory({
-        variables: {
-          bacentaId: bacenta.id,
-          newLeaderId: '',
-          oldLeaderId: '',
-          newconstituencyId: newConstituencyId,
-          oldconstituencyId: oldConstituencyId,
-          historyRecord: historyRecord,
-        },
-      })
-    },
-  })
+  const [CloseDownBacenta] = useMutation(MAKE_BACENTA_INACTIVE)
 
   //Changes upwards. it. Changes to the Council the Constituency Campus is under
   const [RemoveConstituencyCouncil] = useMutation(REMOVE_CONSTITUENCY_COUNCIL)
@@ -219,62 +192,27 @@ const UpdateConstituency = () => {
 
       const newBacentaList = values.bacentas.map((bacenta) => bacenta)
 
-      const removeBacentas = oldBacentaList.filter((value) => {
-        return !getChurchIdsFromObject(newBacentaList).includes(value.id)
-      })
+      const lists = {
+        oldChurches: oldBacentaList,
+        newChurches: newBacentaList,
+      }
 
-      const addBacentas = values.bacentas.filter((value) => {
-        return !getChurchIdsFromObject(oldBacentaList).includes(value.id)
-      })
+      const mutations = {
+        closeDownChurch: CloseDownBacenta,
+        removeChurch: RemoveBacentaConstituency,
+        addChurch: AddConstituencyBacentas,
+        logChurchHistory: LogBacentaHistory,
+      }
 
-      removeBacentas.forEach(async (bacenta) => {
-        try {
-          await CloseDownBacenta({
-            variables: {
-              constituencyId: constituencyId,
-              bacentaId: bacenta.id,
-              leaderId: bacenta.leader?.id,
-            },
-          })
-        } catch (error) {
-          throwErrorMsg(error)
-        }
-      })
+      const args = {
+        initialValues,
+        constituencyId,
+      }
 
-      addBacentas.forEach(async (bacenta) => {
-        if (bacenta.constituency) {
-          try {
-            await RemoveBacentaConstituency({
-              variables: {
-                constituencyId: bacenta.constituency.id,
-                bacentaId: bacenta.id,
-                leaderId: bacenta.leader?.id,
-              },
-            })
-          } catch (error) {
-            throwErrorMsg(error)
-          }
-        } else {
-          //Bacenta has no previous constituency and is now joining. ie. RemoveBacentaConstituency won't run
-          await LogBacentaHistory({
-            variables: {
-              bacentaId: bacenta.id,
-              newLeaderId: '',
-              oldLeaderId: '',
-              newconstituencyId: constituencyId,
-              oldconstituencyId: '',
-              historyRecord: `${bacenta.name} Bacenta has been started again under ${initialValues.name} Constituency`,
-            },
-          })
-        }
-
-        await AddConstituencyBacentas({
-          variables: {
-            constituencyId: constituencyId,
-            bacentaId: bacenta.id,
-          },
-        })
-      })
+      Promise.all([
+        await removeOldChurches(lists, mutations),
+        await addNewChurches(lists, mutations, args),
+      ])
 
       onSubmitProps.setSubmitting(false)
       onSubmitProps.resetForm()

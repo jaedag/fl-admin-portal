@@ -54,6 +54,10 @@ export const MEMBER_BACENTA_SEARCH = gql`
       bacentaSearch(key: $key) {
         id
         name
+        constituency {
+          id
+          name
+        }
       }
     }
   }
