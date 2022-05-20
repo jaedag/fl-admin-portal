@@ -15,8 +15,6 @@ import {
 
 import { MemberContext } from '../../../contexts/MemberContext'
 import MemberForm from '../reusable-forms/MemberForm'
-// import { ADD_MEMBER_TITLE_MUTATION } from 'pages/directory/create/CreateMutations'
-// import { filterPastoralTitles } from 'components/reusable-forms/form-utils'
 
 const UpdateMember = () => {
   const { memberId } = useContext(MemberContext)
@@ -118,7 +116,7 @@ const UpdateMember = () => {
         })
       }
 
-      if (memberChurch?.fellowship.id !== values.fellowship) {
+      if (memberChurch?.fellowship.id !== values.fellowship.id) {
         await UpdateMemberFellowship({
           variables: {
             memberId: memberId,
