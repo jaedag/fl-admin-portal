@@ -4,8 +4,10 @@ import { useQuery, useMutation } from '@apollo/client'
 
 import { parsePhoneNum, throwErrorMsg } from '../../../global-utils'
 import {
+  LOG_MEMBER_HISTORY,
   UPDATE_MEMBER_EMAIL,
   UPDATE_MEMBER_FELLOWSHIP,
+  UPDATE_MEMBER_MINISTRY,
   UPDATE_MEMBER_MUTATION,
 } from './UpdateMutations'
 import {
@@ -46,7 +48,7 @@ const UpdateMember = () => {
     pictureUrl: member?.pictureUrl ?? '',
     fellowship: memberChurch?.fellowship,
     fellowshipName: '',
-    ministry: memberChurch?.ministry ? memberChurch?.ministry?.id : '',
+    ministry: memberChurch?.ministry?.id ?? '',
 
     pastoralHistory: [
       {
@@ -80,14 +82,12 @@ const UpdateMember = () => {
   })
   const [UpdateMemberEmail] = useMutation(UPDATE_MEMBER_EMAIL)
   const [UpdateMemberFellowship] = useMutation(UPDATE_MEMBER_FELLOWSHIP)
-  // const [AddMemberTitle] = useMutation(ADD_MEMBER_TITLE_MUTATION)
+  const [UpdateMemberMinistry] = useMutation(UPDATE_MEMBER_MINISTRY)
+  const [LogMemberHistory] = useMutation(LOG_MEMBER_HISTORY)
 
   const onSubmit = async (values, onSubmitProps) => {
     onSubmitProps.setSubmitting(true)
 
-    //Variables that are not controlled by formik
-
-    // const pastoralAppointment = filterPastoralTitles(values.pastoralAppointment)
     try {
       await UpdateMember({
         variables: {
@@ -104,14 +104,40 @@ const UpdateMember = () => {
           pictureUrl: values.pictureUrl,
 
           fellowship: values.fellowship?.id,
-          ministry: values.ministry,
         },
       })
+
       if (initialValues.email !== values.email) {
         await UpdateMemberEmail({
           variables: {
             id: memberId,
             email: values.email.trim().toLowerCase(),
+          },
+        })
+      }
+
+      if (memberChurch?.ministry?.id !== values.ministry) {
+        const res = await UpdateMemberMinistry({
+          variables: {
+            memberId,
+            ministryId: values.ministry,
+          },
+        })
+
+        const newMinistry = res.data.UpdateMemberMinistry?.ministry
+        let ministryHistoryLog = `${member.firstName} ${member.lastName} joined ${newMinistry?.name} Ministry`
+        if (initialValues.ministry) {
+          ministryHistoryLog = `${member.firstName} ${member.lastName} moved from ${memberChurch?.ministry.name} Ministry to ${newMinistry?.name} Ministry`
+        }
+
+        if (values.ministry === 'None') {
+          ministryHistoryLog = `${member.firstName} ${member.lastName} left ${memberChurch?.ministry.name} Ministry`
+        }
+
+        await LogMemberHistory({
+          variables: {
+            ids: [memberId, newMinistry?.name, memberChurch?.ministry?.id],
+            historyRecord: ministryHistoryLog,
           },
         })
       }
