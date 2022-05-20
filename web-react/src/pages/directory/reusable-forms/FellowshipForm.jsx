@@ -264,7 +264,7 @@ const FellowshipForm = (props) => {
                   onClick={() => {
                     CloseDownFellowship({
                       variables: {
-                        fellowshipId: fellowshipId,
+                        id: fellowshipId,
                         leaderId: props.initialValues.leaderId,
                       },
                     })

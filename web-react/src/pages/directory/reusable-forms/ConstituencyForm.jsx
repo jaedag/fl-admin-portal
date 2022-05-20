@@ -148,7 +148,8 @@ const ConstituencyForm = ({
                                     </Col>
                                     <Col className="col-auto d-flex">
                                       <PlusSign onClick={() => push()} />
-                                      {index > 0 && (
+                                      {(index > 0 ||
+                                        bacentas?.length !== 1) && (
                                         <MinusSign
                                           onClick={() => remove(index)}
                                         />
@@ -179,7 +180,7 @@ const ConstituencyForm = ({
                   onClick={() => {
                     CloseDownConstituency({
                       variables: {
-                        constituencyId,
+                        id: constituencyId,
                         leaderId: initialValues.leaderId,
                       },
                     })

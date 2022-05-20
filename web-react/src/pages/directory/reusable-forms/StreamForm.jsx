@@ -161,7 +161,8 @@ const StreamForm = ({ initialValues, onSubmit, title, newStream }) => {
                   onClick={() => {
                     CloseDownStream({
                       variables: {
-                        streamId: streamId,
+                        id: streamId,
+                        leaderId: initialValues.leaderId,
                       },
                     })
                       .then((res) => {
