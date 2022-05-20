@@ -131,17 +131,11 @@ export const CREATE_FELLOWSHIP_MUTATION = gql`
 `
 
 export const CREATE_BACENTA_MUTATION = gql`
-  mutation CreateBacenta(
-    $name: String!
-    $constituencyId: ID!
-    $leaderId: ID!
-    $fellowships: [ID]
-  ) {
+  mutation CreateBacenta($name: String!, $constituencyId: ID!, $leaderId: ID!) {
     CreateBacenta(
       name: $name
       constituencyId: $constituencyId
       leaderId: $leaderId
-      fellowships: $fellowships
     ) {
       id
       name
@@ -188,17 +182,11 @@ export const CREATE_SONTA_MUTATION = gql`
 `
 
 export const CREATE_CONSTITUENCY_MUTATION = gql`
-  mutation CreateConstituency(
-    $name: String!
-    $leaderId: ID!
-    $councilId: ID!
-    $bacentas: [ID]
-  ) {
+  mutation CreateConstituency($name: String!, $leaderId: ID!, $councilId: ID!) {
     CreateConstituency(
       name: $name
       leaderId: $leaderId
       councilId: $councilId
-      bacentas: $bacentas
     ) {
       id
       name
@@ -215,18 +203,8 @@ export const CREATE_CONSTITUENCY_MUTATION = gql`
 `
 
 export const CREATE_COUNCIL_MUTATION = gql`
-  mutation CreateCouncil(
-    $name: String!
-    $leaderId: ID!
-    $streamId: ID!
-    $constituencies: [ID]
-  ) {
-    CreateCouncil(
-      name: $name
-      leaderId: $leaderId
-      streamId: $streamId
-      constituencies: $constituencies
-    ) {
+  mutation CreateCouncil($name: String!, $leaderId: ID!, $streamId: ID!) {
+    CreateCouncil(name: $name, leaderId: $leaderId, streamId: $streamId) {
       id
       name
       stream_name
@@ -246,13 +224,11 @@ export const CREATE_STREAM_MUTATION = gql`
     $name: String!
     $leaderId: ID!
     $gatheringServiceId: ID!
-    $councils: [ID]
   ) {
     CreateStream(
       name: $name
       leaderId: $leaderId
       gatheringServiceId: $gatheringServiceId
-      councils: $councils
     ) {
       id
       name

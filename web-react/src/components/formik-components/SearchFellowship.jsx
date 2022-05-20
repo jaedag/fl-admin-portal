@@ -5,6 +5,7 @@ import { DEBOUNCE_TIMER, isAuthorised, throwErrorMsg } from 'global-utils'
 import { permitMe } from 'permission-utils'
 import React, { useContext, useEffect, useState } from 'react'
 import Autosuggest from 'react-autosuggest'
+import { initialise } from './search-utils'
 import {
   COUNCIL_FELLOWSHIP_SEARCH,
   GATHERINGSERVICE_FELLOWSHIP_SEARCH,
@@ -130,6 +131,11 @@ const SearchFellowship = (props) => {
       }
     }
   }
+
+  useEffect(() => {
+    setSearchString(initialise(props.initialValue, searchString))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [props.initialValue])
 
   useEffect(() => {
     const timerId = setTimeout(() => {

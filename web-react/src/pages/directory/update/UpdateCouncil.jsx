@@ -15,7 +15,7 @@ import { DISPLAY_COUNCIL } from '../display/ReadQueries'
 import { LOG_COUNCIL_HISTORY, LOG_CONSTITUENCY_HISTORY } from './LogMutations'
 import { MAKE_COUNCIL_LEADER } from './ChangeLeaderMutations'
 import CouncilForm from 'pages/directory/reusable-forms/CouncilForm'
-import { getChurchIdsFromObject } from './update-utils'
+import { addNewChurches, removeOldChurches } from './directory-utils'
 import { MAKE_CONSTITUENCY_INACTIVE } from './CloseChurchMutations'
 
 const UpdateCouncil = () => {
@@ -142,128 +142,95 @@ const UpdateCouncil = () => {
           streamId: values.stream,
         },
       })
+
+      //Log if Council Name Changes
+      if (values.name !== initialValues.name) {
+        await LogCouncilHistory({
+          variables: {
+            councilId: councilId,
+            newLeaderId: '',
+            oldLeaderId: '',
+            oldStreamId: '',
+            newStreamId: '',
+            historyRecord: `Council name has been changed from ${initialValues.name} to ${values.name}`,
+          },
+        })
+      }
+
+      //Log if the Leader Changes
+      if (values.leaderId !== initialValues.leaderId) {
+        try {
+          await MakeCouncilLeader({
+            variables: {
+              oldLeaderId: initialValues.leaderId || 'old-leader',
+              newLeaderId: values.leaderId,
+              councilId: councilId,
+            },
+          })
+          alertMsg('Leader Changed Successfully')
+          navigate(`/council/displaydetails`)
+        } catch (err) {
+          throwErrorMsg('There was a problem changing the Overseer', err)
+        }
+      }
+
+      //Log if Stream Changes
+      if (values.stream !== initialValues.stream) {
+        try {
+          await RemoveCouncilStream({
+            variables: {
+              streamId: initialValues.stream,
+              councilId: councilId,
+            },
+          })
+          await AddCouncilStream({
+            variables: {
+              streamId: values.stream,
+              councilId: councilId,
+            },
+          })
+        } catch (error) {
+          throwErrorMsg(error)
+        }
+      }
+
+      //For the Adding and Removing of Constituencies
+      const oldConstituencyList = initialValues.constituencies.map(
+        (constituency) => constituency
+      )
+
+      const newConstituencyList = values.constituencies.map(
+        (constituency) => constituency
+      )
+
+      const lists = {
+        oldChurches: oldConstituencyList,
+        newChurches: newConstituencyList,
+      }
+
+      const mutations = {
+        closeDownChurch: CloseDownConstituency,
+        removeChurch: RemoveConstituencyCouncil,
+        addChurch: AddCouncilConstituencies,
+        logChurchHistory: LogConstituencyHistory,
+      }
+
+      const args = {
+        initialValues,
+        councilId,
+      }
+
+      Promise.all([
+        await removeOldChurches(lists, mutations),
+        await addNewChurches(lists, mutations, args),
+      ])
+
+      onSubmitProps.setSubmitting(false)
+      onSubmitProps.resetForm()
+      navigate(`/council/displaydetails`)
     } catch (error) {
       throwErrorMsg('There was a problem updating this council', error)
     }
-
-    //Log if Council Name Changes
-    if (values.name !== initialValues.name) {
-      await LogCouncilHistory({
-        variables: {
-          councilId: councilId,
-          newLeaderId: '',
-          oldLeaderId: '',
-          oldStreamId: '',
-          newStreamId: '',
-          historyRecord: `Council name has been changed from ${initialValues.name} to ${values.name}`,
-        },
-      })
-    }
-
-    //Log if the Leader Changes
-    if (values.leaderId !== initialValues.leaderId) {
-      try {
-        await MakeCouncilLeader({
-          variables: {
-            oldLeaderId: initialValues.leaderId || 'old-leader',
-            newLeaderId: values.leaderId,
-            councilId: councilId,
-          },
-        })
-        alertMsg('Leader Changed Successfully')
-        navigate(`/council/displaydetails`)
-      } catch (err) {
-        throwErrorMsg('There was a problem changing the Overseer', err)
-      }
-    }
-
-    //Log if Stream Changes
-    if (values.stream !== initialValues.stream) {
-      try {
-        await RemoveCouncilStream({
-          variables: {
-            streamId: initialValues.stream,
-            councilId: councilId,
-          },
-        })
-        await AddCouncilStream({
-          variables: {
-            streamId: values.stream,
-            councilId: councilId,
-          },
-        })
-      } catch (error) {
-        throwErrorMsg(error)
-      }
-    }
-
-    //For the Adding and Removing of Constituencies
-    const oldConstituencyList = initialValues.constituencies.map(
-      (constituency) => constituency
-    )
-
-    const newConstituencyList = values.constituencies.map(
-      (constituency) => constituency
-    )
-
-    const removeConstituencies = oldConstituencyList.filter((value) => {
-      return !getChurchIdsFromObject(newConstituencyList).includes(value.id)
-    })
-
-    const addConstituencies = values.constituencies.filter((value) => {
-      return !getChurchIdsFromObject(oldConstituencyList).includes(value.id)
-    })
-
-    removeConstituencies.forEach(async (constituency) => {
-      try {
-        await CloseDownConstituency({
-          variables: {
-            councilId: councilId,
-            constituencyId: constituency.id,
-          },
-        })
-      } catch (error) {
-        throwErrorMsg(error)
-      }
-    })
-
-    addConstituencies.forEach(async (constituency) => {
-      try {
-        if (constituency.council) {
-          await RemoveConstituencyCouncil({
-            variables: {
-              councilId: constituency.council.id,
-              constituencyId: constituency.id,
-            },
-          })
-        } else {
-          //Constituency has no previous council and is now joining. ie. RemoveConstituencyCouncil won't run
-          await LogConstituencyHistory({
-            variables: {
-              constituencyId: constituency.id,
-              newLeaderId: '',
-              oldLeaderId: '',
-              newcouncilId: councilId,
-              oldcouncilId: '',
-              historyRecord: `${constituency.name} Constituency has been started again under ${initialValues.name} Council`,
-            },
-          })
-        }
-
-        await AddCouncilConstituencies({
-          variables: {
-            councilId: councilId,
-            constituencyId: constituency.id,
-          },
-        })
-      } catch (error) {
-        throwErrorMsg(error)
-      }
-    })
-
-    onSubmitProps.setSubmitting(false)
-    onSubmitProps.resetForm()
-    navigate(`/council/displaydetails`)
   }
 
   return (

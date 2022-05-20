@@ -477,10 +477,10 @@ export const ADD_BACENTA_CONSTITUENCY = gql`
 `
 
 export const REMOVE_BACENTA_CONSTITUENCY = gql`
-  mutation RemoveBacentaConstituency($constituencyId: ID!, $bacentaId: ID!) {
+  mutation RemoveBacentaConstituency($higherChurch: ID!, $lowerChurch: [ID]!) {
     updateBacentas(
-      where: { id: $bacentaId }
-      disconnect: { constituency: { where: { node: { id: $constituencyId } } } }
+      where: { id_IN: $lowerChurch }
+      disconnect: { constituency: { where: { node: { id: $higherChurch } } } }
     ) {
       bacentas {
         id
@@ -491,7 +491,7 @@ export const REMOVE_BACENTA_CONSTITUENCY = gql`
         }
       }
     }
-    updateConstituencies(where: { id: $constituencyId }) {
+    updateConstituencies(where: { id: $higherChurch }) {
       constituencies {
         id
         name
@@ -534,19 +534,23 @@ export const REMOVE_BACENTA_FELLOWSHIPS = gql`
 `
 
 export const REMOVE_FELLOWSHIP_BACENTA = gql`
-  mutation RemoveFellowshipFromBacenta($bacentaId: ID!, $fellowshipIds: [ID!]) {
+  mutation RemoveFellowshipFromBacenta(
+    $higherChurch: ID!
+    $lowerChurch: [ID!]
+  ) {
     updateFellowships(
-      where: { id_IN: $fellowshipIds }
-      disconnect: { bacenta: { where: { node: { id: $bacentaId } } } }
+      where: { id_IN: $lowerChurch }
+      disconnect: { bacenta: { where: { node: { id: $higherChurch } } } }
     ) {
       fellowships {
         id
         name
       }
     }
-    updateBacentas(where: { id: $bacentaId }) {
+    updateBacentas(where: { id: $higherChurch }) {
       bacentas {
         id
+        name
         fellowships {
           id
         }
@@ -597,10 +601,10 @@ export const ADD_CONSTITUENCY_COUNCIL = gql`
 `
 
 export const REMOVE_CONSTITUENCY_COUNCIL = gql`
-  mutation RemoveConstituencyCouncil($constituencyId: ID!, $councilId: ID!) {
+  mutation RemoveConstituencyCouncil($lowerChurch: [ID]!, $higherChurch: ID!) {
     updateConstituencies(
-      where: { id: $constituencyId }
-      disconnect: { council: { where: { node: { id: $councilId } } } }
+      where: { id_IN: $lowerChurch }
+      disconnect: { council: { where: { node: { id: $higherChurch } } } }
     ) {
       constituencies {
         id
@@ -611,10 +615,10 @@ export const REMOVE_CONSTITUENCY_COUNCIL = gql`
 `
 
 export const ADD_CONSTITUENCY_BACENTAS = gql`
-  mutation AddConstituencyBacentas($constituencyId: ID!, $bacentaId: ID!) {
+  mutation AddConstituencyBacentas($constituencyId: ID!, $bacentaId: [ID]!) {
     updateConstituencies(
       where: { id: $constituencyId }
-      connect: { bacentas: { where: { node: { id: $bacentaId } } } }
+      connect: { bacentas: { where: { node: { id_IN: $bacentaId } } } }
     ) {
       constituencies {
         id
@@ -629,10 +633,12 @@ export const ADD_CONSTITUENCY_BACENTAS = gql`
 
 //Update Council Mutations
 export const ADD_COUNCIL_CONSTITUENCIES = gql`
-  mutation AddCouncilConstituencies($councilId: ID!, $constituencyId: ID!) {
+  mutation AddCouncilConstituencies($councilId: ID!, $constituencyId: [ID]!) {
     updateCouncils(
       where: { id: $councilId }
-      connect: { constituencies: { where: { node: { id: $constituencyId } } } }
+      connect: {
+        constituencies: { where: { node: { id_IN: $constituencyId } } }
+      }
     ) {
       councils {
         id
@@ -664,10 +670,10 @@ export const ADD_COUNCIL_STREAM = gql`
 `
 
 export const REMOVE_COUNCIL_STREAM = gql`
-  mutation RemoveCouncilStream($councilId: ID!, $streamId: ID!) {
+  mutation RemoveCouncilStream($lowerChurch: [ID]!, $higherChurch: ID!) {
     updateCouncils(
-      where: { id: $councilId }
-      disconnect: { stream: { where: { node: { id: $streamId } } } }
+      where: { id_IN: $lowerChurch }
+      disconnect: { stream: { where: { node: { id: $higherChurch } } } }
     ) {
       councils {
         id
@@ -679,9 +685,9 @@ export const REMOVE_COUNCIL_STREAM = gql`
 
 //Update Stream Mutations
 export const ADD_STREAM_COUNCILS = gql`
-  mutation AddStreamCouncils($streamId: ID!, $councilId: ID!) {
+  mutation AddStreamCouncils($streamId: ID!, $councilId: [ID]!) {
     updateCouncils(
-      where: { id: $councilId }
+      where: { id_IN: $councilId }
       connect: { stream: { where: { node: { id: $streamId } } } }
     ) {
       councils {

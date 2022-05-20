@@ -69,10 +69,10 @@ RETURN constituency {
     }
 `
 
-export const closeDonwConstituency = `
-MATCH (constituency:Constituency {id:$constituencyId})
+export const closeDownConstituency = `
+MATCH (constituency:Constituency {id:$constituencyId})<-[:HAS]-(council:Council)
 MATCH (admin:Member {auth_id: $auth.jwt.sub})
-MATCH (constituency)<-[:HAS]-(council:Council)
+MATCH (council)-[:HAS]->(constituencies)
 OPTIONAL MATCH (constituency)-[:HAS]->(bacentas)-[:HAS]->(fellowships)
 
 CREATE (log:HistoryLog {id:apoc.create.uuid()})

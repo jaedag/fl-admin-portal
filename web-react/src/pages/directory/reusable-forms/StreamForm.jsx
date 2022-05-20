@@ -99,45 +99,52 @@ const StreamForm = ({ initialValues, onSubmit, title, newStream }) => {
                         </Col>
                       </RoleView>
                     </Row>
-                    <small className="pt-2">
-                      {`Select any councils that are being moved to this Stream`}
-                    </small>
-                    <FieldArray name="councils">
-                      {(fieldArrayProps) => {
-                        const { push, remove, form } = fieldArrayProps
-                        const { values } = form
-                        const { councils } = values
+                    {!newStream && (
+                      <>
+                        <small className="pt-2">
+                          {`Select any councils that are being moved to this Stream`}
+                        </small>
+                        <FieldArray name="councils">
+                          {(fieldArrayProps) => {
+                            const { push, remove, form } = fieldArrayProps
+                            const { values } = form
+                            const { councils } = values
 
-                        return (
-                          <>
-                            {councils.map((council, index) => (
-                              <Row key={index} className="form-row">
-                                <Col>
-                                  <FormikControl
-                                    control="councilSearch"
-                                    name={`councils[${index}]`}
-                                    placeholder="Council Name"
-                                    initialValue={council?.name}
-                                    setFieldValue={formik.setFieldValue}
-                                    aria-describedby="Constituency Name"
-                                    error={
-                                      formik.errors.councils &&
-                                      formik.errors.councils[index]
-                                    }
-                                  />
-                                </Col>
-                                <Col className="col-auto d-flex">
-                                  <PlusSign onClick={() => push()} />
-                                  {index > 0 && (
-                                    <MinusSign onClick={() => remove(index)} />
-                                  )}
-                                </Col>
-                              </Row>
-                            ))}
-                          </>
-                        )
-                      }}
-                    </FieldArray>
+                            return (
+                              <>
+                                {councils.map((council, index) => (
+                                  <Row key={index} className="form-row">
+                                    <Col>
+                                      <FormikControl
+                                        control="councilSearch"
+                                        name={`councils[${index}]`}
+                                        placeholder="Council Name"
+                                        initialValue={council?.name}
+                                        setFieldValue={formik.setFieldValue}
+                                        aria-describedby="Constituency Name"
+                                        error={
+                                          formik.errors.councils &&
+                                          formik.errors.councils[index]
+                                        }
+                                      />
+                                    </Col>
+                                    <Col className="col-auto d-flex">
+                                      <PlusSign onClick={() => push()} />
+                                      {(index > 0 ||
+                                        councils?.length !== 1) && (
+                                        <MinusSign
+                                          onClick={() => remove(index)}
+                                        />
+                                      )}
+                                    </Col>
+                                  </Row>
+                                ))}
+                              </>
+                            )
+                          }}
+                        </FieldArray>
+                      </>
+                    )}
                   </Col>
                 </Row>
               </div>
@@ -155,7 +162,8 @@ const StreamForm = ({ initialValues, onSubmit, title, newStream }) => {
                   onClick={() => {
                     CloseDownStream({
                       variables: {
-                        streamId: streamId,
+                        id: streamId,
+                        leaderId: initialValues.leaderId,
                       },
                     })
                       .then((res) => {

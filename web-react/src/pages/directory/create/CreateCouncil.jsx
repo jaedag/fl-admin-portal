@@ -16,7 +16,6 @@ const CreateCouncil = () => {
     name: '',
     leaderId: '',
     stream: streamId,
-    constituencies: [''],
   }
 
   const [NewCouncilLeader] = useMutation(NEW_COUNCIL_LEADER)
@@ -32,7 +31,6 @@ const CreateCouncil = () => {
           name: values.name,
           leaderId: values.leaderId,
           streamId: values.stream,
-          constituencies: values.constituencies,
         },
       })
       clickCard(res.data.CreateCouncil)

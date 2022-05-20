@@ -117,45 +117,52 @@ const ConstituencyForm = ({
                       </RoleView>
                     </Row>
 
-                    <small className="pt-2">
-                      {`Select any bacentas that are being moved to this Constituency`}
-                    </small>
-                    <FieldArray name="bacentas">
-                      {(fieldArrayProps) => {
-                        const { push, remove, form } = fieldArrayProps
-                        const { values } = form
-                        const { bacentas } = values
+                    {!newConstituency && (
+                      <>
+                        <small className="pt-2">
+                          {`Select any bacentas that are being moved to this Constituency`}
+                        </small>
+                        <FieldArray name="bacentas">
+                          {(fieldArrayProps) => {
+                            const { push, remove, form } = fieldArrayProps
+                            const { values } = form
+                            const { bacentas } = values
 
-                        return (
-                          <>
-                            {bacentas.map((bacenta, index) => (
-                              <Row key={index} className="form-row">
-                                <Col>
-                                  <FormikControl
-                                    control="bacentaSearch"
-                                    name={`bacentas[${index}]`}
-                                    placeholder="Bacenta Name"
-                                    initialValue={bacenta?.name}
-                                    setFieldValue={formik.setFieldValue}
-                                    aria-describedby="Bacenta Name"
-                                    error={
-                                      formik.errors.bacentas &&
-                                      formik.errors.bacentas[index]
-                                    }
-                                  />
-                                </Col>
-                                <Col className="col-auto d-flex">
-                                  <PlusSign onClick={() => push()} />
-                                  {index > 0 && (
-                                    <MinusSign onClick={() => remove(index)} />
-                                  )}
-                                </Col>
-                              </Row>
-                            ))}
-                          </>
-                        )
-                      }}
-                    </FieldArray>
+                            return (
+                              <>
+                                {bacentas.map((bacenta, index) => (
+                                  <Row key={index} className="form-row">
+                                    <Col>
+                                      <FormikControl
+                                        control="bacentaSearch"
+                                        name={`bacentas[${index}]`}
+                                        placeholder="Bacenta Name"
+                                        initialValue={bacenta?.name}
+                                        setFieldValue={formik.setFieldValue}
+                                        aria-describedby="Bacenta Name"
+                                        error={
+                                          formik.errors.bacentas &&
+                                          formik.errors.bacentas[index]
+                                        }
+                                      />
+                                    </Col>
+                                    <Col className="col-auto d-flex">
+                                      <PlusSign onClick={() => push()} />
+                                      {(index > 0 ||
+                                        bacentas?.length !== 1) && (
+                                        <MinusSign
+                                          onClick={() => remove(index)}
+                                        />
+                                      )}
+                                    </Col>
+                                  </Row>
+                                ))}
+                              </>
+                            )
+                          }}
+                        </FieldArray>
+                      </>
+                    )}
                   </Col>
                 </Row>
               </div>
@@ -173,7 +180,7 @@ const ConstituencyForm = ({
                   onClick={() => {
                     CloseDownConstituency({
                       variables: {
-                        constituencyId,
+                        id: constituencyId,
                         leaderId: initialValues.leaderId,
                       },
                     })

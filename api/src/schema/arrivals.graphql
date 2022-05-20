@@ -1,3 +1,31 @@
+extend type GatheringService {
+  target: Int
+    @cypher(
+      statement: "MATCH (this)-[:HAS*4]->(bacentas:Bacenta:Active) WITH DISTINCT bacentas RETURN SUM(bacentas.target)"
+    )
+}
+
+extend type Stream {
+  target: Int
+    @cypher(
+      statement: "MATCH (this)-[:HAS*3]->(bacentas:Active:Bacenta) WITH DISTINCT bacentas RETURN SUM(bacentas.target)"
+    )
+}
+
+extend type Council {
+  target: Int
+    @cypher(
+      statement: "MATCH (this)-[:HAS*2]->(bacentas:Active:Bacenta) WITH DISTINCT bacentas RETURN SUM(bacentas.target)"
+    )
+}
+
+extend type Constituency {
+  target: Int
+    @cypher(
+      statement: "MATCH (this)-[:HAS]->(bacentas:Bacenta:Active) WITH DISTINCT bacentas RETURN SUM(bacentas.target)"
+    )
+}
+
 type SwellDate implements TimeGraphNode
   @auth(rules: [{ isAuthenticated: true }]) {
   id: ID!
