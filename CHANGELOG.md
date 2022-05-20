@@ -1,3 +1,9 @@
+#### 2.7.1 (2022-05-20)
+
+##### Chores
+
+*  pull remote meta.json file ([a5f28709](https://github.com/firstlovecenter/fl-admin-portal/commit/a5f287090ff1411c3d5ad31c9f833c5758a2294d))
+
 ### 2.8.0 (2022-05-20)
 
 ##### Chores
