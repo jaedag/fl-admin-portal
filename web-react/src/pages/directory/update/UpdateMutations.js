@@ -601,10 +601,10 @@ export const ADD_CONSTITUENCY_COUNCIL = gql`
 `
 
 export const REMOVE_CONSTITUENCY_COUNCIL = gql`
-  mutation RemoveConstituencyCouncil($constituencyId: ID!, $councilId: ID!) {
+  mutation RemoveConstituencyCouncil($lowerChurch: [ID]!, $higherChurch: ID!) {
     updateConstituencies(
-      where: { id: $constituencyId }
-      disconnect: { council: { where: { node: { id: $councilId } } } }
+      where: { id_IN: $lowerChurch }
+      disconnect: { council: { where: { node: { id: $higherChurch } } } }
     ) {
       constituencies {
         id
@@ -633,10 +633,12 @@ export const ADD_CONSTITUENCY_BACENTAS = gql`
 
 //Update Council Mutations
 export const ADD_COUNCIL_CONSTITUENCIES = gql`
-  mutation AddCouncilConstituencies($councilId: ID!, $constituencyId: ID!) {
+  mutation AddCouncilConstituencies($councilId: ID!, $constituencyId: [ID]!) {
     updateCouncils(
       where: { id: $councilId }
-      connect: { constituencies: { where: { node: { id: $constituencyId } } } }
+      connect: {
+        constituencies: { where: { node: { id_IN: $constituencyId } } }
+      }
     ) {
       councils {
         id

@@ -133,7 +133,8 @@ const CouncilForm = ({ initialValues, onSubmit, title, newCouncil }) => {
                                     </Col>
                                     <Col className="col-auto d-flex">
                                       <PlusSign onClick={() => push()} />
-                                      {index > 0 && (
+                                      {(index > 0 ||
+                                        constituencies?.length !== 1) && (
                                         <MinusSign
                                           onClick={() => remove(index)}
                                         />

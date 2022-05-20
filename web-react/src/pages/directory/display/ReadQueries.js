@@ -440,11 +440,13 @@ export const DISPLAY_COUNCIL = gql`
         id
         name
       }
-      constituencies(options: { limit: 5 }) {
+      constituencies {
         id
         name
         stream_name
-
+        leader {
+          id
+        }
         council {
           id
         }
