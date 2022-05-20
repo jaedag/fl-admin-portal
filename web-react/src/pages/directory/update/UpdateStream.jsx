@@ -15,7 +15,7 @@ import { DISPLAY_STREAM } from '../display/ReadQueries'
 import { LOG_STREAM_HISTORY, LOG_COUNCIL_HISTORY } from './LogMutations'
 import { MAKE_STREAM_LEADER } from './ChangeLeaderMutations'
 import StreamForm from 'pages/directory/reusable-forms/StreamForm'
-import { getChurchIdsFromObject } from './directory-utils'
+import { addNewChurches, removeOldChurches } from './directory-utils'
 import { MAKE_COUNCIL_INACTIVE } from './CloseChurchMutations'
 
 const UpdateStream = () => {
@@ -143,124 +143,91 @@ const UpdateStream = () => {
           gatheringServiceId: values.gatheringService,
         },
       })
+
+      //Log if Stream Name Changes
+      if (values.name !== initialValues.name) {
+        await LogStreamHistory({
+          variables: {
+            streamId: streamId,
+            newLeaderId: '',
+            oldLeaderId: '',
+            oldGatheringServiceId: '',
+            newGatheringServiceId: '',
+            historyRecord: `Stream name has been changed from ${initialValues.name} to ${values.name}`,
+          },
+        })
+      }
+
+      //Log if the Leader Changes
+      if (values.leaderId !== initialValues.leaderId) {
+        try {
+          await MakeStreamLeader({
+            variables: {
+              oldLeaderId: initialValues.leaderId || 'old-leader',
+              newLeaderId: values.leaderId,
+              streamId: streamId,
+            },
+          })
+          alertMsg('Leader Changed Successfully')
+          navigate(`/stream/displaydetails`)
+        } catch (err) {
+          throwErrorMsg('There was a problem changing the Overseer', err)
+        }
+      }
+
+      //Log if GatheringService Changes
+      if (values.gatheringService !== initialValues.gatheringService) {
+        try {
+          await RemoveStreamGatheringService({
+            variables: {
+              gatheringServiceId: initialValues.gatheringService,
+              streamId: streamId,
+            },
+          })
+          await AddStreamGatheringService({
+            variables: {
+              gatheringServiceId: values.gatheringService,
+              streamId: streamId,
+            },
+          })
+        } catch (error) {
+          throwErrorMsg(error)
+        }
+      }
+
+      //For the Adding and Removing of Councils
+      const oldCouncilList = initialValues.councils.map((council) => council)
+
+      const newCouncilList = values.councils.map((council) => council)
+
+      const lists = {
+        oldChurches: oldCouncilList,
+        newChurches: newCouncilList,
+      }
+
+      const mutations = {
+        closeDownChurch: CloseDownCouncil,
+        removeChurch: RemoveCouncilStream,
+        addChurch: AddStreamCouncils,
+        logChurchHistory: LogCouncilHistory,
+      }
+
+      const args = {
+        initialValues,
+        streamId,
+      }
+
+      Promise.all([
+        await removeOldChurches(lists, mutations),
+        await addNewChurches(lists, mutations, args),
+      ])
+
+      onSubmitProps.setSubmitting(false)
+      onSubmitProps.resetForm()
+      navigate(`/stream/displaydetails`)
     } catch (err) {
       throwErrorMsg('There was a problem updating this stream', err)
     }
-
-    //Log if Stream Name Changes
-    if (values.name !== initialValues.name) {
-      await LogStreamHistory({
-        variables: {
-          streamId: streamId,
-          newLeaderId: '',
-          oldLeaderId: '',
-          oldGatheringServiceId: '',
-          newGatheringServiceId: '',
-          historyRecord: `Stream name has been changed from ${initialValues.name} to ${values.name}`,
-        },
-      })
-    }
-
-    //Log if the Leader Changes
-    if (values.leaderId !== initialValues.leaderId) {
-      try {
-        await MakeStreamLeader({
-          variables: {
-            oldLeaderId: initialValues.leaderId || 'old-leader',
-            newLeaderId: values.leaderId,
-            streamId: streamId,
-          },
-        })
-        alertMsg('Leader Changed Successfully')
-        navigate(`/stream/displaydetails`)
-      } catch (err) {
-        throwErrorMsg('There was a problem changing the Overseer', err)
-      }
-    }
-
-    //Log if GatheringService Changes
-    if (values.gatheringService !== initialValues.gatheringService) {
-      try {
-        await RemoveStreamGatheringService({
-          variables: {
-            gatheringServiceId: initialValues.gatheringService,
-            streamId: streamId,
-          },
-        })
-        await AddStreamGatheringService({
-          variables: {
-            gatheringServiceId: values.gatheringService,
-            streamId: streamId,
-          },
-        })
-      } catch (error) {
-        throwErrorMsg(error)
-      }
-    }
-
-    //For the Adding and Removing of Councils
-    const oldCouncilList = initialValues.councils.map((council) => council)
-
-    const newCouncilList = values.councils.map((council) => council)
-
-    const removeCouncils = oldCouncilList.filter((value) => {
-      return !getChurchIdsFromObject(newCouncilList).includes(value.id)
-    })
-
-    const addCouncils = values.councils.filter((value) => {
-      return !getChurchIdsFromObject(oldCouncilList).includes(value.id)
-    })
-
-    removeCouncils.forEach(async (council) => {
-      try {
-        await CloseDownCouncil({
-          variables: {
-            streamId: streamId,
-            councilId: council.id,
-          },
-        })
-      } catch (error) {
-        throwErrorMsg(error)
-      }
-    })
-
-    addCouncils.forEach(async (council) => {
-      try {
-        if (council.stream) {
-          await RemoveCouncilStream({
-            variables: {
-              streamId: council.stream.id,
-              councilId: council.id,
-            },
-          })
-        } else {
-          //Council has no previous stream and is now joining. ie. RemoveCouncilStream won't run
-          await LogCouncilHistory({
-            variables: {
-              councilId: council.id,
-              newLeaderId: '',
-              oldLeaderId: '',
-              newstreamId: streamId,
-              oldstreamId: '',
-              historyRecord: `${council.name} Council has been started again under ${initialValues.name} Stream`,
-            },
-          })
-        }
-
-        await AddStreamCouncils({
-          variables: {
-            streamId: streamId,
-            councilId: council.id,
-          },
-        })
-      } catch (error) {
-        throwErrorMsg(error)
-      }
-    })
-
-    onSubmitProps.setSubmitting(false)
-    onSubmitProps.resetForm()
-    navigate(`/stream/displaydetails`)
   }
 
   return (

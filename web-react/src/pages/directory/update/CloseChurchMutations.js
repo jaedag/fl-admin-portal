@@ -48,26 +48,9 @@ export const MAKE_COUNCIL_INACTIVE = gql`
     CloseDownCouncil(councilId: $id, leaderId: $leaderId) {
       id
       name
-      stream_name
-
-      stream {
+      councils {
         id
-        councils {
-          id
-        }
-        history(options: { limit: 5 }) {
-          id
-          timeStamp
-          created_at {
-            date
-          }
-          loggedBy {
-            id
-            firstName
-            lastName
-          }
-          historyRecord
-        }
+        name
       }
     }
   }

@@ -501,10 +501,13 @@ export const DISPLAY_STREAM = gql`
         id
         name
       }
-      councils(options: { limit: 5 }) {
+      councils {
         id
         name
         stream_name
+        leader {
+          id
+        }
       }
 
       admin {

@@ -52,7 +52,7 @@ export const removeOldChurches = async (lists, mutations) => {
   const removeChurches = lists.oldChurches.filter((value) => {
     return !getChurchIdsFromObject(lists.newChurches).includes(value.id)
   })
-  console.log(removeChurches)
+
   if (removeChurches.length) {
     await Promise.all(
       removeChurches.map(async (church) => {
