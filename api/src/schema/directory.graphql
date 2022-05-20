@@ -83,6 +83,13 @@ type Member @auth(rules: [{ isAuthenticated: true }]) {
   leadsConstituencyCount: Int
     @cypher(
       statement: """
+      MATCH (this)-[:LEADS]->(constituency:Constituency)
+      RETURN COUNT(DISTINCT constituency)
+      """
+    )
+  leadsAdminsConstituencyCount: Int
+    @cypher(
+      statement: """
       MATCH (this)-[:LEADS|IS_ADMIN_FOR]->(constituency:Constituency)
       RETURN COUNT(DISTINCT constituency)
       """

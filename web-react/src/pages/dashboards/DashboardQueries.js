@@ -48,7 +48,24 @@ export const FELLOWSHIP_LEADER_DASHBOARD = gql`
     fellowshipMemberCount(id: $fellowshipId)
   }
 `
-
+export const SERVANTS_WITH_ROLES = gql`
+  query servant($auth_id: String!) {
+    members(where: { auth_id: $auth_id }) {
+      id
+      firstName
+      lastName
+      fullName
+      pictureUrl
+      stream_name
+      leadsFellowshipCount
+      leadsBacentaCount
+      leadsAdminsConstituencyCount
+      leadsCouncilCount
+      leadsStreamCount
+      leadsGatheringServiceCount
+    }
+  }
+`
 export const SERVANTS_DASHBOARD = gql`
   query servantsDashboard($id: ID!) {
     members(where: { id: $id }) {
@@ -107,7 +124,39 @@ export const SERVANTS_DASHBOARD = gql`
     }
   }
 `
+export const SERVANT_BACENTA_LEADER = gql`
+  query bacentaLeader($id: ID!) {
+    members(where: { id: $id }) {
+      id
+      leadsBacenta {
+        id
+        name
+        stream_name
+        memberCount
 
+        constituency {
+          id
+          council {
+            id
+          }
+        }
+
+        services(limit: 4) {
+          created_at
+          attendance
+          income
+          week
+        }
+
+        componentServiceAggregate {
+          week
+          attendance
+          income
+        }
+      }
+    }
+  }
+`
 export const SERVANTS_LEADERSHIP = gql`
   query servantIsLeader($id: ID!) {
     members(where: { id: $id }) {
@@ -230,7 +279,7 @@ export const SERVANTS_LEADERSHIP = gql`
   }
 `
 
-export const SERVANTS_ADMIN = gql`
+export const SERVANTS_ADMIN_CONSTITUENCY = gql`
   query servantIsAdmin($id: ID!) {
     members(where: { id: $id }) {
       id
@@ -266,6 +315,14 @@ export const SERVANTS_ADMIN = gql`
           income
         }
       }
+    }
+  }
+`
+export const SERVANTS_ADMIN_COUNCIL = gql`
+  query servantIsAdmin($id: ID!) {
+    members(where: { id: $id }) {
+      id
+
       isAdminForCouncil {
         id
         name
@@ -293,6 +350,15 @@ export const SERVANTS_ADMIN = gql`
           income
         }
       }
+    }
+  }
+`
+
+export const SERVANTS_ADMIN_STREAM = gql`
+  query servantIsAdmin($id: ID!) {
+    members(where: { id: $id }) {
+      id
+
       isAdminForStream {
         id
         name
@@ -320,6 +386,36 @@ export const SERVANTS_ADMIN = gql`
           income
         }
       }
+      isAdminForGatheringService {
+        id
+        name
+        memberCount
+
+        services(limit: 4) {
+          created_at
+          attendance
+          income
+          week
+          serviceDate {
+            date
+          }
+        }
+
+        componentServiceAggregate {
+          week
+          attendance
+          income
+        }
+      }
+    }
+  }
+`
+
+export const SERVANTS_ADMIN_GATHERINGSERVICE = gql`
+  query servantIsAdmin($id: ID!) {
+    members(where: { id: $id }) {
+      id
+
       isAdminForGatheringService {
         id
         name
@@ -492,7 +588,7 @@ export const SERVANT_CHURCHES_COUNT = gql`
       basontaMembershipCount
       leadsFellowshipCount
       leadsBacentaCount
-      leadsConstituencyCount
+      leadsAdminsConstituencyCount
       leadsCouncilCount
       leadsGatheringServiceCount
     }

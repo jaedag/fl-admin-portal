@@ -5,7 +5,7 @@ import './Dashboards.css'
 import { MemberContext } from 'contexts/MemberContext'
 import { useQuery } from '@apollo/client'
 import {
-  SERVANTS_ADMIN,
+  SERVANTS_ADMIN_CONSTITUENCY,
   SERVANTS_DASHBOARD,
   SERVANTS_LEADERSHIP,
 } from './DashboardQueries'
@@ -35,7 +35,7 @@ const ServantsDashboard = () => {
   const { data, error } = useQuery(SERVANTS_DASHBOARD, {
     variables: { id: servantId },
   })
-  const { data: adminData } = useQuery(SERVANTS_ADMIN, {
+  const { data: adminData } = useQuery(SERVANTS_ADMIN_CONSTITUENCY, {
     variables: { id: servantId },
   })
   const { data: leaderData } = useQuery(SERVANTS_LEADERSHIP, {

@@ -5,15 +5,16 @@ import { ChurchContext } from 'contexts/ChurchContext'
 import { MemberContext } from 'contexts/MemberContext'
 import { authorisedLink, capitalise, plural } from 'global-utils'
 import { getServiceGraphData } from 'pages/services/trends/trends-utils'
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Container, Nav, Navbar, Offcanvas, Row, Col } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import { menuItems } from './dashboard-utils'
 import {
-  SERVANTS_ADMIN,
+  SERVANTS_ADMIN_GATHERINGSERVICE,
   SERVANTS_ARRIVALS,
-  SERVANTS_DASHBOARD,
   SERVANTS_LEADERSHIP,
+  SERVANTS_WITH_ROLES,
+  SERVANT_BACENTA_LEADER,
 } from './DashboardQueries'
 import './Navigation.css'
 import logo from 'assets/flc-logo-red.png'
@@ -22,26 +23,19 @@ import { GET_LOGGED_IN_USER } from 'components/UserProfileIcon/UserQueries'
 import SearchBox from 'components/SearchBox'
 import { Moon, Sun } from 'react-bootstrap-icons'
 import { permitMe } from 'permission-utils'
+import { churchLevel } from 'pages/directory/update/directory-utils'
 
 const Navigator = () => {
   const { currentUser, theme, setTheme, setUserJobs, setCurrentUser } =
     useContext(MemberContext)
   const { clickCard } = useContext(ChurchContext)
   const { user } = useAuth0()
-
-  const { data } = useQuery(SERVANTS_DASHBOARD, {
-    variables: { id: currentUser.id },
-  })
-  const { data: adminData } = useQuery(SERVANTS_ADMIN, {
-    variables: { id: currentUser.id },
-  })
+  const [member, setMember] = useState(null)
   const { data: leaderData } = useQuery(SERVANTS_LEADERSHIP, {
-    variables: { id: currentUser.id },
+    variables: { id: currentUser?.id },
   })
-  const { data: arrivalsData } = useQuery(SERVANTS_ARRIVALS, {
-    variables: { id: currentUser.id },
-  })
-
+  const [bacentaQuery] = useLazyQuery(SERVANT_BACENTA_LEADER)
+  const [servantWithRoles, { data }] = useLazyQuery(SERVANTS_WITH_ROLES)
   const [memberByEmail] = useLazyQuery(GET_LOGGED_IN_USER, {
     onCompleted: (data) => {
       const church = data.memberByEmail.stream_name
@@ -78,10 +72,62 @@ const Navigator = () => {
 
   // What leadership roles does this person play?
   let roles = []
+
   let assessmentChurchData, assessmentChurch
+  let newRoles = []
+  const church = {
+    Bacenta: {
+      query: bacentaQuery,
+    },
+  }
+  useEffect(() => {
+    const fetchData = async (user) => {
+      if (!user?.sub) return
+
+      const response = await servantWithRoles({
+        variables: { auth_id: user?.sub },
+      })
+
+      const member = response.data.members[0]
+      setMember(member)
+    }
+
+    fetchData(user)
+  }, [user, servantWithRoles])
+  const getMember = (query) => {
+    return query.data.members[0]
+  }
 
   useEffect(() => {
-    user && memberByEmail({ variables: { email: user.email } })
+    const fetchServantData = async (member) => {
+      if (!member) return
+
+      churchLevel.map(async (level) => {
+        if (level === 'Bacenta' && member[`leads${level}Count`]) {
+          const response = await church[`${level}`].query({
+            variables: member.id,
+          })
+
+          const bacentaLeader = getMember(response)
+          setServantRoles(bacentaLeader, 'Leader', level)
+        }
+      })
+    }
+
+    fetchServantData(member)
+  }, [member, bacentaQuery])
+
+  const { data: adminData } = useQuery(SERVANTS_ADMIN_GATHERINGSERVICE, {
+    variables: { id: currentUser.id },
+  })
+
+  const { data: arrivalsData } = useQuery(SERVANTS_ARRIVALS, {
+    variables: { id: currentUser.id },
+  })
+
+  useEffect(() => {
+    if (!user) return
+    memberByEmail({ variables: { email: user.email } })
 
     setUserJobs({
       jobs: roles,
@@ -90,7 +136,7 @@ const Navigator = () => {
     })
 
     // eslint-disable-next-line
-  }, [data, adminData, leaderData, arrivalsData])
+  }, [data, member, adminData, leaderData, arrivalsData])
 
   const servant = data?.members[0]
   const servantAdmin = adminData?.members[0]
@@ -166,7 +212,21 @@ const Navigator = () => {
     }
 
     const leadsOneChurch = servant[`${verb}`].length === 1 ?? false
-
+    newRoles.push({
+      name: leadsOneChurch ? churchType : plural(churchType),
+      church: servant[`${verb}`],
+      number: servant[`${verb}`]?.length,
+      clickCard: () => {
+        clickCard(servant[`${verb}`][0])
+      },
+      link: authorisedLink(
+        currentUser,
+        permittedForLink,
+        leadsOneChurch
+          ? `/${churchType.toLowerCase()}/displaydetails`
+          : `/servants/church-list`
+      ),
+    })
     roles.push({
       name: leadsOneChurch ? churchType : plural(churchType),
       church: servant[`${verb}`],

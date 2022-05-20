@@ -282,19 +282,19 @@ export const getChurchCount = (servant) => {
     }
   }
 
-  if (servant?.leadsConstituencyCount) {
+  if (servant?.leadsAdminsConstituencyCount) {
     if (churchesCount) {
       churchesCount += ','
 
-      if (servant.leadsConstituencyCount === 1) {
-        churchesCount = `${churchesCount} ${servant.leadsConstituencyCount} Constituency`
+      if (servant.leadsAdminsConstituencyCount === 1) {
+        churchesCount = `${churchesCount} ${servant.leadsAdminsConstituencyCount} Constituency`
       } else {
-        churchesCount = `${churchesCount} ${servant.leadsConstituencyCount} Constituencies`
+        churchesCount = `${churchesCount} ${servant.leadsAdminsConstituencyCount} Constituencies`
       }
-    } else if (servant.leadsConstituencyCount === 1) {
-      churchesCount = `${servant.leadsConstituencyCount} Constituency`
+    } else if (servant.leadsAdminsConstituencyCount === 1) {
+      churchesCount = `${servant.leadsAdminsConstituencyCount} Constituency`
     } else {
-      churchesCount = `${servant.leadsConstituencyCount} Constituencies`
+      churchesCount = `${servant.leadsAdminsConstituencyCount} Constituencies`
     }
   }
 

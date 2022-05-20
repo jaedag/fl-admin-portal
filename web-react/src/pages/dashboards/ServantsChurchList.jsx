@@ -4,7 +4,7 @@ import { useQuery } from '@apollo/client'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { MemberContext } from 'contexts/MemberContext'
 import {
-  SERVANTS_ADMIN,
+  SERVANTS_ADMIN_CONSTITUENCY,
   SERVANTS_DASHBOARD,
   SERVANTS_LEADERSHIP,
 } from './DashboardQueries'
@@ -24,7 +24,7 @@ const ServantsChurchList = () => {
   const { data, loading, error } = useQuery(SERVANTS_DASHBOARD, {
     variables: { id: memberId },
   })
-  const { data: adminData } = useQuery(SERVANTS_ADMIN, {
+  const { data: adminData } = useQuery(SERVANTS_ADMIN_CONSTITUENCY, {
     variables: { id: memberId },
   })
   const { data: leaderData } = useQuery(SERVANTS_LEADERSHIP, {
