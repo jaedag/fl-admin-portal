@@ -1,3 +1,18 @@
+### 2.6.0 (2022-05-20)
+
+##### New Features
+
+*  arrivals targets now only shows if the church is active ([1074b848](https://github.com/firstlovecenter/fl-admin-portal/commit/1074b848feda22440fe4bb2b91e6aa56553644ec))
+
+##### Bug Fixes
+
+*  admin-102 refactored updateStream with moving of councils ([811d4132](https://github.com/firstlovecenter/fl-admin-portal/commit/811d4132d0c3c3bb8c8fa36cd35d1303863ccb5a))
+*  admin-102 refactored updateCouncil with moving of constituencies ([348cbdef](https://github.com/firstlovecenter/fl-admin-portal/commit/348cbdefa87f848cc7f72e94852c4760ee312976))
+*  admin-102 cleaned up code for updating constituency and moving bacentas ([cc5a5fbb](https://github.com/firstlovecenter/fl-admin-portal/commit/cc5a5fbbdb7027fb6389439268e4c76af280fe03))
+*  admin-102 refactored searchbacenta, constituency, council components ([851bd0a3](https://github.com/firstlovecenter/fl-admin-portal/commit/851bd0a32ab890f3d1b439ed111dc35222a838fe))
+*  admin-102 fixed bug which prevented users from creating bacentas movng felships in the same go ([323ee845](https://github.com/firstlovecenter/fl-admin-portal/commit/323ee845657b3478a2236855a89b297a19799033))
+*  fixed bug where getMondaythisWeek was returning Sunday of that Week Instead ([473789fd](https://github.com/firstlovecenter/fl-admin-portal/commit/473789fda17818451ab0d38e1a8bc1655c2b7476))
+
 #### 2.5.1 (2022-05-14)
 
 ##### Bug Fixes
