@@ -58,6 +58,16 @@ const DetailsFellowship = () => {
 
   const details = [
     {
+      title: 'Members',
+      number: fellowship?.memberCount || 0,
+      link: `/${fellowship?.__typename?.toLowerCase()}/members`,
+      width: 12,
+    },
+    {
+      title: 'Meeting Day',
+      number: fellowship?.meetingDay?.day,
+    },
+    {
       title: 'Status',
       number: fellowship?.vacationStatus,
       link: '#',

@@ -16,6 +16,17 @@ const DetailsStream = () => {
   const stream = data?.streams[0]
   let breadcrumb = [stream?.gatheringService, stream]
   const details = [
+    {
+      title: 'Members',
+      number: stream?.memberCount || 0,
+      link: `/${stream?.__typename?.toLowerCase()}/members`,
+      width: 12,
+    },
+    {
+      title: 'Councils',
+      number: stream?.councilCount || 0,
+      link: `/${`Council`.toLowerCase()}/displayall`,
+    },
     { title: 'Target', number: stream?.target, link: '#' },
     { title: 'Pastors', number: stream?.pastorCount || '0', link: '#' },
     {
@@ -24,13 +35,15 @@ const DetailsStream = () => {
       link: `/${stream?.name}/displayall`,
     },
     {
-      title: 'Bacenta',
+      title: 'Bacentas',
       number: stream?.activeBacentaCount,
+      vacationCount: stream?.vacationBacentaCount,
       link: `#`,
     },
     {
       title: 'Fellowships',
       number: stream?.activeFellowshipCount,
+      vacationCount: stream?.vacationFellowshipCount,
       link: '#',
     },
   ]

@@ -285,6 +285,7 @@ export const DISPLAY_BACENTA = gql`
       swellBussingTopUp
       momoNumber
       stream_name
+      vacationFellowshipCount
       fellowships {
         id
         name
@@ -351,6 +352,8 @@ export const DISPLAY_CONSTITUENCY = gql`
       name
       target
       stream_name
+      vacationBacentaCount
+      vacationFellowshipCount
       bacentas {
         id
         name
@@ -435,7 +438,8 @@ export const DISPLAY_COUNCIL = gql`
       activeFellowshipCount
       memberCount
       pastorCount
-
+      vacationBacentaCount
+      vacationFellowshipCount
       stream {
         id
         name
@@ -497,6 +501,8 @@ export const DISPLAY_STREAM = gql`
       activeFellowshipCount
       memberCount
       pastorCount
+      vacationBacentaCount
+      vacationFellowshipCount
       gatheringService {
         id
         name
@@ -554,6 +560,8 @@ export const DISPLAY_GATHERINGSERVICE = gql`
       activeFellowshipCount
       memberCount
       pastorCount
+      vacationBacentaCount
+      vacationFellowshipCount
       streams {
         id
         name

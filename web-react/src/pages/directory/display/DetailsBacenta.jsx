@@ -23,6 +23,18 @@ const DetailsBacenta = () => {
 
   const details = [
     {
+      title: 'Members',
+      number: bacenta?.memberCount || 0,
+      link: `/${bacenta?.__typename?.toLowerCase()}/members`,
+      width: 12,
+    },
+    {
+      title: 'Fellowships',
+      number: bacenta?.fellowships.length || 0,
+      link: `/${`Fellowship`.toLowerCase()}/displayall`,
+      vacationCount: bacenta?.vacationFellowshipCount,
+    },
+    {
       title: 'Grad. Status',
       number: bacenta?.graduationStatus,
       link: `#`,
@@ -85,6 +97,7 @@ const DetailsBacenta = () => {
         history={bacenta?.history.length !== 0 && bacenta?.history}
         breadcrumb={breadcrumb && breadcrumb}
         buttons={bacenta ? bacenta?.fellowships : []}
+        vacationCount={bacenta?.vacationFellowshipCount}
       />
     </BaseComponent>
   )
