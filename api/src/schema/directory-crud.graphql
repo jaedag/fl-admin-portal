@@ -437,6 +437,27 @@ extend type Mutation {
       """
     )
 
+  UpdateMemberMinistry(memberId: ID!, ministryId: ID!): Member
+    @cypher(
+      statement: """
+      MATCH (member:Member {id: $memberId})
+      OPTIONAL MATCH (member)-[previous:BELONGS_TO]->(:Ministry)
+      DELETE previous
+
+      WITH member
+      CALL {
+      	WITH member
+      	WITH member  WHERE $ministryId <> 'None'
+        MATCH (ministry:Ministry {id: $ministryId})
+        MERGE (member)-[:BELONGS_TO]->(ministry)
+
+        RETURN count(member)
+        }
+
+      RETURN member
+      """
+    )
+
   UpdateMemberDetails(
     id: ID!
     firstName: String!
@@ -527,18 +548,6 @@ extend type Mutation {
         MERGE (occupation:Occupation {occupation:$occupation})
       	DELETE r1
       	MERGE (member)-[:HAS_OCCUPATION]-> (occupation)
-         	RETURN count(member)
-         	}
-
-
-      WITH member
-      CALL {
-         	WITH member
-         	WITH member  WHERE $ministry IS NOT NULL
-         	MATCH (ministry:Ministry {id:$ministry})
-      	OPTIONAL MATCH (member)-[r0:BELONGS_TO]-> (:Ministry)
-      	DELETE r0
-      	MERGE (member)-[:BELONGS_TO]-> (ministry)
          	RETURN count(member)
          	}
 

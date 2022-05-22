@@ -97,7 +97,7 @@ export const SERVANTS_DASHBOARD = gql`
         name
         stream_name
         memberCount
-
+        vacationStatus
         constituency {
           id
           council {
