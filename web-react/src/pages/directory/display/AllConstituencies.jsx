@@ -1,7 +1,6 @@
 import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { useQuery } from '@apollo/client'
-//import DisplayChurchList from 'components/DisplayChurchList'
 import { GET_COUNCIL_CONSTITUENCIES } from 'queries/ListQueries'
 import { ChurchContext } from 'contexts/ChurchContext'
 import BaseComponent from 'components/base-component/BaseComponent'

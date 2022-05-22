@@ -4,10 +4,7 @@ import { Link } from 'react-router-dom'
 import './AllChurchesSummary.css'
 
 const AllChurchesSummary = (props) => {
-  const church = props?.church
-  const churchType = props?.churchType
-  const numberOfChurchesBelow = props?.numberOfChurchesBelow
-  const route = props?.route
+  const { church, churchType, numberOfChurchesBelow, route } = props
 
   return (
     <Container className="mt-4">
