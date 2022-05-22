@@ -186,6 +186,7 @@ export const GET_GATHERING_SERVICE_CONSTITUENCIES = gql`
         firstName
         lastName
         stream_name
+        fullName
       }
       constituencies {
         name
@@ -292,6 +293,47 @@ export const GET_GATHERINGSERVICE_STREAMS = gql`
           firstName
           lastName
           stream_name
+          fullName
+        }
+      }
+    }
+  }
+`
+
+export const GET_STREAM_CONSTITUENCIES = gql`
+  query ($id: ID!) {
+    streams(where: { id: $id }) {
+      id
+      name
+      leader {
+        id
+        firstName
+        lastName
+        fullName
+      }
+      memberCount
+      admin {
+        id
+        firstName
+        lastName
+        fullName
+        stream_name
+      }
+      constituencies {
+        name
+        id
+        stream_name
+        memberCount
+        bacentas {
+          id
+        }
+        leader {
+          id
+          firstName
+          lastName
+          stream_name
+          pictureUrl
+          fullName
         }
       }
     }
