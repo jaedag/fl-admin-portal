@@ -21,7 +21,7 @@ const DetailsStream = () => {
     {
       title: 'Constituencies',
       number: stream?.constituencyCount,
-      link: `/${stream?.name}/displayall`,
+      link: `/stream/constituencies`,
     },
     {
       title: 'Bacenta',

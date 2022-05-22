@@ -1,15 +1,16 @@
 import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { useQuery } from '@apollo/client'
-import DisplayChurchList from '../../../components/DisplayChurchList'
 import { GET_GATHERING_SERVICE_CONSTITUENCIES } from '../../../queries/ListQueries'
 import { ChurchContext } from '../../../contexts/ChurchContext'
 import RoleView from '../../../auth/RoleView'
 import BaseComponent from 'components/base-component/BaseComponent'
-import { Container, Row, Col, Button } from 'react-bootstrap'
+import { Container, Row, Col } from 'react-bootstrap'
 import { permitAdmin } from 'permission-utils'
+import AllChurchesSummary from 'components/AllChurchesSummary'
+import ChurchSearch from 'components/ChurchSearch'
 
-const GatheringServiceConstituencies = () => {
+const AllGatheringServiceConstituencies = () => {
   const { clickCard, gatheringServiceId } = useContext(ChurchContext)
 
   const { data, loading, error } = useQuery(
@@ -25,7 +26,7 @@ const GatheringServiceConstituencies = () => {
   return (
     <BaseComponent data={data} loading={loading} error={error}>
       <Container>
-        <div className="mb-4 border-bottom">
+        <div className="mb-4">
           <Row className="mb-2">
             <Col>
               <Link
@@ -34,7 +35,7 @@ const GatheringServiceConstituencies = () => {
                   clickCard(gatheringService)
                 }}
               >
-                <h4>{`${gatheringService?.name}'s Constituencies`}</h4>
+                <h4 className="text-white">{`${gatheringService?.name}'s Constituencies`}</h4>
               </Link>
               <Link
                 to="/member/displaydetails"
@@ -42,8 +43,9 @@ const GatheringServiceConstituencies = () => {
                   clickCard(gatheringService?.leader)
                 }}
               >
-                <h6 className="text-muted">
-                  Resident Pastor:
+                <h6 className="text-white text-small d-block ">
+                  <span className="text-muted">Resident Pastor: </span>
+
                   {gatheringService?.leader
                     ? ` ${gatheringService.leader.fullName}`
                     : null}
@@ -51,13 +53,14 @@ const GatheringServiceConstituencies = () => {
               </Link>
               {gatheringService?.admin ? (
                 <Link
-                  className="pb-4 text-muted"
+                  className="pb-4 text-white text-small"
                   to="/member/displaydetails"
                   onClick={() => {
                     clickCard(gatheringService?.admin)
                   }}
                 >
-                  {`Admin: ${gatheringService?.admin?.fullName}`}
+                  <span className="text-muted">Admin:</span>{' '}
+                  {`${gatheringService?.admin?.fullName}`}
                 </Link>
               ) : null}
             </Col>
@@ -65,32 +68,25 @@ const GatheringServiceConstituencies = () => {
               <Col className="col-auto">
                 <Link
                   to="/constituency/addconstituency"
-                  className="btn btn-primary"
+                  className="btn btn-danger"
                 >
                   Add Constituency
                 </Link>
               </Col>
             </RoleView>
           </Row>
-
-          <Row className="justify-content-between mb-2">
-            <Col>
-              <Button>{`Constituencies: ${constituencies?.length}`}</Button>
-            </Col>
-            <Col className="col-auto">
-              <Link to="/bishop/members">
-                <Button>{`Membership: ${gatheringService?.memberCount}`}</Button>
-              </Link>
-            </Col>
-          </Row>
         </div>
-        <DisplayChurchList
-          data={constituencies}
-          churchType="GatheringService"
+        <AllChurchesSummary
+          church={constituencies}
+          memberCount={gatheringService?.memberCount}
+          numberOfChurchesBelow={constituencies?.length}
+          churchType="Constituency"
+          route="gatheringService"
         />
+        <ChurchSearch data={constituencies} churchType="bishop" />
       </Container>
     </BaseComponent>
   )
 }
 
-export default GatheringServiceConstituencies
+export default AllGatheringServiceConstituencies

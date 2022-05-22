@@ -34,7 +34,7 @@ import DetailsGatheringService from 'pages/directory/display/DetailsGatheringSer
 import DisplayAllCouncils from 'pages/directory/display/AllCouncils'
 import DisplayAllStreams from 'pages/directory/display/AllStreams'
 import CreateCouncil from 'pages/directory/create/CreateCouncil'
-import GatheringServiceConstituencies from 'pages/directory/display/GatheringServiceConstituencies'
+import AllGatheringServiceConstituencies from 'pages/directory/display/AllGatheringServiceConstituencies'
 import UpdateCouncil from 'pages/directory/update/UpdateCouncil'
 import CreateStream from 'pages/directory/create/CreateStream'
 import UpdateStream from 'pages/directory/update/UpdateStream'
@@ -48,6 +48,7 @@ import {
 } from 'permission-utils'
 import ServantMembers from './grids/ServantMembers'
 import UpdateBacentaBussing from './update/UpdateBusPaymentDetails'
+import AllStreamConstituencies from './display/AllStreamConstituencies'
 
 export const memberDirectory = [
   {
@@ -187,8 +188,14 @@ export const directory = [
   },
   {
     path: '/gatheringservice/constituencies',
-    element: GatheringServiceConstituencies,
+    element: AllGatheringServiceConstituencies,
     roles: permitMe('GatheringService'),
+    placeholder: false,
+  },
+  {
+    path: '/stream/constituencies',
+    element: AllStreamConstituencies,
+    roles: permitMe('Stream'),
     placeholder: false,
   },
   {
