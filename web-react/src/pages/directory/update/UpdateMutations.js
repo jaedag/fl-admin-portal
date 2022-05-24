@@ -13,7 +13,6 @@ export const UPDATE_MEMBER_MUTATION = gql`
     $gender: String!
     $occupation: String
     $fellowship: String!
-    $ministry: String
     $pictureUrl: String!
   ) {
     UpdateMemberDetails(
@@ -28,7 +27,6 @@ export const UPDATE_MEMBER_MUTATION = gql`
       gender: $gender
       occupation: $occupation
       fellowship: $fellowship
-      ministry: $ministry
       pictureUrl: $pictureUrl
     ) {
       firstName
@@ -52,11 +50,6 @@ export const UPDATE_MEMBER_MUTATION = gql`
         occupation
       }
 
-      #church info
-      ministry {
-        id
-        name
-      }
       occupation {
         occupation
       }
@@ -67,10 +60,6 @@ export const UPDATE_MEMBER_MUTATION = gql`
             title
           }
         }
-      }
-      fellowship {
-        id
-        name
       }
     }
   }
@@ -83,6 +72,43 @@ export const UPDATE_MEMBER_EMAIL = gql`
       firstName
       lastName
       email
+    }
+  }
+`
+export const UPDATE_MEMBER_MINISTRY = gql`
+  mutation UpdateMemberMinistry($memberId: ID!, $ministryId: ID!) {
+    UpdateMemberMinistry(memberId: $memberId, ministryId: $ministryId) {
+      id
+      firstName
+      lastName
+      ministry {
+        id
+        name
+      }
+    }
+  }
+`
+
+export const LOG_MEMBER_HISTORY = gql`
+  mutation ($ids: [ID], $historyRecord: String!) {
+    LogMemberHistory(ids: $ids, historyRecord: $historyRecord) {
+      id
+      firstName
+      lastName
+      history(options: { limit: 3 }) {
+        id
+        timeStamp
+        created_at {
+          date
+        }
+        loggedBy {
+          id
+          firstName
+          lastName
+          stream_name
+        }
+        historyRecord
+      }
     }
   }
 `

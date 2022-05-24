@@ -63,7 +63,11 @@ const MemberForm = ({ initialValues, onSubmit, title, loading, update }) => {
   if (ministriesLoading || loading) {
     return <LoadingScreen />
   } else if (ministriesData) {
-    const ministryOptions = makeSelectOptions(ministriesData.ministries)
+    const ministryOptions = [
+      { key: 'None', value: 'None' },
+      ...makeSelectOptions(ministriesData.ministries),
+    ]
+
     return (
       <Formik
         initialValues={initialValues}
@@ -236,7 +240,9 @@ const MemberForm = ({ initialValues, onSubmit, title, loading, update }) => {
                   </div>
                 </div>
 
-                <SubmitButton formik={formik} />
+                <Col>
+                  <SubmitButton formik={formik} />
+                </Col>
               </Row>
             </Form>
           </Container>

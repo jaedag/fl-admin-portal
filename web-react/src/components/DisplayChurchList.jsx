@@ -3,6 +3,7 @@ import React, { useContext } from 'react'
 import { Card, Col, Container, Row } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import { ChurchContext } from '../contexts/ChurchContext'
+import CloudinaryImage from './CloudinaryImage'
 
 const DisplayChurchList = (props) => {
   const { data, churchType } = props
@@ -12,40 +13,78 @@ const DisplayChurchList = (props) => {
   }
 
   return (
-    <Container>
-      <h5 className="text-muted">{`${data[0].__typename} Locations:`}</h5>
+    <Container className="mt-3">
       <Row>
         {data.map((church, index) => {
           return (
-            <Link
-              key={index}
-              to={`/${church.__typename.toLowerCase()}/displaydetails`}
-            >
-              <Col
-                sm={8}
-                md={3}
-                onClick={() => {
-                  clickCard(church)
-                }}
-              >
-                <Card className="mb-2">
+            <Col key={index} sm={6} lg={4}>
+              <Link to={`/${church.__typename.toLowerCase()}/displaydetails`}>
+                <Card
+                  className="mb-2"
+                  onClick={() => {
+                    clickCard(church)
+                  }}
+                >
                   <Card.Body>
-                    <Card.Title>{church.name}</Card.Title>
-                    <Card.Text>
-                      {church.leader
-                        ? `${church.leader.firstName} ${church.leader.lastName}`
-                        : null}
-                      {church.admin && (
-                        <p className="text-muted">{`Admin: ${church.admin.firstName} ${church.admin.lastName}`}</p>
-                      )}
-                      {churchType === 'GatheringService'
-                        ? `${capitalise(church?.stream_name)}`
-                        : null}
-                    </Card.Text>
+                    <Row>
+                      <Col
+                        xs={3}
+                        className="d-flex justify-content-center align-items-center"
+                      >
+                        <div className="flex-shrink-0">
+                          <CloudinaryImage
+                            className="rounded-circle img-search"
+                            src={church?.leader?.pictureUrl}
+                          />
+                        </div>
+                      </Col>
+                      <Col>
+                        <Card.Title className="mt-0 church-title">
+                          {church.name}
+                        </Card.Title>
+                        <Card.Body className="pt-1 text-small card-padding">
+                          <Row className="d-block text-title border-bottom border-secondary">
+                            {church.leader
+                              ? `${church.leader.firstName} ${church.leader.lastName}`
+                              : null}
+                            <span className="text-white">
+                              {church.admin &&
+                                `| Admin: ${church.admin.firstName} ${church.admin.lastName}`}
+                            </span>
+                          </Row>
+                          <Row className="text-muted d-block">
+                            {church.fellowships
+                              ? `${church?.fellowships?.length} Fellowships`
+                              : null}{' '}
+                            {church.bacentas
+                              ? `${church?.bacentas?.length} Bacentas`
+                              : null}{' '}
+                            {church.constituencies
+                              ? `${church?.constituencies?.length} Constituencies`
+                              : null}{' '}
+                            {church.councils
+                              ? `${church?.councils?.length} Councils`
+                              : null}{' '}
+                            {church.streams
+                              ? `${church?.streams?.length} Streams`
+                              : null}{' '}
+                            {church.memberCount
+                              ? `| ${church?.memberCount} Members`
+                              : null}{' '}
+                            {church.vacationStatus
+                              ? `| ${church?.vacationStatus}`
+                              : null}{' '}
+                            {churchType === 'GatheringService'
+                              ? `${capitalise(church?.stream_name)}`
+                              : null}
+                          </Row>
+                        </Card.Body>
+                      </Col>
+                    </Row>
                   </Card.Body>
                 </Card>
-              </Col>
-            </Link>
+              </Link>
+            </Col>
           )
         })}
       </Row>

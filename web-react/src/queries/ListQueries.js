@@ -76,6 +76,10 @@ export const GET_CONSTITUENCY_BACENTAS = gql`
         id
         name
         stream_name
+        vacationStatus
+        fellowships {
+          id
+        }
         council {
           id
         }
@@ -83,6 +87,7 @@ export const GET_CONSTITUENCY_BACENTAS = gql`
           id
           firstName
           lastName
+          pictureUrl
         }
       }
     }
@@ -135,11 +140,16 @@ export const GET_COUNCIL_CONSTITUENCIES = gql`
         name
         id
         stream_name
+        memberCount
+        bacentas {
+          id
+        }
         leader {
           id
           firstName
           lastName
           stream_name
+          pictureUrl
         }
         admin {
           id
@@ -176,6 +186,7 @@ export const GET_GATHERING_SERVICE_CONSTITUENCIES = gql`
         firstName
         lastName
         stream_name
+        fullName
       }
       constituencies {
         name
@@ -221,11 +232,16 @@ export const GET_STREAM_COUNCILS = gql`
         name
         id
         stream_name
+        memberCount
+        constituencies {
+          id
+        }
         leader {
           id
           firstName
           lastName
           stream_name
+          pictureUrl
         }
         admin {
           id
@@ -261,17 +277,63 @@ export const GET_GATHERINGSERVICE_STREAMS = gql`
         name
         id
         stream_name
+        memberCount
+        councils {
+          id
+        }
         leader {
           id
           firstName
           lastName
           stream_name
+          pictureUrl
         }
         admin {
           id
           firstName
           lastName
           stream_name
+          fullName
+        }
+      }
+    }
+  }
+`
+
+export const GET_STREAM_CONSTITUENCIES = gql`
+  query ($id: ID!) {
+    streams(where: { id: $id }) {
+      id
+      name
+      leader {
+        id
+        firstName
+        lastName
+        fullName
+      }
+      memberCount
+      admin {
+        id
+        firstName
+        lastName
+        fullName
+        stream_name
+      }
+      constituencies {
+        name
+        id
+        stream_name
+        memberCount
+        bacentas {
+          id
+        }
+        leader {
+          id
+          firstName
+          lastName
+          stream_name
+          pictureUrl
+          fullName
         }
       }
     }
@@ -331,10 +393,13 @@ export const GET_BACENTA_FELLOWSHIPS = gql`
       fellowships {
         id
         name
+        vacationStatus
+        memberCount
         leader {
           id
           firstName
           lastName
+          pictureUrl
         }
         bacenta {
           id

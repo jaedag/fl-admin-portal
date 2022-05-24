@@ -1,13 +1,15 @@
 import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { useQuery } from '@apollo/client'
-import DisplayChurchList from 'components/DisplayChurchList'
+//import DisplayChurchList from 'components/DisplayChurchList'
 import { GET_COUNCIL_CONSTITUENCIES } from 'queries/ListQueries'
 import { ChurchContext } from 'contexts/ChurchContext'
 import BaseComponent from 'components/base-component/BaseComponent'
-import { Container, Row, Col, Button } from 'react-bootstrap'
+import { Container, Row, Col } from 'react-bootstrap'
 import RoleView from 'auth/RoleView'
 import { permitAdmin } from 'permission-utils'
+import AllChurchesSummary from 'components/AllChurchesSummary'
+import ChurchSearch from 'components/ChurchSearch'
 
 const DisplayAllConstituencies = () => {
   const { clickCard, councilId } = useContext(ChurchContext)
@@ -22,53 +24,49 @@ const DisplayAllConstituencies = () => {
   return (
     <BaseComponent data={data} loading={loading} error={error}>
       <Container>
-        <div className="mb-4 border-bottom">
-          <Row className="mb-2">
-            <Col>
+        <Row className="mb-2">
+          <Col>
+            <Link
+              to="/council/displaydetails"
+              onClick={() => {
+                clickCard(constituencies?.council)
+              }}
+            >
+              <h2 className="text-white">{`${council?.leader.fullName}'s Constituencies`}</h2>
+            </Link>
+            {council?.admin ? (
               <Link
-                to="/council/displaydetails"
+                className="pb-1 text-white text-small d-block"
+                to="/member/displaydetails"
                 onClick={() => {
-                  clickCard(constituencies?.council)
+                  clickCard(council?.admin)
                 }}
               >
-                <h4>{`${council?.leader.fullName}'s Constituencies`}</h4>
+                <span className="text-muted">Admin: </span>
+                {`${council?.admin?.firstName} ${council?.admin?.lastName}`}
               </Link>
-              {council?.admin ? (
-                <Link
-                  className="pb-4"
-                  to="/member/displaydetails"
-                  onClick={() => {
-                    clickCard(council?.admin)
-                  }}
-                >
-                  {`Admin: ${council?.admin?.firstName} ${council?.admin?.lastName}`}
-                </Link>
-              ) : null}
-            </Col>
-            <RoleView roles={permitAdmin('Council')}>
-              <Col className="col-auto">
-                <Link
-                  to="/constituency/addconstituency"
-                  className="btn btn-primary"
-                >
-                  Add Constituency
-                </Link>
-              </Col>
-            </RoleView>
-          </Row>
-
-          <Row className="justify-content-between mb-2">
-            <Col>
-              <Button>{`Constituencies: ${constituencies?.length}`}</Button>
-            </Col>
+            ) : null}
+          </Col>
+          <RoleView roles={permitAdmin('Council')}>
             <Col className="col-auto">
-              <Link to="/bishop/members">
-                <Button>{`Membership: ${council?.memberCount}`}</Button>
+              <Link
+                to="/constituency/addconstituency"
+                className="btn btn-danger"
+              >
+                Add Constituency
               </Link>
             </Col>
-          </Row>
-        </div>
-        <DisplayChurchList data={constituencies} churchType="Constituency" />
+          </RoleView>
+        </Row>
+
+        <AllChurchesSummary
+          church={constituencies}
+          memberCount={council?.memberCount}
+          numberOfChurchesBelow={constituencies?.length}
+          churchType="Constituency"
+          route="council"
+        />
+        <ChurchSearch data={constituencies} churchType="Constituency" />
       </Container>
     </BaseComponent>
   )

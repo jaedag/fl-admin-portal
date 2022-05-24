@@ -1,13 +1,14 @@
 import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { useQuery } from '@apollo/client'
-import DisplayChurchList from '../../../components/DisplayChurchList'
 import { GET_BACENTA_FELLOWSHIPS } from '../../../queries/ListQueries'
 import { ChurchContext } from '../../../contexts/ChurchContext'
 import RoleView from '../../../auth/RoleView'
 import BaseComponent from 'components/base-component/BaseComponent'
-import { Container, Row, Col, Button } from 'react-bootstrap'
+import { Container, Row, Col } from 'react-bootstrap'
 import { permitAdmin } from 'permission-utils'
+import AllChurchesSummary from 'components/AllChurchesSummary'
+import ChurchSearch from 'components/ChurchSearch'
 
 const DisplayAllFellowships = () => {
   const { bacentaId, setBacentaId } = useContext(ChurchContext)
@@ -21,42 +22,34 @@ const DisplayAllFellowships = () => {
   return (
     <BaseComponent loading={loading} error={error} data={data}>
       <Container>
-        <div className="mb-4 border-bottom">
-          <Row className="mb-2">
-            <Col>
-              <Link
-                to={`/bacenta/displaydetails`}
-                onClick={() => {
-                  setBacentaId(bacentaId)
-                }}
-              >
-                <h4>{`${fellowships?.[0].bacenta.name} Bacenta`}</h4>
-              </Link>
-            </Col>
-            <RoleView roles={permitAdmin('Constituency')}>
-              <Col className="col-auto">
-                <Link
-                  to="/fellowship/addfellowship"
-                  className="btn btn-primary"
-                >
-                  Add Fellowship
-                </Link>
-              </Col>
-            </RoleView>
-          </Row>
-
-          <Row className="justify-content-between mb-2">
-            <Col>
-              <Button>{`Fellowships: ${fellowships?.length}`}</Button>
-            </Col>
+        <Row className="mb-2">
+          <Col>
+            <Link
+              to={`/bacenta/displaydetails`}
+              onClick={() => {
+                setBacentaId(bacentaId)
+              }}
+            >
+              <h2 className="text-white">{`${fellowships?.[0].bacenta.name} Bacenta`}</h2>
+            </Link>
+          </Col>
+          <RoleView roles={permitAdmin('Constituency')}>
             <Col className="col-auto">
-              <Link to="/bacenta/members">
-                <Button>{`Membership: ${data?.bacentas[0].memberCount}`}</Button>
+              <Link to="/fellowship/addfellowship" className="btn btn-danger">
+                Add Fellowship
               </Link>
             </Col>
-          </Row>
-        </div>
-        <DisplayChurchList data={fellowships} churchType="Fellowship" />
+          </RoleView>
+        </Row>
+
+        <AllChurchesSummary
+          church={fellowships}
+          memberCount={data?.bacentas[0].memberCount}
+          numberOfChurchesBelow={fellowships?.length}
+          churchType="Fellowship"
+          route="bacenta"
+        />
+        <ChurchSearch data={fellowships} churchType="Fellowship" />
       </Container>
     </BaseComponent>
   )
