@@ -1,21 +1,14 @@
-import { useLazyQuery, useQuery } from '@apollo/client'
+import { useLazyQuery } from '@apollo/client'
 import RoleView from 'auth/RoleView'
 import UserProfileIcon from 'components/UserProfileIcon/UserProfileIcon'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { MemberContext } from 'contexts/MemberContext'
 import { authorisedLink, capitalise, plural } from 'global-utils'
 import { getServiceGraphData } from 'pages/services/trends/trends-utils'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { Container, Nav, Navbar, Offcanvas, Row, Col } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import { menuItems } from './dashboard-utils'
-import {
-  SERVANTS_ADMIN_GATHERINGSERVICE,
-  SERVANTS_ARRIVALS,
-  SERVANTS_LEADERSHIP,
-  SERVANTS_WITH_ROLES,
-  SERVANT_BACENTA_LEADER,
-} from './DashboardQueries'
 import './Navigation.css'
 import logo from 'assets/flc-logo-red.png'
 import { useAuth0 } from '@auth0/auth0-react'
@@ -23,19 +16,15 @@ import { GET_LOGGED_IN_USER } from 'components/UserProfileIcon/UserQueries'
 import SearchBox from 'components/SearchBox'
 import { Moon, Sun } from 'react-bootstrap-icons'
 import { permitMe } from 'permission-utils'
-import { churchLevel } from 'pages/directory/update/directory-utils'
+import LogMeIn from './LogMeIn'
 
 const Navigator = () => {
   const { currentUser, theme, setTheme, setUserJobs, setCurrentUser } =
     useContext(MemberContext)
   const { clickCard } = useContext(ChurchContext)
   const { user } = useAuth0()
-  const [member, setMember] = useState(null)
-  const { data: leaderData } = useQuery(SERVANTS_LEADERSHIP, {
-    variables: { id: currentUser?.id },
-  })
-  const [bacentaQuery] = useLazyQuery(SERVANT_BACENTA_LEADER)
-  const [servantWithRoles, { data }] = useLazyQuery(SERVANTS_WITH_ROLES)
+  const { servant } = LogMeIn()
+
   const [memberByEmail] = useLazyQuery(GET_LOGGED_IN_USER, {
     onCompleted: (data) => {
       const church = data.memberByEmail.stream_name
@@ -70,79 +59,25 @@ const Navigator = () => {
     },
   })
 
-  // What leadership roles does this person play?
   let roles = []
-
   let assessmentChurchData, assessmentChurch
-  let newRoles = []
-  const church = {
-    Bacenta: {
-      query: bacentaQuery,
-    },
-  }
-  useEffect(() => {
-    const fetchData = async (user) => {
-      if (!user?.sub) return
-
-      const response = await servantWithRoles({
-        variables: { auth_id: user?.sub },
-      })
-
-      const member = response.data.members[0]
-      setMember(member)
-    }
-
-    fetchData(user)
-  }, [user, servantWithRoles])
-  const getMember = (query) => {
-    return query.data.members[0]
-  }
 
   useEffect(() => {
-    const fetchServantData = async (member) => {
-      if (!member) return
-
-      churchLevel.map(async (level) => {
-        if (level === 'Bacenta' && member[`leads${level}Count`]) {
-          const response = await church[`${level}`].query({
-            variables: member.id,
-          })
-
-          const bacentaLeader = getMember(response)
-          setServantRoles(bacentaLeader, 'Leader', level)
-        }
-      })
-    }
-
-    fetchServantData(member)
-  }, [member, bacentaQuery])
-
-  const { data: adminData } = useQuery(SERVANTS_ADMIN_GATHERINGSERVICE, {
-    variables: { id: currentUser.id },
-  })
-
-  const { data: arrivalsData } = useQuery(SERVANTS_ARRIVALS, {
-    variables: { id: currentUser.id },
-  })
-
-  useEffect(() => {
-    if (!user) return
+    if (!user || currentUser?.id) return
     memberByEmail({ variables: { email: user.email } })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user])
 
+  useEffect(() => {
     setUserJobs({
       jobs: roles,
       assessmentData: assessmentChurchData,
       assessmentChurch: assessmentChurch,
     })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [servant])
 
-    // eslint-disable-next-line
-  }, [data, member, adminData, leaderData, arrivalsData])
-
-  const servant = data?.members[0]
-  const servantAdmin = adminData?.members[0]
-  const servantLeader = leaderData?.members[0]
-  const servantArrivals = arrivalsData?.members[0]
-
+  console.log('firing', roles)
   const setServantRoles = (servant, servantType, churchType) => {
     let verb
 
@@ -212,7 +147,7 @@ const Navigator = () => {
     }
 
     const leadsOneChurch = servant[`${verb}`].length === 1 ?? false
-    newRoles.push({
+    roles.push({
       name: leadsOneChurch ? churchType : plural(churchType),
       church: servant[`${verb}`],
       number: servant[`${verb}`]?.length,
@@ -253,56 +188,56 @@ const Navigator = () => {
     if (servant?.leadsBacenta?.length) {
       setServantRoles(servant, 'Leader', 'Bacenta')
     }
-    if (servantLeader?.leadsSonta?.length) {
-      setServantRoles(servantLeader, 'Leader', 'Sonta')
+    if (servant?.leadsSonta?.length) {
+      setServantRoles(servant, 'Leader', 'Sonta')
     }
-    if (servantLeader?.leadsConstituency?.length) {
-      setServantRoles(servantLeader, 'Leader', 'Constituency')
+    if (servant?.leadsConstituency?.length) {
+      setServantRoles(servant, 'Leader', 'Constituency')
     }
-    if (servantAdmin?.isAdminForConstituency?.length) {
-      setServantRoles(servantAdmin, 'Admin', 'Constituency')
+    if (servant?.isAdminForConstituency?.length) {
+      setServantRoles(servant, 'Admin', 'Constituency')
     }
-    if (servantArrivals?.isArrivalsAdminForConstituency?.length) {
-      setServantRoles(servantArrivals, 'ArrivalsAdmin', 'Constituency')
+    if (servant?.isArrivalsAdminForConstituency?.length) {
+      setServantRoles(servant, 'ArrivalsAdmin', 'Constituency')
     }
-    if (servantLeader?.leadsCouncil?.length) {
-      setServantRoles(servantLeader, 'Leader', 'Council')
+    if (servant?.leadsCouncil?.length) {
+      setServantRoles(servant, 'Leader', 'Council')
     }
-    if (servantAdmin?.isAdminForCouncil?.length) {
-      setServantRoles(servantAdmin, 'Admin', 'Council')
+    if (servant?.isAdminForCouncil?.length) {
+      setServantRoles(servant, 'Admin', 'Council')
     }
-    if (servantArrivals?.isArrivalsAdminForCouncil?.length) {
-      setServantRoles(servantArrivals, 'ArrivalsAdmin', 'Council')
+    if (servant?.isArrivalsAdminForCouncil?.length) {
+      setServantRoles(servant, 'ArrivalsAdmin', 'Council')
     }
-    if (servantLeader?.leadsMinistry?.length) {
-      setServantRoles(servantLeader, 'Leader', 'Ministry')
+    if (servant?.leadsMinistry?.length) {
+      setServantRoles(servant, 'Leader', 'Ministry')
     }
-    if (servantLeader?.leadsStream?.length) {
-      setServantRoles(servantLeader, 'Leader', 'Stream')
+    if (servant?.leadsStream?.length) {
+      setServantRoles(servant, 'Leader', 'Stream')
     }
-    if (servantAdmin?.isAdminForStream?.length) {
-      setServantRoles(servantAdmin, 'Admin', 'Stream')
+    if (servant?.isAdminForStream?.length) {
+      setServantRoles(servant, 'Admin', 'Stream')
     }
-    if (servantArrivals?.isArrivalsAdminForStream?.length) {
-      setServantRoles(servantArrivals, 'ArrivalsAdmin', 'Stream')
+    if (servant?.isArrivalsAdminForStream?.length) {
+      setServantRoles(servant, 'ArrivalsAdmin', 'Stream')
     }
-    if (servantArrivals?.isArrivalsCounterForStream?.length) {
-      setServantRoles(servantArrivals, 'ArrivalsCounter', 'Stream')
+    if (servant?.isArrivalsCounterForStream?.length) {
+      setServantRoles(servant, 'ArrivalsCounter', 'Stream')
     }
-    if (servantArrivals?.isArrivalsConfirmerForStream?.length) {
-      setServantRoles(servantArrivals, 'ArrivalsConfirmer', 'Stream')
+    if (servant?.isArrivalsConfirmerForStream?.length) {
+      setServantRoles(servant, 'ArrivalsConfirmer', 'Stream')
     }
-    if (servantLeader?.leadsGatheringService?.length) {
-      setServantRoles(servantLeader, 'Leader', 'GatheringService')
+    if (servant?.leadsGatheringService?.length) {
+      setServantRoles(servant, 'Leader', 'GatheringService')
     }
-    if (servantAdmin?.isAdminForGatheringService?.length) {
-      setServantRoles(servantAdmin, 'Admin', 'GatheringService')
+    if (servant?.isAdminForGatheringService?.length) {
+      setServantRoles(servant, 'Admin', 'GatheringService')
     }
-    if (servantArrivals?.isArrivalsAdminForGatheringService?.length) {
-      setServantRoles(servantArrivals, 'ArrivalsAdmin', 'GatheringService')
+    if (servant?.isArrivalsAdminForGatheringService?.length) {
+      setServantRoles(servant, 'ArrivalsAdmin', 'GatheringService')
     }
-    if (servantLeader?.leadsBasonta?.length) {
-      setServantRoles(servantLeader, 'Leader', 'Basonta')
+    if (servant?.leadsBasonta?.length) {
+      setServantRoles(servant, 'Leader', 'Basonta')
     }
 
     //run the get graph function after all checking is done to avoid multiple unnecessary runs

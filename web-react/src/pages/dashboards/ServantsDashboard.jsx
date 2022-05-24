@@ -4,11 +4,7 @@ import ChurchGraph from 'components/ChurchGraph/ChurchGraph'
 import './Dashboards.css'
 import { MemberContext } from 'contexts/MemberContext'
 import { useQuery } from '@apollo/client'
-import {
-  SERVANTS_ADMIN_CONSTITUENCY,
-  SERVANTS_DASHBOARD,
-  SERVANTS_LEADERSHIP,
-} from './DashboardQueries'
+import { SERVANTS_DASHBOARD } from './DashboardQueries'
 import RoleCard from './RoleCard'
 import {
   getServiceGraphData,
@@ -35,16 +31,10 @@ const ServantsDashboard = () => {
   const { data, error } = useQuery(SERVANTS_DASHBOARD, {
     variables: { id: servantId },
   })
-  const { data: adminData } = useQuery(SERVANTS_ADMIN_CONSTITUENCY, {
-    variables: { id: servantId },
-  })
-  const { data: leaderData } = useQuery(SERVANTS_LEADERSHIP, {
-    variables: { id: servantId },
-  })
 
   const servant = data?.members[0]
-  const servantAdmin = adminData?.members[0]
-  const servantLeader = leaderData?.members[0]
+  const servantAdmin = data?.members[0]
+  const servantLeader = data?.members[0]
 
   let roles = []
   let assessmentChurchData, assessmentChurch
