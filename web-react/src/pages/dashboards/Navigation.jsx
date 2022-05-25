@@ -3,12 +3,7 @@ import RoleView from 'auth/RoleView'
 import UserProfileIcon from 'components/UserProfileIcon/UserProfileIcon'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { MemberContext } from 'contexts/MemberContext'
-import {
-  authorisedLink,
-  capitalise,
-  DEBOUNCE_TIMER,
-  plural,
-} from 'global-utils'
+import { authorisedLink, capitalise, plural } from 'global-utils'
 import { getServiceGraphData } from 'pages/services/trends/trends-utils'
 import React, { useContext, useEffect } from 'react'
 import { Container, Nav, Navbar, Offcanvas, Row, Col } from 'react-bootstrap'
@@ -82,17 +77,12 @@ const Navigator = () => {
   useEffect(() => {
     if (userJobs?.jobs.length === roles?.length) return
 
-    const timerId = setTimeout(() => {
-      setUserJobs({
-        jobs: roles,
-        assessmentData: assessmentChurchData,
-        assessmentChurch: assessmentChurch,
-      })
-    }, DEBOUNCE_TIMER)
+    setUserJobs({
+      jobs: roles,
+      assessmentData: assessmentChurchData,
+      assessmentChurch: assessmentChurch,
+    })
 
-    return () => {
-      clearTimeout(timerId)
-    }
     // eslint-disable-next-line
   }, [roles])
 
