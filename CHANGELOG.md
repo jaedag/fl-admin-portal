@@ -1,3 +1,9 @@
+#### 2.9.1 (2022-05-25)
+
+##### Bug Fixes
+
+*  removed debounce timer which was causing user dashboard to not load on first accessing of page ([a7a75420](https://github.com/firstlovecenter/fl-admin-portal/commit/a7a75420febb6c2c7f46125ed24e577a40a2a72f))
+
 ### 2.9.0 (2022-05-25)
 
 ##### Chores
