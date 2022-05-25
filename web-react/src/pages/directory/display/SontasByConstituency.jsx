@@ -2,16 +2,16 @@ import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { useQuery } from '@apollo/client'
 import DisplayChurchList from '../../../components/DisplayChurchList'
-import { GET_SONTAS_BY_CONSTITUENCY } from '../../../queries/ListQueries'
 import { ChurchContext } from '../../../contexts/ChurchContext'
 import RoleView from '../../../auth/RoleView'
 import BaseComponent from 'components/base-component/BaseComponent'
 import { permitAdmin } from 'permission-utils'
+import { GET_SONTA_MEMBERS } from '../grids/GridQueries'
 
 const DisplaySontasByConstituency = () => {
   const { councilId, setConstituencyId, setSontaId } = useContext(ChurchContext)
 
-  const { data, loading, error } = useQuery(GET_SONTAS_BY_CONSTITUENCY, {
+  const { data, loading, error } = useQuery(GET_SONTA_MEMBERS, {
     variables: { id: councilId },
   })
 

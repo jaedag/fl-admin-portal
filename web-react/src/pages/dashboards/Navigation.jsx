@@ -77,7 +77,6 @@ const Navigator = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [servant])
 
-  console.log('firing', roles)
   const setServantRoles = (servant, servantType, churchType) => {
     let verb
 

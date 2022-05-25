@@ -78,7 +78,7 @@ const GatheringServiceConstituencies = () => {
               <Button>{`Constituencies: ${constituencies?.length}`}</Button>
             </Col>
             <Col className="col-auto">
-              <Link to="/bishop/members">
+              <Link to="/council/members">
                 <Button>{`Membership: ${gatheringService?.memberCount}`}</Button>
               </Link>
             </Col>

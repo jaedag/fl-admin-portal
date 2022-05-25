@@ -94,30 +94,6 @@ export const GET_CONSTITUENCY_BACENTAS = gql`
   }
 `
 
-export const GET_SONTAS_BY_CONSTITUENCY = gql`
-  query ($id: ID!) {
-    constituencies(where: { bishop: { id: $id } }) {
-      id
-      name
-      bishop {
-        id
-        firstName
-        lastName
-      }
-      sontas {
-        id
-        name
-        leader {
-          id
-          firstName
-          lastName
-        }
-      }
-    }
-    bishopSontaMemberCount(id: $id)
-  }
-`
-
 export const GET_COUNCIL_CONSTITUENCIES = gql`
   query ($id: ID!) {
     councils(where: { id: $id }) {
