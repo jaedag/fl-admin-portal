@@ -69,10 +69,10 @@ const Navigator = () => {
   let assessmentChurchData, assessmentChurch
 
   useEffect(() => {
-    if (!user || currentUser?.id) return
+    if (!(user || currentUser?.id)) return
+
     memberByEmail({ variables: { email: user.email } })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user])
+  }, [currentUser?.id, memberByEmail, user])
 
   useEffect(() => {
     if (userJobs?.jobs.length === roles?.length) return
