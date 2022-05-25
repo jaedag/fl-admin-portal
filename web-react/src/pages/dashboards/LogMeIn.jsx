@@ -22,10 +22,10 @@ import {
   SERVANTS_STREAM_ARRIVALS_CONFIRMER,
 } from './LogInQueries'
 
-const LogMeIn = () => {
+const LogMeIn = (memberId) => {
   const { user } = useAuth0()
   const [servantWithRoles] = useLazyQuery(SERVANTS_WITH_ROLES)
-  const [member, setMember] = useState(null)
+  const [member, setMember] = useState(memberId ?? null)
   const [servant, setServant] = useState(null)
 
   const [fellowshipLeaderQuery] = useLazyQuery(SERVANT_FELLOWSHIP_LEADER)
@@ -65,11 +65,18 @@ const LogMeIn = () => {
   )
 
   useEffect(() => {
-    const fetchData = async (user) => {
-      if (!user?.sub) return
+    if (!user?.sub && !memberId) return
 
+    const getIdToUse = (userSub, memberId) => {
+      if (memberId) {
+        return 'auth0|' + memberId
+      }
+      return userSub
+    }
+
+    const fetchData = async (user) => {
       const response = await servantWithRoles({
-        variables: { auth_id: user?.sub },
+        variables: { auth_id: getIdToUse(user?.sub, memberId) },
       })
 
       const member = response.data.members[0]
@@ -77,7 +84,9 @@ const LogMeIn = () => {
     }
 
     fetchData(user)
-  }, [user, servantWithRoles])
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user?.sub])
 
   const church = {
     Fellowship: {
@@ -144,7 +153,7 @@ const LogMeIn = () => {
 
           if (shouldSearch(level)) {
             const response = await church[`${level}`][`${verb}`]({
-              variables: { id: member.id },
+              variables: { id: memberId || member.id },
             })
 
             servant[`${verb}${level}`] = getMember(response, verb, level)

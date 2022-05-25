@@ -3,7 +3,12 @@ import RoleView from 'auth/RoleView'
 import UserProfileIcon from 'components/UserProfileIcon/UserProfileIcon'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { MemberContext } from 'contexts/MemberContext'
-import { authorisedLink, capitalise, plural } from 'global-utils'
+import {
+  authorisedLink,
+  capitalise,
+  DEBOUNCE_TIMER,
+  plural,
+} from 'global-utils'
 import { getServiceGraphData } from 'pages/services/trends/trends-utils'
 import React, { useContext, useEffect } from 'react'
 import { Container, Nav, Navbar, Offcanvas, Row, Col } from 'react-bootstrap'
@@ -19,8 +24,14 @@ import { permitMe } from 'permission-utils'
 import LogMeIn from './LogMeIn'
 
 const Navigator = () => {
-  const { currentUser, theme, setTheme, setUserJobs, setCurrentUser } =
-    useContext(MemberContext)
+  const {
+    currentUser,
+    theme,
+    setTheme,
+    userJobs,
+    setUserJobs,
+    setCurrentUser,
+  } = useContext(MemberContext)
   const { clickCard } = useContext(ChurchContext)
   const { user } = useAuth0()
   const { servant } = LogMeIn()
@@ -69,13 +80,21 @@ const Navigator = () => {
   }, [user])
 
   useEffect(() => {
-    setUserJobs({
-      jobs: roles,
-      assessmentData: assessmentChurchData,
-      assessmentChurch: assessmentChurch,
-    })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [servant])
+    if (userJobs?.jobs.length === roles?.length) return
+
+    const timerId = setTimeout(() => {
+      setUserJobs({
+        jobs: roles,
+        assessmentData: assessmentChurchData,
+        assessmentChurch: assessmentChurch,
+      })
+    }, DEBOUNCE_TIMER)
+
+    return () => {
+      clearTimeout(timerId)
+    }
+    // eslint-disable-next-line
+  }, [roles])
 
   const setServantRoles = (servant, servantType, churchType) => {
     let verb
@@ -146,21 +165,6 @@ const Navigator = () => {
     }
 
     const leadsOneChurch = servant[`${verb}`].length === 1 ?? false
-    roles.push({
-      name: leadsOneChurch ? churchType : plural(churchType),
-      church: servant[`${verb}`],
-      number: servant[`${verb}`]?.length,
-      clickCard: () => {
-        clickCard(servant[`${verb}`][0])
-      },
-      link: authorisedLink(
-        currentUser,
-        permittedForLink,
-        leadsOneChurch
-          ? `/${churchType.toLowerCase()}/displaydetails`
-          : `/servants/church-list`
-      ),
-    })
     roles.push({
       name: leadsOneChurch ? churchType : plural(churchType),
       church: servant[`${verb}`],
@@ -296,7 +300,6 @@ const Navigator = () => {
                 </RoleView>
               ))}
             </Nav>
-
             <SearchBox />
           </Offcanvas.Body>
           <Container className="footer">

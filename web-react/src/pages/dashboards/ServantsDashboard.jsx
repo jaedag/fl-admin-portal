@@ -17,24 +17,22 @@ import { permitMe } from 'permission-utils'
 import BaseComponent from 'components/base-component/BaseComponent'
 import { Col, Row, Table, Container } from 'react-bootstrap'
 import Placeholder from '../../components/Placeholder'
+import LogMeIn from './LogMeIn'
 
 const ServantsDashboard = () => {
   const { memberId, currentUser } = useContext(MemberContext)
   const { clickCard } = useContext(ChurchContext)
+
   const navigate = useNavigate()
   let servantId = currentUser.id
 
   if (isAuthorised(permitMe('Constituency'), currentUser.roles)) {
     servantId = memberId
   }
-
+  const { servant } = LogMeIn(memberId)
   const { data, error } = useQuery(SERVANTS_DASHBOARD, {
     variables: { id: servantId },
   })
-
-  const servant = data?.members[0]
-  const servantAdmin = data?.members[0]
-  const servantLeader = data?.members[0]
 
   let roles = []
   let assessmentChurchData, assessmentChurch
@@ -103,35 +101,35 @@ const ServantsDashboard = () => {
     if (servant?.leadsBacenta?.length) {
       setServantRoles(servant, 'Leader', 'Bacenta')
     }
-    if (servantLeader?.leadsSonta?.length) {
-      setServantRoles(servantLeader, 'Leader', 'Sonta')
+    if (servant?.leadsSonta?.length) {
+      setServantRoles(servant, 'Leader', 'Sonta')
     }
-    if (servantLeader?.leadsConstituency?.length) {
-      setServantRoles(servantLeader, 'Leader', 'Constituency')
+    if (servant?.leadsConstituency?.length) {
+      setServantRoles(servant, 'Leader', 'Constituency')
     }
-    if (servantAdmin?.isAdminForConstituency?.length) {
-      setServantRoles(servantAdmin, 'Admin', 'Constituency')
+    if (servant?.isAdminForConstituency?.length) {
+      setServantRoles(servant, 'Admin', 'Constituency')
     }
-    if (servantLeader?.leadsCouncil?.length) {
-      setServantRoles(servantLeader, 'Leader', 'Council')
+    if (servant?.leadsCouncil?.length) {
+      setServantRoles(servant, 'Leader', 'Council')
     }
-    if (servantAdmin?.isAdminForCouncil?.length) {
-      setServantRoles(servantAdmin, 'Admin', 'Council')
+    if (servant?.isAdminForCouncil?.length) {
+      setServantRoles(servant, 'Admin', 'Council')
     }
-    if (servantLeader?.leadsMinistry?.length) {
-      setServantRoles(servantLeader, 'Leader', 'Ministry')
+    if (servant?.leadsMinistry?.length) {
+      setServantRoles(servant, 'Leader', 'Ministry')
     }
-    if (servantLeader?.leadsStream?.length) {
-      setServantRoles(servantLeader, 'Leader', 'Stream')
+    if (servant?.leadsStream?.length) {
+      setServantRoles(servant, 'Leader', 'Stream')
     }
-    if (servantLeader?.leadsGatheringService?.length) {
-      setServantRoles(servantLeader, 'Leader', 'GatheringService')
+    if (servant?.leadsGatheringService?.length) {
+      setServantRoles(servant, 'Leader', 'GatheringService')
     }
-    if (servantAdmin?.isAdminForGatheringService?.length) {
-      setServantRoles(servantAdmin, 'Admin', 'GatheringService')
+    if (servant?.isAdminForGatheringService?.length) {
+      setServantRoles(servant, 'Admin', 'GatheringService')
     }
-    if (servantLeader?.leadsBasonta?.length) {
-      setServantRoles(servantLeader, 'Leader', 'Basonta')
+    if (servant?.leadsBasonta?.length) {
+      setServantRoles(servant, 'Leader', 'Basonta')
     }
 
     //run the get graph function after all checking is done to avoid multiple unnecessary runs
