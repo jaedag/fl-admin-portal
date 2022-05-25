@@ -35,7 +35,6 @@ function FormikSearchbox(props) {
         bacenta: row.bacenta,
 
         constituency: row.constituency,
-        bishop: row.bishop,
         leadsFellowship: row.leadsFellowship,
         leadsBacenta: row.leadsBacenta,
         leadsConstituency: row.leadsConstituency,
