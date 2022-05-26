@@ -4,7 +4,7 @@ import ChurchGraph from 'components/ChurchGraph/ChurchGraph'
 import './Dashboards.css'
 import { MemberContext } from 'contexts/MemberContext'
 import { useQuery } from '@apollo/client'
-import { SERVANTS_DASHBOARD } from './DashboardQueries'
+import { SERVANT_CHURCH_LIST } from './DashboardQueries'
 import RoleCard from './RoleCard'
 import {
   getServiceGraphData,
@@ -17,7 +17,6 @@ import { permitMe } from 'permission-utils'
 import BaseComponent from 'components/base-component/BaseComponent'
 import { Col, Row, Table, Container } from 'react-bootstrap'
 import Placeholder from '../../components/Placeholder'
-import LogMeIn from './LogMeIn'
 
 const ServantsDashboard = () => {
   const { memberId, currentUser } = useContext(MemberContext)
@@ -29,11 +28,11 @@ const ServantsDashboard = () => {
   if (isAuthorised(permitMe('Constituency'), currentUser.roles)) {
     servantId = memberId
   }
-  const { servant } = LogMeIn(memberId)
-  const { data, error } = useQuery(SERVANTS_DASHBOARD, {
+
+  const { data, loading, error } = useQuery(SERVANT_CHURCH_LIST, {
     variables: { id: servantId },
   })
-
+  const servant = data?.members[0]
   let roles = []
   let assessmentChurchData, assessmentChurch
 
@@ -47,18 +46,21 @@ const ServantsDashboard = () => {
       case 'Admin':
         verb = `isAdminFor${churchType}`
         break
+      case 'ArrivalsAdmin':
+        verb = `isArrivalsAdminFor${churchType}`
+        break
       default:
         break
     }
 
     const permittedForLink = permitMe(churchType)
 
-    if (servantType === 'Admin') {
+    if (servantType === 'Admin' || servantType === 'ArrivalsAdmin') {
       const adminsOneChurch = servant[`${verb}`].length === 1 ?? false
       roles.push({
         name: adminsOneChurch
-          ? churchType + ' Admin'
-          : plural(churchType) + ' Admin',
+          ? churchType + ' ' + servantType
+          : plural(churchType) + ' ' + servantType,
         church: servant[`${verb}`],
         number: servant[`${verb}`].length,
         clickCard: () => {
@@ -78,7 +80,6 @@ const ServantsDashboard = () => {
     }
 
     const leadsOneChurch = servant[`${verb}`].length === 1 ?? false
-
     roles.push({
       name: leadsOneChurch ? churchType : plural(churchType),
       church: servant[`${verb}`],
@@ -86,9 +87,13 @@ const ServantsDashboard = () => {
       clickCard: () => {
         clickCard(servant[`${verb}`][0])
       },
-      link: leadsOneChurch
-        ? `/${churchType.toLowerCase()}/displaydetails`
-        : `/servants/church-list`,
+      link: authorisedLink(
+        currentUser,
+        permittedForLink,
+        leadsOneChurch
+          ? `/${churchType.toLowerCase()}/displaydetails`
+          : `/servants/church-list`
+      ),
     })
 
     assessmentChurch = servant[`${verb}`][0]
@@ -110,11 +115,17 @@ const ServantsDashboard = () => {
     if (servant?.isAdminForConstituency?.length) {
       setServantRoles(servant, 'Admin', 'Constituency')
     }
+    if (servant?.isArrivalsAdminForConstituency?.length) {
+      setServantRoles(servant, 'ArrivalsAdmin', 'Constituency')
+    }
     if (servant?.leadsCouncil?.length) {
       setServantRoles(servant, 'Leader', 'Council')
     }
     if (servant?.isAdminForCouncil?.length) {
       setServantRoles(servant, 'Admin', 'Council')
+    }
+    if (servant?.isArrivalsAdminForCouncil?.length) {
+      setServantRoles(servant, 'ArrivalsAdmin', 'Council')
     }
     if (servant?.leadsMinistry?.length) {
       setServantRoles(servant, 'Leader', 'Ministry')
@@ -122,16 +133,24 @@ const ServantsDashboard = () => {
     if (servant?.leadsStream?.length) {
       setServantRoles(servant, 'Leader', 'Stream')
     }
+    if (servant?.isAdminForStream?.length) {
+      setServantRoles(servant, 'Admin', 'Stream')
+    }
+    if (servant?.isArrivalsAdminForStream?.length) {
+      setServantRoles(servant, 'ArrivalsAdmin', 'Stream')
+    }
     if (servant?.leadsGatheringService?.length) {
       setServantRoles(servant, 'Leader', 'GatheringService')
     }
     if (servant?.isAdminForGatheringService?.length) {
       setServantRoles(servant, 'Admin', 'GatheringService')
     }
+    if (servant?.isArrivalsAdminForGatheringService?.length) {
+      setServantRoles(servant, 'ArrivalsAdmin', 'GatheringService')
+    }
     if (servant?.leadsBasonta?.length) {
       setServantRoles(servant, 'Leader', 'Basonta')
     }
-
     //run the get graph function after all checking is done to avoid multiple unnecessary runs
     if (assessmentChurch) {
       return getServiceGraphData(assessmentChurch)
@@ -143,7 +162,7 @@ const ServantsDashboard = () => {
   assessmentChurchData = servant && getServantRoles(servant)
 
   return (
-    <BaseComponent error={error} data={data}>
+    <BaseComponent data={data} loading={loading} error={error}>
       <Container>
         <Placeholder loading={!servant?.fullName} as="p">
           <p className="mb-0">{`Welcome to`}</p>
@@ -156,7 +175,7 @@ const ServantsDashboard = () => {
           <Table className="border-bottom-0">
             <tbody>
               <tr>
-                {roles ? (
+                {roles?.length ? (
                   roles.map((role, i) => {
                     return (
                       <td

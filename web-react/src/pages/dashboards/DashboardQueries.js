@@ -49,44 +49,50 @@ export const FELLOWSHIP_LEADER_DASHBOARD = gql`
   }
 `
 
-export const SERVANTS_DASHBOARD = gql`
-  query servantsDashboard($id: ID!) {
+export const SERVANT_CHURCH_LIST = gql`
+  query churchList($id: ID!) {
     members(where: { id: $id }) {
       id
       firstName
       lastName
       fullName
       pictureUrl
-      stream_name
+      leadsFellowship {
+        id
+        name
+      }
 
       leadsBacenta {
         id
         name
-        stream_name
-        memberCount
-        vacationStatus
-        constituency {
-          id
-          council {
-            id
-          }
-        }
-
-        services(limit: 4) {
-          created_at
-          attendance
-          income
-          week
-          serviceDate {
-            date
-          }
-        }
-
-        componentServiceAggregate {
-          week
-          attendance
-          income
-        }
+      }
+      leadsConstituency {
+        id
+        name
+      }
+      leadsCouncil {
+        id
+        name
+      }
+      leadsStream {
+        id
+        name
+      }
+      leadsGatheringService {
+        id
+        name
+      }
+      isAdminForCouncil {
+        id
+        name
+      }
+      isAdminForConstituency {
+        id
+        name
+      }
+      isAdminForGatheringService {
+        id
+        name
       }
     }
   }
