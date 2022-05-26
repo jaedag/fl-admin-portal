@@ -3,11 +3,7 @@ import { useNavigate } from 'react-router'
 import { useQuery } from '@apollo/client'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { MemberContext } from 'contexts/MemberContext'
-import {
-  SERVANTS_ADMIN,
-  SERVANTS_DASHBOARD,
-  SERVANTS_LEADERSHIP,
-} from './DashboardQueries'
+import { SERVANTS_DASHBOARD } from './DashboardQueries'
 import {
   getMonthlyStatAverage,
   getServiceGraphData,
@@ -24,34 +20,28 @@ const ServantsChurchList = () => {
   const { data, loading, error } = useQuery(SERVANTS_DASHBOARD, {
     variables: { id: memberId },
   })
-  const { data: adminData } = useQuery(SERVANTS_ADMIN, {
-    variables: { id: memberId },
-  })
-  const { data: leaderData } = useQuery(SERVANTS_LEADERSHIP, {
-    variables: { id: memberId },
-  })
-
   const servant = data?.members[0]
-  const servantAdmin = adminData?.members[0]
-  const servantLeader = leaderData?.members[0]
-  let churches = []
+  const servantAdmin = data?.members[0]
+  const servantLeader = data?.members[0]
 
-  const pushIntoChurch = (servantChurches) => {
-    servantChurches.map((church) => {
-      const serviceData = getServiceGraphData(church)
-
-      churches.push({
-        __typename: church.__typename,
-        name: church.name,
-        leader: servant?.fullName,
-        leaderPic: servant?.pictureUrl,
-        attendance: getMonthlyStatAverage(serviceData, 'attendance'),
-        income: getMonthlyStatAverage(serviceData, 'income'),
-        link: `/${church.__typename.toLowerCase()}/displaydetails`,
-      })
-    })
-  }
   const getServantChurches = (servant) => {
+    let churches = []
+
+    const pushIntoChurch = (servantChurches) => {
+      servantChurches.map((church) => {
+        const serviceData = getServiceGraphData(church)
+
+        churches.push({
+          __typename: church.__typename,
+          name: church.name,
+          leader: servant?.fullName,
+          leaderPic: servant?.pictureUrl,
+          attendance: getMonthlyStatAverage(serviceData, 'attendance'),
+          income: getMonthlyStatAverage(serviceData, 'income'),
+          link: `/${church.__typename.toLowerCase()}/displaydetails`,
+        })
+      })
+    }
     if (servant?.leadsFellowship?.length) {
       pushIntoChurch(servant?.leadsFellowship)
     }
@@ -91,10 +81,10 @@ const ServantsChurchList = () => {
       pushIntoChurch(servantAdmin?.isAdminForGatheringService)
     }
     //run the get graph function after all checking is done to avoid multiple unnecessary runs
-    return
+    return churches
   }
 
-  getServantChurches(servant)
+  const churches = getServantChurches(servant)
 
   return (
     <BaseComponent loading={loading} error={error} data={data} placeholder>
