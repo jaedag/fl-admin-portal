@@ -79,7 +79,7 @@ const LogMeIn = (memberId) => {
         variables: { auth_id: getIdToUse(user?.sub, memberId) },
       })
 
-      const member = response.data.members[0]
+      const member = response.data?.members[0]
       setMember(member)
     }
 

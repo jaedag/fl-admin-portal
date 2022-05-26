@@ -69,9 +69,9 @@ const Navigator = () => {
   let assessmentChurchData, assessmentChurch
 
   useEffect(() => {
-    if (!(user || currentUser?.id)) return
+    if (!user) return
 
-    memberByEmail({ variables: { email: user.email } })
+    memberByEmail({ variables: { email: user?.email } })
   }, [currentUser?.id, memberByEmail, user])
 
   useEffect(() => {
@@ -82,9 +82,13 @@ const Navigator = () => {
       assessmentData: assessmentChurchData,
       assessmentChurch: assessmentChurch,
     })
-
-    // eslint-disable-next-line
-  }, [roles])
+  }, [
+    assessmentChurch,
+    assessmentChurchData,
+    roles,
+    setUserJobs,
+    userJobs?.jobs.length,
+  ])
 
   const setServantRoles = (servant, servantType, churchType) => {
     let verb
