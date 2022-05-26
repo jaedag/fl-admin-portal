@@ -30,23 +30,6 @@ export const GET_FELLOWSHIP_LEADERS = gql`
   }
 `
 
-export const FELLOWSHIP_DROPDOWN = gql`
-  query ($fellowshipName: String) {
-    fellowshipDropdown(fellowshipName: $fellowshipName, first: 8) {
-      id
-      name
-      bacenta {
-        id
-        name
-        constituency {
-          id
-          name
-        }
-      }
-    }
-  }
-`
-
 export const GET_CONSTITUENCY_BACENTAS = gql`
   query ($id: ID!) {
     constituencies(where: { id: $id }) {
@@ -62,6 +45,7 @@ export const GET_CONSTITUENCY_BACENTAS = gql`
         lastName
         fullName
       }
+
       memberCount
       sontas {
         id
@@ -77,9 +61,7 @@ export const GET_CONSTITUENCY_BACENTAS = gql`
         name
         stream_name
         vacationStatus
-        fellowships {
-          id
-        }
+        fellowshipCount
         council {
           id
         }
@@ -117,9 +99,7 @@ export const GET_COUNCIL_CONSTITUENCIES = gql`
         id
         stream_name
         memberCount
-        bacentas {
-          id
-        }
+        bacentaCount
         leader {
           id
           firstName
@@ -168,10 +148,13 @@ export const GET_GATHERING_SERVICE_CONSTITUENCIES = gql`
         name
         id
         stream_name
+        memberCount
+        bacentaCount
         leader {
           id
           firstName
           lastName
+          pictureUrl
           stream_name
         }
         admin {
@@ -254,9 +237,7 @@ export const GET_GATHERINGSERVICE_STREAMS = gql`
         id
         stream_name
         memberCount
-        councils {
-          id
-        }
+        councilCount
         leader {
           id
           firstName
@@ -300,9 +281,7 @@ export const GET_STREAM_CONSTITUENCIES = gql`
         id
         stream_name
         memberCount
-        bacentas {
-          id
-        }
+        bacentaCount
         leader {
           id
           firstName
