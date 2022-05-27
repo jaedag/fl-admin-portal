@@ -165,12 +165,10 @@ const LogMeIn = (memberId) => {
         })
       )
 
-      setServant(servant)
-
       return servant
     }
 
-    fetchServantData(member)
+    fetchServantData(member).then((res) => setServant(res))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [member])
 
