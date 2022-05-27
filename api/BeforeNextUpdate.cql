@@ -73,6 +73,10 @@ MATCH ()-[r:HAS_HISTORY {current:true}]-()
 remove r.current
 return 1;
 
+MATCH ()-[r:HAS_HISTORY]-()
+remove r.direct
+RETURN 1;
+
 //STEP 2: Reassign Current to All History Logs that are the current releatiosnhip between a church and a leader
 // Also check if it is the latest history log in case of duplicates
 

@@ -143,7 +143,7 @@ export const DISPLAY_MEMBER_CHURCH = gql`
         }
       }
       #Personal history
-      history(options: { limit: 3 }) {
+      history(limit: 3) {
         id
         timeStamp
         created_at {
@@ -204,7 +204,7 @@ export const DISPLAY_FELLOWSHIP_HISTORY = gql`
         bankingProof
         week
       }
-      history(options: { limit: 5 }) {
+      history(limit: 5) {
         id
         timeStamp
         created_at {
@@ -249,7 +249,7 @@ export const DISPLAY_SONTA = gql`
           name
         }
       }
-      history(options: { limit: 5 }) {
+      history(limit: 5) {
         id
         timeStamp
         created_at {
@@ -325,7 +325,7 @@ export const DISPLAY_BACENTA = gql`
           title
         }
       }
-      history(options: { limit: 5 }) {
+      history(limit: 5) {
         id
         timeStamp
         created_at {
@@ -399,7 +399,7 @@ export const DISPLAY_CONSTITUENCY = gql`
         fullName
         pictureUrl
       }
-      history(options: { limit: 5 }) {
+      history(limit: 5) {
         id
         timeStamp
         created_at {
@@ -467,7 +467,7 @@ export const DISPLAY_COUNCIL = gql`
         fullName
         pictureUrl
       }
-      history(options: { limit: 5 }) {
+      history(limit: 5) {
         id
         timeStamp
         created_at {
@@ -523,7 +523,7 @@ export const DISPLAY_STREAM = gql`
         fullName
         pictureUrl
       }
-      history(options: { limit: 5 }) {
+      history(limit: 5) {
         id
         timeStamp
         created_at {
@@ -574,7 +574,7 @@ export const DISPLAY_GATHERINGSERVICE = gql`
         fullName
         pictureUrl
       }
-      history(options: { limit: 5 }) {
+      history(limit: 5) {
         id
         timeStamp
         created_at {
