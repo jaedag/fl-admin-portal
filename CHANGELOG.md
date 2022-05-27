@@ -1,3 +1,13 @@
+#### 2.9.2 (2022-05-27)
+
+##### Bug Fixes
+
+*  minor improvements to LegMein.jsx ([399bc83d](https://github.com/firstlovecenter/fl-admin-portal/commit/399bc83d84a006025901900223707e775d6c6759))
+*  added a conditional to handle errors when fetching user data ([a8c75515](https://github.com/firstlovecenter/fl-admin-portal/commit/a8c75515b4579abbb937d08560da16c908b4d774))
+*  fixed breaking changes rendering servantsDashboard and servants churches ([841a6ef4](https://github.com/firstlovecenter/fl-admin-portal/commit/841a6ef43352c35f9fdec6070e0fbc69908dca17))
+*  minor fixes on nav renderer ([#161](https://github.com/firstlovecenter/fl-admin-portal/pull/161)) ([fe9d3ee4](https://github.com/firstlovecenter/fl-admin-portal/commit/fe9d3ee40d58632dbccf32969a2bce06dfb7392a))
+*  updated dependencies on useeffect ([83cf12bd](https://github.com/firstlovecenter/fl-admin-portal/commit/83cf12bdaa0f9d6f64cc04c4d4204de383ab4af2))
+
 #### 2.9.1 (2022-05-25)
 
 ##### Bug Fixes
