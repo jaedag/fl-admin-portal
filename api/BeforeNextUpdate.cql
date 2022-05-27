@@ -1,86 +1,332 @@
+// REMOVE AND RECREATE ALL THE RELATIONSHIPS 
+
+// STEP 1: Increment ServiceLogs with Same Timestamp
+
+//Gathering Service Level
+MATCH (n:GatheringService)<-[:LEADS]-(leader:Member)
+MATCH (n)-[r:HAS_HISTORY {current:true}]->(log:ServiceLog)<-[:HAS_HISTORY]-(leader)
+WITH COUNT(log) as result, n, leader
+WHERE  result > 1
+MATCH (n)-[:HAS_HISTORY {current:true}]->(l:ServiceLog)
+WITH l , rand()+1 as i
+SET 
+l.timeStamp = l.timeStamp+duration({seconds: i})
+return l;
+
+//Stream Level
+MATCH (n:Stream)<-[:LEADS]-(leader:Member)
+MATCH (n)-[r:HAS_HISTORY {current:true}]->(log:ServiceLog)<-[:HAS_HISTORY]-(leader)
+WITH COUNT(log) as result, n
+WHERE  result > 1
+MATCH (n)-[:HAS_HISTORY {current:true}]->(l:ServiceLog)
+WITH l , rand()+1 as i
+SET 
+l.timeStamp = l.timeStamp+duration({seconds: i})
+return l;
+
+//Council Level
+MATCH (n:Council)<-[:LEADS]-(leader:Member)
+MATCH (n)-[r:HAS_HISTORY {current:true}]->(log:ServiceLog)<-[:HAS_HISTORY]-(leader)
+WITH COUNT(log) as result, n
+WHERE  result > 1
+MATCH (n)-[:HAS_HISTORY {current:true}]->(l:ServiceLog)
+WITH l , rand()+1 as i
+SET 
+l.timeStamp = l.timeStamp+duration({seconds: i})
+return l;
+
+//Constituency Level
+MATCH (n:Constituency)<-[:LEADS]-(leader:Member)
+MATCH (n)-[r:HAS_HISTORY {current:true}]->(log:ServiceLog)<-[:HAS_HISTORY]-(leader)
+WITH COUNT(log) as result, n
+WHERE  result > 1
+MATCH (n)-[:HAS_HISTORY {current:true}]->(l:ServiceLog)
+WITH l , rand()+1 as i
+SET 
+l.timeStamp = l.timeStamp+duration({seconds: i})
+return l;
+
+//Bacenta Level
+MATCH (n:Bacenta)<-[:LEADS]-(leader:Member)
+MATCH (n)-[r:HAS_HISTORY {current:true}]->(log:ServiceLog)<-[:HAS_HISTORY]-(leader)
+WITH COUNT(log) as result, n
+WHERE  result > 1
+MATCH (n)-[:HAS_HISTORY {current:true}]->(l:ServiceLog)
+WITH l , rand()+1 as i
+SET 
+l.timeStamp = l.timeStamp+duration({seconds: i})
+return l;
+
+//Fellowship Level
+MATCH (n:Fellowship)<-[:LEADS]-(leader:Member)
+MATCH (n)-[r:HAS_HISTORY {current:true}]->(log:ServiceLog)<-[:HAS_HISTORY]-(leader)
+WITH COUNT(log) as result, n
+WHERE  result > 1
+MATCH (n)-[:HAS_HISTORY {current:true}]->(l:ServiceLog)
+WITH l , rand()+1 as i
+SET 
+l.timeStamp = l.timeStamp+duration({seconds: i})
+return l;
+
+//DELETE ALL CURRENT RELATIONSHIPS
+MATCH ()-[r:HAS_HISTORY {current:true}]-()
+remove r.current
+return 1;
+
+//STEP 2: Reassign Current to All History Logs that are the current releatiosnhip between a church and a leader
+// Also check if it is the latest history log in case of duplicates
+
+//gathering service history logs
+
+MATCH (n:GatheringService)<-[:LEADS]-(leader:Member)
+MATCH (n)-[r:HAS_HISTORY]->(log:ServiceLog)<-[:HAS_HISTORY]-(leader)
+WITH max(log.timeStamp) as max, n, leader
+MATCH (n)-[r:HAS_HISTORY]->(log:ServiceLog)<-[s:HAS_HISTORY]-(leader)
+WHERE log.timeStamp = max
+SET r.current = true, s.current = true
+RETURN count(log);
+
+//stream history logs
+MATCH (n:Stream)<-[:LEADS]-(leader:Member)
+MATCH (n)-[r:HAS_HISTORY]->(log:ServiceLog)<-[:HAS_HISTORY]-(leader)
+WITH max(log.timeStamp) as max, n, leader
+MATCH (n)-[r:HAS_HISTORY]->(log:ServiceLog)<-[s:HAS_HISTORY]-(leader)
+WHERE log.timeStamp = max
+SET r.current = true, s.current = true
+RETURN count(log);
+
+
+//council history logs
+MATCH (n:Council)<-[:LEADS]-(leader:Member)
+MATCH (n)-[r:HAS_HISTORY]->(log:ServiceLog)<-[:HAS_HISTORY]-(leader)
+WITH max(log.timeStamp) as max, n, leader
+MATCH (n)-[r:HAS_HISTORY]->(log:ServiceLog)<-[s:HAS_HISTORY]-(leader)
+WHERE log.timeStamp = max
+SET r.current = true, s.current = true
+RETURN count(log);
+
+//constituency history logs
+MATCH (n:Constituency)<-[:LEADS]-(leader:Member)
+MATCH (n)-[r:HAS_HISTORY]->(log:ServiceLog)<-[:HAS_HISTORY]-(leader)
+WITH max(log.timeStamp) as max, n, leader
+MATCH (n)-[r:HAS_HISTORY]->(log:ServiceLog)<-[s:HAS_HISTORY]-(leader)
+WHERE log.timeStamp = max
+SET r.current = true, s.current = true
+RETURN count(log);
+
+//bacenta history logs
+MATCH (n:Bacenta)<-[:LEADS]-(leader:Member)
+MATCH (n)-[r:HAS_HISTORY]->(log:ServiceLog)<-[:HAS_HISTORY]-(leader)
+WITH max(log.timeStamp) as max, n, leader
+MATCH (n)-[r:HAS_HISTORY]->(log:ServiceLog)<-[s:HAS_HISTORY]-(leader)
+WHERE log.timeStamp = max
+SET r.current = true, s.current = true
+RETURN count(log);
+
+
+//fellowship history logs
+MATCH (n:Fellowship)<-[:LEADS]-(leader:Member)
+MATCH (n)-[r:HAS_HISTORY]->(log:ServiceLog)<-[:HAS_HISTORY]-(leader)
+WITH max(log.timeStamp) as max, n, leader
+MATCH (n)-[r:HAS_HISTORY]->(log:ServiceLog)<-[s:HAS_HISTORY]-(leader)
+WHERE log.timeStamp = max
+SET r.current = true, s.current = true
+RETURN count(log);
+
+
+//STEP 3: CONNECT THE VERTICAL LOG HISTORY
+MATCH (n:GatheringService)<-[:LEADS]-(leader:Member)
+MATCH (n)-[:HAS_HISTORY {current: true}]->(log:ServiceLog)<-[:HAS_HISTORY {current: true}]-(leader)
+MATCH (n)-[:HAS]->(lowerChurch:Stream)<-[:LEADS]-(lowerLeader:Member)
+MATCH (lowerChurch)-[:HAS_HISTORY {current: true}]->(lowerLog:ServiceLog)<-[:HAS_HISTORY {current: true}]-(lowerLeader)
+MERGE (log)-[:HAS_COMPONENT]->(lowerLog)
+RETURN log, lowerLog;
+
+MATCH (n:Stream)<-[:LEADS]-(leader:Member)
+MATCH (n)-[:HAS_HISTORY {current: true}]->(log:ServiceLog)<-[:HAS_HISTORY {current: true}]-(leader)
+MATCH (n)-[:HAS]->(lowerChurch:Council)<-[:LEADS]-(lowerLeader:Member)
+MATCH (lowerChurch)-[:HAS_HISTORY {current: true}]->(lowerLog:ServiceLog)<-[:HAS_HISTORY {current: true}]-(lowerLeader)
+MERGE (log)-[:HAS_COMPONENT]->(lowerLog)
+RETURN log, lowerLog;
+
+
+MATCH (n:Council)<-[:LEADS]-(leader:Member)
+MATCH (n)-[:HAS_HISTORY {current: true}]->(log:ServiceLog)<-[:HAS_HISTORY {current: true}]-(leader)
+MATCH (n)-[:HAS]->(lowerChurch:Constituency)<-[:LEADS]-(lowerLeader:Member)
+MATCH (lowerChurch)-[:HAS_HISTORY {current: true}]->(lowerLog:ServiceLog)<-[:HAS_HISTORY {current: true}]-(lowerLeader)
+MERGE (log)-[:HAS_COMPONENT]->(lowerLog)
+RETURN log, lowerLog;
+
+
+MATCH (n:Constituency)<-[:LEADS]-(leader:Member)
+MATCH (n)-[:HAS_HISTORY {current: true}]->(log:ServiceLog)<-[:HAS_HISTORY {current: true}]-(leader)
+MATCH (n)-[:HAS]->(lowerChurch:Bacenta)<-[:LEADS]-(lowerLeader:Member)
+MATCH (lowerChurch)-[:HAS_HISTORY {current: true}]->(lowerLog:ServiceLog)<-[:HAS_HISTORY {current: true}]-(lowerLeader)
+MERGE (log)-[:HAS_COMPONENT]->(lowerLog)
+RETURN log, lowerLog;
+
+MATCH (n:Bacenta)<-[:LEADS]-(leader:Member)
+MATCH (n)-[:HAS_HISTORY {current: true}]->(log:ServiceLog)<-[:HAS_HISTORY {current: true}]-(leader)
+MATCH (n)-[:HAS]->(lowerChurch:Fellowship)<-[:LEADS]-(lowerLeader:Member)
+MATCH (lowerChurch)-[:HAS_HISTORY {current: true}]->(lowerLog:ServiceLog)<-[:HAS_HISTORY {current: true}]-(lowerLeader)
+MERGE (log)-[:HAS_COMPONENT]->(lowerLog)
+RETURN log, lowerLog;
+
+
+// STEP 4: Create Denomination
+//Unrelated But needed nonetheless
+
+CREATE (den:Denomination {id: apoc.create.uuid()})
+SET den.name = "UO-FLC190"
+
+
+WITH den
+
+MATCH (g:GatheringService)<-[:LEADS]-(leader:Member)
+MATCH (g)-[:HAS_HISTORY {current:true}]->(gatheringLog:ServiceLog)<-[:HAS_HISTORY {current:true}]-(leader)
+
+MERGE (leader)-[:LEADS]->(den)
+MERGE (den)-[old_church_history:HAS_HISTORY {current:true}]->(log:ServiceLog)<-[old_leader_history:HAS_HISTORY ]-(leader)
+MERGE (den)-[:HAS]->(g)
+MERGE (log)-[:HAS_COMPONENT]->(gatheringLog)
+
+SET log.id = apoc.create.uuid(),
+log.historyRecord = "First Love Denomination History",
+log.timeStamp = datetime()
+
+RETURN den, leader, g, log, gatheringLog;
+
+
+////////////////////START EQUIPMENT CAMPAIGN CREATION////////////////////
+// Create Equipment Campaign
+
+//Match and Delete
+MATCH (f:EquipmentCampaign)
+DETACH DELETE f;
+
+match (br:EquipmentRecord)
+DETACH delete br;
+
+
+MERGE (target:Target)
+SET target.percentage=100.0,
+target.campaign="Equipment"
+RETURN target;
 
 
 
-MATCH (b:BussingRecord)
-DETACH DELETE b;
+//Create Gathering Service Equipment Campaigns
+MATCH (target:Target {campaign:"Equipment"})
+MATCH (gatheringService:GatheringService)
+MATCH (log:ServiceLog)<-[:HAS_HISTORY {current:true}]-(gatheringService)
+MATCH (leader:Member)-[:LEADS]->(gatheringService)
 
-MATCH (member:Member)
-MATCH (member)-[:HAS_HISTORY]->(history:HistoryLog)-[:RECORDED_ON]->(date:TimeGraph)
-WHERE history.historyRecord CONTAINS "was registered"
+WITH target, gatheringService, log, leader
 
-SET history:RegistrationLog
-RETURN COUNT(history);
+CREATE (gatheringServiceCampaign:EquipmentCampaign {id: apoc.create.uuid()})
+ SET gatheringServiceCampaign.name = gatheringService.name + ' Gathering Service'
 
-MATCH (stream:Stream {name: "Town"})
-SET stream.endMobilisationTime = datetime("2022-04-02T11:00"),
-stream.endBussingTime = datetime("2022-04-02T14:30")
-
-RETURN stream;
-
-MATCH (stream:Stream {name: "Campus"})
-SET stream.endMobilisationTime = datetime("2022-04-02T17:00"),
-stream.endBussingTime = datetime("2022-04-02T19:30")
-
-RETURN stream;
-
-MATCH (stream:Stream {name: "Anagkazo"})
-SET stream.endMobilisationTime = datetime("2022-04-02T09:00"),
-stream.endBussingTime = datetime("2022-04-02T10:30")
-
-RETURN stream;
+MERGE (gatheringService)-[:HAS_CAMPAIGN]->(gatheringServiceCampaign)
+MERGE (gatheringServiceCampaign)<-[:LEADS]-(leader)
+// WITH gatheringService, log, gatheringServiceCampaign, leader,target,gatheringServiceCampaign         
+MERGE (gatheringServiceCampaign)-[:HAS_HISTORY]->(log)
+MERGE (gatheringServiceCampaign)-[:HAS_TARGET]->(target)
+return log,gatheringService,gatheringServiceCampaign;
 
 
-// THE PROBLEM DOMAIN
-// 1. Bacentas are still retaining records of places where they have old relationships of 'replacing'
-// 2. All ServiceLogs are still using a "HAS" relationship to define which is the same as the relationship that they have between church levels
+//Create Stream Campaigns
+MATCH (target:Target {campaign:"Equipment"})
+MATCH (stream:Stream)<-[:HAS]-(gatheringService:GatheringService)-[:HAS_CAMPAIGN]->(gatheringServiceCampaign:EquipmentCampaign)
+MATCH (log:ServiceLog)<-[:HAS_HISTORY {current:true}]-(stream)
+MATCH (leader:Member)-[:LEADS]->(stream)
 
-//Replaces all log to log relationships with HAS_COMPONENT
-MATCH (log:ServiceLog)-[has:HAS]->(otherLog:ServiceLog) 
-WHERE has.current = true
+WITH target, stream, gatheringServiceCampaign, log, leader
+CREATE (streamCampaign:EquipmentCampaign {id: apoc.create.uuid()})
+SET streamCampaign.name = stream.name + ' Stream'
 
-MERGE (log)-[hasComponent:HAS_COMPONENT]->(otherLog)
-SET hasComponent.current = true
-RETURN log, otherLog;
-
-
-MATCH (log:ServiceLog)-[has:HAS]->(otherLog:ServiceLog) 
-MERGE (log)-[hasComponent:HAS_COMPONENT]->(otherLog)
-DELETE has
-RETURN log, otherLog;
-
-
-// Create a new History for the lower church
-MATCH (mainChurch) 
-WHERE mainChurch:Bacenta OR mainChurch:Constituency OR mainChurch:Council OR mainChurch:Stream OR mainChurch:GatheringService
-
-MATCH p=(church)-[:HAS*1..5]->(lowerChurch)
-WHERE lowerChurch:Fellowship OR lowerChurch:Bacenta OR lowerChurch:Constituency OR lowerChurch:Council OR lowerChurch:Stream
-
-MATCH (lowerChurch)<-[:LEADS]-(lowerChurchLeader)
-MATCH (lowerChurch)-[lowerHistory:HAS_HISTORY {current:true}]->(lowerLog:ServiceLog)
-MATCH (mainChurch)-[:HAS_HISTORY {current:true}]->(mainLog:ServiceLog)
-REMOVE lowerHistory.current
-
-CREATE (newLowerLog:ServiceLog)
-SET newLowerLog.id = apoc.create.uuid(),
-newLowerLog.timestamp= datetime(),
-newLowerLog.timeStamp= lowerLog.historyRecord
-
-MERGE (lowerChurch)-[:HAS_HISTORY {current:true}]->(newLowerLog)
-MERGE (mainLog)-[:HAS_COMPONENT]->(newLowerLog)
-
-RETURN mainChurch;
+MERGE (stream)-[:HAS_CAMPAIGN]->(streamCampaign)
+MERGE (streamCampaign)<-[:LEADS]-(leader)
+// WITH stream, log, streamCampaign, leader,target,gatheringServiceCampaign         
+MERGE (streamCampaign)-[:HAS_HISTORY]->(log)
+MERGE (streamCampaign)-[:HAS_TARGET]->(target)
+MERGE (streamCampaign)<-[:HAS]-(gatheringServiceCampaign)
+return log,stream,streamCampaign;
 
 
+//Create Council Campaigns
+MATCH (target:Target {campaign:"Equipment"})
+MATCH (council:Council)<-[:HAS]-(stream:Stream)-[:HAS_CAMPAIGN]->(streamCampaign:EquipmentCampaign)
+MATCH (log:ServiceLog)<-[:HAS_HISTORY {current:true}]-(council)
+MATCH (leader:Member)-[:LEADS]->(council)
+WITH target, council, streamCampaign, log, leader
 
-// Delete Swell Dates
-MATCH (n:SwellDate)
-DETACH DELETE n;
+CREATE (councilCampaign:EquipmentCampaign {id: apoc.create.uuid()})
+SET councilCampaign.name = council.name + ' Council'
+
+MERGE (council)-[:HAS_CAMPAIGN]->(councilCampaign)
+MERGE (councilCampaign)<-[:LEADS]-(leader)
+MERGE (councilCampaign)-[:HAS_HISTORY]->(log)
+MERGE (councilCampaign)-[:HAS_TARGET]->(target)
+MERGE (councilCampaign)<-[:HAS]-(streamCampaign)
+
+return log,council,councilCampaign;
 
 
-MATCH (n:BussingRecord)
-DETACH DELETE n;
+//Create Constituency Campaigns
+MATCH (target:Target {campaign:"Equipment"})
+MATCH (constituency:Constituency)<-[:HAS]-(council:Council)-[:HAS_CAMPAIGN]->(councilCampaign:EquipmentCampaign)
+MATCH (log:ServiceLog)<-[:HAS_HISTORY {current:true}]-(constituency)
+MATCH (leader:Member)-[:LEADS]->(constituency)
+WITH target, constituency, councilCampaign, log, leader
+
+CREATE (constituencyCampaign:EquipmentCampaign {id: apoc.create.uuid()})
+SET constituencyCampaign.name = constituency.name + ' Constituency'
+
+MERGE (constituency)-[:HAS_CAMPAIGN]->(constituencyCampaign)
+MERGE (constituencyCampaign)-[:HAS_HISTORY]->(log)
+MERGE (constituencyCampaign)<-[:LEADS]-(leader)
+MERGE (constituencyCampaign)-[:HAS_TARGET]->(target)
+MERGE (constituencyCampaign)<-[:HAS]-(councilCampaign)
+
+return log,constituency,constituencyCampaign;
 
 
 
+//Create Bacenta Campaigns
+MATCH (target:Target {campaign:"Equipment"})
+MATCH (bacenta:Bacenta)<-[:HAS]-(constituency:Constituency)-[:HAS_CAMPAIGN]->(constituencyCampaign:EquipmentCampaign)
+MATCH (log:ServiceLog)<-[:HAS_HISTORY {current:true}]-(bacenta)
+MATCH (leader:Member)-[:LEADS]->(bacenta)
+WITH target, bacenta, constituencyCampaign, log, leader
 
+CREATE (bacentaCampaign:EquipmentCampaign {id: apoc.create.uuid()})
+SET bacentaCampaign.name = bacenta.name + ' Bacenta'
+
+MERGE (bacenta)-[:HAS_CAMPAIGN]->(bacentaCampaign)
+MERGE (bacentaCampaign)-[:HAS_HISTORY]->(log)
+MERGE (bacentaCampaign)-[:HAS_TARGET]->(target)
+MERGE (bacentaCampaign)<-[:LEADS]-(leader)
+MERGE (bacentaCampaign)<-[:HAS]-(constituencyCampaign)
+
+return log,bacenta,bacentaCampaign limit 2;
+
+
+
+//Create Fellowship Campaigns
+MATCH (target:Target {campaign:"Equipment"})
+MATCH (fellowship:Fellowship)<-[:HAS]-(bacenta:Bacenta)-[:HAS_CAMPAIGN]->(bacentaCampaign:EquipmentCampaign)
+MATCH (log:ServiceLog)<-[:HAS_HISTORY {current:true}]-(fellowship)
+MATCH (leader:Member)-[:LEADS]->(fellowship)
+WITH target, fellowship, bacentaCampaign, log, leader
+
+CREATE (fellowshipCampaign:EquipmentCampaign {id: apoc.create.uuid()})
+SET fellowshipCampaign.name = fellowship.name + ' Fellowship'
+
+MERGE (fellowship)-[:HAS_CAMPAIGN]->(fellowshipCampaign)
+MERGE (fellowshipCampaign)-[:HAS_HISTORY]->(log)
+MERGE (fellowshipCampaign)<-[:LEADS]-(leader)
+MERGE (fellowshipCampaign)-[:HAS_TARGET]->(target)
+
+MERGE (fellowshipCampaign)<-[:HAS]-(bacentaCampaign)
+
+return log,fellowship,fellowshipCampaign limit 2;

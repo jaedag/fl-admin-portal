@@ -56,7 +56,10 @@ type Member @auth(rules: [{ isAuthenticated: true }]) {
       RETURN COUNT(DISTINCT members)
       """
     )
-  history: [HistoryLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
+  history: [HistoryLog!]!
+    @cypher(
+      statement: "MATCH (this)-[:HAS_HISTORY|OLD_HISTORY]->(log:HistoryLog) RETURN log"
+    )
   loggedHistory: [HistoryLog!]! @relationship(type: "LOGGED_BY", direction: IN)
   fellowship: Fellowship @relationship(type: "BELONGS_TO", direction: OUT)
   leadsFellowship: [Fellowship!]! @relationship(type: "LEADS", direction: OUT)
