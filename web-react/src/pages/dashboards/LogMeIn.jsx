@@ -75,6 +75,8 @@ const LogMeIn = (memberId) => {
     }
 
     const fetchData = async (user) => {
+      if (!user) return
+
       const response = await servantWithRoles({
         variables: { auth_id: getIdToUse(user?.sub, memberId) },
       })
