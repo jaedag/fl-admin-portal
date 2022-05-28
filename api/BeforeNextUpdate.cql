@@ -2,6 +2,12 @@
 
 // STEP 1: Increment ServiceLogs with Same Timestamp
 
+//Create Dansoman to Leader Has History Relationship 
+MATCH (council:Council {name: "Dansoman"})<-[:LEADS]-(leader:Member)
+MATCH (council)-[:HAS_HISTORY]->(log:ServiceLog)
+MERGE (leader)-[:HAS_HISTORY]->(log)
+RETURN council, leader;
+
 //Gathering Service Level
 MATCH (n:GatheringService)<-[:LEADS]-(leader:Member)
 MATCH (n)-[r:HAS_HISTORY {current:true}]->(log:ServiceLog)<-[:HAS_HISTORY]-(leader)
@@ -76,6 +82,7 @@ return 1;
 MATCH ()-[r:HAS_HISTORY]-()
 remove r.direct
 RETURN 1;
+
 
 //STEP 2: Reassign Current to All History Logs that are the current releatiosnhip between a church and a leader
 // Also check if it is the latest history log in case of duplicates
@@ -218,21 +225,21 @@ target.campaign="Equipment"
 RETURN target;
 
 
+//Adding Equipment Campaign constraints
+CREATE CONSTRAINT equipment_campaign_constraint IF NOT EXISTS FOR (campaign:EquipmentCampaign) REQUIRE campaign.id IS UNIQUE;
+CREATE CONSTRAINT equipment_records_constraint IF NOT EXISTS FOR (record:EquipmentRecord) REQUIRE record.id IS UNIQUE;
 
 //Create Gathering Service Equipment Campaigns
 MATCH (target:Target {campaign:"Equipment"})
 MATCH (gatheringService:GatheringService)
 MATCH (log:ServiceLog)<-[:HAS_HISTORY {current:true}]-(gatheringService)
-MATCH (leader:Member)-[:LEADS]->(gatheringService)
 
-WITH target, gatheringService, log, leader
+WITH target, gatheringService, log
 
 CREATE (gatheringServiceCampaign:EquipmentCampaign {id: apoc.create.uuid()})
  SET gatheringServiceCampaign.name = gatheringService.name + ' Gathering Service'
 
-MERGE (gatheringService)-[:HAS_CAMPAIGN]->(gatheringServiceCampaign)
-MERGE (gatheringServiceCampaign)<-[:LEADS]-(leader)
-// WITH gatheringService, log, gatheringServiceCampaign, leader,target,gatheringServiceCampaign         
+MERGE (gatheringService)-[:HAS_CAMPAIGN]->(gatheringServiceCampaign)     
 MERGE (gatheringServiceCampaign)-[:HAS_HISTORY]->(log)
 MERGE (gatheringServiceCampaign)-[:HAS_TARGET]->(target)
 return log,gatheringService,gatheringServiceCampaign;
@@ -242,15 +249,12 @@ return log,gatheringService,gatheringServiceCampaign;
 MATCH (target:Target {campaign:"Equipment"})
 MATCH (stream:Stream)<-[:HAS]-(gatheringService:GatheringService)-[:HAS_CAMPAIGN]->(gatheringServiceCampaign:EquipmentCampaign)
 MATCH (log:ServiceLog)<-[:HAS_HISTORY {current:true}]-(stream)
-MATCH (leader:Member)-[:LEADS]->(stream)
 
-WITH target, stream, gatheringServiceCampaign, log, leader
+WITH target, stream, gatheringServiceCampaign, log
 CREATE (streamCampaign:EquipmentCampaign {id: apoc.create.uuid()})
 SET streamCampaign.name = stream.name + ' Stream'
 
-MERGE (stream)-[:HAS_CAMPAIGN]->(streamCampaign)
-MERGE (streamCampaign)<-[:LEADS]-(leader)
-// WITH stream, log, streamCampaign, leader,target,gatheringServiceCampaign         
+MERGE (stream)-[:HAS_CAMPAIGN]->(streamCampaign)       
 MERGE (streamCampaign)-[:HAS_HISTORY]->(log)
 MERGE (streamCampaign)-[:HAS_TARGET]->(target)
 MERGE (streamCampaign)<-[:HAS]-(gatheringServiceCampaign)
@@ -261,14 +265,12 @@ return log,stream,streamCampaign;
 MATCH (target:Target {campaign:"Equipment"})
 MATCH (council:Council)<-[:HAS]-(stream:Stream)-[:HAS_CAMPAIGN]->(streamCampaign:EquipmentCampaign)
 MATCH (log:ServiceLog)<-[:HAS_HISTORY {current:true}]-(council)
-MATCH (leader:Member)-[:LEADS]->(council)
-WITH target, council, streamCampaign, log, leader
+WITH target, council, streamCampaign, log
 
 CREATE (councilCampaign:EquipmentCampaign {id: apoc.create.uuid()})
 SET councilCampaign.name = council.name + ' Council'
 
 MERGE (council)-[:HAS_CAMPAIGN]->(councilCampaign)
-MERGE (councilCampaign)<-[:LEADS]-(leader)
 MERGE (councilCampaign)-[:HAS_HISTORY]->(log)
 MERGE (councilCampaign)-[:HAS_TARGET]->(target)
 MERGE (councilCampaign)<-[:HAS]-(streamCampaign)
@@ -280,15 +282,13 @@ return log,council,councilCampaign;
 MATCH (target:Target {campaign:"Equipment"})
 MATCH (constituency:Constituency)<-[:HAS]-(council:Council)-[:HAS_CAMPAIGN]->(councilCampaign:EquipmentCampaign)
 MATCH (log:ServiceLog)<-[:HAS_HISTORY {current:true}]-(constituency)
-MATCH (leader:Member)-[:LEADS]->(constituency)
-WITH target, constituency, councilCampaign, log, leader
+WITH target, constituency, councilCampaign, log
 
 CREATE (constituencyCampaign:EquipmentCampaign {id: apoc.create.uuid()})
 SET constituencyCampaign.name = constituency.name + ' Constituency'
 
 MERGE (constituency)-[:HAS_CAMPAIGN]->(constituencyCampaign)
 MERGE (constituencyCampaign)-[:HAS_HISTORY]->(log)
-MERGE (constituencyCampaign)<-[:LEADS]-(leader)
 MERGE (constituencyCampaign)-[:HAS_TARGET]->(target)
 MERGE (constituencyCampaign)<-[:HAS]-(councilCampaign)
 
@@ -300,8 +300,7 @@ return log,constituency,constituencyCampaign;
 MATCH (target:Target {campaign:"Equipment"})
 MATCH (bacenta:Bacenta)<-[:HAS]-(constituency:Constituency)-[:HAS_CAMPAIGN]->(constituencyCampaign:EquipmentCampaign)
 MATCH (log:ServiceLog)<-[:HAS_HISTORY {current:true}]-(bacenta)
-MATCH (leader:Member)-[:LEADS]->(bacenta)
-WITH target, bacenta, constituencyCampaign, log, leader
+WITH target, bacenta, constituencyCampaign, log
 
 CREATE (bacentaCampaign:EquipmentCampaign {id: apoc.create.uuid()})
 SET bacentaCampaign.name = bacenta.name + ' Bacenta'
@@ -309,7 +308,6 @@ SET bacentaCampaign.name = bacenta.name + ' Bacenta'
 MERGE (bacenta)-[:HAS_CAMPAIGN]->(bacentaCampaign)
 MERGE (bacentaCampaign)-[:HAS_HISTORY]->(log)
 MERGE (bacentaCampaign)-[:HAS_TARGET]->(target)
-MERGE (bacentaCampaign)<-[:LEADS]-(leader)
 MERGE (bacentaCampaign)<-[:HAS]-(constituencyCampaign)
 
 return log,bacenta,bacentaCampaign limit 2;
@@ -320,17 +318,14 @@ return log,bacenta,bacentaCampaign limit 2;
 MATCH (target:Target {campaign:"Equipment"})
 MATCH (fellowship:Fellowship)<-[:HAS]-(bacenta:Bacenta)-[:HAS_CAMPAIGN]->(bacentaCampaign:EquipmentCampaign)
 MATCH (log:ServiceLog)<-[:HAS_HISTORY {current:true}]-(fellowship)
-MATCH (leader:Member)-[:LEADS]->(fellowship)
-WITH target, fellowship, bacentaCampaign, log, leader
+WITH target, fellowship, bacentaCampaign, log
 
 CREATE (fellowshipCampaign:EquipmentCampaign {id: apoc.create.uuid()})
 SET fellowshipCampaign.name = fellowship.name + ' Fellowship'
 
 MERGE (fellowship)-[:HAS_CAMPAIGN]->(fellowshipCampaign)
 MERGE (fellowshipCampaign)-[:HAS_HISTORY]->(log)
-MERGE (fellowshipCampaign)<-[:LEADS]-(leader)
 MERGE (fellowshipCampaign)-[:HAS_TARGET]->(target)
-
 MERGE (fellowshipCampaign)<-[:HAS]-(bacentaCampaign)
 
 return log,fellowship,fellowshipCampaign limit 2;
