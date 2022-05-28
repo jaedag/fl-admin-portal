@@ -1,3 +1,73 @@
+#### 2.9.2 (2022-05-27)
+
+##### Bug Fixes
+
+*  minor improvements to LegMein.jsx ([399bc83d](https://github.com/firstlovecenter/fl-admin-portal/commit/399bc83d84a006025901900223707e775d6c6759))
+*  added a conditional to handle errors when fetching user data ([a8c75515](https://github.com/firstlovecenter/fl-admin-portal/commit/a8c75515b4579abbb937d08560da16c908b4d774))
+*  fixed breaking changes rendering servantsDashboard and servants churches ([841a6ef4](https://github.com/firstlovecenter/fl-admin-portal/commit/841a6ef43352c35f9fdec6070e0fbc69908dca17))
+*  minor fixes on nav renderer ([#161](https://github.com/firstlovecenter/fl-admin-portal/pull/161)) ([fe9d3ee4](https://github.com/firstlovecenter/fl-admin-portal/commit/fe9d3ee40d58632dbccf32969a2bce06dfb7392a))
+*  updated dependencies on useeffect ([83cf12bd](https://github.com/firstlovecenter/fl-admin-portal/commit/83cf12bdaa0f9d6f64cc04c4d4204de383ab4af2))
+
+#### 2.9.1 (2022-05-25)
+
+##### Bug Fixes
+
+*  removed debounce timer which was causing user dashboard to not load on first accessing of page ([a7a75420](https://github.com/firstlovecenter/fl-admin-portal/commit/a7a75420febb6c2c7f46125ed24e577a40a2a72f))
+
+### 2.9.0 (2022-05-25)
+
+##### Chores
+
+*  merged the optimise-nav branch into deploy ([0c600264](https://github.com/firstlovecenter/fl-admin-portal/commit/0c600264f76ada7ad8b89312a5f2876a3b335739))
+
+##### Documentation Changes
+
+*  updated CHANGELOG.md ([5317c2ed](https://github.com/firstlovecenter/fl-admin-portal/commit/5317c2ed4051635a825bd07956c22b868b349732))
+
+##### New Features
+
+*  members are now created with Deer Status ([5c283bc9](https://github.com/firstlovecenter/fl-admin-portal/commit/5c283bc9a0a31fe8d06c35f34be67ccce5f55adb))
+
+##### Bug Fixes
+
+*  fixed grid for displaychurchlist ([8a81e0f2](https://github.com/firstlovecenter/fl-admin-portal/commit/8a81e0f21c7ec812b16d9f95d519a9ed87bcfb98))
+*  admin-127 refactored navigation.jsx to begin optimisation ([766abad8](https://github.com/firstlovecenter/fl-admin-portal/commit/766abad8e791d4134a6a9144bf40a71cb83ceca8))
+
+##### Performance Improvements
+
+*  optimised dashboard gql queries ([c51b3a5d](https://github.com/firstlovecenter/fl-admin-portal/commit/c51b3a5da13b685d833edf68a298c1902710013e))
+*  optimised dashboard gql queries, but dashboard comp not rendering ([cd2de004](https://github.com/firstlovecenter/fl-admin-portal/commit/cd2de00413b29012919d7c076ad4398a9a21c3f3))
+
+##### Refactors
+
+*  removed some lingering instances of the word 'bishop' ([f29754a5](https://github.com/firstlovecenter/fl-admin-portal/commit/f29754a5948083fd194edcdf936f128e3fdb205d))
+*  redesign allchurches page to new standard ([790f3d29](https://github.com/firstlovecenter/fl-admin-portal/commit/790f3d2975d5a7eacd05aaab19512aedff1a8c37))
+
+### 2.8.0 (2022-05-25)
+
+##### Chores
+
+*  merged the optimise-nav branch into deploy ([0c600264](https://github.com/firstlovecenter/fl-admin-portal/commit/0c600264f76ada7ad8b89312a5f2876a3b335739))
+
+##### New Features
+
+*  members are now created with Deer Status ([5c283bc9](https://github.com/firstlovecenter/fl-admin-portal/commit/5c283bc9a0a31fe8d06c35f34be67ccce5f55adb))
+
+##### Bug Fixes
+
+*  fixed grid for displaychurchlist ([8a81e0f2](https://github.com/firstlovecenter/fl-admin-portal/commit/8a81e0f21c7ec812b16d9f95d519a9ed87bcfb98))
+*  admin-127 refactored navigation.jsx to begin optimisation ([766abad8](https://github.com/firstlovecenter/fl-admin-portal/commit/766abad8e791d4134a6a9144bf40a71cb83ceca8))
+
+##### Performance Improvements
+
+*  optimised dashboard gql queries ([c51b3a5d](https://github.com/firstlovecenter/fl-admin-portal/commit/c51b3a5da13b685d833edf68a298c1902710013e))
+*  optimised dashboard gql queries, but dashboard comp not rendering ([cd2de004](https://github.com/firstlovecenter/fl-admin-portal/commit/cd2de00413b29012919d7c076ad4398a9a21c3f3))
+
+##### Refactors
+
+*  removed some lingering instances of the word 'bishop' ([f29754a5](https://github.com/firstlovecenter/fl-admin-portal/commit/f29754a5948083fd194edcdf936f128e3fdb205d))
+*  redesign allchurches page to new standard ([790f3d29](https://github.com/firstlovecenter/fl-admin-portal/commit/790f3d2975d5a7eacd05aaab19512aedff1a8c37))
+
 #### 2.7.2 (2022-05-20)
 
 ##### New Features

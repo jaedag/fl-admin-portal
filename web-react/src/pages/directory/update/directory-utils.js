@@ -1,5 +1,14 @@
 import { capitalise, throwErrorMsg } from 'global-utils'
 
+export const churchLevel = [
+  'Fellowship',
+  'Bacenta',
+  'Constituency',
+  'Council',
+  'Stream',
+  'GatheringService',
+]
+
 export const nextHigherChurch = (churchLevel) => {
   switch (churchLevel) {
     case 'Fellowship':

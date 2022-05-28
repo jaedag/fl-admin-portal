@@ -258,43 +258,43 @@ export const getMemberCount = (servant) => {
 export const getChurchCount = (servant) => {
   let churchesCount = ''
 
-  if (servant?.leadsGatheringServiceCount) {
+  if (servant?.leadsAdminsGatheringServiceCount) {
     if (churchesCount) {
       churchesCount += ','
     }
 
-    if (servant.leadsGatheringServiceCount === 1) {
-      churchesCount = `${servant.leadsGatheringServiceCount} Gathering Service`
+    if (servant.leadsAdminsGatheringServiceCount === 1) {
+      churchesCount = `${servant.leadsAdminsGatheringServiceCount} Gathering Service`
     } else {
-      churchesCount = `${servant.leadsGatheringServiceCount} Gathering Services`
+      churchesCount = `${servant.leadsAdminsGatheringServiceCount} Gathering Services`
     }
   }
 
-  if (servant?.leadsCouncilCount) {
+  if (servant?.leadsAdminsCouncilCount) {
     if (churchesCount) {
       churchesCount += ','
     }
 
-    if (servant.leadsCouncilCount === 1) {
-      churchesCount = `${churchesCount} ${servant.leadsCouncilCount} Council`
+    if (servant.leadsAdminsCouncilCount === 1) {
+      churchesCount = `${churchesCount} ${servant.leadsAdminsCouncilCount} Council`
     } else {
-      churchesCount = `${churchesCount} ${servant.leadsCouncilCount} Councils`
+      churchesCount = `${churchesCount} ${servant.leadsAdminsCouncilCount} Councils`
     }
   }
 
-  if (servant?.leadsConstituencyCount) {
+  if (servant?.leadsAdminsConstituencyCount) {
     if (churchesCount) {
       churchesCount += ','
 
-      if (servant.leadsConstituencyCount === 1) {
-        churchesCount = `${churchesCount} ${servant.leadsConstituencyCount} Constituency`
+      if (servant.leadsAdminsConstituencyCount === 1) {
+        churchesCount = `${churchesCount} ${servant.leadsAdminsConstituencyCount} Constituency`
       } else {
-        churchesCount = `${churchesCount} ${servant.leadsConstituencyCount} Constituencies`
+        churchesCount = `${churchesCount} ${servant.leadsAdminsConstituencyCount} Constituencies`
       }
-    } else if (servant.leadsConstituencyCount === 1) {
-      churchesCount = `${servant.leadsConstituencyCount} Constituency`
+    } else if (servant.leadsAdminsConstituencyCount === 1) {
+      churchesCount = `${servant.leadsAdminsConstituencyCount} Constituency`
     } else {
-      churchesCount = `${servant.leadsConstituencyCount} Constituencies`
+      churchesCount = `${servant.leadsAdminsConstituencyCount} Constituencies`
     }
   }
 

@@ -52,7 +52,6 @@ const PastorsAdmin = () => {
           firstName: '',
           lastName: '',
           fullName: '',
-          bishop: '',
           church: {},
           email: '',
           constituency: '',

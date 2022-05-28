@@ -83,6 +83,20 @@ type Member @auth(rules: [{ isAuthenticated: true }]) {
   leadsConstituencyCount: Int
     @cypher(
       statement: """
+      MATCH (this)-[:LEADS]->(constituency:Constituency)
+      RETURN COUNT(DISTINCT constituency)
+      """
+    )
+  isAdminForConstituencyCount: Int
+    @cypher(
+      statement: """
+      MATCH (this)-[:IS_ADMIN_FOR]->(constituency:Constituency)
+      RETURN COUNT(DISTINCT constituency)
+      """
+    )
+  leadsAdminsConstituencyCount: Int
+    @cypher(
+      statement: """
       MATCH (this)-[:LEADS|IS_ADMIN_FOR]->(constituency:Constituency)
       RETURN COUNT(DISTINCT constituency)
       """
@@ -91,7 +105,21 @@ type Member @auth(rules: [{ isAuthenticated: true }]) {
   leadsCouncilCount: Int
     @cypher(
       statement: """
-      MATCH (this)-[:LEADS|HAS|IS_ADMIN_FOR]->(council:Council)
+      MATCH (this)-[:LEADS]->(council:Council)
+      RETURN COUNT(DISTINCT council)
+      """
+    )
+  isAdminForCouncilCount: Int
+    @cypher(
+      statement: """
+      MATCH (this)-[:IS_ADMIN_FOR]->(council:Council)
+      RETURN COUNT(DISTINCT council)
+      """
+    )
+  leadsAdminsCouncilCount: Int
+    @cypher(
+      statement: """
+      MATCH (this)-[:LEADS|IS_ADMIN_FOR]->(council:Council)
       RETURN COUNT(DISTINCT council)
       """
     )
@@ -99,16 +127,37 @@ type Member @auth(rules: [{ isAuthenticated: true }]) {
   leadsStreamCount: Int
     @cypher(
       statement: """
-      MATCH (this)-[:LEADS|IS_ADMIN_FOR]->(stream:Stream)
+      MATCH (this)-[:LEADS]->(stream:Stream)
+      RETURN COUNT(DISTINCT stream)
+      """
+    )
+  isAdminForStreamCount: Int
+    @cypher(
+      statement: """
+      MATCH (this)-[:IS_ADMIN_FOR]->(stream:Stream)
       RETURN COUNT(DISTINCT stream)
       """
     )
   leadsGatheringService: [GatheringService!]!
     @relationship(type: "LEADS", direction: OUT)
+  isAdminForGatheringServiceCount: Int
+    @cypher(
+      statement: """
+      MATCH (this)-[:IS_ADMIN_FOR]->(gatheringService:GatheringService)
+      RETURN COUNT(DISTINCT gatheringService)
+      """
+    )
   leadsGatheringServiceCount: Int
     @cypher(
       statement: """
-      MATCH (this)-[:LEADS|HAS|IS_ADMIN_FOR]->(gatheringService:GatheringService)
+      MATCH (this)-[:LEADS]->(gatheringService:GatheringService)
+      RETURN COUNT(DISTINCT gatheringService)
+      """
+    )
+  leadsAdminsGatheringServiceCount: Int
+    @cypher(
+      statement: """
+      MATCH (this)-[:LEADS|IS_ADMIN_FOR]->(gatheringService:GatheringService)
       RETURN COUNT(DISTINCT gatheringService)
       """
     )
@@ -490,9 +539,13 @@ type Constituency implements Church {
     @cypher(
       statement: "MATCH (this)-[:HAS]-(:Bacenta)-[:HAS]->(fellowship:Active:Fellowship) RETURN COUNT(fellowship)"
     )
+  bacentaCount: Int
+    @cypher(
+      statement: "MATCH (this)-[:HAS]->(bacenta:Bacenta) RETURN COUNT(bacenta)"
+    )
   activeBacentaCount: Int
     @cypher(
-      statement: "MATCH (this)-[:HAS]-(bacenta:Active:Bacenta) RETURN COUNT(bacenta)"
+      statement: "MATCH (this)-[:HAS]->(bacenta:Bacenta) RETURN COUNT(bacenta)"
     )
   leader: Member @relationship(type: "LEADS", direction: IN)
   sontas: [Sonta!]! @relationship(type: "HAS_SONTA", direction: OUT)
@@ -564,6 +617,10 @@ type Bacenta implements Church {
     )
   leader: Member @relationship(type: "LEADS", direction: IN)
   fellowships: [Fellowship!]! @relationship(type: "HAS", direction: OUT)
+  fellowshipCount: Int!
+    @cypher(
+      statement: "MATCH (this)-[:HAS]->(fellowship:Fellowship) RETURN COUNT(fellowship)"
+    )
   basontas: Basonta @relationship(type: "HAS_BASONTA", direction: OUT)
   constituency: Constituency @relationship(type: "HAS", direction: IN)
   history: [HistoryLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
