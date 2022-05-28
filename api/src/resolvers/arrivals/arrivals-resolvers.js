@@ -167,6 +167,21 @@ export const arrivalsMutation = {
   UploadMobilisationPicture: async (object, args, context) => {
     const session = context.driver.session()
     isAuth(['leaderBacenta'], context.auth.roles)
+
+    const recordResponse = rearrangeCypherObject(
+      await session.run(cypher.checkTransactionId, args)
+    )
+
+    const stream = recordResponse.stream.properties
+    const arrivalEndTime = new Date(
+      new Date().toISOString().slice(0, 10) + stream.arrivalEndTime?.slice(10)
+    )
+    const today = new Date()
+
+    if (today > arrivalEndTime) {
+      throwErrorMsg('It is now past the time for arrivals. Thank you!')
+    }
+
     const checkBacentaMomo = rearrangeCypherObject(
       await session.run(cypher.checkBacentaMomoDetails, args)
     )
