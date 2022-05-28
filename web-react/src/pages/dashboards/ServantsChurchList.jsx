@@ -1,13 +1,7 @@
 import React, { useContext } from 'react'
 import { useNavigate } from 'react-router'
-import { useQuery } from '@apollo/client'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { MemberContext } from 'contexts/MemberContext'
-import {
-  SERVANTS_ADMIN,
-  SERVANTS_DASHBOARD,
-  SERVANTS_LEADERSHIP,
-} from './DashboardQueries'
 import {
   getMonthlyStatAverage,
   getServiceGraphData,
@@ -16,85 +10,83 @@ import MenuButton from 'components/buttons/MenuButton'
 import { Container } from 'react-bootstrap'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import BaseComponent from 'components/base-component/BaseComponent'
+import { SERVANT_CHURCH_LIST } from './DashboardQueries'
+import { useQuery } from '@apollo/client'
 
 const ServantsChurchList = () => {
   const { memberId } = useContext(MemberContext)
   const { clickCard } = useContext(ChurchContext)
   const navigate = useNavigate()
-  const { data, loading, error } = useQuery(SERVANTS_DASHBOARD, {
+  const { data, loading, error } = useQuery(SERVANT_CHURCH_LIST, {
     variables: { id: memberId },
   })
-  const { data: adminData } = useQuery(SERVANTS_ADMIN, {
-    variables: { id: memberId },
-  })
-  const { data: leaderData } = useQuery(SERVANTS_LEADERSHIP, {
-    variables: { id: memberId },
-  })
-
   const servant = data?.members[0]
-  const servantAdmin = adminData?.members[0]
-  const servantLeader = leaderData?.members[0]
-  let churches = []
 
-  const pushIntoChurch = (servantChurches) => {
-    servantChurches.map((church) => {
-      const serviceData = getServiceGraphData(church)
-
-      churches.push({
-        __typename: church.__typename,
-        name: church.name,
-        leader: servant?.fullName,
-        leaderPic: servant?.pictureUrl,
-        attendance: getMonthlyStatAverage(serviceData, 'attendance'),
-        income: getMonthlyStatAverage(serviceData, 'income'),
-        link: `/${church.__typename.toLowerCase()}/displaydetails`,
-      })
-    })
-  }
   const getServantChurches = (servant) => {
+    if (!servant) return
+
+    let churches = []
+
+    const pushIntoChurch = (servantChurches) => {
+      servantChurches.map((church) => {
+        const serviceData = getServiceGraphData(church)
+
+        churches.push({
+          __typename: church.__typename,
+          name: church.name,
+          leader: servant?.fullName,
+          leaderPic: servant?.pictureUrl,
+          attendance: getMonthlyStatAverage(serviceData, 'attendance'),
+          income: getMonthlyStatAverage(serviceData, 'income'),
+          link: `/${church.__typename.toLowerCase()}/displaydetails`,
+        })
+      })
+    }
+
     if (servant?.leadsFellowship?.length) {
       pushIntoChurch(servant?.leadsFellowship)
     }
-    if (servant?.leadsBacenta?.length) {
+    if (servant.leadsBacenta) {
       pushIntoChurch(servant?.leadsBacenta)
     }
-    if (servantLeader?.leadsConstituency?.length) {
-      pushIntoChurch(servantLeader?.leadsConstituency)
+    if (servant.leadsConstituency?.length) {
+      pushIntoChurch(servant?.leadsConstituency)
     }
-    if (servantLeader?.leadsSonta?.length) {
-      pushIntoChurch(servantLeader?.leadsSonta)
+    if (servant?.leadsSonta?.length) {
+      pushIntoChurch(servant?.leadsSonta)
     }
-    if (servantLeader?.leadsBasonta?.length) {
-      pushIntoChurch(servantLeader?.leadsBasonta)
+    if (servant?.leadsBasonta?.length) {
+      pushIntoChurch(servant?.leadsBasonta)
     }
-    if (servantLeader?.leadsMinistry?.length) {
-      pushIntoChurch(servantLeader?.leadsMinistry)
+    if (servant?.leadsMinistry?.length) {
+      pushIntoChurch(servant?.leadsMinistry)
     }
 
-    if (servantLeader?.leadsCouncil?.length) {
-      pushIntoChurch(servantLeader?.leadsCouncil)
+    if (servant?.leadsCouncil?.length) {
+      pushIntoChurch(servant?.leadsCouncil)
     }
-    if (servantLeader?.leadsStream?.length) {
-      pushIntoChurch(servantLeader?.leadsStream)
+    if (servant?.leadsStream?.length) {
+      pushIntoChurch(servant?.leadsStream)
     }
-    if (servantLeader?.leadsGatheringService?.length) {
-      pushIntoChurch(servantLeader?.leadsGatheringService)
+    if (servant?.leadsGatheringService?.length) {
+      pushIntoChurch(servant?.leadsGatheringService)
     }
     //Administrative
-    if (servantAdmin?.isAdminForCouncil?.length) {
-      pushIntoChurch(servantAdmin?.isAdminForCouncil)
+    if (servant?.isAdminForCouncil?.length) {
+      pushIntoChurch(servant?.isAdminForCouncil)
     }
-    if (servantAdmin?.isAdminForConstituency?.length) {
-      pushIntoChurch(servantAdmin?.isAdminForConstituency)
+    if (servant?.isAdminForConstituency?.length) {
+      pushIntoChurch(servant?.isAdminForConstituency)
     }
-    if (servantAdmin?.isAdminForGatheringService?.length) {
-      pushIntoChurch(servantAdmin?.isAdminForGatheringService)
+    if (servant?.isAdminForGatheringService?.length) {
+      pushIntoChurch(servant?.isAdminForGatheringService)
     }
+
     //run the get graph function after all checking is done to avoid multiple unnecessary runs
-    return
+    return churches
   }
 
-  getServantChurches(servant)
+  const churches = getServantChurches(servant)
 
   return (
     <BaseComponent loading={loading} error={error} data={data} placeholder>

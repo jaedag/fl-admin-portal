@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Formik, Form } from 'formik'
 import FormikControl from './formik-components/FormikControl'
-import DisplayChurchList from './DisplayChurchList'
+import ChurchList from './DisplayChurchList'
 import './ChurchSearch.css'
 import { Container } from 'react-bootstrap'
 
@@ -48,7 +48,7 @@ const ChurchSearch = (props) => {
         </Formik>
       </Container>
 
-      <DisplayChurchList data={churchData} churchType={props.churchType} />
+      <ChurchList data={churchData} churchType={props.churchType} />
     </div>
   )
 }
