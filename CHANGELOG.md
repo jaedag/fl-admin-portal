@@ -1,3 +1,9 @@
+#### 2.9.4 (2022-05-31)
+
+##### Performance Improvements
+
+*  minor tweaks to the rendering of the logged in user graph ([edd11afe](https://github.com/firstlovecenter/fl-admin-portal/commit/edd11afee5f96c1189108ec24274164b16a27d6d))
+
 #### 2.9.3 (2022-05-31)
 
 ##### New Features
