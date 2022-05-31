@@ -67,7 +67,7 @@ export const MAKE_STREAM_INACTIVE = gql`
         streams {
           id
         }
-        history(options: { limit: 5 }) {
+        history(limit: 5) {
           id
           timeStamp
           created_at {

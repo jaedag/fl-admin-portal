@@ -41,3 +41,36 @@ export const menuItems = [
     roles: ['adminGatheringService'],
   },
 ]
+
+export const roles = {
+  Fellowship: ['leads'],
+  Bacenta: ['leads'],
+  Constituency: ['leads', 'isAdminFor', 'isArrivalsAdminFor'],
+  Council: ['leads', 'isAdminFor', 'isArrivalsAdminFor'],
+  Stream: [
+    'leads',
+    'isAdminFor',
+    'isArrivalsAdminFor',
+    'isArrivalsCounterFor',
+    'isArrivalsConfirmerFor',
+  ],
+  GatheringService: ['leads', 'isAdminFor', 'isArrivalsAdminFor'],
+}
+
+export const parseRoles = (role) => {
+  switch (role) {
+    case 'leads':
+      return 'leader'
+    case 'isAdminFor':
+      return 'admin'
+    case 'isArrivalsAdminFor':
+      return 'arrivalsAdmin'
+    case 'isArrivalsCounterFor':
+      return 'arrivalsCounter'
+    case 'isArrivalsConfirmerFor':
+      return 'arrivalsConfirmer'
+
+    default:
+      return role
+  }
+}
