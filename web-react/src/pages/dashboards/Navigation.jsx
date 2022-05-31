@@ -16,7 +16,7 @@ import { GET_LOGGED_IN_USER } from 'components/UserProfileIcon/UserQueries'
 import SearchBox from 'components/SearchBox'
 import { Moon, Sun } from 'react-bootstrap-icons'
 import { permitMe } from 'permission-utils'
-import LogMeIn from './LogMeIn'
+import useLogMeIn from './LogMeIn'
 
 const Navigator = () => {
   const {
@@ -29,7 +29,7 @@ const Navigator = () => {
   } = useContext(MemberContext)
   const { clickCard } = useContext(ChurchContext)
   const { user } = useAuth0()
-  const { servant } = LogMeIn()
+  const { servant } = useLogMeIn()
 
   const [memberByEmail] = useLazyQuery(GET_LOGGED_IN_USER, {
     onCompleted: (data) => {
@@ -84,6 +84,8 @@ const Navigator = () => {
       assessmentChurch: assessmentChurch,
     })
   }, [
+    servant,
+    currentUser,
     assessmentChurch,
     assessmentChurchData,
     roles,

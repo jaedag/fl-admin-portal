@@ -262,7 +262,10 @@ interface Church @auth(rules: [{ isAuthenticated: true }]) {
   memberSearch(key: String!, limit: Int!): [Member!]!
   memberCount: Int
   pastorCount: Int
-  history: [HistoryLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
+  history(limit: Int! = 3): [HistoryLog!]!
+    @cypher(
+      statement: "MATCH (this)-[:HAS_HISTORY|OLD_HISTORY]->(log:HistoryLog) RETURN log LIMIT $limit"
+    )
   serviceLogs: [ServiceLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
   services(limit: Int!): [ServiceRecord!]!
 }
@@ -335,7 +338,10 @@ type GatheringService implements Church {
       statement: "MATCH (this)-[:HAS*5]->(fellowships:Active:Fellowship) RETURN COUNT(DISTINCT fellowships)"
     )
   admin: Member @relationship(type: "IS_ADMIN_FOR", direction: IN)
-  history: [HistoryLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
+  history(limit: Int! = 3): [HistoryLog!]!
+    @cypher(
+      statement: "MATCH (this)-[:HAS_HISTORY|OLD_HISTORY]->(log:HistoryLog) RETURN log LIMIT $limit"
+    )
   serviceLogs: [ServiceLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
   services(limit: Int!): [ServiceRecord!]!
     @cypher(
@@ -415,7 +421,10 @@ type Stream implements Church {
       statement: "MATCH (this)-[:HAS*4]->(fellowships:Active:Fellowship) RETURN COUNT(DISTINCT fellowships)"
     )
   admin: Member @relationship(type: "IS_ADMIN_FOR", direction: IN)
-  history: [HistoryLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
+  history(limit: Int! = 3): [HistoryLog!]!
+    @cypher(
+      statement: "MATCH (this)-[:HAS_HISTORY|OLD_HISTORY]->(log:HistoryLog) RETURN log LIMIT $limit"
+    )
   serviceRecord: [ServiceRecord!]!
     @relationship(type: "HAS_SERVICE", direction: OUT)
   serviceLogs: [ServiceLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
@@ -489,7 +498,10 @@ type Council implements Church {
       statement: "MATCH (this)-[:HAS*3]->(fellowships:Active:Fellowship) RETURN COUNT(DISTINCT fellowships)"
     )
   admin: Member @relationship(type: "IS_ADMIN_FOR", direction: IN)
-  history: [HistoryLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
+  history(limit: Int! = 3): [HistoryLog!]!
+    @cypher(
+      statement: "MATCH (this)-[:HAS_HISTORY|OLD_HISTORY]->(log:HistoryLog) RETURN log LIMIT $limit"
+    )
   serviceRecord: [ServiceRecord!]!
     @relationship(type: "HAS_SERVICE", direction: OUT)
   serviceLogs: [ServiceLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
@@ -556,7 +568,10 @@ type Constituency implements Church {
   council: Council @relationship(type: "HAS", direction: IN)
 
   admin: Member @relationship(type: "IS_ADMIN_FOR", direction: IN)
-  history: [HistoryLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
+  history(limit: Int! = 3): [HistoryLog!]!
+    @cypher(
+      statement: "MATCH (this)-[:HAS_HISTORY|OLD_HISTORY]->(log:HistoryLog) RETURN log LIMIT $limit"
+    )
   serviceRecord: [ServiceRecord!]!
     @relationship(type: "HAS_SERVICE", direction: OUT)
   serviceLogs: [ServiceLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
@@ -626,7 +641,10 @@ type Bacenta implements Church {
     )
   basontas: Basonta @relationship(type: "HAS_BASONTA", direction: OUT)
   constituency: Constituency @relationship(type: "HAS", direction: IN)
-  history: [HistoryLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
+  history(limit: Int! = 3): [HistoryLog!]!
+    @cypher(
+      statement: "MATCH (this)-[:HAS_HISTORY|OLD_HISTORY]->(log:HistoryLog) RETURN log LIMIT $limit"
+    )
   serviceLogs: [ServiceLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
   services(limit: Int! = 4): [ServiceRecord!]!
     @cypher(
@@ -688,7 +706,10 @@ type Fellowship implements Church {
       """
     )
   meetingDay: ServiceDay @relationship(type: "MEETS_ON", direction: OUT)
-  history: [HistoryLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
+  history(limit: Int! = 3): [HistoryLog!]!
+    @cypher(
+      statement: "MATCH (this)-[:HAS_HISTORY|OLD_HISTORY]->(log:HistoryLog) RETURN log LIMIT $limit"
+    )
   serviceLogs: [ServiceLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
   services(limit: Int!): [ServiceRecord!]!
     @cypher(
