@@ -1,3 +1,28 @@
+#### 2.9.5 (2022-05-31)
+
+##### Chores
+
+*  merged from deploy into ahadziii-feature ([d45d3024](https://github.com/firstlovecenter/fl-admin-portal/commit/d45d302406f123caac8389843958b71db3e12a0a))
+*  merged from edem's branch for admin-56 ([b3fe0c6d](https://github.com/firstlovecenter/fl-admin-portal/commit/b3fe0c6d31a039e13937ed22210c4a84198a2e92))
+*  updated version number ([78859e7f](https://github.com/firstlovecenter/fl-admin-portal/commit/78859e7ff46bbefc939fb3a0a5103c543e716eb2))
+
+##### Documentation Changes
+
+*  updated CHANGELOG.md ([7e1aa3a5](https://github.com/firstlovecenter/fl-admin-portal/commit/7e1aa3a5c6b9f567ccb6d45ca766a5037283dfa0))
+*  updated CHANGELOG.md ([73bfd991](https://github.com/firstlovecenter/fl-admin-portal/commit/73bfd9919f9120ab31ecea510e9c557ad9da88cc))
+*  updated CHANGELOG.md ([855a74da](https://github.com/firstlovecenter/fl-admin-portal/commit/855a74da57f80cf9fc53bf0735135a5044ec1142))
+
+##### New Features
+
+*  admin-56 closed vacation badges feature ([0e4ad9b3](https://github.com/firstlovecenter/fl-admin-portal/commit/0e4ad9b34b2c24788a6059d8d059bdcf173d6061))
+*  implement vacation mode for fellowships and bacentas in church details page ([5a091868](https://github.com/firstlovecenter/fl-admin-portal/commit/5a09186882bc4813f72fb0784b243788cbbab74d))
+*  added field for vacation counts for bacentas and fellowships ([c4bbdea1](https://github.com/firstlovecenter/fl-admin-portal/commit/c4bbdea195ff6d98fb0ee776b289bb711359fe04))
+
+##### Bug Fixes
+
+*  admin-56 fixed css styling issue where placeholders were  not showing ([92c43408](https://github.com/firstlovecenter/fl-admin-portal/commit/92c4340846b63e0ad26efe3e2c7f1173c103bda0))
+*  tightened phoneNumber validation to prevent using a duplicate number with '+2330' syntax ([9f3206b2](https://github.com/firstlovecenter/fl-admin-portal/commit/9f3206b285151d491e7f93ceca8f2d712efe8575))
+
 <<<<<<< HEAD
 <<<<<<< HEAD
 =======
