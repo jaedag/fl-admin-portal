@@ -1,3 +1,20 @@
+#### 2.9.3 (2022-05-31)
+
+##### New Features
+
+*  admin-126 began testing servant transfer cypher query ([b671444d](https://github.com/firstlovecenter/fl-admin-portal/commit/b671444dae7f12e0c416db73b016a7febc6f0565))
+
+##### Bug Fixes
+
+* **arrivals:**  you can't fill mobilisation time after the assigned time ([40222de4](https://github.com/firstlovecenter/fl-admin-portal/commit/40222de4bd1db2928e5d73bd7147842bb125b65e))
+*  updated the clean up file to affect Dansoman as well ([76e45fec](https://github.com/firstlovecenter/fl-admin-portal/commit/76e45feccdf40863a381acc5f79db241cfbade51))
+*  admin-126 implemented creating subsructure on servant transfer in api ([bfe3037d](https://github.com/firstlovecenter/fl-admin-portal/commit/bfe3037d59ee2e3ea2626024eef5bbc39eef194c))
+
+##### Performance Improvements
+
+*  minor performance improvements ([965839fe](https://github.com/firstlovecenter/fl-admin-portal/commit/965839fea04dc9e18091579ec770be8ea11cb4fc))
+*  optimised login flow to make it 'hopefully' faster ([94719200](https://github.com/firstlovecenter/fl-admin-portal/commit/94719200481d94289351903741ab6493dd0dea98))
+
 #### 2.9.2 (2022-05-27)
 
 ##### Bug Fixes
