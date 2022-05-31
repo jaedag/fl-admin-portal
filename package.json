@@ -43,8 +43,5 @@
     "url": "git://github.com/firstlovecenter/fl-admin-portal.git"
   },
   "license": "Apache-2.0",
-  "version": "2.9.2",
-  "dependencies": {
-    "neo4j-driver": "^4.4.5"
-  }
+  "version": "1.0.3"
 }

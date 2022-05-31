@@ -310,3 +310,14 @@ a {
   height: 50px;
   font-size: 20px;
 }
+
+.badge-vacation {
+  font-size: 12px;
+  font-size: 9px;
+  font-weight: normal;
+  color: #EC4860;
+}
+
+.badge-vacation.bg-danger {
+  background-color: #582e2e !important;
+}
