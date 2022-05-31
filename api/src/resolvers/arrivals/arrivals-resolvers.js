@@ -169,17 +169,18 @@ export const arrivalsMutation = {
     isAuth(['leaderBacenta'], context.auth.roles)
 
     const recordResponse = rearrangeCypherObject(
-      await session.run(cypher.checkTransactionId, args)
+      await session.run(cypher.checkArrivalTimes, args)
     )
 
     const stream = recordResponse.stream.properties
-    const arrivalEndTime = new Date(
-      new Date().toISOString().slice(0, 10) + stream.arrivalEndTime?.slice(10)
+    const mobilisationEndTime = new Date(
+      new Date().toISOString().slice(0, 10) +
+        stream.mobilisationEndTime?.slice(10)
     )
     const today = new Date()
 
-    if (today > arrivalEndTime) {
-      throwErrorMsg('It is now past the time for arrivals. Thank you!')
+    if (today > mobilisationEndTime) {
+      throwErrorMsg('It is now past the time for mobilisation. Thank you!')
     }
 
     const checkBacentaMomo = rearrangeCypherObject(
@@ -238,7 +239,7 @@ export const arrivalsMutation = {
       )
 
       let bussingRecord
-
+      console.log(response)
       if (
         response.attendance < 8 ||
         response.bussingCost === 0 ||
@@ -298,7 +299,6 @@ export const arrivalsMutation = {
     const cypherResponse = rearrangeCypherObject(
       await session.run(cypher.setBussingRecordTransactionId, args)
     )
-
     const bussingRecord = cypherResponse.record.properties
 
     const sendBussingSupport = {
@@ -320,9 +320,11 @@ export const arrivalsMutation = {
         account_issuer: getMobileCode(bussingRecord.mobileNetwork),
       },
     }
+
     console.log(
-      `${cypherResponse.bacentaName} Bacenta ${transactionResponse.momoName}`
+      `${cypherResponse.bacentaName} Bacenta ${bussingRecord.momoName}`
     )
+
     try {
       const res = await axios(sendBussingSupport)
 

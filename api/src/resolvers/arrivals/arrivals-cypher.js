@@ -5,7 +5,7 @@ MATCH (transaction: LastPaySwitchTransactionId)
 SET record.transactionId = transaction.id + 1,
 transaction.id = record.transactionId,
 record.transactionTime = datetime(),
-record.transactionStatus = "pending"
+record.transactionStatus = 'pending'
 
 RETURN record, bacenta.name AS bacentaName, date.date AS date
 `
@@ -45,6 +45,10 @@ MATCH (bacenta)<-[:HAS*3]-(stream:Stream)
 OPTIONAL MATCH (record)-[:COUNTED_BY]->(admin:Member)
 
 RETURN record, stream
+`
+export const checkArrivalTimes = `
+MATCH (bacenta {id: $bacentaId})<-[:HAS*3]-(stream:Stream)
+RETURN stream
 `
 
 export const setSwellDate = `
