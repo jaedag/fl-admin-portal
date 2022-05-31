@@ -100,17 +100,11 @@ const useLogMeIn = (memberId) => {
   }
 
   useEffect(() => {
-    const fetchServantData = async (member) => {
-      if (!member) return
+    const fetchServantData = async (user) => {
+      if (!user) return
 
       let servant = {
-        id: member.id,
-        firstName: member.firstName,
-        lastName: member.lastName,
-        fullName: member.fullName,
-        pictureUrl: member.pictureUrl,
-        stream_name: member.stream_name,
-        __typename: member.__typename,
+        ...user,
       }
 
       await Promise.all(
@@ -123,11 +117,10 @@ const useLogMeIn = (memberId) => {
 
               if (shouldSearch(verb, level)) {
                 const response = await church[`${level}`][`${verb}`]({
-                  variables: { id: user?.sub.replace('auth0|', '') },
+                  variables: { id: user.id },
                 })
 
                 servant[`${verb}${level}`] = getMember(response, verb, level)
-                setServant(servant)
               }
               return servant
             })
@@ -135,12 +128,14 @@ const useLogMeIn = (memberId) => {
         })
       )
 
+      setServant(servant)
+
       return servant
     }
 
-    fetchServantData(user)
+    fetchServantData(currentUser)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentUser.roles, memberId, user, user?.sub])
+  }, [currentUser.roles, memberId, user, user?.sub, currentUser])
 
   return { servant }
 }
