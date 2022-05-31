@@ -23,7 +23,7 @@ import {
   SERVANTS_STREAM_ARRIVALS_CONFIRMER,
 } from './LogInQueries'
 
-const LogMeIn = (memberId) => {
+const useLogMeIn = (memberId) => {
   const { user } = useAuth0()
   const { currentUser } = useContext(MemberContext)
   const [servant, setServant] = useState(null)
@@ -145,4 +145,4 @@ const LogMeIn = (memberId) => {
   return { servant }
 }
 
-export default LogMeIn
+export default useLogMeIn

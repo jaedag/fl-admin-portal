@@ -174,7 +174,7 @@ const ServantsDashboard = () => {
         <div className="card-button-row">
           <Table className="border-bottom-0">
             <tbody>
-              <tr>
+              <tr /*className="row justify-content-start"*/>
                 {roles?.length ? (
                   roles.map((role, i) => {
                     return (
