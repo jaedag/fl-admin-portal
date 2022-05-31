@@ -95,7 +95,7 @@ export const LOG_MEMBER_HISTORY = gql`
       id
       firstName
       lastName
-      history(options: { limit: 3 }) {
+      history(limit: 3) {
         id
         timeStamp
         created_at {
@@ -133,7 +133,7 @@ export const UPDATE_MEMBER_FELLOWSHIP = gql`
       id
       firstName
       lastName
-      history(options: { limit: 3 }) {
+      history(limit: 3) {
         id
         timeStamp
         created_at {
@@ -192,7 +192,7 @@ export const UPDATE_STREAM_MUTATION = gql`
         firstName
         lastName
       }
-      history(options: { limit: 5 }) {
+      history(limit: 5) {
         id
         timeStamp
         created_at {
@@ -247,7 +247,7 @@ export const UPDATE_COUNCIL_MUTATION = gql`
         firstName
         lastName
       }
-      history(options: { limit: 5 }) {
+      history(limit: 5) {
         id
         timeStamp
         created_at {
@@ -309,7 +309,7 @@ export const UPDATE_CONSTITUENCY_MUTATION = gql`
         firstName
         lastName
       }
-      history(options: { limit: 5 }) {
+      history(limit: 5) {
         id
         timeStamp
         created_at {
@@ -371,7 +371,7 @@ export const UPDATE_BACENTA_MUTATION = gql`
           title
         }
       }
-      history(options: { limit: 5 }) {
+      history(limit: 5) {
         id
         timeStamp
         created_at {
@@ -407,7 +407,7 @@ export const UPDATE_SONTA_MUTATION = gql`
           title
         }
       }
-      history(options: { limit: 5 }) {
+      history(limit: 5) {
         id
         timeStamp
         created_at {
@@ -468,7 +468,7 @@ export const UPDATE_FELLOWSHIP = gql`
         pictureUrl
       }
 
-      history(options: { limit: 5 }) {
+      history(limit: 5) {
         id
         timeStamp
         created_at {

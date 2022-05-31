@@ -15,7 +15,27 @@ const DetailsConstituency = () => {
   })
   const constituency = data?.constituencies[0]
 
-  const details = [{ title: 'Target', number: constituency?.target, link: '#' }]
+  const details = [
+    {
+      title: 'Members',
+      number: constituency?.memberCount || 0,
+      link: `/${constituency?.__typename?.toLowerCase()}/members`,
+      width: 12,
+    },
+    { title: 'Target', number: constituency?.target, link: '#', width: 12 },
+    {
+      title: 'Bacentas',
+      number: constituency?.bacentas.length || 0,
+      link: `/${`Bacenta`.toLowerCase()}/displayall`,
+      vacationCount: constituency?.vacationBacentaCount,
+    },
+    {
+      title: 'Fellowships',
+      number: constituency?.activeFellowshipCount,
+      vacationCount: constituency?.vacationFellowshipCount,
+      link: '#',
+    },
+  ]
   return (
     <BaseComponent loading={loading} error={error} data={data} placeholder>
       <DisplayChurchDetails
@@ -43,6 +63,7 @@ const DetailsConstituency = () => {
           data?.constituencies[0]?.history
         }
         breadcrumb={[data?.constituencies[0]?.council, data?.constituencies[0]]}
+        vacationCount={constituency?.vacationBacentaCount}
       />
     </BaseComponent>
   )

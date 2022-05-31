@@ -100,11 +100,11 @@ const MemberDisplayCard = (props) => {
             <Card.Title>{name}</Card.Title>
             <p className={`text-secondary mb-0 ${theme}`}>
               {details?.length &&
-                details.map((detail) => (
-                  <>
+                details.map((detail, i) => (
+                  <div key={i}>
                     <span>{detail}</span>
                     <br />
-                  </>
+                  </div>
                 ))}
             </p>
           </div>

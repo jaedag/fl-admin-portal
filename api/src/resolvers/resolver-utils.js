@@ -226,30 +226,52 @@ export const makeServantCypher = async (
     await session.run(servantCypher.makeHistoryServiceLog, {
       logId: serviceLogRes.id,
     })
+    await session.run(servantCypher.connectServiceLog, {
+      churchId: church.id,
+      servantId: servant.id,
+      oldServantId: oldServant.id ?? '',
+      logId: serviceLogRes.id,
+      auth: context.auth,
+    })
+  } else {
+    await session.run(servantCypher.connectHistoryLog, {
+      churchId: church.id,
+      servantId: servant.id,
+      oldServantId: oldServant.id ?? '',
+      logId: serviceLogRes.id,
+      auth: context.auth,
+    })
   }
-
-  await session.run(servantCypher.connectServiceLog, {
-    churchId: church.id,
-    servantId: servant.id,
-    oldServantId: oldServant.id ?? '',
-    logId: serviceLogRes.id,
-    auth: context.auth,
-  })
 
   //Run Cypher to Connect the History
-  if (churchType === 'Fellowship' && servantType === 'Leader') {
-    await session.run(servantCypher.connectFellowshipHistory, {
-      churchId: church.id,
-    })
-  } else if (churchType === 'GatheringService' && servantType === 'Leader') {
-    await session.run(servantCypher.connectGatheringServiceHistory, {
-      churchId: church.id,
-    })
-  } else if (servantType === 'Leader') {
-    await session.run(servantCypher.connectChurchHistory, {
-      churchId: church.id,
-    })
+  switch (churchType + servantType) {
+    case 'GatheringServiceLeader':
+      await session.run(servantCypher.connectChurchLogSubstructure, {
+        churchId: church.id,
+      })
+      break
+
+    case 'BacentaLeader':
+      await session.run(servantCypher.connectBacentaLogSubstructure, {
+        churchId: church.id,
+      })
+      break
+    default:
+      break
   }
+  // if (churchType === 'Fellowship' && servantType === 'Leader') {
+  //   await session.run(servantCypher.connectFellowshipHistory, {
+  //     churchId: church.id,
+  //   })
+  // } else if (churchType === 'GatheringService' && servantType === 'Leader') {
+  //   await session.run(servantCypher.connectGatheringServiceHistory, {
+  //     churchId: church.id,
+  //   })
+  // } else if (servantType === 'Leader') {
+  //   await session.run(servantCypher.connectChurchHistory, {
+  //     churchId: church.id,
+  //   })
+  // }
 }
 
 export const removeServantCypher = async (

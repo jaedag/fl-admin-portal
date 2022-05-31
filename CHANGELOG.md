@@ -1,3 +1,65 @@
+#### 2.9.5 (2022-05-31)
+
+##### Chores
+
+*  merged from deploy into ahadziii-feature ([d45d3024](https://github.com/firstlovecenter/fl-admin-portal/commit/d45d302406f123caac8389843958b71db3e12a0a))
+*  merged from edem's branch for admin-56 ([b3fe0c6d](https://github.com/firstlovecenter/fl-admin-portal/commit/b3fe0c6d31a039e13937ed22210c4a84198a2e92))
+*  updated version number ([78859e7f](https://github.com/firstlovecenter/fl-admin-portal/commit/78859e7ff46bbefc939fb3a0a5103c543e716eb2))
+
+##### Documentation Changes
+
+*  updated CHANGELOG.md ([7e1aa3a5](https://github.com/firstlovecenter/fl-admin-portal/commit/7e1aa3a5c6b9f567ccb6d45ca766a5037283dfa0))
+*  updated CHANGELOG.md ([73bfd991](https://github.com/firstlovecenter/fl-admin-portal/commit/73bfd9919f9120ab31ecea510e9c557ad9da88cc))
+*  updated CHANGELOG.md ([855a74da](https://github.com/firstlovecenter/fl-admin-portal/commit/855a74da57f80cf9fc53bf0735135a5044ec1142))
+
+##### New Features
+
+*  admin-56 closed vacation badges feature ([0e4ad9b3](https://github.com/firstlovecenter/fl-admin-portal/commit/0e4ad9b34b2c24788a6059d8d059bdcf173d6061))
+*  implement vacation mode for fellowships and bacentas in church details page ([5a091868](https://github.com/firstlovecenter/fl-admin-portal/commit/5a09186882bc4813f72fb0784b243788cbbab74d))
+*  added field for vacation counts for bacentas and fellowships ([c4bbdea1](https://github.com/firstlovecenter/fl-admin-portal/commit/c4bbdea195ff6d98fb0ee776b289bb711359fe04))
+
+##### Bug Fixes
+
+*  admin-56 fixed css styling issue where placeholders were  not showing ([92c43408](https://github.com/firstlovecenter/fl-admin-portal/commit/92c4340846b63e0ad26efe3e2c7f1173c103bda0))
+*  tightened phoneNumber validation to prevent using a duplicate number with '+2330' syntax ([9f3206b2](https://github.com/firstlovecenter/fl-admin-portal/commit/9f3206b285151d491e7f93ceca8f2d712efe8575))
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+#### 2.9.4 (2022-05-31)
+
+##### Performance Improvements
+
+*  minor tweaks to the rendering of the logged in user graph ([edd11afe](https://github.com/firstlovecenter/fl-admin-portal/commit/edd11afee5f96c1189108ec24274164b16a27d6d))
+
+#### 2.9.3 (2022-05-31)
+
+##### New Features
+
+*  admin-126 began testing servant transfer cypher query ([b671444d](https://github.com/firstlovecenter/fl-admin-portal/commit/b671444dae7f12e0c416db73b016a7febc6f0565))
+
+##### Bug Fixes
+
+* **arrivals:**  you can't fill mobilisation time after the assigned time ([40222de4](https://github.com/firstlovecenter/fl-admin-portal/commit/40222de4bd1db2928e5d73bd7147842bb125b65e))
+*  updated the clean up file to affect Dansoman as well ([76e45fec](https://github.com/firstlovecenter/fl-admin-portal/commit/76e45feccdf40863a381acc5f79db241cfbade51))
+*  admin-126 implemented creating subsructure on servant transfer in api ([bfe3037d](https://github.com/firstlovecenter/fl-admin-portal/commit/bfe3037d59ee2e3ea2626024eef5bbc39eef194c))
+
+##### Performance Improvements
+
+*  minor performance improvements ([965839fe](https://github.com/firstlovecenter/fl-admin-portal/commit/965839fea04dc9e18091579ec770be8ea11cb4fc))
+*  optimised login flow to make it 'hopefully' faster ([94719200](https://github.com/firstlovecenter/fl-admin-portal/commit/94719200481d94289351903741ab6493dd0dea98))
+
+>>>>>>> deploy
+#### 2.9.2 (2022-05-27)
+
+##### Bug Fixes
+
+*  minor improvements to LegMein.jsx ([399bc83d](https://github.com/firstlovecenter/fl-admin-portal/commit/399bc83d84a006025901900223707e775d6c6759))
+*  added a conditional to handle errors when fetching user data ([a8c75515](https://github.com/firstlovecenter/fl-admin-portal/commit/a8c75515b4579abbb937d08560da16c908b4d774))
+*  fixed breaking changes rendering servantsDashboard and servants churches ([841a6ef4](https://github.com/firstlovecenter/fl-admin-portal/commit/841a6ef43352c35f9fdec6070e0fbc69908dca17))
+*  minor fixes on nav renderer ([#161](https://github.com/firstlovecenter/fl-admin-portal/pull/161)) ([fe9d3ee4](https://github.com/firstlovecenter/fl-admin-portal/commit/fe9d3ee40d58632dbccf32969a2bce06dfb7392a))
+*  updated dependencies on useeffect ([83cf12bd](https://github.com/firstlovecenter/fl-admin-portal/commit/83cf12bdaa0f9d6f64cc04c4d4204de383ab4af2))
+
 #### 2.9.1 (2022-05-25)
 
 ##### Bug Fixes
@@ -59,23 +121,67 @@
 *  redesign allchurches page to new standard ([790f3d29](https://github.com/firstlovecenter/fl-admin-portal/commit/790f3d2975d5a7eacd05aaab19512aedff1a8c37))
 
 #### 2.7.2 (2022-05-20)
-
-##### New Features
-
-*  admin-125 Members Ministry can now be set to 'None' ([cc8df027](https://github.com/firstlovecenter/fl-admin-portal/commit/cc8df027c92ef2d3d566f877e39bc477486b7089))
-*  filter vacation churched in church list ([#155](https://github.com/firstlovecenter/fl-admin-portal/pull/155)) ([85a82fe9](https://github.com/firstlovecenter/fl-admin-portal/commit/85a82fe95b7b5ebf5aea49588aefa2229e3c4b17))
-
-##### Bug Fixes
-
-*  fixed unnecessary history log of fellowship movement on member update ([2c6075b9](https://github.com/firstlovecenter/fl-admin-portal/commit/2c6075b9c27db31b56ccc6f04794973a755fe838))
-
-#### 2.7.1 (2022-05-20)
+=======
+#### 1.0.3 (2022-04-03)
+>>>>>>> 5a09186882bc4813f72fb0784b243788cbbab74d
 
 ##### Chores
 
-*  pull remote meta.json file ([a5f28709](https://github.com/firstlovecenter/fl-admin-portal/commit/a5f287090ff1411c3d5ad31c9f833c5758a2294d))
+*  updated version number ([8842ec6a](https://github.com/jaedag/fl-admin-portal/commit/8842ec6a9d2f0ad1245f4277296826c4d7194fb1))
+*  update @neo4j/graphql and graphql libraries ([f6c0c814](https://github.com/jaedag/fl-admin-portal/commit/f6c0c81406799c040d610146bbc003458820897f))
 
-### 2.8.0 (2022-05-20)
+##### Documentation Changes
+
+*  updated CHANGELOG.md ([13929c11](https://github.com/jaedag/fl-admin-portal/commit/13929c116d702e47be552d75e8337bfd94fa5b0f))
+*  updated CHANGELOG.md ([393a7e60](https://github.com/jaedag/fl-admin-portal/commit/393a7e60c3c3843c86bbe9d71f74589e97acd0a9))
+
+##### Bug Fixes
+
+*  tightened phoneNumber validation to prevent using a duplicate number with '+2330' syntax ([662096bf](https://github.com/jaedag/fl-admin-portal/commit/662096bf057b87b68b71bf63f97e384d93d40b5b))
+*  added missing 'id' to leaders in ListQueries ([46be6f0d](https://github.com/jaedag/fl-admin-portal/commit/46be6f0dfafe54a776b3583f41f451ccbc098822))
+*  fixed member and church icons on search flow ([e4aa088e](https://github.com/jaedag/fl-admin-portal/commit/e4aa088e74a93e366f1128a7e0a4ef7651a591c8))
+*  fixed bug breaking the update member page ([d656aaed](https://github.com/jaedag/fl-admin-portal/commit/d656aaedf8e8f4100f1b5e7279d1d3ae46032322))
+*  fixed create member submission ([56ddcf4f](https://github.com/jaedag/fl-admin-portal/commit/56ddcf4fd580cc89d2965755628e7aa84310926d))
+*  improved bacenta form for non stream admins ([175d5556](https://github.com/jaedag/fl-admin-portal/commit/175d5556e3119264dbc9a242024a519299a78e6f))
+*  fixed bug where emails could not be changed ([54f64770](https://github.com/jaedag/fl-admin-portal/commit/54f6477063560fcefe05070220a626e4993cd757))
+
+#### 1.0.3 (2022-04-03)
+
+##### Chores
+
+*  update @neo4j/graphql and graphql libraries ([f6c0c814](https://github.com/jaedag/fl-admin-portal/commit/f6c0c81406799c040d610146bbc003458820897f))
+
+##### Documentation Changes
+
+*  updated CHANGELOG.md ([393a7e60](https://github.com/jaedag/fl-admin-portal/commit/393a7e60c3c3843c86bbe9d71f74589e97acd0a9))
+
+##### Bug Fixes
+
+*  tightened phoneNumber validation to prevent using a duplicate number with '+2330' syntax ([662096bf](https://github.com/jaedag/fl-admin-portal/commit/662096bf057b87b68b71bf63f97e384d93d40b5b))
+*  added missing 'id' to leaders in ListQueries ([46be6f0d](https://github.com/jaedag/fl-admin-portal/commit/46be6f0dfafe54a776b3583f41f451ccbc098822))
+*  fixed member and church icons on search flow ([e4aa088e](https://github.com/jaedag/fl-admin-portal/commit/e4aa088e74a93e366f1128a7e0a4ef7651a591c8))
+*  fixed bug breaking the update member page ([d656aaed](https://github.com/jaedag/fl-admin-portal/commit/d656aaedf8e8f4100f1b5e7279d1d3ae46032322))
+*  fixed create member submission ([56ddcf4f](https://github.com/jaedag/fl-admin-portal/commit/56ddcf4fd580cc89d2965755628e7aa84310926d))
+*  improved bacenta form for non stream admins ([175d5556](https://github.com/jaedag/fl-admin-portal/commit/175d5556e3119264dbc9a242024a519299a78e6f))
+*  fixed bug where emails could not be changed ([54f64770](https://github.com/jaedag/fl-admin-portal/commit/54f6477063560fcefe05070220a626e4993cd757))
+
+#### 1.0.1 (2022-04-03)
+
+##### Chores
+
+*  update @neo4j/graphql and graphql libraries ([f6c0c814](https://github.com/jaedag/fl-admin-portal/commit/f6c0c81406799c040d610146bbc003458820897f))
+
+##### Bug Fixes
+
+*  tightened phoneNumber validation to prevent using a duplicate number with '+2330' syntax ([662096bf](https://github.com/jaedag/fl-admin-portal/commit/662096bf057b87b68b71bf63f97e384d93d40b5b))
+*  added missing 'id' to leaders in ListQueries ([46be6f0d](https://github.com/jaedag/fl-admin-portal/commit/46be6f0dfafe54a776b3583f41f451ccbc098822))
+*  fixed member and church icons on search flow ([e4aa088e](https://github.com/jaedag/fl-admin-portal/commit/e4aa088e74a93e366f1128a7e0a4ef7651a591c8))
+*  fixed bug breaking the update member page ([d656aaed](https://github.com/jaedag/fl-admin-portal/commit/d656aaedf8e8f4100f1b5e7279d1d3ae46032322))
+*  fixed create member submission ([56ddcf4f](https://github.com/jaedag/fl-admin-portal/commit/56ddcf4fd580cc89d2965755628e7aa84310926d))
+*  improved bacenta form for non stream admins ([175d5556](https://github.com/jaedag/fl-admin-portal/commit/175d5556e3119264dbc9a242024a519299a78e6f))
+*  fixed bug where emails could not be changed ([54f64770](https://github.com/jaedag/fl-admin-portal/commit/54f6477063560fcefe05070220a626e4993cd757))
+
+## 1.0.0 (2022-03-31)
 
 ##### Chores
 

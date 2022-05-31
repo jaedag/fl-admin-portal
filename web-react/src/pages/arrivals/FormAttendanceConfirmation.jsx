@@ -73,6 +73,7 @@ const FormAttendanceConfirmation = () => {
     }).catch((error) =>
       throwErrorMsg('There was an error confirming bussing', error)
     )
+
     await SetBussingSupport({
       variables: {
         bussingRecordId: bussingRecordId,
@@ -80,7 +81,6 @@ const FormAttendanceConfirmation = () => {
     }).catch((error) =>
       throwErrorMsg('There was an error setting bussing support', error)
     )
-
     const bussingData = res.data.ConfirmBussingByAdmin
 
     if (!bussingData.bussingTopUp || bacenta?.stream_name === 'Anagkazo') {

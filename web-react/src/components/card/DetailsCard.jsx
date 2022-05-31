@@ -2,6 +2,7 @@ import CloudinaryImage from 'components/CloudinaryImage'
 import PlaceholderCustom from 'components/Placeholder'
 import { MemberContext } from 'contexts/MemberContext'
 import React, { useContext } from 'react'
+import { Badge } from 'react-bootstrap'
 import './DetailsCard.css'
 
 const DetailsCard = (props) => {
@@ -26,6 +27,7 @@ const DetailsCard = (props) => {
           <CloudinaryImage src={props.img} className="img-search-placeholder" />
         </PlaceholderCustom>
       )}
+
       <div className="flex-grow-1">
         <PlaceholderCustom loading={loading} as="span" xs={12}>
           <span className={`text-secondary card-heading ${theme}`}>
@@ -35,6 +37,20 @@ const DetailsCard = (props) => {
         <PlaceholderCustom loading={loading} as="h2" xs={12}>
           <h2 className={`font-primary card-detail`}>{props.detail}</h2>
         </PlaceholderCustom>
+      </div>
+      <div>
+        {(props.heading === 'Bacentas' || props.heading === 'Fellowships') &&
+          props?.vacationCount !== '0' && (
+            <>
+              <div className="space"></div>
+              <PlaceholderCustom loading={loading} as="h2" xs={12}>
+                <Badge bg="danger" className="badge-vacation mt-auto">
+                  <span className="font-danger">{`+ `}</span>
+                  {`${props?.vacationCount} on Vacation`}
+                </Badge>
+              </PlaceholderCustom>
+            </>
+          )}
       </div>
     </div>
   )
