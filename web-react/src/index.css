@@ -306,3 +306,7 @@ a {
   height: 50px;
   font-size: 20px;
 }
+
+.text-muted.d-block .text-danger{
+  padding: 0;
+}
