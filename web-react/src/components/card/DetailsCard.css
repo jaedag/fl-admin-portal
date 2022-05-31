@@ -30,6 +30,10 @@
   background-color: #582e2e !important;
 }
 
+.font-danger {
+  color: var(--text-primary);
+}
+
 .space {
   height: 23px;
 }

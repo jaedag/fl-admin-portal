@@ -44,10 +44,10 @@ const DetailsCard = (props) => {
             <>
               <div className="space"></div>
               <PlaceholderCustom loading={loading} as="h2" xs={12}>
-                <Badge
-                  bg="danger"
-                  className="badge-vacation mt-auto"
-                >{`${props?.vacationCount} on Vacation`}</Badge>
+                <Badge bg="danger" className="badge-vacation mt-auto">
+                  <span className="font-danger">{`+ `}</span>
+                  {`${props?.vacationCount} on Vacation`}
+                </Badge>
               </PlaceholderCustom>
             </>
           )}
