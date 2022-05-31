@@ -28,28 +28,29 @@ const DetailsCard = (props) => {
         </PlaceholderCustom>
       )}
 
-      <div className="d-flex justify-content-between align-items-center flex-grow-1">
-        <div>
-          <PlaceholderCustom loading={loading} as="span" xs={12}>
-            <span className={`text-secondary card-heading ${theme}`}>
-              {props.heading}
-            </span>
-          </PlaceholderCustom>
-          <PlaceholderCustom loading={loading} as="h2" xs={12}>
-            <h2 className={`font-primary card-detail`}>{props.detail}</h2>
-          </PlaceholderCustom>
-        </div>
-        <div>
-          {(props.heading === 'Bacentas' || props.heading === 'Fellowships') &&
-            props?.vacationCount !== '0' && (
+      <div className="flex-grow-1">
+        <PlaceholderCustom loading={loading} as="span" xs={12}>
+          <span className={`text-secondary card-heading ${theme}`}>
+            {props.heading}
+          </span>
+        </PlaceholderCustom>
+        <PlaceholderCustom loading={loading} as="h2" xs={12}>
+          <h2 className={`font-primary card-detail`}>{props.detail}</h2>
+        </PlaceholderCustom>
+      </div>
+      <div>
+        {(props.heading === 'Bacentas' || props.heading === 'Fellowships') &&
+          props?.vacationCount !== '0' && (
+            <>
+              <div className="space"></div>
               <PlaceholderCustom loading={loading} as="h2" xs={12}>
                 <Badge
                   bg="danger"
-                  className="badge-vacation"
+                  className="badge-vacation mt-auto"
                 >{`${props?.vacationCount} on Vacation`}</Badge>
               </PlaceholderCustom>
-            )}
-        </div>
+            </>
+          )}
       </div>
     </div>
   )
