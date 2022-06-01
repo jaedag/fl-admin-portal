@@ -1,5 +1,17 @@
 #### 2.9.6 (2022-06-01)
 
+##### Documentation Changes
+
+*  updated CHANGELOG.md ([eb2a4b7d](https://github.com/firstlovecenter/fl-admin-portal/commit/eb2a4b7d35a699171b81714032197903a5c00f39))
+
+##### Bug Fixes
+
+*  hopefully fixed the bug causing a person not to be able to navigate ([0b632dd6](https://github.com/firstlovecenter/fl-admin-portal/commit/0b632dd6d429a392bb92222592dd0be378f1cf7a))
+*  changed colour of vacation plus button to white ([e3fcb7a9](https://github.com/firstlovecenter/fl-admin-portal/commit/e3fcb7a95f0a450e70ed07e5f33dbaa974b3eac4))
+* **arrivals:**  fixed bug preventing money from being sent as the people are being confirmed ([80008321](https://github.com/firstlovecenter/fl-admin-portal/commit/80008321fdb4b17b5f8dba6a9964ae5f0da3d2c0))
+
+#### 2.9.6 (2022-06-01)
+
 ##### Bug Fixes
 
 *  hopefully fixed the bug causing a person not to be able to navigate ([0b632dd6](https://github.com/firstlovecenter/fl-admin-portal/commit/0b632dd6d429a392bb92222592dd0be378f1cf7a))
