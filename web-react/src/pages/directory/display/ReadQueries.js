@@ -287,7 +287,7 @@ export const DISPLAY_BACENTA = gql`
       stream_name
       activeFellowshipCount
       vacationFellowshipCount
-      fellowships {
+      fellowships(options: { limit: 5 }) {
         id
         name
         leader {
