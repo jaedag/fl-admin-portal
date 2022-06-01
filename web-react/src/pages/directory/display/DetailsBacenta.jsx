@@ -30,7 +30,7 @@ const DetailsBacenta = () => {
     },
     {
       title: 'Fellowships',
-      number: bacenta?.fellowships.length || 0,
+      number: bacenta?.activeFellowshipCount || 0,
       link: `/${`Fellowship`.toLowerCase()}/displayall`,
       vacationCount: bacenta?.vacationFellowshipCount,
     },
