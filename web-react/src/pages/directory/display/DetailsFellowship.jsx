@@ -96,7 +96,7 @@ const DetailsFellowship = () => {
       churchType="Fellowship"
       buttons={['']}
       editlink="/fellowship/editfellowship"
-      editPermitted={permitAdmin('Constituency')}
+      editPermitted={[...permitAdmin('Constituency'), 'leaderFellowship']}
       weekNumber={getWeekNumber()}
       last3Weeks={fellowship && check}
       vacation={fellowship?.vacationStatus && true}
