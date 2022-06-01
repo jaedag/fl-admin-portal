@@ -353,9 +353,10 @@ export const DISPLAY_CONSTITUENCY = gql`
       name
       target
       stream_name
+      activeBacentaCount
       vacationBacentaCount
       vacationFellowshipCount
-      bacentas {
+      bacentas(options: { limit: 5 }) {
         id
         name
         leader {

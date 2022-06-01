@@ -25,7 +25,7 @@ const DetailsConstituency = () => {
     { title: 'Target', number: constituency?.target, link: '#', width: 12 },
     {
       title: 'Bacentas',
-      number: constituency?.bacentas.length || 0,
+      number: constituency?.activeBacentaCount || 0,
       link: `/${`Bacenta`.toLowerCase()}/displayall`,
       vacationCount: constituency?.vacationBacentaCount,
     },
