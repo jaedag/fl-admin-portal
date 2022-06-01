@@ -1,3 +1,9 @@
+#### 2.9.11 (2022-06-01)
+
+##### Bug Fixes
+
+*  corrected activeBacentaCount for constituency and removed redundant code ([1c04f3a7](https://github.com/firstlovecenter/fl-admin-portal/commit/1c04f3a77b61f00ef8069f2ad4a7aefb35d5e7f3))
+
 #### 2.9.10 (2022-06-01)
 
 ##### Bug Fixes
