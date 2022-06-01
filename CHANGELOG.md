@@ -1,3 +1,9 @@
+#### 2.9.10 (2022-06-01)
+
+##### Bug Fixes
+
+*  added permissions for fellowship leaders to be able to update venue ([df2e7f3e](https://github.com/firstlovecenter/fl-admin-portal/commit/df2e7f3e32e800a11648c313a912b0d2d4657822))
+
 #### 2.9.7 (2022-06-01)
 
 ##### Bug Fixes
