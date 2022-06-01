@@ -35,22 +35,22 @@ const DetailsCard = (props) => {
           </span>
         </PlaceholderCustom>
         <PlaceholderCustom loading={loading} as="h2" xs={12}>
-          <h2 className={`font-primary card-detail`}>{props.detail}</h2>
+          <div className="d-flex justify-content-between">
+            <h2 className={`font-primary card-detail`}>{props.detail}</h2>
+            <div>
+              {(props.heading === 'Bacentas' ||
+                props.heading === 'Fellowships') &&
+                props?.vacationCount !== '0' && (
+                  <>
+                    <Badge bg="danger" className="badge-vacation mt-auto">
+                      <span className="font-danger">{`+ `}</span>
+                      {`${props?.vacationCount} on Vacation`}
+                    </Badge>
+                  </>
+                )}
+            </div>
+          </div>
         </PlaceholderCustom>
-      </div>
-      <div>
-        {(props.heading === 'Bacentas' || props.heading === 'Fellowships') &&
-          props?.vacationCount !== '0' && (
-            <>
-              <div className="space"></div>
-              <PlaceholderCustom loading={loading} as="h2" xs={12}>
-                <Badge bg="danger" className="badge-vacation mt-auto">
-                  <span className="font-danger">{`+ `}</span>
-                  {`${props?.vacationCount} on Vacation`}
-                </Badge>
-              </PlaceholderCustom>
-            </>
-          )}
       </div>
     </div>
   )
