@@ -63,7 +63,6 @@ const DetailsCouncil = () => {
         subChurch="Constituency"
         membership={council?.memberCount}
         details={details}
-        churchCount={council?.constituencyCount}
         editlink="/council/editcouncil"
         editPermitted={permitAdmin('Stream')}
         history={council?.history.length !== 0 && council?.history}

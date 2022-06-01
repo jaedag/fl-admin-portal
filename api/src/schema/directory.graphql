@@ -589,7 +589,7 @@ type Constituency implements Church {
 
   activeBacentaCount: Int
     @cypher(
-      statement: "MATCH (this)-[:HAS]->(bacenta:Bacenta) RETURN COUNT(bacenta)"
+      statement: "MATCH (this)-[:HAS]->(bacenta:Active:Bacenta) RETURN COUNT(bacenta)"
     )
   vacationBacentaCount: Int
     @cypher(
