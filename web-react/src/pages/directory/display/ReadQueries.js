@@ -285,6 +285,7 @@ export const DISPLAY_BACENTA = gql`
       swellBussingTopUp
       momoNumber
       stream_name
+      activeFellowshipCount
       vacationFellowshipCount
       fellowships {
         id
