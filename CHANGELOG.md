@@ -1,3 +1,23 @@
+#### 2.9.7 (2022-06-01)
+
+##### Bug Fixes
+
+*  implemented minor directory corrections" ([f7465d84](https://github.com/firstlovecenter/fl-admin-portal/commit/f7465d84502fde31de074fdf3ecfb2f346d07afe))
+*  implemented functionality for fellowship leaders to update service venues ([886cc080](https://github.com/firstlovecenter/fl-admin-portal/commit/886cc0803e59e754fc749f11fff55df8e8fc5ba7))
+*  implemented functionality for fellowship leaders to update service venues ([d455d0b2](https://github.com/firstlovecenter/fl-admin-portal/commit/d455d0b249b2b45173d12d1ab2517ae7963be996))
+*  display active bacenta on constituency details page ([a8ab3f28](https://github.com/firstlovecenter/fl-admin-portal/commit/a8ab3f28f13f85ed78a29f4a0fc0ddba64289b33))
+*  design badge to fit in details card on smaller screens ([9189a53e](https://github.com/firstlovecenter/fl-admin-portal/commit/9189a53edc5a8db08585f8e9daf994c4a6d50d60))
+*  display active fellowships on bacenta details page ([1848c13a](https://github.com/firstlovecenter/fl-admin-portal/commit/1848c13a34cdad729e7616bc6cbce6aabb2e7e00))
+*  change color of vacation on display church list card to red ([ebdfbfaf](https://github.com/firstlovecenter/fl-admin-portal/commit/ebdfbfaf9da8736c7f9def5f0b947e57953b754e))
+*  minor fixes on nav renderer ([9835d184](https://github.com/firstlovecenter/fl-admin-portal/commit/9835d184c7749cd933deaaee884b7b83472c5e26))
+
+##### Other Changes
+
+* //github.com/ahadziii/fl-admin-portal into admin-fixes ([8195cee7](https://github.com/firstlovecenter/fl-admin-portal/commit/8195cee7e1992cb20f7c442ca2996768c7833bf1))
+* deploy' into deploy ([7213ec30](https://github.com/firstlovecenter/fl-admin-portal/commit/7213ec30e05172433f3d163740a27a53e21b4915))
+* //github.com/firstlovecenter/fl-admin-portal into firstlovecenter-deploy ([6b0b646c](https://github.com/firstlovecenter/fl-admin-portal/commit/6b0b646c809ef91687e54b378a23fac39872e04c))
+* deploy' into deploy ([21e4f161](https://github.com/firstlovecenter/fl-admin-portal/commit/21e4f1613deb74fcbf16d093fe03601dff1d11a0))
+
 #### 2.9.6 (2022-06-01)
 
 ##### Documentation Changes
