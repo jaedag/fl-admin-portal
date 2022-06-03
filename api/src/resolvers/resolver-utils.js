@@ -253,41 +253,83 @@ export const makeServantCypher = async (
       .catch((e) => throwErrorMsg(`Error Connecting History Log`, e))
   }
 
-  //Run Cypher to Connect the History
-  switch (churchType + servantType) {
-    case 'GatheringServiceLeader':
-      await session
-        .run(servantCypher.connectChurchLogSubstructure, {
-          churchId: church.id,
-        })
-        .catch((e) =>
-          throwErrorMsg(`Error Creating Gathering Service Substructure`, e)
-        )
-      break
+  await createChurchHistorySubstructure({
+    churchType,
+    servantType,
+    church,
+    session,
+  })
+}
 
-    case 'BacentaLeader':
-      await session
-        .run(servantCypher.connectBacentaLogSubstructure, {
-          churchId: church.id,
-        })
-        .catch((e) => throwErrorMsg(`Error Creating Bacenta Substructure`, e))
-      break
-    default:
-      break
+const createChurchHistorySubstructure = async ({
+  churchType,
+  servantType,
+  church,
+  session,
+}) => {
+  try {
+    //Run Cypher to Connect the History
+    const logResponse = {}
+
+    switch (churchType + servantType) {
+      case 'GatheringServiceLeader':
+        logResponse.gatheringServices = [church.id]
+        break
+      case 'StreamLeader':
+        logResponse.streams = [church.id]
+        break
+      case 'CouncilLeader':
+        logResponse.councils = [church.id]
+        break
+      case 'ConstituencyLeader':
+        logResponse.constituencies = [church.id]
+        break
+      case 'BacentaLeader':
+        logResponse.bacentas = [church.id]
+        break
+    }
+    console.log(logResponse, 'logResponse')
+
+    if ('councils' in logResponse) {
+      const res = rearrangeCypherObject(
+        await session
+          .run(servantCypher.connectCouncilLogSubstructure, {
+            churchId: [church.id],
+          })
+          .catch((error) =>
+            throwErrorMsg(`Error Creating Constituency Substructure`, error)
+          )
+      )
+
+      logResponse.constituencies = res.constituencies
+    }
+    if ('constituencies' in logResponse) {
+      const res = rearrangeCypherObject(
+        await session
+          .run(servantCypher.connectConstituencyLogSubstructure, {
+            churchId: [church.id],
+          })
+          .catch((error) =>
+            throwErrorMsg(`Error Creating Constituency Substructure`, error)
+          )
+      )
+      logResponse.bacentas = res.bacentas
+    }
+    if ('bacentas' in logResponse) {
+      const res = rearrangeCypherObject(
+        await session
+          .run(servantCypher.connectBacentaLogSubstructure, {
+            churchId: [church.id],
+          })
+          .catch((error) =>
+            throwErrorMsg(`Error Creating Bacenta Substructure`, error)
+          )
+      )
+      console.log(res, 'response from thing')
+    }
+  } catch (error) {
+    throwErrorMsg(error)
   }
-  // if (churchType === 'Fellowship' && servantType === 'Leader') {
-  //   await session.run(servantCypher.connectFellowshipHistory, {
-  //     churchId: church.id,
-  //   })
-  // } else if (churchType === 'GatheringService' && servantType === 'Leader') {
-  //   await session.run(servantCypher.connectGatheringServiceHistory, {
-  //     churchId: church.id,
-  //   })
-  // } else if (servantType === 'Leader') {
-  //   await session.run(servantCypher.connectChurchHistory, {
-  //     churchId: church.id,
-  //   })
-  // }
 }
 
 export const removeServantCypher = async (

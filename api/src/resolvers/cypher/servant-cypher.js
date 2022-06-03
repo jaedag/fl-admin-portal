@@ -222,24 +222,9 @@ export const connectFellowshipHistory = `
       RETURN churchHistory 
 `
 
-export const connectChurchLogSubstructure = `
-MATCH (church:GatheringService {id: $churchId})<-[:LEADS]-(leader:Member)
-WHERE church:GatheringService OR church:Stream OR church:Council OR church:Constituency OR church:Bacenta
-
-MATCH (church)-[:HAS]->(lowerChurch:Stream)<-[:LEADS]-(lowerLeader:Member)
-MATCH (church)-[:HAS_HISTORY {current:true}]->(mainLog:ServiceLog)
-MATCH (lowerChurch)-[old_church_history:HAS_HISTORY {current:true}]->(lowerLog:ServiceLog)<-[old_leader_history:HAS_HISTORY ]-(lowerLeader)
-REMOVE old_church_history.current, old_leader_history.current
-
-WITH mainLog,lowerLog, lowerChurch, leader, lowerLeader
-MERGE (mainLog)-[:HAS_COMPONENT]->(newLowerLogs:ServiceLog {id:apoc.create.uuid(), historyRecord: lowerLog.historyRecord, timeStamp: datetime()})
-MERGE (lowerChurch)-[:HAS_HISTORY {current: true}]->(newLowerLogs)<-[:HAS_HISTORY {current:true}]-(lowerLeader)
-
-RETURN mainLog.id
-`
-
 export const connectBacentaLogSubstructure = `
-MATCH (church:Bacenta {id: $churchId})<-[:LEADS]-(leader:Member)
+UNWIND $churchId AS bacenta
+MATCH (church:Bacenta {id: bacenta})<-[:LEADS]-(leader:Member)
 
 MATCH (church)-[:HAS]->(lowerChurch:Fellowship)<-[:LEADS]-(lowerLeader:Member)
 MATCH (church)-[:HAS_HISTORY {current:true}]->(mainLog:ServiceLog)
@@ -247,23 +232,88 @@ MATCH (lowerChurch)-[old_church_history:HAS_HISTORY {current:true}]->(lowerLog:S
 REMOVE old_church_history.current, old_leader_history.current
 
 WITH mainLog,lowerLog, lowerChurch, leader, lowerLeader
-MERGE (mainLog)-[:HAS_COMPONENT]->(newLowerLogs:ServiceLog {id:apoc.create.uuid(), historyRecord: lowerLog.historyRecord, timeStamp: datetime()})
-MERGE (lowerChurch)-[:HAS_HISTORY {current: true}]->(newLowerLogs)<-[:HAS_HISTORY {current:true}]-(lowerLeader)
+CREATE (newLowerLog:ServiceLog {id:apoc.create.uuid()})
+   SET newLowerLog.historyRecord = lowerLog.historyRecord,
+      newLowerLog.timeStamp = datetime()
+MERGE (mainLog)-[:HAS_COMPONENT]->(newLowerLog)
+MERGE (lowerChurch)-[:HAS_HISTORY {current: true}]->(newLowerLog)
+MERGE (lowerLeader)-[:HAS_HISTORY {current: true}]->(newLowerLog)
 
-RETURN mainLog.id
+RETURN collect(lowerChurch.id) AS fellowships, COUNT(newLowerLog) AS countNewLogs
 `
 
-// export const connectChurchLogSubstructure = `
-// MATCH (:GatheringService {id: $churchId})-[:HAS]->(church:Stream)<-[:LEADS]-(leader:Member)
-// church:Stream OR church:Council OR church:Constituency OR church:Bacenta
-// MATCH (church)-[:HAS]->(lowerChurch:Council)<-[:LEADS]-(lowerLeader:Member)
-// MATCH (church)-[:HAS_HISTORY {current:true}]->(mainLog:ServiceLog)
-// MATCH (lowerChurch)-[old_church_history:HAS_HISTORY {current:true}]->(lowerLog:ServiceLog)<-[old_leader_history:HAS_HISTORY ]-(lowerLeader)
-// REMOVE old_church_history.current, old_leader_history.current
+export const connectConstituencyLogSubstructure = `
+UNWIND $churchId AS constituency
+MATCH (church:Constituency {id: constituency})<-[:LEADS]-(leader:Member)
 
-// WITH mainLog,lowerLog, lowerChurch, leader, lowerLeader
-// MERGE (mainLog)-[:HAS_COMPONENT]->(newLowerLogs:ServiceLog {id:apoc.create.uuid(), historyRecord: lowerLog.historyRecord, timeStamp: datetime()})
-// MERGE (lowerChurch)-[:HAS_HISTORY {current: true}]->(newLowerLogs)<-[:HAS_HISTORY {current:true}]-(lowerLeader)
+MATCH (church)-[:HAS]->(lowerChurch:Bacenta)<-[:LEADS]-(lowerLeader:Member)
+MATCH (church)-[:HAS_HISTORY {current:true}]->(mainLog:ServiceLog)
+MATCH (lowerChurch)-[old_church_history:HAS_HISTORY {current:true}]->(lowerLog:ServiceLog)<-[old_leader_history:HAS_HISTORY ]-(lowerLeader)
+REMOVE old_church_history.current, old_leader_history.current
 
-// RETURN mainLog.id
-// `
+WITH mainLog,lowerLog, lowerChurch, leader, lowerLeader
+
+MERGE (mainLog)-[:HAS_COMPONENT]->(newLowerLog:ServiceLog {id:apoc.create.uuid()})
+ SET newLowerLog.historyRecord = lowerLog.historyRecord,
+ newLowerLog.timeStamp = datetime()
+MERGE (lowerChurch)-[has_history1:HAS_HISTORY {current: true}]->(newLowerLog)<-[has_history2:HAS_HISTORY {current:true}]-(lowerLeader)
+
+RETURN church.id AS id, collect(lowerChurch.id) AS bacentas
+`
+
+export const connectCouncilLogSubstructure = `
+UNWIND $churchId AS council
+MATCH (church:Council {id: council})<-[:LEADS]-(leader:Member)
+
+MATCH (church)-[:HAS]->(lowerChurch:Bacenta)<-[:LEADS]-(lowerLeader:Member)
+MATCH (church)-[:HAS_HISTORY {current:true}]->(mainLog:ServiceLog)
+MATCH (lowerChurch)-[old_church_history:HAS_HISTORY {current:true}]->(lowerLog:ServiceLog)<-[old_leader_history:HAS_HISTORY ]-(lowerLeader)
+REMOVE old_church_history.current, old_leader_history.current
+
+WITH mainLog,lowerLog, lowerChurch, leader, lowerLeader
+
+MERGE (mainLog)-[:HAS_COMPONENT]->(newLowerLog:ServiceLog {id:apoc.create.uuid()})
+ SET newLowerLog.historyRecord = lowerLog.historyRecord,
+ newLowerLog.timeStamp = datetime()
+MERGE (lowerChurch)-[has_history1:HAS_HISTORY {current: true}]->(newLowerLog)<-[has_history2:HAS_HISTORY {current:true}]-(lowerLeader)
+
+RETURN church.id AS id, collect(lowerChurch.id) AS constituencies
+`
+
+export const connectStreamLogSubstructure = `
+UNWIND $churchId AS stream
+MATCH (church:Stream {id: stream})<-[:LEADS]-(leader:Member)
+
+MATCH (church)-[:HAS]->(lowerChurch:Bacenta)<-[:LEADS]-(lowerLeader:Member)
+MATCH (church)-[:HAS_HISTORY {current:true}]->(mainLog:ServiceLog)
+MATCH (lowerChurch)-[old_church_history:HAS_HISTORY {current:true}]->(lowerLog:ServiceLog)<-[old_leader_history:HAS_HISTORY ]-(lowerLeader)
+REMOVE old_church_history.current, old_leader_history.current
+
+WITH mainLog,lowerLog, lowerChurch, leader, lowerLeader
+
+MERGE (mainLog)-[:HAS_COMPONENT]->(newLowerLog:ServiceLog {id:apoc.create.uuid()})
+ SET newLowerLog.historyRecord = lowerLog.historyRecord,
+ newLowerLog.timeStamp = datetime()
+MERGE (lowerChurch)-[has_history1:HAS_HISTORY {current: true}]->(newLowerLog)<-[has_history2:HAS_HISTORY {current:true}]-(lowerLeader)
+
+RETURN church.id AS id, collect(lowerChurch.id) AS councils
+`
+
+export const connectGatheringServiceLogSubstructure = `
+UNWIND $churchId AS gatheringService
+MATCH (church:GatheringService {id: gatheringService})<-[:LEADS]-(leader:Member)
+
+MATCH (church)-[:HAS]->(lowerChurch:Bacenta)<-[:LEADS]-(lowerLeader:Member)
+MATCH (church)-[:HAS_HISTORY {current:true}]->(mainLog:ServiceLog)
+MATCH (lowerChurch)-[old_church_history:HAS_HISTORY {current:true}]->(lowerLog:ServiceLog)<-[old_leader_history:HAS_HISTORY ]-(lowerLeader)
+REMOVE old_church_history.current, old_leader_history.current
+
+WITH mainLog,lowerLog, lowerChurch, leader, lowerLeader
+
+MERGE (mainLog)-[:HAS_COMPONENT]->(newLowerLog:ServiceLog {id:apoc.create.uuid()})
+ SET newLowerLog.historyRecord = lowerLog.historyRecord,
+ newLowerLog.timeStamp = datetime()
+MERGE (lowerChurch)-[has_history1:HAS_HISTORY {current: true}]->(newLowerLog)<-[has_history2:HAS_HISTORY {current:true}]-(lowerLeader)
+
+RETURN church.id AS id, collect(lowerChurch.id) AS streams
+`

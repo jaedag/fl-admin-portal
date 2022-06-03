@@ -38,37 +38,34 @@ const DetailsBacenta = () => {
       title: 'Grad. Status',
       number: bacenta?.graduationStatus,
       link: `#`,
-      width: 'auto',
     },
     {
       title: 'Status',
       number: bacenta?.vacationStatus,
       link: '#',
-      width: 'auto',
+      width: 3,
     },
     {
       title: 'Target',
       number: bacenta?.target,
       link: '#',
-      width: 'auto',
-    },
-    {
-      title: 'Normal Bussing Top Up',
-      number: bacenta?.normalBussingTopUp,
-      link: `#`,
-      width: 'auto',
-    },
-    {
-      title: 'Swell Bussing Top Up',
-      number: bacenta?.swellBussingTopUp,
-      link: `#`,
-      width: 'auto',
+      width: 3,
     },
     {
       title: 'Momo Number',
       number: bacenta?.momoNumber || '-',
       link: `#`,
-      width: 'auto',
+      width: 6,
+    },
+    {
+      title: 'Normal Bussing Top Up',
+      number: bacenta?.normalBussingTopUp,
+      link: `#`,
+    },
+    {
+      title: 'Swell Bussing Top Up',
+      number: bacenta?.swellBussingTopUp,
+      link: `#`,
     },
   ]
 
