@@ -19,109 +19,106 @@ extend type Fellowship {
   fellowshipAvgAttendanceThisMonth: Float
     @cypher(
       statement: """
-      MATCH (this)-[:HAS_HISTORY {current:true}]->(:ServiceLog)-[:HAS_SERVICE]->(records:ServiceRecord)
-      MATCH (records)-[:SERVICE_HELD_ON]->(date:TimeGraph)
-      WITH date, records
+      MATCH (this)-[:HAS_HISTORY {current:true}]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)
+      MATCH (record) WHERE NOT (record:NoService)
+      MATCH (record)-[:SERVICE_HELD_ON]->(date:TimeGraph)
       MATCH (date)
-      WHERE date(date.date).week >= (date().week - 4) AND date(date.date).week <= date().week
-      RETURN  round(avg(records.attendance))
+      WHERE date.date > date() - duration({months: 1})
+      RETURN round(avg(record.attendance))
       """
     )
 
   fellowshipAvgIncomeThisMonth: Float
     @cypher(
       statement: """
-      MATCH (this)-[:HAS_HISTORY {current:true}]->(:ServiceLog)-[:HAS_SERVICE]->(records:ServiceRecord)
-      MATCH (records)-[:SERVICE_HELD_ON]->(date:TimeGraph)
-      WITH date, records
+      MATCH (this)-[:HAS_HISTORY {current:true}]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)
+      MATCH (record) WHERE NOT (record:NoService)
+      MATCH (record)-[:SERVICE_HELD_ON]->(date:TimeGraph)
       MATCH (date)
-      WHERE date(date.date).week >= (date().week - 4) AND date(date.date).week <= date().week
-      RETURN  round(avg(records.income), 2)
+      WHERE date.date > date() - duration({months: 1})
+      RETURN round(avg(record.income), 2)
       """
     )
 
   fellowshipPeakAttendanceThisMonth: ServiceRecord
     @cypher(
       statement: """
-      MATCH (this)-[:HAS_HISTORY {current:true}]->(:ServiceLog)-[:HAS_SERVICE]->(records:ServiceRecord)
-      MATCH (records)-[:SERVICE_HELD_ON]->(date:TimeGraph)
-      WITH date, records, this
+      MATCH (this)-[:HAS_HISTORY {current:true}]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)
+      MATCH (record)-[:SERVICE_HELD_ON]->(date:TimeGraph)
+      WITH date, record, this
             MATCH (date)
-            WHERE date(date.date).week >= (date().week - 4) AND date(date.date).week <= date().week
-      WITH  max(records.attendance) as max, this
-      MATCH (fellowship)-[:HAS_HISTORY {current:true}]->(s:ServiceLog)-[:HAS_SERVICE]->(records:ServiceRecord)
-      WHERE records.attendance = max
-      RETURN  records LIMIT 1
+            WHERE date.date > date() - duration({months: 1})
+      WITH  max(record.attendance) as max, this
+      MATCH (fellowship)-[:HAS_HISTORY {current:true}]->(s:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)
+      WHERE record.attendance = max
+      RETURN  record LIMIT 1
       """
     )
 
   fellowshipPeakIncomeThisMonth: ServiceRecord
     @cypher(
       statement: """
-      MATCH (this)-[:HAS_HISTORY {current:true}]->(:ServiceLog)-[:HAS_SERVICE]->(records:ServiceRecord)
-      MATCH (records)-[:SERVICE_HELD_ON]->(date:TimeGraph)
-      WITH date, records, this
+      MATCH (this)-[:HAS_HISTORY {current:true}]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)
+      MATCH (record)-[:SERVICE_HELD_ON]->(date:TimeGraph)
+      WITH date, record, this
             MATCH (date)
-            WHERE date(date.date).week >= (date().week - 4) AND date(date.date).week <= date().week
-      WITH  max(records.income) as max, this
-      MATCH (fellowship)-[:HAS_HISTORY {current:true}]->(s:ServiceLog)-[:HAS_SERVICE]->(records:ServiceRecord)
-      WHERE records.income = max
-      RETURN  records LIMIT 1
+           WHERE date.date > date() - duration({months: 1})
+      WITH  max(record.income) as max, this
+      MATCH (fellowship)-[:HAS_HISTORY {current:true}]->(s:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)
+      WHERE record.income = max
+      RETURN  record LIMIT 1
       """
     )
 
   fellowshipAvgAttendanceThisYear: Float
     @cypher(
       statement: """
-      MATCH (this)-[:HAS_HISTORY {current:true}]->(:ServiceLog)-[:HAS_SERVICE]->(records:ServiceRecord)
-      MATCH (records)-[:SERVICE_HELD_ON]->(date:TimeGraph)
-      WITH date, records, fellowship
-            MATCH (date)
-            WHERE date(date.date).week >= 1 AND date(date.date).week <= date().week
-      WITH  max(records.income) as max, fellowship
-      MATCH (fellowship)-[:HAS_HISTORY {current:true}]->(s:ServiceLog)-[:HAS_SERVICE]->(records:ServiceRecord)
-      WHERE records.income = max
-      RETURN  records LIMIT 1
+      MATCH (this)-[:HAS_HISTORY {current:true}]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)
+      MATCH (record) WHERE NOT (record:NoService)
+      MATCH (record)-[:SERVICE_HELD_ON]->(date:TimeGraph)
+      MATCH (date)
+      WHERE date.date > date() - duration({years: 1})
+      RETURN round(avg(record.attendance))
       """
     )
 
   fellowshipAvgIncomeThisYear: Float
     @cypher(
       statement: """
-      MATCH (this)-[:HAS_HISTORY {current:true}]->(:ServiceLog)-[:HAS_SERVICE]->(records:ServiceRecord)
-      MATCH (records)-[:SERVICE_HELD_ON]->(date:TimeGraph)
-      WITH date, records
+      MATCH (this)-[:HAS_HISTORY {current:true}]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)
+      MATCH (record) WHERE NOT (record:NoService)
+      MATCH (record)-[:SERVICE_HELD_ON]->(date:TimeGraph)
       MATCH (date)
-      WHERE date(date.date).week >= 1 AND date(date.date).week <= date().week
-      RETURN  round(avg(records.income))
+      WHERE date.date > date() - duration({years: 1})
+      RETURN round(avg(record.income), 2)
       """
     )
 
   fellowshipPeakAttendanceThisYear: ServiceRecord
     @cypher(
       statement: """
-      MATCH (this)-[:HAS_HISTORY {current:true}]->(:ServiceLog)-[:HAS_SERVICE]->(records:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
-      WITH date, records, this
+      MATCH (this)-[:HAS_HISTORY {current:true}]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
+      WITH date, record, this
             MATCH (date)
-            WHERE date(date.date).week >= (date().week - 52) AND date(date.date).week <= date().week
-      WITH  max(records.attendance) as max, this
-      MATCH (this)-[:HAS_HISTORY {current:true}]->(s:ServiceLog)-[:HAS_SERVICE]->(records:ServiceRecord)
-      WHERE records.attendance = max
-      RETURN  records LIMIT 1
+            WHERE date.date > date() - duration({years: 1})
+      WITH  max(record.attendance) as max, this
+      MATCH (this)-[:HAS_HISTORY {current:true}]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)
+      WHERE record.attendance = max
+      RETURN  record LIMIT 1
       """
     )
 
   fellowshipPeakIncomeThisYear: ServiceRecord
     @cypher(
       statement: """
-      MATCH (this)-[:HAS_HISTORY {current:true}]->(:ServiceLog)-[:HAS_SERVICE]->(records:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
-      WITH date, records, this
+      MATCH (this)-[:HAS_HISTORY {current:true}]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
+      WITH date, record, this
             MATCH (date)
-            WHERE date(date.date).week >= (date().week - 52) AND date(date.date).week <= date().week
-      WITH  max(records.income) as max, this
-      MATCH (this)-[:HAS_HISTORY {current:true}]->(s:ServiceLog)-[:HAS_SERVICE]->(records:ServiceRecord)
-      WHERE records.income = max
-      RETURN  records LIMIT 1
+            WHERE date.date > date() - duration({years: 1})
+      WITH  max(record.income) as max, this
+      MATCH (this)-[:HAS_HISTORY {current:true}]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)
+      WHERE record.income = max
+      RETURN  record LIMIT 1
       """
     )
 }
@@ -130,112 +127,112 @@ extend type Bacenta {
   fellowshipAvgAttendanceThisMonth: Float
     @cypher(
       statement: """
-      MATCH (this)-[:HAS]->(fellowship)-[:HAS_HISTORY {current:true}]->(:ServiceLog)-[:HAS_SERVICE]->(records:ServiceRecord)
-      MATCH (records)-[:SERVICE_HELD_ON]->(date:TimeGraph)
+      MATCH (this)-[:HAS]->(fellowship)-[:HAS_HISTORY {current:true}]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)
+      MATCH (record)-[:SERVICE_HELD_ON]->(date:TimeGraph)
       WHERE fellowship:Fellowship OR fellowship:ClosedFellowship
-      WITH date, records
+      WITH date, record
       MATCH (date)
       WHERE date(date.date).week >= (date().week - 4) AND date(date.date).week <= date().week
-      RETURN  round(avg(records.attendance))
+      RETURN  round(avg(record.attendance))
       """
     )
 
   fellowshipAvgIncomeThisMonth: Float
     @cypher(
       statement: """
-      MATCH (this)-[:HAS]->(fellowship)-[:HAS_HISTORY {current:true}]->(:ServiceLog)-[:HAS_SERVICE]->(records:ServiceRecord)
-      MATCH (records)-[:SERVICE_HELD_ON]->(date:TimeGraph)
+      MATCH (this)-[:HAS]->(fellowship)-[:HAS_HISTORY {current:true}]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)
+      MATCH (record)-[:SERVICE_HELD_ON]->(date:TimeGraph)
       WHERE fellowship:Fellowship OR fellowship:ClosedFellowship
-      WITH date, records
+      WITH date, record
       MATCH (date)
       WHERE date(date.date).week >= (date().week - 4) AND date(date.date).week <= date().week
-      RETURN  round(avg(records.income, 2))
+      RETURN  round(avg(record.income, 2))
       """
     )
 
   fellowshipPeakAttendanceThisMonth: ServiceRecord
     @cypher(
       statement: """
-      MATCH (this)-[:HAS]->(fellowship)-[:HAS_HISTORY {current:true}]->(:ServiceLog)-[:HAS_SERVICE]->(records:ServiceRecord)
-       MATCH (records)-[:SERVICE_HELD_ON]->(date:TimeGraph) WHERE fellowship:Fellowship OR fellowship:ClosedFellowship
-       WITH date, records, fellowship
+      MATCH (this)-[:HAS]->(fellowship)-[:HAS_HISTORY {current:true}]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)
+       MATCH (record)-[:SERVICE_HELD_ON]->(date:TimeGraph) WHERE fellowship:Fellowship OR fellowship:ClosedFellowship
+       WITH date, record, fellowship
              MATCH (date)
              WHERE date(date.date).week >= (date().week - 4) AND date(date.date).week <= date().week
-       WITH  max(records.attendance) as max, fellowship
-       MATCH (fellowship)-[:HAS_HISTORY {current:true}]->(s:ServiceLog)-[:HAS_SERVICE]->(records:ServiceRecord)
-       WHERE records.attendance = max
-       RETURN  records LIMIT 1
+       WITH  max(record.attendance) as max, fellowship
+       MATCH (fellowship)-[:HAS_HISTORY {current:true}]->(s:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)
+       WHERE record.attendance = max
+       RETURN  record LIMIT 1
       """
     )
 
   fellowshipPeakIncomeThisMonth: ServiceRecord
     @cypher(
       statement: """
-      MATCH (this)-[:HAS]->(fellowship)-[:HAS_HISTORY {current:true}]->(:ServiceLog)-[:HAS_SERVICE]->(records:ServiceRecord)
-       MATCH (records)-[:SERVICE_HELD_ON]->(date:TimeGraph) WHERE fellowship:Fellowship OR fellowship:ClosedFellowship
-       WITH date, records, fellowship
+      MATCH (this)-[:HAS]->(fellowship)-[:HAS_HISTORY {current:true}]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)
+       MATCH (record)-[:SERVICE_HELD_ON]->(date:TimeGraph) WHERE fellowship:Fellowship OR fellowship:ClosedFellowship
+       WITH date, record, fellowship
              MATCH (date)
              WHERE date(date.date).week >= (date().week - 4) AND date(date.date).week <= date().week
-       WITH  max(records.attendance) as max, fellowship
-       MATCH (fellowship)-[:HAS_HISTORY {current:true}]->(s:ServiceLog)-[:HAS_SERVICE]->(records:ServiceRecord)
-       WHERE records.attendance = max
-       RETURN  records LIMIT 1
+       WITH  max(record.attendance) as max, fellowship
+       MATCH (fellowship)-[:HAS_HISTORY {current:true}]->(s:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)
+       WHERE record.attendance = max
+       RETURN  record LIMIT 1
       """
     )
 
   fellowshipAvgAttendanceThisYear: Float
     @cypher(
       statement: """
-      MATCH (this)-[:HAS]->(fellowship)-[:HAS_HISTORY {current:true}]->(:ServiceLog)-[:HAS_SERVICE]->(records:ServiceRecord)
-      MATCH (records)-[:SERVICE_HELD_ON]->(date:TimeGraph)
+      MATCH (this)-[:HAS]->(fellowship)-[:HAS_HISTORY {current:true}]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)
+      MATCH (record)-[:SERVICE_HELD_ON]->(date:TimeGraph)
       WHERE fellowship:Fellowship OR fellowship:ClosedFellowship
-      WITH date, records
+      WITH date, record
       MATCH (date)
       WHERE date(date.date).week >= 1 AND date(date.date).week <= date().week
-      RETURN  round(avg(records.attendance))
+      RETURN  round(avg(record.attendance))
       """
     )
 
   fellowshipAvgIncomeThisYear: Float
     @cypher(
       statement: """
-       MATCH (this:Bacenta {id:"a56a18c3-affb-4a96-a684-418df6657bdd"})-[:HAS]->(fellowship)-[:HAS_HISTORY {current:true}]->(:ServiceLog)-[:HAS_SERVICE]->(records:ServiceRecord)
-      MATCH (records)-[:SERVICE_HELD_ON]->(date:TimeGraph)
+       MATCH (this:Bacenta {id:"a56a18c3-affb-4a96-a684-418df6657bdd"})-[:HAS]->(fellowship)-[:HAS_HISTORY {current:true}]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)
+      MATCH (record)-[:SERVICE_HELD_ON]->(date:TimeGraph)
       WHERE fellowship:Fellowship OR fellowship:ClosedFellowship
-      WITH date, records
+      WITH date, record
       MATCH (date)
       WHERE date(date.date).week >= 1 AND date(date.date).week <= date().week
-      RETURN  round(avg(records.income, 2))
+      RETURN  round(avg(record.income, 2))
       """
     )
 
   fellowshipPeakAttendanceThisYear: ServiceRecord
     @cypher(
       statement: """
-      MATCH (this)-[:HAS]->(fellowship)-[:HAS_HISTORY {current:true}]->(:ServiceLog)-[:HAS_SERVICE]->(records:ServiceRecord)
-       MATCH (records)-[:SERVICE_HELD_ON]->(date:TimeGraph) WHERE fellowship:Fellowship OR fellowship:ClosedFellowship
-       WITH date, records, fellowship
+      MATCH (this)-[:HAS]->(fellowship)-[:HAS_HISTORY {current:true}]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)
+       MATCH (record)-[:SERVICE_HELD_ON]->(date:TimeGraph) WHERE fellowship:Fellowship OR fellowship:ClosedFellowship
+       WITH date, record, fellowship
              MATCH (date)
              WHERE date(date.date).week >= 1 AND date(date.date).week <= date().week
-       WITH  max(records.attendance) as max, fellowship
-       MATCH (fellowship)-[:HAS_HISTORY {current:true}]->(s:ServiceLog)-[:HAS_SERVICE]->(records:ServiceRecord)
-       WHERE records.attendance = max
-       RETURN  records LIMIT 1
+       WITH  max(record.attendance) as max, fellowship
+       MATCH (fellowship)-[:HAS_HISTORY {current:true}]->(s:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)
+       WHERE record.attendance = max
+       RETURN  record LIMIT 1
       """
     )
 
   fellowshipPeakIncomeThisYear: ServiceRecord
     @cypher(
       statement: """
-      MATCH (this)-[:HAS]->(fellowship)-[:HAS_HISTORY {current:true}]->(:ServiceLog)-[:HAS_SERVICE]->(records:ServiceRecord)
-       MATCH (records)-[:SERVICE_HELD_ON]->(date:TimeGraph) WHERE fellowship:Fellowship OR fellowship:ClosedFellowship
-       WITH date, records, fellowship
+      MATCH (this)-[:HAS]->(fellowship)-[:HAS_HISTORY {current:true}]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)
+       MATCH (record)-[:SERVICE_HELD_ON]->(date:TimeGraph) WHERE fellowship:Fellowship OR fellowship:ClosedFellowship
+       WITH date, record, fellowship
              MATCH (date)
              WHERE date(date.date).week >= 1 AND date(date.date).week <= date().week
-       WITH  max(records.income) as max, fellowship
-       MATCH (fellowship)-[:HAS_HISTORY {current:true}]->(s:ServiceLog)-[:HAS_SERVICE]->(records:ServiceRecord)
-       WHERE records.income = max
-       RETURN  records LIMIT 1
+       WITH  max(record.income) as max, fellowship
+       MATCH (fellowship)-[:HAS_HISTORY {current:true}]->(s:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)
+       WHERE record.income = max
+       RETURN  record LIMIT 1
       """
     )
 
@@ -301,7 +298,7 @@ extend type Constituency {
 }
 
 extend type Council {
-  fellowshipsAvgAttendanceThisMonth: Float
+  fellowshipAvgAttendanceThisMonth: Float
     @cypher(
       statement: """
       MATCH (this)-[:HAS]->(:Constituency)-[:HAS]->(:Bacenta)-[:HAS]->(fellowship) WHERE fellowship:Fellowship OR fellowship:ClosedFellowship
@@ -313,7 +310,7 @@ extend type Council {
       """
     )
 
-  fellowshipsAvgIncomeThisMonth: Float
+  fellowshipAvgIncomeThisMonth: Float
     @cypher(
       statement: """
       MATCH (this)-[:HAS]->(:Constituency)-[:HAS]->(:Bacenta)-[:HAS]->(fellowship) WHERE fellowship:Fellowship OR fellowship:ClosedFellowship
@@ -532,150 +529,150 @@ extend type GatheringService {
   allFellowshipsAvgIncomeThisYear: Float!
     @cypher(
       statement: """
-      MATCH (this)-[:HAS*5]->(fellowships:Active:Fellowship)-[:HAS_HISTORY {current:true}]->(s:ServiceLog)-[:HAS_SERVICE]->(records:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
-      RETURN  round(avg(records.income), 1)
+      MATCH (this)-[:HAS*5]->(fellowship:Active:Fellowship)-[:HAS_HISTORY {current:true}]->(s:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
+      RETURN  round(avg(record.income), 1)
       """
     )
 
   fellowshipWithPeakAttendanceThisMonth: ServiceRecord!
     @cypher(
       statement: """
-      MATCH (this)-[:HAS]->(:Stream)-[:HAS]->(:Council)-[:HAS]->(:Constituency)-[:HAS]-(:Bacenta)-[:HAS]->(fellowships:Active:Fellowship) WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
-      MATCH (fellowships)-[:HAS_HISTORY {current:true}]->(:ServiceLog)-[:HAS_SERVICE]->(records:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
-      WITH date, records, fellowships
-      MATCH (records)
-      WHERE NOT (records:NoService)
+      MATCH (this)-[:HAS]->(:Stream)-[:HAS]->(:Council)-[:HAS]->(:Constituency)-[:HAS]-(:Bacenta)-[:HAS]->(fellowship:Active:Fellowship) WHERE fellowship:Fellowship OR fellowship:ClosedFellowship
+      MATCH (fellowship)-[:HAS_HISTORY {current:true}]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
+      WITH date, record, fellowship
+      MATCH (record)
+      WHERE NOT (record:NoService)
              MATCH (date)
              WHERE date(date.date).week >= (date().week - 4) AND date(date.date).week <= date().week
 
-       WITH  max(records.attendance) as max
+       WITH  max(record.attendance) as max
 
-       MATCH (fellowships)-[:HAS_HISTORY {current:true}]->(s:ServiceLog)-[:HAS_SERVICE]->(records:ServiceRecord)
-       WHERE records.attendance = max
-       RETURN records ORDER BY records.created_at DESC LIMIT 1
+       MATCH (fellowship)-[:HAS_HISTORY {current:true}]->(s:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)
+       WHERE record.attendance = max
+       RETURN record ORDER BY record.created_at DESC LIMIT 1
       """
     )
 
   fellowshipWithPeakAttendanceThisYear: ServiceRecord!
     @cypher(
       statement: """
-      MATCH (this)-[:HAS]->(:Stream)-[:HAS]->(:Council)-[:HAS]->(:Constituency)-[:HAS]-(:Bacenta)-[:HAS]->(fellowships:Active:Fellowship) WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
-      MATCH (fellowships)-[:HAS_HISTORY {current:true}]->(:ServiceLog)-[:HAS_SERVICE]->(records:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
-      WITH date, records, fellowships
-      MATCH (records)
-      WHERE NOT (records:NoService)
+      MATCH (this)-[:HAS]->(:Stream)-[:HAS]->(:Council)-[:HAS]->(:Constituency)-[:HAS]-(:Bacenta)-[:HAS]->(fellowship:Active:Fellowship) WHERE fellowship:Fellowship OR fellowship:ClosedFellowship
+      MATCH (fellowship)-[:HAS_HISTORY {current:true}]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
+      WITH date, record, fellowship
+      MATCH (record)
+      WHERE NOT (record:NoService)
              MATCH (date)
              WHERE date(date.date).week >= (date().week - 52) AND date(date.date).week <= date().week
 
-       WITH  max(records.attendance) as max
+       WITH  max(record.attendance) as max
 
-       MATCH (fellowships)-[:HAS_HISTORY {current:true}]->(s:ServiceLog)-[:HAS_SERVICE]->(records:ServiceRecord)
-       WHERE records.attendance = max
-       RETURN records ORDER BY records.created_at DESC LIMIT 1
+       MATCH (fellowship)-[:HAS_HISTORY {current:true}]->(s:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)
+       WHERE record.attendance = max
+       RETURN record ORDER BY record.created_at DESC LIMIT 1
       """
     )
 
   fellowshipWithPeakAttendanceAllTime: ServiceRecord!
     @cypher(
       statement: """
-      MATCH (this)-[:HAS]->(:Stream)-[:HAS]->(:Council)-[:HAS]->(:Constituency)-[:HAS]-(:Bacenta)-[:HAS]->(fellowships:Active:Fellowship) WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
-      MATCH (fellowships)-[:HAS_HISTORY {current:true}]->(:ServiceLog)-[:HAS_SERVICE]->(records:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
-      WITH date, records, fellowships
-      MATCH (records)
-      WHERE NOT (records:NoService)
-       WITH  max(records.attendance) as max
-       MATCH (fellowships)-[:HAS_HISTORY {current:true}]->(s:ServiceLog)-[:HAS_SERVICE]->(records:ServiceRecord)
-       WHERE records.attendance = max
-       RETURN records ORDER BY records.created_at DESC LIMIT 1
+      MATCH (this)-[:HAS]->(:Stream)-[:HAS]->(:Council)-[:HAS]->(:Constituency)-[:HAS]-(:Bacenta)-[:HAS]->(fellowship:Active:Fellowship) WHERE fellowship:Fellowship OR fellowship:ClosedFellowship
+      MATCH (fellowship)-[:HAS_HISTORY {current:true}]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
+      WITH date, record, fellowship
+      MATCH (record)
+      WHERE NOT (record:NoService)
+       WITH  max(record.attendance) as max
+       MATCH (fellowship)-[:HAS_HISTORY {current:true}]->(s:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)
+       WHERE record.attendance = max
+       RETURN record ORDER BY record.created_at DESC LIMIT 1
       """
     )
 
   fellowshipWithPeakIncomeThisMonth: ServiceRecord!
     @cypher(
       statement: """
-      MATCH (this)-[:HAS]->(:Stream)-[:HAS]->(:Council)-[:HAS]->(:Constituency)-[:HAS]-(:Bacenta)-[:HAS]->(fellowships:Active:Fellowship) WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
-      MATCH (fellowships)-[:HAS_HISTORY {current:true}]->(:ServiceLog)-[:HAS_SERVICE]->(records:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
-      WITH date, records, fellowships
-      MATCH (records)
-      WHERE NOT (records:NoService)
+      MATCH (this)-[:HAS]->(:Stream)-[:HAS]->(:Council)-[:HAS]->(:Constituency)-[:HAS]-(:Bacenta)-[:HAS]->(fellowship:Active:Fellowship) WHERE fellowship:Fellowship OR fellowship:ClosedFellowship
+      MATCH (fellowship)-[:HAS_HISTORY {current:true}]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
+      WITH date, record, fellowship
+      MATCH (record)
+      WHERE NOT (record:NoService)
              MATCH (date)
              WHERE date(date.date).week >= (date().week - 4) AND date(date.date).week <= date().week
 
-       WITH  max(records.income) as max
+       WITH  max(record.income) as max
 
-       MATCH (fellowships)-[:HAS_HISTORY {current:true}]->(s:ServiceLog)-[:HAS_SERVICE]->(records:ServiceRecord)
-       WHERE records.income = max
-       RETURN records ORDER BY records.created_at DESC LIMIT 1
+       MATCH (fellowship)-[:HAS_HISTORY {current:true}]->(s:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)
+       WHERE record.income = max
+       RETURN record ORDER BY record.created_at DESC LIMIT 1
       """
     )
 
   fellowshipWithPeakIncomeThisYear: ServiceRecord!
     @cypher(
       statement: """
-      MATCH (this)-[:HAS]->(:Stream)-[:HAS]->(:Council)-[:HAS]->(:Constituency)-[:HAS]-(:Bacenta)-[:HAS]->(fellowships:Active:Fellowship) WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
-      MATCH (fellowships)-[:HAS_HISTORY {current:true}]->(:ServiceLog)-[:HAS_SERVICE]->(records:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
-      WITH date, records, fellowships
-      MATCH (records)
-      WHERE NOT (records:NoService)
+      MATCH (this)-[:HAS]->(:Stream)-[:HAS]->(:Council)-[:HAS]->(:Constituency)-[:HAS]-(:Bacenta)-[:HAS]->(fellowship:Active:Fellowship) WHERE fellowship:Fellowship OR fellowship:ClosedFellowship
+      MATCH (fellowship)-[:HAS_HISTORY {current:true}]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
+      WITH date, record, fellowship
+      MATCH (record)
+      WHERE NOT (record:NoService)
              MATCH (date)
              WHERE date(date.date).week >= (date().week - 52) AND date(date.date).week <= date().week
 
-       WITH  max(records.income) as max
+       WITH  max(record.income) as max
 
-       MATCH (fellowships)-[:HAS_HISTORY {current:true}]->(s:ServiceLog)-[:HAS_SERVICE]->(records:ServiceRecord)
-       WHERE records.income = max
-       RETURN records ORDER BY records.created_at DESC LIMIT 1
+       MATCH (fellowship)-[:HAS_HISTORY {current:true}]->(s:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)
+       WHERE record.income = max
+       RETURN record ORDER BY record.created_at DESC LIMIT 1
       """
     )
 
   fellowshipWithPeakIncomeAllTime: ServiceRecord!
     @cypher(
       statement: """
-      MATCH (this)-[:HAS]->(:Stream)-[:HAS]->(:Council)-[:HAS]->(:Constituency)-[:HAS]-(:Bacenta)-[:HAS]->(fellowships:Active:Fellowship) WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
-      MATCH (fellowships)-[:HAS_HISTORY {current:true}]->(:ServiceLog)-[:HAS_SERVICE]->(records:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
-      WITH date, records, fellowships
-      MATCH (records)
-      WHERE NOT (records:NoService)
-       WITH  max(records.income) as max
-       MATCH (fellowships)-[:HAS_HISTORY {current:true}]->(s:ServiceLog)-[:HAS_SERVICE]->(records:ServiceRecord)
-       WHERE records.income = max
-       RETURN records ORDER BY records.created_at DESC LIMIT 1
+      MATCH (this)-[:HAS]->(:Stream)-[:HAS]->(:Council)-[:HAS]->(:Constituency)-[:HAS]-(:Bacenta)-[:HAS]->(fellowship:Active:Fellowship) WHERE fellowship:Fellowship OR fellowship:ClosedFellowship
+      MATCH (fellowship)-[:HAS_HISTORY {current:true}]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
+      WITH date, record, fellowship
+      MATCH (record)
+      WHERE NOT (record:NoService)
+       WITH  max(record.income) as max
+       MATCH (fellowship)-[:HAS_HISTORY {current:true}]->(s:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)
+       WHERE record.income = max
+       RETURN record ORDER BY record.created_at DESC LIMIT 1
       """
     )
 
   totalAverageWeekdayIncomeThisMonth: Float!
     @cypher(
       statement: """
-      MATCH (this)-[:HAS]->(:Stream)-[:HAS]->(:Council)-[:HAS]->(:Constituency)-[:HAS]-(:Bacenta)-[:HAS]->(fellowships:Active:Fellowship) WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
-      MATCH (fellowships)-[:HAS_HISTORY {current:true}]->(:ServiceLog)-[:HAS_SERVICE]->(records:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
-      WITH date, records
+      MATCH (this)-[:HAS]->(:Stream)-[:HAS]->(:Council)-[:HAS]->(:Constituency)-[:HAS]-(:Bacenta)-[:HAS]->(fellowship:Active:Fellowship) WHERE fellowship:Fellowship OR fellowship:ClosedFellowship
+      MATCH (fellowship)-[:HAS_HISTORY {current:true}]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
+      WITH date, record
       MATCH (date)
       WHERE date(date.date).week >= (date().week - 4) AND date(date.date).week <= date().week
-      RETURN  round(sum(records.income)/4, 1)
+      RETURN  round(sum(record.income)/4, 1)
       """
     )
 
   totalAverageWeekdayIncomeThisYear: Float!
     @cypher(
       statement: """
-      MATCH (this)-[:HAS]->(:Stream)-[:HAS]->(:Council)-[:HAS]->(:Constituency)-[:HAS]-(:Bacenta)-[:HAS]->(fellowships:Active:Fellowship) WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
-      MATCH (fellowships)-[:HAS_HISTORY {current:true}]->(:ServiceLog)-[:HAS_SERVICE]->(records:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
-      WITH date, records
+      MATCH (this)-[:HAS]->(:Stream)-[:HAS]->(:Council)-[:HAS]->(:Constituency)-[:HAS]-(:Bacenta)-[:HAS]->(fellowship:Active:Fellowship) WHERE fellowship:Fellowship OR fellowship:ClosedFellowship
+      MATCH (fellowship)-[:HAS_HISTORY {current:true}]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
+      WITH date, record
       MATCH (date)
       WHERE date(date.date).week >= (date().week - 52) AND date(date.date).week <= date().week
-      RETURN  round(sum(records.income)/52, 1)
+      RETURN  round(sum(record.income)/52, 1)
       """
     )
 
   totalAverageWeekdayIncomeAllTime: Float!
     @cypher(
       statement: """
-      MATCH (this)-[:HAS]->(:Stream)-[:HAS]->(:Council)-[:HAS]->(:Constituency)-[:HAS]-(:Bacenta)-[:HAS]->(fellowships:Active:Fellowship) WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
-      MATCH (fellowships)-[:HAS_HISTORY {current:true}]->(:ServiceLog)-[:HAS_SERVICE]->(records:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
-      WITH date, records
+      MATCH (this)-[:HAS]->(:Stream)-[:HAS]->(:Council)-[:HAS]->(:Constituency)-[:HAS]-(:Bacenta)-[:HAS]->(fellowship:Active:Fellowship) WHERE fellowship:Fellowship OR fellowship:ClosedFellowship
+      MATCH (fellowship)-[:HAS_HISTORY {current:true}]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
+      WITH date, record
       MATCH (date)
       WHERE date(date.date).week >= (date().week - 52) AND date(date.date).week <= date().week
-      RETURN  round(sum(records.income)/52, 1)
+      RETURN  round(sum(record.income)/52, 1)
       """
     )
 
