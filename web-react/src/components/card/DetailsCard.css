@@ -18,3 +18,22 @@
   margin-bottom: 0px;
   font-size: 22px;
 }
+
+.badge-vacation {
+  font-size: 12px;
+  font-size: 9px;
+  font-weight: normal;
+  color: #ec4860;
+}
+
+.badge-vacation.bg-danger {
+  background-color: #582e2e !important;
+}
+
+.font-danger {
+  color: var(--text-primary);
+}
+
+.space {
+  height: 23px;
+}

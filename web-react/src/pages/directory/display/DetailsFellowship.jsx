@@ -58,6 +58,16 @@ const DetailsFellowship = () => {
 
   const details = [
     {
+      title: 'Members',
+      number: fellowship?.memberCount || 0,
+      link: `/${fellowship?.__typename?.toLowerCase()}/members`,
+      width: 12,
+    },
+    {
+      title: 'Meeting Day',
+      number: fellowship?.meetingDay?.day,
+    },
+    {
       title: 'Status',
       number: fellowship?.vacationStatus,
       link: '#',
@@ -86,7 +96,7 @@ const DetailsFellowship = () => {
       churchType="Fellowship"
       buttons={['']}
       editlink="/fellowship/editfellowship"
-      editPermitted={permitAdmin('Constituency')}
+      editPermitted={[...permitAdmin('Constituency'), 'leaderFellowship']}
       weekNumber={getWeekNumber()}
       last3Weeks={fellowship && check}
       vacation={fellowship?.vacationStatus && true}

@@ -16,7 +16,7 @@ import { GET_LOGGED_IN_USER } from 'components/UserProfileIcon/UserQueries'
 import SearchBox from 'components/SearchBox'
 import { Moon, Sun } from 'react-bootstrap-icons'
 import { permitMe } from 'permission-utils'
-import LogMeIn from './LogMeIn'
+import useLogMeIn from './LogMeIn'
 
 const Navigator = () => {
   const {
@@ -29,7 +29,7 @@ const Navigator = () => {
   } = useContext(MemberContext)
   const { clickCard } = useContext(ChurchContext)
   const { user } = useAuth0()
-  const { servant } = LogMeIn()
+  const { servant } = useLogMeIn()
 
   const [memberByEmail] = useLazyQuery(GET_LOGGED_IN_USER, {
     onCompleted: (data) => {
@@ -37,13 +37,7 @@ const Navigator = () => {
 
       setCurrentUser({
         ...currentUser,
-        __typename: 'Member',
         id: data.memberByEmail.id,
-        firstName: data.memberByEmail.firstName,
-        lastName: data.memberByEmail.lastName,
-        fullName:
-          data.memberByEmail.firstName + ' ' + data.memberByEmail.lastName,
-        picture: data.memberByEmail?.pictureUrl ?? null,
         fellowship: data.memberByEmail?.fellowship.id,
         bacenta: data.memberByEmail?.fellowship?.bacenta?.id,
         council:
@@ -57,8 +51,6 @@ const Navigator = () => {
         gatheringService:
           data.memberByEmail?.fellowship?.bacenta.constituency?.council.stream
             .gatheringService.id,
-        email: user?.email,
-        roles: user ? user[`https://flcadmin.netlify.app/roles`] : [],
       })
 
       sessionStorage.setItem('currentUser', JSON.stringify({ ...currentUser }))
@@ -72,8 +64,22 @@ const Navigator = () => {
   useEffect(() => {
     if (!user) return
 
+    setCurrentUser({
+      ...currentUser,
+      __typename: 'Member',
+      id: user.sub.replace('auth0|', ''),
+      firstName: user.given_name,
+      lastName: user.family_name,
+      fullName: user.name,
+      picture: user.picture ?? null,
+      email: user?.email,
+      roles: user ? user[`https://flcadmin.netlify.app/roles`] : [],
+    })
+    sessionStorage.setItem('currentUser', JSON.stringify({ ...currentUser }))
+
     memberByEmail({ variables: { email: user?.email } })
-  }, [currentUser?.id, memberByEmail, user])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [memberByEmail, user])
 
   useEffect(() => {
     if (userJobs?.jobs.length === roles?.length) return
@@ -84,6 +90,8 @@ const Navigator = () => {
       assessmentChurch: assessmentChurch,
     })
   }, [
+    servant,
+    currentUser,
     assessmentChurch,
     assessmentChurchData,
     roles,

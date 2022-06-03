@@ -1,6 +1,6 @@
 import { capitalise, throwErrorMsg } from 'global-utils'
 
-export const churchLevel = [
+export const churchLevels = [
   'Fellowship',
   'Bacenta',
   'Constituency',

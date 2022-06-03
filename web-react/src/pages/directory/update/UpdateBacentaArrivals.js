@@ -54,7 +54,7 @@ export const UPDATE_BACENTA_BUSSING_DETAILS = gql`
       swellPersonalContribution
       swellBussingTopUp
 
-      history(options: { limit: 5 }) {
+      history(limit: 5) {
         id
         timeStamp
         created_at {
@@ -91,7 +91,7 @@ export const UPDATE_BUS_PAYMENT_DETAILS = gql`
       momoNumber
       mobileNetwork
 
-      history(options: { limit: 5 }) {
+      history(limit: 5) {
         id
         timeStamp
         created_at {

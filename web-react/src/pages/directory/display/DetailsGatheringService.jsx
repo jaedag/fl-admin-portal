@@ -15,6 +15,17 @@ const DetailsGatheringService = () => {
   const gathering = data?.gatheringServices[0]
   let breadcrumb = [gathering]
   const details = [
+    {
+      title: 'Members',
+      number: gathering?.memberCount || 0,
+      link: `/${gathering?.__typename?.toLowerCase()}/members`,
+      width: 12,
+    },
+    {
+      title: 'Streams',
+      number: gathering?.streamCount || 0,
+      link: `/${`Stream`.toLowerCase()}/displayall`,
+    },
     { title: 'Target', number: gathering?.target, link: '#' },
     { title: 'Pastors', number: gathering?.pastorCount || '0', link: '#' },
     {
@@ -28,13 +39,15 @@ const DetailsGatheringService = () => {
       link: `/gatheringservice/constituencies`,
     },
     {
-      title: 'Bacenta',
+      title: 'Bacentas',
       number: gathering?.activeBacentaCount,
+      vacationCount: gathering?.vacationBacentaCount,
       link: `#`,
     },
     {
       title: 'Fellowships',
       number: gathering?.activeFellowshipCount,
+      vacationCount: gathering?.vacationFellowshipCount,
       link: '#',
     },
   ]
@@ -46,12 +59,9 @@ const DetailsGatheringService = () => {
         leaderTitle="Resident Bishop"
         churchId={gatheringServiceId}
         leader={gathering?.leader}
-        churchHeading="Streams"
         churchType={gathering?.__typename}
         subChurch="Stream"
-        membership={gathering?.memberCount}
         details={details}
-        churchCount={gathering?.streamCount}
         editlink="/stream/editstream"
         editPermitted={['adminGatheringService']}
         history={gathering?.history.length !== 0 && gathering?.history}
