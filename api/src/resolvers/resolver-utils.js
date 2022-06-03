@@ -193,12 +193,14 @@ export const makeServantCypher = async (
   //Connect Leader to Church
 
   const connectedChurchRes = rearrangeCypherObject(
-    await session.run(servantCypher[`connectChurch${servantType}`], {
-      [`${servantLower}Id`]: servant.id,
-      churchId: church.id,
-      auth_id: servant.auth_id,
-      auth: context.auth,
-    })
+    await session
+      .run(servantCypher[`connectChurch${servantType}`], {
+        [`${servantLower}Id`]: servant.id,
+        churchId: church.id,
+        auth_id: servant.auth_id,
+        auth: context.auth,
+      })
+      .catch((e) => throwErrorMsg(`Error Connecting Church${servantType}`, e))
   )
 
   const historyRecordStringArgs = {
@@ -216,45 +218,59 @@ export const makeServantCypher = async (
   }
 
   const serviceLogRes = rearrangeCypherObject(
-    await session.run(servantCypher.createHistoryLog, {
-      id: servant.id,
-      churchType: churchType,
-      historyRecord: historyRecordString(historyRecordStringArgs),
-    })
+    await session
+      .run(servantCypher.createHistoryLog, {
+        id: servant.id,
+        churchType: churchType,
+        historyRecord: historyRecordString(historyRecordStringArgs),
+      })
+      .catch((e) => throwErrorMsg(`Error Creating History Log`, e))
   )
   if (servantType === 'Leader') {
-    await session.run(servantCypher.makeHistoryServiceLog, {
-      logId: serviceLogRes.id,
-    })
-    await session.run(servantCypher.connectServiceLog, {
-      churchId: church.id,
-      servantId: servant.id,
-      oldServantId: oldServant.id ?? '',
-      logId: serviceLogRes.id,
-      auth: context.auth,
-    })
+    await session
+      .run(servantCypher.makeHistoryServiceLog, {
+        logId: serviceLogRes.id,
+      })
+      .catch((e) => throwErrorMsg(`Error Converting History to Service Log`, e))
+    await session
+      .run(servantCypher.connectServiceLog, {
+        churchId: church.id,
+        servantId: servant.id,
+        oldServantId: oldServant.id ?? '',
+        logId: serviceLogRes.id,
+        auth: context.auth,
+      })
+      .catch((e) => throwErrorMsg(`Error Connecting Service Log`, e))
   } else {
-    await session.run(servantCypher.connectHistoryLog, {
-      churchId: church.id,
-      servantId: servant.id,
-      oldServantId: oldServant.id ?? '',
-      logId: serviceLogRes.id,
-      auth: context.auth,
-    })
+    await session
+      .run(servantCypher.connectHistoryLog, {
+        churchId: church.id,
+        servantId: servant.id,
+        oldServantId: oldServant.id ?? '',
+        logId: serviceLogRes.id,
+        auth: context.auth,
+      })
+      .catch((e) => throwErrorMsg(`Error Connecting History Log`, e))
   }
 
   //Run Cypher to Connect the History
   switch (churchType + servantType) {
     case 'GatheringServiceLeader':
-      await session.run(servantCypher.connectChurchLogSubstructure, {
-        churchId: church.id,
-      })
+      await session
+        .run(servantCypher.connectChurchLogSubstructure, {
+          churchId: church.id,
+        })
+        .catch((e) =>
+          throwErrorMsg(`Error Creating Gathering Service Substructure`, e)
+        )
       break
 
     case 'BacentaLeader':
-      await session.run(servantCypher.connectBacentaLogSubstructure, {
-        churchId: church.id,
-      })
+      await session
+        .run(servantCypher.connectBacentaLogSubstructure, {
+          churchId: church.id,
+        })
+        .catch((e) => throwErrorMsg(`Error Creating Bacenta Substructure`, e))
       break
     default:
       break

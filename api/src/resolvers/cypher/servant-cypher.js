@@ -127,9 +127,6 @@ RETURN church.id AS id, church.name AS name, higherChurch.id AS higherChurchId, 
 //Create the service log and returns its ID
 
 export const createHistoryLog = `
-MATCH (church {id:$id}) WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:GatheringService OR church:Sonta OR church:Ministry OR church:Member 
-OR church:ClosedFellowship OR church:ClosedBacenta
-
 CREATE (log:HistoryLog)
   SET log.id = apoc.create.uuid(),
    log.timeStamp = datetime(),
@@ -147,14 +144,14 @@ RETURN log AS log
 //Connect log to leader, new church, and old leader
 export const connectServiceLog = `
 MATCH (church {id: $churchId}) 
-WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council 
+WHERE church:Fellowship OR church:Bacenta 
+OR church:Constituency OR church:Council 
 OR church:Stream OR church:GatheringService 
 OR church:Sonta OR church:Ministry
 OR church:ClosedFellowship OR church:ClosedBacenta
 MATCH (church)<-[:HAS]-(higherChurch)-[:HAS_HISTORY {current: true}]->(higherLog:ServiceLog)
 
 MATCH (leader:Member {id: $servantId})
-OPTIONAL MATCH (oldLeader:Member {id: $oldServantId})
 MATCH (currentUser:Member {auth_id: $auth.jwt.sub}) 
 MATCH (log:ServiceLog {id: $logId})
 
@@ -162,12 +159,15 @@ MERGE (date:TimeGraph {date: date()})
 MERGE (log)-[:LOGGED_BY]->(currentUser)
 MERGE (log)-[:RECORDED_ON]->(date)
 MERGE (higherLog)-[:HAS_COMPONENT]->(log)
-MERGE (oldLeader)-[:OLD_HISTORY]-(log)
 MERGE (leader)-[r1:HAS_HISTORY]->(log)
 MERGE (church)-[r2:HAS_HISTORY]->(log)
    SET r1.current = true,
-   r2.current = true,
-   log:HistoryLog
+   r2.current = true
+WITH church
+   MATCH (oldLeader:Member {id: $oldServantId})
+   MERGE (oldLeader)-[:OLD_HISTORY]-(log)
+
+WITH church
 
 RETURN church.id AS id
 `
@@ -175,7 +175,11 @@ RETURN church.id AS id
 //Connect log to leader, new church, and old leader
 //First Connection
 export const connectHistoryLog = `
-MATCH (church {id:$churchId}) WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:GatheringService OR church:Sonta OR church:Ministry OR church:Member 
+MATCH (church {id:$churchId}) 
+WHERE church:Fellowship OR church:Bacenta 
+OR church:Constituency OR church:Council 
+OR church:Stream OR church:GatheringService 
+OR church:Sonta OR church:Ministry OR church:Member 
 OR church:ClosedFellowship OR church:ClosedBacenta
 
 MATCH (leader:Member {id: $servantId})
@@ -187,7 +191,6 @@ MERGE (log)-[:LOGGED_BY]->(currentUser)
 MERGE (log)-[:RECORDED_ON]->(date)
 MERGE (leader)-[:HAS_HISTORY]->(log)
 MERGE (church)-[:HAS_HISTORY]->(log)
-
 
 RETURN church.id AS id
 `
