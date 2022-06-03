@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client'
 
 export const SERVANTS_WITH_ROLES = gql`
-  query servantWithRoles($auth_id: String!) {
-    members(where: { auth_id: $auth_id }) {
+  query servantWithRoles($id: String!) {
+    members(where: { id: $id }) {
       id
       firstName
       lastName

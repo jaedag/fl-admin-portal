@@ -32,6 +32,7 @@ const ServantsChurchList = () => {
         const serviceData = getServiceGraphData(church)
 
         churches.push({
+          id: church.id,
           __typename: church.__typename,
           name: church.name,
           leader: servant?.fullName,
@@ -104,7 +105,7 @@ const ServantsChurchList = () => {
               caption={church.leader}
               color="churches"
               onClick={() => {
-                clickCard(church[0])
+                clickCard(church)
                 navigate(church.link)
               }}
             />

@@ -22,16 +22,29 @@ const DetailsCouncil = () => {
   }, [council?.stream_name, setChurch])
 
   const details = [
+    {
+      title: 'Members',
+      number: council?.memberCount || 0,
+      link: `/${council?.__typename?.toLowerCase()}/members`,
+      width: 12,
+    },
+    {
+      title: 'Constituencies',
+      number: council?.constituencyCount || 0,
+      link: `/${`Constituency`.toLowerCase()}/displayall`,
+    },
     { title: 'Target', number: council?.target, link: '#' },
     { title: 'Pastors', number: council?.pastorCount, link: '#' },
     {
       title: 'Bacentas',
       number: council?.activeBacentaCount,
+      vacationCount: council?.vacationBacentaCount,
       link: `#`,
     },
     {
       title: 'Fellowships',
       number: council?.activeFellowshipCount,
+      vacationCount: council?.vacationFellowshipCount,
       link: '#',
     },
   ]
@@ -50,7 +63,6 @@ const DetailsCouncil = () => {
         subChurch="Constituency"
         membership={council?.memberCount}
         details={details}
-        churchCount={council?.constituencyCount}
         editlink="/council/editcouncil"
         editPermitted={permitAdmin('Stream')}
         history={council?.history.length !== 0 && council?.history}

@@ -1,9 +1,10 @@
 import { useLazyQuery } from '@apollo/client'
 import { useAuth0 } from '@auth0/auth0-react'
-import { churchLevel } from 'pages/directory/update/directory-utils'
-import { useEffect, useState } from 'react'
+import { MemberContext } from 'contexts/MemberContext'
+import { churchLevels } from 'pages/directory/update/directory-utils'
+import { useContext, useEffect, useState } from 'react'
+import { parseRoles, roles } from './dashboard-utils'
 import {
-  SERVANTS_WITH_ROLES,
   SERVANT_FELLOWSHIP_LEADER,
   SERVANT_BACENTA_LEADER,
   SERVANT_CONSTITUENCY_LEADER,
@@ -22,10 +23,9 @@ import {
   SERVANTS_STREAM_ARRIVALS_CONFIRMER,
 } from './LogInQueries'
 
-const LogMeIn = (memberId) => {
+const useLogMeIn = (memberId) => {
   const { user } = useAuth0()
-  const [servantWithRoles] = useLazyQuery(SERVANTS_WITH_ROLES)
-  const [member, setMember] = useState(memberId ?? null)
+  const { currentUser } = useContext(MemberContext)
   const [servant, setServant] = useState(null)
 
   const [fellowshipLeaderQuery] = useLazyQuery(SERVANT_FELLOWSHIP_LEADER)
@@ -64,32 +64,6 @@ const LogMeIn = (memberId) => {
     SERVANTS_STREAM_ARRIVALS_CONFIRMER
   )
 
-  useEffect(() => {
-    if (!user?.sub && !memberId) return
-
-    const getIdToUse = (userSub, memberId) => {
-      if (memberId) {
-        return 'auth0|' + memberId
-      }
-      return userSub
-    }
-
-    const fetchData = async (user) => {
-      if (!user) return
-
-      const response = await servantWithRoles({
-        variables: { auth_id: getIdToUse(user?.sub, memberId) },
-      })
-
-      const member = response.data?.members[0]
-      setMember(member)
-    }
-
-    fetchData(user)
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user?.sub])
-
   const church = {
     Fellowship: {
       leads: fellowshipLeaderQuery,
@@ -126,53 +100,44 @@ const LogMeIn = (memberId) => {
   }
 
   useEffect(() => {
-    const fetchServantData = async (member) => {
-      if (!member) return
+    const fetchServantData = async (user) => {
+      if (!user) return
 
       let servant = {
-        id: member.id,
-        firstName: member.firstName,
-        lastName: member.lastName,
-        fullName: member.fullName,
-        pictureUrl: member.pictureUrl,
-        stream_name: member.stream_name,
-        __typename: member.__typename,
+        ...user,
       }
 
-      const verbs = [
-        'leads',
-        'isAdminFor',
-        'isArrivalsAdminFor',
-        'isArrivalsCounterFor',
-        'isArrivalsConfirmerFor',
-      ]
+      await Promise.all(
+        churchLevels.map(async (level) => {
+          await Promise.all(
+            roles[`${level}`].map(async (verb) => {
+              const shouldSearch = (verb, level) => {
+                return currentUser?.roles.includes(parseRoles(verb) + level)
+              }
 
-      verbs.map((verb) =>
-        churchLevel.map(async (level) => {
-          const shouldSearch = (level) => {
-            return member[`${verb}${level}Count`]
-          }
+              if (shouldSearch(verb, level)) {
+                const response = await church[`${level}`][`${verb}`]({
+                  variables: { id: user.id },
+                })
 
-          if (shouldSearch(level)) {
-            const response = await church[`${level}`][`${verb}`]({
-              variables: { id: memberId || member.id },
+                servant[`${verb}${level}`] = getMember(response, verb, level)
+              }
+              return servant
             })
-
-            servant[`${verb}${level}`] = getMember(response, verb, level)
-          }
-
-          return servant
+          )
         })
       )
+
+      setServant(servant)
 
       return servant
     }
 
-    fetchServantData(member).then((res) => setServant(res))
+    fetchServantData(currentUser)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [member])
+  }, [currentUser.roles, memberId, user, user?.sub, currentUser])
 
   return { servant }
 }
 
-export default LogMeIn
+export default useLogMeIn

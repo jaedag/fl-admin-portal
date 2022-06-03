@@ -56,7 +56,10 @@ type Member @auth(rules: [{ isAuthenticated: true }]) {
       RETURN COUNT(DISTINCT members)
       """
     )
-  history: [HistoryLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
+  history(limit: Int! = 3): [HistoryLog!]!
+    @cypher(
+      statement: "MATCH (this)-[:HAS_HISTORY|OLD_HISTORY]->(log:HistoryLog) RETURN log LIMIT $limit"
+    )
   loggedHistory: [HistoryLog!]! @relationship(type: "LOGGED_BY", direction: IN)
   fellowship: Fellowship @relationship(type: "BELONGS_TO", direction: OUT)
   leadsFellowship: [Fellowship!]! @relationship(type: "LEADS", direction: OUT)
@@ -259,7 +262,10 @@ interface Church @auth(rules: [{ isAuthenticated: true }]) {
   memberSearch(key: String!, limit: Int!): [Member!]!
   memberCount: Int
   pastorCount: Int
-  history: [HistoryLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
+  history(limit: Int! = 3): [HistoryLog!]!
+    @cypher(
+      statement: "MATCH (this)-[:HAS_HISTORY|OLD_HISTORY]->(log:HistoryLog) RETURN log LIMIT $limit"
+    )
   serviceLogs: [ServiceLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
   services(limit: Int!): [ServiceRecord!]!
 }
@@ -323,6 +329,10 @@ type GatheringService implements Church {
     @cypher(
       statement: "MATCH (this)-[:HAS*4]->(bacentas:Bacenta:Active) RETURN COUNT(DISTINCT bacentas)"
     )
+  vacationBacentaCount: Int
+    @cypher(
+      statement: "MATCH (this)-[:HAS*4]-(bacenta:Vacation:Bacenta) RETURN COUNT(bacenta)"
+    )
   fellowshipCount: Int
     @cypher(
       statement: "MATCH (this)-[:HAS*5]->(fellowships:Fellowship) RETURN COUNT(DISTINCT fellowships)"
@@ -331,8 +341,15 @@ type GatheringService implements Church {
     @cypher(
       statement: "MATCH (this)-[:HAS*5]->(fellowships:Active:Fellowship) RETURN COUNT(DISTINCT fellowships)"
     )
+  vacationFellowshipCount: Int
+    @cypher(
+      statement: "MATCH (this)-[:HAS*5]->(fellowship:Vacation:Fellowship) RETURN COUNT(fellowship)"
+    )
   admin: Member @relationship(type: "IS_ADMIN_FOR", direction: IN)
-  history: [HistoryLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
+  history(limit: Int! = 3): [HistoryLog!]!
+    @cypher(
+      statement: "MATCH (this)-[:HAS_HISTORY|OLD_HISTORY]->(log:HistoryLog) RETURN log LIMIT $limit"
+    )
   serviceLogs: [ServiceLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
   services(limit: Int!): [ServiceRecord!]!
     @cypher(
@@ -403,6 +420,10 @@ type Stream implements Church {
     @cypher(
       statement: "MATCH (this)-[:HAS*3]->(bacentas:Bacenta:Active) RETURN COUNT(DISTINCT bacentas)"
     )
+  vacationBacentaCount: Int
+    @cypher(
+      statement: "MATCH (this)-[:HAS*3]-(bacenta:Vacation:Bacenta) RETURN COUNT(bacenta)"
+    )
   fellowshipCount: Int
     @cypher(
       statement: "MATCH (this)-[:HAS*4]->(fellowships:Fellowship) RETURN COUNT(DISTINCT fellowships)"
@@ -411,8 +432,15 @@ type Stream implements Church {
     @cypher(
       statement: "MATCH (this)-[:HAS*4]->(fellowships:Active:Fellowship) RETURN COUNT(DISTINCT fellowships)"
     )
+  vacationFellowshipCount: Int
+    @cypher(
+      statement: "MATCH (this)-[:HAS*4]->(fellowship:Vacation:Fellowship) RETURN COUNT(fellowship)"
+    )
   admin: Member @relationship(type: "IS_ADMIN_FOR", direction: IN)
-  history: [HistoryLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
+  history(limit: Int! = 3): [HistoryLog!]!
+    @cypher(
+      statement: "MATCH (this)-[:HAS_HISTORY|OLD_HISTORY]->(log:HistoryLog) RETURN log LIMIT $limit"
+    )
   serviceRecord: [ServiceRecord!]!
     @relationship(type: "HAS_SERVICE", direction: OUT)
   serviceLogs: [ServiceLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
@@ -476,17 +504,28 @@ type Council implements Church {
     @cypher(
       statement: "MATCH (this)-[:HAS*2]->(bacentas:Bacenta:Active) RETURN COUNT(DISTINCT bacentas)"
     )
+  vacationBacentaCount: Int
+    @cypher(
+      statement: "MATCH (this)-[:HAS*2]-(bacenta:Vacation:Bacenta) RETURN COUNT(bacenta)"
+    )
   fellowshipCount: Int
     @cypher(
       statement: "MATCH (this)-[:HAS*3]->(fellowships:Fellowship) RETURN COUNT(DISTINCT fellowships)"
     )
-
   activeFellowshipCount: Int
     @cypher(
       statement: "MATCH (this)-[:HAS*3]->(fellowships:Active:Fellowship) RETURN COUNT(DISTINCT fellowships)"
     )
+  vacationFellowshipCount: Int
+    @cypher(
+      statement: "MATCH (this)-[:HAS*3]->(fellowship:Vacation:Fellowship) RETURN COUNT(fellowship)"
+    )
+
   admin: Member @relationship(type: "IS_ADMIN_FOR", direction: IN)
-  history: [HistoryLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
+  history(limit: Int! = 3): [HistoryLog!]!
+    @cypher(
+      statement: "MATCH (this)-[:HAS_HISTORY|OLD_HISTORY]->(log:HistoryLog) RETURN log LIMIT $limit"
+    )
   serviceRecord: [ServiceRecord!]!
     @relationship(type: "HAS_SERVICE", direction: OUT)
   serviceLogs: [ServiceLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
@@ -543,9 +582,18 @@ type Constituency implements Church {
     @cypher(
       statement: "MATCH (this)-[:HAS]->(bacenta:Bacenta) RETURN COUNT(bacenta)"
     )
+  vacationFellowshipCount: Int
+    @cypher(
+      statement: "MATCH (this)-[:HAS]-(:Bacenta)-[:HAS]->(fellowship:Vacation:Fellowship) RETURN COUNT(fellowship)"
+    )
+
   activeBacentaCount: Int
     @cypher(
-      statement: "MATCH (this)-[:HAS]->(bacenta:Bacenta) RETURN COUNT(bacenta)"
+      statement: "MATCH (this)-[:HAS]->(bacenta:Active:Bacenta) RETURN COUNT(bacenta)"
+    )
+  vacationBacentaCount: Int
+    @cypher(
+      statement: "MATCH (this)-[:HAS]-(bacenta:Vacation:Bacenta) RETURN COUNT(bacenta)"
     )
   leader: Member @relationship(type: "LEADS", direction: IN)
   sontas: [Sonta!]! @relationship(type: "HAS_SONTA", direction: OUT)
@@ -553,7 +601,10 @@ type Constituency implements Church {
   council: Council @relationship(type: "HAS", direction: IN)
 
   admin: Member @relationship(type: "IS_ADMIN_FOR", direction: IN)
-  history: [HistoryLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
+  history(limit: Int! = 3): [HistoryLog!]!
+    @cypher(
+      statement: "MATCH (this)-[:HAS_HISTORY|OLD_HISTORY]->(log:HistoryLog) RETURN log LIMIT $limit"
+    )
   serviceRecord: [ServiceRecord!]!
     @relationship(type: "HAS_SERVICE", direction: OUT)
   serviceLogs: [ServiceLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
@@ -619,11 +670,27 @@ type Bacenta implements Church {
   fellowships: [Fellowship!]! @relationship(type: "HAS", direction: OUT)
   fellowshipCount: Int!
     @cypher(
-      statement: "MATCH (this)-[:HAS]->(fellowship:Fellowship) RETURN COUNT(fellowship)"
+      statement: "MATCH (this)-[:HAS]->(fellowship:Fellowship) RETURN COUNT(fellowship)")
+  vacationFellowshipCount: Int
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS]->(fellowship:Fellowship:Vacation)
+      RETURN COUNT(DISTINCT fellowship)
+      """
+    )
+  activeFellowshipCount: Int
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS]->(fellowship:Fellowship:Active)
+      RETURN COUNT(DISTINCT fellowship)
+      """
     )
   basontas: Basonta @relationship(type: "HAS_BASONTA", direction: OUT)
   constituency: Constituency @relationship(type: "HAS", direction: IN)
-  history: [HistoryLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
+  history(limit: Int! = 3): [HistoryLog!]!
+    @cypher(
+      statement: "MATCH (this)-[:HAS_HISTORY|OLD_HISTORY]->(log:HistoryLog) RETURN log LIMIT $limit"
+    )
   serviceLogs: [ServiceLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
   services(limit: Int! = 4): [ServiceRecord!]!
     @cypher(
@@ -685,7 +752,10 @@ type Fellowship implements Church {
       """
     )
   meetingDay: ServiceDay @relationship(type: "MEETS_ON", direction: OUT)
-  history: [HistoryLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
+  history(limit: Int! = 3): [HistoryLog!]!
+    @cypher(
+      statement: "MATCH (this)-[:HAS_HISTORY|OLD_HISTORY]->(log:HistoryLog) RETURN log LIMIT $limit"
+    )
   serviceLogs: [ServiceLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
   services(limit: Int!): [ServiceRecord!]!
     @cypher(

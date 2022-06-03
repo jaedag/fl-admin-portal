@@ -28,7 +28,7 @@ const UserDashboard = () => {
         <div className="card-button-row">
           <Table className="border-bottom-0">
             <tbody>
-              <tr>
+              <tr /*className="row justify-content-start"*/>
                 {userJobs?.assessmentData ? (
                   userJobs?.jobs.map((role, i) => (
                     <td

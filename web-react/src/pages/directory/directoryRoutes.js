@@ -293,7 +293,7 @@ export const directory = [
   {
     path: '/fellowship/editfellowship',
     element: UpdateFellowship,
-    roles: permitAdmin('Constituency'),
+    roles: [...permitAdmin('Constituency'), 'leaderFellowship'],
     placeholder: false,
   },
   {
