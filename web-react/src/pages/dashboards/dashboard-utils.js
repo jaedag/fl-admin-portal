@@ -13,6 +13,7 @@ export const menuItems = [
     subMenus: [
       { name: 'Members', to: '/directory/members' },
       { name: 'Churches', to: '/directory/churches' },
+      { name: 'Quick Facts', to: `/directory/quick-facts/church-list` },
     ],
     roles: ['all'],
   },

@@ -43,6 +43,13 @@ const Directory = () => {
             color="churches"
             onClick={() => navigate(`/directory/churches`)}
           />
+          <MenuButton
+            icon={ChurchIcon}
+            title="quick facts"
+            caption={'I will put something here laterr'}
+            color="quick facts"
+            onClick={() => navigate(`/directory/quick-facts/church-list`)}
+          />
         </div>
       </Container>
     </div>

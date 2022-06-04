@@ -46,6 +46,10 @@ const ChurchList = ({ color, link }) => {
 
                     if (color === 'arrivals') {
                       navigate(`/arrivals/${church.__typename.toLowerCase()}`)
+                    } else if (color === 'quick-facts') {
+                      navigate(
+                        `/quick-facts/${church.__typename.toLowerCase()}`
+                      )
                     } else {
                       navigate(link)
                     }
