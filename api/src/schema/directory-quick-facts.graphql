@@ -491,7 +491,7 @@ extend type Stream {
 }
 
 extend type GatheringService {
-  averageFellowshipAttendanceThisMonth: Float!
+  averageFellowshipAttendanceThisMonth: Float
     @cypher(
       statement: """
       MATCH (this)-[:HAS]->(:Stream)-[:HAS]->(:Council)-[:HAS]->(:Constituency)-[:HAS]-(:Bacenta)-[:HAS]->(fellowship)
@@ -505,7 +505,7 @@ extend type GatheringService {
       """
     )
 
-  avgFellowshipAttendanceThisYear: Float!
+  avgFellowshipAttendanceThisYear: Float
     @cypher(
       statement: """
       MATCH (this)-[:HAS]->(:Stream)-[:HAS]->(:Council)-[:HAS]->(:Constituency)-[:HAS]-(:Bacenta)-[:HAS]->(fellowship)
@@ -519,7 +519,7 @@ extend type GatheringService {
       """
     )
 
-  avgFellowshipAttendanceAllTime: Float!
+  avgFellowshipAttendanceAllTime: Float
     @cypher(
       statement: """
       MATCH (this)-[:HAS]->(:Stream)-[:HAS]->(:Council)-[:HAS]->(:Constituency)-[:HAS]-(:Bacenta)-[:HAS]->(fellowship)
@@ -530,7 +530,7 @@ extend type GatheringService {
       """
     )
 
-  avgFellowshipIncomeThisMonth: Float!
+  avgFellowshipIncomeThisMonth: Float
     @cypher(
       statement: """
       MATCH (this)-[:HAS]->(:Stream)-[:HAS]->(:Council)-[:HAS]->(:Constituency)-[:HAS]-(:Bacenta)-[:HAS]->(fellowship)
