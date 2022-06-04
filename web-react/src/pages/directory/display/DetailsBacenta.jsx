@@ -91,7 +91,6 @@ const DetailsBacenta = () => {
         churchType="Bacenta"
         subChurch="Fellowship"
         membership={bacenta?.memberCount}
-        churchCount={bacenta?.fellowships.length}
         editlink="/bacenta/editbacenta"
         editPermitted={permitArrivals('Constituency')}
         history={bacenta?.history.length !== 0 && bacenta?.history}

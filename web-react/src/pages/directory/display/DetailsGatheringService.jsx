@@ -59,11 +59,9 @@ const DetailsGatheringService = () => {
         leaderTitle="Resident Bishop"
         churchId={gatheringServiceId}
         leader={gathering?.leader}
-        churchHeading="Streams"
         churchType={gathering?.__typename}
         subChurch="Stream"
         details={details}
-        churchCount={gathering?.streamCount}
         editlink="/stream/editstream"
         editPermitted={['adminGatheringService']}
         history={gathering?.history.length !== 0 && gathering?.history}

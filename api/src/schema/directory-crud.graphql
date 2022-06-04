@@ -707,6 +707,7 @@ extend type Mutation {
             "adminStream"
             "adminCouncil"
             "adminConstituency"
+            "leaderFellowship"
           ]
         }
       ]

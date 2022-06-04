@@ -25,7 +25,7 @@ const DetailsConstituency = () => {
     { title: 'Target', number: constituency?.target, link: '#', width: 12 },
     {
       title: 'Bacentas',
-      number: constituency?.bacentas.length || 0,
+      number: constituency?.activeBacentaCount || 0,
       link: `/${`Bacenta`.toLowerCase()}/displayall`,
       vacationCount: constituency?.vacationBacentaCount,
     },
@@ -46,10 +46,6 @@ const DetailsConstituency = () => {
         membership={data?.constituencies[0]?.memberCount}
         leader={data?.constituencies[0]?.leader}
         churchId={constituencyId}
-        churchHeading="Bacentas"
-        church2Heading="Fellowships"
-        churchCount={data?.constituencies[0]?.bacentas.length}
-        church2Count={data?.constituencies[0]?.activeFellowshipCount}
         admin={data?.constituencies[0]?.admin}
         churchType={`Constituency`}
         subChurch={`Bacenta`}
