@@ -57,6 +57,7 @@ export const SERVANT_BACENTA_LEADER = gql`
         name
         stream_name
         memberCount
+        vacationStatus
 
         constituency {
           id
