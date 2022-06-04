@@ -8,6 +8,7 @@ import {
 
 const serviceCypher = require('./cypher/service-cypher')
 const cypher = require('./cypher/component-service-cypher')
+const errorMessage = require('./texts.json').error
 
 const getComponentServiceAggregates = async (obj, args, context, church) => {
   let serviceAggregates = []
@@ -68,8 +69,11 @@ export const serviceMutation = {
     )
 
     if (Object.keys(serviceCheck).length !== 0) {
-      throwErrorMsg('You have already filled your service form this week!')
+      throwErrorMsg(errorMessage.no_double_form_filling)
       return
+    }
+    if (serviceCheck.labels.includes('Vacation')) {
+      throwErrorMsg(errorMessage.vacation_cannot_fill_service)
     }
 
     const serviceDetails = rearrangeCypherObject(

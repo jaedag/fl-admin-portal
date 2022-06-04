@@ -7,7 +7,7 @@ MATCH (church)
       WHERE EXISTS {
         MATCH (church)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph) WHERE date(date.date).week = date().week
         }
-RETURN church.id AS id, church.name AS name
+RETURN church.id AS id, church.name AS name, labels(church) AS labels
 `
 
 export const recordService = `

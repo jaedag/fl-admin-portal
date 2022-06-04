@@ -670,7 +670,8 @@ type Bacenta implements Church {
   fellowships: [Fellowship!]! @relationship(type: "HAS", direction: OUT)
   fellowshipCount: Int!
     @cypher(
-      statement: "MATCH (this)-[:HAS]->(fellowship:Fellowship) RETURN COUNT(fellowship)")
+      statement: "MATCH (this)-[:HAS]->(fellowship:Fellowship) RETURN COUNT(fellowship)"
+    )
   vacationFellowshipCount: Int
     @cypher(
       statement: """

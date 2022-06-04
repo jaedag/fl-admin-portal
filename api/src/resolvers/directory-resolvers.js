@@ -3,6 +3,7 @@ import { isAuth, rearrangeCypherObject, throwErrorMsg } from './resolver-utils'
 import { RemoveServant } from './resolvers'
 const cypher = require('./cypher/resolver-cypher')
 const closeChurchCypher = require('./cypher/close-church-cypher')
+const errorMessage = require('./texts.json').error
 
 export const directoryMutation = {
   CreateMember: async (object, args, context) => {
@@ -17,10 +18,7 @@ export const directoryMutation = {
     const memberCheck = rearrangeCypherObject(memberResponse)
 
     if (memberCheck.email || memberCheck.whatsappNumber) {
-      throwErrorMsg(
-        'A member with this email address/whatsapp number already exists in the database',
-        ''
-      )
+      throwErrorMsg(errorMessage.no_duplicate_email_or_whatsapp, '')
     }
 
     const createMemberResponse = await session.run(cypher.createMember, {
