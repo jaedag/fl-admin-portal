@@ -352,7 +352,7 @@ extend type Council {
       """
     )
 
-  avgBacentaWeekdayAttendanceThisMonth: Float!
+  avgBacentaWeekdayAttendanceThisMonth: Float
     @cypher(
       statement: """
       MATCH (this)-[:HAS]->(:Constituency)-[:HAS]->(bacenta:Bacenta)-[:HAS]->(fellowship)
@@ -367,7 +367,7 @@ extend type Council {
       """
     )
 
-  avgBacentaWeekdayAttendanceThisYear: Float!
+  avgBacentaWeekdayAttendanceThisYear: Float
     @cypher(
       statement: """
       MATCH (this)-[:HAS]->(:Constituency)-[:HAS]->(bacenta:Bacenta)-[:HAS]->(fellowship)
@@ -382,7 +382,7 @@ extend type Council {
       """
     )
 
-  avgConstituencyWeekdayAttendanceThisMonth: Float!
+  avgConstituencyWeekdayAttendanceThisMonth: Float
     @cypher(
       statement: """
       MATCH (this)-[:HAS]->(con:Constituency)-[:HAS]->(:Bacenta)-[:HAS]->(fellowship)
@@ -397,7 +397,7 @@ extend type Council {
       """
     )
 
-  avgConstituencyWeekdayAttendanceThisYear: Float!
+  avgConstituencyWeekdayAttendanceThisYear: Float
     @cypher(
       statement: """
       MATCH (this)-[:HAS]->(con:Constituency)-[:HAS]->(:Bacenta)-[:HAS]->(fellowship)
@@ -412,7 +412,7 @@ extend type Council {
       """
     )
 
-  avgWeekdayAttendanceThisMonth: Float!
+  avgWeekdayAttendanceThisMonth: Float
     @cypher(
       statement: """
       MATCH (this)-[:HAS]->(con:Constituency)-[:HAS]->(:Bacenta)-[:HAS]->(fellowship)
@@ -427,7 +427,7 @@ extend type Council {
       """
     )
 
-  avgWeekdayAttendanceThisYear: Float!
+  avgWeekdayAttendanceThisYear: Float
     @cypher(
       statement: """
       MATCH (this)-[:HAS]->(:Constituency)-[:HAS]->(:Bacenta)-[:HAS]->(fellowship)
