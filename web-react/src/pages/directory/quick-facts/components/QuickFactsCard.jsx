@@ -44,6 +44,7 @@ const QuickFactsCard = (props) => {
           bg={`${getBadgeBackground()}`}
           className={`${getBadgeColor()} mt-auto`}
         >
+          {percentageRiseOrFall >= 0 ? '+' : ''}
           {percentageRiseOrFall}%
         </Badge>
       </div>
