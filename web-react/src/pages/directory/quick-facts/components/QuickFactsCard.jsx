@@ -50,7 +50,9 @@ const QuickFactsCard = (props) => {
       </div>
       <hr className="separator" />
       <div className="facts-number text-center">
-        {details?.avgHigherLevelAttendanceThisMonth}
+        {details?.avgHigherLevelAttendanceThisMonth === 'null'
+          ? '--'
+          : details?.avgHigherLevelAttendanceThisMonth}
       </div>
       <div className="average-text">
         Average {details?.churchType} <br /> Attendance
