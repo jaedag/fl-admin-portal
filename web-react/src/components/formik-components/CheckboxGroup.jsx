@@ -20,11 +20,12 @@ function CheckboxGroup(props) {
       ) : null}
       <Field name={name} {...rest}>
         {({ field }) => {
-          return options.map((option) => {
+          return options.map((option, index) => {
             return (
               <>
                 <button
                   type="button"
+                  key={index}
                   className={`filter-chips ${theme} ${
                     field.value.includes(option.value) && 'active'
                   }`}

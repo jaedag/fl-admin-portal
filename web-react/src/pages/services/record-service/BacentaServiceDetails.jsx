@@ -11,11 +11,7 @@ import BaseComponent from 'components/base-component/BaseComponent'
 const BacentaServiceDetails = () => {
   const { bacentaId } = useContext(ChurchContext)
   const { serviceRecordId } = useContext(ServiceContext)
-  const {
-    data: data,
-    loading: loading,
-    error: error,
-  } = useQuery(DISPLAY_BACENTA_SERVICE, {
+  const { data, loading, error } = useQuery(DISPLAY_BACENTA_SERVICE, {
     variables: { serviceId: serviceRecordId, bacentaId: bacentaId },
   })
 

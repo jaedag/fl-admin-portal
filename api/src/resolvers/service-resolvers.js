@@ -1,11 +1,11 @@
-import { permitLeaderAdmin } from './permissions'
-import {
+const {
   isAuth,
   makeServantCypher,
   rearrangeCypherObject,
   throwErrorMsg,
-} from './resolver-utils'
+} = require('./resolver-utils')
 
+const { permitLeaderAdmin } = require('./permissions')
 const serviceCypher = require('./cypher/service-cypher')
 const cypher = require('./cypher/component-service-cypher')
 const errorMessage = require('./texts.json').error
@@ -13,7 +13,6 @@ const errorMessage = require('./texts.json').error
 const getComponentServiceAggregates = async (obj, args, context, church) => {
   let serviceAggregates = []
 
-  console.log(context.driver.session())
   const session = context.driver.session()
   const serviceAggregateResponse = await session?.run(
     cypher[`component${church}ServiceAggregates`],
@@ -31,7 +30,7 @@ const getComponentServiceAggregates = async (obj, args, context, church) => {
   return serviceAggregates
 }
 
-export const serviceMutation = {
+exports.serviceMutation = {
   RecordService: async (object, args, context) => {
     isAuth(permitLeaderAdmin('Fellowship'), context.auth.roles)
     const session = context.driver.session()
@@ -88,12 +87,10 @@ export const serviceMutation = {
   },
 }
 
-export const serviceResolvers = {
+exports.serviceResolvers = {
   Bacenta: {
-    componentServiceAggregate: async (obj, args, context) => {
-      console.log(context)
-      return getComponentServiceAggregates(obj, args, context, 'Bacenta')
-    },
+    componentServiceAggregate: async (obj, args, context) =>
+      getComponentServiceAggregates(obj, args, context, 'Bacenta'),
   },
   Constituency: {
     componentServiceAggregate: (obj, args, context) =>

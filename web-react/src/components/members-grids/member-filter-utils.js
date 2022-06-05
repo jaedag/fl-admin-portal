@@ -62,7 +62,7 @@ export const memberFilter = (memberData, filters) => {
   if (filters.ministry.length > 0) {
     let filteredByMinistry = []
 
-    filters.ministry.map((ministryToFilter) => {
+    filters.ministry.forEach((ministryToFilter) => {
       filteredByMinistry = [
         ...new Set([
           ...filteredByMinistry,

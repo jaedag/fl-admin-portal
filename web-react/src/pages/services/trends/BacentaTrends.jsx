@@ -13,9 +13,6 @@ import { Button, Col, Container, Row } from 'react-bootstrap'
 export const BacentaTrends = () => {
   const { bacentaId } = useContext(ChurchContext)
   const [bussing, setBussing] = useState(true)
-  const [churchData, setChurchData] = useState(
-    getServiceGraphData(data?.bacentas[0], 'bussing')
-  )
 
   const { data, loading, error } = useQuery(BACENTA_TRENDS, {
     variables: { bacentaId: bacentaId },
@@ -23,6 +20,9 @@ export const BacentaTrends = () => {
       setChurchData(getServiceGraphData(data?.bacentas[0], 'bussing'))
     },
   })
+  const [churchData, setChurchData] = useState(
+    getServiceGraphData(data?.bacentas[0], 'bussing')
+  )
 
   return (
     <BaseComponent loading={loading} error={error} data={data}>

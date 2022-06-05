@@ -31,7 +31,7 @@ const ServantsChurchList = () => {
       servantChurches.map((church) => {
         const serviceData = getServiceGraphData(church)
 
-        churches.push({
+        return churches.push({
           id: church.id,
           __typename: church.__typename,
           name: church.name,

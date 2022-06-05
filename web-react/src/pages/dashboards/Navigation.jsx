@@ -9,7 +9,6 @@ import React, { useContext, useEffect } from 'react'
 import { Container, Nav, Navbar, Offcanvas, Row, Col } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import { menuItems } from './dashboard-utils'
-import './Navigation.css'
 import logo from 'assets/flc-logo-red.png'
 import { useAuth0 } from '@auth0/auth0-react'
 import { GET_LOGGED_IN_USER } from 'components/UserProfileIcon/UserQueries'
@@ -17,6 +16,7 @@ import SearchBox from 'components/SearchBox'
 import { Moon, Sun } from 'react-bootstrap-icons'
 import { permitMe } from 'permission-utils'
 import useLogMeIn from './LogMeIn'
+import './Navigation.css'
 
 const Navigator = () => {
   const {
@@ -57,7 +57,6 @@ const Navigator = () => {
     },
   })
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   let roles = []
   let assessmentChurchData, assessmentChurch
 
@@ -78,12 +77,11 @@ const Navigator = () => {
     sessionStorage.setItem('currentUser', JSON.stringify({ ...currentUser }))
 
     memberByEmail({ variables: { email: user?.email } })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [memberByEmail, user])
 
   useEffect(() => {
     if (userJobs?.jobs.length === roles?.length) return
-    console.log(roles)
+
     setUserJobs({
       jobs: roles,
       assessmentData: assessmentChurchData,
@@ -274,7 +272,6 @@ const Navigator = () => {
           id="offcanvasNavbar"
           aria-labelledby="offcanvasNavbarLabel"
           placement="start"
-          className={`bg-nav ${theme}`}
         >
           <Offcanvas.Header className={`${theme}`} closeButton>
             <Offcanvas.Title id="offcanvasNavbarLabel">
@@ -287,7 +284,7 @@ const Navigator = () => {
               />
             </Offcanvas.Title>
           </Offcanvas.Header>
-          <Offcanvas.Body>
+          <Offcanvas.Body className={`${theme}`}>
             <Nav className="justify-content-start flex-grow-1">
               {menuItems.map((menuItem, index) => (
                 <RoleView key={index} roles={menuItem.roles}>
@@ -305,7 +302,7 @@ const Navigator = () => {
             </Nav>
             <SearchBox />
           </Offcanvas.Body>
-          <Container className="footer">
+          <Container className={`footer ${theme}`}>
             <Row>
               <Col>
                 <Nav.Link

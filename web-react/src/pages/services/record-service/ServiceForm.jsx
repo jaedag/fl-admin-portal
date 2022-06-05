@@ -149,9 +149,7 @@ const ServiceForm = ({
                         const { push, remove, form } = fieldArrayProps
                         const { values } = form
                         const { treasurers } = values
-                        {
-                          formik.values.treasurers
-                        }
+
                         return (
                           <>
                             {treasurers.map((treasurer, index) => (

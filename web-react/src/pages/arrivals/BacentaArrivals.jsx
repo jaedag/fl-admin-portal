@@ -40,11 +40,11 @@ const BacentaArrivals = () => {
     return true
   }
 
-  data?.bacentas[0].bussing.map((data) => {
+  data?.bacentas[0].bussing.forEach((data) => {
     if (isToday(data.serviceDate.date)) {
       bussing = data
     }
-    return
+    return null
   })
 
   const canFillOnTheWay = () => {

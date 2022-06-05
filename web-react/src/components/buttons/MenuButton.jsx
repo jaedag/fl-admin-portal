@@ -31,7 +31,13 @@ const MenuButton = (props) => {
                 {props.avatar && (
                   <CloudinaryImage src={props.avatar} className="avatar" />
                 )}
-                {props.icon && <img src={props.icon} className="square-img" />}
+                {props.icon && (
+                  <img
+                    src={props.icon}
+                    className="square-img"
+                    alt={props.icon}
+                  />
+                )}
                 {props.iconComponent && <props.iconComponent />}
                 {props.number && <div className="fw-bold">{props.number}</div>}
               </div>

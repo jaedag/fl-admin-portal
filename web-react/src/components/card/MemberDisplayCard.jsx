@@ -87,6 +87,7 @@ const MemberDisplayCard = (props) => {
               <img
                 className={`${picture && 'rounded-circle'} img-search`}
                 src={icon}
+                alt={member.name}
               />
             ) : (
               <CloudinaryImage
