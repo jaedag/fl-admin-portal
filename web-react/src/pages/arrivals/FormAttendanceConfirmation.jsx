@@ -147,12 +147,11 @@ const FormAttendanceConfirmation = () => {
                     }}
                     key={index}
                   >
-                    {' '}
                     <CloudinaryImage
                       key={index}
                       src={picture}
                       className="report-picture"
-                      size="large"
+                      size="respond"
                     />
                   </td>
                 ))}
