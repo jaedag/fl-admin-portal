@@ -76,7 +76,7 @@
 .stat-text {
   font-size: 17px;
   letter-spacing: 0px;
-  margin-bottom: 32px;
+  margin-bottom: 20px;
 }
 
 .leader-text {
@@ -87,14 +87,12 @@
 .branch-text {
   font-size: 12px;
   color: #bbbbbb;
-  margin-bottom: 7px;
 }
 
 .facts-number {
   font-size: 80px;
   line-height: 119px;
   font-weight: 900;
-  margin-bottom: 6px;
 }
 
 .badge-percentage-red {
@@ -103,7 +101,7 @@
   color: #ec4860;
   padding: 7px 17px;
   border-radius: 0;
-  margin-bottom: 22px;
+  margin-bottom: 15px;
 }
 
 .badge-percentage-green {
@@ -112,7 +110,7 @@
   color: #2bed08;
   padding: 7px 17px;
   border-radius: 0;
-  margin-bottom: 22px;
+  margin-bottom: 15px;
 }
 
 .badge-percentage-red.bg-danger {
@@ -137,7 +135,6 @@
 
 .separator {
   border: 1px solid var(---ffffff);
-  margin-bottom: 50px;
 }
 
 .quick-fact-card {
