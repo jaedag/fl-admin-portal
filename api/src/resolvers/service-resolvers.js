@@ -13,8 +13,9 @@ const errorMessage = require('./texts.json').error
 const getComponentServiceAggregates = async (obj, args, context, church) => {
   let serviceAggregates = []
 
+  console.log(context.driver.session())
   const session = context.driver.session()
-  const serviceAggregateResponse = await session.run(
+  const serviceAggregateResponse = await session?.run(
     cypher[`component${church}ServiceAggregates`],
     { ...obj, ...args }
   )
@@ -89,8 +90,10 @@ export const serviceMutation = {
 
 export const serviceResolvers = {
   Bacenta: {
-    componentServiceAggregate: async (obj, args, context) =>
-      getComponentServiceAggregates(obj, args, context, 'Bacenta'),
+    componentServiceAggregate: async (obj, args, context) => {
+      console.log(context)
+      return getComponentServiceAggregates(obj, args, context, 'Bacenta')
+    },
   },
   Constituency: {
     componentServiceAggregate: (obj, args, context) =>
