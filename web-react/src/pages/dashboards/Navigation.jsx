@@ -83,7 +83,7 @@ const Navigator = () => {
 
   useEffect(() => {
     if (userJobs?.jobs.length === roles?.length) return
-
+    console.log(roles)
     setUserJobs({
       jobs: roles,
       assessmentData: assessmentChurchData,
