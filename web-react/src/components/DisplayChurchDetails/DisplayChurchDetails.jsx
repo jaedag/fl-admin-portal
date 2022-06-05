@@ -41,15 +41,15 @@ const DisplayChurchDetails = (props) => {
   switch (props.churchType) {
     case 'Constituency':
       needsAdmin = true
-      roles = permitAdmin('Constituency')
+      roles = permitAdmin('Council')
       break
     case 'Council':
       needsAdmin = true
-      roles = permitAdmin('Council')
+      roles = permitAdmin('Stream')
       break
     case 'Stream':
       needsAdmin = true
-      roles = permitAdmin('Stream')
+      roles = permitAdmin('GatheringService')
       break
     default:
       needsAdmin = false
