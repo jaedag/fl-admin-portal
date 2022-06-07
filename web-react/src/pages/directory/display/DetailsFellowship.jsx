@@ -4,7 +4,7 @@ import DisplayChurchDetails from '../../../components/DisplayChurchDetails/Displ
 import { DISPLAY_FELLOWSHIP, DISPLAY_FELLOWSHIP_HISTORY } from './ReadQueries'
 import { ChurchContext } from '../../../contexts/ChurchContext'
 import { throwErrorMsg } from 'global-utils'
-import { last3Weeks, getWeekNumber } from 'date-utils'
+import { last3Weeks, getWeekNumber } from 'jd-date-utils'
 import { permitAdmin } from 'permission-utils'
 
 const DetailsFellowship = () => {

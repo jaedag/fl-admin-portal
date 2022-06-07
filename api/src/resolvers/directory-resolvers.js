@@ -9,7 +9,7 @@ export const directoryMutation = {
   CreateMember: async (object, args, context) => {
     isAuth(permitLeaderAdmin('Fellowship'), context.auth.roles)
 
-    const session = context.driver.session()
+    const session = context.executionContext.session()
     const memberResponse = await session.run(
       cypher.checkMemberEmailExists,
       args
@@ -45,7 +45,7 @@ export const directoryMutation = {
 
   MakeMemberInactive: async (object, args, context) => {
     isAuth(permitLeaderAdmin('Stream'), context.auth.roles)
-    const session = context.driver.session()
+    const session = context.executionContext.session()
 
     const memberCheck = rearrangeCypherObject(
       await session.run(cypher.checkMemberHasNoActiveRelationships, args)
@@ -66,7 +66,7 @@ export const directoryMutation = {
   CloseDownFellowship: async (object, args, context) => {
     isAuth(permitAdmin('Constituency'), context.auth.roles)
 
-    const session = context.driver.session()
+    const session = context.executionContext.session()
 
     try {
       const fellowshipCheckResponse = await session.run(
@@ -114,7 +114,7 @@ export const directoryMutation = {
   CloseDownBacenta: async (object, args, context) => {
     isAuth(permitAdmin('Constituency'), context.auth.roles)
 
-    const session = context.driver.session()
+    const session = context.executionContext.session()
 
     try {
       const bacentaCheckResponse = await session.run(
@@ -155,7 +155,7 @@ export const directoryMutation = {
   CloseDownConstituency: async (object, args, context) => {
     isAuth(permitAdmin('Council'), context.auth.roles)
 
-    const session = context.driver.session()
+    const session = context.executionContext.session()
 
     try {
       const constituencyCheckResponse = await session.run(

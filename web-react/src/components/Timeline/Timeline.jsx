@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ChurchContext } from '../../contexts/ChurchContext'
 import './Timeline.css'
-import { parseDate, parseNeoTime } from '../../date-utils'
+import { parseDate, parseNeoTime } from 'jd-date-utils'
 
 const Timeline = (props) => {
   const { record, limit, modifier } = props

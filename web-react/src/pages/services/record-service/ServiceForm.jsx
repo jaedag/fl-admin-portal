@@ -9,7 +9,7 @@ import { Col, Container, Row } from 'react-bootstrap'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import SubmitButton from 'components/formik-components/SubmitButton'
 import { throwErrorMsg } from 'global-utils'
-import { getMondayThisWeek } from 'date-utils'
+import { getMondayThisWeek } from 'jd-date-utils'
 import { ChurchContext } from 'contexts/ChurchContext'
 
 const ServiceForm = ({

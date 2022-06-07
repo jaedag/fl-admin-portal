@@ -17,7 +17,7 @@ export const bankingMutation = {
   BankServiceOffering: async (object, args, context) => {
     isAuth(permitLeader('Fellowship'), context.auth.roles)
 
-    const session = context.driver.session()
+    const session = context.executionContext.session()
 
     const { merchantId, auth } = getStreamFinancials(args.stream_name)
 
@@ -83,7 +83,7 @@ export const bankingMutation = {
 
   ConfirmOfferingPayment: async (object, args, context) => {
     isAuth(permitLeader('Fellowship'), context.auth.roles)
-    const session = context.driver.session()
+    const session = context.executionContext.session()
     const { merchantId, auth } = getStreamFinancials(args.stream_name)
 
     const transactionResponse = rearrangeCypherObject(

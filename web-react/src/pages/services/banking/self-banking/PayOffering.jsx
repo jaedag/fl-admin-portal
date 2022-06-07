@@ -16,7 +16,7 @@ import SubmitButton from 'components/formik-components/SubmitButton'
 import { Col, Container, Row } from 'react-bootstrap'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import HeadingSecondary from 'components/HeadingSecondary'
-import { parseDate } from 'date-utils'
+import { parseDate } from 'jd-date-utils'
 
 const PayOffering = (props) => {
   const { church } = props

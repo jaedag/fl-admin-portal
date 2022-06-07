@@ -8,7 +8,7 @@ import {
   getHighestTitle,
   USER_PLACEHOLDER,
 } from '../../../global-utils'
-import { getMemberDob } from 'date-utils'
+import { getMemberDob } from 'jd-date-utils'
 import {
   DISPLAY_MEMBER_ADMIN,
   DISPLAY_MEMBER_BIO,

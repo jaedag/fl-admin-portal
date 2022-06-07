@@ -210,7 +210,7 @@ export const MakeServant = async (
     args[`${servantLower}Id`],
   ])
 
-  const session = context.driver.session()
+  const session = context.executionContext.session()
 
   const church = rearrangeCypherObject(
     await session.run(cypher.matchChurchQuery, {
@@ -343,7 +343,7 @@ export const RemoveServant = async (
     args[`${servantLower}Id`],
   ])
 
-  const session = context.driver.session()
+  const session = context.executionContext.session()
 
   const church = rearrangeCypherObject(
     await session.run(cypher.matchChurchQuery, {
@@ -470,7 +470,7 @@ export const resolvers = {
     UpdateMemberEmail: async (object, args, context) => {
       isAuth(permitAdmin('Fellowship'), context.auth.roles)
 
-      const session = context.driver.session()
+      const session = context.executionContext.session()
 
       const member = rearrangeCypherObject(
         await session.run(cypher.matchMemberQuery, {

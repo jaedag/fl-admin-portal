@@ -13,7 +13,7 @@ const errorMessage = require('./texts.json').error
 const getComponentServiceAggregates = async (obj, args, context, church) => {
   let serviceAggregates = []
 
-  const session = context.driver.session()
+  const session = context.executionContext.session()
   const serviceAggregateResponse = await session?.run(
     cypher[`component${church}ServiceAggregates`],
     { ...obj, ...args }
@@ -33,7 +33,7 @@ const getComponentServiceAggregates = async (obj, args, context, church) => {
 exports.serviceMutation = {
   RecordService: async (object, args, context) => {
     isAuth(permitLeaderAdmin('Fellowship'), context.auth.roles)
-    const session = context.driver.session()
+    const session = context.executionContext.session()
 
     const relationshipCheck = rearrangeCypherObject(
       await session.run(serviceCypher.checkCurrentServiceLog, args)

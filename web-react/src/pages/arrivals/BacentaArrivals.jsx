@@ -12,7 +12,7 @@ import {
   beforeArrivalDeadline,
   beforeMobilisationDeadline,
 } from './arrivals-utils'
-import { isToday } from 'date-utils'
+import { isToday } from 'jd-date-utils'
 import HeadingSecondary from 'components/HeadingSecondary'
 import { MemberContext } from 'contexts/MemberContext'
 

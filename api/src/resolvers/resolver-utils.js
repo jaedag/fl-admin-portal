@@ -61,6 +61,7 @@ export const rearrangeCypherObject = (response) => {
 
   return member?.member || member
 }
+
 export const parseForCache = (servant, church, verb, role) => {
   //Returning the data such that it can update apollo cache
   servant[`${verb}`].push({
@@ -189,7 +190,7 @@ export const makeServantCypher = async (
   const terms = formatting(churchType, servantType)
   let servantLower = terms.servantLower
 
-  const session = context.driver.session()
+  const session = context.executionContext.session()
   //Connect Leader to Church
 
   const connectedChurchRes = rearrangeCypherObject(
@@ -341,7 +342,7 @@ export const removeServantCypher = async (
 ) => {
   const terms = formatting(churchType, servantType)
   const servantLower = terms.servantLower
-  const session = context.driver.session()
+  const session = context.executionContext.session()
 
   //Disconnect him from the Church
   await session.run(servantCypher[`disconnectChurch${servantType}`], {

@@ -18,7 +18,7 @@ const {
   rearrangeCypherObject,
   throwErrorMsg,
 } = require('../resolver-utils')
-import { MakeServant, RemoveServant } from '../resolvers'
+const { MakeServant, RemoveServant } = require('../resolvers')
 const cypher = require('./arrivals-cypher')
 const axios = require('axios').default
 
@@ -126,7 +126,7 @@ export const arrivalsMutation = {
     isAuth(permitAdminArrivals('Stream'), context.auth.roles)
     noEmptyArgsValidation(['streamId'])
 
-    const session = context.driver.session()
+    const session = context.executionContext.session()
 
     try {
       await axios(deleteRole('arrivalsConfirmerStream'))
@@ -165,7 +165,7 @@ export const arrivalsMutation = {
     return stream?.record.properties
   },
   UploadMobilisationPicture: async (object, args, context) => {
-    const session = context.driver.session()
+    const session = context.executionContext.session()
     isAuth(['leaderBacenta'], context.auth.roles)
 
     const recordResponse = rearrangeCypherObject(
@@ -232,7 +232,7 @@ export const arrivalsMutation = {
     return returnToCache
   },
   SetBussingSupport: async (object, args, context) => {
-    const session = context.driver.session()
+    const session = context.executionContext.session()
     try {
       const response = rearrangeCypherObject(
         await session.run(cypher.getBussingRecordWithDate, args)
@@ -276,7 +276,7 @@ export const arrivalsMutation = {
   },
   SendBussingSupport: async (object, args, context) => {
     isAuth(permitArrivalsHelpers(), context.auth.roles)
-    const session = context.driver.session()
+    const session = context.executionContext.session()
 
     const { merchantId, auth, passcode } = getStreamFinancials(args.stream_name)
     const recordResponse = rearrangeCypherObject(
@@ -350,7 +350,7 @@ export const arrivalsMutation = {
   },
   RecordArrivalTime: async (object, args, context) => {
     isAuth(permitArrivalsConfirmer(), context.auth.roles)
-    const session = context.driver.session()
+    const session = context.executionContext.session()
 
     const recordResponse = rearrangeCypherObject(
       await session.run(cypher.checkTransactionId, args)
@@ -378,7 +378,7 @@ export const arrivalsMutation = {
   SetSwellDate: async (object, args, context) => {
     isAuth(permitAdminArrivals('GatheringService'), context.auth.roles)
 
-    const session = context.driver.session()
+    const session = context.executionContext.session()
 
     const cypherResponse = rearrangeCypherObject(
       await session.run(cypher.setSwellDate, args)
