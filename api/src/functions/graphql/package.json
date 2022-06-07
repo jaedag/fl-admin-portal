@@ -12,7 +12,7 @@
     "apollo-server-lambda": "^3.6.7",
     "form-data": "^4.0.0",
     "graphql": "^16.3.0",
-    "mailgun.js": "^4.1.4",
+    "mailgun.js": "^7.0.0",
     "neo4j-driver": "^4.3.1"
   }
 }
