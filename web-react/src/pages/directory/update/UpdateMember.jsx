@@ -130,7 +130,7 @@ const UpdateMember = () => {
           ministryHistoryLog = `${member.firstName} ${member.lastName} moved from ${memberChurch?.ministry.name} Ministry to ${newMinistry?.name} Ministry`
         }
 
-        if (values.ministry === 'None') {
+        if (values.ministry === 'None' || !values.ministry) {
           ministryHistoryLog = `${member.firstName} ${member.lastName} left ${memberChurch?.ministry.name} Ministry`
         }
 

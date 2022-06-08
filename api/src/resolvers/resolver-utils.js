@@ -289,7 +289,6 @@ const createChurchHistorySubstructure = async ({
         logResponse.bacentas = [church.id]
         break
     }
-    console.log(logResponse, 'logResponse')
 
     if ('councils' in logResponse) {
       const res = rearrangeCypherObject(
@@ -316,6 +315,7 @@ const createChurchHistorySubstructure = async ({
       )
       logResponse.bacentas = res.bacentas
     }
+    console.log(logResponse, 'logResponse')
     if ('bacentas' in logResponse) {
       const res = rearrangeCypherObject(
         await session
@@ -326,7 +326,7 @@ const createChurchHistorySubstructure = async ({
             throwErrorMsg(`Error Creating Bacenta Substructure`, error)
           )
       )
-      console.log(res, 'response from thing')
+      console.log(res, 'response from bacenta substructure')
     }
   } catch (error) {
     throwErrorMsg(error)

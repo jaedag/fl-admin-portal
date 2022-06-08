@@ -239,7 +239,7 @@ MERGE (mainLog)-[:HAS_COMPONENT]->(newLowerLog)
 MERGE (lowerChurch)-[:HAS_HISTORY {current: true}]->(newLowerLog)
 MERGE (lowerLeader)-[:HAS_HISTORY {current: true}]->(newLowerLog)
 
-RETURN collect(lowerChurch.id) AS fellowships, COUNT(newLowerLog) AS countNewLogs
+RETURN collect(lowerChurch.id) AS fellowships
 `
 
 export const connectConstituencyLogSubstructure = `
@@ -258,7 +258,7 @@ MERGE (mainLog)-[:HAS_COMPONENT]->(newLowerLog:ServiceLog {id:apoc.create.uuid()
  newLowerLog.timeStamp = datetime()
 MERGE (lowerChurch)-[has_history1:HAS_HISTORY {current: true}]->(newLowerLog)<-[has_history2:HAS_HISTORY {current:true}]-(lowerLeader)
 
-RETURN church.id AS id, collect(lowerChurch.id) AS bacentas
+RETURN collect(lowerChurch.id) AS bacentas
 `
 
 export const connectCouncilLogSubstructure = `
@@ -277,7 +277,7 @@ MERGE (mainLog)-[:HAS_COMPONENT]->(newLowerLog:ServiceLog {id:apoc.create.uuid()
  newLowerLog.timeStamp = datetime()
 MERGE (lowerChurch)-[has_history1:HAS_HISTORY {current: true}]->(newLowerLog)<-[has_history2:HAS_HISTORY {current:true}]-(lowerLeader)
 
-RETURN church.id AS id, collect(lowerChurch.id) AS constituencies
+RETURN collect(lowerChurch.id) AS constituencies
 `
 
 export const connectStreamLogSubstructure = `
