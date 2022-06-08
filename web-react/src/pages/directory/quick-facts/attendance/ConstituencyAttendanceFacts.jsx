@@ -30,7 +30,7 @@ const ConstituencyAttendanceFacts = () => {
 
   return (
     <BaseComponent loading={loading} error={error} data={data}>
-      <div>
+      <div className="quick-fact-page">
         <div className="d-flex justify-content-between page-padding">
           <div></div>
           <div>
@@ -42,7 +42,7 @@ const ConstituencyAttendanceFacts = () => {
           <div></div>
         </div>
 
-        <div className=" page-padding mt-3">
+        <div className=" page-padding mt-3 quick-fact-card-wrapper">
           <QuickFactsCard details={details} />
         </div>
       </div>

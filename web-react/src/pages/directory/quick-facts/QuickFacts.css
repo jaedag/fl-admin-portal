@@ -6,47 +6,26 @@
   --text-red: #da0218;
   ---ffffff: #ffffff;
   --card-grey: #1e1c1c;
+  --light-grey: #bbbbbb;
   --text-green: #4de531;
   --text-grey: #8e8c8c;
-  --unnamed-color-4ae545: #4ae545;
-  --unnamed-color-60e831: #60e831;
+  --badge-text-red : #ec4860;
+  --badge-text-green : #2bed08;
+  --badge-background-red : #582e2e;
+  --badge-background-green: #737d55;
 
-  --unnamed-font-family-sf-pro-text: SF Pro Text;
-  --unnamed-font-style-normal: normal;
-  --unnamed-font-weight-900: 900px;
-  --unnamed-font-weight-normal: normal;
-  --unnamed-font-weight-medium: medium;
-  --unnamed-font-weight-bold: bold;
-  --unnamed-font-size-10: 10px;
-  --unnamed-font-size-12: 12px;
-  --unnamed-font-size-15: 15px;
-  --unnamed-font-size-20: 20px;
-  --unnamed-font-size-23: 23px;
-  --unnamed-font-size-25: 25px;
-  --unnamed-font-size-30: 30px;
-  --unnamed-font-size-35: 35px;
-  --unnamed-font-size-100: 100px;
-  --unnamed-character-spacing-0: 0px;
-  --unnamed-line-spacing-12: 12px;
-  --unnamed-line-spacing-14: 14px;
-  --unnamed-line-spacing-18: 18px;
-  --unnamed-line-spacing-24: 24px;
-  --unnamed-line-spacing-28: 28px;
-  --unnamed-line-spacing-30: 30px;
-  --unnamed-line-spacing-36: 36px;
-  --unnamed-line-spacing-41: 41px;
-  --unnamed-line-spacing-119: 119px;
+  --quick-fact-text-font-size-35: 35px;
+  --quick-fact-text-character-spacing-0: 0px;
+  --quick-fact-text-line-spacing-41: 41px;
 }
 
 /* Character Styles */
 .quick-fact-text {
-  letter-spacing: var(--unnamed-character-spacing-0);
+  letter-spacing: var(--quick-fact-text-character-spacing-0);
   color: var(---ffffff);
   text-align: center;
-  font-size: var(--unnamed-font-size-35);
-  line-height: var(--unnamed-line-spacing-41);
-  letter-spacing: 0px;
-  color: #ffffff;
+  font-size: var(--quick-fact-text-font-size-35);
+  line-height: var(--quick-fact-text-line-spacing-41);
   opacity: 1;
   font-weight: 600;
 }
@@ -59,7 +38,7 @@
   line-height: 14px;
   padding: 7px 23px;
   color: var(--text-grey);
-  background: #121212;
+  background: var(--background-base);
 }
 
 .page-padding {
@@ -67,9 +46,9 @@
 }
 
 .church-text {
-  font-size: var(--unnamed-font-size-35);
-  line-height: var(--unnamed-line-spacing-41);
-  letter-spacing: var(--unnamed-character-spacing-0);
+  font-size: var(--quick-fact-text-font-size-35);
+  line-height: var(--quick-fact-text-line-spacing-41);
+  letter-spacing: var(--quick-fact-text-character-spacing-0);
   color: var(---ffffff);
 }
 
@@ -86,7 +65,7 @@
 
 .branch-text {
   font-size: 12px;
-  color: #bbbbbb;
+  color: var(--light-grey);
 }
 
 .facts-number {
@@ -108,7 +87,7 @@
 .badge-percentage-red {
   font-size: 15px;
   font-weight: normal;
-  color: #ec4860;
+  color: var(--badge-text-red);
   padding: 7px 17px;
   border-radius: 0;
   margin-bottom: 15px;
@@ -117,18 +96,18 @@
 .badge-percentage-green {
   font-size: 15px;
   font-weight: normal;
-  color: #2bed08;
+  color: var(--badge-text-green);
   padding: 7px 17px;
   border-radius: 0;
   margin-bottom: 15px;
 }
 
 .badge-percentage-red.bg-danger {
-  background-color: #582e2e !important;
+  background-color: var(--badge-background-red) !important;
 }
 
 .badge-percentage-green.bg-success {
-  background-color: #737d55 !important;
+  background-color: var(--badge-background-green) !important;
 }
 
 .average-text {
@@ -138,7 +117,7 @@
 
 .higher-church-text {
   color: var(--text-grey);
-  font-size: var(--unnamed-font-size-15);
+  font-size: 15px;
   line-height: 24px;
   margin-bottom: 43px;
 }
