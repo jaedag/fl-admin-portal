@@ -96,7 +96,8 @@ const useLogMeIn = (memberId) => {
   }
 
   const getMember = (response, verb, level) => {
-    return response.data.members[0][`${verb + level}`]
+    const member = response?.data?.members?.length
+    if (member) return response.data.members[0][`${verb + level}`]
   }
 
   useEffect(() => {

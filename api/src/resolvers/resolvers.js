@@ -21,6 +21,7 @@ const {
   parseForCache_Removal,
   removeServantCypher,
   formatting,
+  splitAuthId,
 } = require('./resolver-utils')
 
 const auth0 = require('./auth0-utils')
@@ -202,6 +203,11 @@ export const MakeServant = async (
   const churchLower = terms.churchLower
   const servantLower = terms.servantLower
 
+  const current_auth_id = splitAuthId(context.jwt.sub)
+  if (Object.values(args).includes(current_auth_id)) {
+    throwErrorMsg('You cannot make yourself a servant!')
+    return
+  }
   isAuth(permittedRoles, context.auth.roles)
   noEmptyArgsValidation([
     `${churchLower}Id`,

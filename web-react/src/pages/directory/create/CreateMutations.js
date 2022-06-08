@@ -100,7 +100,6 @@ export const CREATE_FELLOWSHIP_MUTATION = gql`
   mutation CreateFellowship(
     $name: String!
     $bacentaId: ID!
-    $leaderId: ID!
     $meetingDay: String!
     $venueLongitude: Float
     $venueLatitude: Float
@@ -108,7 +107,6 @@ export const CREATE_FELLOWSHIP_MUTATION = gql`
     CreateFellowship(
       name: $name
       bacentaId: $bacentaId
-      leaderId: $leaderId
       meetingDay: $meetingDay
       venueLongitude: $venueLongitude
       venueLatitude: $venueLatitude
@@ -131,12 +129,8 @@ export const CREATE_FELLOWSHIP_MUTATION = gql`
 `
 
 export const CREATE_BACENTA_MUTATION = gql`
-  mutation CreateBacenta($name: String!, $constituencyId: ID!, $leaderId: ID!) {
-    CreateBacenta(
-      name: $name
-      constituencyId: $constituencyId
-      leaderId: $leaderId
-    ) {
+  mutation CreateBacenta($name: String!, $constituencyId: ID!) {
+    CreateBacenta(name: $name, constituencyId: $constituencyId) {
       id
       name
       stream_name
@@ -182,12 +176,8 @@ export const CREATE_SONTA_MUTATION = gql`
 `
 
 export const CREATE_CONSTITUENCY_MUTATION = gql`
-  mutation CreateConstituency($name: String!, $leaderId: ID!, $councilId: ID!) {
-    CreateConstituency(
-      name: $name
-      leaderId: $leaderId
-      councilId: $councilId
-    ) {
+  mutation CreateConstituency($name: String!, $councilId: ID!) {
+    CreateConstituency(name: $name, councilId: $councilId) {
       id
       name
       stream_name
@@ -203,8 +193,8 @@ export const CREATE_CONSTITUENCY_MUTATION = gql`
 `
 
 export const CREATE_COUNCIL_MUTATION = gql`
-  mutation CreateCouncil($name: String!, $leaderId: ID!, $streamId: ID!) {
-    CreateCouncil(name: $name, leaderId: $leaderId, streamId: $streamId) {
+  mutation CreateCouncil($name: String!, $streamId: ID!) {
+    CreateCouncil(name: $name, streamId: $streamId) {
       id
       name
       stream_name
@@ -220,16 +210,8 @@ export const CREATE_COUNCIL_MUTATION = gql`
 `
 
 export const CREATE_STREAM_MUTATION = gql`
-  mutation CreateStream(
-    $name: String!
-    $leaderId: ID!
-    $gatheringServiceId: ID!
-  ) {
-    CreateStream(
-      name: $name
-      leaderId: $leaderId
-      gatheringServiceId: $gatheringServiceId
-    ) {
+  mutation CreateStream($name: String!, $gatheringServiceId: ID!) {
+    CreateStream(name: $name, gatheringServiceId: $gatheringServiceId) {
       id
       name
 

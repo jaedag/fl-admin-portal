@@ -364,3 +364,10 @@ export const formatting = (churchType, servantType) => {
     churchLower,
   }
 }
+
+export const splitAuthId = (authID) => {
+  if (authID !== undefined) {
+    const array = authID.split('|')
+    return array[1]
+  }
+}
