@@ -91,8 +91,18 @@
 
 .facts-number {
   font-size: 80px;
-  line-height: 119px;
+  line-height: 80px;
   font-weight: 900;
+}
+
+.quick-fact-page {
+  height: calc(100vh - 54px);
+  overflow: hidden;
+}
+
+.quick-fact-card-wrapper {
+  height: calc(100vh - 171px);
+  padding-bottom: 20px;
 }
 
 .badge-percentage-red {
