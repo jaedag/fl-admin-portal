@@ -1,44 +1,24 @@
-:root {
-  --background-base: #121212;
-  --apple-cyan: #0bc9d2;
-  --text-blue: #68e0d7;
-  --lighter-card: #242323;
-  --text-red: #da0218;
-  ---ffffff: #ffffff;
-  --card-grey: #1e1c1c;
-  --light-grey: #bbbbbb;
-  --text-green: #4de531;
-  --text-grey: #8e8c8c;
-  --badge-text-red : #ec4860;
-  --badge-text-green : #2bed08;
-  --badge-background-red : #582e2e;
-  --badge-background-green: #737d55;
-
-  --quick-fact-text-font-size-35: 35px;
-  --quick-fact-text-character-spacing-0: 0px;
-  --quick-fact-text-line-spacing-41: 41px;
-}
-
-/* Character Styles */
 .quick-fact-text {
-  letter-spacing: var(--quick-fact-text-character-spacing-0);
-  color: var(---ffffff);
+  letter-spacing: 0px;
+  color: #ffffff;
   text-align: center;
-  font-size: var(--quick-fact-text-font-size-35);
-  line-height: var(--quick-fact-text-line-spacing-41);
+  font-size: 35px;
+  line-height: 41px;
   opacity: 1;
   font-weight: 600;
 }
+
 .fit-content {
   width: fit-content;
 }
+
 .dropdown {
-  border: 2px solid var(--text-grey);
+  border: 2px solid #8e8c8c;
   font-size: 12px;
   line-height: 14px;
   padding: 7px 23px;
-  color: var(--text-grey);
-  background: var(--background-base);
+  color: #8e8c8c;
+  background: #121212;
 }
 
 .page-padding {
@@ -46,10 +26,10 @@
 }
 
 .church-text {
-  font-size: var(--quick-fact-text-font-size-35);
-  line-height: var(--quick-fact-text-line-spacing-41);
-  letter-spacing: var(--quick-fact-text-character-spacing-0);
-  color: var(---ffffff);
+  font-size: 35px;
+  line-height: 41px;
+  letter-spacing: 0px;
+  color: #ffffff;
 }
 
 .stat-text {
@@ -65,7 +45,7 @@
 
 .branch-text {
   font-size: 12px;
-  color: var(--light-grey);
+  color: #bbbbbb;
 }
 
 .facts-number {
@@ -87,27 +67,21 @@
 .badge-percentage-red {
   font-size: 15px;
   font-weight: normal;
-  color: var(--badge-text-red);
+  color: #ec4860;
   padding: 7px 17px;
   border-radius: 0;
   margin-bottom: 15px;
+  background-color: #582e2e
 }
 
 .badge-percentage-green {
   font-size: 15px;
   font-weight: normal;
-  color: var(--badge-text-green);
+  color: #2bed08;
   padding: 7px 17px;
   border-radius: 0;
   margin-bottom: 15px;
-}
-
-.badge-percentage-red.bg-danger {
-  background-color: var(--badge-background-red) !important;
-}
-
-.badge-percentage-green.bg-success {
-  background-color: var(--badge-background-green) !important;
+  background-color: #737d55
 }
 
 .average-text {
@@ -116,22 +90,22 @@
 }
 
 .higher-church-text {
-  color: var(--text-grey);
+  color: #8e8c8c;
   font-size: 15px;
   line-height: 24px;
   margin-bottom: 43px;
 }
 
 .separator {
-  border: 1px solid var(---ffffff);
+  border: 1px solid #ffffff;
 }
 
 .quick-fact-card {
-  background-color: var(--lighter-card);
+  background-color: #242323;
   padding: 13px 22px;
 }
 
 .card-grey {
-  background-color: var(--card-grey);
+  background-color: #1e1c1c;
   margin-top: 20px;
 }

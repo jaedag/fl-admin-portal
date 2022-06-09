@@ -17,8 +17,8 @@ const QuickFactsCard = (props) => {
   )
 
   const getBadgeBackground = () => {
-    if (percentageRiseOrFall >= 0) return 'success'
-    return 'danger'
+    if (percentageRiseOrFall >= 0) return 'green'
+    return 'red'
   }
 
   const getBadgeColor = () => {
