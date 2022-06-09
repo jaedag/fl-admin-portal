@@ -49,12 +49,57 @@ import {
 import ServantMembers from './grids/ServantMembers'
 import UpdateBacentaBussing from './update/UpdateBusPaymentDetails'
 import AllStreamConstituencies from './display/AllStreamConstituencies'
+import FellowshipAttendanceFacts from './quick-facts/attendance/FellowshipAttendanceFacts'
+import BacentaAttendanceFacts from './quick-facts/attendance/BacentaAttendanceFacts'
+import ConstituencyAttendanceFacts from './quick-facts/attendance/ConstituencyAttendanceFacts'
+import StreamAttendanceFacts from './quick-facts/attendance/StreamAttendanceFacts'
+import CouncilAttendanceFacts from './quick-facts/attendance/CouncilAttendanceFacts'
+import GatheringServiceAttendanceFacts from './quick-facts/attendance/GatheringServiceAttendanceFacts'
+import QuickFactsChurchList from './quick-facts/QuickFactsChurchList'
 
 export const memberDirectory = [
   {
     path: '/directory/members',
     element: ServantMembers,
     roles: ['all'],
+  },
+]
+
+export const quickFacts = [
+  {
+    path: '/directory/quick-facts/church-list',
+    element: QuickFactsChurchList,
+    roles: ['all'],
+  },
+  {
+    path: '/quick-facts/fellowship',
+    element: FellowshipAttendanceFacts,
+    roles: permitMe('Fellowship'),
+  },
+  {
+    path: '/quick-facts/bacenta',
+    element: BacentaAttendanceFacts,
+    roles: permitMe('Bacenta'),
+  },
+  {
+    path: '/quick-facts/constituency',
+    element: ConstituencyAttendanceFacts,
+    roles: permitMe('Constituency'),
+  },
+  {
+    path: '/quick-facts/stream',
+    element: StreamAttendanceFacts,
+    roles: permitMe('Stream'),
+  },
+  {
+    path: '/quick-facts/council',
+    element: CouncilAttendanceFacts,
+    roles: permitMe('Council'),
+  },
+  {
+    path: '/quick-facts/gathering-service',
+    element: GatheringServiceAttendanceFacts,
+    roles: permitMe('GatheringService'),
   },
 ]
 export const memberGrids = [

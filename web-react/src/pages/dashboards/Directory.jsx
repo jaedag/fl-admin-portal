@@ -5,6 +5,7 @@ import { Container } from 'react-bootstrap'
 import './Directory.css'
 import ChurchIcon from '../../assets/church-svgrepo-com.svg'
 import MemberIcon from '../../assets/people-svgrepo-com.svg'
+import QuickFactsIcon from '../../assets/stars-svgrepo-com.svg'
 import { useQuery } from '@apollo/client'
 import { SERVANT_CHURCHES_COUNT } from './DashboardQueries'
 import MenuButton from 'components/buttons/MenuButton'
@@ -42,6 +43,13 @@ const Directory = () => {
             caption={getChurchCount(data?.members[0])}
             color="churches"
             onClick={() => navigate(`/directory/churches`)}
+          />
+          <MenuButton
+            icon={QuickFactsIcon}
+            title="quick facts"
+            caption={'Quick facts about your church'}
+            color="quick-facts"
+            onClick={() => navigate(`/directory/quick-facts/church-list`)}
           />
         </div>
       </Container>
