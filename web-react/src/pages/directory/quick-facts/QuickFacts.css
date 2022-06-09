@@ -1,0 +1,111 @@
+.quick-fact-text {
+  letter-spacing: 0px;
+  color: #ffffff;
+  text-align: center;
+  font-size: 35px;
+  line-height: 41px;
+  opacity: 1;
+  font-weight: 600;
+}
+
+.fit-content {
+  width: fit-content;
+}
+
+.dropdown {
+  border: 2px solid #8e8c8c;
+  font-size: 12px;
+  line-height: 14px;
+  padding: 7px 23px;
+  color: #8e8c8c;
+  background: #121212;
+}
+
+.page-padding {
+  padding: 0px 36px;
+}
+
+.church-text {
+  font-size: 35px;
+  line-height: 41px;
+  letter-spacing: 0px;
+  color: #ffffff;
+}
+
+.stat-text {
+  font-size: 17px;
+  letter-spacing: 0px;
+  margin-bottom: 20px;
+}
+
+.leader-text {
+  font-size: 14px;
+  line-height: 16px;
+}
+
+.branch-text {
+  font-size: 12px;
+  color: #bbbbbb;
+}
+
+.facts-number {
+  font-size: 80px;
+  line-height: 80px;
+  font-weight: 900;
+}
+
+.quick-fact-page {
+  height: calc(100vh - 54px);
+  overflow: hidden;
+}
+
+.quick-fact-card-wrapper {
+  height: calc(100vh - 171px);
+  padding-bottom: 20px;
+}
+
+.badge-percentage-red {
+  font-size: 15px;
+  font-weight: normal;
+  color: #ec4860;
+  padding: 7px 17px;
+  border-radius: 0;
+  margin-bottom: 15px;
+  background-color: #582e2e
+}
+
+.badge-percentage-green {
+  font-size: 15px;
+  font-weight: normal;
+  color: #2bed08;
+  padding: 7px 17px;
+  border-radius: 0;
+  margin-bottom: 15px;
+  background-color: #737d55
+}
+
+.average-text {
+  font-size: 17px;
+  line-height: 24px;
+}
+
+.higher-church-text {
+  color: #8e8c8c;
+  font-size: 15px;
+  line-height: 24px;
+  margin-bottom: 43px;
+}
+
+.separator {
+  border: 1px solid #ffffff;
+}
+
+.quick-fact-card {
+  background-color: #242323;
+  padding: 13px 22px;
+}
+
+.card-grey {
+  background-color: #1e1c1c;
+  margin-top: 20px;
+}

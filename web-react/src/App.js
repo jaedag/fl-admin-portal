@@ -15,6 +15,7 @@ import {
   directory,
   memberDirectory,
   memberGrids,
+  quickFacts,
 } from 'pages/directory/directoryRoutes.js'
 import { trends, services } from 'pages/services/servicesRoutes.js'
 import { arrivals } from 'pages/arrivals/arrivalsRoutes.js'
@@ -139,20 +140,22 @@ const PastorsAdmin = () => {
                         }
                       />
                     ))}
-                    {[...memberDirectory, ...memberGrids].map((route, i) => (
-                      <Route
-                        key={i}
-                        path={route.path}
-                        element={
-                          <MembersDirectoryRoute
-                            roles={route.roles}
-                            placeholder={route.placeholder}
-                          >
-                            <route.element />
-                          </MembersDirectoryRoute>
-                        }
-                      />
-                    ))}
+                    {[...memberDirectory, ...memberGrids, ...quickFacts].map(
+                      (route, i) => (
+                        <Route
+                          key={i}
+                          path={route.path}
+                          element={
+                            <MembersDirectoryRoute
+                              roles={route.roles}
+                              placeholder={route.placeholder}
+                            >
+                              <route.element />
+                            </MembersDirectoryRoute>
+                          }
+                        />
+                      )
+                    )}
 
                     <Route
                       path="/services/trends"

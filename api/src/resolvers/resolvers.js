@@ -206,7 +206,6 @@ export const MakeServant = async (
   const current_auth_id = splitAuthId(context.jwt.sub)
   if (Object.values(args).includes(current_auth_id)) {
     throwErrorMsg('You cannot make yourself a servant!')
-    return
   }
   isAuth(permittedRoles, context.auth.roles)
   noEmptyArgsValidation([

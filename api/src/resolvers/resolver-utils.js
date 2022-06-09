@@ -365,9 +365,9 @@ export const formatting = (churchType, servantType) => {
   }
 }
 
-export const splitAuthId = (authID) => {
-  if (authID !== undefined) {
-    const array = authID.split('|')
+export const splitAuthId = (authId) => {
+  if (authId !== undefined) {
+    const array = authId.split('|')
     return array[1]
   }
 }

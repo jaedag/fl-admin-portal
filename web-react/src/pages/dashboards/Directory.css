@@ -13,6 +13,10 @@
   color: var(--members-accent);
 }
 
+.quick-facts.dark {
+  color: var(--quickfacts-accent)
+}
+
 .danger.dark {
   color: var(--bad);
 }

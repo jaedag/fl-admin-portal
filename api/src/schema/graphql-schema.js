@@ -42,6 +42,10 @@ const campaigns = fs
   .readFileSync(path.join(__dirname, 'campaigns.graphql'))
   .toString('utf-8')
 
+const quickFacts = fs
+  .readFileSync(path.join(__dirname, './directory-quick-facts.graphql'))
+  .toString('utf-8')
+
 exports.typeDefs =
   schema +
   ' ' +
@@ -59,4 +63,7 @@ exports.typeDefs =
   ' ' +
   campaigns +
   ' ' +
-  banking
+  banking +
+  ' ' +
+  quickFacts +
+  ' '
