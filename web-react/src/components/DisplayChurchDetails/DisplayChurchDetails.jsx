@@ -154,8 +154,6 @@ const DisplayChurchDetails = (props) => {
       shouldFill = false
     }
 
-    // eslint-disable-next-line no-console
-    console.log(props)
     return shouldFill
   }
 

@@ -43,18 +43,16 @@ const DetailsFellowship = () => {
   )
 
   const check = last3Weeks()?.map((number) => {
-    if (lastFilled?.some((thing) => thing.week === number)) {
-      const inside = lastFilled?.find(({ week }) => week === number)
-      // eslint-disable-next-line no-console
-      console.log('inside', inside)
+    if (lastFilled?.some((service) => service.week === number)) {
+      const service = lastFilled?.find(({ week }) => week === number)
 
-      if (inside?.noServiceReason === null) {
+      if (service?.noServiceReason === null) {
         return {
           number: number,
           filled: true,
-          banked: inside.bankingProof ? true : false,
+          banked: service.bankingProof ? true : false,
         }
-      } else if (inside?.noServiceReason !== null) {
+      } else if (service?.noServiceReason !== null) {
         return {
           number: number,
           filled: true,
