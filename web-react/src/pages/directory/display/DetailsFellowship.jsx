@@ -34,24 +34,38 @@ const DetailsFellowship = () => {
     breadcrumb = [fellowship]
   }
 
-  const lastFilledServices = history?.services.map((service) => service.week)
-  const lastFilledBanking = history?.services.map(
-    (service) => service.bankingProof
+  const lastFilled = history?.services.map(
+    ({ bankingProof, noServiceReason, week }) => ({
+      bankingProof,
+      noServiceReason,
+      week,
+    })
   )
 
-  const check = last3Weeks()?.map((week, i) => {
-    if (lastFilledServices?.includes(week)) {
-      return {
-        number: week,
-        filled: true,
-        banked:
-          lastFilledBanking?.length && (lastFilledBanking[i] ? true : false),
+  const check = last3Weeks()?.map((number) => {
+    if (lastFilled?.some((thing) => thing.week === number)) {
+      const inside = lastFilled?.find(({ week }) => week === number)
+      // eslint-disable-next-line no-console
+      console.log('inside', inside)
+
+      if (inside?.noServiceReason === null) {
+        return {
+          number: number,
+          filled: true,
+          banked: inside.bankingProof ? true : false,
+        }
+      } else if (inside?.noServiceReason !== null) {
+        return {
+          number: number,
+          filled: true,
+          banked: 'No Service',
+        }
       }
     } else {
       return {
-        number: week,
+        number: number,
         filled: false,
-        banked: null,
+        banked: 'No Service',
       }
     }
   })
