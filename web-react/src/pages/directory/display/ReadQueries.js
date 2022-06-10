@@ -203,6 +203,7 @@ export const DISPLAY_FELLOWSHIP_HISTORY = gql`
         id
         bankingProof
         week
+        noServiceReason
       }
       history(limit: 5) {
         id

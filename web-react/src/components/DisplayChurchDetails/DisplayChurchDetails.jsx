@@ -368,7 +368,7 @@ const DisplayChurchDetails = (props) => {
           </Container>
         )}
 
-        {props.last3Weeks && props.details[0].number === 'Active' && (
+        {props.last3Weeks && props.details[2].number === 'Active' && (
           <>
             <h3 className="mt-4">FORMS</h3>
             {props.last3Weeks.map((week, i) => (
@@ -380,7 +380,7 @@ const DisplayChurchDetails = (props) => {
                     className={`${week.filled ? 'filled' : 'not-filled'}`}
                   >{`${week.filled ? 'Filled' : 'Not Filled'}`}</span>
                 </p>
-                {week.filled && (
+                {week.filled && week.banked !== 'No Service' && (
                   <p>
                     Banking Slip -{' '}
                     <span
