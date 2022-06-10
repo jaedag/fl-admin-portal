@@ -204,9 +204,13 @@ export const MakeServant = async (
   const servantLower = terms.servantLower
 
   const current_auth_id = splitAuthId(context.jwt.sub)
-  if (Object.values(args).includes(current_auth_id)) {
+  if (
+    Object.values(args).includes(current_auth_id) &&
+    verb.includes('Arrivals')
+  ) {
     throwErrorMsg('You cannot make yourself a servant!')
   }
+
   isAuth(permittedRoles, context.auth.roles)
   noEmptyArgsValidation([
     `${churchLower}Id`,
