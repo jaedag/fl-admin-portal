@@ -141,118 +141,6 @@ extend type Bacenta {
     )
 
   avgFellowshipAttendanceThisYear: Float
-
-  fellowshipAvgAttendanceThisYear: Float
-    @cypher(
-      statement: """
-      MATCH (this)-[:HAS_HISTORY {current:true}]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)
-      MATCH (record) WHERE NOT (record:NoService)
-      MATCH (record)-[:SERVICE_HELD_ON]->(date:TimeGraph)
-      MATCH (date)
-      WHERE date.date > date() - duration({years: 1})
-      RETURN round(avg(record.attendance))
-      """
-    )
-
-  fellowshipAvgIncomeThisYear: Float
-    @cypher(
-      statement: """
-      MATCH (this)-[:HAS_HISTORY {current:true}]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)
-      MATCH (record) WHERE NOT (record:NoService)
-      MATCH (record)-[:SERVICE_HELD_ON]->(date:TimeGraph)
-      MATCH (date)
-      WHERE date.date > date() - duration({years: 1})
-      RETURN round(avg(record.income), 2)
-      """
-    )
-
-  fellowshipPeakAttendanceThisYear: ServiceRecord
-    @cypher(
-      statement: """
-      MATCH (this)-[:HAS_HISTORY {current:true}]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
-      WITH date, record, this
-            MATCH (date)
-            WHERE date.date > date() - duration({years: 1})
-      WITH  max(record.attendance) as max, this
-      MATCH (this)-[:HAS_HISTORY {current:true}]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)
-      WHERE record.attendance = max
-      RETURN  record LIMIT 1
-      """
-    )
-
-  fellowshipPeakIncomeThisYear: ServiceRecord
-    @cypher(
-      statement: """
-      MATCH (this)-[:HAS_HISTORY {current:true}]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
-      WITH date, record, this
-            MATCH (date)
-            WHERE date.date > date() - duration({years: 1})
-      WITH  max(record.income) as max, this
-      MATCH (this)-[:HAS_HISTORY {current:true}]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)
-      WHERE record.income = max
-      RETURN  record LIMIT 1
-      """
-    )
-}
-
-extend type Bacenta {
-  avgFellowshipAttendanceThisMonth: Float
-    @cypher(
-      statement: """
-      MATCH (this)-[:HAS]->(fellowship) WHERE fellowship:Fellowship OR fellowship:ClosedFellowship
-      MATCH (fellowship)-[:HAS_HISTORY {current:true}]-(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)
-      MATCH (record)-[:SERVICE_HELD_ON]->(date:TimeGraph)
-      MATCH (record) WHERE NOT (record:NoService)
-      MATCH (date)
-      WHERE date.date > date() - duration({months: 1})
-      RETURN  round(avg(record.attendance))
-      """
-    )
-
-  avgFellowshipIncomeThisMonth: Float
-    @cypher(
-      statement: """
-      MATCH (this)-[:HAS]->(fellowship) WHERE fellowship:Fellowship OR fellowship:ClosedFellowship
-      MATCH (fellowship)-[:HAS_HISTORY {current:true}]-(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)
-      MATCH (record)-[:SERVICE_HELD_ON]->(date:TimeGraph)
-      MATCH (record) WHERE NOT (record:NoService)
-      MATCH (date)
-      WHERE date.date > date() - duration({months: 1})
-      RETURN  round(avg(record.income), 2)
-      """
-    )
-
-  peakFellowshipAttendanceThisMonth: ServiceRecord
-    @cypher(
-      statement: """
-      MATCH (this)-[:HAS]->(fellowship) WHERE fellowship:Fellowship OR fellowship:ClosedFellowship
-      MATCH (fellowship)-[:HAS_HISTORY {current:true}]-(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)
-      MATCH (record)-[:SERVICE_HELD_ON]->(date:TimeGraph)
-            MATCH (date)
-            WHERE date.date > date() - duration({months: 1})
-      WITH  max(record.attendance) as max, record
-      MATCH (record)
-      WHERE record.attendance = max
-      RETURN  record ORDER BY record.attendance DESC LIMIT 1
-      """
-    )
-
-  peakFellowshipIncomeThisMonth: ServiceRecord
-    @cypher(
-      statement: """
-      MATCH (this)-[:HAS]->(fellowship) WHERE fellowship:Fellowship OR fellowship:ClosedFellowship
-      MATCH (fellowship)-[:HAS_HISTORY {current:true}]-(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)
-      MATCH (record)-[:SERVICE_HELD_ON]->(date:TimeGraph)
-            MATCH (date)
-            WHERE date.date > date() - duration({months: 1})
-      WITH  max(record.income) as max, record
-      MATCH (record)
-      WHERE record.income = max
-      RETURN  record ORDER BY record.income DESC LIMIT 1
-      """
-    )
-
-  avgFellowshipAttendanceThisYear: Float
     @cypher(
       statement: """
       MATCH (this)-[:HAS]->(fellowship) WHERE fellowship:Fellowship OR fellowship:ClosedFellowship
@@ -266,6 +154,48 @@ extend type Bacenta {
     )
 
   avgFellowshipIncomeThisYear: Float
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS]->(fellowship) WHERE fellowship:Fellowship OR fellowship:ClosedFellowship
+      MATCH (fellowship)-[:HAS_HISTORY {current:true}]-(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)
+      MATCH (record) WHERE NOT (record:NoService)
+      MATCH (record)-[:SERVICE_HELD_ON]->(date:TimeGraph)
+      MATCH (date)
+      WHERE date.date > date() - duration({months: 1})
+      WITH sum(record.income) AS sum, this, date(date.date).week as weeknumber
+      RETURN round(avg(sum), 2)
+      """
+    )
+
+  avgWeekdayAttendanceThisMonth: Float
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS]->(fellowship) WHERE fellowship:Fellowship OR fellowship:ClosedFellowship
+      MATCH (fellowship)-[:HAS_HISTORY {current:true}]-(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)
+      MATCH (record) WHERE NOT (record:NoService)
+      MATCH (record)-[:SERVICE_HELD_ON]->(date:TimeGraph)
+      MATCH (date)
+      WHERE date.date > date() - duration({months: 1})
+      WITH sum(record.attendance) AS sum, this, date(date.date).week as weeknumber
+      RETURN round(avg(sum))
+      """
+    )
+
+  avgWeekdayAttendanceThisYear: Float
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS]->(fellowship) WHERE fellowship:Fellowship OR fellowship:ClosedFellowship
+      MATCH (fellowship)-[:HAS_HISTORY {current:true}]-(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)
+      MATCH (record) WHERE NOT (record:NoService)
+      MATCH (record)-[:SERVICE_HELD_ON]->(date:TimeGraph)
+      MATCH (date)
+      WHERE date.date > date() - duration({years: 1})
+      WITH sum(record.attendance) AS sum, this, date(date.date).week as weeknumber
+      RETURN round(avg(sum))
+      """
+    )
+
+  avgWeekdayIncomeThisMonth: Float
     @cypher(
       statement: """
       MATCH (this)-[:HAS]->(fellowship) WHERE fellowship:Fellowship OR fellowship:ClosedFellowship
