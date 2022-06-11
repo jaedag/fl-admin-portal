@@ -71,7 +71,7 @@
   padding: 7px 17px;
   border-radius: 0;
   margin-bottom: 15px;
-  background-color: #582e2e
+  background-color: #582e2e;
 }
 
 .badge-percentage-green {
@@ -81,7 +81,7 @@
   padding: 7px 17px;
   border-radius: 0;
   margin-bottom: 15px;
-  background-color: #737d55
+  background-color: #737d55;
 }
 
 .average-text {
@@ -108,4 +108,16 @@
 .card-grey {
   background-color: #1e1c1c;
   margin-top: 20px;
+}
+
+.income-number {
+  font-size: 40px;
+  line-height: 80px;
+  font-weight: 700;
+  color: #EFAA66;
+}
+
+.currency {
+  font-size: 12px;
+  color: #EFAA66;
 }
