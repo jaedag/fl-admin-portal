@@ -4,6 +4,7 @@ import '../QuickFacts.css'
 import { useNavigate } from 'react-router'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { MemberContext } from 'contexts/MemberContext'
+import { ArrowRightCircle, ArrowLeftCircle } from 'react-bootstrap-icons'
 
 const QuickFactsHeader = (props) => {
   const { clickCard } = useContext(ChurchContext)
@@ -19,7 +20,7 @@ const QuickFactsHeader = (props) => {
           navigate(`/quick-facts/${props.previous}/${churchType.toLowerCase()}`)
         }}
       >
-        <i className="fa-solid fa-circle-chevron-left"></i>
+        <ArrowLeftCircle size={25} />
       </div>
       <div>
         <div className="quick-fact-text">Quick Facts</div>
@@ -35,7 +36,7 @@ const QuickFactsHeader = (props) => {
           )
         }}
       >
-        <i className="fa fa-circle-chevron-right"></i>
+        <ArrowRightCircle size={25} />
       </div>
     </div>
   )
