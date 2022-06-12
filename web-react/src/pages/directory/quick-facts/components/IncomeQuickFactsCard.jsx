@@ -2,18 +2,18 @@ import React from 'react'
 import { Badge } from 'react-bootstrap'
 import '../QuickFacts.css'
 
-const QuickFactsCard = (props) => {
+const IncomeQuickFactsCard = (props) => {
   const details = props?.details[0]
 
-  const getPercentageChange = (avgAttendance, avgHigherLevelAttendance) => {
-    var diff = avgAttendance - avgHigherLevelAttendance
+  const getPercentageChange = (avgIncome, avgHigherLevelIncome) => {
+    var diff = avgIncome - avgHigherLevelIncome
     if (isNaN(diff)) return '--'
-    return Math.round((diff / avgAttendance) * 100)
+    return Math.round((diff / avgIncome) * 100)
   }
 
   const percentageRiseOrFall = getPercentageChange(
-    details?.churchAvgAttendanceThisMonth,
-    details?.avgHigherLevelAttendanceThisMonth
+    details?.churchAvgIncomeThisMonth,
+    details?.avgHigherLevelIncomeThisMonth
   )
 
   const getBadgeBackground = () => {
@@ -29,18 +29,16 @@ const QuickFactsCard = (props) => {
   return (
     <div className="w-100 text-center quick-fact-card">
       <div className="church-text">{details?.churchType}</div>
-      <div className="stat-text ">
-        Average Weekday <br />
-        {details?.cardType}
-      </div>
+      <div className="stat-text ">{details?.cardType} Stats</div>
       <div className="leader-text">{details?.leadersName}</div>
       <div className="branch-text">
         {details?.churchName + ' ' + details?.churchType}
       </div>
-      <div className="facts-number">
-        {details?.churchAvgAttendanceThisMonth === 'null'
+      <div className="income-number">
+        <span className="currency">GHS </span>
+        {details?.churchAvgIncomeThisMonth === 'null'
           ? '--'
-          : details?.churchAvgAttendanceThisMonth}
+          : details?.churchAvgIncomeThisMonth}
       </div>
       <div>
         <Badge
@@ -52,17 +50,18 @@ const QuickFactsCard = (props) => {
         </Badge>
       </div>
       <hr className="separator" />
-      <div className="facts-number text-center">
-        {details?.avgHigherLevelAttendanceThisMonth === 'null'
+      <div className="income-number">
+        <span className="currency">GHS </span>
+        {details?.avgHigherLevelIncomeThisMonth === 'null'
           ? '--'
-          : details?.avgHigherLevelAttendanceThisMonth}
+          : details?.avgHigherLevelIncomeThisMonth}
       </div>
       <div className="average-text">
-        Average {details?.churchType} <br /> Attendance
+        Average {details?.churchType} <br /> Income
       </div>
       <div className="higher-church-text">{details?.higherLevelName}</div>
     </div>
   )
 }
 
-export default QuickFactsCard
+export default IncomeQuickFactsCard

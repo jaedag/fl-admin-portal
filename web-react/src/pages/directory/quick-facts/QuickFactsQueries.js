@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client'
 
-export const FELLOWSHIP_ATTENDANCE_FACTS = gql`
-  query fellowshipAttendanceFacts($fellowshipId: ID) {
+export const FELLOWSHIP_AVG_WEEKDAY_ATTENDANCE_THIS_MONTH = gql`
+  query fellowshipAvgWeekdayAttendanceThisMonth($fellowshipId: ID) {
     fellowships(where: { id: $fellowshipId }) {
       id
       name
@@ -12,7 +12,7 @@ export const FELLOWSHIP_ATTENDANCE_FACTS = gql`
       }
       avgWeekdayAttendanceThisMonth
       council {
-        fellowshipAvgAttendanceThisMonth
+        avgFellowshipWeekdayAttendanceThisMonth
         name
         id
       }
@@ -20,8 +20,8 @@ export const FELLOWSHIP_ATTENDANCE_FACTS = gql`
   }
 `
 
-export const BACENTA_ATTENDANCE_FACTS = gql`
-  query bacentaAttendanceFacts($bacentaId: ID) {
+export const BACENTA_AVG_WEEKDAY_ATTENDANCE_THIS_MONTH = gql`
+  query bacentaAvgWeekdayAttendanceThisMonth($bacentaId: ID) {
     bacentas(where: { id: $bacentaId }) {
       id
       avgWeekdayAttendanceThisMonth
@@ -40,8 +40,8 @@ export const BACENTA_ATTENDANCE_FACTS = gql`
   }
 `
 
-export const CONSTITUENCY_ATTENDANCE_FACTS = gql`
-  query constituencyAttendanceFacts($constituencyId: ID) {
+export const CONSTITUENCY_AVG_WEEKDAY_ATTENDANCE_THIS_MONTH = gql`
+  query constituencyAvgWeekdayAttendanceThisMonth($constituencyId: ID) {
     constituencies(where: { id: $constituencyId }) {
       id
       name
@@ -60,8 +60,8 @@ export const CONSTITUENCY_ATTENDANCE_FACTS = gql`
   }
 `
 
-export const COUNCIL_ATTENDANCE_FACTS = gql`
-  query councilAttendanceFacts($councilId: ID) {
+export const COUNCIL_AVG_WEEKDAY_ATTENDANCE_THIS_MONTH = gql`
+  query councilAvgWeekdayAttendanceThisMonth($councilId: ID) {
     councils(where: { id: $councilId }) {
       id
       name
@@ -80,8 +80,8 @@ export const COUNCIL_ATTENDANCE_FACTS = gql`
   }
 `
 
-export const STREAM_ATTENDANCE_FACTS = gql`
-  query streamAttendanceFacts($streamId: ID) {
+export const STREAM_AVG_WEEKDAY_ATTENDANCE_THIS_MONTH = gql`
+  query streamAvgWeekdayAttendanceThisMonth($streamId: ID) {
     streams(where: { id: $streamId }) {
       id
       name
@@ -100,8 +100,8 @@ export const STREAM_ATTENDANCE_FACTS = gql`
   }
 `
 
-export const GATHERING_SERVICE_ATTENDANCE_FACTS = gql`
-  query gatheringServiceAttendanceFacts($gatheringServiceId: ID) {
+export const GATHERING_SERVICE_AVG_WEEKDAY_ATTENDANCE_THIS_MONTH = gql`
+  query gatheringServiceAvgWeekdayAttendanceThisMonth($gatheringServiceId: ID) {
     gatheringServices(where: { id: $gatheringServiceId }) {
       id
       name
@@ -115,6 +115,127 @@ export const GATHERING_SERVICE_ATTENDANCE_FACTS = gql`
         id
         name
         avgGatheringServiceWeekdayAttendanceThisMonth
+      }
+    }
+  }
+`
+
+//average weekday income this month
+export const FELLOWSHIP_AVG_WEEKDAY_INCOME_THIS_MONTH = gql`
+  query fellowshipAvgWeekdayIncomeThisMonth($fellowshipId: ID) {
+    fellowships(where: { id: $fellowshipId }) {
+      id
+      name
+      avgWeekdayIncomeThisMonth
+      leader {
+        id
+        firstName
+        lastName
+      }
+      council {
+        id
+        name
+        avgFellowshipWeekdayIncomeThisMonth
+      }
+    }
+  }
+`
+
+export const BACENTA_AVG_WEEKDAY_INCOME_THIS_MONTH = gql`
+  query bacentaAvgWeekdayIncomeThisMonth($bacentaId: ID) {
+    bacentas(where: { id: $bacentaId }) {
+      id
+      name
+      avgWeekdayIncomeThisMonth
+      leader {
+        id
+        firstName
+        lastName
+      }
+      council {
+        id
+        name
+        avgBacentaWeekdayIncomeThisMonth
+      }
+    }
+  }
+`
+
+export const CONSTITUENCY_AVG_WEEKDAY_INCOME_THIS_MONTH = gql`
+  query constituencyAvgWeekdayIncomeThisMonth($constituencyId: ID) {
+    constituencies(where: { id: $constituencyId }) {
+      id
+      name
+      avgWeekdayIncomeThisMonth
+      leader {
+        id
+        firstName
+        lastName
+      }
+      council {
+        id
+        name
+        avgConstituencyWeekdayIncomeThisMonth
+      }
+    }
+  }
+`
+
+export const COUNCIL_AVG_WEEKDAY_INCOME_THIS_MONTH = gql`
+  query councilAvgWeekdayIncomeThisMonth($councilId: ID) {
+    councils(where: { id: $councilId }) {
+      id
+      name
+      avgWeekdayIncomeThisMonth
+      leader {
+        id
+        firstName
+        lastName
+      }
+      stream {
+        id
+        name
+        avgCouncilWeekdayIncomeThisMonth
+      }
+    }
+  }
+`
+
+export const STREAM_AVG_WEEKDAY_INCOME_THIS_MONTH = gql`
+  query streamAvgWeekdayIncomeThisMonth($streamId: ID) {
+    streams(where: { id: $streamId }) {
+      id
+      name
+      avgWeekdayIncomeThisMonth
+      leader {
+        id
+        firstName
+        lastName
+      }
+      gatheringService {
+        id
+        name
+        avgStreamWeekdayIncomeThisMonth
+      }
+    }
+  }
+`
+
+export const GATHERING_SERVICE_AVG_WEEKDAY_INCOME_THIS_MONTH = gql`
+  query gatheringServiceAvgWeekdayIncomeThisMonth($gatheringServiceId: ID) {
+    gatheringServices(where: { id: $gatheringServiceId }) {
+      id
+      name
+      avgWeekdayIncomeThisMonth
+      leader {
+        id
+        firstName
+        lastName
+      }
+      denomination {
+        id
+        name
+        avgGatheringServiceWeekdayIncomeThisMonth
       }
     }
   }

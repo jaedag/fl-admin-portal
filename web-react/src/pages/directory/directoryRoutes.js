@@ -49,13 +49,19 @@ import {
 import ServantMembers from './grids/ServantMembers'
 import UpdateBacentaBussing from './update/UpdateBusPaymentDetails'
 import AllStreamConstituencies from './display/AllStreamConstituencies'
-import FellowshipAttendanceFacts from './quick-facts/attendance/FellowshipAttendanceFacts'
-import BacentaAttendanceFacts from './quick-facts/attendance/BacentaAttendanceFacts'
-import ConstituencyAttendanceFacts from './quick-facts/attendance/ConstituencyAttendanceFacts'
-import StreamAttendanceFacts from './quick-facts/attendance/StreamAttendanceFacts'
-import CouncilAttendanceFacts from './quick-facts/attendance/CouncilAttendanceFacts'
-import GatheringServiceAttendanceFacts from './quick-facts/attendance/GatheringServiceAttendanceFacts'
+import FellowshipAvgWeekdayAttendance from './quick-facts/attendance/FellowshipAvgWeekdayAttendance'
+import BacentaAvgWeekdayAttendance from './quick-facts/attendance/BacentaAvgWeekdayAttendance'
+import ConstituencyAvgWeekdayAttendance from './quick-facts/attendance/ConstituencyAvgWeekdayAttendance'
+import StreamAvgWeekdayAttendance from './quick-facts/attendance/StreamAvgWeekdayAttendance'
+import CouncilAvgWeekdayAttendance from './quick-facts/attendance/CouncilAvgWeekdayAttendance'
+import GatheringServiceAvgWeekdayAttendance from './quick-facts/attendance/GatheringServiceAvgWeekdayAttendance'
 import QuickFactsChurchList from './quick-facts/QuickFactsChurchList'
+import FellowshipAvgWeekdayIncome from './quick-facts/income/FellowshipAvgWeekdayIncome'
+import BacentaAvgWeekdayIncome from './quick-facts/income/BacentaAvgWeekdayIncome'
+import ConstituencyAvgWeekdayIncome from './quick-facts/income/ConstituencyAvgWeekdayIncome'
+import StreamAvgWeekdayIncome from './quick-facts/income/StreamAvgWeekdayIncome'
+import CouncilAvgWeekdayIncome from './quick-facts/income/CouncilAvgWeekdayIncome'
+import GatheringServiceAvgWeekdayIncome from './quick-facts/income/GatheringServiceAvgWeekdayIncome'
 
 export const memberDirectory = [
   {
@@ -72,36 +78,68 @@ export const quickFacts = [
     roles: ['all'],
   },
   {
-    path: '/quick-facts/fellowship',
-    element: FellowshipAttendanceFacts,
+    path: '/quick-facts/attendance/fellowship',
+    element: FellowshipAvgWeekdayAttendance,
     roles: permitMe('Fellowship'),
   },
   {
-    path: '/quick-facts/bacenta',
-    element: BacentaAttendanceFacts,
+    path: '/quick-facts/attendance/bacenta',
+    element: BacentaAvgWeekdayAttendance,
     roles: permitMe('Bacenta'),
   },
   {
-    path: '/quick-facts/constituency',
-    element: ConstituencyAttendanceFacts,
+    path: '/quick-facts/attendance/constituency',
+    element: ConstituencyAvgWeekdayAttendance,
     roles: permitMe('Constituency'),
   },
   {
-    path: '/quick-facts/stream',
-    element: StreamAttendanceFacts,
+    path: '/quick-facts/attendance/stream',
+    element: StreamAvgWeekdayAttendance,
     roles: permitMe('Stream'),
   },
   {
-    path: '/quick-facts/council',
-    element: CouncilAttendanceFacts,
+    path: '/quick-facts/attendance/council',
+    element: CouncilAvgWeekdayAttendance,
     roles: permitMe('Council'),
   },
   {
-    path: '/quick-facts/gathering-service',
-    element: GatheringServiceAttendanceFacts,
+    path: '/quick-facts/attendance/gathering-service',
+    element: GatheringServiceAvgWeekdayAttendance,
+    roles: permitMe('GatheringService'),
+  },
+  //quick facts income routes
+  {
+    path: '/quick-facts/income/fellowship',
+    element: FellowshipAvgWeekdayIncome,
+    roles: permitMe('Fellowship'),
+  },
+  {
+    path: '/quick-facts/income/bacenta',
+    element: BacentaAvgWeekdayIncome,
+    roles: permitMe('Bacenta'),
+  },
+  {
+    path: '/quick-facts/income/constituency',
+    element: ConstituencyAvgWeekdayIncome,
+    roles: permitMe('Constituency'),
+  },
+  {
+    path: '/quick-facts/income/stream',
+    element: StreamAvgWeekdayIncome,
+    roles: permitMe('Stream'),
+  },
+  {
+    path: '/quick-facts/income/council',
+    element: CouncilAvgWeekdayIncome,
+    roles: permitMe('Council'),
+  },
+  {
+    path: '/quick-facts/income/gathering-service',
+    element: GatheringServiceAvgWeekdayIncome,
     roles: permitMe('GatheringService'),
   },
 ]
+
 export const memberGrids = [
   {
     path: '/gatheringservice/members',

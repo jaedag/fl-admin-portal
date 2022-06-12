@@ -1,18 +1,21 @@
 import React, { useContext } from 'react'
-import QuickFactsCard from '../components/QuickFactsCard'
+import AttendanceQuickFactsCard from '../components/AttendanceQuickFactsCard'
 import '../QuickFacts.css'
 import { useQuery } from '@apollo/client'
 import { ChurchContext } from 'contexts/ChurchContext'
 import BaseComponent from 'components/base-component/BaseComponent'
-import { FELLOWSHIP_ATTENDANCE_FACTS } from '../QuickFactsQueries'
-import QuickFactsSelect from '../components/QuickFactsSelect'
+import { FELLOWSHIP_AVG_WEEKDAY_ATTENDANCE_THIS_MONTH } from '../QuickFactsQueries'
+import QuickFactsHeader from '../components/QuickFactsHeader'
 
-const FellowshipAttendanceFacts = () => {
+const FellowshipAvgWeekdayAttendance = () => {
   const { fellowshipId } = useContext(ChurchContext)
 
-  const { data, loading, error } = useQuery(FELLOWSHIP_ATTENDANCE_FACTS, {
-    variables: { fellowshipId: fellowshipId },
-  })
+  const { data, loading, error } = useQuery(
+    FELLOWSHIP_AVG_WEEKDAY_ATTENDANCE_THIS_MONTH,
+    {
+      variables: { fellowshipId: fellowshipId },
+    }
+  )
 
   const fellowship = data?.fellowships[0]
 
@@ -23,7 +26,7 @@ const FellowshipAttendanceFacts = () => {
       leadersName: `${fellowship?.leader?.firstName} ${fellowship?.leader?.lastName}`,
       churchName: `${fellowship?.name}`,
       churchAvgAttendanceThisMonth: `${fellowship?.avgWeekdayAttendanceThisMonth}`,
-      avgHigherLevelAttendanceThisMonth: `${fellowship?.council?.fellowshipAvgAttendanceThisMonth}`,
+      avgHigherLevelAttendanceThisMonth: `${fellowship?.council?.avgFellowshipWeekdayAttendanceThisMonth}`,
       higherLevelName: `${fellowship?.council?.name} ${fellowship?.council?.__typename}`,
     },
   ]
@@ -31,22 +34,13 @@ const FellowshipAttendanceFacts = () => {
   return (
     <BaseComponent loading={loading} error={error} data={data}>
       <div className="quick-fact-page">
-        <div className="d-flex justify-content-between page-padding">
-          <div></div>
-          <div>
-            <div className="quick-fact-text">Quick Facts</div>
-            <div className="mx-auto mt-2 fit-content">
-              <QuickFactsSelect />
-            </div>
-          </div>
-          <div></div>
-        </div>
+        <QuickFactsHeader previous={'income'} next={'income'} />
 
         <div className=" page-padding mt-3 quick-fact-card-wrapper">
-          <QuickFactsCard details={details} />
+          <AttendanceQuickFactsCard details={details} />
         </div>
       </div>
     </BaseComponent>
   )
 }
-export default FellowshipAttendanceFacts
+export default FellowshipAvgWeekdayAttendance
