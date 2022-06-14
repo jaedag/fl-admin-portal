@@ -1,5 +1,4 @@
 // REMOVE AND RECREATE ALL THE RELATIONSHIPS 
-
 // STEP 1: Increment ServiceLogs with Same Timestamp
 
 //Create Dansoman to Leader Has History Relationship 
@@ -329,3 +328,5 @@ MERGE (fellowshipCampaign)-[:HAS_TARGET]->(target)
 MERGE (fellowshipCampaign)<-[:HAS]-(bacentaCampaign)
 
 return log,fellowship,fellowshipCampaign limit 2;
+
+

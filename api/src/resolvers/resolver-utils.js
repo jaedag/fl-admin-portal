@@ -290,43 +290,100 @@ const createChurchHistorySubstructure = async ({
         break
     }
 
-    if ('councils' in logResponse) {
-      const res = rearrangeCypherObject(
-        await session
-          .run(servantCypher.connectCouncilLogSubstructure, {
-            churchId: [church.id],
-          })
-          .catch((error) =>
-            throwErrorMsg(`Error Creating Constituency Substructure`, error)
-          )
-      )
+    if ('gatheringServices' in logResponse) {
+      const responseArray = []
+      for (const gatheringService of logResponse.gatheringServices) {
+        const response = rearrangeCypherObject(
+          await session
+            .run(servantCypher.connectGatheringServiceLogSubstructure, {
+              churchId: gatheringService,
+            })
+            .catch((error) =>
+              throwErrorMsg(
+                `Error Creating Gathering Service Substructure`,
+                error
+              )
+            )
+        )
 
-      logResponse.constituencies = res.constituencies
+        responseArray.push(...response.streams)
+      }
+
+      logResponse.streams = responseArray
+    }
+
+    if ('streams' in logResponse) {
+      const responseArray = []
+      for (const stream of logResponse.streams) {
+        const response = rearrangeCypherObject(
+          await session
+            .run(servantCypher.connectStreamLogSubstructure, {
+              churchId: stream,
+            })
+            .catch((error) =>
+              throwErrorMsg(`Error Creating Stream Substructure`, error)
+            )
+        )
+
+        responseArray.push(...response.councils)
+      }
+
+      logResponse.councils = responseArray
+    }
+
+    if ('councils' in logResponse) {
+      const responseArray = []
+      for (const council of logResponse.councils) {
+        const response = rearrangeCypherObject(
+          await session
+            .run(servantCypher.connectCouncilLogSubstructure, {
+              churchId: council,
+            })
+            .catch((error) =>
+              throwErrorMsg(`Error Creating Council Substructure`, error)
+            )
+        )
+        responseArray.push(...response.constituencies)
+      }
+
+      logResponse.constituencies = responseArray
     }
     if ('constituencies' in logResponse) {
-      const res = rearrangeCypherObject(
-        await session
-          .run(servantCypher.connectConstituencyLogSubstructure, {
-            churchId: [church.id],
-          })
-          .catch((error) =>
-            throwErrorMsg(`Error Creating Constituency Substructure`, error)
-          )
-      )
-      logResponse.bacentas = res.bacentas
+      const responseArray = []
+      for (const constituency of logResponse.constituencies) {
+        const response = rearrangeCypherObject(
+          await session
+            .run(servantCypher.connectConstituencyLogSubstructure, {
+              churchId: constituency,
+            })
+            .catch((error) =>
+              throwErrorMsg(`Error Creating Constituency Substructure`, error)
+            )
+        )
+        responseArray.push(...response.bacentas)
+      }
+
+      logResponse.bacentas = responseArray
     }
-    console.log(logResponse, 'logResponse')
     if ('bacentas' in logResponse) {
-      const res = rearrangeCypherObject(
-        await session
-          .run(servantCypher.connectBacentaLogSubstructure, {
-            churchId: [church.id],
-          })
-          .catch((error) =>
-            throwErrorMsg(`Error Creating Bacenta Substructure`, error)
-          )
-      )
-      console.log(res, 'response from bacenta substructure')
+      console.log('prove that there are bacentas here')
+
+      const responseArray = []
+      for (const bacenta of logResponse.bacentas) {
+        const response = rearrangeCypherObject(
+          await session
+            .run(servantCypher.connectBacentaLogSubstructure, {
+              churchId: bacenta,
+            })
+            .catch((error) =>
+              throwErrorMsg(`Error Creating Bacenta Substructure`, error)
+            )
+        )
+
+        responseArray.push(...response.fellowships)
+      }
+
+      console.log(responseArray, 'response from bacenta substructure')
     }
   } catch (error) {
     throwErrorMsg(error)
