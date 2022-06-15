@@ -19,3 +19,7 @@
 .bg-content {
   position: relative;
 }
+
+.desktop-card {
+  width: 40%;
+}
