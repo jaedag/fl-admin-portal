@@ -424,12 +424,12 @@ extend type Mutation {
       OPTIONAL MATCH (oldLeader:Member {id: $oldLeaderId})
          SET log :ServiceLog
          WITH log, newLeader,oldLeader
-       OPTIONAl MATCH ()-[r0:HAS_HISTORY]->(log)
-         SET r0.current = false
+       OPTIONAl MATCH ()-[r0:CURRENT_HISTORY]->(log)
+         DELETE r0
          WITH log,newLeader,oldLeader
        CREATE (oldLeader)-[:HAS_HISTORY]->(log)
        CREATE (newLeader)-[r:HAS_HISTORY]->(log)
-          SET r.current = true
+       CREATE (newLeader)-[:CURRENT_HISTORY]->(log)
           WITH log
        RETURN COUNT(log)
        }
