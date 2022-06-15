@@ -40,7 +40,7 @@ exports.serviceMutation = {
     )
 
     if (!relationshipCheck.exists) {
-      //Checks if the church has a current historyLog with current= true, otherwise creates it
+      //Checks if the church has a current history record otherwise creates it
       const getServantAndChurch = rearrangeCypherObject(
         await session.run(serviceCypher.getServantAndChurch, args)
       )
@@ -68,11 +68,11 @@ exports.serviceMutation = {
       await session.run(serviceCypher.checkFormFilledThisWeek, args)
     )
 
-    if (Object.keys(serviceCheck).length !== 0) {
+    if (serviceCheck.alreadyFilled) {
       throwErrorMsg(errorMessage.no_double_form_filling)
       return
     }
-    if (serviceCheck.labels.includes('Vacation')) {
+    if (serviceCheck.labels?.includes('Vacation')) {
       throwErrorMsg(errorMessage.vacation_cannot_fill_service)
     }
 

@@ -94,7 +94,7 @@ WITH max(log.timeStamp) as max, n, leader
 MATCH (n)-[r:HAS_HISTORY]->(log:ServiceLog)<-[s:HAS_HISTORY]-(leader)
 WHERE log.timeStamp = max
 CREATE (n)-[:CURRENT_HISTORY]->(log)
-CREATE (s)-[:CURRENT_HISTORY]->(log)
+CREATE (leader)-[:CURRENT_HISTORY]->(log)
 RETURN count(log);
 
 //stream history logs
@@ -104,7 +104,7 @@ WITH max(log.timeStamp) as max, n, leader
 MATCH (n)-[r:HAS_HISTORY]->(log:ServiceLog)<-[s:HAS_HISTORY]-(leader)
 WHERE log.timeStamp = max
 CREATE (n)-[:CURRENT_HISTORY]->(log)
-CREATE (s)-[:CURRENT_HISTORY]->(log)
+CREATE (leader)-[:CURRENT_HISTORY]->(log)
 RETURN count(log);
 
 
@@ -115,7 +115,7 @@ WITH max(log.timeStamp) as max, n, leader
 MATCH (n)-[r:HAS_HISTORY]->(log:ServiceLog)<-[s:HAS_HISTORY]-(leader)
 WHERE log.timeStamp = max
 CREATE (n)-[:CURRENT_HISTORY]->(log)
-CREATE (s)-[:CURRENT_HISTORY]->(log)
+CREATE (leader)-[:CURRENT_HISTORY]->(log)
 RETURN count(log);
 
 //constituency history logs
@@ -125,7 +125,7 @@ WITH max(log.timeStamp) as max, n, leader
 MATCH (n)-[r:HAS_HISTORY]->(log:ServiceLog)<-[s:HAS_HISTORY]-(leader)
 WHERE log.timeStamp = max
 CREATE (n)-[:CURRENT_HISTORY]->(log)
-CREATE (s)-[:CURRENT_HISTORY]->(log)
+CREATE (leader)-[:CURRENT_HISTORY]->(log)
 RETURN count(log);
 
 //bacenta history logs
@@ -135,7 +135,7 @@ WITH max(log.timeStamp) as max, n, leader
 MATCH (n)-[r:HAS_HISTORY]->(log:ServiceLog)<-[s:HAS_HISTORY]-(leader)
 WHERE log.timeStamp = max
 CREATE (n)-[:CURRENT_HISTORY]->(log)
-CREATE (s)-[:CURRENT_HISTORY]->(log)
+CREATE (leader)-[:CURRENT_HISTORY]->(log)
 RETURN count(log);
 
 
@@ -146,7 +146,7 @@ WITH max(log.timeStamp) as max, n, leader
 MATCH (n)-[r:HAS_HISTORY]->(log:ServiceLog)<-[s:HAS_HISTORY]-(leader)
 WHERE log.timeStamp = max
 CREATE (n)-[:CURRENT_HISTORY]->(log)
-CREATE (s)-[:CURRENT_HISTORY]->(log)
+CREATE (leader)-[:CURRENT_HISTORY]->(log)
 RETURN count(log);
 
 

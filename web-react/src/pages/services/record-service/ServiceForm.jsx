@@ -36,7 +36,7 @@ const ServiceForm = ({
 
   const validationSchema = Yup.object({
     serviceDate: Yup.date()
-      .max(today, 'Service could not possibly have happened after today')
+      .max(new Date(), 'Service could not possibly have happened after today')
       .min(getMondayThisWeek(today), 'You can only fill forms for this week')
       .required('Date is a required field'),
     cediIncome: Yup.number()

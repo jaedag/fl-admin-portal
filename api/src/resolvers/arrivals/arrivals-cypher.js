@@ -92,8 +92,8 @@ DELETE oldHelpers
 
 WITH church, admin
 
-MATCH (church)-[oldHistory:HAS_HISTORY]->(:ServiceLog)<-[oldAdminHistory:HAS_HISTORY]-(admin)
-REMOVE oldHistory.current, oldAdminHistory.current
+MATCH (church)-[oldHistory:CURRENT_HISTORY]->(:ServiceLog)<-[oldAdminHistory:CURRENT_HISTORY]-(admin)
+DELETE oldHistory, oldAdminHistory
 
 
 RETURN church
@@ -115,7 +115,7 @@ CREATE (bussingRecord:BussingRecord {created_at:datetime()})
 
     WITH bussingRecord
     MATCH (bacenta:Bacenta {id:$bacentaId})
-    MATCH (bacenta)-[has_history:HAS_HISTORY {current: true}]->(log:ServiceLog)
+    MATCH (bacenta)-[:CURRENT_HISTORY]->(log:ServiceLog)
 
     MERGE (log)-[:HAS_BUSSING]->(bussingRecord)
     MERGE (serviceDate:TimeGraph {date: date($serviceDate)})
