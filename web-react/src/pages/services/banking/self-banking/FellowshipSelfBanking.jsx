@@ -60,48 +60,46 @@ const FellowshipSelfBanking = () => {
         }
 
         return (
-          <>
-            <Card
-              key={index}
-              className="mb-2"
-              onClick={() => {
-                setConfirmService(service)
-                clickCard(service)
-                if (service?.transactionStatus === 'pending') {
-                  togglePopup()
-                  return
-                }
+          <Card
+            key={index}
+            className="mb-2"
+            onClick={() => {
+              setConfirmService(service)
+              clickCard(service)
+              if (service?.transactionStatus === 'pending') {
+                togglePopup()
+                return
+              }
 
-                if (service?.transactionStatus === 'success') {
-                  return
-                }
-                navigate('/services/fellowship/self-banking/pay')
-              }}
-            >
-              <Card.Header>
-                <b>{parseDate(service.serviceDate.date)}</b>
-              </Card.Header>
-              <Card.Body>
-                <Row>
-                  <Col>
-                    <span>Offering: {service.income}</span>
-                    <div
-                      className={`${
-                        service?.transactionStatus === 'pending' && 'yellow'
-                      } ${service?.transactionStatus === 'success' && 'good'} ${
-                        service?.transactionStatus === 'failed' && 'bad'
-                      }`}
-                    >
-                      {service?.transactionStatus &&
-                        `Transaction Status: ${capitalise(
-                          service?.transactionStatus
-                        )}`}
-                    </div>
-                  </Col>
-                </Row>
-              </Card.Body>
-            </Card>
-          </>
+              if (service?.transactionStatus === 'success') {
+                return
+              }
+              navigate('/services/fellowship/self-banking/pay')
+            }}
+          >
+            <Card.Header>
+              <b>{parseDate(service.serviceDate.date)}</b>
+            </Card.Header>
+            <Card.Body>
+              <Row>
+                <Col>
+                  <span>Offering: {service.income}</span>
+                  <div
+                    className={`${
+                      service?.transactionStatus === 'pending' && 'yellow'
+                    } ${service?.transactionStatus === 'success' && 'good'} ${
+                      service?.transactionStatus === 'failed' && 'bad'
+                    }`}
+                  >
+                    {service?.transactionStatus &&
+                      `Transaction Status: ${capitalise(
+                        service?.transactionStatus
+                      )}`}
+                  </div>
+                </Col>
+              </Row>
+            </Card.Body>
+          </Card>
         )
       })}
 

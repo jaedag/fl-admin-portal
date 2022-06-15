@@ -2,7 +2,7 @@ import { useQuery } from '@apollo/client'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import PlaceholderCustom from 'components/Placeholder'
 import { ChurchContext } from 'contexts/ChurchContext'
-import { throwErrorMsg } from 'global-utils'
+import { capitalise, throwErrorMsg } from 'global-utils'
 import { parseDate } from 'jd-date-utils'
 import React, { useContext } from 'react'
 import { Card, Col, Container, Row } from 'react-bootstrap'
@@ -41,6 +41,10 @@ const FellowshipBankingSlipView = () => {
               className="mb-2"
               onClick={() => {
                 clickCard(service)
+                if (service.transactionStatus === 'pending') {
+                  navigate('/services/fellowship/self-banking')
+                  return
+                }
                 !service.bankingProof
                   ? navigate('/fellowship/banking-slip/submission')
                   : navigate('/fellowship/service-details')
@@ -55,7 +59,12 @@ const FellowshipBankingSlipView = () => {
                     <span>Offering: {service.income}</span>
                   </Col>
                   <Col className="col-auto">
-                    {service?.bankingProof ? (
+                    {service?.transactionStatus === 'pending' ? (
+                      <span className="text-warning fw-bold">
+                        <XCircleFill color="yellow" size={35} />{' '}
+                        {capitalise(service.transactionStatus)}
+                      </span>
+                    ) : service?.bankingProof ? (
                       <span className="text-success fw-bold">
                         <CheckCircleFill color="green" size={35} /> Filled
                       </span>
