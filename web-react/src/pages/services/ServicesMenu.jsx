@@ -85,17 +85,19 @@ const Services = () => {
                 }}
               />
               <RoleView permittedStream={['Campus', 'Town']}>
-                <MenuButton
-                  iconComponent={Coin}
-                  title="Self Banking Option"
-                  color="banking"
-                  noCaption
-                  onClick={() =>
-                    navigate(
-                      `/services/${churchType.toLowerCase()}/self-banking`
-                    )
-                  }
-                />
+                {church.stream_name !== 'anagkazo' && (
+                  <MenuButton
+                    iconComponent={Coin}
+                    title="Self Banking Option"
+                    color="banking"
+                    noCaption
+                    onClick={() =>
+                      navigate(
+                        `/services/${churchType.toLowerCase()}/self-banking`
+                      )
+                    }
+                  />
+                )}
               </RoleView>
             </>
           )}
