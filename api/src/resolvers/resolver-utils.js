@@ -247,7 +247,7 @@ export const makeServantCypher = async (
   })
 }
 
-const createChurchHistorySubstructure = async ({
+export const createChurchHistorySubstructure = async ({
   churchType,
   servantType,
   church,
@@ -351,8 +351,6 @@ const createChurchHistorySubstructure = async ({
       logResponse.bacentas = responseArray
     }
     if ('bacentas' in logResponse) {
-      console.log('prove that there are bacentas here')
-
       const responseArray = []
       for (const bacenta of logResponse.bacentas) {
         const response = rearrangeCypherObject(
@@ -367,8 +365,6 @@ const createChurchHistorySubstructure = async ({
 
         responseArray.push(...response.fellowships)
       }
-
-      console.log(responseArray, 'response from bacenta substructure')
     }
   } catch (error) {
     throwErrorMsg(error)

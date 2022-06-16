@@ -1,7 +1,13 @@
 import { permitAdmin, permitLeaderAdmin } from './permissions'
-import { isAuth, rearrangeCypherObject, throwErrorMsg } from './resolver-utils'
+import {
+  createChurchHistorySubstructure,
+  isAuth,
+  rearrangeCypherObject,
+  throwErrorMsg,
+} from './resolver-utils'
 import { RemoveServant } from './resolvers'
 const cypher = require('./cypher/resolver-cypher')
+const servantCypher = require('./cypher/servant-cypher')
 const closeChurchCypher = require('./cypher/close-church-cypher')
 const errorMessage = require('./texts.json').error
 
@@ -194,5 +200,28 @@ export const directoryMutation = {
     } catch (error) {
       throwErrorMsg(error)
     }
+  },
+  CreateChurchSubstructure: async (object, args, context) => {
+    const session = context.executionContext.session()
+
+    const church = {
+      id: args.churchId,
+    }
+    const churchType = args.churchType
+    const servantType = args.servantType
+
+    const functionArguments = {
+      churchType,
+      servantType,
+      church,
+      session,
+    }
+
+    await session.run(servantCypher.newDuplicateServiceLog, {
+      id: church.id,
+    })
+    await createChurchHistorySubstructure(functionArguments)
+
+    return church.id
   },
 }

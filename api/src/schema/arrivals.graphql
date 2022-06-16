@@ -1006,7 +1006,7 @@ extend type Mutation {
     )
     @cypher(
       statement: """
-      MERGE (arr:ArrivalsCodeOfTheDay)
+      MATCH (arr:ArrivalsCodeOfTheDay)
       SET arr.code = apoc.text.random(5, 'A-Z0-9')
       RETURN arr.code
       """
@@ -1019,7 +1019,7 @@ extend type Mutation {
     )
     @cypher(
       statement: """
-      MERGE (arr:ArrivalsCodeOfTheDay)
+      MATCH (arr:ArrivalsCodeOfTheDay)
       SET arr.code = $code
       RETURN arr.code
       """

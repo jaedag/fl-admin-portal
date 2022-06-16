@@ -281,3 +281,22 @@ CREATE (lowerLeader)-[:CURRENT_HISTORY]->(newLowerLog)
 WITH DISTINCT lowerChurch.id AS lowerChurchIds
 RETURN collect(lowerChurchIds) AS streams
 `
+
+export const newDuplicateServiceLog = `
+MATCH (church:Bacenta {id: $id})<-[:LEADS]-(leader:Member)
+
+MATCH (church)-[old_church_history:CURRENT_HISTORY]->(mainLog:ServiceLog)<-[old_leader_history:CURRENT_HISTORY]-(leader)
+
+DELETE old_church_history, old_leader_history
+
+WITH mainLog, church, leader
+ CREATE (newLog:ServiceLog {id:apoc.create.uuid()})
+    SET newLog.historyRecord = mainLog.historyRecord,
+       newLog.timeStamp = datetime()
+CREATE (church)-[:CURRENT_HISTORY]->(newLog)
+CREATE (newLog)<-[:CURRENT_HISTORY]-(leader)
+CREATE (church)-[:HAS_HISTORY]->(newLog)
+CREATE (newLog)<-[:HAS_HISTORY]-(leader)
+
+RETURN newLog
+`

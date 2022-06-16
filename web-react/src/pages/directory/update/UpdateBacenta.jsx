@@ -13,7 +13,11 @@ import {
 } from './UpdateMutations'
 import { ChurchContext } from '../../../contexts/ChurchContext'
 import { DISPLAY_BACENTA } from '../display/ReadQueries'
-import { LOG_BACENTA_HISTORY, LOG_FELLOWSHIP_HISTORY } from './LogMutations'
+import {
+  CREATE_HISTORY_SUBSTRUCTURE,
+  LOG_BACENTA_HISTORY,
+  LOG_FELLOWSHIP_HISTORY,
+} from './LogMutations'
 import { MAKE_BACENTA_LEADER } from './ChangeLeaderMutations'
 import BacentaForm from '../reusable-forms/BacentaForm'
 import { MAKE_FELLOWSHIP_INACTIVE } from './CloseChurchMutations'
@@ -104,7 +108,7 @@ const UpdateBacenta = () => {
   })
 
   //Changes upwards. ie. Changes to the Constituency the Bacenta is under
-
+  const [CreateHistorySubstructure] = useMutation(CREATE_HISTORY_SUBSTRUCTURE)
   const [RemoveBacentaConstituency] = useMutation(REMOVE_BACENTA_CONSTITUENCY)
 
   const [AddBacentaConstituency] = useMutation(ADD_BACENTA_CONSTITUENCY, {
@@ -124,6 +128,14 @@ const UpdateBacenta = () => {
           oldConstituencyId: oldConstituency.id,
           historyRecord: recordIfoldConstituency,
         },
+      }).then(() => {
+        return CreateHistorySubstructure({
+          variables: {
+            churchType: 'Bacenta',
+            servantType: 'Leader',
+            churchId: bacentaId,
+          },
+        })
       })
     },
   })
@@ -210,7 +222,6 @@ const UpdateBacenta = () => {
 
     //Log If The Constituency Changes
     if (values.constituency !== initialValues.constituency) {
-      console.log(values.constituency, initialValues.constituency)
       await RemoveBacentaConstituency({
         variables: {
           higherChurch: initialValues.constituency,

@@ -35,7 +35,6 @@ const Breadcrumb = ({ breadcrumb }) => {
           `/${bread?.__typename.toLowerCase()}/displaydetails`
         )}
         onClick={() => {
-          console.log(bread)
           clickCard(bread)
         }}
         className="crumb label text-secondary"
