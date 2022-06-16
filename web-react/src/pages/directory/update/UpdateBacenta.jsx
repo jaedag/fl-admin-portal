@@ -111,37 +111,20 @@ const UpdateBacenta = () => {
     onCompleted: (data) => {
       const oldConstituency = bacenta?.constituency
       const newConstituency = data.updateBacentas.bacentas[0].constituency
-      if (!oldConstituency) {
-        //If There is no old Constituency
-        let recordIfNooldConstituency = `${initialValues.name} Bacenta has been moved to ${newConstituency.name} Constituency`
 
-        LogBacentaHistory({
-          variables: {
-            bacentaId: bacentaId,
-            newLeaderId: '',
-            oldLeaderId: '',
-            newConstituencyId: newConstituency.id,
-            oldConstituencyId: oldConstituency.id,
-            historyRecord: recordIfNooldConstituency,
-          },
-        })
-      } else {
-        //If there is an old Constituency
+      let recordIfoldConstituency = `${initialValues.name} Bacenta has been moved from ${oldConstituency.name} Constituency to ${newConstituency.name} Constituency`
 
-        let recordIfoldConstituency = `${initialValues.name} Bacenta has been moved from ${oldConstituency.name} Constituency to ${newConstituency.name} Constituency`
-
-        //After Adding the bacenta to a constituency, then you log that change.
-        LogBacentaHistory({
-          variables: {
-            bacentaId: bacentaId,
-            newLeaderId: '',
-            oldLeaderId: '',
-            newConstituencyId: newConstituency.id,
-            oldConstituencyId: oldConstituency.id,
-            historyRecord: recordIfoldConstituency,
-          },
-        })
-      }
+      //After Adding the bacenta to a constituency, then you log that change.
+      LogBacentaHistory({
+        variables: {
+          bacentaId: bacentaId,
+          newLeaderId: '',
+          oldLeaderId: '',
+          newConstituencyId: newConstituency.id,
+          oldConstituencyId: oldConstituency.id,
+          historyRecord: recordIfoldConstituency,
+        },
+      })
     },
   })
 
@@ -227,10 +210,11 @@ const UpdateBacenta = () => {
 
     //Log If The Constituency Changes
     if (values.constituency !== initialValues.constituency) {
+      console.log(values.constituency, initialValues.constituency)
       await RemoveBacentaConstituency({
         variables: {
-          constituencyId: initialValues.constituency,
-          bacentaId: bacentaId,
+          higherChurch: initialValues.constituency,
+          lowerChurch: [bacentaId],
         },
       })
       await AddBacentaConstituency({

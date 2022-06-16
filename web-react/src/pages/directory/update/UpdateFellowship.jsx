@@ -96,8 +96,8 @@ const UpdateFellowship = () => {
       try {
         await RemoveFellowshipFromBacenta({
           variables: {
-            bacentaId: initialValues.bacenta,
-            fellowshipIds: [fellowshipId],
+            higherChurch: initialValues.bacenta,
+            lowerChurch: [fellowshipId],
           },
         })
         await AddFellowshipBacenta({
