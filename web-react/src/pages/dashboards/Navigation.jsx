@@ -1,7 +1,6 @@
 import { useQuery } from '@apollo/client'
 import RoleView from 'auth/RoleView'
 import UserProfileIcon from 'components/UserProfileIcon/UserProfileIcon'
-import { ChurchContext } from 'contexts/ChurchContext'
 import { MemberContext } from 'contexts/MemberContext'
 import { authorisedLink, capitalise, plural } from 'global-utils'
 import { getServiceGraphData } from 'pages/services/trends/trends-utils'
@@ -28,10 +27,9 @@ const Navigator = () => {
     setUserJobs,
     setCurrentUser,
   } = useContext(MemberContext)
-  const { clickCard } = useContext(ChurchContext)
   const { user } = useAuth0()
   const { servant } = useLogMeIn()
-  console.log(servant)
+
   useQuery(GET_LOGGED_IN_USER, {
     variables: { email: user.email },
     onCompleted: (data) => {
@@ -82,36 +80,34 @@ const Navigator = () => {
 
   const setServantuserRoles = (servant, servantType, churchType, verb) => {
     const permittedForLink = permitMe(churchType)
-    console.log(servantType, churchType)
+
     if (
       servantType === 'isArrivalsConfirmerFor' ||
       servantType === 'isArrivalsCounterFor'
     ) {
-      const adminsOneChurch = servant[`${verb}`].length === 1 ?? false
+      const adminsOneChurch = servant[`${verb}`]?.length === 1 ?? false
       userRoles.push({
         name: adminsOneChurch
           ? churchType + ' ' + parseRoles(servantType)
           : plural(churchType) + ' ' + parseRoles(servantType),
         church: servant[`${verb}`],
-        number: servant[`${verb}`].length,
+        number: servant[`${verb}`]?.length,
         link: authorisedLink(currentUser, permittedForLink, `/arrivals`),
       })
 
-      assessmentChurch = servant[`${verb}`][0]
+      assessmentChurch = servant[`${verb}`] && servant[`${verb}`][0]
       return
     }
 
     if (servantType === 'isAdminFor' || servantType === 'isArrivalsAdminFor') {
-      const adminsOneChurch = servant[`${verb}`].length === 1 ?? false
+      const adminsOneChurch = servant[`${verb}`]?.length === 1 ?? false
       userRoles.push({
         name: adminsOneChurch
           ? churchType + ' ' + parseRoles(servantType)
           : plural(churchType) + ' ' + parseRoles(servantType),
         church: servant[`${verb}`],
-        number: servant[`${verb}`].length,
-        clickCard: () => {
-          clickCard(servant[`${verb}`][0])
-        },
+        number: servant[`${verb}`]?.length,
+
         link: authorisedLink(
           currentUser,
           permittedForLink,
@@ -121,19 +117,16 @@ const Navigator = () => {
         ),
       })
 
-      assessmentChurch = servant[`${verb}`][0]
+      assessmentChurch = servant[`${verb}`] && servant[`${verb}`][0]
       return
     }
-    console.log(servant[`${verb}`]?.length, churchType)
 
-    const leadsOneChurch = servant[`${verb}`].length === 1 ?? false
+    const leadsOneChurch = servant[`${verb}`]?.length === 1 ?? false
+
     userRoles.push({
       name: leadsOneChurch ? churchType : plural(churchType),
       church: servant[`${verb}`],
       number: servant[`${verb}`]?.length,
-      clickCard: () => {
-        clickCard(servant[`${verb}`][0])
-      },
       link: authorisedLink(
         currentUser,
         permittedForLink,
@@ -143,7 +136,7 @@ const Navigator = () => {
       ),
     })
 
-    assessmentChurch = servant[`${verb}`][0]
+    assessmentChurch = servant[`${verb}`] && servant[`${verb}`][0]
   }
 
   const getServantuserRoles = (servant) => {
