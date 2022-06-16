@@ -219,12 +219,12 @@ export const MakeServant = async (
   )
   const churchInEmail = `${church.name} ${church.type[0]}`
 
-  let servant = rearrangeCypherObject(
+  const servant = rearrangeCypherObject(
     await session.run(cypher.matchMemberQuery, {
       id: args[`${servantLower}Id`],
     })
   )
-  let oldServant = rearrangeCypherObject(
+  const oldServant = rearrangeCypherObject(
     await session.run(cypher.matchMemberQuery, {
       id: args[`old${servantType}Id`] ?? '',
     })

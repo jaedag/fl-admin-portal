@@ -152,27 +152,12 @@ export const historyRecordString = ({
     return `${servant.firstName} ${servant.lastName} was removed as the ${churchType} ${servantType} for  ${church.name} ${churchType}`
   }
 
-  if (
-    oldServant ||
-    args.oldLeaderId ||
-    args.oldAdminId ||
-    args.oldArrivalsAdminId
-  ) {
+  if ('id' in oldServant) {
     return `${servant.firstName} ${servant.lastName} became the ${servantType} of ${church.name} ${churchType} replacing ${oldServant.firstName} ${oldServant.lastName}`
   }
 
-  if (args.adminId) {
-    return `${servant.firstName} ${servant.lastName} became the admin for ${church.name} ${churchType}`
-  }
-
-  if (args.arrivalsAdminId) {
-    return `${servant.firstName} ${servant.lastName} became the arrivals admin for ${church.name} ${churchType}`
-  }
-  if (args.arrivalsCounterId) {
-    return `${servant.firstName} ${servant.lastName} became the arrivals counter for ${church.name} ${churchType}`
-  }
-  if (args.arrivalsConfirmerId) {
-    return `${servant.firstName} ${servant.lastName} became the arrivals confirmer for ${church.name} ${churchType}`
+  if (!args.leaderId) {
+    return `${servant.firstName} ${servant.lastName} became the ${servantType} of ${church.name} ${churchType}`
   }
 
   return `${servant.firstName} ${servant.lastName} started ${church.name} ${churchType} under ${higherChurch.name} ${higherChurch.type}`

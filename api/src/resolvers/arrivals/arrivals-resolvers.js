@@ -18,7 +18,7 @@ const {
   rearrangeCypherObject,
   throwErrorMsg,
 } = require('../resolver-utils')
-const { MakeServant, RemoveServant } = require('../resolvers')
+import { MakeServant, RemoveServant } from '../resolvers'
 const cypher = require('./arrivals-cypher')
 const axios = require('axios').default
 
