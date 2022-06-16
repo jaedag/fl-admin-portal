@@ -99,7 +99,7 @@ const MemberDisplayCard = (props) => {
           </div>
           <div className="flex-grow-1 ms-3">
             <Card.Title>{name}</Card.Title>
-            <p className={`text-secondary mb-0 ${theme}`}>
+            <div className={`text-secondary mb-0 ${theme}`}>
               {details?.length &&
                 details.map((detail, i) => (
                   <div key={i}>
@@ -107,7 +107,7 @@ const MemberDisplayCard = (props) => {
                     <br />
                   </div>
                 ))}
-            </p>
+            </div>
           </div>
         </div>
       </Card.Body>

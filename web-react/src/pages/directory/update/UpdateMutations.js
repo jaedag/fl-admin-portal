@@ -751,12 +751,14 @@ export const ADD_STREAM_GATHERINGSERVICE = gql`
 
 export const REMOVE_STREAM_GATHERINGSERVICE = gql`
   mutation RemoveStreamGatheringService(
-    $streamId: ID!
-    $gatheringServiceId: ID!
+    $lowerChurch: [ID]!
+    $higherChurch: ID!
   ) {
     updateStreams(
-      where: { id: $streamId }
-      disconnect: { stream: { where: { node: { id: $gatheringServiceId } } } }
+      where: { id_IN: $lowerChurch }
+      disconnect: {
+        gatheringService: { where: { node: { id: $higherChurch } } }
+      }
     ) {
       streams {
         id

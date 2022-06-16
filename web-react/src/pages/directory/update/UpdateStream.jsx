@@ -180,8 +180,8 @@ const UpdateStream = () => {
         try {
           await RemoveStreamGatheringService({
             variables: {
-              gatheringServiceId: initialValues.gatheringService,
-              streamId: streamId,
+              higherChurch: initialValues.gatheringService,
+              lowerChurch: [streamId],
             },
           })
           await AddStreamGatheringService({

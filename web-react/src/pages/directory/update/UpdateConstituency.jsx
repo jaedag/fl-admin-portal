@@ -12,7 +12,11 @@ import {
 } from './UpdateMutations'
 import { ChurchContext } from '../../../contexts/ChurchContext'
 import { DISPLAY_CONSTITUENCY } from '../display/ReadQueries'
-import { LOG_CONSTITUENCY_HISTORY, LOG_BACENTA_HISTORY } from './LogMutations'
+import {
+  LOG_CONSTITUENCY_HISTORY,
+  LOG_BACENTA_HISTORY,
+  CREATE_HISTORY_SUBSTRUCTURE,
+} from './LogMutations'
 import { MAKE_CONSTITUENCY_LEADER } from './ChangeLeaderMutations'
 import ConstituencyForm from 'pages/directory/reusable-forms/ConstituencyForm'
 import { MAKE_BACENTA_INACTIVE } from './CloseChurchMutations'
@@ -30,7 +34,7 @@ const UpdateConstituency = () => {
     name: constituency?.name,
     leaderName: constituency?.leader?.fullName ?? '',
     leaderId: constituency?.leader?.id || '',
-    council: constituency?.council.id ?? '',
+    council: constituency?.council ?? '',
     bacentas: constituency?.bacentas?.length ? constituency.bacentas : [''],
   }
 
@@ -50,7 +54,7 @@ const UpdateConstituency = () => {
     refetchQueries: [
       {
         query: GET_COUNCIL_CONSTITUENCIES,
-        variables: { id: initialValues.council },
+        variables: { id: initialValues.council.id },
       },
     ],
   })
@@ -88,42 +92,33 @@ const UpdateConstituency = () => {
   const [CloseDownBacenta] = useMutation(MAKE_BACENTA_INACTIVE)
 
   //Changes upwards. it. Changes to the Council the Constituency Campus is under
+  const [CreateHistorySubstructure] = useMutation(CREATE_HISTORY_SUBSTRUCTURE)
   const [RemoveConstituencyCouncil] = useMutation(REMOVE_CONSTITUENCY_COUNCIL)
   const [AddConstituencyCouncil] = useMutation(ADD_CONSTITUENCY_COUNCIL, {
     onCompleted: (data) => {
-      if (!constituency?.council.name) {
-        //If There is no old Council
-        let recordIfNoOldCouncil = `${initialValues.name} Constituency has been moved to ${data.updateConstituencies.constituencies[0].council.name} Council`
+      //If there is an old Council
 
-        LogConstituencyHistory({
+      let recordIfOldCouncil = `${initialValues.name} Constituency has been moved from ${initialValues?.council.name} Council to ${data.updateConstituencies.constituencies[0].council.name} Council`
+
+      //After Adding the constituency to a council, then you log that change.
+      LogConstituencyHistory({
+        variables: {
+          constituencyId: constituencyId,
+          newLeaderId: '',
+          oldLeaderId: '',
+          newCouncilId: data.updateConstituencies.constituencies[0].council.id,
+          oldCouncilId: initialValues?.council.id,
+          historyRecord: recordIfOldCouncil,
+        },
+      }).then(() => {
+        return CreateHistorySubstructure({
           variables: {
-            constituencyId: constituencyId,
-            newLeaderId: '',
-            oldLeaderId: '',
-            newCouncilId:
-              data.updateConstituencies.constituencies[0].council.id,
-            oldCouncilId: constituency?.council.id,
-            historyRecord: recordIfNoOldCouncil,
+            churchType: 'Constituency',
+            servantType: 'Leader',
+            churchId: constituencyId,
           },
         })
-      } else {
-        //If there is an old Council
-
-        let recordIfOldCouncil = `${initialValues.name} Constituency has been moved from ${initialValues?.council.name} Council to ${data.updateConstituencies.constituencies[0].council.name} Council`
-
-        //After Adding the constituency to a council, then you log that change.
-        LogConstituencyHistory({
-          variables: {
-            constituencyId: constituencyId,
-            newLeaderId: '',
-            oldLeaderId: '',
-            newCouncilId:
-              data.updateConstituencies.constituencies[0].council.id,
-            oldCouncilId: initialValues?.council,
-            historyRecord: recordIfOldCouncil,
-          },
-        })
-      }
+      })
     },
   })
 
@@ -172,11 +167,11 @@ const UpdateConstituency = () => {
       }
 
       //Log if Council Changes
-      if (values.council !== initialValues.council) {
+      if (values.council !== initialValues.council.id) {
         await RemoveConstituencyCouncil({
           variables: {
-            councilId: initialValues.council,
-            constituencyId: constituencyId,
+            higherChurch: initialValues.council.id,
+            lowerChurch: [constituencyId],
           },
         })
         await AddConstituencyCouncil({

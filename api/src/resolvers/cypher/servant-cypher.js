@@ -196,6 +196,8 @@ CREATE (newLowerLog:ServiceLog {id:apoc.create.uuid()})
 CREATE (mainLog)-[:HAS_COMPONENT]->(newLowerLog)
 CREATE (lowerChurch)-[:CURRENT_HISTORY]->(newLowerLog)
 CREATE (lowerLeader)-[:CURRENT_HISTORY]->(newLowerLog)
+CREATE (lowerChurch)-[:HAS_HISTORY]->(newLowerLog)
+CREATE (lowerLeader)-[:HAS_HISTORY]->(newLowerLog)
 
 WITH DISTINCT lowerChurch.id AS lowerChurchIds
 RETURN collect(lowerChurchIds) AS fellowships
@@ -216,6 +218,8 @@ CREATE (newLowerLog:ServiceLog {id:apoc.create.uuid()})
 CREATE (mainLog)-[:HAS_COMPONENT]->(newLowerLog)
 CREATE (lowerChurch)-[:CURRENT_HISTORY]->(newLowerLog)
 CREATE (lowerLeader)-[:CURRENT_HISTORY]->(newLowerLog)
+CREATE (lowerChurch)-[:HAS_HISTORY]->(newLowerLog)
+CREATE (lowerLeader)-[:HAS_HISTORY]->(newLowerLog)
 
 WITH DISTINCT lowerChurch.id AS lowerChurchIds
 RETURN collect(lowerChurchIds) AS bacentas
@@ -236,6 +240,8 @@ CREATE (newLowerLog:ServiceLog {id:apoc.create.uuid()})
 CREATE (mainLog)-[:HAS_COMPONENT]->(newLowerLog)
 CREATE (lowerChurch)-[:CURRENT_HISTORY]->(newLowerLog)
 CREATE (lowerLeader)-[:CURRENT_HISTORY]->(newLowerLog)
+CREATE (lowerChurch)-[:HAS_HISTORY]->(newLowerLog)
+CREATE (lowerLeader)-[:HAS_HISTORY]->(newLowerLog)
 
 WITH DISTINCT lowerChurch.id AS lowerChurchIds
 RETURN collect(lowerChurchIds) AS constituencies
@@ -256,6 +262,8 @@ CREATE (newLowerLog:ServiceLog {id:apoc.create.uuid()})
 CREATE (mainLog)-[:HAS_COMPONENT]->(newLowerLog)
 CREATE (lowerChurch)-[:CURRENT_HISTORY]->(newLowerLog)
 CREATE (lowerLeader)-[:CURRENT_HISTORY]->(newLowerLog)
+CREATE (lowerChurch)-[:HAS_HISTORY]->(newLowerLog)
+CREATE (lowerLeader)-[:HAS_HISTORY]->(newLowerLog)
 
 WITH DISTINCT lowerChurch.id AS lowerChurchIds
 RETURN collect(lowerChurchIds) AS councils
@@ -277,13 +285,18 @@ CREATE (newLowerLog:ServiceLog {id:apoc.create.uuid()})
 CREATE (mainLog)-[:HAS_COMPONENT]->(newLowerLog)
 CREATE (lowerChurch)-[:CURRENT_HISTORY]->(newLowerLog)
 CREATE (lowerLeader)-[:CURRENT_HISTORY]->(newLowerLog)
+CREATE (lowerChurch)-[:HAS_HISTORY]->(newLowerLog)
+CREATE (lowerLeader)-[:HAS_HISTORY]->(newLowerLog)
 
 WITH DISTINCT lowerChurch.id AS lowerChurchIds
 RETURN collect(lowerChurchIds) AS streams
 `
 
 export const newDuplicateServiceLog = `
-MATCH (church:Bacenta {id: $id})<-[:LEADS]-(leader:Member)
+MATCH (church {id: $id})<-[:LEADS]-(leader:Member)
+WHERE church:Fellowship 
+OR church:Bacenta OR church:Constituency 
+OR church:Council OR church:Stream OR church:GatheringService
 
 MATCH (church)-[old_church_history:CURRENT_HISTORY]->(mainLog:ServiceLog)<-[old_leader_history:CURRENT_HISTORY]-(leader)
 
