@@ -5,9 +5,7 @@
   outline: none;
 }
 
-.login {
-  background-color: var(--accent-color);
-}
+
 
 .logout {
   background-color: #42061b;

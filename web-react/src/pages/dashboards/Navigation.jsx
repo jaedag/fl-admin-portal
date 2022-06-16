@@ -1,4 +1,4 @@
-import { useLazyQuery } from '@apollo/client'
+import { useQuery } from '@apollo/client'
 import RoleView from 'auth/RoleView'
 import UserProfileIcon from 'components/UserProfileIcon/UserProfileIcon'
 import { ChurchContext } from 'contexts/ChurchContext'
@@ -31,7 +31,8 @@ const Navigator = () => {
   const { user } = useAuth0()
   const { servant } = useLogMeIn()
 
-  const [memberByEmail] = useLazyQuery(GET_LOGGED_IN_USER, {
+  useQuery(GET_LOGGED_IN_USER, {
+    variables: { email: user.email },
     onCompleted: (data) => {
       const church = data.memberByEmail.stream_name
 
@@ -61,25 +62,7 @@ const Navigator = () => {
   let assessmentChurchData, assessmentChurch
 
   useEffect(() => {
-    if (!user) return
-
-    setCurrentUser({
-      ...currentUser,
-      __typename: 'Member',
-      id: user.sub.replace('auth0|', ''),
-      firstName: user.given_name,
-      lastName: user.family_name,
-      fullName: user.name,
-      picture: user.picture ?? null,
-      email: user?.email,
-      roles: user ? user[`https://flcadmin.netlify.app/roles`] : [],
-    })
-    sessionStorage.setItem('currentUser', JSON.stringify({ ...currentUser }))
-
-    memberByEmail({ variables: { email: user?.email } })
-  }, [memberByEmail, user])
-
-  useEffect(() => {
+    console.log('yes')
     if (userJobs?.jobs.length === roles?.length) return
 
     setUserJobs({

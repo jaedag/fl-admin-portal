@@ -2,7 +2,6 @@ import React from 'react'
 import { useAuth0 } from '@auth0/auth0-react'
 import Popup from '../Popup/Popup'
 import { Button, Container, Spinner } from 'react-bootstrap'
-import { useLocation } from 'react-router'
 import usePopup from 'hooks/usePopup'
 import './AuthButton.css'
 import { BoxArrowInLeft, BoxArrowRight } from 'react-bootstrap-icons'
@@ -11,7 +10,6 @@ const AuthButton = (props) => {
   const { loginWithRedirect, logout, isAuthenticated } = useAuth0()
   const { togglePopup, isOpen } = usePopup()
   const { mobileFullSize } = props
-  const location = useLocation()
 
   if (!isAuthenticated) {
     return (

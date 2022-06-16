@@ -1,6 +1,5 @@
 import React from 'react'
 import AuthButton from './buttons/AuthButton'
-import UserProfileIcon from './UserProfileIcon/UserProfileIcon'
 import Logo from '../assets/flc-logo-small.png'
 import MobileView from './responsive-design/MobileView'
 import TabletDesktopView from './responsive-design/TabletDesktopView'
@@ -27,7 +26,7 @@ const Login = () => {
                     Click to log in to your servants portal
                   </p>
                 </div>
-                <UserProfileIcon />
+                <AuthButton />
               </div>
             </form>
           </div>
@@ -43,7 +42,7 @@ const Login = () => {
             className="img-fluid mx-auto d-block logo"
           />
 
-          <div className="mb-5">
+          <div className="mb-5 font-primary">
             <p>
               <i>{catchPhrase}</i>
             </p>

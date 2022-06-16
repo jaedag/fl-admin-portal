@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Routes, BrowserRouter as Router, Route } from 'react-router-dom'
 import { MemberContext, SearchContext } from './contexts/MemberContext'
 import { ChurchContext } from './contexts/ChurchContext'
@@ -24,8 +24,10 @@ import PageNotFound from 'pages/page-not-found/PageNotFound'
 import SetPermissions from 'auth/SetPermissions'
 import { permitMe } from 'permission-utils'
 import useClickCard from 'hooks/useClickCard'
+import { useAuth0 } from '@auth0/auth0-react'
 
-const PastorsAdmin = () => {
+const PastorsAdmin = (props) => {
+  const { theme, setTheme } = props.themeOptions
   const {
     clickCard,
     church,
@@ -41,21 +43,20 @@ const PastorsAdmin = () => {
     bussingRecordId,
     serviceRecordId,
   } = useClickCard()
-  const [theme, setTheme] = useState('dark')
+  const { user } = useAuth0()
 
   const [currentUser, setCurrentUser] = useState(
     sessionStorage.getItem('currentUser')
       ? JSON.parse(sessionStorage.getItem('currentUser'))
       : {
-          id: '',
-          picture: '',
-          firstName: '',
-          lastName: '',
-          fullName: '',
-          church: {},
-          email: '',
-          constituency: '',
-          roles: [],
+          __typename: 'Member',
+          id: user.sub.replace('auth0|', ''),
+          firstName: user.given_name,
+          lastName: user.family_name,
+          fullName: user.name,
+          picture: user.picture,
+          email: user.email,
+          roles: user[`https://flcadmin.netlify.app/roles`],
         }
   )
 
@@ -70,11 +71,6 @@ const PastorsAdmin = () => {
     leaderRank: [],
     ministry: [],
   })
-
-  useEffect(() => {
-    if (theme === 'dark') document.body.style.backgroundColor = '#121212'
-    else document.body.style.backgroundColor = '#FFFFFF'
-  }, [theme])
 
   return (
     <Router>
