@@ -70,7 +70,8 @@ const DetailsBacenta = () => {
   ]
 
   if (!bacenta?.normalBussingTopUp && !bacenta?.swellBussingTopUp) {
-    details.pop()
+    const moneyItems = [1, 2, 3]
+    moneyItems.forEach(() => details.pop())
   }
 
   return (
