@@ -8,7 +8,7 @@ import { getServiceGraphData } from 'pages/services/trends/trends-utils'
 import React, { useContext, useEffect } from 'react'
 import { Container, Nav, Navbar, Offcanvas, Row, Col } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
-import { menuItems } from './dashboard-utils'
+import { menuItems, parseRoles, roles } from './dashboard-utils'
 import logo from 'assets/flc-logo-red.png'
 import { useAuth0 } from '@auth0/auth0-react'
 import { GET_LOGGED_IN_USER } from 'components/UserProfileIcon/UserQueries'
@@ -17,6 +17,7 @@ import { Moon, Sun } from 'react-bootstrap-icons'
 import { permitMe } from 'permission-utils'
 import useLogMeIn from './LogMeIn'
 import './Navigation.css'
+import { churchLevels } from 'pages/directory/update/directory-utils'
 
 const Navigator = () => {
   const {
@@ -30,7 +31,7 @@ const Navigator = () => {
   const { clickCard } = useContext(ChurchContext)
   const { user } = useAuth0()
   const { servant } = useLogMeIn()
-
+  console.log(servant)
   useQuery(GET_LOGGED_IN_USER, {
     variables: { email: user.email },
     onCompleted: (data) => {
@@ -58,15 +59,14 @@ const Navigator = () => {
     },
   })
 
-  let roles = []
+  let userRoles = []
   let assessmentChurchData, assessmentChurch
 
   useEffect(() => {
-    console.log('yes')
-    if (userJobs?.jobs.length === roles?.length) return
+    if (userJobs?.jobs.length === userRoles?.length) return
 
     setUserJobs({
-      jobs: roles,
+      jobs: userRoles,
       assessmentData: assessmentChurchData,
       assessmentChurch: assessmentChurch,
     })
@@ -75,46 +75,23 @@ const Navigator = () => {
     currentUser,
     assessmentChurch,
     assessmentChurchData,
-    roles,
+    userRoles,
     setUserJobs,
     userJobs?.jobs.length,
   ])
 
-  const setServantRoles = (servant, servantType, churchType) => {
-    let verb
-
-    switch (servantType) {
-      case 'Leader':
-        verb = `leads${churchType}`
-        break
-      case 'Admin':
-        verb = `isAdminFor${churchType}`
-        break
-      case 'ArrivalsAdmin':
-        verb = `isArrivalsAdminFor${churchType}`
-        break
-      case 'ArrivalsCounter':
-        verb = `isArrivalsCounterFor${churchType}`
-        break
-
-      case 'ArrivalsConfirmer':
-        verb = `isArrivalsConfirmerFor${churchType}`
-        break
-      default:
-        break
-    }
-
+  const setServantuserRoles = (servant, servantType, churchType, verb) => {
     const permittedForLink = permitMe(churchType)
-
+    console.log(servantType, churchType)
     if (
-      servantType === 'ArrivalsConfirmer' ||
-      servantType === 'ArrivalsCounter'
+      servantType === 'isArrivalsConfirmerFor' ||
+      servantType === 'isArrivalsCounterFor'
     ) {
       const adminsOneChurch = servant[`${verb}`].length === 1 ?? false
-      roles.push({
+      userRoles.push({
         name: adminsOneChurch
-          ? churchType + ' ' + servantType
-          : plural(churchType) + ' ' + servantType,
+          ? churchType + ' ' + parseRoles(servantType)
+          : plural(churchType) + ' ' + parseRoles(servantType),
         church: servant[`${verb}`],
         number: servant[`${verb}`].length,
         link: authorisedLink(currentUser, permittedForLink, `/arrivals`),
@@ -124,12 +101,12 @@ const Navigator = () => {
       return
     }
 
-    if (servantType === 'Admin' || servantType === 'ArrivalsAdmin') {
+    if (servantType === 'isAdminFor' || servantType === 'isArrivalsAdminFor') {
       const adminsOneChurch = servant[`${verb}`].length === 1 ?? false
-      roles.push({
+      userRoles.push({
         name: adminsOneChurch
-          ? churchType + ' ' + servantType
-          : plural(churchType) + ' ' + servantType,
+          ? churchType + ' ' + parseRoles(servantType)
+          : plural(churchType) + ' ' + parseRoles(servantType),
         church: servant[`${verb}`],
         number: servant[`${verb}`].length,
         clickCard: () => {
@@ -147,9 +124,10 @@ const Navigator = () => {
       assessmentChurch = servant[`${verb}`][0]
       return
     }
+    console.log(servant[`${verb}`]?.length, churchType)
 
     const leadsOneChurch = servant[`${verb}`].length === 1 ?? false
-    roles.push({
+    userRoles.push({
       name: leadsOneChurch ? churchType : plural(churchType),
       church: servant[`${verb}`],
       number: servant[`${verb}`]?.length,
@@ -168,64 +146,18 @@ const Navigator = () => {
     assessmentChurch = servant[`${verb}`][0]
   }
 
-  const getServantRoles = (servant) => {
-    if (servant?.leadsFellowship?.length) {
-      setServantRoles(servant, 'Leader', 'Fellowship')
-    }
-    if (servant?.leadsBacenta?.length) {
-      setServantRoles(servant, 'Leader', 'Bacenta')
-    }
-    if (servant?.leadsSonta?.length) {
-      setServantRoles(servant, 'Leader', 'Sonta')
-    }
-    if (servant?.leadsConstituency?.length) {
-      setServantRoles(servant, 'Leader', 'Constituency')
-    }
-    if (servant?.isAdminForConstituency?.length) {
-      setServantRoles(servant, 'Admin', 'Constituency')
-    }
-    if (servant?.isArrivalsAdminForConstituency?.length) {
-      setServantRoles(servant, 'ArrivalsAdmin', 'Constituency')
-    }
-    if (servant?.leadsCouncil?.length) {
-      setServantRoles(servant, 'Leader', 'Council')
-    }
-    if (servant?.isAdminForCouncil?.length) {
-      setServantRoles(servant, 'Admin', 'Council')
-    }
-    if (servant?.isArrivalsAdminForCouncil?.length) {
-      setServantRoles(servant, 'ArrivalsAdmin', 'Council')
-    }
-    if (servant?.leadsMinistry?.length) {
-      setServantRoles(servant, 'Leader', 'Ministry')
-    }
-    if (servant?.leadsStream?.length) {
-      setServantRoles(servant, 'Leader', 'Stream')
-    }
-    if (servant?.isAdminForStream?.length) {
-      setServantRoles(servant, 'Admin', 'Stream')
-    }
-    if (servant?.isArrivalsAdminForStream?.length) {
-      setServantRoles(servant, 'ArrivalsAdmin', 'Stream')
-    }
-    if (servant?.isArrivalsCounterForStream?.length) {
-      setServantRoles(servant, 'ArrivalsCounter', 'Stream')
-    }
-    if (servant?.isArrivalsConfirmerForStream?.length) {
-      setServantRoles(servant, 'ArrivalsConfirmer', 'Stream')
-    }
-    if (servant?.leadsGatheringService?.length) {
-      setServantRoles(servant, 'Leader', 'GatheringService')
-    }
-    if (servant?.isAdminForGatheringService?.length) {
-      setServantRoles(servant, 'Admin', 'GatheringService')
-    }
-    if (servant?.isArrivalsAdminForGatheringService?.length) {
-      setServantRoles(servant, 'ArrivalsAdmin', 'GatheringService')
-    }
-    if (servant?.leadsBasonta?.length) {
-      setServantRoles(servant, 'Leader', 'Basonta')
-    }
+  const getServantuserRoles = (servant) => {
+    churchLevels.forEach((level) => {
+      roles[`${level}`].forEach((verb) => {
+        const shouldSearch = (verb, level) => {
+          return currentUser?.roles.includes(parseRoles(verb) + level)
+        }
+
+        if (shouldSearch(verb, level)) {
+          setServantuserRoles(servant, verb, level, verb + level)
+        }
+      })
+    })
 
     //run the get graph function after all checking is done to avoid multiple unnecessary runs
     if (assessmentChurch) {
@@ -235,7 +167,7 @@ const Navigator = () => {
     return
   }
 
-  assessmentChurchData = servant && getServantRoles(servant)
+  assessmentChurchData = servant && getServantuserRoles(servant)
 
   return (
     <Navbar
@@ -270,7 +202,7 @@ const Navigator = () => {
           <Offcanvas.Body className={`${theme}`}>
             <Nav className="justify-content-start flex-grow-1">
               {menuItems.map((menuItem, index) => (
-                <RoleView key={index} roles={menuItem.roles}>
+                <RoleView key={index} userRoles={menuItem.userRoles}>
                   <Nav.Link
                     as={Link}
                     eventKey={index}
