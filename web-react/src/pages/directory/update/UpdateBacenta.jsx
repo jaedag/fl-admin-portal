@@ -113,7 +113,7 @@ const UpdateBacenta = () => {
 
   const [AddBacentaConstituency] = useMutation(ADD_BACENTA_CONSTITUENCY, {
     onCompleted: (data) => {
-      const oldConstituency = bacenta?.constituency
+      const oldConstituency = data.updateConstituencies.constituencies[0]
       const newConstituency = data.updateBacentas.bacentas[0].constituency
 
       let recordIfoldConstituency = `${initialValues.name} Bacenta has been moved from ${oldConstituency.name} Constituency to ${newConstituency.name} Constituency`
@@ -128,15 +128,15 @@ const UpdateBacenta = () => {
           oldConstituencyId: oldConstituency.id,
           historyRecord: recordIfoldConstituency,
         },
-      }).then(() => {
-        return CreateHistorySubstructure({
+      }).then(() =>
+        CreateHistorySubstructure({
           variables: {
             churchType: 'Bacenta',
             servantType: 'Leader',
             churchId: bacentaId,
           },
         })
-      })
+      )
     },
   })
 
@@ -231,6 +231,7 @@ const UpdateBacenta = () => {
       await AddBacentaConstituency({
         variables: {
           constituencyId: values.constituency,
+          oldConstituencyId: initialValues.constituency,
           bacentaId: bacentaId,
         },
       })
@@ -252,6 +253,7 @@ const UpdateBacenta = () => {
       removeChurch: RemoveFellowshipFromBacenta,
       addChurch: AddBacentaFellowships,
       logChurchHistory: LogFellowshipHistory,
+      CreateHistorySubstructure: CreateHistorySubstructure,
     }
 
     const args = {

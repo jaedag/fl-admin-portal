@@ -101,8 +101,9 @@ const UpdateCouncil = () => {
   const [AddCouncilStream] = useMutation(ADD_COUNCIL_STREAM, {
     onCompleted: (data) => {
       //If there is an old Stream
-
-      let recordIfOldStream = `${initialValues.name} Council has been moved from ${council?.stream.name} Stream to ${data.updateCouncils.councils[0].stream.name} Stream`
+      const oldStream = data.updateStreams.streams[0]
+      const newStream = data.updateCouncils.councils[0].stream
+      let recordIfOldStream = `${initialValues.name} Council has been moved from ${oldStream.name} Stream to ${newStream.name} Stream`
 
       //After Adding the council to a stream, then you log that change.
       LogCouncilHistory({
@@ -114,15 +115,15 @@ const UpdateCouncil = () => {
           oldStreamId: council?.stream.id,
           historyRecord: recordIfOldStream,
         },
-      }).then(() => {
-        return CreateHistorySubstructure({
+      }).then(() =>
+        CreateHistorySubstructure({
           variables: {
             churchType: 'Council',
             servantType: 'Leader',
             churchId: councilId,
           },
         })
-      })
+      )
     },
   })
 
@@ -183,6 +184,7 @@ const UpdateCouncil = () => {
           await AddCouncilStream({
             variables: {
               streamId: values.stream,
+              oldStreamId: initialValues.stream,
               councilId: councilId,
             },
           })

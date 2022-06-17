@@ -486,7 +486,11 @@ export const UPDATE_FELLOWSHIP = gql`
 `
 
 export const ADD_BACENTA_CONSTITUENCY = gql`
-  mutation AddBacentaConstituency($constituencyId: ID!, $bacentaId: ID!) {
+  mutation AddBacentaConstituency(
+    $constituencyId: ID!
+    $bacentaId: ID!
+    $oldConstituencyId: ID!
+  ) {
     updateBacentas(
       where: { id: $bacentaId }
       connect: { constituency: { where: { node: { id: $constituencyId } } } }
@@ -497,6 +501,12 @@ export const ADD_BACENTA_CONSTITUENCY = gql`
           id
           name
         }
+      }
+    }
+    updateConstituencies(where: { id: $oldConstituencyId }) {
+      constituencies {
+        id
+        name
       }
     }
   }
@@ -595,6 +605,7 @@ export const ADD_FELLOWSHIP_BACENTA = gql`
       connect: { bacenta: { where: { node: { id: $bacentaId } } } }
     ) {
       fellowships {
+        id
         bacenta {
           id
           name
@@ -606,7 +617,11 @@ export const ADD_FELLOWSHIP_BACENTA = gql`
 
 //Updating Constituency Mutations
 export const ADD_CONSTITUENCY_COUNCIL = gql`
-  mutation AddConstituencyCouncil($constituencyId: ID!, $councilId: ID!) {
+  mutation AddConstituencyCouncil(
+    $constituencyId: ID!
+    $councilId: ID!
+    $oldCouncilId: ID!
+  ) {
     updateConstituencies(
       where: { id: $constituencyId }
       connect: { council: { where: { node: { id: $councilId } } } }
@@ -621,6 +636,12 @@ export const ADD_CONSTITUENCY_COUNCIL = gql`
             id
           }
         }
+      }
+    }
+    updateCouncils(where: { id: $oldCouncilId }) {
+      councils {
+        id
+        name
       }
     }
   }
@@ -678,7 +699,11 @@ export const ADD_COUNCIL_CONSTITUENCIES = gql`
 `
 
 export const ADD_COUNCIL_STREAM = gql`
-  mutation AddCouncilStream($councilId: ID!, $streamId: ID!) {
+  mutation AddCouncilStream(
+    $councilId: ID!
+    $streamId: ID!
+    $oldStreamId: ID!
+  ) {
     updateCouncils(
       where: { id: $councilId }
       connect: { stream: { where: { node: { id: $streamId } } } }
@@ -690,6 +715,12 @@ export const ADD_COUNCIL_STREAM = gql`
           id
           name
         }
+      }
+    }
+    updateStreams(where: { id: $oldStreamId }) {
+      streams {
+        id
+        name
       }
     }
   }

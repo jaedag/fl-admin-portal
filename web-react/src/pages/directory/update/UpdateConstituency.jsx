@@ -97,8 +97,9 @@ const UpdateConstituency = () => {
   const [AddConstituencyCouncil] = useMutation(ADD_CONSTITUENCY_COUNCIL, {
     onCompleted: (data) => {
       //If there is an old Council
-
-      let recordIfOldCouncil = `${initialValues.name} Constituency has been moved from ${initialValues?.council.name} Council to ${data.updateConstituencies.constituencies[0].council.name} Council`
+      const oldCouncil = data.updateCouncils.councils[0]
+      const newCouncil = data.updateConstituencies.constituencies[0].council
+      let recordIfOldCouncil = `${initialValues.name} Constituency has been moved from ${oldCouncil.name} Council to ${newCouncil.name} Council`
 
       //After Adding the constituency to a council, then you log that change.
       LogConstituencyHistory({
@@ -110,15 +111,15 @@ const UpdateConstituency = () => {
           oldCouncilId: initialValues?.council.id,
           historyRecord: recordIfOldCouncil,
         },
-      }).then(() => {
-        return CreateHistorySubstructure({
+      }).then(() =>
+        CreateHistorySubstructure({
           variables: {
             churchType: 'Constituency',
             servantType: 'Leader',
             churchId: constituencyId,
           },
         })
-      })
+      )
     },
   })
 
@@ -177,6 +178,7 @@ const UpdateConstituency = () => {
         await AddConstituencyCouncil({
           variables: {
             councilId: values.council,
+            oldCouncilId: initialValues.council.id,
             constituencyId: constituencyId,
           },
         })
