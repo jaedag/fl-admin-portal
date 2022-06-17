@@ -9,6 +9,14 @@ export const FELLOWSHIP_SERVICE_PAYMENT = gql`
     }
   }
 `
+export const CONSTITUENCY_SERVICE_PAYMENT = gql`
+  query ($id: ID!) {
+    constituencies(where: { id: $id }) {
+      id
+      name
+    }
+  }
+`
 
 export const DISPLAY_OFFERING_DETAILS = gql`
   query ($serviceRecordId: ID!) {

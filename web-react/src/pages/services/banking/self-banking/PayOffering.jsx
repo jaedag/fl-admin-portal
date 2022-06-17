@@ -75,7 +75,9 @@ const PayOffering = (props) => {
         <HeadingSecondary loading={loading}>
           {church?.name} {church?.__typename}
         </HeadingSecondary>
-        <div>{`Banking Code: ${church?.bankingCode}`} </div>
+        {church?.bankingCode && (
+          <div>{`Banking Code: ${church.bankingCode}`} </div>
+        )}
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}
