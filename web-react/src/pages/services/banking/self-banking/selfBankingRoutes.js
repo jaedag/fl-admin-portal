@@ -33,11 +33,11 @@ export const banking = [
   {
     path: '/self-banking/confirm-payment',
     element: ConfirmPayment,
-    roles: permitMe('Fellowship'),
+    roles: permitMe('Constituency'),
   },
   {
     path: '/self-banking/receipt',
     element: ReceiptPage,
-    roles: permitMe('Fellowship'),
+    roles: permitMe('Constituency'),
   },
 ]
