@@ -71,6 +71,9 @@ const DisplayChurchList = (props) => {
                             {church.memberCount
                               ? `| ${church?.memberCount} Members`
                               : null}{' '}
+                            {church?.target
+                              ? `|Target: ${church.target}`
+                              : null}
                             {church?.vacationStatus === 'Vacation' ? (
                               <span className="text-danger">{`| ${church?.vacationStatus}`}</span>
                             ) : church.vacationStatus ? (
