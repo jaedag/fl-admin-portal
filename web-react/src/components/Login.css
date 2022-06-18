@@ -23,3 +23,7 @@
 .desktop-card {
   width: 40%;
 }
+
+.slick-track {
+  height: 200px;
+}
