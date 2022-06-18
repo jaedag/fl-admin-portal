@@ -62,6 +62,7 @@ export const GET_CONSTITUENCY_BACENTAS = gql`
         stream_name
         vacationStatus
         fellowshipCount
+        target
         council {
           id
         }
@@ -100,6 +101,7 @@ export const GET_COUNCIL_CONSTITUENCIES = gql`
         stream_name
         memberCount
         bacentaCount
+        target
         leader {
           id
           firstName
@@ -150,6 +152,7 @@ export const GET_GATHERING_SERVICE_CONSTITUENCIES = gql`
         stream_name
         memberCount
         bacentaCount
+        target
         leader {
           id
           firstName
@@ -192,6 +195,7 @@ export const GET_STREAM_COUNCILS = gql`
         id
         stream_name
         memberCount
+        target
         constituencies {
           id
         }
@@ -238,6 +242,7 @@ export const GET_GATHERINGSERVICE_STREAMS = gql`
         stream_name
         memberCount
         councilCount
+        target
         leader {
           id
           firstName
@@ -282,6 +287,7 @@ export const GET_STREAM_CONSTITUENCIES = gql`
         stream_name
         memberCount
         bacentaCount
+        target
         leader {
           id
           firstName
