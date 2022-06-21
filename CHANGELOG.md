@@ -1,3 +1,27 @@
+## 4.0.0 (2022-06-21)
+
+##### Chores
+
+*  merged from fix-servant-cypher into deploy ([581709aa](https://github.com/firstlovecenter/fl-admin-portal/commit/581709aaa7c8f010fca1bb56589426e8050b8684))
+*  reinstalled package-lock ([0204f4b9](https://github.com/firstlovecenter/fl-admin-portal/commit/0204f4b978d3913b053481e27ae1e12f232905a1))
+
+##### Documentation Changes
+
+*  updated CHANGELOG.md ([35942b7f](https://github.com/firstlovecenter/fl-admin-portal/commit/35942b7fc30216162eaf7c88ec2b877d080f7f4c))
+
+##### New Features
+
+*  add target as information on all churches page ([69132689](https://github.com/firstlovecenter/fl-admin-portal/commit/69132689fb896f72133c04f9e46154c83327cec2))
+*  when a person fills no service fellowship summary screen should… ([#172](https://github.com/firstlovecenter/fl-admin-portal/pull/172)) ([2c6acae7](https://github.com/firstlovecenter/fl-admin-portal/commit/2c6acae7b3ff543381c1fab02e0ce3a556b779ba))
+
+##### Bug Fixes
+
+*  returning a clearer picture when counting numbers ([c64ca259](https://github.com/firstlovecenter/fl-admin-portal/commit/c64ca259c22a24de89cf1b14795b0cecafe10cf4))
+*  updated permissions for changing admins ([136703a2](https://github.com/firstlovecenter/fl-admin-portal/commit/136703a278d98beeec8b6de95ccb2fca364e7e3c))
+*  filter vacation bacentas in church list ([#167](https://github.com/firstlovecenter/fl-admin-portal/pull/167)) ([3c04cfe7](https://github.com/firstlovecenter/fl-admin-portal/commit/3c04cfe7776305fec3586781a604e12f9afedd94))
+*  hotfix error preventing new fellowship leaders from filling service forms ([91660137](https://github.com/firstlovecenter/fl-admin-portal/commit/91660137b8e1e3d832e7db25ebd86f212bb9582a))
+*  updated permeissions for updateFellowship mutation ([c0c48bd5](https://github.com/firstlovecenter/fl-admin-portal/commit/c0c48bd503091f3e76b62e77b624db64a814bfee))
+
 ## 3.0.0 (2022-06-21)
 
 ##### Chores
