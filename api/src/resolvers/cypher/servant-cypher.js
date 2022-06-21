@@ -302,7 +302,7 @@ MATCH (church)-[old_church_history:CURRENT_HISTORY]->(mainLog:ServiceLog)<-[old_
 
 DELETE old_church_history, old_leader_history
 
-WITH mainLog, church, leader
+WITH DISTINCT mainLog, church, leader
  CREATE (newLog:ServiceLog {id:apoc.create.uuid()})
     SET newLog.historyRecord = mainLog.historyRecord,
        newLog.timeStamp = datetime()

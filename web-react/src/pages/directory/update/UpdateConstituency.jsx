@@ -199,6 +199,7 @@ const UpdateConstituency = () => {
         removeChurch: RemoveBacentaConstituency,
         addChurch: AddConstituencyBacentas,
         logChurchHistory: LogBacentaHistory,
+        CreateHistorySubstructure: CreateHistorySubstructure,
       }
 
       const args = {

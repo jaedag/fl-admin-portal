@@ -9,7 +9,7 @@ RETURN council, leader;
 
 //Gathering Service Level
 MATCH (n:GatheringService)<-[:LEADS]-(leader:Member)
-MATCH (n)-[r:HAS_HISTORY {current:true}]->(log:ServiceLog)<-[:HAS_HISTORY]-(leader)
+MATCH (n)-[r:HAS_HISTORY {current:true}]->(log:ServiceLog)//<-[:HAS_HISTORY]-(leader)
 WITH COUNT(log) as result, n, leader
 WHERE  result > 1
 MATCH (n)-[:HAS_HISTORY {current:true}]->(l:ServiceLog)
@@ -20,7 +20,7 @@ return l;
 
 //Stream Level
 MATCH (n:Stream)<-[:LEADS]-(leader:Member)
-MATCH (n)-[r:HAS_HISTORY {current:true}]->(log:ServiceLog)<-[:HAS_HISTORY]-(leader)
+MATCH (n)-[r:HAS_HISTORY {current:true}]->(log:ServiceLog)//<-[:HAS_HISTORY]-(leader)
 WITH COUNT(log) as result, n
 WHERE  result > 1
 MATCH (n)-[:HAS_HISTORY {current:true}]->(l:ServiceLog)
@@ -31,7 +31,7 @@ return l;
 
 //Council Level
 MATCH (n:Council)<-[:LEADS]-(leader:Member)
-MATCH (n)-[r:HAS_HISTORY {current:true}]->(log:ServiceLog)<-[:HAS_HISTORY]-(leader)
+MATCH (n)-[r:HAS_HISTORY {current:true}]->(log:ServiceLog)//<-[:HAS_HISTORY]-(leader)
 WITH COUNT(log) as result, n
 WHERE  result > 1
 MATCH (n)-[:HAS_HISTORY {current:true}]->(l:ServiceLog)
@@ -42,7 +42,7 @@ return l;
 
 //Constituency Level
 MATCH (n:Constituency)<-[:LEADS]-(leader:Member)
-MATCH (n)-[r:HAS_HISTORY {current:true}]->(log:ServiceLog)<-[:HAS_HISTORY]-(leader)
+MATCH (n)-[r:HAS_HISTORY {current:true}]->(log:ServiceLog)//<-[:HAS_HISTORY]-(leader)
 WITH COUNT(log) as result, n
 WHERE  result > 1
 MATCH (n)-[:HAS_HISTORY {current:true}]->(l:ServiceLog)
@@ -53,7 +53,7 @@ return l;
 
 //Bacenta Level
 MATCH (n:Bacenta)<-[:LEADS]-(leader:Member)
-MATCH (n)-[r:HAS_HISTORY {current:true}]->(log:ServiceLog)<-[:HAS_HISTORY]-(leader)
+MATCH (n)-[r:HAS_HISTORY {current:true}]->(log:ServiceLog)//<-[:HAS_HISTORY]-(leader)
 WITH COUNT(log) as result, n
 WHERE  result > 1
 MATCH (n)-[:HAS_HISTORY {current:true}]->(l:ServiceLog)
@@ -64,7 +64,7 @@ return l;
 
 //Fellowship Level
 MATCH (n:Fellowship)<-[:LEADS]-(leader:Member)
-MATCH (n)-[r:HAS_HISTORY {current:true}]->(log:ServiceLog)<-[:HAS_HISTORY]-(leader)
+MATCH (n)-[r:HAS_HISTORY {current:true}]->(log:ServiceLog)//<-[:HAS_HISTORY]-(leader)
 WITH COUNT(log) as result, n
 WHERE  result > 1
 MATCH (n)-[:HAS_HISTORY {current:true}]->(l:ServiceLog)
@@ -73,18 +73,12 @@ SET
 l.timeStamp = l.timeStamp+duration({seconds: i})
 return l;
 
-//DELETE ALL CURRENT RELATIONSHIPS
-MATCH ()-[r:HAS_HISTORY {current:true}]-()
-remove r.current
-return 1;
-
-MATCH ()-[r:HAS_HISTORY]-()
-remove r.direct
-RETURN 1;
 
 
 //STEP 2: Reassign Current to All History Logs that are the current releatiosnhip between a church and a leader
 // Also check if it is the latest history log in case of duplicates
+
+
 
 //gathering service history logs
 
@@ -188,6 +182,47 @@ MATCH (lowerChurch)-[:CURRENT_HISTORY]->(lowerLog:ServiceLog)<-[:CURRENT_HISTORY
 MERGE (log)-[:HAS_COMPONENT]->(lowerLog)
 RETURN log, lowerLog;
 
+
+//Clean Up The Relationships
+MATCH p=(n)-[r]->(n)
+DELETE r;
+
+MATCH p=(a)-[r:HAS_HISTORY]->(b)
+REMOVE r.current
+RETURN COUNT(p);
+
+MATCH p=(a)-[r:HAS_HISTORY]->(b)
+REMOVE r.direct
+RETURN COUNT(p);
+
+
+//Create duplicate new service logs to start off the new structure
+MATCH (church)<-[:LEADS]-(leader:Member)
+WHERE church:Fellowship 
+OR church:Bacenta OR church:Constituency 
+OR church:Council OR church:Stream OR church:GatheringService
+
+MATCH (church)-[r:HAS_HISTORY]->(log:ServiceLog)<-[:HAS_HISTORY]-(leader)
+WITH max(log.timeStamp) as max, church, leader 
+MATCH (n)-[r:HAS_HISTORY]->(mainLog:ServiceLog)<-[s:HAS_HISTORY]-(leader)
+WHERE mainLog.timeStamp = max
+
+WITH church, mainLog, leader
+
+MATCH (church)-[old_church_history:HAS_HISTORY]->(mainLog:ServiceLog)<-[old_leader_history:HAS_HISTORY]-(leader)
+
+WITH mainLog, church, leader
+ CREATE (newLog:ServiceLog {id: apoc.create.uuid()})
+    SET newLog.historyRecord = mainLog.historyRecord,
+       newLog.timeStamp = datetime()
+
+       WITH church, newLog
+MERGE (church)-[:CURRENT_HISTORY]->(newLog)
+MERGE (newLog)<-[:CURRENT_HISTORY]-(leader)
+MERGE (church)-[:HAS_HISTORY]->(newLog)
+MERGE (newLog)<-[:HAS_HISTORY]-(leader)
+
+RETURN newLog;
 
 // STEP 4: Create Denomination
 //Unrelated But needed nonetheless

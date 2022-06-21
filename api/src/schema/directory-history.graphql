@@ -3,6 +3,7 @@ extend type Mutation {
     churchType: String!
     servantType: String!
     churchId: ID!
+    connectUpwards: Boolean
   ): ID!
 
   LogStreamHistory(ids: [ID], historyRecord: String!): Stream
@@ -176,7 +177,6 @@ extend type Mutation {
          SET log :ServiceLog
          WITH log, newLeader,oldLeader
        OPTIONAl MATCH (log)<-[r0:HAS_HISTORY]-()
-         SET r0.current = false
          WITH log,newLeader,oldLeader
        CREATE (oldLeader)-[:HAS_HISTORY]->(log)
        CREATE (newLeader)-[:HAS_HISTORY]->(log)

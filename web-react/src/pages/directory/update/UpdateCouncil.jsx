@@ -212,6 +212,7 @@ const UpdateCouncil = () => {
         removeChurch: RemoveConstituencyCouncil,
         addChurch: AddCouncilConstituencies,
         logChurchHistory: LogConstituencyHistory,
+        CreateHistorySubstructure: CreateHistorySubstructure,
       }
 
       const args = {

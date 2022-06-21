@@ -209,6 +209,7 @@ const UpdateStream = () => {
         removeChurch: RemoveCouncilStream,
         addChurch: AddStreamCouncils,
         logChurchHistory: LogCouncilHistory,
+        CreateHistorySubstructure: CreateHistorySubstructure,
       }
 
       const args = {

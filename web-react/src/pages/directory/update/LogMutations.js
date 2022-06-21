@@ -5,11 +5,13 @@ export const CREATE_HISTORY_SUBSTRUCTURE = gql`
     $churchType: String!
     $servantType: String!
     $churchId: ID!
+    $connectUpwards: Boolean
   ) {
     CreateChurchSubstructure(
       churchType: $churchType
       servantType: $servantType
       churchId: $churchId
+      connectUpwards: $connectUpwards
     )
   }
 `

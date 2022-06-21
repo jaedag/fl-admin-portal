@@ -133,9 +133,9 @@ export const addNewChurches = async (lists, mutations, args) => {
 
         await mutations.CreateHistorySubstructure({
           variables: {
-            churchType: capitalise(churchLevel),
+            churchType: capitalise(higherChurch),
             servantType: 'Leader',
-            churchId: church.id,
+            churchId: args[`${higherChurch}Id`],
           },
         })
       })
