@@ -1,3 +1,47 @@
+#### 4.0.1 (2022-06-21)
+
+##### Chores
+
+*  fix merge conflicts ([e1b23962](https://github.com/firstlovecenter/fl-admin-portal/commit/e1b2396248e5b5f98ccfa0c47f2243319ce07dd7))
+*  updated outdated dependencies ([b7dd3f3d](https://github.com/firstlovecenter/fl-admin-portal/commit/b7dd3f3d2d37b1206e4992799e7d19ea6393f2e3))
+*  cleaned up and fixed issues with eslint ([daa4fb5c](https://github.com/firstlovecenter/fl-admin-portal/commit/daa4fb5ce8ad641d20adc464fa697f0a11a0d724))
+*  updated dependencies ([b919652c](https://github.com/firstlovecenter/fl-admin-portal/commit/b919652c802808ce68542dd32fb92cb8e3418137))
+*  updated to react 18 ([af697061](https://github.com/firstlovecenter/fl-admin-portal/commit/af6970610d7c6380a8a5a9fe343cd59a89309113))
+
+##### New Features
+
+*  history structure is created when moving church from up down ([592bc89d](https://github.com/firstlovecenter/fl-admin-portal/commit/592bc89dc4e0f051a677b0c9601b8ac1c967a149))
+*  implemented self-banking for constituency joint services ([ff18729d](https://github.com/firstlovecenter/fl-admin-portal/commit/ff18729d10484b08458ed8ddc052b240764d6f3a))
+*  implemented creation of substructure when changing higher church ([eb75d1b1](https://github.com/firstlovecenter/fl-admin-portal/commit/eb75d1b1ca0385b25179e9b2d3cf187fec2b0e70))
+*  implemented creation of substructure on church transfer ([5a36bea2](https://github.com/firstlovecenter/fl-admin-portal/commit/5a36bea28108ff890ed814f748b510d1e67c32cf))
+*  written the cypher script that will extract history.current to a separate property ([04d68161](https://github.com/firstlovecenter/fl-admin-portal/commit/04d68161424fbb3e5e919342a6d70dd976a4b27c))
+*  implemented creating church substructure when leader changes ([c95255d7](https://github.com/firstlovecenter/fl-admin-portal/commit/c95255d7d27da0a09899134ee2ba7959791a9040))
+*  moved error message strins to texts.json ([186ae091](https://github.com/firstlovecenter/fl-admin-portal/commit/186ae091b5c0f9438a9653c621a3d4e1c1a14559))
+*  implemented logSubstructure queries with BUGS ([a73571a0](https://github.com/firstlovecenter/fl-admin-portal/commit/a73571a0869e9fb0baab70ae820d725a365e7f53))
+
+##### Bug Fixes
+
+*  adjusted permissions for viewing the self banking receipt ([8570187e](https://github.com/firstlovecenter/fl-admin-portal/commit/8570187e204a30b41e9fe45959866bffcf5911f5))
+*  fixed error where history was not showing correctly when changing upwards church ([0c842c91](https://github.com/firstlovecenter/fl-admin-portal/commit/0c842c9127612136a1f86015d6f7173ee85189f0))
+*  tidied up history log messages on servant change ([f9955686](https://github.com/firstlovecenter/fl-admin-portal/commit/f9955686b49540a8a92671ee93524f084a42ae11))
+*  if there is no top up for bacenta, all money cards shouldn't show ([5b848509](https://github.com/firstlovecenter/fl-admin-portal/commit/5b84850923ac262a37591b20e6f1c4ccf97708ce))
+*  fixed feature to add permitted Stream feature to RoleView.jsx ([c76daefc](https://github.com/firstlovecenter/fl-admin-portal/commit/c76daefc6c944cd7be29881ca4f313b51aa6282a))
+*  if you have transaction pending, you can't upload banking slip backend ([414b8e74](https://github.com/firstlovecenter/fl-admin-portal/commit/414b8e74fc51e017b5a2bc4a173ae506f92a4cd5))
+*  if you have transaction pending, you can't upload banking slip ([8fe47945](https://github.com/firstlovecenter/fl-admin-portal/commit/8fe47945969bf913844056294d0b56fff9ec9366))
+*  when member details were updated ministry log was giving a weird feedback ([ac40f967](https://github.com/firstlovecenter/fl-admin-portal/commit/ac40f967a5ba72560524c16b8db9cc877a8116b5))
+
+##### Performance Improvements
+
+*  improved order of history logs in timeline ([be700cf5](https://github.com/firstlovecenter/fl-admin-portal/commit/be700cf58722def7c0c2d057d1bf392996c5e133))
+*  improved login flow ([947dea97](https://github.com/firstlovecenter/fl-admin-portal/commit/947dea9737abbb359a81cdce68634853bdcb6336))
+*  replace .current property with CURRENT_HISTORY relationship ([e4bb2a39](https://github.com/firstlovecenter/fl-admin-portal/commit/e4bb2a3932f9e67aac29796317a70e38c4192197))
+*  imported custom npm package jd-date-utils ([d7173edb](https://github.com/firstlovecenter/fl-admin-portal/commit/d7173edba6673990e312e2e1288d7bb970c58e37))
+
+##### Refactors
+
+*  taken away redundant clickCard property ([3a6c252a](https://github.com/firstlovecenter/fl-admin-portal/commit/3a6c252ad771c3acfa76b90130cdd178c8ae059d))
+*  refactored navigation.jsx for legibility ([ccd30086](https://github.com/firstlovecenter/fl-admin-portal/commit/ccd300867aa471bef4eb617ab8a6b3b6d2c3dc87))
+
 ## 4.0.0 (2022-06-21)
 
 ##### Chores
