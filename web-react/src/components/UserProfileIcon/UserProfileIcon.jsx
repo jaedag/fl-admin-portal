@@ -1,6 +1,5 @@
 import React, { useContext } from 'react'
 import { useAuth0 } from '@auth0/auth0-react'
-import AuthButton from '../buttons/AuthButton'
 import './UserProfileIcon.css'
 import { MemberContext } from '../../contexts/MemberContext.js'
 import { Spinner } from 'react-bootstrap'
@@ -35,11 +34,6 @@ function UserProfileIcon() {
       {isAuthenticated && !currentUser.email && (
         <div className="text-secondary text-center">
           <Spinner animation="grow" />
-        </div>
-      )}
-      {!isAuthenticated && (
-        <div className="nav-item nav-link d-flex align-items-center flex-column">
-          <AuthButton />
         </div>
       )}
     </>

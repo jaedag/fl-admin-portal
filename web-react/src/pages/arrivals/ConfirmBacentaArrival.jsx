@@ -59,7 +59,6 @@ const ConfirmBacentaArrival = () => {
 
   useEffect(() => {
     setBacentaData(bacentaDataLoaded)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [church])
 
   const onSubmit = (values, onSubmitProps) => {

@@ -35,7 +35,6 @@ const MembersGrid = (props) => {
 
   useEffect(() => {
     setMemberData(memberDataLoaded)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, filters])
 
   //NavBar takes 70px of the height and side bar takes 25% of the width

@@ -94,7 +94,6 @@ const SearchConstituency = (props) => {
 
   useEffect(() => {
     setSearchString(initialise(props.initialValue, searchString))
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.initialValue])
 
   useEffect(() => {
@@ -105,7 +104,6 @@ const SearchConstituency = (props) => {
     return () => {
       clearTimeout(timerId)
     }
-    // eslint-disable-next-line
   }, [searchString])
 
   return (

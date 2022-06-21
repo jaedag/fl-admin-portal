@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import { Row, Col, Accordion, Stack } from 'react-bootstrap'
 import { useQuery } from '@apollo/client'
 import { MemberContext } from '../../../contexts/MemberContext'
-import { getMemberDob } from 'date-utils'
+import { getMemberDob } from 'jd-date-utils'
 import Timeline from '../../../components/Timeline/Timeline'
 import BaseComponent from 'components/base-component/BaseComponent'
 import {

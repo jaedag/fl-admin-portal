@@ -13,7 +13,7 @@ import { ChurchContext } from 'contexts/ChurchContext'
 import BaseComponent from 'components/base-component/BaseComponent'
 import { UPLOAD_MOBILISATION_PICTURE } from './arrivalsMutations'
 import { beforeMobilisationDeadline } from './arrivals-utils'
-import { isToday } from 'date-utils'
+import { isToday } from 'jd-date-utils'
 
 const FormMobilisationSubmission = () => {
   const navigate = useNavigate()

@@ -185,7 +185,7 @@ export const getHighestTitle = (member) => {
   }
   let highestTitle
 
-  member.titleConnection.edges.map((title) => {
+  member.titleConnection.edges.forEach((title) => {
     // Male Titles
     if (member.gender.gender === 'Male') {
       if (title.node.title === 'Pastor') {

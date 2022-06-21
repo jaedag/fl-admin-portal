@@ -13,7 +13,7 @@ import { useMutation, useQuery } from '@apollo/client'
 import HeadingSecondary from 'components/HeadingSecondary'
 import BaseComponent from 'components/base-component/BaseComponent'
 import { useNavigate } from 'react-router'
-import { getHumanReadableDate } from 'date-utils'
+import { getHumanReadableDate } from 'jd-date-utils'
 import { throwErrorMsg } from 'global-utils'
 import SubmitButton from 'components/formik-components/SubmitButton'
 

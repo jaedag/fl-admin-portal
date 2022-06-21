@@ -12,7 +12,11 @@ import {
 } from './UpdateMutations'
 import { ChurchContext } from '../../../contexts/ChurchContext'
 import { DISPLAY_COUNCIL } from '../display/ReadQueries'
-import { LOG_COUNCIL_HISTORY, LOG_CONSTITUENCY_HISTORY } from './LogMutations'
+import {
+  LOG_COUNCIL_HISTORY,
+  LOG_CONSTITUENCY_HISTORY,
+  CREATE_HISTORY_SUBSTRUCTURE,
+} from './LogMutations'
 import { MAKE_COUNCIL_LEADER } from './ChangeLeaderMutations'
 import CouncilForm from 'pages/directory/reusable-forms/CouncilForm'
 import { addNewChurches, removeOldChurches } from './directory-utils'
@@ -92,40 +96,34 @@ const UpdateCouncil = () => {
   })
 
   //Changes upwards. it. Changes to the Stream the Council Campus is under
+  const [CreateHistorySubstructure] = useMutation(CREATE_HISTORY_SUBSTRUCTURE)
   const [RemoveCouncilStream] = useMutation(REMOVE_COUNCIL_STREAM)
   const [AddCouncilStream] = useMutation(ADD_COUNCIL_STREAM, {
     onCompleted: (data) => {
-      if (!council?.stream.name) {
-        //If There is no old Stream
-        let recordIfNoOldStream = `${initialValues.name} Council has been moved to ${data.updateCouncils.councils[0].stream.name} Stream`
+      //If there is an old Stream
+      const oldStream = data.updateStreams.streams[0]
+      const newStream = data.updateCouncils.councils[0].stream
+      let recordIfOldStream = `${initialValues.name} Council has been moved from ${oldStream.name} Stream to ${newStream.name} Stream`
 
-        LogCouncilHistory({
+      //After Adding the council to a stream, then you log that change.
+      LogCouncilHistory({
+        variables: {
+          councilId: councilId,
+          newLeaderId: '',
+          oldLeaderId: '',
+          newStreamId: data.updateCouncils.councils[0].stream.id,
+          oldStreamId: council?.stream.id,
+          historyRecord: recordIfOldStream,
+        },
+      }).then(() =>
+        CreateHistorySubstructure({
           variables: {
-            councilId: councilId,
-            newLeaderId: '',
-            oldLeaderId: '',
-            newStreamId: data.updateCouncils.councils[0].stream.id,
-            oldStreamId: council?.stream.id,
-            historyRecord: recordIfNoOldStream,
+            churchType: 'Council',
+            servantType: 'Leader',
+            churchId: councilId,
           },
         })
-      } else {
-        //If there is an old Stream
-
-        let recordIfOldStream = `${initialValues.name} Council has been moved from ${council?.stream.name} Stream to ${data.updateCouncils.councils[0].stream.name} Stream`
-
-        //After Adding the council to a stream, then you log that change.
-        LogCouncilHistory({
-          variables: {
-            councilId: councilId,
-            newLeaderId: '',
-            oldLeaderId: '',
-            newStreamId: data.updateCouncils.councils[0].stream.id,
-            oldStreamId: council?.stream.id,
-            historyRecord: recordIfOldStream,
-          },
-        })
-      }
+      )
     },
   })
 
@@ -179,13 +177,14 @@ const UpdateCouncil = () => {
         try {
           await RemoveCouncilStream({
             variables: {
-              streamId: initialValues.stream,
-              councilId: councilId,
+              higherChurch: initialValues.stream,
+              lowerChurch: [councilId],
             },
           })
           await AddCouncilStream({
             variables: {
               streamId: values.stream,
+              oldStreamId: initialValues.stream,
               councilId: councilId,
             },
           })
@@ -213,6 +212,7 @@ const UpdateCouncil = () => {
         removeChurch: RemoveConstituencyCouncil,
         addChurch: AddCouncilConstituencies,
         logChurchHistory: LogConstituencyHistory,
+        CreateHistorySubstructure: CreateHistorySubstructure,
       }
 
       const args = {

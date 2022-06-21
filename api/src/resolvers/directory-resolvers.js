@@ -1,14 +1,21 @@
 import { permitAdmin, permitLeaderAdmin } from './permissions'
-import { isAuth, rearrangeCypherObject, throwErrorMsg } from './resolver-utils'
+import {
+  createChurchHistorySubstructure,
+  isAuth,
+  rearrangeCypherObject,
+  throwErrorMsg,
+} from './resolver-utils'
 import { RemoveServant } from './resolvers'
 const cypher = require('./cypher/resolver-cypher')
+const servantCypher = require('./cypher/servant-cypher')
 const closeChurchCypher = require('./cypher/close-church-cypher')
+const errorMessage = require('./texts.json').error
 
 export const directoryMutation = {
   CreateMember: async (object, args, context) => {
     isAuth(permitLeaderAdmin('Fellowship'), context.auth.roles)
 
-    const session = context.driver.session()
+    const session = context.executionContext.session()
     const memberResponse = await session.run(
       cypher.checkMemberEmailExists,
       args
@@ -17,10 +24,7 @@ export const directoryMutation = {
     const memberCheck = rearrangeCypherObject(memberResponse)
 
     if (memberCheck.email || memberCheck.whatsappNumber) {
-      throwErrorMsg(
-        'A member with this email address/whatsapp number already exists in the database',
-        ''
-      )
+      throwErrorMsg(errorMessage.no_duplicate_email_or_whatsapp, '')
     }
 
     const createMemberResponse = await session.run(cypher.createMember, {
@@ -47,7 +51,7 @@ export const directoryMutation = {
 
   MakeMemberInactive: async (object, args, context) => {
     isAuth(permitLeaderAdmin('Stream'), context.auth.roles)
-    const session = context.driver.session()
+    const session = context.executionContext.session()
 
     const memberCheck = rearrangeCypherObject(
       await session.run(cypher.checkMemberHasNoActiveRelationships, args)
@@ -68,7 +72,7 @@ export const directoryMutation = {
   CloseDownFellowship: async (object, args, context) => {
     isAuth(permitAdmin('Constituency'), context.auth.roles)
 
-    const session = context.driver.session()
+    const session = context.executionContext.session()
 
     try {
       const fellowshipCheckResponse = await session.run(
@@ -116,7 +120,7 @@ export const directoryMutation = {
   CloseDownBacenta: async (object, args, context) => {
     isAuth(permitAdmin('Constituency'), context.auth.roles)
 
-    const session = context.driver.session()
+    const session = context.executionContext.session()
 
     try {
       const bacentaCheckResponse = await session.run(
@@ -157,7 +161,7 @@ export const directoryMutation = {
   CloseDownConstituency: async (object, args, context) => {
     isAuth(permitAdmin('Council'), context.auth.roles)
 
-    const session = context.driver.session()
+    const session = context.executionContext.session()
 
     try {
       const constituencyCheckResponse = await session.run(
@@ -196,5 +200,28 @@ export const directoryMutation = {
     } catch (error) {
       throwErrorMsg(error)
     }
+  },
+  CreateChurchSubstructure: async (object, args, context) => {
+    const session = context.executionContext.session()
+
+    const church = {
+      id: args.churchId,
+    }
+    const churchType = args.churchType
+    const servantType = args.servantType
+
+    const functionArguments = {
+      churchType,
+      servantType,
+      church,
+      session,
+    }
+
+    await session.run(servantCypher.newDuplicateServiceLog, {
+      id: church.id,
+    })
+    await createChurchHistorySubstructure(functionArguments)
+
+    return church.id
   },
 }

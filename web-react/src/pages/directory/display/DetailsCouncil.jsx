@@ -10,7 +10,6 @@ import useClickCard from 'hooks/useClickCard'
 const DetailsCouncil = () => {
   const { councilId } = useContext(ChurchContext)
   const { setChurch } = useClickCard()
-
   const { data, loading, error } = useQuery(DISPLAY_COUNCIL, {
     variables: { id: councilId },
   })

@@ -75,8 +75,6 @@ const useChurchLevel = (props) => {
     }
 
     whichQuery()
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setChurch])
 
   return { church, subChurchLevel, loading, error }

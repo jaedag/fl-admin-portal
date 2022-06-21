@@ -618,7 +618,7 @@ extend type Mutation {
 
       WITH serviceRecord
       MATCH (church {id:$id}) WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council
-      MATCH (church)-[has_history:HAS_HISTORY]->(log:HistoryLog) WHERE has_history.current = true
+      MATCH (church)-[:CURRENT_HISTORY]->(log:HistoryLog)
       MATCH (leader:Member {auth_id: $auth.jwt.sub})
 
       MERGE (serviceRecord)-[:LOGGED_BY]->(leader)
@@ -644,7 +644,7 @@ extend type Mutation {
         serviceRecord.servicePicture = $servicePicture
       WITH serviceRecord
       MATCH (church {id:$id}) WHERE church:Fellowship OR church:Bacenta OR church:Sonta OR church:Constituency
-      MATCH (church)-[has_history:HAS_HISTORY]->(log:HistoryLog) WHERE has_history.current = true
+      MATCH (church)-[has_history:CURRENT_HISTORY]->(log:HistoryLog)
       MATCH (leader:Member {auth_id: $auth.jwt.sub})
 
       MERGE (serviceRecord)-[:LOGGED_BY]->(leader)
@@ -659,7 +659,7 @@ extend type Mutation {
   SubmitBankingSlip(serviceRecordId: ID!, bankingSlip: String!): ServiceRecord
     @cypher(
       statement: """
-      MATCH (record:ServiceRecord {id: $serviceRecordId})
+      MATCH (record:ServiceRecord {id: $serviceRecordId}) WHERE record.transactionStatus <> "pending"
         SET record.bankingSlip = $bankingSlip
 
         WITH record

@@ -22,7 +22,7 @@ const PlaceholderCustom = (props) => {
 
     return (
       <>
-        <Placeholder as={as ?? 'div'} animation="wave" {...rest}>
+        <Placeholder as={as ?? 'div'} animation="glow" {...rest}>
           <Placeholder
             xs={xs ?? 8}
             size={size ?? 'lg'}

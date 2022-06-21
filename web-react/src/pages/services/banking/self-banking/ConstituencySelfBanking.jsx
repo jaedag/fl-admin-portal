@@ -7,35 +7,35 @@ import { parseDate } from 'jd-date-utils'
 import React, { useContext, useState } from 'react'
 import { Card, Col, Container, Row } from 'react-bootstrap'
 import { useNavigate } from 'react-router'
-import { FELLOWSHIP_BANKING_SLIP_QUERIES } from '../../ServicesQueries'
+import { CONSTITUENCY_BANKING_SLIP_QUERIES } from '../../ServicesQueries'
 import HeadingSecondary from 'components/HeadingSecondary'
 import { capitalise } from 'global-utils'
 import usePopup from 'hooks/usePopup'
 import Popup from 'components/Popup/Popup'
 import ConfirmPaymentButton from './components/button/ConfirmPayment'
 
-const FellowshipSelfBanking = () => {
-  const { fellowshipId, clickCard } = useContext(ChurchContext)
+const ConstituencySelfBanking = () => {
+  const { constituencyId, clickCard } = useContext(ChurchContext)
   const { isOpen, togglePopup } = usePopup()
   const [confirmService, setConfirmService] = useState(null)
   const navigate = useNavigate()
   const { data, loading, error, refetch } = useQuery(
-    FELLOWSHIP_BANKING_SLIP_QUERIES,
+    CONSTITUENCY_BANKING_SLIP_QUERIES,
     {
-      variables: { fellowshipId: fellowshipId },
+      variables: { constituencyId: constituencyId },
     }
   )
-  const fellowship = data?.fellowships[0]
+  const constituency = data?.constituencies[0]
   const placeholder = ['', '', '']
   throwErrorMsg(error)
 
   return (
     <Container>
       <HeadingPrimary loading={loading}>
-        {fellowship?.name} {fellowship?.__typename}
+        {constituency?.name} {constituency?.__typename}
       </HeadingPrimary>
       <PlaceholderCustom as="p" loading={loading}>
-        <p>Banking Code: {fellowship?.bankingCode}</p>
+        <p>Banking Code: {constituency?.bankingCode}</p>
       </PlaceholderCustom>
 
       <HeadingSecondary loading={loading}>
@@ -54,7 +54,7 @@ const FellowshipSelfBanking = () => {
         </Popup>
       )}
 
-      {data?.fellowships[0].services.map((service, index) => {
+      {data?.constituencies[0].services.map((service, index) => {
         if (service.noServiceReason || service.bankingSlip) {
           return null
         }
@@ -74,7 +74,7 @@ const FellowshipSelfBanking = () => {
               if (service?.transactionStatus === 'success') {
                 return
               }
-              navigate('/services/fellowship/self-banking/pay')
+              navigate('/services/constituency/self-banking/pay')
             }}
           >
             <Card.Header>
@@ -125,4 +125,4 @@ const FellowshipSelfBanking = () => {
   )
 }
 
-export default FellowshipSelfBanking
+export default ConstituencySelfBanking

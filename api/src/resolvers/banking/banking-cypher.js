@@ -19,7 +19,7 @@ MATCH (transaction: LastPaySwitchTransactionId)
     record.transactionTime = datetime(),
     record.transactionStatus = "pending"
 
-MERGE (author)<-[:OFFERING_BANKED_BY]-(record)
+CREATE (author)<-[:OFFERING_BANKED_BY]-(record)
 
 RETURN record, church.name AS churchName, date.date AS date, churchLevel AS churchLevel
 `

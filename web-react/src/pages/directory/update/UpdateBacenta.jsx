@@ -13,7 +13,11 @@ import {
 } from './UpdateMutations'
 import { ChurchContext } from '../../../contexts/ChurchContext'
 import { DISPLAY_BACENTA } from '../display/ReadQueries'
-import { LOG_BACENTA_HISTORY, LOG_FELLOWSHIP_HISTORY } from './LogMutations'
+import {
+  CREATE_HISTORY_SUBSTRUCTURE,
+  LOG_BACENTA_HISTORY,
+  LOG_FELLOWSHIP_HISTORY,
+} from './LogMutations'
 import { MAKE_BACENTA_LEADER } from './ChangeLeaderMutations'
 import BacentaForm from '../reusable-forms/BacentaForm'
 import { MAKE_FELLOWSHIP_INACTIVE } from './CloseChurchMutations'
@@ -104,44 +108,35 @@ const UpdateBacenta = () => {
   })
 
   //Changes upwards. ie. Changes to the Constituency the Bacenta is under
-
+  const [CreateHistorySubstructure] = useMutation(CREATE_HISTORY_SUBSTRUCTURE)
   const [RemoveBacentaConstituency] = useMutation(REMOVE_BACENTA_CONSTITUENCY)
 
   const [AddBacentaConstituency] = useMutation(ADD_BACENTA_CONSTITUENCY, {
     onCompleted: (data) => {
-      const oldConstituency = bacenta?.constituency
+      const oldConstituency = data.updateConstituencies.constituencies[0]
       const newConstituency = data.updateBacentas.bacentas[0].constituency
-      if (!oldConstituency) {
-        //If There is no old Constituency
-        let recordIfNooldConstituency = `${initialValues.name} Bacenta has been moved to ${newConstituency.name} Constituency`
 
-        LogBacentaHistory({
+      let recordIfoldConstituency = `${initialValues.name} Bacenta has been moved from ${oldConstituency.name} Constituency to ${newConstituency.name} Constituency`
+
+      //After Adding the bacenta to a constituency, then you log that change.
+      LogBacentaHistory({
+        variables: {
+          bacentaId: bacentaId,
+          newLeaderId: '',
+          oldLeaderId: '',
+          newConstituencyId: newConstituency.id,
+          oldConstituencyId: oldConstituency.id,
+          historyRecord: recordIfoldConstituency,
+        },
+      }).then(() =>
+        CreateHistorySubstructure({
           variables: {
-            bacentaId: bacentaId,
-            newLeaderId: '',
-            oldLeaderId: '',
-            newConstituencyId: newConstituency.id,
-            oldConstituencyId: oldConstituency.id,
-            historyRecord: recordIfNooldConstituency,
+            churchType: 'Bacenta',
+            servantType: 'Leader',
+            churchId: bacentaId,
           },
         })
-      } else {
-        //If there is an old Constituency
-
-        let recordIfoldConstituency = `${initialValues.name} Bacenta has been moved from ${oldConstituency.name} Constituency to ${newConstituency.name} Constituency`
-
-        //After Adding the bacenta to a constituency, then you log that change.
-        LogBacentaHistory({
-          variables: {
-            bacentaId: bacentaId,
-            newLeaderId: '',
-            oldLeaderId: '',
-            newConstituencyId: newConstituency.id,
-            oldConstituencyId: oldConstituency.id,
-            historyRecord: recordIfoldConstituency,
-          },
-        })
-      }
+      )
     },
   })
 
@@ -229,13 +224,14 @@ const UpdateBacenta = () => {
     if (values.constituency !== initialValues.constituency) {
       await RemoveBacentaConstituency({
         variables: {
-          constituencyId: initialValues.constituency,
-          bacentaId: bacentaId,
+          higherChurch: initialValues.constituency,
+          lowerChurch: [bacentaId],
         },
       })
       await AddBacentaConstituency({
         variables: {
           constituencyId: values.constituency,
+          oldConstituencyId: initialValues.constituency,
           bacentaId: bacentaId,
         },
       })
@@ -257,6 +253,7 @@ const UpdateBacenta = () => {
       removeChurch: RemoveFellowshipFromBacenta,
       addChurch: AddBacentaFellowships,
       logChurchHistory: LogFellowshipHistory,
+      CreateHistorySubstructure: CreateHistorySubstructure,
     }
 
     const args = {

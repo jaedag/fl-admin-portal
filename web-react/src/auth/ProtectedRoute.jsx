@@ -12,7 +12,7 @@ import Sabbath from './Sabbath'
 
 const ProtectedRoute = ({ children, roles, roleBased, placeholder }) => {
   const { currentUser } = useContext(MemberContext)
-  const { isAuthenticated } = useAuth0()
+  const { isAuthenticated, isLoading } = useAuth0()
   const church = useContext(ChurchContext)
 
   const location = useLocation()
@@ -20,6 +20,11 @@ const ProtectedRoute = ({ children, roles, roleBased, placeholder }) => {
 
   if (new Date().getDay() === 1) {
     return <Sabbath />
+  }
+
+  if (isLoading) {
+    console.log('loading')
+    return <LoadingScreen />
   }
   if (atHome && !isAuthenticated) {
     //Unauthenticated and home

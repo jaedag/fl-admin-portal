@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import ReactDOM from 'react-dom'
+import { createRoot } from 'react-dom/client'
 import {
   ApolloClient,
   ApolloProvider,
@@ -13,10 +13,12 @@ import CacheBuster from 'CacheBuster'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './index.css'
 import PastorsAdmin from 'App'
+import LoadingScreen from 'components/base-component/LoadingScreen'
+import Login from 'components/Login'
 
 const AppWithApollo = () => {
   const [accessToken, setAccessToken] = useState()
-  const { getAccessTokenSilently } = useAuth0()
+  const { getAccessTokenSilently, isLoading, user } = useAuth0()
 
   const getAccessToken = useCallback(async () => {
     try {
@@ -29,7 +31,7 @@ const AppWithApollo = () => {
       sessionStorage.setItem('token', token)
     } catch (err) {
       // eslint-disable-next-line
-      console.error(err)
+      console.error('Error Obtaining Token', err)
     }
   }, [getAccessTokenSilently])
 
@@ -60,9 +62,23 @@ const AppWithApollo = () => {
     cache: new InMemoryCache(),
   })
 
+  const [theme, setTheme] = useState('dark')
+  useEffect(() => {
+    if (theme === 'dark') document.body.style.backgroundColor = '#121212'
+    else document.body.style.backgroundColor = '#FFFFFF'
+  }, [theme])
+
+  if (isLoading) {
+    return <LoadingScreen />
+  }
+
+  if (!user) {
+    return <Login />
+  }
+
   return (
     <ApolloProvider client={client}>
-      <PastorsAdmin />
+      <PastorsAdmin themeOptions={{ theme, setTheme }} />
     </ApolloProvider>
   )
 }
@@ -90,5 +106,12 @@ const App = () => (
   </CacheBuster>
 )
 
-ReactDOM.render(<App />, document.getElementById('root'))
+const container = document.getElementById('root')
+const root = createRoot(container)
+
+root.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+)
 // registerServiceWorker()

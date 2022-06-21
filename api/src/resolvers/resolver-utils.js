@@ -61,6 +61,7 @@ export const rearrangeCypherObject = (response) => {
 
   return member?.member || member
 }
+
 export const parseForCache = (servant, church, verb, role) => {
   //Returning the data such that it can update apollo cache
   servant[`${verb}`].push({
@@ -151,27 +152,12 @@ export const historyRecordString = ({
     return `${servant.firstName} ${servant.lastName} was removed as the ${churchType} ${servantType} for  ${church.name} ${churchType}`
   }
 
-  if (
-    oldServant ||
-    args.oldLeaderId ||
-    args.oldAdminId ||
-    args.oldArrivalsAdminId
-  ) {
+  if ('id' in oldServant) {
     return `${servant.firstName} ${servant.lastName} became the ${servantType} of ${church.name} ${churchType} replacing ${oldServant.firstName} ${oldServant.lastName}`
   }
 
-  if (args.adminId) {
-    return `${servant.firstName} ${servant.lastName} became the admin for ${church.name} ${churchType}`
-  }
-
-  if (args.arrivalsAdminId) {
-    return `${servant.firstName} ${servant.lastName} became the arrivals admin for ${church.name} ${churchType}`
-  }
-  if (args.arrivalsCounterId) {
-    return `${servant.firstName} ${servant.lastName} became the arrivals counter for ${church.name} ${churchType}`
-  }
-  if (args.arrivalsConfirmerId) {
-    return `${servant.firstName} ${servant.lastName} became the arrivals confirmer for ${church.name} ${churchType}`
+  if (!args.leaderId) {
+    return `${servant.firstName} ${servant.lastName} became the ${servantType} of ${church.name} ${churchType}`
   }
 
   return `${servant.firstName} ${servant.lastName} started ${church.name} ${churchType} under ${higherChurch.name} ${higherChurch.type}`
@@ -189,7 +175,7 @@ export const makeServantCypher = async (
   const terms = formatting(churchType, servantType)
   let servantLower = terms.servantLower
 
-  const session = context.driver.session()
+  const session = context.executionContext.session()
   //Connect Leader to Church
 
   const connectedChurchRes = rearrangeCypherObject(
@@ -253,41 +239,136 @@ export const makeServantCypher = async (
       .catch((e) => throwErrorMsg(`Error Connecting History Log`, e))
   }
 
-  //Run Cypher to Connect the History
-  switch (churchType + servantType) {
-    case 'GatheringServiceLeader':
-      await session
-        .run(servantCypher.connectChurchLogSubstructure, {
-          churchId: church.id,
-        })
-        .catch((e) =>
-          throwErrorMsg(`Error Creating Gathering Service Substructure`, e)
-        )
-      break
+  await createChurchHistorySubstructure({
+    churchType,
+    servantType,
+    church,
+    session,
+  })
+}
 
-    case 'BacentaLeader':
-      await session
-        .run(servantCypher.connectBacentaLogSubstructure, {
-          churchId: church.id,
-        })
-        .catch((e) => throwErrorMsg(`Error Creating Bacenta Substructure`, e))
-      break
-    default:
-      break
+export const createChurchHistorySubstructure = async ({
+  churchType,
+  servantType,
+  church,
+  session,
+}) => {
+  try {
+    //Run Cypher to Connect the History
+    const logResponse = {}
+
+    switch (churchType + servantType) {
+      case 'GatheringServiceLeader':
+        logResponse.gatheringServices = [church.id]
+        break
+      case 'StreamLeader':
+        logResponse.streams = [church.id]
+        break
+      case 'CouncilLeader':
+        logResponse.councils = [church.id]
+        break
+      case 'ConstituencyLeader':
+        logResponse.constituencies = [church.id]
+        break
+      case 'BacentaLeader':
+        logResponse.bacentas = [church.id]
+        break
+    }
+
+    if ('gatheringServices' in logResponse) {
+      const responseArray = []
+      for (const gatheringService of logResponse.gatheringServices) {
+        const response = rearrangeCypherObject(
+          await session
+            .run(servantCypher.connectGatheringServiceLogSubstructure, {
+              churchId: gatheringService,
+            })
+            .catch((error) =>
+              throwErrorMsg(
+                `Error Creating Gathering Service Substructure`,
+                error
+              )
+            )
+        )
+
+        responseArray.push(...response.streams)
+      }
+
+      logResponse.streams = responseArray
+    }
+
+    if ('streams' in logResponse) {
+      const responseArray = []
+      for (const stream of logResponse.streams) {
+        const response = rearrangeCypherObject(
+          await session
+            .run(servantCypher.connectStreamLogSubstructure, {
+              churchId: stream,
+            })
+            .catch((error) =>
+              throwErrorMsg(`Error Creating Stream Substructure`, error)
+            )
+        )
+
+        responseArray.push(...response.councils)
+      }
+
+      logResponse.councils = responseArray
+    }
+
+    if ('councils' in logResponse) {
+      const responseArray = []
+      for (const council of logResponse.councils) {
+        const response = rearrangeCypherObject(
+          await session
+            .run(servantCypher.connectCouncilLogSubstructure, {
+              churchId: council,
+            })
+            .catch((error) =>
+              throwErrorMsg(`Error Creating Council Substructure`, error)
+            )
+        )
+        responseArray.push(...response.constituencies)
+      }
+
+      logResponse.constituencies = responseArray
+    }
+    if ('constituencies' in logResponse) {
+      const responseArray = []
+      for (const constituency of logResponse.constituencies) {
+        const response = rearrangeCypherObject(
+          await session
+            .run(servantCypher.connectConstituencyLogSubstructure, {
+              churchId: constituency,
+            })
+            .catch((error) =>
+              throwErrorMsg(`Error Creating Constituency Substructure`, error)
+            )
+        )
+        responseArray.push(...response.bacentas)
+      }
+
+      logResponse.bacentas = responseArray
+    }
+    if ('bacentas' in logResponse) {
+      const responseArray = []
+      for (const bacenta of logResponse.bacentas) {
+        const response = rearrangeCypherObject(
+          await session
+            .run(servantCypher.connectBacentaLogSubstructure, {
+              churchId: bacenta,
+            })
+            .catch((error) =>
+              throwErrorMsg(`Error Creating Bacenta Substructure`, error)
+            )
+        )
+
+        responseArray.push(...response.fellowships)
+      }
+    }
+  } catch (error) {
+    throwErrorMsg(error)
   }
-  // if (churchType === 'Fellowship' && servantType === 'Leader') {
-  //   await session.run(servantCypher.connectFellowshipHistory, {
-  //     churchId: church.id,
-  //   })
-  // } else if (churchType === 'GatheringService' && servantType === 'Leader') {
-  //   await session.run(servantCypher.connectGatheringServiceHistory, {
-  //     churchId: church.id,
-  //   })
-  // } else if (servantType === 'Leader') {
-  //   await session.run(servantCypher.connectChurchHistory, {
-  //     churchId: church.id,
-  //   })
-  // }
 }
 
 export const removeServantCypher = async (
@@ -299,7 +380,7 @@ export const removeServantCypher = async (
 ) => {
   const terms = formatting(churchType, servantType)
   const servantLower = terms.servantLower
-  const session = context.driver.session()
+  const session = context.executionContext.session()
 
   //Disconnect him from the Church
   await session.run(servantCypher[`disconnectChurch${servantType}`], {

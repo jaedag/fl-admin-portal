@@ -67,12 +67,14 @@ CREATE (log:HistoryLog)
    log.timeStamp = datetime(),
    log.historyRecord = $log
 
-  WITH member
+   WITH member
+   MERGE (date:TimeGraph {date: date()})
+
+   WITH member, date
   MATCH (currentUser:Member {auth_id:$auth.jwt.sub})
-  MERGE (member)-[:HAS_HISTORY]->(log)
-  MERGE (log)-[:LOGGED_BY]->(currentUser)
-  MERGE (date:TimeGraph {date: date()})
-  MERGE (log)-[:RECORDED_ON]->(date)
+  CREATE (member)-[:HAS_HISTORY]->(log)
+  CREATE (log)-[:LOGGED_BY]->(currentUser)
+  CREATE (log)-[:RECORDED_ON]->(date)
 
 RETURN member.id`
 
@@ -115,19 +117,22 @@ CREATE (member:Member:Deer {whatsappNumber:$whatsappNumber})
         log.historyRecord = $firstName +' ' +$lastName+' was registered on '+apoc.date.convertFormat(toString(date()), 'date', 'dd MMMM yyyy') + ' with ' + fellowship.name + ' Fellowship'
 
       WITH member, log
+      MERGE (today:TimeGraph {date: date()})
+      MERGE (date:TimeGraph {date: date($dob)})
+
+      WITH member, log, today, date
       MATCH (currentUser:Member {auth_id:$auth_id})
       MATCH (maritalStatus:MaritalStatus {status:$maritalStatus})
       MATCH (gender:Gender {gender: $gender})
       MATCH (fellowship:Fellowship {id: $fellowship})
-      MERGE (today:TimeGraph {date: date()})
-      MERGE (log)-[:RECORDED_ON]->(today)
-      MERGE (log)-[:LOGGED_BY]->(currentUser)
-      MERGE (member)-[:HAS_HISTORY]->(log)
-      MERGE (member)-[:HAS_MARITAL_STATUS]-> (maritalStatus)
-      MERGE (member)-[:HAS_GENDER]-> (gender)
-      MERGE (date:TimeGraph {date: date($dob)})
-      MERGE (member)-[:WAS_BORN_ON]->(date)
-      MERGE (member)-[:BELONGS_TO]->(fellowship)
+
+      CREATE (log)-[:RECORDED_ON]->(today)
+      CREATE (log)-[:LOGGED_BY]->(currentUser)
+      CREATE (member)-[:HAS_HISTORY]->(log)
+      CREATE (member)-[:HAS_MARITAL_STATUS]-> (maritalStatus)
+      CREATE (member)-[:HAS_GENDER]-> (gender)
+      CREATE (member)-[:WAS_BORN_ON]->(date)
+      CREATE (member)-[:BELONGS_TO]->(fellowship)
 
 
       WITH member

@@ -76,7 +76,6 @@ const SearchCouncil = (props) => {
 
   useEffect(() => {
     setSearchString(initialise(props.initialValue, searchString))
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.initialValue])
 
   useEffect(() => {
@@ -87,7 +86,6 @@ const SearchCouncil = (props) => {
     return () => {
       clearTimeout(timerId)
     }
-    // eslint-disable-next-line
   }, [searchString, props.initialValue])
 
   return (

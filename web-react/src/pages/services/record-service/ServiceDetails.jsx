@@ -63,6 +63,7 @@ const ServiceDetails = ({ service, church, loading }) => {
                     <img
                       className="report-picture"
                       src={service.treasurerSelfie}
+                      alt="treasurer selfie"
                     />
                   </PlaceholderCustom>
                 </div>
@@ -76,6 +77,7 @@ const ServiceDetails = ({ service, church, loading }) => {
                     <img
                       className="report-picture"
                       src={service.servicePicture}
+                      alt="service report"
                     />
                   </PlaceholderCustom>
                 </div>
@@ -103,6 +105,7 @@ const ServiceDetails = ({ service, church, loading }) => {
                         <img
                           className="report-picture"
                           src={service.bankingSlip}
+                          alt="banking slip"
                         />
                       </PlaceholderCustom>
                     </div>

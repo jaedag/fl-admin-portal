@@ -136,7 +136,6 @@ const useLogMeIn = (memberId) => {
     }
 
     fetchServantData(currentUser)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentUser.roles, memberId, user, user?.sub, currentUser])
 
   return { servant }

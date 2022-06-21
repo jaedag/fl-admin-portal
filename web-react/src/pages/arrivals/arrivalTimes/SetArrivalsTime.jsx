@@ -10,8 +10,8 @@ import { Col, Container, Row } from 'react-bootstrap'
 import SubmitButton from 'components/formik-components/SubmitButton'
 import BaseComponent from 'components/base-component/BaseComponent'
 
-import { parseTimeToDate } from 'date-utils'
-import { parseNeoTime } from 'date-utils'
+import { parseTimeToDate } from 'jd-date-utils'
+import { parseNeoTime } from 'jd-date-utils'
 import { useNavigate } from 'react-router'
 
 const SetArrivalsTime = () => {

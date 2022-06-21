@@ -14,12 +14,12 @@ import '../services/record-service/ServiceDetails.css'
 import { useNavigate } from 'react-router'
 import RoleView from 'auth/RoleView'
 import { permitAdminArrivals, permitArrivalsCounter } from 'permission-utils'
-import { parseNeoTime } from 'date-utils'
+import { parseNeoTime } from 'jd-date-utils'
 import CloudinaryImage from 'components/CloudinaryImage'
 import { beforeArrivalDeadline, beforeCountingDeadline } from './arrivals-utils'
 import usePopup from 'hooks/usePopup'
 import Popup from 'components/Popup/Popup'
-import { getHumanReadableDate } from 'date-utils'
+import { getHumanReadableDate } from 'jd-date-utils'
 
 const BusFormDetails = () => {
   const { bacentaId } = useContext(ChurchContext)

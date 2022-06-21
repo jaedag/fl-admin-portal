@@ -41,13 +41,13 @@ labels(date) AS dateLabels
 
 export const checkTransactionId = `
 MATCH (record:BussingRecord {id: $bussingRecordId})<-[:HAS_BUSSING]-(:ServiceLog)<-[:HAS_HISTORY]-(bacenta:Bacenta)
-MATCH (bacenta)<-[:HAS*3]-(stream:Stream)
+MATCH (bacenta)<-[:HAS]-(:Constituency)<-[:HAS]-(:Council)<-[:HAS]-(stream:Stream)
 OPTIONAL MATCH (record)-[:COUNTED_BY]->(admin:Member)
 
 RETURN record, stream
 `
 export const checkArrivalTimes = `
-MATCH (bacenta {id: $bacentaId})<-[:HAS*3]-(stream:Stream)
+MATCH (bacenta {id: $bacentaId})<-[:HAS]-(:Constituency)<-[:HAS]-(:Council)<-[:HAS]-(stream:Stream)
 RETURN stream
 `
 
@@ -92,8 +92,8 @@ DELETE oldHelpers
 
 WITH church, admin
 
-MATCH (church)-[oldHistory:HAS_HISTORY]->(:ServiceLog)<-[oldAdminHistory:HAS_HISTORY]-(admin)
-REMOVE oldHistory.current, oldAdminHistory.current
+MATCH (church)-[oldHistory:CURRENT_HISTORY]->(:ServiceLog)<-[oldAdminHistory:CURRENT_HISTORY]-(admin)
+DELETE oldHistory, oldAdminHistory
 
 
 RETURN church
@@ -114,17 +114,19 @@ CREATE (bussingRecord:BussingRecord {created_at:datetime()})
     bussingRecord.mobilisationPicture = $mobilisationPicture
 
     WITH bussingRecord
-    MATCH (bacenta:Bacenta {id:$bacentaId})
-    MATCH (bacenta)-[has_history:HAS_HISTORY {current: true}]->(log:ServiceLog)
-
-    MERGE (log)-[:HAS_BUSSING]->(bussingRecord)
     MERGE (serviceDate:TimeGraph {date: date($serviceDate)})
-    MERGE (bussingRecord)-[:BUSSED_ON]->(serviceDate)
+
+    WITH bussingRecord, serviceDate
+    MATCH (bacenta:Bacenta {id:$bacentaId})
+    MATCH (bacenta)-[:CURRENT_HISTORY]->(log:ServiceLog)
+
+    CREATE (log)-[:HAS_BUSSING]->(bussingRecord)
+    CREATE (bussingRecord)-[:BUSSED_ON]->(serviceDate)
 
 WITH bussingRecord, bacenta, serviceDate,  date($serviceDate).week AS week
     MATCH (leader:Member {auth_id: $auth.jwt.sub})
-    MATCH (bacenta)<-[:HAS*3]-(stream:Stream)
-    MERGE (bussingRecord)-[:LOGGED_BY]->(leader)
+    MATCH (bacenta)<-[:HAS]-(:Constituency)<-[:HAS]-(:Council)<-[:HAS]-(stream:Stream)
+    CREATE (bussingRecord)-[:LOGGED_BY]->(leader)
 
     RETURN bussingRecord AS bussingRecord, 
     bacenta AS bacenta, 
@@ -140,7 +142,7 @@ SET bussingRecord.arrivalTime = datetime()
 WITH bussingRecord
 MATCH (admin:Member {auth_id: $auth.jwt.sub})
 OPTIONAL MATCH (bussingRecord)-[:COUNTED_BY]->(counter)
-MERGE (bussingRecord)-[:ARRIVAL_CONFIRMED_BY]->(admin)
+CREATE (bussingRecord)-[:ARRIVAL_CONFIRMED_BY]->(admin)
 
 RETURN bussingRecord {
     .id,

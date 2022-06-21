@@ -19,3 +19,11 @@
 .bg-content {
   position: relative;
 }
+
+.font-primary {
+  color: #f5f5f5;
+}
+
+.login {
+  background-color: #690c13;
+}

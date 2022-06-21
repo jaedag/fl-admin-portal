@@ -12,7 +12,7 @@ import {
   beforeArrivalDeadline,
   beforeMobilisationDeadline,
 } from './arrivals-utils'
-import { isToday } from 'date-utils'
+import { isToday } from 'jd-date-utils'
 import HeadingSecondary from 'components/HeadingSecondary'
 import { MemberContext } from 'contexts/MemberContext'
 
@@ -40,11 +40,11 @@ const BacentaArrivals = () => {
     return true
   }
 
-  data?.bacentas[0].bussing.map((data) => {
+  data?.bacentas[0].bussing.forEach((data) => {
     if (isToday(data.serviceDate.date)) {
       bussing = data
     }
-    return
+    return null
   })
 
   const canFillOnTheWay = () => {

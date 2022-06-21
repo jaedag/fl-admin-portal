@@ -4,7 +4,7 @@ import { MemberContext } from '../contexts/MemberContext'
 import useAuth from './useAuth'
 
 const RoleView = (props) => {
-  const { roles, children, verifyId, stream } = props
+  const { roles, children, verifyId, permittedStream } = props
   const { currentUser } = useContext(MemberContext)
   const { isAuthorised } = useAuth()
 
@@ -20,11 +20,11 @@ const RoleView = (props) => {
     }
   }
 
-  const permittedStream = (stream) => {
-    if (!stream) return true
+  const permitStream = (permittedStream) => {
+    if (!permittedStream) return true
 
-    if (stream) {
-      if (stream.includes(currentUser.stream_name)) {
+    if (permittedStream) {
+      if (permittedStream.includes(currentUser.stream_name)) {
         return true
       } else {
         return false
@@ -32,7 +32,11 @@ const RoleView = (props) => {
     }
   }
 
-  if (isAuthorised(roles) && verify(verifyId) && permittedStream(stream)) {
+  if (
+    isAuthorised(roles) &&
+    verify(verifyId) &&
+    permitStream(permittedStream)
+  ) {
     return <>{children}</>
   } else {
     return null

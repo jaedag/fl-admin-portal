@@ -1,6 +1,6 @@
-import { addMinutes } from 'date-utils'
-import { getTodayTime } from 'date-utils'
-import { isToday } from 'date-utils'
+import { addMinutes } from 'jd-date-utils'
+import { getTodayTime } from 'jd-date-utils'
+import { isToday } from 'jd-date-utils'
 
 export const MOBILE_NETWORK_OPTIONS = [
   { key: '', value: '' },

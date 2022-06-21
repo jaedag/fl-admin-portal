@@ -12,7 +12,11 @@ import {
 } from './UpdateMutations'
 import { ChurchContext } from '../../../contexts/ChurchContext'
 import { DISPLAY_STREAM } from '../display/ReadQueries'
-import { LOG_STREAM_HISTORY, LOG_COUNCIL_HISTORY } from './LogMutations'
+import {
+  LOG_STREAM_HISTORY,
+  LOG_COUNCIL_HISTORY,
+  CREATE_HISTORY_SUBSTRUCTURE,
+} from './LogMutations'
 import { MAKE_STREAM_LEADER } from './ChangeLeaderMutations'
 import StreamForm from 'pages/directory/reusable-forms/StreamForm'
 import { addNewChurches, removeOldChurches } from './directory-utils'
@@ -90,44 +94,38 @@ const UpdateStream = () => {
   })
 
   //Changes upwards. it. Changes to the GatheringService the Stream Campus is under
+  const [CreateHistorySubstructure] = useMutation(CREATE_HISTORY_SUBSTRUCTURE)
   const [RemoveStreamGatheringService] = useMutation(
     REMOVE_STREAM_GATHERINGSERVICE
   )
   const [AddStreamGatheringService] = useMutation(ADD_STREAM_GATHERINGSERVICE, {
     onCompleted: (data) => {
-      if (!stream?.gatheringService.name) {
-        //If There is no old GatheringService
-        let recordIfNoOldGatheringService = `${initialValues.name} Stream has been moved to ${data.updateStreams.streams[0].gatheringService.name} GatheringService`
+      const oldGatheringService =
+        data.updateGatheringService.gatheringServices[0]
+      const newGatheringService = data.updateStreams.streams[0].gatheringService
 
-        LogStreamHistory({
+      let recordIfOldGatheringService = `${initialValues.name} Stream has been moved from ${oldGatheringService.name} GatheringService to ${newGatheringService.name} GatheringService`
+
+      //After Adding the stream to a gatheringService, then you log that change.
+      LogStreamHistory({
+        variables: {
+          streamId: streamId,
+          newLeaderId: '',
+          oldLeaderId: '',
+          newGatheringServiceId:
+            data.updateStreams.streams[0].gatheringService.id,
+          oldGatheringServiceId: stream?.gatheringService.id,
+          historyRecord: recordIfOldGatheringService,
+        },
+      }).then(() =>
+        CreateHistorySubstructure({
           variables: {
-            streamId: streamId,
-            newLeaderId: '',
-            oldLeaderId: '',
-            newGatheringServiceId:
-              data.updateStreams.streams[0].gatheringService.id,
-            oldGatheringServiceId: stream?.gatheringService.id,
-            historyRecord: recordIfNoOldGatheringService,
+            churchType: 'Stream',
+            servantType: 'Leader',
+            churchId: streamId,
           },
         })
-      } else {
-        //If there is an old GatheringService
-
-        let recordIfOldGatheringService = `${initialValues.name} Stream has been moved from ${stream?.gatheringService.name} GatheringService to ${data.updateStreams.streams[0].gatheringService.name} GatheringService`
-
-        //After Adding the stream to a gatheringService, then you log that change.
-        LogStreamHistory({
-          variables: {
-            streamId: streamId,
-            newLeaderId: '',
-            oldLeaderId: '',
-            newGatheringServiceId:
-              data.updateStreams.streams[0].gatheringService.id,
-            oldGatheringServiceId: stream?.gatheringService.id,
-            historyRecord: recordIfOldGatheringService,
-          },
-        })
-      }
+      )
     },
   })
 
@@ -180,13 +178,14 @@ const UpdateStream = () => {
         try {
           await RemoveStreamGatheringService({
             variables: {
-              gatheringServiceId: initialValues.gatheringService,
-              streamId: streamId,
+              higherChurch: initialValues.gatheringService,
+              lowerChurch: [streamId],
             },
           })
           await AddStreamGatheringService({
             variables: {
               gatheringServiceId: values.gatheringService,
+              oldGatheringServiceId: initialValues.gatheringService,
               streamId: streamId,
             },
           })
@@ -210,6 +209,7 @@ const UpdateStream = () => {
         removeChurch: RemoveCouncilStream,
         addChurch: AddStreamCouncils,
         logChurchHistory: LogCouncilHistory,
+        CreateHistorySubstructure: CreateHistorySubstructure,
       }
 
       const args = {

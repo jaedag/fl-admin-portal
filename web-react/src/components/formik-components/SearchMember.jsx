@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-globals */
 import { useLazyQuery } from '@apollo/client'
 import { MemberContext } from 'contexts/MemberContext'
 import { ErrorMessage } from 'formik'
@@ -157,7 +158,6 @@ const SearchMember = (props) => {
     return () => {
       clearTimeout(timerId)
     }
-    // eslint-disable-next-line
   }, [searchString])
 
   return (

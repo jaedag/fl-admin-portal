@@ -7,9 +7,13 @@
   color: var(--text-primary);
 }
 
-.bg-nav.dark {
-  background-color: var(--card);
-  color: var(--text-primary);
+.offcanvas-body.dark {
+  background-color: var(--card) !important;
+  color: var(--text-primary) !important;
+}
+.offcanvas-header.dark {
+  background-color: var(--card) !important;
+  color: var(--text-primary) !important;
 }
 
 .nav-btn {
@@ -25,9 +29,12 @@
   background-color: #e6dfdfe0;
 }
 
-.footer {
+.footer.dark {
+  background-color: #101010;
+}
+
+.footer.dark {
   padding: 10px;
-  background-color: #000000;
 }
 
 .light .footer {

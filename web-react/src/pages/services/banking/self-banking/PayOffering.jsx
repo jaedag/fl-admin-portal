@@ -16,7 +16,7 @@ import SubmitButton from 'components/formik-components/SubmitButton'
 import { Col, Container, Row } from 'react-bootstrap'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import HeadingSecondary from 'components/HeadingSecondary'
-import { parseDate } from 'date-utils'
+import { parseDate } from 'jd-date-utils'
 
 const PayOffering = (props) => {
   const { church } = props
@@ -75,7 +75,9 @@ const PayOffering = (props) => {
         <HeadingSecondary loading={loading}>
           {church?.name} {church?.__typename}
         </HeadingSecondary>
-        <div>{`Banking Code: ${church?.bankingCode}`} </div>
+        {church?.bankingCode && (
+          <div>{`Banking Code: ${church.bankingCode}`} </div>
+        )}
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}

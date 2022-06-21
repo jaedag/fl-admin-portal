@@ -52,7 +52,7 @@ export const getServiceGraphData = (church, category) => {
     }
 
     if (array[0]?.__typename === 'ComponentServiceAggregate') {
-      array.map((record) => {
+      array.forEach((record) => {
         data.push({
           id: record?.id,
           date: record?.serviceDate,
@@ -66,7 +66,7 @@ export const getServiceGraphData = (church, category) => {
     }
 
     if (array[0]?.__typename === 'Sonta') {
-      array.map((record) => {
+      array.forEach((record) => {
         data.push({
           id: record?.id,
           date: record?.serviceDate,
@@ -78,7 +78,7 @@ export const getServiceGraphData = (church, category) => {
       return
     }
 
-    array.map((record) => {
+    array.forEach((record) => {
       data.push({
         id: record?.id,
         date: record?.serviceDate?.date || record.date,

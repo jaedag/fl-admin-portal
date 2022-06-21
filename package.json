@@ -4,10 +4,10 @@
     "@commitlint/config-conventional": "^16.0.0",
     "concurrently": "^6.5.1",
     "dotenv": "^10.0.0",
-    "eslint": "^7.19.0",
+    "eslint": "^8.17.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
-    "eslint-plugin-react": "^7.20.0",
+    "eslint-plugin-react": "^7.30.0",
     "eslint-plugin-react-hooks": "^4.4.0",
     "execa": "^4.0.2",
     "generate-changelog": "^1.8.0",
@@ -27,6 +27,27 @@
     "release:minor": "node scripts/release.js minor",
     "release:patch": "node scripts/release.js patch",
     "prepare": "husky install"
+  },
+  "eslintConfig": {
+    "env": {
+      "browser": true,
+      "es6": true,
+      "node": true
+    },
+    "parserOptions": {
+      "ecmaVersion": 2020
+    },
+    "extends": [
+      "eslint:recommended",
+      "plugin:prettier/recommended"
+    ],
+    "plugins": [
+      "prettier"
+    ],
+    "rules": {
+      "prettier/prettier": "warn",
+      "no-console": "warn"
+    }
   },
   "lint-staged": {
     "*.{js,jsx}": [

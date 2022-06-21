@@ -5,5 +5,10 @@
   "html": {
     "subscription": "If you do not understand this message or you believe it has been sent in error, kindly contact your bishop's admin for clarification.<br/><br/>Please do not respond to this email address as it is unmonitored and will not receive a reply.<br/><br/>On behalf of the Resident Bishop,<br/>Regards<br/>The Administrator<br/>First Love Center HQ<br/>Accra",
     "helpdesk": "<b><a href='https://reports.firstlovecenter.com/helpdesk'>this website</a></b>"
+  },
+  "error": {
+    "vacation_cannot_fill_service": "You cannnot have service if you are on vacation. Please conntact your admin!",
+    "no_double_form_filling": "You have already filled your service form this week!",
+    "no_duplicate_email_or_whatsapp": "A member with this email address/whatsapp number already exists in the database"
   }
 }
