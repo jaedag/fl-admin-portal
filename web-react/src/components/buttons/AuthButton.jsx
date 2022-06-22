@@ -4,7 +4,7 @@ import Popup from '../Popup/Popup'
 import { Button, Container, Spinner } from 'react-bootstrap'
 import usePopup from 'hooks/usePopup'
 import './AuthButton.css'
-import { BoxArrowInLeft, BoxArrowRight } from 'react-bootstrap-icons'
+import { BoxArrowRight } from 'react-bootstrap-icons'
 
 const AuthButton = (props) => {
   const { loginWithRedirect, logout, isAuthenticated } = useAuth0()
@@ -22,7 +22,7 @@ const AuthButton = (props) => {
           }`}
           onClick={() => loginWithRedirect()}
         >
-          Log In <BoxArrowInLeft />
+          Log In
         </Button>
         {!mobileFullSize && (
           <i
