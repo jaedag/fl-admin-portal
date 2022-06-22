@@ -27,3 +27,11 @@
 .login {
   background-color: #690c13;
 }
+
+.desktop-card {
+  width: 40%;
+}
+
+.slick-track {
+  height: 200px;
+}
