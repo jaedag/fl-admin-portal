@@ -55,7 +55,6 @@ const SearchPageMobile = () => {
         setCombinedData([
           ...data.councilMemberSearch,
           ...data.councilConstituencySearch,
-          ...data.councilSontaSearch,
           ...data.councilBacentaSearch,
           ...data.councilFellowshipSearch,
         ])
@@ -177,7 +176,7 @@ const SearchPageMobile = () => {
     federalSearch,
     fellowshipSearch,
   ])
-
+  console.log(combinedData)
   return (
     <>
       <MobileSearchNav />
