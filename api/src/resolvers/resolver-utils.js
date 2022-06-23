@@ -152,7 +152,7 @@ export const historyRecordString = ({
     return `${servant.firstName} ${servant.lastName} was removed as the ${churchType} ${servantType} for  ${church.name} ${churchType}`
   }
 
-  if ('id' in oldServant) {
+  if (oldServant?.id) {
     return `${servant.firstName} ${servant.lastName} became the ${servantType} of ${church.name} ${churchType} replacing ${oldServant.firstName} ${oldServant.lastName}`
   }
 
