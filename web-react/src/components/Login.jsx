@@ -33,7 +33,7 @@ const Login = () => {
               <div>
                 <img
                   src={Silhouette}
-                  alt="logo"
+                  alt="silhouette"
                   className="img-fluid mx-auto d-block logo"
                 />
               </div>
@@ -73,7 +73,7 @@ const Login = () => {
             <div>
               <img
                 src={Silhouette}
-                alt="logo"
+                alt="silhouette"
                 className="img-fluid mx-auto d-block logo"
               />
             </div>
