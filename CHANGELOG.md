@@ -2,6 +2,23 @@
 
 ##### Documentation Changes
 
+*  updated CHANGELOG.md ([8db166ea](https://github.com/firstlovecenter/fl-admin-portal/commit/8db166ea66a3a2905f876da55a372f4ac2b5d94c))
+*  updated CHANGELOG.md ([375adf7e](https://github.com/firstlovecenter/fl-admin-portal/commit/375adf7e73da42648e0c5f0400ee1ac6fa58d595))
+
+##### New Features
+
+*  admin-165 implemented dropdown menu on graph page ([d773cbbe](https://github.com/firstlovecenter/fl-admin-portal/commit/d773cbbe3b59e62bf67b6b74862e07772addfa5c))
+*  implement new login screen ([c2eb4a8e](https://github.com/firstlovecenter/fl-admin-portal/commit/c2eb4a8eda041f6330b66cb23e976fd1b6601058))
+
+##### Bug Fixes
+
+*  resolved error of michael oteng ([a5611658](https://github.com/firstlovecenter/fl-admin-portal/commit/a5611658cf0e2e3bda6e521600c30aa5356c6737))
+*  admin-154 fixed bug preventing council admins from using search ([167c93b0](https://github.com/firstlovecenter/fl-admin-portal/commit/167c93b07ccf1a70bcf3d78424a0f674c6f35508))
+
+#### 4.0.2 (2022-06-23)
+
+##### Documentation Changes
+
 *  updated CHANGELOG.md ([375adf7e](https://github.com/firstlovecenter/fl-admin-portal/commit/375adf7e73da42648e0c5f0400ee1ac6fa58d595))
 
 ##### New Features
