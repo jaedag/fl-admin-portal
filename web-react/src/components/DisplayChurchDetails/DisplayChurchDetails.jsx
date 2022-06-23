@@ -300,7 +300,7 @@ const DisplayChurchDetails = (props) => {
             <div className="d-grid gap-2">
               <PlaceholderCustom
                 loading={props.loading}
-                className={`btn-trends ${theme}`}
+                className={`btn-graphs ${theme}`}
                 button
               >
                 <Button
@@ -319,26 +319,26 @@ const DisplayChurchDetails = (props) => {
         <div className="d-grid gap-2">
           <PlaceholderCustom
             loading={props.loading}
-            className={`btn-trends ${theme}`}
+            className={`btn-graphs ${theme}`}
             button="button"
           >
             <Button
-              className={`btn-trends ${theme}`}
+              className={`btn-graphs ${theme}`}
               onClick={() => {
-                navigate(`/${props.churchType.toLowerCase()}/trends`)
+                navigate(`/${props.churchType.toLowerCase()}/graphs`)
               }}
             >
-              View Trends
+              View Graphs
             </Button>
           </PlaceholderCustom>
           {shouldFill() && (
             <PlaceholderCustom
               loading={props.loading}
-              className={`btn-trends ${theme}`}
+              className={`btn-graphs ${theme}`}
               button="button"
             >
               <Button
-                className={`btn-trends ${theme}`}
+                className={`btn-graphs ${theme}`}
                 onClick={() => {
                   setUser({
                     id: props.churchId,
@@ -439,12 +439,12 @@ const DisplayChurchDetails = (props) => {
           <RoleView roles={props.editPermitted}>
             <PlaceholderCustom
               loading={props.loading}
-              className="btn-trends"
+              className="btn-graphs"
               variant={theme}
               button="button"
             >
               <Button
-                className="btn-trends"
+                className="btn-graphs"
                 variant={theme}
                 onClick={() =>
                   navigate(

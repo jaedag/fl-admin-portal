@@ -2,9 +2,9 @@ import React, { useContext } from 'react'
 
 import { ChurchContext } from '../../../contexts/ChurchContext'
 import { useQuery } from '@apollo/client'
-import { getServiceGraphData, getMonthlyStatAverage } from './trends-utils'
+import { getServiceGraphData, getMonthlyStatAverage } from './graphs-utils'
 import ChurchGraph from '../../../components/ChurchGraph/ChurchGraph'
-import { GATHERINGSERVICE_TRENDS } from './TrendsQueries'
+import { GATHERINGSERVICE_GRAPHS } from './GraphsQueries'
 import MembershipCard from './CompMembershipCard'
 import StatDisplay from './CompStatDisplay'
 import BaseComponent from 'components/base-component/BaseComponent'
@@ -14,7 +14,7 @@ import PlaceholderCustom from 'components/Placeholder'
 const GatheringServiceReport = () => {
   const { gatheringServiceId } = useContext(ChurchContext)
 
-  const { data, loading, error } = useQuery(GATHERINGSERVICE_TRENDS, {
+  const { data, loading, error } = useQuery(GATHERINGSERVICE_GRAPHS, {
     variables: { gatheringServiceId: gatheringServiceId },
   })
 

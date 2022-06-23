@@ -6,7 +6,7 @@ import { RECORD_SERVICE } from './RecordServiceMutations'
 import { DISPLAY_FELLOWSHIP } from '../../directory/display/ReadQueries'
 import ServiceForm from './ServiceForm'
 import BaseComponent from 'components/base-component/BaseComponent'
-import { FELLOWSHIP_TRENDS } from '../trends/TrendsQueries'
+import { FELLOWSHIP_GRAPHS } from '../graphs/GraphsQueries'
 
 const FellowshipService = () => {
   const { fellowshipId } = useContext(ChurchContext)
@@ -14,7 +14,7 @@ const FellowshipService = () => {
     variables: { id: fellowshipId },
   })
   const [RecordService] = useMutation(RECORD_SERVICE, {
-    refetchQueries: [{ query: FELLOWSHIP_TRENDS }],
+    refetchQueries: [{ query: FELLOWSHIP_GRAPHS }],
   })
 
   return (

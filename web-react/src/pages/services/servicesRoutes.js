@@ -7,11 +7,11 @@ import FellowshipServiceCancelled from 'pages/services/record-service/Fellowship
 import FellowshipServiceDetails from 'pages/services/record-service/FellowshipServiceDetails'
 import SontaService from 'pages/services/record-service/SontaService'
 import SontaServiceDetails from 'pages/services/record-service/SontaServiceDetails'
-import BacentaReport from 'pages/services/trends/BacentaTrends'
-import ConstituencyReport from 'pages/services/trends/ConstituencyTrends'
-import CouncilReport from 'pages/services/trends/CouncilTrends'
-import FellowshipReport from 'pages/services/trends/FellowshipTrends'
-import SontaReport from 'pages/services/trends/SontaTrends'
+import BacentaReport from 'pages/services/graphs/BacentaGraphs'
+import ConstituencyReport from 'pages/services/graphs/ConstituencyGraphs'
+import CouncilReport from 'pages/services/graphs/CouncilGraphs'
+import FellowshipReport from 'pages/services/graphs/FellowshipGraphs'
+import SontaReport from 'pages/services/graphs/SontaGraphs'
 import BacentaJoint from 'pages/services/BacentaJoint'
 import FellowshipBankingSlipSubmission from 'pages/services/banking/banking-slip/FellowshipSubmission'
 import FellowshipBankingSlipView from 'pages/services/banking/banking-slip/FellowshipView'
@@ -25,8 +25,8 @@ import ServicesThisWeek from 'pages/services/defaulters/ServicesThisWeek'
 import Fellowship from 'pages/services/Fellowship'
 import ServicesChurchList from 'pages/services/ServicesChurchList'
 import ServicesMenu from 'pages/services/ServicesMenu'
-import StreamReport from 'pages/services/trends/StreamTrends'
-import GatheringServiceReport from 'pages/services/trends/GatheringServiceTrends'
+import StreamReport from 'pages/services/graphs/StreamGraphs'
+import GatheringServiceReport from 'pages/services/graphs/GatheringServiceGraphs'
 import StreamByCouncil from 'pages/services/defaulters/StreamByCouncil'
 import GatheringServiceByStream from 'pages/services/defaulters/GatheringServiceByStream'
 import { permitLeaderAdmin } from 'permission-utils'
@@ -143,46 +143,46 @@ export const services = [
   },
 ]
 
-export const trends = [
+export const graphs = [
   {
-    path: '/fellowship/trends',
+    path: '/fellowship/graphs',
     element: FellowshipReport,
     roles: permitLeaderAdmin('Fellowship'),
     placeholder: true,
   },
   {
-    path: '/bacenta/trends',
+    path: '/bacenta/graphs',
     element: BacentaReport,
     roles: permitLeaderAdmin('Bacenta'),
     placeholder: true,
   },
   {
-    path: '/sonta/trends',
+    path: '/sonta/graphs',
     element: SontaReport,
     roles: permitLeaderAdmin('Sonta'),
     placeholder: true,
   },
   {
-    path: '/constituency/trends',
+    path: '/constituency/graphs',
     element: ConstituencyReport,
     roles: permitLeaderAdmin('Constituency'),
     placeholder: true,
   },
 
   {
-    path: '/council/trends',
+    path: '/council/graphs',
     element: CouncilReport,
     roles: permitLeaderAdmin('Council'),
     placeholder: true,
   },
   {
-    path: '/stream/trends',
+    path: '/stream/graphs',
     element: StreamReport,
     roles: permitLeaderAdmin('Stream'),
     placeholder: true,
   },
   {
-    path: '/gatheringservice/trends',
+    path: '/gatheringservice/graphs',
     element: GatheringServiceReport,
     roles: permitLeaderAdmin('GatheringService'),
     placeholder: true,

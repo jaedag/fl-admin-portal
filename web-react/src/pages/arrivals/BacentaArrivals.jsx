@@ -94,10 +94,10 @@ const BacentaArrivals = () => {
             </>
           )}
           <Button
-            className={`btn-trends ${theme}`}
-            onClick={() => navigate(`/bacenta/trends`)}
+            className={`btn-graphs ${theme}`}
+            onClick={() => navigate(`/bacenta/graphs`)}
           >
-            View Trends
+            View Graphs
           </Button>
           <Button
             variant="primary"

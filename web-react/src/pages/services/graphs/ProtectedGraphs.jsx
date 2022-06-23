@@ -1,13 +1,13 @@
 import React, { useContext } from 'react'
 import { Route } from 'react-router-dom'
-import BacentaTrend from './BacentaTrends'
-import FellowshipTrend from './FellowshipTrends'
-import ConstituencyTrend from './ConstituencyTrends'
+import BacentaGraph from './BacentaGraphs'
+import FellowshipGraph from './FellowshipGraphs'
+import ConstituencyGraph from './ConstituencyGraphs'
 import { MemberContext } from 'contexts/MemberContext'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { isAuthorised } from 'global-utils'
 
-const ProtectedTrends = ({ component, roles, ...args }) => {
+const ProtectedGraphs = ({ component, roles, ...args }) => {
   const { currentUser } = useContext(MemberContext)
 
   const church = useContext(ChurchContext)
@@ -24,18 +24,18 @@ const ProtectedTrends = ({ component, roles, ...args }) => {
     isAuthorised(['adminConstituency', 'leaderConstituency'], currentUser.roles)
   ) {
     //If the user does not have permission but is a CO Admin
-    return <Route component={ConstituencyTrend} />
+    return <Route component={ConstituencyGraph} />
   } else if (isAuthorised(['leaderBacenta'], currentUser.roles)) {
     //If the user does not have permission but is a Bacenta Leader
     church.setBacentaId(currentUser.bacenta)
-    return <Route component={BacentaTrend} />
+    return <Route component={BacentaGraph} />
   } else if (isAuthorised(['leaderFellowship'], currentUser.roles)) {
     //If the user does not have permission but is a Fellowship Leader
     church.setFellowshipId(currentUser.fellowship)
-    return <Route component={FellowshipTrend} />
+    return <Route component={FellowshipGraph} />
   } else {
-    return <Route component={FellowshipTrend} />
+    return <Route component={FellowshipGraph} />
   }
 }
 
-export default ProtectedTrends
+export default ProtectedGraphs
