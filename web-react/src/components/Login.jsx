@@ -1,6 +1,5 @@
 import React from 'react'
 import AuthButton from './buttons/AuthButton'
-import Logo from '../assets/flc-logo-small.png'
 import MobileView from './responsive-design/MobileView'
 import TabletDesktopView from './responsive-design/TabletDesktopView'
 import { Container } from 'react-bootstrap'
@@ -10,6 +9,7 @@ import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
 import BarIcon from '../assets/bars.svg'
 import GlobeIcon from '../assets/globe.svg'
+import Silhouette from '../assets/silhouette.svg'
 
 const Login = () => {
   var settings = {
@@ -20,6 +20,7 @@ const Login = () => {
     slidesToScroll: 1,
     autoplay: true,
     arrows: false,
+    autoplaySpeed: 2100,
   }
   const catchPhrase = 'A church full of young people on fire for the Lord'
 
@@ -31,7 +32,7 @@ const Login = () => {
             <Slider {...settings} className="mb-5 mt-5">
               <div>
                 <img
-                  src={Logo}
+                  src={Silhouette}
                   alt="logo"
                   className="img-fluid mx-auto d-block logo"
                 />
@@ -71,7 +72,7 @@ const Login = () => {
           <Slider {...settings} className="mb-5">
             <div>
               <img
-                src={Logo}
+                src={Silhouette}
                 alt="logo"
                 className="img-fluid mx-auto d-block logo"
               />

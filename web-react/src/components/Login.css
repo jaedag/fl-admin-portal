@@ -35,3 +35,14 @@
 .slick-track {
   height: 200px;
 }
+
+.slick-dots li button::before {
+  font-size: 16px;
+  color: #fff !important;
+  opacity: 0.7;
+}
+
+.slick-dots li.slick-active button::before {
+  color: red !important;
+  opacity: 1;
+}
