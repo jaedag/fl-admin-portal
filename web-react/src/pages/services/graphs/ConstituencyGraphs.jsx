@@ -2,42 +2,40 @@ import React, { useContext } from 'react'
 
 import { ChurchContext } from '../../../contexts/ChurchContext'
 import { useQuery } from '@apollo/client'
-import { getServiceGraphData, getMonthlyStatAverage } from './trends-utils'
+import { getServiceGraphData, getMonthlyStatAverage } from './graphs-utils'
 import ChurchGraph from '../../../components/ChurchGraph/ChurchGraph'
-import { STREAM_TRENDS } from './TrendsQueries'
+import { CONSTITUENCY_GRAPHS } from './GraphsQueries'
 import MembershipCard from './CompMembershipCard'
 import StatDisplay from './CompStatDisplay'
 import BaseComponent from 'components/base-component/BaseComponent'
 import { Col, Container, Row } from 'react-bootstrap'
-import PlaceholderCustom from 'components/Placeholder'
 
-const StreamReport = () => {
-  const { streamId } = useContext(ChurchContext)
+export const ConstituencyReport = () => {
+  const { constituencyId } = useContext(ChurchContext)
 
-  const { data, loading, error } = useQuery(STREAM_TRENDS, {
-    variables: { streamId: streamId },
+  const { data, loading, error } = useQuery(CONSTITUENCY_GRAPHS, {
+    variables: { id: constituencyId },
   })
 
-  const churchData = getServiceGraphData(data?.streams[0])
+  const churchData = getServiceGraphData(data?.constituencies[0])
 
   return (
-    <BaseComponent loading={loading} error={error} data={data} placeholder>
+    <BaseComponent loading={loading} error={error} data={data}>
       <Container>
-        <PlaceholderCustom loading={loading} as="h5" xs={10}>
-          <h5 className="mb-0">{`${data?.streams[0]?.name} Stream`}</h5>
-        </PlaceholderCustom>
-        <PlaceholderCustom loading={loading} as="span" xs={10}>
-          <span className="text-secondary font-weight-bold">
-            {`Leader: ${data?.streams[0]?.leader.fullName}`}
-          </span>
-        </PlaceholderCustom>
+        <div className=" my-3">
+          <h5 className="mb-0">{`${data?.constituencies[0].name} Constituency`}</h5>{' '}
+          <p>
+            <span className="text-secondary font-weight-bold">Leader: </span>
+            {`${data?.constituencies[0].leader.fullName}`}
+          </p>
+        </div>
 
-        <Row className="mt-3">
+        <Row>
           <Col>
             <MembershipCard
-              link="/stream/members"
+              link="/constituency/members"
               title="Membership"
-              count={data?.streams[0]?.memberCount}
+              count={data?.constituencies[0].memberCount}
             />
           </Col>
         </Row>
@@ -57,15 +55,14 @@ const StreamReport = () => {
           </Col>
         </Row>
         <ChurchGraph
-          loading={loading}
           stat1="attendance"
           stat2="income"
           churchData={churchData}
-          church="stream"
+          church="constituency"
         />
       </Container>
     </BaseComponent>
   )
 }
 
-export default StreamReport
+export default ConstituencyReport

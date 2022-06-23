@@ -118,12 +118,12 @@ const ServiceDetails = ({ service, church, loading }) => {
                 )}
                 <div className="d-grid gap-2">
                   <Button
-                    className={`btn-trends ${theme}`}
+                    className={`btn-graphs ${theme}`}
                     onClick={() => {
-                      navigate(`/${church?.__typename.toLowerCase()}/trends`)
+                      navigate(`/${church?.__typename.toLowerCase()}/graphs`)
                     }}
                   >
-                    View Trends
+                    View Graphs
                   </Button>
                 </div>
               </div>

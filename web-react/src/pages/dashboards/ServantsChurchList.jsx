@@ -5,7 +5,7 @@ import { MemberContext } from 'contexts/MemberContext'
 import {
   getMonthlyStatAverage,
   getServiceGraphData,
-} from 'pages/services/trends/trends-utils'
+} from 'pages/services/graphs/graphs-utils'
 import MenuButton from 'components/buttons/MenuButton'
 import { Container } from 'react-bootstrap'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'

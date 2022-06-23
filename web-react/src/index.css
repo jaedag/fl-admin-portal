@@ -13,7 +13,7 @@
   --churches-accent: #a9e631;
   --arrivals-accent: #e63167;
   --defaulters-accent: #9531e6;
-  --quickfacts-accent: #EFAA66;
+  --quickfacts-accent: #efaa66;
   --btn-submit: #136e02;
   --border: #1d1d1d;
   --yellow: #ffff00;
@@ -303,11 +303,11 @@ a {
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23212529'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e") !important;
 }
 
-.btn-trends {
+.btn-graphs {
   height: 50px;
   font-size: 20px;
 }
 
-.text-muted.d-block .text-danger{
+.text-muted.d-block .text-danger {
   padding: 0;
 }
