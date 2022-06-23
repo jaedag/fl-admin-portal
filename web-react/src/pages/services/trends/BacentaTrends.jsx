@@ -8,7 +8,7 @@ import { BACENTA_TRENDS } from './TrendsQueries'
 import MembershipCard from './CompMembershipCard'
 import StatDisplay from './CompStatDisplay'
 import BaseComponent from 'components/base-component/BaseComponent'
-import { Button, Col, Container, Row } from 'react-bootstrap'
+import { Col, Container, Dropdown, Row } from 'react-bootstrap'
 
 export const BacentaTrends = () => {
   const { bacentaId } = useContext(ChurchContext)
@@ -35,7 +35,7 @@ export const BacentaTrends = () => {
           </p>
         </div>
 
-        <Row>
+        <Row className="row-cols-2">
           <Col>
             <MembershipCard
               link="/bacenta/members"
@@ -44,28 +44,32 @@ export const BacentaTrends = () => {
             />
           </Col>
           <Col>
-            <div className="d-grid gap-2">
-              <Button
-                variant="success"
-                onClick={() => {
-                  setBussing(true)
-                  setChurchData(
-                    getServiceGraphData(data?.bacentas[0], 'bussing')
-                  )
-                }}
-              >
-                Bussing
-              </Button>
-              <Button
-                variant="danger"
-                onClick={() => {
-                  setBussing(false)
-                  setChurchData(getServiceGraphData(data?.bacentas[0]))
-                }}
-              >
-                Fellowship Services
-              </Button>
-            </div>
+            <Dropdown>
+              <Dropdown.Toggle variant="danger">Select Service</Dropdown.Toggle>
+
+              <Dropdown.Menu variant="dark">
+                <Dropdown.Item
+                  className="py-3"
+                  onClick={() => {
+                    setBussing(true)
+                    setChurchData(
+                      getServiceGraphData(data?.bacentas[0], 'bussing')
+                    )
+                  }}
+                >
+                  Bussing
+                </Dropdown.Item>
+                <Dropdown.Item
+                  className="py-3"
+                  onClick={() => {
+                    setBussing(false)
+                    setChurchData(getServiceGraphData(data?.bacentas[0]))
+                  }}
+                >
+                  Fellowship Services
+                </Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
           </Col>
         </Row>
         <Row className="mt-3">
