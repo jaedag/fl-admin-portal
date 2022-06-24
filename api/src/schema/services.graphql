@@ -659,7 +659,10 @@ extend type Mutation {
   SubmitBankingSlip(serviceRecordId: ID!, bankingSlip: String!): ServiceRecord
     @cypher(
       statement: """
-      MATCH (record:ServiceRecord {id: $serviceRecordId}) WHERE record.transactionStatus <> "pending"
+      MATCH (record:ServiceRecord {id: $serviceRecordId})
+        WHERE record.transactionStatus IS NOT NULL
+        OR NOT record.transactionStatus = 'pending'
+
         SET record.bankingSlip = $bankingSlip
 
         WITH record

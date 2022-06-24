@@ -265,7 +265,6 @@ const DisplayChurchDetails = (props) => {
             bgNone
           />
         </Link>
-
         {props.details?.length && (
           <Row>
             {props.details.map((detail, i) => (
@@ -282,7 +281,6 @@ const DisplayChurchDetails = (props) => {
             ))}
           </Row>
         )}
-
         {props.churchType === 'Bacenta' &&
         (props.church?.normalBussingTopUp ||
           props.church?.swellBussingTopUp) ? (
@@ -354,7 +352,6 @@ const DisplayChurchDetails = (props) => {
             </PlaceholderCustom>
           )}
         </div>
-
         {props?.location && props.location?.latitude !== 0 && (
           <Container className="mt-4 text-center">
             <h3>LOCATION</h3>
