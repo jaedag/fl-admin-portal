@@ -42,10 +42,14 @@ const DetailsFellowship = () => {
     })
   )
 
-  const check = last3Weeks()?.map((number) => {
+  console.log('last 3 weeks', last3Weeks())
+  const check = last3Weeks()?.forEach((number) => {
     if (lastFilled?.some((service) => service.week === number)) {
       const service = lastFilled?.find(({ week }) => week === number)
-      if (!service?.noServiceReason) {
+
+      console.log('last filled', lastFilled)
+      console.log('service', service)
+      if (service?.noServiceReason === null) {
         return {
           number: number,
           filled: true,
