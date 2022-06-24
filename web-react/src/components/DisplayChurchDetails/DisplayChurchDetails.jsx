@@ -364,7 +364,7 @@ const DisplayChurchDetails = (props) => {
             </a>
           </Container>
         )}
-        {console.log(props.details)}
+
         {props.last3Weeks && props.details[2].number === 'Active' && (
           <>
             <h3 className="mt-4">FORMS</h3>

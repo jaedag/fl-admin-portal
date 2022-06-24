@@ -42,7 +42,6 @@ const DetailsFellowship = () => {
     })
   )
 
-  console.log('last 3 weeks', last3Weeks())
   const check = last3Weeks()?.forEach((number) => {
     if (lastFilled?.some((service) => service.week === number)) {
       const service = lastFilled?.find(({ week }) => week === number)
