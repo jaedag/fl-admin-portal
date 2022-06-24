@@ -2,7 +2,7 @@ import React from 'react'
 import '../QuickFacts.css'
 
 const QuickFactsSelect = () => {
-  const options = ['Average This Month']
+  const options = ['This Month']
   return (
     <select className="dropdown" name="dropdown" id="dropdown">
       {options.map((option, index) => (

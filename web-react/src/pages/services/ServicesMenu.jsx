@@ -62,13 +62,12 @@ const Services = () => {
               }
             />
           )}
-
           <MenuButton
             iconComponent={BarChartFill}
-            title="Graphs"
+            title="Trends"
             color="members"
             noCaption
-            onClick={() => navigate(`/${churchType.toLowerCase()}/graphs`)}
+            onClick={() => navigate(`/trends`)}
           />
           {['Council', 'Constituency', 'Fellowship'].includes(churchType) && (
             <>
