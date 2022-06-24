@@ -126,13 +126,13 @@ CREATE (member:Member:Deer {whatsappNumber:$whatsappNumber})
       MATCH (gender:Gender {gender: $gender})
       MATCH (fellowship:Fellowship {id: $fellowship})
 
-      CREATE (log)-[:RECORDED_ON]->(today)
-      CREATE (log)-[:LOGGED_BY]->(currentUser)
-      CREATE (member)-[:HAS_HISTORY]->(log)
-      CREATE (member)-[:HAS_MARITAL_STATUS]-> (maritalStatus)
-      CREATE (member)-[:HAS_GENDER]-> (gender)
-      CREATE (member)-[:WAS_BORN_ON]->(date)
-      CREATE (member)-[:BELONGS_TO]->(fellowship)
+      MERGE (log)-[:RECORDED_ON]->(today)
+      MERGE (log)-[:LOGGED_BY]->(currentUser)
+      MERGE (member)-[:HAS_HISTORY]->(log)
+      MERGE (member)-[:HAS_MARITAL_STATUS]-> (maritalStatus)
+      MERGE (member)-[:HAS_GENDER]-> (gender)
+      MERGE (member)-[:WAS_BORN_ON]->(date)
+      MERGE (member)-[:BELONGS_TO]->(fellowship)
 
 
       WITH member

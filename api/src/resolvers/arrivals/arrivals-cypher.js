@@ -120,13 +120,13 @@ CREATE (bussingRecord:BussingRecord {created_at:datetime()})
     MATCH (bacenta:Bacenta {id:$bacentaId})
     MATCH (bacenta)-[:CURRENT_HISTORY]->(log:ServiceLog)
 
-    CREATE (log)-[:HAS_BUSSING]->(bussingRecord)
-    CREATE (bussingRecord)-[:BUSSED_ON]->(serviceDate)
+    MERGE (log)-[:HAS_BUSSING]->(bussingRecord)
+    MERGE (bussingRecord)-[:BUSSED_ON]->(serviceDate)
 
 WITH bussingRecord, bacenta, serviceDate,  date($serviceDate).week AS week
     MATCH (leader:Member {auth_id: $auth.jwt.sub})
     MATCH (bacenta)<-[:HAS]-(:Constituency)<-[:HAS]-(:Council)<-[:HAS]-(stream:Stream)
-    CREATE (bussingRecord)-[:LOGGED_BY]->(leader)
+    MERGE (bussingRecord)-[:LOGGED_BY]->(leader)
 
     RETURN bussingRecord AS bussingRecord, 
     bacenta AS bacenta, 
@@ -142,7 +142,7 @@ SET bussingRecord.arrivalTime = datetime()
 WITH bussingRecord
 MATCH (admin:Member {auth_id: $auth.jwt.sub})
 OPTIONAL MATCH (bussingRecord)-[:COUNTED_BY]->(counter)
-CREATE (bussingRecord)-[:ARRIVAL_CONFIRMED_BY]->(admin)
+MERGE (bussingRecord)-[:ARRIVAL_CONFIRMED_BY]->(admin)
 
 RETURN bussingRecord {
     .id,
