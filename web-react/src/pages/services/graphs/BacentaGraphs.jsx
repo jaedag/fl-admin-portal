@@ -2,19 +2,19 @@ import React, { useContext, useState } from 'react'
 
 import { ChurchContext } from '../../../contexts/ChurchContext'
 import { useQuery } from '@apollo/client'
-import { getServiceGraphData, getMonthlyStatAverage } from './trends-utils'
+import { getServiceGraphData, getMonthlyStatAverage } from './graphs-utils'
 import ChurchGraph from '../../../components/ChurchGraph/ChurchGraph'
-import { BACENTA_TRENDS } from './TrendsQueries'
+import { BACENTA_GRAPHS } from './GraphsQueries'
 import MembershipCard from './CompMembershipCard'
 import StatDisplay from './CompStatDisplay'
 import BaseComponent from 'components/base-component/BaseComponent'
 import { Col, Container, Dropdown, Row } from 'react-bootstrap'
 
-export const BacentaTrends = () => {
+export const BacentaGraphs = () => {
   const { bacentaId } = useContext(ChurchContext)
   const [bussing, setBussing] = useState(true)
 
-  const { data, loading, error } = useQuery(BACENTA_TRENDS, {
+  const { data, loading, error } = useQuery(BACENTA_GRAPHS, {
     variables: { bacentaId: bacentaId },
     onCompleted: (data) => {
       setChurchData(getServiceGraphData(data?.bacentas[0], 'bussing'))
@@ -100,4 +100,4 @@ export const BacentaTrends = () => {
   )
 }
 
-export default BacentaTrends
+export default BacentaGraphs

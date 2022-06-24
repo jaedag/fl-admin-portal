@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client'
 
-export const FELLOWSHIP_TRENDS = gql`
-  query fellowshipTrends($fellowshipId: ID) {
+export const FELLOWSHIP_GRAPHS = gql`
+  query fellowshipGraphs($fellowshipId: ID) {
     fellowships(where: { id: $fellowshipId }) {
       id
       name
@@ -26,8 +26,8 @@ export const FELLOWSHIP_TRENDS = gql`
   }
 `
 
-export const BACENTA_TRENDS = gql`
-  query bacentaTrends($bacentaId: ID!) {
+export const BACENTA_GRAPHS = gql`
+  query bacentaGraphs($bacentaId: ID!) {
     bacentas(where: { id: $bacentaId }) {
       id
       name
@@ -67,8 +67,8 @@ export const BACENTA_TRENDS = gql`
   }
 `
 
-export const SONTA_TRENDS = gql`
-  query sontaTrends($sontaId: ID!) {
+export const SONTA_GRAPHS = gql`
+  query sontaGraphs($sontaId: ID!) {
     sontas(where: { id: $sontaId }) {
       id
       name
@@ -94,8 +94,8 @@ export const SONTA_TRENDS = gql`
   }
 `
 
-export const CONSTITUENCY_TRENDS = gql`
-  query constiutencyTrends($id: ID!) {
+export const CONSTITUENCY_GRAPHS = gql`
+  query constiutencyGraphs($id: ID!) {
     constituencies(where: { id: $id }) {
       id
       name
@@ -126,8 +126,8 @@ export const CONSTITUENCY_TRENDS = gql`
   }
 `
 
-export const COUNCIL_TRENDS = gql`
-  query councilTrends($councilId: ID!) {
+export const COUNCIL_GRAPHS = gql`
+  query councilGraphs($councilId: ID!) {
     councils(where: { id: $councilId }) {
       id
       name
@@ -158,8 +158,8 @@ export const COUNCIL_TRENDS = gql`
   }
 `
 
-export const STREAM_TRENDS = gql`
-  query streamTrends($streamId: ID!) {
+export const STREAM_GRAPHS = gql`
+  query streamGraphs($streamId: ID!) {
     streams(where: { id: $streamId }) {
       id
       name
@@ -190,8 +190,8 @@ export const STREAM_TRENDS = gql`
   }
 `
 
-export const GATHERINGSERVICE_TRENDS = gql`
-  query gatheringServiceTrends($gatheringServiceId: ID!) {
+export const GATHERINGSERVICE_GRAPHS = gql`
+  query gatheringServiceGraphs($gatheringServiceId: ID!) {
     gatheringServices(where: { id: $gatheringServiceId }) {
       id
       name

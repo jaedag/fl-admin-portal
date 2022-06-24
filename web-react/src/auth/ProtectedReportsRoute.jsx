@@ -9,7 +9,7 @@ import LoadingScreen from '../components/base-component/LoadingScreen'
 import { isAuthorised } from '../global-utils'
 import Churches from 'pages/directory/Churches'
 
-const ProtectedTrends = ({ component, roles, ...args }) => {
+const ProtectedGraphs = ({ component, roles, ...args }) => {
   const { currentUser } = useContext(MemberContext)
   const church = useContext(ChurchContext)
 
@@ -47,4 +47,4 @@ const ProtectedTrends = ({ component, roles, ...args }) => {
   }
 }
 
-export default ProtectedTrends
+export default ProtectedGraphs
