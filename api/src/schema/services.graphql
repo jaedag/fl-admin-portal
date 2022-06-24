@@ -737,7 +737,7 @@ extend type Council {
     @computed
 }
 
-extend type Council {
+extend type Constituency {
   servicesThisWeek: [Fellowship!]!
     @cypher(
       statement: """
