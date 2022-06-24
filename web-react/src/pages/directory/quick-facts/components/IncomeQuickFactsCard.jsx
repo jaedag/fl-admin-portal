@@ -29,7 +29,11 @@ const IncomeQuickFactsCard = (props) => {
   return (
     <div className="w-100 text-center quick-fact-card">
       <div className="church-text">{details?.churchType}</div>
-      <div className="stat-text ">{details?.cardType} Stats</div>
+      <div className="stat-text ">
+        {' '}
+        Average Weekday <br />
+        {details?.cardType}{' '}
+      </div>
       <div className="leader-text">{details?.leadersName}</div>
       <div className="branch-text">
         {details?.churchName + ' ' + details?.churchType}
