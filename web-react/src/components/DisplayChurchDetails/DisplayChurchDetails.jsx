@@ -323,10 +323,15 @@ const DisplayChurchDetails = (props) => {
             <Button
               className={`btn-graphs ${theme}`}
               onClick={() => {
-                navigate(`/${props.churchType.toLowerCase()}/graphs`)
+                setUser({
+                  id: props.churchId,
+                  name: props.name,
+                  __typename: props.churchType,
+                })
+                navigate(`/trends`)
               }}
             >
-              View Graphs
+              View Trends
             </Button>
           </PlaceholderCustom>
           {shouldFill() && (

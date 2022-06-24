@@ -45,6 +45,7 @@ import GatheringServiceService from 'pages/services/record-service/GatheringServ
 import GatheringServiceServiceDetails from 'pages/services/record-service/GatheringServiceServiceDetails'
 import Defaulters from './defaulters/Defaulters'
 import DefaultersDashboard from './defaulters/DefaultersDashboard'
+import TrendsMenu from './graphs/TrendsMenu'
 import { banking } from './banking/self-banking/selfBankingRoutes'
 
 export const services = [
@@ -144,6 +145,12 @@ export const services = [
 ]
 
 export const graphs = [
+  {
+    path: '/trends',
+    element: TrendsMenu,
+    roles: ['all'],
+    placeholder: true,
+  },
   {
     path: '/fellowship/graphs',
     element: FellowshipReport,
