@@ -45,6 +45,7 @@ const DetailsFellowship = () => {
   const check = last3Weeks()?.map((number) => {
     if (lastFilled?.some((service) => service.week === number)) {
       const service = lastFilled?.find(({ week }) => week === number)
+
       if (!service?.noServiceReason) {
         return {
           number: number,
@@ -58,6 +59,8 @@ const DetailsFellowship = () => {
           banked: 'No Service',
         }
       }
+
+      return null
     } else {
       return {
         number: number,

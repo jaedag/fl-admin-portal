@@ -27,14 +27,14 @@ CREATE (serviceRecord:ServiceRecord {created_at:datetime()})
       MERGE (serviceDate:TimeGraph {date:date($serviceDate)})
 
       WITH DISTINCT serviceRecord, leader, serviceDate, log
-      CREATE (serviceRecord)-[:LOGGED_BY]->(leader)
-    CREATE (serviceRecord)-[:SERVICE_HELD_ON]->(serviceDate)
-      CREATE (log)-[:HAS_SERVICE]->(serviceRecord)
+      MERGE (serviceRecord)-[:LOGGED_BY]->(leader)
+      MERGE (serviceRecord)-[:SERVICE_HELD_ON]->(serviceDate)
+      MERGE (log)-[:HAS_SERVICE]->(serviceRecord)
 
       WITH serviceRecord
       UNWIND $treasurers AS treasurerId WITH treasurerId, serviceRecord
       MATCH (treasurer:Member {id: treasurerId})
-      CREATE (treasurer)-[:WAS_TREASURER_FOR]->(serviceRecord)
+      MERGE (treasurer)-[:WAS_TREASURER_FOR]->(serviceRecord)
 
       RETURN serviceRecord
 `
