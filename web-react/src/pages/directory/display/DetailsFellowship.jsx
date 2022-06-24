@@ -42,17 +42,16 @@ const DetailsFellowship = () => {
     })
   )
 
-  const check = last3Weeks()?.forEach((number) => {
+  const check = last3Weeks()?.map((number) => {
     if (lastFilled?.some((service) => service.week === number)) {
       const service = lastFilled?.find(({ week }) => week === number)
-
-      if (service?.noServiceReason === null) {
+      if (!service?.noServiceReason) {
         return {
           number: number,
           filled: true,
           banked: service.bankingProof ? true : false,
         }
-      } else if (service?.noServiceReason !== null) {
+      } else if (service?.noServiceReason) {
         return {
           number: number,
           filled: true,
