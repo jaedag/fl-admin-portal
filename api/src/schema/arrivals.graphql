@@ -1185,11 +1185,6 @@ extend type Mutation {
     serviceDate: String!
     mobilisationPicture: String!
   ): BussingRecord
-    @cypher(
-      statement: """
-
-      """
-    )
 
   #Bussing Records Entries
   RecordBussingFromBacenta(

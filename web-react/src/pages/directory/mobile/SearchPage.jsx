@@ -176,7 +176,7 @@ const SearchPageMobile = () => {
     federalSearch,
     fellowshipSearch,
   ])
-  console.log(combinedData)
+
   return (
     <>
       <MobileSearchNav />

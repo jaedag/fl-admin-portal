@@ -121,6 +121,10 @@ export const CONSTITUENCY_GRAPHS = gql`
         attendance
         income
       }
+      componentBussingAggregate {
+        week
+        attendance
+      }
       memberCount
     }
   }
@@ -152,6 +156,10 @@ export const COUNCIL_GRAPHS = gql`
         week
         attendance
         income
+      }
+      componentBussingAggregate {
+        week
+        attendance
       }
       memberCount
     }
@@ -185,6 +193,10 @@ export const STREAM_GRAPHS = gql`
         attendance
         income
       }
+      componentBussingAggregate {
+        week
+        attendance
+      }
       memberCount
     }
   }
@@ -216,6 +228,10 @@ export const GATHERINGSERVICE_GRAPHS = gql`
         week
         attendance
         income
+      }
+      componentBussingAggregate {
+        week
+        attendance
       }
       memberCount
     }

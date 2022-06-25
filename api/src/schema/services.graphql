@@ -245,8 +245,6 @@ extend type GatheringService {
       RETURN COUNT(DISTINCT fellowships)
       """
     )
-  componentServiceAggregate(limit: Int = 6): [ComponentServiceAggregate]
-    @computed
 }
 extend type Stream {
   servicesThisWeek: [Fellowship!]!
@@ -489,8 +487,6 @@ extend type Stream {
       RETURN COUNT(DISTINCT fellowships)
       """
     )
-  componentServiceAggregate(limit: Int = 6): [ComponentServiceAggregate]
-    @computed
 }
 extend type Council {
   servicesThisWeek: [Fellowship!]!
@@ -733,8 +729,6 @@ extend type Council {
       RETURN COUNT(DISTINCT fellowships)
       """
     )
-  componentServiceAggregate(limit: Int = 6): [ComponentServiceAggregate]
-    @computed
 }
 
 extend type Constituency {
@@ -978,13 +972,6 @@ extend type Constituency {
       RETURN COUNT(DISTINCT fellowships)
       """
     )
-  componentServiceAggregate(limit: Int = 6): [ComponentServiceAggregate]
-    @computed
-}
-
-extend type Bacenta {
-  componentServiceAggregate(limit: Int = 6): [ComponentServiceAggregate]
-    @computed
 }
 
 interface Record {
@@ -1061,12 +1048,6 @@ type ServiceLog @auth(rules: [{ isAuthenticated: true }]) {
     @relationship(type: "HAS_HISTORY", direction: IN)
   council: [Council!]! @relationship(type: "HAS_HISTORY", direction: IN)
   sonta: [Sonta!]! @relationship(type: "HAS_HISTORY", direction: IN)
-}
-
-type ComponentServiceAggregate {
-  week: Int!
-  attendance: Int!
-  income: Float!
 }
 
 extend type Mutation {

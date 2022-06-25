@@ -46,10 +46,16 @@ const quickFacts = fs
   .readFileSync(path.join(__dirname, './directory-quick-facts.graphql'))
   .toString('utf-8')
 
+const aggregates = fs
+  .readFileSync(path.join(__dirname, './aggregates.graphql'))
+  .toString('utf-8')
+
 exports.typeDefs =
   schema +
   ' ' +
   directory +
+  ' ' +
+  aggregates +
   ' ' +
   directoryCrud +
   ' ' +

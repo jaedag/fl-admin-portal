@@ -43,7 +43,6 @@ export const getServiceGraphData = (church, category) => {
   if (!church) {
     return
   }
-
   let data = []
 
   const pushIntoData = (array) => {
@@ -51,7 +50,11 @@ export const getServiceGraphData = (church, category) => {
       return
     }
 
-    if (array[0]?.__typename === 'ComponentServiceAggregate') {
+    if (
+      ['ComponentServiceAggregate', 'ComponentBussingAggregate'].includes(
+        array[0].__typename
+      )
+    ) {
       array.forEach((record) => {
         data.push({
           id: record?.id,
@@ -91,6 +94,7 @@ export const getServiceGraphData = (church, category) => {
 
   if (category === 'bussing') {
     pushIntoData(church.bussing)
+    pushIntoData(church.componentBussingAggregate)
   }
   //Pushing in direct service data eg. Joint Services and Fellowship Services
   else {

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 
 import { ChurchContext } from '../../../contexts/ChurchContext'
 import { useQuery } from '@apollo/client'
@@ -9,15 +9,21 @@ import MembershipCard from './CompMembershipCard'
 import StatDisplay from './CompStatDisplay'
 import BaseComponent from 'components/base-component/BaseComponent'
 import { Col, Container, Row } from 'react-bootstrap'
+import GraphDropdown from './GraphDropdown'
 
 export const ConstituencyReport = () => {
   const { constituencyId } = useContext(ChurchContext)
-
+  const [bussing, setBussing] = useState(true)
   const { data, loading, error } = useQuery(CONSTITUENCY_GRAPHS, {
     variables: { id: constituencyId },
+    onCompleted: (data) => {
+      if (!setChurchData) return
+      setChurchData(getServiceGraphData(data?.constituencies[0], 'bussing'))
+    },
   })
-
-  const churchData = getServiceGraphData(data?.constituencies[0])
+  const [churchData, setChurchData] = useState(
+    getServiceGraphData(data?.constituencies[0], 'bussing')
+  )
 
   return (
     <BaseComponent loading={loading} error={error} data={data}>
@@ -30,7 +36,7 @@ export const ConstituencyReport = () => {
           </p>
         </div>
 
-        <Row>
+        <Row className="row-cols-2">
           <Col>
             <MembershipCard
               link="/constituency/members"
@@ -38,27 +44,38 @@ export const ConstituencyReport = () => {
               count={data?.constituencies[0].memberCount}
             />
           </Col>
+
+          <Col>
+            <GraphDropdown
+              setBussing={setBussing}
+              setChurchData={setChurchData}
+              data={data?.constituencies[0]}
+            />
+          </Col>
         </Row>
         <Row className="mt-3">
           <Col>
             <StatDisplay
-              title="Avg Weekly Attendance"
+              title={`Avg Weekly ${bussing ? 'Bussing' : 'Attendance'}`}
               statistic={getMonthlyStatAverage(churchData, 'attendance')}
             />
           </Col>
 
           <Col>
-            <StatDisplay
-              title="Avg Weekly Income"
-              statistic={getMonthlyStatAverage(churchData, 'income')}
-            />
+            {(!bussing || loading) && (
+              <StatDisplay
+                title="Avg Weekly Income"
+                statistic={getMonthlyStatAverage(churchData, 'income')}
+              />
+            )}
           </Col>
         </Row>
         <ChurchGraph
           stat1="attendance"
-          stat2="income"
+          stat2={!bussing ? 'income' : null}
           churchData={churchData}
           church="constituency"
+          bussing={bussing}
         />
       </Container>
     </BaseComponent>
