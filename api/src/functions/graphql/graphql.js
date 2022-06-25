@@ -12,6 +12,9 @@ const { typeDefs } = require('./schema/graphql-schema')
 const { resolvers } = require('../../resolvers/resolvers.js')
 const { serviceResolvers } = require('../../resolvers/service-resolvers')
 const {
+  componentResolvers,
+} = require('../../resolvers/aggregates/component-resolvers')
+const {
   arrivalsResolvers,
 } = require('../../resolvers/arrivals/arrivals-resolvers')
 
@@ -25,7 +28,12 @@ const driver = neo4j.driver(
 
 const neoSchema = new Neo4jGraphQL({
   typeDefs,
-  resolvers: { ...resolvers, ...serviceResolvers, ...arrivalsResolvers },
+  resolvers: {
+    ...resolvers,
+    ...serviceResolvers,
+    ...arrivalsResolvers,
+    ...componentResolvers,
+  },
   driver,
   plugins: {
     auth: new Neo4jGraphQLAuthJWTPlugin({

@@ -8,7 +8,8 @@ import { BACENTA_GRAPHS } from './GraphsQueries'
 import MembershipCard from './CompMembershipCard'
 import StatDisplay from './CompStatDisplay'
 import BaseComponent from 'components/base-component/BaseComponent'
-import { Col, Container, Dropdown, Row } from 'react-bootstrap'
+import { Col, Container, Row } from 'react-bootstrap'
+import GraphDropdown from './GraphDropdown'
 
 export const BacentaGraphs = () => {
   const { bacentaId } = useContext(ChurchContext)
@@ -17,6 +18,7 @@ export const BacentaGraphs = () => {
   const { data, loading, error } = useQuery(BACENTA_GRAPHS, {
     variables: { bacentaId: bacentaId },
     onCompleted: (data) => {
+      if (!setChurchData) return
       setChurchData(getServiceGraphData(data?.bacentas[0], 'bussing'))
     },
   })
@@ -44,32 +46,11 @@ export const BacentaGraphs = () => {
             />
           </Col>
           <Col>
-            <Dropdown>
-              <Dropdown.Toggle variant="danger">Select Service</Dropdown.Toggle>
-
-              <Dropdown.Menu variant="dark">
-                <Dropdown.Item
-                  className="py-3"
-                  onClick={() => {
-                    setBussing(true)
-                    setChurchData(
-                      getServiceGraphData(data?.bacentas[0], 'bussing')
-                    )
-                  }}
-                >
-                  Bussing
-                </Dropdown.Item>
-                <Dropdown.Item
-                  className="py-3"
-                  onClick={() => {
-                    setBussing(false)
-                    setChurchData(getServiceGraphData(data?.bacentas[0]))
-                  }}
-                >
-                  Fellowship Services
-                </Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>
+            <GraphDropdown
+              setBussing={setBussing}
+              setChurchData={setChurchData}
+              data={data?.bacentas[0]}
+            />
           </Col>
         </Row>
         <Row className="mt-3">
@@ -93,7 +74,7 @@ export const BacentaGraphs = () => {
           stat2={!bussing ? 'income' : null}
           churchData={churchData}
           church="bacenta"
-          bussing={true}
+          bussing={bussing}
         />
       </Container>
     </BaseComponent>

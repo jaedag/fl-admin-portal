@@ -22,29 +22,27 @@ function CheckboxGroup(props) {
         {({ field }) => {
           return options.map((option, index) => {
             return (
-              <>
-                <button
-                  type="button"
-                  key={index}
-                  className={`filter-chips ${theme} ${
-                    field.value.includes(option.value) && 'active'
-                  }`}
-                >
-                  <div key={option.key} className="ml-2">
-                    <input
-                      className="d-none"
-                      type="checkbox"
-                      id={option.value}
-                      {...field}
-                      value={option.value}
-                      checked={field.value.includes(option.value)}
-                    />
-                    <label className="pl-4" htmlFor={option.value}>
-                      {option.key}
-                    </label>
-                  </div>
-                </button>
-              </>
+              <button
+                type="button"
+                key={index}
+                className={`filter-chips ${theme} ${
+                  field.value.includes(option.value) && 'active'
+                }`}
+              >
+                <div key={option.key} className="ml-2">
+                  <input
+                    className="d-none"
+                    type="checkbox"
+                    id={option.value}
+                    {...field}
+                    value={option.value}
+                    checked={field.value.includes(option.value)}
+                  />
+                  <label className="pl-4" htmlFor={option.value}>
+                    {option.key}
+                  </label>
+                </div>
+              </button>
             )
           })
         }}

@@ -4,6 +4,7 @@ import PlaceholderCustom from 'components/Placeholder'
 import SpinnerPage from 'components/SpinnerPage'
 import TableFromArrays from 'components/TableFromArrays/TableFromArrays'
 import { MemberContext } from 'contexts/MemberContext'
+import { parseNeoTime } from 'jd-date-utils'
 import React, { useContext, useEffect } from 'react'
 import { Col, Container, Row, Button } from 'react-bootstrap'
 import { useNavigate } from 'react-router'
@@ -24,7 +25,7 @@ const ServiceDetails = ({ service, church, loading }) => {
 
   const table = [
     ['Date of Service', new Date(service.serviceDate.date).toDateString()],
-    ['Form Filled At', service.created_at],
+    ['Form Filled At', parseNeoTime(service.created_at)],
     ['Attendance', service.attendance],
     ['Income', service.income],
     ...service.treasurers.map((treasurer, i) => [

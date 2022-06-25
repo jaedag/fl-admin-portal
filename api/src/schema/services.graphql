@@ -8,20 +8,21 @@ extend type GatheringService {
   servicesThisWeek: [Fellowship!]!
     @cypher(
       statement: """
-      WITH date() as today
-      WITH  today.weekDay as theDay, today
-      WITH date(today) - duration({days: (theDay - 2)}) AS startDate
-      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates
+      MATCH (this)
+      WITH date() as today, this
+      WITH  today.weekDay as theDay, today, this
+      WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
+      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates, this
 
       MATCH (date:TimeGraph)
       USING INDEX date:TimeGraph(date)
       WHERE date.date IN dates
       MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
 
-       WITH DISTINCT record WHERE record.attendance IS NOT NULL
+       WITH DISTINCT record, this WHERE record.attendance IS NOT NULL
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships) WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
 
-       WITH DISTINCT fellowships
+       WITH DISTINCT fellowships, this
        MATCH (fellowships)<-[:HAS]-(bacenta:Bacenta)<-[:HAS]-(constituency:Constituency)<-[:HAS]-(:Council)<-[:HAS]-(:Stream)<-[:HAS]-(this)
 
       RETURN DISTINCT fellowships
@@ -30,20 +31,21 @@ extend type GatheringService {
   servicesThisWeekCount: Int
     @cypher(
       statement: """
-      WITH date() as today
-      WITH  today.weekDay as theDay, today
-      WITH date(today) - duration({days: (theDay - 2)}) AS startDate
-      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates
+      MATCH (this)
+      WITH date() as today, this
+      WITH  today.weekDay as theDay, today, this
+      WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
+      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates, this
 
       MATCH (date:TimeGraph)
       USING INDEX date:TimeGraph(date)
       WHERE date.date IN dates
       MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
 
-       WITH DISTINCT record WHERE record.attendance IS NOT NULL
+       WITH DISTINCT record, this WHERE record.attendance IS NOT NULL
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships) WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
 
-       WITH DISTINCT fellowships
+       WITH DISTINCT fellowships, this
        MATCH (fellowships)<-[:HAS]-(bacenta:Bacenta)<-[:HAS]-(constituency:Constituency)<-[:HAS]-(:Council)<-[:HAS]-(:Stream)<-[:HAS]-(this)
 
       RETURN COUNT(DISTINCT fellowships)
@@ -52,20 +54,21 @@ extend type GatheringService {
   cancelledServicesThisWeek: [Fellowship!]!
     @cypher(
       statement: """
-      WITH date() as today
-      WITH  today.weekDay as theDay, today
-      WITH date(today) - duration({days: (theDay - 2)}) AS startDate
-      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates
+      MATCH (this)
+      WITH date() as today, this
+      WITH  today.weekDay as theDay, today, this
+      WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
+      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates, this
 
       MATCH (date:TimeGraph)
       USING INDEX date:TimeGraph(date)
       WHERE date.date IN dates
       MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
 
-       WITH DISTINCT record WHERE record.noServiceReason IS NOT NULL
+       WITH DISTINCT record, this WHERE record.noServiceReason IS NOT NULL
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships) WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
 
-       WITH DISTINCT fellowships
+       WITH DISTINCT fellowships, this
        MATCH (fellowships)<-[:HAS]-(bacenta:Bacenta)<-[:HAS]-(constituency:Constituency)<-[:HAS]-(:Council)<-[:HAS]-(:Stream)<-[:HAS]-(this)
 
       RETURN DISTINCT fellowships
@@ -74,20 +77,21 @@ extend type GatheringService {
   cancelledServicesThisWeekCount: Int
     @cypher(
       statement: """
-      WITH date() as today
-      WITH  today.weekDay as theDay, today
-      WITH date(today) - duration({days: (theDay - 2)}) AS startDate
-      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates
+      MATCH (this)
+      WITH date() as today, this
+      WITH  today.weekDay as theDay, today, this
+      WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
+      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates, this
 
       MATCH (date:TimeGraph)
       USING INDEX date:TimeGraph(date)
       WHERE date.date IN dates
       MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
 
-       WITH DISTINCT record WHERE record.noServiceReason IS NOT NULL
+       WITH DISTINCT record, this WHERE record.noServiceReason IS NOT NULL
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships) WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
 
-       WITH DISTINCT fellowships
+       WITH DISTINCT fellowships, this
        MATCH (fellowships)<-[:HAS]-(bacenta:Bacenta)<-[:HAS]-(constituency:Constituency)<-[:HAS]-(:Council)<-[:HAS]-(:Stream)<-[:HAS]-(this)
 
       RETURN COUNT(DISTINCT fellowships)
@@ -96,25 +100,26 @@ extend type GatheringService {
   formDefaultersThisWeek: [Fellowship!]!
     @cypher(
       statement: """
-      WITH date() as today
-      WITH  today.weekDay as theDay, today
-      WITH date(today) - duration({days: (theDay - 2)}) AS startDate
-      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates
+      MATCH (this)
+      WITH date() as today, this
+      WITH  today.weekDay as theDay, today, this
+      WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
+      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates, this
 
       MATCH (date:TimeGraph)
       USING INDEX date:TimeGraph(date)
       WHERE date.date IN dates
       MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
 
-       WITH DISTINCT record
+       WITH DISTINCT record, this
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships:Active:Fellowship)
        MATCH (fellowships)-[:MEETS_ON]->(day:ServiceDay)
 
-       WITH collect(DISTINCT fellowships) as services
+       WITH collect(DISTINCT fellowships) as services, this
        MATCH (defaulters:Active:Fellowship)<-[:HAS]-(bacenta:Bacenta)<-[:HAS]-(constituency:Constituency)<-[:HAS]-(:Council)<-[:HAS]-(:Stream)<-[:HAS]-(this)
        WHERE NOT defaulters IN services
 
-       WITH defaulters
+       WITH defaulters, this
        MATCH (defaulters)-[:MEETS_ON]->(day:ServiceDay)
         WHERE day.dayNumber < date().dayOfWeek OR (day.dayNumber = date().dayOfWeek AND  time() > time('20:30'))
        RETURN DISTINCT defaulters
@@ -123,25 +128,26 @@ extend type GatheringService {
   formDefaultersThisWeekCount: Int
     @cypher(
       statement: """
-      WITH date() as today
-      WITH  today.weekDay as theDay, today
-      WITH date(today) - duration({days: (theDay - 2)}) AS startDate
-      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates
+      MATCH (this)
+      WITH date() as today, this
+      WITH  today.weekDay as theDay, today, this
+      WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
+      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates, this
 
       MATCH (date:TimeGraph)
       USING INDEX date:TimeGraph(date)
       WHERE date.date IN dates
       MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
 
-       WITH DISTINCT record
+       WITH DISTINCT record, this
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships:Active:Fellowship)
        MATCH (fellowships)-[:MEETS_ON]->(day:ServiceDay)
 
-       WITH collect(DISTINCT fellowships) as services
+       WITH collect(DISTINCT fellowships) as services, this
        MATCH (defaulters:Active:Fellowship)<-[:HAS]-(bacenta:Bacenta)<-[:HAS]-(constituency:Constituency)<-[:HAS]-(:Council)<-[:HAS]-(:Stream)<-[:HAS]-(this)
        WHERE NOT defaulters IN services
 
-       WITH defaulters
+       WITH defaulters, this
        MATCH (defaulters)-[:MEETS_ON]->(day:ServiceDay)
         WHERE day.dayNumber < date().dayOfWeek OR (day.dayNumber = date().dayOfWeek AND  time() > time('20:30'))
        RETURN COUNT(DISTINCT defaulters)
@@ -150,23 +156,24 @@ extend type GatheringService {
   bankingDefaultersThisWeek: [Fellowship!]!
     @cypher(
       statement: """
-      WITH date() as today
-      WITH  today.weekDay as theDay, today
-      WITH date(today) - duration({days: (theDay - 2)}) AS startDate
-      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates
+      MATCH (this)
+      WITH date() as today, this
+      WITH  today.weekDay as theDay, today, this
+      WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
+      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates, this
 
       MATCH (date:TimeGraph)
       USING INDEX date:TimeGraph(date)
       WHERE date.date IN dates
       MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
 
-       WITH DISTINCT record
+       WITH DISTINCT record, this
         WHERE record.noServiceReason IS NULL
           AND record.bankingSlip IS NULL
           AND (record.transactionStatus IS NULL OR record.transactionStatus <> 'success')
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships) WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
 
-       WITH DISTINCT fellowships
+       WITH DISTINCT fellowships, this
        MATCH (fellowships)<-[:HAS]-(bacenta:Bacenta)<-[:HAS]-(constituency:Constituency)<-[:HAS]-(:Council)<-[:HAS]-(:Stream)<-[:HAS]-(this)
 
       RETURN DISTINCT fellowships
@@ -175,23 +182,24 @@ extend type GatheringService {
   bankingDefaultersThisWeekCount: Int
     @cypher(
       statement: """
-      WITH date() as today
-      WITH  today.weekDay as theDay, today
-      WITH date(today) - duration({days: (theDay - 2)}) AS startDate
-      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates
+      MATCH (this)
+      WITH date() as today, this
+      WITH  today.weekDay as theDay, today, this
+      WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
+      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates, this
 
       MATCH (date:TimeGraph)
       USING INDEX date:TimeGraph(date)
       WHERE date.date IN dates
       MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
 
-       WITH DISTINCT record
+       WITH DISTINCT record, this
         WHERE record.noServiceReason IS NULL
           AND record.bankingSlip IS NULL
           AND (record.transactionStatus IS NULL OR record.transactionStatus <> 'success')
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships) WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
 
-       WITH DISTINCT fellowships
+       WITH DISTINCT fellowships, this
        MATCH (fellowships)<-[:HAS]-(bacenta:Bacenta)<-[:HAS]-(constituency:Constituency)<-[:HAS]-(:Council)<-[:HAS]-(:Stream)<-[:HAS]-(this)
 
       RETURN COUNT(DISTINCT fellowships)
@@ -200,22 +208,23 @@ extend type GatheringService {
   bankedThisWeek: [Fellowship!]!
     @cypher(
       statement: """
-      WITH date() as today
-      WITH  today.weekDay as theDay, today
-      WITH date(today) - duration({days: (theDay - 2)}) AS startDate
-      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates
+      MATCH (this)
+      WITH date() as today, this
+      WITH  today.weekDay as theDay, today, this
+      WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
+      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates, this
 
       MATCH (date:TimeGraph)
       USING INDEX date:TimeGraph(date)
       WHERE date.date IN dates
       MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
 
-       WITH DISTINCT record
+       WITH DISTINCT record, this
         WHERE record.noServiceReason IS NULL
          AND (record.bankingSlip IS NOT NULL OR record.transactionStatus ='success')
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships) WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
 
-       WITH DISTINCT fellowships
+       WITH DISTINCT fellowships, this
        MATCH (fellowships)<-[:HAS]-(bacenta:Bacenta)<-[:HAS]-(constituency:Constituency)<-[:HAS]-(:Council)<-[:HAS]-(:Stream)<-[:HAS]-(this)
 
       RETURN DISTINCT fellowships
@@ -224,22 +233,23 @@ extend type GatheringService {
   bankedThisWeekCount: Int
     @cypher(
       statement: """
-      WITH date() as today
-      WITH  today.weekDay as theDay, today
-      WITH date(today) - duration({days: (theDay - 2)}) AS startDate
-      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates
+      MATCH (this)
+      WITH date() as today, this
+      WITH  today.weekDay as theDay, today, this
+      WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
+      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates, this
 
       MATCH (date:TimeGraph)
       USING INDEX date:TimeGraph(date)
       WHERE date.date IN dates
       MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
 
-       WITH DISTINCT record
+       WITH DISTINCT record, this
         WHERE record.noServiceReason IS NULL
          AND (record.bankingSlip IS NOT NULL OR record.transactionStatus ='success')
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships) WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
 
-       WITH DISTINCT fellowships
+       WITH DISTINCT fellowships, this
        MATCH (fellowships)<-[:HAS]-(bacenta:Bacenta)<-[:HAS]-(constituency:Constituency)<-[:HAS]-(:Council)<-[:HAS]-(:Stream)<-[:HAS]-(this)
 
       RETURN COUNT(DISTINCT fellowships)
@@ -252,20 +262,21 @@ extend type Stream {
   servicesThisWeek: [Fellowship!]!
     @cypher(
       statement: """
-      WITH date() as today
-      WITH  today.weekDay as theDay, today
-      WITH date(today) - duration({days: (theDay - 2)}) AS startDate
-      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates
+      MATCH (this)
+      WITH date() as today, this
+      WITH  today.weekDay as theDay, today, this
+      WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
+      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates, this
 
       MATCH (date:TimeGraph)
       USING INDEX date:TimeGraph(date)
       WHERE date.date IN dates
       MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
 
-       WITH DISTINCT record WHERE record.attendance IS NOT NULL
+       WITH DISTINCT this, record WHERE record.attendance IS NOT NULL
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships) WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
 
-       WITH DISTINCT fellowships
+       WITH DISTINCT fellowships, this
        MATCH (fellowships)<-[:HAS]-(bacenta:Bacenta)<-[:HAS]-(constituency:Constituency)<-[:HAS]-(:Council)<-[:HAS]-(this)
 
       RETURN DISTINCT fellowships
@@ -274,20 +285,21 @@ extend type Stream {
   servicesThisWeekCount: Int
     @cypher(
       statement: """
-      WITH date() as today
-      WITH  today.weekDay as theDay, today
-      WITH date(today) - duration({days: (theDay - 2)}) AS startDate
-      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates
+      MATCH (this)
+      WITH date() as today, this
+      WITH  today.weekDay as theDay, today, this
+      WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
+      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates, this
 
       MATCH (date:TimeGraph)
       USING INDEX date:TimeGraph(date)
       WHERE date.date IN dates
       MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
 
-       WITH DISTINCT record WHERE record.attendance IS NOT NULL
+       WITH DISTINCT this, record WHERE record.attendance IS NOT NULL
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships) WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
 
-       WITH DISTINCT fellowships
+       WITH DISTINCT fellowships, this
        MATCH (fellowships)<-[:HAS]-(bacenta:Bacenta)<-[:HAS]-(constituency:Constituency)<-[:HAS]-(:Council)<-[:HAS]-(this)
 
       RETURN COUNT(DISTINCT fellowships)
@@ -296,20 +308,22 @@ extend type Stream {
   cancelledServicesThisWeek: [Fellowship!]!
     @cypher(
       statement: """
-      WITH date() as today
-      WITH  today.weekDay as theDay, today
-      WITH date(today) - duration({days: (theDay - 2)}) AS startDate
-      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates
+      MATCH (this)
+      WITH date() as today, this
+      WITH  today.weekDay as theDay, today, this
+      WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
+      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates, this
 
       MATCH (date:TimeGraph)
       USING INDEX date:TimeGraph(date)
       WHERE date.date IN dates
       MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
 
-       WITH DISTINCT record WHERE record.noServiceReason IS NOT NULL
+       WITH DISTINCT record, this
+       WHERE record.noServiceReason IS NOT NULL
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships) WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
 
-       WITH DISTINCT fellowships
+       WITH DISTINCT fellowships, this
        MATCH (fellowships)<-[:HAS]-(bacenta:Bacenta)<-[:HAS]-(constituency:Constituency)<-[:HAS]-(:Council)<-[:HAS]-(this)
 
       RETURN DISTINCT fellowships
@@ -318,47 +332,50 @@ extend type Stream {
   cancelledServicesThisWeekCount: Int
     @cypher(
       statement: """
-      WITH date() as today
-       WITH  today.weekDay as theDay, today
-       WITH date(today) - duration({days: (theDay - 2)}) AS startDate
-       WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates
-
-       MATCH (date:TimeGraph)
-       USING INDEX date:TimeGraph(date)
-       WHERE date.date IN dates
-       MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
-
-        WITH DISTINCT record WHERE record.noServiceReason IS NOT NULL
-        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships) WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
-
-        WITH DISTINCT fellowships
-        MATCH (fellowships)<-[:HAS]-(bacenta:Bacenta)<-[:HAS]-(constituency:Constituency)<-[:HAS]-(:Council)<-[:HAS]-(this)
-
-       RETURN COUNT(DISTINCT fellowships)
-      """
-    )
-  formDefaultersThisWeek: [Fellowship!]!
-    @cypher(
-      statement: """
-      WITH date() as today
-      WITH  today.weekDay as theDay, today
-      WITH date(today) - duration({days: (theDay - 2)}) AS startDate
-      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates
+       MATCH (this)
+      WITH date() as today, this
+      WITH  today.weekDay as theDay, today, this
+      WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
+      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates, this
 
       MATCH (date:TimeGraph)
       USING INDEX date:TimeGraph(date)
       WHERE date.date IN dates
       MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
 
-       WITH DISTINCT record
+       WITH DISTINCT record, this
+       WHERE record.noServiceReason IS NOT NULL
+       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships) WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
+
+       WITH DISTINCT fellowships, this
+       MATCH (fellowships)<-[:HAS]-(bacenta:Bacenta)<-[:HAS]-(constituency:Constituency)<-[:HAS]-(:Council)<-[:HAS]-(this)
+
+      RETURN DISTINCT fellowships
+      """
+    )
+  formDefaultersThisWeek: [Fellowship!]!
+    @cypher(
+      statement: """
+      MATCH (this)
+      WITH date() as today, this
+      WITH  today.weekDay as theDay, today, this
+      WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
+      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates, this
+
+      MATCH (date:TimeGraph)
+      USING INDEX date:TimeGraph(date)
+      WHERE date.date IN dates
+      MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
+
+       WITH DISTINCT record, this
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships:Active:Fellowship)
        MATCH (fellowships)-[:MEETS_ON]->(day:ServiceDay)
 
-       WITH collect(DISTINCT fellowships) as services
+       WITH collect(DISTINCT fellowships) as services, this
        MATCH (defaulters:Active:Fellowship)<-[:HAS]-(bacenta:Bacenta)<-[:HAS]-(constituency:Constituency)<-[:HAS]-(:Council)<-[:HAS]-(this)
        WHERE NOT defaulters IN services
 
-       WITH defaulters
+       WITH defaulters, this
        MATCH (defaulters)-[:MEETS_ON]->(day:ServiceDay)
         WHERE day.dayNumber < date().dayOfWeek OR (day.dayNumber = date().dayOfWeek AND  time() > time('20:30'))
        RETURN DISTINCT defaulters
@@ -367,25 +384,26 @@ extend type Stream {
   formDefaultersThisWeekCount: Int
     @cypher(
       statement: """
-      WITH date() as today
-      WITH  today.weekDay as theDay, today
-      WITH date(today) - duration({days: (theDay - 2)}) AS startDate
-      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates
+      MATCH (this)
+      WITH date() as today, this
+      WITH  today.weekDay as theDay, today, this
+      WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
+      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates, this
 
       MATCH (date:TimeGraph)
       USING INDEX date:TimeGraph(date)
       WHERE date.date IN dates
       MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
 
-       WITH DISTINCT record
+       WITH DISTINCT record, this
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships:Active:Fellowship)
        MATCH (fellowships)-[:MEETS_ON]->(day:ServiceDay)
 
-       WITH collect(DISTINCT fellowships) as services
+       WITH collect(DISTINCT fellowships) as services, this
        MATCH (defaulters:Active:Fellowship)<-[:HAS]-(bacenta:Bacenta)<-[:HAS]-(constituency:Constituency)<-[:HAS]-(:Council)<-[:HAS]-(this)
        WHERE NOT defaulters IN services
 
-       WITH defaulters
+       WITH defaulters, this
        MATCH (defaulters)-[:MEETS_ON]->(day:ServiceDay)
         WHERE day.dayNumber < date().dayOfWeek OR (day.dayNumber = date().dayOfWeek AND  time() > time('20:30'))
        RETURN COUNT(DISTINCT defaulters)
@@ -394,23 +412,24 @@ extend type Stream {
   bankingDefaultersThisWeek: [Fellowship!]!
     @cypher(
       statement: """
-      WITH date() as today
-      WITH  today.weekDay as theDay, today
-      WITH date(today) - duration({days: (theDay - 2)}) AS startDate
-      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates
+      MATCH (this)
+      WITH date() as today, this
+      WITH  today.weekDay as theDay, today, this
+      WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
+      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates, this
 
       MATCH (date:TimeGraph)
       USING INDEX date:TimeGraph(date)
       WHERE date.date IN dates
       MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
 
-       WITH DISTINCT record
+       WITH DISTINCT record, this
         WHERE record.noServiceReason IS NULL
           AND record.bankingSlip IS NULL
           AND (record.transactionStatus IS NULL OR record.transactionStatus <> 'success')
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships) WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
 
-       WITH DISTINCT fellowships
+       WITH DISTINCT fellowships, this
        MATCH (fellowships)<-[:HAS]-(bacenta:Bacenta)<-[:HAS]-(constituency:Constituency)<-[:HAS]-(:Council)<-[:HAS]-(this)
 
       RETURN DISTINCT fellowships
@@ -419,23 +438,24 @@ extend type Stream {
   bankingDefaultersThisWeekCount: Int
     @cypher(
       statement: """
-      WITH date() as today
-      WITH  today.weekDay as theDay, today
-      WITH date(today) - duration({days: (theDay - 2)}) AS startDate
-      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates
+      MATCH (this)
+      WITH date() as today, this
+      WITH  today.weekDay as theDay, today, this
+      WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
+      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates, this
 
       MATCH (date:TimeGraph)
       USING INDEX date:TimeGraph(date)
       WHERE date.date IN dates
       MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
 
-       WITH DISTINCT record
+       WITH DISTINCT record, this
         WHERE record.noServiceReason IS NULL
           AND record.bankingSlip IS NULL
           AND (record.transactionStatus IS NULL OR record.transactionStatus <> 'success')
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships) WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
 
-       WITH DISTINCT fellowships
+       WITH DISTINCT fellowships, this
        MATCH (fellowships)<-[:HAS]-(bacenta:Bacenta)<-[:HAS]-(constituency:Constituency)<-[:HAS]-(:Council)<-[:HAS]-(this)
 
       RETURN COUNT(DISTINCT fellowships)
@@ -444,22 +464,23 @@ extend type Stream {
   bankedThisWeek: [Fellowship!]!
     @cypher(
       statement: """
-      WITH date() as today
-      WITH  today.weekDay as theDay, today
-      WITH date(today) - duration({days: (theDay - 2)}) AS startDate
-      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates
+      MATCH (this)
+      WITH date() as today, this
+      WITH  today.weekDay as theDay, today, this
+      WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
+      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates, this
 
       MATCH (date:TimeGraph)
       USING INDEX date:TimeGraph(date)
       WHERE date.date IN dates
       MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
 
-       WITH DISTINCT record
+       WITH DISTINCT record, this
         WHERE record.noServiceReason IS NULL
          AND (record.bankingSlip IS NOT NULL OR record.transactionStatus ='success')
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships) WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
 
-       WITH DISTINCT fellowships
+       WITH DISTINCT fellowships, this
        MATCH (fellowships)<-[:HAS]-(bacenta:Bacenta)<-[:HAS]-(constituency:Constituency)<-[:HAS]-(:Council)<-[:HAS]-(this)
 
       RETURN DISTINCT fellowships
@@ -468,22 +489,23 @@ extend type Stream {
   bankedThisWeekCount: Int
     @cypher(
       statement: """
-      WITH date() as today
-      WITH  today.weekDay as theDay, today
-      WITH date(today) - duration({days: (theDay - 2)}) AS startDate
-      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates
+      MATCH (this)
+      WITH date() as today, this
+      WITH  today.weekDay as theDay, today, this
+      WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
+      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates, this
 
       MATCH (date:TimeGraph)
       USING INDEX date:TimeGraph(date)
       WHERE date.date IN dates
       MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
 
-       WITH DISTINCT record
+       WITH DISTINCT record, this
         WHERE record.noServiceReason IS NULL
          AND (record.bankingSlip IS NOT NULL OR record.transactionStatus ='success')
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships) WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
 
-       WITH DISTINCT fellowships
+       WITH DISTINCT fellowships, this
        MATCH (fellowships)<-[:HAS]-(bacenta:Bacenta)<-[:HAS]-(constituency:Constituency)<-[:HAS]-(:Council)<-[:HAS]-(this)
 
       RETURN COUNT(DISTINCT fellowships)
@@ -496,20 +518,21 @@ extend type Council {
   servicesThisWeek: [Fellowship!]!
     @cypher(
       statement: """
-      WITH date() as today
-      WITH  today.weekDay as theDay, today
-      WITH date(today) - duration({days: (theDay - 2)}) AS startDate
-      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates
+      MATCH (this)
+      WITH date() as today, this
+      WITH  today.weekDay as theDay, today, this
+      WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
+      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates, this
 
       MATCH (date:TimeGraph)
       USING INDEX date:TimeGraph(date)
       WHERE date.date IN dates
       MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
 
-       WITH DISTINCT record WHERE record.attendance IS NOT NULL
+       WITH DISTINCT this, record WHERE record.attendance IS NOT NULL
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships) WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
 
-       WITH DISTINCT fellowships
+       WITH DISTINCT fellowships, this
        MATCH (fellowships)<-[:HAS]-(bacenta:Bacenta)<-[:HAS]-(constituency:Constituency)<-[:HAS]-(this)
 
       RETURN DISTINCT fellowships
@@ -518,20 +541,21 @@ extend type Council {
   servicesThisWeekCount: Int
     @cypher(
       statement: """
-      WITH date() as today
-      WITH  today.weekDay as theDay, today
-      WITH date(today) - duration({days: (theDay - 2)}) AS startDate
-      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates
+      MATCH (this)
+      WITH date() as today, this
+      WITH  today.weekDay as theDay, today, this
+      WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
+      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates, this
 
       MATCH (date:TimeGraph)
       USING INDEX date:TimeGraph(date)
       WHERE date.date IN dates
       MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
 
-       WITH DISTINCT record WHERE record.attendance IS NOT NULL
+       WITH DISTINCT this, record WHERE record.attendance IS NOT NULL
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships) WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
 
-       WITH DISTINCT fellowships
+       WITH DISTINCT fellowships, this
        MATCH (fellowships)<-[:HAS]-(bacenta:Bacenta)<-[:HAS]-(constituency:Constituency)<-[:HAS]-(this)
 
       RETURN COUNT(DISTINCT fellowships)
@@ -540,20 +564,21 @@ extend type Council {
   cancelledServicesThisWeek: [Fellowship!]!
     @cypher(
       statement: """
-      WITH date() as today
-      WITH  today.weekDay as theDay, today
-      WITH date(today) - duration({days: (theDay - 2)}) AS startDate
-      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates
+      MATCH (this)
+      WITH date() as today, this
+      WITH  today.weekDay as theDay, today, this
+      WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
+      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates, this
 
       MATCH (date:TimeGraph)
       USING INDEX date:TimeGraph(date)
       WHERE date.date IN dates
       MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
 
-       WITH DISTINCT record WHERE record.noServiceReason IS NOT NULL
+       WITH DISTINCT this, record WHERE record.noServiceReason IS NOT NULL
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships) WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
 
-       WITH DISTINCT fellowships
+       WITH DISTINCT fellowships, this
        MATCH (fellowships)<-[:HAS]-(bacenta:Bacenta)<-[:HAS]-(constituency:Constituency)<-[:HAS]-(this)
 
       RETURN DISTINCT fellowships
@@ -572,10 +597,10 @@ extend type Council {
        WHERE date.date IN dates
        MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
 
-        WITH DISTINCT record WHERE record.noServiceReason IS NOT NULL
+        WITH DISTINCT this, record WHERE record.noServiceReason IS NOT NULL
         MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships) WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
 
-        WITH DISTINCT fellowships
+        WITH DISTINCT fellowships, this
         MATCH (fellowships)<-[:HAS]-(bacenta:Bacenta)<-[:HAS]-(constituency:Constituency)<-[:HAS]-(this)
 
        RETURN COUNT(DISTINCT fellowships)
@@ -584,25 +609,26 @@ extend type Council {
   formDefaultersThisWeek: [Fellowship!]!
     @cypher(
       statement: """
-      WITH date() as today
-      WITH  today.weekDay as theDay, today
-      WITH date(today) - duration({days: (theDay - 2)}) AS startDate
-      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates
+      MATCH (this)
+      WITH date() as today, this
+      WITH  today.weekDay as theDay, today, this
+      WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
+      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates, this
 
       MATCH (date:TimeGraph)
       USING INDEX date:TimeGraph(date)
       WHERE date.date IN dates
       MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
 
-       WITH DISTINCT record
+       WITH DISTINCT this, record
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships:Active:Fellowship)
        MATCH (fellowships)-[:MEETS_ON]->(day:ServiceDay)
 
-       WITH collect(DISTINCT fellowships) as services
+       WITH collect(DISTINCT fellowships) as services, this
        MATCH (defaulters:Active:Fellowship)<-[:HAS]-(bacenta:Bacenta)<-[:HAS]-(constituency:Constituency)<-[:HAS]-(this)
        WHERE NOT defaulters IN services
 
-       WITH defaulters
+       WITH defaulters, this
        MATCH (defaulters)-[:MEETS_ON]->(day:ServiceDay)
         WHERE day.dayNumber < date().dayOfWeek OR (day.dayNumber = date().dayOfWeek AND  time() > time('20:30'))
        RETURN DISTINCT defaulters
@@ -611,25 +637,26 @@ extend type Council {
   formDefaultersThisWeekCount: Int
     @cypher(
       statement: """
-      WITH date() as today
-      WITH  today.weekDay as theDay, today
-      WITH date(today) - duration({days: (theDay - 2)}) AS startDate
-      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates
+      MATCH (this)
+      WITH date() as today, this
+      WITH  today.weekDay as theDay, today, this
+      WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
+      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates, this
 
       MATCH (date:TimeGraph)
       USING INDEX date:TimeGraph(date)
       WHERE date.date IN dates
       MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
 
-       WITH DISTINCT record
+       WITH DISTINCT record, this
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships:Active:Fellowship)
        MATCH (fellowships)-[:MEETS_ON]->(day:ServiceDay)
 
-       WITH collect(DISTINCT fellowships) as services
+       WITH collect(DISTINCT fellowships) as services, this
        MATCH (defaulters:Active:Fellowship)<-[:HAS]-(bacenta:Bacenta)<-[:HAS]-(constituency:Constituency)<-[:HAS]-(this)
        WHERE NOT defaulters IN services
 
-       WITH defaulters
+       WITH defaulters, this
        MATCH (defaulters)-[:MEETS_ON]->(day:ServiceDay)
         WHERE day.dayNumber < date().dayOfWeek OR (day.dayNumber = date().dayOfWeek AND  time() > time('20:30'))
        RETURN COUNT(DISTINCT defaulters)
@@ -638,23 +665,24 @@ extend type Council {
   bankingDefaultersThisWeek: [Fellowship!]!
     @cypher(
       statement: """
-      WITH date() as today
-      WITH  today.weekDay as theDay, today
-      WITH date(today) - duration({days: (theDay - 2)}) AS startDate
-      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates
+      MATCH (this)
+      WITH date() as today, this
+      WITH  today.weekDay as theDay, today, this
+      WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
+      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates, this
 
       MATCH (date:TimeGraph)
       USING INDEX date:TimeGraph(date)
       WHERE date.date IN dates
       MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
 
-       WITH DISTINCT record
+       WITH DISTINCT record, this
         WHERE record.noServiceReason IS NULL
           AND record.bankingSlip IS NULL
           AND (record.transactionStatus IS NULL OR record.transactionStatus <> 'success')
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships) WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
 
-       WITH DISTINCT fellowships
+       WITH DISTINCT fellowships, this
        MATCH (fellowships)<-[:HAS]-(bacenta:Bacenta)<-[:HAS]-(constituency:Constituency)<-[:HAS]-(this)
 
       RETURN DISTINCT fellowships
@@ -663,23 +691,24 @@ extend type Council {
   bankingDefaultersThisWeekCount: Int
     @cypher(
       statement: """
-      WITH date() as today
-      WITH  today.weekDay as theDay, today
-      WITH date(today) - duration({days: (theDay - 2)}) AS startDate
-      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates
+      MATCH (this)
+      WITH date() as today, this
+      WITH  today.weekDay as theDay, today, this
+      WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
+      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates, this
 
       MATCH (date:TimeGraph)
       USING INDEX date:TimeGraph(date)
       WHERE date.date IN dates
       MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
 
-       WITH DISTINCT record
+       WITH DISTINCT record, this
         WHERE record.noServiceReason IS NULL
           AND record.bankingSlip IS NULL
           AND (record.transactionStatus IS NULL OR record.transactionStatus <> 'success')
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships) WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
 
-       WITH DISTINCT fellowships
+       WITH DISTINCT fellowships, this
        MATCH (fellowships)<-[:HAS]-(bacenta:Bacenta)<-[:HAS]-(constituency:Constituency)<-[:HAS]-(this)
 
       RETURN COUNT(DISTINCT fellowships)
@@ -688,22 +717,23 @@ extend type Council {
   bankedThisWeek: [Fellowship!]!
     @cypher(
       statement: """
-      WITH date() as today
-      WITH  today.weekDay as theDay, today
-      WITH date(today) - duration({days: (theDay - 2)}) AS startDate
-      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates
+      MATCH (this)
+      WITH date() as today, this
+      WITH  today.weekDay as theDay, today, this
+      WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
+      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates, this
 
       MATCH (date:TimeGraph)
       USING INDEX date:TimeGraph(date)
       WHERE date.date IN dates
       MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
 
-       WITH DISTINCT record
+       WITH DISTINCT record, this
         WHERE record.noServiceReason IS NULL
          AND (record.bankingSlip IS NOT NULL OR record.transactionStatus ='success')
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships) WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
 
-       WITH DISTINCT fellowships
+       WITH DISTINCT fellowships, this
        MATCH (fellowships)<-[:HAS]-(bacenta:Bacenta)<-[:HAS]-(constituency:Constituency)<-[:HAS]-(this)
 
       RETURN DISTINCT fellowships
@@ -712,22 +742,23 @@ extend type Council {
   bankedThisWeekCount: Int
     @cypher(
       statement: """
-      WITH date() as today
-      WITH  today.weekDay as theDay, today
-      WITH date(today) - duration({days: (theDay - 2)}) AS startDate
-      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates
+      MATCH (this)
+      WITH date() as today, this
+      WITH  today.weekDay as theDay, today, this
+      WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
+      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates, this
 
       MATCH (date:TimeGraph)
       USING INDEX date:TimeGraph(date)
       WHERE date.date IN dates
       MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
 
-       WITH DISTINCT record
+       WITH DISTINCT record, this
         WHERE record.noServiceReason IS NULL
          AND (record.bankingSlip IS NOT NULL OR record.transactionStatus ='success')
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships) WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
 
-       WITH DISTINCT fellowships
+       WITH DISTINCT fellowships, this
        MATCH (fellowships)<-[:HAS]-(bacenta:Bacenta)<-[:HAS]-(constituency:Constituency)<-[:HAS]-(this)
 
       RETURN COUNT(DISTINCT fellowships)
@@ -741,20 +772,22 @@ extend type Constituency {
   servicesThisWeek: [Fellowship!]!
     @cypher(
       statement: """
-      WITH date() as today
-      WITH  today.weekDay as theDay, today
-      WITH date(today) - duration({days: (theDay - 2)}) AS startDate
-      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates
+      MATCH (this)
+      WITH date() as today, this
+      WITH  today.weekDay as theDay, today, this
+      WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
+      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates, this
 
       MATCH (date:TimeGraph)
       USING INDEX date:TimeGraph(date)
       WHERE date.date IN dates
       MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
 
-       WITH DISTINCT record WHERE record.attendance IS NOT NULL
+       WITH DISTINCT record, this
+        WHERE record.attendance IS NOT NULL
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships) WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
 
-       WITH DISTINCT fellowships
+       WITH DISTINCT fellowships, this
        MATCH (fellowships)<-[:HAS]-(bacenta:Bacenta)<-[:HAS]-(this)
 
       RETURN DISTINCT fellowships
@@ -763,20 +796,22 @@ extend type Constituency {
   servicesThisWeekCount: Int
     @cypher(
       statement: """
-      WITH date() as today
-      WITH  today.weekDay as theDay, today
-      WITH date(today) - duration({days: (theDay - 2)}) AS startDate
-      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates
+      MATCH (this)
+      WITH date() as today, this
+      WITH  today.weekDay as theDay, today, this
+      WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
+      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates, this
 
       MATCH (date:TimeGraph)
       USING INDEX date:TimeGraph(date)
       WHERE date.date IN dates
       MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
 
-       WITH DISTINCT record WHERE record.attendance IS NOT NULL
+       WITH DISTINCT record, this
+        WHERE record.attendance IS NOT NULL
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships) WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
 
-       WITH DISTINCT fellowships
+       WITH DISTINCT fellowships, this
        MATCH (fellowships)<-[:HAS]-(bacenta:Bacenta)<-[:HAS]-(this)
 
       RETURN COUNT(DISTINCT fellowships)
@@ -785,20 +820,22 @@ extend type Constituency {
   cancelledServicesThisWeek: [Fellowship!]!
     @cypher(
       statement: """
-      WITH date() as today
-      WITH  today.weekDay as theDay, today
-      WITH date(today) - duration({days: (theDay - 2)}) AS startDate
-      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates
+      MATCH (this)
+      WITH date() as today, this
+      WITH  today.weekDay as theDay, today, this
+      WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
+      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates, this
 
       MATCH (date:TimeGraph)
       USING INDEX date:TimeGraph(date)
       WHERE date.date IN dates
       MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
 
-       WITH DISTINCT record WHERE record.noServiceReason IS NOT NULL
+       WITH DISTINCT record, this
+        WHERE record.noServiceReason IS NOT NULL
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships) WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
 
-       WITH DISTINCT fellowships
+       WITH DISTINCT fellowships, this
        MATCH (fellowships)<-[:HAS]-(bacenta:Bacenta)<-[:HAS]-(this)
 
       RETURN DISTINCT fellowships
@@ -807,47 +844,50 @@ extend type Constituency {
   cancelledServicesThisWeekCount: Int
     @cypher(
       statement: """
-      WITH date() as today
-       WITH  today.weekDay as theDay, today
-       WITH date(today) - duration({days: (theDay - 2)}) AS startDate
-       WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates
-
-       MATCH (date:TimeGraph)
-       USING INDEX date:TimeGraph(date)
-       WHERE date.date IN dates
-       MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
-
-        WITH DISTINCT record WHERE record.noServiceReason IS NOT NULL
-        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships) WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
-
-        WITH DISTINCT fellowships
-        MATCH (fellowships)<-[:HAS]-(bacenta:Bacenta)<-[:HAS]-(this)
-
-       RETURN COUNT(DISTINCT fellowships)
-      """
-    )
-  formDefaultersThisWeek: [Fellowship!]!
-    @cypher(
-      statement: """
-      WITH date() as today
-      WITH  today.weekDay as theDay, today
-      WITH date(today) - duration({days: (theDay - 2)}) AS startDate
-      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates
+      MATCH (this)
+      WITH date() as today, this
+      WITH  today.weekDay as theDay, today, this
+      WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
+      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates, this
 
       MATCH (date:TimeGraph)
       USING INDEX date:TimeGraph(date)
       WHERE date.date IN dates
       MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
 
-       WITH DISTINCT record
+       WITH DISTINCT record, this
+        WHERE record.noServiceReason IS NOT NULL
+       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships) WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
+
+       WITH DISTINCT fellowships, this
+       MATCH (fellowships)<-[:HAS]-(bacenta:Bacenta)<-[:HAS]-(this)
+
+      RETURN COUNT(DISTINCT fellowships)
+      """
+    )
+  formDefaultersThisWeek: [Fellowship!]!
+    @cypher(
+      statement: """
+      MATCH (this)
+      WITH date() as today, this
+      WITH  today.weekDay as theDay, today, this
+      WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
+      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates, this
+
+      MATCH (date:TimeGraph)
+      USING INDEX date:TimeGraph(date)
+      WHERE date.date IN dates
+      MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
+
+       WITH DISTINCT record, this
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships:Active:Fellowship)
        MATCH (fellowships)-[:MEETS_ON]->(day:ServiceDay)
 
-       WITH collect(DISTINCT fellowships) as services
+       WITH collect(DISTINCT fellowships) as services, this
        MATCH (defaulters:Active:Fellowship)<-[:HAS]-(:Bacenta)<-[:HAS]-(this)
        WHERE NOT defaulters IN services
 
-       WITH defaulters
+       WITH defaulters, this
        MATCH (defaulters)-[:MEETS_ON]->(day:ServiceDay)
         WHERE day.dayNumber < date().dayOfWeek OR (day.dayNumber = date().dayOfWeek AND  time() > time('20:30'))
        RETURN DISTINCT defaulters
@@ -856,25 +896,26 @@ extend type Constituency {
   formDefaultersThisWeekCount: Int
     @cypher(
       statement: """
-      WITH date() as today
-      WITH  today.weekDay as theDay, today
-      WITH date(today) - duration({days: (theDay - 2)}) AS startDate
-      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates
+      MATCH (this)
+      WITH date() as today, this
+      WITH  today.weekDay as theDay, today, this
+      WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
+      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates, this
 
       MATCH (date:TimeGraph)
       USING INDEX date:TimeGraph(date)
       WHERE date.date IN dates
       MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
 
-       WITH DISTINCT record
+       WITH DISTINCT record, this
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships:Active:Fellowship)
        MATCH (fellowships)-[:MEETS_ON]->(day:ServiceDay)
 
-       WITH collect(DISTINCT fellowships) as services
+       WITH collect(DISTINCT fellowships) as services, this
        MATCH (defaulters:Active:Fellowship)<-[:HAS]-(:Bacenta)<-[:HAS]-(this)
        WHERE NOT defaulters IN services
 
-       WITH defaulters
+       WITH defaulters, this
        MATCH (defaulters)-[:MEETS_ON]->(day:ServiceDay)
         WHERE day.dayNumber < date().dayOfWeek OR (day.dayNumber = date().dayOfWeek AND  time() > time('20:30'))
        RETURN COUNT(DISTINCT defaulters)
@@ -883,23 +924,24 @@ extend type Constituency {
   bankingDefaultersThisWeek: [Fellowship!]!
     @cypher(
       statement: """
-      WITH date() as today
-      WITH  today.weekDay as theDay, today
-      WITH date(today) - duration({days: (theDay - 2)}) AS startDate
-      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates
+      MATCH (this)
+      WITH date() as today, this
+      WITH  today.weekDay as theDay, today, this
+      WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
+      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates, this
 
       MATCH (date:TimeGraph)
       USING INDEX date:TimeGraph(date)
       WHERE date.date IN dates
       MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
 
-       WITH DISTINCT record
+       WITH DISTINCT record, this
         WHERE record.noServiceReason IS NULL
           AND record.bankingSlip IS NULL
           AND (record.transactionStatus IS NULL OR record.transactionStatus <> 'success')
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships) WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
 
-       WITH DISTINCT fellowships
+       WITH DISTINCT fellowships, this
        MATCH (fellowships)<-[:HAS]-(:Bacenta)<-[:HAS]-(this)
 
       RETURN DISTINCT fellowships
@@ -908,23 +950,24 @@ extend type Constituency {
   bankingDefaultersThisWeekCount: Int
     @cypher(
       statement: """
-      WITH date() as today
-      WITH  today.weekDay as theDay, today
-      WITH date(today) - duration({days: (theDay - 2)}) AS startDate
-      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates
+      MATCH (this)
+      WITH date() as today, this
+      WITH  today.weekDay as theDay, today, this
+      WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
+      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates, this
 
       MATCH (date:TimeGraph)
       USING INDEX date:TimeGraph(date)
       WHERE date.date IN dates
       MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
 
-       WITH DISTINCT record
+       WITH DISTINCT record, this
         WHERE record.noServiceReason IS NULL
           AND record.bankingSlip IS NULL
           AND (record.transactionStatus IS NULL OR record.transactionStatus <> 'success')
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships) WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
 
-       WITH DISTINCT fellowships
+       WITH DISTINCT fellowships, this
        MATCH (fellowships)<-[:HAS]-(:Bacenta)<-[:HAS]-(this)
 
       RETURN COUNT(DISTINCT fellowships)
@@ -933,22 +976,23 @@ extend type Constituency {
   bankedThisWeek: [Fellowship!]!
     @cypher(
       statement: """
-      WITH date() as today
-      WITH  today.weekDay as theDay, today
-      WITH date(today) - duration({days: (theDay - 2)}) AS startDate
-      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates
+      MATCH (this)
+      WITH date() as today, this
+      WITH  today.weekDay as theDay, today, this
+      WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
+      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates, this
 
       MATCH (date:TimeGraph)
       USING INDEX date:TimeGraph(date)
       WHERE date.date IN dates
       MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
 
-       WITH DISTINCT record
+       WITH DISTINCT record, this
         WHERE record.noServiceReason IS NULL
          AND (record.bankingSlip IS NOT NULL OR record.transactionStatus ='success')
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships) WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
 
-       WITH DISTINCT fellowships
+       WITH DISTINCT fellowships, this
        MATCH (fellowships)<-[:HAS]-(:Bacenta)<-[:HAS]-(this)
 
       RETURN DISTINCT fellowships
@@ -957,22 +1001,23 @@ extend type Constituency {
   bankedThisWeekCount: Int
     @cypher(
       statement: """
-      WITH date() as today
-      WITH  today.weekDay as theDay, today
-      WITH date(today) - duration({days: (theDay - 2)}) AS startDate
-      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates
+      MATCH (this)
+      WITH date() as today, this
+      WITH  today.weekDay as theDay, today, this
+      WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
+      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates, this
 
       MATCH (date:TimeGraph)
       USING INDEX date:TimeGraph(date)
       WHERE date.date IN dates
       MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
 
-       WITH DISTINCT record
+       WITH DISTINCT record, this
         WHERE record.noServiceReason IS NULL
          AND (record.bankingSlip IS NOT NULL OR record.transactionStatus ='success')
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships) WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
 
-       WITH DISTINCT fellowships
+       WITH DISTINCT fellowships, this
        MATCH (fellowships)<-[:HAS]-(:Bacenta)<-[:HAS]-(this)
 
       RETURN COUNT(DISTINCT fellowships)

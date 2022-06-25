@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 
 import { ChurchContext } from '../../../contexts/ChurchContext'
 import { useQuery } from '@apollo/client'
@@ -10,15 +10,22 @@ import StatDisplay from './CompStatDisplay'
 import BaseComponent from 'components/base-component/BaseComponent'
 import { Col, Container, Row } from 'react-bootstrap'
 import PlaceholderCustom from 'components/Placeholder'
+import GraphDropdown from './GraphDropdown'
 
 const StreamReport = () => {
   const { streamId } = useContext(ChurchContext)
-
+  const [bussing, setBussing] = useState(true)
   const { data, loading, error } = useQuery(STREAM_GRAPHS, {
     variables: { streamId: streamId },
+    onCompleted: (data) => {
+      if (!setChurchData) return
+      setChurchData(getServiceGraphData(data?.streams[0], 'bussing'))
+    },
   })
 
-  const churchData = getServiceGraphData(data?.streams[0])
+  const [churchData, setChurchData] = useState(
+    getServiceGraphData(data?.streams[0], 'bussing')
+  )
 
   return (
     <BaseComponent loading={loading} error={error} data={data} placeholder>
@@ -32,12 +39,20 @@ const StreamReport = () => {
           </span>
         </PlaceholderCustom>
 
-        <Row className="mt-3">
+        <Row className="mt-3 row-cols-2">
           <Col>
             <MembershipCard
               link="/stream/members"
               title="Membership"
               count={data?.streams[0]?.memberCount}
+            />
+          </Col>
+
+          <Col>
+            <GraphDropdown
+              setBussing={setBussing}
+              setChurchData={setChurchData}
+              data={data?.streams[0]}
             />
           </Col>
         </Row>
@@ -49,19 +64,22 @@ const StreamReport = () => {
             />
           </Col>
 
-          <Col>
-            <StatDisplay
-              title="Avg Weekly Income"
-              statistic={getMonthlyStatAverage(churchData, 'income')}
-            />
-          </Col>
+          {(!bussing || loading) && (
+            <Col>
+              <StatDisplay
+                title="Avg Weekly Income"
+                statistic={getMonthlyStatAverage(churchData, 'income')}
+              />
+            </Col>
+          )}
         </Row>
         <ChurchGraph
           loading={loading}
           stat1="attendance"
-          stat2="income"
+          stat2={!bussing ? 'income' : null}
           churchData={churchData}
           church="stream"
+          bussing={bussing}
         />
       </Container>
     </BaseComponent>

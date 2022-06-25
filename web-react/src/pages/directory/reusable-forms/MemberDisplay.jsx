@@ -59,7 +59,7 @@ const MemberDisplay = ({ memberId }) => {
       <div className="d-flex justify-content-center pb-4">
         <PlaceholderCustom
           as="div"
-          className="profile-img mx-auto"
+          className="profile-img profile-img-height mx-auto"
           loading={!member || loading}
           xs={12}
         >
