@@ -49,19 +49,13 @@ import {
 import ServantMembers from './grids/ServantMembers'
 import UpdateBacentaBussing from './update/UpdateBusPaymentDetails'
 import AllStreamConstituencies from './display/AllStreamConstituencies'
-import FellowshipAvgWeekdayAttendance from './quick-facts/attendance/FellowshipAvgWeekdayAttendance'
-import BacentaAvgWeekdayAttendance from './quick-facts/attendance/BacentaAvgWeekdayAttendance'
-import ConstituencyAvgWeekdayAttendance from './quick-facts/attendance/ConstituencyAvgWeekdayAttendance'
-import StreamAvgWeekdayAttendance from './quick-facts/attendance/StreamAvgWeekdayAttendance'
-import CouncilAvgWeekdayAttendance from './quick-facts/attendance/CouncilAvgWeekdayAttendance'
-import GatheringServiceAvgWeekdayAttendance from './quick-facts/attendance/GatheringServiceAvgWeekdayAttendance'
+import FellowshipAvgWeekdayAttendance from './quick-facts/this-month/FellowshipAvgWeekdayQuickFacts'
+import BacentaAvgWeekdayAttendance from './quick-facts/this-month/BacentaAvgWeekdayQuickFacts'
+import ConstituencyAvgWeekdayAttendance from './quick-facts/this-month/ConstituencyAvgWeekdayQuickFacts'
+import StreamAvgWeekdayAttendance from './quick-facts/this-month/StreamAvgWeekdayQuickFacts'
+import CouncilAvgWeekdayAttendance from './quick-facts/this-month/CouncilAvgWeekdayQuickFacts'
+import GatheringServiceAvgWeekdayAttendance from './quick-facts/this-month/GatheringServiceAvgWeekdayQuickFacts'
 import QuickFactsChurchList from './quick-facts/QuickFactsChurchList'
-import FellowshipAvgWeekdayIncome from './quick-facts/income/FellowshipAvgWeekdayIncome'
-import BacentaAvgWeekdayIncome from './quick-facts/income/BacentaAvgWeekdayIncome'
-import ConstituencyAvgWeekdayIncome from './quick-facts/income/ConstituencyAvgWeekdayIncome'
-import StreamAvgWeekdayIncome from './quick-facts/income/StreamAvgWeekdayIncome'
-import CouncilAvgWeekdayIncome from './quick-facts/income/CouncilAvgWeekdayIncome'
-import GatheringServiceAvgWeekdayIncome from './quick-facts/income/GatheringServiceAvgWeekdayIncome'
 
 export const memberDirectory = [
   {
@@ -78,64 +72,33 @@ export const quickFacts = [
     roles: ['all'],
   },
   {
-    path: '/quick-facts/attendance/fellowship',
+    path: '/quick-facts/this-month/fellowship',
     element: FellowshipAvgWeekdayAttendance,
     roles: permitMe('Fellowship'),
   },
   {
-    path: '/quick-facts/attendance/bacenta',
+    path: '/quick-facts/this-month/bacenta',
     element: BacentaAvgWeekdayAttendance,
     roles: permitMe('Bacenta'),
   },
   {
-    path: '/quick-facts/attendance/constituency',
+    path: '/quick-facts/this-month/constituency',
     element: ConstituencyAvgWeekdayAttendance,
     roles: permitMe('Constituency'),
   },
   {
-    path: '/quick-facts/attendance/stream',
+    path: '/quick-facts/this-month/stream',
     element: StreamAvgWeekdayAttendance,
     roles: permitMe('Stream'),
   },
   {
-    path: '/quick-facts/attendance/council',
+    path: '/quick-facts/this-month/council',
     element: CouncilAvgWeekdayAttendance,
     roles: permitMe('Council'),
   },
   {
-    path: '/quick-facts/attendance/gathering-service',
+    path: '/quick-facts/this-month/gatheringservice',
     element: GatheringServiceAvgWeekdayAttendance,
-    roles: permitMe('GatheringService'),
-  },
-  //quick facts income routes
-  {
-    path: '/quick-facts/income/fellowship',
-    element: FellowshipAvgWeekdayIncome,
-    roles: permitMe('Fellowship'),
-  },
-  {
-    path: '/quick-facts/income/bacenta',
-    element: BacentaAvgWeekdayIncome,
-    roles: permitMe('Bacenta'),
-  },
-  {
-    path: '/quick-facts/income/constituency',
-    element: ConstituencyAvgWeekdayIncome,
-    roles: permitMe('Constituency'),
-  },
-  {
-    path: '/quick-facts/income/stream',
-    element: StreamAvgWeekdayIncome,
-    roles: permitMe('Stream'),
-  },
-  {
-    path: '/quick-facts/income/council',
-    element: CouncilAvgWeekdayIncome,
-    roles: permitMe('Council'),
-  },
-  {
-    path: '/quick-facts/income/gathering-service',
-    element: GatheringServiceAvgWeekdayIncome,
     roles: permitMe('GatheringService'),
   },
 ]
