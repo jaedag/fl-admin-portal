@@ -3,7 +3,7 @@ import { Badge } from 'react-bootstrap'
 import '../QuickFacts.css'
 
 const BussingQuickFactsCard = (props) => {
-  const details = props?.details[0]
+  const details = props?.bussingDetails[0]
 
   const getPercentageChange = (avgBussing, avgHigherLevelBussing) => {
     var diff = avgBussing - avgHigherLevelBussing
@@ -12,7 +12,7 @@ const BussingQuickFactsCard = (props) => {
   }
 
   const percentageRiseOrFall = getPercentageChange(
-    details?.churchAvgBussingThisMonth,
+    details?.churchBussingThisMonth,
     details?.avgHigherLevelBussingThisMonth
   )
 
@@ -29,20 +29,15 @@ const BussingQuickFactsCard = (props) => {
   return (
     <div className="w-100 text-center quick-fact-card">
       <div className="church-text">{details?.churchType}</div>
-      <div className="stat-text ">
-        {' '}
-        Average Weekday <br />
-        {details?.cardType}{' '}
-      </div>
+      <div className="stat-text "> Average {details?.cardType} </div>
       <div className="leader-text">{details?.leadersName}</div>
       <div className="branch-text">
         {details?.churchName + ' ' + details?.churchType}
       </div>
-      <div className="income-number">
-        <span className="currency">GHS </span>
-        {details?.churchAvgBussingThisMonth === 'null'
+      <div className="bussing-number">
+        {details?.churchBussingThisMonth === 'null'
           ? '--'
-          : details?.churchAvgBussingThisMonth}
+          : details?.churchBussingThisMonth}
       </div>
       <div>
         <Badge
@@ -54,8 +49,7 @@ const BussingQuickFactsCard = (props) => {
         </Badge>
       </div>
       <hr className="separator" />
-      <div className="income-number">
-        <span className="currency">GHS </span>
+      <div className="bussing-number">
         {details?.avgHigherLevelBussingThisMonth === 'null'
           ? '--'
           : details?.avgHigherLevelBussingThisMonth}

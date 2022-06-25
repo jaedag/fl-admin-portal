@@ -49,9 +49,10 @@
 }
 
 .facts-number {
-  font-size: 80px;
-  line-height: 80px;
-  font-weight: 900;
+  font-size: 50px;
+  line-height: 70px;
+  font-weight: 700;
+  color: #4bacf6;
 }
 
 .quick-fact-page {
@@ -114,10 +115,17 @@
   font-size: 40px;
   line-height: 60px;
   font-weight: 700;
-  color: #EFAA66;
+  color: #efaa66;
+}
+
+.bussing-number {
+  font-size: 50px;
+  line-height: 80px;
+  font-weight: 700;
+  color: #68e0d7;
 }
 
 .currency {
   font-size: 12px;
-  color: #EFAA66;
+  color: #efaa66;
 }
