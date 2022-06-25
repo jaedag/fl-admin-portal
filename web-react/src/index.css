@@ -104,6 +104,9 @@
   font-weight: bold;
 }
 
+.profile-img-height {
+  height: 150px;
+}
 .profile-img {
   width: 150px;
   border-radius: 100px;
