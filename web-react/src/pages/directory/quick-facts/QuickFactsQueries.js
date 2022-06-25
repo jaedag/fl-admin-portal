@@ -240,3 +240,104 @@ export const GATHERING_SERVICE_AVG_WEEKDAY_INCOME_THIS_MONTH = gql`
     }
   }
 `
+
+//average bussing this month
+export const BACENTA_AVG_BUSSING_THIS_MONTH = gql`
+  query bacentaAvgBussingThisMonth($bacentaId: ID) {
+    bacentas(where: { id: $bacentaId }) {
+      id
+      name
+      avgBussingAttendanceThisMonth
+      leader {
+        id
+        firstName
+        lastName
+      }
+      council {
+        id
+        name
+        avgBacentaBussingAttendanceThisMonth
+      }
+    }
+  }
+`
+
+export const CONSTITUENCY_AVG_BUSSING_THIS_MONTH = gql`
+  query constituencyAvgBussingThisMonth($constituencyId: ID) {
+    constituencies(where: { id: $constituencyId }) {
+      id
+      name
+      avgBussingAttendanceThisMonth
+      leader {
+        id
+        firstName
+        lastName
+      }
+      council {
+        id
+        name
+        avgConstituencyBussingAttendanceThisMonth
+      }
+    }
+  }
+`
+
+export const COUNCIL_AVG_BUSSING_THIS_MONTH = gql`
+  query councilAvgBussingThisMonth($councilId: ID) {
+    councils(where: { id: $councilId }) {
+      id
+      name
+      avgBussingAttendanceThisMonth
+      leader {
+        id
+        firstName
+        lastName
+      }
+      stream {
+        id
+        name
+        avgCouncilBussingAttendanceThisMonth
+      }
+    }
+  }
+`
+
+export const STREAM_AVG_BUSSING_THIS_MONTH = gql`
+  query streamAvgBussingThisMonth($streamId: ID) {
+    streams(where: { id: $streamId }) {
+      id
+      name
+      avgBussingAttendanceThisMonth
+      leader {
+        id
+        firstName
+        lastName
+      }
+      gatheringService {
+        id
+        name
+        avgStreamBussingAttendanceThisMonth
+      }
+    }
+  }
+`
+
+export const GATHERING_SERVICE_AVG_BUSSING_THIS_MONTH = gql`
+  query gatheringServiceAvgBussingThisMonth($gatheringServiceId: ID) {
+    gatheringServices(where: { id: $gatheringServiceId }) {
+      id
+      name
+      avgBussingAttendanceThisMonth
+      leader {
+        id
+        firstName
+        lastName
+      }
+      denomination {
+        id
+        name
+        avgGatheringServiceBussingAttendanceThisMonth
+      }
+    }
+  }
+`

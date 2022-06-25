@@ -27,7 +27,7 @@ const Login = () => {
   return (
     <>
       <TabletDesktopView>
-        <div className="container text-center mt-5 desktop-card log">
+        <div className="container text-center mt-5 desktop-card login-page">
           <div className="row align-self-center">
             <Slider {...settings} className="mb-5 mt-5">
               <div>
@@ -68,7 +68,7 @@ const Login = () => {
 
       {/* <!--Mobile--> */}
       <MobileView className="bg-wrapper">
-        <Container className="text-center mt-5 bg-content log">
+        <Container className="text-center mt-5 bg-content login-page">
           <Slider {...settings} className="mb-5">
             <div>
               <img

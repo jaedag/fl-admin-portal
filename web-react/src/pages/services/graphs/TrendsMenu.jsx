@@ -37,7 +37,7 @@ const TrendsMenu = () => {
             color="quick-facts"
             onClick={() =>
               navigate(
-                `/quick-facts/attendance/${church.__typename.toLowerCase()}`
+                `/quick-facts/this-month/${church.__typename.toLowerCase()}`
               )
             }
             caption={'Quick facts about your church'}

@@ -7,12 +7,14 @@ import BaseComponent from 'components/base-component/BaseComponent'
 import {
   COUNCIL_AVG_WEEKDAY_ATTENDANCE_THIS_MONTH,
   COUNCIL_AVG_WEEKDAY_INCOME_THIS_MONTH,
+  COUNCIL_AVG_BUSSING_THIS_MONTH,
 } from '../QuickFactsQueries'
 import QuickFactsHeader from '../components/QuickFactsHeader'
 import IncomeQuickFactsCard from '../components/IncomeQuickFactsCard'
 import Slider from 'react-slick'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
+import BussingQuickFactsCard from '../components/BussingQuickFactsCard'
 
 const CouncilAvgWeekdayAttendance = () => {
   const { councilId } = useContext(ChurchContext)
@@ -29,8 +31,13 @@ const CouncilAvgWeekdayAttendance = () => {
     variables: { councilId: councilId },
   })
 
+  const { data: bussingData } = useQuery(COUNCIL_AVG_BUSSING_THIS_MONTH, {
+    variables: { councilId: councilId },
+  })
+
   const councilAttendance = attendanceData?.councils[0]
   const councilIncome = incomeData?.councils[0]
+  const councilBussing = bussingData?.councils[0]
 
   const attendanceDetails = [
     {
@@ -56,9 +63,22 @@ const CouncilAvgWeekdayAttendance = () => {
     },
   ]
 
+  const bussingDetails = [
+    {
+      churchType: 'Council',
+      cardType: 'Bussing',
+      leadersName: `${councilBussing?.leader?.firstName} ${councilBussing?.leader?.lastName}`,
+      churchName: `${councilBussing?.name}`,
+      churchBussingThisMonth: `${councilBussing?.avgBussingAttendanceThisMonth}`,
+      avgHigherLevelBussingThisMonth: `${councilBussing?.stream?.avgCouncilBussingAttendanceThisMonth}`,
+      higherLevelName: `${councilBussing?.stream?.name} ${councilBussing?.stream?.__typename}`,
+    },
+  ]
+
   var settings = {
     dots: true,
     infinite: true,
+    speed: 900,
     slidesToShow: 1,
     slidesToScroll: 1,
     arrows: true,
@@ -81,6 +101,9 @@ const CouncilAvgWeekdayAttendance = () => {
             </div>
             <div>
               <IncomeQuickFactsCard incomeDetails={incomeDetails} />
+            </div>
+            <div>
+              <BussingQuickFactsCard bussingDetails={bussingDetails} />
             </div>
           </Slider>
         </div>
