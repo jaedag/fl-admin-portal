@@ -1,3 +1,30 @@
+### 4.1.0 (2022-06-25)
+
+##### New Features
+
+*  admin-162 bussing graphs are now availabe for all church levels ([e85519c9](https://github.com/firstlovecenter/fl-admin-portal/commit/e85519c9b18f64745bf6f34a6427f499df6b3f2b))
+
+##### Bug Fixes
+
+*  admin-151 fixed blank screen after filling no service ([65f859b2](https://github.com/firstlovecenter/fl-admin-portal/commit/65f859b2bee1616e08dd648651fc1db3c004f7f8))
+*  cleaned up time on service details form ([d1fc9bb1](https://github.com/firstlovecenter/fl-admin-portal/commit/d1fc9bb1e68726650b3a90d17e52049cd7bab177))
+*  popup disappears after confirming service on fellowship screen ([9818b982](https://github.com/firstlovecenter/fl-admin-portal/commit/9818b982b5669cadf1e745abf060b3eb61c06cb3))
+*  merge issues ([#182](https://github.com/firstlovecenter/fl-admin-portal/pull/182)) ([0acc550b](https://github.com/firstlovecenter/fl-admin-portal/commit/0acc550be7bee03a34cb03b1e7fb82e3ab88396a))
+*  resolved duplicate relationships for member ([6cc977a2](https://github.com/firstlovecenter/fl-admin-portal/commit/6cc977a2565c3b4141975be15f0ec2d0767a50bf))
+*  admin-156 resolved the duplicate treasurer relationships ([0e5e6173](https://github.com/firstlovecenter/fl-admin-portal/commit/0e5e617388cb2f4d15d630c2b2352468710ce4a8))
+*  fixed service history not showing ([54ec21e1](https://github.com/firstlovecenter/fl-admin-portal/commit/54ec21e1f0c1edecaf4e8bd98505abf4a33a7565))
+*  admin-178 real fix for banking slip bug ([39504b45](https://github.com/firstlovecenter/fl-admin-portal/commit/39504b4536796e6647b12b5afc56122abd411ce4))
+*  admin-177 fixed banking slip  bug ([88805d38](https://github.com/firstlovecenter/fl-admin-portal/commit/88805d3825a8afce27da454fc1bd14e52353aeb5))
+
+##### Performance Improvements
+
+*  performance improvements to the log in flow ([2f161a81](https://github.com/firstlovecenter/fl-admin-portal/commit/2f161a815e5e030fe7e37e88b485719295805403))
+*  performance improvements to the codebase ([5567b8f5](https://github.com/firstlovecenter/fl-admin-portal/commit/5567b8f5c87604b221d61bc1b5a8ff0ae042ea87))
+
+##### Refactors
+
+*  change trends to graphs in all file and folders ([e3604efe](https://github.com/firstlovecenter/fl-admin-portal/commit/e3604efeffb44e1e02c92b582fac5cfefa6af08a))
+
 #### 4.0.2 (2022-06-23)
 
 ##### Chores
