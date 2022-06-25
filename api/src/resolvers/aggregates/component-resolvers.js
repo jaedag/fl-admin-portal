@@ -41,7 +41,7 @@ const getComponentServiceAggregates = async (obj, args, context, church) => {
   return serviceAggregates
 }
 
-exports.bussingResolvers = {
+exports.componentResolvers = {
   Bacenta: {
     componentServiceAggregate: async (obj, args, context) =>
       getComponentServiceAggregates(obj, args, context, 'Bacenta'),
