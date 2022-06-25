@@ -3,7 +3,7 @@ import { MemberContext } from 'contexts/MemberContext'
 import { authorisedLink, plural } from 'global-utils'
 import useClickCard from 'hooks/useClickCard'
 import { parseRoles, roles } from 'pages/dashboards/dashboard-utils'
-import useLogMeIn from 'pages/dashboards/LogMeIn'
+import useLogMeIn from 'pages/dashboards/useLogMeIn'
 import { churchLevels } from 'pages/directory/update/directory-utils'
 import { getServiceGraphData } from 'pages/services/graphs/graphs-utils'
 import { permitMe } from 'permission-utils'
@@ -16,6 +16,7 @@ const SetPermissions = ({ children }) => {
   const { isAuthenticated } = useAuth0()
   const { isAuthorised } = useAuth()
   const { servant } = useLogMeIn()
+
   let userRoles = []
   let assessmentChurchData, assessmentChurch
 

@@ -14,7 +14,7 @@ const UserDashboard = () => {
   const { currentUser, userJobs } = useContext(MemberContext)
   const { clickCard } = useContext(ChurchContext)
   const navigate = useNavigate()
-
+  console.log(userJobs)
   return (
     <>
       <Container>

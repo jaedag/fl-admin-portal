@@ -13,8 +13,8 @@ import CacheBuster from 'CacheBuster'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './index.css'
 import PastorsAdmin from 'App'
-import LoadingScreen from 'components/base-component/LoadingScreen'
 import Login from 'components/Login'
+import InitialLoading from 'components/base-component/InitialLoading'
 
 const AppWithApollo = () => {
   const [accessToken, setAccessToken] = useState()
@@ -28,7 +28,7 @@ const AppWithApollo = () => {
       })
 
       setAccessToken(token)
-      sessionStorage.setItem('token', token)
+      localStorage.setItem('token', token)
     } catch (err) {
       // eslint-disable-next-line
       console.error('Error Obtaining Token', err)
@@ -45,7 +45,7 @@ const AppWithApollo = () => {
 
   const authLink = setContext((_, { headers }) => {
     // get the authentication token from local storage if it exists
-    const token = sessionStorage.getItem('token') || accessToken
+    const token = localStorage.getItem('token') || accessToken
 
     // return the headers to the context so httpLink can read them
     return {
@@ -69,7 +69,7 @@ const AppWithApollo = () => {
   }, [theme])
 
   if (isLoading) {
-    return <LoadingScreen />
+    return <InitialLoading />
   }
 
   if (!user) {
