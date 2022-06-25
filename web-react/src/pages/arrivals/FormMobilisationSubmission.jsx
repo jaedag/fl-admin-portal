@@ -14,6 +14,7 @@ import BaseComponent from 'components/base-component/BaseComponent'
 import { UPLOAD_MOBILISATION_PICTURE } from './arrivalsMutations'
 import { beforeMobilisationDeadline } from './arrivals-utils'
 import { isToday } from 'jd-date-utils'
+import { throwErrorMsg } from 'global-utils'
 
 const FormMobilisationSubmission = () => {
   const navigate = useNavigate()
@@ -43,12 +44,14 @@ const FormMobilisationSubmission = () => {
         serviceDate: values.serviceDate,
         mobilisationPicture: values.mobilisationPicture,
       },
-    }).then((res) => {
-      clickCard(res.data.UploadMobilisationPicture)
-      onSubmitProps.resetForm()
-      onSubmitProps.setSubmitting(false)
-      navigate(`/bacenta/bussing-details`)
     })
+      .then((res) => {
+        clickCard(res.data.UploadMobilisationPicture)
+        onSubmitProps.resetForm()
+        onSubmitProps.setSubmitting(false)
+        navigate(`/bacenta/bussing-details`)
+      })
+      .catch((error) => throwErrorMsg('', error))
   }
 
   useEffect(() => {

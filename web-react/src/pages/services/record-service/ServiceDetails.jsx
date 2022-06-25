@@ -24,6 +24,7 @@ const ServiceDetails = ({ service, church, loading }) => {
 
   const table = [
     ['Date of Service', new Date(service.serviceDate.date).toDateString()],
+    ['Form Filled At', service.created_at],
     ['Attendance', service.attendance],
     ['Income', service.income],
     ...service.treasurers.map((treasurer, i) => [

@@ -2,33 +2,22 @@ import { useQuery } from '@apollo/client'
 import RoleView from 'auth/RoleView'
 import UserProfileIcon from 'components/UserProfileIcon/UserProfileIcon'
 import { MemberContext } from 'contexts/MemberContext'
-import { authorisedLink, capitalise, plural } from 'global-utils'
-import { getServiceGraphData } from 'pages/services/graphs/graphs-utils'
-import React, { useContext, useEffect } from 'react'
+import { capitalise } from 'global-utils'
+import React, { useContext } from 'react'
 import { Container, Nav, Navbar, Offcanvas, Row, Col } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
-import { menuItems, parseRoles, roles } from './dashboard-utils'
+import { menuItems } from './dashboard-utils'
 import logo from 'assets/flc-logo-red.png'
 import { useAuth0 } from '@auth0/auth0-react'
 import { GET_LOGGED_IN_USER } from 'components/UserProfileIcon/UserQueries'
 import SearchBox from 'components/SearchBox'
 import { Moon, Sun } from 'react-bootstrap-icons'
-import { permitMe } from 'permission-utils'
-import useLogMeIn from './LogMeIn'
 import './Navigation.css'
-import { churchLevels } from 'pages/directory/update/directory-utils'
 
 const Navigator = () => {
-  const {
-    currentUser,
-    theme,
-    setTheme,
-    userJobs,
-    setUserJobs,
-    setCurrentUser,
-  } = useContext(MemberContext)
+  const { currentUser, theme, setTheme, setCurrentUser } =
+    useContext(MemberContext)
   const { user } = useAuth0()
-  const { servant } = useLogMeIn()
 
   useQuery(GET_LOGGED_IN_USER, {
     variables: { email: user.email },
@@ -56,111 +45,6 @@ const Navigator = () => {
       sessionStorage.setItem('currentUser', JSON.stringify({ ...currentUser }))
     },
   })
-
-  let userRoles = []
-  let assessmentChurchData, assessmentChurch
-
-  useEffect(() => {
-    if (userJobs?.jobs.length === userRoles?.length) return
-
-    setUserJobs({
-      jobs: userRoles,
-      assessmentData: assessmentChurchData,
-      assessmentChurch: assessmentChurch,
-    })
-  }, [
-    servant,
-    currentUser,
-    assessmentChurch,
-    assessmentChurchData,
-    userRoles,
-    setUserJobs,
-    userJobs?.jobs.length,
-  ])
-
-  const setServantuserRoles = (servant, servantType, churchType, verb) => {
-    const permittedForLink = permitMe(churchType)
-
-    if (
-      servantType === 'isArrivalsConfirmerFor' ||
-      servantType === 'isArrivalsCounterFor'
-    ) {
-      const adminsOneChurch = servant[`${verb}`]?.length === 1 ?? false
-      userRoles.push({
-        name: adminsOneChurch
-          ? churchType + ' ' + parseRoles(servantType)
-          : plural(churchType) + ' ' + parseRoles(servantType),
-        church: servant[`${verb}`],
-        number: servant[`${verb}`]?.length,
-        link: authorisedLink(currentUser, permittedForLink, `/arrivals`),
-      })
-
-      assessmentChurch = servant[`${verb}`] && servant[`${verb}`][0]
-      return
-    }
-
-    if (servantType === 'isAdminFor' || servantType === 'isArrivalsAdminFor') {
-      const adminsOneChurch = servant[`${verb}`]?.length === 1 ?? false
-      userRoles.push({
-        name: adminsOneChurch
-          ? churchType + ' ' + parseRoles(servantType)
-          : plural(churchType) + ' ' + parseRoles(servantType),
-        church: servant[`${verb}`],
-        number: servant[`${verb}`]?.length,
-
-        link: authorisedLink(
-          currentUser,
-          permittedForLink,
-          adminsOneChurch
-            ? `/${churchType.toLowerCase()}/displaydetails`
-            : `/servants/church-list`
-        ),
-      })
-
-      assessmentChurch = servant[`${verb}`] && servant[`${verb}`][0]
-      return
-    }
-
-    const leadsOneChurch = servant[`${verb}`]?.length === 1 ?? false
-
-    userRoles.push({
-      name: leadsOneChurch ? churchType : plural(churchType),
-      church: servant[`${verb}`],
-      number: servant[`${verb}`]?.length,
-      link: authorisedLink(
-        currentUser,
-        permittedForLink,
-        leadsOneChurch
-          ? `/${churchType.toLowerCase()}/displaydetails`
-          : `/servants/church-list`
-      ),
-    })
-
-    assessmentChurch = servant[`${verb}`] && servant[`${verb}`][0]
-  }
-
-  const getServantuserRoles = (servant) => {
-    churchLevels.forEach((level) => {
-      roles[`${level}`].forEach((verb) => {
-        const shouldSearch = (verb, level) => {
-          return currentUser?.roles.includes(parseRoles(verb) + level)
-        }
-
-        if (shouldSearch(verb, level)) {
-          setServantuserRoles(servant, verb, level, verb + level)
-        }
-      })
-    })
-
-    //run the get graph function after all checking is done to avoid multiple unnecessary runs
-    if (assessmentChurch) {
-      return getServiceGraphData(assessmentChurch)
-    }
-
-    return
-  }
-
-  assessmentChurchData = servant && getServantuserRoles(servant)
 
   return (
     <Navbar

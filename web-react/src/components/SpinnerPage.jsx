@@ -6,7 +6,12 @@ function SpinnerPage() {
   return (
     <div className="row align-items-center center-page">
       <div className="col text-center">
-        <Spinner animation="grow" size="lg" className="spinner-large" />
+        <Spinner
+          animation="border"
+          size="lg"
+          className="spinner-large"
+          variant="white"
+        />
       </div>
     </div>
   )
