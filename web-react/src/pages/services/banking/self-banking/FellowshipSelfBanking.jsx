@@ -72,6 +72,7 @@ const FellowshipSelfBanking = () => {
               }
 
               if (service?.transactionStatus === 'success') {
+                togglePopup()
                 return
               }
               navigate('/services/fellowship/self-banking/pay')
