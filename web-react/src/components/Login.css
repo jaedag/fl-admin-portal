@@ -32,8 +32,8 @@
   width: 40%;
 }
 
-.slick-track {
-  /* height: 200px; */
+.log .slick-track {
+   height: 200px;
 }
 
 .slick-dots li button::before {
