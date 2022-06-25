@@ -1,4 +1,5 @@
 import { useAuth0 } from '@auth0/auth0-react'
+import InitialLoading from 'components/base-component/InitialLoading'
 import { MemberContext } from 'contexts/MemberContext'
 import { authorisedLink, plural } from 'global-utils'
 import useClickCard from 'hooks/useClickCard'
@@ -152,6 +153,9 @@ const SetPermissions = ({ children }) => {
 
   assessmentChurchData = servant && getServantuserRoles(servant)
 
+  if (!assessmentChurchData) {
+    return <InitialLoading />
+  }
   return <>{children}</>
 }
 
