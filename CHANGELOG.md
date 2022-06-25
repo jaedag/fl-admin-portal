@@ -1,3 +1,9 @@
+#### 4.1.1 (2022-06-25)
+
+##### Bug Fixes
+
+*  included component Resolvers with graphql.js ([5f6e5916](https://github.com/firstlovecenter/fl-admin-portal/commit/5f6e591607144a1b4cac146deed8c2d581d7b7ce))
+
 ### 4.1.0 (2022-06-25)
 
 ##### New Features
