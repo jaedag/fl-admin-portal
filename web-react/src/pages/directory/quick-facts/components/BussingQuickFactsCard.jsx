@@ -2,18 +2,18 @@ import React from 'react'
 import { Badge } from 'react-bootstrap'
 import '../QuickFacts.css'
 
-const IncomeQuickFactsCard = (props) => {
-  const details = props?.incomeDetails[0]
+const BussingQuickFactsCard = (props) => {
+  const details = props?.details[0]
 
-  const getPercentageChange = (avgIncome, avgHigherLevelIncome) => {
-    var diff = avgIncome - avgHigherLevelIncome
+  const getPercentageChange = (avgBussing, avgHigherLevelBussing) => {
+    var diff = avgBussing - avgHigherLevelBussing
     if (isNaN(diff)) return '--'
-    return Math.round((diff / avgIncome) * 100)
+    return Math.round((diff / avgBussing) * 100)
   }
 
   const percentageRiseOrFall = getPercentageChange(
-    details?.churchAvgIncomeThisMonth,
-    details?.avgHigherLevelIncomeThisMonth
+    details?.churchAvgBussingThisMonth,
+    details?.avgHigherLevelBussingThisMonth
   )
 
   const getBadgeBackground = () => {
@@ -40,9 +40,9 @@ const IncomeQuickFactsCard = (props) => {
       </div>
       <div className="income-number">
         <span className="currency">GHS </span>
-        {details?.churchAvgIncomeThisMonth === 'null'
+        {details?.churchAvgBussingThisMonth === 'null'
           ? '--'
-          : details?.churchAvgIncomeThisMonth}
+          : details?.churchAvgBussingThisMonth}
       </div>
       <div>
         <Badge
@@ -56,16 +56,16 @@ const IncomeQuickFactsCard = (props) => {
       <hr className="separator" />
       <div className="income-number">
         <span className="currency">GHS </span>
-        {details?.avgHigherLevelIncomeThisMonth === 'null'
+        {details?.avgHigherLevelBussingThisMonth === 'null'
           ? '--'
-          : details?.avgHigherLevelIncomeThisMonth}
+          : details?.avgHigherLevelBussingThisMonth}
       </div>
       <div className="average-text">
-        Average {details?.churchType} <br /> Income
+        Average {details?.churchType} <br /> Bussing
       </div>
       <div className="higher-church-text">{details?.higherLevelName}</div>
     </div>
   )
 }
 
-export default IncomeQuickFactsCard
+export default BussingQuickFactsCard

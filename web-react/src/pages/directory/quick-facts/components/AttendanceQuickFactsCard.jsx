@@ -3,7 +3,7 @@ import { Badge } from 'react-bootstrap'
 import '../QuickFacts.css'
 
 const AttendanceQuickFactsCard = (props) => {
-  const details = props?.details[0]
+  const details = props?.attendanceDetails[0]
 
   const getPercentageChange = (avgAttendance, avgHigherLevelAttendance) => {
     var diff = avgAttendance - avgHigherLevelAttendance
