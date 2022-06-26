@@ -90,6 +90,10 @@ export const SERVANT_CHURCH_LIST = gql`
         id
         name
       }
+      isAdminForStream {
+        id
+        name
+      }
       isAdminForGatheringService {
         id
         name
