@@ -1,7 +1,10 @@
+import { authorisedLink, plural } from 'global-utils'
+import { churchLevels } from 'pages/directory/update/directory-utils'
 import {
   permitArrivals,
   permitArrivalsHelpers,
   permitLeaderAdmin,
+  permitMe,
 } from 'permission-utils'
 
 export const menuItems = [
@@ -85,4 +88,88 @@ export const parseRoles = (role) => {
     default:
       return role
   }
+}
+
+const setServantRoles = (args) => {
+  const { servant, servantType, churchType, verb, userroles } = args
+  if (!servant) return
+
+  const permittedForLink = permitMe(churchType)
+
+  if (
+    servantType === 'isArrivalsConfirmerFor' ||
+    servantType === 'isArrivalsCounterFor'
+  ) {
+    const adminsOneChurch = servant[`${verb}`]?.length === 1 ?? false
+    userroles.push({
+      name: adminsOneChurch
+        ? churchType + ' ' + parseRoles(servantType)
+        : plural(churchType) + ' ' + parseRoles(servantType),
+      church: servant[`${verb}`],
+      number: servant[`${verb}`]?.length,
+      link: authorisedLink(servant, permittedForLink, `/arrivals`),
+    })
+
+    return
+  }
+
+  if (servantType === 'isAdminFor' || servantType === 'isArrivalsAdminFor') {
+    const adminsOneChurch = servant[`${verb}`]?.length === 1 ?? false
+    userroles.push({
+      name: adminsOneChurch
+        ? churchType + ' ' + parseRoles(servantType)
+        : plural(churchType) + ' ' + parseRoles(servantType),
+      church: servant[`${verb}`],
+      number: servant[`${verb}`]?.length,
+
+      link: authorisedLink(
+        servant,
+        permittedForLink,
+        adminsOneChurch
+          ? `/${churchType.toLowerCase()}/displaydetails`
+          : `/servants/church-list`
+      ),
+    })
+
+    return
+  }
+
+  const leadsOneChurch = servant[`${verb}`]?.length === 1 ?? false
+
+  userroles.push({
+    name: leadsOneChurch ? churchType : plural(churchType),
+    church: servant[`${verb}`],
+    number: servant[`${verb}`]?.length,
+    link: authorisedLink(
+      servant,
+      permittedForLink,
+      leadsOneChurch
+        ? `/${churchType.toLowerCase()}/displaydetails`
+        : `/servants/church-list`
+    ),
+  })
+}
+
+export const getServantRoles = (servant) => {
+  let userroles = []
+
+  churchLevels.forEach((level) => {
+    roles[`${level}`].forEach((verb) => {
+      const shouldSearch = (verb, level) =>
+        servant?.roles.includes(parseRoles(verb) + level)
+
+      if (shouldSearch(verb, level)) {
+        const args = {
+          servant,
+          servantType: verb,
+          churchType: level,
+          verb: verb + level,
+          userroles,
+        }
+        setServantRoles(args)
+      }
+    })
+  })
+
+  return userroles
 }

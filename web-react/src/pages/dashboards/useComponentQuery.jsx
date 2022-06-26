@@ -22,7 +22,7 @@ import {
   SERVANTS_CONSTITUENCY_ARRIVALS_ADMIN,
   SERVANTS_STREAM_ARRIVALS_COUNTER,
   SERVANTS_STREAM_ARRIVALS_CONFIRMER,
-} from './LogInQueries'
+} from './userChurchDataQueries'
 
 const useComponentQuery = () => {
   const { currentUser } = useContext(MemberContext)

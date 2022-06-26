@@ -1,28 +1,5 @@
 import { gql } from '@apollo/client'
 
-export const SERVANTS_WITH_ROLES = gql`
-  query servantWithRoles($id: String!) {
-    members(where: { id: $id }) {
-      id
-      firstName
-      lastName
-      fullName
-      pictureUrl
-      stream_name
-      leadsFellowshipCount
-      leadsBacentaCount
-      leadsConstituencyCount
-      isAdminForConstituencyCount
-      leadsCouncilCount
-      isAdminForCouncilCount
-      leadsStreamCount
-      isAdminForStreamCount
-      leadsGatheringServiceCount
-      isAdminForGatheringServiceCount
-    }
-  }
-`
-
 export const SERVANT_FELLOWSHIP_LEADER = gql`
   query fellowshipLeader($id: ID!) {
     members(where: { id: $id }) {

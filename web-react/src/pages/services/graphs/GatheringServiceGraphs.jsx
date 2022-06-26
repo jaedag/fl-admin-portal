@@ -27,8 +27,6 @@ const GatheringServiceReport = () => {
     getServiceGraphData(data?.gatheringServices[0], 'bussing')
   )
 
-  console.log('gathering service', data?.gatheringServices[0])
-
   return (
     <BaseComponent loading={loading} error={error} data={data} placeholder>
       <Container>
