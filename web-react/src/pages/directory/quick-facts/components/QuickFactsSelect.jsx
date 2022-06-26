@@ -4,7 +4,7 @@ import '../QuickFacts.css'
 const QuickFactsSelect = () => {
   const options = ['This Month']
   return (
-    <select className="dropdown" name="dropdown" id="dropdown">
+    <select className="dropdown-quick-facts" name="dropdown" id="dropdown">
       {options.map((option, index) => (
         <option key={index} value={option}>
           {option}
