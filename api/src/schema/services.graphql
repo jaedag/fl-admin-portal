@@ -350,7 +350,7 @@ extend type Stream {
        WITH DISTINCT fellowships, this
        MATCH (fellowships)<-[:HAS]-(bacenta:Bacenta)<-[:HAS]-(constituency:Constituency)<-[:HAS]-(:Council)<-[:HAS]-(this)
 
-      RETURN DISTINCT fellowships
+      RETURN COUNT(DISTINCT fellowships)
       """
     )
   formDefaultersThisWeek: [Fellowship!]!
