@@ -587,23 +587,24 @@ extend type Council {
   cancelledServicesThisWeekCount: Int
     @cypher(
       statement: """
-      WITH date() as today
-       WITH  today.weekDay as theDay, today
-       WITH date(today) - duration({days: (theDay - 2)}) AS startDate
-       WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates
+      MATCH (this)
+      WITH date() as today, this
+      WITH  today.weekDay as theDay, today, this
+      WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
+      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates, this
 
-       MATCH (date:TimeGraph)
-       USING INDEX date:TimeGraph(date)
-       WHERE date.date IN dates
-       MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
+      MATCH (date:TimeGraph)
+      USING INDEX date:TimeGraph(date)
+      WHERE date.date IN dates
+      MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
 
-        WITH DISTINCT this, record WHERE record.noServiceReason IS NOT NULL
-        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships) WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
+       WITH DISTINCT this, record WHERE record.noServiceReason IS NOT NULL
+       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships) WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
 
-        WITH DISTINCT fellowships, this
-        MATCH (fellowships)<-[:HAS]-(bacenta:Bacenta)<-[:HAS]-(constituency:Constituency)<-[:HAS]-(this)
+       WITH DISTINCT fellowships, this
+       MATCH (fellowships)<-[:HAS]-(bacenta:Bacenta)<-[:HAS]-(constituency:Constituency)<-[:HAS]-(this)
 
-       RETURN COUNT(DISTINCT fellowships)
+      RETURN COUNT(DISTINCT fellowships)
       """
     )
   formDefaultersThisWeek: [Fellowship!]!
