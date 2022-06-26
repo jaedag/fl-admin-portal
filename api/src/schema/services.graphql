@@ -1183,8 +1183,8 @@ extend type Mutation {
     @cypher(
       statement: """
       MATCH (record:ServiceRecord {id: $serviceRecordId})
-        WHERE record.transactionStatus IS NOT NULL
-        OR NOT record.transactionStatus = 'pending'
+       WHERE record.transactionStatus IS NULL
+        OR record.transactionStatus = 'failed'
 
         SET record.bankingSlip = $bankingSlip
 
