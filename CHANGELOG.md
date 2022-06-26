@@ -1,3 +1,10 @@
+#### 4.1.3 (2022-06-26)
+
+##### Bug Fixes
+
+*  added query for counters and confirmers ([5c745341](https://github.com/firstlovecenter/fl-admin-portal/commit/5c745341098ed7b5299b7478d9640188c8fbd7ba))
+*  added query for stream admin churches ([08a71481](https://github.com/firstlovecenter/fl-admin-portal/commit/08a71481d8bfb05464b43860fd44e20432abc540))
+
 #### 4.1.2 (2022-06-26)
 
 ##### New Features
