@@ -1,9 +1,10 @@
 import { useLazyQuery } from '@apollo/client'
-import { useAuth0 } from '@auth0/auth0-react'
 import { MemberContext } from 'contexts/MemberContext'
-import { churchLevels } from 'pages/directory/update/directory-utils'
-import { useContext, useEffect, useState } from 'react'
-import { parseRoles, roles } from './dashboard-utils'
+import { throwErrorMsg } from 'global-utils'
+import { getHighestRole } from 'pages/directory/update/directory-utils'
+import { useState } from 'react'
+import { useContext, useEffect } from 'react'
+import { parseRoles } from './dashboard-utils'
 import {
   SERVANT_FELLOWSHIP_LEADER,
   SERVANT_BACENTA_LEADER,
@@ -23,11 +24,9 @@ import {
   SERVANTS_STREAM_ARRIVALS_CONFIRMER,
 } from './LogInQueries'
 
-const useLogMeIn = (memberId) => {
-  const { user } = useAuth0()
+const useComponentQuery = () => {
   const { currentUser } = useContext(MemberContext)
-  const [servant, setServant] = useState(null)
-
+  const [assessmentChurch, setAssessmentChurch] = useState()
   const [fellowshipLeaderQuery] = useLazyQuery(SERVANT_FELLOWSHIP_LEADER)
   const [bacentaLeaderQuery] = useLazyQuery(SERVANT_BACENTA_LEADER)
   const [constituencyLeaderQuery] = useLazyQuery(SERVANT_CONSTITUENCY_LEADER)
@@ -66,79 +65,58 @@ const useLogMeIn = (memberId) => {
 
   const church = {
     Fellowship: {
-      leads: fellowshipLeaderQuery,
+      leader: fellowshipLeaderQuery,
     },
     Bacenta: {
-      leads: bacentaLeaderQuery,
+      leader: bacentaLeaderQuery,
     },
     Constituency: {
-      leads: constituencyLeaderQuery,
-      isAdminFor: constituencyAdminQuery,
-      isArrivalsAdminFor: constituencyArrivalsAdminQuery,
+      leader: constituencyLeaderQuery,
+      admin: constituencyAdminQuery,
+      arrivalsAdmin: constituencyArrivalsAdminQuery,
     },
     Council: {
-      leads: councilLeaderQuery,
-      isAdminFor: councilAdminQuery,
-      isArrivalsAdminFor: councilArrivalsAdminQuery,
+      leader: councilLeaderQuery,
+      admin: councilAdminQuery,
+      arrivalsAdmin: councilArrivalsAdminQuery,
     },
     Stream: {
-      leads: streamLeaderQuery,
-      isAdminFor: streamAdminQuery,
-      isArrivalsAdminFor: streamArrivalsAdminQuery,
-      isArrivalsCounterFor: streamArrivalsCounterQuery,
-      isArrivalsConfirmerFor: streamArrivalsConfirmerQuery,
+      leader: streamLeaderQuery,
+      admin: streamAdminQuery,
+      arrivalsAdmin: streamArrivalsAdminQuery,
+      arrivalsCounter: streamArrivalsCounterQuery,
+      arrivalsConfirmer: streamArrivalsConfirmerQuery,
     },
     GatheringService: {
-      leads: gatheringServiceLeaderQuery,
-      isAdminFor: gatheringServiceAdminQuery,
-      isArrivalsAdminFor: gatheringServiceArrivalsAdminQuery,
+      leader: gatheringServiceLeaderQuery,
+      admin: gatheringServiceAdminQuery,
+      arrivalsAdmin: gatheringServiceArrivalsAdminQuery,
     },
-  }
-
-  const getMember = (response, verb, level) => {
-    const member = response.data?.members?.length
-
-    if (member) return response.data.members[0][`${verb + level}`]
   }
 
   useEffect(() => {
-    const fetchServantData = async (user) => {
-      if (!user) return
+    const fetchAssessmentChurch = async (user) => {
+      const { highestLevel, highestVerb } = getHighestRole(user.roles)
 
-      let servant = {
-        ...user,
+      const response = await church[`${highestLevel}`][`${highestVerb}`]({
+        variables: { id: user.id },
+      })
+
+      if (response.error) {
+        throwErrorMsg(response.error)
       }
 
-      await Promise.all(
-        churchLevels.map(async (level) => {
-          await Promise.all(
-            roles[`${level}`].map(async (verb) => {
-              const shouldSearch = (verb, level) => {
-                return currentUser?.roles.includes(parseRoles(verb) + level)
-              }
-
-              if (shouldSearch(verb, level)) {
-                const response = await church[`${level}`][`${verb}`]({
-                  variables: { id: user.id },
-                })
-
-                servant[`${verb}${level}`] = getMember(response, verb, level)
-              }
-              return servant
-            })
-          )
-        })
+      setAssessmentChurch(
+        response.data.members[0][parseRoles(highestVerb) + highestLevel][0]
       )
 
-      setServant(servant)
-
-      return servant
+      return
     }
 
-    fetchServantData(currentUser)
-  }, [currentUser.roles, memberId, user, user?.sub, currentUser])
+    fetchAssessmentChurch(currentUser)
+  }, [currentUser])
 
-  return { servant }
+  return { assessmentChurch }
 }
 
-export default useLogMeIn
+export default useComponentQuery

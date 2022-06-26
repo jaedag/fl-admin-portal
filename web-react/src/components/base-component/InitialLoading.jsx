@@ -1,7 +1,7 @@
 import React from 'react'
 import { Container, Spinner } from 'react-bootstrap'
 
-const InitialLoading = () => {
+const InitialLoading = ({ text }) => {
   return (
     <div className="row align-items-center center-page bg dark">
       <div className="col text-center">
@@ -11,8 +11,8 @@ const InitialLoading = () => {
           className="spinner-large"
           variant="white"
         />
-        <Container>
-          <p>Please wait while we log you in</p>
+        <Container className="mt-5">
+          <p>{text || 'Please wait while we log you in'}</p>
         </Container>
       </div>
     </div>

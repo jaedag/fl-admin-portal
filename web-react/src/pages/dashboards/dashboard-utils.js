@@ -60,6 +60,17 @@ export const roles = {
 
 export const parseRoles = (role) => {
   switch (role) {
+    case 'leader':
+      return 'leads'
+    case 'admin':
+      return 'isAdminFor'
+    case 'arrivalsAdmin':
+      return 'isArrivalsAdminFor'
+    case 'arrivalsCounter':
+      return 'isArrivalsCounterFor'
+    case 'arrivalsConfirmer':
+      return 'isArrivalsConfirmerFor'
+
     case 'leads':
       return 'leader'
     case 'isAdminFor':
