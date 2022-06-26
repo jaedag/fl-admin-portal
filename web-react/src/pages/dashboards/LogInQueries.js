@@ -56,7 +56,7 @@ export const SERVANT_BACENTA_LEADER = gql`
         id
         name
         stream_name
-        memberCount
+
         vacationStatus
 
         constituency {
@@ -91,7 +91,6 @@ export const SERVANT_CONSTITUENCY_LEADER = gql`
         id
         name
         stream_name
-        memberCount
 
         council {
           id
@@ -124,7 +123,6 @@ export const SERVANT_COUNCIL_LEADER = gql`
         id
         name
         stream_name
-        memberCount
 
         services(limit: 4) {
           created_at
@@ -154,8 +152,6 @@ export const SERVANT_STREAM_LEADER = gql`
         id
         name
 
-        memberCount
-
         services(limit: 4) {
           created_at
           attendance
@@ -183,7 +179,6 @@ export const SERVANT_GATHERINGSERVICE_LEADER = gql`
       leadsGatheringService {
         id
         name
-        memberCount
 
         services(limit: 4) {
           created_at
@@ -214,7 +209,6 @@ export const SERVANT_CONSTITUENCY_ADMIN = gql`
         id
         name
         stream_name
-        memberCount
         leader {
           id
           firstName
@@ -253,7 +247,7 @@ export const SERVANT_COUNCIL_ADMIN = gql`
         id
         name
         stream_name
-        memberCount
+
         leader {
           id
           firstName
@@ -289,7 +283,6 @@ export const SERVANTS_STREAM_ADMIN = gql`
         id
         name
 
-        memberCount
         leader {
           id
           firstName
@@ -324,7 +317,6 @@ export const SERVANTS_GATHERINGSERVICE_ADMIN = gql`
       isAdminForGatheringService {
         id
         name
-        memberCount
 
         services(limit: 4) {
           created_at
@@ -354,7 +346,7 @@ export const SERVANTS_CONSTITUENCY_ARRIVALS_ADMIN = gql`
         id
         name
         stream_name
-        memberCount
+
         leader {
           id
           firstName
@@ -390,7 +382,7 @@ export const SERVANTS_COUNCIL_ARRIVALS_ADMIN = gql`
         id
         name
         stream_name
-        memberCount
+
         leader {
           id
           firstName
@@ -426,7 +418,6 @@ export const SERVANTS_STREAM_ARRIVALS_ADMIN = gql`
         id
         name
 
-        memberCount
         leader {
           id
           firstName
@@ -461,7 +452,6 @@ export const SERVANTS_GATHERINGSERVICE_ARRIVALS_ADMIN = gql`
       isArrivalsAdminForGatheringService {
         id
         name
-        memberCount
 
         services(limit: 4) {
           created_at
@@ -492,7 +482,6 @@ export const SERVANTS_STREAM_ARRIVALS_COUNTER = gql`
         id
         name
 
-        memberCount
         leader {
           id
           firstName
@@ -513,7 +502,6 @@ export const SERVANTS_STREAM_ARRIVALS_CONFIRMER = gql`
         id
         name
 
-        memberCount
         leader {
           id
           firstName

@@ -57,44 +57,65 @@ export const SERVANT_CHURCH_LIST = gql`
       lastName
       fullName
       pictureUrl
+
       leadsFellowship {
         id
         name
+        memberCount
       }
 
       leadsBacenta {
         id
         name
+        memberCount
       }
       leadsConstituency {
         id
         name
+        memberCount
       }
       leadsCouncil {
         id
         name
+        memberCount
       }
       leadsStream {
         id
         name
+        memberCount
       }
       leadsGatheringService {
         id
         name
+        memberCount
       }
       isAdminForCouncil {
         id
         name
+        memberCount
       }
       isAdminForConstituency {
         id
         name
+        memberCount
       }
       isAdminForStream {
         id
         name
+        memberCount
       }
       isAdminForGatheringService {
+        id
+        name
+        memberCount
+      }
+
+      #MArrivals
+      isArrivalsCounterForStream {
+        id
+        name
+      }
+      isArrivalsConfirmerForStream {
         id
         name
       }
