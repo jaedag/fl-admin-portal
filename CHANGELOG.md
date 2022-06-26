@@ -1,3 +1,26 @@
+#### 4.1.2 (2022-06-26)
+
+##### New Features
+
+*  implement frontend design for bussing quick facts ([fbc56572](https://github.com/firstlovecenter/fl-admin-portal/commit/fbc565722f31ced7884f5de781face8d00bb23b3))
+
+##### Bug Fixes
+
+*  use specified height for login slick slider ([be112d70](https://github.com/firstlovecenter/fl-admin-portal/commit/be112d70462f040365383a5addf251f237c99f98))
+*  bug in cypher for council cancelled services count ([5603b31c](https://github.com/firstlovecenter/fl-admin-portal/commit/5603b31c5e06e73c8049244197258430aa5e1a7c))
+*  bug in cypher for stream cancelled services ([f60fbd61](https://github.com/firstlovecenter/fl-admin-portal/commit/f60fbd61b28cbb5f0a5f55b4aa4b926b9e9c0d0e))
+*  fixed defaulters queries showing gathering service records at all records ([69f961cf](https://github.com/firstlovecenter/fl-admin-portal/commit/69f961cff04e557f4d8b3250986c6ac23d39be0d))
+
+##### Performance Improvements
+
+*  user dashboard queries run on user dashboard ([02306e77](https://github.com/firstlovecenter/fl-admin-portal/commit/02306e770fa553a5a0de1ff7438ceb2d8667a65a))
+
+##### Refactors
+
+*  fixed breaking changes on the userJobs refactor ([2dd7d931](https://github.com/firstlovecenter/fl-admin-portal/commit/2dd7d931e2c668c736e35ce33e2674c17cf08bd9))
+*  refactored income quick facts card css ([b564ab44](https://github.com/firstlovecenter/fl-admin-portal/commit/b564ab448ee2b7442b7ceae9c9a72f1bb59034c8))
+*  changed folder structure of quick facts ([6762ec5e](https://github.com/firstlovecenter/fl-admin-portal/commit/6762ec5e5daf19d6a055abace3b824e9b995fd1d))
+
 #### 4.1.1 (2022-06-25)
 
 ##### Bug Fixes
