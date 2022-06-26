@@ -93,38 +93,41 @@ const useGetRoles = (user) => {
       let servant = { ...user }
 
       await Promise.all(
-        churchLevels.map(async (level) => {
-          await Promise.all(
-            roles[`${level}`].map(async (verb) => {
-              verb = parseRoles(verb)
+        churchLevels.map(
+          async (level) =>
+            await Promise.all(
+              roles[`${level}`].map(async (verb) => {
+                verb = parseRoles(verb)
 
-              const shouldSearch = (verb, level) => {
-                return user?.roles.includes(verb + level)
-              }
-
-              if (shouldSearch(verb, level)) {
-                const response = await church[`${level}`][`${verb}`]({
-                  variables: { id: user.id },
-                })
-
-                const getMemberRole = (response, verb, level) => {
-                  const member = response?.data?.members?.length
-
-                  if (!member) return
-                  return response.data.members[0][`${parseRoles(verb) + level}`]
+                const shouldSearch = (verb, level) => {
+                  return user?.roles.includes(verb + level)
                 }
 
-                servant[`${parseRoles(verb)}${level}`] = getMemberRole(
-                  response,
-                  verb,
-                  level
-                )
-              }
+                if (shouldSearch(verb, level)) {
+                  const response = await church[`${level}`][`${verb}`]({
+                    variables: { id: user.id },
+                  })
 
-              return servant
-            })
-          )
-        })
+                  const getMemberRole = (response, verb, level) => {
+                    const member = response?.data?.members?.length
+
+                    if (!member) return
+                    return response.data.members[0][
+                      `${parseRoles(verb) + level}`
+                    ]
+                  }
+
+                  servant[`${parseRoles(verb)}${level}`] = getMemberRole(
+                    response,
+                    verb,
+                    level
+                  )
+                }
+
+                return servant
+              })
+            )
+        )
       )
 
       setUserJobs(getServantRoles(servant))

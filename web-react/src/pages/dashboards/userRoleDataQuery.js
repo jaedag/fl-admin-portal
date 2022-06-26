@@ -8,7 +8,7 @@ export const FELLOWSHIP_LEADER_LIST = gql`
       leadsFellowship {
         id
         name
-        memberCount
+        # memberCount
         vacationStatus
       }
     }
@@ -22,7 +22,7 @@ export const BACENTA_LEADER_LIST = gql`
       leadsBacenta {
         id
         name
-        memberCount
+        # memberCount
         vacationStatus
       }
     }
@@ -37,7 +37,7 @@ export const CONSTITUENCY_LEADER_LIST = gql`
       leadsConstituency {
         id
         name
-        memberCount
+        # memberCount
       }
     }
   }
@@ -51,7 +51,7 @@ export const COUNCIL_LEADER_LIST = gql`
       leadsCouncil {
         id
         name
-        memberCount
+        # memberCount
       }
     }
   }
@@ -64,7 +64,7 @@ export const STREAM_LEADER_LIST = gql`
       leadsStream {
         id
         name
-        memberCount
+        # memberCount
       }
     }
   }
@@ -78,7 +78,7 @@ export const GATHERINGSERVICE_LEADER_LIST = gql`
       leadsGatheringService {
         id
         name
-        memberCount
+        # memberCount
       }
     }
   }
@@ -92,7 +92,7 @@ export const CONSTITUENCY_ADMIN_LIST = gql`
       isAdminForConstituency {
         id
         name
-        memberCount
+        # memberCount
       }
     }
   }
@@ -106,7 +106,7 @@ export const COUNCIL_ADMIN_LIST = gql`
       isAdminForCouncil {
         id
         name
-        memberCount
+        # memberCount
       }
     }
   }
@@ -120,7 +120,7 @@ export const STREAM_ADMIN_LIST = gql`
       isAdminForStream {
         id
         name
-        memberCount
+        # memberCount
       }
     }
   }
@@ -134,7 +134,7 @@ export const GATHERINGSERVICE_ADMIN_LIST = gql`
       isAdminForGatheringService {
         id
         name
-        memberCount
+        # memberCount
       }
     }
   }
@@ -148,7 +148,7 @@ export const CONSTITUENCY_ARRIVALS_ADMIN_LIST = gql`
       isArrivalsAdminForConstituency {
         id
         name
-        memberCount
+        # memberCount
       }
     }
   }
@@ -162,7 +162,7 @@ export const COUNCIL_ARRIVALS_ADMIN_LIST = gql`
       isArrivalsAdminForCouncil {
         id
         name
-        memberCount
+        # memberCount
       }
     }
   }
@@ -176,7 +176,7 @@ export const STREAM_ARRIVALS_ADMIN_LIST = gql`
       isArrivalsAdminForStream {
         id
         name
-        memberCount
+        # memberCount
       }
     }
   }
@@ -218,7 +218,7 @@ export const STREAM_ARRIVALS_CONFIRMER_LIST = gql`
       isArrivalsConfirmerForStream {
         id
         name
-        memberCount
+        # memberCount
       }
     }
   }
