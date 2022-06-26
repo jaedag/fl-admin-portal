@@ -1,27 +1,32 @@
+import { useQuery } from '@apollo/client'
 import { useAuth0 } from '@auth0/auth0-react'
+import BaseComponent from 'components/base-component/BaseComponent'
 import InitialLoading from 'components/base-component/InitialLoading'
 import { MemberContext } from 'contexts/MemberContext'
 import { authorisedLink, plural } from 'global-utils'
 import useClickCard from 'hooks/useClickCard'
 import { parseRoles, roles } from 'pages/dashboards/dashboard-utils'
-import useLogMeIn from 'pages/dashboards/useLogMeIn'
+import { SERVANT_CHURCH_LIST } from 'pages/dashboards/DashboardQueries'
 import { churchLevels } from 'pages/directory/update/directory-utils'
-import { getServiceGraphData } from 'pages/services/graphs/graphs-utils'
 import { permitMe } from 'permission-utils'
 import React, { useContext, useEffect } from 'react'
 import useAuth from './useAuth'
 
 const SetPermissions = ({ children }) => {
-  const { currentUser, userJobs, setUserJobs } = useContext(MemberContext)
+  const { currentUser, setUserJobs } = useContext(MemberContext)
   const church = useClickCard()
   const { isAuthenticated } = useAuth0()
   const { isAuthorised } = useAuth()
-  const { servant } = useLogMeIn()
 
-  let userRoles = []
-  let assessmentChurchData, assessmentChurch
+  const setServantRoles = (
+    servant,
+    servantType,
+    churchType,
+    verb,
+    userroles
+  ) => {
+    if (!servant) return
 
-  const setServantuserRoles = (servant, servantType, churchType, verb) => {
     const permittedForLink = permitMe(churchType)
 
     if (
@@ -29,7 +34,7 @@ const SetPermissions = ({ children }) => {
       servantType === 'isArrivalsCounterFor'
     ) {
       const adminsOneChurch = servant[`${verb}`]?.length === 1 ?? false
-      userRoles.push({
+      userroles.push({
         name: adminsOneChurch
           ? churchType + ' ' + parseRoles(servantType)
           : plural(churchType) + ' ' + parseRoles(servantType),
@@ -38,13 +43,12 @@ const SetPermissions = ({ children }) => {
         link: authorisedLink(currentUser, permittedForLink, `/arrivals`),
       })
 
-      assessmentChurch = servant[`${verb}`] && servant[`${verb}`][0]
       return
     }
 
     if (servantType === 'isAdminFor' || servantType === 'isArrivalsAdminFor') {
       const adminsOneChurch = servant[`${verb}`]?.length === 1 ?? false
-      userRoles.push({
+      userroles.push({
         name: adminsOneChurch
           ? churchType + ' ' + parseRoles(servantType)
           : plural(churchType) + ' ' + parseRoles(servantType),
@@ -60,13 +64,12 @@ const SetPermissions = ({ children }) => {
         ),
       })
 
-      assessmentChurch = servant[`${verb}`] && servant[`${verb}`][0]
       return
     }
 
     const leadsOneChurch = servant[`${verb}`]?.length === 1 ?? false
 
-    userRoles.push({
+    userroles.push({
       name: leadsOneChurch ? churchType : plural(churchType),
       church: servant[`${verb}`],
       number: servant[`${verb}`]?.length,
@@ -78,48 +81,30 @@ const SetPermissions = ({ children }) => {
           : `/servants/church-list`
       ),
     })
-
-    assessmentChurch = servant[`${verb}`] && servant[`${verb}`][0]
   }
 
-  const getServantuserRoles = (servant) => {
+  const getServantRoles = (servant) => {
+    let userroles = []
     churchLevels.forEach((level) => {
       roles[`${level}`].forEach((verb) => {
-        const shouldSearch = (verb, level) => {
-          return currentUser?.roles.includes(parseRoles(verb) + level)
-        }
+        const shouldSearch = (verb, level) =>
+          currentUser?.roles.includes(parseRoles(verb) + level)
 
         if (shouldSearch(verb, level)) {
-          setServantuserRoles(servant, verb, level, verb + level)
+          setServantRoles(servant, verb, level, verb + level, userroles)
         }
       })
     })
 
-    //run the get graph function after all checking is done to avoid multiple unnecessary runs
-    if (assessmentChurch) {
-      return getServiceGraphData(assessmentChurch)
-    }
-
-    return
+    return userroles
   }
-
-  useEffect(() => {
-    if (userJobs?.jobs.length === userRoles.length) return
-
-    setUserJobs({
-      jobs: userRoles,
-      assessmentData: assessmentChurchData,
-      assessmentChurch: assessmentChurch,
-    })
-  }, [
-    servant,
-    currentUser,
-    assessmentChurch,
-    assessmentChurchData,
-    userRoles,
-    setUserJobs,
-    userJobs?.jobs.length,
-  ])
+  const { data, loading, error } = useQuery(SERVANT_CHURCH_LIST, {
+    variables: { id: currentUser.id },
+    onCompleted: (data) => {
+      const servant = data?.members[0]
+      setUserJobs(getServantRoles(servant))
+    },
+  })
 
   useEffect(() => {
     if (isAuthenticated && currentUser.roles.length) {
@@ -151,12 +136,14 @@ const SetPermissions = ({ children }) => {
     }
   }, [isAuthenticated, currentUser, isAuthorised, church])
 
-  assessmentChurchData = servant && getServantuserRoles(servant)
-
-  if (!assessmentChurchData) {
-    return <InitialLoading />
+  if (loading) {
+    return <InitialLoading text={'Retrieving your church information...'} />
   }
-  return <>{children}</>
+  return (
+    <BaseComponent data={data} error={error}>
+      {children}
+    </BaseComponent>
+  )
 }
 
 export default SetPermissions

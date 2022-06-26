@@ -97,7 +97,7 @@ const ConstituencyAvgWeekdayAttendance = () => {
         <QuickFactsHeader />
 
         <div className=" page-padding mt-3 quick-fact-card-wrapper">
-          <Slider {...settings}>
+          <Slider {...settings} className="quick-facts-shadow">
             <div>
               <AttendanceQuickFactsCard attendanceDetails={attendanceDetails} />
             </div>

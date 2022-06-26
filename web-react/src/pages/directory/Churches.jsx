@@ -27,8 +27,8 @@ const Churches = () => {
         </div>
 
         <div className="d-grid gap-2 mt-5 text-left">
-          {userJobs?.jobs.length ? (
-            userJobs.jobs.map((job) =>
+          {userJobs.length ? (
+            userJobs.map((job) =>
               job.church.map((church, index) => (
                 <MenuButton
                   key={index}

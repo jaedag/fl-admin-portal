@@ -4,17 +4,24 @@ import ChurchGraph from 'components/ChurchGraph/ChurchGraph'
 import './Dashboards.css'
 import { MemberContext } from 'contexts/MemberContext'
 import RoleCard from './RoleCard'
-import { getMonthlyStatAverage } from '../services/graphs/graphs-utils'
+import {
+  getMonthlyStatAverage,
+  getServiceGraphData,
+} from '../services/graphs/graphs-utils'
 import StatDisplay from 'pages/services/graphs/CompStatDisplay'
 import { Col, Row, Table, Container } from 'react-bootstrap'
 import Placeholder from '../../components/Placeholder'
 import { ChurchContext } from 'contexts/ChurchContext'
+import useComponentQuery from './useComponentQuery'
 
 const UserDashboard = () => {
   const { currentUser, userJobs } = useContext(MemberContext)
   const { clickCard } = useContext(ChurchContext)
   const navigate = useNavigate()
-  console.log(userJobs)
+  const { assessmentChurch } = useComponentQuery()
+
+  const assessmentData = getServiceGraphData(assessmentChurch)
+
   return (
     <>
       <Container>
@@ -29,8 +36,8 @@ const UserDashboard = () => {
           <Table className="border-bottom-0">
             <tbody>
               <tr /*className="row justify-content-start"*/>
-                {userJobs?.assessmentData ? (
-                  userJobs?.jobs.map((role, i) => (
+                {userJobs ? (
+                  userJobs?.map((role, i) => (
                     <td
                       className="col-auto p-0"
                       key={i}
@@ -45,7 +52,7 @@ const UserDashboard = () => {
                   ))
                 ) : (
                   <td className="col-auto pl-0">
-                    <RoleCard loading={!userJobs?.assessmentData} />
+                    <RoleCard loading={!userJobs} />
                   </td>
                 )}
               </tr>
@@ -57,32 +64,26 @@ const UserDashboard = () => {
             <Col>
               <StatDisplay
                 title="Avg Weekly Attendance"
-                loading={!userJobs?.assessmentData}
-                statistic={getMonthlyStatAverage(
-                  userJobs?.assessmentData,
-                  'attendance'
-                )}
+                loading={!assessmentData}
+                statistic={getMonthlyStatAverage(assessmentData, 'attendance')}
               />
             </Col>
 
             <Col>
               <StatDisplay
                 title="Avg Weekly Income (GH₵)"
-                loading={!userJobs?.assessmentData}
-                statistic={getMonthlyStatAverage(
-                  userJobs?.assessmentData,
-                  'income'
-                )}
+                loading={!assessmentData}
+                statistic={getMonthlyStatAverage(assessmentData, 'income')}
               />
             </Col>
           </Row>
           <ChurchGraph
-            loading={!userJobs?.assessmentData}
+            loading={!assessmentChurch}
             stat1="attendance"
             stat2="income"
-            church={userJobs?.assessmentChurch?.__typename.toLowerCase()}
-            churchData={userJobs?.assessmentData}
-            secondaryTitle={`${userJobs?.assessmentChurch?.name} ${userJobs?.assessmentChurch?.__typename}`}
+            church={assessmentChurch?.__typename.toLowerCase()}
+            churchData={assessmentData}
+            secondaryTitle={`${assessmentChurch?.name} ${assessmentChurch?.__typename}`}
           />
         </>
       </Container>

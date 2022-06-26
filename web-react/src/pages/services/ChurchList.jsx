@@ -15,8 +15,8 @@ const ChurchList = ({ color, link }) => {
 
   return (
     <div className="d-grid gap-2 text-left">
-      {userJobs?.jobs.length ? (
-        userJobs.jobs.map((role) => {
+      {userJobs.length ? (
+        userJobs.map((role) => {
           return role.church
             .filter((church) => {
               return church?.vacationStatus !== 'Vacation'

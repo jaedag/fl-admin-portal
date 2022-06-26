@@ -9,6 +9,34 @@ export const churchLevels = [
   'GatheringService',
 ]
 
+export const getHighestRole = (roles) => {
+  let highestRole, highestLevel
+
+  for (let i = churchLevels.length; i >= 0; i--) {
+    const churchLevelLower = churchLevels[i]?.toLowerCase()
+    let breakCheck = false
+
+    for (let j = 0; j < roles.length; j++) {
+      const roleLower = roles[j]?.toLowerCase()
+
+      if (roleLower.includes(churchLevelLower)) {
+        breakCheck = true
+        highestRole = roles[j]
+        highestLevel = churchLevels[i]
+        break
+      }
+    }
+
+    if (breakCheck) break
+  }
+
+  return {
+    highestRole,
+    highestLevel,
+    highestVerb: highestRole.replace(highestLevel, ''),
+  }
+}
+
 export const nextHigherChurch = (churchLevel) => {
   switch (churchLevel) {
     case 'Fellowship':
