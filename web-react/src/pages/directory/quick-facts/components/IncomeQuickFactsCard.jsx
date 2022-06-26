@@ -1,15 +1,10 @@
 import React from 'react'
 import { Badge } from 'react-bootstrap'
 import '../QuickFacts.css'
+import { getPercentageChange } from './quick-fact-utils'
 
 const IncomeQuickFactsCard = (props) => {
   const details = props?.incomeDetails[0]
-
-  const getPercentageChange = (avgIncome, avgHigherLevelIncome) => {
-    var diff = avgIncome - avgHigherLevelIncome
-    if (isNaN(diff)) return '--'
-    return Math.round((diff / avgIncome) * 100)
-  }
 
   const percentageRiseOrFall = getPercentageChange(
     details?.churchAvgIncomeThisMonth,
