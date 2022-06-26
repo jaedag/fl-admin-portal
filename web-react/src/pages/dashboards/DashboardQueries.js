@@ -119,6 +119,18 @@ export const SERVANT_CHURCH_LIST = gql`
         id
         name
       }
+      isArrivalsAdminForCouncil {
+        id
+        name
+      }
+      isArrivalsAdminForStream {
+        id
+        name
+      }
+      isArrivalsAdminForGatheringService {
+        id
+        name
+      }
     }
   }
 `
