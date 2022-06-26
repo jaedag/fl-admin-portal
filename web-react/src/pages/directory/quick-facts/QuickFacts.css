@@ -105,6 +105,9 @@
   background-color: #242323;
   padding: 13px 22px;
 }
+.quick-facts-shadow {
+  box-shadow: 0px 0px 20px rgba(123, 123, 123, 0.591);
+}
 
 .card-grey {
   background-color: #1e1c1c;

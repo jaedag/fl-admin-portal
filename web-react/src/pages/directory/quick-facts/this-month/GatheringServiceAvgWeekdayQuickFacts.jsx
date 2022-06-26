@@ -88,7 +88,6 @@ const GatheringServiceAvgWeekdayAttendance = () => {
     slidesToShow: 1,
     slidesToScroll: 1,
     arrows: true,
-    fade: true,
   }
 
   return (
@@ -101,7 +100,7 @@ const GatheringServiceAvgWeekdayAttendance = () => {
         <QuickFactsHeader />
 
         <div className=" page-padding mt-3 quick-fact-card-wrapper">
-          <Slider {...settings}>
+          <Slider {...settings} className="quick-facts-shadow">
             <div>
               <AttendanceQuickFactsCard attendanceDetails={attendanceDetails} />
             </div>
