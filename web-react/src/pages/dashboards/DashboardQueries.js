@@ -53,61 +53,60 @@ export const SERVANT_CHURCH_LIST = gql`
   query churchList($id: ID!) {
     members(where: { id: $id }) {
       id
-      firstName
-      lastName
-      fullName
-      pictureUrl
 
       leadsFellowship {
         id
         name
-        memberCount
       }
 
       leadsBacenta {
         id
         name
-        memberCount
       }
       leadsConstituency {
         id
         name
-        memberCount
       }
       leadsCouncil {
         id
         name
-        memberCount
       }
       leadsStream {
         id
         name
-        memberCount
       }
       leadsGatheringService {
         id
         name
-        memberCount
-      }
-      isAdminForCouncil {
-        id
-        name
-        memberCount
       }
       isAdminForConstituency {
         id
         name
-        memberCount
+      }
+      isAdminForCouncil {
+        id
+        name
       }
       isAdminForStream {
         id
         name
-        memberCount
       }
       isAdminForGatheringService {
         id
         name
-        memberCount
+      }
+
+      isArrivalsAdminForConstituency {
+        id
+        name
+      }
+      isArrivalsAdminForStream {
+        id
+        name
+      }
+      isArrivalsAdminForGatheringService {
+        id
+        name
       }
 
       #MArrivals
@@ -120,14 +119,6 @@ export const SERVANT_CHURCH_LIST = gql`
         name
       }
       isArrivalsAdminForCouncil {
-        id
-        name
-      }
-      isArrivalsAdminForStream {
-        id
-        name
-      }
-      isArrivalsAdminForGatheringService {
         id
         name
       }

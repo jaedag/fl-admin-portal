@@ -1,18 +1,28 @@
+import { useQuery } from '@apollo/client'
 import { useAuth0 } from '@auth0/auth0-react'
+import BaseComponent from 'components/base-component/BaseComponent'
 import InitialLoading from 'components/base-component/InitialLoading'
 import { MemberContext } from 'contexts/MemberContext'
 import useClickCard from 'hooks/useClickCard'
-import useGetRoles from 'pages/dashboards/useGetRoles'
+import { getServantRoles } from 'pages/dashboards/dashboard-utils'
+import { SERVANT_CHURCH_LIST } from 'pages/dashboards/DashboardQueries'
 import { permitMe } from 'permission-utils'
 import React, { useContext, useEffect } from 'react'
 import useAuth from './useAuth'
 
 const SetPermissions = ({ children }) => {
-  const { currentUser } = useContext(MemberContext)
+  const { currentUser, setUserJobs } = useContext(MemberContext)
   const church = useClickCard()
   const { isAuthenticated } = useAuth0()
   const { isAuthorised } = useAuth()
-  const { loading } = useGetRoles(currentUser)
+
+  const { data, loading, error } = useQuery(SERVANT_CHURCH_LIST, {
+    variables: { id: currentUser.id },
+    onCompleted: (data) => {
+      const servant = { ...data?.members[0], ...currentUser }
+      setUserJobs(getServantRoles(servant))
+    },
+  })
 
   useEffect(() => {
     if (isAuthenticated && currentUser.roles.length) {
@@ -48,7 +58,11 @@ const SetPermissions = ({ children }) => {
     return <InitialLoading text={'Retrieving your church information...'} />
   }
 
-  return <>{children}</>
+  return (
+    <BaseComponent data={data} error={error}>
+      {children}
+    </BaseComponent>
+  )
 }
 
 export default SetPermissions

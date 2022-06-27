@@ -187,7 +187,7 @@ export const GATHERINGSERVICE_ARRIVALS_ADMIN_LIST = gql`
     members(where: { id: $id }) {
       id
 
-      isArrivalsAdminForStream {
+      isArrivalsAdminForGatheringService {
         id
         name
         memberCount

@@ -23,7 +23,6 @@ const ProtectedRoute = ({ children, roles, roleBased, placeholder }) => {
   }
 
   if (isLoading) {
-    console.log('loading')
     return <LoadingScreen />
   }
   if (atHome && !isAuthenticated) {
