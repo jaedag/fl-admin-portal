@@ -15,6 +15,7 @@ import './index.css'
 import PastorsAdmin from 'App'
 import Login from 'components/Login'
 import InitialLoading from 'components/base-component/InitialLoading'
+import Sabbath from 'auth/Sabbath'
 
 const AppWithApollo = () => {
   const [accessToken, setAccessToken] = useState()
@@ -67,6 +68,10 @@ const AppWithApollo = () => {
     if (theme === 'dark') document.body.style.backgroundColor = '#121212'
     else document.body.style.backgroundColor = '#FFFFFF'
   }, [theme])
+
+  if (new Date().getDay() === 1) {
+    return <Sabbath />
+  }
 
   if (isLoading) {
     return <InitialLoading />
