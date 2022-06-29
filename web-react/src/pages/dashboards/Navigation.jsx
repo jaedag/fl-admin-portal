@@ -37,6 +37,9 @@ const Navigator = () => {
         stream:
           data.memberByEmail?.fellowship?.bacenta.constituency?.council.stream
             .id,
+        noIncome:
+          data.memberByEmail?.fellowship?.bacenta.constituency?.council.stream
+            .gatheringService.noIncome,
         gatheringService:
           data.memberByEmail?.fellowship?.bacenta.constituency?.council.stream
             .gatheringService.id,
