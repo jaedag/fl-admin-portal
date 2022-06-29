@@ -67,7 +67,10 @@ const Services = () => {
             title="Trends"
             color="members"
             noCaption
-            onClick={() => navigate(`/trends`)}
+            onClick={() => {
+              clickCard(church)
+              navigate(`/trends`)
+            }}
           />
           {['Council', 'Constituency', 'Fellowship'].includes(churchType) && (
             <>
