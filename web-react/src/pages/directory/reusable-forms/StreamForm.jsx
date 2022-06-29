@@ -2,10 +2,10 @@ import { useMutation, useQuery } from '@apollo/client'
 import BaseComponent from 'components/base-component/BaseComponent'
 import { FieldArray, Form, Formik } from 'formik'
 import * as Yup from 'yup'
-import { makeSelectOptions } from 'global-utils'
+import { makeSelectOptions, throwErrorMsg } from 'global-utils'
 import { permitAdmin } from 'permission-utils'
 import { GET_GATHERINGSERVICES } from 'queries/ListQueries'
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { ChurchContext } from 'contexts/ChurchContext'
 import FormikControl from 'components/formik-components/FormikControl'
 import PlusSign from 'components/buttons/PlusMinusSign/PlusSign'
@@ -27,6 +27,7 @@ const StreamForm = ({ initialValues, onSubmit, title, newStream }) => {
   const { togglePopup, isOpen } = usePopup()
   const navigate = useNavigate()
   const { data, loading, error } = useQuery(GET_GATHERINGSERVICES)
+  const [buttonLoading, setButtonLoading] = useState(false)
   const [CloseDownStream] = useMutation(MAKE_STREAM_INACTIVE)
 
   const gatheringServiceOptions = makeSelectOptions(data?.gatheringServices)
@@ -160,6 +161,7 @@ const StreamForm = ({ initialValues, onSubmit, title, newStream }) => {
                   type="submit"
                   className={`btn-main ${theme}`}
                   onClick={() => {
+                    setButtonLoading(false)
                     CloseDownStream({
                       variables: {
                         id: streamId,
@@ -167,21 +169,20 @@ const StreamForm = ({ initialValues, onSubmit, title, newStream }) => {
                       },
                     })
                       .then((res) => {
+                        setButtonLoading(false)
                         clickCard(res.data.CloseDownStream)
                         togglePopup()
                         navigate(`/stream/displayall`)
                       })
                       .catch((error) => {
-                        // eslint-disable-next-line no-console
-                        console.error(error)
-                        alert(
+                        throwErrorMsg(
                           `There was an error closing down this stream`,
                           error
                         )
                       })
                   }}
                 >
-                  {`Yes, I'm sure`}
+                  {buttonLoading ? `Submitting...` : `Yes, I'm sure`}
                 </Button>
                 <Button
                   variant="primary"

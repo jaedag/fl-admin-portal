@@ -39,7 +39,7 @@ RETURN admin.id AS id, admin.auth_id AS auth_id, admin.firstName AS firstName, a
 
 export const disconnectChurchArrivalsCounter = `
 MATCH (church {id: $churchId}) 
-WHERE church:Council OR church:Stream OR church:GatheringService
+WHERE church:Stream OR church:GatheringService
 MATCH (church)<-[oldAdmin:COUNTS_ARRIVALS_FOR]-(admin:Member {id: $arrivalsCounterId})
 DELETE oldAdmin
 
@@ -50,7 +50,7 @@ RETURN admin.id AS id, admin.auth_id AS auth_id, admin.firstName AS firstName, a
 
 export const disconnectChurchArrivalsConfirmer = `
 MATCH (church {id: $churchId}) 
-WHERE church:Council OR church:Stream OR church:GatheringService
+WHERE church:Stream OR church:GatheringService
 MATCH (church)<-[oldAdmin:CONFIRMS_ARRIVALS_FOR]-(admin:Member {id: $arrivalsConfirmerId})
 DELETE oldAdmin
 
@@ -59,6 +59,17 @@ WITH church, admin
 
 RETURN admin.id AS id, admin.auth_id AS auth_id, admin.firstName AS firstName, admin.lastName AS lastName
 `
+
+export const disconnectChurcHTeller = `
+MATCH (church {id: $churchId})
+WHERE church:Stream OR church:GatheringService
+MATCH (church)<-[oldAdmin:IS_TELLER_FOR]-(admin:Member {id: $tellerId})
+DELETE oldAdmin
+
+WITH church, admin
+RETURN admin.id AS id, admin.auth_id AS auth_id, admin.firstName AS firstName, admin.lastName AS lastName
+`
+
 //Create Church Leader Connection
 export const connectChurchLeader = `
 MATCH (church {id: $churchId})<-[:HAS]-(higherChurch)
@@ -92,7 +103,7 @@ RETURN church.id AS id, church.name AS name, higherChurch.id AS higherChurchId, 
 
 export const connectChurchArrivalsCounter = `
 MATCH (church {id:$churchId})<-[:HAS]-(higherChurch)
-WHERE church:Stream OR church:GatheringService OR church:Sonta OR church:Ministry
+WHERE church:Stream OR church:GatheringService
 MATCH (admin:Member {id: $arrivalsCounterId})
    SET admin.auth_id =  $auth_id
 MERGE (admin)-[:COUNTS_ARRIVALS_FOR]->(church)
@@ -102,10 +113,20 @@ RETURN church.id AS id, church.name AS name, higherChurch.id AS higherChurchId, 
 
 export const connectChurchArrivalsConfirmer = `
 MATCH (church {id:$churchId})<-[:HAS]-(higherChurch)
-WHERE church:Stream OR church:GatheringService OR church:Sonta OR church:Ministry
+WHERE church:Stream OR church:GatheringService
 MATCH (admin:Member {id: $arrivalsConfirmerId})
    SET admin.auth_id =  $auth_id
 MERGE (admin)-[:CONFIRMS_ARRIVALS_FOR]->(church)
+
+RETURN church.id AS id, church.name AS name, higherChurch.id AS higherChurchId, higherChurch.name AS higherChurchName
+`
+
+export const connectChurchTeller = `
+MATCH (church {id:$churchId})<-[:HAS]-(higherChurch)
+WHERE church:Stream OR church:GatheringService 
+MATCH (admin:Member {id: $tellerId})
+   SET admin.auth_id =  $auth_id
+MERGE (admin)-[:IS_TELLER_FOR]->(church)
 
 RETURN church.id AS id, church.name AS name, higherChurch.id AS higherChurchId, higherChurch.name AS higherChurchName
 `
@@ -151,7 +172,7 @@ MERGE (church)-[:CURRENT_HISTORY]->(log)
 
 WITH church
    MATCH (oldLeader:Member {id: $oldServantId})
-   MERGE (oldLeader)-[:OLD_HISTORY]-(log)
+   MERGE (oldLeader)-[:OLD_HISTORY]->(log)
 
 WITH church
 

@@ -10,7 +10,7 @@ import {
 } from 'global-utils'
 import { permitAdmin, permitAdminArrivals } from 'permission-utils'
 import { GET_COUNCIL_CONSTITUENCIES } from 'queries/ListQueries'
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { ChurchContext } from 'contexts/ChurchContext'
 import FormikControl from 'components/formik-components/FormikControl'
 import PlusSign from 'components/buttons/PlusMinusSign/PlusSign'
@@ -33,6 +33,7 @@ const BacentaForm = ({ initialValues, onSubmit, title, newBacenta }) => {
   const { theme } = useContext(MemberContext)
   const navigate = useNavigate()
 
+  const [buttonLoading, setButtonLoading] = useState(false)
   const [CloseDownBacenta] = useMutation(MAKE_BACENTA_INACTIVE, {
     refetchQueries: [
       {
@@ -203,6 +204,7 @@ const BacentaForm = ({ initialValues, onSubmit, title, newBacenta }) => {
                   type="submit"
                   className={`btn-main ${theme}`}
                   onClick={() => {
+                    setButtonLoading(true)
                     CloseDownBacenta({
                       variables: {
                         id: bacentaId,
@@ -211,10 +213,12 @@ const BacentaForm = ({ initialValues, onSubmit, title, newBacenta }) => {
                     })
                       .then((res) => {
                         clickCard(res.data.CloseDownBacenta)
+                        setButtonLoading(false)
                         togglePopup()
                         navigate(`/constituency/displaydetails`)
                       })
                       .catch((error) => {
+                        setButtonLoading(false)
                         throwErrorMsg(
                           'There was an error closing down this bacenta',
                           error
@@ -222,7 +226,7 @@ const BacentaForm = ({ initialValues, onSubmit, title, newBacenta }) => {
                       })
                   }}
                 >
-                  {`Yes, I'm sure`}
+                  {buttonLoading ? `Submitting...` : `Yes, I'm sure`}
                 </Button>
                 <Button
                   variant="primary"

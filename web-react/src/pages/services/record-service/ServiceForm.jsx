@@ -90,7 +90,10 @@ const ServiceForm = ({
           clickCard(res.data.RecordService)
           navigate(`/${churchType}/service-details`)
         })
-        .catch((error) => throwErrorMsg('', error))
+        .catch((error) => {
+          onSubmitProps.setSubmitting(false)
+          throwErrorMsg('', error)
+        })
     }
   }
 

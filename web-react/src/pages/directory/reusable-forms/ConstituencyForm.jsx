@@ -4,7 +4,7 @@ import { FieldArray, Form, Formik } from 'formik'
 import * as Yup from 'yup'
 import { makeSelectOptions, throwErrorMsg } from 'global-utils'
 import { GET_COUNCILS } from 'queries/ListQueries'
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { ChurchContext } from 'contexts/ChurchContext'
 import FormikControl from 'components/formik-components/FormikControl'
 import PlusSign from 'components/buttons/PlusMinusSign/PlusSign'
@@ -37,6 +37,8 @@ const ConstituencyForm = ({
     loading: councilLoading,
     error: councilError,
   } = useQuery(GET_COUNCILS)
+
+  const [buttonLoading, setButtonLoading] = useState(false)
   const [CloseDownConstituency] = useMutation(MAKE_CONSTITUENCY_INACTIVE)
 
   const constituencyCouncilOptions = makeSelectOptions(councilData?.councils)
@@ -178,6 +180,7 @@ const ConstituencyForm = ({
                   type="submit"
                   className={`btn-main ${theme}`}
                   onClick={() => {
+                    setButtonLoading(false)
                     CloseDownConstituency({
                       variables: {
                         id: constituencyId,
@@ -185,16 +188,18 @@ const ConstituencyForm = ({
                       },
                     })
                       .then((res) => {
+                        setButtonLoading(false)
                         clickCard(res.data.CloseDownConstituency)
                         togglePopup()
                         navigate(`/constituency/displayall`)
                       })
                       .catch((error) => {
+                        setButtonLoading(false)
                         throwErrorMsg('', error)
                       })
                   }}
                 >
-                  {`Yes, I'm sure`}
+                  {buttonLoading ? `Submitting...` : `Yes, I'm sure`}
                 </Button>
                 <Button
                   variant="primary"

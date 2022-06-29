@@ -2,9 +2,9 @@ import { useMutation, useQuery } from '@apollo/client'
 import BaseComponent from 'components/base-component/BaseComponent'
 import { FieldArray, Form, Formik } from 'formik'
 import * as Yup from 'yup'
-import { makeSelectOptions } from 'global-utils'
+import { makeSelectOptions, throwErrorMsg } from 'global-utils'
 import { GET_STREAMS } from 'queries/ListQueries'
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { ChurchContext } from 'contexts/ChurchContext'
 import FormikControl, {
   arrayError,
@@ -30,6 +30,7 @@ const CouncilForm = ({ initialValues, onSubmit, title, newCouncil }) => {
 
   const navigate = useNavigate()
   const { data, loading, error } = useQuery(GET_STREAMS)
+  const [buttonLoading, setButtonLoading] = useState(false)
   const [CloseDownCouncil] = useMutation(MAKE_COUNCIL_INACTIVE)
 
   const streamOptions = makeSelectOptions(data?.streams)
@@ -163,6 +164,7 @@ const CouncilForm = ({ initialValues, onSubmit, title, newCouncil }) => {
                   type="submit"
                   className={`btn-main ${theme}`}
                   onClick={() => {
+                    setButtonLoading(false)
                     CloseDownCouncil({
                       variables: {
                         id: councilId,
@@ -170,21 +172,21 @@ const CouncilForm = ({ initialValues, onSubmit, title, newCouncil }) => {
                       },
                     })
                       .then((res) => {
+                        setButtonLoading(false)
                         clickCard(res.data.CloseDownCouncil)
                         togglePopup()
                         navigate(`/council/displayall`)
                       })
                       .catch((error) => {
-                        // eslint-disable-next-line no-console
-                        console.error(error)
-                        alert(
+                        setButtonLoading(false)
+                        throwErrorMsg(
                           `There was an error closing down this council`,
                           error
                         )
                       })
                   }}
                 >
-                  {`Yes, I'm sure`}
+                  {buttonLoading ? `Submitting...` : `Yes, I'm sure`}
                 </Button>
                 <Button
                   variant="primary"
