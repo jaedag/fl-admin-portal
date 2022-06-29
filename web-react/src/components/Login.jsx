@@ -2,7 +2,7 @@ import React from 'react'
 import AuthButton from './buttons/AuthButton'
 import MobileView from './responsive-design/MobileView'
 import TabletDesktopView from './responsive-design/TabletDesktopView'
-import { Container } from 'react-bootstrap'
+import { Container, Navbar } from 'react-bootstrap'
 import './Login.css'
 import Slider from 'react-slick'
 import 'slick-carousel/slick/slick.css'
@@ -10,6 +10,7 @@ import 'slick-carousel/slick/slick-theme.css'
 import BarIcon from '../assets/bars.svg'
 import GlobeIcon from '../assets/globe.svg'
 import Silhouette from '../assets/silhouette.svg'
+import Logo from '../assets/flc-logo-small.png'
 
 const Login = () => {
   var settings = {
@@ -27,6 +28,16 @@ const Login = () => {
   return (
     <>
       <TabletDesktopView>
+        <Navbar bg="dark">
+          <Container>
+            <img
+              src={Logo}
+              height="30"
+              className="d-inline-block align-top"
+              alt="FirstLove Logo"
+            />
+          </Container>
+        </Navbar>
         <div className="container text-center mt-5 desktop-card login-page">
           <div className="row align-self-center">
             <Slider {...settings} className="mb-5 mt-5">
@@ -52,14 +63,19 @@ const Login = () => {
                 />
               </div>
             </Slider>
-            <p className="mb-3 mt-3 text-white">FLC SERVANTS PORTAL</p>
+            <h2 className="mb-3 mt-3 text-white font-weight-bold">
+              FLC SERVANTS PORTAL
+            </h2>
+            <p>
+              <span className="mt-3 text-white">{catchPhrase}</span>
+              <br />
 
-            <p className="mt-3 text-white">{catchPhrase}</p>
-
-            <p className="text-secondary mb-3">
-              Click to log in to your servants portal
+              <span className="text-secondary mb-5">
+                Click to log in to your servants portal
+              </span>
             </p>
-            <div className="col-6 mx-auto mb-5">
+
+            <div className="col-6 mx-auto mt-4">
               <AuthButton mobileFullSize="true" />
             </div>
           </div>
@@ -67,7 +83,17 @@ const Login = () => {
       </TabletDesktopView>
 
       {/* <!--Mobile--> */}
-      <MobileView className="bg-wrapper">
+      <MobileView className="bg-wrapper ">
+        <Navbar bg="dark">
+          <Container>
+            <img
+              src={Logo}
+              height="30"
+              className="d-inline-block align-top"
+              alt="FirstLove Logo"
+            />
+          </Container>
+        </Navbar>
         <Container className="text-center mt-5 bg-content login-page">
           <Slider {...settings} className="mb-5">
             <div>
@@ -92,14 +118,20 @@ const Login = () => {
               />
             </div>
           </Slider>
-          <p className="mb-3 mt-3 text-white">FLC SERVANTS PORTAL</p>
+          <h3 className="mb-3 mt-3 text-white font-weight-bold">
+            FLC SERVANTS PORTAL
+          </h3>
 
-          <p className="mt-3 text-white">{catchPhrase}</p>
+          <p>
+            <span className="mt-3 text-white">{catchPhrase}</span>
+            <br />
 
-          <p className="text-secondary mb-3">
-            Click to log in to your servants portal
+            <span className="text-secondary mb-5">
+              Click to log in to your servants portal
+            </span>
           </p>
-          <div className="col-6 mx-auto ">
+
+          <div className="col-6 mx-auto mt-5 ">
             <AuthButton mobileFullSize="true" />
           </div>
         </Container>
