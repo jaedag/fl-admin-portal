@@ -50,26 +50,23 @@ const aggregates = fs
   .readFileSync(path.join(__dirname, './aggregates.graphql'))
   .toString('utf-8')
 
-exports.typeDefs =
-  schema +
-  ' ' +
-  directory +
-  ' ' +
-  aggregates +
-  ' ' +
-  directoryCrud +
-  ' ' +
-  directoryHistory +
-  ' ' +
-  directorySearch +
-  ' ' +
-  services +
-  ' ' +
-  arrivals +
-  ' ' +
-  campaigns +
-  ' ' +
-  banking +
-  ' ' +
-  quickFacts +
-  ' '
+const anagkazoTreasury = fs
+  .readFileSync(path.join(__dirname, './anagkazo-treasury.graphql'))
+  .toString('utf-8')
+
+const array = [
+  schema,
+  directory,
+  directoryCrud,
+  directoryHistory,
+  directorySearch,
+  services,
+  banking,
+  arrivals,
+  campaigns,
+  quickFacts,
+  aggregates,
+  anagkazoTreasury,
+]
+
+exports.typeDefs = array.join(' ')
