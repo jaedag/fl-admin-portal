@@ -41,6 +41,9 @@ const useGetMemberByEmail = () => {
         gatheringService:
           data.memberByEmail?.fellowship?.bacenta.constituency?.council.stream
             .gatheringService.id,
+        noIncome:
+          data.memberByEmail?.fellowship?.bacenta.constituency?.council.stream
+            .gatheringService.noIncome,
         email: user?.email,
         roles: user ? user[`https://flcadmin.netlify.app/roles`] : [],
       })

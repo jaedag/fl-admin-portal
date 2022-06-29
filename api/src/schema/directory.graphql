@@ -317,6 +317,7 @@ type Denomination implements Church {
 type GatheringService implements Church {
   id: ID @id
   name: String!
+  noIncome: Boolean
   leader: Member @relationship(type: "LEADS", direction: IN)
   denomination: Denomination! @relationship(type: "HAS", direction: IN)
   streams: [Stream!]! @relationship(type: "HAS", direction: OUT)
