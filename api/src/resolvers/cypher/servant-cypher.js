@@ -151,7 +151,7 @@ MERGE (church)-[:CURRENT_HISTORY]->(log)
 
 WITH church
    MATCH (oldLeader:Member {id: $oldServantId})
-   MERGE (oldLeader)-[:OLD_HISTORY]-(log)
+   MERGE (oldLeader)-[:OLD_HISTORY]->(log)
 
 WITH church
 

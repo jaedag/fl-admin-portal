@@ -1,7 +1,7 @@
 {
-  "name": "grand-stack-starter-api",
+  "name": "fl-admin-portal-api",
   "version": "4.1.3",
-  "description": "API app for GRANDstack",
+  "description": "API app for GRANDstack Admin Portal Project",
   "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

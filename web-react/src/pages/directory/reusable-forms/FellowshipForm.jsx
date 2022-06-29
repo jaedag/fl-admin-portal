@@ -40,6 +40,7 @@ const FellowshipForm = (props) => {
     variables: { id: councilId },
   })
 
+  const [buttonLoading, setButtonLoading] = useState(false)
   const [CloseDownFellowship] = useMutation(MAKE_FELLOWSHIP_INACTIVE, {
     refetchQueries: [
       {
@@ -262,6 +263,7 @@ const FellowshipForm = (props) => {
                   size="lg"
                   className={`btn-main ${theme}`}
                   onClick={() => {
+                    setButtonLoading(false)
                     CloseDownFellowship({
                       variables: {
                         id: fellowshipId,
@@ -269,13 +271,13 @@ const FellowshipForm = (props) => {
                       },
                     })
                       .then((res) => {
+                        setButtonLoading(false)
                         clickCard(res.data.CloseDownFellowship)
                         togglePopup()
                         navigate('/bacenta/displaydetails')
                       })
                       .catch((error) => {
-                        // eslint-disable-next-line no-console
-                        console.error(error)
+                        setButtonLoading(false)
                         throwErrorMsg(
                           'There was an error closing down this fellowship',
                           error
@@ -283,7 +285,7 @@ const FellowshipForm = (props) => {
                       })
                   }}
                 >
-                  {`Yes, I'm sure`}
+                  {buttonLoading ? `Submitting...` : `Yes, I'm sure`}
                 </Button>
                 <Button
                   variant="primary"
