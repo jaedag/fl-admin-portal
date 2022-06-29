@@ -4,6 +4,7 @@ import { arrivalsMutation } from './arrivals/arrivals-resolvers'
 import { directoryMutation } from './directory-resolvers'
 import { bankingMutation } from './banking/banking-resolver'
 import { bussingMutation } from './aggregates/component-resolvers'
+import { treasuryMutations } from './anagkazo/treasury-resolvers'
 
 /* eslint-disable no-console */
 const dotenv = require('dotenv')
@@ -634,11 +635,11 @@ export const resolvers = {
         'Leader'
       ),
 
-    //ARRIVALS MUTATIONS
     ...arrivalsMutation,
     ...serviceMutation,
     ...bussingMutation,
     ...directoryMutation,
     ...bankingMutation,
+    ...treasuryMutations,
   },
 }
