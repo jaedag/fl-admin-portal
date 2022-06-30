@@ -45,7 +45,6 @@ extend type Mutation {
 
       WITH log, date
       MATCH (author:Member {auth_id: $auth.jwt.sub})
-       MERGE (date:TimeGraph {date: date()})
        MERGE (log)-[:LOGGED_BY]->(author)
        MERGE (log)-[:RECORDED_ON]->(date)
 
