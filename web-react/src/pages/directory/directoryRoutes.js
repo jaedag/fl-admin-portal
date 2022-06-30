@@ -49,12 +49,12 @@ import {
 import ServantMembers from './grids/ServantMembers'
 import UpdateBacentaBussing from './update/UpdateBusPaymentDetails'
 import AllStreamConstituencies from './display/AllStreamConstituencies'
-import FellowshipAvgWeekdayAttendance from './quick-facts/this-month/FellowshipAvgWeekdayQuickFacts'
-import BacentaAvgWeekdayAttendance from './quick-facts/this-month/BacentaAvgWeekdayQuickFacts'
-import ConstituencyAvgWeekdayAttendance from './quick-facts/this-month/ConstituencyAvgWeekdayQuickFacts'
-import StreamAvgWeekdayAttendance from './quick-facts/this-month/StreamAvgWeekdayQuickFacts'
-import CouncilAvgWeekdayAttendance from './quick-facts/this-month/CouncilAvgWeekdayQuickFacts'
-import GatheringServiceAvgWeekdayAttendance from './quick-facts/this-month/GatheringServiceAvgWeekdayQuickFacts'
+import FellowshipAvgWeekdayQuickFacts from './quick-facts/this-month/FellowshipAvgWeekdayQuickFacts'
+import BacentaAvgWeekdayQuickFacts from './quick-facts/this-month/BacentaAvgWeekdayQuickFacts'
+import ConstituencyAvgWeekdayQuickFacts from './quick-facts/this-month/ConstituencyAvgWeekdayQuickFacts'
+import StreamAvgWeekdayQuickFacts from './quick-facts/this-month/StreamAvgWeekdayQuickFacts'
+import CouncilAvgWeekdayQuickFacts from './quick-facts/this-month/CouncilAvgWeekdayQuickFacts'
+import GatheringServiceAvgWeekdayQuickFacts from './quick-facts/this-month/GatheringServiceAvgWeekdayQuickFacts'
 import QuickFactsChurchList from './quick-facts/QuickFactsChurchList'
 
 export const memberDirectory = [
@@ -73,32 +73,32 @@ export const quickFacts = [
   },
   {
     path: '/quick-facts/this-month/fellowship',
-    element: FellowshipAvgWeekdayAttendance,
+    element: FellowshipAvgWeekdayQuickFacts,
     roles: permitMe('Fellowship'),
   },
   {
     path: '/quick-facts/this-month/bacenta',
-    element: BacentaAvgWeekdayAttendance,
+    element: BacentaAvgWeekdayQuickFacts,
     roles: permitMe('Bacenta'),
   },
   {
     path: '/quick-facts/this-month/constituency',
-    element: ConstituencyAvgWeekdayAttendance,
+    element: ConstituencyAvgWeekdayQuickFacts,
     roles: permitMe('Constituency'),
   },
   {
     path: '/quick-facts/this-month/stream',
-    element: StreamAvgWeekdayAttendance,
+    element: StreamAvgWeekdayQuickFacts,
     roles: permitMe('Stream'),
   },
   {
     path: '/quick-facts/this-month/council',
-    element: CouncilAvgWeekdayAttendance,
+    element: CouncilAvgWeekdayQuickFacts,
     roles: permitMe('Council'),
   },
   {
     path: '/quick-facts/this-month/gatheringservice',
-    element: GatheringServiceAvgWeekdayAttendance,
+    element: GatheringServiceAvgWeekdayQuickFacts,
     roles: permitMe('GatheringService'),
   },
 ]
