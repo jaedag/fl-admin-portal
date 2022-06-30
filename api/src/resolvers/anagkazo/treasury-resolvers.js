@@ -45,8 +45,6 @@ export const treasuryMutations = {
         })
       )
 
-      // eslint-disable-next-line no-console
-      console.log('response', confirmationResponse)
       return confirmationResponse.record.properties
     } catch (error) {
       throwErrorMsg('There was a problem confirming the banking', error)
