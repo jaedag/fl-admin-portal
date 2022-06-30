@@ -34,6 +34,7 @@
 
 .login-page .slick-track {
    height: 200px;
+   margin-top: 20px;
 }
 
 .slick-dots li button::before {
