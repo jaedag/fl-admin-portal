@@ -1,5 +1,4 @@
 import React, { useContext } from 'react'
-import AttendanceQuickFactsCard from '../components/AttendanceQuickFactsCard'
 import '../QuickFacts.css'
 import { useQuery } from '@apollo/client'
 import { ChurchContext } from 'contexts/ChurchContext'
@@ -10,11 +9,8 @@ import {
   GATHERING_SERVICE_AVG_BUSSING_THIS_MONTH,
 } from '../QuickFactsQueries'
 import QuickFactsHeader from '../components/QuickFactsHeader'
-import IncomeQuickFactsCard from '../components/IncomeQuickFactsCard'
-import Slider from 'react-slick'
-import 'slick-carousel/slick/slick.css'
-import 'slick-carousel/slick/slick-theme.css'
-import BussingQuickFactsCard from '../components/BussingQuickFactsCard'
+import QuickFactsSlider from '../components/QuickFactsSlider'
+import PlaceholderCustom from 'components/Placeholder'
 
 const GatheringServiceAvgWeekdayAttendance = () => {
   const { gatheringServiceId } = useContext(ChurchContext)
@@ -81,15 +77,6 @@ const GatheringServiceAvgWeekdayAttendance = () => {
     },
   ]
 
-  var settings = {
-    dots: true,
-    infinite: true,
-    speed: 900,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    arrows: true,
-  }
-
   return (
     <BaseComponent
       loading={attendanceLoading}
@@ -98,20 +85,15 @@ const GatheringServiceAvgWeekdayAttendance = () => {
     >
       <div className="quick-fact-page">
         <QuickFactsHeader />
-
-        <div className=" page-padding mt-3 quick-fact-card-wrapper">
-          <Slider {...settings} className="quick-facts-shadow">
-            <div>
-              <AttendanceQuickFactsCard attendanceDetails={attendanceDetails} />
-            </div>
-            <div>
-              <IncomeQuickFactsCard incomeDetails={incomeDetails} />
-            </div>
-            <div>
-              <BussingQuickFactsCard bussingDetails={bussingDetails} />
-            </div>
-          </Slider>
-        </div>
+        <PlaceholderCustom loading={attendanceLoading}>
+          <div className=" page-padding mt-3 quick-fact-card-wrapper">
+            <QuickFactsSlider
+              attendanceDetails={attendanceDetails}
+              incomeDetails={incomeDetails}
+              bussingDetails={bussingDetails}
+            />
+          </div>
+        </PlaceholderCustom>
       </div>
     </BaseComponent>
   )
