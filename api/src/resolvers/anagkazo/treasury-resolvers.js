@@ -1,5 +1,4 @@
-import { session } from 'neo4j-driver'
-import { permitAdmin } from '../permissions'
+import { permitTeller, permitAdmin } from '../permissions'
 import {
   isAuth,
   noEmptyArgsValidation,
@@ -20,8 +19,9 @@ export const treasuryMutations = {
       'Stream',
       'Teller'
     ),
-  ConfirmReceipt: async (object, args, context) => {
-    isAuth(permitAdmin('Stream'), context.auth.roles)
+  ConfirmBanking: async (object, args, context) => {
+    isAuth(permitTeller(), context.auth.roles)
+    const session = context.executionContext.session()
     noEmptyArgsValidation['serviceRecordId']
 
     const today = new Date()
@@ -29,12 +29,27 @@ export const treasuryMutations = {
       throwErrorMsg('You cannot receive offerings today! Thank you')
     }
 
-    const confirmationResponse = rearrangeCypherObject(
-      await session.run(cypher.confirmReceipt, args)
-    )
+    try {
+      const checkAlreadyConfirmed = rearrangeCypherObject(
+        await session.run(cypher.checkIfConfirmed, args)
+      )
 
-    // eslint-disable-next-line no-console
-    console.log('response', confirmationResponse)
-    return confirmationResponse.properties
+      if (checkAlreadyConfirmed) {
+        throwErrorMsg('This service offering has already been banked!')
+      }
+
+      const confirmationResponse = rearrangeCypherObject(
+        await session.run(cypher.confirmBanking, {
+          ...args,
+          auth: context.auth,
+        })
+      )
+
+      // eslint-disable-next-line no-console
+      console.log('response', confirmationResponse)
+      return confirmationResponse.record.properties
+    } catch (error) {
+      throwErrorMsg('There was a problem confirming the banking', error)
+    }
   },
 }

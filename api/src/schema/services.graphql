@@ -171,6 +171,7 @@ extend type GatheringService {
         WHERE record.noServiceReason IS NULL
           AND record.bankingSlip IS NULL
           AND (record.transactionStatus IS NULL OR record.transactionStatus <> 'success')
+          AND record.tellerConfirmationAt IS NULL
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships) WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
 
        WITH DISTINCT fellowships, this
@@ -197,6 +198,7 @@ extend type GatheringService {
         WHERE record.noServiceReason IS NULL
           AND record.bankingSlip IS NULL
           AND (record.transactionStatus IS NULL OR record.transactionStatus <> 'success')
+          AND record.tellerConfirmationAt IS NULL
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships) WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
 
        WITH DISTINCT fellowships, this
@@ -221,7 +223,7 @@ extend type GatheringService {
 
        WITH DISTINCT record, this
         WHERE record.noServiceReason IS NULL
-         AND (record.bankingSlip IS NOT NULL OR record.transactionStatus ='success')
+         AND (record.bankingSlip IS NOT NULL OR record.transactionStatus ='success' OR record.tellerConfirmationAt IS NOT NULL)
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships) WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
 
        WITH DISTINCT fellowships, this
@@ -246,7 +248,7 @@ extend type GatheringService {
 
        WITH DISTINCT record, this
         WHERE record.noServiceReason IS NULL
-         AND (record.bankingSlip IS NOT NULL OR record.transactionStatus ='success')
+         AND (record.bankingSlip IS NOT NULL OR record.transactionStatus ='success' OR record.tellerConfirmationAt IS NOT NULL)
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships) WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
 
        WITH DISTINCT fellowships, this
@@ -427,6 +429,7 @@ extend type Stream {
         WHERE record.noServiceReason IS NULL
           AND record.bankingSlip IS NULL
           AND (record.transactionStatus IS NULL OR record.transactionStatus <> 'success')
+          AND record.tellerConfirmationAt IS NULL
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships) WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
 
        WITH DISTINCT fellowships, this
@@ -453,6 +456,7 @@ extend type Stream {
         WHERE record.noServiceReason IS NULL
           AND record.bankingSlip IS NULL
           AND (record.transactionStatus IS NULL OR record.transactionStatus <> 'success')
+          AND record.tellerConfirmationAt IS NULL
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships) WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
 
        WITH DISTINCT fellowships, this
@@ -477,7 +481,7 @@ extend type Stream {
 
        WITH DISTINCT record, this
         WHERE record.noServiceReason IS NULL
-         AND (record.bankingSlip IS NOT NULL OR record.transactionStatus ='success')
+         AND (record.bankingSlip IS NOT NULL OR record.transactionStatus ='success' OR record.tellerConfirmationAt IS NOT NULL)
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships) WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
 
        WITH DISTINCT fellowships, this
@@ -502,7 +506,7 @@ extend type Stream {
 
        WITH DISTINCT record, this
         WHERE record.noServiceReason IS NULL
-         AND (record.bankingSlip IS NOT NULL OR record.transactionStatus ='success')
+         AND (record.bankingSlip IS NOT NULL OR record.transactionStatus ='success' OR record.tellerConfirmationAt IS NOT NULL)
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships) WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
 
        WITH DISTINCT fellowships, this
@@ -681,6 +685,7 @@ extend type Council {
         WHERE record.noServiceReason IS NULL
           AND record.bankingSlip IS NULL
           AND (record.transactionStatus IS NULL OR record.transactionStatus <> 'success')
+          AND record.tellerConfirmationAt IS NULL
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships) WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
 
        WITH DISTINCT fellowships, this
@@ -707,6 +712,7 @@ extend type Council {
         WHERE record.noServiceReason IS NULL
           AND record.bankingSlip IS NULL
           AND (record.transactionStatus IS NULL OR record.transactionStatus <> 'success')
+          AND record.tellerConfirmationAt IS NULL
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships) WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
 
        WITH DISTINCT fellowships, this
@@ -731,7 +737,7 @@ extend type Council {
 
        WITH DISTINCT record, this
         WHERE record.noServiceReason IS NULL
-         AND (record.bankingSlip IS NOT NULL OR record.transactionStatus ='success')
+         AND (record.bankingSlip IS NOT NULL OR record.transactionStatus ='success' OR record.tellerConfirmationAt IS NOT NULL)
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships) WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
 
        WITH DISTINCT fellowships, this
@@ -756,7 +762,7 @@ extend type Council {
 
        WITH DISTINCT record, this
         WHERE record.noServiceReason IS NULL
-         AND (record.bankingSlip IS NOT NULL OR record.transactionStatus ='success')
+         AND (record.bankingSlip IS NOT NULL OR record.transactionStatus ='success' OR record.tellerConfirmationAt IS NOT NULL)
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships) WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
 
        WITH DISTINCT fellowships, this
@@ -940,6 +946,7 @@ extend type Constituency {
         WHERE record.noServiceReason IS NULL
           AND record.bankingSlip IS NULL
           AND (record.transactionStatus IS NULL OR record.transactionStatus <> 'success')
+          AND record.tellerConfirmationAt IS NULL
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships) WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
 
        WITH DISTINCT fellowships, this
@@ -966,6 +973,7 @@ extend type Constituency {
         WHERE record.noServiceReason IS NULL
           AND record.bankingSlip IS NULL
           AND (record.transactionStatus IS NULL OR record.transactionStatus <> 'success')
+          AND record.tellerConfirmationAt IS NULL
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships) WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
 
        WITH DISTINCT fellowships, this
@@ -990,7 +998,7 @@ extend type Constituency {
 
        WITH DISTINCT record, this
         WHERE record.noServiceReason IS NULL
-         AND (record.bankingSlip IS NOT NULL OR record.transactionStatus ='success')
+         AND (record.bankingSlip IS NOT NULL OR record.transactionStatus ='success' OR record.tellerConfirmationAt IS NOT NULL)
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships) WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
 
        WITH DISTINCT fellowships, this
@@ -1015,7 +1023,7 @@ extend type Constituency {
 
        WITH DISTINCT record, this
         WHERE record.noServiceReason IS NULL
-         AND (record.bankingSlip IS NOT NULL OR record.transactionStatus ='success')
+         AND (record.bankingSlip IS NOT NULL OR record.transactionStatus ='success' OR record.tellerConfirmationAt IS NOT NULL)
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships) WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
 
        WITH DISTINCT fellowships, this

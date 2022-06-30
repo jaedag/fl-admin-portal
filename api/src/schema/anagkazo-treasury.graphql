@@ -6,5 +6,5 @@ extend type Member {
 extend type Mutation {
   MakeStreamTeller(streamId: ID!, tellerId: ID!): Member
   RemoveStreamTeller(streamId: ID!, tellerId: ID!): Member
-  ConfirmReceipt(serviceRecordId: ID!): ServiceRecord
+  ConfirmBanking(serviceRecordId: ID!): ServiceRecord
 }
