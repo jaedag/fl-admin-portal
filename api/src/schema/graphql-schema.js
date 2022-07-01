@@ -31,6 +31,8 @@ const services = fs
   .readFileSync(path.join(__dirname, 'services.graphql'))
   .toString('utf-8')
 
+const londonServices = fs.readFileSync(path.join(__dirname, './london.graphql'))
+
 const banking = fs
   .readFileSync(path.join(__dirname, './banking.graphql'))
   .toString('utf-8')
@@ -67,6 +69,7 @@ const array = [
   quickFacts,
   aggregates,
   anagkazoTreasury,
+  londonServices,
 ]
 
 exports.typeDefs = array.join(' ')

@@ -13,10 +13,6 @@ export const recordService = `
 CREATE (serviceRecord:ServiceRecord {created_at:datetime()})
         SET serviceRecord.id = apoc.create.uuid(),
         serviceRecord.attendance = $attendance,
-        serviceRecord.income = $income,
-        serviceRecord.foreignCurrency = $foreignCurrency,
-        serviceRecord.numberOfTithers = $numberOfTithers,
-        serviceRecord.treasurerSelfie = $treasurerSelfie,
         serviceRecord.servicePicture = $servicePicture
       WITH serviceRecord
 
@@ -30,11 +26,6 @@ CREATE (serviceRecord:ServiceRecord {created_at:datetime()})
       MERGE (serviceRecord)-[:LOGGED_BY]->(leader)
       MERGE (serviceRecord)-[:SERVICE_HELD_ON]->(serviceDate)
       MERGE (log)-[:HAS_SERVICE]->(serviceRecord)
-
-      WITH serviceRecord
-      UNWIND $treasurers AS treasurerId WITH treasurerId, serviceRecord
-      MATCH (treasurer:Member {id: treasurerId})
-      MERGE (treasurer)-[:WAS_TREASURER_FOR]->(serviceRecord)
 
       RETURN serviceRecord
 `

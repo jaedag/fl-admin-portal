@@ -19,8 +19,6 @@ exports.serviceNoIncomeMutations = {
     const relationshipCheck = rearrangeCypherObject(
       await session.run(serviceCypher.checkCurrentServiceLog, args)
     )
-    // eslint-disable-next-line no-console
-    console.log('relationship:', relationshipCheck)
 
     if (!relationshipCheck.exists) {
       //Checks if the church has a current history record otherwise creates it
@@ -51,8 +49,6 @@ exports.serviceNoIncomeMutations = {
     const serviceCheck = rearrangeCypherObject(
       await session.run(serviceCypher.checkFormFilledThisWeek, args)
     )
-    // eslint-disable-next-line no-console
-    console.log('serviceCheck:', serviceCheck)
 
     if (serviceCheck.alreadyFilled) {
       throwErrorMsg(errorMessage.no_double_form_filling)
@@ -68,8 +64,6 @@ exports.serviceNoIncomeMutations = {
         auth: context.auth,
       })
     )
-    // eslint-disable-next-line no-console
-    console.log('serviceDetails', serviceDetails)
 
     return serviceDetails.serviceRecord.properties
   },
