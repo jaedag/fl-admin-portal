@@ -34,10 +34,9 @@ const UpdateConstituency = () => {
     name: constituency?.name,
     leaderName: constituency?.leader?.fullName ?? '',
     leaderId: constituency?.leader?.id || '',
-    council: constituency?.council ?? '',
+    council: constituency?.council?.id,
     bacentas: constituency?.bacentas?.length ? constituency.bacentas : [''],
   }
-
   const [LogConstituencyHistory] = useMutation(LOG_CONSTITUENCY_HISTORY, {
     refetchQueries: [
       { query: DISPLAY_CONSTITUENCY, variables: { id: constituencyId } },
@@ -54,7 +53,7 @@ const UpdateConstituency = () => {
     refetchQueries: [
       {
         query: GET_COUNCIL_CONSTITUENCIES,
-        variables: { id: initialValues.council.id },
+        variables: { id: constituency.council.id },
       },
     ],
   })
@@ -168,17 +167,17 @@ const UpdateConstituency = () => {
       }
 
       //Log if Council Changes
-      if (values.council !== initialValues.council.id) {
+      if (values.council !== constituency.council.id) {
         await RemoveConstituencyCouncil({
           variables: {
-            higherChurch: initialValues.council.id,
+            higherChurch: constituency.council.id,
             lowerChurch: [constituencyId],
           },
         })
         await AddConstituencyCouncil({
           variables: {
             councilId: values.council,
-            oldCouncilId: initialValues.council.id,
+            oldCouncilId: constituency.council.id,
             constituencyId: constituencyId,
           },
         })
