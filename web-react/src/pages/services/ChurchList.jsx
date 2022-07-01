@@ -1,7 +1,6 @@
 import MenuButton from 'components/buttons/MenuButton'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { MemberContext } from 'contexts/MemberContext'
-import { parseMemberCount } from 'global-utils'
 import useSetUserChurch from 'hooks/useSetUserChurch'
 import React, { useContext } from 'react'
 import { useNavigate } from 'react-router'
