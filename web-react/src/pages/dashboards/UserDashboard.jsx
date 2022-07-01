@@ -20,7 +20,6 @@ const UserDashboard = () => {
   const { clickCard } = useContext(ChurchContext)
   const navigate = useNavigate()
   const { assessmentChurch } = useComponentQuery()
-  console.log('currentUser', currentUser)
   const assessmentData = getServiceGraphData(assessmentChurch)
 
   return (
