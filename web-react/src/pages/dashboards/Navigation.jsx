@@ -82,7 +82,7 @@ const Navigator = () => {
           <Offcanvas.Body className={`${theme}`}>
             <Nav className="justify-content-start flex-grow-1">
               {menuItems.map((menuItem, index) => (
-                <RoleView key={index} userRoles={menuItem.userRoles}>
+                <RoleView key={index} roles={menuItem.roles}>
                   <Nav.Link
                     as={Link}
                     eventKey={index}

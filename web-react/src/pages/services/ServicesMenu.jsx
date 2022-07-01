@@ -30,7 +30,6 @@ const Services = () => {
             <p className={`${theme} menu-subheading`}>Services</p>
           </div>
         </PlaceholderCustom>
-
         <div className="d-grid gap-2 mt-5 text-left">
           {churchType === 'Fellowship' &&
             church?.vacationStatus === 'Active' && (

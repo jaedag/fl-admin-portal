@@ -1,7 +1,6 @@
 import MenuButton from 'components/buttons/MenuButton'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { MemberContext } from 'contexts/MemberContext'
-import { parseMemberCount } from 'global-utils'
 import useSetUserChurch from 'hooks/useSetUserChurch'
 import React, { useContext } from 'react'
 import { useNavigate } from 'react-router'
@@ -36,9 +35,9 @@ const ChurchList = ({ color, link }) => {
                 <MenuButton
                   key={index}
                   title={church.name}
-                  caption={parseMemberCount(church.memberCount)}
                   icon={MemberIcon}
                   iconBg={true}
+                  noCaption
                   iconCaption={church.__typename}
                   onClick={() => {
                     clickCard(church)
