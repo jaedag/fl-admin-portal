@@ -82,6 +82,25 @@ export const RECORD_SERVICE_NO_OFFERING = gql`
   }
 `
 
+export const RECORD_SERVICE_NO_INCOME = gql`
+  mutation RecordServiceNoIncome(
+    $churchId: ID!
+    $serviceDate: String!
+    $attendance: Int!
+    $servicePicture: String!
+  ) {
+    RecordServiceNoOffering(
+      id: $churchId
+      serviceDate: $serviceDate
+      attendance: $attendance
+      servicePicture: $servicePicture
+    ) {
+      id
+      week
+    }
+  }
+`
+
 export const DISPLAY_FELLOWSHIP_SERVICE = gql`
   query DisplayServiceRecords($serviceId: ID!, $fellowshipId: ID!) {
     serviceRecords(where: { id: $serviceId }) {

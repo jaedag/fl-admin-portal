@@ -9,8 +9,11 @@ import { TelephoneFill, Whatsapp } from 'react-bootstrap-icons'
 import { useNavigate } from 'react-router'
 import { COUNCIL_BY_CONSTITUENCY } from './DefaultersQueries'
 import PlaceholderDefaulterList from './PlaceholderDefaulterList'
+import { MemberContext } from 'contexts/MemberContext'
 
 const CouncilByConstituency = () => {
+  const { currentUser } = useContext(MemberContext)
+
   const { councilId, clickCard } = useContext(ChurchContext)
   const { setUser } = useSetUserChurch()
   const { data, loading, error } = useQuery(COUNCIL_BY_CONSTITUENCY, {
@@ -56,6 +59,7 @@ const CouncilByConstituency = () => {
                       Form Not Filled This Week{' '}
                       {constituency.formDefaultersThisWeekCount}
                     </div>
+
                     <div
                       className={
                         constituency.bankedThisWeekCount ===

@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import { ChurchContext } from '../../../contexts/ChurchContext'
 
 import { useMutation, useQuery } from '@apollo/client'
-import { RECORD_SERVICE } from './RecordServiceMutations'
+import { RECORD_SERVICE_NO_INCOME } from './RecordServiceMutations'
 import { DISPLAY_FELLOWSHIP } from '../../directory/display/ReadQueries'
 import ServiceForm from './ServiceForm'
 import BaseComponent from 'components/base-component/BaseComponent'
@@ -16,7 +16,7 @@ const FellowshipService = () => {
   const { data, loading, error } = useQuery(DISPLAY_FELLOWSHIP, {
     variables: { id: fellowshipId },
   })
-  const [RecordService] = useMutation(RECORD_SERVICE, {
+  const [RecordService] = useMutation(RECORD_SERVICE_NO_INCOME, {
     refetchQueries: [{ query: FELLOWSHIP_GRAPHS }],
   })
 

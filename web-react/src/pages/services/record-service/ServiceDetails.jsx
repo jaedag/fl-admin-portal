@@ -11,7 +11,7 @@ import { useNavigate } from 'react-router'
 import './ServiceDetails.css'
 
 const ServiceDetails = ({ service, church, loading }) => {
-  const { theme } = useContext(MemberContext)
+  const { theme, currentUser } = useContext(MemberContext)
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -23,16 +23,26 @@ const ServiceDetails = ({ service, church, loading }) => {
     return <SpinnerPage />
   }
 
-  const table = [
-    ['Date of Service', new Date(service.serviceDate.date).toDateString()],
-    ['Form Filled At', parseNeoTime(service.created_at)],
-    ['Attendance', service.attendance],
-    ['Income', service.income],
-    ...service.treasurers.map((treasurer, i) => [
-      `Treasurer ${i + 1}`,
-      treasurer.fullName,
-    ]),
-  ]
+  var table = []
+
+  if (!currentUser.noIncome) {
+    table = [
+      ['Date of Service', new Date(service.serviceDate.date).toDateString()],
+      ['Form Filled At', parseNeoTime(service.created_at)],
+      ['Attendance', service.attendance],
+      ['Income', service.income],
+      ...service.treasurers.map((treasurer, i) => [
+        `Treasurer ${i + 1}`,
+        treasurer.fullName,
+      ]),
+    ]
+  } else {
+    table = [
+      ['Date of Service', new Date(service.serviceDate.date).toDateString()],
+      ['Form Filled At', parseNeoTime(service.created_at)],
+      ['Attendance', service.attendance],
+    ]
+  }
 
   return (
     <Container>
@@ -42,10 +52,10 @@ const ServiceDetails = ({ service, church, loading }) => {
       <PlaceholderCustom as="h6" loading={loading}>
         <HeadingSecondary>{`${church?.name} ${church?.__typename}`}</HeadingSecondary>
         <p>{`Recorded by ${service?.created_by.fullName}`}</p>
-        {service?.bankingSlipUploader && (
+        {!currentUser.noIncome && service?.bankingSlipUploader && (
           <p className="fw-bold">{`Banking Slip Uploaded by ${service?.bankingSlipUploader.fullName}`}</p>
         )}
-        {service?.offeringBankedBy && (
+        {!currentUser.noIncome && service?.offeringBankedBy && (
           <p className="fw-bold">{`Offering Banked by ${service?.offeringBankedBy.fullName}`}</p>
         )}
       </PlaceholderCustom>
@@ -55,20 +65,24 @@ const ServiceDetails = ({ service, church, loading }) => {
             <Row className="d-flex justify-content-center">
               <TableFromArrays tableArray={table} loading={loading} />
               <div className="text-center">
-                <h6>Treasurer Selfie</h6>
-                <div>
-                  <PlaceholderCustom
-                    className="report-picture placeholder"
-                    xs={12}
-                    loading={loading}
-                  >
-                    <img
-                      className="report-picture"
-                      src={service.treasurerSelfie}
-                      alt="treasurer selfie"
-                    />
-                  </PlaceholderCustom>
-                </div>
+                {!currentUser.noIncome && (
+                  <>
+                    <h6>Treasurer Selfie</h6>
+                    <div>
+                      <PlaceholderCustom
+                        className="report-picture placeholder"
+                        xs={12}
+                        loading={loading}
+                      >
+                        <img
+                          className="report-picture"
+                          src={service.treasurerSelfie}
+                          alt="treasurer selfie"
+                        />
+                      </PlaceholderCustom>
+                    </div>
+                  </>
+                )}
                 <h6>Service Picture</h6>
                 <div>
                   <PlaceholderCustom
@@ -83,7 +97,7 @@ const ServiceDetails = ({ service, church, loading }) => {
                     />
                   </PlaceholderCustom>
                 </div>
-                {service?.offeringBankedBy && (
+                {!currentUser.noIncome && service?.offeringBankedBy && (
                   <div className="mb-4">
                     {`${service?.offeringBankedBy.fullName} used the Self Banking Feature. Click this button to see
                     Details`}
@@ -94,7 +108,7 @@ const ServiceDetails = ({ service, church, loading }) => {
                     </div>
                   </div>
                 )}
-                {service?.bankingSlip && (
+                {!currentUser.noIncome && service?.bankingSlip && (
                   <>
                     <h6>Banking Slip</h6>
 
@@ -113,7 +127,7 @@ const ServiceDetails = ({ service, church, loading }) => {
                     </div>
                   </>
                 )}{' '}
-                {!service?.bankingProof && (
+                {!currentUser.noIncome && !service?.bankingProof && (
                   <p className="fw-bold text-danger">
                     You Have Not Submitted Your Banking Slip!!!
                   </p>

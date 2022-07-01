@@ -50,49 +50,78 @@ const DefaultersDashboard = () => {
       break
   }
 
-  const defaulters = [
-    {
-      title: 'Services This Week',
-      data: church?.servicesThisWeekCount,
-      color: church?.servicesThisWeekCount ? 'good' : 'bad',
-      link: church?.servicesThisWeekCount ? '/services/filled-services' : '#',
-    },
-    {
-      title: 'Not Filled Forms',
-      data: church?.formDefaultersThisWeekCount,
-      color: church?.formDefaultersThisWeekCount ? 'bad' : 'good',
-      link: church?.formDefaultersThisWeekCount
-        ? '/services/form-defaulters'
-        : '#',
-    },
-    {
-      title: 'Have Banked',
-      data: church?.bankedThisWeekCount,
-      color:
-        church?.bankedThisWeekCount === church?.servicesThisWeekCount
-          ? 'good'
-          : church?.bankedThisWeekCount > 0
-          ? 'yellow'
-          : 'bad',
-      link: church?.bankedThisWeekCount ? '/services/banked' : '#',
-    },
-    {
-      title: 'Have Not Banked',
-      data: church?.bankingDefaultersThisWeekCount,
-      color: church?.bankingDefaultersThisWeekCount ? 'bad' : 'good',
-      link: church?.bankingDefaultersThisWeekCount
-        ? '/services/banking-defaulters'
-        : '#',
-    },
-    {
-      title: 'Canc. Service',
-      data: church?.cancelledServicesThisWeekCount,
-      color: church?.cancelledServicesThisWeekCount ? 'bad' : 'good',
-      link: church?.cancelledServicesThisWeekCount
-        ? '/services/cancelled-services'
-        : '#',
-    },
-  ]
+  var defaulters = []
+
+  if (!currentUser.noIncome) {
+    defaulters = [
+      {
+        title: 'Services This Week',
+        data: church?.servicesThisWeekCount,
+        color: church?.servicesThisWeekCount ? 'good' : 'bad',
+        link: church?.servicesThisWeekCount ? '/services/filled-services' : '#',
+      },
+      {
+        title: 'Not Filled Forms',
+        data: church?.formDefaultersThisWeekCount,
+        color: church?.formDefaultersThisWeekCount ? 'bad' : 'good',
+        link: church?.formDefaultersThisWeekCount
+          ? '/services/form-defaulters'
+          : '#',
+      },
+      {
+        title: 'Have Banked',
+        data: church?.bankedThisWeekCount,
+        color:
+          church?.bankedThisWeekCount === church?.servicesThisWeekCount
+            ? 'good'
+            : church?.bankedThisWeekCount > 0
+            ? 'yellow'
+            : 'bad',
+        link: church?.bankedThisWeekCount ? '/services/banked' : '#',
+      },
+      {
+        title: 'Have Not Banked',
+        data: church?.bankingDefaultersThisWeekCount,
+        color: church?.bankingDefaultersThisWeekCount ? 'bad' : 'good',
+        link: church?.bankingDefaultersThisWeekCount
+          ? '/services/banking-defaulters'
+          : '#',
+      },
+      {
+        title: 'Canc. Service',
+        data: church?.cancelledServicesThisWeekCount,
+        color: church?.cancelledServicesThisWeekCount ? 'bad' : 'good',
+        link: church?.cancelledServicesThisWeekCount
+          ? '/services/cancelled-services'
+          : '#',
+      },
+    ]
+  } else {
+    defaulters = [
+      {
+        title: 'Services This Week',
+        data: church?.servicesThisWeekCount,
+        color: church?.servicesThisWeekCount ? 'good' : 'bad',
+        link: church?.servicesThisWeekCount ? '/services/filled-services' : '#',
+      },
+      {
+        title: 'Not Filled Forms',
+        data: church?.formDefaultersThisWeekCount,
+        color: church?.formDefaultersThisWeekCount ? 'bad' : 'good',
+        link: church?.formDefaultersThisWeekCount
+          ? '/services/form-defaulters'
+          : '#',
+      },
+      {
+        title: 'Canc. Service',
+        data: church?.cancelledServicesThisWeekCount,
+        color: church?.cancelledServicesThisWeekCount ? 'bad' : 'good',
+        link: church?.cancelledServicesThisWeekCount
+          ? '/services/cancelled-services'
+          : '#',
+      },
+    ]
+  }
 
   const aggregates = {
     title: plural(subChurch),
