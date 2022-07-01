@@ -36,9 +36,9 @@ const ChurchList = ({ color, link }) => {
                 <MenuButton
                   key={index}
                   title={church.name}
-                  caption={parseMemberCount(church.memberCount)}
                   icon={MemberIcon}
                   iconBg={true}
+                  noCaption
                   iconCaption={church.__typename}
                   onClick={() => {
                     clickCard(church)
