@@ -57,29 +57,27 @@ export const MAKE_COUNCIL_INACTIVE = gql`
 `
 
 export const MAKE_STREAM_INACTIVE = gql`
-  mutation CloseDownStream($id: ID!, $leaderId: ID!) {
-    CloseDownStream(streamId: $id, leaderId: $leaderId) {
+  mutation CloseDownStream($id: ID!) {
+    CloseDownStream(streamId: $id) {
       id
       name
 
-      gatheringService {
+      streams {
         id
-        streams {
-          id
+      }
+
+      history(limit: 5) {
+        id
+        timeStamp
+        created_at {
+          date
         }
-        history(limit: 5) {
+        loggedBy {
           id
-          timeStamp
-          created_at {
-            date
-          }
-          loggedBy {
-            id
-            firstName
-            lastName
-          }
-          historyRecord
+          firstName
+          lastName
         }
+        historyRecord
       }
     }
   }

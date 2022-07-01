@@ -11,8 +11,11 @@ import BaseComponent from 'components/base-component/BaseComponent'
 import { Col, Container, Row } from 'react-bootstrap'
 import PlaceholderCustom from 'components/Placeholder'
 import GraphDropdown from './GraphDropdown'
+import { MemberContext } from 'contexts/MemberContext'
 
 const StreamReport = () => {
+  const { currentUser } = useContext(MemberContext)
+
   const { streamId } = useContext(ChurchContext)
   const [bussing, setBussing] = useState(true)
   const { data, loading, error } = useQuery(STREAM_GRAPHS, {
@@ -64,7 +67,7 @@ const StreamReport = () => {
             />
           </Col>
 
-          {(!bussing || loading) && (
+          {(!bussing & !currentUser.noIncome || loading) && (
             <Col>
               <StatDisplay
                 title="Avg Weekly Income"
@@ -73,14 +76,28 @@ const StreamReport = () => {
             </Col>
           )}
         </Row>
-        <ChurchGraph
-          loading={loading}
-          stat1="attendance"
-          stat2={!bussing ? 'income' : null}
-          churchData={churchData}
-          church="stream"
-          bussing={bussing}
-        />
+
+        {!currentUser.noIncome ? (
+          <ChurchGraph
+            loading={loading}
+            stat1="attendance"
+            stat2={!bussing ? 'income' : null}
+            churchData={churchData}
+            church="stream"
+            bussing={bussing}
+            income={true}
+          />
+        ) : (
+          <ChurchGraph
+            loading={loading}
+            stat1="attendance"
+            stat2={null}
+            churchData={churchData}
+            church="stream"
+            bussing={bussing}
+            income={false}
+          />
+        )}
       </Container>
     </BaseComponent>
   )

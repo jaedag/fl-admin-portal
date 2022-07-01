@@ -13,6 +13,7 @@ import { Col, Row, Table, Container } from 'react-bootstrap'
 import Placeholder from '../../components/Placeholder'
 import { ChurchContext } from 'contexts/ChurchContext'
 import useComponentQuery from './useComponentQuery'
+import RoleView from '../../auth/RoleView'
 
 const UserDashboard = () => {
   const { currentUser, userJobs } = useContext(MemberContext)
@@ -68,23 +69,36 @@ const UserDashboard = () => {
                 statistic={getMonthlyStatAverage(assessmentData, 'attendance')}
               />
             </Col>
-
-            <Col>
-              <StatDisplay
-                title="Avg Weekly Income (GH₵)"
-                loading={!assessmentData}
-                statistic={getMonthlyStatAverage(assessmentData, 'income')}
-              />
-            </Col>
+            {!currentUser.noIncome && (
+              <Col>
+                <StatDisplay
+                  title="Avg Weekly Income (GH₵)"
+                  loading={!assessmentData}
+                  statistic={getMonthlyStatAverage(assessmentData, 'income')}
+                />
+              </Col>
+            )}
           </Row>
-          <ChurchGraph
-            loading={!assessmentChurch}
-            stat1="attendance"
-            stat2="income"
-            church={assessmentChurch?.__typename.toLowerCase()}
-            churchData={assessmentData}
-            secondaryTitle={`${assessmentChurch?.name} ${assessmentChurch?.__typename}`}
-          />
+          {!currentUser.noIncome ? (
+            <ChurchGraph
+              loading={!assessmentChurch}
+              stat1="attendance"
+              stat2="income"
+              income={true}
+              church={assessmentChurch?.__typename.toLowerCase()}
+              churchData={assessmentData}
+              secondaryTitle={`${assessmentChurch?.name} ${assessmentChurch?.__typename}`}
+            />
+          ) : (
+            <ChurchGraph
+              loading={!assessmentChurch}
+              stat1="attendance"
+              income={false}
+              church={assessmentChurch?.__typename.toLowerCase()}
+              churchData={assessmentData}
+              secondaryTitle={`${assessmentChurch?.name} ${assessmentChurch?.__typename}`}
+            />
+          )}
         </>
       </Container>
     </>

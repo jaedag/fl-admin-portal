@@ -11,9 +11,12 @@ import { Col, Container, Row } from 'react-bootstrap'
 import PlaceholderCustom from 'components/Placeholder'
 import { ChurchContext } from 'contexts/ChurchContext'
 import GraphDropdown from './GraphDropdown'
+import { MemberContext } from 'contexts/MemberContext'
 
 const CouncilReport = () => {
   const { councilId } = useContext(ChurchContext)
+  const { currentUser } = useContext(MemberContext)
+
   const [bussing, setBussing] = useState(true)
   const { data, loading, error } = useQuery(COUNCIL_GRAPHS, {
     variables: { councilId: councilId },
@@ -65,7 +68,7 @@ const CouncilReport = () => {
           </Col>
 
           <Col>
-            {(!bussing || loading) && (
+            {(!bussing & !currentUser.noIncome || loading) && (
               <StatDisplay
                 title="Avg Weekly Income"
                 statistic={getMonthlyStatAverage(churchData, 'income')}
@@ -73,14 +76,28 @@ const CouncilReport = () => {
             )}
           </Col>
         </Row>
-        <ChurchGraph
-          loading={loading}
-          stat1="attendance"
-          stat2={!bussing ? 'income' : null}
-          churchData={churchData}
-          church="council"
-          bussing={bussing}
-        />
+
+        {!currentUser.noIncome ? (
+          <ChurchGraph
+            loading={loading}
+            stat1="attendance"
+            stat2={!bussing ? 'income' : null}
+            churchData={churchData}
+            church="council"
+            bussing={bussing}
+            income={true}
+          />
+        ) : (
+          <ChurchGraph
+            loading={loading}
+            stat1="attendance"
+            stat2={null}
+            churchData={churchData}
+            church="council"
+            bussing={bussing}
+            income={false}
+          />
+        )}
       </Container>
     </BaseComponent>
   )

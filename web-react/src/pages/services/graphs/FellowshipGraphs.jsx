@@ -8,9 +8,11 @@ import { FELLOWSHIP_GRAPHS } from './GraphsQueries'
 import MembershipCard from './CompMembershipCard'
 import StatDisplay from './CompStatDisplay'
 import BaseComponent from 'components/base-component/BaseComponent'
+import { MemberContext } from 'contexts/MemberContext'
 
 export const FellowshipReport = () => {
   const { fellowshipId } = useContext(ChurchContext)
+  const { currentUser } = useContext(MemberContext)
 
   const { data, loading, error } = useQuery(FELLOWSHIP_GRAPHS, {
     variables: { fellowshipId: fellowshipId },
@@ -46,19 +48,33 @@ export const FellowshipReport = () => {
             />
           </div>
 
-          <div className="col">
-            <StatDisplay
-              title="Avg Weekly Income"
-              statistic={getMonthlyStatAverage(serviceData, 'income')}
-            />
-          </div>
+          {!currentUser.noIncome && (
+            <div className="col">
+              <StatDisplay
+                title="Avg Weekly Income"
+                statistic={getMonthlyStatAverage(serviceData, 'income')}
+              />
+            </div>
+          )}
         </div>
-        <ChurchGraph
-          stat1="attendance"
-          stat2="income"
-          churchData={serviceData}
-          church="fellowship"
-        />
+
+        {!currentUser.noIncome ? (
+          <ChurchGraph
+            stat1="attendance"
+            stat2="income"
+            income={true}
+            churchData={serviceData}
+            church="fellowship"
+          />
+        ) : (
+          <ChurchGraph
+            stat1="attendance"
+            stat2={null}
+            income={false}
+            churchData={serviceData}
+            church="fellowship"
+          />
+        )}
       </div>
     </BaseComponent>
   )
