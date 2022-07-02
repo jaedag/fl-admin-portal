@@ -199,10 +199,13 @@ const DisplayPage = () => {
                           <div className="col-mt-2">
                             <Row>
                               <Col className="text-secondary placeholder-display">
-                                Bishop
+                                Overseeing Pastor
                               </Col>
                               <Col className="placeholder-display">
-                                {memberChurch?.bishop?.fullName}
+                                {
+                                  memberChurch?.fellowship.council.leader
+                                    .fullName
+                                }
                               </Col>
                             </Row>
                             <Row>

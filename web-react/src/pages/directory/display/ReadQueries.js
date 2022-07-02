@@ -140,6 +140,12 @@ export const DISPLAY_MEMBER_CHURCH = gql`
         }
         council {
           id
+          leader {
+            id
+            firstName
+            lastName
+            fullName
+          }
         }
       }
       #Personal history
