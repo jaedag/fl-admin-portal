@@ -42,7 +42,7 @@ export const menuItems = [
   {
     name: 'Maps',
     to: '/maps',
-    roles: ['adminGatheringService'],
+    roles: ['adminGatheringService', 'adminStream'],
   },
 ]
 

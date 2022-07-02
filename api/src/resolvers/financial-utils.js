@@ -79,14 +79,10 @@ export const getStreamFinancials = (stream) => {
     case 'campus':
     case 'Town':
     case 'town':
-      merchantId = process.env.PAYSWITCH_CAMPUS_MERCHANT_ID
-      auth = process.env.PAYSWITCH_CAMPUS_AUTH
-      passcode = process.env.PAYSWITCH_CAMPUS_PASSCODE
+      merchantId = process.env.PAYSWITCH_MERCHANT_ID
+      auth = process.env.PAYSWITCH_AUTH
+      passcode = process.env.PAYSWITCH_PASSCODE
       break
-    // case 'Town':
-    //   merchantId = process.env.PAYSWITCH_TOWN_MERCHANT_ID
-    //   auth = process.env.PAYSWITCH_TOWN_AUTH
-    //   break
   }
 
   return { merchantId, auth, passcode }
