@@ -16,6 +16,7 @@ import PastorsAdmin from 'App'
 import Login from 'components/Login'
 import InitialLoading from 'components/base-component/InitialLoading'
 import Sabbath from 'auth/Sabbath'
+import ReactGA from 'react-ga4'
 
 const AppWithApollo = () => {
   const [accessToken, setAccessToken] = useState()
@@ -110,6 +111,9 @@ const App = () => (
     }}
   </CacheBuster>
 )
+
+ReactGA.initialize('G-BT4M7RYZX0')
+ReactGA.send('pageview')
 
 const container = document.getElementById('root')
 const root = createRoot(container)
