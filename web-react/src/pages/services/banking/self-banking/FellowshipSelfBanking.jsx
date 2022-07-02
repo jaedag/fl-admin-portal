@@ -49,7 +49,11 @@ const FellowshipSelfBanking = () => {
             confirm the status
           </div>
           <div className="d-grid gap-2">
-            <ConfirmPaymentButton service={confirmService} refetch={refetch} />
+            <ConfirmPaymentButton
+              service={confirmService}
+              refetch={refetch}
+              togglePopup={togglePopup}
+            />
           </div>
         </Popup>
       )}
