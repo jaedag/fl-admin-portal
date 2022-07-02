@@ -35,6 +35,7 @@ const ButtonConfirmPayment = (props) => {
                 'Your Payment is still pending please follow the manual steps for approval'
               )
               navigate('/self-banking/receipt')
+              return
             }
 
             alertMsg('Payment Confirmed Successfully 😊')
