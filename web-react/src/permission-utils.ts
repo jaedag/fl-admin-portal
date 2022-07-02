@@ -1,8 +1,20 @@
 // Permissions Things
-export const permitLeader = (churchLevel) => {
-  let permittedFor = []
+export enum ChurchLevelEnum {
+  Fellowship = 'Fellowship',
+  Bacenta = 'Bacenta',
+  Constituency = 'Constituency',
+  Council = 'Council',
+  Stream = 'Stream',
+  GatheringService = 'GatheringService',
+  Sonta = 'Sonta',
+}
+
+export const permitLeader: (churchLevel: ChurchLevelEnum) => string[] = (
+  churchLevel
+) => {
+  let permittedFor = ['']
   switch (churchLevel.toLowerCase()) {
-    case 'fellowship':
+    case 'Fellowship':
       permittedFor = [
         'leaderGatheringService',
         'leaderStream',
@@ -12,7 +24,7 @@ export const permitLeader = (churchLevel) => {
         'leaderFellowship',
       ]
       break
-    case 'bacenta':
+    case 'Bacenta':
       permittedFor = [
         'leaderGatheringService',
         'leaderStream',
@@ -21,7 +33,7 @@ export const permitLeader = (churchLevel) => {
         'leaderBacenta',
       ]
       break
-    case 'sonta':
+    case 'Sonta':
       permittedFor = [
         'leaderGatheringService',
         'leaderStream',
@@ -30,7 +42,7 @@ export const permitLeader = (churchLevel) => {
         'leaderSonta',
       ]
       break
-    case 'constituency':
+    case 'Constituency':
       permittedFor = [
         'leaderGatheringService',
         'leaderStream',
@@ -38,13 +50,13 @@ export const permitLeader = (churchLevel) => {
         'leaderConstituency',
       ]
       break
-    case 'council':
+    case 'Council':
       permittedFor = ['leaderGatheringService', 'leaderStream', 'leaderCouncil']
       break
-    case 'stream':
+    case 'Stream':
       permittedFor = ['leaderGatheringService', 'leaderStream']
       break
-    case 'gatheringservice':
+    case 'Gatheringservice':
       permittedFor = ['leaderGatheringService']
       break
     default:
@@ -55,8 +67,10 @@ export const permitLeader = (churchLevel) => {
   return permittedFor
 }
 
-export const permitAdmin = (churchLevel) => {
-  let permittedFor = []
+export const permitAdmin: (churchLevel: ChurchLevelEnum) => string[] = (
+  churchLevel
+) => {
+  let permittedFor = ['']
   switch (churchLevel) {
     case 'Fellowship':
     case 'Bacenta':
@@ -87,20 +101,20 @@ export const permitAdmin = (churchLevel) => {
   return permittedFor
 }
 
-export const permitLeaderAdmin = (churchLevel) => {
+export const permitLeaderAdmin = (churchLevel: ChurchLevelEnum) => {
   return [...permitLeader(churchLevel), ...permitAdmin(churchLevel)]
 }
 
-export const permitMe = (churchLevel) => {
+export const permitMe = (churchLevel: ChurchLevelEnum) => {
   return [
     ...permitLeaderAdmin(churchLevel),
     ...permitArrivals(churchLevel),
-    ...permitArrivalsHelpers(churchLevel),
+    ...permitArrivalsHelpers(),
   ]
 }
 
-export const permitArrivals = (churchLevel) => {
-  let permittedFor = []
+export const permitArrivals = (churchLevel: ChurchLevelEnum) => {
+  let permittedFor = ['']
   switch (churchLevel) {
     case 'Fellowship':
     case 'Bacenta':
@@ -149,10 +163,10 @@ export const permitArrivalsConfirmer = () => {
 export const permitArrivalsHelpers = () => {
   return ['arrivalsCounterStream', 'arrivalsConfirmerStream']
 }
-export const permitLeaderAdminArrivals = (churchLevel) => {
+export const permitLeaderAdminArrivals = (churchLevel: ChurchLevelEnum) => {
   return [...permitLeaderAdmin(churchLevel), ...permitArrivals(churchLevel)]
 }
 
-export const permitAdminArrivals = (churchLevel) => {
+export const permitAdminArrivals = (churchLevel: ChurchLevelEnum) => {
   return [...permitAdmin(churchLevel), ...permitArrivals(churchLevel)]
 }
