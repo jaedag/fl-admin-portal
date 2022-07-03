@@ -40,6 +40,9 @@
     "http-proxy-middleware": "^2.0.1",
     "waait": "^1.0.5"
   },
+  "overrides": {
+    "autoprefixer": "10.4.5"
+  },
   "eslintConfig": {
     "extends": [
       "react-app",
