@@ -58,6 +58,9 @@
       "react-hooks/exhaustive-deps": "off"
     }
   },
+  "overrides": {
+    "autoprefixer": "10.4.5"
+  },
   "license": "Apache-2.0",
   "browserslist": [
     ">0.2%",
