@@ -1,6 +1,5 @@
 import { useQuery } from '@apollo/client'
 import BaseComponent from 'components/base-component/BaseComponent'
-import React from 'react'
 import { useContext } from 'react'
 import { Button, Card, Container } from 'react-bootstrap'
 import { BACENTA_ARRIVALS } from './arrivalsQueries'
@@ -30,9 +29,12 @@ const BacentaArrivals = () => {
 
   let bussing
 
-  const isMomoCleared = (bacenta) => {
-    if (bacenta?.normalBussingTopUp || bacenta?.swellBussingTopUp) {
-      if (bacenta?.momoNumber) {
+  const isMomoCleared = (bacentaElement) => {
+    if (
+      bacentaElement?.normalBussingTopUp ||
+      bacentaElement?.swellBussingTopUp
+    ) {
+      if (bacentaElement?.momoNumber) {
         return true
       }
       return false
@@ -40,9 +42,9 @@ const BacentaArrivals = () => {
     return true
   }
 
-  data?.bacentas[0].bussing.forEach((data) => {
-    if (isToday(data.serviceDate.date)) {
-      bussing = data
+  data?.bacentas[0].bussing.forEach((busData) => {
+    if (isToday(busDData.serviceDate.date)) {
+      bussing = busData
     }
     return null
   })

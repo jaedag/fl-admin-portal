@@ -3,7 +3,7 @@ import BaseComponent from 'components/base-component/BaseComponent'
 import DisplayChurchDetails from 'components/DisplayChurchDetails/DisplayChurchDetails'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { permitAdmin } from 'permission-utils'
-import React, { useContext, useEffect } from 'react'
+import { useContext, useEffect } from 'react'
 import { DISPLAY_COUNCIL } from './ReadQueries'
 import useClickCard from 'hooks/useClickCard'
 

@@ -2,7 +2,7 @@ import { useMutation } from '@apollo/client'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { alertMsg, throwErrorMsg } from 'global-utils'
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { Button, Container, Spinner } from 'react-bootstrap'
 import { useNavigate } from 'react-router'
 import {

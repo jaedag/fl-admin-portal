@@ -1,8 +1,8 @@
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useQuery, useMutation } from '@apollo/client'
-import { alertMsg, throwErrorMsg } from '../../../global-utils'
-import { GET_STREAM_COUNCILS } from '../../../queries/ListQueries'
+import { alertMsg, throwErrorMsg } from 'global-utils'
+import { GET_STREAM_COUNCILS } from 'queries/ListQueries'
 import {
   UPDATE_COUNCIL_MUTATION,
   ADD_COUNCIL_STREAM,
@@ -10,8 +10,8 @@ import {
   REMOVE_CONSTITUENCY_COUNCIL,
   ADD_COUNCIL_CONSTITUENCIES,
 } from './UpdateMutations'
-import { ChurchContext } from '../../../contexts/ChurchContext'
-import { DISPLAY_COUNCIL } from '../display/ReadQueries'
+import { ChurchContext } from 'contexts/ChurchContext'
+import { DISPLAY_COUNCIL } from 'pages/directory/display/ReadQueries'
 import {
   LOG_COUNCIL_HISTORY,
   LOG_CONSTITUENCY_HISTORY,
@@ -49,7 +49,7 @@ const UpdateCouncil = () => {
   })
 
   const [MakeCouncilLeader] = useMutation(MAKE_COUNCIL_LEADER)
-  const [UpdateCouncil] = useMutation(UPDATE_COUNCIL_MUTATION, {
+  const [UpdateCouncilMutation] = useMutation(UPDATE_COUNCIL_MUTATION, {
     refetchQueries: [
       {
         query: GET_STREAM_COUNCILS,
@@ -62,9 +62,9 @@ const UpdateCouncil = () => {
   const [CloseDownConstituency] = useMutation(MAKE_CONSTITUENCY_INACTIVE)
   const [AddCouncilConstituencies] = useMutation(ADD_COUNCIL_CONSTITUENCIES)
   const [RemoveConstituencyCouncil] = useMutation(REMOVE_CONSTITUENCY_COUNCIL, {
-    onCompleted: (data) => {
-      const prevCouncil = data.updateConstituencies.constituencies[0]
-      const constituency = data.updateConstituencies.constituencies[0]
+    onCompleted: (responseData) => {
+      const prevCouncil = responseData.updateConstituencies.constituencies[0]
+      const constituency = responseData.updateConstituencies.constituencies[0]
       let newCouncilId = ''
       let oldCouncilId = ''
       let historyRecord
@@ -99,10 +99,10 @@ const UpdateCouncil = () => {
   const [CreateHistorySubstructure] = useMutation(CREATE_HISTORY_SUBSTRUCTURE)
   const [RemoveCouncilStream] = useMutation(REMOVE_COUNCIL_STREAM)
   const [AddCouncilStream] = useMutation(ADD_COUNCIL_STREAM, {
-    onCompleted: (data) => {
+    onCompleted: (responseData) => {
       //If there is an old Stream
-      const oldStream = data.updateStreams.streams[0]
-      const newStream = data.updateCouncils.councils[0].stream
+      const oldStream = responseData.updateStreams.streams[0]
+      const newStream = responseData.updateCouncils.councils[0].stream
       let recordIfOldStream = `${initialValues.name} Council has been moved from ${oldStream.name} Stream to ${newStream.name} Stream`
 
       //After Adding the council to a stream, then you log that change.
@@ -111,7 +111,7 @@ const UpdateCouncil = () => {
           councilId: councilId,
           newLeaderId: '',
           oldLeaderId: '',
-          newStreamId: data.updateCouncils.councils[0].stream.id,
+          newStreamId: responseData.updateCouncils.councils[0].stream.id,
           oldStreamId: council?.stream.id,
           historyRecord: recordIfOldStream,
         },
@@ -133,7 +133,7 @@ const UpdateCouncil = () => {
     clickCard({ id: values.stream, __typename: 'Stream' })
 
     try {
-      await UpdateCouncil({
+      await UpdateCouncilMutation({
         variables: {
           councilId: councilId,
           name: values.name,

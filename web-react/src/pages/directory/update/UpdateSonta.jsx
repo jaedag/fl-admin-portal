@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useQuery, useMutation } from '@apollo/client'
 import { GET_CONSTITUENCY_BACENTAS } from '../../../queries/ListQueries'
@@ -34,7 +34,7 @@ const UpdateSonta = () => {
   })
 
   const [MakeSontaLeader] = useMutation(MAKE_SONTA_LEADER)
-  const [UpdateSonta] = useMutation(UPDATE_SONTA_MUTATION, {
+  const [UpdateSontaMutation] = useMutation(UPDATE_SONTA_MUTATION, {
     refetchQueries: [
       { query: GET_CONSTITUENCY_BACENTAS, variables: { id: constituencyId } },
       {
@@ -72,7 +72,7 @@ const UpdateSonta = () => {
       }).catch((err) => throwErrorMsg('There was an error adding leader', err))
     }
 
-    UpdateSonta({
+    UpdateSontaMutation({
       variables: {
         sontaId: sontaId,
         sontaName: values.sontaName,

@@ -7,7 +7,7 @@ import useClickCard from 'hooks/useClickCard'
 import { getServantRoles } from 'pages/dashboards/dashboard-utils'
 import { SERVANT_CHURCH_LIST } from 'pages/dashboards/DashboardQueries'
 import { permitMe } from 'permission-utils'
-import React, { useContext, useEffect } from 'react'
+import { useContext, useEffect } from 'react'
 import useAuth from './useAuth'
 
 const SetPermissions = ({ children }) => {
@@ -18,8 +18,8 @@ const SetPermissions = ({ children }) => {
 
   const { data, loading, error } = useQuery(SERVANT_CHURCH_LIST, {
     variables: { id: currentUser.id },
-    onCompleted: (data) => {
-      const servant = { ...data?.members[0], ...currentUser }
+    onCompleted: (churchListData) => {
+      const servant = { ...churchListData?.members[0], ...currentUser }
       setUserJobs(getServantRoles(servant))
     },
   })

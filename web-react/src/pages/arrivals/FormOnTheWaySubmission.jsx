@@ -6,7 +6,7 @@ import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import HeadingSecondary from 'components/HeadingSecondary'
 import { Form, Formik, FieldArray } from 'formik'
 import { useMutation, useQuery } from '@apollo/client'
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import * as Yup from 'yup'
 import { Col, Container, Row } from 'react-bootstrap'
 import { useNavigate } from 'react-router'
@@ -83,8 +83,8 @@ const FormOnTheWaySubmission = () => {
       onSubmitProps.resetForm()
       onSubmitProps.setSubmitting(false)
       navigate(`/bacenta/bussing-details`)
-    } catch (error) {
-      throwErrorMsg('There was a problem submitting your form', error)
+    } catch (err) {
+      throwErrorMsg('There was a problem submitting your form', err)
     }
   }
 

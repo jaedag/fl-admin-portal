@@ -3,7 +3,7 @@ import BaseComponent from 'components/base-component/BaseComponent'
 import MemberDisplayCard from 'components/card/MemberDisplayCard'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import HeadingSecondary from 'components/HeadingSecondary'
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { Container } from 'react-bootstrap'
 import {
   CONSTITUENCY_BACENTAS_MOBILISING,

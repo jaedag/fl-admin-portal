@@ -4,7 +4,7 @@ import { FieldArray, Form, Formik } from 'formik'
 import * as Yup from 'yup'
 import { makeSelectOptions, throwErrorMsg } from 'global-utils'
 import { GET_STREAMS } from 'queries/ListQueries'
-import React, { useContext, useState } from 'react'
+import { useContext, useState } from 'react'
 import { ChurchContext } from 'contexts/ChurchContext'
 import FormikControl, {
   arrayError,
@@ -177,11 +177,11 @@ const CouncilForm = ({ initialValues, onSubmit, title, newCouncil }) => {
                         togglePopup()
                         navigate(`/council/displayall`)
                       })
-                      .catch((error) => {
+                      .catch((err) => {
                         setButtonLoading(false)
                         throwErrorMsg(
                           `There was an error closing down this council`,
-                          error
+                          err
                         )
                       })
                   }}

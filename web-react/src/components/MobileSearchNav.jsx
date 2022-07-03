@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { Formik, Form } from 'formik'
 import FormikControl from './formik-components/FormikControl'
 import { SearchContext } from '../contexts/MemberContext'

@@ -1,8 +1,8 @@
-import React, { useContext, useState, useEffect } from 'react'
+import { useContext, useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import MemberTable from '../members-grids/MemberTable'
+import MemberTable from 'components/members-grids/MemberTable'
 import { memberFilter } from './member-filter-utils'
-import { debounce } from '../../global-utils'
+import { debounce } from 'global-utils'
 import { ChurchContext } from 'contexts/ChurchContext'
 import PlaceholderCustom from 'components/Placeholder.jsx'
 import {
@@ -54,7 +54,7 @@ const MembersGrid = (props) => {
     }
   })
 
-  function CustomToggle({ children, eventKey, ...rest }) {
+  const CustomToggle = ({ children, eventKey, ...rest }) => {
     const decoratedOnClick = useAccordionButton(eventKey)
 
     return (

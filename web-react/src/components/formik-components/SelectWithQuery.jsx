@@ -1,12 +1,11 @@
-import React from 'react'
 import { Field, ErrorMessage } from 'formik'
-import { makeSelectOptions } from '../../global-utils'
+import { makeSelectOptions } from 'global-utils'
 import TextError from './TextError'
 import { useQuery } from '@apollo/client'
 import { useAuth0 } from '@auth0/auth0-react'
 import PlaceholderCustom from 'components/Placeholder'
 
-function SelectWithQuery(props) {
+const SelectWithQuery = (props) => {
   const {
     label,
     name,

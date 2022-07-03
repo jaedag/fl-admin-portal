@@ -3,7 +3,7 @@ import BaseComponent from 'components/base-component/BaseComponent'
 import MemberDisplayCard from 'components/card/MemberDisplayCard'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import { ChurchContext } from 'contexts/ChurchContext'
-import React, { useContext, useState } from 'react'
+import { useContext, useState } from 'react'
 import { Button, Col, Container, Row, Spinner } from 'react-bootstrap'
 import * as Yup from 'yup'
 import { Form, Formik } from 'formik'
@@ -16,7 +16,7 @@ import { alertMsg, throwErrorMsg } from 'global-utils'
 import Popup from 'components/Popup/Popup'
 import FormikControl from 'components/formik-components/FormikControl'
 import SubmitButton from 'components/formik-components/SubmitButton'
-import NoData from '../CompNoData'
+import NoData from 'pages/arrivals/CompNoData'
 import usePopup from 'hooks/usePopup'
 
 const ArrivalsConfirmers = () => {
@@ -143,8 +143,8 @@ const ArrivalsConfirmers = () => {
                     })
                     setSubmitting(false)
                     alertMsg(`${confirmer.fullName} Deleted Successfully`)
-                  } catch (error) {
-                    throwErrorMsg(error)
+                  } catch (err) {
+                    throwErrorMsg(err)
                   }
                 }
               }}

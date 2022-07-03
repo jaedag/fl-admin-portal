@@ -1,10 +1,9 @@
-import React from 'react'
 import { Field, ErrorMessage } from 'formik'
 import TextError from './TextError'
 import PlaceholderCustom from 'components/Placeholder'
 import { useAuth0 } from '@auth0/auth0-react'
 
-function Select(props) {
+const Select = (props) => {
   const { label, name, options, defaultOption, ...rest } = props
   const { isAuthenticated } = useAuth0()
 

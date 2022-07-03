@@ -1,6 +1,4 @@
-import React from 'react'
-
-function TextError(props) {
+const TextError = (props) => {
   return <small className="error">{props.children}</small>
 }
 

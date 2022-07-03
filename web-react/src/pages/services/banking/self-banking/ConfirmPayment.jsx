@@ -4,7 +4,7 @@ import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import Popup from 'components/Popup/Popup'
 import { ServiceContext } from 'contexts/ServiceContext'
 import usePopup from 'hooks/usePopup'
-import React, { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { Col, Container, Row, Spinner } from 'react-bootstrap'
 import { DISPLAY_OFFERING_DETAILS } from './bankingQueries'
 import ButtonConfirmPayment from './components/button/ConfirmPayment'
@@ -22,7 +22,7 @@ const ConfirmPayment = () => {
   const service = data?.serviceRecords[0]
 
   useEffect(() => {
-    countdown > 0 && setTimeout(() => setCountdown(countdown - 1), 1000)
+    if (countdown > 0) setTimeout(() => setCountdown(countdown - 1), 1000)
   }, [countdown, setCountdown])
 
   return (

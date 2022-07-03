@@ -1,5 +1,5 @@
 import { MemberContext } from 'contexts/MemberContext'
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { Button, Spinner } from 'react-bootstrap'
 
 const SubmitButton = (props) => {

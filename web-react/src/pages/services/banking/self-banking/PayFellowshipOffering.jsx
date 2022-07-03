@@ -1,6 +1,6 @@
 import { useQuery } from '@apollo/client'
 import { ChurchContext } from 'contexts/ChurchContext'
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { FELLOWSHIP_SERVICE_PAYMENT } from './bankingQueries'
 import PayOffering from './PayOffering'
 

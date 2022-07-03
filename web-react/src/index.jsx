@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { createRoot } from 'react-dom/client'
 import {
   ApolloClient,
@@ -30,7 +30,7 @@ const AppWithApollo = () => {
       })
 
       setAccessToken(token)
-      localStorage.setItem('token', token)
+      sessionStorage.setItem('token', token)
     } catch (err) {
       // eslint-disable-next-line
       console.error('Error Obtaining Token', err)
@@ -47,7 +47,7 @@ const AppWithApollo = () => {
 
   const authLink = setContext((_, { headers }) => {
     // get the authentication token from local storage if it exists
-    const token = localStorage.getItem('token') || accessToken
+    const token = sessionStorage.getItem('token') || accessToken
 
     // return the headers to the context so httpLink can read them
     return {

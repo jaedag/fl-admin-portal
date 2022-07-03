@@ -2,8 +2,7 @@ import { useLazyQuery } from '@apollo/client'
 import { MemberContext } from 'contexts/MemberContext'
 import { throwErrorMsg } from 'global-utils'
 import { getHighestRole } from 'pages/directory/update/directory-utils'
-import { useState } from 'react'
-import { useContext, useEffect } from 'react'
+import { useState, useContext, useEffect } from 'react'
 import { parseRoles } from './dashboard-utils'
 import {
   SERVANT_FELLOWSHIP_LEADER,

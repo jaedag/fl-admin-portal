@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import Autosuggest from 'react-autosuggest'
 import './react-autosuggest.css'
 import { useLazyQuery } from '@apollo/client'
@@ -6,7 +6,7 @@ import { ErrorMessage } from 'formik'
 import TextError from './TextError'
 import { DEBOUNCE_TIMER } from 'global-utils'
 
-function Combobox(props) {
+const Combobox = (props) => {
   const {
     label,
     name,

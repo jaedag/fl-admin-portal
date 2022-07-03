@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useQuery, useMutation } from '@apollo/client'
 import { GET_BACENTA_FELLOWSHIPS } from '../../../queries/ListQueries'
@@ -45,7 +45,7 @@ const UpdateFellowship = () => {
   }
   const [LogFellowshipHistory] = useMutation(LOG_FELLOWSHIP_HISTORY)
   const [MakeFellowshipLeader] = useMutation(MAKE_FELLOWSHIP_LEADER)
-  const [UpdateFellowship] = useMutation(UPDATE_FELLOWSHIP, {
+  const [UpdateFellowshipMutation] = useMutation(UPDATE_FELLOWSHIP, {
     refetchQueries: [
       {
         query: GET_BACENTA_FELLOWSHIPS,
@@ -90,7 +90,7 @@ const UpdateFellowship = () => {
     values.venueLatitude = parseFloat(values.venueLatitude)
 
     try {
-      await UpdateFellowship({
+      await UpdateFellowshipMutation({
         variables: {
           id: fellowshipId,
           name: values.name,

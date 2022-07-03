@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useMutation } from '@apollo/client'
 import { CREATE_BACENTA_MUTATION } from './CreateMutations'
@@ -20,7 +20,7 @@ const CreateBacenta = () => {
   }
 
   const [NewBacentaLeader] = useMutation(NEW_BACENTA_LEADER)
-  const [CreateBacenta] = useMutation(CREATE_BACENTA_MUTATION)
+  const [CreateBacentaMutation] = useMutation(CREATE_BACENTA_MUTATION)
 
   //onSubmit receives the form state as argument
   const onSubmit = async (values, onSubmitProps) => {
@@ -28,7 +28,7 @@ const CreateBacenta = () => {
     clickCard({ id: values.constituency, __typename: 'Bacenta' })
 
     try {
-      const res = await CreateBacenta({
+      const res = await CreateBacentaMutation({
         variables: {
           name: values.name,
           constituencyId: values.constituency,

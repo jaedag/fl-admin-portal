@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { Formik, Form } from 'formik'
 import FormikControl from './formik-components/FormikControl'
 import * as Yup from 'yup'
@@ -7,7 +7,7 @@ import './SearchBox.css'
 import { SearchContext } from 'contexts/MemberContext'
 import { useNavigate } from 'react-router'
 
-function SearchBox() {
+const SearchBox = () => {
   const { setSearchKey } = useContext(SearchContext)
   const navigate = useNavigate()
   const initialValues = {

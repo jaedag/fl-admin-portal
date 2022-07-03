@@ -1,5 +1,5 @@
 import { MemberContext } from 'contexts/MemberContext'
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { Table } from 'react-bootstrap'
 import PlaceholderCustom from '../Placeholder'
 import './TableFromArrays.css'

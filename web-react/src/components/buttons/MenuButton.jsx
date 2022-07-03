@@ -2,7 +2,7 @@ import CloudinaryImage from 'components/CloudinaryImage'
 import PlaceholderCustom from 'components/Placeholder'
 import { MemberContext } from 'contexts/MemberContext'
 import { capitalise } from 'global-utils'
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { Button, Col, Row } from 'react-bootstrap'
 import './MenuButton.css'
 

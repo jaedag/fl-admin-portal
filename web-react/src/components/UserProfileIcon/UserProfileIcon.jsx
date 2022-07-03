@@ -1,13 +1,13 @@
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { useAuth0 } from '@auth0/auth0-react'
 import './UserProfileIcon.css'
-import { MemberContext } from '../../contexts/MemberContext.js'
+import { MemberContext } from 'contexts/MemberContext.js'
 import { Spinner } from 'react-bootstrap'
 import CloudinaryImage from 'components/CloudinaryImage'
 import { USER_PLACEHOLDER } from 'global-utils'
 import useClickCard from 'hooks/useClickCard'
 
-function UserProfileIcon() {
+const UserProfileIcon = () => {
   const { setChurch } = useClickCard()
   const { currentUser } = useContext(MemberContext)
   const { isAuthenticated } = useAuth0()

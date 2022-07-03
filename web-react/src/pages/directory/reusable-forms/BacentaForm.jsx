@@ -10,7 +10,7 @@ import {
 } from 'global-utils'
 import { permitAdmin, permitAdminArrivals } from 'permission-utils'
 import { GET_COUNCIL_CONSTITUENCIES } from 'queries/ListQueries'
-import React, { useContext, useState } from 'react'
+import { useContext, useState } from 'react'
 import { ChurchContext } from 'contexts/ChurchContext'
 import FormikControl from 'components/formik-components/FormikControl'
 import PlusSign from 'components/buttons/PlusMinusSign/PlusSign'
@@ -217,11 +217,11 @@ const BacentaForm = ({ initialValues, onSubmit, title, newBacenta }) => {
                         togglePopup()
                         navigate(`/constituency/displaydetails`)
                       })
-                      .catch((error) => {
+                      .catch((err) => {
                         setButtonLoading(false)
                         throwErrorMsg(
                           'There was an error closing down this bacenta',
-                          error
+                          err
                         )
                       })
                   }}

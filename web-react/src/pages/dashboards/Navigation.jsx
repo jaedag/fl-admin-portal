@@ -3,7 +3,7 @@ import RoleView from 'auth/RoleView'
 import UserProfileIcon from 'components/UserProfileIcon/UserProfileIcon'
 import { MemberContext } from 'contexts/MemberContext'
 import { capitalise } from 'global-utils'
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { Container, Nav, Navbar, Offcanvas, Row, Col } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import { menuItems } from './dashboard-utils'
@@ -115,14 +115,22 @@ const Navigator = () => {
                     <Moon
                       size={22}
                       onClick={() => {
-                        theme === 'light' ? setTheme('dark') : setTheme('light')
+                        if (theme === 'light') {
+                          setTheme('dark')
+                        } else {
+                          setTheme('light')
+                        }
                       }}
                     />
                   ) : (
                     <Sun
                       size={22}
                       onClick={() => {
-                        theme === 'dark' ? setTheme('light') : setTheme('dark')
+                        if (theme === 'dark') {
+                          setTheme('light')
+                        } else {
+                          setTheme('dark')
+                        }
                       }}
                     />
                   )}

@@ -1,18 +1,18 @@
 import { useQuery } from '@apollo/client'
 import { Form, Formik } from 'formik'
 import * as Yup from 'yup'
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import {
   GENDER_OPTIONS,
   isAuthorised,
   makeSelectOptions,
   MARITAL_STATUS_OPTIONS,
   PHONE_NUM_REGEX,
-} from '../../../global-utils'
-import { GET_MINISTRIES } from '../../../queries/ListQueries'
-import ErrorScreen from '../../../components/base-component/ErrorScreen'
-import FormikControl from '../../../components/formik-components/FormikControl'
-import { HeadingPrimary } from '../../../components/HeadingPrimary/HeadingPrimary'
+} from 'global-utils'
+import { GET_MINISTRIES } from 'queries/ListQueries'
+import ErrorScreen from 'components/base-component/ErrorScreen'
+import FormikControl from 'components/formik-components/FormikControl'
+import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import { Col, Container, Row } from 'react-bootstrap'
 import LoadingScreen from 'components/base-component/LoadingScreen'
 import { permitAdmin } from 'permission-utils'

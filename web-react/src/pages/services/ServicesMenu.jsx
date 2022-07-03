@@ -2,7 +2,7 @@ import MenuButton from 'components/buttons/MenuButton'
 import PlaceholderCustom from 'components/Placeholder'
 import { MemberContext } from 'contexts/MemberContext'
 import { ChurchContext } from 'contexts/ChurchContext'
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { Container } from 'react-bootstrap'
 import {
   BarChartFill,

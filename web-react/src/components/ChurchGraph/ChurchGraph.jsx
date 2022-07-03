@@ -1,6 +1,6 @@
 import PlaceholderCustom from 'components/Placeholder'
 import { ChurchContext } from 'contexts/ChurchContext'
-import React, { useState, useEffect, useContext } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import { useNavigate } from 'react-router'
 import {
   ResponsiveContainer,
@@ -12,7 +12,7 @@ import {
   LabelList,
   Legend,
 } from 'recharts'
-import { capitalise } from '../../global-utils'
+import { capitalise } from 'global-utils'
 import './ChurchGraph.css'
 
 const ChurchGraph = (props) => {

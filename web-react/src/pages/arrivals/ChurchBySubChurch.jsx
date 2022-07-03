@@ -6,7 +6,7 @@ import { MemberContext } from 'contexts/MemberContext'
 import { plural } from 'global-utils'
 import useChurchLevel from 'hooks/useChurchLevel'
 import useSetUserChurch from 'hooks/useSetUserChurch'
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { Card, Col, Container, Row } from 'react-bootstrap'
 import { useNavigate } from 'react-router'
 import {

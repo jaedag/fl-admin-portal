@@ -3,7 +3,7 @@ import { MemberContext } from 'contexts/MemberContext'
 import { ErrorMessage } from 'formik'
 import { DEBOUNCE_TIMER, isAuthorised, throwErrorMsg } from 'global-utils'
 import { permitMe } from 'permission-utils'
-import React, { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import Autosuggest from 'react-autosuggest'
 import { initialise } from './search-utils'
 import {
@@ -74,11 +74,11 @@ const SearchBacenta = (props) => {
     constituencyError
   throwErrorMsg(error)
 
-  const whichSearch = (searchString) => {
+  const whichSearch = (string) => {
     memberSearch({
       variables: {
         id: currentUser.id,
-        key: searchString?.trim(),
+        key: string?.trim(),
       },
     })
     if (props.roleBased) {
@@ -86,28 +86,28 @@ const SearchBacenta = (props) => {
         gatheringServiceSearch({
           variables: {
             id: currentUser.gatheringService,
-            key: searchString?.trim(),
+            key: string?.trim(),
           },
         })
       } else if (isAuthorised(permitMe('Stream'), currentUser.roles)) {
         streamSearch({
           variables: {
             id: currentUser.stream,
-            key: searchString?.trim(),
+            key: string?.trim(),
           },
         })
       } else if (isAuthorised(permitMe('Council'), currentUser.roles)) {
         councilSearch({
           variables: {
             id: currentUser.council,
-            key: searchString?.trim(),
+            key: string?.trim(),
           },
         })
       } else if (isAuthorised(permitMe('Constituency'), currentUser.roles)) {
         constituencySearch({
           variables: {
             id: currentUser.constituency,
-            key: searchString?.trim(),
+            key: string?.trim(),
           },
         })
       }

@@ -1,4 +1,5 @@
-import React, { useContext, useState } from 'react'
+/* eslint-disable @typescript-eslint/no-use-before-define */
+import { useContext, useState } from 'react'
 
 import { ChurchContext } from '../../../contexts/ChurchContext'
 import { useQuery } from '@apollo/client'
@@ -17,9 +18,9 @@ export const BacentaGraphs = () => {
 
   const { data, loading, error } = useQuery(BACENTA_GRAPHS, {
     variables: { bacentaId: bacentaId },
-    onCompleted: (data) => {
+    onCompleted: (graphData) => {
       if (!setChurchData) return
-      setChurchData(getServiceGraphData(data?.bacentas[0], 'bussing'))
+      setChurchData(getServiceGraphData(graphData?.bacentas[0], 'bussing'))
     },
   })
   const [churchData, setChurchData] = useState(

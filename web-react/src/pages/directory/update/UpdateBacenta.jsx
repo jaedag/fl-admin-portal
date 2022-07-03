@@ -1,9 +1,9 @@
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useQuery, useMutation } from '@apollo/client'
-import { alertMsg, capitalise, throwErrorMsg } from '../../../global-utils'
+import { alertMsg, capitalise, throwErrorMsg } from 'global-utils'
 
-import { GET_CONSTITUENCY_BACENTAS } from '../../../queries/ListQueries'
+import { GET_CONSTITUENCY_BACENTAS } from 'queries/ListQueries'
 import {
   ADD_BACENTA_FELLOWSHIPS,
   REMOVE_BACENTA_CONSTITUENCY,
@@ -11,15 +11,15 @@ import {
   REMOVE_FELLOWSHIP_BACENTA,
   ADD_BACENTA_CONSTITUENCY,
 } from './UpdateMutations'
-import { ChurchContext } from '../../../contexts/ChurchContext'
-import { DISPLAY_BACENTA } from '../display/ReadQueries'
+import { ChurchContext } from 'contexts/ChurchContext'
+import { DISPLAY_BACENTA } from 'pages/directory/display/ReadQueries'
 import {
   CREATE_HISTORY_SUBSTRUCTURE,
   LOG_BACENTA_HISTORY,
   LOG_FELLOWSHIP_HISTORY,
 } from './LogMutations'
 import { MAKE_BACENTA_LEADER } from './ChangeLeaderMutations'
-import BacentaForm from '../reusable-forms/BacentaForm'
+import BacentaForm from 'pages/directory/reusable-forms/BacentaForm'
 import { MAKE_FELLOWSHIP_INACTIVE } from './CloseChurchMutations'
 import {
   MAKE_BACENTA_GRADUATED,
@@ -61,7 +61,7 @@ const UpdateBacenta = () => {
   const [MakeBacentaGraduated] = useMutation(MAKE_BACENTA_GRADUATED)
   const [SetBacentaOnVacation] = useMutation(SET_VACATION_BACENTA)
   const [SetBacentaActive] = useMutation(SET_ACTIVE_BACENTA)
-  const [UpdateBacenta] = useMutation(UPDATE_BACENTA_MUTATION, {
+  const [UpdateBacentaMutation] = useMutation(UPDATE_BACENTA_MUTATION, {
     refetchQueries: [
       {
         query: GET_CONSTITUENCY_BACENTAS,
@@ -145,7 +145,7 @@ const UpdateBacenta = () => {
     onSubmitProps.setSubmitting(true)
     clickCard({ id: values.constituency, __typename: 'Constituency' })
     try {
-      await UpdateBacenta({
+      await UpdateBacentaMutation({
         variables: {
           bacentaId: bacentaId,
           name: values.name,

@@ -1,25 +1,25 @@
-import React, { useContext, useState } from 'react'
+import { useContext, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import DetailsCard from '../card/DetailsCard'
-import { MemberContext } from '../../contexts/MemberContext'
-import { ChurchContext } from '../../contexts/ChurchContext'
-import Timeline from '../Timeline/Timeline'
-import EditButton from '../buttons/EditButton'
-import MemberDisplayCard from '../card/MemberDisplayCard'
-import ChurchButton from '../buttons/ChurchButton/ChurchButton'
+import DetailsCard from 'components/card/DetailsCard'
+import { MemberContext } from 'contexts/MemberContext'
+import { ChurchContext } from 'contexts/ChurchContext'
+import Timeline from 'components/Timeline/Timeline'
+import EditButton from 'components/buttons/EditButton'
+import MemberDisplayCard from 'components/card/MemberDisplayCard'
+import ChurchButton from 'components/buttons/ChurchButton/ChurchButton'
 import './DisplayChurchDetails.css'
-import RoleView from '../../auth/RoleView'
+import RoleView from 'auth/RoleView'
 import { Form, Formik } from 'formik'
 import * as Yup from 'yup'
-import Popup from '../Popup/Popup'
+import Popup from 'components/Popup/Popup'
 import { useMutation } from '@apollo/client'
 import {
   MAKE_CONSTITUENCY_ADMIN,
   MAKE_COUNCIL_ADMIN,
   MAKE_STREAM_ADMIN,
 } from './AdminMutations'
-import FormikControl from '../formik-components/FormikControl'
-import { plural, throwErrorMsg } from '../../global-utils'
+import FormikControl from 'components/formik-components/FormikControl'
+import { plural, throwErrorMsg } from 'global-utils'
 import { getWeekNumber } from 'jd-date-utils'
 import Breadcrumb from './Breadcrumb'
 import { Button, Col, Container, Row, Spinner } from 'react-bootstrap'
@@ -139,22 +139,22 @@ const DisplayChurchDetails = (props) => {
   //End of Admin Change
 
   const shouldFill = () => {
-    let shouldFill = true
+    let should = true
 
     // If the have filled their form this week, they shouldn't fill again
     const filledThisWeek = props.last3Weeks?.filter(
       (week) => week.number === getWeekNumber()
     )
     if (filledThisWeek?.length && filledThisWeek[0].filled === true) {
-      shouldFill = false
+      should = false
     }
 
     //If the church is on vacation, they shouldn't fill
     if (props.vacation === 'Vacation') {
-      shouldFill = false
+      should = false
     }
 
-    return shouldFill
+    return should
   }
 
   return (

@@ -1,24 +1,24 @@
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useMutation } from '@apollo/client'
 import { CREATE_SONTA_MUTATION } from './CreateMutations'
-import { ChurchContext } from '../../../contexts/ChurchContext'
+import { ChurchContext } from 'contexts/ChurchContext'
 import { NEW_SONTA_LEADER } from './MakeLeaderMutations'
 import SontaForm from 'pages/directory/reusable-forms/SontaForm'
 import { throwErrorMsg } from 'global-utils'
 
-function CreateSonta() {
+const CreateSonta = () => {
   const { clickCard, constituencyId } = useContext(ChurchContext)
 
   const navigate = useNavigate()
 
-  const [CreateSonta] = useMutation(CREATE_SONTA_MUTATION)
+  const [CreateSontaMutation] = useMutation(CREATE_SONTA_MUTATION)
   const [NewSontaLeader] = useMutation(NEW_SONTA_LEADER)
 
   //onSubmit receives the form state as argument
   const onSubmit = (values, onSubmitProps) => {
     onSubmitProps.setSubmitting(true)
-    CreateSonta({
+    CreateSontaMutation({
       variables: {
         ministryId: values.ministrySelect,
         constituencyId: constituencyId,

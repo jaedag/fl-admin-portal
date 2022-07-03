@@ -1,8 +1,8 @@
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useQuery, useMutation } from '@apollo/client'
-import { alertMsg, throwErrorMsg } from '../../../global-utils'
-import { GET_GATHERINGSERVICE_STREAMS } from '../../../queries/ListQueries'
+import { alertMsg, throwErrorMsg } from 'global-utils'
+import { GET_GATHERINGSERVICE_STREAMS } from 'queries/ListQueries'
 import {
   UPDATE_STREAM_MUTATION,
   ADD_STREAM_GATHERINGSERVICE,
@@ -10,8 +10,8 @@ import {
   REMOVE_COUNCIL_STREAM,
   ADD_STREAM_COUNCILS,
 } from './UpdateMutations'
-import { ChurchContext } from '../../../contexts/ChurchContext'
-import { DISPLAY_STREAM } from '../display/ReadQueries'
+import { ChurchContext } from 'contexts/ChurchContext'
+import { DISPLAY_STREAM } from 'pages/directory/display/ReadQueries'
 import {
   LOG_STREAM_HISTORY,
   LOG_COUNCIL_HISTORY,
@@ -47,7 +47,7 @@ const UpdateStream = () => {
   })
 
   const [MakeStreamLeader] = useMutation(MAKE_STREAM_LEADER)
-  const [UpdateStream] = useMutation(UPDATE_STREAM_MUTATION, {
+  const [UpdateStreamMutation] = useMutation(UPDATE_STREAM_MUTATION, {
     refetchQueries: [
       {
         query: GET_GATHERINGSERVICE_STREAMS,
@@ -60,9 +60,9 @@ const UpdateStream = () => {
   const [CloseDownCouncil] = useMutation(MAKE_COUNCIL_INACTIVE)
   const [AddStreamCouncils] = useMutation(ADD_STREAM_COUNCILS)
   const [RemoveCouncilStream] = useMutation(REMOVE_COUNCIL_STREAM, {
-    onCompleted: (data) => {
-      const prevStream = data.updateCouncils.councils[0]
-      const council = data.updateCouncils.councils[0]
+    onCompleted: (response) => {
+      const prevStream = response.updateCouncils.councils[0]
+      const council = response.updateCouncils.councils[0]
       let newStreamId = ''
       let oldStreamId = ''
       let historyRecord
@@ -99,10 +99,11 @@ const UpdateStream = () => {
     REMOVE_STREAM_GATHERINGSERVICE
   )
   const [AddStreamGatheringService] = useMutation(ADD_STREAM_GATHERINGSERVICE, {
-    onCompleted: (data) => {
+    onCompleted: (response) => {
       const oldGatheringService =
-        data.updateGatheringService.gatheringServices[0]
-      const newGatheringService = data.updateStreams.streams[0].gatheringService
+        response.updateGatheringService.gatheringServices[0]
+      const newGatheringService =
+        response.updateStreams.streams[0].gatheringService
 
       let recordIfOldGatheringService = `${initialValues.name} Stream has been moved from ${oldGatheringService.name} GatheringService to ${newGatheringService.name} GatheringService`
 
@@ -113,7 +114,7 @@ const UpdateStream = () => {
           newLeaderId: '',
           oldLeaderId: '',
           newGatheringServiceId:
-            data.updateStreams.streams[0].gatheringService.id,
+            response.updateStreams.streams[0].gatheringService.id,
           oldGatheringServiceId: stream?.gatheringService.id,
           historyRecord: recordIfOldGatheringService,
         },
@@ -134,7 +135,7 @@ const UpdateStream = () => {
     onSubmitProps.setSubmitting(true)
     clickCard({ id: values.gatheringService, __typename: 'GatheringService' })
     try {
-      await UpdateStream({
+      await UpdateStreamMutation({
         variables: {
           streamId: streamId,
           name: values.name,

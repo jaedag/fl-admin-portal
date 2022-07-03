@@ -1,9 +1,9 @@
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useMutation } from '@apollo/client'
-import { throwErrorMsg } from '../../../global-utils'
+import { throwErrorMsg } from 'global-utils'
 import { CREATE_COUNCIL_MUTATION } from './CreateMutations'
-import { ChurchContext } from '../../../contexts/ChurchContext'
+import { ChurchContext } from 'contexts/ChurchContext'
 import { NEW_COUNCIL_LEADER } from './MakeLeaderMutations'
 import CouncilForm from 'pages/directory/reusable-forms/CouncilForm'
 
@@ -19,14 +19,14 @@ const CreateCouncil = () => {
   }
 
   const [NewCouncilLeader] = useMutation(NEW_COUNCIL_LEADER)
-  const [CreateCouncil] = useMutation(CREATE_COUNCIL_MUTATION)
+  const [CreateCouncilMutation] = useMutation(CREATE_COUNCIL_MUTATION)
 
   //onSubmit receives the form state as argument
   const onSubmit = async (values, onSubmitProps) => {
     onSubmitProps.setSubmitting(true)
     clickCard({ id: values.stream, __typename: 'Stream' })
     try {
-      const res = await CreateCouncil({
+      const res = await CreateCouncilMutation({
         variables: {
           name: values.name,
           leaderId: values.leaderId,

@@ -1,7 +1,7 @@
 import { MemberContext } from 'contexts/MemberContext'
 import { authorisedLink } from 'global-utils'
 import { permitMe } from 'permission-utils'
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { ChurchContext } from '../../contexts/ChurchContext'
 import './Breadcrumb.css'

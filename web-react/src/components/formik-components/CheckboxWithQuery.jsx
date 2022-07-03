@@ -1,12 +1,12 @@
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { Field, ErrorMessage } from 'formik'
-import { makeSelectOptions } from '../../global-utils'
+import { makeSelectOptions } from 'global-utils'
 import TextError from './TextError'
 import { useQuery } from '@apollo/client'
 import { MemberContext } from 'contexts/MemberContext'
 import './CheckboxGroup.css'
 
-function CheckboxWithQuery(props) {
+const CheckboxWithQuery = (props) => {
   const {
     label,
     name,

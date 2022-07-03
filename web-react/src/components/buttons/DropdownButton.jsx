@@ -1,6 +1,6 @@
 import { MemberContext } from 'contexts/MemberContext'
 import { isAuthorised } from 'global-utils'
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { Link } from 'react-router-dom'
 
 const DropdownButton = (props) => {

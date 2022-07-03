@@ -4,7 +4,7 @@ import {
   MARITAL_STATUS_OPTIONS,
   TITLE_OPTIONS,
 } from 'global-utils'
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { useLocation } from 'react-router-dom'
 import { Formik, Form } from 'formik'
 import FormikControl from 'components/formik-components/FormikControl'

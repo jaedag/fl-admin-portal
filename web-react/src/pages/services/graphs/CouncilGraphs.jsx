@@ -1,4 +1,5 @@
-import React, { useContext, useState } from 'react'
+/* eslint-disable @typescript-eslint/no-use-before-define */
+import { useContext, useState } from 'react'
 
 import { useQuery } from '@apollo/client'
 import { getServiceGraphData, getMonthlyStatAverage } from './graphs-utils'
@@ -17,9 +18,9 @@ const CouncilReport = () => {
   const [bussing, setBussing] = useState(true)
   const { data, loading, error } = useQuery(COUNCIL_GRAPHS, {
     variables: { councilId: councilId },
-    onCompleted: (data) => {
+    onCompleted: (graphData) => {
       if (!setChurchData) return
-      setChurchData(getServiceGraphData(data?.councils[0], 'bussing'))
+      setChurchData(getServiceGraphData(graphData?.councils[0], 'bussing'))
     },
   })
 

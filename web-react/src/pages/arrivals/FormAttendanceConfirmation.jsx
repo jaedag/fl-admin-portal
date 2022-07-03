@@ -6,9 +6,8 @@ import PlaceholderCustom from 'components/Placeholder'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { ServiceContext } from 'contexts/ServiceContext'
 import { Formik, Form } from 'formik'
-import React, { useState } from 'react'
+import { useState, useContext } from 'react'
 import * as Yup from 'yup'
-import { useContext } from 'react'
 import { Card, Container } from 'react-bootstrap'
 import { DISPLAY_BUSSING_RECORDS } from './arrivalsQueries'
 import {
@@ -70,16 +69,16 @@ const FormAttendanceConfirmation = () => {
         attendance: parseInt(values.attendance),
         comments: values.comments,
       },
-    }).catch((error) =>
-      throwErrorMsg('There was an error confirming bussing', error)
+    }).catch((err) =>
+      throwErrorMsg('There was an error confirming bussing', err)
     )
 
     await SetBussingSupport({
       variables: {
         bussingRecordId: bussingRecordId,
       },
-    }).catch((error) =>
-      throwErrorMsg('There was an error setting bussing support', error)
+    }).catch((err) =>
+      throwErrorMsg('There was an error setting bussing support', err)
     )
     const bussingData = res.data.ConfirmBussingByAdmin
 
@@ -104,9 +103,9 @@ const FormAttendanceConfirmation = () => {
         )
         setSubmitting(false)
         navigate(`/bacenta/bussing-details`)
-      } catch (error) {
+      } catch (err) {
         setSubmitting(false)
-        throwErrorMsg(error)
+        throwErrorMsg(err)
       }
     }
     navigate(`/bacenta/bussing-details`)

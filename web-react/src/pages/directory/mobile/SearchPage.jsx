@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { useLazyQuery } from '@apollo/client'
 import MobileSearchNav from '../../../components/MobileSearchNav.jsx'
 import {

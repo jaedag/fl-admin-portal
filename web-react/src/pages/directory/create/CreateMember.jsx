@@ -1,13 +1,13 @@
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useMutation } from '@apollo/client'
-import { parsePhoneNum, throwErrorMsg } from '../../../global-utils'
+import { parsePhoneNum, throwErrorMsg } from 'global-utils'
 import {
   ADD_MEMBER_TITLE_MUTATION,
   CREATE_MEMBER_MUTATION,
 } from './CreateMutations'
-import { ChurchContext } from '../../../contexts/ChurchContext'
-import MemberForm from '../reusable-forms/MemberForm'
+import { ChurchContext } from 'contexts/ChurchContext'
+import MemberForm from 'pages/directory/reusable-forms/MemberForm'
 import { filterPastoralTitles } from 'pages/directory/reusable-forms/form-utils'
 
 const CreateMember = () => {
@@ -52,7 +52,7 @@ const CreateMember = () => {
 
   //All of the Hooks!
 
-  const [CreateMember] = useMutation(CREATE_MEMBER_MUTATION, {
+  const [CreateMemberMutation] = useMutation(CREATE_MEMBER_MUTATION, {
     onCompleted: (newMemberData) => {
       clickCard(newMemberData.CreateMember)
     },
@@ -69,7 +69,7 @@ const CreateMember = () => {
 
     const pastoralAppointment = filterPastoralTitles(values.pastoralAppointment)
     try {
-      const res = await CreateMember({
+      const res = await CreateMemberMutation({
         variables: {
           firstName: values.firstName.trim(),
           middleName: values.middleName.trim(),

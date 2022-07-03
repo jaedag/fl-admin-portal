@@ -1,7 +1,7 @@
 import MenuButton from 'components/buttons/MenuButton'
 import PlaceholderCustom from 'components/Placeholder'
 import { MemberContext } from 'contexts/MemberContext'
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { Container } from 'react-bootstrap'
 import { PencilSquare } from 'react-bootstrap-icons'
 import { useNavigate } from 'react-router'

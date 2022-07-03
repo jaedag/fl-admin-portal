@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { MemberContext } from '../../../contexts/MemberContext'
 import MemberDisplay from 'pages/directory/reusable-forms/MemberDisplay'
 

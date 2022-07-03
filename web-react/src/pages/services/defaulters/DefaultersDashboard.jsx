@@ -2,7 +2,7 @@ import { useLazyQuery } from '@apollo/client'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import HeadingSecondary from 'components/HeadingSecondary'
 import { plural } from 'global-utils'
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { Col, Container, Row } from 'react-bootstrap'
 import {
   CONSTITUENCY_DEFAULTERS,

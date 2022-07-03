@@ -1,8 +1,8 @@
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useQuery, useMutation } from '@apollo/client'
-import { alertMsg, throwErrorMsg } from '../../../global-utils'
-import { GET_COUNCIL_CONSTITUENCIES } from '../../../queries/ListQueries'
+import { alertMsg, throwErrorMsg } from 'global-utils'
+import { GET_COUNCIL_CONSTITUENCIES } from 'queries/ListQueries'
 import {
   UPDATE_CONSTITUENCY_MUTATION,
   ADD_CONSTITUENCY_COUNCIL,
@@ -10,8 +10,8 @@ import {
   ADD_CONSTITUENCY_BACENTAS,
   REMOVE_BACENTA_CONSTITUENCY,
 } from './UpdateMutations'
-import { ChurchContext } from '../../../contexts/ChurchContext'
-import { DISPLAY_CONSTITUENCY } from '../display/ReadQueries'
+import { ChurchContext } from 'contexts/ChurchContext'
+import { DISPLAY_CONSTITUENCY } from 'pages/directory/display/ReadQueries'
 import {
   LOG_CONSTITUENCY_HISTORY,
   LOG_BACENTA_HISTORY,
@@ -49,21 +49,25 @@ const UpdateConstituency = () => {
   })
 
   const [MakeConstituencyLeader] = useMutation(MAKE_CONSTITUENCY_LEADER)
-  const [UpdateConstituency] = useMutation(UPDATE_CONSTITUENCY_MUTATION, {
-    refetchQueries: [
-      {
-        query: GET_COUNCIL_CONSTITUENCIES,
-        variables: { id: constituency.council.id },
-      },
-    ],
-  })
+  const [UpdateConstituencyMutation] = useMutation(
+    UPDATE_CONSTITUENCY_MUTATION,
+    {
+      refetchQueries: [
+        {
+          query: GET_COUNCIL_CONSTITUENCIES,
+          variables: { id: constituency.council.id },
+        },
+      ],
+    }
+  )
 
   //Changes downwards. ie. Bacenta Changes underneath constituency
   const [AddConstituencyBacentas] = useMutation(ADD_CONSTITUENCY_BACENTAS)
   const [RemoveBacentaConstituency] = useMutation(REMOVE_BACENTA_CONSTITUENCY, {
-    onCompleted: (data) => {
-      const prevConstituency = data.updateConstituencies.constituencies[0]
-      const bacenta = data.updateBacentas.bacentas[0]
+    onCompleted: (responseData) => {
+      const prevConstituency =
+        responseData.updateConstituencies.constituencies[0]
+      const bacenta = responseData.updateBacentas.bacentas[0]
       let newConstituencyId = ''
       let oldConstituencyId = ''
       let historyRecord
@@ -94,10 +98,11 @@ const UpdateConstituency = () => {
   const [CreateHistorySubstructure] = useMutation(CREATE_HISTORY_SUBSTRUCTURE)
   const [RemoveConstituencyCouncil] = useMutation(REMOVE_CONSTITUENCY_COUNCIL)
   const [AddConstituencyCouncil] = useMutation(ADD_CONSTITUENCY_COUNCIL, {
-    onCompleted: (data) => {
+    onCompleted: (responseData) => {
       //If there is an old Council
-      const oldCouncil = data.updateCouncils.councils[0]
-      const newCouncil = data.updateConstituencies.constituencies[0].council
+      const oldCouncil = responseData.updateCouncils.councils[0]
+      const newCouncil =
+        responseData.updateConstituencies.constituencies[0].council
       let recordIfOldCouncil = `${initialValues.name} Constituency has been moved from ${oldCouncil.name} Council to ${newCouncil.name} Council`
 
       //After Adding the constituency to a council, then you log that change.
@@ -106,7 +111,8 @@ const UpdateConstituency = () => {
           constituencyId: constituencyId,
           newLeaderId: '',
           oldLeaderId: '',
-          newCouncilId: data.updateConstituencies.constituencies[0].council.id,
+          newCouncilId:
+            responseData.updateConstituencies.constituencies[0].council.id,
           oldCouncilId: initialValues?.council.id,
           historyRecord: recordIfOldCouncil,
         },
@@ -127,7 +133,7 @@ const UpdateConstituency = () => {
     onSubmitProps.setSubmitting(true)
     clickCard({ id: values.council, __typename: 'Council' })
     try {
-      await UpdateConstituency({
+      await UpdateConstituencyMutation({
         variables: {
           constituencyId: constituencyId,
           name: values.name,

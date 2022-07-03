@@ -1,8 +1,8 @@
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useQuery, useMutation } from '@apollo/client'
 
-import { parsePhoneNum, throwErrorMsg } from '../../../global-utils'
+import { parsePhoneNum, throwErrorMsg } from 'global-utils'
 import {
   LOG_MEMBER_HISTORY,
   UPDATE_MEMBER_EMAIL,
@@ -13,10 +13,10 @@ import {
 import {
   DISPLAY_MEMBER_BIO,
   DISPLAY_MEMBER_CHURCH,
-} from '../display/ReadQueries'
+} from 'pages/directory/display/ReadQueries'
 
-import { MemberContext } from '../../../contexts/MemberContext'
-import MemberForm from '../reusable-forms/MemberForm'
+import { MemberContext } from 'contexts/MemberContext'
+import MemberForm from 'pages/directory/reusable-forms/MemberForm'
 
 const UpdateMember = () => {
   const { memberId } = useContext(MemberContext)
@@ -74,7 +74,7 @@ const UpdateMember = () => {
 
   const navigate = useNavigate()
 
-  const [UpdateMember] = useMutation(UPDATE_MEMBER_MUTATION, {
+  const [UpdateMemberMutation] = useMutation(UPDATE_MEMBER_MUTATION, {
     refetchQueries: [
       { query: DISPLAY_MEMBER_BIO, variables: { id: memberId } },
       { query: DISPLAY_MEMBER_CHURCH, variables: { id: memberId } },
@@ -89,7 +89,7 @@ const UpdateMember = () => {
     onSubmitProps.setSubmitting(true)
 
     try {
-      await UpdateMember({
+      await UpdateMemberMutation({
         variables: {
           id: memberId,
           firstName: values.firstName.trim(),

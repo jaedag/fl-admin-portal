@@ -5,7 +5,7 @@ import * as Yup from 'yup'
 import { makeSelectOptions, throwErrorMsg } from 'global-utils'
 import { permitAdmin } from 'permission-utils'
 import { GET_GATHERINGSERVICES } from 'queries/ListQueries'
-import React, { useContext, useState } from 'react'
+import { useContext, useState } from 'react'
 import { ChurchContext } from 'contexts/ChurchContext'
 import FormikControl from 'components/formik-components/FormikControl'
 import PlusSign from 'components/buttons/PlusMinusSign/PlusSign'
@@ -174,10 +174,10 @@ const StreamForm = ({ initialValues, onSubmit, title, newStream }) => {
                         togglePopup()
                         navigate(`/stream/displayall`)
                       })
-                      .catch((error) => {
+                      .catch((err) => {
                         throwErrorMsg(
                           `There was an error closing down this stream`,
-                          error
+                          err
                         )
                       })
                   }}

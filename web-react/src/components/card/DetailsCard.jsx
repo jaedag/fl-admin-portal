@@ -1,7 +1,7 @@
 import CloudinaryImage from 'components/CloudinaryImage'
 import PlaceholderCustom from 'components/Placeholder'
 import { MemberContext } from 'contexts/MemberContext'
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { Badge } from 'react-bootstrap'
 import './DetailsCard.css'
 

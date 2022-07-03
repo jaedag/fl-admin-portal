@@ -1,7 +1,7 @@
 import { useMutation } from '@apollo/client'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { alertMsg, throwErrorMsg } from 'global-utils'
-import React, { useContext, useState } from 'react'
+import { useContext, useState } from 'react'
 import { Button, Spinner } from 'react-bootstrap'
 import { useNavigate } from 'react-router'
 import { CONFIRM_OFFERING_PAYMENT } from '../../bankingQueries'

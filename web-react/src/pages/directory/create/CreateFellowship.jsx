@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useMutation } from '@apollo/client'
 import { CREATE_FELLOWSHIP_MUTATION } from './CreateMutations'
@@ -23,12 +23,12 @@ const CreateFellowship = () => {
   }
 
   const [NewFellowshipLeader] = useMutation(NEW_FELLOWSHIP_LEADER)
-  const [CreateFellowship] = useMutation(CREATE_FELLOWSHIP_MUTATION)
+  const [CreateFellowshipMutation] = useMutation(CREATE_FELLOWSHIP_MUTATION)
 
   //onSubmit receives the form state as argument
   const onSubmit = (values, onSubmitProps) => {
     onSubmitProps.setSubmitting(true)
-    CreateFellowship({
+    CreateFellowshipMutation({
       variables: {
         name: values.name,
         bacentaId: values.bacenta,

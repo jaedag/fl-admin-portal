@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { ChurchContext } from '../../../contexts/ChurchContext'
 
 import { useQuery } from '@apollo/client'

@@ -1,7 +1,6 @@
-import React from 'react'
 import './PlusMinusSign.css'
 
-function MinusSign(props) {
+const MinusSign = (props) => {
   const { ...rest } = props
   return (
     <button {...rest} className="plusminus-button rounded" type="button">

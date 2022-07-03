@@ -4,7 +4,7 @@ import PlaceholderCustom from 'components/Placeholder'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { capitalise, throwErrorMsg } from 'global-utils'
 import { parseDate } from 'jd-date-utils'
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { Card, Col, Container, Row } from 'react-bootstrap'
 import { CheckCircleFill, XCircleFill } from 'react-bootstrap-icons'
 import { useNavigate } from 'react-router'
@@ -45,9 +45,14 @@ const FellowshipBankingSlipView = () => {
                   navigate('/services/fellowship/self-banking')
                   return
                 }
-                !service.bankingProof
-                  ? navigate('/fellowship/banking-slip/submission')
-                  : navigate('/fellowship/service-details')
+
+                if (!service.bankingProof) {
+                  navigate('/fellowship/banking-slip/submission')
+                  return
+                } else {
+                  navigate('/fellowship/service-details')
+                  return
+                }
               }}
             >
               <Card.Header>

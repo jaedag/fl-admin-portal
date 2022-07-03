@@ -1,10 +1,10 @@
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { useQuery } from '@apollo/client'
-import MembersGrid from '../../../components/members-grids/MembersGrid'
+import MembersGrid from 'components/members-grids/MembersGrid'
 import { GET_CONSTITUENCY_MEMBERS } from './GridQueries'
-import { ChurchContext } from '../../../contexts/ChurchContext'
+import { ChurchContext } from 'contexts/ChurchContext'
 
-export const ConstituencyMembers = () => {
+const ConstituencyMembers = () => {
   const { constituencyId } = useContext(ChurchContext)
 
   const { data, loading, error } = useQuery(GET_CONSTITUENCY_MEMBERS, {

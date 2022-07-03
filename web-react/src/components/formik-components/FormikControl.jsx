@@ -1,4 +1,3 @@
-import React from 'react'
 import Input from './Input'
 import Textarea from './Textarea'
 import Select from './Select'
@@ -18,7 +17,7 @@ export const arrayError = (array, index) => {
   if (array?.length) return array[index]
 }
 
-function FormikControl(props) {
+const FormikControl = (props) => {
   const { control, ...rest } = props
 
   switch (control) {

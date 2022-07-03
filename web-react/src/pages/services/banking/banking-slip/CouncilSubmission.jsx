@@ -3,7 +3,7 @@ import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import { ServiceContext } from 'contexts/ServiceContext'
 import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { Col, Container, Row } from 'react-bootstrap'
 import {
   BANKING_SLIP_SUBMISSION,
@@ -47,8 +47,8 @@ const CouncilBankingSlipSubmission = () => {
       onSubmitProps.resetForm()
 
       navigate(`/council/service-details`)
-    } catch (error) {
-      throwErrorMsg(error)
+    } catch (err) {
+      throwErrorMsg(err)
     }
   }
 

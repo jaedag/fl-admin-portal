@@ -1,5 +1,5 @@
 import { GoogleMap } from '@react-google-maps/api'
-import React, { useCallback, useMemo, useRef } from 'react'
+import { useCallback, useMemo, useRef } from 'react'
 import { Col, Row } from 'react-bootstrap'
 import './Map.css'
 

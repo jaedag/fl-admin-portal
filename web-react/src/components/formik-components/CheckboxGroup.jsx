@@ -1,10 +1,10 @@
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { Field, ErrorMessage } from 'formik'
 import TextError from './TextError'
 import { MemberContext } from 'contexts/MemberContext'
 import './CheckboxGroup.css'
 
-function CheckboxGroup(props) {
+const CheckboxGroup = (props) => {
   const { label, name, options, ...rest } = props
   const { theme } = useContext(MemberContext)
 

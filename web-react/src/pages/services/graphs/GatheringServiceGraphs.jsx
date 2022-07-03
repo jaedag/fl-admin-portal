@@ -1,4 +1,5 @@
-import React, { useContext, useState } from 'react'
+/* eslint-disable @typescript-eslint/no-use-before-define */
+import { useContext, useState } from 'react'
 
 import { ChurchContext } from '../../../contexts/ChurchContext'
 import { useQuery } from '@apollo/client'
@@ -17,9 +18,11 @@ const GatheringServiceReport = () => {
   const [bussing, setBussing] = useState(true)
   const { data, loading, error } = useQuery(GATHERINGSERVICE_GRAPHS, {
     variables: { gatheringServiceId: gatheringServiceId },
-    onCompleted: (data) => {
+    onCompleted: (graphData) => {
       if (!setChurchData) return
-      setChurchData(getServiceGraphData(data?.gatheringServices[0], 'bussing'))
+      setChurchData(
+        getServiceGraphData(graphData?.gatheringServices[0], 'bussing')
+      )
     },
   })
 

@@ -1,5 +1,5 @@
 import { capitalise } from 'global-utils'
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { Card, Col, Container, Row } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import { ChurchContext } from '../contexts/ChurchContext'

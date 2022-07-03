@@ -10,7 +10,7 @@ import { MemberContext } from 'contexts/MemberContext'
 import { ServiceContext } from 'contexts/ServiceContext'
 import { Form, Formik } from 'formik'
 import { alertMsg, throwErrorMsg } from 'global-utils'
-import React, { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { Button, Card, Container, Spinner } from 'react-bootstrap'
 import { useNavigate } from 'react-router'
 import { RECORD_ARRIVAL_TIME, SEND_BUSSING_SUPPORT } from './arrivalsMutations'
@@ -133,18 +133,18 @@ const ConfirmBacentaArrival = () => {
                         'Money Successfully Sent to ' +
                           supportRes.data.SendBussingSupport.momoNumber
                       )
-                    } catch (error) {
-                      throwErrorMsg(error)
+                    } catch (err) {
+                      throwErrorMsg(err)
                     }
                   }
 
                   setSubmitting(false)
                   navigate('/bacenta/bussing-details')
-                } catch (error) {
+                } catch (err) {
                   setSubmitting(false)
                   throwErrorMsg(
                     'There was an error recording the arrival time of this bacenta',
-                    error
+                    err
                   )
                 }
               }}

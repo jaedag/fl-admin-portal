@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { Route } from 'react-router-dom'
 import BacentaGraph from './BacentaGraphs'
 import FellowshipGraph from './FellowshipGraphs'

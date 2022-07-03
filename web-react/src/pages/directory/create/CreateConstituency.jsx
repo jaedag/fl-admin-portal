@@ -1,12 +1,12 @@
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useMutation } from '@apollo/client'
-import { throwErrorMsg } from '../../../global-utils'
-import { GET_COUNCIL_CONSTITUENCIES } from '../../../queries/ListQueries'
+import { throwErrorMsg } from 'global-utils'
+import { GET_COUNCIL_CONSTITUENCIES } from 'queries/ListQueries'
 import { CREATE_CONSTITUENCY_MUTATION } from './CreateMutations'
-import { ChurchContext } from '../../../contexts/ChurchContext'
+import { ChurchContext } from 'contexts/ChurchContext'
 import { NEW_CONSTITUENCY_LEADER } from './MakeLeaderMutations'
-import ConstituencyForm from '../reusable-forms/ConstituencyForm'
+import ConstituencyForm from 'pages/directory/reusable-forms/ConstituencyForm'
 
 const CreateConstituency = () => {
   const { clickCard, councilId } = useContext(ChurchContext)
@@ -20,15 +20,18 @@ const CreateConstituency = () => {
   }
 
   const [NewConstituencyLeader] = useMutation(NEW_CONSTITUENCY_LEADER)
-  const [CreateConstituency] = useMutation(CREATE_CONSTITUENCY_MUTATION, {
-    refetchQueries: [
-      { query: GET_COUNCIL_CONSTITUENCIES, variables: { id: councilId } },
-    ],
-    onCompleted: (newConstituencyData) => {
-      clickCard(newConstituencyData.CreateConstituency)
-      navigate(`/constituency/displaydetails`)
-    },
-  })
+  const [CreateConstituencyMutation] = useMutation(
+    CREATE_CONSTITUENCY_MUTATION,
+    {
+      refetchQueries: [
+        { query: GET_COUNCIL_CONSTITUENCIES, variables: { id: councilId } },
+      ],
+      onCompleted: (newConstituencyData) => {
+        clickCard(newConstituencyData.CreateConstituency)
+        navigate(`/constituency/displaydetails`)
+      },
+    }
+  )
 
   //onSubmit receives the form state as argument
 
@@ -36,7 +39,7 @@ const CreateConstituency = () => {
     onSubmitProps.setSubmitting(true)
     clickCard({ id: values.council, __typename: 'Council' })
     try {
-      const res = await CreateConstituency({
+      const res = await CreateConstituencyMutation({
         variables: {
           name: values.name,
           leaderId: values.leaderId,

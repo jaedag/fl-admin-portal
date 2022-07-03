@@ -1,6 +1,6 @@
 import PlaceholderCustom from 'components/Placeholder'
 import { MemberContext } from 'contexts/MemberContext'
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { Container } from 'react-bootstrap'
 import './Directory.css'
 import ChurchIcon from '../../assets/church-svgrepo-com.svg'

@@ -12,7 +12,7 @@ import {
   GET_COUNCIL_CONSTITUENCIES,
   GET_CONSTITUENCY_BACENTAS,
 } from 'queries/ListQueries'
-import React, { useContext, useState } from 'react'
+import { useContext, useState } from 'react'
 import { ChurchContext } from 'contexts/ChurchContext'
 import FormikControl from 'components/formik-components/FormikControl'
 import { MAKE_FELLOWSHIP_INACTIVE } from 'pages/directory/update/CloseChurchMutations'
@@ -276,11 +276,11 @@ const FellowshipForm = (props) => {
                         togglePopup()
                         navigate('/bacenta/displaydetails')
                       })
-                      .catch((error) => {
+                      .catch((err) => {
                         setButtonLoading(false)
                         throwErrorMsg(
                           'There was an error closing down this fellowship',
-                          error
+                          err
                         )
                       })
                   }}

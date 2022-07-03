@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { Row, Col, Accordion, Stack } from 'react-bootstrap'
 import { useQuery } from '@apollo/client'
 import { MemberContext } from '../../../contexts/MemberContext'

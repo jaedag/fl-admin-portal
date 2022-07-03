@@ -1,8 +1,8 @@
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { Button } from 'react-bootstrap'
 import { useNavigate } from 'react-router'
-import { ChurchContext } from '../contexts/ChurchContext'
-import { capitalise } from '../global-utils'
+import { ChurchContext } from 'contexts/ChurchContext'
+import { capitalise } from 'global-utils'
 import PlaceholderCustom from './Placeholder'
 import './MemberRoleList.css'
 
@@ -125,8 +125,8 @@ const MemberRoleList = ({ memberLeader, memberAdmin }) => {
 
         {
           //Rank Discussions */}
-          Object.entries(rank).map((rank) => {
-            return rank[1].map((place, i) => {
+          Object.entries(rank).map((rankElement) => {
+            return rankElement[1].map((place, i) => {
               let servant = 'Leader'
 
               if (place.admin) {

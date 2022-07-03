@@ -1,5 +1,4 @@
 /* eslint-disable no-console*/
-import React from 'react'
 import packageJson from '../package.json'
 global.appVersion = packageJson.version
 
@@ -73,8 +72,10 @@ class CacheBuster extends React.Component {
         }
       })
   }
+
   render() {
     const { loading, isLatestVersion, refreshCacheAndReload } = this.state
+
     return this.props.children({
       loading,
       isLatestVersion,

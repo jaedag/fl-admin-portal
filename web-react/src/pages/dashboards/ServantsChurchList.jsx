@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { useNavigate } from 'react-router'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { MemberContext } from 'contexts/MemberContext'
@@ -22,21 +22,21 @@ const ServantsChurchList = () => {
   })
   const servant = data?.members[0]
 
-  const getServantChurches = (servant) => {
-    if (!servant) return
+  const getServantChurches = (member) => {
+    if (!member) return
 
     let churches = []
 
-    const pushIntoChurch = (servantChurches) => {
-      servantChurches.map((church) => {
+    const pushIntoChurch = (memberChurches) => {
+      memberChurches.map((church) => {
         const serviceData = getServiceGraphData(church)
 
         return churches.push({
           id: church.id,
           __typename: church.__typename,
           name: church.name,
-          leader: servant?.fullName,
-          leaderPic: servant?.pictureUrl,
+          leader: member?.fullName,
+          leaderPic: member?.pictureUrl,
           attendance: getMonthlyStatAverage(serviceData, 'attendance'),
           income: getMonthlyStatAverage(serviceData, 'income'),
           link: `/${church.__typename.toLowerCase()}/displaydetails`,
@@ -44,43 +44,43 @@ const ServantsChurchList = () => {
       })
     }
 
-    if (servant?.leadsFellowship?.length) {
-      pushIntoChurch(servant?.leadsFellowship)
+    if (member?.leadsFellowship?.length) {
+      pushIntoChurch(member?.leadsFellowship)
     }
-    if (servant.leadsBacenta) {
-      pushIntoChurch(servant?.leadsBacenta)
+    if (member.leadsBacenta) {
+      pushIntoChurch(member?.leadsBacenta)
     }
-    if (servant.leadsConstituency?.length) {
-      pushIntoChurch(servant?.leadsConstituency)
+    if (member.leadsConstituency?.length) {
+      pushIntoChurch(member?.leadsConstituency)
     }
-    if (servant?.leadsSonta?.length) {
-      pushIntoChurch(servant?.leadsSonta)
+    if (member?.leadsSonta?.length) {
+      pushIntoChurch(member?.leadsSonta)
     }
-    if (servant?.leadsBasonta?.length) {
-      pushIntoChurch(servant?.leadsBasonta)
+    if (member?.leadsBasonta?.length) {
+      pushIntoChurch(member?.leadsBasonta)
     }
-    if (servant?.leadsMinistry?.length) {
-      pushIntoChurch(servant?.leadsMinistry)
+    if (member?.leadsMinistry?.length) {
+      pushIntoChurch(member?.leadsMinistry)
     }
 
-    if (servant?.leadsCouncil?.length) {
-      pushIntoChurch(servant?.leadsCouncil)
+    if (member?.leadsCouncil?.length) {
+      pushIntoChurch(member?.leadsCouncil)
     }
-    if (servant?.leadsStream?.length) {
-      pushIntoChurch(servant?.leadsStream)
+    if (member?.leadsStream?.length) {
+      pushIntoChurch(member?.leadsStream)
     }
-    if (servant?.leadsGatheringService?.length) {
-      pushIntoChurch(servant?.leadsGatheringService)
+    if (member?.leadsGatheringService?.length) {
+      pushIntoChurch(member?.leadsGatheringService)
     }
     //Administrative
-    if (servant?.isAdminForCouncil?.length) {
-      pushIntoChurch(servant?.isAdminForCouncil)
+    if (member?.isAdminForCouncil?.length) {
+      pushIntoChurch(member?.isAdminForCouncil)
     }
-    if (servant?.isAdminForConstituency?.length) {
-      pushIntoChurch(servant?.isAdminForConstituency)
+    if (member?.isAdminForConstituency?.length) {
+      pushIntoChurch(member?.isAdminForConstituency)
     }
-    if (servant?.isAdminForGatheringService?.length) {
-      pushIntoChurch(servant?.isAdminForGatheringService)
+    if (member?.isAdminForGatheringService?.length) {
+      pushIntoChurch(member?.isAdminForGatheringService)
     }
 
     //run the get graph function after all checking is done to avoid multiple unnecessary runs

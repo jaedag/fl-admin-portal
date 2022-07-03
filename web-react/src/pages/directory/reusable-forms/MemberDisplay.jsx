@@ -1,13 +1,12 @@
-import React from 'react'
 import { useQuery } from '@apollo/client'
-import Timeline from '../../../components/Timeline/Timeline'
-import MemberRoleList from '../../../components/MemberRoleList'
+import Timeline from 'components/Timeline/Timeline'
+import MemberRoleList from 'components/MemberRoleList'
 import {
   getNameWithTitle,
   throwErrorMsg,
   getHighestTitle,
   USER_PLACEHOLDER,
-} from '../../../global-utils'
+} from 'global-utils'
 import { getMemberDob } from 'jd-date-utils'
 import {
   DISPLAY_MEMBER_ADMIN,

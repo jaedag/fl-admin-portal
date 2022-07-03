@@ -4,7 +4,7 @@ import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import HeadingSecondary from 'components/HeadingSecondary'
 import { Form, Formik } from 'formik'
 import { useMutation, useQuery } from '@apollo/client'
-import React, { useContext, useEffect } from 'react'
+import { useContext, useEffect } from 'react'
 import * as Yup from 'yup'
 import { Col, Container, Row } from 'react-bootstrap'
 import { useNavigate } from 'react-router'
@@ -51,15 +51,15 @@ const FormMobilisationSubmission = () => {
         onSubmitProps.setSubmitting(false)
         navigate(`/bacenta/bussing-details`)
       })
-      .catch((error) => throwErrorMsg('', error))
+      .catch((err) => throwErrorMsg('', err))
   }
 
   useEffect(() => {
     let bussing
 
-    data?.bacentas[0].bussing.forEach((data) => {
-      if (isToday(data.serviceDate.date)) {
-        bussing = data
+    data?.bacentas[0].bussing.forEach((bussingData) => {
+      if (isToday(bussingData.serviceDate.date)) {
+        bussing = bussingData
       }
     })
 

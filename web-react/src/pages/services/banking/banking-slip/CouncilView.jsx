@@ -4,7 +4,7 @@ import PlaceholderCustom from 'components/Placeholder'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { throwErrorMsg } from 'global-utils'
 import { parseDate } from 'jd-date-utils'
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { Card, Col, Container, Row } from 'react-bootstrap'
 import { CheckCircleFill, XCircleFill } from 'react-bootstrap-icons'
 import { useNavigate } from 'react-router'
@@ -36,8 +36,10 @@ const CouncilBankingSlipView = () => {
             onClick={() => {
               clickCard(service)
 
-              !service.bankingProof &&
+              if (!service.bankingProof) {
                 navigate('/council/banking-slip/submission')
+                return
+              }
             }}
           >
             <Card.Header>

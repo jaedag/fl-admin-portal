@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from '@apollo/client'
 import { ChurchContext } from 'contexts/ChurchContext'
-import React, { useContext, useState } from 'react'
+import { useContext, useState } from 'react'
 import {
   DISPLAY_BACENTA_BUSSING_DETAILS,
   SEND_MOBILE_VERIFICATION_NUMBER,

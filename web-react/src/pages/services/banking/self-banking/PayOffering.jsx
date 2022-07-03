@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from '@apollo/client'
 import BaseComponent from 'components/base-component/BaseComponent'
 import { ServiceContext } from 'contexts/ServiceContext'
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { useNavigate } from 'react-router'
 import {
   DISPLAY_OFFERING_DETAILS,
@@ -62,7 +62,7 @@ const PayOffering = (props) => {
         mobileNumber: values.mobileNumber,
         momoName: values.momoName,
       },
-    }).catch((error) => throwErrorMsg('There was a problem', error))
+    }).catch((err) => throwErrorMsg('There was a problem', err))
 
     setSubmitting(false)
     navigate('/self-banking/confirm-payment')

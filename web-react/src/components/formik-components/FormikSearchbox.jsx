@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import Autosuggest from 'react-autosuggest'
 import './react-autosuggest.css'
 import { useLazyQuery } from '@apollo/client'
@@ -12,10 +12,10 @@ import {
   FEDERAL_SEARCH,
 } from '../../pages/directory/mobile/SearchQuery.js'
 import { ChurchContext } from '../../contexts/ChurchContext'
-import { capitalise, isAuthorised } from '../../global-utils'
+import { capitalise, isAuthorised } from 'global-utils'
 import { MemberContext } from '../../contexts/MemberContext'
 
-function FormikSearchbox(props) {
+const FormikSearchbox = (props) => {
   const { label, name, placeholder, setFieldValue } = props
 
   const [searchString, setSearchString] = useState('')
@@ -100,10 +100,10 @@ function FormikSearchbox(props) {
     },
   })
 
-  const whichSearch = (searchString) => {
+  const whichSearch = (string) => {
     if (isAuthorised(['adminGatheringService'], currentUser.roles)) {
       federalSearch({
-        variables: { searchKey: capitalise(searchString.trim()) },
+        variables: { searchKey: capitalise(string.trim()) },
       })
     } else if (
       isAuthorised(['adminStream', 'leaderStream'], currentUser.roles)
@@ -111,7 +111,7 @@ function FormikSearchbox(props) {
       streamSearch({
         variables: {
           streamId: currentUser.stream,
-          searchKey: capitalise(searchString.trim()),
+          searchKey: capitalise(string.trim()),
         },
       })
     } else if (
@@ -120,7 +120,7 @@ function FormikSearchbox(props) {
       councilSearch({
         variables: {
           councilId: currentUser.council,
-          searchKey: capitalise(searchString.trim()),
+          searchKey: capitalise(string.trim()),
         },
       })
     } else if (
@@ -132,7 +132,7 @@ function FormikSearchbox(props) {
       constituencySearch({
         variables: {
           constituencyId: currentUser.constituency,
-          searchKey: capitalise(searchString.trim()),
+          searchKey: capitalise(string.trim()),
         },
       })
     }

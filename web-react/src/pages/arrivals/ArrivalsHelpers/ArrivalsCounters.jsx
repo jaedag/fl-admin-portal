@@ -3,7 +3,7 @@ import BaseComponent from 'components/base-component/BaseComponent'
 import MemberDisplayCard from 'components/card/MemberDisplayCard'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import { ChurchContext } from 'contexts/ChurchContext'
-import React, { useContext, useState } from 'react'
+import { useContext, useState } from 'react'
 import { Button, Col, Container, Row, Spinner } from 'react-bootstrap'
 import * as Yup from 'yup'
 import { Form, Formik } from 'formik'
@@ -16,8 +16,8 @@ import { alertMsg, throwErrorMsg } from 'global-utils'
 import Popup from 'components/Popup/Popup'
 import FormikControl from 'components/formik-components/FormikControl'
 import SubmitButton from 'components/formik-components/SubmitButton'
-import NoData from '../CompNoData'
 import usePopup from 'hooks/usePopup'
+import CompNoData from 'pages/arrivals/CompNoData'
 
 const ArrivalsCounters = () => {
   const { streamId } = useContext(ChurchContext)
@@ -139,8 +139,8 @@ const ArrivalsCounters = () => {
                     })
                     setSubmitting(false)
                     alertMsg(`${counter.fullName} Deleted Successfully`)
-                  } catch (error) {
-                    throwErrorMsg(error)
+                  } catch (err) {
+                    throwErrorMsg(err)
                   }
                 }
               }}
@@ -158,7 +158,7 @@ const ArrivalsCounters = () => {
         ))}
 
         {!stream?.arrivalsCounters.length && (
-          <NoData text="There are no arrivals helpers" />
+          <CompNoData text="There are no arrivals helpers" />
         )}
       </Container>
     </BaseComponent>

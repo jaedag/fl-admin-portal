@@ -1,5 +1,5 @@
 import { MemberContext } from 'contexts/MemberContext'
-import React, { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import './MenuItem.css'
 

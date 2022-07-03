@@ -1,9 +1,9 @@
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useMutation } from '@apollo/client'
-import { throwErrorMsg } from '../../../global-utils'
+import { throwErrorMsg } from 'global-utils'
 import { CREATE_STREAM_MUTATION } from './CreateMutations'
-import { ChurchContext } from '../../../contexts/ChurchContext'
+import { ChurchContext } from 'contexts/ChurchContext'
 import { NEW_STREAM_LEADER } from './MakeLeaderMutations'
 import StreamForm from 'pages/directory/reusable-forms/StreamForm'
 
@@ -19,14 +19,14 @@ const CreateStream = () => {
   }
 
   const [NewStreamLeader] = useMutation(NEW_STREAM_LEADER)
-  const [CreateStream] = useMutation(CREATE_STREAM_MUTATION)
+  const [CreateStreamMutation] = useMutation(CREATE_STREAM_MUTATION)
 
   //onSubmit receives the form state as argument
   const onSubmit = (values, onSubmitProps) => {
     onSubmitProps.setSubmitting(true)
     clickCard({ id: values.gatheringService, __typename: 'GatheringService' })
 
-    CreateStream({
+    CreateStreamMutation({
       variables: {
         name: values.name,
         leaderId: values.leaderId,

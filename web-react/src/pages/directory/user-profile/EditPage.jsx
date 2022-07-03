@@ -1,16 +1,16 @@
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useQuery, useMutation } from '@apollo/client'
-import { parsePhoneNum } from '../../../global-utils'
+import { parsePhoneNum } from 'global-utils'
 
-import { UPDATE_MEMBER_MUTATION } from '../update/UpdateMutations'
+import { UPDATE_MEMBER_MUTATION } from 'pages/directory/update/UpdateMutations'
 import {
   DISPLAY_MEMBER_BIO,
   DISPLAY_MEMBER_CHURCH,
-} from '../display/ReadQueries'
+} from 'pages/directory/display/ReadQueries'
 
-import { MemberContext } from '../../../contexts/MemberContext'
-import MemberForm from '../reusable-forms/MemberForm'
+import { MemberContext } from 'contexts/MemberContext'
+import MemberForm from 'pages/directory/reusable-forms/MemberForm'
 import BaseComponent from 'components/base-component/BaseComponent'
 
 const UserProfileEditPage = () => {

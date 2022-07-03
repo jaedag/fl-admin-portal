@@ -4,7 +4,7 @@ import * as Yup from 'yup'
 import { makeSelectOptions } from 'global-utils'
 import { permitAdmin } from 'permission-utils'
 import { GET_COUNCIL_CONSTITUENCIES, GET_MINISTRIES } from 'queries/ListQueries'
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import FormikControl from 'components/formik-components/FormikControl'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { useQuery } from '@apollo/client'
@@ -58,7 +58,7 @@ const SontaForm = ({ initialValues, onSubmit, title, loading, newSonta }) => {
 
   const sontasNotInconstituency = ministryOptions?.filter((ministry) => {
     return !constituency?.sontas.some(
-      (sonta) => sonta['name'] === `${constituency?.name} ${ministry.key}`
+      (sonta) => sonta.name === `${constituency?.name} ${ministry.key}`
     )
   })
 
