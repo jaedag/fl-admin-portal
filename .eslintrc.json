@@ -1,6 +1,6 @@
 {
   "extends": [
-    "airbnb-typescript",
+    "airbnb",
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:prettier/recommended",
@@ -16,7 +16,8 @@
     "ecmaFeatures": {
       "jsx": true
     },
-    "ecmaVersion": 11
+    "ecmaVersion": 11,
+    "sourceType": "module"
   },
   "settings": {
     "import/parsers": {
@@ -25,14 +26,11 @@
     "import/resolver": {
       "typescript": {
         "alwaysTryTypes": true
-      },
-      "node": {
-        "extensions": [".js", ".jsx", ".ts", ".tsx"],
-        "paths": ["web-react/src"]
       }
     }
   },
   "plugins": [
+    "react",
     "@typescript-eslint",
     "prettier",
     "no-relative-import-paths",
@@ -50,6 +48,12 @@
     "no-relative-import-paths/no-relative-import-paths": [
       "warn",
       { "allowSameFolder": true, "rootDir": "src" }
+    ],
+    "react/jsx-filename-extension": [
+      1,
+      {
+        "extensions": [".tsx", ".ts"]
+      }
     ],
     "react/function-component-definition": [
       2,

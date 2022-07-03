@@ -5,11 +5,13 @@ import { Button, Container, Spinner } from 'react-bootstrap'
 import usePopup from 'hooks/usePopup'
 import './AuthButton.css'
 import { BoxArrowRight } from 'react-bootstrap-icons'
+import { useLocation } from 'react-router'
 
 const AuthButton = (props) => {
   const { loginWithRedirect, logout, isAuthenticated } = useAuth0()
   const { togglePopup, isOpen } = usePopup()
   const { mobileFullSize } = props
+  const location = useLocation()
 
   if (!isAuthenticated) {
     return (

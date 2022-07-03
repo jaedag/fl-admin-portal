@@ -1,4 +1,5 @@
 /* eslint-disable no-console*/
+import React from 'react'
 import packageJson from '../package.json'
 global.appVersion = packageJson.version
 

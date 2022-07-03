@@ -1148,8 +1148,8 @@ extend type Mutation {
         serviceRecord.noServiceReason = $noServiceReason
 
       WITH serviceRecord
-      MATCH (church {id:$id}) WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council
-      MATCH (church)-[:CURRENT_HISTORY]->(log:HistoryLog)
+      MATCH (church:Fellowship {id:$id})
+      MATCH (church)-[:CURRENT_HISTORY]->(log:ServiceLog)
       MATCH (leader:Member {auth_id: $auth.jwt.sub})
 
       MERGE (serviceRecord)-[:LOGGED_BY]->(leader)

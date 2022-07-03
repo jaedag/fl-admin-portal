@@ -43,7 +43,7 @@ const BacentaArrivals = () => {
   }
 
   data?.bacentas[0].bussing.forEach((busData) => {
-    if (isToday(busDData.serviceDate.date)) {
+    if (isToday(busData.serviceDate.date)) {
       bussing = busData
     }
     return null
