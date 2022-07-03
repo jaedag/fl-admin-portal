@@ -16,8 +16,7 @@
     "ecmaFeatures": {
       "jsx": true
     },
-    "ecmaVersion": 11,
-    "project": ["web-react/tsconfig.json"]
+    "ecmaVersion": 11
   },
   "settings": {
     "import/parsers": {
@@ -34,7 +33,6 @@
     }
   },
   "plugins": [
-    "react",
     "@typescript-eslint",
     "prettier",
     "no-relative-import-paths",
