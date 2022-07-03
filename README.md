@@ -1,86 +1,43 @@
-[![Netlify Status](https://api.netlify.com/api/v1/badges/3fc1e26f-bccb-4196-ba57-705d3b09bb82/deploy-status)](https://app.netlify.com/sites/flcadmin/deploys)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/cad37b19-5535-4ea4-98c9-e955be0fdab1/deploy-status)](https://app.netlify.com/sites/fl-pastoral-care/deploys)
 
 This project was built using [GRANDstack](https://grandstack.io) (GraphQL, React, Apollo, Neo4j Database) application.
 <br/><br/>
+[![First Love Logo](/img/flc-logo-small.png)](https://www.firstlovecenter.com)
 
-# [![First Love Logo](/img/fl-logo.png)](https://www.firstlovecenter.com) Where Are We Going?
+# Pastoral Care Application
 
-<br/>
+Please find attached the rough UI Design by clicking this link.
+https://xd.adobe.com/view/f5d8900f-8d05-47b4-946e-4d7f315ae6a2-a08b/
 
-> _"The problem in a Mega Church is blindness"_
->
-> \- DHM
+## Definition of Key Terms
 
-<br/>
+- **Bacenta Leader**: A leader in charge of a smaller weekly fellowship. This person will also be accountable for tracking the attendance of the members who are assigned to him.
+- **CO/Constituency Overseer**: A CO has a number of Bacenta Leaders that he oversees in a designated location which is known as a constituency. He will need to be able to monitor the work of Bacenta Leaders under him.
+- **Bishop**: A Bishop Oversees a number of constituencies. Because of this he will also need to be able to monitor the work of constituency overseers as well as Bacenta Leaders under him.
+- **Resident Bishop**: Our senior pastor in charge of the church. He oversees all bishops, constituency overseers and Bacenta Leaders in the church.
+- **Sheep Seeking Admin**: This is a type of administrator who is responsible for the registration of members. They should also maintain the ability to delete members.
+- **Super Admin**: This admin has the ability to create accounts for the different types of leaders (bishops, COs, Bacenta Leaders, Sheep Seeking Admin), as well as updating when there are changes.
 
-The aim is to build a Church Management Portal for Managing the [First Love Church](https://www.firstlovecenter.com) in Accra.
-All Contributors welcome. Go ahead and fork the project and submit a PR. Read the [Contributor Guide](./CONTRIBUTING.md) for guidelines.
+## Pastoral Responsibilities
 
-- [PHASE 1: Directory (State of the Flock Part 1) ✅](#phase-1-directory-state-of-the-flock-part-1-)
-- [PHASE 2: Attendance and Income Records (State of the Flock Part 2) ✅](#phase-2-attendance-and-income-records-state-of-the-flock-part-2-)
-- [PHASE 3: Records of the Campaigns (SSMG)](#phase-3-records-of-the-campaigns-ssmg)
-- [PHASE 4: Geolocation (Google Earth Replacement) (Sheep Seeking)](#phase-4-geolocation-google-earth-replacement-sheep-seeking)
-- [PHASE 5: Bussing Registration and Monitoring (Bacenta Proliferation) ✅](#phase-5-bussing-registration-and-monitoring-bacenta-proliferation-)
-- [PHASE 6: Future Ideas](#phase-6-future-ideas)
+Our church pastoral care runs on four basic activities that a pastor is supposed to do for his assigned members. This is in the form of an acronym PVCI
+Prayer, Visitation, Counselling, Interaction
 
-## PHASE 1: Directory (State of the Flock Part 1) ✅
+## Pastoral Cycles
 
-1.  Be able to hold all membership and leadership records (Bacenta and Basonta).
-2.  Be able to search and filter all membership records based on selected criteria.
-3.  Be able to display information on one member
-4.  Display registration numbers at all levels (Constituency, Bacenta, Basonta)
-5.  Be able to import data in a csv file, and export data in a csv file.
-6.  An extensive transaction log of leadership histories.
-7.  Database Backups to occur every day or twice a day.
-    <br/>
+Each leader is supposed to routinely perform his duties of PVCI during what we call a pastoral cycle.
+For a Bacenta leader his pastoral cycle resets **every month**. This means that he is supposed to pray for, visit, counsel and interact (through phone calls) for each of his members every month.
+The pastoral cycle for a Bacenta leader is **one month**.
+The pastoral cycle for a constituency overseer is **3 months**. The pastoral cycle for a bishop is **6 months**.
 
-## PHASE 2: Attendance and Income Records (State of the Flock Part 2) ✅
+## What We Expect to Achieve Using the Application
 
-1.  Replacing all current forms for accepting income and attendance for all services and Basonta Meetings (treasurers & picture uploads)
-2.  Accepting all data from all services weekly.
-    - Bacenta Fellowship
-    - Constituency Joint Service
-    - First Love Federal Services (Gathering Service and Revival)
-3.  Integrate a way of sending broadcast reminders (SMS/ WhatsApp) to leaders/admins who haven’t filled their forms and such
-4.  Monitor outstanding penalties for fellowships who default
-5.  A Way to Integrate with Bank to confirm if offering payments have been made??
-6.  Generating monthly graph reports at the bishops level/ COs level, bacenta level.
-7.  Requesting records on any leader in the church (Graphs)
-8.  Bishops Monthly Report sent via Mail as a PDF.
-9.  Monthly CO Reports per Constituency.
-10. Requesting records on any bacenta in the church.
-11. Monitoring the tithes of leaders (Needs ideas on how to achieve this)
-    <br/>
-
-## PHASE 3: Records of the Campaigns (SSMG)
-
-1. Replacing all current forms for SSMG
-2. All Campaign Forms
-3. Generating monthly and annual reports for all campaigns
-4. Understanding School Data per member
-   <br/>
-
-## PHASE 4: Geolocation (Google Earth Replacement) (Sheep Seeking)
-
-1. Plot fellowships, bacentas, and centres on a map
-2. Plot all members on a map
-3. Plot outreach venues on a map with information on area populations, cost of bussing, etc
-   <br/>
-
-## PHASE 5: Bussing Registration and Monitoring (Bacenta Proliferation) ✅
-
-1. Maintain an accurate Bacenta Directory
-2. Accept Bacenta Records of Attendance, Cost, Offering Raised, Amount Paid from the Church
-3. Close Down any Bacenta/IC that busses under 8 for four consecutive weeks
-4. Registration of ICs
-5. Graduate IC to Bacenta after bussing above 8 for 4 consecutive weeks.
-6. Accept IC Records of Attendance, Cost, Offering Raised, Amount Paid from the Church
-7. IC Training Attendance Tracking. Attendance to be filled by IC Trainers.
-   <br/>
-
-## PHASE 6: Future Ideas
-
-⁃ Face Recognition Attendance
-
-This project is licensed under the Apache License v2.
-Copyright (c) 2020 Neo4j, Inc.
+1. Sheep seeking admins should be able to register members and assign them to bacentas which will connect them to leaders.
+2. Bacenta Leaders should receive a notification at the end of each week alerting them about their newly assigned members which should then go into a special list called “First Timers and New Converts”. Each bacenta leader should have ticked this by the end of the week.
+3. Every Bacenta leader should be able to tick attendances for each member assigned to them both on Sunday and during the weekday fellowship meeting.
+4. Each member should be classified based on their attendance record. If a member is regular in church, they should be classified as sheep. If they miss four consecutive weeks, they should be classified as goats, missing 8 consecutive weeks will change their classification to deer.
+5. All pastoral duties will apply only for sheep and goats. Deer will be left out of everything.
+6. There should be a large timer showing the countdown for each individuals pastoral cycle.
+7. The leaders (bishops, COs, Bacenta Leaders) should be able to tick for each of their pastoral care duties as well as add a comment (256 max character limit) for each interaction with a member. This history should only be viewed by the bishop.
+8. At the end of each pastoral cycle, emails should be sent to all supervisors (bishops, constituency overseers) showing a summary of the work of the leaders under them.
+9. Super Admin should be able to create accounts and delete them for each type of user. If possible account creation should be automatically done.

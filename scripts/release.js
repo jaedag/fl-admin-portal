@@ -1,8 +1,10 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
+// eslint-disable-next-line import/no-extraneous-dependencies
 const concurrently = require('concurrently')
 const { API_DIR, runner, concurrentOpts, TEMPLATE_DIR } = require('./common')
 
-let versionBump = []
-let release = []
+const versionBump = []
+const release = []
 
 switch (process.argv[2]) {
   case 'patch':
@@ -69,7 +71,9 @@ switch (process.argv[2]) {
     break
 }
 
-concurrently(versionBump, concurrentOpts)
+const { result } = concurrently(versionBump, concurrentOpts)
+
+result
   .then(() => concurrently(release, concurrentOpts))
   .catch((e) => {
     // eslint-disable-next-line no-console
