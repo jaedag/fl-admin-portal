@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
+// eslint-disable-next-line import/no-extraneous-dependencies
 const concurrently = require('concurrently')
 
 const {
@@ -30,6 +32,9 @@ if (templateName === 'Flutter') {
   })
 }
 
-concurrently(jobs, concurrentOpts).catch((e) => {
+const { result } = concurrently(jobs, concurrentOpts)
+
+result.catch((e) => {
+  // eslint-disable-next-line no-console
   console.error(e.message)
 })

@@ -29,7 +29,7 @@ services:
       - neo4j
 
   ui:
-    build: ./web-react
+    build: ./web-react-ts
     ports:
       - 3000:3000
     environment:

@@ -9,6 +9,7 @@ import { treasuryMutations } from './anagkazo/treasury-resolvers'
 /* eslint-disable no-console */
 const dotenv = require('dotenv')
 const axios = require('axios').default
+const formData = require('form-data')
 const cypher = require('./cypher/resolver-cypher')
 
 const {
@@ -31,10 +32,10 @@ const texts = require('./texts.json')
 dotenv.config()
 
 export let authToken
-export let authRoles = {}
+export const authRoles = {}
 
-const formData = require('form-data')
 const Mailgun = require('mailgun.js')
+
 const mailgun = new Mailgun(formData)
 const mg = mailgun.client({ username: 'api', key: process.env.MAILGUN_API_KEY })
 
@@ -47,7 +48,7 @@ const notifyMember = (
   whatsapp_placeholders
 ) => {
   if (whatsapp_template && member?.doWeHaveMoney) {
-    //Send WhatsApp or Not
+    // Send WhatsApp or Not
     const sendWhatsAppConfig = {
       method: 'post',
       baseURL: process.env.INFOBIP_BASE_URL,
@@ -58,8 +59,8 @@ const notifyMember = (
       data: {
         messages: [
           {
-            from: '233508947494', //First Love Number
-            to: member.whatsappNumber, //Member's Number
+            from: '233508947494', // First Love Number
+            to: member.whatsappNumber, // Member's Number
             content: {
               templateName: whatsapp_template,
               templateData: {
@@ -79,7 +80,7 @@ const notifyMember = (
       .then(() =>
         console.log(
           'WhatsApp Message Sending to',
-          member.firstName + ' ' + member.lastName
+          `${member.firstName} ${member.lastName}`
         )
       )
       .catch((error) => throwErrorMsg('WhatsApp Message Failed to Send', error))
@@ -89,9 +90,9 @@ const notifyMember = (
     .create('mg.firstlovecenter.com', {
       from: 'FL Accra Admin <no-reply@firstlovecenter.org>',
       to: process.env.TEST_EMAIL_ADDRESS || member.email,
-      subject: subject,
+      subject,
       text: body,
-      html: html || null, //HTML Version of the Message for Better Styling
+      html: html || null, // HTML Version of the Message for Better Styling
     })
     .then((msg) => console.log('Mailgun API response', msg)) // logs response data
     .catch((err) => console.log('Mailgun API error', err)) // logs any error
@@ -160,7 +161,7 @@ const assignRoles = (servant, userRoles, rolesToAssign) => {
     return
   }
 
-  //An assign roles function to simplify assigning roles with an axios request
+  // An assign roles function to simplify assigning roles with an axios request
   if (!userRoleIds.includes(rolesToAssign[0])) {
     return axios(auth0.setUserRoles(servant.auth_id, rolesToAssign, authToken))
       .then(() =>
@@ -171,12 +172,11 @@ const assignRoles = (servant, userRoles, rolesToAssign) => {
       )
       .catch((err) => throwErrorMsg('There was an error assigning role', err))
   }
-  return
 }
 const removeRoles = (servant, userRoles, rolesToRemove) => {
   const userRoleIds = userRoles.map((role) => authRoles[role].id)
 
-  //A remove roles function to simplify removing roles with an axios request
+  // A remove roles function to simplify removing roles with an axios request
   if (userRoleIds.includes(rolesToRemove)) {
     return axios(
       auth0.deleteUserRoles(servant.auth_id, [rolesToRemove], authToken)
@@ -188,7 +188,6 @@ const removeRoles = (servant, userRoles, rolesToRemove) => {
       )
       .catch((err) => throwErrorMsg('There was an error removing role', err))
   }
-  return
 }
 
 export const MakeServant = async (
@@ -198,11 +197,11 @@ export const MakeServant = async (
   churchType,
   servantType
 ) => {
-  //Set Up
+  // Set Up
   const terms = formatting(churchType, servantType)
-  const verb = terms.verb
-  const churchLower = terms.churchLower
-  const servantLower = terms.servantLower
+  const { verb } = terms
+  const { churchLower } = terms
+  const { servantLower } = terms
 
   isAuth(permittedRoles, context.auth.roles)
   noEmptyArgsValidation([
@@ -234,13 +233,13 @@ export const MakeServant = async (
 
   errorHandling(servant)
 
-  //Check for AuthID of servant
+  // Check for AuthID of servant
   const authIdResponse = await axios(auth0.getAuthIdConfig(servant, authToken))
   servant.auth_id = authIdResponse.data[0]?.user_id
 
   if (!servant.auth_id) {
     try {
-      //If servant Does Not Have Auth0 Profile, Create One
+      // If servant Does Not Have Auth0 Profile, Create One
       const authProfileResponse = await axios(
         auth0.createAuthUserConfig(servant, authToken)
       )
@@ -267,7 +266,7 @@ export const MakeServant = async (
         `Auth0 Account successfully created for ${servant.firstName} ${servant.lastName}`
       )
 
-      //Write Auth0 ID of Leader to Neo4j DB
+      // Write Auth0 ID of Leader to Neo4j DB
       makeServantCypher(
         context,
         args,
@@ -281,17 +280,17 @@ export const MakeServant = async (
       throwErrorMsg(error)
     }
   } else if (servant.auth_id) {
-    //Update a user's Auth Profile with Picture and Name Details
+    // Update a user's Auth Profile with Picture and Name Details
     await axios(auth0.updateAuthUserConfig(servant, authToken))
 
-    //Check auth0 roles and add roles 'leaderBacenta'
+    // Check auth0 roles and add roles 'leaderBacenta'
     const userRoleResponse = await axios(
       auth0.getUserRoles(servant.auth_id, authToken)
     )
     const roles = userRoleResponse.data.map((role) => role.name)
 
     assignRoles(servant, roles, [authRoles[`${servantLower}${churchType}`].id])
-    //Write Auth0 ID of Servant to Neo4j DB
+    // Write Auth0 ID of Servant to Neo4j DB
 
     makeServantCypher(
       context,
@@ -303,7 +302,7 @@ export const MakeServant = async (
       church
     )
 
-    //Send Notifications
+    // Send Notifications
     notifyMember(
       servant,
       'FL Servanthood Status Update',
@@ -331,11 +330,11 @@ export const RemoveServant = async (
   churchType,
   servantType
 ) => {
-  //Set Up
+  // Set Up
   const terms = formatting(churchType, servantType)
-  const verb = terms.verb
-  const churchLower = terms.churchLower
-  const servantLower = terms.servantLower
+  const { verb } = terms
+  const { churchLower } = terms
+  const { servantLower } = terms
 
   isAuth(permittedRoles, context.auth.roles)
   noEmptyArgsValidation([
@@ -365,21 +364,21 @@ export const RemoveServant = async (
   errorHandling(servant)
 
   if (!servant.auth_id) {
-    //if he has no auth_id then there is nothing to do
+    // if he has no auth_id then there is nothing to do
     removeServantCypher(context, churchType, servantType, servant, church)
     return
   }
 
   if (servant[`${verb}`].length > 1) {
-    //If he leads more than one Church don't touch his Auth0 roles
+    // If he leads more than one Church don't touch his Auth0 roles
     console.log(
       `${servant.firstName} ${servant.lastName} leads more than one ${churchType}`
     )
 
-    //Disconnect him from the Church
+    // Disconnect him from the Church
     removeServantCypher(context, churchType, servantType, servant, church)
 
-    //Send a Mail to That Effect
+    // Send a Mail to That Effect
     notifyMember(
       servant,
       'You Have Been Removed!',
@@ -399,20 +398,20 @@ export const RemoveServant = async (
     return parseForCache_Removal(servant, church, verb, servantLower)
   }
 
-  //Check auth0 roles and remove roles 'leaderBacenta'
+  // Check auth0 roles and remove roles 'leaderBacenta'
   const userRoleResponse = await axios(
     auth0.getUserRoles(servant.auth_id, authToken)
   )
   const roles = userRoleResponse.data.map((role) => role.name)
 
-  //If the person is only a constituency Admin, delete auth0 profile
+  // If the person is only a constituency Admin, delete auth0 profile
   if (roles.includes(`${servantLower}${churchType}`) && roles.length === 1) {
     await axios(auth0.deleteAuthUserConfig(servant.auth_id, authToken))
 
     console.log(
       `Auth0 Account successfully deleted for ${servant.firstName} ${servant.lastName}`
     )
-    //Remove Auth0 ID of Leader from Neo4j DB
+    // Remove Auth0 ID of Leader from Neo4j DB
     removeServantCypher(context, churchType, servantType, servant, church)
     await session.run(cypher.removeMemberAuthId, {
       log: `${servant.firstName} ${servant.lastName} was removed as a ${churchType} ${servantType}`,
@@ -420,7 +419,7 @@ export const RemoveServant = async (
       auth: context.auth,
     })
 
-    //Send a Mail to That Effect
+    // Send a Mail to That Effect
     notifyMember(
       servant,
       'Your Servant Account Has Been Deleted',
@@ -436,11 +435,11 @@ export const RemoveServant = async (
     return parseForCache_Removal(servant, church, verb, servantLower)
   }
 
-  //If the person is a bacenta leader as well as any other position, remove role bacenta leader
+  // If the person is a bacenta leader as well as any other position, remove role bacenta leader
   if (roles.includes(`${servantLower}${churchType}`) && roles.length > 1) {
     removeServantCypher(context, churchType, servantType, servant, church)
     removeRoles(servant, roles, authRoles[`${servantLower}${churchType}`].id)
-    //Send Email Using Mailgun
+    // Send Email Using Mailgun
     notifyMember(
       servant,
       'You Have Been Removed!',
@@ -488,14 +487,14 @@ export const resolvers = {
       )
 
       if (member.auth_id) {
-        //Update a user's Auth Profile with Picture and Name Details
+        // Update a user's Auth Profile with Picture and Name Details
         await axios(auth0.updateAuthUserConfig(updatedMember, authToken))
       }
 
       return updatedMember
     },
 
-    //Administrative Mutations
+    // Administrative Mutations
     MakeStreamAdmin: async (object, args, context) =>
       MakeServant(
         context,
@@ -533,7 +532,7 @@ export const resolvers = {
         'Admin'
       ),
 
-    //Pastoral Mutations
+    // Pastoral Mutations
     MakeFellowshipLeader: async (object, args, context) =>
       MakeServant(
         context,
