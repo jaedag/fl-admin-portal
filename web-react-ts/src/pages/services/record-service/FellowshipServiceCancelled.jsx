@@ -5,7 +5,7 @@ import { useMutation, useQuery } from '@apollo/client'
 import { RECORD_CANCELLED_SERVICE } from './RecordServiceMutations'
 import { DISPLAY_FELLOWSHIP } from '../../directory/display/ReadQueries'
 import CancelledServiceForm from './CancelledServiceForm'
-import BaseComponent from 'components/base-component/BaseComponent'
+import ApolloWrapper from 'components/base-component/ApolloWrapper'
 
 const FellowshipServiceCancelled = () => {
   const { fellowshipId } = useContext(ChurchContext)
@@ -15,14 +15,14 @@ const FellowshipServiceCancelled = () => {
   const [RecordCancelledService] = useMutation(RECORD_CANCELLED_SERVICE)
 
   return (
-    <BaseComponent loading={loading} error={error} data={data} placeholder>
+    <ApolloWrapper loading={loading} error={error} data={data} placeholder>
       <CancelledServiceForm
         RecordServiceMutation={RecordCancelledService}
         church={data?.fellowships[0]}
         churchId={fellowshipId}
         churchType="fellowship"
       />
-    </BaseComponent>
+    </ApolloWrapper>
   )
 }
 

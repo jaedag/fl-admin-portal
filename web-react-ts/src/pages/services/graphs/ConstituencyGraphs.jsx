@@ -7,7 +7,7 @@ import ChurchGraph from '../../../components/ChurchGraph/ChurchGraph'
 import { CONSTITUENCY_GRAPHS } from './GraphsQueries'
 import MembershipCard from './CompMembershipCard'
 import StatDisplay from './CompStatDisplay'
-import BaseComponent from 'components/base-component/BaseComponent'
+import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { Col, Container, Row } from 'react-bootstrap'
 import GraphDropdown from './GraphDropdown'
 
@@ -26,7 +26,7 @@ export const ConstituencyReport = () => {
   )
 
   return (
-    <BaseComponent loading={loading} error={error} data={data}>
+    <ApolloWrapper loading={loading} error={error} data={data}>
       <Container>
         <div className=" my-3">
           <h5 className="mb-0">{`${data?.constituencies[0].name} Constituency`}</h5>{' '}
@@ -78,7 +78,7 @@ export const ConstituencyReport = () => {
           bussing={bussing}
         />
       </Container>
-    </BaseComponent>
+    </ApolloWrapper>
   )
 }
 

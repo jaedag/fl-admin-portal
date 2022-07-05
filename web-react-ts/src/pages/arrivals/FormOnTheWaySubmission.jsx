@@ -12,7 +12,7 @@ import { Col, Container, Row } from 'react-bootstrap'
 import { useNavigate } from 'react-router'
 import { BACENTA_ARRIVALS } from './arrivalsQueries'
 import { ChurchContext } from 'contexts/ChurchContext'
-import BaseComponent from 'components/base-component/BaseComponent'
+import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import PlusSign from 'components/buttons/PlusMinusSign/PlusSign'
 import MinusSign from 'components/buttons/PlusMinusSign/MinusSign'
 import { RECORD_BUSSING_FROM_BACENTA } from './arrivalsMutations'
@@ -89,7 +89,7 @@ const FormOnTheWaySubmission = () => {
   }
 
   return (
-    <BaseComponent data={data} loading={loading} error={error}>
+    <ApolloWrapper data={data} loading={loading} error={error}>
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
@@ -197,7 +197,7 @@ const FormOnTheWaySubmission = () => {
           </Container>
         )}
       </Formik>
-    </BaseComponent>
+    </ApolloWrapper>
   )
 }
 

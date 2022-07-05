@@ -1,6 +1,6 @@
 import { useQuery } from '@apollo/client'
 import { useAuth0 } from '@auth0/auth0-react'
-import BaseComponent from 'components/base-component/BaseComponent'
+import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import InitialLoading from 'components/base-component/InitialLoading'
 import { MemberContext } from 'contexts/MemberContext'
 import useClickCard from 'hooks/useClickCard'
@@ -59,9 +59,9 @@ const SetPermissions = ({ children }) => {
   }
 
   return (
-    <BaseComponent data={data} error={error}>
+    <ApolloWrapper data={data} error={error}>
       {children}
-    </BaseComponent>
+    </ApolloWrapper>
   )
 }
 

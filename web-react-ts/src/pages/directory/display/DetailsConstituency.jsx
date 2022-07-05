@@ -4,7 +4,7 @@ import DisplayChurchDetails from '../../../components/DisplayChurchDetails/Displ
 
 import { DISPLAY_CONSTITUENCY } from './ReadQueries'
 import { ChurchContext } from '../../../contexts/ChurchContext'
-import BaseComponent from 'components/base-component/BaseComponent'
+import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { permitAdmin } from 'permission-utils'
 
 const DetailsConstituency = () => {
@@ -37,7 +37,7 @@ const DetailsConstituency = () => {
     },
   ]
   return (
-    <BaseComponent loading={loading} error={error} data={data} placeholder>
+    <ApolloWrapper loading={loading} error={error} data={data} placeholder>
       <DisplayChurchDetails
         details={details}
         loading={loading}
@@ -61,7 +61,7 @@ const DetailsConstituency = () => {
         breadcrumb={[data?.constituencies[0]?.council, data?.constituencies[0]]}
         vacationCount={constituency?.vacationBacentaCount}
       />
-    </BaseComponent>
+    </ApolloWrapper>
   )
 }
 

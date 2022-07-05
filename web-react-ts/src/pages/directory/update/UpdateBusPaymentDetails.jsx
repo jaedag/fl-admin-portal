@@ -9,7 +9,7 @@ import {
 } from './UpdateBacentaArrivals'
 import * as Yup from 'yup'
 import { useNavigate } from 'react-router'
-import BaseComponent from 'components/base-component/BaseComponent'
+import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { Button, Col, Container, Row } from 'react-bootstrap'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import HeadingSecondary from 'components/HeadingSecondary'
@@ -130,7 +130,7 @@ const UpdateBusPayment = () => {
   }
 
   return (
-    <BaseComponent
+    <ApolloWrapper
       data={bacentaData}
       loading={bacentaLoading}
       error={bacentaError}
@@ -282,7 +282,7 @@ const UpdateBusPayment = () => {
           </Container>
         )}
       </Formik>
-    </BaseComponent>
+    </ApolloWrapper>
   )
 }
 

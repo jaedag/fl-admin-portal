@@ -1,5 +1,5 @@
 import { useQuery } from '@apollo/client'
-import BaseComponent from 'components/base-component/BaseComponent'
+import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import { ChurchContext } from 'contexts/ChurchContext'
 import useSetUserChurch from 'hooks/useSetUserChurch'
@@ -21,7 +21,7 @@ const CouncilByConstituency = () => {
   const navigate = useNavigate()
 
   return (
-    <BaseComponent data={data} loading={loading} error={error} placeholder>
+    <ApolloWrapper data={data} loading={loading} error={error} placeholder>
       <Container>
         <HeadingPrimary
           loading={!data}
@@ -113,7 +113,7 @@ const CouncilByConstituency = () => {
           )}
         </Row>
       </Container>
-    </BaseComponent>
+    </ApolloWrapper>
   )
 }
 

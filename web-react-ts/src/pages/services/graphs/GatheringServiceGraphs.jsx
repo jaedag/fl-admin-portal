@@ -7,7 +7,7 @@ import ChurchGraph from '../../../components/ChurchGraph/ChurchGraph'
 import { GATHERINGSERVICE_GRAPHS } from './GraphsQueries'
 import MembershipCard from './CompMembershipCard'
 import StatDisplay from './CompStatDisplay'
-import BaseComponent from 'components/base-component/BaseComponent'
+import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { Col, Container, Row } from 'react-bootstrap'
 import PlaceholderCustom from 'components/Placeholder'
 import GraphDropdown from './GraphDropdown'
@@ -28,7 +28,7 @@ const GatheringServiceReport = () => {
   )
 
   return (
-    <BaseComponent loading={loading} error={error} data={data} placeholder>
+    <ApolloWrapper loading={loading} error={error} data={data} placeholder>
       <Container>
         <PlaceholderCustom loading={loading} as="h5" xs={10}>
           <h5 className="mb-0">{`${data?.gatheringServices[0]?.name} GatheringService`}</h5>
@@ -83,7 +83,7 @@ const GatheringServiceReport = () => {
           bussing={bussing}
         />
       </Container>
-    </BaseComponent>
+    </ApolloWrapper>
   )
 }
 

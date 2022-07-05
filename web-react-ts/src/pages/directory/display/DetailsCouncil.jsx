@@ -1,5 +1,5 @@
 import { useQuery } from '@apollo/client'
-import BaseComponent from 'components/base-component/BaseComponent'
+import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import DisplayChurchDetails from 'components/DisplayChurchDetails/DisplayChurchDetails'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { permitAdmin } from 'permission-utils'
@@ -49,7 +49,7 @@ const DetailsCouncil = () => {
   ]
 
   return (
-    <BaseComponent loading={loading} error={error} data={data} placeholder>
+    <ApolloWrapper loading={loading} error={error} data={data} placeholder>
       <DisplayChurchDetails
         loading={loading}
         name={council?.name}
@@ -68,7 +68,7 @@ const DetailsCouncil = () => {
         buttons={council ? council.constituencies : []}
         breadcrumb={breadcrumb && breadcrumb}
       />
-    </BaseComponent>
+    </ApolloWrapper>
   )
 }
 

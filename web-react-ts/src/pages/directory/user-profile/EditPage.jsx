@@ -11,7 +11,7 @@ import {
 
 import { MemberContext } from '../../../contexts/MemberContext'
 import MemberForm from '../reusable-forms/MemberForm'
-import BaseComponent from 'components/base-component/BaseComponent'
+import ApolloWrapper from 'components/base-component/ApolloWrapper'
 
 const UserProfileEditPage = () => {
   const { currentUser } = useContext(MemberContext)
@@ -90,7 +90,7 @@ const UserProfileEditPage = () => {
   }
 
   return (
-    <BaseComponent
+    <ApolloWrapper
       loading={memberLoading}
       error={memberError || currentUser.id === ''}
       data={memberData}
@@ -100,7 +100,7 @@ const UserProfileEditPage = () => {
         initialValues={initialValues}
         onSubmit={onSubmit}
       />
-    </BaseComponent>
+    </ApolloWrapper>
   )
 }
 

@@ -4,7 +4,7 @@ import { useQuery } from '@apollo/client'
 import { GET_CONSTITUENCY_BACENTAS } from '../../../queries/ListQueries'
 import { ChurchContext } from '../../../contexts/ChurchContext'
 import RoleView from '../../../auth/RoleView'
-import BaseComponent from 'components/base-component/BaseComponent'
+import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { Col, Container, Row } from 'react-bootstrap'
 import { permitAdmin } from 'permission-utils'
 import AllChurchesSummary from 'components/AllChurchesSummary'
@@ -22,7 +22,7 @@ const DisplayAllBacentas = () => {
   const constituency = data?.constituencies[0]
 
   return (
-    <BaseComponent loading={loading} data={data} error={error}>
+    <ApolloWrapper loading={loading} data={data} error={error}>
       <Container>
         <Row className="mb-2">
           <Col>
@@ -83,7 +83,7 @@ const DisplayAllBacentas = () => {
           churchType="Bacenta"
         />
       </Container>
-    </BaseComponent>
+    </ApolloWrapper>
   )
 }
 

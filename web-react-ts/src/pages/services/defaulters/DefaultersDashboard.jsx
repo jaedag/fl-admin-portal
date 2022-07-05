@@ -17,7 +17,7 @@ import RoleView from 'auth/RoleView'
 import { permitLeaderAdmin } from 'permission-utils'
 import { MemberContext } from 'contexts/MemberContext'
 import useChurchLevel from 'hooks/useChurchLevel'
-import BaseComponent from 'components/base-component/BaseComponent'
+import ApolloWrapper from 'components/base-component/ApolloWrapper'
 
 const DefaultersDashboard = () => {
   const { currentUser } = useContext(MemberContext)
@@ -101,7 +101,7 @@ const DefaultersDashboard = () => {
   }
 
   return (
-    <BaseComponent data={church} loading={loading} error={error} placeholder>
+    <ApolloWrapper data={church} loading={loading} error={error} placeholder>
       <Container>
         <HeadingPrimary
           loading={!church}
@@ -127,7 +127,7 @@ const DefaultersDashboard = () => {
           ))}
         </Row>
       </Container>
-    </BaseComponent>
+    </ApolloWrapper>
   )
 }
 

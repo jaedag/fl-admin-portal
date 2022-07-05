@@ -1,5 +1,5 @@
 import { useLazyQuery } from '@apollo/client'
-import BaseComponent from 'components/base-component/BaseComponent'
+import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import PlaceholderCustom from 'components/Placeholder'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { MemberContext } from 'contexts/MemberContext'
@@ -38,7 +38,7 @@ const ChurchBySubChurch = () => {
   }
 
   return (
-    <BaseComponent data={church} loading={loading} error={error} placeholder>
+    <ApolloWrapper data={church} loading={loading} error={error} placeholder>
       <Container>
         <div
           className={`fw-bold large-number pb-3`}
@@ -146,7 +146,7 @@ const ChurchBySubChurch = () => {
             ))}
         </Row>
       </Container>
-    </BaseComponent>
+    </ApolloWrapper>
   )
 }
 

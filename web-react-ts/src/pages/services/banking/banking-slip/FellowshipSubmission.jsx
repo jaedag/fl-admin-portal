@@ -12,7 +12,7 @@ import {
 import { MemberContext } from 'contexts/MemberContext'
 import { useMutation, useQuery } from '@apollo/client'
 import HeadingSecondary from 'components/HeadingSecondary'
-import BaseComponent from 'components/base-component/BaseComponent'
+import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { useNavigate } from 'react-router'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { throwErrorMsg } from 'global-utils'
@@ -56,7 +56,7 @@ const FellowshipBankingSlipSubmission = () => {
   }
 
   return (
-    <BaseComponent loading={loading} error={error} data={data && fellowship}>
+    <ApolloWrapper loading={loading} error={error} data={data && fellowship}>
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
@@ -99,7 +99,7 @@ const FellowshipBankingSlipSubmission = () => {
           </Container>
         )}
       </Formik>
-    </BaseComponent>
+    </ApolloWrapper>
   )
 }
 

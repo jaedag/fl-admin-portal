@@ -4,7 +4,7 @@ import DisplayChurchDetails from '../../../components/DisplayChurchDetails/Displ
 
 import { DISPLAY_BACENTA } from './ReadQueries'
 import { ChurchContext } from '../../../contexts/ChurchContext'
-import BaseComponent from 'components/base-component/BaseComponent'
+import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { permitArrivals } from 'permission-utils'
 
 const DetailsBacenta = () => {
@@ -75,7 +75,7 @@ const DetailsBacenta = () => {
   }
 
   return (
-    <BaseComponent loading={loading} error={error} data={data} placeholder>
+    <ApolloWrapper loading={loading} error={error} data={data} placeholder>
       <DisplayChurchDetails
         details={details}
         loading={loading}
@@ -96,7 +96,7 @@ const DetailsBacenta = () => {
         buttons={bacenta ? bacenta?.fellowships : []}
         vacationCount={bacenta?.vacationFellowshipCount}
       />
-    </BaseComponent>
+    </ApolloWrapper>
   )
 }
 

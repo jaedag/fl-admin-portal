@@ -6,7 +6,7 @@ import { DISPLAY_SONTA_SERVICE } from './RecordServiceMutations'
 import { ServiceContext } from 'contexts/ServiceContext'
 
 import ServiceDetails from './ServiceDetails'
-import BaseComponent from 'components/base-component/BaseComponent'
+import ApolloWrapper from 'components/base-component/ApolloWrapper'
 
 const SontaServiceDetails = () => {
   const { sontaId } = useContext(ChurchContext)
@@ -16,12 +16,12 @@ const SontaServiceDetails = () => {
   })
 
   return (
-    <BaseComponent loading={loading} error={error} data={data}>
+    <ApolloWrapper loading={loading} error={error} data={data}>
       <ServiceDetails
         service={data?.serviceRecords[0]}
         church={data?.sontas[0]}
       />
-    </BaseComponent>
+    </ApolloWrapper>
   )
 }
 

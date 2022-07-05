@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from '@apollo/client'
-import BaseComponent from 'components/base-component/BaseComponent'
+import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import MemberDisplayCard from 'components/card/MemberDisplayCard'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import { ChurchContext } from 'contexts/ChurchContext'
@@ -81,7 +81,7 @@ const ArrivalsCounters = () => {
   }
 
   return (
-    <BaseComponent data={data} loading={loading} error={error}>
+    <ApolloWrapper data={data} loading={loading} error={error}>
       <Container>
         <HeadingPrimary>{`${stream?.name} Arrivals Counters`}</HeadingPrimary>
         {isOpen && (
@@ -161,7 +161,7 @@ const ArrivalsCounters = () => {
           <NoData text="There are no arrivals helpers" />
         )}
       </Container>
-    </BaseComponent>
+    </ApolloWrapper>
   )
 }
 

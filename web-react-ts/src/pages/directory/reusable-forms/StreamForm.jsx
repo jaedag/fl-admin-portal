@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from '@apollo/client'
-import BaseComponent from 'components/base-component/BaseComponent'
+import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { FieldArray, Form, Formik } from 'formik'
 import * as Yup from 'yup'
 import { makeSelectOptions, throwErrorMsg } from 'global-utils'
@@ -45,7 +45,7 @@ const StreamForm = ({ initialValues, onSubmit, title, newStream }) => {
   })
 
   return (
-    <BaseComponent loading={loading} error={error} data={data && initialValues}>
+    <ApolloWrapper loading={loading} error={error} data={data && initialValues}>
       <Container>
         <HeadingPrimary>{title}</HeadingPrimary>
         <HeadingSecondary>{initialValues.name + ' Stream'}</HeadingSecondary>
@@ -208,7 +208,7 @@ const StreamForm = ({ initialValues, onSubmit, title, newStream }) => {
           </Container>
         )}
       </Formik>
-    </BaseComponent>
+    </ApolloWrapper>
   )
 }
 

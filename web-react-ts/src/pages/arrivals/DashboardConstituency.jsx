@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from '@apollo/client'
-import BaseComponent from 'components/base-component/BaseComponent'
+import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import MenuButton from 'components/buttons/MenuButton'
 import FormikControl from 'components/formik-components/FormikControl'
 import SubmitButton from 'components/formik-components/SubmitButton'
@@ -63,7 +63,7 @@ const ConstituencyDashboard = () => {
   }
 
   return (
-    <BaseComponent data={data} loading={loading} error={error}>
+    <ApolloWrapper data={data} loading={loading} error={error}>
       <Container>
         <HeadingPrimary loading={loading}>
           {constituency?.name} Constituency Arrivals Summary
@@ -169,7 +169,7 @@ const ConstituencyDashboard = () => {
           </div>
         </div>
       </Container>
-    </BaseComponent>
+    </ApolloWrapper>
   )
 }
 

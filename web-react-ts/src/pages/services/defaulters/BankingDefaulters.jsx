@@ -1,5 +1,5 @@
 import { useLazyQuery } from '@apollo/client'
-import BaseComponent from 'components/base-component/BaseComponent'
+import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import HeadingSecondary from 'components/HeadingSecondary'
 import PlaceholderCustom from 'components/Placeholder'
@@ -36,7 +36,7 @@ const BankingDefaulters = () => {
   })
 
   return (
-    <BaseComponent data={church} loading={loading} error={error} placeholder>
+    <ApolloWrapper data={church} loading={loading} error={error} placeholder>
       <Container>
         <HeadingPrimary
           loading={!church}
@@ -64,7 +64,7 @@ const BankingDefaulters = () => {
           {!church && <PlaceholderDefaulterList />}
         </Row>
       </Container>
-    </BaseComponent>
+    </ApolloWrapper>
   )
 }
 

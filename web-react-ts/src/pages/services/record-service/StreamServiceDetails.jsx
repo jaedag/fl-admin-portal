@@ -6,7 +6,7 @@ import { DISPLAY_STREAM_SERVICE } from './RecordServiceMutations'
 import { ServiceContext } from 'contexts/ServiceContext'
 
 import ServiceDetails from './ServiceDetails'
-import BaseComponent from 'components/base-component/BaseComponent'
+import ApolloWrapper from 'components/base-component/ApolloWrapper'
 
 const StreamServiceDetails = () => {
   const { streamId } = useContext(ChurchContext)
@@ -16,12 +16,12 @@ const StreamServiceDetails = () => {
   })
 
   return (
-    <BaseComponent loading={loading} error={error} data={data}>
+    <ApolloWrapper loading={loading} error={error} data={data}>
       <ServiceDetails
         service={data?.serviceRecords[0]}
         church={data?.streams[0]}
       />
-    </BaseComponent>
+    </ApolloWrapper>
   )
 }
 

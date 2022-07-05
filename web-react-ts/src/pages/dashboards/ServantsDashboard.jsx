@@ -14,7 +14,7 @@ import { ChurchContext } from 'contexts/ChurchContext'
 import StatDisplay from 'pages/services/graphs/CompStatDisplay'
 import { authorisedLink, isAuthorised, plural } from 'global-utils'
 import { permitMe } from 'permission-utils'
-import BaseComponent from 'components/base-component/BaseComponent'
+import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { Col, Row, Table, Container } from 'react-bootstrap'
 import Placeholder from '../../components/Placeholder'
 
@@ -162,7 +162,7 @@ const ServantsDashboard = () => {
   assessmentChurchData = servant && getServantRoles(servant)
 
   return (
-    <BaseComponent data={data} loading={loading} error={error}>
+    <ApolloWrapper data={data} loading={loading} error={error}>
       <Container>
         <Placeholder loading={!servant?.fullName} as="p">
           <p className="mb-0">{`Welcome to`}</p>
@@ -234,7 +234,7 @@ const ServantsDashboard = () => {
           />
         </>
       </Container>
-    </BaseComponent>
+    </ApolloWrapper>
   )
 }
 

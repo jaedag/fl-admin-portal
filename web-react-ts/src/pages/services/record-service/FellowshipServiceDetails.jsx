@@ -7,7 +7,7 @@ import { ServiceContext } from 'contexts/ServiceContext'
 
 import ServiceDetails from './ServiceDetails'
 import { throwErrorMsg } from 'global-utils'
-import BaseComponent from 'components/base-component/BaseComponent'
+import ApolloWrapper from 'components/base-component/ApolloWrapper'
 
 const FellowshipServiceDetails = () => {
   const { fellowshipId } = useContext(ChurchContext)
@@ -18,13 +18,13 @@ const FellowshipServiceDetails = () => {
   throwErrorMsg(error)
 
   return (
-    <BaseComponent loading={loading} error={error} data={data}>
+    <ApolloWrapper loading={loading} error={error} data={data}>
       <ServiceDetails
         loading={loading}
         service={data?.serviceRecords[0]}
         church={data?.fellowships[0]}
       />
-    </BaseComponent>
+    </ApolloWrapper>
   )
 }
 

@@ -1,5 +1,5 @@
 import { useLazyQuery } from '@apollo/client'
-import BaseComponent from 'components/base-component/BaseComponent'
+import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import MemberDisplayCard from 'components/card/MemberDisplayCard'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import HeadingSecondary from 'components/HeadingSecondary'
@@ -35,7 +35,7 @@ const BacentasOnTheWay = () => {
   })
 
   return (
-    <BaseComponent data={church} loading={loading} error={error} placeholder>
+    <ApolloWrapper data={church} loading={loading} error={error} placeholder>
       <Container>
         <HeadingPrimary loading={loading}>Bacentas On The Way</HeadingPrimary>
         <HeadingSecondary loading={!church?.name}>
@@ -64,7 +64,7 @@ const BacentasOnTheWay = () => {
           <PlaceholderDefaulterList loading={true} />
         )}
       </Container>
-    </BaseComponent>
+    </ApolloWrapper>
   )
 }
 

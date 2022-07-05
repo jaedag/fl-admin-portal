@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from '@apollo/client'
-import BaseComponent from 'components/base-component/BaseComponent'
+import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { ServiceContext } from 'contexts/ServiceContext'
 import React, { useContext } from 'react'
 import { useNavigate } from 'react-router'
@@ -69,7 +69,7 @@ const PayOffering = (props) => {
   }
 
   return (
-    <BaseComponent data={data} loading={loading} error={error}>
+    <ApolloWrapper data={data} loading={loading} error={error}>
       <Container>
         <HeadingPrimary loading={loading}>Offering Self-Banking</HeadingPrimary>
         <HeadingSecondary loading={loading}>
@@ -124,7 +124,7 @@ const PayOffering = (props) => {
           )}
         </Formik>
       </Container>
-    </BaseComponent>
+    </ApolloWrapper>
   )
 }
 

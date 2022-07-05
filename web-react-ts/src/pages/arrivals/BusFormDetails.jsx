@@ -1,5 +1,5 @@
 import { useQuery } from '@apollo/client'
-import BaseComponent from 'components/base-component/BaseComponent'
+import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import HeadingSecondary from 'components/HeadingSecondary'
 import PlaceholderCustom from 'components/Placeholder'
@@ -35,7 +35,7 @@ const BusFormDetails = () => {
   const church = data?.bacentas[0]
 
   return (
-    <BaseComponent loading={loading} error={error} data={data} placeholder>
+    <ApolloWrapper loading={loading} error={error} data={data} placeholder>
       <Container>
         <PlaceholderCustom as="h3" loading={loading}>
           <HeadingPrimary>{`${church?.__typename} Bussing Details`}</HeadingPrimary>
@@ -278,7 +278,7 @@ const BusFormDetails = () => {
           </Button>
         </div>
       </Container>
-    </BaseComponent>
+    </ApolloWrapper>
   )
 }
 

@@ -1,5 +1,5 @@
 import { useQuery } from '@apollo/client'
-import BaseComponent from 'components/base-component/BaseComponent'
+import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import CloudinaryImage from 'components/CloudinaryImage'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import { ChurchContext } from 'contexts/ChurchContext'
@@ -19,7 +19,7 @@ const PreMobilisationPicture = () => {
   const bussing = data?.bussingRecords[0]
 
   return (
-    <BaseComponent loading={loading} error={error} data={data} placeholder>
+    <ApolloWrapper loading={loading} error={error} data={data} placeholder>
       <Container className="text-center">
         <HeadingPrimary>Mobilisation Picture</HeadingPrimary>
         <CloudinaryImage
@@ -33,7 +33,7 @@ const PreMobilisationPicture = () => {
           </Button>
         </div>
       </Container>
-    </BaseComponent>
+    </ApolloWrapper>
   )
 }
 

@@ -13,7 +13,7 @@ import {
 } from './DefaultersQueries'
 import DefaulterCard from './DefaulterCard'
 import useChurchLevel from 'hooks/useChurchLevel'
-import BaseComponent from 'components/base-component/BaseComponent'
+import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import PlaceholderDefaulterList from './PlaceholderDefaulterList'
 
 const ServicesThisWeek = () => {
@@ -34,7 +34,7 @@ const ServicesThisWeek = () => {
   })
 
   return (
-    <BaseComponent data={church} loading={loading} error={error} placeholder>
+    <ApolloWrapper data={church} loading={loading} error={error} placeholder>
       <Container>
         <HeadingPrimary
           loading={!church}
@@ -57,7 +57,7 @@ const ServicesThisWeek = () => {
           {!church && <PlaceholderDefaulterList />}
         </Row>
       </Container>
-    </BaseComponent>
+    </ApolloWrapper>
   )
 }
 

@@ -1,5 +1,5 @@
 import { useQuery } from '@apollo/client'
-import BaseComponent from 'components/base-component/BaseComponent'
+import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import DisplayChurchDetails from 'components/DisplayChurchDetails/DisplayChurchDetails'
 import { ChurchContext } from 'contexts/ChurchContext'
 import React, { useContext } from 'react'
@@ -53,7 +53,7 @@ const DetailsGatheringService = () => {
   ]
 
   return (
-    <BaseComponent loading={loading} error={error} data={data} placeholder>
+    <ApolloWrapper loading={loading} error={error} data={data} placeholder>
       <DisplayChurchDetails
         name={gathering?.name}
         leaderTitle="Resident Bishop"
@@ -69,7 +69,7 @@ const DetailsGatheringService = () => {
         breadcrumb={breadcrumb && breadcrumb}
         loading={loading}
       />
-    </BaseComponent>
+    </ApolloWrapper>
   )
 }
 

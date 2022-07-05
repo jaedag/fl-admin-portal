@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import '../QuickFacts.css'
 import { useQuery } from '@apollo/client'
 import { ChurchContext } from 'contexts/ChurchContext'
-import BaseComponent from 'components/base-component/BaseComponent'
+import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import {
   GATHERING_SERVICE_AVG_WEEKDAY_ATTENDANCE_THIS_MONTH,
   GATHERING_SERVICE_AVG_WEEKDAY_INCOME_THIS_MONTH,
@@ -78,7 +78,7 @@ const GatheringServiceAvgWeekdayQuickFacts = () => {
   ]
 
   return (
-    <BaseComponent
+    <ApolloWrapper
       loading={attendanceLoading}
       error={attendanceError}
       data={attendanceData}
@@ -95,7 +95,7 @@ const GatheringServiceAvgWeekdayQuickFacts = () => {
           </div>
         </PlaceholderCustom>
       </div>
-    </BaseComponent>
+    </ApolloWrapper>
   )
 }
 export default GatheringServiceAvgWeekdayQuickFacts

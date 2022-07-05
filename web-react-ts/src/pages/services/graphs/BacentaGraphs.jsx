@@ -7,7 +7,7 @@ import ChurchGraph from '../../../components/ChurchGraph/ChurchGraph'
 import { BACENTA_GRAPHS } from './GraphsQueries'
 import MembershipCard from './CompMembershipCard'
 import StatDisplay from './CompStatDisplay'
-import BaseComponent from 'components/base-component/BaseComponent'
+import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { Col, Container, Row } from 'react-bootstrap'
 import GraphDropdown from './GraphDropdown'
 
@@ -27,7 +27,7 @@ export const BacentaGraphs = () => {
   )
 
   return (
-    <BaseComponent loading={loading} error={error} data={data}>
+    <ApolloWrapper loading={loading} error={error} data={data}>
       <Container>
         <div className=" my-3">
           <h5 className="mb-0">{`${data?.bacentas[0].name} Bacenta`}</h5>{' '}
@@ -77,7 +77,7 @@ export const BacentaGraphs = () => {
           bussing={bussing}
         />
       </Container>
-    </BaseComponent>
+    </ApolloWrapper>
   )
 }
 

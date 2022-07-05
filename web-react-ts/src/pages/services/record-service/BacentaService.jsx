@@ -5,7 +5,7 @@ import { useMutation, useQuery } from '@apollo/client'
 import { RECORD_SERVICE } from './RecordServiceMutations'
 import { DISPLAY_BACENTA } from '../../directory/display/ReadQueries'
 import ServiceForm from './ServiceForm'
-import BaseComponent from 'components/base-component/BaseComponent'
+import ApolloWrapper from 'components/base-component/ApolloWrapper'
 
 const BacentaService = () => {
   const { bacentaId } = useContext(ChurchContext)
@@ -17,7 +17,7 @@ const BacentaService = () => {
   const [RecordService] = useMutation(RECORD_SERVICE)
 
   return (
-    <BaseComponent
+    <ApolloWrapper
       loading={bacentaLoading}
       error={bacentaError}
       data={bacentaData}
@@ -28,7 +28,7 @@ const BacentaService = () => {
         churchId={bacentaId}
         churchType="bacenta"
       />
-    </BaseComponent>
+    </ApolloWrapper>
   )
 }
 

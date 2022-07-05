@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from '@apollo/client'
-import BaseComponent from 'components/base-component/BaseComponent'
+import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { FieldArray, Form, Formik } from 'formik'
 import * as Yup from 'yup'
 import {
@@ -67,7 +67,7 @@ const BacentaForm = ({ initialValues, onSubmit, title, newBacenta }) => {
   })
 
   return (
-    <BaseComponent loading={loading} error={error} data={data}>
+    <ApolloWrapper loading={loading} error={error} data={data}>
       <Container>
         <HeadingPrimary>{title}</HeadingPrimary>
         <HeadingSecondary>{initialValues.name}</HeadingSecondary>
@@ -251,7 +251,7 @@ const BacentaForm = ({ initialValues, onSubmit, title, newBacenta }) => {
           </Container>
         )}
       </Formik>
-    </BaseComponent>
+    </ApolloWrapper>
   )
 }
 

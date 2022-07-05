@@ -1,5 +1,5 @@
 import { useQuery } from '@apollo/client'
-import BaseComponent from 'components/base-component/BaseComponent'
+import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import Popup from 'components/Popup/Popup'
 import { ServiceContext } from 'contexts/ServiceContext'
@@ -26,7 +26,7 @@ const ConfirmPayment = () => {
   }, [countdown, setCountdown])
 
   return (
-    <BaseComponent data={data} loading={loading} error={error}>
+    <ApolloWrapper data={data} loading={loading} error={error}>
       <Container className="vertically-center d-flex align-items-center px-3 text-center">
         <Row>
           <Col>
@@ -63,7 +63,7 @@ const ConfirmPayment = () => {
           </Col>
         </Row>
       </Container>
-    </BaseComponent>
+    </ApolloWrapper>
   )
 }
 

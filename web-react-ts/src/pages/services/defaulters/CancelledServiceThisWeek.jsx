@@ -12,7 +12,7 @@ import {
   GATHERINGSERVICE_CANCELLED_SERVICES_LIST,
 } from './DefaultersQueries'
 import DefaulterCard from './DefaulterCard'
-import BaseComponent from 'components/base-component/BaseComponent'
+import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import useChurchLevel from 'hooks/useChurchLevel'
 import PlaceholderDefaulterList from './PlaceholderDefaulterList'
 
@@ -36,7 +36,7 @@ const CancelledServicesThisWeek = () => {
   })
 
   return (
-    <BaseComponent data={church} loading={loading} error={error} placeholder>
+    <ApolloWrapper data={church} loading={loading} error={error} placeholder>
       <Container>
         <HeadingPrimary
           loading={!church}
@@ -59,7 +59,7 @@ const CancelledServicesThisWeek = () => {
           {!church && <PlaceholderDefaulterList />}
         </Row>
       </Container>
-    </BaseComponent>
+    </ApolloWrapper>
   )
 }
 

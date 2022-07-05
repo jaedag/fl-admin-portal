@@ -9,7 +9,7 @@ import { Card, Col, Container, Row } from 'react-bootstrap'
 import { CheckCircleFill, XCircleFill } from 'react-bootstrap-icons'
 import { useNavigate } from 'react-router'
 import { FELLOWSHIP_BANKING_SLIP_QUERIES } from '../../ServicesQueries'
-import BaseComponent from 'components/base-component/BaseComponent'
+import ApolloWrapper from 'components/base-component/ApolloWrapper'
 
 const FellowshipBankingSlipView = () => {
   const { clickCard, fellowshipId } = useContext(ChurchContext)
@@ -23,7 +23,7 @@ const FellowshipBankingSlipView = () => {
   throwErrorMsg(error)
 
   return (
-    <BaseComponent data={data} loading={loading} error={error}>
+    <ApolloWrapper data={data} loading={loading} error={error}>
       <Container>
         <HeadingPrimary loading={loading}>{fellowship?.name}</HeadingPrimary>
         <PlaceholderCustom as="p" loading={loading}>
@@ -104,7 +104,7 @@ const FellowshipBankingSlipView = () => {
             )
           })}
       </Container>
-    </BaseComponent>
+    </ApolloWrapper>
   )
 }
 

@@ -4,7 +4,7 @@ import { useQuery } from '@apollo/client'
 import DisplayChurchList from '../../../components/DisplayChurchList'
 import { ChurchContext } from '../../../contexts/ChurchContext'
 import RoleView from '../../../auth/RoleView'
-import BaseComponent from 'components/base-component/BaseComponent'
+import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { permitAdmin } from 'permission-utils'
 import { GET_SONTA_MEMBERS } from '../grids/GridQueries'
 
@@ -18,7 +18,7 @@ const DisplaySontasByConstituency = () => {
   const constituencies = data.constituencies
 
   return (
-    <BaseComponent data={data} loading={loading} error={error}>
+    <ApolloWrapper data={data} loading={loading} error={error}>
       <div className=" container">
         <div className="mb-4 border-bottom">
           <div className="row justify-content-between">
@@ -68,7 +68,7 @@ const DisplaySontasByConstituency = () => {
           )
         })}
       </div>
-    </BaseComponent>
+    </ApolloWrapper>
   )
 }
 

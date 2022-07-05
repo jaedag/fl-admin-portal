@@ -1,5 +1,5 @@
 import { useQuery } from '@apollo/client'
-import BaseComponent from 'components/base-component/BaseComponent'
+import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import HeadingSecondary from 'components/HeadingSecondary'
 import TableFromArrays from 'components/TableFromArrays/TableFromArrays'
@@ -27,7 +27,7 @@ const ArrivalTimes = () => {
   ]
 
   return (
-    <BaseComponent data={data} loading={loading} error={error}>
+    <ApolloWrapper data={data} loading={loading} error={error}>
       <Container>
         <HeadingPrimary>Arrival Times</HeadingPrimary>
         <HeadingSecondary>{`${church?.name} ${church?.__typename}`}</HeadingSecondary>
@@ -40,7 +40,7 @@ const ArrivalTimes = () => {
         </Button>
         <TableFromArrays tableArray={table} />
       </Container>
-    </BaseComponent>
+    </ApolloWrapper>
   )
 }
 

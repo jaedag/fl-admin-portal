@@ -1,5 +1,5 @@
 import { useQuery } from '@apollo/client'
-import BaseComponent from 'components/base-component/BaseComponent'
+import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import React from 'react'
 import { useContext } from 'react'
 import { Button, Card, Container } from 'react-bootstrap'
@@ -63,7 +63,7 @@ const BacentaArrivals = () => {
   }
 
   return (
-    <BaseComponent data={data} loading={loading} error={error}>
+    <ApolloWrapper data={data} loading={loading} error={error}>
       <Container>
         <HeadingPrimary loading={loading}>
           {bacenta?.name} Arrivals
@@ -152,7 +152,7 @@ const BacentaArrivals = () => {
           )}
         </div>
       </Container>
-    </BaseComponent>
+    </ApolloWrapper>
   )
 }
 

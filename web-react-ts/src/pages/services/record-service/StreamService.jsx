@@ -5,7 +5,7 @@ import { useMutation, useQuery } from '@apollo/client'
 import { RECORD_SERVICE } from './RecordServiceMutations'
 import { DISPLAY_STREAM } from '../../directory/display/ReadQueries'
 import ServiceForm from './ServiceForm'
-import BaseComponent from 'components/base-component/BaseComponent'
+import ApolloWrapper from 'components/base-component/ApolloWrapper'
 
 const StreamService = () => {
   const { streamId } = useContext(ChurchContext)
@@ -15,14 +15,14 @@ const StreamService = () => {
   const [RecordService] = useMutation(RECORD_SERVICE)
 
   return (
-    <BaseComponent loading={loading} error={error} data={data}>
+    <ApolloWrapper loading={loading} error={error} data={data}>
       <ServiceForm
         RecordServiceMutation={RecordService}
         church={data?.streams[0]}
         churchId={streamId}
         churchType="stream"
       />
-    </BaseComponent>
+    </ApolloWrapper>
   )
 }
 

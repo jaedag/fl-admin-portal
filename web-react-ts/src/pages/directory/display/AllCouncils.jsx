@@ -4,7 +4,7 @@ import { useQuery } from '@apollo/client'
 import { GET_STREAM_COUNCILS } from '../../../queries/ListQueries'
 import { ChurchContext } from '../../../contexts/ChurchContext'
 import RoleView from '../../../auth/RoleView'
-import BaseComponent from 'components/base-component/BaseComponent'
+import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { Container, Row, Col } from 'react-bootstrap'
 import { permitAdmin } from 'permission-utils'
 import AllChurchesSummary from 'components/AllChurchesSummary'
@@ -21,7 +21,7 @@ const DisplayAllCouncils = () => {
   const stream = data?.streams[0]
 
   return (
-    <BaseComponent data={data} loading={loading} error={error}>
+    <ApolloWrapper data={data} loading={loading} error={error}>
       <Container>
         <Row className="mb-2">
           <Col>
@@ -77,7 +77,7 @@ const DisplayAllCouncils = () => {
 
         <ChurchSearch data={councils} churchType="Council" />
       </Container>
-    </BaseComponent>
+    </ApolloWrapper>
   )
 }
 

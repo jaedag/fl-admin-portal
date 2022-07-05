@@ -1,5 +1,5 @@
 import { useQuery } from '@apollo/client'
-import BaseComponent from 'components/base-component/BaseComponent'
+import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import TableFromArrays from 'components/TableFromArrays/TableFromArrays'
 import { ServiceContext } from 'contexts/ServiceContext'
@@ -35,7 +35,7 @@ const ReceiptPage = () => {
   ]
 
   return (
-    <BaseComponent data={data} loading={loading} error={error}>
+    <ApolloWrapper data={data} loading={loading} error={error}>
       <Container>
         <HeadingPrimary>Self Banking Receipt</HeadingPrimary>
       </Container>
@@ -47,7 +47,7 @@ const ReceiptPage = () => {
           </Button>
         </div>
       </Container>
-    </BaseComponent>
+    </ApolloWrapper>
   )
 }
 

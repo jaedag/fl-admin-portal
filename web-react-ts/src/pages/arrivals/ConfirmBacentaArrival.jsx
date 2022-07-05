@@ -1,5 +1,5 @@
 import { useLazyQuery, useMutation } from '@apollo/client'
-import BaseComponent from 'components/base-component/BaseComponent'
+import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import 'components/card/MemberDisplayCard.css'
 import FormikControl from 'components/formik-components/FormikControl'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
@@ -80,7 +80,7 @@ const ConfirmBacentaArrival = () => {
   }
 
   return (
-    <BaseComponent data={church} loading={loading} error={error} placeholder>
+    <ApolloWrapper data={church} loading={loading} error={error} placeholder>
       <Container>
         <HeadingPrimary loading={loading}>
           Confirm Bacenta Arrival
@@ -230,7 +230,7 @@ const ConfirmBacentaArrival = () => {
 
         {loading && <PlaceholderDefaulterList />}
       </Container>
-    </BaseComponent>
+    </ApolloWrapper>
   )
 }
 

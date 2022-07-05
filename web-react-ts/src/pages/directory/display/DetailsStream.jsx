@@ -1,5 +1,5 @@
 import { useQuery } from '@apollo/client'
-import BaseComponent from 'components/base-component/BaseComponent'
+import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import DisplayChurchDetails from 'components/DisplayChurchDetails/DisplayChurchDetails'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { capitalise } from 'global-utils'
@@ -49,7 +49,7 @@ const DetailsStream = () => {
   ]
 
   return (
-    <BaseComponent loading={loading} error={error} data={data} placeholder>
+    <ApolloWrapper loading={loading} error={error} data={data} placeholder>
       <DisplayChurchDetails
         name={stream?.name}
         leaderTitle="Bishop"
@@ -67,7 +67,7 @@ const DetailsStream = () => {
         breadcrumb={breadcrumb && breadcrumb}
         loading={loading}
       />
-    </BaseComponent>
+    </ApolloWrapper>
   )
 }
 

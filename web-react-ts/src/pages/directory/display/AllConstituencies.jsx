@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { useQuery } from '@apollo/client'
 import { GET_COUNCIL_CONSTITUENCIES } from 'queries/ListQueries'
 import { ChurchContext } from 'contexts/ChurchContext'
-import BaseComponent from 'components/base-component/BaseComponent'
+import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { Container, Row, Col } from 'react-bootstrap'
 import RoleView from 'auth/RoleView'
 import { permitAdmin } from 'permission-utils'
@@ -21,7 +21,7 @@ const DisplayAllConstituencies = () => {
   const council = data?.councils[0]
 
   return (
-    <BaseComponent data={data} loading={loading} error={error}>
+    <ApolloWrapper data={data} loading={loading} error={error}>
       <Container>
         <Row className="mb-2">
           <Col>
@@ -67,7 +67,7 @@ const DisplayAllConstituencies = () => {
         />
         <ChurchSearch data={constituencies} churchType="Constituency" />
       </Container>
-    </BaseComponent>
+    </ApolloWrapper>
   )
 }
 

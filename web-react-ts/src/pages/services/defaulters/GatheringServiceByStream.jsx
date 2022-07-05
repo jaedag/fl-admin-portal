@@ -1,5 +1,5 @@
 import { useQuery } from '@apollo/client'
-import BaseComponent from 'components/base-component/BaseComponent'
+import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { ChurchContext } from 'contexts/ChurchContext'
 import React, { useContext } from 'react'
 import { Card, Col, Row, Button, Container } from 'react-bootstrap'
@@ -20,7 +20,7 @@ const GatheringServiceByStream = () => {
 
   const navigate = useNavigate()
   return (
-    <BaseComponent data={data} loading={loading} error={error} placeholder>
+    <ApolloWrapper data={data} loading={loading} error={error} placeholder>
       <Container>
         <HeadingPrimary
           loading={loading || !data?.gatheringServices[0]?.name}
@@ -105,7 +105,7 @@ const GatheringServiceByStream = () => {
           )}
         </Row>
       </Container>
-    </BaseComponent>
+    </ApolloWrapper>
   )
 }
 

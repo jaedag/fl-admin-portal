@@ -9,7 +9,7 @@ import {
 import MenuButton from 'components/buttons/MenuButton'
 import { Container } from 'react-bootstrap'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
-import BaseComponent from 'components/base-component/BaseComponent'
+import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { SERVANT_CHURCH_LIST } from './DashboardQueries'
 import { useQuery } from '@apollo/client'
 
@@ -90,7 +90,7 @@ const ServantsChurchList = () => {
   const churches = getServantChurches(servant)
 
   return (
-    <BaseComponent loading={loading} error={error} data={data} placeholder>
+    <ApolloWrapper loading={loading} error={error} data={data} placeholder>
       <Container className="mt-4">
         <HeadingPrimary
           loading={!servant}
@@ -112,7 +112,7 @@ const ServantsChurchList = () => {
           ))}
         </div>
       </Container>
-    </BaseComponent>
+    </ApolloWrapper>
   )
 }
 

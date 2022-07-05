@@ -1,4 +1,4 @@
-import BaseComponent from 'components/base-component/BaseComponent'
+import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { Form, Formik } from 'formik'
 import * as Yup from 'yup'
 import { makeSelectOptions } from 'global-utils'
@@ -63,7 +63,7 @@ const SontaForm = ({ initialValues, onSubmit, title, loading, newSonta }) => {
   })
 
   return (
-    <BaseComponent
+    <ApolloWrapper
       loading={
         constituencyLoading ||
         ministryListLoading ||
@@ -150,7 +150,7 @@ const SontaForm = ({ initialValues, onSubmit, title, loading, newSonta }) => {
           </div>
         )}
       </Formik>
-    </BaseComponent>
+    </ApolloWrapper>
   )
 }
 

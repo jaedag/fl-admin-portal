@@ -8,7 +8,7 @@ import { useMutation, useQuery } from '@apollo/client'
 import { GET_ARRIVAL_TIMES, SET_STREAM_ARRIVAL_TIMES } from './time-gql'
 import { Col, Container, Row } from 'react-bootstrap'
 import SubmitButton from 'components/formik-components/SubmitButton'
-import BaseComponent from 'components/base-component/BaseComponent'
+import ApolloWrapper from 'components/base-component/ApolloWrapper'
 
 import { parseTimeToDate } from 'jd-date-utils'
 import { parseNeoTime } from 'jd-date-utils'
@@ -57,7 +57,7 @@ const SetArrivalsTime = () => {
   }
 
   return (
-    <BaseComponent data={church && stream} loading={loading} error={error}>
+    <ApolloWrapper data={church && stream} loading={loading} error={error}>
       <Container>
         <Formik
           initialValues={initialValues}
@@ -116,7 +116,7 @@ const SetArrivalsTime = () => {
           )}
         </Formik>
       </Container>
-    </BaseComponent>
+    </ApolloWrapper>
   )
 }
 

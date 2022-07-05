@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from '@apollo/client'
-import BaseComponent from 'components/base-component/BaseComponent'
+import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { FieldArray, Form, Formik } from 'formik'
 import * as Yup from 'yup'
 import { makeSelectOptions, throwErrorMsg } from 'global-utils'
@@ -56,7 +56,7 @@ const ConstituencyForm = ({
   })
 
   return (
-    <BaseComponent
+    <ApolloWrapper
       loading={councilLoading}
       error={councilError}
       data={councilData}
@@ -225,7 +225,7 @@ const ConstituencyForm = ({
           </Container>
         )}
       </Formik>
-    </BaseComponent>
+    </ApolloWrapper>
   )
 }
 

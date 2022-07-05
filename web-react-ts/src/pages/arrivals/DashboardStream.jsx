@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router'
 import { MAKE_STREAMARRIVALS_ADMIN } from './arrivalsMutations'
 import { STREAM_ARRIVALS_DASHBOARD } from './arrivalsQueries'
 import { throwErrorMsg } from 'global-utils'
-import BaseComponent from 'components/base-component/BaseComponent'
+import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { Col, Container, Row, Button } from 'react-bootstrap'
 import Popup from 'components/Popup/Popup'
 import { Form, Formik } from 'formik'
@@ -73,7 +73,7 @@ const StreamDashboard = () => {
   }
 
   return (
-    <BaseComponent data={data} loading={loading} error={error}>
+    <ApolloWrapper data={data} loading={loading} error={error}>
       <Container>
         <HeadingPrimary loading={loading}>
           {stream?.name} Stream Arrivals Summary
@@ -221,7 +221,7 @@ const StreamDashboard = () => {
           </div>
         </div>
       </Container>
-    </BaseComponent>
+    </ApolloWrapper>
   )
 }
 

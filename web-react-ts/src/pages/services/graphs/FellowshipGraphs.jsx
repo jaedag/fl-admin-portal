@@ -7,7 +7,7 @@ import ChurchGraph from '../../../components/ChurchGraph/ChurchGraph'
 import { FELLOWSHIP_GRAPHS } from './GraphsQueries'
 import MembershipCard from './CompMembershipCard'
 import StatDisplay from './CompStatDisplay'
-import BaseComponent from 'components/base-component/BaseComponent'
+import ApolloWrapper from 'components/base-component/ApolloWrapper'
 
 export const FellowshipReport = () => {
   const { fellowshipId } = useContext(ChurchContext)
@@ -19,7 +19,7 @@ export const FellowshipReport = () => {
   const serviceData = getServiceGraphData(data?.fellowships[0])
 
   return (
-    <BaseComponent loading={loading} error={error} data={data}>
+    <ApolloWrapper loading={loading} error={error} data={data}>
       <div className="container">
         <div className=" my-3">
           <h5 className="mb-0">{`${data?.fellowships[0].name} Fellowship`}</h5>{' '}
@@ -60,7 +60,7 @@ export const FellowshipReport = () => {
           church="fellowship"
         />
       </div>
-    </BaseComponent>
+    </ApolloWrapper>
   )
 }
 

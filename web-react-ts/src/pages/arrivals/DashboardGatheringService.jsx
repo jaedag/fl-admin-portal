@@ -10,7 +10,7 @@ import {
 } from './arrivalsMutations'
 import { GATHERINGSERVICE_ARRIVALS_DASHBOARD } from './arrivalsQueries'
 import { alertMsg, throwErrorMsg } from 'global-utils'
-import BaseComponent from 'components/base-component/BaseComponent'
+import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { Col, Container, Row, Button } from 'react-bootstrap'
 import Popup from 'components/Popup/Popup'
 import { Form, Formik } from 'formik'
@@ -81,7 +81,7 @@ const GatheringServiceDashboard = () => {
   }
 
   return (
-    <BaseComponent data={data} loading={loading} error={error}>
+    <ApolloWrapper data={data} loading={loading} error={error}>
       <Container>
         <HeadingPrimary loading={loading}>
           {gatheringService?.name} Gathering Service Arrivals Summary
@@ -222,7 +222,7 @@ const GatheringServiceDashboard = () => {
           </div>
         </div>
       </Container>
-    </BaseComponent>
+    </ApolloWrapper>
   )
 }
 

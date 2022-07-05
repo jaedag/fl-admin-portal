@@ -11,7 +11,7 @@ import {
 } from '../../ServicesQueries'
 import { useMutation, useQuery } from '@apollo/client'
 import HeadingSecondary from 'components/HeadingSecondary'
-import BaseComponent from 'components/base-component/BaseComponent'
+import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { useNavigate } from 'react-router'
 import { getHumanReadableDate } from 'jd-date-utils'
 import { throwErrorMsg } from 'global-utils'
@@ -53,7 +53,7 @@ const CouncilBankingSlipSubmission = () => {
   }
 
   return (
-    <BaseComponent loading={loading} error={error} data={data && council}>
+    <ApolloWrapper loading={loading} error={error} data={data && council}>
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
@@ -91,7 +91,7 @@ const CouncilBankingSlipSubmission = () => {
           </Container>
         )}
       </Formik>
-    </BaseComponent>
+    </ApolloWrapper>
   )
 }
 

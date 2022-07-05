@@ -7,7 +7,7 @@ import ChurchGraph from '../../../components/ChurchGraph/ChurchGraph'
 import { SONTA_GRAPHS } from './GraphsQueries'
 import MembershipCard from './CompMembershipCard'
 import StatDisplay from './CompStatDisplay'
-import BaseComponent from 'components/base-component/BaseComponent'
+import ApolloWrapper from 'components/base-component/ApolloWrapper'
 
 export const SontaReport = () => {
   const { sontaId } = useContext(ChurchContext)
@@ -19,7 +19,7 @@ export const SontaReport = () => {
   const churchData = getServiceGraphData(data?.sontas[0])
 
   return (
-    <BaseComponent loading={loading} error={error} data={data}>
+    <ApolloWrapper loading={loading} error={error} data={data}>
       <div className="container">
         <div className=" my-3">
           <h5 className="mb-0">{`${data?.sontas[0].name} Sonta`}</h5>{' '}
@@ -59,7 +59,7 @@ export const SontaReport = () => {
           churchData={churchData}
         />
       </div>
-    </BaseComponent>
+    </ApolloWrapper>
   )
 }
 

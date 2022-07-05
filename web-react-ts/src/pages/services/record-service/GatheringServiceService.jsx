@@ -5,7 +5,7 @@ import { useMutation, useQuery } from '@apollo/client'
 import { RECORD_SERVICE } from './RecordServiceMutations'
 import { DISPLAY_GATHERINGSERVICE } from '../../directory/display/ReadQueries'
 import ServiceForm from './ServiceForm'
-import BaseComponent from 'components/base-component/BaseComponent'
+import ApolloWrapper from 'components/base-component/ApolloWrapper'
 
 const GatheringServiceService = () => {
   const { gatheringServiceId } = useContext(ChurchContext)
@@ -15,14 +15,14 @@ const GatheringServiceService = () => {
   const [RecordService] = useMutation(RECORD_SERVICE)
 
   return (
-    <BaseComponent loading={loading} error={error} data={data}>
+    <ApolloWrapper loading={loading} error={error} data={data}>
       <ServiceForm
         RecordServiceMutation={RecordService}
         church={data?.gatheringServices[0]}
         churchId={gatheringServiceId}
         churchType="gatheringService"
       />
-    </BaseComponent>
+    </ApolloWrapper>
   )
 }
 

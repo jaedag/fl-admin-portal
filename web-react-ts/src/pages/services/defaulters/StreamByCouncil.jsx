@@ -1,5 +1,5 @@
 import { useQuery } from '@apollo/client'
-import BaseComponent from 'components/base-component/BaseComponent'
+import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { ChurchContext } from 'contexts/ChurchContext'
 import React, { useContext } from 'react'
 import { Card, Col, Row, Button, Container } from 'react-bootstrap'
@@ -20,7 +20,7 @@ const StreamByCouncil = () => {
 
   const navigate = useNavigate()
   return (
-    <BaseComponent data={data} loading={loading} error={error} placeholder>
+    <ApolloWrapper data={data} loading={loading} error={error} placeholder>
       <Container>
         <HeadingPrimary loading={loading || !data?.streams[0]?.name}>
           {`${data?.streams[0].name} Stream By Council`}
@@ -106,7 +106,7 @@ const StreamByCouncil = () => {
           )}
         </Row>
       </Container>
-    </BaseComponent>
+    </ApolloWrapper>
   )
 }
 

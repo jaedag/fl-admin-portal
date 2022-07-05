@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import '../QuickFacts.css'
 import { useQuery } from '@apollo/client'
 import { ChurchContext } from 'contexts/ChurchContext'
-import BaseComponent from 'components/base-component/BaseComponent'
+import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import {
   BACENTA_AVG_WEEKDAY_ATTENDANCE_THIS_MONTH,
   BACENTA_AVG_WEEKDAY_INCOME_THIS_MONTH,
@@ -72,7 +72,7 @@ const BacentaAvgWeekdayQuickFacts = () => {
   ]
 
   return (
-    <BaseComponent
+    <ApolloWrapper
       loading={attendanceLoading}
       error={attendanceError}
       data={attendanceData}
@@ -89,7 +89,7 @@ const BacentaAvgWeekdayQuickFacts = () => {
           </div>
         </PlaceholderCustom>
       </div>
-    </BaseComponent>
+    </ApolloWrapper>
   )
 }
 export default BacentaAvgWeekdayQuickFacts

@@ -5,7 +5,7 @@ import { useMutation, useQuery } from '@apollo/client'
 import { RECORD_SERVICE } from './RecordServiceMutations'
 import { DISPLAY_CONSTITUENCY } from '../../directory/display/ReadQueries'
 import ServiceForm from './ServiceForm'
-import BaseComponent from 'components/base-component/BaseComponent'
+import ApolloWrapper from 'components/base-component/ApolloWrapper'
 
 const ConstituencyService = () => {
   const { constituencyId } = useContext(ChurchContext)
@@ -15,14 +15,14 @@ const ConstituencyService = () => {
   const [RecordService] = useMutation(RECORD_SERVICE)
 
   return (
-    <BaseComponent loading={loading} error={error} data={data}>
+    <ApolloWrapper loading={loading} error={error} data={data}>
       <ServiceForm
         RecordServiceMutation={RecordService}
         church={data?.constituencies[0]}
         churchId={constituencyId}
         churchType="constituency"
       />
-    </BaseComponent>
+    </ApolloWrapper>
   )
 }
 

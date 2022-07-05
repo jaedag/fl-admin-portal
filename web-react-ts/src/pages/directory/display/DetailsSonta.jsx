@@ -4,7 +4,7 @@ import DisplayChurchDetails from '../../../components/DisplayChurchDetails/Displ
 
 import { DISPLAY_SONTA } from './ReadQueries'
 import { ChurchContext } from '../../../contexts/ChurchContext'
-import BaseComponent from 'components/base-component/BaseComponent'
+import ApolloWrapper from 'components/base-component/ApolloWrapper'
 
 const DetailsSonta = () => {
   const { sontaId } = useContext(ChurchContext)
@@ -26,7 +26,7 @@ const DetailsSonta = () => {
   ]
 
   return (
-    <BaseComponent loading={sontaLoading} error={sontaError} data={sontaData}>
+    <ApolloWrapper loading={sontaLoading} error={sontaError} data={sontaData}>
       <DisplayChurchDetails
         loading={sontaLoading}
         name={sontaData?.sontas[0]?.name}
@@ -54,7 +54,7 @@ const DetailsSonta = () => {
         buttons={['']}
         basontaLeaders={sontaData?.sontaBasontaLeaderList}
       />
-    </BaseComponent>
+    </ApolloWrapper>
   )
 }
 

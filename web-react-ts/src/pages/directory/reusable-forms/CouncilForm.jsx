@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from '@apollo/client'
-import BaseComponent from 'components/base-component/BaseComponent'
+import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { FieldArray, Form, Formik } from 'formik'
 import * as Yup from 'yup'
 import { makeSelectOptions, throwErrorMsg } from 'global-utils'
@@ -48,7 +48,7 @@ const CouncilForm = ({ initialValues, onSubmit, title, newCouncil }) => {
   })
 
   return (
-    <BaseComponent loading={loading} error={error} data={data}>
+    <ApolloWrapper loading={loading} error={error} data={data}>
       <Container>
         <HeadingPrimary>{title}</HeadingPrimary>
         <HeadingSecondary>{initialValues.name + ' Council'}</HeadingSecondary>
@@ -212,7 +212,7 @@ const CouncilForm = ({ initialValues, onSubmit, title, newCouncil }) => {
           </Container>
         )}
       </Formik>
-    </BaseComponent>
+    </ApolloWrapper>
   )
 }
 
