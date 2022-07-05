@@ -28,7 +28,7 @@ const BacentaJoint = () => {
             noCaption
             onClick={() =>
               navigate(
-                `/services/${currentUser.currentChurch?.__typename.toLowerCase()}/record-service`
+                `/${currentUser.currentChurch?.__typename.toLowerCase()}/record-service`
               )
             }
           />

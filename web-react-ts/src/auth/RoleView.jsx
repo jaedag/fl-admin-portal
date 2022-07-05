@@ -4,7 +4,7 @@ import { MemberContext } from '../contexts/MemberContext'
 import useAuth from './useAuth'
 
 const RoleView = (props) => {
-  const { roles, children, verifyId, permittedStream } = props
+  const { roles, children, verifyId, permittedStream, noIncome } = props
   const { currentUser } = useContext(MemberContext)
   const { isAuthorised } = useAuth()
 
@@ -29,6 +29,14 @@ const RoleView = (props) => {
       } else {
         return false
       }
+    }
+  }
+
+  const includeIncome = (noIncome) => {
+    if (currentUser.noIncome === noIncome) {
+      return true
+    } else {
+      return false
     }
   }
 

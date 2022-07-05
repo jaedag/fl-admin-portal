@@ -11,9 +11,11 @@ import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { Col, Container, Row } from 'react-bootstrap'
 import PlaceholderCustom from 'components/Placeholder'
 import GraphDropdown from './GraphDropdown'
+import { MemberContext } from 'contexts/MemberContext'
 
 const GatheringServiceReport = () => {
   const { gatheringServiceId } = useContext(ChurchContext)
+  const { currentUser } = useContext(MemberContext)
   const [bussing, setBussing] = useState(true)
   const { data, loading, error } = useQuery(GATHERINGSERVICE_GRAPHS, {
     variables: { gatheringServiceId: gatheringServiceId },
@@ -35,6 +37,7 @@ const GatheringServiceReport = () => {
         </PlaceholderCustom>
         <PlaceholderCustom loading={loading} as="span" xs={10}>
           <span className="text-secondary font-weight-bold">
+            {console.log(data?.gatheringServices[0])}
             {`Leader: ${data?.gatheringServices[0]?.leader.fullName}`}
           </span>
         </PlaceholderCustom>
@@ -64,7 +67,7 @@ const GatheringServiceReport = () => {
             />
           </Col>
 
-          {(!bussing || loading) && (
+          {(!bussing & !currentUser.noIncome || loading) && (
             <Col>
               <StatDisplay
                 title="Avg Weekly Income"
@@ -74,14 +77,27 @@ const GatheringServiceReport = () => {
           )}
         </Row>
 
-        <ChurchGraph
-          loading={loading}
-          stat1="attendance"
-          stat2={!bussing ? 'income' : null}
-          churchData={churchData}
-          church="gatheringservice"
-          bussing={bussing}
-        />
+        {!currentUser.noIncome ? (
+          <ChurchGraph
+            loading={loading}
+            stat1="attendance"
+            stat2={!bussing ? 'income' : null}
+            churchData={churchData}
+            church="gatheringservice"
+            bussing={bussing}
+            income={true}
+          />
+        ) : (
+          <ChurchGraph
+            loading={loading}
+            stat1="attendance"
+            stat2={!bussing ? 'income' : null}
+            churchData={churchData}
+            church="gatheringservice"
+            bussing={bussing}
+            income={false}
+          />
+        )}
       </Container>
     </ApolloWrapper>
   )

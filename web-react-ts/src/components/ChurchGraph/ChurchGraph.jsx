@@ -16,7 +16,8 @@ import { capitalise } from '../../global-utils'
 import './ChurchGraph.css'
 
 const ChurchGraph = (props) => {
-  const { loading, stat1, stat2, churchData, secondaryTitle, bussing } = props
+  const { loading, stat1, stat2, churchData, secondaryTitle, bussing, income } =
+    props
   const { clickCard } = useContext(ChurchContext)
   const navigate = useNavigate()
 
@@ -74,9 +75,11 @@ const ChurchGraph = (props) => {
       <div className="col">
         <PlaceholderCustom loading={loading} as="p">
           <p className="chart-title font-weight-bold m-0">
-            {stat2
-              ? `${capitalise(stat1)} and ${capitalise(stat2)}`
-              : `${bussing && 'Bussing'} ${capitalise(stat1)} Graph`}
+            {stat2 && `${capitalise(stat1)} and ${capitalise(stat2)}`}
+            {!stat2 &&
+              income &&
+              `${bussing && 'Bussing'} ${capitalise(stat1)} Graph`}
+            {!income && `${capitalise(stat1)}`}
           </p>
         </PlaceholderCustom>
         {secondaryTitle && (

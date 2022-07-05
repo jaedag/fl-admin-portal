@@ -1,0 +1,8 @@
+extend type Mutation {
+  RecordServiceNoIncome(
+    churchId: ID!
+    serviceDate: String!
+    attendance: Int!
+    servicePicture: String!
+  ): ServiceRecord
+}
