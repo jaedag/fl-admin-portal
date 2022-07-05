@@ -18,9 +18,9 @@ import {
   quickFacts,
 } from 'pages/directory/directoryRoutes.js'
 import { graphs, services } from 'pages/services/servicesRoutes.js'
-import { arrivals } from 'pages/arrivals/arrivalsRoutes.js'
+import { arrivals } from 'pages/arrivals/arrivalsRoutes'
 import { campaigns } from 'pages/campaigns/campaignsRoutes.js'
-import { reconciliation } from 'pages/reconciliation/reconRoutes.js'
+import { reconciliation } from 'pages/reconciliation/reconRoutes'
 import PageNotFound from 'pages/page-not-found/PageNotFound'
 import SetPermissions from 'auth/SetPermissions'
 import { permitMe } from 'permission-utils'

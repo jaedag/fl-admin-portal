@@ -1,7 +1,7 @@
+import FourOhFour from 'assets/FourOhFour'
 import React from 'react'
-import { Col, Image, Row } from 'react-bootstrap'
+import { Col, Row } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
-import sadIcon from '../../assets/404.png'
 
 const PageNotFound = () => {
   return (
@@ -9,12 +9,7 @@ const PageNotFound = () => {
       <div className="py-5">
         <Row className="d-flex justify-content-center ">
           <Col xs={6} md={6} lg={2}>
-            <Image
-              src={sadIcon}
-              fluid
-              rounded
-              className="rounded-circle bg-secondary"
-            />
+            <FourOhFour className="img-fluid rounded" />
           </Col>
         </Row>
       </div>
