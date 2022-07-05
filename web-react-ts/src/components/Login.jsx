@@ -13,7 +13,7 @@ import Silhouette from '../assets/silhouette.svg'
 import Logo from '../assets/flc-logo-small.png'
 
 const Login = () => {
-  var settings = {
+  const settings = {
     dots: true,
     infinite: true,
     speed: 500,

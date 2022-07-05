@@ -9,7 +9,7 @@ import AttendanceQuickFactsCard from '../components/AttendanceQuickFactsCard'
 const QuickFactsSlider = (props) => {
   const { attendanceDetails, incomeDetails, bussingDetails } = props
 
-  var settings = {
+  const settings = {
     dots: false,
     infinite: true,
     speed: 900,

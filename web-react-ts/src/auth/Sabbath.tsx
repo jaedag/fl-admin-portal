@@ -1,12 +1,10 @@
-import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
-import React from 'react'
 import { Container } from 'react-bootstrap'
 
 const Sabbath = () => {
   return (
-    <Container>
-      <HeadingPrimary>Today is the Sabbath!</HeadingPrimary>
-      <div>
+    <Container className="mt-5 font-primary">
+      <h2 className="mb-5">Today is the Sabbath!</h2>
+      <div className="font-primary">
         <p className="mb-2">Exodus 20:8-10</p>
         <p>
           Remember the sabbath day, to keep it holy. Six days shalt thou labour,
