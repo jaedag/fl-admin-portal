@@ -29,15 +29,16 @@ import ArrivalTimes from './arrivalTimes/ArrivalTimes'
 import ArrivalsCounters from './ArrivalsHelpers/ArrivalsCounters'
 import ArrivalsConfirmers from './ArrivalsHelpers/ArrivalsConfirmers'
 import BacentasBelow8 from './StateBacentasBelow8'
+import { RouteTypes } from 'global-types'
 
-export const arrivals = [
+export const arrivals: RouteTypes[] = [
   {
     path: '/arrivals',
     element: Arrivals,
     placeholder: true,
     roles: [
       ...permitLeaderAdminArrivals('Fellowship'),
-      ...permitArrivalsHelpers('Stream'),
+      ...permitArrivalsHelpers(),
     ],
   },
 
@@ -63,10 +64,7 @@ export const arrivals = [
   },
   {
     path: '/arrivals/stream',
-    roles: [
-      ...permitLeaderAdminArrivals('Stream'),
-      ...permitArrivalsHelpers('Stream'),
-    ],
+    roles: [...permitLeaderAdminArrivals('Stream'), ...permitArrivalsHelpers()],
     element: StreamDashboard,
     placeholder: true,
   },
@@ -115,7 +113,7 @@ export const arrivals = [
     path: '/arrivals/bacentas-no-activity',
     roles: [
       ...permitLeaderAdminArrivals('Constituency'),
-      ...permitArrivalsHelpers('Stream'),
+      ...permitArrivalsHelpers(),
     ],
     element: StateBacentasNoActivity,
     placeholder: true,
@@ -124,7 +122,7 @@ export const arrivals = [
     path: '/arrivals/bacentas-mobilising',
     roles: [
       ...permitLeaderAdminArrivals('Constituency'),
-      ...permitArrivalsHelpers('Stream'),
+      ...permitArrivalsHelpers(),
     ],
     element: BacentasMobilising,
     placeholder: true,
@@ -137,13 +135,13 @@ export const arrivals = [
   },
   {
     path: '/arrivals/bacentas-to-count',
-    roles: permitArrivalsCounter('Stream'),
+    roles: permitArrivalsCounter(),
     element: StateBacentasToCount,
     placeholder: true,
   },
   {
     path: '/arrivals/confirm-bacenta-arrival',
-    roles: permitArrivalsConfirmer('Stream'),
+    roles: permitArrivalsConfirmer(),
     element: ConfirmBacentaArrival,
     placeholder: true,
   },
@@ -151,7 +149,7 @@ export const arrivals = [
     path: '/arrivals/bacentas-have-arrived',
     roles: [
       ...permitLeaderAdminArrivals('Constituency'),
-      ...permitArrivalsHelpers('Stream'),
+      ...permitArrivalsHelpers(),
     ],
     element: BacentasHaveArrived,
     placeholder: true,
@@ -166,7 +164,7 @@ export const arrivals = [
   //Bacenta Forms
   {
     path: '/arrivals/submit-bus-attendance',
-    roles: permitArrivalsCounter('Stream'),
+    roles: permitArrivalsCounter(),
     element: BusFormConfirmation,
     placeholder: false,
   },
