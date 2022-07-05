@@ -172,10 +172,35 @@ RETURN count(log);
 
 //TODO 4
 //There are some Service Logs Which have multiple [:HAS_COMPONENT] relationships.
-//Delete the HAS_COMPONENT relationship that is pointing to the wrong nod
+//Delete the HAS_COMPONENT relationship that is pointing to the wrong node
+
+//Clear All Component Relationships and Re Assign Them
+MATCH p=(log:ServiceLog)-[r:HAS_COMPONENT]->(lowerLog:ServiceLog) 
+MERGE (log)-[:HAS_COMPONENT_0]->(lowerLog)
+DELETE r
+RETURN log, lowerLog;
+
+MATCH p=(log:ServiceLog)-[r:HAS_COMPONENT_0]->(lowerLog:ServiceLog) 
+MERGE (log)-[:HAS_COMPONENT]->(lowerLog)
+DELETE r
+RETURN log, lowerLog;
+
+MATCH p=(log:ServiceLog)-[r:HAS_COMPONENT_0]->(lowerLog:ServiceLog) 
+DELETE r
+RETURN log, lowerLog;
+
+
+//Find log with multiple HAS_COMPONENT relationships inwards
+MATCH p=(log:ServiceLog)<-[r:HAS_COMPONENT]-(higherLog:ServiceLog)
+WITH COUNT(r) as relCount, log WHERE relCount > 1
+
+MATCH (log)<-[:HAS_COMPONENT]-(higherLog)
+
+RETURN log, higherLog LIMIT 2;
+
+
+
 
 //TODO 4
 // There are some services which have no [:LOGGED_BY] relationship. 
 //Connect them to the leader at the time of the service
-
-
