@@ -169,6 +169,7 @@ RETURN count(log);
 //TODO 3
 //Connect Service Logs Which Don't Have Upward and Downward Relationships
 
+
 //TODO 4
 //There are some Service Logs Which have multiple [:HAS_COMPONENT] relationships.
 //Delete the HAS_COMPONENT relationship that is pointing to the wrong nod
