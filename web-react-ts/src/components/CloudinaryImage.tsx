@@ -10,8 +10,18 @@ import { thumbnail, fill, scale } from '@cloudinary/url-gen/actions/resize'
 import { focusOn } from '@cloudinary/url-gen/qualifiers/gravity'
 import { FocusOn } from '@cloudinary/url-gen/qualifiers/focusOn'
 
-const CloudinaryImage = ({ src, size, ...rest }) => {
-  const getPublicId = (url) => {
+const CloudinaryImage = ({
+  src,
+  size,
+  className,
+  ...rest
+}: {
+  src: string
+  size?: string
+  className?: string
+  [key: string]: any
+}) => {
+  const getPublicId = (url: string) => {
     if (!url) {
       return 'v1627893621/user_qvwhs7.png'
     }
@@ -74,7 +84,14 @@ const CloudinaryImage = ({ src, size, ...rest }) => {
       break
   }
 
-  return <AdvancedImage cldImg={image} plugins={plugins} {...rest} />
+  return (
+    <AdvancedImage
+      cldImg={image}
+      plugins={plugins}
+      className={className}
+      {...rest}
+    />
+  )
 }
 
 export default CloudinaryImage

@@ -3,8 +3,7 @@ import { PencilSquare } from 'react-bootstrap-icons'
 import { Link } from 'react-router-dom'
 import './EditButton.css'
 
-const EditButton = (props) => {
-  const { link } = props
+const EditButton = ({ link }: { link: string }) => {
   return (
     <Link to={link} className="edit-button text-nowrap">
       <PencilSquare />

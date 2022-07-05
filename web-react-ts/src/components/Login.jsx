@@ -76,7 +76,7 @@ const Login = () => {
             </p>
 
             <div className="col-8 mx-auto mt-4">
-              <AuthButton mobileFullSize="true" />
+              <AuthButton mobileFullSize />
             </div>
           </div>
         </div>
@@ -132,7 +132,7 @@ const Login = () => {
           </p>
 
           <div className="mx-auto mt-5 ">
-            <AuthButton mobileFullSize="true" />
+            <AuthButton mobileFullSize />
           </div>
         </Container>
       </MobileView>

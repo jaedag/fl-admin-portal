@@ -6,6 +6,6 @@ import PlusSign from './PlusSign'
 afterEach(cleanup)
 
 it('renders', () => {
-  const { asFragment } = render(<PlusSign />)
+  const { asFragment } = render(<PlusSign onClick={() => ''} />)
   expect(asFragment()).toMatchSnapshot()
 })

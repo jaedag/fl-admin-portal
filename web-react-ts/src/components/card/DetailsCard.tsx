@@ -5,7 +5,20 @@ import React, { useContext } from 'react'
 import { Badge } from 'react-bootstrap'
 import './DetailsCard.css'
 
-const DetailsCard = (props) => {
+type DetailsCardPropsType = {
+  title: string
+  subtitle?: string
+  avatar?: string
+  heading?: string
+  loading?: boolean
+  detail?: string
+  onClick?: () => void
+  bgNone?: boolean
+  img: string
+  vacationCount?: string
+}
+
+const DetailsCard = (props: DetailsCardPropsType) => {
   const { theme, currentUser } = useContext(MemberContext)
   const loading =
     !props.heading || props.loading || !currentUser.id || !props.detail

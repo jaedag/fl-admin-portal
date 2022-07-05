@@ -6,7 +6,15 @@ import { Link } from 'react-router-dom'
 import { ChurchContext } from '../../contexts/ChurchContext'
 import './Breadcrumb.css'
 
-const Breadcrumb = ({ breadcrumb }) => {
+type BreadcrumbType = {
+  __typename: string
+  name: string
+  constituency: {
+    name: string
+  }
+}
+
+const Breadcrumb = ({ breadcrumb }: { breadcrumb: BreadcrumbType[] }) => {
   const { clickCard } = useContext(ChurchContext)
   const { currentUser } = useContext(MemberContext)
 

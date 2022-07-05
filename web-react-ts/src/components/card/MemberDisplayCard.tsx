@@ -1,12 +1,12 @@
 import React, { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { ChurchContext } from '../../contexts/ChurchContext'
-import bussolid from '../../assets/bus-solid.svg'
-import fellowship from '../../assets/fellowship.svg'
-import stream from '../../assets/stream.svg'
-import council from '../../assets/council.svg'
-import bacenta from '../../assets/bacenta.svg'
-import constituency from '../../assets/constituency-location.svg'
+import { ChurchContext } from 'contexts/ChurchContext'
+import BusIcon from 'assets/icons/BusIcon'
+import FellowshipIcon from 'assets/icons/FellowshipIcon'
+import BacentaIcon from 'assets/icons/BacentaIcon'
+import ConstituencyIcon from 'assets/icons/ConstituencyIcon'
+import CouncilIcon from 'assets/icons/CouncilIcon'
+import StreamIcon from 'assets/icons/StreamIcon'
 import { Button, Card } from 'react-bootstrap'
 import { MemberContext } from 'contexts/MemberContext'
 import '../../components/members-grids/MemberTable.css'
@@ -15,18 +15,66 @@ import { TelephoneFill, Whatsapp } from 'react-bootstrap-icons'
 import CloudinaryImage from 'components/CloudinaryImage'
 import { USER_PLACEHOLDER } from 'global-utils'
 
-const MemberDisplayCard = (props) => {
+type MemberDisplayCardProps = {
+  member: {
+    __typename: string
+    id: string
+    name: string
+    firstName: string
+    lastName: string
+    fullName: string
+    pictureUrl: string
+    fellowship: {
+      id: string
+      name: string
+    }
+    ministry: {
+      id: string
+      name: string
+    }
+    leader: {
+      id: string
+      fullName: string
+    }
+  }
+  leader: {
+    id: string
+    fullName: string
+    phoneNumber: string
+    whatsappNumber: string
+    pictureUrl: string
+  }
+  onClick?: () => void
+  contact?: boolean
+}
+
+const Icons = ({ icon, className }: { icon: string; className: string }) => {
+  return (
+    <div className={className}>
+      {icon === 'fellowship' && <FellowshipIcon />}
+      {icon === 'bacenta' && <BacentaIcon />}
+      {icon === 'constituency' && <ConstituencyIcon />}
+      {icon === 'council' && <CouncilIcon />}
+      {icon === 'stream' && <StreamIcon />}
+      {icon === 'bus' && <BusIcon />}
+    </div>
+  )
+}
+
+const MemberDisplayCard = (props: MemberDisplayCardProps) => {
   const { member, leader, ...rest } = props
   const { clickCard } = useContext(ChurchContext)
   const { theme } = useContext(MemberContext)
   const navigate = useNavigate()
-  let icon, name, details
+  let icon: string = ''
+  let name: string | undefined
+  let details: string[] = []
+
   const noPicture = !member?.pictureUrl && !leader?.pictureUrl
   let picture = member?.pictureUrl || leader?.pictureUrl || USER_PLACEHOLDER
 
   switch (member.__typename) {
     case 'Member':
-      icon = ''
       name = member?.fullName || member.firstName + ' ' + member.lastName
       details = [
         member.fellowship && member.fellowship.name + ' Fellowship',
@@ -34,38 +82,38 @@ const MemberDisplayCard = (props) => {
       ]
       break
     case 'Fellowship':
-      icon = fellowship
+      icon = 'fellowship'
       name = member.name + ' Fellowship'
       details = [member?.leader?.fullName]
       break
     case 'Bacenta':
-      icon = bacenta
+      icon = 'bacenta'
       name = member.name + ' Bacenta'
       details = [member?.leader?.fullName]
       break
 
     case 'Constituency':
-      icon = constituency
+      icon = 'constituency'
       name = member.name + ' Constituency'
       details = [member?.leader?.fullName]
       break
     case 'Council':
-      icon = council
+      icon = 'council'
       name = member.name + ' Council'
       details = [member?.leader?.fullName]
       break
     case 'Stream':
-      icon = stream
+      icon = 'stream'
       name = member.name + ' Stream'
       details = [member?.leader?.fullName]
       break
     case 'GatheringService':
-      icon = bussolid
+      icon = 'stream'
       name = member.name + ' Gathering Service'
       details = [member?.leader?.fullName]
       break
     case 'Sonta':
-      icon = bussolid
+      icon = 'stream'
       name = member.name + ' Sonta'
       details = [member?.leader?.fullName]
       break
@@ -84,10 +132,9 @@ const MemberDisplayCard = (props) => {
         <div className="d-flex align-items-center">
           <div className="flex-shrink-0">
             {noPicture && member.__typename !== 'Member' ? (
-              <img
+              <Icons
                 className={`${picture && 'rounded-circle'} img-search`}
-                src={icon}
-                alt={member.name}
+                icon={icon}
               />
             ) : (
               <CloudinaryImage

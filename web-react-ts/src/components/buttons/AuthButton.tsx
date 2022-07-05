@@ -6,7 +6,10 @@ import usePopup from 'hooks/usePopup'
 import './AuthButton.css'
 import { BoxArrowRight } from 'react-bootstrap-icons'
 
-const AuthButton = (props) => {
+type AuthButtonPropsType = {
+  mobileFullSize?: boolean
+}
+const AuthButton = (props: AuthButtonPropsType) => {
   const { loginWithRedirect, logout, isAuthenticated } = useAuth0()
   const { togglePopup, isOpen } = usePopup()
   const { mobileFullSize } = props

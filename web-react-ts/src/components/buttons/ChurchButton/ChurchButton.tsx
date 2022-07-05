@@ -4,7 +4,15 @@ import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
 import './ChurchButton.css'
 
-const ChurchButton = (props) => {
+type ChurchButtonProps = {
+  church: {
+    id: string
+    name: string
+    __typename: string
+  }
+}
+
+const ChurchButton = (props: ChurchButtonProps) => {
   const { church } = props
   const { clickCard } = useContext(ChurchContext)
 

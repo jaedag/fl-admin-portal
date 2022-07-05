@@ -2,9 +2,9 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import './ViewAll.css'
 
-const ViewAll = ({ ...rest }) => {
+const ViewAll = ({ to }: { to: string }) => {
   return (
-    <Link className="view-all" {...rest}>
+    <Link className="view-all" to={to}>
       VIEW ALL
     </Link>
   )

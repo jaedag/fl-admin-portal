@@ -6,7 +6,24 @@ import React, { useContext } from 'react'
 import { Button, Col, Row } from 'react-bootstrap'
 import './MenuButton.css'
 
-const MenuButton = (props) => {
+type MenuButtonProps = {
+  buttonText: string
+  link: string
+  className?: string
+  onClick?: () => void
+  icon?: string
+  iconComponent?: React.ComponentType
+  iconCaption?: string
+  iconBg?: boolean
+  avatar?: string
+  caption?: string
+  noCaption?: boolean
+  number?: number
+  color: string
+  title: string
+}
+
+const MenuButton = (props: MenuButtonProps) => {
   const { theme } = useContext(MemberContext)
 
   const icon = props.icon || props.iconComponent || props.avatar || props.number
@@ -24,8 +41,9 @@ const MenuButton = (props) => {
             <PlaceholderCustom className="rounded-circle menu" as="div">
               <div
                 className={
-                  props.iconBg &&
-                  `rounded-circle menu gradient-bg ${props.color}`
+                  props.iconBg
+                    ? `rounded-circle menu gradient-bg ${props.color}`
+                    : ''
                 }
               >
                 {props.avatar && (
