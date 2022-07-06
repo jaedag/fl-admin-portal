@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 const fs = require('fs')
 const path = require('path')
 /*
@@ -52,8 +53,8 @@ const aggregates = fs
   .readFileSync(path.join(__dirname, './aggregates.graphql'))
   .toString('utf-8')
 
-const anagkazoTreasury = fs
-  .readFileSync(path.join(__dirname, './anagkazo-treasury.graphql'))
+const bankingAnagkazo = fs
+  .readFileSync(path.join(__dirname, './banking-anagkazo.graphql'))
   .toString('utf-8')
 
 const array = [
@@ -64,11 +65,11 @@ const array = [
   directorySearch,
   services,
   banking,
+  bankingAnagkazo,
   arrivals,
   campaigns,
   quickFacts,
   aggregates,
-  anagkazoTreasury,
   londonServices,
 ]
 

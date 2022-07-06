@@ -10,7 +10,7 @@ import { ServiceContext } from 'contexts/ServiceContext'
 import MembersDirectoryRoute from './pages/directory/MembersDirectoryRoute.jsx'
 import Navigation from 'pages/dashboards/Navigation.jsx'
 import ProtectedGraphs from 'pages/services/graphs/ProtectedGraphs.jsx'
-import { dashboards } from 'pages/dashboards/dashboardRoutes.js'
+import { dashboards } from 'pages/dashboards/dashboardRoutes'
 import {
   directory,
   memberDirectory,

@@ -48,8 +48,10 @@ import DefaultersDashboard from './defaulters/DefaultersDashboard'
 import TrendsMenu from './graphs/TrendsMenu'
 import { banking } from './banking/self-banking/selfBankingRoutes'
 import { RouteTypes } from 'global-types'
+import { anagkazoRoutes } from './banking/anagkazo/anagkazoBankingRoutes'
 
 export const services: RouteTypes[] = [
+  ...anagkazoRoutes,
   ...banking,
   {
     path: '/services',
@@ -145,7 +147,7 @@ export const services: RouteTypes[] = [
   },
 ]
 
-export const graphs = [
+export const graphs: RouteTypes[] = [
   {
     path: '/trends',
     element: TrendsMenu,

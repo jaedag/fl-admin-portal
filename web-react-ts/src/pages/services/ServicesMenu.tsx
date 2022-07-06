@@ -12,6 +12,7 @@ import {
   FileEarmarkArrowUpFill,
 } from 'react-bootstrap-icons'
 import { useNavigate } from 'react-router'
+import { ChurchLevel } from 'global-types'
 
 const Services = () => {
   const { currentUser, theme } = useContext(MemberContext)
@@ -19,7 +20,7 @@ const Services = () => {
   const { clickCard } = useContext(ChurchContext)
 
   const church = currentUser.currentChurch
-  const churchType = currentUser.currentChurch?.__typename
+  const churchType: ChurchLevel = currentUser.currentChurch?.__typename
 
   return (
     <div className="d-flex align-items-center justify-content-center ">
@@ -71,9 +72,7 @@ const Services = () => {
               navigate(`/trends`)
             }}
           />
-          {['Stream', 'Council', 'Constituency', 'Fellowship'].includes(
-            churchType
-          ) &&
+          {['Council', 'Constituency', 'Fellowship'].includes(churchType) &&
             church.stream_name !== 'anagkazo' && (
               <>
                 <MenuButton
@@ -88,6 +87,7 @@ const Services = () => {
                     )
                   }}
                 />
+
                 <MenuButton
                   iconComponent={Coin}
                   title="Self Banking Option"
@@ -101,15 +101,19 @@ const Services = () => {
                 />
               </>
             )}
-          <MenuButton
-            iconComponent={CashCoin}
-            title="Midweek Banking"
-            color="banking"
-            onClick={() =>
-              navigate(`/services/${churchType.toLowerCase()}/midweek-banking`)
-            }
-            noCaption
-          />
+          {church.stream_name === 'anagkazo' && (
+            <MenuButton
+              iconComponent={CashCoin}
+              title="Midweek Banking"
+              color="banking"
+              onClick={() =>
+                navigate(
+                  `/services/${church.stream_name.toLowerCase()}/midweek-banking`
+                )
+              }
+              noCaption
+            />
+          )}
         </div>
       </Container>
     </div>

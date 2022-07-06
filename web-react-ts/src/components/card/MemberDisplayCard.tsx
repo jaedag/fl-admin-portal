@@ -19,7 +19,7 @@ type MemberDisplayCardProps = {
   member: {
     __typename: string
     id: string
-    name: string
+    name?: string
     firstName: string
     lastName: string
     fullName: string
@@ -32,12 +32,12 @@ type MemberDisplayCardProps = {
       id: string
       name: string
     }
-    leader: {
+    leader?: {
       id: string
       fullName: string
     }
   }
-  leader: {
+  leader?: {
     id: string
     fullName: string
     phoneNumber: string
@@ -84,38 +84,38 @@ const MemberDisplayCard = (props: MemberDisplayCardProps) => {
     case 'Fellowship':
       icon = 'fellowship'
       name = member.name + ' Fellowship'
-      details = [member?.leader?.fullName]
+      details = [member?.leader?.fullName || '']
       break
     case 'Bacenta':
       icon = 'bacenta'
       name = member.name + ' Bacenta'
-      details = [member?.leader?.fullName]
+      details = [member?.leader?.fullName || '']
       break
 
     case 'Constituency':
       icon = 'constituency'
       name = member.name + ' Constituency'
-      details = [member?.leader?.fullName]
+      details = [member?.leader?.fullName || '']
       break
     case 'Council':
       icon = 'council'
       name = member.name + ' Council'
-      details = [member?.leader?.fullName]
+      details = [member?.leader?.fullName || '']
       break
     case 'Stream':
       icon = 'stream'
       name = member.name + ' Stream'
-      details = [member?.leader?.fullName]
+      details = [member?.leader?.fullName || '']
       break
     case 'GatheringService':
       icon = 'stream'
       name = member.name + ' Gathering Service'
-      details = [member?.leader?.fullName]
+      details = [member?.leader?.fullName || '']
       break
     case 'Sonta':
       icon = 'stream'
       name = member.name + ' Sonta'
-      details = [member?.leader?.fullName]
+      details = [member?.leader?.fullName || '']
       break
     default:
       break

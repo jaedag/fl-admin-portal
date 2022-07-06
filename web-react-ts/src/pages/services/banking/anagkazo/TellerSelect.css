@@ -1,0 +1,8 @@
+.modal-content.dark {
+  background-color: #1e1c1c;
+  color: var(--text-primary);
+}
+
+.btn-close {
+  color: var(--text-primary);
+}

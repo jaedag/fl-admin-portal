@@ -1,4 +1,4 @@
-import { RolesEnum, RouteTypes } from 'global-types'
+import { RouteTypes } from 'global-types'
 import { permitMe } from 'permission-utils'
 import ConfirmPayment from './ConfirmPayment'
 import ConstituencySelfBanking from './ConstituencySelfBanking'
@@ -12,33 +12,33 @@ export const banking: RouteTypes[] = [
   {
     path: '/services/fellowship/self-banking',
     element: FellowshipSelfBanking,
-    roles: [RolesEnum.leaderFellowship],
+    roles: ['leaderFellowship'],
     placeholder: true,
   },
   {
     path: '/services/constituency/self-banking',
     element: ConstituencySelfBanking,
-    roles: [RolesEnum.leaderConstituency],
+    roles: ['leaderConstituency'],
     placeholder: true,
   },
   {
     path: '/services/fellowship/self-banking/pay',
     element: PayFellowshipOffering,
-    roles: [RolesEnum.leaderFellowship],
+    roles: ['leaderFellowship'],
   },
   {
     path: '/services/constituency/self-banking/pay',
     element: PayConstituencyOffering,
-    roles: [RolesEnum.leaderConstituency],
+    roles: ['leaderConstituency'],
   },
   {
     path: '/self-banking/confirm-payment',
     element: ConfirmPayment,
-    roles: [...permitMe('Constituency'), RolesEnum.leaderFellowship],
+    roles: [...permitMe('Constituency'), 'leaderFellowship'],
   },
   {
     path: '/self-banking/receipt',
     element: ReceiptPage,
-    roles: [...permitMe('Constituency'), RolesEnum.leaderFellowship],
+    roles: [...permitMe('Constituency'), 'leaderFellowship'],
   },
 ]

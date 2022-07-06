@@ -48,6 +48,7 @@
     "no-console": "error",
     "import/extensions": "off",
     "react/react-in-jsx-scope": "off",
+    "@typescript-eslint/no-var-requires": "off",
     "no-relative-import-paths/no-relative-import-paths": [
       "warn",
       { "allowSameFolder": true }
@@ -63,6 +64,6 @@
       {
         "namedComponents": "arrow-function"
       }
-  ]
+    ]
   }
 }
