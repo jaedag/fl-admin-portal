@@ -13,7 +13,6 @@ import { Col, Row, Table, Container } from 'react-bootstrap'
 import Placeholder from '../../components/Placeholder'
 import { ChurchContext } from 'contexts/ChurchContext'
 import useComponentQuery from './useComponentQuery'
-import RoleView from '../../auth/RoleView'
 
 const UserDashboard = () => {
   const { currentUser, userJobs } = useContext(MemberContext)

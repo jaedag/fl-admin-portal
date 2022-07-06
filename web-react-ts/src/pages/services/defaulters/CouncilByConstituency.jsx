@@ -12,8 +12,6 @@ import PlaceholderDefaulterList from './PlaceholderDefaulterList'
 import { MemberContext } from 'contexts/MemberContext'
 
 const CouncilByConstituency = () => {
-  const { currentUser } = useContext(MemberContext)
-
   const { councilId, clickCard } = useContext(ChurchContext)
   const { setUser } = useSetUserChurch()
   const { data, loading, error } = useQuery(COUNCIL_BY_CONSTITUENCY, {
