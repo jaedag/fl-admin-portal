@@ -32,7 +32,7 @@ const texts = require('./texts.json')
 
 dotenv.config()
 
-export let authToken
+export let authToken = ''
 export const authRoles = {}
 
 const Mailgun = require('mailgun.js')

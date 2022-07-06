@@ -20,7 +20,7 @@ exports.serviceMutation = {
     )
 
     if (!relationshipCheck.exists) {
-      //Checks if the church has a current history record otherwise creates it
+      // Checks if the church has a current history record otherwise creates it
       const getServantAndChurch = rearrangeCypherObject(
         await session.run(serviceCypher.getServantAndChurch, args)
       )
