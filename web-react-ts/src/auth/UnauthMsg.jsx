@@ -1,7 +1,7 @@
 import React from 'react'
 import { Button, Container } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
-import MenAtWork from '../assets/men-at-work-shivendu-shukla.jpeg'
+import MenAtWork from '../assets/men-at-work-shivendu-shukla.webp'
 import './UnauthMsg.css'
 
 export const UnauthMsg = () => {

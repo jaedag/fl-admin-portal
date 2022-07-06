@@ -10,7 +10,7 @@ import 'slick-carousel/slick/slick-theme.css'
 import BarIcon from '../assets/bars.svg'
 import GlobeIcon from '../assets/globe.svg'
 import Silhouette from '../assets/silhouette.svg'
-import Logo from '../assets/flc-logo-small.png'
+import Logo from '../assets/flc-logo-small.webp'
 
 const Login = () => {
   const settings = {

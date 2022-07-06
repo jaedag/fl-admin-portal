@@ -22,18 +22,28 @@ const RoleView = (props: RoleViewProps) => {
   const { isAuthorised } = useAuth()
 
   const verify = (verifyId: string | undefined) => {
-    if (currentUser.id === verifyId) return true
+    if (!verifyId) return true
+
+    if (currentUser.id === verifyId) {
+      return true
+    }
 
     return false
   }
 
   const permitStream = (permittedStream: StreamEnum[] | undefined) => {
-    if (permittedStream?.includes(currentUser.stream_name)) return true
+    if (!permittedStream) return true
+
+    if (permittedStream?.includes(currentUser.stream_name)) {
+      return true
+    }
 
     return false
   }
 
   const includeIncome = (noIncome: boolean | undefined) => {
+    if (!noIncome) return true
+
     if (currentUser.noIncome === noIncome) {
       return true
     }

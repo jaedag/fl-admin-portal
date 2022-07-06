@@ -23,7 +23,7 @@ const CloudinaryImage = ({
 }) => {
   const getPublicId = (url: string) => {
     if (!url) {
-      return 'v1627893621/user_qvwhs7.png'
+      return 'v1627893621/user_qvwhs7webp'
     }
 
     return url.replace(
