@@ -1,9 +1,9 @@
-import { typeDefs } from './schema/graphql-schema'
 import { ApolloServer } from 'apollo-server-express'
 import express from 'express'
 import neo4j from 'neo4j-driver'
 import { Neo4jGraphQL } from '@neo4j/graphql'
 import { Neo4jGraphQLAuthJWTPlugin } from '@neo4j/graphql-plugin-auth'
+import { typeDefs } from './schema/graphql-schema'
 import { resolvers } from './resolvers/resolvers'
 import { serviceResolvers } from './resolvers/service-resolvers'
 import { arrivalsResolvers } from './resolvers/arrivals/arrivals-resolvers'
@@ -52,19 +52,6 @@ const neoSchema = new Neo4jGraphQL({
  * generated resolvers to connect to the database.
  */
 
-const startServer = async () => {
-  const schema = await neoSchema.getSchema()
-
-  const server = new ApolloServer({
-    context: ({ req }) => req,
-    introspection: true,
-    schema,
-  })
-
-  await server.start()
-  server.applyMiddleware({ app, path })
-}
-
 // Specify host, port and path for GraphQL endpoint
 const port = process.env.GRAPHQL_SERVER_PORT || 4001
 const path = process.env.GRAPHQL_SERVER_PATH || '/graphql'
@@ -74,6 +61,18 @@ const host = process.env.GRAPHQL_SERVER_HOST || '0.0.0.0'
  * Optionally, apply Express middleware for authentication, etc
  * This also also allows us to specify a path for the GraphQL endpoint
  */
+const startServer = async () => {
+  const schema = await neoSchema.getSchema()
+
+  const server = new ApolloServer({
+    context: ({ req }) => ({ req, executionContext: driver }),
+    introspection: true,
+    schema,
+  })
+
+  await server.start()
+  server.applyMiddleware({ app, path })
+}
 
 startServer()
 
