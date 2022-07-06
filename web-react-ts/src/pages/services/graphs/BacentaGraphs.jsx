@@ -10,10 +10,12 @@ import StatDisplay from './CompStatDisplay'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { Col, Container, Row } from 'react-bootstrap'
 import GraphDropdown from './GraphDropdown'
+import { MemberContext } from 'contexts/MemberContext'
 
 export const BacentaGraphs = () => {
   const { bacentaId } = useContext(ChurchContext)
   const [bussing, setBussing] = useState(true)
+  const { currentUser } = useContext(MemberContext)
 
   const { data, loading, error } = useQuery(BACENTA_GRAPHS, {
     variables: { bacentaId: bacentaId },
@@ -60,7 +62,7 @@ export const BacentaGraphs = () => {
               statistic={getMonthlyStatAverage(churchData, 'attendance')}
             />
           </Col>
-          {(!bussing || loading) && (
+          {(!bussing & !currentUser.noIncome || loading) && (
             <Col>
               <StatDisplay
                 title="Avg Weekly Income"
@@ -69,13 +71,26 @@ export const BacentaGraphs = () => {
             </Col>
           )}
         </Row>
-        <ChurchGraph
-          stat1="attendance"
-          stat2={!bussing ? 'income' : null}
-          churchData={churchData}
-          church="bacenta"
-          bussing={bussing}
-        />
+
+        {!currentUser.noIncome ? (
+          <ChurchGraph
+            stat1="attendance"
+            stat2={!bussing ? 'income' : null}
+            churchData={churchData}
+            church="bacenta"
+            bussing={bussing}
+            income={true}
+          />
+        ) : (
+          <ChurchGraph
+            stat1="attendance"
+            stat2={null}
+            churchData={churchData}
+            church="bacenta"
+            bussing={bussing}
+            income={false}
+          />
+        )}
       </Container>
     </ApolloWrapper>
   )

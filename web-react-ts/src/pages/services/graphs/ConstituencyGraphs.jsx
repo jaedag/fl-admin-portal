@@ -10,9 +10,12 @@ import StatDisplay from './CompStatDisplay'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { Col, Container, Row } from 'react-bootstrap'
 import GraphDropdown from './GraphDropdown'
+import { MemberContext } from 'contexts/MemberContext'
 
 export const ConstituencyReport = () => {
   const { constituencyId } = useContext(ChurchContext)
+  const { currentUser } = useContext(MemberContext)
+
   const [bussing, setBussing] = useState(true)
   const { data, loading, error } = useQuery(CONSTITUENCY_GRAPHS, {
     variables: { id: constituencyId },
@@ -62,7 +65,7 @@ export const ConstituencyReport = () => {
           </Col>
 
           <Col>
-            {(!bussing || loading) && (
+            {(!bussing & !currentUser.noIncome || loading) && (
               <StatDisplay
                 title="Avg Weekly Income"
                 statistic={getMonthlyStatAverage(churchData, 'income')}
@@ -70,13 +73,26 @@ export const ConstituencyReport = () => {
             )}
           </Col>
         </Row>
-        <ChurchGraph
-          stat1="attendance"
-          stat2={!bussing ? 'income' : null}
-          churchData={churchData}
-          church="constituency"
-          bussing={bussing}
-        />
+
+        {!currentUser.noIncome ? (
+          <ChurchGraph
+            stat1="attendance"
+            stat2={!bussing ? 'income' : null}
+            churchData={churchData}
+            church="constituency"
+            bussing={bussing}
+            income={true}
+          />
+        ) : (
+          <ChurchGraph
+            stat1="attendance"
+            stat2={null}
+            churchData={churchData}
+            church="constituency"
+            bussing={bussing}
+            income={false}
+          />
+        )}
       </Container>
     </ApolloWrapper>
   )
