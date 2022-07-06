@@ -56,8 +56,9 @@ import StreamAvgWeekdayQuickFacts from './quick-facts/this-month/StreamAvgWeekda
 import CouncilAvgWeekdayQuickFacts from './quick-facts/this-month/CouncilAvgWeekdayQuickFacts'
 import GatheringServiceAvgWeekdayQuickFacts from './quick-facts/this-month/GatheringServiceAvgWeekdayQuickFacts'
 import QuickFactsChurchList from './quick-facts/QuickFactsChurchList'
+import { RouteTypes } from 'global-types'
 
-export const memberDirectory = [
+export const memberDirectory: RouteTypes[] = [
   {
     path: '/directory/members',
     element: ServantMembers,
@@ -65,7 +66,7 @@ export const memberDirectory = [
   },
 ]
 
-export const quickFacts = [
+export const quickFacts: RouteTypes[] = [
   {
     path: '/directory/quick-facts/church-list',
     element: QuickFactsChurchList,
@@ -103,7 +104,7 @@ export const quickFacts = [
   },
 ]
 
-export const memberGrids = [
+export const memberGrids: RouteTypes[] = [
   {
     path: '/gatheringservice/members',
     element: GatheringServiceMembers,
@@ -142,7 +143,7 @@ export const memberGrids = [
   },
 ]
 
-export const directory = [
+export const directory: RouteTypes[] = [
   {
     path: '/directory',
     element: Directory,

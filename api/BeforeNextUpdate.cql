@@ -166,11 +166,11 @@ RETURN count(log);
 //Some service records have multiple HAS_SERVICE relationships which need to be made single
 
 
-//TODO 3
+//TODO 3 (SCRAPPED) 🚫
 //Connect Service Logs Which Don't Have Upward and Downward Relationships
 
 
-//TODO 4
+//TODO 4 XXXXXXX (SCRAPPED) 🚫
 //There are some Service Logs Which have multiple [:HAS_COMPONENT] relationships.
 //Delete the HAS_COMPONENT relationship that is pointing to the wrong node
 
