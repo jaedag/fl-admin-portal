@@ -47,8 +47,9 @@ import Defaulters from './defaulters/Defaulters'
 import DefaultersDashboard from './defaulters/DefaultersDashboard'
 import TrendsMenu from './graphs/TrendsMenu'
 import { banking } from './banking/self-banking/selfBankingRoutes'
+import { RouteTypes } from 'global-types'
 
-export const services = [
+export const services: RouteTypes[] = [
   ...banking,
   {
     path: '/services',

@@ -17,7 +17,7 @@ import {
   memberGrids,
   quickFacts,
 } from 'pages/directory/directoryRoutes'
-import { graphs, services } from 'pages/services/servicesRoutes.js'
+import { graphs, services } from 'pages/services/servicesRoutes'
 import { arrivals } from 'pages/arrivals/arrivalsRoutes'
 import { campaigns } from 'pages/campaigns/campaignsRoutes.js'
 import { reconciliation } from 'pages/reconciliation/reconRoutes'

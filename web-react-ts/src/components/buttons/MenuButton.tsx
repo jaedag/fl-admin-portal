@@ -7,8 +7,6 @@ import { Button, Col, Row } from 'react-bootstrap'
 import './MenuButton.css'
 
 type MenuButtonProps = {
-  buttonText: string
-  link: string
   className?: string
   onClick?: () => void
   icon?: string

@@ -13,8 +13,12 @@
   color: var(--members-accent);
 }
 
+.banking.dark {
+  color: var(--banking-accent);
+}
+
 .quick-facts.dark {
-  color: var(--quickfacts-accent)
+  color: var(--quickfacts-accent);
 }
 
 .danger.dark {

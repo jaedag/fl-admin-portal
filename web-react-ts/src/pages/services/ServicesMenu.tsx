@@ -7,11 +7,11 @@ import { Container } from 'react-bootstrap'
 import {
   BarChartFill,
   Book,
+  CashCoin,
   Coin,
   FileEarmarkArrowUpFill,
 } from 'react-bootstrap-icons'
 import { useNavigate } from 'react-router'
-import RoleView from 'auth/RoleView'
 
 const Services = () => {
   const { currentUser, theme } = useContext(MemberContext)
@@ -71,37 +71,45 @@ const Services = () => {
               navigate(`/trends`)
             }}
           />
-          {['Council', 'Constituency', 'Fellowship'].includes(churchType) && (
-            <>
-              <MenuButton
-                iconComponent={FileEarmarkArrowUpFill}
-                title="Upload Banking Slips"
-                color="banking"
-                noCaption
-                onClick={() => {
-                  clickCard(church)
-                  navigate(
-                    `/services/${churchType.toLowerCase()}/banking-slips`
-                  )
-                }}
-              />
-              <RoleView permittedStream={['Campus', 'Town']}>
-                {church.stream_name !== 'anagkazo' && (
-                  <MenuButton
-                    iconComponent={Coin}
-                    title="Self Banking Option"
-                    color="banking"
-                    noCaption
-                    onClick={() =>
-                      navigate(
-                        `/services/${churchType.toLowerCase()}/self-banking`
-                      )
-                    }
-                  />
-                )}
-              </RoleView>
-            </>
-          )}
+          {['Stream', 'Council', 'Constituency', 'Fellowship'].includes(
+            churchType
+          ) &&
+            church.stream_name !== 'anagkazo' && (
+              <>
+                <MenuButton
+                  iconComponent={FileEarmarkArrowUpFill}
+                  title="Upload Banking Slips"
+                  color="banking"
+                  noCaption
+                  onClick={() => {
+                    clickCard(church)
+                    navigate(
+                      `/services/${churchType.toLowerCase()}/banking-slips`
+                    )
+                  }}
+                />
+                <MenuButton
+                  iconComponent={Coin}
+                  title="Self Banking Option"
+                  color="banking"
+                  noCaption
+                  onClick={() =>
+                    navigate(
+                      `/services/${churchType.toLowerCase()}/self-banking`
+                    )
+                  }
+                />
+              </>
+            )}
+          <MenuButton
+            iconComponent={CashCoin}
+            title="Midweek Banking"
+            color="banking"
+            onClick={() =>
+              navigate(`/services/${churchType.toLowerCase()}/midweek-banking`)
+            }
+            noCaption
+          />
         </div>
       </Container>
     </div>
