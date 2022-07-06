@@ -165,6 +165,28 @@ RETURN count(log);
 //TODO 2
 //Some service records have multiple HAS_SERVICE relationships which need to be made single
 
+//Do it for bacentas
+MATCH p=(this:Bacenta)-[:HAS_HISTORY]->(log:ServiceLog)-[r:HAS_BUSSING]->(record:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
+MATCH (record)<-[rel:HAS_BUSSING]-(log)
+WITH  record, COUNT(rel) AS relCount WHERE relCount > 1
+MATCH (record)<-[:HAS_BUSSING]-(log:ServiceLog)
+
+WITH max(log.timeStamp) AS max, record
+MATCH p=(record)<-[r:HAS_BUSSING]-(log) WHERE NOT toString(log.timeStamp) = toString(max)
+DELETE r
+RETURN record,log, max LIMIT 4;
+
+//Do it for services
+
+MATCH p=(this)-[:HAS_HISTORY]->(log:ServiceLog)-[r:HAS_SERVICE]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph) WHERE this:Fellowship OR this:Constituency OR this:Council
+MATCH (record)<-[rel:HAS_SERVICE]-(log)
+WITH  record, COUNT(rel) AS relCount WHERE relCount > 1
+MATCH (record)<-[:HAS_SERVICE]-(log:ServiceLog)
+
+WITH max(log.timeStamp) AS max, record
+MATCH p=(record)<-[r:HAS_SERVICE]-(log:ServiceLog) WHERE NOT toString(log.timeStamp) = toString(max)
+DELETE r
+RETURN record,log, max LIMIT 4;
 
 //TODO 3 (SCRAPPED) 🚫
 //Connect Service Logs Which Don't Have Upward and Downward Relationships
