@@ -21,5 +21,5 @@ export type RouteTypes = {
   path: string
   element: () => JSX.Element
   placeholder?: boolean
-  roles: RolesEnum[]
+  roles: RolesEnum[] | 'all'[]
 }

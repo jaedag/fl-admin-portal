@@ -1,4 +1,4 @@
-//Remove Fellowship Leader Connection
+// Remove Fellowship Leader Connection
 export const disconnectChurchLeader = `
 MATCH (church {id: $churchId}) 
 WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:GatheringService OR church:Sonta OR church:Ministry
@@ -70,7 +70,7 @@ WITH church, admin
 RETURN admin.id AS id, admin.auth_id AS auth_id, admin.firstName AS firstName, admin.lastName AS lastName
 `
 
-//Create Church Leader Connection
+// Create Church Leader Connection
 export const connectChurchLeader = `
 MATCH (church {id: $churchId})<-[:HAS]-(higherChurch)
 WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:GatheringService OR church:Sonta OR church:Ministry
@@ -130,7 +130,7 @@ MERGE (admin)-[:IS_TELLER_FOR]->(church)
 
 RETURN church.id AS id, church.name AS name, higherChurch.id AS higherChurchId, higherChurch.name AS higherChurchName
 `
-//Create the service log and returns its ID
+// Create the service log and returns its ID
 
 export const createHistoryLog = `
 CREATE (log:HistoryLog)
@@ -147,7 +147,7 @@ SET log:ServiceLog
 RETURN log AS log
 `
 
-//Connect log to leader, new church, and old leader
+// Connect log to leader, new church, and old leader
 export const connectServiceLog = `
 MATCH (church {id: $churchId}) 
 WHERE church:Fellowship OR church:Bacenta 
@@ -179,8 +179,8 @@ WITH church
 RETURN church.id AS id
 `
 
-//Connect log to leader, new church, and old leader
-//First Connection
+// Connect log to leader, new church, and old leader
+// First Connection
 export const connectHistoryLog = `
 MATCH (church {id:$churchId}) 
 WHERE church:Fellowship OR church:Bacenta 
