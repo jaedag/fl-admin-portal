@@ -226,3 +226,16 @@ RETURN log, higherLog LIMIT 2;
 //TODO 4
 // There are some services which have no [:LOGGED_BY] relationship. 
 //Connect them to the leader at the time of the service
+
+MATCH (record:ServiceRecord)<-[r]-()
+WHERE  NOT EXISTS {
+    MATCH (record)-[:LOGGED_BY]->(m: Member)
+}
+WITH record
+MATCH (record)<-[:HAS_SERVICE]-(:HistoryLog)<-[:HAS_HISTORY]-(:Fellowship)<-[:LEADS]-(leader:Member)
+WITH leader, record
+CREATE (record)-[:LOGGED_BY]->(leader)
+RETURN record, leader;
+
+//Adding CONSTRAINST 
+CREATE CONSTRAINT memberShouldHaveEmails FOR (member:Member) REQUIRE member.email IS NOT NULL;
