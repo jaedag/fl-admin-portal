@@ -13,6 +13,22 @@
   },
   "author": "William Lyon",
   "license": "MIT",
+  "eslintConfig": {
+    "plugins": [
+      "@typescript-eslint",
+      "no-relative-import-paths",
+      "import"
+    ],
+    "rules": {
+      "import/no-unresolved": "off",
+      "no-relative-import-paths/no-relative-import-paths": [
+        "warn",
+        {
+          "allowSameFolder": true
+        }
+      ]
+    }
+  },
   "dependencies": {
     "@apollo/client": "^3.2.5",
     "@neo4j/graphql": "^3.4.0",

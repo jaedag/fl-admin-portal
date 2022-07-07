@@ -5,12 +5,11 @@ import { directoryMutation } from './directory-resolvers'
 import { bankingMutation } from './banking/banking-resolver'
 import { bussingMutation } from './aggregates/component-resolvers'
 import { treasuryMutations } from './anagkazo/treasury-resolvers'
-import { serviceNoIncomeMutations } from './london/service-resolvers'
+import { serviceNoIncomeMutations } from './no-income/service-resolvers'
 
 /* eslint-disable no-console */
 const dotenv = require('dotenv')
 const axios = require('axios').default
-const formData = require('form-data')
 const cypher = require('./cypher/resolver-cypher')
 
 const {
@@ -22,7 +21,7 @@ const {
   parseForCache,
   churchInEmail,
   makeServantCypher,
-  parseForCache_Removal,
+  parseForCacheRemoval,
   removeServantCypher,
   formatting,
 } = require('./resolver-utils')
@@ -32,72 +31,8 @@ const texts = require('./texts.json')
 
 dotenv.config()
 
-export let authToken = ''
+export let authToken
 export const authRoles = {}
-
-const Mailgun = require('mailgun.js')
-
-const mailgun = new Mailgun(formData)
-const mg = mailgun.client({ username: 'api', key: process.env.MAILGUN_API_KEY })
-
-const notifyMember = (
-  member,
-  subject,
-  body,
-  html,
-  whatsapp_template,
-  whatsapp_placeholders
-) => {
-  if (whatsapp_template && member?.doWeHaveMoney) {
-    // Send WhatsApp or Not
-    const sendWhatsAppConfig = {
-      method: 'post',
-      baseURL: process.env.INFOBIP_BASE_URL,
-      url: `/whatsapp/1/message/template`,
-      headers: {
-        Authorization: `App ${process.env.INFOBIP_API_KEY}`,
-      },
-      data: {
-        messages: [
-          {
-            from: '233508947494', // First Love Number
-            to: member.whatsappNumber, // Member's Number
-            content: {
-              templateName: whatsapp_template,
-              templateData: {
-                body: {
-                  placeholders: whatsapp_placeholders,
-                },
-              },
-              language: 'en_GB',
-            },
-            // callbackData: 'Callback data',
-          },
-        ],
-      },
-    }
-
-    axios(sendWhatsAppConfig)
-      .then(() =>
-        console.log(
-          'WhatsApp Message Sending to',
-          `${member.firstName} ${member.lastName}`
-        )
-      )
-      .catch((error) => throwErrorMsg('WhatsApp Message Failed to Send', error))
-  }
-
-  mg.messages
-    .create('mg.firstlovecenter.com', {
-      from: 'FL Accra Admin <no-reply@firstlovecenter.org>',
-      to: process.env.TEST_EMAIL_ADDRESS || member.email,
-      subject,
-      text: body,
-      html: html || null, // HTML Version of the Message for Better Styling
-    })
-    .then((msg) => console.log('Mailgun API response', msg)) // logs response data
-    .catch((err) => console.log('Mailgun API error', err)) // logs any error
-}
 
 const getTokenConfig = {
   method: 'post',
@@ -396,7 +331,7 @@ export const RemoveServant = async (
       [servant.firstName, churchType, servantType, church.name, church.type[0]]
     )
 
-    return parseForCache_Removal(servant, church, verb, servantLower)
+    return parseForCacheRemoval(servant, church, verb, servantLower)
   }
 
   // Check auth0 roles and remove roles 'leaderBacenta'
@@ -433,7 +368,7 @@ export const RemoveServant = async (
         texts.string.subscription
       }`
     )
-    return parseForCache_Removal(servant, church, verb, servantLower)
+    return parseForCacheRemoval(servant, church, verb, servantLower)
   }
 
   // If the person is a bacenta leader as well as any other position, remove role bacenta leader
@@ -455,7 +390,7 @@ export const RemoveServant = async (
     )
   }
 
-  return parseForCache_Removal(servant, church, verb, servantLower)
+  return parseForCacheRemoval(servant, church, verb, servantLower)
 }
 
 export const resolvers = {

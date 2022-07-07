@@ -1,7 +1,8 @@
 import { getRoleId } from './resolvers'
 import { authToken } from './resolvers'
 
-export const createAuthUserConfig = (member, authToken) => ({
+
+const createAuthUserConfig = (member, authToken) => ({
   method: 'post',
   baseURL: process.env.AUTH0_BASE_URL,
   url: `/api/v2/users`,

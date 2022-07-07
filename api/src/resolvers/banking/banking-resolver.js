@@ -3,7 +3,7 @@ const {
   padNumbers,
   getStreamFinancials,
   handlePaymentError,
-} = require('../financial-utils')
+} = require('../utils/financial-utils')
 const { permitLeader } = require('../permissions')
 const cypher = require('./banking-cypher')
 const {

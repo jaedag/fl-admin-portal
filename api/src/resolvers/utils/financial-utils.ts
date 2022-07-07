@@ -1,7 +1,5 @@
-import utils from './utils'
+import { throwErrorMsg } from './utils'
 import { StreamOptions } from './types'
-
-const { throwErrorMsg } = utils
 
 type Network = 'MTN' | 'Vodafone' | 'AirtelTigo' | 'Airtel' | 'Tigo'
 type NetworkCode = 'MTN' | 'VDF' | 'ATL' | 'TGO'

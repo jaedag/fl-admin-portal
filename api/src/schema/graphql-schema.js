@@ -32,11 +32,14 @@ const services = fs
   .readFileSync(path.join(__dirname, 'services.graphql'))
   .toString('utf-8')
 
-const londonServices = fs.readFileSync(path.join(__dirname, './london.graphql'))
+const servicesNoIncome = fs.readFileSync(
+  path.join(__dirname, 'services-no-income.graphql')
+)
 
 const banking = fs
   .readFileSync(path.join(__dirname, './banking.graphql'))
   .toString('utf-8')
+
 const arrivals = fs
   .readFileSync(path.join(__dirname, './arrivals.graphql'))
   .toString('utf-8')
@@ -70,7 +73,7 @@ const array = [
   campaigns,
   quickFacts,
   aggregates,
-  londonServices,
+  servicesNoIncome,
 ]
 
 exports.typeDefs = array.join(' ')

@@ -10,7 +10,7 @@ const neo4j = require('neo4j-driver')
 // Be sure to run `npm run build`
 const { typeDefs } = require('./schema/graphql-schema')
 const { resolvers } = require('../../resolvers/resolvers.js')
-const { serviceResolvers } = require('../../resolvers/service-resolvers')
+const { serviceResolvers } = require('../../resolvers/services-resolvers')
 const {
   componentResolvers,
 } = require('../../resolvers/aggregates/component-resolvers')

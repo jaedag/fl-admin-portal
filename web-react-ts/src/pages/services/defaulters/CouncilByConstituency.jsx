@@ -9,7 +9,6 @@ import { TelephoneFill, Whatsapp } from 'react-bootstrap-icons'
 import { useNavigate } from 'react-router'
 import { COUNCIL_BY_CONSTITUENCY } from './DefaultersQueries'
 import PlaceholderDefaulterList from './PlaceholderDefaulterList'
-import { MemberContext } from 'contexts/MemberContext'
 
 const CouncilByConstituency = () => {
   const { councilId, clickCard } = useContext(ChurchContext)

@@ -3,7 +3,7 @@ const {
   getMobileCode,
   padNumbers,
   getStreamFinancials,
-} = require('../financial-utils')
+} = require('../utils/financial-utils')
 const { createRole, deleteRole } = require('../auth0-utils')
 const {
   permitAdmin,

@@ -1,4 +1,4 @@
-import { ChurchLevel, Role } from './types'
+import { ChurchLevel, Role } from './utils/types'
 
 // Permissions Things
 export const permitLeader = (churchLevel: ChurchLevel) => {
