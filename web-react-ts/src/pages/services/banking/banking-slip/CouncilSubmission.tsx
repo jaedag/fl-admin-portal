@@ -1,13 +1,13 @@
 import FormikControl from 'components/formik-components/FormikControl'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import { ServiceContext } from 'contexts/ServiceContext'
-import { Formik, Form } from 'formik'
+import { Formik, Form, FormikHelpers } from 'formik'
 import * as Yup from 'yup'
 import React, { useContext } from 'react'
 import { Col, Container, Row } from 'react-bootstrap'
 import {
   BANKING_SLIP_SUBMISSION,
-  CONSTITUENCY_SERVICE_RECORDS,
+  COUNCIL_SERVICE_RECORDS,
 } from '../../ServicesQueries'
 import { useMutation, useQuery } from '@apollo/client'
 import HeadingSecondary from 'components/HeadingSecondary'
@@ -17,16 +17,19 @@ import { getHumanReadableDate } from 'jd-date-utils'
 import { throwErrorMsg } from 'global-utils'
 import SubmitButton from 'components/formik-components/SubmitButton'
 
-const ConstituencyBankingSlipSubmission = () => {
+type FormOptions = {
+  bankingSlip: string
+}
+
+const CouncilBankingSlipSubmission = () => {
   const { serviceRecordId } = useContext(ServiceContext)
   const navigate = useNavigate()
 
-  const { data, loading, error } = useQuery(CONSTITUENCY_SERVICE_RECORDS, {
+  const { data, loading, error } = useQuery(COUNCIL_SERVICE_RECORDS, {
     variables: { serviceId: serviceRecordId },
   })
-  const constituency = data?.serviceRecords[0]?.serviceLog?.constituency[0]
-
-  const initialValues = {
+  const council = data?.serviceRecords[0]?.serviceLog?.council[0]
+  const initialValues: FormOptions = {
     bankingSlip: '',
   }
   const [SubmitBankingSlip] = useMutation(BANKING_SLIP_SUBMISSION)
@@ -35,7 +38,10 @@ const ConstituencyBankingSlipSubmission = () => {
     bankingSlip: Yup.string().required('You must upload a banking slip'),
   })
 
-  const onSubmit = async (values, onSubmitProps) => {
+  const onSubmit = async (
+    values: FormOptions,
+    onSubmitProps: FormikHelpers<FormOptions>
+  ) => {
     onSubmitProps.setSubmitting(true)
     try {
       await SubmitBankingSlip({
@@ -47,14 +53,14 @@ const ConstituencyBankingSlipSubmission = () => {
       onSubmitProps.setSubmitting(false)
       onSubmitProps.resetForm()
 
-      navigate(`/constituency/service-details`)
+      navigate(`/council/service-details`)
     } catch (error) {
       throwErrorMsg(error)
     }
   }
 
   return (
-    <ApolloWrapper loading={loading} error={error} data={data && constituency}>
+    <ApolloWrapper loading={loading} error={error} data={data && council}>
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
@@ -64,12 +70,12 @@ const ConstituencyBankingSlipSubmission = () => {
         {(formik) => (
           <Container>
             <HeadingPrimary>Banking Slip Submission</HeadingPrimary>
-            <HeadingSecondary>{constituency?.name}</HeadingSecondary>
+            <HeadingSecondary>{council?.name}</HeadingSecondary>
             <p>
               Date of Joint Service Code:{' '}
               {getHumanReadableDate(
                 data.serviceRecords[0].serviceDate.date,
-                'weekday'
+                true
               )}
             </p>
             <p>Expected Income: {data.serviceRecords[0].income}</p>
@@ -80,7 +86,6 @@ const ConstituencyBankingSlipSubmission = () => {
                     label="Upload a Picture of Your Banking Slip"
                     control="imageUpload"
                     name="bankingSlip"
-                    error={formik.errors.bankingSlip}
                     uploadPreset={process.env.REACT_APP_CLOUDINARY_BANKING}
                     placeholder="Choose"
                     setFieldValue={formik.setFieldValue}
@@ -97,4 +102,4 @@ const ConstituencyBankingSlipSubmission = () => {
   )
 }
 
-export default ConstituencyBankingSlipSubmission
+export default CouncilBankingSlipSubmission

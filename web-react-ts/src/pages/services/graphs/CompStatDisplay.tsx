@@ -2,7 +2,15 @@ import PlaceholderCustom from 'components/Placeholder'
 import React from 'react'
 import './Graphs.css'
 
-const StatDisplay = ({ title, statistic, loading }) => {
+const StatDisplay = ({
+  title,
+  statistic,
+  loading,
+}: {
+  title: string
+  statistic: number
+  loading: boolean
+}) => {
   if (isNaN(statistic)) {
     statistic = 0
   }

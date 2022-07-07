@@ -8,9 +8,6 @@ import CloudinaryImage from './CloudinaryImage'
 const DisplayChurchList = (props) => {
   const { data, churchType } = props
   const { clickCard } = useContext(ChurchContext)
-  if (!data) {
-    return
-  }
 
   return (
     <Container className="mt-3">

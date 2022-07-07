@@ -80,3 +80,16 @@ export type UserRole = {
   number: number
   link: string
 }
+
+export type ServiceRecord = {
+  id: string
+  income: number
+  week: number
+  noServiceReason: string
+  bankingProof: boolean
+  bankingSlip: string
+  transactionStatus: 'pending' | 'success' | 'failed'
+  serviceDate: {
+    date: string
+  }
+}

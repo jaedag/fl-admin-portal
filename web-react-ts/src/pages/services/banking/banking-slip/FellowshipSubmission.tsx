@@ -1,7 +1,7 @@
 import FormikControl from 'components/formik-components/FormikControl'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import { ServiceContext } from 'contexts/ServiceContext'
-import { Formik, Form } from 'formik'
+import { Formik, Form, FormikHelpers } from 'formik'
 import * as Yup from 'yup'
 import React, { useContext } from 'react'
 import { Col, Container, Row, Button } from 'react-bootstrap'
@@ -17,6 +17,10 @@ import { useNavigate } from 'react-router'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { throwErrorMsg } from 'global-utils'
 
+type FormOptions = {
+  bankingSlip: string
+}
+
 const FellowshipBankingSlipSubmission = () => {
   const { serviceRecordId } = useContext(ServiceContext)
   const { theme } = useContext(MemberContext)
@@ -28,7 +32,7 @@ const FellowshipBankingSlipSubmission = () => {
   })
   const fellowship = data?.serviceRecords[0]?.serviceLog?.fellowship[0]
 
-  const initialValues = {
+  const initialValues: FormOptions = {
     bankingSlip: '',
   }
   const [SubmitBankingSlip] = useMutation(BANKING_SLIP_SUBMISSION)
@@ -37,7 +41,10 @@ const FellowshipBankingSlipSubmission = () => {
     bankingSlip: Yup.string().required('You must upload a banking slip'),
   })
 
-  const onSubmit = async (values, onSubmitProps) => {
+  const onSubmit = async (
+    values: FormOptions,
+    onSubmitProps: FormikHelpers<FormOptions>
+  ) => {
     onSubmitProps.setSubmitting(true)
     try {
       await SubmitBankingSlip({

@@ -6,6 +6,7 @@ import { ChurchContext } from '../../../contexts/ChurchContext'
 import { throwErrorMsg } from 'global-utils'
 import { last3Weeks, getWeekNumber } from 'jd-date-utils'
 import { permitAdmin } from 'permission-utils'
+import { ServiceRecord } from 'global-types'
 
 const DetailsFellowship = () => {
   const { fellowshipId } = useContext(ChurchContext)
@@ -35,7 +36,15 @@ const DetailsFellowship = () => {
   }
 
   const lastFilled = history?.services.map(
-    ({ bankingProof, noServiceReason, week }) => ({
+    ({
+      bankingProof,
+      noServiceReason,
+      week,
+    }: {
+      bankingProof: boolean
+      noServiceReason: string
+      week: number
+    }) => ({
       bankingProof,
       noServiceReason,
       week,
@@ -43,8 +52,10 @@ const DetailsFellowship = () => {
   )
 
   const check = last3Weeks()?.map((number) => {
-    if (lastFilled?.some((service) => service.week === number)) {
-      const service = lastFilled?.find(({ week }) => week === number)
+    if (lastFilled?.some((service: ServiceRecord) => service.week === number)) {
+      const service = lastFilled?.find(
+        ({ week }: { week: number }) => week === number
+      )
 
       if (!service?.noServiceReason) {
         return {

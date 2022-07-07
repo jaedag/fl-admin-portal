@@ -2,6 +2,7 @@ import { useQuery } from '@apollo/client'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import PlaceholderCustom from 'components/Placeholder'
 import { ChurchContext } from 'contexts/ChurchContext'
+import { ServiceRecord } from 'global-types'
 import { throwErrorMsg } from 'global-utils'
 import { parseDate } from 'jd-date-utils'
 import React, { useContext } from 'react'
@@ -24,14 +25,14 @@ const ConstituencyBankingSlipView = () => {
     <Container>
       <HeadingPrimary loading={loading}>{constituency?.name}</HeadingPrimary>
 
-      {data?.constituencies[0].services.map((service, index) => {
+      {data?.constituencies[0].services.map((service: ServiceRecord) => {
         if (service.noServiceReason) {
           return null
         }
 
         return (
           <Card
-            key={index}
+            key={service.id}
             className="mb-2"
             onClick={() => {
               clickCard(service)

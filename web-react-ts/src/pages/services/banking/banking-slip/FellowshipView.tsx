@@ -10,6 +10,7 @@ import { CheckCircleFill, XCircleFill } from 'react-bootstrap-icons'
 import { useNavigate } from 'react-router'
 import { FELLOWSHIP_BANKING_SLIP_QUERIES } from '../../ServicesQueries'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
+import { ServiceRecord } from 'global-types'
 
 const FellowshipBankingSlipView = () => {
   const { clickCard, fellowshipId } = useContext(ChurchContext)
@@ -30,14 +31,14 @@ const FellowshipBankingSlipView = () => {
           <p>Banking Code: {fellowship?.bankingCode}</p>
         </PlaceholderCustom>
 
-        {data?.fellowships[0]?.services.map((service, index) => {
+        {data?.fellowships[0]?.services.map((service: ServiceRecord) => {
           if (service.noServiceReason) {
             return null
           }
 
           return (
             <Card
-              key={index}
+              key={service.id}
               className="mb-2"
               onClick={() => {
                 clickCard(service)
