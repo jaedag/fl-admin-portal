@@ -54,7 +54,7 @@ export const errorHandling = (member: Member) => {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const rearrangeCypherObject = (response: any) => {
   const member: {
-    [key: string]: string
+    [key: string]: any
   } = {}
 
   response.records[0]?.keys.forEach((key: string, i: number) => {
@@ -62,12 +62,14 @@ export const rearrangeCypherObject = (response: any) => {
     member[key] = response.records[0]._fields[i]
   })
 
-  response.records.forEach((record: { keys: string[] }, index: number) => {
-    record?.keys.forEach((key: string, j: number) => {
-      // eslint-disable-next-line no-underscore-dangle
-      member[key] = response.records[index]._fields[j]
-    })
-  })
+  response.records.forEach(
+    (record: { [keys: string]: string[] }, index: number) => {
+      record?.keys.forEach((key: string, j: number) => {
+        // eslint-disable-next-line no-underscore-dangle
+        member[key] = response.records[index]._fields[j]
+      })
+    }
+  )
 
   return member?.member || member
 }

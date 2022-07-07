@@ -25,6 +25,7 @@ export type Role =
   | 'arrivalsAdminStream'
   | 'arrivalsAdminCouncil'
   | 'arrivalsAdminConstituency'
+  | 'tellerStream'
   | 'all'
 
 export type VerbTypes =

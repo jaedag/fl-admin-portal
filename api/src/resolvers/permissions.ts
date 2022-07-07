@@ -143,7 +143,7 @@ export const permitArrivalsConfirmer = () => {
 export const permitArrivalsHelpers = () => {
   return ['arrivalsCounterStream', 'arrivalsConfirmerStream']
 }
-export const permitTeller = () => {
+export const permitTeller = (): Role[] => {
   return ['tellerStream']
 }
 export const permitLeaderAdminArrivals = (churchLevel: ChurchLevel) => {
