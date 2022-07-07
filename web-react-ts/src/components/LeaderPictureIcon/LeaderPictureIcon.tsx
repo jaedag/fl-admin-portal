@@ -1,7 +1,8 @@
 import CloudinaryImage from 'components/CloudinaryImage'
+import { MemberType } from 'global-types'
 import React from 'react'
 
-function LeaderPictureIcon({ member }) {
+function LeaderPictureIcon({ member }: { member: MemberType }) {
   if (!member) {
     return null
   }

@@ -4,15 +4,21 @@ import { Table } from 'react-bootstrap'
 import PlaceholderCustom from '../Placeholder'
 import './TableFromArrays.css'
 
-const TableFromArrays = ({ tableArray, loading }) => {
+const TableFromArrays = ({
+  tableArray,
+  loading,
+}: {
+  tableArray: string[][]
+  loading: boolean
+}) => {
   const { theme } = useContext(MemberContext)
 
   return (
     <Table variant={theme} striped bordered>
       <tbody>
-        {tableArray?.map((row, i) => (
+        {tableArray?.map((row: string[], i: number) => (
           <tr key={i}>
-            {row.map((col, j) => (
+            {row.map((col: string, j: number) => (
               <PlaceholderCustom
                 key={j}
                 as="td"

@@ -1,7 +1,12 @@
 import React from 'react'
 import './Popup.css'
 
-const Popup = (props) => {
+type PopupProps = {
+  children: React.ReactNode
+  handleClose: () => void
+}
+
+const Popup = (props: PopupProps) => {
   return (
     <div className="popup-box">
       <div className="box">
