@@ -18,7 +18,7 @@ type MenuButtonProps = {
   noCaption?: boolean
   number?: number
   color: string
-  title: string
+  title?: string
 }
 
 const MenuButton = (props: MenuButtonProps) => {

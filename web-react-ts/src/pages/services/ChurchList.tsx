@@ -4,9 +4,9 @@ import { MemberContext } from 'contexts/MemberContext'
 import useSetUserChurch from 'hooks/useSetUserChurch'
 import React, { useContext } from 'react'
 import { useNavigate } from 'react-router'
-import MemberIcon from '../../assets/people-svgrepo-com-2.svg'
+import People2Icon from 'assets/icons/People2'
 
-const ChurchList = ({ color, link }) => {
+const ChurchList = ({ color, link }: { color: string; link: string }) => {
   const { userJobs } = useContext(MemberContext)
   const { clickCard } = useContext(ChurchContext)
   const { setUser } = useSetUserChurch()
@@ -15,12 +15,12 @@ const ChurchList = ({ color, link }) => {
   return (
     <div className="d-grid gap-2 text-left">
       {userJobs.length ? (
-        userJobs.map((role) => {
+        userJobs.map((role: any) => {
           return role.church
-            .filter((church) => {
+            .filter((church: any) => {
               return church?.vacationStatus !== 'Vacation'
             })
-            .map((church, index) => {
+            .map((church: any) => {
               if (color === 'arrivals') {
                 if (['Fellowship'].includes(church.__typename)) {
                   return null
@@ -33,9 +33,9 @@ const ChurchList = ({ color, link }) => {
               }
               return (
                 <MenuButton
-                  key={index}
+                  key={church.id}
                   title={church.name}
-                  icon={MemberIcon}
+                  iconComponent={People2Icon}
                   iconBg={true}
                   noCaption
                   iconCaption={church.__typename}

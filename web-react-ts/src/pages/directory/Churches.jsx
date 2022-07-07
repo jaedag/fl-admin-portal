@@ -6,7 +6,7 @@ import { parseMemberCount } from 'global-utils'
 import React, { useContext } from 'react'
 import { Container } from 'react-bootstrap'
 import { useNavigate } from 'react-router'
-import MemberIcon from '../../assets/people-svgrepo-com-2.svg'
+import People2Icon from 'assets/icons/People2'
 
 const Churches = () => {
   const { currentUser, userJobs } = useContext(MemberContext)
@@ -34,7 +34,7 @@ const Churches = () => {
                   key={index}
                   title={church.name}
                   caption={parseMemberCount(church.memberCount)}
-                  icon={MemberIcon}
+                  icon={People2Icon}
                   iconBg
                   iconCaption={church.__typename}
                   onClick={() => {
