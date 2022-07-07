@@ -64,24 +64,6 @@ export const RECORD_CANCELLED_SERVICE = gql`
   }
 `
 
-export const RECORD_SERVICE_NO_OFFERING = gql`
-  mutation RecordServiceNoOffering(
-    $id: ID!
-    $serviceDate: String!
-    $attendance: Int!
-    $servicePicture: String!
-  ) {
-    RecordServiceNoOffering(
-      id: $id
-      serviceDate: $serviceDate
-      attendance: $attendance
-      servicePicture: $servicePicture
-    ) {
-      id
-    }
-  }
-`
-
 export const RECORD_SERVICE_NO_INCOME = gql`
   mutation RecordServiceNoIncome(
     $churchId: ID!

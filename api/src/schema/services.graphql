@@ -1,6 +1,6 @@
 type ServiceDay @auth(rules: [{ isAuthenticated: true }]) {
   day: String!
-  dayNumber: Int
+  dayNumber: Int!
   fellowship: Fellowship @relationship(type: "MEETS_ON", direction: IN)
 }
 
@@ -1087,7 +1087,7 @@ type NoService implements Record @auth(rules: [{ isAuthenticated: true }]) {
   created_at: DateTime!
   created_by: Member!
   serviceDate: TimeGraph @relationship(type: "SERVICE_HELD_ON", direction: OUT)
-  week: Int
+  week: Int!
     @cypher(
       statement: """
       MATCH (this)-[:SERVICE_HELD_ON]->(date:TimeGraph)
@@ -1095,7 +1095,7 @@ type NoService implements Record @auth(rules: [{ isAuthenticated: true }]) {
       """
     )
   serviceLog: ServiceLog @relationship(type: "HAS_SERVICE", direction: IN)
-  noServiceReason: String
+  noServiceReason: String!
 }
 
 type ServiceLog @auth(rules: [{ isAuthenticated: true }]) {
@@ -1110,7 +1110,6 @@ type ServiceLog @auth(rules: [{ isAuthenticated: true }]) {
   leaders: [Member!]! @relationship(type: "HAS_HISTORY", direction: IN)
   fellowship: [Fellowship!]! @relationship(type: "HAS_HISTORY", direction: IN)
   bacenta: [Bacenta!]! @relationship(type: "HAS_HISTORY", direction: IN)
-  # bacentaFellowshipRecords(bacentaId: ID!): [BacentaFellowshipServiceRecords]
   constituency: [Constituency!]!
     @relationship(type: "HAS_HISTORY", direction: IN)
   council: [Council!]! @relationship(type: "HAS_HISTORY", direction: IN)
@@ -1134,13 +1133,13 @@ extend type Mutation {
     treasurers: [ID]!
     treasurerSelfie: String!
     servicePicture: String!
-  ): ServiceRecord
+  ): ServiceRecord!
 
   RecordCancelledService(
     id: ID!
     serviceDate: String!
     noServiceReason: String!
-  ): NoService
+  ): NoService!
     @cypher(
       statement: """
       CREATE (serviceRecord:ServiceRecord:NoService {created_at:datetime()})
@@ -1153,7 +1152,7 @@ extend type Mutation {
       MATCH (leader:Member {auth_id: $auth.jwt.sub})
 
       MERGE (serviceRecord)-[:LOGGED_BY]->(leader)
-      MERGE (serviceDate:TimeGraph {date:date($serviceDate)})
+      MERGE (serviceDate:TimeGraph {date: date($serviceDate)})
       MERGE (serviceRecord)-[:SERVICE_HELD_ON]->(serviceDate)
       MERGE (log)-[:HAS_SERVICE]->(serviceRecord)
 
@@ -1161,33 +1160,7 @@ extend type Mutation {
       """
     )
 
-  RecordServiceNoOffering(
-    id: ID!
-    serviceDate: String!
-    attendance: Int!
-    servicePicture: String!
-  ): ServiceRecord
-    @cypher(
-      statement: """
-      CREATE (serviceRecord:ServiceRecord {created_at:datetime()})
-        SET serviceRecord.id = apoc.create.uuid(),
-        serviceRecord.attendance = $attendance,
-        serviceRecord.servicePicture = $servicePicture
-      WITH serviceRecord
-      MATCH (church {id:$id}) WHERE church:Fellowship OR church:Bacenta OR church:Sonta OR church:Constituency
-      MATCH (church)-[has_history:CURRENT_HISTORY]->(log:HistoryLog)
-      MATCH (leader:Member {auth_id: $auth.jwt.sub})
-
-      MERGE (serviceRecord)-[:LOGGED_BY]->(leader)
-      MERGE (serviceDate:TimeGraph {date:date($serviceDate)})
-      MERGE (serviceRecord)-[:SERVICE_HELD_ON]->(serviceDate)
-      MERGE (log)-[:HAS_SERVICE]->(serviceRecord)
-
-      RETURN serviceRecord
-      """
-    )
-
-  SubmitBankingSlip(serviceRecordId: ID!, bankingSlip: String!): ServiceRecord
+  SubmitBankingSlip(serviceRecordId: ID!, bankingSlip: String!): ServiceRecord!
     @cypher(
       statement: """
       MATCH (record:ServiceRecord {id: $serviceRecordId})

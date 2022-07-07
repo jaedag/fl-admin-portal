@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import { ChurchContext } from '../../../contexts/ChurchContext'
 
 import { useMutation, useQuery } from '@apollo/client'
-import { RECORD_SERVICE_NO_OFFERING } from './RecordServiceMutations'
+import { RECORD_SERVICE_NO_INCOME } from './RecordServiceMutations'
 import { DISPLAY_SONTA } from '../../directory/display/ReadQueries'
 import ServiceFormNoOffering from './ServiceFormNoOffering'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
@@ -14,7 +14,7 @@ const SontaService = () => {
     loading: sontaLoading,
     error: sontaError,
   } = useQuery(DISPLAY_SONTA, { variables: { id: sontaId } })
-  const [RecordServiceNoOffering] = useMutation(RECORD_SERVICE_NO_OFFERING)
+  const [RecordServiceNoOffering] = useMutation(RECORD_SERVICE_NO_INCOME)
 
   return (
     <ApolloWrapper loading={sontaLoading} error={sontaError} data={sontaData}>

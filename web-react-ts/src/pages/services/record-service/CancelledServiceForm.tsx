@@ -1,5 +1,5 @@
 import FormikControl from 'components/formik-components/FormikControl'
-import { Form, Formik } from 'formik'
+import { Form, Formik, FormikHelpers } from 'formik'
 import * as Yup from 'yup'
 import React, { useContext } from 'react'
 import { useNavigate } from 'react-router'
@@ -12,14 +12,31 @@ import { MemberContext } from 'contexts/MemberContext'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { throwErrorMsg } from 'global-utils'
 
-const CancelledServiceForm = ({ church, churchId, churchType }) => {
+type FormOptionsType = {
+  serviceDate: string
+  noServiceReason: string
+}
+
+const CancelledServiceForm = ({
+  church,
+  churchId,
+  churchType,
+}: {
+  church: {
+    id: string
+    name: string
+    __typename: string
+  }
+  churchId: string
+  churchType: string
+}) => {
   const { theme } = useContext(MemberContext)
   const { clickCard } = useContext(ChurchContext)
   const navigate = useNavigate()
 
   const [RecordCancelledService] = useMutation(RECORD_CANCELLED_SERVICE)
 
-  const initialValues = {
+  const initialValues: FormOptionsType = {
     serviceDate: new Date().toISOString().slice(0, 10),
     noServiceReason: '',
   }
@@ -31,7 +48,10 @@ const CancelledServiceForm = ({ church, churchId, churchType }) => {
     noServiceReason: Yup.string().required('You must take give a reason'),
   })
 
-  const onSubmit = (values, onSubmitProps) => {
+  const onSubmit = (
+    values: FormOptionsType,
+    onSubmitProps: FormikHelpers<FormOptionsType>
+  ) => {
     onSubmitProps.setSubmitting(true)
     RecordCancelledService({
       variables: {
@@ -66,7 +86,7 @@ const CancelledServiceForm = ({ church, churchId, churchType }) => {
               <Col className="mb-2">
                 <div className="form-row d-flex justify-content-center">
                   <Col>
-                    <small htmlFor="dateofservice" className="form-text label">
+                    <small className="form-text label">
                       Date of Service*
                       <i className="text-secondary">(Day/Month/Year)</i>
                     </small>

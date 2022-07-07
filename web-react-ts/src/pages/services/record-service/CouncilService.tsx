@@ -2,7 +2,10 @@ import React, { useContext } from 'react'
 import { ChurchContext } from '../../../contexts/ChurchContext'
 
 import { useMutation, useQuery } from '@apollo/client'
-import { RECORD_SERVICE } from './RecordServiceMutations'
+import {
+  RECORD_SERVICE,
+  RECORD_SERVICE_NO_INCOME,
+} from './RecordServiceMutations'
 import { DISPLAY_COUNCIL } from '../../directory/display/ReadQueries'
 import ServiceForm from './ServiceForm'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
@@ -17,12 +20,13 @@ const CouncilService = () => {
     variables: { id: councilId },
   })
   const [RecordService] = useMutation(RECORD_SERVICE)
+  const [RecordServiceNoIncome] = useMutation(RECORD_SERVICE_NO_INCOME)
 
   return (
     <ApolloWrapper loading={loading} error={error} data={data}>
       {currentUser.noIncome ? (
         <ServiceFormNoIncome
-          RecordServiceMutation={RecordService}
+          RecordServiceMutation={RecordServiceNoIncome}
           church={data?.councils[0]}
           churchId={councilId}
           churchType="council"
