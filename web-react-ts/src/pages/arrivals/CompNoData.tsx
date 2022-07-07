@@ -1,7 +1,7 @@
 import React from 'react'
 import { Card } from 'react-bootstrap'
 
-const CompNoData = ({ text }) => {
+const NoDataComponent = ({ text }: { text: string }) => {
   return (
     <Card className="mt-5 py-3">
       <Card.Body>{text}</Card.Body>
@@ -9,4 +9,4 @@ const CompNoData = ({ text }) => {
   )
 }
 
-export default CompNoData
+export default NoDataComponent

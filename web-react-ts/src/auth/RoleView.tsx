@@ -1,4 +1,4 @@
-import { RoleTypes } from 'global-types'
+import { Role } from 'global-types'
 import React, { useContext } from 'react'
 import { MemberContext } from '../contexts/MemberContext'
 import useAuth from './useAuth'
@@ -10,7 +10,7 @@ enum StreamEnum {
 }
 
 type RoleViewProps = {
-  roles: RoleTypes[]
+  roles: Role[]
   children: React.ReactNode
   verifyId?: string
   permittedStream?: StreamEnum[]

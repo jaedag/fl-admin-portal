@@ -2,11 +2,11 @@ import MenuButton from 'components/buttons/MenuButton'
 import PlaceholderCustom from 'components/Placeholder'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { MemberContext } from 'contexts/MemberContext'
-import { parseMemberCount } from 'global-utils'
 import React, { useContext } from 'react'
 import { Container } from 'react-bootstrap'
 import { useNavigate } from 'react-router'
 import People2Icon from 'assets/icons/People2'
+import { Church, UserRole } from 'global-types'
 
 const Churches = () => {
   const { currentUser, userJobs } = useContext(MemberContext)
@@ -28,13 +28,13 @@ const Churches = () => {
 
         <div className="d-grid gap-2 mt-5 text-left">
           {userJobs.length ? (
-            userJobs.map((job) =>
-              job.church.map((church, index) => (
+            userJobs.map((job: UserRole) =>
+              job.church.map((church: Church) => (
                 <MenuButton
-                  key={index}
+                  key={church.id}
                   title={church.name}
-                  caption={parseMemberCount(church.memberCount)}
-                  icon={People2Icon}
+                  noCaption
+                  iconComponent={People2Icon}
                   iconBg
                   iconCaption={church.__typename}
                   onClick={() => {

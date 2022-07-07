@@ -26,3 +26,23 @@ export const STREAM_BANK_TELLERS = gql`
     }
   }
 `
+
+export const MAKE_STREAM_TELLER = gql`
+  mutation MakeStreamTeller($streamId: ID!, $tellerId: ID!) {
+    MakeStreamTeller(streamId: $streamId, tellerId: $tellerId) {
+      id
+      firstName
+      lastName
+    }
+  }
+`
+
+export const REMOVE_STREAM_TELLER = gql`
+  mutation RemoveStreamTeller($streamId: ID!, $tellerId: ID!) {
+    RemoveStreamTeller(streamId: $streamId, tellerId: $tellerId) {
+      id
+      firstName
+      lastName
+    }
+  }
+`

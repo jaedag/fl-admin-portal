@@ -1,6 +1,6 @@
 extend type Stream {
   bankTellers: [Member!]!
-    @relationship(type: "IS_ADMIN_FOR", direction: IN)
+    @relationship(type: "IS_BANK_TELLER_FOR", direction: IN)
 }
 
 extend type Member {
@@ -9,7 +9,7 @@ extend type Member {
 }
 
 extend type Mutation {
-  MakeStreamTeller(streamId: ID!, tellerId: ID!): Member
-  RemoveStreamTeller(streamId: ID!, tellerId: ID!): Member
-  ConfirmBanking(serviceRecordId: ID!): ServiceRecord
+  MakeStreamTeller(streamId: ID!, tellerId: ID!): Member!
+  RemoveStreamTeller(streamId: ID!, tellerId: ID!): Member!
+  ConfirmBanking(serviceRecordId: ID!): ServiceRecord!
 }

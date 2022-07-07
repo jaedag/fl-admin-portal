@@ -1,4 +1,4 @@
-import { useQuery } from '@apollo/client'
+import { useMutation, useQuery } from '@apollo/client'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import MemberDisplayCard from 'components/card/MemberDisplayCard'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
@@ -6,17 +6,28 @@ import HeadingSecondary from 'components/HeadingSecondary'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { FunctionReturnsVoid, MemberType, StreamInterface } from 'global-types'
 import React, { useContext, useState } from 'react'
-import { Button, Col, Container, Modal, Row } from 'react-bootstrap'
-import { STREAM_BANK_TELLERS } from './Treasury.gql'
+import { Button, Col, Container, Modal, Row, Spinner } from 'react-bootstrap'
+import {
+  MAKE_STREAM_TELLER,
+  REMOVE_STREAM_TELLER,
+  STREAM_BANK_TELLERS,
+} from './Treasury.gql'
 import './TellerSelect.css'
 import * as Yup from 'yup'
-import { Form, Formik } from 'formik'
+import { Form, Formik, FormikHelpers } from 'formik'
 import FormikControl from 'components/formik-components/FormikControl'
 import ModalSubmitButton from './ModalSubmitButton'
+import { alertMsg, throwErrorMsg } from 'global-utils'
+import NoDataComponent from 'pages/arrivals/CompNoData'
 
 interface StreamWithTellers extends StreamInterface {
   bankTellers: MemberType[]
   activeFellowshipCount: number
+}
+
+type FormOptions = {
+  tellerName: string
+  tellerSelect: string
 }
 
 const TellerSelect = () => {
@@ -24,13 +35,32 @@ const TellerSelect = () => {
   const { data, loading, error } = useQuery(STREAM_BANK_TELLERS, {
     variables: { id: streamId },
   })
+  const [submitting, setSubmitting] = useState(false)
   const [show, setShow] = useState(false)
   const handleOpen: FunctionReturnsVoid = () => setShow(true)
   const handleClose: FunctionReturnsVoid = () => setShow(false)
 
   const stream: StreamWithTellers = data?.streams[0]
 
-  const initialValues = {
+  const [MakeStreamTeller] = useMutation(MAKE_STREAM_TELLER, {
+    refetchQueries: [
+      {
+        query: STREAM_BANK_TELLERS,
+        variables: { id: streamId },
+      },
+    ],
+  })
+
+  const [RemoveStreamTeller] = useMutation(REMOVE_STREAM_TELLER, {
+    refetchQueries: [
+      {
+        query: STREAM_BANK_TELLERS,
+        variables: { id: streamId },
+      },
+    ],
+  })
+
+  const initialValues: FormOptions = {
     tellerName: '',
     tellerSelect: '',
   }
@@ -41,12 +71,26 @@ const TellerSelect = () => {
     ),
   })
 
-  const onSubmit = (
-    values: any,
-    onSubmitProps: { setSubmitting: (arg: boolean) => void }
+  const onSubmit = async (
+    values: FormOptions,
+    onSubmitProps: FormikHelpers<FormOptions>
   ) => {
     onSubmitProps.setSubmitting(true)
-    console.log('submitted')
+    try {
+      await MakeStreamTeller({
+        variables: {
+          streamId: streamId,
+          tellerId: values.tellerSelect,
+        },
+      })
+
+      handleClose()
+      onSubmitProps.setSubmitting(false)
+      alert('Anagkazo Teller has been added successfully')
+    } catch (e) {
+      onSubmitProps.setSubmitting(false)
+      throwErrorMsg(e)
+    }
     onSubmitProps.setSubmitting(false)
     return
   }
@@ -112,8 +156,47 @@ const TellerSelect = () => {
         {stream?.bankTellers?.map((teller: MemberType) => (
           <div key={teller.id}>
             <MemberDisplayCard member={teller} />
+            <div className="d-grid gap-2">
+              <Button
+                disabled={submitting}
+                variant="danger"
+                onClick={async () => {
+                  const confirmBox = window.confirm(
+                    `Do you want to delete ${teller.fullName} as a teller`
+                  )
+
+                  if (confirmBox === true) {
+                    try {
+                      await RemoveStreamTeller({
+                        variables: {
+                          streamId: streamId,
+                          arrivalstellerId: teller.id,
+                        },
+                      })
+                      setSubmitting(false)
+                      alertMsg(`${teller.fullName} Deleted Successfully`)
+                    } catch (error) {
+                      throwErrorMsg(error)
+                    }
+                  }
+                }}
+              >
+                {submitting ? (
+                  <>
+                    <Spinner animation="grow" size="sm" />
+                    <span> Submitting</span>
+                  </>
+                ) : (
+                  'Delete'
+                )}
+              </Button>
+            </div>
           </div>
         ))}
+
+        {!stream?.bankTellers?.length && (
+          <NoDataComponent text="You have no Bank Tellers at this time" />
+        )}
       </Container>
     </ApolloWrapper>
   )

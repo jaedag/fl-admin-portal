@@ -9,8 +9,15 @@ import BacentaMembers from 'pages/directory/grids/BacentaMembers'
 import GatheringServiceMembers from 'pages/directory/grids/GatheringServiceMembers'
 import StreamMembers from './grids/StreamMembers'
 import { permitMe } from 'permission-utils'
+import { Role } from 'global-types'
 
-const MembersDirectoryRoute = ({ children, roles }) => {
+const MembersDirectoryRoute = ({
+  children,
+  roles,
+}: {
+  children: JSX.Element
+  roles: Role
+}) => {
   const { currentUser } = useContext(MemberContext)
   const church = useContext(ChurchContext)
 

@@ -16,10 +16,10 @@ export type RouteTypes = {
   path: string
   element: () => JSX.Element
   placeholder?: boolean
-  roles: RoleTypes[]
+  roles: Role[]
 }
 
-export type RoleTypes =
+export type Role =
   | 'leaderFellowship'
   | 'leaderBacenta'
   | 'leaderConstituency'
@@ -61,9 +61,10 @@ export interface MemberType {
   }
 }
 
-export type ChurchType = {
+export type Church = {
   id: string
   name: string
+  vacationStatus: 'Vacation' | 'Active'
   __typename: ChurchLevel
 }
 
@@ -71,4 +72,11 @@ export interface StreamInterface {
   id: string
   name: string
   __typename: ChurchLevel
+}
+
+export type UserRole = {
+  name: string
+  church: Church[]
+  number: number
+  link: string
 }

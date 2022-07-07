@@ -5,6 +5,7 @@ import useSetUserChurch from 'hooks/useSetUserChurch'
 import React, { useContext } from 'react'
 import { useNavigate } from 'react-router'
 import People2Icon from 'assets/icons/People2'
+import { Church, UserRole } from 'global-types'
 
 const ChurchList = ({ color, link }: { color: string; link: string }) => {
   const { userJobs } = useContext(MemberContext)
@@ -15,12 +16,12 @@ const ChurchList = ({ color, link }: { color: string; link: string }) => {
   return (
     <div className="d-grid gap-2 text-left">
       {userJobs.length ? (
-        userJobs.map((role: any) => {
+        userJobs.map((role: UserRole) => {
           return role.church
-            .filter((church: any) => {
+            .filter((church: Church) => {
               return church?.vacationStatus !== 'Vacation'
             })
-            .map((church: any) => {
+            .map((church: Church) => {
               if (color === 'arrivals') {
                 if (['Fellowship'].includes(church.__typename)) {
                   return null
