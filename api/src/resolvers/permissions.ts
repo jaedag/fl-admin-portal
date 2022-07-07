@@ -1,6 +1,8 @@
+import { ChurchLevel, Role } from './types'
+
 // Permissions Things
-export const permitLeader = (churchLevel) => {
-  let permittedFor = []
+export const permitLeader = (churchLevel: ChurchLevel) => {
+  let permittedFor: Role[] = []
   switch (churchLevel.toLowerCase()) {
     case 'fellowship':
       permittedFor = [
@@ -55,8 +57,8 @@ export const permitLeader = (churchLevel) => {
   return permittedFor
 }
 
-export const permitAdmin = (churchLevel) => {
-  let permittedFor = []
+export const permitAdmin = (churchLevel: ChurchLevel) => {
+  let permittedFor: Role[] = []
   switch (churchLevel) {
     case 'Fellowship':
     case 'Bacenta':
@@ -87,20 +89,12 @@ export const permitAdmin = (churchLevel) => {
   return permittedFor
 }
 
-export const permitLeaderAdmin = (churchLevel) => {
+export const permitLeaderAdmin = (churchLevel: ChurchLevel) => {
   return [...permitLeader(churchLevel), ...permitAdmin(churchLevel)]
 }
 
-export const permitMe = (churchLevel) => {
-  return [
-    ...permitLeaderAdmin(churchLevel),
-    ...permitArrivals(churchLevel),
-    ...permitArrivalsHelpers(churchLevel),
-  ]
-}
-
-export const permitArrivals = (churchLevel) => {
-  let permittedFor = []
+export const permitArrivals = (churchLevel: ChurchLevel) => {
+  let permittedFor: Role[] = []
   switch (churchLevel) {
     case 'Fellowship':
     case 'Bacenta':
@@ -152,10 +146,18 @@ export const permitArrivalsHelpers = () => {
 export const permitTeller = () => {
   return ['tellerStream']
 }
-export const permitLeaderAdminArrivals = (churchLevel) => {
+export const permitLeaderAdminArrivals = (churchLevel: ChurchLevel) => {
   return [...permitLeaderAdmin(churchLevel), ...permitArrivals(churchLevel)]
 }
 
-export const permitAdminArrivals = (churchLevel) => {
+export const permitAdminArrivals = (churchLevel: ChurchLevel) => {
   return [...permitAdmin(churchLevel), ...permitArrivals(churchLevel)]
+}
+
+export const permitMe = (churchLevel: ChurchLevel) => {
+  return [
+    ...permitLeaderAdmin(churchLevel),
+    ...permitArrivals(churchLevel),
+    ...permitArrivalsHelpers(),
+  ]
 }
