@@ -12,8 +12,8 @@ const mg = mailgun.client({
 const notifyMember = (
   member: Member,
   subject: string,
-  body: string,
-  html: string
+  body?: string,
+  html?: string
 ): void => {
   mg.messages
     .create('mg.firstlovecenter.com', {

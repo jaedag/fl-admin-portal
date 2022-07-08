@@ -1,4 +1,5 @@
 import { Context } from '@neo4j/graphql/dist/types'
+import { MakeServant, RemoveServant } from 'api/src/resolvers/resolvers'
 import { permitTeller, permitAdmin } from 'api/src/resolvers/permissions'
 import {
   isAuth,
@@ -6,7 +7,6 @@ import {
   rearrangeCypherObject,
   throwErrorMsg,
 } from 'api/src/resolvers/utils/utils'
-import { MakeServant, RemoveServant } from 'api/src/resolvers/resolvers'
 import anagkazo from './treasury-cypher'
 
 const treasuryMutations = {
