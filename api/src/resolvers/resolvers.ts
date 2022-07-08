@@ -1,4 +1,4 @@
-import componentResolvers from 'aggregates/component-resolvers'
+import componentResolvers from './aggregates/component-resolvers'
 import MakeServantResolvers from './directory/make-servant-resolvers'
 import serviceNoIncomeMutations from './no-income/service-resolvers'
 import serviceMutation from './services/service-resolvers'
