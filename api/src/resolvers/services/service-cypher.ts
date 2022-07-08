@@ -1,5 +1,4 @@
-const serviceCypher = {
-  checkFormFilledThisWeek: `
+export const checkFormFilledThisWeek = `
 MATCH (church {id: $churchId}) 
 WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:GatheringService OR church:Sonta OR church:Ministry
 OR church:ClosedFellowship OR church:ClosedBacenta
@@ -8,9 +7,9 @@ OR church:ClosedFellowship OR church:ClosedBacenta
 OPTIONAL MATCH (church)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph) WHERE date(date.date).week = date().week
         
 RETURN church.id AS id, church.name AS name, labels(church) AS labels, record AS alreadyFilled
-`,
+`
 
-  recordService: `
+export const recordService = `
 CREATE (serviceRecord:ServiceRecord {created_at:datetime()})
         SET serviceRecord.id = apoc.create.uuid(),
         serviceRecord.attendance = $attendance,
@@ -38,20 +37,17 @@ CREATE (serviceRecord:ServiceRecord {created_at:datetime()})
       MERGE (treasurer)-[:WAS_TREASURER_FOR]->(serviceRecord)
 
       RETURN serviceRecord
-`,
+`
 
-  checkCurrentServiceLog: `
+export const checkCurrentServiceLog = `
 MATCH (church {id:$churchId}) WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream
 MATCH (church)-[:CURRENT_HISTORY]->(log:ServiceLog)
 RETURN true AS exists
-`,
-  getServantAndChurch: `
+`
+export const getServantAndChurch = `
 MATCH (church {id:$churchId}) WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream
 MATCH (church)<-[:LEADS]-(servant:Member)
 UNWIND labels(church) AS churchType 
 WITH churchType, church, servant WHERE churchType IN ['Fellowship', 'Bacenta', 'Constituency', 'Council', 'Stream']
 RETURN church.id AS churchId, church.name AS churchName, servant.id AS servantId, servant.auth_id AS auth_id, servant.firstName AS firstName, servant.lastName AS lastName, churchType AS churchType
-`,
-}
-
-export default serviceCypher
+`

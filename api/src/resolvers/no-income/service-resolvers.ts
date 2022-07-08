@@ -1,16 +1,16 @@
 import { makeServantCypher } from 'directory/utils'
 import { permitLeaderAdmin } from 'permissions'
-import { Context } from 'utils/neo4j-types'
-import { Member } from 'utils/types'
-import { isAuth, rearrangeCypherObject, throwErrorMsg } from 'utils/utils'
-// eslint-disable-next-line no-relative-import-paths/no-relative-import-paths
-import { error as errorMessage } from '../texts.json'
 import {
   checkCurrentServiceLog,
   checkFormFilledThisWeek,
-  recordService,
   getServantAndChurch as getServantAndChurchCypher,
-} from './service-cypher'
+} from 'services/service-cypher'
+import { Context } from 'utils/neo4j-types'
+import { Member } from 'utils/types'
+import { isAuth, rearrangeCypherObject, throwErrorMsg } from 'utils/utils'
+import recordService from './service-cypher'
+
+const errorMessage = require('./texts.json').error
 
 const serviceNoIncomeMutations = {
   RecordServiceNoIncome: async (
