@@ -16,7 +16,7 @@ import {
   setTransactionStatusFailed,
   setTransactionStatusSuccess,
 } from './banking-cypher'
-import { PayswitchDebitRequestBody } from '../utils/types'
+import { PaySwitchRequestBody } from './banking-types'
 
 const bankingMutation = {
   BankServiceOffering: async (object: any, args: any, context: Context) => {
@@ -56,7 +56,7 @@ const bankingMutation = {
 
     const serviceRecord = cypherResponse.record.properties
 
-    const payOffering: PayswitchDebitRequestBody = {
+    const payOffering: PaySwitchRequestBody = {
       method: 'post',
       url: `https://prod.theteller.net/v1.1/transaction/process`,
       headers: {

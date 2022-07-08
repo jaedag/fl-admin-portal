@@ -1,29 +1,50 @@
-/* eslint-disable no-console */
-const {
-  getMobileCode,
-  padNumbers,
-  getStreamFinancials,
-} = require('../utils/financial-utils')
-const { createRole, deleteRole } = require('../auth0-utils')
-const {
+import { getAuthToken } from 'authenticate'
+import axios from 'axios'
+import { PaySwitchRequestBody } from 'banking/banking-types'
+import { MakeServant, RemoveServant } from 'directory/make-remove-servants'
+import {
   permitAdmin,
   permitAdminArrivals,
   permitArrivals,
-  permitArrivalsHelpers,
   permitArrivalsConfirmer,
-} = require('../permissions')
-const {
+  permitArrivalsHelpers,
+} from 'permissions'
+import { createRole } from 'utils/auth0'
+import {
+  getMobileCode,
+  getStreamFinancials,
+  padNumbers,
+} from 'utils/financial-utils'
+import { Context } from 'utils/neo4j-types'
+import {
   isAuth,
   noEmptyArgsValidation,
   rearrangeCypherObject,
   throwErrorMsg,
-} = require('../resolver-utils')
-import { MakeServant, RemoveServant } from '../resolvers'
-const cypher = require('./arrivals-cypher')
-const axios = require('axios').default
+} from 'utils/utils'
+import {
+  checkArrivalTimes,
+  checkBacentaMomoDetails,
+  checkTransactionId,
+  getBussingRecordWithDate,
+  noBussingTopUp,
+  recordArrivalTime,
+  RemoveAllStreamArrivalsHelpers,
+  removeBussingRecordTransactionId,
+  setBussingRecordTransactionId,
+  setBussingRecordTransactionSuccessful,
+  setNormalBussingTopUp,
+  setSwellBussingTopUp,
+  setSwellDate,
+  uploadMobilisationPicture,
+} from './arrivals-cypher'
 
 export const arrivalsMutation = {
-  MakeConstituencyArrivalsAdmin: async (object, args, context) =>
+  MakeConstituencyArrivalsAdmin: async (
+    object: any,
+    args: any,
+    context: Context
+  ) =>
     MakeServant(
       context,
       args,
@@ -31,7 +52,11 @@ export const arrivalsMutation = {
       'Constituency',
       'ArrivalsAdmin'
     ),
-  RemoveConstituencyArrivalsAdmin: async (object, args, context) =>
+  RemoveConstituencyArrivalsAdmin: async (
+    object: any,
+    args: any,
+    context: Context
+  ) =>
     RemoveServant(
       context,
       args,
@@ -39,7 +64,7 @@ export const arrivalsMutation = {
       'Constituency',
       'ArrivalsAdmin'
     ),
-  MakeCouncilArrivalsAdmin: async (object, args, context) =>
+  MakeCouncilArrivalsAdmin: async (object: any, args: any, context: Context) =>
     MakeServant(
       context,
       args,
@@ -47,7 +72,11 @@ export const arrivalsMutation = {
       'Council',
       'ArrivalsAdmin'
     ),
-  RemoveCouncilArrivalsAdmin: async (object, args, context) =>
+  RemoveCouncilArrivalsAdmin: async (
+    object: any,
+    args: any,
+    context: Context
+  ) =>
     RemoveServant(
       context,
       args,
@@ -55,7 +84,7 @@ export const arrivalsMutation = {
       'Council',
       'ArrivalsAdmin'
     ),
-  MakeStreamArrivalsAdmin: async (object, args, context) =>
+  MakeStreamArrivalsAdmin: async (object: any, args: any, context: Context) =>
     MakeServant(
       context,
       args,
@@ -63,7 +92,7 @@ export const arrivalsMutation = {
       'Stream',
       'ArrivalsAdmin'
     ),
-  RemoveStreamArrivalsAdmin: async (object, args, context) =>
+  RemoveStreamArrivalsAdmin: async (object: any, args: any, context: Context) =>
     RemoveServant(
       context,
       args,
@@ -71,7 +100,11 @@ export const arrivalsMutation = {
       'Stream',
       'ArrivalsAdmin'
     ),
-  MakeGatheringServiceArrivalsAdmin: async (object, args, context) =>
+  MakeGatheringServiceArrivalsAdmin: async (
+    object: any,
+    args: any,
+    context: Context
+  ) =>
     MakeServant(
       context,
       args,
@@ -79,7 +112,11 @@ export const arrivalsMutation = {
       'GatheringService',
       'ArrivalsAdmin'
     ),
-  RemoveGatheringServiceArrivalsAdmin: async (object, args, context) =>
+  RemoveGatheringServiceArrivalsAdmin: async (
+    object: any,
+    args: any,
+    context: Context
+  ) =>
     RemoveServant(
       context,
       args,
@@ -88,8 +125,8 @@ export const arrivalsMutation = {
       'ArrivalsAdmin'
     ),
 
-  //ARRIVALS HELPERS
-  MakeStreamArrivalsCounter: async (object, args, context) =>
+  // ARRIVALS HELPERS
+  MakeStreamArrivalsCounter: async (object: any, args: any, context: Context) =>
     MakeServant(
       context,
       args,
@@ -97,7 +134,11 @@ export const arrivalsMutation = {
       'Stream',
       'ArrivalsCounter'
     ),
-  RemoveStreamArrivalsCounter: async (object, args, context) =>
+  RemoveStreamArrivalsCounter: async (
+    object: any,
+    args: any,
+    context: Context
+  ) =>
     RemoveServant(
       context,
       args,
@@ -106,7 +147,11 @@ export const arrivalsMutation = {
       'ArrivalsCounter'
     ),
 
-  MakeStreamArrivalsConfirmer: async (object, args, context) =>
+  MakeStreamArrivalsConfirmer: async (
+    object: any,
+    args: any,
+    context: Context
+  ) =>
     MakeServant(
       context,
       args,
@@ -114,7 +159,11 @@ export const arrivalsMutation = {
       'Stream',
       'ArrivalsConfirmer'
     ),
-  RemoveStreamArrivalsConfirmer: async (object, args, context) =>
+  RemoveStreamArrivalsConfirmer: async (
+    object: any,
+    args: any,
+    context: Context
+  ) =>
     RemoveServant(
       context,
       args,
@@ -122,19 +171,24 @@ export const arrivalsMutation = {
       'Stream',
       'ArrivalsConfirmer'
     ),
-  RemoveAllStreamArrivalsHelpers: async (object, args, context) => {
+  RemoveAllStreamArrivalsHelpers: async (
+    object: any,
+    args: any,
+    context: Context
+  ) => {
+    const authToken = await getAuthToken()
     isAuth(permitAdminArrivals('Stream'), context.auth.roles)
     noEmptyArgsValidation(['streamId'])
 
     const session = context.executionContext.session()
 
     try {
-      await axios(deleteRole('arrivalsConfirmerStream'))
-      await axios(deleteRole('arrivalsCounterStream'))
+      // await axios(deleteRole('arrivalsConfirmerStream', authToken))
+      // await axios(deleteRole('arrivalsCounterStream', authToken))
 
       // eslint-disable-next-line no-console
       console.log('Arrivals Helper Roles Deleted Successfully')
-    } catch (error) {
+    } catch (error: any) {
       throwErrorMsg('There was an error deleting arrivals helper roles', error)
     }
 
@@ -142,13 +196,15 @@ export const arrivalsMutation = {
       await axios(
         createRole(
           'arrivalsConfirmerStream',
-          'A person who confirms the arrival of bacentas'
+          'A person who confirms the arrival of bacentas',
+          authToken
         )
       )
       await axios(
         createRole(
           'arrivalsCounterStream',
-          'A person who confirms the attendance of bacentas'
+          'A person who confirms the attendance of bacentas',
+          authToken
         )
       )
       console.log('Arrivals Helper Roles Created Successfully')
@@ -157,25 +213,29 @@ export const arrivalsMutation = {
     }
 
     const stream = rearrangeCypherObject(
-      await session.run(cypher.RemoveAllStreamArrivalsHelpers, {
+      await session.run(RemoveAllStreamArrivalsHelpers, {
         streamId: args?.streamId,
       })
     )
 
     return stream?.record.properties
   },
-  UploadMobilisationPicture: async (object, args, context) => {
+  UploadMobilisationPicture: async (
+    object: any,
+    args: any,
+    context: Context
+  ) => {
     const session = context.executionContext.session()
     isAuth(['leaderBacenta'], context.auth.roles)
 
     const recordResponse = rearrangeCypherObject(
-      await session.run(cypher.checkArrivalTimes, args)
+      await session.run(checkArrivalTimes, args)
     )
 
     const stream = recordResponse.stream.properties
     const mobilisationEndTime = new Date(
       new Date().toISOString().slice(0, 10) +
-        stream.mobilisationEndTime?.slice(10)
+        stream.mobilisationEndTime.slice(10)
     )
     const today = new Date()
 
@@ -184,7 +244,7 @@ export const arrivalsMutation = {
     }
 
     const checkBacentaMomo = rearrangeCypherObject(
-      await session.run(cypher.checkBacentaMomoDetails, args)
+      await session.run(checkBacentaMomoDetails, args)
     )
 
     if (
@@ -195,7 +255,7 @@ export const arrivalsMutation = {
     }
 
     const response = rearrangeCypherObject(
-      await session.run(cypher.uploadMobilisationPicture, {
+      await session.run(uploadMobilisationPicture, {
         ...args,
         auth: context.auth,
       })
@@ -231,23 +291,23 @@ export const arrivalsMutation = {
 
     return returnToCache
   },
-  SetBussingSupport: async (object, args, context) => {
+  SetBussingSupport: async (object: any, args: any, context: Context) => {
     const session = context.executionContext.session()
     try {
       const response = rearrangeCypherObject(
-        await session.run(cypher.getBussingRecordWithDate, args)
+        await session.run(getBussingRecordWithDate, args)
       )
 
       let bussingRecord
-      console.log(response)
+
       if (
         response.attendance < 8 ||
         response.bussingCost === 0 ||
-        (response.numberOfBusses === 0 && response.numberOfCars === 0)
+        response.numberOfBusses === 0
       ) {
         try {
-          rearrangeCypherObject(await session.run(cypher.noBussingTopUp, args))
-        } catch (error) {
+          rearrangeCypherObject(await session.run(noBussingTopUp, args))
+        } catch (error: any) {
           throwErrorMsg(error)
         } finally {
           throwErrorMsg("Today's Bussing doesn't merit a top up")
@@ -260,27 +320,28 @@ export const arrivalsMutation = {
           response.dateLabels.includes('SwellDate')
         ) {
           bussingRecord = rearrangeCypherObject(
-            await session.run(cypher.setSwellBussingTopUp, args)
+            await session.run(setSwellBussingTopUp, args)
           )
         } else {
           bussingRecord = rearrangeCypherObject(
-            await session.run(cypher.setNormalBussingTopUp, args)
+            await session.run(setNormalBussingTopUp, args)
           )
         }
       }
 
       return bussingRecord?.record.properties
-    } catch (error) {
+    } catch (error: any) {
       throwErrorMsg(error)
     }
+    return {}
   },
-  SendBussingSupport: async (object, args, context) => {
+  SendBussingSupport: async (object: any, args: any, context: Context) => {
     isAuth(permitArrivalsHelpers(), context.auth.roles)
     const session = context.executionContext.session()
 
     const { merchantId, auth, passcode } = getStreamFinancials(args.stream_name)
     const recordResponse = rearrangeCypherObject(
-      await session.run(cypher.checkTransactionId, args)
+      await session.run(checkTransactionId, args)
     )
 
     const transactionResponse = recordResponse.record.properties
@@ -292,16 +353,16 @@ export const arrivalsMutation = {
       transactionResponse?.attendance < 8 ||
       !transactionResponse?.bussingTopUp
     ) {
-      //If record has not been confirmed, it will return null
+      // If record has not been confirmed, it will return null
       throwErrorMsg('This bacenta is not eligible to receive money')
     }
 
     const cypherResponse = rearrangeCypherObject(
-      await session.run(cypher.setBussingRecordTransactionId, args)
+      await session.run(setBussingRecordTransactionId, args)
     )
     const bussingRecord = cypherResponse.record.properties
 
-    const sendBussingSupport = {
+    const sendBussingSupport: PaySwitchRequestBody = {
       method: 'post',
       url: `https://prod.theteller.net/v1.1/transaction/process`,
       headers: {
@@ -321,21 +382,17 @@ export const arrivalsMutation = {
       },
     }
 
-    console.log(
-      `${cypherResponse.bacentaName} Bacenta ${bussingRecord.momoName}`
-    )
-
     try {
       const res = await axios(sendBussingSupport)
 
       if (res.data.code !== '000') {
-        await session.run(cypher.removeBussingRecordTransactionId, args)
-        throwErrorMsg(res.data.code + ' ' + res.data.reason)
+        await session.run(removeBussingRecordTransactionId, args)
+        throwErrorMsg(`${res.data.code} ${res.data.reason}`)
       }
 
       await session
-        .run(cypher.setBussingRecordTransactionSuccessful, args)
-        .catch((error) => throwErrorMsg(error))
+        .run(setBussingRecordTransactionSuccessful, args)
+        .catch((error: any) => throwErrorMsg(error))
 
       // eslint-disable-next-line no-console
       console.log(
@@ -344,21 +401,22 @@ export const arrivalsMutation = {
         res.data
       )
       return bussingRecord
-    } catch (error) {
+    } catch (error: any) {
       throwErrorMsg(error, 'Money could not be sent!')
     }
+    return bussingRecord
   },
-  RecordArrivalTime: async (object, args, context) => {
+  RecordArrivalTime: async (object: any, args: any, context: Context) => {
     isAuth(permitArrivalsConfirmer(), context.auth.roles)
     const session = context.executionContext.session()
 
     const recordResponse = rearrangeCypherObject(
-      await session.run(cypher.checkTransactionId, args)
+      await session.run(checkTransactionId, args)
     )
 
     const stream = recordResponse.stream.properties
     const arrivalEndTime = new Date(
-      new Date().toISOString().slice(0, 10) + stream.arrivalEndTime?.slice(10)
+      new Date().toISOString().slice(0, 10) + stream.arrivalEndTime.slice(10)
     )
     const today = new Date()
 
@@ -367,26 +425,30 @@ export const arrivalsMutation = {
     }
 
     const response = rearrangeCypherObject(
-      await session.run(cypher.recordArrivalTime, {
+      await session.run(recordArrivalTime, {
         ...args,
         auth: context.auth,
       })
     )
-    console.log(response)
+
     return response.bussingRecord
   },
-  SetSwellDate: async (object, args, context) => {
+  SetSwellDate: async (object: any, args: any, context: Context) => {
     isAuth(permitAdminArrivals('GatheringService'), context.auth.roles)
 
     const session = context.executionContext.session()
 
     const cypherResponse = rearrangeCypherObject(
-      await session.run(cypher.setSwellDate, args)
+      await session.run(setSwellDate, args)
     )
 
     return cypherResponse
   },
-  SendMobileVerificationNumber: async (object, args, context) => {
+  SendMobileVerificationNumber: async (
+    object: any,
+    args: any,
+    context: Context
+  ) => {
     isAuth(['leaderBacenta'], context.auth.roles)
 
     const sendMessage = {
@@ -411,9 +473,11 @@ export const arrivalsMutation = {
         return 'Message sent successfully'
       }
       throwErrorMsg('There was a problem sending your message')
-    } catch (error) {
+    } catch (error: any) {
       throwErrorMsg('There was a problem sending your message', error)
     }
+
+    return 'Message sent successfully'
   },
 }
 

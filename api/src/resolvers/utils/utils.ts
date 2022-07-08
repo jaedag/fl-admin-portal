@@ -11,7 +11,10 @@ type ErrorCustom = {
   }
 }
 
-export const throwErrorMsg = (message: string, error?: ErrorCustom) => {
+export const throwErrorMsg = (
+  message: string,
+  error?: ErrorCustom | string
+) => {
   let errorVar: string | ErrorCustom = ''
 
   if (error) {

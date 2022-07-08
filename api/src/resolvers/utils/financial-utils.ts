@@ -2,7 +2,7 @@ import { throwErrorMsg } from './utils'
 import { StreamOptions } from './types'
 
 type Network = 'MTN' | 'Vodafone' | 'AirtelTigo' | 'Airtel' | 'Tigo'
-type NetworkCode = 'MTN' | 'VDF' | 'ATL' | 'TGO'
+export type NetworkCode = 'MTN' | 'VDF' | 'ATL' | 'TGO'
 type PaymentErrorCode =
   | '100'
   | '101'
