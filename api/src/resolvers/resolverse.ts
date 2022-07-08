@@ -1,10 +1,11 @@
 import treasuryMutations from 'anagkazo/treasury-resolvers'
 import { arrivalsMutation } from 'arrivals/arrivals-resolvers'
 import { bankingMutation } from 'banking/banking-resolver'
+import MakeServantResolvers from 'directory/make-servant-resolvers'
 import { serviceNoIncomeMutations } from 'no-income/service-resolvers'
 import { serviceMutation } from 'service-resolvers'
 import { Member } from 'utils/types'
-import { directoryMutation } from './directory/directory-resolvers'
+import directoryMutation from './directory/directory-resolvers'
 
 const resolvers = {
   // Resolver Parameters
@@ -16,9 +17,11 @@ const resolvers = {
     fullName: (source: Member) => `${source.firstName} ${source.lastName}`,
   },
   Mutation: {
+    ...MakeServantResolvers,
     ...directoryMutation,
     ...arrivalsMutation,
     ...serviceMutation,
+    ...bussingMutation,
     ...bankingMutation,
     ...treasuryMutations,
     ...serviceNoIncomeMutations,

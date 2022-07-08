@@ -1,20 +1,22 @@
 /* eslint-disable no-await-in-loop */
 /* eslint-disable no-restricted-syntax */
-import { Church, ChurchLevel, ServantType } from 'utils/types'
+import { ChurchLevel, ServantType } from 'utils/types'
 import { rearrangeCypherObject, throwErrorMsg } from 'utils/utils'
 import servantCypher from './servant-cypher'
+
+export type HistorySubstructureArgs = {
+  churchType: ChurchLevel
+  servantType: ServantType
+  church: { id: string }
+  session: any
+}
 
 const CreateChurchHistorySubstructure = async ({
   churchType,
   servantType,
   church,
   session,
-}: {
-  churchType: ChurchLevel
-  servantType: ServantType
-  church: Church
-  session: any
-}) => {
+}: HistorySubstructureArgs) => {
   // Run Cypher to Connect the History
   const logResponse: {
     bacentas: string[]

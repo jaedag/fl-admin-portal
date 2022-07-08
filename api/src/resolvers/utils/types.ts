@@ -78,6 +78,8 @@ export interface Member {
 
 export interface MemberWithoutBioData {
   id: string
+  // eslint-disable-next-line camelcase
+  auth_id?: string
   firstName: string
   lastName: string
 }
@@ -90,4 +92,9 @@ export interface Church {
   arrivalsAdmin: MemberWithoutBioData
   arrivalsCounter: MemberWithoutBioData
   arrivalsConfirmer: MemberWithoutBioData
+}
+
+export type ChurchIdAndName = {
+  id: string
+  name: string
 }

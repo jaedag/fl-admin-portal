@@ -4,9 +4,11 @@ import axios from 'axios'
 import { deleteUserRoles, setUserRoles } from 'utils/auth0'
 import {
   Church,
+  ChurchIdAndName,
   ChurchLevel,
   ChurchLevelWithClosed,
   Member,
+  MemberWithoutBioData,
   Role,
   ServantType,
   ServantTypeLowerCase,
@@ -14,9 +16,9 @@ import {
 import { throwErrorMsg } from 'utils/utils'
 
 export type HistoryRecordArgs = {
-  servant: Member
-  oldServant?: Member
-  church: Church
+  servant: MemberWithoutBioData
+  oldServant?: MemberWithoutBioData
+  church: ChurchIdAndName
   churchType: ChurchLevel
   servantType: ServantType
   removed: boolean

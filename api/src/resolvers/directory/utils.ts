@@ -1,8 +1,7 @@
 import { Context } from 'utils/neo4j-types'
 import {
-  Church,
   ChurchLevel,
-  Member,
+  MemberWithoutBioData,
   ServantType,
   ServantTypeLowerCase,
 } from 'utils/types'
@@ -55,10 +54,10 @@ type MakeRemoveServantArgs = {
   context: Context
   churchType: ChurchLevel
   servantType: ServantType
-  servant: Member
-  church: Church
+  servant: MemberWithoutBioData
+  church: { id: string; name: string }
   args?: { leaderId: string }
-  oldServant?: Member
+  oldServant?: MemberWithoutBioData
 }
 
 export const removeServantCypher = async ({

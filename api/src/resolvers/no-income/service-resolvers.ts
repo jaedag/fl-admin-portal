@@ -1,23 +1,23 @@
-import {
-  isAuth,
-  makeServantCypher,
-  rearrangeCypherObject,
-  throwErrorMsg,
-} from '../resolver-utils'
-
-import { permitLeaderAdmin } from '../permissions'
+import { makeServantCypher } from 'directory/utils'
+import { permitLeaderAdmin } from 'permissions'
+import { Context } from 'utils/neo4j-types'
+import { Member } from 'utils/types'
+import { isAuth, rearrangeCypherObject, throwErrorMsg } from 'utils/utils'
+// eslint-disable-next-line no-relative-import-paths/no-relative-import-paths
+import { error as errorMessage } from '../texts.json'
 import {
   checkCurrentServiceLog,
-  getServantAndChurch as _getServantAndChurch,
   checkFormFilledThisWeek,
   recordService,
+  getServantAndChurch as getServantAndChurchCypher,
 } from './service-cypher'
-import { getServantAndChurch } from './service-cypher'
 
-import { error as errorMessage } from '../texts.json'
-
-export const serviceNoIncomeMutations = {
-  RecordServiceNoIncome: async (object, args, context) => {
+const serviceNoIncomeMutations = {
+  RecordServiceNoIncome: async (
+    object: any,
+    args: Member,
+    context: Context
+  ) => {
     isAuth(permitLeaderAdmin('Fellowship'), context.auth.roles)
     const session = context.executionContext.session()
 
@@ -26,38 +26,37 @@ export const serviceNoIncomeMutations = {
     )
 
     if (!relationshipCheck.exists) {
-      //Checks if the church has a current history record otherwise creates it
+      // Checks if the church has a current history record otherwise creates it
       const getServantAndChurch = rearrangeCypherObject(
-        await session.run(_getServantAndChurch, args)
+        await session.run(getServantAndChurchCypher, args)
       )
 
-      await makeServantCypher(
+      await makeServantCypher({
         context,
-        {},
-        getServantAndChurch.churchType,
-        'Leader',
-        {
+        churchType: getServantAndChurch.churchType,
+        servantType: 'Leader',
+        servant: {
           id: getServantAndChurch.servantId,
           auth_id: getServantAndChurch.auth_id,
           firstName: getServantAndChurch.firstName,
           lastName: getServantAndChurch.lastName,
         },
-        '',
-        {
+        args: {
+          leaderId: getServantAndChurch.servantId,
+        },
+        church: {
           id: getServantAndChurch.churchId,
           name: getServantAndChurch.churchName,
-        }
-      )
+        },
+      })
     }
-    console.log('getServant:', getServantAndChurch)
 
     const serviceCheck = rearrangeCypherObject(
       await session.run(checkFormFilledThisWeek, args)
     )
 
     if (serviceCheck.alreadyFilled) {
-      throwErrorMsg(errorMessage.no_double_form_filling)
-      return
+      return throwErrorMsg(errorMessage.no_double_form_filling)
     }
     if (serviceCheck.labels?.includes('Vacation')) {
       throwErrorMsg(errorMessage.vacation_cannot_fill_service)
@@ -73,3 +72,5 @@ export const serviceNoIncomeMutations = {
     return serviceDetails.serviceRecord.properties
   },
 }
+
+export default serviceNoIncomeMutations

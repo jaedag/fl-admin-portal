@@ -1,9 +1,11 @@
 import { Context } from 'utils/neo4j-types'
 import { Member } from 'utils/types'
 import { isAuth, rearrangeCypherObject, throwErrorMsg } from 'utils/utils'
-import { permitAdmin, permitLeaderAdmin } from 'api/src/resolvers/permissions'
-import { createChurchHistorySubstructure } from 'api/src/resolvers/resolver-utils'
-import { RemoveServant } from 'api/src/resolvers/resolvers'
+import { permitAdmin, permitLeaderAdmin } from 'permissions'
+import { RemoveServant } from './make-remove-servants'
+import CreateChurchHistorySubstructure, {
+  HistorySubstructureArgs,
+} from './history-substructure'
 
 const cypher = require('../cypher/resolver-cypher')
 const servantCypher = require('../cypher/servant-cypher')
@@ -216,7 +218,7 @@ const directoryMutation = {
     const { churchType } = args
     const { servantType } = args
 
-    const functionArguments = {
+    const functionArguments: HistorySubstructureArgs = {
       churchType,
       servantType,
       church,
@@ -226,7 +228,7 @@ const directoryMutation = {
     await session.run(servantCypher.newDuplicateServiceLog, {
       id: church.id,
     })
-    await createChurchHistorySubstructure(functionArguments)
+    await CreateChurchHistorySubstructure(functionArguments)
 
     return church.id
   },
