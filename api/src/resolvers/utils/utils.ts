@@ -13,7 +13,7 @@ type ErrorCustom = {
 
 export const throwErrorMsg = (
   message: string,
-  error?: ErrorCustom | string
+  error?: ErrorCustom | string | any
 ) => {
   let errorVar: string | ErrorCustom = ''
 
