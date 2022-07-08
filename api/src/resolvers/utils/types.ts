@@ -99,3 +99,24 @@ export type ChurchIdAndName = {
   id: string
   name: string
 }
+
+interface DebitData {
+  // eslint-disable-next-line camelcase
+  transaction_id: string
+  // eslint-disable-next-line camelcase
+  merchant_id: string
+  amount: any
+  // eslint-disable-next-line camelcase
+  processing_code: string
+  desc: string
+  // eslint-disable-next-line camelcase
+  subscriber_number: string
+  voucher: string
+}
+
+export interface PayswitchDebitRequestBody {
+  method: string
+  url: string
+  headers: any
+  data: DebitData
+}
