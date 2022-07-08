@@ -61,7 +61,7 @@ const servantCypher = {
    RETURN admin.id AS id, admin.auth_id AS auth_id, admin.firstName AS firstName, admin.lastName AS lastName
    `,
 
-  disconnectChurcHTeller: `
+  disconnectChurchTeller: `
    MATCH (church {id: $churchId})
    WHERE church:Stream OR church:GatheringService
    MATCH (church)<-[oldAdmin:IS_TELLER_FOR]-(admin:Member {id: $tellerId})
