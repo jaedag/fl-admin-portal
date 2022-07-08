@@ -34,7 +34,7 @@ export const treasuryMutations = {
         await session.run(cypher.checkIfConfirmed, args)
       )
 
-      if (checkAlreadyConfirmed) {
+      if (checkAlreadyConfirmed=== true) {
         throwErrorMsg('This service offering has already been banked!')
       }
 

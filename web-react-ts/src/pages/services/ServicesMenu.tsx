@@ -101,19 +101,26 @@ const Services = () => {
                 />
               </>
             )}
-          {church.stream_name === 'anagkazo' && (
+          <MenuButton
+            iconComponent={CashCoin}
+            title="Midweek Banking"
+            color="banking"
+            onClick={() =>
+              navigate(`/services/${churchType.toLowerCase()}/midweek-banking`)
+            }
+            noCaption
+          />
+          {/* remove this when you are done */}
+          {church.name === 'Anagkazo' && (
             <MenuButton
               iconComponent={CashCoin}
-              title="Midweek Banking"
+              title="Receive Midweek Banking"
               color="banking"
-              onClick={() =>
-                navigate(
-                  `/services/${church.stream_name.toLowerCase()}/midweek-banking`
-                )
-              }
+              onClick={() => navigate(`/anagkazo/receive-banking`)}
               noCaption
             />
           )}
+          {/* remove this when you are done */}
         </div>
       </Container>
     </div>
