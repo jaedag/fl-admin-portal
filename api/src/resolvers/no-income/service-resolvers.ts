@@ -1,16 +1,16 @@
-import { makeServantCypher } from 'directory/utils'
-import { permitLeaderAdmin } from 'permissions'
+import { isAuth, rearrangeCypherObject, throwErrorMsg } from '../utils/utils'
 import {
   checkCurrentServiceLog,
   checkFormFilledThisWeek,
   getServantAndChurch as getServantAndChurchCypher,
-} from 'services/service-cypher'
-import { Context } from 'utils/neo4j-types'
-import { Member } from 'utils/types'
-import { isAuth, rearrangeCypherObject, throwErrorMsg } from 'utils/utils'
+} from '../services/service-cypher'
+import { Context } from '../utils/neo4j-types'
+import { Member } from '../utils/types'
+import { permitLeaderAdmin } from '../permissions'
+import { makeServantCypher } from '../directory/utils'
 import recordService from './service-cypher'
 
-const errorMessage = require('./texts.json').error
+const errorMessage = require('../texts.json').error
 
 const serviceNoIncomeMutations = {
   RecordServiceNoIncome: async (

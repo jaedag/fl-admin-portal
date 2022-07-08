@@ -1,15 +1,15 @@
-import { Context } from 'utils/neo4j-types'
+import {
+  nextHigherChurch,
+  rearrangeCypherObject,
+  throwErrorMsg,
+} from '../utils/utils'
 import {
   ChurchLevel,
   MemberWithoutBioData,
   ServantType,
   ServantTypeLowerCase,
-} from 'utils/types'
-import {
-  nextHigherChurch,
-  rearrangeCypherObject,
-  throwErrorMsg,
-} from 'utils/utils'
+} from '../utils/types'
+import { Context } from '../utils/neo4j-types'
 import { HistoryRecordArgs, historyRecordString } from './helper-functions'
 import CreateChurchHistorySubstructure from './history-substructure'
 import servantCypher from './servant-cypher'

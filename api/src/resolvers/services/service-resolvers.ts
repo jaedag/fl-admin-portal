@@ -1,8 +1,8 @@
-import { makeServantCypher } from 'directory/utils'
-import { permitLeaderAdmin } from 'permissions'
-import { Context } from 'utils/neo4j-types'
-import { Member } from 'utils/types'
-import { isAuth, rearrangeCypherObject, throwErrorMsg } from 'utils/utils'
+import { makeServantCypher } from '../directory/utils'
+import { permitLeaderAdmin } from '../permissions'
+import { Context } from '../utils/neo4j-types'
+import { Member } from '../utils/types'
+import { isAuth, rearrangeCypherObject, throwErrorMsg } from '../utils/utils'
 import {
   checkCurrentServiceLog,
   checkFormFilledThisWeek,
@@ -10,7 +10,7 @@ import {
   recordService,
 } from './service-cypher'
 
-const errorMessage = require('./texts.json').error
+const errorMessage = require('../texts.json').error
 
 const serviceMutation = {
   RecordService: async (object: any, args: Member, context: Context) => {

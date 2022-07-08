@@ -1,7 +1,7 @@
 /* eslint-disable no-await-in-loop */
 /* eslint-disable no-restricted-syntax */
-import { ChurchLevel, ServantType } from 'utils/types'
-import { rearrangeCypherObject, throwErrorMsg } from 'utils/utils'
+import { rearrangeCypherObject, throwErrorMsg } from '../utils/utils'
+import { ChurchLevel, ServantType } from '../utils/types'
 import servantCypher from './servant-cypher'
 
 export type HistorySubstructureArgs = {

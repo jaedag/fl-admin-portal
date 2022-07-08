@@ -1,7 +1,6 @@
 /* eslint-disable no-console */
-import { getAuth0Roles } from 'authenticate'
 import axios from 'axios'
-import { deleteUserRoles, setUserRoles } from 'utils/auth0'
+import { throwErrorMsg } from '../utils/utils'
 import {
   Church,
   ChurchIdAndName,
@@ -12,8 +11,9 @@ import {
   Role,
   ServantType,
   ServantTypeLowerCase,
-} from 'utils/types'
-import { throwErrorMsg } from 'utils/utils'
+} from '../utils/types'
+import { deleteUserRoles, setUserRoles } from '../utils/auth0'
+import { getAuth0Roles } from '../authenticate'
 
 export type HistoryRecordArgs = {
   servant: MemberWithoutBioData

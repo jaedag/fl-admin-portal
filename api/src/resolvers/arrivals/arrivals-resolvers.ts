@@ -1,27 +1,27 @@
-import { getAuthToken } from 'authenticate'
 import axios from 'axios'
-import { PaySwitchRequestBody } from 'banking/banking-types'
-import { MakeServant, RemoveServant } from 'directory/make-remove-servants'
+import { createRole } from '../utils/auth0'
+import {
+  getMobileCode,
+  getStreamFinancials,
+  padNumbers,
+} from '../utils/financial-utils'
+import { Context } from '../utils/neo4j-types'
+import {
+  isAuth,
+  noEmptyArgsValidation,
+  rearrangeCypherObject,
+  throwErrorMsg,
+} from '../utils/utils'
 import {
   permitAdmin,
   permitAdminArrivals,
   permitArrivals,
   permitArrivalsConfirmer,
   permitArrivalsHelpers,
-} from 'permissions'
-import { createRole } from 'utils/auth0'
-import {
-  getMobileCode,
-  getStreamFinancials,
-  padNumbers,
-} from 'utils/financial-utils'
-import { Context } from 'utils/neo4j-types'
-import {
-  isAuth,
-  noEmptyArgsValidation,
-  rearrangeCypherObject,
-  throwErrorMsg,
-} from 'utils/utils'
+} from '../permissions'
+import { MakeServant, RemoveServant } from '../directory/make-remove-servants'
+import { PaySwitchRequestBody } from '../banking/banking-types'
+import { getAuthToken } from '../authenticate'
 import {
   checkArrivalTimes,
   checkBacentaMomoDetails,

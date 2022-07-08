@@ -6,6 +6,8 @@ import serviceMutation from './services/service-resolvers'
 import { Member } from './utils/types'
 import treasuryMutations from './anagkazo/treasury-resolvers'
 import directoryMutation from './directory/directory-resolvers'
+import { arrivalsMutation } from './arrivals/arrivals-resolvers'
+import bankingMutation from './banking/banking-resolver'
 
 const resolvers = {
   // Resolver Parameters
@@ -19,10 +21,9 @@ const resolvers = {
   Mutation: {
     ...MakeServantResolvers,
     ...directoryMutation,
-    // ...arrivalsMutation,
+    ...arrivalsMutation,
     ...serviceMutation,
-    // ...bussingMutation,
-    // ...bankingMutation,
+    ...bankingMutation,
     ...treasuryMutations,
     ...serviceNoIncomeMutations,
   },
