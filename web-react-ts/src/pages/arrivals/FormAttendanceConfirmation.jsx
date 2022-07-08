@@ -15,7 +15,7 @@ import {
   CONFIRM_BUSSING_BY_ADMIN,
   SEND_BUSSING_SUPPORT,
   SET_BUSSING_SUPPORT,
-} from './arrivalsMutations'
+} from './arrivalsMutation'
 import { useNavigate } from 'react-router'
 import FormikControl from 'components/formik-components/FormikControl'
 import SubmitButton from 'components/formik-components/SubmitButton'

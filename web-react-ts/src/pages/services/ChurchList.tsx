@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router'
 import People2Icon from 'assets/icons/People2'
 import { Church, UserRole } from 'global-types'
 
-const ChurchList = ({ color, link }: { color: string; link: string }) => {
+const ChurchList = ({ color, link }: { color: string; link?: string }) => {
   const { userJobs } = useContext(MemberContext)
   const { clickCard } = useContext(ChurchContext)
   const { setUser } = useSetUserChurch()
@@ -51,7 +51,7 @@ const ChurchList = ({ color, link }: { color: string; link: string }) => {
                         `/quick-facts/this-month/${church.__typename.toLowerCase()}`
                       )
                     } else {
-                      navigate(link)
+                      navigate(link || '#')
                     }
                   }}
                   color={color}
