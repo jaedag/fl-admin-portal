@@ -4,12 +4,11 @@ export type ChurchLevel =
   | 'Constituency'
   | 'Council'
   | 'Stream'
-  | 'Gathering Service'
   | 'GatheringService'
   | 'Denomination'
   | 'Sonta'
-  | 'ClosedFellowship'
-  | 'ClosedBacenta'
+
+export type ChurchLevelWithClosed = 'ClosedFellowship' | 'ClosedBacenta'
 
 export type Role =
   | 'leaderFellowship'
@@ -19,6 +18,7 @@ export type Role =
   | 'leaderStream'
   | 'leaderSonta'
   | 'leaderGatheringService'
+  | 'leaderDenomination'
   | 'adminConstituency'
   | 'adminCouncil'
   | 'adminStream'

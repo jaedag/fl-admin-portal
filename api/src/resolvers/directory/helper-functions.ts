@@ -1,10 +1,11 @@
 /* eslint-disable no-console */
 import { getAuth0Roles } from 'authenticate'
 import axios from 'axios'
-import { setUserRoles } from 'utils/auth0'
+import { deleteUserRoles, setUserRoles } from 'utils/auth0'
 import {
   Church,
   ChurchLevel,
+  ChurchLevelWithClosed,
   Member,
   Role,
   ServantType,
@@ -51,6 +52,28 @@ export const historyRecordString = ({
   return `${servant.firstName} ${servant.lastName} started ${church.name} ${churchType} under ${higherChurch?.name} ${higherChurch?.type}`
 }
 
+export const removeRoles = async (
+  servant: Member,
+  userRoles: Role[],
+  rolesToRemove: string,
+  authToken: string
+) => {
+  const authRoles = await getAuth0Roles(authToken)
+  const userRoleIds = userRoles.map((role) => authRoles[role].id)
+
+  // A remove roles function to simplify removing roles with an axios request
+  if (userRoleIds.includes(rolesToRemove)) {
+    return axios(deleteUserRoles(servant.auth_id, [rolesToRemove], authToken))
+      .then(() =>
+        console.log(
+          `Role successfully removed for ${servant.firstName} ${servant.lastName}`
+        )
+      )
+      .catch((err) => throwErrorMsg('There was an error removing role', err))
+  }
+  return servant
+}
+
 export const assignRoles = async (
   servant: Member,
   userRoles: Role[],
@@ -93,7 +116,10 @@ export const assignRoles = async (
   }
 }
 
-export const churchInEmail = (church: { type: ChurchLevel[]; name: any }) => {
+export const churchInEmail = (church: {
+  type: ChurchLevelWithClosed[]
+  name: string
+}) => {
   if (church.type[0] === 'ClosedFellowship') {
     return `${church.name} Fellowship which has been closed`
   }
@@ -108,7 +134,7 @@ export const servantInEmail = (servant: Member) => {
   return servant
 }
 
-interface MemberWithKeys extends Member {
+export interface MemberWithKeys extends Member {
   [key: string]: any
 }
 interface ChurchWithKeys extends Church {
@@ -142,4 +168,33 @@ export const parseForCache = (
   })
 
   return servant
+}
+
+export const parseForCacheRemoval = (
+  servant: MemberWithKeys,
+  removedChurch: Church,
+  verb: string,
+  role: ServantTypeLowerCase
+) => {
+  const servantMutable = servant
+  // Returning the data such that it can update apollo cache
+  servantMutable[`${verb}`] = servantMutable[`${verb}`].filter(
+    (church: Church) => {
+      if (church.id === removedChurch.id) {
+        return false
+      }
+      return true
+    }
+  )
+
+  servant[`${verb}`].forEach((churchMutable: ChurchWithKeys) => {
+    // eslint-disable-next-line no-param-reassign
+    churchMutable[`${role}`] = {
+      id: servant.id,
+      firstName: servant.firstName,
+      lastName: servant.lastName,
+    }
+  })
+
+  return servantMutable
 }

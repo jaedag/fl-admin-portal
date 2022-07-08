@@ -1,5 +1,12 @@
 import { Member, Role } from 'utils/types'
-import { getRoleId } from 'api/src/resolvers/resolvers'
+
+export type Auth0RoleObject = {
+  // eslint-disable-next-line no-unused-vars
+  [key in Role]: { id: string }
+} & {
+  id: string
+  name: string
+}
 
 export const createAuthUserConfig = (member: Member, token: string) => ({
   method: 'post',
@@ -78,7 +85,7 @@ export const getAuthIdConfig = (member: Member, token: string) => ({
     Authorization: `Bearer ${token}`,
   },
 })
-export const getUserRoles = (memberId: Member, token: string) => ({
+export const getUserRoles = (memberId: string, token: string) => ({
   method: 'get',
   baseURL: process.env.AUTH0_BASE_URL,
   url: `/api/v2/users/${memberId}/roles`,
@@ -105,7 +112,7 @@ export const setUserRoles = (
 })
 export const deleteUserRoles = (
   memberId: string,
-  roles: Role[],
+  roles: string[],
   token: string
 ) => ({
   method: 'delete',
@@ -120,7 +127,13 @@ export const deleteUserRoles = (
   },
 })
 
-export const deleteRole = (role: Role, token: string) => {
+export const deleteRole = (
+  role: Role,
+  token: string,
+  authRoles: Auth0RoleObject
+) => {
+  const getRoleId = (roleName: Role) => authRoles[roleName].id
+
   return {
     method: 'delete',
     baseURL: process.env.AUTH0_BASE_URL,

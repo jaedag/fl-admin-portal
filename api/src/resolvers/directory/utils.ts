@@ -57,8 +57,8 @@ type MakeRemoveServantArgs = {
   servantType: ServantType
   servant: Member
   church: Church
-  args: { leaderId: string }
-  oldServant: Member
+  args?: { leaderId: string }
+  oldServant?: Member
 }
 
 export const removeServantCypher = async ({
@@ -167,7 +167,7 @@ export const makeServantCypher = async ({
       .run(servantCypher.connectServiceLog, {
         churchId: church.id,
         servantId: servant.id,
-        oldServantId: oldServant.id ?? '',
+        oldServantId: oldServant?.id ?? '',
         logId: serviceLogRes.id,
         auth: context.auth,
       })
@@ -177,7 +177,7 @@ export const makeServantCypher = async ({
       .run(servantCypher.connectHistoryLog, {
         churchId: church.id,
         servantId: servant.id,
-        oldServantId: oldServant.id ?? '',
+        oldServantId: oldServant?.id ?? '',
         logId: serviceLogRes.id,
         auth: context.auth,
       })
