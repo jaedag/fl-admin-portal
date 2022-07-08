@@ -1,3 +1,4 @@
+import { ChurchLevel, Role, Servant, UserJobs, VerbTypes } from 'global-types'
 import { authorisedLink, plural } from 'global-utils'
 import { churchLevels } from 'pages/directory/update/directory-utils'
 import {
@@ -7,17 +8,19 @@ import {
   permitMe,
 } from 'permission-utils'
 
-export const menuItems = [
+type MenuItem = {
+  name: string
+  to: string
+  roles: Role[]
+  exact?: 'true'
+}
+
+export const menuItems: MenuItem[] = [
   { name: 'Home', to: '/', roles: ['all'] },
   {
     name: 'Directory',
     exact: 'true',
     to: '/directory',
-    subMenus: [
-      { name: 'Members', to: '/directory/members' },
-      { name: 'Churches', to: '/directory/churches' },
-      { name: 'Quick Facts', to: `/directory/quick-facts/church-list` },
-    ],
     roles: ['all'],
   },
   {
@@ -31,7 +34,7 @@ export const menuItems = [
     roles: [
       ...permitLeaderAdmin('Bacenta'),
       ...permitArrivals('Bacenta'),
-      ...permitArrivalsHelpers('Stream'),
+      ...permitArrivalsHelpers(),
     ],
   },
   {
@@ -46,7 +49,9 @@ export const menuItems = [
   },
 ]
 
-export const roles = {
+export const roles: {
+  [key in ChurchLevel]: VerbTypes[]
+} = {
   Fellowship: ['leads'],
   Bacenta: ['leads'],
   Constituency: ['leads', 'isAdminFor', 'isArrivalsAdminFor'],
@@ -59,9 +64,10 @@ export const roles = {
     'isArrivalsConfirmerFor',
   ],
   GatheringService: ['leads', 'isAdminFor', 'isArrivalsAdminFor'],
+  Denomination: ['leads', 'isAdminFor'],
 }
 
-export const parseRoles = (role) => {
+export const parseRoles = (role: VerbTypes): VerbTypes => {
   switch (role) {
     case 'leader':
       return 'leads'
@@ -90,7 +96,15 @@ export const parseRoles = (role) => {
   }
 }
 
-const setServantRoles = (args) => {
+type ServantRolesArgs = {
+  servant?: any
+  servantType: VerbTypes
+  churchType: ChurchLevel
+  verb: string
+  userroles: UserJobs[]
+}
+
+const setServantRoles = (args: ServantRolesArgs) => {
   const { servant, servantType, churchType, verb, userroles } = args
   if (!servant) return
 
@@ -150,13 +164,14 @@ const setServantRoles = (args) => {
   })
 }
 
-export const getServantRoles = (servant) => {
-  let userroles = []
+export const getServantRoles = (servant: Servant) => {
+  let userroles: UserJobs[] = []
 
-  churchLevels.forEach((level) => {
-    roles[`${level}`].forEach((verb) => {
-      const shouldSearch = (verb, level) =>
-        servant?.roles.includes(parseRoles(verb) + level)
+  churchLevels.forEach((level: ChurchLevel) => {
+    roles[`${level}`].forEach((verb: VerbTypes) => {
+      const servantRoles: string[] = servant?.roles
+      const shouldSearch = (verb: VerbTypes, level: ChurchLevel) =>
+        servantRoles.includes(`${parseRoles(verb)}${level}`)
 
       if (shouldSearch(verb, level)) {
         const args = {

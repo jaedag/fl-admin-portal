@@ -8,8 +8,21 @@ import { permitMe } from 'permission-utils'
 import { UnauthMsg } from './UnauthMsg'
 import LoadingScreen from 'components/base-component/LoadingScreen'
 import Login from 'components/Login'
+import { Role } from 'global-types'
 
-const ProtectedRoute = ({ children, roles, roleBased, placeholder }) => {
+type ProtectedRouteProps = {
+  children: React.ReactNode
+  roles: Role[]
+  roleBased?: boolean
+  placeholder?: boolean
+}
+
+const ProtectedRoute = ({
+  children,
+  roles,
+  roleBased,
+  placeholder,
+}: ProtectedRouteProps) => {
   const { currentUser } = useContext(MemberContext)
   const { isAuthenticated, isLoading } = useAuth0()
   const church = useContext(ChurchContext)

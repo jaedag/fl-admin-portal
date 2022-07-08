@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { useNavigate } from 'react-router'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { MemberContext } from 'contexts/MemberContext'
@@ -12,6 +12,7 @@ import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { SERVANT_CHURCH_LIST } from './DashboardQueries'
 import { useQuery } from '@apollo/client'
+import { ChurchLevel, MemberWithChurches } from 'global-types'
 
 const ServantsChurchList = () => {
   const { memberId } = useContext(MemberContext)
@@ -22,12 +23,21 @@ const ServantsChurchList = () => {
   })
   const servant = data?.members[0]
 
-  const getServantChurches = (servant) => {
+  const getServantChurches = (servant: MemberWithChurches) => {
     if (!servant) return
 
-    let churches = []
+    let churches: {
+      id: string
+      __typename: ChurchLevel
+      name: string
+      leader: string
+      leaderPic: string
+      attendance: string | undefined
+      income: string | undefined
+      link: string
+    }[] = []
 
-    const pushIntoChurch = (servantChurches) => {
+    const pushIntoChurch = (servantChurches: any[]) => {
       servantChurches.map((church) => {
         const serviceData = getServiceGraphData(church)
 
@@ -55,9 +65,6 @@ const ServantsChurchList = () => {
     }
     if (servant?.leadsSonta?.length) {
       pushIntoChurch(servant?.leadsSonta)
-    }
-    if (servant?.leadsBasonta?.length) {
-      pushIntoChurch(servant?.leadsBasonta)
     }
     if (servant?.leadsMinistry?.length) {
       pushIntoChurch(servant?.leadsMinistry)

@@ -1,6 +1,8 @@
+import { MutationFunction } from '@apollo/client'
+import { Church, ChurchLevel, Role } from 'global-types'
 import { capitalise, throwErrorMsg } from 'global-utils'
 
-export const churchLevels = [
+export const churchLevels: ChurchLevel[] = [
   'Fellowship',
   'Bacenta',
   'Constituency',
@@ -9,8 +11,9 @@ export const churchLevels = [
   'GatheringService',
 ]
 
-export const getHighestRole = (roles) => {
-  let highestRole, highestLevel
+export const getHighestRole = (roles: Role[]) => {
+  let highestRole,
+    highestLevel: string = ''
 
   for (let i = churchLevels.length; i >= 0; i--) {
     const churchLevelLower = churchLevels[i]?.toLowerCase()
@@ -33,11 +36,11 @@ export const getHighestRole = (roles) => {
   return {
     highestRole,
     highestLevel,
-    highestVerb: highestRole.replace(highestLevel, ''),
+    highestVerb: highestRole?.replace(highestLevel, ''),
   }
 }
 
-export const nextHigherChurch = (churchLevel) => {
+export const nextHigherChurch = (churchLevel: ChurchLevel): ChurchLevel => {
   switch (churchLevel) {
     case 'Fellowship':
       return 'Bacenta'
@@ -48,15 +51,15 @@ export const nextHigherChurch = (churchLevel) => {
     case 'Council':
       return 'Stream'
     case 'Stream':
-      return 'Gathering Service'
-    case 'Gathering Service':
+      return 'GatheringService'
+    case 'GatheringService':
       return 'Denomination'
     default:
-      break
+      return 'Fellowship'
   }
 }
 
-export const nextLowerChurch = (churchLevel) => {
+export const nextLowerChurch = (churchLevel: ChurchLevel) => {
   switch (churchLevel) {
     case 'Fellowship':
       return 'Fellowship'
@@ -68,31 +71,42 @@ export const nextLowerChurch = (churchLevel) => {
       return 'Constituency'
     case 'Stream':
       return 'Council'
-    case 'Gathering Service':
+    case 'GatheringService':
       return 'Stream'
     default:
       break
   }
 }
 
-export const getChurchIdsFromObject = (churchList) => {
+export const getChurchIdsFromObject = (churchList: Church[]) => {
   const newArray = churchList.map((churchList) => churchList.id)
 
   return newArray
 }
+type ChurchList = { oldChurches: Church[]; newChurches: Church[] }
+type Mutations = {
+  closeDownChurch: MutationFunction
+  removeChurch: MutationFunction
+  addChurch: MutationFunction
+  logChurchHistory: MutationFunction
+  CreateHistorySubstructure: MutationFunction
+}
 
-export const removeOldChurches = async (lists, mutations) => {
+export const removeOldChurches = async (
+  lists: ChurchList,
+  mutations: Mutations
+) => {
   //Remove Lower Churches
   if (!lists || !mutations) {
     return
   }
-  const removeChurches = lists.oldChurches.filter((value) => {
+  const removeChurches = lists.oldChurches.filter((value: Church) => {
     return !getChurchIdsFromObject(lists.newChurches).includes(value.id)
   })
 
   if (removeChurches.length) {
     await Promise.all(
-      removeChurches.map(async (church) => {
+      removeChurches.map(async (church: Church) => {
         try {
           await mutations.closeDownChurch({
             variables: {
@@ -110,7 +124,11 @@ export const removeOldChurches = async (lists, mutations) => {
   return true
 }
 
-export const addNewChurches = async (lists, mutations, args) => {
+export const addNewChurches = async (
+  lists: ChurchList,
+  mutations: Mutations,
+  args: any
+) => {
   if (!lists || !mutations || !args) {
     return
   }
@@ -121,14 +139,12 @@ export const addNewChurches = async (lists, mutations, args) => {
 
   if (!addChurches.length) return
 
-  const churchLevel = addChurches[0].__typename?.toLowerCase()
-  const higherChurch = nextHigherChurch(
-    addChurches[0]?.__typename
-  )?.toLowerCase()
+  const churchLevel = addChurches[0].__typename.toLowerCase()
+  const higherChurch = nextHigherChurch(addChurches[0].__typename).toLowerCase()
 
   if (addChurches.length) {
     await Promise.all(
-      addChurches.map(async (church) => {
+      addChurches.map(async (church: any) => {
         if (church[`${higherChurch}`]) {
           await mutations.removeChurch({
             variables: {

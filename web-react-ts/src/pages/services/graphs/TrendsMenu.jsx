@@ -4,8 +4,8 @@ import { MemberContext } from 'contexts/MemberContext'
 import { Container } from 'react-bootstrap'
 import { useNavigate } from 'react-router'
 import MenuButton from 'components/buttons/MenuButton'
-import QuickFactsIcon from '../../../assets/stars-svgrepo-com.svg'
 import GraphIcon from '../../../assets/charts-svgrepo-com.svg'
+import Stars from 'assets/icons/Stars'
 
 const TrendsMenu = () => {
   const { currentUser, theme } = useContext(MemberContext)
@@ -32,7 +32,7 @@ const TrendsMenu = () => {
             caption={'Income and Attendance Graphs'}
           />
           <MenuButton
-            icon={QuickFactsIcon}
+            iconComponent={Stars}
             title="Quick Facts"
             color="quick-facts"
             onClick={() =>

@@ -3,14 +3,14 @@ import { MemberContext } from 'contexts/MemberContext'
 import React, { useContext } from 'react'
 import { Container } from 'react-bootstrap'
 import './Directory.css'
-import ChurchIcon from '../../assets/church-svgrepo-com.svg'
-import MemberIcon from '../../assets/people-svgrepo-com.svg'
-import QuickFactsIcon from '../../assets/stars-svgrepo-com.svg'
 import { useQuery } from '@apollo/client'
 import { SERVANT_CHURCHES_COUNT } from './DashboardQueries'
 import MenuButton from 'components/buttons/MenuButton'
 import { useNavigate } from 'react-router'
 import { getChurchCount, getMemberCount } from 'global-utils'
+import Church from 'assets/icons/Church'
+import People from 'assets/icons/People'
+import Stars from 'assets/icons/Stars'
 
 const Directory = () => {
   const { currentUser, theme } = useContext(MemberContext)
@@ -31,21 +31,21 @@ const Directory = () => {
 
         <div className="d-grid gap-2 mt-5 text-left">
           <MenuButton
-            icon={MemberIcon}
+            iconComponent={People}
             title="members"
             caption={getMemberCount(data?.members[0])}
             color="members"
             onClick={() => navigate(`/directory/members`)}
           />
           <MenuButton
-            icon={ChurchIcon}
+            iconComponent={Church}
             title="churches"
             caption={getChurchCount(data?.members[0])}
             color="churches"
             onClick={() => navigate(`/directory/churches`)}
           />
           <MenuButton
-            icon={QuickFactsIcon}
+            iconComponent={Stars}
             title="quick facts"
             caption={'Quick facts about your church'}
             color="quick-facts"

@@ -1,7 +1,14 @@
 import PlaceholderCustom from 'components/Placeholder'
+import { Role } from 'global-types'
 import React from 'react'
 
-const RoleCard = ({ number, role, loading }) => {
+type RoleCardProps = {
+  number: number | string
+  role: Role
+  loading: boolean
+}
+
+const RoleCard = ({ number, role, loading }: RoleCardProps) => {
   const isString = typeof number === 'string' && true
 
   return (
