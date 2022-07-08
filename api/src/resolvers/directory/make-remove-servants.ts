@@ -1,10 +1,14 @@
-import { getAuth0Roles, getAuthToken } from 'authenticate'
 import axios from 'axios'
 import {
-  matchChurchQuery,
-  matchMemberQuery,
-  removeMemberAuthId,
-} from 'cypher/resolver-cypher'
+  errorHandling,
+  isAuth,
+  noEmptyArgsValidation,
+  rearrangeCypherObject,
+  throwErrorMsg,
+} from '../utils/utils'
+import { ChurchLevel, Member, Role, ServantType } from '../utils/types'
+import notifyMember from '../utils/notify'
+import { Context } from '../utils/neo4j-types'
 import {
   Auth0RoleObject,
   changePasswordConfig,
@@ -13,17 +17,13 @@ import {
   getAuthIdConfig,
   getUserRoles,
   updateAuthUserConfig,
-} from 'utils/auth0'
-import { Context } from 'utils/neo4j-types'
-import notifyMember from 'utils/notify'
-import { ChurchLevel, Member, Role, ServantType } from 'utils/types'
+} from '../utils/auth0'
 import {
-  errorHandling,
-  isAuth,
-  noEmptyArgsValidation,
-  rearrangeCypherObject,
-  throwErrorMsg,
-} from 'utils/utils'
+  matchChurchQuery,
+  matchMemberQuery,
+  removeMemberAuthId,
+} from '../cypher/resolver-cypher'
+import { getAuth0Roles, getAuthToken } from '../authenticate'
 import {
   assignRoles,
   churchInEmail,

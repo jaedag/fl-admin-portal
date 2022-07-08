@@ -1,6 +1,6 @@
-import { permitAdmin } from 'permissions'
-import { Context } from 'utils/neo4j-types'
-import { Member } from 'utils/types'
+import { Context } from '../utils/neo4j-types'
+import { Member } from '../utils/types'
+import { permitAdmin } from '../permissions'
 import { MakeServant, RemoveServant } from './make-remove-servants'
 
 const MakeServantResolvers = {

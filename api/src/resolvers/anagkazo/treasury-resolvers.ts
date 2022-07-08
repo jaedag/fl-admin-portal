@@ -1,6 +1,6 @@
-import { Context } from '@neo4j/graphql/dist/types'
-import { MakeServant, RemoveServant } from 'resolvers'
+import { MakeServant, RemoveServant } from 'directory/make-remove-servants'
 import { permitTeller, permitAdmin } from 'permissions'
+import { Context } from 'utils/neo4j-types'
 import {
   isAuth,
   noEmptyArgsValidation,

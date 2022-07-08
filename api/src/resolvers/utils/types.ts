@@ -48,6 +48,7 @@ export type ServantType =
   | 'ArrivalsAdmin'
   | 'ArrivalsCounter'
   | 'ArrivalsConfirmer'
+  | 'Teller'
 export type ServantTypeLowerCase =
   | 'leader'
   | 'admin'

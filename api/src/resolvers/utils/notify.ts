@@ -14,7 +14,7 @@ const notifyMember = (
   subject: string,
   body?: string,
   html?: string
-): void => {
+) => {
   mg.messages
     .create('mg.firstlovecenter.com', {
       from: 'FL Accra Admin <no-reply@firstlovecenter.org>',

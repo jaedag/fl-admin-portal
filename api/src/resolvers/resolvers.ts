@@ -1,10 +1,10 @@
-import treasuryMutations from 'anagkazo/treasury-resolvers'
-import { arrivalsMutation } from 'arrivals/arrivals-resolvers'
-import { bankingMutation } from 'banking/banking-resolver'
-import MakeServantResolvers from 'directory/make-servant-resolvers'
-import serviceNoIncomeMutations from 'no-income/service-resolvers'
-import serviceMutation from 'services/service-resolvers'
-import { Member } from 'utils/types'
+// import { arrivalsMutation } from './arrivals/arrivals-resolvers'
+// import { bankingMutation } from './banking/banking-resolver'
+import MakeServantResolvers from './directory/make-servant-resolvers'
+import serviceNoIncomeMutations from './no-income/service-resolvers'
+import serviceMutation from './services/service-resolvers'
+import { Member } from './utils/types'
+import treasuryMutations from './anagkazo/treasury-resolvers'
 import directoryMutation from './directory/directory-resolvers'
 
 const resolvers = {
@@ -19,10 +19,10 @@ const resolvers = {
   Mutation: {
     ...MakeServantResolvers,
     ...directoryMutation,
-    ...arrivalsMutation,
+    // ...arrivalsMutation,
     ...serviceMutation,
-    ...bussingMutation,
-    ...bankingMutation,
+    // ...bussingMutation,
+    // ...bankingMutation,
     ...treasuryMutations,
     ...serviceNoIncomeMutations,
   },
