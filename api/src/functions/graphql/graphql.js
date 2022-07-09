@@ -10,13 +10,6 @@ const neo4j = require('neo4j-driver')
 // Be sure to run `npm run build`
 const { typeDefs } = require('./schema/graphql-schema')
 const { resolvers } = require('../../resolvers/resolvers.js')
-const { serviceResolvers } = require('../../resolvers/service-resolvers')
-const {
-  componentResolvers,
-} = require('../../resolvers/aggregates/component-resolvers')
-const {
-  arrivalsResolvers,
-} = require('../../resolvers/arrivals/arrivals-resolvers')
 
 const driver = neo4j.driver(
   process.env.NEO4J_URI || 'bolt://localhost:7687',
@@ -28,12 +21,7 @@ const driver = neo4j.driver(
 
 const neoSchema = new Neo4jGraphQL({
   typeDefs,
-  resolvers: {
-    ...resolvers,
-    ...serviceResolvers,
-    ...arrivalsResolvers,
-    ...componentResolvers,
-  },
+  resolvers,
   driver,
   plugins: {
     auth: new Neo4jGraphQLAuthJWTPlugin({
@@ -43,10 +31,12 @@ const neoSchema = new Neo4jGraphQL({
   },
 })
 
+// eslint-disable-next-line import/prefer-default-export
 export const handler = async (event, context, ...args) => {
   const schema = await neoSchema.getSchema()
 
   const server = new ApolloServer({
+    // eslint-disable-next-line no-shadow
     context: ({ event }) => ({ req: event }),
     introspection: true,
     schema,
