@@ -1,4 +1,4 @@
-import { NetworkCode } from 'utils/financial-utils'
+import { NetworkCode } from '../utils/financial-utils'
 
 /* eslint-disable camelcase */
 export interface TransferData {

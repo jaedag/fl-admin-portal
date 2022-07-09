@@ -40,7 +40,7 @@ export const permitLeader = (churchLevel: ChurchLevel) => {
         'leaderConstituency',
       ]
       break
-    case 'council':
+    case 'councils':
       permittedFor = ['leaderGatheringService', 'leaderStream', 'leaderCouncil']
       break
     case 'stream':

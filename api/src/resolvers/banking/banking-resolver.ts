@@ -1,5 +1,5 @@
-import { Context } from 'utils/neo4j-types'
 import axios from 'axios'
+import { Context } from '../utils/neo4j-types'
 import { permitLeader } from '../permissions'
 import {
   getMobileCode,

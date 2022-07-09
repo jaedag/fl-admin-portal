@@ -71,7 +71,9 @@ export const removeRoles = async (
           `Role successfully removed for ${servant.firstName} ${servant.lastName}`
         )
       )
-      .catch((err) => throwErrorMsg('There was an error removing role', err))
+      .catch((err: any) =>
+        throwErrorMsg('There was an error removing role', err)
+      )
   }
   return servant
 }

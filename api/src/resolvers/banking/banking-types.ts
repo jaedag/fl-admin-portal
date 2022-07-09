@@ -1,5 +1,5 @@
-import { TransferData } from 'arrivals/arrivals-types'
-import { NetworkCode } from 'utils/financial-utils'
+import { TransferData } from '../arrivals/arrivals-types'
+import { NetworkCode } from '../utils/financial-utils'
 
 /* eslint-disable camelcase */
 interface DebitData {

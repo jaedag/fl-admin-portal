@@ -1,7 +1,8 @@
 /* eslint-disable no-console */
-import formData from 'form-data'
-import Mailgun from 'mailgun.js'
 import { Member } from './types'
+
+const formData = require('form-data')
+const Mailgun = require('mailgun.js')
 
 const mailgun = new Mailgun(formData)
 const mg = mailgun.client({
@@ -22,10 +23,11 @@ const notifyMember = (
       to: process.env.TEST_EMAIL_ADDRESS || member.email,
       subject,
       text: body,
+      template: '',
       html: html || undefined, // HTML Version of the Message for Better Styling
     })
-    .then((msg) => console.log('Mailgun API response', msg)) // logs response data
-    .catch((err) => console.log('Mailgun API error', err)) // logs any error
+    .then((msg: any) => console.log('Mailgun API response', msg)) // logs response data
+    .catch((err: any) => console.log('Mailgun API error', err)) // logs any error
 }
 
 export default notifyMember

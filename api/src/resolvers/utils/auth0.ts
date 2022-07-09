@@ -1,4 +1,4 @@
-import { Member, Role } from 'utils/types'
+import { Member, Role } from './types'
 
 export type Auth0RoleObject = {
   // eslint-disable-next-line no-unused-vars
