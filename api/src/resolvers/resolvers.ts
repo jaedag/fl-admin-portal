@@ -11,6 +11,10 @@ import {
 } from './arrivals/arrivals-resolvers'
 import bankingMutation from './banking/banking-resolver'
 
+const dotenv = require('dotenv')
+
+dotenv.config()
+
 const resolvers = {
   // Resolver Parameters
   // Object: the parent result of a previous resolver

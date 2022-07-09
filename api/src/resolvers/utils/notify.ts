@@ -3,11 +3,14 @@ import { Member } from './types'
 
 const formData = require('form-data')
 const Mailgun = require('mailgun.js')
+const dotenv = require('dotenv')
+
+dotenv.config()
 
 const mailgun = new Mailgun(formData)
 const mg = mailgun.client({
   username: 'api',
-  key: process.env.MAILGUN_API_KEY || '',
+  key: process.env.MAILGUN_API_KEY,
 })
 
 const notifyMember = (

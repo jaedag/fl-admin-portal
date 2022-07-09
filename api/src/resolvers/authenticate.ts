@@ -1,5 +1,9 @@
 import axios from 'axios'
 
+const dotenv = require('dotenv')
+
+dotenv.config()
+
 const getTokenConfig = {
   method: 'post',
   url: `${process.env.AUTH0_BASE_URL}oauth/token`,

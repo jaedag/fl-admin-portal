@@ -39,6 +39,10 @@ import {
   uploadMobilisationPicture,
 } from './arrivals-cypher'
 
+const dotenv = require('dotenv')
+
+dotenv.config()
+
 export const arrivalsMutation = {
   MakeConstituencyArrivalsAdmin: async (
     object: any,

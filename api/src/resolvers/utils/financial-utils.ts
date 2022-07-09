@@ -1,6 +1,10 @@
 import { throwErrorMsg } from './utils'
 import { StreamOptions } from './types'
 
+const dotenv = require('dotenv')
+
+dotenv.config()
+
 type Network = 'MTN' | 'Vodafone' | 'AirtelTigo' | 'Airtel' | 'Tigo'
 export type NetworkCode = 'MTN' | 'VDF' | 'ATL' | 'TGO'
 type PaymentErrorCode =

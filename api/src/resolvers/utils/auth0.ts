@@ -1,5 +1,9 @@
 import { Member, Role } from './types'
 
+const dotenv = require('dotenv')
+
+dotenv.config()
+
 export type Auth0RoleObject = {
   // eslint-disable-next-line no-unused-vars
   [key in Role]: { id: string }
