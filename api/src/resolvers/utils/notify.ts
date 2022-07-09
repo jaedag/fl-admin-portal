@@ -20,6 +20,7 @@ const notifyMember = (
   html?: string
 ) => {
   console.log('We will send your message')
+
   mg.messages
     .create('mg.firstlovecenter.com', {
       from: 'FL Accra Admin <no-reply@firstlovecenter.org>',

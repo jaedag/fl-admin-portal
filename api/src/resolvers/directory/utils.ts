@@ -71,9 +71,13 @@ export const removeServantCypher = async ({
   const { servantLower } = terms
   const session = context.executionContext.session()
 
+  if (!servant) {
+    throwErrorMsg('There is no servant to remove')
+  }
+
   // Disconnect him from the Church
   await session.run(servantCypher[`disconnectChurch${servantType}`], {
-    [`${servantLower}Id`]: servant.id,
+    [`${servantLower}Id`]: servant.id ?? '',
     churchId: church.id,
     auth_id: servant.auth_id,
     auth: context.auth,

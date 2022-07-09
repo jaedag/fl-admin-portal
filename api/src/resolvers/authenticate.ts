@@ -1,4 +1,6 @@
 import axios from 'axios'
+import { Auth0RoleObject } from './utils/auth0'
+import { throwErrorMsg } from './utils/utils'
 
 const dotenv = require('dotenv')
 
@@ -17,9 +19,12 @@ const getTokenConfig = {
 }
 
 export const getAuthToken = async () => {
-  const tokenRes = await axios(getTokenConfig)
-
-  return tokenRes.data.access_token
+  try {
+    const tokenRes = await axios(getTokenConfig)
+    return tokenRes.data.access_token
+  } catch (error) {
+    return throwErrorMsg('Problem Obtaining Auth Token', error)
+  }
 }
 
 export const getAuth0Roles = async (authToken: string) => {
@@ -35,19 +40,19 @@ export const getAuth0Roles = async (authToken: string) => {
 
   const rolesRes = await axios(getRolesConfig)
 
-  return rolesRes.data.forEach(
-    (role: { name: string; id: string; description: string }) => {
-      const authRoles: {
-        [key: string]: any
-      } = {}
+  const authRoles: {
+    [key: string]: any
+  } = {}
 
-      authRoles[role.name] = {
-        id: role.id,
-        name: role.name,
-        description: role.description,
-      }
-
-      return authRoles
+  rolesRes.data.forEach((role: Auth0RoleObject) => {
+    authRoles[role.name] = {
+      id: role.id,
+      name: role.name,
+      description: role.description,
     }
-  )
+
+    return authRoles
+  })
+
+  return authRoles
 }
