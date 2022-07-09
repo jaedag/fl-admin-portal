@@ -10,6 +10,7 @@ export type Auth0RoleObject = {
 } & {
   id: string
   name: string
+  description: string
 }
 
 export const createAuthUserConfig = (member: Member, token: string) => ({
