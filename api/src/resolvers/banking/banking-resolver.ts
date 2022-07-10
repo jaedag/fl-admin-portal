@@ -11,12 +11,41 @@ import { isAuth, rearrangeCypherObject, throwErrorMsg } from '../utils/utils'
 
 import {
   checkTransactionId,
+  lastButOneServiceRecord,
   removeBankingRecordTransactionId,
   setServiceRecordTransactionId,
   setTransactionStatusFailed,
   setTransactionStatusSuccess,
+  submitBankingSlip,
 } from './banking-cypher'
 import { PaySwitchRequestBody } from './banking-types'
+
+const checkIfLastServiceBanked = async (
+  serviceRecordId: string,
+  context: Context
+) => {
+  const session = context.executionContext.session()
+  // this checks if the person has banked their last offering
+  const lastServiceRecord = rearrangeCypherObject(
+    await session
+      .run(lastButOneServiceRecord, {
+        serviceRecordId,
+        auth: context.auth,
+      })
+      .catch((error: any) => throwErrorMsg(error))
+  )
+
+  const record = lastServiceRecord.record.properties
+  console.log(record.transactionStatus === 'success')
+
+  if (
+    (!Object.prototype.hasOwnProperty.call(record, 'bankingSlip') ||
+      record.transactionStatus === 'success') &&
+    record.id !== serviceRecordId
+  ) {
+    throwErrorMsg('You cannot bank without banking your previous offering')
+  }
+}
 
 const bankingMutation = {
   BankServiceOffering: async (object: any, args: any, context: Context) => {
@@ -25,6 +54,8 @@ const bankingMutation = {
     const session = context.executionContext.session()
 
     const { merchantId, auth } = getStreamFinancials(args.stream_name)
+
+    await checkIfLastServiceBanked(args.serviceRecordId, context)
 
     // This code checks if there has already been a successful transaction
     const transactionResponse = rearrangeCypherObject(
@@ -170,6 +201,25 @@ const bankingMutation = {
         lastName: banker.lastName,
         fullName: `${banker.firstName} ${banker.fullName}`,
       },
+    }
+  },
+  SubmitBankingSlip: async (object: any, args: any, context: Context) => {
+    isAuth(permitLeader('Fellowship'), context.auth.roles)
+    const session = context.executionContext.session()
+
+    try {
+      await checkIfLastServiceBanked(args.serviceRecordId, context)
+
+      const submissionResponse = rearrangeCypherObject(
+        await session.run(submitBankingSlip, { ...args, auth: context.auth })
+      )
+
+      return submissionResponse.record.properties
+    } catch (error: any) {
+      return throwErrorMsg(
+        'There was an error submitting your banking slip',
+        error
+      )
     }
   },
 }
