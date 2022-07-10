@@ -23,13 +23,9 @@ type FormOptions = {
 }
 
 type Defaulter = {
-  bacenta: {}
-  id: string
   leader: { pictureUrl: string; fullName: string }
-  meetingDay: { day: string }
   name: string
   services: [{}]
-  __typename: string
 }
 
 const ConfirmAnagkazoBanking = () => {

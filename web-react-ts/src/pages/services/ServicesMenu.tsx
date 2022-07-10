@@ -110,7 +110,6 @@ const Services = () => {
             }
             noCaption
           />
-          {/* remove this when you are done */}
           {church.name === 'Anagkazo' && (
             <MenuButton
               iconComponent={CashCoin}
@@ -120,7 +119,6 @@ const Services = () => {
               noCaption
             />
           )}
-          {/* remove this when you are done */}
         </div>
       </Container>
     </div>
