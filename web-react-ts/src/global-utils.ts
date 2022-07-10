@@ -1,3 +1,6 @@
+import { ApolloError } from '@apollo/client'
+import { ChurchLevel, CurrentUser, Member, Role } from 'global-types'
+
 //Global Constants
 export const PHONE_NUM_REGEX = /^[+][(]{0,1}[1-9]{1,4}[)]{0,1}[-\s/0-9]*$/
 export const MOMO_NUM_REGEX = /^[0][\s/0-9]{9}$/
@@ -6,26 +9,31 @@ export const DECIMAL_NUM_REGEX_POSITIVE_ONLY = /^\d*\.{1}\d*$/
 export const USER_PLACEHOLDER = 'v1627893621/user_qvwhs7webp'
 export const DEBOUNCE_TIMER = 500
 
-export const GENDER_OPTIONS = [
+type FormikSelectOptions = {
+  key: string
+  value: string
+}[]
+
+export const GENDER_OPTIONS: FormikSelectOptions = [
   { key: 'Male', value: 'Male' },
   { key: 'Female', value: 'Female' },
 ]
-export const MARITAL_STATUS_OPTIONS = [
+export const MARITAL_STATUS_OPTIONS: FormikSelectOptions = [
   { key: 'Single', value: 'Single' },
   { key: 'Married', value: 'Married' },
 ]
-export const VACATION_OPTIONS = [
+export const VACATION_OPTIONS: FormikSelectOptions = [
   { key: 'Active', value: 'Active' },
   { key: 'Vacation', value: 'Vacation' },
 ]
 
-export const TITLE_OPTIONS = [
+export const TITLE_OPTIONS: FormikSelectOptions = [
   { key: 'Pastor', value: 'Pastor' },
   { key: 'Reverend', value: 'Reverend' },
   { key: 'Bishop', value: 'Bishop' },
 ]
 
-export const SERVICE_DAY_OPTIONS = [
+export const SERVICE_DAY_OPTIONS: FormikSelectOptions = [
   { key: 'Tuesday', value: 'Tuesday' },
   { key: 'Wednesday', value: 'Wednesday' },
   { key: 'Thursday', value: 'Thursday' },
@@ -33,12 +41,12 @@ export const SERVICE_DAY_OPTIONS = [
   { key: 'Saturday', value: 'Saturday' },
 ]
 
-export const BUSSING_STATUS_OPTIONS = [
+export const BUSSING_STATUS_OPTIONS: FormikSelectOptions = [
   { key: 'IC', value: 'IC' },
   { key: 'Graduated', value: 'Graduated' },
 ]
 
-export const throwErrorMsg = (message, error) => {
+export const throwErrorMsg = (message: string, error?: Error | ApolloError) => {
   if (!message && !error) {
     return
   }
@@ -64,12 +72,12 @@ export const throwErrorMsg = (message, error) => {
   alert(`${message} ${error}`)
 }
 
-export const alertMsg = (message) => {
+export const alertMsg = (message: string) => {
   // eslint-disable-next-line no-alert
   alert(message)
 }
 
-export const isAuthorised = (permittedRoles, userRoles) => {
+export const isAuthorised = (permittedRoles: Role[], userRoles: Role[]) => {
   if (permittedRoles?.includes('all')) {
     return true
   }
@@ -77,18 +85,22 @@ export const isAuthorised = (permittedRoles, userRoles) => {
   return permittedRoles?.some((r) => userRoles.includes(r))
 }
 
-export const authorisedLink = (currentUser, permittedRoles, link) => {
+export const authorisedLink = (
+  currentUser: CurrentUser,
+  permittedRoles: Role[],
+  link: string
+): string => {
   if (isAuthorised(permittedRoles, currentUser.roles)) {
     return link
   }
   return '#'
 }
 
-export const capitalise = (str) => {
+export const capitalise = (str: string) => {
   return str?.charAt(0).toUpperCase() + str?.slice(1)
 }
-export const plural = (church) => {
-  switch (church) {
+export const plural = (church: ChurchLevel) => {
+  switch (church.toLowerCase()) {
     case 'stream':
       return 'streams'
     case 'Stream':
@@ -130,7 +142,7 @@ export const plural = (church) => {
   }
 }
 
-export const parsePhoneNum = (phoneNumber) => {
+export const parsePhoneNum = (phoneNumber: string) => {
   let rawNumber = phoneNumber
   if (rawNumber.includes('+2330')) {
     rawNumber = rawNumber.replace('+2330', '+233')
@@ -143,18 +155,21 @@ export const parsePhoneNum = (phoneNumber) => {
     .replace(')', '')
     .replace('-', '')
 }
-export const repackDecimals = (decimal) => {
+export const repackDecimals = (decimal: string | number) => {
   if (decimal === 0) {
     return '0.0'
   }
-  return parseFloat(decimal)
+
+  return parseFloat(decimal.toString())
 }
 
-export const arrayOr = (array) => {
+export const arrayOr = (array: []) => {
   return array.some((element) => element)
 }
 
-export const makeSelectOptions = (initialArray) => {
+export const makeSelectOptions = (
+  initialArray: { id: string; name: string; fullName: string }[]
+): FormikSelectOptions | null => {
   if (!initialArray) {
     return null
   }
@@ -166,10 +181,10 @@ export const makeSelectOptions = (initialArray) => {
 }
 
 // debouncing function
-export const debounce = (callback, delay = 500) => {
-  let timeout
+export const debounce = (callback: () => void, delay = 500) => {
+  let timeout: any
 
-  return (...args) => {
+  return (...args: []) => {
     clearTimeout(timeout)
     // Clears timer if code haskk not yet executed
 
@@ -179,7 +194,18 @@ export const debounce = (callback, delay = 500) => {
   }
 }
 
-export const getHighestTitle = (member) => {
+interface MemberWithTitle extends Member {
+  titleConnection: {
+    edges: {
+      node: { title: 'Pastor' | 'Reverend' | 'Bishop' }
+    }[]
+  }
+  gender: {
+    gender: 'Male' | 'Female'
+  }
+}
+
+export const getHighestTitle = (member: MemberWithTitle) => {
   if (!member.titleConnection.edges?.length) {
     return
   }
@@ -216,7 +242,7 @@ export const getHighestTitle = (member) => {
   return highestTitle
 }
 
-export const getNameWithTitle = (member) => {
+export const getNameWithTitle = (member?: MemberWithTitle) => {
   if (!member) {
     return null
   }
@@ -231,7 +257,7 @@ export const getNameWithTitle = (member) => {
   return displayName.name
 }
 
-export const average = (array) => {
+export const average = (array: []) => {
   let i = 0
   let sum = 0
   const len = array.length
@@ -241,13 +267,22 @@ export const average = (array) => {
   return sum / len
 }
 
-export const parseMemberCount = (number) => {
+export const parseMemberCount = (number: number) => {
   if (number === 1) {
     return `${number} Member`
   }
   return `${number} Members`
 }
-export const getMemberCount = (servant) => {
+interface MemberWithChurchCount extends Member {
+  memberCount: number
+  basontaMembershipCount: number
+  leadsFellowshipCount: number
+  leadsBacentaCount: number
+  leadsAdminsCouncilCount: number
+  leadsAdminsConstituencyCount: number
+  leadsAdminsGatheringServiceCount: number
+}
+export const getMemberCount = (servant: MemberWithChurchCount) => {
   if (!servant?.memberCount) {
     return
   }
@@ -255,7 +290,8 @@ export const getMemberCount = (servant) => {
     servant?.basontaMembershipCount
   } in Ministries`
 }
-export const getChurchCount = (servant) => {
+
+export const getChurchCount = (servant: MemberWithChurchCount) => {
   let churchesCount = ''
 
   if (servant?.leadsAdminsGatheringServiceCount) {
@@ -333,7 +369,7 @@ export const getChurchCount = (servant) => {
   return churchesCount
 }
 
-export const getSubChurchLevel = (churchType) => {
+export const getSubChurchLevel = (churchType: ChurchLevel) => {
   switch (churchType) {
     case 'Constituency':
       return 'Bacenta'

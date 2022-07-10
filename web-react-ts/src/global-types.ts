@@ -4,6 +4,19 @@ export type JSXChildren = {
 
 export type FunctionReturnsVoid = () => void
 
+export type HTMLElement =
+  | 'div'
+  | 'span'
+  | 'h1'
+  | 'h2'
+  | 'h3'
+  | 'h4'
+  | 'h5'
+  | 'h6'
+  | 'p'
+  | 'td'
+  | 'tr'
+
 export type ChurchLevel =
   | 'Fellowship'
   | 'Bacenta'
@@ -44,7 +57,7 @@ export type VerbTypes =
   | 'isArrivalsCounterFor'
   | 'isArrivalsConfirmerFor'
 
-export interface MemberType {
+export interface Member {
   __typename: 'Member'
   id: string
   firstName: string
@@ -59,6 +72,11 @@ export interface MemberType {
     id: string
     name: string
   }
+}
+
+export type CurrentUser = {
+  id: string
+  roles: Role[]
 }
 
 export type Church = {

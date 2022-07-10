@@ -1,9 +1,32 @@
 import { useAuth0 } from '@auth0/auth0-react'
+import { HTMLElement } from 'global-types'
 import React from 'react'
 import { Placeholder } from 'react-bootstrap'
 import '../pages/services/graphs/Graphs.css'
 
-const PlaceholderCustom = (props) => {
+type PlaceholderCustomProps = {
+  loading?: boolean
+  children: React.ReactNode
+  xs?: number
+  sm?: number
+  md?: number
+  lg?: number
+  as?: HTMLElement
+  size?: 'sm' | 'lg'
+  variant?:
+    | 'primary'
+    | 'secondary'
+    | 'success'
+    | 'danger'
+    | 'warning'
+    | 'info'
+    | 'light'
+    | 'dark'
+  className?: string
+  button?: boolean
+}
+
+const PlaceholderCustom = (props: PlaceholderCustomProps) => {
   const { isAuthenticated } = useAuth0()
   const { loading, children, as, size, xs, ...rest } = props
 

@@ -16,7 +16,7 @@ const MembersDirectoryRoute = ({
   roles,
 }: {
   children: JSX.Element
-  roles: Role
+  roles: Role[]
 }) => {
   const { currentUser } = useContext(MemberContext)
   const church = useContext(ChurchContext)
