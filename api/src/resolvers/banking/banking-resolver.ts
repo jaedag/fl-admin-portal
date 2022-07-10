@@ -19,6 +19,7 @@ import {
   submitBankingSlip,
 } from './banking-cypher'
 import { PaySwitchRequestBody } from './banking-types'
+import { StreamOptions } from '../utils/types'
 
 const checkIfLastServiceBanked = async (
   serviceRecordId: string,
@@ -125,7 +126,12 @@ const bankingMutation = {
     }
   },
 
-  ConfirmOfferingPayment: async (object: any, args: any, context: Context) => {
+  ConfirmOfferingPayment: async (
+    object: any,
+    // eslint-disable-next-line camelcase
+    args: { stream_name: StreamOptions; serviceRecordId: string },
+    context: Context
+  ) => {
     isAuth(permitLeader('Fellowship'), context.auth.roles)
     const session = context.executionContext.session()
     const { merchantId, auth } = getStreamFinancials(args.stream_name)
@@ -213,7 +219,11 @@ const bankingMutation = {
       },
     }
   },
-  SubmitBankingSlip: async (object: any, args: any, context: Context) => {
+  SubmitBankingSlip: async (
+    object: any,
+    args: { serviceRecordId: string; bankingSlip: string },
+    context: Context
+  ) => {
     isAuth(permitLeader('Fellowship'), context.auth.roles)
     const session = context.executionContext.session()
 
