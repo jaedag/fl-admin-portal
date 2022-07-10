@@ -54,14 +54,14 @@ const bankingMutation = {
 
     const { merchantId, auth } = getStreamFinancials(args.stream_name)
 
-    await checkIfLastServiceBanked(args.serviceRecordId, context)
-
     // This code checks if there has already been a successful transaction
     const transactionResponse = rearrangeCypherObject(
       await session
         .run(checkTransactionId, args)
         .catch((error: any) => throwErrorMsg(error))
     )
+
+    await checkIfLastServiceBanked(args.serviceRecordId, context)
 
     const transactionStatus =
       transactionResponse?.record.properties.transactionStatus

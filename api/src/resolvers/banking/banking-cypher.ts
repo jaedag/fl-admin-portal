@@ -56,10 +56,10 @@ RETURN record, church.name AS churchName, date.date AS date
 `
 export const lastButOneServiceRecord = `
 MATCH (record:ServiceRecord {id: $serviceRecordId})
-MATCH (record)<-[:HAS_SERVICE]-(:HistoryLog)<-[:HAS_HISTORY]-(fellowship) 
+MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowship) 
 WHERE fellowship:Fellowship OR fellowship:ClosedFellowship
 WITH fellowship
-MATCH (record:ServiceRecord)<-[:HAS_SERVICE]-(:HistoryLog)<-[:HAS_HISTORY]-(fellowship) 
+MATCH (record:ServiceRecord)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowship) 
 WHERE NOT (record:NoService)
 WITH fellowship, record ORDER BY record.created_at DESC LIMIT 2
 WITH min(record.created_at) as lowDate, fellowship
