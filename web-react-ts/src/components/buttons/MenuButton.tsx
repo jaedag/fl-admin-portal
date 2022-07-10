@@ -68,7 +68,7 @@ const MenuButton = (props: MenuButtonProps) => {
 
         <Col className="btn-right-col">
           <PlaceholderCustom loading={!props.title} as="div" xs={10}>
-            <span>{capitalise(props.title)}</span>
+            <span>{capitalise(props?.title ?? '')}</span>
           </PlaceholderCustom>
           {!props.noCaption && (
             <PlaceholderCustom loading={!props.caption} as="div" xs={10}>

@@ -1,6 +1,6 @@
 import React from 'react'
 import { useQuery } from '@apollo/client'
-import Timeline from '../../../components/Timeline/Timeline'
+import Timeline from '../../../components/Timeline/Timeline.tsx'
 import MemberRoleList from '../../../components/MemberRoleList'
 import {
   getNameWithTitle,

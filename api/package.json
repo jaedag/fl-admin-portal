@@ -13,6 +13,19 @@
   },
   "author": "William Lyon",
   "license": "MIT",
+  "eslintConfig": {
+    "plugins": [
+      "@typescript-eslint",
+      "no-relative-import-paths",
+      "import"
+    ],
+    "rules": {
+      "import/no-unresolved": "off",
+      "no-console": "off",
+      "@typescript-eslint/no-explicit-any": "off",
+      "no-relative-import-paths/no-relative-import-paths": "off"
+    }
+  },
   "dependencies": {
     "@apollo/client": "^3.2.5",
     "@neo4j/graphql": "^3.4.0",
@@ -21,6 +34,7 @@
     "apollo-server": "^3.5.0",
     "apollo-server-express": "^3.9.0",
     "apollo-server-lambda": "^3.5.0",
+    "auth0": "^2.42.0",
     "axios": "^0.27.2",
     "csv-parse": "^5.0.3",
     "dotenv": "^10.0.0",

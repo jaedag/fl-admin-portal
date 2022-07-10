@@ -1,19 +1,20 @@
-import { permitAdmin, permitLeaderAdmin } from './permissions'
-import {
-  createChurchHistorySubstructure,
-  isAuth,
-  rearrangeCypherObject,
-  throwErrorMsg,
-} from './resolver-utils'
-import { RemoveServant } from './resolvers'
-const cypher = require('./cypher/resolver-cypher')
-const servantCypher = require('./cypher/servant-cypher')
-const closeChurchCypher = require('./cypher/close-church-cypher')
-const errorMessage = require('./texts.json').error
+import { Context } from '../utils/neo4j-types'
+import { Member } from '../utils/types'
+import { isAuth, rearrangeCypherObject, throwErrorMsg } from '../utils/utils'
+import { permitAdmin, permitLeaderAdmin } from '../permissions'
+import { RemoveServant } from './make-remove-servants'
+import CreateChurchHistorySubstructure, {
+  HistorySubstructureArgs,
+} from './history-substructure'
 
-export const directoryMutation = {
-  CreateMember: async (object, args, context) => {
-    isAuth(permitLeaderAdmin('Fellowship'), context.auth.roles)
+const cypher = require('../cypher/resolver-cypher')
+const servantCypher = require('./servant-cypher')
+const closeChurchCypher = require('../cypher/close-church-cypher')
+const errorMessage = require('../texts.json').error
+
+const directoryMutation = {
+  CreateMember: async (object: any, args: Member, context: Context) => {
+    isAuth(permitLeaderAdmin('Fellowship'), context?.auth.roles)
 
     const session = context.executionContext.session()
     const memberResponse = await session.run(
@@ -24,7 +25,7 @@ export const directoryMutation = {
     const memberCheck = rearrangeCypherObject(memberResponse)
 
     if (memberCheck.email || memberCheck.whatsappNumber) {
-      throwErrorMsg(errorMessage.no_duplicate_email_or_whatsapp, '')
+      throwErrorMsg(errorMessage.no_duplicate_email_or_whatsapp)
     }
 
     const createMemberResponse = await session.run(cypher.createMember, {
@@ -49,7 +50,7 @@ export const directoryMutation = {
     return member
   },
 
-  MakeMemberInactive: async (object, args, context) => {
+  MakeMemberInactive: async (object: any, args: never, context: Context) => {
     isAuth(permitLeaderAdmin('Stream'), context.auth.roles)
     const session = context.executionContext.session()
 
@@ -69,7 +70,7 @@ export const directoryMutation = {
 
     return member?.properties
   },
-  CloseDownFellowship: async (object, args, context) => {
+  CloseDownFellowship: async (object: any, args: any, context: Context) => {
     isAuth(permitAdmin('Constituency'), context.auth.roles)
 
     const session = context.executionContext.session()
@@ -87,7 +88,7 @@ export const directoryMutation = {
         )
       }
 
-      //Fellowship Leader must be removed since the fellowship is being closed down
+      // Fellowship Leader must be removed since the fellowship is being closed down
       await RemoveServant(
         context,
         args,
@@ -109,15 +110,16 @@ export const directoryMutation = {
         }
       )
 
-      const fellowshipResponse = rearrangeCypherObject(closeFellowshipResponse) //Returns a Bacenta
+      const fellowshipResponse = rearrangeCypherObject(closeFellowshipResponse) // Returns a Bacenta
 
       return fellowshipResponse.bacenta
-    } catch (error) {
-      throwErrorMsg(error)
+    } catch (error: any) {
+      throwErrorMsg('', error)
     }
+    return null
   },
 
-  CloseDownBacenta: async (object, args, context) => {
+  CloseDownBacenta: async (object: any, args: any, context: Context) => {
     isAuth(permitAdmin('Constituency'), context.auth.roles)
 
     const session = context.executionContext.session()
@@ -135,7 +137,7 @@ export const directoryMutation = {
         )
       }
 
-      //Bacenta Leader must be removed since the Bacenta is being closed down
+      // Bacenta Leader must be removed since the Bacenta is being closed down
       await RemoveServant(
         context,
         args,
@@ -154,11 +156,12 @@ export const directoryMutation = {
 
       const bacentaResponse = rearrangeCypherObject(closeBacentaResponse)
       return bacentaResponse.constituency
-    } catch (error) {
+    } catch (error: any) {
       throwErrorMsg(error)
     }
+    return null
   },
-  CloseDownConstituency: async (object, args, context) => {
+  CloseDownConstituency: async (object: any, args: any, context: Context) => {
     isAuth(permitAdmin('Council'), context.auth.roles)
 
     const session = context.executionContext.session()
@@ -176,7 +179,7 @@ export const directoryMutation = {
         )
       }
 
-      //Bacenta Leader must be removed since the Bacenta is being closed down
+      // Bacenta Leader must be removed since the Bacenta is being closed down
       await RemoveServant(
         context,
         args,
@@ -197,20 +200,25 @@ export const directoryMutation = {
         closeConstituencyResponse
       )
       return constituencyResponse.council
-    } catch (error) {
+    } catch (error: any) {
       throwErrorMsg(error)
     }
+    return null
   },
-  CreateChurchSubstructure: async (object, args, context) => {
+  CreateChurchSubstructure: async (
+    object: any,
+    args: any,
+    context: Context
+  ) => {
     const session = context.executionContext.session()
 
     const church = {
       id: args.churchId,
     }
-    const churchType = args.churchType
-    const servantType = args.servantType
+    const { churchType } = args
+    const { servantType } = args
 
-    const functionArguments = {
+    const functionArguments: HistorySubstructureArgs = {
       churchType,
       servantType,
       church,
@@ -220,8 +228,10 @@ export const directoryMutation = {
     await session.run(servantCypher.newDuplicateServiceLog, {
       id: church.id,
     })
-    await createChurchHistorySubstructure(functionArguments)
+    await CreateChurchHistorySubstructure(functionArguments)
 
     return church.id
   },
 }
+
+export default directoryMutation

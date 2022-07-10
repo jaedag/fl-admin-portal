@@ -4,13 +4,12 @@ import { Table } from 'react-bootstrap'
 import PlaceholderCustom from '../Placeholder'
 import './TableFromArrays.css'
 
-const TableFromArrays = ({
-  tableArray,
-  loading,
-}: {
+type TableFromArrayProps = {
   tableArray: string[][]
   loading: boolean
-}) => {
+}
+
+const TableFromArrays = ({ tableArray, loading }: TableFromArrayProps) => {
   const { theme } = useContext(MemberContext)
 
   return (
