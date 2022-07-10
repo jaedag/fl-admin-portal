@@ -43,14 +43,12 @@ export const campaignsMutation = {
         await session.run(getEquipmentCampaign)
       )
 
-      console.log(equipmentCampaign)
-
       const currentDate = new Date(args.date)
       const startDate = new Date(equipmentCampaign.campaign.equipmentStartDate)
       const endDate = new Date(equipmentCampaign.campaign.equipmentEndDate)
 
       if (currentDate >= startDate && currentDate <= endDate) {
-        const date = equipmentCampaign.campaign.equipmentStartDate
+        const date = equipmentCampaign.campaign.equipmentDate
 
         const equipmentRecordExists = rearrangeCypherObject(
           await session.run(checkExistingEquipmentRecord, args)
@@ -97,12 +95,12 @@ export const campaignsMutation = {
         await session.run(getEquipmentCampaign)
       )
 
-      const currentDate = args.date
-      const startDate = equipmentCampaign.campaign.properties.equipmentStartDate
-      const endDate = equipmentCampaign.campaign.properties.equipmentEndDate
+      const currentDate = new Date(args.date)
+      const startDate = new Date(equipmentCampaign.campaign.equipmentStartDate)
+      const endDate = new Date(equipmentCampaign.campaign.equipmentEndDate)
 
       if (currentDate >= startDate && currentDate <= endDate) {
-        const date = startDate
+        const date = equipmentCampaign.campaign.equipmentDate
 
         const equipmentRecordExists = rearrangeCypherObject(
           await session.run(checkExistingEquipmentRecord, args)

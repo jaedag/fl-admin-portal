@@ -20,8 +20,7 @@ RETURN gatheringService
 
 export const createFellowshipEquipmentRecord = `
 MATCH (fellowship:Fellowship {id:$id})
-MATCH (fellowship)-[:CURRENT_HISTORY]->(log:HistoryLog)
-MATCH (date:TimeGraph {date:date($date)})
+MATCH (fellowship)-[:CURRENT_HISTORY]->(log:ServiceLog)
 MATCH (member:Member {auth_id: $auth.jwt.sub})
 CREATE (record:EquipmentRecord)
 SET
@@ -30,6 +29,7 @@ record.id = apoc.create.uuid(),
 record.offeringBags = $offeringBags
 
 MERGE (log)-[:HAS_EQUIPMENT_RECORD]->(record)
+MERGE (date:TimeGraph {date:date($date)})
 MERGE (record)-[:HAS_EQUIPMENT_DATE]->(date)
 MERGE (record)-[:LOGGED_BY]->(member)
 RETURN record
@@ -45,8 +45,7 @@ RETURN church
 `
 export const createConstituencyEquipmentRecord = `
 MATCH (con:Constituency {id:$id})
-MATCH (con)-[:CURRENT_HISTORY]->(log:HistoryLog)
-MATCH (date:TimeGraph {date:date($date)})
+MATCH (con)-[:CURRENT_HISTORY]->(log:ServiceLog)
 MATCH (member:Member {auth_id: $auth.jwt.sub})
 CREATE (record:EquipmentRecord)
 SET
@@ -55,6 +54,7 @@ record.id = apoc.create.uuid(),
 record.pulpits = $pulpits
 
 MERGE (log)-[:HAS_EQUIPMENT_RECORD]->(record)
+MERGE (date:TimeGraph {date:date($date)})
 MERGE (record)-[:HAS_EQUIPMENT_DATE]->(date)
 MERGE (record)-[:LOGGED_BY]->(member)
 RETURN record
