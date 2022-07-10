@@ -1,6 +1,29 @@
-import { throwErrorMsg } from './resolver-utils'
+import { throwErrorMsg } from './utils'
+import { StreamOptions } from './types'
 
-export const getMobileCode = (network) => {
+const dotenv = require('dotenv')
+
+dotenv.config()
+
+type Network = 'MTN' | 'Vodafone' | 'AirtelTigo' | 'Airtel' | 'Tigo'
+export type NetworkCode = 'MTN' | 'VDF' | 'ATL' | 'TGO'
+type PaymentErrorCode =
+  | '100'
+  | '101'
+  | '102'
+  | '103'
+  | '104'
+  | '105'
+  | '107'
+  | '111'
+  | '114'
+  | '200'
+  | '600'
+  | '909'
+  | '979'
+  | '999'
+
+export const getMobileCode = (network: Network): NetworkCode => {
   switch (network) {
     case 'MTN':
       return 'MTN'
@@ -15,18 +38,22 @@ export const getMobileCode = (network) => {
     default:
       break
   }
+
+  return 'MTN'
 }
 
-export const padNumbers = (number) => {
+export const padNumbers = (number: number): string => {
   if (!number) {
-    return
+    return ''
   }
   return number.toString().padStart(12, '0')
 }
-export const handlePaymentError = (paymentResponse) => {
-  const code = paymentResponse.data.code
+export const handlePaymentError = (paymentResponse: {
+  data: { code: PaymentErrorCode }
+}) => {
+  const { code } = paymentResponse.data
 
-  switch (code.toString()) {
+  switch (code) {
     case '105':
     case '101':
       throwErrorMsg('101 Payment Unsuccessful!')
@@ -66,22 +93,28 @@ export const handlePaymentError = (paymentResponse) => {
     case '999':
       throwErrorMsg('Access Denied. Merchant ID is not set')
       break
+    default:
+      break
   }
 }
-export const getStreamFinancials = (stream) => {
-  let merchantId, auth, passcode
 
-  switch (stream) {
-    case 'Anagkazo':
+export const getStreamFinancials = (stream: StreamOptions) => {
+  let merchantId = process.env.PAYSWITCH_MERCHANT_ID
+  let auth = process.env.PAYSWITCH_AUTH
+  let passcode = process.env.PAYSWITCH_PASSCODE
+
+  switch (stream.toLowerCase()) {
+    case 'anagkazo':
       throwErrorMsg('Anagkazo has a different way of banking their offerings')
       break
-    case 'Campus':
     case 'campus':
-    case 'Town':
     case 'town':
       merchantId = process.env.PAYSWITCH_MERCHANT_ID
       auth = process.env.PAYSWITCH_AUTH
       passcode = process.env.PAYSWITCH_PASSCODE
+      break
+
+    default:
       break
   }
 

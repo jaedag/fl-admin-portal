@@ -122,7 +122,7 @@ const ConfirmAnagkazoBanking = () => {
                   setSubmitting(false)
                   refetch({ id: streamId })
                   navigate('/anagkazo/receive-banking')
-                } catch (error) {
+                } catch (error: any) {
                   setSubmitting(false)
                   throwErrorMsg(error)
                 }

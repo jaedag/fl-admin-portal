@@ -114,7 +114,7 @@ export const removeOldChurches = async (
               leaderId: church?.leader?.id,
             },
           })
-        } catch (error) {
+        } catch (error: any) {
           throwErrorMsg('There was a problem closing down the church', error)
         }
       })
