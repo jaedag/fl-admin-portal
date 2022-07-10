@@ -47,7 +47,18 @@ const checkIfLastServiceBanked = async (
 }
 
 const bankingMutation = {
-  BankServiceOffering: async (object: any, args: any, context: Context) => {
+  BankServiceOffering: async (
+    object: any,
+    args: {
+      // eslint-disable-next-line camelcase
+      stream_name: string
+      serviceRecordId: number
+      mobileNetwork: string
+      mobileNumber: string
+      momoName: string
+    },
+    context: Context
+  ) => {
     isAuth(permitLeader('Fellowship'), context.auth.roles)
 
     const session = context.executionContext.session()
