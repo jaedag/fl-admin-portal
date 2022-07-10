@@ -36,7 +36,6 @@ const checkIfLastServiceBanked = async (
   )
 
   const record = lastServiceRecord.record.properties
-  console.log(record.transactionStatus === 'success')
 
   if (
     (!Object.prototype.hasOwnProperty.call(record, 'bankingSlip') ||
