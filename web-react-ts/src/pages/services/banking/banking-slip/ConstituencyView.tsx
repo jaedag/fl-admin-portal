@@ -19,7 +19,7 @@ const ConstituencyBankingSlipView = () => {
   })
   const constituency = data?.constituencies[0]
   const placeholder = ['', '', '']
-  throwErrorMsg(error)
+  throwErrorMsg('', error)
 
   return (
     <Container>

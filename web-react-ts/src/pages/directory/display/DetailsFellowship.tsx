@@ -21,7 +21,7 @@ const DetailsFellowship = () => {
   const { data: historyData } = useQuery(DISPLAY_FELLOWSHIP_HISTORY, {
     variables: { id: fellowshipId },
   })
-  throwErrorMsg(fellowshipError)
+  throwErrorMsg('', fellowshipError)
   const fellowship = fellowshipData?.fellowships[0]
   const history = historyData?.fellowships[0]
 

@@ -57,8 +57,8 @@ const FellowshipBankingSlipSubmission = () => {
       onSubmitProps.resetForm()
       clickCard(fellowship)
       navigate(`/fellowship/service-details`)
-    } catch (error) {
-      throwErrorMsg(error)
+    } catch (error: any) {
+      throwErrorMsg('', error)
     }
   }
 

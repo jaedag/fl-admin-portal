@@ -3,19 +3,20 @@ export type JSXChildren = {
 }
 
 export type FunctionReturnsVoid = () => void
+export type HTMLElement =
+  | 'div'
+  | 'span'
+  | 'h1'
+  | 'h2'
+  | 'h3'
+  | 'h4'
+  | 'h5'
+  | 'h6'
+  | 'p'
+  | 'td'
+  | 'tr'
 
-export type UserJobs = {
-  name: string
-  church: Church[]
-  number: number
-  link: string
-}
-
-export interface Servant {
-  id: string
-  roles: Role[]
-}
-
+// CHURCHES
 export type ChurchLevel =
   | 'Fellowship'
   | 'Bacenta'
@@ -24,6 +25,122 @@ export type ChurchLevel =
   | 'Stream'
   | 'GatheringService'
   | 'Denomination'
+
+export type Church = {
+  id: string
+  name: string
+  leader: {
+    id: string
+    firstName: string
+    lastName: string
+  }
+  vacationStatus: 'Vacation' | 'Active'
+  __typename: ChurchLevel
+}
+
+export type ChurchIdAndName = {
+  id: string
+  name: string
+}
+
+export type StreamOptions = 'Campus' | 'Town' | 'Anagkazo'
+
+export interface StreamInterface {
+  id: string
+  name: string
+  __typename: ChurchLevel
+}
+
+//MEMBERSHIP
+export interface MemberWithoutBioData {
+  id: string
+  // eslint-disable-next-line camelcase
+  auth_id?: string
+  firstName: string
+  lastName: string
+}
+
+export interface Member {
+  __typename: 'Member'
+  id: string
+  // eslint-disable-next-line camelcase
+  auth_id: string
+  firstName: string
+  middleName?: string
+  lastName: string
+  fullName: string
+  email: string
+  pictureUrl: string
+  phoneNumber: string
+  whatsappNumber: string
+  dob: string
+  maritalStatus: string
+  gender: { gender: 'Male' | 'Female' }
+  occupation: string
+  fellowship: {
+    id: string
+    name: string
+  }
+  ministry: {
+    id: string
+    name: string
+  }
+}
+
+export interface MemberWithChurches extends Member {
+  leadsFellowship: Church[]
+  leadsBacenta: Church[]
+  leadsConstituency: Church[]
+  leadsCouncil: Church[]
+  leadsStream: Church[]
+  leadsSonta: Church[]
+  leadsGatheringService: Church[]
+  leadsDenomination: Church[]
+  leadsMinistry: Church[]
+  isAdminForConstituency: Church[]
+  isAdminForCouncil: Church[]
+  isAdminForStream: Church[]
+  isAdminForGatheringService: Church[]
+}
+
+export interface Servant {
+  id: string
+  roles: Role[]
+}
+
+export type ServantType =
+  | 'Leader'
+  | 'Admin'
+  | 'ArrivalsAdmin'
+  | 'ArrivalsCounter'
+  | 'ArrivalsConfirmer'
+  | 'Teller'
+
+export type ServantTypeLowerCase =
+  | 'leader'
+  | 'admin'
+  | 'arrivalsAdmin'
+  | 'arrivalsCounter'
+  | 'arrivalsConfirmer'
+
+export type CurrentUser = {
+  id: string
+  roles: Role[]
+}
+
+export type UserRole = {
+  name: string
+  church: Church[]
+  number: number
+  link: string
+}
+
+export type UserJobs = {
+  name: string
+  church: Church[]
+  number: number
+  link: string
+}
 
 export type RouteTypes = {
   path: string
@@ -66,48 +183,6 @@ export type VerbTypes =
   | 'isArrivalsCounterFor'
   | 'isArrivalsConfirmerFor'
 
-export interface MemberType {
-  __typename: 'Member'
-  id: string
-  firstName: string
-  lastName: string
-  fullName: string
-  pictureUrl: string
-  fellowship: {
-    id: string
-    name: string
-  }
-  ministry: {
-    id: string
-    name: string
-  }
-}
-
-export interface Church {
-  id: string
-  name: string
-  leader: {
-    id: string
-    firstName: string
-    lastName: string
-  }
-  vacationStatus: 'Vacation' | 'Active'
-  __typename: ChurchLevel
-}
-
-export interface StreamInterface {
-  id: string
-  name: string
-  __typename: ChurchLevel
-}
-
-export type UserRole = {
-  name: string
-  church: Church[]
-  number: number
-  link: string
-}
-
 export type ServiceRecord = {
   id: string
   income: number
@@ -119,70 +194,4 @@ export type ServiceRecord = {
   serviceDate: {
     date: string
   }
-}
-
-export type ServantType =
-  | 'Leader'
-  | 'Admin'
-  | 'ArrivalsAdmin'
-  | 'ArrivalsCounter'
-  | 'ArrivalsConfirmer'
-  | 'Teller'
-
-export type ServantTypeLowerCase =
-  | 'leader'
-  | 'admin'
-  | 'arrivalsAdmin'
-  | 'arrivalsCounter'
-  | 'arrivalsConfirmer'
-
-export type StreamOptions = 'Campus' | 'Town' | 'Anagkazo'
-
-export interface Member {
-  id: string
-  // eslint-disable-next-line camelcase
-  auth_id: string
-  firstName: string
-  middleName?: string
-  lastName: string
-  fullName: string
-  email: string
-  pictureUrl: string
-  phoneNumber: string
-  whatsappNumber: string
-  dob: string
-  maritalStatus: string
-  gender: string
-  occupation: string
-  fellowship: string
-  ministry: string
-}
-
-export interface MemberWithoutBioData {
-  id: string
-  // eslint-disable-next-line camelcase
-  auth_id?: string
-  firstName: string
-  lastName: string
-}
-
-export interface MemberWithChurches extends Member {
-  leadsFellowship: Church[]
-  leadsBacenta: Church[]
-  leadsConstituency: Church[]
-  leadsCouncil: Church[]
-  leadsStream: Church[]
-  leadsSonta: Church[]
-  leadsGatheringService: Church[]
-  leadsDenomination: Church[]
-  leadsMinistry: Church[]
-  isAdminForConstituency: Church[]
-  isAdminForCouncil: Church[]
-  isAdminForStream: Church[]
-  isAdminForGatheringService: Church[]
-}
-
-export type ChurchIdAndName = {
-  id: string
-  name: string
 }

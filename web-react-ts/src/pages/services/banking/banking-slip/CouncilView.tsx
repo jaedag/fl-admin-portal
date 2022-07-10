@@ -19,7 +19,7 @@ const CouncilBankingSlipView = () => {
   })
   const council = data?.councils[0]
   const placeholder = ['', '', '']
-  throwErrorMsg(error)
+  throwErrorMsg('', error)
 
   return (
     <Container>
@@ -76,10 +76,7 @@ const CouncilBankingSlipView = () => {
               <Card.Body>
                 <Row>
                   <Col>
-                    <PlaceholderCustom
-                      as="span"
-                      loading={loading}
-                    ></PlaceholderCustom>
+                    <PlaceholderCustom as="span" loading={loading} />
                   </Col>
                 </Row>
               </Card.Body>

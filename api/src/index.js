@@ -4,10 +4,7 @@ import neo4j from 'neo4j-driver'
 import { Neo4jGraphQL } from '@neo4j/graphql'
 import { Neo4jGraphQLAuthJWTPlugin } from '@neo4j/graphql-plugin-auth'
 import { typeDefs } from './schema/graphql-schema'
-import { resolvers } from './resolvers/resolvers'
-import { serviceResolvers } from './resolvers/service-resolvers'
-import { arrivalsResolvers } from './resolvers/arrivals/arrivals-resolvers'
-import { componentResolvers } from './resolvers/aggregates/component-resolvers'
+import resolvers from './resolvers/resolvers'
 
 const app = express()
 
@@ -24,12 +21,7 @@ const driver = neo4j.driver(
 
 const neoSchema = new Neo4jGraphQL({
   typeDefs,
-  resolvers: {
-    ...resolvers,
-    ...serviceResolvers,
-    ...arrivalsResolvers,
-    ...componentResolvers,
-  },
+  resolvers,
   driver,
   plugins: {
     auth: new Neo4jGraphQLAuthJWTPlugin({

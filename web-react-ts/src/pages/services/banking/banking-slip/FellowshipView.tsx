@@ -21,7 +21,7 @@ const FellowshipBankingSlipView = () => {
   })
   const fellowship = data?.fellowships[0]
   const placeholder = ['', '', '']
-  throwErrorMsg(error)
+  throwErrorMsg('', error)
 
   return (
     <ApolloWrapper data={data} loading={loading} error={error}>
@@ -86,18 +86,16 @@ const FellowshipBankingSlipView = () => {
             return (
               <Card key={index} className="mb-2">
                 <Card.Header>
-                  <PlaceholderCustom
-                    as="p"
-                    loading={loading}
-                  ></PlaceholderCustom>
+                  <PlaceholderCustom as="p" loading={loading}>
+                    <div></div>
+                  </PlaceholderCustom>
                 </Card.Header>
                 <Card.Body>
                   <Row>
                     <Col>
-                      <PlaceholderCustom
-                        as="span"
-                        loading={loading}
-                      ></PlaceholderCustom>
+                      <PlaceholderCustom as="span" loading={loading}>
+                        <div></div>
+                      </PlaceholderCustom>
                     </Col>
                   </Row>
                 </Card.Body>

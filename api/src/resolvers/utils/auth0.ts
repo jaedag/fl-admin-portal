@@ -1,13 +1,25 @@
-import { getRoleId } from './resolvers'
-import { authToken } from './resolvers'
+import { Member, Role } from './types'
 
-export const createAuthUserConfig = (member, authToken) => ({
+const dotenv = require('dotenv')
+
+dotenv.config()
+
+export type Auth0RoleObject = {
+  // eslint-disable-next-line no-unused-vars
+  [key in Role]: { id: string }
+} & {
+  id: string
+  name: string
+  description: string
+}
+
+export const createAuthUserConfig = (member: Member, token: string) => ({
   method: 'post',
   baseURL: process.env.AUTH0_BASE_URL,
   url: `/api/v2/users`,
   headers: {
     autho: '',
-    Authorization: `Bearer ${authToken}`,
+    Authorization: `Bearer ${token}`,
   },
   data: {
     connection: `flcadmin${process.env.TEST_ENV ? '-test' : ''}`,
@@ -23,13 +35,13 @@ export const createAuthUserConfig = (member, authToken) => ({
   },
 })
 
-export const updateAuthUserConfig = (member, authToken) => ({
+export const updateAuthUserConfig = (member: Member, token: string) => ({
   method: 'patch',
   baseURL: process.env.AUTH0_BASE_URL,
   url: `/api/v2/users/${member.auth_id}`,
   headers: {
     autho: '',
-    Authorization: `Bearer ${authToken}`,
+    Authorization: `Bearer ${token}`,
   },
   data: {
     connection: `flcadmin${process.env.TEST_ENV ? '-test' : ''}`,
@@ -43,13 +55,13 @@ export const updateAuthUserConfig = (member, authToken) => ({
   },
 })
 
-export const changePasswordConfig = (member, authToken) => ({
+export const changePasswordConfig = (member: Member, token: string) => ({
   method: 'post',
   baseURL: process.env.AUTH0_BASE_URL,
   url: `/api/v2/tickets/password-change`,
   headers: {
     autho: '',
-    Authorization: `Bearer ${authToken}`,
+    Authorization: `Bearer ${token}`,
   },
 
   data: {
@@ -59,82 +71,96 @@ export const changePasswordConfig = (member, authToken) => ({
   },
 })
 
-export const deleteAuthUserConfig = (memberId, authToken) => ({
+export const deleteAuthUserConfig = (memberId: string, token: string) => ({
   method: 'delete',
   baseURL: process.env.AUTH0_BASE_URL,
   url: `/api/v2/users/${memberId}`,
   headers: {
     autho: '',
-    Authorization: `Bearer ${authToken}`,
+    Authorization: `Bearer ${token}`,
   },
 })
 
-export const getAuthIdConfig = (member, authToken) => ({
+export const getAuthIdConfig = (member: Member, token: string) => ({
   method: 'get',
   baseURL: process.env.AUTH0_BASE_URL,
   url: `/api/v2/users-by-email?email=${member.email}`,
   headers: {
     autho: '',
-    Authorization: `Bearer ${authToken}`,
+    Authorization: `Bearer ${token}`,
   },
 })
-export const getUserRoles = (memberId, authToken) => ({
+export const getUserRoles = (memberId: string, token: string) => ({
   method: 'get',
   baseURL: process.env.AUTH0_BASE_URL,
   url: `/api/v2/users/${memberId}/roles`,
   headers: {
     autho: '',
-    Authorization: `Bearer ${authToken}`,
+    Authorization: `Bearer ${token}`,
   },
 })
-export const setUserRoles = (memberId, roles, authToken) => ({
+export const setUserRoles = (
+  memberId: string,
+  roles: Role[],
+  token: string
+) => ({
   method: 'post',
   baseURL: process.env.AUTH0_BASE_URL,
   url: `/api/v2/users/${memberId}/roles`,
   headers: {
     autho: '',
-    Authorization: `Bearer ${authToken}`,
+    Authorization: `Bearer ${token}`,
   },
   data: {
-    roles: roles,
+    roles,
   },
 })
-export const deleteUserRoles = (memberId, roles, authToken) => ({
+export const deleteUserRoles = (
+  memberId: string,
+  roles: string[],
+  token: string
+) => ({
   method: 'delete',
   baseURL: process.env.AUTH0_BASE_URL,
   url: `/api/v2/users/${memberId}/roles`,
   headers: {
     autho: '',
-    Authorization: `Bearer ${authToken}`,
+    Authorization: `Bearer ${token}`,
   },
   data: {
-    roles: roles,
+    roles,
   },
 })
 
-export const deleteRole = (role) => {
+export const deleteRole = (
+  role: Role,
+  token: string,
+  authRoles: Auth0RoleObject
+) => {
+  const getRoleId = (roleName: Role) => authRoles[roleName].id
+
   return {
     method: 'delete',
     baseURL: process.env.AUTH0_BASE_URL,
     url: `/api/v2/roles/${getRoleId(role)}`,
     headers: {
       autho: '',
-      Authorization: `Bearer ${authToken}`,
+      Authorization: `Bearer ${token}`,
     },
   }
 }
-export const createRole = (role, description) => {
+export const createRole = (role: Role, description: string, token: string) => {
   return {
     method: 'post',
     baseURL: process.env.AUTH0_BASE_URL,
     url: `/api/v2/roles`,
     headers: {
       autho: '',
-      Authorization: `Bearer ${authToken}`,
+      Authorization: `Bearer ${token}`,
     },
     data: {
       name: role,
-      description: description,
+      description,
     },
   }
 }

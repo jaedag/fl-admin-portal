@@ -11,7 +11,7 @@ import {
 } from './SearchQuery'
 import { MemberContext, SearchContext } from '../../../contexts/MemberContext'
 import MemberDisplayCard from '../../../components/card/MemberDisplayCard'
-import { isAuthorised, throwErrorMsg } from 'global-utils.js'
+import { isAuthorised, throwErrorMsg } from 'global-utils'
 import { Container, Spinner } from 'react-bootstrap'
 
 const SearchPageMobile = () => {

@@ -3,8 +3,24 @@ import { useNavigate } from 'react-router-dom'
 import { ChurchContext } from '../../contexts/ChurchContext'
 import './Timeline.css'
 import { parseDate, parseNeoTime } from 'jd-date-utils'
+import { Member } from 'global-types'
 
-const Timeline = (props) => {
+type TimelineElement = {
+  historyRecord: string
+  loggedBy: Member
+  timeStamp: string
+  created_at: {
+    date: string
+  }
+}
+
+type TimelineProps = {
+  limit: number
+  modifier?: 'church'
+  record: TimelineElement[]
+}
+
+const Timeline = (props: TimelineProps) => {
   const { record, limit, modifier } = props
 
   const { clickCard } = useContext(ChurchContext)
@@ -17,7 +33,7 @@ const Timeline = (props) => {
     return (
       <ul className="timeline">
         {record.map(
-          (element, index) =>
+          (element: TimelineElement, index: number) =>
             index < 5 && (
               <li key={index}>
                 <p className="timeline-text">

@@ -15,7 +15,7 @@ const FellowshipServiceDetails = () => {
   const { data, loading, error } = useQuery(DISPLAY_FELLOWSHIP_SERVICE, {
     variables: { serviceId: serviceRecordId, fellowshipId: fellowshipId },
   })
-  throwErrorMsg(error)
+  throwErrorMsg('', error)
 
   return (
     <ApolloWrapper loading={loading} error={error} data={data}>
