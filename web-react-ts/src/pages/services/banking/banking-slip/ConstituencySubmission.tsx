@@ -55,7 +55,7 @@ const ConstituencyBankingSlipSubmission = () => {
       onSubmitProps.resetForm()
 
       navigate(`/constituency/service-details`)
-    } catch (error) {
+    } catch (error: any) {
       throwErrorMsg(error)
     }
   }

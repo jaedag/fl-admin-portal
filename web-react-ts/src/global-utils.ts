@@ -200,9 +200,6 @@ interface MemberWithTitle extends Member {
       node: { title: 'Pastor' | 'Reverend' | 'Bishop' }
     }[]
   }
-  gender: {
-    gender: 'Male' | 'Female'
-  }
 }
 
 export const getHighestTitle = (member: MemberWithTitle) => {

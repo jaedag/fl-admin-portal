@@ -75,7 +75,7 @@ export interface Member {
   whatsappNumber: string
   dob: string
   maritalStatus: string
-  gender: string
+  gender: { gender: 'Male' | 'Female' }
   occupation: string
   fellowship: {
     id: string

@@ -6,7 +6,7 @@ import '../pages/services/graphs/Graphs.css'
 
 type PlaceholderCustomProps = {
   loading?: boolean
-  children: React.ReactNode
+  children?: React.ReactNode
   xs?: number
   sm?: number
   md?: number
@@ -24,6 +24,7 @@ type PlaceholderCustomProps = {
     | 'dark'
   className?: string
   button?: boolean
+  animation?: 'wave' | 'glow'
 }
 
 const PlaceholderCustom = (props: PlaceholderCustomProps) => {
