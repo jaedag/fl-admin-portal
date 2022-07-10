@@ -38,6 +38,7 @@ import {
   setSwellDate,
   uploadMobilisationPicture,
 } from './arrivals-cypher'
+import { sendBulkSMS } from '../utils/notify'
 
 const dotenv = require('dotenv')
 
@@ -450,38 +451,17 @@ export const arrivalsMutation = {
   },
   SendMobileVerificationNumber: async (
     object: any,
-    args: any,
+    args: { firstName: string; phoneNumber: string; code: string },
     context: Context
   ) => {
     isAuth(['leaderBacenta'], context.auth.roles)
 
-    const sendMessage = {
-      method: 'post',
-      url: `https://api.mnotify.com/api/sms/quick?key=${process.env.MNOTIFY_KEY}`,
-      headers: {
-        'content-type': 'application/json',
-      },
-      data: {
-        recipient: [args.phoneNumber],
-        sender: 'FLC Admin',
-        message: `Hi ${args.firstName},\n\nYour code is ${args.code}. Input this on the portal to verify your phone number.`,
-        is_schedule: 'false',
-        schedule_date: '',
-      },
-    }
+    const response = await sendBulkSMS(
+      [args.phoneNumber],
+      `Hi ${args.firstName},\n\nYour code is ${args.code}. Input this on the portal to verify your phone number.`
+    )
 
-    try {
-      const res = await axios(sendMessage)
-
-      if (res.data.code === '2000') {
-        return 'Message sent successfully'
-      }
-      throwErrorMsg('There was a problem sending your message')
-    } catch (error: any) {
-      throwErrorMsg('There was a problem sending your message', error)
-    }
-
-    return 'Message sent successfully'
+    return response
   },
 }
 

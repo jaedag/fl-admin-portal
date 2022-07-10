@@ -1,5 +1,7 @@
 /* eslint-disable no-console */
+import axios from 'axios'
 import { Member } from './types'
+import { throwErrorMsg } from './utils'
 
 const formData = require('form-data')
 const Mailgun = require('mailgun.js')
@@ -13,7 +15,7 @@ const mg = mailgun.client({
   key: process.env.MAILGUN_API_KEY,
 })
 
-const notifyMember = (
+export const sendEmail = (
   member: Member,
   subject: string,
   body?: string,
@@ -34,4 +36,32 @@ const notifyMember = (
     .catch((err: any) => console.log('Mailgun API error', err)) // logs any error
 }
 
-export default notifyMember
+export const sendBulkSMS = async (recipient: string[], message: string) => {
+  const sendMessage = {
+    method: 'post',
+    url: `https://api.mnotify.com/api/sms/quick?key=${process.env.MNOTIFY_KEY}`,
+    headers: {
+      'content-type': 'application/json',
+    },
+    data: {
+      recipient,
+      sender: 'FLC Admin',
+      message,
+      is_schedule: 'false',
+      schedule_date: '',
+    },
+  }
+
+  try {
+    const res = await axios(sendMessage)
+
+    if (res.data.code === '2000') {
+      return 'Message sent successfully'
+    }
+    throwErrorMsg('There was a problem sending your message')
+  } catch (error: any) {
+    throwErrorMsg('There was a problem sending your message', error)
+  }
+
+  return 'Message sent successfully'
+}
