@@ -8,7 +8,7 @@ import {
   FEDERAL_SEARCH,
   BACENTA_SEARCH,
   FELLOWSHIP_SEARCH,
-} from './SearchQuery'
+} from './SearchQuery.ts'
 import { MemberContext, SearchContext } from '../../../contexts/MemberContext'
 import MemberDisplayCard from '../../../components/card/MemberDisplayCard'
 import { isAuthorised, throwErrorMsg } from 'global-utils'

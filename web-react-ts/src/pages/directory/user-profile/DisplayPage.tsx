@@ -1,9 +1,9 @@
 import React, { useContext } from 'react'
 import { Row, Col, Accordion, Stack } from 'react-bootstrap'
 import { useQuery } from '@apollo/client'
-import { MemberContext } from '../../../contexts/MemberContext'
+import { MemberContext } from 'contexts/MemberContext'
 import { getMemberDob } from 'jd-date-utils'
-import Timeline from '../../../components/Timeline/Timeline.tsx'
+import Timeline from 'components/Timeline/Timeline'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import {
   DISPLAY_MEMBER_BIO,
@@ -36,12 +36,7 @@ const DisplayPage = () => {
 
   return (
     <div className="scroll-bottom">
-      <ApolloWrapper
-        loadingState={loading}
-        errorState={error}
-        data={bioData}
-        placeholder
-      >
+      <ApolloWrapper loading={loading} error={error} data={bioData} placeholder>
         <div className="py-5">
           <div className="pt-5">
             <Row className="d-flex justify-content-center">

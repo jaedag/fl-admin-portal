@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from '@apollo/client'
+import { ApolloError, useMutation, useQuery } from '@apollo/client'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { ServiceContext } from 'contexts/ServiceContext'
 import React, { useContext } from 'react'
@@ -8,7 +8,7 @@ import {
   PAY_OFFERING_MUTATION,
 } from './bankingQueries'
 import * as Yup from 'yup'
-import { Form, Formik } from 'formik'
+import { Form, Formik, FormikHelpers } from 'formik'
 import { MOMO_NUM_REGEX, throwErrorMsg } from 'global-utils'
 import FormikControl from 'components/formik-components/FormikControl'
 import { MOBILE_NETWORK_OPTIONS } from 'pages/arrivals/arrivals-utils'
@@ -17,8 +17,23 @@ import { Col, Container, Row } from 'react-bootstrap'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import HeadingSecondary from 'components/HeadingSecondary'
 import { parseDate } from 'jd-date-utils'
+import { Fellowship } from 'global-types'
 
-const PayOffering = (props) => {
+type PayOfferingProps = {
+  church: Fellowship
+  loading: boolean
+  error: ApolloError | undefined
+}
+
+type FormOptions = {
+  bankingDate: string
+  income: number
+  momoName: string
+  mobileNetwork: string
+  mobileNumber: string
+}
+
+const PayOffering = (props: PayOfferingProps) => {
   const { church } = props
   const { serviceRecordId } = useContext(ServiceContext)
   const { data, loading, error } = useQuery(DISPLAY_OFFERING_DETAILS, {
@@ -31,6 +46,7 @@ const PayOffering = (props) => {
   const initialValues = {
     bankingDate: new Date().toISOString().slice(0, 10),
     income: service?.income,
+    momoName: '',
     mobileNetwork: '',
     mobileNumber: '',
   }
@@ -40,16 +56,19 @@ const PayOffering = (props) => {
       `Enter a valid MoMo Number without spaces. eg. (02XXXXXXXX)`
     ),
     momoName: Yup.string().when('mobileNumber', {
-      is: (mobileNumber) => mobileNumber && mobileNumber.length > 0,
+      is: (mobileNumber: string) => mobileNumber && mobileNumber.length > 0,
       then: Yup.string().required('Please enter the Momo Name'),
     }),
     mobileNetwork: Yup.string().when('mobileNumber', {
-      is: (mobileNumber) => mobileNumber && mobileNumber.length > 0,
+      is: (mobileNumber: string) => mobileNumber && mobileNumber.length > 0,
       then: Yup.string().required('Please enter the Mobile Network'),
     }),
   })
 
-  const onSubmit = async (values, onSubmitProps) => {
+  const onSubmit = async (
+    values: FormOptions,
+    onSubmitProps: FormikHelpers<FormOptions>
+  ) => {
     const { setSubmitting } = onSubmitProps
 
     setSubmitting(true)
@@ -87,16 +106,12 @@ const PayOffering = (props) => {
             <Form>
               <Row className="row-cols-1 row-cols-md-2 mt-2">
                 <Col className="mb-2">
-                  <small htmlFor="dateofservice" className="form-text label">
-                    Date of Service
-                  </small>
+                  <small className="form-text label">Date of Service</small>
                   <HeadingPrimary>
                     {parseDate(service?.serviceDate.date)}
                   </HeadingPrimary>
 
-                  <small htmlFor="dateofservice" className="form-text label">
-                    Income
-                  </small>
+                  <small className="form-text label">Income</small>
                   <div className="fw-bold">{service?.income} GHS</div>
                   <FormikControl
                     control="select"

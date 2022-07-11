@@ -254,7 +254,7 @@ export const getNameWithTitle = (member?: MemberWithTitle) => {
   return displayName.name
 }
 
-export const average = (array: []) => {
+export const average = (array: number[]) => {
   let i = 0
   let sum = 0
   const len = array.length

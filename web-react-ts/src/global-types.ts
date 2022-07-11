@@ -25,8 +25,9 @@ export type ChurchLevel =
   | 'Stream'
   | 'GatheringService'
   | 'Denomination'
+  | 'Sonta'
 
-export type Church = {
+export interface Church {
   id: string
   name: string
   leader: {
@@ -36,6 +37,11 @@ export type Church = {
   }
   vacationStatus: 'Vacation' | 'Active'
   __typename: ChurchLevel
+}
+
+export interface Fellowship extends Church {
+  __typename: 'Fellowship'
+  bankingCode: number
 }
 
 export type ChurchIdAndName = {
@@ -184,9 +190,12 @@ export type VerbTypes =
   | 'isArrivalsConfirmerFor'
 
 export type ServiceRecord = {
+  __typename: 'ServiceRecord' | 'RehearsalRecord'
   id: string
+  attendance: number
   income: number
   week: number
+  stream_name: StreamOptions
   noServiceReason: string
   bankingProof: boolean
   bankingSlip: string

@@ -46,52 +46,50 @@ const AuthButton = (props: AuthButtonPropsType) => {
     )
   }
 
-  if (isAuthenticated) {
-    return (
-      <Container>
-        <div className="d-grid gap-2">
-          <Button
-            size="lg"
-            variant="danger"
-            className={`auth-button logout text-nowrap ${
-              !mobileFullSize && `d-none d-md-inline`
-            }`}
-            onClick={togglePopup}
-          >
-            Log Out <BoxArrowRight />
-          </Button>
-        </div>
-        {isOpen && (
-          <Popup handleClose={togglePopup}>
-            <>
-              <b>Confirm Log Out</b>
-              <p className="mt-2">Are you sure you want to Log Out?</p>
-              <div className="d-grid gap-2">
-                <Button
-                  className={`auth-button logout mt-3 ${
-                    !mobileFullSize && `d-none d-md-inline`
-                  }`}
-                  onClick={() => {
-                    logout({ returnTo: window.location.origin })
-                    togglePopup()
-                  }}
-                >
-                  Log Out
-                </Button>
-              </div>
-            </>
-          </Popup>
-        )}
+  return (
+    <Container>
+      <div className="d-grid gap-2">
+        <Button
+          size="lg"
+          variant="danger"
+          className={`auth-button logout text-nowrap ${
+            !mobileFullSize && `d-none d-md-inline`
+          }`}
+          onClick={togglePopup}
+        >
+          Log Out <BoxArrowRight />
+        </Button>
+      </div>
+      {isOpen && (
+        <Popup handleClose={togglePopup}>
+          <>
+            <b>Confirm Log Out</b>
+            <p className="mt-2">Are you sure you want to Log Out?</p>
+            <div className="d-grid gap-2">
+              <Button
+                className={`auth-button logout mt-3 ${
+                  !mobileFullSize && `d-none d-md-inline`
+                }`}
+                onClick={() => {
+                  logout({ returnTo: window.location.origin })
+                  togglePopup()
+                }}
+              >
+                Log Out
+              </Button>
+            </div>
+          </>
+        </Popup>
+      )}
 
-        {!mobileFullSize && (
-          <i
-            className="fas fa-sign-out-alt fa-2x d-md-none"
-            onClick={() => logout({ returnTo: window.location.origin })}
-          />
-        )}
-      </Container>
-    )
-  }
+      {!mobileFullSize && (
+        <i
+          className="fas fa-sign-out-alt fa-2x d-md-none"
+          onClick={() => logout({ returnTo: window.location.origin })}
+        />
+      )}
+    </Container>
+  )
 }
 
 export default AuthButton

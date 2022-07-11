@@ -2,7 +2,11 @@ import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import React from 'react'
 import { Button } from 'react-bootstrap'
 
-const ManualApprovalSteps = (props) => {
+type ManualApprovalStepsProps = {
+  close: () => void
+}
+
+const ManualApprovalSteps = (props: ManualApprovalStepsProps) => {
   return (
     <>
       <HeadingPrimary>Manual Approval</HeadingPrimary>

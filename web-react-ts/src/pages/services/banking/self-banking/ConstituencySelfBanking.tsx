@@ -12,12 +12,16 @@ import HeadingSecondary from 'components/HeadingSecondary'
 import { capitalise } from 'global-utils'
 import usePopup from 'hooks/usePopup'
 import Popup from 'components/Popup/Popup'
-import ConfirmPaymentButton from './components/button/ConfirmPayment'
+import ConfirmPaymentButton, {
+  ConfirmPaymentServiceType,
+} from './components/button/ConfirmPayment'
+import { ServiceRecord } from 'global-types'
 
 const ConstituencySelfBanking = () => {
   const { constituencyId, clickCard } = useContext(ChurchContext)
   const { isOpen, togglePopup } = usePopup()
-  const [confirmService, setConfirmService] = useState(null)
+  const [confirmService, setConfirmService] =
+    useState<ConfirmPaymentServiceType>(null)
   const navigate = useNavigate()
   const { data, loading, error, refetch } = useQuery(
     CONSTITUENCY_BANKING_SLIP_QUERIES,
@@ -27,7 +31,7 @@ const ConstituencySelfBanking = () => {
   )
   const constituency = data?.constituencies[0]
   const placeholder = ['', '', '']
-  throwErrorMsg(error)
+  throwErrorMsg('', error)
 
   return (
     <Container>
@@ -54,54 +58,59 @@ const ConstituencySelfBanking = () => {
         </Popup>
       )}
 
-      {data?.constituencies[0].services.map((service, index) => {
-        if (service.noServiceReason || service.bankingSlip) {
-          return null
+      {data?.constituencies[0].services.map(
+        (service: ServiceRecord, index: number) => {
+          if (service.noServiceReason || service.bankingSlip) {
+            return null
+          }
+
+          return (
+            <Card
+              key={index}
+              className="mb-2"
+              onClick={() => {
+                setConfirmService({
+                  id: service.id,
+                  stream_name: service.stream_name,
+                })
+                clickCard(service)
+                if (service?.transactionStatus === 'pending') {
+                  togglePopup()
+                  return
+                }
+
+                if (service?.transactionStatus === 'success') {
+                  return
+                }
+                navigate('/services/constituency/self-banking/pay')
+              }}
+            >
+              <Card.Header>
+                <b>{parseDate(service.serviceDate.date)}</b>
+              </Card.Header>
+              <Card.Body>
+                <Row>
+                  <Col>
+                    <span>Offering: {service.income}</span>
+                    <div
+                      className={`${
+                        service?.transactionStatus === 'pending' && 'yellow'
+                      } ${service?.transactionStatus === 'success' && 'good'} ${
+                        service?.transactionStatus === 'failed' && 'bad'
+                      }`}
+                    >
+                      {service?.transactionStatus &&
+                        `Transaction Status: ${capitalise(
+                          service?.transactionStatus
+                        )}`}
+                    </div>
+                  </Col>
+                </Row>
+              </Card.Body>
+            </Card>
+          )
         }
-
-        return (
-          <Card
-            key={index}
-            className="mb-2"
-            onClick={() => {
-              setConfirmService(service)
-              clickCard(service)
-              if (service?.transactionStatus === 'pending') {
-                togglePopup()
-                return
-              }
-
-              if (service?.transactionStatus === 'success') {
-                return
-              }
-              navigate('/services/constituency/self-banking/pay')
-            }}
-          >
-            <Card.Header>
-              <b>{parseDate(service.serviceDate.date)}</b>
-            </Card.Header>
-            <Card.Body>
-              <Row>
-                <Col>
-                  <span>Offering: {service.income}</span>
-                  <div
-                    className={`${
-                      service?.transactionStatus === 'pending' && 'yellow'
-                    } ${service?.transactionStatus === 'success' && 'good'} ${
-                      service?.transactionStatus === 'failed' && 'bad'
-                    }`}
-                  >
-                    {service?.transactionStatus &&
-                      `Transaction Status: ${capitalise(
-                        service?.transactionStatus
-                      )}`}
-                  </div>
-                </Col>
-              </Row>
-            </Card.Body>
-          </Card>
-        )
-      })}
+      )}
 
       {loading &&
         placeholder.map((service, index) => (

@@ -148,14 +148,6 @@ const CouncilDashboard = () => {
           />
 
           <MenuButton
-            title="Confirm Bacenta Arrival"
-            onClick={() => navigate('/arrivals/confirm-bacenta-arrival')}
-            number={council?.bacentasOnTheWayCount.toString()}
-            iconBg
-            noCaption
-          />
-
-          <MenuButton
             title="Bacentas That Have Arrived"
             onClick={() => navigate('/arrivals/bacentas-have-arrived')}
             number={council?.bacentasHaveArrivedCount.toString()}

@@ -61,39 +61,39 @@ const Timeline = (props: TimelineProps) => {
         )}
       </ul>
     )
-  } else if (record) {
-    return (
-      <ul className="timeline">
-        {record.map(
-          (element, index) =>
-            index < limit && (
-              <li key={index}>
-                <p className="timeline-text">
-                  {element.historyRecord}
-                  <br />
-                  <small className="text-secondary">
-                    {`${parseDate(element.created_at?.date)} at ${parseNeoTime(
-                      element.timeStamp
-                    )}`}
-                    {element?.loggedBy && ' by '}
-                    <span
-                      className="font-weight-bold"
-                      onClick={() => {
-                        clickCard(element?.loggedBy)
-                        navigate('/member/displaydetails')
-                      }}
-                    >
-                      {element?.loggedBy &&
-                        `${element?.loggedBy?.firstName} ${element?.loggedBy?.lastName}`}
-                    </span>
-                  </small>
-                </p>
-              </li>
-            )
-        )}
-      </ul>
-    )
   }
+
+  return (
+    <ul className="timeline">
+      {record.map(
+        (element, index) =>
+          index < limit && (
+            <li key={index}>
+              <p className="timeline-text">
+                {element.historyRecord}
+                <br />
+                <small className="text-secondary">
+                  {`${parseDate(element.created_at?.date)} at ${parseNeoTime(
+                    element.timeStamp
+                  )}`}
+                  {element?.loggedBy && ' by '}
+                  <span
+                    className="font-weight-bold"
+                    onClick={() => {
+                      clickCard(element?.loggedBy)
+                      navigate('/member/displaydetails')
+                    }}
+                  >
+                    {element?.loggedBy &&
+                      `${element?.loggedBy?.firstName} ${element?.loggedBy?.lastName}`}
+                  </span>
+                </small>
+              </p>
+            </li>
+          )
+      )}
+    </ul>
+  )
 }
 
 export default Timeline
