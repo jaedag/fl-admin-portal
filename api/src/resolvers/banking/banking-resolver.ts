@@ -50,32 +50,6 @@ const checkIfLastServiceBanked = async (
   }
 }
 
-const checkIfLastServiceBanked = async (
-  serviceRecordId: string,
-  context: Context
-) => {
-  const session = context.executionContext.session()
-  // this checks if the person has banked their last offering
-  const lastServiceRecord = rearrangeCypherObject(
-    await session
-      .run(lastButOneServiceRecord, {
-        serviceRecordId,
-        auth: context.auth,
-      })
-      .catch((error: any) => throwErrorMsg(error))
-  )
-
-  const record = lastServiceRecord.record.properties
-
-  if (
-    (!Object.prototype.hasOwnProperty.call(record, 'bankingSlip') ||
-      record.transactionStatus === 'success') &&
-    record.id !== serviceRecordId
-  ) {
-    throwErrorMsg('You cannot bank without banking your previous offering')
-  }
-}
-
 const bankingMutation = {
   BankServiceOffering: async (
     object: any,
