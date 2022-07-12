@@ -14,7 +14,7 @@ import { useNavigate } from 'react-router'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import RoleView from 'auth/RoleView'
 import { throwErrorMsg } from 'global-utils'
-import { MAKE_COUNCILARRIVALS_ADMIN } from './arrivalsMutations'
+import { MAKE_COUNCILARRIVALS_ADMIN } from './arrivalsMutation'
 import { permitAdmin, permitArrivals } from 'permission-utils'
 import HeadingSecondary from 'components/HeadingSecondary'
 import DefaulterInfoCard from 'pages/services/defaulters/DefaulterInfoCard'
@@ -143,14 +143,6 @@ const CouncilDashboard = () => {
             onClick={() => navigate('/arrivals/bacentas-on-the-way')}
             number={council?.bacentasOnTheWayCount.toString()}
             color="yellow"
-            iconBg
-            noCaption
-          />
-
-          <MenuButton
-            title="Confirm Bacenta Arrival"
-            onClick={() => navigate('/arrivals/confirm-bacenta-arrival')}
-            number={council?.bacentasOnTheWayCount.toString()}
             iconBg
             noCaption
           />

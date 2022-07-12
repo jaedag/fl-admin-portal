@@ -5,6 +5,7 @@ import {
   getMobileCode,
   getStreamFinancials,
   handlePaymentError,
+  Network,
   padNumbers,
 } from '../utils/financial-utils'
 import { isAuth, rearrangeCypherObject, throwErrorMsg } from '../utils/utils'
@@ -19,6 +20,35 @@ import {
   submitBankingSlip,
 } from './banking-cypher'
 import { PaySwitchRequestBody } from './banking-types'
+import { StreamOptions } from '../utils/types'
+
+const checkIfLastServiceBanked = async (
+  serviceRecordId: string,
+  context: Context
+) => {
+  const session = context.executionContext.session()
+  // this checks if the person has banked their last offering
+  const lastServiceRecord = rearrangeCypherObject(
+    await session
+      .run(lastButOneServiceRecord, {
+        serviceRecordId,
+        auth: context.auth,
+      })
+      .catch((error: any) => throwErrorMsg(error))
+  )
+
+  const record = lastServiceRecord.record.properties
+
+  if (
+    (!Object.prototype.hasOwnProperty.call(record, 'bankingSlip') ||
+      record.transactionStatus === 'success') &&
+    record.id !== serviceRecordId
+  ) {
+    throwErrorMsg(
+      "Please bank last week's outstanding offering before attempting to bank this week's"
+    )
+  }
+}
 
 const checkIfLastServiceBanked = async (
   serviceRecordId: string,
@@ -47,7 +77,18 @@ const checkIfLastServiceBanked = async (
 }
 
 const bankingMutation = {
-  BankServiceOffering: async (object: any, args: any, context: Context) => {
+  BankServiceOffering: async (
+    object: any,
+    args: {
+      // eslint-disable-next-line camelcase
+      stream_name: StreamOptions
+      serviceRecordId: string
+      mobileNetwork: Network
+      mobileNumber: string
+      momoName: string
+    },
+    context: Context
+  ) => {
     isAuth(permitLeader('Fellowship'), context.auth.roles)
 
     const session = context.executionContext.session()
@@ -114,7 +155,12 @@ const bankingMutation = {
     }
   },
 
-  ConfirmOfferingPayment: async (object: any, args: any, context: Context) => {
+  ConfirmOfferingPayment: async (
+    object: any,
+    // eslint-disable-next-line camelcase
+    args: { stream_name: StreamOptions; serviceRecordId: string },
+    context: Context
+  ) => {
     isAuth(permitLeader('Fellowship'), context.auth.roles)
     const session = context.executionContext.session()
     const { merchantId, auth } = getStreamFinancials(args.stream_name)
@@ -202,7 +248,11 @@ const bankingMutation = {
       },
     }
   },
-  SubmitBankingSlip: async (object: any, args: any, context: Context) => {
+  SubmitBankingSlip: async (
+    object: any,
+    args: { serviceRecordId: string; bankingSlip: string },
+    context: Context
+  ) => {
     isAuth(permitLeader('Fellowship'), context.auth.roles)
     const session = context.executionContext.session()
 

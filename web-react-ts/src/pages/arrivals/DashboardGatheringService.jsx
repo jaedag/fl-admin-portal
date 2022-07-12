@@ -7,7 +7,7 @@ import {
   MAKE_GATHERINGSERVICEARRIVALS_ADMIN,
   SET_SWELL_DATE,
   SET_CODE_OF_THE_DAY,
-} from './arrivalsMutations'
+} from './arrivalsMutation'
 import { GATHERINGSERVICE_ARRIVALS_DASHBOARD } from './arrivalsQueries'
 import { alertMsg, throwErrorMsg } from 'global-utils'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
