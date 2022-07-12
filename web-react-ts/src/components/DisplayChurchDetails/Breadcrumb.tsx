@@ -1,4 +1,5 @@
 import { MemberContext } from 'contexts/MemberContext'
+import { ChurchLevel } from 'global-types'
 import { authorisedLink } from 'global-utils'
 import { permitMe } from 'permission-utils'
 import React, { useContext } from 'react'
@@ -7,7 +8,7 @@ import { ChurchContext } from '../../contexts/ChurchContext'
 import './Breadcrumb.css'
 
 type BreadcrumbType = {
-  __typename: string
+  __typename: ChurchLevel
   name: string
   constituency: {
     name: string

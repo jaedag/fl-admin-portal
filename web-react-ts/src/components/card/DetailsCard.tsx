@@ -14,7 +14,7 @@ type DetailsCardPropsType = {
   detail?: string
   onClick?: () => void
   bgNone?: boolean
-  img: string
+  img?: string
   vacationCount?: string
 }
 

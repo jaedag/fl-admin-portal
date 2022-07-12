@@ -1,10 +1,10 @@
 import React, { useContext, useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import MemberTable from '../members-grids/MemberTable'
+import MemberTable from './MemberTable'
 import { memberFilter } from './member-filter-utils'
 import { debounce } from '../../global-utils'
 import { ChurchContext } from 'contexts/ChurchContext'
-import PlaceholderCustom from 'components/Placeholder.jsx'
+import PlaceholderCustom from 'components/Placeholder'
 import {
   Accordion,
   Col,
