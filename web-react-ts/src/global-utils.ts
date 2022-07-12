@@ -195,44 +195,68 @@ export const debounce = (callback: () => void, delay = 500) => {
 }
 
 interface MemberWithTitle extends Member {
-  titleConnection: {
-    edges: {
-      node: { title: 'Pastor' | 'Reverend' | 'Bishop' }
-    }[]
-  }
+  // titleConnection: {
+  //   edges: {
+  //     node: { title: 'Pastor' | 'Reverend' | 'Bishop' }
+  //   }[]
+  // }
+  title: { title: 'Pastor' | 'Reverend' | 'Bishop' }[]
 }
 
 export const getHighestTitle = (member: MemberWithTitle) => {
-  if (!member.titleConnection.edges?.length) {
+  if (!member.title?.length) {
     return
   }
   let highestTitle
+  let power = 0
+  const maleTitles = ['Pastor', 'Reverend', 'Bishop']
+  const femaleTitles = ['Lady Pastor', 'Lady Reverend', 'Elect Mother']
 
-  member.titleConnection.edges.forEach((title) => {
+  member.title.forEach((title) => {
     // Male Titles
     if (member.gender.gender === 'Male') {
-      if (title.node.title === 'Pastor') {
-        highestTitle = 'Pastor'
+      if (title.title === 'Pastor') {
+        const titlePower = 1
+        if (power < titlePower) {
+          power = titlePower
+        }
       }
-      if (title.node.title === 'Reverend') {
-        highestTitle = 'Reverend'
+      if (title.title === 'Reverend') {
+        const titlePower = 2
+        if (power < titlePower) {
+          power = titlePower
+        }
       }
-      if (title.node.title === 'Bishop') {
-        highestTitle = 'Bishop'
+      if (title.title === 'Bishop') {
+        const titlePower = 3
+        if (power < titlePower) {
+          power = titlePower
+        }
       }
+      highestTitle = maleTitles[power - 1]
     }
 
     // Female Titles
     if (member.gender.gender === 'Female') {
-      if (title.node.title === 'Pastor') {
-        highestTitle = 'Lady Pastor'
+      if (title.title === 'Pastor') {
+        const titlePower = 1
+        if (power < titlePower) {
+          power = titlePower
+        }
       }
-      if (title.node.title === 'Reverend') {
-        highestTitle = 'Lady Reverend'
+      if (title.title === 'Reverend') {
+        const titlePower = 2
+        if (power < titlePower) {
+          power = titlePower
+        }
       }
-      if (title.node.title === 'Bishop') {
-        highestTitle = 'Elect Mother'
+      if (title.title === 'Bishop') {
+        const titlePower = 3
+        if (power < titlePower) {
+          power = titlePower
+        }
       }
+      highestTitle = femaleTitles[power - 1]
     }
   })
 
@@ -248,7 +272,7 @@ export const getNameWithTitle = (member?: MemberWithTitle) => {
     title: getHighestTitle(member),
   }
 
-  if (member.titleConnection.edges?.length) {
+  if (member.title?.length) {
     return `${displayName.title} ${displayName.name}`
   }
   return displayName.name
