@@ -113,7 +113,7 @@ const Services = () => {
           {church.name === 'Anagkazo' && (
             <MenuButton
               iconComponent={CashCoin}
-              title="Receive Midweek Banking"
+              title="Receive Midweek Offering"
               color="banking"
               onClick={() => navigate(`/anagkazo/receive-banking`)}
               noCaption

@@ -56,6 +56,8 @@ const ConfirmAnagkazoBanking = () => {
   const service = fellowshipServiceData?.serviceRecords[0]
   const banking_defaulters_list = data?.streams[0]?.bankingDefaultersThisWeek
 
+  console.log(service)
+
   const onSubmit = (
     values: FormOptions,
     onSubmitProps: FormikHelpers<FormOptions>
@@ -86,7 +88,7 @@ const ConfirmAnagkazoBanking = () => {
         <PlaceholderCustom xs={12} as="h1">
           <div className="text-center">
             <h1 className="mb-0  page-header">{`${church?.name} ${churchType}`}</h1>
-            <p className={`${theme} menu-subheading`}>Receive Banking</p>
+            <p className={`${theme} menu-subheading`}>Receive Offering</p>
           </div>
         </PlaceholderCustom>
 
@@ -99,6 +101,12 @@ const ConfirmAnagkazoBanking = () => {
                   <td>Income</td>
                   <td>{service?.income}</td>
                 </tr>
+                {service?.foreignCurrency && (
+                  <tr>
+                    <td>Foreign Currency</td>
+                    <td>{service?.foreignCurrency}</td>
+                  </tr>
+                )}
               </tbody>
             </Table>
             <Button
@@ -202,7 +210,7 @@ const ConfirmAnagkazoBanking = () => {
                         }}
                         variant="info"
                       >
-                        Confirm Banking
+                        Confirm Offering
                       </Button>
                     </Card.Footer>
                   </Card>
