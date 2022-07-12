@@ -101,3 +101,8 @@ export type ChurchIdAndName = {
   id: string
   name: string
 }
+
+export interface Record {
+  id: string
+  attendance: number
+}
