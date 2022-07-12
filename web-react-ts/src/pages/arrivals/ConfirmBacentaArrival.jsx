@@ -13,7 +13,7 @@ import { alertMsg, throwErrorMsg } from 'global-utils'
 import React, { useContext, useEffect, useState } from 'react'
 import { Button, Card, Container, Spinner } from 'react-bootstrap'
 import { useNavigate } from 'react-router'
-import { RECORD_ARRIVAL_TIME, SEND_BUSSING_SUPPORT } from './arrivalsMutations'
+import { RECORD_ARRIVAL_TIME, SEND_BUSSING_SUPPORT } from './arrivalsMutation'
 import {
   CONFIRM_CONSTITUENCY_ARRIVALS,
   CONFIRM_COUNCIL_ARRIVALS,

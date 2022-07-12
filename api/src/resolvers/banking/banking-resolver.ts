@@ -45,7 +45,7 @@ const checkIfLastServiceBanked = async (
     record.id !== serviceRecordId
   ) {
     throwErrorMsg(
-      'Please bank last weeks outstanding offering before attempting to bank this weeks'
+      "Please bank last week's outstanding offering before attempting to bank this week's"
     )
   }
 }
