@@ -77,7 +77,7 @@ export const rearrangeCypherObject = (response: any) => {
   return member?.member || member
 }
 
-export const isAuth = (permittedRoles: Role[], userRoles?: string[]) => {
+export const isAuth = (permittedRoles: Role[], userRoles?: Role[]) => {
   if (!permittedRoles.some((r) => userRoles?.includes(r))) {
     throwErrorMsg('You are not permitted to run this mutation')
   }

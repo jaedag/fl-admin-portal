@@ -19,6 +19,7 @@ const ServiceDetails = ({ service, church, loading }) => {
       navigate(-1)
     }
   }, [service, navigate])
+
   if (loading) {
     return <SpinnerPage />
   }
