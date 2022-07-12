@@ -227,7 +227,11 @@ export const arrivalsMutation = {
   },
   UploadMobilisationPicture: async (
     object: any,
-    args: any,
+    args: {
+      bacentaId: string
+      serviceDate: string
+      mobilisationPicture: string
+    },
     context: Context
   ) => {
     const session = context.executionContext.session()
@@ -296,7 +300,11 @@ export const arrivalsMutation = {
 
     return returnToCache
   },
-  SetBussingSupport: async (object: any, args: any, context: Context) => {
+  SetBussingSupport: async (
+    object: any,
+    args: { bussingRecordId: string },
+    context: Context
+  ) => {
     const session = context.executionContext.session()
     try {
       const response = rearrangeCypherObject(
