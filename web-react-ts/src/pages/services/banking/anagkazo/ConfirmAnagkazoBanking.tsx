@@ -56,8 +56,6 @@ const ConfirmAnagkazoBanking = () => {
   const service = fellowshipServiceData?.serviceRecords[0]
   const banking_defaulters_list = data?.streams[0]?.bankingDefaultersThisWeek
 
-  console.log(service)
-
   const onSubmit = (
     values: FormOptions,
     onSubmitProps: FormikHelpers<FormOptions>
