@@ -208,7 +208,7 @@ export const getHighestTitle = (member: MemberWithTitle) => {
     return
   }
   let highestTitle
-  let power = 0
+  let weight = 0
   const maleTitles = ['Pastor', 'Reverend', 'Bishop']
   const femaleTitles = ['Lady Pastor', 'Lady Reverend', 'Elect Mother']
 
@@ -216,47 +216,47 @@ export const getHighestTitle = (member: MemberWithTitle) => {
     // Male Titles
     if (member.gender.gender === 'Male') {
       if (title.title === 'Pastor') {
-        const titlePower = 1
-        if (power < titlePower) {
-          power = titlePower
+        const titleWeight = 1
+        if (weight < titleWeight) {
+          weight = titleWeight
         }
       }
       if (title.title === 'Reverend') {
-        const titlePower = 2
-        if (power < titlePower) {
-          power = titlePower
+        const titleWeight = 2
+        if (weight < titleWeight) {
+          weight = titleWeight
         }
       }
       if (title.title === 'Bishop') {
-        const titlePower = 3
-        if (power < titlePower) {
-          power = titlePower
+        const titleWeight = 3
+        if (weight < titleWeight) {
+          weight = titleWeight
         }
       }
-      highestTitle = maleTitles[power - 1]
+      highestTitle = maleTitles[weight - 1]
     }
 
     // Female Titles
     if (member.gender.gender === 'Female') {
       if (title.title === 'Pastor') {
-        const titlePower = 1
-        if (power < titlePower) {
-          power = titlePower
+        const titleWeight = 1
+        if (weight < titleWeight) {
+          weight = titleWeight
         }
       }
       if (title.title === 'Reverend') {
-        const titlePower = 2
-        if (power < titlePower) {
-          power = titlePower
+        const titleWeight = 2
+        if (weight < titleWeight) {
+          weight = titleWeight
         }
       }
       if (title.title === 'Bishop') {
-        const titlePower = 3
-        if (power < titlePower) {
-          power = titlePower
+        const titleWeight = 3
+        if (weight < titleWeight) {
+          weight = titleWeight
         }
       }
-      highestTitle = femaleTitles[power - 1]
+      highestTitle = femaleTitles[weight - 1]
     }
   })
 
