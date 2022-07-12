@@ -17,6 +17,7 @@ import { ServiceContext } from 'contexts/ServiceContext'
 import { DISPLAY_FELLOWSHIP_SERVICE } from 'pages/services/record-service/RecordServiceMutations'
 import { alertMsg, throwErrorMsg } from 'global-utils'
 import Popup from 'components/Popup/Popup'
+import { ServiceRecord } from 'global-types'
 
 type FormOptions = {
   defaulterSearch: string
@@ -25,7 +26,7 @@ type FormOptions = {
 type Defaulter = {
   leader: { pictureUrl: string; fullName: string }
   name: string
-  services: [{}]
+  services: ServiceRecord[]
 }
 
 const ConfirmAnagkazoBanking = () => {
