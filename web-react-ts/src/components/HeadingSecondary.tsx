@@ -1,7 +1,12 @@
 import React from 'react'
 import PlaceholderCustom from './Placeholder'
 
-const HeadingSecondary = (props) => {
+type HeadingSecondaryProps = {
+  children: React.ReactNode
+  loading?: boolean
+}
+
+const HeadingSecondary = (props: HeadingSecondaryProps) => {
   const { children, loading, ...rest } = props
   return (
     <PlaceholderCustom as="h6" loading={loading}>

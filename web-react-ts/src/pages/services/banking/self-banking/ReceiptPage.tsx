@@ -38,9 +38,8 @@ const ReceiptPage = () => {
     <ApolloWrapper data={data} loading={loading} error={error}>
       <Container>
         <HeadingPrimary>Self Banking Receipt</HeadingPrimary>
-      </Container>
-      <Container>
-        <TableFromArrays tableArray={tablevalues} />
+
+        <TableFromArrays tableArray={tablevalues} loading={false} />
         <div className="d-grid gap-2">
           <Button size="lg" onClick={() => navigate('/services/church-list')}>
             Go Home

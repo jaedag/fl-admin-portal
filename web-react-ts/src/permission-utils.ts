@@ -1,6 +1,8 @@
+import { ChurchLevel, Role } from 'global-types'
+
 // Permissions Things
-export const permitLeader = (churchLevel) => {
-  let permittedFor = []
+export const permitLeader = (churchLevel: ChurchLevel) => {
+  let permittedFor: Role[] = []
   switch (churchLevel.toLowerCase()) {
     case 'fellowship':
       permittedFor = [
@@ -55,8 +57,8 @@ export const permitLeader = (churchLevel) => {
   return permittedFor
 }
 
-export const permitAdmin = (churchLevel) => {
-  let permittedFor = []
+export const permitAdmin = (churchLevel: ChurchLevel) => {
+  let permittedFor: Role[] = []
   switch (churchLevel) {
     case 'Fellowship':
     case 'Bacenta':
@@ -87,20 +89,20 @@ export const permitAdmin = (churchLevel) => {
   return permittedFor
 }
 
-export const permitLeaderAdmin = (churchLevel) => {
+export const permitLeaderAdmin = (churchLevel: ChurchLevel): Role[] => {
   return [...permitLeader(churchLevel), ...permitAdmin(churchLevel)]
 }
 
-export const permitMe = (churchLevel) => {
+export const permitMe = (churchLevel: ChurchLevel): Role[] => {
   return [
     ...permitLeaderAdmin(churchLevel),
     ...permitArrivals(churchLevel),
-    ...permitArrivalsHelpers(churchLevel),
+    ...permitArrivalsHelpers(),
   ]
 }
 
-export const permitArrivals = (churchLevel) => {
-  let permittedFor = []
+export const permitArrivals = (churchLevel: ChurchLevel): Role[] => {
+  let permittedFor: Role[] = []
   switch (churchLevel) {
     case 'Fellowship':
     case 'Bacenta':
@@ -140,19 +142,19 @@ export const permitArrivals = (churchLevel) => {
   return [...permitAdmin(churchLevel), ...permittedFor]
 }
 
-export const permitArrivalsCounter = () => {
+export const permitArrivalsCounter = (): Role[] => {
   return ['arrivalsCounterStream']
 }
-export const permitArrivalsConfirmer = () => {
+export const permitArrivalsConfirmer = (): Role[] => {
   return ['arrivalsConfirmerStream']
 }
-export const permitArrivalsHelpers = () => {
+export const permitArrivalsHelpers = (): Role[] => {
   return ['arrivalsCounterStream', 'arrivalsConfirmerStream']
 }
-export const permitLeaderAdminArrivals = (churchLevel) => {
+export const permitLeaderAdminArrivals = (churchLevel: ChurchLevel): Role[] => {
   return [...permitLeaderAdmin(churchLevel), ...permitArrivals(churchLevel)]
 }
 
-export const permitAdminArrivals = (churchLevel) => {
+export const permitAdminArrivals = (churchLevel: ChurchLevel): Role[] => {
   return [...permitAdmin(churchLevel), ...permitArrivals(churchLevel)]
 }

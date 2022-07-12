@@ -4,8 +4,8 @@ import { MemberContext } from 'contexts/MemberContext'
 import { Container } from 'react-bootstrap'
 import { useNavigate } from 'react-router'
 import MenuButton from 'components/buttons/MenuButton'
-import GraphIcon from '../../../assets/charts-svgrepo-com.svg'
 import Stars from 'assets/icons/Stars'
+import Charts from 'assets/icons/Charts'
 
 const TrendsMenu = () => {
   const { currentUser, theme } = useContext(MemberContext)
@@ -25,7 +25,7 @@ const TrendsMenu = () => {
         </PlaceholderCustom>
         <div className="d-grid gap-2 mt-5 text-left">
           <MenuButton
-            icon={GraphIcon}
+            iconComponent={Charts}
             title="Graphs"
             color="members"
             onClick={() => navigate(`/${churchType.toLowerCase()}/graphs`)}

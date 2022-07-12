@@ -1,12 +1,33 @@
-import { useMutation } from '@apollo/client'
+import { ApolloQueryResult, useMutation } from '@apollo/client'
 import { ChurchContext } from 'contexts/ChurchContext'
+import { StreamOptions } from 'global-types'
 import { alertMsg, throwErrorMsg } from 'global-utils'
 import React, { useContext, useState } from 'react'
 import { Button, Spinner } from 'react-bootstrap'
 import { useNavigate } from 'react-router'
 import { CONFIRM_OFFERING_PAYMENT } from '../../bankingQueries'
 
-const ButtonConfirmPayment = (props) => {
+export type ConfirmPaymentServiceType = {
+  id: string
+  stream_name: StreamOptions
+} | null
+
+type ButtonConfirmPaymentProps = {
+  refetch: (
+    variables?:
+      | Partial<{
+          serviceRecordId?: string
+          fellowshipId?: string
+          constituencyId?: string
+        }>
+      | undefined
+  ) => Promise<ApolloQueryResult<any>>
+  service: ConfirmPaymentServiceType
+  disabled?: boolean
+  togglePopup?: () => void
+}
+
+const ButtonConfirmPayment = (props: ButtonConfirmPaymentProps) => {
   const { refetch, service, togglePopup, ...rest } = props
   const [sending, setSending] = useState(false)
   const [ConfirmOfferingPayment] = useMutation(CONFIRM_OFFERING_PAYMENT)
