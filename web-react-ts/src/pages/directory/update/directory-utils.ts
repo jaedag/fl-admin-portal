@@ -9,6 +9,7 @@ export const churchLevels: ChurchLevel[] = [
   'Council',
   'Stream',
   'GatheringService',
+  'Denomination',
 ]
 
 export const getHighestRole = (roles: Role[]) => {

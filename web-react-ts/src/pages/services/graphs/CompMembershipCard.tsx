@@ -3,7 +3,13 @@ import { PeopleFill } from 'react-bootstrap-icons'
 import { Link } from 'react-router-dom'
 import './Graphs.css'
 
-const MembershipCard = ({ link, title, count }) => {
+type MembershipCardProps = {
+  link: string
+  title: string
+  count: number
+}
+
+const MembershipCard = ({ link, title, count }: MembershipCardProps) => {
   return (
     <div className="card rounded-corners membership-card">
       <Link to={link} className="card-body white-links">
