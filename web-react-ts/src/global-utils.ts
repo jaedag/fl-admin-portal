@@ -195,11 +195,11 @@ export const debounce = (callback: () => void, delay = 500) => {
 }
 
 interface MemberWithTitle extends Member {
-  // titleConnection: {
-  //   edges: {
-  //     node: { title: 'Pastor' | 'Reverend' | 'Bishop' }
-  //   }[]
-  // }
+  titleConnection: {
+    edges: {
+      node: { title: 'Pastor' | 'Reverend' | 'Bishop' }
+    }[]
+  }
   title: { title: 'Pastor' | 'Reverend' | 'Bishop' }[]
 }
 
