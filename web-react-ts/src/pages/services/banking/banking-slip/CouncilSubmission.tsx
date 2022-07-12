@@ -54,8 +54,8 @@ const CouncilBankingSlipSubmission = () => {
       onSubmitProps.resetForm()
 
       navigate(`/council/service-details`)
-    } catch (error) {
-      throwErrorMsg(error)
+    } catch (error: any) {
+      throwErrorMsg('', error)
     }
   }
 

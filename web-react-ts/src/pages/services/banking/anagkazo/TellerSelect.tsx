@@ -4,7 +4,7 @@ import MemberDisplayCard from 'components/card/MemberDisplayCard'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import HeadingSecondary from 'components/HeadingSecondary'
 import { ChurchContext } from 'contexts/ChurchContext'
-import { FunctionReturnsVoid, MemberType, StreamInterface } from 'global-types'
+import { FunctionReturnsVoid, Member, StreamInterface } from 'global-types'
 import React, { useContext, useState } from 'react'
 import { Button, Col, Container, Modal, Row, Spinner } from 'react-bootstrap'
 import {
@@ -21,7 +21,7 @@ import { alertMsg, throwErrorMsg } from 'global-utils'
 import NoDataComponent from 'pages/arrivals/CompNoData'
 
 interface StreamWithTellers extends StreamInterface {
-  bankTellers: MemberType[]
+  bankTellers: Member[]
   activeFellowshipCount: number
 }
 
@@ -87,7 +87,7 @@ const TellerSelect = () => {
       handleClose()
       onSubmitProps.setSubmitting(false)
       alert('Anagkazo Teller has been added successfully')
-    } catch (e) {
+    } catch (e: any) {
       onSubmitProps.setSubmitting(false)
       throwErrorMsg(e)
     }
@@ -153,7 +153,7 @@ const TellerSelect = () => {
           </Button>
         </div>
 
-        {stream?.bankTellers?.map((teller: MemberType) => (
+        {stream?.bankTellers?.map((teller: Member) => (
           <div key={teller.id}>
             <MemberDisplayCard member={teller} />
             <div className="d-grid gap-2">
@@ -175,8 +175,8 @@ const TellerSelect = () => {
                       })
                       setSubmitting(false)
                       alertMsg(`${teller.fullName} Deleted Successfully`)
-                    } catch (error) {
-                      throwErrorMsg(error)
+                    } catch (error: any) {
+                      throwErrorMsg('', error)
                     }
                   }
                 }}
