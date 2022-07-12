@@ -5,6 +5,7 @@ import {
   getMobileCode,
   getStreamFinancials,
   handlePaymentError,
+  Network,
   padNumbers,
 } from '../utils/financial-utils'
 import { isAuth, rearrangeCypherObject, throwErrorMsg } from '../utils/utils'
@@ -43,7 +44,9 @@ const checkIfLastServiceBanked = async (
       record.transactionStatus === 'success') &&
     record.id !== serviceRecordId
   ) {
-    throwErrorMsg('You cannot bank without banking your previous offering')
+    throwErrorMsg(
+      'Please bank last weeks outstanding offering before attempting to bank this weeks'
+    )
   }
 }
 
@@ -52,9 +55,9 @@ const bankingMutation = {
     object: any,
     args: {
       // eslint-disable-next-line camelcase
-      stream_name: string
-      serviceRecordId: number
-      mobileNetwork: string
+      stream_name: StreamOptions
+      serviceRecordId: string
+      mobileNetwork: Network
       mobileNumber: string
       momoName: string
     },
