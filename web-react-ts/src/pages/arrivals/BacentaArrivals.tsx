@@ -22,7 +22,7 @@ import CountdownTimer from './countdown-component/CountdownTimer'
 
 const BacentaArrivals = () => {
   const { clickCard, bacentaId } = useContext(ChurchContext)
-  const { show, handleClose, handleShow } = useModal()
+  const { show, handleClose } = useModal()
   const { theme } = useContext(MemberContext)
   const navigate = useNavigate()
   const today = new Date().toISOString().slice(0, 10)
@@ -155,7 +155,7 @@ const BacentaArrivals = () => {
             variant="primary"
             size="lg"
             disabled={
-              !beforeMobilisationDeadline(bussing, bacenta) ||
+              !beforeMobilisationDeadline(bacenta, bussing) ||
               !isMomoCleared(bacenta)
             }
             onClick={() => {
