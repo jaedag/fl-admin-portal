@@ -26,7 +26,7 @@ const isArrivalsToday = (bacenta: BacentaWithArrivals) => {
     return true
   }
 
-  return true
+  return false
 }
 
 export const beforeCountingDeadline = (
