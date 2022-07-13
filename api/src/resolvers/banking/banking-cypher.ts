@@ -60,8 +60,8 @@ MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowship:Fellows
 WITH fellowship
 MATCH (date:TimeGraph)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)<-[:HAS_SERVICE]-(:HistoryLog)<-[:HAS_HISTORY]-(fellowship) 
 WHERE NOT (record:NoService)
-WITH DISTINCT fellowship, record, date ORDER BY date.date DESC LIMIT 2
-WITH min(date.date) as lowDate, fellowship
+WITH DISTINCT fellowship, record, date ORDER BY date(date.date) DESC LIMIT 2
+WITH min(date(date.date)) as lowDate, fellowship
 MATCH (date:TimeGraph {date:date(lowDate)})<-[:SERVICE_HELD_ON]-(record:ServiceRecord)<-[:HAS_SERVICE]-(:HistoryLog)<-[:HAS_HISTORY]-(fellowship) 
 RETURN record
 `
