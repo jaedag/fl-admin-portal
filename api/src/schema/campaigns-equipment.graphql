@@ -622,8 +622,14 @@ type EquipmentCampaign implements Campaign {
     @relationship(type: "HAS_EQUIPMENT_RECORD", direction: IN)
   gatheringService: GatheringService
     @relationship(type: "HAS_CAMPAIGN", direction: IN)
+  stream: Stream @relationship(type: "HAS_CAMPAIGN", direction: IN)
+  council: Council @relationship(type: "HAS_CAMPAIGN", direction: IN)
+  constituency: Constituency @relationship(type: "HAS_CAMPAIGN", direction: IN)
+  bacenta: Bacenta @relationship(type: "HAS_CAMPAIGN", direction: IN)
+  fellowship: Fellowship @relationship(type: "HAS_CAMPAIGN", direction: IN)
   leader: Member @relationship(type: "LEADS", direction: IN)
-  target: Int!
+  constituencyTarget: Int!
+  fellowshipTarget: Int!
 }
 
 extend type Member {
