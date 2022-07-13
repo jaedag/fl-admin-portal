@@ -522,6 +522,7 @@ export const STREAM_BANKING_DEFAULTERS_LIST = gql`
           fullName
           phoneNumber
           whatsappNumber
+          pictureUrl
         }
         bacenta {
           id
