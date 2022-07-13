@@ -10,6 +10,7 @@ import {
   arrivalsResolvers,
 } from './arrivals/arrivals-resolvers'
 import bankingMutation from './banking/banking-resolver'
+import { campaignsMutation } from './campaigns/campaigns-resolver'
 
 const dotenv = require('dotenv')
 
@@ -49,6 +50,7 @@ const resolvers = {
     ...bankingMutation,
     ...treasuryMutations,
     ...serviceNoIncomeMutations,
+    ...campaignsMutation,
   },
 }
 

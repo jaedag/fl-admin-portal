@@ -60,6 +60,10 @@ const bankingAnagkazo = fs
   .readFileSync(path.join(__dirname, './banking-anagkazo.graphql'))
   .toString('utf-8')
 
+const equipmentCampaign = fs
+  .readFileSync(path.join(__dirname, './campaigns-equipment.graphql'))
+  .toString('utf-8')
+
 const array = [
   schema,
   directory,
@@ -74,6 +78,7 @@ const array = [
   quickFacts,
   aggregates,
   servicesNoIncome,
+  equipmentCampaign,
 ]
 
 exports.typeDefs = array.join(' ')
