@@ -5,7 +5,7 @@ import TreasurerSelect from './TellerSelect'
 
 export const anagkazoRoutes: RouteTypes[] = [
   {
-    path: '/services/anagkazo/midweek-banking',
+    path: '/services/stream/midweek-banking',
     element: MidweekBankingHome,
     roles: ['adminStream'],
     placeholder: false,

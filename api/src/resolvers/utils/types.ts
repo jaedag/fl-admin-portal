@@ -57,6 +57,7 @@ export type ServantTypeLowerCase =
   | 'arrivalsAdmin'
   | 'arrivalsCounter'
   | 'arrivalsConfirmer'
+  | 'teller'
 
 export type StreamOptions = 'Campus' | 'Town' | 'Anagkazo'
 

@@ -6,7 +6,7 @@ export const STREAM_BANK_TELLERS = gql`
       id
       name
 
-      bankTellers {
+      tellers {
         id
         firstName
         lastName

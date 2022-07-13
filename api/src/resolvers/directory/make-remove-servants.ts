@@ -18,11 +18,7 @@ import {
   getUserRoles,
   updateAuthUserConfig,
 } from '../utils/auth0'
-import {
-  matchChurchQuery,
-  matchMemberQuery,
-  removeMemberAuthId,
-} from '../cypher/resolver-cypher'
+import { matchChurchQuery, removeMemberAuthId } from '../cypher/resolver-cypher'
 import { getAuth0Roles, getAuthToken } from '../authenticate'
 import {
   assignRoles,
@@ -73,7 +69,7 @@ export const MakeServant = async (
   const authRoles = await getAuth0Roles(authToken)
 
   const terms = formatting(churchType, servantType)
-  const { verb, servantLower, churchLower } = terms
+  const { verb, servantLower, churchLower, memberQuery } = terms
 
   const setUpArgs = {
     permittedRoles,
@@ -93,10 +89,10 @@ export const MakeServant = async (
   const church = rearrangeCypherObject(churchRes)
   const churchNameInEmail = `${church.name} ${church.type[0]}`
 
-  const servantRes = await session.run(matchMemberQuery, {
+  const servantRes = await session.run(memberQuery, {
     id: args[`${servantLower}Id`],
   })
-  const oldServantRes = await session.run(matchMemberQuery, {
+  const oldServantRes = await session.run(memberQuery, {
     id: args[`old${servantType}Id`] ?? '',
   })
   const servant = rearrangeCypherObject(servantRes)
@@ -204,7 +200,7 @@ export const RemoveServant = async (
   const authToken: string = await getAuthToken()
   const authRoles = await getAuth0Roles(authToken)
   const terms = formatting(churchType, servantType)
-  const { verb, servantLower, churchLower } = terms
+  const { verb, servantLower, churchLower, memberQuery } = terms
 
   const setUpArgs = {
     permittedRoles,
@@ -223,7 +219,7 @@ export const RemoveServant = async (
   })
   const church = rearrangeCypherObject(churchRes)
 
-  const servantRes = await session.run(matchMemberQuery, {
+  const servantRes = await session.run(memberQuery, {
     id: args[`${servantLower}Id`],
   })
   const servant: MemberWithKeys = rearrangeCypherObject(servantRes)
