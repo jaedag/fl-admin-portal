@@ -27,6 +27,9 @@ export type ChurchLevel =
   | 'Denomination'
   | 'Sonta'
 
+export type TimeGraph = {
+  date: Date
+}
 export interface Church {
   id: string
   name: string
@@ -44,6 +47,10 @@ export interface Fellowship extends Church {
   bankingCode: number
 }
 
+export interface Bacenta extends Church {
+  __typename: 'Bacenta'
+}
+
 export type ChurchIdAndName = {
   id: string
   name: string
@@ -51,10 +58,10 @@ export type ChurchIdAndName = {
 
 export type StreamOptions = 'Campus' | 'Town' | 'Anagkazo'
 
-export interface StreamInterface {
+export interface Stream extends Church {
   id: string
   name: string
-  __typename: ChurchLevel
+  __typename: 'Stream'
 }
 
 //MEMBERSHIP

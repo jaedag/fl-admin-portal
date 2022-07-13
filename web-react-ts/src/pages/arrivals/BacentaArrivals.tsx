@@ -1,8 +1,8 @@
 import { useQuery } from '@apollo/client'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
-import React from 'react'
+import { useEffect } from 'react'
 import { useContext } from 'react'
-import { Button, Card, Container } from 'react-bootstrap'
+import { Button, Card, Container, Modal } from 'react-bootstrap'
 import { BACENTA_ARRIVALS } from './arrivalsQueries'
 import { useNavigate } from 'react-router'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
@@ -12,12 +12,17 @@ import {
   beforeArrivalDeadline,
   beforeMobilisationDeadline,
 } from './arrivals-utils'
-import { isToday } from 'jd-date-utils'
+import { getTodayTime, isToday } from 'jd-date-utils'
 import HeadingSecondary from 'components/HeadingSecondary'
 import { MemberContext } from 'contexts/MemberContext'
+import { BacentaWithArrivals } from './arrivals-types'
+import useModal from 'hooks/useModal'
+import './Arrivals.css'
+import CountdownTimer from './countdown-component/CountdownTimer'
 
 const BacentaArrivals = () => {
   const { clickCard, bacentaId } = useContext(ChurchContext)
+  const { show, handleClose, handleShow } = useModal()
   const { theme } = useContext(MemberContext)
   const navigate = useNavigate()
   const today = new Date().toISOString().slice(0, 10)
@@ -25,12 +30,10 @@ const BacentaArrivals = () => {
     variables: { id: bacentaId, date: today },
   })
 
-  const bacenta = data?.bacentas[0]
+  const bacenta: BacentaWithArrivals = data?.bacentas[0]
   const date = data?.timeGraphs[0]
 
-  let bussing
-
-  const isMomoCleared = (bacenta) => {
+  const isMomoCleared = (bacenta: BacentaWithArrivals) => {
     if (bacenta?.normalBussingTopUp || bacenta?.swellBussingTopUp) {
       if (bacenta?.momoNumber) {
         return true
@@ -40,12 +43,9 @@ const BacentaArrivals = () => {
     return true
   }
 
-  data?.bacentas[0].bussing.forEach((data) => {
-    if (isToday(data.serviceDate.date)) {
-      bussing = data
-    }
-    return null
-  })
+  const bussing = bacenta?.bussing.find((bussingRecord) =>
+    isToday(bussingRecord.serviceDate.date.toString())
+  )
 
   const canFillOnTheWay = () => {
     // Ring true if it is before the deadline
@@ -62,6 +62,16 @@ const BacentaArrivals = () => {
     )
   }
 
+  const canFillOnTheWayValue = canFillOnTheWay()
+
+  useEffect(() => handleClose(), [])
+
+  const END_TIME_IN_MS = new Date(
+    getTodayTime(bacenta?.stream.arrivalEndTime)
+  ).getTime()
+
+  const dateTimeToEnd = END_TIME_IN_MS - 60 * 90 * 1000
+
   return (
     <ApolloWrapper data={data} loading={loading} error={error}>
       <Container>
@@ -70,14 +80,35 @@ const BacentaArrivals = () => {
         </HeadingPrimary>
         {date?.swell && (
           <HeadingSecondary loading={loading}>
-            <h3 className="fw-bold text-center yellow">Swell Weekend!!!</h3>
+            <h4 className="fw-bold text-center yellow">Swell Weekend!!!</h4>
           </HeadingSecondary>
         )}
-        <div className="text-center text-seconday">
-          <p>Code of the Day: </p>
-          <h4 className="fw-bold">{`${bacenta?.arrivalsCodeOfTheDay}`}</h4>
-        </div>
 
+        {canFillOnTheWayValue ? (
+          <Card className="text-center py-4">
+            <div className="text-secondary-custom">
+              <span>Code of the Day: </span>
+              <h5 className="fw-bold code-of-the-day">{`${bacenta?.arrivalsCodeOfTheDay}`}</h5>
+            </div>
+
+            <CountdownTimer targetDate={dateTimeToEnd} />
+            <div className="text-secondary-custom">Till Arrivals Closes</div>
+          </Card>
+        ) : (
+          <Card className="text-center py-3">
+            <p className="display-1">😞</p>
+            <h5 className="countdown danger fw-bold ">
+              It is too late to fill your forms!
+            </h5>
+            <i>
+              <div>Ecclesiastes 3:1</div>
+              <div>
+                To every thing there is a season, and a time to every purpose
+                under the heaven:
+              </div>
+            </i>
+          </Card>
+        )}
         <div className="d-grid gap-2 mt-5">
           {!isMomoCleared(bacenta) && (
             <>
@@ -99,6 +130,27 @@ const BacentaArrivals = () => {
           >
             View Graphs
           </Button>
+          <Modal
+            className="arrivals-end"
+            show={show}
+            onHide={handleClose}
+            centered
+          >
+            <Modal.Header>
+              <Modal.Title>You Are Too Late! 😞 </Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              To everything there is a time and a season, and your time is up!{' '}
+              <div className="fw-bold text-center display-6 mt-2">
+                It is too late to fill your forms.
+              </div>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={handleClose}>
+                Close
+              </Button>
+            </Modal.Footer>
+          </Modal>
           <Button
             variant="primary"
             size="lg"
@@ -118,7 +170,7 @@ const BacentaArrivals = () => {
           <Button
             variant="primary"
             size="lg"
-            disabled={!canFillOnTheWay()}
+            disabled={!canFillOnTheWayValue}
             onClick={() => {
               clickCard(bacenta)
               clickCard(bussing)
