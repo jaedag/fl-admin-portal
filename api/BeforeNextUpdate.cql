@@ -239,3 +239,5 @@ RETURN record, leader;
 
 //Adding CONSTRAINST 
 CREATE CONSTRAINT memberShouldHaveEmails FOR (member:Member) REQUIRE member.email IS NOT NULL;
+//constraint for service record id
+CREATE CONSTRAINT con_gathering_service_id FOR (n:GatheringService) REQUIRE n.id IS UNIQUE;

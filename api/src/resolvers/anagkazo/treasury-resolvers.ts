@@ -39,7 +39,7 @@ const treasuryMutations = {
         await session.run(anagkazo.checkIfConfirmed, args)
       )
 
-      if (checkAlreadyConfirmed) {
+      if (checkAlreadyConfirmed.check) {
         throwErrorMsg('This service offering has already been banked!')
       }
 

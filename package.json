@@ -1,4 +1,5 @@
 {
+  "version": "4.6.0",
   "devDependencies": {
     "@commitlint/cli": "^16.1.0",
     "@commitlint/config-conventional": "^16.0.0",
@@ -55,7 +56,6 @@
     "url": "git://github.com/firstlovecenter/fl-pastoral-care.git"
   },
   "license": "Apache-2.0",
-  "version": "4.5.1",
   "dependencies": {
     "jd-date-utils": "^1.0.3"
   }
