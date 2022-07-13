@@ -25,7 +25,7 @@ export interface BussingRecord {
   arrival_confirmed_by: Member
 
   mobileNetwork: Network
-  mobileNumber: string
+  momoNumber: string
   momoName: string
 }
 

@@ -20,6 +20,7 @@ import { beforeArrivalDeadline, beforeCountingDeadline } from './arrivals-utils'
 import usePopup from 'hooks/usePopup'
 import Popup from 'components/Popup/Popup'
 import { getHumanReadableDate } from 'jd-date-utils'
+import { BacentaWithArrivals, BussingRecord } from './arrivals-types'
 
 const BusFormDetails = () => {
   const { bacentaId } = useContext(ChurchContext)
@@ -31,8 +32,8 @@ const BusFormDetails = () => {
     variables: { bussingRecordId: bussingRecordId, bacentaId: bacentaId },
   })
   const navigate = useNavigate()
-  const bussing = data?.bussingRecords[0]
-  const church = data?.bacentas[0]
+  const bussing: BussingRecord = data?.bussingRecords[0]
+  const church: BacentaWithArrivals = data?.bacentas[0]
 
   return (
     <ApolloWrapper loading={loading} error={error} data={data} placeholder>
@@ -80,7 +81,11 @@ const BusFormDetails = () => {
                       loading={loading}
                       className="td-placeholder"
                     >
-                      <td>{getHumanReadableDate(bussing?.serviceDate.date)}</td>
+                      <td>
+                        {getHumanReadableDate(
+                          bussing?.serviceDate.date.toString()
+                        )}
+                      </td>
                     </PlaceholderCustom>
                   </tr>
                   <tr>
@@ -107,7 +112,7 @@ const BusFormDetails = () => {
                     </td>
                   </tr>
                   <tr>
-                    <td>Attendance</td>
+                    <td>Bus Payment Attendance</td>
                     <td>
                       <PlaceholderCustom loading={loading}>
                         {bussing?.attendance}
@@ -197,7 +202,7 @@ const BusFormDetails = () => {
                       <td>Arrival Time</td>
                       <td className="fw-bold good">
                         <PlaceholderCustom loading={loading}>
-                          {parseNeoTime(bussing?.arrivalTime)}
+                          {parseNeoTime(bussing?.arrivalTime.toString())}
                         </PlaceholderCustom>
                       </td>
                     </tr>
@@ -244,7 +249,7 @@ const BusFormDetails = () => {
         </Row>
 
         <div className="d-grid gap-2">
-          <RoleView roles={permitArrivalsCounter('Stream')}>
+          <RoleView roles={permitArrivalsCounter()}>
             {beforeCountingDeadline(bussing, church) && (
               <>
                 {!bussing?.attendance && (
