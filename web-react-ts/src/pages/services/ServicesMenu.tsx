@@ -13,6 +13,8 @@ import {
 } from 'react-bootstrap-icons'
 import { useNavigate } from 'react-router'
 import { ChurchLevel } from 'global-types'
+import RoleView from 'auth/RoleView'
+import { permitTellerStream } from 'permission-utils'
 
 const Services = () => {
   const { currentUser, theme } = useContext(MemberContext)
@@ -101,19 +103,24 @@ const Services = () => {
                 />
               </>
             )}
-          {church.stream_name === 'anagkazo' && (
+          <MenuButton
+            iconComponent={CashCoin}
+            title="Midweek Banking"
+            color="banking"
+            onClick={() =>
+              navigate(`/services/${churchType.toLowerCase()}/midweek-banking`)
+            }
+            noCaption
+          />
+          <RoleView roles={permitTellerStream()}>
             <MenuButton
               iconComponent={CashCoin}
-              title="Midweek Banking"
+              title="Receive Midweek Offering"
               color="banking"
-              onClick={() =>
-                navigate(
-                  `/services/${church.stream_name.toLowerCase()}/midweek-banking`
-                )
-              }
+              onClick={() => navigate(`/anagkazo/receive-banking`)}
               noCaption
             />
-          )}
+          </RoleView>
         </div>
       </Container>
     </div>
