@@ -251,14 +251,16 @@ extend type Council {
   avgWeekdayAttendanceStats(days: Int!): Stats
     @cypher(
       statement: """
-      MATCH (this)-[:HAS]->(con:Constituency)-[:HAS]->(:Bacenta)-[:HAS]->(fellowship)
-          WHERE fellowship:Fellowship OR fellowship:ClosedFellowship
-      MATCH (fellowship)-[:HAS_HISTORY]-(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)
-      MATCH (record) WHERE NOT (record:NoService)
-      MATCH (record)-[:SERVICE_HELD_ON]->(date:TimeGraph)
+       MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_COMPONENT*1..3]->(componentServices)
+          MATCH (componentServices)-[:HAS_SERVICE]->(componentRecords:ServiceRecord)
+ 
+      MATCH (componentRecords) WHERE NOT (componentRecords:NoService)
+      MATCH (componentRecords)-[:SERVICE_HELD_ON]->(date:TimeGraph)
       MATCH (date)
       WHERE date.date > date() - duration({days: $days})
-      WITH sum(record.attendance) AS attendance, sum(record.attendance) AS income, this, date(date.date).week as weeknumber
+      
+      WITH DISTINCT componentRecords, date(date.date).week as weeknumber, this
+      WITH sum(componentRecords.attendance) AS attendance, sum(componentRecords.income) AS income, this, weeknumber
       RETURN {
         attendance: toInteger(round(avg(attendance))),
         income: round(avg(income), 2)
@@ -285,17 +287,19 @@ extend type Stream {
   avgWeekdayAttendanceStats(days: Int!): Stats
     @cypher(
       statement: """
-      MATCH (this)-[:HAS]->(:Council)-[:HAS]->(:Constituency)-[:HAS]->(:Bacenta)-[:HAS]->(fellowship)
-          WHERE fellowship:Fellowship OR fellowship:ClosedFellowship
-      MATCH (fellowship)-[:HAS_HISTORY]-(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)
-      MATCH (record) WHERE NOT (record:NoService)
-      MATCH (record)-[:SERVICE_HELD_ON]->(date:TimeGraph)
+      MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_COMPONENT*1..4]->(componentServices)
+          MATCH (componentServices)-[:HAS_SERVICE]->(componentRecords:ServiceRecord)
+ 
+      MATCH (componentRecords) WHERE NOT (componentRecords:NoService)
+      MATCH (componentRecords)-[:SERVICE_HELD_ON]->(date:TimeGraph)
       MATCH (date)
       WHERE date.date > date() - duration({days: $days})
-      WITH sum(record.attendance) AS attendance, sum(record.income) AS income, this, date(date.date).week as weeknumber
+      
+      WITH DISTINCT componentRecords, date(date.date).week as weeknumber, this
+      WITH sum(componentRecords.attendance) AS attendance, sum(componentRecords.income) AS income, this, weeknumber
       RETURN {
-        attendance: toInteger(round(avg(record.attendance))),
-        income: round(avg(record.income), 2)
+        attendance: toInteger(round(avg(attendance))),
+        income: round(avg(income), 2)
         }
       """
     )
