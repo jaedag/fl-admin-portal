@@ -58,11 +58,11 @@ export const lastButOneServiceRecord = `
 MATCH (record:ServiceRecord {id: $serviceRecordId})
 MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowship:Fellowship) 
 WITH fellowship
-MATCH (record:ServiceRecord)<-[:HAS_SERVICE]-(:HistoryLog)<-[:HAS_HISTORY]-(fellowship) 
+MATCH (date:TimeGraph)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)<-[:HAS_SERVICE]-(:HistoryLog)<-[:HAS_HISTORY]-(fellowship) 
 WHERE NOT (record:NoService)
-WITH fellowship, record ORDER BY record.created_at DESC LIMIT 2
-WITH min(record.created_at) as lowDate, fellowship
-MATCH (record:ServiceRecord {created_at: lowDate})<-[:HAS_SERVICE]-(:HistoryLog)<-[:HAS_HISTORY]-(fellowship) 
+WITH fellowship, record, date ORDER BY date.date DESC LIMIT 2
+WITH min(date.date) as lowDate, fellowship
+MATCH (date:TimeGraph {date:date(lowDate)})<-[:SERVICE_HELD_ON]-(record:ServiceRecord)<-[:HAS_SERVICE]-(:HistoryLog)<-[:HAS_HISTORY]-(fellowship) 
 RETURN record
 `
 export const submitBankingSlip = `
