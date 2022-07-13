@@ -25,11 +25,7 @@ import { MemberContext } from 'contexts/MemberContext'
 import { CheckAll } from 'react-bootstrap-icons'
 import usePopup from 'hooks/usePopup'
 import HeadingSecondary from 'components/HeadingSecondary'
-
-type FormOptions = {
-  adminName: string
-  adminSelect: string
-}
+import { AdminFormOptions } from './DashboardConstituency'
 
 const StreamDashboard = () => {
   const { isOpen, togglePopup } = usePopup()
@@ -41,7 +37,7 @@ const StreamDashboard = () => {
   const [MakeStreamArrivalsAdmin] = useMutation(MAKE_STREAMARRIVALS_ADMIN)
   const stream = data?.streams[0]
 
-  const initialValues = {
+  const initialValues: AdminFormOptions = {
     adminName: stream?.arrivalsAdmin
       ? `${stream?.arrivalsAdmin?.firstName} ${stream?.arrivalsAdmin?.lastName}`
       : '',
@@ -54,8 +50,8 @@ const StreamDashboard = () => {
   })
 
   const onSubmit = (
-    values: FormOptions,
-    onSubmitProps: FormikHelpers<FormOptions>
+    values: AdminFormOptions,
+    onSubmitProps: FormikHelpers<AdminFormOptions>
   ) => {
     onSubmitProps.setSubmitting(true)
 

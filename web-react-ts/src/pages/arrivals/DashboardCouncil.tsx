@@ -20,11 +20,7 @@ import HeadingSecondary from 'components/HeadingSecondary'
 import DefaulterInfoCard from 'pages/services/defaulters/DefaulterInfoCard'
 import { MemberContext } from 'contexts/MemberContext'
 import usePopup from 'hooks/usePopup'
-
-type FormOptions = {
-  adminName: string
-  adminSelect: string
-}
+import { AdminFormOptions } from './DashboardConstituency'
 
 const CouncilDashboard = () => {
   const { isOpen, togglePopup } = usePopup()
@@ -36,7 +32,7 @@ const CouncilDashboard = () => {
   const [MakeCouncilArrivalsAdmin] = useMutation(MAKE_COUNCILARRIVALS_ADMIN)
   const council = data?.councils[0]
 
-  const initialValues: FormOptions = {
+  const initialValues: AdminFormOptions = {
     adminName: council?.arrivalsAdmin
       ? `${council?.arrivalsAdmin?.firstName} ${council?.arrivalsAdmin?.lastName}`
       : '',
@@ -49,8 +45,8 @@ const CouncilDashboard = () => {
   })
 
   const onSubmit = (
-    values: FormOptions,
-    onSubmitProps: FormikHelpers<FormOptions>
+    values: AdminFormOptions,
+    onSubmitProps: FormikHelpers<AdminFormOptions>
   ) => {
     onSubmitProps.setSubmitting(true)
 

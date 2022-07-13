@@ -13,7 +13,7 @@ import { alertMsg, throwErrorMsg } from 'global-utils'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { Col, Container, Row, Button } from 'react-bootstrap'
 import Popup from 'components/Popup/Popup'
-import { Form, Formik } from 'formik'
+import { Form, Formik, FormikHelpers } from 'formik'
 import FormikControl from 'components/formik-components/FormikControl'
 import SubmitButton from 'components/formik-components/SubmitButton'
 import RoleView from 'auth/RoleView'
@@ -24,6 +24,7 @@ import { getHumanReadableDate } from 'jd-date-utils'
 import DefaulterInfoCard from 'pages/services/defaulters/DefaulterInfoCard'
 import { MemberContext } from 'contexts/MemberContext'
 import usePopup from 'hooks/usePopup'
+import { AdminFormOptions } from './DashboardConstituency'
 
 const GatheringServiceDashboard = () => {
   const { isOpen, togglePopup } = usePopup()
@@ -44,7 +45,7 @@ const GatheringServiceDashboard = () => {
   )
   const gatheringService = data?.gatheringServices[0]
 
-  const initialValues = {
+  const initialValues: AdminFormOptions = {
     adminName: gatheringService?.arrivalsAdmin
       ? `${gatheringService?.arrivalsAdmin?.firstName} ${gatheringService?.arrivalsAdmin?.lastName}`
       : '',
@@ -56,7 +57,10 @@ const GatheringServiceDashboard = () => {
     ),
   })
 
-  const onSubmit = (values, onSubmitProps) => {
+  const onSubmit = (
+    values: AdminFormOptions,
+    onSubmitProps: FormikHelpers<AdminFormOptions>
+  ) => {
     onSubmitProps.setSubmitting(true)
 
     MakeGatheringServiceArrivalsAdmin({
@@ -110,7 +114,7 @@ const GatheringServiceDashboard = () => {
                         placeholder="Select an Admin"
                         setFieldValue={formik.setFieldValue}
                         aria-describedby="Member Search"
-                        error={formik.errors.admin}
+                        error={formik.errors.adminSelect}
                       />
                     </Col>
                   </Row>
@@ -124,9 +128,7 @@ const GatheringServiceDashboard = () => {
 
         {data?.timeGraphs.length ? (
           <>
-            <h4>
-              {getHumanReadableDate(data?.timeGraphs[0]?.date, 'weekday')}
-            </h4>
+            <h4>{getHumanReadableDate(data?.timeGraphs[0]?.date, true)}</h4>
             <h5>{data?.timeGraphs[0].swell && `Swell Weekend!`}</h5>
           </>
         ) : null}
@@ -192,6 +194,15 @@ const GatheringServiceDashboard = () => {
             number={gatheringService?.bacentasOnTheWayCount.toString()}
             color="yellow"
             iconBg
+            noCaption
+          />
+
+          <MenuButton
+            title="Bacentas Below 8"
+            onClick={() => navigate('/arrivals/bacentas-below-8')}
+            number={gatheringService?.bacentasBelow8Count.toString()}
+            iconBg
+            color="red"
             noCaption
           />
 
