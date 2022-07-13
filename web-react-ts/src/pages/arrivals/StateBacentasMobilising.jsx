@@ -11,7 +11,7 @@ import {
   GATHERINGSERVICE_BACENTAS_MOBILISING,
   STREAM_BACENTAS_MOBILISING,
 } from './bussingStatusQueries'
-import useChurchLevel from '../../hooks/useChurchLevel'
+import useChurchLevel from '../../hooks/useChurchLevel.tsx'
 import NoData from './CompNoData'
 import PlaceholderDefaulterList from 'pages/services/defaulters/PlaceholderDefaulterList'
 import { ChurchContext } from 'contexts/ChurchContext'

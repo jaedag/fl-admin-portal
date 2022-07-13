@@ -1,4 +1,4 @@
-import { Bacenta, Member, Stream, TimeGraph } from 'global-types'
+import { Bacenta, Church, Member, Stream, TimeGraph } from 'global-types'
 
 type Network = 'MTN' | 'Vodafone' | 'AirtelTigo' | 'Airtel' | 'Tigo'
 
@@ -43,4 +43,21 @@ export interface BacentaWithArrivals extends Bacenta {
   normalBussingTopUp: number
   swellBussingTopUp: number
   bussing: BussingRecord[]
+}
+
+export interface HigherChurchWithArrivals extends Church {
+  __typename: 'Constituency' | 'Stream' | 'Council' | 'GatheringService'
+  bacentasNoActivity: BacentaWithArrivals[]
+  bacentasMobilising: BacentaWithArrivals[]
+  bacentasOnTheWay: BacentaWithArrivals[]
+  bacentasBelow8: BacentaWithArrivals[]
+  bacentasHaveArrived: BacentaWithArrivals[]
+
+  bacentasNoActivityCount: number
+  bacentasMobilisingCount: number
+  bacentasOnTheWayCount: number
+  bacentasBelow8Count: number
+  bacentasHaveArrivedCount: number
+  bussingMembersOnTheWayCount: number
+  bussingMembersHaveArrivedCount: number
 }

@@ -14,21 +14,22 @@ import './MemberDisplayCard.css'
 import { TelephoneFill, Whatsapp } from 'react-bootstrap-icons'
 import CloudinaryImage from 'components/CloudinaryImage'
 import { USER_PLACEHOLDER } from 'global-utils'
+import { ChurchLevel } from 'global-types'
 
 type MemberDisplayCardProps = {
   member: {
-    __typename: string
+    __typename: string | ChurchLevel
     id: string
     name?: string
-    firstName: string
-    lastName: string
-    fullName: string
-    pictureUrl: string
-    fellowship: {
+    firstName?: string
+    lastName?: string
+    fullName?: string
+    pictureUrl?: string
+    fellowship?: {
       id: string
       name: string
     }
-    ministry: {
+    ministry?: {
       id: string
       name: string
     }
@@ -77,8 +78,8 @@ const MemberDisplayCard = (props: MemberDisplayCardProps) => {
     case 'Member':
       name = member?.fullName || member.firstName + ' ' + member.lastName
       details = [
-        member.fellowship && member.fellowship.name + ' Fellowship',
-        member.ministry && member.ministry.name,
+        member.fellowship ? member.fellowship.name + ' Fellowship' : '',
+        member.ministry ? member.ministry.name : '',
       ]
       break
     case 'Fellowship':

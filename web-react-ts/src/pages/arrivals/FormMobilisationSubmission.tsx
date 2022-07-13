@@ -2,7 +2,7 @@ import FormikControl from 'components/formik-components/FormikControl'
 import SubmitButton from 'components/formik-components/SubmitButton'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import HeadingSecondary from 'components/HeadingSecondary'
-import { Form, Formik } from 'formik'
+import { Form, Formik, FormikHelpers } from 'formik'
 import { useMutation, useQuery } from '@apollo/client'
 import React, { useContext, useEffect } from 'react'
 import * as Yup from 'yup'
@@ -15,11 +15,17 @@ import { UPLOAD_MOBILISATION_PICTURE } from './arrivalsMutation'
 import { beforeMobilisationDeadline } from './arrivals-utils'
 import { isToday } from 'jd-date-utils'
 import { throwErrorMsg } from 'global-utils'
+import { BacentaWithArrivals, BussingRecord } from './arrivals-types'
+
+type FormOptions = {
+  serviceDate: string
+  mobilisationPicture: string
+}
 
 const FormMobilisationSubmission = () => {
   const navigate = useNavigate()
   const { bacentaId, clickCard } = useContext(ChurchContext)
-  const initialValues = {
+  const initialValues: FormOptions = {
     serviceDate: new Date().toISOString().slice(0, 10),
     mobilisationPicture: '',
   }
@@ -36,7 +42,10 @@ const FormMobilisationSubmission = () => {
     mobilisationPicture: Yup.string().required('You must upload a picture'),
   })
 
-  const onSubmit = (values, onSubmitProps) => {
+  const onSubmit = (
+    values: FormOptions,
+    onSubmitProps: FormikHelpers<FormOptions>
+  ) => {
     onSubmitProps.setSubmitting(true)
     UploadMobilisationPicture({
       variables: {
@@ -55,15 +64,12 @@ const FormMobilisationSubmission = () => {
   }
 
   useEffect(() => {
-    let bussing
+    const bacenta: BacentaWithArrivals = data?.bacentas[0]
+    const bussing = bacenta?.bussing.find((data: BussingRecord) =>
+      isToday(data.serviceDate.date.toString())
+    )
 
-    data?.bacentas[0].bussing.forEach((data) => {
-      if (isToday(data.serviceDate.date)) {
-        bussing = data
-      }
-    })
-
-    if (data && !beforeMobilisationDeadline(bussing, data?.bacentas[0])) {
+    if (data && !beforeMobilisationDeadline(data?.bacentas[0], bussing)) {
       navigate('/arrivals/bacenta')
     }
   }, [data?.bacentas, navigate, data])
@@ -94,7 +100,7 @@ const FormMobilisationSubmission = () => {
             <Form>
               <Row className="row-cols-1 row-cols-md-2 mt-2">
                 <Col className="mb-2">
-                  <small htmlFor="dateofservice" className="form-text label">
+                  <small className="form-text label">
                     Date of Service*
                     <i className="text-secondary">(Day/Month/Year)</i>
                   </small>

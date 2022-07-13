@@ -1,41 +1,51 @@
 import { useMutation, useQuery } from '@apollo/client'
+import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
+import React, { useContext } from 'react'
+import * as Yup from 'yup'
+import { useNavigate } from 'react-router'
+import { MAKE_STREAMARRIVALS_ADMIN } from './arrivalsMutation'
+import { STREAM_ARRIVALS_DASHBOARD } from './arrivalsQueries'
+import { throwErrorMsg } from 'global-utils'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
-import MenuButton from 'components/buttons/MenuButton'
+import { Col, Container, Row, Button } from 'react-bootstrap'
+import Popup from 'components/Popup/Popup'
+import { Form, Formik, FormikHelpers } from 'formik'
 import FormikControl from 'components/formik-components/FormikControl'
 import SubmitButton from 'components/formik-components/SubmitButton'
-import Popup from 'components/Popup/Popup'
-import { Form, Formik } from 'formik'
-import * as Yup from 'yup'
-import React from 'react'
-import { useContext } from 'react'
-import { Button, Col, Container, Row } from 'react-bootstrap'
-import { COUNCIL_ARRIVALS_DASHBOARD } from './arrivalsQueries'
-import { useNavigate } from 'react-router'
-import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import RoleView from 'auth/RoleView'
-import { throwErrorMsg } from 'global-utils'
-import { MAKE_COUNCILARRIVALS_ADMIN } from './arrivalsMutation'
-import { permitAdmin, permitArrivals } from 'permission-utils'
-import HeadingSecondary from 'components/HeadingSecondary'
+import {
+  permitAdmin,
+  permitArrivals,
+  permitArrivalsConfirmer,
+  permitArrivalsCounter,
+} from 'permission-utils'
+import MenuButton from 'components/buttons/MenuButton'
 import DefaulterInfoCard from 'pages/services/defaulters/DefaulterInfoCard'
 import { MemberContext } from 'contexts/MemberContext'
+import { CheckAll } from 'react-bootstrap-icons'
 import usePopup from 'hooks/usePopup'
+import HeadingSecondary from 'components/HeadingSecondary'
 
-const CouncilDashboard = () => {
+type FormOptions = {
+  adminName: string
+  adminSelect: string
+}
+
+const StreamDashboard = () => {
   const { isOpen, togglePopup } = usePopup()
   const { currentUser } = useContext(MemberContext)
   const navigate = useNavigate()
-  const { data, loading, error } = useQuery(COUNCIL_ARRIVALS_DASHBOARD, {
+  const { data, loading, error } = useQuery(STREAM_ARRIVALS_DASHBOARD, {
     variables: { id: currentUser?.currentChurch.id },
   })
-  const [MakeCouncilArrivalsAdmin] = useMutation(MAKE_COUNCILARRIVALS_ADMIN)
-  const council = data?.councils[0]
+  const [MakeStreamArrivalsAdmin] = useMutation(MAKE_STREAMARRIVALS_ADMIN)
+  const stream = data?.streams[0]
 
   const initialValues = {
-    adminName: council?.arrivalsAdmin
-      ? `${council?.arrivalsAdmin?.firstName} ${council?.arrivalsAdmin?.lastName}`
+    adminName: stream?.arrivalsAdmin
+      ? `${stream?.arrivalsAdmin?.firstName} ${stream?.arrivalsAdmin?.lastName}`
       : '',
-    adminSelect: council?.arrivalsAdmin?.id ?? '',
+    adminSelect: stream?.arrivalsAdmin?.id ?? '',
   }
   const validationSchema = Yup.object({
     adminSelect: Yup.string().required(
@@ -43,12 +53,15 @@ const CouncilDashboard = () => {
     ),
   })
 
-  const onSubmit = (values, onSubmitProps) => {
+  const onSubmit = (
+    values: FormOptions,
+    onSubmitProps: FormikHelpers<FormOptions>
+  ) => {
     onSubmitProps.setSubmitting(true)
 
-    MakeCouncilArrivalsAdmin({
+    MakeStreamArrivalsAdmin({
       variables: {
-        councilId: currentUser?.currentChurch.id,
+        streamId: currentUser?.currentChurch.id,
         newAdminId: values.adminSelect,
         oldAdminId: initialValues.adminSelect || 'no-old-admin',
       },
@@ -56,26 +69,26 @@ const CouncilDashboard = () => {
       .then(() => {
         togglePopup()
         onSubmitProps.setSubmitting(false)
-        alert('Council Arrivals Admin has been changed successfully')
+        alert('stream Arrivals Admin has been changed successfully')
       })
       .catch((e) => throwErrorMsg(e))
   }
 
   const aggregates = {
-    title: 'Constituencies',
-    data: council?.constituencyCount,
-    link: `/arrivals/council-by-constituency`,
+    title: 'Councils',
+    data: stream?.councilCount,
+    link: `/arrivals/stream-by-council`,
   }
 
   return (
     <ApolloWrapper data={data} loading={loading} error={error}>
       <Container>
         <HeadingPrimary loading={loading}>
-          {council?.name} Council Arrivals Summary
+          {stream?.name} Stream Arrivals Summary
         </HeadingPrimary>
-        <HeadingSecondary>{`Arrivals Rep: ${
-          council?.arrivalsAdmin?.fullName ?? 'None'
-        }`}</HeadingSecondary>
+        <HeadingSecondary loading={loading}>
+          Arrivals Admin: {stream?.arrivalsAdmin?.fullName}
+        </HeadingSecondary>
         {isOpen && (
           <Popup handleClose={togglePopup}>
             <b>Change Arrivals Admin</b>
@@ -97,7 +110,7 @@ const CouncilDashboard = () => {
                         placeholder="Select an Admin"
                         setFieldValue={formik.setFieldValue}
                         aria-describedby="Member Search"
-                        error={formik.errors.admin}
+                        error={formik.errors.adminSelect}
                       />
                     </Col>
                   </Row>
@@ -108,16 +121,30 @@ const CouncilDashboard = () => {
             </Formik>
           </Popup>
         )}
-
         <div className="d-grid gap-2">
           <RoleView
-            roles={[...permitAdmin('Council'), ...permitArrivals('Stream')]}
+            roles={[...permitAdmin('Stream'), ...permitArrivals('Stream')]}
           >
             <Button
-              variant="outline-secondary my-3"
+              variant="outline-secondary"
+              size="lg"
               onClick={() => togglePopup()}
             >
               Change Arrivals Admin
+            </Button>
+            <Button
+              variant="outline-secondary"
+              size="lg"
+              onClick={() => navigate('/stream/arrivals-helpers')}
+            >
+              Arrivals Helpers
+            </Button>
+            <Button
+              variant="outline-secondary"
+              size="lg"
+              onClick={() => navigate('/stream/arrival-times')}
+            >
+              Arrivals Times
             </Button>
           </RoleView>
 
@@ -125,7 +152,7 @@ const CouncilDashboard = () => {
           <MenuButton
             title="Bacentas With No Activity"
             onClick={() => navigate('/arrivals/bacentas-no-activity')}
-            number={council?.bacentasNoActivityCount.toString()}
+            number={stream?.bacentasNoActivityCount.toString()}
             color="red"
             iconBg
             noCaption
@@ -133,7 +160,7 @@ const CouncilDashboard = () => {
           <MenuButton
             title="Bacentas Mobilising"
             onClick={() => navigate('/arrivals/bacentas-mobilising')}
-            number={council?.bacentasMobilisingCount.toString()}
+            number={stream?.bacentasMobilisingCount.toString()}
             color="orange"
             iconBg
             noCaption
@@ -141,31 +168,61 @@ const CouncilDashboard = () => {
           <MenuButton
             title="Bacentas On The Way"
             onClick={() => navigate('/arrivals/bacentas-on-the-way')}
-            number={council?.bacentasOnTheWayCount.toString()}
+            number={stream?.bacentasOnTheWayCount.toString()}
             color="yellow"
             iconBg
+            noCaption
+          />
+          <RoleView roles={permitArrivalsCounter()}>
+            <MenuButton
+              title="Bacentas To Be Counted"
+              onClick={() => navigate('/arrivals/bacentas-to-count')}
+              number={stream?.bacentasNotCountedCount.toString()}
+              color="yellow"
+              iconBg
+              noCaption
+            />
+          </RoleView>
+          <RoleView roles={permitArrivalsConfirmer()}>
+            <MenuButton
+              title="Confirm Bacenta Arrival"
+              color="yellow"
+              onClick={() => navigate('/arrivals/confirm-bacenta-arrival')}
+              iconComponent={CheckAll}
+              iconBg
+              noCaption
+            />
+          </RoleView>
+
+          <MenuButton
+            title="Bacentas Below 8"
+            onClick={() => navigate('/arrivals/bacentas-below-8')}
+            number={stream?.bacentasBelow8Count.toString()}
+            iconBg
+            color="red"
             noCaption
           />
 
           <MenuButton
             title="Bacentas That Have Arrived"
             onClick={() => navigate('/arrivals/bacentas-have-arrived')}
-            number={council?.bacentasHaveArrivedCount.toString()}
-            color="green"
+            number={stream?.bacentasHaveArrivedCount.toString()}
             iconBg
+            color="green"
             noCaption
           />
+
           <div className="mt-5 d-grid gap-2">
             <MenuButton
               title="Members On The Way"
-              number={council?.bussingMembersOnTheWayCount.toString()}
+              number={stream?.bussingMembersOnTheWayCount.toString()}
               color="yellow"
               iconBg
               noCaption
             />
             <MenuButton
               title="Members That Have Arrived"
-              number={council?.bussingMembersHaveArrivedCount.toString()}
+              number={stream?.bussingMembersHaveArrivedCount.toString()}
               color="green"
               iconBg
               noCaption
@@ -177,4 +234,4 @@ const CouncilDashboard = () => {
   )
 }
 
-export default CouncilDashboard
+export default StreamDashboard

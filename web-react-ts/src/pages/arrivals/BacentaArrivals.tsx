@@ -70,7 +70,7 @@ const BacentaArrivals = () => {
     getTodayTime(bacenta?.stream.arrivalEndTime)
   ).getTime()
 
-  const dateTimeToEnd = END_TIME_IN_MS - 60 * 90 * 1000
+  const dateTimeToEnd = END_TIME_IN_MS
 
   return (
     <ApolloWrapper data={data} loading={loading} error={error}>
@@ -95,6 +95,14 @@ const BacentaArrivals = () => {
             <div className="text-secondary-custom">Till Arrivals Closes</div>
           </Card>
         ) : (
+          <Card className="text-center py-4">
+            <div className="text-secondary-custom">
+              <span>Code of the Day: </span>
+              <h5 className="fw-bold code-of-the-day">{`${bacenta?.arrivalsCodeOfTheDay}`}</h5>
+            </div>
+          </Card>
+        )}
+        {!canFillOnTheWayValue && bussing?.mobilisationPicture && (
           <Card className="text-center py-3">
             <p className="display-1">😞</p>
             <h5 className="countdown danger fw-bold ">

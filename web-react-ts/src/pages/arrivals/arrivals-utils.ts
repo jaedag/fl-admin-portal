@@ -15,19 +15,18 @@ const isArrivalsToday = (bacenta: BacentaWithArrivals) => {
 
   const today = new Date().getDay()
 
-  switch (bacenta.stream.name) {
-    case 'Anagkazo':
-    case 'Campus':
-      // Anagkazo and Campus are on Saturday
-      if (today === 6) return true
-      break
-    case 'Town':
-      if (today === 0) return true
-      break
-
-    default:
-      return false
+  if (
+    today === 6 &&
+    (bacenta.stream.name === 'Anagkazo' || bacenta.stream.name === 'Campus')
+  ) {
+    // Anagkazo and Campus are on Saturday
+    return true
   }
+  if (today === 0 && bacenta.stream.name === 'Town') {
+    return true
+  }
+
+  return true
 }
 
 export const beforeCountingDeadline = (

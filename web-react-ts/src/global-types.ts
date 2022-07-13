@@ -37,6 +37,10 @@ export interface Church {
     id: string
     firstName: string
     lastName: string
+    fullName: string
+    phoneNumber: string
+    whatsappNumber: string
+    pictureUrl: string
   }
   vacationStatus: 'Vacation' | 'Active'
   __typename: ChurchLevel
