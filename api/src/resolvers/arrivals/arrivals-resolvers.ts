@@ -428,12 +428,20 @@ export const arrivalsMutation = {
     )
 
     const stream = recordResponse.stream.properties
-    const arrivalEndTime = new Date(
-      new Date().toISOString().slice(0, 10) + stream.arrivalEndTime.slice(10)
-    )
+    const arrivalEndTime = () => {
+      const endTimeToday = new Date(
+        new Date().toISOString().slice(0, 10) + stream.arrivalEndTime.slice(10)
+      )
+
+      const FiveMinBuffer = 5 * 60 * 1000
+
+      const endTime = new Date(endTimeToday.getTime() + FiveMinBuffer)
+
+      return endTime
+    }
     const today = new Date()
 
-    if (today > arrivalEndTime) {
+    if (today > arrivalEndTime()) {
       throwErrorMsg('It is now past the time for arrivals. Thank you!')
     }
 

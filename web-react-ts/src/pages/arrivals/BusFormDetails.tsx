@@ -104,7 +104,7 @@ const BusFormDetails = () => {
                     </td>
                   </tr>
                   <tr>
-                    <td>Leader Declaration</td>
+                    <td>Leader Says</td>
                     <td>
                       <PlaceholderCustom loading={loading}>
                         {bussing?.leaderDeclaration}
