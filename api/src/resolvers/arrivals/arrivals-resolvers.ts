@@ -579,14 +579,14 @@ export const arrivalsMutation = {
   },
   SendMobileVerificationNumber: async (
     object: any,
-    args: { firstName: string; phoneNumber: string; code: string },
+    args: { firstName: string; phoneNumber: string; otp: string },
     context: Context
   ) => {
     isAuth(['leaderBacenta'], context.auth.roles)
 
     const response = await sendBulkSMS(
       [args.phoneNumber],
-      `Hi ${args.firstName},\n\nYour code is ${args.code}. Input this on the portal to verify your phone number.`
+      `Hi ${args.firstName},\n\nYour OTP is ${args.otp}. Input this on the portal to verify your phone number.`
     )
 
     return response

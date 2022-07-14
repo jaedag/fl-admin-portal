@@ -112,12 +112,12 @@ export const SEND_MOBILE_VERIFICATION_NUMBER = gql`
   mutation SendMobileVerificationNumber(
     $firstName: String!
     $phoneNumber: String!
-    $code: String!
+    $otp: String!
   ) {
     SendMobileVerificationNumber(
       firstName: $firstName
       phoneNumber: $phoneNumber
-      code: $code
+      otp: $otp
     )
   }
 `
