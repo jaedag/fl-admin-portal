@@ -25,13 +25,8 @@ export const DISPLAY_MEMBER_BIO = gql`
       occupation {
         occupation
       }
-      titleConnection {
-        edges {
-          date
-          node {
-            title
-          }
-        }
+      title {
+        title
       }
     }
   }

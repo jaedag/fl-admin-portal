@@ -9,7 +9,6 @@ const Arrivals = () => {
     <Container>
       <HeadingPrimary>Arrivals</HeadingPrimary>
       <HeadingSecondary>Click on one of churches below</HeadingSecondary>
-      {/* This Page will require a redesign. Possibly by Basoah */}
 
       <ChurchList color="arrivals" />
     </Container>

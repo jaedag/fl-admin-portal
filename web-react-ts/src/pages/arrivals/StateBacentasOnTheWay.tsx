@@ -9,6 +9,7 @@ import PlaceholderDefaulterList from 'pages/services/defaulters/PlaceholderDefau
 import React, { useContext } from 'react'
 import { Container } from 'react-bootstrap'
 import { useNavigate } from 'react-router'
+import { ArrivalsUseChurchType } from './arrivals-types'
 import {
   CONSTITUENCY_BACENTAS_ON_THE_WAY,
   COUNCIL_BACENTAS_ON_THE_WAY,
@@ -27,12 +28,13 @@ const BacentasOnTheWay = () => {
     GATHERINGSERVICE_BACENTAS_ON_THE_WAY
   )
 
-  const { church, loading, error } = useChurchLevel({
+  const data: ArrivalsUseChurchType = useChurchLevel({
     constituencyFunction: constituencyOnTheWay,
     councilFunction: councilOnTheWay,
     streamFunction: streamOnTheWay,
     gatheringServiceFunction: gatheringServiceOnTheWay,
   })
+  const { church, loading, error } = data
 
   return (
     <ApolloWrapper data={church} loading={loading} error={error} placeholder>
@@ -61,7 +63,7 @@ const BacentasOnTheWay = () => {
         ))}
 
         {!church?.bacentasOnTheWay.length && loading && (
-          <PlaceholderDefaulterList loading={true} />
+          <PlaceholderDefaulterList />
         )}
       </Container>
     </ApolloWrapper>

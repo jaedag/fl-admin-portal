@@ -1,7 +1,7 @@
 import FormikControl from 'components/formik-components/FormikControl'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import { MemberContext } from 'contexts/MemberContext'
-import { Formik, Form } from 'formik'
+import { Formik, Form, FormikHelpers } from 'formik'
 import * as Yup from 'yup'
 import React, { useContext } from 'react'
 import { useMutation, useQuery } from '@apollo/client'
@@ -14,6 +14,14 @@ import { parseTimeToDate } from 'jd-date-utils'
 import { parseNeoTime } from 'jd-date-utils'
 import { useNavigate } from 'react-router'
 
+type FormOptions = {
+  id: string
+  mobilisationStartTime: string
+  mobilisationEndTime: string
+  arrivalStartTime: string
+  arrivalEndTime: string
+}
+
 const SetArrivalsTime = () => {
   const { currentUser } = useContext(MemberContext)
   const church = currentUser?.currentChurch
@@ -23,7 +31,7 @@ const SetArrivalsTime = () => {
   const stream = data?.streams[0]
   const navigate = useNavigate()
 
-  const initialValues = {
+  const initialValues: FormOptions = {
     id: church?.id,
     mobilisationStartTime: parseNeoTime(stream?.mobilisationStartTime) ?? '',
     mobilisationEndTime: parseNeoTime(stream?.mobilisationEndTime) ?? '',
@@ -39,7 +47,10 @@ const SetArrivalsTime = () => {
 
   const [SetStreamArrivalTimes] = useMutation(SET_STREAM_ARRIVAL_TIMES)
 
-  const onSubmit = async (values, onSubmitProps) => {
+  const onSubmit = async (
+    values: FormOptions,
+    onSubmitProps: FormikHelpers<FormOptions>
+  ) => {
     onSubmitProps.setSubmitting(true)
 
     await SetStreamArrivalTimes({

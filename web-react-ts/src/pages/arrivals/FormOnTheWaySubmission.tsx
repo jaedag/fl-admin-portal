@@ -4,7 +4,7 @@ import FormikControl, {
 import SubmitButton from 'components/formik-components/SubmitButton'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import HeadingSecondary from 'components/HeadingSecondary'
-import { Form, Formik, FieldArray } from 'formik'
+import { Form, Formik, FieldArray, FormikHelpers } from 'formik'
 import { useMutation, useQuery } from '@apollo/client'
 import React, { useContext } from 'react'
 import * as Yup from 'yup'
@@ -20,11 +20,19 @@ import { parseDate } from 'jd-date-utils'
 import { ServiceContext } from 'contexts/ServiceContext'
 import { throwErrorMsg } from 'global-utils'
 
+type FormOptions = {
+  attendance: string
+  bussingPictures: string[]
+  bussingCost: string
+  numberOfBusses: string
+  numberOfCars: string
+}
+
 const FormOnTheWaySubmission = () => {
   const navigate = useNavigate()
   const { bacentaId, clickCard } = useContext(ChurchContext)
   const { bussingRecordId } = useContext(ServiceContext)
-  const initialValues = {
+  const initialValues: FormOptions = {
     attendance: '',
     bussingPictures: [''],
     bussingCost: '',
@@ -64,7 +72,10 @@ const FormOnTheWaySubmission = () => {
       .integer('You cannot have a decimal number of cars!'),
   })
 
-  const onSubmit = async (values, onSubmitProps) => {
+  const onSubmit = async (
+    values: FormOptions,
+    onSubmitProps: FormikHelpers<FormOptions>
+  ) => {
     onSubmitProps.setSubmitting(true)
     try {
       const res = await RecordBussingFromBacenta({
@@ -74,7 +85,7 @@ const FormOnTheWaySubmission = () => {
           bussingPictures: values.bussingPictures,
           bussingCost: parseFloat(values.bussingCost),
           numberOfBusses: parseInt(values.numberOfBusses),
-          numberOfCars: parseInt(values.numberOfCars || 0),
+          numberOfCars: parseInt(values.numberOfCars || '0'),
         },
       })
 
@@ -83,7 +94,7 @@ const FormOnTheWaySubmission = () => {
       onSubmitProps.resetForm()
       onSubmitProps.setSubmitting(false)
       navigate(`/bacenta/bussing-details`)
-    } catch (error) {
+    } catch (error: any) {
       throwErrorMsg('There was a problem submitting your form', error)
     }
   }
@@ -113,9 +124,7 @@ const FormOnTheWaySubmission = () => {
             <Form>
               <Row className="row-cols-1 row-cols-md-2 mt-2">
                 <Col className="mb-2">
-                  <small htmlFor="dateofservice" className="form-text label">
-                    Date of Service
-                  </small>
+                  <small className="form-text label">Date of Service</small>
                   <HeadingPrimary>
                     {parseDate(bacenta?.bussing[0].serviceDate.date)}
                   </HeadingPrimary>
@@ -145,44 +154,47 @@ const FormOnTheWaySubmission = () => {
                     {(fieldArrayProps) => {
                       const { push, remove, form } = fieldArrayProps
                       const { values } = form
-                      const { bussingPictures } = values
+                      const { bussingPictures }: { bussingPictures: string[] } =
+                        values
 
                       return (
                         <>
-                          {bussingPictures.map((bussingPicture, index) => (
-                            <Row key={index} className="form-row">
-                              <Col>
-                                <FormikControl
-                                  label="Upload A Bussing Picture"
-                                  control="imageUpload"
-                                  name={`bussingPictures[${index}]`}
-                                  uploadPreset={
-                                    process.env.REACT_APP_CLOUDINARY_BUSSING
-                                  }
-                                  placeholder="Choose"
-                                  error={arrayError(
-                                    formik.errors.bussingPictures,
-                                    index
-                                  )}
-                                  setFieldValue={formik.setFieldValue}
-                                  aria-describedby="UploadBussingPicture"
-                                />
-                              </Col>
-                              <Col className="col-auto d-flex">
-                                {index < pictureLimit - 1 && (
-                                  <PlusSign
-                                    onClick={() =>
-                                      bussingPictures.length <= pictureLimit &&
-                                      push()
+                          {bussingPictures.map(
+                            (bussingPicture, index: number) => (
+                              <Row key={index} className="form-row">
+                                <Col>
+                                  <FormikControl
+                                    label="Upload A Bussing Picture"
+                                    control="imageUpload"
+                                    name={`bussingPictures[${index}]`}
+                                    uploadPreset={
+                                      process.env.REACT_APP_CLOUDINARY_BUSSING
                                     }
+                                    placeholder="Choose"
+                                    error={arrayError(
+                                      formik.errors.bussingPictures,
+                                      index
+                                    )}
+                                    setFieldValue={formik.setFieldValue}
+                                    aria-describedby="UploadBussingPicture"
                                   />
-                                )}
-                                {index > 0 && (
-                                  <MinusSign onClick={() => remove(index)} />
-                                )}
-                              </Col>
-                            </Row>
-                          ))}
+                                </Col>
+                                <Col className="col-auto d-flex">
+                                  {index < pictureLimit - 1 && (
+                                    <PlusSign
+                                      onClick={() =>
+                                        bussingPictures.length <=
+                                          pictureLimit && push('')
+                                      }
+                                    />
+                                  )}
+                                  {index > 0 && (
+                                    <MinusSign onClick={() => remove(index)} />
+                                  )}
+                                </Col>
+                              </Row>
+                            )
+                          )}
                         </>
                       )
                     }}

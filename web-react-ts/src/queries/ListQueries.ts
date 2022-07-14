@@ -17,6 +17,7 @@ export const GET_FELLOWSHIP_LEADERS = gql`
       id
       bacentas {
         id
+
         fellowships {
           id
           fellowshipLeader {

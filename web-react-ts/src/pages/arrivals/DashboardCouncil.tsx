@@ -4,7 +4,7 @@ import MenuButton from 'components/buttons/MenuButton'
 import FormikControl from 'components/formik-components/FormikControl'
 import SubmitButton from 'components/formik-components/SubmitButton'
 import Popup from 'components/Popup/Popup'
-import { Form, Formik } from 'formik'
+import { Form, Formik, FormikHelpers } from 'formik'
 import * as Yup from 'yup'
 import React from 'react'
 import { useContext } from 'react'
@@ -20,6 +20,7 @@ import HeadingSecondary from 'components/HeadingSecondary'
 import DefaulterInfoCard from 'pages/services/defaulters/DefaulterInfoCard'
 import { MemberContext } from 'contexts/MemberContext'
 import usePopup from 'hooks/usePopup'
+import { AdminFormOptions } from './DashboardConstituency'
 
 const CouncilDashboard = () => {
   const { isOpen, togglePopup } = usePopup()
@@ -31,7 +32,7 @@ const CouncilDashboard = () => {
   const [MakeCouncilArrivalsAdmin] = useMutation(MAKE_COUNCILARRIVALS_ADMIN)
   const council = data?.councils[0]
 
-  const initialValues = {
+  const initialValues: AdminFormOptions = {
     adminName: council?.arrivalsAdmin
       ? `${council?.arrivalsAdmin?.firstName} ${council?.arrivalsAdmin?.lastName}`
       : '',
@@ -43,7 +44,10 @@ const CouncilDashboard = () => {
     ),
   })
 
-  const onSubmit = (values, onSubmitProps) => {
+  const onSubmit = (
+    values: AdminFormOptions,
+    onSubmitProps: FormikHelpers<AdminFormOptions>
+  ) => {
     onSubmitProps.setSubmitting(true)
 
     MakeCouncilArrivalsAdmin({
@@ -97,7 +101,7 @@ const CouncilDashboard = () => {
                         placeholder="Select an Admin"
                         setFieldValue={formik.setFieldValue}
                         aria-describedby="Member Search"
-                        error={formik.errors.admin}
+                        error={formik.errors.adminSelect}
                       />
                     </Col>
                   </Row>
@@ -144,6 +148,14 @@ const CouncilDashboard = () => {
             number={council?.bacentasOnTheWayCount.toString()}
             color="yellow"
             iconBg
+            noCaption
+          />
+          <MenuButton
+            title="Bacentas Below 8"
+            onClick={() => navigate('/arrivals/bacentas-below-8')}
+            number={council?.bacentasBelow8Count.toString()}
+            iconBg
+            color="red"
             noCaption
           />
 

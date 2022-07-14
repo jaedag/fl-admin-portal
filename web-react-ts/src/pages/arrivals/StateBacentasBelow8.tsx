@@ -3,7 +3,7 @@ import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import MemberDisplayCard from 'components/card/MemberDisplayCard'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import HeadingSecondary from 'components/HeadingSecondary'
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { Container } from 'react-bootstrap'
 import {
   CONSTITUENCY_BACENTAS_BELOW_8,
@@ -16,6 +16,7 @@ import NoData from './CompNoData'
 import PlaceholderDefaulterList from 'pages/services/defaulters/PlaceholderDefaulterList'
 import { useNavigate } from 'react-router'
 import { ChurchContext } from 'contexts/ChurchContext'
+import { ArrivalsUseChurchType } from './arrivals-types'
 
 const BacentasBelow8 = () => {
   const { clickCard } = useContext(ChurchContext)
@@ -29,12 +30,13 @@ const BacentasBelow8 = () => {
     GATHERINGSERVICE_BACENTAS_BELOW_8
   )
 
-  const { church, loading, error } = useChurchLevel({
+  const data: ArrivalsUseChurchType = useChurchLevel({
     constituencyFunction: constituencyBacentasBelow8,
     councilFunction: councilBacentasBelow8,
     streamFunction: streamBacentasBelow8,
     gatheringServiceFunction: gatheringServiceBacentasBelow8,
   })
+  const { church, loading, error } = data
 
   return (
     <ApolloWrapper data={church} loading={loading} error={error} placeholder>
@@ -48,7 +50,7 @@ const BacentasBelow8 = () => {
           <NoData text="There are no bacentas that didn't bus" />
         )}
 
-        {church?.bacentasBelow8.map((bacenta, i) => (
+        {church?.bacentasBelow8.map((bacenta, i: number) => (
           <MemberDisplayCard
             key={i}
             member={bacenta}

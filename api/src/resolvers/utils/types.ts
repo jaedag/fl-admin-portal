@@ -1,3 +1,11 @@
+export type neonumber = { low: number; high: number }
+export type RearragedCypherResponse = {
+  record: {
+    identity: number
+    lables: string[]
+    properties: any
+  }
+}
 export type ChurchLevel =
   | 'Fellowship'
   | 'Bacenta'
@@ -58,6 +66,7 @@ export type ServantTypeLowerCase =
   | 'arrivalsAdmin'
   | 'arrivalsCounter'
   | 'arrivalsConfirmer'
+  | 'teller'
 
 export type StreamOptions = 'Campus' | 'Town' | 'Anagkazo'
 
@@ -101,4 +110,25 @@ export interface Church {
 export type ChurchIdAndName = {
   id: string
   name: string
+}
+
+export interface Record {
+  id: string
+  attendance: number
+}
+export type ServiceRecord = {
+  __typename: 'ServiceRecord' | 'RehearsalRecord'
+  id: string
+  attendance: number
+  income: number
+  week: number
+  // eslint-disable-next-line camelcase
+  stream_name: StreamOptions
+  noServiceReason: string
+  bankingProof: boolean
+  bankingSlip: string
+  transactionStatus: 'pending' | 'success' | 'failed'
+  serviceDate: {
+    date: string
+  }
 }

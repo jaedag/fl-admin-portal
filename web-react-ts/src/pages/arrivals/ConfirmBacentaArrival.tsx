@@ -8,7 +8,7 @@ import Popup from 'components/Popup/Popup'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { MemberContext } from 'contexts/MemberContext'
 import { ServiceContext } from 'contexts/ServiceContext'
-import { Form, Formik } from 'formik'
+import { Form, Formik, FormikHelpers } from 'formik'
 import { alertMsg, throwErrorMsg } from 'global-utils'
 import React, { useContext, useEffect, useState } from 'react'
 import { Button, Card, Container, Spinner } from 'react-bootstrap'
@@ -25,6 +25,11 @@ import useChurchLevel from 'hooks/useChurchLevel'
 import NoData from './CompNoData'
 import usePopup from 'hooks/usePopup'
 import PlaceholderDefaulterList from 'pages/services/defaulters/PlaceholderDefaulterList'
+import { ArrivalsUseChurchType, BacentaWithArrivals } from './arrivals-types'
+
+type FormOptions = {
+  bacentaSearch: string
+}
 
 const ConfirmBacentaArrival = () => {
   const { clickCard } = useContext(ChurchContext)
@@ -42,26 +47,32 @@ const ConfirmBacentaArrival = () => {
     CONFIRM_GATHERINGSERVICE_ARRIVALS
   )
 
-  const { church, loading, error } = useChurchLevel({
+  const data: ArrivalsUseChurchType = useChurchLevel({
     constituencyFunction: confirmConstituencyArrivals,
     councilFunction: confirmCouncilArrivals,
     streamFunction: confirmStreamArrivals,
     gatheringServiceFunction: confirmGatheringServiceArrivals,
   })
+  const { church, loading, error } = data
   const [RecordArrivalTime] = useMutation(RECORD_ARRIVAL_TIME)
   const [SendBussingSupport] = useMutation(SEND_BUSSING_SUPPORT)
 
-  const initialValues = {
+  const initialValues: FormOptions = {
     bacentaSearch: '',
   }
   const bacentaDataLoaded = church ? church?.bacentasOnTheWay : []
-  const [bacentaData, setBacentaData] = useState([])
+  const [bacentaData, setBacentaData] = useState<
+    BacentaWithArrivals[] | undefined
+  >([])
 
   useEffect(() => {
     setBacentaData(bacentaDataLoaded)
   }, [church])
 
-  const onSubmit = (values, onSubmitProps) => {
+  const onSubmit = (
+    values: FormOptions,
+    onSubmitProps: FormikHelpers<FormOptions>
+  ) => {
     onSubmitProps.setSubmitting(true)
     const searchTerm = values.bacentaSearch.toLowerCase()
     setBacentaData(
@@ -133,14 +144,14 @@ const ConfirmBacentaArrival = () => {
                         'Money Successfully Sent to ' +
                           supportRes.data.SendBussingSupport.momoNumber
                       )
-                    } catch (error) {
+                    } catch (error: any) {
                       throwErrorMsg(error)
                     }
                   }
 
                   setSubmitting(false)
                   navigate('/bacenta/bussing-details')
-                } catch (error) {
+                } catch (error: any) {
                   setSubmitting(false)
                   throwErrorMsg(
                     'There was an error recording the arrival time of this bacenta',

@@ -4,7 +4,7 @@ import MemberDisplayCard from 'components/card/MemberDisplayCard'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import HeadingSecondary from 'components/HeadingSecondary'
 import { ChurchContext } from 'contexts/ChurchContext'
-import { FunctionReturnsVoid, Member, StreamInterface } from 'global-types'
+import { FunctionReturnsVoid, Member, Stream } from 'global-types'
 import React, { useContext, useState } from 'react'
 import { Button, Col, Container, Modal, Row, Spinner } from 'react-bootstrap'
 import {
@@ -20,8 +20,8 @@ import ModalSubmitButton from './ModalSubmitButton'
 import { alertMsg, throwErrorMsg } from 'global-utils'
 import NoDataComponent from 'pages/arrivals/CompNoData'
 
-interface StreamWithTellers extends StreamInterface {
-  bankTellers: Member[]
+interface StreamWithTellers extends Stream {
+  tellers: Member[]
   activeFellowshipCount: number
 }
 
@@ -153,7 +153,7 @@ const TellerSelect = () => {
           </Button>
         </div>
 
-        {stream?.bankTellers?.map((teller: Member) => (
+        {stream?.tellers?.map((teller: Member) => (
           <div key={teller.id}>
             <MemberDisplayCard member={teller} />
             <div className="d-grid gap-2">
@@ -170,7 +170,7 @@ const TellerSelect = () => {
                       await RemoveStreamTeller({
                         variables: {
                           streamId: streamId,
-                          arrivalstellerId: teller.id,
+                          tellerId: teller.id,
                         },
                       })
                       setSubmitting(false)
@@ -194,7 +194,7 @@ const TellerSelect = () => {
           </div>
         ))}
 
-        {!stream?.bankTellers?.length && (
+        {!stream?.tellers?.length && (
           <NoDataComponent text="You have no Bank Tellers at this time" />
         )}
       </Container>

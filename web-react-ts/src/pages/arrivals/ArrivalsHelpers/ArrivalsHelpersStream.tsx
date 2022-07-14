@@ -66,7 +66,7 @@ const ArrivalsHelpersStream = () => {
                 })
 
                 alertMsg('All Stream Arrivals Helpers have been deleted')
-              } catch (error) {
+              } catch (error: any) {
                 throwErrorMsg(error)
               }
             }

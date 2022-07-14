@@ -1,6 +1,6 @@
 {
-  "name": "fl-admin-portal-react-frontend",
-  "version": "4.5.1",
+  "name": "admin-portal-react-frontend",
+  "version": "4.6.0",
   "description": "React app for GRANDstack FL Admin Portal",
   "private": true,
   "dependencies": {
@@ -38,6 +38,7 @@
     "@types/react-router-dom": "^5.1.5",
     "@types/recharts": "^1.8.14",
     "http-proxy-middleware": "^2.0.1",
+    "react-test-renderer": "^18.2.0",
     "typescript": "^4.7.2"
   },
   "scripts": {

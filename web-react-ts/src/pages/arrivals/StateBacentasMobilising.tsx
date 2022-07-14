@@ -11,11 +11,12 @@ import {
   GATHERINGSERVICE_BACENTAS_MOBILISING,
   STREAM_BACENTAS_MOBILISING,
 } from './bussingStatusQueries'
-import useChurchLevel from '../../hooks/useChurchLevel'
+import useChurchLevel from 'hooks/useChurchLevel'
 import NoData from './CompNoData'
 import PlaceholderDefaulterList from 'pages/services/defaulters/PlaceholderDefaulterList'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { useNavigate } from 'react-router'
+import { ArrivalsUseChurchType } from './arrivals-types'
 
 const BacentasMobilising = () => {
   const { clickCard } = useContext(ChurchContext)
@@ -29,12 +30,13 @@ const BacentasMobilising = () => {
     GATHERINGSERVICE_BACENTAS_MOBILISING
   )
 
-  const { church, loading, error } = useChurchLevel({
+  const data: ArrivalsUseChurchType = useChurchLevel({
     constituencyFunction: constituencyBacentasMobilising,
     councilFunction: councilBacentasMobilising,
     streamFunction: streamBacentasMobilising,
     gatheringServiceFunction: gatheringServiceBacentasMobilising,
   })
+  const { church, loading, error } = data
 
   return (
     <ApolloWrapper data={church} loading={loading} error={error} placeholder>
@@ -65,7 +67,7 @@ const BacentasMobilising = () => {
         })}
 
         {!church?.bacentasMobilising.length && loading && (
-          <PlaceholderDefaulterList loading={true} />
+          <PlaceholderDefaulterList />
         )}
       </Container>
     </ApolloWrapper>

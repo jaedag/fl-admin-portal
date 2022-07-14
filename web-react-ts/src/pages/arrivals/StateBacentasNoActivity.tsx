@@ -11,9 +11,10 @@ import {
   GATHERINGSERVICE_BACENTAS_NO_ACTIVITY,
   STREAM_BACENTAS_NO_ACTIVITY,
 } from './bussingStatusQueries'
-import useChurchLevel from '../../hooks/useChurchLevel'
+import useChurchLevel from 'hooks/useChurchLevel'
 import NoData from './CompNoData'
 import PlaceholderDefaulterList from 'pages/services/defaulters/PlaceholderDefaulterList'
+import { ArrivalsUseChurchType } from './arrivals-types'
 
 const BacentasNoActiviity = () => {
   const [constituencyBacentasNoActivity] = useLazyQuery(
@@ -25,12 +26,13 @@ const BacentasNoActiviity = () => {
     GATHERINGSERVICE_BACENTAS_NO_ACTIVITY
   )
 
-  const { church, loading, error } = useChurchLevel({
+  const data: ArrivalsUseChurchType = useChurchLevel({
     constituencyFunction: constituencyBacentasNoActivity,
     councilFunction: councilBacentasNoActivity,
     streamFunction: streamBacentasNoActivity,
     gatheringServiceFunction: gatheringServiceBacentasNoActivity,
   })
+  const { church, loading, error } = data
 
   return (
     <ApolloWrapper data={church} loading={loading} error={error} placeholder>

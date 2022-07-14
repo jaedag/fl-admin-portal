@@ -6,7 +6,7 @@ import { ChurchContext } from 'contexts/ChurchContext'
 import React, { useContext, useState } from 'react'
 import { Button, Col, Container, Row, Spinner } from 'react-bootstrap'
 import * as Yup from 'yup'
-import { Form, Formik } from 'formik'
+import { Form, Formik, FormikHelpers } from 'formik'
 import {
   MAKE_STREAMARRIVALS_COUNTER,
   REMOVE_STREAMARRIVALS_COUNTER,
@@ -18,16 +18,22 @@ import FormikControl from 'components/formik-components/FormikControl'
 import SubmitButton from 'components/formik-components/SubmitButton'
 import NoData from '../CompNoData'
 import usePopup from 'hooks/usePopup'
+import { StreamWithArrivals } from '../arrivals-types'
+
+type FormOptions = {
+  helperName: string
+  helperSelect: string
+}
 
 const ArrivalsCounters = () => {
   const { streamId } = useContext(ChurchContext)
   const { isOpen, togglePopup } = usePopup()
-  const [submitting, setSubmitting] = useState()
+  const [submitting, setSubmitting] = useState(false)
 
   const { data, loading, error } = useQuery(STREAM_ARRIVALS_HELPERS, {
     variables: { id: streamId },
   })
-  const stream = data?.streams[0]
+  const stream: StreamWithArrivals = data?.streams[0]
 
   const [MakeStreamArrivalsCounter] = useMutation(MAKE_STREAMARRIVALS_COUNTER, {
     refetchQueries: [
@@ -50,7 +56,7 @@ const ArrivalsCounters = () => {
     }
   )
 
-  const initialValues = {
+  const initialValues: FormOptions = {
     helperName: '',
     helperSelect: '',
   }
@@ -61,7 +67,10 @@ const ArrivalsCounters = () => {
     ),
   })
 
-  const onSubmit = async (values, onSubmitProps) => {
+  const onSubmit = async (
+    values: FormOptions,
+    onSubmitProps: FormikHelpers<FormOptions>
+  ) => {
     onSubmitProps.setSubmitting(true)
     try {
       await MakeStreamArrivalsCounter({
@@ -74,7 +83,7 @@ const ArrivalsCounters = () => {
       togglePopup()
       onSubmitProps.setSubmitting(false)
       alert('Arrivals Counter has been added successfully')
-    } catch (e) {
+    } catch (e: any) {
       onSubmitProps.setSubmitting(false)
       throwErrorMsg(e)
     }
@@ -105,7 +114,7 @@ const ArrivalsCounters = () => {
                         placeholder="Select a Name"
                         setFieldValue={formik.setFieldValue}
                         aria-describedby="Member Search"
-                        error={formik.errors.admin}
+                        error={formik.errors.helperSelect}
                       />
                     </Col>
                   </Row>
@@ -139,7 +148,7 @@ const ArrivalsCounters = () => {
                     })
                     setSubmitting(false)
                     alertMsg(`${counter.fullName} Deleted Successfully`)
-                  } catch (error) {
+                  } catch (error: any) {
                     throwErrorMsg(error)
                   }
                 }

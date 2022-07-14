@@ -10,6 +10,10 @@ import React, { useContext } from 'react'
 import { Card, Col, Container, Row } from 'react-bootstrap'
 import { useNavigate } from 'react-router'
 import {
+  ArrivalsUseChurchExt,
+  HigherChurchWithArrivals,
+} from './arrivals-types'
+import {
   COUNCIL_BY_CONSTITUENCY_ARRIVALS,
   STREAM_BY_COUNCIL_ARRIVALS,
   GATHERINGSERVICE_BY_STREAM_ARRIVALS,
@@ -27,15 +31,18 @@ const ChurchBySubChurch = () => {
     GATHERINGSERVICE_BY_STREAM_ARRIVALS
   )
   const currentChurch = currentUser?.currentChurch
-  const { church, subChurchLevel, loading, error } = useChurchLevel({
+  const data: ArrivalsUseChurchExt = useChurchLevel({
     councilFunction: councilByConstituency,
     streamFunction: streamByCouncil,
     gatheringServiceFunction: gatheringServcieByStream,
   })
+  const { church, subChurchLevel, loading, error } = data
 
   if (currentChurch?.__typename === 'Constituency') {
     return <ConstituencyDashboard />
   }
+
+  const subChurchLevelStr = plural(subChurchLevel)?.toLowerCase()
 
   return (
     <ApolloWrapper data={church} loading={loading} error={error} placeholder>
@@ -45,13 +52,13 @@ const ChurchBySubChurch = () => {
         >{`${currentChurch?.name} ${currentChurch?.__typename} By ${subChurchLevel}`}</div>
         <Row>
           {church &&
-            church[`${plural(subChurchLevel?.toLowerCase())}`]?.map(
-              (subChurch, i) => {
+            church[`${subChurchLevelStr}`]?.map(
+              (subChurch: HigherChurchWithArrivals, i: number) => {
                 const array = [
                   {
                     title: 'Active Bacentas',
                     number: subChurch.activeBacentaCount,
-                    color: null,
+                    color: 'white',
                   },
                   {
                     title: 'Bacentas With No Activity',

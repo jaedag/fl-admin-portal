@@ -21,6 +21,7 @@ export const CONSTITUENCY_ARRIVALS_DASHBOARD = gql`
       bacentasMobilisingCount
       bacentasOnTheWayCount
       bacentasHaveBeenCountedCount
+      bacentasBelow8Count
       bacentasHaveArrivedCount
       bussingMembersOnTheWayCount
       bussingMembersHaveArrivedCount
@@ -50,6 +51,7 @@ export const COUNCIL_ARRIVALS_DASHBOARD = gql`
       bacentasMobilisingCount
       bacentasOnTheWayCount
       bacentasHaveBeenCountedCount
+      bacentasBelow8Count
       bacentasHaveArrivedCount
       bussingMembersOnTheWayCount
       bussingMembersHaveArrivedCount
@@ -80,11 +82,10 @@ export const STREAM_ARRIVALS_DASHBOARD = gql`
       bacentasOnTheWayCount
       bacentasNotCountedCount
       bacentasHaveBeenCountedCount
+      bacentasBelow8Count
       bacentasHaveArrivedCount
       bussingMembersOnTheWayCount
       bussingMembersHaveArrivedCount
-
-      bacentasBelow8Count
     }
   }
 `
@@ -111,6 +112,7 @@ export const GATHERINGSERVICE_ARRIVALS_DASHBOARD = gql`
       bacentasMobilisingCount
       bacentasOnTheWayCount
       bacentasHaveBeenCountedCount
+      bacentasBelow8Count
       bacentasHaveArrivedCount
       bussingMembersOnTheWayCount
       bussingMembersHaveArrivedCount
