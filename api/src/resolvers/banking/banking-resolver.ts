@@ -20,7 +20,7 @@ import {
   submitBankingSlip,
 } from './banking-cypher'
 import { PaySwitchRequestBody } from './banking-types'
-import { StreamOptions } from '../utils/types'
+import { ServiceRecord, StreamOptions } from '../utils/types'
 
 const checkIfLastServiceBanked = async (
   serviceRecordId: string,
@@ -37,17 +37,17 @@ const checkIfLastServiceBanked = async (
       .catch((error: any) => throwErrorMsg(error))
   )
 
-  const record = lastServiceRecord.record.properties
+  const record: ServiceRecord = lastServiceRecord.record.properties
 
-  if (
-    (!Object.prototype.hasOwnProperty.call(record, 'bankingSlip') ||
-      record.transactionStatus === 'success') &&
-    record.id !== serviceRecordId
-  ) {
+  if ('bankingSlip' in record || record.transactionStatus === 'success') {
     throwErrorMsg(
-      "Please bank last week's outstanding offering before attempting to bank this week's"
+      "Please bank last week's outstanding offering before attempting to bank this week's offering"
     )
+
+    return false
   }
+
+  return true
 }
 
 const bankingMutation = {
