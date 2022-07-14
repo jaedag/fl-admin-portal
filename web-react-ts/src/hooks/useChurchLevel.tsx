@@ -1,17 +1,30 @@
+import {
+  ApolloError,
+  LazyQueryExecFunction,
+  OperationVariables,
+} from '@apollo/client'
 import { MemberContext } from 'contexts/MemberContext'
+import { ChurchLevel } from 'global-types'
 import { getSubChurchLevel } from 'global-utils'
 import { useContext, useEffect, useState } from 'react'
 
-const useChurchLevel = (props) => {
+type useChurchLevelProps = {
+  constituencyFunction: LazyQueryExecFunction<any, OperationVariables>
+  councilFunction: LazyQueryExecFunction<any, OperationVariables>
+  streamFunction: LazyQueryExecFunction<any, OperationVariables>
+  gatheringServiceFunction: LazyQueryExecFunction<any, OperationVariables>
+}
+
+const useChurchLevel = (props: useChurchLevelProps) => {
   const { currentUser } = useContext(MemberContext)
 
   const currentChurch = currentUser?.currentChurch
-  const churchLevel = currentUser?.currentChurch?.__typename
+  const churchLevel: ChurchLevel = currentUser?.currentChurch?.__typename
   const subChurchLevel = getSubChurchLevel(currentChurch?.__typename)
 
   const [church, setChurch] = useState(null)
   const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(false)
+  const [error, setError] = useState<undefined | ApolloError>()
 
   useEffect(() => {
     const whichQuery = async () => {

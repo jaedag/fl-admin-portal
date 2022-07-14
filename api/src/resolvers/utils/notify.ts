@@ -21,8 +21,6 @@ export const sendEmail = (
   body?: string,
   html?: string
 ) => {
-  console.log('We will send your message')
-
   mg.messages
     .create('mg.firstlovecenter.com', {
       from: 'FL Accra Admin <no-reply@firstlovecenter.org>',
@@ -53,6 +51,7 @@ export const sendBulkSMS = async (recipient: string[], message: string) => {
   }
 
   try {
+    console.log('Sending SMS using mNotify')
     const res = await axios(sendMessage)
 
     if (res.data.code === '2000') {
@@ -64,4 +63,8 @@ export const sendBulkSMS = async (recipient: string[], message: string) => {
   }
 
   return 'Message sent successfully'
+}
+
+export const joinMessageStrings = (strings: string[]) => {
+  return strings.join('')
 }

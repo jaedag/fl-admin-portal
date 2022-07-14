@@ -7,9 +7,9 @@ import RoleView from '../../../auth/RoleView'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { permitAdmin } from 'permission-utils'
 import { GET_SONTA_MEMBERS } from '../grids/GridQueries'
-import { Church, StreamInterface } from 'global-types'
+import { Church, Stream } from 'global-types'
 
-interface StreamWithSontas extends StreamInterface {
+interface StreamWithSontas extends Stream {
   sontas: Church[]
 }
 const DisplaySontasByConstituency = () => {

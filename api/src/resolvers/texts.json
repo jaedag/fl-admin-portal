@@ -10,5 +10,18 @@
     "vacation_cannot_fill_service": "You cannnot have service if you are on vacation. Please conntact your admin!",
     "no_double_form_filling": "You have already filled your service form this week!",
     "no_duplicate_email_or_whatsapp": "A member with this email address/whatsapp number already exists in the database"
+  },
+  "arrivalsSMS": {
+    "less_than_8": "Proverbs 27:23 (KJV)\n\nBe thou diligent to know the state of thy flocks,and look well to thy herds.\n\nToday's bussing will not merit a top up. Your attendance was ",
+    "no_bussing_cost": "Thank you for your serivce. Since you filled 0 for bussing cost, you will not receive a  top up today.",
+    "no_busses_to_pay_for": "Thank you for your service. Since you indicated that you didn't use a bus today, you  will not receive a top up.",
+    "swell_top_up_p1": "Congratulations on exceeding your target! You will receive an amount of ",
+    "swell_top_up_p2": "GHS as a top up. Your attendance was ",
+    "normal_top_up_p1": "Your attendance has just been confirmed at the terminal. You will receive a top up of ",
+    "normal_top_up_p2": "GHS. Today you bussed ",
+    "normal_no_top_up": "Your attendance has just been confirmed at the terminal. Today you bussed ",
+    "swell_no_top_up": "Congratulations on exceeding your target! Your attendance has just been confirmed at the terminal. Today you bussed ",
+    "cheaper_bussing_today": "Today's bussing cost is cheaper than usual. Congratulations! You will receive full payment of ",
+    "cheaper_bussing_today_p2": " GHS. Your bussing attendance was "
   }
 }

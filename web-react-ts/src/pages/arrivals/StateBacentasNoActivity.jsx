@@ -11,7 +11,7 @@ import {
   GATHERINGSERVICE_BACENTAS_NO_ACTIVITY,
   STREAM_BACENTAS_NO_ACTIVITY,
 } from './bussingStatusQueries'
-import useChurchLevel from '../../hooks/useChurchLevel'
+import useChurchLevel from '../../hooks/useChurchLevel.tsx'
 import NoData from './CompNoData'
 import PlaceholderDefaulterList from 'pages/services/defaulters/PlaceholderDefaulterList'
 

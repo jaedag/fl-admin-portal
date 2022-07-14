@@ -3,44 +3,53 @@ import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import React, { useContext } from 'react'
 import * as Yup from 'yup'
 import { useNavigate } from 'react-router'
-import { MAKE_STREAMARRIVALS_ADMIN } from './arrivalsMutation'
-import { STREAM_ARRIVALS_DASHBOARD } from './arrivalsQueries'
-import { throwErrorMsg } from 'global-utils'
+import {
+  MAKE_GATHERINGSERVICEARRIVALS_ADMIN,
+  SET_SWELL_DATE,
+  SET_CODE_OF_THE_DAY,
+} from './arrivalsMutation'
+import { GATHERINGSERVICE_ARRIVALS_DASHBOARD } from './arrivalsQueries'
+import { alertMsg, throwErrorMsg } from 'global-utils'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { Col, Container, Row, Button } from 'react-bootstrap'
 import Popup from 'components/Popup/Popup'
-import { Form, Formik } from 'formik'
+import { Form, Formik, FormikHelpers } from 'formik'
 import FormikControl from 'components/formik-components/FormikControl'
 import SubmitButton from 'components/formik-components/SubmitButton'
 import RoleView from 'auth/RoleView'
-import {
-  permitAdmin,
-  permitArrivals,
-  permitArrivalsConfirmer,
-  permitArrivalsCounter,
-} from 'permission-utils'
+import { permitAdmin } from 'permission-utils'
 import MenuButton from 'components/buttons/MenuButton'
+import HeadingSecondary from 'components/HeadingSecondary'
+import { getHumanReadableDate } from 'jd-date-utils'
 import DefaulterInfoCard from 'pages/services/defaulters/DefaulterInfoCard'
 import { MemberContext } from 'contexts/MemberContext'
-import { CheckAll } from 'react-bootstrap-icons'
 import usePopup from 'hooks/usePopup'
-import HeadingSecondary from 'components/HeadingSecondary'
+import { AdminFormOptions } from './DashboardConstituency'
 
-const StreamDashboard = () => {
+const GatheringServiceDashboard = () => {
   const { isOpen, togglePopup } = usePopup()
   const { currentUser } = useContext(MemberContext)
   const navigate = useNavigate()
-  const { data, loading, error } = useQuery(STREAM_ARRIVALS_DASHBOARD, {
-    variables: { id: currentUser?.currentChurch.id },
-  })
-  const [MakeStreamArrivalsAdmin] = useMutation(MAKE_STREAMARRIVALS_ADMIN)
-  const stream = data?.streams[0]
+  const today = new Date().toISOString().slice(0, 10)
+  const { data, loading, error } = useQuery(
+    GATHERINGSERVICE_ARRIVALS_DASHBOARD,
+    {
+      variables: { id: currentUser?.currentChurch.id, date: today },
+    }
+  )
 
-  const initialValues = {
-    adminName: stream?.arrivalsAdmin
-      ? `${stream?.arrivalsAdmin?.firstName} ${stream?.arrivalsAdmin?.lastName}`
+  const [SetSwellDate] = useMutation(SET_SWELL_DATE)
+  const [SetCodeOfTheDay] = useMutation(SET_CODE_OF_THE_DAY)
+  const [MakeGatheringServiceArrivalsAdmin] = useMutation(
+    MAKE_GATHERINGSERVICEARRIVALS_ADMIN
+  )
+  const gatheringService = data?.gatheringServices[0]
+
+  const initialValues: AdminFormOptions = {
+    adminName: gatheringService?.arrivalsAdmin
+      ? `${gatheringService?.arrivalsAdmin?.firstName} ${gatheringService?.arrivalsAdmin?.lastName}`
       : '',
-    adminSelect: stream?.arrivalsAdmin?.id ?? '',
+    adminSelect: gatheringService?.arrivalsAdmin?.id ?? '',
   }
   const validationSchema = Yup.object({
     adminSelect: Yup.string().required(
@@ -48,12 +57,15 @@ const StreamDashboard = () => {
     ),
   })
 
-  const onSubmit = (values, onSubmitProps) => {
+  const onSubmit = (
+    values: AdminFormOptions,
+    onSubmitProps: FormikHelpers<AdminFormOptions>
+  ) => {
     onSubmitProps.setSubmitting(true)
 
-    MakeStreamArrivalsAdmin({
+    MakeGatheringServiceArrivalsAdmin({
       variables: {
-        streamId: currentUser?.currentChurch.id,
+        gatheringServiceId: currentUser?.currentChurch.id,
         newAdminId: values.adminSelect,
         oldAdminId: initialValues.adminSelect || 'no-old-admin',
       },
@@ -61,25 +73,25 @@ const StreamDashboard = () => {
       .then(() => {
         togglePopup()
         onSubmitProps.setSubmitting(false)
-        alert('stream Arrivals Admin has been changed successfully')
+        alert('Gathering Service Arrivals Admin has been changed successfully')
       })
       .catch((e) => throwErrorMsg(e))
   }
 
   const aggregates = {
-    title: 'Councils',
-    data: stream?.councilCount,
-    link: `/arrivals/stream-by-council`,
+    title: 'Streams',
+    data: gatheringService?.streamCount,
+    link: `/arrivals/gatheringservice-by-stream`,
   }
 
   return (
     <ApolloWrapper data={data} loading={loading} error={error}>
       <Container>
         <HeadingPrimary loading={loading}>
-          {stream?.name} Stream Arrivals Summary
+          {gatheringService?.name} Gathering Service Arrivals Summary
         </HeadingPrimary>
         <HeadingSecondary loading={loading}>
-          Arrivals Admin: {stream?.arrivalsAdmin?.fullName}
+          Arrivals Admin: {gatheringService?.arrivalsAdmin?.fullName}
         </HeadingSecondary>
         {isOpen && (
           <Popup handleClose={togglePopup}>
@@ -102,7 +114,7 @@ const StreamDashboard = () => {
                         placeholder="Select an Admin"
                         setFieldValue={formik.setFieldValue}
                         aria-describedby="Member Search"
-                        error={formik.errors.admin}
+                        error={formik.errors.adminSelect}
                       />
                     </Col>
                   </Row>
@@ -113,10 +125,16 @@ const StreamDashboard = () => {
             </Formik>
           </Popup>
         )}
+
+        {data?.timeGraphs.length ? (
+          <>
+            <h4>{getHumanReadableDate(data?.timeGraphs[0]?.date, true)}</h4>
+            <h5>{data?.timeGraphs[0].swell && `Swell Weekend!`}</h5>
+          </>
+        ) : null}
+
         <div className="d-grid gap-2">
-          <RoleView
-            roles={[...permitAdmin('Stream'), ...permitArrivals('Stream')]}
-          >
+          <RoleView roles={permitAdmin('GatheringService')}>
             <Button
               variant="outline-secondary"
               size="lg"
@@ -124,27 +142,40 @@ const StreamDashboard = () => {
             >
               Change Arrivals Admin
             </Button>
+
+            {(!data?.timeGraphs.length || !data?.timeGraphs[0]?.swell) && (
+              <Button
+                onClick={() => {
+                  const confirmBox = window.confirm(
+                    'Do you want to set today as a swell day?'
+                  )
+
+                  if (confirmBox === true) {
+                    SetSwellDate({
+                      variables: { date: today },
+                    }).then(() => alertMsg('Swell Date Set Succesffully'))
+                  }
+                }}
+              >
+                Set Today as Swell
+              </Button>
+            )}
+
             <Button
-              variant="outline-secondary"
-              size="lg"
-              onClick={() => navigate('/stream/arrivals-helpers')}
+              onClick={() => {
+                const promptBox = window.prompt('Enter the Code of The Day')
+                SetCodeOfTheDay({ variables: { code: promptBox } })
+              }}
             >
-              Arrivals Helpers
-            </Button>
-            <Button
-              variant="outline-secondary"
-              size="lg"
-              onClick={() => navigate('/stream/arrival-times')}
-            >
-              Arrivals Times
+              Code of the Day
             </Button>
           </RoleView>
-
           <DefaulterInfoCard defaulter={aggregates} />
+
           <MenuButton
             title="Bacentas With No Activity"
             onClick={() => navigate('/arrivals/bacentas-no-activity')}
-            number={stream?.bacentasNoActivityCount.toString()}
+            number={gatheringService?.bacentasNoActivityCount.toString()}
             color="red"
             iconBg
             noCaption
@@ -152,7 +183,7 @@ const StreamDashboard = () => {
           <MenuButton
             title="Bacentas Mobilising"
             onClick={() => navigate('/arrivals/bacentas-mobilising')}
-            number={stream?.bacentasMobilisingCount.toString()}
+            number={gatheringService?.bacentasMobilisingCount.toString()}
             color="orange"
             iconBg
             noCaption
@@ -160,35 +191,16 @@ const StreamDashboard = () => {
           <MenuButton
             title="Bacentas On The Way"
             onClick={() => navigate('/arrivals/bacentas-on-the-way')}
-            number={stream?.bacentasOnTheWayCount.toString()}
+            number={gatheringService?.bacentasOnTheWayCount.toString()}
             color="yellow"
             iconBg
             noCaption
           />
-          <RoleView roles={permitArrivalsCounter('Stream')}>
-            <MenuButton
-              title="Bacentas To Be Counted"
-              onClick={() => navigate('/arrivals/bacentas-to-count')}
-              number={stream?.bacentasNotCountedCount.toString()}
-              color="yellow"
-              iconBg
-              noCaption
-            />
-          </RoleView>
-          <RoleView roles={permitArrivalsConfirmer('Stream')}>
-            <MenuButton
-              title="Confirm Bacenta Arrival"
-              onClick={() => navigate('/arrivals/confirm-bacenta-arrival')}
-              iconComponent={CheckAll}
-              iconBg
-              noCaption
-            />
-          </RoleView>
 
           <MenuButton
             title="Bacentas Below 8"
             onClick={() => navigate('/arrivals/bacentas-below-8')}
-            number={stream?.bacentasBelow8Count.toString()}
+            number={gatheringService?.bacentasBelow8Count.toString()}
             iconBg
             color="red"
             noCaption
@@ -197,23 +209,23 @@ const StreamDashboard = () => {
           <MenuButton
             title="Bacentas That Have Arrived"
             onClick={() => navigate('/arrivals/bacentas-have-arrived')}
-            number={stream?.bacentasHaveArrivedCount.toString()}
-            iconBg
+            number={gatheringService?.bacentasHaveArrivedCount.toString()}
             color="green"
+            iconBg
             noCaption
           />
 
           <div className="mt-5 d-grid gap-2">
             <MenuButton
               title="Members On The Way"
-              number={stream?.bussingMembersOnTheWayCount.toString()}
+              number={gatheringService?.bussingMembersOnTheWayCount.toString()}
               color="yellow"
               iconBg
               noCaption
             />
             <MenuButton
               title="Members That Have Arrived"
-              number={stream?.bussingMembersHaveArrivedCount.toString()}
+              number={gatheringService?.bussingMembersHaveArrivedCount.toString()}
               color="green"
               iconBg
               noCaption
@@ -225,4 +237,4 @@ const StreamDashboard = () => {
   )
 }
 
-export default StreamDashboard
+export default GatheringServiceDashboard
