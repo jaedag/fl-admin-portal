@@ -31,6 +31,7 @@ import UpdateBacenta from 'pages/directory/update/UpdateBacenta'
 import UpdateSonta from 'pages/directory/update/UpdateSonta'
 import UpdateConstituency from 'pages/directory/update/UpdateConstituency'
 import DetailsGatheringService from 'pages/directory/display/DetailsGatheringService'
+import DetailsOversight from 'pages/directory/display/DetailsOversight'
 import DisplayAllCouncils from 'pages/directory/display/AllCouncils'
 import DisplayAllStreams from 'pages/directory/display/AllStreams'
 import CreateCouncil from 'pages/directory/create/CreateCouncil'
@@ -231,6 +232,12 @@ export const directory: RouteTypes[] = [
     path: '/gatheringservice/displaydetails',
     element: DetailsGatheringService,
     roles: permitMe('GatheringService'),
+    placeholder: false,
+  },
+  {
+    path: '/oversight/displaydetails',
+    element: DetailsOversight,
+    roles: permitMe('Oversight'),
     placeholder: false,
   },
   {

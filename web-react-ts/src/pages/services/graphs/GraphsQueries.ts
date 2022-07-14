@@ -237,3 +237,37 @@ export const GATHERINGSERVICE_GRAPHS = gql`
     }
   }
 `
+export const OVERSIGHT_GRAPHS = gql`
+  query oversightGraphs($oversightId: ID!) {
+    oversight(where: { id: $oversightId }) {
+      id
+      name
+      leader {
+        id
+        firstName
+        lastName
+        fullName
+      }
+      services(limit: 4) {
+        id
+        created_at
+        attendance
+        income
+        week
+        serviceDate {
+          date
+        }
+      }
+
+      componentServiceAggregate {
+        week
+        attendance
+      }
+      componentBussingAggregate {
+        week
+        attendance
+      }
+      memberCount
+    }
+  }
+`

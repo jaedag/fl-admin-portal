@@ -43,6 +43,7 @@ const PastorsAdmin = (props) => {
     ministryId,
     bussingRecordId,
     serviceRecordId,
+      oversightId,
   } = useClickCard()
   const { user } = useAuth0()
 
@@ -90,6 +91,7 @@ const PastorsAdmin = (props) => {
           fellowshipId,
           sontaId,
           ministryId,
+            oversightId,
         }}
       >
         <MemberContext.Provider

@@ -9,6 +9,7 @@ export const churchLevels: ChurchLevel[] = [
   'Council',
   'Stream',
   'GatheringService',
+  'Oversight',
 ]
 
 export const getHighestRole = (roles: Role[]) => {
@@ -53,7 +54,7 @@ export const nextHigherChurch = (churchLevel: ChurchLevel): ChurchLevel => {
     case 'Stream':
       return 'GatheringService'
     case 'GatheringService':
-      return 'Denomination'
+      return 'Oversight'
     default:
       return 'Fellowship'
   }

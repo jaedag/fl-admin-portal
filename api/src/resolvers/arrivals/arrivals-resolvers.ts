@@ -113,7 +113,7 @@ export const arrivalsMutation = {
     MakeServant(
       context,
       args,
-      [...permitAdmin('GatheringService'), ...permitArrivals('Denomination')],
+      [...permitAdmin('GatheringService'), ...permitArrivals('Oversight')],
       'GatheringService',
       'ArrivalsAdmin'
     ),
@@ -125,7 +125,7 @@ export const arrivalsMutation = {
     RemoveServant(
       context,
       args,
-      [...permitAdmin('GatheringService'), ...permitArrivals('Denomination')],
+      [...permitAdmin('GatheringService'), ...permitArrivals('Oversight')],
       'GatheringService',
       'ArrivalsAdmin'
     ),

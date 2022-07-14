@@ -12,10 +12,12 @@ import {
   SERVANT_COUNCIL_LEADER,
   SERVANT_STREAM_LEADER,
   SERVANT_GATHERINGSERVICE_LEADER,
+  SERVANT_OVERSIGHT_LEADER,
   SERVANT_CONSTITUENCY_ADMIN,
   SERVANT_COUNCIL_ADMIN,
   SERVANTS_STREAM_ADMIN,
   SERVANTS_GATHERINGSERVICE_ADMIN,
+  SERVANTS_OVERSIGHT_ADMIN,
   SERVANTS_GATHERINGSERVICE_ARRIVALS_ADMIN,
   SERVANTS_STREAM_ARRIVALS_ADMIN,
   SERVANTS_COUNCIL_ARRIVALS_ADMIN,
@@ -35,6 +37,7 @@ const useComponentQuery = () => {
   const [gatheringServiceLeaderQuery] = useLazyQuery(
     SERVANT_GATHERINGSERVICE_LEADER
   )
+  const [oversightLeaderQuery] = useLazyQuery(SERVANT_OVERSIGHT_LEADER)
   //Admin Queries
   const [constituencyAdminQuery] = useLazyQuery(SERVANT_CONSTITUENCY_ADMIN)
   const [councilAdminQuery] = useLazyQuery(SERVANT_COUNCIL_ADMIN)
@@ -42,6 +45,7 @@ const useComponentQuery = () => {
   const [gatheringServiceAdminQuery] = useLazyQuery(
     SERVANTS_GATHERINGSERVICE_ADMIN
   )
+  const [oversightAdminQuery] = useLazyQuery(SERVANTS_OVERSIGHT_ADMIN)
   //Arrivals Admin Queries
   const [constituencyArrivalsAdminQuery] = useLazyQuery(
     SERVANTS_CONSTITUENCY_ARRIVALS_ADMIN
@@ -92,6 +96,11 @@ const useComponentQuery = () => {
       admin: gatheringServiceAdminQuery,
       arrivalsAdmin: gatheringServiceArrivalsAdminQuery,
     },
+    Oversight: {
+      leader: oversightLeaderQuery,
+      admin: oversightAdminQuery,
+      arrivalsAdmin: '',
+    },
   }
 
   useEffect(() => {
@@ -101,6 +110,8 @@ const useComponentQuery = () => {
       const response = await church[`${highestLevel}`][`${highestVerb}`]({
         variables: { id: user.id },
       })
+
+      console.log(response)
 
       if (response.error) {
         throwErrorMsg(response.error)
