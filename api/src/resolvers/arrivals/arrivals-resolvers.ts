@@ -51,6 +51,14 @@ const dotenv = require('dotenv')
 
 dotenv.config()
 
+const checkIfSelf = (servantId: string, auth: string) => {
+  if (servantId === auth.replace('auth0|', '')) {
+    throwErrorMsg(
+      'Sorry! You cannot make yourself an arrivals counter or confirmer'
+    )
+  }
+}
+
 export const arrivalsMutation = {
   MakeConstituencyArrivalsAdmin: async (
     object: any,
@@ -138,17 +146,23 @@ export const arrivalsMutation = {
     ),
 
   // ARRIVALS HELPERS
-  MakeStreamArrivalsCounter: async (object: any, args: any, context: Context) =>
-    MakeServant(
+  MakeStreamArrivalsCounter: async (
+    object: never,
+    args: { arrivalsCounterId: string; streamId: string },
+    context: Context
+  ) => {
+    checkIfSelf(args.arrivalsCounterId, context.auth.jwt.sub)
+    await MakeServant(
       context,
       args,
       [...permitAdmin('Stream'), ...permitArrivals('Stream')],
       'Stream',
       'ArrivalsCounter'
-    ),
+    )
+  },
   RemoveStreamArrivalsCounter: async (
-    object: any,
-    args: any,
+    object: never,
+    args: { arrivalsCounterId: string; streamId: string },
     context: Context
   ) =>
     RemoveServant(
@@ -161,19 +175,22 @@ export const arrivalsMutation = {
 
   MakeStreamArrivalsConfirmer: async (
     object: any,
-    args: any,
+    args: { arrivalsConfirmerId: string; streamId: string },
     context: Context
-  ) =>
-    MakeServant(
+  ) => {
+    checkIfSelf(args.arrivalsConfirmerId, context.auth.jwt.sub)
+
+    await MakeServant(
       context,
       args,
       [...permitAdmin('Stream'), ...permitArrivals('Stream')],
       'Stream',
       'ArrivalsConfirmer'
-    ),
+    )
+  },
   RemoveStreamArrivalsConfirmer: async (
     object: any,
-    args: any,
+    args: { arrivalsConfirmerId: string; streamId: string },
     context: Context
   ) =>
     RemoveServant(
