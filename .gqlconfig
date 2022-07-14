@@ -1,0 +1,19 @@
+/* .gqlconfig */
+{
+  schema: {
+    files: "**/*.gql"
+  },
+  query: {
+    files: [ /* define file paths which you'd like the gql parser to watch and give autocomplete suggestions for */
+      {
+        match: ['web-react-ts/src/**/*.ts', 'web-react-ts/src/**/*.tsx','api/src/schema/**/*.graphql], // match multiple extensions
+        parser: ['EmbeddedQueryParser', { startTag: 'gql`', endTag: '`' }], // parse any query inside gql template literal
+      },
+      {
+        match: 'web-react-ts/src/**/*.js', // for js
+        parser: ['EmbeddedQueryParser', { startTag: 'Relay\\.QL`', endTag: '`' }], // parse Relay syntax
+        isRelay: true,
+      },
+    ],
+  }
+}

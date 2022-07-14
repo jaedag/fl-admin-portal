@@ -219,10 +219,11 @@ export const GET_STREAM_COUNCILS = gql`
 `
 
 export const GET_GATHERINGSERVICE_STREAMS = gql`
-  query ($id: ID!) {
+  query gatheringStreams($id: ID!) {
     gatheringServices(where: { id: $id }) {
       id
       name
+
       leader {
         id
         firstName
