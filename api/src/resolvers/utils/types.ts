@@ -1,3 +1,11 @@
+export type neonumber = { low: number; high: number }
+export type RearragedCypherResponse = {
+  record: {
+    identity: number
+    lables: string[]
+    properties: any
+  }
+}
 export type ChurchLevel =
   | 'Fellowship'
   | 'Bacenta'

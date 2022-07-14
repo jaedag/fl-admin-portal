@@ -4,7 +4,7 @@ import MemberDisplayCard from 'components/card/MemberDisplayCard'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import HeadingSecondary from 'components/HeadingSecondary'
 import { ChurchContext } from 'contexts/ChurchContext'
-import { FunctionReturnsVoid, Member, StreamInterface } from 'global-types'
+import { FunctionReturnsVoid, Member, Stream } from 'global-types'
 import React, { useContext, useState } from 'react'
 import { Button, Col, Container, Modal, Row, Spinner } from 'react-bootstrap'
 import {
@@ -20,7 +20,7 @@ import ModalSubmitButton from './ModalSubmitButton'
 import { alertMsg, throwErrorMsg } from 'global-utils'
 import NoDataComponent from 'pages/arrivals/CompNoData'
 
-interface StreamWithTellers extends StreamInterface {
+interface StreamWithTellers extends Stream {
   tellers: Member[]
   activeFellowshipCount: number
 }

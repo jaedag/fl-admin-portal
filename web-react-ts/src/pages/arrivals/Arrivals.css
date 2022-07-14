@@ -1,0 +1,21 @@
+.arrivals-end .modal-content {
+  background-color: #7d1f1a;
+  color: whitesmoke;
+}
+
+.code-of-the-day {
+  color: #d5ee6f;
+}
+
+.countdown {
+  color: #81ee6f;
+  font-weight: bold;
+}
+
+.countdown.danger {
+  color: #f94040;
+}
+
+.text-secondary-custom {
+  color: #9f9f9f;
+}

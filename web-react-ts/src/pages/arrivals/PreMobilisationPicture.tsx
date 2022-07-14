@@ -7,6 +7,7 @@ import { ServiceContext } from 'contexts/ServiceContext'
 import React, { useContext } from 'react'
 import { Button, Container } from 'react-bootstrap'
 import { useNavigate } from 'react-router'
+import { BussingRecord } from './arrivals-types'
 import { DISPLAY_BUSSING_RECORDS } from './arrivalsQueries'
 
 const PreMobilisationPicture = () => {
@@ -16,7 +17,7 @@ const PreMobilisationPicture = () => {
   const { data, loading, error } = useQuery(DISPLAY_BUSSING_RECORDS, {
     variables: { bussingRecordId: bussingRecordId, bacentaId: bacentaId },
   })
-  const bussing = data?.bussingRecords[0]
+  const bussing: BussingRecord = data?.bussingRecords[0]
 
   return (
     <ApolloWrapper loading={loading} error={error} data={data} placeholder>

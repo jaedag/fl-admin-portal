@@ -1,4 +1,4 @@
-import { useLazyQuery } from '@apollo/client'
+import { ApolloError, useLazyQuery } from '@apollo/client'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import MemberDisplayCard from 'components/card/MemberDisplayCard'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
@@ -16,6 +16,7 @@ import NoData from './CompNoData'
 import PlaceholderDefaulterList from 'pages/services/defaulters/PlaceholderDefaulterList'
 import { useNavigate } from 'react-router'
 import { ChurchContext } from 'contexts/ChurchContext'
+import { HigherChurchWithArrivals } from './arrivals-types'
 
 const BacentasBelow8 = () => {
   const { clickCard } = useContext(ChurchContext)
@@ -29,12 +30,18 @@ const BacentasBelow8 = () => {
     GATHERINGSERVICE_BACENTAS_BELOW_8
   )
 
-  const { church, loading, error } = useChurchLevel({
+  type dataType = {
+    church: HigherChurchWithArrivals | null
+    loading: boolean
+    error: ApolloError | undefined
+  }
+  const data: dataType = useChurchLevel({
     constituencyFunction: constituencyBacentasBelow8,
     councilFunction: councilBacentasBelow8,
     streamFunction: streamBacentasBelow8,
     gatheringServiceFunction: gatheringServiceBacentasBelow8,
   })
+  const { church, loading, error } = data
 
   return (
     <ApolloWrapper data={church} loading={loading} error={error} placeholder>
@@ -48,7 +55,7 @@ const BacentasBelow8 = () => {
           <NoData text="There are no bacentas that didn't bus" />
         )}
 
-        {church?.bacentasBelow8.map((bacenta, i) => (
+        {church?.bacentasBelow8.map((bacenta, i: number) => (
           <MemberDisplayCard
             key={i}
             member={bacenta}
