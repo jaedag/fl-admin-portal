@@ -9,44 +9,50 @@ import PlaceholderDefaulterList from 'pages/services/defaulters/PlaceholderDefau
 import React, { useContext } from 'react'
 import { Container } from 'react-bootstrap'
 import { useNavigate } from 'react-router'
+import { ArrivalsUseChurchType } from './arrivals-types'
 import {
-  CONSTITUENCY_BACENTAS_TO_COUNT,
-  COUNCIL_BACENTAS_TO_COUNT,
-  GATHERINGSERVICE_BACENTAS_TO_COUNT,
-  STREAM_BACENTAS_TO_COUNT,
+  CONSTITUENCY_BACENTAS_ARRIVED,
+  COUNCIL_BACENTAS_ARRIVED,
+  GATHERINGSERVICES_BACENTAS_ARRIVED,
+  STREAM_BACENTAS_ARRIVED,
 } from './bussingStatusQueries'
 import NoData from './CompNoData'
 
-const StateBacentasToCount = () => {
-  const { clickCard } = useContext(ChurchContext)
+const BacentasHaveArrived = () => {
   const navigate = useNavigate()
-  const [constituencyOnTheWay] = useLazyQuery(CONSTITUENCY_BACENTAS_TO_COUNT)
-  const [councilOnTheWay] = useLazyQuery(COUNCIL_BACENTAS_TO_COUNT)
-  const [streamOnTheWay] = useLazyQuery(STREAM_BACENTAS_TO_COUNT)
-  const [gatheringServiceOnTheWay] = useLazyQuery(
-    GATHERINGSERVICE_BACENTAS_TO_COUNT
+  const { clickCard } = useContext(ChurchContext)
+  const [constituencyBacentasArrived] = useLazyQuery(
+    CONSTITUENCY_BACENTAS_ARRIVED
+  )
+  const [councilBacentasArrived] = useLazyQuery(COUNCIL_BACENTAS_ARRIVED)
+  const [streamBacentasArrived] = useLazyQuery(STREAM_BACENTAS_ARRIVED)
+  const [gatheringServiceBacentasArrived] = useLazyQuery(
+    GATHERINGSERVICES_BACENTAS_ARRIVED
   )
 
-  const { church, loading, error } = useChurchLevel({
-    constituencyFunction: constituencyOnTheWay,
-    councilFunction: councilOnTheWay,
-    streamFunction: streamOnTheWay,
-    gatheringServiceFunction: gatheringServiceOnTheWay,
+  const data: ArrivalsUseChurchType = useChurchLevel({
+    constituencyFunction: constituencyBacentasArrived,
+    councilFunction: councilBacentasArrived,
+    streamFunction: streamBacentasArrived,
+    gatheringServiceFunction: gatheringServiceBacentasArrived,
   })
+  const { church, loading, error } = data
 
   return (
     <ApolloWrapper data={church} loading={loading} error={error} placeholder>
       <Container>
-        <HeadingPrimary loading={loading}>Bacentas To Count</HeadingPrimary>
+        <HeadingPrimary loading={loading}>
+          Bacentas That Have Arrived
+        </HeadingPrimary>
         <HeadingSecondary loading={!church?.name}>
-          {church?.name} {church?.__typename}
+          {church?.name} Constituency
         </HeadingSecondary>
 
-        {church && !church?.bacentasNotCounted.length && (
-          <NoData text="There are no bacentas to be counted" />
+        {church && !church?.bacentasHaveArrived.length && (
+          <NoData text="No Bacentas Have Arrived at the Centre" />
         )}
 
-        {church?.bacentasNotCounted?.map((bacenta, i) => {
+        {church?.bacentasHaveArrived?.map((bacenta, i: number) => {
           return (
             <MemberDisplayCard
               key={i}
@@ -62,7 +68,7 @@ const StateBacentasToCount = () => {
           )
         })}
 
-        {!church?.bacentasNotCounted.length && loading && (
+        {!church?.bacentasHaveArrived.length && loading && (
           <PlaceholderDefaulterList />
         )}
       </Container>
@@ -70,4 +76,4 @@ const StateBacentasToCount = () => {
   )
 }
 
-export default StateBacentasToCount
+export default BacentasHaveArrived

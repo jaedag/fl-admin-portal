@@ -401,7 +401,7 @@ export const getSubChurchLevel = (churchType: ChurchLevel) => {
     case 'GatheringService':
       return 'Stream'
     default:
-      break
+      return 'Fellowship'
   }
 }
 

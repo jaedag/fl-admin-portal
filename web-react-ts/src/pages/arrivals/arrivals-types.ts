@@ -1,4 +1,13 @@
-import { Bacenta, Church, Member, Stream, TimeGraph } from 'global-types'
+import { ApolloError } from '@apollo/client'
+import {
+  Bacenta,
+  Church,
+  ChurchLevel,
+  Member,
+  Stream,
+  StreamOptions,
+  TimeGraph,
+} from 'global-types'
 
 type Network = 'MTN' | 'Vodafone' | 'AirtelTigo' | 'Airtel' | 'Tigo'
 
@@ -34,10 +43,13 @@ export interface StreamWithArrivals extends Stream {
   mobilisationEndTime: string
   arrivalStartTime: string
   arrivalEndTime: string
+  arrivalsConfirmers: Member[]
+  arrivalsCounters: Member[]
 }
 
 export interface BacentaWithArrivals extends Bacenta {
   stream: StreamWithArrivals
+  stream_name: StreamOptions
   arrivalsCodeOfTheDay: string
   momoNumber: string
   normalBussingTopUp: number
@@ -47,12 +59,16 @@ export interface BacentaWithArrivals extends Bacenta {
 
 export interface HigherChurchWithArrivals extends Church {
   __typename: 'Constituency' | 'Stream' | 'Council' | 'GatheringService'
+  stream_name: StreamOptions
+  activeBacentaCount: number
   bacentasNoActivity: BacentaWithArrivals[]
   bacentasMobilising: BacentaWithArrivals[]
   bacentasOnTheWay: BacentaWithArrivals[]
   bacentasBelow8: BacentaWithArrivals[]
   bacentasHaveArrived: BacentaWithArrivals[]
+  bacentasNotCounted: BacentaWithArrivals[]
 
+  bacentasNotCountedCount: number
   bacentasNoActivityCount: number
   bacentasMobilisingCount: number
   bacentasOnTheWayCount: number
@@ -60,4 +76,15 @@ export interface HigherChurchWithArrivals extends Church {
   bacentasHaveArrivedCount: number
   bussingMembersOnTheWayCount: number
   bussingMembersHaveArrivedCount: number
+  [key: string]: any
+}
+
+export interface ArrivalsUseChurchType {
+  church: HigherChurchWithArrivals | null
+  loading: boolean
+  error: ApolloError | undefined
+}
+
+export interface ArrivalsUseChurchExt extends ArrivalsUseChurchType {
+  subChurchLevel: ChurchLevel
 }

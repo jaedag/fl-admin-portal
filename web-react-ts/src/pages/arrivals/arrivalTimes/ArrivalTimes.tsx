@@ -20,10 +20,10 @@ const ArrivalTimes = () => {
   const navigate = useNavigate()
 
   const table = [
-    ['Mobilisation Start', parseNeoTime(stream?.mobilisationStartTime)],
-    ['Mobilisation End', parseNeoTime(stream?.mobilisationEndTime)],
-    ['Arrival Start', parseNeoTime(stream?.arrivalStartTime)],
-    ['Arrival End', parseNeoTime(stream?.arrivalEndTime)],
+    ['Mobilisation Start', parseNeoTime(stream?.mobilisationStartTime) || ''],
+    ['Mobilisation End', parseNeoTime(stream?.mobilisationEndTime) || ''],
+    ['Arrival Start', parseNeoTime(stream?.arrivalStartTime) || ''],
+    ['Arrival End', parseNeoTime(stream?.arrivalEndTime) || ''],
   ]
 
   return (
@@ -38,7 +38,7 @@ const ArrivalTimes = () => {
         >
           Edit Times
         </Button>
-        <TableFromArrays tableArray={table} />
+        <TableFromArrays tableArray={table} loading={loading} />
       </Container>
     </ApolloWrapper>
   )

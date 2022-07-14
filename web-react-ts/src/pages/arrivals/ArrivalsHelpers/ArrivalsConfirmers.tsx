@@ -6,7 +6,7 @@ import { ChurchContext } from 'contexts/ChurchContext'
 import React, { useContext, useState } from 'react'
 import { Button, Col, Container, Row, Spinner } from 'react-bootstrap'
 import * as Yup from 'yup'
-import { Form, Formik } from 'formik'
+import { Form, Formik, FormikHelpers } from 'formik'
 import {
   MAKE_STREAMARRIVALS_CONFIRMER,
   REMOVE_STREAMARRIVALS_CONFIRMER,
@@ -18,6 +18,12 @@ import FormikControl from 'components/formik-components/FormikControl'
 import SubmitButton from 'components/formik-components/SubmitButton'
 import NoData from '../CompNoData'
 import usePopup from 'hooks/usePopup'
+import { StreamWithArrivals } from '../arrivals-types'
+
+type FormOptions = {
+  helperName: string
+  helperSelect: string
+}
 
 const ArrivalsConfirmers = () => {
   const { streamId } = useContext(ChurchContext)
@@ -27,7 +33,7 @@ const ArrivalsConfirmers = () => {
   const { data, loading, error } = useQuery(STREAM_ARRIVALS_HELPERS, {
     variables: { id: streamId },
   })
-  const stream = data?.streams[0]
+  const stream: StreamWithArrivals = data?.streams[0]
 
   const [MakeStreamArrivalsConfirmer] = useMutation(
     MAKE_STREAMARRIVALS_CONFIRMER,
@@ -53,7 +59,7 @@ const ArrivalsConfirmers = () => {
     }
   )
 
-  const initialValues = {
+  const initialValues: FormOptions = {
     helperName: '',
     helperSelect: '',
   }
@@ -64,7 +70,10 @@ const ArrivalsConfirmers = () => {
     ),
   })
 
-  const onSubmit = async (values, onSubmitProps) => {
+  const onSubmit = async (
+    values: FormOptions,
+    onSubmitProps: FormikHelpers<FormOptions>
+  ) => {
     onSubmitProps.setSubmitting(true)
     try {
       await MakeStreamArrivalsConfirmer({
@@ -77,7 +86,7 @@ const ArrivalsConfirmers = () => {
       togglePopup()
       onSubmitProps.setSubmitting(false)
       alert('Arrivals Confirmer has been added successfully')
-    } catch (e) {
+    } catch (e: any) {
       onSubmitProps.setSubmitting(false)
       throwErrorMsg(e)
     }
@@ -108,7 +117,7 @@ const ArrivalsConfirmers = () => {
                         placeholder="Select a Name"
                         setFieldValue={formik.setFieldValue}
                         aria-describedby="Member Search"
-                        error={formik.errors.admin}
+                        error={formik.errors.helperSelect}
                       />
                     </Col>
                   </Row>
@@ -122,7 +131,7 @@ const ArrivalsConfirmers = () => {
 
         <Button onClick={() => togglePopup()}>Add Helpers</Button>
 
-        {stream?.arrivalsConfirmers.map((confirmer, i) => (
+        {stream?.arrivalsConfirmers.map((confirmer, i: number) => (
           <div key={i}>
             <MemberDisplayCard key={i} member={confirmer} />
             <Button
@@ -143,7 +152,7 @@ const ArrivalsConfirmers = () => {
                     })
                     setSubmitting(false)
                     alertMsg(`${confirmer.fullName} Deleted Successfully`)
-                  } catch (error) {
+                  } catch (error: any) {
                     throwErrorMsg(error)
                   }
                 }
