@@ -1,5 +1,4 @@
-import { MemberContext } from 'contexts/MemberContext'
-import React, { useContext } from 'react'
+import React from 'react'
 import { Button } from 'react-bootstrap'
 import Popup from './Popup'
 import { useNavigate } from 'react-router'
@@ -12,7 +11,6 @@ interface ErrorDialogProps {
 
 const ErrorPopup = (props: ErrorDialogProps) => {
   const { errorMessage, togglePopup, link } = props
-  const { theme } = useContext(MemberContext)
   const navigate = useNavigate()
 
   return (

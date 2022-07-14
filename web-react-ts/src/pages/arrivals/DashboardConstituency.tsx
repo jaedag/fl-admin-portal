@@ -4,7 +4,7 @@ import MenuButton from 'components/buttons/MenuButton'
 import FormikControl from 'components/formik-components/FormikControl'
 import SubmitButton from 'components/formik-components/SubmitButton'
 import Popup from 'components/Popup/Popup'
-import { Form, Formik } from 'formik'
+import { Form, Formik, FormikHelpers } from 'formik'
 import * as Yup from 'yup'
 import React from 'react'
 import { useContext } from 'react'
@@ -20,6 +20,11 @@ import HeadingSecondary from 'components/HeadingSecondary'
 import { MemberContext } from 'contexts/MemberContext'
 import usePopup from 'hooks/usePopup'
 
+export type AdminFormOptions = {
+  adminName: string
+  adminSelect: string
+}
+
 const ConstituencyDashboard = () => {
   const { isOpen, togglePopup } = usePopup()
   const { currentUser } = useContext(MemberContext)
@@ -32,7 +37,7 @@ const ConstituencyDashboard = () => {
   )
   const constituency = data?.constituencies[0]
 
-  const initialValues = {
+  const initialValues: AdminFormOptions = {
     adminName: constituency?.arrivalsAdmin
       ? `${constituency?.arrivalsAdmin?.fullName}`
       : '',
@@ -44,7 +49,10 @@ const ConstituencyDashboard = () => {
     ),
   })
 
-  const onSubmit = (values, onSubmitProps) => {
+  const onSubmit = (
+    values: AdminFormOptions,
+    onSubmitProps: FormikHelpers<AdminFormOptions>
+  ) => {
     onSubmitProps.setSubmitting(true)
 
     MakeConstituencyArrivalsAdmin({
@@ -92,7 +100,7 @@ const ConstituencyDashboard = () => {
                         placeholder="Select an Admin"
                         setFieldValue={formik.setFieldValue}
                         aria-describedby="Member Search"
-                        error={formik.errors.admin}
+                        error={formik.errors.adminSelect}
                       />
                     </Col>
                   </Row>
@@ -142,7 +150,14 @@ const ConstituencyDashboard = () => {
             iconBg
             noCaption
           />
-
+          <MenuButton
+            title="Bacentas Below 8"
+            onClick={() => navigate('/arrivals/bacentas-below-8')}
+            number={constituency?.bacentasBelow8Count.toString()}
+            iconBg
+            color="red"
+            noCaption
+          />
           <MenuButton
             title="Bacentas That Have Arrived"
             onClick={() => navigate('/arrivals/bacentas-have-arrived')}
