@@ -239,10 +239,7 @@ const bankingMutation = {
 
       return submissionResponse.record.properties
     } catch (error: any) {
-      return throwErrorMsg(
-        'There was an error submitting your banking slip',
-        error
-      )
+      return throwErrorMsg(error)
     }
   },
 }
