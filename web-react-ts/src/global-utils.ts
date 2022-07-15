@@ -99,8 +99,8 @@ export const authorisedLink = (
 export const capitalise = (str: string) => {
   return str?.charAt(0).toUpperCase() + str?.slice(1)
 }
-export const plural = (church: ChurchLevel) => {
-  switch (church.toLowerCase()) {
+export const plural = (church: ChurchLevel | string) => {
+  switch (church) {
     case 'stream':
       return 'streams'
     case 'Stream':

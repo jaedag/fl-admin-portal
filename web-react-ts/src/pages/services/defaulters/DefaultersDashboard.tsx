@@ -18,6 +18,8 @@ import { permitLeaderAdmin } from 'permission-utils'
 import { MemberContext } from 'contexts/MemberContext'
 import useChurchLevel from 'hooks/useChurchLevel'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
+import { DefaultersUseChurchtype } from './defaulters-types'
+import { ChurchLevel } from 'global-types'
 
 const DefaultersDashboard = () => {
   const { currentUser } = useContext(MemberContext)
@@ -26,14 +28,16 @@ const DefaultersDashboard = () => {
   const [streamDefaulters] = useLazyQuery(STREAM_DEFAULTERS)
   const [gatheringServiceDefaulters] = useLazyQuery(GATHERINGSERVICE_DEFAULTERS)
 
-  let subChurch
+  let subChurch: ChurchLevel | string = ''
 
-  const { church, loading, error } = useChurchLevel({
+  const data: DefaultersUseChurchtype = useChurchLevel({
     constituencyFunction: constituencyDefaulters,
     councilFunction: councilDefaulters,
     streamFunction: streamDefaulters,
     gatheringServiceFunction: gatheringServiceDefaulters,
   })
+
+  const { church, loading, error } = data
 
   switch (currentUser?.currentChurch?.__typename) {
     case 'Council':
@@ -71,7 +75,7 @@ const DefaultersDashboard = () => {
       color:
         church?.bankedThisWeekCount === church?.servicesThisWeekCount
           ? 'good'
-          : church?.bankedThisWeekCount > 0
+          : (church?.bankedThisWeekCount || 0) > 0
           ? 'yellow'
           : 'bad',
       link: church?.bankedThisWeekCount ? '/services/banked' : '#',
