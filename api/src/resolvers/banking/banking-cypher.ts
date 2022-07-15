@@ -61,7 +61,7 @@ MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowship:Fellows
 MATCH (fellowship)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(otherRecords:ServiceRecord) 
 WHERE NOT (otherRecords:NoService)
 
-WITH record,otherRecords ORDER BY otherRecords.created_at DESC LIMIT 2
+WITH DISTINCT record,otherRecords ORDER BY otherRecords.created_at DESC LIMIT 2
 WITH collect(otherRecords.id) AS recordIds, record.id AS currentServiceId
 
 WITH apoc.coll.indexOf(recordIds,currentServiceId) + 1 AS lastServiceIndex, recordIds WHERE lastServiceIndex >= 0
