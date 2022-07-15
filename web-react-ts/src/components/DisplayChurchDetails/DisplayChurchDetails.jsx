@@ -32,7 +32,6 @@ import usePopup from 'hooks/usePopup'
 
 const DisplayChurchDetails = (props) => {
   const { setUser } = useSetUserChurch()
-
   const navigate = useNavigate()
   let needsAdmin
 

@@ -6,6 +6,13 @@ const useClickCard = () => {
       ? JSON.parse(sessionStorage.getItem('church'))
       : { church: '', subChurch: '' }
   )
+
+  const [oversightId, setOversightId] = useState(
+    sessionStorage.getItem('oversightId')
+      ? sessionStorage.getItem('oversightId')
+      : ''
+  )
+
   const [gatheringServiceId, setGatheringServiceId] = useState(
     sessionStorage.getItem('gatheringServiceId')
       ? sessionStorage.getItem('gatheringServiceId')
@@ -244,6 +251,80 @@ const useClickCard = () => {
         break
     }
 
+    //Setting the Oversight for the different levels under Oversight
+    switch (card.__typename) {
+      case 'Fellowship':
+        if (
+          card?.bacenta?.constituency?.council?.stream?.gatheringService
+            ?.oversight?.id
+        ) {
+          setOversightId(
+            card?.bacenta?.constituency?.council?.stream?.gatheringService
+              ?.oversight?.id
+          )
+          sessionStorage.setItem(
+            'oversightId',
+            card?.bacenta?.constituency?.council?.stream?.gatheringService
+              ?.oversight?.id
+          )
+        }
+        break
+      case 'Bacenta':
+        if (
+          card?.constituency?.council?.stream?.gatheringService?.oversight?.id
+        ) {
+          setOversightId(
+            card?.constituency?.council?.stream?.gatheringService?.oversight?.id
+          )
+          sessionStorage.setItem(
+            'oversightId',
+            card?.constituency?.council?.stream?.gatheringService?.oversight?.id
+          )
+        }
+        break
+      case 'Constituency':
+        if (card?.council?.stream?.gatheringService?.oversight?.id) {
+          setOversightId(card?.council?.stream?.gatheringService?.oversight?.id)
+          sessionStorage.setItem(
+            'oversightId',
+            card?.council?.stream?.gatheringService?.oversight?.id
+          )
+        }
+        break
+      case 'Council':
+        if (card?.stream?.gatheringService?.oversight?.id) {
+          setOversightId(card?.stream?.gatheringService?.oversight?.id)
+          sessionStorage.setItem(
+            'oversightId',
+            card?.stream?.gatheringService?.oversight?.id
+          )
+        }
+        break
+      case 'Stream':
+        if (card?.gatheringService?.oversight?.id) {
+          setOversightId(card?.gatheringService?.oversight?.id)
+          sessionStorage.setItem(
+            'oversightId',
+            card?.gatheringService?.oversight?.id
+          )
+        }
+        break
+      case 'GatheringService':
+        if (card?.oversight?.id) {
+          setOversightId(card?.oversight?.id)
+          sessionStorage.setItem('oversightId', card?.oversight?.id)
+        }
+        break
+      case 'Oversight':
+        if (card.id) {
+          setOversightId(card?.id)
+          sessionStorage.setItem('oversightId', card?.id)
+        }
+        break
+      default:
+        break
+    }
+
     return
   }
 
@@ -282,6 +363,14 @@ const useClickCard = () => {
         setStreamId(card.id)
         sessionStorage.setItem('streamId', card.id)
         break
+      case 'GatheringService':
+        setGatheringServiceId(card.id)
+        sessionStorage.setItem('gatheringServiceId', card.id)
+        break
+      case 'Oversight':
+        setOversightId(card.id)
+        sessionStorage.setItem('oversightId', card.id)
+        break
       case 'Basonta':
         setSontaId(card.sonta.id)
         sessionStorage.setItem('sontaId', card.sonta.id)
@@ -314,6 +403,7 @@ const useClickCard = () => {
     clickCard,
     church,
     memberId,
+    oversightId,
     gatheringServiceId,
     streamId,
     councilId,
@@ -326,6 +416,7 @@ const useClickCard = () => {
     serviceRecordId,
 
     //Set State
+    setOversightId,
     setGatheringServiceId,
     setChurch,
     setStreamId,

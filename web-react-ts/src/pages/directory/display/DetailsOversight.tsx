@@ -24,14 +24,14 @@ const DetailsGatheringService = () => {
     {
       title: 'Streams',
       number: oversight?.streamCount || 0,
-      link: `/${`Stream`.toLowerCase()}/displayall`,
+      link: `#`,
     },
     { title: 'Target', number: oversight?.target, link: '#' },
     { title: 'Pastors', number: oversight?.pastorCount || '0', link: '#' },
     {
-      title: 'Gathering Sercives',
+      title: 'Gathering Services',
       number: oversight?.gatheringServiceCount,
-      link: `#`,
+      link: `/${`GatheringService`.toLowerCase()}/displayall`,
     },
     {
       title: 'Councils',
@@ -70,7 +70,7 @@ const DetailsGatheringService = () => {
         editlink="/gatheringservice/editgatheringservice"
         editPermitted={['adminOversight']}
         history={oversight?.history.length !== 0 && oversight?.history}
-        buttons={oversight?.streams ?? []}
+        buttons={oversight?.gatheringServices ?? []}
         breadcrumb={breadcrumb && breadcrumb}
         loading={loading}
       />

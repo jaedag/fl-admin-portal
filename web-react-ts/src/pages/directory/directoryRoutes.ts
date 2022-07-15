@@ -34,6 +34,7 @@ import DetailsGatheringService from 'pages/directory/display/DetailsGatheringSer
 import DetailsOversight from 'pages/directory/display/DetailsOversight'
 import DisplayAllCouncils from 'pages/directory/display/AllCouncils'
 import DisplayAllStreams from 'pages/directory/display/AllStreams'
+import DisplayAllGatheringServices from 'pages/directory/display/AllGatheringServices'
 import CreateCouncil from 'pages/directory/create/CreateCouncil'
 import AllGatheringServiceConstituencies from 'pages/directory/display/AllGatheringServiceConstituencies'
 import UpdateCouncil from 'pages/directory/update/UpdateCouncil'
@@ -304,7 +305,12 @@ export const directory: RouteTypes[] = [
     roles: permitLeaderAdmin('GatheringService'),
     placeholder: false,
   },
-
+  {
+    path: '/gatheringservice/displayall',
+    element: DisplayAllGatheringServices,
+    roles: permitLeaderAdmin('Oversight'),
+    placeholder: false,
+  },
   //Creation Pages
   {
     path: '/fellowship/addfellowship',

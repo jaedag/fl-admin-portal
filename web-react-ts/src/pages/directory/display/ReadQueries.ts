@@ -571,6 +571,10 @@ export const DISPLAY_GATHERINGSERVICE = gql`
       pastorCount
       vacationBacentaCount
       vacationFellowshipCount
+      oversight {
+        id
+        name
+      }
       streams {
         id
         name
@@ -627,7 +631,7 @@ export const DISPLAY_OVERSIGHT = gql`
       pastorCount
       vacationBacentaCount
       vacationFellowshipCount
-      gatheringservices {
+      gatheringServices {
         id
         name
       }

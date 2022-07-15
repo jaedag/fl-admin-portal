@@ -301,7 +301,7 @@ type Oversight implements Church {
   name: String!
   noIncome: Boolean
   leader: Member @relationship(type: "LEADS", direction: IN)
-  gatheringservices: GatheringService!
+  gatheringServices: [GatheringService!]!
     @relationship(type: "HAS", direction: OUT)
   streams: [Stream!]! @relationship(type: "HAS", direction: OUT)
   councils: [Council!]!
@@ -401,6 +401,7 @@ type GatheringService implements Church {
   leader: Member @relationship(type: "LEADS", direction: IN)
   oversight: Oversight! @relationship(type: "HAS", direction: IN)
   streams: [Stream!]! @relationship(type: "HAS", direction: OUT)
+
   councils: [Council!]!
     @cypher(
       statement: "MATCH (this)-[:HAS*2]->(councils:Council) RETURN councils"

@@ -111,8 +111,6 @@ const useComponentQuery = () => {
         variables: { id: user.id },
       })
 
-      console.log(response)
-
       if (response.error) {
         throwErrorMsg(response.error)
       }
