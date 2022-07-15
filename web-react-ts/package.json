@@ -1,6 +1,6 @@
 {
   "name": "admin-portal-react-frontend",
-  "version": "4.6.0",
+  "version": "4.6.2",
   "description": "React app for GRANDstack FL Admin Portal",
   "private": true,
   "dependencies": {
