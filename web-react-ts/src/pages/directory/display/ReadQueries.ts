@@ -266,12 +266,6 @@ export const DISPLAY_SONTA = gql`
         historyRecord
       }
     }
-    sontaMemberCount(id: $id)
-    sontaBasontaLeaderList(id: $id) {
-      id
-      firstName
-      lastName
-    }
   }
 `
 
