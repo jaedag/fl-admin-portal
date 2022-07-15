@@ -56,8 +56,5 @@
     "type": "git",
     "url": "git://github.com/firstlovecenter/fl-pastoral-care.git"
   },
-  "license": "Apache-2.0",
-  "dependencies": {
-    "jd-date-utils": "^1.0.3"
-  }
+  "license": "Apache-2.0"
 }

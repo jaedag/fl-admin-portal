@@ -12,7 +12,7 @@ import { isAuth, rearrangeCypherObject, throwErrorMsg } from '../utils/utils'
 
 import {
   checkTransactionId,
-  lastButOneServiceRecord,
+  getLastServiceRecord,
   removeBankingRecordTransactionId,
   setServiceRecordTransactionId,
   setTransactionStatusFailed,
@@ -28,18 +28,19 @@ const checkIfLastServiceBanked = async (
 ) => {
   const session = context.executionContext.session()
   // this checks if the person has banked their last offering
-  const lastServiceRecord = rearrangeCypherObject(
-    await session
-      .run(lastButOneServiceRecord, {
-        serviceRecordId,
-        auth: context.auth,
-      })
-      .catch((error: any) => throwErrorMsg(error))
-  )
+  const lastServiceResponse = await session
+    .run(getLastServiceRecord, {
+      serviceRecordId,
+      auth: context.auth,
+    })
+    .catch((error: any) => throwErrorMsg(error))
+  const lastServiceRecord = rearrangeCypherObject(lastServiceResponse)
 
-  const record: ServiceRecord = lastServiceRecord.record.properties
+  if (!('lastService' in lastServiceRecord)) return true
 
-  if ('bankingSlip' in record || record.transactionStatus === 'success') {
+  const record: ServiceRecord = lastServiceRecord.lastService.properties
+
+  if (!('bankingSlip' in record || record.transactionStatus === 'success')) {
     throwErrorMsg(
       "Please bank last week's outstanding offering before attempting to bank this week's offering"
     )
