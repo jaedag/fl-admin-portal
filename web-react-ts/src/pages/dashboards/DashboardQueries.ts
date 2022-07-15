@@ -1,28 +1,5 @@
 import { gql } from '@apollo/client'
 
-export const MAKE_BISHOP_ADMIN = gql`
-  mutation MakeBishopAdmin($bishopId: ID!, $newAdminId: ID!, $oldAdminId: ID!) {
-    RemoveBishopAdmin(bishopId: $bishopId, adminId: $oldAdminId) {
-      id
-      firstName
-      lastName
-    }
-    MakeBishopAdmin(bishopId: $bishopId, adminId: $newAdminId) {
-      id
-      firstName
-      lastName
-      isAdminForCouncil {
-        id
-        admin {
-          id
-          firstName
-          lastName
-        }
-      }
-    }
-  }
-`
-
 export const FELLOWSHIP_LEADER_DASHBOARD = gql`
   query fellowshipLeaderDashboard($fellowshipId: ID!) {
     fellowships(where: { id: $fellowshipId }) {
@@ -45,7 +22,6 @@ export const FELLOWSHIP_LEADER_DASHBOARD = gql`
         }
       }
     }
-    fellowshipMemberCount(id: $fellowshipId)
   }
 `
 
@@ -53,6 +29,9 @@ export const SERVANT_CHURCH_LIST = gql`
   query churchList($id: ID!) {
     members(where: { id: $id }) {
       id
+      firstName
+      lastName
+      fullName
 
       leadsFellowship {
         id

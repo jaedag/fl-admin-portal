@@ -122,7 +122,7 @@ const UpdateBusPayment = () => {
         variables: {
           firstName: bacenta?.leader.firstName,
           phoneNumber: values.momoNumber,
-          code: otp,
+          otp,
         },
       })
       togglePopup()

@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client'
 
 export const DISPLAY_MEMBER_BIO = gql`
-  query ($id: ID!) {
+  query displayMemberBio($id: ID!) {
     members(where: { id: $id }) {
       id
       firstName
@@ -25,19 +25,14 @@ export const DISPLAY_MEMBER_BIO = gql`
       occupation {
         occupation
       }
-      titleConnection {
-        edges {
-          date
-          node {
-            title
-          }
-        }
+      title {
+        title
       }
     }
   }
 `
 export const DISPLAY_MEMBER_LEADERSHIP = gql`
-  query ($id: ID!) {
+  query displayMemberLeadership($id: ID!) {
     members(where: { id: $id }) {
       id
 
@@ -89,7 +84,7 @@ export const DISPLAY_MEMBER_LEADERSHIP = gql`
 `
 
 export const DISPLAY_MEMBER_ADMIN = gql`
-  query ($id: ID!) {
+  query displayMemberAdmin($id: ID!) {
     members(where: { id: $id }) {
       id
 
@@ -117,7 +112,7 @@ export const DISPLAY_MEMBER_ADMIN = gql`
 `
 
 export const DISPLAY_MEMBER_CHURCH = gql`
-  query ($id: ID!) {
+  query displayMemberChurch($id: ID!) {
     members(where: { id: $id }) {
       id
       #church info
@@ -168,7 +163,7 @@ export const DISPLAY_MEMBER_CHURCH = gql`
 `
 
 export const DISPLAY_FELLOWSHIP = gql`
-  query ($id: ID!) {
+  query displayFellowship($id: ID!) {
     fellowships(where: { id: $id }, options: { limit: 1 }) {
       id
       vacationStatus
@@ -202,7 +197,7 @@ export const DISPLAY_FELLOWSHIP = gql`
   }
 `
 export const DISPLAY_FELLOWSHIP_HISTORY = gql`
-  query ($id: ID!) {
+  query displayFellowshipHistory($id: ID!) {
     fellowships(where: { id: $id }, options: { limit: 1 }) {
       id
       services(limit: 5) {
@@ -256,7 +251,7 @@ export const DISPLAY_SONTA = gql`
           name
         }
       }
-      history(limit: 5) {
+      history {
         id
         timeStamp
         created_at {
@@ -271,17 +266,11 @@ export const DISPLAY_SONTA = gql`
         historyRecord
       }
     }
-    sontaMemberCount(id: $id)
-    sontaBasontaLeaderList(id: $id) {
-      id
-      firstName
-      lastName
-    }
   }
 `
 
 export const DISPLAY_BACENTA = gql`
-  query ($id: ID!) {
+  query displayBacenta($id: ID!) {
     bacentas(where: { id: $id }, options: { limit: 1 }) {
       id
       name
@@ -354,7 +343,7 @@ export const DISPLAY_BACENTA = gql`
 `
 
 export const DISPLAY_CONSTITUENCY = gql`
-  query ($id: ID!) {
+  query displayConstituency($id: ID!) {
     constituencies(where: { id: $id }, options: { limit: 1 }) {
       id
       name
@@ -432,7 +421,7 @@ export const DISPLAY_CONSTITUENCY = gql`
 `
 
 export const DISPLAY_COUNCIL = gql`
-  query ($id: ID!) {
+  query displayCouncil($id: ID!) {
     councils(where: { id: $id }, options: { limit: 1 }) {
       id
       name
@@ -499,7 +488,7 @@ export const DISPLAY_COUNCIL = gql`
 `
 
 export const DISPLAY_STREAM = gql`
-  query ($id: ID!) {
+  query displayStream($id: ID!) {
     streams(where: { id: $id }, options: { limit: 1 }) {
       id
       name
@@ -557,7 +546,7 @@ export const DISPLAY_STREAM = gql`
 `
 
 export const DISPLAY_GATHERINGSERVICE = gql`
-  query ($id: ID!) {
+  query displayGathering($id: ID!) {
     gatheringServices(where: { id: $id }, options: { limit: 1 }) {
       id
       name

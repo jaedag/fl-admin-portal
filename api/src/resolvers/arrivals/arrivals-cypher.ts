@@ -26,7 +26,7 @@ RETURN record, bacenta.name AS bacentaName, date.date AS date
 `
 
 export const getBussingRecordWithDate = `
-MATCH (record:BussingRecord {id: $bussingRecordId})<-[:HAS_BUSSING]-(:ServiceLog)<-[:HAS_HISTORY]-(bacenta:Bacenta)
+MATCH (record:BussingRecord {id: $bussingRecordId})<-[:HAS_BUSSING]-(:ServiceLog)<-[:HAS_HISTORY]-(bacenta:Bacenta)<-[:LEADS]-(leader:Member)
 MATCH (record)-[:BUSSED_ON]->(date:TimeGraph)
 SET record.target = bacenta.target
 
@@ -36,6 +36,12 @@ record.attendance AS attendance,
 record.numberOfBusses AS numberOfBusses,
 record.numberOfCars AS numberOfCars,
 record.bussingCost AS bussingCost,
+leader.phoneNumber AS leaderPhoneNumber,
+leader.firstName AS leaderFirstName,
+
+bacenta.swellBussingCost - bacenta.swellPersonalContribution AS swellBussingTopUp,
+bacenta.normalBussingCost - bacenta.normalPersonalContribution AS normalBussingTopUp,
+
 labels(date) AS dateLabels
 `
 
@@ -65,6 +71,13 @@ record.mobileNetwork = bacenta.mobileNetwork,
 record.momoName = bacenta.momoName
 
 RETURN record
+`
+
+export const setAdjustedDiscountTopUp = `
+MATCH (record:BussingRecord {id: $bussingRecordId})
+SET record.bussingTopUp = record.bussingCost 
+
+RETURN record AS record
 `
 
 export const noBussingTopUp = `

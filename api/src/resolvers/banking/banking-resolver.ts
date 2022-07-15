@@ -5,21 +5,65 @@ import {
   getMobileCode,
   getStreamFinancials,
   handlePaymentError,
+  Network,
   padNumbers,
 } from '../utils/financial-utils'
 import { isAuth, rearrangeCypherObject, throwErrorMsg } from '../utils/utils'
 
 import {
   checkTransactionId,
+  getLastServiceRecord,
   removeBankingRecordTransactionId,
   setServiceRecordTransactionId,
   setTransactionStatusFailed,
   setTransactionStatusSuccess,
+  submitBankingSlip,
 } from './banking-cypher'
 import { PaySwitchRequestBody } from './banking-types'
+import { ServiceRecord, StreamOptions } from '../utils/types'
+
+const checkIfLastServiceBanked = async (
+  serviceRecordId: string,
+  context: Context
+) => {
+  const session = context.executionContext.session()
+  // this checks if the person has banked their last offering
+  const lastServiceResponse = await session
+    .run(getLastServiceRecord, {
+      serviceRecordId,
+      auth: context.auth,
+    })
+    .catch((error: any) => throwErrorMsg(error))
+  const lastServiceRecord = rearrangeCypherObject(lastServiceResponse)
+
+  if (!('lastService' in lastServiceRecord)) return true
+
+  const record: ServiceRecord = lastServiceRecord.lastService.properties
+
+  if (!('bankingSlip' in record || record.transactionStatus === 'success')) {
+    throwErrorMsg(
+      "Please bank last week's outstanding offering before attempting to bank this week's offering"
+    )
+
+    return false
+  }
+
+  return true
+}
 
 const bankingMutation = {
-  BankServiceOffering: async (object: any, args: any, context: Context) => {
+  BankServiceOffering: async (
+    object: any,
+    args: {
+      // eslint-disable-next-line camelcase
+      stream_name: StreamOptions
+      serviceRecordId: string
+      mobileNetwork: Network
+      mobileNumber: string
+      momoName: string
+    },
+    context: Context
+  ) => {
     isAuth(permitLeader('Fellowship'), context.auth.roles)
 
     const session = context.executionContext.session()
@@ -32,6 +76,8 @@ const bankingMutation = {
         .run(checkTransactionId, args)
         .catch((error: any) => throwErrorMsg(error))
     )
+
+    await checkIfLastServiceBanked(args.serviceRecordId, context)
 
     const transactionStatus =
       transactionResponse?.record.properties.transactionStatus
@@ -84,7 +130,12 @@ const bankingMutation = {
     }
   },
 
-  ConfirmOfferingPayment: async (object: any, args: any, context: Context) => {
+  ConfirmOfferingPayment: async (
+    object: any,
+    // eslint-disable-next-line camelcase
+    args: { stream_name: StreamOptions; serviceRecordId: string },
+    context: Context
+  ) => {
     isAuth(permitLeader('Fellowship'), context.auth.roles)
     const session = context.executionContext.session()
     const { merchantId, auth } = getStreamFinancials(args.stream_name)
@@ -170,6 +221,29 @@ const bankingMutation = {
         lastName: banker.lastName,
         fullName: `${banker.firstName} ${banker.fullName}`,
       },
+    }
+  },
+  SubmitBankingSlip: async (
+    object: any,
+    args: { serviceRecordId: string; bankingSlip: string },
+    context: Context
+  ) => {
+    isAuth(permitLeader('Fellowship'), context.auth.roles)
+    const session = context.executionContext.session()
+
+    try {
+      await checkIfLastServiceBanked(args.serviceRecordId, context)
+
+      const submissionResponse = rearrangeCypherObject(
+        await session.run(submitBankingSlip, { ...args, auth: context.auth })
+      )
+
+      return submissionResponse.record.properties
+    } catch (error: any) {
+      return throwErrorMsg(
+        'There was an error submitting your banking slip',
+        error
+      )
     }
   },
 }

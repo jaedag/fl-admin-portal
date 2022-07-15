@@ -8,8 +8,11 @@ const anagkazo = {
     `,
   checkIfConfirmed: `
     MATCH (record:ServiceRecord {id:$serviceRecordId})
-    WHERE record.tellerConfirmationTime IS NOT NULL
-    RETURN true
+    RETURN 
+    CASE 
+    WHEN record.tellerConfirmationTime IS NOT NULL THEN true
+    WHEN record.tellerConfirmationTime IS NULL THEN false
+    END AS check
 `,
 }
 
