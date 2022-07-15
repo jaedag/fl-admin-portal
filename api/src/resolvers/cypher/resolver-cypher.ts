@@ -39,6 +39,15 @@ WITH apoc.cypher.runFirstColumn(
   } AS member
   `
 
+export const matchMemberTellerQuery = `
+  WITH apoc.cypher.runFirstColumn(
+    "MATCH (member:Member {id:$id})
+    RETURN member", {offset:0, first:5, id: $id}, True) AS x UNWIND x AS member
+    RETURN member { .id,.auth_id, .firstName,.lastName,.email,.phoneNumber,.whatsappNumber,.pictureUrl,
+    isTellerForStream: [ member_tellerStreams IN apoc.cypher.runFirstColumn("MATCH (this)-[:IS_TELLER_FOR]->(tellerStream:Stream)
+    RETURN tellerStream", {this: member}, true) | member_tellerStreams { .id,.name }]} AS member 
+  `
+
 export const matchChurchQuery = `
   MATCH (church {id:$id}) 
   WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:GatheringService OR church:Sonta OR church:Ministry OR church:Member 

@@ -10,6 +10,7 @@ extend type Mutation {
     stream_name: String!
     serviceRecordId: ID!
   ): ServiceRecord
+  SubmitBankingSlip(serviceRecordId: ID!, bankingSlip: String!): ServiceRecord!
 }
 
 extend type ServiceRecord {

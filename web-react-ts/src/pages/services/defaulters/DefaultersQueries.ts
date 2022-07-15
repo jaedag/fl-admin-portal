@@ -17,7 +17,7 @@ export const CONSTITUENCY_DEFAULTERS = gql`
 `
 
 export const CONSTITUENCY_SERVICES_LIST = gql`
-  query servicesThisWeek($id: ID!) {
+  query constituencyServicesThisWeek($id: ID!) {
     constituencies(where: { id: $id }) {
       id
       name
@@ -48,7 +48,7 @@ export const CONSTITUENCY_SERVICES_LIST = gql`
 `
 
 export const CONSTITUENCY_CANCELLED_SERVICES_LIST = gql`
-  query cancelledServicesThisWeek($id: ID!) {
+  query constituencyCancelledServicesThisWeek($id: ID!) {
     constituencies(where: { id: $id }) {
       id
       name
@@ -77,7 +77,7 @@ export const CONSTITUENCY_CANCELLED_SERVICES_LIST = gql`
 `
 
 export const CONSTITUENCY_FORM_DEFAULTERS_LIST = gql`
-  query formDefaulters($id: ID!) {
+  query constituencyFormDefaulters($id: ID!) {
     constituencies(where: { id: $id }) {
       id
       name
@@ -102,7 +102,7 @@ export const CONSTITUENCY_FORM_DEFAULTERS_LIST = gql`
 `
 
 export const CONSTITUENCY_BANKING_DEFAULTERS_LIST = gql`
-  query bankingDefaulters($id: ID!) {
+  query constituencyBankingDefaulters($id: ID!) {
     constituencies(where: { id: $id }) {
       id
       name
@@ -132,7 +132,7 @@ export const CONSTITUENCY_BANKING_DEFAULTERS_LIST = gql`
 `
 
 export const CONSTITUENCY_BANKED_LIST = gql`
-  query banked($id: ID!) {
+  query constituencyBanked($id: ID!) {
     constituencies(where: { id: $id }) {
       id
       name
@@ -178,7 +178,7 @@ export const COUNCIL_DEFAULTERS = gql`
 `
 
 export const COUNCIL_SERVICES_LIST = gql`
-  query servicesThisWeek($id: ID!) {
+  query councilServicesThisWeek($id: ID!) {
     councils(where: { id: $id }) {
       id
       name
@@ -216,7 +216,7 @@ export const COUNCIL_SERVICES_LIST = gql`
 `
 
 export const COUNCIL_CANCELLED_SERVICES_LIST = gql`
-  query cancelledServicesThisWeek($id: ID!) {
+  query councilCancelledServicesThisWeek($id: ID!) {
     councils(where: { id: $id }) {
       id
       name
@@ -252,7 +252,7 @@ export const COUNCIL_CANCELLED_SERVICES_LIST = gql`
 `
 
 export const COUNCIL_FORM_DEFAULTERS_LIST = gql`
-  query formDefaulters($id: ID!) {
+  query councilFormDefaulters($id: ID!) {
     councils(where: { id: $id }) {
       id
       name
@@ -284,7 +284,7 @@ export const COUNCIL_FORM_DEFAULTERS_LIST = gql`
 `
 
 export const COUNCIL_BANKING_DEFAULTERS_LIST = gql`
-  query bankingDefaulters($id: ID!) {
+  query councilBankingDefaulters($id: ID!) {
     councils(where: { id: $id }) {
       id
       name
@@ -321,7 +321,7 @@ export const COUNCIL_BANKING_DEFAULTERS_LIST = gql`
 `
 
 export const COUNCIL_BANKED_LIST = gql`
-  query banked($id: ID!) {
+  query councilBanked($id: ID!) {
     councils(where: { id: $id }) {
       id
       name
@@ -401,7 +401,7 @@ export const STREAM_DEFAULTERS = gql`
 `
 
 export const STREAM_SERVICES_LIST = gql`
-  query servicesThisWeek($id: ID!) {
+  query streamServicesThisWeek($id: ID!) {
     streams(where: { id: $id }) {
       id
       name
@@ -439,7 +439,7 @@ export const STREAM_SERVICES_LIST = gql`
 `
 
 export const STREAM_CANCELLED_SERVICES_LIST = gql`
-  query cancelledServicesThisWeek($id: ID!) {
+  query streamCancelledServicesThisWeek($id: ID!) {
     streams(where: { id: $id }) {
       id
       name
@@ -475,7 +475,7 @@ export const STREAM_CANCELLED_SERVICES_LIST = gql`
 `
 
 export const STREAM_FORM_DEFAULTERS_LIST = gql`
-  query formDefaulters($id: ID!) {
+  query streamFormDefaulters($id: ID!) {
     streams(where: { id: $id }) {
       id
       name
@@ -507,7 +507,7 @@ export const STREAM_FORM_DEFAULTERS_LIST = gql`
 `
 
 export const STREAM_BANKING_DEFAULTERS_LIST = gql`
-  query bankingDefaulters($id: ID!) {
+  query streamBankingDefaulters($id: ID!) {
     streams(where: { id: $id }) {
       id
       name
@@ -522,6 +522,7 @@ export const STREAM_BANKING_DEFAULTERS_LIST = gql`
           fullName
           phoneNumber
           whatsappNumber
+          pictureUrl
         }
         bacenta {
           id
@@ -544,7 +545,7 @@ export const STREAM_BANKING_DEFAULTERS_LIST = gql`
 `
 
 export const STREAM_BANKED_LIST = gql`
-  query banked($id: ID!) {
+  query streamBanked($id: ID!) {
     streams(where: { id: $id }) {
       id
       name
@@ -624,7 +625,7 @@ export const GATHERINGSERVICE_DEFAULTERS = gql`
 `
 
 export const GATHERINGSERVICE_SERVICES_LIST = gql`
-  query servicesThisWeek($id: ID!) {
+  query gatheringServicesThisWeek($id: ID!) {
     gatheringServices(where: { id: $id }) {
       id
       name
@@ -662,7 +663,7 @@ export const GATHERINGSERVICE_SERVICES_LIST = gql`
 `
 
 export const GATHERINGSERVICE_CANCELLED_SERVICES_LIST = gql`
-  query cancelledServicesThisWeek($id: ID!) {
+  query gatheringCancelledServicesThisWeek($id: ID!) {
     gatheringServices(where: { id: $id }) {
       id
       name
@@ -698,7 +699,7 @@ export const GATHERINGSERVICE_CANCELLED_SERVICES_LIST = gql`
 `
 
 export const GATHERINGSERVICE_FORM_DEFAULTERS_LIST = gql`
-  query formDefaulters($id: ID!) {
+  query gatheringFormDefaulters($id: ID!) {
     gatheringServices(where: { id: $id }) {
       id
       name
@@ -730,7 +731,7 @@ export const GATHERINGSERVICE_FORM_DEFAULTERS_LIST = gql`
 `
 
 export const GATHERINGSERVICE_BANKING_DEFAULTERS_LIST = gql`
-  query bankingDefaulters($id: ID!) {
+  query gatheringBankingDefaulters($id: ID!) {
     gatheringServices(where: { id: $id }) {
       id
       name
@@ -767,7 +768,7 @@ export const GATHERINGSERVICE_BANKING_DEFAULTERS_LIST = gql`
 `
 
 export const GATHERINGSERVICE_BANKED_LIST = gql`
-  query banked($id: ID!) {
+  query gatheringBanked($id: ID!) {
     gatheringServices(where: { id: $id }) {
       id
       name
@@ -804,7 +805,7 @@ export const GATHERINGSERVICE_BANKED_LIST = gql`
 `
 
 export const GATHERINGSERVICE_BY_STREAM = gql`
-  query gatheringserviceByStream($id: ID!) {
+  query gatheringServiceByStream($id: ID!) {
     gatheringServices(where: { id: $id }) {
       id
       name

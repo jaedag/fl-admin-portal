@@ -13,6 +13,10 @@ import { Context } from '../utils/neo4j-types'
 import { HistoryRecordArgs, historyRecordString } from './helper-functions'
 import CreateChurchHistorySubstructure from './history-substructure'
 import servantCypher from './servant-cypher'
+import {
+  matchMemberQuery,
+  matchMemberTellerQuery,
+} from '../cypher/resolver-cypher'
 
 export const formatting = (
   churchType: ChurchLevel,
@@ -20,6 +24,7 @@ export const formatting = (
 ) => {
   let churchLower = churchType.toLowerCase()
   let servantLower: ServantTypeLowerCase = 'leader'
+  let memberQuery = matchMemberQuery
 
   let verb = `leads${churchType}`
   if (servantType === 'Admin') {
@@ -39,6 +44,12 @@ export const formatting = (
     verb = `isArrivalsConfirmerFor${churchType}`
     servantLower = 'arrivalsConfirmer'
   }
+  if (servantType === 'Teller') {
+    verb = `isTellerFor${churchType}`
+    servantLower = 'teller'
+    memberQuery = matchMemberTellerQuery
+  }
+
   if (churchType === 'GatheringService') {
     churchLower = 'gatheringService'
   }
@@ -47,6 +58,7 @@ export const formatting = (
     verb,
     servantLower,
     churchLower,
+    memberQuery,
   }
 }
 

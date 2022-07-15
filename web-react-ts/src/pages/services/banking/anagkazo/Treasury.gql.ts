@@ -1,12 +1,12 @@
 import { gql } from '@apollo/client'
 
 export const STREAM_BANK_TELLERS = gql`
-  query ($id: ID!) {
+  query streamBankTellers($id: ID!) {
     streams(where: { id: $id }, options: { limit: 1 }) {
       id
       name
 
-      bankTellers {
+      tellers {
         id
         firstName
         lastName
@@ -43,6 +43,14 @@ export const REMOVE_STREAM_TELLER = gql`
       id
       firstName
       lastName
+    }
+  }
+`
+
+export const CONFIRM_BANKING = gql`
+  mutation ConfirmBanking($serviceRecordId: ID!) {
+    ConfirmBanking(serviceRecordId: $serviceRecordId) {
+      id
     }
   }
 `

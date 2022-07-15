@@ -13,6 +13,7 @@ import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { SERVANT_CHURCH_LIST } from './DashboardQueries'
 import { useQuery } from '@apollo/client'
 import { ChurchLevel, MemberWithChurches } from 'global-types'
+import People2Icon from 'assets/icons/People2'
 
 const ServantsChurchList = () => {
   const { memberId } = useContext(MemberContext)
@@ -113,6 +114,9 @@ const ServantsChurchList = () => {
             <MenuButton
               key={i}
               avatar={church.leaderPic}
+              iconComponent={People2Icon}
+              iconBg={true}
+              iconCaption={church.__typename}
               title={`${church.name} ${church.__typename}`}
               caption={church.leader}
               color="churches"

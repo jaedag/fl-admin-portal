@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client'
 
 export const GET_FEDERAL_MEMBERS = gql`
-  query {
+  query getFederalMembers {
     members(options: { sort: { firstName: ASC } }) {
       id
       firstName
@@ -56,7 +56,7 @@ export const GET_FEDERAL_MEMBERS = gql`
 `
 
 export const GET_SERVANT_MEMBERS = gql`
-  query ($id: ID!) {
+  query getServantMembers($id: ID!) {
     members(where: { id: $id }) {
       id
       firstName
@@ -125,7 +125,7 @@ export const GET_SERVANT_MEMBERS = gql`
 `
 
 export const GET_GATHERING_SERVICE_MEMBERS = gql`
-  query ($id: ID!) {
+  query getGatheringMembers($id: ID!) {
     gatheringServices(where: { id: $id }) {
       id
       name
@@ -191,7 +191,7 @@ export const GET_GATHERING_SERVICE_MEMBERS = gql`
   }
 `
 export const GET_STREAM_MEMBERS = gql`
-  query ($id: ID!) {
+  query getStreamMembers($id: ID!) {
     streams(where: { id: $id }) {
       id
       name
@@ -258,7 +258,7 @@ export const GET_STREAM_MEMBERS = gql`
 `
 
 export const GET_COUNCIL_MEMBERS = gql`
-  query ($id: ID!) {
+  query getCouncilMembers($id: ID!) {
     councils(where: { id: $id }) {
       id
       name
@@ -325,7 +325,7 @@ export const GET_COUNCIL_MEMBERS = gql`
 `
 
 export const GET_CONSTITUENCY_MEMBERS = gql`
-  query ($id: ID!) {
+  query getConstituencyMembers($id: ID!) {
     constituencies(where: { id: $id }) {
       id
       name
@@ -388,7 +388,7 @@ export const GET_CONSTITUENCY_MEMBERS = gql`
 `
 
 export const GET_BACENTA_MEMBERS = gql`
-  query ($id: ID!) {
+  query getBacentaMembers($id: ID!) {
     bacentas(where: { id: $id }) {
       id
       name
@@ -446,7 +446,7 @@ export const GET_BACENTA_MEMBERS = gql`
 `
 
 export const GET_FELLOWSHIP_MEMBERS = gql`
-  query ($id: ID!) {
+  query getFellowshipMembers($id: ID!) {
     fellowships(where: { id: $id }) {
       id
       name
@@ -510,7 +510,7 @@ export const GET_FELLOWSHIP_MEMBERS = gql`
 `
 
 export const GET_SONTA_MEMBERS = gql`
-  query ($id: ID!) {
+  query getSontaMembers($id: ID!) {
     sontas(where: { id: $id }) {
       id
       name

@@ -1,14 +1,14 @@
 import { Context } from '../utils/neo4j-types'
-import { Member } from '../utils/types'
+import { ChurchLevel, Member, ServantType } from '../utils/types'
 import { isAuth, rearrangeCypherObject, throwErrorMsg } from '../utils/utils'
 import { permitAdmin, permitLeaderAdmin } from '../permissions'
 import { RemoveServant } from './make-remove-servants'
 import CreateChurchHistorySubstructure, {
   HistorySubstructureArgs,
 } from './history-substructure'
+import servantCypher from './servant-cypher'
 
 const cypher = require('../cypher/resolver-cypher')
-const servantCypher = require('./servant-cypher')
 const closeChurchCypher = require('../cypher/close-church-cypher')
 const errorMessage = require('../texts.json').error
 
@@ -207,7 +207,11 @@ const directoryMutation = {
   },
   CreateChurchSubstructure: async (
     object: any,
-    args: any,
+    args: {
+      churchId: string
+      churchType: ChurchLevel
+      servantType: ServantType
+    },
     context: Context
   ) => {
     const session = context.executionContext.session()
