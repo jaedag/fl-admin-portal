@@ -1,3 +1,4 @@
+import axios from 'axios'
 import { Context } from '../utils/neo4j-types'
 import { ChurchLevel, Member, ServantType } from '../utils/types'
 import { isAuth, rearrangeCypherObject, throwErrorMsg } from '../utils/utils'
@@ -7,6 +8,13 @@ import CreateChurchHistorySubstructure, {
   HistorySubstructureArgs,
 } from './history-substructure'
 import servantCypher from './servant-cypher'
+import { updateAuthUserConfig } from '../utils/auth0'
+import {
+  makeMemberInactive,
+  matchMemberQuery,
+  updateMemberEmail,
+} from '../cypher/resolver-cypher'
+import { getAuthToken } from '../authenticate'
 
 const cypher = require('../cypher/resolver-cypher')
 const closeChurchCypher = require('../cypher/close-church-cypher')
@@ -49,7 +57,36 @@ const directoryMutation = {
 
     return member
   },
+  UpdateMemberEmail: async (
+    object: Member,
+    args: { id: string; email: string },
+    context: Context
+  ) => {
+    isAuth(permitAdmin('Fellowship'), context.auth.roles)
 
+    const authToken: string = await getAuthToken()
+    const session = context.executionContext.session()
+
+    const member = rearrangeCypherObject(
+      await session.run(matchMemberQuery, {
+        id: args.id,
+      })
+    )
+
+    const updatedMember: Member = rearrangeCypherObject(
+      await session.run(updateMemberEmail, {
+        id: args.id,
+        email: args.email,
+      })
+    )
+
+    if (member.auth_id) {
+      // Update a user's Auth Profile with Picture and Name Details
+      await axios(updateAuthUserConfig(updatedMember, authToken))
+    }
+
+    return updatedMember
+  },
   MakeMemberInactive: async (object: any, args: never, context: Context) => {
     isAuth(permitLeaderAdmin('Stream'), context.auth.roles)
     const session = context.executionContext.session()
@@ -65,7 +102,7 @@ const directoryMutation = {
     }
 
     const member = rearrangeCypherObject(
-      await session.run(cypher.makeMemberInactive, args)
+      await session.run(makeMemberInactive, args)
     )
 
     return member?.properties

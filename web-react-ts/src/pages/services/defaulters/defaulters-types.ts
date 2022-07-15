@@ -19,6 +19,7 @@ interface HigherChurchWithDefaulters extends Church {
   bankedThisWeekCount: number
   bankingDefaultersThisWeekCount: number
   cancelledServicesThisWeekCount: number
+
   [key: string]: any
 }
 
