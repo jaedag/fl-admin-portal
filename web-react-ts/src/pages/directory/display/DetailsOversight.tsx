@@ -65,7 +65,7 @@ const DetailsGatheringService = () => {
         churchId={oversightId}
         leader={oversight?.leader}
         churchType={oversight?.__typename}
-        subChurch="Gathering Service"
+        subChurch="GatheringService"
         details={details}
         editlink="/gatheringservice/editgatheringservice"
         editPermitted={['adminOversight']}
