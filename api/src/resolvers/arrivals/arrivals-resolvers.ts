@@ -392,60 +392,55 @@ export const arrivalsMutation = {
         return bussingRecord?.record.properties
       }
 
-      if (
-        response.attendance >= 8 &&
-        response.bussingCost.low >= response.swellBussingTopUp
-      ) {
-        if (response.attendance >= response.target) {
-          const receiveMoney = joinMessageStrings([
-            `Hi  ${response.leaderFirstName}\n\n`,
-            texts.arrivalsSMS.swell_top_up_p1,
-            response.swellBussingTopUp?.toString(),
-            texts.arrivalsSMS.swell_top_up_p2,
-            response.attendance.toString(),
-          ])
+      if (response.attendance >= response.target) {
+        const receiveMoney = joinMessageStrings([
+          `Hi  ${response.leaderFirstName}\n\n`,
+          texts.arrivalsSMS.swell_top_up_p1,
+          response.swellBussingTopUp?.toString(),
+          texts.arrivalsSMS.swell_top_up_p2,
+          response.attendance.toString(),
+        ])
 
-          const noMoney = joinMessageStrings([
-            `Hi  ${response.leaderFirstName}\n\n`,
-            texts.arrivalsSMS.swell_no_top_up,
-            response.attendance.toString(),
-          ])
+        const noMoney = joinMessageStrings([
+          `Hi  ${response.leaderFirstName}\n\n`,
+          texts.arrivalsSMS.swell_no_top_up,
+          response.attendance.toString(),
+        ])
 
-          const attendanceRes = await Promise.all([
-            session.run(setSwellBussingTopUp, args),
-            sendBulkSMS(
-              [response.leaderPhoneNumber],
-              `${response.swellBussingTopUp ? receiveMoney : noMoney}`
-            ),
-          ])
+        const attendanceRes = await Promise.all([
+          session.run(setSwellBussingTopUp, args),
+          sendBulkSMS(
+            [response.leaderPhoneNumber],
+            `${response.swellBussingTopUp ? receiveMoney : noMoney}`
+          ),
+        ])
 
-          bussingRecord = rearrangeCypherObject(attendanceRes[0])
-        }
+        bussingRecord = rearrangeCypherObject(attendanceRes[0])
+      }
 
-        if (response.attendance < response.target) {
-          const receiveMoney = joinMessageStrings([
-            `Hi  ${response.leaderFirstName}\n\n`,
-            texts.arrivalsSMS.normal_top_up_p1,
-            response.normalBussingTopUp?.toString(),
-            texts.arrivalsSMS.normal_top_up_p2,
-            response.attendance?.toString(),
-          ])
+      if (response.attendance < response.target) {
+        const receiveMoney = joinMessageStrings([
+          `Hi  ${response.leaderFirstName}\n\n`,
+          texts.arrivalsSMS.normal_top_up_p1,
+          response.normalBussingTopUp?.toString(),
+          texts.arrivalsSMS.normal_top_up_p2,
+          response.attendance?.toString(),
+        ])
 
-          const noMoney = joinMessageStrings([
-            `Hi  ${response.leaderFirstName}\n\n`,
-            texts.arrivalsSMS.normal_no_top_up,
-            response.attendance.toString(),
-          ])
+        const noMoney = joinMessageStrings([
+          `Hi  ${response.leaderFirstName}\n\n`,
+          texts.arrivalsSMS.normal_no_top_up,
+          response.attendance.toString(),
+        ])
 
-          const attendanceRes = await Promise.all([
-            session.run(setNormalBussingTopUp, args),
-            sendBulkSMS(
-              [response.leaderPhoneNumber],
-              `${response.normalBussingTopUp ? receiveMoney : noMoney}`
-            ),
-          ])
-          bussingRecord = rearrangeCypherObject(attendanceRes[0])
-        }
+        const attendanceRes = await Promise.all([
+          session.run(setNormalBussingTopUp, args),
+          sendBulkSMS(
+            [response.leaderPhoneNumber],
+            `${response.normalBussingTopUp ? receiveMoney : noMoney}`
+          ),
+        ])
+        bussingRecord = rearrangeCypherObject(attendanceRes[0])
       }
 
       if (response.numberOfBusses.low === 0) {
