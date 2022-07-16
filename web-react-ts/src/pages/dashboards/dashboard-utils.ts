@@ -66,6 +66,7 @@ export const roles: {
   GatheringService: ['leads', 'isAdminFor', 'isArrivalsAdminFor'],
   Denomination: ['leads', 'isAdminFor'],
   Sonta: ['leads'],
+  Basonta: ['leads'],
 }
 
 export const parseRoles = (role: VerbTypes): VerbTypes => {

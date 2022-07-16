@@ -8,6 +8,8 @@ export const DISPLAY_MEMBER_BIO = gql`
       middleName
       lastName
       fullName
+      currentTitle
+      nameWithTitle
       email
       phoneNumber
       pictureUrl
@@ -26,7 +28,7 @@ export const DISPLAY_MEMBER_BIO = gql`
         occupation
       }
       title {
-        title
+        name
       }
     }
   }
@@ -239,7 +241,7 @@ export const DISPLAY_SONTA = gql`
         lastName
         whatsappNumber
         title {
-          title
+          name
         }
       }
 
@@ -320,7 +322,7 @@ export const DISPLAY_BACENTA = gql`
         pictureUrl
         whatsappNumber
         title {
-          title
+          name
         }
       }
       history(limit: 5) {
@@ -358,13 +360,6 @@ export const DISPLAY_CONSTITUENCY = gql`
         leader {
           id
         }
-        constituency {
-          id
-          name
-          council {
-            id
-          }
-        }
       }
       sontas {
         id
@@ -374,19 +369,6 @@ export const DISPLAY_CONSTITUENCY = gql`
         id
         firstName
         lastName
-        fellowship {
-          id
-          bacenta {
-            id
-            constituency {
-              id
-              name
-              council {
-                id
-              }
-            }
-          }
-        }
       }
       council {
         id
@@ -397,7 +379,7 @@ export const DISPLAY_CONSTITUENCY = gql`
         id
         firstName
         lastName
-        fullName
+        currentTitle
         pictureUrl
       }
       history(limit: 5) {
@@ -442,31 +424,22 @@ export const DISPLAY_COUNCIL = gql`
         id
         name
       }
-      constituencies {
+      constituencies(options: { limit: 5 }) {
         id
         name
         stream_name
-        leader {
-          id
-        }
-        council {
-          id
-        }
       }
 
       admin {
         id
         firstName
         lastName
-        fellowship {
-          id
-        }
       }
       leader {
         id
         firstName
         lastName
-        fullName
+        currentTitle
         pictureUrl
       }
       history(limit: 5) {
@@ -505,13 +478,9 @@ export const DISPLAY_STREAM = gql`
         id
         name
       }
-      councils {
+      councils(options: { limit: 5 }) {
         id
         name
-        stream_name
-        leader {
-          id
-        }
       }
 
       admin {
@@ -524,7 +493,7 @@ export const DISPLAY_STREAM = gql`
         id
         firstName
         lastName
-        fullName
+        currentTitle
         pictureUrl
       }
       history(limit: 5) {
@@ -560,7 +529,7 @@ export const DISPLAY_GATHERINGSERVICE = gql`
       pastorCount
       vacationBacentaCount
       vacationFellowshipCount
-      streams {
+      streams(options: { limit: 5 }) {
         id
         name
         stream_name
@@ -577,7 +546,8 @@ export const DISPLAY_GATHERINGSERVICE = gql`
         id
         firstName
         lastName
-        fullName
+        currentTitle
+        nameWithTitle
         pictureUrl
       }
       history(limit: 5) {

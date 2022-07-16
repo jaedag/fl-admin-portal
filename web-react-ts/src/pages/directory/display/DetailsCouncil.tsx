@@ -53,14 +53,12 @@ const DetailsCouncil = () => {
       <DisplayChurchDetails
         loading={loading}
         name={council?.name}
-        leaderTitle="Council Overseer"
+        leaderTitle={'Council Overseer'}
         churchId={councilId}
         leader={council?.leader}
         admin={council?.admin}
-        churchHeading="Constituencies"
         churchType={council?.__typename}
         subChurch="Constituency"
-        membership={council?.memberCount}
         details={details}
         editlink="/council/editcouncil"
         editPermitted={permitAdmin('Stream')}

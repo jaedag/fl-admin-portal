@@ -85,13 +85,11 @@ const DetailsBacenta = () => {
         leaderTitle="Bacenta Leader"
         leader={bacenta?.leader}
         churchId={bacentaId}
-        churchHeading="Fellowships"
         churchType="Bacenta"
         subChurch="Fellowship"
-        membership={bacenta?.memberCount}
         editlink="/bacenta/editbacenta"
         editPermitted={permitArrivals('Constituency')}
-        history={bacenta?.history.length !== 0 && bacenta?.history}
+        history={bacenta?.history.length !== 0 ? bacenta?.history : []}
         breadcrumb={breadcrumb && breadcrumb}
         buttons={bacenta ? bacenta?.fellowships : []}
         vacationCount={bacenta?.vacationFellowshipCount}

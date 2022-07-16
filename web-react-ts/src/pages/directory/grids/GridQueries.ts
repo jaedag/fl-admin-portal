@@ -22,7 +22,7 @@ export const GET_FEDERAL_MEMBERS = gql`
         gender
       }
       title {
-        title
+        name
       }
       leadsFellowship {
         name
@@ -84,7 +84,7 @@ export const GET_SERVANT_MEMBERS = gql`
           gender
         }
         title {
-          title
+          name
         }
         leadsFellowship {
           id
@@ -151,7 +151,7 @@ export const GET_GATHERING_SERVICE_MEMBERS = gql`
           gender
         }
         title {
-          title
+          name
         }
         leadsFellowship {
           id
@@ -217,7 +217,7 @@ export const GET_STREAM_MEMBERS = gql`
           gender
         }
         title {
-          title
+          name
         }
         leadsFellowship {
           id
@@ -284,7 +284,7 @@ export const GET_COUNCIL_MEMBERS = gql`
           gender
         }
         title {
-          title
+          name
         }
         leadsFellowship {
           id
@@ -347,7 +347,7 @@ export const GET_CONSTITUENCY_MEMBERS = gql`
           gender
         }
         title {
-          title
+          name
         }
         leadsFellowship {
           id
@@ -410,7 +410,7 @@ export const GET_BACENTA_MEMBERS = gql`
           gender
         }
         title {
-          title
+          name
         }
         leadsFellowship {
           name
@@ -469,7 +469,7 @@ export const GET_FELLOWSHIP_MEMBERS = gql`
           gender
         }
         title {
-          title
+          name
         }
         leadsFellowship {
           id
@@ -532,7 +532,7 @@ export const GET_SONTA_MEMBERS = gql`
           gender
         }
         title {
-          title
+          name
         }
         leadsFellowship {
           name

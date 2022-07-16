@@ -3,13 +3,13 @@ import { Link, useNavigate } from 'react-router-dom'
 import DetailsCard from '../card/DetailsCard'
 import { MemberContext } from '../../contexts/MemberContext'
 import { ChurchContext } from '../../contexts/ChurchContext'
-import Timeline from '../Timeline/Timeline.tsx'
+import Timeline, { TimelineElement } from '../Timeline/Timeline'
 import EditButton from '../buttons/EditButton'
 import MemberDisplayCard from '../card/MemberDisplayCard'
 import ChurchButton from '../buttons/ChurchButton/ChurchButton'
 import './DisplayChurchDetails.css'
 import RoleView from '../../auth/RoleView'
-import { Form, Formik } from 'formik'
+import { Form, Formik, FormikHelpers } from 'formik'
 import * as Yup from 'yup'
 import Popup from '../Popup/Popup'
 import { useMutation } from '@apollo/client'
@@ -29,14 +29,62 @@ import ViewAll from 'components/buttons/ViewAll'
 import { permitAdmin } from 'permission-utils'
 import useSetUserChurch from 'hooks/useSetUserChurch'
 import usePopup from 'hooks/usePopup'
+import { Church, ChurchLevel, MemberWithoutBioData, Role } from 'global-types'
+import { BacentaWithArrivals } from 'pages/arrivals/arrivals-types'
 
-const DisplayChurchDetails = (props) => {
+type DisplayChurchDetailsProps = {
+  details: {
+    title: string
+    number: number | string
+    link: string
+    width?: number
+    vacationCount?: number
+  }[]
+  loading: boolean
+  church?: BacentaWithArrivals
+  name: string
+  leaderTitle: string
+  leader: MemberWithoutBioData
+  admin?: MemberWithoutBioData
+  churchId: string
+  churchType: ChurchLevel
+  subChurch?: ChurchLevel
+  editlink: string
+  editPermitted: Role[]
+  history: TimelineElement[]
+  breadcrumb: Church[]
+  buttons: Church[]
+  vacation?: boolean
+  vacationCount?: number
+
+  buttonsSecondRow?: Church[]
+  subChurchBasonta?: string
+  basontaLeaders?: MemberWithoutBioData[]
+  momoNumber?: string
+  //Fellowships
+  location?: {
+    longitude: number
+    latitude: number
+  }
+  last3Weeks?: {
+    number: number
+    filled: boolean
+    banked: boolean | 'No Service'
+  }[]
+}
+
+type FormOptions = {
+  adminName: string
+  adminSelect: string
+}
+
+const DisplayChurchDetails = (props: DisplayChurchDetailsProps) => {
   const { setUser } = useSetUserChurch()
 
   const navigate = useNavigate()
   let needsAdmin
 
-  let roles = []
+  let roles: Role[] = []
 
   switch (props.churchType) {
     case 'Constituency':
@@ -67,7 +115,7 @@ const DisplayChurchDetails = (props) => {
   const [MakeCouncilAdmin] = useMutation(MAKE_COUNCIL_ADMIN)
   const [MakeStreamAdmin] = useMutation(MAKE_STREAM_ADMIN)
 
-  const initialValues = {
+  const initialValues: FormOptions = {
     adminName: props.admin
       ? `${props.admin?.firstName} ${props.admin?.lastName}`
       : '',
@@ -79,7 +127,10 @@ const DisplayChurchDetails = (props) => {
     ),
   })
 
-  const onSubmit = (values, onSubmitProps) => {
+  const onSubmit = (
+    values: FormOptions,
+    onSubmitProps: FormikHelpers<FormOptions>
+  ) => {
     if (initialValues.adminSelect === values.adminSelect) {
       return
     }
@@ -150,7 +201,7 @@ const DisplayChurchDetails = (props) => {
     }
 
     //If the church is on vacation, they shouldn't fill
-    if (props.vacation === 'Vacation') {
+    if (props.vacation) {
       shouldFill = false
     }
 
@@ -186,11 +237,7 @@ const DisplayChurchDetails = (props) => {
 
           {needsAdmin && (
             <RoleView roles={roles}>
-              <span
-                className={`text-nowrap`}
-                value="Change Admin"
-                onClick={togglePopup}
-              >
+              <span className={`text-nowrap`} onClick={togglePopup}>
                 <PencilSquare />
               </span>
             </RoleView>
@@ -217,7 +264,7 @@ const DisplayChurchDetails = (props) => {
                           placeholder="Select an Admin"
                           setFieldValue={formik.setFieldValue}
                           aria-describedby="Member Search"
-                          error={formik.errors.admin}
+                          error={formik.errors.adminSelect}
                         />
                       </Col>
                     </Row>
@@ -272,9 +319,11 @@ const DisplayChurchDetails = (props) => {
                 <DetailsCard
                   onClick={() => navigate(detail.link)}
                   heading={detail.title}
-                  detail={!props.loading && (detail.number || '0')}
+                  detail={!props.loading ? detail.number.toString() || '0' : ''}
                   vacationCount={
-                    !props.loading && (detail.vacationCount || '0')
+                    !props.loading
+                      ? detail?.vacationCount?.toString() || '0'
+                      : ''
                   }
                 />
               </Col>
@@ -286,7 +335,7 @@ const DisplayChurchDetails = (props) => {
           props.church?.swellBussingTopUp) ? (
           <RoleView
             roles={['leaderBacenta']}
-            stream={['Campus', 'Town']}
+            permittedStream={['Campus', 'Town']}
             verifyId={props?.leader?.id}
           >
             {!props.momoNumber && (
@@ -450,7 +499,7 @@ const DisplayChurchDetails = (props) => {
                 variant={theme}
                 onClick={() =>
                   navigate(
-                    `/${props.subChurch.toLowerCase()}/add${props.subChurch.toLowerCase()}`
+                    `/${props.subChurch?.toLowerCase()}/add${props.subChurch?.toLowerCase()}`
                   )
                 }
               >
@@ -472,7 +521,7 @@ const DisplayChurchDetails = (props) => {
               <div className="col-auto">
                 <Link
                   className="card text-secondary px-1"
-                  to={`/${props.subChurchBasonta.toLowerCase()}/displayall`}
+                  to={`/${props.subChurchBasonta?.toLowerCase()}/displayall`}
                 >
                   {`View All ${plural(props.subChurchBasonta)}`}
                 </Link>

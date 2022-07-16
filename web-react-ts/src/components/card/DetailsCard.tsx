@@ -6,7 +6,6 @@ import { Badge } from 'react-bootstrap'
 import './DetailsCard.css'
 
 type DetailsCardPropsType = {
-  title: string
   subtitle?: string
   avatar?: string
   heading?: string

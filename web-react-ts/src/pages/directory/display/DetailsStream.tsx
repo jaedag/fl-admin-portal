@@ -2,7 +2,6 @@ import { useQuery } from '@apollo/client'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import DisplayChurchDetails from 'components/DisplayChurchDetails/DisplayChurchDetails'
 import { ChurchContext } from 'contexts/ChurchContext'
-import { capitalise } from 'global-utils'
 import React, { useContext } from 'react'
 import { DISPLAY_STREAM } from './ReadQueries'
 
@@ -52,13 +51,12 @@ const DetailsStream = () => {
     <ApolloWrapper loading={loading} error={error} data={data} placeholder>
       <DisplayChurchDetails
         name={stream?.name}
-        leaderTitle="Bishop"
-        deatils={streamId}
+        church={stream}
+        leaderTitle={'Stream Overseer'}
         leader={stream?.leader}
         admin={stream?.admin}
+        churchId={streamId}
         churchType={stream?.__typename}
-        subChurch={capitalise('council')}
-        membership={stream?.memberCount}
         details={details}
         editlink="/stream/editstream"
         editPermitted={['adminGatheringService']}

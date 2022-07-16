@@ -32,7 +32,6 @@ const DisplayPage = () => {
   const member = bioData?.members[0]
   const memberChurch = churchData?.members[0]
   const memberBirthday = getMemberDob(member)
-  //const nameAndTitle = getNameWithTitle(member)
 
   return (
     <div className="scroll-bottom">
@@ -57,7 +56,7 @@ const DisplayPage = () => {
           </div>
           <div>
             <PlaceholderCustom
-              loading={!member?.fullName}
+              loading={!member?.nameWithTitle}
               as="h1"
               className="text-center"
             >
