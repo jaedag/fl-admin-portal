@@ -152,7 +152,8 @@ export const arrivalsMutation = {
     context: Context
   ) => {
     checkIfSelf(args.arrivalsCounterId, context.auth.jwt.sub)
-    await MakeServant(
+
+    return MakeServant(
       context,
       args,
       [...permitAdmin('Stream'), ...permitArrivals('Stream')],
@@ -180,7 +181,7 @@ export const arrivalsMutation = {
   ) => {
     checkIfSelf(args.arrivalsConfirmerId, context.auth.jwt.sub)
 
-    await MakeServant(
+    return MakeServant(
       context,
       args,
       [...permitAdmin('Stream'), ...permitArrivals('Stream')],
