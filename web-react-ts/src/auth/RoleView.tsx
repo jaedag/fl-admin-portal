@@ -48,6 +48,7 @@ const RoleView = (props: RoleViewProps) => {
     if (currentUser.noIncome === noIncome) {
       return true
     }
+
     return false
   }
 

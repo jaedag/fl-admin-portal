@@ -37,7 +37,6 @@ const mocks = [
     },
   },
 ]
-// console.log(useNavigate())
 it('renders without error if user id is present', () => {
   const component = TestRenderer.create(
     <MockedProvider mocks={mocks} addTypename={false}>
