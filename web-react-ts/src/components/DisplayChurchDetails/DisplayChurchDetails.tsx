@@ -304,10 +304,7 @@ const DisplayChurchDetails = (props: DisplayChurchDetailsProps) => {
           <DetailsCard
             loading={props.loading}
             heading={props.leaderTitle}
-            detail={
-              props.leader &&
-              props.leader?.firstName + ' ' + props.leader?.lastName
-            }
+            detail={props.leader && props.leader?.nameWithTitle}
             img={props.leader?.pictureUrl}
             bgNone
           />

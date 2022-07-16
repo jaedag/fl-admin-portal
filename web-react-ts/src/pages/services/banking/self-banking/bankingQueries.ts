@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client'
 
 export const FELLOWSHIP_SERVICE_PAYMENT = gql`
-  query ($id: ID!) {
+  query fellowshipServicePayment($id: ID!) {
     fellowships(where: { id: $id }) {
       id
       name
@@ -10,7 +10,7 @@ export const FELLOWSHIP_SERVICE_PAYMENT = gql`
   }
 `
 export const CONSTITUENCY_SERVICE_PAYMENT = gql`
-  query ($id: ID!) {
+  query constituencyServicePayment($id: ID!) {
     constituencies(where: { id: $id }) {
       id
       name
@@ -19,7 +19,7 @@ export const CONSTITUENCY_SERVICE_PAYMENT = gql`
 `
 
 export const DISPLAY_OFFERING_DETAILS = gql`
-  query ($serviceRecordId: ID!) {
+  query displayOfferingDetails($serviceRecordId: ID!) {
     serviceRecords(where: { id: $serviceRecordId }) {
       id
       serviceDate {
@@ -33,7 +33,7 @@ export const DISPLAY_OFFERING_DETAILS = gql`
 `
 
 export const PAY_OFFERING_MUTATION = gql`
-  mutation (
+  mutation PayOfferingMutation(
     $serviceRecordId: ID!
     $stream_name: String!
     $mobileNetwork: String!
@@ -50,7 +50,10 @@ export const PAY_OFFERING_MUTATION = gql`
   }
 `
 export const CONFIRM_OFFERING_PAYMENT = gql`
-  mutation ($serviceRecordId: ID!, $stream_name: String!) {
+  mutation ConfirmOfferingPayment(
+    $serviceRecordId: ID!
+    $stream_name: String!
+  ) {
     ConfirmOfferingPayment(
       serviceRecordId: $serviceRecordId
       stream_name: $stream_name
@@ -70,7 +73,7 @@ export const CONFIRM_OFFERING_PAYMENT = gql`
 `
 
 export const SELF_BANKING_RECEIPT = gql`
-  query ($id: ID!) {
+  query selfBankingReceipt($id: ID!) {
     serviceRecords(where: { id: $id }) {
       id
       income

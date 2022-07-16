@@ -71,8 +71,8 @@ export const RECORD_SERVICE_NO_INCOME = gql`
     $attendance: Int!
     $servicePicture: String!
   ) {
-    RecordServiceNoOffering(
-      id: $churchId
+    RecordServiceNoIncome(
+      churchId: $churchId
       serviceDate: $serviceDate
       attendance: $attendance
       servicePicture: $servicePicture

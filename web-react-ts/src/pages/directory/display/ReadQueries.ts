@@ -192,7 +192,8 @@ export const DISPLAY_FELLOWSHIP = gql`
         id
         firstName
         lastName
-        fullName
+        currentTitle
+        nameWithTitle
         pictureUrl
       }
     }
@@ -239,10 +240,9 @@ export const DISPLAY_SONTA = gql`
         id
         firstName
         lastName
-        whatsappNumber
-        title {
-          name
-        }
+        currentTitle
+        nameWithTitle
+        pictureUrl
       }
 
       constituency {
@@ -295,13 +295,6 @@ export const DISPLAY_BACENTA = gql`
           id
           name
           stream_name
-
-          constituency {
-            id
-            council {
-              id
-            }
-          }
         }
       }
 
@@ -318,12 +311,9 @@ export const DISPLAY_BACENTA = gql`
         id
         firstName
         lastName
-        fullName
+        currentTitle
+        nameWithTitle
         pictureUrl
-        whatsappNumber
-        title {
-          name
-        }
       }
       history(limit: 5) {
         id
@@ -380,6 +370,7 @@ export const DISPLAY_CONSTITUENCY = gql`
         firstName
         lastName
         currentTitle
+        nameWithTitle
         pictureUrl
       }
       history(limit: 5) {
@@ -440,6 +431,7 @@ export const DISPLAY_COUNCIL = gql`
         firstName
         lastName
         currentTitle
+        nameWithTitle
         pictureUrl
       }
       history(limit: 5) {
@@ -494,6 +486,7 @@ export const DISPLAY_STREAM = gql`
         firstName
         lastName
         currentTitle
+        nameWithTitle
         pictureUrl
       }
       history(limit: 5) {
