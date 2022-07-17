@@ -1,8 +1,8 @@
 import React, { useContext } from 'react'
 import { useQuery } from '@apollo/client'
-import DisplayChurchDetails from '../../../components/DisplayChurchDetails/DisplayChurchDetails'
+import DisplayChurchDetails from 'components/DisplayChurchDetails/DisplayChurchDetails'
 import { DISPLAY_FELLOWSHIP, DISPLAY_FELLOWSHIP_HISTORY } from './ReadQueries'
-import { ChurchContext } from '../../../contexts/ChurchContext'
+import { ChurchContext } from 'contexts/ChurchContext'
 import { throwErrorMsg } from 'global-utils'
 import { last3Weeks } from 'jd-date-utils'
 import { permitAdmin } from 'permission-utils'
@@ -119,7 +119,7 @@ const DetailsFellowship = () => {
       editlink="/fellowship/editfellowship"
       editPermitted={[...permitAdmin('Constituency'), 'leaderFellowship']}
       last3Weeks={fellowship && check}
-      vacation={fellowship?.vacationStatus && true}
+      vacation={fellowship?.vacationStatus}
       history={history?.history.length && history?.history}
       breadcrumb={breadcrumb && breadcrumb}
     />

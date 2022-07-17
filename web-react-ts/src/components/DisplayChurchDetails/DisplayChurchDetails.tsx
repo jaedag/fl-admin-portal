@@ -54,7 +54,7 @@ type DisplayChurchDetailsProps = {
   history: TimelineElement[]
   breadcrumb: Church[]
   buttons: Church[]
-  vacation?: boolean
+  vacation?: 'Active' | 'Vacation'
   vacationCount?: number
 
   buttonsSecondRow?: Church[]
@@ -201,7 +201,7 @@ const DisplayChurchDetails = (props: DisplayChurchDetailsProps) => {
     }
 
     //If the church is on vacation, they shouldn't fill
-    if (props.vacation) {
+    if (props.vacation === 'Vacation') {
       shouldFill = false
     }
 
@@ -380,6 +380,7 @@ const DisplayChurchDetails = (props: DisplayChurchDetailsProps) => {
               View Trends
             </Button>
           </PlaceholderCustom>
+
           {shouldFill() && (
             <PlaceholderCustom
               loading={props.loading}
