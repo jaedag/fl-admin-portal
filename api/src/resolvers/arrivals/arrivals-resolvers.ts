@@ -334,13 +334,13 @@ export const arrivalsMutation = {
     try {
       type responseType = {
         id: string
-        target: number
-        attendance: number
+        target: neonumber
+        attendance: neonumber
         numberOfBusses: neonumber
-        numberOfCars: number
-        bussingCost: neonumber
-        swellBussingTopUp: number
-        normalBussingTopUp: number
+        numberOfCars: neonumber
+        bussingCost: number
+        swellBussingTopUp: neonumber
+        normalBussingTopUp: neonumber
         leaderPhoneNumber: string
         leaderFirstName: string
         dateLabels: string[]
@@ -351,7 +351,7 @@ export const arrivalsMutation = {
 
       let bussingRecord: RearragedCypherResponse | undefined
 
-      if (response.attendance < 8) {
+      if (response.attendance.low < 8) {
         try {
           await Promise.all([
             session.run(noBussingTopUp, args),
@@ -371,8 +371,8 @@ export const arrivalsMutation = {
       }
 
       if (
-        response.attendance >= 8 &&
-        response.bussingCost.low < response.normalBussingTopUp
+        response.attendance.low >= 8 &&
+        response.bussingCost < response.normalBussingTopUp.low
       ) {
         // Bussing Cost is less than the normal top up
 
@@ -392,7 +392,7 @@ export const arrivalsMutation = {
         return bussingRecord?.record.properties
       }
 
-      if (response.attendance >= response.target) {
+      if (response.attendance.low >= response.target.low) {
         const receiveMoney = joinMessageStrings([
           `Hi  ${response.leaderFirstName}\n\n`,
           texts.arrivalsSMS.swell_top_up_p1,
@@ -418,7 +418,7 @@ export const arrivalsMutation = {
         bussingRecord = rearrangeCypherObject(attendanceRes[0])
       }
 
-      if (response.attendance < response.target) {
+      if (response.attendance.low < response.target.low) {
         const receiveMoney = joinMessageStrings([
           `Hi  ${response.leaderFirstName}\n\n`,
           texts.arrivalsSMS.normal_top_up_p1,
@@ -452,7 +452,7 @@ export const arrivalsMutation = {
           ),
         ])
       }
-      if (response.bussingCost.low === 0) {
+      if (response.bussingCost === 0) {
         await Promise.all([
           session.run(setNormalBussingTopUp, args),
           sendBulkSMS(
