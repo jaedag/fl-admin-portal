@@ -63,6 +63,9 @@ const BacentaArrivals = () => {
   }
 
   const canFillOnTheWayValue = canFillOnTheWay()
+  const isBeforeArrivalEnd = bussing
+    ? beforeArrivalDeadline(bussing, bacenta)
+    : false
 
   useEffect(() => handleClose(), [])
 
@@ -84,7 +87,7 @@ const BacentaArrivals = () => {
           </HeadingSecondary>
         )}
 
-        {canFillOnTheWayValue ? (
+        {isBeforeArrivalEnd ? (
           <Card className="text-center py-4">
             <div className="text-secondary-custom">
               <span>Code of the Day: </span>
@@ -102,7 +105,7 @@ const BacentaArrivals = () => {
             </div>
           </Card>
         )}
-        {!canFillOnTheWayValue && bussing?.mobilisationPicture && (
+        {!isBeforeArrivalEnd && bussing?.mobilisationPicture && (
           <Card className="text-center py-3">
             <p className="display-1">😞</p>
             <h5 className="countdown danger fw-bold ">
@@ -117,6 +120,7 @@ const BacentaArrivals = () => {
             </i>
           </Card>
         )}
+
         <div className="d-grid gap-2 mt-5">
           {!isMomoCleared(bacenta) && (
             <>
