@@ -192,6 +192,7 @@ export const DISPLAY_FELLOWSHIP = gql`
         id
         firstName
         lastName
+        fullName
         currentTitle
         nameWithTitle
         pictureUrl

@@ -53,14 +53,6 @@ export const UPDATE_MEMBER_MUTATION = gql`
       occupation {
         occupation
       }
-      titleConnection {
-        edges {
-          date
-          node {
-            title
-          }
-        }
-      }
     }
   }
 `
