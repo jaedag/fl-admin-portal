@@ -14,11 +14,37 @@ import SearchBacenta from './SearchBacenta'
 import SearchConstituency from './SearchConstituency'
 import SearchCouncil from './SearchCouncil'
 
-export const arrayError = (array, index) => {
+export const arrayError = (
+  array: string | string[] | number[] | undefined,
+  index: number
+) => {
   if (array?.length) return array[index]
+
+  return array
 }
 
-function FormikControl(props) {
+type FormikControlProps = {
+  control:
+    | 'input'
+    | 'combobox'
+    | 'memberSearch'
+    | 'fellowshipSearch'
+    | 'bacentaSearch'
+    | 'constituencySearch'
+    | 'councilSearch'
+    | 'textarea'
+    | 'select'
+    | 'selectWithQuery'
+    | 'radio'
+    | 'checkbox'
+    | 'checkboxWithQuery'
+    | 'imageUpload'
+  name: string
+  label?: string
+  [key: string]: any
+}
+
+function FormikControl(props: FormikControlProps) {
   const { control, ...rest } = props
 
   switch (control) {

@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { Field, ErrorMessage } from 'formik'
 import { makeSelectOptions } from '../../global-utils'
-import TextError from './TextError'
+import TextError from './TextError/TextError'
 import { useQuery } from '@apollo/client'
 import { MemberContext } from 'contexts/MemberContext'
 import './CheckboxGroup.css'

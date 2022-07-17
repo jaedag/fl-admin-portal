@@ -47,6 +47,11 @@ export interface Church {
   }
   vacationStatus: 'Vacation' | 'Active'
   __typename: ChurchLevel
+  sontas?: Sonta[]
+}
+
+export interface Sonta extends Church {
+  __typename: 'Sonta'
 }
 
 export interface Fellowship extends Church {
@@ -61,6 +66,7 @@ export interface Bacenta extends Church {
 export type ChurchIdAndName = {
   id: string
   name: string
+  __typename: ChurchLevel
 }
 
 export type StreamOptions = 'Campus' | 'Town' | 'Anagkazo'

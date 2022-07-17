@@ -133,7 +133,9 @@ const PayOffering = (props: PayOfferingProps) => {
                 </Col>
               </Row>
               <div className="d-flex justify-content-center">
-                <SubmitButton formik={formik}>Make Payment</SubmitButton>
+                <SubmitButton formik={formik}>
+                  <>Make Payment</>
+                </SubmitButton>
               </div>
             </Form>
           )}

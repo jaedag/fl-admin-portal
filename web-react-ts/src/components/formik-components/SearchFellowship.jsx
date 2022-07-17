@@ -14,7 +14,7 @@ import {
   BACENTA_FELLOWSHIP_SEARCH,
   MEMBER_FELLOWSHIP_SEARCH,
 } from './SearchFellowshipQueries'
-import TextError from './TextError'
+import TextError from './TextError/TextError'
 
 const SearchFellowship = (props) => {
   const { currentUser } = useContext(MemberContext)

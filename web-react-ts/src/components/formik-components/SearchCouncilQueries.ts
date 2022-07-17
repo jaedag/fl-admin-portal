@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client'
 
 export const GATHERINGSERVICE_COUNCIL_SEARCH = gql`
-  query ($id: ID!, $key: String!) {
+  query gatheringCouncilSearch($id: ID!, $key: String!) {
     gatheringServices(where: { id: $id }) {
       id
       councilSearch(key: $key, limit: 5) {
@@ -13,7 +13,7 @@ export const GATHERINGSERVICE_COUNCIL_SEARCH = gql`
 `
 
 export const STREAM_COUNCIL_SEARCH = gql`
-  query ($id: ID!, $key: String!) {
+  query streamCouncilSearch($id: ID!, $key: String!) {
     streams(where: { id: $id }) {
       id
       councilSearch(key: $key, limit: 5) {
@@ -25,7 +25,7 @@ export const STREAM_COUNCIL_SEARCH = gql`
 `
 
 export const MEMBER_COUNCIL_SEARCH = gql`
-  query ($id: ID!, $key: String!) {
+  query memberCouncilSearch($id: ID!, $key: String!) {
     members(where: { id: $id }) {
       id
       councilSearch(key: $key) {

@@ -1,18 +1,25 @@
 import React, { useContext } from 'react'
-import { Formik, Form } from 'formik'
+import { Formik, Form, FormikHelpers } from 'formik'
 import FormikControl from './formik-components/FormikControl'
 import { SearchContext } from '../contexts/MemberContext'
 import './SearchBox.css'
 import { Col, Button, Container } from 'react-bootstrap'
 
+type FormOptions = {
+  searchKeyVal: string
+}
+
 const MobileSearchNav = () => {
   const { searchKey, setSearchKey } = useContext(SearchContext)
 
-  const initialValues = {
+  const initialValues: FormOptions = {
     searchKeyVal: searchKey ?? '',
   }
 
-  const onSubmit = (values, onSubmitProps) => {
+  const onSubmit = (
+    values: FormOptions,
+    onSubmitProps: FormikHelpers<FormOptions>
+  ) => {
     onSubmitProps.setSubmitting(true)
     setSearchKey(values.searchKeyVal)
     onSubmitProps.setSubmitting(false)

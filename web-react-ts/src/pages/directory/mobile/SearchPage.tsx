@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { useLazyQuery } from '@apollo/client'
-import MobileSearchNav from '../../../components/MobileSearchNav.jsx'
+import MobileSearchNav from 'components/MobileSearchNav'
 import {
   STREAM_SEARCH,
   COUNCIL_SEARCH,
@@ -8,21 +8,62 @@ import {
   FEDERAL_SEARCH,
   BACENTA_SEARCH,
   FELLOWSHIP_SEARCH,
-} from './SearchQuery.ts'
-import { MemberContext, SearchContext } from '../../../contexts/MemberContext'
-import MemberDisplayCard from '../../../components/card/MemberDisplayCard'
+} from './SearchQuery'
+import { MemberContext, SearchContext } from 'contexts/MemberContext'
+import MemberDisplayCard from 'components/card/MemberDisplayCard'
 import { isAuthorised, throwErrorMsg } from 'global-utils'
 import { Container, Spinner } from 'react-bootstrap'
+import { Church, MemberWithoutBioData, Stream } from 'global-types'
+type FederalSearchResult = {
+  federalMemberSearch: MemberWithoutBioData[]
+  federalStreamSearch: Stream[]
+  federalCouncilSearch: Church[]
+  federalConstituencySearch: Church[]
+  federalBacentaSearch: Church[]
+  federalFellowshipSearch: Church[]
+}
+
+type StreamSearchResult = {
+  streamMemberSearch: MemberWithoutBioData[]
+  streamCouncilSearch: Church[]
+  streamConstituencySearch: Church[]
+  streamBacentaSearch: Church[]
+  streamFellowshipSearch: Church[]
+}
+
+type CouncilSearchResult = {
+  councilMemberSearch: MemberWithoutBioData[]
+  councilConstituencySearch: Church[]
+  councilBacentaSearch: Church[]
+  councilFellowshipSearch: Church[]
+}
+
+type ConstituencySearchResult = {
+  constituencyMemberSearch: MemberWithoutBioData[]
+  constituencyBacentaSearch: Church[]
+  constituencyFellowshipSearch: Church[]
+}
+
+type BacentaSearchResults = {
+  bacentaMemberSearch: MemberWithoutBioData[]
+  bacentaFellowshipSearch: Church[]
+}
+
+type FellowshipSearchResults = {
+  fellowshipMemberSearch: MemberWithoutBioData[]
+}
+
+type SearchResult = MemberWithoutBioData | Church
 
 const SearchPageMobile = () => {
   const { searchKey } = useContext(SearchContext)
   const { currentUser } = useContext(MemberContext)
 
-  const [combinedData, setCombinedData] = useState([])
+  const [combinedData, setCombinedData] = useState<SearchResult[]>([])
 
   const [federalSearch, { loading: federalLoading, error: federalError }] =
     useLazyQuery(FEDERAL_SEARCH, {
-      onCompleted: (data) => {
+      onCompleted: (data: FederalSearchResult) => {
         setCombinedData([
           ...data.federalMemberSearch,
           ...data.federalStreamSearch,
@@ -37,7 +78,7 @@ const SearchPageMobile = () => {
 
   const [streamSearch, { loading: streamLoading, error: streamError }] =
     useLazyQuery(STREAM_SEARCH, {
-      onCompleted: (data) => {
+      onCompleted: (data: StreamSearchResult) => {
         setCombinedData([
           ...data.streamMemberSearch,
           ...data.streamCouncilSearch,
@@ -51,7 +92,7 @@ const SearchPageMobile = () => {
 
   const [councilSearch, { loading: councilLoading, error: councilError }] =
     useLazyQuery(COUNCIL_SEARCH, {
-      onCompleted: (data) => {
+      onCompleted: (data: CouncilSearchResult) => {
         setCombinedData([
           ...data.councilMemberSearch,
           ...data.councilConstituencySearch,
@@ -65,7 +106,7 @@ const SearchPageMobile = () => {
     constituencySearch,
     { loading: constituencyLoading, error: constituencyError },
   ] = useLazyQuery(CONSTITUENCY_SEARCH, {
-    onCompleted: (data) => {
+    onCompleted: (data: ConstituencySearchResult) => {
       setCombinedData([
         ...data.constituencyMemberSearch,
         ...data.constituencyBacentaSearch,
@@ -77,7 +118,7 @@ const SearchPageMobile = () => {
 
   const [bacentaSearch, { loading: bacentaLoading, error: bacentaError }] =
     useLazyQuery(BACENTA_SEARCH, {
-      onCompleted: (data) => {
+      onCompleted: (data: BacentaSearchResults) => {
         setCombinedData([
           ...data.bacentaMemberSearch,
           ...data.bacentaFellowshipSearch,
@@ -90,7 +131,7 @@ const SearchPageMobile = () => {
     fellowshipSearch,
     { loading: fellowshipLoading, error: fellowshipError },
   ] = useLazyQuery(FELLOWSHIP_SEARCH, {
-    onCompleted: (data) => {
+    onCompleted: (data: FellowshipSearchResults) => {
       setCombinedData([...data.fellowshipMemberSearch])
       return
     },
@@ -102,7 +143,8 @@ const SearchPageMobile = () => {
     constituencyError ||
     bacentaError ||
     fellowshipError
-  throwErrorMsg(error)
+
+  throwErrorMsg('', error)
 
   const loading =
     federalLoading ||
@@ -113,7 +155,7 @@ const SearchPageMobile = () => {
     fellowshipLoading
 
   useEffect(() => {
-    const whichSearch = (searchString) => {
+    const whichSearch = (searchString: string) => {
       if (isAuthorised(['adminGatheringService'], currentUser.roles)) {
         federalSearch({
           variables: { searchKey: searchString?.trim() },

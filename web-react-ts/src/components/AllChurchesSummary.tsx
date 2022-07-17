@@ -1,9 +1,18 @@
+import { Church, ChurchLevel } from 'global-types'
 import React from 'react'
 import { Container, Card, Row, Col } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import './AllChurchesSummary.css'
 
-const AllChurchesSummary = (props) => {
+type AllChurchesSummaryProps = {
+  church: Church
+  churchType: ChurchLevel
+  numberOfChurchesBelow: number
+  route: string
+  memberCount: number
+}
+
+const AllChurchesSummary = (props: AllChurchesSummaryProps) => {
   const { church, churchType, numberOfChurchesBelow, route } = props
 
   return (
@@ -37,7 +46,7 @@ const AllChurchesSummary = (props) => {
               <Link to="/sonta/displayall">
                 <Card.Body className="summary-padding">
                   <Row className="text-muted text-small">Sontas</Row>
-                  <Row className="number">{church?.sontas.length}</Row>
+                  <Row className="number">{church.sontas?.length}</Row>
                 </Card.Body>
               </Link>
             </Card>

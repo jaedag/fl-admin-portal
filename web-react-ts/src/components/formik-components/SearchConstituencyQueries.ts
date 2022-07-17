@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client'
 
 export const GATHERINGSERVICE_CONSTITUENCY_SEARCH = gql`
-  query ($id: ID!, $key: String!) {
+  query gatheringConstituencySearch($id: ID!, $key: String!) {
     gatheringServices(where: { id: $id }) {
       id
       constituencySearch(key: $key, limit: 5) {
@@ -13,7 +13,7 @@ export const GATHERINGSERVICE_CONSTITUENCY_SEARCH = gql`
 `
 
 export const STREAM_CONSTITUENCY_SEARCH = gql`
-  query ($id: ID!, $key: String!) {
+  query streamConstituencySearch($id: ID!, $key: String!) {
     streams(where: { id: $id }) {
       id
       constituencySearch(key: $key, limit: 5) {
@@ -25,7 +25,7 @@ export const STREAM_CONSTITUENCY_SEARCH = gql`
 `
 
 export const COUNCIL_CONSTITUENCY_SEARCH = gql`
-  query ($id: ID!, $key: String!) {
+  query councilConstituencySearch($id: ID!, $key: String!) {
     councils(where: { id: $id }) {
       id
       constituencySearch(key: $key, limit: 5) {
@@ -37,7 +37,7 @@ export const COUNCIL_CONSTITUENCY_SEARCH = gql`
 `
 
 export const MEMBER_CONSTITUENCY_SEARCH = gql`
-  query ($id: ID!, $key: String!) {
+  query memberConstituencySearch($id: ID!, $key: String!) {
     members(where: { id: $id }) {
       id
       constituencySearch(key: $key) {

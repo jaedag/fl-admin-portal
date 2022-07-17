@@ -11,7 +11,7 @@ import {
   STREAM_COUNCIL_SEARCH,
   MEMBER_COUNCIL_SEARCH,
 } from './SearchCouncilQueries'
-import TextError from './TextError'
+import TextError from './TextError/TextError'
 
 const SearchCouncil = (props) => {
   const { currentUser } = useContext(MemberContext)
