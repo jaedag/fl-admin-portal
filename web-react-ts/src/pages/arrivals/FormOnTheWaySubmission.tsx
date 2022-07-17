@@ -61,7 +61,6 @@ const FormOnTheWaySubmission = () => {
       .of(Yup.string().required('You must upload a bussing picture')),
     bussingCost: Yup.number()
       .typeError('Please enter a valid number')
-      .positive()
       .required('This is a required field'),
     numberOfBusses: Yup.number()
       .typeError('Please enter a valid number')
