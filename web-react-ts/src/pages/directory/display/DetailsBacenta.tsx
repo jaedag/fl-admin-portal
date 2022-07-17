@@ -1,9 +1,9 @@
 import React, { useContext } from 'react'
 import { useQuery } from '@apollo/client'
-import DisplayChurchDetails from '../../../components/DisplayChurchDetails/DisplayChurchDetails'
+import DisplayChurchDetails from 'components/DisplayChurchDetails/DisplayChurchDetails'
 
 import { DISPLAY_BACENTA } from './ReadQueries'
-import { ChurchContext } from '../../../contexts/ChurchContext'
+import { ChurchContext } from 'contexts/ChurchContext'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { permitArrivals } from 'permission-utils'
 

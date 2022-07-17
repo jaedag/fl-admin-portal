@@ -294,6 +294,10 @@ export const DISPLAY_BACENTA = gql`
         bacenta {
           id
           name
+          council {
+            id
+            name
+          }
           stream_name
         }
       }
