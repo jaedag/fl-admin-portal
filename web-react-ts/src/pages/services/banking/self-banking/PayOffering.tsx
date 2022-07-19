@@ -1,7 +1,7 @@
 import { ApolloError, useMutation, useQuery } from '@apollo/client'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { ServiceContext } from 'contexts/ServiceContext'
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { useNavigate } from 'react-router'
 import {
   DISPLAY_OFFERING_DETAILS,
@@ -9,7 +9,7 @@ import {
 } from './bankingQueries'
 import * as Yup from 'yup'
 import { Form, Formik, FormikHelpers } from 'formik'
-import { MOMO_NUM_REGEX, throwErrorMsg } from 'global-utils'
+import { MOMO_NUM_REGEX } from 'global-utils'
 import FormikControl from 'components/formik-components/FormikControl'
 import { MOBILE_NETWORK_OPTIONS } from 'pages/arrivals/arrivals-utils'
 import SubmitButton from 'components/formik-components/SubmitButton'
@@ -18,6 +18,8 @@ import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import HeadingSecondary from 'components/HeadingSecondary'
 import { parseDate } from 'jd-date-utils'
 import { Fellowship } from 'global-types'
+import usePopup from 'hooks/usePopup'
+import ErrorPopup from 'components/Popup/ErrorPopup'
 
 type PayOfferingProps = {
   church: Fellowship
@@ -42,6 +44,8 @@ const PayOffering = (props: PayOfferingProps) => {
   const [BankServiceOffering] = useMutation(PAY_OFFERING_MUTATION)
   const navigate = useNavigate()
   const service = data?.serviceRecords[0]
+  const { togglePopup, isOpen } = usePopup()
+  const [errorMessage, setErrorMessage] = useState('')
 
   const initialValues = {
     bankingDate: new Date().toISOString().slice(0, 10),
@@ -72,76 +76,91 @@ const PayOffering = (props: PayOfferingProps) => {
     const { setSubmitting } = onSubmitProps
 
     setSubmitting(true)
-
-    BankServiceOffering({
-      variables: {
-        serviceRecordId: serviceRecordId,
-        stream_name: service.stream_name,
-        mobileNetwork: values.mobileNetwork,
-        mobileNumber: values.mobileNumber,
-        momoName: values.momoName,
-      },
-    }).catch((error) => throwErrorMsg('There was a problem', error))
-
-    setSubmitting(false)
-    navigate('/self-banking/confirm-payment')
+    try {
+      await BankServiceOffering({
+        variables: {
+          serviceRecordId: serviceRecordId,
+          stream_name: service.stream_name,
+          mobileNetwork: values.mobileNetwork,
+          mobileNumber: values.mobileNumber,
+          momoName: values.momoName,
+        },
+      })
+      setSubmitting(false)
+      navigate('/self-banking/confirm-payment')
+    } catch (error: any) {
+      setErrorMessage(error.message)
+      togglePopup()
+    }
   }
 
   return (
-    <ApolloWrapper data={data} loading={loading} error={error}>
-      <Container>
-        <HeadingPrimary loading={loading}>Offering Self-Banking</HeadingPrimary>
-        <HeadingSecondary loading={loading}>
-          {church?.name} {church?.__typename}
-        </HeadingSecondary>
-        {church?.bankingCode && (
-          <div>{`Banking Code: ${church.bankingCode}`} </div>
-        )}
-        <Formik
-          initialValues={initialValues}
-          validationSchema={validationSchema}
-          onSubmit={onSubmit}
-        >
-          {(formik) => (
-            <Form>
-              <Row className="row-cols-1 row-cols-md-2 mt-2">
-                <Col className="mb-2">
-                  <small className="form-text label">Date of Service</small>
-                  <HeadingPrimary>
-                    {parseDate(service?.serviceDate.date)}
-                  </HeadingPrimary>
+    <div>
+      {isOpen && (
+        <ErrorPopup
+          errorMessage={errorMessage}
+          togglePopup={togglePopup}
+          link={`/services/${church?.__typename.toLowerCase()}/self-banking`}
+        />
+      )}
 
-                  <small className="form-text label">Income</small>
-                  <div className="fw-bold">{service?.income} GHS</div>
-                  <FormikControl
-                    control="select"
-                    name="mobileNetwork"
-                    label="Mobile Network"
-                    options={MOBILE_NETWORK_OPTIONS}
-                  />
-                  <FormikControl
-                    control="input"
-                    name="mobileNumber"
-                    label="MoMo Number"
-                    defaultOption="Choose a Network"
-                  />
-                  <FormikControl
-                    control="input"
-                    name="momoName"
-                    label="MoMo Name"
-                  />
-                </Col>
-              </Row>
-              <div className="d-flex justify-content-center">
-                <SubmitButton formik={formik}>
-                  <>Make Payment</>
-                </SubmitButton>
-              </div>
-            </Form>
+      <ApolloWrapper data={data} loading={loading} error={error}>
+        <Container>
+          <HeadingPrimary loading={loading}>
+            Offering Self-Banking
+          </HeadingPrimary>
+          <HeadingSecondary loading={loading}>
+            {church?.name} {church?.__typename}
+          </HeadingSecondary>
+          {church?.bankingCode && (
+            <div>{`Banking Code: ${church.bankingCode}`} </div>
           )}
-        </Formik>
-      </Container>
-    </ApolloWrapper>
+          <Formik
+            initialValues={initialValues}
+            validationSchema={validationSchema}
+            onSubmit={onSubmit}
+          >
+            {(formik) => (
+              <Form>
+                <Row className="row-cols-1 row-cols-md-2 mt-2">
+                  <Col className="mb-2">
+                    <small className="form-text label">Date of Service</small>
+                    <HeadingPrimary>
+                      {parseDate(service?.serviceDate.date)}
+                    </HeadingPrimary>
+
+                    <small className="form-text label">Income</small>
+                    <div className="fw-bold">{service?.income} GHS</div>
+                    <FormikControl
+                      control="select"
+                      name="mobileNetwork"
+                      label="Mobile Network"
+                      options={MOBILE_NETWORK_OPTIONS}
+                    />
+                    <FormikControl
+                      control="input"
+                      name="mobileNumber"
+                      label="MoMo Number"
+                      defaultOption="Choose a Network"
+                    />
+                    <FormikControl
+                      control="input"
+                      name="momoName"
+                      label="MoMo Name"
+                    />
+                  </Col>
+                </Row>
+                <div className="d-flex justify-content-center">
+                  <SubmitButton formik={formik}>
+                    <>Make Payment</>
+                  </SubmitButton>
+                </div>
+              </Form>
+            )}
+          </Formik>
+        </Container>
+      </ApolloWrapper>
+    </div>
   )
 }
 
