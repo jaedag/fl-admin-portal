@@ -913,7 +913,7 @@ extend type Stream {
       """
     )
 
-  avgCouncilBussingAttendanceThisMonth: Float!
+  avgCouncilBussingAttendanceThisMonth: Float
     @cypher(
       statement: """
       MATCH (this)-[:HAS]->(council:Council)-[:HAS]->(:Constituency)-[:HAS]->(bacenta:Bacenta)
@@ -927,7 +927,7 @@ extend type Stream {
       """
     )
 
-  avgBussingAttendanceThisMonth: Float!
+  avgBussingAttendanceThisMonth: Float
     @cypher(
       statement: """
       MATCH (this)-[:HAS]->(:Council)-[:HAS]->(:Constituency)-[:HAS]->(bacenta:Bacenta)
@@ -995,7 +995,7 @@ extend type GatheringService {
       """
     )
 
-  avgFellowshipIncomeThisYear: Float!
+  avgFellowshipIncomeThisYear: Float
     @cypher(
       statement: """
       MATCH (this)-[:HAS]->(:Stream)-[:HAS]->(:Council)-[:HAS]->(:Constituency)-[:HAS]-(:Bacenta)-[:HAS]->(fellowship)
@@ -1008,7 +1008,7 @@ extend type GatheringService {
       """
     )
 
-  allFellowshipsAvgIncomeThisYear: Float!
+  allFellowshipsAvgIncomeThisYear: Float
     @cypher(
       statement: """
       MATCH (this)-[:HAS*5]->(fellowship:Active:Fellowship)-[:CURRENT_HISTORY]->(s:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
@@ -1122,7 +1122,7 @@ extend type GatheringService {
       """
     )
 
-  avgBacentaAttendanceThisMonth: Float!
+  avgBacentaAttendanceThisMonth: Float
     @cypher(
       statement: """
       MATCH (this)-[:HAS]-(:Stream)-[:HAS]-(:Council)-[:HAS]-(:Constituency)-[:HAS]->(bacenta:Bacenta)
@@ -1134,7 +1134,7 @@ extend type GatheringService {
       """
     )
 
-  avgBacentaAttendanceThisYear: Float!
+  avgBacentaAttendanceThisYear: Float
     @cypher(
       statement: """
       MATCH (this)-[:HAS]-(:Stream)-[:HAS]-(:Council)-[:HAS]-(:Constituency)-[:HAS]->(bacenta:Bacenta)
@@ -1146,7 +1146,7 @@ extend type GatheringService {
       """
     )
 
-  avgBacentaAttendanceAllTime: Float!
+  avgBacentaAttendanceAllTime: Float
     @cypher(
       statement: """
       MATCH (this)-[:HAS]-(:Stream)-[:HAS]-(:Council)-[:HAS]-(:Constituency)-[:HAS]->(bacenta:Bacenta)
@@ -1215,7 +1215,7 @@ extend type GatheringService {
       """
     )
 
-  avgConstituencyBussingAttendanceThisMonth: Float!
+  avgConstituencyBussingAttendanceThisMonth: Float
     @cypher(
       statement: """
       MATCH (this)-[:HAS]->(:Stream)-[:HAS]->(:Council)-[:HAS]->(con:Constituency)-[:HAS]->(bacenta:Bacenta)
@@ -1227,7 +1227,7 @@ extend type GatheringService {
       """
     )
 
-  avgConstituencyBussingAttendanceThisYear: Float!
+  avgConstituencyBussingAttendanceThisYear: Float
     @cypher(
       statement: """
       MATCH (this)-[:HAS]->(:Stream)-[:HAS]->(:Council)-[:HAS]->(con:Constituency)-[:HAS]->(bacenta:Bacenta)
@@ -1240,7 +1240,7 @@ extend type GatheringService {
       """
     )
 
-  avgConstituencyWeekdayAttendanceThisMonth: Float!
+  avgConstituencyWeekdayAttendanceThisMonth: Float
     @cypher(
       statement: """
       MATCH (this)-[:HAS]->(:Stream)-[:HAS]->(:Council)-[:HAS]->(con:Constituency)-[:HAS]->(:Bacenta)-[:HAS]->(fellowship)
@@ -1255,7 +1255,7 @@ extend type GatheringService {
       """
     )
 
-  avgConstituencyWeekdayAttendanceThisYear: Float!
+  avgConstituencyWeekdayAttendanceThisYear: Float
     @cypher(
       statement: """
       MATCH (this)-[:HAS]->(:Stream)-[:HAS]->(:Council)-[:HAS]->(con:Constituency)-[:HAS]->(:Bacenta)-[:HAS]->(fellowship)
@@ -1270,7 +1270,7 @@ extend type GatheringService {
       """
     )
 
-  avgConstituencyWeekdayIncomeThisMonth: Float!
+  avgConstituencyWeekdayIncomeThisMonth: Float
     @cypher(
       statement: """
       MATCH (this)-[:HAS]->(:Stream)-[:HAS]->(:Council)-[:HAS]->(con:Constituency)-[:HAS]->(:Bacenta)-[:HAS]->(fellowship)
@@ -1285,7 +1285,7 @@ extend type GatheringService {
       """
     )
 
-  avgConstituencyWeekdayIncomeThisYear: Float!
+  avgConstituencyWeekdayIncomeThisYear: Float
     @cypher(
       statement: """
       MATCH (this)-[:HAS]->(:Stream)-[:HAS]->(:Council)-[:HAS]->(con:Constituency)-[:HAS]->(:Bacenta)-[:HAS]->(fellowship)
@@ -1300,7 +1300,7 @@ extend type GatheringService {
       """
     )
 
-  avgCouncilWeekdayAttendanceThisMonth: Float!
+  avgCouncilWeekdayAttendanceThisMonth: Float
     @cypher(
       statement: """
       MATCH (this)-[:HAS]->(:Stream)-[:HAS]->(council:Council)-[:HAS]->(:Constituency)-[:HAS]->(:Bacenta)-[:HAS]->(fellowship)
@@ -1315,7 +1315,7 @@ extend type GatheringService {
       """
     )
 
-  avgCouncilWeekdayAttendanceThisYear: Float!
+  avgCouncilWeekdayAttendanceThisYear: Float
     @cypher(
       statement: """
       MATCH (this)-[:HAS]->(:Stream)-[:HAS]->(council:Council)-[:HAS]->(:Constituency)-[:HAS]->(:Bacenta)-[:HAS]->(fellowship)
@@ -1330,7 +1330,7 @@ extend type GatheringService {
       """
     )
 
-  avgCouncilWeekdayIncomeThisMonth: Float!
+  avgCouncilWeekdayIncomeThisMonth: Float
     @cypher(
       statement: """
       MATCH (this)-[:HAS]->(:Stream)-[:HAS]->(council:Council)-[:HAS]->(:Constituency)-[:HAS]->(:Bacenta)-[:HAS]->(fellowship)
@@ -1345,7 +1345,7 @@ extend type GatheringService {
       """
     )
 
-  avgCouncilWeekdayIncomeThisYear: Float!
+  avgCouncilWeekdayIncomeThisYear: Float
     @cypher(
       statement: """
       MATCH (this)-[:HAS]->(:Stream)-[:HAS]->(council:Council)-[:HAS]->(:Constituency)-[:HAS]->(:Bacenta)-[:HAS]->(fellowship)
@@ -1360,7 +1360,7 @@ extend type GatheringService {
       """
     )
 
-  avgCouncilBussingAttendanceThisMonth: Float!
+  avgCouncilBussingAttendanceThisMonth: Float
     @cypher(
       statement: """
       MATCH (this)-[:HAS]->(:Stream)-[:HAS]->(council:Council)-[:HAS]->(:Constituency)-[:HAS]->(bacenta:Bacenta)
@@ -1374,7 +1374,7 @@ extend type GatheringService {
       """
     )
 
-  avgCouncilBussingAttendanceThisYear: Float!
+  avgCouncilBussingAttendanceThisYear: Float
     @cypher(
       statement: """
       MATCH (this)-[:HAS]->(:Stream)-[:HAS]->(council:Council)-[:HAS]->(:Constituency)-[:HAS]->(bacenta:Bacenta)
@@ -1388,7 +1388,7 @@ extend type GatheringService {
       """
     )
 
-  avgStreamWeekdayAttendanceThisMonth: Float!
+  avgStreamWeekdayAttendanceThisMonth: Float
     @cypher(
       statement: """
       MATCH (this)-[:HAS]->(stream:Stream)-[:HAS]->(:Council)-[:HAS]->(:Constituency)-[:HAS]->(:Bacenta)-[:HAS]->(fellowship)
@@ -1403,7 +1403,7 @@ extend type GatheringService {
       """
     )
 
-  avgStreamWeekdayAttendanceThisYear: Float!
+  avgStreamWeekdayAttendanceThisYear: Float
     @cypher(
       statement: """
       MATCH (this)-[:HAS]->(stream:Stream)-[:HAS]->(:Council)-[:HAS]->(:Constituency)-[:HAS]->(:Bacenta)-[:HAS]->(fellowship)
@@ -1418,7 +1418,7 @@ extend type GatheringService {
       """
     )
 
-  avgStreamWeekdayIncomeThisMonth: Float!
+  avgStreamWeekdayIncomeThisMonth: Float
     @cypher(
       statement: """
       MATCH (this)-[:HAS]->(stream:Stream)-[:HAS]->(:Council)-[:HAS]->(:Constituency)-[:HAS]->(:Bacenta)-[:HAS]->(fellowship)
@@ -1433,7 +1433,7 @@ extend type GatheringService {
       """
     )
 
-  avgStreamWeekdayIncomeThisYear: Float!
+  avgStreamWeekdayIncomeThisYear: Float
     @cypher(
       statement: """
       MATCH (this)-[:HAS]->(stream:Stream)-[:HAS]->(:Council)-[:HAS]->(:Constituency)-[:HAS]->(:Bacenta)-[:HAS]->(fellowship)
@@ -1448,7 +1448,7 @@ extend type GatheringService {
       """
     )
 
-  avgStreamBussingAttendanceThisMonth: Float!
+  avgStreamBussingAttendanceThisMonth: Float
     @cypher(
       statement: """
       MATCH (this)-[:HAS]->(stream:Stream)-[:HAS]->(:Council)-[:HAS]->(:Constituency)-[:HAS]->(bacenta:Bacenta)
@@ -1462,7 +1462,7 @@ extend type GatheringService {
       """
     )
 
-  avgStreamBussingAttendanceThisYear: Float!
+  avgStreamBussingAttendanceThisYear: Float
     @cypher(
       statement: """
       MATCH (this)-[:HAS]->(stream:Stream)-[:HAS]->(:Council)-[:HAS]->(:Constituency)-[:HAS]->(bacenta:Bacenta)
@@ -1476,7 +1476,7 @@ extend type GatheringService {
       """
     )
 
-  avgBussingAttendanceThisMonth: Float!
+  avgBussingAttendanceThisMonth: Float
     @cypher(
       statement: """
       MATCH (this)-[:HAS]->(:Stream)-[:HAS]->(:Council)-[:HAS]->(:Constituency)-[:HAS]->(bacenta:Bacenta)
