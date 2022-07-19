@@ -1,6 +1,6 @@
 type ServiceDay @auth(rules: [{ isAuthenticated: true }]) {
   day: String!
-  dayNumber: Int
+  dayNumber: Int!
   fellowship: Fellowship @relationship(type: "MEETS_ON", direction: IN)
 }
 
@@ -12,7 +12,7 @@ extend type GatheringService {
       WITH date() as today, this
       WITH  today.weekDay as theDay, today, this
       WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
-      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates, this
+      WITH [day in range(0, 5) | startDate + duration({days: day})] AS dates, this
 
       MATCH (date:TimeGraph)
       USING INDEX date:TimeGraph(date)
@@ -35,7 +35,7 @@ extend type GatheringService {
       WITH date() as today, this
       WITH  today.weekDay as theDay, today, this
       WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
-      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates, this
+      WITH [day in range(0, 5) | startDate + duration({days: day})] AS dates, this
 
       MATCH (date:TimeGraph)
       USING INDEX date:TimeGraph(date)
@@ -58,7 +58,7 @@ extend type GatheringService {
       WITH date() as today, this
       WITH  today.weekDay as theDay, today, this
       WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
-      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates, this
+      WITH [day in range(0, 5) | startDate + duration({days: day})] AS dates, this
 
       MATCH (date:TimeGraph)
       USING INDEX date:TimeGraph(date)
@@ -81,7 +81,7 @@ extend type GatheringService {
       WITH date() as today, this
       WITH  today.weekDay as theDay, today, this
       WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
-      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates, this
+      WITH [day in range(0, 5) | startDate + duration({days: day})] AS dates, this
 
       MATCH (date:TimeGraph)
       USING INDEX date:TimeGraph(date)
@@ -104,7 +104,7 @@ extend type GatheringService {
       WITH date() as today, this
       WITH  today.weekDay as theDay, today, this
       WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
-      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates, this
+      WITH [day in range(0, 5) | startDate + duration({days: day})] AS dates, this
 
       MATCH (date:TimeGraph)
       USING INDEX date:TimeGraph(date)
@@ -132,7 +132,7 @@ extend type GatheringService {
       WITH date() as today, this
       WITH  today.weekDay as theDay, today, this
       WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
-      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates, this
+      WITH [day in range(0, 5) | startDate + duration({days: day})] AS dates, this
 
       MATCH (date:TimeGraph)
       USING INDEX date:TimeGraph(date)
@@ -160,7 +160,7 @@ extend type GatheringService {
       WITH date() as today, this
       WITH  today.weekDay as theDay, today, this
       WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
-      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates, this
+      WITH [day in range(0, 5) | startDate + duration({days: day})] AS dates, this
 
       MATCH (date:TimeGraph)
       USING INDEX date:TimeGraph(date)
@@ -171,6 +171,7 @@ extend type GatheringService {
         WHERE record.noServiceReason IS NULL
           AND record.bankingSlip IS NULL
           AND (record.transactionStatus IS NULL OR record.transactionStatus <> 'success')
+          AND record.tellerConfirmationTime IS NULL
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships) WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
 
        WITH DISTINCT fellowships, this
@@ -186,7 +187,7 @@ extend type GatheringService {
       WITH date() as today, this
       WITH  today.weekDay as theDay, today, this
       WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
-      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates, this
+      WITH [day in range(0, 5) | startDate + duration({days: day})] AS dates, this
 
       MATCH (date:TimeGraph)
       USING INDEX date:TimeGraph(date)
@@ -197,6 +198,7 @@ extend type GatheringService {
         WHERE record.noServiceReason IS NULL
           AND record.bankingSlip IS NULL
           AND (record.transactionStatus IS NULL OR record.transactionStatus <> 'success')
+          AND record.tellerConfirmationTime IS NULL
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships) WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
 
        WITH DISTINCT fellowships, this
@@ -212,7 +214,7 @@ extend type GatheringService {
       WITH date() as today, this
       WITH  today.weekDay as theDay, today, this
       WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
-      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates, this
+      WITH [day in range(0, 5) | startDate + duration({days: day})] AS dates, this
 
       MATCH (date:TimeGraph)
       USING INDEX date:TimeGraph(date)
@@ -221,7 +223,7 @@ extend type GatheringService {
 
        WITH DISTINCT record, this
         WHERE record.noServiceReason IS NULL
-         AND (record.bankingSlip IS NOT NULL OR record.transactionStatus ='success')
+         AND (record.bankingSlip IS NOT NULL OR record.transactionStatus ='success' OR record.tellerConfirmationTime IS NOT NULL)
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships) WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
 
        WITH DISTINCT fellowships, this
@@ -237,7 +239,7 @@ extend type GatheringService {
       WITH date() as today, this
       WITH  today.weekDay as theDay, today, this
       WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
-      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates, this
+      WITH [day in range(0, 5) | startDate + duration({days: day})] AS dates, this
 
       MATCH (date:TimeGraph)
       USING INDEX date:TimeGraph(date)
@@ -246,7 +248,7 @@ extend type GatheringService {
 
        WITH DISTINCT record, this
         WHERE record.noServiceReason IS NULL
-         AND (record.bankingSlip IS NOT NULL OR record.transactionStatus ='success')
+         AND (record.bankingSlip IS NOT NULL OR record.transactionStatus ='success' OR record.tellerConfirmationTime IS NOT NULL)
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships) WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
 
        WITH DISTINCT fellowships, this
@@ -266,7 +268,7 @@ extend type Stream {
       WITH date() as today, this
       WITH  today.weekDay as theDay, today, this
       WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
-      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates, this
+      WITH [day in range(0, 5) | startDate + duration({days: day})] AS dates, this
 
       MATCH (date:TimeGraph)
       USING INDEX date:TimeGraph(date)
@@ -289,7 +291,7 @@ extend type Stream {
       WITH date() as today, this
       WITH  today.weekDay as theDay, today, this
       WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
-      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates, this
+      WITH [day in range(0, 5) | startDate + duration({days: day})] AS dates, this
 
       MATCH (date:TimeGraph)
       USING INDEX date:TimeGraph(date)
@@ -312,7 +314,7 @@ extend type Stream {
       WITH date() as today, this
       WITH  today.weekDay as theDay, today, this
       WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
-      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates, this
+      WITH [day in range(0, 5) | startDate + duration({days: day})] AS dates, this
 
       MATCH (date:TimeGraph)
       USING INDEX date:TimeGraph(date)
@@ -336,7 +338,7 @@ extend type Stream {
       WITH date() as today, this
       WITH  today.weekDay as theDay, today, this
       WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
-      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates, this
+      WITH [day in range(0, 5) | startDate + duration({days: day})] AS dates, this
 
       MATCH (date:TimeGraph)
       USING INDEX date:TimeGraph(date)
@@ -360,7 +362,7 @@ extend type Stream {
       WITH date() as today, this
       WITH  today.weekDay as theDay, today, this
       WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
-      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates, this
+      WITH [day in range(0, 5) | startDate + duration({days: day})] AS dates, this
 
       MATCH (date:TimeGraph)
       USING INDEX date:TimeGraph(date)
@@ -388,7 +390,7 @@ extend type Stream {
       WITH date() as today, this
       WITH  today.weekDay as theDay, today, this
       WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
-      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates, this
+      WITH [day in range(0, 5) | startDate + duration({days: day})] AS dates, this
 
       MATCH (date:TimeGraph)
       USING INDEX date:TimeGraph(date)
@@ -416,7 +418,7 @@ extend type Stream {
       WITH date() as today, this
       WITH  today.weekDay as theDay, today, this
       WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
-      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates, this
+      WITH [day in range(0, 5) | startDate + duration({days: day})] AS dates, this
 
       MATCH (date:TimeGraph)
       USING INDEX date:TimeGraph(date)
@@ -427,6 +429,7 @@ extend type Stream {
         WHERE record.noServiceReason IS NULL
           AND record.bankingSlip IS NULL
           AND (record.transactionStatus IS NULL OR record.transactionStatus <> 'success')
+          AND record.tellerConfirmationTime IS NULL
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships) WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
 
        WITH DISTINCT fellowships, this
@@ -442,7 +445,7 @@ extend type Stream {
       WITH date() as today, this
       WITH  today.weekDay as theDay, today, this
       WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
-      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates, this
+      WITH [day in range(0, 5) | startDate + duration({days: day})] AS dates, this
 
       MATCH (date:TimeGraph)
       USING INDEX date:TimeGraph(date)
@@ -453,6 +456,7 @@ extend type Stream {
         WHERE record.noServiceReason IS NULL
           AND record.bankingSlip IS NULL
           AND (record.transactionStatus IS NULL OR record.transactionStatus <> 'success')
+          AND record.tellerConfirmationTime IS NULL
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships) WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
 
        WITH DISTINCT fellowships, this
@@ -468,7 +472,7 @@ extend type Stream {
       WITH date() as today, this
       WITH  today.weekDay as theDay, today, this
       WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
-      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates, this
+      WITH [day in range(0, 5) | startDate + duration({days: day})] AS dates, this
 
       MATCH (date:TimeGraph)
       USING INDEX date:TimeGraph(date)
@@ -477,7 +481,7 @@ extend type Stream {
 
        WITH DISTINCT record, this
         WHERE record.noServiceReason IS NULL
-         AND (record.bankingSlip IS NOT NULL OR record.transactionStatus ='success')
+         AND (record.bankingSlip IS NOT NULL OR record.transactionStatus ='success' OR record.tellerConfirmationTime IS NOT NULL)
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships) WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
 
        WITH DISTINCT fellowships, this
@@ -493,7 +497,7 @@ extend type Stream {
       WITH date() as today, this
       WITH  today.weekDay as theDay, today, this
       WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
-      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates, this
+      WITH [day in range(0, 5) | startDate + duration({days: day})] AS dates, this
 
       MATCH (date:TimeGraph)
       USING INDEX date:TimeGraph(date)
@@ -502,7 +506,7 @@ extend type Stream {
 
        WITH DISTINCT record, this
         WHERE record.noServiceReason IS NULL
-         AND (record.bankingSlip IS NOT NULL OR record.transactionStatus ='success')
+         AND (record.bankingSlip IS NOT NULL OR record.transactionStatus ='success' OR record.tellerConfirmationTime IS NOT NULL)
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships) WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
 
        WITH DISTINCT fellowships, this
@@ -522,7 +526,7 @@ extend type Council {
       WITH date() as today, this
       WITH  today.weekDay as theDay, today, this
       WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
-      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates, this
+      WITH [day in range(0, 5) | startDate + duration({days: day})] AS dates, this
 
       MATCH (date:TimeGraph)
       USING INDEX date:TimeGraph(date)
@@ -545,7 +549,7 @@ extend type Council {
       WITH date() as today, this
       WITH  today.weekDay as theDay, today, this
       WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
-      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates, this
+      WITH [day in range(0, 5) | startDate + duration({days: day})] AS dates, this
 
       MATCH (date:TimeGraph)
       USING INDEX date:TimeGraph(date)
@@ -568,7 +572,7 @@ extend type Council {
       WITH date() as today, this
       WITH  today.weekDay as theDay, today, this
       WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
-      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates, this
+      WITH [day in range(0, 5) | startDate + duration({days: day})] AS dates, this
 
       MATCH (date:TimeGraph)
       USING INDEX date:TimeGraph(date)
@@ -591,7 +595,7 @@ extend type Council {
       WITH date() as today, this
       WITH  today.weekDay as theDay, today, this
       WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
-      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates, this
+      WITH [day in range(0, 5) | startDate + duration({days: day})] AS dates, this
 
       MATCH (date:TimeGraph)
       USING INDEX date:TimeGraph(date)
@@ -614,7 +618,7 @@ extend type Council {
       WITH date() as today, this
       WITH  today.weekDay as theDay, today, this
       WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
-      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates, this
+      WITH [day in range(0, 5) | startDate + duration({days: day})] AS dates, this
 
       MATCH (date:TimeGraph)
       USING INDEX date:TimeGraph(date)
@@ -642,7 +646,7 @@ extend type Council {
       WITH date() as today, this
       WITH  today.weekDay as theDay, today, this
       WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
-      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates, this
+      WITH [day in range(0, 5) | startDate + duration({days: day})] AS dates, this
 
       MATCH (date:TimeGraph)
       USING INDEX date:TimeGraph(date)
@@ -670,7 +674,7 @@ extend type Council {
       WITH date() as today, this
       WITH  today.weekDay as theDay, today, this
       WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
-      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates, this
+      WITH [day in range(0, 5) | startDate + duration({days: day})] AS dates, this
 
       MATCH (date:TimeGraph)
       USING INDEX date:TimeGraph(date)
@@ -681,6 +685,7 @@ extend type Council {
         WHERE record.noServiceReason IS NULL
           AND record.bankingSlip IS NULL
           AND (record.transactionStatus IS NULL OR record.transactionStatus <> 'success')
+          AND record.tellerConfirmationTime IS NULL
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships) WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
 
        WITH DISTINCT fellowships, this
@@ -696,7 +701,7 @@ extend type Council {
       WITH date() as today, this
       WITH  today.weekDay as theDay, today, this
       WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
-      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates, this
+      WITH [day in range(0, 5) | startDate + duration({days: day})] AS dates, this
 
       MATCH (date:TimeGraph)
       USING INDEX date:TimeGraph(date)
@@ -707,6 +712,7 @@ extend type Council {
         WHERE record.noServiceReason IS NULL
           AND record.bankingSlip IS NULL
           AND (record.transactionStatus IS NULL OR record.transactionStatus <> 'success')
+          AND record.tellerConfirmationTime IS NULL
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships) WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
 
        WITH DISTINCT fellowships, this
@@ -722,7 +728,7 @@ extend type Council {
       WITH date() as today, this
       WITH  today.weekDay as theDay, today, this
       WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
-      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates, this
+      WITH [day in range(0, 5) | startDate + duration({days: day})] AS dates, this
 
       MATCH (date:TimeGraph)
       USING INDEX date:TimeGraph(date)
@@ -731,7 +737,7 @@ extend type Council {
 
        WITH DISTINCT record, this
         WHERE record.noServiceReason IS NULL
-         AND (record.bankingSlip IS NOT NULL OR record.transactionStatus ='success')
+         AND (record.bankingSlip IS NOT NULL OR record.transactionStatus ='success' OR record.tellerConfirmationTime IS NOT NULL)
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships) WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
 
        WITH DISTINCT fellowships, this
@@ -747,7 +753,7 @@ extend type Council {
       WITH date() as today, this
       WITH  today.weekDay as theDay, today, this
       WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
-      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates, this
+      WITH [day in range(0, 5) | startDate + duration({days: day})] AS dates, this
 
       MATCH (date:TimeGraph)
       USING INDEX date:TimeGraph(date)
@@ -756,7 +762,7 @@ extend type Council {
 
        WITH DISTINCT record, this
         WHERE record.noServiceReason IS NULL
-         AND (record.bankingSlip IS NOT NULL OR record.transactionStatus ='success')
+         AND (record.bankingSlip IS NOT NULL OR record.transactionStatus ='success' OR record.tellerConfirmationTime IS NOT NULL)
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships) WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
 
        WITH DISTINCT fellowships, this
@@ -777,7 +783,7 @@ extend type Constituency {
       WITH date() as today, this
       WITH  today.weekDay as theDay, today, this
       WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
-      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates, this
+      WITH [day in range(0, 5) | startDate + duration({days: day})] AS dates, this
 
       MATCH (date:TimeGraph)
       USING INDEX date:TimeGraph(date)
@@ -801,7 +807,7 @@ extend type Constituency {
       WITH date() as today, this
       WITH  today.weekDay as theDay, today, this
       WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
-      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates, this
+      WITH [day in range(0, 5) | startDate + duration({days: day})] AS dates, this
 
       MATCH (date:TimeGraph)
       USING INDEX date:TimeGraph(date)
@@ -825,7 +831,7 @@ extend type Constituency {
       WITH date() as today, this
       WITH  today.weekDay as theDay, today, this
       WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
-      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates, this
+      WITH [day in range(0, 5) | startDate + duration({days: day})] AS dates, this
 
       MATCH (date:TimeGraph)
       USING INDEX date:TimeGraph(date)
@@ -849,7 +855,7 @@ extend type Constituency {
       WITH date() as today, this
       WITH  today.weekDay as theDay, today, this
       WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
-      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates, this
+      WITH [day in range(0, 5) | startDate + duration({days: day})] AS dates, this
 
       MATCH (date:TimeGraph)
       USING INDEX date:TimeGraph(date)
@@ -873,7 +879,7 @@ extend type Constituency {
       WITH date() as today, this
       WITH  today.weekDay as theDay, today, this
       WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
-      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates, this
+      WITH [day in range(0, 5) | startDate + duration({days: day})] AS dates, this
 
       MATCH (date:TimeGraph)
       USING INDEX date:TimeGraph(date)
@@ -901,7 +907,7 @@ extend type Constituency {
       WITH date() as today, this
       WITH  today.weekDay as theDay, today, this
       WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
-      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates, this
+      WITH [day in range(0, 5) | startDate + duration({days: day})] AS dates, this
 
       MATCH (date:TimeGraph)
       USING INDEX date:TimeGraph(date)
@@ -929,7 +935,7 @@ extend type Constituency {
       WITH date() as today, this
       WITH  today.weekDay as theDay, today, this
       WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
-      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates, this
+      WITH [day in range(0, 5) | startDate + duration({days: day})] AS dates, this
 
       MATCH (date:TimeGraph)
       USING INDEX date:TimeGraph(date)
@@ -940,6 +946,7 @@ extend type Constituency {
         WHERE record.noServiceReason IS NULL
           AND record.bankingSlip IS NULL
           AND (record.transactionStatus IS NULL OR record.transactionStatus <> 'success')
+          AND record.tellerConfirmationTime IS NULL
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships) WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
 
        WITH DISTINCT fellowships, this
@@ -955,7 +962,7 @@ extend type Constituency {
       WITH date() as today, this
       WITH  today.weekDay as theDay, today, this
       WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
-      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates, this
+      WITH [day in range(0, 5) | startDate + duration({days: day})] AS dates, this
 
       MATCH (date:TimeGraph)
       USING INDEX date:TimeGraph(date)
@@ -966,6 +973,7 @@ extend type Constituency {
         WHERE record.noServiceReason IS NULL
           AND record.bankingSlip IS NULL
           AND (record.transactionStatus IS NULL OR record.transactionStatus <> 'success')
+          AND record.tellerConfirmationTime IS NULL
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships) WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
 
        WITH DISTINCT fellowships, this
@@ -981,7 +989,7 @@ extend type Constituency {
       WITH date() as today, this
       WITH  today.weekDay as theDay, today, this
       WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
-      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates, this
+      WITH [day in range(0, 5) | startDate + duration({days: day})] AS dates, this
 
       MATCH (date:TimeGraph)
       USING INDEX date:TimeGraph(date)
@@ -990,7 +998,7 @@ extend type Constituency {
 
        WITH DISTINCT record, this
         WHERE record.noServiceReason IS NULL
-         AND (record.bankingSlip IS NOT NULL OR record.transactionStatus ='success')
+         AND (record.bankingSlip IS NOT NULL OR record.transactionStatus ='success' OR record.tellerConfirmationTime IS NOT NULL)
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships) WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
 
        WITH DISTINCT fellowships, this
@@ -1006,7 +1014,7 @@ extend type Constituency {
       WITH date() as today, this
       WITH  today.weekDay as theDay, today, this
       WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
-      WITH [day in range(0, 4) | startDate + duration({days: day})] AS dates, this
+      WITH [day in range(0, 5) | startDate + duration({days: day})] AS dates, this
 
       MATCH (date:TimeGraph)
       USING INDEX date:TimeGraph(date)
@@ -1015,7 +1023,7 @@ extend type Constituency {
 
        WITH DISTINCT record, this
         WHERE record.noServiceReason IS NULL
-         AND (record.bankingSlip IS NOT NULL OR record.transactionStatus ='success')
+         AND (record.bankingSlip IS NOT NULL OR record.transactionStatus ='success' OR record.tellerConfirmationTime IS NOT NULL)
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships) WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
 
        WITH DISTINCT fellowships, this
@@ -1079,7 +1087,7 @@ type NoService implements Record @auth(rules: [{ isAuthenticated: true }]) {
   created_at: DateTime!
   created_by: Member!
   serviceDate: TimeGraph @relationship(type: "SERVICE_HELD_ON", direction: OUT)
-  week: Int
+  week: Int!
     @cypher(
       statement: """
       MATCH (this)-[:SERVICE_HELD_ON]->(date:TimeGraph)
@@ -1087,7 +1095,7 @@ type NoService implements Record @auth(rules: [{ isAuthenticated: true }]) {
       """
     )
   serviceLog: ServiceLog @relationship(type: "HAS_SERVICE", direction: IN)
-  noServiceReason: String
+  noServiceReason: String!
 }
 
 type ServiceLog @auth(rules: [{ isAuthenticated: true }]) {
@@ -1102,7 +1110,6 @@ type ServiceLog @auth(rules: [{ isAuthenticated: true }]) {
   leaders: [Member!]! @relationship(type: "HAS_HISTORY", direction: IN)
   fellowship: [Fellowship!]! @relationship(type: "HAS_HISTORY", direction: IN)
   bacenta: [Bacenta!]! @relationship(type: "HAS_HISTORY", direction: IN)
-  # bacentaFellowshipRecords(bacentaId: ID!): [BacentaFellowshipServiceRecords]
   constituency: [Constituency!]!
     @relationship(type: "HAS_HISTORY", direction: IN)
   council: [Council!]! @relationship(type: "HAS_HISTORY", direction: IN)
@@ -1126,13 +1133,13 @@ extend type Mutation {
     treasurers: [ID]!
     treasurerSelfie: String!
     servicePicture: String!
-  ): ServiceRecord
+  ): ServiceRecord!
 
   RecordCancelledService(
     id: ID!
     serviceDate: String!
     noServiceReason: String!
-  ): NoService
+  ): NoService!
     @cypher(
       statement: """
       CREATE (serviceRecord:ServiceRecord:NoService {created_at:datetime()})
@@ -1140,59 +1147,16 @@ extend type Mutation {
         serviceRecord.noServiceReason = $noServiceReason
 
       WITH serviceRecord
-      MATCH (church {id:$id}) WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council
-      MATCH (church)-[:CURRENT_HISTORY]->(log:HistoryLog)
+      MATCH (church {id:$id}) WHERE church:Fellowship
+      MATCH (church)-[:CURRENT_HISTORY]->(log:ServiceLog)
       MATCH (leader:Member {auth_id: $auth.jwt.sub})
 
       MERGE (serviceRecord)-[:LOGGED_BY]->(leader)
-      MERGE (serviceDate:TimeGraph {date:date($serviceDate)})
+      MERGE (serviceDate:TimeGraph {date: date($serviceDate)})
       MERGE (serviceRecord)-[:SERVICE_HELD_ON]->(serviceDate)
       MERGE (log)-[:HAS_SERVICE]->(serviceRecord)
 
       RETURN serviceRecord
-      """
-    )
-
-  RecordServiceNoOffering(
-    id: ID!
-    serviceDate: String!
-    attendance: Int!
-    servicePicture: String!
-  ): ServiceRecord
-    @cypher(
-      statement: """
-      CREATE (serviceRecord:ServiceRecord {created_at:datetime()})
-        SET serviceRecord.id = apoc.create.uuid(),
-        serviceRecord.attendance = $attendance,
-        serviceRecord.servicePicture = $servicePicture
-      WITH serviceRecord
-      MATCH (church {id:$id}) WHERE church:Fellowship OR church:Bacenta OR church:Sonta OR church:Constituency
-      MATCH (church)-[has_history:CURRENT_HISTORY]->(log:HistoryLog)
-      MATCH (leader:Member {auth_id: $auth.jwt.sub})
-
-      MERGE (serviceRecord)-[:LOGGED_BY]->(leader)
-      MERGE (serviceDate:TimeGraph {date:date($serviceDate)})
-      MERGE (serviceRecord)-[:SERVICE_HELD_ON]->(serviceDate)
-      MERGE (log)-[:HAS_SERVICE]->(serviceRecord)
-
-      RETURN serviceRecord
-      """
-    )
-
-  SubmitBankingSlip(serviceRecordId: ID!, bankingSlip: String!): ServiceRecord
-    @cypher(
-      statement: """
-      MATCH (record:ServiceRecord {id: $serviceRecordId})
-       WHERE record.transactionStatus IS NULL
-        OR record.transactionStatus = 'failed'
-
-        SET record.bankingSlip = $bankingSlip
-
-        WITH record
-        MATCH (banker:Member {auth_id: $auth.jwt.sub})
-        MERGE (banker)-[:UPLOADED_SLIP_FOR]->(record)
-
-        RETURN record
       """
     )
 }

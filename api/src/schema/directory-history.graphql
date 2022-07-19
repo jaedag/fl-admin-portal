@@ -3,7 +3,6 @@ extend type Mutation {
     churchType: String!
     servantType: String!
     churchId: ID!
-    connectUpwards: Boolean
   ): ID!
 
   LogStreamHistory(ids: [ID], historyRecord: String!): Stream
@@ -45,7 +44,6 @@ extend type Mutation {
 
       WITH log, date
       MATCH (author:Member {auth_id: $auth.jwt.sub})
-       MERGE (date:TimeGraph {date: date()})
        MERGE (log)-[:LOGGED_BY]->(author)
        MERGE (log)-[:RECORDED_ON]->(date)
 

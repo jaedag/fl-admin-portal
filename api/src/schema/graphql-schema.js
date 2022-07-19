@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 const fs = require('fs')
 const path = require('path')
 /*
@@ -31,9 +32,14 @@ const services = fs
   .readFileSync(path.join(__dirname, 'services.graphql'))
   .toString('utf-8')
 
+const servicesNoIncome = fs.readFileSync(
+  path.join(__dirname, 'services-no-income.graphql')
+)
+
 const banking = fs
   .readFileSync(path.join(__dirname, './banking.graphql'))
   .toString('utf-8')
+
 const arrivals = fs
   .readFileSync(path.join(__dirname, './arrivals.graphql'))
   .toString('utf-8')
@@ -50,26 +56,24 @@ const aggregates = fs
   .readFileSync(path.join(__dirname, './aggregates.graphql'))
   .toString('utf-8')
 
-exports.typeDefs =
-  schema +
-  ' ' +
-  directory +
-  ' ' +
-  aggregates +
-  ' ' +
-  directoryCrud +
-  ' ' +
-  directoryHistory +
-  ' ' +
-  directorySearch +
-  ' ' +
-  services +
-  ' ' +
-  arrivals +
-  ' ' +
-  campaigns +
-  ' ' +
-  banking +
-  ' ' +
-  quickFacts +
-  ' '
+const bankingAnagkazo = fs
+  .readFileSync(path.join(__dirname, './banking-anagkazo.graphql'))
+  .toString('utf-8')
+
+const array = [
+  schema,
+  directory,
+  directoryCrud,
+  directoryHistory,
+  directorySearch,
+  services,
+  banking,
+  bankingAnagkazo,
+  arrivals,
+  campaigns,
+  quickFacts,
+  aggregates,
+  servicesNoIncome,
+]
+
+exports.typeDefs = array.join(' ')

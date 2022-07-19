@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders 1`] = `
+<DocumentFragment>
+  <h3
+    class="placeholder-glow"
+  >
+    <span
+      class="h-100 col-8 placeholder placeholder-lg bg-dark"
+    />
+  </h3>
+</DocumentFragment>
+`;

@@ -16,7 +16,7 @@ npm start
 
 This will start the GraphQL service (by default on localhost:4000) where you can issue GraphQL requests or access GraphQL Playground in the browser:
 
-![GraphQL Playground](img/graphql-playground.png)
+![GraphQL Playground](img/graphql-playgroundwebp)
 
 ## Configure
 
@@ -37,7 +37,6 @@ Note that grand-stack-starter does not currently bundle a distribution of Neo4j.
 ## Configuring Auth0 for GRANDstack - GraphQL.
 
 Please read this [write-up](auth0-howto.md) for more information on configuring `Auth0` for GRANDStack - GraphQL.
-
 
 ## Deployment
 

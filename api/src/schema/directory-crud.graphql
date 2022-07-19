@@ -786,7 +786,7 @@ extend type Mutation {
       MERGE (stream)-[:HAS_HISTORY]->(log)
       MERGE (gatheringService)-[:HAS_HISTORY]->(log)
 
-      SET stream:ClosedStream, councils:ClosedCouncil, constituencies:Closedconstituency, bacentas:ClosedBacenta, fellowships:ClosedFellowship
+      SET stream:ClosedStream, council:ClosedCouncil, constituencies:Closedconstituency, bacentas:ClosedBacenta, fellowships:ClosedFellowship
       REMOVE stream:Stream, council:Council, constituencies:Constituency,bacentas:Bacenta,fellowships:Fellowship
 
       RETURN gatheringService

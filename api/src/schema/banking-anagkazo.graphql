@@ -1,0 +1,14 @@
+extend type Stream {
+  tellers: [Member!]! @relationship(type: "IS_TELLER_FOR", direction: IN)
+}
+
+extend type Member {
+  isTellerForStream: [Stream!]!
+    @relationship(type: "IS_TELLER_FOR", direction: OUT)
+}
+
+extend type Mutation {
+  MakeStreamTeller(streamId: ID!, tellerId: ID!): Member!
+  RemoveStreamTeller(streamId: ID!, tellerId: ID!): Member!
+  ConfirmBanking(serviceRecordId: ID!): ServiceRecord!
+}
