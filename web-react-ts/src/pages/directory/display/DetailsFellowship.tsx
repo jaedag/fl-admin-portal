@@ -1,10 +1,10 @@
 import React, { useContext } from 'react'
 import { useQuery } from '@apollo/client'
-import DisplayChurchDetails from '../../../components/DisplayChurchDetails/DisplayChurchDetails'
+import DisplayChurchDetails from 'components/DisplayChurchDetails/DisplayChurchDetails'
 import { DISPLAY_FELLOWSHIP, DISPLAY_FELLOWSHIP_HISTORY } from './ReadQueries'
-import { ChurchContext } from '../../../contexts/ChurchContext'
+import { ChurchContext } from 'contexts/ChurchContext'
 import { throwErrorMsg } from 'global-utils'
-import { last3Weeks, getWeekNumber } from 'jd-date-utils'
+import { last3Weeks } from 'jd-date-utils'
 import { permitAdmin } from 'permission-utils'
 import { ServiceRecord } from 'global-types'
 
@@ -91,18 +91,17 @@ const DetailsFellowship = () => {
     {
       title: 'Meeting Day',
       number: fellowship?.meetingDay?.day,
+      link: '#',
     },
     {
       title: 'Status',
       number: fellowship?.vacationStatus,
       link: '#',
-      width: '',
     },
     {
       title: 'Code',
       number: fellowship?.bankingCode,
       link: `#`,
-      width: '',
     },
   ]
 
@@ -115,16 +114,12 @@ const DetailsFellowship = () => {
       leaderTitle="Fellowship Leader"
       leader={fellowship?.leader}
       location={fellowship?.location}
-      membership={fellowship?.memberCount}
-      churchHeading="Meeting Day"
-      churchCount={fellowship?.meetingDay?.day}
       churchType="Fellowship"
-      buttons={['']}
+      buttons={[]}
       editlink="/fellowship/editfellowship"
       editPermitted={[...permitAdmin('Constituency'), 'leaderFellowship']}
-      weekNumber={getWeekNumber()}
       last3Weeks={fellowship && check}
-      vacation={fellowship?.vacationStatus && true}
+      vacation={fellowship?.vacationStatus}
       history={history?.history.length && history?.history}
       breadcrumb={breadcrumb && breadcrumb}
     />

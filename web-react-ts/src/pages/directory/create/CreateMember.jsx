@@ -96,7 +96,7 @@ const CreateMember = () => {
           await AddMemberTitle({
             variables: {
               memberId: res.data.CreateMember.id,
-              title: title.title,
+              title: title.name,
               status: true,
               date: title.date,
             },

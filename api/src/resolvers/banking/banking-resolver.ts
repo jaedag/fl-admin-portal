@@ -12,7 +12,7 @@ import { isAuth, rearrangeCypherObject, throwErrorMsg } from '../utils/utils'
 
 import {
   checkTransactionId,
-  lastButOneServiceRecord,
+  getLastServiceRecord,
   removeBankingRecordTransactionId,
   setServiceRecordTransactionId,
   setTransactionStatusFailed,
@@ -20,7 +20,7 @@ import {
   submitBankingSlip,
 } from './banking-cypher'
 import { PaySwitchRequestBody } from './banking-types'
-import { StreamOptions } from '../utils/types'
+import { ServiceRecord, StreamOptions } from '../utils/types'
 
 const checkIfLastServiceBanked = async (
   serviceRecordId: string,
@@ -28,26 +28,27 @@ const checkIfLastServiceBanked = async (
 ) => {
   const session = context.executionContext.session()
   // this checks if the person has banked their last offering
-  const lastServiceRecord = rearrangeCypherObject(
-    await session
-      .run(lastButOneServiceRecord, {
-        serviceRecordId,
-        auth: context.auth,
-      })
-      .catch((error: any) => throwErrorMsg(error))
-  )
+  const lastServiceResponse = await session
+    .run(getLastServiceRecord, {
+      serviceRecordId,
+      auth: context.auth,
+    })
+    .catch((error: any) => throwErrorMsg(error))
+  const lastServiceRecord = rearrangeCypherObject(lastServiceResponse)
 
-  const record = lastServiceRecord.record.properties
+  if (!('lastService' in lastServiceRecord)) return true
 
-  if (
-    (!Object.prototype.hasOwnProperty.call(record, 'bankingSlip') ||
-      record.transactionStatus === 'success') &&
-    record.id !== serviceRecordId
-  ) {
+  const record: ServiceRecord = lastServiceRecord.lastService.properties
+
+  if (!('bankingSlip' in record || record.transactionStatus === 'success')) {
     throwErrorMsg(
-      "Please bank last week's outstanding offering before attempting to bank this week's"
+      "Please bank last week's outstanding offering before attempting to bank this week's offering"
     )
+
+    return false
   }
+
+  return true
 }
 
 const bankingMutation = {
@@ -239,10 +240,7 @@ const bankingMutation = {
 
       return submissionResponse.record.properties
     } catch (error: any) {
-      return throwErrorMsg(
-        'There was an error submitting your banking slip',
-        error
-      )
+      return throwErrorMsg(error)
     }
   },
 }

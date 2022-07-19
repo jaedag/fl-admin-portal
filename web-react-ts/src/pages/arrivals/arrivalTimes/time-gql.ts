@@ -26,7 +26,7 @@ export const SET_STREAM_ARRIVAL_TIMES = gql`
 `
 
 export const GET_ARRIVAL_TIMES = gql`
-  query ($id: ID!) {
+  query getStreamArrivalTimes($id: ID!) {
     streams(where: { id: $id }) {
       id
       name

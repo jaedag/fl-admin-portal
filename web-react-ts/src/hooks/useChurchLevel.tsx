@@ -9,7 +9,7 @@ import { getSubChurchLevel } from 'global-utils'
 import { useContext, useEffect, useState } from 'react'
 
 type useChurchLevelProps = {
-  constituencyFunction: LazyQueryExecFunction<any, OperationVariables>
+  constituencyFunction?: LazyQueryExecFunction<any, OperationVariables>
   councilFunction: LazyQueryExecFunction<any, OperationVariables>
   streamFunction: LazyQueryExecFunction<any, OperationVariables>
   gatheringServiceFunction: LazyQueryExecFunction<any, OperationVariables>
@@ -20,7 +20,9 @@ const useChurchLevel = (props: useChurchLevelProps) => {
 
   const currentChurch = currentUser?.currentChurch
   const churchLevel: ChurchLevel = currentUser?.currentChurch?.__typename
-  const subChurchLevel = getSubChurchLevel(currentChurch?.__typename)
+  const subChurchLevel: ChurchLevel = getSubChurchLevel(
+    currentChurch?.__typename
+  )
 
   const [church, setChurch] = useState(null)
   const [loading, setLoading] = useState(true)
@@ -31,6 +33,7 @@ const useChurchLevel = (props: useChurchLevelProps) => {
       switch (churchLevel) {
         case 'Constituency':
           {
+            if (!props.constituencyFunction) break
             const res = await props.constituencyFunction({
               variables: {
                 id: currentChurch?.id,

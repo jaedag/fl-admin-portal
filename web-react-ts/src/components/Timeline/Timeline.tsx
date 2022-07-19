@@ -5,7 +5,7 @@ import './Timeline.css'
 import { parseDate, parseNeoTime } from 'jd-date-utils'
 import { Member } from 'global-types'
 
-type TimelineElement = {
+export type TimelineElement = {
   historyRecord: string
   loggedBy: Member
   timeStamp: string

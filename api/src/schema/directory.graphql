@@ -5,6 +5,11 @@ type Member @auth(rules: [{ isAuthenticated: true }]) {
   middleName: String
   lastName: String
   fullName: String @computed
+  currentTitle: String
+    @cypher(
+      statement: "MATCH (this)-[:HAS_TITLE]->(title:Title) RETURN title.name ORDER BY title.weight DESC LIMIT 1"
+    )
+  nameWithTitle: String @computed
   email: String
   phoneNumber: String
   whatsappNumber: String
@@ -194,7 +199,7 @@ type Occupation @auth(rules: [{ isAuthenticated: true }]) {
 }
 
 type Title @auth(rules: [{ isAuthenticated: true }]) {
-  title: String! #Pastor, Reverend, Apostle, Bishop (Mother)
+  name: String! #Pastor, Reverend, Apostle, Bishop (Mother)
   members: [Member!]!
     @relationship(type: "HAS_TITLE", properties: "HasTitle", direction: IN)
 }
@@ -890,6 +895,7 @@ type Sonta {
       RETURN DISTINCT toLower(stream.name)
       """
     )
+  members: [Member!]!
   leader: Member @relationship(type: "LEADS", direction: IN)
   basonta: [Basonta!]! @relationship(type: "HAS_BASONTA", direction: OUT)
   ministry: Ministry @relationship(type: "HAS_SONTA", direction: IN)

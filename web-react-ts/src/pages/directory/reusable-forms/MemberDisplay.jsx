@@ -2,12 +2,7 @@ import React from 'react'
 import { useQuery } from '@apollo/client'
 import Timeline from '../../../components/Timeline/Timeline.tsx'
 import MemberRoleList from '../../../components/MemberRoleList'
-import {
-  getNameWithTitle,
-  throwErrorMsg,
-  getHighestTitle,
-  USER_PLACEHOLDER,
-} from '../../../global-utils'
+import { throwErrorMsg, USER_PLACEHOLDER } from 'global-utils'
 import { getMemberDob } from 'jd-date-utils'
 import {
   DISPLAY_MEMBER_ADMIN,
@@ -48,7 +43,6 @@ const MemberDisplay = ({ memberId }) => {
   const memberLeader = leaderData?.members[0]
   const memberAdmin = adminData?.members[0]
   const memberBirthday = getMemberDob(member)
-  const nameAndTitle = getNameWithTitle(member)
 
   return (
     <Container>
@@ -74,7 +68,7 @@ const MemberDisplay = ({ memberId }) => {
 
       <div className="text-center">
         <PlaceholderCustom as="h3" loading={!member || loading}>
-          <h3>{nameAndTitle}</h3>
+          <h3>{member?.nameWithTitle}</h3>
         </PlaceholderCustom>
         <MemberRoleList memberLeader={memberLeader} memberAdmin={memberAdmin} />
       </div>
@@ -158,10 +152,7 @@ const MemberDisplay = ({ memberId }) => {
 
         {member?.titleConnection?.edges[0]?.node.title && (
           <Col sm={1} md="auto">
-            <DetailsCard
-              heading="Pastoral Rank"
-              detail={getHighestTitle(member)}
-            />
+            <DetailsCard heading="Pastoral Rank" detail={member.currentTitle} />
           </Col>
         )}
 

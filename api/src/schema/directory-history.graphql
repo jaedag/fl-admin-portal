@@ -3,7 +3,6 @@ extend type Mutation {
     churchType: String!
     servantType: String!
     churchId: ID!
-    connectUpwards: Boolean
   ): ID!
 
   LogStreamHistory(ids: [ID], historyRecord: String!): Stream

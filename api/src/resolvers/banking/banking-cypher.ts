@@ -32,7 +32,7 @@ RETURN record, banker
 
 export const setTransactionStatusFailed = `
 MATCH (record:ServiceRecord {id: $serviceRecordId})
-SET record.transactionStatus = "failed"
+SET record.transactionStatus = 'failed'
 
 RETURN record
 `
@@ -49,21 +49,25 @@ WHERE church:Fellowship OR church:Constituency OR church:Council OR church:Strea
 
 MATCH (record)-[r:OFFERING_BANKED_BY]->(banker)
 MATCH (record)-[:SERVICE_HELD_ON]->(date:TimeGraph)
-SET record.transactionStatus = "failed"
+SET record.transactionStatus = 'failed'
 DELETE r
 
 RETURN record, church.name AS churchName, date.date AS date
 `
-export const lastButOneServiceRecord = `
+
+export const getLastServiceRecord = `
 MATCH (record:ServiceRecord {id: $serviceRecordId})
-MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowship:Fellowship) 
-WITH fellowship
-MATCH (date:TimeGraph)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowship) 
-WHERE NOT (record:NoService)
-WITH DISTINCT fellowship, record, date ORDER BY date(date.date) DESC LIMIT 2
-WITH min(date(date.date)) as lowDate, fellowship
-MATCH (date:TimeGraph {date:date(lowDate)})<-[:SERVICE_HELD_ON]-(record:ServiceRecord)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowship) 
-RETURN record
+MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowship:Fellowship)
+MATCH (fellowship)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(otherRecords:ServiceRecord) 
+WHERE NOT (otherRecords:NoService)
+
+WITH DISTINCT record,otherRecords ORDER BY otherRecords.created_at DESC LIMIT 2
+WITH collect(otherRecords.id) AS recordIds, record.id AS currentServiceId
+
+WITH apoc.coll.indexOf(recordIds,currentServiceId) + 1 AS lastServiceIndex, recordIds WHERE lastServiceIndex >= 0
+MATCH (lastService:ServiceRecord {id: recordIds[lastServiceIndex]})
+
+RETURN lastService
 `
 export const submitBankingSlip = `
 MATCH (record:ServiceRecord {id: $serviceRecordId})

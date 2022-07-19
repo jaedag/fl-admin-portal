@@ -71,8 +71,8 @@ export const RECORD_SERVICE_NO_INCOME = gql`
     $attendance: Int!
     $servicePicture: String!
   ) {
-    RecordServiceNoOffering(
-      id: $churchId
+    RecordServiceNoIncome(
+      churchId: $churchId
       serviceDate: $serviceDate
       attendance: $attendance
       servicePicture: $servicePicture
@@ -84,7 +84,7 @@ export const RECORD_SERVICE_NO_INCOME = gql`
 `
 
 export const DISPLAY_FELLOWSHIP_SERVICE = gql`
-  query DisplayServiceRecords($serviceId: ID!, $fellowshipId: ID!) {
+  query fellowshipDisplayServiceRecords($serviceId: ID!, $fellowshipId: ID!) {
     serviceRecords(where: { id: $serviceId }) {
       id
       created_at
@@ -133,7 +133,7 @@ export const DISPLAY_FELLOWSHIP_SERVICE = gql`
 `
 
 export const DISPLAY_BACENTA_SERVICE = gql`
-  query DisplayServiceRecords($serviceId: ID!, $bacentaId: ID!) {
+  query bacentaDisplayServiceRecords($serviceId: ID!, $bacentaId: ID!) {
     serviceRecords(where: { id: $serviceId }) {
       id
       created_at
@@ -182,7 +182,7 @@ export const DISPLAY_BACENTA_SERVICE = gql`
 `
 
 export const DISPLAY_SONTA_SERVICE = gql`
-  query DisplayServiceRecords($serviceId: ID!, $sontaId: ID!) {
+  query sontaDisplayServiceRecords($serviceId: ID!, $sontaId: ID!) {
     serviceRecords(where: { id: $serviceId }) {
       id
       created_at
@@ -209,7 +209,10 @@ export const DISPLAY_SONTA_SERVICE = gql`
 `
 
 export const DISPLAY_CONSTITUENCY_SERVICE = gql`
-  query DisplayServiceRecords($serviceId: ID!, $constituencyId: ID!) {
+  query constituencyDisplayServiceRecords(
+    $serviceId: ID!
+    $constituencyId: ID!
+  ) {
     serviceRecords(where: { id: $serviceId }) {
       id
       created_at
@@ -258,7 +261,7 @@ export const DISPLAY_CONSTITUENCY_SERVICE = gql`
 `
 
 export const DISPLAY_COUNCIL_SERVICE = gql`
-  query DisplayServiceRecords($serviceId: ID!, $councilId: ID!) {
+  query councilDisplayServiceRecords($serviceId: ID!, $councilId: ID!) {
     serviceRecords(where: { id: $serviceId }) {
       id
       created_at
@@ -307,7 +310,7 @@ export const DISPLAY_COUNCIL_SERVICE = gql`
 `
 
 export const DISPLAY_STREAM_SERVICE = gql`
-  query DisplayServiceRecords($serviceId: ID!, $streamId: ID!) {
+  query streamDisplayServiceRecords($serviceId: ID!, $streamId: ID!) {
     serviceRecords(where: { id: $serviceId }) {
       id
       created_at
@@ -356,7 +359,10 @@ export const DISPLAY_STREAM_SERVICE = gql`
 `
 
 export const DISPLAY_GATHERINGSERVICE_SERVICE = gql`
-  query DisplayServiceRecords($serviceId: ID!, $gatheringServiceId: ID!) {
+  query gatheringDisplayServiceRecords(
+    $serviceId: ID!
+    $gatheringServiceId: ID!
+  ) {
     serviceRecords(where: { id: $serviceId }) {
       id
       created_at

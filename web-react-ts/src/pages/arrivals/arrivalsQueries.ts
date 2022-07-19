@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client'
 
 export const CONSTITUENCY_ARRIVALS_DASHBOARD = gql`
-  query ($id: ID!) {
+  query constituencyArrivalsDashboard($id: ID!) {
     constituencies(where: { id: $id }, options: { limit: 1 }) {
       id
       name
@@ -30,7 +30,7 @@ export const CONSTITUENCY_ARRIVALS_DASHBOARD = gql`
 `
 
 export const COUNCIL_ARRIVALS_DASHBOARD = gql`
-  query ($id: ID!) {
+  query councilArrivalsDashboard($id: ID!) {
     councils(where: { id: $id }, options: { limit: 1 }) {
       id
       name
@@ -60,7 +60,7 @@ export const COUNCIL_ARRIVALS_DASHBOARD = gql`
 `
 
 export const STREAM_ARRIVALS_DASHBOARD = gql`
-  query ($id: ID!) {
+  query streamArrivalsDashboard($id: ID!) {
     streams(where: { id: $id }, options: { limit: 1 }) {
       id
       name
@@ -91,7 +91,7 @@ export const STREAM_ARRIVALS_DASHBOARD = gql`
 `
 
 export const GATHERINGSERVICE_ARRIVALS_DASHBOARD = gql`
-  query ($id: ID!, $date: Date!) {
+  query gatheringArrivalsDashboard($id: ID!, $date: Date!) {
     gatheringServices(where: { id: $id }, options: { limit: 1 }) {
       id
       name
@@ -126,7 +126,7 @@ export const GATHERINGSERVICE_ARRIVALS_DASHBOARD = gql`
 `
 
 export const CONFIRM_CONSTITUENCY_ARRIVALS = gql`
-  query ($id: ID!) {
+  query confirmConstituencyArrivals($id: ID!) {
     constituencies(where: { id: $id }, options: { limit: 1 }) {
       id
       name
@@ -158,7 +158,7 @@ export const CONFIRM_CONSTITUENCY_ARRIVALS = gql`
 `
 
 export const CONFIRM_COUNCIL_ARRIVALS = gql`
-  query ($id: ID!) {
+  query confirmCouncilArrivals($id: ID!) {
     councils(where: { id: $id }, options: { limit: 1 }) {
       id
       name
@@ -190,7 +190,7 @@ export const CONFIRM_COUNCIL_ARRIVALS = gql`
 `
 
 export const CONFIRM_STREAM_ARRIVALS = gql`
-  query ($id: ID!) {
+  query confirmStreamArrivals($id: ID!) {
     streams(where: { id: $id }, options: { limit: 1 }) {
       id
       name
@@ -222,7 +222,7 @@ export const CONFIRM_STREAM_ARRIVALS = gql`
 `
 
 export const CONFIRM_GATHERINGSERVICE_ARRIVALS = gql`
-  query ($id: ID!) {
+  query confirmGatheringArrivals($id: ID!) {
     gatheringServices(where: { id: $id }, options: { limit: 1 }) {
       id
       name
@@ -254,7 +254,7 @@ export const CONFIRM_GATHERINGSERVICE_ARRIVALS = gql`
 `
 
 export const BACENTA_ARRIVALS = gql`
-  query ($id: ID!, $date: Date) {
+  query bacentaArrivals($id: ID!, $date: Date) {
     bacentas(where: { id: $id }, options: { limit: 1 }) {
       id
       name
@@ -293,7 +293,7 @@ export const BACENTA_ARRIVALS = gql`
 `
 
 export const CONSTITUENCY_LEADER_ARRIVALS = gql`
-  query ($id: ID!) {
+  query constituencyLeaderArrivals($id: ID!) {
     members(where: { id: $id }, options: { limit: 1 }) {
       id
       firstName
@@ -312,7 +312,7 @@ export const CONSTITUENCY_LEADER_ARRIVALS = gql`
 `
 
 export const COUNCIL_LEADER_ARRIVALS = gql`
-  query ($id: ID!) {
+  query councilLeaderArrivals($id: ID!) {
     members(where: { id: $id }, options: { limit: 1 }) {
       id
       firstName
@@ -331,7 +331,7 @@ export const COUNCIL_LEADER_ARRIVALS = gql`
 `
 
 export const STREAM_LEADER_ARRIVALS = gql`
-  query ($id: ID!) {
+  query streamLeaderArrivals($id: ID!) {
     members(where: { id: $id }, options: { limit: 1 }) {
       id
       firstName
@@ -350,7 +350,7 @@ export const STREAM_LEADER_ARRIVALS = gql`
 `
 
 export const GATHERINGSERVICE_LEADER_ARRIVALS = gql`
-  query ($id: ID!) {
+  query gatheringLeaderArrivals($id: ID!) {
     members(where: { id: $id }, options: { limit: 1 }) {
       id
       firstName

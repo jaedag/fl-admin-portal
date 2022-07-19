@@ -69,6 +69,8 @@ export type ServantTypeLowerCase =
 
 export type StreamOptions = 'Campus' | 'Town' | 'Anagkazo'
 
+type TitleOptions = 'Pastor' | 'Reverend' | 'Bishop'
+
 export interface Member {
   id: string
   // eslint-disable-next-line camelcase
@@ -76,6 +78,10 @@ export interface Member {
   firstName: string
   middleName?: string
   lastName: string
+  currentTitle: TitleOptions
+  title: {
+    name: TitleOptions
+  }
   email: string
   pictureUrl: string
   phoneNumber: string
@@ -114,4 +120,20 @@ export type ChurchIdAndName = {
 export interface Record {
   id: string
   attendance: number
+}
+export type ServiceRecord = {
+  __typename: 'ServiceRecord' | 'RehearsalRecord'
+  id: string
+  attendance: number
+  income: number
+  week: number
+  // eslint-disable-next-line camelcase
+  stream_name: StreamOptions
+  noServiceReason: string
+  bankingProof: boolean
+  bankingSlip: string
+  transactionStatus: 'pending' | 'success' | 'failed'
+  serviceDate: {
+    date: string
+  }
 }

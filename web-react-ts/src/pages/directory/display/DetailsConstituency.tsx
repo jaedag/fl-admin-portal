@@ -43,13 +43,11 @@ const DetailsConstituency = () => {
         loading={loading}
         name={data?.constituencies[0]?.name}
         leaderTitle={'Constituency Overseer'}
-        membership={data?.constituencies[0]?.memberCount}
         leader={data?.constituencies[0]?.leader}
         churchId={constituencyId}
         admin={data?.constituencies[0]?.admin}
         churchType={`Constituency`}
         subChurch={`Bacenta`}
-        subChurchBasonta="Sonta"
         buttons={data?.constituencies[0]?.bacentas}
         buttonsSecondRow={data?.constituencies[0]?.sontas}
         editlink="/constituency/editconstituency"

@@ -51,6 +51,14 @@ const dotenv = require('dotenv')
 
 dotenv.config()
 
+const checkIfSelf = (servantId: string, auth: string) => {
+  if (servantId === auth.replace('auth0|', '')) {
+    throwErrorMsg(
+      'Sorry! You cannot make yourself an arrivals counter or confirmer'
+    )
+  }
+}
+
 export const arrivalsMutation = {
   MakeConstituencyArrivalsAdmin: async (
     object: any,
@@ -138,17 +146,24 @@ export const arrivalsMutation = {
     ),
 
   // ARRIVALS HELPERS
-  MakeStreamArrivalsCounter: async (object: any, args: any, context: Context) =>
-    MakeServant(
+  MakeStreamArrivalsCounter: async (
+    object: never,
+    args: { arrivalsCounterId: string; streamId: string },
+    context: Context
+  ) => {
+    checkIfSelf(args.arrivalsCounterId, context.auth.jwt.sub)
+
+    return MakeServant(
       context,
       args,
       [...permitAdmin('Stream'), ...permitArrivals('Stream')],
       'Stream',
       'ArrivalsCounter'
-    ),
+    )
+  },
   RemoveStreamArrivalsCounter: async (
-    object: any,
-    args: any,
+    object: never,
+    args: { arrivalsCounterId: string; streamId: string },
     context: Context
   ) =>
     RemoveServant(
@@ -161,19 +176,22 @@ export const arrivalsMutation = {
 
   MakeStreamArrivalsConfirmer: async (
     object: any,
-    args: any,
+    args: { arrivalsConfirmerId: string; streamId: string },
     context: Context
-  ) =>
-    MakeServant(
+  ) => {
+    checkIfSelf(args.arrivalsConfirmerId, context.auth.jwt.sub)
+
+    return MakeServant(
       context,
       args,
       [...permitAdmin('Stream'), ...permitArrivals('Stream')],
       'Stream',
       'ArrivalsConfirmer'
-    ),
+    )
+  },
   RemoveStreamArrivalsConfirmer: async (
     object: any,
-    args: any,
+    args: { arrivalsConfirmerId: string; streamId: string },
     context: Context
   ) =>
     RemoveServant(
@@ -316,13 +334,13 @@ export const arrivalsMutation = {
     try {
       type responseType = {
         id: string
-        target: number
-        attendance: number
+        target: neonumber
+        attendance: neonumber
         numberOfBusses: neonumber
-        numberOfCars: number
-        bussingCost: neonumber
-        swellBussingTopUp: number
-        normalBussingTopUp: number
+        numberOfCars: neonumber
+        bussingCost: number
+        swellBussingTopUp: neonumber
+        normalBussingTopUp: neonumber
         leaderPhoneNumber: string
         leaderFirstName: string
         dateLabels: string[]
@@ -333,7 +351,7 @@ export const arrivalsMutation = {
 
       let bussingRecord: RearragedCypherResponse | undefined
 
-      if (response.attendance < 8) {
+      if (response.attendance.low < 8) {
         try {
           await Promise.all([
             session.run(noBussingTopUp, args),
@@ -353,8 +371,8 @@ export const arrivalsMutation = {
       }
 
       if (
-        response.attendance >= 8 &&
-        response.bussingCost.low < response.normalBussingTopUp
+        response.attendance.low >= 8 &&
+        response.bussingCost < response.normalBussingTopUp.low
       ) {
         // Bussing Cost is less than the normal top up
 
@@ -374,60 +392,55 @@ export const arrivalsMutation = {
         return bussingRecord?.record.properties
       }
 
-      if (
-        response.attendance >= 8 &&
-        response.bussingCost.low >= response.swellBussingTopUp
-      ) {
-        if (response.attendance >= response.target) {
-          const receiveMoney = joinMessageStrings([
-            `Hi  ${response.leaderFirstName}\n\n`,
-            texts.arrivalsSMS.swell_top_up_p1,
-            response.swellBussingTopUp?.toString(),
-            texts.arrivalsSMS.swell_top_up_p2,
-            response.attendance.toString(),
-          ])
+      if (response.attendance.low >= response.target.low) {
+        const receiveMoney = joinMessageStrings([
+          `Hi  ${response.leaderFirstName}\n\n`,
+          texts.arrivalsSMS.swell_top_up_p1,
+          response.swellBussingTopUp?.toString(),
+          texts.arrivalsSMS.swell_top_up_p2,
+          response.attendance.toString(),
+        ])
 
-          const noMoney = joinMessageStrings([
-            `Hi  ${response.leaderFirstName}\n\n`,
-            texts.arrivalsSMS.swell_no_top_up,
-            response.attendance.toString(),
-          ])
+        const noMoney = joinMessageStrings([
+          `Hi  ${response.leaderFirstName}\n\n`,
+          texts.arrivalsSMS.swell_no_top_up,
+          response.attendance.toString(),
+        ])
 
-          const attendanceRes = await Promise.all([
-            session.run(setSwellBussingTopUp, args),
-            sendBulkSMS(
-              [response.leaderPhoneNumber],
-              `${response.swellBussingTopUp ? receiveMoney : noMoney}`
-            ),
-          ])
+        const attendanceRes = await Promise.all([
+          session.run(setSwellBussingTopUp, args),
+          sendBulkSMS(
+            [response.leaderPhoneNumber],
+            `${response.swellBussingTopUp ? receiveMoney : noMoney}`
+          ),
+        ])
 
-          bussingRecord = rearrangeCypherObject(attendanceRes[0])
-        }
+        bussingRecord = rearrangeCypherObject(attendanceRes[0])
+      }
 
-        if (response.attendance < response.target) {
-          const receiveMoney = joinMessageStrings([
-            `Hi  ${response.leaderFirstName}\n\n`,
-            texts.arrivalsSMS.normal_top_up_p1,
-            response.normalBussingTopUp?.toString(),
-            texts.arrivalsSMS.normal_top_up_p2,
-            response.attendance?.toString(),
-          ])
+      if (response.attendance.low < response.target.low) {
+        const receiveMoney = joinMessageStrings([
+          `Hi  ${response.leaderFirstName}\n\n`,
+          texts.arrivalsSMS.normal_top_up_p1,
+          response.normalBussingTopUp?.toString(),
+          texts.arrivalsSMS.normal_top_up_p2,
+          response.attendance?.toString(),
+        ])
 
-          const noMoney = joinMessageStrings([
-            `Hi  ${response.leaderFirstName}\n\n`,
-            texts.arrivalsSMS.normal_no_top_up,
-            response.attendance.toString(),
-          ])
+        const noMoney = joinMessageStrings([
+          `Hi  ${response.leaderFirstName}\n\n`,
+          texts.arrivalsSMS.normal_no_top_up,
+          response.attendance.toString(),
+        ])
 
-          const attendanceRes = await Promise.all([
-            session.run(setNormalBussingTopUp, args),
-            sendBulkSMS(
-              [response.leaderPhoneNumber],
-              `${response.normalBussingTopUp ? receiveMoney : noMoney}`
-            ),
-          ])
-          bussingRecord = rearrangeCypherObject(attendanceRes[0])
-        }
+        const attendanceRes = await Promise.all([
+          session.run(setNormalBussingTopUp, args),
+          sendBulkSMS(
+            [response.leaderPhoneNumber],
+            `${response.normalBussingTopUp ? receiveMoney : noMoney}`
+          ),
+        ])
+        bussingRecord = rearrangeCypherObject(attendanceRes[0])
       }
 
       if (response.numberOfBusses.low === 0) {
@@ -439,7 +452,7 @@ export const arrivalsMutation = {
           ),
         ])
       }
-      if (response.bussingCost.low === 0) {
+      if (response.bussingCost === 0) {
         await Promise.all([
           session.run(setNormalBussingTopUp, args),
           sendBulkSMS(
@@ -579,14 +592,14 @@ export const arrivalsMutation = {
   },
   SendMobileVerificationNumber: async (
     object: any,
-    args: { firstName: string; phoneNumber: string; code: string },
+    args: { firstName: string; phoneNumber: string; otp: string },
     context: Context
   ) => {
     isAuth(['leaderBacenta'], context.auth.roles)
 
     const response = await sendBulkSMS(
       [args.phoneNumber],
-      `Hi ${args.firstName},\n\nYour code is ${args.code}. Input this on the portal to verify your phone number.`
+      `Hi ${args.firstName},\n\nYour OTP is ${args.otp}. Input this on the portal to verify your phone number.`
     )
 
     return response

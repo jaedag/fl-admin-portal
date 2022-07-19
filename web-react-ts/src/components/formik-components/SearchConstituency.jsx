@@ -12,7 +12,7 @@ import {
   STREAM_CONSTITUENCY_SEARCH,
   MEMBER_CONSTITUENCY_SEARCH,
 } from './SearchConstituencyQueries'
-import TextError from './TextError'
+import TextError from './TextError/TextError'
 
 const SearchConstituency = (props) => {
   const { currentUser } = useContext(MemberContext)

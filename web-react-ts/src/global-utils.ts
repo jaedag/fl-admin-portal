@@ -99,8 +99,8 @@ export const authorisedLink = (
 export const capitalise = (str: string) => {
   return str?.charAt(0).toUpperCase() + str?.slice(1)
 }
-export const plural = (church: ChurchLevel) => {
-  switch (church.toLowerCase()) {
+export const plural = (church: ChurchLevel | string) => {
+  switch (church) {
     case 'stream':
       return 'streams'
     case 'Stream':
@@ -192,90 +192,6 @@ export const debounce = (callback: () => void, delay = 500) => {
       callback(...args) // pass in the arguments to the function and the scope
     }, delay)
   }
-}
-
-interface MemberWithTitle extends Member {
-  titleConnection: {
-    edges: {
-      node: { title: 'Pastor' | 'Reverend' | 'Bishop' }
-    }[]
-  }
-  title: { title: 'Pastor' | 'Reverend' | 'Bishop' }[]
-}
-
-export const getHighestTitle = (member: MemberWithTitle) => {
-  if (!member.title?.length) {
-    return
-  }
-  let highestTitle
-  let weight = 0
-  const maleTitles = ['Pastor', 'Reverend', 'Bishop']
-  const femaleTitles = ['Lady Pastor', 'Lady Reverend', 'Elect Mother']
-
-  member.title.forEach((title) => {
-    // Male Titles
-    if (member.gender.gender === 'Male') {
-      if (title.title === 'Pastor') {
-        const titleWeight = 1
-        if (weight < titleWeight) {
-          weight = titleWeight
-        }
-      }
-      if (title.title === 'Reverend') {
-        const titleWeight = 2
-        if (weight < titleWeight) {
-          weight = titleWeight
-        }
-      }
-      if (title.title === 'Bishop') {
-        const titleWeight = 3
-        if (weight < titleWeight) {
-          weight = titleWeight
-        }
-      }
-      highestTitle = maleTitles[weight - 1]
-    }
-
-    // Female Titles
-    if (member.gender.gender === 'Female') {
-      if (title.title === 'Pastor') {
-        const titleWeight = 1
-        if (weight < titleWeight) {
-          weight = titleWeight
-        }
-      }
-      if (title.title === 'Reverend') {
-        const titleWeight = 2
-        if (weight < titleWeight) {
-          weight = titleWeight
-        }
-      }
-      if (title.title === 'Bishop') {
-        const titleWeight = 3
-        if (weight < titleWeight) {
-          weight = titleWeight
-        }
-      }
-      highestTitle = femaleTitles[weight - 1]
-    }
-  })
-
-  return highestTitle
-}
-
-export const getNameWithTitle = (member?: MemberWithTitle) => {
-  if (!member) {
-    return null
-  }
-  const displayName = {
-    name: `${member.fullName}`,
-    title: getHighestTitle(member),
-  }
-
-  if (member.title?.length) {
-    return `${displayName.title} ${displayName.name}`
-  }
-  return displayName.name
 }
 
 export const average = (array: number[]) => {
@@ -401,7 +317,7 @@ export const getSubChurchLevel = (churchType: ChurchLevel) => {
     case 'GatheringService':
       return 'Stream'
     default:
-      break
+      return 'Fellowship'
   }
 }
 

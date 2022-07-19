@@ -25,6 +25,19 @@ const resolvers = {
 
   Member: {
     fullName: (source: Member) => `${source.firstName} ${source.lastName}`,
+    nameWithTitle: (source: Member) => {
+      const title = source.currentTitle ? `${source.currentTitle} ` : ''
+      let shortTitle = title
+
+      if (source.currentTitle === 'Reverend') {
+        shortTitle = 'Rev. '
+      }
+      if (source.currentTitle === 'Pastor') {
+        shortTitle = 'Ps. '
+      }
+
+      return `${shortTitle}${source.firstName} ${source.lastName}`
+    },
   },
   Bacenta: {
     ...componentResolvers.Bacenta,

@@ -10,7 +10,6 @@ export const FEDERAL_SEARCH = gql`
         id
         firstName
         lastName
-        fullName
       }
     }
     federalCouncilSearch(searchKey: $searchKey) {
