@@ -3,12 +3,24 @@ import { Badge } from 'react-bootstrap'
 import '../QuickFacts.css'
 import { getPercentageChange } from './quick-fact-utils'
 
-const IncomeQuickFactsCard = (props) => {
-  const details = props?.incomeDetails[0]
+export interface BussingQuickFactsProps {
+  bussingDetails: {
+    churchType: string
+    cardType: string
+    leadersName: string
+    churchName: string
+    churchBussingThisMonth: any
+    avgHigherLevelBussingThisMonth: any
+    higherLevelName: string
+  }[]
+}
+
+const BussingQuickFactsCard = (props: BussingQuickFactsProps) => {
+  const details = props?.bussingDetails[0]
 
   const percentageRiseOrFall = getPercentageChange(
-    details?.churchAvgIncomeThisMonth,
-    details?.avgHigherLevelIncomeThisMonth
+    details?.churchBussingThisMonth,
+    details?.avgHigherLevelBussingThisMonth
   )
 
   const getBadgeBackground = () => {
@@ -24,20 +36,15 @@ const IncomeQuickFactsCard = (props) => {
   return (
     <div className="w-100 text-center quick-fact-card">
       <div className="church-text">{details?.churchType}</div>
-      <div className="stat-text ">
-        {' '}
-        Average Weekday <br />
-        {details?.cardType}{' '}
-      </div>
+      <div className="stat-text "> Average {details?.cardType} </div>
       <div className="leader-text">{details?.leadersName}</div>
       <div className="branch-text">
         {details?.churchName + ' ' + details?.churchType}
       </div>
-      <div className="income-number">
-        <span className="currency">GHS </span>
-        {details?.churchAvgIncomeThisMonth === 'null'
+      <div className="bussing-number">
+        {details?.churchBussingThisMonth === 'null'
           ? '--'
-          : details?.churchAvgIncomeThisMonth}
+          : details?.churchBussingThisMonth}
       </div>
       <div>
         <Badge
@@ -49,18 +56,17 @@ const IncomeQuickFactsCard = (props) => {
         </Badge>
       </div>
       <hr className="separator" />
-      <div className="income-number">
-        <span className="currency">GHS </span>
-        {details?.avgHigherLevelIncomeThisMonth === 'null'
+      <div className="bussing-number">
+        {details?.avgHigherLevelBussingThisMonth === 'null'
           ? '--'
-          : details?.avgHigherLevelIncomeThisMonth}
+          : details?.avgHigherLevelBussingThisMonth}
       </div>
       <div className="average-text">
-        Average {details?.churchType} <br /> Income
+        Average {details?.churchType} <br /> Bussing
       </div>
       <div className="higher-church-text">{details?.higherLevelName}</div>
     </div>
   )
 }
 
-export default IncomeQuickFactsCard
+export default BussingQuickFactsCard
