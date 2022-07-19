@@ -1,4 +1,4 @@
-interface Campaign {
+type Campaign {
   id: ID!
   name: String!
   type: String!
