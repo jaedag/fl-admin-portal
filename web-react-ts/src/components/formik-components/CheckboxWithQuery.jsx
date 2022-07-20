@@ -56,10 +56,11 @@ function CheckboxWithQuery(props) {
       </Field> */}
       <Field name={name} {...rest}>
         {({ field }) => {
-          return options.map((option) => {
+          return options.map((option, index) => {
             return (
               <>
                 <button
+                  key={index}
                   type="button"
                   className={`filter-chips ${theme} ${
                     field.value.includes(option.key) && 'active'

@@ -40,6 +40,7 @@
     "dotenv": "^10.0.0",
     "form-data": "^4.0.0",
     "graphql": "^16.3.0",
+    "jd-date-utils": "^1.0.7",
     "mailgun.js": "^7.0.0",
     "neo4j-driver": "^4.3.1",
     "node-fetch": "^2.6.0",
