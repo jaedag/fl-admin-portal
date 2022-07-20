@@ -599,7 +599,6 @@ extend type Mutation {
     startDate: Date!
     endDate: Date!
     id: ID!
-    target: Int!
   ): GatheringService
   CreateFellowshipEquipmentRecord(
     id: ID!

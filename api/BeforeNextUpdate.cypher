@@ -12,6 +12,7 @@ SET campaign.id = apoc.create.uuid(),
 
  //Adding constraint for equipment campaign
 CREATE CONSTRAINT con_campaign_id FOR (n:Campaign) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT con_equipment_record_id FOR (n:EquipmentRecord) REQUIRE n.id IS UNIQUE;
 CREATE CONSTRAINT con_campaign_name FOR (n:Campaign) REQUIRE n.name IS UNIQUE;
 CREATE CONSTRAINT campaignShouldHaveChurchLevels FOR (n:Campaign) REQUIRE n.churchLevels IS NOT NULL;
 CREATE CONSTRAINT campaignShouldHaveType FOR (n:Campaign) REQUIRE n.type IS NOT NULL;
