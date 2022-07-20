@@ -360,7 +360,7 @@ export const UPDATE_BACENTA_MUTATION = gql`
         lastName
         whatsappNumber
         title {
-          title
+          name
         }
       }
       history(limit: 5) {
