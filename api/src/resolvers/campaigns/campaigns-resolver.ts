@@ -13,7 +13,11 @@ import { Context } from '../utils/neo4j-types'
 
 export const campaignsMutation = {
   // Equipment Campaigns
-  SetEquipmentDeadline: async (object: never, args: any, context: Context) => {
+  SetEquipmentDeadline: async (
+    object: never,
+    args: { startDate: Date; endDate: Date; id: string; target: number },
+    context: Context
+  ) => {
     const session = context.executionContext.session()
     isAuth(permitAdmin('GatheringService'), context.auth.roles)
 
@@ -31,7 +35,7 @@ export const campaignsMutation = {
   },
   CreateConstituencyEquipmentRecord: async (
     object: never,
-    args: any,
+    args: { id: string; pulpits: number; date: Date },
     context: Context
   ) => {
     isAuth(permitAdmin('Constituency'), context.auth.roles)
@@ -83,7 +87,7 @@ export const campaignsMutation = {
   },
   CreateFellowshipEquipmentRecord: async (
     object: never,
-    args: any,
+    args: { id: string; offeringBags: number; date: Date },
     context: Context
   ) => {
     isAuth(permitAdmin('Fellowship'), context.auth.roles)
