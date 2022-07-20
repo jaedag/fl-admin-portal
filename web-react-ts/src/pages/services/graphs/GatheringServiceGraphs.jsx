@@ -37,7 +37,6 @@ const GatheringServiceReport = () => {
         </PlaceholderCustom>
         <PlaceholderCustom loading={loading} as="span" xs={10}>
           <span className="text-secondary font-weight-bold">
-            {console.log(data?.gatheringServices[0])}
             {`Leader: ${data?.gatheringServices[0]?.leader.fullName}`}
           </span>
         </PlaceholderCustom>

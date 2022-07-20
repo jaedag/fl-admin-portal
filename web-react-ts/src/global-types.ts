@@ -26,6 +26,7 @@ export type ChurchLevel =
   | 'GatheringService'
   | 'Oversight'
   | 'Sonta'
+  | 'Basonta'
 
 export type TimeGraph = {
   date: Date
@@ -38,12 +39,19 @@ export interface Church {
     firstName: string
     lastName: string
     fullName: string
+    currentTitle: 'Pastor' | 'Reverend' | 'Bishop'
+    nameWithTitle: string
     phoneNumber: string
     whatsappNumber: string
     pictureUrl: string
   }
   vacationStatus: 'Vacation' | 'Active'
   __typename: ChurchLevel
+  sontas?: Sonta[]
+}
+
+export interface Sonta extends Church {
+  __typename: 'Sonta'
 }
 
 export interface Fellowship extends Church {
@@ -58,9 +66,11 @@ export interface Bacenta extends Church {
 export type ChurchIdAndName = {
   id: string
   name: string
+  __typename: ChurchLevel
 }
 
 export type StreamOptions = 'Campus' | 'Town' | 'Anagkazo'
+export type TitleOptions = 'Pastor' | 'Reverend' | 'Bishop'
 
 export interface Stream extends Church {
   id: string
@@ -70,11 +80,16 @@ export interface Stream extends Church {
 
 //MEMBERSHIP
 export interface MemberWithoutBioData {
+  __typename: 'Member'
   id: string
   // eslint-disable-next-line camelcase
   auth_id?: string
   firstName: string
   lastName: string
+  fullName: string
+  pictureUrl: string
+  currentTitle: TitleOptions
+  nameWithTitle: string
 }
 
 export interface Member {

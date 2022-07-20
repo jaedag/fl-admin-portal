@@ -61,7 +61,7 @@ export const ADD_MEMBER_TITLE_MUTATION = gql`
     updateMembers(
       where: { id: $memberId }
       connect: {
-        title: { where: { node: { title: $title } }, edge: { date: $date } }
+        title: { where: { node: { name: $title } }, edge: { date: $date } }
       }
     ) {
       members {
@@ -69,28 +69,16 @@ export const ADD_MEMBER_TITLE_MUTATION = gql`
         firstName
         lastName
         title {
-          title
+          name
         }
         titleConnection {
           edges {
             date
             node {
-              title
+              name
             }
           }
         }
-      }
-    }
-  }
-`
-
-export const ADD_LEADER_HISTORY_MUTATION = gql`
-  mutation ($id: ID!, $pastoralHistory: [pastoralHistory]) {
-    AddLeaderHistory(id: $id, pastoralHistory: $pastoralHistory) {
-      id
-      historyRecord
-      created_at {
-        formatted
       }
     }
   }

@@ -6,6 +6,10 @@ import TextError from './TextError'
 afterEach(cleanup)
 
 it('renders', () => {
-  const { asFragment } = render(<TextError>This is an error</TextError>)
+  const { asFragment } = render(
+    <TextError>
+      <>This is an error</>
+    </TextError>
+  )
   expect(asFragment()).toMatchSnapshot()
 })

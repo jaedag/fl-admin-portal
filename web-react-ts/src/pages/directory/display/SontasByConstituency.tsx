@@ -7,10 +7,10 @@ import RoleView from '../../../auth/RoleView'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { permitAdmin } from 'permission-utils'
 import { GET_SONTA_MEMBERS } from '../grids/GridQueries'
-import { Church, Stream } from 'global-types'
+import { Sonta, Stream } from 'global-types'
 
 interface StreamWithSontas extends Stream {
-  sontas: Church[]
+  sontas: Sonta[]
 }
 const DisplaySontasByConstituency = () => {
   const { councilId, setConstituencyId, setSontaId } = useContext(ChurchContext)

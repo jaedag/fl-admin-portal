@@ -1,12 +1,12 @@
 import React from 'react'
 import { Field, ErrorMessage } from 'formik'
-import TextError from './TextError'
+import TextError from './TextError/TextError'
 import './Input.css'
 import './Formik.css'
 import PlaceholderCustom from 'components/Placeholder'
 import { useAuth0 } from '@auth0/auth0-react'
 
-function Input(props) {
+function Input(props: { label?: string; name: string }) {
   const { label, name, ...rest } = props
   const { isAuthenticated } = useAuth0()
 

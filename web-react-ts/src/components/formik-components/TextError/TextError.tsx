@@ -1,7 +1,6 @@
-import { JSXChildren } from 'global-types'
 import React from 'react'
 
-const TextError = (props: JSXChildren) => {
+const TextError = (props: any) => {
   return <small className="error">{props.children}</small>
 }
 

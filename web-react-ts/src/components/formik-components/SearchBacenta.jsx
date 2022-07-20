@@ -13,7 +13,7 @@ import {
   CONSTITUENCY_BACENTA_SEARCH,
   MEMBER_BACENTA_SEARCH,
 } from './SearchBacentaQueries'
-import TextError from './TextError'
+import TextError from './TextError/TextError'
 
 const SearchBacenta = (props) => {
   const { currentUser } = useContext(MemberContext)

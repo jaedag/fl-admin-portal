@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { Formik, Form } from 'formik'
+import { Formik, Form, FormikHelpers } from 'formik'
 import FormikControl from './formik-components/FormikControl'
 import * as Yup from 'yup'
 import { Col, Button, Nav } from 'react-bootstrap'
@@ -7,17 +7,24 @@ import './SearchBox.css'
 import { SearchContext } from 'contexts/MemberContext'
 import { useNavigate } from 'react-router'
 
-function SearchBox() {
+type FormOptions = {
+  searchKeyVal: string
+}
+
+const SearchBox = () => {
   const { setSearchKey } = useContext(SearchContext)
   const navigate = useNavigate()
-  const initialValues = {
+  const initialValues: FormOptions = {
     searchKeyVal: '',
   }
   const validationSchema = Yup.object({
     searchKeyVal: Yup.string().required(''),
   })
 
-  const onSubmit = (values, onSubmitProps) => {
+  const onSubmit = (
+    values: FormOptions,
+    onSubmitProps: FormikHelpers<FormOptions>
+  ) => {
     onSubmitProps.setSubmitting(true)
     setSearchKey(values.searchKeyVal)
     navigate('/search-results')

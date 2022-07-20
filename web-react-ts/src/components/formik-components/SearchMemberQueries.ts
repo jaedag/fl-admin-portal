@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client'
 
 export const GATHERINGSERVICE_MEMBER_SEARCH = gql`
-  query ($id: ID!, $key: String!) {
+  query gatheringMemberSearch($id: ID!, $key: String!) {
     fellowships(where: { id: $id }) {
       id
       memberSearch(key: $key, limit: 5) {
@@ -14,7 +14,7 @@ export const GATHERINGSERVICE_MEMBER_SEARCH = gql`
 `
 
 export const STREAM_MEMBER_SEARCH = gql`
-  query ($id: ID!, $key: String!) {
+  query streamMemberSearch($id: ID!, $key: String!) {
     streams(where: { id: $id }) {
       id
       memberSearch(key: $key, limit: 5) {
@@ -27,7 +27,7 @@ export const STREAM_MEMBER_SEARCH = gql`
 `
 
 export const COUNCIL_MEMBER_SEARCH = gql`
-  query ($id: ID!, $key: String!) {
+  query councilMemberSearch($id: ID!, $key: String!) {
     councils(where: { id: $id }) {
       id
       memberSearch(key: $key, limit: 5) {
@@ -40,7 +40,7 @@ export const COUNCIL_MEMBER_SEARCH = gql`
 `
 
 export const CONSTITUENCY_MEMBER_SEARCH = gql`
-  query ($id: ID!, $key: String!) {
+  query constiutencyMemberSearch($id: ID!, $key: String!) {
     constituencies(where: { id: $id }) {
       id
       memberSearch(key: $key, limit: 5) {
@@ -53,7 +53,7 @@ export const CONSTITUENCY_MEMBER_SEARCH = gql`
 `
 
 export const BACENTA_MEMBER_SEARCH = gql`
-  query ($id: ID!, $key: String!) {
+  query bacentaMemberSearch($id: ID!, $key: String!) {
     bacentas(where: { id: $id }) {
       id
       memberSearch(key: $key, limit: 5) {
@@ -66,7 +66,7 @@ export const BACENTA_MEMBER_SEARCH = gql`
 `
 
 export const FELLOWSHIP_MEMBER_SEARCH = gql`
-  query ($id: ID!, $key: String!) {
+  query fellowshipMemberSearch($id: ID!, $key: String!) {
     fellowships(where: { id: $id }) {
       id
       memberSearch(key: $key, limit: 5) {
@@ -79,7 +79,7 @@ export const FELLOWSHIP_MEMBER_SEARCH = gql`
 `
 
 export const MEMBER_MEMBER_SEARCH = gql`
-  query ($id: ID!, $key: String!) {
+  query memberMemberSearch($id: ID!, $key: String!) {
     members(where: { id: $id }) {
       id
       memberSearch(key: $key, limit: 5) {

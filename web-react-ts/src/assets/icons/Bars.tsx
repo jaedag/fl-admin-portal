@@ -1,4 +1,8 @@
- <svg
+import React from 'react'
+
+const BarsIcon = () => {
+  return (
+    <svg
       width="183"
       height="183"
       viewBox="0 0 183 183"
@@ -10,3 +14,7 @@
         fill="white"
       />
     </svg>
+  )
+}
+
+export default BarsIcon

@@ -57,7 +57,8 @@ const DetailsGatheringService = () => {
     <ApolloWrapper loading={loading} error={error} data={data} placeholder>
       <DisplayChurchDetails
         name={gathering?.name}
-        leaderTitle="Resident Bishop"
+        leaderTitle={'Resident Bishop'}
+        church={gathering}
         churchId={gatheringServiceId}
         leader={gathering?.leader}
         churchType={gathering?.__typename}

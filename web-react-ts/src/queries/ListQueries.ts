@@ -2,7 +2,7 @@ import { gql } from '@apollo/client'
 
 export const GET_BISHOPS = gql`
   query getBishops {
-    members(where: { title_SOME: { title: "Bishop" } }) {
+    members(where: { title_SOME: { name: "Bishop" } }) {
       id
       firstName
       lastName

@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useQuery, useMutation } from '@apollo/client'
-import { parsePhoneNum } from '../../../global-utils'
+import { parsePhoneNum } from 'global-utils'
 
 import { UPDATE_MEMBER_MUTATION } from '../update/UpdateMutations'
 import {
@@ -9,7 +9,7 @@ import {
   DISPLAY_MEMBER_CHURCH,
 } from '../display/ReadQueries'
 
-import { MemberContext } from '../../../contexts/MemberContext'
+import { MemberContext } from 'contexts/MemberContext'
 import MemberForm from '../reusable-forms/MemberForm'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 

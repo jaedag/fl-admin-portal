@@ -53,14 +53,6 @@ export const UPDATE_MEMBER_MUTATION = gql`
       occupation {
         occupation
       }
-      titleConnection {
-        edges {
-          date
-          node {
-            title
-          }
-        }
-      }
     }
   }
 `
@@ -368,7 +360,7 @@ export const UPDATE_BACENTA_MUTATION = gql`
         lastName
         whatsappNumber
         title {
-          title
+          name
         }
       }
       history(limit: 5) {

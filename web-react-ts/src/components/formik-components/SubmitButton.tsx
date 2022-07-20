@@ -1,8 +1,12 @@
 import { MemberContext } from 'contexts/MemberContext'
 import React, { useContext } from 'react'
 import { Button, Spinner } from 'react-bootstrap'
+type SubmitButtonProps = {
+  formik: any
+  children?: JSX.Element
+}
 
-const SubmitButton = (props) => {
+const SubmitButton = (props: SubmitButtonProps) => {
   const { formik, ...rest } = props
   const { theme } = useContext(MemberContext)
 

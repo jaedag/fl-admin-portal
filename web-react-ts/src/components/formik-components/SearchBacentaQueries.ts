@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client'
 
 export const GATHERINGSERVICE_BACENTA_SEARCH = gql`
-  query ($id: ID!, $key: String!) {
+  query gatheringBacentaSearch($id: ID!, $key: String!) {
     gatheringServices(where: { id: $id }) {
       id
       bacentaSearch(key: $key, limit: 5) {
@@ -13,7 +13,7 @@ export const GATHERINGSERVICE_BACENTA_SEARCH = gql`
 `
 
 export const STREAM_BACENTA_SEARCH = gql`
-  query ($id: ID!, $key: String!) {
+  query streamBacentaSearch($id: ID!, $key: String!) {
     streams(where: { id: $id }) {
       id
       bacentaSearch(key: $key, limit: 5) {
@@ -25,7 +25,7 @@ export const STREAM_BACENTA_SEARCH = gql`
 `
 
 export const COUNCIL_BACENTA_SEARCH = gql`
-  query ($id: ID!, $key: String!) {
+  query councilBacentaSearch($id: ID!, $key: String!) {
     councils(where: { id: $id }) {
       id
       bacentaSearch(key: $key, limit: 5) {
@@ -37,7 +37,7 @@ export const COUNCIL_BACENTA_SEARCH = gql`
 `
 
 export const CONSTITUENCY_BACENTA_SEARCH = gql`
-  query ($id: ID!, $key: String!) {
+  query constituencyBacentaSearch($id: ID!, $key: String!) {
     constituencies(where: { id: $id }) {
       id
       bacentaSearch(key: $key, limit: 5) {
@@ -48,7 +48,7 @@ export const CONSTITUENCY_BACENTA_SEARCH = gql`
   }
 `
 export const MEMBER_BACENTA_SEARCH = gql`
-  query ($id: ID!, $key: String!) {
+  query memberBacentaSearch($id: ID!, $key: String!) {
     members(where: { id: $id }) {
       id
       bacentaSearch(key: $key) {

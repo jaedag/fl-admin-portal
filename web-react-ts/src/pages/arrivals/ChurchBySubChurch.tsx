@@ -102,7 +102,10 @@ const ChurchBySubChurch = () => {
                 return (
                   <Col key={i} xs={12} className="mb-3">
                     <Card>
-                      <Card.Header className="fw-bold">{`${subChurch.name} ${subChurch.__typename}`}</Card.Header>
+                      <Card.Header>
+                        <div className="fw-bold">{`${subChurch.name} ${subChurch.__typename}`}</div>
+                        <div className="text-secondary">{`Leader: ${subChurch.leader.nameWithTitle}`}</div>
+                      </Card.Header>
                       <Card.Body
                         onClick={() => {
                           clickCard(subChurch)

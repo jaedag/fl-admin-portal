@@ -15,7 +15,7 @@ import {
   FELLOWSHIP_MEMBER_SEARCH,
   MEMBER_MEMBER_SEARCH,
 } from './SearchMemberQueries'
-import TextError from './TextError'
+import TextError from './TextError/TextError'
 
 const SearchMember = (props) => {
   const { currentUser } = useContext(MemberContext)

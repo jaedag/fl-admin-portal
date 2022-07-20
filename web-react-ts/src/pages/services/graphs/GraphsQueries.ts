@@ -78,18 +78,7 @@ export const SONTA_GRAPHS = gql`
         lastName
         fullName
       }
-      services(limit: 4) {
-        id
-        created_at
-        attendance
-        income
-        week
-        serviceDate {
-          date
-        }
-      }
-
-      memberCount
+      # memberCount
     }
   }
 `

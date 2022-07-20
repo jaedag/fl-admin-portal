@@ -2,7 +2,7 @@ import TestRenderer from 'react-test-renderer'
 import { MockedProvider } from '@apollo/client/testing'
 import ArrivalTimes from './ArrivalTimes'
 import { GET_ARRIVAL_TIMES } from './time-gql'
-import TestProvider from 'TestProvider.jsx'
+import TestProvider from 'TestProvider'
 import { BrowserRouter } from 'react-router-dom'
 
 const mockedUsedNavigate = jest.fn()
@@ -37,7 +37,6 @@ const mocks = [
     },
   },
 ]
-// console.log(useNavigate())
 it('renders without error if user id is present', () => {
   const component = TestRenderer.create(
     <MockedProvider mocks={mocks} addTypename={false}>
