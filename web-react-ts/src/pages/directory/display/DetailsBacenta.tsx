@@ -45,6 +45,7 @@ const DetailsBacenta = () => {
       link: '#',
       width: 3,
     },
+
     {
       title: 'Target',
       number: bacenta?.target,
@@ -52,24 +53,25 @@ const DetailsBacenta = () => {
       width: 3,
     },
     {
+      title: 'Zone',
+      number: bacenta?.zone.number,
+      link: `#`,
+    },
+    {
       title: 'Momo Number',
       number: bacenta?.momoNumber || '-',
       link: `#`,
-      width: 6,
+      width: 12,
     },
     {
-      title: 'Normal Bussing Top Up',
-      number: bacenta?.normalBussingTopUp,
+      title: 'Sprinter Cost',
+      number: bacenta?.zone.sprinterCost,
       link: `#`,
     },
-    {
-      title: 'Swell Bussing Top Up',
-      number: bacenta?.swellBussingTopUp,
-      link: `#`,
-    },
+    { title: 'Urvan Cost', number: bacenta?.zone.urvanCost, link: `#` },
   ]
 
-  if (!bacenta?.normalBussingTopUp && !bacenta?.swellBussingTopUp) {
+  if (!bacenta?.zone) {
     const moneyItems = [1, 2, 3]
     moneyItems.forEach(() => details.pop())
   }

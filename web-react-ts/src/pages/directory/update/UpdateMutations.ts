@@ -82,7 +82,7 @@ export const UPDATE_MEMBER_MINISTRY = gql`
 `
 
 export const LOG_MEMBER_HISTORY = gql`
-  mutation ($ids: [ID], $historyRecord: String!) {
+  mutation LogMemberHistory($ids: [ID], $historyRecord: String!) {
     LogMemberHistory(ids: $ids, historyRecord: $historyRecord) {
       id
       firstName
@@ -331,6 +331,10 @@ export const UPDATE_BACENTA_MUTATION = gql`
     ) {
       id
       name
+      zone {
+        id
+        number
+      }
       fellowships {
         id
         name
@@ -382,7 +386,7 @@ export const UPDATE_BACENTA_MUTATION = gql`
 
 export const UPDATE_SONTA_MUTATION = gql`
   mutation UpdateSonta($sontaId: ID!, $name: String!) {
-    UpdateSontaDetails(sontaId: $sontaId, name: $name) {
+    UpdateSontaDetails(sontaId: $sontaId, sontaName: $name) {
       id
       name
       constituency {
@@ -396,10 +400,10 @@ export const UPDATE_SONTA_MUTATION = gql`
         lastName
         whatsappNumber
         title {
-          title
+          name
         }
       }
-      history(limit: 5) {
+      history {
         id
         timeStamp
         created_at {

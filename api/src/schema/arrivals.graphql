@@ -659,6 +659,13 @@ extend type Council {
     )
 }
 
+type BusZone {
+  id: ID!
+  number: Int!
+  sprinterCost: Float!
+  urvanCost: Float!
+}
+
 extend type Constituency {
   #Arrivals in the Constituency
   arrivalsAdmin: Member @relationship(type: "DOES_ARRIVALS_FOR", direction: IN)
@@ -867,8 +874,7 @@ extend type Bacenta {
       RETURN status
       """
     )
-  zone: Int!
-  normalPersonalContribution: Float
+  zone: BusZone! @relationship(type: "BUSSES_FROM", direction: OUT)
   mobileNetwork: String
   momoNumber: String
   momoName: String
@@ -1011,14 +1017,7 @@ extend type Mutation {
       """
     )
 
-  UpdateBacentaBussingDetails(
-    bacentaId: ID!
-    target: Int!
-    normalBussingCost: Float!
-    normalPersonalContribution: Float!
-    swellBussingCost: Float!
-    swellPersonalContribution: Float!
-  ): Bacenta!
+  UpdateBacentaBussingDetails(bacentaId: ID!, target: Int!): Bacenta!
     @auth(
       rules: [
         {
@@ -1034,20 +1033,16 @@ extend type Mutation {
     @cypher(
       statement: """
       MATCH (bacenta:Bacenta {id: $bacentaId})
-      	SET bacenta.target = $target,
-        bacenta.normalBussingCost = $normalBussingCost,
-        bacenta.normalPersonalContribution = $normalPersonalContribution,
-        bacenta.swellBussingCost = $swellBussingCost,
-        bacenta.swellPersonalContribution = $swellPersonalContribution
+      	SET bacenta.target = $target
 
-      WITH bacenta
+
       CREATE (log:HistoryLog {id:apoc.create.uuid()})
         SET log.timeStamp = datetime(),
         log.historyRecord = bacenta.name + ' Bussing Details were updated'
 
       WITH log,bacenta
       MATCH (admin:Member {auth_id: $auth.jwt.sub})
-      MERGE (date:TimeGraph {date:date()})
+
       MERGE (log)-[:LOGGED_BY]->(admin)
       MERGE (log)-[:RECORDED_ON]->(date)
       MERGE (bacenta)-[:HAS_HISTORY]->(log)
@@ -1083,6 +1078,31 @@ extend type Mutation {
       MERGE (bacenta)-[:HAS_HISTORY]->(log)
 
       RETURN bacenta
+      """
+    )
+
+  UpdateBacentaZone(bacentaId: ID!, zone: Int!): Bacenta!
+    @auth(
+      rules: [
+        {
+          roles: [
+            "adminGatheringService"
+            "arrivalsAdminGatheringService"
+            "adminStream"
+            "arrivalsAdminStream"
+          ]
+        }
+      ]
+    )
+    @cypher(
+      statement: """
+      OPTIONAL MATCH (bacenta:Bacenta {id: $bacentaId})-[r:BUSSES_FROM]->()
+       MATCH (new:BusZone {number: $zone})
+       DELETE r
+
+       MERGE (bacenta)-[:BUSSES_FROM]->(new)
+
+       RETURN bacenta
       """
     )
 

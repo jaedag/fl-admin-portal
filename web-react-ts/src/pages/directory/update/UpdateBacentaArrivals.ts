@@ -14,46 +14,32 @@ export const DISPLAY_BACENTA_BUSSING_DETAILS = gql`
       vacationStatus
       graduationStatus
 
-      normalBussingCost
-      normalPersonalContribution
-      swellBussingCost
-      swellPersonalContribution
+      zone {
+        id
+        number
+        sprinterCost
+        urvanCost
+      }
 
       momoName
       momoNumber
       mobileNetwork
     }
+    busZones {
+      id
+      number
+      sprinterCost
+      urvanCost
+    }
   }
 `
 
 export const UPDATE_BACENTA_BUSSING_DETAILS = gql`
-  mutation UpdateBacentaBussingDetails(
-    $bacentaId: ID!
-    $target: Int!
-    $normalBussingCost: Float!
-    $normalPersonalContribution: Float!
-    $swellBussingCost: Float!
-    $swellPersonalContribution: Float!
-  ) {
-    UpdateBacentaBussingDetails(
-      bacentaId: $bacentaId
-      target: $target
-      normalBussingCost: $normalBussingCost
-      normalPersonalContribution: $normalPersonalContribution
-      swellBussingCost: $swellBussingCost
-      swellPersonalContribution: $swellPersonalContribution
-    ) {
+  mutation UpdateBacentaBussingDetails($bacentaId: ID!, $target: Int!) {
+    UpdateBacentaBussingDetails(bacentaId: $bacentaId, target: $target) {
       id
       name
-
       target
-      normalBussingCost
-      normalPersonalContribution
-      normalBussingTopUp
-      swellBussingCost
-      swellPersonalContribution
-      swellBussingTopUp
-
       history(limit: 5) {
         id
         timeStamp
@@ -103,6 +89,21 @@ export const UPDATE_BUS_PAYMENT_DETAILS = gql`
           lastName
         }
         historyRecord
+      }
+    }
+  }
+`
+
+export const UPDATE_BACENTA_ZONE = gql`
+  mutation UpdateBacentaZone($bacentaId: ID!, $zone: Int!) {
+    UpdateBacentaZone(bacentaId: $bacentaId, zone: $zone) {
+      id
+      name
+      zone {
+        id
+        number
+        sprinterCost
+        urvanCost
       }
     }
   }

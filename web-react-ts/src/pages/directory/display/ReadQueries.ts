@@ -280,8 +280,12 @@ export const DISPLAY_BACENTA = gql`
       vacationStatus
       graduationStatus
       target
-      normalBussingTopUp
-      swellBussingTopUp
+      zone {
+        id
+        number
+        sprinterCost
+        urvanCost
+      }
       momoNumber
       stream_name
       activeFellowshipCount

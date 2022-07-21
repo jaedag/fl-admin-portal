@@ -327,9 +327,7 @@ const DisplayChurchDetails = (props: DisplayChurchDetailsProps) => {
             ))}
           </Row>
         )}
-        {props.churchType === 'Bacenta' &&
-        (props.church?.normalBussingTopUp ||
-          props.church?.swellBussingTopUp) ? (
+        {props.churchType === 'Bacenta' && props.church?.zone.number !== 0 ? (
           <RoleView
             roles={['leaderBacenta']}
             permittedStream={['Campus', 'Town']}

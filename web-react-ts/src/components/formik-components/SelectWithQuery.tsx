@@ -2,11 +2,22 @@ import React from 'react'
 import { Field, ErrorMessage } from 'formik'
 import { makeSelectOptions } from '../../global-utils'
 import TextError from './TextError/TextError'
-import { useQuery } from '@apollo/client'
+import { DocumentNode, useQuery } from '@apollo/client'
 import { useAuth0 } from '@auth0/auth0-react'
 import PlaceholderCustom from 'components/Placeholder'
 
-function SelectWithQuery(props) {
+type SelectWithQueryProps = {
+  label: string
+  name: string
+  modifier?: 'filter'
+  queryVariable: any
+  optionsQuery: DocumentNode
+  varValue: string
+  dataset: string
+  defaultOption?: string
+}
+
+function SelectWithQuery(props: SelectWithQueryProps) {
   const {
     label,
     name,
@@ -30,7 +41,7 @@ function SelectWithQuery(props) {
   if (data?.constituencies?.length) {
     options = makeSelectOptions(data.constituencies[0].bacentas)
   } else {
-    options = data ? makeSelectOptions(data[dataset ? `${dataset}` : null]) : []
+    options = data ? makeSelectOptions(data[dataset ? `${dataset}` : '']) : []
   }
 
   return (
@@ -49,7 +60,7 @@ function SelectWithQuery(props) {
         className="form-control"
         {...rest}
       >
-        <option value="" disabled defaultValue>
+        <option value="" disabled defaultValue="true">
           {defaultOption}
         </option>
         {options?.map((option) => {

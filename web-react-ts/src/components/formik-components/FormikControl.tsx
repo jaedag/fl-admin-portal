@@ -2,7 +2,6 @@ import React from 'react'
 import Input from './Input'
 import Textarea from './Textarea'
 import Select from './Select'
-import SelectWithQuery from './SelectWithQuery'
 import RadioButtons from './RadioButtons'
 import CheckboxGroup from './CheckboxGroup'
 import Combobox from './Combobox'
@@ -34,7 +33,6 @@ type FormikControlProps = {
     | 'councilSearch'
     | 'textarea'
     | 'select'
-    | 'selectWithQuery'
     | 'radio'
     | 'checkbox'
     | 'checkboxWithQuery'
@@ -66,8 +64,7 @@ function FormikControl(props: FormikControlProps) {
       return <Textarea {...rest} />
     case 'select':
       return <Select {...rest} />
-    case 'selectWithQuery':
-      return <SelectWithQuery {...rest} />
+
     case 'radio':
       return <RadioButtons {...rest} />
     case 'checkbox':

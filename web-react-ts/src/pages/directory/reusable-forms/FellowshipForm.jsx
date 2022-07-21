@@ -29,6 +29,7 @@ import SubmitButton from 'components/formik-components/SubmitButton'
 import { DISPLAY_BACENTA } from 'pages/directory/display/ReadQueries'
 import { permitAdmin } from 'permission-utils'
 import usePopup from 'hooks/usePopup'
+import SelectWithQuery from 'components/formik-components/SelectWithQuery'
 
 const FellowshipForm = (props) => {
   const { fellowshipId, councilId, clickCard } = useContext(ChurchContext)
@@ -124,8 +125,7 @@ const FellowshipForm = (props) => {
                             defaultOption={`Select a Constituency`}
                           />
 
-                          <FormikControl
-                            control="selectWithQuery"
+                          <SelectWithQuery
                             name="bacenta"
                             label="Bacenta"
                             optionsQuery={GET_CONSTITUENCY_BACENTAS}
