@@ -1,7 +1,12 @@
+import { StreamOptions } from 'global-types'
 import { addMinutes } from 'jd-date-utils'
 import { getTodayTime } from 'jd-date-utils'
 import { isToday } from 'jd-date-utils'
-import { BacentaWithArrivals, BussingRecord } from './arrivals-types'
+import {
+  BacentaWithArrivals,
+  BussingRecord,
+  StreamWithArrivals,
+} from './arrivals-types'
 
 export const MOBILE_NETWORK_OPTIONS = [
   { key: '', value: '' },
@@ -10,7 +15,7 @@ export const MOBILE_NETWORK_OPTIONS = [
   { key: 'AirtelTigo', value: 'AirtelTigo' },
 ]
 
-const isArrivalsToday = (bacenta: BacentaWithArrivals) => {
+const isArrivalsToday = (bacenta: { stream_name: StreamOptions }) => {
   if (!bacenta) return false
 
   const today = new Date().getDay()
@@ -29,7 +34,18 @@ const isArrivalsToday = (bacenta: BacentaWithArrivals) => {
 
   return false
 }
+export const beforeStreamArrivalsDeadline = (stream: StreamWithArrivals) => {
+  if (!stream) return false
 
+  const church = {
+    ...stream,
+    stream_name: stream.name,
+  }
+
+  const today = new Date()
+
+  return isArrivalsToday(church) && today < new Date(stream.arrivalEndTime)
+}
 export const beforeCountingDeadline = (
   bussing: BussingRecord,
   church: BacentaWithArrivals

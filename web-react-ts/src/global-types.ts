@@ -74,8 +74,12 @@ export type TitleOptions = 'Pastor' | 'Reverend' | 'Bishop'
 
 export interface Stream extends Church {
   id: string
-  name: string
+  name: StreamOptions
   __typename: 'Stream'
+}
+export interface Constituency extends Church {
+  __typename: 'Constituency'
+  stream: Stream
 }
 
 //MEMBERSHIP

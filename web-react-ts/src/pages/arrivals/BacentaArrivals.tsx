@@ -107,7 +107,6 @@ const BacentaArrivals = () => {
             )}
           </Card>
         )}
-        {console.log(bussing?.bussingPictures)}
         {!isBeforeArrivalEnd &&
           bussing?.mobilisationPicture &&
           !bussing?.bussingPictures.length && (

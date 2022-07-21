@@ -21,6 +21,7 @@ import DefaulterInfoCard from 'pages/services/defaulters/DefaulterInfoCard'
 import { MemberContext } from 'contexts/MemberContext'
 import usePopup from 'hooks/usePopup'
 import { AdminFormOptions } from './DashboardConstituency'
+import { beforeStreamArrivalsDeadline } from './arrivals-utils'
 
 const CouncilDashboard = () => {
   const { isOpen, togglePopup } = usePopup()
@@ -126,6 +127,11 @@ const CouncilDashboard = () => {
           </RoleView>
 
           <DefaulterInfoCard defaulter={aggregates} />
+          {!beforeStreamArrivalsDeadline(council?.stream) && (
+            <div className="text-center fw-bold text-danger">
+              Arrival Deadline is up! Thank you very much
+            </div>
+          )}
           <MenuButton
             title="Bacentas With No Activity"
             onClick={() => navigate('/arrivals/bacentas-no-activity')}

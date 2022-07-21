@@ -19,6 +19,7 @@ import { permitAdmin, permitArrivals } from 'permission-utils'
 import HeadingSecondary from 'components/HeadingSecondary'
 import { MemberContext } from 'contexts/MemberContext'
 import usePopup from 'hooks/usePopup'
+import { beforeStreamArrivalsDeadline } from './arrivals-utils'
 
 export type AdminFormOptions = {
   adminName: string
@@ -126,6 +127,12 @@ const ConstituencyDashboard = () => {
               Change Arrivals Admin
             </Button>
           </RoleView>
+
+          {!beforeStreamArrivalsDeadline(constituency?.council.stream) && (
+            <div className="text-center fw-bold text-danger">
+              Arrival Deadline is up! Thank you very much
+            </div>
+          )}
           <MenuButton
             title="Bacentas With No Activity"
             onClick={() => navigate('/arrivals/bacentas-no-activity')}

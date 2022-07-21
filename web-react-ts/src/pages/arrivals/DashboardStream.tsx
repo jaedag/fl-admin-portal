@@ -27,6 +27,7 @@ import usePopup from 'hooks/usePopup'
 import HeadingSecondary from 'components/HeadingSecondary'
 import { AdminFormOptions } from './DashboardConstituency'
 import ArrivalsMenuDropdown from './ArrivalsMenuDropdown'
+import { beforeStreamArrivalsDeadline } from './arrivals-utils'
 
 const StreamDashboard = () => {
   const { isOpen, togglePopup } = usePopup()
@@ -138,6 +139,11 @@ const StreamDashboard = () => {
 
         <div className="d-grid gap-2 mt-3">
           <DefaulterInfoCard defaulter={aggregates} />
+          {!beforeStreamArrivalsDeadline(stream) && (
+            <div className="text-center fw-bold text-danger">
+              Arrival Deadline is up! Thank you very much
+            </div>
+          )}
           <MenuButton
             title="Bacentas With No Activity"
             onClick={() => navigate('/arrivals/bacentas-no-activity')}

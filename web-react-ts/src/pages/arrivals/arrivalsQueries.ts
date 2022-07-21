@@ -5,26 +5,33 @@ export const CONSTITUENCY_ARRIVALS_DASHBOARD = gql`
     constituencies(where: { id: $id }, options: { limit: 1 }) {
       id
       name
-      admin {
+      council {
         id
-        firstName
-        lastName
+        stream {
+          id
+          arrivalEndTime
+        }
+        admin {
+          id
+          firstName
+          lastName
+        }
+        arrivalsAdmin {
+          id
+          firstName
+          lastName
+          fullName
+          pictureUrl
+        }
+        bacentasNoActivityCount
+        bacentasMobilisingCount
+        bacentasOnTheWayCount
+        bacentasHaveBeenCountedCount
+        bacentasBelow8Count
+        bacentasHaveArrivedCount
+        bussingMembersOnTheWayCount
+        bussingMembersHaveArrivedCount
       }
-      arrivalsAdmin {
-        id
-        firstName
-        lastName
-        fullName
-        pictureUrl
-      }
-      bacentasNoActivityCount
-      bacentasMobilisingCount
-      bacentasOnTheWayCount
-      bacentasHaveBeenCountedCount
-      bacentasBelow8Count
-      bacentasHaveArrivedCount
-      bussingMembersOnTheWayCount
-      bussingMembersHaveArrivedCount
     }
   }
 `
@@ -34,6 +41,10 @@ export const COUNCIL_ARRIVALS_DASHBOARD = gql`
     councils(where: { id: $id }, options: { limit: 1 }) {
       id
       name
+      stream {
+        id
+        arrivalEndTime
+      }
       admin {
         id
         firstName
@@ -76,6 +87,7 @@ export const STREAM_ARRIVALS_DASHBOARD = gql`
         fullName
         pictureUrl
       }
+      arrivalEndTime
       councilCount
       bacentasNoActivityCount
       bacentasMobilisingCount

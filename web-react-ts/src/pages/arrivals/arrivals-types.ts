@@ -3,6 +3,7 @@ import {
   Bacenta,
   Church,
   ChurchLevel,
+  Constituency,
   Member,
   Stream,
   StreamOptions,
@@ -69,6 +70,7 @@ export interface BacentaWithArrivals extends Bacenta {
 export interface HigherChurchWithArrivals extends Church {
   __typename: 'Constituency' | 'Stream' | 'Council' | 'GatheringService'
   stream_name: StreamOptions
+  stream: Stream
   activeBacentaCount: number
   bacentasNoActivity: BacentaWithArrivals[]
   bacentasMobilising: BacentaWithArrivals[]
