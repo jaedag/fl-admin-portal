@@ -8,7 +8,7 @@ import { Form, Formik, FieldArray, FormikHelpers } from 'formik'
 import { useMutation, useQuery } from '@apollo/client'
 import React, { useContext } from 'react'
 import * as Yup from 'yup'
-import { Col, Container, Row } from 'react-bootstrap'
+import { Card, Col, Container, Row } from 'react-bootstrap'
 import { useNavigate } from 'react-router'
 import { BACENTA_ARRIVALS } from './arrivalsQueries'
 import { ChurchContext } from 'contexts/ChurchContext'
@@ -239,10 +239,17 @@ const FormOnTheWaySubmission = () => {
                     }}
                   </FieldArray>
                 </Col>
-
-                <div className="d-flex justify-content-center">
-                  <SubmitButton formik={formik} />
-                </div>
+                <Container>
+                  <Card className="text-center mt-3 p-2">
+                    <Card.Body>
+                      I can confirm that the above data is correct and I am
+                      cursed if I do the work of the Lord deceitfully
+                    </Card.Body>
+                    <Card.Footer>
+                      <SubmitButton formik={formik} />
+                    </Card.Footer>
+                  </Card>
+                </Container>
               </Row>
             </Form>
           </Container>

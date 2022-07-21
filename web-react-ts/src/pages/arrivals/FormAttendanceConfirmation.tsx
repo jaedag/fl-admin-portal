@@ -242,7 +242,6 @@ const FormAttendanceConfirmation = () => {
                     <SubmitButton formik={formik} />
                   </Card.Footer>
                 </Card>
-                <div className="d-flex justify-content-center pt-3"></div>
               </Form>
             </Container>
           )}
