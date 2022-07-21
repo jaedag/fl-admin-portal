@@ -7,7 +7,7 @@ import { BACENTA_ARRIVALS } from './arrivalsQueries'
 import { useNavigate } from 'react-router'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import { ChurchContext } from 'contexts/ChurchContext'
-import { CheckCircleFill } from 'react-bootstrap-icons'
+import { ArrowDownSquare, CheckCircleFill } from 'react-bootstrap-icons'
 import {
   beforeArrivalDeadline,
   beforeMobilisationDeadline,
@@ -99,25 +99,42 @@ const BacentaArrivals = () => {
           </Card>
         ) : (
           <Card className="text-center py-4">
-            <div className="text-secondary-custom">
-              <span>Code of the Day: </span>
-              <h5 className="fw-bold code-of-the-day">{`${bacenta?.arrivalsCodeOfTheDay}`}</h5>
-            </div>
+            {!bussing?.bussingPictures.length && (
+              <div className="text-secondary-custom">
+                <span>Code of the Day: </span>
+                <h5 className="fw-bold code-of-the-day">{`${bacenta?.arrivalsCodeOfTheDay}`}</h5>
+              </div>
+            )}
           </Card>
         )}
-        {!isBeforeArrivalEnd && bussing?.mobilisationPicture && (
-          <Card className="text-center py-3">
-            <p className="display-1">😞</p>
-            <h5 className="countdown danger fw-bold ">
-              It is too late to fill your forms!
-            </h5>
-            <i>
-              <div>Ecclesiastes 3:1</div>
-              <div>
-                To every thing there is a season, and a time to every purpose
-                under the heaven:
+        {console.log(bussing?.bussingPictures)}
+        {!isBeforeArrivalEnd &&
+          bussing?.mobilisationPicture &&
+          !bussing?.bussingPictures.length && (
+            <Card className="text-center py-3">
+              <p className="display-1">😞</p>
+              <h5 className="countdown danger fw-bold ">
+                It is too late to fill your forms!
+              </h5>
+              <i>
+                <div>Ecclesiastes 3:1</div>
+                <div>
+                  To every thing there is a season, and a time to every purpose
+                  under the heaven:
+                </div>
+              </i>
+            </Card>
+          )}
+        {bussing?.bussingPictures.length && (
+          <Card className="text-center">
+            <Card.Body>You have filled your forms today</Card.Body>
+            <Card.Footer>
+              Click <span className="good">{`Today's Bussing`}</span> below to
+              view your bussing data{' '}
+              <div className="p-2">
+                <ArrowDownSquare size={50} />
               </div>
-            </i>
+            </Card.Footer>
           </Card>
         )}
 
