@@ -339,6 +339,7 @@ export const arrivalsMutation = {
         numberOfUrvans: neonumber
         numberOfCars: neonumber
         bussingCost: neonumber
+        personalContribution: number
         bacentaSprinterCost: number
         bacentaUrvanCost: number
         swellBussingTopUp: neonumber
@@ -355,7 +356,8 @@ export const arrivalsMutation = {
 
       const bussingTopUp =
         response.numberOfSprinters.low * response.bacentaSprinterCost +
-        response.numberOfUrvans.low * response.bacentaUrvanCost
+        response.numberOfUrvans.low * response.bacentaUrvanCost -
+        response.personalContribution
 
       if (response.attendance.low < 8) {
         try {

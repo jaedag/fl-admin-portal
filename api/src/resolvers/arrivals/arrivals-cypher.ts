@@ -38,6 +38,7 @@ record.numberOfSprinters AS numberOfSprinters,
 record.numberOfUrvans AS numberOfUrvans,
 record.numberOfCars AS numberOfCars,
 record.bussingCost AS bussingCost,
+record.personalContribution AS personalContribution,
 leader.phoneNumber AS leaderPhoneNumber,
 leader.firstName AS leaderFirstName,
 
