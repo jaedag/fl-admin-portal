@@ -48,9 +48,10 @@ labels(date) AS dateLabels
 export const checkTransactionId = `
 MATCH (record:BussingRecord {id: $bussingRecordId})<-[:HAS_BUSSING]-(:ServiceLog)<-[:HAS_HISTORY]-(bacenta:Bacenta)
 MATCH (bacenta)<-[:HAS]-(:Constituency)<-[:HAS]-(:Council)<-[:HAS]-(stream:Stream)
-OPTIONAL MATCH (record)-[:COUNTED_BY]->(admin:Member)
+MATCH (bacenta)<-[:LEADS]-(leader:Member)
+WITH record, bacenta, leader, stream
 
-RETURN record, stream
+RETURN record, stream, bacenta, leader.firstName AS firstName, leader.phoneNumber AS phoneNumber
 `
 export const checkArrivalTimes = `
 MATCH (bacenta {id: $bacentaId})<-[:HAS]-(:Constituency)<-[:HAS]-(:Council)<-[:HAS]-(stream:Stream)

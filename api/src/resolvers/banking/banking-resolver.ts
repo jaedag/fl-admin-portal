@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { getHumanReadableDate } from 'jd-date-utils'
 import { Context } from '../utils/neo4j-types'
 import { permitLeader } from '../permissions'
 import {
@@ -42,7 +43,9 @@ const checkIfLastServiceBanked = async (
 
   if (!('bankingSlip' in record || record.transactionStatus === 'success')) {
     throwErrorMsg(
-      "Please bank last week's outstanding offering before attempting to bank this week's offering"
+      `Please bank outstanding offering for your service filled on ${getHumanReadableDate(
+        record.created_at
+      )} before attempting to bank this week's offering`
     )
 
     return false
@@ -240,10 +243,7 @@ const bankingMutation = {
 
       return submissionResponse.record.properties
     } catch (error: any) {
-      return throwErrorMsg(
-        'There was an error submitting your banking slip',
-        error
-      )
+      return throwErrorMsg(error)
     }
   },
 }
