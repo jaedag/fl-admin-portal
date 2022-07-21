@@ -27,20 +27,22 @@ RETURN record, bacenta.name AS bacentaName, date.date AS date
 
 export const getBussingRecordWithDate = `
 MATCH (record:BussingRecord {id: $bussingRecordId})<-[:HAS_BUSSING]-(:ServiceLog)<-[:HAS_HISTORY]-(bacenta:Bacenta)<-[:LEADS]-(leader:Member)
+MATCH (bacenta)-[:BUSSES_FROM]->(zone:Zone)
 MATCH (record)-[:BUSSED_ON]->(date:TimeGraph)
 SET record.target = bacenta.target
 
 RETURN record.id AS bussingRecordId,
 record.target AS target,
 record.attendance AS attendance, 
-record.numberOfBusses AS numberOfBusses,
+record.numberOfSprinters AS numberOfSprinters,
+record.numberOfUrvans AS numberOfUrvans,
 record.numberOfCars AS numberOfCars,
 record.bussingCost AS bussingCost,
 leader.phoneNumber AS leaderPhoneNumber,
 leader.firstName AS leaderFirstName,
 
-bacenta.swellBussingCost - bacenta.swellPersonalContribution AS swellBussingTopUp,
-bacenta.normalBussingCost - bacenta.normalPersonalContribution AS normalBussingTopUp,
+zone.sprinterCost AS bacentaSprinterCost,
+zone.urvanCost AS bacentaUrvanCost,
 
 labels(date) AS dateLabels
 `
@@ -64,16 +66,6 @@ MERGE (date:TimeGraph {date: date($date)})
 RETURN toString(date.date) AS id, date.date AS date, true AS swell
 `
 
-export const setSwellBussingTopUp = `
-MATCH (record:BussingRecord {id: $bussingRecordId})<-[:HAS_BUSSING]-(:ServiceLog)<-[:HAS_HISTORY]-(bacenta:Bacenta)
-SET record.bussingTopUp = bacenta.swellBussingCost - bacenta.swellPersonalContribution,
-record.momoNumber = bacenta.momoNumber, 
-record.mobileNetwork = bacenta.mobileNetwork,
-record.momoName = bacenta.momoName
-
-RETURN record
-`
-
 export const setAdjustedDiscountTopUp = `
 MATCH (record:BussingRecord {id: $bussingRecordId})
 SET record.bussingTopUp = record.bussingCost 
@@ -90,7 +82,7 @@ RETURN record AS record
 
 export const setNormalBussingTopUp = `
 MATCH (record:BussingRecord {id: $bussingRecordId})<-[:HAS_BUSSING]-(:ServiceLog)<-[:HAS_HISTORY]-(bacenta:Bacenta)
-SET record.bussingTopUp = bacenta.normalBussingCost - bacenta.normalPersonalContribution,
+SET record.bussingTopUp = $bussingTopUp,
 record.momoNumber = bacenta.momoNumber, 
 record.mobileNetwork = bacenta.mobileNetwork,
 record.momoName = bacenta.momoName

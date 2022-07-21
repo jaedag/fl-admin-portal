@@ -3,7 +3,7 @@ import { Church, ChurchLevel } from 'global-types'
 import { authorisedLink } from 'global-utils'
 import { permitMe } from 'permission-utils'
 import React, { useContext } from 'react'
-import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router'
 import { ChurchContext } from '../../contexts/ChurchContext'
 import './Breadcrumb.css'
 
@@ -18,6 +18,8 @@ interface BreadcrumbType extends Church {
 const Breadcrumb = ({ breadcrumb }: { breadcrumb: BreadcrumbType[] }) => {
   const { clickCard } = useContext(ChurchContext)
   const { currentUser } = useContext(MemberContext)
+
+  const navigate = useNavigate()
 
   if (!breadcrumb.length) {
     return <></>
@@ -38,21 +40,23 @@ const Breadcrumb = ({ breadcrumb }: { breadcrumb: BreadcrumbType[] }) => {
         }
 
         return (
-          <Link
+          <span
             key={i}
-            to={authorisedLink(
-              currentUser,
-              permitMe(bread?.__typename),
-              `/${bread?.__typename.toLowerCase()}/displaydetails`
-            )}
             onClick={() => {
               clickCard(bread)
+              navigate(
+                authorisedLink(
+                  currentUser,
+                  permitMe(bread?.__typename),
+                  `/${bread?.__typename.toLowerCase()}/displaydetails`
+                )
+              )
             }}
             className="crumb label text-secondary"
           >
             {`${breadname} ${bread?.__typename}`}
             {i !== breadcrumb.length - 1 && ' > '}
-          </Link>
+          </span>
         )
       })}
     </>

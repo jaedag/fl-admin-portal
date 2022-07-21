@@ -15,7 +15,7 @@ const isArrivalsToday = (bacenta: BacentaWithArrivals) => {
 
   const today = new Date().getDay()
   if (
-    today === 6 &&
+    today &&
     (bacenta.stream_name.toLowerCase() === 'anagkazo' ||
       bacenta.stream_name.toLowerCase() === 'campus')
   ) {

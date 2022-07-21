@@ -1,3 +1,20 @@
+MATCH (bussingRecord:BussingRecord)
+SET bussingRecord.numberOfSprinters = bussingRecord.numberOfBusses
+REMOVE bussingRecord.numberOfBusses 
+RETURN COUNT(bussingRecord);
+
+
+CREATE (zone:BusZone {id:apoc.create.uuid()})
+SET zone.number = 1,
+zone.sprinterCost = 100,
+zone.urvanCost = 70
+RETURN zone;
+
+MATCH (b:Bacenta)
+MATCH (zone:BusZone {number: 1})
+MERGE (b)-[:BUSSES_FROM]->(zone)
+RETURN zone;
+
 //Adding CONSTRAINST 
 //constraint for service record id
 CREATE CONSTRAINT con_oversight_id FOR (n:Oversight) REQUIRE n.id IS UNIQUE;

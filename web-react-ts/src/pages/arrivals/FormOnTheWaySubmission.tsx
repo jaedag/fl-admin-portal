@@ -24,7 +24,8 @@ type FormOptions = {
   attendance: string
   bussingPictures: string[]
   bussingCost: string
-  numberOfBusses: string
+  numberOfSprinters: string
+  numberOfUrvans: string
   numberOfCars: string
 }
 
@@ -36,7 +37,8 @@ const FormOnTheWaySubmission = () => {
     attendance: '',
     bussingPictures: [''],
     bussingCost: '',
-    numberOfBusses: '',
+    numberOfSprinters: '',
+    numberOfUrvans: '',
     numberOfCars: '',
   }
 
@@ -62,7 +64,11 @@ const FormOnTheWaySubmission = () => {
     bussingCost: Yup.number()
       .typeError('Please enter a valid number')
       .required('This is a required field'),
-    numberOfBusses: Yup.number()
+    numberOfSprinters: Yup.number()
+      .typeError('Please enter a valid number')
+      .integer('You cannot have busses with decimals!')
+      .required('This is a required field'),
+    numberOfUrvans: Yup.number()
       .typeError('Please enter a valid number')
       .integer('You cannot have busses with decimals!')
       .required('This is a required field'),
@@ -83,7 +89,8 @@ const FormOnTheWaySubmission = () => {
           bussingRecordId: bussingRecordId,
           bussingPictures: values.bussingPictures,
           bussingCost: parseFloat(values.bussingCost),
-          numberOfBusses: parseInt(values.numberOfBusses),
+          numberOfSprinters: parseInt(values.numberOfSprinters),
+          numberOfUrvans: parseInt(values.numberOfUrvans),
           numberOfCars: parseInt(values.numberOfCars || '0'),
         },
       })
@@ -138,10 +145,20 @@ const FormOnTheWaySubmission = () => {
                     name="bussingCost"
                     label="Bussing Cost (in Cedis)*"
                   />
+                  <hr />
+                  <div className="mb-2">
+                    This section will be used to calculate your bussing top up
+                    so fill it carefully
+                  </div>
                   <FormikControl
                     control="input"
-                    name="numberOfBusses"
-                    label="Number of Busses *"
+                    name="numberOfSprinters"
+                    label="Number of Sprinters *"
+                  />
+                  <FormikControl
+                    control="input"
+                    name="numberOfUrvans"
+                    label="Number of Urvans *"
                   />
 
                   <FormikControl

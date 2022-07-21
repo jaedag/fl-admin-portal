@@ -137,14 +137,37 @@ const BusFormDetails = () => {
                     </td>
                   </tr>
 
-                  <tr>
-                    <td>Number of Busses</td>
-                    <td>
-                      <PlaceholderCustom loading={loading}>
-                        {bussing?.numberOfBusses}
-                      </PlaceholderCustom>
-                    </td>
-                  </tr>
+                  {bussing?.numberOfBusses && (
+                    <tr>
+                      <td>Number of Busses</td>
+                      <td>
+                        <PlaceholderCustom loading={loading}>
+                          {bussing?.numberOfBusses}
+                        </PlaceholderCustom>
+                      </td>
+                    </tr>
+                  )}
+                  {bussing?.numberOfSprinters ? (
+                    <tr>
+                      <td>Number of Sprinters</td>
+                      <td>
+                        <PlaceholderCustom loading={loading}>
+                          {bussing?.numberOfSprinters}
+                        </PlaceholderCustom>
+                      </td>
+                    </tr>
+                  ) : null}
+                  {bussing?.numberOfUrvans ? (
+                    <tr>
+                      <td>Number of Busses</td>
+                      <td>
+                        <PlaceholderCustom loading={loading}>
+                          {bussing?.numberOfUrvans}
+                        </PlaceholderCustom>
+                      </td>
+                    </tr>
+                  ) : null}
+
                   {bussing?.numberOfCars ? (
                     <tr>
                       <td>Number of Cars</td>
@@ -247,7 +270,6 @@ const BusFormDetails = () => {
             </Row>
           </Col>
         </Row>
-
         <div className="d-grid gap-2">
           <RoleView roles={permitArrivalsCounter()}>
             {beforeCountingDeadline(bussing, church) && (

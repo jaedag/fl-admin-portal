@@ -402,6 +402,8 @@ export const DISPLAY_BUSSING_RECORDS = gql`
       bussingCost
       bussingTopUp
       numberOfBusses
+      numberOfSprinters
+      numberOfUrvans
       numberOfCars
       comments
       arrivalTime

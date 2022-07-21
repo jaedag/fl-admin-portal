@@ -9,7 +9,7 @@ import { Formik, Form, FormikHelpers } from 'formik'
 import React, { useState } from 'react'
 import * as Yup from 'yup'
 import { useContext } from 'react'
-import { Card, Container } from 'react-bootstrap'
+import { Card, Col, Container, Row } from 'react-bootstrap'
 import { DISPLAY_BUSSING_RECORDS } from './arrivalsQueries'
 import {
   CONFIRM_BUSSING_BY_ADMIN,
@@ -27,7 +27,8 @@ import { BacentaWithArrivals, BussingRecord } from './arrivals-types'
 
 type FormOptions = {
   attendance: string
-  bussingTopUp: string
+  numberOfSprinters: string
+  numberOfUrvans: string
   comments: string
 }
 
@@ -49,7 +50,8 @@ const FormAttendanceConfirmation = () => {
   const bacenta: BacentaWithArrivals = data?.bacentas[0]
   const initialValues: FormOptions = {
     attendance: '',
-    bussingTopUp: '',
+    numberOfSprinters: '0',
+    numberOfUrvans: '0',
     comments: '',
   }
 
@@ -58,6 +60,14 @@ const FormAttendanceConfirmation = () => {
       .typeError('Please enter a valid number')
       .positive()
       .integer('You cannot have attendance with decimals!')
+      .required('This is a required field'),
+    numberOfSprinters: Yup.number()
+      .typeError('Please enter a valid number')
+      .integer('You cannot have busses with decimals!')
+      .required('This is a required field'),
+    numberOfUrvans: Yup.number()
+      .typeError('Please enter a valid number')
+      .integer('You cannot have busses with decimals!')
       .required('This is a required field'),
     comments: Yup.string().when('attendance', {
       is: (attendance: number) => attendance !== bussing?.leaderDeclaration,
@@ -78,6 +88,8 @@ const FormAttendanceConfirmation = () => {
       variables: {
         bussingRecordId: bussingRecordId,
         attendance: parseInt(values.attendance),
+        numberOfSprinters: parseInt(values.numberOfSprinters),
+        numberOfUrvans: parseInt(values.numberOfUrvans),
         comments: values.comments,
       },
     }).catch((error) =>
@@ -172,7 +184,7 @@ const FormAttendanceConfirmation = () => {
             </table>
           </div>
         </div>
-        <Container>
+        <Container className="mb-2">
           <Card>
             <Card.Body>
               <div className="text-secondary">
@@ -199,15 +211,38 @@ const FormAttendanceConfirmation = () => {
                   label="Attendance (from Picture)*"
                   placeholder={bussing?.attendance}
                 />
+                <Row>
+                  <Col>
+                    <FormikControl
+                      control="input"
+                      name="numberOfSprinters"
+                      label="Number of Sprinters *"
+                    />
+                  </Col>
+                  <Col>
+                    <FormikControl
+                      control="input"
+                      name="numberOfUrvans"
+                      label="Number of Urvans *"
+                    />
+                  </Col>
+                </Row>
 
                 <FormikControl
                   control="textarea"
                   name="comments"
                   label="Comments"
                 />
-                <div className="d-flex justify-content-center pt-3">
-                  <SubmitButton formik={formik} />
-                </div>
+                <Card className="text-center mt-3 ">
+                  <Card.Body>
+                    I can confirm that the above data is correct and I approve
+                    the bussing top up for this bacenta
+                  </Card.Body>
+                  <Card.Footer>
+                    <SubmitButton formik={formik} />
+                  </Card.Footer>
+                </Card>
+                <div className="d-flex justify-content-center pt-3"></div>
               </Form>
             </Container>
           )}

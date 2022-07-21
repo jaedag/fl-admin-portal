@@ -867,24 +867,8 @@ extend type Bacenta {
       RETURN status
       """
     )
-  normalBussingCost: Float
+  zone: Int!
   normalPersonalContribution: Float
-  normalBussingTopUp: Float
-    @cypher(
-      statement: """
-      MATCH (this)
-      RETURN this.normalBussingCost - this.normalPersonalContribution
-      """
-    )
-  swellBussingCost: Float
-  swellPersonalContribution: Float
-  swellBussingTopUp: Float
-    @cypher(
-      statement: """
-      MATCH (this)
-      RETURN this.swellBussingCost - this.swellPersonalContribution
-      """
-    )
   mobileNetwork: String
   momoNumber: String
   momoName: String
@@ -931,7 +915,9 @@ type BussingRecord implements Record @auth(rules: [{ isAuthenticated: true }]) {
   bussingPictures: [String]
   attendance: Int
   leaderDeclaration: Int
-  numberOfBusses: Int
+  numberOfBusses: Int #Legacy Property for before we started collecting Spinter/Urvan details
+  numberOfSprinters: Int
+  numberOfUrvans: Int
   numberOfCars: Int
   bussingCost: Float
   bussingTopUp: Float
@@ -1192,7 +1178,8 @@ extend type Mutation {
     attendance: Int!
     bussingPictures: [String]!
     bussingCost: Float!
-    numberOfBusses: Int!
+    numberOfSprinters: Int!
+    numberOfUrvans: Int!
     numberOfCars: Int!
   ): BussingRecord!
     @cypher(
@@ -1201,7 +1188,8 @@ extend type Mutation {
       SET bussingRecord.leaderDeclaration = $attendance,
       bussingRecord.bussingPictures = $bussingPictures,
       bussingRecord.bussingCost = $bussingCost,
-      bussingRecord.numberOfBusses = $numberOfBusses,
+      bussingRecord.numberOfSprinters = $numberOfSprinters,
+      bussingRecord.numberOfUrvans = $numberOfUrvans,
       bussingRecord.numberOfCars = $numberOfCars
 
        WITH bussingRecord
@@ -1217,6 +1205,8 @@ extend type Mutation {
   ConfirmBussingByAdmin(
     bussingRecordId: ID!
     attendance: Int!
+    numberOfSprinters: Int!
+    numberOfUrvans: Int!
     comments: String
   ): BussingRecord!
     @auth(rules: [{ roles: ["arrivalsCounterStream"] }])
@@ -1224,6 +1214,8 @@ extend type Mutation {
       statement: """
       MATCH (bussingRecord:BussingRecord {id: $bussingRecordId})
         SET bussingRecord.attendance = $attendance,
+        bussingRecord.numberOfSprinters = $numberOfSprinters,
+        bussingRecord.numberOfUrvans = $numberOfUrvans,
         bussingRecord.comments = $comments
 
          WITH bussingRecord

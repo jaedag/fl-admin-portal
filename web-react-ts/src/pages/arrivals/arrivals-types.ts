@@ -23,6 +23,8 @@ export interface BussingRecord {
   attendance: number
   leaderDeclaration: number
   numberOfBusses: number
+  numberOfSprinters: number
+  numberOfUrvans: number
   numberOfCars: number
   bussingCost: number
   bussingTopUp: number

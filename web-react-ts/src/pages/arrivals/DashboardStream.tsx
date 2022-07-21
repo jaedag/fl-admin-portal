@@ -7,7 +7,7 @@ import { MAKE_STREAMARRIVALS_ADMIN } from './arrivalsMutation'
 import { STREAM_ARRIVALS_DASHBOARD } from './arrivalsQueries'
 import { throwErrorMsg } from 'global-utils'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
-import { Col, Container, Row, Button } from 'react-bootstrap'
+import { Col, Container, Row } from 'react-bootstrap'
 import Popup from 'components/Popup/Popup'
 import { Form, Formik, FormikHelpers } from 'formik'
 import FormikControl from 'components/formik-components/FormikControl'
@@ -26,6 +26,7 @@ import { CheckAll } from 'react-bootstrap-icons'
 import usePopup from 'hooks/usePopup'
 import HeadingSecondary from 'components/HeadingSecondary'
 import { AdminFormOptions } from './DashboardConstituency'
+import ArrivalsMenuDropdown from './ArrivalsMenuDropdown'
 
 const StreamDashboard = () => {
   const { isOpen, togglePopup } = usePopup()
@@ -76,6 +77,17 @@ const StreamDashboard = () => {
     link: `/arrivals/stream-by-council`,
   }
 
+  const ArrivalsMenu = [
+    { title: 'Change Arrivals Admin', onClick: togglePopup },
+    {
+      title: 'Arrivals Helpers',
+      onClick: () => navigate('/stream/arrivals-helpers'),
+    },
+    {
+      title: 'Arrival Times',
+      onClick: () => navigate('/stream/arrival-times'),
+    },
+  ]
   return (
     <ApolloWrapper data={data} loading={loading} error={error}>
       <Container>
@@ -117,33 +129,14 @@ const StreamDashboard = () => {
             </Formik>
           </Popup>
         )}
-        <div className="d-grid gap-2">
-          <RoleView
-            roles={[...permitAdmin('Stream'), ...permitArrivals('Stream')]}
-          >
-            <Button
-              variant="outline-secondary"
-              size="lg"
-              onClick={() => togglePopup()}
-            >
-              Change Arrivals Admin
-            </Button>
-            <Button
-              variant="outline-secondary"
-              size="lg"
-              onClick={() => navigate('/stream/arrivals-helpers')}
-            >
-              Arrivals Helpers
-            </Button>
-            <Button
-              variant="outline-secondary"
-              size="lg"
-              onClick={() => navigate('/stream/arrival-times')}
-            >
-              Arrivals Times
-            </Button>
-          </RoleView>
 
+        <RoleView
+          roles={[...permitAdmin('Stream'), ...permitArrivals('Stream')]}
+        >
+          <ArrivalsMenuDropdown menuItems={ArrivalsMenu} />
+        </RoleView>
+
+        <div className="d-grid gap-2 mt-3">
           <DefaulterInfoCard defaulter={aggregates} />
           <MenuButton
             title="Bacentas With No Activity"
