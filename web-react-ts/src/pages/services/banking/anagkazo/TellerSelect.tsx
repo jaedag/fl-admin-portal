@@ -166,6 +166,7 @@ const TellerSelect = () => {
                   )
 
                   if (confirmBox === true) {
+                    setSubmitting(true)
                     try {
                       await RemoveStreamTeller({
                         variables: {

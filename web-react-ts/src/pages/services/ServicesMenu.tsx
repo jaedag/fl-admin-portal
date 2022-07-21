@@ -104,26 +104,29 @@ const Services = () => {
                 />
               </>
             )}
-          {church.stream_name === 'anagkazo' && (
-            <RoleView roles={permitAdmin('Stream')}>
-              <MenuButton
-                iconComponent={PersonPlus}
-                title="Add Treasurers"
-                color="banking"
-                onClick={() => navigate(`/anagkazo/treasurer-select`)}
-                noCaption
-              />
-            </RoleView>
+          {church.stream_name === 'anagkazo' && church.__typename === 'Stream' && (
+            <>
+              <RoleView roles={permitAdmin('Stream')}>
+                <MenuButton
+                  iconComponent={PersonPlus}
+                  title="Add Treasurers"
+                  color="banking"
+                  onClick={() => navigate(`/anagkazo/treasurer-select`)}
+                  noCaption
+                />
+              </RoleView>
+
+              <RoleView roles={permitTellerStream()}>
+                <MenuButton
+                  iconComponent={CashCoin}
+                  title="Receive Midweek Offering"
+                  color="banking"
+                  onClick={() => navigate(`/anagkazo/receive-banking`)}
+                  noCaption
+                />
+              </RoleView>
+            </>
           )}
-          <RoleView roles={permitTellerStream()}>
-            <MenuButton
-              iconComponent={CashCoin}
-              title="Receive Midweek Offering"
-              color="banking"
-              onClick={() => navigate(`/anagkazo/receive-banking`)}
-              noCaption
-            />
-          </RoleView>
         </div>
       </Container>
     </div>
