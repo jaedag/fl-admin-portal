@@ -920,8 +920,9 @@ type BussingRecord implements Record @auth(rules: [{ isAuthenticated: true }]) {
   #On The Way
   bussingPictures: [String]
   attendance: Int
-  leaderDeclaration: Int
+  leaderDeclaration: Int!
   numberOfBusses: Int #Legacy Property for before we started collecting Spinter/Urvan details
+  personalContribution: Float
   numberOfSprinters: Int
   numberOfUrvans: Int
   numberOfCars: Int
@@ -1198,6 +1199,7 @@ extend type Mutation {
     attendance: Int!
     bussingPictures: [String]!
     bussingCost: Float!
+    personalContribution: Float!
     numberOfSprinters: Int!
     numberOfUrvans: Int!
     numberOfCars: Int!
@@ -1208,6 +1210,7 @@ extend type Mutation {
       SET bussingRecord.leaderDeclaration = $attendance,
       bussingRecord.bussingPictures = $bussingPictures,
       bussingRecord.bussingCost = $bussingCost,
+      bussingRecord.personalContribution = $personalContribution,
       bussingRecord.numberOfSprinters = $numberOfSprinters,
       bussingRecord.numberOfUrvans = $numberOfUrvans,
       bussingRecord.numberOfCars = $numberOfCars

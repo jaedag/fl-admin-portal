@@ -402,6 +402,7 @@ export const DISPLAY_BUSSING_RECORDS = gql`
       attendance
       bussingPictures
       bussingCost
+      personalContribution
       bussingTopUp
       numberOfBusses
       numberOfSprinters

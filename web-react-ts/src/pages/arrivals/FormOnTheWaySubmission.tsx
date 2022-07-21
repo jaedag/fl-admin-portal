@@ -24,6 +24,7 @@ type FormOptions = {
   attendance: string
   bussingPictures: string[]
   bussingCost: string
+  personalContribution: string
   numberOfSprinters: string
   numberOfUrvans: string
   numberOfCars: string
@@ -37,9 +38,10 @@ const FormOnTheWaySubmission = () => {
     attendance: '',
     bussingPictures: [''],
     bussingCost: '',
+    personalContribution: '',
     numberOfSprinters: '',
     numberOfUrvans: '',
-    numberOfCars: '',
+    numberOfCars: '0',
   }
 
   const { data, loading, error } = useQuery(BACENTA_ARRIVALS, {
@@ -62,6 +64,9 @@ const FormOnTheWaySubmission = () => {
       )
       .of(Yup.string().required('You must upload a bussing picture')),
     bussingCost: Yup.number()
+      .typeError('Please enter a valid number')
+      .required('This is a required field'),
+    personalContribution: Yup.number()
       .typeError('Please enter a valid number')
       .required('This is a required field'),
     numberOfSprinters: Yup.number()
@@ -89,6 +94,7 @@ const FormOnTheWaySubmission = () => {
           bussingRecordId: bussingRecordId,
           bussingPictures: values.bussingPictures,
           bussingCost: parseFloat(values.bussingCost),
+          personalContribution: parseInt(values.personalContribution),
           numberOfSprinters: parseInt(values.numberOfSprinters),
           numberOfUrvans: parseInt(values.numberOfUrvans),
           numberOfCars: parseInt(values.numberOfCars || '0'),
@@ -145,27 +151,44 @@ const FormOnTheWaySubmission = () => {
                     name="bussingCost"
                     label="Bussing Cost (in Cedis)*"
                   />
-                  <hr />
-                  <div className="mb-2">
-                    This section will be used to calculate your bussing top up
-                    so fill it carefully
-                  </div>
+                </Col>
+
+                <hr />
+                <div className="mb-2 yellow">
+                  This section will be used to calculate your bussing top up so
+                  fill it carefully
+                </div>
+                <FormikControl
+                  control="input"
+                  name="personalContribution"
+                  label="Personal Contribution"
+                />
+              </Row>
+              <Row className="row-cols-2">
+                <Col>
                   <FormikControl
                     control="input"
                     name="numberOfSprinters"
                     label="Number of Sprinters *"
                   />
+                </Col>
+                <Col>
                   <FormikControl
                     control="input"
                     name="numberOfUrvans"
                     label="Number of Urvans *"
                   />
-
+                </Col>
+                <Col>
                   <FormikControl
                     control="input"
                     name="numberOfCars"
                     label="Number of Cars"
                   />
+                </Col>
+              </Row>
+              <Row>
+                <Col>
                   <FieldArray name="bussingPictures">
                     {(fieldArrayProps) => {
                       const { push, remove, form } = fieldArrayProps

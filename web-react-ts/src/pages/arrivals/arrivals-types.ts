@@ -22,6 +22,7 @@ export interface BussingRecord {
   bussingPictures: string[]
   attendance: number
   leaderDeclaration: number
+  personalContribution: number
   numberOfBusses: number
   numberOfSprinters: number
   numberOfUrvans: number

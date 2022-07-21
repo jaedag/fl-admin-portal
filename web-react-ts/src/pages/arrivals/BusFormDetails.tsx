@@ -113,7 +113,7 @@ const BusFormDetails = () => {
                   </tr>
                   <tr>
                     <td>Bus Payment Attendance</td>
-                    <td>
+                    <td className="good">
                       <PlaceholderCustom loading={loading}>
                         {bussing?.attendance}
                       </PlaceholderCustom>
@@ -123,16 +123,30 @@ const BusFormDetails = () => {
                     <td>Bussing Cost</td>
                     <td>
                       <PlaceholderCustom loading={loading}>
-                        {bussing?.bussingCost}
+                        {bussing?.bussingCost}{' '}
+                        <span className="small">GHS</span>
+                      </PlaceholderCustom>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>Personal Contribution</td>
+                    <td className="good">
+                      <PlaceholderCustom loading={loading}>
+                        {bussing?.personalContribution}{' '}
+                        <span className="small">GHS</span>
                       </PlaceholderCustom>
                     </td>
                   </tr>
 
                   <tr>
                     <td>Bussing Top Up</td>
-                    <td>
+                    <td className="good">
                       <PlaceholderCustom loading={loading}>
-                        {bussing?.bussingTopUp}
+                        {bussing?.bussingTopUp}{' '}
+                        <span className="small">
+                          {bussing?.bussingTopUp && `GHS`}
+                        </span>
                       </PlaceholderCustom>
                     </td>
                   </tr>
