@@ -377,7 +377,7 @@ export const arrivalsMutation = {
       }
 
       if (response.attendance.low >= 8 && response.bussingCost < bussingTopUp) {
-        // Bussing Cost is less than the  bussingTop Up
+        // Bussing Cost is less than the  bussingTop Up, We will pay all the bussing cost
 
         const receiveMoney = joinMessageStrings([
           `Hi  ${response.leaderFirstName}\n\n`,
@@ -422,8 +422,8 @@ export const arrivalsMutation = {
       //   bussingRecord = rearrangeCypherObject(attendanceRes[0])
       // }
 
-      if (response.attendance.low < response.target.low) {
-        // Did not cross your target
+      if (response.attendance.low) {
+        // Did not cross your target, you get your normal zonal top up
 
         const receiveMoney = joinMessageStrings([
           `Hi  ${response.leaderFirstName}\n\n`,
@@ -458,6 +458,7 @@ export const arrivalsMutation = {
           ),
         ])
       }
+
       if (response.bussingCost === 0) {
         await Promise.all([
           session.run(setNormalBussingTopUp, { ...args, bussingTopUp }),
