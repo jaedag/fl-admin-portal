@@ -338,7 +338,7 @@ export const arrivalsMutation = {
         numberOfSprinters: neonumber
         numberOfUrvans: neonumber
         numberOfCars: neonumber
-        bussingCost: number
+        bussingCost: neonumber
         bacentaSprinterCost: number
         bacentaUrvanCost: number
         swellBussingTopUp: neonumber
@@ -376,7 +376,22 @@ export const arrivalsMutation = {
         }
       }
 
-      if (response.attendance.low >= 8 && response.bussingCost < bussingTopUp) {
+      if (response.bussingCost.low === 0) {
+        const attendanceRes = await Promise.all([
+          session.run(noBussingTopUp, { ...args, bussingTopUp }),
+          sendBulkSMS(
+            [response.leaderPhoneNumber],
+            joinMessageStrings([texts.arrivalsSMS.no_bussing_cost])
+          ),
+        ])
+        bussingRecord = rearrangeCypherObject(attendanceRes[0])
+        return bussingRecord?.record.properties
+      }
+
+      if (
+        response.attendance.low >= 8 &&
+        response.bussingCost.low < bussingTopUp
+      ) {
         // Bussing Cost is less than the  bussingTop Up, We will pay all the bussing cost
 
         const receiveMoney = joinMessageStrings([
@@ -422,7 +437,10 @@ export const arrivalsMutation = {
       //   bussingRecord = rearrangeCypherObject(attendanceRes[0])
       // }
 
-      if (response.attendance.low) {
+      if (
+        response.attendance.low &&
+        response.numberOfSprinters.low + response.numberOfUrvans.low > 0
+      ) {
         // Did not cross your target, you get your normal zonal top up
 
         const receiveMoney = joinMessageStrings([
@@ -450,23 +468,17 @@ export const arrivalsMutation = {
       }
 
       if (response.numberOfSprinters.low + response.numberOfUrvans.low === 0) {
-        await Promise.all([
-          session.run(setNormalBussingTopUp, { ...args, bussingTopUp }),
+        const attendanceRes = await Promise.all([
+          session.run(noBussingTopUp, { ...args, bussingTopUp }),
           sendBulkSMS(
             [response.leaderPhoneNumber],
-            joinMessageStrings([texts.arrivalsSMS.no_busses_to_pay_for])
+            joinMessageStrings([
+              texts.arrivalsSMS.no_busses_to_pay_for,
+              response.attendance.toString(),
+            ])
           ),
         ])
-      }
-
-      if (response.bussingCost === 0) {
-        await Promise.all([
-          session.run(setNormalBussingTopUp, { ...args, bussingTopUp }),
-          sendBulkSMS(
-            [response.leaderPhoneNumber],
-            joinMessageStrings([texts.arrivalsSMS.no_bussing_cost])
-          ),
-        ])
+        bussingRecord = rearrangeCypherObject(attendanceRes[0])
       }
 
       return bussingRecord?.record.properties
