@@ -9,19 +9,13 @@ extend type ServiceRecord {
     )
 }
 
-type PeakWeek {
-  weeknumber: String!
-  income: Float
-  attendance: Float
-}
-
 type Stats {
-  attendance: Float!
-  income: Float!
+  attendance: Float
+  income: Float
 }
 
 extend type Fellowship {
-  avgWeekdayStats(days: Int!): Stats
+  avgWeekdayStats(days: Int!): Stats!
     @cypher(
       statement: """
       MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)
@@ -68,7 +62,7 @@ extend type Fellowship {
 }
 
 extend type Bacenta {
-  avgFellowshipStats(days: Int!): Stats
+  avgFellowshipStats(days: Int!): Stats!
     @cypher(
       statement: """
       MATCH (this)-[:HAS]->(fellowship) WHERE fellowship:Fellowship OR fellowship:ClosedFellowship
@@ -84,7 +78,7 @@ extend type Bacenta {
       """
     )
 
-  peakFellowshipAttendance(days: Int!): ServiceRecord
+  peakFellowshipAttendance(days: Int!): ServiceRecord!
     @cypher(
       statement: """
       MATCH (this)-[:HAS]->(fellowship) WHERE fellowship:Fellowship OR fellowship:ClosedFellowship
@@ -99,7 +93,7 @@ extend type Bacenta {
       """
     )
 
-  peakFellowshipIncome(days: Int!): ServiceRecord
+  peakFellowshipIncome(days: Int!): ServiceRecord!
     @cypher(
       statement: """
       MATCH (this)-[:HAS]->(fellowship) WHERE fellowship:Fellowship OR fellowship:ClosedFellowship
@@ -114,7 +108,7 @@ extend type Bacenta {
       """
     )
 
-  avgWeekdayStats(days: Int!): Stats
+  avgWeekdayStats(days: Int!): Stats!
     @cypher(
       statement: """
       MATCH (this)-[:HAS]->(fellowship) WHERE fellowship:Fellowship OR fellowship:ClosedFellowship
@@ -131,7 +125,7 @@ extend type Bacenta {
       """
     )
 
-  avgBussingAttendance(days: Int!): Float
+  avgBussingAttendance(days: Int!): Float!
     @cypher(
       statement: """
       MATCH (this)-[:HAS_HISTORY]-(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)
@@ -140,31 +134,38 @@ extend type Bacenta {
       MATCH (date)
        WHERE date.date > date() - duration({days: $days})
       WITH sum(bussing.attendance) AS sum, this, date(date.date).week as weeknumber
-      RETURN round(avg(sum))
+      WITH round(avg(sum)) AS average
+      RETURN
+      CASE
+      WHEN average IS NULL THEN 0
+      ELSE average
+      END AS average
       """
     )
 }
 
 extend type Constituency {
-  avgWeekdayStats(days: Int!): Stats
+  avgWeekdayStats(days: Int!): Stats!
     @cypher(
       statement: """
-      MATCH (this)-[:HAS]->(:Bacenta)-[:HAS]->(fellowship)
-          WHERE fellowship:Fellowship OR fellowship:ClosedFellowship
-      MATCH (fellowship)-[:HAS_HISTORY]-(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)
-      MATCH (record) WHERE NOT (record:NoService)
-      MATCH (record)-[:SERVICE_HELD_ON]->(date:TimeGraph)
+      MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_COMPONENT*1..2]->(componentServices)
+          MATCH (componentServices)-[:HAS_SERVICE]->(componentRecords:ServiceRecord)
+
+      MATCH (componentRecords) WHERE NOT (componentRecords:NoService)
+      MATCH (componentRecords)-[:SERVICE_HELD_ON]->(date:TimeGraph)
       MATCH (date)
-       WHERE date.date > date() - duration({days: $days})
-      WITH sum(record.attendance) AS sum, with sum(record.income) as income, this, date(date.date).week as weeknumber
+      WHERE date.date > date() - duration({days:$days})
+
+      WITH DISTINCT componentRecords, date(date.date).week as weeknumber, this
+      WITH sum(componentRecords.attendance) AS attendance, sum(componentRecords.income) AS income, this, weeknumber
       RETURN {
-        attendance: toInteger(round(avg(record.attendance))),
-        income: round(avg(record.income), 2)
+        attendance: toInteger(round(avg(attendance))),
+        income: round(avg(income), 2)
         }
       """
     )
 
-  avgBacentaBussingAttendance(days: Int!): Float
+  avgBacentaBussingAttendance(days: Int!): Float!
     @cypher(
       statement: """
       MATCH (this)-[:HAS]->(bacenta:Bacenta)
@@ -174,11 +175,16 @@ extend type Constituency {
       MATCH (date)
        WHERE date.date > date() - duration({days: $days})
       WITH sum(bussing.attendance) AS sum, bacenta, date(date.date).week as weeknumber
-      RETURN round(avg(sum))
+      WITH round(avg(sum)) AS average
+      RETURN
+      CASE
+      WHEN average IS NULL THEN 0
+      ELSE average
+      END AS average
       """
     )
 
-  avgBussingAttendance(days: Int): Float
+  avgBussingAttendance(days: Int): Float!
     @cypher(
       statement: """
       MATCH (this)-[:HAS]->(bacenta:Bacenta)
@@ -188,13 +194,18 @@ extend type Constituency {
       MATCH (date)
        WHERE date.date > date() - duration({days: $days})
       WITH sum(bussing.attendance) AS sum, this, date(date.date).week as weeknumber
-      RETURN round(avg(sum))
+      WITH round(avg(sum)) AS average
+      RETURN
+      CASE
+      WHEN average IS NULL THEN 0
+      ELSE average
+      END AS average
       """
     )
 }
 
 extend type Council {
-  avgFellowshipWeekdayStats(days: Int!): Stats
+  avgFellowshipWeekdayStats(days: Int!): Stats!
     @cypher(
       statement: """
       MATCH (this)-[:HAS]->(:Constituency)-[:HAS]->(:Bacenta)-[:HAS]->(fellowship)
@@ -212,7 +223,7 @@ extend type Council {
       """
     )
 
-  avgBacentaWeekdayStats(days: Int!): Stats
+  avgBacentaWeekdayStats(days: Int!): Stats!
     @cypher(
       statement: """
       MATCH (this)-[:HAS]->(:Constituency)-[:HAS]->(bacenta:Bacenta)-[:HAS]->(fellowship)
@@ -230,17 +241,19 @@ extend type Council {
       """
     )
 
-  avgConstituencyWeekdayStats(days: Int!): Stats
+  avgConstituencyWeekdayStats(days: Int!): Stats!
     @cypher(
       statement: """
-      MATCH (this)-[:HAS]->(con:Constituency)-[:HAS]->(:Bacenta)-[:HAS]->(fellowship)
-          WHERE fellowship:Fellowship OR fellowship:ClosedFellowship
-      MATCH (fellowship)-[:HAS_HISTORY]-(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)
-      MATCH (record) WHERE NOT (record:NoService)
-      MATCH (record)-[:SERVICE_HELD_ON]->(date:TimeGraph)
+      MATCH (this)-[:HAS]->(constituency:Constituency)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_COMPONENT*1..2]->(componentServices)
+          MATCH (componentServices)-[:HAS_SERVICE]->(componentRecords:ServiceRecord)
+
+      MATCH (componentRecords) WHERE NOT (componentRecords:NoService)
+      MATCH (componentRecords)-[:SERVICE_HELD_ON]->(date:TimeGraph)
       MATCH (date)
-      WHERE date.date > date() - duration({days: $days})
-      WITH sum(record.attendance) AS attendance, sum(record.income) AS attendance, con, date(date.date).week as weeknumber
+      WHERE date.date > date() - duration({days:$days})
+
+      WITH DISTINCT componentRecords, date(date.date).week as weeknumber, constituency
+      WITH sum(componentRecords.attendance) AS attendance, sum(componentRecords.income) AS income, constituency, weeknumber
       RETURN {
         attendance: toInteger(round(avg(attendance))),
         income: round(avg(income), 2)
@@ -248,17 +261,17 @@ extend type Council {
       """
     )
 
-  avgWeekdayAttendanceStats(days: Int!): Stats
+  avgWeekdayAttendanceStats(days: Int!): Stats!
     @cypher(
       statement: """
        MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_COMPONENT*1..3]->(componentServices)
           MATCH (componentServices)-[:HAS_SERVICE]->(componentRecords:ServiceRecord)
- 
+
       MATCH (componentRecords) WHERE NOT (componentRecords:NoService)
       MATCH (componentRecords)-[:SERVICE_HELD_ON]->(date:TimeGraph)
       MATCH (date)
-      WHERE date.date > date() - duration({days: $days})
-      
+      WHERE date.date > date() - duration({days:$days})
+
       WITH DISTINCT componentRecords, date(date.date).week as weeknumber, this
       WITH sum(componentRecords.attendance) AS attendance, sum(componentRecords.income) AS income, this, weeknumber
       RETURN {
@@ -268,7 +281,7 @@ extend type Council {
       """
     )
 
-  avgBacentaBussingAttendance(days: Int!): Float
+  avgBacentaBussingAttendance(days: Int!): Float!
     @cypher(
       statement: """
       MATCH (this)-[:HAS]->(:Constituency)-[:HAS]->(bacenta:Bacenta)
@@ -278,7 +291,12 @@ extend type Council {
       MATCH (date)
        WHERE date.date > date() - duration({days: $days})
       WITH sum(bussing.attendance) AS sum, bacenta, date(date.date).week as weeknumber
-      RETURN round(avg(sum))
+      WITH round(avg(sum)) AS average
+      RETURN
+      CASE
+      WHEN average IS NULL THEN 0
+      ELSE average
+      END AS average
       """
     )
 }
@@ -289,12 +307,12 @@ extend type Stream {
       statement: """
       MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_COMPONENT*1..4]->(componentServices)
           MATCH (componentServices)-[:HAS_SERVICE]->(componentRecords:ServiceRecord)
- 
+
       MATCH (componentRecords) WHERE NOT (componentRecords:NoService)
       MATCH (componentRecords)-[:SERVICE_HELD_ON]->(date:TimeGraph)
       MATCH (date)
       WHERE date.date > date() - duration({days: $days})
-      
+
       WITH DISTINCT componentRecords, date(date.date).week as weeknumber, this
       WITH sum(componentRecords.attendance) AS attendance, sum(componentRecords.income) AS income, this, weeknumber
       RETURN {
@@ -307,14 +325,16 @@ extend type Stream {
   avgCouncilWeekdayAttendanceStats(days: Int!): Stats
     @cypher(
       statement: """
-      MATCH (this)-[:HAS]->(council:Council)-[:HAS]->(:Constituency)-[:HAS]->(:Bacenta)-[:HAS]->(fellowship)
-          WHERE fellowship:Fellowship OR fellowship:ClosedFellowship
-      MATCH (fellowship)-[:HAS_HISTORY]-(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)
-      MATCH (record) WHERE NOT (record:NoService)
-      MATCH (record)-[:SERVICE_HELD_ON]->(date:TimeGraph)
+      MATCH (this)-[:HAS]->(council:Council)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_COMPONENT*1..4]->(componentServices)
+          MATCH (componentServices)-[:HAS_SERVICE]->(componentRecords:ServiceRecord)
+
+      MATCH (componentRecords) WHERE NOT (componentRecords:NoService)
+      MATCH (componentRecords)-[:SERVICE_HELD_ON]->(date:TimeGraph)
       MATCH (date)
       WHERE date.date > date() - duration({days: $days})
-      WITH sum(record.attendance) AS sum, with sum(record.income) as income, council, date(date.date).week as weeknumber
+
+      WITH DISTINCT componentRecords, date(date.date).week as weeknumber, council
+      WITH sum(componentRecords.attendance) AS attendance, sum(componentRecords.income) AS income, council, weeknumber
       RETURN {
         attendance: toInteger(round(avg(attendance))),
         income: round(avg(income), 2)
@@ -332,7 +352,12 @@ extend type Stream {
       MATCH (date)
        WHERE date.date > date() - duration({days: $days})
       WITH sum(bussing.attendance) AS sum, council, date(date.date).week as weeknumber
-      RETURN round(avg(sum))
+      WITH round(avg(sum)) AS average
+      RETURN
+      CASE
+      WHEN average IS NULL THEN 0
+      ELSE average
+      END AS average
       """
     )
 
@@ -346,7 +371,12 @@ extend type Stream {
       MATCH (date)
        WHERE date.date > date() - duration({days: $days})
       WITH sum(bussing.attendance) AS sum, this, date(date.date).week as weeknumber
-      RETURN round(avg(sum))
+      WITH round(avg(sum)) AS average
+      RETURN
+      CASE
+      WHEN average IS NULL THEN 0
+      ELSE average
+      END AS average
       """
     )
 }
@@ -417,7 +447,11 @@ extend type GatheringService {
       WITH date, bussing
       MATCH (date)
        WHERE date.date > date() - duration({days: $days})
-      RETURN round(avg(bussing.attendance))
+      RETURN
+      CASE
+      WHEN average IS NULL THEN 0
+      ELSE average
+      END AS average
       """
     )
 
@@ -444,43 +478,51 @@ extend type GatheringService {
       MATCH (date)
       WHERE date.date > date() - duration({days: $days})
       WITH sum(bussing.attendance) AS sum,date(date.date).week as weeknumber, con
-      RETURN round(avg(sum))
+      RETURN
+      CASE
+      WHEN average IS NULL THEN 0
+      ELSE average
+      END AS average
       """
     )
 
   avgConstituencyWeekdayStats(days: Int!): Stats!
     @cypher(
       statement: """
-      MATCH (this)-[:HAS]->(:Stream)-[:HAS]->(:Council)-[:HAS]->(con:Constituency)-[:HAS]->(:Bacenta)-[:HAS]->(fellowship)
-          WHERE fellowship:Fellowship OR fellowship:ClosedFellowship
-      MATCH (fellowship)-[:CURRENT_HISTORY]-(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)
-      MATCH (record) WHERE NOT (record:NoService)
-      MATCH (record)-[:SERVICE_HELD_ON]->(date:TimeGraph)
-      MATCH (date)
-      WHERE date.date > date() - duration({days: $days})
-      WITH sum(record.attendance) AS attendance, sum(record.income) AS income, with sum(record.income) as income, con, date(date.date).week as weeknumber
-      RETURN {
-        attendance: round(avg(attendance)),
-        income: round(avg(income), 2)
-        }
+      MATCH (this)-[:HAS]->(:Stream)-[:HAS]->(:Council)-[:HAS]->(constituency:Constituency)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_COMPONENT*1..2]->(componentServices)
+           MATCH (componentServices)-[:HAS_SERVICE]->(componentRecords:ServiceRecord)
+
+       MATCH (componentRecords) WHERE NOT (componentRecords:NoService)
+       MATCH (componentRecords)-[:SERVICE_HELD_ON]->(date:TimeGraph)
+       MATCH (date)
+       WHERE date.date > date() - duration({days: $days})
+
+       WITH DISTINCT componentRecords, date(date.date).week as weeknumber, constituency
+       WITH sum(componentRecords.attendance) AS attendance, sum(componentRecords.income) AS income, constituency, weeknumber
+       RETURN {
+         attendance: toInteger(round(avg(attendance))),
+         income: round(avg(income), 2)
+         }
       """
     )
 
   avgCouncilWeekdayAttendanceStats(days: Int!): Float!
     @cypher(
       statement: """
-      MATCH (this)-[:HAS]->(:Stream)-[:HAS]->(council:Council)-[:HAS]->(:Constituency)-[:HAS]->(:Bacenta)-[:HAS]->(fellowship)
-          WHERE fellowship:Fellowship OR fellowship:ClosedFellowship
-      MATCH (fellowship)-[:CURRENT_HISTORY]-(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)
-      MATCH (record) WHERE NOT (record:NoService)
-      MATCH (record)-[:SERVICE_HELD_ON]->(date:TimeGraph)
-      MATCH (date)
-      WHERE date.date > date() - duration({days: $days})
-      WITH sum(record.attendance) AS sum, with sum(record.income) as income, council, date(date.date).week as weeknumber
-      RETURN {
-        attendance: round(avg(attendance)),
-        income: round(avg(income), 2)
-        }
+      MATCH (this)-[:HAS]->(:Stream)-[:HAS]->(council:Council)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_COMPONENT*1..3]->(componentServices)
+           MATCH (componentServices)-[:HAS_SERVICE]->(componentRecords:ServiceRecord)
+
+       MATCH (componentRecords) WHERE NOT (componentRecords:NoService)
+       MATCH (componentRecords)-[:SERVICE_HELD_ON]->(date:TimeGraph)
+       MATCH (date)
+       WHERE date.date > date() - duration({days: $days})
+
+       WITH DISTINCT componentRecords, date(date.date).week as weeknumber, council
+       WITH sum(componentRecords.attendance) AS attendance, sum(componentRecords.income) AS income, council, weeknumber
+       RETURN {
+         attendance: toInteger(round(avg(attendance))),
+         income: round(avg(income), 2)
+         }
       """
     )
 
@@ -494,25 +536,31 @@ extend type GatheringService {
       MATCH (date)
       WHERE date.date > date() - duration({days: $days})
       WITH sum(bussing.attendance) AS sum, council, date(date.date).week as weeknumber
-      RETURN round(avg(sum))
+      RETURN
+      CASE
+      WHEN average IS NULL THEN 0
+      ELSE average
+      END AS average
       """
     )
 
-  avgStreamWeekdayAttendanceStats: Stats
+  avgStreamWeekdayAttendanceStats: Stats!
     @cypher(
       statement: """
-      MATCH (this)-[:HAS]->(stream:Stream)-[:HAS]->(:Council)-[:HAS]->(:Constituency)-[:HAS]->(:Bacenta)-[:HAS]->(fellowship)
-          WHERE fellowship:Fellowship OR fellowship:ClosedFellowship
-      MATCH (fellowship)-[:CURRENT_HISTORY]-(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)
-      MATCH (record) WHERE NOT (record:NoService)
-      MATCH (record)-[:SERVICE_HELD_ON]->(date:TimeGraph)
-      MATCH (date)
-      WHERE date.date > date() - duration({days: $days})
-      WITH sum(record.attendance) AS sum, with sum(record.income) as income, stream, date(date.date).week as weeknumber
+      MATCH (this)-[:HAS]->(:Stream)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_COMPONENT*1..4]->(componentServices)
+           MATCH (componentServices)-[:HAS_SERVICE]->(componentRecords:ServiceRecord)
+
+       MATCH (componentRecords) WHERE NOT (componentRecords:NoService)
+       MATCH (componentRecords)-[:SERVICE_HELD_ON]->(date:TimeGraph)
+       MATCH (date)
+       WHERE date.date > date() - duration({days: $days})
+
+       WITH DISTINCT componentRecords, date(date.date).week as weeknumber, council
+       WITH sum(componentRecords.attendance) AS attendance, sum(componentRecords.income) AS income, council, weeknumber
        RETURN {
-        attendance: round(avg(attendance)),
-        income: round(avg(income), 2)
-        }
+         attendance: toInteger(round(avg(attendance))),
+         income: round(avg(income), 2)
+         }
       """
     )
 
@@ -526,7 +574,11 @@ extend type GatheringService {
       MATCH (date)
       WHERE date.date > date() - duration({days: $days})
       WITH sum(bussing.attendance) AS sum, stream, date(date.date).week as weeknumber
-      RETURN round(avg(sum))
+      RETURN
+      CASE
+      WHEN average IS NULL THEN 0
+      ELSE average
+      END AS average
       """
     )
 
@@ -540,49 +592,57 @@ extend type GatheringService {
       MATCH (date)
        WHERE date.date > date() - duration({days: $days})
       WITH sum(bussing.attendance) AS sum, this, date(date.date).week as weeknumber
-      RETURN round(avg(sum))
+      RETURN
+      CASE
+      WHEN average IS NULL THEN 0
+      ELSE average
+      END AS average
       """
     )
 
-  avgWeekdayAttendance(days: Int!): Stats
+  avgWeekdayAttendance(days: Int!): Stats!
     @cypher(
       statement: """
-      MATCH (this)-[:HAS]->(:Stream)-[:HAS]->(:Council)-[:HAS]->(:Constituency)-[:HAS]->(:Bacenta)-[:HAS]->(fellowship)
-          WHERE fellowship:Fellowship OR fellowship:ClosedFellowship
-      MATCH (fellowship)-[:CURRENT_HISTORY]-(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)
-      MATCH (record) WHERE NOT (record:NoService)
-      MATCH (record)-[:SERVICE_HELD_ON]->(date:TimeGraph)
-      MATCH (date)
-      WHERE date.date > date() - duration({days: $days})
-      WITH sum(record.attendance) AS sum, with sum(record.income) as income, this, date(date.date).week as weeknumber
-      RETURN {
-        attendance: round(avg(attendance)),
-        income: round(avg(income), 2)
-        }
+      MATCH (this)-[:HAS]->(:Stream)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_COMPONENT*1..4]->(componentServices)
+           MATCH (componentServices)-[:HAS_SERVICE]->(componentRecords:ServiceRecord)
+
+       MATCH (componentRecords) WHERE NOT (componentRecords:NoService)
+       MATCH (componentRecords)-[:SERVICE_HELD_ON]->(date:TimeGraph)
+       MATCH (date)
+       WHERE date.date > date() - duration({days: $days})
+
+       WITH DISTINCT componentRecords, date(date.date).week as weeknumber, council
+       WITH sum(componentRecords.attendance) AS attendance, sum(componentRecords.income) AS income, council, weeknumber
+       RETURN {
+         attendance: toInteger(round(avg(attendance))),
+         income: round(avg(income), 2)
+         }
       """
     )
 }
 
 extend type Denomination {
-  avgGatheringServiceWeekdayStats(days: Int!): Float
+  avgGatheringServiceWeekdayStats(days: Int!): Stats!
     @cypher(
       statement: """
-      MATCH (this)-[:HAS]->(gatheringService:GatheringService)-[:HAS]->(:Stream)-[:HAS]->(:Council)-[:HAS]->(:Constituency)-[:HAS]->(:Bacenta)-[:HAS]->(fellowship)
-          WHERE fellowship:Fellowship OR fellowship:ClosedFellowship
-      MATCH (fellowship)-[:CURRENT_HISTORY]-(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)
-      MATCH (record) WHERE NOT (record:NoService)
-      MATCH (record)-[:SERVICE_HELD_ON]->(date:TimeGraph)
-      MATCH (date)
-      WHERE date.date > date() - duration({days: $days})
-      WITH sum(record.attendance) AS sum, with sum(record.income) as income, gatheringService, date(date.date).week as weeknumber
-      RETURN {
-        attendance: round(avg(attendance)),
-        income: round(avg(income), 2)
-        }s
+      MATCH (this)-[:HAS]->(:gatheringService)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_COMPONENT*1..5]->(componentServices)
+           MATCH (componentServices)-[:HAS_SERVICE]->(componentRecords:ServiceRecord)
+
+       MATCH (componentRecords) WHERE NOT (componentRecords:NoService)
+       MATCH (componentRecords)-[:SERVICE_HELD_ON]->(date:TimeGraph)
+       MATCH (date)
+       WHERE date.date > date() - duration({days: $days})
+
+       WITH DISTINCT componentRecords, date(date.date).week as weeknumber, council
+       WITH sum(componentRecords.attendance) AS attendance, sum(componentRecords.income) AS income, council, weeknumber
+       RETURN {
+         attendance: toInteger(round(avg(attendance))),
+         income: round(avg(income), 2)
+         }
       """
     )
 
-  avgGatheringServiceBussingAttendance(days: Int!): Float
+  avgGatheringServiceBussingAttendance(days: Int!): Float!
     @cypher(
       statement: """
       MATCH (this)-[:HAS]->(gatheringService:GatheringService)-[:HAS]->(:Stream)-[:HAS]->(:Council)-[:HAS]->(:Constituency)-[:HAS]->(bacenta:Bacenta)
@@ -592,7 +652,11 @@ extend type Denomination {
       MATCH (date)
        WHERE date.date > date() - duration({days: $days})
       WITH sum(bussing.attendance) AS sum, gatheringService, date(date.date).week as weeknumber
-      RETURN round(avg(sum))
+      RETURN
+      CASE
+      WHEN average IS NULL THEN 0
+      ELSE average
+      END AS average
       """
     )
 }
