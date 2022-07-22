@@ -117,6 +117,7 @@ CREATE (member:Member:Deer {whatsappNumber:$whatsappNumber})
       	member.lastName = $lastName,
       	member.email = $email,
       	member.phoneNumber = $phoneNumber,
+        member.location = $location,
       	member.pictureUrl = $pictureUrl
 
       CREATE (log:HistoryLog:RegistrationLog)

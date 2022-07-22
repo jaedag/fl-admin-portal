@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useQuery, useMutation } from '@apollo/client'
 
-import { parsePhoneNum, throwErrorMsg } from '../../../global-utils'
+import { parsePhoneNum, throwErrorMsg } from 'global-utils'
 import {
   LOG_MEMBER_HISTORY,
   UPDATE_MEMBER_EMAIL,
@@ -15,8 +15,10 @@ import {
   DISPLAY_MEMBER_CHURCH,
 } from '../display/ReadQueries'
 
-import { MemberContext } from '../../../contexts/MemberContext'
+import { MemberContext } from 'contexts/MemberContext'
 import MemberForm from '../reusable-forms/MemberForm'
+import { CreateMemberFormOptions } from '../create/CreateMember'
+import { FormikHelpers } from 'formik'
 
 const UpdateMember = () => {
   const { memberId } = useContext(MemberContext)
@@ -28,13 +30,14 @@ const UpdateMember = () => {
   } = useQuery(DISPLAY_MEMBER_BIO, {
     variables: { id: memberId },
   })
+  const error: any = memberError
   const { data: churchData } = useQuery(DISPLAY_MEMBER_CHURCH, {
     variables: { id: memberId },
   })
   const member = memberData?.members[0]
   const memberChurch = churchData?.members[0]
 
-  const initialValues = {
+  const initialValues: CreateMemberFormOptions = {
     firstName: member?.firstName ?? '',
     middleName: member?.middleName ?? '',
     lastName: member?.lastName ?? '',
@@ -46,30 +49,9 @@ const UpdateMember = () => {
     maritalStatus: member?.maritalStatus?.status ?? '',
     occupation: member?.occupation?.occupation ?? '',
     pictureUrl: member?.pictureUrl ?? '',
+    location: member?.location?.location ?? 'no-location',
     fellowship: memberChurch?.fellowship,
-    fellowshipName: '',
     ministry: memberChurch?.ministry?.id ?? '',
-
-    pastoralHistory: [
-      {
-        historyRecord: '',
-        historyDate: '',
-      },
-    ],
-    pastoralAppointment: [
-      {
-        title: 'Pastor',
-        date: '',
-      },
-      {
-        title: 'Reverend',
-        date: '',
-      },
-      {
-        title: 'Bishop',
-        date: '',
-      },
-    ],
   }
 
   const navigate = useNavigate()
@@ -85,7 +67,10 @@ const UpdateMember = () => {
   const [UpdateMemberMinistry] = useMutation(UPDATE_MEMBER_MINISTRY)
   const [LogMemberHistory] = useMutation(LOG_MEMBER_HISTORY)
 
-  const onSubmit = async (values, onSubmitProps) => {
+  const onSubmit = async (
+    values: CreateMemberFormOptions,
+    onSubmitProps: FormikHelpers<CreateMemberFormOptions>
+  ) => {
     onSubmitProps.setSubmitting(true)
 
     try {
@@ -156,13 +141,13 @@ const UpdateMember = () => {
       onSubmitProps.setSubmitting(false)
       onSubmitProps.resetForm()
       navigate('/member/displaydetails')
-    } catch (error) {
+    } catch (error: any) {
       throwErrorMsg('There was an error updating the member profile\n', error)
     }
   }
 
-  if (memberError) {
-    throwErrorMsg(memberError)
+  if (error) {
+    throwErrorMsg(error)
   }
 
   return (

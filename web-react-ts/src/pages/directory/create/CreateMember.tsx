@@ -1,17 +1,32 @@
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useMutation } from '@apollo/client'
 import { parsePhoneNum, throwErrorMsg } from '../../../global-utils'
-import {
-  ADD_MEMBER_TITLE_MUTATION,
-  CREATE_MEMBER_MUTATION,
-} from './CreateMutations'
+import { CREATE_MEMBER_MUTATION } from './CreateMutations'
 import { ChurchContext } from '../../../contexts/ChurchContext'
 import MemberForm from '../reusable-forms/MemberForm'
-import { filterPastoralTitles } from 'pages/directory/reusable-forms/form-utils'
+import { Fellowship } from 'global-types'
+import { FormikHelpers } from 'formik'
+
+export type CreateMemberFormOptions = {
+  firstName: string
+  middleName: string
+  lastName: string
+  gender: 'Male' | 'Female' | ''
+  phoneNumber: string
+  whatsappNumber: string
+  email: string
+  dob: string
+  maritalStatus: 'Single' | 'Married' | ''
+  occupation: string
+  pictureUrl: string
+  location: string
+  fellowship: Fellowship | { [key: string]: any }
+  ministry: string
+}
 
 const CreateMember = () => {
-  const initialValues = {
+  const initialValues: CreateMemberFormOptions = {
     firstName: '',
     middleName: '',
     lastName: '',
@@ -23,29 +38,9 @@ const CreateMember = () => {
     maritalStatus: '',
     occupation: '',
     pictureUrl: '',
+    location: '',
     fellowship: {},
     ministry: '',
-
-    pastoralHistory: [
-      {
-        historyRecord: '',
-        historyDate: '',
-      },
-    ],
-    pastoralAppointment: [
-      {
-        title: 'Pastor',
-        date: '',
-      },
-      {
-        title: 'Reverend',
-        date: '',
-      },
-      {
-        title: 'Bishop',
-        date: '',
-      },
-    ],
   }
 
   const { clickCard } = useContext(ChurchContext)
@@ -58,18 +53,18 @@ const CreateMember = () => {
     },
   })
 
-  const [AddMemberTitle] = useMutation(ADD_MEMBER_TITLE_MUTATION)
-
   const navigate = useNavigate()
 
-  const onSubmit = async (values, onSubmitProps) => {
+  const onSubmit = async (
+    values: CreateMemberFormOptions,
+    onSubmitProps: FormikHelpers<CreateMemberFormOptions>
+  ) => {
     const { setSubmitting, resetForm } = onSubmitProps
     setSubmitting(true)
     // Variables that are not controlled by formik
 
-    const pastoralAppointment = filterPastoralTitles(values.pastoralAppointment)
     try {
-      const res = await CreateMember({
+      await CreateMember({
         variables: {
           firstName: values.firstName.trim(),
           middleName: values.middleName.trim(),
@@ -83,29 +78,12 @@ const CreateMember = () => {
           occupation: values.occupation,
           pictureUrl: values.pictureUrl,
 
+          location: values.location,
           fellowship: values.fellowship?.id,
           ministry: values.ministry,
         },
       })
-
-      pastoralAppointment.forEach(async (title) => {
-        if (!title.date) {
-          return
-        }
-        try {
-          await AddMemberTitle({
-            variables: {
-              memberId: res.data.CreateMember.id,
-              title: title.name,
-              status: true,
-              date: title.date,
-            },
-          })
-        } catch (error) {
-          throwErrorMsg(`There was a problem adding member title`, error)
-        }
-      })
-    } catch (error) {
+    } catch (error: any) {
       throwErrorMsg('There was an error creating the member profile\n', error)
     }
 
@@ -119,6 +97,7 @@ const CreateMember = () => {
       <MemberForm
         title="Register a New Member"
         initialValues={initialValues}
+        loading={false}
         onSubmit={onSubmit}
       />
     </>
