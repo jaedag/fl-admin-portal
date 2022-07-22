@@ -38,6 +38,7 @@
     "@types/react-dom": "^18.0.5",
     "@types/react-router-dom": "^5.1.5",
     "@types/react-slick": "^0.23.10",
+    "@types/react-test-renderer": "^18.0.0",
     "@types/recharts": "^1.8.14",
     "@zarconontol/enzyme-adapter-react-18": "^0.7.3",
     "http-proxy-middleware": "^2.0.1",
