@@ -1,20 +1,9 @@
-export const createGatheringServiceEquipmentCampaign = `
+export const SetEquipmentDeadline = `
 MATCH (gatheringService:GatheringService {id: $id})
-WITH gatheringService
-MERGE (gatheringServiceCampaign:EquipmentCampaign)
-ON CREATE
- SET gatheringServiceCampaign.name = gatheringService.name + ' Gathering Service',
-      gatheringServiceCampaign.id = apoc.create.uuid(),
-     gatheringServiceCampaign.target = $target,
-     gatheringServiceCampaign.equipmentStartDate = $startDate,
-     gatheringServiceCampaign.equipmentEndDate = $endDate,
-     gatheringServiceCampaign.equipmentDate = $startDate
-ON MATCH 
-     SET gatheringServiceCampaign.target = $target,
-     gatheringServiceCampaign.equipmentStartDate = $startDate,
-     gatheringServiceCampaign.equipmentEndDate = $endDate,
-     gatheringServiceCampaign.equipmentDate = $startDate
-MERGE (gatheringService)-[:HAS_CAMPAIGN]->(gatheringServiceCampaign)
+MATCH (gatheringService)-[:HAS_CAMPAIGN]->(campaign:EquipmentCampaign)
+SET campaign.equipmentStartDate = $startDate,
+     campaign.equipmentEndDate = $endDate,
+     campaign.equipmentDate = $startDate
 RETURN gatheringService
 `
 
@@ -24,9 +13,10 @@ MATCH (fellowship)-[:CURRENT_HISTORY]->(log:ServiceLog)
 MATCH (member:Member {auth_id: $auth.jwt.sub})
 CREATE (record:EquipmentRecord)
 SET
-record.historyRecord = fellowship.name + ' ' + 'Equipment Campaign created an Equipment Record on this '+datetime(),
+record.historyRecord = fellowship.name + ' ' + ' Equipment Record created on this '+datetime(),
 record.id = apoc.create.uuid(),
-record.offeringBags = $offeringBags
+record.offeringBags = $offeringBags,
+record.created_at = datetime()
 
 MERGE (log)-[:HAS_EQUIPMENT_RECORD]->(record)
 MERGE (date:TimeGraph {date:date($date)})
@@ -40,7 +30,7 @@ MATCH (church {id:$id})
 where church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:GatheringService
 MATCH (church)
 WHERE EXISTS {
-      MATCH (church)-[:HAS_HISTORY]->(:HistoryLog)-[:HAS_EQUIPMENT_RECORD]->(:EquipmentRecord)-[:HAS_EQUIPMENT_DATE]->(:TimeGraph {date:date($date)})}
+      MATCH (church)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_EQUIPMENT_RECORD]->(:EquipmentRecord)-[:HAS_EQUIPMENT_DATE]->(:TimeGraph {date:date($date)})}
 RETURN church
 `
 export const createConstituencyEquipmentRecord = `
@@ -49,9 +39,10 @@ MATCH (con)-[:CURRENT_HISTORY]->(log:ServiceLog)
 MATCH (member:Member {auth_id: $auth.jwt.sub})
 CREATE (record:EquipmentRecord)
 SET
-record.historyRecord = con.name + ' ' + 'Equipment Campaign created an Equipment Record on this '+datetime(),
+record.historyRecord = con.name + ' ' + 'Equipment Record created on this '+datetime(),
 record.id = apoc.create.uuid(),
-record.pulpits = $pulpits
+record.pulpits = $pulpits,
+record.created_at = datetime()
 
 MERGE (log)-[:HAS_EQUIPMENT_RECORD]->(record)
 MERGE (date:TimeGraph {date:date($date)})

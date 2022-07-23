@@ -1,12 +1,72 @@
-interface Campaign {
+type Campaign {
   id: ID!
   name: String!
   type: String!
-  historyLog: [HistoryLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
+  churchLevels: String
   leader: Member @relationship(type: "LEADS", direction: IN)
-  target: Int!
 }
 
 extend type GatheringService {
-  campaigns: [Campaign!]! @relationship(type: "HAS_CAMPAIGN", direction: OUT)
+  campaigns: [Campaign!]!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS_CAMPAIGN]->(campaigns)
+      RETURN campaigns
+      """
+    )
+}
+
+extend type Stream {
+  campaigns: [Campaign!]!
+    @cypher(
+      statement: """
+      MATCH (this)<-[:HAS]-(gatheringService:GatheringService)
+      MATCH (gatheringService)-[:HAS_CAMPAIGN]->(campaigns)
+      RETURN campaigns
+      """
+    )
+}
+
+extend type Council {
+  campaigns: [Campaign!]!
+    @cypher(
+      statement: """
+      MATCH (this)<-[:HAS]-(:Stream)<-[:HAS]-(gatheringService:GatheringService)
+      MATCH (gatheringService)-[:HAS_CAMPAIGN]->(campaigns)
+      RETURN campaigns
+      """
+    )
+}
+
+extend type Constituency {
+  campaigns: [Campaign!]!
+    @cypher(
+      statement: """
+      MATCH (this)<-[:HAS]-(:Council)<-[:HAS]-(:Stream)<-[:HAS]-(gatheringService:GatheringService)
+      MATCH (gatheringService)-[:HAS_CAMPAIGN]->(campaigns)
+      RETURN campaigns
+      """
+    )
+}
+
+extend type Bacenta {
+  campaigns: [Campaign!]!
+    @cypher(
+      statement: """
+      MATCH (this)<-[:HAS]-(:Constituency)<-[:HAS]-(:Council)<-[:HAS]-(:Stream)<-[:HAS]-(gatheringService:GatheringService)
+      MATCH (gatheringService)-[:HAS_CAMPAIGN]->(campaigns)
+      RETURN campaigns
+      """
+    )
+}
+
+extend type Fellowship {
+  campaigns: [Campaign!]!
+    @cypher(
+      statement: """
+      MATCH (this)<-[:HAS]-(:Bacenta)<-[:HAS]-(:Constituency)<-[:HAS]-(:Council)<-[:HAS]-(:Stream)<-[:HAS]-(gatheringService:GatheringService)
+      MATCH (gatheringService)-[:HAS_CAMPAIGN]->(campaigns)
+      RETURN campaigns
+      """
+    )
 }

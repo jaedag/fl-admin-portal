@@ -4,7 +4,7 @@ import {
   checkExistingEquipmentRecord,
   createConstituencyEquipmentRecord,
   createFellowshipEquipmentRecord,
-  createGatheringServiceEquipmentCampaign,
+  SetEquipmentDeadline,
   getEquipmentCampaign,
 } from './campaigns-cypher'
 
@@ -13,17 +13,22 @@ import { Context } from '../utils/neo4j-types'
 
 export const campaignsMutation = {
   // Equipment Campaigns
-  SetEquipmentDeadline: async (object: never, args: any, context: Context) => {
+  SetEquipmentDeadline: async (
+    object: never,
+    args: { startDate: Date; endDate: Date; id: string; target: number },
+    context: Context
+  ) => {
     const session = context.executionContext.session()
     isAuth(permitAdmin('GatheringService'), context.auth.roles)
 
     try {
       const setEquipmentDuration = rearrangeCypherObject(
-        await session.run(createGatheringServiceEquipmentCampaign, args)
+        await session.run(SetEquipmentDeadline, args)
       )
 
       return {
         id: setEquipmentDuration.gatheringService.properties.id,
+        name: setEquipmentDuration.gatheringService.properties.name,
       }
     } catch (error: any) {
       return throwErrorMsg('Setting equipment deadline failed ', error)
@@ -31,7 +36,7 @@ export const campaignsMutation = {
   },
   CreateConstituencyEquipmentRecord: async (
     object: never,
-    args: any,
+    args: { id: string; pulpits: number; date: Date },
     context: Context
   ) => {
     isAuth(permitAdmin('Constituency'), context.auth.roles)
@@ -51,7 +56,11 @@ export const campaignsMutation = {
         const date = equipmentCampaign.campaign.equipmentDate
 
         const equipmentRecordExists = rearrangeCypherObject(
-          await session.run(checkExistingEquipmentRecord, args)
+          await session.run(checkExistingEquipmentRecord, {
+            id: args.id,
+            pulpits: args.pulpits,
+            date,
+          })
         )
 
         if (Object.keys(equipmentRecordExists).length !== 0) {
@@ -83,7 +92,7 @@ export const campaignsMutation = {
   },
   CreateFellowshipEquipmentRecord: async (
     object: never,
-    args: any,
+    args: { id: string; offeringBags: number; date: Date },
     context: Context
   ) => {
     isAuth(permitAdmin('Fellowship'), context.auth.roles)
@@ -103,7 +112,11 @@ export const campaignsMutation = {
         const date = equipmentCampaign.campaign.equipmentDate
 
         const equipmentRecordExists = rearrangeCypherObject(
-          await session.run(checkExistingEquipmentRecord, args)
+          await session.run(checkExistingEquipmentRecord, {
+            id: args.id,
+            offeringBags: args.offeringBags,
+            date,
+          })
         )
 
         if (Object.keys(equipmentRecordExists).length !== 0) {
