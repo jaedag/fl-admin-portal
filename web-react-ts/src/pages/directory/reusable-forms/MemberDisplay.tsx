@@ -1,7 +1,7 @@
 import React from 'react'
 import { useQuery } from '@apollo/client'
-import Timeline from '../../../components/Timeline/Timeline.tsx'
-import MemberRoleList from '../../../components/MemberRoleList'
+import Timeline from 'components/Timeline/Timeline'
+import MemberRoleList from 'components/MemberRoleList'
 import { throwErrorMsg, USER_PLACEHOLDER } from 'global-utils'
 import { getMemberDob } from 'jd-date-utils'
 import {
@@ -19,7 +19,7 @@ import ViewAll from 'components/buttons/ViewAll'
 import { permitAdmin } from 'permission-utils'
 import CloudinaryImage from 'components/CloudinaryImage'
 
-const MemberDisplay = ({ memberId }) => {
+const MemberDisplay = ({ memberId }: { memberId: string }) => {
   const {
     data: bioData,
     loading,
@@ -36,7 +36,8 @@ const MemberDisplay = ({ memberId }) => {
   const { data: adminData } = useQuery(DISPLAY_MEMBER_ADMIN, {
     variables: { id: memberId },
   })
-  throwErrorMsg(error)
+  const errorToThrow: any = error
+  throwErrorMsg(errorToThrow)
 
   const member = bioData?.members[0]
   const memberChurch = churchData?.members[0]
@@ -135,6 +136,11 @@ const MemberDisplay = ({ memberId }) => {
         <Col sm={1} md="auto">
           <DetailsCard heading="Email Address" detail={member?.email} />
         </Col>
+        {member?.location && (
+          <Col sm={1} md="auto">
+            <DetailsCard heading="Location for IDL" detail={member?.location} />
+          </Col>
+        )}
         <Col sm={1} md="auto">
           <DetailsCard
             heading="Fellowship"

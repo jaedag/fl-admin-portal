@@ -8,13 +8,14 @@ import {
   BarChartFill,
   Book,
   CashCoin,
+  PersonPlus,
   Coin,
   FileEarmarkArrowUpFill,
 } from 'react-bootstrap-icons'
 import { useNavigate } from 'react-router'
 import { ChurchLevel } from 'global-types'
 import RoleView from 'auth/RoleView'
-import { permitTellerStream } from 'permission-utils'
+import { permitAdmin, permitTellerStream } from 'permission-utils'
 
 const Services = () => {
   const { currentUser, theme } = useContext(MemberContext)
@@ -103,15 +104,17 @@ const Services = () => {
                 />
               </>
             )}
-          <MenuButton
-            iconComponent={CashCoin}
-            title="Midweek Banking"
-            color="banking"
-            onClick={() =>
-              navigate(`/services/${churchType.toLowerCase()}/midweek-banking`)
-            }
-            noCaption
-          />
+          {church.stream_name === 'anagkazo' && (
+            <RoleView roles={permitAdmin('Stream')}>
+              <MenuButton
+                iconComponent={PersonPlus}
+                title="Add Treasurers"
+                color="banking"
+                onClick={() => navigate(`/anagkazo/treasurer-select`)}
+                noCaption
+              />
+            </RoleView>
+          )}
           <RoleView roles={permitTellerStream()}>
             <MenuButton
               iconComponent={CashCoin}

@@ -570,12 +570,18 @@ export const arrivalsMutation = {
       throwErrorMsg('It is now past the time for arrivals. Thank you!')
     }
 
-    const response = rearrangeCypherObject(
-      await session.run(recordArrivalTime, {
+    const promiseAllResponse = await Promise.all([
+      session.run(recordArrivalTime, {
         ...args,
         auth: context.auth,
-      })
-    )
+      }),
+      sendBulkSMS(
+        [recordResponse.bacenta.properties.momoNumber],
+        `Hi ${recordResponse.firstName}\n\n${texts.arrivalsSMS.you_have_arrived}`
+      ),
+    ])
+
+    const response = rearrangeCypherObject(promiseAllResponse[0])
 
     return response.bussingRecord
   },

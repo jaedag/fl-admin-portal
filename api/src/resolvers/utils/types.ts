@@ -89,6 +89,7 @@ export interface Member {
   dob: string
   maritalStatus: string
   gender: string
+  location?: string
   occupation: string
   fellowship: string
   ministry: string
@@ -124,6 +125,8 @@ export interface Record {
 export type ServiceRecord = {
   __typename: 'ServiceRecord' | 'RehearsalRecord'
   id: string
+  // eslint-disable-next-line camelcase
+  created_at: string
   attendance: number
   income: number
   week: number
