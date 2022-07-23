@@ -1,5 +1,6 @@
 //Equipment Campaign
 //Creating the equipment campaign node
+MATCH (gatheringService:GatheringService)
 CREATE (campaign:EquipmentCampaign)
 SET campaign:Campaign:EquipmentCampaign
 SET campaign.id = apoc.create.uuid(),
@@ -8,6 +9,9 @@ SET campaign.id = apoc.create.uuid(),
     campaign.constituencyTarget = 1,
     campaign.fellowshipTarget = 2,
     campaign.churchLevels = apoc.convert.toJson({fellowship: true, bacenta:true, constituency: true, council:true, stream:true, gatheringService:true})
+
+    WITH gatheringService, campaign
+    MERGE (gatheringService)-[:HAS_CAMPAIGN]->(campaign)
     RETURN campaign;
 
  //Adding constraint for equipment campaign
