@@ -67,12 +67,13 @@ extend type Bacenta {
       statement: """
       MATCH (this)-[:HAS]->(fellowship) WHERE fellowship:Fellowship OR fellowship:ClosedFellowship
       MATCH (fellowship)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)
+      WHERE NOT (record:NoService)
       MATCH (record)-[:SERVICE_HELD_ON]->(date:TimeGraph)
-      WITH date, record.attendance AS attendance, record.income AS income WHERE NOT (record:NoService)
+      WITH date, record.attendance AS attendance, record.income AS income
       WITH date
       WHERE date.date > date() - duration({days: $days})
       RETURN  {
-        attendance: round(avg(attendance)),
+        attendance: toInteger(round(avg(attendance))),
         income: round(avg(income), 2)
       }
       """
@@ -117,10 +118,10 @@ extend type Bacenta {
       MATCH (record)-[:SERVICE_HELD_ON]->(date:TimeGraph)
       MATCH (date)
       WHERE date.date > date() - duration({days: $days})
-      WITH sum(record.attendance) AS sum, with sum(record.income) as income, this, date(date.date).week as weeknumber
+      WITH sum(record.attendance) AS attendance, sum(record.income) as income, this, date(date.date).week as weeknumber
       RETURN  {
-        attendance: round(avg(record.attendance)),
-        income: round(avg(record.income), 2)
+        attendance: round(avg(attendance)),
+        income: round(avg(income), 2)
       }
       """
     )
@@ -506,7 +507,7 @@ extend type GatheringService {
       """
     )
 
-  avgCouncilWeekdayAttendanceStats(days: Int!): Float!
+  avgCouncilWeekdayAttendanceStats(days: Int!): Stats!
     @cypher(
       statement: """
       MATCH (this)-[:HAS]->(:Stream)-[:HAS]->(council:Council)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_COMPONENT*1..3]->(componentServices)
