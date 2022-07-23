@@ -234,7 +234,7 @@ export const graphs: RouteTypes[] = [
 
   //Bacenta Service Things
   {
-    path: '/bacenta/record-service',
+    path: '/bacenta/record-service-not-exist',
     element: BacentaService,
     roles: permitLeaderAdmin('Bacenta'),
     placeholder: false,

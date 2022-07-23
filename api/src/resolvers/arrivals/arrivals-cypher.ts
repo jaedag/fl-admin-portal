@@ -26,7 +26,7 @@ RETURN record, bacenta.name AS bacentaName, date.date AS date
 `
 
 export const getBussingRecordWithDate = `
-MATCH (record:BussingRecord {id: $bussingRecordId})<-[:HAS_BUSSING]-(:ServiceLog)<-[:HAS_HISTORY]-(bacenta:Bacenta)
+MATCH (record:BussingRecord {id: $bussingRecordId})<-[:HAS_BUSSING]-(:ServiceLog)<-[:HAS_HISTORY]-(bacenta:Bacenta)<-[:LEADS]-(leader:Member)
 MATCH (record)-[:BUSSED_ON]->(date:TimeGraph)
 SET record.target = bacenta.target
 
@@ -36,15 +36,22 @@ record.attendance AS attendance,
 record.numberOfBusses AS numberOfBusses,
 record.numberOfCars AS numberOfCars,
 record.bussingCost AS bussingCost,
+leader.phoneNumber AS leaderPhoneNumber,
+leader.firstName AS leaderFirstName,
+
+bacenta.swellBussingCost - bacenta.swellPersonalContribution AS swellBussingTopUp,
+bacenta.normalBussingCost - bacenta.normalPersonalContribution AS normalBussingTopUp,
+
 labels(date) AS dateLabels
 `
 
 export const checkTransactionId = `
 MATCH (record:BussingRecord {id: $bussingRecordId})<-[:HAS_BUSSING]-(:ServiceLog)<-[:HAS_HISTORY]-(bacenta:Bacenta)
 MATCH (bacenta)<-[:HAS]-(:Constituency)<-[:HAS]-(:Council)<-[:HAS]-(stream:Stream)
-OPTIONAL MATCH (record)-[:COUNTED_BY]->(admin:Member)
+MATCH (bacenta)<-[:LEADS]-(leader:Member)
+WITH record, bacenta, leader, stream
 
-RETURN record, stream
+RETURN record, stream, bacenta, leader.firstName AS firstName, leader.phoneNumber AS phoneNumber
 `
 export const checkArrivalTimes = `
 MATCH (bacenta {id: $bacentaId})<-[:HAS]-(:Constituency)<-[:HAS]-(:Council)<-[:HAS]-(stream:Stream)
@@ -65,6 +72,13 @@ record.mobileNetwork = bacenta.mobileNetwork,
 record.momoName = bacenta.momoName
 
 RETURN record
+`
+
+export const setAdjustedDiscountTopUp = `
+MATCH (record:BussingRecord {id: $bussingRecordId})
+SET record.bussingTopUp = record.bussingCost 
+
+RETURN record AS record
 `
 
 export const noBussingTopUp = `

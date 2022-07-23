@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client'
 
 export const GET_BISHOPS = gql`
-  {
-    members(where: { title: { title: "Bishop" } }) {
+  query getBishops {
+    members(where: { title_SOME: { name: "Bishop" } }) {
       id
       firstName
       lastName
@@ -11,30 +11,12 @@ export const GET_BISHOPS = gql`
   }
 `
 
-export const GET_FELLOWSHIP_LEADERS = gql`
-  {
-    constituencyList(firstName: $firstName, lastName: $lastName) {
-      id
-      bacentas {
-        id
-        fellowships {
-          id
-          fellowshipLeader {
-            id
-            firstName
-            lastName
-          }
-        }
-      }
-    }
-  }
-`
-
 export const GET_CONSTITUENCY_BACENTAS = gql`
-  query ($id: ID!) {
+  query getConstituencyBacentas($id: ID!) {
     constituencies(where: { id: $id }) {
       id
       name
+
       stream_name
       council {
         id
@@ -78,7 +60,7 @@ export const GET_CONSTITUENCY_BACENTAS = gql`
 `
 
 export const GET_COUNCIL_CONSTITUENCIES = gql`
-  query ($id: ID!) {
+  query getCouncilConstituencies($id: ID!) {
     councils(where: { id: $id }) {
       id
       name
@@ -128,7 +110,7 @@ export const GET_COUNCIL_CONSTITUENCIES = gql`
   }
 `
 export const GET_GATHERING_SERVICE_CONSTITUENCIES = gql`
-  query ($id: ID!) {
+  query getGatheringConstituencies($id: ID!) {
     gatheringServices(where: { id: $id }) {
       id
       name
@@ -172,7 +154,7 @@ export const GET_GATHERING_SERVICE_CONSTITUENCIES = gql`
 `
 
 export const GET_STREAM_COUNCILS = gql`
-  query ($id: ID!) {
+  query getStreamCouncils($id: ID!) {
     streams(where: { id: $id }) {
       id
       name
@@ -218,10 +200,11 @@ export const GET_STREAM_COUNCILS = gql`
 `
 
 export const GET_GATHERINGSERVICE_STREAMS = gql`
-  query ($id: ID!) {
+  query gatheringStreams($id: ID!) {
     gatheringServices(where: { id: $id }) {
       id
       name
+
       leader {
         id
         firstName
@@ -263,7 +246,7 @@ export const GET_GATHERINGSERVICE_STREAMS = gql`
 `
 
 export const GET_STREAM_CONSTITUENCIES = gql`
-  query ($id: ID!) {
+  query getStreamConstituencies($id: ID!) {
     streams(where: { id: $id }) {
       id
       name
@@ -302,7 +285,7 @@ export const GET_STREAM_CONSTITUENCIES = gql`
 `
 
 export const GET_COUNCILS = gql`
-  {
+  query getCouncils {
     councils {
       id
       name
@@ -314,7 +297,7 @@ export const GET_COUNCILS = gql`
 `
 
 export const GET_STREAMS = gql`
-  {
+  query getStreams {
     streams {
       id
       name
@@ -326,7 +309,7 @@ export const GET_STREAMS = gql`
 `
 
 export const GET_GATHERINGSERVICES = gql`
-  {
+  query getGatheringServices {
     gatheringServices {
       id
       name
@@ -338,7 +321,7 @@ export const GET_GATHERINGSERVICES = gql`
 `
 
 export const GET_MINISTRIES = gql`
-  query {
+  query getMinistries {
     ministries {
       id
       name
@@ -347,7 +330,7 @@ export const GET_MINISTRIES = gql`
 `
 
 export const GET_BACENTA_FELLOWSHIPS = gql`
-  query ($id: ID!) {
+  query getBacentaFellowships($id: ID!) {
     bacentas(where: { id: $id }) {
       id
       memberCount
@@ -376,14 +359,6 @@ export const GET_BACENTA_FELLOWSHIPS = gql`
           }
         }
       }
-    }
-  }
-`
-
-export const OCCUPATION_LIST = gql`
-  query ($searchKey: String!) {
-    occupationList(searchKey: $searchKey, first: 5) {
-      occupation
     }
   }
 `

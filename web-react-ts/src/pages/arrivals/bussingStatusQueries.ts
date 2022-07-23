@@ -2,7 +2,7 @@ import { gql } from '@apollo/client'
 
 //No Activity Queries
 export const CONSTITUENCY_BACENTAS_NO_ACTIVITY = gql`
-  query ($id: ID!) {
+  query constituencyBacentasNoActivity($id: ID!) {
     constituencies(where: { id: $id }, options: { limit: 1 }) {
       id
       name
@@ -25,7 +25,7 @@ export const CONSTITUENCY_BACENTAS_NO_ACTIVITY = gql`
 `
 
 export const COUNCIL_BACENTAS_NO_ACTIVITY = gql`
-  query ($id: ID!) {
+  query councilBacentasNoActivity($id: ID!) {
     councils(where: { id: $id }, options: { limit: 1 }) {
       id
       name
@@ -48,7 +48,7 @@ export const COUNCIL_BACENTAS_NO_ACTIVITY = gql`
 `
 
 export const STREAM_BACENTAS_NO_ACTIVITY = gql`
-  query ($id: ID!) {
+  query streamBacentasNoActivity($id: ID!) {
     streams(where: { id: $id }, options: { limit: 1 }) {
       id
       name
@@ -71,7 +71,7 @@ export const STREAM_BACENTAS_NO_ACTIVITY = gql`
 `
 
 export const GATHERINGSERVICE_BACENTAS_NO_ACTIVITY = gql`
-  query ($id: ID!) {
+  query gatheringBacentasNoActivity($id: ID!) {
     gatheringServices(where: { id: $id }, options: { limit: 1 }) {
       id
       name
@@ -94,7 +94,7 @@ export const GATHERINGSERVICE_BACENTAS_NO_ACTIVITY = gql`
 `
 
 export const CONSTITUENCY_BACENTAS_MOBILISING = gql`
-  query ($id: ID!) {
+  query constituencyBacentasMobilising($id: ID!) {
     constituencies(where: { id: $id }, options: { limit: 1 }) {
       id
       name
@@ -120,7 +120,7 @@ export const CONSTITUENCY_BACENTAS_MOBILISING = gql`
 `
 
 export const COUNCIL_BACENTAS_MOBILISING = gql`
-  query ($id: ID!) {
+  query councilBacentasMobilising($id: ID!) {
     councils(where: { id: $id }, options: { limit: 1 }) {
       id
       name
@@ -146,7 +146,7 @@ export const COUNCIL_BACENTAS_MOBILISING = gql`
 `
 
 export const STREAM_BACENTAS_MOBILISING = gql`
-  query ($id: ID!) {
+  query streamBacentasMobilising($id: ID!) {
     streams(where: { id: $id }, options: { limit: 1 }) {
       id
       name
@@ -172,7 +172,7 @@ export const STREAM_BACENTAS_MOBILISING = gql`
 `
 
 export const GATHERINGSERVICE_BACENTAS_MOBILISING = gql`
-  query ($id: ID!) {
+  query gatheringBacentasMobilising($id: ID!) {
     gatheringServices(where: { id: $id }, options: { limit: 1 }) {
       id
       name
@@ -198,7 +198,7 @@ export const GATHERINGSERVICE_BACENTAS_MOBILISING = gql`
 `
 
 export const CONSTITUENCY_BACENTAS_ON_THE_WAY = gql`
-  query ($id: ID!) {
+  query constituencyBacentasOnTheWay($id: ID!) {
     constituencies(where: { id: $id }, options: { limit: 1 }) {
       id
       name
@@ -224,7 +224,7 @@ export const CONSTITUENCY_BACENTAS_ON_THE_WAY = gql`
 `
 
 export const COUNCIL_BACENTAS_ON_THE_WAY = gql`
-  query ($id: ID!) {
+  query councilBacentasOnTheWay($id: ID!) {
     councils(where: { id: $id }, options: { limit: 1 }) {
       id
       name
@@ -249,7 +249,7 @@ export const COUNCIL_BACENTAS_ON_THE_WAY = gql`
   }
 `
 export const STREAM_BACENTAS_ON_THE_WAY = gql`
-  query ($id: ID!) {
+  query streamBacentasOnTheWay($id: ID!) {
     streams(where: { id: $id }, options: { limit: 1 }) {
       id
       name
@@ -275,7 +275,7 @@ export const STREAM_BACENTAS_ON_THE_WAY = gql`
 `
 
 export const GATHERINGSERVICE_BACENTAS_ON_THE_WAY = gql`
-  query ($id: ID!) {
+  query gatheringBacentasOnTheWay($id: ID!) {
     gatheringServices(where: { id: $id }, options: { limit: 1 }) {
       id
       name
@@ -301,7 +301,7 @@ export const GATHERINGSERVICE_BACENTAS_ON_THE_WAY = gql`
 `
 
 export const CONSTITUENCY_BACENTAS_TO_COUNT = gql`
-  query ($id: ID!) {
+  query constituencyBacentasToCount($id: ID!) {
     constituencies(where: { id: $id }, options: { limit: 1 }) {
       id
       name
@@ -327,7 +327,7 @@ export const CONSTITUENCY_BACENTAS_TO_COUNT = gql`
 `
 
 export const COUNCIL_BACENTAS_TO_COUNT = gql`
-  query ($id: ID!) {
+  query councilBacentasToCount($id: ID!) {
     councils(where: { id: $id }, options: { limit: 1 }) {
       id
       name
@@ -352,7 +352,7 @@ export const COUNCIL_BACENTAS_TO_COUNT = gql`
   }
 `
 export const STREAM_BACENTAS_TO_COUNT = gql`
-  query ($id: ID!) {
+  query streamBacentasToCount($id: ID!) {
     streams(where: { id: $id }, options: { limit: 1 }) {
       id
       name
@@ -378,7 +378,7 @@ export const STREAM_BACENTAS_TO_COUNT = gql`
 `
 
 export const GATHERINGSERVICE_BACENTAS_TO_COUNT = gql`
-  query ($id: ID!) {
+  query gatheringBacentasToCount($id: ID!) {
     gatheringServices(where: { id: $id }, options: { limit: 1 }) {
       id
       name
@@ -404,7 +404,7 @@ export const GATHERINGSERVICE_BACENTAS_TO_COUNT = gql`
 `
 
 export const CONSTITUENCY_BACENTAS_ARRIVED = gql`
-  query ($id: ID!) {
+  query constituencyBacentasArrived($id: ID!) {
     constituencies(where: { id: $id }, options: { limit: 1 }) {
       id
       name
@@ -430,7 +430,7 @@ export const CONSTITUENCY_BACENTAS_ARRIVED = gql`
 `
 
 export const COUNCIL_BACENTAS_ARRIVED = gql`
-  query ($id: ID!) {
+  query councilBacentasArrived($id: ID!) {
     councils(where: { id: $id }, options: { limit: 1 }) {
       id
       name
@@ -456,7 +456,7 @@ export const COUNCIL_BACENTAS_ARRIVED = gql`
 `
 
 export const STREAM_BACENTAS_ARRIVED = gql`
-  query ($id: ID!) {
+  query streamBacentasArrived($id: ID!) {
     streams(where: { id: $id }, options: { limit: 1 }) {
       id
       name
@@ -482,7 +482,7 @@ export const STREAM_BACENTAS_ARRIVED = gql`
 `
 
 export const GATHERINGSERVICES_BACENTAS_ARRIVED = gql`
-  query ($id: ID!) {
+  query gatheringBacentasArrived($id: ID!) {
     gatheringServices(where: { id: $id }, options: { limit: 1 }) {
       id
       name
@@ -508,7 +508,7 @@ export const GATHERINGSERVICES_BACENTAS_ARRIVED = gql`
 `
 
 export const CONSTITUENCY_BACENTAS_BELOW_8 = gql`
-  query ($id: ID!) {
+  query constituencyBacentasBelow8($id: ID!) {
     constituencies(where: { id: $id }, options: { limit: 1 }) {
       id
       name
@@ -534,7 +534,7 @@ export const CONSTITUENCY_BACENTAS_BELOW_8 = gql`
 `
 
 export const COUNCIL_BACENTAS_BELOW_8 = gql`
-  query ($id: ID!) {
+  query councilBacentasBelow8($id: ID!) {
     councils(where: { id: $id }, options: { limit: 1 }) {
       id
       name
@@ -560,7 +560,7 @@ export const COUNCIL_BACENTAS_BELOW_8 = gql`
 `
 
 export const STREAM_BACENTAS_BELOW_8 = gql`
-  query ($id: ID!) {
+  query streamBacentasBelow8($id: ID!) {
     streams(where: { id: $id }, options: { limit: 1 }) {
       id
       name
@@ -586,7 +586,7 @@ export const STREAM_BACENTAS_BELOW_8 = gql`
 `
 
 export const GATHERINGSERVICE_BACENTAS_BELOW_8 = gql`
-  query ($id: ID!) {
+  query gatheringBacentasBelow8($id: ID!) {
     gatheringServices(where: { id: $id }, options: { limit: 1 }) {
       id
       name

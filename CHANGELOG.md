@@ -1,3 +1,100 @@
+### 4.7.0 (2022-07-22)
+
+##### New Features
+
+*  adds location as a field when creating a member admin-228 ([93aedb5d](https://github.com/firstlovecenter/fl-pastoral-care/commit/93aedb5d2bbee76e4075fb09e21ebf141c372b79))
+*  implemented sending of message upon both counting and arrival ([e4cadcf9](https://github.com/firstlovecenter/fl-pastoral-care/commit/e4cadcf9dd11e712afeff7aa10b59155086422e7))
+* **service-forms:**  enable council level and higher to fill multiple times in a week ([24216ae7](https://github.com/firstlovecenter/fl-pastoral-care/commit/24216ae7e479ccd3642a96860a9931ae90eeb816))
+
+##### Bug Fixes
+
+*  adds no data component to comfirm anagkazo banking ([d06ce743](https://github.com/firstlovecenter/fl-pastoral-care/commit/d06ce743da7604213a8143f0a867de2c97259531))
+*  removes link to bacenta services ([46d27602](https://github.com/firstlovecenter/fl-pastoral-care/commit/46d27602e0726c943efc28d29cf044cc1777bf29))
+*  edits the error message to show the date of the last outstanding service ([4f23de2e](https://github.com/firstlovecenter/fl-pastoral-care/commit/4f23de2eae23c2883258f939f430a0a0b57c40b1))
+*  fixing error on update bacenta mutation in leader properties on title property ([570addf5](https://github.com/firstlovecenter/fl-pastoral-care/commit/570addf5dcae04554525863560ed3b13c41be2e1))
+*  fixed bug preventing service forms button from appearing on the church details ([97cf4fb5](https://github.com/firstlovecenter/fl-pastoral-care/commit/97cf4fb5a161012dc854668a524fa8a253a201a9))
+*  fixed bug preventing members from being updated ([96ab8cb0](https://github.com/firstlovecenter/fl-pastoral-care/commit/96ab8cb0d26a71c764ced16ac5fe7062690f40a9))
+*  fixed bug breaking the ui when  viewing bacenta details ([002d1d12](https://github.com/firstlovecenter/fl-pastoral-care/commit/002d1d122ef362d2ca731f2311c79ed4d1d9b200))
+*  allowed leaders to enter  0 as bussing  cost ([67f8893b](https://github.com/firstlovecenter/fl-pastoral-care/commit/67f8893b7fd0e889b4fa33e12fc0e852bbb686c5))
+*  when a  leader fills the form,  they should  still see the countdown time ([5ff3aa8c](https://github.com/firstlovecenter/fl-pastoral-care/commit/5ff3aa8c25d608e5e90223991022bf7d720219f5))
+*   fixed bug preventing the right  top up from being set ([0d6c0b09](https://github.com/firstlovecenter/fl-pastoral-care/commit/0d6c0b099c586e85dfcb5c910762719a59dc4048))
+*  named more graphql queries throught the repo ([b5594956](https://github.com/firstlovecenter/fl-pastoral-care/commit/b5594956aa87bac24a7c68197b5aca6df9e399ed))
+*  pushed fix for making counters and confirmers ([d23aad61](https://github.com/firstlovecenter/fl-pastoral-care/commit/d23aad61b3817fbd38e80601ddb0f71dfdefb80d))
+*  fixed bug preventing arrivalscounters from counting ([bf489d11](https://github.com/firstlovecenter/fl-pastoral-care/commit/bf489d1156a1fefb01bc388612b8117b4e2976cc))
+*  brought back resolver to update member emails ([3aabffbd](https://github.com/firstlovecenter/fl-pastoral-care/commit/3aabffbd0c9cc342d87715c9cedf26b164910b02))
+*  improved getLastServiceRecord to handle for when a record is doubled ([832d0ac6](https://github.com/firstlovecenter/fl-pastoral-care/commit/832d0ac6f8335ea5603080b0637f051c4b94bddf))
+* **arrivals:**  fixed bug where arrivals amount was not set ([59aa9585](https://github.com/firstlovecenter/fl-pastoral-care/commit/59aa9585e829c3613aa43cc69e3d6dbdb6f1ff1e))
+* **defaulters:**  fixed bug preventing constituency admins from viewin defaulters ([36e19f12](https://github.com/firstlovecenter/fl-pastoral-care/commit/36e19f1251bbbc598d0ac60b0e3eb3116cfb2c16))
+
+##### Performance Improvements
+
+*  finally figured out how to get DEBUG logs working again ([d1183328](https://github.com/firstlovecenter/fl-pastoral-care/commit/d1183328aacf207b49bf727fc5e793806c7af699))
+
+##### Refactors
+
+*  remove midweek banking home and change midweek banking button to add treasurers ([1f3850f4](https://github.com/firstlovecenter/fl-pastoral-care/commit/1f3850f47bb4c4b37d890ccb360fbaa77e0ffbb5))
+*  began converting formik components to typescript ([11ddb84c](https://github.com/firstlovecenter/fl-pastoral-care/commit/11ddb84c5649981c4b64f0a45f1c20418e2fb3b5))
+*  refactored display church details into ts ([c4340947](https://github.com/firstlovecenter/fl-pastoral-care/commit/c4340947538f86b11f5410b4ea8fd8e634857f8a))
+
+#### 4.6.4 (2022-07-15)
+
+#### 4.6.3 (2022-07-15)
+
+##### Chores
+
+*  updated jd-date-utils ([4b9e3f52](https://github.com/firstlovecenter/fl-pastoral-care/commit/4b9e3f52bcd820343fa27985db4e25798c9f19c9))
+*  named anonymous graphql queries according to conventions ([9060d629](https://github.com/firstlovecenter/fl-pastoral-care/commit/9060d6296f962bf02f1e160e6e761e943a4d15c1))
+*  audited package.json files ([9ed37816](https://github.com/firstlovecenter/fl-pastoral-care/commit/9ed37816ff4b035c72cfa26643135e3c01c358fe))
+
+##### Bug Fixes
+
+*  fixed issue where leaders were unable to bank their offerings if they had old services unbanked ([0ebedb49](https://github.com/firstlovecenter/fl-pastoral-care/commit/0ebedb496cdc9ff326f411276660d2413c8db1f9))
+
+##### Performance Improvements
+
+*  edited gitignore to track apollo.config.js file ([350088d7](https://github.com/firstlovecenter/fl-pastoral-care/commit/350088d7ca89544f15b6bdb9fc3215103b8e37be))
+
+#### 4.6.1 (2022-07-15)
+
+##### Chores
+
+*  uninstalled gql parser in favour of a global install ([1e97fbdb](https://github.com/firstlovecenter/fl-pastoral-care/commit/1e97fbdb52df96012bae9d7d09d22dc3bcf5720b))
+*  fixed merge conflicts bringing deploy into arrivals ([bbce0745](https://github.com/firstlovecenter/fl-pastoral-care/commit/bbce0745bb8cb188d911c51bbea4608df6324b73))
+
+##### New Features
+
+* **arrivals:**
+  *  implemented feature to prevent users from giving themselves arrivals roles ([b788f264](https://github.com/firstlovecenter/fl-pastoral-care/commit/b788f264c6c340cfe8d8e5689e4a0768b67f7b9f))
+  *  admin-205 made isArrivalsToday function ready for prod ([c929d268](https://github.com/firstlovecenter/fl-pastoral-care/commit/c929d268eb4619454111dda2d6f47c44904f1599))
+  *  admin-205 implemented 'Bacentas Below 8' button on all church pages ([ac72d0ea](https://github.com/firstlovecenter/fl-pastoral-care/commit/ac72d0eaf79a9bbce9272d124cc0768d03bf0b10))
+  *  admin-205 implemented SMS notifications for those who have confirmed attendance ([7ec54b62](https://github.com/firstlovecenter/fl-pastoral-care/commit/7ec54b627fe3563b526370722a5d17dfcd1b9aca))
+  *  admin-205 added a 5 minute buffer for arrivals confirmers ([deac14ab](https://github.com/firstlovecenter/fl-pastoral-care/commit/deac14ab52538b4a6a2625f440e652d95204541c))
+  *  admin-211 changed attendance to bus payment attendance ([16561236](https://github.com/firstlovecenter/fl-pastoral-care/commit/165612365f8224582206f9a2a5fe871b0bd41af0))
+  *  implemented feature to check whether today is a day of bussing per stream ([3e3d9538](https://github.com/firstlovecenter/fl-pastoral-care/commit/3e3d9538e1d7aafde5ebd73a72ad8dadec55f9a0))
+
+##### Bug Fixes
+
+*  fixed issue where newDuplicateServiceLog was not being created in createHistorySubstructure ([031fc8b6](https://github.com/firstlovecenter/fl-pastoral-care/commit/031fc8b6c43efa49d20aef6258d0fa59d618a406))
+*  implemented mnotify fix of changing the word code to OTP ([39b153c4](https://github.com/firstlovecenter/fl-pastoral-care/commit/39b153c407ed3ed3989d76de3ba3b3fe1193eedd))
+*  added date function in front of dates to prevent wrong date in lastButOneServiceRecord cypher ([#208](https://github.com/firstlovecenter/fl-pastoral-care/pull/208)) ([a7a8a27b](https://github.com/firstlovecenter/fl-pastoral-care/commit/a7a8a27baaaf427b82ad5cd5a93c3def0ab1ec8b))
+*  admin-213 implemented alert to show when the arrivals window is open ([a044d6f4](https://github.com/firstlovecenter/fl-pastoral-care/commit/a044d6f4c7c8fe39cbf2e99ee66c5c34cda8fbd8))
+* **banking:**  admin-219 corrected cypher query for getting the last service record ([3251d228](https://github.com/firstlovecenter/fl-pastoral-care/commit/3251d228e9bd5a3a2606bc7bc17c024e2a8eb277))
+
+##### Performance Improvements
+
+*  updated date-utils package ([7285e511](https://github.com/firstlovecenter/fl-pastoral-care/commit/7285e511894333cd5fc8a5ef4c0fe14f607d01c2))
+*  included config for using official apollo vscode extension ([8f3c8e39](https://github.com/firstlovecenter/fl-pastoral-care/commit/8f3c8e3913e7993586c792029879c4e9a3f222ed))
+*  added a package to check graphql queries ([b5389e68](https://github.com/firstlovecenter/fl-pastoral-care/commit/b5389e680830d79cb461824c25eea7cea2d9e25d))
+*  admin-214 implemented constraints on database ([5f420843](https://github.com/firstlovecenter/fl-pastoral-care/commit/5f420843b2eb5bedbe99d51b80e54c541d28ee28))
+
+##### Refactors
+
+* **banking:**
+  *  replaced double quotes with single quotes ([9979f456](https://github.com/firstlovecenter/fl-pastoral-care/commit/9979f45679336c13d214cf7b01b0f2371b8d2154))
+  *  made the typing stricter on the lastServiceBanked function ([3c3a483b](https://github.com/firstlovecenter/fl-pastoral-care/commit/3c3a483bdb6734d923a86f3370574cc46af9734c))
+  *  rewrote the lastButOneServiceRecord for easier legibility ([a6e6418a](https://github.com/firstlovecenter/fl-pastoral-care/commit/a6e6418a4be0172d45eb36310809aae27c4ce458))
+* **arrivals:**  converted all arrivals js files to ts ([2b268539](https://github.com/firstlovecenter/fl-pastoral-care/commit/2b268539c5b231c1329b927f2abb983009a80628))
+
 ### 4.6.0 (2022-07-13)
 
 ##### Chores

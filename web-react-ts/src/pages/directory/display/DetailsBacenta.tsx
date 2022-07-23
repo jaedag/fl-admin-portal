@@ -1,9 +1,9 @@
 import React, { useContext } from 'react'
 import { useQuery } from '@apollo/client'
-import DisplayChurchDetails from '../../../components/DisplayChurchDetails/DisplayChurchDetails'
+import DisplayChurchDetails from 'components/DisplayChurchDetails/DisplayChurchDetails'
 
 import { DISPLAY_BACENTA } from './ReadQueries'
-import { ChurchContext } from '../../../contexts/ChurchContext'
+import { ChurchContext } from 'contexts/ChurchContext'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { permitArrivals } from 'permission-utils'
 
@@ -85,13 +85,11 @@ const DetailsBacenta = () => {
         leaderTitle="Bacenta Leader"
         leader={bacenta?.leader}
         churchId={bacentaId}
-        churchHeading="Fellowships"
         churchType="Bacenta"
         subChurch="Fellowship"
-        membership={bacenta?.memberCount}
         editlink="/bacenta/editbacenta"
         editPermitted={permitArrivals('Constituency')}
-        history={bacenta?.history.length !== 0 && bacenta?.history}
+        history={bacenta?.history.length !== 0 ? bacenta?.history : []}
         breadcrumb={breadcrumb && breadcrumb}
         buttons={bacenta ? bacenta?.fellowships : []}
         vacationCount={bacenta?.vacationFellowshipCount}

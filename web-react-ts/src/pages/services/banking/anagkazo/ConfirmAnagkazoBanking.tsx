@@ -18,6 +18,7 @@ import { DISPLAY_FELLOWSHIP_SERVICE } from 'pages/services/record-service/Record
 import { alertMsg, throwErrorMsg } from 'global-utils'
 import Popup from 'components/Popup/Popup'
 import { ServiceRecord } from 'global-types'
+import NoDataComponent from 'pages/arrivals/CompNoData'
 
 type FormOptions = {
   defaulterSearch: string
@@ -55,7 +56,7 @@ const ConfirmAnagkazoBanking = () => {
   const [ConfirmBanking] = useMutation(CONFIRM_BANKING)
 
   const service = fellowshipServiceData?.serviceRecords[0]
-  const banking_defaulters_list = data?.streams[0]?.bankingDefaultersThisWeek
+  const bankingDefaultersList = data?.streams[0]?.bankingDefaultersThisWeek
 
   const onSubmit = (
     values: FormOptions,
@@ -63,7 +64,7 @@ const ConfirmAnagkazoBanking = () => {
   ) => {
     onSubmitProps.setSubmitting(true)
     setDefaultersData(
-      banking_defaulters_list.filter((defaulter: Defaulter) =>
+      bankingDefaultersList.filter((defaulter: Defaulter) =>
         defaulter.name
           .toLowerCase()
           .includes(values.defaulterSearch.toLowerCase())
@@ -74,8 +75,8 @@ const ConfirmAnagkazoBanking = () => {
   }
 
   useEffect(() => {
-    setDefaultersData(banking_defaulters_list)
-  }, [banking_defaulters_list])
+    setDefaultersData(bankingDefaultersList)
+  }, [bankingDefaultersList])
 
   const initialValues: FormOptions = {
     defaulterSearch: '',
@@ -215,6 +216,10 @@ const ConfirmAnagkazoBanking = () => {
                   </Card>
                 ))}
               </div>
+
+              {!bankingDefaultersList?.length && !loading && (
+                <NoDataComponent text="There are no services to be confirmed" />
+              )}
             </Container>
           </div>
         </ApolloWrapper>

@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react'
 import { ErrorMessage } from 'formik'
-import TextError from './TextError'
+import TextError from './TextError/TextError'
 import { Container, Spinner } from 'react-bootstrap'
 import { MemberContext } from 'contexts/MemberContext'
 import './Formik.css'

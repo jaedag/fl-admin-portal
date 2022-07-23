@@ -1,5 +1,5 @@
 import { MemberContext } from 'contexts/MemberContext'
-import { ChurchLevel } from 'global-types'
+import { Church, ChurchLevel } from 'global-types'
 import { authorisedLink } from 'global-utils'
 import { permitMe } from 'permission-utils'
 import React, { useContext } from 'react'
@@ -7,10 +7,10 @@ import { Link } from 'react-router-dom'
 import { ChurchContext } from '../../contexts/ChurchContext'
 import './Breadcrumb.css'
 
-type BreadcrumbType = {
+interface BreadcrumbType extends Church {
   __typename: ChurchLevel
   name: string
-  constituency: {
+  constituency?: {
     name: string
   }
 }
@@ -20,39 +20,43 @@ const Breadcrumb = ({ breadcrumb }: { breadcrumb: BreadcrumbType[] }) => {
   const { currentUser } = useContext(MemberContext)
 
   if (!breadcrumb.length) {
-    return null
+    return <></>
   }
 
-  return breadcrumb.map((bread, i) => {
-    if (!bread) {
-      return null
-    }
+  return (
+    <>
+      {breadcrumb.map((bread, i) => {
+        if (!bread) {
+          return <></>
+        }
 
-    let breadname
-    if (bread?.__typename === 'Sonta') {
-      breadname = bread.name.replace(bread.constituency.name, '')
-    } else {
-      breadname = bread.name
-    }
+        let breadname
+        if (bread?.__typename === 'Sonta' && bread.constituency) {
+          breadname = bread.name.replace(bread.constituency.name, '')
+        } else {
+          breadname = bread.name
+        }
 
-    return (
-      <Link
-        key={i}
-        to={authorisedLink(
-          currentUser,
-          permitMe(bread?.__typename),
-          `/${bread?.__typename.toLowerCase()}/displaydetails`
-        )}
-        onClick={() => {
-          clickCard(bread)
-        }}
-        className="crumb label text-secondary"
-      >
-        {`${breadname} ${bread?.__typename}`}
-        {i !== breadcrumb.length - 1 && ' > '}
-      </Link>
-    )
-  })
+        return (
+          <Link
+            key={i}
+            to={authorisedLink(
+              currentUser,
+              permitMe(bread?.__typename),
+              `/${bread?.__typename.toLowerCase()}/displaydetails`
+            )}
+            onClick={() => {
+              clickCard(bread)
+            }}
+            className="crumb label text-secondary"
+          >
+            {`${breadname} ${bread?.__typename}`}
+            {i !== breadcrumb.length - 1 && ' > '}
+          </Link>
+        )
+      })}
+    </>
+  )
 }
 
 export default Breadcrumb

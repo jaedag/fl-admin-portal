@@ -1,6 +1,6 @@
 import React from 'react'
 import { Field, ErrorMessage } from 'formik'
-import TextError from './TextError'
+import TextError from './TextError/TextError'
 import PlaceholderCustom from 'components/Placeholder'
 import { useAuth0 } from '@auth0/auth0-react'
 
