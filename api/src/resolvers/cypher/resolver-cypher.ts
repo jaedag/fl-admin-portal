@@ -109,7 +109,7 @@ RETURN member
 
 export const createMember = `
 MATCH (fellowship:Fellowship {id: $fellowship})
-CREATE (member:Member:Deer {whatsappNumber:$whatsappNumber})
+CREATE (member:Member:IDL {whatsappNumber:$whatsappNumber})
       SET
       	member.id = apoc.create.uuid(),
       	member.firstName = $firstName,
