@@ -2,8 +2,15 @@ type Campaign {
   id: ID!
   name: String!
   type: String!
-  churchLevels: String
   leader: Member @relationship(type: "LEADS", direction: IN)
+  fellowship: Boolean!
+  bacenta: Boolean!
+  constituency: Boolean!
+  council: Boolean!
+  stream: Boolean!
+  gatheringService: Boolean!
+  oversight: Boolean!
+  denomination: Boolean!
 }
 
 extend type GatheringService {
