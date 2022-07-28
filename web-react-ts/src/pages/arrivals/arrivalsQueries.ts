@@ -268,8 +268,6 @@ export const BACENTA_ARRIVALS = gql`
         arrivalEndTime
       }
       momoNumber
-      normalBussingTopUp
-      swellBussingTopUp
 
       arrivalsCodeOfTheDay
       bussing(limit: 1) {
@@ -415,8 +413,6 @@ export const DISPLAY_BUSSING_RECORDS = gql`
         arrivalStartTime
         arrivalEndTime
       }
-      normalBussingTopUp
-      swellBussingTopUp
     }
   }
 `

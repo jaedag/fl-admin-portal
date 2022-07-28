@@ -10,7 +10,7 @@ export const RECORD_SERVICE = gql`
     $numberOfTithers: Int!
     $treasurers: [ID]!
     $treasurerSelfie: String!
-    $servicePicture: String!
+    $familyPicture: String!
   ) {
     RecordService(
       churchId: $churchId
@@ -21,7 +21,7 @@ export const RECORD_SERVICE = gql`
       numberOfTithers: $numberOfTithers
       treasurers: $treasurers
       treasurerSelfie: $treasurerSelfie
-      servicePicture: $servicePicture
+      familyPicture: $familyPicture
     ) {
       id
       serviceLog {
@@ -69,13 +69,13 @@ export const RECORD_SERVICE_NO_INCOME = gql`
     $churchId: ID!
     $serviceDate: String!
     $attendance: Int!
-    $servicePicture: String!
+    $familyPicture: String!
   ) {
     RecordServiceNoIncome(
       churchId: $churchId
       serviceDate: $serviceDate
       attendance: $attendance
-      servicePicture: $servicePicture
+      familyPicture: $familyPicture
     ) {
       id
       week
@@ -102,7 +102,7 @@ export const DISPLAY_FELLOWSHIP_SERVICE = gql`
       income
       foreignCurrency
       treasurerSelfie
-      servicePicture
+      familyPicture
       bankingProof
       bankingSlip
       bankingSlipUploader {
@@ -151,7 +151,7 @@ export const DISPLAY_BACENTA_SERVICE = gql`
       income
       foreignCurrency
       treasurerSelfie
-      servicePicture
+      familyPicture
       bankingProof
       bankingSlip
       bankingSlipUploader {
@@ -193,7 +193,7 @@ export const DISPLAY_SONTA_SERVICE = gql`
       income
       foreignCurrency
       treasurerSelfie
-      servicePicture
+      familyPicture
       treasurers {
         id
         firstName
@@ -231,7 +231,7 @@ export const DISPLAY_CONSTITUENCY_SERVICE = gql`
       foreignCurrency
       transactionId
       treasurerSelfie
-      servicePicture
+      familyPicture
       bankingProof
       bankingSlip
       bankingSlipUploader {
@@ -280,7 +280,7 @@ export const DISPLAY_COUNCIL_SERVICE = gql`
       transactionId
       foreignCurrency
       treasurerSelfie
-      servicePicture
+      familyPicture
       bankingProof
       bankingSlip
       bankingSlipUploader {
@@ -329,7 +329,7 @@ export const DISPLAY_STREAM_SERVICE = gql`
       foreignCurrency
       transactionId
       treasurerSelfie
-      servicePicture
+      familyPicture
       bankingProof
       bankingSlip
       bankingSlipUploader {
@@ -381,7 +381,7 @@ export const DISPLAY_GATHERINGSERVICE_SERVICE = gql`
       transactionId
       foreignCurrency
       treasurerSelfie
-      servicePicture
+      familyPicture
       bankingProof
       bankingSlip
       bankingSlipUploader {

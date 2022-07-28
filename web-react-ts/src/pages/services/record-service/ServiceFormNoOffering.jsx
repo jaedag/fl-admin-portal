@@ -17,7 +17,7 @@ const ServiceFormNoOffering = ({
   const initialValues = {
     serviceDate: new Date().toISOString().slice(0, 10),
     attendance: '',
-    servicePicture: '',
+    familyPicture: '',
   }
 
   const validationSchema = Yup.object({
@@ -29,7 +29,7 @@ const ServiceFormNoOffering = ({
       .positive()
       .integer('You cannot have attendance with decimals!')
       .required('You cannot submit this form without entering your attendance'),
-    servicePicture: Yup.string().required(
+    familyPicture: Yup.string().required(
       'Please submit a picture of your service'
     ),
   })
@@ -41,7 +41,7 @@ const ServiceFormNoOffering = ({
         id: churchId,
         serviceDate: values.serviceDate,
         attendance: parseInt(values.attendance),
-        servicePicture: values.servicePicture,
+        familyPicture: values.familyPicture,
       },
     }).then((res) => {
       onSubmitProps.setSubmitting(false)
@@ -85,11 +85,11 @@ const ServiceFormNoOffering = ({
                     />
                     <FormikControl
                       control="imageUpload"
-                      name="servicePicture"
+                      name="familyPicture"
                       uploadPreset={process.env.REACT_APP_CLOUDINARY_SERVICES}
                       placeholder="Upload a Picture of the Meeting"
                       setFieldValue={formik.setFieldValue}
-                      aria-describedby="UploadServicePicture"
+                      aria-describedby="UploadfamilyPicture"
                     />
                     <div className="d-flex justify-content-center">
                       <button

@@ -7,15 +7,19 @@ type Member @auth(rules: [{ isAuthenticated: true }]) {
   fullName: String @computed
   currentTitle: String
     @cypher(
-      statement: "MATCH (this)-[:HAS_TITLE]->(title:Title) RETURN title.name ORDER BY title.weight DESC LIMIT 1"
+      statement: """
+      MATCH (this)-[:HAS_TITLE]->(title:Title) 
+      RETURN title.name ORDER BY title.weight DESC LIMIT 1
+      """
     )
   nameWithTitle: String @computed
-  email: String
+  email: String!
   phoneNumber: String
-  whatsappNumber: String
+  whatsappNumber: String!
   pictureUrl: String
-  gender: Gender @relationship(type: "HAS_GENDER", direction: OUT)
-  maritalStatus: MaritalStatus
+  location: String
+  gender: Gender! @relationship(type: "HAS_GENDER", direction: OUT)
+  maritalStatus: MaritalStatus!
     @relationship(type: "HAS_MARITAL_STATUS", direction: OUT)
   dob: TimeGraph @relationship(type: "WAS_BORN_ON", direction: OUT)
   title: [Title!]!

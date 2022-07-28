@@ -29,7 +29,7 @@ const ServiceForm = ({
     attendance: '',
     treasurers: [''],
     treasurerSelfie: '',
-    servicePicture: '',
+    familyPicture: '',
   }
 
   const today = new Date()
@@ -56,7 +56,7 @@ const ServiceForm = ({
       .integer('You cannot have attendance with decimals!')
       .required('You cannot submit this form without entering your attendance'),
     treasurerSelfie: Yup.string().required('You must take a treasurers selfie'),
-    servicePicture: Yup.string().required(
+    familyPicture: Yup.string().required(
       'Please submit a picture of your service'
     ),
     treasurers: Yup.array()
@@ -81,7 +81,7 @@ const ServiceForm = ({
           numberOfTithers: parseInt(values.numberOfTithers),
           treasurers: values?.treasurers,
           treasurerSelfie: values.treasurerSelfie,
-          servicePicture: values.servicePicture,
+          familyPicture: values.familyPicture,
         },
       })
         .then((res) => {
@@ -204,11 +204,11 @@ const ServiceForm = ({
                       </small>
                       <FormikControl
                         control="imageUpload"
-                        name="servicePicture"
+                        name="familyPicture"
                         uploadPreset={process.env.REACT_APP_CLOUDINARY_SERVICES}
                         placeholder="Choose"
                         setFieldValue={formik.setFieldValue}
-                        aria-describedby="UploadServicePicture"
+                        aria-describedby="UploadfamilyPicture"
                       />
                     </Col>
                     <div className="d-flex justify-content-center mt-5">
