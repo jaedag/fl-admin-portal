@@ -2,7 +2,7 @@ const recordService = `
 CREATE (serviceRecord:ServiceRecord {created_at:datetime()})
         SET serviceRecord.id = apoc.create.uuid(),
         serviceRecord.attendance = $attendance,
-        serviceRecord.servicePicture = $servicePicture
+        serviceRecord.familyPicture = $familyPicture
       WITH serviceRecord
 
       MATCH (church {id: $churchId}) WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream

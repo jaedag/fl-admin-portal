@@ -1062,7 +1062,7 @@ type ServiceRecord implements Record @auth(rules: [{ isAuthenticated: true }]) {
   attendance: Int
   income: Float
   foreignCurrency: String
-  servicePicture: String
+  familyPicture: String
   treasurerSelfie: String
   bankingSlip: String
   bankingSlipUploader: Member
@@ -1132,7 +1132,7 @@ extend type Mutation {
     numberOfTithers: Int
     treasurers: [ID]!
     treasurerSelfie: String!
-    servicePicture: String!
+    familyPicture: String!
   ): ServiceRecord!
 
   RecordCancelledService(
