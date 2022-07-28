@@ -9,8 +9,8 @@ export interface BussingQuickFactsProps {
     cardType: string
     leadersName: string
     churchName: string
-    churchBussingThisMonth: any
-    avgHigherLevelBussingThisMonth: any
+    churchBussingThisMonth: number | string
+    avgHigherLevelBussingThisMonth: number | string
     higherLevelName: string
   }[]
 }
@@ -19,8 +19,8 @@ const BussingQuickFactsCard = (props: BussingQuickFactsProps) => {
   const details = props?.bussingDetails[0]
 
   const percentageRiseOrFall = getPercentageChange(
-    details?.churchBussingThisMonth,
-    details?.avgHigherLevelBussingThisMonth
+    details?.churchBussingThisMonth as number,
+    details?.avgHigherLevelBussingThisMonth as number
   )
 
   const getBadgeBackground = () => {

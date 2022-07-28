@@ -528,6 +528,10 @@ export const DISPLAY_GATHERINGSERVICE = gql`
       pastorCount
       vacationBacentaCount
       vacationFellowshipCount
+      oversight {
+        id
+        name
+      }
       streams(options: { limit: 5 }) {
         id
         name
@@ -547,6 +551,60 @@ export const DISPLAY_GATHERINGSERVICE = gql`
         lastName
         currentTitle
         nameWithTitle
+        pictureUrl
+      }
+      history(limit: 5) {
+        id
+        timeStamp
+        created_at {
+          date
+        }
+        loggedBy {
+          id
+          firstName
+          lastName
+          stream_name
+        }
+        historyRecord
+      }
+    }
+  }
+`
+
+export const DISPLAY_OVERSIGHT = gql`
+  query {
+    oversights(
+      where: { id: "ffe5d324-7d3d-4639-9d67-b059bc7a9a2e" }
+      options: { limit: 1 }
+    ) {
+      id
+      name
+      gatheringServiceCount
+      streamCount
+      councilCount
+      constituencyCount
+      activeBacentaCount
+      activeFellowshipCount
+      memberCount
+      pastorCount
+      vacationBacentaCount
+      vacationFellowshipCount
+      gatheringServices {
+        id
+        name
+      }
+      admin {
+        id
+        firstName
+        lastName
+        fullName
+        stream_name
+      }
+      leader {
+        id
+        firstName
+        lastName
+        fullName
         pictureUrl
       }
       history(limit: 5) {

@@ -96,8 +96,8 @@ export const nextHigherChurch = (churchLevel: ChurchLevel) => {
     case 'Stream':
       return 'GatheringService'
     case 'GatheringService':
-      return 'Denomination'
+      return 'Oversight'
     default:
-      return 'Denomination'
+      return 'Oversight'
   }
 }

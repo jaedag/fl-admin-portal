@@ -3,6 +3,6 @@ extend type Mutation {
     churchId: ID!
     serviceDate: String!
     attendance: Int!
-    servicePicture: String!
+    familyPicture: String!
   ): ServiceRecord
 }

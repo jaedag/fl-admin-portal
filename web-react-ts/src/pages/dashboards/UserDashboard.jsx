@@ -67,15 +67,13 @@ const UserDashboard = () => {
                 statistic={getMonthlyStatAverage(assessmentData, 'attendance')}
               />
             </Col>
-            {!currentUser.noIncome && (
-              <Col>
-                <StatDisplay
-                  title="Avg Weekly Income (GH₵)"
-                  loading={!assessmentData}
-                  statistic={getMonthlyStatAverage(assessmentData, 'income')}
-                />
-              </Col>
-            )}
+            <Col>
+              <StatDisplay
+                title="Avg Weekly Income (GH₵)"
+                loading={!assessmentData}
+                statistic={getMonthlyStatAverage(assessmentData, 'income')}
+              />
+            </Col>
           </Row>
           {!currentUser.noIncome ? (
             <ChurchGraph

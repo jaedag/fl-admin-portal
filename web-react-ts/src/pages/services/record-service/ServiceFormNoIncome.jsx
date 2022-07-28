@@ -22,7 +22,7 @@ const ServiceForm = ({
   const initialValues = {
     serviceDate: new Date().toISOString().slice(0, 10),
     attendance: '',
-    servicePicture: '',
+    familyPicture: '',
   }
 
   const today = new Date()
@@ -37,7 +37,7 @@ const ServiceForm = ({
       .positive()
       .integer('You cannot have attendance with decimals!')
       .required('You cannot submit this form without entering your attendance'),
-    servicePicture: Yup.string().required(
+    familyPicture: Yup.string().required(
       'Please submit a picture of your service'
     ),
   })
@@ -49,7 +49,7 @@ const ServiceForm = ({
         churchId: churchId,
         serviceDate: values.serviceDate,
         attendance: parseInt(values.attendance),
-        servicePicture: values.servicePicture,
+        familyPicture: values.familyPicture,
       },
     })
       .then((res) => {
@@ -102,11 +102,11 @@ const ServiceForm = ({
                       </small>
                       <FormikControl
                         control="imageUpload"
-                        name="servicePicture"
+                        name="familyPicture"
                         uploadPreset={process.env.REACT_APP_CLOUDINARY_SERVICES}
                         placeholder="Choose"
                         setFieldValue={formik.setFieldValue}
-                        aria-describedby="UploadServicePicture"
+                        aria-describedby="UploadfamilyPicture"
                       />
                     </Col>
                     <div className="d-flex justify-content-center mt-5">

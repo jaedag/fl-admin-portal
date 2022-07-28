@@ -3,7 +3,6 @@ import { useQuery } from '@apollo/client'
 import MembersGrid from '../../../components/members-grids/MembersGrid'
 import { GET_GATHERING_SERVICE_MEMBERS } from './GridQueries'
 import { ChurchContext } from '../../../contexts/ChurchContext'
-// import TabletDesktopView from 'components/responsive-design/TabletDesktopView'
 
 const GatheringServiceMembers = () => {
   const { gatheringServiceId } = useContext(ChurchContext)

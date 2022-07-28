@@ -13,7 +13,8 @@ const DetailsGatheringService = () => {
   })
 
   const gathering = data?.gatheringServices[0]
-  let breadcrumb = [gathering]
+  let breadcrumb = [gathering?.oversight, gathering]
+
   const details = [
     {
       title: 'Members',

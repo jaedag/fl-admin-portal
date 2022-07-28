@@ -9,8 +9,8 @@ export interface AttendanceQuickFactsProps {
     cardType: string
     leadersName: string
     churchName: string
-    churchAvgAttendanceThisMonth: any
-    avgHigherLevelAttendanceThisMonth: any
+    churchAvgAttendanceThisMonth: number | string
+    avgHigherLevelAttendanceThisMonth: number | string
     higherLevelName: string
   }[]
 }
@@ -19,8 +19,8 @@ const AttendanceQuickFactsCard = (props: AttendanceQuickFactsProps) => {
   const details = props?.attendanceDetails[0]
 
   const percentageRiseOrFall = getPercentageChange(
-    details?.churchAvgAttendanceThisMonth,
-    details?.avgHigherLevelAttendanceThisMonth
+    details?.churchAvgAttendanceThisMonth as number,
+    details?.avgHigherLevelAttendanceThisMonth as number
   )
 
   const getBadgeBackground = () => {

@@ -69,7 +69,6 @@ const FellowshipAvgWeekdayQuickFacts = () => {
             <QuickFactsSlider
               attendanceDetails={attendanceDetails}
               incomeDetails={incomeDetails}
-              bussingDetails={undefined}
             />
           </div>
         </PlaceholderCustom>

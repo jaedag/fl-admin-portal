@@ -145,6 +145,12 @@ const ServantsDashboard = () => {
     if (servant?.isAdminForGatheringService?.length) {
       setServantRoles(servant, 'Admin', 'GatheringService')
     }
+    if (servant?.leadsOversight?.length) {
+      setServantRoles(servant, 'Leader', 'Oversight')
+    }
+    if (servant?.isAdminForOversight?.length) {
+      setServantRoles(servant, 'Admin', 'Oversight')
+    }
     if (servant?.isArrivalsAdminForGatheringService?.length) {
       setServantRoles(servant, 'ArrivalsAdmin', 'GatheringService')
     }

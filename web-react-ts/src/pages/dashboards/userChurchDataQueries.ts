@@ -177,6 +177,33 @@ export const SERVANT_GATHERINGSERVICE_LEADER = gql`
   }
 `
 
+export const SERVANT_OVERSIGHT_LEADER = gql`
+  query oversightLeader($id: ID!) {
+    members(where: { id: $id }) {
+      id
+      leadsOversight {
+        id
+        name
+
+        services(limit: 4) {
+          created_at
+          attendance
+          income
+          week
+          serviceDate {
+            date
+          }
+        }
+
+        componentServiceAggregate {
+          week
+          attendance
+        }
+      }
+    }
+  }
+`
+
 export const SERVANT_CONSTITUENCY_ADMIN = gql`
   query constituencyAdmin($id: ID!) {
     members(where: { id: $id }) {
@@ -314,6 +341,39 @@ export const SERVANTS_GATHERINGSERVICE_ADMIN = gql`
     }
   }
 `
+
+export const SERVANTS_OVERSIGHT_ADMIN = gql`
+  query oversightAdmin($id: ID!) {
+    members(where: { id: $id }) {
+      id
+
+      isAdminForOversight {
+        id
+        name
+
+        services(limit: 4) {
+          created_at
+          attendance
+          income
+          week
+          serviceDate {
+            date
+          }
+        }
+        componentServiceAggregate {
+          week
+          attendance
+        }
+
+        componentBussingAggregate {
+          week
+          attendance
+        }
+      }
+    }
+  }
+`
+
 export const SERVANTS_CONSTITUENCY_ARRIVALS_ADMIN = gql`
   query constituencyArrivalsAdmin($id: ID!) {
     members(where: { id: $id }) {

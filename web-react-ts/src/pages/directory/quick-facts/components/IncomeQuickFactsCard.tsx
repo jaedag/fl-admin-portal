@@ -9,8 +9,8 @@ export interface IncomeQuickFactsProps {
     cardType: string
     leadersName: string
     churchName: string
-    churchAvgIncomeThisMonth: any
-    avgHigherLevelIncomeThisMonth: any
+    churchAvgIncomeThisMonth: number | string
+    avgHigherLevelIncomeThisMonth: number | string
     higherLevelName: string
   }[]
 }
@@ -19,8 +19,8 @@ const IncomeQuickFactsCard = (props: IncomeQuickFactsProps) => {
   const details = props?.incomeDetails[0]
 
   const percentageRiseOrFall = getPercentageChange(
-    details?.churchAvgIncomeThisMonth,
-    details?.avgHigherLevelIncomeThisMonth
+    details?.churchAvgIncomeThisMonth as number,
+    details?.avgHigherLevelIncomeThisMonth as number
   )
 
   const getBadgeBackground = () => {
