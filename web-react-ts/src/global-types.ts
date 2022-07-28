@@ -24,7 +24,7 @@ export type ChurchLevel =
   | 'Council'
   | 'Stream'
   | 'GatheringService'
-  | 'Denomination'
+  | 'Oversight'
   | 'Sonta'
   | 'Basonta'
 
@@ -127,12 +127,13 @@ export interface MemberWithChurches extends Member {
   leadsStream: Church[]
   leadsSonta: Church[]
   leadsGatheringService: Church[]
-  leadsDenomination: Church[]
+  leadsOversight: Church[]
   leadsMinistry: Church[]
   isAdminForConstituency: Church[]
   isAdminForCouncil: Church[]
   isAdminForStream: Church[]
   isAdminForGatheringService: Church[]
+  isAdminForOversight: Church[]
 }
 
 export interface Servant {
@@ -189,11 +190,12 @@ export type Role =
   | 'leaderStream'
   | 'leaderSonta'
   | 'leaderGatheringService'
-  | 'leaderDenomination'
+  | 'leaderOversight'
   | 'adminConstituency'
   | 'adminCouncil'
   | 'adminStream'
   | 'adminGatheringService'
+  | 'adminOversight'
   | 'arrivalsAdminGatheringService'
   | 'arrivalsAdminStream'
   | 'arrivalsAdminCouncil'

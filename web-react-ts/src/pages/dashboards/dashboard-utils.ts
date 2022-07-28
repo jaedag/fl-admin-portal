@@ -64,7 +64,7 @@ export const roles: {
     'isArrivalsConfirmerFor',
   ],
   GatheringService: ['leads', 'isAdminFor', 'isArrivalsAdminFor'],
-  Denomination: ['leads', 'isAdminFor'],
+  Oversight: ['leads', 'isAdminFor'],
   Sonta: ['leads'],
   Basonta: ['leads'],
 }
