@@ -13,6 +13,7 @@ import {
   makeMemberInactive,
   matchMemberQuery,
   updateMemberEmail,
+  createMember,
 } from '../cypher/resolver-cypher'
 import { getAuthToken } from '../authenticate'
 
@@ -36,7 +37,7 @@ const directoryMutation = {
       throwErrorMsg(errorMessage.no_duplicate_email_or_whatsapp)
     }
 
-    const createMemberResponse = await session.run(cypher.createMember, {
+    const createMemberResponse = await session.run(createMember, {
       firstName: args?.firstName ?? '',
       middleName: args?.middleName ?? '',
       lastName: args?.lastName ?? '',
@@ -49,6 +50,7 @@ const directoryMutation = {
       occupation: args?.occupation ?? '',
       fellowship: args?.fellowship ?? '',
       ministry: args?.ministry ?? '',
+      location: args?.location ?? '',
       pictureUrl: args?.pictureUrl ?? '',
       auth_id: context.auth.jwt.sub ?? '',
     })

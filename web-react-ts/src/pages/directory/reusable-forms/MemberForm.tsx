@@ -1,5 +1,5 @@
 import { useQuery } from '@apollo/client'
-import { Form, Formik } from 'formik'
+import { Form, Formik, FormikHelpers } from 'formik'
 import * as Yup from 'yup'
 import React, { useContext } from 'react'
 import {
@@ -8,18 +8,36 @@ import {
   makeSelectOptions,
   MARITAL_STATUS_OPTIONS,
   PHONE_NUM_REGEX,
-} from '../../../global-utils'
-import { GET_MINISTRIES } from '../../../queries/ListQueries'
-import ErrorScreen from '../../../components/base-component/ErrorScreen'
-import FormikControl from '../../../components/formik-components/FormikControl'
-import { HeadingPrimary } from '../../../components/HeadingPrimary/HeadingPrimary'
+} from 'global-utils'
+import { GET_MINISTRIES } from 'queries/ListQueries'
+import ErrorScreen from 'components/base-component/ErrorScreen'
+import FormikControl from 'components/formik-components/FormikControl'
+import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import { Col, Container, Row } from 'react-bootstrap'
 import LoadingScreen from 'components/base-component/LoadingScreen'
 import { permitAdmin } from 'permission-utils'
 import SubmitButton from 'components/formik-components/SubmitButton'
 import { MemberContext } from 'contexts/MemberContext'
+import { CreateMemberFormOptions } from '../create/CreateMember'
 
-const MemberForm = ({ initialValues, onSubmit, title, loading, update }) => {
+type MemberFormProps = {
+  initialValues: CreateMemberFormOptions
+  onSubmit: (
+    values: CreateMemberFormOptions,
+    onSubmitProps: FormikHelpers<CreateMemberFormOptions>
+  ) => void
+  title: string
+  loading: boolean
+  update?: boolean
+}
+
+const MemberForm = ({
+  initialValues,
+  onSubmit,
+  title,
+  loading,
+  update,
+}: MemberFormProps) => {
   const { data: ministriesData, loading: ministriesLoading } =
     useQuery(GET_MINISTRIES)
   const { currentUser } = useContext(MemberContext)
@@ -55,6 +73,7 @@ const MemberForm = ({ initialValues, onSubmit, title, loading, update }) => {
       PHONE_NUM_REGEX,
       `Phone Number must start with + and country code (eg. '+233')`
     ),
+    location: Yup.string().required('Location is a required field'),
     fellowship: Yup.object().required(
       'Please pick a fellowship from the dropdown'
     ),
@@ -63,10 +82,8 @@ const MemberForm = ({ initialValues, onSubmit, title, loading, update }) => {
   if (ministriesLoading || loading) {
     return <LoadingScreen />
   } else if (ministriesData) {
-    const ministryOptions = [
-      { key: 'None', value: 'None' },
-      ...makeSelectOptions(ministriesData.ministries),
-    ]
+    const ministryArray = makeSelectOptions(ministriesData.ministries) || []
+    const ministryOptions = [{ key: 'None', value: 'None' }, ...ministryArray]
 
     return (
       <Formik
@@ -194,7 +211,7 @@ const MemberForm = ({ initialValues, onSubmit, title, loading, update }) => {
                     )}
 
                     <Col sm={10}>
-                      <small htmlFor="dateofbirth" className="form-text ">
+                      <small className="form-text ">
                         Date of Birth*{' '}
                         <i className="text-secondary">(Day/Month/Year)</i>
                       </small>
@@ -214,6 +231,17 @@ const MemberForm = ({ initialValues, onSubmit, title, loading, update }) => {
                 <div className="col my-4">
                   <HeadingPrimary>Church Info</HeadingPrimary>
                   <div className="form-row row-cols-1 row-cols-md-2 justify-content-center">
+                    {!update && (
+                      <Col sm={10}>
+                        <FormikControl
+                          label="Home/Campus Location * (for IDL)"
+                          control="input"
+                          name="location"
+                          placeholder="Enter the location for IDL Visitaion"
+                          aria-describedby="location"
+                        />
+                      </Col>
+                    )}
                     <Col sm={10}>
                       <FormikControl
                         control="fellowshipSearch"

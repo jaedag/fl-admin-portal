@@ -84,7 +84,7 @@ const ServiceDetails = ({ service, church, loading }) => {
                     </div>
                   </>
                 )}
-                <h6>Service Picture</h6>
+                <h6>Family Picture</h6>
                 <div>
                   <PlaceholderCustom
                     loading={loading}
@@ -93,7 +93,7 @@ const ServiceDetails = ({ service, church, loading }) => {
                   >
                     <img
                       className="report-picture"
-                      src={service.servicePicture}
+                      src={service.familyPicture}
                       alt="service report"
                     />
                   </PlaceholderCustom>
