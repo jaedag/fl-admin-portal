@@ -12,15 +12,12 @@ const OversightMembers = () => {
   })
 
   return (
-    console.log(data),
-    (
-      <MembersGrid
-        title={data ? `${data?.oversights[0]?.name}` : null}
-        data={data && data.oversights[0].members}
-        loading={loading}
-        error={error}
-      />
-    )
+    <MembersGrid
+      title={data ? `${data?.oversights[0]?.name}` : null}
+      data={data && data.oversights[0].members}
+      loading={loading}
+      error={error}
+    />
   )
 }
 
