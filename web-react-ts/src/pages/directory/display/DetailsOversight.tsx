@@ -5,7 +5,7 @@ import { ChurchContext } from 'contexts/ChurchContext'
 import React, { useContext } from 'react'
 import { DISPLAY_OVERSIGHT } from './ReadQueries'
 
-const DetailsGatheringService = () => {
+const DetailsOversight = () => {
   const { oversightId } = useContext(ChurchContext)
 
   const { data, loading, error } = useQuery(DISPLAY_OVERSIGHT, {
@@ -14,6 +14,7 @@ const DetailsGatheringService = () => {
 
   const oversight = data?.oversights[0]
   let breadcrumb = [oversight]
+
   const details = [
     {
       title: 'Members',
@@ -26,7 +27,6 @@ const DetailsGatheringService = () => {
       number: oversight?.streamCount || 0,
       link: `#`,
     },
-    { title: 'Target', number: oversight?.target, link: '#' },
     { title: 'Pastors', number: oversight?.pastorCount || '0', link: '#' },
     {
       title: 'Gathering Services',
@@ -78,4 +78,4 @@ const DetailsGatheringService = () => {
   )
 }
 
-export default DetailsGatheringService
+export default DetailsOversight

@@ -257,6 +257,73 @@ export const GET_STREAM_MEMBERS = gql`
   }
 `
 
+export const GET_OVERSIGHT_MEMBERS = gql`
+  query getOversightMembers($id: ID!) {
+    oversights(where: { id: $id }) {
+      id
+      name
+
+      members {
+        id
+        firstName
+        lastName
+        pictureUrl
+        stream_name
+        fellowship {
+          id
+          name
+        }
+        ministry {
+          id
+          name
+        }
+        maritalStatus {
+          status
+        }
+        gender {
+          gender
+        }
+        title {
+          name
+        }
+        leadsFellowship {
+          id
+          name
+        }
+        leadsBacenta {
+          id
+          name
+        }
+        leadsMinistry {
+          id
+          name
+        }
+        leadsSonta {
+          id
+          name
+        }
+        leadsBasonta {
+          id
+          name
+        }
+        leadsConstituency {
+          id
+          name
+        }
+
+        isAdminForCouncil {
+          id
+          name
+        }
+        isAdminForConstituency {
+          id
+          name
+        }
+      }
+    }
+  }
+`
+
 export const GET_COUNCIL_MEMBERS = gql`
   query getCouncilMembers($id: ID!) {
     councils(where: { id: $id }) {

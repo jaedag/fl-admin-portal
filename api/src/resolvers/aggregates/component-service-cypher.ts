@@ -79,7 +79,7 @@ RETURN week AS week, SUM(componentRecords.attendance) AS attendance, SUM(compone
 export const componentOversightServiceAggregates = `
  MATCH (church:Oversight {id:$id})
   
-  MATCH (church)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_COMPONENT*1..5]->(componentServices:ServiceLog)
+  MATCH (church)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_COMPONENT*1..6]->(componentServices:ServiceLog)
   MATCH (componentServices)-[:HAS_SERVICE]->(componentRecords:ServiceRecord)
 
   MATCH (componentRecords)-[:SERVICE_HELD_ON]->(date:TimeGraph)

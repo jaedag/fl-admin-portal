@@ -324,7 +324,7 @@ type Oversight implements Church {
   members: [Member!]!
     @cypher(
       statement: """
-      MATCH (this)-[:HAS*5]->(:Fellowship)<-[:BELONGS_TO]-(members:Member)
+      MATCH (this)-[:HAS*6]->(:Fellowship)<-[:BELONGS_TO]-(members:Member)
       RETURN DISTINCT members ORDER BY toLower(members.lastName), toLower(members.firstName)
       """
     )

@@ -41,6 +41,7 @@ import UpdateCouncil from 'pages/directory/update/UpdateCouncil'
 import CreateStream from 'pages/directory/create/CreateStream'
 import UpdateStream from 'pages/directory/update/UpdateStream'
 import GatheringServiceMembers from 'pages/directory/grids/GatheringServiceMembers'
+import OversightMembers from 'pages/directory/grids/OversightMembers'
 import StreamMembers from 'pages/directory/grids/StreamMembers'
 import {
   permitAdmin,
@@ -107,6 +108,11 @@ export const quickFacts: RouteTypes[] = [
 ]
 
 export const memberGrids: RouteTypes[] = [
+  {
+    path: '/oversight/members',
+    element: OversightMembers,
+    roles: permitMe('GatheringService'),
+  },
   {
     path: '/gatheringservice/members',
     element: GatheringServiceMembers,

@@ -98,6 +98,10 @@ const DisplayChurchDetails = (props: DisplayChurchDetailsProps) => {
       needsAdmin = true
       roles = permitAdmin('GatheringService')
       break
+    case 'GatheringService':
+      needsAdmin = true
+      roles = permitAdmin('Oversight')
+      break
     default:
       needsAdmin = false
       break
