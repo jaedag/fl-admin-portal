@@ -59,7 +59,10 @@ const DisplayAllGatheringServices = () => {
           </Col>
           <RoleView roles={permitAdmin('GatheringService')}>
             <Col className="col-auto">
-              <Link to="/stream/addstream" className="btn btn-danger">
+              <Link
+                to="/gatheringservice/addgatheringservice"
+                className="btn btn-danger"
+              >
                 Add Gathering Service
               </Link>
             </Col>
