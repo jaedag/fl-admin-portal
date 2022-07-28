@@ -1,12 +1,24 @@
 import React from 'react'
-import IncomeQuickFactsCard from '../components/IncomeQuickFactsCard'
 import Slider from 'react-slick'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
-import BussingQuickFactsCard from '../components/BussingQuickFactsCard'
-import AttendanceQuickFactsCard from '../components/AttendanceQuickFactsCard'
+import BussingQuickFactsCard, {
+  BussingQuickFactsProps,
+} from './BussingQuickFactsCard'
+import AttendanceQuickFactsCard, {
+  AttendanceQuickFactsProps,
+} from './AttendanceQuickFactsCard'
+import IncomeQuickFactsCard, {
+  IncomeQuickFactsProps,
+} from './IncomeQuickFactsCard'
 
-const QuickFactsSlider = (props) => {
+type QuickFactsSliderProps = {
+  attendanceDetails: AttendanceQuickFactsProps['attendanceDetails']
+  bussingDetails?: BussingQuickFactsProps['bussingDetails']
+  incomeDetails: IncomeQuickFactsProps['incomeDetails']
+}
+
+const QuickFactsSlider = (props: QuickFactsSliderProps) => {
   const { attendanceDetails, incomeDetails, bussingDetails } = props
 
   const settings = {
@@ -26,7 +38,7 @@ const QuickFactsSlider = (props) => {
       <div>
         <IncomeQuickFactsCard incomeDetails={incomeDetails} />
       </div>
-      {attendanceDetails[0].churchType !== 'Fellowship' && (
+      {bussingDetails !== undefined && (
         <div>
           <BussingQuickFactsCard bussingDetails={bussingDetails} />
         </div>
