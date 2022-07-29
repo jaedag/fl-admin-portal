@@ -1,3 +1,43 @@
+### 4.8.0 (2022-07-29)
+
+##### Chores
+
+*  fix merge conflicts merging deploy into arrivals ([5b297b79](https://github.com/firstlovecenter/fl-pastoral-care/commit/5b297b7984fd3f650f8e81804bd20307ca3ce6b5))
+
+##### New Features
+
+*  change map style to satellite images ([1b93e7d5](https://github.com/firstlovecenter/fl-pastoral-care/commit/1b93e7d517b255f458e996501b0eec9263875a4b))
+*  register members as IDL members ([e2641b3d](https://github.com/firstlovecenter/fl-pastoral-care/commit/e2641b3d61f34d35cb0705b0cc78e60db2905dd4))
+* **arrivals:**
+  *  admin-205 implements a notice to show when arrivals is over for all levels ([a164761e](https://github.com/firstlovecenter/fl-pastoral-care/commit/a164761e8fa20b6935331fb604d65ed05876089a))
+  *  admin-205 implemments a message for leaders who have filled on the way form ([e9121a70](https://github.com/firstlovecenter/fl-pastoral-care/commit/e9121a706b4dea02641a7ed76813e55a896842c1))
+  *  admin-205 adjusts bussing top up to account for leaders contribution ([40baaad3](https://github.com/firstlovecenter/fl-pastoral-care/commit/40baaad39a30f062f75daccf3d5beb65a8875cea))
+  *  admin-205 implements a curse on submitting bussing data deceitfully ([fc0ebdba](https://github.com/firstlovecenter/fl-pastoral-care/commit/fc0ebdba2296faed44720c9d7201ca95898bfa72))
+  *  admin-205 added form option to submit personal contribution ([696ded44](https://github.com/firstlovecenter/fl-pastoral-care/commit/696ded44dcb7ecb02a7ef150d9efadd2ed0a4b95))
+  *  admin-205 implements edits to the SMS that is sent on bussing ([e057f5a4](https://github.com/firstlovecenter/fl-pastoral-care/commit/e057f5a4b8dc22c4dd4d2405616e378d7996cfc6))
+  *  admin-210 implements zones in the database ([bc282fd7](https://github.com/firstlovecenter/fl-pastoral-care/commit/bc282fd7dd640722f3c95f1b3fa32ff98719325f))
+  *  introduces the concept of zones to the bacentas ([cfe6cce1](https://github.com/firstlovecenter/fl-pastoral-care/commit/cfe6cce1384bfc0abad0af3a66e634b04065f786))
+  *  admin-209 edits bussing form to accept number of sprinters and urvans ([f7d174be](https://github.com/firstlovecenter/fl-pastoral-care/commit/f7d174bec674027a12baab1ce107c25c308d4dae))
+
+##### Bug Fixes
+
+*  format of email messages on servant status change ([c391bc66](https://github.com/firstlovecenter/fl-pastoral-care/commit/c391bc66a8db960d2b26c026df1c1d48ff38eba4))
+*  update the description in the index.html tag ([a9543b53](https://github.com/firstlovecenter/fl-pastoral-care/commit/a9543b539d5b9b1284f3479f06ea3428ba03d855))
+*  change the phrase 'service picture' to 'family picture' ([66c9b0bd](https://github.com/firstlovecenter/fl-pastoral-care/commit/66c9b0bd5f6f99327b488e9ae965183061475ae6))
+*  delete hidden netlify directory ([83ac2ecc](https://github.com/firstlovecenter/fl-pastoral-care/commit/83ac2ecc6f23f563d5aa5c0566b36aabb526c864))
+*  change IDL  node lable to idl ([65b22df8](https://github.com/firstlovecenter/fl-pastoral-care/commit/65b22df8234c14d82741adcf738c404f2ae7e61a))
+*  fixes error resolving file path in  arrivals  time ([1ed403b0](https://github.com/firstlovecenter/fl-pastoral-care/commit/1ed403b06e9d41bdad00711bfca1265ee45ad881))
+* **anagkazo-banking:**  show loading icon when adding treasurer ([95ba4445](https://github.com/firstlovecenter/fl-pastoral-care/commit/95ba444579dae949e9b03a5f63979a6e017bf917))
+
+##### Refactors
+
+*  remove hardcoded oversightId value ([94023eea](https://github.com/firstlovecenter/fl-pastoral-care/commit/94023eea11645ec2307497566d3438755b25ad7b))
+*  converted service details to tsx ([5b9ffb8f](https://github.com/firstlovecenter/fl-pastoral-care/commit/5b9ffb8f2df69cac9b7316366993a4d71ab4cbf1))
+*  converted service form component to tsx ([00d98ecd](https://github.com/firstlovecenter/fl-pastoral-care/commit/00d98ecd9212d655ef5a79232f587ffba43aff77))
+*  converts quickfacts components to typescript ([#217](https://github.com/firstlovecenter/fl-pastoral-care/pull/217)) ([cd9eb1f8](https://github.com/firstlovecenter/fl-pastoral-care/commit/cd9eb1f8ea4c5d4a44c6f0656e5655725aa0a690))
+*  converted maps components to typescript ([cb4f6b29](https://github.com/firstlovecenter/fl-pastoral-care/commit/cb4f6b293b71d93baec977f1a7a0db516a0143d1))
+*  reorganises code in the arrivals folder ([260cc89a](https://github.com/firstlovecenter/fl-pastoral-care/commit/260cc89acb4bac91ba06e1beadfcbffe8572833d))
+
 ### 4.7.0 (2022-07-22)
 
 ##### New Features
