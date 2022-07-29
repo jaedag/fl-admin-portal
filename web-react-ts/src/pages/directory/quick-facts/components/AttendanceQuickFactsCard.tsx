@@ -3,12 +3,24 @@ import { Badge } from 'react-bootstrap'
 import '../QuickFacts.css'
 import { getPercentageChange } from './quick-fact-utils'
 
-const AttendanceQuickFactsCard = (props) => {
+export interface AttendanceQuickFactsProps {
+  attendanceDetails: {
+    churchType: string
+    cardType: string
+    leadersName: string
+    churchName: string
+    churchAvgAttendanceThisMonth: number | string
+    avgHigherLevelAttendanceThisMonth: number | string
+    higherLevelName: string
+  }[]
+}
+
+const AttendanceQuickFactsCard = (props: AttendanceQuickFactsProps) => {
   const details = props?.attendanceDetails[0]
 
   const percentageRiseOrFall = getPercentageChange(
-    details?.churchAvgAttendanceThisMonth,
-    details?.avgHigherLevelAttendanceThisMonth
+    details?.churchAvgAttendanceThisMonth as number,
+    details?.avgHigherLevelAttendanceThisMonth as number
   )
 
   const getBadgeBackground = () => {

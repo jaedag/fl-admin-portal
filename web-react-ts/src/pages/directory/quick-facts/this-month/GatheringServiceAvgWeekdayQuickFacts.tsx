@@ -48,7 +48,7 @@ const GatheringServiceAvgWeekdayQuickFacts = () => {
       leadersName: `${gatheringServiceAttendance?.leader?.firstName} ${gatheringServiceAttendance?.leader?.lastName}`,
       churchName: `${gatheringServiceAttendance?.name}`,
       churchAvgAttendanceThisMonth: `${gatheringServiceAttendance?.avgWeekdayAttendanceThisMonth}`,
-      avgHigherLevelAttendanceThisMonth: `${gatheringServiceAttendance?.denomination?.avgGatheringServiceWeekdayAttendanceThisMonth}`,
+      avgHigherLevelAttendanceThisMonth: `${gatheringServiceAttendance?.oversight?.avgGatheringServiceWeekdayAttendanceThisMonth}`,
       higherLevelName: `${gatheringServiceAttendance?.name} ${gatheringServiceAttendance?.__typename}`,
     },
   ]
@@ -60,7 +60,7 @@ const GatheringServiceAvgWeekdayQuickFacts = () => {
       leadersName: `${gatheringServiceIncome?.leader?.firstName} ${gatheringServiceIncome?.leader?.lastName}`,
       churchName: `${gatheringServiceIncome?.name}`,
       churchAvgIncomeThisMonth: `${gatheringServiceIncome?.avgWeekdayIncomeThisMonth}`,
-      avgHigherLevelIncomeThisMonth: `${gatheringServiceIncome?.denomination?.avgGatheringServiceWeekdayIncomeThisMonth}`,
+      avgHigherLevelIncomeThisMonth: `${gatheringServiceIncome?.oversight?.avgGatheringServiceWeekdayIncomeThisMonth}`,
       higherLevelName: `${gatheringServiceIncome?.name} ${gatheringServiceIncome?.__typename}`,
     },
   ]
@@ -72,8 +72,8 @@ const GatheringServiceAvgWeekdayQuickFacts = () => {
       leadersName: `${gatheringServiceBussing?.leader?.firstName} ${gatheringServiceBussing?.leader?.lastName}`,
       churchName: `${gatheringServiceBussing?.name}`,
       churchBussingThisMonth: `${gatheringServiceBussing?.avgBussingAttendanceThisMonth}`,
-      avgHigherLevelBussingThisMonth: `${gatheringServiceBussing?.denomination?.avgGatheringServiceBussingAttendanceThisMonth}`,
-      higherLevelName: `${gatheringServiceBussing?.denomination?.name} ${gatheringServiceBussing?.denomination?.__typename}`,
+      avgHigherLevelBussingThisMonth: `${gatheringServiceBussing?.oversight?.avgGatheringServiceBussingAttendanceThisMonth}`,
+      higherLevelName: `${gatheringServiceBussing?.oversight?.name} ${gatheringServiceBussing?.oversight?.__typename}`,
     },
   ]
 

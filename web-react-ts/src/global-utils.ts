@@ -218,6 +218,7 @@ interface MemberWithChurchCount extends Member {
   leadsAdminsCouncilCount: number
   leadsAdminsConstituencyCount: number
   leadsAdminsGatheringServiceCount: number
+  leadsAdminsOversightCount: number
 }
 export const getMemberCount = (servant: MemberWithChurchCount) => {
   if (!servant?.memberCount) {
@@ -230,6 +231,18 @@ export const getMemberCount = (servant: MemberWithChurchCount) => {
 
 export const getChurchCount = (servant: MemberWithChurchCount) => {
   let churchesCount = ''
+
+  if (servant?.leadsAdminsOversightCount) {
+    if (churchesCount) {
+      churchesCount += ','
+    }
+
+    if (servant.leadsAdminsOversightCount === 1) {
+      churchesCount = `${servant.leadsAdminsOversightCount} Oversight`
+    } else {
+      churchesCount = `${servant.leadsAdminsOversightCount} Oversight`
+    }
+  }
 
   if (servant?.leadsAdminsGatheringServiceCount) {
     if (churchesCount) {
@@ -316,6 +329,8 @@ export const getSubChurchLevel = (churchType: ChurchLevel) => {
       return 'Council'
     case 'GatheringService':
       return 'Stream'
+    case 'Oversight':
+      return 'GatheringService'
     default:
       return 'Fellowship'
   }

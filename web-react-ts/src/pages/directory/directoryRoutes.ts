@@ -31,14 +31,17 @@ import UpdateBacenta from 'pages/directory/update/UpdateBacenta'
 import UpdateSonta from 'pages/directory/update/UpdateSonta'
 import UpdateConstituency from 'pages/directory/update/UpdateConstituency'
 import DetailsGatheringService from 'pages/directory/display/DetailsGatheringService'
+import DetailsOversight from 'pages/directory/display/DetailsOversight'
 import DisplayAllCouncils from 'pages/directory/display/AllCouncils'
 import DisplayAllStreams from 'pages/directory/display/AllStreams'
+import DisplayAllGatheringServices from 'pages/directory/display/AllGatheringServices'
 import CreateCouncil from 'pages/directory/create/CreateCouncil'
 import AllGatheringServiceConstituencies from 'pages/directory/display/AllGatheringServiceConstituencies'
 import UpdateCouncil from 'pages/directory/update/UpdateCouncil'
 import CreateStream from 'pages/directory/create/CreateStream'
 import UpdateStream from 'pages/directory/update/UpdateStream'
 import GatheringServiceMembers from 'pages/directory/grids/GatheringServiceMembers'
+import OversightMembers from 'pages/directory/grids/OversightMembers'
 import StreamMembers from 'pages/directory/grids/StreamMembers'
 import {
   permitAdmin,
@@ -105,6 +108,11 @@ export const quickFacts: RouteTypes[] = [
 ]
 
 export const memberGrids: RouteTypes[] = [
+  {
+    path: '/oversight/members',
+    element: OversightMembers,
+    roles: permitMe('GatheringService'),
+  },
   {
     path: '/gatheringservice/members',
     element: GatheringServiceMembers,
@@ -234,6 +242,12 @@ export const directory: RouteTypes[] = [
     placeholder: false,
   },
   {
+    path: '/oversight/displaydetails',
+    element: DetailsOversight,
+    roles: permitMe('Oversight'),
+    placeholder: false,
+  },
+  {
     path: '/gatheringservice/constituencies',
     element: AllGatheringServiceConstituencies,
     roles: permitMe('GatheringService'),
@@ -297,7 +311,12 @@ export const directory: RouteTypes[] = [
     roles: permitLeaderAdmin('GatheringService'),
     placeholder: false,
   },
-
+  {
+    path: '/gatheringservice/displayall',
+    element: DisplayAllGatheringServices,
+    roles: permitLeaderAdmin('Oversight'),
+    placeholder: false,
+  },
   //Creation Pages
   {
     path: '/fellowship/addfellowship',

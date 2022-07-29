@@ -4,18 +4,25 @@ import PlaceholderCustom from 'components/Placeholder'
 import SpinnerPage from 'components/SpinnerPage'
 import TableFromArrays from 'components/TableFromArrays/TableFromArrays'
 import { MemberContext } from 'contexts/MemberContext'
+import { Church, ServiceRecord } from 'global-types'
 import { parseNeoTime } from 'jd-date-utils'
 import React, { useContext, useEffect } from 'react'
 import { Col, Container, Row, Button } from 'react-bootstrap'
 import { useNavigate } from 'react-router'
 import './ServiceDetails.css'
 
-const ServiceDetails = ({ service, church, loading }) => {
+type ServiceDetailsProps = {
+  service: ServiceRecord
+  church: Church
+  loading: boolean
+}
+
+const ServiceDetails = ({ service, church, loading }: ServiceDetailsProps) => {
   const { theme, currentUser } = useContext(MemberContext)
   const navigate = useNavigate()
 
   useEffect(() => {
-    if (!service) {
+    if (!service && !loading) {
       navigate(-1)
     }
   }, [service, navigate])
@@ -24,24 +31,30 @@ const ServiceDetails = ({ service, church, loading }) => {
     return <SpinnerPage />
   }
 
-  var table = []
+  let table: string[][] = []
 
   if (!currentUser.noIncome) {
     table = [
-      ['Date of Service', new Date(service.serviceDate.date).toDateString()],
-      ['Form Filled At', parseNeoTime(service.created_at)],
-      ['Attendance', service.attendance],
-      ['Income', service.income],
+      [
+        'Date of Service',
+        new Date(service.serviceDate.date).toDateString() ?? '',
+      ],
+      ['Form Filled At', parseNeoTime(service.created_at) ?? ''],
+      ['Attendance', service.attendance.toString()],
+      ['Income', service.income.toString()],
       ...service.treasurers.map((treasurer, i) => [
         `Treasurer ${i + 1}`,
-        treasurer.fullName,
+        treasurer.fullName ?? '',
       ]),
     ]
   } else {
     table = [
-      ['Date of Service', new Date(service.serviceDate.date).toDateString()],
-      ['Form Filled At', parseNeoTime(service.created_at)],
-      ['Attendance', service.attendance],
+      [
+        'Date of Service',
+        new Date(service.serviceDate.date).toDateString() ?? '',
+      ],
+      ['Form Filled At', parseNeoTime(service.created_at) ?? ''],
+      ['Attendance', service.attendance.toString()],
     ]
   }
 

@@ -8,8 +8,8 @@ import {
   FELLOWSHIP_AVG_WEEKDAY_INCOME_THIS_MONTH,
 } from '../QuickFactsQueries'
 import QuickFactsHeader from '../components/QuickFactsHeader'
-import QuickFactsSlider from '../components/QuickFactsSlider'
 import PlaceholderCustom from 'components/Placeholder'
+import QuickFactsSlider from '../components/QuickFactsSlider'
 
 const FellowshipAvgWeekdayQuickFacts = () => {
   const { fellowshipId } = useContext(ChurchContext)

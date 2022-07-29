@@ -4,7 +4,7 @@ import { ChurchContext } from '../../../contexts/ChurchContext'
 import { useMutation, useQuery } from '@apollo/client'
 import { RECORD_SERVICE_NO_INCOME } from './RecordServiceMutations'
 import { DISPLAY_SONTA } from '../../directory/display/ReadQueries'
-import ServiceFormNoOffering from './ServiceFormNoOffering'
+import ServiceFormNoOffering from './ServiceFormNoIncome'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 
 const SontaService = () => {

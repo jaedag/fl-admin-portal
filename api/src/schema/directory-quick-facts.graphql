@@ -1566,7 +1566,7 @@ extend type GatheringService {
     )
 }
 
-extend type Denomination {
+extend type Oversight {
   avgGatheringServiceWeekdayAttendanceThisMonth: Float
     @cypher(
       statement: """

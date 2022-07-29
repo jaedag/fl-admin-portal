@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { ChurchContext } from '../../../contexts/ChurchContext'
+import { ChurchContext } from 'contexts/ChurchContext'
 
 import { useQuery } from '@apollo/client'
 import { DISPLAY_CONSTITUENCY_SERVICE } from './RecordServiceMutations'

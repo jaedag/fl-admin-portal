@@ -80,7 +80,6 @@ type FormOptions = {
 
 const DisplayChurchDetails = (props: DisplayChurchDetailsProps) => {
   const { setUser } = useSetUserChurch()
-
   const navigate = useNavigate()
   let needsAdmin
 
@@ -98,6 +97,10 @@ const DisplayChurchDetails = (props: DisplayChurchDetailsProps) => {
     case 'Stream':
       needsAdmin = true
       roles = permitAdmin('GatheringService')
+      break
+    case 'GatheringService':
+      needsAdmin = true
+      roles = permitAdmin('Oversight')
       break
     default:
       needsAdmin = false

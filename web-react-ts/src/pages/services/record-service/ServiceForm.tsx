@@ -1,7 +1,7 @@
 import MinusSign from 'components/buttons/PlusMinusSign/MinusSign'
 import PlusSign from 'components/buttons/PlusMinusSign/PlusSign'
 import FormikControl from 'components/formik-components/FormikControl'
-import { FieldArray, Form, Formik } from 'formik'
+import { FieldArray, Form, Formik, FormikHelpers } from 'formik'
 import * as Yup from 'yup'
 import React, { useContext } from 'react'
 import { useNavigate } from 'react-router'
@@ -11,17 +11,37 @@ import SubmitButton from 'components/formik-components/SubmitButton'
 import { throwErrorMsg } from 'global-utils'
 import { getMondayThisWeek } from 'jd-date-utils'
 import { ChurchContext } from 'contexts/ChurchContext'
+import { Church, ChurchLevel } from 'global-types'
+import { MutationFunction } from '@apollo/client'
+
+type ServiceFormProps = {
+  church: Church
+  churchId: string
+  churchType: ChurchLevel
+  RecordServiceMutation: MutationFunction
+}
+
+type FormOptions = {
+  serviceDate: string
+  cediIncome: string
+  foreignCurrency: string
+  numberOfTithers: string
+  attendance: string
+  treasurers: string[]
+  treasurerSelfie: string
+  familyPicture: string
+}
 
 const ServiceForm = ({
   church,
   churchId,
   churchType,
   RecordServiceMutation,
-}) => {
+}: ServiceFormProps) => {
   const { clickCard } = useContext(ChurchContext)
   const navigate = useNavigate()
 
-  const initialValues = {
+  const initialValues: FormOptions = {
     serviceDate: new Date().toISOString().slice(0, 10),
     cediIncome: '',
     foreignCurrency: '',
@@ -64,8 +84,21 @@ const ServiceForm = ({
       .of(Yup.string().required('Please pick a name from the dropdown')),
   })
 
-  const onSubmit = (values, onSubmitProps) => {
-    if (values.treasurers[0] === values.treasurers[1]) {
+  const checkIfArrayHasRepeatingValues = (array: any[]) => {
+    const sortedArray = array.sort()
+    for (let i = 0; i < sortedArray.length - 1; i++) {
+      if (sortedArray[i + 1] === sortedArray[i]) {
+        return true
+      }
+    }
+    return false
+  }
+
+  const onSubmit = (
+    values: FormOptions,
+    onSubmitProps: FormikHelpers<FormOptions>
+  ) => {
+    if (checkIfArrayHasRepeatingValues(values.treasurers)) {
       throwErrorMsg('You cannot choose the same treasurer twice!')
       onSubmitProps.setSubmitting(false)
       return
@@ -88,7 +121,7 @@ const ServiceForm = ({
           onSubmitProps.setSubmitting(false)
           onSubmitProps.resetForm()
           clickCard(res.data.RecordService)
-          navigate(`/${churchType}/service-details`)
+          navigate(`/${churchType.toLowerCase()}/service-details`)
         })
         .catch((error) => {
           onSubmitProps.setSubmitting(false)
@@ -115,7 +148,7 @@ const ServiceForm = ({
               <Col className="mb-2">
                 <div className="form-row d-flex justify-content-center">
                   <Col>
-                    <small htmlFor="dateofservice" className="form-text label">
+                    <small className="form-text label">
                       Date of Service*
                       <i className="text-secondary">(Day/Month/Year)</i>
                     </small>
@@ -151,7 +184,7 @@ const ServiceForm = ({
                       {(fieldArrayProps) => {
                         const { push, remove, form } = fieldArrayProps
                         const { values } = form
-                        const { treasurers } = values
+                        const { treasurers }: { treasurers: string[] } = values
 
                         return (
                           <>
@@ -174,7 +207,7 @@ const ServiceForm = ({
                                 </Col>
 
                                 <Col className="col-auto d-flex">
-                                  <PlusSign onClick={() => push()} />
+                                  <PlusSign onClick={() => push('')} />
                                   {index > 0 && (
                                     <MinusSign onClick={() => remove(index)} />
                                   )}
