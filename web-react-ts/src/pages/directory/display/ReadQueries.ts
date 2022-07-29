@@ -572,11 +572,8 @@ export const DISPLAY_GATHERINGSERVICE = gql`
 `
 
 export const DISPLAY_OVERSIGHT = gql`
-  query {
-    oversights(
-      where: { id: "ffe5d324-7d3d-4639-9d67-b059bc7a9a2e" }
-      options: { limit: 1 }
-    ) {
+  query displayOversight($id: ID!) {
+    oversights(where: { id: $id }, options: { limit: 1 }) {
       id
       name
       gatheringServiceCount
