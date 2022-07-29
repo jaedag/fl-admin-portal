@@ -29,14 +29,14 @@ const ConstituencyService = () => {
           RecordServiceMutation={RecordServiceNoIncome}
           church={data?.constituencies[0]}
           churchId={constituencyId}
-          churchType="constituency"
+          churchType="Constituency"
         />
       ) : (
         <ServiceForm
           RecordServiceMutation={RecordService}
           church={data?.constituencies[0]}
           churchId={constituencyId}
-          churchType="constituency"
+          churchType="Constituency"
         />
       )}
     </ApolloWrapper>

@@ -15,7 +15,7 @@ const ServiceDetails = ({ service, church, loading }) => {
   const navigate = useNavigate()
 
   useEffect(() => {
-    if (!service) {
+    if (!service && !loading) {
       navigate(-1)
     }
   }, [service, navigate])

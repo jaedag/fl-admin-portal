@@ -1,8 +1,12 @@
 import { makeServantCypher } from '../directory/utils'
 import { permitLeaderAdmin } from '../permissions'
 import { Context } from '../utils/neo4j-types'
-import { Member } from '../utils/types'
-import { isAuth, rearrangeCypherObject, throwErrorMsg } from '../utils/utils'
+import {
+  checkIfArrayHasRepeatingValues,
+  isAuth,
+  rearrangeCypherObject,
+  throwErrorMsg,
+} from '../utils/utils'
 import {
   checkCurrentServiceLog,
   checkFormFilledThisWeek,
@@ -12,14 +16,34 @@ import {
 
 const errorMessage = require('../texts.json').error
 
+type RecordServiceArgs = {
+  churchId: string
+  serviceDate: string
+  attendance: number
+  income: number
+  foreignCurrency: string
+  numberOfTithers: number
+  treasurers: string[]
+  treasurerSelfie: string
+  familyPicture: string
+}
+
 const serviceMutation = {
-  RecordService: async (object: any, args: Member, context: Context) => {
+  RecordService: async (
+    object: any,
+    args: RecordServiceArgs,
+    context: Context
+  ) => {
     isAuth(permitLeaderAdmin('Fellowship'), context.auth.roles)
     const session = context.executionContext.session()
 
     const relationshipCheck = rearrangeCypherObject(
       await session.run(checkCurrentServiceLog, args)
     )
+
+    if (checkIfArrayHasRepeatingValues(args.treasurers)) {
+      throwErrorMsg(errorMessage.repeatingTreasurers)
+    }
 
     if (!relationshipCheck.exists) {
       // Checks if the church has a current history record otherwise creates it

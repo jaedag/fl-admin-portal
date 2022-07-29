@@ -24,17 +24,8 @@ export const RECORD_SERVICE = gql`
       familyPicture: $familyPicture
     ) {
       id
-      serviceLog {
-        id
-        fellowship {
-          id
-          services(limit: 5) {
-            id
-            week
-            bankingProof
-          }
-        }
-      }
+      attendance
+      income
     }
   }
 `

@@ -228,7 +228,7 @@ export const GATHERINGSERVICE_GRAPHS = gql`
 `
 export const OVERSIGHT_GRAPHS = gql`
   query oversightGraphs($oversightId: ID!) {
-    oversight(where: { id: $oversightId }) {
+    oversights(where: { id: $oversightId }) {
       id
       name
       leader {

@@ -22,7 +22,7 @@ export const formatting = (
   churchType: ChurchLevel,
   servantType: ServantType
 ) => {
-  let churchLower = churchType.toLowerCase()
+  let churchLower = churchType?.toLowerCase()
   let servantLower: ServantTypeLowerCase = 'leader'
   let memberQuery = matchMemberQuery
 
