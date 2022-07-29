@@ -220,15 +220,24 @@ export type VerbTypes =
 export type ServiceRecord = {
   __typename: 'ServiceRecord' | 'RehearsalRecord'
   id: string
+  created_at: string
+  created_by: Member
   attendance: number
   income: number
   week: number
+  familyPicture: string
+  treasurers: Member[]
   stream_name: StreamOptions
   noServiceReason: string
-  bankingProof: boolean
-  bankingSlip: string
-  transactionStatus: 'pending' | 'success' | 'failed'
   serviceDate: {
     date: string
   }
+
+  // Offering
+  treasurerSelfie: string
+  bankingProof: boolean
+  bankingSlip: string
+  transactionStatus: 'pending' | 'success' | 'failed'
+  bankingSlipUploader: Member
+  offeringBankedBy: Member
 }
