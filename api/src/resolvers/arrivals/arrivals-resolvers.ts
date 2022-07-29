@@ -1,27 +1,19 @@
 import axios from 'axios'
-import { createRole } from '../utils/auth0'
 import {
   getMobileCode,
   getStreamFinancials,
   padNumbers,
 } from '../utils/financial-utils'
 import { Context } from '../utils/neo4j-types'
-import {
-  isAuth,
-  noEmptyArgsValidation,
-  rearrangeCypherObject,
-  throwErrorMsg,
-} from '../utils/utils'
+import { isAuth, rearrangeCypherObject, throwErrorMsg } from '../utils/utils'
 import {
   permitAdmin,
   permitAdminArrivals,
   permitArrivals,
-  permitArrivalsConfirmer,
   permitArrivalsHelpers,
 } from '../permissions'
 import { MakeServant, RemoveServant } from '../directory/make-remove-servants'
 import { PaySwitchRequestBody } from '../banking/banking-types'
-import { getAuthToken } from '../authenticate'
 import {
   checkArrivalTimes,
   checkBacentaMomoDetails,
@@ -29,7 +21,6 @@ import {
   getBussingRecordWithDate,
   noBussingTopUp,
   recordArrivalTime,
-  RemoveAllStreamArrivalsHelpers,
   removeBussingRecordTransactionId,
   setAdjustedDiscountTopUp,
   setBussingRecordTransactionId,
@@ -52,9 +43,7 @@ dotenv.config()
 
 const checkIfSelf = (servantId: string, auth: string) => {
   if (servantId === auth.replace('auth0|', '')) {
-    throwErrorMsg(
-      'Sorry! You cannot make yourself an arrivals counter or confirmer'
-    )
+    throwErrorMsg('Sorry! You cannot make yourself an arrivals counter')
   }
 }
 
@@ -173,82 +162,6 @@ export const arrivalsMutation = {
       'ArrivalsCounter'
     ),
 
-  MakeStreamArrivalsConfirmer: async (
-    object: any,
-    args: { arrivalsConfirmerId: string; streamId: string },
-    context: Context
-  ) => {
-    checkIfSelf(args.arrivalsConfirmerId, context.auth.jwt.sub)
-
-    return MakeServant(
-      context,
-      args,
-      [...permitAdmin('Stream'), ...permitArrivals('Stream')],
-      'Stream',
-      'ArrivalsConfirmer'
-    )
-  },
-  RemoveStreamArrivalsConfirmer: async (
-    object: any,
-    args: { arrivalsConfirmerId: string; streamId: string },
-    context: Context
-  ) =>
-    RemoveServant(
-      context,
-      args,
-      [...permitAdmin('Stream'), ...permitArrivals('Stream')],
-      'Stream',
-      'ArrivalsConfirmer'
-    ),
-  RemoveAllStreamArrivalsHelpers: async (
-    object: any,
-    args: any,
-    context: Context
-  ) => {
-    const authToken = await getAuthToken()
-    isAuth(permitAdminArrivals('Stream'), context.auth.roles)
-    noEmptyArgsValidation(['streamId'])
-
-    const session = context.executionContext.session()
-
-    try {
-      // await axios(deleteRole('arrivalsConfirmerStream', authToken))
-      // await axios(deleteRole('arrivalsCounterStream', authToken))
-
-      // eslint-disable-next-line no-console
-      console.log('Arrivals Helper Roles Deleted Successfully')
-    } catch (error: any) {
-      throwErrorMsg('There was an error deleting arrivals helper roles', error)
-    }
-
-    try {
-      await axios(
-        createRole(
-          'arrivalsConfirmerStream',
-          'A person who confirms the arrival of bacentas',
-          authToken
-        )
-      )
-      await axios(
-        createRole(
-          'arrivalsCounterStream',
-          'A person who confirms the attendance of bacentas',
-          authToken
-        )
-      )
-      console.log('Arrivals Helper Roles Created Successfully')
-    } catch (error) {
-      throwErrorMsg('There was an error creating arrivals helper roles')
-    }
-
-    const stream = rearrangeCypherObject(
-      await session.run(RemoveAllStreamArrivalsHelpers, {
-        streamId: args?.streamId,
-      })
-    )
-
-    return stream?.record.properties
-  },
   UploadMobilisationPicture: async (
     object: any,
     args: {

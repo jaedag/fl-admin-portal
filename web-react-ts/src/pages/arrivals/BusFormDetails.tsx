@@ -298,7 +298,7 @@ const BusFormDetails = () => {
                 )}
                 <Button
                   variant="danger"
-                  onClick={() => navigate('/arrivals/confirm-bacenta-arrival')}
+                  onClick={() => navigate('/arrivals/bacentas-to-count')}
                 >
                   Continue Confirming Arrivals
                 </Button>

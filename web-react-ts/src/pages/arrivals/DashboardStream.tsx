@@ -16,13 +16,11 @@ import RoleView from 'auth/RoleView'
 import {
   permitAdmin,
   permitArrivals,
-  permitArrivalsConfirmer,
   permitArrivalsCounter,
 } from 'permission-utils'
 import MenuButton from 'components/buttons/MenuButton'
 import DefaulterInfoCard from 'pages/services/defaulters/DefaulterInfoCard'
 import { MemberContext } from 'contexts/MemberContext'
-import { CheckAll } from 'react-bootstrap-icons'
 import usePopup from 'hooks/usePopup'
 import HeadingSecondary from 'components/HeadingSecondary'
 import { AdminFormOptions } from './DashboardConstituency'
@@ -81,8 +79,8 @@ const StreamDashboard = () => {
   const ArrivalsMenu = [
     { title: 'Change Arrivals Admin', onClick: togglePopup },
     {
-      title: 'Arrivals Helpers',
-      onClick: () => navigate('/stream/arrivals-helpers'),
+      title: 'Arrivals Counters',
+      onClick: () => navigate('/stream/arrivals-counters'),
     },
     {
       title: 'Arrival Times',
@@ -174,16 +172,6 @@ const StreamDashboard = () => {
               onClick={() => navigate('/arrivals/bacentas-to-count')}
               number={stream?.bacentasNotCountedCount.toString()}
               color="yellow"
-              iconBg
-              noCaption
-            />
-          </RoleView>
-          <RoleView roles={permitArrivalsConfirmer()}>
-            <MenuButton
-              title="Confirm Bacenta Arrival"
-              color="yellow"
-              onClick={() => navigate('/arrivals/confirm-bacenta-arrival')}
-              iconComponent={CheckAll}
               iconBg
               noCaption
             />

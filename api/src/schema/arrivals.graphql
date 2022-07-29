@@ -979,9 +979,6 @@ extend type Mutation {
 
   MakeStreamArrivalsCounter(arrivalsCounterId: ID!, streamId: ID!): Member!
   RemoveStreamArrivalsCounter(arrivalsCounterId: ID!, streamId: ID!): Member
-  MakeStreamArrivalsConfirmer(arrivalsConfirmerId: ID!, streamId: ID!): Member!
-  RemoveStreamArrivalsConfirmer(arrivalsConfirmerId: ID!, streamId: ID!): Member
-  RemoveAllStreamArrivalsHelpers(streamId: ID!): Stream!
 
   ## GENERATE CODE OF THE DAY
   GenerateCodeOfTheDay: String!
