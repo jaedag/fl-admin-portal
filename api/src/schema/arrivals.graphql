@@ -59,8 +59,6 @@ extend type Member {
     @relationship(type: "DOES_ARRIVALS_FOR", direction: OUT)
   isArrivalsCounterForStream: [Stream!]!
     @relationship(type: "COUNTS_ARRIVALS_FOR", direction: OUT)
-  isArrivalsConfirmerForStream: [Stream!]!
-    @relationship(type: "CONFIRMS_ARRIVALS_FOR", direction: OUT)
 }
 extend type GatheringService {
   arrivalsAdmin: Member @relationship(type: "DOES_ARRIVALS_FOR", direction: IN)
@@ -263,8 +261,6 @@ extend type Stream {
   arrivalsAdmin: Member @relationship(type: "DOES_ARRIVALS_FOR", direction: IN)
   arrivalsCounters: [Member!]!
     @relationship(type: "COUNTS_ARRIVALS_FOR", direction: IN)
-  arrivalsConfirmers: [Member!]!
-    @relationship(type: "CONFIRMS_ARRIVALS_FOR", direction: IN)
   bacentasNoActivity: [Bacenta!]!
     @cypher(
       statement: """
@@ -933,8 +929,6 @@ type BussingRecord implements Record @auth(rules: [{ isAuthenticated: true }]) {
   comments: String
   arrivalTime: DateTime
   transactionId: Int
-  arrival_confirmed_by: Member
-    @relationship(type: "ARRIVAL_CONFIRMED_BY", direction: OUT)
 
   #Money Things
   mobileNetwork: String
@@ -1257,7 +1251,6 @@ extend type Mutation {
       ]
     )
 
-  RecordArrivalTime(bussingRecordId: ID!): BussingRecord!
 
   SetSwellDate(date: String!): TimeGraph!
   SendBussingSupport(bussingRecordId: ID!, stream_name: String!): BussingRecord!

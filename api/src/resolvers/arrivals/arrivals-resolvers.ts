@@ -20,7 +20,6 @@ import {
   checkTransactionId,
   getBussingRecordWithDate,
   noBussingTopUp,
-  recordArrivalTime,
   removeBussingRecordTransactionId,
   setAdjustedDiscountTopUp,
   setBussingRecordTransactionId,
@@ -477,47 +476,6 @@ export const arrivalsMutation = {
       throwErrorMsg(error, 'Money could not be sent!')
     }
     return bussingRecord
-  },
-  RecordArrivalTime: async (object: any, args: any, context: Context) => {
-    isAuth(permitArrivalsConfirmer(), context.auth.roles)
-    const session = context.executionContext.session()
-
-    const recordResponse = rearrangeCypherObject(
-      await session.run(checkTransactionId, args)
-    )
-
-    const stream = recordResponse.stream.properties
-    const arrivalEndTime = () => {
-      const endTimeToday = new Date(
-        new Date().toISOString().slice(0, 10) + stream.arrivalEndTime.slice(10)
-      )
-
-      const FiveMinBuffer = 5 * 60 * 1000
-
-      const endTime = new Date(endTimeToday.getTime() + FiveMinBuffer)
-
-      return endTime
-    }
-    const today = new Date()
-
-    if (today > arrivalEndTime()) {
-      throwErrorMsg('It is now past the time for arrivals. Thank you!')
-    }
-
-    const promiseAllResponse = await Promise.all([
-      session.run(recordArrivalTime, {
-        ...args,
-        auth: context.auth,
-      }),
-      sendBulkSMS(
-        [recordResponse.bacenta.properties.momoNumber],
-        `Hi ${recordResponse.firstName}\n\n${texts.arrivalsSMS.you_have_arrived}`
-      ),
-    ])
-
-    const response = rearrangeCypherObject(promiseAllResponse[0])
-
-    return response.bussingRecord
   },
   SetSwellDate: async (object: any, args: any, context: Context) => {
     isAuth(permitAdminArrivals('GatheringService'), context.auth.roles)

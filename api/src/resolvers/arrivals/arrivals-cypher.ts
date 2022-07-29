@@ -142,29 +142,3 @@ WITH bussingRecord, bacenta, serviceDate,  date($serviceDate).week AS week
     week AS week,
     stream.name AS stream_name
 `
-
-export const recordArrivalTime = `
-MATCH (bussingRecord:BussingRecord {id: $bussingRecordId})
-SET bussingRecord.arrivalTime = datetime()
-
-WITH bussingRecord
-MATCH (admin:Member {auth_id: $auth.jwt.sub})
-OPTIONAL MATCH (bussingRecord)-[:COUNTED_BY]->(counter)
-MERGE (bussingRecord)-[:ARRIVAL_CONFIRMED_BY]->(admin)
-
-RETURN bussingRecord {
-    .id,
-    .bussingTopUp,
-    .arrivalTime,
-    counted_by: counter {
-        .id,
-        .firstName,
-        .lastName
-    },
-       arrival_confirmed_by:  admin {
-           .id,
-           .firstName,
-           .lastName
-       }
-}
-`
