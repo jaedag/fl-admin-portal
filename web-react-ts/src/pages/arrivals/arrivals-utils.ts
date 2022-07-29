@@ -20,7 +20,8 @@ const isArrivalsToday = (bacenta: { stream_name: StreamOptions }) => {
 
   const today = new Date().getDay()
   if (
-    today === 6 &&
+    today &&
+    // today === 6 &&
     (bacenta.stream_name.toLowerCase() === 'anagkazo' ||
       bacenta.stream_name.toLowerCase() === 'campus')
   ) {
@@ -62,7 +63,7 @@ export const beforeCountingDeadline = (
     getTodayTime(church?.stream.arrivalStartTime)
   )
   const arrivalEndTime = new Date(getTodayTime(church?.stream.arrivalEndTime))
-  const countingEndTime = addMinutes(arrivalEndTime.toString(), 30)
+  const countingEndTime = addMinutes(arrivalEndTime.toString(), 10)
 
   if (
     isArrivalsToday(church) &&
@@ -96,7 +97,6 @@ export const beforeArrivalDeadline = (
     getTodayTime(church?.stream.arrivalStartTime)
   )
   const arrivalEndTime = new Date(getTodayTime(church?.stream.arrivalEndTime))
-
   if (
     isArrivalsToday(church) &&
     arrivalStartTime < today &&
@@ -106,7 +106,7 @@ export const beforeArrivalDeadline = (
       return true
     }
 
-    if (isToday(bussing?.created_at) && !bussing?.bussingPictures) {
+    if (isToday(bussing?.created_at) && !bussing?.leaderDeclaration) {
       //If the record was created today
       //And if the time is less than the arrivals cutoff time
       return true

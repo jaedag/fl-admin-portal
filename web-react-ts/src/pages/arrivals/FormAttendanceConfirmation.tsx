@@ -6,7 +6,6 @@ import PlaceholderCustom from 'components/Placeholder'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { ServiceContext } from 'contexts/ServiceContext'
 import { Formik, Form, FormikHelpers } from 'formik'
-import React, { useState } from 'react'
 import * as Yup from 'yup'
 import { useContext } from 'react'
 import { Card, Col, Container, Row } from 'react-bootstrap'
@@ -19,16 +18,14 @@ import {
 import { useNavigate } from 'react-router'
 import FormikControl from 'components/formik-components/FormikControl'
 import SubmitButton from 'components/formik-components/SubmitButton'
-import CloudinaryImage from 'components/CloudinaryImage'
 import { alertMsg, throwErrorMsg } from 'global-utils'
-import Popup from 'components/Popup/Popup'
-import usePopup from 'hooks/usePopup'
 import { BacentaWithArrivals, BussingRecord } from './arrivals-types'
 
 type FormOptions = {
   attendance: string
   numberOfSprinters: string
   numberOfUrvans: string
+  numberOfCars: string
   comments: string
 }
 
@@ -36,8 +33,6 @@ const FormAttendanceConfirmation = () => {
   const navigate = useNavigate()
   const { bacentaId } = useContext(ChurchContext)
   const { bussingRecordId } = useContext(ServiceContext)
-  const { isOpen, togglePopup } = usePopup()
-  const [picturePopup, setPicturePopup] = useState('')
 
   const { data, loading, error } = useQuery(DISPLAY_BUSSING_RECORDS, {
     variables: { bussingRecordId: bussingRecordId, bacentaId: bacentaId },
@@ -48,10 +43,12 @@ const FormAttendanceConfirmation = () => {
 
   const bussing: BussingRecord = data?.bussingRecords[0]
   const bacenta: BacentaWithArrivals = data?.bacentas[0]
+
   const initialValues: FormOptions = {
     attendance: '',
-    numberOfSprinters: '0',
-    numberOfUrvans: '0',
+    numberOfSprinters: bussing?.numberOfSprinters.toString() ?? '0',
+    numberOfUrvans: bussing?.numberOfUrvans.toString() ?? '0',
+    numberOfCars: bussing?.numberOfCars.toString() ?? '0',
     comments: '',
   }
 
@@ -69,12 +66,33 @@ const FormAttendanceConfirmation = () => {
       .typeError('Please enter a valid number')
       .integer('You cannot have busses with decimals!')
       .required('This is a required field'),
-    comments: Yup.string().when('attendance', {
-      is: (attendance: number) => attendance !== bussing?.leaderDeclaration,
-      then: Yup.string().required(
-        'You need to explain if the numbers are different'
-      ),
-    }),
+    numberOfCars: Yup.number()
+      .typeError('Please enter a valid number')
+      .integer('You cannot have busses with decimals!')
+      .required('This is a required field'),
+    comments: Yup.string().when(
+      ['attendance', 'numberOfSprinters', 'numberOfUrvans', 'numberOfCars'],
+      {
+        is: (
+          attendance: number,
+          numberOfSprinters: number,
+          numberOfUrvans: number,
+          numberOfCars: number
+        ) => {
+          if (
+            attendance !== bussing?.leaderDeclaration ||
+            numberOfSprinters !== bussing?.numberOfSprinters ||
+            numberOfUrvans !== bussing?.numberOfUrvans ||
+            numberOfCars !== bussing?.numberOfCars
+          ) {
+            return true
+          }
+        },
+        then: Yup.string().required(
+          'You need to explain if the numbers are different'
+        ),
+      }
+    ),
   })
 
   const onSubmit = async (
@@ -148,42 +166,6 @@ const FormAttendanceConfirmation = () => {
           </PlaceholderCustom>
         </Container>
 
-        <div className="text-center">
-          <h6>Bussing Pictures</h6>
-          {isOpen && (
-            <Popup handleClose={togglePopup}>
-              <CloudinaryImage
-                src={picturePopup}
-                className="full-width"
-                size="fullWidth"
-              />
-            </Popup>
-          )}
-          <div className="container card-button-row">
-            <table>
-              <tbody>
-                <tr>
-                  {bussing?.bussingPictures.map((picture, index: number) => (
-                    <td
-                      onClick={() => {
-                        setPicturePopup(picture)
-                        togglePopup()
-                      }}
-                      key={index}
-                    >
-                      <CloudinaryImage
-                        key={index}
-                        src={picture}
-                        className="report-picture"
-                        size="respond"
-                      />
-                    </td>
-                  ))}
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
         <Container className="mb-2">
           <Card>
             <Card.Body>
@@ -208,22 +190,33 @@ const FormAttendanceConfirmation = () => {
                 <FormikControl
                   control="input"
                   name="attendance"
-                  label="Attendance (from Picture)*"
-                  placeholder={bussing?.attendance}
+                  label="Attendance *"
+                  placeholder={bussing?.leaderDeclaration}
                 />
-                <Row>
+                <Row className="mt-4">
+                  <hr />
+                  <div className="mb-2 yellow">
+                    Input the number of Vehicles
+                  </div>
                   <Col>
                     <FormikControl
                       control="input"
                       name="numberOfSprinters"
-                      label="Number of Sprinters *"
+                      label="Sprinters *"
                     />
                   </Col>
                   <Col>
                     <FormikControl
                       control="input"
                       name="numberOfUrvans"
-                      label="Number of Urvans *"
+                      label="Urvans *"
+                    />
+                  </Col>
+                  <Col>
+                    <FormikControl
+                      control="input"
+                      name="numberOfCars"
+                      label="Cars *"
                     />
                   </Col>
                 </Row>

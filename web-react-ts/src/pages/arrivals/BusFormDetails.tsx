@@ -16,11 +16,12 @@ import RoleView from 'auth/RoleView'
 import { permitAdminArrivals, permitArrivalsCounter } from 'permission-utils'
 import { parseNeoTime } from 'jd-date-utils'
 import CloudinaryImage from 'components/CloudinaryImage'
-import { beforeArrivalDeadline, beforeCountingDeadline } from './arrivals-utils'
+import { beforeCountingDeadline } from './arrivals-utils'
 import usePopup from 'hooks/usePopup'
 import Popup from 'components/Popup/Popup'
 import { getHumanReadableDate } from 'jd-date-utils'
 import { BacentaWithArrivals, BussingRecord } from './arrivals-types'
+import CurrencySpan from 'components/CurrencySpan'
 
 const BusFormDetails = () => {
   const { bacentaId } = useContext(ChurchContext)
@@ -112,7 +113,7 @@ const BusFormDetails = () => {
                     </td>
                   </tr>
                   <tr>
-                    <td>Bus Payment Attendance</td>
+                    <td>Confirmed Attendance</td>
                     <td className="good">
                       <PlaceholderCustom loading={loading}>
                         {bussing?.attendance}
@@ -123,8 +124,7 @@ const BusFormDetails = () => {
                     <td>Bussing Cost</td>
                     <td>
                       <PlaceholderCustom loading={loading}>
-                        {bussing?.bussingCost}{' '}
-                        <span className="small">GHS</span>
+                        <CurrencySpan number={bussing?.bussingCost} />
                       </PlaceholderCustom>
                     </td>
                   </tr>
@@ -133,8 +133,7 @@ const BusFormDetails = () => {
                     <td>Personal Contribution</td>
                     <td className="good">
                       <PlaceholderCustom loading={loading}>
-                        {bussing?.personalContribution}{' '}
-                        <span className="small">GHS</span>
+                        <CurrencySpan number={bussing?.personalContribution} />
                       </PlaceholderCustom>
                     </td>
                   </tr>
@@ -143,10 +142,7 @@ const BusFormDetails = () => {
                     <td>Bussing Top Up</td>
                     <td className="good">
                       <PlaceholderCustom loading={loading}>
-                        {bussing?.bussingTopUp}{' '}
-                        <span className="small">
-                          {bussing?.bussingTopUp && `GHS`}
-                        </span>
+                        <CurrencySpan number={bussing?.bussingTopUp} />
                       </PlaceholderCustom>
                     </td>
                   </tr>
@@ -256,30 +252,34 @@ const BusFormDetails = () => {
                     />
                   </Popup>
                 )}
-                <h6>Bussing Pictures</h6>
-                <div className="container card-button-row">
-                  <table>
-                    <tbody>
-                      <tr>
-                        {bussing?.bussingPictures?.map((picture, index) => (
-                          <td
-                            onClick={() => {
-                              setPicturePopup(picture)
-                              togglePopup()
-                            }}
-                            key={index}
-                          >
-                            <CloudinaryImage
-                              className="report-picture"
-                              src={picture}
-                              size="respond"
-                            />
-                          </td>
-                        ))}
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
+                {bussing?.bussingPictures && (
+                  <>
+                    <h6>Bussing Pictures</h6>
+                    <div className="container card-button-row">
+                      <table>
+                        <tbody>
+                          <tr>
+                            {bussing?.bussingPictures?.map((picture, index) => (
+                              <td
+                                onClick={() => {
+                                  setPicturePopup(picture)
+                                  togglePopup()
+                                }}
+                                key={index}
+                              >
+                                <CloudinaryImage
+                                  className="report-picture"
+                                  src={picture}
+                                  size="respond"
+                                />
+                              </td>
+                            ))}
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </>
+                )}
               </Row>
             </Row>
           </Col>
@@ -298,23 +298,14 @@ const BusFormDetails = () => {
                 )}
                 <Button
                   variant="danger"
-                  onClick={() => navigate('/arrivals/bacentas-to-count')}
+                  onClick={() => navigate('/arrivals/confirm-bacenta-arrival')}
                 >
-                  Continue Counting
+                  Continue Confirming Arrivals
                 </Button>
               </>
             )}
-
-            {beforeArrivalDeadline(bussing, church) && (
-              <Button
-                variant="danger"
-                onClick={() => navigate('/arrivals/confirm-bacenta-arrival')}
-              >
-                Continue Confirming Arrivals
-              </Button>
-            )}
           </RoleView>
-          <Button onClick={() => navigate('/arrivals')}>
+          <Button size="lg" onClick={() => navigate('/arrivals')}>
             Back to Arrivals Home
           </Button>
         </div>

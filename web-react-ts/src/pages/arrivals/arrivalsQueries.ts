@@ -294,7 +294,6 @@ export const BACENTA_ARRIVALS = gql`
         }
         week
         mobilisationPicture
-        bussingPictures
         arrivalTime
       }
     }
@@ -412,7 +411,6 @@ export const DISPLAY_BUSSING_RECORDS = gql`
       mobilisationPicture
       leaderDeclaration
       attendance
-      bussingPictures
       bussingCost
       personalContribution
       bussingTopUp

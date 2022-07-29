@@ -378,7 +378,7 @@ export const arrivalsMutation = {
         }
       }
 
-      if (response.bussingCost.low === 0) {
+      if (response.bussingCost.low === 0 || bussingTopUp <= 0) {
         const attendanceRes = await Promise.all([
           session.run(noBussingTopUp, { ...args, bussingTopUp }),
           sendBulkSMS(

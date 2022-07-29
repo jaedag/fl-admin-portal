@@ -29,7 +29,8 @@ export const getBussingRecordWithDate = `
 MATCH (record:BussingRecord {id: $bussingRecordId})<-[:HAS_BUSSING]-(:ServiceLog)<-[:HAS_HISTORY]-(bacenta:Bacenta)<-[:LEADS]-(leader:Member)
 MATCH (bacenta)-[:BUSSES_FROM]->(zone:BusZone)
 MATCH (record)-[:BUSSED_ON]->(date:TimeGraph)
-SET record.target = bacenta.target
+SET record.target = bacenta.target,
+record.arrivalTime = datetime()
 
 RETURN record.id AS bussingRecordId,
 record.target AS target,

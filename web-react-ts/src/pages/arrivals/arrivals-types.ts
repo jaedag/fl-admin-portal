@@ -20,7 +20,7 @@ export interface BussingRecord {
   created_by: Member
   serviceDate: TimeGraph
 
-  bussingPictures: string[]
+  bussingPictures?: string[]
   attendance: number
   leaderDeclaration: number
   personalContribution: number

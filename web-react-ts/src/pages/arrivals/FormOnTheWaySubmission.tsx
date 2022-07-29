@@ -1,20 +1,16 @@
-import FormikControl, {
-  arrayError,
-} from 'components/formik-components/FormikControl'
+import FormikControl from 'components/formik-components/FormikControl'
 import SubmitButton from 'components/formik-components/SubmitButton'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import HeadingSecondary from 'components/HeadingSecondary'
-import { Form, Formik, FieldArray, FormikHelpers } from 'formik'
+import { Form, Formik, FormikHelpers } from 'formik'
 import { useMutation, useQuery } from '@apollo/client'
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import * as Yup from 'yup'
 import { Card, Col, Container, Row } from 'react-bootstrap'
 import { useNavigate } from 'react-router'
 import { BACENTA_ARRIVALS } from './arrivalsQueries'
 import { ChurchContext } from 'contexts/ChurchContext'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
-import PlusSign from 'components/buttons/PlusMinusSign/PlusSign'
-import MinusSign from 'components/buttons/PlusMinusSign/MinusSign'
 import { RECORD_BUSSING_FROM_BACENTA } from './arrivalsMutation'
 import { parseDate } from 'jd-date-utils'
 import { ServiceContext } from 'contexts/ServiceContext'
@@ -22,7 +18,6 @@ import { throwErrorMsg } from 'global-utils'
 
 type FormOptions = {
   attendance: string
-  bussingPictures: string[]
   bussingCost: string
   personalContribution: string
   numberOfSprinters: string
@@ -36,7 +31,6 @@ const FormOnTheWaySubmission = () => {
   const { bussingRecordId } = useContext(ServiceContext)
   const initialValues: FormOptions = {
     attendance: '',
-    bussingPictures: [''],
     bussingCost: '',
     personalContribution: '',
     numberOfSprinters: '',
@@ -50,19 +44,12 @@ const FormOnTheWaySubmission = () => {
 
   const bacenta = data?.bacentas[0]
   const [RecordBussingFromBacenta] = useMutation(RECORD_BUSSING_FROM_BACENTA)
-  const pictureLimit = 5
   const validationSchema = Yup.object({
     attendance: Yup.number()
       .typeError('Please enter a valid number')
       .positive()
       .integer('You cannot have attendance with decimals!')
       .required('This is a required field'),
-    bussingPictures: Yup.array()
-      .max(
-        pictureLimit,
-        `You cannot upload more than ${pictureLimit} pictures per bacenta`
-      )
-      .of(Yup.string().required('You must upload a bussing picture')),
     bussingCost: Yup.number()
       .typeError('Please enter a valid number')
       .required('This is a required field'),
@@ -92,9 +79,8 @@ const FormOnTheWaySubmission = () => {
         variables: {
           attendance: parseInt(values.attendance),
           bussingRecordId: bussingRecordId,
-          bussingPictures: values.bussingPictures,
           bussingCost: parseFloat(values.bussingCost),
-          personalContribution: parseInt(values.personalContribution),
+          personalContribution: parseFloat(values.personalContribution),
           numberOfSprinters: parseInt(values.numberOfSprinters),
           numberOfUrvans: parseInt(values.numberOfUrvans),
           numberOfCars: parseInt(values.numberOfCars || '0'),
@@ -161,7 +147,7 @@ const FormOnTheWaySubmission = () => {
                 <FormikControl
                   control="input"
                   name="personalContribution"
-                  label="Personal Contribution"
+                  label="Personal Contribution* (in Cedis)"
                 />
               </Row>
               <Row className="row-cols-2">
@@ -188,57 +174,6 @@ const FormOnTheWaySubmission = () => {
                 </Col>
               </Row>
               <Row>
-                <Col>
-                  <FieldArray name="bussingPictures">
-                    {(fieldArrayProps) => {
-                      const { push, remove, form } = fieldArrayProps
-                      const { values } = form
-                      const { bussingPictures }: { bussingPictures: string[] } =
-                        values
-
-                      return (
-                        <>
-                          {bussingPictures.map(
-                            (bussingPicture, index: number) => (
-                              <Row key={index} className="form-row">
-                                <Col>
-                                  <FormikControl
-                                    label="Upload A Bussing Picture"
-                                    control="imageUpload"
-                                    name={`bussingPictures[${index}]`}
-                                    uploadPreset={
-                                      process.env.REACT_APP_CLOUDINARY_BUSSING
-                                    }
-                                    placeholder="Choose"
-                                    error={arrayError(
-                                      formik.errors.bussingPictures,
-                                      index
-                                    )}
-                                    setFieldValue={formik.setFieldValue}
-                                    aria-describedby="UploadBussingPicture"
-                                  />
-                                </Col>
-                                <Col className="col-auto d-flex">
-                                  {index < pictureLimit - 1 && (
-                                    <PlusSign
-                                      onClick={() =>
-                                        bussingPictures.length <=
-                                          pictureLimit && push('')
-                                      }
-                                    />
-                                  )}
-                                  {index > 0 && (
-                                    <MinusSign onClick={() => remove(index)} />
-                                  )}
-                                </Col>
-                              </Row>
-                            )
-                          )}
-                        </>
-                      )
-                    }}
-                  </FieldArray>
-                </Col>
                 <Container>
                   <Card className="text-center mt-3 p-2">
                     <Card.Body>

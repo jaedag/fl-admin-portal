@@ -58,7 +58,7 @@ const BacentaArrivals = () => {
     return (
       beforeArrivalDeadline(bussing, bacenta) &&
       bussing?.mobilisationPicture &&
-      !bussing?.bussingPictures?.length
+      !bussing?.leaderDeclaration
     )
   }
 
@@ -99,7 +99,7 @@ const BacentaArrivals = () => {
           </Card>
         ) : (
           <Card className="text-center py-4">
-            {!bussing?.bussingPictures.length && (
+            {!bussing?.leaderDeclaration && (
               <div className="text-secondary-custom">
                 <span>Code of the Day: </span>
                 <h5 className="fw-bold code-of-the-day">{`${bacenta?.arrivalsCodeOfTheDay}`}</h5>
@@ -109,7 +109,7 @@ const BacentaArrivals = () => {
         )}
         {!isBeforeArrivalEnd &&
           bussing?.mobilisationPicture &&
-          !bussing?.bussingPictures.length && (
+          !bussing?.leaderDeclaration && (
             <Card className="text-center py-3">
               <p className="display-1">😞</p>
               <h5 className="countdown danger fw-bold ">
@@ -124,7 +124,7 @@ const BacentaArrivals = () => {
               </i>
             </Card>
           )}
-        {bussing?.bussingPictures.length && (
+        {bussing?.leaderDeclaration && (
           <Card className="text-center">
             <Card.Body>You have filled your forms today</Card.Body>
             <Card.Footer>
@@ -205,7 +205,7 @@ const BacentaArrivals = () => {
               navigate('/arrivals/submit-on-the-way')
             }}
           >
-            Submit On-The-Way Picture
+            Submit On-The-Way Data
           </Button>
           {bussing && (
             <Button

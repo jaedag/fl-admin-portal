@@ -119,7 +119,7 @@ extend type GatheringService {
       WHERE EXISTS {
       MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
         WHERE date(date.date)=date()
-        AND bussing.bussingPictures IS NOT NULL
+        AND bussing.leaderDeclaration IS NOT NULL
         AND bussing.arrivalTime IS NULL
       }
       RETURN DISTINCT bacentas
@@ -132,7 +132,7 @@ extend type GatheringService {
       WHERE EXISTS {
       MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
         WHERE date(date.date)=date()
-        AND bussing.bussingPictures IS NOT NULL
+        AND bussing.leaderDeclaration IS NOT NULL
         AND bussing.arrivalTime IS NULL
       }
       RETURN COUNT(DISTINCT bacentas)
@@ -144,7 +144,7 @@ extend type GatheringService {
        MATCH (this)-[:HAS*4]->(bacentas:Active:Bacenta)
        MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
         WHERE date(date.date)=date()
-        AND bussing.bussingPictures IS NOT NULL
+        AND bussing.leaderDeclaration IS NOT NULL
         AND bussing.arrivalTime IS NULL
 
       WITH DISTINCT bussing
@@ -320,7 +320,7 @@ extend type Stream {
       WHERE EXISTS {
       MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
         WHERE date(date.date)=date()
-        AND bussing.bussingPictures IS NOT NULL
+        AND bussing.leaderDeclaration IS NOT NULL
         AND bussing.arrivalTime IS NULL
       }
       RETURN DISTINCT bacentas
@@ -333,7 +333,7 @@ extend type Stream {
       WHERE EXISTS {
       MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
         WHERE date(date.date)=date()
-        AND bussing.bussingPictures IS NOT NULL
+        AND bussing.leaderDeclaration IS NOT NULL
         AND bussing.arrivalTime IS NULL
       }
       RETURN COUNT(DISTINCT bacentas)
@@ -345,7 +345,7 @@ extend type Stream {
        MATCH (this)-[:HAS*3]->(bacentas:Active:Bacenta)
        MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
         WHERE date(date.date)=date()
-        AND bussing.bussingPictures IS NOT NULL
+        AND bussing.leaderDeclaration IS NOT NULL
         AND bussing.arrivalTime IS NULL
 
       WITH DISTINCT bussing
@@ -519,7 +519,7 @@ extend type Council {
       WHERE EXISTS {
       MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
         WHERE date(date.date)=date()
-        AND bussing.bussingPictures IS NOT NULL
+        AND bussing.leaderDeclaration IS NOT NULL
         AND bussing.arrivalTime IS NULL
       }
       RETURN DISTINCT bacentas
@@ -532,7 +532,7 @@ extend type Council {
       WHERE EXISTS {
       MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
         WHERE date(date.date)=date()
-        AND bussing.bussingPictures IS NOT NULL
+        AND bussing.leaderDeclaration IS NOT NULL
         AND bussing.arrivalTime IS NULL
       }
       RETURN COUNT(DISTINCT bacentas)
@@ -544,7 +544,7 @@ extend type Council {
        MATCH (this)-[:HAS*2]->(bacentas:Active:Bacenta)
        MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
         WHERE date(date.date)=date()
-        AND bussing.bussingPictures IS NOT NULL
+        AND bussing.leaderDeclaration IS NOT NULL
         AND bussing.arrivalTime IS NULL
 
       WITH DISTINCT bussing
@@ -724,7 +724,7 @@ extend type Constituency {
       WHERE EXISTS {
       MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
         WHERE date(date.date)=date()
-        AND bussing.bussingPictures IS NOT NULL
+        AND bussing.leaderDeclaration IS NOT NULL
         AND bussing.arrivalTime IS NULL
       }
       RETURN DISTINCT bacentas
@@ -737,7 +737,7 @@ extend type Constituency {
       WHERE EXISTS {
       MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
         WHERE date(date.date)=date()
-        AND bussing.bussingPictures IS NOT NULL
+        AND bussing.leaderDeclaration IS NOT NULL
         AND bussing.arrivalTime IS NULL
       }
       RETURN COUNT(DISTINCT bacentas)
@@ -749,7 +749,7 @@ extend type Constituency {
        MATCH (this)-[:HAS]->(bacentas:Active:Bacenta)
        MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
         WHERE date(date.date)=date()
-        AND bussing.bussingPictures IS NOT NULL
+        AND bussing.leaderDeclaration IS NOT NULL
         AND bussing.arrivalTime IS NULL
 
       WITH DISTINCT bussing
@@ -918,9 +918,8 @@ type BussingRecord implements Record @auth(rules: [{ isAuthenticated: true }]) {
   created_by: Member! @relationship(type: "LOGGED_BY", direction: OUT)
 
   #On The Way
-  bussingPictures: [String]
   attendance: Int
-  leaderDeclaration: Int!
+  leaderDeclaration: Int
   numberOfBusses: Int #Legacy Property for before we started collecting Spinter/Urvan details
   personalContribution: Float
   numberOfSprinters: Int
@@ -1197,7 +1196,6 @@ extend type Mutation {
   RecordBussingFromBacenta(
     bussingRecordId: ID!
     attendance: Int!
-    bussingPictures: [String]!
     bussingCost: Float!
     personalContribution: Float!
     numberOfSprinters: Int!
@@ -1208,7 +1206,6 @@ extend type Mutation {
       statement: """
       MATCH (bussingRecord:BussingRecord {id: $bussingRecordId})
       SET bussingRecord.leaderDeclaration = $attendance,
-      bussingRecord.bussingPictures = $bussingPictures,
       bussingRecord.bussingCost = $bussingCost,
       bussingRecord.personalContribution = $personalContribution,
       bussingRecord.numberOfSprinters = $numberOfSprinters,
