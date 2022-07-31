@@ -23,7 +23,6 @@ import {
   SERVANTS_COUNCIL_ARRIVALS_ADMIN,
   SERVANTS_CONSTITUENCY_ARRIVALS_ADMIN,
   SERVANTS_STREAM_ARRIVALS_COUNTER,
-  SERVANTS_STREAM_ARRIVALS_CONFIRMER,
 } from './userChurchDataQueries'
 
 const useComponentQuery = () => {
@@ -63,9 +62,6 @@ const useComponentQuery = () => {
   const [streamArrivalsCounterQuery] = useLazyQuery(
     SERVANTS_STREAM_ARRIVALS_COUNTER
   )
-  const [streamArrivalsConfirmerQuery] = useLazyQuery(
-    SERVANTS_STREAM_ARRIVALS_CONFIRMER
-  )
 
   const church = {
     Fellowship: {
@@ -89,7 +85,6 @@ const useComponentQuery = () => {
       admin: streamAdminQuery,
       arrivalsAdmin: streamArrivalsAdminQuery,
       arrivalsCounter: streamArrivalsCounterQuery,
-      arrivalsConfirmer: streamArrivalsConfirmerQuery,
     },
     GatheringService: {
       leader: gatheringServiceLeaderQuery,

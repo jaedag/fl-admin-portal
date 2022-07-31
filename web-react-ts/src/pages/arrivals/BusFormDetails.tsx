@@ -1,4 +1,4 @@
-import { useQuery } from '@apollo/client'
+import { useMutation, useQuery } from '@apollo/client'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import HeadingSecondary from 'components/HeadingSecondary'
@@ -8,7 +8,15 @@ import { MemberContext } from 'contexts/MemberContext'
 import { ServiceContext } from 'contexts/ServiceContext'
 import React, { useState } from 'react'
 import { useContext } from 'react'
-import { Container, Row, Col, Table, Button } from 'react-bootstrap'
+import {
+  Container,
+  Row,
+  Col,
+  Table,
+  Button,
+  Modal,
+  Spinner,
+} from 'react-bootstrap'
 import { DISPLAY_BUSSING_RECORDS } from './arrivalsQueries'
 import '../services/record-service/ServiceDetails.css'
 import { useNavigate } from 'react-router'
@@ -22,16 +30,21 @@ import Popup from 'components/Popup/Popup'
 import { getHumanReadableDate } from 'jd-date-utils'
 import { BacentaWithArrivals, BussingRecord } from './arrivals-types'
 import CurrencySpan from 'components/CurrencySpan'
+import useModal from 'hooks/useModal'
+import { RECORD_ARRIVAL_TIME } from './arrivalsMutation'
 
 const BusFormDetails = () => {
   const { bacentaId } = useContext(ChurchContext)
   const { theme } = useContext(MemberContext)
   const { bussingRecordId } = useContext(ServiceContext)
   const { isOpen, togglePopup } = usePopup()
+  const { show, handleClose, handleShow } = useModal()
   const [picturePopup, setPicturePopup] = useState('')
   const { data, loading, error } = useQuery(DISPLAY_BUSSING_RECORDS, {
     variables: { bussingRecordId: bussingRecordId, bacentaId: bacentaId },
   })
+  const [RecordArrivalTime, { loading: arrivalLoading }] =
+    useMutation(RECORD_ARRIVAL_TIME)
   const navigate = useNavigate()
   const bussing: BussingRecord = data?.bussingRecords[0]
   const church: BacentaWithArrivals = data?.bacentas[0]
@@ -285,27 +298,76 @@ const BusFormDetails = () => {
           </Col>
         </Row>
         <div className="d-grid gap-2">
+          <Modal className="dark" show={show} onHide={handleClose} centered>
+            <Modal.Body>
+              <p>Are you sure you want to confirm this arrival?</p>
+              <p>
+                You will <span className="fw-bold text-danger">not</span> be
+                able to{' '}
+                <span className="fw-bold text-danger">
+                  count or add any more people
+                </span>{' '}
+                after this!
+              </p>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button
+                variant="success"
+                disabled={arrivalLoading}
+                onClick={() =>
+                  RecordArrivalTime({
+                    variables: {
+                      bussingRecordId,
+                    },
+                  }).then(() => handleClose())
+                }
+              >
+                {arrivalLoading ? (
+                  <span>
+                    {'Recording  '}
+                    <Spinner animation="border" size="sm" />
+                  </span>
+                ) : (
+                  'Yes I do'
+                )}
+              </Button>
+              <Button
+                disabled={arrivalLoading}
+                variant="danger"
+                onClick={handleClose}
+              >
+                No, Take Me Back
+              </Button>
+            </Modal.Footer>
+          </Modal>
           <RoleView roles={permitArrivalsCounter()}>
             {beforeCountingDeadline(bussing, church) && (
               <>
-                {!bussing?.attendance && (
+                {!bussing.arrivalTime && (
                   <Button
-                    variant="success"
+                    variant="warning"
                     onClick={() => navigate('/arrivals/submit-bus-attendance')}
                   >
-                    Confirm Attendance
+                    I Want to Count
                   </Button>
                 )}
+                <Button variant="info" className="mb-3" onClick={handleShow}>
+                  This Bacenta Has Arrived
+                </Button>
                 <Button
-                  variant="danger"
+                  variant="outline-danger"
                   onClick={() => navigate('/arrivals/bacentas-to-count')}
                 >
-                  Continue Confirming Arrivals
+                  Continue Counting
                 </Button>
               </>
             )}
           </RoleView>
-          <Button size="lg" onClick={() => navigate('/arrivals')}>
+          <Button
+            variant="outline-primary"
+            size="lg"
+            onClick={() => navigate('/arrivals')}
+          >
             Back to Arrivals Home
           </Button>
         </div>

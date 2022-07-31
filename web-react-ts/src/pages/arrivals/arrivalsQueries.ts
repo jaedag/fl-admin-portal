@@ -398,12 +398,7 @@ export const DISPLAY_BUSSING_RECORDS = gql`
         lastName
         fullName
       }
-      arrival_confirmed_by {
-        id
-        firstName
-        lastName
-        fullName
-      }
+
       serviceDate {
         date
       }

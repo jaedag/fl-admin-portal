@@ -2,6 +2,11 @@
   background-color: #7d1f1a;
   color: whitesmoke;
 }
+.dark .modal-content {
+  background-color: #252525;
+  color: whitesmoke;
+}
+
 
 .code-of-the-day {
   color: #d5ee6f;

@@ -264,11 +264,6 @@ export const RECORD_ARRIVAL_TIME = gql`
         firstName
         lastName
       }
-      arrival_confirmed_by {
-        id
-        firstName
-        lastName
-      }
     }
   }
 `
@@ -278,7 +273,6 @@ export const SET_BUSSING_SUPPORT = gql`
     SetBussingSupport(bussingRecordId: $bussingRecordId) {
       id
       bussingTopUp
-      arrivalTime
     }
   }
 `

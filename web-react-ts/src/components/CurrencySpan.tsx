@@ -1,7 +1,7 @@
 import React from 'react'
 
 const CurrencySpan = ({ number }: { number: number }) => {
-  if (number >= 0) {
+  if (number && number >= 0) {
     return (
       <>
         <span>{number} </span>

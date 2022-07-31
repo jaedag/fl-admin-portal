@@ -2,7 +2,6 @@ import React from 'react'
 import Input from './Input'
 import Textarea from './Textarea'
 import Select from './Select'
-import RadioButtons from './RadioButtons'
 import CheckboxGroup from './CheckboxGroup'
 import Combobox from './Combobox'
 import ImageUpload from './ImageUpload'
@@ -65,8 +64,6 @@ function FormikControl(props: FormikControlProps) {
     case 'select':
       return <Select {...rest} />
 
-    case 'radio':
-      return <RadioButtons {...rest} />
     case 'checkbox':
       return <CheckboxGroup {...rest} />
     case 'checkboxWithQuery':

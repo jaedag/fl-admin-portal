@@ -1223,7 +1223,7 @@ extend type Mutation {
     @auth(rules: [{ roles: ["arrivalsCounterStream"] }])
     @cypher(
       statement: """
-      MATCH (bussingRecord:BussingRecord {id: $bussingRecordId})
+      MATCH (bussingRecord:BussingRecord {id: $bussingRecordId}) WHERE bussingRecord.arrivalTime  IS NULL
         SET bussingRecord.attendance = $attendance,
         bussingRecord.numberOfSprinters = $numberOfSprinters,
         bussingRecord.numberOfUrvans = $numberOfUrvans,
@@ -1251,7 +1251,7 @@ extend type Mutation {
       ]
     )
 
-
+  RecordArrivalTime(bussingRecordId: ID!): BussingRecord!
   SetSwellDate(date: String!): TimeGraph!
   SendBussingSupport(bussingRecordId: ID!, stream_name: String!): BussingRecord!
 }

@@ -10,6 +10,7 @@ import {
   permitAdmin,
   permitAdminArrivals,
   permitArrivals,
+  permitArrivalsCounter,
   permitArrivalsHelpers,
 } from '../permissions'
 import { MakeServant, RemoveServant } from '../directory/make-remove-servants'
@@ -20,6 +21,7 @@ import {
   checkTransactionId,
   getBussingRecordWithDate,
   noBussingTopUp,
+  recordArrivalTime,
   removeBussingRecordTransactionId,
   setAdjustedDiscountTopUp,
   setBussingRecordTransactionId,
@@ -254,6 +256,7 @@ export const arrivalsMutation = {
         personalContribution: number
         bacentaSprinterCost: number
         bacentaUrvanCost: number
+        arrivalTime: string
         swellBussingTopUp: neonumber
         normalBussingTopUp: neonumber
         leaderPhoneNumber: string
@@ -263,7 +266,9 @@ export const arrivalsMutation = {
       const response: responseType = rearrangeCypherObject(
         await session.run(getBussingRecordWithDate, args)
       )
-
+      if (response.arrivalTime) {
+        throwErrorMsg('You cannot set top up for this bacenta')
+      }
       let bussingRecord: RearragedCypherResponse | undefined
 
       const bussingTopUp =
@@ -501,6 +506,47 @@ export const arrivalsMutation = {
     )
 
     return response
+  },
+  RecordArrivalTime: async (object: any, args: any, context: Context) => {
+    isAuth(permitArrivalsCounter(), context.auth.roles)
+    const session = context.executionContext.session()
+
+    const recordResponse = rearrangeCypherObject(
+      await session.run(checkTransactionId, args)
+    )
+
+    const stream = recordResponse.stream.properties
+    const arrivalEndTime = () => {
+      const endTimeToday = new Date(
+        new Date().toISOString().slice(0, 10) + stream.arrivalEndTime.slice(10)
+      )
+
+      const FiveMinBuffer = 5 * 60 * 1000
+
+      const endTime = new Date(endTimeToday.getTime() + FiveMinBuffer)
+
+      return endTime
+    }
+    const today = new Date()
+
+    if (today > arrivalEndTime()) {
+      throwErrorMsg('It is now past the time for arrivals. Thank you!')
+    }
+
+    const promiseAllResponse = await Promise.all([
+      session.run(recordArrivalTime, {
+        ...args,
+        auth: context.auth,
+      }),
+      sendBulkSMS(
+        [recordResponse.bacenta.properties.momoNumber],
+        `Hi ${recordResponse.firstName}\n\n${texts.arrivalsSMS.you_have_arrived}`
+      ),
+    ])
+
+    const response = rearrangeCypherObject(promiseAllResponse[0])
+
+    return response.bussingRecord
   },
 }
 

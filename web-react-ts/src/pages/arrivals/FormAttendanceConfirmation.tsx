@@ -12,6 +12,7 @@ import { Card, Col, Container, Row } from 'react-bootstrap'
 import { DISPLAY_BUSSING_RECORDS } from './arrivalsQueries'
 import {
   CONFIRM_BUSSING_BY_ADMIN,
+  RECORD_ARRIVAL_TIME,
   SEND_BUSSING_SUPPORT,
   SET_BUSSING_SUPPORT,
 } from './arrivalsMutation'
@@ -20,6 +21,7 @@ import FormikControl from 'components/formik-components/FormikControl'
 import SubmitButton from 'components/formik-components/SubmitButton'
 import { alertMsg, throwErrorMsg } from 'global-utils'
 import { BacentaWithArrivals, BussingRecord } from './arrivals-types'
+import RadioButtons from 'components/formik-components/RadioButtons'
 
 type FormOptions = {
   attendance: string
@@ -27,6 +29,7 @@ type FormOptions = {
   numberOfUrvans: string
   numberOfCars: string
   comments: string
+  addMoreLater: 'true' | 'false'
 }
 
 const FormAttendanceConfirmation = () => {
@@ -40,6 +43,7 @@ const FormAttendanceConfirmation = () => {
   const [ConfirmBussingByAdmin] = useMutation(CONFIRM_BUSSING_BY_ADMIN)
   const [SetBussingSupport] = useMutation(SET_BUSSING_SUPPORT)
   const [SendBussingSupport] = useMutation(SEND_BUSSING_SUPPORT)
+  const [RecordArrivalTime] = useMutation(RECORD_ARRIVAL_TIME)
 
   const bussing: BussingRecord = data?.bussingRecords[0]
   const bacenta: BacentaWithArrivals = data?.bacentas[0]
@@ -50,6 +54,7 @@ const FormAttendanceConfirmation = () => {
     numberOfUrvans: bussing?.numberOfUrvans.toString() ?? '0',
     numberOfCars: bussing?.numberOfCars.toString() ?? '0',
     comments: '',
+    addMoreLater: 'false',
   }
 
   const validationSchema = Yup.object({
@@ -114,13 +119,25 @@ const FormAttendanceConfirmation = () => {
       throwErrorMsg('There was an error confirming bussing', error)
     )
 
+    if (values.addMoreLater === 'true') {
+      navigate(`/bacenta/bussing-details`)
+      return
+    }
+
     const bussingData = res?.data.ConfirmBussingByAdmin
 
-    await SetBussingSupport({
-      variables: {
-        bussingRecordId: bussingRecordId,
-      },
-    }).catch((error) =>
+    await Promise.all([
+      SetBussingSupport({
+        variables: {
+          bussingRecordId: bussingRecordId,
+        },
+      }),
+      RecordArrivalTime({
+        variables: {
+          bussingRecordId,
+        },
+      }),
+    ]).catch((error) =>
       throwErrorMsg('There was an error setting bussing support', error)
     )
 
@@ -226,7 +243,25 @@ const FormAttendanceConfirmation = () => {
                   name="comments"
                   label="Comments"
                 />
-                <Card className="text-center mt-3 ">
+                <Card border="warning" className="my-3">
+                  <Card.Body>
+                    <RadioButtons
+                      name="addMoreLater"
+                      options={[
+                        {
+                          key: 'Will Add More Vehicles',
+                          value: 'true',
+                        },
+                        {
+                          key: 'No More Vehicles Coming',
+                          value: 'false',
+                        },
+                      ]}
+                    />
+                  </Card.Body>
+                </Card>
+
+                <Card className="text-center">
                   <Card.Body>
                     I can confirm that the above data is correct and I approve
                     the bussing top up for this bacenta

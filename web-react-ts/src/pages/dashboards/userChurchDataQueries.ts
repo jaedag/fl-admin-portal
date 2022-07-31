@@ -529,23 +529,3 @@ export const SERVANTS_STREAM_ARRIVALS_COUNTER = gql`
     }
   }
 `
-
-export const SERVANTS_STREAM_ARRIVALS_CONFIRMER = gql`
-  query streamArrivalsConfirmer($id: ID!) {
-    members(where: { id: $id }) {
-      id
-
-      isArrivalsConfirmerForStream {
-        id
-        name
-
-        leader {
-          id
-          firstName
-          lastName
-          fullName
-        }
-      }
-    }
-  }
-`

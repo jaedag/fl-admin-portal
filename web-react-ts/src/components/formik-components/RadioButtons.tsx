@@ -1,8 +1,16 @@
 import React from 'react'
 import { Field, ErrorMessage } from 'formik'
 import TextError from './TextError/TextError'
+import { FormikSelectOptions } from 'global-utils'
+import { Form } from 'react-bootstrap'
 
-function RadioButtons(props) {
+type RadioButtonsProps = {
+  name: string
+  label?: string
+  options: FormikSelectOptions
+}
+
+function RadioButtons(props: RadioButtonsProps) {
   const { label, name, options, ...rest } = props
 
   return (
@@ -15,21 +23,19 @@ function RadioButtons(props) {
         </div>
       ) : null}
       <Field name={name} className="row row-cols-2 form-control" {...rest}>
-        {({ field }) => {
+        {({ field }: { field: { value: string } }) => {
           return options.map((option) => {
             return (
-              <span className="col pl-0" key={option.key}>
-                <input
+              <div className="col radio-container pl-0" key={option.key}>
+                <Form.Check
                   type="radio"
                   id={option.value}
                   {...field}
+                  label={option.key}
                   value={option.value}
                   checked={field.value === option.value}
                 />
-                <label className="pl-2" htmlFor={option.value}>
-                  {option.key}
-                </label>
-              </span>
+              </div>
             )
           })
         }}
