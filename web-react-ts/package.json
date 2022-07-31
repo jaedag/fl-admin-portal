@@ -1,7 +1,7 @@
 {
   "name": "admin-portal-react-frontend",
   "version": "4.9.2",
-  "description": "React app for GRANDstack FL Admin Portal",
+  "description": "React app for FL Admin Portal",
   "private": true,
   "dependencies": {
     "@apollo/client": "^3.6.5",
