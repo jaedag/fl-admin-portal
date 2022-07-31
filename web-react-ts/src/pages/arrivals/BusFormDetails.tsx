@@ -58,14 +58,17 @@ const BusFormDetails = () => {
         <PlaceholderCustom as="h6" loading={loading}>
           <HeadingSecondary>{`${church?.name} ${church?.__typename}`}</HeadingSecondary>
           <p>{`Recorded by ${bussing?.created_by.fullName}`}</p>
-          {bussing?.counted_by && (
+          {bussing?.counted_by.length && (
             <p className="mb-0">
               {`Counted`}
               <RoleView roles={permitAdminArrivals('Stream')}>
                 {` by `}
-                <span className="fw-bold good">
-                  {bussing?.counted_by.fullName}
-                </span>
+                {bussing.counted_by.map((counter, i) => (
+                  <span className="good">
+                    {counter.fullName}
+                    {i < bussing.counted_by.length - 1 && ' | '}
+                  </span>
+                ))}
               </RoleView>
             </p>
           )}
@@ -84,7 +87,7 @@ const BusFormDetails = () => {
 
         <Row>
           <Col>
-            <Row className="d-flex justify-content-center">
+            <Row className="d-flex justify-content-center mt-3">
               <Table variant={theme} striped bordered>
                 <tbody>
                   <tr>
@@ -344,16 +347,25 @@ const BusFormDetails = () => {
             {beforeCountingDeadline(bussing, church) && (
               <>
                 {!bussing.arrivalTime && (
-                  <Button
-                    variant="warning"
-                    onClick={() => navigate('/arrivals/submit-bus-attendance')}
-                  >
-                    I Want to Count
-                  </Button>
+                  <>
+                    <Button
+                      variant="warning"
+                      onClick={() =>
+                        navigate('/arrivals/submit-bus-attendance')
+                      }
+                    >
+                      I Want to Count
+                    </Button>
+                    <Button
+                      variant="info"
+                      className="mb-3"
+                      onClick={handleShow}
+                    >
+                      This Bacenta Has Arrived
+                    </Button>
+                  </>
                 )}
-                <Button variant="info" className="mb-3" onClick={handleShow}>
-                  This Bacenta Has Arrived
-                </Button>
+
                 <Button
                   variant="outline-danger"
                   onClick={() => navigate('/arrivals/bacentas-to-count')}

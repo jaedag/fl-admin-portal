@@ -30,7 +30,7 @@ export interface BussingRecord {
   numberOfCars: number
   bussingCost: number
   bussingTopUp: number
-  counted_by: Member
+  counted_by: [Member]
 
   comments: string
   arrivalTime: Date

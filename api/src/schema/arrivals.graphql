@@ -923,7 +923,7 @@ type BussingRecord implements Record @auth(rules: [{ isAuthenticated: true }]) {
   numberOfCars: Int
   bussingCost: Float
   bussingTopUp: Float
-  counted_by: Member @relationship(type: "COUNTED_BY", direction: OUT)
+  counted_by: [Member!]! @relationship(type: "COUNTED_BY", direction: OUT)
 
   #Arrived
   comments: String
