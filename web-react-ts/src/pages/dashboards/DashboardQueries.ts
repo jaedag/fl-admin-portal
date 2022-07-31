@@ -60,6 +60,10 @@ export const SERVANT_CHURCH_LIST = gql`
         id
         name
       }
+      leadsOversight {
+        id
+        name
+      }
       isAdminForConstituency {
         id
         name
@@ -74,6 +78,11 @@ export const SERVANT_CHURCH_LIST = gql`
         stream_name
       }
       isAdminForGatheringService {
+        id
+        name
+      }
+
+      isAdminForOversight {
         id
         name
       }

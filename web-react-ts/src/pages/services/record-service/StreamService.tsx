@@ -29,14 +29,14 @@ const StreamService = () => {
           RecordServiceMutation={RecordServiceNoIncome}
           church={data?.streams[0]}
           churchId={streamId}
-          churchType="stream"
+          churchType="Stream"
         />
       ) : (
         <ServiceForm
           RecordServiceMutation={RecordService}
           church={data?.streams[0]}
           churchId={streamId}
-          churchType="stream"
+          churchType="Stream"
         />
       )}
     </ApolloWrapper>

@@ -36,7 +36,7 @@ const GatheringServiceService = () => {
           RecordServiceMutation={RecordService}
           church={data?.gatheringServices[0]}
           churchId={gatheringServiceId}
-          churchType="gatheringService"
+          churchType="GatheringService"
         />
       )}
     </ApolloWrapper>

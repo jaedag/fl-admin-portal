@@ -24,7 +24,7 @@ export type ChurchLevel =
   | 'Council'
   | 'Stream'
   | 'GatheringService'
-  | 'Denomination'
+  | 'Oversight'
   | 'Sonta'
   | 'Basonta'
 
@@ -127,12 +127,13 @@ export interface MemberWithChurches extends Member {
   leadsStream: Church[]
   leadsSonta: Church[]
   leadsGatheringService: Church[]
-  leadsDenomination: Church[]
+  leadsOversight: Church[]
   leadsMinistry: Church[]
   isAdminForConstituency: Church[]
   isAdminForCouncil: Church[]
   isAdminForStream: Church[]
   isAdminForGatheringService: Church[]
+  isAdminForOversight: Church[]
 }
 
 export interface Servant {
@@ -189,11 +190,12 @@ export type Role =
   | 'leaderStream'
   | 'leaderSonta'
   | 'leaderGatheringService'
-  | 'leaderDenomination'
+  | 'leaderOversight'
   | 'adminConstituency'
   | 'adminCouncil'
   | 'adminStream'
   | 'adminGatheringService'
+  | 'adminOversight'
   | 'arrivalsAdminGatheringService'
   | 'arrivalsAdminStream'
   | 'arrivalsAdminCouncil'
@@ -218,15 +220,24 @@ export type VerbTypes =
 export type ServiceRecord = {
   __typename: 'ServiceRecord' | 'RehearsalRecord'
   id: string
+  created_at: string
+  created_by: Member
   attendance: number
   income: number
   week: number
+  familyPicture: string
+  treasurers: Member[]
   stream_name: StreamOptions
   noServiceReason: string
-  bankingProof: boolean
-  bankingSlip: string
-  transactionStatus: 'pending' | 'success' | 'failed'
   serviceDate: {
     date: string
   }
+
+  // Offering
+  treasurerSelfie: string
+  bankingProof: boolean
+  bankingSlip: string
+  transactionStatus: 'pending' | 'success' | 'failed'
+  bankingSlipUploader: Member
+  offeringBankedBy: Member
 }

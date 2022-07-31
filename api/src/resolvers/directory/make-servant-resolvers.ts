@@ -125,7 +125,7 @@ const MakeServantResolvers = {
     MakeServant(
       context,
       args,
-      permitAdmin('Denomination'),
+      permitAdmin('Oversight'),
       'GatheringService',
       'Leader'
     ),
@@ -137,7 +137,7 @@ const MakeServantResolvers = {
     RemoveServant(
       context,
       args,
-      permitAdmin('Denomination'),
+      permitAdmin('Oversight'),
       'GatheringService',
       'Leader'
     ),

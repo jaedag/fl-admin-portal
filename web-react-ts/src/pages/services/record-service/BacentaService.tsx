@@ -31,14 +31,14 @@ const BacentaService = () => {
           RecordServiceMutation={RecordService}
           church={bacentaData?.bacentas[0]}
           churchId={bacentaId}
-          churchType="bacenta"
+          churchType="Bacenta"
         />
       ) : (
         <ServiceForm
           RecordServiceMutation={RecordService}
           church={bacentaData?.bacentas[0]}
           churchId={bacentaId}
-          churchType="bacenta"
+          churchType="Bacenta"
         />
       )}
     </ApolloWrapper>

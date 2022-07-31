@@ -111,7 +111,7 @@ export const GATHERING_SERVICE_AVG_WEEKDAY_ATTENDANCE_THIS_MONTH = gql`
         firstName
         lastName
       }
-      denomination {
+      oversight {
         id
         name
         avgGatheringServiceWeekdayAttendanceThisMonth
@@ -232,7 +232,7 @@ export const GATHERING_SERVICE_AVG_WEEKDAY_INCOME_THIS_MONTH = gql`
         firstName
         lastName
       }
-      denomination {
+      oversight {
         id
         name
         avgGatheringServiceWeekdayIncomeThisMonth
@@ -333,7 +333,7 @@ export const GATHERING_SERVICE_AVG_BUSSING_THIS_MONTH = gql`
         firstName
         lastName
       }
-      denomination {
+      oversight {
         id
         name
         avgGatheringServiceBussingAttendanceThisMonth

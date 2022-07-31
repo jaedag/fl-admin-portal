@@ -245,6 +245,47 @@ export const GET_GATHERINGSERVICE_STREAMS = gql`
   }
 `
 
+export const GET_OVERSIGHT_GATHERINGSERVICES = gql`
+  query getOversightGatheringServices($id: ID!) {
+    oversights(where: { id: $id }) {
+      id
+      name
+      leader {
+        id
+        firstName
+        lastName
+        fullName
+      }
+      memberCount
+      admin {
+        id
+        firstName
+        lastName
+        fullName
+      }
+      gatheringServices {
+        name
+        id
+        memberCount
+        councilCount
+        target
+        leader {
+          id
+          firstName
+          lastName
+          pictureUrl
+        }
+        admin {
+          id
+          firstName
+          lastName
+          fullName
+        }
+      }
+    }
+  }
+`
+
 export const GET_STREAM_CONSTITUENCIES = gql`
   query getStreamConstituencies($id: ID!) {
     streams(where: { id: $id }) {

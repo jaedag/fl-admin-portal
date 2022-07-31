@@ -10,6 +10,7 @@ import {
 
 import { isAuth, rearrangeCypherObject, throwErrorMsg } from '../utils/utils'
 import { Context } from '../utils/neo4j-types'
+import { ChurchLevel } from '../utils/types'
 
 export const campaignsMutation = {
   // Equipment Campaigns
@@ -148,4 +149,57 @@ export const campaignsMutation = {
   },
 }
 
-export const campaignsResolvers = {}
+const churchCampaigns = async (church: ChurchLevel) => {
+  switch (church) {
+    case 'Oversight':
+    case 'GatheringService':
+    case 'Stream':
+    case 'Council':
+    case 'Constituency':
+    case 'Bacenta':
+    case 'Fellowship':
+      return ['Equipment']
+
+    default:
+      return []
+  }
+}
+
+export const campaignsResolvers = {
+  Oversight: {
+    campaigns: async () => {
+      return churchCampaigns('Oversight')
+    },
+  },
+  GatheringService: {
+    campaigns: async () => {
+      return churchCampaigns('GatheringService')
+    },
+  },
+  Stream: {
+    campaigns: async () => {
+      console.log('in stream function')
+      return churchCampaigns('Stream')
+    },
+  },
+  Council: {
+    campaigns: async () => {
+      return churchCampaigns('Council')
+    },
+  },
+  Constituency: {
+    campaigns: async () => {
+      return churchCampaigns('Constituency')
+    },
+  },
+  Bacenta: {
+    campaigns: async () => {
+      return churchCampaigns('Bacenta')
+    },
+  },
+  Fellowship: {
+    campaigns: async () => {
+      return churchCampaigns('Fellowship')
+    },
+  },
+}
