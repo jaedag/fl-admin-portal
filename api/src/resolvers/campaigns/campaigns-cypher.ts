@@ -1,9 +1,8 @@
 export const SetEquipmentDeadline = `
 MATCH (gatheringService:GatheringService {id: $id})
-MATCH (gatheringService)-[:HAS_CAMPAIGN]->(campaign:EquipmentCampaign)
-SET campaign.equipmentStartDate = $startDate,
-     campaign.equipmentEndDate = $endDate,
-     campaign.equipmentDate = $startDate
+SET gatheringService.equipmentStartDate = $startDate,
+    gatheringService.equipmentEndDate = $endDate
+MERGE (equipmentDate:TimeGraph:EquipmentDate {date:date($startDate)})
 RETURN gatheringService
 `
 
@@ -52,11 +51,11 @@ RETURN record
 `
 
 export const getEquipmentCampaign = `
-MATCH (gs:GatheringService)-[:HAS_CAMPAIGN]->(campaign:EquipmentCampaign)
+MATCH (gatheringService:GatheringService)
 RETURN 
     { 
-    equipmentDate: toString(campaign.equipmentDate),
-    equipmentEndDate: toString(campaign.equipmentEndDate),
-    equipmentStartDate: toString(campaign.equipmentStartDate)
+    equipmentDate: toString(gatheringService.equipmentDate),
+    equipmentEndDate: toString(gatheringService.equipmentEndDate),
+    equipmentStartDate: toString(gatheringService.equipmentStartDate)
     } as campaign
 `

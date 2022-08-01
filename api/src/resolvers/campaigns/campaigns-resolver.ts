@@ -30,6 +30,10 @@ export const campaignsMutation = {
       return {
         id: setEquipmentDuration.gatheringService.properties.id,
         name: setEquipmentDuration.gatheringService.properties.name,
+        equipmentStartDate:
+          setEquipmentDuration.gatheringService.properties.equipmentStartDate,
+        equipmentEndDate:
+          setEquipmentDuration.gatheringService.properties.equipmentEndDate,
       }
     } catch (error: any) {
       return throwErrorMsg('Setting equipment deadline failed ', error)
@@ -167,39 +171,24 @@ const churchCampaigns = async (church: ChurchLevel) => {
 
 export const campaignsResolvers = {
   Oversight: {
-    campaigns: async () => {
-      return churchCampaigns('Oversight')
-    },
+    campaigns: async () => churchCampaigns('Oversight'),
   },
   GatheringService: {
-    campaigns: async () => {
-      return churchCampaigns('GatheringService')
-    },
+    campaigns: async () => churchCampaigns('GatheringService'),
   },
   Stream: {
-    campaigns: async () => {
-      console.log('in stream function')
-      return churchCampaigns('Stream')
-    },
+    campaigns: async () => churchCampaigns('Stream'),
   },
   Council: {
-    campaigns: async () => {
-      return churchCampaigns('Council')
-    },
+    campaigns: async () => churchCampaigns('Council'),
   },
   Constituency: {
-    campaigns: async () => {
-      return churchCampaigns('Constituency')
-    },
+    campaigns: async () => churchCampaigns('Constituency'),
   },
   Bacenta: {
-    campaigns: async () => {
-      return churchCampaigns('Bacenta')
-    },
+    campaigns: async () => churchCampaigns('Bacenta'),
   },
   Fellowship: {
-    campaigns: async () => {
-      return churchCampaigns('Fellowship')
-    },
+    campaigns: async () => churchCampaigns('Fellowship'),
   },
 }
