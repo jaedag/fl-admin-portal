@@ -51,10 +51,13 @@ RETURN record
 `
 
 export const getEquipmentCampaign = `
-MATCH (gatheringService:GatheringService)
+MATCH (church {id:$id}) WHERE church:Fellowship OR church:Constituency
+MATCH (fellowship)<-[:HAS*1..5]-(gatheringService:GatheringService)
+MATCH (date:EquipmentDate)
+WITH DISTINCT max(date.date) as latestEquipmentDate, gatheringService
 RETURN 
     { 
-    equipmentDate: toString(gatheringService.equipmentDate),
+    equipmentDate: toString(latestEquipmentDate),
     equipmentEndDate: toString(gatheringService.equipmentEndDate),
     equipmentStartDate: toString(gatheringService.equipmentStartDate)
     } as campaign

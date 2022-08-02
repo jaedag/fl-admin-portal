@@ -4,158 +4,131 @@ extend type ServiceLog {
 }
 
 extend type GatheringService {
-  pulpits(date: Date!): Int
+  pulpits: Int
     @cypher(
       statement: """
       MATCH (this)
+      MATCH (n:EquipmentDate)
+      WITH max(n.date) as latestEquipmentDate, this
       MATCH (this)-[:HAS]->(:Stream)-[:HAS]->(:Council)-[:HAS]->(:Constituency)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_EQUIPMENT_RECORD]->(record:EquipmentRecord)
-      MATCH (record)-[:HAS_EQUIPMENT_DATE]->(date:TimeGraph {date:date($date)})
+      MATCH (record)-[:HAS_EQUIPMENT_DATE]->(equipment:EquipmentDate {date:date(latestEquipmentDate)})
       RETURN sum(record.pulpits)
       """
     )
-  offeringBags(date: Date!): Int
+  offeringBags: Int
     @cypher(
       statement: """
       MATCH (this)
-      MATCH (this)-[:HAS]->(:Stream)-[:HAS]->(:Council)-[:HAS]->(:Constituency)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_EQUIPMENT_RECORD]->(record:EquipmentRecord)
-      MATCH (record)-[:HAS_EQUIPMENT_DATE]->(date:TimeGraph {date:date($date)})
+      MATCH (n:EquipmentDate)
+      WITH max(n.date) as latestEquipmentDate, this
+      MATCH (this)-[:HAS]->(:Stream)-[:HAS]->(:Council)-[:HAS]->(:Constituency)-[:HAS]->(:Bacenta)-[:HAS]->(:Fellowship)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_EQUIPMENT_RECORD]->(record:EquipmentRecord)
+      MATCH (record)-[:HAS_EQUIPMENT_DATE]->(date:EquipmentDate {date:date(latestEquipmentDate)})
       RETURN sum(record.offeringBags)
       """
     )
-  # equipmentFormConstituencyDefaulters: [Constituency!]!
-  # equipmentFormConstituencyDefaultersCount: Int
-  # equipmentFormConstituenciesFilled: [Constituency!]!
-  # equipmentFormConstituenciesFilledCount: Int
-  # equipmentFormFellowshipsFilled: [Fellowship!]!
-  # equipmentFormFellowshipsFilledCount: Int
-  # equipmentFormFellowshipDefaulters: [Fellowship!]!
-  # equipmentFormFellowshipDefaultersCount: Int
   equipmentStartDate: Date
   equipmentEndDate: Date
 }
 
 extend type Stream {
-  pulpits(date: Date!): Int
+  pulpits: Int
     @cypher(
       statement: """
       MATCH (this)<-[:HAS]-(gatheringService:GatheringService)
+      MATCH (n:EquipmentDate)
+      WITH max(n.date) as latestEquipmentDate, this
       MATCH (this)-[:HAS]->(:Council)-[:HAS]->(:Constituency)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_EQUIPMENT_RECORD]->(record:EquipmentRecord)
-      MATCH (record)-[:HAS_EQUIPMENT_DATE]->(date:TimeGraph {date:date(gatheringService.equipmentDate)})
+      MATCH (record)-[:HAS_EQUIPMENT_DATE]->(date:TimeGraph {date:date(latestEquipmentDate)})
       RETURN sum(record.pulpits)
       """
     )
-  offeringBags(date: Date!): Int
+  offeringBags: Int
     @cypher(
       statement: """
       MATCH (this)<-[:HAS]-(gatheringService:GatheringService)
+      MATCH (n:EquipmentDate)
+      WITH max(n.date) as latestEquipmentDate, this
       MATCH (gatheringService)-[:HAS_CAMPAIGN]->(campaign:EquipmentCampaign)
       MATCH (this)-[:HAS]->(:Council)-[:HAS]->(:Constituency)-[:HAS]->(:Bacenta)-[:HAS]-(:Fellowship)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_EQUIPMENT_RECORD]->(record:EquipmentRecord)
-      MATCH (record)-[:HAS_EQUIPMENT_DATE]->(date:TimeGraph {date:date(gatheringService.equipmentDate)})
+      MATCH (record)-[:HAS_EQUIPMENT_DATE]->(date:TimeGraph {date:date(latestEquipmentDate)})
       RETURN sum(record.offeringBags)
       """
     )
-  # equipmentFormConstituencyDefaulters: [Constituency!]!
-  # equipmentFormConstituencyDefaultersCount: Int
-  # equipmentFormConstituenciesFilled: [Constituency!]!
-  # equipmentFormConstituenciesFilledCount: Int
-  # equipmentFormFellowshipsFilled: [Fellowship!]!
-  # equipmentFormFellowshipsFilledCount: Int
-  # equipmentFormFellowshipDefaulters: [Fellowship!]!
-  # equipmentFormFellowshipDefaultersCount: Int
 }
 
 extend type Council {
-  pulpits(date: Date!): Int
+  pulpits: Int
     @cypher(
       statement: """
       MATCH (this)<-[:HAS]-(:Stream)<-[:HAS]-(gatheringService:GatheringService)
+      MATCH (n:EquipmentDate)
+      WITH max(n.date) as latestEquipmentDate, this
       MATCH (this)-[:HAS]->(:Constituency)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_EQUIPMENT_RECORD]->(record:EquipmentRecord)
-      MATCH (record)-[:HAS_EQUIPMENT_DATE]->(date:TimeGraph {date:date(gatheringService.equipmentDate)})
+      MATCH (record)-[:HAS_EQUIPMENT_DATE]->(date:TimeGraph {date:date(latestEquipmentDate)})
       RETURN sum(record.pulpits)
       """
     )
-  offeringBags(date: Date!): Int
+  offeringBags: Int
     @cypher(
       statement: """
       MATCH (this)<-[:HAS]-(:Stream)<-[:HAS]-(gatheringService:GatheringService)
+      MATCH (n:EquipmentDate)
+      WITH max(n.date) as latestEquipmentDate, this
       MATCH (this)-[:HAS]->(:Constituency)-[:HAS]->(:Bacenta)-[:HAS]-(:Fellowship)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_EQUIPMENT_RECORD]->(record:EquipmentRecord)
-      MATCH (record)-[:HAS_EQUIPMENT_DATE]->(date:TimeGraph {date:date(gatheringService.equipmentDate)})
+      MATCH (record)-[:HAS_EQUIPMENT_DATE]->(date:TimeGraph {date:date(latestEquipmentDate)})
       RETURN sum(record.offeringBags)
       """
     )
-  # equipmentFormConstituencyDefaulters: [Constituency!]!
-
-  # equipmentFormConstituencyDefaultersCount: Int
-
-  # equipmentFormConstituenciesFilled: [Constituency!]!
-
-  # equipmentFormConstituenciesFilledCount: Int
-
-  # equipmentFormFellowshipsFilled: [Fellowship!]!
-
-  # equipmentFormFellowshipsFilledCount: Int
-
-  # equipmentFormFellowshipDefaulters: [Fellowship!]!
-
-  # equipmentFormFellowshipDefaultersCount: Int
 }
 
 extend type Constituency {
-  pulpits(date: Date!): Int
+  pulpits: Int
     @cypher(
       statement: """
-      MATCH (this)<-[:HAS]-(:Council)<-[:HAS]-(:Stream)<-[:HAS]-(gatheringService:GatheringService)
+      MATCH (this)
+      MATCH (n:EquipmentDate)
+      WITH max(n.date) as latestEquipmentDate, this
       MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_EQUIPMENT_RECORD]->(record:EquipmentRecord)
-      MATCH (record)-[:HAS_EQUIPMENT_DATE]->(date:TimeGraph {date:date(gatheringService.equipmentDate)})
+      MATCH (record)-[:HAS_EQUIPMENT_DATE]->(date:TimeGraph {date:date(latestEquipmentDate)})
       RETURN sum(record.pulpits)
       """
     )
-  offeringBags(date: Date!): Int
+  offeringBags: Int
     @cypher(
       statement: """
-      MATCH (this)<-[:HAS]-(:Council)<-[:HAS]-(:Stream)<-[:HAS]-(gatheringService:GatheringService)
+      MATCH (this)
+      MATCH (n:EquipmentDate)
+      WITH max(n.date) as latestEquipmentDate, this
       MATCH (this)-[:HAS]->(:Bacenta)-[:HAS]-(:Fellowship)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_EQUIPMENT_RECORD]->(record:EquipmentRecord)
-      MATCH (record)-[:HAS_EQUIPMENT_DATE]->(date:TimeGraph {date:date(gatheringService.equipmentDate)})
+      MATCH (record)-[:HAS_EQUIPMENT_DATE]->(date:TimeGraph {date:date(latestEquipmentDate)})
       RETURN sum(record.offeringBags)
       """
     )
-
-  # equipmentFormFellowshipsFilled: [Fellowship!]!
-
-  # equipmentFormFellowshipsFilledCount: Int
-
-  # equipmentFormFellowshipDefaulters: [Fellowship!]!
-
-  # equipmentFormFellowshipDefaultersCount: Int
 }
 
 extend type Bacenta {
-  offeringBags(date: Date!): Int
+  offeringBags: Int
     @cypher(
       statement: """
-      MATCH (this)<-[:HAS]-(:Constituency)<-[:HAS]-(:Council)<-[:HAS]-(:Stream)<-[:HAS]-(gatheringService:GatheringService)
+      MATCH (this)
+      MATCH (n:EquipmentDate)
+      WITH max(n.date) as latestEquipmentDate, this
       MATCH (this)-[:HAS]-(:Fellowship)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_EQUIPMENT_RECORD]->(record:EquipmentRecord)
-      MATCH (record)-[:HAS_EQUIPMENT_DATE]->(date:TimeGraph {date:date($date)})
+      MATCH (record)-[:HAS_EQUIPMENT_DATE]->(date:TimeGraph {date:date(latestEquipmentDate)})
       RETURN sum(record.offeringBags)
       """
     )
-
-  # equipmentFormFellowshipsFilled: [Fellowship!]!
-
-  # equipmentFormFellowshipsFilledCount: Int
-
-  # equipmentFormFellowshipDefaulters: [Fellowship!]!
-
-  # equipmentFormFellowshipDefaultersCount: Int
 }
 
 extend type Fellowship {
-  offeringBags(date: Date!): Int
+  offeringBags: Int
     @cypher(
       statement: """
-      MATCH (this)<-[:HAS]-(:Bacenta)<-[:HAS]-(:Constituency)<-[:HAS]-(:Council)<-[:HAS]-(:Stream)<-[:HAS]-(gatheringService:GatheringService)
+      MATCH (this)
+      MATCH (n:EquipmentDate)
+      WITH max(n.date) as latestEquipmentDate, this
       MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_EQUIPMENT_RECORD]->(record:EquipmentRecord)
-      MATCH (record)-[:HAS_EQUIPMENT_DATE]->(date:TimeGraph {date:date($date)})
+      MATCH (record)-[:HAS_EQUIPMENT_DATE]->(date:TimeGraph {date:date(latestEquipmentDate)})
       RETURN sum(record.offeringBags)
       """
     )

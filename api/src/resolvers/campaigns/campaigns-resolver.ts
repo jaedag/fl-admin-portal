@@ -50,7 +50,7 @@ export const campaignsMutation = {
 
     try {
       const equipmentCampaign = rearrangeCypherObject(
-        await session.run(getEquipmentCampaign)
+        await session.run(getEquipmentCampaign, { ...args })
       )
 
       const currentDate = new Date(args.date)
@@ -106,7 +106,7 @@ export const campaignsMutation = {
 
     try {
       const equipmentCampaign = rearrangeCypherObject(
-        await session.run(getEquipmentCampaign)
+        await session.run(getEquipmentCampaign, { ...args })
       )
 
       const currentDate = new Date(args.date)
