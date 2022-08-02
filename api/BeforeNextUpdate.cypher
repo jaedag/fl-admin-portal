@@ -1,26 +1,7 @@
 //Equipment Campaign
-//Creating the equipment campaign node
-MATCH (gatheringService:GatheringService)
-CREATE (campaign:EquipmentCampaign)
-SET campaign:Campaign:EquipmentCampaign
-SET campaign.id = apoc.create.uuid(),
-    campaign.name = "Equipment Campaign",
-    campaign.type = "Equipment",
-    campaign.constituencyTarget = 1,
-    campaign.fellowshipTarget = 2,
-    campaign.churchLevels = apoc.convert.toJson({fellowship: true, bacenta:true, constituency: true, council:true, stream:true, gatheringService:true})
-
-    WITH gatheringService, campaign
-    MERGE (gatheringService)-[:HAS_CAMPAIGN]->(campaign)
-    RETURN campaign;
-
  //Adding constraint for equipment campaign
-CREATE CONSTRAINT con_campaign_id FOR (n:Campaign) REQUIRE n.id IS UNIQUE;
 CREATE CONSTRAINT con_equipment_record_id FOR (n:EquipmentRecord) REQUIRE n.id IS UNIQUE;
-CREATE CONSTRAINT con_campaign_name FOR (n:Campaign) REQUIRE n.name IS UNIQUE;
-CREATE CONSTRAINT campaignShouldHaveChurchLevels FOR (n:Campaign) REQUIRE n.churchLevels IS NOT NULL;
-CREATE CONSTRAINT campaignShouldHaveType FOR (n:Campaign) REQUIRE n.type IS NOT NULL;
-CREATE INDEX ind_campaign_name FOR (n:Campaign) ON (n.name);
+
 
 
 //Adding CONSTRAINST 
