@@ -38,7 +38,7 @@ export const arrivals: RouteTypes[] = [
     placeholder: true,
     roles: [
       ...permitLeaderAdminArrivals('Fellowship'),
-      ...permitArrivalsHelpers('Fellowship'),
+      ...permitArrivalsHelpers('Stream'),
     ],
   },
 
@@ -116,7 +116,7 @@ export const arrivals: RouteTypes[] = [
     path: '/arrivals/bacentas-no-activity',
     roles: [
       ...permitLeaderAdminArrivals('Constituency'),
-      ...permitArrivalsHelpers('Constituency'),
+      ...permitArrivalsHelpers('Stream'),
     ],
     element: StateBacentasNoActivity,
     placeholder: true,
@@ -125,7 +125,7 @@ export const arrivals: RouteTypes[] = [
     path: '/arrivals/bacentas-mobilising',
     roles: [
       ...permitLeaderAdminArrivals('Constituency'),
-      ...permitArrivalsHelpers('Constituency'),
+      ...permitArrivalsHelpers('Stream'),
     ],
     element: BacentasMobilising,
     placeholder: true,
@@ -152,7 +152,7 @@ export const arrivals: RouteTypes[] = [
     path: '/arrivals/bacentas-have-arrived',
     roles: [
       ...permitLeaderAdminArrivals('Constituency'),
-      ...permitArrivalsHelpers('Constituency'),
+      ...permitArrivalsHelpers('Stream'),
     ],
     element: BacentasHaveArrived,
     placeholder: true,
@@ -174,7 +174,7 @@ export const arrivals: RouteTypes[] = [
   {
     path: '/bacenta/bussing-details',
     roles: [
-      ...permitArrivalsHelpers('Bacenta'),
+      ...permitArrivalsHelpers('Stream'),
       ...permitLeaderAdminArrivals('Bacenta'),
     ],
     element: BusFormDetails,
