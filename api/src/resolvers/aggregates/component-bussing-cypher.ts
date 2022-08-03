@@ -63,3 +63,15 @@ export const componentGatheringServiceBussingAggregates = `
 
 RETURN week AS week, SUM(componentRecords.attendance) AS attendance ORDER BY week DESC LIMIT toInteger($limit)
 `
+export const componentOversightBussingAggregates = `
+ MATCH (church:Oversight {id:$id})
+  
+  MATCH (church)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_COMPONENT*1..6]->(componentServices:ServiceLog)
+  MATCH (componentServices)-[:HAS_BUSSING]->(componentRecords:BussingRecord)
+
+  MATCH (componentRecords)-[:BUSSED_ON]->(date:TimeGraph)
+  WHERE date.date > date() - duration({months: 2})
+  WITH DISTINCT componentRecords, date(date.date).week AS week ORDER BY week
+
+RETURN week AS week, SUM(componentRecords.attendance) AS attendance ORDER BY week DESC LIMIT toInteger($limit)
+`

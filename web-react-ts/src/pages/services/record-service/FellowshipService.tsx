@@ -33,14 +33,14 @@ const FellowshipService = () => {
           RecordServiceMutation={RecordServiceNoIncome}
           church={data?.fellowships[0]}
           churchId={fellowshipId}
-          churchType="fellowship"
+          churchType="Fellowship"
         />
       ) : (
         <ServiceForm
           RecordServiceMutation={RecordService}
           church={data?.fellowships[0]}
           churchId={fellowshipId}
-          churchType="fellowship"
+          churchType="Fellowship"
         />
       )}
     </ApolloWrapper>

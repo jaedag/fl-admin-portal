@@ -10,6 +10,7 @@ import {
 
 import { isAuth, rearrangeCypherObject, throwErrorMsg } from '../utils/utils'
 import { Context } from '../utils/neo4j-types'
+import { ChurchLevel } from '../utils/types'
 
 export const campaignsMutation = {
   // Equipment Campaigns
@@ -29,6 +30,10 @@ export const campaignsMutation = {
       return {
         id: setEquipmentDuration.gatheringService.properties.id,
         name: setEquipmentDuration.gatheringService.properties.name,
+        equipmentStartDate:
+          setEquipmentDuration.gatheringService.properties.equipmentStartDate,
+        equipmentEndDate:
+          setEquipmentDuration.gatheringService.properties.equipmentEndDate,
       }
     } catch (error: any) {
       return throwErrorMsg('Setting equipment deadline failed ', error)
@@ -45,7 +50,7 @@ export const campaignsMutation = {
 
     try {
       const equipmentCampaign = rearrangeCypherObject(
-        await session.run(getEquipmentCampaign)
+        await session.run(getEquipmentCampaign, { ...args })
       )
 
       const currentDate = new Date(args.date)
@@ -101,7 +106,7 @@ export const campaignsMutation = {
 
     try {
       const equipmentCampaign = rearrangeCypherObject(
-        await session.run(getEquipmentCampaign)
+        await session.run(getEquipmentCampaign, { ...args })
       )
 
       const currentDate = new Date(args.date)
@@ -136,6 +141,8 @@ export const campaignsMutation = {
         return {
           id: fellowshipRecord.record.properties.id,
           offeringBags: fellowshipRecord.record.properties.offeringBags,
+          bluetoothSpeakers:
+            fellowshipRecord.record.properties.bluetoothSpeakers,
         }
       }
       return throwErrorMsg('Equipment Deadline is up')
@@ -148,4 +155,42 @@ export const campaignsMutation = {
   },
 }
 
-export const campaignsResolvers = {}
+const churchCampaigns = async (church: ChurchLevel) => {
+  switch (church) {
+    case 'Oversight':
+    case 'GatheringService':
+    case 'Stream':
+    case 'Council':
+    case 'Constituency':
+    case 'Bacenta':
+    case 'Fellowship':
+      return ['Equipment']
+
+    default:
+      return []
+  }
+}
+
+export const campaignsResolvers = {
+  Oversight: {
+    campaigns: async () => churchCampaigns('Oversight'),
+  },
+  GatheringService: {
+    campaigns: async () => churchCampaigns('GatheringService'),
+  },
+  Stream: {
+    campaigns: async () => churchCampaigns('Stream'),
+  },
+  Council: {
+    campaigns: async () => churchCampaigns('Council'),
+  },
+  Constituency: {
+    campaigns: async () => churchCampaigns('Constituency'),
+  },
+  Bacenta: {
+    campaigns: async () => churchCampaigns('Bacenta'),
+  },
+  Fellowship: {
+    campaigns: async () => churchCampaigns('Fellowship'),
+  },
+}

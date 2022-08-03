@@ -1,9 +1,8 @@
 export const SetEquipmentDeadline = `
 MATCH (gatheringService:GatheringService {id: $id})
-MATCH (gatheringService)-[:HAS_CAMPAIGN]->(campaign:EquipmentCampaign)
-SET campaign.equipmentStartDate = $startDate,
-     campaign.equipmentEndDate = $endDate,
-     campaign.equipmentDate = $startDate
+SET gatheringService.equipmentStartDate = date($startDate),
+    gatheringService.equipmentEndDate = date($endDate)
+MERGE (equipmentDate:TimeGraph:EquipmentDate {date:date($startDate)})
 RETURN gatheringService
 `
 
@@ -13,9 +12,9 @@ MATCH (fellowship)-[:CURRENT_HISTORY]->(log:ServiceLog)
 MATCH (member:Member {auth_id: $auth.jwt.sub})
 CREATE (record:EquipmentRecord)
 SET
-record.historyRecord = fellowship.name + ' ' + ' Equipment Record created on this '+datetime(),
 record.id = apoc.create.uuid(),
-record.offeringBags = $offeringBags,
+record.offeringBags = toInteger($offeringBags),
+record.bluetoothSpeakers = toInteger($bluetoothSpeakers),
 record.created_at = datetime()
 
 MERGE (log)-[:HAS_EQUIPMENT_RECORD]->(record)
@@ -39,9 +38,8 @@ MATCH (con)-[:CURRENT_HISTORY]->(log:ServiceLog)
 MATCH (member:Member {auth_id: $auth.jwt.sub})
 CREATE (record:EquipmentRecord)
 SET
-record.historyRecord = con.name + ' ' + 'Equipment Record created on this '+datetime(),
 record.id = apoc.create.uuid(),
-record.pulpits = $pulpits,
+record.pulpits = toInteger($pulpits),
 record.created_at = datetime()
 
 MERGE (log)-[:HAS_EQUIPMENT_RECORD]->(record)
@@ -52,11 +50,14 @@ RETURN record
 `
 
 export const getEquipmentCampaign = `
-MATCH (gs:GatheringService)-[:HAS_CAMPAIGN]->(campaign:EquipmentCampaign)
+MATCH (church {id:$id}) WHERE church:Fellowship OR church:Constituency
+MATCH (fellowship)<-[:HAS*1..5]-(gatheringService:GatheringService)
+MATCH (date:EquipmentDate)
+WITH DISTINCT max(date.date) as latestEquipmentDate, gatheringService
 RETURN 
     { 
-    equipmentDate: toString(campaign.equipmentDate),
-    equipmentEndDate: toString(campaign.equipmentEndDate),
-    equipmentStartDate: toString(campaign.equipmentStartDate)
+    equipmentDate: toString(latestEquipmentDate),
+    equipmentEndDate: toString(gatheringService.equipmentEndDate),
+    equipmentStartDate: toString(gatheringService.equipmentStartDate)
     } as campaign
 `

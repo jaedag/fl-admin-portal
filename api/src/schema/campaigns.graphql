@@ -1,79 +1,28 @@
 type Campaign {
-  id: ID!
   name: String!
   type: String!
-  leader: Member @relationship(type: "LEADS", direction: IN)
-  fellowship: Boolean!
-  bacenta: Boolean!
-  constituency: Boolean!
-  council: Boolean!
-  stream: Boolean!
-  gatheringService: Boolean!
-  oversight: Boolean!
-  denomination: Boolean!
 }
 
 extend type GatheringService {
-  campaigns: [Campaign!]!
-    @cypher(
-      statement: """
-      MATCH (this)-[:HAS_CAMPAIGN]->(campaigns)
-      RETURN campaigns
-      """
-    )
+  campaigns: [String!]!
 }
 
 extend type Stream {
-  campaigns: [Campaign!]!
-    @cypher(
-      statement: """
-      MATCH (this)<-[:HAS]-(gatheringService:GatheringService)
-      MATCH (gatheringService)-[:HAS_CAMPAIGN]->(campaigns)
-      RETURN campaigns
-      """
-    )
+  campaigns: [String!]!
 }
 
 extend type Council {
-  campaigns: [Campaign!]!
-    @cypher(
-      statement: """
-      MATCH (this)<-[:HAS]-(:Stream)<-[:HAS]-(gatheringService:GatheringService)
-      MATCH (gatheringService)-[:HAS_CAMPAIGN]->(campaigns)
-      RETURN campaigns
-      """
-    )
+  campaigns: [String!]!
 }
 
 extend type Constituency {
-  campaigns: [Campaign!]!
-    @cypher(
-      statement: """
-      MATCH (this)<-[:HAS]-(:Council)<-[:HAS]-(:Stream)<-[:HAS]-(gatheringService:GatheringService)
-      MATCH (gatheringService)-[:HAS_CAMPAIGN]->(campaigns)
-      RETURN campaigns
-      """
-    )
+  campaigns: [String!]!
 }
 
 extend type Bacenta {
-  campaigns: [Campaign!]!
-    @cypher(
-      statement: """
-      MATCH (this)<-[:HAS]-(:Constituency)<-[:HAS]-(:Council)<-[:HAS]-(:Stream)<-[:HAS]-(gatheringService:GatheringService)
-      MATCH (gatheringService)-[:HAS_CAMPAIGN]->(campaigns)
-      RETURN campaigns
-      """
-    )
+  campaigns: [String!]!
 }
 
 extend type Fellowship {
-  campaigns: [Campaign!]!
-    @cypher(
-      statement: """
-      MATCH (this)<-[:HAS]-(:Bacenta)<-[:HAS]-(:Constituency)<-[:HAS]-(:Council)<-[:HAS]-(:Stream)<-[:HAS]-(gatheringService:GatheringService)
-      MATCH (gatheringService)-[:HAS_CAMPAIGN]->(campaigns)
-      RETURN campaigns
-      """
-    )
+  campaigns: [String!]!
 }

@@ -94,6 +94,12 @@ const componentResolvers = {
     componentServiceAggregate: (obj: any, args: any, context: Context) =>
       getComponentServiceAggregates(obj, args, context, 'GatheringService'),
   },
+  Oversight: {
+    componentBussingAggregate: (obj: any, args: any, context: Context) =>
+      getComponentBussingAggregates(obj, args, context, 'Oversight'),
+    componentServiceAggregate: (obj: any, args: any, context: Context) =>
+      getComponentServiceAggregates(obj, args, context, 'Oversight'),
+  },
 }
 
 export default componentResolvers

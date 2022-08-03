@@ -3,252 +3,68 @@ extend type ServiceLog {
     @relationship(type: "HAS_EQUIPMENT_RECORD", direction: OUT)
 }
 
+type FellowshipEquipment {
+  offeringBags: Int!
+  bluetoothSpeakers: Int!
+}
+
 extend type GatheringService {
   pulpits: Int
     @cypher(
       statement: """
-      MATCH (this)-[:HAS_CAMPAIGN]->(campaign:EquipmentCampaign)
+      MATCH (this)
+      MATCH (n:EquipmentDate)
+      WITH max(n.date) as latestEquipmentDate, this
       MATCH (this)-[:HAS]->(:Stream)-[:HAS]->(:Council)-[:HAS]->(:Constituency)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_EQUIPMENT_RECORD]->(record:EquipmentRecord)
-      MATCH (record)-[:HAS_EQUIPMENT_DATE]->(date:TimeGraph {date:date(campaign.equipmentDate)})
+      MATCH (record)-[:HAS_EQUIPMENT_DATE]->(equipment:EquipmentDate {date:date(latestEquipmentDate)})
       RETURN sum(record.pulpits)
       """
     )
-  offeringBags: Int
+  fellowshipEquipment: FellowshipEquipment!
     @cypher(
       statement: """
-      MATCH (this)-[:HAS_CAMPAIGN]->(campaign:EquipmentCampaign)
-      MATCH (this)-[:HAS]->(:Stream)-[:HAS]->(:Council)-[:HAS]->(:Constituency)-[:HAS]->(:Bacenta)-[:HAS]-(:Fellowship)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_EQUIPMENT_RECORD]->(record:EquipmentRecord)
-      MATCH (record)-[:HAS_EQUIPMENT_DATE]->(date:TimeGraph {date:date(campaign.equipmentDate)})
-      RETURN sum(record.offeringBags)
+      MATCH (this)
+      MATCH (n:EquipmentDate)
+      WITH max(n.date) as latestEquipmentDate, this
+      MATCH (this)-[:HAS]->(:Stream)-[:HAS]->(:Council)-[:HAS]->(:Constituency)-[:HAS]->(:Bacenta)-[:HAS]->(:Fellowship)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_EQUIPMENT_RECORD]->(record:EquipmentRecord)
+      MATCH (record)-[:HAS_EQUIPMENT_DATE]->(date:EquipmentDate {date:date(latestEquipmentDate)})
+      WITH DISTINCT record
+      RETURN {
+        offeringBags: sum(record.offeringBags),
+        bluetoothSpeakers: sum(record.bluetoothSpeakers)
+      } as fellowshipEquipment
       """
     )
-
-  equipmentFormConstituencyDefaulters: [Constituency!]!
-    @cypher(
-      statement: """
-      MATCH (this)-[:HAS*3]->(con:Constituency)
-      MATCH (gs)-[:HAS_CAMPAIGN]->(campaign:EquipmentCampaign)
-      WITH con, campaign.equipmentDate as date
-      WHERE NOT  EXISTS {
-       MATCH (con)-[:HAS_CAMPAIGN]->(conCampaign:EquipmentCampaign)-[:HAS_RECORD]->(record:EquipmentRecord)-[:HAS_EQUIPMENT_DATE]->(t:TimeGraph {date:date})
-      }
-      RETURN DISTINCT con
-      """
-    )
-
-  equipmentFormConstituencyDefaultersCount: Int
-    @cypher(
-      statement: """
-      MATCH (this)-[:HAS*3]->(con:Constituency)
-      MATCH (gs)-[:HAS_CAMPAIGN]->(campaign:EquipmentCampaign)
-      WITH con, campaign.equipmentDate as date
-      WHERE NOT  EXISTS {
-       MATCH (con)-[:HAS_CAMPAIGN]->(conCampaign:EquipmentCampaign)-[:HAS_RECORD]->(record:EquipmentRecord)-[:HAS_EQUIPMENT_DATE]->(t:TimeGraph {date:date})
-      }
-      RETURN COUNT(DISTINCT con)
-      """
-    )
-
-  equipmentFormConstituenciesFilled: [Constituency!]!
-    @cypher(
-      statement: """
-      MATCH (this)-[:HAS*3]->(con:Constituency)
-      MATCH (gs)-[:HAS_CAMPAIGN]->(campaign:EquipmentCampaign)
-      WITH con, campaign.equipmentDate as date
-      WHERE EXISTS {
-       MATCH (con)-[:HAS_CAMPAIGN]->(conCampaign:EquipmentCampaign)-[:HAS_RECORD]->(record:EquipmentRecord)-[:HAS_EQUIPMENT_DATE]->(t:TimeGraph {date:date})
-      }
-      RETURN DISTINCT con
-      """
-    )
-
-  equipmentFormConstituenciesFilledCount: Int
-    @cypher(
-      statement: """
-      MATCH (this)-[:HAS*3]->(con:Constituency)
-      MATCH (gs)-[:HAS_CAMPAIGN]->(campaign:EquipmentCampaign)
-      WITH con, campaign.equipmentDate as date
-      WHERE EXISTS {
-       MATCH (con)-[:HAS_CAMPAIGN]->(conCampaign:EquipmentCampaign)-[:HAS_RECORD]->(record:EquipmentRecord)-[:HAS_EQUIPMENT_DATE]->(t:TimeGraph {date:date})
-      }
-      RETURN COUNT(DISTINCT con)
-      """
-    )
-
-  equipmentFormFellowshipsFilled: [Fellowship!]!
-    @cypher(
-      statement: """
-      MATCH (this)-[:HAS*5]->(fellowship:Fellowship)
-      MATCH (gs)-[:HAS_CAMPAIGN]->(campaign:EquipmentCampaign)
-      WITH fellowship, campaign.equipmentDate as date
-      WHERE  EXISTS {
-       MATCH (fellowship)-[:HAS_CAMPAIGN]->(fellowshipCampaign:EquipmentCampaign)-[:HAS_RECORD]->(record:EquipmentRecord)-[:HAS_EQUIPMENT_DATE]->(t:TimeGraph {date:date})
-      }
-      RETURN DISTINCT fellowship
-      """
-    )
-
-  equipmentFormFellowshipsFilledCount: Int
-    @cypher(
-      statement: """
-      MATCH (this)-[:HAS*5]->(fellowship:Fellowship)
-      MATCH (gs)-[:HAS_CAMPAIGN]->(campaign:EquipmentCampaign)
-      WITH fellowship, campaign.equipmentDate as date
-      WHERE  EXISTS {
-       MATCH (fellowship)-[:HAS_CAMPAIGN]->(fellowshipCampaign:EquipmentCampaign)-[:HAS_RECORD]->(record:EquipmentRecord)-[:HAS_EQUIPMENT_DATE]->(t:TimeGraph {date:date})
-      }
-      RETURN COUNT(DISTINCT fellowship)
-      """
-    )
-
-  equipmentFormFellowshipDefaulters: [Fellowship!]!
-    @cypher(
-      statement: """
-      MATCH (this)-[:HAS*5]->(fellowship:Fellowship)
-      MATCH (gs)-[:HAS_CAMPAIGN]->(campaign:EquipmentCampaign)
-      WITH fellowship, campaign.equipmentDate as date
-      WHERE NOT EXISTS {
-       MATCH (fellowship)-[:HAS_CAMPAIGN]->(fellowshipCampaign:EquipmentCampaign)-[:HAS_RECORD]->(record:EquipmentRecord)-[:HAS_EQUIPMENT_DATE]->(t:TimeGraph {date:date})
-      }
-      RETURN DISTINCT fellowship
-      """
-    )
-
-  equipmentFormFellowshipDefaultersCount: Int
-    @cypher(
-      statement: """
-      MATCH (this)-[:HAS*5]->(fellowship:Fellowship)
-      MATCH (gs)-[:HAS_CAMPAIGN]->(campaign:EquipmentCampaign)
-      WITH fellowship, campaign.equipmentDate as date
-      WHERE NOT EXISTS {
-       MATCH (fellowship)-[:HAS_CAMPAIGN]->(fellowshipCampaign:EquipmentCampaign)-[:HAS_RECORD]->(record:EquipmentRecord)-[:HAS_EQUIPMENT_DATE]->(t:TimeGraph {date:date})
-      }
-      RETURN  COUNT(DISTINCT fellowship)
-      """
-    )
+  equipmentStartDate: Date
+  equipmentEndDate: Date
 }
 
 extend type Stream {
   pulpits: Int
     @cypher(
       statement: """
-      MATCH (this)<-[:HAS]-(:GatheringService)-[:HAS_CAMPAIGN]->(campaign:EquipmentCampaign)
+      MATCH (this)<-[:HAS]-(gatheringService:GatheringService)
+      MATCH (n:EquipmentDate)
+      WITH max(n.date) as latestEquipmentDate, this
       MATCH (this)-[:HAS]->(:Council)-[:HAS]->(:Constituency)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_EQUIPMENT_RECORD]->(record:EquipmentRecord)
-      MATCH (record)-[:HAS_EQUIPMENT_DATE]->(date:TimeGraph {date:date(campaign.equipmentDate)})
+      MATCH (record)-[:HAS_EQUIPMENT_DATE]->(date:TimeGraph {date:date(latestEquipmentDate)})
       RETURN sum(record.pulpits)
       """
     )
-  offeringBags: Int
+  fellowshipEquipment: FellowshipEquipment!
     @cypher(
       statement: """
       MATCH (this)<-[:HAS]-(gatheringService:GatheringService)
+      MATCH (n:EquipmentDate)
+      WITH max(n.date) as latestEquipmentDate, this
       MATCH (gatheringService)-[:HAS_CAMPAIGN]->(campaign:EquipmentCampaign)
       MATCH (this)-[:HAS]->(:Council)-[:HAS]->(:Constituency)-[:HAS]->(:Bacenta)-[:HAS]-(:Fellowship)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_EQUIPMENT_RECORD]->(record:EquipmentRecord)
-      MATCH (record)-[:HAS_EQUIPMENT_DATE]->(date:TimeGraph {date:date(campaign.equipmentDate)})
-      RETURN sum(record.offeringBags)
-      """
-    )
-  equipmentFormConstituencyDefaulters: [Constituency!]!
-    @cypher(
-      statement: """
-      MATCH (this)-[:HAS*2]->(con:Constituency)
-      MATCH (gs)-[:HAS_CAMPAIGN]->(campaign:EquipmentCampaign)
-      WITH con, campaign.equipmentDate as date
-      WHERE NOT  EXISTS {
-       MATCH (con)-[:HAS_CAMPAIGN]->(conCampaign:EquipmentCampaign)-[:HAS_RECORD]->(record:EquipmentRecord)-[:HAS_EQUIPMENT_DATE]->(t:TimeGraph {date:date})
-      }
-      RETURN DISTINCT con
-      """
-    )
-
-  equipmentFormConstituencyDefaultersCount: Int
-    @cypher(
-      statement: """
-      MATCH (this)-[:HAS*2]->(con:Constituency)
-      MATCH (gs)-[:HAS_CAMPAIGN]->(campaign:EquipmentCampaign)
-      WITH con, campaign.equipmentDate as date
-      WHERE NOT  EXISTS {
-       MATCH (con)-[:HAS_CAMPAIGN]->(conCampaign:EquipmentCampaign)-[:HAS_RECORD]->(record:EquipmentRecord)-[:HAS_EQUIPMENT_DATE]->(t:TimeGraph {date:date})
-      }
-      RETURN COUNT(DISTINCT con)
-      """
-    )
-
-  equipmentFormConstituenciesFilled: [Constituency!]!
-    @cypher(
-      statement: """
-      MATCH (this)-[:HAS*2]->(con:Constituency)
-      MATCH (gs)-[:HAS_CAMPAIGN]->(campaign:EquipmentCampaign)
-      WITH con, campaign.equipmentDate as date
-      WHERE EXISTS {
-       MATCH (con)-[:HAS_CAMPAIGN]->(conCampaign:EquipmentCampaign)-[:HAS_RECORD]->(record:EquipmentRecord)-[:HAS_EQUIPMENT_DATE]->(t:TimeGraph {date:date})
-      }
-      RETURN DISTINCT con
-      """
-    )
-
-  equipmentFormConstituenciesFilledCount: Int
-    @cypher(
-      statement: """
-      MATCH (this)-[:HAS*2]->(con:Constituency)
-      MATCH (gs)-[:HAS_CAMPAIGN]->(campaign:EquipmentCampaign)
-      WITH con, campaign.equipmentDate as date
-      WHERE EXISTS {
-       MATCH (con)-[:HAS_CAMPAIGN]->(conCampaign:EquipmentCampaign)-[:HAS_RECORD]->(record:EquipmentRecord)-[:HAS_EQUIPMENT_DATE]->(t:TimeGraph {date:date})
-      }
-      RETURN COUNT(DISTINCT con)
-      """
-    )
-
-  equipmentFormFellowshipsFilled: [Fellowship!]!
-    @cypher(
-      statement: """
-      MATCH (this)-[:HAS*4]->(fellowship:Fellowship)
-      MATCH (gs)-[:HAS_CAMPAIGN]->(campaign:EquipmentCampaign)
-      WITH fellowship, campaign.equipmentDate as date
-      WHERE  EXISTS {
-       MATCH (fellowship)-[:HAS_CAMPAIGN]->(fellowshipCampaign:EquipmentCampaign)-[:HAS_RECORD]->(record:EquipmentRecord)-[:HAS_EQUIPMENT_DATE]->(t:TimeGraph {date:date})
-      }
-      RETURN DISTINCT fellowship
-      """
-    )
-
-  equipmentFormFellowshipsFilledCount: Int
-    @cypher(
-      statement: """
-      MATCH (this)-[:HAS*4]->(fellowship:Fellowship)
-      MATCH (gs)-[:HAS_CAMPAIGN]->(campaign:EquipmentCampaign)
-      WITH fellowship, campaign.equipmentDate as date
-      WHERE  EXISTS {
-       MATCH (fellowship)-[:HAS_CAMPAIGN]->(fellowshipCampaign:EquipmentCampaign)-[:HAS_RECORD]->(record:EquipmentRecord)-[:HAS_EQUIPMENT_DATE]->(t:TimeGraph {date:date})
-      }
-      RETURN COUNT(DISTINCT fellowship)
-      """
-    )
-
-  equipmentFormFellowshipDefaulters: [Fellowship!]!
-    @cypher(
-      statement: """
-      MATCH (this)-[:HAS*4]->(fellowship:Fellowship)
-      MATCH (gs)-[:HAS_CAMPAIGN]->(campaign:EquipmentCampaign)
-      WITH fellowship, campaign.equipmentDate as date
-      WHERE NOT EXISTS {
-       MATCH (fellowship)-[:HAS_CAMPAIGN]->(fellowshipCampaign:EquipmentCampaign)-[:HAS_RECORD]->(record:EquipmentRecord)-[:HAS_EQUIPMENT_DATE]->(t:TimeGraph {date:date})
-      }
-      RETURN DISTINCT fellowship
-      """
-    )
-
-  equipmentFormFellowshipDefaultersCount: Int
-    @cypher(
-      statement: """
-      MATCH (this)-[:HAS*4]->(fellowship:Fellowship)
-      MATCH (gs)-[:HAS_CAMPAIGN]->(campaign:EquipmentCampaign)
-      WITH fellowship, campaign.equipmentDate as date
-      WHERE NOT EXISTS {
-       MATCH (fellowship)-[:HAS_CAMPAIGN]->(fellowshipCampaign:EquipmentCampaign)-[:HAS_RECORD]->(record:EquipmentRecord)-[:HAS_EQUIPMENT_DATE]->(t:TimeGraph {date:date})
-      }
-      RETURN COUNT(DISTINCT fellowship)
+      MATCH (record)-[:HAS_EQUIPMENT_DATE]->(date:TimeGraph {date:date(latestEquipmentDate)})
+      WITH DISTINCT record
+      RETURN {
+        offeringBags: sum(record.offeringBags),
+        bluetoothSpeakers: sum(record.bluetoothSpeakers)
+      } as fellowshipEquipment
       """
     )
 }
@@ -258,123 +74,26 @@ extend type Council {
     @cypher(
       statement: """
       MATCH (this)<-[:HAS]-(:Stream)<-[:HAS]-(gatheringService:GatheringService)
-      MATCH (gatheringService)-[:HAS_CAMPAIGN]->(campaign:EquipmentCampaign)
+      MATCH (n:EquipmentDate)
+      WITH max(n.date) as latestEquipmentDate, this
       MATCH (this)-[:HAS]->(:Constituency)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_EQUIPMENT_RECORD]->(record:EquipmentRecord)
-      MATCH (record)-[:HAS_EQUIPMENT_DATE]->(date:TimeGraph {date:date(campaign.equipmentDate)})
+      MATCH (record)-[:HAS_EQUIPMENT_DATE]->(date:TimeGraph {date:date(latestEquipmentDate)})
       RETURN sum(record.pulpits)
       """
     )
-  offeringBags: Int
+  fellowshipEquipment: FellowshipEquipment!
     @cypher(
       statement: """
       MATCH (this)<-[:HAS]-(:Stream)<-[:HAS]-(gatheringService:GatheringService)
-      MATCH (gatheringService)-[:HAS_CAMPAIGN]->(campaign:EquipmentCampaign)
+      MATCH (n:EquipmentDate)
+      WITH max(n.date) as latestEquipmentDate, this
       MATCH (this)-[:HAS]->(:Constituency)-[:HAS]->(:Bacenta)-[:HAS]-(:Fellowship)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_EQUIPMENT_RECORD]->(record:EquipmentRecord)
-      MATCH (record)-[:HAS_EQUIPMENT_DATE]->(date:TimeGraph {date:date(campaign.equipmentDate)})
-      RETURN sum(record.offeringBags)
-      """
-    )
-  equipmentFormConstituencyDefaulters: [Constituency!]!
-    @cypher(
-      statement: """
-      MATCH (this)-[:HAS]->(con:Constituency)
-      MATCH (gs)-[:HAS_CAMPAIGN]->(campaign:EquipmentCampaign)
-      WITH con, campaign.equipmentDate as date
-      WHERE NOT  EXISTS {
-       MATCH (con)-[:HAS_CAMPAIGN]->(conCampaign:EquipmentCampaign)-[:HAS_RECORD]->(record:EquipmentRecord)-[:HAS_EQUIPMENT_DATE]->(t:TimeGraph {date:date})
-      }
-      RETURN DISTINCT con
-      """
-    )
-
-  equipmentFormConstituencyDefaultersCount: Int
-    @cypher(
-      statement: """
-      MATCH (this)-[:HAS]->(con:Constituency)
-      MATCH (gs)-[:HAS_CAMPAIGN]->(campaign:EquipmentCampaign)
-      WITH con, campaign.equipmentDate as date
-      WHERE NOT  EXISTS {
-       MATCH (con)-[:HAS_CAMPAIGN]->(conCampaign:EquipmentCampaign)-[:HAS_RECORD]->(record:EquipmentRecord)-[:HAS_EQUIPMENT_DATE]->(t:TimeGraph {date:date})
-      }
-      RETURN COUNT(DISTINCT con)
-      """
-    )
-
-  equipmentFormConstituenciesFilled: [Constituency!]!
-    @cypher(
-      statement: """
-      MATCH (this)-[:HAS]->(con:Constituency)
-      MATCH (gs)-[:HAS_CAMPAIGN]->(campaign:EquipmentCampaign)
-      WITH con, campaign.equipmentDate as date
-      WHERE EXISTS {
-       MATCH (con)-[:HAS_CAMPAIGN]->(conCampaign:EquipmentCampaign)-[:HAS_RECORD]->(record:EquipmentRecord)-[:HAS_EQUIPMENT_DATE]->(t:TimeGraph {date:date})
-      }
-      RETURN DISTINCT con
-      """
-    )
-
-  equipmentFormConstituenciesFilledCount: Int
-    @cypher(
-      statement: """
-      MATCH (this)-[:HAS]->(con:Constituency)
-      MATCH (gs)-[:HAS_CAMPAIGN]->(campaign:EquipmentCampaign)
-      WITH con, campaign.equipmentDate as date
-      WHERE EXISTS {
-       MATCH (con)-[:HAS_CAMPAIGN]->(conCampaign:EquipmentCampaign)-[:HAS_RECORD]->(record:EquipmentRecord)-[:HAS_EQUIPMENT_DATE]->(t:TimeGraph {date:date})
-      }
-      RETURN COUNT(DISTINCT con)
-      """
-    )
-
-  equipmentFormFellowshipsFilled: [Fellowship!]!
-    @cypher(
-      statement: """
-      MATCH (this)-[:HAS*3]->(fellowship:Fellowship)
-      MATCH (gs)-[:HAS_CAMPAIGN]->(campaign:EquipmentCampaign)
-      WITH fellowship, campaign.equipmentDate as date
-      WHERE  EXISTS {
-       MATCH (fellowship)-[:HAS_CAMPAIGN]->(fellowshipCampaign:EquipmentCampaign)-[:HAS_RECORD]->(record:EquipmentRecord)-[:HAS_EQUIPMENT_DATE]->(t:TimeGraph {date:date})
-      }
-      RETURN DISTINCT fellowship
-      """
-    )
-
-  equipmentFormFellowshipsFilledCount: Int
-    @cypher(
-      statement: """
-      MATCH (this)-[:HAS*3]->(fellowship:Fellowship)
-      MATCH (gs)-[:HAS_CAMPAIGN]->(campaign:EquipmentCampaign)
-      WITH fellowship, campaign.equipmentDate as date
-      WHERE  EXISTS {
-       MATCH (fellowship)-[:HAS_CAMPAIGN]->(fellowshipCampaign:EquipmentCampaign)-[:HAS_RECORD]->(record:EquipmentRecord)-[:HAS_EQUIPMENT_DATE]->(t:TimeGraph {date:date})
-      }
-      RETURN COUNT(DISTINCT fellowship)
-      """
-    )
-
-  equipmentFormFellowshipDefaulters: [Fellowship!]!
-    @cypher(
-      statement: """
-      MATCH (this)-[:HAS*3]->(fellowship:Fellowship)
-      MATCH (gs)-[:HAS_CAMPAIGN]->(campaign:EquipmentCampaign)
-      WITH fellowship, campaign.equipmentDate as date
-      WHERE NOT EXISTS {
-       MATCH (fellowship)-[:HAS_CAMPAIGN]->(fellowshipCampaign:EquipmentCampaign)-[:HAS_RECORD]->(record:EquipmentRecord)-[:HAS_EQUIPMENT_DATE]->(t:TimeGraph {date:date})
-      }
-      RETURN DISTINCT fellowship
-      """
-    )
-
-  equipmentFormFellowshipDefaultersCount: Int
-    @cypher(
-      statement: """
-      MATCH (this)-[:HAS*3]->(fellowship:Fellowship)
-      MATCH (gs)-[:HAS_CAMPAIGN]->(campaign:EquipmentCampaign)
-      WITH fellowship, campaign.equipmentDate as date
-      WHERE NOT EXISTS {
-       MATCH (fellowship)-[:HAS_CAMPAIGN]->(fellowshipCampaign:EquipmentCampaign)-[:HAS_RECORD]->(record:EquipmentRecord)-[:HAS_EQUIPMENT_DATE]->(t:TimeGraph {date:date})
-      }
-      RETURN  COUNT(DISTINCT fellowship)
+      MATCH (record)-[:HAS_EQUIPMENT_DATE]->(date:TimeGraph {date:date(latestEquipmentDate)})
+      WITH DISTINCT record
+      RETURN {
+        offeringBags: sum(record.offeringBags),
+        bluetoothSpeakers: sum(record.bluetoothSpeakers)
+      } as fellowshipEquipment
       """
     )
 }
@@ -383,171 +102,63 @@ extend type Constituency {
   pulpits: Int
     @cypher(
       statement: """
-      MATCH (this)<-[:HAS]-(:Council)<-[:HAS]-(:Stream)<-[:HAS]-(gatheringService:GatheringService)
-      MATCH (gatheringService)-[:HAS_CAMPAIGN]->(campaign:EquipmentCampaign)
+      MATCH (this)
+      MATCH (n:EquipmentDate)
+      WITH max(n.date) as latestEquipmentDate, this
       MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_EQUIPMENT_RECORD]->(record:EquipmentRecord)
-      MATCH (record)-[:HAS_EQUIPMENT_DATE]->(date:TimeGraph {date:date(campaign.equipmentDate)})
+      MATCH (record)-[:HAS_EQUIPMENT_DATE]->(date:TimeGraph {date:date(latestEquipmentDate)})
       RETURN sum(record.pulpits)
       """
     )
-  offeringBags: Int
+  fellowshipEquipment: FellowshipEquipment!
     @cypher(
       statement: """
-      MATCH (this)<-[:HAS]-(:Council)<-[:HAS]-(:Stream)<-[:HAS]-(gatheringService:GatheringService)
-      MATCH (gatheringService)-[:HAS_CAMPAIGN]->(campaign:EquipmentCampaign)
+      MATCH (this)
+      MATCH (n:EquipmentDate)
+      WITH max(n.date) as latestEquipmentDate, this
       MATCH (this)-[:HAS]->(:Bacenta)-[:HAS]-(:Fellowship)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_EQUIPMENT_RECORD]->(record:EquipmentRecord)
-      MATCH (record)-[:HAS_EQUIPMENT_DATE]->(date:TimeGraph {date:date(campaign.equipmentDate)})
-      RETURN sum(record.offeringBags)
-      """
-    )
-  latestEquipmentRecord: EquipmentRecord
-    @cypher(
-      statement: """
-       MATCH (this)-[:HAS_CAMPAIGN]->(:EquipmentCampaign)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_RECORD]->(record:EquipmentRecord)
-      MATCH (record)-[:HAS_EQUIPMENT_DATE]->(date:TimeGraph)
-      WITH MAX(date.date) as lastDate, record
-      MATCH (date {date:lastDate})<-[:HAS_EQUIPMENT_DATE]-(record:EquipmentRecord)
-      RETURN record limit 1
-      """
-    )
-
-  equipmentFormFellowshipsFilled: [Fellowship!]!
-    @cypher(
-      statement: """
-      MATCH (this)-[:HAS*2]->(fellowship:Fellowship)
-      MATCH (gs)-[:HAS_CAMPAIGN]->(campaign:EquipmentCampaign)
-      WITH fellowship, campaign.equipmentDate as date
-      WHERE  EXISTS {
-       MATCH (fellowship)-[:HAS_CAMPAIGN]->(fellowshipCampaign:EquipmentCampaign)-[:HAS_RECORD]->(record:EquipmentRecord)-[:HAS_EQUIPMENT_DATE]->(t:TimeGraph {date:date})
-      }
-      RETURN DISTINCT fellowship
-      """
-    )
-
-  equipmentFormFellowshipsFilledCount: Int
-    @cypher(
-      statement: """
-      MATCH (this)-[:HAS*2]->(fellowship:Fellowship)
-      MATCH (gs)-[:HAS_CAMPAIGN]->(campaign:EquipmentCampaign)
-      WITH fellowship, campaign.equipmentDate as date
-      WHERE  EXISTS {
-       MATCH (fellowship)-[:HAS_CAMPAIGN]->(fellowshipCampaign:EquipmentCampaign)-[:HAS_RECORD]->(record:EquipmentRecord)-[:HAS_EQUIPMENT_DATE]->(t:TimeGraph {date:date})
-      }
-      RETURN COUNT(DISTINCT fellowship)
-      """
-    )
-
-  equipmentFormFellowshipDefaulters: [Fellowship!]!
-    @cypher(
-      statement: """
-      MATCH (this)-[:HAS*2]->(fellowship:Fellowship)
-      MATCH (gs)-[:HAS_CAMPAIGN]->(campaign:EquipmentCampaign)
-      WITH fellowship, campaign.equipmentDate as date
-      WHERE NOT EXISTS {
-       MATCH (fellowship)-[:HAS_CAMPAIGN]->(fellowshipCampaign:EquipmentCampaign)-[:HAS_RECORD]->(record:EquipmentRecord)-[:HAS_EQUIPMENT_DATE]->(t:TimeGraph {date:date})
-      }
-      RETURN DISTINCT fellowship
-      """
-    )
-
-  equipmentFormFellowshipDefaultersCount: Int
-    @cypher(
-      statement: """
-      MATCH (this)-[:HAS*2]->(fellowship:Fellowship)
-      MATCH (gs)-[:HAS_CAMPAIGN]->(campaign:EquipmentCampaign)
-      WITH fellowship, campaign.equipmentDate as date
-      WHERE NOT EXISTS {
-       MATCH (fellowship)-[:HAS_CAMPAIGN]->(fellowshipCampaign:EquipmentCampaign)-[:HAS_RECORD]->(record:EquipmentRecord)-[:HAS_EQUIPMENT_DATE]->(t:TimeGraph {date:date})
-      }
-      RETURN COUNT(DISTINCT fellowship)
+      MATCH (record)-[:HAS_EQUIPMENT_DATE]->(date:TimeGraph {date:date(latestEquipmentDate)})
+      WITH DISTINCT record
+      RETURN {
+        offeringBags: sum(record.offeringBags),
+        bluetoothSpeakers: sum(record.bluetoothSpeakers)
+      } as fellowshipEquipment
       """
     )
 }
 
 extend type Bacenta {
-  offeringBags: Int
+  fellowshipEquipment: FellowshipEquipment!
     @cypher(
       statement: """
-      MATCH (this)<-[:HAS]-(:Constituency)<-[:HAS]-(:Council)<-[:HAS]-(:Stream)<-[:HAS]-(gatheringService:GatheringService)
-      MATCH (gatheringService)-[:HAS_CAMPAIGN]->(campaign:EquipmentCampaign)
+      MATCH (this)
+      MATCH (n:EquipmentDate)
+      WITH max(n.date) as latestEquipmentDate, this
       MATCH (this)-[:HAS]-(:Fellowship)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_EQUIPMENT_RECORD]->(record:EquipmentRecord)
-      MATCH (record)-[:HAS_EQUIPMENT_DATE]->(date:TimeGraph {date:date(campaign.equipmentDate)})
-      RETURN sum(record.offeringBags)
-      """
-    )
-
-  equipmentFormFellowshipsFilled: [Fellowship!]!
-    @cypher(
-      statement: """
-      MATCH (this)-[:HAS]->(fellowship:Fellowship)
-      MATCH (gs)-[:HAS_CAMPAIGN]->(campaign:EquipmentCampaign)
-      WITH fellowship, campaign.equipmentDate as date
-      WHERE  EXISTS {
-       MATCH (fellowship)-[:HAS_CAMPAIGN]->(fellowshipCampaign:EquipmentCampaign)-[:HAS_RECORD]->(record:EquipmentRecord)-[:HAS_EQUIPMENT_DATE]->(t:TimeGraph {date:date})
-      }
-      RETURN DISTINCT fellowship
-      """
-    )
-
-  equipmentFormFellowshipsFilledCount: Int
-    @cypher(
-      statement: """
-      MATCH (this)-[:HAS]->(fellowship:Fellowship)
-      MATCH (gs)-[:HAS_CAMPAIGN]->(campaign:EquipmentCampaign)
-      WITH fellowship, campaign.equipmentDate as date
-      WHERE  EXISTS {
-       MATCH (fellowship)-[:HAS_CAMPAIGN]->(fellowshipCampaign:EquipmentCampaign)-[:HAS_RECORD]->(record:EquipmentRecord)-[:HAS_EQUIPMENT_DATE]->(t:TimeGraph {date:date})
-      }
-      RETURN COUNT(DISTINCT fellowship)
-      """
-    )
-
-  equipmentFormFellowshipDefaulters: [Fellowship!]!
-    @cypher(
-      statement: """
-      MATCH (this)-[:HAS]->(fellowship:Fellowship)
-      MATCH (gs)-[:HAS_CAMPAIGN]->(campaign:EquipmentCampaign)
-      WITH fellowship, campaign.equipmentDate as date
-      WHERE NOT EXISTS {
-       MATCH (fellowship)-[:HAS_CAMPAIGN]->(fellowshipCampaign:EquipmentCampaign)-[:HAS_RECORD]->(record:EquipmentRecord)-[:HAS_EQUIPMENT_DATE]->(t:TimeGraph {date:date})
-      }
-      RETURN DISTINCT fellowship
-      """
-    )
-
-  equipmentFormFellowshipDefaultersCount: Int
-    @cypher(
-      statement: """
-      MATCH (this)-[:HAS]->(fellowship:Fellowship)
-      MATCH (gs)-[:HAS_CAMPAIGN]->(campaign:EquipmentCampaign)
-      WITH fellowship, campaign.equipmentDate as date
-      WHERE NOT EXISTS {
-       MATCH (fellowship)-[:HAS_CAMPAIGN]->(fellowshipCampaign:EquipmentCampaign)-[:HAS_RECORD]->(record:EquipmentRecord)-[:HAS_EQUIPMENT_DATE]->(t:TimeGraph {date:date})
-      }
-      RETURN COUNT(DISTINCT fellowship)
+      MATCH (record)-[:HAS_EQUIPMENT_DATE]->(date:TimeGraph {date:date(latestEquipmentDate)})
+      WITH DISTINCT record
+      RETURN {
+        offeringBags: sum(record.offeringBags),
+        bluetoothSpeakers: sum(record.bluetoothSpeakers)
+      } as fellowshipEquipment
       """
     )
 }
 
 extend type Fellowship {
-  offeringBags: Int
+  fellowshipEquipment: FellowshipEquipment!
     @cypher(
       statement: """
-      MATCH (this)<-[:HAS]-(:Bacenta)<-[:HAS]-(:Constituency)<-[:HAS]-(:Council)<-[:HAS]-(:Stream)<-[:HAS]-(gatheringService:GatheringService)
-      MATCH (gatheringService)-[:HAS_CAMPAIGN]->(campaign:EquipmentCampaign)
+      MATCH (this)
+      MATCH (n:EquipmentDate)
+      WITH max(n.date) as latestEquipmentDate, this
       MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_EQUIPMENT_RECORD]->(record:EquipmentRecord)
-      MATCH (record)-[:HAS_EQUIPMENT_DATE]->(date:TimeGraph {date:date(campaign.equipmentDate)})
-      RETURN sum(record.offeringBags)
-      """
-    )
-  latestEquipmenRecord: EquipmentRecord
-    @cypher(
-      statement: """
-      MATCH (this)-[:HAS_CAMPAIGN]->(:EquipmentCampaign)-[:HAS_RECORD]->(record:EquipmentRecord)
-      MATCH (record)-[:HAS_EQUIPMENT_DATE]->(date:TimeGraph)
-      WITH MAX(date.date) as lastDate, record
-      MATCH (date {date:lastDate})<-[:HAS_EQUIPMENT_DATE]-(record:EquipmentRecord)
-      RETURN record  limit 1
+      MATCH (record)-[:HAS_EQUIPMENT_DATE]->(date:TimeGraph {date:date(latestEquipmentDate)})
+      WITH DISTINCT record
+      RETURN {
+        offeringBags: sum(record.offeringBags),
+        bluetoothSpeakers: sum(record.bluetoothSpeakers)
+      } as fellowshipEquipment
       """
     )
 }
@@ -560,6 +171,7 @@ type EquipmentRecord {
     @relationship(type: "HAS_EQUIPMENT_DATE", direction: OUT)
   offeringBags: Int
   pulpits: Int
+  bluetoothSpeakers: Int
   serviceLog: ServiceLog
     @relationship(type: "HAS_EQUIPMENT_RECORD", direction: IN)
   church_name: String
@@ -603,6 +215,7 @@ extend type Mutation {
   CreateFellowshipEquipmentRecord(
     id: ID!
     offeringBags: Int!
+    bluetoothSpeakers: Int!
     date: Date!
   ): EquipmentRecord
 

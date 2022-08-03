@@ -27,7 +27,7 @@ const Breadcrumb = ({ breadcrumb }: { breadcrumb: BreadcrumbType[] }) => {
     <>
       {breadcrumb.map((bread, i) => {
         if (!bread) {
-          return <></>
+          return <div key={i}></div>
         }
 
         let breadname

@@ -302,10 +302,10 @@ export const RemoveServant = async (
       undefined,
       `Hi ${servant.firstName} ${
         servant.lastName
-      },\n\nThis is to inform you that your servant account has been deleted from the First Love Admin Portal. You will no longer have access to any data\n\nThis is due to the fact that you have been removed as a ${churchType} ${servantType} for ${churchInEmail(
+      },<br/><br/>This is to inform you that your servant account has been deleted from the First Love Admin Portal. You will no longer have access to any data<br/><br/>his is due to the fact that you have been removed as a ${churchType} ${servantType} for ${churchInEmail(
         church
-      )}.\n\nWe however encourage you to strive to serve the Lord faithfully. Do not be discouraged from loving God by this removal; we hope it is just temporary.${
-        texts.string.subscription
+      )}.<br/><br/>We however encourage you to strive to serve the Lord faithfully. Do not be discouraged from loving God by this removal; we hope it is just temporary.${
+        texts.html.subscription
       }`
     )
     return parseForCacheRemoval(servant, church, verb, servantLower)
@@ -332,7 +332,7 @@ export const RemoveServant = async (
         servant.lastName
       },<br/><br/>We regret to inform you that you have been removed as the <b>${churchType} ${servantType}</b> for <b>${churchInEmail(
         church
-      )}</b>.<br/><br/>We however encourage you to strive to serve the Lord faithfully in your other roles. Do not be discouraged by this removal; as you work hard we hope and pray that you will soon be restored to your service to him</p>.${
+      )}</b>.<br/><br/>We however encourage you to strive to serve the Lord faithfully in your other roles. Do not be discouraged by this removal; as you work hard we hope and pray that you will soon be restored to your service to him.</p>${
         texts.html.subscription
       }`
     )

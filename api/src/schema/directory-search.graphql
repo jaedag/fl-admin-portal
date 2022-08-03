@@ -41,7 +41,7 @@ extend type Member {
     )
 }
 
-extend type Denomination {
+extend type Oversight {
   memberSearch(key: String!, limit: Int!): [Member!]!
     @cypher(
       statement: """

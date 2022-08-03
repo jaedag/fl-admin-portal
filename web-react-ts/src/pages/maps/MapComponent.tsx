@@ -3,15 +3,24 @@ import React, { useCallback, useMemo, useRef } from 'react'
 import { Col, Row } from 'react-bootstrap'
 import './Map.css'
 
-const Map = () => {
-  const mapRef = useRef()
-  const center = useMemo(() => ({ lat: 5.655949, lng: -0.167033 }), [])
-  const options = useMemo(() => ({
-    mapId: 'b0ab33f7a0fc53d5',
-    disableDefaultUI: true,
-    clickableIcons: false,
-  }))
-  const onLoad = useCallback((map) => (mapRef.current = map), [])
+type LatLngLiteral = google.maps.LatLngLiteral
+type MapOptions = google.maps.MapOptions
+
+const MapComponent = () => {
+  const mapRef = useRef<GoogleMap>()
+  const center = useMemo<LatLngLiteral>(
+    () => ({ lat: 5.655949, lng: -0.167033 }),
+    []
+  )
+  const options = useMemo<MapOptions>(
+    () => ({
+      mapId: 'b0ab33f7a0fc53d5',
+      disableDefaultUI: true,
+      clickableIcons: false,
+    }),
+    []
+  )
+  const onLoad = useCallback((map: any) => (mapRef.current = map), [])
 
   return (
     <Row>
@@ -33,4 +42,4 @@ const Map = () => {
   )
 }
 
-export default Map
+export default MapComponent

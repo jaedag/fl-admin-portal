@@ -9,6 +9,11 @@ type ComponentServiceAggregate {
   income: Float!
 }
 
+extend type Oversight {
+  componentBussingAggregate(limit: Int = 6): [ComponentBussingAggregate]
+  componentServiceAggregate(limit: Int = 6): [ComponentServiceAggregate]
+}
+
 extend type GatheringService {
   componentBussingAggregate(limit: Int = 6): [ComponentBussingAggregate]
   componentServiceAggregate(limit: Int = 6): [ComponentServiceAggregate]
