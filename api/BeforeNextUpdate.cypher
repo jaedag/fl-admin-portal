@@ -1,3 +1,9 @@
+//Equipment Campaign
+ //Adding constraint for equipment campaign
+CREATE CONSTRAINT con_equipment_record_id FOR (n:EquipmentRecord) REQUIRE n.id IS UNIQUE;
+
+
+
 //Adding CONSTRAINST 
 //constraint for service record id
 CREATE CONSTRAINT con_oversight_id FOR (n:Oversight) REQUIRE n.id IS UNIQUE;
