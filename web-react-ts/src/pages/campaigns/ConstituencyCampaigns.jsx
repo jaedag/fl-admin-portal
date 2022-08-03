@@ -33,7 +33,7 @@ const ConstituencyCampaigns = () => {
             {campaigns?.map((campaign, index) => (
               <MenuButton
                 key={index}
-                name={campaign.__typename}
+                name={campaign}
                 onClick={() => navigate(`/campaigns/constituency/equipment`)}
               />
             ))}

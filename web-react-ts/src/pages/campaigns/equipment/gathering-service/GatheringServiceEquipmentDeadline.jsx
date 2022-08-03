@@ -1,7 +1,6 @@
 import React, { useContext } from 'react'
 import FormikControl from 'components/formik-components/FormikControl'
 import { Formik, Form } from 'formik'
-//import * as Yup from 'yup'
 import { Col, Container, Row, Button } from 'react-bootstrap'
 import HeadingSecondary from 'components/HeadingSecondary'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
@@ -10,6 +9,7 @@ import { useMutation } from '@apollo/client'
 import { SET_EQUIPMENT_DEADLINE } from '../../CampaignQueries'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { useNavigate } from 'react-router'
+import { throwErrorMsg } from 'global-utils'
 
 const GatheringServiceEquipmentDeadline = () => {
   const { gatheringServiceId } = useContext(ChurchContext)
@@ -23,16 +23,6 @@ const GatheringServiceEquipmentDeadline = () => {
     endDate: '',
   }
 
-  // const validationSchema = Yup.object({
-  //   pulpits: Yup.number()
-  //     .typeError('Please enter a valid number')
-  //     .positive()
-  //     .integer('You cannot have pulpits with decimals!')
-  //     .required(
-  //       'You cannot submit this form without entering the number of pulpits'
-  //     ),
-  // })
-
   const onSubmit = (values, onSubmitProps) => {
     onSubmitProps.setSubmitting(true)
     SetEquipmentDealine({
@@ -41,17 +31,21 @@ const GatheringServiceEquipmentDeadline = () => {
         endDate: values.endDate,
         gatheringServiceId: gatheringServiceId,
       },
-    }).then(() => {
-      onSubmitProps.setSubmitting(false)
-      onSubmitProps.resetForm()
-      navigate('/campaigns/gatheringservice')
     })
+      .then(() => {
+        onSubmitProps.setSubmitting(false)
+        onSubmitProps.resetForm()
+        navigate('/campaigns/gatheringservice')
+        alert('Equipment Deadline Set')
+      })
+      .catch((error) => {
+        throwErrorMsg(error)
+      })
   }
 
   return (
     <Formik
       initialValues={initialValues}
-      //validationSchema={validationSchema}
       onSubmit={onSubmit}
       validateOnMount={true}
     >

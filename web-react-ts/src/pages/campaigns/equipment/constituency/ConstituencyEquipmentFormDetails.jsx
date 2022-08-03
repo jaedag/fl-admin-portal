@@ -29,8 +29,7 @@ const ConstituencyEquipmentFormDetails = () => {
 
   const constituency = data?.constituencies[0]
 
-  const equipmentDate = constituency?.latestEquipmentRecord?.equipmentDate?.date
-  const pulpits = constituency?.latestEquipmentRecord?.pulpits
+  const pulpits = constituency?.pulpits
 
   return (
     <ApolloWrapper data={data} loading={loading} error={error}>
@@ -44,7 +43,7 @@ const ConstituencyEquipmentFormDetails = () => {
             <tbody>
               <tr>
                 <td>Date :</td>
-                <td>{equipmentDate?.slice(0, 10)}</td>
+                <td>{new Date().toISOString().slice(0, 10)}</td>
               </tr>
               <tr>
                 <td>Number of Pulpits :</td>

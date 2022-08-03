@@ -26,6 +26,7 @@ const FellowshipEquipmentForm = () => {
 
   const initialValues = {
     offeringBags: 0,
+    bluetoothSpeakers: 0,
     date: new Date().toISOString().slice(0, 10),
   }
 
@@ -37,6 +38,13 @@ const FellowshipEquipmentForm = () => {
       .required(
         'You cannot submit this form without entering the number of offerigBags'
       ),
+    bluetoothSpeakers: Yup.number()
+      .typeError('Please enter a valid number')
+      .positive()
+      .integer('You cannot have bluetooth speakers with decimals!')
+      .required(
+        'You cannot submit this form without entering the number of bluetooth speakers'
+      ),
   })
 
   const onSubmit = async (values, onSubmitProps) => {
@@ -46,6 +54,7 @@ const FellowshipEquipmentForm = () => {
         variables: {
           id: fellowshipId,
           offeringBags: parseInt(values.offeringBags),
+          bluetoothSpeakers: parseInt(values.bluetoothSpeakers),
           date: new Date().toISOString().slice(0, 10),
         },
       })
@@ -90,6 +99,14 @@ const FellowshipEquipmentForm = () => {
                   className="form-control"
                   control="input"
                   name="offeringBags"
+                />
+                <small htmlFor="date" className="form-text ">
+                  Number of Bluetooth Speakers*{' '}
+                </small>
+                <FormikControl
+                  className="form-control"
+                  control="input"
+                  name="bluetoothSpeakers"
                 />
                 <div className="d-flex justify-content-center pt-2">
                   <Button

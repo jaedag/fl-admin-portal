@@ -6,10 +6,7 @@ export const GATHERING_SERVICE_CAMPAIGN_LIST = gql`
     gatheringServices(where: { id: $gatheringServiceId }) {
       id
       name
-      campaigns {
-        id
-        name
-      }
+      campaigns
     }
   }
 `
@@ -19,18 +16,13 @@ export const GATHERING_SERVICE_TRENDS = gql`
     gatheringServices(where: { id: $gatheringServiceId }) {
       id
       name
-      offeringBags
+      fellowshipEquipment {
+        bluetoothSpeakers
+        offeringBags
+      }
       pulpits
       activeFellowshipCount
       constituencyCount
-      campaigns {
-        ... on EquipmentCampaign {
-          id
-          target {
-            percentage
-          }
-        }
-      }
     }
   }
 `
@@ -43,7 +35,10 @@ export const GATHERING_SERVICE_BY_STREAM = gql`
       streams {
         id
         name
-        offeringBags
+        fellowshipEquipment {
+          bluetoothSpeakers
+          offeringBags
+        }
         pulpits
         constituencyCount
         activeFellowshipCount
@@ -91,14 +86,6 @@ export const STREAM_TRENDS = gql`
       pulpits
       activeFellowshipCount
       constituencyCount
-      campaigns {
-        ... on EquipmentCampaign {
-          id
-          target {
-            percentage
-          }
-        }
-      }
     }
   }
 `
@@ -111,19 +98,14 @@ export const STREAM_BY_COUNCIL = gql`
       councils {
         id
         name
-        offeringBags
+        fellowshipEquipment {
+          bluetoothSpeakers
+          offeringBags
+        }
         pulpits
         activeFellowshipCount
         constituencyCount
       }
-    }
-  }
-`
-
-export const CREATE_STREAM_EQUIPMENT_CAMPAIGN = gql`
-  mutation CreateStreamEquipmentCampaign($streamId: ID!) {
-    CreateStreamEquipmentCampaign(id: $streamId) {
-      id
     }
   }
 `
@@ -134,10 +116,7 @@ export const COUNCIL_CAMPAIGN_LIST = gql`
     councils(where: { id: $councilId }) {
       id
       name
-      campaigns {
-        id
-        name
-      }
+      campaigns
     }
   }
 `
@@ -147,18 +126,13 @@ export const COUNCIL_TRENDS = gql`
     councils(where: { id: $councilId }) {
       id
       name
-      offeringBags
+      fellowshipEquipment {
+        bluetoothSpeakers
+        offeringBags
+      }
       pulpits
       activeFellowshipCount
       constituencyCount
-      campaigns {
-        ... on EquipmentCampaign {
-          id
-          target {
-            percentage
-          }
-        }
-      }
     }
   }
 `
@@ -171,18 +145,13 @@ export const COUNCIL_BY_CONSTITUENCY = gql`
       constituencies {
         id
         name
-        offeringBags
+        fellowshipEquipment {
+          bluetoothSpeakers
+          offeringBags
+        }
         pulpits
         activeFellowshipCount
       }
-    }
-  }
-`
-
-export const CREATE_COUNCIL_EQUIPMENT_CAMPAIGN = gql`
-  mutation CreateCouncilEquipmentCampaign($councilId: ID!) {
-    CreateCouncilEquipmentCampaign(id: $councilId) {
-      id
     }
   }
 `
@@ -193,10 +162,7 @@ export const CONSTITUENCY_CAMPAIGN_LIST = gql`
     constituencies(where: { id: $constituencyId }) {
       id
       name
-      campaigns {
-        id
-        name
-      }
+      campaigns
     }
   }
 `
@@ -206,17 +172,12 @@ export const CONSTITUENCY_TRENDS = gql`
     constituencies(where: { id: $constituencyId }) {
       id
       name
-      offeringBags
+      fellowshipEquipment {
+        bluetoothSpeakers
+        offeringBags
+      }
       pulpits
       activeFellowshipCount
-      campaigns {
-        ... on EquipmentCampaign {
-          id
-          target {
-            percentage
-          }
-        }
-      }
     }
   }
 `
@@ -238,14 +199,7 @@ export const CONSTITUENCY_LATEST_EQUIPMENT_RECORD = gql`
   query LatestEquipmentRecord($constituencyId: ID) {
     constituencies(where: { id: $constituencyId }) {
       id
-      latestEquipmentRecord {
-        id
-        offeringBags
-        pulpits
-        equipmentDate {
-          date
-        }
-      }
+      pulpits
     }
   }
 `
@@ -258,17 +212,12 @@ export const CONSTITUENCY_BY_BACENTA = gql`
       bacentas {
         id
         name
-        offeringBags
+        fellowshipEquipment {
+          bluetoothSpeakers
+          offeringBags
+        }
         activeFellowshipCount
       }
-    }
-  }
-`
-
-export const CREATE_CONSTITUENCY_EQUIPMENT_CAMPAIGN = gql`
-  mutation CreateConstituencyEquipmentCampaign($constituencyId: ID!) {
-    CreateConstituencyEquipmentCampaign(id: $constituencyId) {
-      id
     }
   }
 `
@@ -279,10 +228,7 @@ export const BACENTA_CAMPAIGN_LIST = gql`
     bacentas(where: { id: $bacentaId }) {
       id
       name
-      campaigns {
-        id
-        name
-      }
+      campaigns
     }
   }
 `
@@ -292,16 +238,11 @@ export const BACENTA_TRENDS = gql`
     bacentas(where: { id: $bacentaId }) {
       id
       name
-      offeringBags
-      activeFellowshipCount
-      campaigns {
-        ... on EquipmentCampaign {
-          id
-          target {
-            percentage
-          }
-        }
+      fellowshipEquipment {
+        bluetoothSpeakers
+        offeringBags
       }
+      activeFellowshipCount
     }
   }
 `
@@ -315,15 +256,11 @@ export const BACENTA_BY_FELLOWSHIP = gql`
       fellowships {
         id
         name
-        offeringBags
+        fellowshipEquipment {
+          bluetoothSpeakers
+          offeringBags
+        }
       }
-    }
-  }
-`
-export const CREATE_BACENTA_EQUIPMENT_CAMPAIGN = gql`
-  mutation CreateBacentaEquipmentCampaign($bacentaId: ID!) {
-    CreateBacentaEquipmentCampaign(id: $bacentaId) {
-      id
     }
   }
 `
@@ -334,10 +271,7 @@ export const FELLOWSHIP_CAMPAIGN_LIST = gql`
     fellowships(where: { id: $fellowshipId }) {
       id
       name
-      campaigns {
-        id
-        name
-      }
+      campaigns
     }
   }
 `
@@ -347,14 +281,9 @@ export const FELLOWSHIP_TRENDS = gql`
     fellowships(where: { id: $fellowshipId }) {
       id
       name
-      offeringBags
-      campaigns {
-        ... on EquipmentCampaign {
-          id
-          target {
-            percentage
-          }
-        }
+      fellowshipEquipment {
+        bluetoothSpeakers
+        offeringBags
       }
     }
   }
@@ -364,29 +293,29 @@ export const CREATE_FELLOWSHIP_EQUIPMENT_RECORD = gql`
     $id: ID!
     $offeringBags: Int!
     $date: Date!
+    $bluetoothSpeakers: Int!
   ) {
     CreateFellowshipEquipmentRecord(
       id: $id
       offeringBags: $offeringBags
       date: $date
+      bluetoothSpeakers: $bluetoothSpeakers
     ) {
       id
       offeringBags
+      bluetoothSpeakers
     }
   }
 `
 
+//ask for equipment date
 export const FELLOWSHIP_LATEST_EQUIPMENT_RECORD = gql`
   query LatestEquipmenRecord($fellowshipId: ID) {
     fellowships(where: { id: $fellowshipId }) {
       id
-      latestEquipmenRecord {
-        id
+      fellowshipEquipment {
+        bluetoothSpeakers
         offeringBags
-        pulpits
-        equipmentDate {
-          date
-        }
       }
     }
   }
@@ -405,13 +334,6 @@ export const FELLOWSHIP_RECORDS_PER_CONSTITUENCY = gql`
           offeringBags
         }
       }
-    }
-  }
-`
-export const CREATE_FELLOWSHIP_EQUIPMENT_CAMPAIGN = gql`
-  mutation CreateFellowshipEquipmentCampaign($fellowshipId: ID!) {
-    CreateFellowshipEquipmentCampaign(id: $fellowshipId) {
-      id
     }
   }
 `

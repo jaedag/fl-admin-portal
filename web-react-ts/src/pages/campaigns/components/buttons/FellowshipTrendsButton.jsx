@@ -10,10 +10,13 @@ const FellowshipTrendsButton = (props) => {
   const church = props.church
   const name = church?.name
   const churchType = church?.__typename
-  const offeringBags = church?.offeringBags
+  const offeringBags = church?.fellowshipEquipment?.offeringBags
+  const bluetoothSpeakers = church?.fellowshipEquipment?.bluetoothSpeakers
+
   const total =
     churchType === 'Fellowship' ? 2 : church?.activeFellowshipCount * 2
   const offeringBagsPercentage = ((offeringBags / total) * 100).toFixed()
+  const bluetoothSpeakersPercentage = ((bluetoothSpeakers / 1) * 100).toFixed()
 
   return (
     <Button
@@ -31,6 +34,10 @@ const FellowshipTrendsButton = (props) => {
           Total Offering Bags: {offeringBags} / {total}
         </div>
         <ProgressBar percentage={offeringBagsPercentage} />
+        <div className="lowercase-text text-secondary">
+          Total Bluetooth Speakers: {bluetoothSpeakers} / {1}
+        </div>
+        <ProgressBar percentage={bluetoothSpeakersPercentage} />
       </div>
     </Button>
   )
