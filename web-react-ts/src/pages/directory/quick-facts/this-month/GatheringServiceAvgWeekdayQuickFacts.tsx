@@ -3,11 +3,7 @@ import '../QuickFacts.css'
 import { useQuery } from '@apollo/client'
 import { ChurchContext } from 'contexts/ChurchContext'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
-import {
-  GATHERING_SERVICE_AVG_WEEKDAY_ATTENDANCE_THIS_MONTH,
-  GATHERING_SERVICE_AVG_WEEKDAY_INCOME_THIS_MONTH,
-  GATHERING_SERVICE_AVG_BUSSING_THIS_MONTH,
-} from '../QuickFactsQueries'
+import { GATHERING_SERVICE_AVG_WEEKDAY_STATS } from '../QuickFactsQueries'
 import QuickFactsHeader from '../components/QuickFactsHeader'
 import QuickFactsSlider from '../components/QuickFactsSlider'
 import PlaceholderCustom from 'components/Placeholder'
@@ -15,41 +11,27 @@ import PlaceholderCustom from 'components/Placeholder'
 const GatheringServiceAvgWeekdayQuickFacts = () => {
   const { gatheringServiceId } = useContext(ChurchContext)
 
-  const {
-    data: attendanceData,
-    loading: attendanceLoading,
-    error: attendanceError,
-  } = useQuery(GATHERING_SERVICE_AVG_WEEKDAY_ATTENDANCE_THIS_MONTH, {
-    variables: { gatheringServiceId: gatheringServiceId },
-  })
-
-  const { data: incomeData } = useQuery(
-    GATHERING_SERVICE_AVG_WEEKDAY_INCOME_THIS_MONTH,
+  const { data, loading, error } = useQuery(
+    GATHERING_SERVICE_AVG_WEEKDAY_STATS,
     {
-      variables: { gatheringServiceId: gatheringServiceId },
+      variables: { gatheringServiceId: gatheringServiceId, days: 60 },
     }
   )
 
-  const { data: bussingData } = useQuery(
-    GATHERING_SERVICE_AVG_BUSSING_THIS_MONTH,
-    {
-      variables: { gatheringServiceId: gatheringServiceId },
-    }
-  )
-
-  const gatheringServiceAttendance = attendanceData?.gatheringServices[0]
-  const gatheringServiceIncome = incomeData?.gatheringServices[0]
-  const gatheringServiceBussing = bussingData?.gatheringServices[0]
+  const gatheringService = data?.gatheringServices[0]
+  const leadersName = `${gatheringService?.leader?.firstName} ${gatheringService?.leader?.lastName}`
+  const churchName = `${gatheringService?.name}`
+  const higherLevelName = `${gatheringService?.name} ${gatheringService?.__typename}`
 
   const attendanceDetails = [
     {
       churchType: 'Gathering Service',
       cardType: 'Attendance',
-      leadersName: `${gatheringServiceAttendance?.leader?.firstName} ${gatheringServiceAttendance?.leader?.lastName}`,
-      churchName: `${gatheringServiceAttendance?.name}`,
-      churchAvgAttendanceThisMonth: `${gatheringServiceAttendance?.avgWeekdayAttendanceThisMonth}`,
-      avgHigherLevelAttendanceThisMonth: `${gatheringServiceAttendance?.oversight?.avgGatheringServiceWeekdayAttendanceThisMonth}`,
-      higherLevelName: `${gatheringServiceAttendance?.name} ${gatheringServiceAttendance?.__typename}`,
+      leadersName: leadersName,
+      churchName: churchName,
+      churchAvgAttendanceThisMonth: `${gatheringService?.avgWeekdayStats?.attendance}`,
+      avgHigherLevelAttendanceThisMonth: `${gatheringService?.oversight?.avgGatheringServiceWeekdayStats?.attendance}`,
+      higherLevelName: higherLevelName,
     },
   ]
 
@@ -57,11 +39,11 @@ const GatheringServiceAvgWeekdayQuickFacts = () => {
     {
       churchType: 'Gathering Service',
       cardType: 'Income',
-      leadersName: `${gatheringServiceIncome?.leader?.firstName} ${gatheringServiceIncome?.leader?.lastName}`,
-      churchName: `${gatheringServiceIncome?.name}`,
-      churchAvgIncomeThisMonth: `${gatheringServiceIncome?.avgWeekdayIncomeThisMonth}`,
-      avgHigherLevelIncomeThisMonth: `${gatheringServiceIncome?.oversight?.avgGatheringServiceWeekdayIncomeThisMonth}`,
-      higherLevelName: `${gatheringServiceIncome?.name} ${gatheringServiceIncome?.__typename}`,
+      leadersName: leadersName,
+      churchName: churchName,
+      churchAvgIncomeThisMonth: `${gatheringService?.avgWeekdayStats?.income}`,
+      avgHigherLevelIncomeThisMonth: `${gatheringService?.oversight?.avgGatheringServiceWeekdayStats?.income}`,
+      higherLevelName: higherLevelName,
     },
   ]
 
@@ -69,23 +51,19 @@ const GatheringServiceAvgWeekdayQuickFacts = () => {
     {
       churchType: 'Gathering Service',
       cardType: 'Bussing',
-      leadersName: `${gatheringServiceBussing?.leader?.firstName} ${gatheringServiceBussing?.leader?.lastName}`,
-      churchName: `${gatheringServiceBussing?.name}`,
-      churchBussingThisMonth: `${gatheringServiceBussing?.avgBussingAttendanceThisMonth}`,
-      avgHigherLevelBussingThisMonth: `${gatheringServiceBussing?.oversight?.avgGatheringServiceBussingAttendanceThisMonth}`,
-      higherLevelName: `${gatheringServiceBussing?.oversight?.name} ${gatheringServiceBussing?.oversight?.__typename}`,
+      leadersName: leadersName,
+      churchName: churchName,
+      churchBussingThisMonth: `${gatheringService?.avgBussingAttendance}`,
+      avgHigherLevelBussingThisMonth: `${gatheringService?.oversight?.avgGatheringServiceBussingAttendance}`,
+      higherLevelName: higherLevelName,
     },
   ]
 
   return (
-    <ApolloWrapper
-      loading={attendanceLoading}
-      error={attendanceError}
-      data={attendanceData}
-    >
+    <ApolloWrapper loading={loading} error={error} data={data}>
       <div className="quick-fact-page">
         <QuickFactsHeader />
-        <PlaceholderCustom loading={attendanceLoading}>
+        <PlaceholderCustom loading={loading}>
           <div className=" page-padding mt-3 quick-fact-card-wrapper">
             <QuickFactsSlider
               attendanceDetails={attendanceDetails}
