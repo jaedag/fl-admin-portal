@@ -3,6 +3,11 @@ extend type ServiceLog {
     @relationship(type: "HAS_EQUIPMENT_RECORD", direction: OUT)
 }
 
+type FellowshipEquipment {
+  offeringBags: Int!
+  bluetoothSpeakers: Int!
+}
+
 extend type GatheringService {
   pulpits: Int
     @cypher(
@@ -15,7 +20,7 @@ extend type GatheringService {
       RETURN sum(record.pulpits)
       """
     )
-  offeringBags: Int
+  fellowshipEquipment: FellowshipEquipment!
     @cypher(
       statement: """
       MATCH (this)
@@ -23,7 +28,11 @@ extend type GatheringService {
       WITH max(n.date) as latestEquipmentDate, this
       MATCH (this)-[:HAS]->(:Stream)-[:HAS]->(:Council)-[:HAS]->(:Constituency)-[:HAS]->(:Bacenta)-[:HAS]->(:Fellowship)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_EQUIPMENT_RECORD]->(record:EquipmentRecord)
       MATCH (record)-[:HAS_EQUIPMENT_DATE]->(date:EquipmentDate {date:date(latestEquipmentDate)})
-      RETURN sum(record.offeringBags)
+      WITH DISTINCT record
+      RETURN {
+        offeringBags: sum(record.offeringBags),
+        bluetoothSpeakers: sum(record.bluetoothSpeakers)
+      } as fellowshipEquipment
       """
     )
   equipmentStartDate: Date
@@ -42,7 +51,7 @@ extend type Stream {
       RETURN sum(record.pulpits)
       """
     )
-  offeringBags: Int
+  fellowshipEquipment: FellowshipEquipment!
     @cypher(
       statement: """
       MATCH (this)<-[:HAS]-(gatheringService:GatheringService)
@@ -51,7 +60,11 @@ extend type Stream {
       MATCH (gatheringService)-[:HAS_CAMPAIGN]->(campaign:EquipmentCampaign)
       MATCH (this)-[:HAS]->(:Council)-[:HAS]->(:Constituency)-[:HAS]->(:Bacenta)-[:HAS]-(:Fellowship)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_EQUIPMENT_RECORD]->(record:EquipmentRecord)
       MATCH (record)-[:HAS_EQUIPMENT_DATE]->(date:TimeGraph {date:date(latestEquipmentDate)})
-      RETURN sum(record.offeringBags)
+      WITH DISTINCT record
+      RETURN {
+        offeringBags: sum(record.offeringBags),
+        bluetoothSpeakers: sum(record.bluetoothSpeakers)
+      } as fellowshipEquipment
       """
     )
 }
@@ -68,7 +81,7 @@ extend type Council {
       RETURN sum(record.pulpits)
       """
     )
-  offeringBags: Int
+  fellowshipEquipment: FellowshipEquipment!
     @cypher(
       statement: """
       MATCH (this)<-[:HAS]-(:Stream)<-[:HAS]-(gatheringService:GatheringService)
@@ -76,7 +89,11 @@ extend type Council {
       WITH max(n.date) as latestEquipmentDate, this
       MATCH (this)-[:HAS]->(:Constituency)-[:HAS]->(:Bacenta)-[:HAS]-(:Fellowship)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_EQUIPMENT_RECORD]->(record:EquipmentRecord)
       MATCH (record)-[:HAS_EQUIPMENT_DATE]->(date:TimeGraph {date:date(latestEquipmentDate)})
-      RETURN sum(record.offeringBags)
+      WITH DISTINCT record
+      RETURN {
+        offeringBags: sum(record.offeringBags),
+        bluetoothSpeakers: sum(record.bluetoothSpeakers)
+      } as fellowshipEquipment
       """
     )
 }
@@ -93,7 +110,7 @@ extend type Constituency {
       RETURN sum(record.pulpits)
       """
     )
-  offeringBags: Int
+  fellowshipEquipment: FellowshipEquipment!
     @cypher(
       statement: """
       MATCH (this)
@@ -101,13 +118,17 @@ extend type Constituency {
       WITH max(n.date) as latestEquipmentDate, this
       MATCH (this)-[:HAS]->(:Bacenta)-[:HAS]-(:Fellowship)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_EQUIPMENT_RECORD]->(record:EquipmentRecord)
       MATCH (record)-[:HAS_EQUIPMENT_DATE]->(date:TimeGraph {date:date(latestEquipmentDate)})
-      RETURN sum(record.offeringBags)
+      WITH DISTINCT record
+      RETURN {
+        offeringBags: sum(record.offeringBags),
+        bluetoothSpeakers: sum(record.bluetoothSpeakers)
+      } as fellowshipEquipment
       """
     )
 }
 
 extend type Bacenta {
-  offeringBags: Int
+  fellowshipEquipment: FellowshipEquipment!
     @cypher(
       statement: """
       MATCH (this)
@@ -115,13 +136,17 @@ extend type Bacenta {
       WITH max(n.date) as latestEquipmentDate, this
       MATCH (this)-[:HAS]-(:Fellowship)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_EQUIPMENT_RECORD]->(record:EquipmentRecord)
       MATCH (record)-[:HAS_EQUIPMENT_DATE]->(date:TimeGraph {date:date(latestEquipmentDate)})
-      RETURN sum(record.offeringBags)
+      WITH DISTINCT record
+      RETURN {
+        offeringBags: sum(record.offeringBags),
+        bluetoothSpeakers: sum(record.bluetoothSpeakers)
+      } as fellowshipEquipment
       """
     )
 }
 
 extend type Fellowship {
-  offeringBags: Int
+  fellowshipEquipment: FellowshipEquipment!
     @cypher(
       statement: """
       MATCH (this)
@@ -129,7 +154,11 @@ extend type Fellowship {
       WITH max(n.date) as latestEquipmentDate, this
       MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_EQUIPMENT_RECORD]->(record:EquipmentRecord)
       MATCH (record)-[:HAS_EQUIPMENT_DATE]->(date:TimeGraph {date:date(latestEquipmentDate)})
-      RETURN sum(record.offeringBags)
+      WITH DISTINCT record
+      RETURN {
+        offeringBags: sum(record.offeringBags),
+        bluetoothSpeakers: sum(record.bluetoothSpeakers)
+      } as fellowshipEquipment
       """
     )
 }
@@ -142,6 +171,7 @@ type EquipmentRecord {
     @relationship(type: "HAS_EQUIPMENT_DATE", direction: OUT)
   offeringBags: Int
   pulpits: Int
+  bluetoothSpeakers: Int
   serviceLog: ServiceLog
     @relationship(type: "HAS_EQUIPMENT_RECORD", direction: IN)
   church_name: String
@@ -185,6 +215,7 @@ extend type Mutation {
   CreateFellowshipEquipmentRecord(
     id: ID!
     offeringBags: Int!
+    bluetoothSpeakers: Int!
     date: Date!
   ): EquipmentRecord
 

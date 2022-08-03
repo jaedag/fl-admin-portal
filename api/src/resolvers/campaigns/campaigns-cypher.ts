@@ -12,9 +12,9 @@ MATCH (fellowship)-[:CURRENT_HISTORY]->(log:ServiceLog)
 MATCH (member:Member {auth_id: $auth.jwt.sub})
 CREATE (record:EquipmentRecord)
 SET
-record.historyRecord = fellowship.name + ' ' + ' Equipment Record created on this '+datetime(),
 record.id = apoc.create.uuid(),
-record.offeringBags = $offeringBags,
+record.offeringBags = toInteger($offeringBags),
+record.bluetoothSpeakers = toInteger($bluetoothSpeakers),
 record.created_at = datetime()
 
 MERGE (log)-[:HAS_EQUIPMENT_RECORD]->(record)
@@ -38,9 +38,8 @@ MATCH (con)-[:CURRENT_HISTORY]->(log:ServiceLog)
 MATCH (member:Member {auth_id: $auth.jwt.sub})
 CREATE (record:EquipmentRecord)
 SET
-record.historyRecord = con.name + ' ' + 'Equipment Record created on this '+datetime(),
 record.id = apoc.create.uuid(),
-record.pulpits = $pulpits,
+record.pulpits = toInteger($pulpits),
 record.created_at = datetime()
 
 MERGE (log)-[:HAS_EQUIPMENT_RECORD]->(record)

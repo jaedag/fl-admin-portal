@@ -141,6 +141,8 @@ export const campaignsMutation = {
         return {
           id: fellowshipRecord.record.properties.id,
           offeringBags: fellowshipRecord.record.properties.offeringBags,
+          bluetoothSpeakers:
+            fellowshipRecord.record.properties.bluetoothSpeakers,
         }
       }
       return throwErrorMsg('Equipment Deadline is up')
