@@ -24,7 +24,7 @@ const ServiceDetails = ({ service, church, loading }) => {
     return <SpinnerPage />
   }
 
-  var table = []
+  let table = []
 
   if (!currentUser.noIncome) {
     table = [

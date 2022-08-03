@@ -34,7 +34,7 @@ export const menuItems: MenuItem[] = [
     roles: [
       ...permitLeaderAdmin('Bacenta'),
       ...permitArrivals('Bacenta'),
-      ...permitArrivalsHelpers(),
+      ...permitArrivalsHelpers('Bacenta'),
     ],
   },
   {
