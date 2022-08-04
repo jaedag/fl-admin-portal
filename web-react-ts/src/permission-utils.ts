@@ -177,12 +177,8 @@ export const permitArrivalsCounter = (): Role[] => {
 export const permitArrivalsConfirmer = (): Role[] => {
   return ['arrivalsConfirmerStream']
 }
-export const permitArrivalsHelpers = (churchLevel: ChurchLevel): Role[] => {
-  if (churchLevel === 'Stream') {
-    return ['arrivalsCounterStream', 'arrivalsConfirmerStream']
-  } else {
-    return []
-  }
+export const permitArrivalsHelpers = (churchLevel: 'Stream'): Role[] => {
+  return ['arrivalsCounterStream', 'arrivalsConfirmerStream']
 }
 export const permitLeaderAdminArrivals = (churchLevel: ChurchLevel): Role[] => {
   return [...permitLeaderAdmin(churchLevel), ...permitArrivals(churchLevel)]
