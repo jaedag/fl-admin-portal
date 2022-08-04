@@ -25,7 +25,7 @@ const ProgressBar = (props: Props) => {
         aria-valuemax={100}
         style={{ width: `${percentage}%` }}
       >
-        {percentage}%
+        <div className="progress-bar-title">{percentage}%</div>
       </div>
     </div>
   )

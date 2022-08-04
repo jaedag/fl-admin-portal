@@ -3,7 +3,6 @@ import FormikControl from 'components/formik-components/FormikControl'
 import { Formik, Form, FormikHelpers } from 'formik'
 import * as Yup from 'yup'
 import { Col, Container, Row, Button } from 'react-bootstrap'
-import HeadingSecondary from 'components/HeadingSecondary'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import { MemberContext } from 'contexts/MemberContext'
 import { useMutation } from '@apollo/client'
@@ -13,7 +12,7 @@ import { useNavigate } from 'react-router'
 import { throwErrorMsg } from '../../../../global-utils'
 
 type FormOptions = {
-  pulpits: number
+  pulpits: string
   date: string
 }
 
@@ -30,7 +29,7 @@ const ConstituencyEquipmentForm = () => {
   const navigate = useNavigate()
 
   const initialValues: FormOptions = {
-    pulpits: 0,
+    pulpits: '0',
     date: new Date().toISOString().slice(0, 10),
   }
 
@@ -53,7 +52,7 @@ const ConstituencyEquipmentForm = () => {
       await CreateEquipmentRecord({
         variables: {
           id: constituencyId,
-          pulpits: values.pulpits,
+          pulpits: parseInt(values.pulpits),
           date: new Date().toISOString().slice(0, 10),
         },
       })

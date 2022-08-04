@@ -3,7 +3,6 @@ import FormikControl from 'components/formik-components/FormikControl'
 import { Formik, Form, FormikHelpers } from 'formik'
 import * as Yup from 'yup'
 import { Col, Container, Row, Button } from 'react-bootstrap'
-import HeadingSecondary from 'components/HeadingSecondary'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import { MemberContext } from 'contexts/MemberContext'
 import { useMutation } from '@apollo/client'
@@ -13,8 +12,8 @@ import { useNavigate } from 'react-router'
 import { throwErrorMsg } from '../../../../global-utils'
 
 type FormOptions = {
-  offeringBags: number
-  bluetoothSpeakers: number
+  offeringBags: string
+  bluetoothSpeakers: string
   date: string
 }
 
@@ -31,8 +30,8 @@ const FellowshipEquipmentForm = () => {
   const navigate = useNavigate()
 
   const initialValues: FormOptions = {
-    offeringBags: 0,
-    bluetoothSpeakers: 0,
+    offeringBags: '0',
+    bluetoothSpeakers: '0',
     date: new Date().toISOString().slice(0, 10),
   }
 
@@ -62,8 +61,8 @@ const FellowshipEquipmentForm = () => {
       await CreateEquipmentRecord({
         variables: {
           id: fellowshipId,
-          offeringBags: values.offeringBags,
-          bluetoothSpeakers: values.bluetoothSpeakers,
+          offeringBags: parseInt(values.offeringBags),
+          bluetoothSpeakers: parseInt(values.bluetoothSpeakers),
           date: new Date().toISOString().slice(0, 10),
         },
       })

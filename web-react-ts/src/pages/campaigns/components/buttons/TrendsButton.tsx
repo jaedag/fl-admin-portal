@@ -41,16 +41,16 @@ const TrendsButton = (props: TrendsButtonProps) => {
         </div>
       </div>
       <div className="d-grid gap-1 pb-2">
-        <div className="lowercase-text">
-          Total Offering Bags: {offeringBags}/{total}
+        <div className="lowercase-text text-secondary">
+          Total Offering Bags: {offeringBags} / {total}
         </div>
         <ProgressBar percentage={offeringBagsPercentage} />
-        <div className="lowercase-text">
-          Total Pulpits: {pulpits}/{constituencyCount}
+        <div className="lowercase-text text-secondary">
+          Total Pulpits: {pulpits} / {constituencyCount}
         </div>
         <ProgressBar percentage={pulpitsPercentage} />
-        <div className="lowercase-text">
-          Total Bluetooth Speakers: {bluetoothSpeakers}/
+        <div className="lowercase-text text-secondary">
+          Total Bluetooth Speakers: {bluetoothSpeakers} /{' '}
           {church?.activeFellowshipCount}
         </div>
         <ProgressBar percentage={bluetoothSpeakersPercentage} />
