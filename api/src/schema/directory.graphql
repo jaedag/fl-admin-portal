@@ -8,7 +8,7 @@ type Member @auth(rules: [{ isAuthenticated: true }]) {
   currentTitle: String
     @cypher(
       statement: """
-      MATCH (this)-[:HAS_TITLE]->(title:Title) 
+      MATCH (this)-[:HAS_TITLE]->(title:Title)
       RETURN title.name ORDER BY title.weight DESC LIMIT 1
       """
     )

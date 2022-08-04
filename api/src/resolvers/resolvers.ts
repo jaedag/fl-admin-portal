@@ -10,6 +10,10 @@ import {
   arrivalsResolvers,
 } from './arrivals/arrivals-resolvers'
 import bankingMutation from './banking/banking-resolver'
+import {
+  campaignsMutation,
+  campaignsResolvers,
+} from './campaigns/campaigns-resolver'
 
 const dotenv = require('dotenv')
 
@@ -38,20 +42,28 @@ const resolvers = {
       return `${shortTitle}${source.firstName} ${source.lastName}`
     },
   },
+  Fellowship: {
+    ...campaignsResolvers.Fellowship,
+  },
   Bacenta: {
     ...componentResolvers.Bacenta,
+    ...campaignsResolvers.Bacenta,
   },
   Constituency: {
     ...componentResolvers.Constituency,
+    ...campaignsResolvers.Constituency,
   },
   Council: {
     ...componentResolvers.Council,
+    ...campaignsResolvers.Stream,
   },
   Stream: {
     ...componentResolvers.Stream,
+    ...campaignsResolvers.Stream,
   },
   GatheringService: {
     ...componentResolvers.GatheringService,
+    ...campaignsResolvers.GatheringService,
   },
   ...arrivalsResolvers,
   Mutation: {
@@ -62,6 +74,7 @@ const resolvers = {
     ...bankingMutation,
     ...treasuryMutations,
     ...serviceNoIncomeMutations,
+    ...campaignsMutation,
   },
 }
 
