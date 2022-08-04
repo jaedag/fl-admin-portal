@@ -49,11 +49,15 @@
   letter-spacing: 1px;
 }
 
-.lowercase-text{
+.lowercase-text {
   font-size: 14px;
 }
 
 .button {
   text-align: left;
   padding-left: 15px;
+}
+
+.menu-padding {
+  padding: 19px 58px;
 }

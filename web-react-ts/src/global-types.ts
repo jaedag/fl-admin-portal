@@ -241,3 +241,20 @@ export type ServiceRecord = {
   bankingSlipUploader: Member
   offeringBankedBy: Member
 }
+
+//equipment
+export type EquipmentChurch = {
+  __typename: string
+  id: string
+  name: string
+  fellowshipEquipment: FellowshipEquipment
+  pulpits: number
+  activeFellowshipCount: number
+  constituencyCount: number
+}
+
+export type FellowshipEquipment = {
+  __typename: string
+  bluetoothSpeakers: number
+  offeringBags: number
+}
