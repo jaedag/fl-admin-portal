@@ -2,7 +2,7 @@ import React from 'react'
 import './TrendsButton.css'
 
 type Props = {
-  percentage: number
+  percentage: number | typeof NaN
 }
 
 const ProgressBar = (props: Props) => {
@@ -25,7 +25,9 @@ const ProgressBar = (props: Props) => {
         aria-valuemax={100}
         style={{ width: `${percentage}%` }}
       >
-        <div className="progress-bar-title">{percentage}%</div>
+        <div className="progress-bar-title">
+          {isNaN(percentage) ? '0%' : `${percentage}%`}
+        </div>
       </div>
     </div>
   )
