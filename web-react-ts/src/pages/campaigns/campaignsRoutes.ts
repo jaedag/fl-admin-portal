@@ -27,37 +27,38 @@ import CouncilByConstituency from './equipment/council/CouncilByConstituency'
 import ConstituencyByBacenta from './equipment/constituency/ConstituencyByBacenta'
 import BacentaByFellowship from './equipment/bacenta/BacentaByFellowship'
 import GatheringServiceEquipmentDeadline from './equipment/gathering-service/GatheringServiceEquipmentDeadline'
+import { permitLeaderAdmin } from 'permission-utils'
 
 export const campaigns = [
   //gathering-service routes
   {
     path: '/campaigns/gatheringservice',
     element: GatheringServiceCampaigns,
-    roles: ['leaderGatheringService', 'adminGatheringService'],
+    roles: permitLeaderAdmin('GatheringService'),
     placeholder: true,
   },
   {
     path: '/campaigns/gathering-service/equipment',
     element: GatheringServiceEquipmentCampaign,
-    roles: ['leaderGatheringService', 'adminGatheringService'],
+    roles: permitLeaderAdmin('GatheringService'),
     placeholder: true,
   },
   {
     path: '/campaigns/gathering-service/equipment/trends',
     element: GatheringServiceTrends,
-    roles: ['leaderGatheringService', 'adminGatheringService'],
+    roles: permitLeaderAdmin('GatheringService'),
     placeholder: true,
   },
   {
     path: '/campaigns/equipment/gathering-service/stream',
     element: GatheringServiceByStream,
-    roles: ['leaderGatheringService', 'adminGatheringService'],
+    roles: permitLeaderAdmin('GatheringService'),
     placeholder: true,
   },
   {
     path: '/campaigns/gathering-service/set-equipment-deadline',
     element: GatheringServiceEquipmentDeadline,
-    roles: ['leaderGatheringService', 'adminGatheringService'],
+    roles: permitLeaderAdmin('GatheringService'),
     placeholder: true,
   },
 
@@ -65,25 +66,25 @@ export const campaigns = [
   {
     path: '/campaigns/stream',
     element: StreamCampaigns,
-    roles: ['leaderStream', 'adminStream'],
+    roles: permitLeaderAdmin('Stream'),
     placeholder: true,
   },
   {
     path: '/campaigns/stream/equipment',
     element: StreamEquipmentCampaign,
-    roles: ['leaderStream', 'adminStream'],
+    roles: permitLeaderAdmin('Stream'),
     placeholder: true,
   },
   {
     path: '/campaigns/stream/equipment/trends',
     element: StreamTrends,
-    roles: ['leaderStream', 'adminStream'],
+    roles: permitLeaderAdmin('Stream'),
     placeholder: true,
   },
   {
     path: '/campaigns/equipment/stream/council',
     element: StreamByCouncil,
-    roles: ['leaderStream', 'adminStream'],
+    roles: permitLeaderAdmin('Stream'),
     placeholder: true,
   },
 
@@ -91,25 +92,25 @@ export const campaigns = [
   {
     path: '/campaigns/council',
     element: CouncilCampaigns,
-    roles: ['leaderCouncil', 'adminCouncil'],
+    roles: permitLeaderAdmin('Council'),
     placeholder: true,
   },
   {
     path: '/campaigns/council/equipment',
     element: CouncilEquipmentCampaign,
-    roles: ['leaderCouncil', 'adminCouncil'],
+    roles: permitLeaderAdmin('Council'),
     placeholder: true,
   },
   {
     path: '/campaigns/council/equipment/trends',
     element: CouncilTrends,
-    roles: ['leaderCouncil', 'adminCouncil'],
+    roles: permitLeaderAdmin('Council'),
     placeholder: true,
   },
   {
     path: '/campaigns/equipment/council/constituency',
     element: CouncilByConstituency,
-    roles: ['leaderCouncil', 'adminCouncil'],
+    roles: permitLeaderAdmin('Council'),
     placeholder: true,
   },
 
@@ -117,37 +118,37 @@ export const campaigns = [
   {
     path: '/campaigns/constituency',
     element: ConstituencyCampaigns,
-    roles: ['leaderConstituency', 'adminConstituency'],
+    roles: permitLeaderAdmin('Constituency'),
     placeholder: true,
   },
   {
     path: '/campaigns/constituency/equipment',
     element: ConstituencyEquipmentCampaign,
-    roles: ['leaderConstituency', 'adminConstituency'],
+    roles: permitLeaderAdmin('Constituency'),
     placeholder: true,
   },
   {
     path: '/campaigns/constituency/equipment/trends',
     element: ConstituencyEquipmentTrends,
-    roles: ['leaderConstituency', 'adminConstituency'],
+    roles: permitLeaderAdmin('Constituency'),
     placeholder: true,
   },
   {
     path: '/campaigns/equipment/constituency/bacenta',
     element: ConstituencyByBacenta,
-    roles: ['leaderConstituency', 'adminConstituency'],
+    roles: permitLeaderAdmin('Constituency'),
     placeholder: true,
   },
   {
     path: '/campaigns/constituency/equipment/form',
     element: ConstituencyEquipmentForm,
-    roles: ['leaderConstituency', 'adminConstituency'],
+    roles: permitLeaderAdmin('Constituency'),
     placeholder: true,
   },
   {
     path: '/campaigns/constituency/equipment/form-details',
     element: ConstituencyEquipmentFormDetails,
-    roles: ['leaderConstituency', 'adminConstituency'],
+    roles: permitLeaderAdmin('Constituency'),
     placeholder: true,
   },
 
@@ -155,25 +156,25 @@ export const campaigns = [
   {
     path: '/campaigns/bacenta',
     element: BacentaCampaigns,
-    roles: ['leaderBacenta', 'adminBacenta'],
+    roles: permitLeaderAdmin('Bacenta'),
     placeholder: true,
   },
   {
     path: '/campaigns/bacenta/equipment',
     element: BacentaEquipmentCampaign,
-    roles: ['leaderBacenta', 'adminBacenta'],
+    roles: permitLeaderAdmin('Bacenta'),
     placeholder: true,
   },
   {
     path: '/campaigns/bacenta/equipment/trends',
     element: BacentaTrends,
-    roles: ['leaderBacenta', 'adminBacenta'],
+    roles: permitLeaderAdmin('Bacenta'),
     placeholder: true,
   },
   {
     path: '/campaigns/equipment/bacenta/fellowship',
     element: BacentaByFellowship,
-    roles: ['leaderBacenta', 'adminBacenta'],
+    roles: permitLeaderAdmin('Bacenta'),
     placeholder: true,
   },
 
@@ -181,31 +182,31 @@ export const campaigns = [
   {
     path: '/campaigns/fellowship',
     element: FellowshipCampaigns,
-    roles: ['leaderFellowship'],
+    roles: permitLeaderAdmin('Fellowship'),
     placeholder: true,
   },
   {
     path: '/campaigns/fellowship/equipment',
     element: FellowshipEquipmentCampaign,
-    roles: ['leaderFellowship'],
+    roles: permitLeaderAdmin('Fellowship'),
     placeholder: true,
   },
   {
     path: '/campaigns/fellowship/equipment/trends',
     element: FellowshipTrends,
-    roles: ['leaderFellowship'],
+    roles: permitLeaderAdmin('Fellowship'),
     placeholder: true,
   },
   {
     path: '/campaigns/fellowship/equipment/form',
     element: FellowshipEquipmentForm,
-    roles: ['leaderFellowship'],
+    roles: permitLeaderAdmin('Fellowship'),
     placeholder: true,
   },
   {
     path: '/campaigns/fellowship/equipment/form-details',
     element: FellowshipEquipmentFormDetails,
-    roles: ['leaderFellowship'],
+    roles: permitLeaderAdmin('Fellowship'),
     placeholder: true,
   },
 
