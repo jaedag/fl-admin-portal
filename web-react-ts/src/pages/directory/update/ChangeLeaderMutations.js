@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client'
 
-export const MAKE_FELLOWSHIP_LEADER = gql`
+export const MAKE_FELLOWSHIP_LEADER = gql `
   mutation MakeFellowshipLeader(
     $fellowshipId: ID!
     $newLeaderId: ID!
@@ -35,7 +35,7 @@ export const MAKE_FELLOWSHIP_LEADER = gql`
   }
 `
 
-export const MAKE_BACENTA_LEADER = gql`
+export const MAKE_BACENTA_LEADER = gql `
   mutation MakeBacentaLeader(
     $bacentaId: ID!
     $newLeaderId: ID!
@@ -79,7 +79,7 @@ export const MAKE_BACENTA_LEADER = gql`
   }
 `
 
-export const MAKE_SONTA_LEADER = gql`
+export const MAKE_SONTA_LEADER = gql `
   mutation MakeSontaLeader(
     $sontaId: ID!
     $newLeaderId: ID!
@@ -119,7 +119,7 @@ export const MAKE_SONTA_LEADER = gql`
   }
 `
 
-export const MAKE_CONSTITUENCY_LEADER = gql`
+export const MAKE_CONSTITUENCY_LEADER = gql `
   mutation MakeConstituencyLeader(
     $constituencyId: ID!
     $newLeaderId: ID!
@@ -166,7 +166,7 @@ export const MAKE_CONSTITUENCY_LEADER = gql`
   }
 `
 
-export const MAKE_COUNCIL_LEADER = gql`
+export const MAKE_COUNCIL_LEADER = gql `
   mutation MakeCouncilLeader(
     $councilId: ID!
     $newLeaderId: ID!
@@ -210,7 +210,7 @@ export const MAKE_COUNCIL_LEADER = gql`
   }
 `
 
-export const MAKE_STREAM_LEADER = gql`
+export const MAKE_STREAM_LEADER = gql `
   mutation MakeStreamLeader(
     $streamId: ID!
     $newLeaderId: ID!
@@ -249,6 +249,40 @@ export const MAKE_STREAM_LEADER = gql`
         #   }
         #   historyRecord
         # }
+      }
+    }
+  }
+`
+
+export const MAKE_GATHERINGSERVICE_LEADER = gql `
+  mutation MakeGatheringServiceLeader(
+    $gatheringServiceId: ID!
+    $newLeaderId: ID!
+    $oldLeaderId: ID!
+  ) {
+    RemoveGatheringServiceLeader(
+      gatheringServiceId: $gatheringServiceId
+      leaderId: $oldLeaderId
+    ) {
+      id
+      firstName
+      lastName
+    }
+    MakeGatheringServiceLeader(
+      gatheringServiceId: $gatheringServiceId
+      leaderId: $newLeaderId
+      oldLeaderId: $oldLeaderId
+    ) {
+      id
+      firstName
+      lastName
+      leadsStream {
+        id
+        leader {
+          id
+          firstName
+          lastName
+        }
       }
     }
   }

@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client'
 
-export const UPDATE_MEMBER_MUTATION = gql`
+export const UPDATE_MEMBER_MUTATION = gql `
   mutation UpdateMemberDetails(
     $id: ID!
     $firstName: String!
@@ -57,7 +57,7 @@ export const UPDATE_MEMBER_MUTATION = gql`
   }
 `
 
-export const UPDATE_MEMBER_EMAIL = gql`
+export const UPDATE_MEMBER_EMAIL = gql `
   mutation UpdateMemberEmail($id: ID!, $email: String!) {
     UpdateMemberEmail(id: $id, email: $email) {
       id
@@ -67,7 +67,7 @@ export const UPDATE_MEMBER_EMAIL = gql`
     }
   }
 `
-export const UPDATE_MEMBER_MINISTRY = gql`
+export const UPDATE_MEMBER_MINISTRY = gql `
   mutation UpdateMemberMinistry($memberId: ID!, $ministryId: ID!) {
     UpdateMemberMinistry(memberId: $memberId, ministryId: $ministryId) {
       id
@@ -81,7 +81,7 @@ export const UPDATE_MEMBER_MINISTRY = gql`
   }
 `
 
-export const LOG_MEMBER_HISTORY = gql`
+export const LOG_MEMBER_HISTORY = gql `
   mutation ($ids: [ID], $historyRecord: String!) {
     LogMemberHistory(ids: $ids, historyRecord: $historyRecord) {
       id
@@ -105,7 +105,7 @@ export const LOG_MEMBER_HISTORY = gql`
   }
 `
 
-export const UPDATE_MEMBER_FELLOWSHIP = gql`
+export const UPDATE_MEMBER_FELLOWSHIP = gql `
   mutation UpdateMemberFellowship(
     $memberId: ID!
     $fellowshipId: ID!
@@ -142,7 +142,7 @@ export const UPDATE_MEMBER_FELLOWSHIP = gql`
     }
   }
 `
-export const UPDATE_STREAM_MUTATION = gql`
+export const UPDATE_STREAM_MUTATION = gql `
   mutation UpdateStream(
     $streamId: ID!
     $name: String!
@@ -201,7 +201,66 @@ export const UPDATE_STREAM_MUTATION = gql`
   }
 `
 
-export const UPDATE_COUNCIL_MUTATION = gql`
+export const UPDATE_GATHERINGSERVICE_MUTATION = gql `
+  mutation UpdateGatheringService(
+    $gatheringServiceId: ID!
+    $name: String!
+    $oversightId: ID!
+  ) {
+    UpdateGatheringServiceDetails(
+      gatheringServiceId: $streamId
+      name: $name
+      oversightId: $gatheringServiceId
+    ) {
+      id
+      name
+      streams {
+        id
+        name
+        gatheringService {
+          id
+          name
+          oversight {
+            id
+            gatheringService {
+              id
+            }
+          }
+        }
+      }
+
+      admin {
+        id
+        firstName
+        lastName
+        fellowship {
+          id
+          stream_name
+        }
+      }
+      leader {
+        id
+        firstName
+        lastName
+      }
+      history(limit: 5) {
+        id
+        timeStamp
+        created_at {
+          date
+        }
+        loggedBy {
+          id
+          firstName
+          lastName
+        }
+        historyRecord
+      }
+    }
+  }
+`
+
+export const UPDATE_COUNCIL_MUTATION = gql `
   mutation UpdateCouncil($councilId: ID!, $name: String!, $streamId: ID!) {
     UpdateCouncilDetails(
       councilId: $councilId
@@ -256,7 +315,7 @@ export const UPDATE_COUNCIL_MUTATION = gql`
   }
 `
 
-export const UPDATE_CONSTITUENCY_MUTATION = gql`
+export const UPDATE_CONSTITUENCY_MUTATION = gql `
   mutation UpdateConstituency(
     $constituencyId: ID!
     $name: String!
@@ -318,7 +377,7 @@ export const UPDATE_CONSTITUENCY_MUTATION = gql`
   }
 `
 
-export const UPDATE_BACENTA_MUTATION = gql`
+export const UPDATE_BACENTA_MUTATION = gql `
   mutation UpdateBacenta(
     $bacentaId: ID!
     $name: String!
@@ -380,7 +439,7 @@ export const UPDATE_BACENTA_MUTATION = gql`
   }
 `
 
-export const UPDATE_SONTA_MUTATION = gql`
+export const UPDATE_SONTA_MUTATION = gql `
   mutation UpdateSonta($sontaId: ID!, $name: String!) {
     UpdateSontaDetails(sontaId: $sontaId, name: $name) {
       id
@@ -416,7 +475,7 @@ export const UPDATE_SONTA_MUTATION = gql`
   }
 `
 
-export const UPDATE_FELLOWSHIP = gql`
+export const UPDATE_FELLOWSHIP = gql `
   mutation UpdateFellowship(
     $id: ID!
     $name: String!
@@ -477,7 +536,7 @@ export const UPDATE_FELLOWSHIP = gql`
   }
 `
 
-export const ADD_BACENTA_CONSTITUENCY = gql`
+export const ADD_BACENTA_CONSTITUENCY = gql `
   mutation AddBacentaConstituency(
     $constituencyId: ID!
     $bacentaId: ID!
@@ -504,7 +563,7 @@ export const ADD_BACENTA_CONSTITUENCY = gql`
   }
 `
 
-export const REMOVE_BACENTA_CONSTITUENCY = gql`
+export const REMOVE_BACENTA_CONSTITUENCY = gql `
   mutation RemoveBacentaConstituency($higherChurch: ID!, $lowerChurch: [ID]!) {
     updateBacentas(
       where: { id_IN: $lowerChurch }
@@ -528,7 +587,7 @@ export const REMOVE_BACENTA_CONSTITUENCY = gql`
   }
 `
 
-export const ADD_BACENTA_FELLOWSHIPS = gql`
+export const ADD_BACENTA_FELLOWSHIPS = gql `
   mutation AddBacentaFellowships($bacentaId: ID!, $fellowshipId: [ID!]) {
     updateBacentas(
       where: { id: $bacentaId }
@@ -544,7 +603,7 @@ export const ADD_BACENTA_FELLOWSHIPS = gql`
     }
   }
 `
-export const REMOVE_BACENTA_FELLOWSHIPS = gql`
+export const REMOVE_BACENTA_FELLOWSHIPS = gql `
   mutation RemoveBacentaFellowships($bacentaId: ID!, $fellowshipId: ID!) {
     updateBacentas(
       where: { id: $bacentaId }
@@ -561,7 +620,7 @@ export const REMOVE_BACENTA_FELLOWSHIPS = gql`
   }
 `
 
-export const REMOVE_FELLOWSHIP_BACENTA = gql`
+export const REMOVE_FELLOWSHIP_BACENTA = gql `
   mutation RemoveFellowshipFromBacenta(
     $higherChurch: ID!
     $lowerChurch: [ID!]
@@ -590,7 +649,7 @@ export const REMOVE_FELLOWSHIP_BACENTA = gql`
   }
 `
 
-export const ADD_FELLOWSHIP_BACENTA = gql`
+export const ADD_FELLOWSHIP_BACENTA = gql `
   mutation AddFellowshipBacenta($bacentaId: ID!, $fellowshipId: ID!) {
     updateFellowships(
       where: { id: $fellowshipId }
@@ -608,7 +667,7 @@ export const ADD_FELLOWSHIP_BACENTA = gql`
 `
 
 //Updating Constituency Mutations
-export const ADD_CONSTITUENCY_COUNCIL = gql`
+export const ADD_CONSTITUENCY_COUNCIL = gql `
   mutation AddConstituencyCouncil(
     $constituencyId: ID!
     $councilId: ID!
@@ -639,7 +698,7 @@ export const ADD_CONSTITUENCY_COUNCIL = gql`
   }
 `
 
-export const REMOVE_CONSTITUENCY_COUNCIL = gql`
+export const REMOVE_CONSTITUENCY_COUNCIL = gql `
   mutation RemoveConstituencyCouncil($lowerChurch: [ID]!, $higherChurch: ID!) {
     updateConstituencies(
       where: { id_IN: $lowerChurch }
@@ -653,7 +712,7 @@ export const REMOVE_CONSTITUENCY_COUNCIL = gql`
   }
 `
 
-export const ADD_CONSTITUENCY_BACENTAS = gql`
+export const ADD_CONSTITUENCY_BACENTAS = gql `
   mutation AddConstituencyBacentas($constituencyId: ID!, $bacentaId: [ID]!) {
     updateConstituencies(
       where: { id: $constituencyId }
@@ -671,7 +730,7 @@ export const ADD_CONSTITUENCY_BACENTAS = gql`
 `
 
 //Update Council Mutations
-export const ADD_COUNCIL_CONSTITUENCIES = gql`
+export const ADD_COUNCIL_CONSTITUENCIES = gql `
   mutation AddCouncilConstituencies($councilId: ID!, $constituencyId: [ID]!) {
     updateCouncils(
       where: { id: $councilId }
@@ -690,7 +749,7 @@ export const ADD_COUNCIL_CONSTITUENCIES = gql`
   }
 `
 
-export const ADD_COUNCIL_STREAM = gql`
+export const ADD_COUNCIL_STREAM = gql `
   mutation AddCouncilStream(
     $councilId: ID!
     $streamId: ID!
@@ -718,7 +777,7 @@ export const ADD_COUNCIL_STREAM = gql`
   }
 `
 
-export const REMOVE_COUNCIL_STREAM = gql`
+export const REMOVE_COUNCIL_STREAM = gql `
   mutation RemoveCouncilStream($lowerChurch: [ID]!, $higherChurch: ID!) {
     updateCouncils(
       where: { id_IN: $lowerChurch }
@@ -733,7 +792,7 @@ export const REMOVE_COUNCIL_STREAM = gql`
 `
 
 //Update Stream Mutations
-export const ADD_STREAM_COUNCILS = gql`
+export const ADD_STREAM_COUNCILS = gql `
   mutation AddStreamCouncils($streamId: ID!, $councilId: [ID]!) {
     updateCouncils(
       where: { id_IN: $councilId }
@@ -752,8 +811,8 @@ export const ADD_STREAM_COUNCILS = gql`
   }
 `
 
-export const ADD_STREAM_GATHERINGSERVICE = gql`
-  mutation AddStreamGatheringService($streamId: ID!, $gatheringServiceId: ID!) {
+export const ADD_GATHERINGSERVICE_STREAM = gql `
+  mutation AddGatheringServiceStream($streamId: ID!, $gatheringServiceId: ID!) {
     updateStreams(
       where: { id: $streamId }
       connect: {
@@ -772,7 +831,28 @@ export const ADD_STREAM_GATHERINGSERVICE = gql`
   }
 `
 
-export const REMOVE_STREAM_GATHERINGSERVICE = gql`
+export const ADD_GATHERINGSERVICE_OVERSIGHT = gql `
+  mutation AddGatheringServiceOversight(
+    $gatheringServiceId: ID!
+    $oversightId: ID!
+  ) {
+    UpdateGatheringService(
+      where: { id: $gatheringService }
+      connect: { oversight: { where: { node: { id: $oversightId } } } }
+    ) {
+      gatheringService {
+        id
+        name
+        oversight {
+          id
+          name
+        }
+      }
+    }
+  }
+`
+
+export const REMOVE_STREAM_GATHERINGSERVICE = gql `
   mutation RemoveStreamGatheringService(
     $lowerChurch: [ID]!
     $higherChurch: ID!
@@ -784,6 +864,22 @@ export const REMOVE_STREAM_GATHERINGSERVICE = gql`
       }
     ) {
       streams {
+        id
+        name
+      }
+    }
+  }
+`
+export const REMOVE_GATHERINGSERVICE_OVERSIGHT = gql `
+  mutation RemoveGatheringServiceOversight(
+    $lowerChurch: [ID]!
+    $higherChurch: ID!
+  ) {
+    UpdateGatheringService(
+      where: { id_IN: $lowerChurch }
+      disconnect: { oversight: { where: { node: { id: $higherChurch } } } }
+    ) {
+      gatheringService {
         id
         name
       }

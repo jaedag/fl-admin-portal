@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client'
 
-export const CREATE_HISTORY_SUBSTRUCTURE = gql`
+export const CREATE_HISTORY_SUBSTRUCTURE = gql `
   mutation CreateChurchSubstructure(
     $churchType: String!
     $servantType: String!
@@ -16,7 +16,7 @@ export const CREATE_HISTORY_SUBSTRUCTURE = gql`
   }
 `
 
-export const LOG_FELLOWSHIP_HISTORY = gql`
+export const LOG_FELLOWSHIP_HISTORY = gql `
   mutation LogFellowshipHistory(
     $fellowshipId: ID!
     $historyRecord: String!
@@ -55,7 +55,7 @@ export const LOG_FELLOWSHIP_HISTORY = gql`
   }
 `
 
-export const LOG_BACENTA_HISTORY = gql`
+export const LOG_BACENTA_HISTORY = gql `
   mutation LogBacentaHistory(
     $bacentaId: ID!
     $historyRecord: String!
@@ -100,7 +100,7 @@ export const LOG_BACENTA_HISTORY = gql`
   }
 `
 
-export const LOG_CONSTITUENCY_HISTORY = gql`
+export const LOG_CONSTITUENCY_HISTORY = gql `
   mutation LogConstituencyHistory(
     $constituencyId: ID!
     $historyRecord: String!
@@ -145,7 +145,7 @@ export const LOG_CONSTITUENCY_HISTORY = gql`
   }
 `
 
-export const LOG_COUNCIL_HISTORY = gql`
+export const LOG_COUNCIL_HISTORY = gql `
   mutation LogCouncilHistory(
     $councilId: ID!
     $historyRecord: String!
@@ -190,7 +190,7 @@ export const LOG_COUNCIL_HISTORY = gql`
   }
 `
 
-export const LOG_STREAM_HISTORY = gql`
+export const LOG_STREAM_HISTORY = gql `
   mutation LogStreamHistory(
     $streamId: ID!
     $historyRecord: String!
@@ -234,8 +234,51 @@ export const LOG_STREAM_HISTORY = gql`
     }
   }
 `
-
-export const LOG_SONTA_HISTORY = gql`
+export const LOG_GATHERINGSERVICE_HISTORY = gql `
+  mutation LogGatheringServiceHistory(
+    $gatheringServiceId: ID!
+    $historyRecord: String!
+    $oldLeaderId: ID
+    $newLeaderId: ID
+    $oldOversightId: ID
+    $newOversightId: ID
+  ) {
+    LogStreamHistory(
+      gatheringServiceId: $streamId
+      historyRecord: $historyRecord
+      newLeaderId: $newLeaderId
+      oldLeaderId: $oldLeaderId
+      oldOversightId: $oldOversightId
+      newOversightId: $newOversightId
+    ) {
+      id
+      name
+      leader {
+        id
+        firstName
+        lastName
+      }
+      history(limit: 5) {
+        id
+        timeStamp
+        created_at {
+          date
+        }
+        loggedBy {
+          id
+          firstName
+          lastName
+        }
+        historyRecord
+      }
+    }
+    ConnectChurchHistory(churchId: $gatheringServiceId) {
+      id
+      historyRecord
+    }
+  }
+`
+export const LOG_SONTA_HISTORY = gql `
   mutation LogSontaHistory(
     $sontaId: ID!
     $historyRecord: String!

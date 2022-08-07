@@ -361,6 +361,18 @@ export const GET_GATHERINGSERVICES = gql`
   }
 `
 
+export const GET_OVERSIGHTS = gql`
+  query getOversights {
+    oversights {
+      id
+      name
+      gatheringServices {
+        id
+      }
+    }
+  }
+`
+
 export const GET_MINISTRIES = gql`
   query getMinistries {
     ministries {

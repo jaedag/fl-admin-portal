@@ -1,0 +1,269 @@
+import React, { useContext } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useQuery, useMutation } from '@apollo/client'
+import { alertMsg, throwErrorMsg } from '../../../global-utils'
+import { GET_OVERSIGHT_GATHERINGSERVICES } from '../../../queries/ListQueries'
+import {
+  UPDATE_GATHERINGSERVICE_MUTATION,
+  ADD_GATHERINGSERVICE_OVERSIGHT,
+  REMOVE_GATHERINGSERVICE_OVERSIGHT,
+  REMOVE_STREAM_GATHERINGSERVICE,
+  ADD_GATHERINGSERVICE_STREAM,
+} from './UpdateMutations'
+import { ChurchContext } from '../../../contexts/ChurchContext'
+import { DISPLAY_GATHERINGSERVICE } from '../display/ReadQueries'
+import {
+  LOG_GATHERINGSERVICE_HISTORY,
+  LOG_STREAM_HISTORY,
+  CREATE_HISTORY_SUBSTRUCTURE,
+} from './LogMutations'
+import { MAKE_GATHERINGSERVICE_LEADER } from './ChangeLeaderMutations'
+import GatheringServiceForm from 'pages/directory/reusable-forms/GatheringServiceForm'
+import { addNewChurches, removeOldChurches } from './directory-utils'
+import { MAKE_STREAM_INACTIVE } from './CloseChurchMutations'
+
+const UpdateStream = () => {
+  const { gatheringServiceId, clickCard } = useContext(ChurchContext)
+  const { data, loading } = useQuery(DISPLAY_GATHERINGSERVICE, {
+    variables: { id: gatheringServiceId },
+  })
+
+  console.log('data', data)
+  const navigate = useNavigate()
+  const gatheringService = data?.gatheringServices[0]
+
+  const initialValues = {
+    name: gatheringService?.name,
+    leaderName: gatheringService?.leader?.fullName ?? '',
+    leaderId: gatheringService?.leader?.id || '',
+    oversight: gatheringService?.oversight?.id ?? '',
+    streams: gatheringService?.streams?.length
+      ? gatheringService.streams
+      : [''],
+  }
+
+  const [LogGatheringServiceHistory] = useMutation(
+    LOG_GATHERINGSERVICE_HISTORY,
+    {
+      refetchQueries: [
+        {
+          query: DISPLAY_GATHERINGSERVICE,
+          variables: { id: gatheringServiceId },
+        },
+      ],
+    }
+  )
+  const [LogStreamHistory] = useMutation(LOG_STREAM_HISTORY, {
+    refetchQueries: [
+      {
+        query: DISPLAY_GATHERINGSERVICE,
+        variables: { id: gatheringServiceId },
+      },
+    ],
+  })
+
+  const [MakeGatheringServiceLeader] = useMutation(MAKE_GATHERINGSERVICE_LEADER)
+  const [UpdateGatheringService] = useMutation(
+    UPDATE_GATHERINGSERVICE_MUTATION,
+    {
+      refetchQueries: [
+        {
+          query: GET_OVERSIGHT_GATHERINGSERVICES,
+          variables: { id: initialValues.oversight },
+        },
+      ],
+    }
+  )
+
+  //Changes downwards. ie. Council Changes underneath stream
+  const [CloseDownStream] = useMutation(MAKE_STREAM_INACTIVE)
+  const [AddGatheringServiceStreams] = useMutation(ADD_GATHERINGSERVICE_STREAM)
+  const [RemoveStreamGatheringService] = useMutation(
+    REMOVE_STREAM_GATHERINGSERVICE,
+    {
+      onCompleted: (data) => {
+        const prevGatheringService = data.updateStreams.streams[0]
+        const stream = data.updateStreams.streams[0]
+        let newGatheringServiceId = ''
+        let oldGatheringServiceId = ''
+        let historyRecord
+
+        if (prevGatheringService?.id === gatheringServiceId) {
+          //Stream has previous gathering service which is current gathering service and is going
+          oldGatheringServiceId = gatheringServiceId
+          newGatheringServiceId = ''
+          historyRecord = `${stream.name} Stream has been closed down under ${initialValues.name} Gathering Service.`
+        } else if (prevGatheringService.id !== gatheringServiceId) {
+          //Stream has previous gathering service which is not current gathering service and is joining
+          oldGatheringServiceId = prevGatheringService.id
+          oldGatheringServiceId = gatheringServiceId
+          historyRecord = `${stream.name} Stream has been moved to ${initialValues.name} Gathering Service from ${prevGatheringService.name} Gathering Service`
+        }
+
+        //After removing the council from a stream, then you log that change.
+        LogStreamHistory({
+          variables: {
+            streamId: stream.id,
+            newLeaderId: '',
+            oldLeaderId: '',
+            newGatheringServiceId: newGatheringServiceId,
+            oldGatheringServiceId: oldGatheringServiceId,
+            historyRecord: historyRecord,
+          },
+        })
+      },
+    }
+  )
+
+  //Changes upwards. it. Changes to the GatheringService the Stream Campus is under
+  const [CreateHistorySubstructure] = useMutation(CREATE_HISTORY_SUBSTRUCTURE)
+  const [RemoveGatheringServiceOversight] = useMutation(
+    REMOVE_GATHERINGSERVICE_OVERSIGHT
+  )
+  const [AddGatheringServiceOversight] = useMutation(
+    ADD_GATHERINGSERVICE_OVERSIGHT,
+    {
+      onCompleted: (data) => {
+        const oldOversight = data.updateOversight.Oversight[0]
+        const newOversight =
+          data.UpdateGatheringService.gatheringService[0].oversight
+
+        let recordIfOldOversight = `${initialValues.name} Gathering Service has been moved from ${oldOversight.name} Oversight to ${newOversight.name} Oversight`
+
+        //After Adding the stream to a gatheringService, then you log that change.
+        LogGatheringServiceHistory({
+          variables: {
+            gatheringServiceId: gatheringServiceId,
+            newLeaderId: '',
+            oldLeaderId: '',
+            newOversightId:
+              data.UpdateGatheringService.gatheringService[0].oversight.id,
+            oldOversight: gatheringService?.oversight.id,
+            historyRecord: recordIfOldOversight,
+          },
+        }).then(() =>
+          CreateHistorySubstructure({
+            variables: {
+              churchType: 'GatheringService',
+              servantType: 'Leader',
+              churchId: gatheringServiceId,
+            },
+          })
+        )
+      },
+    }
+  )
+
+  //onSubmit receives the form state as argument
+  const onSubmit = async (values, onSubmitProps) => {
+    onSubmitProps.setSubmitting(true)
+    clickCard({ id: values.oversight, __typename: 'Oversight' })
+    try {
+      await UpdateGatheringService({
+        variables: {
+          gatheringServiceId: gatheringServiceId,
+          name: values.name,
+          oversightId: values.oversight,
+        },
+      })
+
+      //Log if Gathering Services Name Changes
+      if (values.name !== initialValues.name) {
+        await LogGatheringServiceHistory({
+          variables: {
+            gatheringServiceId: gatheringServiceId,
+            newLeaderId: '',
+            oldLeaderId: '',
+            oldOversightId: '',
+            newOversightId: '',
+            historyRecord: `Gathering Service name has been changed from ${initialValues.name} to ${values.name}`,
+          },
+        })
+      }
+
+      //Log if the Leader Changes
+      if (values.leaderId !== initialValues.leaderId) {
+        try {
+          await MakeGatheringServiceLeader({
+            variables: {
+              oldLeaderId: initialValues.leaderId || 'old-leader',
+              newLeaderId: values.leaderId,
+              gatheringServiceId: gatheringServiceId,
+            },
+          })
+          alertMsg('Leader Changed Successfully')
+          navigate(`/gatheringservice/displaydetails`)
+        } catch (err) {
+          throwErrorMsg('There was a problem changing the Overseer', err)
+        }
+      }
+
+      //Log if GatheringService Changes
+      if (values.Oversight !== initialValues.Oversight) {
+        try {
+          await RemoveGatheringServiceOversight({
+            variables: {
+              higherChurch: initialValues.oversight,
+              lowerChurch: [gatheringServiceId],
+            },
+          })
+          await AddGatheringServiceOversight({
+            variables: {
+              OversightId: values.oversight,
+              oldOversightd: initialValues.oversight,
+              gatheringServiceId: gatheringServiceId,
+            },
+          })
+        } catch (error) {
+          throwErrorMsg(error)
+        }
+      }
+
+      //For the Adding and Removing of Councils
+      const oldStreamList = initialValues.stream.map((stream) => stream)
+
+      const newStreamList = values.stream.map((stream) => stream)
+
+      const lists = {
+        oldChurches: oldStreamList,
+        newChurches: newStreamList,
+      }
+
+      const mutations = {
+        closeDownChurch: CloseDownStream,
+        removeChurch: RemoveStreamGatheringService,
+        addChurch: AddGatheringServiceStreams,
+        logChurchHistory: LogStreamHistory,
+        CreateHistorySubstructure: CreateHistorySubstructure,
+      }
+
+      const args = {
+        initialValues,
+        gatheringServiceId,
+      }
+
+      Promise.all([
+        await removeOldChurches(lists, mutations),
+        await addNewChurches(lists, mutations, args),
+      ])
+
+      onSubmitProps.setSubmitting(false)
+      onSubmitProps.resetForm()
+      navigate(`/gatheringservice/displaydetails`)
+    } catch (err) {
+      throwErrorMsg('There was a problem updating this gathering service', err)
+    }
+  }
+
+  return (
+    <GatheringServiceForm
+      initialValues={initialValues}
+      onSubmit={onSubmit}
+      title={`Update Stream Form`}
+      loading={loading || !initialValues.name}
+      newStream={false}
+    />
+  )
+}
+
+export default UpdateStream

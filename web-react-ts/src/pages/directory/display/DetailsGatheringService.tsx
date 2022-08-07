@@ -64,8 +64,8 @@ const DetailsGatheringService = () => {
         churchType={gathering?.__typename}
         subChurch="Stream"
         details={details}
-        editlink="/stream/editstream"
-        editPermitted={['adminGatheringService']}
+        editlink="/gatheringservice/editgatheringservice"
+        editPermitted={['adminOversight']}
         history={gathering?.history.length !== 0 && gathering?.history}
         buttons={gathering?.streams ?? []}
         breadcrumb={breadcrumb && breadcrumb}

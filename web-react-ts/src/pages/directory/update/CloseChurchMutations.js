@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client'
 
-export const MAKE_FELLOWSHIP_INACTIVE = gql`
+export const MAKE_FELLOWSHIP_INACTIVE = gql `
   mutation CloseDownFellowship($id: ID!, $leaderId: ID!) {
     CloseDownFellowship(fellowshipId: $id, leaderId: $leaderId) {
       #Returns Bacenta
@@ -15,7 +15,7 @@ export const MAKE_FELLOWSHIP_INACTIVE = gql`
   }
 `
 
-export const MAKE_BACENTA_INACTIVE = gql`
+export const MAKE_BACENTA_INACTIVE = gql `
   mutation CloseDownBacenta($id: ID!, $leaderId: ID!) {
     CloseDownBacenta(bacentaId: $id, leaderId: $leaderId) {
       # Returns Constituency
@@ -30,7 +30,7 @@ export const MAKE_BACENTA_INACTIVE = gql`
   }
 `
 
-export const MAKE_CONSTITUENCY_INACTIVE = gql`
+export const MAKE_CONSTITUENCY_INACTIVE = gql `
   mutation CloseDownConstituency($id: ID!, $leaderId: ID!) {
     CloseDownConstituency(constituencyId: $id, leaderId: $leaderId) {
       id
@@ -43,7 +43,7 @@ export const MAKE_CONSTITUENCY_INACTIVE = gql`
   }
 `
 
-export const MAKE_COUNCIL_INACTIVE = gql`
+export const MAKE_COUNCIL_INACTIVE = gql `
   mutation CloseDownCouncil($id: ID!, $leaderId: ID!) {
     CloseDownCouncil(councilId: $id, leaderId: $leaderId) {
       id
@@ -56,13 +56,39 @@ export const MAKE_COUNCIL_INACTIVE = gql`
   }
 `
 
-export const MAKE_STREAM_INACTIVE = gql`
+export const MAKE_STREAM_INACTIVE = gql `
   mutation CloseDownStream($id: ID!) {
     CloseDownStream(streamId: $id) {
       id
       name
 
       streams {
+        id
+      }
+
+      history(limit: 5) {
+        id
+        timeStamp
+        created_at {
+          date
+        }
+        loggedBy {
+          id
+          firstName
+          lastName
+        }
+        historyRecord
+      }
+    }
+  }
+`
+export const MAKE_GATHERING_SERVICE_INACTIVE = gql `
+  mutation CloseDownGatheringService($id: ID!) {
+    CloseDownGatheringService(gatheringServiceId: $id) {
+      id
+      name
+
+      gatheringServices {
         id
       }
 
