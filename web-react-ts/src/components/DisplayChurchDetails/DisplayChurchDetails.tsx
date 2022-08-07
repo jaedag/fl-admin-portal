@@ -319,7 +319,9 @@ const DisplayChurchDetails = (props: DisplayChurchDetailsProps) => {
                 <DetailsCard
                   onClick={() => navigate(detail.link)}
                   heading={detail.title}
-                  detail={!props.loading ? detail.number.toString() || '0' : ''}
+                  detail={
+                    !props.loading ? detail?.number?.toString() || '0' : ''
+                  }
                   vacationCount={
                     !props.loading
                       ? detail?.vacationCount?.toString() || '0'
