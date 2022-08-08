@@ -55,7 +55,6 @@ const resolvers = {
   },
   Council: {
     ...componentResolvers.Council,
-    ...campaignsResolvers.Council,
   },
   Stream: {
     ...componentResolvers.Stream,

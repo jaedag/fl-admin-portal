@@ -94,6 +94,136 @@ CREATE CONSTRAINT con_history_log_id FOR (n:HistoryLog) REQUIRE n.id IS UNIQUE;
 
 // Cleaning Cypher 
 
+// Create Duplicate Church Service Log 
+  MATCH (church)<-[:LEADS]-(leader:Member)
+   WHERE church:GatheringService
+   
+   MATCH (church)-[old_church_history:CURRENT_HISTORY]->(mainLog:ServiceLog)<-[old_leader_history:CURRENT_HISTORY]-(leader)
+   
+   DELETE old_church_history, old_leader_history
+   
+   WITH DISTINCT mainLog, church, leader
+    CREATE (newLog:ServiceLog {id:apoc.create.uuid()})
+       SET newLog.historyRecord = mainLog.historyRecord,
+          newLog.timeStamp = datetime()
+   CREATE (church)-[:CURRENT_HISTORY]->(newLog)
+   CREATE (newLog)<-[:CURRENT_HISTORY]-(leader)
+   CREATE (church)-[:HAS_HISTORY]->(newLog)
+   CREATE (newLog)<-[:HAS_HISTORY]-(leader)
+   
+   RETURN newLog;
+
+
+// Create Gathering Service Substructure
+   MATCH (church:GatheringService)<-[:LEADS]-(leader:Member)
+   
+   MATCH (church)-[:HAS]->(lowerChurch:Stream)<-[:LEADS]-(lowerLeader:Member)
+   MATCH (church)-[:CURRENT_HISTORY]->(mainLog:ServiceLog)
+   MATCH (lowerChurch)-[old_church_history:CURRENT_HISTORY]->(lowerLog:ServiceLog)<-[old_leader_history:CURRENT_HISTORY]-(lowerLeader)
+   DELETE old_church_history, old_leader_history
+   
+   WITH mainLog,lowerLog, lowerChurch, leader, lowerLeader
+   CREATE (newLowerLog:ServiceLog {id:apoc.create.uuid()})
+      SET newLowerLog.historyRecord = lowerLog.historyRecord,
+         newLowerLog.timeStamp = datetime()
+   CREATE (mainLog)-[:HAS_COMPONENT]->(newLowerLog)
+   CREATE (lowerChurch)-[:CURRENT_HISTORY]->(newLowerLog)
+   CREATE (lowerLeader)-[:CURRENT_HISTORY]->(newLowerLog)
+   CREATE (lowerChurch)-[:HAS_HISTORY]->(newLowerLog)
+   CREATE (lowerLeader)-[:HAS_HISTORY]->(newLowerLog)
+   
+   WITH DISTINCT lowerChurch.id AS lowerChurchIds
+   RETURN collect(lowerChurchIds) AS streams;
+
+
+// Create Stream Substructure
+    MATCH (church:Stream)<-[:LEADS]-(leader:Member)
+   
+   MATCH (church)-[:HAS]->(lowerChurch:Council)<-[:LEADS]-(lowerLeader:Member)
+   MATCH (church)-[:CURRENT_HISTORY]->(mainLog:ServiceLog)
+   MATCH (lowerChurch)-[old_church_history:CURRENT_HISTORY]->(lowerLog:ServiceLog)<-[old_leader_history:CURRENT_HISTORY]-(lowerLeader)
+   DELETE old_church_history, old_leader_history
+   
+   WITH mainLog,lowerLog, lowerChurch, leader, lowerLeader
+   CREATE (newLowerLog:ServiceLog {id:apoc.create.uuid()})
+      SET newLowerLog.historyRecord = lowerLog.historyRecord,
+         newLowerLog.timeStamp = datetime()
+   CREATE (mainLog)-[:HAS_COMPONENT]->(newLowerLog)
+   CREATE (lowerChurch)-[:CURRENT_HISTORY]->(newLowerLog)
+   CREATE (lowerLeader)-[:CURRENT_HISTORY]->(newLowerLog)
+   CREATE (lowerChurch)-[:HAS_HISTORY]->(newLowerLog)
+   CREATE (lowerLeader)-[:HAS_HISTORY]->(newLowerLog)
+   
+   WITH DISTINCT lowerChurch.id AS lowerChurchIds
+   RETURN collect(lowerChurchIds) AS councils;
+
+//Create Council Substructure
+ MATCH (church:Council)<-[:LEADS]-(leader:Member)
+   
+   MATCH (church)-[:HAS]->(lowerChurch:Constituency)<-[:LEADS]-(lowerLeader:Member)
+   MATCH (church)-[:CURRENT_HISTORY]->(mainLog:ServiceLog)
+   MATCH (lowerChurch)-[old_church_history:CURRENT_HISTORY]->(lowerLog:ServiceLog)<-[old_leader_history:CURRENT_HISTORY]-(lowerLeader)
+   DELETE old_church_history, old_leader_history
+   
+   WITH mainLog,lowerLog, lowerChurch, leader, lowerLeader
+   CREATE (newLowerLog:ServiceLog {id:apoc.create.uuid()})
+      SET newLowerLog.historyRecord = lowerLog.historyRecord,
+         newLowerLog.timeStamp = datetime()
+   CREATE (mainLog)-[:HAS_COMPONENT]->(newLowerLog)
+   CREATE (lowerChurch)-[:CURRENT_HISTORY]->(newLowerLog)
+   CREATE (lowerLeader)-[:CURRENT_HISTORY]->(newLowerLog)
+   CREATE (lowerChurch)-[:HAS_HISTORY]->(newLowerLog)
+   CREATE (lowerLeader)-[:HAS_HISTORY]->(newLowerLog)
+   
+   WITH DISTINCT lowerChurch.id AS lowerChurchIds
+   RETURN collect(lowerChurchIds) AS constituencies;
+
+   //Create Constituency Substructure
+
+MATCH (church:Constituency)<-[:LEADS]-(leader:Member)
+   
+   MATCH (church)-[:HAS]->(lowerChurch:Bacenta)<-[:LEADS]-(lowerLeader:Member)
+   MATCH (church)-[:CURRENT_HISTORY]->(mainLog:ServiceLog)
+   MATCH (lowerChurch)-[old_church_history:CURRENT_HISTORY]->(lowerLog:ServiceLog)<-[old_leader_history:CURRENT_HISTORY]-(lowerLeader)
+   DELETE old_church_history, old_leader_history
+   
+   WITH mainLog,lowerLog, lowerChurch, leader, lowerLeader
+   CREATE (newLowerLog:ServiceLog {id:apoc.create.uuid()})
+      SET newLowerLog.historyRecord = lowerLog.historyRecord,
+         newLowerLog.timeStamp = datetime()
+   CREATE (mainLog)-[:HAS_COMPONENT]->(newLowerLog)
+   CREATE (lowerChurch)-[:CURRENT_HISTORY]->(newLowerLog)
+   CREATE (lowerLeader)-[:CURRENT_HISTORY]->(newLowerLog)
+   CREATE (lowerChurch)-[:HAS_HISTORY]->(newLowerLog)
+   CREATE (lowerLeader)-[:HAS_HISTORY]->(newLowerLog)
+   
+   WITH DISTINCT lowerChurch.id AS lowerChurchIds
+   RETURN collect(lowerChurchIds) AS bacentas;
+
+   //Create Bacenta Substructure
+    MATCH (church:Bacenta)<-[:LEADS]-(leader:Member)
+   
+   MATCH (church)-[:HAS]->(lowerChurch:Fellowship)<-[:LEADS]-(lowerLeader:Member)
+   MATCH (church)-[:CURRENT_HISTORY]->(mainLog:ServiceLog)
+   MATCH (lowerChurch)-[old_church_history:CURRENT_HISTORY]->(lowerLog:ServiceLog)<-[old_leader_history:CURRENT_HISTORY]-(lowerLeader)
+   DELETE old_church_history, old_leader_history
+   
+   WITH mainLog,lowerLog, lowerChurch, leader, lowerLeader
+   CREATE (newLowerLog:ServiceLog {id:apoc.create.uuid()})
+      SET newLowerLog.historyRecord = lowerLog.historyRecord,
+         newLowerLog.timeStamp = datetime()
+   CREATE (mainLog)-[:HAS_COMPONENT]->(newLowerLog)
+   CREATE (lowerChurch)-[:CURRENT_HISTORY]->(newLowerLog)
+   CREATE (lowerLeader)-[:CURRENT_HISTORY]->(newLowerLog)
+   CREATE (lowerChurch)-[:HAS_HISTORY]->(newLowerLog)
+   CREATE (lowerLeader)-[:HAS_HISTORY]->(newLowerLog)
+   
+   WITH DISTINCT lowerChurch.id AS lowerChurchIds
+   RETURN collect(lowerChurchIds) AS fellowships;
+
+
+
+
 // REMOVE AND RECREATE ALL THE RELATIONSHIPS 
 // STEP 1: Increment ServiceLogs with Same Timestamp
 
@@ -250,3 +380,4 @@ WITH max(log.timeStamp) AS max, record
 MATCH p=(record)<-[r:HAS_SERVICE]-(log:ServiceLog) WHERE NOT toString(log.timeStamp) = toString(max)
 DELETE r
 RETURN record,log, max LIMIT 4;
+

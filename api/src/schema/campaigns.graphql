@@ -1,3 +1,7 @@
+type Campaign {
+  name: String!
+  type: String!
+}
 
 extend type GatheringService {
   campaigns: [String!]!
