@@ -3,7 +3,17 @@ import { Dropdown } from 'react-bootstrap'
 import { getServiceGraphData } from './graphs-utils'
 import './GraphDropdown.css'
 
-const GraphDropdown = ({ setBussing, setChurchData, data }) => (
+type GraphDropdownProps = {
+  setBussing: React.Dispatch<React.SetStateAction<boolean>>
+  setChurchData: React.Dispatch<React.SetStateAction<any>>
+  data: never
+}
+
+const GraphDropdown = ({
+  setBussing,
+  setChurchData,
+  data,
+}: GraphDropdownProps) => (
   <Dropdown className="border-none">
     <Dropdown.Toggle variant="danger">Select Service</Dropdown.Toggle>
 

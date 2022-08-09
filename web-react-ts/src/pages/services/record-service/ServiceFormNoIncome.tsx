@@ -1,5 +1,4 @@
-import FormikControl from 'components/formik-components/FormikControl'
-import { Form, Formik } from 'formik'
+import { Form, Formik, FormikHelpers } from 'formik'
 import * as Yup from 'yup'
 import React, { useContext } from 'react'
 import { useNavigate } from 'react-router'
@@ -10,17 +9,35 @@ import { throwErrorMsg } from 'global-utils'
 import { getMondayThisWeek } from 'jd-date-utils'
 import { ChurchContext } from 'contexts/ChurchContext'
 import Input from 'components/formik-components/Input'
+import { Church, ChurchLevel } from 'global-types'
+import { MutationFunction } from '@apollo/client'
+import ImageUpload from 'components/formik-components/ImageUpload'
+
+type ServiceFormProps = {
+  church: Church
+  churchId: string
+  churchType: ChurchLevel
+  RecordServiceMutation: MutationFunction
+}
+
+type FormOptions = {
+  serviceDate: string
+
+  attendance: string
+
+  familyPicture: string
+}
 
 const ServiceForm = ({
   church,
   churchId,
   churchType,
   RecordServiceMutation,
-}) => {
+}: ServiceFormProps) => {
   const { clickCard } = useContext(ChurchContext)
   const navigate = useNavigate()
 
-  const initialValues = {
+  const initialValues: FormOptions = {
     serviceDate: new Date().toISOString().slice(0, 10),
     attendance: '',
     familyPicture: '',
@@ -43,7 +60,10 @@ const ServiceForm = ({
     ),
   })
 
-  const onSubmit = (values, onSubmitProps) => {
+  const onSubmit = (
+    values: FormOptions,
+    onSubmitProps: FormikHelpers<FormOptions>
+  ) => {
     onSubmitProps.setSubmitting(true)
     RecordServiceMutation({
       variables: {
@@ -80,7 +100,7 @@ const ServiceForm = ({
               <Col className="mb-2">
                 <div className="form-row d-flex justify-content-center">
                   <Col>
-                    <small htmlFor="dateofservice" className="form-text label">
+                    <small className="form-text label">
                       Date of Service*
                       <i className="text-secondary">(Day/Month/Year)</i>
                     </small>
@@ -96,8 +116,7 @@ const ServiceForm = ({
                       <small className="mb-3">
                         Upload a Picture of Your Service*
                       </small>
-                      <FormikControl
-                        control="imageUpload"
+                      <ImageUpload
                         name="familyPicture"
                         uploadPreset={process.env.REACT_APP_CLOUDINARY_SERVICES}
                         placeholder="Choose"
