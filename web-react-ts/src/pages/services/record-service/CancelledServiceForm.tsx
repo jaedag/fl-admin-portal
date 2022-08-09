@@ -10,7 +10,7 @@ import HeadingSecondary from 'components/HeadingSecondary'
 import { MemberContext } from 'contexts/MemberContext'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { throwErrorMsg } from 'global-utils'
-import Input from 'components/formik-components/Input'
+import Input from 'components/formik/Input'
 
 type FormOptionsType = {
   serviceDate: string

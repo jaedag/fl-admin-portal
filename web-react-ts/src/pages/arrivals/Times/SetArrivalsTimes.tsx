@@ -6,13 +6,13 @@ import React, { useContext } from 'react'
 import { useMutation, useQuery } from '@apollo/client'
 import { GET_ARRIVAL_TIMES, SET_STREAM_ARRIVAL_TIMES } from './time-gql'
 import { Col, Container, Row } from 'react-bootstrap'
-import SubmitButton from 'components/formik-components/SubmitButton'
+import SubmitButton from 'components/formik/SubmitButton'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 
 import { parseTimeToDate } from 'jd-date-utils'
 import { parseNeoTime } from 'jd-date-utils'
 import { useNavigate } from 'react-router'
-import Input from 'components/formik-components/Input'
+import Input from 'components/formik/Input'
 
 type FormOptions = {
   id: string

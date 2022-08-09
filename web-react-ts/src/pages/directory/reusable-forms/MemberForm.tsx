@@ -15,13 +15,13 @@ import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import { Col, Container, Row } from 'react-bootstrap'
 import LoadingScreen from 'components/base-component/LoadingScreen'
 import { permitAdmin } from 'permission-utils'
-import SubmitButton from 'components/formik-components/SubmitButton'
+import SubmitButton from 'components/formik/SubmitButton'
 import { MemberContext } from 'contexts/MemberContext'
 import { CreateMemberFormOptions } from '../create/CreateMember'
-import Input from 'components/formik-components/Input'
-import ImageUpload from 'components/formik-components/ImageUpload'
-import SearchFellowship from 'components/formik-components/SearchFellowship'
-import Select from 'components/formik-components/Select'
+import Input from 'components/formik/Input'
+import ImageUpload from 'components/formik/ImageUpload'
+import SearchFellowship from 'components/formik/SearchFellowship'
+import Select from 'components/formik/Select'
 
 type MemberFormProps = {
   initialValues: CreateMemberFormOptions

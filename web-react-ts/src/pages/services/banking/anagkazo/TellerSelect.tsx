@@ -18,7 +18,7 @@ import { Form, Formik, FormikHelpers } from 'formik'
 import ModalSubmitButton from './ModalSubmitButton'
 import { alertMsg, throwErrorMsg } from 'global-utils'
 import NoDataComponent from 'pages/arrivals/CompNoData'
-import SearchMember from 'components/formik-components/SearchMember'
+import SearchMember from 'components/formik/SearchMember'
 
 interface StreamWithTellers extends Stream {
   tellers: Member[]

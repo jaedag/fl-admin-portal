@@ -4,14 +4,14 @@ import React, { useContext } from 'react'
 import { useNavigate } from 'react-router'
 import { Col, Container, Row } from 'react-bootstrap'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
-import SubmitButton from 'components/formik-components/SubmitButton'
+import SubmitButton from 'components/formik/SubmitButton'
 import { throwErrorMsg } from 'global-utils'
 import { getMondayThisWeek } from 'jd-date-utils'
 import { ChurchContext } from 'contexts/ChurchContext'
-import Input from 'components/formik-components/Input'
+import Input from 'components/formik/Input'
 import { Church, ChurchLevel } from 'global-types'
 import { MutationFunction } from '@apollo/client'
-import ImageUpload from 'components/formik-components/ImageUpload'
+import ImageUpload from 'components/formik/ImageUpload'
 
 type ServiceFormProps = {
   church: Church

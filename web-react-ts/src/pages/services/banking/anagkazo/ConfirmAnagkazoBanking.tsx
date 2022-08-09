@@ -18,7 +18,7 @@ import { alertMsg, throwErrorMsg } from 'global-utils'
 import Popup from 'components/Popup/Popup'
 import { ServiceRecord } from 'global-types'
 import NoDataComponent from 'pages/arrivals/CompNoData'
-import Input from 'components/formik-components/Input'
+import Input from 'components/formik/Input'
 
 type FormOptions = {
   defaulterSearch: string

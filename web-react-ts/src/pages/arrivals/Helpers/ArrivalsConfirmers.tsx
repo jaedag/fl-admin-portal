@@ -14,11 +14,11 @@ import {
 } from './ArrivalsHelpersGQL'
 import { alertMsg, throwErrorMsg } from 'global-utils'
 import Popup from 'components/Popup/Popup'
-import SubmitButton from 'components/formik-components/SubmitButton'
+import SubmitButton from 'components/formik/SubmitButton'
 import NoData from '../CompNoData'
 import usePopup from 'hooks/usePopup'
 import { StreamWithArrivals } from '../arrivals-types'
-import SearchMember from 'components/formik-components/SearchMember'
+import SearchMember from 'components/formik/SearchMember'
 
 type FormOptions = {
   helperName: string

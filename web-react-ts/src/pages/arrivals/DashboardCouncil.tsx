@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from '@apollo/client'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import MenuButton from 'components/buttons/MenuButton'
-import SubmitButton from 'components/formik-components/SubmitButton'
+import SubmitButton from 'components/formik/SubmitButton'
 import Popup from 'components/Popup/Popup'
 import { Form, Formik, FormikHelpers } from 'formik'
 import * as Yup from 'yup'
@@ -20,7 +20,7 @@ import DefaulterInfoCard from 'pages/services/defaulters/DefaulterInfoCard'
 import { MemberContext } from 'contexts/MemberContext'
 import usePopup from 'hooks/usePopup'
 import { AdminFormOptions } from './DashboardConstituency'
-import SearchMember from 'components/formik-components/SearchMember'
+import SearchMember from 'components/formik/SearchMember'
 
 const CouncilDashboard = () => {
   const { isOpen, togglePopup } = usePopup()

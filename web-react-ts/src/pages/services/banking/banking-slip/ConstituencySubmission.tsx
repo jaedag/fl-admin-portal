@@ -13,10 +13,10 @@ import HeadingSecondary from 'components/HeadingSecondary'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { useNavigate } from 'react-router'
 import { getHumanReadableDate } from 'jd-date-utils'
-import SubmitButton from 'components/formik-components/SubmitButton'
+import SubmitButton from 'components/formik/SubmitButton'
 import usePopup from 'hooks/usePopup'
 import ErrorPopup from 'components/Popup/ErrorPopup'
-import ImageUpload from 'components/formik-components/ImageUpload'
+import ImageUpload from 'components/formik/ImageUpload'
 
 type FormOptions = {
   bankingSlip: string

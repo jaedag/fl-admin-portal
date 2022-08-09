@@ -10,7 +10,7 @@ import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { Col, Container, Row, Button } from 'react-bootstrap'
 import Popup from 'components/Popup/Popup'
 import { Form, Formik, FormikHelpers } from 'formik'
-import SubmitButton from 'components/formik-components/SubmitButton'
+import SubmitButton from 'components/formik/SubmitButton'
 import RoleView from 'auth/RoleView'
 import {
   permitAdmin,
@@ -25,7 +25,7 @@ import { CheckAll } from 'react-bootstrap-icons'
 import usePopup from 'hooks/usePopup'
 import HeadingSecondary from 'components/HeadingSecondary'
 import { AdminFormOptions } from './DashboardConstituency'
-import SearchMember from 'components/formik-components/SearchMember'
+import SearchMember from 'components/formik/SearchMember'
 
 const StreamDashboard = () => {
   const { isOpen, togglePopup } = usePopup()

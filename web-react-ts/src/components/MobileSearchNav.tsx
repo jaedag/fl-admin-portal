@@ -3,7 +3,7 @@ import { Formik, Form, FormikHelpers } from 'formik'
 import { SearchContext } from '../contexts/MemberContext'
 import './SearchBox.css'
 import { Col, Button, Container } from 'react-bootstrap'
-import Input from './formik-components/Input'
+import Input from './formik/Input'
 
 type FormOptions = {
   searchKeyVal: string

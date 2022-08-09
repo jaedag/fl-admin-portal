@@ -30,7 +30,7 @@ import useSetUserChurch from 'hooks/useSetUserChurch'
 import usePopup from 'hooks/usePopup'
 import { Church, ChurchLevel, MemberWithoutBioData, Role } from 'global-types'
 import { BacentaWithArrivals } from 'pages/arrivals/arrivals-types'
-import SearchMember from 'components/formik-components/SearchMember'
+import SearchMember from 'components/formik/SearchMember'
 
 type DisplayChurchDetailsProps = {
   details: {

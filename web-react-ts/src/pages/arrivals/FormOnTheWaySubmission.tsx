@@ -1,5 +1,5 @@
-import { arrayError } from 'components/formik-components/FormikControl'
-import SubmitButton from 'components/formik-components/SubmitButton'
+import { arrayError } from 'components/formik/FormikControl'
+import SubmitButton from 'components/formik/SubmitButton'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import HeadingSecondary from 'components/HeadingSecondary'
 import { Form, Formik, FieldArray, FormikHelpers } from 'formik'
@@ -17,8 +17,8 @@ import { RECORD_BUSSING_FROM_BACENTA } from './arrivalsMutation'
 import { parseDate } from 'jd-date-utils'
 import { ServiceContext } from 'contexts/ServiceContext'
 import { throwErrorMsg } from 'global-utils'
-import Input from 'components/formik-components/Input'
-import ImageUpload from 'components/formik-components/ImageUpload'
+import Input from 'components/formik/Input'
+import ImageUpload from 'components/formik/ImageUpload'
 
 type FormOptions = {
   attendance: string

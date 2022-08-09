@@ -16,7 +16,7 @@ import { useNavigate } from 'react-router'
 import { ChurchContext } from 'contexts/ChurchContext'
 import usePopup from 'hooks/usePopup'
 import ErrorPopup from 'components/Popup/ErrorPopup'
-import ImageUpload from 'components/formik-components/ImageUpload'
+import ImageUpload from 'components/formik/ImageUpload'
 
 type FormOptions = {
   bankingSlip: string
