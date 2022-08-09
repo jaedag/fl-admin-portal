@@ -8,7 +8,6 @@ import { STREAM_BANKING_DEFAULTERS_LIST } from 'pages/services/defaulters/Defaul
 import { useQuery, useMutation } from '@apollo/client'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { Formik, Form, FormikHelpers } from 'formik'
-import FormikControl from 'components/formik-components/FormikControl'
 import { useNavigate } from 'react-router-dom'
 import usePopup from 'hooks/usePopup'
 import { CONFIRM_BANKING } from './Treasury.gql'
@@ -19,6 +18,7 @@ import { alertMsg, throwErrorMsg } from 'global-utils'
 import Popup from 'components/Popup/Popup'
 import { ServiceRecord } from 'global-types'
 import NoDataComponent from 'pages/arrivals/CompNoData'
+import Input from 'components/formik/Input'
 
 type FormOptions = {
   defaulterSearch: string
@@ -161,9 +161,8 @@ const ConfirmAnagkazoBanking = () => {
               {() => (
                 <Form>
                   <div>
-                    <FormikControl
+                    <Input
                       className="form-control church-search search-center"
-                      control="input"
                       name="defaulterSearch"
                       placeholder="Search Churches"
                       aria-describedby="Defaulter Search"

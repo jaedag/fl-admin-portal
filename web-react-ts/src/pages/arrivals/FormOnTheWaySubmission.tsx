@@ -1,5 +1,4 @@
-import FormikControl from 'components/formik-components/FormikControl'
-import SubmitButton from 'components/formik-components/SubmitButton'
+import SubmitButton from 'components/formik/SubmitButton'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import HeadingSecondary from 'components/HeadingSecondary'
 import { Form, Formik, FormikHelpers } from 'formik'
@@ -15,6 +14,7 @@ import { RECORD_BUSSING_FROM_BACENTA } from './arrivalsMutation'
 import { parseDate } from 'jd-date-utils'
 import { ServiceContext } from 'contexts/ServiceContext'
 import { throwErrorMsg } from 'global-utils'
+import Input from 'components/formik/Input'
 
 type FormOptions = {
   attendance: string
@@ -127,16 +127,8 @@ const FormOnTheWaySubmission = () => {
                     {parseDate(bacenta?.bussing[0].serviceDate.date)}
                   </HeadingPrimary>
 
-                  <FormikControl
-                    control="input"
-                    name="attendance"
-                    label="Attendance*"
-                  />
-                  <FormikControl
-                    control="input"
-                    name="bussingCost"
-                    label="Bussing Cost (in Cedis)*"
-                  />
+                  <Input name="attendance" label="Attendance*" />
+                  <Input name="bussingCost" label="Bussing Cost (in Cedis)*" />
                 </Col>
 
                 <hr />
@@ -144,33 +136,23 @@ const FormOnTheWaySubmission = () => {
                   This section will be used to calculate your bussing top up so
                   fill it carefully
                 </div>
-                <FormikControl
-                  control="input"
+                <Input
                   name="personalContribution"
                   label="Personal Contribution* (in Cedis)"
                 />
               </Row>
               <Row className="row-cols-2">
                 <Col>
-                  <FormikControl
-                    control="input"
+                  <Input
                     name="numberOfSprinters"
                     label="Number of Sprinters *"
                   />
                 </Col>
                 <Col>
-                  <FormikControl
-                    control="input"
-                    name="numberOfUrvans"
-                    label="Number of Urvans *"
-                  />
+                  <Input name="numberOfUrvans" label="Number of Urvans *" />
                 </Col>
                 <Col>
-                  <FormikControl
-                    control="input"
-                    name="numberOfCars"
-                    label="Number of Cars"
-                  />
+                  <Input name="numberOfCars" label="Number of Cars" />
                 </Col>
               </Row>
               <Row>
@@ -185,6 +167,10 @@ const FormOnTheWaySubmission = () => {
                     </Card.Footer>
                   </Card>
                 </Container>
+
+                <div className="d-flex justify-content-center">
+                  <SubmitButton formik={formik} />
+                </div>
               </Row>
             </Form>
           </Container>

@@ -6,7 +6,7 @@ import { makeSelectOptions, throwErrorMsg } from 'global-utils'
 import { GET_COUNCILS } from 'queries/ListQueries'
 import React, { useContext, useState } from 'react'
 import { ChurchContext } from 'contexts/ChurchContext'
-import FormikControl from 'components/formik-components/FormikControl'
+import FormikControl from 'components/formik/FormikControl'
 import PlusSign from 'components/buttons/PlusMinusSign/PlusSign'
 import MinusSign from 'components/buttons/PlusMinusSign/MinusSign'
 import { MAKE_CONSTITUENCY_INACTIVE } from 'pages/directory/update/CloseChurchMutations'
@@ -17,9 +17,10 @@ import { Button, Container, Row, Col } from 'react-bootstrap'
 import { MemberContext } from 'contexts/MemberContext'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import HeadingSecondary from 'components/HeadingSecondary'
-import SubmitButton from 'components/formik-components/SubmitButton'
+import SubmitButton from 'components/formik/SubmitButton'
 import { permitAdmin } from 'permission-utils'
 import usePopup from 'hooks/usePopup'
+import Input from 'components/formik/Input'
 
 const ConstituencyForm = ({
   initialValues,
@@ -95,8 +96,7 @@ const ConstituencyForm = ({
                       </Row>
                     </RoleView>
 
-                    <FormikControl
-                      control="input"
+                    <Input
                       name="name"
                       label={`Name of Constituency`}
                       placeholder={`Name of Constituency`}

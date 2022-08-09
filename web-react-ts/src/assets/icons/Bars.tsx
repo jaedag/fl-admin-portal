@@ -1,6 +1,6 @@
 import React from 'react'
 
-const BarsIcon = () => {
+const BarsIcon = ({ className }: { className: string }) => {
   return (
     <svg
       width="183"

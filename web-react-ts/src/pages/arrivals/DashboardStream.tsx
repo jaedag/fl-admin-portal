@@ -10,8 +10,7 @@ import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { Col, Container, Row } from 'react-bootstrap'
 import Popup from 'components/Popup/Popup'
 import { Form, Formik, FormikHelpers } from 'formik'
-import FormikControl from 'components/formik-components/FormikControl'
-import SubmitButton from 'components/formik-components/SubmitButton'
+import SubmitButton from 'components/formik/SubmitButton'
 import RoleView from 'auth/RoleView'
 import {
   permitAdmin,
@@ -24,6 +23,7 @@ import { MemberContext } from 'contexts/MemberContext'
 import usePopup from 'hooks/usePopup'
 import HeadingSecondary from 'components/HeadingSecondary'
 import { AdminFormOptions } from './DashboardConstituency'
+import SearchMember from 'components/formik/SearchMember'
 import ArrivalsMenuDropdown from './ArrivalsMenuDropdown'
 import { beforeStreamArrivalsDeadline } from './arrivals-utils'
 
@@ -110,8 +110,7 @@ const StreamDashboard = () => {
                 <Form>
                   <Row className="form-row">
                     <Col>
-                      <FormikControl
-                        control="memberSearch"
+                      <SearchMember
                         name="adminSelect"
                         initialValue={initialValues?.adminName}
                         placeholder="Select an Admin"

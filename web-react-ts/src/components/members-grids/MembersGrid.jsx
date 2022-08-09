@@ -16,7 +16,7 @@ import { CaretDownFill } from 'react-bootstrap-icons'
 import './MembersGrid.css'
 import Filters from './Filters'
 import { Form, Formik } from 'formik'
-import FormikControl from 'components/formik-components/FormikControl'
+import FormikControl from 'components/formik/FormikControl'
 
 const MembersGrid = (props) => {
   const { data, error, loading, title } = props

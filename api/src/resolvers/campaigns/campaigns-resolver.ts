@@ -12,6 +12,8 @@ import { isAuth, rearrangeCypherObject, throwErrorMsg } from '../utils/utils'
 import { Context } from '../utils/neo4j-types'
 import { ChurchLevel } from '../utils/types'
 
+const campaignsCypher = require('./campaigns-cypher')
+
 export const campaignsMutation = {
   // Equipment Campaigns
   SetEquipmentDeadline: async (
@@ -83,8 +85,11 @@ export const campaignsMutation = {
         )
 
         return {
-          id: constituencyRecord.record.properties.id,
-          pulpits: constituencyRecord.record.properties.pulpits,
+          id: args.id,
+          equipmentRecord: {
+            id: constituencyRecord.record.properties.id,
+            pulpits: constituencyRecord.record.properties.pulpits,
+          },
         }
       }
       return throwErrorMsg('Equipment Deadline is up')
@@ -139,10 +144,13 @@ export const campaignsMutation = {
         )
 
         return {
-          id: fellowshipRecord.record.properties.id,
-          offeringBags: fellowshipRecord.record.properties.offeringBags,
-          bluetoothSpeakers:
-            fellowshipRecord.record.properties.bluetoothSpeakers,
+          id: args.id,
+          equipmentRecord: {
+            id: fellowshipRecord.record.properties.id,
+            offeringBags: fellowshipRecord.record.properties.offeringBags,
+            bluetoothSpeakers:
+              fellowshipRecord.record.properties.bluetoothSpeakers,
+          },
         }
       }
       return throwErrorMsg('Equipment Deadline is up')
@@ -171,21 +179,69 @@ const churchCampaigns = async (church: ChurchLevel) => {
   }
 }
 
+const getEquipmentDetails = async (
+  obj: any,
+  args: any,
+  context: Context,
+  church: ChurchLevel
+) => {
+  const session = context.executionContext.session()
+  const fellowshipEquipmentResponse = await session?.run(
+    campaignsCypher[`${church}FellowshipEquipment`],
+    { ...obj, ...args }
+  )
+
+  const constituencyEquipmentResponse = await session?.run(
+    campaignsCypher[`${church}ConstituencyEquipment`],
+    { ...obj, ...args }
+  )
+
+  // eslint-disable-next-line no-underscore-dangle
+  const { id } = constituencyEquipmentResponse.records[0]._fields[0]
+
+  const pulpits =
+    // eslint-disable-next-line no-underscore-dangle
+    constituencyEquipmentResponse.records[0]._fields[0].pulpits.low
+
+  const bluetoothSpeakers =
+    // eslint-disable-next-line no-underscore-dangle
+    fellowshipEquipmentResponse.records[0]._fields[0].bluetoothSpeakers.low
+  const offeringBags =
+    // eslint-disable-next-line no-underscore-dangle
+    fellowshipEquipmentResponse.records[0]._fields[0].offeringBags.low
+
+  switch (church) {
+    case 'Constituency':
+      return { id, pulpits, bluetoothSpeakers, offeringBags }
+
+    default:
+      return { pulpits, bluetoothSpeakers, offeringBags }
+  }
+}
+
 export const campaignsResolvers = {
   Oversight: {
     campaigns: async () => churchCampaigns('Oversight'),
   },
   GatheringService: {
     campaigns: async () => churchCampaigns('GatheringService'),
+    equipmentRecord: (obj: any, args: any, context: Context) =>
+      getEquipmentDetails(obj, args, context, 'GatheringService'),
   },
   Stream: {
     campaigns: async () => churchCampaigns('Stream'),
+    equipmentRecord: (obj: any, args: any, context: Context) =>
+      getEquipmentDetails(obj, args, context, 'Stream'),
   },
   Council: {
     campaigns: async () => churchCampaigns('Council'),
+    equipmentRecord: (obj: any, args: any, context: Context) =>
+      getEquipmentDetails(obj, args, context, 'Council'),
   },
   Constituency: {
     campaigns: async () => churchCampaigns('Constituency'),
+    equipmentRecord: (obj: any, args: any, context: Context) =>
+      getEquipmentDetails(obj, args, context, 'Constituency'),
   },
   Bacenta: {
     campaigns: async () => churchCampaigns('Bacenta'),

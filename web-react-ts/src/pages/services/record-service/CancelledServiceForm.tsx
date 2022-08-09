@@ -1,4 +1,3 @@
-import FormikControl from 'components/formik-components/FormikControl'
 import { Form, Formik, FormikHelpers } from 'formik'
 import * as Yup from 'yup'
 import React, { useContext } from 'react'
@@ -11,6 +10,7 @@ import HeadingSecondary from 'components/HeadingSecondary'
 import { MemberContext } from 'contexts/MemberContext'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { throwErrorMsg } from 'global-utils'
+import Input from 'components/formik/Input'
 
 type FormOptionsType = {
   serviceDate: string
@@ -90,18 +90,13 @@ const CancelledServiceForm = ({
                       Date of Service*
                       <i className="text-secondary">(Day/Month/Year)</i>
                     </small>
-                    <FormikControl
-                      control="input"
+                    <Input
                       name="serviceDate"
                       type="date"
                       placeholder="dd/mm/yyyy"
                       aria-describedby="dateofservice"
                     />
-                    <FormikControl
-                      control="input"
-                      name="noServiceReason"
-                      label="Reason"
-                    />
+                    <Input name="noServiceReason" label="Reason" />
 
                     <div className="d-flex justify-content-center mt-5">
                       <Button

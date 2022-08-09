@@ -29,7 +29,7 @@ const GatheringServiceService = () => {
           RecordServiceMutation={RecordServiceNoIncome}
           church={data?.gatheringServices[0]}
           churchId={gatheringServiceId}
-          churchType="gatheringService"
+          churchType="GatheringService"
         />
       ) : (
         <ServiceForm

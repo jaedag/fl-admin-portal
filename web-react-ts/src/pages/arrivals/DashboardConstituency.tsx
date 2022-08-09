@@ -1,8 +1,7 @@
 import { useMutation, useQuery } from '@apollo/client'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import MenuButton from 'components/buttons/MenuButton'
-import FormikControl from 'components/formik-components/FormikControl'
-import SubmitButton from 'components/formik-components/SubmitButton'
+import SubmitButton from 'components/formik/SubmitButton'
 import Popup from 'components/Popup/Popup'
 import { Form, Formik, FormikHelpers } from 'formik'
 import * as Yup from 'yup'
@@ -19,6 +18,7 @@ import { permitAdmin, permitArrivals } from 'permission-utils'
 import HeadingSecondary from 'components/HeadingSecondary'
 import { MemberContext } from 'contexts/MemberContext'
 import usePopup from 'hooks/usePopup'
+import SearchMember from 'components/formik/SearchMember'
 import { beforeStreamArrivalsDeadline } from './arrivals-utils'
 
 export type AdminFormOptions = {
@@ -94,8 +94,7 @@ const ConstituencyDashboard = () => {
                 <Form>
                   <Row className="form-row">
                     <Col>
-                      <FormikControl
-                        control="memberSearch"
+                      <SearchMember
                         name="adminSelect"
                         initialValue={initialValues?.adminName}
                         placeholder="Select an Admin"

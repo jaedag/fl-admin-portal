@@ -5,7 +5,7 @@ import DisplayChurchDetails from 'components/DisplayChurchDetails/DisplayChurchD
 import { DISPLAY_BACENTA } from './ReadQueries'
 import { ChurchContext } from 'contexts/ChurchContext'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
-import { permitArrivals } from 'permission-utils'
+import { permitAdminArrivals } from 'permission-utils'
 
 const DetailsBacenta = () => {
   const { bacentaId } = useContext(ChurchContext)
@@ -90,7 +90,7 @@ const DetailsBacenta = () => {
         churchType="Bacenta"
         subChurch="Fellowship"
         editlink="/bacenta/editbacenta"
-        editPermitted={permitArrivals('Constituency')}
+        editPermitted={permitAdminArrivals('Constituency')}
         history={bacenta?.history.length !== 0 ? bacenta?.history : []}
         breadcrumb={breadcrumb && breadcrumb}
         buttons={bacenta ? bacenta?.fellowships : []}

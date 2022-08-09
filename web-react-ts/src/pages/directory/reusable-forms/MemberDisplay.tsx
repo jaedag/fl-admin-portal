@@ -18,6 +18,7 @@ import RoleView from 'auth/RoleView'
 import ViewAll from 'components/buttons/ViewAll'
 import { permitAdmin } from 'permission-utils'
 import CloudinaryImage from 'components/CloudinaryImage'
+import { Member } from 'global-types'
 
 const MemberDisplay = ({ memberId }: { memberId: string }) => {
   const {
@@ -39,7 +40,7 @@ const MemberDisplay = ({ memberId }: { memberId: string }) => {
   const errorToThrow: any = error
   throwErrorMsg(errorToThrow)
 
-  const member = bioData?.members[0]
+  const member: Member = bioData?.members[0]
   const memberChurch = churchData?.members[0]
   const memberLeader = leaderData?.members[0]
   const memberAdmin = adminData?.members[0]

@@ -8,7 +8,7 @@ import { ServiceContext } from 'contexts/ServiceContext'
 import { Formik, Form, FormikHelpers } from 'formik'
 import * as Yup from 'yup'
 import { useContext } from 'react'
-import { Card, Col, Container, Row } from 'react-bootstrap'
+import { Card, Container } from 'react-bootstrap'
 import { DISPLAY_BUSSING_RECORDS } from './arrivalsQueries'
 import {
   CONFIRM_BUSSING_BY_ADMIN,
@@ -17,11 +17,12 @@ import {
   SET_BUSSING_SUPPORT,
 } from './arrivalsMutation'
 import { useNavigate } from 'react-router'
-import FormikControl from 'components/formik-components/FormikControl'
-import SubmitButton from 'components/formik-components/SubmitButton'
+import SubmitButton from 'components/formik/SubmitButton'
 import { alertMsg, throwErrorMsg } from 'global-utils'
 import { BacentaWithArrivals, BussingRecord } from './arrivals-types'
-import RadioButtons from 'components/formik-components/RadioButtons'
+import Input from 'components/formik/Input'
+import Textarea from 'components/formik/Textarea'
+import RadioButtons from 'components/formik/RadioButtons'
 
 type FormOptions = {
   attendance: string
@@ -204,45 +205,13 @@ const FormAttendanceConfirmation = () => {
           {(formik) => (
             <Container>
               <Form>
-                <FormikControl
-                  control="input"
+                <Input
                   name="attendance"
-                  label="Attendance *"
-                  placeholder={bussing?.leaderDeclaration}
+                  label="Attendance (from Picture)*"
+                  placeholder={bussing?.attendance.toString()}
                 />
-                <Row className="mt-4">
-                  <hr />
-                  <div className="mb-2 yellow">
-                    Input the number of Vehicles
-                  </div>
-                  <Col>
-                    <FormikControl
-                      control="input"
-                      name="numberOfSprinters"
-                      label="Sprinters *"
-                    />
-                  </Col>
-                  <Col>
-                    <FormikControl
-                      control="input"
-                      name="numberOfUrvans"
-                      label="Urvans *"
-                    />
-                  </Col>
-                  <Col>
-                    <FormikControl
-                      control="input"
-                      name="numberOfCars"
-                      label="Cars *"
-                    />
-                  </Col>
-                </Row>
 
-                <FormikControl
-                  control="textarea"
-                  name="comments"
-                  label="Comments"
-                />
+                <Textarea name="comments" label="Comments" />
                 <Card border="warning" className="my-3">
                   <Card.Body>
                     <RadioButtons

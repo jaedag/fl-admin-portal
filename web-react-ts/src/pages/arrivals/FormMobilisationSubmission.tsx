@@ -1,5 +1,4 @@
-import FormikControl from 'components/formik-components/FormikControl'
-import SubmitButton from 'components/formik-components/SubmitButton'
+import SubmitButton from 'components/formik/SubmitButton'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import HeadingSecondary from 'components/HeadingSecondary'
 import { Form, Formik, FormikHelpers } from 'formik'
@@ -16,6 +15,8 @@ import { beforeMobilisationDeadline } from './arrivals-utils'
 import { isToday } from 'jd-date-utils'
 import { throwErrorMsg } from 'global-utils'
 import { BacentaWithArrivals, BussingRecord } from './arrivals-types'
+import Input from 'components/formik/Input'
+import ImageUpload from 'components/formik/ImageUpload'
 
 type FormOptions = {
   serviceDate: string
@@ -104,15 +105,13 @@ const FormMobilisationSubmission = () => {
                     Date of Service*
                     <i className="text-secondary">(Day/Month/Year)</i>
                   </small>
-                  <FormikControl
-                    control="input"
+                  <Input
                     name="serviceDate"
                     type="date"
                     placeholder="dd/mm/yyyy"
                     aria-describedby="dateofservice"
                   />
-                  <FormikControl
-                    control="imageUpload"
+                  <ImageUpload
                     name="mobilisationPicture"
                     uploadPreset={
                       process.env.REACT_APP_CLOUDINARY_BUS_MOBILISATION
