@@ -15,8 +15,8 @@ import { Button, Col, Container, Row } from 'react-bootstrap'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import HeadingSecondary from 'components/HeadingSecondary'
 import { Form, Formik, FormikHelpers } from 'formik'
-import FormikControl from 'components/formik-components/FormikControl'
-import SubmitButton from 'components/formik-components/SubmitButton'
+import FormikControl from 'components/formik/FormikControl'
+import SubmitButton from 'components/formik/SubmitButton'
 import {
   alertMsg,
   FormikSelectOptions,

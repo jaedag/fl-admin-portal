@@ -1,7 +1,7 @@
 import { useLazyQuery } from '@apollo/client'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import MemberDisplayCard from 'components/card/MemberDisplayCard'
-import FormikControl from 'components/formik-components/FormikControl'
+import Input from 'components/formik/Input'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import HeadingSecondary from 'components/HeadingSecondary'
 import { ChurchContext } from 'contexts/ChurchContext'
@@ -90,9 +90,8 @@ const StateBacentasToCount = () => {
           {() => (
             <Form>
               <div className="align-middle">
-                <FormikControl
+                <Input
                   className="form-control member-search w-100"
-                  control="input"
                   name="bacentaSearch"
                   placeholder="Search Bacentas"
                   aria-describedby="Bacenta Search"

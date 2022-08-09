@@ -29,7 +29,7 @@ import SubmitButton from 'components/formik/SubmitButton'
 import { DISPLAY_BACENTA } from 'pages/directory/display/ReadQueries'
 import { permitAdmin } from 'permission-utils'
 import usePopup from 'hooks/usePopup'
-import SelectWithQuery from 'components/formik-components/SelectWithQuery'
+import SelectWithQuery from 'components/formik/SelectWithQuery'
 
 const FellowshipForm = (props) => {
   const { fellowshipId, councilId, clickCard } = useContext(ChurchContext)
