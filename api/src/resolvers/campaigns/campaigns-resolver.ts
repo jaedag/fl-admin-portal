@@ -83,7 +83,6 @@ export const campaignsMutation = {
             date,
           })
         )
-        console.log(constituencyRecord)
 
         return {
           id: args.id,
