@@ -1,6 +1,5 @@
 import React, { useContext } from 'react'
 import { Formik, Form, FormikHelpers } from 'formik'
-import FormikControl from './formik-components/FormikControl'
 import { SearchContext } from '../contexts/MemberContext'
 import './SearchBox.css'
 import { Col, Button, Container } from 'react-bootstrap'
