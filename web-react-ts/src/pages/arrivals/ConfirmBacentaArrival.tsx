@@ -1,7 +1,6 @@
 import { useLazyQuery, useMutation } from '@apollo/client'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import 'components/card/MemberDisplayCard.css'
-import FormikControl from 'components/formik/FormikControl'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import HeadingSecondary from 'components/HeadingSecondary'
 import Popup from 'components/Popup/Popup'
