@@ -20,7 +20,7 @@ const Navigator = () => {
   const { user } = useAuth0()
 
   useQuery(GET_LOGGED_IN_USER, {
-    variables: { email: user.email },
+    variables: { email: user?.email },
     onCompleted: (data) => {
       const church = data.memberByEmail.stream_name
 
@@ -86,7 +86,6 @@ const Navigator = () => {
                   <Nav.Link
                     as={Link}
                     eventKey={index}
-                    exact={menuItem.exact}
                     to={menuItem.to}
                     className="font-primary nav-btn"
                   >
@@ -103,7 +102,6 @@ const Navigator = () => {
                 <Nav.Link
                   as={Link}
                   eventKey={menuItems.length}
-                  exact="true"
                   to="/user-profile"
                 >
                   <UserProfileIcon />

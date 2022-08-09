@@ -8,7 +8,7 @@ import ServantsDashboard from 'pages/dashboards/ServantsDashboard'
 import ServantsChurchList from 'pages/dashboards/ServantsChurchList'
 import { ServiceContext } from 'contexts/ServiceContext'
 import MembersDirectoryRoute from './pages/directory/MembersDirectoryRoute'
-import Navigation from 'pages/dashboards/Navigation.jsx'
+import Navigation from 'pages/dashboards/Navigation'
 import { dashboards } from 'pages/dashboards/dashboardRoutes'
 import {
   directory,
