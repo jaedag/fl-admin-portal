@@ -1,12 +1,23 @@
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { Button } from 'react-bootstrap'
 import { useNavigate } from 'react-router'
 import { ChurchContext } from '../contexts/ChurchContext'
 import { capitalise } from '../global-utils'
 import PlaceholderCustom from './Placeholder'
 import './MemberRoleList.css'
+import { ChurchLevelLower, MemberWithChurches } from 'global-types'
 
-const MemberRoleList = ({ memberLeader, memberAdmin }) => {
+interface MemberForRoles extends MemberWithChurches {
+  [key: string]: any
+}
+
+const MemberRoleList = ({
+  memberLeader,
+  memberAdmin,
+}: {
+  memberLeader: MemberForRoles
+  memberAdmin: MemberForRoles
+}) => {
   const { clickCard } = useContext(ChurchContext)
   const navigate = useNavigate()
 
@@ -31,12 +42,13 @@ const MemberRoleList = ({ memberLeader, memberAdmin }) => {
   }
   let isServant = false
 
-  const updateRank = (member, churchType) => {
+  const updateRank = (member: MemberForRoles, churchType: ChurchLevelLower) => {
     isServant = true
 
-    member[`isAdminFor${capitalise(churchType)}`]?.map((church) => {
-      let ch = church.__typename.toLowerCase()
+    member[`isAdminFor${capitalise(churchType)}`]?.map((church: any) => {
+      let ch: ChurchLevelLower = church.__typename.toLowerCase()
 
+      // @ts-ignore
       rank[`${ch}Admin`].push({
         name: church.name,
         stream_name: church.stream_name,
@@ -51,9 +63,9 @@ const MemberRoleList = ({ memberLeader, memberAdmin }) => {
       return null
     })
 
-    member[`leads${capitalise(churchType)}`]?.map((church) => {
-      let ch = church.__typename.toLowerCase()
-
+    member[`leads${capitalise(churchType)}`]?.map((church: any) => {
+      let ch: ChurchLevelLower = church.__typename.toLowerCase()
+      // @ts-ignore
       rank[`${ch}Leader`].push({
         name: church.name,
         stream_name: church.stream_name,
@@ -126,28 +138,38 @@ const MemberRoleList = ({ memberLeader, memberAdmin }) => {
         {
           //Rank Discussions */}
           Object.entries(rank).map((rank) => {
-            return rank[1].map((place, i) => {
-              let servant = 'Leader'
+            return rank[1].map(
+              (
+                place: {
+                  name: string
+                  __typename: string
+                  admin: boolean
+                  link: string
+                },
+                i
+              ) => {
+                let servant = 'Leader'
 
-              if (place.admin) {
-                servant = 'Admin'
+                if (place.admin) {
+                  servant = 'Admin'
+                }
+
+                return (
+                  <span
+                    key={i}
+                    onClick={() => {
+                      clickCard(place)
+                      navigate(place.link)
+                    }}
+                  >
+                    <p className="mb-0">
+                      <span className=" text-secondary">{`${place.__typename} ${servant} : `}</span>
+                      <span>{place.name}</span>
+                    </p>
+                  </span>
+                )
               }
-
-              return (
-                <span
-                  key={i}
-                  onClick={() => {
-                    clickCard(place)
-                    navigate(place.link)
-                  }}
-                >
-                  <p className="mb-0">
-                    <span className=" text-secondary">{`${place.__typename} ${servant} : `}</span>
-                    <span>{place.name}</span>
-                  </p>
-                </span>
-              )
-            })
+            )
           })
         }
       </small>
