@@ -14,7 +14,6 @@ import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { Col, Container, Row, Button } from 'react-bootstrap'
 import Popup from 'components/Popup/Popup'
 import { Form, Formik, FormikHelpers } from 'formik'
-import FormikControl from 'components/formik-components/FormikControl'
 import SubmitButton from 'components/formik-components/SubmitButton'
 import RoleView from 'auth/RoleView'
 import { permitAdmin } from 'permission-utils'
@@ -25,6 +24,7 @@ import DefaulterInfoCard from 'pages/services/defaulters/DefaulterInfoCard'
 import { MemberContext } from 'contexts/MemberContext'
 import usePopup from 'hooks/usePopup'
 import { AdminFormOptions } from './DashboardConstituency'
+import SearchMember from 'components/formik-components/SearchMember'
 
 const GatheringServiceDashboard = () => {
   const { isOpen, togglePopup } = usePopup()
@@ -107,8 +107,7 @@ const GatheringServiceDashboard = () => {
                 <Form>
                   <Row className="form-row">
                     <Col>
-                      <FormikControl
-                        control="memberSearch"
+                      <SearchMember
                         name="adminSelect"
                         initialValue={initialValues?.adminName}
                         placeholder="Select an Admin"

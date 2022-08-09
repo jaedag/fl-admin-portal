@@ -11,7 +11,6 @@ import {
 } from 'global-utils'
 import { GET_MINISTRIES } from 'queries/ListQueries'
 import ErrorScreen from 'components/base-component/ErrorScreen'
-import FormikControl from 'components/formik-components/FormikControl'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import { Col, Container, Row } from 'react-bootstrap'
 import LoadingScreen from 'components/base-component/LoadingScreen'
@@ -19,6 +18,10 @@ import { permitAdmin } from 'permission-utils'
 import SubmitButton from 'components/formik-components/SubmitButton'
 import { MemberContext } from 'contexts/MemberContext'
 import { CreateMemberFormOptions } from '../create/CreateMember'
+import Input from 'components/formik-components/Input'
+import ImageUpload from 'components/formik-components/ImageUpload'
+import SearchFellowship from 'components/formik-components/SearchFellowship'
+import Select from 'components/formik-components/Select'
 
 type MemberFormProps = {
   initialValues: CreateMemberFormOptions
@@ -100,8 +103,7 @@ const MemberForm = ({
                 {/* <!-- Basic Info Div --> */}
                 {/* Photo Upload with Cloudinary */}
                 <Col className="my-3">
-                  <FormikControl
-                    control="imageUpload"
+                  <ImageUpload
                     name="pictureUrl"
                     initialValue={initialValues.pictureUrl}
                     error={formik.errors.pictureUrl}
@@ -119,36 +121,32 @@ const MemberForm = ({
                   <div className="form-row row-cols-1 row-cols-md-2 justify-content-center">
                     <HeadingPrimary className="mb-4">Basic Info</HeadingPrimary>
                     <Col sm={10}>
-                      <FormikControl
+                      <Input
                         label="First Name*"
-                        control="input"
                         name="firstName"
                         placeholder="First Name"
                         aria-describedby="firstNameHelp"
                       />
                     </Col>
                     <Col sm={10}>
-                      <FormikControl
+                      <Input
                         label="Middle Name"
-                        control="input"
                         name="middleName"
                         placeholder="Other Names"
                         aria-describedby="middleNameHelp"
                       />
                     </Col>
                     <Col sm={10}>
-                      <FormikControl
+                      <Input
                         label="Last Name*"
-                        control="input"
                         name="lastName"
                         placeholder="Last Name"
                         aria-describedby="lastNameHelp"
                       />
                     </Col>
                     <Col sm={10}>
-                      <FormikControl
+                      <Select
                         label="Gender*"
-                        control="select"
                         name="gender"
                         placeholder="Gender"
                         options={GENDER_OPTIONS}
@@ -156,20 +154,16 @@ const MemberForm = ({
                       />
                     </Col>
                     <Col sm={10}>
-                      <FormikControl
+                      <Input
                         label="Phone Number*"
-                        control="input"
                         placeholder="Eg. +233 241 23 456"
-                        id="phoneNumber"
                         name="phoneNumber"
                       />
                     </Col>
                     <Col sm={10}>
-                      <FormikControl
+                      <Input
                         label="WhatsApp Number*"
-                        control="input"
                         placeholder="Eg. +233 241 23 456"
-                        id="whatsappNumber"
                         name="whatsappNumber"
                       />
                     </Col>
@@ -177,9 +171,8 @@ const MemberForm = ({
 
                   <div className="form-row row-cols-1 row-cols-md-2 justify-content-center">
                     <Col sm={10}>
-                      <FormikControl
+                      <Select
                         label="Marital Status*"
-                        control="select"
                         name="maritalStatus"
                         placeholder="Marital Status"
                         options={MARITAL_STATUS_OPTIONS}
@@ -187,9 +180,8 @@ const MemberForm = ({
                       />
                     </Col>
                     <Col sm={10}>
-                      <FormikControl
+                      <Input
                         label="Occupation"
-                        control="input"
                         name="occupation"
                         placeholder="Occupation"
                         aria-describedby="occupationHelp"
@@ -200,9 +192,8 @@ const MemberForm = ({
                   <div className="form-row justify-content-center">
                     {canChangeEmail() && (
                       <Col sm={10}>
-                        <FormikControl
+                        <Input
                           label="Email Address*"
-                          control="input"
                           name="email"
                           placeholder="Enter Email Address"
                           aria-describedby="emailHelp"
@@ -215,8 +206,7 @@ const MemberForm = ({
                         Date of Birth*{' '}
                         <i className="text-secondary">(Day/Month/Year)</i>
                       </small>
-                      <FormikControl
-                        control="input"
+                      <Input
                         name="dob"
                         type="date"
                         placeholder="dd/mm/yyyy"
@@ -233,9 +223,8 @@ const MemberForm = ({
                   <div className="form-row row-cols-1 row-cols-md-2 justify-content-center">
                     {!update && (
                       <Col sm={10}>
-                        <FormikControl
+                        <Input
                           label="Home/Campus Location * (for IDL)"
-                          control="input"
                           name="location"
                           placeholder="Enter the location for IDL Visitaion"
                           aria-describedby="location"
@@ -243,8 +232,7 @@ const MemberForm = ({
                       </Col>
                     )}
                     <Col sm={10}>
-                      <FormikControl
-                        control="fellowshipSearch"
+                      <SearchFellowship
                         name="fellowship"
                         label="Fellowship*"
                         placeholder="Start Typing"
@@ -257,9 +245,8 @@ const MemberForm = ({
                       />
                     </Col>
                     <Col sm={10}>
-                      <FormikControl
+                      <Select
                         label="Ministry"
-                        control="select"
                         name="ministry"
                         options={ministryOptions}
                         defaultOption="Ministry"

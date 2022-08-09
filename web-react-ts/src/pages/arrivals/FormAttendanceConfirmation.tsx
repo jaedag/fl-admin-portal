@@ -24,6 +24,7 @@ import { alertMsg, throwErrorMsg } from 'global-utils'
 import Popup from 'components/Popup/Popup'
 import usePopup from 'hooks/usePopup'
 import { BacentaWithArrivals, BussingRecord } from './arrivals-types'
+import Input from 'components/formik-components/Input'
 
 type FormOptions = {
   attendance: string
@@ -193,11 +194,10 @@ const FormAttendanceConfirmation = () => {
           {(formik) => (
             <Container>
               <Form>
-                <FormikControl
-                  control="input"
+                <Input
                   name="attendance"
                   label="Attendance (from Picture)*"
-                  placeholder={bussing?.attendance}
+                  placeholder={bussing?.attendance.toString()}
                 />
 
                 <FormikControl

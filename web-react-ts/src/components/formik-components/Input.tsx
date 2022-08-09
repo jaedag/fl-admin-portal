@@ -5,8 +5,13 @@ import './Input.css'
 import './Formik.css'
 import PlaceholderCustom from 'components/Placeholder'
 import { useAuth0 } from '@auth0/auth0-react'
+import { FormikComponentProps } from './formiik-utils'
 
-function Input(props: { label?: string; name: string }) {
+interface InputProps extends FormikComponentProps {
+  type?: 'date' | 'time'
+}
+
+function Input(props: InputProps) {
   const { label, name, ...rest } = props
   const { isAuthenticated } = useAuth0()
 

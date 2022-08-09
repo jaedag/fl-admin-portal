@@ -4,8 +4,15 @@ import TextError from './TextError/TextError'
 import { Container, Spinner } from 'react-bootstrap'
 import { MemberContext } from 'contexts/MemberContext'
 import './Formik.css'
+import { FormikComponentProps } from './formiik-utils'
 
-function ImageUpload(props) {
+interface ImageUploadProps extends FormikComponentProps {
+  uploadPreset?: string
+  initialValue?: string
+  setFieldValue: (field: string, value: any) => void
+}
+
+const ImageUpload = (props: ImageUploadProps) => {
   const {
     label,
     name,
@@ -19,11 +26,11 @@ function ImageUpload(props) {
   const [loading, setLoading] = useState(false)
   const [image, setImage] = useState('')
 
-  const uploadImage = async (e) => {
+  const uploadImage = async (e: any) => {
     const files = e.target.files
     const data = new FormData()
     data.append('file', files[0])
-    data.append('upload_preset', uploadPreset)
+    data.append('upload_preset', uploadPreset || '')
 
     setLoading(true)
 

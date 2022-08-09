@@ -1,5 +1,6 @@
 import PlaceholderCustom from 'components/Placeholder'
 import { ChurchContext } from 'contexts/ChurchContext'
+import { ChurchLevel } from 'global-types'
 import React, { useState, useEffect, useContext } from 'react'
 import { useNavigate } from 'react-router'
 import {
@@ -15,18 +16,36 @@ import {
 import { capitalise } from '../../global-utils'
 import './ChurchGraph.css'
 
-const ChurchGraph = (props) => {
+type ChurchGraphProps = {
+  loading: boolean
+  stat1: 'attendance' | 'income'
+  stat2: 'attendance' | 'income'
+  churchData: { [key: string]: any }
+  secondaryTitle: string
+  bussing: any
+  income: boolean
+  church: ChurchLevel
+}
+
+const ChurchGraph = (props: ChurchGraphProps) => {
   const { loading, stat1, stat2, churchData, secondaryTitle, bussing, income } =
     props
   const { clickCard } = useContext(ChurchContext)
   const navigate = useNavigate()
 
   const [sortedData, setSortedData] = useState([])
-  const [dataMax, setDataMax] = useState(0)
+  const [dataMax, setDataMax] = useState<{
+    attendance: number
+    income: number
+  }>({ attendance: 0, income: 0 })
+
+  type WeekSortObject = {
+    week: number
+  }
 
   useEffect(() => {
     setSortedData(
-      churchData?.sort((a, b) => {
+      churchData?.sort((a: WeekSortObject, b: WeekSortObject) => {
         if (a.week - b.week < -4 || a.week - b.week > 4) {
           return -1 * a.week - b.week
         }
@@ -39,21 +58,26 @@ const ChurchGraph = (props) => {
       attendance:
         Math.max.apply(
           Math,
-          churchData?.map((max) => {
+          churchData?.map((max: any) => {
             return max.attendance
           })
         ) * 1.2,
       income:
         Math.max.apply(
           Math,
-          churchData?.map((max) => {
+          churchData?.map((max: any) => {
             return max.income
           })
         ) + 1.2,
     })
   }, [churchData])
 
-  const CustomTooltip = ({ active, payload, label }) => {
+  type CustomToolTipProps = {
+    payload?: any
+    label?: string
+    active?: boolean
+  }
+  const CustomTooltip = ({ active, payload, label }: CustomToolTipProps) => {
     if (active && payload && payload.length) {
       return (
         <div className="custom-tooltip">

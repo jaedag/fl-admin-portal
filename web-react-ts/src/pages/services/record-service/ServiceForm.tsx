@@ -1,6 +1,5 @@
 import MinusSign from 'components/buttons/PlusMinusSign/MinusSign'
 import PlusSign from 'components/buttons/PlusMinusSign/PlusSign'
-import FormikControl from 'components/formik-components/FormikControl'
 import { FieldArray, Form, Formik, FormikHelpers } from 'formik'
 import * as Yup from 'yup'
 import React, { useContext } from 'react'
@@ -13,6 +12,9 @@ import { getMondayThisWeek } from 'jd-date-utils'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { Church, ChurchLevel } from 'global-types'
 import { MutationFunction } from '@apollo/client'
+import Input from 'components/formik-components/Input'
+import ImageUpload from 'components/formik-components/ImageUpload'
+import SearchMember from 'components/formik-components/SearchMember'
 
 type ServiceFormProps = {
   church: Church
@@ -152,33 +154,19 @@ const ServiceForm = ({
                       Date of Service*
                       <i className="text-secondary">(Day/Month/Year)</i>
                     </small>
-                    <FormikControl
-                      control="input"
+                    <Input
                       name="serviceDate"
                       type="date"
                       placeholder="dd/mm/yyyy"
                       aria-describedby="dateofservice"
                     />
-                    <FormikControl
-                      control="input"
-                      name="attendance"
-                      label="Attendance*"
-                    />
-                    <FormikControl
-                      control="input"
-                      name="cediIncome"
-                      label="Income (in Cedis)*"
-                    />
-                    <FormikControl
-                      control="input"
+                    <Input name="attendance" label="Attendance*" />
+                    <Input name="cediIncome" label="Income (in Cedis)*" />
+                    <Input
                       name="foreignCurrency"
                       label="Foreign Currency (if any)*"
                     />
-                    <FormikControl
-                      control="input"
-                      name="numberOfTithers"
-                      label="Number of Tithers*"
-                    />
+                    <Input name="numberOfTithers" label="Number of Tithers*" />
                     <small className="label">Treasurers (minimum of 2)</small>
                     <FieldArray name="treasurers">
                       {(fieldArrayProps) => {
@@ -191,8 +179,7 @@ const ServiceForm = ({
                             {treasurers.map((treasurer, index) => (
                               <Row key={index} className="form-row">
                                 <Col>
-                                  <FormikControl
-                                    control="memberSearch"
+                                  <SearchMember
                                     name={`treasurers[${index}]`}
                                     placeholder="Start typing"
                                     setFieldValue={formik.setFieldValue}
@@ -220,8 +207,7 @@ const ServiceForm = ({
                     </FieldArray>
                     <Col className="my-2 mt-5">
                       <small>Upload Treasurer Selfie*</small>
-                      <FormikControl
-                        control="imageUpload"
+                      <ImageUpload
                         name="treasurerSelfie"
                         uploadPreset={
                           process.env.REACT_APP_CLOUDINARY_TREASURERS
@@ -235,8 +221,7 @@ const ServiceForm = ({
                       <small className="mb-3">
                         Upload a Picture of Your Service*
                       </small>
-                      <FormikControl
-                        control="imageUpload"
+                      <ImageUpload
                         name="familyPicture"
                         uploadPreset={process.env.REACT_APP_CLOUDINARY_SERVICES}
                         placeholder="Choose"

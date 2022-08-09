@@ -1,6 +1,4 @@
-import FormikControl, {
-  arrayError,
-} from 'components/formik-components/FormikControl'
+import { arrayError } from 'components/formik-components/FormikControl'
 import SubmitButton from 'components/formik-components/SubmitButton'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import HeadingSecondary from 'components/HeadingSecondary'
@@ -19,6 +17,8 @@ import { RECORD_BUSSING_FROM_BACENTA } from './arrivalsMutation'
 import { parseDate } from 'jd-date-utils'
 import { ServiceContext } from 'contexts/ServiceContext'
 import { throwErrorMsg } from 'global-utils'
+import Input from 'components/formik-components/Input'
+import ImageUpload from 'components/formik-components/ImageUpload'
 
 type FormOptions = {
   attendance: string
@@ -128,27 +128,11 @@ const FormOnTheWaySubmission = () => {
                     {parseDate(bacenta?.bussing[0].serviceDate.date)}
                   </HeadingPrimary>
 
-                  <FormikControl
-                    control="input"
-                    name="attendance"
-                    label="Attendance*"
-                  />
-                  <FormikControl
-                    control="input"
-                    name="bussingCost"
-                    label="Bussing Cost (in Cedis)*"
-                  />
-                  <FormikControl
-                    control="input"
-                    name="numberOfBusses"
-                    label="Number of Busses *"
-                  />
+                  <Input name="attendance" label="Attendance*" />
+                  <Input name="bussingCost" label="Bussing Cost (in Cedis)*" />
+                  <Input name="numberOfBusses" label="Number of Busses *" />
 
-                  <FormikControl
-                    control="input"
-                    name="numberOfCars"
-                    label="Number of Cars"
-                  />
+                  <Input name="numberOfCars" label="Number of Cars" />
                   <FieldArray name="bussingPictures">
                     {(fieldArrayProps) => {
                       const { push, remove, form } = fieldArrayProps
@@ -162,9 +146,8 @@ const FormOnTheWaySubmission = () => {
                             (bussingPicture, index: number) => (
                               <Row key={index} className="form-row">
                                 <Col>
-                                  <FormikControl
+                                  <ImageUpload
                                     label="Upload A Bussing Picture"
-                                    control="imageUpload"
                                     name={`bussingPictures[${index}]`}
                                     uploadPreset={
                                       process.env.REACT_APP_CLOUDINARY_BUSSING

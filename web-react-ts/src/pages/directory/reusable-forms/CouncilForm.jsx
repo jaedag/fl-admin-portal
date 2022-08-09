@@ -80,8 +80,7 @@ const CouncilForm = ({ initialValues, onSubmit, title, newCouncil }) => {
                       </Row>
                     </RoleView>
 
-                    <FormikControl
-                      control="input"
+                    <Input
                       name="name"
                       label={`Name of Council`}
                       placeholder={`Name of Council`}

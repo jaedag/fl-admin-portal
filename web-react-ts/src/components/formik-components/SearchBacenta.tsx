@@ -5,50 +5,77 @@ import { DEBOUNCE_TIMER, isAuthorised, throwErrorMsg } from 'global-utils'
 import { permitMe } from 'permission-utils'
 import React, { useContext, useEffect, useState } from 'react'
 import Autosuggest from 'react-autosuggest'
+import { RoleBasedSearch } from './formiik-utils'
 import { initialise } from './search-utils'
 import {
-  GATHERINGSERVICE_COUNCIL_SEARCH,
-  STREAM_COUNCIL_SEARCH,
-  MEMBER_COUNCIL_SEARCH,
-} from './SearchCouncilQueries'
+  COUNCIL_BACENTA_SEARCH,
+  GATHERINGSERVICE_BACENTA_SEARCH,
+  STREAM_BACENTA_SEARCH,
+  CONSTITUENCY_BACENTA_SEARCH,
+  MEMBER_BACENTA_SEARCH,
+} from './SearchBacentaQueries'
 import TextError from './TextError/TextError'
 
-const SearchCouncil = (props) => {
+const SearchBacenta = (props: RoleBasedSearch) => {
   const { currentUser } = useContext(MemberContext)
   const [suggestions, setSuggestions] = useState([])
   const [searchString, setSearchString] = useState(props.initialValue ?? '')
 
   const [gatheringServiceSearch, { error: gatheringServiceError }] =
-    useLazyQuery(GATHERINGSERVICE_COUNCIL_SEARCH, {
+    useLazyQuery(GATHERINGSERVICE_BACENTA_SEARCH, {
       onCompleted: (data) => {
-        setSuggestions(data.gatheringServices[0].councilSearch)
+        setSuggestions(data.gatheringServices[0].bacentaSearch)
         return
       },
     })
   const [streamSearch, { error: streamError }] = useLazyQuery(
-    STREAM_COUNCIL_SEARCH,
+    STREAM_BACENTA_SEARCH,
     {
       onCompleted: (data) => {
-        setSuggestions(data.streams[0].councilSearch)
+        setSuggestions(data.streams[0].bacentaSearch)
+        return
+      },
+    }
+  )
+  const [councilSearch, { error: councilError }] = useLazyQuery(
+    COUNCIL_BACENTA_SEARCH,
+    {
+      onCompleted: (data) => {
+        setSuggestions(data.councils[0].bacentaSearch)
+        return
+      },
+    }
+  )
+
+  const [constituencySearch, { error: constituencyError }] = useLazyQuery(
+    CONSTITUENCY_BACENTA_SEARCH,
+    {
+      onCompleted: (data) => {
+        setSuggestions(data.constituencies[0].bacentaSearch)
         return
       },
     }
   )
 
   const [memberSearch, { error: memberError }] = useLazyQuery(
-    MEMBER_COUNCIL_SEARCH,
+    MEMBER_BACENTA_SEARCH,
     {
       onCompleted: (data) => {
-        setSuggestions(data.members[0].councilSearch)
+        setSuggestions(data.members[0].bacentaSearch)
         return
       },
     }
   )
 
-  const error = memberError || gatheringServiceError || streamError
-  throwErrorMsg(error)
+  const error =
+    memberError ||
+    gatheringServiceError ||
+    streamError ||
+    councilError ||
+    constituencyError
+  throwErrorMsg('', error)
 
-  const whichSearch = (searchString) => {
+  const whichSearch = (searchString: string) => {
     memberSearch({
       variables: {
         id: currentUser.id,
@@ -70,12 +97,26 @@ const SearchCouncil = (props) => {
             key: searchString?.trim(),
           },
         })
+      } else if (isAuthorised(permitMe('Council'), currentUser.roles)) {
+        councilSearch({
+          variables: {
+            id: currentUser.council,
+            key: searchString?.trim(),
+          },
+        })
+      } else if (isAuthorised(permitMe('Constituency'), currentUser.roles)) {
+        constituencySearch({
+          variables: {
+            id: currentUser.constituency,
+            key: searchString?.trim(),
+          },
+        })
       }
     }
   }
 
   useEffect(() => {
-    setSearchString(initialise(props.initialValue, searchString))
+    setSearchString(initialise(searchString, props.initialValue))
   }, [props.initialValue])
 
   useEffect(() => {
@@ -90,11 +131,8 @@ const SearchCouncil = (props) => {
 
   return (
     <div>
-      {props.label ? (
-        <label className="label" htmlFor={name}>
-          {props.label}
-        </label>
-      ) : null}
+      {props.label ? <label className="label">{props.label}</label> : null}
+      {/*// @ts-ignore*/}
       <Autosuggest
         inputProps={{
           placeholder: props.placeholder,
@@ -123,17 +161,17 @@ const SearchCouncil = (props) => {
           setSearchString(suggestion.name)
           props.setFieldValue(`${props.name}`, suggestion)
         }}
-        getSuggestionValue={(suggestion) => suggestion.name}
+        getSuggestionValue={(suggestion: any) => suggestion.name}
         highlightFirstSuggestion={true}
-        renderSuggestion={(suggestion) => (
+        renderSuggestion={(suggestion: any) => (
           <div className="combobox-control">{suggestion.name}</div>
         )}
       />
-
       {props.error && <TextError>{props.error}</TextError>}
+      {/*// @ts-ignore*/}
       {!props.error ?? <ErrorMessage name={name} component={TextError} />}
     </div>
   )
 }
 
-export default SearchCouncil
+export default SearchBacenta

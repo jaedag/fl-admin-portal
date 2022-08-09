@@ -2,16 +2,13 @@ import React from 'react'
 import { Field, ErrorMessage } from 'formik'
 import TextError from './TextError/TextError'
 import './Formik.css'
+import { FormikComponentProps } from './formiik-utils'
 
-function Textarea(props) {
+function Textarea(props: FormikComponentProps) {
   const { label, name, ...rest } = props
   return (
     <div>
-      {label ? (
-        <label className="label" htmlFor={name}>
-          {label}
-        </label>
-      ) : null}
+      {label ? <label className="label">{label}</label> : null}
       <Field
         as="textarea"
         id={name}

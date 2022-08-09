@@ -3,8 +3,9 @@ import { Field, ErrorMessage } from 'formik'
 import TextError from './TextError/TextError'
 import PlaceholderCustom from 'components/Placeholder'
 import { useAuth0 } from '@auth0/auth0-react'
+import { FormikSelectProps } from './formiik-utils'
 
-function Select(props) {
+function Select(props: FormikSelectProps) {
   const { label, name, options, defaultOption, ...rest } = props
   const { isAuthenticated } = useAuth0()
 
@@ -12,9 +13,7 @@ function Select(props) {
     <div>
       {label ? (
         <PlaceholderCustom loading={!isAuthenticated}>
-          <label className="label" htmlFor={name}>
-            {label}
-          </label>
+          <label className="label">{label}</label>
         </PlaceholderCustom>
       ) : null}
       <Field
@@ -24,7 +23,7 @@ function Select(props) {
         className="form-control"
         {...rest}
       >
-        <option value="" disabled defaultValue>
+        <option value="" disabled defaultValue="true">
           {defaultOption}
         </option>
         {options?.map((option) => {

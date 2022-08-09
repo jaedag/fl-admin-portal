@@ -26,6 +26,7 @@ import NoData from './CompNoData'
 import usePopup from 'hooks/usePopup'
 import PlaceholderDefaulterList from 'pages/services/defaulters/PlaceholderDefaulterList'
 import { ArrivalsUseChurchType, BacentaWithArrivals } from './arrivals-types'
+import Input from 'components/formik-components/Input'
 
 type FormOptions = {
   bacentaSearch: string
@@ -183,9 +184,8 @@ const ConfirmBacentaArrival = () => {
           {() => (
             <Form>
               <div className="align-middle">
-                <FormikControl
+                <Input
                   className="form-control member-search w-100"
-                  control="input"
                   name="bacentaSearch"
                   placeholder="Search Bacentas"
                   aria-describedby="Bacenta Search"

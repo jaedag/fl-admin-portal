@@ -9,6 +9,7 @@ import SubmitButton from 'components/formik-components/SubmitButton'
 import { throwErrorMsg } from 'global-utils'
 import { getMondayThisWeek } from 'jd-date-utils'
 import { ChurchContext } from 'contexts/ChurchContext'
+import Input from 'components/formik-components/Input'
 
 const ServiceForm = ({
   church,
@@ -83,18 +84,13 @@ const ServiceForm = ({
                       Date of Service*
                       <i className="text-secondary">(Day/Month/Year)</i>
                     </small>
-                    <FormikControl
-                      control="input"
+                    <Input
                       name="serviceDate"
                       type="date"
                       placeholder="dd/mm/yyyy"
                       aria-describedby="dateofservice"
                     />
-                    <FormikControl
-                      control="input"
-                      name="attendance"
-                      label="Attendance*"
-                    />
+                    <Input name="attendance" label="Attendance*" />
 
                     <Col className="my-2">
                       <small className="mb-3">

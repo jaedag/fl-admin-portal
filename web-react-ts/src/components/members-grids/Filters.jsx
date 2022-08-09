@@ -12,6 +12,7 @@ import { GET_MINISTRIES } from 'queries/ListQueries'
 import { Col, Row, Button } from 'react-bootstrap'
 import { MemberContext } from 'contexts/MemberContext'
 import './Filters.css'
+import CheckboxWithQuery from 'components/formik-components/CheckboxWithQuery'
 
 const Filters = ({ ToggleAccordion }) => {
   const { setFilters, filters } = useContext(ChurchContext)
@@ -68,8 +69,7 @@ const Filters = ({ ToggleAccordion }) => {
               </Col>
 
               <Col className="filter-col">
-                <FormikControl
-                  control="checkboxWithQuery"
+                <CheckboxWithQuery
                   name="ministry"
                   modifier="filter"
                   optionsQuery={GET_MINISTRIES}

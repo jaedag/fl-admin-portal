@@ -5,6 +5,7 @@ import { DEBOUNCE_TIMER, isAuthorised, throwErrorMsg } from 'global-utils'
 import { permitMe } from 'permission-utils'
 import React, { useContext, useEffect, useState } from 'react'
 import Autosuggest from 'react-autosuggest'
+import { RoleBasedSearch } from './formiik-utils'
 import { initialise } from './search-utils'
 import {
   COUNCIL_FELLOWSHIP_SEARCH,
@@ -16,7 +17,7 @@ import {
 } from './SearchFellowshipQueries'
 import TextError from './TextError/TextError'
 
-const SearchFellowship = (props) => {
+const SearchFellowship = (props: RoleBasedSearch) => {
   const { currentUser } = useContext(MemberContext)
   const [suggestions, setSuggestions] = useState([])
   const [searchString, setSearchString] = useState(props.initialValue ?? '')
@@ -83,9 +84,9 @@ const SearchFellowship = (props) => {
     constituencyError ||
     bacentaError ||
     memberError
-  throwErrorMsg(error)
+  throwErrorMsg('', error)
 
-  const whichSearch = (searchString) => {
+  const whichSearch = (searchString: string) => {
     memberSearch({
       variables: {
         id: currentUser.id,
@@ -133,7 +134,7 @@ const SearchFellowship = (props) => {
   }
 
   useEffect(() => {
-    setSearchString(initialise(props.initialValue, searchString))
+    setSearchString(initialise(searchString, props.initialValue))
   }, [props.initialValue])
 
   useEffect(() => {
@@ -148,11 +149,8 @@ const SearchFellowship = (props) => {
 
   return (
     <div>
-      {props.label ? (
-        <label className="label" htmlFor={name}>
-          {props.label}
-        </label>
-      ) : null}
+      {props.label ? <label className="label">{props.label}</label> : null}
+      {/*// @ts-ignore*/}
       <Autosuggest
         inputProps={{
           placeholder: props.placeholder,
@@ -182,7 +180,7 @@ const SearchFellowship = (props) => {
 
           props.setFieldValue(`${props.name}`, suggestion)
         }}
-        getSuggestionValue={(suggestion) => suggestion.name}
+        getSuggestionValue={(suggestion: any) => suggestion.name}
         highlightFirstSuggestion={true}
         renderSuggestion={(suggestion) => (
           <div className="combobox-control">{suggestion.name}</div>
@@ -190,6 +188,7 @@ const SearchFellowship = (props) => {
       />
 
       {props.error && <TextError>{props.error}</TextError>}
+      {/*// @ts-ignore*/}
       {!props.error ?? <ErrorMessage name={name} component={TextError} />}
     </div>
   )

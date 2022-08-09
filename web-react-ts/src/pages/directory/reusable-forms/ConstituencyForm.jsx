@@ -95,8 +95,7 @@ const ConstituencyForm = ({
                       </Row>
                     </RoleView>
 
-                    <FormikControl
-                      control="input"
+                    <Input
                       name="name"
                       label={`Name of Constituency`}
                       placeholder={`Name of Constituency`}

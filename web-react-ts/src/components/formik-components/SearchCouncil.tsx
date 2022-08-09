@@ -5,61 +5,51 @@ import { DEBOUNCE_TIMER, isAuthorised, throwErrorMsg } from 'global-utils'
 import { permitMe } from 'permission-utils'
 import React, { useContext, useEffect, useState } from 'react'
 import Autosuggest from 'react-autosuggest'
+import { RoleBasedSearch } from './formiik-utils'
 import { initialise } from './search-utils'
 import {
-  COUNCIL_CONSTITUENCY_SEARCH,
-  GATHERINGSERVICE_CONSTITUENCY_SEARCH,
-  STREAM_CONSTITUENCY_SEARCH,
-  MEMBER_CONSTITUENCY_SEARCH,
-} from './SearchConstituencyQueries'
+  GATHERINGSERVICE_COUNCIL_SEARCH,
+  STREAM_COUNCIL_SEARCH,
+  MEMBER_COUNCIL_SEARCH,
+} from './SearchCouncilQueries'
 import TextError from './TextError/TextError'
 
-const SearchConstituency = (props) => {
+const SearchCouncil = (props: RoleBasedSearch) => {
   const { currentUser } = useContext(MemberContext)
   const [suggestions, setSuggestions] = useState([])
   const [searchString, setSearchString] = useState(props.initialValue ?? '')
 
   const [gatheringServiceSearch, { error: gatheringServiceError }] =
-    useLazyQuery(GATHERINGSERVICE_CONSTITUENCY_SEARCH, {
+    useLazyQuery(GATHERINGSERVICE_COUNCIL_SEARCH, {
       onCompleted: (data) => {
-        setSuggestions(data.gatheringServices[0].constituencySearch)
+        setSuggestions(data.gatheringServices[0].councilSearch)
         return
       },
     })
   const [streamSearch, { error: streamError }] = useLazyQuery(
-    STREAM_CONSTITUENCY_SEARCH,
+    STREAM_COUNCIL_SEARCH,
     {
       onCompleted: (data) => {
-        setSuggestions(data.streams[0].constituencySearch)
-        return
-      },
-    }
-  )
-  const [councilSearch, { error: councilError }] = useLazyQuery(
-    COUNCIL_CONSTITUENCY_SEARCH,
-    {
-      onCompleted: (data) => {
-        setSuggestions(data.councils[0].constituencySearch)
+        setSuggestions(data.streams[0].councilSearch)
         return
       },
     }
   )
 
   const [memberSearch, { error: memberError }] = useLazyQuery(
-    MEMBER_CONSTITUENCY_SEARCH,
+    MEMBER_COUNCIL_SEARCH,
     {
       onCompleted: (data) => {
-        setSuggestions(data.members[0].constituencySearch)
+        setSuggestions(data.members[0].councilSearch)
         return
       },
     }
   )
 
-  const error =
-    memberError || gatheringServiceError || streamError || councilError
-  throwErrorMsg(error)
+  const error = memberError || gatheringServiceError || streamError
+  throwErrorMsg('', error)
 
-  const whichSearch = (searchString) => {
+  const whichSearch = (searchString: string) => {
     memberSearch({
       variables: {
         id: currentUser.id,
@@ -81,19 +71,12 @@ const SearchConstituency = (props) => {
             key: searchString?.trim(),
           },
         })
-      } else if (isAuthorised(permitMe('Council'), currentUser.roles)) {
-        councilSearch({
-          variables: {
-            id: currentUser.council,
-            key: searchString?.trim(),
-          },
-        })
       }
     }
   }
 
   useEffect(() => {
-    setSearchString(initialise(props.initialValue, searchString))
+    setSearchString(initialise(searchString, props.initialValue))
   }, [props.initialValue])
 
   useEffect(() => {
@@ -104,15 +87,12 @@ const SearchConstituency = (props) => {
     return () => {
       clearTimeout(timerId)
     }
-  }, [searchString])
+  }, [searchString, props.initialValue])
 
   return (
     <div>
-      {props.label ? (
-        <label className="label" htmlFor={name}>
-          {props.label}
-        </label>
-      ) : null}
+      {props.label ? <label className="label">{props.label}</label> : null}
+      {/*// @ts-ignore*/}
       <Autosuggest
         inputProps={{
           placeholder: props.placeholder,
@@ -143,15 +123,16 @@ const SearchConstituency = (props) => {
         }}
         getSuggestionValue={(suggestion) => suggestion.name}
         highlightFirstSuggestion={true}
-        renderSuggestion={(suggestion) => (
+        renderSuggestion={(suggestion: any) => (
           <div className="combobox-control">{suggestion.name}</div>
         )}
       />
 
       {props.error && <TextError>{props.error}</TextError>}
+      {/*// @ts-ignore*/}
       {!props.error ?? <ErrorMessage name={name} component={TextError} />}
     </div>
   )
 }
 
-export default SearchConstituency
+export default SearchCouncil

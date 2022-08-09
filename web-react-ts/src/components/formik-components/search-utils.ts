@@ -1,4 +1,4 @@
-export const initialise = (initialValue: string, searchString: string) => {
+export const initialise = (searchString: string, initialValue?: string) => {
   const showingSame = initialValue === searchString
 
   if (!initialValue) {

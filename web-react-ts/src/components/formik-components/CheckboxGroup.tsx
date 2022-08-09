@@ -3,8 +3,11 @@ import { Field, ErrorMessage } from 'formik'
 import TextError from './TextError/TextError'
 import { MemberContext } from 'contexts/MemberContext'
 import './CheckboxGroup.css'
+import { FormikComponentProps } from './formiik-utils'
 
-function CheckboxGroup(props) {
+interface CheckboxGroupProps extends FormikComponentProps {}
+
+function CheckboxGroup(props: CheckboxGroupProps) {
   const { label, name, options, ...rest } = props
   const { theme } = useContext(MemberContext)
 
@@ -19,8 +22,8 @@ function CheckboxGroup(props) {
         </>
       ) : null}
       <Field name={name} {...rest}>
-        {({ field }) => {
-          return options.map((option, index) => {
+        {({ field }: any) => {
+          return options?.map((option, index) => {
             return (
               <button
                 type="button"

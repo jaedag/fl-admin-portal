@@ -1,80 +1,103 @@
+/* eslint-disable no-restricted-globals */
 import { useLazyQuery } from '@apollo/client'
 import { MemberContext } from 'contexts/MemberContext'
 import { ErrorMessage } from 'formik'
 import { DEBOUNCE_TIMER, isAuthorised, throwErrorMsg } from 'global-utils'
 import { permitMe } from 'permission-utils'
 import React, { useContext, useEffect, useState } from 'react'
+import { RoleBasedSearch } from './formiik-utils'
 import Autosuggest from 'react-autosuggest'
-import { initialise } from './search-utils'
 import {
-  COUNCIL_BACENTA_SEARCH,
-  GATHERINGSERVICE_BACENTA_SEARCH,
-  STREAM_BACENTA_SEARCH,
-  CONSTITUENCY_BACENTA_SEARCH,
-  MEMBER_BACENTA_SEARCH,
-} from './SearchBacentaQueries'
+  COUNCIL_MEMBER_SEARCH,
+  GATHERINGSERVICE_MEMBER_SEARCH,
+  STREAM_MEMBER_SEARCH,
+  CONSTITUENCY_MEMBER_SEARCH,
+  BACENTA_MEMBER_SEARCH,
+  FELLOWSHIP_MEMBER_SEARCH,
+  MEMBER_MEMBER_SEARCH,
+} from './SearchMemberQueries'
 import TextError from './TextError/TextError'
 
-const SearchBacenta = (props) => {
+const SearchMember = (props: RoleBasedSearch) => {
   const { currentUser } = useContext(MemberContext)
   const [suggestions, setSuggestions] = useState([])
   const [searchString, setSearchString] = useState(props.initialValue ?? '')
 
   const [gatheringServiceSearch, { error: gatheringServiceError }] =
-    useLazyQuery(GATHERINGSERVICE_BACENTA_SEARCH, {
+    useLazyQuery(GATHERINGSERVICE_MEMBER_SEARCH, {
       onCompleted: (data) => {
-        setSuggestions(data.gatheringServices[0].bacentaSearch)
+        setSuggestions(data.gatheringServices[0].memberSearch)
         return
       },
     })
   const [streamSearch, { error: streamError }] = useLazyQuery(
-    STREAM_BACENTA_SEARCH,
+    STREAM_MEMBER_SEARCH,
     {
       onCompleted: (data) => {
-        setSuggestions(data.streams[0].bacentaSearch)
+        setSuggestions(data.streams[0].memberSearch)
         return
       },
     }
   )
   const [councilSearch, { error: councilError }] = useLazyQuery(
-    COUNCIL_BACENTA_SEARCH,
+    COUNCIL_MEMBER_SEARCH,
     {
       onCompleted: (data) => {
-        setSuggestions(data.councils[0].bacentaSearch)
+        setSuggestions(data.councils[0].memberSearch)
         return
       },
     }
   )
 
   const [constituencySearch, { error: constituencyError }] = useLazyQuery(
-    CONSTITUENCY_BACENTA_SEARCH,
+    CONSTITUENCY_MEMBER_SEARCH,
     {
       onCompleted: (data) => {
-        setSuggestions(data.constituencies[0].bacentaSearch)
+        setSuggestions(data.constituencies[0].memberSearch)
+        return
+      },
+    }
+  )
+  const [bacentaSearch, { error: bacentaError }] = useLazyQuery(
+    BACENTA_MEMBER_SEARCH,
+    {
+      onCompleted: (data) => {
+        setSuggestions(data.bacentas[0].memberSearch)
+        return
+      },
+    }
+  )
+  const [fellowshipSearch, { error: fellowshipError }] = useLazyQuery(
+    FELLOWSHIP_MEMBER_SEARCH,
+    {
+      onCompleted: (data) => {
+        setSuggestions(data.fellowships[0].memberSearch)
         return
       },
     }
   )
 
   const [memberSearch, { error: memberError }] = useLazyQuery(
-    MEMBER_BACENTA_SEARCH,
+    MEMBER_MEMBER_SEARCH,
     {
       onCompleted: (data) => {
-        setSuggestions(data.members[0].bacentaSearch)
+        setSuggestions(data.members[0].memberSearch)
         return
       },
     }
   )
 
   const error =
-    memberError ||
     gatheringServiceError ||
     streamError ||
     councilError ||
-    constituencyError
-  throwErrorMsg(error)
+    constituencyError ||
+    bacentaError ||
+    fellowshipError ||
+    memberError
+  throwErrorMsg('', error)
 
-  const whichSearch = (searchString) => {
+  const whichSearch = (searchString: string) => {
     memberSearch({
       variables: {
         id: currentUser.id,
@@ -110,13 +133,23 @@ const SearchBacenta = (props) => {
             key: searchString?.trim(),
           },
         })
+      } else if (isAuthorised(permitMe('Bacenta'), currentUser.roles)) {
+        bacentaSearch({
+          variables: {
+            id: currentUser.bacenta,
+            key: searchString?.trim(),
+          },
+        })
+      } else if (isAuthorised(permitMe('Fellowship'), currentUser.roles)) {
+        fellowshipSearch({
+          variables: {
+            id: currentUser.fellowship,
+            key: searchString?.trim(),
+          },
+        })
       }
     }
   }
-
-  useEffect(() => {
-    setSearchString(initialise(props.initialValue, searchString))
-  }, [props.initialValue])
 
   useEffect(() => {
     const timerId = setTimeout(() => {
@@ -126,15 +159,12 @@ const SearchBacenta = (props) => {
     return () => {
       clearTimeout(timerId)
     }
-  }, [searchString, props.initialValue])
+  }, [searchString])
 
   return (
     <div>
-      {props.label ? (
-        <label className="label" htmlFor={name}>
-          {props.label}
-        </label>
-      ) : null}
+      {props.label ? <label className="label">{props.label}</label> : null}
+      {/*// @ts-ignore*/}
       <Autosuggest
         inputProps={{
           placeholder: props.placeholder,
@@ -160,20 +190,26 @@ const SearchBacenta = (props) => {
           if (method === 'enter') {
             event.preventDefault()
           }
-          setSearchString(suggestion.name)
-          props.setFieldValue(`${props.name}`, suggestion)
+          setSearchString(suggestion.firstName + ' ' + suggestion.lastName)
+
+          props.setFieldValue(`${props.name}`, suggestion.id)
         }}
-        getSuggestionValue={(suggestion) => suggestion.name}
+        getSuggestionValue={(suggestion) =>
+          suggestion.firstName + ' ' + suggestion.lastName
+        }
         highlightFirstSuggestion={true}
-        renderSuggestion={(suggestion) => (
-          <div className="combobox-control">{suggestion.name}</div>
+        renderSuggestion={(suggestion: any) => (
+          <div className="combobox-control">
+            {suggestion.firstName + ' ' + suggestion.lastName}
+          </div>
         )}
       />
 
       {props.error && <TextError>{props.error}</TextError>}
+      {/*// @ts-ignore*/}
       {!props.error ?? <ErrorMessage name={name} component={TextError} />}
     </div>
   )
 }
 
-export default SearchBacenta
+export default SearchMember

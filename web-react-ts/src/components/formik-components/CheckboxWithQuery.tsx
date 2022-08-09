@@ -5,8 +5,13 @@ import TextError from './TextError/TextError'
 import { useQuery } from '@apollo/client'
 import { MemberContext } from 'contexts/MemberContext'
 import './CheckboxGroup.css'
+import { FormikWithApolloProps } from './formiik-utils'
 
-function CheckboxWithQuery(props) {
+interface CheckBoxWithQueryProps extends FormikWithApolloProps {
+  modifier: 'filter'
+}
+
+function CheckboxWithQuery(props: CheckBoxWithQueryProps) {
   const {
     label,
     name,
@@ -26,7 +31,7 @@ function CheckboxWithQuery(props) {
   })
 
   const options = data
-    ? makeSelectOptions(data[dataset ? `${dataset}` : null])
+    ? makeSelectOptions(data[dataset ? `${dataset}` : ''])
     : []
 
   return (
@@ -55,8 +60,8 @@ function CheckboxWithQuery(props) {
         })}
       </Field> */}
       <Field name={name} {...rest}>
-        {({ field }) => {
-          return options.map((option, index) => {
+        {({ field }: any) => {
+          return options?.map((option, index) => {
             return (
               <>
                 <button

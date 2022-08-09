@@ -4,6 +4,7 @@ import FormikControl from './formik-components/FormikControl'
 import { SearchContext } from '../contexts/MemberContext'
 import './SearchBox.css'
 import { Col, Button, Container } from 'react-bootstrap'
+import Input from './formik-components/Input'
 
 type FormOptions = {
   searchKeyVal: string
@@ -32,9 +33,8 @@ const MobileSearchNav = () => {
           <Form>
             <div className="form-row">
               <Col className="col px-0 d-flex align-items-center">
-                <FormikControl
+                <Input
                   className="nav-search-box w-100"
-                  control="input"
                   name="searchKeyVal"
                   placeholder="Search for anything..."
                   aria-describedby="Global Search"

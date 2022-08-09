@@ -77,8 +77,7 @@ const StreamForm = ({ initialValues, onSubmit, title, newStream }) => {
                       </Row>
                     </RoleView>
 
-                    <FormikControl
-                      control="input"
+                    <Input
                       name="name"
                       label={`Name of Stream`}
                       placeholder={`Name of Stream`}

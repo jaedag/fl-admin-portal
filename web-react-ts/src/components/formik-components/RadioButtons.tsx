@@ -1,8 +1,11 @@
 import React from 'react'
 import { Field, ErrorMessage } from 'formik'
 import TextError from './TextError/TextError'
+import { FormikComponentProps } from './formiik-utils'
 
-function RadioButtons(props) {
+interface RadioButtonProps extends FormikComponentProps {}
+
+const RadioButtons = (props: RadioButtonProps) => {
   const { label, name, options, ...rest } = props
 
   return (
@@ -15,8 +18,8 @@ function RadioButtons(props) {
         </div>
       ) : null}
       <Field name={name} className="row row-cols-2 form-control" {...rest}>
-        {({ field }) => {
-          return options.map((option) => {
+        {({ field }: any) => {
+          return options?.map((option) => {
             return (
               <span className="col pl-0" key={option.key}>
                 <input

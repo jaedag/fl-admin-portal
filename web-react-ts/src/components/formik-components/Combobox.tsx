@@ -1,12 +1,24 @@
 import React, { useState, useEffect } from 'react'
 import Autosuggest from 'react-autosuggest'
-import './react-autosuggest.css'
-import { useLazyQuery } from '@apollo/client'
+import { DocumentNode, useLazyQuery } from '@apollo/client'
 import { ErrorMessage } from 'formik'
 import TextError from './TextError/TextError'
 import { DEBOUNCE_TIMER } from 'global-utils'
+import { FormikComponentProps } from './formiik-utils'
 
-function Combobox(props) {
+interface ComboBoxProps extends FormikComponentProps {
+  suggestions: string[]
+  dataset: string
+  modifier?: string
+  queryVariable: string
+  suggestionText: string
+  optionsQuery: DocumentNode
+  suggestionId: string
+  initialValue: string
+  setFieldValue: (field: string, value: any) => void
+}
+
+const Combobox = (props: ComboBoxProps) => {
   const {
     label,
     name,
@@ -14,7 +26,7 @@ function Combobox(props) {
     modifier,
     queryVariable,
     suggestionText,
-    suggestionID,
+    suggestionId,
     placeholder,
     optionsQuery,
     setFieldValue,
@@ -26,9 +38,9 @@ function Combobox(props) {
   const [query] = useLazyQuery(optionsQuery, {
     onCompleted: (data) => {
       setSuggestions(
-        data[`${dataset}`].map((row) => ({
+        data[`${dataset}`].map((row: any) => ({
           name: row[`${suggestionText}`],
-          id: row[`${suggestionID}`],
+          id: row[`${suggestionId}`],
           bacenta: row.bacenta,
           constituency: row.constituency,
         }))
@@ -66,12 +78,12 @@ function Combobox(props) {
           value: searchString,
           name: name,
           className: 'form-control',
-          onChange: (_event, { newValue }) => {
+          onChange: (_event: any, { newValue }: any) => {
             setSearchString(newValue)
           },
         }}
         suggestions={suggestions}
-        onSuggestionsFetchRequested={async ({ value }) => {
+        onSuggestionsFetchRequested={async ({ value }: any) => {
           if (!value) {
             setSuggestions([])
           }
@@ -88,7 +100,7 @@ function Combobox(props) {
         onSuggestionsClearRequested={() => {
           setSuggestions([])
         }}
-        onSuggestionSelected={(event, { suggestion, method }) => {
+        onSuggestionSelected={(event, { suggestion, method }: any) => {
           if (method === 'enter') {
             event.preventDefault()
           }
@@ -99,7 +111,7 @@ function Combobox(props) {
             setFieldValue(`${name}`, suggestion)
           }
         }}
-        getSuggestionValue={(suggestion) => suggestion.name}
+        getSuggestionValue={(suggestion: { name: string }) => suggestion.name}
         highlightFirstSuggestion={true}
         renderSuggestion={(suggestion) => (
           <div className="combobox-control">{suggestion.name}</div>

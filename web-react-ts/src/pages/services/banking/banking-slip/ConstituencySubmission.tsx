@@ -1,4 +1,3 @@
-import FormikControl from 'components/formik-components/FormikControl'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import { ServiceContext } from 'contexts/ServiceContext'
 import { Formik, Form, FormikHelpers } from 'formik'
@@ -17,6 +16,7 @@ import { getHumanReadableDate } from 'jd-date-utils'
 import SubmitButton from 'components/formik-components/SubmitButton'
 import usePopup from 'hooks/usePopup'
 import ErrorPopup from 'components/Popup/ErrorPopup'
+import ImageUpload from 'components/formik-components/ImageUpload'
 
 type FormOptions = {
   bankingSlip: string
@@ -100,9 +100,8 @@ const ConstituencyBankingSlipSubmission = () => {
               <Form>
                 <Row className="row-cols-1 row-cols-md-2 mt-5">
                   <Col className="mb-2">
-                    <FormikControl
+                    <ImageUpload
                       label="Upload a Picture of Your Banking Slip"
-                      control="imageUpload"
                       name="bankingSlip"
                       error={formik.errors.bankingSlip}
                       uploadPreset={process.env.REACT_APP_CLOUDINARY_BANKING}
