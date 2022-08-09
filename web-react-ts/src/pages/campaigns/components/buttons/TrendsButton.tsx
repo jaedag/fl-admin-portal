@@ -16,9 +16,9 @@ const TrendsButton = (props: TrendsButtonProps) => {
   const church = props.church
   const churchType = church?.__typename
 
-  const offeringBags = church?.fellowshipEquipment?.offeringBags
-  const bluetoothSpeakers = church?.fellowshipEquipment?.bluetoothSpeakers
-  const pulpits = church?.pulpits
+  const offeringBags = church?.equipmentRecord?.offeringBags
+  const bluetoothSpeakers = church?.equipmentRecord?.bluetoothSpeakers
+  const pulpits = church?.equipmentRecord.pulpits
   const name = church?.name
   const constituencyCount =
     churchType === 'Constituency' ? 1 : church?.constituencyCount
@@ -37,7 +37,7 @@ const TrendsButton = (props: TrendsButtonProps) => {
     >
       <div className="pb-3 pt-2">
         <div className="text">
-          TOTAL {name.toUpperCase()} {churchType.toUpperCase()}
+          {name.toUpperCase()} {churchType.toUpperCase()}
         </div>
       </div>
       <div className="d-grid gap-1 pb-2">

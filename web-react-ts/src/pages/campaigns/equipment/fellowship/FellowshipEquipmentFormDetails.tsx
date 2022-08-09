@@ -29,8 +29,8 @@ const FellowshipEquipmentFormDetails = () => {
 
   const fellowship = data?.fellowships[0]
 
-  const offeringBags = fellowship?.fellowshipEquipment?.offeringBags
-  const bluetoothSpeakers = fellowship?.fellowshipEquipment?.bluetoothSpeakers
+  const offeringBags = fellowship?.equipmentRecord?.offeringBags
+  const bluetoothSpeakers = fellowship?.equipmentRecord?.bluetoothSpeakers
 
   return (
     <ApolloWrapper data={data} loading={loading} error={error}>
@@ -51,11 +51,11 @@ const FellowshipEquipmentFormDetails = () => {
                 <td>{new Date().toISOString().slice(0, 10)}</td>
               </tr>
               <tr>
-                <td>Number of Offering Bags </td>
+                <td>Offering Bags </td>
                 <td>{offeringBags}</td>
               </tr>
               <tr>
-                <td>Number of Bluetooth Speakers </td>
+                <td>Bluetooth Speakers </td>
                 <td>{bluetoothSpeakers}</td>
               </tr>
             </tbody>

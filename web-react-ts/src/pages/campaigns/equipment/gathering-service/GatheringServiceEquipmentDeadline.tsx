@@ -43,7 +43,7 @@ const GatheringServiceEquipmentDeadline = () => {
         onSubmitProps.setSubmitting(false)
         onSubmitProps.resetForm()
         navigate('/campaigns/gatheringservice')
-        alert('Equipment Deadline Set')
+        alert('The equipment deadline has been set')
       })
       .catch((error) => {
         throwErrorMsg(error)

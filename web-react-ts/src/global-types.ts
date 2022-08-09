@@ -247,14 +247,14 @@ export type EquipmentChurch = {
   __typename: string
   id: string
   name: string
-  fellowshipEquipment: FellowshipEquipment
-  pulpits: number
+  equipmentRecord: EquipmentRecord
   activeFellowshipCount: number
   constituencyCount: number
 }
 
-export type FellowshipEquipment = {
+export type EquipmentRecord = {
   __typename: string
   bluetoothSpeakers: number
   offeringBags: number
+  pulpits: number
 }

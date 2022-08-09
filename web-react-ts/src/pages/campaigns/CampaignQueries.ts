@@ -16,11 +16,12 @@ export const GATHERING_SERVICE_TRENDS = gql`
     gatheringServices(where: { id: $gatheringServiceId }) {
       id
       name
-      fellowshipEquipment {
+      campaigns
+      equipmentRecord {
         bluetoothSpeakers
         offeringBags
+        pulpits
       }
-      pulpits
       activeFellowshipCount
       constituencyCount
     }
@@ -35,11 +36,11 @@ export const GATHERING_SERVICE_BY_STREAM = gql`
       streams {
         id
         name
-        fellowshipEquipment {
+        equipmentRecord {
           bluetoothSpeakers
           offeringBags
+          pulpits
         }
-        pulpits
         constituencyCount
         activeFellowshipCount
       }
@@ -79,11 +80,11 @@ export const STREAM_TRENDS = gql`
     streams(where: { id: $streamId }) {
       id
       name
-      fellowshipEquipment {
+      equipmentRecord {
         bluetoothSpeakers
         offeringBags
+        pulpits
       }
-      pulpits
       activeFellowshipCount
       constituencyCount
     }
@@ -98,11 +99,11 @@ export const STREAM_BY_COUNCIL = gql`
       councils {
         id
         name
-        fellowshipEquipment {
+        equipmentRecord {
           bluetoothSpeakers
           offeringBags
+          pulpits
         }
-        pulpits
         activeFellowshipCount
         constituencyCount
       }
@@ -126,11 +127,11 @@ export const COUNCIL_TRENDS = gql`
     councils(where: { id: $councilId }) {
       id
       name
-      fellowshipEquipment {
+      equipmentRecord {
         bluetoothSpeakers
         offeringBags
+        pulpits
       }
-      pulpits
       activeFellowshipCount
       constituencyCount
     }
@@ -145,11 +146,11 @@ export const COUNCIL_BY_CONSTITUENCY = gql`
       constituencies {
         id
         name
-        fellowshipEquipment {
+        equipmentRecord {
           bluetoothSpeakers
           offeringBags
+          pulpits
         }
-        pulpits
         activeFellowshipCount
       }
     }
@@ -172,11 +173,12 @@ export const CONSTITUENCY_TRENDS = gql`
     constituencies(where: { id: $constituencyId }) {
       id
       name
-      fellowshipEquipment {
+      equipmentRecord {
+        id
         bluetoothSpeakers
         offeringBags
+        pulpits
       }
-      pulpits
       activeFellowshipCount
     }
   }
@@ -190,7 +192,10 @@ export const CREATE_CONSTITUENCY_EQUIPMENT_RECORD = gql`
   ) {
     CreateConstituencyEquipmentRecord(id: $id, pulpits: $pulpits, date: $date) {
       id
-      pulpits
+      equipmentRecord {
+        id
+        pulpits
+      }
     }
   }
 `
@@ -199,7 +204,10 @@ export const CONSTITUENCY_LATEST_EQUIPMENT_RECORD = gql`
   query LatestEquipmentRecord($constituencyId: ID) {
     constituencies(where: { id: $constituencyId }) {
       id
-      pulpits
+      equipmentRecord {
+        id
+        pulpits
+      }
     }
   }
 `
@@ -212,7 +220,7 @@ export const CONSTITUENCY_BY_BACENTA = gql`
       bacentas {
         id
         name
-        fellowshipEquipment {
+        equipmentRecord {
           bluetoothSpeakers
           offeringBags
         }
@@ -238,9 +246,9 @@ export const BACENTA_TRENDS = gql`
     bacentas(where: { id: $bacentaId }) {
       id
       name
-      fellowshipEquipment {
-        bluetoothSpeakers
+      equipmentRecord {
         offeringBags
+        bluetoothSpeakers
       }
       activeFellowshipCount
     }
@@ -256,7 +264,7 @@ export const BACENTA_BY_FELLOWSHIP = gql`
       fellowships {
         id
         name
-        fellowshipEquipment {
+        equipmentRecord {
           bluetoothSpeakers
           offeringBags
         }
@@ -281,7 +289,8 @@ export const FELLOWSHIP_TRENDS = gql`
     fellowships(where: { id: $fellowshipId }) {
       id
       name
-      fellowshipEquipment {
+      equipmentRecord {
+        id
         bluetoothSpeakers
         offeringBags
       }
@@ -302,8 +311,11 @@ export const CREATE_FELLOWSHIP_EQUIPMENT_RECORD = gql`
       bluetoothSpeakers: $bluetoothSpeakers
     ) {
       id
-      offeringBags
-      bluetoothSpeakers
+      equipmentRecord {
+        id
+        bluetoothSpeakers
+        offeringBags
+      }
     }
   }
 `
@@ -312,7 +324,8 @@ export const FELLOWSHIP_LATEST_EQUIPMENT_RECORD = gql`
   query LatestEquipmenRecord($fellowshipId: ID) {
     fellowships(where: { id: $fellowshipId }) {
       id
-      fellowshipEquipment {
+      equipmentRecord {
+        id
         bluetoothSpeakers
         offeringBags
       }
@@ -330,7 +343,8 @@ export const FELLOWSHIP_RECORDS_PER_CONSTITUENCY = gql`
         fellowships {
           id
           name
-          fellowshipEquipment {
+          equipmentRecord {
+            id
             bluetoothSpeakers
             offeringBags
           }

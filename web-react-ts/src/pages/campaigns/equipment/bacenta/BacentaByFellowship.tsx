@@ -20,7 +20,7 @@ const BacentaByFellowship = () => {
       <div className="d-flex align-items-center justify-content-center ">
         <Container>
           <div className="text-center">
-            <h1 className="mb-1 ">EQ CAMPAIGN</h1>
+            <h1 className="mb-1 ">Equipment Campaign</h1>
             <h6 className="text-secondary">{`${data?.bacentas[0].name} ${data?.bacentas[0].__typename}`}</h6>
           </div>
           <div className="d-grid gap-2 mt-4 text-center px-2">
