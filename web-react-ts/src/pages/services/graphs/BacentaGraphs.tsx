@@ -4,70 +4,65 @@ import { ChurchContext } from '../../../contexts/ChurchContext'
 import { useQuery } from '@apollo/client'
 import { getServiceGraphData, getMonthlyStatAverage } from './graphs-utils'
 import ChurchGraph from '../../../components/ChurchGraph/ChurchGraph'
-import { STREAM_GRAPHS } from './GraphsQueries.ts'
+import { BACENTA_GRAPHS } from './GraphsQueries'
 import MembershipCard from './CompMembershipCard'
 import StatDisplay from './CompStatDisplay'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { Col, Container, Row } from 'react-bootstrap'
-import PlaceholderCustom from 'components/Placeholder'
 import GraphDropdown from './GraphDropdown'
 import { MemberContext } from 'contexts/MemberContext'
 
-const StreamReport = () => {
+export const BacentaGraphs = () => {
+  const { bacentaId } = useContext(ChurchContext)
+  const [bussing, setBussing] = useState(true)
   const { currentUser } = useContext(MemberContext)
 
-  const { streamId } = useContext(ChurchContext)
-  const [bussing, setBussing] = useState(true)
-  const { data, loading, error } = useQuery(STREAM_GRAPHS, {
-    variables: { streamId: streamId },
+  const { data, loading, error } = useQuery(BACENTA_GRAPHS, {
+    variables: { bacentaId: bacentaId },
     onCompleted: (data) => {
       if (!setChurchData) return
-      setChurchData(getServiceGraphData(data?.streams[0], 'bussing'))
+      setChurchData(getServiceGraphData(data?.bacentas[0], 'bussing'))
     },
   })
-
   const [churchData, setChurchData] = useState(
-    getServiceGraphData(data?.streams[0], 'bussing')
+    getServiceGraphData(data?.bacentas[0], 'bussing')
   )
 
   return (
-    <ApolloWrapper loading={loading} error={error} data={data} placeholder>
+    <ApolloWrapper loading={loading} error={error} data={data}>
       <Container>
-        <PlaceholderCustom loading={loading} as="h5" xs={10}>
-          <h5 className="mb-0">{`${data?.streams[0]?.name} Stream`}</h5>
-        </PlaceholderCustom>
-        <PlaceholderCustom loading={loading} as="span" xs={10}>
-          <span className="text-secondary font-weight-bold">
-            {`Leader: ${data?.streams[0]?.leader.fullName}`}
-          </span>
-        </PlaceholderCustom>
+        <div className=" my-3">
+          <h5 className="mb-0">{`${data?.bacentas[0].name} Bacenta`}</h5>{' '}
+          <p>
+            <span className="text-secondary font-weight-bold">Leader: </span>
+            {`${data?.bacentas[0].leader.fullName}`}
+          </p>
+        </div>
 
-        <Row className="mt-3 row-cols-2">
+        <Row className="row-cols-2">
           <Col>
             <MembershipCard
-              link="/stream/members"
+              link="/bacenta/members"
               title="Membership"
-              count={data?.streams[0]?.memberCount}
+              count={data?.bacentas[0].memberCount}
             />
           </Col>
-
           <Col>
             <GraphDropdown
               setBussing={setBussing}
               setChurchData={setChurchData}
-              data={data?.streams[0]}
+              data={data?.bacentas[0]}
             />
           </Col>
         </Row>
         <Row className="mt-3">
           <Col>
             <StatDisplay
-              title="Avg Weekly Attendance"
+              title={`Avg Weekly ${bussing ? 'Bussing' : 'Attendance'}`}
               statistic={getMonthlyStatAverage(churchData, 'attendance')}
             />
           </Col>
-
-          {(!bussing & !currentUser.noIncome || loading) && (
+          {((!bussing && !currentUser.noIncome) || loading) && (
             <Col>
               <StatDisplay
                 title="Avg Weekly Income"
@@ -79,21 +74,19 @@ const StreamReport = () => {
 
         {!currentUser.noIncome ? (
           <ChurchGraph
-            loading={loading}
             stat1="attendance"
             stat2={!bussing ? 'income' : null}
-            churchData={churchData}
-            church="stream"
+            churchData={churchData || []}
+            church="bacenta"
             bussing={bussing}
             income={true}
           />
         ) : (
           <ChurchGraph
-            loading={loading}
             stat1="attendance"
             stat2={null}
-            churchData={churchData}
-            church="stream"
+            churchData={churchData || []}
+            church="bacenta"
             bussing={bussing}
             income={false}
           />
@@ -103,4 +96,4 @@ const StreamReport = () => {
   )
 }
 
-export default StreamReport
+export default BacentaGraphs

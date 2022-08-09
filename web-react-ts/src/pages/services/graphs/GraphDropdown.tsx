@@ -6,7 +6,7 @@ import './GraphDropdown.css'
 type GraphDropdownProps = {
   setBussing: React.Dispatch<React.SetStateAction<boolean>>
   setChurchData: React.Dispatch<React.SetStateAction<any>>
-  data: never
+  data: any
 }
 
 const GraphDropdown = ({

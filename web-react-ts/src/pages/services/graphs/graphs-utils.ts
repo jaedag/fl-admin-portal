@@ -1,12 +1,23 @@
 import { average } from 'global-utils'
 
 const numberOfWeeks = 4
-export const getMonthlyStatAverage = (data, stat) => {
-  if (!data) {
+
+export const getMonthlyStatAverage = (
+  data?: {
+    attendance: string
+    income: string
+    gatheringAttendance: string
+    rehearsalAttendance: string
+  }[],
+  stat?: 'attendance' | 'income' | 'gatheringAttendance' | 'rehearsalAttendance'
+) => {
+  if (!data || !stat) {
     return
   }
 
-  const statArray = data.map((service) => parseFloat(service[`${stat}`]))
+  const statArray = data.map((service) =>
+    parseFloat(service[`${stat || 'attendance'}`])
+  )
 
   //filter and remove all zeros
   const nonZeroArray = statArray.filter((value) => {
@@ -17,9 +28,12 @@ export const getMonthlyStatAverage = (data, stat) => {
   return average(nonZeroArray.slice(-numberOfWeeks))?.toFixed(2)
 }
 
-export const sortingFunction = (key, order = 'asc') => {
+export const sortingFunction = (key: string, order = 'asc') => {
   //used for sorting services data according to date
-  return function innerSort(a, b) {
+  return function innerSort(
+    a: { [x: string]: any; hasOwnProperty: (arg0: any) => any },
+    b: { [x: string]: any; hasOwnProperty: (arg0: any) => any }
+  ) {
     // eslint-disable-next-line no-prototype-builtins
     if (!a.hasOwnProperty(key) || !b.hasOwnProperty(key)) {
       //property doesn't exist on either object
@@ -39,13 +53,23 @@ export const sortingFunction = (key, order = 'asc') => {
   }
 }
 
-export const getServiceGraphData = (church, category) => {
+export const getServiceGraphData = (
+  church:
+    | {
+        bussing: any[]
+        componentBussingAggregate: any[]
+        componentServiceAggregate: any[]
+        services: any[]
+      }
+    | undefined,
+  category?: 'bussing'
+) => {
   if (!church) {
     return
   }
-  let data = []
+  let data: any[] = []
 
-  const pushIntoData = (array) => {
+  const pushIntoData = (array: any[]) => {
     if (!array || array?.length === 0) {
       return
     }

@@ -1,6 +1,6 @@
 import PlaceholderCustom from 'components/Placeholder'
 import { ChurchContext } from 'contexts/ChurchContext'
-import { ChurchLevel } from 'global-types'
+import { ChurchLevelLower } from 'global-types'
 import React, { useState, useEffect, useContext } from 'react'
 import { useNavigate } from 'react-router'
 import {
@@ -17,14 +17,14 @@ import { capitalise } from '../../global-utils'
 import './ChurchGraph.css'
 
 type ChurchGraphProps = {
-  loading: boolean
+  loading?: boolean
   stat1: 'attendance' | 'income'
-  stat2: 'attendance' | 'income'
-  churchData: { [key: string]: any }
-  secondaryTitle: string
-  bussing: any
+  stat2: 'attendance' | 'income' | null
+  churchData: any[]
+  secondaryTitle?: string
+  bussing?: boolean
   income: boolean
-  church: ChurchLevel
+  church: ChurchLevelLower
 }
 
 const ChurchGraph = (props: ChurchGraphProps) => {
@@ -33,7 +33,7 @@ const ChurchGraph = (props: ChurchGraphProps) => {
   const { clickCard } = useContext(ChurchContext)
   const navigate = useNavigate()
 
-  const [sortedData, setSortedData] = useState([])
+  const [sortedData, setSortedData] = useState<any[]>([])
   const [dataMax, setDataMax] = useState<{
     attendance: number
     income: number
@@ -223,7 +223,7 @@ const ChurchGraph = (props: ChurchGraphProps) => {
               <YAxis
                 hide={true}
                 type="number"
-                domain={[0, dataMax[`${stat2}`]]}
+                domain={[0, stat2 ? dataMax[`${stat2}`] : '']}
                 yAxisId="right"
                 orientation="right"
               />

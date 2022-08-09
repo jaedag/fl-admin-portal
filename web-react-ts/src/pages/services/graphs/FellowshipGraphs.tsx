@@ -4,7 +4,7 @@ import { ChurchContext } from '../../../contexts/ChurchContext'
 import { useQuery } from '@apollo/client'
 import { getServiceGraphData, getMonthlyStatAverage } from './graphs-utils'
 import ChurchGraph from '../../../components/ChurchGraph/ChurchGraph'
-import { FELLOWSHIP_GRAPHS } from './GraphsQueries.ts'
+import { FELLOWSHIP_GRAPHS } from './GraphsQueries'
 import MembershipCard from './CompMembershipCard'
 import StatDisplay from './CompStatDisplay'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
@@ -15,7 +15,7 @@ export const FellowshipReport = () => {
   const { currentUser } = useContext(MemberContext)
 
   const { data, loading, error } = useQuery(FELLOWSHIP_GRAPHS, {
-    variables: { fellowshipId: fellowshipId },
+    variables: { fellowshipId },
   })
 
   const serviceData = getServiceGraphData(data?.fellowships[0])
@@ -63,7 +63,7 @@ export const FellowshipReport = () => {
             stat1="attendance"
             stat2="income"
             income={true}
-            churchData={serviceData}
+            churchData={serviceData || []}
             church="fellowship"
           />
         ) : (
@@ -71,7 +71,7 @@ export const FellowshipReport = () => {
             stat1="attendance"
             stat2={null}
             income={false}
-            churchData={serviceData}
+            churchData={serviceData || []}
             church="fellowship"
           />
         )}

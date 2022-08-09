@@ -4,7 +4,7 @@ import { ChurchContext } from '../../../contexts/ChurchContext'
 import { useQuery } from '@apollo/client'
 import { getServiceGraphData, getMonthlyStatAverage } from './graphs-utils'
 import ChurchGraph from '../../../components/ChurchGraph/ChurchGraph'
-import { SONTA_GRAPHS } from './GraphsQueries.ts'
+import { SONTA_GRAPHS } from './GraphsQueries'
 import MembershipCard from './CompMembershipCard'
 import StatDisplay from './CompStatDisplay'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
@@ -42,21 +42,29 @@ export const SontaReport = () => {
           <div className="col">
             <StatDisplay
               title="Avg Rehearsal Attendance"
-              statistic={getMonthlyStatAverage(churchData, 'rehearsal')}
+              statistic={getMonthlyStatAverage(
+                churchData,
+                'rehearsalAttendance'
+              )}
             />
           </div>
 
           <div className="col">
             <StatDisplay
               title="Avg Service Attendance"
-              statistic={getMonthlyStatAverage(churchData, 'sunday')}
+              statistic={getMonthlyStatAverage(
+                churchData,
+                'gatheringAttendance'
+              )}
             />
           </div>
         </div>
         <ChurchGraph
           stat1="attendance"
-          // stat2="service"
-          churchData={churchData}
+          stat2={null}
+          church="sonta"
+          income={false}
+          churchData={churchData || []}
         />
       </div>
     </ApolloWrapper>
