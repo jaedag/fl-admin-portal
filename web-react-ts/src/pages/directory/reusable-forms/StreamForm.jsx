@@ -20,6 +20,7 @@ import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import HeadingSecondary from 'components/HeadingSecondary'
 import SubmitButton from 'components/formik-components/SubmitButton'
 import usePopup from 'hooks/usePopup'
+import Input from 'components/formik-components/Input'
 
 const StreamForm = ({ initialValues, onSubmit, title, newStream }) => {
   const { clickCard, streamId } = useContext(ChurchContext)

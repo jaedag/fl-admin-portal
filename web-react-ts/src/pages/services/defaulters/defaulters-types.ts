@@ -5,7 +5,7 @@ interface FellowshipWithArrivals extends Fellowship {
   __typename: 'Fellowship'
 }
 
-interface HigherChurchWithDefaulters extends Church {
+export interface HigherChurchWithDefaulters extends Church {
   __typename: 'Constituency' | 'Stream' | 'Council' | 'GatheringService'
   stream_name: StreamOptions
   servicesThisWeek: FellowshipWithArrivals[]

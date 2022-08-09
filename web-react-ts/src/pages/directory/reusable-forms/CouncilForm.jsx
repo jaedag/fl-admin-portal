@@ -22,6 +22,7 @@ import HeadingSecondary from 'components/HeadingSecondary'
 import SubmitButton from 'components/formik-components/SubmitButton'
 import { permitAdmin } from 'permission-utils'
 import usePopup from 'hooks/usePopup'
+import Input from 'components/formik-components/Input'
 
 const CouncilForm = ({ initialValues, onSubmit, title, newCouncil }) => {
   const { clickCard, councilId } = useContext(ChurchContext)
