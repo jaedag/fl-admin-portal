@@ -234,7 +234,6 @@ export const LOG_STREAM_HISTORY = gql `
 `
 export const LOG_GATHERINGSERVICE_HISTORY = gql `
   mutation LogGatheringServiceHistory(
-    $ids: [ID]
     $gatheringServiceId: ID!
     $historyRecord: String!
     $oldLeaderId: ID
@@ -243,7 +242,6 @@ export const LOG_GATHERINGSERVICE_HISTORY = gql `
     $newOversightId: ID
   ) {
     LogGatheringServiceHistory(
-      ids: $ids
       gatheringServiceId: $gatheringServiceId
       historyRecord: $historyRecord
       newLeaderId: $newLeaderId
