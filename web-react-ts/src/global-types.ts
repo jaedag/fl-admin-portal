@@ -260,3 +260,15 @@ export type ServiceRecord = {
   bankingSlipUploader: Member
   offeringBankedBy: Member
 }
+
+export interface HigherChurch extends Church {
+  stream_name: StreamOptions
+  admin: Member
+  fellowshipCount: number
+  bacentaCount: number
+  constituencyCount: number
+  councilCount: number
+  streamCount: number
+  memberCount: number
+  target: number
+}
