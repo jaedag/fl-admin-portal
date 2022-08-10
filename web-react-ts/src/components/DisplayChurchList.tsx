@@ -1,3 +1,4 @@
+import { ChurchLevel, HigherChurch } from 'global-types'
 import { capitalise } from 'global-utils'
 import React, { useContext } from 'react'
 import { Card, Col, Container, Row } from 'react-bootstrap'
@@ -5,14 +6,17 @@ import { Link } from 'react-router-dom'
 import { ChurchContext } from '../contexts/ChurchContext'
 import CloudinaryImage from './CloudinaryImage'
 
-const DisplayChurchList = (props) => {
+const DisplayChurchList = (props: {
+  data: HigherChurch[]
+  churchType: ChurchLevel
+}) => {
   const { data, churchType } = props
   const { clickCard } = useContext(ChurchContext)
 
   return (
     <Container className="mt-3">
       <Row>
-        {data.map((church, index) => {
+        {data.map((church, index: number) => {
           return (
             <Col key={index} sm={6} lg={4}>
               <Link to={`/${church.__typename.toLowerCase()}/displaydetails`}>
@@ -62,7 +66,7 @@ const DisplayChurchList = (props) => {
                             {church.councilCount
                               ? `${church?.councilCount} Councils`
                               : null}{' '}
-                            {church.streams
+                            {church.streamCount
                               ? `${church?.streamCount} Streams`
                               : null}{' '}
                             {church.memberCount

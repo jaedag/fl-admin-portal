@@ -1,5 +1,6 @@
 import { useLazyQuery } from '@apollo/client'
 import { MemberContext } from 'contexts/MemberContext'
+import { Role } from 'global-types'
 import { throwErrorMsg } from 'global-utils'
 import { getHighestRole } from 'pages/directory/update/directory-utils'
 import { useState } from 'react'
@@ -63,7 +64,9 @@ const useComponentQuery = () => {
     SERVANTS_STREAM_ARRIVALS_COUNTER
   )
 
-  const church = {
+  const church: {
+    [key: string]: any
+  } = {
     Fellowship: {
       leader: fellowshipLeaderQuery,
     },
@@ -96,10 +99,16 @@ const useComponentQuery = () => {
       admin: oversightAdminQuery,
       arrivalsAdmin: '',
     },
+    Sonta: {},
+    Basonta: {},
+    Ministry: {},
   }
 
   useEffect(() => {
-    const fetchAssessmentChurch = async (user) => {
+    const fetchAssessmentChurch = async (user: {
+      roles: Role[]
+      id: string
+    }) => {
       const { highestLevel, highestVerb } = getHighestRole(user.roles)
 
       const response = await church[`${highestLevel}`][`${highestVerb}`]({
@@ -111,7 +120,9 @@ const useComponentQuery = () => {
       }
 
       setAssessmentChurch(
-        response.data.members[0][parseRoles(highestVerb) + highestLevel][0]
+        response.data.members[0][
+          parseRoles(highestVerb || '') + highestLevel
+        ][0]
       )
 
       return
