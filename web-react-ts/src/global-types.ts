@@ -28,6 +28,18 @@ export type ChurchLevel =
   | 'Sonta'
   | 'Basonta'
 
+export type ChurchLevelLower =
+  | 'fellowship'
+  | 'bacenta'
+  | 'constituency'
+  | 'council'
+  | 'stream'
+  | 'gatheringService'
+  | 'oversight'
+  | 'ministry'
+  | 'sonta'
+  | 'basonta'
+
 export type TimeGraph = {
   date: Date
 }
@@ -101,14 +113,18 @@ export interface Member {
   middleName?: string
   lastName: string
   fullName: string
+  location?: string
+  nameWithTitle?: string
+  currentTitle: TitleOptions
+  titleConnection?: any
   email: string
   pictureUrl: string
   phoneNumber: string
   whatsappNumber: string
-  dob: string
-  maritalStatus: string
+  dob: { date: string }
+  maritalStatus: { status: 'Married' | 'Single' }
   gender: { gender: 'Male' | 'Female' }
-  occupation: string
+  occupation: { occupation: string }
   fellowship: {
     id: string
     name: string

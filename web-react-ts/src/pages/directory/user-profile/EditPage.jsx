@@ -65,7 +65,7 @@ const UserProfileEditPage = () => {
     onSubmitProps.setSubmitting(true)
     //Variables that are not controlled by formik
 
-    UpdateMember({
+    await UpdateMember({
       variables: {
         id: currentUser.id,
         firstName: values.firstName,

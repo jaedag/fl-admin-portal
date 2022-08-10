@@ -17,13 +17,14 @@ import {
   SET_BUSSING_SUPPORT,
 } from './arrivalsMutation'
 import { useNavigate } from 'react-router'
-import FormikControl from 'components/formik-components/FormikControl'
-import SubmitButton from 'components/formik-components/SubmitButton'
+import SubmitButton from 'components/formik/SubmitButton'
 import CloudinaryImage from 'components/CloudinaryImage'
 import { alertMsg, throwErrorMsg } from 'global-utils'
 import Popup from 'components/Popup/Popup'
 import usePopup from 'hooks/usePopup'
 import { BacentaWithArrivals, BussingRecord } from './arrivals-types'
+import Input from 'components/formik/Input'
+import Textarea from 'components/formik/Textarea'
 
 type FormOptions = {
   attendance: string
@@ -193,18 +194,13 @@ const FormAttendanceConfirmation = () => {
           {(formik) => (
             <Container>
               <Form>
-                <FormikControl
-                  control="input"
+                <Input
                   name="attendance"
                   label="Attendance (from Picture)*"
-                  placeholder={bussing?.attendance}
+                  placeholder={bussing?.attendance.toString()}
                 />
 
-                <FormikControl
-                  control="textarea"
-                  name="comments"
-                  label="Comments"
-                />
+                <Textarea name="comments" label="Comments" />
                 <div className="d-flex justify-content-center pt-3">
                   <SubmitButton formik={formik} />
                 </div>

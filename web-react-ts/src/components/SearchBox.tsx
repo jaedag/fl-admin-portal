@@ -1,11 +1,11 @@
 import React, { useContext } from 'react'
 import { Formik, Form, FormikHelpers } from 'formik'
-import FormikControl from './formik-components/FormikControl'
 import * as Yup from 'yup'
 import { Col, Button, Nav } from 'react-bootstrap'
 import './SearchBox.css'
 import { SearchContext } from 'contexts/MemberContext'
 import { useNavigate } from 'react-router'
+import Input from './formik/Input'
 
 type FormOptions = {
   searchKeyVal: string
@@ -40,8 +40,7 @@ const SearchBox = () => {
       {() => (
         <Form className="form-row">
           <Col className="d-flex mt-2">
-            <FormikControl
-              control="input"
+            <Input
               className="nav-search-box"
               name="searchKeyVal"
               placeholder="Search for anything..."

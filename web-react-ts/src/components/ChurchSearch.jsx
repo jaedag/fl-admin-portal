@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Formik, Form } from 'formik'
-import FormikControl from './formik-components/FormikControl'
+import FormikControl from './formik/FormikControl'
 import ChurchList from './DisplayChurchList'
 import './ChurchSearch.css'
 import { Container } from 'react-bootstrap'

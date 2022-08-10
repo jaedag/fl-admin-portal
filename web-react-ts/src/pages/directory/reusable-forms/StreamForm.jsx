@@ -7,7 +7,7 @@ import { permitAdmin } from 'permission-utils'
 import { GET_GATHERINGSERVICES } from 'queries/ListQueries'
 import React, { useContext, useState } from 'react'
 import { ChurchContext } from 'contexts/ChurchContext'
-import FormikControl from 'components/formik-components/FormikControl'
+import FormikControl from 'components/formik/FormikControl'
 import PlusSign from 'components/buttons/PlusMinusSign/PlusSign'
 import MinusSign from 'components/buttons/PlusMinusSign/MinusSign'
 import { MAKE_STREAM_INACTIVE } from 'pages/directory/update/CloseChurchMutations'
@@ -18,8 +18,9 @@ import { Button, Container, Row, Col } from 'react-bootstrap'
 import { MemberContext } from 'contexts/MemberContext'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import HeadingSecondary from 'components/HeadingSecondary'
-import SubmitButton from 'components/formik-components/SubmitButton'
+import SubmitButton from 'components/formik/SubmitButton'
 import usePopup from 'hooks/usePopup'
+import Input from 'components/formik/Input'
 
 const StreamForm = ({ initialValues, onSubmit, title, newStream }) => {
   const { clickCard, streamId } = useContext(ChurchContext)
@@ -77,8 +78,7 @@ const StreamForm = ({ initialValues, onSubmit, title, newStream }) => {
                       </Row>
                     </RoleView>
 
-                    <FormikControl
-                      control="input"
+                    <Input
                       name="name"
                       label={`Name of Stream`}
                       placeholder={`Name of Stream`}

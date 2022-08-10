@@ -14,11 +14,11 @@ import {
 } from './ArrivalsHelpersGQL'
 import { alertMsg, throwErrorMsg } from 'global-utils'
 import Popup from 'components/Popup/Popup'
-import FormikControl from 'components/formik-components/FormikControl'
-import SubmitButton from 'components/formik-components/SubmitButton'
+import SubmitButton from 'components/formik/SubmitButton'
 import NoData from '../CompNoData'
 import usePopup from 'hooks/usePopup'
 import { StreamWithArrivals } from '../arrivals-types'
+import SearchMember from 'components/formik/SearchMember'
 
 type FormOptions = {
   helperName: string
@@ -107,8 +107,7 @@ const ArrivalsCounters = () => {
                 <Form>
                   <Row className="form-row">
                     <Col>
-                      <FormikControl
-                        control="memberSearch"
+                      <SearchMember
                         name="helperSelect"
                         initialValue={initialValues?.helperName}
                         placeholder="Select a Name"

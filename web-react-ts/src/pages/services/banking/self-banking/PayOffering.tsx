@@ -10,9 +10,8 @@ import {
 import * as Yup from 'yup'
 import { Form, Formik, FormikHelpers } from 'formik'
 import { MOMO_NUM_REGEX } from 'global-utils'
-import FormikControl from 'components/formik-components/FormikControl'
 import { MOBILE_NETWORK_OPTIONS } from 'pages/arrivals/arrivals-utils'
-import SubmitButton from 'components/formik-components/SubmitButton'
+import SubmitButton from 'components/formik/SubmitButton'
 import { Col, Container, Row } from 'react-bootstrap'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import HeadingSecondary from 'components/HeadingSecondary'
@@ -20,6 +19,8 @@ import { parseDate } from 'jd-date-utils'
 import { Fellowship } from 'global-types'
 import usePopup from 'hooks/usePopup'
 import ErrorPopup from 'components/Popup/ErrorPopup'
+import Input from 'components/formik/Input'
+import Select from 'components/formik/Select'
 
 type PayOfferingProps = {
   church: Fellowship
@@ -131,23 +132,13 @@ const PayOffering = (props: PayOfferingProps) => {
 
                     <small className="form-text label">Income</small>
                     <div className="fw-bold">{service?.income} GHS</div>
-                    <FormikControl
-                      control="select"
+                    <Select
                       name="mobileNetwork"
                       label="Mobile Network"
                       options={MOBILE_NETWORK_OPTIONS}
                     />
-                    <FormikControl
-                      control="input"
-                      name="mobileNumber"
-                      label="MoMo Number"
-                      defaultOption="Choose a Network"
-                    />
-                    <FormikControl
-                      control="input"
-                      name="momoName"
-                      label="MoMo Name"
-                    />
+                    <Input name="mobileNumber" label="MoMo Number" />
+                    <Input name="momoName" label="MoMo Name" />
                   </Col>
                 </Row>
                 <div className="d-flex justify-content-center">
