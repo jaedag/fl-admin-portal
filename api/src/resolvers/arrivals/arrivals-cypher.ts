@@ -43,8 +43,8 @@ record.personalContribution AS personalContribution,
 leader.phoneNumber AS leaderPhoneNumber,
 leader.firstName AS leaderFirstName,
 
-zone.sprinterCost AS bacentaSprinterCost,
-zone.urvanCost AS bacentaUrvanCost,
+zone.sprinterTopUp AS bacentaSprinterTop Up,
+zone.urvanTopUp AS bacentaUrvanTop Up,
 
 labels(date) AS dateLabels
 `

@@ -58,7 +58,7 @@ const UpdateConstituencyZone = () => {
   const zone: FormikSelectOptions = data?.busZones.map((zone: BusZone) => {
     return {
       value: zone.number,
-      key: `Zn ${zone.number} - Sprinter - ${zone.sprinterCost}, Urvan - ${zone.urvanCost}`,
+      key: `Zn ${zone.number} - Sprinter - ${zone.sprinterTopUp}, Urvan - ${zone.urvanTopUp}`,
     }
   })
 

@@ -30,15 +30,15 @@ export const DISPLAY_CONSTITUENCY_BUSSING_DETAILS = gql`
       zone {
         id
         number
-        sprinterCost
-        urvanCost
+        sprinterTopUp
+        urvanTopUp
       }
     }
     busZones {
       id
       number
-      sprinterCost
-      urvanCost
+      sprinterTopUp
+      urvanTopUp
     }
   }
 `
@@ -111,8 +111,8 @@ export const UPDATE_CONSTITUENCY_ZONE = gql`
       zone {
         id
         number
-        sprinterCost
-        urvanCost
+        sprinterTopUp
+        urvanTopUp
       }
     }
   }

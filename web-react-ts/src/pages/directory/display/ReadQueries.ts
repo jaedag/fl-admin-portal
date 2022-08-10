@@ -284,8 +284,8 @@ export const DISPLAY_BACENTA = gql`
       zone {
         id
         number
-        sprinterCost
-        urvanCost
+        sprinterTopUp
+        urvanTopUp
       }
       momoNumber
       stream_name
@@ -378,8 +378,8 @@ export const DISPLAY_CONSTITUENCY = gql`
       zone {
         id
         number
-        sprinterCost
-        urvanCost
+        sprinterTopUp
+        urvanTopUp
       }
 
       leader {

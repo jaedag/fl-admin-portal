@@ -53,8 +53,8 @@ export interface StreamWithArrivals extends Stream {
 export type BusZone = {
   id: string
   number: number
-  sprinterCost: number
-  urvanCost: number
+  sprinterTopUp: number
+  urvanTopUp: number
 }
 
 export interface BacentaWithArrivals extends Bacenta {

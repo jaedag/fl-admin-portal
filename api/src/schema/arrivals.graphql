@@ -660,7 +660,9 @@ type BusZone {
   id: ID!
   number: Int!
   sprinterCost: Float!
+  sprinterTopUp: Float!
   urvanCost: Float!
+  urvanTopUp: Float!
   constituencies: [Constituency!]!
     @relationship(type: "BUSSES_FROM", direction: IN)
 }

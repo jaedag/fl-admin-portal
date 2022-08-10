@@ -65,11 +65,15 @@ const DetailsBacenta = () => {
       width: 12,
     },
     {
-      title: 'Sprinter Cost',
-      number: bacenta?.zone.sprinterCost,
+      title: 'Sprinter Top Up',
+      number: bacenta?.zone.sprinterTopUp + ' GHS',
       link: `#`,
     },
-    { title: 'Urvan Cost', number: bacenta?.zone.urvanCost, link: `#` },
+    {
+      title: 'Urvan Top Up',
+      number: bacenta?.zone.urvanTopUp + ' GHS',
+      link: `#`,
+    },
   ]
 
   if (!bacenta?.zone) {

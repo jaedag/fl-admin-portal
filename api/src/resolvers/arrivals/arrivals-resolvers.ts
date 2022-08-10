@@ -254,8 +254,8 @@ export const arrivalsMutation = {
         numberOfCars: neonumber
         bussingCost: neonumber
         personalContribution: number
-        bacentaSprinterCost: number
-        bacentaUrvanCost: number
+        bacentaSprinterTopUp: number
+        bacentaUrvanTopUp: number
         arrivalTime: string
         swellBussingTopUp: neonumber
         normalBussingTopUp: neonumber
@@ -272,8 +272,8 @@ export const arrivalsMutation = {
       let bussingRecord: RearragedCypherResponse | undefined
 
       const bussingTopUp =
-        response.numberOfSprinters.low * response.bacentaSprinterCost +
-        response.numberOfUrvans.low * response.bacentaUrvanCost -
+        response.numberOfSprinters.low * response.bacentaSprinterTopUp +
+        response.numberOfUrvans.low * response.bacentaUrvanTopUp -
         response.personalContribution
 
       if (response.attendance.low < 8) {

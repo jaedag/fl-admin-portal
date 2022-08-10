@@ -7,12 +7,16 @@ RETURN COUNT(bussingRecord);
 CREATE (zone:BusZone {id:apoc.create.uuid()})
 SET zone.number = 1,
 zone.sprinterCost = 100,
-zone.urvanCost = 70
+zone.sprinterTopUp = 100,
+zone.urvanCost = 70,
+zone.urvanTopUp = 70
 RETURN zone;
 CREATE (zone:BusZone {id:apoc.create.uuid()})
 SET zone.number = 2,
 zone.sprinterCost = 120,
-zone.urvanCost = 90
+zone.sprinterTopUp = 120,
+zone.urvanCost = 90,
+zone.urvanTopUp = 90
 RETURN zone;
 
 MATCH (b:Constituency)
