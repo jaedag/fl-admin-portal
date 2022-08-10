@@ -39,6 +39,14 @@ extend type Member {
       RETURN DISTINCT council LIMIT $limit
       """
     )
+  streamSearch(key: String!, limit: Int! = 5): [Stream!]!
+    @cypher(
+      statement: """
+      MATCH (this)-[:LEADS|HAS|DOES_ARRIVALS_FOR|IS_ADMIN_FOR*1..2]->(stream:Stream)
+      WHERE toLower(stream.name) CONTAINS toLower($key)
+      RETURN DISTINCT stream LIMIT $limit
+      """
+    )
 }
 
 extend type Oversight {
@@ -53,7 +61,7 @@ extend type Oversight {
   fellowshipSearch(key: String!, limit: Int!): [Fellowship!]!
     @cypher(
       statement: """
-      MATCH (this)-[:HAS*6]->(fellowship:Fellowship)
+      MATCH (this)-[:HAS*5]->(fellowship:Fellowship)
       WHERE toLower(fellowship.name) CONTAINS toLower($key)
       RETURN DISTINCT fellowship LIMIT $limit
       """
@@ -61,7 +69,7 @@ extend type Oversight {
   bacentaSearch(key: String!, limit: Int!): [Bacenta!]!
     @cypher(
       statement: """
-      MATCH (this)-[:HAS*5]->(bacenta:Bacenta)
+      MATCH (this)-[:HAS*4]->(bacenta:Bacenta)
       WHERE toLower(bacenta.name) CONTAINS toLower($key)
       RETURN DISTINCT bacenta LIMIT $limit
       """
@@ -69,7 +77,7 @@ extend type Oversight {
   constituencySearch(key: String!, limit: Int!): [Constituency!]!
     @cypher(
       statement: """
-      MATCH (this)-[:HAS*4]->(constituency:Constituency)
+      MATCH (this)-[:HAS*3]->(constituency:Constituency)
       WHERE toLower(constituency.name) CONTAINS toLower($key)
       RETURN DISTINCT constituency LIMIT $limit
       """
@@ -77,7 +85,7 @@ extend type Oversight {
   councilSearch(key: String!, limit: Int!): [Council!]!
     @cypher(
       statement: """
-      MATCH (this)-[:HAS*3]->(council:Council)
+      MATCH (this)-[:HAS*2]->(council:Council)
       WHERE toLower(council.name) CONTAINS toLower($key)
       RETURN DISTINCT council LIMIT $limit
       """
@@ -85,7 +93,7 @@ extend type Oversight {
   streamSearch(key: String!, limit: Int!): [Stream!]!
     @cypher(
       statement: """
-      MATCH (this)-[:HAS*2]->(stream:Stream)
+      MATCH (this)-[:HAS]->(stream:Stream)
       WHERE toLower(stream.name) CONTAINS toLower($key)
       RETURN DISTINCT stream LIMIT $limit
       """

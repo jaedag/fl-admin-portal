@@ -5,13 +5,11 @@ export const CREATE_HISTORY_SUBSTRUCTURE = gql `
     $churchType: String!
     $servantType: String!
     $churchId: ID!
-    $connectUpwards: Boolean
   ) {
     CreateChurchSubstructure(
       churchType: $churchType
       servantType: $servantType
       churchId: $churchId
-      connectUpwards: $connectUpwards
     )
   }
 `
@@ -236,6 +234,7 @@ export const LOG_STREAM_HISTORY = gql `
 `
 export const LOG_GATHERINGSERVICE_HISTORY = gql `
   mutation LogGatheringServiceHistory(
+    $ids: [ID]
     $gatheringServiceId: ID!
     $historyRecord: String!
     $oldLeaderId: ID
@@ -243,8 +242,9 @@ export const LOG_GATHERINGSERVICE_HISTORY = gql `
     $oldOversightId: ID
     $newOversightId: ID
   ) {
-    LogStreamHistory(
-      gatheringServiceId: $streamId
+    LogGatheringServiceHistory(
+      ids: $ids
+      gatheringServiceId: $gatheringServiceId
       historyRecord: $historyRecord
       newLeaderId: $newLeaderId
       oldLeaderId: $oldLeaderId

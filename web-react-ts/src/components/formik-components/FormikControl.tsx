@@ -13,6 +13,7 @@ import SearchFellowship from './SearchFellowship'
 import SearchBacenta from './SearchBacenta'
 import SearchConstituency from './SearchConstituency'
 import SearchCouncil from './SearchCouncil'
+import SearchStream from './SearchStream'
 
 export const arrayError = (
   array: string | string[] | number[] | undefined,
@@ -32,6 +33,7 @@ type FormikControlProps = {
     | 'bacentaSearch'
     | 'constituencySearch'
     | 'councilSearch'
+    | 'streamSearch'
     | 'textarea'
     | 'select'
     | 'selectWithQuery'
@@ -62,6 +64,8 @@ function FormikControl(props: FormikControlProps) {
       return <SearchConstituency {...rest} />
     case 'councilSearch':
       return <SearchCouncil {...rest} />
+    case 'streamSearch':
+      return <SearchStream {...rest} />
     case 'textarea':
       return <Textarea {...rest} />
     case 'select':

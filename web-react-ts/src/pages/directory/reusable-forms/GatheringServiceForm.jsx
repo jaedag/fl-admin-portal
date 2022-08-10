@@ -31,13 +31,13 @@ const GatheringServiceForm = ({
   const { theme } = useContext(MemberContext)
   const { togglePopup, isOpen } = usePopup()
   const navigate = useNavigate()
-  const { data, loading, error } = useQuery(GET_OVERSIGHTS)
+  const { data: oversightData, loading, error } = useQuery(GET_OVERSIGHTS)
   const [buttonLoading, setButtonLoading] = useState(false)
   const [CloseDownGatheringService] = useMutation(
     MAKE_GATHERING_SERVICE_INACTIVE
   )
 
-  const oversightOptions = makeSelectOptions(data?.oversights)
+  const oversightOptions = makeSelectOptions(oversightData?.oversights)
 
   const validationSchema = Yup.object({
     name: Yup.string().required(`Gathering Service Name is a required field`),
@@ -52,7 +52,7 @@ const GatheringServiceForm = ({
   })
 
   return (
-    <ApolloWrapper loading={loading} error={error} data={data && initialValues}>
+    <ApolloWrapper loading={loading} error={error} data={oversightData}>
       <Container>
         <HeadingPrimary>{title}</HeadingPrimary>
         <HeadingSecondary>
@@ -119,7 +119,6 @@ const GatheringServiceForm = ({
                             const { push, remove, form } = fieldArrayProps
                             const { values } = form
                             const { streams } = values
-
                             return (
                               <>
                                 {streams.map((stream, index) => (
@@ -131,7 +130,7 @@ const GatheringServiceForm = ({
                                         placeholder="Stream Name"
                                         initialValue={stream?.name}
                                         setFieldValue={formik.setFieldValue}
-                                        aria-describedby="Council Name"
+                                        aria-describedby="Stream Name"
                                         error={
                                           formik.errors.streams &&
                                           formik.errors.streams[index]

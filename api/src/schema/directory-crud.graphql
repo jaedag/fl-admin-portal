@@ -615,7 +615,6 @@ extend type Mutation {
                   MERGE (oversight)-[:HAS]->(gatheringService)
               	RETURN count(gatheringService)
               	}
-              	}
       MATCH (gatheringService)<-[:LEADS]-(leader:Member)
       RETURN gatheringService
       """

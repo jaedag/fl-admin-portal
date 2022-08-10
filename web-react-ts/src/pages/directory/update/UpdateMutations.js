@@ -208,9 +208,9 @@ export const UPDATE_GATHERINGSERVICE_MUTATION = gql `
     $oversightId: ID!
   ) {
     UpdateGatheringServiceDetails(
-      gatheringServiceId: $streamId
+      gatheringServiceId: $gatheringServiceId
       name: $name
-      oversightId: $gatheringServiceId
+      oversightId: $oversightId
     ) {
       id
       name
@@ -222,7 +222,7 @@ export const UPDATE_GATHERINGSERVICE_MUTATION = gql `
           name
           oversight {
             id
-            gatheringService {
+            gatheringServices {
               id
             }
           }
@@ -812,19 +812,16 @@ export const ADD_STREAM_COUNCILS = gql `
 `
 
 export const ADD_GATHERINGSERVICE_STREAM = gql `
-  mutation AddGatheringServiceStream($streamId: ID!, $gatheringServiceId: ID!) {
-    updateStreams(
-      where: { id: $streamId }
-      connect: {
-        gatheringService: { where: { node: { id: $gatheringServiceId } } }
-      }
+  mutation AddGatheringServiceStream($gatheringServiceId: ID!, $streamId: ID!) {
+    updateGatheringServices(
+      where: { id: $gatheringServiceId }
+      connect: { streams: { where: { node: { id: $streamId } } } }
     ) {
-      streams {
+      gatheringServices {
         id
         name
-        gatheringService {
+        streams {
           id
-          name
         }
       }
     }
@@ -854,8 +851,8 @@ export const ADD_GATHERINGSERVICE_OVERSIGHT = gql `
 
 export const REMOVE_STREAM_GATHERINGSERVICE = gql `
   mutation RemoveStreamGatheringService(
-    $lowerChurch: [ID]!
     $higherChurch: ID!
+    $lowerChurch: [ID]!
   ) {
     updateStreams(
       where: { id_IN: $lowerChurch }
@@ -864,6 +861,16 @@ export const REMOVE_STREAM_GATHERINGSERVICE = gql `
       }
     ) {
       streams {
+        id
+        name
+        gatheringService {
+          id
+          name
+        }
+      }
+    }
+    updateGatheringServices(where: { id: $higherChurch }) {
+      gatheringServices {
         id
         name
       }

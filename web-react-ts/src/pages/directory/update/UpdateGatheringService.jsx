@@ -28,7 +28,6 @@ const UpdateStream = () => {
     variables: { id: gatheringServiceId },
   })
 
-  console.log('data', data)
   const navigate = useNavigate()
   const gatheringService = data?.gatheringServices[0]
 
@@ -69,20 +68,20 @@ const UpdateStream = () => {
       refetchQueries: [
         {
           query: GET_OVERSIGHT_GATHERINGSERVICES,
-          variables: { id: initialValues.oversight },
+          variables: { id: gatheringService.oversight.id },
         },
       ],
     }
   )
 
-  //Changes downwards. ie. Council Changes underneath stream
-  const [CloseDownStream] = useMutation(MAKE_STREAM_INACTIVE)
+  //Changes downwards. ie. Stream Changes underneath Gathering Service
   const [AddGatheringServiceStreams] = useMutation(ADD_GATHERINGSERVICE_STREAM)
   const [RemoveStreamGatheringService] = useMutation(
     REMOVE_STREAM_GATHERINGSERVICE,
     {
       onCompleted: (data) => {
-        const prevGatheringService = data.updateStreams.streams[0]
+        const prevGatheringService =
+          data.updateGatheringServices.gatheringServices[0]
         const stream = data.updateStreams.streams[0]
         let newGatheringServiceId = ''
         let oldGatheringServiceId = ''
@@ -114,6 +113,7 @@ const UpdateStream = () => {
       },
     }
   )
+  const [CloseDownStream] = useMutation(MAKE_STREAM_INACTIVE)
 
   //Changes upwards. it. Changes to the GatheringService the Stream Campus is under
   const [CreateHistorySubstructure] = useMutation(CREATE_HISTORY_SUBSTRUCTURE)
@@ -219,10 +219,11 @@ const UpdateStream = () => {
         }
       }
 
-      //For the Adding and Removing of Councils
-      const oldStreamList = initialValues.stream.map((stream) => stream)
+      //For the Adding and Removing of Streams
 
-      const newStreamList = values.stream.map((stream) => stream)
+      const oldStreamList = initialValues.streams.map((stream) => stream)
+
+      const newStreamList = values.streams.map((stream) => stream)
 
       const lists = {
         oldChurches: oldStreamList,
@@ -259,7 +260,7 @@ const UpdateStream = () => {
     <GatheringServiceForm
       initialValues={initialValues}
       onSubmit={onSubmit}
-      title={`Update Stream Form`}
+      title={`Update Gathering Service Form`}
       loading={loading || !initialValues.name}
       newStream={false}
     />
