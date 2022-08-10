@@ -1,5 +1,5 @@
 import { MutationFunction } from '@apollo/client'
-import { Church, ChurchLevel, Role } from 'global-types'
+import { Church, ChurchLevel, Role, VerbTypes } from 'global-types'
 import { capitalise, throwErrorMsg } from 'global-utils'
 
 export const churchLevels: ChurchLevel[] = [
@@ -13,8 +13,10 @@ export const churchLevels: ChurchLevel[] = [
 ]
 
 export const getHighestRole = (roles: Role[]) => {
-  let highestRole,
-    highestLevel: string = ''
+  let highestRole
+
+  let highestLevel: ChurchLevel = 'Fellowship'
+  let highestVerb: VerbTypes = 'leader'
 
   for (let i = churchLevels.length; i >= 0; i--) {
     const churchLevelLower = churchLevels[i]?.toLowerCase()
@@ -27,6 +29,8 @@ export const getHighestRole = (roles: Role[]) => {
         breakCheck = true
         highestRole = roles[j]
         highestLevel = churchLevels[i]
+        // @ts-ignore
+        highestVerb = highestRole?.replace(highestLevel, '')
         break
       }
     }
@@ -37,7 +41,7 @@ export const getHighestRole = (roles: Role[]) => {
   return {
     highestRole,
     highestLevel,
-    highestVerb: highestRole?.replace(highestLevel, ''),
+    highestVerb,
   }
 }
 

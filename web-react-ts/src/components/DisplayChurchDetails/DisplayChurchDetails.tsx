@@ -18,7 +18,6 @@ import {
   MAKE_COUNCIL_ADMIN,
   MAKE_STREAM_ADMIN,
 } from './AdminMutations'
-import FormikControl from '../formik-components/FormikControl'
 import { plural, throwErrorMsg } from '../../global-utils'
 import { getWeekNumber } from 'jd-date-utils'
 import Breadcrumb from './Breadcrumb'
@@ -31,6 +30,7 @@ import useSetUserChurch from 'hooks/useSetUserChurch'
 import usePopup from 'hooks/usePopup'
 import { Church, ChurchLevel, MemberWithoutBioData, Role } from 'global-types'
 import { BacentaWithArrivals } from 'pages/arrivals/arrivals-types'
+import SearchMember from 'components/formik/SearchMember'
 
 type DisplayChurchDetailsProps = {
   details: {
@@ -260,8 +260,7 @@ const DisplayChurchDetails = (props: DisplayChurchDetailsProps) => {
                   <Form>
                     <Row className="form-row">
                       <Col>
-                        <FormikControl
-                          control="memberSearch"
+                        <SearchMember
                           name="adminSelect"
                           initialValue={initialValues?.adminName}
                           placeholder="Select an Admin"
@@ -319,7 +318,9 @@ const DisplayChurchDetails = (props: DisplayChurchDetailsProps) => {
                 <DetailsCard
                   onClick={() => navigate(detail.link)}
                   heading={detail.title}
-                  detail={!props.loading ? detail.number.toString() || '0' : ''}
+                  detail={
+                    !props.loading ? detail?.number?.toString() || '0' : ''
+                  }
                   vacationCount={
                     !props.loading
                       ? detail?.vacationCount?.toString() || '0'

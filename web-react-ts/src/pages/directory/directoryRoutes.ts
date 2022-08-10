@@ -19,7 +19,6 @@ import DetailsStream from 'pages/directory/display/DetailsStream'
 import DetailsSonta from 'pages/directory/display/DetailsSonta'
 import DisplayAllBacentas from 'pages/directory/display/AllBacentas'
 import DisplayAllSontas from 'pages/directory/display/AllSontas'
-import DisplaySontasByConstituency from 'pages/directory/display/SontasByConstituency'
 import DisplayAllConstituencies from 'pages/directory/display/AllConstituencies'
 import DisplayAllFellowships from 'pages/directory/display/AllFellowships'
 import CreateConstituency from 'pages/directory/create/CreateConstituency'
@@ -280,12 +279,6 @@ export const directory: RouteTypes[] = [
     path: '/sonta/displayall',
     element: DisplayAllSontas,
     roles: permitLeaderAdmin('Constituency'),
-    placeholder: false,
-  },
-  {
-    path: '/constituency/display-sontas',
-    element: DisplaySontasByConstituency,
-    roles: permitLeaderAdmin('Council'),
     placeholder: false,
   },
 

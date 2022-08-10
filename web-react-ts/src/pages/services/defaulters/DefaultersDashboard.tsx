@@ -18,7 +18,7 @@ import { permitLeaderAdmin } from 'permission-utils'
 import { MemberContext } from 'contexts/MemberContext'
 import useChurchLevel from 'hooks/useChurchLevel'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
-import { DefaultersUseChurchtype } from './defaulters-types'
+import { DefaultersUseChurchType } from './defaulters-types'
 import { ChurchLevel } from 'global-types'
 
 const DefaultersDashboard = () => {
@@ -30,7 +30,7 @@ const DefaultersDashboard = () => {
 
   let subChurch: ChurchLevel | string = ''
 
-  const data: DefaultersUseChurchtype = useChurchLevel({
+  const data: DefaultersUseChurchType = useChurchLevel({
     constituencyFunction: constituencyDefaulters,
     councilFunction: councilDefaulters,
     streamFunction: streamDefaulters,

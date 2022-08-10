@@ -14,8 +14,7 @@ import { Button, Col, Container, Row } from 'react-bootstrap'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import HeadingSecondary from 'components/HeadingSecondary'
 import { Form, Formik } from 'formik'
-import FormikControl from 'components/formik-components/FormikControl'
-import SubmitButton from 'components/formik-components/SubmitButton'
+import SubmitButton from 'components/formik/SubmitButton'
 import {
   alertMsg,
   MOMO_NUM_REGEX,
@@ -29,6 +28,8 @@ import useAuth from 'auth/useAuth'
 import Popup from 'components/Popup/Popup'
 import usePopup from 'hooks/usePopup'
 import { MemberContext } from 'contexts/MemberContext'
+import Input from 'components/formik/Input'
+import Select from 'components/formik/Select'
 
 const UpdateBusPayment = () => {
   const { bacentaId } = useContext(ChurchContext)
@@ -154,32 +155,27 @@ const UpdateBusPayment = () => {
                     <RoleView roles={permitAdminArrivals('Stream')}>
                       <Row className="form-row">
                         <Col>
-                          <FormikControl
-                            control="input"
+                          <Input
                             name="target"
                             label="Attendance Target"
                             placeholder="Enter Target"
                           />
-                          <FormikControl
-                            control="input"
+                          <Input
                             name="normalBussingCost"
                             label="Normal Bussing Cost"
                             placeholder="Enter Total Bussing Cost for Normal"
                           />
-                          <FormikControl
-                            control="input"
+                          <Input
                             name="normalPersonalContribution"
                             label="Normal Personal Contribution"
                             placeholder="Enter Personal Contribution for Normal"
                           />
-                          <FormikControl
-                            control="input"
+                          <Input
                             name="swellBussingCost"
                             label="Swell Bussing Cost"
                             placeholder="Enter Total Bussing Cost for Swell"
                           />
-                          <FormikControl
-                            control="input"
+                          <Input
                             name="swellPersonalContribution"
                             label="Swell Personal Contribution"
                             placeholder="Enter Personal Contribution for Swell"
@@ -202,8 +198,7 @@ const UpdateBusPayment = () => {
                               that code in the box below
                             </p>
                           </div>
-                          <FormikControl
-                            control="input"
+                          <Input
                             label="Enter your verification code"
                             name="verificationCode"
                           />
@@ -253,24 +248,18 @@ const UpdateBusPayment = () => {
                       )}
                       <Row>
                         <Col>
-                          <FormikControl
-                            control="select"
+                          <Select
                             name="mobileNetwork"
                             label="Mobile Network"
                             options={MOBILE_NETWORK_OPTIONS}
                           />
-                          <FormikControl
-                            control="input"
+                          <Input
                             name="momoNumber"
                             label="MoMo Number"
                             placeholder="Enter a number"
                           />
 
-                          <FormikControl
-                            control="input"
-                            name="momoName"
-                            label="MoMo Name"
-                          />
+                          <Input name="momoName" label="MoMo Name" />
                         </Col>
                       </Row>
                     </RoleView>

@@ -8,11 +8,13 @@ const StatDisplay = ({
   loading,
 }: {
   title: string
-  statistic: number
-  loading: boolean
+  statistic?: string | number
+  loading?: boolean
 }) => {
-  if (isNaN(statistic)) {
-    statistic = 0
+  let stat = parseInt(statistic?.toString() || '0')
+
+  if (isNaN(stat)) {
+    stat = 0
   }
   return (
     <>
@@ -23,7 +25,7 @@ const StatDisplay = ({
         as="p"
         animation="wave"
       >
-        <p className="info-text">{statistic}</p>
+        <p className="info-text">{stat}</p>
       </PlaceholderCustom>
     </>
   )
