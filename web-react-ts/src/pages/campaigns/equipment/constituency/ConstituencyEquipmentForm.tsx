@@ -1,5 +1,4 @@
 import React, { useContext } from 'react'
-import FormikControl from 'components/formik-components/FormikControl'
 import { Formik, Form, FormikHelpers } from 'formik'
 import * as Yup from 'yup'
 import { Col, Container, Row, Button } from 'react-bootstrap'
@@ -10,6 +9,7 @@ import { CREATE_CONSTITUENCY_EQUIPMENT_RECORD } from '../../CampaignQueries'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { useNavigate } from 'react-router'
 import { throwErrorMsg } from '../../../../global-utils'
+import Input from 'components/formik/Input'
 
 type FormOptions = {
   pulpits: string
@@ -83,19 +83,14 @@ const ConstituencyEquipmentForm = () => {
                 <small className="form-text ">
                   Date * <i className="text-secondary">(Day/Month/Year)</i>
                 </small>
-                <FormikControl
+                <Input
                   className="form-control"
-                  control="input"
                   name="date"
                   type="date"
                   placeholder="dd/mm/yyyy"
                 />
                 <small className="form-text ">Number of Pulpits* </small>
-                <FormikControl
-                  className="form-control"
-                  control="input"
-                  name="pulpits"
-                />
+                <Input className="form-control" name="pulpits" />
                 <div className="d-flex justify-content-center pt-2">
                   <Button
                     variant="primary"

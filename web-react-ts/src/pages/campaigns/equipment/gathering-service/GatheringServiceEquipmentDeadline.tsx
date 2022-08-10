@@ -1,5 +1,4 @@
 import React, { useContext } from 'react'
-import FormikControl from 'components/formik-components/FormikControl'
 import { Formik, Form, FormikHelpers } from 'formik'
 import { Col, Container, Row, Button } from 'react-bootstrap'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
@@ -9,6 +8,7 @@ import { SET_EQUIPMENT_DEADLINE } from '../../CampaignQueries'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { useNavigate } from 'react-router'
 import { throwErrorMsg } from 'global-utils'
+import Input from 'components/formik/Input'
 
 type FormOptions = {
   startDate: string
@@ -66,17 +66,15 @@ const GatheringServiceEquipmentDeadline = () => {
             <Row className="row-cols-1 row-cols-md-2 mt-5">
               <Col className="mb-2">
                 <small className="form-text">Start Date* </small>
-                <FormikControl
+                <Input
                   className="form-control"
-                  control="input"
                   name="startDate"
                   type="date"
                   placeholder="dd/mm/yyyy"
                 />
                 <small className="form-text">End Date* </small>
-                <FormikControl
+                <Input
                   className="form-control"
-                  control="input"
                   name="endDate"
                   type="date"
                   placeholder="dd/mm/yyyy"
