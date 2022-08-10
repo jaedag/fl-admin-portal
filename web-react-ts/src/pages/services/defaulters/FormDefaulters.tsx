@@ -15,6 +15,7 @@ import DefaulterCard from './DefaulterCard'
 import useChurchLevel from 'hooks/useChurchLevel'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import PlaceholderDefaulterList from './PlaceholderDefaulterList'
+import { DefaultersUseChurchType } from './defaulters-types'
 
 const FormDefaulters = () => {
   const [constituencyFormDefaulters] = useLazyQuery(
@@ -26,12 +27,14 @@ const FormDefaulters = () => {
     GATHERINGSERVICE_FORM_DEFAULTERS_LIST
   )
 
-  const { church, loading, error } = useChurchLevel({
+  const data: DefaultersUseChurchType = useChurchLevel({
     constituencyFunction: constituencyFormDefaulters,
     councilFunction: councilFormDefaulters,
     streamFunction: streamFormDefaulters,
     gatheringServiceFunction: gatheringServiceFormDefaulters,
   })
+
+  const { church, loading, error } = data
 
   return (
     <ApolloWrapper data={church} loading={loading} error={error} placeholder>

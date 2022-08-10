@@ -4,12 +4,21 @@ import React, { useContext } from 'react'
 import { Card, Button } from 'react-bootstrap'
 import { TelephoneFill, Whatsapp } from 'react-bootstrap-icons'
 import { useNavigate } from 'react-router'
+import { FellowshipWithDefaulters } from './defaulters-types'
 
-const DefaulterCard = ({ defaulter, link }) => {
+type DefaulterCardProps = {
+  defaulter: FellowshipWithDefaulters
+  link?: string
+}
+
+const DefaulterCard = ({ defaulter, link }: DefaulterCardProps) => {
   const navigate = useNavigate()
   const { clickCard } = useContext(ChurchContext)
 
-  const serviceDetails = defaulter?.services?.length && defaulter?.services[0]
+  const serviceDetails = defaulter?.services?.length
+    ? defaulter?.services[0]
+    : null
+
   return (
     <Card>
       <PlaceholderCustom

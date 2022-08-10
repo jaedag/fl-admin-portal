@@ -15,6 +15,7 @@ import {
   GATHERINGSERVICE_BANKING_DEFAULTERS_LIST,
 } from './DefaultersQueries'
 import PlaceholderDefaulterList from './PlaceholderDefaulterList'
+import { DefaultersUseChurchType } from './defaulters-types'
 
 const BankingDefaulters = () => {
   const [constituencyBankingDefaulters] = useLazyQuery(
@@ -28,12 +29,14 @@ const BankingDefaulters = () => {
     GATHERINGSERVICE_BANKING_DEFAULTERS_LIST
   )
 
-  const { church, loading, error } = useChurchLevel({
+  const data: DefaultersUseChurchType = useChurchLevel({
     constituencyFunction: constituencyBankingDefaulters,
     councilFunction: councilBankingDefaulters,
     streamFunction: streamBankingDefaulters,
     gatheringServiceFunction: gatheringServiceBankingDefaulters,
   })
+
+  const { church, loading, error } = data
 
   return (
     <ApolloWrapper data={church} loading={loading} error={error} placeholder>
