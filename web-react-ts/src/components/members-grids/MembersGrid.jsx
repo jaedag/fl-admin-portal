@@ -16,7 +16,7 @@ import { CaretDownFill } from 'react-bootstrap-icons'
 import './MembersGrid.css'
 import Filters from './Filters'
 import { Form, Formik } from 'formik'
-import SearchMember from 'components/formik/SearchMember'
+import Input from 'components/formik/Input'
 
 const MembersGrid = (props) => {
   const { data, error, loading, title } = props
@@ -100,7 +100,7 @@ const MembersGrid = (props) => {
           {() => (
             <Form>
               <div className="align-middle">
-                <SearchMember
+                <Input
                   className="form-control member-search"
                   name="memberSearch"
                   placeholder="Search Members"

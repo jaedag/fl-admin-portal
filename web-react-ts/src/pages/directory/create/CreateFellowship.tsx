@@ -4,16 +4,20 @@ import { useMutation } from '@apollo/client'
 import { CREATE_FELLOWSHIP_MUTATION } from './CreateMutations'
 import { ChurchContext } from '../../../contexts/ChurchContext'
 import { NEW_FELLOWSHIP_LEADER } from './MakeLeaderMutations'
-import FellowshipForm from 'pages/directory/reusable-forms/FellowshipForm'
+import FellowshipForm, {
+  FellowshipFormValues,
+} from 'pages/directory/reusable-forms/FellowshipForm'
 import { throwErrorMsg } from 'global-utils'
+import { FormikHelpers } from 'formik'
 
 const CreateFellowship = () => {
   const { clickCard, constituencyId, bacentaId } = useContext(ChurchContext)
   const navigate = useNavigate()
 
-  const initialValues = {
+  const initialValues: FellowshipFormValues = {
     name: '',
     leaderId: '',
+    leaderName: '',
     constituencySelect: constituencyId ?? '',
     bacenta: bacentaId ?? '',
     meetingDay: '',
@@ -26,7 +30,10 @@ const CreateFellowship = () => {
   const [CreateFellowship] = useMutation(CREATE_FELLOWSHIP_MUTATION)
 
   //onSubmit receives the form state as argument
-  const onSubmit = (values, onSubmitProps) => {
+  const onSubmit = (
+    values: FellowshipFormValues,
+    onSubmitProps: FormikHelpers<FellowshipFormValues>
+  ) => {
     onSubmitProps.setSubmitting(true)
     CreateFellowship({
       variables: {
@@ -34,8 +41,8 @@ const CreateFellowship = () => {
         bacentaId: values.bacenta,
         meetingDay: values.meetingDay,
         leaderId: values.leaderId,
-        venueLongitude: parseFloat(values.venueLongitude),
-        venueLatitude: parseFloat(values.venueLatitude),
+        venueLongitude: parseFloat(values.venueLongitude.toString()),
+        venueLatitude: parseFloat(values.venueLatitude.toString()),
       },
     })
       .then((res) => {

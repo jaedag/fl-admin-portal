@@ -5,16 +5,20 @@ import { throwErrorMsg } from '../../../global-utils'
 import { CREATE_STREAM_MUTATION } from './CreateMutations'
 import { ChurchContext } from '../../../contexts/ChurchContext'
 import { NEW_STREAM_LEADER } from './MakeLeaderMutations'
-import StreamForm from 'pages/directory/reusable-forms/StreamForm'
+import StreamForm, {
+  StreamFormValues,
+} from 'pages/directory/reusable-forms/StreamForm'
+import { FormikHelpers } from 'formik'
 
 const CreateStream = () => {
   const { clickCard, gatheringServiceId } = useContext(ChurchContext)
 
   const navigate = useNavigate()
 
-  const initialValues = {
+  const initialValues: StreamFormValues = {
     name: '',
     leaderId: '',
+    leaderName: '',
     gatheringService: gatheringServiceId,
   }
 
@@ -22,7 +26,10 @@ const CreateStream = () => {
   const [CreateStream] = useMutation(CREATE_STREAM_MUTATION)
 
   //onSubmit receives the form state as argument
-  const onSubmit = (values, onSubmitProps) => {
+  const onSubmit = (
+    values: StreamFormValues,
+    onSubmitProps: FormikHelpers<StreamFormValues>
+  ) => {
     onSubmitProps.setSubmitting(true)
     clickCard({ id: values.gatheringService, __typename: 'GatheringService' })
 

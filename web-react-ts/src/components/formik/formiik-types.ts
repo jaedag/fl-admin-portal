@@ -11,6 +11,7 @@ export interface FormikComponentProps {
 
 export interface FormikSelectProps extends FormikComponentProps {
   defaultOption?: string
+  onChange?: (value: string) => void
 }
 
 export interface FormikSelectWithApollo
@@ -19,8 +20,8 @@ export interface FormikSelectWithApollo
 
 export interface FormikWithApolloProps extends FormikComponentProps {
   initialValue: string
-  query: DocumentNode
-  optionsQuery: any
+  query?: DocumentNode
+  optionsQuery: DocumentNode
   queryVariable: string
   varValue: string
   dataset: string
@@ -31,4 +32,11 @@ export interface RoleBasedSearch extends FormikComponentProps {
   roleBased?: boolean
   initialValue?: string
   setFieldValue: (field: string, value: any) => void
+}
+
+// Form Stuff
+export interface FormikInitialValues {
+  name: string
+  leaderId: string
+  leaderName: string
 }

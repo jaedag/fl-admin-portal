@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from '@apollo/client'
-import { Form, Formik } from 'formik'
+import { Form, Formik, FormikHelpers } from 'formik'
 import * as Yup from 'yup'
 import {
   DECIMAL_NUM_REGEX,
@@ -28,12 +28,32 @@ import SubmitButton from 'components/formik/SubmitButton'
 import { DISPLAY_BACENTA } from 'pages/directory/display/ReadQueries'
 import { permitAdmin } from 'permission-utils'
 import usePopup from 'hooks/usePopup'
-import SelectWithQuery from 'components/formik/SelectWithQuery'
 import Input from 'components/formik/Input'
-import Select from 'components/formik/Select'
 import SearchMember from 'components/formik/SearchMember'
+import Select from 'components/formik/Select'
+import SelectWithQuery from 'components/formik/SelectWithQuery'
+import { FormikInitialValues } from 'components/formik/formiik-types'
 
-const FellowshipForm = (props) => {
+export interface FellowshipFormValues extends FormikInitialValues {
+  constituencySelect: string
+  bacenta: string
+  meetingDay: string
+  vacationStatus: string
+  venueLatitude: string | number
+  venueLongitude: string | number
+}
+
+type FellowshipFormProps = {
+  initialValues: FellowshipFormValues
+  title: string
+  newFellowship: boolean
+  onSubmit: (
+    values: FellowshipFormValues,
+    onSubmitProps: FormikHelpers<FellowshipFormValues>
+  ) => void
+}
+
+const FellowshipForm = (props: FellowshipFormProps) => {
   const { fellowshipId, councilId, clickCard } = useContext(ChurchContext)
   const { togglePopup, isOpen } = usePopup()
   const { theme } = useContext(MemberContext)
@@ -54,7 +74,7 @@ const FellowshipForm = (props) => {
   })
 
   if (error) {
-    throwErrorMsg(error)
+    throwErrorMsg('', error)
   }
 
   const validationSchema = Yup.object({
@@ -68,13 +88,17 @@ const FellowshipForm = (props) => {
     ),
     venueLatitude: Yup.string()
       .required('Please fill in your location info')
-      .test('is-decimal', 'Please enter valid coordinates', (value) =>
-        (value + '').match(DECIMAL_NUM_REGEX)
+      .test(
+        'is-decimal',
+        'Please enter valid coordinates',
+        (value) => !!(value + '').match(DECIMAL_NUM_REGEX)
       ),
     venueLongitude: Yup.string()
       .required('Please fill in your location info')
-      .test('is-decimal', 'Please enter valid coordinates', (value) =>
-        (value + '').match(DECIMAL_NUM_REGEX)
+      .test(
+        'is-decimal',
+        'Please enter valid coordinates',
+        (value) => !!(value + '').match(DECIMAL_NUM_REGEX)
       ),
   })
 
@@ -116,7 +140,7 @@ const FellowshipForm = (props) => {
                             label={`Constituency`}
                             name="constituencySelect"
                             options={constituencyOptions}
-                            onChange={(e) => {
+                            onChange={(e: any) => {
                               formik.setFieldValue(
                                 'constituencySelect',
                                 e.target.value
@@ -136,6 +160,7 @@ const FellowshipForm = (props) => {
                               constituencyIdVar || props.initialValues.bacenta
                             }
                             defaultOption="Select a Bacenta"
+                            initialValue={''}
                           />
                         </Col>
                       </RoleView>
@@ -214,9 +239,11 @@ const FellowshipForm = (props) => {
                                 )
                                 document
                                   .getElementById('venueLongitude')
-                                  .focus()
-                                document.getElementById('venueLatitude').focus()
-                                document.getElementById('venueLatitude').blur()
+                                  ?.focus()
+                                document
+                                  .getElementById('venueLatitude')
+                                  ?.focus()
+                                document.getElementById('venueLatitude')?.blur()
                                 setPositionLoading(false)
                               }
                             )

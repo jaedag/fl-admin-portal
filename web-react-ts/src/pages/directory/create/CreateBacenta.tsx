@@ -4,16 +4,18 @@ import { useMutation } from '@apollo/client'
 import { CREATE_BACENTA_MUTATION } from './CreateMutations'
 import { ChurchContext } from '../../../contexts/ChurchContext'
 import { NEW_BACENTA_LEADER } from './MakeLeaderMutations'
-import BacentaForm from '../reusable-forms/BacentaForm'
+import BacentaForm, { BacentaFormValues } from '../reusable-forms/BacentaForm'
 import { throwErrorMsg } from 'global-utils'
+import { FormikHelpers } from 'formik'
 
 const CreateBacenta = () => {
   const { clickCard, constituencyId } = useContext(ChurchContext)
   const navigate = useNavigate()
 
-  const initialValues = {
+  const initialValues: BacentaFormValues = {
     name: '',
     leaderId: '',
+    leaderName: '',
     constituency: constituencyId ?? '',
     graduationStatus: '',
     vacationStatus: '',
@@ -23,7 +25,10 @@ const CreateBacenta = () => {
   const [CreateBacenta] = useMutation(CREATE_BACENTA_MUTATION)
 
   //onSubmit receives the form state as argument
-  const onSubmit = async (values, onSubmitProps) => {
+  const onSubmit = async (
+    values: BacentaFormValues,
+    onSubmitProps: FormikHelpers<BacentaFormValues>
+  ) => {
     onSubmitProps.setSubmitting(true)
     clickCard({ id: values.constituency, __typename: 'Bacenta' })
 
@@ -44,14 +49,14 @@ const CreateBacenta = () => {
             bacentaId: res.data.CreateBacenta.id,
           },
         })
-      } catch (error) {
+      } catch (error: any) {
         throwErrorMsg('There was an error adding leader', error)
       }
 
       onSubmitProps.setSubmitting(false)
       onSubmitProps.resetForm()
       navigate('/bacenta/displaydetails')
-    } catch (error) {
+    } catch (error: any) {
       throwErrorMsg('There was an error creating bacenta', error)
     }
   }

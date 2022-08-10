@@ -11,6 +11,7 @@ import { GET_MINISTRIES } from 'queries/ListQueries'
 import { Col, Row, Button } from 'react-bootstrap'
 import { MemberContext } from 'contexts/MemberContext'
 import './Filters.css'
+import CheckboxWithQuery from 'components/formik/CheckboxWithQuery'
 import CheckboxGroup from 'components/formik/CheckboxGroup'
 
 const Filters = ({ ToggleAccordion }) => {

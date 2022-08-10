@@ -6,16 +6,20 @@ import { GET_COUNCIL_CONSTITUENCIES } from '../../../queries/ListQueries'
 import { CREATE_CONSTITUENCY_MUTATION } from './CreateMutations'
 import { ChurchContext } from '../../../contexts/ChurchContext'
 import { NEW_CONSTITUENCY_LEADER } from './MakeLeaderMutations'
-import ConstituencyForm from '../reusable-forms/ConstituencyForm'
+import ConstituencyForm, {
+  ConstituencyFormValues,
+} from '../reusable-forms/ConstituencyForm'
+import { FormikHelpers } from 'formik'
 
 const CreateConstituency = () => {
   const { clickCard, councilId } = useContext(ChurchContext)
 
   const navigate = useNavigate()
 
-  const initialValues = {
+  const initialValues: ConstituencyFormValues = {
     name: '',
     leaderId: '',
+    leaderName: '',
     council: councilId,
   }
 
@@ -32,7 +36,10 @@ const CreateConstituency = () => {
 
   //onSubmit receives the form state as argument
 
-  const onSubmit = async (values, onSubmitProps) => {
+  const onSubmit = async (
+    values: ConstituencyFormValues,
+    onSubmitProps: FormikHelpers<ConstituencyFormValues>
+  ) => {
     onSubmitProps.setSubmitting(true)
     clickCard({ id: values.council, __typename: 'Council' })
     try {
@@ -53,14 +60,14 @@ const CreateConstituency = () => {
               res.data.CreateConstituency.council.constituencies[0].id,
           },
         })
-      } catch (error) {
+      } catch (error: any) {
         throwErrorMsg('There was an error adding the leader', error)
       }
 
       onSubmitProps.setSubmitting(false)
       onSubmitProps.resetForm()
       navigate(`/constituency/displaydetails`)
-    } catch (error) {
+    } catch (error: any) {
       throwErrorMsg('There was an error creating the constituency', error)
     }
   }

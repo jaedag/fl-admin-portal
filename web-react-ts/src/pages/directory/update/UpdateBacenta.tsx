@@ -19,7 +19,7 @@ import {
   LOG_FELLOWSHIP_HISTORY,
 } from './LogMutations'
 import { MAKE_BACENTA_LEADER } from './ChangeLeaderMutations'
-import BacentaForm from '../reusable-forms/BacentaForm'
+import BacentaForm, { BacentaFormValues } from '../reusable-forms/BacentaForm'
 import { MAKE_FELLOWSHIP_INACTIVE } from './CloseChurchMutations'
 import {
   MAKE_BACENTA_GRADUATED,
@@ -28,6 +28,8 @@ import {
   SET_VACATION_BACENTA,
 } from './StatusChanges'
 import { addNewChurches, removeOldChurches } from './directory-utils'
+import LoadingScreen from 'components/base-component/LoadingScreen'
+import { FormikHelpers } from 'formik'
 
 const UpdateBacenta = () => {
   const { church, bacentaId, clickCard } = useContext(ChurchContext)
@@ -40,7 +42,7 @@ const UpdateBacenta = () => {
   const navigate = useNavigate()
   const bacenta = bacentaData?.bacentas[0]
 
-  const initialValues = {
+  const initialValues: BacentaFormValues = {
     name: bacenta?.name,
     leaderName: bacenta?.leader?.fullName ?? '',
     leaderId: bacenta?.leader?.id || '',
@@ -141,7 +143,10 @@ const UpdateBacenta = () => {
   })
 
   //onSubmit receives the form state as argument
-  const onSubmit = async (values, onSubmitProps) => {
+  const onSubmit = async (
+    values: BacentaFormValues,
+    onSubmitProps: FormikHelpers<BacentaFormValues>
+  ) => {
     onSubmitProps.setSubmitting(true)
     clickCard({ id: values.constituency, __typename: 'Constituency' })
     try {
@@ -153,7 +158,7 @@ const UpdateBacenta = () => {
           constituencyId: values.constituency,
         },
       })
-    } catch (error) {
+    } catch (error: any) {
       throwErrorMsg(error)
     }
     //Log if Bacenta Name Changes
@@ -215,7 +220,7 @@ const UpdateBacenta = () => {
         })
         alertMsg('Leader Changed Successfully')
         navigate(`/bacenta/displaydetails`)
-      } catch (error) {
+      } catch (error: any) {
         throwErrorMsg('There was an error changing the leader', error)
       }
     }
@@ -236,12 +241,13 @@ const UpdateBacenta = () => {
         },
       })
     }
-    //For the adding and removing of fellowships
-    const oldFellowships = initialValues.fellowships.map(
-      (fellowship) => fellowship
-    )
 
-    const newFellowships = values.fellowships.map((fellowship) => fellowship)
+    //For the adding and removing of fellowships
+    const oldFellowships =
+      initialValues.fellowships?.map((fellowship) => fellowship) || []
+
+    const newFellowships =
+      values.fellowships?.map((fellowship) => fellowship) || []
 
     const lists = {
       oldChurches: oldFellowships,
@@ -260,6 +266,7 @@ const UpdateBacenta = () => {
       initialValues,
       bacentaId,
     }
+
     Promise.all([
       await removeOldChurches(lists, mutations),
       await addNewChurches(lists, mutations, args),
@@ -270,13 +277,16 @@ const UpdateBacenta = () => {
 
     navigate(`/bacenta/displaydetails`)
   }
+  if (bacentaLoading) {
+    return <LoadingScreen />
+  }
 
   return (
     <BacentaForm
       initialValues={initialValues}
       onSubmit={onSubmit}
       title={`${capitalise(church.subChurch)} Update Form`}
-      loading={bacentaLoading}
+      newBacenta={false}
     />
   )
 }

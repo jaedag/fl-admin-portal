@@ -4,10 +4,13 @@ import { useMutation } from '@apollo/client'
 import { CREATE_SONTA_MUTATION } from './CreateMutations'
 import { ChurchContext } from '../../../contexts/ChurchContext'
 import { NEW_SONTA_LEADER } from './MakeLeaderMutations'
-import SontaForm from 'pages/directory/reusable-forms/SontaForm'
+import SontaForm, {
+  SontaFormValues,
+} from 'pages/directory/reusable-forms/SontaForm'
 import { throwErrorMsg } from 'global-utils'
+import { FormikHelpers } from 'formik'
 
-function CreateSonta() {
+const CreateSonta = () => {
   const { clickCard, constituencyId } = useContext(ChurchContext)
 
   const navigate = useNavigate()
@@ -15,8 +18,19 @@ function CreateSonta() {
   const [CreateSonta] = useMutation(CREATE_SONTA_MUTATION)
   const [NewSontaLeader] = useMutation(NEW_SONTA_LEADER)
 
+  const initialValues: SontaFormValues = {
+    ministrySelect: '',
+    leaderId: '',
+    name: '',
+    leaderName: '',
+    constituency: constituencyId ?? '',
+  }
+
   //onSubmit receives the form state as argument
-  const onSubmit = (values, onSubmitProps) => {
+  const onSubmit = (
+    values: SontaFormValues,
+    onSubmitProps: FormikHelpers<SontaFormValues>
+  ) => {
     onSubmitProps.setSubmitting(true)
     CreateSonta({
       variables: {
@@ -45,7 +59,13 @@ function CreateSonta() {
   }
 
   return (
-    <SontaForm onSubmit={onSubmit} title="Start a New Sonta" newSonta={true} />
+    <SontaForm
+      onSubmit={onSubmit}
+      title="Start a New Sonta"
+      loading={false}
+      initialValues={initialValues}
+      newSonta={true}
+    />
   )
 }
 

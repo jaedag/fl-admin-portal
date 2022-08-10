@@ -5,16 +5,20 @@ import { throwErrorMsg } from '../../../global-utils'
 import { CREATE_COUNCIL_MUTATION } from './CreateMutations'
 import { ChurchContext } from '../../../contexts/ChurchContext'
 import { NEW_COUNCIL_LEADER } from './MakeLeaderMutations'
-import CouncilForm from 'pages/directory/reusable-forms/CouncilForm'
+import CouncilForm, {
+  CouncilFormValues,
+} from 'pages/directory/reusable-forms/CouncilForm'
+import { FormikHelpers } from 'formik'
 
 const CreateCouncil = () => {
   const { clickCard, streamId } = useContext(ChurchContext)
 
   const navigate = useNavigate()
 
-  const initialValues = {
+  const initialValues: CouncilFormValues = {
     name: '',
     leaderId: '',
+    leaderName: '',
     stream: streamId,
   }
 
@@ -22,7 +26,10 @@ const CreateCouncil = () => {
   const [CreateCouncil] = useMutation(CREATE_COUNCIL_MUTATION)
 
   //onSubmit receives the form state as argument
-  const onSubmit = async (values, onSubmitProps) => {
+  const onSubmit = async (
+    values: CouncilFormValues,
+    onSubmitProps: FormikHelpers<CouncilFormValues>
+  ) => {
     onSubmitProps.setSubmitting(true)
     clickCard({ id: values.stream, __typename: 'Stream' })
     try {
@@ -42,10 +49,10 @@ const CreateCouncil = () => {
             councilId: res.data.CreateCouncil.id,
           },
         })
-      } catch (error) {
+      } catch (error: any) {
         throwErrorMsg('There was an error adding leader', error)
       }
-    } catch (error) {
+    } catch (error: any) {
       throwErrorMsg('There was an error creating council', error)
     }
 

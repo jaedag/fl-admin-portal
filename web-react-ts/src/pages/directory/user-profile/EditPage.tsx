@@ -12,6 +12,8 @@ import {
 import { MemberContext } from 'contexts/MemberContext'
 import MemberForm from '../reusable-forms/MemberForm'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
+import { CreateMemberFormOptions } from '../create/CreateMember'
+import { FormikHelpers } from 'formik'
 
 const UserProfileEditPage = () => {
   const { currentUser } = useContext(MemberContext)
@@ -30,7 +32,7 @@ const UserProfileEditPage = () => {
   const member = memberData?.members[0]
   const memberChurch = churchData?.members[0]
 
-  const initialValues = {
+  const initialValues: CreateMemberFormOptions = {
     firstName: member?.firstName ? member?.firstName : '',
     middleName: member?.middleName ? member?.middleName : '',
     lastName: member?.lastName ? member?.lastName : '',
@@ -43,25 +45,16 @@ const UserProfileEditPage = () => {
     occupation: member?.occupation ? member?.occupation.occupation : '',
     pictureUrl: member?.pictureUrl ? member?.pictureUrl : '',
     fellowship: memberChurch?.fellowship?.name ?? '',
+    location: member?.location ?? '',
     ministry: memberChurch?.ministry ? memberChurch?.ministry.id : '',
-
-    pastoralHistory: [
-      {
-        historyRecord: '',
-        historyDate: '',
-      },
-    ],
-    pastoralAppointment: [
-      {
-        title: '',
-        date: '',
-      },
-    ],
   }
 
   const [UpdateMember] = useMutation(UPDATE_MEMBER_MUTATION)
 
-  const onSubmit = async (values, onSubmitProps) => {
+  const onSubmit = async (
+    values: CreateMemberFormOptions,
+    onSubmitProps: FormikHelpers<CreateMemberFormOptions>
+  ) => {
     onSubmitProps.setSubmitting(true)
     //Variables that are not controlled by formik
 
@@ -92,13 +85,14 @@ const UserProfileEditPage = () => {
   return (
     <ApolloWrapper
       loading={memberLoading}
-      error={memberError || currentUser.id === ''}
+      error={memberError}
       data={memberData}
     >
       <MemberForm
         title="Edit Your Details"
         initialValues={initialValues}
         onSubmit={onSubmit}
+        loading={memberLoading}
       />
     </ApolloWrapper>
   )

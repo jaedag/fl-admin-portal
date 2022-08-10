@@ -169,9 +169,9 @@ export const arrayOr = (array: []) => {
 
 export const makeSelectOptions = (
   initialArray: { id: string; name: string; fullName: string }[]
-): FormikSelectOptions | null => {
+): FormikSelectOptions => {
   if (!initialArray) {
-    return null
+    return []
   }
 
   return initialArray.map((data) => ({
