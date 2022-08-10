@@ -55,6 +55,12 @@ export const campaignsMutation = {
         await session.run(getEquipmentCampaign, { ...args })
       )
 
+      if (typeof equipmentCampaign.campaign === 'undefined') {
+        return throwErrorMsg(
+          'You cannot fill your forms now because an equipment date has not been set'
+        )
+      }
+
       const currentDate = new Date(args.date)
       const startDate = new Date(equipmentCampaign.campaign.equipmentStartDate)
       const endDate = new Date(equipmentCampaign.campaign.equipmentEndDate)
@@ -113,6 +119,12 @@ export const campaignsMutation = {
       const equipmentCampaign = rearrangeCypherObject(
         await session.run(getEquipmentCampaign, { ...args })
       )
+
+      if (typeof equipmentCampaign.campaign === 'undefined') {
+        return throwErrorMsg(
+          'You cannot fill your forms now because an equipment date has not been set'
+        )
+      }
 
       const currentDate = new Date(args.date)
       const startDate = new Date(equipmentCampaign.campaign.equipmentStartDate)
