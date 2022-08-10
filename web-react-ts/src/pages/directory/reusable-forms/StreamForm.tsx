@@ -28,7 +28,7 @@ import { Church } from 'global-types'
 
 export interface StreamFormValues extends FormikInitialValues {
   gatheringService: string
-  councils?: string[]
+  councils?: Church[]
 }
 
 type StreamFormProps = {

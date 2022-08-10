@@ -39,8 +39,8 @@ export interface FellowshipFormValues extends FormikInitialValues {
   bacenta: string
   meetingDay: string
   vacationStatus: string
-  venueLatitude: string
-  venueLongitude: string
+  venueLatitude: string | number
+  venueLongitude: string | number
 }
 
 type FellowshipFormProps = {

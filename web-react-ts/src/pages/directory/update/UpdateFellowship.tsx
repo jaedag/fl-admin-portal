@@ -14,9 +14,13 @@ import {
   LOG_FELLOWSHIP_HISTORY,
 } from './LogMutations'
 import { MAKE_FELLOWSHIP_LEADER } from './ChangeLeaderMutations'
-import FellowshipForm from 'pages/directory/reusable-forms/FellowshipForm'
+import FellowshipForm, {
+  FellowshipFormValues,
+} from 'pages/directory/reusable-forms/FellowshipForm'
 import { alertMsg, repackDecimals, throwErrorMsg } from 'global-utils'
 import { SET_VACATION_FELLOWSHIP, SET_ACTIVE_FELLOWSHIP } from './StatusChanges'
+import { FormikHelpers } from 'formik'
+import LoadingScreen from 'components/base-component/LoadingScreen'
 
 const UpdateFellowship = () => {
   const { clickCard, fellowshipId } = useContext(ChurchContext)
@@ -32,7 +36,7 @@ const UpdateFellowship = () => {
 
   const fellowship = fellowshipData?.fellowships[0]
 
-  const initialValues = {
+  const initialValues: FellowshipFormValues = {
     name: fellowship?.name,
     leaderId: fellowship?.leader?.id,
     leaderName: `${fellowship?.leader?.fullName} `,
@@ -83,11 +87,14 @@ const UpdateFellowship = () => {
   })
 
   //onSubmit receives the form state as argument
-  const onSubmit = async (values, onSubmitProps) => {
+  const onSubmit = async (
+    values: FellowshipFormValues,
+    onSubmitProps: FormikHelpers<FellowshipFormValues>
+  ) => {
     onSubmitProps.setSubmitting(true)
     clickCard({ id: values.bacenta, __typename: 'Bacenta' })
-    values.venueLongitude = parseFloat(values.venueLongitude)
-    values.venueLatitude = parseFloat(values.venueLatitude)
+    values.venueLongitude = parseFloat(values.venueLongitude.toString())
+    values.venueLatitude = parseFloat(values.venueLatitude.toString())
 
     try {
       await UpdateFellowship({
@@ -100,7 +107,7 @@ const UpdateFellowship = () => {
           venueLatitude: values.venueLatitude,
         },
       })
-    } catch (error) {
+    } catch (error: any) {
       throwErrorMsg('There was an error updating this fellowship', error)
     }
     //Log If The Bacenta Changes
@@ -118,7 +125,7 @@ const UpdateFellowship = () => {
             fellowshipId: fellowshipId,
           },
         })
-      } catch (error) {
+      } catch (error: any) {
         throwErrorMsg('', error)
       }
     }
@@ -201,7 +208,7 @@ const UpdateFellowship = () => {
         })
         alertMsg('Leader Changed Successfully')
         navigate(`/fellowship/displaydetails`)
-      } catch (err) {
+      } catch (err: any) {
         throwErrorMsg('There was a problem changing fellowship leader', err)
       }
     }
@@ -210,13 +217,16 @@ const UpdateFellowship = () => {
     onSubmitProps.resetForm()
     navigate(`/fellowship/displaydetails`)
   }
+  if (fellowshipLoading) {
+    return <LoadingScreen />
+  }
 
   return (
     <FellowshipForm
       title="Update Fellowship"
       initialValues={initialValues}
       onSubmit={onSubmit}
-      loading={fellowshipLoading}
+      newFellowship={false}
     />
   )
 }

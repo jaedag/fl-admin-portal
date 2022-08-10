@@ -7,8 +7,11 @@ import { ChurchContext } from '../../../contexts/ChurchContext'
 import { DISPLAY_SONTA } from '../display/ReadQueries'
 import { LOG_SONTA_HISTORY } from './LogMutations'
 import { MAKE_SONTA_LEADER } from './ChangeLeaderMutations'
-import SontaForm from 'pages/directory/reusable-forms/SontaForm'
+import SontaForm, {
+  SontaFormValues,
+} from 'pages/directory/reusable-forms/SontaForm'
 import { throwErrorMsg } from 'global-utils'
+import { FormikHelpers } from 'formik'
 
 const UpdateSonta = () => {
   const { sontaId, constituencyId, setConstituencyId } =
@@ -21,8 +24,8 @@ const UpdateSonta = () => {
   const navigate = useNavigate()
   const sonta = sontaData?.sontas[0]
 
-  const initialValues = {
-    sontaName: sonta?.name,
+  const initialValues: SontaFormValues = {
+    name: sonta?.name,
     leaderName: sonta?.leader.fullName ?? '',
     leaderId: sonta?.leader?.id || '',
     ministrySelect: sonta?.ministry.id || '',
@@ -45,18 +48,21 @@ const UpdateSonta = () => {
   })
 
   //onSubmit receives the form state as argument
-  const onSubmit = (values, onSubmitProps) => {
+  const onSubmit = (
+    values: SontaFormValues,
+    onSubmitProps: FormikHelpers<SontaFormValues>
+  ) => {
     onSubmitProps.setSubmitting(true)
     setConstituencyId(values.constituency)
 
     //Log if Sonta Name Changes
-    if (values.sontaName !== initialValues.sontaName) {
+    if (values.name !== initialValues.name) {
       LogSontaHistory({
         variables: {
           sontaId: sontaId,
           newLeaderId: '',
           oldLeaderId: '',
-          historyRecord: `Sonta name has been changed from ${initialValues.sontaName} to ${values.sontaName}`,
+          historyRecord: `Sonta name has been changed from ${initialValues.name} to ${values.name}`,
         },
       })
     }
@@ -75,12 +81,12 @@ const UpdateSonta = () => {
     UpdateSonta({
       variables: {
         sontaId: sontaId,
-        sontaName: values.sontaName,
+        sontaName: values.name,
         leaderId: values.leaderId,
       },
     })
       .then(() => navigate(`/sonta/displaydetails`))
-      .catch((error) =>
+      .catch((error: any) =>
         throwErrorMsg('There was an error updating this sonta', error)
       )
 
@@ -94,6 +100,7 @@ const UpdateSonta = () => {
       onSubmit={onSubmit}
       title="Sonta Update Form"
       loading={sontaLoading}
+      newSonta={false}
     />
   )
 }

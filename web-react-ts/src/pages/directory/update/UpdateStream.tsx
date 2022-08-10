@@ -18,9 +18,13 @@ import {
   CREATE_HISTORY_SUBSTRUCTURE,
 } from './LogMutations'
 import { MAKE_STREAM_LEADER } from './ChangeLeaderMutations'
-import StreamForm from 'pages/directory/reusable-forms/StreamForm'
+import StreamForm, {
+  StreamFormValues,
+} from 'pages/directory/reusable-forms/StreamForm'
 import { addNewChurches, removeOldChurches } from './directory-utils'
 import { MAKE_COUNCIL_INACTIVE } from './CloseChurchMutations'
+import LoadingScreen from 'components/base-component/LoadingScreen'
+import { FormikHelpers } from 'formik'
 
 const UpdateStream = () => {
   const { streamId, clickCard } = useContext(ChurchContext)
@@ -31,7 +35,7 @@ const UpdateStream = () => {
   const navigate = useNavigate()
   const stream = data?.streams[0]
 
-  const initialValues = {
+  const initialValues: StreamFormValues = {
     name: stream?.name,
     leaderName: stream?.leader?.fullName ?? '',
     leaderId: stream?.leader?.id || '',
@@ -130,7 +134,10 @@ const UpdateStream = () => {
   })
 
   //onSubmit receives the form state as argument
-  const onSubmit = async (values, onSubmitProps) => {
+  const onSubmit = async (
+    values: StreamFormValues,
+    onSubmitProps: FormikHelpers<StreamFormValues>
+  ) => {
     onSubmitProps.setSubmitting(true)
     clickCard({ id: values.gatheringService, __typename: 'GatheringService' })
     try {
@@ -168,7 +175,7 @@ const UpdateStream = () => {
           })
           alertMsg('Leader Changed Successfully')
           navigate(`/stream/displaydetails`)
-        } catch (err) {
+        } catch (err: any) {
           throwErrorMsg('There was a problem changing the Overseer', err)
         }
       }
@@ -189,15 +196,16 @@ const UpdateStream = () => {
               streamId: streamId,
             },
           })
-        } catch (error) {
+        } catch (error: any) {
           throwErrorMsg(error)
         }
       }
 
       //For the Adding and Removing of Councils
-      const oldCouncilList = initialValues.councils.map((council) => council)
+      const oldCouncilList =
+        initialValues.councils?.map((council) => council) || []
 
-      const newCouncilList = values.councils.map((council) => council)
+      const newCouncilList = values.councils?.map((council) => council) || []
 
       const lists = {
         oldChurches: oldCouncilList,
@@ -225,9 +233,13 @@ const UpdateStream = () => {
       onSubmitProps.setSubmitting(false)
       onSubmitProps.resetForm()
       navigate(`/stream/displaydetails`)
-    } catch (err) {
+    } catch (err: any) {
       throwErrorMsg('There was a problem updating this stream', err)
     }
+  }
+
+  if (loading) {
+    return <LoadingScreen />
   }
 
   return (
@@ -235,7 +247,6 @@ const UpdateStream = () => {
       initialValues={initialValues}
       onSubmit={onSubmit}
       title={`Update Stream Form`}
-      loading={loading || !initialValues.name}
       newStream={false}
     />
   )

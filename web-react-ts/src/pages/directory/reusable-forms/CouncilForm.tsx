@@ -29,7 +29,7 @@ import { Church } from 'global-types'
 
 export interface CouncilFormValues extends FormikInitialValues {
   stream: string
-  constituencies?: string[]
+  constituencies?: Church[]
 }
 
 type CouncilFormProps = {

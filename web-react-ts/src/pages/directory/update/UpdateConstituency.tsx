@@ -18,9 +18,13 @@ import {
   CREATE_HISTORY_SUBSTRUCTURE,
 } from './LogMutations'
 import { MAKE_CONSTITUENCY_LEADER } from './ChangeLeaderMutations'
-import ConstituencyForm from 'pages/directory/reusable-forms/ConstituencyForm'
+import ConstituencyForm, {
+  ConstituencyFormValues,
+} from 'pages/directory/reusable-forms/ConstituencyForm'
 import { MAKE_BACENTA_INACTIVE } from './CloseChurchMutations'
 import { addNewChurches, removeOldChurches } from './directory-utils'
+import { FormikHelpers } from 'formik'
+import LoadingScreen from 'components/base-component/LoadingScreen'
 
 const UpdateConstituency = () => {
   const { constituencyId, clickCard } = useContext(ChurchContext)
@@ -30,7 +34,7 @@ const UpdateConstituency = () => {
 
   const navigate = useNavigate()
   const constituency = data?.constituencies[0]
-  const initialValues = {
+  const initialValues: ConstituencyFormValues = {
     name: constituency?.name,
     leaderName: constituency?.leader?.fullName ?? '',
     leaderId: constituency?.leader?.id || '',
@@ -107,7 +111,7 @@ const UpdateConstituency = () => {
           newLeaderId: '',
           oldLeaderId: '',
           newCouncilId: data.updateConstituencies.constituencies[0].council.id,
-          oldCouncilId: initialValues?.council.id,
+          oldCouncilId: initialValues?.council,
           historyRecord: recordIfOldCouncil,
         },
       }).then(() =>
@@ -123,7 +127,10 @@ const UpdateConstituency = () => {
   })
 
   //onSubmit receives the form state as argument
-  const onSubmit = async (values, onSubmitProps) => {
+  const onSubmit = async (
+    values: ConstituencyFormValues,
+    onSubmitProps: FormikHelpers<ConstituencyFormValues>
+  ) => {
     onSubmitProps.setSubmitting(true)
     clickCard({ id: values.council, __typename: 'Council' })
     try {
@@ -161,7 +168,7 @@ const UpdateConstituency = () => {
 
           alertMsg('Leader Changed Successfully')
           navigate(`/constituency/displaydetails`)
-        } catch (error) {
+        } catch (error: any) {
           throwErrorMsg('There was a problem changing the CO', error)
         }
       }
@@ -184,9 +191,10 @@ const UpdateConstituency = () => {
       }
 
       //For the Adding and Removing of Bacentas
-      const oldBacentaList = initialValues.bacentas.map((bacenta) => bacenta)
+      const oldBacentaList =
+        initialValues.bacentas?.map((bacenta) => bacenta) || []
 
-      const newBacentaList = values.bacentas.map((bacenta) => bacenta)
+      const newBacentaList = values.bacentas?.map((bacenta) => bacenta) || []
 
       const lists = {
         oldChurches: oldBacentaList,
@@ -214,9 +222,13 @@ const UpdateConstituency = () => {
       onSubmitProps.setSubmitting(false)
       onSubmitProps.resetForm()
       navigate(`/constituency/displaydetails`)
-    } catch (error) {
+    } catch (error: any) {
       throwErrorMsg('There was a problem updating this constituency', error)
     }
+  }
+
+  if (loading) {
+    return <LoadingScreen />
   }
 
   return (
@@ -224,7 +236,6 @@ const UpdateConstituency = () => {
       initialValues={initialValues}
       onSubmit={onSubmit}
       title={`Update Constituency Form`}
-      loading={loading || !initialValues.name}
       newConstituency={false}
     />
   )

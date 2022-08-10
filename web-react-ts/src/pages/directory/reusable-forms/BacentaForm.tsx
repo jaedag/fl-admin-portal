@@ -30,13 +30,13 @@ import Input from 'components/formik/Input'
 import SearchMember from 'components/formik/SearchMember'
 import SearchFellowship from 'components/formik/SearchFellowship'
 import { FormikInitialValues } from 'components/formik/formiik-types'
-import { Fellowship } from 'global-types'
+import { Church } from 'global-types'
 
 export interface BacentaFormValues extends FormikInitialValues {
   constituency: string
   graduationStatus: string
   vacationStatus: string
-  fellowships?: Fellowship[]
+  fellowships?: Church[]
 }
 
 type BacentaFormProps = {
@@ -180,7 +180,7 @@ const BacentaForm = ({
                               return (
                                 <>
                                   {fellowships.map(
-                                    (fellowship: Fellowship, index: number) => (
+                                    (fellowship: Church, index: number) => (
                                       <Row key={index} className="form-row">
                                         <Col>
                                           <SearchFellowship

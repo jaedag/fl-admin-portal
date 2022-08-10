@@ -41,8 +41,8 @@ const CreateFellowship = () => {
         bacentaId: values.bacenta,
         meetingDay: values.meetingDay,
         leaderId: values.leaderId,
-        venueLongitude: parseFloat(values.venueLongitude),
-        venueLatitude: parseFloat(values.venueLatitude),
+        venueLongitude: parseFloat(values.venueLongitude.toString()),
+        venueLatitude: parseFloat(values.venueLatitude.toString()),
       },
     })
       .then((res) => {

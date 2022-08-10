@@ -18,9 +18,13 @@ import {
   CREATE_HISTORY_SUBSTRUCTURE,
 } from './LogMutations'
 import { MAKE_COUNCIL_LEADER } from './ChangeLeaderMutations'
-import CouncilForm from 'pages/directory/reusable-forms/CouncilForm'
+import CouncilForm, {
+  CouncilFormValues,
+} from 'pages/directory/reusable-forms/CouncilForm'
 import { addNewChurches, removeOldChurches } from './directory-utils'
 import { MAKE_CONSTITUENCY_INACTIVE } from './CloseChurchMutations'
+import { FormikHelpers } from 'formik'
+import LoadingScreen from 'components/base-component/LoadingScreen'
 
 const UpdateCouncil = () => {
   const { councilId, clickCard } = useContext(ChurchContext)
@@ -31,7 +35,7 @@ const UpdateCouncil = () => {
   const navigate = useNavigate()
   const council = data?.councils[0]
 
-  const initialValues = {
+  const initialValues: CouncilFormValues = {
     name: council?.name,
     leaderName: council?.leader?.fullName ?? '',
     leaderId: council?.leader?.id || '',
@@ -128,7 +132,10 @@ const UpdateCouncil = () => {
   })
 
   //onSubmit receives the form state as argument
-  const onSubmit = async (values, onSubmitProps) => {
+  const onSubmit = async (
+    values: CouncilFormValues,
+    onSubmitProps: FormikHelpers<CouncilFormValues>
+  ) => {
     onSubmitProps.setSubmitting(true)
     clickCard({ id: values.stream, __typename: 'Stream' })
 
@@ -167,7 +174,7 @@ const UpdateCouncil = () => {
           })
           alertMsg('Leader Changed Successfully')
           navigate(`/council/displaydetails`)
-        } catch (err) {
+        } catch (err: any) {
           throwErrorMsg('There was a problem changing the Overseer', err)
         }
       }
@@ -188,19 +195,17 @@ const UpdateCouncil = () => {
               councilId: councilId,
             },
           })
-        } catch (error) {
+        } catch (error: any) {
           throwErrorMsg(error)
         }
       }
 
       //For the Adding and Removing of Constituencies
-      const oldConstituencyList = initialValues.constituencies.map(
-        (constituency) => constituency
-      )
+      const oldConstituencyList =
+        initialValues.constituencies?.map((constituency) => constituency) || []
 
-      const newConstituencyList = values.constituencies.map(
-        (constituency) => constituency
-      )
+      const newConstituencyList =
+        values.constituencies?.map((constituency) => constituency) || []
 
       const lists = {
         oldChurches: oldConstituencyList,
@@ -228,9 +233,13 @@ const UpdateCouncil = () => {
       onSubmitProps.setSubmitting(false)
       onSubmitProps.resetForm()
       navigate(`/council/displaydetails`)
-    } catch (error) {
+    } catch (error: any) {
       throwErrorMsg('There was a problem updating this council', error)
     }
+  }
+
+  if (loading) {
+    return <LoadingScreen />
   }
 
   return (
@@ -238,7 +247,6 @@ const UpdateCouncil = () => {
       initialValues={initialValues}
       onSubmit={onSubmit}
       title={`Update Council Form`}
-      loading={loading || !initialValues.name}
       newCouncil={false}
     />
   )
