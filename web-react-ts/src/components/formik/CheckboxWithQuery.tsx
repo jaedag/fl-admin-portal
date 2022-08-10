@@ -5,7 +5,7 @@ import TextError from './TextError/TextError'
 import { useQuery } from '@apollo/client'
 import { MemberContext } from 'contexts/MemberContext'
 import './CheckboxGroup.css'
-import { FormikWithApolloProps } from './formiik-utils'
+import { FormikWithApolloProps } from './formiik-types'
 
 interface CheckBoxWithQueryProps extends FormikWithApolloProps {
   modifier: 'filter'

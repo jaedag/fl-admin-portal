@@ -5,11 +5,12 @@ import { makeSelectOptions } from 'global-utils'
 import { permitAdmin } from 'permission-utils'
 import { GET_COUNCIL_CONSTITUENCIES, GET_MINISTRIES } from 'queries/ListQueries'
 import React, { useContext } from 'react'
-import FormikControl from 'components/formik/FormikControl'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { useQuery } from '@apollo/client'
 import { DISPLAY_CONSTITUENCY } from 'pages/directory/display/ReadQueries'
 import RoleView from 'auth/RoleView'
+import Select from 'components/formik/Select'
+import SearchMember from 'components/formik/SearchMember'
 
 const SontaForm = ({ initialValues, onSubmit, title, loading, newSonta }) => {
   const { constituencyId, councilId } = useContext(ChurchContext)
@@ -90,8 +91,7 @@ const SontaForm = ({ initialValues, onSubmit, title, loading, newSonta }) => {
                     <div className="form-row row-cols-2">
                       <div className="col-10">
                         <RoleView roles={permitAdmin('Council')}>
-                          <FormikControl
-                            control="select"
+                          <Select
                             label={`Select a Constituency`}
                             name="constituency"
                             options={constituencyOptions}
@@ -109,9 +109,8 @@ const SontaForm = ({ initialValues, onSubmit, title, loading, newSonta }) => {
 
                     <div className="form-row row-cols-3">
                       <div className="col-10">
-                        <FormikControl
+                        <Select
                           label="Ministry*"
-                          control="select"
                           name="ministrySelect"
                           options={
                             newSonta ? sontasNotInconstituency : ministryOptions
@@ -122,8 +121,7 @@ const SontaForm = ({ initialValues, onSubmit, title, loading, newSonta }) => {
                     </div>
                     <div className="row d-flex align-items-center">
                       <div className="col">
-                        <FormikControl
-                          control="memberSearch"
+                        <SearchMember
                           name="leaderId"
                           initialValue={initialValues?.leaderName}
                           label="Select a Leader"

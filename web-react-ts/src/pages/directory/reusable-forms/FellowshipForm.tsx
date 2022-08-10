@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from '@apollo/client'
-import { Form, Formik } from 'formik'
+import { Form, Formik, FormikHelpers } from 'formik'
 import * as Yup from 'yup'
 import {
   DECIMAL_NUM_REGEX,
@@ -14,7 +14,6 @@ import {
 } from 'queries/ListQueries'
 import React, { useContext, useState } from 'react'
 import { ChurchContext } from 'contexts/ChurchContext'
-import FormikControl from 'components/formik/FormikControl'
 import { MAKE_FELLOWSHIP_INACTIVE } from 'pages/directory/update/CloseChurchMutations'
 import { useNavigate } from 'react-router'
 import Popup from 'components/Popup/Popup'
@@ -29,8 +28,32 @@ import SubmitButton from 'components/formik/SubmitButton'
 import { DISPLAY_BACENTA } from 'pages/directory/display/ReadQueries'
 import { permitAdmin } from 'permission-utils'
 import usePopup from 'hooks/usePopup'
+import Input from 'components/formik/Input'
+import SearchMember from 'components/formik/SearchMember'
+import Select from 'components/formik/Select'
+import SelectWithQuery from 'components/formik/SelectWithQuery'
+import { FormikInitialValues } from 'components/formik/formiik-types'
 
-const FellowshipForm = (props) => {
+export interface FellowshipFormValues extends FormikInitialValues {
+  constituencySelect: string
+  bacenta: string
+  meetingDay: string
+  vacationStatus: string
+  venueLatitude: string
+  venueLongitude: string
+}
+
+type FellowshipFormProps = {
+  initialValues: FellowshipFormValues
+  title: string
+  newFellowship: boolean
+  onSubmit: (
+    values: FellowshipFormValues,
+    onSubmitProps: FormikHelpers<FellowshipFormValues>
+  ) => void
+}
+
+const FellowshipForm = (props: FellowshipFormProps) => {
   const { fellowshipId, councilId, clickCard } = useContext(ChurchContext)
   const { togglePopup, isOpen } = usePopup()
   const { theme } = useContext(MemberContext)
@@ -51,7 +74,7 @@ const FellowshipForm = (props) => {
   })
 
   if (error) {
-    throwErrorMsg(error)
+    throwErrorMsg('', error)
   }
 
   const validationSchema = Yup.object({
@@ -65,13 +88,17 @@ const FellowshipForm = (props) => {
     ),
     venueLatitude: Yup.string()
       .required('Please fill in your location info')
-      .test('is-decimal', 'Please enter valid coordinates', (value) =>
-        (value + '').match(DECIMAL_NUM_REGEX)
+      .test(
+        'is-decimal',
+        'Please enter valid coordinates',
+        (value) => !!(value + '').match(DECIMAL_NUM_REGEX)
       ),
     venueLongitude: Yup.string()
       .required('Please fill in your location info')
-      .test('is-decimal', 'Please enter valid coordinates', (value) =>
-        (value + '').match(DECIMAL_NUM_REGEX)
+      .test(
+        'is-decimal',
+        'Please enter valid coordinates',
+        (value) => !!(value + '').match(DECIMAL_NUM_REGEX)
       ),
   })
 
@@ -109,12 +136,11 @@ const FellowshipForm = (props) => {
                     <Row className="form-row">
                       <RoleView roles={permitAdmin('Constituency')}>
                         <Col>
-                          <FormikControl
-                            control="select"
+                          <Select
                             label={`Constituency`}
                             name="constituencySelect"
                             options={constituencyOptions}
-                            onChange={(e) => {
+                            onChange={(e: any) => {
                               formik.setFieldValue(
                                 'constituencySelect',
                                 e.target.value
@@ -124,8 +150,7 @@ const FellowshipForm = (props) => {
                             defaultOption={`Select a Constituency`}
                           />
 
-                          <FormikControl
-                            control="selectWithQuery"
+                          <SelectWithQuery
                             name="bacenta"
                             label="Bacenta"
                             optionsQuery={GET_CONSTITUENCY_BACENTAS}
@@ -135,6 +160,7 @@ const FellowshipForm = (props) => {
                               constituencyIdVar || props.initialValues.bacenta
                             }
                             defaultOption="Select a Bacenta"
+                            initialValue={''}
                           />
                         </Col>
                       </RoleView>
@@ -143,8 +169,7 @@ const FellowshipForm = (props) => {
                     <Row className="form-row">
                       <RoleView roles={permitAdmin('Constituency')}>
                         <Col sm={12}>
-                          <FormikControl
-                            control="input"
+                          <Input
                             name="name"
                             label="Name of Fellowship"
                             placeholder="Name of Fellowship"
@@ -152,8 +177,7 @@ const FellowshipForm = (props) => {
                         </Col>
 
                         <Col sm={12}>
-                          <FormikControl
-                            control="select"
+                          <Select
                             label="Meeting Day"
                             name="meetingDay"
                             options={SERVICE_DAY_OPTIONS}
@@ -162,8 +186,7 @@ const FellowshipForm = (props) => {
                         </Col>
 
                         <Col sm={12}>
-                          <FormikControl
-                            control="select"
+                          <Select
                             label="Vacation Status"
                             name="vacationStatus"
                             options={VACATION_OPTIONS}
@@ -173,8 +196,7 @@ const FellowshipForm = (props) => {
                       </RoleView>
                       <RoleView roles={permitAdmin('Constituency')}>
                         <Col sm={12}>
-                          <FormikControl
-                            control="memberSearch"
+                          <SearchMember
                             name="leaderId"
                             label="Fellowship Leader"
                             initialValue={props.initialValues.leaderName}
@@ -192,18 +214,10 @@ const FellowshipForm = (props) => {
 
                     <Row className="row-cols-2 d-flex align-items-center">
                       <Col>
-                        <FormikControl
-                          control="input"
-                          name="venueLatitude"
-                          placeholder="Latitude"
-                        />
+                        <Input name="venueLatitude" placeholder="Latitude" />
                       </Col>
                       <Col>
-                        <FormikControl
-                          control="input"
-                          name="venueLongitude"
-                          placeholder="Longitude"
-                        />
+                        <Input name="venueLongitude" placeholder="Longitude" />
                       </Col>
                       <Col className="my-2">
                         <Button
@@ -225,9 +239,11 @@ const FellowshipForm = (props) => {
                                 )
                                 document
                                   .getElementById('venueLongitude')
-                                  .focus()
-                                document.getElementById('venueLatitude').focus()
-                                document.getElementById('venueLatitude').blur()
+                                  ?.focus()
+                                document
+                                  .getElementById('venueLatitude')
+                                  ?.focus()
+                                document.getElementById('venueLatitude')?.blur()
                                 setPositionLoading(false)
                               }
                             )

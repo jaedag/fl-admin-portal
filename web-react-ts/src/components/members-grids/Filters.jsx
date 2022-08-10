@@ -7,12 +7,12 @@ import {
 import React, { useContext } from 'react'
 import { useLocation } from 'react-router-dom'
 import { Formik, Form } from 'formik'
-import FormikControl from 'components/formik/FormikControl'
 import { GET_MINISTRIES } from 'queries/ListQueries'
 import { Col, Row, Button } from 'react-bootstrap'
 import { MemberContext } from 'contexts/MemberContext'
 import './Filters.css'
 import CheckboxWithQuery from 'components/formik/CheckboxWithQuery'
+import CheckboxGroup from 'components/formik/CheckboxGroup'
 
 const Filters = ({ ToggleAccordion }) => {
   const { setFilters, filters } = useContext(ChurchContext)
@@ -52,17 +52,15 @@ const Filters = ({ ToggleAccordion }) => {
             <Row xs={1} md={2}>
               {/* <!-- Basic Info Div --> */}
               <Col className="filter-col">
-                <FormikControl
+                <CheckboxGroup
                   label="Gender"
-                  control="checkbox"
                   name="gender"
                   options={GENDER_OPTIONS}
                 />
               </Col>
               <Col className="filter-col">
-                <FormikControl
+                <CheckboxGroup
                   label="Marital Status"
-                  control="checkbox"
                   name="maritalStatus"
                   options={MARITAL_STATUS_OPTIONS}
                 />
@@ -80,18 +78,16 @@ const Filters = ({ ToggleAccordion }) => {
               </Col>
 
               <Col className="filter-col">
-                <FormikControl
+                <CheckboxGroup
                   label="Leader Rank"
                   name="leaderRank"
-                  control="checkbox"
                   options={LEADER_OPTIONS}
                 />
               </Col>
               <Col className="filter-col">
-                <FormikControl
+                <CheckboxGroup
                   label="Leader Title"
                   name="leaderTitle"
-                  control="checkbox"
                   options={TITLE_OPTIONS}
                 />
               </Col>

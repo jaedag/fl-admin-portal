@@ -6,5 +6,3 @@ export const arrayError = (
 
   return array
 }
-
-export default arrayError

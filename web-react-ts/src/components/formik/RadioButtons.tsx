@@ -1,7 +1,7 @@
 import React from 'react'
 import { Field, ErrorMessage } from 'formik'
 import TextError from './TextError/TextError'
-import { FormikComponentProps } from './formiik-utils'
+import { FormikComponentProps } from './formiik-types'
 
 interface RadioButtonProps extends FormikComponentProps {}
 

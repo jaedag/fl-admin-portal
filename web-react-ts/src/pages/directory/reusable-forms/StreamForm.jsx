@@ -7,7 +7,6 @@ import { permitAdmin } from 'permission-utils'
 import { GET_GATHERINGSERVICES } from 'queries/ListQueries'
 import React, { useContext, useState } from 'react'
 import { ChurchContext } from 'contexts/ChurchContext'
-import FormikControl from 'components/formik/FormikControl'
 import PlusSign from 'components/buttons/PlusMinusSign/PlusSign'
 import MinusSign from 'components/buttons/PlusMinusSign/MinusSign'
 import { MAKE_STREAM_INACTIVE } from 'pages/directory/update/CloseChurchMutations'
@@ -21,6 +20,9 @@ import HeadingSecondary from 'components/HeadingSecondary'
 import SubmitButton from 'components/formik/SubmitButton'
 import usePopup from 'hooks/usePopup'
 import Input from 'components/formik/Input'
+import Select from 'components/formik/Select'
+import SearchMember from 'components/formik/SearchMember'
+import SearchCouncil from 'components/formik/SearchCouncil'
 
 const StreamForm = ({ initialValues, onSubmit, title, newStream }) => {
   const { clickCard, streamId } = useContext(ChurchContext)
@@ -67,8 +69,7 @@ const StreamForm = ({ initialValues, onSubmit, title, newStream }) => {
                     <RoleView roles={permitAdmin('GatheringService')}>
                       <Row className="form-row">
                         <Col>
-                          <FormikControl
-                            control="select"
+                          <Select
                             name="gatheringService"
                             label="Select a Gathering Service"
                             options={gatheringServiceOptions}
@@ -87,8 +88,7 @@ const StreamForm = ({ initialValues, onSubmit, title, newStream }) => {
                     <Row className="d-flex align-items-center mb-3">
                       <RoleView roles={permitAdmin('GatheringService')}>
                         <Col>
-                          <FormikControl
-                            control="memberSearch"
+                          <SearchMember
                             name="leaderId"
                             label="Choose a Leader"
                             placeholder="Start typing..."
@@ -116,8 +116,7 @@ const StreamForm = ({ initialValues, onSubmit, title, newStream }) => {
                                 {councils.map((council, index) => (
                                   <Row key={index} className="form-row">
                                     <Col>
-                                      <FormikControl
-                                        control="councilSearch"
+                                      <SearchCouncil
                                         name={`councils[${index}]`}
                                         placeholder="Council Name"
                                         initialValue={council?.name}

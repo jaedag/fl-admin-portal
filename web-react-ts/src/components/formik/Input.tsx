@@ -5,7 +5,7 @@ import './Input.css'
 import './Formik.css'
 import PlaceholderCustom from 'components/Placeholder'
 import { useAuth0 } from '@auth0/auth0-react'
-import { FormikComponentProps } from './formiik-utils'
+import { FormikComponentProps } from './formiik-types'
 
 interface InputProps extends FormikComponentProps {
   type?: 'date' | 'time'

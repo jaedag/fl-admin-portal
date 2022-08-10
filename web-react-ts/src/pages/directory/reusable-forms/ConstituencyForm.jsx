@@ -6,7 +6,6 @@ import { makeSelectOptions, throwErrorMsg } from 'global-utils'
 import { GET_COUNCILS } from 'queries/ListQueries'
 import React, { useContext, useState } from 'react'
 import { ChurchContext } from 'contexts/ChurchContext'
-import FormikControl from 'components/formik/FormikControl'
 import PlusSign from 'components/buttons/PlusMinusSign/PlusSign'
 import MinusSign from 'components/buttons/PlusMinusSign/MinusSign'
 import { MAKE_CONSTITUENCY_INACTIVE } from 'pages/directory/update/CloseChurchMutations'
@@ -21,6 +20,9 @@ import SubmitButton from 'components/formik/SubmitButton'
 import { permitAdmin } from 'permission-utils'
 import usePopup from 'hooks/usePopup'
 import Input from 'components/formik/Input'
+import Select from 'components/formik/Select'
+import SearchMember from 'components/formik/SearchMember'
+import SearchBacenta from 'components/formik/SearchBacenta'
 
 const ConstituencyForm = ({
   initialValues,
@@ -85,8 +87,7 @@ const ConstituencyForm = ({
                     <RoleView roles={permitAdmin('Stream')}>
                       <Row className="form-row">
                         <Col>
-                          <FormikControl
-                            control="select"
+                          <Select
                             name="council"
                             label="Select a Council"
                             options={constituencyCouncilOptions}
@@ -105,8 +106,7 @@ const ConstituencyForm = ({
                     <Row className="d-flex align-items-center mb-3">
                       <RoleView roles={permitAdmin('Council')}>
                         <Col>
-                          <FormikControl
-                            control="memberSearch"
+                          <SearchMember
                             name="leaderId"
                             label="Choose a CO"
                             placeholder="Start typing..."
@@ -135,8 +135,7 @@ const ConstituencyForm = ({
                                 {bacentas.map((bacenta, index) => (
                                   <Row key={index} className="form-row">
                                     <Col>
-                                      <FormikControl
-                                        control="bacentaSearch"
+                                      <SearchBacenta
                                         name={`bacentas[${index}]`}
                                         placeholder="Bacenta Name"
                                         initialValue={bacenta?.name}
