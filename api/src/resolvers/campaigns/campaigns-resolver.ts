@@ -196,12 +196,16 @@ const getEquipmentDetails = async (
     { ...obj, ...args }
   )
 
-  // eslint-disable-next-line no-underscore-dangle
-  const { id } = constituencyEquipmentResponse.records[0]._fields[0]
-
-  const pulpits =
+  let id
+  let pulpits
+  if (typeof constituencyEquipmentResponse.records[0] !== 'undefined') {
     // eslint-disable-next-line no-underscore-dangle
-    constituencyEquipmentResponse.records[0]._fields[0].pulpits.low
+    id = constituencyEquipmentResponse.records[0]._fields[0].id
+    // eslint-disable-next-line no-underscore-dangle
+    pulpits = constituencyEquipmentResponse.records[0]._fields[0].pulpits.low
+  } else {
+    id = null
+  }
 
   const bluetoothSpeakers =
     // eslint-disable-next-line no-underscore-dangle
