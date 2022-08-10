@@ -3,7 +3,16 @@ import React from 'react'
 import { Card } from 'react-bootstrap'
 import { useNavigate } from 'react-router'
 
-const DefaulterInfoCard = ({ defaulter }) => {
+const DefaulterInfoCard = ({
+  defaulter,
+}: {
+  defaulter: {
+    title: string
+    link: string
+    data?: number | string
+    color?: string
+  }
+}) => {
   const navigate = useNavigate()
   return (
     <Card className="text-center" onClick={() => navigate(defaulter.link)}>
