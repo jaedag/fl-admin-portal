@@ -2,95 +2,73 @@ import { useMutation, useQuery } from '@apollo/client'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { FieldArray, Form, Formik, FormikHelpers } from 'formik'
 import * as Yup from 'yup'
-import {
-  BUSSING_STATUS_OPTIONS,
-  makeSelectOptions,
-  throwErrorMsg,
-  VACATION_OPTIONS,
-} from 'global-utils'
-import { permitAdmin, permitAdminArrivals } from 'permission-utils'
-import { GET_COUNCIL_CONSTITUENCIES } from 'queries/ListQueries'
+import { makeSelectOptions, throwErrorMsg } from 'global-utils'
+import { GET_STREAMS } from 'queries/ListQueries'
 import React, { useContext, useState } from 'react'
 import { ChurchContext } from 'contexts/ChurchContext'
+import { arrayError } from 'components/formik/formik-utils'
 import PlusSign from 'components/buttons/PlusMinusSign/PlusSign'
 import MinusSign from 'components/buttons/PlusMinusSign/MinusSign'
+import { MAKE_COUNCIL_INACTIVE } from 'pages/directory/update/CloseChurchMutations'
 import { useNavigate } from 'react-router'
-import { MAKE_BACENTA_INACTIVE } from 'pages/directory/update/CloseChurchMutations'
 import Popup from 'components/Popup/Popup'
 import RoleView from 'auth/RoleView'
-import { Container, Row, Col, Button } from 'react-bootstrap'
+import { Button, Container, Row, Col } from 'react-bootstrap'
+import { MemberContext } from 'contexts/MemberContext'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import HeadingSecondary from 'components/HeadingSecondary'
-import { MemberContext } from 'contexts/MemberContext'
 import SubmitButton from 'components/formik/SubmitButton'
-import { DISPLAY_CONSTITUENCY } from 'pages/directory/display/ReadQueries'
+import { permitAdmin } from 'permission-utils'
 import usePopup from 'hooks/usePopup'
-import Select from 'components/formik/Select'
 import Input from 'components/formik/Input'
+import Select from 'components/formik/Select'
 import SearchMember from 'components/formik/SearchMember'
-import SearchFellowship from 'components/formik/SearchFellowship'
+import SearchConstituency from 'components/formik/SearchConstituency'
 import { FormikInitialValues } from 'components/formik/formiik-types'
-import { Fellowship } from 'global-types'
+import { Church } from 'global-types'
 
-export interface BacentaFormValues extends FormikInitialValues {
-  constituency: string
-  graduationStatus: string
-  vacationStatus: string
-  fellowships?: Fellowship[]
+export interface CouncilFormValues extends FormikInitialValues {
+  stream: string
+  constituencies?: string[]
 }
 
-type BacentaFormProps = {
-  initialValues: BacentaFormValues
+type CouncilFormProps = {
+  initialValues: CouncilFormValues
   onSubmit: (
-    values: BacentaFormValues,
-    onSubmitProps: FormikHelpers<BacentaFormValues>
+    values: CouncilFormValues,
+    onSubmitProps: FormikHelpers<CouncilFormValues>
   ) => void
   title: string
-  newBacenta: boolean
+  newCouncil: boolean
 }
 
-const BacentaForm = ({
+const CouncilForm = ({
   initialValues,
   onSubmit,
   title,
-  newBacenta,
-}: BacentaFormProps) => {
-  const { clickCard, bacentaId, councilId } = useContext(ChurchContext)
+  newCouncil,
+}: CouncilFormProps) => {
+  const { clickCard, councilId } = useContext(ChurchContext)
   const { togglePopup, isOpen } = usePopup()
   const { theme } = useContext(MemberContext)
+
   const navigate = useNavigate()
-
+  const { data, loading, error } = useQuery(GET_STREAMS)
   const [buttonLoading, setButtonLoading] = useState(false)
-  const [CloseDownBacenta] = useMutation(MAKE_BACENTA_INACTIVE, {
-    refetchQueries: [
-      {
-        query: DISPLAY_CONSTITUENCY,
-        variables: { id: initialValues.constituency },
-      },
-    ],
-  })
-  const { data, loading, error } = useQuery(GET_COUNCIL_CONSTITUENCIES, {
-    variables: { id: councilId },
-  })
+  const [CloseDownCouncil] = useMutation(MAKE_COUNCIL_INACTIVE)
 
-  const constituencyOptions = makeSelectOptions(
-    data?.councils[0]?.constituencies
-  )
+  const streamOptions = makeSelectOptions(data?.streams)
 
   const validationSchema = Yup.object({
-    name: Yup.string().required('Bacenta Name is a required field'),
-    leaderId: Yup.string().required('Please choose a leader from the dropdown'),
-    fellowships: newBacenta
+    name: Yup.string().required(`Council Name is a required field`),
+    leaderId: Yup.string().required(
+      'Please choose a leader from the drop down'
+    ),
+    constituencies: newCouncil
       ? Yup.array().nullable()
       : Yup.array().of(
-          Yup.object().required('Please pick a fellowship from the dropdown')
+          Yup.object().required('Please pick a constituency from the dropdown')
         ),
-    graduationStatus: Yup.string().required(
-      'Graduation Status is a required field'
-    ),
-    vacationStatus: Yup.string().required(
-      'Vacation Status is a required field'
-    ),
   })
 
   return (
@@ -98,14 +76,8 @@ const BacentaForm = ({
       <>
         <Container>
           <HeadingPrimary>{title}</HeadingPrimary>
-          <HeadingSecondary>{initialValues.name}</HeadingSecondary>
-          <RoleView roles={permitAdminArrivals('Stream')}>
-            <Button onClick={() => navigate('/bacenta/editbussing')}>
-              Edit Bussing Details
-            </Button>
-          </RoleView>
+          <HeadingSecondary>{initialValues.name + ' Council'}</HeadingSecondary>
         </Container>
-
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}
@@ -119,44 +91,33 @@ const BacentaForm = ({
                   <Row className="row-cols-1 row-cols-md-2">
                     {/* <!-- Basic Info Div --> */}
                     <Col className="mb-2">
-                      <Row className="form-row">
-                        <Col>
-                          <RoleView roles={permitAdmin('Council')}>
+                      <RoleView roles={permitAdmin('GatheringService')}>
+                        <Row className="form-row">
+                          <Col>
                             <Select
-                              label={`Select a Constituency`}
-                              name="constituency"
-                              options={constituencyOptions}
-                              defaultOption={`Select a Constituency`}
+                              name="stream"
+                              label="Select a Stream"
+                              options={streamOptions}
+                              defaultOption="Select a Stream"
                             />
-                          </RoleView>
-                          <Input
-                            name="name"
-                            label="Name of Bacenta"
-                            placeholder="Enter Name Here"
-                          />
-                          <Select
-                            name="graduationStatus"
-                            options={BUSSING_STATUS_OPTIONS}
-                            defaultOption="Choose Graduation Status"
-                            label="Status"
-                          />
-                          <Select
-                            name="vacationStatus"
-                            options={VACATION_OPTIONS}
-                            defaultOption="Choose Vacation Status"
-                            label="Status"
-                          />
-                        </Col>
-                      </Row>
+                          </Col>
+                        </Row>
+                      </RoleView>
+
+                      <Input
+                        name="name"
+                        label={`Name of Council`}
+                        placeholder={`Name of Council`}
+                      />
 
                       <Row className="d-flex align-items-center mb-3">
-                        <RoleView roles={permitAdmin('Constituency')}>
+                        <RoleView roles={permitAdmin('Stream')}>
                           <Col>
                             <SearchMember
                               name="leaderId"
+                              label="Choose a Leader"
+                              placeholder="Start typing..."
                               initialValue={initialValues?.leaderName}
-                              placeholder="Start typing"
-                              label="Select a Leader"
                               setFieldValue={formik.setFieldValue}
                               aria-describedby="Member Search Box"
                               error={formik.errors.leaderId}
@@ -164,44 +125,39 @@ const BacentaForm = ({
                           </Col>
                         </RoleView>
                       </Row>
-
-                      {!newBacenta && (
+                      {!newCouncil && (
                         <>
-                          <small>
-                            List any Fellowships that are being moved to this
-                            Bacenta
+                          <small className="pt-2">
+                            {`Select any constituencies that are being moved to this Council`}
                           </small>
-                          <FieldArray name="fellowships">
+                          <FieldArray name="constituencies">
                             {(fieldArrayProps) => {
                               const { push, remove, form } = fieldArrayProps
                               const { values } = form
-                              const { fellowships } = values
+                              const { constituencies } = values
 
                               return (
                                 <>
-                                  {fellowships.map(
-                                    (fellowship: Fellowship, index: number) => (
+                                  {constituencies.map(
+                                    (constituency: Church, index: number) => (
                                       <Row key={index} className="form-row">
                                         <Col>
-                                          <SearchFellowship
-                                            name={`fellowships[${index}]`}
-                                            initialValue={fellowship?.name}
-                                            placeholder="Enter Fellowship Name"
+                                          <SearchConstituency
+                                            name={`constituencies[${index}]`}
+                                            placeholder="Constituency Name"
+                                            initialValue={constituency?.name}
                                             setFieldValue={formik.setFieldValue}
-                                            aria-describedby="Fellowship Name"
-                                            error={
-                                              formik.errors.fellowships?.length
-                                                ? formik.errors.fellowships[
-                                                    index
-                                                  ]
-                                                : ''
-                                            }
+                                            aria-describedby="Constituency Name"
+                                            error={arrayError(
+                                              formik.errors.constituencies,
+                                              index
+                                            )}
                                           />
                                         </Col>
                                         <Col className="col-auto d-flex">
                                           <PlusSign onClick={() => push('')} />
                                           {(index > 0 ||
-                                            fellowships?.length !== 1) && (
+                                            constituencies?.length !== 1) && (
                                             <MinusSign
                                               onClick={() => remove(index)}
                                             />
@@ -222,32 +178,32 @@ const BacentaForm = ({
 
                 <SubmitButton formik={formik} />
               </Form>
+
               {isOpen && (
                 <Popup handleClose={togglePopup}>
-                  Are you sure you want to close down this bacenta?
+                  Are you sure you want to close down this fellowship?
                   <Button
                     variant="primary"
-                    size="lg"
                     type="submit"
                     className={`btn-main ${theme}`}
                     onClick={() => {
-                      setButtonLoading(true)
-                      CloseDownBacenta({
+                      setButtonLoading(false)
+                      CloseDownCouncil({
                         variables: {
-                          id: bacentaId,
+                          id: councilId,
                           leaderId: initialValues.leaderId,
                         },
                       })
                         .then((res) => {
-                          clickCard(res.data.CloseDownBacenta)
                           setButtonLoading(false)
+                          clickCard(res.data.CloseDownCouncil)
                           togglePopup()
-                          navigate(`/constituency/displaydetails`)
+                          navigate(`/council/displayall`)
                         })
                         .catch((error) => {
                           setButtonLoading(false)
                           throwErrorMsg(
-                            'There was an error closing down this bacenta',
+                            `There was an error closing down this council`,
                             error
                           )
                         })
@@ -264,7 +220,8 @@ const BacentaForm = ({
                   </Button>
                 </Popup>
               )}
-              {!newBacenta && (
+
+              {!newCouncil && (
                 <Button
                   variant="primary"
                   size="lg"
@@ -272,7 +229,7 @@ const BacentaForm = ({
                   className={`btn-secondary ${theme} mt-3`}
                   onClick={togglePopup}
                 >
-                  Close Down Bacenta
+                  {`Close Down Council`}
                 </Button>
               )}
             </Container>
@@ -283,4 +240,4 @@ const BacentaForm = ({
   )
 }
 
-export default BacentaForm
+export default CouncilForm

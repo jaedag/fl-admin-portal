@@ -1,5 +1,5 @@
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
-import { Form, Formik } from 'formik'
+import { Form, Formik, FormikHelpers } from 'formik'
 import * as Yup from 'yup'
 import { makeSelectOptions } from 'global-utils'
 import { permitAdmin } from 'permission-utils'
@@ -11,8 +11,31 @@ import { DISPLAY_CONSTITUENCY } from 'pages/directory/display/ReadQueries'
 import RoleView from 'auth/RoleView'
 import Select from 'components/formik/Select'
 import SearchMember from 'components/formik/SearchMember'
+import { FormikInitialValues } from 'components/formik/formiik-types'
 
-const SontaForm = ({ initialValues, onSubmit, title, loading, newSonta }) => {
+export interface SontaFormValues extends FormikInitialValues {
+  ministrySelect: string
+  constituency: string
+}
+
+type SontaFormProps = {
+  initialValues: SontaFormValues
+  onSubmit: (
+    values: SontaFormValues,
+    onSubmitProps: FormikHelpers<SontaFormValues>
+  ) => void
+  title: string
+  loading: boolean
+  newSonta: boolean
+}
+
+const SontaForm = ({
+  initialValues,
+  onSubmit,
+  title,
+  newSonta,
+  loading,
+}: SontaFormProps) => {
   const { constituencyId, councilId } = useContext(ChurchContext)
 
   const {
@@ -37,16 +60,6 @@ const SontaForm = ({ initialValues, onSubmit, title, loading, newSonta }) => {
   const constituencyLoading = constituenciesLoading
   const constituency = constituenciesData?.constituencies[0]
 
-  let initialValuesForNewSonta
-
-  if (newSonta) {
-    initialValuesForNewSonta = {
-      ministrySelect: '',
-      leaderId: '',
-      constituency: constituency?.id ?? '',
-    }
-  }
-
   const validationSchema = Yup.object({
     ministrySelect: Yup.string().required('You must choose a ministry'),
     leaderId: Yup.string().required('Please choose a leader from the dropdown'),
@@ -59,7 +72,8 @@ const SontaForm = ({ initialValues, onSubmit, title, loading, newSonta }) => {
 
   const sontasNotInconstituency = ministryOptions?.filter((ministry) => {
     return !constituency?.sontas.some(
-      (sonta) => sonta['name'] === `${constituency?.name} ${ministry.key}`
+      (sonta: { [x: string]: string }) =>
+        sonta['name'] === `${constituency?.name} ${ministry.key}`
     )
   })
 
@@ -76,7 +90,7 @@ const SontaForm = ({ initialValues, onSubmit, title, loading, newSonta }) => {
       data={constituenciesData && ministryListData && councilData}
     >
       <Formik
-        initialValues={initialValuesForNewSonta || initialValues}
+        initialValues={initialValues}
         validationSchema={validationSchema}
         onSubmit={onSubmit}
       >
