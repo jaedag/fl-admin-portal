@@ -69,6 +69,9 @@ export interface Sonta extends Church {
 export interface Fellowship extends Church {
   __typename: 'Fellowship'
   bankingCode: number
+  meetingDay: {
+    day: 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday'
+  }
 }
 
 export interface Bacenta extends Church {
@@ -273,4 +276,15 @@ export type EquipmentRecord = {
   bluetoothSpeakers: number
   offeringBags: number
   pulpits: number
+}
+export interface HigherChurch extends Church {
+  stream_name: StreamOptions
+  admin: Member
+  fellowshipCount: number
+  bacentaCount: number
+  constituencyCount: number
+  councilCount: number
+  streamCount: number
+  memberCount: number
+  target: number
 }

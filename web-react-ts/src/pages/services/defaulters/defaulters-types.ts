@@ -1,18 +1,24 @@
 import { ApolloError } from '@apollo/client'
-import { Church, StreamOptions, Fellowship } from 'global-types'
+import { Church, StreamOptions, Fellowship, ServiceRecord } from 'global-types'
 
-interface FellowshipWithArrivals extends Fellowship {
+export interface FellowshipWithDefaulters extends Fellowship {
   __typename: 'Fellowship'
+  bacenta: {
+    id: string
+    name: string
+    constituency: Church
+  }
+  services: ServiceRecord[]
 }
 
 export interface HigherChurchWithDefaulters extends Church {
   __typename: 'Constituency' | 'Stream' | 'Council' | 'GatheringService'
   stream_name: StreamOptions
-  servicesThisWeek: FellowshipWithArrivals[]
-  formDefaultersThisWeek: FellowshipWithArrivals[]
-  bankedThisWeek: FellowshipWithArrivals[]
-  bankingDefaultersThisWeek: FellowshipWithArrivals[]
-  cancelledServicesThisWeek: FellowshipWithArrivals[]
+  servicesThisWeek: FellowshipWithDefaulters[]
+  formDefaultersThisWeek: FellowshipWithDefaulters[]
+  bankedThisWeek: FellowshipWithDefaulters[]
+  bankingDefaultersThisWeek: FellowshipWithDefaulters[]
+  cancelledServicesThisWeek: FellowshipWithDefaulters[]
 
   servicesThisWeekCount: number
   formDefaultersThisWeekCount: number
@@ -23,7 +29,7 @@ export interface HigherChurchWithDefaulters extends Church {
   [key: string]: any
 }
 
-export interface DefaultersUseChurchtype {
+export interface DefaultersUseChurchType {
   church: HigherChurchWithDefaulters | null
   loading: boolean
   error: ApolloError | undefined

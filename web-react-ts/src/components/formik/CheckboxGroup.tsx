@@ -3,7 +3,7 @@ import { Field, ErrorMessage } from 'formik'
 import TextError from './TextError/TextError'
 import { MemberContext } from 'contexts/MemberContext'
 import './CheckboxGroup.css'
-import { FormikComponentProps } from './formiik-utils'
+import { FormikComponentProps } from './formiik-types'
 
 interface CheckboxGroupProps extends FormikComponentProps {}
 

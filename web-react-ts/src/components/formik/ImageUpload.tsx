@@ -4,7 +4,7 @@ import TextError from './TextError/TextError'
 import { Container, Spinner } from 'react-bootstrap'
 import { MemberContext } from 'contexts/MemberContext'
 import './Formik.css'
-import { FormikComponentProps } from './formiik-utils'
+import { FormikComponentProps } from './formiik-types'
 
 interface ImageUploadProps extends FormikComponentProps {
   uploadPreset?: string

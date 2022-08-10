@@ -4,7 +4,7 @@ import { DocumentNode, useLazyQuery } from '@apollo/client'
 import { ErrorMessage } from 'formik'
 import TextError from './TextError/TextError'
 import { DEBOUNCE_TIMER } from 'global-utils'
-import { FormikComponentProps } from './formiik-utils'
+import { FormikComponentProps } from './formiik-types'
 
 interface ComboBoxProps extends FormikComponentProps {
   suggestions: string[]

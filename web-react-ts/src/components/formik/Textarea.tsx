@@ -2,7 +2,7 @@ import React from 'react'
 import { Field, ErrorMessage } from 'formik'
 import TextError from './TextError/TextError'
 import './Formik.css'
-import { FormikComponentProps } from './formiik-utils'
+import { FormikComponentProps } from './formiik-types'
 
 function Textarea(props: FormikComponentProps) {
   const { label, name, ...rest } = props
