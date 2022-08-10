@@ -1,6 +1,5 @@
 import React, { useContext } from 'react'
 import { Container, Row, Table, Button } from 'react-bootstrap'
-import HeadingSecondary from 'components/HeadingSecondary'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import { MemberContext } from 'contexts/MemberContext'
 import { ChurchContext } from 'contexts/ChurchContext'
@@ -38,11 +37,11 @@ const FellowshipEquipmentFormDetails = () => {
         <HeadingPrimary className="text-center">
           Equipment Campaign
         </HeadingPrimary>
-        <HeadingSecondary>
-          <h6 className="text-center pb-4 text-secondary">
-            {`${church?.name} ${churchType}`}
-          </h6>
-        </HeadingSecondary>
+
+        <h6 className="text-center pb-4 text-secondary">
+          {`${church?.name} ${churchType}`}
+        </h6>
+
         <Row>
           <Table variant={theme} striped bordered>
             <tbody>

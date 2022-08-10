@@ -14,6 +14,8 @@ const FellowshipTrendsButton = (props: TrendsButtonProps) => {
   const offeringBags = church?.equipmentRecord?.offeringBags
   const bluetoothSpeakers = church?.equipmentRecord?.bluetoothSpeakers
 
+  console.log(offeringBags)
+
   const totalOfferingBags =
     churchType === 'Fellowship' ? 2 : church?.activeFellowshipCount * 2
   const totalBluetoothSpeakers =
@@ -38,11 +40,11 @@ const FellowshipTrendsButton = (props: TrendsButtonProps) => {
       </div>
       <div className="d-grid gap-1 pb-3">
         <div className="lowercase-text text-secondary">
-          Total Offering Bags: {offeringBags} / {totalOfferingBags}
+          Offering Bags: {offeringBags ? offeringBags : 0} / {totalOfferingBags}
         </div>
         <ProgressBar percentage={offeringBagsPercentage} />
         <div className="lowercase-text text-secondary">
-          Total Bluetooth Speakers: {bluetoothSpeakers} /{' '}
+          Bluetooth Speakers: {bluetoothSpeakers ? bluetoothSpeakers : 0} /{' '}
           {totalBluetoothSpeakers}
         </div>
         <ProgressBar percentage={bluetoothSpeakersPercentage} />
