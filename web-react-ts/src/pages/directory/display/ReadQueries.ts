@@ -375,6 +375,13 @@ export const DISPLAY_CONSTITUENCY = gql`
         name
       }
 
+      zone {
+        id
+        number
+        sprinterCost
+        urvanCost
+      }
+
       leader {
         id
         firstName

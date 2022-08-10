@@ -9,8 +9,13 @@ SET zone.number = 1,
 zone.sprinterCost = 100,
 zone.urvanCost = 70
 RETURN zone;
+CREATE (zone:BusZone {id:apoc.create.uuid()})
+SET zone.number = 2,
+zone.sprinterCost = 120,
+zone.urvanCost = 90
+RETURN zone;
 
-MATCH (b:Bacenta)
+MATCH (b:Constituency)
 MATCH (zone:BusZone {number: 1})
 MERGE (b)-[:BUSSES_FROM]->(zone)
 RETURN zone;

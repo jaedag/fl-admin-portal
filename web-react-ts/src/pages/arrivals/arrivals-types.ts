@@ -3,7 +3,6 @@ import {
   Bacenta,
   Church,
   ChurchLevel,
-  Constituency,
   Member,
   Stream,
   StreamOptions,

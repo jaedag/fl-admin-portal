@@ -6,6 +6,7 @@ import { DISPLAY_BACENTA } from './ReadQueries'
 import { ChurchContext } from 'contexts/ChurchContext'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { permitAdminArrivals } from 'permission-utils'
+import { DetailsArray } from './DetailsFellowship'
 
 const DetailsBacenta = () => {
   const { bacentaId } = useContext(ChurchContext)
@@ -21,7 +22,7 @@ const DetailsBacenta = () => {
     bacenta,
   ]
 
-  const details = [
+  const details: DetailsArray = [
     {
       title: 'Members',
       number: bacenta?.memberCount || 0,

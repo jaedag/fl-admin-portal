@@ -59,6 +59,7 @@ import CouncilAvgWeekdayQuickFacts from './quick-facts/this-month/CouncilAvgWeek
 import GatheringServiceAvgWeekdayQuickFacts from './quick-facts/this-month/GatheringServiceAvgWeekdayQuickFacts'
 import QuickFactsChurchList from './quick-facts/QuickFactsChurchList'
 import { RouteTypes } from 'global-types'
+import UpdateConstituencyZone from './update/UpdateConstituencyZone'
 
 export const memberDirectory: RouteTypes[] = [
   {
@@ -377,6 +378,12 @@ export const directory: RouteTypes[] = [
     path: '/constituency/editconstituency',
     element: UpdateConstituency,
     roles: permitAdmin('Council'),
+    placeholder: false,
+  },
+  {
+    path: 'constituency/change-zone',
+    element: UpdateConstituencyZone,
+    roles: permitAdmin('Stream'),
     placeholder: false,
   },
   {

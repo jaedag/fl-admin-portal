@@ -5,7 +5,6 @@ import {
   DISPLAY_BACENTA_BUSSING_DETAILS,
   SEND_MOBILE_VERIFICATION_NUMBER,
   UPDATE_BACENTA_BUSSING_DETAILS,
-  UPDATE_BACENTA_ZONE,
   UPDATE_BUS_PAYMENT_DETAILS,
 } from './UpdateBacentaArrivals'
 import * as Yup from 'yup'
@@ -18,7 +17,6 @@ import { Form, Formik, FormikHelpers } from 'formik'
 import SubmitButton from 'components/formik/SubmitButton'
 import {
   alertMsg,
-  FormikSelectOptions,
   MOMO_NUM_REGEX,
   randomOTPGenerator,
   throwErrorMsg,
@@ -30,14 +28,12 @@ import useAuth from 'auth/useAuth'
 import Popup from 'components/Popup/Popup'
 import usePopup from 'hooks/usePopup'
 import { MemberContext } from 'contexts/MemberContext'
-import { BusZone } from 'pages/arrivals/arrivals-types'
-import Input from 'components/formik/Input'
 import Select from 'components/formik/Select'
+import Input from 'components/formik/Input'
 
 type FormOptions = {
   name: string
   target: string
-  zone: string
   mobileNetwork: string
   momoName: string
   momoNumber: string
@@ -60,20 +56,11 @@ const UpdateBusPayment = () => {
     variables: { id: bacentaId },
   })
 
-  const zone: FormikSelectOptions = bacentaData?.busZones.map(
-    (zone: BusZone) => {
-      return {
-        value: zone.number,
-        key: `Zn ${zone.number} - Sprinter - ${zone.sprinterCost}, Urvan - ${zone.urvanCost}`,
-      }
-    }
-  )
-
   const [UpdateBacentaBussingDetails] = useMutation(
     UPDATE_BACENTA_BUSSING_DETAILS
   )
   const [UpdateBusPaymentDetails] = useMutation(UPDATE_BUS_PAYMENT_DETAILS)
-  const [UpdateBacentaZone] = useMutation(UPDATE_BACENTA_ZONE)
+
   const [SendMobileVerificationNumber] = useMutation(
     SEND_MOBILE_VERIFICATION_NUMBER
   )
@@ -82,7 +69,7 @@ const UpdateBusPayment = () => {
   const initialValues: FormOptions = {
     name: bacenta?.name,
     target: bacenta?.target ?? '',
-    zone: bacenta?.zone?.number ?? '',
+
     mobileNetwork: bacenta?.mobileNetwork ?? '',
     momoName: bacenta?.momoName ?? '',
     momoNumber: bacenta?.momoNumber ?? '',
@@ -91,7 +78,7 @@ const UpdateBusPayment = () => {
 
   const validationSchema = Yup.object({
     target: Yup.string().required('Bacenta Name is a required field'),
-    zone: Yup.string().required('This is a required field'),
+
     momoNumber: Yup.string().matches(
       MOMO_NUM_REGEX,
       `Enter a valid MoMo Number without spaces. eg. (02XXXXXXXX)`
@@ -112,30 +99,14 @@ const UpdateBusPayment = () => {
   ) => {
     onSubmitProps.setSubmitting(true)
 
-    const mutationArray = []
-
     if (isAuthorised(permitAdminArrivals('Stream'))) {
-      mutationArray.push(
+      try {
         UpdateBacentaBussingDetails({
           variables: {
             bacentaId: bacentaId,
             target: parseInt(values.target),
           },
         })
-      )
-
-      if (initialValues.zone !== values.zone) {
-        mutationArray.push(
-          UpdateBacentaZone({
-            variables: {
-              bacentaId: bacentaId,
-              zone: parseInt(values.zone),
-            },
-          })
-        )
-      }
-      try {
-        await Promise.all(mutationArray)
       } catch (error: any) {
         throwErrorMsg('', error)
       }
@@ -190,13 +161,6 @@ const UpdateBusPayment = () => {
                               name="target"
                               label="Attendance Target"
                               placeholder="Enter Target"
-                            />
-
-                            <Select
-                              options={zone}
-                              name="zone"
-                              label="Bus Zone"
-                              defaultOption="Select Zone"
                             />
                           </Col>
                         </Row>

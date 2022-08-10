@@ -20,6 +20,7 @@ extend type Council {
 }
 
 extend type Constituency {
+  zone: BusZone! @relationship(type: "BUSSES_FROM", direction: OUT)
   target: Int!
     @cypher(
       statement: "MATCH (this)-[:HAS]->(bacentas:Bacenta:Active) WITH DISTINCT bacentas RETURN SUM(bacentas.target)"
@@ -660,6 +661,8 @@ type BusZone {
   number: Int!
   sprinterCost: Float!
   urvanCost: Float!
+  constituencies: [Constituency!]!
+    @relationship(type: "BUSSES_FROM", direction: IN)
 }
 
 extend type Constituency {
@@ -861,6 +864,10 @@ extend type Constituency {
 }
 
 extend type Bacenta {
+  zone: BusZone!
+    @cypher(
+      statement: "MATCH (this)<-[:HAS]-(:Constituency)-[:BUSSES_FROM]->(zone:BusZone) RETURN zone"
+    )
   graduationStatus: String!
     @cypher(
       statement: """
@@ -870,7 +877,7 @@ extend type Bacenta {
       RETURN status
       """
     )
-  zone: BusZone! @relationship(type: "BUSSES_FROM", direction: OUT)
+
   mobileNetwork: String
   momoNumber: String
   momoName: String
@@ -1072,7 +1079,7 @@ extend type Mutation {
       """
     )
 
-  UpdateBacentaZone(bacentaId: ID!, zone: Int!): Bacenta!
+  UpdateConstituencyZone(constituencyId: ID!, zone: Int!): Constituency!
     @auth(
       rules: [
         {
@@ -1087,13 +1094,13 @@ extend type Mutation {
     )
     @cypher(
       statement: """
-      OPTIONAL MATCH (bacenta:Bacenta {id: $bacentaId})-[r:BUSSES_FROM]->()
+      OPTIONAL MATCH (constituency:Constituency {id: $constituencyId})-[r:BUSSES_FROM]->(:BusZone)
        MATCH (new:BusZone {number: $zone})
        DELETE r
 
-       MERGE (bacenta)-[:BUSSES_FROM]->(new)
+       MERGE (constituency)-[:BUSSES_FROM]->(new)
 
-       RETURN bacenta
+       RETURN constituency
       """
     )
 

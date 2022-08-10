@@ -14,16 +14,25 @@ export const DISPLAY_BACENTA_BUSSING_DETAILS = gql`
       vacationStatus
       graduationStatus
 
+      momoName
+      momoNumber
+      mobileNetwork
+    }
+  }
+`
+
+export const DISPLAY_CONSTITUENCY_BUSSING_DETAILS = gql`
+  query DisplayConstituencyBussingDetails($id: ID!) {
+    constituencies(where: { id: $id }, options: { limit: 1 }) {
+      id
+      name
+
       zone {
         id
         number
         sprinterCost
         urvanCost
       }
-
-      momoName
-      momoNumber
-      mobileNetwork
     }
     busZones {
       id
@@ -94,9 +103,9 @@ export const UPDATE_BUS_PAYMENT_DETAILS = gql`
   }
 `
 
-export const UPDATE_BACENTA_ZONE = gql`
-  mutation UpdateBacentaZone($bacentaId: ID!, $zone: Int!) {
-    UpdateBacentaZone(bacentaId: $bacentaId, zone: $zone) {
+export const UPDATE_CONSTITUENCY_ZONE = gql`
+  mutation UpdateConstituencyZone($constituencyId: ID!, $zone: Int!) {
+    UpdateConstituencyZone(constituencyId: $constituencyId, zone: $zone) {
       id
       name
       zone {

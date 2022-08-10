@@ -6,6 +6,7 @@ import { DISPLAY_CONSTITUENCY } from './ReadQueries'
 import { ChurchContext } from '../../../contexts/ChurchContext'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { permitAdmin } from 'permission-utils'
+import { DetailsArray } from './DetailsFellowship'
 
 const DetailsConstituency = () => {
   const { constituencyId } = useContext(ChurchContext)
@@ -15,14 +16,14 @@ const DetailsConstituency = () => {
   })
   const constituency = data?.constituencies[0]
 
-  const details = [
+  const details: DetailsArray = [
     {
       title: 'Members',
       number: constituency?.memberCount || 0,
       link: `/${constituency?.__typename?.toLowerCase()}/members`,
       width: 12,
     },
-    { title: 'Target', number: constituency?.target, link: '#', width: 12 },
+    { title: 'Target', number: constituency?.target, link: '#' },
     {
       title: 'Bacentas',
       number: constituency?.activeBacentaCount || 0,
@@ -33,6 +34,21 @@ const DetailsConstituency = () => {
       title: 'Fellowships',
       number: constituency?.activeFellowshipCount,
       vacationCount: constituency?.vacationFellowshipCount,
+      link: '#',
+    },
+    {
+      title: 'Zone',
+      number: constituency?.zone?.number,
+      link: '#',
+    },
+    {
+      title: 'Sprinter Cost',
+      number: constituency?.zone.sprinterCost + ' GHS',
+      link: '#',
+    },
+    {
+      title: 'Urvan Cost',
+      number: constituency?.zone.urvanCost + ' GHS',
       link: '#',
     },
   ]

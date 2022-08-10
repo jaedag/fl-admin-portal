@@ -3,6 +3,7 @@ import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import DisplayChurchDetails from 'components/DisplayChurchDetails/DisplayChurchDetails'
 import { ChurchContext } from 'contexts/ChurchContext'
 import React, { useContext } from 'react'
+import { DetailsArray } from './DetailsFellowship'
 import { DISPLAY_GATHERINGSERVICE } from './ReadQueries'
 
 const DetailsGatheringService = () => {
@@ -15,7 +16,7 @@ const DetailsGatheringService = () => {
   const gathering = data?.gatheringServices[0]
   let breadcrumb = [gathering?.oversight, gathering]
 
-  const details = [
+  const details: DetailsArray = [
     {
       title: 'Members',
       number: gathering?.memberCount || 0,
