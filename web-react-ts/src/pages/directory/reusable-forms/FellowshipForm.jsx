@@ -14,7 +14,6 @@ import {
 } from 'queries/ListQueries'
 import React, { useContext, useState } from 'react'
 import { ChurchContext } from 'contexts/ChurchContext'
-import FormikControl from 'components/formik/FormikControl'
 import { MAKE_FELLOWSHIP_INACTIVE } from 'pages/directory/update/CloseChurchMutations'
 import { useNavigate } from 'react-router'
 import Popup from 'components/Popup/Popup'
@@ -30,6 +29,9 @@ import { DISPLAY_BACENTA } from 'pages/directory/display/ReadQueries'
 import { permitAdmin } from 'permission-utils'
 import usePopup from 'hooks/usePopup'
 import SelectWithQuery from 'components/formik/SelectWithQuery'
+import Input from 'components/formik/Input'
+import Select from 'components/formik/Select'
+import SearchMember from 'components/formik/SearchMember'
 
 const FellowshipForm = (props) => {
   const { fellowshipId, councilId, clickCard } = useContext(ChurchContext)
@@ -110,8 +112,7 @@ const FellowshipForm = (props) => {
                     <Row className="form-row">
                       <RoleView roles={permitAdmin('Constituency')}>
                         <Col>
-                          <FormikControl
-                            control="select"
+                          <Select
                             label={`Constituency`}
                             name="constituencySelect"
                             options={constituencyOptions}
@@ -143,8 +144,7 @@ const FellowshipForm = (props) => {
                     <Row className="form-row">
                       <RoleView roles={permitAdmin('Constituency')}>
                         <Col sm={12}>
-                          <FormikControl
-                            control="input"
+                          <Input
                             name="name"
                             label="Name of Fellowship"
                             placeholder="Name of Fellowship"
@@ -152,8 +152,7 @@ const FellowshipForm = (props) => {
                         </Col>
 
                         <Col sm={12}>
-                          <FormikControl
-                            control="select"
+                          <Select
                             label="Meeting Day"
                             name="meetingDay"
                             options={SERVICE_DAY_OPTIONS}
@@ -162,8 +161,7 @@ const FellowshipForm = (props) => {
                         </Col>
 
                         <Col sm={12}>
-                          <FormikControl
-                            control="select"
+                          <Select
                             label="Vacation Status"
                             name="vacationStatus"
                             options={VACATION_OPTIONS}
@@ -173,8 +171,7 @@ const FellowshipForm = (props) => {
                       </RoleView>
                       <RoleView roles={permitAdmin('Constituency')}>
                         <Col sm={12}>
-                          <FormikControl
-                            control="memberSearch"
+                          <SearchMember
                             name="leaderId"
                             label="Fellowship Leader"
                             initialValue={props.initialValues.leaderName}
@@ -192,18 +189,10 @@ const FellowshipForm = (props) => {
 
                     <Row className="row-cols-2 d-flex align-items-center">
                       <Col>
-                        <FormikControl
-                          control="input"
-                          name="venueLatitude"
-                          placeholder="Latitude"
-                        />
+                        <Input name="venueLatitude" placeholder="Latitude" />
                       </Col>
                       <Col>
-                        <FormikControl
-                          control="input"
-                          name="venueLongitude"
-                          placeholder="Longitude"
-                        />
+                        <Input name="venueLongitude" placeholder="Longitude" />
                       </Col>
                       <Col className="my-2">
                         <Button

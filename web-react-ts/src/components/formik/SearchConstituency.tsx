@@ -5,7 +5,7 @@ import { DEBOUNCE_TIMER, isAuthorised, throwErrorMsg } from 'global-utils'
 import { permitMe } from 'permission-utils'
 import React, { useContext, useEffect, useState } from 'react'
 import Autosuggest from 'react-autosuggest'
-import { RoleBasedSearch } from './formiik-utils'
+import { RoleBasedSearch } from './formiik-types'
 import { initialise } from './search-utils'
 import {
   COUNCIL_CONSTITUENCY_SEARCH,

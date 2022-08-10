@@ -4,7 +4,7 @@ import TextError from './TextError/TextError'
 import { useQuery } from '@apollo/client'
 import { useAuth0 } from '@auth0/auth0-react'
 import PlaceholderCustom from 'components/Placeholder'
-import { FormikSelectWithApollo } from './formiik-utils'
+import { FormikSelectWithApollo } from './formiik-types'
 
 function SelectWithQuery(props: FormikSelectWithApollo) {
   const {

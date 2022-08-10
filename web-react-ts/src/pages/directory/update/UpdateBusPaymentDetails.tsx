@@ -15,7 +15,6 @@ import { Button, Col, Container, Row } from 'react-bootstrap'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import HeadingSecondary from 'components/HeadingSecondary'
 import { Form, Formik, FormikHelpers } from 'formik'
-import FormikControl from 'components/formik/FormikControl'
 import SubmitButton from 'components/formik/SubmitButton'
 import {
   alertMsg,
@@ -32,6 +31,8 @@ import Popup from 'components/Popup/Popup'
 import usePopup from 'hooks/usePopup'
 import { MemberContext } from 'contexts/MemberContext'
 import { BusZone } from 'pages/arrivals/arrivals-types'
+import Input from 'components/formik/Input'
+import Select from 'components/formik/Select'
 
 type FormOptions = {
   name: string
@@ -185,15 +186,13 @@ const UpdateBusPayment = () => {
                       <RoleView roles={permitAdminArrivals('Stream')}>
                         <Row className="form-row">
                           <Col>
-                            <FormikControl
-                              control="input"
+                            <Input
                               name="target"
                               label="Attendance Target"
                               placeholder="Enter Target"
                             />
 
-                            <FormikControl
-                              control="select"
+                            <Select
                               options={zone}
                               name="zone"
                               label="Bus Zone"
@@ -217,8 +216,7 @@ const UpdateBusPayment = () => {
                                 Enter that code in the box below
                               </p>
                             </div>
-                            <FormikControl
-                              control="input"
+                            <Input
                               label="Enter your verification code"
                               name="verificationCode"
                             />
@@ -268,24 +266,18 @@ const UpdateBusPayment = () => {
                         )}
                         <Row>
                           <Col>
-                            <FormikControl
-                              control="select"
+                            <Select
                               name="mobileNetwork"
                               label="Mobile Network"
                               options={MOBILE_NETWORK_OPTIONS}
                             />
-                            <FormikControl
-                              control="input"
+                            <Input
                               name="momoNumber"
                               label="MoMo Number"
                               placeholder="Enter a number"
                             />
 
-                            <FormikControl
-                              control="input"
-                              name="momoName"
-                              label="MoMo Name"
-                            />
+                            <Input name="momoName" label="MoMo Name" />
                           </Col>
                         </Row>
                       </RoleView>

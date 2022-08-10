@@ -12,7 +12,6 @@ import { permitAdmin, permitAdminArrivals } from 'permission-utils'
 import { GET_COUNCIL_CONSTITUENCIES } from 'queries/ListQueries'
 import React, { useContext, useState } from 'react'
 import { ChurchContext } from 'contexts/ChurchContext'
-import FormikControl from 'components/formik/FormikControl'
 import PlusSign from 'components/buttons/PlusMinusSign/PlusSign'
 import MinusSign from 'components/buttons/PlusMinusSign/MinusSign'
 import { useNavigate } from 'react-router'
@@ -26,6 +25,10 @@ import { MemberContext } from 'contexts/MemberContext'
 import SubmitButton from 'components/formik/SubmitButton'
 import { DISPLAY_CONSTITUENCY } from 'pages/directory/display/ReadQueries'
 import usePopup from 'hooks/usePopup'
+import Select from 'components/formik/Select'
+import Input from 'components/formik/Input'
+import SearchMember from 'components/formik/SearchMember'
+import SearchFellowship from 'components/formik/SearchFellowship'
 
 const BacentaForm = ({ initialValues, onSubmit, title, newBacenta }) => {
   const { clickCard, bacentaId, councilId } = useContext(ChurchContext)
@@ -94,29 +97,25 @@ const BacentaForm = ({ initialValues, onSubmit, title, newBacenta }) => {
                     <Row className="form-row">
                       <Col>
                         <RoleView roles={permitAdmin('Council')}>
-                          <FormikControl
-                            control="select"
+                          <Select
                             label={`Select a Constituency`}
                             name="constituency"
                             options={constituencyOptions}
                             defaultOption={`Select a Constituency`}
                           />
                         </RoleView>
-                        <FormikControl
-                          control="input"
+                        <Input
                           name="name"
                           label="Name of Bacenta"
                           placeholder="Enter Name Here"
                         />
-                        <FormikControl
-                          control="select"
+                        <Select
                           name="graduationStatus"
                           options={BUSSING_STATUS_OPTIONS}
                           defaultOption="Choose Graduation Status"
                           label="Status"
                         />
-                        <FormikControl
-                          control="select"
+                        <Select
                           name="vacationStatus"
                           options={VACATION_OPTIONS}
                           defaultOption="Choose Vacation Status"
@@ -128,8 +127,7 @@ const BacentaForm = ({ initialValues, onSubmit, title, newBacenta }) => {
                     <Row className="d-flex align-items-center mb-3">
                       <RoleView roles={permitAdmin('Constituency')}>
                         <Col>
-                          <FormikControl
-                            control="memberSearch"
+                          <SearchMember
                             name="leaderId"
                             initialValue={initialValues?.leaderName}
                             placeholder="Start typing"
@@ -159,8 +157,7 @@ const BacentaForm = ({ initialValues, onSubmit, title, newBacenta }) => {
                                 {fellowships.map((fellowship, index) => (
                                   <Row key={index} className="form-row">
                                     <Col>
-                                      <FormikControl
-                                        control="fellowshipSearch"
+                                      <SearchFellowship
                                         name={`fellowships[${index}]`}
                                         initialValue={fellowship?.name}
                                         placeholder="Enter Fellowship Name"

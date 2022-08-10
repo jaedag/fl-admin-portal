@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { Formik, Form } from 'formik'
-import FormikControl from './formik/FormikControl'
 import ChurchList from './DisplayChurchList'
 import './ChurchSearch.css'
 import { Container } from 'react-bootstrap'
+import Input from './formik/Input'
 
 const ChurchSearch = (props) => {
   const churchDataLoaded = props.data
@@ -35,9 +35,8 @@ const ChurchSearch = (props) => {
           {() => (
             <Form>
               <div>
-                <FormikControl
+                <Input
                   className="form-control church-search search-center"
-                  control="input"
                   name="churchSearch"
                   placeholder="Search Churches"
                   aria-describedby="Church Search"

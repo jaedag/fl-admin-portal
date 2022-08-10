@@ -6,9 +6,6 @@ import { makeSelectOptions, throwErrorMsg } from 'global-utils'
 import { GET_STREAMS } from 'queries/ListQueries'
 import React, { useContext, useState } from 'react'
 import { ChurchContext } from 'contexts/ChurchContext'
-import FormikControl, {
-  arrayError,
-} from 'components/formik/FormikControl'
 import PlusSign from 'components/buttons/PlusMinusSign/PlusSign'
 import MinusSign from 'components/buttons/PlusMinusSign/MinusSign'
 import { MAKE_COUNCIL_INACTIVE } from 'pages/directory/update/CloseChurchMutations'
@@ -23,6 +20,9 @@ import SubmitButton from 'components/formik/SubmitButton'
 import { permitAdmin } from 'permission-utils'
 import usePopup from 'hooks/usePopup'
 import Input from 'components/formik/Input'
+import Select from 'components/formik/Select'
+import { arrayError } from 'components/formik/formik-utils'
+import SearchConstituency from 'components/formik/SearchConstituency'
 
 const CouncilForm = ({ initialValues, onSubmit, title, newCouncil }) => {
   const { clickCard, councilId } = useContext(ChurchContext)
@@ -70,8 +70,7 @@ const CouncilForm = ({ initialValues, onSubmit, title, newCouncil }) => {
                     <RoleView roles={permitAdmin('GatheringService')}>
                       <Row className="form-row">
                         <Col>
-                          <FormikControl
-                            control="select"
+                          <Select
                             name="stream"
                             label="Select a Stream"
                             options={streamOptions}
@@ -90,8 +89,7 @@ const CouncilForm = ({ initialValues, onSubmit, title, newCouncil }) => {
                     <Row className="d-flex align-items-center mb-3">
                       <RoleView roles={permitAdmin('Stream')}>
                         <Col>
-                          <FormikControl
-                            control="memberSearch"
+                          <Input
                             name="leaderId"
                             label="Choose a Leader"
                             placeholder="Start typing..."
@@ -119,8 +117,7 @@ const CouncilForm = ({ initialValues, onSubmit, title, newCouncil }) => {
                                 {constituencies.map((constituency, index) => (
                                   <Row key={index} className="form-row">
                                     <Col>
-                                      <FormikControl
-                                        control="constituencySearch"
+                                      <SearchConstituency
                                         name={`constituencies[${index}]`}
                                         placeholder="Constituency Name"
                                         initialValue={constituency?.name}
