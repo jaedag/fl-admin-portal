@@ -5,55 +5,62 @@ import { throwErrorMsg } from '../../../global-utils'
 import { CREATE_GATHERING_SERVICE_MUTATION } from './CreateMutations'
 import { ChurchContext } from '../../../contexts/ChurchContext'
 import { NEW_GATHERING_SERVICE_LEADER } from './MakeLeaderMutations'
-import GatheringServiceForm from 'pages/directory/reusable-forms/GatheringServiceForm'
+import GatheringServiceForm, {
+  GatheringServiceFormValues,
+} from 'pages/directory/reusable-forms/GatheringServiceForm'
+import { FormikHelpers } from 'formik'
 
 const CreateGatheringService = () => {
   const { clickCard, oversightId } = useContext(ChurchContext)
 
   const navigate = useNavigate()
 
-  const initialValues = {
+  const initialValues: GatheringServiceFormValues = {
     name: '',
     leaderId: '',
+    leaderName: '',
     oversight: oversightId,
   }
 
   const [NewGatheringServiceLeader] = useMutation(NEW_GATHERING_SERVICE_LEADER)
-  const [createGatheringServices] = useMutation(
+  const [CreateGatheringService] = useMutation(
     CREATE_GATHERING_SERVICE_MUTATION
   )
 
   //onSubmit receives the form state as argument
-  const onSubmit = (values, onSubmitProps) => {
+  const onSubmit = async (
+    values: GatheringServiceFormValues,
+    onSubmitProps: FormikHelpers<GatheringServiceFormValues>
+  ) => {
     onSubmitProps.setSubmitting(true)
     clickCard({ id: values.oversight, __typename: 'Oversight' })
+    try {
+      const res = await CreateGatheringService({
+        variables: {
+          name: values.name,
+          leaderId: values.leaderId,
+          oversightId: values.oversight,
+        },
+      })
+      clickCard(res.data.createGatheringService)
 
-    createGatheringServices({
-      variables: {
-        name: values.name,
-        leaderId: values.leaderId,
-        oversightId: values.oversight,
-      },
-    })
-      .then((res) => {
-        clickCard(res.data.createGatheringServices)
-        NewGatheringServiceLeader({
+      try {
+        await NewGatheringServiceLeader({
           variables: {
             leaderId: values.leaderId,
-            gatheringServiceId: res.data.CreateGatheringServices.id,
+            gatheringServiceId: res.data.CreateGatheringService.id,
           },
-        }).catch((error) => {
-          throwErrorMsg('There was an error adding leader', error)
         })
+      } catch (error: any) {
+        throwErrorMsg('There was an error adding leader', error)
+      }
+    } catch (error: any) {
+      throwErrorMsg('There was an error creating gathering service', error)
+    }
 
-        clickCard(res.data.createGatheringServices)
-        onSubmitProps.setSubmitting(false)
-        onSubmitProps.resetForm()
-        navigate(`/gatheringservice/displaydetails`)
-      })
-      .catch((error) => {
-        throwErrorMsg('There was an error creating gathering service', error)
-      })
+    onSubmitProps.setSubmitting(false)
+    onSubmitProps.resetForm()
+    navigate(`/gatheringservice/displaydetails`)
   }
 
   return (

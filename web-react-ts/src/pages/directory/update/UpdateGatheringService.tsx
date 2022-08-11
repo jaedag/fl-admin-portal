@@ -5,10 +5,10 @@ import { alertMsg, throwErrorMsg } from '../../../global-utils'
 import { GET_OVERSIGHT_GATHERINGSERVICES } from '../../../queries/ListQueries'
 import {
   UPDATE_GATHERINGSERVICE_MUTATION,
-  ADD_GATHERINGSERVICE_OVERSIGHT,
+  ADD_GATHERINGSERVICE_STREAM,
   REMOVE_GATHERINGSERVICE_OVERSIGHT,
   REMOVE_STREAM_GATHERINGSERVICE,
-  ADD_GATHERINGSERVICE_STREAM,
+  ADD_GATHERINGSERVICE_OVERSIGHT,
 } from './UpdateMutations'
 import { ChurchContext } from '../../../contexts/ChurchContext'
 import { DISPLAY_GATHERINGSERVICE } from '../display/ReadQueries'
@@ -18,11 +18,15 @@ import {
   CREATE_HISTORY_SUBSTRUCTURE,
 } from './LogMutations'
 import { MAKE_GATHERINGSERVICE_LEADER } from './ChangeLeaderMutations'
-import GatheringServiceForm from 'pages/directory/reusable-forms/GatheringServiceForm'
-import { addNewChurches, removeOldChurches } from './directory-utils'
+import GatheringServiceForm, {
+  GatheringServiceFormValues,
+} from 'pages/directory/reusable-forms/GatheringServiceForm'
 import { MAKE_STREAM_INACTIVE } from './CloseChurchMutations'
+import { addNewChurches, removeOldChurches } from './directory-utils'
+import { FormikHelpers } from 'formik'
+import LoadingScreen from 'components/base-component/LoadingScreen'
 
-const UpdateStream = () => {
+const UpdateGatheringService = () => {
   const { gatheringServiceId, clickCard } = useContext(ChurchContext)
   const { data, loading } = useQuery(DISPLAY_GATHERINGSERVICE, {
     variables: { id: gatheringServiceId },
@@ -30,17 +34,15 @@ const UpdateStream = () => {
 
   const navigate = useNavigate()
   const gatheringService = data?.gatheringServices[0]
-
-  const initialValues = {
+  const initialValues: GatheringServiceFormValues = {
     name: gatheringService?.name,
     leaderName: gatheringService?.leader?.fullName ?? '',
     leaderId: gatheringService?.leader?.id || '',
-    oversight: gatheringService?.oversight?.id ?? '',
+    oversight: gatheringService?.oversight?.id,
     streams: gatheringService?.streams?.length
       ? gatheringService.streams
       : [''],
   }
-
   const [LogGatheringServiceHistory] = useMutation(
     LOG_GATHERINGSERVICE_HISTORY,
     {
@@ -74,35 +76,30 @@ const UpdateStream = () => {
     }
   )
 
-  //Changes downwards. ie. Stream Changes underneath Gathering Service
-  const [AddGatheringServiceStreams] = useMutation(ADD_GATHERINGSERVICE_STREAM)
+  //Changes downwards. ie. Bacenta Changes underneath constituency
+  const [AddGatheringServicesStream] = useMutation(ADD_GATHERINGSERVICE_STREAM)
   const [RemoveStreamGatheringService] = useMutation(
     REMOVE_STREAM_GATHERINGSERVICE,
     {
       onCompleted: (data) => {
         const prevGatheringService =
-          data.updateGatheringServices.gatheringServices[0]
-        const stream = data.updateStreams.streams[0]
+          data.updateGatheringService.gatheringServices[0]
+        const stream = data.updateStream.streams[0]
         let newGatheringServiceId = ''
         let oldGatheringServiceId = ''
         let historyRecord
 
-        if (prevGatheringService?.id === gatheringServiceId) {
-          //Stream has previous gathering service which is current gathering service and is going
-          oldGatheringServiceId = gatheringServiceId
-          newGatheringServiceId = ''
-          historyRecord = `${stream.name} Stream has been closed down under ${initialValues.name} Gathering Service.`
-        } else if (prevGatheringService.id !== gatheringServiceId) {
-          //Stream has previous gathering service which is not current gathering service and is joining
+        if (prevGatheringService.id !== gatheringServiceId) {
+          //Bacenta has previous constituency which is not current constituency and is joining
           oldGatheringServiceId = prevGatheringService.id
-          oldGatheringServiceId = gatheringServiceId
+          newGatheringServiceId = gatheringServiceId
           historyRecord = `${stream.name} Stream has been moved to ${initialValues.name} Gathering Service from ${prevGatheringService.name} Gathering Service`
         }
 
-        //After removing the council from a stream, then you log that change.
+        //After removing the bacenta from a constituency, then you log that change.
         LogStreamHistory({
           variables: {
-            streamId: stream.id,
+            stream: stream.id,
             newLeaderId: '',
             oldLeaderId: '',
             newGatheringServiceId: newGatheringServiceId,
@@ -115,7 +112,7 @@ const UpdateStream = () => {
   )
   const [CloseDownStream] = useMutation(MAKE_STREAM_INACTIVE)
 
-  //Changes upwards. it. Changes to the GatheringService the Stream Campus is under
+  //Changes upwards. it. Changes to the Oversight the Gathering Service Campus is under
   const [CreateHistorySubstructure] = useMutation(CREATE_HISTORY_SUBSTRUCTURE)
   const [RemoveGatheringServiceOversight] = useMutation(
     REMOVE_GATHERINGSERVICE_OVERSIGHT
@@ -155,7 +152,10 @@ const UpdateStream = () => {
   )
 
   //onSubmit receives the form state as argument
-  const onSubmit = async (values, onSubmitProps) => {
+  const onSubmit = async (
+    values: GatheringServiceFormValues,
+    onSubmitProps: FormikHelpers<GatheringServiceFormValues>
+  ) => {
     onSubmitProps.setSubmitting(true)
     clickCard({ id: values.oversight, __typename: 'Oversight' })
     try {
@@ -193,13 +193,13 @@ const UpdateStream = () => {
           })
           alertMsg('Leader Changed Successfully')
           navigate(`/gatheringservice/displaydetails`)
-        } catch (err) {
+        } catch (err: any) {
           throwErrorMsg('There was a problem changing the Overseer', err)
         }
       }
 
       //Log if GatheringService Changes
-      if (values.Oversight !== initialValues.Oversight) {
+      if (values.oversight !== gatheringService.oversight.id) {
         try {
           await RemoveGatheringServiceOversight({
             variables: {
@@ -214,16 +214,16 @@ const UpdateStream = () => {
               gatheringServiceId: gatheringServiceId,
             },
           })
-        } catch (error) {
+        } catch (error: any) {
           throwErrorMsg(error)
         }
       }
 
       //For the Adding and Removing of Streams
 
-      const oldStreamList = initialValues.streams.map((stream) => stream)
+      const oldStreamList = initialValues.streams?.map((stream) => stream) || []
 
-      const newStreamList = values.streams.map((stream) => stream)
+      const newStreamList = values.streams?.map((stream) => stream) || []
 
       const lists = {
         oldChurches: oldStreamList,
@@ -233,7 +233,7 @@ const UpdateStream = () => {
       const mutations = {
         closeDownChurch: CloseDownStream,
         removeChurch: RemoveStreamGatheringService,
-        addChurch: AddGatheringServiceStreams,
+        addChurch: AddGatheringServicesStream,
         logChurchHistory: LogStreamHistory,
         CreateHistorySubstructure: CreateHistorySubstructure,
       }
@@ -251,9 +251,13 @@ const UpdateStream = () => {
       onSubmitProps.setSubmitting(false)
       onSubmitProps.resetForm()
       navigate(`/gatheringservice/displaydetails`)
-    } catch (err) {
+    } catch (err: any) {
       throwErrorMsg('There was a problem updating this gathering service', err)
     }
+  }
+
+  if (loading) {
+    return <LoadingScreen />
   }
 
   return (
@@ -261,10 +265,9 @@ const UpdateStream = () => {
       initialValues={initialValues}
       onSubmit={onSubmit}
       title={`Update Gathering Service Form`}
-      loading={loading || !initialValues.name}
-      newStream={false}
+      newGatheringService={false}
     />
   )
 }
 
-export default UpdateStream
+export default UpdateGatheringService
