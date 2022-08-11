@@ -61,7 +61,6 @@ import CouncilAvgWeekdayQuickFacts from './quick-facts/this-month/CouncilAvgWeek
 import GatheringServiceAvgWeekdayQuickFacts from './quick-facts/this-month/GatheringServiceAvgWeekdayQuickFacts'
 import QuickFactsChurchList from './quick-facts/QuickFactsChurchList'
 import { RouteTypes } from 'global-types'
-import EditButton from 'components/buttons/EditButton'
 
 export const memberDirectory: RouteTypes[] = [
   {

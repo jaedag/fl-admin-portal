@@ -4,6 +4,7 @@ import DisplayChurchDetails from 'components/DisplayChurchDetails/DisplayChurchD
 import { ChurchContext } from 'contexts/ChurchContext'
 import React, { useContext } from 'react'
 import { DISPLAY_GATHERINGSERVICE } from './ReadQueries'
+import { permitAdmin } from 'permission-utils'
 
 const DetailsGatheringService = () => {
   const { gatheringServiceId } = useContext(ChurchContext)
@@ -62,10 +63,11 @@ const DetailsGatheringService = () => {
         churchId={gatheringServiceId}
         leader={gathering?.leader}
         churchType={gathering?.__typename}
+        admin={gathering?.admin}
         subChurch="Stream"
         details={details}
         editlink="/gatheringservice/editgatheringservice"
-        editPermitted={['adminOversight']}
+        editPermitted={permitAdmin('Oversight')}
         history={gathering?.history.length !== 0 && gathering?.history}
         buttons={gathering?.streams ?? []}
         breadcrumb={breadcrumb && breadcrumb}

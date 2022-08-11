@@ -26,7 +26,7 @@ const Navigator = () => {
       setCurrentUser({
         ...currentUser,
         id: data.memberByEmail.id,
-        fellowship: data.memberByEmail?.fellowship?.id,
+        fellowship: data.memberByEmail?.fellowship.id,
         bacenta: data.memberByEmail?.fellowship?.bacenta?.id,
         council:
           data.memberByEmail?.fellowship?.bacenta.constituency?.council.id,

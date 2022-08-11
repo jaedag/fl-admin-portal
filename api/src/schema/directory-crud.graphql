@@ -200,7 +200,7 @@ extend type Mutation {
       """
     )
 
-  CreateGatheringServices(
+  CreateGatheringService(
     name: String!
     leaderId: ID!
     oversightId: ID!

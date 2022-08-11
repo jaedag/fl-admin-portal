@@ -234,12 +234,12 @@ export const CREATE_STREAM_MUTATION = gql`
   }
 `
 export const CREATE_GATHERING_SERVICE_MUTATION = gql`
-  mutation CreateGatheringServices(
+  mutation CreateGatheringService(
     $name: String!
     $leaderId: ID!
     $oversightId: ID!
   ) {
-    CreateGatheringServices(
+    CreateGatheringService(
       name: $name
       leaderId: $leaderId
       oversightId: $oversightId
