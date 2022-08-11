@@ -3,7 +3,7 @@ import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { FieldArray, Form, Formik, FormikHelpers } from 'formik'
 import * as Yup from 'yup'
 import { makeSelectOptions, throwErrorMsg } from 'global-utils'
-import { GET_GATHERINGSERVICES } from 'queries/ListQueries'
+import { GET_OVERSIGHTS } from 'queries/ListQueries'
 import React, { useContext, useState } from 'react'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { arrayError } from 'components/formik/formik-utils'
@@ -53,14 +53,13 @@ const GatheringServiceForm = ({
   const { theme } = useContext(MemberContext)
 
   const navigate = useNavigate()
-  const { data, loading, error } = useQuery(GET_GATHERINGSERVICES)
+  const { data, loading, error } = useQuery(GET_OVERSIGHTS)
   const [buttonLoading, setButtonLoading] = useState(false)
   const [CloseDownGatheringService] = useMutation(
     MAKE_GATHERING_SERVICE_INACTIVE
   )
 
-  const oversightOptions = makeSelectOptions(data?.oversight)
-
+  const oversightOptions = makeSelectOptions(data?.oversights)
   const validationSchema = Yup.object({
     name: Yup.string().required(`Gathering Service Name is a required field`),
     leaderId: Yup.string().required(

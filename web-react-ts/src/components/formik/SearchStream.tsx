@@ -9,11 +9,14 @@ import { initialise } from './search-utils'
 import {
   GATHERINGSERVICE_STREAM_SEARCH,
   STREAM_COUNCIL_SEARCH,
+  MEMBER_STREAM_SEARCH,
 } from './SearchStreamQueries'
-import { MEMBER_STREAM_SEARCH } from './SearchStreamQueries'
+
+import { RoleBasedSearch } from './formiik-types'
+
 import TextError from './TextError/TextError'
 
-const SearchStream = (props) => {
+const SearchStream = (props: RoleBasedSearch) => {
   const { currentUser } = useContext(MemberContext)
   const [suggestions, setSuggestions] = useState([])
   const [searchString, setSearchString] = useState(props.initialValue ?? '')
@@ -34,7 +37,6 @@ const SearchStream = (props) => {
       },
     }
   )
-
   const [memberSearch, { error: memberError }] = useLazyQuery(
     MEMBER_STREAM_SEARCH,
     {
@@ -46,9 +48,9 @@ const SearchStream = (props) => {
   )
 
   const error = memberError || gatheringServiceError || streamError
-  throwErrorMsg(error)
+  throwErrorMsg('', error)
 
-  const whichSearch = (searchString) => {
+  const whichSearch = (searchString: string) => {
     memberSearch({
       variables: {
         id: currentUser.id,
@@ -75,7 +77,7 @@ const SearchStream = (props) => {
   }
 
   useEffect(() => {
-    setSearchString(initialise(props.initialValue, searchString))
+    setSearchString(initialise(searchString, props.initialValue))
   }, [props.initialValue])
 
   useEffect(() => {
@@ -86,15 +88,12 @@ const SearchStream = (props) => {
     return () => {
       clearTimeout(timerId)
     }
-  }, [searchString, props.initialValue])
+  }, [searchString])
 
   return (
     <div>
-      {props.label ? (
-        <label className="label" htmlFor={name}>
-          {props.label}
-        </label>
-      ) : null}
+      {props.label ? <label className="label">{props.label}</label> : null}
+      {/*// @ts-ignore*/}
       <Autosuggest
         inputProps={{
           placeholder: props.placeholder,
@@ -125,12 +124,13 @@ const SearchStream = (props) => {
         }}
         getSuggestionValue={(suggestion) => suggestion.name}
         highlightFirstSuggestion={true}
-        renderSuggestion={(suggestion) => (
+        renderSuggestion={(suggestion: any) => (
           <div className="combobox-control">{suggestion.name}</div>
         )}
       />
 
       {props.error && <TextError>{props.error}</TextError>}
+      {/*// @ts-ignore*/}
       {!props.error ?? <ErrorMessage name={name} component={TextError} />}
     </div>
   )
