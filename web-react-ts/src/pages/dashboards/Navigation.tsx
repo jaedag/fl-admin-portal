@@ -23,7 +23,6 @@ const Navigator = () => {
     variables: { email: user?.email },
     onCompleted: (data) => {
       const church = data.memberByEmail.stream_name
-      console.log(data)
       setCurrentUser({
         ...currentUser,
         id: data.memberByEmail.id,
