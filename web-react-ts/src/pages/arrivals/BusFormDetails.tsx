@@ -21,9 +21,10 @@ import Popup from 'components/Popup/Popup'
 import { getHumanReadableDate } from 'jd-date-utils'
 import { BacentaWithArrivals, BussingRecord } from './arrivals-types'
 import CurrencySpan from 'components/CurrencySpan'
+import VehicleButton from './components/VehicleButton'
 
 const BusFormDetails = () => {
-  const { bacentaId, clickCard } = useContext(ChurchContext)
+  const { bacentaId } = useContext(ChurchContext)
   const { theme } = useContext(MemberContext)
   const { bussingRecordId } = useContext(ServiceContext)
   const { isOpen, togglePopup } = usePopup()
@@ -279,16 +280,11 @@ const BusFormDetails = () => {
 
         {bussing?.vehicleRecords.map((record, index) => (
           <span key={index}>
-            <Button
-              className="mb-2 me-1"
-              variant="warning"
-              onClick={() => {
-                clickCard(record)
-                navigate('/bacenta/vehicle-details')
-              }}
-            >
-              V{index + 1}: {record.vehicle}
-            </Button>
+            <VehicleButton
+              className="mb-2 me-1 py-2 px-1"
+              record={record}
+              size="sm"
+            />
           </span>
         ))}
         <div className="d-grid gap-2">

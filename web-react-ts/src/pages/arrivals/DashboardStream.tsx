@@ -26,6 +26,7 @@ import { AdminFormOptions } from './DashboardConstituency'
 import SearchMember from 'components/formik/SearchMember'
 import ArrivalsMenuDropdown from './ArrivalsMenuDropdown'
 import { beforeStreamArrivalsDeadline } from './arrivals-utils'
+import { StreamWithArrivals } from './arrivals-types'
 
 const StreamDashboard = () => {
   const { isOpen, togglePopup } = usePopup()
@@ -35,7 +36,7 @@ const StreamDashboard = () => {
     variables: { id: currentUser?.currentChurch.id },
   })
   const [MakeStreamArrivalsAdmin] = useMutation(MAKE_STREAMARRIVALS_ADMIN)
-  const stream = data?.streams[0]
+  const stream: StreamWithArrivals = data?.streams[0]
 
   const initialValues: AdminFormOptions = {
     adminName: stream?.arrivalsAdmin
@@ -167,7 +168,7 @@ const StreamDashboard = () => {
           />
           <RoleView roles={permitArrivalsCounter()}>
             <MenuButton
-              title="Bacentas To Be Counted"
+              title="Vehicles To Be Counted"
               onClick={() => navigate('/arrivals/bacentas-to-count')}
               number={stream?.bacentasNotCountedCount.toString()}
               color="yellow"

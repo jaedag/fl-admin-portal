@@ -67,7 +67,9 @@ export type VehicleRecord = {
   transactionId: number
 }
 
-export interface StreamWithArrivals extends Stream {
+export interface StreamWithArrivals extends Stream, HigherChurchWithArrivals {
+  __typename: 'Stream'
+  name: StreamOptions
   mobilisationStartTime: string
   mobilisationEndTime: string
   arrivalStartTime: string
@@ -96,6 +98,7 @@ export interface HigherChurchWithArrivals extends Church {
   __typename: 'Constituency' | 'Stream' | 'Council' | 'GatheringService'
   stream_name: StreamOptions
   stream: Stream
+  arrivalsAdmin: Member
   activeBacentaCount: number
   bacentasNoActivity: BacentaWithArrivals[]
   bacentasMobilising: BacentaWithArrivals[]

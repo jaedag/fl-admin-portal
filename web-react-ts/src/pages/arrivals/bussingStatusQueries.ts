@@ -371,6 +371,11 @@ export const STREAM_BACENTAS_TO_COUNT = gql`
         }
         bussing(limit: 1) {
           id
+          vehicleRecords {
+            id
+            attendance
+            vehicle
+          }
         }
       }
     }

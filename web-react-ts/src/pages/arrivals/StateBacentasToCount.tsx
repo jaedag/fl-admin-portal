@@ -10,7 +10,6 @@ import useChurchLevel from 'hooks/useChurchLevel'
 import PlaceholderDefaulterList from 'pages/services/defaulters/PlaceholderDefaulterList'
 import React, { useContext, useEffect, useState } from 'react'
 import { Container } from 'react-bootstrap'
-import { useNavigate } from 'react-router'
 import { ArrivalsUseChurchType, BacentaWithArrivals } from './arrivals-types'
 import {
   CONSTITUENCY_BACENTAS_TO_COUNT,
@@ -19,6 +18,7 @@ import {
   STREAM_BACENTAS_TO_COUNT,
 } from './bussingStatusQueries'
 import NoData from './CompNoData'
+import VehicleButton from './components/VehicleButton'
 
 type FormOptions = {
   bacentaSearch: string
@@ -26,7 +26,6 @@ type FormOptions = {
 
 const StateBacentasToCount = () => {
   const { clickCard } = useContext(ChurchContext)
-  const navigate = useNavigate()
   const [constituencyOnTheWay] = useLazyQuery(CONSTITUENCY_BACENTAS_TO_COUNT)
   const [councilOnTheWay] = useLazyQuery(COUNCIL_BACENTAS_TO_COUNT)
   const [streamOnTheWay] = useLazyQuery(STREAM_BACENTAS_TO_COUNT)
@@ -53,10 +52,10 @@ const StateBacentasToCount = () => {
   >([])
 
   useEffect(() => {
-    console.log(bacentaDataLoaded)
     setBacentaData(bacentaDataLoaded)
   }, [church])
 
+  console.log(church?.bacentasNotCounted)
   const onSubmit = (
     values: FormOptions,
     onSubmitProps: FormikHelpers<FormOptions>
@@ -81,49 +80,54 @@ const StateBacentasToCount = () => {
   return (
     <ApolloWrapper data={church} loading={loading} error={error} placeholder>
       <Container>
-        <HeadingPrimary loading={loading}>Bacentas To Count</HeadingPrimary>
-        <HeadingSecondary loading={!church?.name}>
-          {church?.name} {church?.__typename}
-        </HeadingSecondary>
+        <>
+          <HeadingPrimary loading={loading}>Bacentas To Count</HeadingPrimary>
+          <HeadingSecondary loading={!church?.name}>
+            {church?.name} {church?.__typename}
+          </HeadingSecondary>
 
-        <Formik initialValues={initialValues} onSubmit={onSubmit}>
-          {() => (
-            <Form>
-              <div className="align-middle">
-                <Input
-                  className="form-control member-search w-100"
-                  name="bacentaSearch"
-                  placeholder="Search Bacentas"
-                  aria-describedby="Bacenta Search"
-                />
-              </div>
-            </Form>
+          <Formik initialValues={initialValues} onSubmit={onSubmit}>
+            {() => (
+              <Form>
+                <div className="align-middle">
+                  <Input
+                    className="form-control member-search w-100"
+                    name="bacentaSearch"
+                    placeholder="Search Bacentas"
+                    aria-describedby="Bacenta Search"
+                  />
+                </div>
+              </Form>
+            )}
+          </Formik>
+
+          {church && !bacentaData?.length && (
+            <NoData text="There are no bacentas to be counted" />
           )}
-        </Formik>
 
-        {church && !bacentaData?.length && (
-          <NoData text="There are no bacentas to be counted" />
-        )}
+          {bacentaData?.map((bacenta: BacentaWithArrivals) =>
+            bacenta.bussing[0].vehicleRecords.map((record, i) => (
+              <MemberDisplayCard
+                key={i}
+                member={bacenta}
+                leader={bacenta.leader}
+                contact
+                onClick={() => {
+                  clickCard(bacenta)
+                  clickCard(bacenta.bussing[0])
+                }}
+              >
+                <div className="d-grid gap-2 mt-2">
+                  <VehicleButton record={record} />
+                </div>
+              </MemberDisplayCard>
+            ))
+          )}
 
-        {bacentaData?.map((bacenta, i) => {
-          return (
-            <MemberDisplayCard
-              key={i}
-              member={bacenta}
-              leader={bacenta.leader}
-              contact
-              onClick={() => {
-                clickCard(bacenta)
-                clickCard(bacenta.bussing[0])
-                navigate('/bacenta/bussing-details')
-              }}
-            />
-          )
-        })}
-
-        {!church?.bacentasNotCounted.length && loading && (
-          <PlaceholderDefaulterList />
-        )}
+          {!church?.bacentasNotCounted.length && loading && (
+            <PlaceholderDefaulterList />
+          )}
+        </>
       </Container>
     </ApolloWrapper>
   )

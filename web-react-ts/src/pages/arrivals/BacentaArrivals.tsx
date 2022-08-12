@@ -7,7 +7,7 @@ import { BACENTA_ARRIVALS } from './arrivalsQueries'
 import { useNavigate } from 'react-router'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import { ChurchContext } from 'contexts/ChurchContext'
-import { ArrowDownSquare, CheckCircleFill } from 'react-bootstrap-icons'
+import { ArrowDownSquare } from 'react-bootstrap-icons'
 import {
   beforeArrivalDeadline,
   beforeMobilisationDeadline,
@@ -19,11 +19,11 @@ import { BacentaWithArrivals } from './arrivals-types'
 import useModal from 'hooks/useModal'
 import './Arrivals.css'
 import CountdownTimer from './countdown-component/CountdownTimer'
-import ButtonIcons from './components/ButtonIcons'
+import VehicleButton from './components/VehicleButton'
 
 const BacentaArrivals = () => {
   const { clickCard, bacentaId } = useContext(ChurchContext)
-  const { show, handleClose, handleShow } = useModal()
+  const { show, handleClose } = useModal()
   const { theme } = useContext(MemberContext)
   const navigate = useNavigate()
   const today = new Date().toISOString().slice(0, 10)
@@ -68,11 +68,7 @@ const BacentaArrivals = () => {
     ? beforeArrivalDeadline(bussing, bacenta)
     : false
 
-  useEffect(() => {
-    if (!canFillOnTheWay) {
-      handleShow()
-    }
-  }, [])
+  useEffect(() => handleClose(), [])
 
   const END_TIME_IN_MS = new Date(
     getTodayTime(bacenta?.stream.arrivalEndTime)
@@ -204,24 +200,11 @@ const BacentaArrivals = () => {
             <div className="my-2">Please Find Your Records Below</div>
           ) : null}
           {bussing?.vehicleRecords.map((vehicleRecord, index) => (
-            <Button
-              key={vehicleRecord.id}
-              variant={vehicleRecord?.arrivalTime ? 'success' : 'warning'}
-              size="lg"
-              className="text-start"
-              disabled={!canFillOnTheWayValue}
-              onClick={() => {
-                clickCard(vehicleRecord)
-                navigate('/bacenta/vehicle-details')
-              }}
-            >
-              <ButtonIcons type={vehicleRecord?.vehicle} />
-              {vehicleRecord?.vehicle} ({vehicleRecord?.attendance || '-'})
-              {'  '}
-              {vehicleRecord?.arrivalTime ? (
-                <CheckCircleFill className="ms-3" color="white" size={20} />
-              ) : null}
-            </Button>
+            <VehicleButton
+              record={vehicleRecord}
+              key={index}
+              canFillOnTheWay={!canFillOnTheWayValue ? false : null}
+            />
           ))}
           <hr />
           <small className="yellow fw-bold">
