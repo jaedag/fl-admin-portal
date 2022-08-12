@@ -1,3 +1,60 @@
+### 4.9.0 (2022-08-12)
+
+##### Chores
+
+*  merge deploy into feature/arrivals 3.0 ([dff1b338](https://github.com/firstlovecenter/fl-pastoral-care/commit/dff1b338dc3828ef9db249c8fb232af783035636))
+*  update formik components across arrivals feature ([98388886](https://github.com/firstlovecenter/fl-pastoral-care/commit/983888866da98ad41e48d9321f99b78228751e72))
+*  update import statements ([e1f4688b](https://github.com/firstlovecenter/fl-pastoral-care/commit/e1f4688b50f46c90d066a4e8445ab87915e7b09e))
+*  merge deploy into feature/arrivals ([8cc448ab](https://github.com/firstlovecenter/fl-pastoral-care/commit/8cc448ab73fbdc5178813d1cd4991669a7ffa2fa))
+*  installed typescript-eslint ([afc42c57](https://github.com/firstlovecenter/fl-pastoral-care/commit/afc42c57f971c560987866fdc244bef231b084c4))
+*  merge deploy into feature/arrivals and updated packages ([4f71faeb](https://github.com/firstlovecenter/fl-pastoral-care/commit/4f71faeb1cc016a54abd6e461f726643fe394942))
+*  updated the short name in the manifest file ([52e8baa9](https://github.com/firstlovecenter/fl-pastoral-care/commit/52e8baa9302f6c55d7971d3af3dad620c37ee3c1))
+
+##### New Features
+
+*  implement bacenta and vehicle count view on all church levels ([35b87824](https://github.com/firstlovecenter/fl-pastoral-care/commit/35b87824c8025eaa2d64c15ae86e0855c2f1d96c))
+*  fix calculations in api cypher to accommodate vehicles filling forms ([222650f6](https://github.com/firstlovecenter/fl-pastoral-care/commit/222650f6cc8c989c6a83ee832b7b10ecb464ff9b))
+*  implement api feature for handlig in and out bussing ([7c0872d3](https://github.com/firstlovecenter/fl-pastoral-care/commit/7c0872d30fb720e132cdaca635b01a61aa340408))
+*  implement feature so that counters can count in vehicles ([f620b356](https://github.com/firstlovecenter/fl-pastoral-care/commit/f620b356d9239ef08dd4477d182ebb4911135c52))
+*  enable bacenta leaders to fill bussing data on a per vehicle basis ([20edbfa2](https://github.com/firstlovecenter/fl-pastoral-care/commit/20edbfa21c051163b74df24866741042130d58f5))
+*  implement filling of form by entering details of one vehicle ([ee4849e0](https://github.com/firstlovecenter/fl-pastoral-care/commit/ee4849e0f091fe666077689a5358e4d37d63ca74))
+*  implement changing of constituency zone ([27d29bcb](https://github.com/firstlovecenter/fl-pastoral-care/commit/27d29bcb35dc3f313208db2ffefcd524221e8f85))
+*  implement fix for oversight permissions ([#220](https://github.com/firstlovecenter/fl-pastoral-care/pull/220)) ([13c4de6e](https://github.com/firstlovecenter/fl-pastoral-care/commit/13c4de6e7144fa789119e90f57a0a808fe925f2a))
+*  implement Equipment Campaign data collection ([#218](https://github.com/firstlovecenter/fl-pastoral-care/pull/218)) ([1dc71126](https://github.com/firstlovecenter/fl-pastoral-care/commit/1dc7112659f0006c41053c3045e6fe0321434c6e))
+*  implement a list of counters instead of a single one ([4ca4c30f](https://github.com/firstlovecenter/fl-pastoral-care/commit/4ca4c30ff10fadbeef12c9bde7ed1dedc57ecdf6))
+*  implement feature additional busses and ubers can be counted and added ([f5afd970](https://github.com/firstlovecenter/fl-pastoral-care/commit/f5afd9702f13e0f6933b8dc11de13fe6dd31338a))
+*  merge counting and confirming procedures into one ([bde85660](https://github.com/firstlovecenter/fl-pastoral-care/commit/bde8566077bf18cf1630a16a4d3df8b1829e9b46))
+*  remove picture submission for on the way form ([1a845d3e](https://github.com/firstlovecenter/fl-pastoral-care/commit/1a845d3eececc81629e7cdeae22876e293be9642))
+
+##### Bug Fixes
+
+*  fix bug when setting a new arrivals admin ([5ef74b41](https://github.com/firstlovecenter/fl-pastoral-care/commit/5ef74b41aeccedcdeaadf0dfd0f1b0dc300315f8))
+*  fix broken styling on autosuggest components ([004d737a](https://github.com/firstlovecenter/fl-pastoral-care/commit/004d737af4a52ac79f77552e477ce3f4da25a2c4))
+*  clean up bacentas to be counted so that couted bacentas don't show ([611e4399](https://github.com/firstlovecenter/fl-pastoral-care/commit/611e4399b7b90788602bd9ca3ef86bb87dcfda5e))
+*  remove unused imports ([23814473](https://github.com/firstlovecenter/fl-pastoral-care/commit/2381447359f815cfe895a4f5b163bac9ff1def56))
+*  fix breaking change on displaychurchsdetails ([c66734b3](https://github.com/firstlovecenter/fl-pastoral-care/commit/c66734b3770fa6b9620672a0d2c4a0e9b328aa1f))
+*  changes permission passed as prop to display bacenta details page ([#222](https://github.com/firstlovecenter/fl-pastoral-care/pull/222)) ([a0ebe507](https://github.com/firstlovecenter/fl-pastoral-care/commit/a0ebe5078f48e31ec839938a26a40c9667e109d0))
+*  update clean up cypher in beforeNextUpdate.cql ([dbe2d9a0](https://github.com/firstlovecenter/fl-pastoral-care/commit/dbe2d9a057153b9cf9825af62bad72ced73d4b91))
+*  clean lingering references to arrivals confirmer ([ffbd73ac](https://github.com/firstlovecenter/fl-pastoral-care/commit/ffbd73ac80d1f775a7d21e4a16341ed18175a79c))
+
+##### Refactors
+
+*  change 'cost' to 'top up' ([a868f6cd](https://github.com/firstlovecenter/fl-pastoral-care/commit/a868f6cd85a1b7eabeeb35a70ab3810a95f1594e))
+*  convert useComponentQuery to tsx ([b8d29a43](https://github.com/firstlovecenter/fl-pastoral-care/commit/b8d29a4366b1afbc9fe16e39732d6be5c84fafed))
+*  convert /user-profile to ts ([af5b88cc](https://github.com/firstlovecenter/fl-pastoral-care/commit/af5b88cc90600d0bba96eb846505aa3f2e1f7083))
+*  convert /update files to ts ([6393837b](https://github.com/firstlovecenter/fl-pastoral-care/commit/6393837bd7797ee733c85a7aa79436dcb43c8ecc))
+*  convert /create and /reusable-forms to ts ([dc83bf68](https://github.com/firstlovecenter/fl-pastoral-care/commit/dc83bf6802fe9df7c0cb62f7e0d0ef4967648cc2))
+*  convert fellowship and bacenta form to typescript ([c3cdbdab](https://github.com/firstlovecenter/fl-pastoral-care/commit/c3cdbdab43cc6a0d368fa83f20edd4cf0fdc3591))
+*  convert /defaulters files to typescript ([8382bc7a](https://github.com/firstlovecenter/fl-pastoral-care/commit/8382bc7aebd5ced64e17bed3f8f3db033cbc28a3))
+*  delete formikControl component ([9217ee35](https://github.com/firstlovecenter/fl-pastoral-care/commit/9217ee35760b9a7365e8b9ef3d42ad0b3555fff1))
+*  remove unused import of FormikControl ([350a8282](https://github.com/firstlovecenter/fl-pastoral-care/commit/350a8282ced8c5c2cfdb6610698cf8822886dd78))
+*  convert a few files in the defaulters folder to ts ([8a41c780](https://github.com/firstlovecenter/fl-pastoral-care/commit/8a41c780dbf1ebdbe5e8c39c80e9dab82ede6345))
+*  convert Navigation.jsx to tsx ([e0f583ca](https://github.com/firstlovecenter/fl-pastoral-care/commit/e0f583ca9767524f18035351be420e1019e9af59))
+*  convert services/graphs files to typescript ([9a8cca76](https://github.com/firstlovecenter/fl-pastoral-care/commit/9a8cca762b4955e8b7fdbd6183e688b08812bb14))
+*  convert misc components to typescript ([eb5b939b](https://github.com/firstlovecenter/fl-pastoral-care/commit/eb5b939bdf5908d5bab940e0c6d8369397036e13))
+*  convert login page to typescript ([1cd3322b](https://github.com/firstlovecenter/fl-pastoral-care/commit/1cd3322bd092af8e43cf695cb42e24795c105b91))
+*  convert formik components to typescript eliminated FormikControl component ([bf2861ad](https://github.com/firstlovecenter/fl-pastoral-care/commit/bf2861adc4cafb784a5d8e1772d0e555373e59d8))
+
 #### 4.8.1 (2022-07-29)
 
 ##### Chores
