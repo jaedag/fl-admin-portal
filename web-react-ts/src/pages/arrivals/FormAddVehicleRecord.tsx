@@ -21,22 +21,22 @@ import ImageUpload from 'components/formik/ImageUpload'
 
 type FormOptions = {
   attendance: string
-  bussingCost: string
+  vehicleCost: string
   personalContribution: string
   vehicle: string
-  bussingPicture: string
+  picture: string
 }
 
-const FormAddBusRecord = () => {
+const FormAddVehicleRecord = () => {
   const navigate = useNavigate()
   const { bacentaId, clickCard } = useContext(ChurchContext)
   const { bussingRecordId } = useContext(ServiceContext)
   const initialValues: FormOptions = {
     attendance: '',
-    bussingCost: '',
+    vehicleCost: '',
     personalContribution: '',
     vehicle: '',
-    bussingPicture: '',
+    picture: '',
   }
 
   const { data, loading, error } = useQuery(BACENTA_ARRIVALS, {
@@ -44,21 +44,21 @@ const FormAddBusRecord = () => {
   })
 
   const bacenta = data?.bacentas[0]
-  const [RecordBussingFromBacenta] = useMutation(RECORD_BUSSING_FROM_BACENTA)
+  const [RecordVehicleFromBacenta] = useMutation(RECORD_BUSSING_FROM_BACENTA)
   const validationSchema = Yup.object({
     attendance: Yup.number()
       .typeError('Please enter a valid number')
       .positive()
       .integer('You cannot have attendance with decimals!')
       .required('This is a required field'),
-    bussingCost: Yup.number()
+    vehicleCost: Yup.number()
       .typeError('Please enter a valid number')
       .required('This is a required field'),
     personalContribution: Yup.number()
       .typeError('Please enter a valid number')
       .required('This is a required field'),
     vehicle: Yup.string().required('This is a required field'),
-    bussingPicture: Yup.string().required('This is a required field'),
+    picture: Yup.string().required('This is a required field'),
   })
 
   const onSubmit = async (
@@ -67,22 +67,22 @@ const FormAddBusRecord = () => {
   ) => {
     onSubmitProps.setSubmitting(true)
     try {
-      const res = await RecordBussingFromBacenta({
+      const res = await RecordVehicleFromBacenta({
         variables: {
           attendance: parseInt(values.attendance),
           bussingRecordId: bussingRecordId,
-          bussingCost: parseFloat(values.bussingCost),
+          vehicleCost: parseFloat(values.vehicleCost),
           personalContribution: parseFloat(values.personalContribution),
           vehicle: values.vehicle,
-          bussingPicture: values.bussingPicture,
+          picture: values.picture,
         },
       })
 
-      clickCard(res.data.RecordBussingFromBacenta)
+      clickCard(res.data.RecordVehicleFromBacenta)
 
       onSubmitProps.resetForm()
       onSubmitProps.setSubmitting(false)
-      navigate(`/bacenta/bussing-details`)
+      navigate(`/bacenta/vehicle-details`)
     } catch (error: any) {
       throwErrorMsg('There was a problem submitting your form', error)
     }
@@ -125,7 +125,7 @@ const FormAddBusRecord = () => {
                     options={VEHICLE_OPTIONS}
                     defaultOption="Select a vehicle type"
                   />
-                  <Input name="bussingCost" label="Bussing Cost (in Cedis)*" />
+                  <Input name="vehicleCost" label="Vehicle Cost (in Cedis)*" />
                 </Col>
 
                 <hr />
@@ -139,7 +139,7 @@ const FormAddBusRecord = () => {
                 />
                 <ImageUpload
                   label="Upload A Bussing Picture"
-                  name="bussingPicture"
+                  name="picture"
                   uploadPreset={process.env.REACT_APP_CLOUDINARY_BUSSING}
                   placeholder="Choose"
                   setFieldValue={formik.setFieldValue}
@@ -168,4 +168,4 @@ const FormAddBusRecord = () => {
   )
 }
 
-export default FormAddBusRecord
+export default FormAddVehicleRecord

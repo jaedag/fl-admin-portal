@@ -27,6 +27,7 @@ export interface BussingRecord {
   numberOfSprinters: number
   numberOfUrvans: number
   numberOfCars: number
+
   bussingCost: number
   bussingTopUp: number
   counted_by: [Member]
@@ -39,6 +40,31 @@ export interface BussingRecord {
   mobileNetwork: Network
   momoNumber: string
   momoName: string
+  vehicleRecords: VehicleRecord[]
+}
+
+export type VehicleRecord = {
+  id: string
+  created_by: Member
+  created_at: string
+
+  leaderDeclaration: number
+  attendance: number
+  personalContribution: number
+  vehicle: 'Sprinter' | 'Urvan' | 'Car'
+
+  momoNumber: string
+  momoName: string
+  mobileNetwork: Network
+  vehicleTopUp: number
+  vehicleCost: number
+  picture: string
+
+  counted_by: Member
+
+  comments: string
+  arrivalTime: string
+  transactionId: number
 }
 
 export interface StreamWithArrivals extends Stream {

@@ -292,6 +292,12 @@ export const BACENTA_ARRIVALS = gql`
         serviceDate {
           date
         }
+        vehicleRecords {
+          id
+          vehicle
+          attendance
+          arrivalTime
+        }
         week
         mobilisationPicture
       }
@@ -412,6 +418,50 @@ export const DISPLAY_BUSSING_RECORDS = gql`
       numberOfSprinters
       numberOfUrvans
       numberOfCars
+      vehicleRecords {
+        id
+        vehicle
+      }
+    }
+    bacentas(where: { id: $bacentaId }) {
+      id
+      name
+      stream_name
+      stream {
+        id
+        arrivalStartTime
+        arrivalEndTime
+      }
+    }
+  }
+`
+export const DISPLAY_VEHICLE_RECORDS = gql`
+  query DisplayVehicleRecords($vehicleRecordId: ID!, $bacentaId: ID!) {
+    vehicleRecords(where: { id: $vehicleRecordId }) {
+      id
+      created_at
+      created_by {
+        id
+        firstName
+        lastName
+        fullName
+      }
+      counted_by {
+        id
+        firstName
+        lastName
+        fullName
+      }
+
+      leaderDeclaration
+      attendance
+      vehicleCost
+      personalContribution
+      vehicleTopUp
+      vehicle
+      picture
+      comments
+      arrivalTime
     }
     bacentas(where: { id: $bacentaId }) {
       id

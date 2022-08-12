@@ -925,36 +925,44 @@ type BussingRecord implements Record @auth(rules: [{ isAuthenticated: true }]) {
   #On The Way
   attendance: Int
     @cypher(
-      statement: "MATCH (this)-[:INCLUDES_RECORD]->(record:BusRecord) WHERE record.attendance IS NOT NULL RETURN SUM(record.attendance)"
+      statement: "MATCH (this)-[:INCLUDES_RECORD]->(record:VehicleRecord) WHERE record.attendance IS NOT NULL RETURN SUM(record.attendance)"
     )
   leaderDeclaration: Int
     @cypher(
-      statement: "MATCH (this)-[:INCLUDES_RECORD]->(record:BusRecord) WHERE record.leaderDeclaration IS NOT NULL RETURN SUM(record.leaderDeclaration)"
+      statement: "MATCH (this)-[:INCLUDES_RECORD]->(record:VehicleRecord) WHERE record.leaderDeclaration IS NOT NULL RETURN SUM(record.leaderDeclaration)"
+    )
+  bussingPictures: [String!]!
+    @cypher(
+      statement: """
+      MATCH (this)-[:INCLUDES_RECORD]->(record:VehicleRecord)
+      WHERE record.picture IS NOT NULL
+      RETURN collect(record.picture)
+      """
     )
   numberOfBusses: Int #Legacy Property for before we started collecting Spinter/Urvan details
   personalContribution: Float
     @cypher(
-      statement: "MATCH (this)-[:INCLUDES_RECORD]->(record:BusRecord) WHERE record.personalContribution IS NOT NULL RETURN SUM(record.personalContribution)"
+      statement: "MATCH (this)-[:INCLUDES_RECORD]->(record:VehicleRecord) WHERE record.personalContribution IS NOT NULL RETURN SUM(record.personalContribution)"
     )
   numberOfSprinters: Int
     @cypher(
-      statement: "MATCH (this)-[:INCLUDES_RECORD]->(record:BusRecord) WHERE record.vehicle = 'Sprinter' RETURN COUNT(DISTINCT record)"
+      statement: "MATCH (this)-[:INCLUDES_RECORD]->(record:VehicleRecord) WHERE record.vehicle = 'Sprinter' RETURN COUNT(DISTINCT record)"
     )
   numberOfUrvans: Int
     @cypher(
-      statement: "MATCH (this)-[:INCLUDES_RECORD]->(record:BusRecord) WHERE record.vehicle = 'Urvan' RETURN COUNT(DISTINCT record)"
+      statement: "MATCH (this)-[:INCLUDES_RECORD]->(record:VehicleRecord) WHERE record.vehicle = 'Urvan' RETURN COUNT(DISTINCT record)"
     )
   numberOfCars: Int
     @cypher(
-      statement: "MATCH (this)-[:INCLUDES_RECORD]->(record:BusRecord) WHERE record.vehicle = 'Car' RETURN COUNT(DISTINCT record)"
+      statement: "MATCH (this)-[:INCLUDES_RECORD]->(record:VehicleRecord) WHERE record.vehicle = 'Car' RETURN COUNT(DISTINCT record)"
     )
   bussingCost: Float
     @cypher(
-      statement: "MATCH (this)-[:INCLUDES_RECORD]->(record:BusRecord) WHERE record.bussingCost IS NOT NULL RETURN SUM(record.bussingCost)"
+      statement: "MATCH (this)-[:INCLUDES_RECORD]->(record:VehicleRecord) WHERE record.vehicleCost IS NOT NULL RETURN SUM(record.vehicleCost)"
     )
   bussingTopUp: Float
     @cypher(
-      statement: "MATCH (this)-[:INCLUDES_RECORD]->(record:BusRecord) WHERE record.bussingTopUp IS NOT NULL RETURN SUM(record.bussingTopUp)"
+      statement: "MATCH (this)-[:INCLUDES_RECORD]->(record:VehicleRecord) WHERE record.vehicleTopUp IS NOT NULL RETURN SUM(record.vehicleTopUp)"
     )
 
   #Money Things
@@ -965,32 +973,33 @@ type BussingRecord implements Record @auth(rules: [{ isAuthenticated: true }]) {
   counted_by: [Member!]!
     @cypher(
       statement: """
-      MATCH (this)-[:INCLUDES_RECORD]->(record:BusRecord)-[:COUNTED_BY]->(member:Member)
+      MATCH (this)-[:INCLUDES_RECORD]->(record:VehicleRecord)-[:COUNTED_BY]->(member:Member)
       RETURN DISTINCT member
       """
     )
 
-  busRecords: [BusRecord!]!
+  vehicleRecords: [VehicleRecord!]!
     @relationship(type: "INCLUDES_RECORD", direction: OUT)
   serviceLog: ServiceLog! @relationship(type: "HAS_BUSSING", direction: IN)
 }
 
-type BusRecord {
+type VehicleRecord {
   id: ID!
   created_by: Member! @relationship(type: "LOGGED_BY", direction: OUT)
   created_at: DateTime! #mobilisation time is the time the record was created
-  serviceDate: TimeGraph! @relationship(type: "BUSSED_ON", direction: OUT)
-
   leaderDeclaration: Int!
-  attendance: Int!
+  attendance: Int
+  picture: String!
   vehicle: String!
   personalContribution: Float!
 
-  momoNumber: String!
-  momoName: String!
-  bussingTopUp: Float
+  momoNumber: String
+  momoName: String
+  mobileNetwork: String
+  vehicleTopUp: Float
+  vehicleCost: Float!
 
-  counted_by: [Member!]! @relationship(type: "COUNTED_BY", direction: OUT)
+  counted_by: Member @relationship(type: "COUNTED_BY", direction: OUT)
 
   #Arrived
   comments: String
@@ -1247,55 +1256,56 @@ extend type Mutation {
   ): BussingRecord!
 
   #Bussing Records Entries
-  RecordBussingFromBacenta(
+  RecordVehicleFromBacenta(
     bussingRecordId: ID!
     attendance: Int!
-    bussingCost: Float!
+    vehicleCost: Float!
     personalContribution: Float!
     vehicle: String!
-  ): BussingRecord!
+    picture: String!
+  ): VehicleRecord!
     @cypher(
       statement: """
       MATCH (bussingRecord:BussingRecord {id: $bussingRecordId})
-      CREATE (busRecord:BusRecord  {id: apoc.create.uuid()})
-      MERGE (bussingRecord)-[:INCLUDES_RECORD]->(busRecord)
+      CREATE (vehicleRecord:VehicleRecord  {id: apoc.create.uuid()})
+      MERGE (bussingRecord)-[:INCLUDES_RECORD]->(vehicleRecord)
 
-        SET busRecord.leaderDeclaration = $attendance,
-        busRecord.bussingCost = $bussingCost,
-        busRecord.personalContribution = $personalContribution,
-        busRecord.vehicle = $vehicle
+        SET vehicleRecord.leaderDeclaration = $attendance,
+        vehicleRecord.created_at = datetime(),
+        vehicleRecord.vehicleCost = $vehicleCost,
+        vehicleRecord.personalContribution = $personalContribution,
+        vehicleRecord.vehicle = $vehicle,
+        vehicleRecord.picture =  $picture
 
-       WITH busRecord, bussingRecord
+       WITH vehicleRecord, bussingRecord
         MATCH (leader:Member {auth_id: $auth.jwt.sub})
-        MERGE (busRecord)-[:LOGGED_BY]->(leader)
+        MERGE (vehicleRecord)-[:LOGGED_BY]->(leader)
 
-      RETURN bussingRecord
+      RETURN vehicleRecord
       """
     )
 
-  SetBusSupport(busRecordId: ID!): BusRecord!
+  SetVehicleSupport(vehicleRecordId: ID!): VehicleRecord!
 
-  ConfirmBussingByAdmin(
-    busRecordId: ID!
+  ConfirmVehicleByAdmin(
+    vehicleRecordId: ID!
     attendance: Int!
     vehicle: String!
     comments: String
-  ): BusRecord!
+  ): VehicleRecord!
     @auth(rules: [{ roles: ["arrivalsCounterStream"] }])
     @cypher(
       statement: """
-      MATCH (busRecord:BusRecord {id: $busRecordId}) WHERE busRecord.arrivalTime  IS NULL
-        SET busRecord.attendance = $attendance,
-        busRecord.vehicle = $vehicle,
-        busRecord.comments = $comments
+      MATCH (vehicleRecord:VehicleRecord {id: $vehicleRecordId}) WHERE vehicleRecord.arrivalTime  IS NULL
+        SET vehicleRecord.attendance = $attendance,
+        vehicleRecord.vehicle = $vehicle,
+        vehicleRecord.comments = $comments
 
-         WITHbusRecord
+         WITH vehicleRecord
           MATCH (admin:Member {auth_id: $auth.jwt.sub})
-          OPTIONAL MATCH (busRecord)-[r:COUNTED_BY]->(oldCounter)
-          DELETE r
-          MERGE (busRecord)-[:COUNTED_BY]->(admin)
+          MERGE (vehicleRecord)-[:COUNTED_BY]->(admin)
 
-      RETURN busRecord
+      RETURN vehicleRecord
       """
     )
     @auth(
@@ -1311,9 +1321,9 @@ extend type Mutation {
       ]
     )
 
-  RecordArrivalTime(busRecordId: ID!): BusRecord!
+  RecordArrivalTime(vehicleRecordId: ID!): VehicleRecord!
   SetSwellDate(date: String!): TimeGraph!
-  SendBussingSupport(busRecordId: ID!, stream_name: String!): BusRecord!
+  SendVehicleSupport(vehicleRecordId: ID!, stream_name: String!): VehicleRecord!
 }
 
 extend type Mutation {

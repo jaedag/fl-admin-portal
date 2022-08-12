@@ -26,6 +26,7 @@ RETURN zone;
 //Equipment Campaign
  //Adding constraint for equipment campaign
 CREATE CONSTRAINT con_equipment_record_id FOR (n:EquipmentRecord) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT con_vehicle_record_id FOR (n:VehicleRecord) REQUIRE n.id IS UNIQUE;
 
 
 

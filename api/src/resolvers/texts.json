@@ -16,14 +16,8 @@
     "less_than_8": "Proverbs 27:23 (KJV)\n\nBe thou diligent to know the state of thy flocks,and look well to thy herds.\n\nToday's bussing will not merit a top up. Your attendance was ",
     "no_bussing_cost": "We just counted your attendance. Since there is no cost to the church, you will not receive a  top up today. Thank you!",
     "no_busses_to_pay_for": "We just counted your attendance. Since you indicated that you didn't use a bus today, you  will not receive a top up. Confirmed attendance is ",
-    "swell_top_up_p1": "Congratulations on exceeding your target! We just counted your attendance. You will receive an amount of ",
-    "swell_top_up_p2": " GHS as a top up when you arrive. Your attendance was ",
     "normal_top_up_p1": "We just counted your attendance at the terminal. You will receive a top up of ",
-    "normal_top_up_p2": " GHS when you arrive. Today you bussed ",
-    "normal_no_top_up": "We just counted your attendance at the terminal. Today you bussed ",
-    "swell_no_top_up": "Congratulations on exceeding your target! We just counted your attendance at the terminal. Today you bussed ",
-    "cheaper_bussing_today": "Today's bussing cost is cheaper than usual. Congratulations! You will receive full payment of ",
-    "cheaper_bussing_today_p2": " GHS when you arrive. Your bussing attendance was ",
-    "you_have_arrived": "We have just confirmed your arrival at the terminal. If you are eligible for bussing support you should receive it very soon. God bless you!"
+    "normal_top_up_p2": " GHS. Today's attendance was ",
+    "normal_no_top_up": "We just counted your attendance at the terminal. Today you bussed "
   }
 }

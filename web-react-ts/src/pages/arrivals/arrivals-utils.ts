@@ -6,6 +6,7 @@ import {
   BacentaWithArrivals,
   BussingRecord,
   StreamWithArrivals,
+  VehicleRecord,
 } from './arrivals-types'
 
 export const MOBILE_NETWORK_OPTIONS = [
@@ -53,7 +54,7 @@ export const beforeStreamArrivalsDeadline = (stream: StreamWithArrivals) => {
   return isArrivalsToday(church) && today < new Date(stream.arrivalEndTime)
 }
 export const beforeCountingDeadline = (
-  bussing: BussingRecord,
+  bussing: VehicleRecord,
   church: BacentaWithArrivals
 ) => {
   if (!bussing || !church) {
@@ -75,7 +76,7 @@ export const beforeCountingDeadline = (
     arrivalStartTime < today &&
     today < countingEndTime
   ) {
-    if (isToday(bussing?.created_at)) {
+    if (isToday(bussing?.created_at) && !bussing?.arrivalTime) {
       //If the record was created today
       //And if the time is less than the arrivals cutoff time
       return true

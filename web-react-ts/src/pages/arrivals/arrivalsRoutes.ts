@@ -10,7 +10,7 @@ import StateBacentasNoActivity from 'pages/arrivals/StateBacentasNoActivity'
 import BacentasOnTheWay from 'pages/arrivals/StateBacentasOnTheWay'
 import BusFormConfirmation from 'pages/arrivals/FormAttendanceConfirmation'
 import BusFormDetails from 'pages/arrivals/BusFormDetails'
-import OnTheWaySubmission from 'pages/arrivals/FormAddBusRecord'
+import OnTheWaySubmission from 'pages/arrivals/FormAddVehicleRecord'
 import ConstituencyDashboard from 'pages/arrivals/DashboardConstituency'
 import CouncilDashboard from './DashboardCouncil'
 import MobilisationSubmission from './FormMobilisationSubmission'
@@ -26,6 +26,7 @@ import ArrivalTimes from './Times/ArrivalTimes'
 import ArrivalsCounters from './Helpers/ArrivalsCounters'
 import BacentasBelow8 from './StateBacentasBelow8'
 import { RouteTypes } from 'global-types'
+import BusVehicleFormDetails from './BusVehicleFormDetails'
 
 export const arrivals: RouteTypes[] = [
   {
@@ -96,7 +97,7 @@ export const arrivals: RouteTypes[] = [
 
   //Bacenta Forms that need to be Filled
   {
-    path: '/arrivals/submit-bus-record',
+    path: '/arrivals/submit-vehicle-record',
     roles: ['leaderBacenta'],
     element: OnTheWaySubmission,
     placeholder: false,
@@ -156,10 +157,15 @@ export const arrivals: RouteTypes[] = [
 
   //Bacenta Forms
   {
-    path: '/arrivals/submit-bus-attendance',
+    path: '/arrivals/submit-vehicle-attendance',
     roles: permitArrivalsCounter(),
     element: BusFormConfirmation,
     placeholder: false,
+  },
+  {
+    path: '/bacenta/vehicle-details',
+    roles: permitArrivalsHelpers('Stream'),
+    element: BusVehicleFormDetails,
   },
   {
     path: '/bacenta/bussing-details',

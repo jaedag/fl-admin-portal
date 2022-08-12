@@ -7,7 +7,6 @@
   color: whitesmoke;
 }
 
-
 .code-of-the-day {
   color: #d5ee6f;
 }
@@ -23,4 +22,8 @@
 
 .text-secondary-custom {
   color: #9f9f9f;
+}
+
+.button-icons {
+  margin-right: 10px;
 }

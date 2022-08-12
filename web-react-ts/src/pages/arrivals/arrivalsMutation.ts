@@ -171,39 +171,37 @@ export const UPLOAD_MOBILISATION_PICTURE = gql`
 `
 
 export const RECORD_BUSSING_FROM_BACENTA = gql`
-  mutation RecordBussingFromBacenta(
+  mutation RecordVehicleFromBacenta(
     $bussingRecordId: ID!
     $attendance: Int!
-    $bussingCost: Float!
+    $vehicleCost: Float!
     $personalContribution: Float!
     $vehicle: String!
+    $picture: String!
   ) {
-    RecordBussingFromBacenta(
+    RecordVehicleFromBacenta(
       bussingRecordId: $bussingRecordId
       attendance: $attendance
-      bussingCost: $bussingCost
+      vehicleCost: $vehicleCost
       personalContribution: $personalContribution
       vehicle: $vehicle
+      picture: $picture
     ) {
       id
-      mobilisationPicture
       leaderDeclaration
       attendance
-      bussingCost
+      vehicleCost
       personalContribution
-      bussingTopUp
-      numberOfBusses
-      numberOfSprinters
-      numberOfUrvans
-      numberOfCars
-
-      serviceLog {
-        bacenta {
-          id
-          stream_name
-          bussing(limit: 1) {
+      vehicleTopUp
+      bussingRecord {
+        serviceLog {
+          bacenta {
             id
-            week
+            stream_name
+            bussing(limit: 1) {
+              id
+              week
+            }
           }
         }
       }
@@ -211,15 +209,15 @@ export const RECORD_BUSSING_FROM_BACENTA = gql`
   }
 `
 
-export const CONFIRM_BUSSING_BY_ADMIN = gql`
-  mutation ConfirmBussingByAdmin(
-    $busRecordId: ID!
+export const CONFIRM_VEHICLE_BY_ADMIN = gql`
+  mutation ConfirmVehicleByAdmin(
+    $vehicleRecordId: ID!
     $attendance: Int!
     $vehicle: String!
     $comments: String!
   ) {
-    ConfirmBussingByAdmin(
-      busRecordId: $busRecordId
+    ConfirmVehicleByAdmin(
+      vehicleRecordId: $vehicleRecordId
       attendance: $attendance
       vehicle: $vehicle
       comments: $comments
@@ -227,7 +225,7 @@ export const CONFIRM_BUSSING_BY_ADMIN = gql`
       id
       attendance
       vehicle
-      bussingTopUp
+      vehicleTopUp
       momoName
       momoNumber
 
@@ -244,34 +242,32 @@ export const CONFIRM_BUSSING_BY_ADMIN = gql`
 `
 
 export const RECORD_ARRIVAL_TIME = gql`
-  mutation RecordArrivalTime($busRecordId: ID!) {
-    RecordArrivalTime(busRecordId: $busRecordId) {
+  mutation RecordArrivalTime($vehicleRecordId: ID!) {
+    RecordArrivalTime(vehicleRecordId: $vehicleRecordId) {
       id
-      bussingTopUp
+      vehicleTopUp
       arrivalTime
-      counted_by {
-        id
-        firstName
-        lastName
-      }
     }
   }
 `
 
-export const SET_BUSSING_SUPPORT = gql`
-  mutation SetBussingSupport($busRecordId: ID!) {
-    SetBusSupport(busRecordId: $busRecordId) {
+export const SET_VEHICLE_SUPPORT = gql`
+  mutation SetVehicleSupport($vehicleRecordId: ID!) {
+    SetVehicleSupport(vehicleRecordId: $vehicleRecordId) {
       id
-      bussingTopUp
+      vehicleTopUp
     }
   }
 `
 
-export const SEND_BUSSING_SUPPORT = gql`
-  mutation SendBussingSupport($busRecordId: ID!, $stream_name: String!) {
-    SendBussingSupport(busRecordId: $busRecordId, stream_name: $stream_name) {
+export const SEND_VEHICLE_SUPPORT = gql`
+  mutation SendVehicleSupport($vehicleRecordId: ID!, $stream_name: String!) {
+    SendVehicleSupport(
+      vehicleRecordId: $vehicleRecordId
+      stream_name: $stream_name
+    ) {
       id
-      bussingTopUp
+      vehicleTopUp
       momoNumber
       transactionId
     }

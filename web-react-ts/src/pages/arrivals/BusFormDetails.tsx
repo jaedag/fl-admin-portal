@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from '@apollo/client'
+import { useQuery } from '@apollo/client'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import HeadingSecondary from 'components/HeadingSecondary'
@@ -6,45 +6,32 @@ import PlaceholderCustom from 'components/Placeholder'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { MemberContext } from 'contexts/MemberContext'
 import { ServiceContext } from 'contexts/ServiceContext'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useContext } from 'react'
-import {
-  Container,
-  Row,
-  Col,
-  Table,
-  Button,
-  Modal,
-  Spinner,
-} from 'react-bootstrap'
+import { Container, Row, Col, Table, Button } from 'react-bootstrap'
 import { DISPLAY_BUSSING_RECORDS } from './arrivalsQueries'
 import '../services/record-service/ServiceDetails.css'
 import { useNavigate } from 'react-router'
 import RoleView from 'auth/RoleView'
-import { permitAdminArrivals, permitArrivalsCounter } from 'permission-utils'
+import { permitAdminArrivals } from 'permission-utils'
 import { parseNeoTime } from 'jd-date-utils'
 import CloudinaryImage from 'components/CloudinaryImage'
-import { beforeCountingDeadline } from './arrivals-utils'
 import usePopup from 'hooks/usePopup'
 import Popup from 'components/Popup/Popup'
 import { getHumanReadableDate } from 'jd-date-utils'
 import { BacentaWithArrivals, BussingRecord } from './arrivals-types'
 import CurrencySpan from 'components/CurrencySpan'
-import useModal from 'hooks/useModal'
-import { RECORD_ARRIVAL_TIME } from './arrivalsMutation'
 
 const BusFormDetails = () => {
-  const { bacentaId } = useContext(ChurchContext)
+  const { bacentaId, clickCard } = useContext(ChurchContext)
   const { theme } = useContext(MemberContext)
   const { bussingRecordId } = useContext(ServiceContext)
   const { isOpen, togglePopup } = usePopup()
-  const { show, handleClose, handleShow } = useModal()
   const [picturePopup, setPicturePopup] = useState('')
   const { data, loading, error } = useQuery(DISPLAY_BUSSING_RECORDS, {
     variables: { bussingRecordId: bussingRecordId, bacentaId: bacentaId },
   })
-  const [RecordArrivalTime, { loading: arrivalLoading }] =
-    useMutation(RECORD_ARRIVAL_TIME)
+
   const navigate = useNavigate()
   const bussing: BussingRecord = data?.bussingRecords[0]
   const church: BacentaWithArrivals = data?.bacentas[0]
@@ -58,7 +45,7 @@ const BusFormDetails = () => {
         <PlaceholderCustom as="h6" loading={loading}>
           <HeadingSecondary>{`${church?.name} ${church?.__typename}`}</HeadingSecondary>
           <p>{`Recorded by ${bussing?.created_by.fullName}`}</p>
-          {bussing?.counted_by.length && (
+          {bussing?.counted_by.length ? (
             <p className="mb-0">
               {`Counted`}
               <RoleView roles={permitAdminArrivals('Stream')}>
@@ -71,18 +58,7 @@ const BusFormDetails = () => {
                 ))}
               </RoleView>
             </p>
-          )}
-          {bussing?.arrival_confirmed_by && (
-            <p>
-              {`Arrival Confirmed`}
-              <RoleView roles={permitAdminArrivals('Stream')}>
-                {` by `}
-                <span className="fw-bold good">
-                  {bussing?.arrival_confirmed_by.fullName}
-                </span>
-              </RoleView>
-            </p>
-          )}{' '}
+          ) : null}
         </PlaceholderCustom>
 
         <Row>
@@ -300,81 +276,22 @@ const BusFormDetails = () => {
             </Row>
           </Col>
         </Row>
-        <div className="d-grid gap-2">
-          <Modal className="dark" show={show} onHide={handleClose} centered>
-            <Modal.Body>
-              <p>Are you sure you want to confirm this arrival?</p>
-              <p>
-                You will <span className="fw-bold text-danger">not</span> be
-                able to{' '}
-                <span className="fw-bold text-danger">
-                  count or add any more people
-                </span>{' '}
-                after this!
-              </p>
-            </Modal.Body>
-            <Modal.Footer>
-              <Button
-                variant="success"
-                disabled={arrivalLoading}
-                onClick={() =>
-                  RecordArrivalTime({
-                    variables: {
-                      bussingRecordId,
-                    },
-                  }).then(() => handleClose())
-                }
-              >
-                {arrivalLoading ? (
-                  <span>
-                    {'Recording  '}
-                    <Spinner animation="border" size="sm" />
-                  </span>
-                ) : (
-                  'Yes I do'
-                )}
-              </Button>
-              <Button
-                disabled={arrivalLoading}
-                variant="danger"
-                onClick={handleClose}
-              >
-                No, Take Me Back
-              </Button>
-            </Modal.Footer>
-          </Modal>
-          <RoleView roles={permitArrivalsCounter()}>
-            {beforeCountingDeadline(bussing, church) && (
-              <>
-                {!bussing.arrivalTime && (
-                  <>
-                    <Button
-                      variant="warning"
-                      onClick={() =>
-                        navigate('/arrivals/submit-bus-attendance')
-                      }
-                    >
-                      I Want to Count
-                    </Button>
-                    <Button
-                      variant="info"
-                      className="mb-3"
-                      onClick={handleShow}
-                    >
-                      This Bacenta Has Arrived
-                    </Button>
-                  </>
-                )}
 
-                <Button
-                  variant="outline-danger"
-                  onClick={() => navigate('/arrivals/bacentas-to-count')}
-                >
-                  Continue Counting
-                </Button>
-              </>
-            )}
-          </RoleView>
+        {bussing?.vehicleRecords.map((record, index) => (
+          <span key={index}>
+            <Button
+              className="mb-2 me-1"
+              variant="warning"
+              onClick={() => {
+                clickCard(record)
+                navigate('/bacenta/vehicle-details')
+              }}
+            >
+              V{index + 1}: {record.vehicle}
+            </Button>
+          </span>
+        ))}
+        <div className="d-grid gap-2">
           <Button
             variant="outline-primary"
             size="lg"

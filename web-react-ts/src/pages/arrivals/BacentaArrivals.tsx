@@ -19,10 +19,11 @@ import { BacentaWithArrivals } from './arrivals-types'
 import useModal from 'hooks/useModal'
 import './Arrivals.css'
 import CountdownTimer from './countdown-component/CountdownTimer'
+import ButtonIcons from './components/ButtonIcons'
 
 const BacentaArrivals = () => {
   const { clickCard, bacentaId } = useContext(ChurchContext)
-  const { show, handleClose } = useModal()
+  const { show, handleClose, handleShow } = useModal()
   const { theme } = useContext(MemberContext)
   const navigate = useNavigate()
   const today = new Date().toISOString().slice(0, 10)
@@ -67,7 +68,11 @@ const BacentaArrivals = () => {
     ? beforeArrivalDeadline(bussing, bacenta)
     : false
 
-  useEffect(() => handleClose(), [])
+  useEffect(() => {
+    if (!canFillOnTheWay) {
+      handleShow()
+    }
+  }, [])
 
   const END_TIME_IN_MS = new Date(
     getTodayTime(bacenta?.stream.arrivalEndTime)
@@ -195,18 +200,45 @@ const BacentaArrivals = () => {
             Upload Pre-Mobilisation Picture
           </Button>
 
+          {bussing?.vehicleRecords.length ? (
+            <div className="my-2">Please Find Your Records Below</div>
+          ) : null}
+          {bussing?.vehicleRecords.map((vehicleRecord, index) => (
+            <Button
+              key={vehicleRecord.id}
+              variant={vehicleRecord?.arrivalTime ? 'success' : 'warning'}
+              size="lg"
+              className="text-start"
+              disabled={!canFillOnTheWayValue}
+              onClick={() => {
+                clickCard(vehicleRecord)
+                navigate('/bacenta/vehicle-details')
+              }}
+            >
+              <ButtonIcons type={vehicleRecord?.vehicle} />
+              {vehicleRecord?.vehicle} ({vehicleRecord?.attendance || '-'})
+              {'  '}
+              {vehicleRecord?.arrivalTime ? (
+                <CheckCircleFill className="ms-3" color="white" size={20} />
+              ) : null}
+            </Button>
+          ))}
+          <hr />
+          <small className="yellow fw-bold">
+            You must fill one form for each vehicle
+          </small>
           <Button
-            variant="primary"
+            variant="danger"
             size="lg"
             disabled={!canFillOnTheWayValue}
             onClick={() => {
               clickCard(bacenta)
               clickCard(bussing)
 
-              navigate('/arrivals/submit-bus-record')
+              navigate('/arrivals/submit-vehicle-record')
             }}
           >
-            Add A Bus
+            Add A Vehicle
           </Button>
           {bussing && (
             <Button
@@ -218,18 +250,8 @@ const BacentaArrivals = () => {
                 navigate('/bacenta/bussing-details')
               }}
             >
-              {`Today's Bussing`}
+              {`Today's Bussing Summary`}
             </Button>
-          )}
-
-          {bussing?.arrivalTime && (
-            <Card>
-              <Card.Body className="text-center">
-                <span className="text-success fw-bold">
-                  <CheckCircleFill color="green" size={35} /> Arrived!
-                </span>
-              </Card.Body>
-            </Card>
           )}
         </div>
       </Container>

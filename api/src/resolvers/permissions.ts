@@ -163,7 +163,7 @@ export const permitArrivalsCounter = (): Role[] => {
 }
 
 export const permitArrivalsHelpers = (): Role[] => {
-  return ['arrivalsCounterStream', 'arrivalsConfirmerStream']
+  return ['arrivalsCounterStream']
 }
 export const permitTeller = (): Role[] => {
   return ['tellerStream']
