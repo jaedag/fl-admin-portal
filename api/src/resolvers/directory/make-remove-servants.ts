@@ -52,10 +52,11 @@ const setUp = (setUpArgs: {
 }
 
 const servantValidation = (servant: Member) => {
-  if (Object.keys(servant).length === 0) {
-    return
+  if (!servant.id) {
+    return false
   }
   errorHandling(servant)
+  return true
 }
 
 export const MakeServant = async (
@@ -222,9 +223,12 @@ export const RemoveServant = async (
   const servantRes = await session.run(memberQuery, {
     id: args[`${servantLower}Id`],
   })
+
   const servant: MemberWithKeys = rearrangeCypherObject(servantRes)
 
-  servantValidation(servant)
+  if (!servantValidation(servant)) {
+    return null
+  }
 
   if (!servant.auth_id) {
     // if he has no auth_id then there is nothing to do

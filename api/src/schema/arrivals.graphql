@@ -150,7 +150,7 @@ extend type GatheringService {
       RETURN SUM(record.attendance)
       """
     )
-  
+
   bacentasNotCounted: [Bacenta!]!
     @cypher(
       statement: """
@@ -182,13 +182,13 @@ extend type GatheringService {
   bacentasBelow8: [Bacenta!]!
     @cypher(
       statement: """
-      MATCH (this)-[:HAS*4]->(bacentas:Active:Bacenta)
-     MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
-        WHERE date(date.date)=date()
-        MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
-        WITH  SUM(record.attendance) AS attendance, bacentas
-        WHERE attendance < 8
-      RETURN DISTINCT bacentas
+       MATCH (this)-[:HAS*4]->(bacentas:Active:Bacenta)
+      MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
+         WHERE date(date.date)=date()
+         MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
+         WITH  SUM(record.attendance) AS attendance, bacentas
+         WHERE attendance < 8
+       RETURN DISTINCT bacentas
       """
     )
   bacentasBelow8Count: Int!
@@ -950,23 +950,23 @@ extend type Mutation {
     arrivalsAdminId: ID!
     constituencyId: ID!
     oldArrivalsAdminId: ID
-  ): Member
+  ): Member!
   RemoveConstituencyArrivalsAdmin(
     arrivalsAdminId: ID!
     constituencyId: ID!
-  ): Member!
+  ): Member
   MakeCouncilArrivalsAdmin(
     arrivalsAdminId: ID!
     councilId: ID!
     oldArrivalsAdminId: ID
   ): Member!
-  RemoveCouncilArrivalsAdmin(arrivalsAdminId: ID!, councilId: ID!): Member!
+  RemoveCouncilArrivalsAdmin(arrivalsAdminId: ID!, councilId: ID!): Member
   MakeStreamArrivalsAdmin(
     arrivalsAdminId: ID!
     streamId: ID!
     oldArrivalsAdminId: ID
   ): Member!
-  RemoveStreamArrivalsAdmin(arrivalsAdminId: ID!, streamId: ID!): Member!
+  RemoveStreamArrivalsAdmin(arrivalsAdminId: ID!, streamId: ID!): Member
   MakeGatheringServiceArrivalsAdmin(
     arrivalsAdminId: ID!
     gatheringServiceId: ID!
@@ -975,7 +975,7 @@ extend type Mutation {
   RemoveGatheringServiceArrivalsAdmin(
     arrivalsAdminId: ID!
     gatheringServiceId: ID!
-  ): Member!
+  ): Member
 
   MakeStreamArrivalsCounter(arrivalsCounterId: ID!, streamId: ID!): Member!
   RemoveStreamArrivalsCounter(arrivalsCounterId: ID!, streamId: ID!): Member
