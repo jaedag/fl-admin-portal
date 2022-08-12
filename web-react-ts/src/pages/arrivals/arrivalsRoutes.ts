@@ -10,7 +10,7 @@ import StateBacentasNoActivity from 'pages/arrivals/StateBacentasNoActivity'
 import BacentasOnTheWay from 'pages/arrivals/StateBacentasOnTheWay'
 import BusFormConfirmation from 'pages/arrivals/FormAttendanceConfirmation'
 import BusFormDetails from 'pages/arrivals/BusFormDetails'
-import OnTheWaySubmission from 'pages/arrivals/FormOnTheWaySubmission'
+import OnTheWaySubmission from 'pages/arrivals/FormAddBusRecord'
 import ConstituencyDashboard from 'pages/arrivals/DashboardConstituency'
 import CouncilDashboard from './DashboardCouncil'
 import MobilisationSubmission from './FormMobilisationSubmission'
@@ -96,7 +96,7 @@ export const arrivals: RouteTypes[] = [
 
   //Bacenta Forms that need to be Filled
   {
-    path: '/arrivals/submit-on-the-way',
+    path: '/arrivals/submit-bus-record',
     roles: ['leaderBacenta'],
     element: OnTheWaySubmission,
     placeholder: false,

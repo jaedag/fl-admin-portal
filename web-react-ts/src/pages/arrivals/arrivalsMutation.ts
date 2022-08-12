@@ -176,18 +176,14 @@ export const RECORD_BUSSING_FROM_BACENTA = gql`
     $attendance: Int!
     $bussingCost: Float!
     $personalContribution: Float!
-    $numberOfSprinters: Int!
-    $numberOfUrvans: Int!
-    $numberOfCars: Int!
+    $vehicle: String!
   ) {
     RecordBussingFromBacenta(
       bussingRecordId: $bussingRecordId
       attendance: $attendance
       bussingCost: $bussingCost
       personalContribution: $personalContribution
-      numberOfSprinters: $numberOfSprinters
-      numberOfUrvans: $numberOfUrvans
-      numberOfCars: $numberOfCars
+      vehicle: $vehicle
     ) {
       id
       mobilisationPicture
@@ -200,8 +196,6 @@ export const RECORD_BUSSING_FROM_BACENTA = gql`
       numberOfSprinters
       numberOfUrvans
       numberOfCars
-      comments
-      arrivalTime
 
       serviceLog {
         bacenta {
@@ -219,28 +213,24 @@ export const RECORD_BUSSING_FROM_BACENTA = gql`
 
 export const CONFIRM_BUSSING_BY_ADMIN = gql`
   mutation ConfirmBussingByAdmin(
-    $bussingRecordId: ID!
+    $busRecordId: ID!
     $attendance: Int!
-    $numberOfSprinters: Int!
-    $numberOfUrvans: Int!
-    $comments: String
+    $vehicle: String!
+    $comments: String!
   ) {
     ConfirmBussingByAdmin(
-      bussingRecordId: $bussingRecordId
+      busRecordId: $busRecordId
       attendance: $attendance
-      numberOfSprinters: $numberOfSprinters
-      numberOfUrvans: $numberOfUrvans
+      vehicle: $vehicle
       comments: $comments
     ) {
       id
       attendance
-      numberOfSprinters
-      numberOfUrvans
-      numberOfCars
+      vehicle
       bussingTopUp
       momoName
       momoNumber
-      week
+
       counted_by {
         id
         firstName
@@ -254,8 +244,8 @@ export const CONFIRM_BUSSING_BY_ADMIN = gql`
 `
 
 export const RECORD_ARRIVAL_TIME = gql`
-  mutation RecordArrivalTime($bussingRecordId: ID!) {
-    RecordArrivalTime(bussingRecordId: $bussingRecordId) {
+  mutation RecordArrivalTime($busRecordId: ID!) {
+    RecordArrivalTime(busRecordId: $busRecordId) {
       id
       bussingTopUp
       arrivalTime
@@ -269,8 +259,8 @@ export const RECORD_ARRIVAL_TIME = gql`
 `
 
 export const SET_BUSSING_SUPPORT = gql`
-  mutation SetBussingSupport($bussingRecordId: ID!) {
-    SetBussingSupport(bussingRecordId: $bussingRecordId) {
+  mutation SetBussingSupport($busRecordId: ID!) {
+    SetBusSupport(busRecordId: $busRecordId) {
       id
       bussingTopUp
     }
@@ -278,11 +268,8 @@ export const SET_BUSSING_SUPPORT = gql`
 `
 
 export const SEND_BUSSING_SUPPORT = gql`
-  mutation SendBussingSupport($bussingRecordId: ID!, $stream_name: String!) {
-    SendBussingSupport(
-      bussingRecordId: $bussingRecordId
-      stream_name: $stream_name
-    ) {
+  mutation SendBussingSupport($busRecordId: ID!, $stream_name: String!) {
+    SendBussingSupport(busRecordId: $busRecordId, stream_name: $stream_name) {
       id
       bussingTopUp
       momoNumber

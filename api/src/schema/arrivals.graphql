@@ -924,14 +924,72 @@ type BussingRecord implements Record @auth(rules: [{ isAuthenticated: true }]) {
 
   #On The Way
   attendance: Int
+    @cypher(
+      statement: "MATCH (this)-[:INCLUDES_RECORD]->(record:BusRecord) WHERE record.attendance IS NOT NULL RETURN SUM(record.attendance)"
+    )
   leaderDeclaration: Int
+    @cypher(
+      statement: "MATCH (this)-[:INCLUDES_RECORD]->(record:BusRecord) WHERE record.leaderDeclaration IS NOT NULL RETURN SUM(record.leaderDeclaration)"
+    )
   numberOfBusses: Int #Legacy Property for before we started collecting Spinter/Urvan details
   personalContribution: Float
+    @cypher(
+      statement: "MATCH (this)-[:INCLUDES_RECORD]->(record:BusRecord) WHERE record.personalContribution IS NOT NULL RETURN SUM(record.personalContribution)"
+    )
   numberOfSprinters: Int
+    @cypher(
+      statement: "MATCH (this)-[:INCLUDES_RECORD]->(record:BusRecord) WHERE record.vehicle = 'Sprinter' RETURN COUNT(DISTINCT record)"
+    )
   numberOfUrvans: Int
+    @cypher(
+      statement: "MATCH (this)-[:INCLUDES_RECORD]->(record:BusRecord) WHERE record.vehicle = 'Urvan' RETURN COUNT(DISTINCT record)"
+    )
   numberOfCars: Int
+    @cypher(
+      statement: "MATCH (this)-[:INCLUDES_RECORD]->(record:BusRecord) WHERE record.vehicle = 'Car' RETURN COUNT(DISTINCT record)"
+    )
   bussingCost: Float
+    @cypher(
+      statement: "MATCH (this)-[:INCLUDES_RECORD]->(record:BusRecord) WHERE record.bussingCost IS NOT NULL RETURN SUM(record.bussingCost)"
+    )
   bussingTopUp: Float
+    @cypher(
+      statement: "MATCH (this)-[:INCLUDES_RECORD]->(record:BusRecord) WHERE record.bussingTopUp IS NOT NULL RETURN SUM(record.bussingTopUp)"
+    )
+
+  #Money Things
+  mobileNetwork: String
+  momoNumber: String
+  momoName: String
+
+  counted_by: [Member!]!
+    @cypher(
+      statement: """
+      MATCH (this)-[:INCLUDES_RECORD]->(record:BusRecord)-[:COUNTED_BY]->(member:Member)
+      RETURN DISTINCT member
+      """
+    )
+
+  busRecords: [BusRecord!]!
+    @relationship(type: "INCLUDES_RECORD", direction: OUT)
+  serviceLog: ServiceLog! @relationship(type: "HAS_BUSSING", direction: IN)
+}
+
+type BusRecord {
+  id: ID!
+  created_by: Member! @relationship(type: "LOGGED_BY", direction: OUT)
+  created_at: DateTime! #mobilisation time is the time the record was created
+  serviceDate: TimeGraph! @relationship(type: "BUSSED_ON", direction: OUT)
+
+  leaderDeclaration: Int!
+  attendance: Int!
+  vehicle: String!
+  personalContribution: Float!
+
+  momoNumber: String!
+  momoName: String!
+  bussingTopUp: Float
+
   counted_by: [Member!]! @relationship(type: "COUNTED_BY", direction: OUT)
 
   #Arrived
@@ -939,12 +997,8 @@ type BussingRecord implements Record @auth(rules: [{ isAuthenticated: true }]) {
   arrivalTime: DateTime
   transactionId: Int
 
-  #Money Things
-  mobileNetwork: String
-  momoNumber: String
-  momoName: String
-
-  serviceLog: ServiceLog! @relationship(type: "HAS_BUSSING", direction: IN)
+  bussingRecord: BussingRecord!
+    @relationship(type: "INCLUDES_RECORD", direction: IN)
 }
 
 extend type Mutation {
@@ -1198,53 +1252,50 @@ extend type Mutation {
     attendance: Int!
     bussingCost: Float!
     personalContribution: Float!
-    numberOfSprinters: Int!
-    numberOfUrvans: Int!
-    numberOfCars: Int!
+    vehicle: String!
   ): BussingRecord!
     @cypher(
       statement: """
       MATCH (bussingRecord:BussingRecord {id: $bussingRecordId})
-      SET bussingRecord.leaderDeclaration = $attendance,
-      bussingRecord.bussingCost = $bussingCost,
-      bussingRecord.personalContribution = $personalContribution,
-      bussingRecord.numberOfSprinters = $numberOfSprinters,
-      bussingRecord.numberOfUrvans = $numberOfUrvans,
-      bussingRecord.numberOfCars = $numberOfCars
+      CREATE (busRecord:BusRecord  {id: apoc.create.uuid()})
+      MERGE (bussingRecord)-[:INCLUDES_RECORD]->(busRecord)
 
-       WITH bussingRecord
+        SET busRecord.leaderDeclaration = $attendance,
+        busRecord.bussingCost = $bussingCost,
+        busRecord.personalContribution = $personalContribution,
+        busRecord.vehicle = $vehicle
+
+       WITH busRecord, bussingRecord
         MATCH (leader:Member {auth_id: $auth.jwt.sub})
-        MERGE (bussingRecord)-[:LOGGED_BY]->(leader)
+        MERGE (busRecord)-[:LOGGED_BY]->(leader)
 
       RETURN bussingRecord
       """
     )
 
-  SetBussingSupport(bussingRecordId: ID!): BussingRecord!
+  SetBusSupport(busRecordId: ID!): BusRecord!
 
   ConfirmBussingByAdmin(
-    bussingRecordId: ID!
+    busRecordId: ID!
     attendance: Int!
-    numberOfSprinters: Int!
-    numberOfUrvans: Int!
+    vehicle: String!
     comments: String
-  ): BussingRecord!
+  ): BusRecord!
     @auth(rules: [{ roles: ["arrivalsCounterStream"] }])
     @cypher(
       statement: """
-      MATCH (bussingRecord:BussingRecord {id: $bussingRecordId}) WHERE bussingRecord.arrivalTime  IS NULL
-        SET bussingRecord.attendance = $attendance,
-        bussingRecord.numberOfSprinters = $numberOfSprinters,
-        bussingRecord.numberOfUrvans = $numberOfUrvans,
-        bussingRecord.comments = $comments
+      MATCH (busRecord:BusRecord {id: $busRecordId}) WHERE busRecord.arrivalTime  IS NULL
+        SET busRecord.attendance = $attendance,
+        busRecord.vehicle = $vehicle,
+        busRecord.comments = $comments
 
-         WITH bussingRecord
+         WITHbusRecord
           MATCH (admin:Member {auth_id: $auth.jwt.sub})
-          OPTIONAL MATCH (bussingRecord)-[r:COUNTED_BY]->(oldCounter)
+          OPTIONAL MATCH (busRecord)-[r:COUNTED_BY]->(oldCounter)
           DELETE r
-          MERGE (bussingRecord)-[:COUNTED_BY]->(admin)
+          MERGE (busRecord)-[:COUNTED_BY]->(admin)
 
-      RETURN bussingRecord
+      RETURN busRecord
       """
     )
     @auth(
@@ -1260,9 +1311,9 @@ extend type Mutation {
       ]
     )
 
-  RecordArrivalTime(bussingRecordId: ID!): BussingRecord!
+  RecordArrivalTime(busRecordId: ID!): BusRecord!
   SetSwellDate(date: String!): TimeGraph!
-  SendBussingSupport(bussingRecordId: ID!, stream_name: String!): BussingRecord!
+  SendBussingSupport(busRecordId: ID!, stream_name: String!): BusRecord!
 }
 
 extend type Mutation {

@@ -294,7 +294,6 @@ export const BACENTA_ARRIVALS = gql`
         }
         week
         mobilisationPicture
-        arrivalTime
       }
     }
     timeGraphs(where: { date: $date }) {
@@ -413,8 +412,6 @@ export const DISPLAY_BUSSING_RECORDS = gql`
       numberOfSprinters
       numberOfUrvans
       numberOfCars
-      comments
-      arrivalTime
     }
     bacentas(where: { id: $bacentaId }) {
       id

@@ -14,6 +14,11 @@ export const MOBILE_NETWORK_OPTIONS = [
   { key: 'Vodafone', value: 'Vodafone' },
   { key: 'AirtelTigo', value: 'AirtelTigo' },
 ]
+export const VEHICLE_OPTIONS = [
+  { key: 'Urvan', value: 'Urvan' },
+  { key: 'Sprinter', value: 'Sprinter' },
+  { key: 'Car', value: 'Car' },
+]
 
 const isArrivalsToday = (bacenta: { stream_name: StreamOptions }) => {
   if (!bacenta) return false

@@ -202,10 +202,11 @@ const BacentaArrivals = () => {
             onClick={() => {
               clickCard(bacenta)
               clickCard(bussing)
-              navigate('/arrivals/submit-on-the-way')
+
+              navigate('/arrivals/submit-bus-record')
             }}
           >
-            Submit On-The-Way Data
+            Add A Bus
           </Button>
           {bussing && (
             <Button

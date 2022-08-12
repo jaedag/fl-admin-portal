@@ -238,7 +238,7 @@ export const arrivalsMutation = {
 
     return returnToCache
   },
-  SetBussingSupport: async (
+  SetBusSupport: async (
     object: never,
     args: { bussingRecordId: string },
     context: Context

@@ -15,17 +15,19 @@ import { parseDate } from 'jd-date-utils'
 import { ServiceContext } from 'contexts/ServiceContext'
 import { throwErrorMsg } from 'global-utils'
 import Input from 'components/formik/Input'
+import Select from 'components/formik/Select'
+import { VEHICLE_OPTIONS } from './arrivals-utils'
+import ImageUpload from 'components/formik/ImageUpload'
 
 type FormOptions = {
   attendance: string
   bussingCost: string
   personalContribution: string
-  numberOfSprinters: string
-  numberOfUrvans: string
-  numberOfCars: string
+  vehicle: string
+  bussingPicture: string
 }
 
-const FormOnTheWaySubmission = () => {
+const FormAddBusRecord = () => {
   const navigate = useNavigate()
   const { bacentaId, clickCard } = useContext(ChurchContext)
   const { bussingRecordId } = useContext(ServiceContext)
@@ -33,9 +35,8 @@ const FormOnTheWaySubmission = () => {
     attendance: '',
     bussingCost: '',
     personalContribution: '',
-    numberOfSprinters: '',
-    numberOfUrvans: '',
-    numberOfCars: '0',
+    vehicle: '',
+    bussingPicture: '',
   }
 
   const { data, loading, error } = useQuery(BACENTA_ARRIVALS, {
@@ -56,17 +57,8 @@ const FormOnTheWaySubmission = () => {
     personalContribution: Yup.number()
       .typeError('Please enter a valid number')
       .required('This is a required field'),
-    numberOfSprinters: Yup.number()
-      .typeError('Please enter a valid number')
-      .integer('You cannot have busses with decimals!')
-      .required('This is a required field'),
-    numberOfUrvans: Yup.number()
-      .typeError('Please enter a valid number')
-      .integer('You cannot have busses with decimals!')
-      .required('This is a required field'),
-    numberOfCars: Yup.number()
-      .typeError('Please enter a valid number')
-      .integer('You cannot have a decimal number of cars!'),
+    vehicle: Yup.string().required('This is a required field'),
+    bussingPicture: Yup.string().required('This is a required field'),
   })
 
   const onSubmit = async (
@@ -81,9 +73,8 @@ const FormOnTheWaySubmission = () => {
           bussingRecordId: bussingRecordId,
           bussingCost: parseFloat(values.bussingCost),
           personalContribution: parseFloat(values.personalContribution),
-          numberOfSprinters: parseInt(values.numberOfSprinters),
-          numberOfUrvans: parseInt(values.numberOfUrvans),
-          numberOfCars: parseInt(values.numberOfCars || '0'),
+          vehicle: values.vehicle,
+          bussingPicture: values.bussingPicture,
         },
       })
 
@@ -128,6 +119,12 @@ const FormOnTheWaySubmission = () => {
                   </HeadingPrimary>
 
                   <Input name="attendance" label="Attendance*" />
+                  <Select
+                    name="vehicle"
+                    label="Type of Vehicle"
+                    options={VEHICLE_OPTIONS}
+                    defaultOption="Select a vehicle type"
+                  />
                   <Input name="bussingCost" label="Bussing Cost (in Cedis)*" />
                 </Col>
 
@@ -140,26 +137,21 @@ const FormOnTheWaySubmission = () => {
                   name="personalContribution"
                   label="Personal Contribution* (in Cedis)"
                 />
+                <ImageUpload
+                  label="Upload A Bussing Picture"
+                  name="bussingPicture"
+                  uploadPreset={process.env.REACT_APP_CLOUDINARY_BUSSING}
+                  placeholder="Choose"
+                  setFieldValue={formik.setFieldValue}
+                  aria-describedby="UploadBussingPicture"
+                />
               </Row>
-              <Row className="row-cols-2">
-                <Col>
-                  <Input
-                    name="numberOfSprinters"
-                    label="Number of Sprinters *"
-                  />
-                </Col>
-                <Col>
-                  <Input name="numberOfUrvans" label="Number of Urvans *" />
-                </Col>
-                <Col>
-                  <Input name="numberOfCars" label="Number of Cars" />
-                </Col>
-              </Row>
+
               <Row>
                 <Container>
                   <Card className="text-center mt-3 p-2">
                     <Card.Body>
-                      I can confirm that the above data is correct and I am
+                      I can confirm that the above data is siorrect and I am
                       cursed if I do the work of the Lord deceitfully
                     </Card.Body>
                     <Card.Footer>
@@ -167,10 +159,6 @@ const FormOnTheWaySubmission = () => {
                     </Card.Footer>
                   </Card>
                 </Container>
-
-                <div className="d-flex justify-content-center">
-                  <SubmitButton formik={formik} />
-                </div>
               </Row>
             </Form>
           </Container>
@@ -180,4 +168,4 @@ const FormOnTheWaySubmission = () => {
   )
 }
 
-export default FormOnTheWaySubmission
+export default FormAddBusRecord
