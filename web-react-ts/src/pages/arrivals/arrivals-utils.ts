@@ -33,8 +33,7 @@ const isArrivalsToday = (bacenta: { stream_name: StreamOptions }) => {
   const today = new Date().getDay()
 
   if (
-    // today === 6 &&
-    bacenta.stream_name.toLowerCase() === 'anagkazo' ||
+    (today === 6 && bacenta.stream_name.toLowerCase() === 'anagkazo') ||
     bacenta.stream_name.toLowerCase() === 'campus'
   ) {
     // Anagkazo and Campus are on Saturday
@@ -57,7 +56,10 @@ export const beforeStreamArrivalsDeadline = (stream: StreamWithArrivals) => {
 
   const today = new Date()
 
-  return isArrivalsToday(church) && today < new Date(stream.arrivalEndTime)
+  return (
+    isArrivalsToday(church) &&
+    today < new Date(getTodayTime(stream.arrivalEndTime))
+  )
 }
 export const beforeCountingDeadline = (
   bussing: VehicleRecord,

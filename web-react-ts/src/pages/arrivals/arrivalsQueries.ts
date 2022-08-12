@@ -9,28 +9,24 @@ export const CONSTITUENCY_ARRIVALS_DASHBOARD = gql`
         id
         stream {
           id
+          name
           arrivalEndTime
         }
-        admin {
-          id
-          firstName
-          lastName
-        }
-        arrivalsAdmin {
-          id
-          firstName
-          lastName
-          fullName
-          pictureUrl
-        }
-        bacentasNoActivityCount
-        bacentasMobilisingCount
-        bacentasOnTheWayCount
-        bacentasBelow8Count
-        bacentasHaveArrivedCount
-        bussingMembersOnTheWayCount
-        bussingMembersHaveArrivedCount
       }
+      arrivalsAdmin {
+        id
+        firstName
+        lastName
+        fullName
+        pictureUrl
+      }
+      bacentasNoActivityCount
+      bacentasMobilisingCount
+      bacentasOnTheWayCount
+      bacentasBelow8Count
+      bacentasHaveArrivedCount
+      bussingMembersOnTheWayCount
+      bussingMembersHaveArrivedCount
     }
   }
 `
@@ -42,13 +38,10 @@ export const COUNCIL_ARRIVALS_DASHBOARD = gql`
       name
       stream {
         id
+        name
         arrivalEndTime
       }
-      admin {
-        id
-        firstName
-        lastName
-      }
+
       arrivalsAdmin {
         id
         firstName
@@ -73,11 +66,7 @@ export const STREAM_ARRIVALS_DASHBOARD = gql`
     streams(where: { id: $id }, options: { limit: 1 }) {
       id
       name
-      admin {
-        id
-        firstName
-        lastName
-      }
+
       arrivalsAdmin {
         id
         firstName
@@ -104,11 +93,7 @@ export const GATHERINGSERVICE_ARRIVALS_DASHBOARD = gql`
     gatheringServices(where: { id: $id }, options: { limit: 1 }) {
       id
       name
-      admin {
-        id
-        firstName
-        lastName
-      }
+
       arrivalsAdmin {
         id
         firstName
