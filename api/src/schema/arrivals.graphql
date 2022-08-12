@@ -348,28 +348,7 @@ extend type Stream {
       RETURN SUM(record.attendance)
       """
     )
-  bacentasHaveBeenCounted: [Bacenta!]!
-    @cypher(
-      statement: """
-      MATCH (this)-[:HAS*3]->(bacentas:Active:Bacenta)
-      WHERE EXISTS {
-      MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph) WHERE date(date.date)=date()
-       AND EXISTS {MATCH (bussing)-[:COUNTED_BY]->(:Member)}
-      }
-      RETURN DISTINCT bacentas
-      """
-    )
-  bacentasHaveBeenCountedCount: Int
-    @cypher(
-      statement: """
-      MATCH (this)-[:HAS*3]->(bacentas:Active:Bacenta)
-      WHERE EXISTS {
-      MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph) WHERE date(date.date)=date()
-       AND EXISTS {MATCH (bussing)-[:COUNTED_BY]->(:Member)}
-      }
-       RETURN COUNT(DISTINCT bacentas)
-      """
-    )
+
   bacentasNotCounted: [Bacenta!]!
     @cypher(
       statement: """
@@ -402,11 +381,11 @@ extend type Stream {
     @cypher(
       statement: """
       MATCH (this)-[:HAS*3]->(bacentas:Active:Bacenta)
-      WHERE EXISTS {
       MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
         WHERE date(date.date)=date()
-        AND bussing.attendance < 8
-      }
+        MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
+        WITH  SUM(record.attendance) AS attendance, bacentas
+        WHERE attendance < 8
       RETURN DISTINCT bacentas
       """
     )
@@ -414,11 +393,11 @@ extend type Stream {
     @cypher(
       statement: """
       MATCH (this)-[:HAS*3]->(bacentas:Active:Bacenta)
-      WHERE EXISTS {
       MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
         WHERE date(date.date)=date()
-        AND bussing.attendance < 8
-      }
+        MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
+        WITH  SUM(record.attendance) AS attendance, bacentas
+        WHERE attendance < 8
       RETURN COUNT(DISTINCT bacentas)
       """
     )
@@ -426,11 +405,12 @@ extend type Stream {
     @cypher(
       statement: """
       MATCH (this)-[:HAS*3]->(bacentas:Active:Bacenta)
-      WHERE EXISTS {
       MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
         WHERE date(date.date)=date()
-        AND bussing.arrivalTime IS NOT NULL
-      }
+        AND NOT EXISTS {
+        MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
+        WHERE record.arrivalTime IS NULL
+        }
       RETURN DISTINCT bacentas
       """
     )
@@ -438,24 +418,24 @@ extend type Stream {
     @cypher(
       statement: """
       MATCH (this)-[:HAS*3]->(bacentas:Active:Bacenta)
-      WHERE EXISTS {
       MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
         WHERE date(date.date)=date()
-        AND bussing.arrivalTime IS NOT NULL
-      }
+        AND NOT EXISTS {
+        MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
+        WHERE record.arrivalTime IS NULL
+        }
       RETURN COUNT(DISTINCT bacentas)
       """
     )
   bussingMembersHaveArrivedCount: Int
     @cypher(
       statement: """
-       MATCH (this)-[:HAS*3]->(bacentas:Active:Bacenta)
-       MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
-         WHERE date(date.date)=date()
-        AND bussing.arrivalTime IS NOT NULL
-
-      WITH DISTINCT bussing
-      RETURN SUM(bussing.attendance)
+      MATCH (this)-[:HAS*3]->(bacentas:Active:Bacenta)
+      MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
+        WHERE date(date.date)=date()
+        MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
+        WHERE record.arrivalTime IS NOT NULL
+      RETURN SUM(record.attendance)
       """
     )
 }
