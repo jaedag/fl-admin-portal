@@ -464,6 +464,7 @@ export const DISPLAY_VEHICLE_RECORDS = gql`
       picture
       comments
       arrivalTime
+      outbound
     }
     bacentas(where: { id: $bacentaId }) {
       id

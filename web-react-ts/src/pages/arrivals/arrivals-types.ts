@@ -62,6 +62,7 @@ export type VehicleRecord = {
 
   counted_by: Member
 
+  outbound: boolean
   comments: string
   arrivalTime: string
   transactionId: number

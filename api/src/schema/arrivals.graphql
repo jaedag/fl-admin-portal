@@ -362,11 +362,11 @@ extend type Stream {
   bacentasHaveBeenCountedCount: Int
     @cypher(
       statement: """
-       MATCH (this)-[:HAS*3]->(bacentas:Active:Bacenta)
-       WHERE EXISTS {
+      MATCH (this)-[:HAS*3]->(bacentas:Active:Bacenta)
+      WHERE EXISTS {
       MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph) WHERE date(date.date)=date()
-        AND EXISTS {MATCH (bussing)-[:COUNTED_BY]->(:Member)}
-       }
+       AND EXISTS {MATCH (bussing)-[:COUNTED_BY]->(:Member)}
+      }
        RETURN COUNT(DISTINCT bacentas)
       """
     )
@@ -377,7 +377,7 @@ extend type Stream {
       MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
       WHERE date(date.date)=date()
       MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
-      
+
       WHERE NOT EXISTS {
        MATCH (record)-[:COUNTED_BY]->(:Member)
       }
@@ -391,11 +391,11 @@ extend type Stream {
       MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
       WHERE date(date.date)=date()
       MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
-     
+
       WHERE NOT EXISTS {
        MATCH (record)-[:COUNTED_BY]->(:Member)
       }
-      RETURN COUNT(DISTINCT record)
+      RETURN COUNT(DISTINCT bacentas)
       """
     )
   bacentasBelow8: [Bacenta!]!
@@ -1008,6 +1008,7 @@ type VehicleRecord {
   comments: String
   arrivalTime: DateTime
   transactionId: Int
+  outbound: Boolean!
 
   bussingRecord: BussingRecord!
     @relationship(type: "INCLUDES_RECORD", direction: IN)

@@ -223,6 +223,7 @@ const BusFormDetails = () => {
                       </td>
                     </tr>
                   )}
+
                   {bussing?.arrivalTime && (
                     <tr>
                       <td>Arrival Time</td>

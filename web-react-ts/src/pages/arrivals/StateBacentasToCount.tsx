@@ -105,22 +105,24 @@ const StateBacentasToCount = () => {
           )}
 
           {bacentaData?.map((bacenta: BacentaWithArrivals) =>
-            bacenta.bussing[0].vehicleRecords.map((record, i) => (
-              <MemberDisplayCard
-                key={i}
-                member={bacenta}
-                leader={bacenta.leader}
-                contact
-                onClick={() => {
-                  clickCard(bacenta)
-                  clickCard(bacenta.bussing[0])
-                }}
-              >
-                <div className="d-grid gap-2 mt-2">
-                  <VehicleButton record={record} />
-                </div>
-              </MemberDisplayCard>
-            ))
+            bacenta.bussing[0].vehicleRecords.map((record, i) => {
+              return (
+                <MemberDisplayCard
+                  key={i}
+                  member={bacenta}
+                  leader={bacenta.leader}
+                  contact
+                  onClick={() => {
+                    clickCard(bacenta)
+                    clickCard(bacenta.bussing[0])
+                  }}
+                >
+                  <div className="d-grid gap-2 mt-2">
+                    <VehicleButton record={record} />
+                  </div>
+                </MemberDisplayCard>
+              )
+            })
           )}
 
           {!church?.bacentasNotCounted.length && loading && (
