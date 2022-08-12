@@ -23,7 +23,7 @@ import Input from 'components/formik/Input'
 import Select from 'components/formik/Select'
 import SearchMember from 'components/formik/SearchMember'
 import SearchBacenta from 'components/formik/SearchBacenta'
-import { FormikInitialValues } from 'components/formik/formiik-types'
+import { FormikInitialValues } from 'components/formik/formik-types'
 import { Bacenta } from 'global-types'
 
 export interface ConstituencyFormValues extends FormikInitialValues {

@@ -11,7 +11,7 @@ import { DISPLAY_CONSTITUENCY } from 'pages/directory/display/ReadQueries'
 import RoleView from 'auth/RoleView'
 import Select from 'components/formik/Select'
 import SearchMember from 'components/formik/SearchMember'
-import { FormikInitialValues } from 'components/formik/formiik-types'
+import { FormikInitialValues } from 'components/formik/formik-types'
 
 export interface SontaFormValues extends FormikInitialValues {
   ministrySelect: string
