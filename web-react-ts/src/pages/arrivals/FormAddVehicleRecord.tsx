@@ -16,8 +16,9 @@ import { ServiceContext } from 'contexts/ServiceContext'
 import { throwErrorMsg } from 'global-utils'
 import Input from 'components/formik/Input'
 import Select from 'components/formik/Select'
-import { VEHICLE_OPTIONS } from './arrivals-utils'
+import { OUTBOUND_OPTIONS, VEHICLE_OPTIONS } from './arrivals-utils'
 import ImageUpload from 'components/formik/ImageUpload'
+import RadioButtons from 'components/formik/RadioButtons'
 
 type FormOptions = {
   attendance: string
@@ -25,6 +26,7 @@ type FormOptions = {
   personalContribution: string
   vehicle: string
   picture: string
+  outbound: string
 }
 
 const FormAddVehicleRecord = () => {
@@ -37,6 +39,14 @@ const FormAddVehicleRecord = () => {
     personalContribution: '',
     vehicle: '',
     picture: '',
+    outbound: 'In Only',
+  }
+
+  const convertToBoolean = (value: string) => {
+    if (value === 'In and Out') {
+      return true
+    }
+    return false
   }
 
   const { data, loading, error } = useQuery(BACENTA_ARRIVALS, {
@@ -75,6 +85,7 @@ const FormAddVehicleRecord = () => {
           personalContribution: parseFloat(values.personalContribution),
           vehicle: values.vehicle,
           picture: values.picture,
+          outbound: convertToBoolean(values.outbound),
         },
       })
 
@@ -137,6 +148,18 @@ const FormAddVehicleRecord = () => {
                   name="personalContribution"
                   label="Personal Contribution* (in Cedis)"
                 />
+                <Container className="my-2">
+                  <Card border="warning">
+                    <Card.Body>
+                      <RadioButtons
+                        name="outbound"
+                        label="Are You Bussing Back?"
+                        options={OUTBOUND_OPTIONS}
+                      />
+                    </Card.Body>
+                  </Card>
+                </Container>
+
                 <ImageUpload
                   label="Upload A Bussing Picture"
                   name="picture"

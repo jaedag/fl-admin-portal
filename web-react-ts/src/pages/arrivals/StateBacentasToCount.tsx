@@ -55,7 +55,6 @@ const StateBacentasToCount = () => {
     setBacentaData(bacentaDataLoaded)
   }, [church])
 
-  console.log(church?.bacentasNotCounted)
   const onSubmit = (
     values: FormOptions,
     onSubmitProps: FormikHelpers<FormOptions>

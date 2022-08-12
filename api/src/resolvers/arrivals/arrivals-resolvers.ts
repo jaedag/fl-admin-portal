@@ -247,6 +247,7 @@ export const arrivalsMutation = {
         attendance: number
         vehicle: 'Sprinter' | 'Urvan' | 'Car'
         vehicleCost: number
+        outbound: boolean
         personalContribution: number
         bacentaSprinterTopUp: neonumber
         bacentaUrvanTopUp: neonumber
@@ -268,19 +269,28 @@ export const arrivalsMutation = {
       let vehicleRecord: RearragedCypherResponse | undefined
 
       const calculateVehicleTopUp = () => {
+        const outbound = response.outbound ? 2 : 1
         if (response.vehicle === 'Sprinter') {
           if (response.vehicleCost < response.bacentaSprinterTopUp.low) {
-            return response.vehicleCost - response.personalContribution
+            return (
+              response.vehicleCost * outbound - response.personalContribution
+            )
           }
           return (
-            response.bacentaSprinterTopUp.low - response.personalContribution
+            response.bacentaSprinterTopUp.low * outbound -
+            response.personalContribution
           )
         }
         if (response.vehicle === 'Urvan') {
           if (response.vehicleCost < response.bacentaUrvanTopUp.low) {
-            return response.vehicleCost - response.personalContribution
+            return (
+              response.vehicleCost * outbound - response.personalContribution
+            )
           }
-          return response.bacentaUrvanTopUp.low - response.personalContribution
+          return (
+            response.bacentaUrvanTopUp.low * outbound -
+            response.personalContribution
+          )
         }
         return 0
       }

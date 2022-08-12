@@ -178,6 +178,7 @@ export const RECORD_BUSSING_FROM_BACENTA = gql`
     $personalContribution: Float!
     $vehicle: String!
     $picture: String!
+    $outbound: Boolean!
   ) {
     RecordVehicleFromBacenta(
       bussingRecordId: $bussingRecordId
@@ -186,6 +187,7 @@ export const RECORD_BUSSING_FROM_BACENTA = gql`
       personalContribution: $personalContribution
       vehicle: $vehicle
       picture: $picture
+      outbound: $outbound
     ) {
       id
       leaderDeclaration

@@ -1266,6 +1266,7 @@ extend type Mutation {
     personalContribution: Float!
     vehicle: String!
     picture: String!
+    outbound: Boolean!
   ): VehicleRecord!
     @cypher(
       statement: """
@@ -1278,7 +1279,8 @@ extend type Mutation {
         vehicleRecord.vehicleCost = $vehicleCost,
         vehicleRecord.personalContribution = $personalContribution,
         vehicleRecord.vehicle = $vehicle,
-        vehicleRecord.picture =  $picture
+        vehicleRecord.picture =  $picture,
+        vehicleRecord.outbound = $outbound
 
        WITH vehicleRecord, bussingRecord
         MATCH (leader:Member {auth_id: $auth.jwt.sub})

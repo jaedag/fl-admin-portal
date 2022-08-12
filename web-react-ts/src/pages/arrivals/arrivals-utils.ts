@@ -1,4 +1,5 @@
 import { StreamOptions } from 'global-types'
+import { FormikSelectOptions } from 'global-utils'
 import { addMinutes } from 'jd-date-utils'
 import { getTodayTime } from 'jd-date-utils'
 import { isToday } from 'jd-date-utils'
@@ -9,16 +10,21 @@ import {
   VehicleRecord,
 } from './arrivals-types'
 
-export const MOBILE_NETWORK_OPTIONS = [
+export const MOBILE_NETWORK_OPTIONS: FormikSelectOptions = [
   { key: '', value: '' },
   { key: 'MTN', value: 'MTN' },
   { key: 'Vodafone', value: 'Vodafone' },
   { key: 'AirtelTigo', value: 'AirtelTigo' },
 ]
-export const VEHICLE_OPTIONS = [
+export const VEHICLE_OPTIONS: FormikSelectOptions = [
   { key: 'Urvan', value: 'Urvan' },
   { key: 'Sprinter', value: 'Sprinter' },
   { key: 'Car', value: 'Car' },
+]
+
+export const OUTBOUND_OPTIONS: FormikSelectOptions = [
+  { key: 'In Only', value: 'In Only' },
+  { key: 'In and Out', value: 'In and Out' },
 ]
 
 const isArrivalsToday = (bacenta: { stream_name: StreamOptions }) => {
