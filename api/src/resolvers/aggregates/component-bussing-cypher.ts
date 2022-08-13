@@ -20,9 +20,10 @@ export const componentConstituencyBussingAggregates = `
 
   MATCH (componentRecords)-[:BUSSED_ON]->(date:TimeGraph)
   WHERE date.date > date() - duration({months: 2})
-  WITH DISTINCT componentRecords, date(date.date).week AS week ORDER BY week
+  MATCH (componentRecords)-[:INCLUDES_RECORD]->(vehicleRecord:VehicleRecord)
+  WITH DISTINCT vehicleRecord, date(date.date).week AS week ORDER BY week
 
-RETURN week AS week, SUM(componentRecords.attendance) AS attendance ORDER BY week DESC LIMIT toInteger($limit)
+RETURN week AS week, SUM(vehicleRecord.attendance) AS attendance ORDER BY week DESC LIMIT toInteger($limit)
 `
 
 export const componentCouncilBussingAggregates = `

@@ -12,11 +12,12 @@ import { Col, Container, Row } from 'react-bootstrap'
 import GraphDropdown from './GraphDropdown'
 import { MemberContext } from 'contexts/MemberContext'
 
-export const ConstituencyReport = () => {
+export const ConstituencyGraphs = () => {
   const { constituencyId } = useContext(ChurchContext)
   const { currentUser } = useContext(MemberContext)
 
   const [bussing, setBussing] = useState(true)
+  const [churchData, setChurchData] = useState<any[] | undefined>([])
   const { data, loading, error } = useQuery(CONSTITUENCY_GRAPHS, {
     variables: { id: constituencyId },
     onCompleted: (data) => {
@@ -24,9 +25,6 @@ export const ConstituencyReport = () => {
       setChurchData(getServiceGraphData(data?.constituencies[0], 'bussing'))
     },
   })
-  const [churchData, setChurchData] = useState(
-    getServiceGraphData(data?.constituencies[0], 'bussing')
-  )
 
   return (
     <ApolloWrapper loading={loading} error={error} data={data}>
@@ -98,4 +96,4 @@ export const ConstituencyReport = () => {
   )
 }
 
-export default ConstituencyReport
+export default ConstituencyGraphs

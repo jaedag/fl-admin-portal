@@ -3,7 +3,10 @@ import { Form, Formik, FormikHelpers } from 'formik'
 import * as Yup from 'yup'
 import { makeSelectOptions } from 'global-utils'
 import { permitAdmin } from 'permission-utils'
-import { GET_COUNCIL_CONSTITUENCIES, GET_MINISTRIES } from 'queries/ListQueries'
+import {
+  GET_COUNCIL_CONSTITUENCIES,
+  GET_GATHERINGSERVICE_MINISTRIES,
+} from 'queries/ListQueries'
 import React, { useContext } from 'react'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { useQuery } from '@apollo/client'
@@ -36,7 +39,8 @@ const SontaForm = ({
   newSonta,
   loading,
 }: SontaFormProps) => {
-  const { constituencyId, councilId } = useContext(ChurchContext)
+  const { constituencyId, councilId, gatheringServiceId } =
+    useContext(ChurchContext)
 
   const {
     data: councilData,
@@ -54,8 +58,14 @@ const SontaForm = ({
     variables: { id: constituencyId },
   })
 
-  const { data: ministryListData, loading: ministryListLoading } =
-    useQuery(GET_MINISTRIES)
+  const { data: ministryListData, loading: ministryListLoading } = useQuery(
+    GET_GATHERINGSERVICE_MINISTRIES,
+    {
+      variables: {
+        id: gatheringServiceId,
+      },
+    }
+  )
 
   const constituencyLoading = constituenciesLoading
   const constituency = constituenciesData?.constituencies[0]

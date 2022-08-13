@@ -43,6 +43,9 @@ const Navigator = () => {
         gatheringService:
           data.memberByEmail?.fellowship?.bacenta.constituency?.council.stream
             .gatheringService.id,
+        oversight:
+          data.memberByEmail?.fellowship?.bacenta.constituency?.council.stream
+            .gatheringService.oversight.id,
       })
 
       sessionStorage.setItem('currentUser', JSON.stringify({ ...currentUser }))

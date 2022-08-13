@@ -361,11 +361,15 @@ export const GET_GATHERINGSERVICES = gql`
   }
 `
 
-export const GET_MINISTRIES = gql`
-  query getMinistries {
-    ministries {
+export const GET_GATHERINGSERVICE_MINISTRIES = gql`
+  query getGatheringServiceMinistries($id: ID!) {
+    gatheringServices(where: { id: $id }) {
       id
       name
+      ministries {
+        id
+        name
+      }
     }
   }
 `

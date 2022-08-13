@@ -18,6 +18,7 @@ const CouncilReport = () => {
   const { currentUser } = useContext(MemberContext)
 
   const [bussing, setBussing] = useState(true)
+  const [churchData, setChurchData] = useState<any[] | undefined>([])
   const { data, loading, error } = useQuery(COUNCIL_GRAPHS, {
     variables: { councilId: councilId },
     onCompleted: (data) => {
@@ -25,10 +26,6 @@ const CouncilReport = () => {
       setChurchData(getServiceGraphData(data?.councils[0], 'bussing'))
     },
   })
-
-  const [churchData, setChurchData] = useState(
-    getServiceGraphData(data?.councils[0], 'bussing')
-  )
 
   return (
     <ApolloWrapper loading={loading} error={error} data={data} placeholder>

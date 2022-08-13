@@ -52,6 +52,12 @@ const DetailsConstituency = () => {
       link: '#',
     },
   ]
+
+  if (!constituency?.zone.number) {
+    const moneyItems = [1, 2, 3]
+    moneyItems.forEach(() => details.pop())
+  }
+
   return (
     <ApolloWrapper loading={loading} error={error} data={data} placeholder>
       <DisplayChurchDetails
