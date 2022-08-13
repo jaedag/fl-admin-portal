@@ -22,6 +22,7 @@ import usePopup from 'hooks/usePopup'
 import { AdminFormOptions } from './DashboardConstituency'
 import SearchMember from 'components/formik/SearchMember'
 import { beforeStreamArrivalsDeadline } from './arrivals-utils'
+import ErrorText from 'components/ErrorText'
 
 const CouncilDashboard = () => {
   const { isOpen, togglePopup } = usePopup()
@@ -127,9 +128,7 @@ const CouncilDashboard = () => {
 
           <DefaulterInfoCard defaulter={aggregates} />
           {!beforeStreamArrivalsDeadline(council?.stream) && (
-            <div className="text-center fw-bold text-danger">
-              Arrival Deadline is up! Thank you very much
-            </div>
+            <ErrorText>Arrival Deadline is up! Thank you very much</ErrorText>
           )}
           <MenuButton
             title="Bacentas With No Activity"

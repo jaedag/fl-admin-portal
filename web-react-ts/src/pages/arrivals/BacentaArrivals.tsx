@@ -20,6 +20,7 @@ import useModal from 'hooks/useModal'
 import './Arrivals.css'
 import CountdownTimer from './countdown-component/CountdownTimer'
 import VehicleButton from './components/VehicleButton'
+import ErrorText from 'components/ErrorText'
 
 const BacentaArrivals = () => {
   const { clickCard, bacentaId } = useContext(ChurchContext)
@@ -195,6 +196,11 @@ const BacentaArrivals = () => {
           >
             Upload Pre-Mobilisation Picture
           </Button>
+          {(!beforeMobilisationDeadline(bacenta, bussing) ||
+            !isMomoCleared(bacenta)) &&
+          bussing ? (
+            <ErrorText>Pre-Mobilisation Form is not open!</ErrorText>
+          ) : null}
 
           {bussing?.vehicleRecords.length ? (
             <div className="my-2">Please Find Your Records Below</div>

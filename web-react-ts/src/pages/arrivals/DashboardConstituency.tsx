@@ -20,6 +20,7 @@ import { MemberContext } from 'contexts/MemberContext'
 import usePopup from 'hooks/usePopup'
 import SearchMember from 'components/formik/SearchMember'
 import { beforeStreamArrivalsDeadline } from './arrivals-utils'
+import ErrorText from 'components/ErrorText'
 
 export type AdminFormOptions = {
   adminName: string
@@ -128,9 +129,7 @@ const ConstituencyDashboard = () => {
           </RoleView>
 
           {!beforeStreamArrivalsDeadline(constituency?.council.stream) && (
-            <div className="text-center fw-bold text-danger">
-              Arrival Deadline is up! Thank you very much
-            </div>
+            <ErrorText>Arrival Deadline is up! Thank you very much</ErrorText>
           )}
           <MenuButton
             title="Bacentas With No Activity"

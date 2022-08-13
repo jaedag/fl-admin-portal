@@ -27,6 +27,7 @@ import SearchMember from 'components/formik/SearchMember'
 import ArrivalsMenuDropdown from './ArrivalsMenuDropdown'
 import { beforeStreamArrivalsDeadline } from './arrivals-utils'
 import { StreamWithArrivals } from './arrivals-types'
+import ErrorText from 'components/ErrorText'
 
 const StreamDashboard = () => {
   const { isOpen, togglePopup } = usePopup()
@@ -138,9 +139,7 @@ const StreamDashboard = () => {
         <div className="d-grid gap-2 mt-3">
           <DefaulterInfoCard defaulter={aggregates} />
           {!beforeStreamArrivalsDeadline(stream) && (
-            <div className="text-center fw-bold text-danger">
-              Arrival Deadline is up! Thank you very much
-            </div>
+            <ErrorText>Arrival Deadline is up! Thank you very much</ErrorText>
           )}
           <MenuButton
             title="Bacentas With No Activity"
