@@ -37,7 +37,7 @@ const UpdateStream = () => {
 
   const initialValues: StreamFormValues = {
     name: stream?.name,
-    leaderName: stream?.leader?.fullName ?? '',
+    leaderName: stream?.leader?.firstName + ' ' + stream?.leader.lastName ?? '',
     leaderId: stream?.leader?.id || '',
     gatheringService: stream?.gatheringService?.id ?? '',
     councils: stream?.councils?.length ? stream.councils : [''],

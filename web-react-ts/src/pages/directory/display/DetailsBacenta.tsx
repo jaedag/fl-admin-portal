@@ -76,7 +76,7 @@ const DetailsBacenta = () => {
     },
   ]
 
-  if (!bacenta?.zone) {
+  if (!bacenta?.zone.number) {
     const moneyItems = [1, 2, 3]
     moneyItems.forEach(() => details.pop())
   }

@@ -36,7 +36,9 @@ const UpdateConstituency = () => {
   const constituency = data?.constituencies[0]
   const initialValues: ConstituencyFormValues = {
     name: constituency?.name,
-    leaderName: constituency?.leader?.fullName ?? '',
+    leaderName:
+      constituency?.leader?.firstName + ' ' + constituency?.leader.lastName ??
+      '',
     leaderId: constituency?.leader?.id || '',
     council: constituency?.council?.id,
     bacentas: constituency?.bacentas?.length ? constituency.bacentas : [''],
