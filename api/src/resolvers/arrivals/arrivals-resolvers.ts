@@ -1,42 +1,32 @@
 import axios from 'axios'
-import { createRole } from '../utils/auth0'
 import {
   getMobileCode,
   getStreamFinancials,
   padNumbers,
 } from '../utils/financial-utils'
 import { Context } from '../utils/neo4j-types'
-import {
-  isAuth,
-  noEmptyArgsValidation,
-  rearrangeCypherObject,
-  throwErrorMsg,
-} from '../utils/utils'
+import { isAuth, rearrangeCypherObject, throwErrorMsg } from '../utils/utils'
 import {
   permitAdmin,
   permitAdminArrivals,
   permitArrivals,
-  permitArrivalsConfirmer,
+  permitArrivalsCounter,
   permitArrivalsHelpers,
 } from '../permissions'
 import { MakeServant, RemoveServant } from '../directory/make-remove-servants'
 import { PaySwitchRequestBody } from '../banking/banking-types'
-import { getAuthToken } from '../authenticate'
 import {
   checkArrivalTimes,
   checkBacentaMomoDetails,
   checkTransactionId,
-  getBussingRecordWithDate,
-  noBussingTopUp,
+  getVehicleRecordWithDate,
+  noVehicleTopUp,
   recordArrivalTime,
-  RemoveAllStreamArrivalsHelpers,
-  removeBussingRecordTransactionId,
-  setAdjustedDiscountTopUp,
-  setBussingRecordTransactionId,
-  setBussingRecordTransactionSuccessful,
-  setNormalBussingTopUp,
-  setSwellBussingTopUp,
+  removeVehicleRecordTransactionId,
   setSwellDate,
+  setVehicleRecordTransactionId,
+  setVehicleRecordTransactionSuccessful,
+  setVehicleTopUp,
   uploadMobilisationPicture,
 } from './arrivals-cypher'
 import { joinMessageStrings, sendBulkSMS } from '../utils/notify'
@@ -53,9 +43,7 @@ dotenv.config()
 
 const checkIfSelf = (servantId: string, auth: string) => {
   if (servantId === auth.replace('auth0|', '')) {
-    throwErrorMsg(
-      'Sorry! You cannot make yourself an arrivals counter or confirmer'
-    )
+    throwErrorMsg('Sorry! You cannot make yourself an arrivals counter')
   }
 }
 
@@ -174,82 +162,6 @@ export const arrivalsMutation = {
       'ArrivalsCounter'
     ),
 
-  MakeStreamArrivalsConfirmer: async (
-    object: any,
-    args: { arrivalsConfirmerId: string; streamId: string },
-    context: Context
-  ) => {
-    checkIfSelf(args.arrivalsConfirmerId, context.auth.jwt.sub)
-
-    return MakeServant(
-      context,
-      args,
-      [...permitAdmin('Stream'), ...permitArrivals('Stream')],
-      'Stream',
-      'ArrivalsConfirmer'
-    )
-  },
-  RemoveStreamArrivalsConfirmer: async (
-    object: any,
-    args: { arrivalsConfirmerId: string; streamId: string },
-    context: Context
-  ) =>
-    RemoveServant(
-      context,
-      args,
-      [...permitAdmin('Stream'), ...permitArrivals('Stream')],
-      'Stream',
-      'ArrivalsConfirmer'
-    ),
-  RemoveAllStreamArrivalsHelpers: async (
-    object: any,
-    args: any,
-    context: Context
-  ) => {
-    const authToken = await getAuthToken()
-    isAuth(permitAdminArrivals('Stream'), context.auth.roles)
-    noEmptyArgsValidation(['streamId'])
-
-    const session = context.executionContext.session()
-
-    try {
-      // await axios(deleteRole('arrivalsConfirmerStream', authToken))
-      // await axios(deleteRole('arrivalsCounterStream', authToken))
-
-      // eslint-disable-next-line no-console
-      console.log('Arrivals Helper Roles Deleted Successfully')
-    } catch (error: any) {
-      throwErrorMsg('There was an error deleting arrivals helper roles', error)
-    }
-
-    try {
-      await axios(
-        createRole(
-          'arrivalsConfirmerStream',
-          'A person who confirms the arrival of bacentas',
-          authToken
-        )
-      )
-      await axios(
-        createRole(
-          'arrivalsCounterStream',
-          'A person who confirms the attendance of bacentas',
-          authToken
-        )
-      )
-      console.log('Arrivals Helper Roles Created Successfully')
-    } catch (error) {
-      throwErrorMsg('There was an error creating arrivals helper roles')
-    }
-
-    const stream = rearrangeCypherObject(
-      await session.run(RemoveAllStreamArrivalsHelpers, {
-        streamId: args?.streamId,
-      })
-    )
-
-    return stream?.record.properties
-  },
   UploadMobilisationPicture: async (
     object: any,
     args: {
@@ -281,10 +193,9 @@ export const arrivalsMutation = {
       await session.run(checkBacentaMomoDetails, args)
     )
 
-    if (
-      !checkBacentaMomo.momoNumber &&
-      (checkBacentaMomo.normalTopUp || checkBacentaMomo.swellTopUp)
-    ) {
+    if (!checkBacentaMomo.momoNumber && checkBacentaMomo.zone.low) {
+      console.log(checkBacentaMomo.momoNumber, 'momoNumber')
+      console.log(checkBacentaMomo.zone, 'zone')
       throwErrorMsg('You need a mobile money number before filling this form')
     }
 
@@ -325,9 +236,9 @@ export const arrivalsMutation = {
 
     return returnToCache
   },
-  SetBussingSupport: async (
+  SetVehicleSupport: async (
     object: never,
-    args: { bussingRecordId: string },
+    args: { vehicleRecordId: string },
     context: Context
   ) => {
     const session = context.executionContext.session()
@@ -335,26 +246,78 @@ export const arrivalsMutation = {
       type responseType = {
         id: string
         target: neonumber
-        attendance: neonumber
-        numberOfBusses: neonumber
-        numberOfCars: neonumber
-        bussingCost: number
-        swellBussingTopUp: neonumber
-        normalBussingTopUp: neonumber
+        attendance: number
+        vehicle: 'Sprinter' | 'Urvan' | 'Car'
+        vehicleCost: number
+        outbound: boolean
+        personalContribution: number
+        bacentaSprinterTopUp: neonumber
+        bacentaUrvanTopUp: neonumber
+        arrivalTime: string
         leaderPhoneNumber: string
         leaderFirstName: string
         dateLabels: string[]
       }
       const response: responseType = rearrangeCypherObject(
-        await session.run(getBussingRecordWithDate, args)
+        await session.run(getVehicleRecordWithDate, args)
       )
 
-      let bussingRecord: RearragedCypherResponse | undefined
+      if (response.arrivalTime) {
+        throwErrorMsg(
+          'This bacenta has already been marked as arrived and will not receive money'
+        )
+      }
 
-      if (response.attendance.low < 8) {
+      let vehicleRecord: RearragedCypherResponse | undefined
+
+      const calculateVehicleTopUp = () => {
+        const outbound = response.outbound ? 2 : 1
+        if (response.vehicle === 'Sprinter') {
+          if (response.vehicleCost < response.bacentaSprinterTopUp.low) {
+            return (
+              response.vehicleCost * outbound - response.personalContribution
+            )
+          }
+          return (
+            response.bacentaSprinterTopUp.low * outbound -
+            response.personalContribution
+          )
+        }
+        if (response.vehicle === 'Urvan') {
+          if (response.vehicleCost < response.bacentaUrvanTopUp.low) {
+            return (
+              response.vehicleCost * outbound - response.personalContribution
+            )
+          }
+          return (
+            response.bacentaUrvanTopUp.low * outbound -
+            response.personalContribution
+          )
+        }
+        return 0
+      }
+
+      const vehicleTopUp = calculateVehicleTopUp()
+
+      if (response.vehicle === 'Car') {
+        const attendanceRes = await Promise.all([
+          session.run(noVehicleTopUp, { ...args, vehicleTopUp }),
+          sendBulkSMS(
+            [response.leaderPhoneNumber],
+            joinMessageStrings([
+              texts.arrivalsSMS.no_busses_to_pay_for,
+              response.attendance.toString(),
+            ])
+          ),
+        ])
+        vehicleRecord = rearrangeCypherObject(attendanceRes[0])
+        return vehicleRecord?.record.properties
+      }
+
+      if (response.attendance < 8) {
         try {
           await Promise.all([
-            session.run(noBussingTopUp, args),
+            session.run(noVehicleTopUp, args),
             sendBulkSMS(
               [response.leaderPhoneNumber],
               joinMessageStrings([
@@ -370,108 +333,49 @@ export const arrivalsMutation = {
         }
       }
 
-      if (
-        response.attendance.low >= 8 &&
-        response.bussingCost < response.normalBussingTopUp.low
-      ) {
-        // Bussing Cost is less than the normal top up
-
-        const receiveMoney = joinMessageStrings([
-          `Hi  ${response.leaderFirstName}\n\n`,
-          texts.arrivalsSMS.cheaper_bussing_today,
-          response.bussingCost?.toString(),
-          texts.arrivalsSMS.cheaper_bussing_today_p2,
-          response.attendance?.toString(),
-        ])
-
+      if (response.vehicleCost === 0 || vehicleTopUp <= 0) {
         const attendanceRes = await Promise.all([
-          session.run(setAdjustedDiscountTopUp, args),
-          sendBulkSMS([response.leaderPhoneNumber], receiveMoney),
-        ])
-        bussingRecord = rearrangeCypherObject(attendanceRes[0])
-        return bussingRecord?.record.properties
-      }
-
-      if (response.attendance.low >= response.target.low) {
-        const receiveMoney = joinMessageStrings([
-          `Hi  ${response.leaderFirstName}\n\n`,
-          texts.arrivalsSMS.swell_top_up_p1,
-          response.swellBussingTopUp?.toString(),
-          texts.arrivalsSMS.swell_top_up_p2,
-          response.attendance.toString(),
-        ])
-
-        const noMoney = joinMessageStrings([
-          `Hi  ${response.leaderFirstName}\n\n`,
-          texts.arrivalsSMS.swell_no_top_up,
-          response.attendance.toString(),
-        ])
-
-        const attendanceRes = await Promise.all([
-          session.run(setSwellBussingTopUp, args),
-          sendBulkSMS(
-            [response.leaderPhoneNumber],
-            `${response.swellBussingTopUp ? receiveMoney : noMoney}`
-          ),
-        ])
-
-        bussingRecord = rearrangeCypherObject(attendanceRes[0])
-      }
-
-      if (response.attendance.low < response.target.low) {
-        const receiveMoney = joinMessageStrings([
-          `Hi  ${response.leaderFirstName}\n\n`,
-          texts.arrivalsSMS.normal_top_up_p1,
-          response.normalBussingTopUp?.toString(),
-          texts.arrivalsSMS.normal_top_up_p2,
-          response.attendance?.toString(),
-        ])
-
-        const noMoney = joinMessageStrings([
-          `Hi  ${response.leaderFirstName}\n\n`,
-          texts.arrivalsSMS.normal_no_top_up,
-          response.attendance.toString(),
-        ])
-
-        const attendanceRes = await Promise.all([
-          session.run(setNormalBussingTopUp, args),
-          sendBulkSMS(
-            [response.leaderPhoneNumber],
-            `${response.normalBussingTopUp ? receiveMoney : noMoney}`
-          ),
-        ])
-        bussingRecord = rearrangeCypherObject(attendanceRes[0])
-      }
-
-      if (response.numberOfBusses.low === 0) {
-        await Promise.all([
-          session.run(setNormalBussingTopUp, args),
-          sendBulkSMS(
-            [response.leaderPhoneNumber],
-            joinMessageStrings([texts.arrivalsSMS.no_busses_to_pay_for])
-          ),
-        ])
-      }
-      if (response.bussingCost === 0) {
-        await Promise.all([
-          session.run(setNormalBussingTopUp, args),
+          session.run(noVehicleTopUp, { ...args, vehicleTopUp }),
           sendBulkSMS(
             [response.leaderPhoneNumber],
             joinMessageStrings([texts.arrivalsSMS.no_bussing_cost])
           ),
         ])
+        vehicleRecord = rearrangeCypherObject(attendanceRes[0])
+        return vehicleRecord?.record.properties
       }
 
-      return bussingRecord?.record.properties
+      if (
+        response.attendance &&
+        (response.vehicle === 'Sprinter' || response.vehicle === 'Urvan')
+      ) {
+        // Did not cross your target, you get your normal zonal top up
+
+        const receiveMoney = joinMessageStrings([
+          `Hi  ${response.leaderFirstName}\n\n`,
+          texts.arrivalsSMS.normal_top_up_p1,
+          vehicleTopUp?.toString(),
+          texts.arrivalsSMS.normal_top_up_p2,
+          response.attendance?.toString(),
+        ])
+
+        const attendanceRes = await Promise.all([
+          session.run(setVehicleTopUp, { ...args, vehicleTopUp }),
+          sendBulkSMS([response.leaderPhoneNumber], `${receiveMoney}`),
+        ])
+        vehicleRecord = rearrangeCypherObject(attendanceRes[0])
+      }
+
+      return vehicleRecord?.record.properties
     } catch (error: any) {
       throwErrorMsg(error)
     }
     return {}
   },
-  SendBussingSupport: async (
+  SendVehicleSupport: async (
     object: any,
     // eslint-disable-next-line camelcase
-    args: { bussingRecordId: string; stream_name: StreamOptions },
+    args: { vehicleRecordId: string; stream_name: StreamOptions },
     context: Context
   ) => {
     isAuth(permitArrivalsHelpers(), context.auth.roles)
@@ -489,18 +393,17 @@ export const arrivalsMutation = {
     } else if (
       !transactionResponse?.arrivalTime ||
       transactionResponse?.attendance < 8 ||
-      !transactionResponse?.bussingTopUp
+      !transactionResponse?.vehicleTopUp
     ) {
       // If record has not been confirmed, it will return null
       throwErrorMsg('This bacenta is not eligible to receive money')
     }
-
     const cypherResponse = rearrangeCypherObject(
-      await session.run(setBussingRecordTransactionId, args)
+      await session.run(setVehicleRecordTransactionId, args)
     )
-    const bussingRecord = cypherResponse.record.properties
+    const vehicleRecord = cypherResponse.record.properties
 
-    const sendBussingSupport: PaySwitchRequestBody = {
+    const sendVehicleSupport: PaySwitchRequestBody = {
       method: 'post',
       url: `https://prod.theteller.net/v1.1/transaction/process`,
       headers: {
@@ -509,43 +412,68 @@ export const arrivalsMutation = {
       },
       data: {
         merchant_id: merchantId,
-        transaction_id: padNumbers(bussingRecord.transactionId),
-        amount: padNumbers(bussingRecord.bussingTopUp * 100),
+        transaction_id: padNumbers(vehicleRecord.transactionId),
+        amount: padNumbers(vehicleRecord.bussingTopUp * 100),
         processing_code: '404000',
         'r-switch': 'FLT',
-        desc: `${cypherResponse.bacentaName} Bacenta ${bussingRecord.momoName}`,
+        desc: `${cypherResponse.bacentaName} Bacenta ${vehicleRecord.momoName}`,
         pass_code: passcode,
-        account_number: bussingRecord.momoNumber,
-        account_issuer: getMobileCode(bussingRecord.mobileNetwork),
+        account_number: vehicleRecord.momoNumber,
+        account_issuer: getMobileCode(vehicleRecord.mobileNetwork),
       },
     }
 
     try {
-      const res = await axios(sendBussingSupport)
+      const res = await axios(sendVehicleSupport)
 
       if (res.data.code !== '000') {
-        await session.run(removeBussingRecordTransactionId, args)
+        await session.run(removeVehicleRecordTransactionId, args)
         throwErrorMsg(`${res.data.code} ${res.data.reason}`)
       }
 
       await session
-        .run(setBussingRecordTransactionSuccessful, args)
+        .run(setVehicleRecordTransactionSuccessful, args)
         .catch((error: any) => throwErrorMsg(error))
 
       // eslint-disable-next-line no-console
       console.log(
         'Money Sent Successfully to',
-        bussingRecord.momoNumber,
+        vehicleRecord.momoNumber,
         res.data
       )
-      return bussingRecord
+      return vehicleRecord
     } catch (error: any) {
       throwErrorMsg(error, 'Money could not be sent!')
     }
-    return bussingRecord
+    return vehicleRecord
+  },
+  SetSwellDate: async (object: any, args: any, context: Context) => {
+    isAuth(permitAdminArrivals('GatheringService'), context.auth.roles)
+
+    const session = context.executionContext.session()
+
+    const cypherResponse = rearrangeCypherObject(
+      await session.run(setSwellDate, args)
+    )
+
+    return cypherResponse
+  },
+  SendMobileVerificationNumber: async (
+    object: any,
+    args: { firstName: string; phoneNumber: string; otp: string },
+    context: Context
+  ) => {
+    isAuth(['leaderBacenta'], context.auth.roles)
+
+    const response = await sendBulkSMS(
+      [args.phoneNumber],
+      `Hi ${args.firstName},\n\nYour OTP is ${args.otp}. Input this on the portal to verify your phone number.`
+    )
+
+    return response
   },
   RecordArrivalTime: async (object: any, args: any, context: Context) => {
-    isAuth(permitArrivalsConfirmer(), context.auth.roles)
+    isAuth(permitArrivalsCounter(), context.auth.roles)
     const session = context.executionContext.session()
 
     const recordResponse = rearrangeCypherObject(
@@ -575,40 +503,11 @@ export const arrivalsMutation = {
         ...args,
         auth: context.auth,
       }),
-      sendBulkSMS(
-        [recordResponse.bacenta.properties.momoNumber],
-        `Hi ${recordResponse.firstName}\n\n${texts.arrivalsSMS.you_have_arrived}`
-      ),
     ])
 
     const response = rearrangeCypherObject(promiseAllResponse[0])
 
-    return response.bussingRecord
-  },
-  SetSwellDate: async (object: any, args: any, context: Context) => {
-    isAuth(permitAdminArrivals('GatheringService'), context.auth.roles)
-
-    const session = context.executionContext.session()
-
-    const cypherResponse = rearrangeCypherObject(
-      await session.run(setSwellDate, args)
-    )
-
-    return cypherResponse
-  },
-  SendMobileVerificationNumber: async (
-    object: any,
-    args: { firstName: string; phoneNumber: string; otp: string },
-    context: Context
-  ) => {
-    isAuth(['leaderBacenta'], context.auth.roles)
-
-    const response = await sendBulkSMS(
-      [args.phoneNumber],
-      `Hi ${args.firstName},\n\nYour OTP is ${args.otp}. Input this on the portal to verify your phone number.`
-    )
-
-    return response
+    return response.vehicleRecord
   },
 }
 

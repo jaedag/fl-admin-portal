@@ -32,7 +32,7 @@ import Input from 'components/formik/Input'
 import SearchMember from 'components/formik/SearchMember'
 import Select from 'components/formik/Select'
 import SelectWithQuery from 'components/formik/SelectWithQuery'
-import { FormikInitialValues } from 'components/formik/formiik-types'
+import { FormikInitialValues } from 'components/formik/formik-types'
 
 export interface FellowshipFormValues extends FormikInitialValues {
   constituencySelect: string

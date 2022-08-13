@@ -1,11 +1,10 @@
-import React from 'react'
 import { Field, ErrorMessage } from 'formik'
 import { makeSelectOptions } from '../../global-utils'
 import TextError from './TextError/TextError'
 import { useQuery } from '@apollo/client'
 import { useAuth0 } from '@auth0/auth0-react'
 import PlaceholderCustom from 'components/Placeholder'
-import { FormikSelectWithApollo } from './formiik-types'
+import { FormikSelectWithApollo } from './formik-types'
 
 function SelectWithQuery(props: FormikSelectWithApollo) {
   const {

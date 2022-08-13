@@ -9,7 +9,7 @@ import {
   MARITAL_STATUS_OPTIONS,
   PHONE_NUM_REGEX,
 } from 'global-utils'
-import { GET_MINISTRIES } from 'queries/ListQueries'
+import { GET_GATHERINGSERVICE_MINISTRIES } from 'queries/ListQueries'
 import ErrorScreen from 'components/base-component/ErrorScreen'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import { Col, Container, Row } from 'react-bootstrap'
@@ -22,6 +22,7 @@ import Input from 'components/formik/Input'
 import ImageUpload from 'components/formik/ImageUpload'
 import SearchFellowship from 'components/formik/SearchFellowship'
 import Select from 'components/formik/Select'
+import { ChurchContext } from 'contexts/ChurchContext'
 
 type MemberFormProps = {
   initialValues: CreateMemberFormOptions
@@ -41,9 +42,16 @@ const MemberForm = ({
   loading,
   update,
 }: MemberFormProps) => {
-  const { data: ministriesData, loading: ministriesLoading } =
-    useQuery(GET_MINISTRIES)
   const { currentUser } = useContext(MemberContext)
+  const { gatheringServiceId } = useContext(ChurchContext)
+  const { data: ministriesData, loading: ministriesLoading } = useQuery(
+    GET_GATHERINGSERVICE_MINISTRIES,
+    {
+      variables: {
+        id: gatheringServiceId,
+      },
+    }
+  )
 
   const canChangeEmail = () => {
     if (!update) {
@@ -85,7 +93,8 @@ const MemberForm = ({
   if (ministriesLoading || loading) {
     return <LoadingScreen />
   } else if (ministriesData) {
-    const ministryArray = makeSelectOptions(ministriesData.ministries) || []
+    const ministryArray =
+      makeSelectOptions(ministriesData.gatheringServices[0]?.ministries) || []
     const ministryOptions = [{ key: 'None', value: 'None' }, ...ministryArray]
 
     return (

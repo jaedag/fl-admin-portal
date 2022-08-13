@@ -8,6 +8,14 @@ import { last3Weeks } from 'jd-date-utils'
 import { permitAdmin } from 'permission-utils'
 import { ServiceRecord } from 'global-types'
 
+export type DetailsArray = {
+  title: string
+  number: number
+  link: string
+  width?: number
+  vacationCount?: number
+}[]
+
 const DetailsFellowship = () => {
   const { fellowshipId } = useContext(ChurchContext)
 
@@ -81,7 +89,7 @@ const DetailsFellowship = () => {
     }
   })
 
-  const details = [
+  const details: DetailsArray = [
     {
       title: 'Members',
       number: fellowship?.memberCount || 0,

@@ -20,6 +20,7 @@ extend type Council {
 }
 
 extend type Constituency {
+  zone: BusZone! @relationship(type: "BUSSES_FROM", direction: OUT)
   target: Int!
     @cypher(
       statement: "MATCH (this)-[:HAS]->(bacentas:Bacenta:Active) WITH DISTINCT bacentas RETURN SUM(bacentas.target)"
@@ -59,8 +60,6 @@ extend type Member {
     @relationship(type: "DOES_ARRIVALS_FOR", direction: OUT)
   isArrivalsCounterForStream: [Stream!]!
     @relationship(type: "COUNTS_ARRIVALS_FOR", direction: OUT)
-  isArrivalsConfirmerForStream: [Stream!]!
-    @relationship(type: "CONFIRMS_ARRIVALS_FOR", direction: OUT)
 }
 extend type GatheringService {
   arrivalsAdmin: Member @relationship(type: "DOES_ARRIVALS_FOR", direction: IN)
@@ -80,9 +79,9 @@ extend type GatheringService {
       statement: """
       MATCH (this)-[:HAS*4]->(bacentas:Active:Bacenta)
        WHERE NOT EXISTS {
-         MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
-         WHERE date(date.date)=date()
-         }
+        MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
+        WHERE date(date.date)=date()
+        }
       RETURN COUNT(DISTINCT bacentas)
       """
     )
@@ -90,12 +89,12 @@ extend type GatheringService {
     @cypher(
       statement: """
       MATCH (this)-[:HAS*4]->(bacentas:Active:Bacenta)
-      WHERE EXISTS {
       MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
         WHERE date(date.date)=date()
         AND bussing.mobilisationPicture IS NOT NULL
-        AND bussing.leaderDeclaration IS NULL
-      }
+        AND NOT EXISTS {
+        MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
+        }
       RETURN DISTINCT bacentas
       """
     )
@@ -103,12 +102,12 @@ extend type GatheringService {
     @cypher(
       statement: """
       MATCH (this)-[:HAS*4]->(bacentas:Active:Bacenta)
-      WHERE EXISTS {
       MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
         WHERE date(date.date)=date()
         AND bussing.mobilisationPicture IS NOT NULL
-        AND bussing.leaderDeclaration IS NULL
-      }
+        AND NOT EXISTS {
+        MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
+        }
       RETURN COUNT(DISTINCT bacentas)
       """
     )
@@ -116,12 +115,12 @@ extend type GatheringService {
     @cypher(
       statement: """
       MATCH (this)-[:HAS*4]->(bacentas:Active:Bacenta)
-      WHERE EXISTS {
       MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
         WHERE date(date.date)=date()
-        AND bussing.bussingPictures IS NOT NULL
-        AND bussing.arrivalTime IS NULL
-      }
+        AND EXISTS {
+        MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
+        WHERE record.arrivalTime IS NULL
+        }
       RETURN DISTINCT bacentas
       """
     )
@@ -129,12 +128,12 @@ extend type GatheringService {
     @cypher(
       statement: """
       MATCH (this)-[:HAS*4]->(bacentas:Active:Bacenta)
-      WHERE EXISTS {
       MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
         WHERE date(date.date)=date()
-        AND bussing.bussingPictures IS NOT NULL
-        AND bussing.arrivalTime IS NULL
-      }
+        AND EXISTS {
+        MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
+        WHERE record.arrivalTime IS NULL
+        }
       RETURN COUNT(DISTINCT bacentas)
       """
     )
@@ -144,43 +143,24 @@ extend type GatheringService {
        MATCH (this)-[:HAS*4]->(bacentas:Active:Bacenta)
        MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
         WHERE date(date.date)=date()
-        AND bussing.bussingPictures IS NOT NULL
-        AND bussing.arrivalTime IS NULL
+        MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
+        WHERE record.arrivalTime IS NULL
 
-      WITH DISTINCT bussing
-      RETURN SUM(bussing.attendance)
+      WITH DISTINCT record
+      RETURN SUM(record.attendance)
       """
     )
-  bacentasHaveBeenCounted: [Bacenta!]!
-    @cypher(
-      statement: """
-      MATCH (this)-[:HAS*4]->(bacentas:Active:Bacenta)
-      WHERE EXISTS {
-      MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph) WHERE date(date.date)=date()
-       AND EXISTS {MATCH (bussing)-[:COUNTED_BY]->(:Member)}
-      }
-      RETURN DISTINCT bacentas
-      """
-    )
-  bacentasHaveBeenCountedCount: Int
-    @cypher(
-      statement: """
-      MATCH (this)-[:HAS*4]->(bacentas:Active:Bacenta)
-      WHERE EXISTS {
-       MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph) WHERE date(date.date)=date()
-       AND EXISTS {MATCH (bussing)-[:COUNTED_BY]->(:Member)}
-      }
-      RETURN COUNT(DISTINCT bacentas)
-      """
-    )
+
   bacentasNotCounted: [Bacenta!]!
     @cypher(
       statement: """
       MATCH (this)-[:HAS*4]->(bacentas:Active:Bacenta)
       MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
-      WHERE date(date.date)=date() AND bussing.leaderDeclaration IS NOT NULL
-      AND NOT EXISTS {
-       MATCH (bussing)-[:COUNTED_BY]->(:Member)
+      WHERE date(date.date)=date()
+      MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
+
+      WHERE NOT EXISTS {
+       MATCH (record)-[:COUNTED_BY]->(:Member)
       }
       RETURN DISTINCT bacentas
       """
@@ -190,9 +170,11 @@ extend type GatheringService {
       statement: """
       MATCH (this)-[:HAS*4]->(bacentas:Active:Bacenta)
       MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
-       WHERE date(date.date)=date() AND bussing.leaderDeclaration IS NOT NULL
-      AND NOT EXISTS {
-       MATCH (bussing)-[:COUNTED_BY]->(:Member)
+      WHERE date(date.date)=date()
+      MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
+
+      WHERE NOT EXISTS {
+       MATCH (record)-[:COUNTED_BY]->(:Member)
       }
       RETURN COUNT(DISTINCT bacentas)
       """
@@ -200,24 +182,24 @@ extend type GatheringService {
   bacentasBelow8: [Bacenta!]!
     @cypher(
       statement: """
-      MATCH (this)-[:HAS*4]->(bacentas:Active:Bacenta)
-      WHERE EXISTS {
+       MATCH (this)-[:HAS*4]->(bacentas:Active:Bacenta)
       MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
-        WHERE date(date.date)=date()
-        AND bussing.attendance < 8
-      }
-      RETURN DISTINCT bacentas
+         WHERE date(date.date)=date()
+         MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
+         WITH  SUM(record.attendance) AS attendance, bacentas
+         WHERE attendance < 8
+       RETURN DISTINCT bacentas
       """
     )
   bacentasBelow8Count: Int!
     @cypher(
       statement: """
       MATCH (this)-[:HAS*4]->(bacentas:Active:Bacenta)
-      WHERE EXISTS {
       MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
         WHERE date(date.date)=date()
-        AND bussing.attendance < 8
-      }
+        MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
+        WITH  SUM(record.attendance) AS attendance, bacentas
+        WHERE attendance < 8
       RETURN COUNT(DISTINCT bacentas)
       """
     )
@@ -225,11 +207,12 @@ extend type GatheringService {
     @cypher(
       statement: """
       MATCH (this)-[:HAS*4]->(bacentas:Active:Bacenta)
-      WHERE EXISTS {
       MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
         WHERE date(date.date)=date()
-        AND bussing.arrivalTime IS NOT NULL
-      }
+        AND NOT EXISTS {
+        MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
+        WHERE record.arrivalTime IS NULL
+        }
       RETURN DISTINCT bacentas
       """
     )
@@ -237,11 +220,12 @@ extend type GatheringService {
     @cypher(
       statement: """
       MATCH (this)-[:HAS*4]->(bacentas:Active:Bacenta)
-      WHERE EXISTS {
       MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
         WHERE date(date.date)=date()
-        AND bussing.arrivalTime IS NOT NULL
-      }
+        AND NOT EXISTS {
+        MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
+        WHERE record.arrivalTime IS NULL
+        }
       RETURN COUNT(DISTINCT bacentas)
       """
     )
@@ -250,11 +234,10 @@ extend type GatheringService {
       statement: """
        MATCH (this)-[:HAS*4]->(bacentas:Active:Bacenta)
        MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
-         WHERE date(date.date)=date()
-        AND bussing.arrivalTime IS NOT NULL
-
-      WITH DISTINCT bussing
-      RETURN SUM(bussing.attendance)
+        WHERE date(date.date)=date()
+        MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
+        WHERE record.arrivalTime IS NOT NULL
+      RETURN SUM(record.attendance)
       """
     )
 }
@@ -263,8 +246,6 @@ extend type Stream {
   arrivalsAdmin: Member @relationship(type: "DOES_ARRIVALS_FOR", direction: IN)
   arrivalsCounters: [Member!]!
     @relationship(type: "COUNTS_ARRIVALS_FOR", direction: IN)
-  arrivalsConfirmers: [Member!]!
-    @relationship(type: "CONFIRMS_ARRIVALS_FOR", direction: IN)
   bacentasNoActivity: [Bacenta!]!
     @cypher(
       statement: """
@@ -291,12 +272,12 @@ extend type Stream {
     @cypher(
       statement: """
       MATCH (this)-[:HAS*3]->(bacentas:Active:Bacenta)
-      WHERE EXISTS {
       MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
         WHERE date(date.date)=date()
         AND bussing.mobilisationPicture IS NOT NULL
-        AND bussing.leaderDeclaration IS NULL
-      }
+        AND NOT EXISTS {
+        MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
+        }
       RETURN DISTINCT bacentas
       """
     )
@@ -304,25 +285,25 @@ extend type Stream {
     @cypher(
       statement: """
       MATCH (this)-[:HAS*3]->(bacentas:Active:Bacenta)
-      WHERE EXISTS {
       MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
         WHERE date(date.date)=date()
         AND bussing.mobilisationPicture IS NOT NULL
-        AND bussing.leaderDeclaration IS NULL
-      }
+        AND NOT EXISTS {
+        MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
+        }
       RETURN COUNT(DISTINCT bacentas)
       """
     )
   bacentasOnTheWay: [Bacenta!]!
     @cypher(
       statement: """
-      MATCH (this)-[:HAS*3]->(bacentas:Active:Bacenta)
-      WHERE EXISTS {
-      MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
+       MATCH (this)-[:HAS*3]->(bacentas:Active:Bacenta)
+       MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
         WHERE date(date.date)=date()
-        AND bussing.bussingPictures IS NOT NULL
-        AND bussing.arrivalTime IS NULL
-      }
+        AND EXISTS {
+        MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
+        WHERE record.arrivalTime IS NULL
+        }
       RETURN DISTINCT bacentas
       """
     )
@@ -330,12 +311,11 @@ extend type Stream {
     @cypher(
       statement: """
       MATCH (this)-[:HAS*3]->(bacentas:Active:Bacenta)
-      WHERE EXISTS {
       MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
-        WHERE date(date.date)=date()
-        AND bussing.bussingPictures IS NOT NULL
-        AND bussing.arrivalTime IS NULL
-      }
+      WHERE date(date.date)=date()
+      MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
+      WHERE record.arrivalTime IS NULL
+
       RETURN COUNT(DISTINCT bacentas)
       """
     )
@@ -345,43 +325,24 @@ extend type Stream {
        MATCH (this)-[:HAS*3]->(bacentas:Active:Bacenta)
        MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
         WHERE date(date.date)=date()
-        AND bussing.bussingPictures IS NOT NULL
-        AND bussing.arrivalTime IS NULL
+        MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
+        WHERE record.arrivalTime IS NULL
 
-      WITH DISTINCT bussing
-      RETURN SUM(bussing.attendance)
+      WITH DISTINCT record
+      RETURN SUM(record.attendance)
       """
     )
-  bacentasHaveBeenCounted: [Bacenta!]!
-    @cypher(
-      statement: """
-      MATCH (this)-[:HAS*3]->(bacentas:Active:Bacenta)
-      WHERE EXISTS {
-      MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph) WHERE date(date.date)=date()
-       AND EXISTS {MATCH (bussing)-[:COUNTED_BY]->(:Member)}
-      }
-      RETURN DISTINCT bacentas
-      """
-    )
-  bacentasHaveBeenCountedCount: Int
-    @cypher(
-      statement: """
-       MATCH (this)-[:HAS*3]->(bacentas:Active:Bacenta)
-       WHERE EXISTS {
-      MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph) WHERE date(date.date)=date()
-        AND EXISTS {MATCH (bussing)-[:COUNTED_BY]->(:Member)}
-       }
-       RETURN COUNT(DISTINCT bacentas)
-      """
-    )
+
   bacentasNotCounted: [Bacenta!]!
     @cypher(
       statement: """
       MATCH (this)-[:HAS*3]->(bacentas:Active:Bacenta)
       MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
-      WHERE date(date.date)=date() AND bussing.leaderDeclaration IS NOT NULL
-      AND NOT EXISTS {
-       MATCH (bussing)-[:COUNTED_BY]->(:Member)
+      WHERE date(date.date)=date()
+      MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
+
+      WHERE NOT EXISTS {
+       MATCH (record)-[:COUNTED_BY]->(:Member)
       }
       RETURN DISTINCT bacentas
       """
@@ -391,9 +352,11 @@ extend type Stream {
       statement: """
       MATCH (this)-[:HAS*3]->(bacentas:Active:Bacenta)
       MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
-      WHERE date(date.date)=date() AND bussing.leaderDeclaration IS NOT NULL
-      AND NOT EXISTS {
-       MATCH (bussing)-[:COUNTED_BY]->(:Member)
+      WHERE date(date.date)=date()
+      MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
+
+      WHERE NOT EXISTS {
+       MATCH (record)-[:COUNTED_BY]->(:Member)
       }
       RETURN COUNT(DISTINCT bacentas)
       """
@@ -402,11 +365,11 @@ extend type Stream {
     @cypher(
       statement: """
       MATCH (this)-[:HAS*3]->(bacentas:Active:Bacenta)
-      WHERE EXISTS {
       MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
         WHERE date(date.date)=date()
-        AND bussing.attendance < 8
-      }
+        MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
+        WITH  SUM(record.attendance) AS attendance, bacentas
+        WHERE attendance < 8
       RETURN DISTINCT bacentas
       """
     )
@@ -414,11 +377,11 @@ extend type Stream {
     @cypher(
       statement: """
       MATCH (this)-[:HAS*3]->(bacentas:Active:Bacenta)
-      WHERE EXISTS {
       MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
         WHERE date(date.date)=date()
-        AND bussing.attendance < 8
-      }
+        MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
+        WITH  SUM(record.attendance) AS attendance, bacentas
+        WHERE attendance < 8
       RETURN COUNT(DISTINCT bacentas)
       """
     )
@@ -426,11 +389,12 @@ extend type Stream {
     @cypher(
       statement: """
       MATCH (this)-[:HAS*3]->(bacentas:Active:Bacenta)
-      WHERE EXISTS {
       MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
         WHERE date(date.date)=date()
-        AND bussing.arrivalTime IS NOT NULL
-      }
+        AND NOT EXISTS {
+        MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
+        WHERE record.arrivalTime IS NULL
+        }
       RETURN DISTINCT bacentas
       """
     )
@@ -438,24 +402,24 @@ extend type Stream {
     @cypher(
       statement: """
       MATCH (this)-[:HAS*3]->(bacentas:Active:Bacenta)
-      WHERE EXISTS {
       MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
         WHERE date(date.date)=date()
-        AND bussing.arrivalTime IS NOT NULL
-      }
+        AND NOT EXISTS {
+        MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
+        WHERE record.arrivalTime IS NULL
+        }
       RETURN COUNT(DISTINCT bacentas)
       """
     )
   bussingMembersHaveArrivedCount: Int
     @cypher(
       statement: """
-       MATCH (this)-[:HAS*3]->(bacentas:Active:Bacenta)
-       MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
-         WHERE date(date.date)=date()
-        AND bussing.arrivalTime IS NOT NULL
-
-      WITH DISTINCT bussing
-      RETURN SUM(bussing.attendance)
+      MATCH (this)-[:HAS*3]->(bacentas:Active:Bacenta)
+      MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
+        WHERE date(date.date)=date()
+        MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
+        WHERE record.arrivalTime IS NOT NULL
+      RETURN SUM(record.attendance)
       """
     )
 }
@@ -490,12 +454,12 @@ extend type Council {
     @cypher(
       statement: """
       MATCH (this)-[:HAS*2]->(bacentas:Active:Bacenta)
-      WHERE EXISTS {
       MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
         WHERE date(date.date)=date()
         AND bussing.mobilisationPicture IS NOT NULL
-        AND bussing.leaderDeclaration IS NULL
-      }
+        AND NOT EXISTS {
+        MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
+        }
       RETURN DISTINCT bacentas
       """
     )
@@ -503,12 +467,12 @@ extend type Council {
     @cypher(
       statement: """
       MATCH (this)-[:HAS*2]->(bacentas:Active:Bacenta)
-      WHERE EXISTS {
       MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
         WHERE date(date.date)=date()
         AND bussing.mobilisationPicture IS NOT NULL
-        AND bussing.leaderDeclaration IS NULL
-      }
+        AND NOT EXISTS {
+        MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
+        }
       RETURN COUNT(DISTINCT bacentas)
       """
     )
@@ -516,12 +480,12 @@ extend type Council {
     @cypher(
       statement: """
       MATCH (this)-[:HAS*2]->(bacentas:Active:Bacenta)
-      WHERE EXISTS {
       MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
         WHERE date(date.date)=date()
-        AND bussing.bussingPictures IS NOT NULL
-        AND bussing.arrivalTime IS NULL
-      }
+        AND EXISTS {
+        MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
+        WHERE record.arrivalTime IS NULL
+        }
       RETURN DISTINCT bacentas
       """
     )
@@ -529,12 +493,12 @@ extend type Council {
     @cypher(
       statement: """
       MATCH (this)-[:HAS*2]->(bacentas:Active:Bacenta)
-      WHERE EXISTS {
       MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
         WHERE date(date.date)=date()
-        AND bussing.bussingPictures IS NOT NULL
-        AND bussing.arrivalTime IS NULL
-      }
+        AND EXISTS {
+        MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
+        WHERE record.arrivalTime IS NULL
+        }
       RETURN COUNT(DISTINCT bacentas)
       """
     )
@@ -544,33 +508,11 @@ extend type Council {
        MATCH (this)-[:HAS*2]->(bacentas:Active:Bacenta)
        MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
         WHERE date(date.date)=date()
-        AND bussing.bussingPictures IS NOT NULL
-        AND bussing.arrivalTime IS NULL
+        MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
+        WHERE record.arrivalTime IS NULL
 
-      WITH DISTINCT bussing
-      RETURN SUM(bussing.attendance)
-      """
-    )
-  bacentasHaveBeenCounted: [Bacenta!]!
-    @cypher(
-      statement: """
-      MATCH (this)-[:HAS*2]->(bacentas:Active:Bacenta)
-      WHERE EXISTS {
-      MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph) WHERE date(date.date)=date()
-       AND EXISTS {MATCH (bussing)-[:COUNTED_BY]->(:Member)}
-      }
-      RETURN DISTINCT bacentas
-      """
-    )
-  bacentasHaveBeenCountedCount: Int
-    @cypher(
-      statement: """
-      MATCH (this)-[:HAS*2]->(bacentas:Active:Bacenta)
-      WHERE EXISTS {
-      MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph) WHERE date(date.date)=date()
-       AND EXISTS {MATCH (bussing)-[:COUNTED_BY]->(:Member)}
-      }
-      RETURN COUNT(DISTINCT bacentas)
+      WITH DISTINCT record
+      RETURN SUM(record.attendance)
       """
     )
   bacentasNotCounted: [Bacenta!]!
@@ -578,9 +520,11 @@ extend type Council {
       statement: """
       MATCH (this)-[:HAS*2]->(bacentas:Active:Bacenta)
       MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
-      WHERE date(date.date)=date() AND bussing.leaderDeclaration IS NOT NULL
-      AND NOT EXISTS {
-        MATCH (bussing)-[:COUNTED_BY]->(:Member)
+      WHERE date(date.date)=date()
+      MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
+
+      WHERE NOT EXISTS {
+       MATCH (record)-[:COUNTED_BY]->(:Member)
       }
       RETURN DISTINCT bacentas
       """
@@ -590,9 +534,11 @@ extend type Council {
       statement: """
       MATCH (this)-[:HAS*2]->(bacentas:Active:Bacenta)
       MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
-      WHERE date(date.date)=date() AND bussing.leaderDeclaration IS NOT NULL
-      AND NOT EXISTS {
-       MATCH (bussing)-[:COUNTED_BY]->(:Member)
+      WHERE date(date.date)=date()
+      MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
+
+      WHERE NOT EXISTS {
+       MATCH (record)-[:COUNTED_BY]->(:Member)
       }
       RETURN COUNT(DISTINCT bacentas)
       """
@@ -601,11 +547,11 @@ extend type Council {
     @cypher(
       statement: """
       MATCH (this)-[:HAS*2]->(bacentas:Active:Bacenta)
-      WHERE EXISTS {
       MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
         WHERE date(date.date)=date()
-        AND bussing.attendance < 8
-      }
+        MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
+        WITH  SUM(record.attendance) AS attendance, bacentas
+        WHERE attendance < 8
       RETURN DISTINCT bacentas
       """
     )
@@ -613,11 +559,11 @@ extend type Council {
     @cypher(
       statement: """
       MATCH (this)-[:HAS*2]->(bacentas:Active:Bacenta)
-      WHERE EXISTS {
       MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
         WHERE date(date.date)=date()
-        AND bussing.attendance < 8
-      }
+        MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
+        WITH  SUM(record.attendance) AS attendance, bacentas
+        WHERE attendance < 8
       RETURN COUNT(DISTINCT bacentas)
       """
     )
@@ -625,11 +571,12 @@ extend type Council {
     @cypher(
       statement: """
       MATCH (this)-[:HAS*2]->(bacentas:Active:Bacenta)
-      WHERE EXISTS {
       MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
         WHERE date(date.date)=date()
-        AND bussing.arrivalTime IS NOT NULL
-      }
+        AND NOT EXISTS {
+        MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
+        WHERE record.arrivalTime IS NULL
+        }
       RETURN DISTINCT bacentas
       """
     )
@@ -637,11 +584,12 @@ extend type Council {
     @cypher(
       statement: """
       MATCH (this)-[:HAS*2]->(bacentas:Active:Bacenta)
-      WHERE EXISTS {
       MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
         WHERE date(date.date)=date()
-        AND bussing.arrivalTime IS NOT NULL
-      }
+        AND NOT EXISTS {
+        MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
+        WHERE record.arrivalTime IS NULL
+        }
       RETURN COUNT(DISTINCT bacentas)
       """
     )
@@ -650,13 +598,23 @@ extend type Council {
       statement: """
        MATCH (this)-[:HAS*2]->(bacentas:Active:Bacenta)
        MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
-         WHERE date(date.date)=date()
-        AND bussing.arrivalTime IS NOT NULL
-
-      WITH DISTINCT bussing
-      RETURN SUM(bussing.attendance)
+        WHERE date(date.date)=date()
+        MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
+        WHERE record.arrivalTime IS NOT NULL
+      RETURN SUM(record.attendance)
       """
     )
+}
+
+type BusZone {
+  id: ID!
+  number: Int!
+  sprinterCost: Float!
+  sprinterTopUp: Float!
+  urvanCost: Float!
+  urvanTopUp: Float!
+  constituencies: [Constituency!]!
+    @relationship(type: "BUSSES_FROM", direction: IN)
 }
 
 extend type Constituency {
@@ -688,12 +646,12 @@ extend type Constituency {
     @cypher(
       statement: """
       MATCH (this)-[:HAS]->(bacentas:Active:Bacenta)
-      WHERE EXISTS {
       MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
         WHERE date(date.date)=date()
         AND bussing.mobilisationPicture IS NOT NULL
-        AND bussing.leaderDeclaration IS NULL
-      }
+        AND NOT EXISTS {
+        MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
+        }
       RETURN DISTINCT bacentas
       """
     )
@@ -701,12 +659,12 @@ extend type Constituency {
     @cypher(
       statement: """
       MATCH (this)-[:HAS]->(bacentas:Active:Bacenta)
-      WHERE EXISTS {
       MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
         WHERE date(date.date)=date()
         AND bussing.mobilisationPicture IS NOT NULL
-        AND bussing.leaderDeclaration IS NULL
-      }
+        AND NOT EXISTS {
+        MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
+        }
       RETURN COUNT(DISTINCT bacentas)
       """
     )
@@ -714,12 +672,12 @@ extend type Constituency {
     @cypher(
       statement: """
       MATCH (this)-[:HAS]->(bacentas:Active:Bacenta)
-      WHERE EXISTS {
       MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
         WHERE date(date.date)=date()
-        AND bussing.bussingPictures IS NOT NULL
-        AND bussing.arrivalTime IS NULL
-      }
+        AND EXISTS {
+        MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
+        WHERE record.arrivalTime IS NULL
+        }
       RETURN DISTINCT bacentas
       """
     )
@@ -727,12 +685,12 @@ extend type Constituency {
     @cypher(
       statement: """
       MATCH (this)-[:HAS]->(bacentas:Active:Bacenta)
-      WHERE EXISTS {
       MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
         WHERE date(date.date)=date()
-        AND bussing.bussingPictures IS NOT NULL
-        AND bussing.arrivalTime IS NULL
-      }
+        AND EXISTS {
+        MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
+        WHERE record.arrivalTime IS NULL
+        }
       RETURN COUNT(DISTINCT bacentas)
       """
     )
@@ -740,35 +698,13 @@ extend type Constituency {
     @cypher(
       statement: """
        MATCH (this)-[:HAS]->(bacentas:Active:Bacenta)
-       MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
+        MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
         WHERE date(date.date)=date()
-        AND bussing.bussingPictures IS NOT NULL
-        AND bussing.arrivalTime IS NULL
+        MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
+        WHERE record.arrivalTime IS NULL
 
-      WITH DISTINCT bussing
-      RETURN SUM(bussing.attendance)
-      """
-    )
-  bacentasHaveBeenCounted: [Bacenta!]!
-    @cypher(
-      statement: """
-      MATCH (this)-[:HAS]->(bacentas:Active:Bacenta)
-      WHERE EXISTS {
-      MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph) WHERE date(date.date)=date()
-       AND EXISTS {MATCH (bussing)-[:COUNTED_BY]->(:Member)}
-      }
-      RETURN DISTINCT bacentas
-      """
-    )
-  bacentasHaveBeenCountedCount: Int
-    @cypher(
-      statement: """
-      MATCH (this)-[:HAS]->(bacentas:Active:Bacenta)
-      WHERE EXISTS {
-      MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph) WHERE date(date.date)=date()
-       AND EXISTS {MATCH (bussing)-[:COUNTED_BY]->(:Member)}
-      }
-      RETURN COUNT(DISTINCT bacentas)
+      WITH DISTINCT record
+      RETURN SUM(record.attendance)
       """
     )
   bacentasNotCounted: [Bacenta!]!
@@ -776,10 +712,12 @@ extend type Constituency {
       statement: """
        MATCH (this)-[:HAS]->(bacentas:Active:Bacenta)
        MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
-      WHERE date(date.date)=date() AND bussing.leaderDeclaration IS NOT NULL
-       AND NOT EXISTS {
-        MATCH (bussing)-[:COUNTED_BY]->(:Member)
-       }
+      WHERE date(date.date)=date()
+      MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
+
+      WHERE NOT EXISTS {
+       MATCH (record)-[:COUNTED_BY]->(:Member)
+      }
        RETURN DISTINCT bacentas
       """
     )
@@ -788,10 +726,12 @@ extend type Constituency {
       statement: """
        MATCH (this)-[:HAS]->(bacentas:Active:Bacenta)
        MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
-      WHERE date(date.date)=date() AND bussing.leaderDeclaration IS NOT NULL
-       AND NOT EXISTS {
-         MATCH (bussing)-[:COUNTED_BY]->(:Member)
-       }
+      WHERE date(date.date)=date()
+      MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
+
+      WHERE NOT EXISTS {
+       MATCH (record)-[:COUNTED_BY]->(:Member)
+      }
        RETURN COUNT(DISTINCT bacentas)
       """
     )
@@ -799,11 +739,11 @@ extend type Constituency {
     @cypher(
       statement: """
       MATCH (this)-[:HAS]->(bacentas:Active:Bacenta)
-      WHERE EXISTS {
       MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
         WHERE date(date.date)=date()
-        AND bussing.attendance < 8
-      }
+        MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
+        WITH  SUM(record.attendance) AS attendance, bacentas
+        WHERE attendance < 8
       RETURN DISTINCT bacentas
       """
     )
@@ -811,11 +751,11 @@ extend type Constituency {
     @cypher(
       statement: """
       MATCH (this)-[:HAS]->(bacentas:Active:Bacenta)
-      WHERE EXISTS {
       MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
         WHERE date(date.date)=date()
-        AND bussing.attendance < 8
-      }
+        MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
+        WITH  SUM(record.attendance) AS attendance, bacentas
+        WHERE attendance < 8
       RETURN COUNT(DISTINCT bacentas)
       """
     )
@@ -823,11 +763,12 @@ extend type Constituency {
     @cypher(
       statement: """
       MATCH (this)-[:HAS]->(bacentas:Active:Bacenta)
-      WHERE EXISTS {
       MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
         WHERE date(date.date)=date()
-        AND bussing.arrivalTime IS NOT NULL
-      }
+        AND NOT EXISTS {
+        MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
+        WHERE record.arrivalTime IS NULL
+        }
       RETURN DISTINCT bacentas
       """
     )
@@ -835,29 +776,33 @@ extend type Constituency {
     @cypher(
       statement: """
       MATCH (this)-[:HAS]->(bacentas:Active:Bacenta)
-      WHERE EXISTS {
       MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
         WHERE date(date.date)=date()
-        AND bussing.arrivalTime IS NOT NULL
-      }
+        AND NOT EXISTS {
+        MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
+        WHERE record.arrivalTime IS NULL
+        }
       RETURN COUNT(DISTINCT bacentas)
       """
     )
   bussingMembersHaveArrivedCount: Int
     @cypher(
       statement: """
-       MATCH (this)-[:HAS]->(bacentas:Active:Bacenta)
-       MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
-         WHERE date(date.date)=date()
-        AND bussing.arrivalTime IS NOT NULL
-
-      WITH DISTINCT bussing
-      RETURN SUM(bussing.attendance)
+      MATCH (this)-[:HAS*3]->(bacentas:Active:Bacenta)
+      MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
+        WHERE date(date.date)=date()
+        MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
+        WHERE record.arrivalTime IS NOT NULL
+      RETURN SUM(record.attendance)
       """
     )
 }
 
 extend type Bacenta {
+  zone: BusZone!
+    @cypher(
+      statement: "MATCH (this)<-[:HAS]-(:Constituency)-[:BUSSES_FROM]->(zone:BusZone) RETURN zone"
+    )
   graduationStatus: String!
     @cypher(
       statement: """
@@ -867,24 +812,7 @@ extend type Bacenta {
       RETURN status
       """
     )
-  normalBussingCost: Float
-  normalPersonalContribution: Float
-  normalBussingTopUp: Float
-    @cypher(
-      statement: """
-      MATCH (this)
-      RETURN this.normalBussingCost - this.normalPersonalContribution
-      """
-    )
-  swellBussingCost: Float
-  swellPersonalContribution: Float
-  swellBussingTopUp: Float
-    @cypher(
-      statement: """
-      MATCH (this)
-      RETURN this.swellBussingCost - this.swellPersonalContribution
-      """
-    )
+
   mobileNetwork: String
   momoNumber: String
   momoName: String
@@ -928,28 +856,92 @@ type BussingRecord implements Record @auth(rules: [{ isAuthenticated: true }]) {
   created_by: Member! @relationship(type: "LOGGED_BY", direction: OUT)
 
   #On The Way
-  bussingPictures: [String]
   attendance: Int
+    @cypher(
+      statement: "MATCH (this)-[:INCLUDES_RECORD]->(record:VehicleRecord) WHERE record.attendance IS NOT NULL RETURN SUM(record.attendance)"
+    )
   leaderDeclaration: Int
-  numberOfBusses: Int
+    @cypher(
+      statement: "MATCH (this)-[:INCLUDES_RECORD]->(record:VehicleRecord) WHERE record.leaderDeclaration IS NOT NULL RETURN SUM(record.leaderDeclaration)"
+    )
+  bussingPictures: [String!]!
+    @cypher(
+      statement: """
+      MATCH (this)-[:INCLUDES_RECORD]->(record:VehicleRecord)
+      WHERE record.picture IS NOT NULL
+      RETURN collect(record.picture)
+      """
+    )
+  numberOfBusses: Int #Legacy Property for before we started collecting Spinter/Urvan details
+  personalContribution: Float
+    @cypher(
+      statement: "MATCH (this)-[:INCLUDES_RECORD]->(record:VehicleRecord) WHERE record.personalContribution IS NOT NULL RETURN SUM(record.personalContribution)"
+    )
+  numberOfSprinters: Int
+    @cypher(
+      statement: "MATCH (this)-[:INCLUDES_RECORD]->(record:VehicleRecord) WHERE record.vehicle = 'Sprinter' RETURN COUNT(DISTINCT record)"
+    )
+  numberOfUrvans: Int
+    @cypher(
+      statement: "MATCH (this)-[:INCLUDES_RECORD]->(record:VehicleRecord) WHERE record.vehicle = 'Urvan' RETURN COUNT(DISTINCT record)"
+    )
   numberOfCars: Int
+    @cypher(
+      statement: "MATCH (this)-[:INCLUDES_RECORD]->(record:VehicleRecord) WHERE record.vehicle = 'Car' RETURN COUNT(DISTINCT record)"
+    )
   bussingCost: Float
+    @cypher(
+      statement: "MATCH (this)-[:INCLUDES_RECORD]->(record:VehicleRecord) WHERE record.vehicleCost IS NOT NULL RETURN SUM(record.vehicleCost)"
+    )
   bussingTopUp: Float
-  counted_by: Member @relationship(type: "COUNTED_BY", direction: OUT)
-
-  #Arrived
-  comments: String
-  arrivalTime: DateTime
-  transactionId: Int
-  arrival_confirmed_by: Member
-    @relationship(type: "ARRIVAL_CONFIRMED_BY", direction: OUT)
+    @cypher(
+      statement: "MATCH (this)-[:INCLUDES_RECORD]->(record:VehicleRecord) WHERE record.vehicleTopUp IS NOT NULL RETURN SUM(record.vehicleTopUp)"
+    )
 
   #Money Things
   mobileNetwork: String
   momoNumber: String
   momoName: String
 
+  counted_by: [Member!]!
+    @cypher(
+      statement: """
+      MATCH (this)-[:INCLUDES_RECORD]->(record:VehicleRecord)-[:COUNTED_BY]->(member:Member)
+      RETURN DISTINCT member
+      """
+    )
+
+  vehicleRecords: [VehicleRecord!]!
+    @relationship(type: "INCLUDES_RECORD", direction: OUT)
   serviceLog: ServiceLog! @relationship(type: "HAS_BUSSING", direction: IN)
+}
+
+type VehicleRecord {
+  id: ID!
+  created_by: Member! @relationship(type: "LOGGED_BY", direction: OUT)
+  created_at: DateTime! #mobilisation time is the time the record was created
+  leaderDeclaration: Int!
+  attendance: Int
+  picture: String!
+  vehicle: String!
+  personalContribution: Float!
+
+  momoNumber: String
+  momoName: String
+  mobileNetwork: String
+  vehicleTopUp: Float
+  vehicleCost: Float!
+
+  counted_by: Member @relationship(type: "COUNTED_BY", direction: OUT)
+
+  #Arrived
+  comments: String
+  arrivalTime: DateTime
+  transactionId: Int
+  outbound: Boolean!
+
+  bussingRecord: BussingRecord!
+    @relationship(type: "INCLUDES_RECORD", direction: IN)
 }
 
 extend type Mutation {
@@ -958,23 +950,23 @@ extend type Mutation {
     arrivalsAdminId: ID!
     constituencyId: ID!
     oldArrivalsAdminId: ID
-  ): Member
+  ): Member!
   RemoveConstituencyArrivalsAdmin(
     arrivalsAdminId: ID!
     constituencyId: ID!
-  ): Member!
+  ): Member
   MakeCouncilArrivalsAdmin(
     arrivalsAdminId: ID!
     councilId: ID!
     oldArrivalsAdminId: ID
   ): Member!
-  RemoveCouncilArrivalsAdmin(arrivalsAdminId: ID!, councilId: ID!): Member!
+  RemoveCouncilArrivalsAdmin(arrivalsAdminId: ID!, councilId: ID!): Member
   MakeStreamArrivalsAdmin(
     arrivalsAdminId: ID!
     streamId: ID!
     oldArrivalsAdminId: ID
   ): Member!
-  RemoveStreamArrivalsAdmin(arrivalsAdminId: ID!, streamId: ID!): Member!
+  RemoveStreamArrivalsAdmin(arrivalsAdminId: ID!, streamId: ID!): Member
   MakeGatheringServiceArrivalsAdmin(
     arrivalsAdminId: ID!
     gatheringServiceId: ID!
@@ -983,13 +975,10 @@ extend type Mutation {
   RemoveGatheringServiceArrivalsAdmin(
     arrivalsAdminId: ID!
     gatheringServiceId: ID!
-  ): Member!
+  ): Member
 
   MakeStreamArrivalsCounter(arrivalsCounterId: ID!, streamId: ID!): Member!
   RemoveStreamArrivalsCounter(arrivalsCounterId: ID!, streamId: ID!): Member
-  MakeStreamArrivalsConfirmer(arrivalsConfirmerId: ID!, streamId: ID!): Member!
-  RemoveStreamArrivalsConfirmer(arrivalsConfirmerId: ID!, streamId: ID!): Member
-  RemoveAllStreamArrivalsHelpers(streamId: ID!): Stream!
 
   ## GENERATE CODE OF THE DAY
   GenerateCodeOfTheDay: String!
@@ -1025,14 +1014,7 @@ extend type Mutation {
       """
     )
 
-  UpdateBacentaBussingDetails(
-    bacentaId: ID!
-    target: Int!
-    normalBussingCost: Float!
-    normalPersonalContribution: Float!
-    swellBussingCost: Float!
-    swellPersonalContribution: Float!
-  ): Bacenta!
+  UpdateBacentaBussingDetails(bacentaId: ID!, target: Int!): Bacenta!
     @auth(
       rules: [
         {
@@ -1048,20 +1030,16 @@ extend type Mutation {
     @cypher(
       statement: """
       MATCH (bacenta:Bacenta {id: $bacentaId})
-      	SET bacenta.target = $target,
-        bacenta.normalBussingCost = $normalBussingCost,
-        bacenta.normalPersonalContribution = $normalPersonalContribution,
-        bacenta.swellBussingCost = $swellBussingCost,
-        bacenta.swellPersonalContribution = $swellPersonalContribution
+      	SET bacenta.target = $target
 
-      WITH bacenta
+
       CREATE (log:HistoryLog {id:apoc.create.uuid()})
         SET log.timeStamp = datetime(),
         log.historyRecord = bacenta.name + ' Bussing Details were updated'
 
       WITH log,bacenta
       MATCH (admin:Member {auth_id: $auth.jwt.sub})
-      MERGE (date:TimeGraph {date:date()})
+
       MERGE (log)-[:LOGGED_BY]->(admin)
       MERGE (log)-[:RECORDED_ON]->(date)
       MERGE (bacenta)-[:HAS_HISTORY]->(log)
@@ -1097,6 +1075,31 @@ extend type Mutation {
       MERGE (bacenta)-[:HAS_HISTORY]->(log)
 
       RETURN bacenta
+      """
+    )
+
+  UpdateConstituencyZone(constituencyId: ID!, zone: Int!): Constituency!
+    @auth(
+      rules: [
+        {
+          roles: [
+            "adminGatheringService"
+            "arrivalsAdminGatheringService"
+            "adminStream"
+            "arrivalsAdminStream"
+          ]
+        }
+      ]
+    )
+    @cypher(
+      statement: """
+      OPTIONAL MATCH (constituency:Constituency {id: $constituencyId})-[r:BUSSES_FROM]->(:BusZone)
+       MATCH (new:BusZone {number: $zone})
+       DELETE r
+
+       MERGE (constituency)-[:BUSSES_FROM]->(new)
+
+       RETURN constituency
       """
     )
 
@@ -1187,52 +1190,58 @@ extend type Mutation {
   ): BussingRecord!
 
   #Bussing Records Entries
-  RecordBussingFromBacenta(
+  RecordVehicleFromBacenta(
     bussingRecordId: ID!
     attendance: Int!
-    bussingPictures: [String]!
-    bussingCost: Float!
-    numberOfBusses: Int!
-    numberOfCars: Int!
-  ): BussingRecord!
+    vehicleCost: Float!
+    personalContribution: Float!
+    vehicle: String!
+    picture: String!
+    outbound: Boolean!
+  ): VehicleRecord!
     @cypher(
       statement: """
       MATCH (bussingRecord:BussingRecord {id: $bussingRecordId})
-      SET bussingRecord.leaderDeclaration = $attendance,
-      bussingRecord.bussingPictures = $bussingPictures,
-      bussingRecord.bussingCost = $bussingCost,
-      bussingRecord.numberOfBusses = $numberOfBusses,
-      bussingRecord.numberOfCars = $numberOfCars
+      CREATE (vehicleRecord:VehicleRecord  {id: apoc.create.uuid()})
+      MERGE (bussingRecord)-[:INCLUDES_RECORD]->(vehicleRecord)
 
-       WITH bussingRecord
+        SET vehicleRecord.leaderDeclaration = $attendance,
+        vehicleRecord.created_at = datetime(),
+        vehicleRecord.vehicleCost = $vehicleCost,
+        vehicleRecord.personalContribution = $personalContribution,
+        vehicleRecord.vehicle = $vehicle,
+        vehicleRecord.picture =  $picture,
+        vehicleRecord.outbound = $outbound
+
+       WITH vehicleRecord, bussingRecord
         MATCH (leader:Member {auth_id: $auth.jwt.sub})
-        MERGE (bussingRecord)-[:LOGGED_BY]->(leader)
+        MERGE (vehicleRecord)-[:LOGGED_BY]->(leader)
 
-      RETURN bussingRecord
+      RETURN vehicleRecord
       """
     )
 
-  SetBussingSupport(bussingRecordId: ID!): BussingRecord!
+  SetVehicleSupport(vehicleRecordId: ID!): VehicleRecord!
 
-  ConfirmBussingByAdmin(
-    bussingRecordId: ID!
+  ConfirmVehicleByAdmin(
+    vehicleRecordId: ID!
     attendance: Int!
+    vehicle: String!
     comments: String
-  ): BussingRecord!
+  ): VehicleRecord!
     @auth(rules: [{ roles: ["arrivalsCounterStream"] }])
     @cypher(
       statement: """
-      MATCH (bussingRecord:BussingRecord {id: $bussingRecordId})
-        SET bussingRecord.attendance = $attendance,
-        bussingRecord.comments = $comments
+      MATCH (vehicleRecord:VehicleRecord {id: $vehicleRecordId}) WHERE vehicleRecord.arrivalTime  IS NULL
+        SET vehicleRecord.attendance = $attendance,
+        vehicleRecord.vehicle = $vehicle,
+        vehicleRecord.comments = $comments
 
-         WITH bussingRecord
+         WITH vehicleRecord
           MATCH (admin:Member {auth_id: $auth.jwt.sub})
-          OPTIONAL MATCH (bussingRecord)-[r:COUNTED_BY]->(oldCounter)
-          DELETE r
-          MERGE (bussingRecord)-[:COUNTED_BY]->(admin)
+          MERGE (vehicleRecord)-[:COUNTED_BY]->(admin)
 
-      RETURN bussingRecord
+      RETURN vehicleRecord
       """
     )
     @auth(
@@ -1248,10 +1257,9 @@ extend type Mutation {
       ]
     )
 
-  RecordArrivalTime(bussingRecordId: ID!): BussingRecord!
-
+  RecordArrivalTime(vehicleRecordId: ID!): VehicleRecord!
   SetSwellDate(date: String!): TimeGraph!
-  SendBussingSupport(bussingRecordId: ID!, stream_name: String!): BussingRecord!
+  SendVehicleSupport(vehicleRecordId: ID!, stream_name: String!): VehicleRecord!
 }
 
 extend type Mutation {

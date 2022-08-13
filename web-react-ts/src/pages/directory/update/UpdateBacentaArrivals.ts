@@ -14,11 +14,6 @@ export const DISPLAY_BACENTA_BUSSING_DETAILS = gql`
       vacationStatus
       graduationStatus
 
-      normalBussingCost
-      normalPersonalContribution
-      swellBussingCost
-      swellPersonalContribution
-
       momoName
       momoNumber
       mobileNetwork
@@ -26,34 +21,34 @@ export const DISPLAY_BACENTA_BUSSING_DETAILS = gql`
   }
 `
 
-export const UPDATE_BACENTA_BUSSING_DETAILS = gql`
-  mutation UpdateBacentaBussingDetails(
-    $bacentaId: ID!
-    $target: Int!
-    $normalBussingCost: Float!
-    $normalPersonalContribution: Float!
-    $swellBussingCost: Float!
-    $swellPersonalContribution: Float!
-  ) {
-    UpdateBacentaBussingDetails(
-      bacentaId: $bacentaId
-      target: $target
-      normalBussingCost: $normalBussingCost
-      normalPersonalContribution: $normalPersonalContribution
-      swellBussingCost: $swellBussingCost
-      swellPersonalContribution: $swellPersonalContribution
-    ) {
+export const DISPLAY_CONSTITUENCY_BUSSING_DETAILS = gql`
+  query DisplayConstituencyBussingDetails($id: ID!) {
+    constituencies(where: { id: $id }, options: { limit: 1 }) {
       id
       name
 
-      target
-      normalBussingCost
-      normalPersonalContribution
-      normalBussingTopUp
-      swellBussingCost
-      swellPersonalContribution
-      swellBussingTopUp
+      zone {
+        id
+        number
+        sprinterTopUp
+        urvanTopUp
+      }
+    }
+    busZones {
+      id
+      number
+      sprinterTopUp
+      urvanTopUp
+    }
+  }
+`
 
+export const UPDATE_BACENTA_BUSSING_DETAILS = gql`
+  mutation UpdateBacentaBussingDetails($bacentaId: ID!, $target: Int!) {
+    UpdateBacentaBussingDetails(bacentaId: $bacentaId, target: $target) {
+      id
+      name
+      target
       history(limit: 5) {
         id
         timeStamp
@@ -103,6 +98,21 @@ export const UPDATE_BUS_PAYMENT_DETAILS = gql`
           lastName
         }
         historyRecord
+      }
+    }
+  }
+`
+
+export const UPDATE_CONSTITUENCY_ZONE = gql`
+  mutation UpdateConstituencyZone($constituencyId: ID!, $zone: Int!) {
+    UpdateConstituencyZone(constituencyId: $constituencyId, zone: $zone) {
+      id
+      name
+      zone {
+        id
+        number
+        sprinterTopUp
+        urvanTopUp
       }
     }
   }

@@ -1,25 +1,22 @@
 import {
   permitAdminArrivals,
   permitArrivalsCounter,
-  permitArrivalsConfirmer,
   permitLeaderAdminArrivals,
   permitArrivalsHelpers,
 } from 'permission-utils'
 import Arrivals from 'pages/arrivals/Arrivals'
 import BacentaArrivals from 'pages/arrivals/BacentaArrivals'
-import ConfirmBacentaArrival from 'pages/arrivals/ConfirmBacentaArrival'
 import StateBacentasNoActivity from 'pages/arrivals/StateBacentasNoActivity'
 import BacentasOnTheWay from 'pages/arrivals/StateBacentasOnTheWay'
 import BusFormConfirmation from 'pages/arrivals/FormAttendanceConfirmation'
 import BusFormDetails from 'pages/arrivals/BusFormDetails'
-import OnTheWaySubmission from 'pages/arrivals/FormOnTheWaySubmission'
+import OnTheWaySubmission from 'pages/arrivals/FormAddVehicleRecord'
 import ConstituencyDashboard from 'pages/arrivals/DashboardConstituency'
 import CouncilDashboard from './DashboardCouncil'
 import MobilisationSubmission from './FormMobilisationSubmission'
 import MobilisationPicture from './PreMobilisationPicture'
 import BacentasMobilising from './StateBacentasMobilising'
 import StreamDashboard from './DashboardStream'
-import ArrivalsHelpersStream from './Helpers/ArrivalsHelpersStream'
 import GatheringSerivceDashboard from './DashboardGatheringService'
 import BacentasHaveArrived from './StateBacentasArrived'
 import ChurchBySubChurch from './ChurchBySubChurch'
@@ -27,9 +24,9 @@ import StateBacentasToCount from './StateBacentasToCount'
 import SetArrivalsTime from './Times/SetArrivalsTimes'
 import ArrivalTimes from './Times/ArrivalTimes'
 import ArrivalsCounters from './Helpers/ArrivalsCounters'
-import ArrivalsConfirmers from './Helpers/ArrivalsConfirmers'
 import BacentasBelow8 from './StateBacentasBelow8'
 import { RouteTypes } from 'global-types'
+import BusVehicleFormDetails from './BusVehicleFormDetails'
 
 export const arrivals: RouteTypes[] = [
   {
@@ -100,7 +97,7 @@ export const arrivals: RouteTypes[] = [
 
   //Bacenta Forms that need to be Filled
   {
-    path: '/arrivals/submit-on-the-way',
+    path: '/arrivals/submit-vehicle-record',
     roles: ['leaderBacenta'],
     element: OnTheWaySubmission,
     placeholder: false,
@@ -143,12 +140,6 @@ export const arrivals: RouteTypes[] = [
     placeholder: true,
   },
   {
-    path: '/arrivals/confirm-bacenta-arrival',
-    roles: permitArrivalsConfirmer(),
-    element: ConfirmBacentaArrival,
-    placeholder: true,
-  },
-  {
     path: '/arrivals/bacentas-have-arrived',
     roles: [
       ...permitLeaderAdminArrivals('Constituency'),
@@ -166,10 +157,15 @@ export const arrivals: RouteTypes[] = [
 
   //Bacenta Forms
   {
-    path: '/arrivals/submit-bus-attendance',
+    path: '/arrivals/submit-vehicle-attendance',
     roles: permitArrivalsCounter(),
     element: BusFormConfirmation,
     placeholder: false,
+  },
+  {
+    path: '/bacenta/vehicle-details',
+    roles: permitArrivalsHelpers('Stream'),
+    element: BusVehicleFormDetails,
   },
   {
     path: '/bacenta/bussing-details',
@@ -188,22 +184,14 @@ export const arrivals: RouteTypes[] = [
   },
 
   //Arrivals Helpers
-  {
-    path: '/stream/arrivals-helpers',
-    roles: permitAdminArrivals('Stream'),
-    element: ArrivalsHelpersStream,
-    placeholder: false,
-  },
+
   {
     path: '/stream/arrivals-counters',
     roles: permitAdminArrivals('Stream'),
     element: ArrivalsCounters,
   },
-  {
-    path: '/stream/arrivals-confirmers',
-    roles: permitAdminArrivals('Stream'),
-    element: ArrivalsConfirmers,
-  }, //Arrivals Times
+
+  //Arrivals Times
   {
     path: '/stream/arrival-times',
     roles: permitAdminArrivals('Stream'),

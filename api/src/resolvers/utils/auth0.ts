@@ -149,18 +149,3 @@ export const deleteRole = (
     },
   }
 }
-export const createRole = (role: Role, description: string, token: string) => {
-  return {
-    method: 'post',
-    baseURL: process.env.AUTH0_BASE_URL,
-    url: `/api/v2/roles`,
-    headers: {
-      autho: '',
-      Authorization: `Bearer ${token}`,
-    },
-    data: {
-      name: role,
-      description,
-    },
-  }
-}

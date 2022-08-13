@@ -44,7 +44,8 @@ const UpdateBacenta = () => {
 
   const initialValues: BacentaFormValues = {
     name: bacenta?.name,
-    leaderName: bacenta?.leader?.fullName ?? '',
+    leaderName:
+      bacenta?.leader?.firstName + ' ' + bacenta?.leader?.lastName ?? '',
     leaderId: bacenta?.leader?.id || '',
     constituency: bacenta?.constituency?.id,
     fellowships: bacenta?.fellowships.length ? bacenta?.fellowships : [''],

@@ -19,14 +19,18 @@ export interface BussingRecord {
   created_by: Member
   serviceDate: TimeGraph
 
-  bussingPictures: string[]
+  bussingPictures?: string[]
   attendance: number
   leaderDeclaration: number
+  personalContribution: number
   numberOfBusses: number
+  numberOfSprinters: number
+  numberOfUrvans: number
   numberOfCars: number
+
   bussingCost: number
   bussingTopUp: number
-  counted_by: Member
+  counted_by: [Member]
 
   comments: string
   arrivalTime: Date
@@ -36,9 +40,37 @@ export interface BussingRecord {
   mobileNetwork: Network
   momoNumber: string
   momoName: string
+  vehicleRecords: VehicleRecord[]
 }
 
-export interface StreamWithArrivals extends Stream {
+export type VehicleRecord = {
+  id: string
+  created_by: Member
+  created_at: string
+
+  leaderDeclaration: number
+  attendance: number
+  personalContribution: number
+  vehicle: 'Sprinter' | 'Urvan' | 'Car'
+
+  momoNumber: string
+  momoName: string
+  mobileNetwork: Network
+  vehicleTopUp: number
+  vehicleCost: number
+  picture: string
+
+  counted_by: Member
+
+  outbound: boolean
+  comments: string
+  arrivalTime: string
+  transactionId: number
+}
+
+export interface StreamWithArrivals extends Stream, HigherChurchWithArrivals {
+  __typename: 'Stream'
+  name: StreamOptions
   mobilisationStartTime: string
   mobilisationEndTime: string
   arrivalStartTime: string
@@ -47,19 +79,27 @@ export interface StreamWithArrivals extends Stream {
   arrivalsCounters: Member[]
 }
 
+export type BusZone = {
+  id: string
+  number: number
+  sprinterTopUp: number
+  urvanTopUp: number
+}
+
 export interface BacentaWithArrivals extends Bacenta {
   stream: StreamWithArrivals
   stream_name: StreamOptions
   arrivalsCodeOfTheDay: string
   momoNumber: string
-  normalBussingTopUp: number
-  swellBussingTopUp: number
+  zone: BusZone
   bussing: BussingRecord[]
 }
 
 export interface HigherChurchWithArrivals extends Church {
   __typename: 'Constituency' | 'Stream' | 'Council' | 'GatheringService'
   stream_name: StreamOptions
+  stream: Stream
+  arrivalsAdmin: Member
   activeBacentaCount: number
   bacentasNoActivity: BacentaWithArrivals[]
   bacentasMobilising: BacentaWithArrivals[]

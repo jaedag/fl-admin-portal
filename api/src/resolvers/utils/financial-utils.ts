@@ -105,7 +105,7 @@ export const getStreamFinancials = (stream: StreamOptions) => {
 
   switch (stream.toLowerCase()) {
     case 'anagkazo':
-      throwErrorMsg('Anagkazo has a different way of banking their offerings')
+      throwErrorMsg('Anagkazo has a different financial system. Thank you!')
       break
     case 'campus':
     case 'town':

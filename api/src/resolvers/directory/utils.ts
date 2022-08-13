@@ -83,7 +83,7 @@ export const removeServantCypher = async ({
   const { servantLower } = terms
   const session = context.executionContext.session()
 
-  if (!servant) {
+  if (!servant.id) {
     throwErrorMsg('There is no servant to remove')
   }
 

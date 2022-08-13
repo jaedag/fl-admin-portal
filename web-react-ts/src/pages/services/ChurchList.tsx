@@ -32,6 +32,7 @@ const ChurchList = ({ color, link }: { color: string; link?: string }) => {
                   return null
                 }
               }
+
               return (
                 <MenuButton
                   key={church.id}

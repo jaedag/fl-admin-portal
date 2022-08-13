@@ -12,11 +12,14 @@ export interface FormikComponentProps {
 export interface FormikSelectProps extends FormikComponentProps {
   defaultOption?: string
   onChange?: (value: string) => void
+  options: { key: string; value: string }[]
 }
 
-export interface FormikSelectWithApollo
-  extends FormikWithApolloProps,
-    FormikSelectProps {}
+export interface FormikSelectWithApollo extends FormikWithApolloProps {
+  defaultOption?: string
+  onChange?: (value: string) => void
+  options?: { key: string; value: string }[]
+}
 
 export interface FormikWithApolloProps extends FormikComponentProps {
   initialValue: string

@@ -29,7 +29,7 @@ import Select from 'components/formik/Select'
 import Input from 'components/formik/Input'
 import SearchMember from 'components/formik/SearchMember'
 import SearchFellowship from 'components/formik/SearchFellowship'
-import { FormikInitialValues } from 'components/formik/formiik-types'
+import { FormikInitialValues } from 'components/formik/formik-types'
 import { Church } from 'global-types'
 
 export interface BacentaFormValues extends FormikInitialValues {
