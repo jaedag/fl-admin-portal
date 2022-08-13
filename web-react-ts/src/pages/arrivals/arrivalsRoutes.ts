@@ -164,7 +164,10 @@ export const arrivals: RouteTypes[] = [
   },
   {
     path: '/bacenta/vehicle-details',
-    roles: permitArrivalsHelpers('Stream'),
+    roles: [
+      ...permitArrivalsHelpers('Stream'),
+      ...permitLeaderAdminArrivals('Bacenta'),
+    ],
     element: BusVehicleFormDetails,
   },
   {
