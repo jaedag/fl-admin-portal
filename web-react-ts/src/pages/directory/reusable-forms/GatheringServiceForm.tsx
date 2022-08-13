@@ -24,7 +24,7 @@ import Input from 'components/formik/Input'
 import Select from 'components/formik/Select'
 import SearchMember from 'components/formik/SearchMember'
 import SearchStream from 'components/formik/SearchStream'
-import { FormikInitialValues } from 'components/formik/formiik-types'
+import { FormikInitialValues } from 'components/formik/formik-types'
 import { Church } from 'global-types'
 
 export interface GatheringServiceFormValues extends FormikInitialValues {

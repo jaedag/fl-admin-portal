@@ -12,7 +12,7 @@ import {
   MEMBER_STREAM_SEARCH,
 } from './SearchStreamQueries'
 
-import { RoleBasedSearch } from './formiik-types'
+import { RoleBasedSearch } from './formik-types'
 
 import TextError from './TextError/TextError'
 
