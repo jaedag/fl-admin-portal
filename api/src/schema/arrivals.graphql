@@ -147,7 +147,7 @@ extend type GatheringService {
         WHERE record.arrivalTime IS NULL
 
       WITH DISTINCT record
-      RETURN SUM(record.attendance)
+      RETURN SUM(record.leaderDeclaration)
       """
     )
 
@@ -329,7 +329,7 @@ extend type Stream {
         WHERE record.arrivalTime IS NULL
 
       WITH DISTINCT record
-      RETURN SUM(record.attendance)
+      RETURN SUM(record.leaderDeclaration)
       """
     )
 
@@ -512,7 +512,7 @@ extend type Council {
         WHERE record.arrivalTime IS NULL
 
       WITH DISTINCT record
-      RETURN SUM(record.attendance)
+      RETURN SUM(record.leaderDeclaration)
       """
     )
   bacentasNotCounted: [Bacenta!]!
@@ -704,7 +704,7 @@ extend type Constituency {
         WHERE record.arrivalTime IS NULL
 
       WITH DISTINCT record
-      RETURN SUM(record.attendance)
+      RETURN SUM(record.leaderDeclaration)
       """
     )
   bacentasNotCounted: [Bacenta!]!
