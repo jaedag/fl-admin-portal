@@ -211,7 +211,7 @@ extend type GatheringService {
         WHERE date(date.date)=date()
         AND NOT EXISTS {
         MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
-        WHERE record.arrivalTime IS NULL
+        WHERE record.arrivalTime IS NOT NULL
         }
       RETURN DISTINCT bacentas
       """
@@ -224,7 +224,7 @@ extend type GatheringService {
         WHERE date(date.date)=date()
         AND NOT EXISTS {
         MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
-        WHERE record.arrivalTime IS NULL
+        WHERE record.arrivalTime IS NOT NULL
         }
       RETURN COUNT(DISTINCT bacentas)
       """
@@ -575,7 +575,7 @@ extend type Council {
         WHERE date(date.date)=date()
         AND NOT EXISTS {
         MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
-        WHERE record.arrivalTime IS NULL
+        WHERE record.arrivalTime IS NOT NULL
         }
       RETURN DISTINCT bacentas
       """
@@ -588,7 +588,7 @@ extend type Council {
         WHERE date(date.date)=date()
         AND NOT EXISTS {
         MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
-        WHERE record.arrivalTime IS NULL
+        WHERE record.arrivalTime IS NOT NULL
         }
       RETURN COUNT(DISTINCT bacentas)
       """
@@ -767,7 +767,7 @@ extend type Constituency {
         WHERE date(date.date)=date()
         AND NOT EXISTS {
         MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
-        WHERE record.arrivalTime IS NULL
+        WHERE record.arrivalTime IS NOT NULL
         }
       RETURN DISTINCT bacentas
       """
@@ -780,7 +780,7 @@ extend type Constituency {
         WHERE date(date.date)=date()
         AND NOT EXISTS {
         MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
-        WHERE record.arrivalTime IS NULL
+        WHERE record.arrivalTime IS NOT NULL
         }
       RETURN COUNT(DISTINCT bacentas)
       """
