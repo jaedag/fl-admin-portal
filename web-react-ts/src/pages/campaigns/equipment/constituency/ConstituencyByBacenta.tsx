@@ -17,7 +17,6 @@ const ConstituencyByBacenta = () => {
     variables: { constituencyId: constituencyId },
   })
   const bacentas = data?.constituencies[0]?.bacentas
-  console.log(bacentas)
 
   return (
     <ApolloWrapper data={data} loading={loading} error={error}>

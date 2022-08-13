@@ -14,8 +14,6 @@ const FellowshipTrendsButton = (props: TrendsButtonProps) => {
   const offeringBags = church?.equipmentRecord?.offeringBags
   const bluetoothSpeakers = church?.equipmentRecord?.bluetoothSpeakers
 
-  console.log(offeringBags)
-
   const totalOfferingBags =
     churchType === 'Fellowship' ? 2 : church?.activeFellowshipCount * 2
   const totalBluetoothSpeakers =

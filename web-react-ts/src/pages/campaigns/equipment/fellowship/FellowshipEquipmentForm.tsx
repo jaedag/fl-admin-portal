@@ -68,6 +68,7 @@ const FellowshipEquipmentForm = () => {
       })
     } catch (error: any) {
       throwErrorMsg(error)
+      navigate(-1)
     }
     onSubmitProps.setSubmitting(false)
     onSubmitProps.resetForm()
