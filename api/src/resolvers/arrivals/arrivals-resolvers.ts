@@ -193,7 +193,7 @@ export const arrivalsMutation = {
       await session.run(checkBacentaMomoDetails, args)
     )
 
-    if (!checkBacentaMomo.momoNumber && checkBacentaMomo.zone) {
+    if (!checkBacentaMomo.momoNumber && checkBacentaMomo.zone !== 0) {
       throwErrorMsg('You need a mobile money number before filling this form')
     }
 
