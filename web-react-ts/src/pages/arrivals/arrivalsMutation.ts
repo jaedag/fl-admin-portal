@@ -217,12 +217,14 @@ export const CONFIRM_VEHICLE_BY_ADMIN = gql`
     $attendance: Int!
     $vehicle: String!
     $comments: String!
+    $outbound: Boolean!
   ) {
     ConfirmVehicleByAdmin(
       vehicleRecordId: $vehicleRecordId
       attendance: $attendance
       vehicle: $vehicle
       comments: $comments
+      outbound: $outbound
     ) {
       id
       attendance
@@ -239,6 +241,7 @@ export const CONFIRM_VEHICLE_BY_ADMIN = gql`
       }
 
       comments
+      outbound
     }
   }
 `
