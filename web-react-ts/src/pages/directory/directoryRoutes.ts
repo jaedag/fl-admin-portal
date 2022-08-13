@@ -38,7 +38,9 @@ import CreateCouncil from 'pages/directory/create/CreateCouncil'
 import AllGatheringServiceConstituencies from 'pages/directory/display/AllGatheringServiceConstituencies'
 import UpdateCouncil from 'pages/directory/update/UpdateCouncil'
 import CreateStream from 'pages/directory/create/CreateStream'
+import CreateGatheringService from 'pages/directory/create/CreateGatheringService'
 import UpdateStream from 'pages/directory/update/UpdateStream'
+import UpdateGatheringService from 'pages/directory/update/UpdateGatheringService'
 import GatheringServiceMembers from 'pages/directory/grids/GatheringServiceMembers'
 import OversightMembers from 'pages/directory/grids/OversightMembers'
 import StreamMembers from 'pages/directory/grids/StreamMembers'
@@ -348,6 +350,12 @@ export const directory: RouteTypes[] = [
     roles: permitAdmin('GatheringService'),
     placeholder: false,
   },
+  {
+    path: '/gatheringservice/addgatheringservice',
+    element: CreateGatheringService,
+    roles: permitAdmin('Oversight'),
+    placeholder: false,
+  },
 
   //Pages to Update the Directory
   {
@@ -396,6 +404,12 @@ export const directory: RouteTypes[] = [
     path: '/stream/editstream',
     element: UpdateStream,
     roles: permitAdmin('GatheringService'),
+    placeholder: false,
+  },
+  {
+    path: '/gatheringservice/editgatheringservice',
+    element: UpdateGatheringService,
+    roles: permitAdmin('Oversight'),
     placeholder: false,
   },
 ]

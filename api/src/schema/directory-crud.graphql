@@ -200,6 +200,45 @@ extend type Mutation {
       """
     )
 
+  CreateGatheringService(
+    name: String!
+    leaderId: ID!
+    oversightId: ID!
+  ): GatheringService
+    @auth(rules: [{ roles: ["adminOversight"] }])
+    @cypher(
+      statement: """
+      CREATE (gatheringService:GatheringService {id:apoc.create.uuid(), name:$name})
+
+      WITH gatheringService
+      MATCH (leader:Member {id: $leaderId})
+      MATCH (currentUser:Member {auth_id:$auth.jwt.sub})
+      MATCH (oversight:Oversight {id: $oversightId})
+
+
+       CREATE (log:HistoryLog:ServiceLog)
+        SET
+        log.id =  apoc.create.uuid(),
+        log.timeStamp = datetime(),
+        log.historyRecord =  $name +' Gathering Service History Begins'
+
+      MERGE (oversight)-[:HAS]->(gatheringService)
+      MERGE (leader)-[:LEADS]->(gatheringService)
+
+      MERGE (date:TimeGraph {date: date()})
+      MERGE (log)-[:LOGGED_BY]->(currentUser)
+      MERGE (log)-[:RECORDED_ON]->(date)
+      MERGE (gatheringService)-[:HAS_HISTORY]->(log)
+      MERGE (oversight)-[r2:HAS_HISTORY]->(log)
+      MERGE (leader)-[r3:HAS_HISTORY]->(log)
+        SET r2.current = true,
+        r3.current = true
+
+
+      RETURN gatheringService
+      """
+    )
+
   CreateCouncil(name: String!, leaderId: ID!, streamId: ID!): Council
     @auth(rules: [{ roles: ["adminGatheringService", "adminStream"] }])
     @cypher(
@@ -555,6 +594,31 @@ extend type Mutation {
       RETURN member
       """
     )
+  UpdateGatheringServiceDetails(
+    gatheringServiceId: ID!
+    name: String!
+    oversightId: ID!
+  ): GatheringService
+    @auth(rules: [{ roles: ["adminOversight"] }])
+    @cypher(
+      statement: """
+           MATCH (gatheringService:GatheringService {id: $gatheringServiceId})
+           	SET gatheringService.name = $name
+
+           WITH gatheringService
+              CALL {
+              	WITH gatheringService
+
+                  MATCH (oversight:Oversight {id: $oversightId})
+                  OPTIONAL MATCH (gatheringService)<-[r:HAS]-()
+                  DELETE r
+                  MERGE (oversight)-[:HAS]->(gatheringService)
+              	RETURN count(gatheringService)
+              	}
+      MATCH (gatheringService)<-[:LEADS]-(leader:Member)
+      RETURN gatheringService
+      """
+    )
   UpdateStreamDetails(
     streamId: ID!
     name: String!
@@ -791,6 +855,32 @@ extend type Mutation {
       REMOVE stream:Stream, council:Council, constituencies:Constituency,bacentas:Bacenta,fellowships:Fellowship
 
       RETURN gatheringService
+      """
+    )
+
+  CloseDownGatheringService(gatheringServiceId: ID!): Oversight
+    @cypher(
+      statement: """
+      MATCH (gatheringService:GatheringService {id:$gatheringServiceId})
+      MATCH (admin:Member {auth_id: $auth.jwt.sub})
+      MATCH (gatheringService)<-[:HAS]-(oversight:Oversight)
+      OPTIONAL MATCH (gatheringService)-[:HAS]->(stream)-[:HAS]->(council)-[:HAS]->(constituencies)-[:HAS]->(bacentas)-[:HAS]->(fellowships)
+
+      CREATE (log:HistoryLog {id:apoc.create.uuid()})
+        SET log.timeStamp = datetime(),
+        log.historyRecord = gatheringService.name + ' Gathering Service was closed down under ' + oversight.name +' Oversight'
+
+
+      MERGE (date:TimeGraph {date:date()})
+      MERGE (log)-[:LOGGED_BY]->(admin)
+      MERGE (log)-[:RECORDED_ON]->(date)
+      MERGE (gatheringService)-[:HAS_HISTORY]->(log)
+      MERGE (oversight)-[:HAS_HISTORY]->(log)
+
+      SET gatheringService:ClosedGatheringService, stream:ClosedStream, council:ClosedCouncil, constituencies:Closedconstituency, bacentas:ClosedBacenta, fellowships:ClosedFellowship
+      REMOVE gatheringService:ClosedGatheringService, stream:Stream, council:Council, constituencies:Constituency,bacentas:Bacenta,fellowships:Fellowship
+
+      RETURN oversight
       """
     )
 }
