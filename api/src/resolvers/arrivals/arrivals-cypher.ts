@@ -104,7 +104,7 @@ export const checkBacentaMomoDetails = `
 MATCH (bacenta:Bacenta {id: $bacentaId})<-[:HAS]-(:Constituency)-[:BUSSES_FROM]->(zone:BusZone)
 
 
-RETURN constituency.zone AS zone, 
+RETURN zone.number AS zone, 
 bacenta.momoNumber AS momoNumber
 `
 
