@@ -72,7 +72,7 @@ const ImageUpload = (props: ImageUploadProps) => {
           name={name}
           style={{ display: 'none' }}
           type="file"
-          accept="image/png, image/webp"
+          accept="image/png, image/webp, image/jpg, image/jpeg"
           onChange={uploadImage}
           {...rest}
         />

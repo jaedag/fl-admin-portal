@@ -27,3 +27,7 @@
 .button-icons {
   margin-right: 10px;
 }
+
+.low-opacity {
+  opacity: 0.2;
+}
