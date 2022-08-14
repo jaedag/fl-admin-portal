@@ -1211,11 +1211,18 @@ extend type Mutation {
         vehicleRecord.personalContribution = $personalContribution,
         vehicleRecord.vehicle = $vehicle,
         vehicleRecord.picture =  $picture,
-        vehicleRecord.outbound = $outbound
+        vehicleRecord.outbound = $outbound,
 
        WITH vehicleRecord, bussingRecord
         MATCH (leader:Member {auth_id: $auth.jwt.sub})
         MERGE (vehicleRecord)-[:LOGGED_BY]->(leader)
+
+        WITH vehicleRecord, bussingRecord
+        MATCH (bussingRecord)-[:INCLUDES_RECORD]->(vehicleRecords)
+        WITH vehicleRecord, bussingRecord, sum(vehicleRecords.leaderDeclaration) as summedLeaderDeclaration, toFloat(SUM(vehicleRecords.personalContribution)) as summedPersonalContribution, toFloat(SUM(vehicleRecords.vehicleCost)) as summedVehicleCost
+        SET bussingRecord.leaderDeclaration = summedLeaderDeclaration,
+        bussingRecord.personalContribution = summedPersonalContribution,
+        bussingRecord.bussingCost = summedVehicleCost
 
       RETURN vehicleRecord
       """
