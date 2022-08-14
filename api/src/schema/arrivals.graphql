@@ -1183,8 +1183,9 @@ extend type Mutation {
   ): VehicleRecord!
     @cypher(
       statement: """
-      MATCH (bussingRecord:BussingRecord {id: $bussingRecordId})
       CREATE (vehicleRecord:VehicleRecord  {id: apoc.create.uuid()})
+          WITH vehicleRecord
+      MATCH (bussingRecord:BussingRecord {id: $bussingRecordId})
       MERGE (bussingRecord)-[:INCLUDES_RECORD]->(vehicleRecord)
 
         SET vehicleRecord.leaderDeclaration = $attendance,
