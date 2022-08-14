@@ -486,9 +486,9 @@ export const arrivalsMutation = {
         new Date().toISOString().slice(0, 10) + stream.arrivalEndTime.slice(10)
       )
 
-      const FiveMinBuffer = 5 * 60 * 1000
+      const TenMinBuffer = 10 * 60 * 1000
 
-      const endTime = new Date(endTimeToday.getTime() + FiveMinBuffer)
+      const endTime = new Date(endTimeToday.getTime() + TenMinBuffer)
 
       return endTime
     }
