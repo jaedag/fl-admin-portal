@@ -127,13 +127,12 @@ extend type GatheringService {
   bacentasOnTheWayCount: Int
     @cypher(
       statement: """
-      MATCH (this)-[:HAS*4]->(bacentas:Active:Bacenta)
+      MATCH (this)-[:HAS*3]->(bacentas:Active:Bacenta)
       MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
-        WHERE date(date.date)=date()
-        AND EXISTS {
-        MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
-        WHERE record.arrivalTime IS NULL
-        }
+      WHERE date(date.date)=date()
+      MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
+      WHERE record.arrivalTime IS NULL
+
       RETURN COUNT(DISTINCT bacentas)
       """
     )
@@ -209,11 +208,11 @@ extend type GatheringService {
       MATCH (this)-[:HAS*4]->(bacentas:Active:Bacenta)
       MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
         WHERE date(date.date)=date()
-        AND NOT EXISTS {
+        AND EXISTS {
         MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
         WHERE record.arrivalTime IS NOT NULL
         }
-      RETURN DISTINCT bacentas
+      RETURN COUNT(DISTINCT bacentas)
       """
     )
   bacentasHaveArrivedCount: Int
@@ -222,7 +221,7 @@ extend type GatheringService {
       MATCH (this)-[:HAS*4]->(bacentas:Active:Bacenta)
       MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
         WHERE date(date.date)=date()
-        AND NOT EXISTS {
+        AND EXISTS {
         MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
         WHERE record.arrivalTime IS NOT NULL
         }
