@@ -874,29 +874,11 @@ type BussingRecord implements Record @auth(rules: [{ isAuthenticated: true }]) {
     )
   numberOfBusses: Int #Legacy Property for before we started collecting Spinter/Urvan details
   personalContribution: Float
-    @cypher(
-      statement: "MATCH (this)-[:INCLUDES_RECORD]->(record:VehicleRecord) WHERE record.personalContribution IS NOT NULL RETURN SUM(record.personalContribution)"
-    )
   numberOfSprinters: Int
-    @cypher(
-      statement: "MATCH (this)-[:INCLUDES_RECORD]->(record:VehicleRecord) WHERE record.vehicle = 'Sprinter' RETURN COUNT(DISTINCT record)"
-    )
   numberOfUrvans: Int
-    @cypher(
-      statement: "MATCH (this)-[:INCLUDES_RECORD]->(record:VehicleRecord) WHERE record.vehicle = 'Urvan' RETURN COUNT(DISTINCT record)"
-    )
   numberOfCars: Int
-    @cypher(
-      statement: "MATCH (this)-[:INCLUDES_RECORD]->(record:VehicleRecord) WHERE record.vehicle = 'Car' RETURN COUNT(DISTINCT record)"
-    )
   bussingCost: Float
-    @cypher(
-      statement: "MATCH (this)-[:INCLUDES_RECORD]->(record:VehicleRecord) WHERE record.vehicleCost IS NOT NULL RETURN SUM(record.vehicleCost)"
-    )
   bussingTopUp: Float
-    @cypher(
-      statement: "MATCH (this)-[:INCLUDES_RECORD]->(record:VehicleRecord) WHERE record.vehicleTopUp IS NOT NULL RETURN SUM(record.vehicleTopUp)"
-    )
 
   #Money Things
   mobileNetwork: String
@@ -1211,7 +1193,7 @@ extend type Mutation {
         vehicleRecord.personalContribution = $personalContribution,
         vehicleRecord.vehicle = $vehicle,
         vehicleRecord.picture =  $picture,
-        vehicleRecord.outbound = $outbound,
+        vehicleRecord.outbound = $outbound
 
        WITH vehicleRecord, bussingRecord
         MATCH (leader:Member {auth_id: $auth.jwt.sub})
