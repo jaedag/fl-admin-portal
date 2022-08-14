@@ -874,29 +874,11 @@ type BussingRecord implements Record @auth(rules: [{ isAuthenticated: true }]) {
     )
   numberOfBusses: Int #Legacy Property for before we started collecting Spinter/Urvan details
   personalContribution: Float
-    @cypher(
-      statement: "MATCH (this)-[:INCLUDES_RECORD]->(record:VehicleRecord) WHERE record.personalContribution IS NOT NULL RETURN SUM(record.personalContribution)"
-    )
   numberOfSprinters: Int
-    @cypher(
-      statement: "MATCH (this)-[:INCLUDES_RECORD]->(record:VehicleRecord) WHERE record.vehicle = 'Sprinter' RETURN COUNT(DISTINCT record)"
-    )
   numberOfUrvans: Int
-    @cypher(
-      statement: "MATCH (this)-[:INCLUDES_RECORD]->(record:VehicleRecord) WHERE record.vehicle = 'Urvan' RETURN COUNT(DISTINCT record)"
-    )
   numberOfCars: Int
-    @cypher(
-      statement: "MATCH (this)-[:INCLUDES_RECORD]->(record:VehicleRecord) WHERE record.vehicle = 'Car' RETURN COUNT(DISTINCT record)"
-    )
   bussingCost: Float
-    @cypher(
-      statement: "MATCH (this)-[:INCLUDES_RECORD]->(record:VehicleRecord) WHERE record.vehicleCost IS NOT NULL RETURN SUM(record.vehicleCost)"
-    )
   bussingTopUp: Float
-    @cypher(
-      statement: "MATCH (this)-[:INCLUDES_RECORD]->(record:VehicleRecord) WHERE record.vehicleTopUp IS NOT NULL RETURN SUM(record.vehicleTopUp)"
-    )
 
   #Money Things
   mobileNetwork: String
@@ -1216,6 +1198,13 @@ extend type Mutation {
        WITH vehicleRecord, bussingRecord
         MATCH (leader:Member {auth_id: $auth.jwt.sub})
         MERGE (vehicleRecord)-[:LOGGED_BY]->(leader)
+
+        WITH vehicleRecord, bussingRecord
+        MATCH (bussingRecord)-[:INCLUDES_RECORD]->(vehicleRecords)
+        WITH vehicleRecord, bussingRecord, sum(vehicleRecords.leaderDeclaration) as summedLeaderDeclaration, toFloat(SUM(vehicleRecords.personalContribution)) as summedPersonalContribution, toFloat(SUM(vehicleRecords.vehicleCost)) as summedVehicleCost
+        SET bussingRecord.leaderDeclaration = summedLeaderDeclaration,
+        bussingRecord.personalContribution = summedPersonalContribution,
+        bussingRecord.bussingCost = summedVehicleCost
 
       RETURN vehicleRecord
       """
