@@ -147,10 +147,10 @@ bussing.bussingCost = vehicleCost,
 bussing.bussingTopUp = vehicleTopUp
 
 WITH bussing
-OPTIONAL MATCH (bussing)-[:INCLUDES_RECORD]->(cars:VehicleRecord) WHERE cars.vehicle = 'Car'
-OPTIONAL MATCH (bussing)-[:INCLUDES_RECORD]->(sprinters:VehicleRecord) WHERE cars.vehicle = 'Sprinter'
-OPTIONAL MATCH (bussing)-[:INCLUDES_RECORD]->(urvan:VehicleRecord) WHERE cars.vehicle = 'Urvan'
-WITH bussing, COUNT(cars) AS cars, COUNT(sprinters) AS sprinters, COUNT(urvan) AS urvan
+OPTIONAL MATCH (bussing)-[:INCLUDES_RECORD]->(cars:VehicleRecord {vehicle: 'Car'})
+OPTIONAL MATCH (bussing)-[:INCLUDES_RECORD]->(sprinters:VehicleRecord {vehicle: 'Sprinter'})
+OPTIONAL MATCH (bussing)-[:INCLUDES_RECORD]->(urvan:VehicleRecord {vehicle: 'Urvan'})
+WITH bussing, COUNT(DISTINCT cars) AS cars, COUNT(DISTINCT sprinters) AS sprinters, COUNT(DISTINCT urvan) AS urvan
 
 MATCH (vehicleRecord:VehicleRecord {id: $vehicleRecordId})
 SET vehicleRecord.arrivalTime = datetime(),

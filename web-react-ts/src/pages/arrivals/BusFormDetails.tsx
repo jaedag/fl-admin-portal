@@ -52,7 +52,7 @@ const BusFormDetails = () => {
               <RoleView roles={permitAdminArrivals('Stream')}>
                 {` by `}
                 {bussing.counted_by.map((counter, i) => (
-                  <span className="good">
+                  <span key={i} className="good">
                     {counter.fullName}
                     {i < bussing.counted_by.length - 1 && ' | '}
                   </span>

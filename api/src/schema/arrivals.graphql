@@ -812,13 +812,7 @@ type BussingRecord implements Record @auth(rules: [{ isAuthenticated: true }]) {
 
   #On The Way
   attendance: Int
-    @cypher(
-      statement: "MATCH (this)-[:INCLUDES_RECORD]->(record:VehicleRecord) WHERE record.attendance IS NOT NULL RETURN SUM(record.attendance)"
-    )
   leaderDeclaration: Int
-    @cypher(
-      statement: "MATCH (this)-[:INCLUDES_RECORD]->(record:VehicleRecord) WHERE record.leaderDeclaration IS NOT NULL RETURN SUM(record.leaderDeclaration)"
-    )
   bussingPictures: [String!]!
     @cypher(
       statement: """
