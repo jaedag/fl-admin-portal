@@ -19,7 +19,7 @@ export const MOBILE_NETWORK_OPTIONS: FormikSelectOptions = [
 export const VEHICLE_OPTIONS: FormikSelectOptions = [
   { key: 'Urvan', value: 'Urvan' },
   { key: 'Sprinter', value: 'Sprinter' },
-  { key: 'Car', value: 'Car' },
+  { key: 'Private Car', value: 'Car' },
 ]
 
 export const OUTBOUND_OPTIONS: FormikSelectOptions = [
@@ -40,7 +40,10 @@ const isArrivalsToday = (bacenta: { stream_name: StreamOptions }) => {
     return true
   }
 
-  if (today === 0 && bacenta.stream_name.toLowerCase() === 'town') {
+  if (
+    // today === 0 &&
+    bacenta.stream_name.toLowerCase() === 'town'
+  ) {
     return true
   }
 

@@ -275,7 +275,6 @@ extend type Stream {
         WHERE date(date.date)=date()
         AND bussing.mobilisationPicture IS NOT NULL
         AND bussing.leaderDeclaration IS NULL
-      }
       RETURN COUNT(DISTINCT bacentas)
       """
     )
@@ -372,6 +371,7 @@ extend type Stream {
         AND EXISTS {
         MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
         WHERE record.arrivalTime IS NOT NULL
+        }
       RETURN DISTINCT bacentas
       """
     )

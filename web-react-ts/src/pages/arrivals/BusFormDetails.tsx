@@ -173,7 +173,7 @@ const BusFormDetails = () => {
 
                   {bussing?.numberOfCars ? (
                     <tr>
-                      <td>Number of Cars</td>
+                      <td>Number of Private Cars</td>
                       <td>
                         <PlaceholderCustom loading={loading}>
                           {bussing?.numberOfCars}
