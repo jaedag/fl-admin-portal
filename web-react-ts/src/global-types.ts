@@ -28,6 +28,18 @@ export type ChurchLevel =
   | 'Sonta'
   | 'Basonta'
 
+export type ChurchLevelLower =
+  | 'fellowship'
+  | 'bacenta'
+  | 'constituency'
+  | 'council'
+  | 'stream'
+  | 'gatheringService'
+  | 'oversight'
+  | 'ministry'
+  | 'sonta'
+  | 'basonta'
+
 export type TimeGraph = {
   date: Date
 }
@@ -57,6 +69,9 @@ export interface Sonta extends Church {
 export interface Fellowship extends Church {
   __typename: 'Fellowship'
   bankingCode: number
+  meetingDay: {
+    day: 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday'
+  }
 }
 
 export interface Bacenta extends Church {
@@ -74,8 +89,12 @@ export type TitleOptions = 'Pastor' | 'Reverend' | 'Bishop'
 
 export interface Stream extends Church {
   id: string
-  name: string
+  name: StreamOptions
   __typename: 'Stream'
+}
+export interface Constituency extends Church {
+  __typename: 'Constituency'
+  stream: Stream
 }
 
 //MEMBERSHIP
@@ -101,14 +120,18 @@ export interface Member {
   middleName?: string
   lastName: string
   fullName: string
+  location?: string
+  nameWithTitle?: string
+  currentTitle: TitleOptions
+  titleConnection?: any
   email: string
   pictureUrl: string
   phoneNumber: string
   whatsappNumber: string
-  dob: string
-  maritalStatus: string
+  dob: { date: string }
+  maritalStatus: { status: 'Married' | 'Single' }
   gender: { gender: 'Male' | 'Female' }
-  occupation: string
+  occupation: { occupation: string }
   fellowship: {
     id: string
     name: string
@@ -240,4 +263,16 @@ export type ServiceRecord = {
   transactionStatus: 'pending' | 'success' | 'failed'
   bankingSlipUploader: Member
   offeringBankedBy: Member
+}
+
+export interface HigherChurch extends Church {
+  stream_name: StreamOptions
+  admin: Member
+  fellowshipCount: number
+  bacentaCount: number
+  constituencyCount: number
+  councilCount: number
+  streamCount: number
+  memberCount: number
+  target: number
 }

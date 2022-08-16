@@ -19,7 +19,6 @@ import DetailsStream from 'pages/directory/display/DetailsStream'
 import DetailsSonta from 'pages/directory/display/DetailsSonta'
 import DisplayAllBacentas from 'pages/directory/display/AllBacentas'
 import DisplayAllSontas from 'pages/directory/display/AllSontas'
-import DisplaySontasByConstituency from 'pages/directory/display/SontasByConstituency'
 import DisplayAllConstituencies from 'pages/directory/display/AllConstituencies'
 import DisplayAllFellowships from 'pages/directory/display/AllFellowships'
 import CreateConstituency from 'pages/directory/create/CreateConstituency'
@@ -39,7 +38,9 @@ import CreateCouncil from 'pages/directory/create/CreateCouncil'
 import AllGatheringServiceConstituencies from 'pages/directory/display/AllGatheringServiceConstituencies'
 import UpdateCouncil from 'pages/directory/update/UpdateCouncil'
 import CreateStream from 'pages/directory/create/CreateStream'
+import CreateGatheringService from 'pages/directory/create/CreateGatheringService'
 import UpdateStream from 'pages/directory/update/UpdateStream'
+import UpdateGatheringService from 'pages/directory/update/UpdateGatheringService'
 import GatheringServiceMembers from 'pages/directory/grids/GatheringServiceMembers'
 import OversightMembers from 'pages/directory/grids/OversightMembers'
 import StreamMembers from 'pages/directory/grids/StreamMembers'
@@ -60,6 +61,7 @@ import CouncilAvgWeekdayQuickFacts from './quick-facts/this-month/CouncilAvgWeek
 import GatheringServiceAvgWeekdayQuickFacts from './quick-facts/this-month/GatheringServiceAvgWeekdayQuickFacts'
 import QuickFactsChurchList from './quick-facts/QuickFactsChurchList'
 import { RouteTypes } from 'global-types'
+import UpdateConstituencyZone from './update/UpdateConstituencyZone'
 
 export const memberDirectory: RouteTypes[] = [
   {
@@ -279,12 +281,6 @@ export const directory: RouteTypes[] = [
     roles: permitLeaderAdmin('Constituency'),
     placeholder: false,
   },
-  {
-    path: '/constituency/display-sontas',
-    element: DisplaySontasByConstituency,
-    roles: permitLeaderAdmin('Council'),
-    placeholder: false,
-  },
 
   {
     path: '/constituency/displayall',
@@ -354,6 +350,12 @@ export const directory: RouteTypes[] = [
     roles: permitAdmin('GatheringService'),
     placeholder: false,
   },
+  {
+    path: '/gatheringservice/addgatheringservice',
+    element: CreateGatheringService,
+    roles: permitAdmin('Oversight'),
+    placeholder: false,
+  },
 
   //Pages to Update the Directory
   {
@@ -387,6 +389,12 @@ export const directory: RouteTypes[] = [
     placeholder: false,
   },
   {
+    path: 'constituency/change-zone',
+    element: UpdateConstituencyZone,
+    roles: permitAdmin('Stream'),
+    placeholder: false,
+  },
+  {
     path: '/council/editcouncil',
     element: UpdateCouncil,
     roles: permitAdmin('Stream'),
@@ -396,6 +404,12 @@ export const directory: RouteTypes[] = [
     path: '/stream/editstream',
     element: UpdateStream,
     roles: permitAdmin('GatheringService'),
+    placeholder: false,
+  },
+  {
+    path: '/gatheringservice/editgatheringservice',
+    element: UpdateGatheringService,
+    roles: permitAdmin('Oversight'),
     placeholder: false,
   },
 ]

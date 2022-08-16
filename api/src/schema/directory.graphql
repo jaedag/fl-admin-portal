@@ -8,7 +8,7 @@ type Member @auth(rules: [{ isAuthenticated: true }]) {
   currentTitle: String
     @cypher(
       statement: """
-      MATCH (this)-[:HAS_TITLE]->(title:Title) 
+      MATCH (this)-[:HAS_TITLE]->(title:Title)
       RETURN title.name ORDER BY title.weight DESC LIMIT 1
       """
     )
@@ -410,6 +410,7 @@ type GatheringService implements Church {
   leader: Member @relationship(type: "LEADS", direction: IN)
   oversight: Oversight! @relationship(type: "HAS", direction: IN)
   streams: [Stream!]! @relationship(type: "HAS", direction: OUT)
+  ministries: [Ministry!]! @relationship(type: "HAS_MINISTRY", direction: OUT)
 
   councils: [Council!]!
     @cypher(
@@ -968,6 +969,7 @@ type Ministry {
   sonta: [Sonta!]! @relationship(type: "HAS_SONTA", direction: OUT)
   leader: Member @relationship(type: "LEADS", direction: IN)
   members: [Member!]! @relationship(type: "BELONGS_TO", direction: IN)
+  gatheringService: GatheringService @relationship(type: "HAS_MINISTRY", direction: IN)
 }
 
 type Sonta {

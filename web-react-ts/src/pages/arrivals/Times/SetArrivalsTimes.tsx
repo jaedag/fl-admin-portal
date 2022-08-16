@@ -1,4 +1,3 @@
-import FormikControl from 'components/formik-components/FormikControl'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import { MemberContext } from 'contexts/MemberContext'
 import { Formik, Form, FormikHelpers } from 'formik'
@@ -7,12 +6,13 @@ import React, { useContext } from 'react'
 import { useMutation, useQuery } from '@apollo/client'
 import { GET_ARRIVAL_TIMES, SET_STREAM_ARRIVAL_TIMES } from './time-gql'
 import { Col, Container, Row } from 'react-bootstrap'
-import SubmitButton from 'components/formik-components/SubmitButton'
+import SubmitButton from 'components/formik/SubmitButton'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 
 import { parseTimeToDate } from 'jd-date-utils'
 import { parseNeoTime } from 'jd-date-utils'
 import { useNavigate } from 'react-router'
+import Input from 'components/formik/Input'
 
 type FormOptions = {
   id: string
@@ -84,8 +84,7 @@ const SetArrivalsTime = () => {
               <Form className="form-group">
                 <Row>
                   <Col xs={12} md={6}>
-                    <FormikControl
-                      control="input"
+                    <Input
                       type="time"
                       name="mobilisationStartTime"
                       label="Mobilisation Start Time"
@@ -93,8 +92,7 @@ const SetArrivalsTime = () => {
                     />
                   </Col>
                   <Col xs={12} md={6}>
-                    <FormikControl
-                      control="input"
+                    <Input
                       type="time"
                       name="mobilisationEndTime"
                       label="Mobilisation End Time"
@@ -102,8 +100,7 @@ const SetArrivalsTime = () => {
                     />
                   </Col>
                   <Col xs={12} md={6}>
-                    <FormikControl
-                      control="input"
+                    <Input
                       type="time"
                       name="arrivalStartTime"
                       label="Arrival Start Time"
@@ -111,8 +108,7 @@ const SetArrivalsTime = () => {
                     />
                   </Col>
                   <Col xs={12} md={6}>
-                    <FormikControl
-                      control="input"
+                    <Input
                       type="time"
                       name="arrivalEndTime"
                       label="Arrival End Time"

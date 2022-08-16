@@ -1,0 +1,110 @@
+extend type ServiceLog {
+  equpmentRecord: [EquipmentRecord!]!
+    @relationship(type: "HAS_EQUIPMENT_RECORD", direction: OUT)
+}
+
+interface EquipmentRecord {
+  offeringBags: Int
+  bluetoothSpeakers: Int
+}
+
+type ConstituencyEquipment implements EquipmentRecord {
+  id: ID!
+  pulpits: Int!
+  offeringBags: Int!
+  bluetoothSpeakers: Int!
+}
+
+type AggregatedEquipment implements EquipmentRecord {
+  pulpits: Int!
+  offeringBags: Int!
+  bluetoothSpeakers: Int!
+}
+
+type BacentaEquipment implements EquipmentRecord {
+  offeringBags: Int!
+  bluetoothSpeakers: Int!
+}
+
+type FellowshipEquipment implements EquipmentRecord {
+  id: ID!
+  offeringBags: Int!
+  bluetoothSpeakers: Int!
+  serviceLog: ServiceLog
+    @relationship(type: "HAS_EQUIPMENT_RECORD", direction: IN)
+  equipmentDate: TimeGraph!
+    @relationship(type: "HAS_EQUIPMENT_DATE", direction: OUT)
+  created_at: DateTime!
+}
+
+extend type GatheringService {
+  equipmentRecord: AggregatedEquipment!
+  equipmentStartDate: Date
+  equipmentEndDate: Date
+}
+
+extend type Stream {
+  equipmentRecord: AggregatedEquipment!
+}
+
+extend type Council {
+  equipmentRecord: AggregatedEquipment!
+}
+
+extend type Constituency {
+  equipmentRecord: ConstituencyEquipment!
+}
+
+extend type Bacenta {
+  equipmentRecord: BacentaEquipment!
+    @cypher(
+      statement: """
+      MATCH (this)
+      MATCH (n:EquipmentDate)
+      WITH max(n.date) as latestEquipmentDate, this
+      MATCH (this)-[:HAS]-(:Fellowship)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_EQUIPMENT_RECORD]->(record:EquipmentRecord)
+      MATCH (record)-[:HAS_EQUIPMENT_DATE]->(date:TimeGraph {date:date(latestEquipmentDate)})
+      WITH DISTINCT record
+      RETURN {
+        offeringBags: toInteger(sum(record.offeringBags)),
+        bluetoothSpeakers: toInteger(sum(record.bluetoothSpeakers))
+      } as fellowshipEquipment
+      """
+    )
+}
+
+extend type Fellowship {
+  equipmentRecord: FellowshipEquipment!
+    @cypher(
+      statement: """
+      MATCH (this)
+      MATCH (n:EquipmentDate)
+      WITH max(n.date) as latestEquipmentDate, this
+      MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_EQUIPMENT_RECORD]->(record:EquipmentRecord)
+      MATCH (record)-[:HAS_EQUIPMENT_DATE]->(date:TimeGraph {date:date(latestEquipmentDate)})
+      RETURN record
+      """
+    )
+}
+
+###### CAMPAIGN TYPES #######
+
+extend type Mutation {
+  SetEquipmentDeadline(
+    startDate: Date!
+    endDate: Date!
+    id: ID!
+  ): GatheringService
+  CreateFellowshipEquipmentRecord(
+    id: ID!
+    offeringBags: Int!
+    bluetoothSpeakers: Int!
+    date: Date!
+  ): Fellowship
+
+  CreateConstituencyEquipmentRecord(
+    id: ID!
+    pulpits: Int!
+    date: Date!
+  ): Constituency
+}

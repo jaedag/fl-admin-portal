@@ -22,7 +22,7 @@ const SontaService = () => {
         RecordServiceMutation={RecordServiceNoOffering}
         church={sontaData?.sontas[0]}
         churchId={sontaId}
-        churchType="sonta"
+        churchType="Sonta"
       />
     </ApolloWrapper>
   )

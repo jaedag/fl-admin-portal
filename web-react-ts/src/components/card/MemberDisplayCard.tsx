@@ -47,6 +47,7 @@ type MemberDisplayCardProps = {
   }
   onClick?: () => void
   contact?: boolean
+  children?: React.ReactNode
 }
 
 const Icons = ({ icon, className }: { icon: string; className: string }) => {
@@ -63,7 +64,7 @@ const Icons = ({ icon, className }: { icon: string; className: string }) => {
 }
 
 const MemberDisplayCard = (props: MemberDisplayCardProps) => {
-  const { member, leader, ...rest } = props
+  const { member, leader, children, ...rest } = props
   const { clickCard } = useContext(ChurchContext)
   const { theme } = useContext(MemberContext)
   const navigate = useNavigate()
@@ -156,6 +157,7 @@ const MemberDisplayCard = (props: MemberDisplayCardProps) => {
                   </div>
                 ))}
             </div>
+            <div>{children}</div>
           </div>
         </div>
       </Card.Body>

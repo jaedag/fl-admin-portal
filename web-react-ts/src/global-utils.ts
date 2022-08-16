@@ -9,7 +9,7 @@ export const DECIMAL_NUM_REGEX_POSITIVE_ONLY = /^\d*\.{1}\d*$/
 export const USER_PLACEHOLDER = 'v1627893621/user_qvwhs7webp'
 export const DEBOUNCE_TIMER = 500
 
-type FormikSelectOptions = {
+export type FormikSelectOptions = {
   key: string
   value: string
 }[]
@@ -169,9 +169,9 @@ export const arrayOr = (array: []) => {
 
 export const makeSelectOptions = (
   initialArray: { id: string; name: string; fullName: string }[]
-): FormikSelectOptions | null => {
+): FormikSelectOptions => {
   if (!initialArray) {
-    return null
+    return []
   }
 
   return initialArray.map((data) => ({

@@ -105,10 +105,6 @@ export const SERVANT_CHURCH_LIST = gql`
         id
         name
       }
-      isArrivalsConfirmerForStream {
-        id
-        name
-      }
       isArrivalsAdminForCouncil {
         id
         name

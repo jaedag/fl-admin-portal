@@ -15,10 +15,10 @@ import {
 import './TellerSelect.css'
 import * as Yup from 'yup'
 import { Form, Formik, FormikHelpers } from 'formik'
-import FormikControl from 'components/formik-components/FormikControl'
 import ModalSubmitButton from './ModalSubmitButton'
 import { alertMsg, throwErrorMsg } from 'global-utils'
 import NoDataComponent from 'pages/arrivals/CompNoData'
+import SearchMember from 'components/formik/SearchMember'
 
 interface StreamWithTellers extends Stream {
   tellers: Member[]
@@ -124,8 +124,7 @@ const TellerSelect = () => {
                 <Modal.Body>
                   <Row className="form-row">
                     <Col>
-                      <FormikControl
-                        control="memberSearch"
+                      <SearchMember
                         name="tellerSelect"
                         initialValue={initialValues?.tellerName}
                         placeholder="Select a Name"
@@ -166,6 +165,7 @@ const TellerSelect = () => {
                   )
 
                   if (confirmBox === true) {
+                    setSubmitting(true)
                     try {
                       await RemoveStreamTeller({
                         variables: {

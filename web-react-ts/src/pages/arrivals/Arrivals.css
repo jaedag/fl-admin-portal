@@ -2,6 +2,10 @@
   background-color: #7d1f1a;
   color: whitesmoke;
 }
+.dark .modal-content {
+  background-color: #252525;
+  color: whitesmoke;
+}
 
 .code-of-the-day {
   color: #d5ee6f;
@@ -18,4 +22,12 @@
 
 .text-secondary-custom {
   color: #9f9f9f;
+}
+
+.button-icons {
+  margin-right: 10px;
+}
+
+.low-opacity {
+  opacity: 0.2;
 }

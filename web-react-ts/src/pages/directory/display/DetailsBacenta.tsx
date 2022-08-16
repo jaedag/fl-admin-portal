@@ -5,7 +5,8 @@ import DisplayChurchDetails from 'components/DisplayChurchDetails/DisplayChurchD
 import { DISPLAY_BACENTA } from './ReadQueries'
 import { ChurchContext } from 'contexts/ChurchContext'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
-import { permitArrivals } from 'permission-utils'
+import { permitAdminArrivals } from 'permission-utils'
+import { DetailsArray } from './DetailsFellowship'
 
 const DetailsBacenta = () => {
   const { bacentaId } = useContext(ChurchContext)
@@ -21,7 +22,7 @@ const DetailsBacenta = () => {
     bacenta,
   ]
 
-  const details = [
+  const details: DetailsArray = [
     {
       title: 'Members',
       number: bacenta?.memberCount || 0,
@@ -45,6 +46,7 @@ const DetailsBacenta = () => {
       link: '#',
       width: 3,
     },
+
     {
       title: 'Target',
       number: bacenta?.target,
@@ -52,24 +54,29 @@ const DetailsBacenta = () => {
       width: 3,
     },
     {
+      title: 'Zone',
+      number: bacenta?.zone.number,
+      link: `#`,
+    },
+    {
       title: 'Momo Number',
       number: bacenta?.momoNumber || '-',
       link: `#`,
-      width: 6,
+      width: 12,
     },
     {
-      title: 'Normal Bussing Top Up',
-      number: bacenta?.normalBussingTopUp,
+      title: 'Sprinter Top Up',
+      number: bacenta?.zone.sprinterTopUp + ' GHS',
       link: `#`,
     },
     {
-      title: 'Swell Bussing Top Up',
-      number: bacenta?.swellBussingTopUp,
+      title: 'Urvan Top Up',
+      number: bacenta?.zone.urvanTopUp + ' GHS',
       link: `#`,
     },
   ]
 
-  if (!bacenta?.normalBussingTopUp && !bacenta?.swellBussingTopUp) {
+  if (!bacenta?.zone.number) {
     const moneyItems = [1, 2, 3]
     moneyItems.forEach(() => details.pop())
   }
@@ -88,7 +95,7 @@ const DetailsBacenta = () => {
         churchType="Bacenta"
         subChurch="Fellowship"
         editlink="/bacenta/editbacenta"
-        editPermitted={permitArrivals('Constituency')}
+        editPermitted={permitAdminArrivals('Constituency')}
         history={bacenta?.history.length !== 0 ? bacenta?.history : []}
         breadcrumb={breadcrumb && breadcrumb}
         buttons={bacenta ? bacenta?.fellowships : []}

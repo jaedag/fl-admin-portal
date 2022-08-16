@@ -8,8 +8,7 @@ import ServantsDashboard from 'pages/dashboards/ServantsDashboard'
 import ServantsChurchList from 'pages/dashboards/ServantsChurchList'
 import { ServiceContext } from 'contexts/ServiceContext'
 import MembersDirectoryRoute from './pages/directory/MembersDirectoryRoute'
-import Navigation from 'pages/dashboards/Navigation.jsx'
-import ProtectedGraphs from 'pages/services/graphs/ProtectedGraphs.jsx'
+import Navigation from 'pages/dashboards/Navigation'
 import { dashboards } from 'pages/dashboards/dashboardRoutes'
 import {
   directory,
@@ -43,7 +42,8 @@ const PastorsAdmin = (props) => {
     ministryId,
     bussingRecordId,
     serviceRecordId,
-      oversightId,
+    vehicleRecordId,
+    oversightId,
   } = useClickCard()
   const { user } = useAuth0()
 
@@ -91,7 +91,7 @@ const PastorsAdmin = (props) => {
           fellowshipId,
           sontaId,
           ministryId,
-            oversightId,
+          oversightId,
         }}
       >
         <MemberContext.Provider
@@ -110,6 +110,7 @@ const PastorsAdmin = (props) => {
               value={{
                 serviceRecordId,
                 bussingRecordId,
+                vehicleRecordId,
               }}
             >
               <SetPermissions>
@@ -155,12 +156,6 @@ const PastorsAdmin = (props) => {
                       )
                     )}
 
-                    <Route
-                      path="/services/graphs"
-                      element={
-                        <ProtectedGraphs roles={['all']} placeholder exact />
-                      }
-                    />
                     <Route
                       path="/dashboard/servants"
                       element={

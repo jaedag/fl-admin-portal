@@ -5,10 +5,13 @@ export const CONSTITUENCY_ARRIVALS_DASHBOARD = gql`
     constituencies(where: { id: $id }, options: { limit: 1 }) {
       id
       name
-      admin {
+      council {
         id
-        firstName
-        lastName
+        stream {
+          id
+          name
+          arrivalEndTime
+        }
       }
       arrivalsAdmin {
         id
@@ -20,7 +23,6 @@ export const CONSTITUENCY_ARRIVALS_DASHBOARD = gql`
       bacentasNoActivityCount
       bacentasMobilisingCount
       bacentasOnTheWayCount
-      bacentasHaveBeenCountedCount
       bacentasBelow8Count
       bacentasHaveArrivedCount
       bussingMembersOnTheWayCount
@@ -34,11 +36,12 @@ export const COUNCIL_ARRIVALS_DASHBOARD = gql`
     councils(where: { id: $id }, options: { limit: 1 }) {
       id
       name
-      admin {
+      stream {
         id
-        firstName
-        lastName
+        name
+        arrivalEndTime
       }
+
       arrivalsAdmin {
         id
         firstName
@@ -50,7 +53,6 @@ export const COUNCIL_ARRIVALS_DASHBOARD = gql`
       bacentasNoActivityCount
       bacentasMobilisingCount
       bacentasOnTheWayCount
-      bacentasHaveBeenCountedCount
       bacentasBelow8Count
       bacentasHaveArrivedCount
       bussingMembersOnTheWayCount
@@ -64,11 +66,7 @@ export const STREAM_ARRIVALS_DASHBOARD = gql`
     streams(where: { id: $id }, options: { limit: 1 }) {
       id
       name
-      admin {
-        id
-        firstName
-        lastName
-      }
+
       arrivalsAdmin {
         id
         firstName
@@ -76,12 +74,12 @@ export const STREAM_ARRIVALS_DASHBOARD = gql`
         fullName
         pictureUrl
       }
+      arrivalEndTime
       councilCount
       bacentasNoActivityCount
       bacentasMobilisingCount
       bacentasOnTheWayCount
       bacentasNotCountedCount
-      bacentasHaveBeenCountedCount
       bacentasBelow8Count
       bacentasHaveArrivedCount
       bussingMembersOnTheWayCount
@@ -95,11 +93,7 @@ export const GATHERINGSERVICE_ARRIVALS_DASHBOARD = gql`
     gatheringServices(where: { id: $id }, options: { limit: 1 }) {
       id
       name
-      admin {
-        id
-        firstName
-        lastName
-      }
+
       arrivalsAdmin {
         id
         firstName
@@ -111,7 +105,6 @@ export const GATHERINGSERVICE_ARRIVALS_DASHBOARD = gql`
       bacentasNoActivityCount
       bacentasMobilisingCount
       bacentasOnTheWayCount
-      bacentasHaveBeenCountedCount
       bacentasBelow8Count
       bacentasHaveArrivedCount
       bussingMembersOnTheWayCount
@@ -268,6 +261,10 @@ export const BACENTA_ARRIVALS = gql`
         arrivalEndTime
       }
       momoNumber
+      zone {
+        id
+        number
+      }
 
       arrivalsCodeOfTheDay
       bussing(limit: 1) {
@@ -276,10 +273,14 @@ export const BACENTA_ARRIVALS = gql`
         serviceDate {
           date
         }
+        vehicleRecords {
+          id
+          vehicle
+          attendance
+          arrivalTime
+        }
         week
         mobilisationPicture
-        bussingPictures
-        arrivalTime
       }
     }
     timeGraphs(where: { date: $date }) {
@@ -383,12 +384,7 @@ export const DISPLAY_BUSSING_RECORDS = gql`
         lastName
         fullName
       }
-      arrival_confirmed_by {
-        id
-        firstName
-        lastName
-        fullName
-      }
+
       serviceDate {
         date
       }
@@ -396,13 +392,60 @@ export const DISPLAY_BUSSING_RECORDS = gql`
       mobilisationPicture
       leaderDeclaration
       attendance
-      bussingPictures
       bussingCost
+      personalContribution
       bussingTopUp
       numberOfBusses
+      numberOfSprinters
+      numberOfUrvans
       numberOfCars
+      vehicleRecords {
+        id
+        vehicle
+        arrivalTime
+        attendance
+      }
+    }
+    bacentas(where: { id: $bacentaId }) {
+      id
+      name
+      stream_name
+      stream {
+        id
+        arrivalStartTime
+        arrivalEndTime
+      }
+    }
+  }
+`
+export const DISPLAY_VEHICLE_RECORDS = gql`
+  query DisplayVehicleRecords($vehicleRecordId: ID!, $bacentaId: ID!) {
+    vehicleRecords(where: { id: $vehicleRecordId }) {
+      id
+      created_at
+      created_by {
+        id
+        firstName
+        lastName
+        fullName
+      }
+      counted_by {
+        id
+        firstName
+        lastName
+        fullName
+      }
+
+      leaderDeclaration
+      attendance
+      vehicleCost
+      personalContribution
+      vehicleTopUp
+      vehicle
+      picture
       comments
       arrivalTime
+      outbound
     }
     bacentas(where: { id: $bacentaId }) {
       id

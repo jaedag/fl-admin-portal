@@ -1,6 +1,6 @@
-export const setBussingRecordTransactionId = `
-MATCH (record:BussingRecord {id: $bussingRecordId})<-[:HAS_BUSSING]-(:ServiceLog)<-[:HAS_HISTORY]-(bacenta:Bacenta)
-MATCH (record)-[:BUSSED_ON]->(date:TimeGraph)
+export const setVehicleRecordTransactionId = `
+MATCH (record:VehicleRecord {id: $vehicleRecordId})<-[:INCLUDES_RECORD]-(bussing:BussingRecord)<-[:HAS_BUSSING]-(:ServiceLog)<-[:HAS_HISTORY]-(bacenta:Bacenta)
+MATCH (bussing)-[:BUSSED_ON]->(date:TimeGraph)
 MATCH (transaction: LastPaySwitchTransactionId)
 SET record.transactionId = transaction.id + 1,
 transaction.id = record.transactionId,
@@ -10,49 +10,56 @@ record.transactionStatus = 'pending'
 RETURN record, bacenta.name AS bacentaName, date.date AS date
 `
 
-export const setBussingRecordTransactionSuccessful = `
-MATCH (record:BussingRecord {id: $bussingRecordId})
+export const setVehicleRecordTransactionSuccessful = `
+MATCH (record:VehicleRecord {id: $vehicleRecordId})
 SET record.transactionStatus = "success"
 
 RETURN record
 `
 
-export const removeBussingRecordTransactionId = `
-MATCH (record:BussingRecord {id: $bussingRecordId})<-[:HAS_BUSSING]-(:ServiceLog)<-[:HAS_HISTORY]-(bacenta:Bacenta)
-MATCH (record)-[:BUSSED_ON]->(date:TimeGraph)
+export const removeVehicleRecordTransactionId = `
+MATCH (record:VehicleRecord {id: $vehicleRecordId})<-[:INCLUDES_RECORD]-(bussing:BussingRecord)<-[:HAS_BUSSING]-(:ServiceLog)<-[:HAS_HISTORY]-(bacenta:Bacenta)
+MATCH (bussing)-[:BUSSED_ON]->(date:TimeGraph)
 REMOVE record.transactionId, record.transactionTime, record.transactionStatus
 
 RETURN record, bacenta.name AS bacentaName, date.date AS date
 `
 
-export const getBussingRecordWithDate = `
-MATCH (record:BussingRecord {id: $bussingRecordId})<-[:HAS_BUSSING]-(:ServiceLog)<-[:HAS_HISTORY]-(bacenta:Bacenta)<-[:LEADS]-(leader:Member)
-MATCH (record)-[:BUSSED_ON]->(date:TimeGraph)
-SET record.target = bacenta.target
+export const getVehicleRecordWithDate = `
+MATCH (record:VehicleRecord {id: $vehicleRecordId})<-[:INCLUDES_RECORD]-(bussing:BussingRecord)<-[:HAS_BUSSING]-(:ServiceLog)<-[:HAS_HISTORY]-(bacenta:Bacenta)<-[:LEADS]-(leader:Member)
+MATCH (bacenta)<-[:HAS]-(:Constituency)-[:BUSSES_FROM]->(zone:BusZone)
+MATCH (bussing)-[:BUSSED_ON]->(date:TimeGraph)
+SET record.target = bacenta.target,
+record.momoNumber = bacenta.momoNumber, 
+record.mobileNetwork = bacenta.mobileNetwork,
+record.momoName = bacenta.momoName
 
-RETURN record.id AS bussingRecordId,
+RETURN record.id AS vehicleRecordId,
 record.target AS target,
 record.attendance AS attendance, 
-record.numberOfBusses AS numberOfBusses,
-record.numberOfCars AS numberOfCars,
-record.bussingCost AS bussingCost,
+record.vehicle AS vehicle,
+record.vehicleCost AS vehicleCost,
+record.outbound AS outbound,
+record.arrivalTime  AS arrivalTime,
+record.personalContribution AS personalContribution,
 leader.phoneNumber AS leaderPhoneNumber,
 leader.firstName AS leaderFirstName,
 
-bacenta.swellBussingCost - bacenta.swellPersonalContribution AS swellBussingTopUp,
-bacenta.normalBussingCost - bacenta.normalPersonalContribution AS normalBussingTopUp,
+zone.sprinterTopUp AS bacentaSprinterTopUp,
+zone.urvanTopUp AS bacentaUrvanTopUp,
 
 labels(date) AS dateLabels
 `
 
 export const checkTransactionId = `
-MATCH (record:BussingRecord {id: $bussingRecordId})<-[:HAS_BUSSING]-(:ServiceLog)<-[:HAS_HISTORY]-(bacenta:Bacenta)
+MATCH (record:VehicleRecord {id: $vehicleRecordId})<-[:INCLUDES_RECORD]-(:BussingRecord)<-[:HAS_BUSSING]-(:ServiceLog)<-[:HAS_HISTORY]-(bacenta:Bacenta)
 MATCH (bacenta)<-[:HAS]-(:Constituency)<-[:HAS]-(:Council)<-[:HAS]-(stream:Stream)
 MATCH (bacenta)<-[:LEADS]-(leader:Member)
 WITH record, bacenta, leader, stream
 
 RETURN record, stream, bacenta, leader.firstName AS firstName, leader.phoneNumber AS phoneNumber
 `
+
 export const checkArrivalTimes = `
 MATCH (bacenta {id: $bacentaId})<-[:HAS]-(:Constituency)<-[:HAS]-(:Council)<-[:HAS]-(stream:Stream)
 RETURN stream
@@ -64,36 +71,16 @@ MERGE (date:TimeGraph {date: date($date)})
 RETURN toString(date.date) AS id, date.date AS date, true AS swell
 `
 
-export const setSwellBussingTopUp = `
-MATCH (record:BussingRecord {id: $bussingRecordId})<-[:HAS_BUSSING]-(:ServiceLog)<-[:HAS_HISTORY]-(bacenta:Bacenta)
-SET record.bussingTopUp = bacenta.swellBussingCost - bacenta.swellPersonalContribution,
-record.momoNumber = bacenta.momoNumber, 
-record.mobileNetwork = bacenta.mobileNetwork,
-record.momoName = bacenta.momoName
-
-RETURN record
-`
-
-export const setAdjustedDiscountTopUp = `
-MATCH (record:BussingRecord {id: $bussingRecordId})
-SET record.bussingTopUp = record.bussingCost 
+export const noVehicleTopUp = `
+MATCH (record:VehicleRecord {id: $vehicleRecordId})<-[:INCLUDES_RECORD]-(bussing:BussingRecord)
+SET record.vehicleTopUp = 0
 
 RETURN record AS record
 `
 
-export const noBussingTopUp = `
-MATCH (record:BussingRecord {id: $bussingRecordId})
-SET record.bussingTopUp = 0
-
-RETURN record AS record
-`
-
-export const setNormalBussingTopUp = `
-MATCH (record:BussingRecord {id: $bussingRecordId})<-[:HAS_BUSSING]-(:ServiceLog)<-[:HAS_HISTORY]-(bacenta:Bacenta)
-SET record.bussingTopUp = bacenta.normalBussingCost - bacenta.normalPersonalContribution,
-record.momoNumber = bacenta.momoNumber, 
-record.mobileNetwork = bacenta.mobileNetwork,
-record.momoName = bacenta.momoName
+export const setVehicleTopUp = `
+MATCH (record:VehicleRecord {id: $vehicleRecordId})
+SET record.vehicleTopUp = $vehicleTopUp
 
 RETURN record
 `
@@ -114,11 +101,10 @@ RETURN church
 `
 
 export const checkBacentaMomoDetails = `
-MATCH (bacenta:Bacenta {id: $bacentaId})
+MATCH (bacenta:Bacenta {id: $bacentaId})<-[:HAS]-(:Constituency)-[:BUSSES_FROM]->(zone:BusZone)
 
 
-RETURN bacenta.normalBussingCost - bacenta.normalPersonalContribution AS normalTopUp, 
-bacenta.swellBussingCost - bacenta.swellPersonalContribution AS swellTopUp, 
+RETURN zone.number AS zone, 
 bacenta.momoNumber AS momoNumber
 `
 
@@ -149,28 +135,32 @@ WITH bussingRecord, bacenta, serviceDate,  date($serviceDate).week AS week
     stream.name AS stream_name
 `
 
+// Record Time And Aggregate Records for Bussing Record
 export const recordArrivalTime = `
-MATCH (bussingRecord:BussingRecord {id: $bussingRecordId})
-SET bussingRecord.arrivalTime = datetime()
+MATCH (vehicle:VehicleRecord {id: $vehicleRecordId})<-[:INCLUDES_RECORD]-(bussing:BussingRecord)
+MATCH (bussing)-[:INCLUDES_RECORD]->(allVehicles:VehicleRecord)
+WITH bussing, SUM(vehicle.attendance) AS attendance, SUM(vehicle.leaderDeclaration) AS leaderDeclaration, SUM(vehicle.personalContribution) AS personalContribution, SUM(vehicle.vehicleCost) AS vehicleCost, SUM(vehicle.vehicleTopUp) AS vehicleTopUp
+SET bussing.attendance = attendance,
+bussing.leaderDeclaration = leaderDeclaration,
+bussing.personalContribution = personalContribution,
+bussing.bussingCost = vehicleCost,
+bussing.bussingTopUp = vehicleTopUp
 
-WITH bussingRecord
-MATCH (admin:Member {auth_id: $auth.jwt.sub})
-OPTIONAL MATCH (bussingRecord)-[:COUNTED_BY]->(counter)
-MERGE (bussingRecord)-[:ARRIVAL_CONFIRMED_BY]->(admin)
+WITH bussing
+OPTIONAL MATCH (bussing)-[:INCLUDES_RECORD]->(cars:VehicleRecord {vehicle: 'Car'})
+OPTIONAL MATCH (bussing)-[:INCLUDES_RECORD]->(sprinters:VehicleRecord {vehicle: 'Sprinter'})
+OPTIONAL MATCH (bussing)-[:INCLUDES_RECORD]->(urvan:VehicleRecord {vehicle: 'Urvan'})
+WITH bussing, COUNT(DISTINCT cars) AS cars, COUNT(DISTINCT sprinters) AS sprinters, COUNT(DISTINCT urvan) AS urvan
 
-RETURN bussingRecord {
+MATCH (vehicleRecord:VehicleRecord {id: $vehicleRecordId})
+SET vehicleRecord.arrivalTime = datetime(),
+ bussing.numberOfSprinters = sprinters,
+ bussing.numberOfCars = cars,
+ bussing.numberOfUrvan = urvan
+
+RETURN vehicleRecord {
     .id,
-    .bussingTopUp,
-    .arrivalTime,
-    counted_by: counter {
-        .id,
-        .firstName,
-        .lastName
-    },
-       arrival_confirmed_by:  admin {
-           .id,
-           .firstName,
-           .lastName
-       }
-}
+    .vehicleTopUp,
+    .arrivalTime
+   }
 `

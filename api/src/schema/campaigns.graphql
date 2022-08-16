@@ -1,0 +1,28 @@
+type Campaign {
+  name: String!
+  type: String!
+}
+
+extend type GatheringService {
+  campaigns: [String!]!
+}
+
+extend type Stream {
+  campaigns: [String!]!
+}
+
+extend type Council {
+  campaigns: [String!]!
+}
+
+extend type Constituency {
+  campaigns: [String!]!
+}
+
+extend type Bacenta {
+  campaigns: [String!]!
+}
+
+extend type Fellowship {
+  campaigns: [String!]!
+}
