@@ -41,6 +41,148 @@ extend type GatheringService {
   equipmentRecord: AggregatedEquipment!
   equipmentStartDate: Date
   equipmentEndDate: Date
+  fellowshipEquipmentFilledCount: Int!
+    @cypher(
+      statement: """
+      MATCH (this)
+      MATCH (n:EquipmentDate)
+      WITH max(n.date) as latestEquipmentDate, this
+      MATCH (date:EquipmentDate {date:latestEquipmentDate})
+      MATCH (date)<-[:HAS_EQUIPMENT_DATE]-(record:EquipmentRecord)
+       WITH DISTINCT date, this
+       MATCH (record)<-[:HAS_EQUIPMENT_RECORD]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships) WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
+       WITH DISTINCT fellowships, this
+      MATCH (fellowships)<-[:HAS]-(:Bacenta)<-[:HAS]-(:Constituency)<-[:HAS]-(:Council)<-[:HAS]-(:Stream)<-[:HAS]-(this)
+      RETURN COUNT(DISTINCT fellowships)
+      """
+    )
+  fellowshipEquipmentFilled: [Fellowship!]!
+    @cypher(
+      statement: """
+      MATCH (this)
+      MATCH (n:EquipmentDate)
+      WITH max(n.date) as latestEquipmentDate, this
+      MATCH (date:EquipmentDate {date:latestEquipmentDate})
+      MATCH (date)<-[:HAS_EQUIPMENT_DATE]-(record:EquipmentRecord)
+       WITH DISTINCT date, this
+       MATCH (record)<-[:HAS_EQUIPMENT_RECORD]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships) WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
+       WITH DISTINCT fellowships, this
+      MATCH (fellowships)<-[:HAS]-(:Bacenta)<-[:HAS]-(:Constituency)<-[:HAS]-(:Council)<-[:HAS]-(:Stream)<-[:HAS]-(this)
+      RETURN DISTINCT fellowships
+      """
+    )
+
+  fellowshipEquipmentNotFilled: [Fellowship!]!
+    @cypher(
+      statement: """
+      MATCH (this)
+      MATCH (n:EquipmentDate)
+      WITH max(n.date) as latestEquipmentDate, this
+      MATCH (date:EquipmentDate {date:latestEquipmentDate})
+      MATCH (date)<-[:HAS_EQUIPMENT_DATE]-(record:EquipmentRecord)
+       WITH DISTINCT date, this, record
+
+      MATCH (record)<-[:HAS_EQUIPMENT_RECORD]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships:Active:Fellowship)
+
+       WITH collect(DISTINCT fellowships) as filled, this
+       MATCH (defaulters:Active:Fellowship)<-[:HAS]-(bacenta:Bacenta)<-[:HAS]-(constituency:Constituency)<-[:HAS]-(:Council)<-[:HAS]-(:Stream)<-[:HAS]-(this)
+       WHERE NOT defaulters IN filled
+
+      RETURN DISTINCT defaulters
+      """
+    )
+
+  fellowshipEquipmentNotFilledCount: Int!
+    @cypher(
+      statement: """
+      MATCH (this)
+      MATCH (n:EquipmentDate)
+      WITH max(n.date) as latestEquipmentDate, this
+      MATCH (date:EquipmentDate {date:latestEquipmentDate})
+      MATCH (date)<-[:HAS_EQUIPMENT_DATE]-(record:EquipmentRecord)
+       WITH DISTINCT date, this, record
+
+      MATCH (record)<-[:HAS_EQUIPMENT_RECORD]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships:Active:Fellowship)
+
+       WITH collect(DISTINCT fellowships) as filled, this
+       MATCH (defaulters:Active:Fellowship)<-[:HAS]-(bacenta:Bacenta)<-[:HAS]-(constituency:Constituency)<-[:HAS]-(:Council)<-[:HAS]-(:Stream)<-[:HAS]-(this)
+       WHERE NOT defaulters IN filled
+
+      RETURN COUNT(DISTINCT defaulters)
+      """
+    )
+
+  constituencyEquipmentFilledCount: Int!
+    @cypher(
+      statement: """
+      MATCH (this)
+      MATCH (n:EquipmentDate)
+      WITH max(n.date) as latestEquipmentDate, this
+      MATCH (date:EquipmentDate {date:latestEquipmentDate})
+      MATCH (date)<-[:HAS_EQUIPMENT_DATE]-(record:EquipmentRecord)
+       WITH DISTINCT date, this, record
+       MATCH (record)<-[:HAS_EQUIPMENT_RECORD]-(:ServiceLog)<-[:HAS_HISTORY]-(constituencies) WHERE constituencies:Constituency OR constituencies:ClosedConstituency
+       WITH DISTINCT constituencies, this
+       MATCH (constituencies)<-[:HAS]-(:Council)<-[:HAS]-(:Stream)<-[:HAS]-(this)
+      RETURN COUNT(DISTINCT constituencies)
+      """
+    )
+  constituencyEquipmentFilled: [Fellowship!]!
+    @cypher(
+      statement: """
+      MATCH (this)
+      MATCH (n:EquipmentDate)
+      WITH max(n.date) as latestEquipmentDate, this
+      MATCH (date:EquipmentDate {date:latestEquipmentDate})
+      MATCH (date)<-[:HAS_EQUIPMENT_DATE]-(record:EquipmentRecord)
+       WITH DISTINCT date, this, record
+       MATCH (record)<-[:HAS_EQUIPMENT_RECORD]-(:ServiceLog)<-[:HAS_HISTORY]-(constituencies)
+       WHERE constituencies:Constituency OR constituencies:ClosedConstituency
+       WITH DISTINCT constituencies, this
+       MATCH (constituencies)<-[:HAS]-(:Council)<-[:HAS]-(:Stream)<-[:HAS]-(this)
+      RETURN DISTINCT constituencies
+      """
+    )
+
+  constituencyEquipmentNotFilled: [Constituency!]!
+    @cypher(
+      statement: """
+      MATCH (this)
+      MATCH (n:EquipmentDate)
+      WITH max(n.date) as latestEquipmentDate, this
+      MATCH (date:EquipmentDate {date:latestEquipmentDate})
+      MATCH (date)<-[:HAS_EQUIPMENT_DATE]-(record:EquipmentRecord)
+       WITH DISTINCT date, this, record
+
+      MATCH (record)<-[:HAS_EQUIPMENT_RECORD]-(:ServiceLog)<-[:HAS_HISTORY]-(constituencies:Constituency)
+
+       WITH collect(DISTINCT constituencies) as filled, this
+       MATCH (defaulters:Active:Constituency)<-[:HAS]-(:Council)<-[:HAS]-(:Stream)<-[:HAS]-(this)
+       WHERE NOT defaulters IN filled
+
+       RETURN DISTINCT defaulters
+      """
+    )
+
+  constituencyEquipmentNotFilledCount: Int!
+    @cypher(
+      statement: """
+      MATCH (this)
+      MATCH (n:EquipmentDate)
+      WITH max(n.date) as latestEquipmentDate, this
+      MATCH (date:EquipmentDate {date:latestEquipmentDate})
+      MATCH (date)<-[:HAS_EQUIPMENT_DATE]-(record:EquipmentRecord)
+       WITH DISTINCT date, this, record
+
+      MATCH (record)<-[:HAS_EQUIPMENT_RECORD]-(:ServiceLog)<-[:HAS_HISTORY]-(constituencies:Constituency)
+
+       WITH collect(DISTINCT constituencies) as filled, this
+       MATCH (defaulters:Active:Constituency)<-[:HAS]-(:Council)<-[:HAS]-(:Stream)<-[:HAS]-(this)
+       WHERE NOT defaulters IN filled
+
+       RETURN COUNT(DISTINCT defaulters)
+      """
+    )
 }
 
 extend type Stream {
