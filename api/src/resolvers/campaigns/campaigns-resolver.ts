@@ -55,6 +55,12 @@ export const campaignsMutation = {
         await session.run(getEquipmentCampaign, { ...args })
       )
 
+      if (typeof equipmentCampaign.campaign === 'undefined') {
+        return throwErrorMsg(
+          'You cannot fill your forms now because an equipment date has not been set'
+        )
+      }
+
       const currentDate = new Date(args.date)
       const startDate = new Date(equipmentCampaign.campaign.equipmentStartDate)
       const endDate = new Date(equipmentCampaign.campaign.equipmentEndDate)
@@ -113,6 +119,12 @@ export const campaignsMutation = {
       const equipmentCampaign = rearrangeCypherObject(
         await session.run(getEquipmentCampaign, { ...args })
       )
+
+      if (typeof equipmentCampaign.campaign === 'undefined') {
+        return throwErrorMsg(
+          'You cannot fill your forms now because an equipment date has not been set'
+        )
+      }
 
       const currentDate = new Date(args.date)
       const startDate = new Date(equipmentCampaign.campaign.equipmentStartDate)
@@ -196,12 +208,16 @@ const getEquipmentDetails = async (
     { ...obj, ...args }
   )
 
-  // eslint-disable-next-line no-underscore-dangle
-  const { id } = constituencyEquipmentResponse.records[0]._fields[0]
-
-  const pulpits =
+  let id
+  let pulpits
+  if (typeof constituencyEquipmentResponse.records[0] !== 'undefined') {
     // eslint-disable-next-line no-underscore-dangle
-    constituencyEquipmentResponse.records[0]._fields[0].pulpits.low
+    id = constituencyEquipmentResponse.records[0]._fields[0].id
+    // eslint-disable-next-line no-underscore-dangle
+    pulpits = constituencyEquipmentResponse.records[0]._fields[0].pulpits.low
+  } else {
+    id = null
+  }
 
   const bluetoothSpeakers =
     // eslint-disable-next-line no-underscore-dangle
