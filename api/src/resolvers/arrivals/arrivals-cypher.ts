@@ -72,7 +72,7 @@ RETURN toString(date.date) AS id, date.date AS date, true AS swell
 `
 
 export const noVehicleTopUp = `
-MATCH (record:VehicleRecord {id: $vehicleRecordId})
+MATCH (record:VehicleRecord {id: $vehicleRecordId})<-[:INCLUDES_RECORD]-(bussing:BussingRecord)
 SET record.vehicleTopUp = 0
 
 RETURN record AS record
@@ -135,11 +135,29 @@ WITH bussingRecord, bacenta, serviceDate,  date($serviceDate).week AS week
     stream.name AS stream_name
 `
 
+// Record Time And Aggregate Records for Bussing Record
 export const recordArrivalTime = `
+MATCH (vehicle:VehicleRecord {id: $vehicleRecordId})<-[:INCLUDES_RECORD]-(bussing:BussingRecord)
+MATCH (bussing)-[:INCLUDES_RECORD]->(allVehicles:VehicleRecord)
+WITH bussing, SUM(vehicle.attendance) AS attendance, SUM(vehicle.leaderDeclaration) AS leaderDeclaration, SUM(vehicle.personalContribution) AS personalContribution, SUM(vehicle.vehicleCost) AS vehicleCost, SUM(vehicle.vehicleTopUp) AS vehicleTopUp
+SET bussing.attendance = attendance,
+bussing.leaderDeclaration = leaderDeclaration,
+bussing.personalContribution = personalContribution,
+bussing.bussingCost = vehicleCost,
+bussing.bussingTopUp = vehicleTopUp
+
+WITH bussing
+OPTIONAL MATCH (bussing)-[:INCLUDES_RECORD]->(cars:VehicleRecord {vehicle: 'Car'})
+OPTIONAL MATCH (bussing)-[:INCLUDES_RECORD]->(sprinters:VehicleRecord {vehicle: 'Sprinter'})
+OPTIONAL MATCH (bussing)-[:INCLUDES_RECORD]->(urvan:VehicleRecord {vehicle: 'Urvan'})
+WITH bussing, COUNT(DISTINCT cars) AS cars, COUNT(DISTINCT sprinters) AS sprinters, COUNT(DISTINCT urvan) AS urvan
+
 MATCH (vehicleRecord:VehicleRecord {id: $vehicleRecordId})
-SET vehicleRecord.arrivalTime = datetime()
-WITH vehicleRecord 
-MATCH (admin:Member {auth_id: $auth.jwt.sub})
+SET vehicleRecord.arrivalTime = datetime(),
+ bussing.numberOfSprinters = sprinters,
+ bussing.numberOfCars = cars,
+ bussing.numberOfUrvan = urvan
+
 RETURN vehicleRecord {
     .id,
     .vehicleTopUp,

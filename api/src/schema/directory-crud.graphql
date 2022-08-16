@@ -294,6 +294,7 @@ extend type Mutation {
       MATCH (leader:Member {id: $leaderId})
       MATCH (currentUser:Member {auth_id:$auth.jwt.sub})
       MATCH (council:Council {id: $councilId})
+      MATCH (zone:Constituency {number : 0})
 
        CREATE (log:HistoryLog)
         SET
@@ -303,6 +304,7 @@ extend type Mutation {
 
       MERGE (council)-[:HAS]->(constituency)
       MERGE (leader)-[:LEADS]->(constituency)
+      MERGE (constituency)-[:BUSSES_FROM]->(zone)
 
       MERGE (date:TimeGraph {date: date()})
       MERGE (log)-[:LOGGED_BY]->(currentUser)

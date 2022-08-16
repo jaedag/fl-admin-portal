@@ -69,6 +69,7 @@ const FormAddVehicleRecord = () => {
       .required('This is a required field'),
     vehicle: Yup.string().required('This is a required field'),
     picture: Yup.string().required('This is a required field'),
+    outbound: Yup.string().required('This is a required field'),
   })
 
   const onSubmit = async (
@@ -174,7 +175,7 @@ const FormAddVehicleRecord = () => {
                 <Container>
                   <Card className="text-center mt-3 p-2">
                     <Card.Body>
-                      I can confirm that the above data is siorrect and I am
+                      I can confirm that the above data is correct and I am
                       cursed if I do the work of the Lord deceitfully
                     </Card.Body>
                     <Card.Footer>

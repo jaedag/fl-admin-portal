@@ -35,7 +35,7 @@ const BusVehicleFormDetails = () => {
   const { theme } = useContext(MemberContext)
   const { vehicleRecordId } = useContext(ServiceContext)
   const { isOpen, togglePopup } = usePopup()
-  const { show, handleClose, handleShow } = useModal()
+  const { show, handleClose } = useModal()
   const [picturePopup, setPicturePopup] = useState('')
   const { data, loading, error } = useQuery(DISPLAY_VEHICLE_RECORDS, {
     variables: { vehicleRecordId: vehicleRecordId, bacentaId: bacentaId },
@@ -298,9 +298,9 @@ const BusVehicleFormDetails = () => {
                     >
                       I Want to Count
                     </Button>
-                    <Button variant="info" onClick={handleShow}>
+                    {/* <Button variant="info" onClick={handleShow}>
                       This Vehicle Has Arrived Without Filling
-                    </Button>
+                    </Button> */}
                   </>
                 )}
               </>

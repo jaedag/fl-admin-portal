@@ -8,8 +8,8 @@ import { ChurchContext } from 'contexts/ChurchContext'
 import { Form, Formik, FormikHelpers } from 'formik'
 import useChurchLevel from 'hooks/useChurchLevel'
 import PlaceholderDefaulterList from 'pages/services/defaulters/PlaceholderDefaulterList'
-import React, { useContext, useEffect, useState } from 'react'
-import { Container } from 'react-bootstrap'
+import { useContext, useEffect, useState } from 'react'
+import { Button, Container } from 'react-bootstrap'
 import { ArrivalsUseChurchType, BacentaWithArrivals } from './arrivals-types'
 import {
   CONSTITUENCY_BACENTAS_TO_COUNT,
@@ -32,6 +32,8 @@ const StateBacentasToCount = () => {
   const [gatheringServiceOnTheWay] = useLazyQuery(
     GATHERINGSERVICE_BACENTAS_TO_COUNT
   )
+  const [seeCars, setSeeCars] = useState(true)
+  const [seeBusses, setSeeBusses] = useState(true)
 
   const data: ArrivalsUseChurchType = useChurchLevel({
     constituencyFunction: constituencyOnTheWay,
@@ -42,10 +44,10 @@ const StateBacentasToCount = () => {
   const { church, loading, error } = data
 
   // Searching Feature
-
   const initialValues: FormOptions = {
     bacentaSearch: '',
   }
+
   const bacentaDataLoaded = church ? church?.bacentasNotCounted : []
   const [bacentaData, setBacentaData] = useState<
     BacentaWithArrivals[] | undefined
@@ -84,7 +86,6 @@ const StateBacentasToCount = () => {
           <HeadingSecondary loading={!church?.name}>
             {church?.name} {church?.__typename}
           </HeadingSecondary>
-
           <Formik initialValues={initialValues} onSubmit={onSubmit}>
             {() => (
               <Form>
@@ -99,13 +100,38 @@ const StateBacentasToCount = () => {
               </Form>
             )}
           </Formik>
-
+          <div className="text-center mt-2">
+            <Button
+              variant={'info'}
+              className={`${!seeBusses && 'low-opacity'} me-2`}
+              onClick={() => setSeeBusses(!seeBusses)}
+            >
+              Sprinter and Urvan
+            </Button>
+            <Button
+              variant={`success`}
+              className={`${!seeCars && 'low-opacity'}`}
+              onClick={() => setSeeCars(!seeCars)}
+            >
+              Car and Uber
+            </Button>
+          </div>
           {church && !bacentaData?.length && (
             <NoData text="There are no bacentas to be counted" />
           )}
-
           {bacentaData?.map((bacenta: BacentaWithArrivals) =>
             bacenta.bussing[0].vehicleRecords.map((record, i) => {
+              if (
+                !seeBusses &&
+                (record.vehicle === 'Sprinter' || record.vehicle === 'Urvan')
+              ) {
+                return null
+              }
+
+              if (!seeCars && record.vehicle === 'Car') {
+                return null
+              }
+
               return (
                 <MemberDisplayCard
                   key={i}
@@ -124,7 +150,6 @@ const StateBacentasToCount = () => {
               )
             })
           )}
-
           {!church?.bacentasNotCounted.length && loading && (
             <PlaceholderDefaulterList />
           )}
