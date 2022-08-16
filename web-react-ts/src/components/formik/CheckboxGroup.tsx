@@ -24,7 +24,6 @@ function CheckboxGroup(props: CheckboxGroupProps) {
       <Field name={name} {...rest}>
         {({ field }: any) => {
           return options?.map((option, index) => {
-            console.log(field.value)
             return (
               <button
                 type="button"

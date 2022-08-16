@@ -32,9 +32,8 @@ function CheckboxWithQuery(props: CheckBoxWithQueryProps) {
     },
   })
 
-  console.log(data ? data[dataset] : null)
   const getOptions = () => {
-    if (data && dataset) {
+    if (data && dataset && !nestedDataset) {
       return makeSelectOptions(data[dataset])
     }
 
