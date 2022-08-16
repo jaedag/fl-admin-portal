@@ -9,8 +9,8 @@ interface EquipmentRecord {
 }
 
 type ConstituencyEquipment implements EquipmentRecord {
-  id: ID!
-  pulpits: Int!
+  id: ID
+  pulpits: Int
   offeringBags: Int!
   bluetoothSpeakers: Int!
 }
@@ -74,7 +74,7 @@ extend type Bacenta {
 }
 
 extend type Fellowship {
-  equipmentRecord: FellowshipEquipment!
+  equipmentRecord: FellowshipEquipment
     @cypher(
       statement: """
       MATCH (this)

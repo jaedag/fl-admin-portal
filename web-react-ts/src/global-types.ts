@@ -265,6 +265,22 @@ export type ServiceRecord = {
   offeringBankedBy: Member
 }
 
+//equipment
+export type EquipmentChurch = {
+  __typename: string
+  id: string
+  name: string
+  equipmentRecord: EquipmentRecord
+  activeFellowshipCount: number
+  constituencyCount: number
+}
+
+export type EquipmentRecord = {
+  __typename: string
+  bluetoothSpeakers: number
+  offeringBags: number
+  pulpits: number
+}
 export interface HigherChurch extends Church {
   stream_name: StreamOptions
   admin: Member

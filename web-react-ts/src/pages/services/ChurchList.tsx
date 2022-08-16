@@ -51,6 +51,8 @@ const ChurchList = ({ color, link }: { color: string; link?: string }) => {
                       navigate(
                         `/quick-facts/this-month/${church.__typename.toLowerCase()}`
                       )
+                    } else if (color === 'campaigns') {
+                      navigate(`/campaigns/${church.__typename.toLowerCase()}`)
                     } else {
                       navigate(link || '#')
                     }
