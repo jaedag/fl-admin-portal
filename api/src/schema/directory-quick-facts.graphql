@@ -33,13 +33,13 @@ extend type Fellowship {
   peakFellowshipAttendance(days: Int!): ServiceRecord
     @cypher(
       statement: """
-      MATCH (this)-[:CURRENT_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)
+      MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)
       MATCH (record)-[:SERVICE_HELD_ON]->(date:TimeGraph)
       WITH date, record, this
             MATCH (date)
             WHERE date.date > date() - duration({days: $days})
       WITH  max(record.attendance) as max, this
-      MATCH (fellowship)-[:CURRENT_HISTORY]->(s:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)
+      MATCH (fellowship)-[:HAS_HISTORY]->(s:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)
       WHERE record.attendance = max
       RETURN  record LIMIT 1
       """
@@ -48,13 +48,13 @@ extend type Fellowship {
   peakFellowshipIncome(days: Int!): ServiceRecord
     @cypher(
       statement: """
-      MATCH (this)-[:CURRENT_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)
+      MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)
       MATCH (record)-[:SERVICE_HELD_ON]->(date:TimeGraph)
       WITH date, record, this
             MATCH (date)
             WHERE date.date > date() - duration({days: $days})
       WITH  max(record.income) as max, this
-      MATCH (fellowship)-[:CURRENT_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)
+      MATCH (fellowship)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)
       WHERE record.income = max
       RETURN record LIMIT 1
       """
@@ -442,12 +442,12 @@ extend type GatheringService {
     @cypher(
       statement: """
       MATCH (this)-[:HAS]-(:Stream)-[:HAS]-(:Council)-[:HAS]-(:Constituency)-[:HAS]->(bacenta:Bacenta)
-      MATCH (bacenta)-[:CURRENT_HISTORY]-(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
+      MATCH (bacenta)-[:HAS_HISTORY]-(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
       WITH date, bussing, bacenta
       MATCH (date)
       WWHERE date.date > date() - duration({days: $days})
       WITH  max(bussing.attendance) as max, bacenta
-             MATCH (bacenta)-[:CURRENT_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)
+             MATCH (bacenta)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)
              WHERE bussing.attendance = max
       RETURN bussing LIMIT 1
       """
@@ -457,7 +457,7 @@ extend type GatheringService {
     @cypher(
       statement: """
       MATCH (this)-[:HAS]->(:Stream)-[:HAS]->(:Council)-[:HAS]->(con:Constituency)-[:HAS]->(bacenta:Bacenta)
-      MATCH (bacenta)-[:CURRENT_HISTORY]-(log:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
+      MATCH (bacenta)-[:HAS_HISTORY]-(log:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
       MATCH (date)
       WHERE date.date > date() - duration({days: $days})
       WITH sum(bussing.attendance) AS sum,date(date.date).week as weeknumber, con
@@ -509,7 +509,7 @@ extend type GatheringService {
     @cypher(
       statement: """
       MATCH (this)-[:HAS]->(:Stream)-[:HAS]->(council:Council)-[:HAS]->(:Constituency)-[:HAS]->(bacenta:Bacenta)
-      MATCH (bacenta)-[:CURRENT_HISTORY]-(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)
+      MATCH (bacenta)-[:HAS_HISTORY]-(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)
       MATCH (bussing) WHERE bussing.attendance IS NOT NULL
       MATCH (bussing)-[:BUSSED_ON]->(date:TimeGraph)
       MATCH (date)
@@ -548,7 +548,7 @@ extend type GatheringService {
     @cypher(
       statement: """
       MATCH (this)-[:HAS]->(stream:Stream)-[:HAS]->(:Council)-[:HAS]->(:Constituency)-[:HAS]->(bacenta:Bacenta)
-      MATCH (bacenta)-[:CURRENT_HISTORY]-(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)
+      MATCH (bacenta)-[:HAS_HISTORY]-(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)
       MATCH (bussing) WHERE bussing.attendance IS NOT NULL
       MATCH (bussing)-[:BUSSED_ON]->(date:TimeGraph)
       MATCH (date)
@@ -562,7 +562,7 @@ extend type GatheringService {
     @cypher(
       statement: """
       MATCH (this)-[:HAS]->(:Stream)-[:HAS]->(:Council)-[:HAS]->(:Constituency)-[:HAS]->(bacenta:Bacenta)
-      MATCH (bacenta)-[:CURRENT_HISTORY]-(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)
+      MATCH (bacenta)-[:HAS_HISTORY]-(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)
       MATCH (bussing) WHERE bussing.attendance IS NOT NULL
       MATCH (bussing)-[:BUSSED_ON]->(date:TimeGraph)
       MATCH (date)
@@ -597,7 +597,8 @@ extend type Oversight {
   avgGatheringServiceWeekdayStats(days: Int!): Stats!
     @cypher(
       statement: """
-      MATCH (this)-[:HAS]->(gatheringService:GatheringService)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_COMPONENT*1..5]->(componentServices)
+      MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_COMPONENT*1..6]->(componentServices)
+      MATCH (this)-[:HAS]->(gatheringService:GatheringService)
            MATCH (componentServices)-[:HAS_SERVICE]->(componentRecords:ServiceRecord)
 
        MATCH (componentRecords) WHERE NOT (componentRecords:NoService)
@@ -614,11 +615,11 @@ extend type Oversight {
       """
     )
 
-  avgGatheringServiceBussingAttendance(days: Int!): Float!
+  avgGatheringServiceBussingAttendance(days: Int!): Float
     @cypher(
       statement: """
       MATCH (this)-[:HAS]->(gatheringService:GatheringService)-[:HAS]->(:Stream)-[:HAS]->(:Council)-[:HAS]->(:Constituency)-[:HAS]->(bacenta:Bacenta)
-      MATCH (bacenta)-[:CURRENT_HISTORY]-(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)
+      MATCH (bacenta)-[:HAS_HISTORY]-(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)
       MATCH (bussing) WHERE bussing.attendance IS NOT NULL
       MATCH (bussing)-[:BUSSED_ON]->(date:TimeGraph)
       MATCH (date)
