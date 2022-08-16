@@ -12,7 +12,7 @@ const StreamAvgWeekdayQuickFacts = () => {
   const { streamId } = useContext(ChurchContext)
 
   const { data, loading, error } = useQuery(STREAM_AVG_WEEKDAY_STATS, {
-    variables: { streamId: streamId, days: 60 },
+    variables: { streamId: streamId, days: 30 },
   })
 
   const stream = data?.streams[0]

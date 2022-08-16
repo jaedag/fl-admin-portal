@@ -135,12 +135,7 @@ extend type Bacenta {
       MATCH (date)
        WHERE date.date > date() - duration({days: $days})
       WITH sum(bussing.attendance) AS sum, this, date(date.date).week as weeknumber
-      WITH round(avg(sum)) AS average
-      RETURN
-      CASE
-      WHEN average IS NULL THEN 0
-      ELSE average
-      END AS average AS average
+      RETURN round(avg(sum)) AS average
       """
     )
 }
@@ -193,6 +188,7 @@ extend type Constituency {
       RETURN round(avg(sum)) AS average
       """
     )
+}
 
 extend type Council {
   avgFellowshipWeekdayStats(days: Int!): Stats!

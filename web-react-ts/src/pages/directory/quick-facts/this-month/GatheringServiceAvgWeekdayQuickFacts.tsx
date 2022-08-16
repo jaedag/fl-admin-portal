@@ -14,14 +14,14 @@ const GatheringServiceAvgWeekdayQuickFacts = () => {
   const { data, loading, error } = useQuery(
     GATHERING_SERVICE_AVG_WEEKDAY_STATS,
     {
-      variables: { gatheringServiceId: gatheringServiceId, days: 60 },
+      variables: { gatheringServiceId: gatheringServiceId, days: 30 },
     }
   )
 
   const gatheringService = data?.gatheringServices[0]
   const leadersName = `${gatheringService?.leader?.firstName} ${gatheringService?.leader?.lastName}`
   const churchName = `${gatheringService?.name}`
-  const higherLevelName = `${gatheringService?.name} ${gatheringService?.__typename}`
+  const higherLevelName = `${gatheringService?.oversight?.name} `
 
   const attendanceDetails = [
     {

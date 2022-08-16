@@ -12,7 +12,7 @@ const ConstituencyAvgWeekdayQuickFacts = () => {
   const { constituencyId } = useContext(ChurchContext)
 
   const { data, loading, error } = useQuery(CONSTITUENCY_AVG_WEEKDAY_STATS, {
-    variables: { constituencyId: constituencyId, days: 60 },
+    variables: { constituencyId: constituencyId, days: 30 },
   })
 
   const constituency = data?.constituencies[0]

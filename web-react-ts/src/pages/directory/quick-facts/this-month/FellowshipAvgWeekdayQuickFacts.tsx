@@ -12,7 +12,7 @@ const FellowshipAvgWeekdayQuickFacts = () => {
   const { fellowshipId } = useContext(ChurchContext)
 
   const { data, loading, error } = useQuery(FELLOWSHIP_AVG_WEEKDAY_STATS, {
-    variables: { fellowshipId: fellowshipId, days: 60 },
+    variables: { fellowshipId: fellowshipId, days: 30 },
   })
 
   const fellowship = data?.fellowships[0]

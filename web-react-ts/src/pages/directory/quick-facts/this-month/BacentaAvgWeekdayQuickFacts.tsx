@@ -12,7 +12,7 @@ const BacentaAvgWeekdayQuickFacts = () => {
   const { bacentaId } = useContext(ChurchContext)
 
   const { data, loading, error } = useQuery(BACENTA_AVG_WEEKDAY_STATS, {
-    variables: { bacentaId: bacentaId, days: 60 },
+    variables: { bacentaId: bacentaId, days: 30 },
   })
 
   const bacenta = data?.bacentas[0]
