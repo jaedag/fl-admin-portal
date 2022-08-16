@@ -30,7 +30,7 @@ export const OUTBOUND_OPTIONS: FormikSelectOptions = [
 const isArrivalsToday = (bacenta: { stream_name: StreamOptions }) => {
   if (!bacenta) return false
 
-  const today = new Date().getDay()
+  // const today = new Date().getDay()
 
   if (
     // today === 6 &&
