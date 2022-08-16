@@ -5,13 +5,11 @@ export const CREATE_HISTORY_SUBSTRUCTURE = gql`
     $churchType: String!
     $servantType: String!
     $churchId: ID!
-    $connectUpwards: Boolean
   ) {
     CreateChurchSubstructure(
       churchType: $churchType
       servantType: $servantType
       churchId: $churchId
-      connectUpwards: $connectUpwards
     )
   }
 `
@@ -234,7 +232,50 @@ export const LOG_STREAM_HISTORY = gql`
     }
   }
 `
-
+export const LOG_GATHERINGSERVICE_HISTORY = gql`
+  mutation LogGatheringServiceHistory(
+    $gatheringServiceId: ID!
+    $historyRecord: String!
+    $oldLeaderId: ID
+    $newLeaderId: ID
+    $oldOversightId: ID
+    $newOversightId: ID
+  ) {
+    LogGatheringServiceHistory(
+      gatheringServiceId: $gatheringServiceId
+      historyRecord: $historyRecord
+      newLeaderId: $newLeaderId
+      oldLeaderId: $oldLeaderId
+      oldOversightId: $oldOversightId
+      newOversightId: $newOversightId
+    ) {
+      id
+      name
+      leader {
+        id
+        firstName
+        lastName
+      }
+      history(limit: 5) {
+        id
+        timeStamp
+        created_at {
+          date
+        }
+        loggedBy {
+          id
+          firstName
+          lastName
+        }
+        historyRecord
+      }
+    }
+    ConnectChurchHistory(churchId: $gatheringServiceId) {
+      id
+      historyRecord
+    }
+  }
+`
 export const LOG_SONTA_HISTORY = gql`
   mutation LogSontaHistory(
     $sontaId: ID!

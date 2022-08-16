@@ -37,7 +37,8 @@ const UpdateCouncil = () => {
 
   const initialValues: CouncilFormValues = {
     name: council?.name,
-    leaderName: council?.leader?.fullName ?? '',
+    leaderName:
+      council?.leader?.firstName + ' ' + council?.leader.lastName ?? '',
     leaderId: council?.leader?.id || '',
     stream: council?.stream?.id ?? '',
     constituencies: council?.constituencies?.length

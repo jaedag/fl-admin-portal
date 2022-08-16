@@ -82,7 +82,7 @@ export const UPDATE_MEMBER_MINISTRY = gql`
 `
 
 export const LOG_MEMBER_HISTORY = gql`
-  mutation ($ids: [ID], $historyRecord: String!) {
+  mutation LogMemberHistory($ids: [ID], $historyRecord: String!) {
     LogMemberHistory(ids: $ids, historyRecord: $historyRecord) {
       id
       firstName
@@ -164,6 +164,65 @@ export const UPDATE_STREAM_MUTATION = gql`
           gatheringService {
             id
             streams {
+              id
+            }
+          }
+        }
+      }
+
+      admin {
+        id
+        firstName
+        lastName
+        fellowship {
+          id
+          stream_name
+        }
+      }
+      leader {
+        id
+        firstName
+        lastName
+      }
+      history(limit: 5) {
+        id
+        timeStamp
+        created_at {
+          date
+        }
+        loggedBy {
+          id
+          firstName
+          lastName
+        }
+        historyRecord
+      }
+    }
+  }
+`
+
+export const UPDATE_GATHERINGSERVICE_MUTATION = gql`
+  mutation UpdateGatheringService(
+    $gatheringServiceId: ID!
+    $name: String!
+    $oversightId: ID!
+  ) {
+    UpdateGatheringServiceDetails(
+      gatheringServiceId: $gatheringServiceId
+      name: $name
+      oversightId: $oversightId
+    ) {
+      id
+      name
+      streams {
+        id
+        name
+        gatheringService {
+          id
+          name
+          oversight {
+            id
+            gatheringServices {
               id
             }
           }
@@ -331,6 +390,10 @@ export const UPDATE_BACENTA_MUTATION = gql`
     ) {
       id
       name
+      zone {
+        id
+        number
+      }
       fellowships {
         id
         name
@@ -382,7 +445,7 @@ export const UPDATE_BACENTA_MUTATION = gql`
 
 export const UPDATE_SONTA_MUTATION = gql`
   mutation UpdateSonta($sontaId: ID!, $name: String!) {
-    UpdateSontaDetails(sontaId: $sontaId, name: $name) {
+    UpdateSontaDetails(sontaId: $sontaId, sontaName: $name) {
       id
       name
       constituency {
@@ -396,10 +459,10 @@ export const UPDATE_SONTA_MUTATION = gql`
         lastName
         whatsappNumber
         title {
-          title
+          name
         }
       }
-      history(limit: 5) {
+      history {
         id
         timeStamp
         created_at {
@@ -752,12 +815,53 @@ export const ADD_STREAM_COUNCILS = gql`
   }
 `
 
-export const ADD_STREAM_GATHERINGSERVICE = gql`
-  mutation AddStreamGatheringService($streamId: ID!, $gatheringServiceId: ID!) {
+export const ADD_GATHERINGSERVICE_STREAM = gql`
+  mutation AddGatheringServiceStream($gatheringServiceId: ID!, $streamId: ID!) {
+    updateGatheringServices(
+      where: { id: $gatheringServiceId }
+      connect: { streams: { where: { node: { id: $streamId } } } }
+    ) {
+      gatheringServices {
+        id
+        name
+        streams {
+          id
+        }
+      }
+    }
+  }
+`
+
+export const ADD_GATHERINGSERVICE_OVERSIGHT = gql`
+  mutation AddGatheringServiceOversight(
+    $gatheringServiceId: ID!
+    $oversightId: ID!
+  ) {
+    UpdateGatheringService(
+      where: { id: $gatheringService }
+      connect: { oversight: { where: { node: { id: $oversightId } } } }
+    ) {
+      gatheringService {
+        id
+        name
+        oversight {
+          id
+          name
+        }
+      }
+    }
+  }
+`
+
+export const REMOVE_STREAM_GATHERINGSERVICE = gql`
+  mutation RemoveStreamGatheringService(
+    $higherChurch: ID!
+    $lowerChurch: [ID]!
+  ) {
     updateStreams(
-      where: { id: $streamId }
-      connect: {
-        gatheringService: { where: { node: { id: $gatheringServiceId } } }
+      where: { id_IN: $lowerChurch }
+      disconnect: {
+        gatheringService: { where: { node: { id: $higherChurch } } }
       }
     ) {
       streams {
@@ -769,21 +873,24 @@ export const ADD_STREAM_GATHERINGSERVICE = gql`
         }
       }
     }
+    updateGatheringServices(where: { id: $higherChurch }) {
+      gatheringServices {
+        id
+        name
+      }
+    }
   }
 `
-
-export const REMOVE_STREAM_GATHERINGSERVICE = gql`
-  mutation RemoveStreamGatheringService(
+export const REMOVE_GATHERINGSERVICE_OVERSIGHT = gql`
+  mutation RemoveGatheringServiceOversight(
     $lowerChurch: [ID]!
     $higherChurch: ID!
   ) {
-    updateStreams(
+    UpdateGatheringService(
       where: { id_IN: $lowerChurch }
-      disconnect: {
-        gatheringService: { where: { node: { id: $higherChurch } } }
-      }
+      disconnect: { oversight: { where: { node: { id: $higherChurch } } } }
     ) {
-      streams {
+      gatheringService {
         id
         name
       }

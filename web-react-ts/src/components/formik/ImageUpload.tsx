@@ -4,7 +4,7 @@ import TextError from './TextError/TextError'
 import { Container, Spinner } from 'react-bootstrap'
 import { MemberContext } from 'contexts/MemberContext'
 import './Formik.css'
-import { FormikComponentProps } from './formiik-types'
+import { FormikComponentProps } from './formik-types'
 
 interface ImageUploadProps extends FormikComponentProps {
   uploadPreset?: string
@@ -72,7 +72,7 @@ const ImageUpload = (props: ImageUploadProps) => {
           name={name}
           style={{ display: 'none' }}
           type="file"
-          accept="image/png, image/webp"
+          accept="image/png, image/webp, image/jpg, image/jpeg"
           onChange={uploadImage}
           {...rest}
         />

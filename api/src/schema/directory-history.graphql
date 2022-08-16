@@ -5,29 +5,139 @@ extend type Mutation {
     churchId: ID!
   ): ID!
 
-  LogStreamHistory(ids: [ID], historyRecord: String!): Stream
+  LogStreamHistory(
+    streamId: ID!
+    historyRecord: String!
+    newLeaderId: ID
+    oldLeaderId: ID
+    newGatheringServiceId: ID
+    oldGatheringServiceId: ID
+  ): Stream
     @cypher(
       statement: """
-      CREATE (log:HistoryLog)
-        SET log.id = apoc.create.uuid(),
-         log.timeStamp = datetime(),
-         log.historyRecord = $historyRecord
-
-      WITH  log
+      MATCH  (stream:Stream {id: $streamId})
+      MATCH (admin:Member {auth_id: $auth.jwt.sub})
+      CREATE (log:HistoryLog {id: apoc.create.uuid()})
+        SET log.historyRecord = $historyRecord,
+          log.timeStamp = datetime()
       MERGE (date:TimeGraph {date: date()})
+      MERGE (stream)-[r:HAS_HISTORY]->(log)
+      MERGE (log)-[:RECORDED_ON]->(date)
+      MERGE (log)-[:LOGGED_BY]->(admin)
 
-      WITH log, date
-      MATCH (author:Member {auth_id: $auth.jwt.sub})
-      CREATE (log)-[:LOGGED_BY]->(author)
-      CREATE (log)-[:RECORDED_ON]->(date)
+      WITH log,stream
+      CALL{
+        WITH log
+        WITH log WHERE $newLeaderId IS NOT NULL
+      MATCH (newLeader:Member {id: $newLeaderId})
+        SET log :ServiceLog
+        WITH log, newLeader
+      OPTIONAl MATCH ()-[r0:HAS_HISTORY]->(log)
+        SET r0.current = false
+        WITH log,newLeader
+      CREATE (newLeader)-[r:HAS_HISTORY]->(log)
+         SET r.current = true
+         WITH log
+      RETURN COUNT(log)
+      }
 
-      WITH log
-      UNWIND $ids AS nodeId
-      MATCH (node {id: $nodeId}) WHERE node:Member OR node:Stream
-      CREATE (node)-[:HAS_HISTORY]->(log)
+      WITH log,stream
+      CALL {
+        WITH log
+        WITH log WHERE $oldLeaderId IS NOT NULL
+        MATCH (oldLeader:Member {id: $oldLeaderId})
+        CREATE (oldLeader)-[:HAS_HISTORY]->(log)
+        RETURN COUNT(log)
+      }
 
-      WITH node WHERE node:Stream
-      RETURN node
+
+      WITH log,stream
+      CALL {
+        WITH log
+        WITH log WHERE $oldGatheringServiceId IS NOT NULL
+        MATCH (gatheringService:GatheringService {id: $oldGatheringServiceId})
+        MERGE (gatheringService)-[:HAS_HISTORY]->(log)
+        RETURN COUNT(log)
+      }
+
+      WITH log,stream
+      CALL {
+        WITH log
+        WITH log WHERE $newGatheringServiceId IS NOT NULL
+        MATCH (gatheringService:GatheringService {id: $newGatheringServiceId})
+        MERGE (gatheringService)-[:HAS_HISTORY]->(log)
+        RETURN COUNT(log)
+      }
+
+      RETURN stream
+      """
+    )
+
+  LogGatheringServiceHistory(
+    gatheringServiceId: ID!
+    historyRecord: String!
+    newLeaderId: ID
+    oldLeaderId: ID
+    newOversightId: ID
+    oldOversightId: ID
+  ): GatheringService
+    @cypher(
+      statement: """
+      MATCH  (gatheringService:GatheringService {id: $gatheringServiceId})
+      MATCH (admin:Member {auth_id: $auth.jwt.sub})
+      CREATE (log:HistoryLog {id: apoc.create.uuid()})
+        SET log.historyRecord = $historyRecord,
+          log.timeStamp = datetime()
+      MERGE (date:TimeGraph {date: date()})
+      MERGE (gatheringService)-[r:HAS_HISTORY]->(log)
+      MERGE (log)-[:RECORDED_ON]->(date)
+      MERGE (log)-[:LOGGED_BY]->(admin)
+
+      WITH log,gatheringService
+      CALL{
+        WITH log
+        WITH log WHERE $newLeaderId IS NOT NULL
+      MATCH (newLeader:Member {id: $newLeaderId})
+        SET log :ServiceLog
+        WITH log, newLeader
+      OPTIONAl MATCH ()-[r0:HAS_HISTORY]->(log)
+        SET r0.current = false
+        WITH log,newLeader
+      CREATE (newLeader)-[r:HAS_HISTORY]->(log)
+         SET r.current = true
+         WITH log
+      RETURN COUNT(log)
+      }
+
+      WITH log,gatheringService
+      CALL {
+        WITH log
+        WITH log WHERE $oldLeaderId IS NOT NULL
+        MATCH (oldLeader:Member {id: $oldLeaderId})
+        CREATE (oldLeader)-[:HAS_HISTORY]->(log)
+        RETURN COUNT(log)
+      }
+
+
+      WITH log,gatheringService
+      CALL {
+        WITH log
+        WITH log WHERE $oldOversightId IS NOT NULL
+        MATCH (oversight:Oversight {id: $oldOversightId})
+        MERGE (oversight)-[:HAS_HISTORY]->(log)
+        RETURN COUNT(log)
+      }
+
+      WITH log,gatheringService
+      CALL {
+        WITH log
+        WITH log WHERE $newOversightId IS NOT NULL
+        MATCH (oversight:Oversight {id: $newOversightId})
+        MERGE (oversight)-[:HAS_HISTORY]->(log)
+        RETURN COUNT(log)
+      }
+
+      RETURN gatheringService
       """
     )
 

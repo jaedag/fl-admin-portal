@@ -17,6 +17,7 @@ export const BacentaGraphs = () => {
   const [bussing, setBussing] = useState(true)
   const { currentUser } = useContext(MemberContext)
 
+  const [churchData, setChurchData] = useState<any[] | undefined>([])
   const { data, loading, error } = useQuery(BACENTA_GRAPHS, {
     variables: { bacentaId: bacentaId },
     onCompleted: (data) => {
@@ -24,9 +25,6 @@ export const BacentaGraphs = () => {
       setChurchData(getServiceGraphData(data?.bacentas[0], 'bussing'))
     },
   })
-  const [churchData, setChurchData] = useState(
-    getServiceGraphData(data?.bacentas[0], 'bussing')
-  )
 
   return (
     <ApolloWrapper loading={loading} error={error} data={data}>

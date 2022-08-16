@@ -3,6 +3,7 @@ import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import DisplayChurchDetails from 'components/DisplayChurchDetails/DisplayChurchDetails'
 import { ChurchContext } from 'contexts/ChurchContext'
 import React, { useContext } from 'react'
+import { DetailsArray } from './DetailsFellowship'
 import { DISPLAY_STREAM } from './ReadQueries'
 
 const DetailsStream = () => {
@@ -14,7 +15,7 @@ const DetailsStream = () => {
 
   const stream = data?.streams[0]
   let breadcrumb = [stream?.gatheringService, stream]
-  const details = [
+  const details: DetailsArray = [
     {
       title: 'Members',
       number: stream?.memberCount || 0,

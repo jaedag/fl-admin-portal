@@ -233,3 +233,27 @@ export const CREATE_STREAM_MUTATION = gql`
     }
   }
 `
+export const CREATE_GATHERING_SERVICE_MUTATION = gql`
+  mutation CreateGatheringService(
+    $name: String!
+    $leaderId: ID!
+    $oversightId: ID!
+  ) {
+    CreateGatheringService(
+      name: $name
+      leaderId: $leaderId
+      oversightId: $oversightId
+    ) {
+      id
+      name
+
+      oversight {
+        id
+        gatheringServices {
+          id
+          name
+        }
+      }
+    }
+  }
+`

@@ -163,7 +163,6 @@ export const UPLOAD_MOBILISATION_PICTURE = gql`
             }
             week
             mobilisationPicture
-            bussingPictures
           }
         }
       }
@@ -172,37 +171,39 @@ export const UPLOAD_MOBILISATION_PICTURE = gql`
 `
 
 export const RECORD_BUSSING_FROM_BACENTA = gql`
-  mutation RecordBussingFromBacenta(
+  mutation RecordVehicleFromBacenta(
     $bussingRecordId: ID!
     $attendance: Int!
-    $bussingPictures: [String]!
-    $bussingCost: Float!
-    $numberOfBusses: Int!
-    $numberOfCars: Int!
+    $vehicleCost: Float!
+    $personalContribution: Float!
+    $vehicle: String!
+    $picture: String!
+    $outbound: Boolean!
   ) {
-    RecordBussingFromBacenta(
+    RecordVehicleFromBacenta(
       bussingRecordId: $bussingRecordId
       attendance: $attendance
-      bussingPictures: $bussingPictures
-      bussingCost: $bussingCost
-      numberOfBusses: $numberOfBusses
-      numberOfCars: $numberOfCars
+      vehicleCost: $vehicleCost
+      personalContribution: $personalContribution
+      vehicle: $vehicle
+      picture: $picture
+      outbound: $outbound
     ) {
       id
-      attendance
-      bussingPictures
-      bussingCost
       leaderDeclaration
-      numberOfBusses
-      numberOfCars
-
-      serviceLog {
-        bacenta {
-          id
-          stream_name
-          bussing(limit: 1) {
+      attendance
+      vehicleCost
+      personalContribution
+      vehicleTopUp
+      bussingRecord {
+        serviceLog {
+          bacenta {
             id
-            week
+            stream_name
+            bussing(limit: 1) {
+              id
+              week
+            }
           }
         }
       }
@@ -210,72 +211,68 @@ export const RECORD_BUSSING_FROM_BACENTA = gql`
   }
 `
 
-export const CONFIRM_BUSSING_BY_ADMIN = gql`
-  mutation ConfirmBussingByAdmin(
-    $bussingRecordId: ID!
+export const CONFIRM_VEHICLE_BY_ADMIN = gql`
+  mutation ConfirmVehicleByAdmin(
+    $vehicleRecordId: ID!
     $attendance: Int!
-    $comments: String
+    $vehicle: String!
+    $comments: String!
+    $outbound: Boolean!
   ) {
-    ConfirmBussingByAdmin(
-      bussingRecordId: $bussingRecordId
+    ConfirmVehicleByAdmin(
+      vehicleRecordId: $vehicleRecordId
       attendance: $attendance
+      vehicle: $vehicle
       comments: $comments
+      outbound: $outbound
     ) {
       id
       attendance
-      bussingTopUp
+      vehicle
+      vehicleTopUp
       momoName
       momoNumber
-      week
+
       counted_by {
         id
         firstName
         lastName
         fullName
       }
-      arrivalTime
+
       comments
+      outbound
     }
   }
 `
 
 export const RECORD_ARRIVAL_TIME = gql`
-  mutation RecordArrivalTime($bussingRecordId: ID!) {
-    RecordArrivalTime(bussingRecordId: $bussingRecordId) {
+  mutation RecordArrivalTime($vehicleRecordId: ID!) {
+    RecordArrivalTime(vehicleRecordId: $vehicleRecordId) {
       id
-      bussingTopUp
+      vehicleTopUp
       arrivalTime
-      counted_by {
-        id
-        firstName
-        lastName
-      }
-      arrival_confirmed_by {
-        id
-        firstName
-        lastName
-      }
     }
   }
 `
 
-export const SET_BUSSING_SUPPORT = gql`
-  mutation SetBussingSupport($bussingRecordId: ID!) {
-    SetBussingSupport(bussingRecordId: $bussingRecordId) {
+export const SET_VEHICLE_SUPPORT = gql`
+  mutation SetVehicleSupport($vehicleRecordId: ID!) {
+    SetVehicleSupport(vehicleRecordId: $vehicleRecordId) {
       id
-      bussingTopUp
+      vehicleTopUp
     }
   }
 `
 
-export const SEND_BUSSING_SUPPORT = gql`
-  mutation SendBussingSupport($bussingRecordId: ID!, $stream_name: String!) {
-    SendBussingSupport(
-      bussingRecordId: $bussingRecordId
+export const SEND_VEHICLE_SUPPORT = gql`
+  mutation SendVehicleSupport($vehicleRecordId: ID!, $stream_name: String!) {
+    SendVehicleSupport(
+      vehicleRecordId: $vehicleRecordId
       stream_name: $stream_name
     ) {
       id
-      bussingTopUp
+      vehicleTopUp
       momoNumber
       transactionId
     }

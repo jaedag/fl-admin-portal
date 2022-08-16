@@ -23,7 +23,7 @@ import Input from 'components/formik/Input'
 import Select from 'components/formik/Select'
 import SearchMember from 'components/formik/SearchMember'
 import SearchBacenta from 'components/formik/SearchBacenta'
-import { FormikInitialValues } from 'components/formik/formiik-types'
+import { FormikInitialValues } from 'components/formik/formik-types'
 import { Bacenta } from 'global-types'
 
 export interface ConstituencyFormValues extends FormikInitialValues {
@@ -100,7 +100,16 @@ const ConstituencyForm = ({
                 <div className="form-group">
                   <Row className="row-cols-1 row-cols-md-2">
                     {/* <!-- Basic Info Div --> */}
-
+                    <RoleView roles={permitAdmin('Stream')}>
+                      <div className="d-grid gap-2 mb-2">
+                        <Button
+                          variant="warning"
+                          onClick={() => navigate('/constituency/change-zone')}
+                        >
+                          Change Constituency Zone
+                        </Button>
+                      </div>
+                    </RoleView>
                     <Col className="mb-2">
                       <RoleView roles={permitAdmin('Stream')}>
                         <Row className="form-row">

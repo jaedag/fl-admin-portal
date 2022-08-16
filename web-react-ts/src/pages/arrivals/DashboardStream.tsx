@@ -7,7 +7,7 @@ import { MAKE_STREAMARRIVALS_ADMIN } from './arrivalsMutation'
 import { STREAM_ARRIVALS_DASHBOARD } from './arrivalsQueries'
 import { throwErrorMsg } from 'global-utils'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
-import { Col, Container, Row, Button } from 'react-bootstrap'
+import { Col, Container, Row } from 'react-bootstrap'
 import Popup from 'components/Popup/Popup'
 import { Form, Formik, FormikHelpers } from 'formik'
 import SubmitButton from 'components/formik/SubmitButton'
@@ -15,17 +15,19 @@ import RoleView from 'auth/RoleView'
 import {
   permitAdmin,
   permitArrivals,
-  permitArrivalsConfirmer,
   permitArrivalsCounter,
 } from 'permission-utils'
 import MenuButton from 'components/buttons/MenuButton'
 import DefaulterInfoCard from 'pages/services/defaulters/DefaulterInfoCard'
 import { MemberContext } from 'contexts/MemberContext'
-import { CheckAll } from 'react-bootstrap-icons'
 import usePopup from 'hooks/usePopup'
 import HeadingSecondary from 'components/HeadingSecondary'
 import { AdminFormOptions } from './DashboardConstituency'
 import SearchMember from 'components/formik/SearchMember'
+import ArrivalsMenuDropdown from './ArrivalsMenuDropdown'
+import { beforeStreamArrivalsDeadline } from './arrivals-utils'
+import { StreamWithArrivals } from './arrivals-types'
+import ErrorText from 'components/ErrorText'
 
 const StreamDashboard = () => {
   const { isOpen, togglePopup } = usePopup()
@@ -35,7 +37,7 @@ const StreamDashboard = () => {
     variables: { id: currentUser?.currentChurch.id },
   })
   const [MakeStreamArrivalsAdmin] = useMutation(MAKE_STREAMARRIVALS_ADMIN)
-  const stream = data?.streams[0]
+  const stream: StreamWithArrivals = data?.streams[0]
 
   const initialValues: AdminFormOptions = {
     adminName: stream?.arrivalsAdmin
@@ -76,6 +78,17 @@ const StreamDashboard = () => {
     link: `/arrivals/stream-by-council`,
   }
 
+  const ArrivalsMenu = [
+    { title: 'Change Arrivals Admin', onClick: togglePopup },
+    {
+      title: 'Arrivals Counters',
+      onClick: () => navigate('/stream/arrivals-counters'),
+    },
+    {
+      title: 'Arrival Times',
+      onClick: () => navigate('/stream/arrival-times'),
+    },
+  ]
   return (
     <ApolloWrapper data={data} loading={loading} error={error}>
       <Container>
@@ -116,34 +129,18 @@ const StreamDashboard = () => {
             </Formik>
           </Popup>
         )}
-        <div className="d-grid gap-2">
-          <RoleView
-            roles={[...permitAdmin('Stream'), ...permitArrivals('Stream')]}
-          >
-            <Button
-              variant="outline-secondary"
-              size="lg"
-              onClick={() => togglePopup()}
-            >
-              Change Arrivals Admin
-            </Button>
-            <Button
-              variant="outline-secondary"
-              size="lg"
-              onClick={() => navigate('/stream/arrivals-helpers')}
-            >
-              Arrivals Helpers
-            </Button>
-            <Button
-              variant="outline-secondary"
-              size="lg"
-              onClick={() => navigate('/stream/arrival-times')}
-            >
-              Arrivals Times
-            </Button>
-          </RoleView>
 
+        <RoleView
+          roles={[...permitAdmin('Stream'), ...permitArrivals('Stream')]}
+        >
+          <ArrivalsMenuDropdown menuItems={ArrivalsMenu} />
+        </RoleView>
+
+        <div className="d-grid gap-2 mt-3">
           <DefaulterInfoCard defaulter={aggregates} />
+          {!beforeStreamArrivalsDeadline(stream) && (
+            <ErrorText>Arrival Deadline is up! Thank you very much</ErrorText>
+          )}
           <MenuButton
             title="Bacentas With No Activity"
             onClick={() => navigate('/arrivals/bacentas-no-activity')}
@@ -170,20 +167,10 @@ const StreamDashboard = () => {
           />
           <RoleView roles={permitArrivalsCounter()}>
             <MenuButton
-              title="Bacentas To Be Counted"
+              title="Vehicles To Be Counted"
               onClick={() => navigate('/arrivals/bacentas-to-count')}
               number={stream?.bacentasNotCountedCount.toString()}
               color="yellow"
-              iconBg
-              noCaption
-            />
-          </RoleView>
-          <RoleView roles={permitArrivalsConfirmer()}>
-            <MenuButton
-              title="Confirm Bacenta Arrival"
-              color="yellow"
-              onClick={() => navigate('/arrivals/confirm-bacenta-arrival')}
-              iconComponent={CheckAll}
               iconBg
               noCaption
             />

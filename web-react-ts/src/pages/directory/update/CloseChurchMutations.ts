@@ -82,3 +82,29 @@ export const MAKE_STREAM_INACTIVE = gql`
     }
   }
 `
+export const MAKE_GATHERING_SERVICE_INACTIVE = gql`
+  mutation CloseDownGatheringService($id: ID!) {
+    CloseDownGatheringService(gatheringServiceId: $id) {
+      id
+      name
+
+      gatheringServices {
+        id
+      }
+
+      history(limit: 5) {
+        id
+        timeStamp
+        created_at {
+          date
+        }
+        loggedBy {
+          id
+          firstName
+          lastName
+        }
+        historyRecord
+      }
+    }
+  }
+`

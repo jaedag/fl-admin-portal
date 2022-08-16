@@ -1,6 +1,6 @@
 import React from 'react'
 
-const BusIcon = () => {
+const BusIcon = ({ width, height }: { width?: number; height?: number }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -8,6 +8,8 @@ const BusIcon = () => {
       data-icon="bus"
       data-prefix="fas"
       viewBox="0 0 512 512"
+      width={width}
+      height={height}
     >
       <path
         fill="currentColor"

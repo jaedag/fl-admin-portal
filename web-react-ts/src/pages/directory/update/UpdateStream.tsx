@@ -5,7 +5,7 @@ import { alertMsg, throwErrorMsg } from '../../../global-utils'
 import { GET_GATHERINGSERVICE_STREAMS } from '../../../queries/ListQueries'
 import {
   UPDATE_STREAM_MUTATION,
-  ADD_STREAM_GATHERINGSERVICE,
+  ADD_GATHERINGSERVICE_STREAM,
   REMOVE_STREAM_GATHERINGSERVICE,
   REMOVE_COUNCIL_STREAM,
   ADD_STREAM_COUNCILS,
@@ -37,7 +37,7 @@ const UpdateStream = () => {
 
   const initialValues: StreamFormValues = {
     name: stream?.name,
-    leaderName: stream?.leader?.fullName ?? '',
+    leaderName: stream?.leader?.firstName + ' ' + stream?.leader.lastName ?? '',
     leaderId: stream?.leader?.id || '',
     gatheringService: stream?.gatheringService?.id ?? '',
     councils: stream?.councils?.length ? stream.councils : [''],
@@ -102,7 +102,7 @@ const UpdateStream = () => {
   const [RemoveStreamGatheringService] = useMutation(
     REMOVE_STREAM_GATHERINGSERVICE
   )
-  const [AddStreamGatheringService] = useMutation(ADD_STREAM_GATHERINGSERVICE, {
+  const [AddStreamGatheringService] = useMutation(ADD_GATHERINGSERVICE_STREAM, {
     onCompleted: (data) => {
       const oldGatheringService =
         data.updateGatheringService.gatheringServices[0]

@@ -4,11 +4,9 @@ export const componentBussingAggregates = `
   
   MATCH (church)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_COMPONENT*1..5]->(componentServices:ServiceLog)
   MATCH (componentServices)-[:HAS_BUSSING]->(componentRecords:BussingRecord)
-
   MATCH (componentRecords)-[:BUSSED_ON]->(date:TimeGraph)
   WHERE date.date > date() - duration({months: 2})
   WITH  DISTINCT componentRecords, date(date.date).week AS week ORDER BY week
-
 RETURN week AS week,SUM(componentRecords.attendance) AS attendance ORDER BY week DESC LIMIT toInteger($limit)
 `
 
@@ -17,12 +15,10 @@ export const componentConstituencyBussingAggregates = `
   
   MATCH (church)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_COMPONENT*1..2]->(componentServices:ServiceLog)
   MATCH (componentServices)-[:HAS_BUSSING]->(componentRecords:BussingRecord)
-
   MATCH (componentRecords)-[:BUSSED_ON]->(date:TimeGraph)
   WHERE date.date > date() - duration({months: 2})
-  WITH DISTINCT componentRecords, date(date.date).week AS week ORDER BY week
-
-RETURN week AS week, SUM(componentRecords.attendance) AS attendance ORDER BY week DESC LIMIT toInteger($limit)
+  WITH  DISTINCT componentRecords, date(date.date).week AS week ORDER BY week
+RETURN week AS week,SUM(componentRecords.attendance) AS attendance ORDER BY week DESC LIMIT toInteger($limit)
 `
 
 export const componentCouncilBussingAggregates = `
@@ -30,11 +26,9 @@ export const componentCouncilBussingAggregates = `
   
   MATCH (church)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_COMPONENT*1..3]->(componentServices:ServiceLog)
   MATCH (componentServices)-[:HAS_BUSSING]->(componentRecords:BussingRecord)
-
   MATCH (componentRecords)-[:BUSSED_ON]->(date:TimeGraph)
   WHERE date.date > date() - duration({months: 2})
-  WITH DISTINCT componentRecords, date(date.date).week AS week ORDER BY week
-
+  WITH  DISTINCT componentRecords, date(date.date).week AS week ORDER BY week
 RETURN week AS week,SUM(componentRecords.attendance) AS attendance ORDER BY week DESC LIMIT toInteger($limit)
 `
 
@@ -43,11 +37,9 @@ export const componentStreamBussingAggregates = `
   
   MATCH (church)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_COMPONENT*1..4]->(componentServices:ServiceLog)
   MATCH (componentServices)-[:HAS_BUSSING]->(componentRecords:BussingRecord)
-
   MATCH (componentRecords)-[:BUSSED_ON]->(date:TimeGraph)
   WHERE date.date > date() - duration({months: 2})
-  WITH DISTINCT componentRecords, date(date.date).week AS week ORDER BY week
-
+  WITH  DISTINCT componentRecords, date(date.date).week AS week ORDER BY week
 RETURN week AS week,SUM(componentRecords.attendance) AS attendance ORDER BY week DESC LIMIT toInteger($limit)
 `
 
@@ -56,12 +48,10 @@ export const componentGatheringServiceBussingAggregates = `
   
   MATCH (church)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_COMPONENT*1..5]->(componentServices:ServiceLog)
   MATCH (componentServices)-[:HAS_BUSSING]->(componentRecords:BussingRecord)
-
   MATCH (componentRecords)-[:BUSSED_ON]->(date:TimeGraph)
   WHERE date.date > date() - duration({months: 2})
-  WITH DISTINCT componentRecords, date(date.date).week AS week ORDER BY week
-
-RETURN week AS week, SUM(componentRecords.attendance) AS attendance ORDER BY week DESC LIMIT toInteger($limit)
+  WITH  DISTINCT componentRecords, date(date.date).week AS week ORDER BY week
+RETURN week AS week,SUM(componentRecords.attendance) AS attendance ORDER BY week DESC LIMIT toInteger($limit)
 `
 export const componentOversightBussingAggregates = `
  MATCH (church:Oversight {id:$id})

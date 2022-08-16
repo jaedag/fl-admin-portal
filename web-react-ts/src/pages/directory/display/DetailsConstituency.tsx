@@ -6,6 +6,7 @@ import { DISPLAY_CONSTITUENCY } from './ReadQueries'
 import { ChurchContext } from '../../../contexts/ChurchContext'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { permitAdmin } from 'permission-utils'
+import { DetailsArray } from './DetailsFellowship'
 
 const DetailsConstituency = () => {
   const { constituencyId } = useContext(ChurchContext)
@@ -15,14 +16,14 @@ const DetailsConstituency = () => {
   })
   const constituency = data?.constituencies[0]
 
-  const details = [
+  const details: DetailsArray = [
     {
       title: 'Members',
       number: constituency?.memberCount || 0,
       link: `/${constituency?.__typename?.toLowerCase()}/members`,
       width: 12,
     },
-    { title: 'Target', number: constituency?.target, link: '#', width: 12 },
+    { title: 'Target', number: constituency?.target, link: '#' },
     {
       title: 'Bacentas',
       number: constituency?.activeBacentaCount || 0,
@@ -35,7 +36,28 @@ const DetailsConstituency = () => {
       vacationCount: constituency?.vacationFellowshipCount,
       link: '#',
     },
+    {
+      title: 'Zone',
+      number: constituency?.zone?.number,
+      link: '#',
+    },
+    {
+      title: 'Sprinter Top Up',
+      number: constituency?.zone.sprinterTopUp + ' GHS',
+      link: '#',
+    },
+    {
+      title: 'Urvan Top Up',
+      number: constituency?.zone.urvanTopUp + ' GHS',
+      link: '#',
+    },
   ]
+
+  if (!constituency?.zone.number) {
+    const moneyItems = [1, 2, 3]
+    moneyItems.forEach(() => details.pop())
+  }
+
   return (
     <ApolloWrapper loading={loading} error={error} data={data} placeholder>
       <DisplayChurchDetails

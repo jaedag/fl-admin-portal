@@ -7,7 +7,7 @@ import { BACENTA_ARRIVALS } from './arrivalsQueries'
 import { useNavigate } from 'react-router'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import { ChurchContext } from 'contexts/ChurchContext'
-import { CheckCircleFill } from 'react-bootstrap-icons'
+import { ArrowDownSquare } from 'react-bootstrap-icons'
 import {
   beforeArrivalDeadline,
   beforeMobilisationDeadline,
@@ -19,6 +19,8 @@ import { BacentaWithArrivals } from './arrivals-types'
 import useModal from 'hooks/useModal'
 import './Arrivals.css'
 import CountdownTimer from './countdown-component/CountdownTimer'
+import VehicleButton from './components/VehicleButton'
+import ErrorText from 'components/ErrorText'
 
 const BacentaArrivals = () => {
   const { clickCard, bacentaId } = useContext(ChurchContext)
@@ -34,7 +36,7 @@ const BacentaArrivals = () => {
   const date = data?.timeGraphs[0]
 
   const isMomoCleared = (bacenta: BacentaWithArrivals) => {
-    if (bacenta?.normalBussingTopUp || bacenta?.swellBussingTopUp) {
+    if (bacenta?.zone.number) {
       if (bacenta?.momoNumber) {
         return true
       }
@@ -58,7 +60,7 @@ const BacentaArrivals = () => {
     return (
       beforeArrivalDeadline(bussing, bacenta) &&
       bussing?.mobilisationPicture &&
-      !bussing?.bussingPictures?.length
+      !bussing?.leaderDeclaration
     )
   }
 
@@ -99,25 +101,41 @@ const BacentaArrivals = () => {
           </Card>
         ) : (
           <Card className="text-center py-4">
-            <div className="text-secondary-custom">
-              <span>Code of the Day: </span>
-              <h5 className="fw-bold code-of-the-day">{`${bacenta?.arrivalsCodeOfTheDay}`}</h5>
-            </div>
+            {!bussing?.leaderDeclaration && (
+              <div className="text-secondary-custom">
+                <span>Code of the Day: </span>
+                <h5 className="fw-bold code-of-the-day">{`${bacenta?.arrivalsCodeOfTheDay}`}</h5>
+              </div>
+            )}
           </Card>
         )}
-        {!isBeforeArrivalEnd && bussing?.mobilisationPicture && (
-          <Card className="text-center py-3">
-            <p className="display-1">😞</p>
-            <h5 className="countdown danger fw-bold ">
-              It is too late to fill your forms!
-            </h5>
-            <i>
-              <div>Ecclesiastes 3:1</div>
-              <div>
-                To every thing there is a season, and a time to every purpose
-                under the heaven:
+        {!isBeforeArrivalEnd &&
+          bussing?.mobilisationPicture &&
+          !bussing?.leaderDeclaration && (
+            <Card className="text-center py-3">
+              <p className="display-1">😞</p>
+              <h5 className="countdown danger fw-bold ">
+                It is too late to fill your forms!
+              </h5>
+              <i>
+                <div>Ecclesiastes 3:1</div>
+                <div>
+                  To every thing there is a season, and a time to every purpose
+                  under the heaven:
+                </div>
+              </i>
+            </Card>
+          )}
+        {bussing?.leaderDeclaration && (
+          <Card className="text-center">
+            <Card.Body>You have filled your forms today</Card.Body>
+            <Card.Footer>
+              Click <span className="good">{`Today's Bussing`}</span> below to
+              view your bussing data{' '}
+              <div className="p-2">
+                <ArrowDownSquare size={50} />
               </div>
-            </i>
+            </Card.Footer>
           </Card>
         )}
 
@@ -178,18 +196,38 @@ const BacentaArrivals = () => {
           >
             Upload Pre-Mobilisation Picture
           </Button>
+          {(!beforeMobilisationDeadline(bacenta, bussing) ||
+            !isMomoCleared(bacenta)) &&
+          bussing ? (
+            <ErrorText>Pre-Mobilisation Form is not open!</ErrorText>
+          ) : null}
 
+          {bussing?.vehicleRecords.length ? (
+            <div className="my-2">Please Find Your Records Below</div>
+          ) : null}
+          {bussing?.vehicleRecords.map((vehicleRecord, index) => (
+            <VehicleButton
+              record={vehicleRecord}
+              key={index}
+              canFillOnTheWay={!canFillOnTheWayValue ? false : null}
+            />
+          ))}
+          <hr />
+          <small className="yellow fw-bold">
+            You must fill one form for each vehicle
+          </small>
           <Button
-            variant="primary"
+            variant="danger"
             size="lg"
             disabled={!canFillOnTheWayValue}
             onClick={() => {
               clickCard(bacenta)
               clickCard(bussing)
-              navigate('/arrivals/submit-on-the-way')
+
+              navigate('/arrivals/submit-vehicle-record')
             }}
           >
-            Submit On-The-Way Picture
+            Add A Vehicle
           </Button>
           {bussing && (
             <Button
@@ -201,18 +239,8 @@ const BacentaArrivals = () => {
                 navigate('/bacenta/bussing-details')
               }}
             >
-              {`Today's Bussing`}
+              {`Today's Bussing Summary`}
             </Button>
-          )}
-
-          {bussing?.arrivalTime && (
-            <Card>
-              <Card.Body className="text-center">
-                <span className="text-success fw-bold">
-                  <CheckCircleFill color="green" size={35} /> Arrived!
-                </span>
-              </Card.Body>
-            </Card>
           )}
         </div>
       </Container>

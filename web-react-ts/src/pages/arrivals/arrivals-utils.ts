@@ -1,23 +1,40 @@
+import { StreamOptions } from 'global-types'
+import { FormikSelectOptions } from 'global-utils'
 import { addMinutes } from 'jd-date-utils'
 import { getTodayTime } from 'jd-date-utils'
 import { isToday } from 'jd-date-utils'
-import { BacentaWithArrivals, BussingRecord } from './arrivals-types'
+import {
+  BacentaWithArrivals,
+  BussingRecord,
+  StreamWithArrivals,
+  VehicleRecord,
+} from './arrivals-types'
 
-export const MOBILE_NETWORK_OPTIONS = [
+export const MOBILE_NETWORK_OPTIONS: FormikSelectOptions = [
   { key: '', value: '' },
   { key: 'MTN', value: 'MTN' },
   { key: 'Vodafone', value: 'Vodafone' },
   { key: 'AirtelTigo', value: 'AirtelTigo' },
 ]
+export const VEHICLE_OPTIONS: FormikSelectOptions = [
+  { key: 'Urvan', value: 'Urvan' },
+  { key: 'Sprinter', value: 'Sprinter' },
+  { key: 'Private Car', value: 'Car' },
+]
 
-const isArrivalsToday = (bacenta: BacentaWithArrivals) => {
+export const OUTBOUND_OPTIONS: FormikSelectOptions = [
+  { key: 'In Only', value: 'In Only' },
+  { key: 'In and Out', value: 'In and Out' },
+]
+
+const isArrivalsToday = (bacenta: { stream_name: StreamOptions }) => {
   if (!bacenta) return false
 
   const today = new Date().getDay()
+
   if (
-    today === 6 &&
-    (bacenta.stream_name.toLowerCase() === 'anagkazo' ||
-      bacenta.stream_name.toLowerCase() === 'campus')
+    (today === 6 && bacenta.stream_name.toLowerCase() === 'anagkazo') ||
+    bacenta.stream_name.toLowerCase() === 'campus'
   ) {
     // Anagkazo and Campus are on Saturday
     return true
@@ -29,9 +46,23 @@ const isArrivalsToday = (bacenta: BacentaWithArrivals) => {
 
   return false
 }
+export const beforeStreamArrivalsDeadline = (stream: StreamWithArrivals) => {
+  if (!stream) return false
 
+  const church = {
+    ...stream,
+    stream_name: stream.name,
+  }
+
+  const today = new Date()
+
+  return (
+    isArrivalsToday(church) &&
+    today < new Date(getTodayTime(stream.arrivalEndTime))
+  )
+}
 export const beforeCountingDeadline = (
-  bussing: BussingRecord,
+  bussing: VehicleRecord,
   church: BacentaWithArrivals
 ) => {
   if (!bussing || !church) {
@@ -46,14 +77,14 @@ export const beforeCountingDeadline = (
     getTodayTime(church?.stream.arrivalStartTime)
   )
   const arrivalEndTime = new Date(getTodayTime(church?.stream.arrivalEndTime))
-  const countingEndTime = addMinutes(arrivalEndTime.toString(), 30)
+  const countingEndTime = addMinutes(arrivalEndTime.toString(), 10)
 
   if (
     isArrivalsToday(church) &&
     arrivalStartTime < today &&
     today < countingEndTime
   ) {
-    if (isToday(bussing?.created_at)) {
+    if (isToday(bussing?.created_at) && !bussing?.arrivalTime) {
       //If the record was created today
       //And if the time is less than the arrivals cutoff time
       return true
@@ -80,7 +111,6 @@ export const beforeArrivalDeadline = (
     getTodayTime(church?.stream.arrivalStartTime)
   )
   const arrivalEndTime = new Date(getTodayTime(church?.stream.arrivalEndTime))
-
   if (
     isArrivalsToday(church) &&
     arrivalStartTime < today &&
@@ -90,7 +120,7 @@ export const beforeArrivalDeadline = (
       return true
     }
 
-    if (isToday(bussing?.created_at) && !bussing?.bussingPictures) {
+    if (isToday(bussing?.created_at) && !bussing?.leaderDeclaration) {
       //If the record was created today
       //And if the time is less than the arrivals cutoff time
       return true

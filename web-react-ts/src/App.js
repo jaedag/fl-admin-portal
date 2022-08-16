@@ -42,6 +42,7 @@ const PastorsAdmin = (props) => {
     ministryId,
     bussingRecordId,
     serviceRecordId,
+    vehicleRecordId,
     oversightId,
   } = useClickCard()
   const { user } = useAuth0()
@@ -109,6 +110,7 @@ const PastorsAdmin = (props) => {
               value={{
                 serviceRecordId,
                 bussingRecordId,
+                vehicleRecordId,
               }}
             >
               <SetPermissions>

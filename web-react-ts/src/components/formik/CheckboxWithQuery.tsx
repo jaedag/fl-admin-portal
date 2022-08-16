@@ -5,10 +5,11 @@ import TextError from './TextError/TextError'
 import { useQuery } from '@apollo/client'
 import { MemberContext } from 'contexts/MemberContext'
 import './CheckboxGroup.css'
-import { FormikWithApolloProps } from './formiik-types'
+import { FormikWithApolloProps } from './formik-types'
 
 interface CheckBoxWithQueryProps extends FormikWithApolloProps {
   modifier: 'filter'
+  nestedDataset: string[]
 }
 
 function CheckboxWithQuery(props: CheckBoxWithQueryProps) {
@@ -20,6 +21,7 @@ function CheckboxWithQuery(props: CheckBoxWithQueryProps) {
     optionsQuery,
     varValue,
     dataset,
+    nestedDataset,
     ...rest
   } = props
 
@@ -30,9 +32,19 @@ function CheckboxWithQuery(props: CheckBoxWithQueryProps) {
     },
   })
 
-  const options = data
-    ? makeSelectOptions(data[dataset ? `${dataset}` : ''])
-    : []
+  console.log(data ? data[dataset] : null)
+  const getOptions = () => {
+    if (data && dataset) {
+      return makeSelectOptions(data[dataset])
+    }
+
+    if (data && nestedDataset) {
+      return makeSelectOptions(data[nestedDataset[0]][0][nestedDataset[1]])
+    }
+    return []
+  }
+
+  const options = getOptions()
 
   return (
     <div>

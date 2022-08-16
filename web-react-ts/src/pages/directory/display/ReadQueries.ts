@@ -281,8 +281,12 @@ export const DISPLAY_BACENTA = gql`
       vacationStatus
       graduationStatus
       target
-      normalBussingTopUp
-      swellBussingTopUp
+      zone {
+        id
+        number
+        sprinterTopUp
+        urvanTopUp
+      }
       momoNumber
       stream_name
       activeFellowshipCount
@@ -369,6 +373,13 @@ export const DISPLAY_CONSTITUENCY = gql`
       council {
         id
         name
+      }
+
+      zone {
+        id
+        number
+        sprinterTopUp
+        urvanTopUp
       }
 
       leader {

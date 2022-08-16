@@ -3,7 +3,9 @@ import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import DisplayChurchDetails from 'components/DisplayChurchDetails/DisplayChurchDetails'
 import { ChurchContext } from 'contexts/ChurchContext'
 import React, { useContext } from 'react'
+import { DetailsArray } from './DetailsFellowship'
 import { DISPLAY_GATHERINGSERVICE } from './ReadQueries'
+import { permitAdmin } from 'permission-utils'
 
 const DetailsGatheringService = () => {
   const { gatheringServiceId } = useContext(ChurchContext)
@@ -15,7 +17,7 @@ const DetailsGatheringService = () => {
   const gathering = data?.gatheringServices[0]
   let breadcrumb = [gathering?.oversight, gathering]
 
-  const details = [
+  const details: DetailsArray = [
     {
       title: 'Members',
       number: gathering?.memberCount || 0,
@@ -62,10 +64,11 @@ const DetailsGatheringService = () => {
         churchId={gatheringServiceId}
         leader={gathering?.leader}
         churchType={gathering?.__typename}
+        admin={gathering?.admin}
         subChurch="Stream"
         details={details}
-        editlink="/stream/editstream"
-        editPermitted={['adminGatheringService']}
+        editlink="/gatheringservice/editgatheringservice"
+        editPermitted={permitAdmin('Oversight')}
         history={gathering?.history.length !== 0 && gathering?.history}
         buttons={gathering?.streams ?? []}
         breadcrumb={breadcrumb && breadcrumb}

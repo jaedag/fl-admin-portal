@@ -13,7 +13,6 @@ import GatheringServiceCampaigns from './GatheringServiceCampaigns'
 import StreamCampaigns from './StreamCampaigns'
 import CouncilCampaigns from './CouncilCampaigns'
 import BacentaCampaigns from './BacentaCampaigns'
-import GatheringServiceEquipmentCampaign from './equipment/gathering-service/GatheringServiceEquipmentCamPaign'
 import StreamEquipmentCampaign from './equipment/stream/StreamEquipmentCampaign'
 import CouncilEquipmentCampaign from './equipment/council/CouncilEquipmentCampaign'
 import BacentaEquipmentCampaign from './equipment/bacenta/BacentaEquipmentCampaign'
@@ -28,6 +27,7 @@ import ConstituencyByBacenta from './equipment/constituency/ConstituencyByBacent
 import BacentaByFellowship from './equipment/bacenta/BacentaByFellowship'
 import GatheringServiceEquipmentDeadline from './equipment/gathering-service/GatheringServiceEquipmentDeadline'
 import { permitLeaderAdmin } from 'permission-utils'
+import GatheringServiceEquipmentCampaign from './equipment/gathering-service/GatheringServiceEquipmentCampaign'
 
 export const campaigns = [
   //gathering-service routes

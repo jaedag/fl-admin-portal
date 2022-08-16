@@ -16,7 +16,7 @@ type MenuButtonProps = {
   avatar?: string
   caption?: string
   noCaption?: boolean
-  number?: number
+  number?: number | string
   color: string
   title?: string
 }

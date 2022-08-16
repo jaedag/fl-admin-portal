@@ -78,6 +78,8 @@ export const nextLowerChurch = (churchLevel: ChurchLevel) => {
       return 'Council'
     case 'GatheringService':
       return 'Stream'
+    case 'Oversight':
+      return 'GatheringService'
     default:
       break
   }
@@ -145,7 +147,8 @@ export const addNewChurches = async (
   if (!addChurches.length) return
 
   const churchLevel = addChurches[0].__typename.toLowerCase()
-  const higherChurch = nextHigherChurch(addChurches[0].__typename).toLowerCase()
+
+  let higherChurch = nextHigherChurch(addChurches[0].__typename).toLowerCase()
 
   if (addChurches.length) {
     await Promise.all(
@@ -164,6 +167,7 @@ export const addNewChurches = async (
           await mutations.logChurchHistory({
             variables: {
               fellowshipId: church.id,
+              streamId: church.id,
               newLeaderId: '',
               oldLeaderId: '',
               [`new${capitalise(higherChurch)}Id`]: args.bacentaId,
@@ -173,10 +177,14 @@ export const addNewChurches = async (
           })
         }
 
+        if (higherChurch === 'gatheringservice') {
+          higherChurch = 'gatheringService'
+        }
+
         await mutations.addChurch({
           variables: {
+            [`${churchLevel}Id`]: church.id,
             [`${higherChurch}Id`]: args[`${higherChurch}Id`],
-            [`${churchLevel}Id`]: [church.id],
           },
         })
 

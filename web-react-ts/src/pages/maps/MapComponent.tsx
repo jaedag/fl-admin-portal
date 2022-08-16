@@ -17,6 +17,7 @@ const MapComponent = () => {
       mapId: 'b0ab33f7a0fc53d5',
       disableDefaultUI: true,
       clickableIcons: false,
+      mapTypeId: 'satellite',
     }),
     []
   )

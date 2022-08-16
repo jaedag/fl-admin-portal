@@ -6,6 +6,7 @@ import { permitAdmin } from 'permission-utils'
 import React, { useContext, useEffect } from 'react'
 import { DISPLAY_COUNCIL } from './ReadQueries'
 import useClickCard from 'hooks/useClickCard'
+import { DetailsArray } from './DetailsFellowship'
 
 const DetailsCouncil = () => {
   const { councilId } = useContext(ChurchContext)
@@ -20,7 +21,7 @@ const DetailsCouncil = () => {
     setChurch({ church: council?.stream_name, subChurch: 'bacenta' })
   }, [council?.stream_name, setChurch])
 
-  const details = [
+  const details: DetailsArray = [
     {
       title: 'Members',
       number: council?.memberCount || 0,

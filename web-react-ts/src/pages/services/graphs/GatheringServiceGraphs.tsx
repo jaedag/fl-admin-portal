@@ -17,6 +17,7 @@ const GatheringServiceReport = () => {
   const { gatheringServiceId } = useContext(ChurchContext)
   const { currentUser } = useContext(MemberContext)
   const [bussing, setBussing] = useState(true)
+  const [churchData, setChurchData] = useState<any[] | undefined>([])
   const { data, loading, error } = useQuery(GATHERINGSERVICE_GRAPHS, {
     variables: { gatheringServiceId: gatheringServiceId },
     onCompleted: (data) => {
@@ -24,10 +25,6 @@ const GatheringServiceReport = () => {
       setChurchData(getServiceGraphData(data?.gatheringServices[0], 'bussing'))
     },
   })
-
-  const [churchData, setChurchData] = useState(
-    getServiceGraphData(data?.gatheringServices[0], 'bussing')
-  )
 
   return (
     <ApolloWrapper loading={loading} error={error} data={data} placeholder>

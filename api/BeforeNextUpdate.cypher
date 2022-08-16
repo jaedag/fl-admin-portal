@@ -1,6 +1,32 @@
+MATCH (bussingRecord:BussingRecord)
+SET bussingRecord.numberOfSprinters = bussingRecord.numberOfBusses
+REMOVE bussingRecord.numberOfBusses 
+RETURN COUNT(bussingRecord);
+
+
+CREATE (zone:BusZone {id:apoc.create.uuid()})
+SET zone.number = 1,
+zone.sprinterCost = 100,
+zone.sprinterTopUp = 100,
+zone.urvanCost = 70,
+zone.urvanTopUp = 70
+RETURN zone;
+CREATE (zone:BusZone {id:apoc.create.uuid()})
+SET zone.number = 2,
+zone.sprinterCost = 120,
+zone.sprinterTopUp = 120,
+zone.urvanCost = 90,
+zone.urvanTopUp = 90
+RETURN zone;
+
+MATCH (b:Constituency)
+MATCH (zone:BusZone {number: 1})
+MERGE (b)-[:BUSSES_FROM]->(zone)
+RETURN zone;
 //Equipment Campaign
  //Adding constraint for equipment campaign
 CREATE CONSTRAINT con_equipment_record_id FOR (n:EquipmentRecord) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT con_vehicle_record_id FOR (n:VehicleRecord) REQUIRE n.id IS UNIQUE;
 
 
 

@@ -370,7 +370,11 @@ export const STREAM_BACENTAS_TO_COUNT = gql`
           whatsappNumber
         }
         bussing(limit: 1) {
-          id
+          vehicleRecords(where: { arrivalTime: null }) {
+            id
+            attendance
+            vehicle
+          }
         }
       }
     }

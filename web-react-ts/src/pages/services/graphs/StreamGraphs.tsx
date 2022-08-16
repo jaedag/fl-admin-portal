@@ -18,6 +18,7 @@ const StreamReport = () => {
 
   const { streamId } = useContext(ChurchContext)
   const [bussing, setBussing] = useState(true)
+  const [churchData, setChurchData] = useState<any[] | undefined>([])
   const { data, loading, error } = useQuery(STREAM_GRAPHS, {
     variables: { streamId: streamId },
     onCompleted: (data) => {
@@ -25,10 +26,6 @@ const StreamReport = () => {
       setChurchData(getServiceGraphData(data?.streams[0], 'bussing'))
     },
   })
-
-  const [churchData, setChurchData] = useState(
-    getServiceGraphData(data?.streams[0], 'bussing')
-  )
 
   return (
     <ApolloWrapper loading={loading} error={error} data={data} placeholder>

@@ -253,3 +253,37 @@ export const MAKE_STREAM_LEADER = gql`
     }
   }
 `
+
+export const MAKE_GATHERINGSERVICE_LEADER = gql`
+  mutation MakeGatheringServiceLeader(
+    $gatheringServiceId: ID!
+    $newLeaderId: ID!
+    $oldLeaderId: ID!
+  ) {
+    RemoveGatheringServiceLeader(
+      gatheringServiceId: $gatheringServiceId
+      leaderId: $oldLeaderId
+    ) {
+      id
+      firstName
+      lastName
+    }
+    MakeGatheringServiceLeader(
+      gatheringServiceId: $gatheringServiceId
+      leaderId: $newLeaderId
+      oldLeaderId: $oldLeaderId
+    ) {
+      id
+      firstName
+      lastName
+      leadsStream {
+        id
+        leader {
+          id
+          firstName
+          lastName
+        }
+      }
+    }
+  }
+`

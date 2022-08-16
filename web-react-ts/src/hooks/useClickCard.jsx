@@ -41,6 +41,9 @@ const useClickCard = () => {
   const [bussingRecordId, setBussingRecordId] = useState(
     sessionStorage.getItem('bussingRecordId') ?? ''
   )
+  const [vehicleRecordId, setVehicleRecordId] = useState(
+    sessionStorage.getItem('vehicleRecordId') ?? ''
+  )
 
   const [sontaId, setSontaId] = useState(
     sessionStorage.getItem('sontaId') ?? ''
@@ -387,6 +390,10 @@ const useClickCard = () => {
         setBussingRecordId(card.id)
         sessionStorage.setItem('bussingRecordId', card.id)
         break
+      case 'VehicleRecord':
+        setVehicleRecordId(card.id)
+        sessionStorage.setItem('vehicleRecordId', card.id)
+        break
       default:
         break
     }
@@ -413,6 +420,7 @@ const useClickCard = () => {
     sontaId,
     ministryId,
     bussingRecordId,
+    vehicleRecordId,
     serviceRecordId,
 
     //Set State
