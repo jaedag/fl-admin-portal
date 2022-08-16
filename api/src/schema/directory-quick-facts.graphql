@@ -597,8 +597,8 @@ extend type Oversight {
   avgGatheringServiceWeekdayStats(days: Int!): Stats!
     @cypher(
       statement: """
-      MATCH (this)-[:HAS]->(gatheringService:GatheringService)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_COMPONENT*1..5]->(componentServices)
-           MATCH (componentServices)-[:HAS_SERVICE]->(componentRecords:ServiceRecord)
+      MATCH (this)-[:HAS]->(gatheringService:GatheringService)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_COMPONENT*1..6]->(componentServices)
+      MATCH (componentServices)-[:HAS_SERVICE]->(componentRecords:ServiceRecord)
 
        MATCH (componentRecords) WHERE NOT (componentRecords:NoService)
        MATCH (componentRecords)-[:SERVICE_HELD_ON]->(date:TimeGraph)
