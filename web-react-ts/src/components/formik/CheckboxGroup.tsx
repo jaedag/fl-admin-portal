@@ -3,6 +3,7 @@ import { Field, ErrorMessage } from 'formik'
 import TextError from './TextError/TextError'
 import { MemberContext } from 'contexts/MemberContext'
 import './CheckboxGroup.css'
+import './Formik.css'
 import { FormikComponentProps } from './formik-types'
 
 interface CheckboxGroupProps extends FormikComponentProps {}
@@ -15,7 +16,7 @@ function CheckboxGroup(props: CheckboxGroupProps) {
     <div>
       {label ? (
         <>
-          <label className="checkbox-label" htmlFor={name}>
+          <label className="label checkbox-label" htmlFor={name}>
             {label}
           </label>
           <br />

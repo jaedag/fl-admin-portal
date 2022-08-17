@@ -44,7 +44,25 @@ const PastorsAdmin = (props) => {
     serviceRecordId,
     vehicleRecordId,
     oversightId,
+
+    //Set State
+    setOversightId,
+    setGatheringServiceId,
+    setChurch,
+    setStreamId,
+    setCouncilId,
+    setConstituencyId,
   } = useClickCard()
+
+  const doNotUse = {
+    setOversightId,
+    setGatheringServiceId,
+    setChurch,
+    setStreamId,
+    setCouncilId,
+    setConstituencyId,
+  }
+
   const { user } = useAuth0()
 
   const [currentUser, setCurrentUser] = useState(
@@ -92,6 +110,7 @@ const PastorsAdmin = (props) => {
           sontaId,
           ministryId,
           oversightId,
+          doNotUse,
         }}
       >
         <MemberContext.Provider
