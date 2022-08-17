@@ -3,11 +3,7 @@ import '../QuickFacts.css'
 import { useQuery } from '@apollo/client'
 import { ChurchContext } from 'contexts/ChurchContext'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
-import {
-  STREAM_AVG_WEEKDAY_ATTENDANCE_THIS_MONTH,
-  STREAM_AVG_WEEKDAY_INCOME_THIS_MONTH,
-  STREAM_AVG_BUSSING_THIS_MONTH,
-} from '../QuickFactsQueries'
+import { STREAM_AVG_WEEKDAY_STATS } from '../QuickFactsQueries'
 import QuickFactsHeader from '../components/QuickFactsHeader'
 import QuickFactsSlider from '../components/QuickFactsSlider'
 import PlaceholderCustom from 'components/Placeholder'
@@ -15,35 +11,24 @@ import PlaceholderCustom from 'components/Placeholder'
 const StreamAvgWeekdayQuickFacts = () => {
   const { streamId } = useContext(ChurchContext)
 
-  const {
-    data: attendanceData,
-    loading: attendanceLoading,
-    error: attendanceError,
-  } = useQuery(STREAM_AVG_WEEKDAY_ATTENDANCE_THIS_MONTH, {
-    variables: { streamId: streamId },
+  const { data, loading, error } = useQuery(STREAM_AVG_WEEKDAY_STATS, {
+    variables: { streamId: streamId, days: 30 },
   })
 
-  const { data: incomeData } = useQuery(STREAM_AVG_WEEKDAY_INCOME_THIS_MONTH, {
-    variables: { streamId: streamId },
-  })
-
-  const { data: bussingData } = useQuery(STREAM_AVG_BUSSING_THIS_MONTH, {
-    variables: { streamId: streamId },
-  })
-
-  const streamAttendance = attendanceData?.streams[0]
-  const streamIncome = incomeData?.streams[0]
-  const streamBussing = bussingData?.streams[0]
+  const stream = data?.streams[0]
+  const leadersName = `${stream?.leader?.firstName} ${stream?.leader?.lastName}`
+  const churchName = `${stream?.name}`
+  const higherLevelName = `${stream?.gatheringService?.name} ${stream?.gatheringService?.__typename}`
 
   const attendanceDetails = [
     {
       churchType: 'Stream',
       cardType: 'Attendance',
-      leadersName: `${streamAttendance?.leader?.firstName} ${streamAttendance?.leader?.lastName}`,
-      churchName: `${streamAttendance?.name}`,
-      churchAvgAttendanceThisMonth: `${streamAttendance?.avgWeekdayAttendanceThisMonth}`,
-      avgHigherLevelAttendanceThisMonth: `${streamAttendance?.gatheringService?.avgStreamWeekdayAttendanceThisMonth}`,
-      higherLevelName: `${streamAttendance?.gatheringService?.name} ${streamAttendance?.gatheringService?.__typename}`,
+      leadersName: leadersName,
+      churchName: churchName,
+      churchAvgAttendanceThisMonth: `${stream?.avgWeekdayStats?.attendance}`,
+      avgHigherLevelAttendanceThisMonth: `${stream?.gatheringService?.avgStreamWeekdayStats?.attendance}`,
+      higherLevelName: higherLevelName,
     },
   ]
 
@@ -51,11 +36,11 @@ const StreamAvgWeekdayQuickFacts = () => {
     {
       churchType: 'Stream',
       cardType: 'Income',
-      leadersName: `${streamIncome?.leader?.firstName} ${streamIncome?.leader?.lastName}`,
-      churchName: `${streamIncome?.name}`,
-      churchAvgIncomeThisMonth: `${streamIncome?.avgWeekdayIncomeThisMonth}`,
-      avgHigherLevelIncomeThisMonth: `${streamIncome?.gatheringService?.avgStreamWeekdayIncomeThisMonth}`,
-      higherLevelName: `${streamIncome?.gatheringService?.name} ${streamIncome?.gatheringService?.__typename}`,
+      leadersName: leadersName,
+      churchName: churchName,
+      churchAvgIncomeThisMonth: `${stream?.avgWeekdayStats?.income}`,
+      avgHigherLevelIncomeThisMonth: `${stream?.gatheringService?.avgStreamWeekdayStats?.income}`,
+      higherLevelName: higherLevelName,
     },
   ]
 
@@ -63,23 +48,19 @@ const StreamAvgWeekdayQuickFacts = () => {
     {
       churchType: 'Stream',
       cardType: 'Bussing',
-      leadersName: `${streamBussing?.leader?.firstName} ${streamBussing?.leader?.lastName}`,
-      churchName: `${streamBussing?.name}`,
-      churchBussingThisMonth: `${streamBussing?.avgBussingAttendanceThisMonth}`,
-      avgHigherLevelBussingThisMonth: `${streamBussing?.gatheringService?.avgStreamBussingAttendanceThisMonth}`,
-      higherLevelName: `${streamBussing?.gatheringService?.name} ${streamBussing?.gatheringService?.__typename}`,
+      leadersName: leadersName,
+      churchName: churchName,
+      churchBussingThisMonth: `${stream?.avgBussingAttendance}`,
+      avgHigherLevelBussingThisMonth: `${stream?.gatheringService?.avgStreamBussingAttendance}`,
+      higherLevelName: higherLevelName,
     },
   ]
 
   return (
-    <ApolloWrapper
-      loading={attendanceLoading}
-      error={attendanceError}
-      data={attendanceData}
-    >
+    <ApolloWrapper loading={loading} error={error} data={data}>
       <div className="quick-fact-page">
         <QuickFactsHeader />
-        <PlaceholderCustom loading={attendanceLoading}>
+        <PlaceholderCustom loading={loading}>
           <div className=" page-padding mt-3 quick-fact-card-wrapper">
             <QuickFactsSlider
               attendanceDetails={attendanceDetails}
