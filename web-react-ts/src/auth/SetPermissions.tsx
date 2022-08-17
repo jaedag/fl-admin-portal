@@ -78,7 +78,7 @@ const SetPermissions = ({ children }: { children: JSX.Element }) => {
 
         if (!isAuthorised(permitMe('GatheringService'))) {
           //if User is not a federal admin
-          doNotUse.setdoNotUse(currentUser.doNotUse)
+          doNotUse.setChurch(currentUser.church)
           doNotUse.setStreamId(currentUser.stream)
 
           if (!isAuthorised(permitMe('Stream'))) {
@@ -88,14 +88,14 @@ const SetPermissions = ({ children }: { children: JSX.Element }) => {
               //User is not at the Council Level
               doNotUse.setConstituencyId(currentUser.constituency)
 
-              if (!isAuthorised(permitMe('Constituency'))) {
-                //User is not a Constituency Admin the he can only be looking at his bacenta membership
-                // doNotUse.setBacentaId(currentUser.bacenta)
-                // if (!isAuthorised( ['leaderBacenta'])) {
-                //   //User is not a Bacenta Leader and he can only be looking at his fellowship membership
-                //   setFellowshipId(currentUser.fellowship?.id)
-                // }
-              }
+              // if (!isAuthorised(permitMe('Constituency'))) {
+              //User is not a Constituency Admin the he can only be looking at his bacenta membership
+              // doNotUse.setBacentaId(currentUser.bacenta)
+              // if (!isAuthorised(['leaderBacenta'])) {
+              //   //User is not a Bacenta Leader and he can only be looking at his fellowship membership
+              // doNotUse.setFellowshipId(currentUser.fellowship?.id)
+              // }
+              // }
             }
           }
         }
