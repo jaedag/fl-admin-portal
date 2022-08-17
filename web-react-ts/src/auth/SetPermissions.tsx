@@ -104,7 +104,7 @@ const SetPermissions = ({ children }: { children: JSX.Element }) => {
   }, [isAuthenticated, currentUser, isAuthorised, doNotUse])
 
   if (loading) {
-    return <InitialLoading text={'Retrieving your doNotUse information...'} />
+    return <InitialLoading text={'Retrieving your Church information...'} />
   }
 
   return (
