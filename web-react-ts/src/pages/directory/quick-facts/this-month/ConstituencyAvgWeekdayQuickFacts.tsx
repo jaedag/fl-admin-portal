@@ -3,11 +3,7 @@ import '../QuickFacts.css'
 import { useQuery } from '@apollo/client'
 import { ChurchContext } from 'contexts/ChurchContext'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
-import {
-  CONSTITUENCY_AVG_WEEKDAY_ATTENDANCE_THIS_MONTH,
-  CONSTITUENCY_AVG_WEEKDAY_INCOME_THIS_MONTH,
-  CONSTITUENCY_AVG_BUSSING_THIS_MONTH,
-} from '../QuickFactsQueries'
+import { CONSTITUENCY_AVG_WEEKDAY_STATS } from '../QuickFactsQueries'
 import QuickFactsHeader from '../components/QuickFactsHeader'
 import QuickFactsSlider from '../components/QuickFactsSlider'
 import PlaceholderCustom from 'components/Placeholder'
@@ -15,38 +11,24 @@ import PlaceholderCustom from 'components/Placeholder'
 const ConstituencyAvgWeekdayQuickFacts = () => {
   const { constituencyId } = useContext(ChurchContext)
 
-  const {
-    data: attendanceData,
-    loading: attendanceLoading,
-    error: attendanceError,
-  } = useQuery(CONSTITUENCY_AVG_WEEKDAY_ATTENDANCE_THIS_MONTH, {
-    variables: { constituencyId: constituencyId },
+  const { data, loading, error } = useQuery(CONSTITUENCY_AVG_WEEKDAY_STATS, {
+    variables: { constituencyId: constituencyId, days: 30 },
   })
 
-  const { data: incomeData } = useQuery(
-    CONSTITUENCY_AVG_WEEKDAY_INCOME_THIS_MONTH,
-    {
-      variables: { constituencyId: constituencyId },
-    }
-  )
-
-  const { data: bussingData } = useQuery(CONSTITUENCY_AVG_BUSSING_THIS_MONTH, {
-    variables: { constituencyId: constituencyId },
-  })
-
-  const constituencyAttendance = attendanceData?.constituencies[0]
-  const constituencyIncome = incomeData?.constituencies[0]
-  const constituencyBussing = bussingData?.constituencies[0]
+  const constituency = data?.constituencies[0]
+  const leadersName = `${constituency?.leader?.firstName} ${constituency?.leader?.lastName}`
+  const churchName = `${constituency?.name}`
+  const higherLevelName = `${constituency?.council?.name} ${constituency?.council?.__typename}`
 
   const attendanceDetails = [
     {
       churchType: 'Constituency',
       cardType: 'Attendance',
-      leadersName: `${constituencyAttendance?.leader?.firstName} ${constituencyAttendance?.leader?.lastName}`,
-      churchName: `${constituencyAttendance?.name}`,
-      churchAvgAttendanceThisMonth: `${constituencyAttendance?.avgWeekdayAttendanceThisMonth}`,
-      avgHigherLevelAttendanceThisMonth: `${constituencyAttendance?.council?.avgConstituencyWeekdayAttendanceThisMonth}`,
-      higherLevelName: `${constituencyAttendance?.council?.name} ${constituencyAttendance?.council?.__typename}`,
+      leadersName: leadersName,
+      churchName: churchName,
+      churchAvgAttendanceThisMonth: `${constituency?.avgWeekdayStats?.attendance}`,
+      avgHigherLevelAttendanceThisMonth: `${constituency?.council?.avgConstituencyWeekdayStats?.attendance}`,
+      higherLevelName: higherLevelName,
     },
   ]
 
@@ -54,11 +36,11 @@ const ConstituencyAvgWeekdayQuickFacts = () => {
     {
       churchType: 'Constituency',
       cardType: 'Income',
-      leadersName: `${constituencyIncome?.leader?.firstName} ${constituencyIncome?.leader?.lastName}`,
-      churchName: `${constituencyIncome?.name}`,
-      churchAvgIncomeThisMonth: `${constituencyIncome?.avgWeekdayIncomeThisMonth}`,
-      avgHigherLevelIncomeThisMonth: `${constituencyIncome?.council?.avgConstituencyWeekdayIncomeThisMonth}`,
-      higherLevelName: `${constituencyIncome?.council?.name} ${constituencyIncome?.council?.__typename}`,
+      leadersName: leadersName,
+      churchName: churchName,
+      churchAvgIncomeThisMonth: `${constituency?.avgWeekdayStats?.income}`,
+      avgHigherLevelIncomeThisMonth: `${constituency?.council?.avgConstituencyWeekdayStats.income}`,
+      higherLevelName: higherLevelName,
     },
   ]
 
@@ -66,23 +48,19 @@ const ConstituencyAvgWeekdayQuickFacts = () => {
     {
       churchType: 'Constituency',
       cardType: 'Bussing',
-      leadersName: `${constituencyBussing?.leader?.firstName} ${constituencyBussing?.leader?.lastName}`,
-      churchName: `${constituencyBussing?.name}`,
-      churchBussingThisMonth: `${constituencyBussing?.avgBussingAttendanceThisMonth}`,
-      avgHigherLevelBussingThisMonth: `${constituencyBussing?.council?.avgConstituencyBussingAttendanceThisMonth}`,
-      higherLevelName: `${constituencyBussing?.council?.name} ${constituencyBussing?.council?.__typename}`,
+      leadersName: leadersName,
+      churchName: churchName,
+      churchBussingThisMonth: `${constituency?.avgBussingAttendance}`,
+      avgHigherLevelBussingThisMonth: `${constituency?.council?.avgConstituencyBussingAttendance}`,
+      higherLevelName: higherLevelName,
     },
   ]
 
   return (
-    <ApolloWrapper
-      loading={attendanceLoading}
-      error={attendanceError}
-      data={attendanceData}
-    >
+    <ApolloWrapper loading={loading} error={error} data={data}>
       <div className="quick-fact-page">
         <QuickFactsHeader />
-        <PlaceholderCustom loading={attendanceLoading}>
+        <PlaceholderCustom loading={loading}>
           <div className=" page-padding mt-3 quick-fact-card-wrapper">
             <QuickFactsSlider
               attendanceDetails={attendanceDetails}

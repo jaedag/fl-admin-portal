@@ -3,11 +3,7 @@ import '../QuickFacts.css'
 import { useQuery } from '@apollo/client'
 import { ChurchContext } from 'contexts/ChurchContext'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
-import {
-  BACENTA_AVG_WEEKDAY_ATTENDANCE_THIS_MONTH,
-  BACENTA_AVG_WEEKDAY_INCOME_THIS_MONTH,
-  BACENTA_AVG_BUSSING_THIS_MONTH,
-} from '../QuickFactsQueries'
+import { BACENTA_AVG_WEEKDAY_STATS } from '../QuickFactsQueries'
 import QuickFactsHeader from '../components/QuickFactsHeader'
 import QuickFactsSlider from '../components/QuickFactsSlider'
 import PlaceholderCustom from 'components/Placeholder'
@@ -15,35 +11,24 @@ import PlaceholderCustom from 'components/Placeholder'
 const BacentaAvgWeekdayQuickFacts = () => {
   const { bacentaId } = useContext(ChurchContext)
 
-  const {
-    data: attendanceData,
-    loading: attendanceLoading,
-    error: attendanceError,
-  } = useQuery(BACENTA_AVG_WEEKDAY_ATTENDANCE_THIS_MONTH, {
-    variables: { bacentaId: bacentaId },
+  const { data, loading, error } = useQuery(BACENTA_AVG_WEEKDAY_STATS, {
+    variables: { bacentaId: bacentaId, days: 30 },
   })
 
-  const { data: incomeData } = useQuery(BACENTA_AVG_WEEKDAY_INCOME_THIS_MONTH, {
-    variables: { bacentaId: bacentaId },
-  })
-
-  const { data: bussingData } = useQuery(BACENTA_AVG_BUSSING_THIS_MONTH, {
-    variables: { bacentaId: bacentaId },
-  })
-
-  const bacentaAttendance = attendanceData?.bacentas[0]
-  const bacentaIncome = incomeData?.bacentas[0]
-  const bacentaBussing = bussingData?.bacentas[0]
+  const bacenta = data?.bacentas[0]
+  const leadersName = `${bacenta?.leader?.firstName} ${bacenta?.leader?.lastName}`
+  const churchName = `${bacenta?.name}`
+  const higherLevelName = `${bacenta?.council?.name} ${bacenta?.council?.__typename}`
 
   const attendanceDetails = [
     {
       churchType: 'Bacenta',
       cardType: 'Attendance',
-      leadersName: `${bacentaAttendance?.leader?.firstName} ${bacentaAttendance?.leader?.lastName}`,
-      churchName: `${bacentaAttendance?.name}`,
-      churchAvgAttendanceThisMonth: `${bacentaAttendance?.avgWeekdayAttendanceThisMonth}`,
-      avgHigherLevelAttendanceThisMonth: `${bacentaAttendance?.council?.avgBacentaWeekdayAttendanceThisMonth}`,
-      higherLevelName: `${bacentaAttendance?.council?.name} ${bacentaAttendance?.council?.__typename}`,
+      leadersName: leadersName,
+      churchName: churchName,
+      churchAvgAttendanceThisMonth: `${bacenta?.avgWeekdayStats?.attendance}`,
+      avgHigherLevelAttendanceThisMonth: `${bacenta?.council?.avgBacentaWeekdayStats?.attendance}`,
+      higherLevelName: higherLevelName,
     },
   ]
 
@@ -51,11 +36,11 @@ const BacentaAvgWeekdayQuickFacts = () => {
     {
       churchType: 'Bacenta',
       cardType: 'Income',
-      leadersName: `${bacentaIncome?.leader?.firstName} ${bacentaIncome?.leader?.lastName}`,
-      churchName: `${bacentaIncome?.name}`,
-      churchAvgIncomeThisMonth: `${bacentaIncome?.avgWeekdayIncomeThisMonth}`,
-      avgHigherLevelIncomeThisMonth: `${bacentaIncome?.council?.avgBacentaWeekdayIncomeThisMonth}`,
-      higherLevelName: `${bacentaIncome?.council?.name} ${bacentaIncome?.council?.__typename}`,
+      leadersName: leadersName,
+      churchName: churchName,
+      churchAvgIncomeThisMonth: `${bacenta?.avgWeekdayStats?.income}`,
+      avgHigherLevelIncomeThisMonth: `${bacenta?.council?.avgBacentaWeekdayStats?.income}`,
+      higherLevelName: higherLevelName,
     },
   ]
 
@@ -63,23 +48,19 @@ const BacentaAvgWeekdayQuickFacts = () => {
     {
       churchType: 'Bacenta',
       cardType: 'Bussing',
-      leadersName: `${bacentaBussing?.leader?.firstName} ${bacentaBussing?.leader?.lastName}`,
-      churchName: `${bacentaBussing?.name}`,
-      churchBussingThisMonth: `${bacentaBussing?.avgBussingAttendanceThisMonth}`,
-      avgHigherLevelBussingThisMonth: `${bacentaBussing?.council?.avgBacentaBussingAttendanceThisMonth}`,
-      higherLevelName: `${bacentaBussing?.council?.name} ${bacentaBussing?.council?.__typename}`,
+      leadersName: leadersName,
+      churchName: churchName,
+      churchBussingThisMonth: `${bacenta?.avgBussingAttendance}`,
+      avgHigherLevelBussingThisMonth: `${bacenta?.council?.avgBacentaBussingAttendance}`,
+      higherLevelName: higherLevelName,
     },
   ]
 
   return (
-    <ApolloWrapper
-      loading={attendanceLoading}
-      error={attendanceError}
-      data={attendanceData}
-    >
+    <ApolloWrapper loading={loading} error={error} data={data}>
       <div className="quick-fact-page">
         <QuickFactsHeader />
-        <PlaceholderCustom loading={attendanceLoading}>
+        <PlaceholderCustom loading={loading}>
           <div className=" page-padding mt-3 quick-fact-card-wrapper">
             <QuickFactsSlider
               attendanceDetails={attendanceDetails}

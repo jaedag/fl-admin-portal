@@ -6,7 +6,7 @@ import {
 } from 'global-utils'
 import React, { useContext } from 'react'
 import { useLocation } from 'react-router-dom'
-import { Formik, Form } from 'formik'
+import { Formik, Form, FormikHelpers } from 'formik'
 import { GET_GATHERINGSERVICE_MINISTRIES } from 'queries/ListQueries'
 import { Col, Row, Button } from 'react-bootstrap'
 import { MemberContext } from 'contexts/MemberContext'
@@ -14,13 +14,29 @@ import './Filters.css'
 import CheckboxGroup from 'components/formik/CheckboxGroup'
 import CheckboxWithQuery from 'components/formik/CheckboxWithQuery'
 
-const Filters = ({ ToggleAccordion }) => {
+type FormOptions = {
+  gender: string[]
+  maritalStatus: string[]
+  occupation: string
+  leaderTitle: string[]
+  leaderRank: string[]
+  ministry: string[]
+}
+
+const Filters = ({
+  ToggleAccordion,
+}: {
+  [x: string]: any
+  children: any
+  eventKey: any
+}) => {
   const { setFilters, filters, gatheringServiceId } = useContext(ChurchContext)
+  console.log(useContext(ChurchContext))
   const { theme } = useContext(MemberContext)
   const location = useLocation()
   const atPastors = location.pathname === '/pastors'
 
-  const initialValues = {
+  const initialValues: FormOptions = {
     gender: filters.gender || [],
     maritalStatus: filters.maritalStatus || [],
     occupation: filters.occupation || '',
@@ -38,7 +54,10 @@ const Filters = ({ ToggleAccordion }) => {
     { key: 'Admin', value: 'Admin' },
   ]
 
-  const onSubmit = (values, onSubmitProps) => {
+  const onSubmit = (
+    values: FormOptions,
+    onSubmitProps: FormikHelpers<FormOptions>
+  ) => {
     onSubmitProps.setSubmitting(true)
     setFilters(values)
     onSubmitProps.setSubmitting(false)
@@ -72,6 +91,8 @@ const Filters = ({ ToggleAccordion }) => {
                   modifier="filter"
                   optionsQuery={GET_GATHERINGSERVICE_MINISTRIES}
                   queryVariable="id"
+                  initialValue=""
+                  dataset=""
                   varValue={gatheringServiceId}
                   nestedDataset={['gatheringServices', 'ministries']}
                   label="Select a Ministry"

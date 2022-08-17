@@ -1,56 +1,17 @@
-import { useQuery } from '@apollo/client'
 import RoleView from 'auth/RoleView'
 import UserProfileIcon from 'components/UserProfileIcon/UserProfileIcon'
 import { MemberContext } from 'contexts/MemberContext'
-import { capitalise } from 'global-utils'
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { Container, Nav, Navbar, Offcanvas, Row, Col } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import { menuItems } from './dashboard-utils'
 import logo from 'assets/flc-logo-red.webp'
-import { useAuth0 } from '@auth0/auth0-react'
-import { GET_LOGGED_IN_USER } from 'components/UserProfileIcon/UserQueries'
 import SearchBox from 'components/SearchBox'
 import { Moon, Sun } from 'react-bootstrap-icons'
 import './Navigation.css'
 
 const Navigator = () => {
-  const { currentUser, theme, setTheme, setCurrentUser } =
-    useContext(MemberContext)
-  const { user } = useAuth0()
-
-  useQuery(GET_LOGGED_IN_USER, {
-    variables: { email: user?.email },
-    onCompleted: (data) => {
-      const church = data.memberByEmail.stream_name
-
-      setCurrentUser({
-        ...currentUser,
-        id: data.memberByEmail.id,
-        fellowship: data.memberByEmail?.fellowship.id,
-        bacenta: data.memberByEmail?.fellowship?.bacenta?.id,
-        council:
-          data.memberByEmail?.fellowship?.bacenta.constituency?.council.id,
-        constituency: data.memberByEmail?.fellowship?.bacenta.constituency?.id,
-        church: { church: church, subChurch: 'bacenta' },
-        stream_name: capitalise(data?.memberByEmail?.stream_name),
-        stream:
-          data.memberByEmail?.fellowship?.bacenta.constituency?.council.stream
-            .id,
-        noIncome:
-          data.memberByEmail?.fellowship?.bacenta.constituency?.council.stream
-            .gatheringService.noIncome,
-        gatheringService:
-          data.memberByEmail?.fellowship?.bacenta.constituency?.council.stream
-            .gatheringService.id,
-        oversight:
-          data.memberByEmail?.fellowship?.bacenta.constituency?.council.stream
-            .gatheringService.oversight.id,
-      })
-
-      sessionStorage.setItem('currentUser', JSON.stringify({ ...currentUser }))
-    },
-  })
+  const { theme, setTheme } = useContext(MemberContext)
 
   return (
     <Navbar

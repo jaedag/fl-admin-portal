@@ -29,14 +29,12 @@ const MemberTable = (props) => {
                 <div
                   className={`d-flex align-items-center card-border ${theme}`}
                 >
-                  {/* <div className="rounded-circle img-search-placeholder "> */}
                   <PlaceholderCustom
                     className="rounded-circle img-search-placeholder"
                     as="div"
                     xs={12}
                     loading={pageLoading}
                   />
-                  {/* </div> */}
 
                   <div className="flex-grow-1 ms-3">
                     <PlaceholderCustom
