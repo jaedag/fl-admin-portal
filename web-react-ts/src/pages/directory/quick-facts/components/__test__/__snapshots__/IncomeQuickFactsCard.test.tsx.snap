@@ -1,0 +1,78 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`matches snapshot 1`] = `
+<div
+  className="w-100 text-center quick-fact-card"
+  data-testid="incomeCard"
+>
+  <div
+    className="church-text"
+  >
+    Bacenta
+  </div>
+  <div
+    className="stat-text "
+  >
+     
+    Average Weekday 
+    <br />
+    Income
+     
+  </div>
+  <div
+    className="leader-text"
+  >
+    Edem Ahadzi
+  </div>
+  <div
+    className="branch-text"
+  >
+    Madina Bacenta Bacenta
+  </div>
+  <div
+    className="income-number"
+  >
+    <span
+      className="currency"
+    >
+      GHS 
+    </span>
+    2330
+  </div>
+  <div>
+    <span
+      className="badge-percentage-red mt-auto badge bg-red"
+    >
+      -63
+      %
+    </span>
+  </div>
+  <hr
+    className="separator"
+  />
+  <div
+    className="income-number"
+  >
+    <span
+      className="currency"
+    >
+      GHS 
+    </span>
+    6380
+  </div>
+  <div
+    className="average-text"
+  >
+    Average 
+    Bacenta
+     
+    <br />
+     Income
+  </div>
+  <div
+    className="higher-church-text"
+  >
+    Madina Council
+  </div>
+</div>
+`;

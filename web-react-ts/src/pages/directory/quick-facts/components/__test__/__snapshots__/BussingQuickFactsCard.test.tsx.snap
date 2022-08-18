@@ -1,0 +1,66 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`matches snapshot 1`] = `
+<div
+  className="w-100 text-center quick-fact-card"
+  data-testid="bussingCard"
+>
+  <div
+    className="church-text"
+  >
+    Bacenta
+  </div>
+  <div
+    className="stat-text "
+  >
+     Average 
+    Bussing
+     
+  </div>
+  <div
+    className="leader-text"
+  >
+    Edem Ahadzi
+  </div>
+  <div
+    className="branch-text"
+  >
+    Madina Bacenta Bacenta
+  </div>
+  <div
+    className="bussing-number"
+  >
+    23
+  </div>
+  <div>
+    <span
+      className="badge-percentage-red mt-auto badge bg-red"
+    >
+      -63
+      %
+    </span>
+  </div>
+  <hr
+    className="separator"
+  />
+  <div
+    className="bussing-number"
+  >
+    63
+  </div>
+  <div
+    className="average-text"
+  >
+    Average 
+    Bacenta
+     
+    <br />
+     Bussing
+  </div>
+  <div
+    className="higher-church-text"
+  >
+    Madina Council
+  </div>
+</div>
+`;

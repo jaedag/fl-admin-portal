@@ -34,7 +34,10 @@ const BussingQuickFactsCard = (props: BussingQuickFactsProps) => {
   }
 
   return (
-    <div className="w-100 text-center quick-fact-card">
+    <div
+      className="w-100 text-center quick-fact-card"
+      data-testid="bussingCard"
+    >
       <div className="church-text">{details?.churchType}</div>
       <div className="stat-text "> Average {details?.cardType} </div>
       <div className="leader-text">{details?.leadersName}</div>
