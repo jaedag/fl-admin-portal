@@ -34,7 +34,10 @@ const AttendanceQuickFactsCard = (props: AttendanceQuickFactsProps) => {
   }
 
   return (
-    <div className="w-100 text-center quick-fact-card">
+    <div
+      className="w-100 text-center quick-fact-card"
+      data-testid="attendanceCard"
+    >
       <div className="church-text">{details?.churchType}</div>
       <div className="stat-text ">
         Average Weekday <br />
