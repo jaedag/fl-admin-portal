@@ -29,10 +29,11 @@ const sendEmailsandSMS = async (
 ) => {
   const session = context.executionContext.session()
 
-  const overseersPhoneNumbers = []
-  const overseersEmailAdresses = []
-  const fellowshipPhoneNumbers = []
-  const fellowshipEmailAdresses = []
+  const overseersPhoneNumbers: string[] = []
+  const overseersEmailAdresses: string[] = []
+  const fellowshipPhoneNumbers: string[] = []
+  const fellowshipEmailAdresses: string[] = []
+
   const constituencyLeadersResponse = await session.run(
     getConstituencyOverseersEmailsAndNumbers,
     args
