@@ -500,7 +500,7 @@ extend type Constituency {
       RETURN COUNT(DISTINCT fellowships)
       """
     )
-  fellowshipEquipmentFilled: [Bacenta!]!
+  fellowshipEquipmentFilled: [Fellowship!]!
     @cypher(
       statement: """
       MATCH (this)
@@ -513,11 +513,11 @@ extend type Constituency {
        WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
        WITH DISTINCT fellowships, this
       MATCH (fellowships)<-[:HAS]-(bacentas:Bacenta)<-[:HAS]-(this)
-      RETURN DISTINCT bacentas
+      RETURN DISTINCT fellowships
       """
     )
 
-  fellowshipEquipmentNotFilled: [Bacenta!]!
+  fellowshipEquipmentNotFilled: [Fellowship!]!
     @cypher(
       statement: """
       MATCH (this)
@@ -533,7 +533,7 @@ extend type Constituency {
        MATCH (defaulters:Fellowship)<-[:HAS]-(bacentas:Bacenta)<-[:HAS]-(this)
        WHERE NOT defaulters IN filled
 
-      RETURN DISTINCT bacentas
+      RETURN DISTINCT defaulters
       """
     )
 
