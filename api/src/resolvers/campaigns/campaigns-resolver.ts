@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import { permitAdmin } from '../permissions'
 
 import {
@@ -6,13 +7,84 @@ import {
   createFellowshipEquipmentRecord,
   SetEquipmentDeadline,
   getEquipmentCampaign,
+  getConstituencyOverseersEmailsAndNumbers,
+  getFellowshipLeadersEmailsAndNumbers,
+  getEquipmentCampaignDate,
 } from './campaigns-cypher'
+
+import texts from '../texts.json'
 
 import { isAuth, rearrangeCypherObject, throwErrorMsg } from '../utils/utils'
 import { Context } from '../utils/neo4j-types'
 import { ChurchLevel } from '../utils/types'
+import { sendBulkEmail, sendBulkSMS } from '../utils/notify'
 
 const campaignsCypher = require('./campaigns-cypher')
+
+type Record = { keys: number[]; _fields: never[] }
+
+const sendEmailsandSMS = async (
+  args: { startDate: Date; endDate: Date; id: string; target: number },
+  context: Context
+) => {
+  const session = context.executionContext.session()
+
+  const overseersPhoneNumbers = []
+  const overseersEmailAdresses = []
+  const fellowshipPhoneNumbers = []
+  const fellowshipEmailAdresses = []
+  const constituencyLeadersResponse = await session.run(
+    getConstituencyOverseersEmailsAndNumbers,
+    args
+  )
+
+  const fellowshipLeadersResponse = await session.run(
+    getFellowshipLeadersEmailsAndNumbers,
+    args
+  )
+
+  constituencyLeadersResponse.records.forEach((record: Record) => {
+    overseersPhoneNumbers.push(record._fields[2])
+    overseersEmailAdresses.push(record._fields[1])
+  })
+
+  fellowshipLeadersResponse.records.forEach((record: Record) => {
+    fellowshipPhoneNumbers.push(record._fields[2])
+    fellowshipEmailAdresses.push(record._fields[1])
+  })
+
+  const equipmentDeadline = new Date(args.endDate)
+  const formattedDeadline = equipmentDeadline.toLocaleString('en-GB', {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    timeZone: 'UTC',
+  })
+
+  await Promise.all([
+    sendBulkSMS(fellowshipPhoneNumbers, texts.equipment.fellowship),
+    sendBulkSMS(overseersPhoneNumbers, texts.equipment.constituency),
+    sendBulkEmail(
+      overseersEmailAdresses,
+      'Equipment Campaign Data Collection Ongoing!',
+      undefined,
+      `<p>Hi Constituency Overseer,
+      <br/><br/>Please be informed that it is time for another Equipment Campaign Data Collection! Please ensure that you and your fellowship leaders have filled the appropirate forms. The deadline for filling these forms is <b>${formattedDeadline}</b>.
+      <br/><br/>When you log in, please go to Campaigns on your menu bar and follow the prompts to fill your details as a constituency overseer for equipment campaign.
+      <br/><br/>We encourage you to ensure that all forms are filled <b>by the deadline</b>. Thank you!</p>${texts.html.subscription}`
+    ),
+    sendBulkEmail(
+      fellowshipEmailAdresses,
+      'Equipment Campaign Data Collection Ongoing!',
+      undefined,
+      `<p>Hi Fellowship Leader,
+      <br/><br/>Please be informed that it is time for another Equipment Campaign Data Collection! Please ensure that you have filled the appropirate forms. The deadline for filling these forms is <b>${formattedDeadline}</b>.<br/>
+      <br/>When you log in, please go to Campaigns on your menu bar and follow the prompts to fill your details as a fellowship leader for equipment campaign
+      <br/><br/>We encourage you to ensure that all forms are filled <b>by the deadline</b>. Thank you!</p>${texts.html.subscription}`
+    ),
+  ])
+}
 
 export const campaignsMutation = {
   // Equipment Campaigns
@@ -25,6 +97,20 @@ export const campaignsMutation = {
     isAuth(permitAdmin('GatheringService'), context.auth.roles)
 
     try {
+      const equipmentCampaign = rearrangeCypherObject(
+        await session.run(getEquipmentCampaignDate, args)
+      )
+
+      const startDate = new Date(equipmentCampaign.campaign?.equipmentStartDate)
+      const newStartDate = new Date(args.startDate)
+
+      if (
+        typeof equipmentCampaign.campaign === 'undefined' ||
+        !(newStartDate.getTime() === startDate.getTime())
+      ) {
+        sendEmailsandSMS(args, context)
+      }
+
       const setEquipmentDuration = rearrangeCypherObject(
         await session.run(SetEquipmentDeadline, args)
       )

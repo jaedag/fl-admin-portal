@@ -161,3 +161,29 @@ RETURN {
     pulpits: record.pulpits
 } as constituencyEquipment
 `
+
+export const getConstituencyOverseersEmailsAndNumbers = `
+MATCH (this:GatheringService {id:$id})
+MATCH (this)-[:HAS]->(:Stream)-[:HAS]->(:Council)-[:HAS]->(constituencies:Constituency)<-[:LEADS]-(leader:Member)
+MATCH (leader) WHERE leader.email = "dabick14@gmail.com"
+RETURN (leader.firstName +' '+ leader.lastName) as leader, leader.email, leader.phoneNumber
+`
+export const getFellowshipLeadersEmailsAndNumbers = `
+MATCH (this:GatheringService {id:$id})
+MATCH (this)-[:HAS]->(:Stream)-[:HAS]->(:Council)-[:HAS]->(:Constituency)-[:HAS]->(:Bacenta)-[:HAS]->(fellowship:Fellowship)
+MATCH (fellowship)<-[:LEADS]-(leader:Member)
+MATCH (leader) WHERE leader.email = "dabick14@gmail.com"
+RETURN (leader.firstName +' '+ leader.lastName) as leader, leader.email, leader.phoneNumber
+`
+
+export const getEquipmentCampaignDate = `
+MATCH (gatheringService {id:$id})
+MATCH (date:EquipmentDate)
+WITH DISTINCT max(date.date) as latestEquipmentDate, gatheringService
+RETURN 
+    { 
+    equipmentDate: toString(latestEquipmentDate),
+    equipmentEndDate: toString(gatheringService.equipmentEndDate),
+    equipmentStartDate: toString(gatheringService.equipmentStartDate)
+    } as campaign
+`

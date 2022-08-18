@@ -1,9 +1,9 @@
 {
   "string": {
-    "subscription": "\n\nIf you do not understand this message or you believe it has been sent in error, kindly contact your bishop's admin for clarification.\n\nPlease do not respond to this email address as it is unmonitored and will not receive a reply.\n\nOn behalf of the Resident Bishop,\nRegards\nThe Administrator\nFirst Love Center HQ\nAccra"
+    "subscription": "\n\nIf you do not understand this message or you believe it has been sent in error, kindly contact your council admin for clarification.\n\nPlease do not respond to this email address as it is unmonitored and will not receive a reply.\n\nOn behalf of the Resident Bishop,\nRegards\nThe Administrator\nFirst Love Center HQ\nAccra"
   },
   "html": {
-    "subscription": "If you do not understand this message or you believe it has been sent in error, kindly contact your bishop's admin for clarification.<br/><br/>Please do not respond to this email address as it is unmonitored and will not receive a reply.<br/><br/>On behalf of the Resident Bishop,<br/>Regards<br/>The Administrator<br/>First Love Center HQ<br/>Accra",
+    "subscription": "If you do not understand this message or you believe it has been sent in error, kindly contact your council admin for clarification.<br/><br/>Please do not respond to this email address as it is unmonitored and will not receive a reply.<br/><br/>On behalf of the Resident Bishop,<br/>Regards<br/>The Administrator<br/>First Love Center HQ<br/>Accra",
     "helpdesk": "<b><a href='https://reports.firstlovecenter.com/helpdesk'>this website</a></b>"
   },
   "error": {
@@ -19,5 +19,9 @@
     "normal_top_up_p1": "We just counted your attendance at the terminal. You will receive a top up of ",
     "normal_top_up_p2": " GHS. Today's attendance was ",
     "normal_no_top_up": "We just counted your attendance at the terminal. Today you bussed "
+  },
+  "equipment": {
+    "fellowship": "Hi Fellowship Leader,\nNote: Equipment Campaign Data Collection is ongoing. You are required to fill forms on the Admin Portal. Check your mail for more info.",
+    "constituency": "Hi CO,\nNote: Equipment Campaign Data Collection is ongoing. You are required to fill forms on the Admin Portal. Check your mail for more info."
   }
 }
