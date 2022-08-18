@@ -61,7 +61,7 @@ export const sendBulkSMS = async (recipient: string[], message: string) => {
       'content-type': 'application/json',
     },
     data: {
-      recipient,
+      recipient: [process.env.TEST_PHONE_NUMBER] || recipient,
       sender: 'FLC Admin',
       message,
       is_schedule: 'false',
