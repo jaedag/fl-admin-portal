@@ -64,25 +64,25 @@ const sendEmailsandSMS = async (
   })
 
   await Promise.all([
-    sendBulkSMS(fellowshipPhoneNumbers, texts.equipment.fellowship),
-    sendBulkSMS(overseersPhoneNumbers, texts.equipment.constituency),
+    sendBulkSMS(
+      fellowshipPhoneNumbers,
+      texts.equipment.notify_fellowship_leaders_sms
+    ),
+    sendBulkSMS(
+      overseersPhoneNumbers,
+      texts.equipment.notify_constituency_overseers_sms
+    ),
     sendBulkEmail(
       overseersEmailAdresses,
       'Equipment Campaign Data Collection Ongoing!',
       undefined,
-      `<p>Hi Constituency Overseer,
-      <br/><br/>Please be informed that it is time for another Equipment Campaign Data Collection! Please ensure that you and your fellowship leaders have filled the appropirate forms. The deadline for filling these forms is <b>${formattedDeadline}</b>.
-      <br/><br/>When you log in, please go to Campaigns on your menu bar and follow the prompts to fill your details as a constituency overseer for equipment campaign.
-      <br/><br/>We encourage you to ensure that all forms are filled <b>by the deadline</b>. Thank you!</p>${texts.html.subscription}`
+      `<p>Hi ${texts.equipment.overseer_text},</p> ${texts.equipment.notify_constituency_overseers_email} <b>${formattedDeadline}</b> ${texts.equipment.notify_email_p1} ${texts.equipment.overseer_text}  ${texts.equipment.notify_email_p2}${texts.html.subscription}`
     ),
     sendBulkEmail(
       fellowshipEmailAdresses,
       'Equipment Campaign Data Collection Ongoing!',
       undefined,
-      `<p>Hi Fellowship Leader,
-      <br/><br/>Please be informed that it is time for another Equipment Campaign Data Collection! Please ensure that you have filled the appropirate forms. The deadline for filling these forms is <b>${formattedDeadline}</b>.<br/>
-      <br/>When you log in, please go to Campaigns on your menu bar and follow the prompts to fill your details as a fellowship leader for equipment campaign
-      <br/><br/>We encourage you to ensure that all forms are filled <b>by the deadline</b>. Thank you!</p>${texts.html.subscription}`
+      `<p>Hi ${texts.equipment.fellowship_text},</p> ${texts.equipment.notify_fellowship_leaders_email} <b>${formattedDeadline}</b> ${texts.equipment.notify_email_p1} ${texts.equipment.fellowship_text}  ${texts.equipment.notify_email_p2}${texts.html.subscription}`
     ),
   ])
 }
