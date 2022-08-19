@@ -121,11 +121,6 @@ export const BANKING_SLIP_SUBMISSION = gql`
         firstName
         lastName
       }
-      serviceLog {
-        fellowship {
-          id
-        }
-      }
     }
   }
 `

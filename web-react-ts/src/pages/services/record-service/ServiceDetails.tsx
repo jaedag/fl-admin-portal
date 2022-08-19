@@ -141,11 +141,13 @@ const ServiceDetails = ({ service, church, loading }: ServiceDetailsProps) => {
                     </div>
                   </>
                 )}{' '}
-                {!currentUser.noIncome && !service?.bankingProof && (
-                  <p className="fw-bold text-danger">
-                    You Have Not Submitted Your Banking Slip!!!
-                  </p>
-                )}
+                {!currentUser.noIncome &&
+                  !service?.bankingProof &&
+                  !service.bankingSlip && (
+                    <p className="fw-bold text-danger">
+                      You Have Not Submitted Your Banking Slip!!!
+                    </p>
+                  )}
                 <div className="d-grid gap-2">
                   <Button
                     className={`btn-graphs ${theme}`}
