@@ -8,6 +8,7 @@ import {
   throwErrorMsg,
 } from '../utils/utils'
 import {
+  aggregateServiceDataOnHigherChurches,
   checkCurrentServiceLog,
   checkFormFilledThisWeek,
   getServantAndChurch as getServantAndChurchCypher,
@@ -82,12 +83,17 @@ const serviceMutation = {
       throwErrorMsg(errorMessage.vacation_cannot_fill_service)
     }
 
-    const serviceDetails = rearrangeCypherObject(
-      await session.run(recordService, {
+    const cypherResponse = await Promise.all([
+      session.run(recordService, {
         ...args,
         auth: context.auth,
-      })
-    )
+      }),
+      session.run(aggregateServiceDataOnHigherChurches, {
+        ...args,
+      }),
+    ])
+
+    const serviceDetails = rearrangeCypherObject(cypherResponse[0])
 
     return serviceDetails.serviceRecord.properties
   },

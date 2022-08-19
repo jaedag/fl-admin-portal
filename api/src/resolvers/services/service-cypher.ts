@@ -38,6 +38,25 @@ CREATE (serviceRecord:ServiceRecord {created_at:datetime()})
       RETURN serviceRecord
 `
 
+export const aggregateServiceDataOnHigherChurches = `
+   MATCH (church {id: $churchId}) 
+   WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council
+   OR church:Stream OR church:GatheringService OR church:Oversight OR church:Denomination
+   MATCH (timeNode:TimeGraph {date: date($serviceDate)})
+   MATCH (church)<-[:HAS*1..7]-(higherChurch)
+   MATCH (higherChurch)-[:CURRENT_HISTORY]->(log:ServiceLog)
+   MERGE (log)-[:HAS_SERVICE]->(newRecord:ServiceRecord)-[:SERVICE_HELD_ON]->(timeNode)
+   ON CREATE SET
+       newRecord.id = apoc.create.uuid(),
+       newRecord.created_at = datetime(),
+       newRecord.attendance = $attendance,
+       newRecord.income = $income
+   ON MATCH SET 
+       newRecord.attendance = newRecord.attendance + $attendance,
+       newRecord.income = newRecord.income + $income
+   RETURN church, higherChurch, log, timeNode, newRecord
+`
+
 export const checkCurrentServiceLog = `
 MATCH (church {id:$churchId}) WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream
 MATCH (church)-[:CURRENT_HISTORY]->(log:ServiceLog)
