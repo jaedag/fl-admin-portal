@@ -7,7 +7,7 @@ import {
   throwErrorMsg,
 } from '../utils/utils'
 import { ChurchLevel, Member, Role, ServantType } from '../utils/types'
-import { sendEmail } from '../utils/notify'
+import { sendSingleEmail } from '../utils/notify'
 import { Context } from '../utils/neo4j-types'
 import {
   Auth0RoleObject,
@@ -119,7 +119,7 @@ export const MakeServant = async (
 
       await Promise.all([
         // Send Mail to the Person after Password Change Ticket has been generated
-        sendEmail(
+        sendSingleEmail(
           servant,
           'Your Account Has Been Created On The FL Admin Portal',
           undefined,
@@ -179,7 +179,7 @@ export const MakeServant = async (
         oldServant,
         church,
       }),
-      sendEmail(
+      sendSingleEmail(
         servant,
         'FL Servanthood Status Update',
         undefined,
@@ -258,7 +258,7 @@ export const RemoveServant = async (
         church,
       }),
       // Send a Mail to That Effect
-      sendEmail(
+      sendSingleEmail(
         servant,
         'You Have Been Removed!',
         undefined,
@@ -300,7 +300,7 @@ export const RemoveServant = async (
     })
 
     // Send a Mail to That Effect
-    sendEmail(
+    sendSingleEmail(
       servant,
       'Your Servant Account Has Been Deleted',
       undefined,
@@ -328,7 +328,7 @@ export const RemoveServant = async (
       authToken
     )
     // Send Email Using Mailgun
-    sendEmail(
+    sendSingleEmail(
       servant,
       'You Have Been Removed!',
       undefined,

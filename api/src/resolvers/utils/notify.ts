@@ -15,7 +15,7 @@ const mg = mailgun.client({
   key: process.env.MAILGUN_API_KEY,
 })
 
-export const sendEmail = (
+export const sendSingleEmail = (
   member: Member,
   subject: string,
   body?: string,
@@ -34,6 +34,25 @@ export const sendEmail = (
     .catch((err: any) => console.log('Mailgun API error', err)) // logs any error
 }
 
+export const sendBulkEmail = (
+  recipient: string[],
+  subject: string,
+  body?: string,
+  html?: string
+) => {
+  mg.messages
+    .create('mg.firstlovecenter.com', {
+      from: 'FL Accra Admin <no-reply@firstlovecenter.org>',
+      to: process.env.TEST_EMAIL_ADDRESS || recipient,
+      subject,
+      text: body,
+      template: '',
+      html: html || undefined, // HTML Version of the Message for Better Styling
+    })
+    .then((msg: any) => console.log('Mailgun API response', msg)) // logs response data
+    .catch((err: any) => console.log('Mailgun API error', err)) // logs any error
+}
+
 export const sendBulkSMS = async (recipient: string[], message: string) => {
   const sendMessage = {
     method: 'post',
@@ -42,7 +61,9 @@ export const sendBulkSMS = async (recipient: string[], message: string) => {
       'content-type': 'application/json',
     },
     data: {
-      recipient,
+      recipient: process.env.TEST_PHONE_NUMBER
+        ? [process.env.TEST_PHONE_NUMBER]
+        : recipient,
       sender: 'FLC Admin',
       message,
       is_schedule: 'false',
