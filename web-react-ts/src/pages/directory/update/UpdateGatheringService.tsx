@@ -15,7 +15,6 @@ import { DISPLAY_GATHERINGSERVICE } from '../display/ReadQueries'
 import {
   LOG_GATHERINGSERVICE_HISTORY,
   LOG_STREAM_HISTORY,
-  CREATE_HISTORY_SUBSTRUCTURE,
 } from './LogMutations'
 import { MAKE_GATHERINGSERVICE_LEADER } from './ChangeLeaderMutations'
 import GatheringServiceForm, {
@@ -113,7 +112,6 @@ const UpdateGatheringService = () => {
   const [CloseDownStream] = useMutation(MAKE_STREAM_INACTIVE)
 
   //Changes upwards. it. Changes to the Oversight the Gathering Service Campus is under
-  const [CreateHistorySubstructure] = useMutation(CREATE_HISTORY_SUBSTRUCTURE)
   const [RemoveGatheringServiceOversight] = useMutation(
     REMOVE_GATHERINGSERVICE_OVERSIGHT
   )
@@ -138,15 +136,7 @@ const UpdateGatheringService = () => {
             oldOversight: gatheringService?.oversight.id,
             historyRecord: recordIfOldOversight,
           },
-        }).then(() =>
-          CreateHistorySubstructure({
-            variables: {
-              churchType: 'GatheringService',
-              servantType: 'Leader',
-              churchId: gatheringServiceId,
-            },
-          })
-        )
+        })
       },
     }
   )
@@ -235,7 +225,6 @@ const UpdateGatheringService = () => {
         removeChurch: RemoveStreamGatheringService,
         addChurch: AddGatheringServicesStream,
         logChurchHistory: LogStreamHistory,
-        CreateHistorySubstructure: CreateHistorySubstructure,
       }
 
       const args = {

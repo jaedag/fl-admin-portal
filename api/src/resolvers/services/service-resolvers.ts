@@ -83,15 +83,19 @@ const serviceMutation = {
       throwErrorMsg(errorMessage.vacation_cannot_fill_service)
     }
 
+    const secondSession = context.executionContext.session()
     const cypherResponse = await Promise.all([
       session.run(recordService, {
         ...args,
         auth: context.auth,
       }),
-      session.run(aggregateServiceDataOnHigherChurches, {
+      secondSession.run(aggregateServiceDataOnHigherChurches, {
         ...args,
       }),
     ])
+
+    session.close()
+    secondSession.close()
 
     const serviceDetails = rearrangeCypherObject(cypherResponse[0])
 

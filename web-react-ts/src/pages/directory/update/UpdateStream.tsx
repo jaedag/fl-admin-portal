@@ -12,11 +12,7 @@ import {
 } from './UpdateMutations'
 import { ChurchContext } from '../../../contexts/ChurchContext'
 import { DISPLAY_STREAM } from '../display/ReadQueries'
-import {
-  LOG_STREAM_HISTORY,
-  LOG_COUNCIL_HISTORY,
-  CREATE_HISTORY_SUBSTRUCTURE,
-} from './LogMutations'
+import { LOG_STREAM_HISTORY, LOG_COUNCIL_HISTORY } from './LogMutations'
 import { MAKE_STREAM_LEADER } from './ChangeLeaderMutations'
 import StreamForm, {
   StreamFormValues,
@@ -98,7 +94,6 @@ const UpdateStream = () => {
   })
 
   //Changes upwards. it. Changes to the GatheringService the Stream Campus is under
-  const [CreateHistorySubstructure] = useMutation(CREATE_HISTORY_SUBSTRUCTURE)
   const [RemoveStreamGatheringService] = useMutation(
     REMOVE_STREAM_GATHERINGSERVICE
   )
@@ -121,15 +116,7 @@ const UpdateStream = () => {
           oldGatheringServiceId: stream?.gatheringService.id,
           historyRecord: recordIfOldGatheringService,
         },
-      }).then(() =>
-        CreateHistorySubstructure({
-          variables: {
-            churchType: 'Stream',
-            servantType: 'Leader',
-            churchId: streamId,
-          },
-        })
-      )
+      })
     },
   })
 
@@ -217,7 +204,6 @@ const UpdateStream = () => {
         removeChurch: RemoveCouncilStream,
         addChurch: AddStreamCouncils,
         logChurchHistory: LogCouncilHistory,
-        CreateHistorySubstructure: CreateHistorySubstructure,
       }
 
       const args = {

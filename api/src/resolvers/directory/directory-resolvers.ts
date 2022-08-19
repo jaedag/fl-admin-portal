@@ -1,13 +1,10 @@
 import axios from 'axios'
 import { Context } from '../utils/neo4j-types'
-import { ChurchLevel, Member, ServantType } from '../utils/types'
+import { Member } from '../utils/types'
 import { isAuth, rearrangeCypherObject, throwErrorMsg } from '../utils/utils'
 import { permitAdmin, permitLeaderAdmin } from '../permissions'
 import { RemoveServant } from './make-remove-servants'
-import CreateChurchHistorySubstructure, {
-  HistorySubstructureArgs,
-} from './history-substructure'
-import servantCypher from './servant-cypher'
+
 import { updateAuthUserConfig } from '../utils/auth0'
 import {
   makeMemberInactive,
@@ -243,37 +240,6 @@ const directoryMutation = {
       throwErrorMsg(error)
     }
     return null
-  },
-  CreateChurchSubstructure: async (
-    object: any,
-    args: {
-      churchId: string
-      churchType: ChurchLevel
-      servantType: ServantType
-    },
-    context: Context
-  ) => {
-    const session = context.executionContext.session()
-
-    const church = {
-      id: args.churchId,
-    }
-    const { churchType } = args
-    const { servantType } = args
-
-    const functionArguments: HistorySubstructureArgs = {
-      churchType,
-      servantType,
-      church,
-      session,
-    }
-
-    await session.run(servantCypher.newDuplicateServiceLog, {
-      id: church.id,
-    })
-    await CreateChurchHistorySubstructure(functionArguments)
-
-    return church.id
   },
 }
 

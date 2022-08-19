@@ -96,7 +96,6 @@ type Mutations = {
   removeChurch: MutationFunction
   addChurch: MutationFunction
   logChurchHistory: MutationFunction
-  CreateHistorySubstructure: MutationFunction
 }
 
 export const removeOldChurches = async (
@@ -185,14 +184,6 @@ export const addNewChurches = async (
           variables: {
             [`${churchLevel}Id`]: church.id,
             [`${higherChurch}Id`]: args[`${higherChurch}Id`],
-          },
-        })
-
-        await mutations.CreateHistorySubstructure({
-          variables: {
-            churchType: capitalise(higherChurch),
-            servantType: 'Leader',
-            churchId: args[`${higherChurch}Id`],
           },
         })
       })

@@ -12,11 +12,7 @@ import {
 } from './UpdateMutations'
 import { ChurchContext } from '../../../contexts/ChurchContext'
 import { DISPLAY_COUNCIL } from '../display/ReadQueries'
-import {
-  LOG_COUNCIL_HISTORY,
-  LOG_CONSTITUENCY_HISTORY,
-  CREATE_HISTORY_SUBSTRUCTURE,
-} from './LogMutations'
+import { LOG_COUNCIL_HISTORY, LOG_CONSTITUENCY_HISTORY } from './LogMutations'
 import { MAKE_COUNCIL_LEADER } from './ChangeLeaderMutations'
 import CouncilForm, {
   CouncilFormValues,
@@ -101,7 +97,6 @@ const UpdateCouncil = () => {
   })
 
   //Changes upwards. it. Changes to the Stream the Council Campus is under
-  const [CreateHistorySubstructure] = useMutation(CREATE_HISTORY_SUBSTRUCTURE)
   const [RemoveCouncilStream] = useMutation(REMOVE_COUNCIL_STREAM)
   const [AddCouncilStream] = useMutation(ADD_COUNCIL_STREAM, {
     onCompleted: (data) => {
@@ -120,15 +115,7 @@ const UpdateCouncil = () => {
           oldStreamId: council?.stream.id,
           historyRecord: recordIfOldStream,
         },
-      }).then(() =>
-        CreateHistorySubstructure({
-          variables: {
-            churchType: 'Council',
-            servantType: 'Leader',
-            churchId: councilId,
-          },
-        })
-      )
+      })
     },
   })
 
@@ -218,7 +205,6 @@ const UpdateCouncil = () => {
         removeChurch: RemoveConstituencyCouncil,
         addChurch: AddCouncilConstituencies,
         logChurchHistory: LogConstituencyHistory,
-        CreateHistorySubstructure: CreateHistorySubstructure,
       }
 
       const args = {

@@ -1,10 +1,4 @@
 extend type Mutation {
-  CreateChurchSubstructure(
-    churchType: String!
-    servantType: String!
-    churchId: ID!
-  ): ID!
-
   LogStreamHistory(
     streamId: ID!
     historyRecord: String!
@@ -166,51 +160,6 @@ extend type Mutation {
        WITH node WHERE node:Member
 
       RETURN node
-      """
-    )
-
-  ConnectChurchHistory(churchId: ID!): [ServiceLog!]!
-    @cypher(
-      statement: """
-      MATCH (church {id: $churchId})
-      WHERE church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:Sonta
-      MATCH (church)-[r:HAS_HISTORY]->(churchHistory:ServiceLog) WHERE r.current=true
-      MATCH (church)-[:HAS]->(downRelatedChurch)
-      MATCH (upRelatedChurch)-[:HAS]->(church)
-      MATCH (downRelatedChurch)-[r1:HAS_HISTORY]->(downHistory:ServiceLog) WHERE r1.current=true
-      MATCH (upRelatedChurch)-[r2:HAS_HISTORY]->(upHistory:ServiceLog) WHERE r2.current=true
-
-      MERGE (upHistory)-[:HAS_COMPONENT]->(churchHistory)
-      MERGE (churchHistory)-[:HAS_COMPONENT {direct: true}]->(downHistory)
-
-      RETURN churchHistory
-      """
-    )
-
-  ConnectFellowshipHistory(churchId: ID!): [ServiceLog!]!
-    @cypher(
-      statement: """
-      MATCH (church:Fellowship {id: $churchId})
-      MATCH (church)-[r:HAS_HISTORY]->(churchHistory:ServiceLog) WHERE r.current=true
-      MATCH (upRelatedChurch)-[:HAS]->(church)
-      MATCH (upRelatedChurch)-[r2:HAS_HISTORY]->(upHistory:ServiceLog) WHERE r2.current=true
-
-      MERGE (upHistory)-[:HAS_COMPONENT]->(churchHistory)
-
-      RETURN churchHistory
-      """
-    )
-  ConnectGatheringServiceHistory(churchId: ID!): [ServiceLog!]!
-    @cypher(
-      statement: """
-      MATCH (church:GatheringService {id: $churchId})
-      MATCH (church)-[r:HAS_HISTORY]-(churchHistory:ServiceLog) WHERE r.current=true
-      MATCH (downRelatedChurch)-[:HAS]->(church)
-      MATCH (downRelatedChurch)-[r2:HAS_HISTORY]->(downHistory:ServiceLog) WHERE r2.current=true
-
-      MERGE (churchHistory)-[:HAS_COMPONENT]->(downHistory)
-
-      RETURN churchHistory
       """
     )
 

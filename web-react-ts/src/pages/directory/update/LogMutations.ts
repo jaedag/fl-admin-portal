@@ -1,19 +1,5 @@
 import { gql } from '@apollo/client'
 
-export const CREATE_HISTORY_SUBSTRUCTURE = gql`
-  mutation CreateChurchSubstructure(
-    $churchType: String!
-    $servantType: String!
-    $churchId: ID!
-  ) {
-    CreateChurchSubstructure(
-      churchType: $churchType
-      servantType: $servantType
-      churchId: $churchId
-    )
-  }
-`
-
 export const LOG_FELLOWSHIP_HISTORY = gql`
   mutation LogFellowshipHistory(
     $fellowshipId: ID!

@@ -9,10 +9,7 @@ import {
 } from './UpdateMutations'
 import { ChurchContext } from '../../../contexts/ChurchContext'
 import { DISPLAY_FELLOWSHIP } from '../display/ReadQueries'
-import {
-  CREATE_HISTORY_SUBSTRUCTURE,
-  LOG_FELLOWSHIP_HISTORY,
-} from './LogMutations'
+import { LOG_FELLOWSHIP_HISTORY } from './LogMutations'
 import { MAKE_FELLOWSHIP_LEADER } from './ChangeLeaderMutations'
 import FellowshipForm, {
   FellowshipFormValues,
@@ -61,7 +58,6 @@ const UpdateFellowship = () => {
   const [SetFellowshipActive] = useMutation(SET_ACTIVE_FELLOWSHIP)
   const [RemoveFellowshipFromBacenta] = useMutation(REMOVE_FELLOWSHIP_BACENTA)
 
-  const [CreateHistorySubstructure] = useMutation(CREATE_HISTORY_SUBSTRUCTURE)
   const [AddFellowshipBacenta] = useMutation(ADD_FELLOWSHIP_BACENTA, {
     onCompleted: (data) => {
       //After Adding the fellowship to a bacenta, then you log that change.
@@ -74,14 +70,6 @@ const UpdateFellowship = () => {
           oldBacentaId: fellowship?.bacenta ? fellowship?.bacenta.id : null,
           historyRecord: `${initialValues.name} Fellowship has been moved from ${fellowship?.bacenta.name} Bacenta to ${data.updateFellowships.fellowships[0]?.bacenta.name} Bacenta`,
         },
-      }).then(() => {
-        return CreateHistorySubstructure({
-          variables: {
-            churchType: 'Fellowship',
-            servantType: 'Leader',
-            churchId: fellowshipId,
-          },
-        })
       })
     },
   })

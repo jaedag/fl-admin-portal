@@ -12,11 +12,7 @@ import {
 } from './UpdateMutations'
 import { ChurchContext } from '../../../contexts/ChurchContext'
 import { DISPLAY_CONSTITUENCY } from '../display/ReadQueries'
-import {
-  LOG_CONSTITUENCY_HISTORY,
-  LOG_BACENTA_HISTORY,
-  CREATE_HISTORY_SUBSTRUCTURE,
-} from './LogMutations'
+import { LOG_CONSTITUENCY_HISTORY, LOG_BACENTA_HISTORY } from './LogMutations'
 import { MAKE_CONSTITUENCY_LEADER } from './ChangeLeaderMutations'
 import ConstituencyForm, {
   ConstituencyFormValues,
@@ -97,7 +93,6 @@ const UpdateConstituency = () => {
   const [CloseDownBacenta] = useMutation(MAKE_BACENTA_INACTIVE)
 
   //Changes upwards. it. Changes to the Council the Constituency Campus is under
-  const [CreateHistorySubstructure] = useMutation(CREATE_HISTORY_SUBSTRUCTURE)
   const [RemoveConstituencyCouncil] = useMutation(REMOVE_CONSTITUENCY_COUNCIL)
   const [AddConstituencyCouncil] = useMutation(ADD_CONSTITUENCY_COUNCIL, {
     onCompleted: (data) => {
@@ -116,15 +111,7 @@ const UpdateConstituency = () => {
           oldCouncilId: initialValues?.council,
           historyRecord: recordIfOldCouncil,
         },
-      }).then(() =>
-        CreateHistorySubstructure({
-          variables: {
-            churchType: 'Constituency',
-            servantType: 'Leader',
-            churchId: constituencyId,
-          },
-        })
-      )
+      })
     },
   })
 
@@ -208,7 +195,6 @@ const UpdateConstituency = () => {
         removeChurch: RemoveBacentaConstituency,
         addChurch: AddConstituencyBacentas,
         logChurchHistory: LogBacentaHistory,
-        CreateHistorySubstructure: CreateHistorySubstructure,
       }
 
       const args = {

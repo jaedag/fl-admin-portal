@@ -11,7 +11,6 @@ import {
 } from '../utils/types'
 import { Context } from '../utils/neo4j-types'
 import { HistoryRecordArgs, historyRecordString } from './helper-functions'
-import CreateChurchHistorySubstructure from './history-substructure'
 import servantCypher from './servant-cypher'
 import {
   matchMemberQuery,
@@ -198,11 +197,4 @@ export const makeServantCypher = async ({
       })
       .catch((e: any) => throwErrorMsg(`Error Connecting History Log`, e))
   }
-
-  await CreateChurchHistorySubstructure({
-    churchType,
-    servantType,
-    church,
-    session,
-  })
 }
