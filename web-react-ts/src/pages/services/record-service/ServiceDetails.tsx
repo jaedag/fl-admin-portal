@@ -65,7 +65,9 @@ const ServiceDetails = ({ service, church, loading }: ServiceDetailsProps) => {
       </PlaceholderCustom>
       <PlaceholderCustom as="h6" loading={loading}>
         <HeadingSecondary>{`${church?.name} ${church?.__typename}`}</HeadingSecondary>
-        <p>{`Recorded by ${service?.created_by.fullName}`}</p>
+        {service?.created_by && (
+          <p>{`Recorded by ${service?.created_by?.fullName}`}</p>
+        )}
         {!currentUser.noIncome && service?.bankingSlipUploader && (
           <p className="fw-bold">{`Banking Slip Uploaded by ${service?.bankingSlipUploader.fullName}`}</p>
         )}
@@ -79,7 +81,7 @@ const ServiceDetails = ({ service, church, loading }: ServiceDetailsProps) => {
             <Row className="d-flex justify-content-center">
               <TableFromArrays tableArray={table} loading={loading} />
               <div className="text-center">
-                {!currentUser.noIncome && (
+                {!currentUser.noIncome && service?.treasurerSelfie && (
                   <>
                     <h6>Treasurer Selfie</h6>
                     <div>
@@ -97,20 +99,24 @@ const ServiceDetails = ({ service, church, loading }: ServiceDetailsProps) => {
                     </div>
                   </>
                 )}
-                <h6>Family Picture</h6>
-                <div>
-                  <PlaceholderCustom
-                    loading={loading}
-                    className="report-picture placeholder"
-                    xs={12}
-                  >
-                    <img
-                      className="report-picture"
-                      src={service.familyPicture}
-                      alt="service report"
-                    />
-                  </PlaceholderCustom>
-                </div>
+                {service.familyPicture && (
+                  <>
+                    <h6>Family Picture</h6>
+                    <div>
+                      <PlaceholderCustom
+                        loading={loading}
+                        className="report-picture placeholder"
+                        xs={12}
+                      >
+                        <img
+                          className="report-picture"
+                          src={service.familyPicture}
+                          alt="service report"
+                        />
+                      </PlaceholderCustom>
+                    </div>
+                  </>
+                )}
                 {!currentUser.noIncome && service?.offeringBankedBy && (
                   <div className="mb-4">
                     {`${service?.offeringBankedBy.fullName} used the Self Banking Feature. Click this button to see
@@ -143,7 +149,8 @@ const ServiceDetails = ({ service, church, loading }: ServiceDetailsProps) => {
                 )}{' '}
                 {!currentUser.noIncome &&
                   !service?.bankingProof &&
-                  !service.bankingSlip && (
+                  !service.bankingSlip &&
+                  service?.treasurerSelfie && (
                     <p className="fw-bold text-danger">
                       You Have Not Submitted Your Banking Slip!!!
                     </p>

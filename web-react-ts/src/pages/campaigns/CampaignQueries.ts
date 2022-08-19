@@ -92,7 +92,7 @@ export const STREAM_TRENDS = gql`
 `
 
 export const STREAM_BY_COUNCIL = gql`
-  query streamByCouncil($streamId: ID) {
+  query equipmentStreamByCouncil($streamId: ID) {
     streams(where: { id: $streamId }) {
       id
       name
@@ -139,7 +139,7 @@ export const COUNCIL_TRENDS = gql`
 `
 
 export const COUNCIL_BY_CONSTITUENCY = gql`
-  query councilByConstituency($councilId: ID) {
+  query equipmentCouncilByConstituency($councilId: ID) {
     councils(where: { id: $councilId }) {
       id
       name
@@ -213,7 +213,7 @@ export const CONSTITUENCY_LATEST_EQUIPMENT_RECORD = gql`
 `
 
 export const CONSTITUENCY_BY_BACENTA = gql`
-  query constituencyByBacenta($constituencyId: ID) {
+  query equipmentConstituencyByBacenta($constituencyId: ID) {
     constituencies(where: { id: $constituencyId }) {
       id
       name

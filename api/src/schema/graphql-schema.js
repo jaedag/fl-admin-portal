@@ -52,10 +52,6 @@ const quickFacts = fs
   .readFileSync(path.join(__dirname, './directory-quick-facts.graphql'))
   .toString('utf-8')
 
-const aggregates = fs
-  .readFileSync(path.join(__dirname, './aggregates.graphql'))
-  .toString('utf-8')
-
 const bankingAnagkazo = fs
   .readFileSync(path.join(__dirname, './banking-anagkazo.graphql'))
   .toString('utf-8')
@@ -76,7 +72,6 @@ const array = [
   arrivals,
   campaigns,
   quickFacts,
-  aggregates,
   servicesNoIncome,
   equipmentCampaign,
 ]

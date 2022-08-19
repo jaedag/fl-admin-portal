@@ -12,7 +12,7 @@ export const GATHERINGSERVICE_STREAM_SEARCH = gql`
   }
 `
 export const STREAM_COUNCIL_SEARCH = gql`
-  query streamCouncilSearch($id: ID!, $key: String!) {
+  query gatheringStreamCouncilSearch($id: ID!, $key: String!) {
     streams(where: { id: $id }) {
       id
       councilSearch(key: $key, limit: 5) {
@@ -24,7 +24,7 @@ export const STREAM_COUNCIL_SEARCH = gql`
 `
 
 export const STREAM_CONSTITUENCY_SEARCH = gql`
-  query streamConstituencySearch($id: ID!, $key: String!) {
+  query gatheringStreamConstituencySearch($id: ID!, $key: String!) {
     streams(where: { id: $id }) {
       id
       constituencySearch(key: $key, limit: 5) {
@@ -36,7 +36,7 @@ export const STREAM_CONSTITUENCY_SEARCH = gql`
 `
 
 export const COUNCIL_CONSTITUENCY_SEARCH = gql`
-  query councilConstituencySearch($id: ID!, $key: String!) {
+  query gatheringCouncilConstituencySearch($id: ID!, $key: String!) {
     councils(where: { id: $id }) {
       id
       constituencySearch(key: $key, limit: 5) {
@@ -48,7 +48,7 @@ export const COUNCIL_CONSTITUENCY_SEARCH = gql`
 `
 
 export const MEMBER_CONSTITUENCY_SEARCH = gql`
-  query memberConstituencySearch($id: ID!, $key: String!) {
+  query gatheringMemberConstituencySearch($id: ID!, $key: String!) {
     members(where: { id: $id }) {
       id
       constituencySearch(key: $key) {

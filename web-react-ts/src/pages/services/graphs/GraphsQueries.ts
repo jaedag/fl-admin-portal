@@ -57,11 +57,6 @@ export const BACENTA_GRAPHS = gql`
         }
       }
 
-      componentServiceAggregate {
-        week
-        attendance
-        income
-      }
       memberCount
     }
   }
@@ -105,15 +100,6 @@ export const CONSTITUENCY_GRAPHS = gql`
         }
       }
 
-      componentServiceAggregate {
-        week
-        attendance
-        income
-      }
-      componentBussingAggregate {
-        week
-        attendance
-      }
       memberCount
     }
   }
@@ -141,15 +127,6 @@ export const COUNCIL_GRAPHS = gql`
         }
       }
 
-      componentServiceAggregate {
-        week
-        attendance
-        income
-      }
-      componentBussingAggregate {
-        week
-        attendance
-      }
       memberCount
     }
   }
@@ -177,15 +154,6 @@ export const STREAM_GRAPHS = gql`
         }
       }
 
-      componentServiceAggregate {
-        week
-        attendance
-        income
-      }
-      componentBussingAggregate {
-        week
-        attendance
-      }
       memberCount
     }
   }
@@ -213,15 +181,6 @@ export const GATHERINGSERVICE_GRAPHS = gql`
         }
       }
 
-      componentServiceAggregate {
-        week
-        attendance
-        income
-      }
-      componentBussingAggregate {
-        week
-        attendance
-      }
       memberCount
     }
   }
@@ -248,14 +207,6 @@ export const OVERSIGHT_GRAPHS = gql`
         }
       }
 
-      componentServiceAggregate {
-        week
-        attendance
-      }
-      componentBussingAggregate {
-        week
-        attendance
-      }
       memberCount
     }
   }

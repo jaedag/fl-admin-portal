@@ -1,4 +1,3 @@
-import componentResolvers from './aggregates/component-resolvers'
 import MakeServantResolvers from './directory/make-servant-resolvers'
 import serviceNoIncomeMutations from './no-income/service-resolvers'
 import serviceMutation from './services/service-resolvers'
@@ -46,23 +45,18 @@ const resolvers = {
     ...campaignsResolvers.Fellowship,
   },
   Bacenta: {
-    ...componentResolvers.Bacenta,
     ...campaignsResolvers.Bacenta,
   },
   Constituency: {
-    ...componentResolvers.Constituency,
     ...campaignsResolvers.Constituency,
   },
   Council: {
-    ...componentResolvers.Council,
     ...campaignsResolvers.Council,
   },
   Stream: {
-    ...componentResolvers.Stream,
     ...campaignsResolvers.Stream,
   },
   GatheringService: {
-    ...componentResolvers.GatheringService,
     ...campaignsResolvers.GatheringService,
   },
   ...arrivalsResolvers,

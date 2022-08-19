@@ -49,12 +49,6 @@ export const SERVANT_BACENTA_LEADER = gql`
           income
           week
         }
-
-        componentServiceAggregate {
-          week
-          attendance
-          income
-        }
       }
     }
   }
@@ -81,12 +75,6 @@ export const SERVANT_CONSTITUENCY_LEADER = gql`
             date
           }
         }
-
-        componentServiceAggregate {
-          week
-          attendance
-          income
-        }
       }
     }
   }
@@ -110,12 +98,6 @@ export const SERVANT_COUNCIL_LEADER = gql`
             date
           }
         }
-
-        componentServiceAggregate {
-          week
-          attendance
-          income
-        }
       }
     }
   }
@@ -137,12 +119,6 @@ export const SERVANT_STREAM_LEADER = gql`
           serviceDate {
             date
           }
-        }
-
-        componentServiceAggregate {
-          week
-          attendance
-          income
         }
       }
     }
@@ -166,12 +142,6 @@ export const SERVANT_GATHERINGSERVICE_LEADER = gql`
             date
           }
         }
-
-        componentServiceAggregate {
-          week
-          attendance
-          income
-        }
       }
     }
   }
@@ -193,11 +163,6 @@ export const SERVANT_OVERSIGHT_LEADER = gql`
           serviceDate {
             date
           }
-        }
-
-        componentServiceAggregate {
-          week
-          attendance
         }
       }
     }
@@ -231,12 +196,6 @@ export const SERVANT_CONSTITUENCY_ADMIN = gql`
             date
           }
         }
-
-        componentServiceAggregate {
-          week
-          attendance
-          income
-        }
       }
     }
   }
@@ -267,12 +226,6 @@ export const SERVANT_COUNCIL_ADMIN = gql`
             date
           }
         }
-
-        componentServiceAggregate {
-          week
-          attendance
-          income
-        }
       }
     }
   }
@@ -302,12 +255,6 @@ export const SERVANTS_STREAM_ADMIN = gql`
             date
           }
         }
-
-        componentServiceAggregate {
-          week
-          attendance
-          income
-        }
       }
     }
   }
@@ -331,12 +278,6 @@ export const SERVANTS_GATHERINGSERVICE_ADMIN = gql`
             date
           }
         }
-
-        componentServiceAggregate {
-          week
-          attendance
-          income
-        }
       }
     }
   }
@@ -359,15 +300,6 @@ export const SERVANTS_OVERSIGHT_ADMIN = gql`
           serviceDate {
             date
           }
-        }
-        componentServiceAggregate {
-          week
-          attendance
-        }
-
-        componentBussingAggregate {
-          week
-          attendance
         }
       }
     }
@@ -399,12 +331,6 @@ export const SERVANTS_CONSTITUENCY_ARRIVALS_ADMIN = gql`
             date
           }
         }
-
-        componentServiceAggregate {
-          week
-          attendance
-          income
-        }
       }
     }
   }
@@ -435,12 +361,6 @@ export const SERVANTS_COUNCIL_ARRIVALS_ADMIN = gql`
             date
           }
         }
-
-        componentServiceAggregate {
-          week
-          attendance
-          income
-        }
       }
     }
   }
@@ -470,12 +390,6 @@ export const SERVANTS_STREAM_ARRIVALS_ADMIN = gql`
             date
           }
         }
-
-        componentServiceAggregate {
-          week
-          attendance
-          income
-        }
       }
     }
   }
@@ -498,12 +412,6 @@ export const SERVANTS_GATHERINGSERVICE_ARRIVALS_ADMIN = gql`
           serviceDate {
             date
           }
-        }
-
-        componentServiceAggregate {
-          week
-          attendance
-          income
         }
       }
     }

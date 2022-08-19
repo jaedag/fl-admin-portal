@@ -57,8 +57,6 @@ export const getServiceGraphData = (
   church:
     | {
         bussing: any[]
-        componentBussingAggregate: any[]
-        componentServiceAggregate: any[]
         services: any[]
       }
     | undefined,
@@ -118,11 +116,9 @@ export const getServiceGraphData = (
 
   if (category === 'bussing') {
     pushIntoData(church.bussing)
-    pushIntoData(church.componentBussingAggregate)
   }
   //Pushing in direct service data eg. Joint Services and Fellowship Services
   else {
-    pushIntoData(church.componentServiceAggregate) //Push in Service Aggregates
     pushIntoData(church.services)
   }
 
