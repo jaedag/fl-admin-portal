@@ -270,7 +270,7 @@ const churchCampaigns = async (church: ChurchLevel) => {
     case 'Constituency':
       return [
         'Equipment',
-        'AntiBrutish',
+        'Anti-Brutish',
         'Multiplication',
         'Swollen Sunday',
         'Telepastoring',
