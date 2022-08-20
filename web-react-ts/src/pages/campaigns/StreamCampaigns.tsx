@@ -34,7 +34,9 @@ const StreamCampaigns = () => {
               <MenuButton
                 key={index}
                 name={campaign}
-                onClick={() => navigate(`/campaigns/stream/equipment`)}
+                onClick={() =>
+                  navigate(`/campaigns/stream/${campaign.toLowerCase()}`)
+                }
               />
             ))}
           </div>
