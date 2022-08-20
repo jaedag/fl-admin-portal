@@ -72,30 +72,30 @@ const SetPermissions = ({ children }: { children: JSX.Element }) => {
 
   useEffect(() => {
     if (isAuthenticated && currentUser.roles.length) {
-      doNotUse.setOversightId(currentUser.oversight)
       if (!isAuthorised(permitMe('Oversight'))) {
-        doNotUse.setGatheringServiceId(currentUser.gatheringService)
+        doNotUse.setOversightId(currentUser.oversight)
 
         if (!isAuthorised(permitMe('GatheringService'))) {
+          doNotUse.setGatheringServiceId(currentUser.gatheringService)
           //if User is not a federal admin
-          doNotUse.setChurch(currentUser.church)
-          doNotUse.setStreamId(currentUser.stream)
 
           if (!isAuthorised(permitMe('Stream'))) {
+            doNotUse.setChurch(currentUser.church)
+            doNotUse.setStreamId(currentUser.stream)
             //User is not at the Stream Level
-            doNotUse.setCouncilId(currentUser.council)
             if (!isAuthorised(permitMe('Council'))) {
+              doNotUse.setCouncilId(currentUser.council)
               //User is not at the Council Level
-              doNotUse.setConstituencyId(currentUser.constituency)
 
-              // if (!isAuthorised(permitMe('Constituency'))) {
-              //User is not a Constituency Admin the he can only be looking at his bacenta membership
-              // doNotUse.setBacentaId(currentUser.bacenta)
-              // if (!isAuthorised(['leaderBacenta'])) {
-              //   //User is not a Bacenta Leader and he can only be looking at his fellowship membership
-              // doNotUse.setFellowshipId(currentUser.fellowship?.id)
-              // }
-              // }
+              if (!isAuthorised(permitMe('Constituency'))) {
+                //User is not a Constituency Admin the he can only be looking at his bacenta membership
+                doNotUse.setConstituencyId(currentUser.constituency)
+                // doNotUse.setBacentaId(currentUser.bacenta)
+                // if (!isAuthorised(['leaderBacenta'])) {
+                //   //User is not a Bacenta Leader and he can only be looking at his fellowship membership
+                // doNotUse.setFellowshipId(currentUser.fellowship?.id)
+                // }
+              }
             }
           }
         }
@@ -104,7 +104,7 @@ const SetPermissions = ({ children }: { children: JSX.Element }) => {
   }, [isAuthenticated, currentUser, isAuthorised, doNotUse])
 
   if (loading) {
-    return <InitialLoading text={'Retrieving your Church information...'} />
+    return <InitialLoading text={'Retrieving your church information...'} />
   }
 
   return (
