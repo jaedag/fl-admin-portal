@@ -144,22 +144,111 @@ MERGE (denominationLog)-[:HAS_SERVICE]->(record)
 RETURN denominationLog, record, timeNode LIMIT 4;
 
 
+
+
+
 // Record bacenta attendance  as aggregates on Constituency bussing record node
 MATCH (constituency:Constituency)-[:HAS_HISTORY]->(constituencyLog:ServiceLog)
 MATCH (constituencyLog)-[:HAS_COMPONENT]->(bacentaLog)-[:HAS_BUSSING]->(bacentaBussing:BussingRecord)-[:BUSSED_ON]->(timeNode:TimeGraph)
 
-WITH timeNode, constituencyLog, SUM(bacentaBussing.attendance) AS attendance
+WITH timeNode, constituencyLog, SUM(bacentaBussing.attendance) AS attendance, SUM(bacentaBussing.leaderDeclaration) AS leaderDeclaration,
+SUM(bacentaBussing.bussingCost) AS bussingCost
 MERGE (record:BussingRecord {id: apoc.create.uuid()})
 SET record.created_at = datetime(),
-record.attendance = attendance
+record.leaderDeclaration = leaderDeclaration,
+record.attendance = attendance,
+record.bussingCost = bussingCost
 
 WITH constituencyLog, record, timeNode
-
 MERGE (record)-[:BUSSED_ON]->(timeNode)
 MERGE (constituencyLog)-[:HAS_BUSSING]->(record)
-
-
 RETURN constituencyLog, record, timeNode LIMIT 4;
+
+// Record Constituency attendance as aggregates on Council bussing Record node
+MATCH (council:Council)-[:HAS_HISTORY]->(councilLog:ServiceLog)
+MATCH (councilLog)-[:HAS_COMPONENT]->(constituencyLog)-[:HAS_BUSSING]->(constituencyBussing:BussingRecord)-[:BUSSED_ON]->(timeNode:TimeGraph)
+
+WITH timeNode, councilLog, SUM(constituencyBussing.attendance) AS attendance, SUM(constituencyBussing.leaderDeclaration) AS leaderDeclaration,
+SUM(constituencyBussing.bussingCost) AS bussingCost
+MERGE (record:BussingRecord {id: apoc.create.uuid()})
+SET record.created_at = datetime(),
+record.leaderDeclaration = leaderDeclaration,
+record.attendance = attendance,
+record.bussingCost = bussingCost
+
+WITH councilLog, record, timeNode
+MERGE (record)-[:BUSSED_ON]->(timeNode)
+MERGE (councilLog)-[:HAS_BUSSING]->(record)
+RETURN councilLog, record, timeNode LIMIT 4;
+
+// Record Council attendance as aggregates on Stream bussing record node
+MATCH (stream:Stream)-[:HAS_HISTORY]->(streamLog:ServiceLog)
+MATCH (streamLog)-[:HAS_COMPONENT]->(councilLog)-[:HAS_BUSSING]->(councilBussing:BussingRecord)-[:BUSSED_ON]->(timeNode:TimeGraph)
+
+WITH timeNode, streamLog, SUM(councilBussing.attendance) AS attendance, SUM(councilBussing.leaderDeclaration) AS leaderDeclaration,
+SUM(councilBussing.bussingCost) AS bussingCost
+MERGE (record:BussingRecord {id: apoc.create.uuid()})
+SET record.created_at = datetime(),
+record.leaderDeclaration = leaderDeclaration,
+record.attendance = attendance,
+record.bussingCost = bussingCost
+
+WITH streamLog, record, timeNode
+MERGE (record)-[:BUSSED_ON]->(timeNode)
+MERGE (streamLog)-[:HAS_BUSSING]->(record)
+RETURN streamLog, record, timeNode LIMIT 4;
+
+// Record Stream attendance as aggregates on GatheringServcie bussing record node
+MATCH (gathering:GatheringService)-[:HAS_HISTORY]->(gatheringLog:ServiceLog)
+MATCH (gatheringLog)-[:HAS_COMPONENT]->(streamLog)-[:HAS_BUSSING]->(streamBussing:BussingRecord)-[:BUSSED_ON]->(timeNode:TimeGraph)
+
+WITH timeNode, gatheringLog, SUM(streamBussing.attendance) AS attendance, SUM(streamBussing.leaderDeclaration) AS leaderDeclaration,
+SUM(streamBussing.bussingCost) AS bussingCost
+MERGE (record:BussingRecord {id: apoc.create.uuid()})
+SET record.created_at = datetime(),
+record.leaderDeclaration = leaderDeclaration,
+record.attendance = attendance,
+record.bussingCost = bussingCost
+
+WITH gatheringLog, record, timeNode
+MERGE (record)-[:BUSSED_ON]->(timeNode)
+MERGE (gatheringLog)-[:HAS_BUSSING]->(record)
+RETURN gatheringLog, record, timeNode LIMIT 4;
+
+// Record GatheringService attendance as aggregates on Oversight bussing record node
+MATCH (oversight:Oversight)-[:HAS_HISTORY]->(oversightLog:ServiceLog)
+MATCH (oversightLog)-[:HAS_COMPONENT]->(gatheringLog)-[:HAS_BUSSING]->(gatheringBussing:BussingRecord)-[:BUSSED_ON]->(timeNode:TimeGraph)
+
+WITH timeNode, oversightLog, SUM(gatheringBussing.attendance) AS attendance, SUM(gatheringBussing.leaderDeclaration) AS leaderDeclaration,
+SUM(gatheringBussing.bussingCost) AS bussingCost
+MERGE (record:BussingRecord {id: apoc.create.uuid()})
+SET record.created_at = datetime(),
+record.leaderDeclaration = leaderDeclaration,
+record.attendance = attendance,
+record.bussingCost = bussingCost
+
+WITH oversightLog, record, timeNode
+MERGE (record)-[:BUSSED_ON]->(timeNode)
+MERGE (oversightLog)-[:HAS_BUSSING]->(record)
+RETURN oversightLog, record, timeNode LIMIT 4;
+
+// Record Oversight attendance as aggregates on Denomination bussing record node
+MATCH (denomination:Denomination)-[:HAS_HISTORY]->(denominationLog:ServiceLog)
+MATCH (denominationLog)-[:HAS_COMPONENT]->(oversightLog)-[:HAS_BUSSING]->(oversightBussing:BussingRecord)-[:BUSSED_ON]->(timeNode:TimeGraph)
+
+WITH timeNode, denominationLog, SUM(oversightBussing.attendance) AS attendance, SUM(oversightBussing.leaderDeclaration) AS leaderDeclaration,
+SUM(oversightBussing.bussingCost) AS bussingCost
+MERGE (record:BussingRecord {id: apoc.create.uuid()})
+SET record.created_at = datetime(),
+record.leaderDeclaration = leaderDeclaration,
+record.attendance = attendance,
+record.bussingCost = bussingCost
+
+WITH denominationLog, record, timeNode
+MERGE (record)-[:BUSSED_ON]->(timeNode)
+MERGE (denominationLog)-[:HAS_BUSSING]->(record)
+RETURN denominationLog, record, timeNode LIMIT 4;
+
 
 // DELTE all HAS_COMPONENT relatiionships
 //  MATCH (a)-[r:HAS_COMPONENT]->(b)

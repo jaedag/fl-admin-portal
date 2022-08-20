@@ -21,7 +21,7 @@ import ImageUpload from 'components/formik/ImageUpload'
 import RadioButtons from 'components/formik/RadioButtons'
 
 type FormOptions = {
-  attendance: string
+  leaderDeclaration: string
   vehicleCost: string
   personalContribution: string
   vehicle: string
@@ -34,7 +34,7 @@ const FormAddVehicleRecord = () => {
   const { bacentaId, clickCard } = useContext(ChurchContext)
   const { bussingRecordId } = useContext(ServiceContext)
   const initialValues: FormOptions = {
-    attendance: '',
+    leaderDeclaration: '',
     vehicleCost: '',
     personalContribution: '',
     vehicle: '',
@@ -56,7 +56,7 @@ const FormAddVehicleRecord = () => {
   const bacenta = data?.bacentas[0]
   const [RecordVehicleFromBacenta] = useMutation(RECORD_BUSSING_FROM_BACENTA)
   const validationSchema = Yup.object({
-    attendance: Yup.number()
+    leaderDeclaration: Yup.number()
       .typeError('Please enter a valid number')
       .positive()
       .integer('You cannot have attendance with decimals!')
@@ -80,7 +80,8 @@ const FormAddVehicleRecord = () => {
     try {
       const res = await RecordVehicleFromBacenta({
         variables: {
-          attendance: parseInt(values.attendance),
+          bacentaId,
+          leaderDeclaration: parseInt(values.leaderDeclaration),
           bussingRecordId: bussingRecordId,
           vehicleCost: parseFloat(values.vehicleCost),
           personalContribution: parseFloat(values.personalContribution),
@@ -130,7 +131,7 @@ const FormAddVehicleRecord = () => {
                     {parseDate(bacenta?.bussing[0].serviceDate.date)}
                   </HeadingPrimary>
 
-                  <Input name="attendance" label="Attendance*" />
+                  <Input name="leaderDeclaration" label="Attendance*" />
                   <Select
                     name="vehicle"
                     label="Type of Vehicle"

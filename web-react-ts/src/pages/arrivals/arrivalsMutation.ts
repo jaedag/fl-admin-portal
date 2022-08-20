@@ -172,8 +172,9 @@ export const UPLOAD_MOBILISATION_PICTURE = gql`
 
 export const RECORD_BUSSING_FROM_BACENTA = gql`
   mutation RecordVehicleFromBacenta(
+    $bacentaId: ID!
     $bussingRecordId: ID!
-    $attendance: Int!
+    $leaderDeclaration: Int!
     $vehicleCost: Float!
     $personalContribution: Float!
     $vehicle: String!
@@ -181,8 +182,9 @@ export const RECORD_BUSSING_FROM_BACENTA = gql`
     $outbound: Boolean!
   ) {
     RecordVehicleFromBacenta(
+      bacentaId: $bacentaId
       bussingRecordId: $bussingRecordId
-      attendance: $attendance
+      leaderDeclaration: $leaderDeclaration
       vehicleCost: $vehicleCost
       personalContribution: $personalContribution
       vehicle: $vehicle
@@ -247,8 +249,16 @@ export const CONFIRM_VEHICLE_BY_ADMIN = gql`
 `
 
 export const RECORD_ARRIVAL_TIME = gql`
-  mutation RecordArrivalTime($vehicleRecordId: ID!) {
-    RecordArrivalTime(vehicleRecordId: $vehicleRecordId) {
+  mutation RecordArrivalTime(
+    $vehicleRecordId: ID!
+    $bacentaId: ID!
+    $attendance: Int!
+  ) {
+    RecordArrivalTime(
+      vehicleRecordId: $vehicleRecordId
+      bacentaId: $bacentaId
+      attendance: $attendance
+    ) {
       id
       vehicleTopUp
       arrivalTime

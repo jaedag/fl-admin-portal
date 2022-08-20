@@ -164,3 +164,65 @@ RETURN vehicleRecord {
     .arrivalTime
    }
 `
+
+export const recordVehicleFromBacenta = `
+CREATE (vehicleRecord:VehicleRecord  {id: apoc.create.uuid()})
+WITH vehicleRecord
+MATCH (bussingRecord:BussingRecord {id: $bussingRecordId})
+MERGE (bussingRecord)-[:INCLUDES_RECORD]->(vehicleRecord)
+
+SET vehicleRecord.leaderDeclaration = $leaderDeclaration,
+vehicleRecord.created_at = datetime(),
+vehicleRecord.vehicleCost = $vehicleCost,
+vehicleRecord.personalContribution = $personalContribution,
+vehicleRecord.vehicle = $vehicle,
+vehicleRecord.picture =  $picture,
+vehicleRecord.outbound = $outbound
+
+WITH vehicleRecord, bussingRecord
+MATCH (leader:Member {auth_id: $auth.jwt.sub})
+MERGE (vehicleRecord)-[:LOGGED_BY]->(leader)
+
+WITH vehicleRecord, bussingRecord
+MATCH (bussingRecord)-[:INCLUDES_RECORD]->(vehicleRecords)
+WITH vehicleRecord, bussingRecord, sum(vehicleRecords.leaderDeclaration) as summedLeaderDeclaration, toFloat(SUM(vehicleRecords.personalContribution)) as summedPersonalContribution, toFloat(SUM(vehicleRecords.vehicleCost)) as summedVehicleCost
+SET bussingRecord.leaderDeclaration = summedLeaderDeclaration,
+bussingRecord.personalContribution = summedPersonalContribution,
+bussingRecord.bussingCost = summedVehicleCost
+
+RETURN vehicleRecord, bussingRecord, date().week AS week
+`
+
+export const aggregateLeaderBussingDataOnHigherChurches = `
+   MATCH (church {id: $bacentaId}) 
+   WHERE church:Bacenta OR church:Constituency OR church:Council
+   OR church:Stream OR church:GatheringService OR church:Oversight OR church:Denomination
+   MATCH (timeNode:TimeGraph {date: date()})
+   MATCH (church)<-[:HAS*1..7]-(higherChurch)
+   MATCH (higherChurch)-[:CURRENT_HISTORY]->(log:ServiceLog)
+   MERGE (log)-[:HAS_BUSSING]->(newRecord:BussingRecord)-[:BUSSED_ON]->(timeNode)
+   ON CREATE SET
+       newRecord.id = apoc.create.uuid(),
+       newRecord.created_at = datetime(),
+       newRecord.leaderDeclaration = $leaderDeclaration,
+       newRecord.bussingCost = $vehicleCost,
+       newRecord.personalContribution = $personalContribution
+   ON MATCH SET 
+       newRecord.leaderDeclaration = newRecord.leaderDeclaration + $leaderDeclaration,
+       newRecord.bussingCost = newRecord.bussingCost + $vehicleCost,
+       newRecord.personalContribution = newRecord.personalContribution + $personalContribution
+   RETURN church, higherChurch, log, timeNode, newRecord
+`
+
+export const aggregateConfirmedBussingDataOnHigherChurches = `
+   MATCH (church {id: $bacentaId}) 
+   WHERE church:Bacenta OR church:Constituency OR church:Council
+   OR church:Stream OR church:GatheringService OR church:Oversight OR church:Denomination
+   MATCH (timeNode:TimeGraph {date: date()})
+   MATCH (church)<-[:HAS*1..7]-(higherChurch)
+   MATCH (higherChurch)-[:CURRENT_HISTORY]->(log:ServiceLog)
+   MERGE (log)-[:HAS_BUSSING]->(newRecord:BussingRecord)-[:BUSSED_ON]->(timeNode)
+   ON MATCH SET 
+       newRecord.attendance = newRecord.attendance + $attendance
+   RETURN church, higherChurch, log, timeNode, newRecord
+`

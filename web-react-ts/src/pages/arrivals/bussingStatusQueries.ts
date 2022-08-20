@@ -374,6 +374,7 @@ export const STREAM_BACENTAS_TO_COUNT = gql`
             id
             attendance
             vehicle
+            arrivalTime
           }
         }
       }

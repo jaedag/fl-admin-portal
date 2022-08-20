@@ -121,6 +121,9 @@ const StateBacentasToCount = () => {
           )}
           {bacentaData?.map((bacenta: BacentaWithArrivals) =>
             bacenta.bussing[0].vehicleRecords.map((record, i) => {
+              if (record.arrivalTime) {
+                return null
+              }
               if (
                 !seeBusses &&
                 (record.vehicle === 'Sprinter' || record.vehicle === 'Urvan')

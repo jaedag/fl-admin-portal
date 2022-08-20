@@ -116,6 +116,8 @@ const FormAttendanceConfirmation = () => {
       }),
       RecordArrivalTime({
         variables: {
+          bacentaId,
+          attendance: parseInt(values.attendance),
           vehicleRecordId,
         },
       }),

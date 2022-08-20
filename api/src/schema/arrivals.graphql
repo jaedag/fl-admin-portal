@@ -1122,43 +1122,15 @@ extend type Mutation {
 
   #Bussing Records Entries
   RecordVehicleFromBacenta(
+    bacentaId: ID!
     bussingRecordId: ID!
-    attendance: Int!
+    leaderDeclaration: Int!
     vehicleCost: Float!
     personalContribution: Float!
     vehicle: String!
     picture: String!
     outbound: Boolean!
   ): VehicleRecord!
-    @cypher(
-      statement: """
-      CREATE (vehicleRecord:VehicleRecord  {id: apoc.create.uuid()})
-          WITH vehicleRecord
-      MATCH (bussingRecord:BussingRecord {id: $bussingRecordId})
-      MERGE (bussingRecord)-[:INCLUDES_RECORD]->(vehicleRecord)
-
-        SET vehicleRecord.leaderDeclaration = $attendance,
-        vehicleRecord.created_at = datetime(),
-        vehicleRecord.vehicleCost = $vehicleCost,
-        vehicleRecord.personalContribution = $personalContribution,
-        vehicleRecord.vehicle = $vehicle,
-        vehicleRecord.picture =  $picture,
-        vehicleRecord.outbound = $outbound
-
-       WITH vehicleRecord, bussingRecord
-        MATCH (leader:Member {auth_id: $auth.jwt.sub})
-        MERGE (vehicleRecord)-[:LOGGED_BY]->(leader)
-
-        WITH vehicleRecord, bussingRecord
-        MATCH (bussingRecord)-[:INCLUDES_RECORD]->(vehicleRecords)
-        WITH vehicleRecord, bussingRecord, sum(vehicleRecords.leaderDeclaration) as summedLeaderDeclaration, toFloat(SUM(vehicleRecords.personalContribution)) as summedPersonalContribution, toFloat(SUM(vehicleRecords.vehicleCost)) as summedVehicleCost
-        SET bussingRecord.leaderDeclaration = summedLeaderDeclaration,
-        bussingRecord.personalContribution = summedPersonalContribution,
-        bussingRecord.bussingCost = summedVehicleCost
-
-      RETURN vehicleRecord
-      """
-    )
 
   SetVehicleSupport(vehicleRecordId: ID!): VehicleRecord!
 
@@ -1198,7 +1170,11 @@ extend type Mutation {
       ]
     )
 
-  RecordArrivalTime(vehicleRecordId: ID!): VehicleRecord!
+  RecordArrivalTime(
+    vehicleRecordId: ID!
+    attendance: Int!
+    bacentaId: ID!
+  ): VehicleRecord!
   SetSwellDate(date: String!): TimeGraph!
   SendVehicleSupport(vehicleRecordId: ID!, stream_name: String!): VehicleRecord!
 }

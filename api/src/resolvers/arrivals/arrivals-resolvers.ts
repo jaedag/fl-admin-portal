@@ -16,12 +16,14 @@ import {
 import { MakeServant, RemoveServant } from '../directory/make-remove-servants'
 import { PaySwitchRequestBody } from '../banking/banking-types'
 import {
+  aggregateLeaderBussingDataOnHigherChurches,
   checkArrivalTimes,
   checkBacentaMomoDetails,
   checkTransactionId,
   getVehicleRecordWithDate,
   noVehicleTopUp,
   recordArrivalTime,
+  recordVehicleFromBacenta,
   removeVehicleRecordTransactionId,
   setSwellDate,
   setVehicleRecordTransactionId,
@@ -234,6 +236,73 @@ export const arrivalsMutation = {
       },
     }
 
+    return returnToCache
+  },
+  RecordVehicleFromBacenta: async (
+    object: never,
+    args: {
+      bacentaId: string
+      bussingRecordId: string
+      leaderDeclaration: number
+      vehicleCost: number
+      personalContribution: number
+      vehicle: string
+      picture: string
+      outbound: boolean
+    },
+    context: Context
+  ) => {
+    isAuth(['leaderBacenta'], context.auth.roles)
+    const session = context.executionContext.session()
+
+    const response = rearrangeCypherObject(
+      await session.run(recordVehicleFromBacenta, {
+        ...args,
+        auth: context.auth,
+      })
+    )
+
+    const secondResponse = rearrangeCypherObject(
+      await session.run(aggregateLeaderBussingDataOnHigherChurches, args)
+    )
+    const vehicleRecord = response.vehicleRecord.properties
+    const bacenta = secondResponse.church.properties
+    const date = secondResponse.timeNode.properties
+
+    const returnToCache = {
+      id: vehicleRecord.id,
+      leaderDeclaration: vehicleRecord.leaderDeclaration,
+      attendance: vehicleRecord.attendance,
+      vehicleCost: vehicleRecord.vehicleCost,
+      personalContribution: vehicleRecord.personalContribution,
+      vehicle: vehicleRecord.vehicle,
+      picture: vehicleRecord.picture,
+      outbound: vehicleRecord.outbound,
+      bussingRecord: {
+        serviceLog: {
+          bacenta: [
+            {
+              id: bacenta.id,
+              stream_name: response.stream_name,
+              bussing: [
+                {
+                  id: vehicleRecord.id,
+                  serviceDate: {
+                    date: date.date,
+                  },
+                  week: response.week,
+                  vehicleCost: vehicleRecord.vehicleCost,
+                  personalContribution: vehicleRecord.personalContribution,
+                  vehicle: vehicleRecord.vehicle,
+                  picture: vehicleRecord.picture,
+                  outbound: vehicleRecord.outbound,
+                },
+              ],
+            },
+          ],
+        },
+      },
+    }
     return returnToCache
   },
   SetVehicleSupport: async (
@@ -472,7 +541,11 @@ export const arrivalsMutation = {
 
     return response
   },
-  RecordArrivalTime: async (object: any, args: any, context: Context) => {
+  RecordArrivalTime: async (
+    object: any,
+    args: { vehicleRecordId: string; bacentaId: string; attendance: number },
+    context: Context
+  ) => {
     isAuth(permitArrivalsCounter(), context.auth.roles)
     const session = context.executionContext.session()
 
