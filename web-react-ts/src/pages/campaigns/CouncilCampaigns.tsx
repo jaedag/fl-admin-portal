@@ -34,7 +34,9 @@ const CouncilCampaigns = () => {
               <MenuButton
                 key={index}
                 name={campaign}
-                onClick={() => navigate(`/campaigns/council/equipment`)}
+                onClick={() =>
+                  navigate(`/campaigns/council/${campaign.toLowerCase()}`)
+                }
               />
             ))}
           </div>

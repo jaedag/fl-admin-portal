@@ -28,6 +28,23 @@ import BacentaByFellowship from './equipment/bacenta/BacentaByFellowship'
 import GatheringServiceEquipmentDeadline from './equipment/gathering-service/GatheringServiceEquipmentDeadline'
 import { permitLeaderAdmin } from 'permission-utils'
 import GatheringServiceEquipmentCampaign from './equipment/gathering-service/GatheringServiceEquipmentCampaign'
+import GatheringServiceAntiBrutishCampaign from './anti-brutish/gathering-service/GatheringServiceAntiBrutishCampaign'
+import GatheringServiceMultiplicationCampaign from './multiplication/gathering-service/GatheringServiceMultiplicationCampaign'
+import GatheringServiceSwollenSundayCampaign from './swollen-sunday/gathering-service/GatheringServiceSwollenSundayCampaign'
+import GatheringServiceTelepastoringCampaign from './telepastoring/gathering-service/GatheringServiceTelepastoringCampaign'
+import StreamAntiBrutishCampaign from './anti-brutish/stream/StreamAntiBrutishCampaign'
+import StreamMultiplicationCampaign from './multiplication/stream/StreamMultiplicationCampaign'
+import StreamSwollenSundayCampaign from './swollen-sunday/stream/StreamSwollenSundayCampaign'
+import StreamTelepastoringCampaign from './telepastoring/stream/StreamTelepastoringCampaign'
+import CouncilAntiBrutishCampaign from './anti-brutish/council/CouncilAntiBrutishCampaign'
+import CouncilMultiplicationCampaign from './multiplication/council/CouncilMultiplicationCampaign'
+import CouncilTelepastoringCampaign from './telepastoring/council/CouncilTelepastoringCampaign'
+import CouncilSwollenSundayCampaign from './swollen-sunday/council/CouncilSwollenSundayCampaign'
+import ConstituencyAntiBrutishCampaign from './anti-brutish/constituency/ConstituencyAntiBrutishCampaign'
+import ConstituencyMultiplicationCampaign from './multiplication/constituency/ConstituencyMultiplicationCampaign'
+import ConstituencyTelepastoringCampaign from './telepastoring/constituency/ConstituencyTelepastoringCampaign'
+import ConstituencySwollenSundayCampaign from './swollen-sunday/constituency/ConstituencySwollenSundayCampaign'
+import BacentaSwollenSundayCampaign from './swollen-sunday/bacenta/BacentaSwollenSundayCampaign'
 
 export const campaigns = [
   //gathering-service routes
@@ -61,6 +78,30 @@ export const campaigns = [
     roles: permitLeaderAdmin('GatheringService'),
     placeholder: true,
   },
+  {
+    path: '/campaigns/gathering-service/anti-brutish',
+    element: GatheringServiceAntiBrutishCampaign,
+    roles: permitLeaderAdmin('GatheringService'),
+    placeholder: true,
+  },
+  {
+    path: '/campaigns/gathering-service/multiplication',
+    element: GatheringServiceMultiplicationCampaign,
+    roles: permitLeaderAdmin('GatheringService'),
+    placeholder: true,
+  },
+  {
+    path: '/campaigns/gathering-service/swollen%20sunday',
+    element: GatheringServiceSwollenSundayCampaign,
+    roles: permitLeaderAdmin('GatheringService'),
+    placeholder: true,
+  },
+  {
+    path: '/campaigns/gathering-service/telepastoring',
+    element: GatheringServiceTelepastoringCampaign,
+    roles: permitLeaderAdmin('GatheringService'),
+    placeholder: true,
+  },
 
   //stream routes
   {
@@ -87,6 +128,30 @@ export const campaigns = [
     roles: permitLeaderAdmin('Stream'),
     placeholder: true,
   },
+  {
+    path: '/campaigns/stream/anti-brutish',
+    element: StreamAntiBrutishCampaign,
+    roles: permitLeaderAdmin('Stream'),
+    placeholder: true,
+  },
+  {
+    path: '/campaigns/stream/multiplication',
+    element: StreamMultiplicationCampaign,
+    roles: permitLeaderAdmin('Stream'),
+    placeholder: true,
+  },
+  {
+    path: '/campaigns/stream/swollen%20sunday',
+    element: StreamSwollenSundayCampaign,
+    roles: permitLeaderAdmin('Stream'),
+    placeholder: true,
+  },
+  {
+    path: '/campaigns/stream/telepastoring',
+    element: StreamTelepastoringCampaign,
+    roles: permitLeaderAdmin('Stream'),
+    placeholder: true,
+  },
 
   //council routes
   {
@@ -110,6 +175,30 @@ export const campaigns = [
   {
     path: '/campaigns/equipment/council/constituency',
     element: CouncilByConstituency,
+    roles: permitLeaderAdmin('Council'),
+    placeholder: true,
+  },
+  {
+    path: '/campaigns/council/anti-brutish',
+    element: CouncilAntiBrutishCampaign,
+    roles: permitLeaderAdmin('Council'),
+    placeholder: true,
+  },
+  {
+    path: '/campaigns/council/multiplication',
+    element: CouncilMultiplicationCampaign,
+    roles: permitLeaderAdmin('Council'),
+    placeholder: true,
+  },
+  {
+    path: '/campaigns/council/swollen%20sunday',
+    element: CouncilSwollenSundayCampaign,
+    roles: permitLeaderAdmin('Council'),
+    placeholder: true,
+  },
+  {
+    path: '/campaigns/council/telepastoring',
+    element: CouncilTelepastoringCampaign,
     roles: permitLeaderAdmin('Council'),
     placeholder: true,
   },
@@ -151,6 +240,30 @@ export const campaigns = [
     roles: permitLeaderAdmin('Constituency'),
     placeholder: true,
   },
+  {
+    path: '/campaigns/constituency/anti-brutish',
+    element: ConstituencyAntiBrutishCampaign,
+    roles: permitLeaderAdmin('Constituency'),
+    placeholder: true,
+  },
+  {
+    path: '/campaigns/constituency/multiplication',
+    element: ConstituencyMultiplicationCampaign,
+    roles: permitLeaderAdmin('Constituency'),
+    placeholder: true,
+  },
+  {
+    path: '/campaigns/constituency/swollen%20sunday',
+    element: ConstituencySwollenSundayCampaign,
+    roles: permitLeaderAdmin('Constituency'),
+    placeholder: true,
+  },
+  {
+    path: '/campaigns/constituency/telepastoring',
+    element: ConstituencyTelepastoringCampaign,
+    roles: permitLeaderAdmin('Constituency'),
+    placeholder: true,
+  },
 
   //bacenta routes
   {
@@ -174,6 +287,12 @@ export const campaigns = [
   {
     path: '/campaigns/equipment/bacenta/fellowship',
     element: BacentaByFellowship,
+    roles: permitLeaderAdmin('Bacenta'),
+    placeholder: true,
+  },
+  {
+    path: '/campaigns/bacenta/swollen%20sunday',
+    element: BacentaSwollenSundayCampaign,
     roles: permitLeaderAdmin('Bacenta'),
     placeholder: true,
   },

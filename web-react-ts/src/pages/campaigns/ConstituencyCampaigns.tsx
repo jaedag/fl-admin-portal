@@ -34,7 +34,9 @@ const ConstituencyCampaigns = () => {
               <MenuButton
                 key={index}
                 name={campaign}
-                onClick={() => navigate(`/campaigns/constituency/equipment`)}
+                onClick={() =>
+                  navigate(`/campaigns/constituency/${campaign.toLowerCase()}`)
+                }
               />
             ))}
           </div>
