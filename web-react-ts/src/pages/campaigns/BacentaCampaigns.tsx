@@ -34,7 +34,9 @@ const BacentaCampaigns = () => {
               <MenuButton
                 key={index}
                 name={campaign}
-                onClick={() => navigate(`/campaigns/bacenta/equipment`)}
+                onClick={() =>
+                  navigate(`/campaigns/bacenta/${campaign.toLowerCase()}`)
+                }
               />
             ))}
           </div>

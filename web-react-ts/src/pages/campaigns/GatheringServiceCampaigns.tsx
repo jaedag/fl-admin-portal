@@ -35,7 +35,9 @@ const GatheringServiceCampaigns = () => {
                 key={index}
                 name={campaign}
                 onClick={() =>
-                  navigate(`/campaigns/gathering-service/equipment`)
+                  navigate(
+                    `/campaigns/gathering-service/${campaign.toLowerCase()}`
+                  )
                 }
               />
             ))}
