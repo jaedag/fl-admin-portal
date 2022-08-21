@@ -230,6 +230,37 @@ export const CONSTITUENCY_BY_BACENTA = gql`
   }
 `
 
+export const CONSTITUENCY_EQUIPMENT_DEFAULTERS_NUMBER_BY_FELLOWSHIP = gql`
+  query equipmentConstituencyDefaultersNumberByFellowship($constituencyId: ID) {
+    constituencies(where: { id: $constituencyId }) {
+      id
+      fellowshipEquipmentFilledCount
+      fellowshipEquipmentNotFilledCount
+    }
+  }
+`
+
+export const CONSTITUENCY_EQUIPMENT_DEFAULTERS_LIST = gql`
+  query equipmentConstituencyDefaultersList($constituencyId: ID) {
+    constituencies(where: { id: $constituencyId }) {
+      id
+      fellowshipEquipmentFilledCount
+      fellowshipEquipmentNotFilledCount
+      fellowshipEquipmentNotFilled {
+        id
+        name
+        leader {
+          id
+          firstName
+          lastName
+          phoneNumber
+          whatsappNumber
+        }
+      }
+    }
+  }
+`
+
 //Bacenta Queries and Mutation
 export const BACENTA_CAMPAIGN_LIST = gql`
   query bacentaCampaigns($bacentaId: ID) {

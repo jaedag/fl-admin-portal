@@ -41,7 +41,7 @@
 }
 
 .progress {
-   height: 13px; 
+  height: 13px;
   position: relative;
 }
 
@@ -70,4 +70,8 @@
 
 .menu-padding {
   padding: 19px 58px;
+}
+
+.defaulters-number {
+  font-size: 50px;
 }
