@@ -79,10 +79,10 @@ extend type GatheringService {
       MATCH (n:EquipmentDate)
       WITH max(n.date) as latestEquipmentDate, this
       MATCH (date:EquipmentDate {date:latestEquipmentDate})
-      MATCH (date)<-[:HAS_EQUIPMENT_DATE]-(record:EquipmentRecord)
+      OPTIONAL MATCH (date)<-[:HAS_EQUIPMENT_DATE]-(record:EquipmentRecord)
        WITH DISTINCT date, this, record
 
-      MATCH (record)<-[:HAS_EQUIPMENT_RECORD]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships:Active:Fellowship)
+      OPTIONAL MATCH (record)<-[:HAS_EQUIPMENT_RECORD]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships:Active:Fellowship)
 
        WITH collect(DISTINCT fellowships) as filled, this
        MATCH (defaulters:Fellowship)<-[:HAS]-(bacenta:Bacenta)<-[:HAS]-(constituency:Constituency)<-[:HAS]-(:Council)<-[:HAS]-(:Stream)<-[:HAS]-(this)
@@ -99,16 +99,16 @@ extend type GatheringService {
       MATCH (n:EquipmentDate)
       WITH max(n.date) as latestEquipmentDate, this
       MATCH (date:EquipmentDate {date:latestEquipmentDate})
-      MATCH (date)<-[:HAS_EQUIPMENT_DATE]-(record:EquipmentRecord)
+      OPTIONAL MATCH (date)<-[:HAS_EQUIPMENT_DATE]-(record:EquipmentRecord)
        WITH DISTINCT date, this, record
 
-      MATCH (record)<-[:HAS_EQUIPMENT_RECORD]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships:Active:Fellowship)
+      OPTIONAL MATCH (record)<-[:HAS_EQUIPMENT_RECORD]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships:Active:Fellowship)
 
        WITH collect(DISTINCT fellowships) as filled, this
        MATCH (defaulters:Fellowship)<-[:HAS]-(bacenta:Bacenta)<-[:HAS]-(constituency:Constituency)<-[:HAS]-(:Council)<-[:HAS]-(:Stream)<-[:HAS]-(this)
        WHERE NOT defaulters IN filled
 
-      RETURN COUNT(DISTINCT defaulters)
+      RETURN  COUNT(DISTINCT defaulters)
       """
     )
 
@@ -119,9 +119,9 @@ extend type GatheringService {
       MATCH (n:EquipmentDate)
       WITH max(n.date) as latestEquipmentDate, this
       MATCH (date:EquipmentDate {date:latestEquipmentDate})
-      MATCH (date)<-[:HAS_EQUIPMENT_DATE]-(record:EquipmentRecord)
+      OPTIONAL MATCH (date)<-[:HAS_EQUIPMENT_DATE]-(record:EquipmentRecord)
        WITH DISTINCT date, this, record
-       MATCH (record)<-[:HAS_EQUIPMENT_RECORD]-(:ServiceLog)<-[:HAS_HISTORY]-(constituencies) WHERE constituencies:Constituency OR constituencies:ClosedConstituency
+       OPTIONAL MATCH (record)<-[:HAS_EQUIPMENT_RECORD]-(:ServiceLog)<-[:HAS_HISTORY]-(constituencies) WHERE constituencies:Constituency OR constituencies:ClosedConstituency
        WITH DISTINCT constituencies, this
        MATCH (constituencies)<-[:HAS]-(:Council)<-[:HAS]-(:Stream)<-[:HAS]-(this)
       RETURN COUNT(DISTINCT constituencies)
@@ -134,9 +134,9 @@ extend type GatheringService {
       MATCH (n:EquipmentDate)
       WITH max(n.date) as latestEquipmentDate, this
       MATCH (date:EquipmentDate {date:latestEquipmentDate})
-      MATCH (date)<-[:HAS_EQUIPMENT_DATE]-(record:EquipmentRecord)
+      OPTIONAL MATCH (date)<-[:HAS_EQUIPMENT_DATE]-(record:EquipmentRecord)
        WITH DISTINCT date, this, record
-       MATCH (record)<-[:HAS_EQUIPMENT_RECORD]-(:ServiceLog)<-[:HAS_HISTORY]-(constituencies)
+       OPTIONAL MATCH (record)<-[:HAS_EQUIPMENT_RECORD]-(:ServiceLog)<-[:HAS_HISTORY]-(constituencies)
        WHERE constituencies:Constituency OR constituencies:ClosedConstituency
        WITH DISTINCT constituencies, this
        MATCH (constituencies)<-[:HAS]-(:Council)<-[:HAS]-(:Stream)<-[:HAS]-(this)
@@ -151,10 +151,10 @@ extend type GatheringService {
       MATCH (n:EquipmentDate)
       WITH max(n.date) as latestEquipmentDate, this
       MATCH (date:EquipmentDate {date:latestEquipmentDate})
-      MATCH (date)<-[:HAS_EQUIPMENT_DATE]-(record:EquipmentRecord)
+      OPTIONAL MATCH (date)<-[:HAS_EQUIPMENT_DATE]-(record:EquipmentRecord)
        WITH DISTINCT date, this, record
 
-      MATCH (record)<-[:HAS_EQUIPMENT_RECORD]-(:ServiceLog)<-[:HAS_HISTORY]-(constituencies:Constituency)
+      OPTIONAL MATCH (record)<-[:HAS_EQUIPMENT_RECORD]-(:ServiceLog)<-[:HAS_HISTORY]-(constituencies:Constituency)
 
        WITH collect(DISTINCT constituencies) as filled, this
        MATCH (defaulters:Constituency)<-[:HAS]-(:Council)<-[:HAS]-(:Stream)<-[:HAS]-(this)
@@ -171,10 +171,10 @@ extend type GatheringService {
       MATCH (n:EquipmentDate)
       WITH max(n.date) as latestEquipmentDate, this
       MATCH (date:EquipmentDate {date:latestEquipmentDate})
-      MATCH (date)<-[:HAS_EQUIPMENT_DATE]-(record:EquipmentRecord)
+      OPTIONAL MATCH (date)<-[:HAS_EQUIPMENT_DATE]-(record:EquipmentRecord)
        WITH DISTINCT date, this, record
 
-      MATCH (record)<-[:HAS_EQUIPMENT_RECORD]-(:ServiceLog)<-[:HAS_HISTORY]-(constituencies:Constituency)
+      OPTIONAL MATCH (record)<-[:HAS_EQUIPMENT_RECORD]-(:ServiceLog)<-[:HAS_HISTORY]-(constituencies:Constituency)
 
        WITH collect(DISTINCT constituencies) as filled, this
        MATCH (defaulters:Constituency)<-[:HAS]-(:Council)<-[:HAS]-(:Stream)<-[:HAS]-(this)
@@ -194,9 +194,9 @@ extend type Stream {
       MATCH (n:EquipmentDate)
       WITH max(n.date) as latestEquipmentDate, this
       MATCH (date:EquipmentDate {date:latestEquipmentDate})
-      MATCH (date)<-[:HAS_EQUIPMENT_DATE]-(record:EquipmentRecord)
+      OPTIONAL MATCH (date)<-[:HAS_EQUIPMENT_DATE]-(record:EquipmentRecord)
        WITH DISTINCT date, this
-       MATCH (record)<-[:HAS_EQUIPMENT_RECORD]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships)
+       OPTIONAL MATCH (record)<-[:HAS_EQUIPMENT_RECORD]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships)
        WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
        WITH DISTINCT fellowships, this
       MATCH (fellowships)<-[:HAS]-(:Bacenta)<-[:HAS]-(:Constituency)<-[:HAS]-(:Council)<-[:HAS]-(this)
@@ -206,17 +206,17 @@ extend type Stream {
   fellowshipEquipmentFilled: [Fellowship!]!
     @cypher(
       statement: """
-      MATCH (this)
-      MATCH (n:EquipmentDate)
-      WITH max(n.date) as latestEquipmentDate, this
-      MATCH (date:EquipmentDate {date:latestEquipmentDate})
-      MATCH (date)<-[:HAS_EQUIPMENT_DATE]-(record:EquipmentRecord)
-       WITH DISTINCT date, this
-       MATCH (record)<-[:HAS_EQUIPMENT_RECORD]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships)
-       WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
-       WITH DISTINCT fellowships, this
-      MATCH (fellowships)<-[:HAS]-(:Bacenta)<-[:HAS]-(:Constituency)<-[:HAS]-(:Council)<-[:HAS]-(this)
-      RETURN DISTINCT fellowships
+       MATCH (this)
+       MATCH (n:EquipmentDate)
+       WITH max(n.date) as latestEquipmentDate, this
+       MATCH (date:EquipmentDate {date:latestEquipmentDate})
+      OPTIONAL MATCH (date)<-[:HAS_EQUIPMENT_DATE]-(record:EquipmentRecord)
+        WITH DISTINCT date, this
+        OPTIONAL MATCH (record)<-[:HAS_EQUIPMENT_RECORD]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships)
+        WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
+        WITH DISTINCT fellowships, this
+       MATCH (fellowships)<-[:HAS]-(:Bacenta)<-[:HAS]-(:Constituency)<-[:HAS]-(:Council)<-[:HAS]-(this)
+       RETURN DISTINCT fellowships
       """
     )
 
@@ -227,10 +227,10 @@ extend type Stream {
       MATCH (n:EquipmentDate)
       WITH max(n.date) as latestEquipmentDate, this
       MATCH (date:EquipmentDate {date:latestEquipmentDate})
-      MATCH (date)<-[:HAS_EQUIPMENT_DATE]-(record:EquipmentRecord)
+      OPTIONAL MATCH (date)<-[:HAS_EQUIPMENT_DATE]-(record:EquipmentRecord)
        WITH DISTINCT date, this, record
 
-      MATCH (record)<-[:HAS_EQUIPMENT_RECORD]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships:Active:Fellowship)
+      OPTIONAL MATCH (record)<-[:HAS_EQUIPMENT_RECORD]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships:Active:Fellowship)
 
        WITH collect(DISTINCT fellowships) as filled, this
        MATCH (defaulters:Fellowship)<-[:HAS]-(bacenta:Bacenta)<-[:HAS]-(constituency:Constituency)<-[:HAS]-(:Council)<-[:HAS]-(this)
@@ -247,10 +247,10 @@ extend type Stream {
       MATCH (n:EquipmentDate)
       WITH max(n.date) as latestEquipmentDate, this
       MATCH (date:EquipmentDate {date:latestEquipmentDate})
-      MATCH (date)<-[:HAS_EQUIPMENT_DATE]-(record:EquipmentRecord)
+      OPTIONAL MATCH (date)<-[:HAS_EQUIPMENT_DATE]-(record:EquipmentRecord)
        WITH DISTINCT date, this, record
 
-      MATCH (record)<-[:HAS_EQUIPMENT_RECORD]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships:Active:Fellowship)
+      OPTIONAL MATCH (record)<-[:HAS_EQUIPMENT_RECORD]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships:Active:Fellowship)
 
        WITH collect(DISTINCT fellowships) as filled, this
        MATCH (defaulters:Fellowship)<-[:HAS]-(bacenta:Bacenta)<-[:HAS]-(constituency:Constituency)<-[:HAS]-(:Council)<-[:HAS]-(this)
@@ -267,9 +267,9 @@ extend type Stream {
       MATCH (n:EquipmentDate)
       WITH max(n.date) as latestEquipmentDate, this
       MATCH (date:EquipmentDate {date:latestEquipmentDate})
-      MATCH (date)<-[:HAS_EQUIPMENT_DATE]-(record:EquipmentRecord)
+      OPTIONAL MATCH (date)<-[:HAS_EQUIPMENT_DATE]-(record:EquipmentRecord)
        WITH DISTINCT date, this, record
-       MATCH (record)<-[:HAS_EQUIPMENT_RECORD]-(:ServiceLog)<-[:HAS_HISTORY]-(constituencies) WHERE constituencies:Constituency OR constituencies:ClosedConstituency
+       OPTIONAL MATCH (record)<-[:HAS_EQUIPMENT_RECORD]-(:ServiceLog)<-[:HAS_HISTORY]-(constituencies) WHERE constituencies:Constituency OR constituencies:ClosedConstituency
        WITH DISTINCT constituencies, this
        MATCH (constituencies)<-[:HAS]-(:Council)<-[:HAS]-(this)
       RETURN COUNT(DISTINCT constituencies)
@@ -282,9 +282,9 @@ extend type Stream {
       MATCH (n:EquipmentDate)
       WITH max(n.date) as latestEquipmentDate, this
       MATCH (date:EquipmentDate {date:latestEquipmentDate})
-      MATCH (date)<-[:HAS_EQUIPMENT_DATE]-(record:EquipmentRecord)
+      OPTIONAL MATCH (date)<-[:HAS_EQUIPMENT_DATE]-(record:EquipmentRecord)
        WITH DISTINCT date, this, record
-       MATCH (record)<-[:HAS_EQUIPMENT_RECORD]-(:ServiceLog)<-[:HAS_HISTORY]-(constituencies)
+       OPTIONAL MATCH (record)<-[:HAS_EQUIPMENT_RECORD]-(:ServiceLog)<-[:HAS_HISTORY]-(constituencies)
        WHERE constituencies:Constituency OR constituencies:ClosedConstituency
        WITH DISTINCT constituencies, this
        MATCH (constituencies)<-[:HAS]-(:Council)<-[:HAS]-(this)
@@ -299,10 +299,10 @@ extend type Stream {
       MATCH (n:EquipmentDate)
       WITH max(n.date) as latestEquipmentDate, this
       MATCH (date:EquipmentDate {date:latestEquipmentDate})
-      MATCH (date)<-[:HAS_EQUIPMENT_DATE]-(record:EquipmentRecord)
+      OPTIONAL MATCH (date)<-[:HAS_EQUIPMENT_DATE]-(record:EquipmentRecord)
        WITH DISTINCT date, this, record
 
-      MATCH (record)<-[:HAS_EQUIPMENT_RECORD]-(:ServiceLog)<-[:HAS_HISTORY]-(constituencies:Constituency)
+      OPTIONAL MATCH (record)<-[:HAS_EQUIPMENT_RECORD]-(:ServiceLog)<-[:HAS_HISTORY]-(constituencies:Constituency)
 
        WITH collect(DISTINCT constituencies) as filled, this
        MATCH (defaulters:Constituency)<-[:HAS]-(:Council)<-[:HAS]-(this)
@@ -319,10 +319,10 @@ extend type Stream {
       MATCH (n:EquipmentDate)
       WITH max(n.date) as latestEquipmentDate, this
       MATCH (date:EquipmentDate {date:latestEquipmentDate})
-      MATCH (date)<-[:HAS_EQUIPMENT_DATE]-(record:EquipmentRecord)
+      OPTIONAL MATCH (date)<-[:HAS_EQUIPMENT_DATE]-(record:EquipmentRecord)
        WITH DISTINCT date, this, record
 
-      MATCH (record)<-[:HAS_EQUIPMENT_RECORD]-(:ServiceLog)<-[:HAS_HISTORY]-(constituencies:Constituency)
+      OPTIONAL MATCH (record)<-[:HAS_EQUIPMENT_RECORD]-(:ServiceLog)<-[:HAS_HISTORY]-(constituencies:Constituency)
 
        WITH collect(DISTINCT constituencies) as filled, this
        MATCH (defaulters:Constituency)<-[:HAS]-(:Council)<-[:HAS]-(this)
@@ -342,9 +342,9 @@ extend type Council {
       MATCH (n:EquipmentDate)
       WITH max(n.date) as latestEquipmentDate, this
       MATCH (date:EquipmentDate {date:latestEquipmentDate})
-      MATCH (date)<-[:HAS_EQUIPMENT_DATE]-(record:EquipmentRecord)
+      OPTIONAL MATCH (date)<-[:HAS_EQUIPMENT_DATE]-(record:EquipmentRecord)
        WITH DISTINCT date, this
-       MATCH (record)<-[:HAS_EQUIPMENT_RECORD]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships)
+       OPTIONAL MATCH (record)<-[:HAS_EQUIPMENT_RECORD]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships)
        WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
        WITH DISTINCT fellowships, this
       MATCH (fellowships)<-[:HAS]-(:Bacenta)<-[:HAS]-(:Constituency)<-[:HAS]-(this)
@@ -358,9 +358,9 @@ extend type Council {
       MATCH (n:EquipmentDate)
       WITH max(n.date) as latestEquipmentDate, this
       MATCH (date:EquipmentDate {date:latestEquipmentDate})
-      MATCH (date)<-[:HAS_EQUIPMENT_DATE]-(record:EquipmentRecord)
+      OPTIONAL MATCH (date)<-[:HAS_EQUIPMENT_DATE]-(record:EquipmentRecord)
        WITH DISTINCT date, this
-       MATCH (record)<-[:HAS_EQUIPMENT_RECORD]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships)
+       OPTIONAL MATCH (record)<-[:HAS_EQUIPMENT_RECORD]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships)
        WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
        WITH DISTINCT fellowships, this
       MATCH (fellowships)<-[:HAS]-(:Bacenta)<-[:HAS]-(:Constituency)<-[:HAS]-(this)
@@ -375,10 +375,10 @@ extend type Council {
       MATCH (n:EquipmentDate)
       WITH max(n.date) as latestEquipmentDate, this
       MATCH (date:EquipmentDate {date:latestEquipmentDate})
-      MATCH (date)<-[:HAS_EQUIPMENT_DATE]-(record:EquipmentRecord)
+      OPTIONAL MATCH (date)<-[:HAS_EQUIPMENT_DATE]-(record:EquipmentRecord)
        WITH DISTINCT date, this, record
 
-      MATCH (record)<-[:HAS_EQUIPMENT_RECORD]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships:Active:Fellowship)
+      OPTIONAL MATCH (record)<-[:HAS_EQUIPMENT_RECORD]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships:Active:Fellowship)
 
        WITH collect(DISTINCT fellowships) as filled, this
        MATCH (defaulters:Fellowship)<-[:HAS]-(bacenta:Bacenta)<-[:HAS]-(constituency:Constituency)<-[:HAS]-(this)
@@ -395,10 +395,10 @@ extend type Council {
       MATCH (n:EquipmentDate)
       WITH max(n.date) as latestEquipmentDate, this
       MATCH (date:EquipmentDate {date:latestEquipmentDate})
-      MATCH (date)<-[:HAS_EQUIPMENT_DATE]-(record:EquipmentRecord)
+      OPTIONAL MATCH (date)<-[:HAS_EQUIPMENT_DATE]-(record:EquipmentRecord)
        WITH DISTINCT date, this, record
 
-      MATCH (record)<-[:HAS_EQUIPMENT_RECORD]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships:Active:Fellowship)
+      OPTIONAL MATCH (record)<-[:HAS_EQUIPMENT_RECORD]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships:Active:Fellowship)
 
        WITH collect(DISTINCT fellowships) as filled, this
        MATCH (defaulters:Fellowship)<-[:HAS]-(bacenta:Bacenta)<-[:HAS]-(constituency:Constituency)<-[:HAS]-(this)
@@ -415,9 +415,9 @@ extend type Council {
       MATCH (n:EquipmentDate)
       WITH max(n.date) as latestEquipmentDate, this
       MATCH (date:EquipmentDate {date:latestEquipmentDate})
-      MATCH (date)<-[:HAS_EQUIPMENT_DATE]-(record:EquipmentRecord)
+      OPTIONAL MATCH (date)<-[:HAS_EQUIPMENT_DATE]-(record:EquipmentRecord)
        WITH DISTINCT date, this, record
-       MATCH (record)<-[:HAS_EQUIPMENT_RECORD]-(:ServiceLog)<-[:HAS_HISTORY]-(constituencies)
+       OPTIONAL MATCH (record)<-[:HAS_EQUIPMENT_RECORD]-(:ServiceLog)<-[:HAS_HISTORY]-(constituencies)
        WHERE constituencies:Constituency OR constituencies:ClosedConstituency
        WITH DISTINCT constituencies, this
        MATCH (constituencies)<-[:HAS]-(this)
@@ -431,9 +431,9 @@ extend type Council {
       MATCH (n:EquipmentDate)
       WITH max(n.date) as latestEquipmentDate, this
       MATCH (date:EquipmentDate {date:latestEquipmentDate})
-      MATCH (date)<-[:HAS_EQUIPMENT_DATE]-(record:EquipmentRecord)
+      OPTIONAL MATCH (date)<-[:HAS_EQUIPMENT_DATE]-(record:EquipmentRecord)
        WITH DISTINCT date, this, record
-       MATCH (record)<-[:HAS_EQUIPMENT_RECORD]-(:ServiceLog)<-[:HAS_HISTORY]-(constituencies)
+       OPTIONAL MATCH (record)<-[:HAS_EQUIPMENT_RECORD]-(:ServiceLog)<-[:HAS_HISTORY]-(constituencies)
        WHERE constituencies:Constituency OR constituencies:ClosedConstituency
        WITH DISTINCT constituencies, this
        MATCH (constituencies)<-[:HAS]-(this)
@@ -448,10 +448,10 @@ extend type Council {
       MATCH (n:EquipmentDate)
       WITH max(n.date) as latestEquipmentDate, this
       MATCH (date:EquipmentDate {date:latestEquipmentDate})
-      MATCH (date)<-[:HAS_EQUIPMENT_DATE]-(record:EquipmentRecord)
+      OPTIONAL MATCH (date)<-[:HAS_EQUIPMENT_DATE]-(record:EquipmentRecord)
        WITH DISTINCT date, this, record
 
-      MATCH (record)<-[:HAS_EQUIPMENT_RECORD]-(:ServiceLog)<-[:HAS_HISTORY]-(constituencies:Constituency)
+      OPTIONAL MATCH (record)<-[:HAS_EQUIPMENT_RECORD]-(:ServiceLog)<-[:HAS_HISTORY]-(constituencies:Constituency)
 
        WITH collect(DISTINCT constituencies) as filled, this
        MATCH (defaulters:Constituency)<-[:HAS]-(:Council)<-[:HAS]-(this)
@@ -468,10 +468,10 @@ extend type Council {
       MATCH (n:EquipmentDate)
       WITH max(n.date) as latestEquipmentDate, this
       MATCH (date:EquipmentDate {date:latestEquipmentDate})
-      MATCH (date)<-[:HAS_EQUIPMENT_DATE]-(record:EquipmentRecord)
+      OPTIONAL MATCH (date)<-[:HAS_EQUIPMENT_DATE]-(record:EquipmentRecord)
        WITH DISTINCT date, this, record
 
-      MATCH (record)<-[:HAS_EQUIPMENT_RECORD]-(:ServiceLog)<-[:HAS_HISTORY]-(constituencies:Constituency)
+      OPTIONAL MATCH (record)<-[:HAS_EQUIPMENT_RECORD]-(:ServiceLog)<-[:HAS_HISTORY]-(constituencies:Constituency)
 
        WITH collect(DISTINCT constituencies) as filled, this
        MATCH (defaulters:Constituency)<-[:HAS]-(:Council)<-[:HAS]-(this)
@@ -491,9 +491,9 @@ extend type Constituency {
       MATCH (n:EquipmentDate)
       WITH max(n.date) as latestEquipmentDate, this
       MATCH (date:EquipmentDate {date:latestEquipmentDate})
-      MATCH (date)<-[:HAS_EQUIPMENT_DATE]-(record:EquipmentRecord)
+      OPTIONAL MATCH (date)<-[:HAS_EQUIPMENT_DATE]-(record:EquipmentRecord)
        WITH DISTINCT date, this
-       MATCH (record)<-[:HAS_EQUIPMENT_RECORD]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships)
+       OPTIONAL MATCH (record)<-[:HAS_EQUIPMENT_RECORD]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships)
        WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
        WITH DISTINCT fellowships, this
       MATCH (fellowships)<-[:HAS]-(bacentas:Bacenta)<-[:HAS]-(this)
@@ -507,9 +507,9 @@ extend type Constituency {
       MATCH (n:EquipmentDate)
       WITH max(n.date) as latestEquipmentDate, this
       MATCH (date:EquipmentDate {date:latestEquipmentDate})
-      MATCH (date)<-[:HAS_EQUIPMENT_DATE]-(record:EquipmentRecord)
+      OPTIONAL MATCH (date)<-[:HAS_EQUIPMENT_DATE]-(record:EquipmentRecord)
        WITH DISTINCT date, this
-       MATCH (record)<-[:HAS_EQUIPMENT_RECORD]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships)
+       OPTIONAL MATCH (record)<-[:HAS_EQUIPMENT_RECORD]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships)
        WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
        WITH DISTINCT fellowships, this
       MATCH (fellowships)<-[:HAS]-(bacentas:Bacenta)<-[:HAS]-(this)
@@ -524,10 +524,10 @@ extend type Constituency {
       MATCH (n:EquipmentDate)
       WITH max(n.date) as latestEquipmentDate, this
       MATCH (date:EquipmentDate {date:latestEquipmentDate})
-      MATCH (date)<-[:HAS_EQUIPMENT_DATE]-(record:EquipmentRecord)
+      OPTIONAL MATCH (date)<-[:HAS_EQUIPMENT_DATE]-(record:EquipmentRecord)
        WITH DISTINCT date, this, record
 
-      MATCH (record)<-[:HAS_EQUIPMENT_RECORD]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships:Active:Fellowship)
+      OPTIONAL MATCH (record)<-[:HAS_EQUIPMENT_RECORD]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships:Active:Fellowship)
 
        WITH collect(DISTINCT fellowships) as filled, this
        MATCH (defaulters:Fellowship)<-[:HAS]-(bacentas:Bacenta)<-[:HAS]-(this)
@@ -544,10 +544,10 @@ extend type Constituency {
       MATCH (n:EquipmentDate)
       WITH max(n.date) as latestEquipmentDate, this
       MATCH (date:EquipmentDate {date:latestEquipmentDate})
-      MATCH (date)<-[:HAS_EQUIPMENT_DATE]-(record:EquipmentRecord)
+      OPTIONAL MATCH (date)<-[:HAS_EQUIPMENT_DATE]-(record:EquipmentRecord)
        WITH DISTINCT date, this, record
 
-      MATCH (record)<-[:HAS_EQUIPMENT_RECORD]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships:Active:Fellowship)
+      OPTIONAL MATCH (record)<-[:HAS_EQUIPMENT_RECORD]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships:Active:Fellowship)
 
        WITH collect(DISTINCT fellowships) as filled, this
        MATCH (defaulters:Fellowship)<-[:HAS]-(bacentas:Bacenta)<-[:HAS]-(this)
@@ -582,9 +582,9 @@ extend type Bacenta {
       MATCH (n:EquipmentDate)
       WITH max(n.date) as latestEquipmentDate, this
       MATCH (date:EquipmentDate {date:latestEquipmentDate})
-      MATCH (date)<-[:HAS_EQUIPMENT_DATE]-(record:EquipmentRecord)
+      OPTIONAL MATCH (date)<-[:HAS_EQUIPMENT_DATE]-(record:EquipmentRecord)
        WITH DISTINCT date, this
-       MATCH (record)<-[:HAS_EQUIPMENT_RECORD]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships)
+       OPTIONAL MATCH (record)<-[:HAS_EQUIPMENT_RECORD]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships)
        WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
        WITH DISTINCT fellowships, this
       MATCH (fellowships)<-[:HAS]-(this)
@@ -598,9 +598,9 @@ extend type Bacenta {
       MATCH (n:EquipmentDate)
       WITH max(n.date) as latestEquipmentDate, this
       MATCH (date:EquipmentDate {date:latestEquipmentDate})
-      MATCH (date)<-[:HAS_EQUIPMENT_DATE]-(record:EquipmentRecord)
+      OPTIONAL MATCH (date)<-[:HAS_EQUIPMENT_DATE]-(record:EquipmentRecord)
        WITH DISTINCT date, this
-       MATCH (record)<-[:HAS_EQUIPMENT_RECORD]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships)
+       OPTIONAL MATCH (record)<-[:HAS_EQUIPMENT_RECORD]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships)
        WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
        WITH DISTINCT fellowships, this
       MATCH (fellowships)<-[:HAS]-(this)
@@ -615,10 +615,10 @@ extend type Bacenta {
       MATCH (n:EquipmentDate)
       WITH max(n.date) as latestEquipmentDate, this
       MATCH (date:EquipmentDate {date:latestEquipmentDate})
-      MATCH (date)<-[:HAS_EQUIPMENT_DATE]-(record:EquipmentRecord)
+      OPTIONAL MATCH (date)<-[:HAS_EQUIPMENT_DATE]-(record:EquipmentRecord)
        WITH DISTINCT date, this, record
 
-      MATCH (record)<-[:HAS_EQUIPMENT_RECORD]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships:Active:Fellowship)
+      OPTIONAL MATCH (record)<-[:HAS_EQUIPMENT_RECORD]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships:Active:Fellowship)
 
        WITH collect(DISTINCT fellowships) as filled, this
        MATCH (defaulters:Fellowship)<-[:HAS]-(this)
@@ -635,10 +635,10 @@ extend type Bacenta {
       MATCH (n:EquipmentDate)
       WITH max(n.date) as latestEquipmentDate, this
       MATCH (date:EquipmentDate {date:latestEquipmentDate})
-      MATCH (date)<-[:HAS_EQUIPMENT_DATE]-(record:EquipmentRecord)
+      OPTIONAL MATCH (date)<-[:HAS_EQUIPMENT_DATE]-(record:EquipmentRecord)
        WITH DISTINCT date, this, record
 
-      MATCH (record)<-[:HAS_EQUIPMENT_RECORD]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships:Active:Fellowship)
+      OPTIONAL MATCH (record)<-[:HAS_EQUIPMENT_RECORD]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships:Active:Fellowship)
 
        WITH collect(DISTINCT fellowships) as filled, this
        MATCH (defaulters:Fellowship)<-[:HAS]-(this)

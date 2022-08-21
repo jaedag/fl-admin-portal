@@ -84,7 +84,9 @@ const sendEmailsandSMS = async (
       undefined,
       `<p>Hi ${texts.equipment.fellowship_text},</p> ${texts.equipment.notify_fellowship_leaders_email} <b>${formattedDeadline}</b> ${texts.equipment.notify_email_p1} ${texts.equipment.fellowship_text}  ${texts.equipment.notify_email_p2}${texts.html.subscription}`
     ),
-  ])
+  ]).catch((err) => {
+    throwErrorMsg('There was an error sending the equipment notifications', err)
+  })
 }
 
 export const campaignsMutation = {
