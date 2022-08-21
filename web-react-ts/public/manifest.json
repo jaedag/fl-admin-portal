@@ -1,6 +1,6 @@
 {
   "short_name": "Admin Portal",
-  "name": "FLC Servants Portal",
+  "name": "FLC Servants Administrative Portal",
   "icons": [
     {
       "src": "favicon.ico",
@@ -9,7 +9,7 @@
     }
   ],
   "start_url": "./index.html",
-  "display": "standwione",
+  "display": "minimal-ui",
   "theme_color": "#000000",
   "background_color": "#ffffff"
 }
