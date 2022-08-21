@@ -164,10 +164,7 @@ const PastorsAdmin = (props) => {
                           key={i}
                           path={route.path}
                           element={
-                            <MembersDirectoryRoute
-                              roles={route.roles}
-                              placeholder={route.placeholder}
-                            >
+                            <MembersDirectoryRoute roles={route.roles}>
                               <route.element />
                             </MembersDirectoryRoute>
                           }
