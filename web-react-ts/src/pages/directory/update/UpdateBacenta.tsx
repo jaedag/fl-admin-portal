@@ -28,7 +28,7 @@ import LoadingScreen from 'components/base-component/LoadingScreen'
 import { FormikHelpers } from 'formik'
 
 const UpdateBacenta = () => {
-  const { church, bacentaId, clickCard } = useContext(ChurchContext)
+  const { bacentaId, clickCard } = useContext(ChurchContext)
   const { data: bacentaData, loading: bacentaLoading } = useQuery(
     DISPLAY_BACENTA,
     {
@@ -272,7 +272,7 @@ const UpdateBacenta = () => {
     <BacentaForm
       initialValues={initialValues}
       onSubmit={onSubmit}
-      title={`${capitalise(church.subChurch)} Update Form`}
+      title={`${capitalise(bacenta?.__typename)} Update Form`}
       newBacenta={false}
     />
   )
