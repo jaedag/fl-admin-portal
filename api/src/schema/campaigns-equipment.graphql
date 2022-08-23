@@ -368,8 +368,8 @@ extend type Council {
       MATCH (this)
       MATCH (n:EquipmentDate)
       WITH max(n.date) as latestEquipmentDate, this
-      OPTIONAL MATCH (date:EquipmentDate {date:latestEquipmentDate})
-       MATCH (date)<-[:HAS_EQUIPMENT_DATE]-(record:EquipmentRecord)
+       MATCH (date:EquipmentDate {date:latestEquipmentDate})
+       OPTIONAL MATCH (date)<-[:HAS_EQUIPMENT_DATE]-(record:EquipmentRecord)
        WITH DISTINCT date, this, record
 
        OPTIONAL MATCH (record)<-[:HAS_EQUIPMENT_RECORD]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships:Fellowship)
