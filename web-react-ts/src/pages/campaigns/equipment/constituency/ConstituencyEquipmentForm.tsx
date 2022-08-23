@@ -36,8 +36,9 @@ const ConstituencyEquipmentForm = () => {
   const validationSchema = Yup.object({
     pulpits: Yup.number()
       .typeError('Please enter a valid number')
-      .positive()
       .integer('You cannot have pulpits with decimals!')
+      .min(0)
+      .max(1)
       .required(
         'You cannot submit this form without entering the number of pulpits'
       ),

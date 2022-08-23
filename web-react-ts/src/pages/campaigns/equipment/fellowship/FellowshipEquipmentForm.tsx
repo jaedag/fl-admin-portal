@@ -38,15 +38,17 @@ const FellowshipEquipmentForm = () => {
   const validationSchema = Yup.object({
     offeringBags: Yup.number()
       .typeError('Please enter a valid number')
-      .positive()
       .integer('You cannot have offering bags with decimals!')
+      .min(0)
+      .max(1)
       .required(
         'You cannot submit this form without entering the number of offerigBags'
       ),
     bluetoothSpeakers: Yup.number()
       .typeError('Please enter a valid number')
-      .positive()
       .integer('You cannot have bluetooth speakers with decimals!')
+      .min(0)
+      .max(1)
       .required(
         'You cannot submit this form without entering the number of bluetooth speakers'
       ),
