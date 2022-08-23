@@ -19,7 +19,7 @@ import {
   MAKE_COUNCIL_ADMIN,
   MAKE_STREAM_ADMIN,
 } from './AdminMutations'
-import { plural, throwErrorMsg } from '../../global-utils'
+import { alertMsg, plural, throwErrorMsg } from '../../global-utils'
 import { getWeekNumber } from 'jd-date-utils'
 import Breadcrumb from './Breadcrumb'
 import { Button, Col, Container, Row, Spinner } from 'react-bootstrap'
@@ -153,7 +153,7 @@ const DisplayChurchDetails = (props: DisplayChurchDetailsProps) => {
         .then(() => {
           togglePopup()
           setSubmitting(false)
-          alert('Gathering Service Admin has been changed successfully')
+          alertMsg('Gathering Service Admin has been changed successfully')
         })
         .catch((e: any) => throwErrorMsg(e))
     }
@@ -169,7 +169,7 @@ const DisplayChurchDetails = (props: DisplayChurchDetailsProps) => {
         .then(() => {
           togglePopup()
           setSubmitting(false)
-          alert('Stream Admin has been changed successfully')
+          alertMsg('Stream Admin has been changed successfully')
         })
         .catch((e) => throwErrorMsg(e))
     }
@@ -185,7 +185,7 @@ const DisplayChurchDetails = (props: DisplayChurchDetailsProps) => {
         .then(() => {
           togglePopup()
           setSubmitting(false)
-          alert('Council Admin has been changed successfully')
+          alertMsg('Council Admin has been changed successfully')
         })
         .catch((e) => throwErrorMsg(e))
     }
@@ -201,7 +201,7 @@ const DisplayChurchDetails = (props: DisplayChurchDetailsProps) => {
         .then(() => {
           togglePopup()
           setSubmitting(false)
-          alert('Constituency Admin has been changed successfully')
+          alertMsg('Constituency Admin has been changed successfully')
         })
         .catch((e) => throwErrorMsg(e))
     }
