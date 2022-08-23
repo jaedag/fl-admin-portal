@@ -25,7 +25,6 @@ const CouncilEquipmentDefaulters = () => {
     }
   )
   const council = data?.councils[0]
-  console.log(council)
 
   return (
     <ApolloWrapper data={data} loading={loading} error={error}>
