@@ -63,30 +63,57 @@ const sendEmailsandSMS = async (
     timeZone: 'UTC',
   })
 
-  await Promise.all([
-    sendBulkSMS(
+  try {
+    await sendBulkSMS(
       fellowshipPhoneNumbers,
       texts.equipment.notify_fellowship_leaders_sms
-    ),
-    sendBulkSMS(
+    )
+    await sendBulkSMS(
       overseersPhoneNumbers,
       texts.equipment.notify_constituency_overseers_sms
-    ),
-    sendBulkEmail(
+    )
+    await sendBulkEmail(
       overseersEmailAdresses,
       'Equipment Campaign Data Collection Ongoing!',
       undefined,
       `<p>Hi ${texts.equipment.overseer_text},</p> ${texts.equipment.notify_constituency_overseers_email} <b>${formattedDeadline}</b> ${texts.equipment.notify_email_p1} ${texts.equipment.overseer_text}  ${texts.equipment.notify_email_p2}${texts.html.subscription}`
-    ),
-    sendBulkEmail(
+    )
+    await sendBulkEmail(
       fellowshipEmailAdresses,
       'Equipment Campaign Data Collection Ongoing!',
       undefined,
       `<p>Hi ${texts.equipment.fellowship_text},</p> ${texts.equipment.notify_fellowship_leaders_email} <b>${formattedDeadline}</b> ${texts.equipment.notify_email_p1} ${texts.equipment.fellowship_text}  ${texts.equipment.notify_email_p2}${texts.html.subscription}`
-    ),
-  ]).catch((err) => {
-    throwErrorMsg('There was an error sending the equipment notifications', err)
-  })
+    )
+  } catch (error) {
+    throwErrorMsg(
+      'There was an error sending the equipment notifications',
+      error
+    )
+  }
+  // await Promise.all([
+  //   sendBulkSMS(
+  //     fellowshipPhoneNumbers,
+  //     texts.equipment.notify_fellowship_leaders_sms
+  //   ),
+  //   sendBulkSMS(
+  //     overseersPhoneNumbers,
+  //     texts.equipment.notify_constituency_overseers_sms
+  //   ),
+  //   sendBulkEmail(
+  //     overseersEmailAdresses,
+  //     'Equipment Campaign Data Collection Ongoing!',
+  //     undefined,
+  //     `<p>Hi ${texts.equipment.overseer_text},</p> ${texts.equipment.notify_constituency_overseers_email} <b>${formattedDeadline}</b> ${texts.equipment.notify_email_p1} ${texts.equipment.overseer_text}  ${texts.equipment.notify_email_p2}${texts.html.subscription}`
+  //   ),
+  //   sendBulkEmail(
+  //     fellowshipEmailAdresses,
+  //     'Equipment Campaign Data Collection Ongoing!',
+  //     undefined,
+  //     `<p>Hi ${texts.equipment.fellowship_text},</p> ${texts.equipment.notify_fellowship_leaders_email} <b>${formattedDeadline}</b> ${texts.equipment.notify_email_p1} ${texts.equipment.fellowship_text}  ${texts.equipment.notify_email_p2}${texts.html.subscription}`
+  //   ),
+  // ]).catch((err) => {
+  //   throwErrorMsg('There was an error sending the equipment notifications', err)
+  // })
 }
 
 export const campaignsMutation = {
