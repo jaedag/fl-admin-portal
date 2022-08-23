@@ -65,6 +65,40 @@ export const MAKE_COUNCIL_ADMIN = gql`
   }
 `
 
+export const MAKE_GATHERING_SERVICE_ADMIN = gql`
+  mutation MakeGatheringServiceAdmin(
+    $gatheringServiceId: ID!
+    $newAdminId: ID!
+    $oldAdminId: ID!
+  ) {
+    RemoveGatheringServiceAdmin(
+      gatheringServiceId: $gatheringServiceId
+      adminId: $oldAdminId
+    ) {
+      id
+      firstName
+      lastName
+    }
+    MakeGatheringServiceAdmin(
+      gatheringServiceId: $gatheringServiceId
+      adminId: $newAdminId
+      oldAdminId: $oldAdminId
+    ) {
+      id
+      firstName
+      lastName
+      isAdminForGatheringService {
+        id
+        admin {
+          id
+          firstName
+          lastName
+        }
+      }
+    }
+  }
+`
+
 export const MAKE_STREAM_ADMIN = gql`
   mutation MakeStreamAdmin($streamId: ID!, $newAdminId: ID!, $oldAdminId: ID!) {
     RemoveStreamAdmin(streamId: $streamId, adminId: $oldAdminId) {

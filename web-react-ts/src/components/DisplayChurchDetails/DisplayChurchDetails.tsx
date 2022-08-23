@@ -14,6 +14,7 @@ import * as Yup from 'yup'
 import Popup from '../Popup/Popup'
 import { useMutation } from '@apollo/client'
 import {
+  MAKE_GATHERING_SERVICE_ADMIN,
   MAKE_CONSTITUENCY_ADMIN,
   MAKE_COUNCIL_ADMIN,
   MAKE_STREAM_ADMIN,
@@ -109,7 +110,7 @@ const DisplayChurchDetails = (props: DisplayChurchDetailsProps) => {
 
   const { theme } = useContext(MemberContext)
   const [submitting, setSubmitting] = useState(false)
-  const { clickCard, constituencyId, councilId, streamId } =
+  const { clickCard, constituencyId, councilId, streamId, gatheringServiceId } =
     useContext(ChurchContext)
   const { togglePopup, isOpen } = usePopup()
 
@@ -117,6 +118,7 @@ const DisplayChurchDetails = (props: DisplayChurchDetailsProps) => {
   const [MakeConstituencyAdmin] = useMutation(MAKE_CONSTITUENCY_ADMIN)
   const [MakeCouncilAdmin] = useMutation(MAKE_COUNCIL_ADMIN)
   const [MakeStreamAdmin] = useMutation(MAKE_STREAM_ADMIN)
+  const [MakeGatheringServiceAdmin] = useMutation(MAKE_GATHERING_SERVICE_ADMIN)
 
   const initialValues: FormOptions = {
     adminName: props.admin
@@ -139,6 +141,22 @@ const DisplayChurchDetails = (props: DisplayChurchDetailsProps) => {
     }
 
     setSubmitting(true)
+
+    if (props.churchType === 'GatheringService') {
+      MakeGatheringServiceAdmin({
+        variables: {
+          gatheringServiceId: gatheringServiceId,
+          newAdminId: values.adminSelect,
+          oldAdminId: initialValues.adminSelect || 'no-old-admin',
+        },
+      })
+        .then(() => {
+          togglePopup()
+          setSubmitting(false)
+          alert('Gathering Service Admin has been changed successfully')
+        })
+        .catch((e: any) => throwErrorMsg(e))
+    }
 
     if (props.churchType === 'Stream') {
       MakeStreamAdmin({
