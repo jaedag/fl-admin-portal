@@ -26,7 +26,7 @@ import CouncilByConstituency from './equipment/council/CouncilByConstituency'
 import ConstituencyByBacenta from './equipment/constituency/ConstituencyByBacenta'
 import BacentaByFellowship from './equipment/bacenta/BacentaByFellowship'
 import GatheringServiceEquipmentDeadline from './equipment/gathering-service/GatheringServiceEquipmentDeadline'
-import { permitLeaderAdmin } from 'permission-utils'
+import { permitAdmin, permitLeaderAdmin } from 'permission-utils'
 import GatheringServiceEquipmentCampaign from './equipment/gathering-service/GatheringServiceEquipmentCampaign'
 import GatheringServiceAntiBrutishCampaign from './anti-brutish/gathering-service/GatheringServiceAntiBrutishCampaign'
 import GatheringServiceMultiplicationCampaign from './multiplication/gathering-service/GatheringServiceMultiplicationCampaign'
@@ -45,6 +45,11 @@ import ConstituencyMultiplicationCampaign from './multiplication/constituency/Co
 import ConstituencyTelepastoringCampaign from './telepastoring/constituency/ConstituencyTelepastoringCampaign'
 import ConstituencySwollenSundayCampaign from './swollen-sunday/constituency/ConstituencySwollenSundayCampaign'
 import BacentaSwollenSundayCampaign from './swollen-sunday/bacenta/BacentaSwollenSundayCampaign'
+import ConstituencyEquipmentDefaulters from './equipment/constituency/ConstituencyEquipmentDefaulters'
+import ConstituencyEquipmentHaveNotFilledByFellowship from './equipment/constituency/ConstituencyEquipmentHaveNotFilledByFellowship'
+import CouncilEquipmentDefaulters from './equipment/council/CouncilEquipmentDefaulters'
+import CouncilEquipmentHaveNotFilledByFellowship from './equipment/council/CouncilEquipmentHaveNotFilledByFellowship'
+import CouncilEquipmentHaveNotFilledByConstituency from './equipment/council/CouncilEquipmentHaveNotFilledByConstituency'
 
 export const campaigns = [
   //gathering-service routes
@@ -202,6 +207,24 @@ export const campaigns = [
     roles: permitLeaderAdmin('Council'),
     placeholder: true,
   },
+  {
+    path: '/campaigns/council/equipment/defaulters',
+    element: CouncilEquipmentDefaulters,
+    roles: permitAdmin('Council'),
+    placeholder: true,
+  },
+  {
+    path: '/campaigns/council/equipment/have-not-filled/fellowship',
+    element: CouncilEquipmentHaveNotFilledByFellowship,
+    roles: permitAdmin('Council'),
+    placeholder: true,
+  },
+  {
+    path: '/campaigns/council/equipment/have-not-filled/constituency',
+    element: CouncilEquipmentHaveNotFilledByConstituency,
+    roles: permitAdmin('Council'),
+    placeholder: true,
+  },
 
   //constituency routes
   {
@@ -262,6 +285,18 @@ export const campaigns = [
     path: '/campaigns/constituency/telepastoring',
     element: ConstituencyTelepastoringCampaign,
     roles: permitLeaderAdmin('Constituency'),
+    placeholder: true,
+  },
+  {
+    path: '/campaigns/constituency/equipment/defaulters',
+    element: ConstituencyEquipmentDefaulters,
+    roles: permitAdmin('Constituency'),
+    placeholder: true,
+  },
+  {
+    path: '/campaigns/constituency/equipment/have-not-filled/fellowship',
+    element: ConstituencyEquipmentHaveNotFilledByFellowship,
+    roles: permitAdmin('Constituency'),
     placeholder: true,
   },
 

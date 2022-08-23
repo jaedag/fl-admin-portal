@@ -6,6 +6,8 @@ import { MemberContext } from 'contexts/MemberContext'
 import { CONSTITUENCY_LATEST_EQUIPMENT_RECORD } from 'pages/campaigns/CampaignQueries'
 import { useQuery } from '@apollo/client'
 import { ChurchContext } from 'contexts/ChurchContext'
+import RoleView from 'auth/RoleView'
+import { permitAdmin } from 'permission-utils'
 
 const ConstituencyEquipmentCampaign = () => {
   const { currentUser } = useContext(MemberContext)
@@ -43,6 +45,14 @@ const ConstituencyEquipmentCampaign = () => {
             name="View Trends"
             onClick={() => navigate(`/campaigns/constituency/equipment/trends`)}
           />
+          <RoleView roles={permitAdmin('Constituency')}>
+            <MenuButton
+              name="Defaulters"
+              onClick={() =>
+                navigate('/campaigns/constituency/equipment/defaulters')
+              }
+            />
+          </RoleView>
         </div>
       </Container>
     </div>

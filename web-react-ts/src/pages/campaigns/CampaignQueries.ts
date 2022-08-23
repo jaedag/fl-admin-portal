@@ -18,6 +18,7 @@ export const GATHERING_SERVICE_TRENDS = gql`
       name
       campaigns
       equipmentRecord {
+        id
         bluetoothSpeakers
         offeringBags
         pulpits
@@ -37,6 +38,7 @@ export const GATHERING_SERVICE_BY_STREAM = gql`
         id
         name
         equipmentRecord {
+          id
           bluetoothSpeakers
           offeringBags
           pulpits
@@ -81,6 +83,7 @@ export const STREAM_TRENDS = gql`
       id
       name
       equipmentRecord {
+        id
         bluetoothSpeakers
         offeringBags
         pulpits
@@ -100,6 +103,7 @@ export const STREAM_BY_COUNCIL = gql`
         id
         name
         equipmentRecord {
+          id
           bluetoothSpeakers
           offeringBags
           pulpits
@@ -128,6 +132,7 @@ export const COUNCIL_TRENDS = gql`
       id
       name
       equipmentRecord {
+        id
         bluetoothSpeakers
         offeringBags
         pulpits
@@ -147,11 +152,66 @@ export const COUNCIL_BY_CONSTITUENCY = gql`
         id
         name
         equipmentRecord {
+          id
           bluetoothSpeakers
           offeringBags
           pulpits
         }
         activeFellowshipCount
+      }
+    }
+  }
+`
+
+export const COUNCIL_EQUIPMENT_DEFAULTERS_NUMBER_BY_CONSTITUENCY_AND_FELLOWSHIP = gql`
+  query councilEquipmentDefaultersNumberByConstituencyAndFellowship(
+    $councilId: ID
+  ) {
+    councils(where: { id: $councilId }) {
+      id
+      constituencyCount
+      constituencyEquipmentFilledCount
+      constituencyEquipmentNotFilledCount
+      fellowshipCount
+      fellowshipEquipmentFilledCount
+      fellowshipEquipmentNotFilledCount
+    }
+  }
+`
+
+export const COUNCIL_EQUIPMENT_DEFAULTERS_LIST_BY_FELLOWSHIP = gql`
+  query equipmentConstituencyDefaultersList($councilId: ID) {
+    councils(where: { id: $councilId }) {
+      id
+      fellowshipEquipmentNotFilled {
+        id
+        name
+        leader {
+          id
+          firstName
+          lastName
+          phoneNumber
+          whatsappNumber
+        }
+      }
+    }
+  }
+`
+
+export const COUNCIL_EQUIPMENT_DEFAULTERS_LIST_BY_CONSTITUENCY = gql`
+  query equipmentConstituencyDefaultersList($councilId: ID) {
+    councils(where: { id: $councilId }) {
+      id
+      constituencyEquipmentNotFilled {
+        id
+        name
+        leader {
+          id
+          firstName
+          lastName
+          phoneNumber
+          whatsappNumber
+        }
       }
     }
   }
@@ -221,10 +281,42 @@ export const CONSTITUENCY_BY_BACENTA = gql`
         id
         name
         equipmentRecord {
+          id
           bluetoothSpeakers
           offeringBags
         }
         activeFellowshipCount
+      }
+    }
+  }
+`
+
+export const CONSTITUENCY_EQUIPMENT_DEFAULTERS_NUMBER_BY_FELLOWSHIP = gql`
+  query equipmentConstituencyDefaultersNumberByFellowship($constituencyId: ID) {
+    constituencies(where: { id: $constituencyId }) {
+      id
+      fellowshipEquipmentFilledCount
+      fellowshipEquipmentNotFilledCount
+    }
+  }
+`
+
+export const CONSTITUENCY_EQUIPMENT_DEFAULTERS_LIST_BY_FELLOWSHIP = gql`
+  query equipmentConstituencyDefaultersList($constituencyId: ID) {
+    constituencies(where: { id: $constituencyId }) {
+      id
+      fellowshipEquipmentFilledCount
+      fellowshipEquipmentNotFilledCount
+      fellowshipEquipmentNotFilled {
+        id
+        name
+        leader {
+          id
+          firstName
+          lastName
+          phoneNumber
+          whatsappNumber
+        }
       }
     }
   }
@@ -247,6 +339,7 @@ export const BACENTA_TRENDS = gql`
       id
       name
       equipmentRecord {
+        id
         offeringBags
         bluetoothSpeakers
       }
@@ -265,6 +358,7 @@ export const BACENTA_BY_FELLOWSHIP = gql`
         id
         name
         equipmentRecord {
+          id
           bluetoothSpeakers
           offeringBags
         }
