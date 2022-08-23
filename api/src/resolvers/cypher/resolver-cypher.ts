@@ -18,6 +18,8 @@ WITH apoc.cypher.runFirstColumn(
   RETURN gatheringService", {this: member}, true) | member_gatheringService { .id,.name }],
   leadsSonta: [ member_sontas IN apoc.cypher.runFirstColumn("MATCH (this)-[:LEADS]->(sonta:Sonta)
   RETURN sonta", {this: member}, true) | member_sontas { .id,.name }],
+  isAdminForGatheringService: [ member_adminGatheringServices IN apoc.cypher.runFirstColumn("MATCH (this)-[:IS_ADMIN_FOR]->(adminGatheringService:GatheringService)
+  RETURN adminGatheringService", {this: member}, true) | member_adminGatheringServices { .id,.name }],
   isAdminForConstituency: [ member_adminConstituencies IN apoc.cypher.runFirstColumn("MATCH (this)-[:IS_ADMIN_FOR]->(adminConstituency:Constituency)
   RETURN adminConstituency", {this: member}, true) | member_adminConstituencies { .id,.name }],
   isAdminForCouncil: [ member_adminCouncils IN apoc.cypher.runFirstColumn("MATCH (this)-[:IS_ADMIN_FOR]->(adminCouncil:Council)

@@ -1,5 +1,11 @@
 extend type Mutation {
   #resolver Mutations
+  MakeGatheringServiceAdmin(
+    adminId: ID!
+    gatheringServiceId: ID!
+    oldAdminId: ID
+  ): Member
+  RemoveGatheringServiceAdmin(adminId: ID!, gatheringServiceId: ID!): Member
   MakeStreamAdmin(adminId: ID!, streamId: ID!, oldAdminId: ID): Member
   RemoveStreamAdmin(adminId: ID!, streamId: ID!): Member
   MakeCouncilAdmin(adminId: ID!, councilId: ID!, oldAdminId: ID): Member

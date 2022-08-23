@@ -5,6 +5,30 @@ import { MakeServant, RemoveServant } from './make-remove-servants'
 
 const MakeServantResolvers = {
   // Administrative Mutations
+  MakeGatheringServiceAdmin: async (
+    object: any,
+    args: Member,
+    context: Context
+  ) =>
+    MakeServant(
+      context,
+      args,
+      permitAdmin('Oversight'),
+      'GatheringService',
+      'Admin'
+    ),
+  RemoveGatheringServiceAdmin: async (
+    object: any,
+    args: Member,
+    context: Context
+  ) =>
+    RemoveServant(
+      context,
+      args,
+      permitAdmin('Oversight'),
+      'GatheringService',
+      'Admin'
+    ),
   MakeStreamAdmin: async (object: any, args: Member, context: Context) =>
     MakeServant(
       context,
