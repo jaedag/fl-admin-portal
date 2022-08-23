@@ -157,6 +157,54 @@ export const COUNCIL_BY_CONSTITUENCY = gql`
   }
 `
 
+export const COUNCIL_EQUIPMENT_DEFAULTERS_NUMBER_BY_CONSTITUENCY_AND_FELLOWSHIP = gql`
+  query councilEquipmentDefaultersNumberByConstituencyAndFellowship(
+    $councilId: ID
+  ) {
+    councils(where: { id: $councilId }) {
+      id
+      constituencyCount
+      constituencyEquipmentFilledCount
+      constituencyEquipmentNotFilledCount
+      fellowshipCount
+      fellowshipEquipmentFilledCount
+      fellowshipEquipmentNotFilledCount
+    }
+  }
+`
+
+export const COUNCIL_EQUIPMENT_DEFAULTERS_LIST_BY_FELLOWSHIP = gql`
+  query equipmentConstituencyDefaultersList($councilId: ID) {
+    councils(where: { id: $councilId }) {
+      id
+      fellowshipEquipmentNotFilled {
+        id
+        name
+        leader {
+          firstName
+          lastName
+        }
+      }
+    }
+  }
+`
+
+export const COUNCIL_EQUIPMENT_DEFAULTERS_LIST_BY_CONSTITUENCY = gql`
+  query equipmentConstituencyDefaultersList($councilId: ID) {
+    councils(where: { id: $councilId }) {
+      id
+      constituencyEquipmentNotFilled {
+        id
+        name
+        leader {
+          firstName
+          lastName
+        }
+      }
+    }
+  }
+`
+
 //Constituencies and Mutations
 export const CONSTITUENCY_CAMPAIGN_LIST = gql`
   query constituencyCampaigns($constituencyId: ID) {
@@ -240,7 +288,7 @@ export const CONSTITUENCY_EQUIPMENT_DEFAULTERS_NUMBER_BY_FELLOWSHIP = gql`
   }
 `
 
-export const CONSTITUENCY_EQUIPMENT_DEFAULTERS_LIST = gql`
+export const CONSTITUENCY_EQUIPMENT_DEFAULTERS_LIST_BY_FELLOWSHIP = gql`
   query equipmentConstituencyDefaultersList($constituencyId: ID) {
     constituencies(where: { id: $constituencyId }) {
       id

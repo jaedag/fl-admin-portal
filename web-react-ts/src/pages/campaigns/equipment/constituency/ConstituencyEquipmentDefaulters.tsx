@@ -42,7 +42,7 @@ function ConstituencyEquipmentDefaulters() {
                   name="Have not filled"
                   onClick={() => {
                     navigate(
-                      `/campaigns/constituency/equipment/have-not-filled`
+                      `/campaigns/constituency/equipment/have-not-filled/fellowship`
                     )
                   }}
                   number={constituency?.fellowshipEquipmentNotFilledCount}

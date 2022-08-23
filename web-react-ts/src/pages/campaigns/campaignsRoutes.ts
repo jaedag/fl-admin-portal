@@ -46,7 +46,10 @@ import ConstituencyTelepastoringCampaign from './telepastoring/constituency/Cons
 import ConstituencySwollenSundayCampaign from './swollen-sunday/constituency/ConstituencySwollenSundayCampaign'
 import BacentaSwollenSundayCampaign from './swollen-sunday/bacenta/BacentaSwollenSundayCampaign'
 import ConstituencyEquipmentDefaulters from './equipment/constituency/ConstituencyEquipmentDefaulters'
-import ConstituencyEquipmentHaveNotFilled from './equipment/constituency/ConstituencyEquipmentHaveNotFilled'
+import ConstituencyEquipmentHaveNotFilledByFellowship from './equipment/constituency/ConstituencyEquipmentHaveNotFilledByFellowship'
+import CouncilEquipmentDefaulters from './equipment/council/CouncilEquipmentDefaulters'
+import CouncilEquipmentHaveNotFilledByFellowship from './equipment/council/CouncilEquipmentHaveNotFilledByFellowship'
+import CouncilEquipmentHaveNotFilledByConstituency from './equipment/council/CouncilEquipmentHaveNotFilledByConstituency'
 
 export const campaigns = [
   //gathering-service routes
@@ -204,6 +207,24 @@ export const campaigns = [
     roles: permitLeaderAdmin('Council'),
     placeholder: true,
   },
+  {
+    path: '/campaigns/council/equipment/defaulters',
+    element: CouncilEquipmentDefaulters,
+    roles: permitAdmin('Council'),
+    placeholder: true,
+  },
+  {
+    path: '/campaigns/council/equipment/have-not-filled/fellowship',
+    element: CouncilEquipmentHaveNotFilledByFellowship,
+    roles: permitAdmin('Council'),
+    placeholder: true,
+  },
+  {
+    path: '/campaigns/council/equipment/have-not-filled/constituency',
+    element: CouncilEquipmentHaveNotFilledByConstituency,
+    roles: permitAdmin('Council'),
+    placeholder: true,
+  },
 
   //constituency routes
   {
@@ -273,8 +294,8 @@ export const campaigns = [
     placeholder: true,
   },
   {
-    path: '/campaigns/constituency/equipment/have-not-filled',
-    element: ConstituencyEquipmentHaveNotFilled,
+    path: '/campaigns/constituency/equipment/have-not-filled/fellowship',
+    element: ConstituencyEquipmentHaveNotFilledByFellowship,
     roles: permitAdmin('Constituency'),
     placeholder: true,
   },

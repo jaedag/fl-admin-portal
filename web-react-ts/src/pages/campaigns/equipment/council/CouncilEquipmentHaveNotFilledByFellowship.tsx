@@ -6,26 +6,26 @@ import DefaultersCard, {
 import React, { useContext } from 'react'
 import { Container, Row } from 'react-bootstrap'
 import { useQuery } from '@apollo/client'
-import { CONSTITUENCY_EQUIPMENT_DEFAULTERS_LIST } from 'pages/campaigns/CampaignQueries'
+import { COUNCIL_EQUIPMENT_DEFAULTERS_LIST_BY_FELLOWSHIP } from 'pages/campaigns/CampaignQueries'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 
-const ConstituencyEquipmentHaveNotFilled = () => {
+const CouncilEquipmentHaveNotFilledByFellowship = () => {
   const { currentUser } = useContext(MemberContext)
 
   const church = currentUser.currentChurch
   const churchType = currentUser.currentChurch?.__typename
-  const { constituencyId } = useContext(ChurchContext)
+  const { councilId } = useContext(ChurchContext)
 
   const { data, loading, error } = useQuery(
-    CONSTITUENCY_EQUIPMENT_DEFAULTERS_LIST,
+    COUNCIL_EQUIPMENT_DEFAULTERS_LIST_BY_FELLOWSHIP,
     {
       variables: {
-        constituencyId: constituencyId,
+        councilId: councilId,
       },
     }
   )
 
-  const defaulters = data?.constituencies[0]?.fellowshipEquipmentNotFilled
+  const defaulters = data?.councils[0]?.fellowshipEquipmentNotFilled
 
   return (
     <ApolloWrapper data={data} loading={loading} error={error}>
@@ -53,4 +53,4 @@ const ConstituencyEquipmentHaveNotFilled = () => {
   )
 }
 
-export default ConstituencyEquipmentHaveNotFilled
+export default CouncilEquipmentHaveNotFilledByFellowship
