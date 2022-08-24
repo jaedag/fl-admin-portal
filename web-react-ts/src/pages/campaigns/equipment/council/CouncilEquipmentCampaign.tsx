@@ -3,6 +3,8 @@ import { Container } from 'react-bootstrap'
 import MenuButton from '../../components/buttons/MenuButton'
 import { useNavigate } from 'react-router'
 import { MemberContext } from 'contexts/MemberContext'
+import RoleView from 'auth/RoleView'
+import { permitAdmin } from 'permission-utils'
 
 const CouncilEquipmentCampaign = () => {
   const { currentUser } = useContext(MemberContext)
@@ -22,6 +24,14 @@ const CouncilEquipmentCampaign = () => {
             name="View Trends"
             onClick={() => navigate(`/campaigns/council/equipment/trends`)}
           />
+          <RoleView roles={permitAdmin('Council')}>
+            <MenuButton
+              name="Defaulters"
+              onClick={() =>
+                navigate('/campaigns/council/equipment/defaulters')
+              }
+            />
+          </RoleView>
         </div>
       </Container>
     </div>
