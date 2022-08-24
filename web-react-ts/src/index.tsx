@@ -14,7 +14,7 @@ import reportWebVitals from './reportWebVitals'
 
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './index.css'
-import PastorsAdmin from 'App'
+import AppWithContext from 'AppWithContext'
 import Login from 'components/Login'
 import InitialLoading from 'components/base-component/InitialLoading'
 import Sabbath from 'auth/Sabbath'
@@ -86,12 +86,12 @@ const AppWithApollo = () => {
 
   return (
     <ApolloProvider client={client}>
-      <PastorsAdmin themeOptions={{ theme, setTheme }} />
+      <AppWithContext themeOptions={{ theme, setTheme }} />
     </ApolloProvider>
   )
 }
 
-const App = () => (
+const AppWithAuth = () => (
   <CacheBuster>
     {({
       loading,
@@ -131,7 +131,7 @@ const root = createRoot(container)
 
 root.render(
   <React.StrictMode>
-    <App />
+    <AppWithAuth />
   </React.StrictMode>
 )
 

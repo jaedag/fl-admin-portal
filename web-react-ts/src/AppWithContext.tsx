@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { Dispatch, useState } from 'react'
 import { Routes, BrowserRouter as Router, Route } from 'react-router-dom'
 import { MemberContext, SearchContext } from './contexts/MemberContext'
 import { ChurchContext } from './contexts/ChurchContext'
@@ -26,7 +26,14 @@ import { permitMe } from 'permission-utils'
 import useClickCard from 'hooks/useClickCard'
 import { useAuth0 } from '@auth0/auth0-react'
 
-const PastorsAdmin = (props) => {
+type AppPropsType = {
+  themeOptions: {
+    theme: string
+    setTheme: Dispatch<React.SetStateAction<string>>
+  }
+}
+
+const AppWithContext = (props: AppPropsType) => {
   const { theme, setTheme } = props.themeOptions
   const {
     clickCard,
@@ -67,16 +74,16 @@ const PastorsAdmin = (props) => {
 
   const [currentUser, setCurrentUser] = useState(
     sessionStorage.getItem('currentUser')
-      ? JSON.parse(sessionStorage.getItem('currentUser'))
+      ? JSON.parse(sessionStorage.getItem('currentUser') || '{}')
       : {
           __typename: 'Member',
-          id: user.sub.replace('auth0|', ''),
-          firstName: user.given_name,
-          lastName: user.family_name,
-          fullName: user.name,
-          picture: user.picture,
-          email: user.email,
-          roles: user[`https://flcadmin.netlify.app/roles`],
+          id: user?.sub?.replace('auth0|', ''),
+          firstName: user?.given_name,
+          lastName: user?.family_name,
+          fullName: user?.name,
+          picture: user?.picture,
+          email: user?.email,
+          roles: user && user[`https://flcadmin.netlify.app/roles`],
         }
   )
 
@@ -133,73 +140,70 @@ const PastorsAdmin = (props) => {
               }}
             >
               <SetPermissions>
-                <Navigation />
-                <div className={`bg ${theme}`}>
-                  <Routes>
-                    {[
-                      ...dashboards,
-                      ...directory,
-                      ...services,
-                      ...arrivals,
-                      ...campaigns,
-                      ...reconciliation,
-                      ...graphs,
-                    ].map((route, i) => (
-                      <Route
-                        key={i}
-                        path={route.path}
-                        element={
-                          <ProtectedRoute
-                            roles={route.roles ?? ['all']}
-                            placeholder={route.placeholder}
-                          >
-                            <route.element />
-                          </ProtectedRoute>
-                        }
-                      />
-                    ))}
-                    {[...memberDirectory, ...memberGrids, ...quickFacts].map(
-                      (route, i) => (
+                <>
+                  <Navigation />
+                  <div className={`bg ${theme}`}>
+                    <Routes>
+                      {[
+                        ...dashboards,
+                        ...directory,
+                        ...services,
+                        ...arrivals,
+                        ...campaigns,
+                        ...reconciliation,
+                        ...graphs,
+                      ].map((route, i) => (
                         <Route
                           key={i}
                           path={route.path}
                           element={
-                            <MembersDirectoryRoute
-                              roles={route.roles}
+                            <ProtectedRoute
+                              roles={route.roles ?? ['all']}
                               placeholder={route.placeholder}
                             >
                               <route.element />
-                            </MembersDirectoryRoute>
+                            </ProtectedRoute>
                           }
                         />
-                      )
-                    )}
+                      ))}
+                      {[...memberDirectory, ...memberGrids, ...quickFacts].map(
+                        (route, i) => (
+                          <Route
+                            key={i}
+                            path={route.path}
+                            element={
+                              <MembersDirectoryRoute roles={route.roles}>
+                                <route.element />
+                              </MembersDirectoryRoute>
+                            }
+                          />
+                        )
+                      )}
 
-                    <Route
-                      path="/dashboard/servants"
-                      element={
-                        <ProtectedRouteHome
-                          roles={permitMe('Fellowship')}
-                          placeholder
-                        >
-                          <ServantsDashboard />
-                        </ProtectedRouteHome>
-                      }
-                    />
-                    <Route
-                      path="/servants/church-list"
-                      element={
-                        <ProtectedRoute
-                          roles={permitMe('Fellowship')}
-                          placeholder
-                        >
-                          <ServantsChurchList />
-                        </ProtectedRoute>
-                      }
-                    />
-                    <Route path="*" element={<PageNotFound />} />
-                  </Routes>
-                </div>
+                      <Route
+                        path="/dashboard/servants"
+                        element={
+                          <ProtectedRouteHome
+                            roles={permitMe('Fellowship')}
+                            component={<ServantsDashboard />}
+                          />
+                        }
+                      />
+                      <Route
+                        path="/servants/church-list"
+                        element={
+                          <ProtectedRoute
+                            roles={permitMe('Fellowship')}
+                            placeholder
+                          >
+                            <ServantsChurchList />
+                          </ProtectedRoute>
+                        }
+                      />
+                      <Route path="*" element={<PageNotFound />} />
+                    </Routes>
+                  </div>
+                </>
               </SetPermissions>
             </ServiceContext.Provider>
           </SearchContext.Provider>
@@ -209,4 +213,4 @@ const PastorsAdmin = (props) => {
   )
 }
 
-export default PastorsAdmin
+export default AppWithContext
