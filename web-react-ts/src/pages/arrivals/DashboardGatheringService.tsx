@@ -25,13 +25,14 @@ import { MemberContext } from 'contexts/MemberContext'
 import usePopup from 'hooks/usePopup'
 import { AdminFormOptions } from './DashboardConstituency'
 import SearchMember from 'components/formik/SearchMember'
+import PullToRefresh from 'react-simple-pull-to-refresh'
 
 const GatheringServiceDashboard = () => {
   const { isOpen, togglePopup } = usePopup()
   const { currentUser } = useContext(MemberContext)
   const navigate = useNavigate()
   const today = new Date().toISOString().slice(0, 10)
-  const { data, loading, error } = useQuery(
+  const { data, loading, error, refetch } = useQuery(
     GATHERINGSERVICE_ARRIVALS_DASHBOARD,
     {
       variables: { id: currentUser?.currentChurch.id, date: today },
@@ -85,154 +86,156 @@ const GatheringServiceDashboard = () => {
   }
 
   return (
-    <ApolloWrapper data={data} loading={loading} error={error}>
-      <Container>
-        <HeadingPrimary loading={loading}>
-          {gatheringService?.name} Gathering Service Arrivals Summary
-        </HeadingPrimary>
-        <HeadingSecondary loading={loading}>
-          Arrivals Admin: {gatheringService?.arrivalsAdmin?.fullName}
-        </HeadingSecondary>
-        {isOpen && (
-          <Popup handleClose={togglePopup}>
-            <b>Change Arrivals Admin</b>
-            <p>Please enter the name of the new arrivals rep</p>
+    <PullToRefresh onRefresh={refetch}>
+      <ApolloWrapper data={data} loading={loading} error={error}>
+        <Container>
+          <HeadingPrimary loading={loading}>
+            {gatheringService?.name} Gathering Service Arrivals Summary
+          </HeadingPrimary>
+          <HeadingSecondary loading={loading}>
+            Arrivals Admin: {gatheringService?.arrivalsAdmin?.fullName}
+          </HeadingSecondary>
+          {isOpen && (
+            <Popup handleClose={togglePopup}>
+              <b>Change Arrivals Admin</b>
+              <p>Please enter the name of the new arrivals rep</p>
 
-            <Formik
-              initialValues={initialValues}
-              validationSchema={validationSchema}
-              onSubmit={onSubmit}
-            >
-              {(formik) => (
-                <Form>
-                  <Row className="form-row">
-                    <Col>
-                      <SearchMember
-                        name="adminSelect"
-                        initialValue={initialValues?.adminName}
-                        placeholder="Select an Admin"
-                        setFieldValue={formik.setFieldValue}
-                        aria-describedby="Member Search"
-                        error={formik.errors.adminSelect}
-                      />
-                    </Col>
-                  </Row>
+              <Formik
+                initialValues={initialValues}
+                validationSchema={validationSchema}
+                onSubmit={onSubmit}
+              >
+                {(formik) => (
+                  <Form>
+                    <Row className="form-row">
+                      <Col>
+                        <SearchMember
+                          name="adminSelect"
+                          initialValue={initialValues?.adminName}
+                          placeholder="Select an Admin"
+                          setFieldValue={formik.setFieldValue}
+                          aria-describedby="Member Search"
+                          error={formik.errors.adminSelect}
+                        />
+                      </Col>
+                    </Row>
 
-                  <SubmitButton formik={formik} />
-                </Form>
+                    <SubmitButton formik={formik} />
+                  </Form>
+                )}
+              </Formik>
+            </Popup>
+          )}
+
+          {data?.timeGraphs.length ? (
+            <>
+              <h4>{getHumanReadableDate(data?.timeGraphs[0]?.date, true)}</h4>
+              <h5>{data?.timeGraphs[0].swell && `Swell Weekend!`}</h5>
+            </>
+          ) : null}
+
+          <div className="d-grid gap-2">
+            <RoleView roles={permitAdmin('GatheringService')}>
+              <Button
+                variant="outline-secondary"
+                size="lg"
+                onClick={() => togglePopup()}
+              >
+                Change Arrivals Admin
+              </Button>
+
+              {(!data?.timeGraphs.length || !data?.timeGraphs[0]?.swell) && (
+                <Button
+                  onClick={() => {
+                    const confirmBox = window.confirm(
+                      'Do you want to set today as a swell day?'
+                    )
+
+                    if (confirmBox === true) {
+                      SetSwellDate({
+                        variables: { date: today },
+                      }).then(() => alertMsg('Swell Date Set Succesffully'))
+                    }
+                  }}
+                >
+                  Set Today as Swell
+                </Button>
               )}
-            </Formik>
-          </Popup>
-        )}
 
-        {data?.timeGraphs.length ? (
-          <>
-            <h4>{getHumanReadableDate(data?.timeGraphs[0]?.date, true)}</h4>
-            <h5>{data?.timeGraphs[0].swell && `Swell Weekend!`}</h5>
-          </>
-        ) : null}
-
-        <div className="d-grid gap-2">
-          <RoleView roles={permitAdmin('GatheringService')}>
-            <Button
-              variant="outline-secondary"
-              size="lg"
-              onClick={() => togglePopup()}
-            >
-              Change Arrivals Admin
-            </Button>
-
-            {(!data?.timeGraphs.length || !data?.timeGraphs[0]?.swell) && (
               <Button
                 onClick={() => {
-                  const confirmBox = window.confirm(
-                    'Do you want to set today as a swell day?'
-                  )
-
-                  if (confirmBox === true) {
-                    SetSwellDate({
-                      variables: { date: today },
-                    }).then(() => alertMsg('Swell Date Set Succesffully'))
-                  }
+                  const promptBox = window.prompt('Enter the Code of The Day')
+                  SetCodeOfTheDay({ variables: { code: promptBox } })
                 }}
               >
-                Set Today as Swell
+                Code of the Day
               </Button>
-            )}
+            </RoleView>
+            <DefaulterInfoCard defaulter={aggregates} />
 
-            <Button
-              onClick={() => {
-                const promptBox = window.prompt('Enter the Code of The Day')
-                SetCodeOfTheDay({ variables: { code: promptBox } })
-              }}
-            >
-              Code of the Day
-            </Button>
-          </RoleView>
-          <DefaulterInfoCard defaulter={aggregates} />
-
-          <MenuButton
-            title="Bacentas With No Activity"
-            onClick={() => navigate('/arrivals/bacentas-no-activity')}
-            number={gatheringService?.bacentasNoActivityCount.toString()}
-            color="red"
-            iconBg
-            noCaption
-          />
-          <MenuButton
-            title="Bacentas Mobilising"
-            onClick={() => navigate('/arrivals/bacentas-mobilising')}
-            number={gatheringService?.bacentasMobilisingCount.toString()}
-            color="orange"
-            iconBg
-            noCaption
-          />
-          <MenuButton
-            title="Bacentas On The Way"
-            onClick={() => navigate('/arrivals/bacentas-on-the-way')}
-            number={gatheringService?.bacentasOnTheWayCount.toString()}
-            color="yellow"
-            iconBg
-            noCaption
-          />
-
-          <MenuButton
-            title="Bacentas Below 8"
-            onClick={() => navigate('/arrivals/bacentas-below-8')}
-            number={gatheringService?.bacentasBelow8Count.toString()}
-            iconBg
-            color="red"
-            noCaption
-          />
-
-          <MenuButton
-            title="Bacentas That Have Arrived"
-            onClick={() => navigate('/arrivals/bacentas-have-arrived')}
-            number={gatheringService?.bacentasHaveArrivedCount.toString()}
-            color="green"
-            iconBg
-            noCaption
-          />
-
-          <div className="mt-5 d-grid gap-2">
             <MenuButton
-              title="Members On The Way"
-              number={gatheringService?.bussingMembersOnTheWayCount.toString()}
+              title="Bacentas With No Activity"
+              onClick={() => navigate('/arrivals/bacentas-no-activity')}
+              number={gatheringService?.bacentasNoActivityCount.toString()}
+              color="red"
+              iconBg
+              noCaption
+            />
+            <MenuButton
+              title="Bacentas Mobilising"
+              onClick={() => navigate('/arrivals/bacentas-mobilising')}
+              number={gatheringService?.bacentasMobilisingCount.toString()}
+              color="orange"
+              iconBg
+              noCaption
+            />
+            <MenuButton
+              title="Bacentas On The Way"
+              onClick={() => navigate('/arrivals/bacentas-on-the-way')}
+              number={gatheringService?.bacentasOnTheWayCount.toString()}
               color="yellow"
               iconBg
               noCaption
             />
+
             <MenuButton
-              title="Members That Have Arrived"
-              number={gatheringService?.bussingMembersHaveArrivedCount.toString()}
+              title="Bacentas Below 8"
+              onClick={() => navigate('/arrivals/bacentas-below-8')}
+              number={gatheringService?.bacentasBelow8Count.toString()}
+              iconBg
+              color="red"
+              noCaption
+            />
+
+            <MenuButton
+              title="Bacentas That Have Arrived"
+              onClick={() => navigate('/arrivals/bacentas-have-arrived')}
+              number={gatheringService?.bacentasHaveArrivedCount.toString()}
               color="green"
               iconBg
               noCaption
             />
+
+            <div className="mt-5 d-grid gap-2">
+              <MenuButton
+                title="Members On The Way"
+                number={gatheringService?.bussingMembersOnTheWayCount.toString()}
+                color="yellow"
+                iconBg
+                noCaption
+              />
+              <MenuButton
+                title="Members That Have Arrived"
+                number={gatheringService?.bussingMembersHaveArrivedCount.toString()}
+                color="green"
+                iconBg
+                noCaption
+              />
+            </div>
           </div>
-        </div>
-      </Container>
-    </ApolloWrapper>
+        </Container>
+      </ApolloWrapper>
+    </PullToRefresh>
   )
 }
 

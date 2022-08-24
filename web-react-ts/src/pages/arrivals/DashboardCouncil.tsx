@@ -23,14 +23,18 @@ import { AdminFormOptions } from './DashboardConstituency'
 import SearchMember from 'components/formik/SearchMember'
 import { beforeStreamArrivalsDeadline } from './arrivals-utils'
 import ErrorText from 'components/ErrorText'
+import PullToRefresh from 'react-simple-pull-to-refresh'
 
 const CouncilDashboard = () => {
   const { isOpen, togglePopup } = usePopup()
   const { currentUser } = useContext(MemberContext)
   const navigate = useNavigate()
-  const { data, loading, error } = useQuery(COUNCIL_ARRIVALS_DASHBOARD, {
-    variables: { id: currentUser?.currentChurch.id },
-  })
+  const { data, loading, error, refetch } = useQuery(
+    COUNCIL_ARRIVALS_DASHBOARD,
+    {
+      variables: { id: currentUser?.currentChurch.id },
+    }
+  )
   const [MakeCouncilArrivalsAdmin] = useMutation(MAKE_COUNCILARRIVALS_ADMIN)
   const council = data?.councils[0]
 
@@ -74,122 +78,124 @@ const CouncilDashboard = () => {
   }
 
   return (
-    <ApolloWrapper data={data} loading={loading} error={error}>
-      <Container>
-        <HeadingPrimary loading={loading}>
-          {council?.name} Council Arrivals Summary
-        </HeadingPrimary>
-        <HeadingSecondary>{`Arrivals Rep: ${
-          council?.arrivalsAdmin?.fullName ?? 'None'
-        }`}</HeadingSecondary>
-        {isOpen && (
-          <Popup handleClose={togglePopup}>
-            <b>Change Arrivals Admin</b>
-            <p>Please enter the name of the new arrivals rep</p>
+    <PullToRefresh onRefresh={refetch}>
+      <ApolloWrapper data={data} loading={loading} error={error}>
+        <Container>
+          <HeadingPrimary loading={loading}>
+            {council?.name} Council Arrivals Summary
+          </HeadingPrimary>
+          <HeadingSecondary>{`Arrivals Rep: ${
+            council?.arrivalsAdmin?.fullName ?? 'None'
+          }`}</HeadingSecondary>
+          {isOpen && (
+            <Popup handleClose={togglePopup}>
+              <b>Change Arrivals Admin</b>
+              <p>Please enter the name of the new arrivals rep</p>
 
-            <Formik
-              initialValues={initialValues}
-              validationSchema={validationSchema}
-              onSubmit={onSubmit}
-            >
-              {(formik) => (
-                <Form>
-                  <Row className="form-row">
-                    <Col>
-                      <SearchMember
-                        name="adminSelect"
-                        initialValue={initialValues?.adminName}
-                        placeholder="Select an Admin"
-                        setFieldValue={formik.setFieldValue}
-                        aria-describedby="Member Search"
-                        error={formik.errors.adminSelect}
-                      />
-                    </Col>
-                  </Row>
+              <Formik
+                initialValues={initialValues}
+                validationSchema={validationSchema}
+                onSubmit={onSubmit}
+              >
+                {(formik) => (
+                  <Form>
+                    <Row className="form-row">
+                      <Col>
+                        <SearchMember
+                          name="adminSelect"
+                          initialValue={initialValues?.adminName}
+                          placeholder="Select an Admin"
+                          setFieldValue={formik.setFieldValue}
+                          aria-describedby="Member Search"
+                          error={formik.errors.adminSelect}
+                        />
+                      </Col>
+                    </Row>
 
-                  <SubmitButton formik={formik} />
-                </Form>
-              )}
-            </Formik>
-          </Popup>
-        )}
-
-        <div className="d-grid gap-2">
-          <RoleView
-            roles={[...permitAdmin('Council'), ...permitArrivals('Stream')]}
-          >
-            <Button
-              variant="outline-secondary my-3"
-              onClick={() => togglePopup()}
-            >
-              Change Arrivals Admin
-            </Button>
-          </RoleView>
-
-          <DefaulterInfoCard defaulter={aggregates} />
-          {!beforeStreamArrivalsDeadline(council?.stream) && (
-            <ErrorText>Arrival Deadline is up! Thank you very much</ErrorText>
+                    <SubmitButton formik={formik} />
+                  </Form>
+                )}
+              </Formik>
+            </Popup>
           )}
-          <MenuButton
-            title="Bacentas With No Activity"
-            onClick={() => navigate('/arrivals/bacentas-no-activity')}
-            number={council?.bacentasNoActivityCount.toString()}
-            color="red"
-            iconBg
-            noCaption
-          />
-          <MenuButton
-            title="Bacentas Mobilising"
-            onClick={() => navigate('/arrivals/bacentas-mobilising')}
-            number={council?.bacentasMobilisingCount.toString()}
-            color="orange"
-            iconBg
-            noCaption
-          />
-          <MenuButton
-            title="Bacentas On The Way"
-            onClick={() => navigate('/arrivals/bacentas-on-the-way')}
-            number={council?.bacentasOnTheWayCount.toString()}
-            color="yellow"
-            iconBg
-            noCaption
-          />
-          <MenuButton
-            title="Bacentas Below 8"
-            onClick={() => navigate('/arrivals/bacentas-below-8')}
-            number={council?.bacentasBelow8Count.toString()}
-            iconBg
-            color="red"
-            noCaption
-          />
 
-          <MenuButton
-            title="Bacentas That Have Arrived"
-            onClick={() => navigate('/arrivals/bacentas-have-arrived')}
-            number={council?.bacentasHaveArrivedCount.toString()}
-            color="green"
-            iconBg
-            noCaption
-          />
-          <div className="mt-5 d-grid gap-2">
+          <div className="d-grid gap-2">
+            <RoleView
+              roles={[...permitAdmin('Council'), ...permitArrivals('Stream')]}
+            >
+              <Button
+                variant="outline-secondary my-3"
+                onClick={() => togglePopup()}
+              >
+                Change Arrivals Admin
+              </Button>
+            </RoleView>
+
+            <DefaulterInfoCard defaulter={aggregates} />
+            {!beforeStreamArrivalsDeadline(council?.stream) && (
+              <ErrorText>Arrival Deadline is up! Thank you very much</ErrorText>
+            )}
             <MenuButton
-              title="Members On The Way"
-              number={council?.bussingMembersOnTheWayCount.toString()}
+              title="Bacentas With No Activity"
+              onClick={() => navigate('/arrivals/bacentas-no-activity')}
+              number={council?.bacentasNoActivityCount.toString()}
+              color="red"
+              iconBg
+              noCaption
+            />
+            <MenuButton
+              title="Bacentas Mobilising"
+              onClick={() => navigate('/arrivals/bacentas-mobilising')}
+              number={council?.bacentasMobilisingCount.toString()}
+              color="orange"
+              iconBg
+              noCaption
+            />
+            <MenuButton
+              title="Bacentas On The Way"
+              onClick={() => navigate('/arrivals/bacentas-on-the-way')}
+              number={council?.bacentasOnTheWayCount.toString()}
               color="yellow"
               iconBg
               noCaption
             />
             <MenuButton
-              title="Members That Have Arrived"
-              number={council?.bussingMembersHaveArrivedCount.toString()}
+              title="Bacentas Below 8"
+              onClick={() => navigate('/arrivals/bacentas-below-8')}
+              number={council?.bacentasBelow8Count.toString()}
+              iconBg
+              color="red"
+              noCaption
+            />
+
+            <MenuButton
+              title="Bacentas That Have Arrived"
+              onClick={() => navigate('/arrivals/bacentas-have-arrived')}
+              number={council?.bacentasHaveArrivedCount.toString()}
               color="green"
               iconBg
               noCaption
             />
+            <div className="mt-5 d-grid gap-2">
+              <MenuButton
+                title="Members On The Way"
+                number={council?.bussingMembersOnTheWayCount.toString()}
+                color="yellow"
+                iconBg
+                noCaption
+              />
+              <MenuButton
+                title="Members That Have Arrived"
+                number={council?.bussingMembersHaveArrivedCount.toString()}
+                color="green"
+                iconBg
+                noCaption
+              />
+            </div>
           </div>
-        </div>
-      </Container>
-    </ApolloWrapper>
+        </Container>
+      </ApolloWrapper>
+    </PullToRefresh>
   )
 }
 

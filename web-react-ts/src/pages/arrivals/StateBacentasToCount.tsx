@@ -10,6 +10,7 @@ import useChurchLevel from 'hooks/useChurchLevel'
 import PlaceholderDefaulterList from 'pages/services/defaulters/PlaceholderDefaulterList'
 import { useContext, useEffect, useState } from 'react'
 import { Button, Container } from 'react-bootstrap'
+import PullToRefresh from 'react-simple-pull-to-refresh'
 import { ArrivalsUseChurchType, BacentaWithArrivals } from './arrivals-types'
 import {
   CONSTITUENCY_BACENTAS_TO_COUNT,
@@ -26,22 +27,31 @@ type FormOptions = {
 
 const StateBacentasToCount = () => {
   const { clickCard } = useContext(ChurchContext)
-  const [constituencyOnTheWay] = useLazyQuery(CONSTITUENCY_BACENTAS_TO_COUNT)
-  const [councilOnTheWay] = useLazyQuery(COUNCIL_BACENTAS_TO_COUNT)
-  const [streamOnTheWay] = useLazyQuery(STREAM_BACENTAS_TO_COUNT)
-  const [gatheringServiceOnTheWay] = useLazyQuery(
-    GATHERINGSERVICE_BACENTAS_TO_COUNT
+  const [constituencyOnTheWay, { refetch: constituencyRefetch }] = useLazyQuery(
+    CONSTITUENCY_BACENTAS_TO_COUNT
   )
+  const [councilOnTheWay, { refetch: councilRefetch }] = useLazyQuery(
+    COUNCIL_BACENTAS_TO_COUNT
+  )
+  const [streamOnTheWay, { refetch: streamRefetch }] = useLazyQuery(
+    STREAM_BACENTAS_TO_COUNT
+  )
+  const [gatheringServiceOnTheWay, { refetch: gatheringServiceRefetch }] =
+    useLazyQuery(GATHERINGSERVICE_BACENTAS_TO_COUNT)
   const [seeCars, setSeeCars] = useState(true)
   const [seeBusses, setSeeBusses] = useState(true)
 
   const data: ArrivalsUseChurchType = useChurchLevel({
     constituencyFunction: constituencyOnTheWay,
+    constituencyRefetch,
     councilFunction: councilOnTheWay,
+    councilRefetch,
     streamFunction: streamOnTheWay,
+    streamRefetch,
     gatheringServiceFunction: gatheringServiceOnTheWay,
+    gatheringServiceRefetch,
   })
-  const { church, loading, error } = data
+  const { church, loading, error, refetch } = data
 
   // Searching Feature
   const initialValues: FormOptions = {
@@ -79,86 +89,88 @@ const StateBacentasToCount = () => {
   }
 
   return (
-    <ApolloWrapper data={church} loading={loading} error={error} placeholder>
-      <Container>
-        <>
-          <HeadingPrimary loading={loading}>Bacentas To Count</HeadingPrimary>
-          <HeadingSecondary loading={!church?.name}>
-            {church?.name} {church?.__typename}
-          </HeadingSecondary>
-          <Formik initialValues={initialValues} onSubmit={onSubmit}>
-            {() => (
-              <Form>
-                <div className="align-middle">
-                  <Input
-                    className="form-control member-search w-100"
-                    name="bacentaSearch"
-                    placeholder="Search Bacentas"
-                    aria-describedby="Bacenta Search"
-                  />
-                </div>
-              </Form>
-            )}
-          </Formik>
-          <div className="text-center mt-2">
-            <Button
-              variant={'info'}
-              className={`${!seeBusses && 'low-opacity'} me-2`}
-              onClick={() => setSeeBusses(!seeBusses)}
-            >
-              Sprinter and Urvan
-            </Button>
-            <Button
-              variant={`success`}
-              className={`${!seeCars && 'low-opacity'}`}
-              onClick={() => setSeeCars(!seeCars)}
-            >
-              Car and Uber
-            </Button>
-          </div>
-          {church && !bacentaData?.length && (
-            <NoData text="There are no bacentas to be counted" />
-          )}
-          {bacentaData?.map((bacenta: BacentaWithArrivals) =>
-            bacenta.bussing[0].vehicleRecords.map((record, i) => {
-              if (record.arrivalTime) {
-                return null
-              }
-              if (
-                !seeBusses &&
-                (record.vehicle === 'Sprinter' || record.vehicle === 'Urvan')
-              ) {
-                return null
-              }
-
-              if (!seeCars && record.vehicle === 'Car') {
-                return null
-              }
-
-              return (
-                <MemberDisplayCard
-                  key={i}
-                  member={bacenta}
-                  leader={bacenta.leader}
-                  contact
-                  onClick={() => {
-                    clickCard(bacenta)
-                    clickCard(bacenta.bussing[0])
-                  }}
-                >
-                  <div className="d-grid gap-2 mt-2">
-                    <VehicleButton record={record} />
+    <PullToRefresh onRefresh={() => refetch}>
+      <ApolloWrapper data={church} loading={loading} error={error} placeholder>
+        <Container>
+          <>
+            <HeadingPrimary loading={loading}>Bacentas To Count</HeadingPrimary>
+            <HeadingSecondary loading={!church?.name}>
+              {church?.name} {church?.__typename}
+            </HeadingSecondary>
+            <Formik initialValues={initialValues} onSubmit={onSubmit}>
+              {() => (
+                <Form>
+                  <div className="align-middle">
+                    <Input
+                      className="form-control member-search w-100"
+                      name="bacentaSearch"
+                      placeholder="Search Bacentas"
+                      aria-describedby="Bacenta Search"
+                    />
                   </div>
-                </MemberDisplayCard>
-              )
-            })
-          )}
-          {!church?.bacentasNotCounted.length && loading && (
-            <PlaceholderDefaulterList />
-          )}
-        </>
-      </Container>
-    </ApolloWrapper>
+                </Form>
+              )}
+            </Formik>
+            <div className="text-center mt-2">
+              <Button
+                variant={'info'}
+                className={`${!seeBusses && 'low-opacity'} me-2`}
+                onClick={() => setSeeBusses(!seeBusses)}
+              >
+                Sprinter and Urvan
+              </Button>
+              <Button
+                variant={`success`}
+                className={`${!seeCars && 'low-opacity'}`}
+                onClick={() => setSeeCars(!seeCars)}
+              >
+                Car and Uber
+              </Button>
+            </div>
+            {church && !bacentaData?.length && (
+              <NoData text="There are no bacentas to be counted" />
+            )}
+            {bacentaData?.map((bacenta: BacentaWithArrivals) =>
+              bacenta.bussing[0].vehicleRecords.map((record, i) => {
+                if (record.arrivalTime) {
+                  return null
+                }
+                if (
+                  !seeBusses &&
+                  (record.vehicle === 'Sprinter' || record.vehicle === 'Urvan')
+                ) {
+                  return null
+                }
+
+                if (!seeCars && record.vehicle === 'Car') {
+                  return null
+                }
+
+                return (
+                  <MemberDisplayCard
+                    key={i}
+                    member={bacenta}
+                    leader={bacenta.leader}
+                    contact
+                    onClick={() => {
+                      clickCard(bacenta)
+                      clickCard(bacenta.bussing[0])
+                    }}
+                  >
+                    <div className="d-grid gap-2 mt-2">
+                      <VehicleButton record={record} />
+                    </div>
+                  </MemberDisplayCard>
+                )
+              })
+            )}
+            {!church?.bacentasNotCounted.length && loading && (
+              <PlaceholderDefaulterList />
+            )}
+          </>
+        </Container>
+      </ApolloWrapper>
+    </PullToRefresh>
   )
 }
 

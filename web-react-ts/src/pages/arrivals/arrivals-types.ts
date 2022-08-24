@@ -1,4 +1,4 @@
-import { ApolloError } from '@apollo/client'
+import { ApolloError, ApolloQueryResult } from '@apollo/client'
 import {
   Bacenta,
   Church,
@@ -123,6 +123,7 @@ export interface ArrivalsUseChurchType {
   church: HigherChurchWithArrivals | null
   loading: boolean
   error: ApolloError | undefined
+  refetch: () => Promise<any>
 }
 
 export interface ArrivalsUseChurchExt extends ArrivalsUseChurchType {
