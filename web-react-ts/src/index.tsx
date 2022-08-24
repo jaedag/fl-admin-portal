@@ -9,7 +9,9 @@ import {
 import { setContext } from '@apollo/client/link/context'
 import { Auth0Provider, useAuth0 } from '@auth0/auth0-react'
 import CacheBuster from 'CacheBuster'
-// import registerServiceWorker from './registerServiceWorker'
+import * as serviceWorkerRegistration from './serviceWorkerRegistration'
+import reportWebVitals from './reportWebVitals'
+
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './index.css'
 import PastorsAdmin from 'App'
@@ -19,7 +21,7 @@ import Sabbath from 'auth/Sabbath'
 import ReactGA from 'react-ga4'
 
 const AppWithApollo = () => {
-  const [accessToken, setAccessToken] = useState()
+  const [accessToken, setAccessToken] = useState<String>()
   const { getAccessTokenSilently, isLoading, user } = useAuth0()
 
   const getAccessToken = useCallback(async () => {
@@ -91,7 +93,15 @@ const AppWithApollo = () => {
 
 const App = () => (
   <CacheBuster>
-    {({ loading, isLatestVersion, refreshCacheAndReload }) => {
+    {({
+      loading,
+      isLatestVersion,
+      refreshCacheAndReload,
+    }: {
+      loading: boolean
+      isLatestVersion: boolean
+      refreshCacheAndReload: () => void
+    }) => {
       if (loading) return null
       if (!loading && !isLatestVersion) {
         refreshCacheAndReload()
@@ -99,11 +109,11 @@ const App = () => (
 
       return (
         <Auth0Provider
-          domain={process.env.REACT_APP_AUTH0_DOMAIN}
-          clientId={process.env.REACT_APP_AUTH0_CLIENT_ID}
+          domain={process.env.REACT_APP_AUTH0_DOMAIN || ''}
+          clientId={process.env.REACT_APP_AUTH0_CLIENT_ID || ''}
           redirectUri={window.location.origin}
           audience="https://flcadmin.netlify.app/graphql"
-          scope
+          scope="true"
         >
           <AppWithApollo />
         </Auth0Provider>
@@ -115,7 +125,8 @@ const App = () => (
 ReactGA.initialize('G-BT4M7RYZX0')
 ReactGA.send('pageview')
 
-const container = document.getElementById('root')
+const container: HTMLElement =
+  document.getElementById('root') || document.createElement('div')
 const root = createRoot(container)
 
 root.render(
@@ -123,4 +134,13 @@ root.render(
     <App />
   </React.StrictMode>
 )
-// registerServiceWorker()
+
+// If you want your app to work offline and load faster, you can change
+// unregister() to register() below. Note this comes with some pitfalls.
+// Learn more about service workers: https://cra.link/PWA
+serviceWorkerRegistration.unregister()
+
+// If you want to start measuring performance in your app, pass a function
+// to log results (for example: reportWebVitals(console.log))
+// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+reportWebVitals()
