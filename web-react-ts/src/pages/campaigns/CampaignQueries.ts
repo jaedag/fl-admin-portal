@@ -291,6 +291,7 @@ export const CONSTITUENCY_EQUIPMENT_DEFAULTERS_NUMBER_BY_FELLOWSHIP = gql`
       id
       fellowshipEquipmentFilledCount
       fellowshipEquipmentNotFilledCount
+      fellowshipCount
     }
   }
 `

@@ -36,6 +36,12 @@ function ConstituencyEquipmentDefaulters() {
           </div>
           <h6 className="mt-4">Fellowships that haven't filled their form</h6>
           <div className=" gap-2 mt-4">
+            <h6>
+              Fellowships :{' '}
+              <span className="text-primary">
+                {constituency?.fellowshipCount}
+              </span>
+            </h6>
             <Row>
               <Col>
                 <DefaultersMenuButton
