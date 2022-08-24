@@ -5,7 +5,6 @@ import { useContext } from 'react'
 import { Container, Nav, Navbar, Offcanvas, Row, Col } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import { menuItems } from './dashboard-utils'
-import logo from 'assets/flc-logo-red.webp'
 import SearchBox from 'components/SearchBox'
 import { Moon, Sun } from 'react-bootstrap-icons'
 import './Navigation.css'
@@ -33,15 +32,7 @@ const Navigator = () => {
           placement="start"
         >
           <Offcanvas.Header className={`${theme}`} closeButton>
-            <Offcanvas.Title id="offcanvasNavbarLabel">
-              <img
-                src={logo}
-                width="50"
-                height="50"
-                className="d-inline-block align-top"
-                alt="FLC Admin Logo"
-              />
-            </Offcanvas.Title>
+            <Offcanvas.Title id="offcanvasNavbarLabel"></Offcanvas.Title>
           </Offcanvas.Header>
           <Offcanvas.Body className={`${theme}`}>
             <Nav className="justify-content-start flex-grow-1">
