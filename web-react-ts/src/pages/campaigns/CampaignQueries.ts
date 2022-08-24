@@ -18,7 +18,6 @@ export const GATHERING_SERVICE_TRENDS = gql`
       name
       campaigns
       equipmentRecord {
-        id
         bluetoothSpeakers
         offeringBags
         pulpits
@@ -38,7 +37,6 @@ export const GATHERING_SERVICE_BY_STREAM = gql`
         id
         name
         equipmentRecord {
-          id
           bluetoothSpeakers
           offeringBags
           pulpits
@@ -83,7 +81,6 @@ export const STREAM_TRENDS = gql`
       id
       name
       equipmentRecord {
-        id
         bluetoothSpeakers
         offeringBags
         pulpits
@@ -103,7 +100,6 @@ export const STREAM_BY_COUNCIL = gql`
         id
         name
         equipmentRecord {
-          id
           bluetoothSpeakers
           offeringBags
           pulpits
@@ -132,7 +128,6 @@ export const COUNCIL_TRENDS = gql`
       id
       name
       equipmentRecord {
-        id
         bluetoothSpeakers
         offeringBags
         pulpits
@@ -281,7 +276,6 @@ export const CONSTITUENCY_BY_BACENTA = gql`
         id
         name
         equipmentRecord {
-          id
           bluetoothSpeakers
           offeringBags
         }
@@ -297,6 +291,7 @@ export const CONSTITUENCY_EQUIPMENT_DEFAULTERS_NUMBER_BY_FELLOWSHIP = gql`
       id
       fellowshipEquipmentFilledCount
       fellowshipEquipmentNotFilledCount
+      fellowshipCount
     }
   }
 `
@@ -339,7 +334,6 @@ export const BACENTA_TRENDS = gql`
       id
       name
       equipmentRecord {
-        id
         offeringBags
         bluetoothSpeakers
       }
