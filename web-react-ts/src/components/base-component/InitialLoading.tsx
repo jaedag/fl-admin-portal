@@ -1,7 +1,7 @@
 import React from 'react'
 import { Container, Spinner } from 'react-bootstrap'
 
-const InitialLoading = ({ text }: { text: string }) => {
+const InitialLoading = ({ text }: { text?: string }) => {
   return (
     <div className="row align-items-center center-page bg dark">
       <div className="col text-center">
