@@ -300,7 +300,7 @@ extend type Mutation {
       MATCH (leader:Member {id: $leaderId})
       MATCH (currentUser:Member {auth_id:$auth.jwt.sub})
       MATCH (council:Council {id: $councilId})
-      MATCH (zone:Constituency {number : 0})
+      MATCH (zone:BusZone {number : 0})
 
        CREATE (log:HistoryLog)
         SET
