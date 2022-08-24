@@ -1,5 +1,6 @@
 import {
   ApolloError,
+  ApolloQueryResult,
   LazyQueryExecFunction,
   OperationVariables,
 } from '@apollo/client'
@@ -10,9 +11,13 @@ import { useContext, useEffect, useState } from 'react'
 
 type useChurchLevelProps = {
   constituencyFunction?: LazyQueryExecFunction<any, OperationVariables>
+  constituencyRefetch?: () => Promise<ApolloQueryResult<any>>
   councilFunction: LazyQueryExecFunction<any, OperationVariables>
+  councilRefetch: () => Promise<ApolloQueryResult<any>>
   streamFunction: LazyQueryExecFunction<any, OperationVariables>
+  streamRefetch: () => Promise<ApolloQueryResult<any>>
   gatheringServiceFunction: LazyQueryExecFunction<any, OperationVariables>
+  gatheringServiceRefetch: () => Promise<ApolloQueryResult<any>>
 }
 
 const useChurchLevel = (props: useChurchLevelProps) => {
@@ -27,6 +32,9 @@ const useChurchLevel = (props: useChurchLevelProps) => {
   const [church, setChurch] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<undefined | ApolloError>()
+  const [refetch, setRefetch] = useState<() => Promise<any>>(() =>
+    Promise.resolve()
+  )
 
   useEffect(() => {
     const whichQuery = async () => {
@@ -43,6 +51,9 @@ const useChurchLevel = (props: useChurchLevelProps) => {
             setChurch(res.data?.constituencies[0])
             setLoading(res.loading)
             setError(res.error)
+            if (props.constituencyRefetch) {
+              setRefetch(props?.constituencyRefetch)
+            }
           }
           break
         case 'Council':
@@ -56,6 +67,7 @@ const useChurchLevel = (props: useChurchLevelProps) => {
             setChurch(res?.data?.councils[0])
             setLoading(res.loading)
             setError(res.error)
+            setRefetch(props?.councilRefetch)
           }
 
           break
@@ -69,6 +81,7 @@ const useChurchLevel = (props: useChurchLevelProps) => {
             setChurch(res?.data?.streams[0])
             setLoading(res.loading)
             setError(res.error)
+            setRefetch(props?.streamRefetch)
           }
           break
 
@@ -83,6 +96,7 @@ const useChurchLevel = (props: useChurchLevelProps) => {
             setChurch(res?.data?.gatheringServices[0])
             setLoading(res.loading)
             setError(res.error)
+            setRefetch(props?.gatheringServiceRefetch)
           }
           break
         default:
@@ -93,7 +107,7 @@ const useChurchLevel = (props: useChurchLevelProps) => {
     whichQuery()
   }, [setChurch])
 
-  return { church, subChurchLevel, loading, error }
+  return { church, subChurchLevel, loading, error, refetch }
 }
 
 export default useChurchLevel
