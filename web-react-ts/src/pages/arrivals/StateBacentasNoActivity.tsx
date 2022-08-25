@@ -15,53 +15,64 @@ import useChurchLevel from 'hooks/useChurchLevel'
 import NoData from './CompNoData'
 import PlaceholderDefaulterList from 'pages/services/defaulters/PlaceholderDefaulterList'
 import { ArrivalsUseChurchType } from './arrivals-types'
+import PullToRefresh from 'react-simple-pull-to-refresh'
 
 const BacentasNoActiviity = () => {
-  const [constituencyBacentasNoActivity] = useLazyQuery(
-    CONSTITUENCY_BACENTAS_NO_ACTIVITY
+  const [constituencyBacentasNoActivity, { refetch: constituencyRefetch }] =
+    useLazyQuery(CONSTITUENCY_BACENTAS_NO_ACTIVITY)
+  const [councilBacentasNoActivity, { refetch: councilRefetch }] = useLazyQuery(
+    COUNCIL_BACENTAS_NO_ACTIVITY
   )
-  const [councilBacentasNoActivity] = useLazyQuery(COUNCIL_BACENTAS_NO_ACTIVITY)
-  const [streamBacentasNoActivity] = useLazyQuery(STREAM_BACENTAS_NO_ACTIVITY)
-  const [gatheringServiceBacentasNoActivity] = useLazyQuery(
-    GATHERINGSERVICE_BACENTAS_NO_ACTIVITY
+  const [streamBacentasNoActivity, { refetch: streamRefetch }] = useLazyQuery(
+    STREAM_BACENTAS_NO_ACTIVITY
   )
+  const [
+    gatheringServiceBacentasNoActivity,
+    { refetch: gatheringServiceRefetch },
+  ] = useLazyQuery(GATHERINGSERVICE_BACENTAS_NO_ACTIVITY)
 
   const data: ArrivalsUseChurchType = useChurchLevel({
     constituencyFunction: constituencyBacentasNoActivity,
+    constituencyRefetch,
     councilFunction: councilBacentasNoActivity,
+    councilRefetch,
     streamFunction: streamBacentasNoActivity,
+    streamRefetch,
     gatheringServiceFunction: gatheringServiceBacentasNoActivity,
+    gatheringServiceRefetch,
   })
-  const { church, loading, error } = data
+  const { church, loading, error, refetch } = data
 
   return (
-    <ApolloWrapper data={church} loading={loading} error={error} placeholder>
-      <Container>
-        <HeadingPrimary loading={loading}>
-          Bacentas With No Activity
-        </HeadingPrimary>
-        <HeadingSecondary loading={!church?.name}>
-          {church?.name} {church?.__typename}
-        </HeadingSecondary>
+    <PullToRefresh onRefresh={refetch}>
+      <ApolloWrapper data={church} loading={loading} error={error} placeholder>
+        <Container>
+          <HeadingPrimary loading={loading}>
+            Bacentas With No Activity
+          </HeadingPrimary>
+          <HeadingSecondary loading={!church?.name}>
+            {church?.name} {church?.__typename}
+          </HeadingSecondary>
 
-        {church && !church?.bacentasNoActivity.length && (
-          <NoData text="There are no bacentas without activity" />
-        )}
+          {church && !church?.bacentasNoActivity.length && (
+            <NoData text="There are no bacentas without activity" />
+          )}
 
-        {church?.bacentasNoActivity.map((bacenta, i) => (
-          <MemberDisplayCard
-            key={i}
-            member={bacenta}
-            leader={bacenta.leader}
-            contact
-          />
-        ))}
+          {church?.bacentasNoActivity.map((bacenta, i) => (
+            <MemberDisplayCard
+              key={i}
+              member={bacenta}
+              leader={bacenta.leader}
+              contact
+            />
+          ))}
 
-        {!church?.bacentasNoActivity.length && loading && (
-          <PlaceholderDefaulterList />
-        )}
-      </Container>
-    </ApolloWrapper>
+          {!church?.bacentasNoActivity.length && loading && (
+            <PlaceholderDefaulterList />
+          )}
+        </Container>
+      </ApolloWrapper>
+    </PullToRefresh>
   )
 }
 

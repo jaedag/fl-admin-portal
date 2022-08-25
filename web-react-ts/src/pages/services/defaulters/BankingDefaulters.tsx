@@ -16,58 +16,67 @@ import {
 } from './DefaultersQueries'
 import PlaceholderDefaulterList from './PlaceholderDefaulterList'
 import { DefaultersUseChurchType } from './defaulters-types'
+import PullToRefresh from 'react-simple-pull-to-refresh'
 
 const BankingDefaulters = () => {
-  const [constituencyBankingDefaulters] = useLazyQuery(
-    CONSTITUENCY_BANKING_DEFAULTERS_LIST
-  )
-  const [councilBankingDefaulters] = useLazyQuery(
+  const [constituencyBankingDefaulters, { refetch: constituencyRefetch }] =
+    useLazyQuery(CONSTITUENCY_BANKING_DEFAULTERS_LIST)
+  const [councilBankingDefaulters, { refetch: councilRefetch }] = useLazyQuery(
     COUNCIL_BANKING_DEFAULTERS_LIST
   )
-  const [streamBankingDefaulters] = useLazyQuery(STREAM_BANKING_DEFAULTERS_LIST)
-  const [gatheringServiceBankingDefaulters] = useLazyQuery(
-    GATHERINGSERVICE_BANKING_DEFAULTERS_LIST
+  const [streamBankingDefaulters, { refetch: streamRefetch }] = useLazyQuery(
+    STREAM_BANKING_DEFAULTERS_LIST
   )
+  const [
+    gatheringServiceBankingDefaulters,
+    { refetch: gatheringServiceRefetch },
+  ] = useLazyQuery(GATHERINGSERVICE_BANKING_DEFAULTERS_LIST)
 
   const data: DefaultersUseChurchType = useChurchLevel({
     constituencyFunction: constituencyBankingDefaulters,
+    constituencyRefetch,
     councilFunction: councilBankingDefaulters,
+    councilRefetch,
     streamFunction: streamBankingDefaulters,
+    streamRefetch,
     gatheringServiceFunction: gatheringServiceBankingDefaulters,
+    gatheringServiceRefetch,
   })
 
-  const { church, loading, error } = data
+  const { church, loading, error, refetch } = data
 
   return (
-    <ApolloWrapper data={church} loading={loading} error={error} placeholder>
-      <Container>
-        <HeadingPrimary
-          loading={!church}
-        >{`${church?.name} ${church?.__typename}`}</HeadingPrimary>
-        <HeadingSecondary>
-          {`Fellowships That Have Not Banked This Week Despite Having Service (Week ${getWeekNumber()})`}
-        </HeadingSecondary>
+    <PullToRefresh onRefresh={refetch}>
+      <ApolloWrapper data={church} loading={loading} error={error} placeholder>
+        <Container>
+          <HeadingPrimary
+            loading={!church}
+          >{`${church?.name} ${church?.__typename}`}</HeadingPrimary>
+          <HeadingSecondary>
+            {`Fellowships That Have Not Banked This Week Despite Having Service (Week ${getWeekNumber()})`}
+          </HeadingSecondary>
 
-        <PlaceholderCustom
-          as="h6"
-          loading={!church?.bankingDefaultersThisWeek.length}
-        >
-          <h6>{`Number of Defaulters: ${church?.bankingDefaultersThisWeek.length}`}</h6>
-        </PlaceholderCustom>
+          <PlaceholderCustom
+            as="h6"
+            loading={!church?.bankingDefaultersThisWeek.length}
+          >
+            <h6>{`Number of Defaulters: ${church?.bankingDefaultersThisWeek.length}`}</h6>
+          </PlaceholderCustom>
 
-        <Row>
-          {church?.bankingDefaultersThisWeek.map((defaulter, i) => (
-            <Col key={i} xs={12} className="mb-3">
-              <DefaulterCard
-                defaulter={defaulter}
-                link="/fellowship/service-details"
-              />
-            </Col>
-          ))}
-          {!church && <PlaceholderDefaulterList />}
-        </Row>
-      </Container>
-    </ApolloWrapper>
+          <Row>
+            {church?.bankingDefaultersThisWeek.map((defaulter, i) => (
+              <Col key={i} xs={12} className="mb-3">
+                <DefaulterCard
+                  defaulter={defaulter}
+                  link="/fellowship/service-details"
+                />
+              </Col>
+            ))}
+            {!church && <PlaceholderDefaulterList />}
+          </Row>
+        </Container>
+      </ApolloWrapper>
+    </PullToRefresh>
   )
 }
 
