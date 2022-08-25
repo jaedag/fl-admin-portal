@@ -1,10 +1,11 @@
 /* eslint-disable no-console*/
+// @ts-nocheck
 import React from 'react'
 import packageJson from '../package.json'
 global.appVersion = packageJson.version
 
 // version from response - first param, local version second param
-const semverGreaterThan = (versionA, versionB) => {
+const semverGreaterThan = (versionA: string, versionB: string) => {
   const versionsA = versionA.split(/\./g)
 
   const versionsB = versionB.split(/\./g)
@@ -21,7 +22,7 @@ const semverGreaterThan = (versionA, versionB) => {
 }
 
 class CacheBuster extends React.Component {
-  constructor(props) {
+  constructor(props: any) {
     super(props)
     this.state = {
       loading: true,
@@ -54,6 +55,7 @@ class CacheBuster extends React.Component {
       .then((response) => response.json())
       .then((meta) => {
         const latestVersion = meta.version
+        //@ts-ignore
         const currentVersion = global.appVersion
 
         const shouldForceRefresh = semverGreaterThan(
@@ -75,6 +77,7 @@ class CacheBuster extends React.Component {
   }
   render() {
     const { loading, isLatestVersion, refreshCacheAndReload } = this.state
+
     return this.props.children({
       loading,
       isLatestVersion,
