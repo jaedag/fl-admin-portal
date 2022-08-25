@@ -32,10 +32,21 @@ const useChurchLevel = (props: useChurchLevelProps) => {
   const [church, setChurch] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<undefined | ApolloError>()
-  const [refetch, setRefetch] = useState<() => Promise<any>>(() =>
-    Promise.resolve()
-  )
 
+  const chooseRefetch = () => {
+    switch (churchLevel) {
+      case 'Constituency':
+        return props.constituencyRefetch || props.councilRefetch
+      case 'Council':
+        return props.councilRefetch
+      case 'Stream':
+        return props.streamRefetch
+      case 'GatheringService':
+        return props.gatheringServiceRefetch
+      default:
+        return props.councilRefetch
+    }
+  }
   useEffect(() => {
     const whichQuery = async () => {
       switch (churchLevel) {
@@ -51,9 +62,6 @@ const useChurchLevel = (props: useChurchLevelProps) => {
             setChurch(res.data?.constituencies[0])
             setLoading(res.loading)
             setError(res.error)
-            if (props.constituencyRefetch) {
-              setRefetch(props?.constituencyRefetch)
-            }
           }
           break
         case 'Council':
@@ -67,7 +75,6 @@ const useChurchLevel = (props: useChurchLevelProps) => {
             setChurch(res?.data?.councils[0])
             setLoading(res.loading)
             setError(res.error)
-            setRefetch(props?.councilRefetch)
           }
 
           break
@@ -81,7 +88,6 @@ const useChurchLevel = (props: useChurchLevelProps) => {
             setChurch(res?.data?.streams[0])
             setLoading(res.loading)
             setError(res.error)
-            setRefetch(props?.streamRefetch)
           }
           break
 
@@ -96,7 +102,6 @@ const useChurchLevel = (props: useChurchLevelProps) => {
             setChurch(res?.data?.gatheringServices[0])
             setLoading(res.loading)
             setError(res.error)
-            setRefetch(props?.gatheringServiceRefetch)
           }
           break
         default:
@@ -107,7 +112,7 @@ const useChurchLevel = (props: useChurchLevelProps) => {
     whichQuery()
   }, [setChurch])
 
-  return { church, subChurchLevel, loading, error, refetch }
+  return { church, subChurchLevel, loading, error, refetch: chooseRefetch() }
 }
 
 export default useChurchLevel

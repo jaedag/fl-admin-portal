@@ -89,7 +89,7 @@ const StateBacentasToCount = () => {
   }
 
   return (
-    <PullToRefresh onRefresh={() => refetch}>
+    <PullToRefresh onRefresh={refetch}>
       <ApolloWrapper data={church} loading={loading} error={error} placeholder>
         <Container>
           <>

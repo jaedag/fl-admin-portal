@@ -9,6 +9,7 @@ import PlaceholderDefaulterList from 'pages/services/defaulters/PlaceholderDefau
 import React, { useContext } from 'react'
 import { Container } from 'react-bootstrap'
 import { useNavigate } from 'react-router'
+import PullToRefresh from 'react-simple-pull-to-refresh'
 import { ArrivalsUseChurchType } from './arrivals-types'
 import {
   CONSTITUENCY_BACENTAS_ARRIVED,
@@ -21,58 +22,68 @@ import NoData from './CompNoData'
 const BacentasHaveArrived = () => {
   const navigate = useNavigate()
   const { clickCard } = useContext(ChurchContext)
-  const [constituencyBacentasArrived] = useLazyQuery(
-    CONSTITUENCY_BACENTAS_ARRIVED
+  const [constituencyBacentasArrived, { refetch: constituencyRefetch }] =
+    useLazyQuery(CONSTITUENCY_BACENTAS_ARRIVED)
+  const [councilBacentasArrived, { refetch: councilRefetch }] = useLazyQuery(
+    COUNCIL_BACENTAS_ARRIVED
   )
-  const [councilBacentasArrived] = useLazyQuery(COUNCIL_BACENTAS_ARRIVED)
-  const [streamBacentasArrived] = useLazyQuery(STREAM_BACENTAS_ARRIVED)
-  const [gatheringServiceBacentasArrived] = useLazyQuery(
-    GATHERINGSERVICES_BACENTAS_ARRIVED
+  const [streamBacentasArrived, { refetch: streamRefetch }] = useLazyQuery(
+    STREAM_BACENTAS_ARRIVED
   )
+  const [
+    gatheringServiceBacentasArrived,
+    { refetch: gatheringServiceRefetch },
+  ] = useLazyQuery(GATHERINGSERVICES_BACENTAS_ARRIVED)
 
   const data: ArrivalsUseChurchType = useChurchLevel({
     constituencyFunction: constituencyBacentasArrived,
+    constituencyRefetch,
     councilFunction: councilBacentasArrived,
+    councilRefetch,
     streamFunction: streamBacentasArrived,
+    streamRefetch,
     gatheringServiceFunction: gatheringServiceBacentasArrived,
+    gatheringServiceRefetch,
   })
-  const { church, loading, error } = data
+  const { church, loading, error, refetch } = data
 
   return (
-    <ApolloWrapper data={church} loading={loading} error={error} placeholder>
-      <Container>
-        <HeadingPrimary loading={loading}>
-          Bacentas That Have Arrived
-        </HeadingPrimary>
-        <HeadingSecondary loading={!church?.name}>
-          {church?.name} Constituency
-        </HeadingSecondary>
+    <PullToRefresh onRefresh={refetch}>
+      <ApolloWrapper data={church} loading={loading} error={error} placeholder>
+        <Container>
+          <HeadingPrimary loading={loading}>
+            Bacentas That Have Arrived
+          </HeadingPrimary>
+          <HeadingSecondary loading={!church?.name}>
+            {church?.name} Constituency
+          </HeadingSecondary>
 
-        {church && !church?.bacentasHaveArrived.length && (
-          <NoData text="No Bacentas Have Arrived at the Centre" />
-        )}
+          {church && !church?.bacentasHaveArrived.length && (
+            <NoData text="No Bacentas Have Arrived at the Centre" />
+          )}
 
-        {church?.bacentasHaveArrived?.map((bacenta, i: number) => {
-          return (
-            <MemberDisplayCard
-              key={i}
-              member={bacenta}
-              leader={bacenta.leader}
-              contact
-              onClick={() => {
-                clickCard(bacenta)
-                clickCard(bacenta.bussing[0])
-                navigate('/bacenta/bussing-details')
-              }}
-            />
-          )
-        })}
+          {church?.bacentasHaveArrived?.map((bacenta, i: number) => {
+            return (
+              <MemberDisplayCard
+                key={i}
+                member={bacenta}
+                leader={bacenta.leader}
+                contact
+                onClick={() => {
+                  clickCard(bacenta)
+                  clickCard(bacenta.bussing[0])
+                  navigate('/bacenta/bussing-details')
+                }}
+              />
+            )
+          })}
 
-        {!church?.bacentasHaveArrived.length && loading && (
-          <PlaceholderDefaulterList />
-        )}
-      </Container>
-    </ApolloWrapper>
+          {!church?.bacentasHaveArrived.length && loading && (
+            <PlaceholderDefaulterList />
+          )}
+        </Container>
+      </ApolloWrapper>
+    </PullToRefresh>
   )
 }
 

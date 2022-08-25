@@ -44,7 +44,7 @@ const BacentasOnTheWay = () => {
     gatheringServiceFunction: gatheringServiceOnTheWay,
     gatheringServiceRefetch,
   })
-  const { church, loading, error } = data
+  const { church, loading, error, refetch } = data
 
   return (
     <PullToRefresh onRefresh={refetch}>

@@ -16,49 +16,61 @@ import {
 } from './DefaultersQueries'
 import PlaceholderDefaulterList from './PlaceholderDefaulterList'
 import { DefaultersUseChurchType } from './defaulters-types'
+import PullToRefresh from 'react-simple-pull-to-refresh'
 
 const Banked = () => {
-  const [constituencyBanked] = useLazyQuery(CONSTITUENCY_BANKED_LIST)
-  const [councilBanked] = useLazyQuery(COUNCIL_BANKED_LIST)
-  const [streamBanked] = useLazyQuery(STREAM_BANKED_LIST)
-  const [gatheringServiceBanked] = useLazyQuery(GATHERINGSERVICE_BANKED_LIST)
+  const [constituencyBanked, { refetch: constituencyRefetch }] = useLazyQuery(
+    CONSTITUENCY_BANKED_LIST
+  )
+  const [councilBanked, { refetch: councilRefetch }] =
+    useLazyQuery(COUNCIL_BANKED_LIST)
+  const [streamBanked, { refetch: streamRefetch }] =
+    useLazyQuery(STREAM_BANKED_LIST)
+  const [gatheringServiceBanked, { refetch: gatheringServiceRefetch }] =
+    useLazyQuery(GATHERINGSERVICE_BANKED_LIST)
 
   const data: DefaultersUseChurchType = useChurchLevel({
     constituencyFunction: constituencyBanked,
+    constituencyRefetch,
     councilFunction: councilBanked,
+    councilRefetch,
     streamFunction: streamBanked,
+    streamRefetch,
     gatheringServiceFunction: gatheringServiceBanked,
+    gatheringServiceRefetch,
   })
 
-  const { church, loading, error } = data
+  const { church, loading, error, refetch } = data
 
   return (
-    <ApolloWrapper data={church} loading={loading} error={error} placeholder>
-      <Container>
-        <HeadingPrimary
-          loading={!church}
-        >{`${church?.name} ${church?.__typename}`}</HeadingPrimary>
-        <HeadingSecondary>
-          {`Fellowships That Have Banked This Week (Week ${getWeekNumber()})`}
-        </HeadingSecondary>
+    <PullToRefresh onRefresh={refetch}>
+      <ApolloWrapper data={church} loading={loading} error={error} placeholder>
+        <Container>
+          <HeadingPrimary
+            loading={!church}
+          >{`${church?.name} ${church?.__typename}`}</HeadingPrimary>
+          <HeadingSecondary>
+            {`Fellowships That Have Banked This Week (Week ${getWeekNumber()})`}
+          </HeadingSecondary>
 
-        <PlaceholderCustom as="h6" loading={!church?.bankedThisWeek.length}>
-          <h6>{`Number Who Have Banked: ${church?.bankedThisWeek.length}`}</h6>
-        </PlaceholderCustom>
+          <PlaceholderCustom as="h6" loading={!church?.bankedThisWeek.length}>
+            <h6>{`Number Who Have Banked: ${church?.bankedThisWeek.length}`}</h6>
+          </PlaceholderCustom>
 
-        <Row>
-          {church?.bankedThisWeek.map((defaulter, i) => (
-            <Col key={i} xs={12} className="mb-3">
-              <DefaulterCard
-                defaulter={defaulter}
-                link="/fellowship/service-details"
-              />
-            </Col>
-          ))}
-          {!church && <PlaceholderDefaulterList />}
-        </Row>
-      </Container>
-    </ApolloWrapper>
+          <Row>
+            {church?.bankedThisWeek.map((defaulter, i) => (
+              <Col key={i} xs={12} className="mb-3">
+                <DefaulterCard
+                  defaulter={defaulter}
+                  link="/fellowship/service-details"
+                />
+              </Col>
+            ))}
+            {!church && <PlaceholderDefaulterList />}
+          </Row>
+        </Container>
+      </ApolloWrapper>
+    </PullToRefresh>
   )
 }
 
