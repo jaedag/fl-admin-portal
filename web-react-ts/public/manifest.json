@@ -4,33 +4,33 @@
   "description": "An administrative portal for managing and adminstering the First Love Church",
   "icons": [
     {
-      "src": "app-icon-inverted.svg",
+      "src": "app-icon-inverted.png",
       "sizes": "64x64",
-      "type": "image/svg",
+      "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "app-icon-inverted.svg",
+      "src": "app-icon-inverted.png",
       "sizes": "32x32",
-      "type": "image/svg",
+      "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "app-icon-inverted.svg",
+      "src": "app-icon-inverted.png",
       "sizes": "24x24",
-      "type": "image/svg",
+      "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "app-icon-inverted.svg",
+      "src": "app-icon-inverted.png",
       "sizes": "16x16",
-      "type": "image/svg",
+      "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "app-icon-inverted.svg",
+      "src": "app-icon-inverted.png",
       "sizes": "180x180",
-      "type": "image/svg",
+      "type": "image/png",
       "purpose": "any"
     }
   ],
