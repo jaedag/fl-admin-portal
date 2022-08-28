@@ -33,4 +33,5 @@ export interface DefaultersUseChurchType {
   church: HigherChurchWithDefaulters | null
   loading: boolean
   error: ApolloError | undefined
+  refetch: () => Promise<any>
 }

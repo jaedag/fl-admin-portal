@@ -16,53 +16,62 @@ import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import useChurchLevel from 'hooks/useChurchLevel'
 import PlaceholderDefaulterList from './PlaceholderDefaulterList'
 import { DefaultersUseChurchType } from './defaulters-types'
+import PullToRefresh from 'react-simple-pull-to-refresh'
 
 const CancelledServicesThisWeek = () => {
-  const [constituencyCancelledServices] = useLazyQuery(
-    CONSTITUENCY_CANCELLED_SERVICES_LIST
-  )
-  const [councilCancelledServices] = useLazyQuery(
+  const [constituencyCancelledServices, { refetch: constituencyRefetch }] =
+    useLazyQuery(CONSTITUENCY_CANCELLED_SERVICES_LIST)
+  const [councilCancelledServices, { refetch: councilRefetch }] = useLazyQuery(
     COUNCIL_CANCELLED_SERVICES_LIST
   )
-  const [streamCancelledServices] = useLazyQuery(STREAM_CANCELLED_SERVICES_LIST)
-  const [gatheringServiceCancelledServices] = useLazyQuery(
-    GATHERINGSERVICE_CANCELLED_SERVICES_LIST
+  const [streamCancelledServices, { refetch: streamRefetch }] = useLazyQuery(
+    STREAM_CANCELLED_SERVICES_LIST
   )
+  const [
+    gatheringServiceCancelledServices,
+    { refetch: gatheringServiceRefetch },
+  ] = useLazyQuery(GATHERINGSERVICE_CANCELLED_SERVICES_LIST)
 
   const data: DefaultersUseChurchType = useChurchLevel({
     constituencyFunction: constituencyCancelledServices,
+    constituencyRefetch,
     councilFunction: councilCancelledServices,
+    councilRefetch,
     streamFunction: streamCancelledServices,
+    streamRefetch,
     gatheringServiceFunction: gatheringServiceCancelledServices,
+    gatheringServiceRefetch,
   })
 
-  const { church, loading, error } = data
+  const { church, loading, error, refetch } = data
 
   return (
-    <ApolloWrapper data={church} loading={loading} error={error} placeholder>
-      <Container>
-        <HeadingPrimary
-          loading={!church}
-        >{`${church?.name} ${church?.__typename}`}</HeadingPrimary>
-        <HeadingSecondary>{`Cancelled Services This Week (Week ${getWeekNumber()})`}</HeadingSecondary>
+    <PullToRefresh onRefresh={refetch}>
+      <ApolloWrapper data={church} loading={loading} error={error} placeholder>
+        <Container>
+          <HeadingPrimary
+            loading={!church}
+          >{`${church?.name} ${church?.__typename}`}</HeadingPrimary>
+          <HeadingSecondary>{`Cancelled Services This Week (Week ${getWeekNumber()})`}</HeadingSecondary>
 
-        <PlaceholderCustom
-          as="h6"
-          loading={!church?.cancelledServicesThisWeek.length}
-        >
-          <h6>{`Number of Cancelled Services: ${church?.cancelledServicesThisWeek.length}`}</h6>
-        </PlaceholderCustom>
+          <PlaceholderCustom
+            as="h6"
+            loading={!church?.cancelledServicesThisWeek.length}
+          >
+            <h6>{`Number of Cancelled Services: ${church?.cancelledServicesThisWeek.length}`}</h6>
+          </PlaceholderCustom>
 
-        <Row>
-          {church?.cancelledServicesThisWeek.map((service, i) => (
-            <Col key={i} xs={12} className="mb-3">
-              <DefaulterCard defaulter={service} />
-            </Col>
-          ))}
-          {!church && <PlaceholderDefaulterList />}
-        </Row>
-      </Container>
-    </ApolloWrapper>
+          <Row>
+            {church?.cancelledServicesThisWeek.map((service, i) => (
+              <Col key={i} xs={12} className="mb-3">
+                <DefaulterCard defaulter={service} />
+              </Col>
+            ))}
+            {!church && <PlaceholderDefaulterList />}
+          </Row>
+        </Container>
+      </ApolloWrapper>
+    </PullToRefresh>
   )
 }
 

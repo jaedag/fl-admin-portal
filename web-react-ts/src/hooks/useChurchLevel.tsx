@@ -1,5 +1,6 @@
 import {
   ApolloError,
+  ApolloQueryResult,
   LazyQueryExecFunction,
   OperationVariables,
 } from '@apollo/client'
@@ -10,9 +11,13 @@ import { useContext, useEffect, useState } from 'react'
 
 type useChurchLevelProps = {
   constituencyFunction?: LazyQueryExecFunction<any, OperationVariables>
+  constituencyRefetch?: () => Promise<ApolloQueryResult<any>>
   councilFunction: LazyQueryExecFunction<any, OperationVariables>
+  councilRefetch: () => Promise<ApolloQueryResult<any>>
   streamFunction: LazyQueryExecFunction<any, OperationVariables>
+  streamRefetch: () => Promise<ApolloQueryResult<any>>
   gatheringServiceFunction: LazyQueryExecFunction<any, OperationVariables>
+  gatheringServiceRefetch: () => Promise<ApolloQueryResult<any>>
 }
 
 const useChurchLevel = (props: useChurchLevelProps) => {
@@ -28,6 +33,20 @@ const useChurchLevel = (props: useChurchLevelProps) => {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<undefined | ApolloError>()
 
+  const chooseRefetch = () => {
+    switch (churchLevel) {
+      case 'Constituency':
+        return props.constituencyRefetch || props.councilRefetch
+      case 'Council':
+        return props.councilRefetch
+      case 'Stream':
+        return props.streamRefetch
+      case 'GatheringService':
+        return props.gatheringServiceRefetch
+      default:
+        return props.councilRefetch
+    }
+  }
   useEffect(() => {
     const whichQuery = async () => {
       switch (churchLevel) {
@@ -93,7 +112,7 @@ const useChurchLevel = (props: useChurchLevelProps) => {
     whichQuery()
   }, [setChurch])
 
-  return { church, subChurchLevel, loading, error }
+  return { church, subChurchLevel, loading, error, refetch: chooseRefetch() }
 }
 
 export default useChurchLevel

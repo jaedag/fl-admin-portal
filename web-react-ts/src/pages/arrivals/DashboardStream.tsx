@@ -28,14 +28,18 @@ import ArrivalsMenuDropdown from './ArrivalsMenuDropdown'
 import { beforeStreamArrivalsDeadline } from './arrivals-utils'
 import { StreamWithArrivals } from './arrivals-types'
 import ErrorText from 'components/ErrorText'
+import PullToRefresh from 'react-simple-pull-to-refresh'
 
 const StreamDashboard = () => {
   const { isOpen, togglePopup } = usePopup()
   const { currentUser } = useContext(MemberContext)
   const navigate = useNavigate()
-  const { data, loading, error } = useQuery(STREAM_ARRIVALS_DASHBOARD, {
-    variables: { id: currentUser?.currentChurch.id },
-  })
+  const { data, loading, error, refetch } = useQuery(
+    STREAM_ARRIVALS_DASHBOARD,
+    {
+      variables: { id: currentUser?.currentChurch.id },
+    }
+  )
   const [MakeStreamArrivalsAdmin] = useMutation(MAKE_STREAMARRIVALS_ADMIN)
   const stream: StreamWithArrivals = data?.streams[0]
 
@@ -90,129 +94,131 @@ const StreamDashboard = () => {
     },
   ]
   return (
-    <ApolloWrapper data={data} loading={loading} error={error}>
-      <Container>
-        <HeadingPrimary loading={loading}>
-          {stream?.name} Stream Arrivals Summary
-        </HeadingPrimary>
-        <HeadingSecondary loading={loading}>
-          Arrivals Admin: {stream?.arrivalsAdmin?.fullName}
-        </HeadingSecondary>
-        {isOpen && (
-          <Popup handleClose={togglePopup}>
-            <b>Change Arrivals Admin</b>
-            <p>Please enter the name of the new arrivals rep</p>
+    <PullToRefresh onRefresh={refetch}>
+      <ApolloWrapper data={data} loading={loading} error={error}>
+        <Container>
+          <HeadingPrimary loading={loading}>
+            {stream?.name} Stream Arrivals Summary
+          </HeadingPrimary>
+          <HeadingSecondary loading={loading}>
+            Arrivals Admin: {stream?.arrivalsAdmin?.fullName}
+          </HeadingSecondary>
+          {isOpen && (
+            <Popup handleClose={togglePopup}>
+              <b>Change Arrivals Admin</b>
+              <p>Please enter the name of the new arrivals rep</p>
 
-            <Formik
-              initialValues={initialValues}
-              validationSchema={validationSchema}
-              onSubmit={onSubmit}
-            >
-              {(formik) => (
-                <Form>
-                  <Row className="form-row">
-                    <Col>
-                      <SearchMember
-                        name="adminSelect"
-                        initialValue={initialValues?.adminName}
-                        placeholder="Select an Admin"
-                        setFieldValue={formik.setFieldValue}
-                        aria-describedby="Member Search"
-                        error={formik.errors.adminSelect}
-                      />
-                    </Col>
-                  </Row>
+              <Formik
+                initialValues={initialValues}
+                validationSchema={validationSchema}
+                onSubmit={onSubmit}
+              >
+                {(formik) => (
+                  <Form>
+                    <Row className="form-row">
+                      <Col>
+                        <SearchMember
+                          name="adminSelect"
+                          initialValue={initialValues?.adminName}
+                          placeholder="Select an Admin"
+                          setFieldValue={formik.setFieldValue}
+                          aria-describedby="Member Search"
+                          error={formik.errors.adminSelect}
+                        />
+                      </Col>
+                    </Row>
 
-                  <SubmitButton formik={formik} />
-                </Form>
-              )}
-            </Formik>
-          </Popup>
-        )}
-
-        <RoleView
-          roles={[...permitAdmin('Stream'), ...permitArrivals('Stream')]}
-        >
-          <ArrivalsMenuDropdown menuItems={ArrivalsMenu} />
-        </RoleView>
-
-        <div className="d-grid gap-2 mt-3">
-          <DefaulterInfoCard defaulter={aggregates} />
-          {!beforeStreamArrivalsDeadline(stream) && (
-            <ErrorText>Arrival Deadline is up! Thank you very much</ErrorText>
+                    <SubmitButton formik={formik} />
+                  </Form>
+                )}
+              </Formik>
+            </Popup>
           )}
-          <MenuButton
-            title="Bacentas With No Activity"
-            onClick={() => navigate('/arrivals/bacentas-no-activity')}
-            number={stream?.bacentasNoActivityCount.toString()}
-            color="red"
-            iconBg
-            noCaption
-          />
-          <MenuButton
-            title="Bacentas Mobilising"
-            onClick={() => navigate('/arrivals/bacentas-mobilising')}
-            number={stream?.bacentasMobilisingCount.toString()}
-            color="orange"
-            iconBg
-            noCaption
-          />
-          <MenuButton
-            title="Bacentas On The Way"
-            onClick={() => navigate('/arrivals/bacentas-on-the-way')}
-            number={stream?.bacentasOnTheWayCount.toString()}
-            color="yellow"
-            iconBg
-            noCaption
-          />
-          <RoleView roles={permitArrivalsCounter()}>
-            <MenuButton
-              title="Vehicles To Be Counted"
-              onClick={() => navigate('/arrivals/bacentas-to-count')}
-              number={stream?.bacentasNotCountedCount.toString()}
-              color="yellow"
-              iconBg
-              noCaption
-            />
+
+          <RoleView
+            roles={[...permitAdmin('Stream'), ...permitArrivals('Stream')]}
+          >
+            <ArrivalsMenuDropdown menuItems={ArrivalsMenu} />
           </RoleView>
 
-          <MenuButton
-            title="Bacentas Below 8"
-            onClick={() => navigate('/arrivals/bacentas-below-8')}
-            number={stream?.bacentasBelow8Count.toString()}
-            iconBg
-            color="red"
-            noCaption
-          />
-
-          <MenuButton
-            title="Bacentas That Have Arrived"
-            onClick={() => navigate('/arrivals/bacentas-have-arrived')}
-            number={stream?.bacentasHaveArrivedCount.toString()}
-            iconBg
-            color="green"
-            noCaption
-          />
-
-          <div className="mt-5 d-grid gap-2">
+          <div className="d-grid gap-2 mt-3">
+            <DefaulterInfoCard defaulter={aggregates} />
+            {!beforeStreamArrivalsDeadline(stream) && (
+              <ErrorText>Arrival Deadline is up! Thank you very much</ErrorText>
+            )}
             <MenuButton
-              title="Members On The Way"
-              number={stream?.bussingMembersOnTheWayCount.toString()}
+              title="Bacentas With No Activity"
+              onClick={() => navigate('/arrivals/bacentas-no-activity')}
+              number={stream?.bacentasNoActivityCount.toString()}
+              color="red"
+              iconBg
+              noCaption
+            />
+            <MenuButton
+              title="Bacentas Mobilising"
+              onClick={() => navigate('/arrivals/bacentas-mobilising')}
+              number={stream?.bacentasMobilisingCount.toString()}
+              color="orange"
+              iconBg
+              noCaption
+            />
+            <MenuButton
+              title="Bacentas On The Way"
+              onClick={() => navigate('/arrivals/bacentas-on-the-way')}
+              number={stream?.bacentasOnTheWayCount.toString()}
               color="yellow"
               iconBg
               noCaption
             />
+            <RoleView roles={permitArrivalsCounter()}>
+              <MenuButton
+                title="Vehicles To Be Counted"
+                onClick={() => navigate('/arrivals/bacentas-to-count')}
+                number={stream?.bacentasNotCountedCount.toString()}
+                color="yellow"
+                iconBg
+                noCaption
+              />
+            </RoleView>
+
             <MenuButton
-              title="Members That Have Arrived"
-              number={stream?.bussingMembersHaveArrivedCount.toString()}
-              color="green"
+              title="Bacentas Below 8"
+              onClick={() => navigate('/arrivals/bacentas-below-8')}
+              number={stream?.bacentasBelow8Count.toString()}
               iconBg
+              color="red"
               noCaption
             />
+
+            <MenuButton
+              title="Bacentas That Have Arrived"
+              onClick={() => navigate('/arrivals/bacentas-have-arrived')}
+              number={stream?.bacentasHaveArrivedCount.toString()}
+              iconBg
+              color="green"
+              noCaption
+            />
+
+            <div className="mt-5 d-grid gap-2">
+              <MenuButton
+                title="Members On The Way"
+                number={stream?.bussingMembersOnTheWayCount.toString()}
+                color="yellow"
+                iconBg
+                noCaption
+              />
+              <MenuButton
+                title="Members That Have Arrived"
+                number={stream?.bussingMembersHaveArrivedCount.toString()}
+                color="green"
+                iconBg
+                noCaption
+              />
+            </div>
           </div>
-        </div>
-      </Container>
-    </ApolloWrapper>
+        </Container>
+      </ApolloWrapper>
+    </PullToRefresh>
   )
 }
 

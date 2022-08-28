@@ -20,24 +20,33 @@ import useChurchLevel from 'hooks/useChurchLevel'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { DefaultersUseChurchType } from './defaulters-types'
 import { ChurchLevel } from 'global-types'
+import PullToRefresh from 'react-simple-pull-to-refresh'
 
 const DefaultersDashboard = () => {
   const { currentUser } = useContext(MemberContext)
-  const [constituencyDefaulters] = useLazyQuery(CONSTITUENCY_DEFAULTERS)
-  const [councilDefaulters] = useLazyQuery(COUNCIL_DEFAULTERS)
-  const [streamDefaulters] = useLazyQuery(STREAM_DEFAULTERS)
-  const [gatheringServiceDefaulters] = useLazyQuery(GATHERINGSERVICE_DEFAULTERS)
+  const [constituencyDefaulters, { refetch: constituencyRefetch }] =
+    useLazyQuery(CONSTITUENCY_DEFAULTERS)
+  const [councilDefaulters, { refetch: councilRefetch }] =
+    useLazyQuery(COUNCIL_DEFAULTERS)
+  const [streamDefaulters, { refetch: streamRefetch }] =
+    useLazyQuery(STREAM_DEFAULTERS)
+  const [gatheringServiceDefaulters, { refetch: gatheringServiceRefetch }] =
+    useLazyQuery(GATHERINGSERVICE_DEFAULTERS)
 
   let subChurch: ChurchLevel | string = ''
 
   const data: DefaultersUseChurchType = useChurchLevel({
     constituencyFunction: constituencyDefaulters,
+    constituencyRefetch,
     councilFunction: councilDefaulters,
+    councilRefetch,
     streamFunction: streamDefaulters,
+    streamRefetch,
     gatheringServiceFunction: gatheringServiceDefaulters,
+    gatheringServiceRefetch,
   })
 
-  const { church, loading, error } = data
+  const { church, loading, error, refetch } = data
 
   switch (currentUser?.currentChurch?.__typename) {
     case 'Council':
@@ -105,33 +114,35 @@ const DefaultersDashboard = () => {
   }
 
   return (
-    <ApolloWrapper data={church} loading={loading} error={error} placeholder>
-      <Container>
-        <HeadingPrimary
-          loading={!church}
-        >{`${church?.name} ${church?.__typename}`}</HeadingPrimary>
-        <HeadingSecondary>Defaulters Page</HeadingSecondary>
+    <PullToRefresh onRefresh={refetch}>
+      <ApolloWrapper data={church} loading={loading} error={error} placeholder>
+        <Container>
+          <HeadingPrimary
+            loading={!church}
+          >{`${church?.name} ${church?.__typename}`}</HeadingPrimary>
+          <HeadingSecondary>Defaulters Page</HeadingSecondary>
 
-        <PlaceholderCustom as="h6" loading={!church}>
-          <h6>{`Total Number of Fellowships: ${church?.activeFellowshipCount}`}</h6>
-        </PlaceholderCustom>
+          <PlaceholderCustom as="h6" loading={!church}>
+            <h6>{`Total Number of Fellowships: ${church?.activeFellowshipCount}`}</h6>
+          </PlaceholderCustom>
 
-        <Row>
-          <RoleView roles={permitLeaderAdmin('Council')}>
-            <Col xs={12} className="mb-3">
-              {aggregates?.title && (
-                <DefaulterInfoCard defaulter={aggregates} />
-              )}
-            </Col>
-          </RoleView>
-          {defaulters.map((defaulter, i) => (
-            <Col key={i} xs={6} className="mb-3">
-              <DefaulterInfoCard defaulter={defaulter} />
-            </Col>
-          ))}
-        </Row>
-      </Container>
-    </ApolloWrapper>
+          <Row>
+            <RoleView roles={permitLeaderAdmin('Council')}>
+              <Col xs={12} className="mb-3">
+                {aggregates?.title && (
+                  <DefaulterInfoCard defaulter={aggregates} />
+                )}
+              </Col>
+            </RoleView>
+            {defaulters.map((defaulter, i) => (
+              <Col key={i} xs={6} className="mb-3">
+                <DefaulterInfoCard defaulter={defaulter} />
+              </Col>
+            ))}
+          </Row>
+        </Container>
+      </ApolloWrapper>
+    </PullToRefresh>
   )
 }
 
