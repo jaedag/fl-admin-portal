@@ -20,7 +20,8 @@ extend type Council {
 }
 
 extend type Constituency {
-  zone: BusZone! @relationship(type: "BUSSES_FROM", direction: OUT)
+  sprinterCost: Float!
+  urvanCost: Float!
   target: Int!
     @cypher(
       statement: "MATCH (this)-[:HAS]->(bacentas:Bacenta:Active) WITH DISTINCT bacentas RETURN SUM(bacentas.target)"
@@ -572,17 +573,6 @@ extend type Council {
     )
 }
 
-type BusZone {
-  id: ID!
-  number: Int!
-  sprinterCost: Float!
-  sprinterTopUp: Float!
-  urvanCost: Float!
-  urvanTopUp: Float!
-  constituencies: [Constituency!]!
-    @relationship(type: "BUSSES_FROM", direction: IN)
-}
-
 extend type Constituency {
   #Arrivals in the Constituency
   arrivalsAdmin: Member @relationship(type: "DOES_ARRIVALS_FOR", direction: IN)
@@ -753,11 +743,63 @@ extend type Constituency {
     )
 }
 
-extend type Bacenta {
-  zone: BusZone!
+extend type Constituency {
+  sprinterCost: Float!
+  sprinterTopUp: Float!
     @cypher(
-      statement: "MATCH (this)<-[:HAS]-(:Constituency)-[:BUSSES_FROM]->(zone:BusZone) RETURN zone"
+      statement: """
+      MATCH (this)
+      RETURN
+      CASE
+       WHEN this.sprinterCost <= 100 THEN 0.5 * this.sprinterCost
+       WHEN this.sprinterCost <= 220 THEN  0.7 * this.sprinterCost
+       ELSE  0.8 * this.sprinterCost
+      END
+      """
     )
+  urvanCost: Float!
+  urvanTopUp: Float!
+    @cypher(
+      statement: """
+      MATCH (this)
+      RETURN
+      CASE
+       WHEN this.urvanCost <= 100 THEN 0.5 * this.urvanCost
+       WHEN this.urvanCost <= 220 THEN  0.7 * this.urvanCost
+       ELSE  0.8 * this.urvanCost
+      END
+      """
+    )
+}
+
+extend type Bacenta {
+  sprinterCost: Float!
+  sprinterTopUp: Float!
+    @cypher(
+      statement: """
+      MATCH (this)
+      RETURN
+      CASE
+       WHEN this.sprinterCost <= 100 THEN 0.5 * this.sprinterCost
+       WHEN this.sprinterCost <= 220 THEN  0.7 * this.sprinterCost
+       ELSE  0.8 * this.sprinterCost
+      END
+      """
+    )
+  urvanCost: Float!
+  urvanTopUp: Float!
+    @cypher(
+      statement: """
+      MATCH (this)
+      RETURN
+      CASE
+       WHEN this.urvanCost <= 100 THEN 0.5 * this.urvanCost
+       WHEN this.urvanCost <= 220 THEN  0.7 * this.urvanCost
+       ELSE  0.8 * this.urvanCost
+      END
+      """
+    )
+
   graduationStatus: String!
     @cypher(
       statement: """
@@ -1009,7 +1051,11 @@ extend type Mutation {
       """
     )
 
-  UpdateConstituencyZone(constituencyId: ID!, zone: Int!): Constituency!
+  UpdateConstituencyBussingCost(
+    constituencyId: ID!
+    sprinterCost: Float!
+    urvanCost: Float!
+  ): Constituency!
     @auth(
       rules: [
         {
@@ -1024,13 +1070,11 @@ extend type Mutation {
     )
     @cypher(
       statement: """
-      OPTIONAL MATCH (constituency:Constituency {id: $constituencyId})-[r:BUSSES_FROM]->(:BusZone)
-       MATCH (new:BusZone {number: $zone})
-       DELETE r
+      MATCH (constituency:Constituency {id: $constituencyId})
+      SET constituency.sprinterCost = $sprinterCost,
+      constituency.urvanCost = $urvanCost
 
-       MERGE (constituency)-[:BUSSES_FROM]->(new)
-
-       RETURN constituency
+      RETURN constituency
       """
     )
 

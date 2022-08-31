@@ -1,66 +1,63 @@
 import { useMutation, useQuery } from '@apollo/client'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
-import Select from 'components/formik/Select'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { Form, Formik, FormikHelpers } from 'formik'
-import { FormikSelectOptions } from 'global-utils'
-import { BusZone } from 'pages/arrivals/arrivals-types'
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import * as Yup from 'yup'
 import { Col, Container, Row } from 'react-bootstrap'
 import {
   DISPLAY_CONSTITUENCY_BUSSING_DETAILS,
-  UPDATE_CONSTITUENCY_ZONE,
+  UPDATE_CONSTITUENCY_BUSSING_COST,
 } from './UpdateBacentaArrivals'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import HeadingSecondary from 'components/HeadingSecondary'
 import SubmitButton from 'components/formik/SubmitButton'
 import { useNavigate } from 'react-router'
+import Input from 'components/formik/Input'
 
 type FormOptions = {
-  zone: string
   constituencyId: string
+  sprinterCost: string
+  urvanCost: string
 }
 
-const UpdateConstituencyZone = () => {
+const UpdateConstituencyBussingCost = () => {
   const { constituencyId } = useContext(ChurchContext)
   const { data, loading, error } = useQuery(
     DISPLAY_CONSTITUENCY_BUSSING_DETAILS,
     { variables: { id: constituencyId } }
   )
 
-  const [UpdateConstituencyZone] = useMutation(UPDATE_CONSTITUENCY_ZONE)
+  const [UpdateConstituencyBussingCost] = useMutation(
+    UPDATE_CONSTITUENCY_BUSSING_COST
+  )
   const navigate = useNavigate()
   const constituency = data?.constituencies[0]
   const initialValues: FormOptions = {
     constituencyId: constituencyId,
-    zone: constituency?.zone?.number ?? '',
+    sprinterCost: constituency?.sprinterCost || 0,
+    urvanCost: constituency?.urvanCost || 0,
   }
 
   const validationSchema = Yup.object({
-    zone: Yup.string().required('This is a required field'),
+    sprinterCost: Yup.string().required('This is a required field'),
+    urvanCost: Yup.string().required('This is a required field'),
   })
 
   const onSubmit = async (
     values: FormOptions,
     onSubmitProps: FormikHelpers<FormOptions>
   ) => {
-    await UpdateConstituencyZone({
+    await UpdateConstituencyBussingCost({
       variables: {
         constituencyId,
-        zone: parseInt(values.zone),
+        sprinterCost: parseFloat(values.sprinterCost),
+        urvanCost: parseFloat(values.urvanCost),
       },
     })
     onSubmitProps.resetForm()
     navigate('/constituency/displaydetails')
   }
-
-  const zone: FormikSelectOptions = data?.busZones.map((zone: BusZone) => {
-    return {
-      value: zone.number,
-      key: `Zn ${zone.number} - Sprinter - ${zone.sprinterTopUp}, Urvan - ${zone.urvanTopUp}`,
-    }
-  })
 
   return (
     <ApolloWrapper data={data} loading={loading} error={error}>
@@ -77,12 +74,8 @@ const UpdateConstituencyZone = () => {
             <Form>
               <Row className="form-row">
                 <Col>
-                  <Select
-                    options={zone}
-                    name="zone"
-                    label="Select a Zone"
-                    defaultOption="Select Zone"
-                  />
+                  <Input name="sprinterCost" label="Sprinter Cost" />
+                  <Input name="urvanCost" label="Urvan Cost" />
                 </Col>
               </Row>
               <div className="mt-4">
@@ -98,4 +91,4 @@ const UpdateConstituencyZone = () => {
   )
 }
 
-export default UpdateConstituencyZone
+export default UpdateConstituencyBussingCost
