@@ -36,27 +36,20 @@ const DetailsBacenta = () => {
       vacationCount: bacenta?.vacationFellowshipCount,
     },
     {
-      title: 'Grad. Status',
-      number: bacenta?.graduationStatus,
-      link: `#`,
-    },
-    {
       title: 'Status',
       number: bacenta?.vacationStatus,
       link: '#',
-      width: 3,
+    },
+    {
+      title: 'Grad. Status',
+      number: bacenta?.graduationStatus,
+      link: `#`,
     },
 
     {
       title: 'Target',
       number: bacenta?.target,
       link: '#',
-      width: 3,
-    },
-    {
-      title: 'Sprinter',
-      number: bacenta?.sprinterCost,
-      link: `#`,
     },
     {
       title: 'Momo Number',

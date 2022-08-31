@@ -62,7 +62,7 @@ const UpdateConstituencyBussingCost = () => {
   return (
     <ApolloWrapper data={data} loading={loading} error={error}>
       <Container>
-        <HeadingPrimary>Change Constituency Bussing Zone</HeadingPrimary>
+        <HeadingPrimary>Change Constituency Bussing Costs</HeadingPrimary>
         <HeadingSecondary>{constituency?.name} Constituency</HeadingSecondary>
         <Formik
           initialValues={initialValues}
