@@ -1,0 +1,49 @@
+.cover {
+  background: linear-gradient(#ff2c5e, #c1012f);
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  opacity: 1;
+}
+
+.cover #icon {
+  --size: 100px;
+  position: absolute;
+  top: 42%;
+  /* left: 45%; */
+  transform: translate(-50%, -50%);
+  width: var(--size);
+}
+
+/* animation */
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.8);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@-webkit-keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.8);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+.animation {
+  animation: pulse 2s ease-in-out 0s infinite normal none;
+  -webkit-animation: pulse 2s ease-in-out 0s infinite normal none;
+}
+
+.content {
+  width: 100%;
+}
