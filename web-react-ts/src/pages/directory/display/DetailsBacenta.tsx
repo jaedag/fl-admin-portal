@@ -54,8 +54,8 @@ const DetailsBacenta = () => {
       width: 3,
     },
     {
-      title: 'Zone',
-      number: bacenta?.zone.number,
+      title: 'Sprinter',
+      number: bacenta?.sprinterCost,
       link: `#`,
     },
     {
@@ -66,17 +66,17 @@ const DetailsBacenta = () => {
     },
     {
       title: 'Sprinter Top Up',
-      number: bacenta?.zone.sprinterTopUp + ' GHS',
+      number: bacenta?.sprinterTopUp + ' GHS',
       link: `#`,
     },
     {
       title: 'Urvan Top Up',
-      number: bacenta?.zone.urvanTopUp + ' GHS',
+      number: bacenta?.urvanTopUp + ' GHS',
       link: `#`,
     },
   ]
 
-  if (!bacenta?.zone.number) {
+  if (!bacenta?.sprinterCost || !bacenta?.urvanCost) {
     const moneyItems = [1, 2, 3]
     moneyItems.forEach(() => details.pop())
   }

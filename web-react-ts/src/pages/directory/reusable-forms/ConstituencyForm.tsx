@@ -104,9 +104,11 @@ const ConstituencyForm = ({
                       <div className="d-grid gap-2 mb-2">
                         <Button
                           variant="warning"
-                          onClick={() => navigate('/constituency/change-zone')}
+                          onClick={() =>
+                            navigate('/constituency/change-bussing-cost')
+                          }
                         >
-                          Change Constituency Zone
+                          Change Constituency Bussing Costs
                         </Button>
                       </div>
                     </RoleView>
