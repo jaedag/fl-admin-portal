@@ -38,17 +38,12 @@ const DetailsConstituency = () => {
     },
     {
       title: 'Sprinter Cost',
-      number: constituency?.zone?.number,
+      number: constituency?.sprinterCost + ' GHS',
       link: '#',
     },
     {
-      title: 'Sprinter Top Up',
-      number: constituency?.sprinterTopUp + ' GHS',
-      link: '#',
-    },
-    {
-      title: 'Urvan Top Up',
-      number: constituency?.urvanTopUp + ' GHS',
+      title: 'Urvan Cost',
+      number: constituency?.urvanCost + ' GHS',
       link: '#',
     },
   ]
