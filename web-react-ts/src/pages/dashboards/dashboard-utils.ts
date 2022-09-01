@@ -47,7 +47,7 @@ export const menuItems: MenuItem[] = [
   {
     name: 'Campaigns',
     to: '/campaigns/churchlist',
-    roles: permitLeaderAdmin('Constituency'),
+    roles: permitLeaderAdmin('Fellowship'),
   },
   {
     name: 'Maps',
