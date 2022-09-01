@@ -52,7 +52,7 @@ RETURN record
 
 export const getEquipmentCampaign = `
 MATCH (church {id:$id}) WHERE church:Fellowship OR church:Constituency
-MATCH (fellowship)<-[:HAS*1..5]-(gatheringService:GatheringService)
+MATCH (church)<-[:HAS*1..5]-(gatheringService:GatheringService)
 MATCH (date:EquipmentDate)
 WITH DISTINCT max(date.date) as latestEquipmentDate, gatheringService
 RETURN 
