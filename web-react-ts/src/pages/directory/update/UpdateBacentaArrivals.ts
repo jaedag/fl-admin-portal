@@ -53,6 +53,11 @@ export const UPDATE_BACENTA_BUSSING_DETAILS = gql`
       id
       name
       target
+
+      sprinterCost
+      urvanCost
+      sprinterTopUp
+      urvanTopUp
       history(limit: 5) {
         id
         timeStamp
@@ -85,8 +90,6 @@ export const UPDATE_BUS_PAYMENT_DETAILS = gql`
     ) {
       id
       name
-      sprinterCost
-      urvanCost
 
       momoName
       momoNumber

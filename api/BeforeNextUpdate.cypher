@@ -25,3 +25,10 @@ MATCH (bacenta:Bacenta)
 REMOVE bacenta.normalBussingCost, bacenta.normalPersonalContribution, bacenta.swellBussingCost, bacenta.swellPersonalContribution
 RETURN COUNT(bacenta);
 
+
+// Update Targets on Higher Church Levels
+
+MATCH (this:GatheringService)-[:HAS*4]->(bacentas:Bacenta:Active) WITH this, SUM(bacentas.target) AS sumtotal SET this.target = sumtotal  RETURN sumtotal;
+MATCH (this:Stream)-[:HAS*3]->(bacentas:Active:Bacenta) WITH this, SUM(bacentas.target) AS sumtotal  SET this.target = sumtotal RETURN sumtotal;
+MATCH (this:Council)-[:HAS*2]->(bacentas:Active:Bacenta) WITH this , SUM(bacentas.target) AS sumtotal SET this.target = sumtotal RETURN sumtotal;
+MATCH (this:Constituency)-[:HAS]->(bacentas:Bacenta:Active) WITH this , SUM(bacentas.target) AS sumtotal SET this.target = sumtotal RETURN sumtotal;
