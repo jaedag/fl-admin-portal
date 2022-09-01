@@ -16,9 +16,9 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import './index.css'
 import AppWithContext from 'AppWithContext'
 import Login from 'components/Login'
-import InitialLoading from 'components/base-component/InitialLoading'
 import Sabbath from 'auth/Sabbath'
 import ReactGA from 'react-ga4'
+import SplashSreen from 'pages/splash-screen/SplashSreen'
 
 const AppWithApollo = () => {
   const [accessToken, setAccessToken] = useState<String>()
@@ -77,7 +77,7 @@ const AppWithApollo = () => {
   }
 
   if (isLoading) {
-    return <InitialLoading />
+    return <SplashSreen />
   }
 
   if (!user) {
