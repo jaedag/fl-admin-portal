@@ -195,9 +195,7 @@ export const arrivalsMutation = {
       await session.run(checkBacentaMomoDetails, args)
     )
 
-    if (!checkBacentaMomo.momoNumber && checkBacentaMomo.zone.low) {
-      console.log(checkBacentaMomo.momoNumber, 'momoNumber')
-      console.log(checkBacentaMomo.zone, 'zone')
+    if (!checkBacentaMomo?.momoNumber) {
       throwErrorMsg('You need a mobile money number before filling this form')
     }
 
@@ -320,16 +318,22 @@ export const arrivalsMutation = {
         vehicleCost: number
         outbound: boolean
         personalContribution: number
-        bacentaSprinterTopUp: neonumber
-        bacentaUrvanTopUp: neonumber
+        bacentaSprinterCost: neonumber
+        bacentaUrvanCost: neonumber
         arrivalTime: string
         leaderPhoneNumber: string
         leaderFirstName: string
         dateLabels: string[]
       }
+
       const response: responseType = rearrangeCypherObject(
         await session.run(getVehicleRecordWithDate, args)
       )
+      const calculateTopUp = (vehicleCost: number) => {
+        if (vehicleCost <= 100) return 0.5 * vehicleCost
+        if (vehicleCost <= 220) return 0.7 * vehicleCost
+        return 0.8 * vehicleCost
+      }
 
       if (response.arrivalTime) {
         throwErrorMsg(
@@ -339,34 +343,27 @@ export const arrivalsMutation = {
 
       let vehicleRecord: RearragedCypherResponse | undefined
 
-      const calculateVehicleTopUp = () => {
+      const calculateVehicleTopUp = (data: responseType) => {
+        const sprinterTopUp = calculateTopUp(data.bacentaSprinterCost.low)
+        const urvanTopUp = calculateTopUp(data.bacentaUrvanCost.low)
+
         const outbound = response.outbound ? 2 : 1
-        if (response.vehicle === 'Sprinter') {
-          if (response.vehicleCost < response.bacentaSprinterTopUp.low) {
-            return (
-              response.vehicleCost * outbound - response.personalContribution
-            )
+        if (data.vehicle === 'Sprinter') {
+          if (data.vehicleCost < sprinterTopUp) {
+            return data.vehicleCost * outbound - data.personalContribution
           }
-          return (
-            response.bacentaSprinterTopUp.low * outbound -
-            response.personalContribution
-          )
+          return sprinterTopUp * outbound - data.personalContribution
         }
-        if (response.vehicle === 'Urvan') {
-          if (response.vehicleCost < response.bacentaUrvanTopUp.low) {
-            return (
-              response.vehicleCost * outbound - response.personalContribution
-            )
+        if (data.vehicle === 'Urvan') {
+          if (data.vehicleCost < urvanTopUp) {
+            return data.vehicleCost * outbound - data.personalContribution
           }
-          return (
-            response.bacentaUrvanTopUp.low * outbound -
-            response.personalContribution
-          )
+          return urvanTopUp * outbound - data.personalContribution
         }
         return 0
       }
 
-      const vehicleTopUp = calculateVehicleTopUp()
+      const vehicleTopUp = calculateVehicleTopUp(response)
 
       if (response.vehicle === 'Car') {
         const attendanceRes = await Promise.all([

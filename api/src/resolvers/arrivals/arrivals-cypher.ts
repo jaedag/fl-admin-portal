@@ -27,7 +27,7 @@ RETURN record, bacenta.name AS bacentaName, date.date AS date
 
 export const getVehicleRecordWithDate = `
 MATCH (record:VehicleRecord {id: $vehicleRecordId})<-[:INCLUDES_RECORD]-(bussing:BussingRecord)<-[:HAS_BUSSING]-(:ServiceLog)<-[:HAS_HISTORY]-(bacenta:Bacenta)<-[:LEADS]-(leader:Member)
-MATCH (bacenta)<-[:HAS]-(:Constituency)-[:BUSSES_FROM]->(zone:BusZone)
+MATCH (bacenta)
 MATCH (bussing)-[:BUSSED_ON]->(date:TimeGraph)
 SET record.target = bacenta.target,
 record.momoNumber = bacenta.momoNumber, 
@@ -45,8 +45,8 @@ record.personalContribution AS personalContribution,
 leader.phoneNumber AS leaderPhoneNumber,
 leader.firstName AS leaderFirstName,
 
-zone.sprinterTopUp AS bacentaSprinterTopUp,
-zone.urvanTopUp AS bacentaUrvanTopUp,
+bacenta.sprinterCost AS bacentaSprinterCost,
+bacenta.urvanCost AS bacentaUrvanCost,
 
 labels(date) AS dateLabels
 `
@@ -101,11 +101,9 @@ RETURN church
 `
 
 export const checkBacentaMomoDetails = `
-MATCH (bacenta:Bacenta {id: $bacentaId})<-[:HAS]-(:Constituency)-[:BUSSES_FROM]->(zone:BusZone)
-
-
-RETURN zone.number AS zone, 
-bacenta.momoNumber AS momoNumber
+MATCH (bacenta:Bacenta {id: $bacentaId})
+WITH bacenta WHERE bacenta.sprinterCost IS NOT NULL
+RETURN bacenta.momoNumber AS momoNumber
 `
 
 export const uploadMobilisationPicture = `

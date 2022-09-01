@@ -281,12 +281,11 @@ export const DISPLAY_BACENTA = gql`
       vacationStatus
       graduationStatus
       target
-      zone {
-        id
-        number
-        sprinterTopUp
-        urvanTopUp
-      }
+      sprinterCost
+      urvanCost
+      sprinterTopUp
+      urvanTopUp
+
       momoNumber
       stream_name
       activeFellowshipCount
@@ -375,12 +374,10 @@ export const DISPLAY_CONSTITUENCY = gql`
         name
       }
 
-      zone {
-        id
-        number
-        sprinterTopUp
-        urvanTopUp
-      }
+      sprinterCost
+      sprinterTopUp
+      urvanCost
+      urvanTopUp
 
       leader {
         id
