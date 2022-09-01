@@ -153,7 +153,7 @@ export const campaignsMutation = {
         )
       }
 
-      const currentDate = new Date(args.date)
+      const currentDate = new Date()
       const startDate = new Date(equipmentCampaign.campaign.equipmentStartDate)
       const endDate = new Date(equipmentCampaign.campaign.equipmentEndDate)
 
@@ -218,7 +218,7 @@ export const campaignsMutation = {
         )
       }
 
-      const currentDate = new Date(args.date)
+      const currentDate = new Date()
       const startDate = new Date(equipmentCampaign.campaign.equipmentStartDate)
       const endDate = new Date(equipmentCampaign.campaign.equipmentEndDate)
 
