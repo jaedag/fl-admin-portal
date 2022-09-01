@@ -15,9 +15,9 @@ const FellowshipTrendsButton = (props: TrendsButtonProps) => {
   const bluetoothSpeakers = church?.equipmentRecord?.bluetoothSpeakers
 
   const totalOfferingBags =
-    churchType === 'Fellowship' ? 1 : church?.activeFellowshipCount
+    churchType === 'Fellowship' ? 1 : church?.fellowshipCount
   const totalBluetoothSpeakers =
-    churchType === 'Fellowship' ? 1 : church?.activeFellowshipCount
+    churchType === 'Fellowship' ? 1 : church?.fellowshipCount
   const offeringBagsPercentage = Math.round(
     (offeringBags / totalOfferingBags) * 100
   )

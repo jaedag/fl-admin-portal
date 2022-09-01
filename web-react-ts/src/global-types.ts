@@ -286,7 +286,7 @@ export type EquipmentChurch = {
   id: string
   name: string
   equipmentRecord: EquipmentRecord
-  activeFellowshipCount: number
+  fellowshipCount: number
   constituencyCount: number
 }
 
