@@ -1,3 +1,101 @@
+## 5.0.0 (2022-09-01)
+
+##### Chores
+
+*  clean up all code that refers to the history substructure ([76397dee](https://github.com/firstlovecenter/fl-pastoral-care/commit/76397dee0fc094c814079f565b5d0de28040f14d))
+*  update package-lock.json file ([e4f6efe0](https://github.com/firstlovecenter/fl-pastoral-care/commit/e4f6efe060d88a5116a8ef2919ab3f4131ae25bc))
+
+##### Continuous Integration
+
+*  create templates for pr and issues ([c582c626](https://github.com/firstlovecenter/fl-pastoral-care/commit/c582c6264f6c266b8ca6c373f9d0788a3f52b09f))
+*  write cypher to aggregate all bacenta records as explicit values ([55ad20c3](https://github.com/firstlovecenter/fl-pastoral-care/commit/55ad20c3ccb1fb709355d5c0aa1d4b07db562cf8))
+*  update snapshots for PlusMinus components ([5cf777ef](https://github.com/firstlovecenter/fl-pastoral-care/commit/5cf777efb0131c7fdcc2cdb625476b929e156701))
+
+##### Documentation Changes
+
+*  adjust PR template ([2326806b](https://github.com/firstlovecenter/fl-pastoral-care/commit/2326806bd9c6944f463c0a89b7fd97ef6a67123a))
+* **pwa:**  update name and description in manifest.json ([17077656](https://github.com/firstlovecenter/fl-pastoral-care/commit/170776568d71622d6cb1cfee5aa12453c2717c1d))
+
+##### New Features
+
+*  implement pwa functionality in the web app ([#244](https://github.com/firstlovecenter/fl-pastoral-care/pull/244)) ([c0e57246](https://github.com/firstlovecenter/fl-pastoral-care/commit/c0e5724645ad780fa60ffe08d3b73c490e8bdaba))
+*  bacenta top ups can now be individually adjusted ([0469f0e9](https://github.com/firstlovecenter/fl-pastoral-care/commit/0469f0e90452d833f9d6c2c9f3a3ac2858c91cb6))
+*  adjusted bacenta top ups based on new constituency top ups ([4f91c857](https://github.com/firstlovecenter/fl-pastoral-care/commit/4f91c857124e7c395bd7bd6746a54fef98be3722))
+*  implement pull to refresh for arrivals and defaulters ([de17a362](https://github.com/firstlovecenter/fl-pastoral-care/commit/de17a362158a3f18af043f4eb6ef0ddf38ae2f4e))
+*  partway done with the pull to refresh feature ([0bb7dacf](https://github.com/firstlovecenter/fl-pastoral-care/commit/0bb7dacf217a8ae7e11b46d7ddb6335354b78f66))
+*  implements defaulters flow for equipment campaign ([#240](https://github.com/firstlovecenter/fl-pastoral-care/pull/240)) ([e8044d7b](https://github.com/firstlovecenter/fl-pastoral-care/commit/e8044d7b367b806f4ada6dbb0f4001b5a91ba852))
+*  implement adding gathering service admin ([ad3ed15d](https://github.com/firstlovecenter/fl-pastoral-care/commit/ad3ed15d4c9713808a9ee43d54a2fd58ed67f79b))
+*  admin-245 modify arrivals cypher and gql to follow new standard ([a4a7e964](https://github.com/firstlovecenter/fl-pastoral-care/commit/a4a7e9648901a8f4d3e07fc9ff442ab80e27ef8b))
+*  admin-245 modify queries in the front end and graphs to reflect new aggregate data ([349981d2](https://github.com/firstlovecenter/fl-pastoral-care/commit/349981d2e5dbfd6e3dac459b465e6e2f74e75033))
+*  admin-245 implement in resolver to write aggregate data to higher churches explicitly ([05c1e6e3](https://github.com/firstlovecenter/fl-pastoral-care/commit/05c1e6e335f392c0a9514553127fbb1ed526d35d))
+*  admin-247 implements sms and email notifications when an equipm… ([#230](https://github.com/firstlovecenter/fl-pastoral-care/pull/230)) ([0627877f](https://github.com/firstlovecenter/fl-pastoral-care/commit/0627877fd43f7371939868e638a07c221086426b))
+*  writes test for quick facts card ([#229](https://github.com/firstlovecenter/fl-pastoral-care/pull/229)) ([6d5d1aec](https://github.com/firstlovecenter/fl-pastoral-care/commit/6d5d1aecff4baa528ace71bb20a8e9231b8c2245))
+*  add a ten minute buffer for arrival counting ([63979677](https://github.com/firstlovecenter/fl-pastoral-care/commit/6397967795fb5563a608e3195297ace2560b41d7))
+*  recording arrival time aggregates data to put on the bussing record ([af88a379](https://github.com/firstlovecenter/fl-pastoral-care/commit/af88a3795f79135385ef7959d4c626fe9c573d0c))
+*  implement feature for filtering bus type on counting screen ([000cf351](https://github.com/firstlovecenter/fl-pastoral-care/commit/000cf3519f0b7c07be3fbbfdaaea1d7fa2e521cd))
+*  implement add and edit gathering service with mutations ([#223](https://github.com/firstlovecenter/fl-pastoral-care/pull/223)) ([6393fb26](https://github.com/firstlovecenter/fl-pastoral-care/commit/6393fb268392e87649f533788cb58daac50df1cd))
+*  lock ministry to gatheringService ([45feb2dc](https://github.com/firstlovecenter/fl-pastoral-care/commit/45feb2dc12532b9a6e45ddfa4864b28200a3ab8e))
+
+##### Bug Fixes
+
+*  change active fellowship count to fellowship to campaign trends ([8117f79a](https://github.com/firstlovecenter/fl-pastoral-care/commit/8117f79ac7b626471930d25e442e98982b3a8325))
+*  fix submit button loading ux for constituency and fellowship equipment form ([#264](https://github.com/firstlovecenter/fl-pastoral-care/pull/264)) ([59610de4](https://github.com/firstlovecenter/fl-pastoral-care/commit/59610de4bcf67cf92c8af8daf4992771c0eec979))
+*  fix broken cypher in identifying campaign start and end dates ([b5abdf47](https://github.com/firstlovecenter/fl-pastoral-care/commit/b5abdf4746b77cd288d7b5ce5b509e202e96e25a))
+*  changes structure of check equipment deadline statement ([c35581f3](https://github.com/firstlovecenter/fl-pastoral-care/commit/c35581f374e4751ac9de8f5ccbacc500fc0e80cc))
+*  changes date used in check for the deadline ([7ed2addf](https://github.com/firstlovecenter/fl-pastoral-care/commit/7ed2addf211495e05a7f16b26692fbe42b6761af))
+*  add permission so that fellowship leaders can view campaigns button in nav ([ad57472c](https://github.com/firstlovecenter/fl-pastoral-care/commit/ad57472cfba877baed3efe5d4868d0d05e1a5389))
+*  fix submit button loading ux and vacation churches not appearing ([b727ac10](https://github.com/firstlovecenter/fl-pastoral-care/commit/b727ac109dc9e466350dba9993d0121ab7abf79b))
+*  change sprinter top up on constituency page to sprinter cost ([883d45b9](https://github.com/firstlovecenter/fl-pastoral-care/commit/883d45b944dbff1774bec2eeefcd7f6dedb54ac3))
+*  correct sabbath timer and adjust so that sabbath starts at 4 am on Monday ([#251](https://github.com/firstlovecenter/fl-pastoral-care/pull/251)) ([4171cccf](https://github.com/firstlovecenter/fl-pastoral-care/commit/4171cccf4e1e8f7c9d095b10a9ddb907328b3f95))
+*  install workbox dependencies and web-vitals ([3b58e7e7](https://github.com/firstlovecenter/fl-pastoral-care/commit/3b58e7e73584d2db91a6955c40c3122fedbee633))
+*  register service worker ([31d402c0](https://github.com/firstlovecenter/fl-pastoral-care/commit/31d402c0d43865b4fb83cfeedbed5bca5add52c6))
+*  installed service worker files from the CRA pwa template ([f0442692](https://github.com/firstlovecenter/fl-pastoral-care/commit/f044269293a8be200c596885aeaa5e798c053f87))
+*  fix typo breaking mutation to create constituency ([6a405f6d](https://github.com/firstlovecenter/fl-pastoral-care/commit/6a405f6dc429ccb1e4b7265ee660e0cb54dc9483))
+*  minor equipment defaulters bugs ([#242](https://github.com/firstlovecenter/fl-pastoral-care/pull/242)) ([18a8d2ab](https://github.com/firstlovecenter/fl-pastoral-care/commit/18a8d2ab6803172e075a2bbb8f39981142d13551))
+*  fixes errors in equipment campaign defaulters queries ([fa004fd8](https://github.com/firstlovecenter/fl-pastoral-care/commit/fa004fd8e1aaf1c230c252630f671b53d2f7d266))
+*  change 'alert' to 'alertMsg' for churchdetails page ([d82bda76](https://github.com/firstlovecenter/fl-pastoral-care/commit/d82bda76313dd73aae04ee101db4cc050e6f24d7))
+*  add optional match to equipment defaulters queries ([de028485](https://github.com/firstlovecenter/fl-pastoral-care/commit/de02848585adceb30faaebe8c2583b1f79908e1d))
+*  fix bug preventing admins from updating bacenta info ([1519b508](https://github.com/firstlovecenter/fl-pastoral-care/commit/1519b508a31eedc951cbf44569a81bda847736d9))
+*  change 'number of busses' to 'number of urvans' ([cc422f7d](https://github.com/firstlovecenter/fl-pastoral-care/commit/cc422f7d42aa5cd7777b49c771d1602640fb6383))
+*  fix error in calculating bussing details on recording vehicle arrival time ([c22d7cc2](https://github.com/firstlovecenter/fl-pastoral-care/commit/c22d7cc2a9cc7473cee74f76ca707c2903c12ccf))
+*  adjust permissions to accommodate leaders and admin of two church levels ([c924e863](https://github.com/firstlovecenter/fl-pastoral-care/commit/c924e863f2a1365f43d677b2ef3ed134db9cfb6a))
+*  fix bug preventing members from uploading banking slip ([bbae105b](https://github.com/firstlovecenter/fl-pastoral-care/commit/bbae105be55923a968f6a38f95d8aac18dd1943e))
+*  fix breaking change resulting from typo ([0344cc21](https://github.com/firstlovecenter/fl-pastoral-care/commit/0344cc21fb7f6ef4717a9edabda58f9612738f1a))
+*  fix typo on intial loading ([d74a0c5c](https://github.com/firstlovecenter/fl-pastoral-care/commit/d74a0c5cd6c1d53da8bb799b99805c1fdc2429c9))
+*  fix data leak when using context to set permissions ([29a799c2](https://github.com/firstlovecenter/fl-pastoral-care/commit/29a799c2f19f23a6eb1dfe7ec1bb235d65ee5f15))
+*  fix bug breaking member list loading page ([92bc946b](https://github.com/firstlovecenter/fl-pastoral-care/commit/92bc946b57f6507beab1587f2616ddbfe325d190))
+*  comment out unused code for arrrivals isToday ([e76a469a](https://github.com/firstlovecenter/fl-pastoral-care/commit/e76a469a52fa9018d9b861b46a4b29304e8a50b9))
+*  update to allow filling of bussing forms on every day of the week ([cdcfe89c](https://github.com/firstlovecenter/fl-pastoral-care/commit/cdcfe89c39700d5decad8ac59dd9f9bc10bb3773))
+*  solve mior bug with regards to aggrregating of data ([11f76dcb](https://github.com/firstlovecenter/fl-pastoral-care/commit/11f76dcbd38daf6e4f43aef6a8cc930fab142da0))
+*  solve petty arrivals issues with countig and form filling ([4cc7e817](https://github.com/firstlovecenter/fl-pastoral-care/commit/4cc7e81773e005f3b1dd816fa2cce2fa48a95284))
+*  clean up errant 'WHERE EXISTS' from arrivals cypher queries ([d161ee12](https://github.com/firstlovecenter/fl-pastoral-care/commit/d161ee12003bbb704d03f320e433324c65801f10))
+*  revert bussing aggregate to use bussinng records ([7d4d83d8](https://github.com/firstlovecenter/fl-pastoral-care/commit/7d4d83d8b64b1029301f71b39a7c7632bd710368))
+*  adjust arrivals summary data structure ([ae2232fd](https://github.com/firstlovecenter/fl-pastoral-care/commit/ae2232fdc481c2063de5034c557db23ffde87aeb))
+*  adjust arrivals cypher to use bussing record ([77577be8](https://github.com/firstlovecenter/fl-pastoral-care/commit/77577be8bd32c9407b053a0a85b1cdc6b40512c0))
+*  fix gathering service   bussing calculations ([fc772123](https://github.com/firstlovecenter/fl-pastoral-care/commit/fc7721239420d7767aca97e4d38532b3d43fc5a7))
+*  prevent creation of excess vehicle record nodes ([1fba9717](https://github.com/firstlovecenter/fl-pastoral-care/commit/1fba971748ffbb2817945550d397e5b2a40b4f00))
+*  use leader declaration for on the way count ([179a97fa](https://github.com/firstlovecenter/fl-pastoral-care/commit/179a97fab74cd6e715646f219a1827d023cbfd4a))
+*  added confirmation of in and out to counters ([18792ef7](https://github.com/firstlovecenter/fl-pastoral-care/commit/18792ef7989c5a0e675216e6eaf8220016d0b9b9))
+*  update permissions for vehicle form details ([b3af284b](https://github.com/firstlovecenter/fl-pastoral-care/commit/b3af284b8014966a29bba0263ea7319bb563cc96))
+*  update query to find the bacentas that have arrived 2 ([022aec97](https://github.com/firstlovecenter/fl-pastoral-care/commit/022aec971887fa6b20494a7bba0cd4d2d179369d))
+*  update query to find bacentasHaveArrived on all church levels ([a12dfa20](https://github.com/firstlovecenter/fl-pastoral-care/commit/a12dfa205d9c86d4378002e2be8ee1a20dc7134d))
+*  update query to find bacentasHaveArrived ([a877095d](https://github.com/firstlovecenter/fl-pastoral-care/commit/a877095dc62d37f4c902ff6d76d767729279b715))
+*  update import statement in SearchStream ([02af09c6](https://github.com/firstlovecenter/fl-pastoral-care/commit/02af09c6a3c7e0bf14e333f772b3be915f951263))
+*  update  memberByEmail query ([de6a6280](https://github.com/firstlovecenter/fl-pastoral-care/commit/de6a6280d8e366d27f00630b1f766780307667ed))
+*  update cross oversight search functionality ([3dbb633b](https://github.com/firstlovecenter/fl-pastoral-care/commit/3dbb633bdb4ac8c3b61a154d2bc096863aad075a))
+*  implement error text to show when pre mobilisation is closed ([f004d2d5](https://github.com/firstlovecenter/fl-pastoral-care/commit/f004d2d510999a4ce3c88388520684831ea71849))
+*  fix bug preventing zone 0 bacentas from filling ([24b60a7c](https://github.com/firstlovecenter/fl-pastoral-care/commit/24b60a7c11afaa2d4de75a3b9653003fb4352da2))
+*  allow bacentas in zone 0 to fill out their form ([44c3e21e](https://github.com/firstlovecenter/fl-pastoral-care/commit/44c3e21ee5bd67c8d8f014c9a22e9a1a98749439))
+
+##### Performance Improvements
+
+*  aggregate church target on write and not read ([d683e39d](https://github.com/firstlovecenter/fl-pastoral-care/commit/d683e39da140f526b29640b8fd816cf59180022c))
+
+##### Refactors
+
+*  convert Cachebuster component to typescript ([3f6e04f3](https://github.com/firstlovecenter/fl-pastoral-care/commit/3f6e04f313426963af490c810d9247f57e959076))
+*  convert App.js to tsx file ([1b9ae9ed](https://github.com/firstlovecenter/fl-pastoral-care/commit/1b9ae9ed0059ea24ece36ea8e2a7aa8040b993ca))
+
 ### 4.9.0 (2022-08-12)
 
 ##### Chores
