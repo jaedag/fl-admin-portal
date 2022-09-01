@@ -37,7 +37,7 @@ const BacentaArrivals = () => {
   const date = data?.timeGraphs[0]
 
   const isMomoCleared = (bacenta: BacentaWithArrivals) => {
-    if (bacenta?.zone.number) {
+    if (bacenta?.sprinterCost) {
       if (bacenta?.momoNumber) {
         return true
       }

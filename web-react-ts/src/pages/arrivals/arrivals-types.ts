@@ -79,19 +79,15 @@ export interface StreamWithArrivals extends Stream, HigherChurchWithArrivals {
   arrivalsCounters: Member[]
 }
 
-export type BusZone = {
-  id: string
-  number: number
-  sprinterTopUp: number
-  urvanTopUp: number
-}
-
 export interface BacentaWithArrivals extends Bacenta {
   stream: StreamWithArrivals
   stream_name: StreamOptions
   arrivalsCodeOfTheDay: string
   momoNumber: string
-  zone: BusZone
+  sprinterCost: number
+  sprinterTopUp: number
+  urvanCost: number
+  urvanTopUp: number
   bussing: BussingRecord[]
 }
 

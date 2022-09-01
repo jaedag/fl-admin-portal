@@ -34,6 +34,8 @@ import Input from 'components/formik/Input'
 type FormOptions = {
   name: string
   target: string
+  urvanCost: string
+  sprinterCost: string
   mobileNetwork: string
   momoName: string
   momoNumber: string
@@ -69,6 +71,8 @@ const UpdateBusPayment = () => {
   const initialValues: FormOptions = {
     name: bacenta?.name,
     target: bacenta?.target ?? '',
+    urvanCost: bacenta?.urvanCost ?? '',
+    sprinterCost: bacenta?.sprinterCost ?? '',
 
     mobileNetwork: bacenta?.mobileNetwork ?? '',
     momoName: bacenta?.momoName ?? '',
@@ -77,7 +81,7 @@ const UpdateBusPayment = () => {
   }
 
   const validationSchema = Yup.object({
-    target: Yup.string().required('Bacenta Name is a required field'),
+    target: Yup.string().required('Bacenta Target is a required field'),
 
     momoNumber: Yup.string().matches(
       MOMO_NUM_REGEX,
@@ -101,9 +105,11 @@ const UpdateBusPayment = () => {
 
     if (isAuthorised(permitAdminArrivals('Stream'))) {
       try {
-        UpdateBacentaBussingDetails({
+        await UpdateBacentaBussingDetails({
           variables: {
-            bacentaId: bacentaId,
+            bacentaId,
+            sprinterCost: parseFloat(values.sprinterCost),
+            urvanCost: parseFloat(values.urvanCost),
             target: parseInt(values.target),
           },
         })
@@ -163,6 +169,16 @@ const UpdateBusPayment = () => {
                               placeholder="Enter Target"
                             />
                           </Col>
+                          <Input
+                            name="urvanCost"
+                            label="Cost of Urvan Bus"
+                            placeholder="Enter Amount in GHS"
+                          />
+                          <Input
+                            name="sprinterCost"
+                            label="Cost Of Sprinter Bus"
+                            placeholder="Enter Amount in GHS"
+                          />
                         </Row>
                       </RoleView>
                       <RoleView

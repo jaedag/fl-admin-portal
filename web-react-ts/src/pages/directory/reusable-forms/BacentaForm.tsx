@@ -100,7 +100,10 @@ const BacentaForm = ({
           <HeadingPrimary>{title}</HeadingPrimary>
           <HeadingSecondary>{initialValues.name}</HeadingSecondary>
           <RoleView roles={permitAdminArrivals('Stream')}>
-            <Button onClick={() => navigate('/bacenta/editbussing')}>
+            <Button
+              variant="warning"
+              onClick={() => navigate('/bacenta/editbussing')}
+            >
               Edit Bussing Details
             </Button>
           </RoleView>

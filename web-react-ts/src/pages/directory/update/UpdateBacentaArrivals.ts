@@ -11,6 +11,8 @@ export const DISPLAY_BACENTA_BUSSING_DETAILS = gql`
         firstName
       }
       target
+      sprinterCost
+      urvanCost
       vacationStatus
       graduationStatus
 
@@ -27,28 +29,35 @@ export const DISPLAY_CONSTITUENCY_BUSSING_DETAILS = gql`
       id
       name
 
-      zone {
-        id
-        number
-        sprinterTopUp
-        urvanTopUp
-      }
-    }
-    busZones {
-      id
-      number
+      sprinterCost
       sprinterTopUp
+      urvanCost
       urvanTopUp
     }
   }
 `
 
 export const UPDATE_BACENTA_BUSSING_DETAILS = gql`
-  mutation UpdateBacentaBussingDetails($bacentaId: ID!, $target: Int!) {
-    UpdateBacentaBussingDetails(bacentaId: $bacentaId, target: $target) {
+  mutation UpdateBacentaBussingDetails(
+    $bacentaId: ID!
+    $target: Int!
+    $sprinterCost: Float!
+    $urvanCost: Float!
+  ) {
+    UpdateBacentaBussingDetails(
+      bacentaId: $bacentaId
+      target: $target
+      sprinterCost: $sprinterCost
+      urvanCost: $urvanCost
+    ) {
       id
       name
       target
+
+      sprinterCost
+      urvanCost
+      sprinterTopUp
+      urvanTopUp
       history(limit: 5) {
         id
         timeStamp
@@ -103,17 +112,23 @@ export const UPDATE_BUS_PAYMENT_DETAILS = gql`
   }
 `
 
-export const UPDATE_CONSTITUENCY_ZONE = gql`
-  mutation UpdateConstituencyZone($constituencyId: ID!, $zone: Int!) {
-    UpdateConstituencyZone(constituencyId: $constituencyId, zone: $zone) {
+export const UPDATE_CONSTITUENCY_BUSSING_COST = gql`
+  mutation UpdateConstituencyBussingCost(
+    $constituencyId: ID!
+    $sprinterCost: Float!
+    $urvanCost: Float!
+  ) {
+    UpdateConstituencyBussingCost(
+      constituencyId: $constituencyId
+      sprinterCost: $sprinterCost
+      urvanCost: $urvanCost
+    ) {
       id
       name
-      zone {
-        id
-        number
-        sprinterTopUp
-        urvanTopUp
-      }
+      sprinterCost
+      sprinterTopUp
+      urvanCost
+      urvanTopUp
     }
   }
 `
