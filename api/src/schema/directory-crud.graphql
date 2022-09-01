@@ -295,7 +295,9 @@ extend type Mutation {
       statement: """
        CREATE (constituency:Constituency {name:$name})
          	SET
-      	constituency.id = apoc.create.uuid()
+      	constituency.id = apoc.create.uuid(),
+        constituency.sprinterCost = 0,
+        constituency.urvanCost = 0
       WITH constituency
       MATCH (leader:Member {id: $leaderId})
       MATCH (currentUser:Member {auth_id:$auth.jwt.sub})
@@ -342,11 +344,14 @@ extend type Mutation {
       CREATE (bacenta:Bacenta:IC:Active {name:$name})
         SET	bacenta.id = apoc.create.uuid(),
         bacenta.target = 10
+
       WITH bacenta
        MATCH (leader:Member {id:$leaderId})
        MATCH (constituency:Constituency {id:$constituencyId})
        MATCH (currentUser:Member {auth_id:$auth.jwt.sub})
-
+        SET bacenta.sprinterCost = constituency.sprinterCost,
+        bacenta.urvanCost = constituency.urvanCost
+      
 
       CREATE (log:HistoryLog:ServiceLog)
       SET log.id = apoc.create.uuid(),
