@@ -1,34 +1,41 @@
-MATCH (constituency:Constituency)
-SET constituency.sprinterCost = 0,
-constituency.urvanCost = 0
+MATCH (record:ServiceRecord) WHERE record.familyPicture IS NULL AND record.noServiceReason IS NULL
+DETACH DELETE record;
 
-RETURN COUNT(constituency);
+MATCH (bacenta:Bacenta)-[:HAS]->(fellowship:Fellowship)
+MATCH (bacenta)-[:CURRENT_HISTORY]->(currentLog:ServiceLog)
+MATCH (fellowship)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(timeNode:TimeGraph)
+WITH currentLog,timeNode.date.week AS week, timeNode.date.year AS year, SUM(record.attendance) AS attendance, SUM(record.income) AS income //WHERE timeNode.date.week = 10
+CREATE (agg:AggregateServiceRecord)
+SET agg.week = week, 
+agg.year = year,
+agg.attendance = attendance, 
+agg.income = income
+MERGE (currentLog)-[:HAS_SERVICE_AGGREGATE]->(agg)
+
+RETURN agg;
 
 
-LOAD CSV WITH HEADERS FROM "https://www.dropbox.com/s/r1nuq9xpz0uslyk/Zones.csv?dl=1" as line
-MATCH (constituency:Constituency {name: line.Constituency})
-SET constituency.sprinterCost = toFloat(line.`One Way Sprinter`),
-constituency.urvanCost = toFloat(line.`One Way Urvan`)
-
-RETURN constituency.name, constituency.sprinterCost, constituency.urvanCost;
-
-MATCH (constituency:Constituency)-[:HAS]->(bacenta:Bacenta)
-SET bacenta.sprinterCost = constituency.sprinterCost,
-bacenta.urvanCost = constituency.urvanCost
-
-RETURN constituency;
-
-MATCH (zone:BusZone)
-DETACH DELETE zone;
+// Bussing Aggregates
 
 MATCH (bacenta:Bacenta)
-REMOVE bacenta.normalBussingCost, bacenta.normalPersonalContribution, bacenta.swellBussingCost, bacenta.swellPersonalContribution
-RETURN COUNT(bacenta);
+MATCH (bacenta)-[:CURRENT_HISTORY]->(currentLog:ServiceLog)
+MATCH (bacenta)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(record:BussingRecord)-[:BUSSED_ON]->(timeNode:TimeGraph)
+WITH currentLog,timeNode.date.week AS week, timeNode.date.year AS year, SUM(record.attendance) AS attendance, SUM(record.leaderDeclaration) AS leaderDeclaration, 
+SUM(record.personalContribution) AS personalContribution, SUM(record.numberOfSprinters) AS numberOfSprinters,
+SUM(record.numberOfUrvans) AS numberOfUrvans, SUM(record.numberOfCars) AS numberOfCars, SUM(record.bussingCost) AS bussingCost, 
+SUM(record.bussingTopUp) AS bussingTopUp //WHERE timeNode.date.week = 10
 
+CREATE (agg:AggregateBussingRecord)
+SET agg.week = week, 
+agg.year = year,
+agg.attendance = attendance, 
+agg.leaderDeclaration = leaderDeclaration,
+agg.personalContribution = personalContribution,
+agg.numberOfSprinters = numberOfSprinters,
+agg.numberOfUrvans = numberOfUrvans,
+agg.numberOfCars = numberOfCars,
+agg.bussingCost = bussingCost,
+agg.bussingTopUp = bussingTopUp
+MERGE (currentLog)-[:HAS_BUSSING_AGGREGATE]->(agg)
 
-// Update Targets on Higher Church Levels
-
-MATCH (this:GatheringService)-[:HAS*4]->(bacentas:Bacenta:Active) WITH this, SUM(bacentas.target) AS sumtotal SET this.target = sumtotal  RETURN sumtotal;
-MATCH (this:Stream)-[:HAS*3]->(bacentas:Active:Bacenta) WITH this, SUM(bacentas.target) AS sumtotal  SET this.target = sumtotal RETURN sumtotal;
-MATCH (this:Council)-[:HAS*2]->(bacentas:Active:Bacenta) WITH this , SUM(bacentas.target) AS sumtotal SET this.target = sumtotal RETURN sumtotal;
-MATCH (this:Constituency)-[:HAS]->(bacentas:Bacenta:Active) WITH this , SUM(bacentas.target) AS sumtotal SET this.target = sumtotal RETURN sumtotal;
+RETURN agg;

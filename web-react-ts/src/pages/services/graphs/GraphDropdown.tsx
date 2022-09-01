@@ -13,31 +13,56 @@ const GraphDropdown = ({
   setBussing,
   setChurchData,
   data,
-}: GraphDropdownProps) => (
-  <Dropdown className="border-none">
-    <Dropdown.Toggle variant="danger">Select Service</Dropdown.Toggle>
+}: GraphDropdownProps) => {
+  const [selected, setSelected] = React.useState('Select Service')
+  return (
+    <Dropdown className="border-none">
+      <Dropdown.Toggle variant="danger">{selected}</Dropdown.Toggle>
 
-    <Dropdown.Menu variant="dark">
-      <Dropdown.Item
-        className="py-3"
-        onClick={() => {
-          setBussing(true)
-          setChurchData(getServiceGraphData(data, 'bussing'))
-        }}
-      >
-        Bussing
-      </Dropdown.Item>
-      <Dropdown.Item
-        className="py-3"
-        onClick={() => {
-          setBussing(false)
-          setChurchData(getServiceGraphData(data))
-        }}
-      >
-        Fellowship Services
-      </Dropdown.Item>
-    </Dropdown.Menu>
-  </Dropdown>
-)
+      <Dropdown.Menu variant="dark">
+        <Dropdown.Item
+          className="py-3"
+          onClick={() => {
+            setBussing(true)
+            setSelected('Bussing')
+            setChurchData(getServiceGraphData(data, 'bussing'))
+          }}
+        >
+          Bussing
+        </Dropdown.Item>
+        <Dropdown.Item
+          className="py-3"
+          onClick={() => {
+            setBussing(false)
+            setSelected('Services')
+            setChurchData(getServiceGraphData(data))
+          }}
+        >
+          Services
+        </Dropdown.Item>
+        <Dropdown.Item
+          className="py-3"
+          onClick={() => {
+            setBussing(false)
+            setSelected('Bussing Total')
+            setChurchData(getServiceGraphData(data, 'bussingAggregate'))
+          }}
+        >
+          Bussing Total
+        </Dropdown.Item>
+        <Dropdown.Item
+          className="py-3"
+          onClick={() => {
+            setBussing(false)
+            setSelected('Fellowship Total')
+            setChurchData(getServiceGraphData(data, 'serviceAggregate'))
+          }}
+        >
+          Services Total
+        </Dropdown.Item>
+      </Dropdown.Menu>
+    </Dropdown>
+  )
+}
 
 export default GraphDropdown

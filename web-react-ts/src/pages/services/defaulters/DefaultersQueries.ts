@@ -805,7 +805,7 @@ export const GATHERINGSERVICE_BANKED_LIST = gql`
 `
 
 export const GATHERINGSERVICE_BY_STREAM = gql`
-  query gatheringServiceByStream($id: ID!) {
+  query defaultersGatheringServiceByStream($id: ID!) {
     gatheringServices(where: { id: $id }) {
       id
       name

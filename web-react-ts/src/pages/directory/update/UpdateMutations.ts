@@ -390,10 +390,8 @@ export const UPDATE_BACENTA_MUTATION = gql`
     ) {
       id
       name
-      zone {
-        id
-        number
-      }
+      sprinterTopUp
+      urvanTopUp
       fellowships {
         id
         name
@@ -837,11 +835,11 @@ export const ADD_GATHERINGSERVICE_OVERSIGHT = gql`
     $gatheringServiceId: ID!
     $oversightId: ID!
   ) {
-    UpdateGatheringService(
-      where: { id: $gatheringService }
+    updateGatheringServices(
+      where: { id: $gatheringServiceId }
       connect: { oversight: { where: { node: { id: $oversightId } } } }
     ) {
-      gatheringService {
+      gatheringServices {
         id
         name
         oversight {
@@ -886,11 +884,11 @@ export const REMOVE_GATHERINGSERVICE_OVERSIGHT = gql`
     $lowerChurch: [ID]!
     $higherChurch: ID!
   ) {
-    UpdateGatheringService(
+    updateGatheringServices(
       where: { id_IN: $lowerChurch }
       disconnect: { oversight: { where: { node: { id: $higherChurch } } } }
     ) {
-      gatheringService {
+      gatheringServices {
         id
         name
       }

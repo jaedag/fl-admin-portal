@@ -37,11 +37,19 @@ export const BACENTA_GRAPHS = gql`
         lastName
         fullName
       }
+      aggregateServiceRecords(limit: 4) {
+        attendance
+        income
+        week
+      }
+      aggregateBussingRecords(limit: 4) {
+        attendance
+        week
+      }
       services(limit: 4) {
         id
         created_at
         attendance
-        income
         week
         serviceDate {
           date

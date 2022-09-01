@@ -32,10 +32,6 @@ export const LOG_FELLOWSHIP_HISTORY = gql`
         historyRecord
       }
     }
-    ConnectFellowshipHistory(churchId: $fellowshipId) {
-      id
-      historyRecord
-    }
   }
 `
 
@@ -76,10 +72,6 @@ export const LOG_BACENTA_HISTORY = gql`
         }
         historyRecord
       }
-    }
-    ConnectChurchHistory(churchId: $bacentaId) {
-      id
-      historyRecord
     }
   }
 `
@@ -122,10 +114,6 @@ export const LOG_CONSTITUENCY_HISTORY = gql`
         historyRecord
       }
     }
-    ConnectChurchHistory(churchId: $constituencyId) {
-      id
-      historyRecord
-    }
   }
 `
 
@@ -166,10 +154,6 @@ export const LOG_COUNCIL_HISTORY = gql`
         }
         historyRecord
       }
-    }
-    ConnectChurchHistory(churchId: $councilId) {
-      id
-      historyRecord
     }
   }
 `
@@ -212,10 +196,6 @@ export const LOG_STREAM_HISTORY = gql`
         historyRecord
       }
     }
-    ConnectChurchHistory(churchId: $streamId) {
-      id
-      historyRecord
-    }
   }
 `
 export const LOG_GATHERINGSERVICE_HISTORY = gql`
@@ -256,10 +236,6 @@ export const LOG_GATHERINGSERVICE_HISTORY = gql`
         historyRecord
       }
     }
-    ConnectChurchHistory(churchId: $gatheringServiceId) {
-      id
-      historyRecord
-    }
   }
 `
 export const LOG_SONTA_HISTORY = gql`
@@ -268,16 +244,12 @@ export const LOG_SONTA_HISTORY = gql`
     $historyRecord: String!
     $oldLeaderId: ID
     $newLeaderId: ID
-    $oldConstituencyId: ID
-    $newConstituencyId: ID
   ) {
     LogSontaHistory(
       sontaId: $sontaId
       historyRecord: $historyRecord
       newLeaderId: $newLeaderId
       oldLeaderId: $oldLeaderId
-      oldConstituencyId: $oldConstituencyId
-      newConstituencyId: $newConstituencyId
     ) {
       id
       name
@@ -286,7 +258,7 @@ export const LOG_SONTA_HISTORY = gql`
         firstName
         lastName
       }
-      history(limit: 5) {
+      history {
         id
         timeStamp
         created_at {
@@ -299,10 +271,6 @@ export const LOG_SONTA_HISTORY = gql`
         }
         historyRecord
       }
-    }
-    ConnectFellowshipHistory(churchId: $sontaId) {
-      id
-      historyRecord
     }
   }
 `
