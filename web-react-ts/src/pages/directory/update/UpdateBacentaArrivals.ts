@@ -11,6 +11,8 @@ export const DISPLAY_BACENTA_BUSSING_DETAILS = gql`
         firstName
       }
       target
+      sprinterCost
+      urvanCost
       vacationStatus
       graduationStatus
 
@@ -36,8 +38,18 @@ export const DISPLAY_CONSTITUENCY_BUSSING_DETAILS = gql`
 `
 
 export const UPDATE_BACENTA_BUSSING_DETAILS = gql`
-  mutation UpdateBacentaBussingDetails($bacentaId: ID!, $target: Int!) {
-    UpdateBacentaBussingDetails(bacentaId: $bacentaId, target: $target) {
+  mutation UpdateBacentaBussingDetails(
+    $bacentaId: ID!
+    $target: Int!
+    $sprinterCost: Float!
+    $urvanCost: Float!
+  ) {
+    UpdateBacentaBussingDetails(
+      bacentaId: $bacentaId
+      target: $target
+      sprinterCost: $sprinterCost
+      urvanCost: $urvanCost
+    ) {
       id
       name
       target
@@ -73,6 +85,8 @@ export const UPDATE_BUS_PAYMENT_DETAILS = gql`
     ) {
       id
       name
+      sprinterCost
+      urvanCost
 
       momoName
       momoNumber
