@@ -183,7 +183,7 @@ export const campaignsMutation = {
             auth: context.auth,
             date,
           })
-          .catch((error) => {
+          .catch((error: any) => {
             return throwErrorMsg(error)
           })
       )
@@ -226,7 +226,7 @@ export const campaignsMutation = {
       const startDate = new Date(equipmentCampaign.campaign.equipmentStartDate)
       const endDate = new Date(equipmentCampaign.campaign.equipmentEndDate)
 
-      if (currentDate < startDate || currentDate > endDate) {
+      if (!(currentDate >= startDate && currentDate <= endDate)) {
         throwErrorMsg('Equipment Deadline is up')
       }
 
@@ -250,7 +250,7 @@ export const campaignsMutation = {
             auth: context.auth,
             date,
           })
-          .catch((error) => {
+          .catch((error: any) => {
             return throwErrorMsg(error)
           })
       )
