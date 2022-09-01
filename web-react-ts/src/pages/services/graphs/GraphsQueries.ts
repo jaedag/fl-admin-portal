@@ -50,6 +50,7 @@ export const BACENTA_GRAPHS = gql`
         id
         created_at
         attendance
+        income
         week
         serviceDate {
           date
@@ -87,7 +88,7 @@ export const SONTA_GRAPHS = gql`
 `
 
 export const CONSTITUENCY_GRAPHS = gql`
-  query constiutencyGraphs($id: ID!) {
+  query constituencyGraphs($id: ID!) {
     constituencies(where: { id: $id }) {
       id
       name
@@ -96,6 +97,15 @@ export const CONSTITUENCY_GRAPHS = gql`
         firstName
         lastName
         fullName
+      }
+      aggregateServiceRecords(limit: 4) {
+        attendance
+        income
+        week
+      }
+      aggregateBussingRecords(limit: 4) {
+        attendance
+        week
       }
       services(limit: 4) {
         id
@@ -124,6 +134,15 @@ export const COUNCIL_GRAPHS = gql`
         lastName
         fullName
       }
+      aggregateServiceRecords(limit: 4) {
+        attendance
+        income
+        week
+      }
+      aggregateBussingRecords(limit: 4) {
+        attendance
+        week
+      }
       services(limit: 4) {
         id
         created_at
@@ -150,6 +169,15 @@ export const STREAM_GRAPHS = gql`
         firstName
         lastName
         fullName
+      }
+      aggregateServiceRecords(limit: 4) {
+        attendance
+        income
+        week
+      }
+      aggregateBussingRecords(limit: 4) {
+        attendance
+        week
       }
       services(limit: 4) {
         id
@@ -178,6 +206,15 @@ export const GATHERINGSERVICE_GRAPHS = gql`
         lastName
         fullName
       }
+      aggregateServiceRecords(limit: 4) {
+        attendance
+        income
+        week
+      }
+      aggregateBussingRecords(limit: 4) {
+        attendance
+        week
+      }
       services(limit: 4) {
         id
         created_at
@@ -203,6 +240,15 @@ export const OVERSIGHT_GRAPHS = gql`
         firstName
         lastName
         fullName
+      }
+      aggregateServiceRecords(limit: 4) {
+        attendance
+        income
+        week
+      }
+      aggregateBussingRecords(limit: 4) {
+        attendance
+        week
       }
       services(limit: 4) {
         id

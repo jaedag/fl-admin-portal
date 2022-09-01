@@ -14,6 +14,94 @@ MERGE (currentLog)-[:HAS_SERVICE_AGGREGATE]->(agg)
 
 RETURN agg;
 
+// Get Bacenta Services for Constituency Aggregation
+MATCH (constituency:Constituency)-[:HAS]->(bacenta:Bacenta)
+MATCH (constituency)-[:CURRENT_HISTORY]->(currentLog:ServiceLog)
+MATCH (bacenta)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(record:AggregateServiceRecord) 
+WITH currentLog,record.week AS week, record.year AS year, SUM(record.attendance) AS attendance, SUM(record.income) AS income //WHERE timeNode.date.week = 10
+CREATE (agg:AggregateServiceRecord)
+SET agg.week = week, 
+agg.year = year,
+agg.attendance = attendance, 
+agg.income = income
+MERGE (currentLog)-[:HAS_SERVICE_AGGREGATE]->(agg)
+
+RETURN agg;
+
+// Get all Constituency Services for Constituency Aggregation
+MATCH (constituency:Constituency)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(timeNode:TimeGraph)
+WITH constituency,record, timeNode.date.week AS week, timeNode.date.year AS year, SUM(record.attendance) AS attendance, SUM(record.income) AS income //WHERE timeNode.date.week = 11
+MATCH (constituency)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(agg:AggregateServiceRecord {week: week, year: year})
+SET agg.attendance = agg.attendance + attendance,
+agg.income = agg.income + income
+
+RETURN agg;
+
+
+// Get all Constituency Services for Council Aggregation
+MATCH (council:Council)-[:HAS]->(constituency:Constituency)
+MATCH (council)-[:CURRENT_HISTORY]->(currentLog:ServiceLog)
+MATCH (constituency)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(record:AggregateServiceRecord)
+WITH currentLog,record.week AS week, record.year AS year, SUM(record.attendance) AS attendance, SUM(record.income) AS income //WHERE timeNode.date.week = 11
+CREATE (agg:AggregateServiceRecord)
+SET agg.week = week,
+agg.year = year,
+agg.attendance = attendance,
+agg.income = income
+MERGE (currentLog)-[:HAS_SERVICE_AGGREGATE]->(agg)
+
+RETURN agg;
+
+// Get all Council Services for Council Aggregation
+MATCH (council:Council)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(timeNode:TimeGraph)
+WITH council,record, timeNode.date.week AS week, timeNode.date.year AS year, SUM(record.attendance) AS attendance, SUM(record.income) AS income //WHERE timeNode.date.week = 11
+MATCH (council)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(agg:AggregateServiceRecord {week: week, year: year})
+SET agg.attendance = agg.attendance + attendance,
+agg.income = agg.income + income
+
+RETURN agg;
+
+// Get all Council Services for Stream Aggregation
+MATCH (stream:Stream)-[:HAS]->(council:Council)
+MATCH (stream)-[:CURRENT_HISTORY]->(currentLog:ServiceLog)
+MATCH (council)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(record:AggregateServiceRecord)
+WITH currentLog,record.week AS week, record.year AS year, SUM(record.attendance) AS attendance, SUM(record.income) AS income //WHERE timeNode.date.week = 11
+CREATE (agg:AggregateServiceRecord)
+SET agg.week = week,
+agg.year = year,
+agg.attendance = attendance,
+agg.income = income
+MERGE (currentLog)-[:HAS_SERVICE_AGGREGATE]->(agg)
+
+RETURN agg;
+
+// Get all Stream Services for Stream Aggregation
+MATCH (stream:Stream)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(timeNode:TimeGraph)
+WITH stream,record, timeNode.date.week AS week, timeNode.date.year AS year, SUM(record.attendance) AS attendance, SUM(record.income) AS income //WHERE timeNode.date.week = 11
+MATCH (stream)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(agg:AggregateServiceRecord {week: week, year: year})
+SET agg.attendance = agg.attendance + attendance,
+agg.income = agg.income + income
+
+RETURN agg;
+
+// Get all Stream services for GatheringService Aggregation
+MATCH (gathering:Gathering)-[:HAS]->(stream:Stream)
+MATCH (gathering)-[:CURRENT_HISTORY]->(currentLog:ServiceLog)
+MATCH (stream)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(record:AggregateServiceRecord)
+WITH currentLog, record.week AS week, record.year AS year, SUM(record.attendance) AS attendance, SUM(record.income) AS income //WHERE timeNode.date.week = 11
+CREATE (agg:AggregateServiceRecord)
+SET agg.week = week,
+agg.year = year,
+agg.attendance = attendance,
+agg.income = income
+MERGE (currentLog)-[:HAS_SERVICE_AGGREGATE]->(agg)
+
+RETURN agg;
+
+// Get all GatheringServices for Oversight Aggregation
+
+
+
 
 // Bussing Aggregates
 
