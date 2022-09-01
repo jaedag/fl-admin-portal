@@ -351,7 +351,7 @@ extend type Mutation {
        MATCH (currentUser:Member {auth_id:$auth.jwt.sub})
         SET bacenta.sprinterCost = constituency.sprinterCost,
         bacenta.urvanCost = constituency.urvanCost
-      
+
 
       CREATE (log:HistoryLog:ServiceLog)
       SET log.id = apoc.create.uuid(),
