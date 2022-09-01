@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { Formik, Form, FormikHelpers } from 'formik'
 import * as Yup from 'yup'
-import { Col, Container, Row, Button } from 'react-bootstrap'
+import { Col, Container, Row } from 'react-bootstrap'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import { MemberContext } from 'contexts/MemberContext'
 import { useMutation } from '@apollo/client'
@@ -10,6 +10,7 @@ import { ChurchContext } from 'contexts/ChurchContext'
 import { useNavigate } from 'react-router'
 import { throwErrorMsg } from '../../../../global-utils'
 import Input from 'components/formik/Input'
+import SubmitButton from 'components/formik/SubmitButton'
 
 type FormOptions = {
   offeringBags: string
@@ -26,7 +27,6 @@ const FellowshipEquipmentForm = () => {
   const [CreateEquipmentRecord] = useMutation(
     CREATE_FELLOWSHIP_EQUIPMENT_RECORD
   )
-  const { theme } = useContext(MemberContext)
   const navigate = useNavigate()
 
   const initialValues: FormOptions = {
@@ -110,15 +110,7 @@ const FellowshipEquipmentForm = () => {
                 </small>
                 <Input className="form-control" name="bluetoothSpeakers" />
                 <div className="d-flex justify-content-center pt-2">
-                  <Button
-                    variant="primary"
-                    size="lg"
-                    type="submit"
-                    className={`btn-main ${theme}`}
-                    disabled={!formik.isValid || formik.isSubmitting}
-                  >
-                    Submit
-                  </Button>
+                  <SubmitButton formik={formik} />
                 </div>
               </Col>
             </Row>
