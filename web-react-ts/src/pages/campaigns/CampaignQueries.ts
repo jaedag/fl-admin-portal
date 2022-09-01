@@ -22,7 +22,7 @@ export const GATHERING_SERVICE_TRENDS = gql`
         offeringBags
         pulpits
       }
-      activeFellowshipCount
+      fellowshipCount
       constituencyCount
     }
   }
@@ -42,7 +42,7 @@ export const GATHERING_SERVICE_BY_STREAM = gql`
           pulpits
         }
         constituencyCount
-        activeFellowshipCount
+        fellowshipCount
       }
     }
   }
@@ -85,7 +85,7 @@ export const STREAM_TRENDS = gql`
         offeringBags
         pulpits
       }
-      activeFellowshipCount
+      fellowshipCount
       constituencyCount
     }
   }
@@ -104,7 +104,7 @@ export const STREAM_BY_COUNCIL = gql`
           offeringBags
           pulpits
         }
-        activeFellowshipCount
+        fellowshipCount
         constituencyCount
       }
     }
@@ -132,7 +132,7 @@ export const COUNCIL_TRENDS = gql`
         offeringBags
         pulpits
       }
-      activeFellowshipCount
+      fellowshipCount
       constituencyCount
     }
   }
@@ -152,7 +152,7 @@ export const COUNCIL_BY_CONSTITUENCY = gql`
           offeringBags
           pulpits
         }
-        activeFellowshipCount
+        fellowshipCount
       }
     }
   }
@@ -234,7 +234,7 @@ export const CONSTITUENCY_TRENDS = gql`
         offeringBags
         pulpits
       }
-      activeFellowshipCount
+      fellowshipCount
     }
   }
 `
@@ -279,7 +279,7 @@ export const CONSTITUENCY_BY_BACENTA = gql`
           bluetoothSpeakers
           offeringBags
         }
-        activeFellowshipCount
+        fellowshipCount
       }
     }
   }
@@ -337,7 +337,7 @@ export const BACENTA_TRENDS = gql`
         offeringBags
         bluetoothSpeakers
       }
-      activeFellowshipCount
+      fellowshipCount
     }
   }
 `
@@ -347,7 +347,7 @@ export const BACENTA_BY_FELLOWSHIP = gql`
     bacentas(where: { id: $bacentaId }) {
       id
       name
-      activeFellowshipCount
+      fellowshipCount
       fellowships {
         id
         name

@@ -22,13 +22,13 @@ const TrendsButton = (props: TrendsButtonProps) => {
   const name = church?.name
   const constituencyCount =
     churchType === 'Constituency' ? 1 : church?.constituencyCount
-  const activeFellowshipCount = church?.activeFellowshipCount
+  const fellowshipCount = church?.fellowshipCount
   const offeringBagsPercentage = Math.round(
-    (offeringBags / activeFellowshipCount) * 100
+    (offeringBags / fellowshipCount) * 100
   )
   const pulpitsPercentage = Math.round((pulpits / constituencyCount) * 100)
   const bluetoothSpeakersPercentage = Math.round(
-    (bluetoothSpeakers / activeFellowshipCount) * 100
+    (bluetoothSpeakers / fellowshipCount) * 100
   )
 
   return (
@@ -44,7 +44,7 @@ const TrendsButton = (props: TrendsButtonProps) => {
       </div>
       <div className="d-grid gap-1 pb-2">
         <div className="lowercase-text text-secondary">
-          Offering Bags: {offeringBags} / {activeFellowshipCount}
+          Offering Bags: {offeringBags} / {fellowshipCount}
         </div>
         <ProgressBar percentage={offeringBagsPercentage} />
         <div className="lowercase-text text-secondary">
@@ -52,7 +52,7 @@ const TrendsButton = (props: TrendsButtonProps) => {
         </div>
         <ProgressBar percentage={pulpitsPercentage} />
         <div className="lowercase-text text-secondary">
-          Bluetooth Speakers: {bluetoothSpeakers} / {activeFellowshipCount}
+          Bluetooth Speakers: {bluetoothSpeakers} / {fellowshipCount}
         </div>
         <ProgressBar percentage={bluetoothSpeakersPercentage} />
       </div>
