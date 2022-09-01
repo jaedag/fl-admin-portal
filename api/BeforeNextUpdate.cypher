@@ -85,7 +85,7 @@ agg.income = agg.income + income
 RETURN agg;
 
 // Get all Stream services for GatheringService Aggregation
-MATCH (gathering:Gathering)-[:HAS]->(stream:Stream)
+MATCH (gathering:GatheringService)-[:HAS]->(stream:Stream)
 MATCH (gathering)-[:CURRENT_HISTORY]->(currentLog:ServiceLog)
 MATCH (stream)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(record:AggregateServiceRecord)
 WITH currentLog, record.week AS week, record.year AS year, SUM(record.attendance) AS attendance, SUM(record.income) AS income //WHERE timeNode.date.week = 11
@@ -99,12 +99,23 @@ MERGE (currentLog)-[:HAS_SERVICE_AGGREGATE]->(agg)
 RETURN agg;
 
 // Get all GatheringServices for Oversight Aggregation
+MATCH (oversight:Oversight)-[:HAS]->(gathering:GatheringService)
+MATCH (oversight)-[:CURRENT_HISTORY]->(currentLog:ServiceLog)
+MATCH (gathering)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(record:AggregateServiceRecord)
+WITH currentLog, record.week AS week, record.year AS year, SUM(record.attendance) AS attendance, SUM(record.income) AS income //WHERE timeNode.date.week = 11
+CREATE (agg:AggregateServiceRecord)
+SET agg.week = week,
+agg.year = year,
+agg.attendance = attendance,
+agg.income = income
+MERGE (currentLog)-[:HAS_SERVICE_AGGREGATE]->(agg)
 
+RETURN agg;
 
 
 
 // Bussing Aggregates
-
+// Get all Bacenta Aggregates for Bacenta Aggregation
 MATCH (bacenta:Bacenta)
 MATCH (bacenta)-[:CURRENT_HISTORY]->(currentLog:ServiceLog)
 MATCH (bacenta)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(record:BussingRecord)-[:BUSSED_ON]->(timeNode:TimeGraph)
@@ -113,6 +124,118 @@ SUM(record.personalContribution) AS personalContribution, SUM(record.numberOfSpr
 SUM(record.numberOfUrvans) AS numberOfUrvans, SUM(record.numberOfCars) AS numberOfCars, SUM(record.bussingCost) AS bussingCost, 
 SUM(record.bussingTopUp) AS bussingTopUp //WHERE timeNode.date.week = 10
 
+CREATE (agg:AggregateBussingRecord)
+SET agg.week = week, 
+agg.year = year,
+agg.attendance = attendance, 
+agg.leaderDeclaration = leaderDeclaration,
+agg.personalContribution = personalContribution,
+agg.numberOfSprinters = numberOfSprinters,
+agg.numberOfUrvans = numberOfUrvans,
+agg.numberOfCars = numberOfCars,
+agg.bussingCost = bussingCost,
+agg.bussingTopUp = bussingTopUp
+MERGE (currentLog)-[:HAS_BUSSING_AGGREGATE]->(agg)
+
+RETURN agg;
+
+
+// Get Bacenta Bussing for Constituency Aggregation
+MATCH (constituency:Constituency)-[:HAS]->(bacenta:Bacenta)
+MATCH (constituency)-[:CURRENT_HISTORY]->(currentLog:ServiceLog)
+MATCH (bacenta)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(record:BussingRecord)-[:BUSSED_ON]->(timeNode:TimeGraph)
+WITH currentLog,timeNode.date.week AS week, timeNode.date.year AS year, SUM(record.attendance) AS attendance, SUM(record.leaderDeclaration) AS leaderDeclaration, 
+SUM(record.personalContribution) AS personalContribution, SUM(record.numberOfSprinters) AS numberOfSprinters,
+SUM(record.numberOfUrvans) AS numberOfUrvans, SUM(record.numberOfCars) AS numberOfCars, SUM(record.bussingCost) AS bussingCost, 
+SUM(record.bussingTopUp) AS bussingTopUp //WHERE timeNode.date.week = 10
+CREATE (agg:AggregateBussingRecord)
+SET agg.week = week, 
+agg.year = year,
+agg.attendance = attendance, 
+agg.leaderDeclaration = leaderDeclaration,
+agg.personalContribution = personalContribution,
+agg.numberOfSprinters = numberOfSprinters,
+agg.numberOfUrvans = numberOfUrvans,
+agg.numberOfCars = numberOfCars,
+agg.bussingCost = bussingCost,
+agg.bussingTopUp = bussingTopUp
+MERGE (currentLog)-[:HAS_BUSSING_AGGREGATE]->(agg)
+
+RETURN agg;
+
+MATCH (council:Council)-[:HAS]->(constituency:Constituency)
+MATCH (council)-[:CURRENT_HISTORY]->(currentLog:ServiceLog)
+MATCH (constituency)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING_AGGREGATE]->(record:AggregateBussingRecord)
+WITH currentLog,record.week AS week, record.year AS year, SUM(record.attendance) AS attendance, SUM(record.leaderDeclaration) AS leaderDeclaration, 
+SUM(record.personalContribution) AS personalContribution, SUM(record.numberOfSprinters) AS numberOfSprinters,
+SUM(record.numberOfUrvans) AS numberOfUrvans, SUM(record.numberOfCars) AS numberOfCars, SUM(record.bussingCost) AS bussingCost, 
+SUM(record.bussingTopUp) AS bussingTopUp //WHERE timeNode.date.week = 10
+CREATE (agg:AggregateBussingRecord)
+SET agg.week = week, 
+agg.year = year,
+agg.attendance = attendance, 
+agg.leaderDeclaration = leaderDeclaration,
+agg.personalContribution = personalContribution,
+agg.numberOfSprinters = numberOfSprinters,
+agg.numberOfUrvans = numberOfUrvans,
+agg.numberOfCars = numberOfCars,
+agg.bussingCost = bussingCost,
+agg.bussingTopUp = bussingTopUp
+MERGE (currentLog)-[:HAS_BUSSING_AGGREGATE]->(agg)
+
+RETURN agg;
+
+MATCH (stream:Stream)-[:HAS]->(council:Council)
+MATCH (stream)-[:CURRENT_HISTORY]->(currentLog:ServiceLog)
+MATCH (council)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING_AGGREGATE]->(record:AggregateBussingRecord)
+WITH currentLog,record.week AS week, record.year AS year, SUM(record.attendance) AS attendance, SUM(record.leaderDeclaration) AS leaderDeclaration, 
+SUM(record.personalContribution) AS personalContribution, SUM(record.numberOfSprinters) AS numberOfSprinters,
+SUM(record.numberOfUrvans) AS numberOfUrvans, SUM(record.numberOfCars) AS numberOfCars, SUM(record.bussingCost) AS bussingCost, 
+SUM(record.bussingTopUp) AS bussingTopUp //WHERE timeNode.date.week = 10
+CREATE (agg:AggregateBussingRecord)
+SET agg.week = week, 
+agg.year = year,
+agg.attendance = attendance, 
+agg.leaderDeclaration = leaderDeclaration,
+agg.personalContribution = personalContribution,
+agg.numberOfSprinters = numberOfSprinters,
+agg.numberOfUrvans = numberOfUrvans,
+agg.numberOfCars = numberOfCars,
+agg.bussingCost = bussingCost,
+agg.bussingTopUp = bussingTopUp
+MERGE (currentLog)-[:HAS_BUSSING_AGGREGATE]->(agg)
+
+RETURN agg;
+
+MATCH (gathering:GatheringService)-[:HAS]->(stream:Stream)
+MATCH (gathering)-[:CURRENT_HISTORY]->(currentLog:ServiceLog)
+MATCH (stream)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING_AGGREGATE]->(record:AggregateBussingRecord)
+WITH currentLog,record.week AS week, record.year AS year, SUM(record.attendance) AS attendance, SUM(record.leaderDeclaration) AS leaderDeclaration, 
+SUM(record.personalContribution) AS personalContribution, SUM(record.numberOfSprinters) AS numberOfSprinters,
+SUM(record.numberOfUrvans) AS numberOfUrvans, SUM(record.numberOfCars) AS numberOfCars, SUM(record.bussingCost) AS bussingCost, 
+SUM(record.bussingTopUp) AS bussingTopUp //WHERE timeNode.date.week = 10
+CREATE (agg:AggregateBussingRecord)
+SET agg.week = week, 
+agg.year = year,
+agg.attendance = attendance, 
+agg.leaderDeclaration = leaderDeclaration,
+agg.personalContribution = personalContribution,
+agg.numberOfSprinters = numberOfSprinters,
+agg.numberOfUrvans = numberOfUrvans,
+agg.numberOfCars = numberOfCars,
+agg.bussingCost = bussingCost,
+agg.bussingTopUp = bussingTopUp
+MERGE (currentLog)-[:HAS_BUSSING_AGGREGATE]->(agg)
+
+RETURN agg;
+
+MATCH (oversight:Oversight)-[:HAS]->(gathering:GatheringService)
+MATCH (oversight)-[:CURRENT_HISTORY]->(currentLog:ServiceLog)
+MATCH (gathering)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING_AGGREGATE]->(record:AggregateBussingRecord)
+WITH currentLog,record.week AS week, record.year AS year, SUM(record.attendance) AS attendance, SUM(record.leaderDeclaration) AS leaderDeclaration, 
+SUM(record.personalContribution) AS personalContribution, SUM(record.numberOfSprinters) AS numberOfSprinters,
+SUM(record.numberOfUrvans) AS numberOfUrvans, SUM(record.numberOfCars) AS numberOfCars, SUM(record.bussingCost) AS bussingCost, 
+SUM(record.bussingTopUp) AS bussingTopUp //WHERE timeNode.date.week = 10
 CREATE (agg:AggregateBussingRecord)
 SET agg.week = week, 
 agg.year = year,

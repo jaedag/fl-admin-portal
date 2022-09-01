@@ -19,10 +19,12 @@ const GatheringServiceReport = () => {
   const [bussing, setBussing] = useState(true)
   const [churchData, setChurchData] = useState<any[] | undefined>([])
   const { data, loading, error } = useQuery(GATHERINGSERVICE_GRAPHS, {
-    variables: { gatheringServiceId: gatheringServiceId },
+    variables: { gatheringServiceId },
     onCompleted: (data) => {
       if (!setChurchData) return
-      setChurchData(getServiceGraphData(data?.gatheringServices[0], 'bussing'))
+      setChurchData(
+        getServiceGraphData(data?.gatheringServices[0], 'bussingAggregate')
+      )
     },
   })
 
@@ -30,7 +32,7 @@ const GatheringServiceReport = () => {
     <ApolloWrapper loading={loading} error={error} data={data} placeholder>
       <Container>
         <PlaceholderCustom loading={loading} as="h5" xs={10}>
-          <h5 className="mb-0">{`${data?.gatheringServices[0]?.name} GatheringService`}</h5>
+          <h5 className="mb-0">{`${data?.gatheringServices[0]?.name} Gathering Service`}</h5>
         </PlaceholderCustom>
         <PlaceholderCustom loading={loading} as="span" xs={10}>
           <span className="text-secondary font-weight-bold">

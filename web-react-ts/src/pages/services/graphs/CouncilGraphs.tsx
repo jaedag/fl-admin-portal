@@ -20,10 +20,10 @@ const CouncilReport = () => {
   const [bussing, setBussing] = useState(true)
   const [churchData, setChurchData] = useState<any[] | undefined>([])
   const { data, loading, error } = useQuery(COUNCIL_GRAPHS, {
-    variables: { councilId: councilId },
+    variables: { councilId },
     onCompleted: (data) => {
       if (!setChurchData) return
-      setChurchData(getServiceGraphData(data?.councils[0], 'bussing'))
+      setChurchData(getServiceGraphData(data?.councils[0], 'bussingAggregate'))
     },
   })
 

@@ -38,11 +38,13 @@ export const BACENTA_GRAPHS = gql`
         fullName
       }
       aggregateServiceRecords(limit: 4) {
+        id
         attendance
         income
         week
       }
       aggregateBussingRecords(limit: 4) {
+        id
         attendance
         week
       }
@@ -99,11 +101,13 @@ export const CONSTITUENCY_GRAPHS = gql`
         fullName
       }
       aggregateServiceRecords(limit: 4) {
+        id
         attendance
         income
         week
       }
       aggregateBussingRecords(limit: 4) {
+        id
         attendance
         week
       }
@@ -135,11 +139,13 @@ export const COUNCIL_GRAPHS = gql`
         fullName
       }
       aggregateServiceRecords(limit: 4) {
+        id
         attendance
         income
         week
       }
       aggregateBussingRecords(limit: 4) {
+        id
         attendance
         week
       }
@@ -171,11 +177,13 @@ export const STREAM_GRAPHS = gql`
         fullName
       }
       aggregateServiceRecords(limit: 4) {
+        id
         attendance
         income
         week
       }
       aggregateBussingRecords(limit: 4) {
+        id
         attendance
         week
       }
@@ -207,11 +215,13 @@ export const GATHERINGSERVICE_GRAPHS = gql`
         fullName
       }
       aggregateServiceRecords(limit: 4) {
+        id
         attendance
         income
         week
       }
       aggregateBussingRecords(limit: 4) {
+        id
         attendance
         week
       }
@@ -242,11 +252,13 @@ export const OVERSIGHT_GRAPHS = gql`
         fullName
       }
       aggregateServiceRecords(limit: 4) {
+        id
         attendance
         income
         week
       }
       aggregateBussingRecords(limit: 4) {
+        id
         attendance
         week
       }

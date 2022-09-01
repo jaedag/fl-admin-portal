@@ -127,6 +127,7 @@ export const getServiceGraphData = (
   if (category === 'bussingAggregate') {
     pushIntoData(church.aggregateBussingRecords)
   }
+
   //Pushing in direct service data eg. Joint Services and Fellowship Services
   else {
     pushIntoData(church.services)

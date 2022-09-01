@@ -113,3 +113,22 @@ extend type GatheringService {
       """
     )
 }
+
+extend type Oversight {
+  aggregateServiceRecords(limit: Int! = 4): [AggregateServiceRecord!]!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(aggregate:AggregateServiceRecord)
+      WHERE aggregate.year = date().year
+      RETURN aggregate ORDER BY aggregate.year, aggregate.week DESC LIMIT $limit
+      """
+    )
+  aggregateBussingRecords(limit: Int! = 4): [AggregateBussingRecord!]!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING_AGGREGATE]->(aggregate:AggregateBussingRecord)
+      WHERE aggregate.year = date().year
+      RETURN aggregate ORDER BY aggregate.year, aggregate.week DESC LIMIT $limit
+      """
+    )
+}
