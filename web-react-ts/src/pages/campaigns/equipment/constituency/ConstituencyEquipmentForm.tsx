@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { Formik, Form, FormikHelpers } from 'formik'
 import * as Yup from 'yup'
 import { Col, Container, Row, Button } from 'react-bootstrap'
@@ -21,6 +21,8 @@ const ConstituencyEquipmentForm = () => {
   const { constituencyId } = useContext(ChurchContext)
   const church = currentUser.currentChurch
   const churchType = currentUser.currentChurch?.__typename
+
+  const [buttonLoading, setButtonLoading] = useState(false)
 
   const [CreateEquipmentRecord] = useMutation(
     CREATE_CONSTITUENCY_EQUIPMENT_RECORD
@@ -49,6 +51,7 @@ const ConstituencyEquipmentForm = () => {
     onSubmitProps: FormikHelpers<FormOptions>
   ) => {
     onSubmitProps.setSubmitting(true)
+    setButtonLoading(true)
     try {
       await CreateEquipmentRecord({
         variables: {
@@ -59,10 +62,12 @@ const ConstituencyEquipmentForm = () => {
       })
     } catch (error: any) {
       throwErrorMsg(error)
+      setButtonLoading(false)
       navigate(-1)
     }
     onSubmitProps.setSubmitting(false)
     onSubmitProps.resetForm()
+    setButtonLoading(false)
     navigate('/campaigns/constituency/equipment/form-details')
   }
 
@@ -101,7 +106,7 @@ const ConstituencyEquipmentForm = () => {
                     className={`btn-main ${theme}`}
                     disabled={!formik.isValid || formik.isSubmitting}
                   >
-                    Submit
+                    {buttonLoading ? 'Submitting...' : 'Submit'}
                   </Button>
                 </div>
               </Col>

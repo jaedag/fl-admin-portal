@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { Formik, Form, FormikHelpers } from 'formik'
 import { Col, Container, Row, Button } from 'react-bootstrap'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
@@ -21,6 +21,7 @@ const GatheringServiceEquipmentDeadline = () => {
   const [SetEquipmentDealine] = useMutation(SET_EQUIPMENT_DEADLINE)
   const { theme } = useContext(MemberContext)
   const navigate = useNavigate()
+  const [buttonLoading, setButtonLoading] = useState(false)
 
   const initialValues: FormOptions = {
     startDate: '',
@@ -32,6 +33,7 @@ const GatheringServiceEquipmentDeadline = () => {
     onSubmitProps: FormikHelpers<FormOptions>
   ) => {
     onSubmitProps.setSubmitting(true)
+    setButtonLoading(true)
     SetEquipmentDealine({
       variables: {
         startDate: values.startDate,
@@ -43,9 +45,11 @@ const GatheringServiceEquipmentDeadline = () => {
         onSubmitProps.setSubmitting(false)
         onSubmitProps.resetForm()
         navigate('/campaigns/gatheringservice')
+        setButtonLoading(false)
         alert('The equipment deadline has been set')
       })
       .catch((error) => {
+        setButtonLoading(false)
         throwErrorMsg(error)
       })
   }
@@ -87,7 +91,7 @@ const GatheringServiceEquipmentDeadline = () => {
                     className={`btn-main ${theme}`}
                     disabled={!formik.isValid || formik.isSubmitting}
                   >
-                    Submit
+                    {buttonLoading ? 'Submitting...' : 'Submit'}
                   </Button>
                 </div>
               </Col>
