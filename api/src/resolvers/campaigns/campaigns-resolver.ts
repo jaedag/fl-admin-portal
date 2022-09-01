@@ -1,5 +1,5 @@
 /* eslint-disable no-underscore-dangle */
-import { permitAdmin } from '../permissions'
+import { permitAdmin, permitLeaderAdmin } from '../permissions'
 
 import {
   checkExistingEquipmentRecord,
@@ -110,16 +110,16 @@ export const campaignsMutation = {
       const startDate = new Date(equipmentCampaign.campaign?.equipmentStartDate)
       const newStartDate = new Date(args.startDate)
 
+      const setEquipmentDuration = rearrangeCypherObject(
+        await session.run(SetEquipmentDeadline, args)
+      )
+
       if (
         typeof equipmentCampaign.campaign === 'undefined' ||
         !(newStartDate.getTime() === startDate.getTime())
       ) {
         sendEmailsandSMS(args, context)
       }
-
-      const setEquipmentDuration = rearrangeCypherObject(
-        await session.run(SetEquipmentDeadline, args)
-      )
 
       return {
         id: setEquipmentDuration.gatheringService.properties.id,
@@ -138,7 +138,7 @@ export const campaignsMutation = {
     args: { id: string; pulpits: number; date: Date },
     context: Context
   ) => {
-    isAuth(permitAdmin('Constituency'), context.auth.roles)
+    isAuth(permitLeaderAdmin('Constituency'), context.auth.roles)
 
     const session = context.executionContext.session()
 
@@ -203,7 +203,7 @@ export const campaignsMutation = {
     args: { id: string; offeringBags: number; date: Date },
     context: Context
   ) => {
-    isAuth(permitAdmin('Fellowship'), context.auth.roles)
+    isAuth(permitLeaderAdmin('Fellowship'), context.auth.roles)
 
     const session = context.executionContext.session()
 
