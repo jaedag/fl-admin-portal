@@ -2,7 +2,11 @@ export const SetEquipmentDeadline = `
 MATCH (gatheringService:GatheringService {id: $id})
 SET gatheringService.equipmentStartDate = date($startDate),
     gatheringService.equipmentEndDate = date($endDate)
-MERGE (equipmentDate:TimeGraph:EquipmentDate {date:date($startDate)})
+MERGE (equipmentDate:TimeGraph {date:date($startDate)})
+ON MATCH 
+SET equipmentDate:EquipmentDate
+ON CREATE
+SET equipmentDate:EquipmentDate
 RETURN gatheringService
 `
 
