@@ -7,7 +7,13 @@ import { useNavigate } from 'react-router'
 import People2Icon from 'assets/icons/People2'
 import { Church, UserRole } from 'global-types'
 
-const ChurchList = ({ color, link }: { color: string; link?: string }) => {
+const ChurchList = ({
+  color,
+  link,
+}: {
+  color: 'defaulters' | 'arrivals' | 'campaigns' | 'quick-facts' | 'churches'
+  link?: string
+}) => {
   const { userJobs } = useContext(MemberContext)
   const { clickCard } = useContext(ChurchContext)
   const { setUser } = useSetUserChurch()
@@ -19,6 +25,7 @@ const ChurchList = ({ color, link }: { color: string; link?: string }) => {
         userJobs.map((role: UserRole) => {
           return role.church
             .filter((church: Church) => {
+              if (color === 'campaigns') return true
               return church?.vacationStatus !== 'Vacation'
             })
             .map((church: Church) => {

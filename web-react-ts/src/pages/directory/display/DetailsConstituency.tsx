@@ -37,23 +37,18 @@ const DetailsConstituency = () => {
       link: '#',
     },
     {
-      title: 'Zone',
-      number: constituency?.zone?.number,
+      title: 'Sprinter Cost',
+      number: constituency?.sprinterCost + ' GHS',
       link: '#',
     },
     {
-      title: 'Sprinter Top Up',
-      number: constituency?.zone.sprinterTopUp + ' GHS',
-      link: '#',
-    },
-    {
-      title: 'Urvan Top Up',
-      number: constituency?.zone.urvanTopUp + ' GHS',
+      title: 'Urvan Cost',
+      number: constituency?.urvanCost + ' GHS',
       link: '#',
     },
   ]
 
-  if (!constituency?.zone.number) {
+  if (!constituency?.sprinterCost || !constituency?.urvanCost) {
     const moneyItems = [1, 2, 3]
     moneyItems.forEach(() => details.pop())
   }

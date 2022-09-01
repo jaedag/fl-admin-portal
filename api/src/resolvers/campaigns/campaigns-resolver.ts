@@ -1,5 +1,5 @@
 /* eslint-disable no-underscore-dangle */
-import { permitAdmin } from '../permissions'
+import { permitAdmin, permitLeaderAdmin } from '../permissions'
 
 import {
   checkExistingEquipmentRecord,
@@ -110,16 +110,16 @@ export const campaignsMutation = {
       const startDate = new Date(equipmentCampaign.campaign?.equipmentStartDate)
       const newStartDate = new Date(args.startDate)
 
+      const setEquipmentDuration = rearrangeCypherObject(
+        await session.run(SetEquipmentDeadline, args)
+      )
+
       if (
         typeof equipmentCampaign.campaign === 'undefined' ||
         !(newStartDate.getTime() === startDate.getTime())
       ) {
         sendEmailsandSMS(args, context)
       }
-
-      const setEquipmentDuration = rearrangeCypherObject(
-        await session.run(SetEquipmentDeadline, args)
-      )
 
       return {
         id: setEquipmentDuration.gatheringService.properties.id,
@@ -138,7 +138,7 @@ export const campaignsMutation = {
     args: { id: string; pulpits: number; date: Date },
     context: Context
   ) => {
-    isAuth(permitAdmin('Constituency'), context.auth.roles)
+    isAuth(permitLeaderAdmin('Constituency'), context.auth.roles)
 
     const session = context.executionContext.session()
 
@@ -153,44 +153,48 @@ export const campaignsMutation = {
         )
       }
 
-      const currentDate = new Date(args.date)
+      const currentDate = new Date()
       const startDate = new Date(equipmentCampaign.campaign.equipmentStartDate)
       const endDate = new Date(equipmentCampaign.campaign.equipmentEndDate)
 
-      if (currentDate >= startDate && currentDate <= endDate) {
-        const date = equipmentCampaign.campaign.equipmentDate
+      if (currentDate < startDate || currentDate > endDate) {
+        throwErrorMsg('Equipment Deadline is up')
+      }
 
-        const equipmentRecordExists = rearrangeCypherObject(
-          await session.run(checkExistingEquipmentRecord, {
-            id: args.id,
-            pulpits: args.pulpits,
-            date,
-          })
+      const date = equipmentCampaign.campaign.equipmentDate
+
+      const equipmentRecordExists = rearrangeCypherObject(
+        await session.run(checkExistingEquipmentRecord, {
+          id: args.id,
+          date,
+        })
+      )
+
+      if (Object.keys(equipmentRecordExists).length !== 0) {
+        throwErrorMsg(
+          'You have already filled your constituency equipment form!'
         )
+      }
 
-        if (Object.keys(equipmentRecordExists).length !== 0) {
-          throwErrorMsg(
-            'You have already filled your constituency equipment form!'
-          )
-        }
-
-        const constituencyRecord = rearrangeCypherObject(
-          await session.run(createConstituencyEquipmentRecord, {
+      const constituencyRecord = rearrangeCypherObject(
+        await session
+          .run(createConstituencyEquipmentRecord, {
             ...args,
             auth: context.auth,
             date,
           })
-        )
+          .catch((error: any) => {
+            return throwErrorMsg(error)
+          })
+      )
 
-        return {
-          id: args.id,
-          equipmentRecord: {
-            id: constituencyRecord.record.properties.id,
-            pulpits: constituencyRecord.record.properties.pulpits,
-          },
-        }
+      return {
+        id: args.id,
+        equipmentRecord: {
+          id: constituencyRecord.record.properties.id,
+          pulpits: constituencyRecord.record.properties.pulpits,
+        },
       }
-      return throwErrorMsg('Equipment Deadline is up')
     } catch (error) {
       return throwErrorMsg(
         'Creating Constituency Equipment Record failed ',
@@ -203,7 +207,7 @@ export const campaignsMutation = {
     args: { id: string; offeringBags: number; date: Date },
     context: Context
   ) => {
-    isAuth(permitAdmin('Fellowship'), context.auth.roles)
+    isAuth(permitLeaderAdmin('Fellowship'), context.auth.roles)
 
     const session = context.executionContext.session()
 
@@ -218,46 +222,48 @@ export const campaignsMutation = {
         )
       }
 
-      const currentDate = new Date(args.date)
+      const currentDate = new Date()
       const startDate = new Date(equipmentCampaign.campaign.equipmentStartDate)
       const endDate = new Date(equipmentCampaign.campaign.equipmentEndDate)
 
-      if (currentDate >= startDate && currentDate <= endDate) {
-        const date = equipmentCampaign.campaign.equipmentDate
+      if (!(currentDate >= startDate && currentDate <= endDate)) {
+        throwErrorMsg('Equipment Deadline is up')
+      }
 
-        const equipmentRecordExists = rearrangeCypherObject(
-          await session.run(checkExistingEquipmentRecord, {
-            id: args.id,
-            offeringBags: args.offeringBags,
-            date,
-          })
-        )
+      const date = equipmentCampaign.campaign.equipmentDate
 
-        if (Object.keys(equipmentRecordExists).length !== 0) {
-          throwErrorMsg(
-            'You have already filled your fellowship equipment form!'
-          )
-        }
+      const equipmentRecordExists = rearrangeCypherObject(
+        await session.run(checkExistingEquipmentRecord, {
+          id: args.id,
+          date,
+        })
+      )
 
-        const fellowshipRecord = rearrangeCypherObject(
-          await session.run(createFellowshipEquipmentRecord, {
+      if (Object.keys(equipmentRecordExists).length !== 0) {
+        throwErrorMsg('You have already filled your fellowship equipment form!')
+      }
+
+      const fellowshipRecord = rearrangeCypherObject(
+        await session
+          .run(createFellowshipEquipmentRecord, {
             ...args,
             auth: context.auth,
             date,
           })
-        )
+          .catch((error: any) => {
+            return throwErrorMsg(error)
+          })
+      )
 
-        return {
-          id: args.id,
-          equipmentRecord: {
-            id: fellowshipRecord.record.properties.id,
-            offeringBags: fellowshipRecord.record.properties.offeringBags,
-            bluetoothSpeakers:
-              fellowshipRecord.record.properties.bluetoothSpeakers,
-          },
-        }
+      return {
+        id: args.id,
+        equipmentRecord: {
+          id: fellowshipRecord.record.properties.id,
+          offeringBags: fellowshipRecord.record.properties.offeringBags,
+          bluetoothSpeakers:
+            fellowshipRecord.record.properties.bluetoothSpeakers,
+        },
       }
-      return throwErrorMsg('Equipment Deadline is up')
     } catch (error) {
       return throwErrorMsg(
         'Creating Fellowship Equipment Record failed ',

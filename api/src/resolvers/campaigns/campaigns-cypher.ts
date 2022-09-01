@@ -2,7 +2,8 @@ export const SetEquipmentDeadline = `
 MATCH (gatheringService:GatheringService {id: $id})
 SET gatheringService.equipmentStartDate = date($startDate),
     gatheringService.equipmentEndDate = date($endDate)
-MERGE (equipmentDate:TimeGraph:EquipmentDate {date:date($startDate)})
+MERGE (equipmentDate:TimeGraph {date:date($startDate)})
+SET equipmentDate:EquipmentDate
 RETURN gatheringService
 `
 
@@ -51,7 +52,7 @@ RETURN record
 
 export const getEquipmentCampaign = `
 MATCH (church {id:$id}) WHERE church:Fellowship OR church:Constituency
-MATCH (fellowship)<-[:HAS*1..5]-(gatheringService:GatheringService)
+MATCH (church)<-[:HAS*1..5]-(gatheringService:GatheringService)
 MATCH (date:EquipmentDate)
 WITH DISTINCT max(date.date) as latestEquipmentDate, gatheringService
 RETURN 

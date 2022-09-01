@@ -36,27 +36,20 @@ const DetailsBacenta = () => {
       vacationCount: bacenta?.vacationFellowshipCount,
     },
     {
-      title: 'Grad. Status',
-      number: bacenta?.graduationStatus,
-      link: `#`,
-    },
-    {
       title: 'Status',
       number: bacenta?.vacationStatus,
       link: '#',
-      width: 3,
+    },
+    {
+      title: 'Grad. Status',
+      number: bacenta?.graduationStatus,
+      link: `#`,
     },
 
     {
       title: 'Target',
       number: bacenta?.target,
       link: '#',
-      width: 3,
-    },
-    {
-      title: 'Zone',
-      number: bacenta?.zone.number,
-      link: `#`,
     },
     {
       title: 'Momo Number',
@@ -66,17 +59,17 @@ const DetailsBacenta = () => {
     },
     {
       title: 'Sprinter Top Up',
-      number: bacenta?.zone.sprinterTopUp + ' GHS',
+      number: bacenta?.sprinterTopUp + ' GHS',
       link: `#`,
     },
     {
       title: 'Urvan Top Up',
-      number: bacenta?.zone.urvanTopUp + ' GHS',
+      number: bacenta?.urvanTopUp + ' GHS',
       link: `#`,
     },
   ]
 
-  if (!bacenta?.zone.number) {
+  if (!bacenta?.sprinterCost || !bacenta?.urvanCost) {
     const moneyItems = [1, 2, 3]
     moneyItems.forEach(() => details.pop())
   }

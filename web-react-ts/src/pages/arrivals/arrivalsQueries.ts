@@ -261,10 +261,10 @@ export const BACENTA_ARRIVALS = gql`
         arrivalEndTime
       }
       momoNumber
-      zone {
-        id
-        number
-      }
+      sprinterCost
+      sprinterTopUp
+      urvanCost
+      urvanTopUp
 
       arrivalsCodeOfTheDay
       bussing(limit: 1) {

@@ -1,7 +1,7 @@
 {
   "short_name": "FLC Admin",
-  "name": "FLC Admin Portal",
-  "description": "An administrative portal for managing and adminstering the First Love Church",
+  "name": "FLC Servants Administrative Portal",
+  "description": "An administrative portal for managing and adminstering all aspects of the First Love Church.",
   "icons": [
     {
       "src": "app-icon-inverted.png",

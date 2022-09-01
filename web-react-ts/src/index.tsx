@@ -72,7 +72,7 @@ const AppWithApollo = () => {
     else document.body.style.backgroundColor = '#FFFFFF'
   }, [theme])
 
-  if (new Date().getDay() === 8) {
+  if (new Date().getDay() === 1 && new Date().getHours() > 4) {
     return <Sabbath />
   }
 
