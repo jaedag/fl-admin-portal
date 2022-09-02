@@ -31,7 +31,6 @@ const Filters = ({
   eventKey: any
 }) => {
   const { setFilters, filters, gatheringServiceId } = useContext(ChurchContext)
-  console.log(useContext(ChurchContext))
   const { theme } = useContext(MemberContext)
   const location = useLocation()
   const atPastors = location.pathname === '/pastors'

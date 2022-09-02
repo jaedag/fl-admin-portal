@@ -74,7 +74,8 @@
     "rules": {
       "react/prop-types": "off",
       "no-restricted-globals": "off",
-      "react-hooks/exhaustive-deps": "off"
+      "react-hooks/exhaustive-deps": "off",
+      "no-console": "warn"
     }
   },
   "overrides": {
