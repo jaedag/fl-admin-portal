@@ -2,6 +2,8 @@ MATCH (record:ServiceRecord) WHERE record.familyPicture IS NULL AND record.noSer
 DETACH DELETE record;
 MATCH (bussing:BussingRecord) WHERE record.mobilisationPicture IS NULL
 DETACH DELETE bussing;
+MATCH (a)-[r:HAS_COMPONENT]->(b)
+DELETE r;
 
 MATCH (bacenta:Bacenta)-[:HAS]->(fellowship:Fellowship)
 MATCH (bacenta)-[:CURRENT_HISTORY]->(currentLog:ServiceLog)
