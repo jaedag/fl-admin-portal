@@ -1,7 +1,16 @@
 import { useLazyQuery } from '@apollo/client'
 import { MemberContext } from 'contexts/MemberContext'
-import { Role } from 'global-types'
+import {
+  AggregateServiceRecord,
+  ChurchLevel,
+  Role,
+  ServiceRecord,
+} from 'global-types'
 import { throwErrorMsg } from 'global-utils'
+import {
+  AggregateBussingRecords,
+  BussingRecord,
+} from 'pages/arrivals/arrivals-types'
 import { getHighestRole } from 'pages/directory/update/directory-utils'
 import { useState } from 'react'
 import { useContext, useEffect } from 'react'
@@ -26,9 +35,23 @@ import {
   SERVANTS_STREAM_ARRIVALS_COUNTER,
 } from './userChurchDataQueries'
 
-const useComponentQuery = () => {
+type DashboardChurchType = {
+  __typename: ChurchLevel
+  id: string
+  name: string
+  bussing: BussingRecord[]
+  services: ServiceRecord[]
+  aggregateServiceRecords: AggregateServiceRecord[]
+  aggregateBussingRecords: AggregateBussingRecords[]
+}
+
+type UseComponentQuery = {
+  servant: any
+}
+const useComponentQuery = (props?: UseComponentQuery) => {
   const { currentUser } = useContext(MemberContext)
-  const [assessmentChurch, setAssessmentChurch] = useState()
+  const [assessmentChurch, setAssessmentChurch] =
+    useState<DashboardChurchType>()
   const [fellowshipLeaderQuery] = useLazyQuery(SERVANT_FELLOWSHIP_LEADER)
   const [bacentaLeaderQuery] = useLazyQuery(SERVANT_BACENTA_LEADER)
   const [constituencyLeaderQuery] = useLazyQuery(SERVANT_CONSTITUENCY_LEADER)
@@ -109,6 +132,7 @@ const useComponentQuery = () => {
       roles: Role[]
       id: string
     }) => {
+      if (!user.roles.length) return
       const { highestLevel, highestVerb } = getHighestRole(user.roles)
 
       const response = await church[`${highestLevel}`][`${highestVerb}`]({
@@ -128,8 +152,8 @@ const useComponentQuery = () => {
       return
     }
 
-    fetchAssessmentChurch(currentUser)
-  }, [currentUser])
+    fetchAssessmentChurch(props?.servant || currentUser)
+  }, [currentUser, props?.servant.roles.length])
 
   return { assessmentChurch }
 }

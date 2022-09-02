@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { useNavigate } from 'react-router'
 import ChurchGraph from 'components/ChurchGraph/ChurchGraph'
 import './Dashboards.css'
@@ -13,13 +13,15 @@ import { Col, Row, Table, Container } from 'react-bootstrap'
 import Placeholder from '../../components/Placeholder'
 import { ChurchContext } from 'contexts/ChurchContext'
 import useComponentQuery from './useComponentQuery'
+import { Role, UserJobs } from 'global-types'
 
 const UserDashboard = () => {
   const { currentUser, userJobs } = useContext(MemberContext)
   const { clickCard } = useContext(ChurchContext)
   const navigate = useNavigate()
   const { assessmentChurch } = useComponentQuery()
-  const assessmentData = getServiceGraphData(assessmentChurch)
+  const assessmentData =
+    getServiceGraphData(assessmentChurch, 'serviceAggregate') || []
 
   return (
     <>
@@ -36,7 +38,7 @@ const UserDashboard = () => {
             <tbody>
               <tr>
                 {userJobs ? (
-                  userJobs?.map((role, i) => (
+                  userJobs?.map((role: UserJobs, i: number) => (
                     <td
                       className="col-auto p-0"
                       key={i}
@@ -46,12 +48,20 @@ const UserDashboard = () => {
                         navigate(role.link)
                       }}
                     >
-                      <RoleCard number={role.number} role={role.name} />
+                      <RoleCard
+                        number={role.number}
+                        role={role.name as Role}
+                        loading={!userJobs}
+                      />
                     </td>
                   ))
                 ) : (
                   <td className="col-auto pl-0">
-                    <RoleCard loading={!userJobs} />
+                    <RoleCard
+                      loading={!userJobs}
+                      number={''}
+                      role={'leaderFellowship'}
+                    />
                   </td>
                 )}
               </tr>
@@ -81,7 +91,7 @@ const UserDashboard = () => {
               stat1="attendance"
               stat2="income"
               income={true}
-              church={assessmentChurch?.__typename.toLowerCase()}
+              church={assessmentChurch?.__typename.toLowerCase() || ''}
               churchData={assessmentData}
               secondaryTitle={`${assessmentChurch?.name} ${assessmentChurch?.__typename}`}
             />
@@ -90,9 +100,10 @@ const UserDashboard = () => {
               loading={!assessmentChurch}
               stat1="attendance"
               income={false}
-              church={assessmentChurch?.__typename.toLowerCase()}
+              church={assessmentChurch?.__typename.toLowerCase() || ''}
               churchData={assessmentData}
               secondaryTitle={`${assessmentChurch?.name} ${assessmentChurch?.__typename}`}
+              stat2={null}
             />
           )}
         </>

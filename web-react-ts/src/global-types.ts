@@ -143,12 +143,14 @@ export interface Member {
 }
 
 export interface MemberWithChurches extends Member {
+  roles?: Role[]
   leadsFellowship: Church[]
   leadsBacenta: Church[]
   leadsConstituency: Church[]
   leadsCouncil: Church[]
   leadsStream: Church[]
   leadsSonta: Church[]
+  leadsBasonta: Church[]
   leadsGatheringService: Church[]
   leadsOversight: Church[]
   leadsMinistry: Church[]
@@ -157,6 +159,12 @@ export interface MemberWithChurches extends Member {
   isAdminForStream: Church[]
   isAdminForGatheringService: Church[]
   isAdminForOversight: Church[]
+
+  isArrivalsAdminForConstituency: Church[]
+  isArrivalsAdminForCouncil: Church[]
+  isArrivalsAdminForStream: Church[]
+  isArrivalsAdminForGatheringService: Church[]
+  isArrivalsAdminForOversight: Church[]
 }
 
 export interface Servant {
@@ -263,6 +271,13 @@ export type ServiceRecord = {
   transactionStatus: 'pending' | 'success' | 'failed'
   bankingSlipUploader: Member
   offeringBankedBy: Member
+}
+
+export type AggregateServiceRecord = {
+  id: string
+  week: string
+  attendance: number
+  income: number
 }
 
 //equipment

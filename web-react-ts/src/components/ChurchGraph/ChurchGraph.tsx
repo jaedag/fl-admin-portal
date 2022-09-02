@@ -24,7 +24,7 @@ type ChurchGraphProps = {
   secondaryTitle?: string
   bussing?: boolean
   income: boolean
-  church: ChurchLevelLower
+  church: ChurchLevelLower | string
 }
 
 const ChurchGraph = (props: ChurchGraphProps) => {
