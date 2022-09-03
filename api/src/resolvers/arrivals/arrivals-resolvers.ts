@@ -355,13 +355,19 @@ export const arrivalsMutation = {
           if (data.vehicleCost < sprinterTopUp) {
             return data.vehicleCost * outbound - data.personalContribution
           }
-          return sprinterTopUp * outbound - data.personalContribution
+          return (
+            data.vehicleCost -
+            data.personalContribution -
+            sprinterTopUp * outbound
+          )
         }
         if (data.vehicle === 'Urvan') {
           if (data.vehicleCost < urvanTopUp) {
             return data.vehicleCost * outbound - data.personalContribution
           }
-          return urvanTopUp * outbound - data.personalContribution
+          return (
+            data.vehicleCost - data.personalContribution - urvanTopUp * outbound
+          )
         }
         return 0
       }
