@@ -1,3 +1,23 @@
+#### 5.1.3 (2022-09-03)
+
+##### Chores
+
+*  sync version numbers ([725aaea4](https://github.com/firstlovecenter/fl-pastoral-care/commit/725aaea442073594be7c2eeaafb69c39cbf4c638))
+*  version bump ([e92788f2](https://github.com/firstlovecenter/fl-pastoral-care/commit/e92788f2114483746c3ad1271f2d934a4fa5f1d8))
+
+##### Documentation Changes
+
+*  update CHANGELOG.md ([4dd0a587](https://github.com/firstlovecenter/fl-pastoral-care/commit/4dd0a5879196d1f0926dcbd6c6cc91bb705b9062))
+*  update CHANGELOG.md ([331524bf](https://github.com/firstlovecenter/fl-pastoral-care/commit/331524bf70a85379de5085c8d75227d305827c4c))
+
+##### Bug Fixes
+
+*  change start url to prevent showing 404 page ([b8492815](https://github.com/firstlovecenter/fl-pastoral-care/commit/b8492815ceef968e11af88274d34c22e8af500dd))
+
+##### Other Changes
+
+* //github.com/firstlovecenter/fl-admin-portal into deploy ([79902dc5](https://github.com/firstlovecenter/fl-pastoral-care/commit/79902dc570db1deb206de8aec48d2b07f67930d0))
+
 #### 5.1.2 (2022-09-03)
 
 ##### Chores
