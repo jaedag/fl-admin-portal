@@ -1,3 +1,18 @@
+#### 5.1.1 (2022-09-03)
+
+##### New Features
+
+*  add shortcuts feature to pwa for convenient user experience ([#269](https://github.com/firstlovecenter/fl-pastoral-care/pull/269)) ([70f5a9b0](https://github.com/firstlovecenter/fl-pastoral-care/commit/70f5a9b0397843aee978a44d8e418e83cb640dcd))
+
+##### Bug Fixes
+
+*  fix error in calculating top up amount ([dedafe8e](https://github.com/firstlovecenter/fl-pastoral-care/commit/dedafe8e20ac24767a35917a3016688e9d1f8d76))
+*  fix bug passing NaN to vehicle top up ([fcb29543](https://github.com/firstlovecenter/fl-pastoral-care/commit/fcb29543142ac1eefc4f34c31fa313f2c4df3091))
+*  fix bug preventing arrivals data from being submitted ([ef460d98](https://github.com/firstlovecenter/fl-pastoral-care/commit/ef460d9808d62a119308492b7b652c652f85cbb4))
+*  change font colour on user profile screen that is not visible for PWA ([#268](https://github.com/firstlovecenter/fl-pastoral-care/pull/268)) ([fd4ac90a](https://github.com/firstlovecenter/fl-pastoral-care/commit/fd4ac90a4da8ec98d9faadf5719c573b1075f894))
+*  fix arrivals timeNode error ([cdeae8ba](https://github.com/firstlovecenter/fl-pastoral-care/commit/cdeae8bade96b19c23645927ea26f4d3cc3c2ad4))
+*  hotfix bug preventing bacentas with no top up from filling ([b523e8c6](https://github.com/firstlovecenter/fl-pastoral-care/commit/b523e8c6381ead2eb33c188186ba837cd8889313))
+
 ### 5.1.0 (2022-09-03)
 
 ##### Continuous Integration
