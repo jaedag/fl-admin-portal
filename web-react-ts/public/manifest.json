@@ -28,6 +28,32 @@
       "purpose": "maskable"
     }
   ],
+  "shortcuts": [
+    {
+      "name": "Directory",
+      "short_name": "Directory",
+      "description": "View my directory page",
+      "url": "/directory"
+    },
+    {
+      "name": "Services",
+      "short_name": "Services",
+      "description": "View my services",
+      "url": "/services/church-list"
+    },
+    {
+      "name": "Arrivals",
+      "short_name": "Arrivals",
+      "description": "View my arrivals page",
+      "url": "/arrivals"
+    },
+    {
+      "name": "Campaigns",
+      "short_name": "Campaigns",
+      "description": "View my SSMG campaigns",
+      "url": "/campaigns/churchlist"
+    }
+  ],
   "start_url": "/index.html",
   "display": "standalone",
   "theme_color": "#000000",
