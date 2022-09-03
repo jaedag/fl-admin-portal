@@ -11,6 +11,7 @@ import { useNavigate } from 'react-router'
 import { throwErrorMsg } from '../../../../global-utils'
 import Input from 'components/formik/Input'
 import SubmitButton from 'components/formik/SubmitButton'
+import HeadingSecondary from 'components/HeadingSecondary'
 
 type FormOptions = {
   pulpits: string
@@ -76,10 +77,10 @@ const ConstituencyEquipmentForm = () => {
     >
       {(formik) => (
         <Container>
-          <HeadingPrimary className="text-center">
-            Equipment Campaign Form
-          </HeadingPrimary>
-          <h6 className="text-center text-secondary">{`${church?.name} ${churchType}`}</h6>
+          <div className="text-center">
+            <HeadingPrimary>{`${church?.name} ${churchType}`}</HeadingPrimary>
+            <HeadingSecondary>Equipment Campaign Form</HeadingSecondary>
+          </div>
           <Form>
             <Row className="row-cols-1 row-cols-md-2 mt-5">
               <Col className="mb-2">

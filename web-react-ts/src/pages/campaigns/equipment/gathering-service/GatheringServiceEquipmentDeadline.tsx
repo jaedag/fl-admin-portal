@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router'
 import { throwErrorMsg } from 'global-utils'
 import Input from 'components/formik/Input'
 import SubmitButton from 'components/formik/SubmitButton'
+import HeadingSecondary from 'components/HeadingSecondary'
 
 type FormOptions = {
   startDate: string
@@ -57,12 +58,12 @@ const GatheringServiceEquipmentDeadline = () => {
     >
       {(formik) => (
         <Container>
-          <HeadingPrimary className="text-center">
-            Equipment Campaign Form
-          </HeadingPrimary>
-          <h6 className="text-center text-secondary">Deadline Dates</h6>
+          <div className="text-center">
+            <HeadingPrimary>Equipment Campaign Form</HeadingPrimary>
+            <HeadingSecondary>Deadline Dates</HeadingSecondary>
+          </div>
           <Form>
-            <Row className="row-cols-1 row-cols-md-2 mt-5">
+            <Row className="row-cols-1 row-cols-md-2 mt-4">
               <Col className="mb-2">
                 <small className="form-text">Start Date* </small>
                 <Input

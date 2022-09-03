@@ -6,6 +6,8 @@ import { MemberContext } from 'contexts/MemberContext'
 import { FELLOWSHIP_LATEST_EQUIPMENT_RECORD } from 'pages/campaigns/CampaignQueries'
 import { useQuery } from '@apollo/client'
 import { ChurchContext } from 'contexts/ChurchContext'
+import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
+import HeadingSecondary from 'components/HeadingSecondary'
 
 const FellowshipEquipmentCampaign = () => {
   const { currentUser } = useContext(MemberContext)
@@ -27,8 +29,8 @@ const FellowshipEquipmentCampaign = () => {
     <div className="d-flex align-items-center justify-content-center ">
       <Container>
         <div className="text-center">
-          <h1 className="mb-1 ">Equipment Campaign</h1>
-          <h6 className="text-secondary">{`${church?.name} ${churchType}`}</h6>
+          <HeadingPrimary>{`${church?.name} ${churchType}`}</HeadingPrimary>
+          <HeadingSecondary>Equipment Campaign</HeadingSecondary>
         </div>
         <div className="d-grid gap-2 mt-4 text-center px-4">
           {fellowshipEquipmentRecord === null && (

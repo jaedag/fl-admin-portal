@@ -7,6 +7,8 @@ import { ChurchContext } from 'contexts/ChurchContext'
 import { useQuery } from '@apollo/client'
 import { COUNCIL_EQUIPMENT_DEFAULTERS_NUMBER_BY_CONSTITUENCY_AND_FELLOWSHIP } from 'pages/campaigns/CampaignQueries'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
+import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
+import HeadingSecondary from 'components/HeadingSecondary'
 
 const CouncilEquipmentDefaulters = () => {
   const { currentUser } = useContext(MemberContext)
@@ -31,8 +33,8 @@ const CouncilEquipmentDefaulters = () => {
       <div className="d-flex align-items-center justify-content-center ">
         <Container>
           <div className="text-center">
-            <h1 className="mb-1 ">Equipment Campaign</h1>
-            <h6 className="text-secondary">{`${church?.name} ${churchType}`}</h6>
+            <HeadingPrimary>{`${church?.name} ${churchType}`}</HeadingPrimary>
+            <HeadingSecondary>Equipment Campaign</HeadingSecondary>
           </div>
           <h6 className="mt-4">
             Fellowships and Constituencies that haven't filled their form
