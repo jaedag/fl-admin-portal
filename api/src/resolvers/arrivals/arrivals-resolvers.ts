@@ -195,7 +195,10 @@ export const arrivalsMutation = {
       await session.run(checkBacentaMomoDetails, args)
     )
 
-    if (!checkBacentaMomo?.momoNumber) {
+    if (
+      !checkBacentaMomo?.momoNumber &&
+      (checkBacentaMomo.sprinterCost?.low || checkBacentaMomo.urvanCost?.low)
+    ) {
       throwErrorMsg('You need a mobile money number before filling this form')
     }
 

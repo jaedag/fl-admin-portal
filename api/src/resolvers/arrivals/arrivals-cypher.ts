@@ -102,8 +102,7 @@ RETURN church
 
 export const checkBacentaMomoDetails = `
 MATCH (bacenta:Bacenta {id: $bacentaId})
-WITH bacenta WHERE bacenta.sprinterCost IS NOT NULL
-RETURN bacenta.momoNumber AS momoNumber
+RETURN bacenta.sprinterCost AS sprinterCost, bacenta.urvanCost AS uvanCost, bacenta.momoNumber AS momoNumber
 `
 
 export const uploadMobilisationPicture = `
