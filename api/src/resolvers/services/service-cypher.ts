@@ -52,7 +52,7 @@ export const aggregateServiceDataOnHigherChurches = `
    ON MATCH SET 
        newRecord.attendance = newRecord.attendance + $attendance,
        newRecord.income = newRecord.income + $income
-   RETURN church, higherChurch, log, timeNode, newRecord
+   RETURN church, higherChurch, log, newRecord
 `
 
 export const checkCurrentServiceLog = `

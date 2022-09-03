@@ -268,7 +268,7 @@ export const arrivalsMutation = {
     )
     const vehicleRecord = response.vehicleRecord.properties
     const bacenta = secondResponse.church.properties
-    const date = secondResponse.timeNode.properties
+    const date = new Date().toISOString().slice(0, 10)
 
     const returnToCache = {
       id: vehicleRecord.id,
@@ -289,7 +289,7 @@ export const arrivalsMutation = {
                 {
                   id: vehicleRecord.id,
                   serviceDate: {
-                    date: date.date,
+                    date,
                   },
                   week: response.week,
                   vehicleCost: vehicleRecord.vehicleCost,
