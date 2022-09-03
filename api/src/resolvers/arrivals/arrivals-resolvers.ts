@@ -321,8 +321,8 @@ export const arrivalsMutation = {
         vehicleCost: number
         outbound: boolean
         personalContribution: number
-        bacentaSprinterCost: neonumber
-        bacentaUrvanCost: neonumber
+        bacentaSprinterCost: number
+        bacentaUrvanCost: number
         arrivalTime: string
         leaderPhoneNumber: string
         leaderFirstName: string
@@ -347,8 +347,8 @@ export const arrivalsMutation = {
       let vehicleRecord: RearragedCypherResponse | undefined
 
       const calculateVehicleTopUp = (data: responseType) => {
-        const sprinterTopUp = calculateTopUp(data.bacentaSprinterCost.low)
-        const urvanTopUp = calculateTopUp(data.bacentaUrvanCost.low)
+        const sprinterTopUp = calculateTopUp(data.bacentaSprinterCost)
+        const urvanTopUp = calculateTopUp(data.bacentaUrvanCost)
 
         const outbound = response.outbound ? 2 : 1
         if (data.vehicle === 'Sprinter') {
@@ -365,7 +365,6 @@ export const arrivalsMutation = {
         }
         return 0
       }
-
       const vehicleTopUp = calculateVehicleTopUp(response)
 
       if (response.vehicle === 'Car') {
@@ -439,7 +438,10 @@ export const arrivalsMutation = {
     } catch (error: any) {
       throwErrorMsg(error)
     }
-    return {}
+    return {
+      id: args.vehicleRecordId,
+      vehicleTopUp: 0,
+    }
   },
   SendVehicleSupport: async (
     object: any,
