@@ -2,7 +2,6 @@ import React, { useContext } from 'react'
 import { Formik, Form, FormikHelpers } from 'formik'
 import * as Yup from 'yup'
 import { Col, Container, Row } from 'react-bootstrap'
-import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import { MemberContext } from 'contexts/MemberContext'
 import { useMutation } from '@apollo/client'
 import { CREATE_FELLOWSHIP_EQUIPMENT_RECORD } from '../../CampaignQueries'
@@ -86,10 +85,10 @@ const FellowshipEquipmentForm = () => {
     >
       {(formik) => (
         <Container>
-          <HeadingPrimary className="text-center">
+          <h1 className="text-center text-secondary">
             Equipment Campaign Form
-          </HeadingPrimary>
-          <h6 className="text-center text-secondary">{`${church?.name} ${churchType}`}</h6>
+          </h1>
+          <h6 className="text-center">{`${church?.name} ${churchType}`}</h6>
 
           <Form>
             <Row className="row-cols-1 row-cols-md-2 mt-4">

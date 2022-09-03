@@ -1,6 +1,5 @@
 import React, { useContext } from 'react'
 import { Container, Row, Table, Button } from 'react-bootstrap'
-import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import { MemberContext } from 'contexts/MemberContext'
 import { ChurchContext } from 'contexts/ChurchContext'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
@@ -33,13 +32,8 @@ const ConstituencyEquipmentFormDetails = () => {
   return (
     <ApolloWrapper data={data} loading={loading} error={error}>
       <Container>
-        <HeadingPrimary className="text-center">
-          Equipment Campaign
-        </HeadingPrimary>
-
-        <h6 className="text-center text-secondary pb-4">
-          {`${church?.name} ${churchType}`}
-        </h6>
+        <h1 className="text-center text-secondary">Equipment Campaign</h1>
+        <h6 className="text-center pb-4">{`${church?.name} ${churchType}`}</h6>
 
         <Row>
           <Table variant={theme} striped bordered>

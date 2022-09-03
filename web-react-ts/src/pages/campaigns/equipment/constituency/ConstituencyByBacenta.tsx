@@ -23,8 +23,8 @@ const ConstituencyByBacenta = () => {
       <div className="d-flex align-items-center justify-content-center ">
         <Container>
           <div className="text-center">
-            <h1 className="mb-1 ">Equipment Campaign</h1>
-            <h6 className="text-secondary">{`${data?.constituencies[0].name} ${data?.constituencies[0].__typename}`}</h6>
+            <h1 className="mb-1 text-secondary">Equipment Campaign</h1>
+            <h6>{`${data?.constituencies[0].name} ${data?.constituencies[0].__typename}`}</h6>
           </div>
           <div className="d-grid gap-2 mt-4 text-center px-2">
             {bacentas?.map((bacenta: EquipmentChurch, index: number) => (

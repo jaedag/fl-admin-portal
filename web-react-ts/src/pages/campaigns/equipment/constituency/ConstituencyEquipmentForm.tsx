@@ -2,7 +2,6 @@ import React, { useContext } from 'react'
 import { Formik, Form, FormikHelpers } from 'formik'
 import * as Yup from 'yup'
 import { Col, Container, Row } from 'react-bootstrap'
-import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import { MemberContext } from 'contexts/MemberContext'
 import { useMutation } from '@apollo/client'
 import { CREATE_CONSTITUENCY_EQUIPMENT_RECORD } from '../../CampaignQueries'
@@ -11,6 +10,7 @@ import { useNavigate } from 'react-router'
 import { throwErrorMsg } from '../../../../global-utils'
 import Input from 'components/formik/Input'
 import SubmitButton from 'components/formik/SubmitButton'
+import HeadingSecondary from 'components/HeadingSecondary'
 
 type FormOptions = {
   pulpits: string
@@ -76,10 +76,8 @@ const ConstituencyEquipmentForm = () => {
     >
       {(formik) => (
         <Container>
-          <HeadingPrimary className="text-center">
-            Equipment Campaign Form
-          </HeadingPrimary>
-          <h6 className="text-center text-secondary">{`${church?.name} ${churchType}`}</h6>
+          <HeadingSecondary>Equipment Campaign Form</HeadingSecondary>
+          <h6 className="text-center">{`${church?.name} ${churchType}`}</h6>
           <Form>
             <Row className="row-cols-1 row-cols-md-2 mt-5">
               <Col className="mb-2">

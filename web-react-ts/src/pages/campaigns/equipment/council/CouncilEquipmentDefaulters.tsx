@@ -31,8 +31,8 @@ const CouncilEquipmentDefaulters = () => {
       <div className="d-flex align-items-center justify-content-center ">
         <Container>
           <div className="text-center">
-            <h1 className="mb-1 ">Equipment Campaign</h1>
-            <h6 className="text-secondary">{`${church?.name} ${churchType}`}</h6>
+            <h1 className="mb-1 text-secondary">Equipment Campaign</h1>
+            <h6>{`${church?.name} ${churchType}`}</h6>
           </div>
           <h6 className="mt-4">
             Fellowships and Constituencies that haven't filled their form

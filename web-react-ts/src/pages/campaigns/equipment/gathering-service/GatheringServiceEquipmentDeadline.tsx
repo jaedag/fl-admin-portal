@@ -1,7 +1,6 @@
 import React, { useContext } from 'react'
 import { Formik, Form, FormikHelpers } from 'formik'
 import { Col, Container, Row } from 'react-bootstrap'
-import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import { useMutation } from '@apollo/client'
 import { SET_EQUIPMENT_DEADLINE } from '../../CampaignQueries'
 import { ChurchContext } from 'contexts/ChurchContext'
@@ -57,10 +56,10 @@ const GatheringServiceEquipmentDeadline = () => {
     >
       {(formik) => (
         <Container>
-          <HeadingPrimary className="text-center">
+          <h1 className="text-center text-secondary">
             Equipment Campaign Form
-          </HeadingPrimary>
-          <h6 className="text-center text-secondary">Deadline Dates</h6>
+          </h1>
+          <h6 className="text-center">Deadline Dates</h6>
           <Form>
             <Row className="row-cols-1 row-cols-md-2 mt-5">
               <Col className="mb-2">
