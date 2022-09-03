@@ -1,3 +1,41 @@
+### 5.1.0 (2022-09-03)
+
+##### Continuous Integration
+
+*  update eslint rules to disable console logs in front end ([7bf48aec](https://github.com/firstlovecenter/fl-pastoral-care/commit/7bf48aec6a72137936d539643aed451f4e6e5876))
+*  update eslint rules to disable console logs in front end ([f81f0926](https://github.com/firstlovecenter/fl-pastoral-care/commit/f81f09265de03c6f7b71451cfdb7ea4cc3e715aa))
+
+##### Documentation Changes
+
+*  update CHANGELOG.md ([221260c7](https://github.com/firstlovecenter/fl-pastoral-care/commit/221260c785d3db91017448279f4670c5e83e1290))
+
+##### New Features
+
+*  implement pwa functionality in the web app ([#244](https://github.com/firstlovecenter/fl-pastoral-care/pull/244)) ([783bea3c](https://github.com/firstlovecenter/fl-pastoral-care/commit/783bea3cba3966bdbb6775fbdb9150fcfcbedf90))
+*  adjust service data writes to reflect the new aggregate structure ([bff125c4](https://github.com/firstlovecenter/fl-pastoral-care/commit/bff125c4a2d3b0b942f4eed5c4cd7c567c5d7707))
+*  adjust bacenta bussing data writes to reflect new aggregate structure ([fb18890a](https://github.com/firstlovecenter/fl-pastoral-care/commit/fb18890a6b2fca683d4d5c4547a7e85cf609b1d8))
+
+##### Bug Fixes
+
+*  merge branch 'bugfix/graphs-admin-260' into deploy ([9122f455](https://github.com/firstlovecenter/fl-pastoral-care/commit/9122f455fe664a679010a50f356093a48803a0c7))
+*  adds constituency id to constituency equipment records that have a null id ([#266](https://github.com/firstlovecenter/fl-pastoral-care/pull/266)) ([0754b881](https://github.com/firstlovecenter/fl-pastoral-care/commit/0754b881da3ba7316e38a2cf47eac673623922c7))
+*  change active fellowship count to fellowship to campaign trends ([2a2c1b82](https://github.com/firstlovecenter/fl-pastoral-care/commit/2a2c1b828e41b297bd1ab55ca13b6c144271cc33))
+*  fix submit button loading ux for constituency and fellowship equipment form ([#264](https://github.com/firstlovecenter/fl-pastoral-care/pull/264)) ([d0dc5a38](https://github.com/firstlovecenter/fl-pastoral-care/commit/d0dc5a381fcc916cce215331b762f8ff974a7580))
+*  fix broken cypher in identifying campaign start and end dates ([c718c869](https://github.com/firstlovecenter/fl-pastoral-care/commit/c718c869a02ef3510ff12c7dfed1d83212431498))
+*  changes structure of check equipment deadline statement ([eca308c8](https://github.com/firstlovecenter/fl-pastoral-care/commit/eca308c8ed9d1c8ee875f13a1e1c2e6901be4196))
+*  changes date used in check for the deadline ([955aceeb](https://github.com/firstlovecenter/fl-pastoral-care/commit/955aceeb4eda5dd609cc3fe1c9a44e4dad53cbcc))
+*  add permission so that fellowship leaders can view campaigns button in nav ([45f4351f](https://github.com/firstlovecenter/fl-pastoral-care/commit/45f4351fc924aaba00de109e3dd24731138b96f6))
+*  fix submit button loading ux and vacation churches not appearing ([b09f5040](https://github.com/firstlovecenter/fl-pastoral-care/commit/b09f50403d784bc00f81e5f16f2e54edacf90c0c))
+*  update cypher ([b430636d](https://github.com/firstlovecenter/fl-pastoral-care/commit/b430636d2db050285b6fdccf2703dce405e50eb0))
+*  adds constituency id to constituency equipment records that have a null id ([#266](https://github.com/firstlovecenter/fl-pastoral-care/pull/266)) ([05d87a4a](https://github.com/firstlovecenter/fl-pastoral-care/commit/05d87a4a4bde7fbbbee2b3da91cc5c78ef6f41d9))
+*  cypher for correcting service aggregates ([13aef0c9](https://github.com/firstlovecenter/fl-pastoral-care/commit/13aef0c9cc2fc4e680161dcd4ab0e8e93f14d768))
+*  fix bacenta component service structure and queries ([a06ef0f4](https://github.com/firstlovecenter/fl-pastoral-care/commit/a06ef0f4599fce9449e9a33522e3539cb4cde6ad))
+
+##### Refactors
+
+*  implement servant and user dashboards using the new aggregate system ([b60a221f](https://github.com/firstlovecenter/fl-pastoral-care/commit/b60a221f32def7d4643818b899fbcb7fd1e874b0))
+*  implement graphs using the new system of explicit aggregates ([d0239317](https://github.com/firstlovecenter/fl-pastoral-care/commit/d0239317e3d59ae9240fc9b9f7116db25cfc91e5))
+
 ## 5.0.0 (2022-09-01)
 
 ##### Chores
