@@ -1,4 +1,11 @@
-import { ChurchLevel, Role, Servant, UserJobs, VerbTypes } from 'global-types'
+import {
+  ChurchLevel,
+  MemberWithChurches,
+  Role,
+  Servant,
+  UserJobs,
+  VerbTypes,
+} from 'global-types'
 import { authorisedLink, plural } from 'global-utils'
 import { churchLevels } from 'pages/directory/update/directory-utils'
 import {
@@ -166,12 +173,13 @@ const setServantRoles = (args: ServantRolesArgs) => {
   })
 }
 
-export const getServantRoles = (servant: Servant) => {
+export const getUserServantRoles = (servant: Servant) => {
   let userroles: UserJobs[] = []
 
   churchLevels.forEach((level: ChurchLevel) => {
     roles[`${level}`].forEach((verb: VerbTypes) => {
       const servantRoles: string[] = servant?.roles
+
       const shouldSearch = (verb: VerbTypes, level: ChurchLevel) =>
         servantRoles.includes(`${parseRoles(verb)}${level}`)
 
@@ -189,4 +197,253 @@ export const getServantRoles = (servant: Servant) => {
   })
 
   return userroles
+}
+
+export const getServantRoles = (servant: MemberWithChurches) => {
+  const userroles: UserJobs[] = []
+  const roleTitles: Role[] = []
+
+  if (servant?.leadsFellowship?.length) {
+    roleTitles.push('leaderFellowship')
+    userroles.push({
+      name: 'Fellowship',
+      church: servant?.leadsFellowship,
+      number: servant?.leadsFellowship?.length,
+      link: authorisedLink(
+        servant,
+        permitMe('Fellowship'),
+        '/fellowship/displaydetails'
+      ),
+    })
+  }
+  if (servant?.leadsBacenta?.length) {
+    roleTitles.push('leaderBacenta')
+    userroles.push({
+      name: 'Bacenta',
+      church: servant?.leadsBacenta,
+      number: servant?.leadsBacenta?.length,
+      link: authorisedLink(
+        servant,
+        permitMe('Bacenta'),
+        '/bacenta/displaydetails'
+      ),
+    })
+  }
+  if (servant?.leadsSonta?.length) {
+    roleTitles.push('leaderSonta')
+    userroles.push({
+      name: 'Sonta',
+      church: servant?.leadsSonta,
+      number: servant?.leadsSonta?.length,
+      link: authorisedLink(servant, permitMe('Sonta'), '/sonta/displaydetails'),
+    })
+  }
+  if (servant?.leadsConstituency?.length) {
+    roleTitles.push('leaderConstituency')
+    userroles.push({
+      name: 'Constituency',
+      church: servant?.leadsConstituency,
+      number: servant?.leadsConstituency?.length,
+      link: authorisedLink(
+        servant,
+        permitMe('Constituency'),
+        '/constituency/displaydetails'
+      ),
+    })
+  }
+  if (servant?.isAdminForConstituency?.length) {
+    roleTitles.push('adminConstituency')
+    userroles.push({
+      name: 'Constituency Admin',
+      church: servant?.isAdminForConstituency,
+      number: servant?.isAdminForConstituency?.length,
+      link: authorisedLink(
+        servant,
+        permitMe('Constituency'),
+        '/constituency/displaydetails'
+      ),
+    })
+  }
+  if (servant?.isArrivalsAdminForConstituency?.length) {
+    roleTitles.push('arrivalsAdminConstituency')
+    userroles.push({
+      name: 'Constituency Arrivals Admin',
+      church: servant?.isArrivalsAdminForConstituency,
+      number: servant?.isArrivalsAdminForConstituency?.length,
+      link: authorisedLink(
+        servant,
+        permitMe('Constituency'),
+        `/constituency/displaydetails`
+      ),
+    })
+  }
+  if (servant?.leadsCouncil?.length) {
+    roleTitles.push('leaderCouncil')
+    userroles.push({
+      name: 'Council',
+      church: servant?.leadsCouncil,
+      number: servant?.leadsCouncil?.length,
+      link: authorisedLink(
+        servant,
+        permitMe('Council'),
+        '/council/displaydetails'
+      ),
+    })
+  }
+  if (servant?.isAdminForCouncil?.length) {
+    roleTitles.push('adminCouncil')
+    userroles.push({
+      name: 'Council Admin',
+      church: servant?.isAdminForCouncil,
+      number: servant?.isAdminForCouncil?.length,
+      link: authorisedLink(
+        servant,
+        permitMe('Council'),
+        '/council/displaydetails'
+      ),
+    })
+  }
+  if (servant?.isArrivalsAdminForCouncil?.length) {
+    roleTitles.push('arrivalsAdminCouncil')
+    userroles.push({
+      name: 'Council Arrivals Admin',
+      church: servant?.isArrivalsAdminForCouncil,
+      number: servant?.isArrivalsAdminForCouncil?.length,
+      link: authorisedLink(
+        servant,
+        permitMe('Council'),
+        `/council/displaydetails`
+      ),
+    })
+  }
+  if (servant?.leadsMinistry?.length) {
+    userroles.push({
+      name: 'Ministry',
+      church: servant?.leadsMinistry,
+      number: servant?.leadsMinistry?.length,
+      link: authorisedLink(
+        servant,
+        permitMe('GatheringService'),
+        '/ministry/displaydetails'
+      ),
+    })
+  }
+  if (servant?.leadsStream?.length) {
+    roleTitles.push('leaderStream')
+    userroles.push({
+      name: 'Stream',
+      church: servant?.leadsStream,
+      number: servant?.leadsStream?.length,
+      link: authorisedLink(
+        servant,
+        permitMe('Stream'),
+        '/stream/displaydetails'
+      ),
+    })
+  }
+  if (servant?.isAdminForStream?.length) {
+    roleTitles.push('adminStream')
+    userroles.push({
+      name: 'Stream Admin',
+      church: servant?.isAdminForStream,
+      number: servant?.isAdminForStream?.length,
+      link: authorisedLink(
+        servant,
+        permitMe('Stream'),
+        '/stream/displaydetails'
+      ),
+    })
+  }
+  if (servant?.isArrivalsAdminForStream?.length) {
+    roleTitles.push('arrivalsAdminStream')
+    userroles.push({
+      name: 'Stream Arrivals Admin',
+      church: servant?.isArrivalsAdminForStream,
+      number: servant?.isArrivalsAdminForStream?.length,
+      link: authorisedLink(
+        servant,
+        permitMe('Stream'),
+        `/stream/displaydetails`
+      ),
+    })
+  }
+  if (servant?.leadsGatheringService?.length) {
+    roleTitles.push('leaderGatheringService')
+    userroles.push({
+      name: 'Gathering Service',
+      church: servant?.leadsGatheringService,
+      number: servant?.leadsGatheringService?.length,
+      link: authorisedLink(
+        servant,
+        permitMe('GatheringService'),
+        '/gatheringservice/displaydetails'
+      ),
+    })
+  }
+  if (servant?.isAdminForGatheringService?.length) {
+    roleTitles.push('adminGatheringService')
+    userroles.push({
+      name: 'Gathering Service Admin',
+      church: servant?.isAdminForGatheringService,
+      number: servant?.isAdminForGatheringService?.length,
+      link: authorisedLink(
+        servant,
+        permitMe('GatheringService'),
+        '/gatheringservice/displaydetails'
+      ),
+    })
+  }
+  if (servant?.leadsOversight?.length) {
+    roleTitles.push('leaderOversight')
+    userroles.push({
+      name: 'Oversight',
+      church: servant?.leadsOversight,
+      number: servant?.leadsOversight?.length,
+      link: authorisedLink(
+        servant,
+        permitMe('Oversight'),
+        '/oversight/displaydetails'
+      ),
+    })
+  }
+  if (servant?.isAdminForOversight?.length) {
+    roleTitles.push('adminOversight')
+    userroles.push({
+      name: 'Oversight Admin',
+      church: servant?.isAdminForOversight,
+      number: servant?.isAdminForOversight?.length,
+      link: authorisedLink(
+        servant,
+        permitMe('Oversight'),
+        '/oversight/displaydetails'
+      ),
+    })
+  }
+  if (servant?.isArrivalsAdminForGatheringService?.length) {
+    roleTitles.push('arrivalsAdminGatheringService')
+    userroles.push({
+      name: 'Gathering Service Arrivals Admin',
+      church: servant?.isArrivalsAdminForGatheringService,
+      number: servant?.isArrivalsAdminForGatheringService?.length,
+      link: authorisedLink(
+        servant,
+        permitMe('GatheringService'),
+        `/gatheringservice/displaydetails`
+      ),
+    })
+  }
+  if (servant?.leadsBasonta?.length) {
+    userroles.push({
+      name: 'Basonta',
+      church: servant?.leadsBasonta,
+      number: servant?.leadsBasonta?.length,
+      link: authorisedLink(
+        servant,
+        permitMe('Basonta'),
+        '/basonta/displaydetails'
+      ),
+    })
+  }
+
+  return { userroles, roleTitles }
 }

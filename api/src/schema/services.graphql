@@ -1029,9 +1029,15 @@ extend type Constituency {
 }
 
 interface Record {
-  id: ID!
+  id: ID
   created_at: DateTime!
   created_by: Member @relationship(type: "LOGGED_BY", direction: OUT)
+}
+
+interface HadService {
+  week: Int!
+  attendance: Int!
+  income: Float!
 }
 
 type ServiceRecord implements Record @auth(rules: [{ isAuthenticated: true }]) {
@@ -1092,6 +1098,8 @@ type ServiceLog @auth(rules: [{ isAuthenticated: true }]) {
   loggedBy: Member @relationship(type: "LOGGED_BY", direction: OUT)
   serviceRecords: [ServiceRecord!]!
     @relationship(type: "HAS_SERVICE", direction: OUT)
+  aggregateServiceRecord: [AggregateServiceRecord!]!
+    @relationship(type: "HAS_SERVICE_AGGREGATE", direction: OUT)
   bussingRecords: [BussingRecord!]!
     @relationship(type: "HAS_BUSSING", direction: OUT)
   leaders: [Member!]! @relationship(type: "HAS_HISTORY", direction: IN)

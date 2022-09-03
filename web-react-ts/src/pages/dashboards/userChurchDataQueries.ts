@@ -43,8 +43,8 @@ export const SERVANT_BACENTA_LEADER = gql`
           }
         }
 
-        services(limit: 4) {
-          created_at
+        aggregateServiceRecords(limit: 6) {
+          id
           attendance
           income
           week
@@ -66,14 +66,11 @@ export const SERVANT_CONSTITUENCY_LEADER = gql`
         council {
           id
         }
-        services(limit: 4) {
-          created_at
+        aggregateServiceRecords(limit: 6) {
+          id
           attendance
           income
           week
-          serviceDate {
-            date
-          }
         }
       }
     }
@@ -89,14 +86,11 @@ export const SERVANT_COUNCIL_LEADER = gql`
         name
         stream_name
 
-        services(limit: 4) {
-          created_at
+        aggregateServiceRecords(limit: 6) {
+          id
           attendance
           income
           week
-          serviceDate {
-            date
-          }
         }
       }
     }
@@ -111,14 +105,11 @@ export const SERVANT_STREAM_LEADER = gql`
         id
         name
 
-        services(limit: 4) {
-          created_at
+        aggregateServiceRecords(limit: 6) {
+          id
           attendance
           income
           week
-          serviceDate {
-            date
-          }
         }
       }
     }
@@ -133,14 +124,11 @@ export const SERVANT_GATHERINGSERVICE_LEADER = gql`
         id
         name
 
-        services(limit: 4) {
-          created_at
+        aggregateServiceRecords(limit: 6) {
+          id
           attendance
           income
           week
-          serviceDate {
-            date
-          }
         }
       }
     }
@@ -155,14 +143,11 @@ export const SERVANT_OVERSIGHT_LEADER = gql`
         id
         name
 
-        services(limit: 4) {
-          created_at
+        aggregateServiceRecords(limit: 6) {
+          id
           attendance
           income
           week
-          serviceDate {
-            date
-          }
         }
       }
     }
@@ -187,14 +172,11 @@ export const SERVANT_CONSTITUENCY_ADMIN = gql`
         council {
           id
         }
-        services(limit: 4) {
-          created_at
+        aggregateServiceRecords(limit: 6) {
+          id
           attendance
           income
           week
-          serviceDate {
-            date
-          }
         }
       }
     }
@@ -217,14 +199,11 @@ export const SERVANT_COUNCIL_ADMIN = gql`
           lastName
           fullName
         }
-        services(limit: 4) {
-          created_at
+        aggregateServiceRecords(limit: 6) {
+          id
           attendance
           income
           week
-          serviceDate {
-            date
-          }
         }
       }
     }
@@ -246,14 +225,11 @@ export const SERVANTS_STREAM_ADMIN = gql`
           lastName
           fullName
         }
-        services(limit: 4) {
-          created_at
+        aggregateServiceRecords(limit: 6) {
+          id
           attendance
           income
           week
-          serviceDate {
-            date
-          }
         }
       }
     }
@@ -269,14 +245,11 @@ export const SERVANTS_GATHERINGSERVICE_ADMIN = gql`
         id
         name
 
-        services(limit: 4) {
-          created_at
+        aggregateServiceRecords(limit: 6) {
+          id
           attendance
           income
           week
-          serviceDate {
-            date
-          }
         }
       }
     }
@@ -292,14 +265,11 @@ export const SERVANTS_OVERSIGHT_ADMIN = gql`
         id
         name
 
-        services(limit: 4) {
-          created_at
+        aggregateServiceRecords(limit: 6) {
+          id
           attendance
           income
           week
-          serviceDate {
-            date
-          }
         }
       }
     }
@@ -322,14 +292,10 @@ export const SERVANTS_CONSTITUENCY_ARRIVALS_ADMIN = gql`
           lastName
           fullName
         }
-        services(limit: 4) {
-          created_at
+        aggregateBussingRecords(limit: 6) {
+          id
           attendance
-          income
           week
-          serviceDate {
-            date
-          }
         }
       }
     }

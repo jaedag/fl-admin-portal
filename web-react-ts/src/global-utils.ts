@@ -1,5 +1,11 @@
 import { ApolloError } from '@apollo/client'
-import { ChurchLevel, CurrentUser, Member, Role } from 'global-types'
+import {
+  ChurchLevel,
+  CurrentUser,
+  Member,
+  MemberWithChurches,
+  Role,
+} from 'global-types'
 
 //Global Constants
 export const PHONE_NUM_REGEX = /^[+][(]{0,1}[1-9]{1,4}[)]{0,1}[-\s/0-9]*$/
@@ -86,11 +92,11 @@ export const isAuthorised = (permittedRoles: Role[], userRoles: Role[]) => {
 }
 
 export const authorisedLink = (
-  currentUser: CurrentUser,
+  currentUser: CurrentUser | MemberWithChurches,
   permittedRoles: Role[],
   link: string
 ): string => {
-  if (isAuthorised(permittedRoles, currentUser.roles)) {
+  if (isAuthorised(permittedRoles, currentUser?.roles || [])) {
     return link
   }
   return '#'

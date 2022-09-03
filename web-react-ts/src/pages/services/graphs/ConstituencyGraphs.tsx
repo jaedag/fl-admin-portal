@@ -22,7 +22,9 @@ export const ConstituencyGraphs = () => {
     variables: { id: constituencyId },
     onCompleted: (data) => {
       if (!setChurchData) return
-      setChurchData(getServiceGraphData(data?.constituencies[0], 'bussing'))
+      setChurchData(
+        getServiceGraphData(data?.constituencies[0], 'bussingAggregate')
+      )
     },
   })
 

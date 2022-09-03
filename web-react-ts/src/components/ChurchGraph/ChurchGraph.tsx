@@ -24,7 +24,7 @@ type ChurchGraphProps = {
   secondaryTitle?: string
   bussing?: boolean
   income: boolean
-  church: ChurchLevelLower
+  church: ChurchLevelLower | string
 }
 
 const ChurchGraph = (props: ChurchGraphProps) => {
@@ -160,6 +160,8 @@ const ChurchGraph = (props: ChurchGraphProps) => {
                 yAxisId="left"
                 fill="url(#colorPrimary)"
                 onClick={(data) => {
+                  if (data.id === data.week) return
+
                   if (data.id && bussing) {
                     clickCard({ ...data, __typename: 'BussingRecord' })
                     navigate(`/${props.church}/bussing-details`)
@@ -184,6 +186,8 @@ const ChurchGraph = (props: ChurchGraphProps) => {
                   yAxisId="right"
                   fill="url(#colorSecondary)"
                   onClick={(data) => {
+                    if (data.id === data.week) return
+
                     if (data.id && bussing) {
                       clickCard({ ...data, __typename: 'BussingRecord' })
                       navigate(`/${props.church}/bussing-details`)

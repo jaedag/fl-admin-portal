@@ -43,6 +43,19 @@ export interface BussingRecord {
   vehicleRecords: VehicleRecord[]
 }
 
+export type AggregateBussingRecords = {
+  id: string
+  week: number
+  attendance: number
+  leaderDeclaration: number
+  personalContribution: number
+  numberOfSprinters: number
+  numberOfUrvans: number
+  numberOfCars: number
+  bussingCost: number
+  bussingTopUp: number
+}
+
 export type VehicleRecord = {
   id: string
   created_by: Member

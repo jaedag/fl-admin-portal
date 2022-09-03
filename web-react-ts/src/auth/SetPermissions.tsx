@@ -6,7 +6,7 @@ import { GET_LOGGED_IN_USER } from 'components/UserProfileIcon/UserQueries'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { MemberContext } from 'contexts/MemberContext'
 import { capitalise } from 'global-utils'
-import { getServantRoles } from 'pages/dashboards/dashboard-utils'
+import { getUserServantRoles } from 'pages/dashboards/dashboard-utils'
 import { SERVANT_CHURCH_LIST } from 'pages/dashboards/DashboardQueries'
 import { permitMe } from 'permission-utils'
 import React, { useContext, useEffect } from 'react'
@@ -24,7 +24,7 @@ const SetPermissions = ({ children }: { children: JSX.Element }) => {
     {
       onCompleted: (data) => {
         const servant = { ...data?.members[0], ...currentUser }
-        setUserJobs(getServantRoles(servant))
+        setUserJobs(getUserServantRoles(servant))
       },
     }
   )

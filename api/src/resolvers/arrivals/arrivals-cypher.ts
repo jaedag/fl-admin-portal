@@ -194,14 +194,11 @@ RETURN vehicleRecord, bussingRecord, date().week AS week
 export const aggregateLeaderBussingDataOnHigherChurches = `
    MATCH (church {id: $bacentaId}) 
    WHERE church:Bacenta OR church:Constituency OR church:Council
-   OR church:Stream OR church:GatheringService OR church:Oversight OR church:Denomination
-   MATCH (timeNode:TimeGraph {date: date()})
+   OR church:Stream OR church:GatheringService OR church:Denomination
    MATCH (church)<-[:HAS*1..7]-(higherChurch)
    MATCH (higherChurch)-[:CURRENT_HISTORY]->(log:ServiceLog)
-   MERGE (log)-[:HAS_BUSSING]->(newRecord:BussingRecord)-[:BUSSED_ON]->(timeNode)
+   MERGE (log)-[:HAS_BUSSING_AGGREGATE]->(newRecord:AggregateBussingRecord {week: date().week, year: date().year})
    ON CREATE SET
-       newRecord.id = apoc.create.uuid(),
-       newRecord.created_at = datetime(),
        newRecord.leaderDeclaration = $leaderDeclaration,
        newRecord.bussingCost = $vehicleCost,
        newRecord.personalContribution = $personalContribution
@@ -215,11 +212,10 @@ export const aggregateLeaderBussingDataOnHigherChurches = `
 export const aggregateConfirmedBussingDataOnHigherChurches = `
    MATCH (church {id: $bacentaId}) 
    WHERE church:Bacenta OR church:Constituency OR church:Council
-   OR church:Stream OR church:GatheringService OR church:Oversight OR church:Denomination
-   MATCH (timeNode:TimeGraph {date: date()})
+   OR church:Stream OR church:GatheringService OR church:Denomination
    MATCH (church)<-[:HAS*1..7]-(higherChurch)
    MATCH (higherChurch)-[:CURRENT_HISTORY]->(log:ServiceLog)
-   MERGE (log)-[:HAS_BUSSING]->(newRecord:BussingRecord)-[:BUSSED_ON]->(timeNode)
+   MERGE (log)-[:HAS_BUSSING_AGGREGATE]->(newRecord:AggregateBussingRecord {week: date().week, year: date().year})
    ON MATCH SET 
        newRecord.attendance = newRecord.attendance + $attendance
    RETURN church, higherChurch, log, timeNode, newRecord

@@ -23,7 +23,7 @@ const StreamReport = () => {
     variables: { streamId: streamId },
     onCompleted: (data) => {
       if (!setChurchData) return
-      setChurchData(getServiceGraphData(data?.streams[0], 'bussing'))
+      setChurchData(getServiceGraphData(data?.streams[0], 'bussingAggregate'))
     },
   })
 

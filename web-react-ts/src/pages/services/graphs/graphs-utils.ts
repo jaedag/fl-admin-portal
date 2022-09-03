@@ -58,9 +58,11 @@ export const getServiceGraphData = (
     | {
         bussing: any[]
         services: any[]
+        aggregateServiceRecords: any[]
+        aggregateBussingRecords: any[]
       }
     | undefined,
-  category?: 'bussing'
+  category?: 'bussing' | 'bussingAggregate' | 'serviceAggregate' | 'service'
 ) => {
   if (!church) {
     return
@@ -117,6 +119,15 @@ export const getServiceGraphData = (
   if (category === 'bussing') {
     pushIntoData(church.bussing)
   }
+
+  if (category === 'serviceAggregate') {
+    pushIntoData(church.aggregateServiceRecords)
+  }
+
+  if (category === 'bussingAggregate') {
+    pushIntoData(church.aggregateBussingRecords)
+  }
+
   //Pushing in direct service data eg. Joint Services and Fellowship Services
   else {
     pushIntoData(church.services)

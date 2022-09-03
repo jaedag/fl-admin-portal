@@ -29,7 +29,7 @@ export const GATHERING_SERVICE_TRENDS = gql`
 `
 
 export const GATHERING_SERVICE_BY_STREAM = gql`
-  query gatheringServiceByStream($gatheringServiceId: ID) {
+  query equipmentGatheringServiceByStream($gatheringServiceId: ID) {
     gatheringServices(where: { id: $gatheringServiceId }) {
       id
       name
@@ -175,7 +175,7 @@ export const COUNCIL_EQUIPMENT_DEFAULTERS_NUMBER_BY_CONSTITUENCY_AND_FELLOWSHIP 
 `
 
 export const COUNCIL_EQUIPMENT_DEFAULTERS_LIST_BY_FELLOWSHIP = gql`
-  query equipmentConstituencyDefaultersList($councilId: ID) {
+  query equipmentCouncilDefaultersByFellowship($councilId: ID) {
     councils(where: { id: $councilId }) {
       id
       fellowshipEquipmentNotFilled {
@@ -194,7 +194,7 @@ export const COUNCIL_EQUIPMENT_DEFAULTERS_LIST_BY_FELLOWSHIP = gql`
 `
 
 export const COUNCIL_EQUIPMENT_DEFAULTERS_LIST_BY_CONSTITUENCY = gql`
-  query equipmentConstituencyDefaultersList($councilId: ID) {
+  query equipmentConstituencyDefaultersByConstituency($councilId: ID) {
     councils(where: { id: $councilId }) {
       id
       constituencyEquipmentNotFilled {
@@ -297,7 +297,7 @@ export const CONSTITUENCY_EQUIPMENT_DEFAULTERS_NUMBER_BY_FELLOWSHIP = gql`
 `
 
 export const CONSTITUENCY_EQUIPMENT_DEFAULTERS_LIST_BY_FELLOWSHIP = gql`
-  query equipmentConstituencyDefaultersList($constituencyId: ID) {
+  query equipmentConstituencyDefaultersListByFellowship($constituencyId: ID) {
     constituencies(where: { id: $constituencyId }) {
       id
       fellowshipEquipmentFilledCount
