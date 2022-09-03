@@ -205,7 +205,7 @@ export const aggregateLeaderBussingDataOnHigherChurches = `
        newRecord.leaderDeclaration = newRecord.leaderDeclaration + $leaderDeclaration,
        newRecord.bussingCost = newRecord.bussingCost + $vehicleCost,
        newRecord.personalContribution = newRecord.personalContribution + $personalContribution
-   RETURN church, higherChurch, log, timeNode, newRecord
+   RETURN church, higherChurch, log, newRecord
 `
 
 export const aggregateConfirmedBussingDataOnHigherChurches = `
@@ -217,5 +217,5 @@ export const aggregateConfirmedBussingDataOnHigherChurches = `
    MERGE (log)-[:HAS_BUSSING_AGGREGATE]->(newRecord:AggregateBussingRecord {week: date().week, year: date().year})
    ON MATCH SET 
        newRecord.attendance = newRecord.attendance + $attendance
-   RETURN church, higherChurch, log, timeNode, newRecord
+   RETURN church, higherChurch, log, newRecord
 `
