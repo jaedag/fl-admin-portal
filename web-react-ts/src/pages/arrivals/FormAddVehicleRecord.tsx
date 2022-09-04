@@ -138,7 +138,7 @@ const FormAddVehicleRecord = () => {
                     options={VEHICLE_OPTIONS}
                     defaultOption="Select a vehicle type"
                   />
-                  <Input name="vehicleCost" label="Vehicle Cost (in Cedis)*" />
+                  <Input name="vehicleCost" label="Vehicle Cost (One Way)*" />
                 </Col>
 
                 <hr />
