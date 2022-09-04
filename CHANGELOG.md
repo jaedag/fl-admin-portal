@@ -1,3 +1,20 @@
+#### 5.1.4 (2022-09-04)
+
+##### New Features
+
+*  adds prepared cypher statements to BeforeNextUpdate.cypher file ([4d494e25](https://github.com/firstlovecenter/fl-pastoral-care/commit/4d494e25436cd28318ccc13e4d22e153cb1a20cb))
+*  admin-273 implement aggregation member count ([6e8de16a](https://github.com/firstlovecenter/fl-pastoral-care/commit/6e8de16ac46e3de1ca45ccc54f917464372ab64a))
+
+##### Bug Fixes
+
+*  update start_url in manifest.json ([e55f235b](https://github.com/firstlovecenter/fl-pastoral-care/commit/e55f235be4ee0cd3c2e4046fcde1ea9c16d2cf82))
+*  update vehicle cost, to say 'one way' ([5f951cdc](https://github.com/firstlovecenter/fl-pastoral-care/commit/5f951cdcb3cde08988f84fb712a0e9525a4821cd))
+*  update arrivals cypher which calculates aggregate attendance upwards ([f7f36ae6](https://github.com/firstlovecenter/fl-pastoral-care/commit/f7f36ae6ef9abdda04b7c9086ade1ecec2044fb6))
+*  update addMemberToUpperChurch to also add to fellowship member counter ([d5309e2c](https://github.com/firstlovecenter/fl-pastoral-care/commit/d5309e2cdcecba184630f24b32e88f2fabedee78))
+*  swap primaryheading to be the church name, and secondary heading to be the campaign name ([#272](https://github.com/firstlovecenter/fl-pastoral-care/pull/272)) ([733bdc26](https://github.com/firstlovecenter/fl-pastoral-care/commit/733bdc260a127faf67d914a1fcdfda02ffbda5b0))
+*  fix constituency record null id error ([#273](https://github.com/firstlovecenter/fl-pastoral-care/pull/273)) ([89702770](https://github.com/firstlovecenter/fl-pastoral-care/commit/897027703af9275f74d8d102a3c851cbdc894792))
+*  correct function calculating vehicle top up ([1188a697](https://github.com/firstlovecenter/fl-pastoral-care/commit/1188a697d714221935c83e84c3995a405022acc9))
+
 #### 5.1.3 (2022-09-03)
 
 ##### Chores
