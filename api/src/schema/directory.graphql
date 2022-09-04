@@ -334,12 +334,6 @@ type Oversight implements Church {
     )
 
   memberCount: Int
-    @cypher(
-      statement: """
-      MATCH (this)-[:HAS*6]->(:Fellowship)<-[:BELONGS_TO]-(members:Member)
-      RETURN COUNT(DISTINCT members)
-      """
-    )
   pastorCount: Int
     @cypher(
       statement: """
@@ -433,12 +427,6 @@ type GatheringService implements Church {
     )
 
   memberCount: Int
-    @cypher(
-      statement: """
-      MATCH (this)-[:HAS*5]->(:Fellowship)<-[:BELONGS_TO]-(members:Member)
-      RETURN COUNT(DISTINCT members)
-      """
-    )
   pastorCount: Int
     @cypher(
       statement: """
@@ -528,12 +516,6 @@ type Stream implements Church {
       """
     )
   memberCount: Int
-    @cypher(
-      statement: """
-      MATCH (this)-[:HAS*4]->(:Fellowship)<-[:BELONGS_TO]-(members:Member)
-      RETURN COUNT(DISTINCT members)
-      """
-    )
   pastorCount: Int
     @cypher(
       statement: """
@@ -616,12 +598,6 @@ type Council implements Church {
       """
     )
   memberCount: Int
-    @cypher(
-      statement: """
-      MATCH (this)-[:HAS*3]->(:Fellowship)<-[:BELONGS_TO]-(members:Member)
-      RETURN COUNT(DISTINCT members)
-      """
-    )
   pastorCount: Int
     @cypher(
       statement: """
@@ -694,12 +670,6 @@ type Constituency implements Church {
       """
     )
   memberCount: Int
-    @cypher(
-      statement: """
-      MATCH (this)-[:HAS*2]->(fellowship:Fellowship)<-[:BELONGS_TO]-(members:Member)
-      RETURN COUNT(DISTINCT members)
-      """
-    )
   pastorCount: Int
     @cypher(
       statement: """
@@ -790,12 +760,6 @@ type Bacenta implements Church {
       """
     )
   memberCount: Int
-    @cypher(
-      statement: """
-      MATCH (this)-[:HAS]->(fellowship:Fellowship)<-[:BELONGS_TO]-(members:Member)
-      RETURN COUNT(DISTINCT members)
-      """
-    )
   pastorCount: Int
     @cypher(
       statement: """
@@ -875,13 +839,8 @@ type Fellowship implements Church {
   bacenta: Bacenta @relationship(type: "HAS", direction: IN)
   leader: Member @relationship(type: "LEADS", direction: IN)
   members: [Member!]! @relationship(type: "BELONGS_TO", direction: IN)
-  memberCount: Int
-    @cypher(
-      statement: """
-      MATCH (this)<-[:BELONGS_TO]-(members:Member)
-      RETURN COUNT(DISTINCT members)
-      """
-    )
+  memberCount: Int!
+  ministryMemberCount: Int
   pastorCount: Int
     @cypher(
       statement: """
@@ -969,7 +928,8 @@ type Ministry {
   sonta: [Sonta!]! @relationship(type: "HAS_SONTA", direction: OUT)
   leader: Member @relationship(type: "LEADS", direction: IN)
   members: [Member!]! @relationship(type: "BELONGS_TO", direction: IN)
-  gatheringService: GatheringService @relationship(type: "HAS_MINISTRY", direction: IN)
+  gatheringService: GatheringService
+    @relationship(type: "HAS_MINISTRY", direction: IN)
 }
 
 type Sonta {
