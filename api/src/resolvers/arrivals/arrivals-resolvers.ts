@@ -351,23 +351,25 @@ export const arrivalsMutation = {
         const urvanTopUp = calculateTopUp(data.bacentaUrvanCost)
 
         const outbound = response.outbound ? 2 : 1
+        const amountToPay =
+          data.vehicleCost * outbound - data.personalContribution
+
         if (data.vehicle === 'Sprinter') {
-          if (data.vehicleCost < sprinterTopUp) {
-            return data.vehicleCost * outbound - data.personalContribution
+          if (sprinterTopUp === 0) return 0
+          if (data.vehicleCost < sprinterTopUp || amountToPay < sprinterTopUp) {
+            return amountToPay
           }
-          return (
-            data.vehicleCost -
-            data.personalContribution -
-            sprinterTopUp * outbound
-          )
+
+          return sprinterTopUp * outbound
         }
+
         if (data.vehicle === 'Urvan') {
-          if (data.vehicleCost < urvanTopUp) {
-            return data.vehicleCost * outbound - data.personalContribution
+          if (urvanTopUp === 0) return 0
+          if (data.vehicleCost < urvanTopUp || amountToPay < urvanTopUp) {
+            return amountToPay
           }
-          return (
-            data.vehicleCost - data.personalContribution - urvanTopUp * outbound
-          )
+
+          return urvanTopUp * outbound
         }
         return 0
       }
