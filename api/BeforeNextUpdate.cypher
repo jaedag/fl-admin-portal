@@ -1,4 +1,3 @@
-//record fellowship membership and ministry membership on the fellowship node
 MATCH (fellowship:Fellowship)<-[:BELONGS_TO]-(members:Member)
 WITH fellowship, count(members) as memberCount
 SET fellowship.memberCount = memberCount
