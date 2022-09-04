@@ -16,6 +16,7 @@ import {
 import { MakeServant, RemoveServant } from '../directory/make-remove-servants'
 import { PaySwitchRequestBody } from '../banking/banking-types'
 import {
+  aggregateConfirmedBussingDataOnHigherChurches,
   aggregateLeaderBussingDataOnHigherChurches,
   checkArrivalTimes,
   checkBacentaMomoDetails,
@@ -266,6 +267,7 @@ export const arrivalsMutation = {
     const secondResponse = rearrangeCypherObject(
       await session.run(aggregateLeaderBussingDataOnHigherChurches, args)
     )
+
     const vehicleRecord = response.vehicleRecord.properties
     const bacenta = secondResponse.church.properties
     const date = new Date().toISOString().slice(0, 10)
@@ -558,6 +560,7 @@ export const arrivalsMutation = {
   ) => {
     isAuth(permitArrivalsCounter(), context.auth.roles)
     const session = context.executionContext.session()
+    const sessionTwo = context.executionContext.session()
 
     const recordResponse = rearrangeCypherObject(
       await session.run(checkTransactionId, args)
@@ -586,6 +589,7 @@ export const arrivalsMutation = {
         ...args,
         auth: context.auth,
       }),
+      sessionTwo.run(aggregateConfirmedBussingDataOnHigherChurches, args),
     ])
 
     const response = rearrangeCypherObject(promiseAllResponse[0])

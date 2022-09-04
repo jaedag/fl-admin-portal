@@ -64,10 +64,14 @@ RETURN church limit 25;
 
 MATCH (record:ServiceRecord) WHERE record.familyPicture IS NULL AND record.noServiceReason IS NULL
 DETACH DELETE record;
-MATCH (bussing:BussingRecord) WHERE record.mobilisationPicture IS NULL
+MATCH (bussing:BussingRecord) WHERE bussing.mobilisationPicture IS NULL
 DETACH DELETE bussing;
 MATCH (a)-[r:HAS_COMPONENT]->(b)
 DELETE r;
+MATCH (r:AggregateServiceRecord)
+DETACH DELETE r;
+MATCH (b:AggregateBussingRecord)
+DETACH DELETE b;
 
 MATCH (bacenta:Bacenta)-[:HAS]->(fellowship:Fellowship)
 MATCH (bacenta)-[:CURRENT_HISTORY]->(currentLog:ServiceLog)
@@ -179,6 +183,21 @@ agg.income = income
 MERGE (currentLog)-[:HAS_SERVICE_AGGREGATE]->(agg)
 
 RETURN agg;
+
+// Get all Oversight services for Denomination Aggregation
+MATCH (denomination:Denomination)-[:HAS]->(oversight:Oversight)
+MATCH (denomination)-[:CURRENT_HISTORY]->(currentLog:ServiceLog)
+MATCH (oversight)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(record:AggregateServiceRecord)
+WITH currentLog, record.week AS week, record.year AS year, SUM(record.attendance) AS attendance, SUM(record.income) AS income //WHERE timeNode.date.week = 11
+CREATE (agg:AggregateServiceRecord)
+SET agg.week = week,
+agg.year = year,
+agg.attendance = attendance,
+agg.income = income
+MERGE (currentLog)-[:HAS_SERVICE_AGGREGATE]->(agg)
+
+RETURN agg;
+
 
 
 
@@ -308,6 +327,28 @@ CREATE (agg:AggregateBussingRecord)
 SET agg.week = week, 
 agg.year = year,
 agg.attendance = attendance, 
+agg.leaderDeclaration = leaderDeclaration,
+agg.personalContribution = personalContribution,
+agg.numberOfSprinters = numberOfSprinters,
+agg.numberOfUrvans = numberOfUrvans,
+agg.numberOfCars = numberOfCars,
+agg.bussingCost = bussingCost,
+agg.bussingTopUp = bussingTopUp
+MERGE (currentLog)-[:HAS_BUSSING_AGGREGATE]->(agg)
+
+RETURN agg;
+
+MATCH (denomination:Denomination)-[:HAS]->(oversight:Oversight)
+MATCH (denomination)-[:CURRENT_HISTORY]->(currentLog:ServiceLog)
+MATCH (oversight)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING_AGGREGATE]->(record:AggregateBussingRecord)
+WITH currentLog,record.week AS week, record.year AS year, SUM(record.attendance) AS attendance, SUM(record.leaderDeclaration) AS leaderDeclaration,
+SUM(record.personalContribution) AS personalContribution, SUM(record.numberOfSprinters) AS numberOfSprinters,
+SUM(record.numberOfUrvans) AS numberOfUrvans, SUM(record.numberOfCars) AS numberOfCars, SUM(record.bussingCost) AS bussingCost,
+SUM(record.bussingTopUp) AS bussingTopUp //WHERE timeNode.date.week = 10
+CREATE (agg:AggregateBussingRecord)
+SET agg.week = week,
+agg.year = year,
+agg.attendance = attendance,
 agg.leaderDeclaration = leaderDeclaration,
 agg.personalContribution = personalContribution,
 agg.numberOfSprinters = numberOfSprinters,
