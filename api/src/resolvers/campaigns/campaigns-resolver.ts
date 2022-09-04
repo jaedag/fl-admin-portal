@@ -322,7 +322,7 @@ const getEquipmentDetails = async (
     // eslint-disable-next-line no-underscore-dangle
     pulpits = constituencyEquipmentResponse.records[0]._fields[0].pulpits.low
   } else {
-    id = args?.id
+    id = obj?.id
   }
 
   const bluetoothSpeakers =
