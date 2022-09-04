@@ -7,6 +7,8 @@ import { STREAM_CAMPAIGN_LIST } from './CampaignQueries'
 import { ChurchContext } from 'contexts/ChurchContext'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { MemberContext } from 'contexts/MemberContext'
+import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
+import HeadingSecondary from 'components/HeadingSecondary'
 
 const StreamCampaigns = () => {
   const { streamId } = useContext(ChurchContext)
@@ -26,8 +28,8 @@ const StreamCampaigns = () => {
       <div className="d-flex align-items-center justify-content-center ">
         <Container>
           <div className="text-center">
-            <h1 className="mb-1 ">SSMG Campaigns</h1>
-            <h6 className="text-secondary">{`${church?.name} ${churchType}`}</h6>
+            <HeadingPrimary>{`${church?.name} ${churchType}`}</HeadingPrimary>
+            <HeadingSecondary>SSMG Campaigns</HeadingSecondary>
           </div>
           <div className="d-grid gap-2 mt-4 text-center px-4">
             {campaigns?.map((campaign: string, index: number) => (

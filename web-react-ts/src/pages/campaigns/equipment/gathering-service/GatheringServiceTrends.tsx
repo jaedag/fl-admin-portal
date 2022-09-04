@@ -7,6 +7,8 @@ import { GATHERING_SERVICE_TRENDS } from '../../CampaignQueries'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { useNavigate } from 'react-router'
+import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
+import HeadingSecondary from 'components/HeadingSecondary'
 
 const GatheringServiceTrends = () => {
   const { currentUser } = useContext(MemberContext)
@@ -14,7 +16,6 @@ const GatheringServiceTrends = () => {
   const navigate = useNavigate()
 
   const church = currentUser.currentChurch
-  const churchType = currentUser.currentChurch?.__typename
 
   const { data, loading, error } = useQuery(GATHERING_SERVICE_TRENDS, {
     variables: { gatheringServiceId: gatheringServiceId },
@@ -25,8 +26,8 @@ const GatheringServiceTrends = () => {
       <div className="d-flex align-items-center justify-content-center ">
         <Container>
           <div className="text-center">
-            <h1 className="mb-1 ">Equipment Campaign</h1>
-            <h6 className="text-secondary">{`${church?.name} ${churchType}`}</h6>
+            <HeadingPrimary>{`${church?.name} Gathering Service`}</HeadingPrimary>
+            <HeadingSecondary>Equipment Campaign</HeadingSecondary>
           </div>
           <div className="d-grid gap-2 mt-4 text-center px-2">
             <TrendsButton

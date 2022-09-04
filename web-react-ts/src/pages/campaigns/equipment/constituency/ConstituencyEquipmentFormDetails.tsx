@@ -7,6 +7,7 @@ import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { useQuery } from '@apollo/client'
 import { CONSTITUENCY_LATEST_EQUIPMENT_RECORD } from '../../CampaignQueries'
 import { useNavigate } from 'react-router'
+import HeadingSecondary from 'components/HeadingSecondary'
 
 const ConstituencyEquipmentFormDetails = () => {
   const { currentUser } = useContext(MemberContext)
@@ -33,13 +34,10 @@ const ConstituencyEquipmentFormDetails = () => {
   return (
     <ApolloWrapper data={data} loading={loading} error={error}>
       <Container>
-        <HeadingPrimary className="text-center">
-          Equipment Campaign
-        </HeadingPrimary>
-
-        <h6 className="text-center text-secondary pb-4">
-          {`${church?.name} ${churchType}`}
-        </h6>
+        <div className="text-center">
+          <HeadingPrimary>{`${church?.name} ${churchType}`}</HeadingPrimary>
+          <HeadingSecondary>Equipment Campaign</HeadingSecondary>
+        </div>
 
         <Row>
           <Table variant={theme} striped bordered>

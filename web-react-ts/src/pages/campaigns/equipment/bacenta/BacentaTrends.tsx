@@ -7,6 +7,8 @@ import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { useNavigate } from 'react-router'
 import FellowshipTrendsButton from 'pages/campaigns/components/buttons/FellowshipTrendsButton'
+import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
+import HeadingSecondary from 'components/HeadingSecondary'
 
 const BacentaTrends = () => {
   const { currentUser } = useContext(MemberContext)
@@ -25,8 +27,8 @@ const BacentaTrends = () => {
       <div className="d-flex align-items-center justify-content-center ">
         <Container>
           <div className="text-center">
-            <h1 className="mb-1 ">Equipment Campaign</h1>
-            <h6 className="text-secondary">{`${church?.name} ${churchType}`}</h6>
+            <HeadingPrimary>{`${church?.name} ${churchType}`}</HeadingPrimary>
+            <HeadingSecondary>Equipment Campaign</HeadingSecondary>
           </div>
           <div className="d-grid gap-2 mt-4 text-center px-2">
             <FellowshipTrendsButton

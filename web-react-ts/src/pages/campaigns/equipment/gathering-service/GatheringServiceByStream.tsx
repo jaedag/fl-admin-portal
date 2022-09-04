@@ -7,6 +7,8 @@ import { ChurchContext } from 'contexts/ChurchContext'
 import { useNavigate } from 'react-router'
 import TrendsButton from 'pages/campaigns/components/buttons/TrendsButton'
 import { EquipmentChurch } from 'global-types'
+import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
+import HeadingSecondary from 'components/HeadingSecondary'
 
 const GatheringServiceByStream = () => {
   const { gatheringServiceId, clickCard } = useContext(ChurchContext)
@@ -22,8 +24,8 @@ const GatheringServiceByStream = () => {
       <div className="d-flex align-items-center justify-content-center ">
         <Container>
           <div className="text-center">
-            <h1 className="mb-1 ">Equipment Campaign</h1>
-            <h6 className="text-secondary">{`${data?.gatheringServices[0].name} ${data?.gatheringServices[0].__typename}`}</h6>
+            <HeadingPrimary>{`${data?.gatheringServices[0].name} Gathering Service`}</HeadingPrimary>
+            <HeadingSecondary>Equipment Campaign</HeadingSecondary>
           </div>
           <div className="d-grid gap-2 mt-4 text-center px-2">
             {streams?.map((stream: EquipmentChurch, index: number) => (
