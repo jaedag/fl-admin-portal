@@ -1,3 +1,68 @@
+//record fellowship membership and ministry membership on the fellowship node
+MATCH (fellowship:Fellowship)<-[:BELONGS_TO]-(members:Member)
+WITH fellowship, count(members) as memberCount
+SET fellowship.memberCount = memberCount
+
+WITH fellowship
+MATCH (fellowship:Fellowship)<-[:BELONGS_TO]-(membersInMinistry:Member)-[:BELONGS_TO]->(:Ministry)
+
+WITH fellowship, count(membersInMinistry) as ministryMemberCount
+SET fellowship.ministryMemberCount = ministryMemberCount
+RETURN distinct fellowship;
+
+
+//record bacenta membership and ministry membership on the fellowship node
+MATCH (church:Bacenta)-[:HAS]->(lowerChurch:Fellowship)
+WITH church, sum(lowerChurch.memberCount) as memberCount, sum(lowerChurch.ministryMemberCount) as ministryMemberCount
+SET church.memberCount = memberCount,
+church.ministryMemberCount = ministryMemberCount
+RETURN church limit 25;
+
+//record constituency membership and ministry membership on the fellowship node
+MATCH (church:Constituency)-[:HAS]->(lowerChurch:Bacenta)
+WITH church, sum(lowerChurch.memberCount) as memberCount, sum(lowerChurch.ministryMemberCount) as ministryMemberCount
+SET church.memberCount = memberCount,
+church.ministryMemberCount = ministryMemberCount
+RETURN church limit 25;
+
+//record council membership and ministry membership on the fellowship node
+MATCH (church:Council)-[:HAS]->(lowerChurch:Constituency)
+WITH church, sum(lowerChurch.memberCount) as memberCount, sum(lowerChurch.ministryMemberCount) as ministryMemberCount
+SET church.memberCount = memberCount,
+church.ministryMemberCount = ministryMemberCount
+RETURN church limit 25;
+
+//record stream membership and ministry membership on the fellowship node
+MATCH (church:Stream)-[:HAS]->(lowerChurch:Council)
+WITH church, sum(lowerChurch.memberCount) as memberCount, sum(lowerChurch.ministryMemberCount) as ministryMemberCount
+SET church.memberCount = memberCount,
+church.ministryMemberCount = ministryMemberCount
+RETURN church limit 25;
+
+
+//record gatheringService membership and ministry membership on the fellowship node
+MATCH (church:GatheringService)-[:HAS]->(lowerChurch:Stream)
+WITH church, sum(lowerChurch.memberCount) as memberCount, sum(lowerChurch.ministryMemberCount) as ministryMemberCount
+SET church.memberCount = memberCount,
+church.ministryMemberCount = ministryMemberCount
+RETURN church limit 25;
+
+//record oversight membership and ministry membership on the fellowship node
+MATCH (church:Oversight)-[:HAS]->(lowerChurch:GatheringService)
+WITH church, sum(lowerChurch.memberCount) as memberCount, sum(lowerChurch.ministryMemberCount) as ministryMemberCount
+SET church.memberCount = memberCount,
+church.ministryMemberCount = ministryMemberCount
+RETURN church limit 25;
+
+//record denomination membership and ministry membership on the fellowship node
+MATCH (church:Denomination)-[:HAS]->(lowerChurch:Oversight)
+WITH church, sum(lowerChurch.memberCount) as memberCount, sum(lowerChurch.ministryMemberCount) as ministryMemberCount
+SET church.memberCount = memberCount,
+church.ministryMemberCount = ministryMemberCount
+RETURN church limit 25;
+
+//////////
+
 MATCH (record:ServiceRecord) WHERE record.familyPicture IS NULL AND record.noServiceReason IS NULL
 DETACH DELETE record;
 MATCH (bussing:BussingRecord) WHERE record.mobilisationPicture IS NULL
