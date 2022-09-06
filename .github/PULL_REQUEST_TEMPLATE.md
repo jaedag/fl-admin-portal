@@ -1,5 +1,3 @@
-<!--THIS PROJECT IS IN MAINTENANCE MODE. We accept pull-requests for Bug Fixes **ONLY**. NO NEW FEATURES ACCEPTED!-->
-
 <!--- Provide a general summary of your changes in the Title above -->
 
 ## Description
@@ -8,14 +6,10 @@
 
 ## Related Issue
 
-<!--- This project only accepts pull requests related to open issues -->
 <!--- If suggesting a new feature or change, please discuss it in an issue first -->
 <!--- If fixing a bug, there should be an issue describing it with steps to reproduce -->
 <!--- Please link to the issue here: -->
 
-<!--## Motivation and Context-->
-<!--- Why is this change required? What problem does it solve? -->
-<!--- If it fixes an open issue, please link to the issue here. -->
 
 ## Types of changes
 
@@ -31,4 +25,6 @@
 <!--- Include details of your testing environment, and the tests you ran to -->
 <!--- see how your change affects other areas of the code, etc. -->
 
-## Screenshots (if appropriate):
+## Screenshots/Videos (if appropriate):
+
+<!--Not optional. Please oblige so that your PR will be merged in due time!-->
