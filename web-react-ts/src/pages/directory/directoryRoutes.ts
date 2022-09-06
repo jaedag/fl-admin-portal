@@ -1,5 +1,3 @@
-import Directory from 'pages/dashboards/Directory'
-import Churches from 'pages/directory/Churches'
 import UserDisplayPage from 'pages/directory/user-profile/DisplayPage'
 import DisplayMember from 'pages/directory/display/DetailsMember'
 import UserProfileEditPage from 'pages/directory/user-profile/EditPage'
@@ -60,10 +58,11 @@ import StreamAvgWeekdayQuickFacts from './quick-facts/this-month/StreamAvgWeekda
 import CouncilAvgWeekdayQuickFacts from './quick-facts/this-month/CouncilAvgWeekdayQuickFacts'
 import GatheringServiceAvgWeekdayQuickFacts from './quick-facts/this-month/GatheringServiceAvgWeekdayQuickFacts'
 import QuickFactsChurchList from './quick-facts/QuickFactsChurchList'
-import { RouteTypes } from 'global-types'
+import { LazyRouteTypes } from 'global-types'
 import UpdateConstituencyBussingCost from './update/UpdateConstituencyBussingCost'
+import { lazy } from 'react'
 
-export const memberDirectory: RouteTypes[] = [
+export const memberDirectory: LazyRouteTypes[] = [
   {
     path: '/directory/members',
     element: ServantMembers,
@@ -71,7 +70,7 @@ export const memberDirectory: RouteTypes[] = [
   },
 ]
 
-export const quickFacts: RouteTypes[] = [
+export const quickFacts: LazyRouteTypes[] = [
   {
     path: '/directory/quick-facts/church-list',
     element: QuickFactsChurchList,
@@ -109,7 +108,7 @@ export const quickFacts: RouteTypes[] = [
   },
 ]
 
-export const memberGrids: RouteTypes[] = [
+export const memberGrids: LazyRouteTypes[] = [
   {
     path: '/oversight/members',
     element: OversightMembers,
@@ -153,7 +152,10 @@ export const memberGrids: RouteTypes[] = [
   },
 ]
 
-export const directory: RouteTypes[] = [
+const Directory = lazy(() => import('pages/dashboards/Directory'))
+const Churches = lazy(() => import('pages/directory/Churches'))
+
+export const directory: LazyRouteTypes[] = [
   {
     path: '/directory',
     element: Directory,

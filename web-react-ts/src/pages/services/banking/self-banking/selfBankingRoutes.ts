@@ -1,4 +1,4 @@
-import { RouteTypes } from 'global-types'
+import { LazyRouteTypes } from 'global-types'
 import { permitMe } from 'permission-utils'
 import ConfirmPayment from './ConfirmPayment'
 import ConstituencySelfBanking from './ConstituencySelfBanking'
@@ -7,7 +7,7 @@ import PayConstituencyOffering from './PayConstituencyOffering'
 import PayFellowshipOffering from './PayFellowshipOffering'
 import ReceiptPage from './ReceiptPage'
 
-export const banking: RouteTypes[] = [
+export const banking: LazyRouteTypes[] = [
   //Self Banking Options
   {
     path: '/services/fellowship/self-banking',

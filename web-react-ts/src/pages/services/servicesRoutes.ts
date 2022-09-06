@@ -47,10 +47,10 @@ import Defaulters from './defaulters/Defaulters'
 import DefaultersDashboard from './defaulters/DefaultersDashboard'
 import TrendsMenu from './graphs/TrendsMenu'
 import { banking } from './banking/self-banking/selfBankingRoutes'
-import { RouteTypes } from 'global-types'
 import { anagkazoRoutes } from './banking/anagkazo/anagkazoBankingRoutes'
+import { LazyRouteTypes } from 'global-types'
 
-export const services: RouteTypes[] = [
+export const services: LazyRouteTypes[] = [
   ...anagkazoRoutes,
   ...banking,
   {
@@ -147,7 +147,7 @@ export const services: RouteTypes[] = [
   },
 ]
 
-export const graphs: RouteTypes[] = [
+export const graphs: LazyRouteTypes[] = [
   {
     path: '/trends',
     element: TrendsMenu,

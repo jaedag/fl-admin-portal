@@ -1,7 +1,7 @@
+import { LazyRouteTypes } from 'global-types'
 import Reconciliation from 'pages/reconciliation/Reconciliation'
-import { RouteTypes } from 'global-types'
 
-export const reconciliation: RouteTypes[] = [
+export const reconciliation: LazyRouteTypes[] = [
   {
     path: '/recon',
     element: Reconciliation,

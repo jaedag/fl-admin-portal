@@ -50,9 +50,9 @@ import ConstituencyEquipmentHaveNotFilledByFellowship from './equipment/constitu
 import CouncilEquipmentDefaulters from './equipment/council/CouncilEquipmentDefaulters'
 import CouncilEquipmentHaveNotFilledByFellowship from './equipment/council/CouncilEquipmentHaveNotFilledByFellowship'
 import CouncilEquipmentHaveNotFilledByConstituency from './equipment/council/CouncilEquipmentHaveNotFilledByConstituency'
-import { RouteTypes } from 'global-types'
+import { LazyRouteTypes } from 'global-types'
 
-export const campaigns: RouteTypes[] = [
+export const campaigns: LazyRouteTypes[] = [
   //gathering-service routes
   {
     path: '/campaigns/gatheringservice',

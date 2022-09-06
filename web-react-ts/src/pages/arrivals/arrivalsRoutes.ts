@@ -25,10 +25,10 @@ import SetArrivalsTime from './Times/SetArrivalsTimes'
 import ArrivalTimes from './Times/ArrivalTimes'
 import ArrivalsCounters from './Helpers/ArrivalsCounters'
 import BacentasBelow8 from './StateBacentasBelow8'
-import { RouteTypes } from 'global-types'
 import BusVehicleFormDetails from './BusVehicleFormDetails'
+import { LazyRouteTypes } from 'global-types'
 
-export const arrivals: RouteTypes[] = [
+export const arrivals: LazyRouteTypes[] = [
   {
     path: '/arrivals',
     element: Arrivals,
