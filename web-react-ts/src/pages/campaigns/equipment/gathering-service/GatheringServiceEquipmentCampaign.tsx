@@ -5,6 +5,8 @@ import { useNavigate } from 'react-router'
 import { MemberContext } from 'contexts/MemberContext'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import HeadingSecondary from 'components/HeadingSecondary'
+import RoleView from 'auth/RoleView'
+import { permitAdmin } from 'permission-utils'
 
 const GatheringServiceEquipmentCampaign = () => {
   const { currentUser } = useContext(MemberContext)
@@ -32,6 +34,14 @@ const GatheringServiceEquipmentCampaign = () => {
               navigate(`/campaigns/gathering-service/set-equipment-deadline`)
             }
           />
+          <RoleView roles={permitAdmin('GatheringService')}>
+            <MenuButton
+              name="Defaulters"
+              onClick={() =>
+                navigate('/campaigns/gathering-service/equipment/defaulters')
+              }
+            />
+          </RoleView>
         </div>
       </Container>
     </div>

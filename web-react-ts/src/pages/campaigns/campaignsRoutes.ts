@@ -51,6 +51,12 @@ import CouncilEquipmentDefaulters from './equipment/council/CouncilEquipmentDefa
 import CouncilEquipmentHaveNotFilledByFellowship from './equipment/council/CouncilEquipmentHaveNotFilledByFellowship'
 import CouncilEquipmentHaveNotFilledByConstituency from './equipment/council/CouncilEquipmentHaveNotFilledByConstituency'
 import { RouteTypes } from 'global-types'
+import StreamEquipmentHaveNotFilledByFellowship from './equipment/stream/StreamEquipmentHaveNotFilledByFellowship'
+import StreamEquipmentHaveNotFilledByConstituency from './equipment/stream/StreamEquipmentHaveNotFilledByConstituency'
+import StreamEquipmentDefaulters from './equipment/stream/StreamEquipmentDefaulters'
+import GatheringServiceEquipmentHaveNotFilledByFellowship from './equipment/gathering-service/GatheringServiceEquipmentHaveNotFilledByFellowship'
+import GatheringServiceEquipmentDefaulters from './equipment/gathering-service/GatheringServiceDefaulters'
+import GatheringServiceEquipmentHaveNotFilledByConstituency from './equipment/gathering-service/GatheringServiceEquipmentHaveNotFilledByConstituency'
 
 export const campaigns: RouteTypes[] = [
   //gathering-service routes
@@ -108,6 +114,24 @@ export const campaigns: RouteTypes[] = [
     roles: permitLeaderAdmin('GatheringService'),
     placeholder: true,
   },
+  {
+    path: '/campaigns/gathering-service/equipment/defaulters',
+    element: GatheringServiceEquipmentDefaulters,
+    roles: permitAdmin('Stream'),
+    placeholder: true,
+  },
+  {
+    path: '/campaigns/gathering-service/equipment/have-not-filled/fellowship',
+    element: GatheringServiceEquipmentHaveNotFilledByFellowship,
+    roles: permitAdmin('Stream'),
+    placeholder: true,
+  },
+  {
+    path: '/campaigns/gathering-service/equipment/have-not-filled/constituency',
+    element: GatheringServiceEquipmentHaveNotFilledByConstituency,
+    roles: permitAdmin('Stream'),
+    placeholder: true,
+  },
 
   //stream routes
   {
@@ -156,6 +180,24 @@ export const campaigns: RouteTypes[] = [
     path: '/campaigns/stream/telepastoring',
     element: StreamTelepastoringCampaign,
     roles: permitLeaderAdmin('Stream'),
+    placeholder: true,
+  },
+  {
+    path: '/campaigns/stream/equipment/defaulters',
+    element: StreamEquipmentDefaulters,
+    roles: permitAdmin('Stream'),
+    placeholder: true,
+  },
+  {
+    path: '/campaigns/stream/equipment/have-not-filled/fellowship',
+    element: StreamEquipmentHaveNotFilledByFellowship,
+    roles: permitAdmin('Stream'),
+    placeholder: true,
+  },
+  {
+    path: '/campaigns/stream/equipment/have-not-filled/constituency',
+    element: StreamEquipmentHaveNotFilledByConstituency,
+    roles: permitAdmin('Stream'),
     placeholder: true,
   },
 

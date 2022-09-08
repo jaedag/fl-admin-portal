@@ -5,6 +5,8 @@ import { useNavigate } from 'react-router'
 import { MemberContext } from 'contexts/MemberContext'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import HeadingSecondary from 'components/HeadingSecondary'
+import RoleView from 'auth/RoleView'
+import { permitAdmin } from 'permission-utils'
 
 const StreamEquipmentCampaign = () => {
   const { currentUser } = useContext(MemberContext)
@@ -24,6 +26,12 @@ const StreamEquipmentCampaign = () => {
             name="View Trends"
             onClick={() => navigate(`/campaigns/stream/equipment/trends`)}
           />
+          <RoleView roles={permitAdmin('Stream')}>
+            <MenuButton
+              name="Defaulters"
+              onClick={() => navigate('/campaigns/stream/equipment/defaulters')}
+            />
+          </RoleView>
         </div>
       </Container>
     </div>
