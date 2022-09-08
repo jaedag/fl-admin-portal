@@ -31,7 +31,7 @@ const GatheringServiceEquipmentCampaign = () => {
           <HeadingPrimary>{`${church?.name} Gathering Service`}</HeadingPrimary>
           <HeadingSecondary>Equipment Campaign</HeadingSecondary>
         </div>
-        <h6 className="text-danger">
+        <h6 className="text-danger text-center">
           Current Deadline : {getHumanReadableDate(equipmentEndDate)}{' '}
         </h6>
         <div className="d-grid gap-2 mt-4 text-center px-4">
