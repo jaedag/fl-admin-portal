@@ -10,6 +10,7 @@ import { CONSTITUENCY_EQUIPMENT_DEFAULTERS_LIST_BY_FELLOWSHIP } from 'pages/camp
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import HeadingSecondary from 'components/HeadingSecondary'
+import PullToRefresh from 'react-simple-pull-to-refresh'
 
 const ConstituencyEquipmentHaveNotFilledByFellowship = () => {
   const { currentUser } = useContext(MemberContext)
@@ -18,7 +19,7 @@ const ConstituencyEquipmentHaveNotFilledByFellowship = () => {
   const churchType = currentUser.currentChurch?.__typename
   const { constituencyId } = useContext(ChurchContext)
 
-  const { data, loading, error } = useQuery(
+  const { data, loading, error, refetch } = useQuery(
     CONSTITUENCY_EQUIPMENT_DEFAULTERS_LIST_BY_FELLOWSHIP,
     {
       variables: {
@@ -30,26 +31,30 @@ const ConstituencyEquipmentHaveNotFilledByFellowship = () => {
   const defaulters = data?.constituencies[0]?.fellowshipEquipmentNotFilled
 
   return (
-    <ApolloWrapper data={data} loading={loading} error={error}>
-      <div className="d-flex align-items-center justify-content-center ">
-        <Container>
-          <div className="text-center">
-            <HeadingPrimary>{`${church?.name} ${churchType}`}</HeadingPrimary>
-            <HeadingSecondary>Equipment Campaign</HeadingSecondary>
-          </div>
-          <h6 className="mt-4">Fellowships that haven't filled their form</h6>
+    <PullToRefresh
+      onRefresh={() => refetch({ constituencyId: constituencyId })}
+    >
+      <ApolloWrapper data={data} loading={loading} error={error}>
+        <div className="d-flex align-items-center justify-content-center ">
           <Container>
-            <Row>
-              {defaulters?.map(
-                (defaulter: EquipmentDefaulterProps, index: number) => (
-                  <DefaultersCard key={index} defaulter={defaulter} />
-                )
-              )}
-            </Row>
+            <div className="text-center">
+              <HeadingPrimary>{`${church?.name} ${churchType}`}</HeadingPrimary>
+              <HeadingSecondary>Equipment Campaign</HeadingSecondary>
+            </div>
+            <h6 className="mt-4">Fellowships that haven't filled their form</h6>
+            <Container>
+              <Row>
+                {defaulters?.map(
+                  (defaulter: EquipmentDefaulterProps, index: number) => (
+                    <DefaultersCard key={index} defaulter={defaulter} />
+                  )
+                )}
+              </Row>
+            </Container>
           </Container>
-        </Container>
-      </div>
-    </ApolloWrapper>
+        </div>
+      </ApolloWrapper>
+    </PullToRefresh>
   )
 }
 
