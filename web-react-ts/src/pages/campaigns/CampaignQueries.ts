@@ -64,6 +64,15 @@ export const SET_EQUIPMENT_DEADLINE = gql`
   }
 `
 
+export const EQUIPMENT_END_DATE = gql`
+  query equipmentEndDate($gatheringServiceId: ID) {
+    gatheringServices(where: { id: $gatheringServiceId }) {
+      id
+      equipmentEndDate
+    }
+  }
+`
+
 //Streams Queries and Mutations
 export const STREAM_CAMPAIGN_LIST = gql`
   query streamCampaigns($streamId: ID) {
