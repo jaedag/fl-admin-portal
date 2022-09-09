@@ -12,6 +12,7 @@ import { ChurchContext } from 'contexts/ChurchContext'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import HeadingSecondary from 'components/HeadingSecondary'
 import { getHumanReadableDate } from 'jd-date-utils'
+import Placeholder from '../../../../components/Placeholder'
 
 const FellowshipEquipmentCampaign = () => {
   const { currentUser } = useContext(MemberContext)
@@ -30,7 +31,7 @@ const FellowshipEquipmentCampaign = () => {
 
   const fellowshipEquipmentRecord = data?.fellowships[0]?.equipmentRecord
 
-  const { data: equipmentEndDateData } = useQuery(EQUIPMENT_END_DATE, {
+  const { data: equipmentEndDateData, loading } = useQuery(EQUIPMENT_END_DATE, {
     variables: {
       gatheringServiceId: gatheringServiceId,
     },
@@ -46,9 +47,11 @@ const FellowshipEquipmentCampaign = () => {
           <HeadingPrimary>{`${church?.name} ${churchType}`}</HeadingPrimary>
           <HeadingSecondary>Equipment Campaign</HeadingSecondary>
         </div>
-        <h6 className="text-danger text-center">
-          Current Deadline : {getHumanReadableDate(equipmentEndDate)}{' '}
-        </h6>
+        <Placeholder as="h6" loading={loading} className="text-center">
+          <h6 className="text-danger text-center">
+            Current Deadline : {getHumanReadableDate(equipmentEndDate)}{' '}
+          </h6>
+        </Placeholder>
         <div className="d-grid gap-2 mt-4 text-center px-4">
           {fellowshipEquipmentRecord === null && (
             <MenuButton

@@ -8,13 +8,14 @@ import HeadingSecondary from 'components/HeadingSecondary'
 import { EQUIPMENT_END_DATE } from 'pages/campaigns/CampaignQueries'
 import { useQuery } from '@apollo/client'
 import { getHumanReadableDate } from 'jd-date-utils'
+import Placeholder from '../../../../components/Placeholder'
 
 const BacentaEquipmentCampaign = () => {
   const { currentUser } = useContext(MemberContext)
   const navigate = useNavigate()
   const gatheringServiceId = currentUser?.gatheringService
 
-  const { data } = useQuery(EQUIPMENT_END_DATE, {
+  const { data, loading } = useQuery(EQUIPMENT_END_DATE, {
     variables: {
       gatheringServiceId: gatheringServiceId,
     },
@@ -31,9 +32,11 @@ const BacentaEquipmentCampaign = () => {
           <HeadingPrimary>{`${church?.name} ${churchType}`}</HeadingPrimary>
           <HeadingSecondary>Equipment Campaign</HeadingSecondary>
         </div>
-        <h6 className="text-danger text-center">
-          Current Deadline : {getHumanReadableDate(equipmentEndDate)}{' '}
-        </h6>
+        <Placeholder as="h6" loading={loading} className="text-center">
+          <h6 className="text-danger text-center">
+            Current Deadline : {getHumanReadableDate(equipmentEndDate)}{' '}
+          </h6>
+        </Placeholder>
         <div className="d-grid gap-2 mt-4 text-center px-4">
           <MenuButton
             name="View Trends"
