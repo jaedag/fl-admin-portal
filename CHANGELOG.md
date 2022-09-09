@@ -1,3 +1,18 @@
+#### 5.1.5 (2022-09-09)
+
+##### Documentation Changes
+
+*  update PR template ([ceecad35](https://github.com/firstlovecenter/fl-pastoral-care/commit/ceecad350240317871e40f747f6db298946ba463))
+
+##### New Features
+
+*  implement equipment deadline on the equipment main page ([#277](https://github.com/firstlovecenter/fl-pastoral-care/pull/277)) ([b9f9cd77](https://github.com/firstlovecenter/fl-pastoral-care/commit/b9f9cd774824ed8a8b329b10dd558b1b8bf6d845))
+
+##### Bug Fixes
+
+*  change start url in manifest.json ([#279](https://github.com/firstlovecenter/fl-pastoral-care/pull/279)) ([0634f918](https://github.com/firstlovecenter/fl-pastoral-care/commit/0634f918c6f14b935fff907baaa5f5baed48feee))
+*  change background color dark grey ([e24fdc48](https://github.com/firstlovecenter/fl-pastoral-care/commit/e24fdc483dc558eda4db223b280f1623ebe5424d))
+
 #### 5.1.4 (2022-09-04)
 
 ##### New Features

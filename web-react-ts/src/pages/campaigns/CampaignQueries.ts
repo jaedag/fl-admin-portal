@@ -64,6 +64,15 @@ export const SET_EQUIPMENT_DEADLINE = gql`
   }
 `
 
+export const EQUIPMENT_END_DATE = gql`
+  query equipmentEndDate($gatheringServiceId: ID) {
+    gatheringServices(where: { id: $gatheringServiceId }) {
+      id
+      equipmentEndDate
+    }
+  }
+`
+
 export const GATHERING_SERVICE_EQUIPMENT_DEFAULTERS_NUMBER_BY_CONSTITUENCY_AND_FELLOWSHIP = gql`
   query gatheringServiceEquipmentDefaultersNumberByConstituencyAndFellowship(
     $gatheringServiceId: ID
