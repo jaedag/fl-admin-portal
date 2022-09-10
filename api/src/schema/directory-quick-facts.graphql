@@ -353,7 +353,7 @@ extend type Stream {
        MATCH (this)-[:HAS]->(council:Council)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING_AGGREGATE]->(agg:AggregateBussingRecord)
       MATCH (agg)
       WHERE agg.week IN weeks and agg.year = date().year
-      WITH sum(agg.attendance) AS attendance, this, agg.week as weeknumber
+      WITH sum(agg.attendance) AS attendance, council, agg.week as weeknumber
       RETURN round(avg(attendance)) AS average
       """
     )
