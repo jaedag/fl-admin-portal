@@ -68,16 +68,15 @@ const DetailsBacenta = () => {
       link: `#`,
     },
   ]
-  // if therer is not bacenta urvanCost remove array element at the index of 6
-  if (!bacenta?.urvanCost) {
+  if (!bacenta?.urvanCost && bacenta?.sprinterCost) {
     details.splice(6, 1)
   }
-  // if therer is not bacenta sprinterCost remove array element at the index of 7
-  if (!bacenta?.sprinterCost) {
+  if (!bacenta?.sprinterCost && bacenta?.urvanCost) {
     details.splice(7, 1)
   }
 
   if (!bacenta?.sprinterCost && !bacenta?.urvanCost) {
+    details.splice(6, 3)
     details.splice(5, 1)
   }
 
