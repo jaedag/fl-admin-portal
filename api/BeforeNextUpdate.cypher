@@ -359,3 +359,11 @@ agg.bussingTopUp = bussingTopUp
 MERGE (currentLog)-[:HAS_BUSSING_AGGREGATE]->(agg)
 
 RETURN agg;
+
+
+CREATE CONSTRAINT bussingAggregateNeedsAttendance FOR (n:BussingRecordAggregate) REQUIRE n.target IS NOT NULL;
+CREATE CONSTRAINT bussingAggregateNeedsYear FOR (n:BussingRecordAggregate) REQUIRE n.year IS NOT NULL;
+CREATE CONSTRAINT bussingAggregateNeedsWeek FOR (n:BussingRecordAggregate) REQUIRE n.week IS NOT NULL;
+CREATE CONSTRAINT serviceAggregateNeedsAttendance FOR (n:ServiceRecordAggregate) REQUIRE n.attendance IS NOT NULL;
+CREATE CONSTRAINT serviceAggregateNeedsWeek FOR (n:ServiceRecordAggregate) REQUIRE n.week IS NOT NULL;
+CREATE CONSTRAINT serviceAggregateNeedsYear FOR (n:ServiceRecordAggregate) REQUIRE n.year IS NOT NULL;
