@@ -171,12 +171,12 @@ const UpdateBusPayment = () => {
                           </Col>
                           <Input
                             name="urvanCost"
-                            label="Cost of Urvan Bus"
+                            label="Cost of Urvan Bus (One Way)"
                             placeholder="Enter Amount in GHS"
                           />
                           <Input
                             name="sprinterCost"
-                            label="Cost Of Sprinter Bus"
+                            label="Cost Of Sprinter Bus (One Way)"
                             placeholder="Enter Amount in GHS"
                           />
                         </Row>
