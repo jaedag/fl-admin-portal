@@ -366,7 +366,7 @@ const DisplayChurchDetails = (props: DisplayChurchDetailsProps) => {
               <PlaceholderCustom
                 loading={props.loading}
                 className={`btn-graphs ${theme}`}
-                button
+                button="true"
               >
                 <Button
                   className={`${theme}`}
