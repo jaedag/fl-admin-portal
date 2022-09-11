@@ -199,6 +199,7 @@ export const aggregateLeaderBussingDataOnHigherChurches = `
    ON CREATE SET
        aggregate.leaderDeclaration = $leaderDeclaration,
        aggregate.bussingCost = $vehicleCost,
+       aggregate.attendance = 0,
        aggregate.personalContribution = $personalContribution
    ON MATCH SET 
        aggregate.leaderDeclaration = aggregate.leaderDeclaration + $leaderDeclaration,
