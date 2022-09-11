@@ -1,14 +1,16 @@
 type AggregateServiceRecord implements HadService
   @auth(rules: [{ isAuthenticated: true }]) {
-  id: Int! @cypher(statement: "MATCH (this) RETURN this.week")
+  id: ID!
   week: Int!
+  year: Int!
   attendance: Int!
   income: Float!
 }
 
 type AggregateBussingRecord @auth(rules: [{ isAuthenticated: true }]) {
-  id: Int! @cypher(statement: "MATCH (this) RETURN this.week")
+  id: ID!
   week: Int!
+  year: Int!
   attendance: Int
   leaderDeclaration: Int!
   personalContribution: Float!
