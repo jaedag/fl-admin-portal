@@ -50,7 +50,7 @@ export const aggregateServiceDataOnHigherChurches = `
        newRecord.attendance = $attendance,
        newRecord.income = $income
    ON MATCH SET 
-       newRecord.attendance = newRecord.attendance + $attendance,
+       newRecord.attendance = newRecord.attenance + $attendance,
        newRecord.income = newRecord.income + $income
    RETURN church, higherChurch, log, newRecord
 `
