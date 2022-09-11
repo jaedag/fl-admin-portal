@@ -195,7 +195,7 @@ export const aggregateLeaderBussingDataOnHigherChurches = `
    WHERE church:Bacenta 
    MATCH (church)<-[:HAS*1..7]-(higherChurch)
    MATCH (higherChurch)-[:CURRENT_HISTORY]->(log:ServiceLog)
-   MERGE (aggregate:AggregateBussingRecord {id: date().week + '-' + date().year + '-' + higherChurch.id})
+   MERGE (aggregate:AggregateBussingRecord {id: date().week + '-' + date().year + '-' + log.id})
    MERGE (log)-[:HAS_BUSSING_AGGREGATE]->(aggregate)
    ON CREATE SET
        aggregate.week = date().week,
@@ -216,7 +216,7 @@ export const aggregateConfirmedBussingDataOnHigherChurches = `
    WHERE church:Bacenta 
    MATCH (church)<-[:HAS*1..7]-(higherChurch)
    MATCH (higherChurch)-[:CURRENT_HISTORY]->(log:ServiceLog)
-   MATCH (aggregate:AggregateBussingRecord {id: date().week + '-' + date().year + '-' + higherChurch.id})
+   MATCH (aggregate:AggregateBussingRecord {id: date().week + '-' + date().year + '-' + log.id})
    MATCH (log)-[:HAS_BUSSING_AGGREGATE]->(aggregate)
         WITH SUM(aggregate.attendance) AS attendanceTotal, aggregate
         SET aggregate.attendance = attendanceTotal + 100

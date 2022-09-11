@@ -77,7 +77,7 @@ MATCH (bacenta:Bacenta)-[:HAS]->(fellowship:Fellowship)
 MATCH (bacenta)-[:CURRENT_HISTORY]->(currentLog:ServiceLog)
 MATCH (fellowship)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(timeNode:TimeGraph)
 WITH currentLog,timeNode.date.week AS week, timeNode.date.year AS year, SUM(record.attendance) AS attendance, SUM(record.income) AS income //WHERE timeNode.date.week = 10
-CREATE (agg:AggregateServiceRecord)
+MERGE (agg:AggregateServiceRecord {id: week + '-' +year +'-' + currentLog.id})
 SET agg.week = week, 
 agg.year = year,
 agg.attendance = attendance, 
@@ -91,7 +91,7 @@ MATCH (constituency:Constituency)-[:HAS]->(bacenta:Bacenta)
 MATCH (constituency)-[:CURRENT_HISTORY]->(currentLog:ServiceLog)
 MATCH (bacenta)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(record:AggregateServiceRecord) 
 WITH currentLog,record.week AS week, record.year AS year, SUM(record.attendance) AS attendance, SUM(record.income) AS income //WHERE timeNode.date.week = 10
-CREATE (agg:AggregateServiceRecord)
+MERGE (agg:AggregateServiceRecord {id: week + '-' + year + '-' + currentLog.id})
 SET agg.week = week, 
 agg.year = year,
 agg.attendance = attendance, 
@@ -115,7 +115,7 @@ MATCH (council:Council)-[:HAS]->(constituency:Constituency)
 MATCH (council)-[:CURRENT_HISTORY]->(currentLog:ServiceLog)
 MATCH (constituency)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(record:AggregateServiceRecord)
 WITH currentLog,record.week AS week, record.year AS year, SUM(record.attendance) AS attendance, SUM(record.income) AS income //WHERE timeNode.date.week = 11
-CREATE (agg:AggregateServiceRecord)
+MERGE (agg:AggregateServiceRecord {id: week + '-' + year + '-' + currentLog.id})
 SET agg.week = week,
 agg.year = year,
 agg.attendance = attendance,
@@ -138,7 +138,7 @@ MATCH (stream:Stream)-[:HAS]->(council:Council)
 MATCH (stream)-[:CURRENT_HISTORY]->(currentLog:ServiceLog)
 MATCH (council)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(record:AggregateServiceRecord)
 WITH currentLog,record.week AS week, record.year AS year, SUM(record.attendance) AS attendance, SUM(record.income) AS income //WHERE timeNode.date.week = 11
-CREATE (agg:AggregateServiceRecord)
+MERGE (agg:AggregateServiceRecord {id: week + '-' + year +'-' + currentLog.id})
 SET agg.week = week,
 agg.year = year,
 agg.attendance = attendance,
@@ -161,7 +161,7 @@ MATCH (gathering:GatheringService)-[:HAS]->(stream:Stream)
 MATCH (gathering)-[:CURRENT_HISTORY]->(currentLog:ServiceLog)
 MATCH (stream)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(record:AggregateServiceRecord)
 WITH currentLog, record.week AS week, record.year AS year, SUM(record.attendance) AS attendance, SUM(record.income) AS income //WHERE timeNode.date.week = 11
-CREATE (agg:AggregateServiceRecord)
+MERGE (agg:AggregateServiceRecord {id: week + '-' + year + '-' + currentLog.id})
 SET agg.week = week,
 agg.year = year,
 agg.attendance = attendance,
@@ -175,7 +175,7 @@ MATCH (oversight:Oversight)-[:HAS]->(gathering:GatheringService)
 MATCH (oversight)-[:CURRENT_HISTORY]->(currentLog:ServiceLog)
 MATCH (gathering)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(record:AggregateServiceRecord)
 WITH currentLog, record.week AS week, record.year AS year, SUM(record.attendance) AS attendance, SUM(record.income) AS income //WHERE timeNode.date.week = 11
-CREATE (agg:AggregateServiceRecord)
+MERGE (agg:AggregateServiceRecord {id: week + '-' +year +'-' + currentLog.id})
 SET agg.week = week,
 agg.year = year,
 agg.attendance = attendance,
@@ -189,7 +189,7 @@ MATCH (denomination:Denomination)-[:HAS]->(oversight:Oversight)
 MATCH (denomination)-[:CURRENT_HISTORY]->(currentLog:ServiceLog)
 MATCH (oversight)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(record:AggregateServiceRecord)
 WITH currentLog, record.week AS week, record.year AS year, SUM(record.attendance) AS attendance, SUM(record.income) AS income //WHERE timeNode.date.week = 11
-CREATE (agg:AggregateServiceRecord)
+MERGE (agg:AggregateServiceRecord {id: week + '-' +year +'-' + currentLog.id})
 SET agg.week = week,
 agg.year = year,
 agg.attendance = attendance,
@@ -211,7 +211,7 @@ SUM(record.personalContribution) AS personalContribution, SUM(record.numberOfSpr
 SUM(record.numberOfUrvans) AS numberOfUrvans, SUM(record.numberOfCars) AS numberOfCars, SUM(record.bussingCost) AS bussingCost, 
 SUM(record.bussingTopUp) AS bussingTopUp //WHERE timeNode.date.week = 10
 
-CREATE (agg:AggregateBussingRecord)
+MERGE (agg:AggregateBussingRecord {id: week + '-' +year +'-' + currentLog.id})
 SET agg.week = week, 
 agg.year = year,
 agg.attendance = attendance, 
@@ -235,7 +235,7 @@ WITH currentLog,timeNode.date.week AS week, timeNode.date.year AS year, SUM(reco
 SUM(record.personalContribution) AS personalContribution, SUM(record.numberOfSprinters) AS numberOfSprinters,
 SUM(record.numberOfUrvans) AS numberOfUrvans, SUM(record.numberOfCars) AS numberOfCars, SUM(record.bussingCost) AS bussingCost, 
 SUM(record.bussingTopUp) AS bussingTopUp //WHERE timeNode.date.week = 10
-CREATE (agg:AggregateBussingRecord)
+MERGE (agg:AggregateBussingRecord {id: week + '-' +year +'-' + currentLog.id})
 SET agg.week = week, 
 agg.year = year,
 agg.attendance = attendance, 
@@ -257,7 +257,7 @@ WITH currentLog,record.week AS week, record.year AS year, SUM(record.attendance)
 SUM(record.personalContribution) AS personalContribution, SUM(record.numberOfSprinters) AS numberOfSprinters,
 SUM(record.numberOfUrvans) AS numberOfUrvans, SUM(record.numberOfCars) AS numberOfCars, SUM(record.bussingCost) AS bussingCost, 
 SUM(record.bussingTopUp) AS bussingTopUp //WHERE timeNode.date.week = 10
-CREATE (agg:AggregateBussingRecord)
+MERGE (agg:AggregateBussingRecord {id: week + '-' +year +'-' + currentLog.id})
 SET agg.week = week, 
 agg.year = year,
 agg.attendance = attendance, 
@@ -279,7 +279,7 @@ WITH currentLog,record.week AS week, record.year AS year, SUM(record.attendance)
 SUM(record.personalContribution) AS personalContribution, SUM(record.numberOfSprinters) AS numberOfSprinters,
 SUM(record.numberOfUrvans) AS numberOfUrvans, SUM(record.numberOfCars) AS numberOfCars, SUM(record.bussingCost) AS bussingCost, 
 SUM(record.bussingTopUp) AS bussingTopUp //WHERE timeNode.date.week = 10
-CREATE (agg:AggregateBussingRecord)
+MERGE (agg:AggregateBussingRecord {id: week + '-' +year +'-' + currentLog.id})
 SET agg.week = week, 
 agg.year = year,
 agg.attendance = attendance, 
@@ -301,7 +301,7 @@ WITH currentLog,record.week AS week, record.year AS year, SUM(record.attendance)
 SUM(record.personalContribution) AS personalContribution, SUM(record.numberOfSprinters) AS numberOfSprinters,
 SUM(record.numberOfUrvans) AS numberOfUrvans, SUM(record.numberOfCars) AS numberOfCars, SUM(record.bussingCost) AS bussingCost, 
 SUM(record.bussingTopUp) AS bussingTopUp //WHERE timeNode.date.week = 10
-CREATE (agg:AggregateBussingRecord)
+MERGE (agg:AggregateBussingRecord {id: week + '-' +year +'-' + currentLog.id})
 SET agg.week = week, 
 agg.year = year,
 agg.attendance = attendance, 
@@ -323,7 +323,7 @@ WITH currentLog,record.week AS week, record.year AS year, SUM(record.attendance)
 SUM(record.personalContribution) AS personalContribution, SUM(record.numberOfSprinters) AS numberOfSprinters,
 SUM(record.numberOfUrvans) AS numberOfUrvans, SUM(record.numberOfCars) AS numberOfCars, SUM(record.bussingCost) AS bussingCost, 
 SUM(record.bussingTopUp) AS bussingTopUp //WHERE timeNode.date.week = 10
-CREATE (agg:AggregateBussingRecord)
+MERGE (agg:AggregateBussingRecord {id: week + '-' +year +'-' + currentLog.id})
 SET agg.week = week, 
 agg.year = year,
 agg.attendance = attendance, 
@@ -345,7 +345,7 @@ WITH currentLog,record.week AS week, record.year AS year, SUM(record.attendance)
 SUM(record.personalContribution) AS personalContribution, SUM(record.numberOfSprinters) AS numberOfSprinters,
 SUM(record.numberOfUrvans) AS numberOfUrvans, SUM(record.numberOfCars) AS numberOfCars, SUM(record.bussingCost) AS bussingCost,
 SUM(record.bussingTopUp) AS bussingTopUp //WHERE timeNode.date.week = 10
-CREATE (agg:AggregateBussingRecord)
+MERGE (agg:AggregateBussingRecord {id: week + '-' +year +'-' + currentLog.id})
 SET agg.week = week,
 agg.year = year,
 agg.attendance = attendance,

@@ -82,6 +82,7 @@ export const getServiceGraphData = (
       array.forEach((record) => {
         data.push({
           id: record?.id,
+          category,
           date: record?.serviceDate,
           week: record.week,
           attendance: record.attendance,
@@ -96,6 +97,7 @@ export const getServiceGraphData = (
       array.forEach((record) => {
         data.push({
           id: record?.id,
+          category,
           date: record?.serviceDate,
           week: record.week,
           attendance: record.attendance,
@@ -108,6 +110,7 @@ export const getServiceGraphData = (
     array.forEach((record) => {
       data.push({
         id: record?.id,
+        category,
         date: record?.serviceDate?.date || record.date,
         week: record.week,
         attendance: record.attendance,
@@ -138,6 +141,7 @@ export const getServiceGraphData = (
   if (!data.length) {
     return [
       {
+        __typename: category,
         date: '',
         week: null,
         attendance: null,
