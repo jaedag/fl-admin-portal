@@ -9,14 +9,14 @@ type AggregateServiceRecord implements HadService
 type AggregateBussingRecord @auth(rules: [{ isAuthenticated: true }]) {
   id: Int! @cypher(statement: "MATCH (this) RETURN this.week")
   week: Int!
-  attendance: Int!
+  attendance: Int
   leaderDeclaration: Int!
   personalContribution: Float!
   numberOfSprinters: Int!
   numberOfUrvans: Int!
   numberOfCars: Int!
   bussingCost: Float!
-  bussingTopUp: Float!
+  bussingTopUp: Float
 }
 
 extend type Bacenta {

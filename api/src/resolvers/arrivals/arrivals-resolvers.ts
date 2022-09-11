@@ -591,7 +591,6 @@ export const arrivalsMutation = {
       }),
       sessionTwo.run(aggregateConfirmedBussingDataOnHigherChurches, args),
     ])
-
     const response = rearrangeCypherObject(promiseAllResponse[0])
 
     return response.vehicleRecord

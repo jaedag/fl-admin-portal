@@ -73,14 +73,14 @@ const UserDashboard = () => {
             <Col>
               <StatDisplay
                 title="Avg Weekly Attendance"
-                loading={!assessmentData}
+                loading={!assessmentData[0]}
                 statistic={getMonthlyStatAverage(assessmentData, 'attendance')}
               />
             </Col>
             <Col>
               <StatDisplay
                 title="Avg Weekly Income (GH₵)"
-                loading={!assessmentData}
+                loading={!assessmentData[0]}
                 statistic={getMonthlyStatAverage(assessmentData, 'income')}
               />
             </Col>
