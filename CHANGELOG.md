@@ -1,3 +1,14 @@
+#### 5.1.11 (2022-09-11)
+
+##### Chores
+
+*  api version bump ([f36b77e6](https://github.com/firstlovecenter/fl-pastoral-care/commit/f36b77e65cb85642dbaf8e50142c969d4a19848d))
+
+##### Bug Fixes
+
+*  add permissions for gathering arrivals admin ([6eeebc0f](https://github.com/firstlovecenter/fl-pastoral-care/commit/6eeebc0fd1504759b40a40b567eff18c795b74b4))
+*  fix bug causing  multiple aggregateBussingRecord nodes for the same week and year ([24582195](https://github.com/firstlovecenter/fl-pastoral-care/commit/2458219542cd710040e9eb2ceebb92c0b3219dfa))
+
 #### 5.1.10 (2022-09-11)
 
 ##### Continuous Integration
