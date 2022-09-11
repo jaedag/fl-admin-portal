@@ -58,12 +58,12 @@ const DetailsBacenta = () => {
       width: 12,
     },
     {
-      title: 'Urvan Top Up (One Way)',
+      title: 'Urvan (One Way)\n\nTop Up',
       number: bacenta?.urvanTopUp + ' GHS',
       link: `#`,
     },
     {
-      title: 'Sprinter Top Up (One Way)',
+      title: 'Sprinter (One Way)\n\nTop Up',
       number: bacenta?.sprinterTopUp + ' GHS',
       link: `#`,
     },

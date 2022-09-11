@@ -739,9 +739,10 @@ extend type Constituency {
       MATCH (this)
       RETURN
       CASE
-       WHEN this.sprinterCost <= 100 THEN 0.5 * this.sprinterCost
-       WHEN this.sprinterCost <= 220 THEN  0.7 * this.sprinterCost
-       ELSE  0.8 * this.sprinterCost
+        WHEN this.sprinterCost <= 100 THEN round(0.5 * this.sprinterCost)
+       WHEN this.sprinterCost <= 220 THEN  round(0.7 * this.sprinterCost)
+       WHEN this.sprinterCost > 220 THEN  round(0.8 * this.sprinterCost)
+       ELSE 0
       END
       """
     )
@@ -752,9 +753,10 @@ extend type Constituency {
       MATCH (this)
       RETURN
       CASE
-       WHEN this.urvanCost <= 100 THEN 0.5 * this.urvanCost
-       WHEN this.urvanCost <= 220 THEN  0.7 * this.urvanCost
-       ELSE  0.8 * this.urvanCost
+       WHEN this.urvanCost <= 100 THEN round(0.5 * this.urvanCost)
+       WHEN this.urvanCost <= 220 THEN  round(0.7 * this.urvanCost)
+       WHEN this.urvanCost > 220 THEN  round(0.8 * this.urvanCost)
+       ELSE 0
       END
       """
     )
@@ -782,9 +784,9 @@ extend type Bacenta {
       MATCH (this)
       RETURN
       CASE
-       WHEN this.urvanCost <= 100 THEN round(0.5 * this.urvanCost)
+        WHEN this.urvanCost <= 100 THEN round(0.5 * this.urvanCost)
        WHEN this.urvanCost <= 220 THEN  round(0.7 * this.urvanCost)
-       WHEN this.sprinterCost > 220 THEN  round(0.8 * this.sprinterCost)
+       WHEN this.urvanCost > 220 THEN  round(0.8 * this.urvanCost)
        ELSE 0
       END
       """
@@ -1003,12 +1005,14 @@ extend type Mutation {
           bacenta.sprinterCost = $sprinterCost,
           bacenta.urvanCost = $urvanCost
 
+      WITH DISTINCT bacenta
       CREATE (log:HistoryLog {id:apoc.create.uuid()})
         SET log.timeStamp = datetime(),
         log.historyRecord = bacenta.name + ' Bussing Details were updated'
 
       WITH log,bacenta
       MATCH (admin:Member {auth_id: $auth.jwt.sub})
+      MERGE (date:TimeGraph {date: date()})
 
       MERGE (log)-[:LOGGED_BY]->(admin)
       MERGE (log)-[:RECORDED_ON]->(date)
