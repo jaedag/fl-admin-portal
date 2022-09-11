@@ -1,3 +1,16 @@
+#### 5.1.10 (2022-09-11)
+
+##### Continuous Integration
+
+*  update npm release commands fix ([4d1b218d](https://github.com/firstlovecenter/fl-pastoral-care/commit/4d1b218dea8ca56be96a3eb9fb9a446d6f217bbd))
+*  update npm release commands ([f324bdb3](https://github.com/firstlovecenter/fl-pastoral-care/commit/f324bdb33b5667ba2a067ef16c4bab10f03ffa94))
+
+##### Bug Fixes
+
+*  bacenta aggregate records are now initialised with an attendance of 0 ([31b179cd](https://github.com/firstlovecenter/fl-pastoral-care/commit/31b179cd577c1b59b4d5297629c8671fad0a2239))
+*  fix cypher bug that was not adding attendance to aggregate bussing records ([15d4af35](https://github.com/firstlovecenter/fl-pastoral-care/commit/15d4af35759e9dad382757e20450c4510d4866c1))
+*  fix bug creating multiple histories with invalid date when bussing details are updated ([0862e0e6](https://github.com/firstlovecenter/fl-pastoral-care/commit/0862e0e6d55e40b013b7ecf6fc5f28a7b814bae8))
+
 #### 5.1.8 (2022-09-10)
 
 ##### Documentation Changes
