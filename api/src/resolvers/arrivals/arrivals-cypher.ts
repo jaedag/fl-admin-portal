@@ -219,6 +219,6 @@ export const aggregateConfirmedBussingDataOnHigherChurches = `
    MATCH (aggregate:AggregateBussingRecord {id: date().week + '-' + date().year + '-' + log.id})
    MATCH (log)-[:HAS_BUSSING_AGGREGATE]->(aggregate)
         WITH SUM(aggregate.attendance) AS attendanceTotal, aggregate
-        SET aggregate.attendance = attendanceTotal + 100
+        SET aggregate.attendance = attendanceTotal + $attendance
    RETURN aggregate
 `
