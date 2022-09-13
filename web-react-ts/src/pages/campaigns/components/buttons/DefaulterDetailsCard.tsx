@@ -82,25 +82,28 @@ function DefaulterDetailsCard(props: DefaulterDetailsCardProps) {
           </div>
         )}
       </Card.Body>
-      <Card.Footer>
-        <div className="mb-2">
-          Contact Admin:{' '}
-          {`${church?.admin?.firstName} ${church?.admin?.lastName}`}{' '}
-        </div>
-        <a href={`tel:${church?.admin?.phoneNumber}`}>
-          <Button variant="primary">
-            <TelephoneFill /> Call
-          </Button>
-        </a>
-        <a
-          href={`https://wa.me/${church?.admin?.whatsappNumber}`}
-          className="ms-3"
-        >
-          <Button variant="success">
-            <Whatsapp /> WhatsApp
-          </Button>
-        </a>
-      </Card.Footer>
+      {church?.admin?.firstName === undefined &&
+      church?.admin?.firstName === undefined ? null : (
+        <Card.Footer>
+          <div className="mb-2">
+            Contact Admin:{' '}
+            {`${church?.admin?.firstName} ${church?.admin?.lastName}`}{' '}
+          </div>
+          <a href={`tel:${church?.admin?.phoneNumber}`}>
+            <Button variant="primary">
+              <TelephoneFill /> Call
+            </Button>
+          </a>
+          <a
+            href={`https://wa.me/${church?.admin?.whatsappNumber}`}
+            className="ms-3"
+          >
+            <Button variant="success">
+              <Whatsapp /> WhatsApp
+            </Button>
+          </a>
+        </Card.Footer>
+      )}
     </Card>
   )
 }
