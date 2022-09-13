@@ -192,30 +192,33 @@ RETURN vehicleRecord, bussingRecord, date().week AS week
 
 export const aggregateLeaderBussingDataOnHigherChurches = `
    MATCH (church {id: $bacentaId}) 
-   WHERE church:Bacenta OR church:Constituency OR church:Council
-   OR church:Stream OR church:GatheringService OR church:Denomination
+   WHERE church:Bacenta 
    MATCH (church)<-[:HAS*1..7]-(higherChurch)
    MATCH (higherChurch)-[:CURRENT_HISTORY]->(log:ServiceLog)
-   MERGE (log)-[:HAS_BUSSING_AGGREGATE]->(newRecord:AggregateBussingRecord {week: date().week, year: date().year})
+   MERGE (aggregate:AggregateBussingRecord {id: date().week + '-' + date().year + '-' + log.id})
+   MERGE (log)-[:HAS_BUSSING_AGGREGATE]->(aggregate)
    ON CREATE SET
-       newRecord.leaderDeclaration = $leaderDeclaration,
-       newRecord.bussingCost = $vehicleCost,
-       newRecord.personalContribution = $personalContribution
+       aggregate.week = date().week,
+       aggregate.year = date().year,
+       aggregate.leaderDeclaration = $leaderDeclaration,
+       aggregate.bussingCost = $vehicleCost,
+       aggregate.attendance = 0,
+       aggregate.personalContribution = $personalContribution
    ON MATCH SET 
-       newRecord.leaderDeclaration = newRecord.leaderDeclaration + $leaderDeclaration,
-       newRecord.bussingCost = newRecord.bussingCost + $vehicleCost,
-       newRecord.personalContribution = newRecord.personalContribution + $personalContribution
-   RETURN church, higherChurch, log, newRecord
+       aggregate.leaderDeclaration = aggregate.leaderDeclaration + $leaderDeclaration,
+       aggregate.bussingCost = aggregate.bussingCost + $vehicleCost,
+       aggregate.personalContribution = aggregate.personalContribution + $personalContribution
+   RETURN church, higherChurch, log, aggregate 
 `
 
 export const aggregateConfirmedBussingDataOnHigherChurches = `
    MATCH (church {id: $bacentaId}) 
-   WHERE church:Bacenta OR church:Constituency OR church:Council
-   OR church:Stream OR church:GatheringService OR church:Denomination
+   WHERE church:Bacenta 
    MATCH (church)<-[:HAS*1..7]-(higherChurch)
    MATCH (higherChurch)-[:CURRENT_HISTORY]->(log:ServiceLog)
-   MERGE (log)-[:HAS_BUSSING_AGGREGATE]->(newRecord:AggregateBussingRecord {week: date().week, year: date().year})
-   ON MATCH SET 
-       newRecord.attendance = newRecord.attendance + $attendance
-   RETURN church, higherChurch, log, newRecord
+   MATCH (aggregate:AggregateBussingRecord {id: date().week + '-' + date().year + '-' + log.id})
+   MATCH (log)-[:HAS_BUSSING_AGGREGATE]->(aggregate)
+        WITH SUM(aggregate.attendance) AS attendanceTotal, aggregate
+        SET aggregate.attendance = attendanceTotal + $attendance
+   RETURN aggregate
 `

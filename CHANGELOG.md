@@ -1,3 +1,66 @@
+#### 5.1.11 (2022-09-11)
+
+##### Chores
+
+*  api version bump ([f36b77e6](https://github.com/firstlovecenter/fl-pastoral-care/commit/f36b77e65cb85642dbaf8e50142c969d4a19848d))
+
+##### Bug Fixes
+
+*  add permissions for gathering arrivals admin ([6eeebc0f](https://github.com/firstlovecenter/fl-pastoral-care/commit/6eeebc0fd1504759b40a40b567eff18c795b74b4))
+*  fix bug causing  multiple aggregateBussingRecord nodes for the same week and year ([24582195](https://github.com/firstlovecenter/fl-pastoral-care/commit/2458219542cd710040e9eb2ceebb92c0b3219dfa))
+
+#### 5.1.10 (2022-09-11)
+
+##### Continuous Integration
+
+*  update npm release commands fix ([4d1b218d](https://github.com/firstlovecenter/fl-pastoral-care/commit/4d1b218dea8ca56be96a3eb9fb9a446d6f217bbd))
+*  update npm release commands ([f324bdb3](https://github.com/firstlovecenter/fl-pastoral-care/commit/f324bdb33b5667ba2a067ef16c4bab10f03ffa94))
+
+##### Bug Fixes
+
+*  bacenta aggregate records are now initialised with an attendance of 0 ([31b179cd](https://github.com/firstlovecenter/fl-pastoral-care/commit/31b179cd577c1b59b4d5297629c8671fad0a2239))
+*  fix cypher bug that was not adding attendance to aggregate bussing records ([15d4af35](https://github.com/firstlovecenter/fl-pastoral-care/commit/15d4af35759e9dad382757e20450c4510d4866c1))
+*  fix bug creating multiple histories with invalid date when bussing details are updated ([0862e0e6](https://github.com/firstlovecenter/fl-pastoral-care/commit/0862e0e6d55e40b013b7ecf6fc5f28a7b814bae8))
+
+#### 5.1.8 (2022-09-10)
+
+##### Documentation Changes
+
+*  update CHANGELOG.md ([60a4a421](https://github.com/firstlovecenter/fl-pastoral-care/commit/60a4a4219ab59002afed1b099a505b156e372341))
+*  update CHANGELOG.md ([83319905](https://github.com/firstlovecenter/fl-pastoral-care/commit/83319905f6be5dfce0cfad0c25bd229d804f1d5f))
+
+##### New Features
+
+*  implement pull to refresh feature on equipment defaulters pages ([#278](https://github.com/firstlovecenter/fl-pastoral-care/pull/278)) ([29179bbe](https://github.com/firstlovecenter/fl-pastoral-care/commit/29179bbef9d08705a39e735b60a5f829d0ac9393))
+
+##### Bug Fixes
+
+*  show bacenta momo number when either sprinterCost or urvanCost is present ([429c3aae](https://github.com/firstlovecenter/fl-pastoral-care/commit/429c3aae7be24a17600c37bfaf7b2ce289b1a920))
+*  change top up in bacenta details to 'one way top up' in form ([b99cd956](https://github.com/firstlovecenter/fl-pastoral-care/commit/b99cd9561d9815ce707a747272bb1c994bc9e04e))
+*  change top up in bacenta details to 'one way top up' ([a4ec0fc8](https://github.com/firstlovecenter/fl-pastoral-care/commit/a4ec0fc8aeab9f7f1d5108414c9eb5b03e73e820))
+
+##### Performance Improvements
+
+*  improve loading ux for equipment campaign deadline ([#280](https://github.com/firstlovecenter/fl-pastoral-care/pull/280)) ([f143376d](https://github.com/firstlovecenter/fl-pastoral-care/commit/f143376d591bfdf05e183f3af3069ff71a314c6f))
+
+#### 5.1.7 (2022-09-10)
+
+#### 5.1.6 (2022-09-10)
+
+##### New Features
+
+*  implement pull to refresh feature on equipment defaulters pages ([#278](https://github.com/firstlovecenter/fl-pastoral-care/pull/278)) ([29179bbe](https://github.com/firstlovecenter/fl-pastoral-care/commit/29179bbef9d08705a39e735b60a5f829d0ac9393))
+
+##### Bug Fixes
+
+*  show bacenta momo number when either sprinterCost or urvanCost is present ([429c3aae](https://github.com/firstlovecenter/fl-pastoral-care/commit/429c3aae7be24a17600c37bfaf7b2ce289b1a920))
+*  change top up in bacenta details to 'one way top up' in form ([b99cd956](https://github.com/firstlovecenter/fl-pastoral-care/commit/b99cd9561d9815ce707a747272bb1c994bc9e04e))
+*  change top up in bacenta details to 'one way top up' ([a4ec0fc8](https://github.com/firstlovecenter/fl-pastoral-care/commit/a4ec0fc8aeab9f7f1d5108414c9eb5b03e73e820))
+
+##### Performance Improvements
+
+*  improve loading ux for equipment campaign deadline ([#280](https://github.com/firstlovecenter/fl-pastoral-care/pull/280)) ([f143376d](https://github.com/firstlovecenter/fl-pastoral-care/commit/f143376d591bfdf05e183f3af3069ff71a314c6f))
+
 #### 5.1.5 (2022-09-09)
 
 ##### Documentation Changes

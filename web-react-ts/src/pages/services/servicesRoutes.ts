@@ -29,7 +29,7 @@ import StreamReport from 'pages/services/graphs/StreamGraphs'
 import GatheringServiceReport from 'pages/services/graphs/GatheringServiceGraphs'
 import StreamByCouncil from 'pages/services/defaulters/StreamByCouncil'
 import GatheringServiceByStream from 'pages/services/defaulters/GatheringServiceByStream'
-import { permitLeaderAdmin } from 'permission-utils'
+import { permitLeaderAdmin, permitLeaderAdminArrivals } from 'permission-utils'
 import ConstituencyBankingSlipView from 'pages/services/banking/banking-slip/ConstituencyView'
 import ConstituencyBankingSlipSubmission from 'pages/services/banking/banking-slip/ConstituencySubmission'
 import CouncilService from 'pages/services/record-service/CouncilService'
@@ -157,44 +157,44 @@ export const graphs: RouteTypes[] = [
   {
     path: '/fellowship/graphs',
     element: FellowshipReport,
-    roles: permitLeaderAdmin('Fellowship'),
+    roles: permitLeaderAdminArrivals('Fellowship'),
     placeholder: true,
   },
   {
     path: '/bacenta/graphs',
     element: BacentaReport,
-    roles: permitLeaderAdmin('Bacenta'),
+    roles: permitLeaderAdminArrivals('Bacenta'),
     placeholder: true,
   },
   {
     path: '/sonta/graphs',
     element: SontaReport,
-    roles: permitLeaderAdmin('Sonta'),
+    roles: permitLeaderAdminArrivals('Sonta'),
     placeholder: true,
   },
   {
     path: '/constituency/graphs',
     element: ConstituencyReport,
-    roles: permitLeaderAdmin('Constituency'),
+    roles: permitLeaderAdminArrivals('Constituency'),
     placeholder: true,
   },
 
   {
     path: '/council/graphs',
     element: CouncilReport,
-    roles: permitLeaderAdmin('Council'),
+    roles: permitLeaderAdminArrivals('Council'),
     placeholder: true,
   },
   {
     path: '/stream/graphs',
     element: StreamReport,
-    roles: permitLeaderAdmin('Stream'),
+    roles: permitLeaderAdminArrivals('Stream'),
     placeholder: true,
   },
   {
     path: '/gatheringservice/graphs',
     element: GatheringServiceReport,
-    roles: permitLeaderAdmin('GatheringService'),
+    roles: permitLeaderAdminArrivals('GatheringService'),
     placeholder: true,
   },
 

@@ -58,20 +58,26 @@ const DetailsBacenta = () => {
       width: 12,
     },
     {
-      title: 'Sprinter Top Up',
-      number: bacenta?.sprinterTopUp + ' GHS',
-      link: `#`,
-    },
-    {
-      title: 'Urvan Top Up',
+      title: 'Urvan (One Way)\n\nTop Up',
       number: bacenta?.urvanTopUp + ' GHS',
       link: `#`,
     },
+    {
+      title: 'Sprinter (One Way)\n\nTop Up',
+      number: bacenta?.sprinterTopUp + ' GHS',
+      link: `#`,
+    },
   ]
+  if (!bacenta?.urvanCost && bacenta?.sprinterCost) {
+    details.splice(6, 1)
+  }
+  if (!bacenta?.sprinterCost && bacenta?.urvanCost) {
+    details.splice(7, 1)
+  }
 
-  if (!bacenta?.sprinterCost || !bacenta?.urvanCost) {
-    const moneyItems = [1, 2, 3]
-    moneyItems.forEach(() => details.pop())
+  if (!bacenta?.sprinterCost && !bacenta?.urvanCost) {
+    details.splice(6, 3)
+    details.splice(5, 1)
   }
 
   return (

@@ -14,6 +14,7 @@ import MemberDisplayCard from 'components/card/MemberDisplayCard'
 import { isAuthorised, throwErrorMsg } from 'global-utils'
 import { Container, Spinner } from 'react-bootstrap'
 import { Church, MemberWithoutBioData, Stream } from 'global-types'
+import { permitMe } from 'permission-utils'
 type FederalSearchResult = {
   federalMemberSearch: MemberWithoutBioData[]
   federalStreamSearch: Stream[]
@@ -156,48 +157,39 @@ const SearchPageMobile = () => {
 
   useEffect(() => {
     const whichSearch = (searchString: string) => {
-      if (isAuthorised(['adminGatheringService'], currentUser.roles)) {
+      if (isAuthorised(permitMe('GatheringService'), currentUser.roles)) {
         federalSearch({
           variables: { searchKey: searchString?.trim() },
         })
-      } else if (
-        isAuthorised(['adminStream', 'leaderStream'], currentUser.roles)
-      ) {
+      } else if (isAuthorised(permitMe('Stream'), currentUser.roles)) {
         streamSearch({
           variables: {
             streamId: currentUser.stream,
             searchKey: searchString?.trim(),
           },
         })
-      } else if (
-        isAuthorised(['adminCouncil', 'leaderCouncil'], currentUser.roles)
-      ) {
+      } else if (isAuthorised(permitMe('Council'), currentUser.roles)) {
         councilSearch({
           variables: {
             councilId: currentUser.council,
             searchKey: searchString?.trim(),
           },
         })
-      } else if (
-        isAuthorised(
-          ['adminConstituency', 'leaderConstituency'],
-          currentUser.roles
-        )
-      ) {
+      } else if (isAuthorised(permitMe('Constituency'), currentUser.roles)) {
         constituencySearch({
           variables: {
             constituencyId: currentUser.constituency,
             searchKey: searchString?.trim(),
           },
         })
-      } else if (isAuthorised(['leaderBacenta'], currentUser.roles)) {
+      } else if (isAuthorised(permitMe('Bacenta'), currentUser.roles)) {
         bacentaSearch({
           variables: {
             bacentaId: currentUser.bacenta,
             searchKey: searchString?.trim(),
           },
         })
-      } else if (isAuthorised(['leaderFellowship'], currentUser.roles)) {
+      } else if (isAuthorised(permitMe('Fellowship'), currentUser.roles)) {
         fellowshipSearch({
           variables: {
             fellowshipId: currentUser.fellowship,

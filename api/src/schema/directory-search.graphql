@@ -299,7 +299,15 @@ extend type Query {
 
   federalMemberSearch(searchKey: String): [Member!]!
     @auth(
-      rules: [{ roles: ["adminGatheringService", "leaderGatheringService"] }]
+      rules: [
+        {
+          roles: [
+            "adminGatheringService"
+            "leaderGatheringService"
+            "arrivalsAdminGatheringService"
+          ]
+        }
+      ]
     )
     @cypher(
       statement: """
@@ -313,7 +321,9 @@ extend type Query {
       """
     )
   streamMemberSearch(searchKey: String, streamId: ID!): [Member!]!
-    @auth(rules: [{ roles: ["adminStream", "leaderStream"] }])
+    @auth(
+      rules: [{ roles: ["adminStream", "leaderStream", "arrivalsAdminStream"] }]
+    )
     @cypher(
       statement: """
       MATCH (stream:Stream {id: $streamId})-[:HAS]->(:Council)-[:HAS]->(:Constituency)-[:HAS]->(:Bacenta)-[:HAS]->(:Fellowship)<-[:BELONGS_TO]-(member:Member)
@@ -327,7 +337,18 @@ extend type Query {
       """
     )
   councilMemberSearch(searchKey: String, councilId: ID!): [Member!]!
-    @auth(rules: [{ roles: ["adminCouncil", "leaderCouncil"] }])
+    @auth(
+      rules: [
+        {
+          roles: [
+            "adminCouncil"
+            "leaderCouncil"
+            "arrivalsAdminCouncil"
+            "arrivalsAdminCouncil"
+          ]
+        }
+      ]
+    )
     @cypher(
       statement: """
       MATCH (council:Council {id: $councilId})-[:HAS]->(:Constituency)-[:HAS]->(:Bacenta)-[:HAS]->(:Fellowship)<-[:BELONGS_TO*]-(member:Member)
@@ -341,7 +362,17 @@ extend type Query {
       """
     )
   constituencyMemberSearch(searchKey: String, constituencyId: ID!): [Member!]!
-    @auth(rules: [{ roles: ["adminConstituency", "leaderConstituency"] }])
+    @auth(
+      rules: [
+        {
+          roles: [
+            "adminConstituency"
+            "leaderConstituency"
+            "arrivalsAdminConstituency"
+          ]
+        }
+      ]
+    )
     @cypher(
       statement: """
       MATCH (constituency:Constituency {id:$constituencyId})
@@ -388,7 +419,15 @@ extend type Query {
 
   federalFellowshipSearch(searchKey: String): [Fellowship!]!
     @auth(
-      rules: [{ roles: ["adminGatheringService", "leaderGatheringService"] }]
+      rules: [
+        {
+          roles: [
+            "adminGatheringService"
+            "leaderGatheringService"
+            "arrivalsAdminGatheringService"
+          ]
+        }
+      ]
     )
     @cypher(
       statement: """
@@ -400,7 +439,9 @@ extend type Query {
     )
 
   streamFellowshipSearch(searchKey: String, streamId: ID!): [Fellowship!]!
-    @auth(rules: [{ roles: ["adminStream", "leaderStream"] }])
+    @auth(
+      rules: [{ roles: ["adminStream", "leaderStream", "arrivalsAdminStream"] }]
+    )
     @cypher(
       statement: """
       MATCH (stream:Stream {id: $streamId})-[:HAS*4]->(fellowship:Fellowship)
@@ -412,7 +453,11 @@ extend type Query {
     )
 
   councilFellowshipSearch(searchKey: String, councilId: ID!): [Fellowship!]!
-    @auth(rules: [{ roles: ["adminCouncil", "leaderCouncil"] }])
+    @auth(
+      rules: [
+        { roles: ["adminCouncil", "leaderCouncil", "arrivalsAdminCouncil"] }
+      ]
+    )
     @cypher(
       statement: """
       MATCH (council:Council {id: $councilId})-[:HAS*3]->(fellowship:Fellowship)
@@ -426,7 +471,17 @@ extend type Query {
     searchKey: String
     constituencyId: ID!
   ): [Fellowship!]!
-    @auth(rules: [{ roles: ["adminConstituency", "leaderConstituency"] }])
+    @auth(
+      rules: [
+        {
+          roles: [
+            "adminConstituency"
+            "leaderConstituency"
+            "arrivalsAdminConstituency"
+          ]
+        }
+      ]
+    )
     @cypher(
       statement: """
       MATCH (constituency:Constituency {id:$constituencyId})-[:HAS*2]->(fellowship:Fellowship)
@@ -451,7 +506,15 @@ extend type Query {
 
   federalBacentaSearch(searchKey: String): [Bacenta]
     @auth(
-      rules: [{ roles: ["adminGatheringService", "leaderGatheringService"] }]
+      rules: [
+        {
+          roles: [
+            "adminGatheringService"
+            "leaderGatheringService"
+            "arrivalsAdminGatheringService"
+          ]
+        }
+      ]
     )
     @cypher(
       statement: """
@@ -462,7 +525,9 @@ extend type Query {
       """
     )
   streamBacentaSearch(searchKey: String, streamId: ID!): [Bacenta]
-    @auth(rules: [{ roles: ["adminStream", "leaderStream"] }])
+    @auth(
+      rules: [{ roles: ["adminStream", "leaderStream", "arrivalsAdminStream"] }]
+    )
     @cypher(
       statement: """
       MATCH (stream:Stream {id: $streamId})-[:HAS*3]->(bacenta:Bacenta)
@@ -473,7 +538,11 @@ extend type Query {
       """
     )
   councilBacentaSearch(searchKey: String, councilId: ID!): [Bacenta]
-    @auth(rules: [{ roles: ["adminCouncil", "leaderCouncil"] }])
+    @auth(
+      rules: [
+        { roles: ["adminCouncil", "leaderCouncil", "arrivalsAdminCouncil"] }
+      ]
+    )
     @cypher(
       statement: """
       MATCH (council:Council {id: $councilId})-[:HAS*2]->(bacenta:Bacenta)
@@ -484,7 +553,11 @@ extend type Query {
       """
     )
   councilSontaSearch(searchKey: String, councilId: ID!): [Bacenta]
-    @auth(rules: [{ roles: ["adminCouncil", "leaderCouncil"] }])
+    @auth(
+      rules: [
+        { roles: ["adminCouncil", "leaderCouncil", "arrivalsAdminCouncil"] }
+      ]
+    )
     @cypher(
       statement: """
       MATCH (council:Council {id: $councilId})-[:HAS*2]->(bacenta:Bacenta)
@@ -498,7 +571,17 @@ extend type Query {
     searchKey: String
     constituencyId: ID!
   ): [Fellowship!]!
-    @auth(rules: [{ roles: ["adminConstituency", "leaderConstituency"] }])
+    @auth(
+      rules: [
+        {
+          roles: [
+            "adminConstituency"
+            "leaderConstituency"
+            "arrivalsAdminConstituency"
+          ]
+        }
+      ]
+    )
     @cypher(
       statement: """
       MATCH (constituency:Constituency {id:$constituencyId})
@@ -514,7 +597,15 @@ extend type Query {
 
   federalConstituencySearch(searchKey: String): [Constituency!]!
     @auth(
-      rules: [{ roles: ["adminGatheringService", "leaderGatheringService"] }]
+      rules: [
+        {
+          roles: [
+            "adminGatheringService"
+            "leaderGatheringService"
+            "arrivalsAdminGatheringService"
+          ]
+        }
+      ]
     )
     @cypher(
       statement: """
@@ -525,7 +616,9 @@ extend type Query {
       """
     )
   streamConstituencySearch(searchKey: String, streamId: ID!): [Constituency!]!
-    @auth(rules: [{ roles: ["adminStream", "leaderStream"] }])
+    @auth(
+      rules: [{ roles: ["adminStream", "leaderStream", "arrivalsAdminStream"] }]
+    )
     @cypher(
       statement: """
       MATCH (stream:Stream {id: $streamId})-[:HAS]->(council:Council)-[:HAS]->(constituency:Constituency)
@@ -539,7 +632,11 @@ extend type Query {
     searchKey: String
     councilId: ID!
   ): [Constituency!]!
-    @auth(rules: [{ roles: ["adminCouncil", "leaderCouncil"] }])
+    @auth(
+      rules: [
+        { roles: ["adminCouncil", "leaderCouncil", "arrivalsAdminCouncil"] }
+      ]
+    )
     @cypher(
       statement: """
       MATCH (council:Council {id: $councilId})-[:HAS]->(constituency:Constituency)
@@ -554,7 +651,15 @@ extend type Query {
 
   federalCouncilSearch(searchKey: String): [Council!]!
     @auth(
-      rules: [{ roles: ["adminGatheringService", "leaderGatheringService"] }]
+      rules: [
+        {
+          roles: [
+            "adminGatheringService"
+            "leaderGatheringService"
+            "arrivalsAdminGatheringService"
+          ]
+        }
+      ]
     )
     @cypher(
       statement: """
@@ -565,7 +670,9 @@ extend type Query {
       """
     )
   streamCouncilSearch(searchKey: String, streamId: ID!): [Council!]!
-    @auth(rules: [{ roles: ["adminStream", "leaderStream"] }])
+    @auth(
+      rules: [{ roles: ["adminStream", "leaderStream", "arrivalsAdminStream"] }]
+    )
     @cypher(
       statement: """
       MATCH (stream:Stream {id: $streamId})-[:HAS]->(council:Council)
@@ -579,7 +686,15 @@ extend type Query {
   ### Stream Search ###
   federalStreamSearch(searchKey: String): [Stream!]!
     @auth(
-      rules: [{ roles: ["adminGatheringService", "leaderGatheringService"] }]
+      rules: [
+        {
+          roles: [
+            "adminGatheringService"
+            "leaderGatheringService"
+            "arrivalsAdminGatheringService"
+          ]
+        }
+      ]
     )
     @cypher(
       statement: """

@@ -44,15 +44,16 @@ export const aggregateServiceDataOnHigherChurches = `
    OR church:Stream OR church:GatheringService OR church:Oversight OR church:Denomination
    MATCH (church)<-[:HAS*1..7]-(higherChurch)
    MATCH (higherChurch)-[:CURRENT_HISTORY]->(log:ServiceLog)
-   MERGE (log)-[:HAS_SERVICE_AGGREGATE]->(newRecord:AggregateServiceRecord {week: date().week, year: date().year})
+   MERGE (aggregate:AggregateBussingRecord {id: date().week + '-' + date().year + '-' + log.id})
+   MERGE (log)-[:HAS_SERVICE_AGGREGATE]->(aggregate)
    ON CREATE SET
-       newRecord.id = apoc.create.uuid(),
-       newRecord.attendance = $attendance,
-       newRecord.income = $income
+      aggregate.id = apoc.create.uuid(),
+      aggregate.attendance = $attendance,
+      aggregate.income = $income
    ON MATCH SET 
-       newRecord.attendance = newRecord.attendance + $attendance,
-       newRecord.income = newRecord.income + $income
-   RETURN church, higherChurch, log, newRecord
+      aggregate.attendance =   aggregate.attenance + $attendance,
+      aggregate.income =   aggregate.income + $income
+   RETURN church, higherChurch, log,  aggregate 
 `
 
 export const checkCurrentServiceLog = `
