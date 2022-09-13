@@ -17,7 +17,7 @@ const CouncilEquipmentDefaulters = () => {
 
   const church = currentUser.currentChurch
   const churchType = currentUser.currentChurch?.__typename
-  const { councilId } = useContext(ChurchContext)
+  const { councilId, clickCard } = useContext(ChurchContext)
 
   const { data, loading, error, refetch } = useQuery(
     COUNCIL_EQUIPMENT_DEFAULTERS_NUMBER_BY_CONSTITUENCY_AND_FELLOWSHIP,
@@ -41,6 +41,15 @@ const CouncilEquipmentDefaulters = () => {
             <h6 className="mt-4">
               Fellowships and Constituencies that haven't filled their form
             </h6>
+            <DefaultersMenuButton
+              name="Constituencies"
+              onClick={() => {
+                clickCard(council)
+                navigate('/campaigns/council/constituency/equipment/defaulters')
+              }}
+              number={council?.constituencyCount}
+              color="text-danger"
+            />
             <div className=" gap-2 mt-4">
               <h6>
                 Fellowships :{' '}
