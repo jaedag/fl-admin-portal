@@ -9,6 +9,8 @@ import { EQUIPMENT_END_DATE } from 'pages/campaigns/CampaignQueries'
 import { useQuery } from '@apollo/client'
 import { getHumanReadableDate } from 'jd-date-utils'
 import Placeholder from '../../../../components/Placeholder'
+import { permitAdmin } from 'permission-utils'
+import RoleView from 'auth/RoleView'
 
 const StreamEquipmentCampaign = () => {
   const { currentUser } = useContext(MemberContext)
@@ -43,6 +45,12 @@ const StreamEquipmentCampaign = () => {
             name="View Trends"
             onClick={() => navigate(`/campaigns/stream/equipment/trends`)}
           />
+          <RoleView roles={permitAdmin('Stream')}>
+            <MenuButton
+              name="Defaulters"
+              onClick={() => navigate('/campaigns/stream/equipment/defaulters')}
+            />
+          </RoleView>
         </div>
       </Container>
     </div>
