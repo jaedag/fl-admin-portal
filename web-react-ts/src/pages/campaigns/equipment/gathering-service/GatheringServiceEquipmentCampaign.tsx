@@ -9,6 +9,8 @@ import { EQUIPMENT_END_DATE } from 'pages/campaigns/CampaignQueries'
 import { useQuery } from '@apollo/client'
 import { getHumanReadableDate } from 'jd-date-utils'
 import Placeholder from '../../../../components/Placeholder'
+import RoleView from 'auth/RoleView'
+import { permitAdmin } from 'permission-utils'
 
 const GatheringServiceEquipmentCampaign = () => {
   const { currentUser } = useContext(MemberContext)
@@ -50,6 +52,14 @@ const GatheringServiceEquipmentCampaign = () => {
               navigate(`/campaigns/gathering-service/set-equipment-deadline`)
             }
           />
+          <RoleView roles={permitAdmin('GatheringService')}>
+            <MenuButton
+              name="Defaulters"
+              onClick={() =>
+                navigate('/campaigns/gathering-service/equipment/defaulters')
+              }
+            />
+          </RoleView>
         </div>
       </Container>
     </div>

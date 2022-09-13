@@ -73,6 +73,49 @@ export const EQUIPMENT_END_DATE = gql`
   }
 `
 
+export const GATHERING_SERVICE_EQUIPMENT_DEFAULTERS_NUMBER_BY_CONSTITUENCY_AND_FELLOWSHIP = gql`
+  query gatheringServiceEquipmentDefaultersNumberByConstituencyAndFellowship(
+    $gatheringServiceId: ID
+  ) {
+    gatheringServices(where: { id: $gatheringServiceId }) {
+      id
+      constituencyCount
+      constituencyEquipmentFilledCount
+      constituencyEquipmentNotFilledCount
+      fellowshipCount
+      fellowshipEquipmentFilledCount
+      fellowshipEquipmentNotFilledCount
+      streamCount
+    }
+  }
+`
+
+export const GATHERING_SERVICE_BY_STREAM_EQUIPMENT_DEFAULTERS = gql`
+  query equipmentGatheringServiceByStreamDefaulters($gatheringServiceId: ID) {
+    gatheringServices(where: { id: $gatheringServiceId }) {
+      id
+      name
+      streams {
+        id
+        name
+        constituencyCount
+        fellowshipCount
+        constituencyEquipmentFilledCount
+        constituencyEquipmentNotFilledCount
+        fellowshipEquipmentFilledCount
+        fellowshipEquipmentNotFilledCount
+        admin {
+          id
+          firstName
+          lastName
+          whatsappNumber
+          phoneNumber
+        }
+      }
+    }
+  }
+`
+
 //Streams Queries and Mutations
 export const STREAM_CAMPAIGN_LIST = gql`
   query streamCampaigns($streamId: ID) {
@@ -116,6 +159,48 @@ export const STREAM_BY_COUNCIL = gql`
         fellowshipCount
         constituencyCount
       }
+    }
+  }
+`
+export const STREAM_BY_COUNCIL_EQUIPMENT_DEFAULTERS = gql`
+  query equipmentStreamByCouncilDefaulters($streamId: ID) {
+    streams(where: { id: $streamId }) {
+      id
+      name
+      councils {
+        id
+        name
+        constituencyCount
+        fellowshipCount
+        constituencyEquipmentFilledCount
+        constituencyEquipmentNotFilledCount
+        fellowshipEquipmentFilledCount
+        fellowshipEquipmentNotFilledCount
+        admin {
+          id
+          firstName
+          lastName
+          whatsappNumber
+          phoneNumber
+        }
+      }
+    }
+  }
+`
+
+export const STREAM_EQUIPMENT_DEFAULTERS_NUMBER_BY_CONSTITUENCY_AND_FELLOWSHIP = gql`
+  query streamEquipmentDefaultersNumberByConstituencyAndFellowship(
+    $streamId: ID
+  ) {
+    streams(where: { id: $streamId }) {
+      id
+      constituencyCount
+      constituencyEquipmentFilledCount
+      constituencyEquipmentNotFilledCount
+      fellowshipCount
+      fellowshipEquipmentFilledCount
+      fellowshipEquipmentNotFilledCount
+      councilCount
     }
   }
 `
@@ -196,6 +281,32 @@ export const COUNCIL_EQUIPMENT_DEFAULTERS_LIST_BY_FELLOWSHIP = gql`
           lastName
           phoneNumber
           whatsappNumber
+        }
+      }
+    }
+  }
+`
+export const COUNCIL_BY_CONSTITUENCY_EQUIPMENT_DEFAULTERS = gql`
+  query equipmentCouncilByConstituencyDefaulters($councilId: ID) {
+    councils(where: { id: $councilId }) {
+      id
+      name
+      constituencies {
+        id
+        name
+        fellowshipCount
+        fellowshipEquipmentFilledCount
+        fellowshipEquipmentNotFilledCount
+        equipmentRecord {
+          id
+          pulpits
+        }
+        admin {
+          id
+          firstName
+          lastName
+          whatsappNumber
+          phoneNumber
         }
       }
     }
@@ -298,6 +409,7 @@ export const CONSTITUENCY_EQUIPMENT_DEFAULTERS_NUMBER_BY_FELLOWSHIP = gql`
   query equipmentConstituencyDefaultersNumberByFellowship($constituencyId: ID) {
     constituencies(where: { id: $constituencyId }) {
       id
+      name
       fellowshipEquipmentFilledCount
       fellowshipEquipmentNotFilledCount
       fellowshipCount

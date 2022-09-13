@@ -51,6 +51,11 @@ import CouncilEquipmentDefaulters from './equipment/council/CouncilEquipmentDefa
 import CouncilEquipmentHaveNotFilledByFellowship from './equipment/council/CouncilEquipmentHaveNotFilledByFellowship'
 import CouncilEquipmentHaveNotFilledByConstituency from './equipment/council/CouncilEquipmentHaveNotFilledByConstituency'
 import { RouteTypes } from 'global-types'
+import GatheringServiceEquipmentDefaulters from './equipment/gathering-service/GatheringServiceEquipmentDefaulters'
+import GatheringServiceByStreamEquipmentDefaulters from './equipment/gathering-service/GatheringServiceByStreamEquipmentDefaulters'
+import StreamByCouncilEquipmentDefaulters from './equipment/stream/StreamByCouncilEquipmentDefaulters'
+import CouncilByConstituencyEquipmentDefaulters from './equipment/council/CouncilByConstituencyEquipmentDefaulters'
+import StreamEquipmentDefaulters from './equipment/stream/StreamEquipmentDefaulters'
 
 export const campaigns: RouteTypes[] = [
   //gathering-service routes
@@ -108,6 +113,18 @@ export const campaigns: RouteTypes[] = [
     roles: permitLeaderAdmin('GatheringService'),
     placeholder: true,
   },
+  {
+    path: '/campaigns/gathering-service/equipment/defaulters',
+    element: GatheringServiceEquipmentDefaulters,
+    roles: permitAdmin('GatheringService'),
+    placeholder: true,
+  },
+  {
+    path: '/campaigns/gathering-service/stream/equipment/defaulters',
+    element: GatheringServiceByStreamEquipmentDefaulters,
+    roles: permitAdmin('GatheringService'),
+    placeholder: true,
+  },
 
   //stream routes
   {
@@ -156,6 +173,18 @@ export const campaigns: RouteTypes[] = [
     path: '/campaigns/stream/telepastoring',
     element: StreamTelepastoringCampaign,
     roles: permitLeaderAdmin('Stream'),
+    placeholder: true,
+  },
+  {
+    path: '/campaigns/stream/council/equipment/defaulters',
+    element: StreamByCouncilEquipmentDefaulters,
+    roles: permitAdmin('Stream'),
+    placeholder: true,
+  },
+  {
+    path: '/campaigns/stream/equipment/defaulters',
+    element: StreamEquipmentDefaulters,
+    roles: permitAdmin('Stream'),
     placeholder: true,
   },
 
@@ -223,6 +252,12 @@ export const campaigns: RouteTypes[] = [
   {
     path: '/campaigns/council/equipment/have-not-filled/constituency',
     element: CouncilEquipmentHaveNotFilledByConstituency,
+    roles: permitAdmin('Council'),
+    placeholder: true,
+  },
+  {
+    path: '/campaigns/council/constituency/equipment/defaulters',
+    element: CouncilByConstituencyEquipmentDefaulters,
     roles: permitAdmin('Council'),
     placeholder: true,
   },

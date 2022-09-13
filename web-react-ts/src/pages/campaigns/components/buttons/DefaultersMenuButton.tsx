@@ -7,7 +7,7 @@ type Props = {
   name: string
   number: number
   color: string
-  onClick: () => void
+  onClick?: () => void
 }
 
 const DefaultersMenuButton = (props: Props) => {

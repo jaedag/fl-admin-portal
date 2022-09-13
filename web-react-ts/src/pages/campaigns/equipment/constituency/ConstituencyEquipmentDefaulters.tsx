@@ -2,7 +2,6 @@ import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import DefaultersMenuButton from 'pages/campaigns/components/buttons/DefaultersMenuButton'
 import React, { useContext } from 'react'
 import { Col, Container, Row } from 'react-bootstrap'
-import { MemberContext } from 'contexts/MemberContext'
 import { useNavigate } from 'react-router'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { useQuery } from '@apollo/client'
@@ -12,11 +11,8 @@ import HeadingSecondary from 'components/HeadingSecondary'
 import PullToRefresh from 'react-simple-pull-to-refresh'
 
 function ConstituencyEquipmentDefaulters() {
-  const { currentUser } = useContext(MemberContext)
   const navigate = useNavigate()
 
-  const church = currentUser.currentChurch
-  const churchType = currentUser.currentChurch?.__typename
   const { constituencyId } = useContext(ChurchContext)
 
   const { data, loading, error, refetch } = useQuery(
@@ -37,7 +33,7 @@ function ConstituencyEquipmentDefaulters() {
         <div className="d-flex align-items-center justify-content-center ">
           <Container>
             <div className="text-center">
-              <HeadingPrimary>{`${church?.name} ${churchType}`}</HeadingPrimary>
+              <HeadingPrimary>{`${constituency?.name} Constituency`}</HeadingPrimary>
               <HeadingSecondary>Equipment Campaign</HeadingSecondary>
             </div>
             <h6 className="mt-4">Fellowships that haven't filled their form</h6>
