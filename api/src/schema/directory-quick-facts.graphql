@@ -97,7 +97,7 @@ extend type Bacenta {
       statement: """
       MATCH (this)
       WITH date() as today, this
-      WITH date(today) - duration({days: 200}) AS startDate, this
+      WITH date(today) - duration({days: $days}) AS startDate, this
       WITH  range(date(startDate).week, date().week) as weeks, this
 
       MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(agg:AggregateServiceRecord)
@@ -328,7 +328,7 @@ extend type Stream {
       statement: """
       MATCH (this)
       WITH date() as today, this
-      WITH date(today) - duration({days: 100}) AS startDate, this
+      WITH date(today) - duration({days: $days}) AS startDate, this
       WITH  range(date(startDate).week, date().week) as weeks, this
 
       MATCH (this)-[:HAS]->(council:Council)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(agg:AggregateServiceRecord)
