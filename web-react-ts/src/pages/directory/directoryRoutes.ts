@@ -1,66 +1,159 @@
-import UserDisplayPage from 'pages/directory/user-profile/DisplayPage'
-import DisplayMember from 'pages/directory/display/DetailsMember'
-import UserProfileEditPage from 'pages/directory/user-profile/EditPage'
-import CreateMember from 'pages/directory/create/CreateMember'
-import UpdateMember from 'pages/directory/update/UpdateMember'
-import SearchPageMobile from 'pages/directory/mobile/SearchPage'
-import CouncilMembers from 'pages/directory/grids/CouncilMembers'
-import ConstituencyMembers from 'pages/directory/grids/ConstituencyMembers'
-import BacentaMembers from 'pages/directory/grids/BacentaMembers'
-import FellowshipMembers from 'pages/directory/grids/FellowshipMembers'
-import SontaMembers from 'pages/directory/grids/SontaMembers'
-import DetailsFellowship from 'pages/directory/display/DetailsFellowship'
-import DetailsBacenta from 'pages/directory/display/DetailsBacenta'
-import DetailsConstituency from 'pages/directory/display/DetailsConstituency'
-import DetailsCouncil from 'pages/directory/display/DetailsCouncil'
-import DetailsStream from 'pages/directory/display/DetailsStream'
-import DetailsSonta from 'pages/directory/display/DetailsSonta'
-import DisplayAllBacentas from 'pages/directory/display/AllBacentas'
-import DisplayAllSontas from 'pages/directory/display/AllSontas'
-import DisplayAllConstituencies from 'pages/directory/display/AllConstituencies'
-import DisplayAllFellowships from 'pages/directory/display/AllFellowships'
-import CreateConstituency from 'pages/directory/create/CreateConstituency'
-import CreateBacenta from 'pages/directory/create/CreateBacenta'
-import CreateFellowship from 'pages/directory/create/CreateFellowship'
-import CreateSonta from 'pages/directory/create/CreateSonta'
-import UpdateFellowship from 'pages/directory/update/UpdateFellowship'
-import UpdateBacenta from 'pages/directory/update/UpdateBacenta'
-import UpdateSonta from 'pages/directory/update/UpdateSonta'
-import UpdateConstituency from 'pages/directory/update/UpdateConstituency'
-import DetailsGatheringService from 'pages/directory/display/DetailsGatheringService'
-import DetailsOversight from 'pages/directory/display/DetailsOversight'
-import DisplayAllCouncils from 'pages/directory/display/AllCouncils'
-import DisplayAllStreams from 'pages/directory/display/AllStreams'
-import DisplayAllGatheringServices from 'pages/directory/display/AllGatheringServices'
-import CreateCouncil from 'pages/directory/create/CreateCouncil'
-import AllGatheringServiceConstituencies from 'pages/directory/display/AllGatheringServiceConstituencies'
-import UpdateCouncil from 'pages/directory/update/UpdateCouncil'
-import CreateStream from 'pages/directory/create/CreateStream'
-import CreateGatheringService from 'pages/directory/create/CreateGatheringService'
-import UpdateStream from 'pages/directory/update/UpdateStream'
-import UpdateGatheringService from 'pages/directory/update/UpdateGatheringService'
-import GatheringServiceMembers from 'pages/directory/grids/GatheringServiceMembers'
-import OversightMembers from 'pages/directory/grids/OversightMembers'
-import StreamMembers from 'pages/directory/grids/StreamMembers'
+import { LazyRouteTypes } from 'global-types'
 import {
   permitAdmin,
-  permitMe,
-  permitLeaderAdmin,
   permitAdminArrivals,
+  permitLeaderAdmin,
+  permitMe,
 } from 'permission-utils'
-import ServantMembers from './grids/ServantMembers'
-import UpdateBacentaBussing from './update/UpdateBusPaymentDetails'
-import AllStreamConstituencies from './display/AllStreamConstituencies'
-import FellowshipAvgWeekdayQuickFacts from './quick-facts/this-month/FellowshipAvgWeekdayQuickFacts'
-import BacentaAvgWeekdayQuickFacts from './quick-facts/this-month/BacentaAvgWeekdayQuickFacts'
-import ConstituencyAvgWeekdayQuickFacts from './quick-facts/this-month/ConstituencyAvgWeekdayQuickFacts'
-import StreamAvgWeekdayQuickFacts from './quick-facts/this-month/StreamAvgWeekdayQuickFacts'
-import CouncilAvgWeekdayQuickFacts from './quick-facts/this-month/CouncilAvgWeekdayQuickFacts'
-import GatheringServiceAvgWeekdayQuickFacts from './quick-facts/this-month/GatheringServiceAvgWeekdayQuickFacts'
-import QuickFactsChurchList from './quick-facts/QuickFactsChurchList'
-import { LazyRouteTypes } from 'global-types'
-import UpdateConstituencyBussingCost from './update/UpdateConstituencyBussingCost'
 import { lazy } from 'react'
+
+const UserDisplayPage = lazy(
+  () => import('pages/directory/user-profile/DisplayPage')
+)
+const DisplayMember = lazy(
+  () => import('pages/directory/display/DetailsMember')
+)
+const UserProfileEditPage = lazy(
+  () => import('pages/directory/user-profile/EditPage')
+)
+const CreateMember = lazy(() => import('pages/directory/create/CreateMember'))
+const UpdateMember = lazy(() => import('pages/directory/update/UpdateMember'))
+const SearchPageMobile = lazy(() => import('pages/directory/mobile/SearchPage'))
+const CouncilMembers = lazy(
+  () => import('pages/directory/grids/CouncilMembers')
+)
+const ConstituencyMembers = lazy(
+  () => import('pages/directory/grids/ConstituencyMembers')
+)
+const BacentaMembers = lazy(
+  () => import('pages/directory/grids/BacentaMembers')
+)
+const FellowshipMembers = lazy(
+  () => import('pages/directory/grids/FellowshipMembers')
+)
+const SontaMembers = lazy(() => import('pages/directory/grids/SontaMembers'))
+const DetailsFellowship = lazy(
+  () => import('pages/directory/display/DetailsFellowship')
+)
+const DetailsBacenta = lazy(
+  () => import('pages/directory/display/DetailsBacenta')
+)
+const DetailsConstituency = lazy(
+  () => import('pages/directory/display/DetailsConstituency')
+)
+const DetailsCouncil = lazy(
+  () => import('pages/directory/display/DetailsCouncil')
+)
+const DetailsStream = lazy(
+  () => import('pages/directory/display/DetailsStream')
+)
+const DetailsSonta = lazy(() => import('pages/directory/display/DetailsSonta'))
+const DisplayAllBacentas = lazy(
+  () => import('pages/directory/display/AllBacentas')
+)
+const DisplayAllSontas = lazy(() => import('pages/directory/display/AllSontas'))
+const DisplayAllConstituencies = lazy(
+  () => import('pages/directory/display/AllConstituencies')
+)
+const DisplayAllFellowships = lazy(
+  () => import('pages/directory/display/AllFellowships')
+)
+const CreateConstituency = lazy(
+  () => import('pages/directory/create/CreateConstituency')
+)
+const CreateBacenta = lazy(() => import('pages/directory/create/CreateBacenta'))
+const CreateFellowship = lazy(
+  () => import('pages/directory/create/CreateFellowship')
+)
+const CreateSonta = lazy(() => import('pages/directory/create/CreateSonta'))
+const UpdateFellowship = lazy(
+  () => import('pages/directory/update/UpdateFellowship')
+)
+const UpdateBacenta = lazy(() => import('pages/directory/update/UpdateBacenta'))
+const UpdateSonta = lazy(() => import('pages/directory/update/UpdateSonta'))
+const UpdateConstituency = lazy(
+  () => import('pages/directory/update/UpdateConstituency')
+)
+const DetailsGatheringService = lazy(
+  () => import('pages/directory/display/DetailsGatheringService')
+)
+const DetailsOversight = lazy(
+  () => import('pages/directory/display/DetailsOversight')
+)
+const DisplayAllCouncils = lazy(
+  () => import('pages/directory/display/AllCouncils')
+)
+const DisplayAllStreams = lazy(
+  () => import('pages/directory/display/AllStreams')
+)
+const DisplayAllGatheringServices = lazy(
+  () => import('pages/directory/display/AllGatheringServices')
+)
+const CreateCouncil = lazy(() => import('pages/directory/create/CreateCouncil'))
+const AllGatheringServiceConstituencies = lazy(
+  () => import('pages/directory/display/AllGatheringServiceConstituencies')
+)
+const UpdateCouncil = lazy(() => import('pages/directory/update/UpdateCouncil'))
+const CreateStream = lazy(() => import('pages/directory/create/CreateStream'))
+const CreateGatheringService = lazy(
+  () => import('pages/directory/create/CreateGatheringService')
+)
+const UpdateStream = lazy(() => import('pages/directory/update/UpdateStream'))
+const UpdateGatheringService = lazy(
+  () => import('pages/directory/update/UpdateGatheringService')
+)
+const GatheringServiceMembers = lazy(
+  () => import('pages/directory/grids/GatheringServiceMembers')
+)
+const OversightMembers = lazy(
+  () => import('pages/directory/grids/OversightMembers')
+)
+const StreamMembers = lazy(() => import('pages/directory/grids/StreamMembers'))
+const ServantMembers = lazy(
+  () => import('pages/directory/grids/ServantMembers')
+)
+const UpdateBacentaBussing = lazy(
+  () => import('pages/directory/update/UpdateBusPaymentDetails')
+)
+const AllStreamConstituencies = lazy(
+  () => import('pages/directory/display/AllStreamConstituencies')
+)
+const FellowshipAvgWeekdayQuickFacts = lazy(
+  () =>
+    import(
+      'pages/directory/quick-facts/this-month/FellowshipAvgWeekdayQuickFacts'
+    )
+)
+const BacentaAvgWeekdayQuickFacts = lazy(
+  () =>
+    import('pages/directory/quick-facts/this-month/BacentaAvgWeekdayQuickFacts')
+)
+const ConstituencyAvgWeekdayQuickFacts = lazy(
+  () =>
+    import(
+      'pages/directory/quick-facts/this-month/ConstituencyAvgWeekdayQuickFacts'
+    )
+)
+const StreamAvgWeekdayQuickFacts = lazy(
+  () =>
+    import('pages/directory/quick-facts/this-month/StreamAvgWeekdayQuickFacts')
+)
+const CouncilAvgWeekdayQuickFacts = lazy(
+  () =>
+    import('pages/directory/quick-facts/this-month/CouncilAvgWeekdayQuickFacts')
+)
+const GatheringServiceAvgWeekdayQuickFacts = lazy(
+  () =>
+    import(
+      'pages/directory/quick-facts/this-month/GatheringServiceAvgWeekdayQuickFacts'
+    )
+)
+const QuickFactsChurchList = lazy(
+  () => import('pages/directory/quick-facts/QuickFactsChurchList')
+)
+const UpdateConstituencyBussingCost = lazy(
+  () => import('pages/directory/update/UpdateConstituencyBussingCost')
+)
 
 export const memberDirectory: LazyRouteTypes[] = [
   {

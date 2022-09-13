@@ -1,5 +1,7 @@
 import { LazyRouteTypes } from 'global-types'
-import Reconciliation from 'pages/reconciliation/Reconciliation'
+import { lazy } from 'react'
+
+const Reconciliation = lazy(() => import('pages/reconciliation/Reconciliation'))
 
 export const reconciliation: LazyRouteTypes[] = [
   {

@@ -1,56 +1,175 @@
-import ConstituencyEquipmentCampaign from 'pages/campaigns/equipment/constituency/ConstituencyEquipmentCampaign'
-import ConstituencyEquipmentForm from 'pages/campaigns/equipment/constituency/ConstituencyEquipmentForm'
-import CampaignChurchList from 'pages/campaigns/ChurchList'
-import ConstituencyEquipmentTrends from 'pages/campaigns/equipment/constituency/ConstituencyTrends'
-import ConstituencyCampaigns from 'pages/campaigns/ConstituencyCampaigns'
-import FellowshipEquipmentCampaign from 'pages/campaigns/equipment/fellowship/FellowshipEquipmentCampaign'
-import FellowshipEquipmentForm from 'pages/campaigns/equipment/fellowship/FellowshipEquipmentForm'
-import FellowshipCampaigns from 'pages/campaigns/FellowshipCampaigns'
-import ConstituencyEquipmentFormDetails from 'pages/campaigns/equipment/constituency/ConstituencyEquipmentFormDetails'
-import FellowshipEquipmentFormDetails from 'pages/campaigns/equipment/fellowship/FellowshipEquipmentFormDetails'
-import FellowshipTrends from './equipment/fellowship/FellowshipTrends'
-import GatheringServiceCampaigns from './GatheringServiceCampaigns'
-import StreamCampaigns from './StreamCampaigns'
-import CouncilCampaigns from './CouncilCampaigns'
-import BacentaCampaigns from './BacentaCampaigns'
-import StreamEquipmentCampaign from './equipment/stream/StreamEquipmentCampaign'
-import CouncilEquipmentCampaign from './equipment/council/CouncilEquipmentCampaign'
-import BacentaEquipmentCampaign from './equipment/bacenta/BacentaEquipmentCampaign'
-import GatheringServiceTrends from './equipment/gathering-service/GatheringServiceTrends'
-import StreamTrends from './equipment/stream/StreamTrends'
-import CouncilTrends from './equipment/council/CouncilTrends'
-import BacentaTrends from './equipment/bacenta/BacentaTrends'
-import GatheringServiceByStream from './equipment/gathering-service/GatheringServiceByStream'
-import StreamByCouncil from './equipment/stream/StreamByCouncil'
-import CouncilByConstituency from './equipment/council/CouncilByConstituency'
-import ConstituencyByBacenta from './equipment/constituency/ConstituencyByBacenta'
-import BacentaByFellowship from './equipment/bacenta/BacentaByFellowship'
-import GatheringServiceEquipmentDeadline from './equipment/gathering-service/GatheringServiceEquipmentDeadline'
 import { permitAdmin, permitLeaderAdmin } from 'permission-utils'
-import GatheringServiceEquipmentCampaign from './equipment/gathering-service/GatheringServiceEquipmentCampaign'
-import GatheringServiceAntiBrutishCampaign from './anti-brutish/gathering-service/GatheringServiceAntiBrutishCampaign'
-import GatheringServiceMultiplicationCampaign from './multiplication/gathering-service/GatheringServiceMultiplicationCampaign'
-import GatheringServiceSwollenSundayCampaign from './swollen-sunday/gathering-service/GatheringServiceSwollenSundayCampaign'
-import GatheringServiceTelepastoringCampaign from './telepastoring/gathering-service/GatheringServiceTelepastoringCampaign'
-import StreamAntiBrutishCampaign from './anti-brutish/stream/StreamAntiBrutishCampaign'
-import StreamMultiplicationCampaign from './multiplication/stream/StreamMultiplicationCampaign'
-import StreamSwollenSundayCampaign from './swollen-sunday/stream/StreamSwollenSundayCampaign'
-import StreamTelepastoringCampaign from './telepastoring/stream/StreamTelepastoringCampaign'
-import CouncilAntiBrutishCampaign from './anti-brutish/council/CouncilAntiBrutishCampaign'
-import CouncilMultiplicationCampaign from './multiplication/council/CouncilMultiplicationCampaign'
-import CouncilTelepastoringCampaign from './telepastoring/council/CouncilTelepastoringCampaign'
-import CouncilSwollenSundayCampaign from './swollen-sunday/council/CouncilSwollenSundayCampaign'
-import ConstituencyAntiBrutishCampaign from './anti-brutish/constituency/ConstituencyAntiBrutishCampaign'
-import ConstituencyMultiplicationCampaign from './multiplication/constituency/ConstituencyMultiplicationCampaign'
-import ConstituencyTelepastoringCampaign from './telepastoring/constituency/ConstituencyTelepastoringCampaign'
-import ConstituencySwollenSundayCampaign from './swollen-sunday/constituency/ConstituencySwollenSundayCampaign'
-import BacentaSwollenSundayCampaign from './swollen-sunday/bacenta/BacentaSwollenSundayCampaign'
-import ConstituencyEquipmentDefaulters from './equipment/constituency/ConstituencyEquipmentDefaulters'
-import ConstituencyEquipmentHaveNotFilledByFellowship from './equipment/constituency/ConstituencyEquipmentHaveNotFilledByFellowship'
-import CouncilEquipmentDefaulters from './equipment/council/CouncilEquipmentDefaulters'
-import CouncilEquipmentHaveNotFilledByFellowship from './equipment/council/CouncilEquipmentHaveNotFilledByFellowship'
-import CouncilEquipmentHaveNotFilledByConstituency from './equipment/council/CouncilEquipmentHaveNotFilledByConstituency'
 import { LazyRouteTypes } from 'global-types'
+import { lazy } from 'react'
+
+const ConstituencyEquipmentCampaign = lazy(
+  () =>
+    import(
+      'pages/campaigns/equipment/constituency/ConstituencyEquipmentCampaign'
+    )
+)
+const ConstituencyEquipmentForm = lazy(
+  () =>
+    import('pages/campaigns/equipment/constituency/ConstituencyEquipmentForm')
+)
+const CampaignChurchList = lazy(() => import('pages/campaigns/ChurchList'))
+const ConstituencyEquipmentTrends = lazy(
+  () => import('pages/campaigns/equipment/constituency/ConstituencyTrends')
+)
+const ConstituencyCampaigns = lazy(
+  () => import('pages/campaigns/ConstituencyCampaigns')
+)
+const FellowshipEquipmentCampaign = lazy(
+  () =>
+    import('pages/campaigns/equipment/fellowship/FellowshipEquipmentCampaign')
+)
+const FellowshipEquipmentForm = lazy(
+  () => import('pages/campaigns/equipment/fellowship/FellowshipEquipmentForm')
+)
+const FellowshipCampaigns = lazy(
+  () => import('pages/campaigns/FellowshipCampaigns')
+)
+const ConstituencyEquipmentFormDetails = lazy(
+  () =>
+    import(
+      'pages/campaigns/equipment/constituency/ConstituencyEquipmentFormDetails'
+    )
+)
+const FellowshipEquipmentFormDetails = lazy(
+  () =>
+    import(
+      'pages/campaigns/equipment/fellowship/FellowshipEquipmentFormDetails'
+    )
+)
+const FellowshipTrends = lazy(
+  () => import('./equipment/fellowship/FellowshipTrends')
+)
+const GatheringServiceCampaigns = lazy(
+  () => import('./GatheringServiceCampaigns')
+)
+const StreamCampaigns = lazy(() => import('./StreamCampaigns'))
+const CouncilCampaigns = lazy(() => import('./CouncilCampaigns'))
+const BacentaCampaigns = lazy(() => import('./BacentaCampaigns'))
+const StreamEquipmentCampaign = lazy(
+  () => import('./equipment/stream/StreamEquipmentCampaign')
+)
+const CouncilEquipmentCampaign = lazy(
+  () => import('./equipment/council/CouncilEquipmentCampaign')
+)
+const BacentaEquipmentCampaign = lazy(
+  () => import('./equipment/bacenta/BacentaEquipmentCampaign')
+)
+const GatheringServiceTrends = lazy(
+  () => import('./equipment/gathering-service/GatheringServiceTrends')
+)
+const StreamTrends = lazy(() => import('./equipment/stream/StreamTrends'))
+const CouncilTrends = lazy(() => import('./equipment/council/CouncilTrends'))
+const BacentaTrends = lazy(() => import('./equipment/bacenta/BacentaTrends'))
+const GatheringServiceByStream = lazy(
+  () => import('./equipment/gathering-service/GatheringServiceByStream')
+)
+const StreamByCouncil = lazy(() => import('./equipment/stream/StreamByCouncil'))
+const CouncilByConstituency = lazy(
+  () => import('./equipment/council/CouncilByConstituency')
+)
+const ConstituencyByBacenta = lazy(
+  () => import('./equipment/constituency/ConstituencyByBacenta')
+)
+const BacentaByFellowship = lazy(
+  () => import('./equipment/bacenta/BacentaByFellowship')
+)
+const GatheringServiceEquipmentDeadline = lazy(
+  () =>
+    import('./equipment/gathering-service/GatheringServiceEquipmentDeadline')
+)
+const GatheringServiceEquipmentCampaign = lazy(
+  () =>
+    import('./equipment/gathering-service/GatheringServiceEquipmentCampaign')
+)
+const GatheringServiceAntiBrutishCampaign = lazy(
+  () =>
+    import(
+      './anti-brutish/gathering-service/GatheringServiceAntiBrutishCampaign'
+    )
+)
+const GatheringServiceMultiplicationCampaign = lazy(
+  () =>
+    import(
+      './multiplication/gathering-service/GatheringServiceMultiplicationCampaign'
+    )
+)
+const GatheringServiceSwollenSundayCampaign = lazy(
+  () =>
+    import(
+      './swollen-sunday/gathering-service/GatheringServiceSwollenSundayCampaign'
+    )
+)
+const GatheringServiceTelepastoringCampaign = lazy(
+  () =>
+    import(
+      './telepastoring/gathering-service/GatheringServiceTelepastoringCampaign'
+    )
+)
+const StreamAntiBrutishCampaign = lazy(
+  () => import('./anti-brutish/stream/StreamAntiBrutishCampaign')
+)
+const StreamMultiplicationCampaign = lazy(
+  () => import('./multiplication/stream/StreamMultiplicationCampaign')
+)
+const StreamSwollenSundayCampaign = lazy(
+  () => import('./swollen-sunday/stream/StreamSwollenSundayCampaign')
+)
+const StreamTelepastoringCampaign = lazy(
+  () => import('./telepastoring/stream/StreamTelepastoringCampaign')
+)
+const CouncilAntiBrutishCampaign = lazy(
+  () => import('./anti-brutish/council/CouncilAntiBrutishCampaign')
+)
+const CouncilMultiplicationCampaign = lazy(
+  () => import('./multiplication/council/CouncilMultiplicationCampaign')
+)
+const CouncilTelepastoringCampaign = lazy(
+  () => import('./telepastoring/council/CouncilTelepastoringCampaign')
+)
+const CouncilSwollenSundayCampaign = lazy(
+  () => import('./swollen-sunday/council/CouncilSwollenSundayCampaign')
+)
+const BacentaSwollenSundayCampaign = lazy(
+  () => import('./swollen-sunday/bacenta/BacentaSwollenSundayCampaign')
+)
+const ConstituencyAntiBrutishCampaign = lazy(
+  () => import('./anti-brutish/constituency/ConstituencyAntiBrutishCampaign')
+)
+const ConstituencyMultiplicationCampaign = lazy(
+  () =>
+    import('./multiplication/constituency/ConstituencyMultiplicationCampaign')
+)
+const ConstituencySwollenSundayCampaign = lazy(
+  () =>
+    import('./swollen-sunday/constituency/ConstituencySwollenSundayCampaign')
+)
+const ConstituencyTelepastoringCampaign = lazy(
+  () => import('./telepastoring/constituency/ConstituencyTelepastoringCampaign')
+)
+const ConstituencyEquipmentDefaulters = lazy(
+  () => import('./equipment/constituency/ConstituencyEquipmentDefaulters')
+)
+const ConstituencyEquipmentHaveNotFilledByFellowship = lazy(
+  () =>
+    import(
+      './equipment/constituency/ConstituencyEquipmentHaveNotFilledByFellowship'
+    )
+)
+const CouncilEquipmentDefaulters = lazy(
+  () => import('./equipment/council/CouncilEquipmentDefaulters')
+)
+const CouncilEquipmentHaveNotFilledByFellowship = lazy(
+  () => import('./equipment/council/CouncilEquipmentHaveNotFilledByFellowship')
+)
+const CouncilEquipmentHaveNotFilledByConstituency = lazy(
+  () =>
+    import('./equipment/council/CouncilEquipmentHaveNotFilledByConstituency')
+)
 
 export const campaigns: LazyRouteTypes[] = [
   //gathering-service routes

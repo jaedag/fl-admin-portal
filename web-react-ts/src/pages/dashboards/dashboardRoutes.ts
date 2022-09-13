@@ -1,7 +1,11 @@
 import { LazyRouteTypes } from 'global-types'
-import ServantsDashboard from 'pages/dashboards/ServantsDashboard'
-import UserDashboard from 'pages/dashboards/UserDashboard'
-import Maps from 'pages/maps/Maps'
+import { lazy } from 'react'
+
+const ServantsDashboard = lazy(
+  () => import('pages/dashboards/ServantsDashboard')
+)
+const UserDashboard = lazy(() => import('pages/dashboards/UserDashboard'))
+const Maps = lazy(() => import('pages/maps/Maps'))
 
 export const dashboards: LazyRouteTypes[] = [
   {
