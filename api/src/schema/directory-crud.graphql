@@ -457,7 +457,7 @@ extend type Mutation {
     @cypher(
       statement: """
       MATCH (lastCode:LastBankingCode)
-      CREATE (fellowship:Fellowship:Active:Fellowship {name:$name,location: point({latitude:toFloat($venueLatitude), longitude:toFloat($venueLongitude), crs:'WGS-84'})})
+      CREATE (fellowship:Fellowship:Active {name:$name,location: point({latitude:toFloat($venueLatitude), longitude:toFloat($venueLongitude), crs:'WGS-84'})})
          	SET
       	fellowship.id = apoc.create.uuid(),
         fellowship.bankingCode = lastCode.number + 1,

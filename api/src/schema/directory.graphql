@@ -295,7 +295,7 @@ interface Church @auth(rules: [{ isAuthenticated: true }]) {
   leader: Member @relationship(type: "LEADS", direction: IN)
   members: [Member!]!
   memberSearch(key: String!, limit: Int!): [Member!]!
-  memberCount: Int
+  memberCount: Int!
   pastorCount: Int
   history(limit: Int! = 3): [HistoryLog!]!
     @cypher(
@@ -333,7 +333,7 @@ type Oversight implements Church {
       """
     )
 
-  memberCount: Int
+  memberCount: Int!
   pastorCount: Int
     @cypher(
       statement: """
@@ -426,7 +426,7 @@ type GatheringService implements Church {
       """
     )
 
-  memberCount: Int
+  memberCount: Int!
   pastorCount: Int
     @cypher(
       statement: """
@@ -515,7 +515,7 @@ type Stream implements Church {
       RETURN DISTINCT members ORDER BY toLower(members.lastName), toLower(members.firstName)
       """
     )
-  memberCount: Int
+  memberCount: Int!
   pastorCount: Int
     @cypher(
       statement: """
@@ -597,7 +597,7 @@ type Council implements Church {
       RETURN DISTINCT members ORDER BY toLower(members.lastName), toLower(members.firstName)
       """
     )
-  memberCount: Int
+  memberCount: Int!
   pastorCount: Int
     @cypher(
       statement: """
@@ -669,7 +669,7 @@ type Constituency implements Church {
       RETURN DISTINCT members ORDER BY toLower(members.lastName), toLower(members.firstName)
       """
     )
-  memberCount: Int
+  memberCount: Int!
   pastorCount: Int
     @cypher(
       statement: """
@@ -759,7 +759,7 @@ type Bacenta implements Church {
       RETURN DISTINCT members ORDER BY toLower(members.lastName), toLower(members.firstName)
       """
     )
-  memberCount: Int
+  memberCount: Int!
   pastorCount: Int
     @cypher(
       statement: """
