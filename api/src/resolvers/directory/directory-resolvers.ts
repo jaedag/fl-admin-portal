@@ -11,7 +11,11 @@ import {
   matchMemberQuery,
   updateMemberEmail,
   createMember,
-  addMemberToUpperChurch,
+  updateMemberFellowship,
+  increaseMemberCount,
+  increaseMinistryMemberCount,
+  reduceMemberCount,
+  reduceMinistryMemberCount,
 } from '../cypher/resolver-cypher'
 import { getAuthToken } from '../authenticate'
 
@@ -24,6 +28,7 @@ const directoryMutation = {
     isAuth(permitLeaderAdmin('Fellowship'), context?.auth.roles)
 
     const session = context.executionContext.session()
+
     const memberResponse = await session.run(
       cypher.checkMemberEmailExists,
       args
@@ -55,7 +60,12 @@ const directoryMutation = {
 
     const member = rearrangeCypherObject(createMemberResponse)
 
-    await session.run(addMemberToUpperChurch, {
+    await session.run(increaseMemberCount, {
+      memberId: member.id,
+      fellowshipId: args?.fellowship,
+    })
+
+    await session.run(increaseMinistryMemberCount, {
       memberId: member.id,
       fellowshipId: args?.fellowship,
     })
@@ -91,6 +101,28 @@ const directoryMutation = {
     }
 
     return updatedMember
+  },
+
+  UpdateMemberFellowship: async (
+    object: Member,
+    args: { memberId: string; fellowshipId: string },
+    context: Context
+  ) => {
+    isAuth(permitAdmin('Fellowship'), context.auth.roles)
+
+    const session = context.executionContext.session()
+
+    await session.run(reduceMemberCount, args)
+    await session.run(reduceMinistryMemberCount, args)
+
+    const member = rearrangeCypherObject(
+      await session.run(updateMemberFellowship, args)
+    )
+
+    await session.run(increaseMemberCount, args)
+    await session.run(increaseMinistryMemberCount, args)
+
+    return member
   },
   MakeMemberInactive: async (object: any, args: never, context: Context) => {
     isAuth(permitLeaderAdmin('Stream'), context.auth.roles)

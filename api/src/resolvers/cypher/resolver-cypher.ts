@@ -172,17 +172,66 @@ CREATE (member:Member:idl {whatsappNumber:$whatsappNumber})
             fellowship:fellowship {.id,bacenta:bacenta{.id,constituency:constituency{.id}}}}
       `
 
-export const addMemberToUpperChurch = `
-  MATCH (church:Fellowship {id: $fellowshipId}) 
-      SET church.memberCount = church.memberCount + 1,
-      church.ministryMemberCount= church.ministryMemberCount + 1  
-    
-    WITH church
-   OPTIONAL MATCH (m:Member {id: $memberId})-[:BELONGS_TO]->(ministry:Ministry)
-   MATCH (church)<-[:HAS*1..7]-(higherChurch)
-   WITH count(ministry) as ministry, church, higherChurch
-   SET 
-    higherChurch.memberCount = higherChurch.memberCount + 1,
-    higherChurch.ministryMemberCount =  higherChurch.ministryMemberCount + ministry
-   RETURN church, higherChurch
-   `
+export const increaseMemberCount = `
+MATCH (church:Fellowship {id: $fellowshipId}) 
+    SET church.memberCount = church.memberCount + 1
+      
+WITH church
+MATCH (church)<-[:HAS*1..7]-(higherChurch)
+SET higherChurch.memberCount = higherChurch.memberCount + 1
+RETURN church
+`
+
+export const increaseMinistryMemberCount = `
+MATCH (church:Fellowship {id: $fellowshipId}) 
+MATCH (member:Member {id: $memberId})  
+OPTIONAL MATCH (member)-[:BELONGS_TO]->(ministry:Ministry)
+
+WITH count(ministry) as ministry, church
+  SET church.ministryMemberCount= church.ministryMemberCount + ministry
+
+WITH church, ministry 
+MATCH (church)<-[:HAS*1..7]-(higherChurch)
+ SET higherChurch.ministryMemberCount =  higherChurch.ministryMemberCount + ministry
+RETURN church
+`
+
+export const updateMemberFellowship = `
+MATCH (member:Member {id: $memberId})
+MATCH (fellowship:Fellowship {id: $fellowshipId})
+
+OPTIONAL MATCH (member)-[previous:BELONGS_TO]-> (:Fellowship)
+DELETE previous
+MERGE (member)-[:BELONGS_TO]->(fellowship)
+RETURN {
+  id: member.id,
+  firstName: member.firstName,
+  lastName: member.lastName,
+  fellowship: fellowship {.id, .name}
+} as member
+`
+
+export const reduceMemberCount = `
+MATCH (member:Member {id: $memberId})
+MATCH (church:Fellowship)<-[:BELONGS_TO]-(member) 
+    SET church.memberCount = church.memberCount - 1
+      
+WITH church
+MATCH (church)<-[:HAS*1..7]-(higherChurch)
+SET higherChurch.memberCount = higherChurch.memberCount - 1
+RETURN church
+`
+
+export const reduceMinistryMemberCount = `
+MATCH (church:Fellowship {id: $fellowshipId}) 
+MATCH (member:Member {id: $memberId})  
+OPTIONAL MATCH (member)-[:BELONGS_TO]->(ministry:Ministry)
+
+WITH count(ministry) as ministry, church
+  SET church.ministryMemberCount= church.ministryMemberCount - ministry
+
+WITH church, ministry 
+MATCH (church)<-[:HAS*1..7]-(higherChurch)
+ SET higherChurch.ministryMemberCount =  higherChurch.ministryMemberCount - ministry
+RETURN church
+`
