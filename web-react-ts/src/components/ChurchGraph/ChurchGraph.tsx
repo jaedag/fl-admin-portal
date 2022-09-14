@@ -191,7 +191,12 @@ const ChurchGraph = (props: ChurchGraphProps) => {
                   yAxisId="right"
                   fill="url(#colorSecondary)"
                   onClick={(data) => {
-                    if (data.id === data.week) return
+                    if (
+                      data.category === 'bussingAggregate' ||
+                      data.category === 'serviceAggregate'
+                    ) {
+                      return
+                    }
 
                     if (data.id && bussing) {
                       clickCard({ ...data, __typename: 'BussingRecord' })
