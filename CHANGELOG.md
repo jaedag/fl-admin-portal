@@ -1,3 +1,24 @@
+#### 5.1.12 (2022-09-14)
+
+##### Chores
+
+*  update dependencies ([e7fc206e](https://github.com/firstlovecenter/fl-pastoral-care/commit/e7fc206eba4c33d31382b3984ae5ee10d9dba824))
+
+##### New Features
+
+*  implement new splash screens for ios with red backgrounds ([#285](https://github.com/firstlovecenter/fl-pastoral-care/pull/285)) ([11e2f8a5](https://github.com/firstlovecenter/fl-pastoral-care/commit/11e2f8a5de58d8e67192382e83299d37eef9a1dc))
+*  implement equipment defaulters flow for gathering and stream level admins ([#283](https://github.com/firstlovecenter/fl-pastoral-care/pull/283)) ([a533659e](https://github.com/firstlovecenter/fl-pastoral-care/commit/a533659e34d1c3ae716e20da1bc076d7b0756d21))
+
+##### Bug Fixes
+
+*  set memberCount on creating church ([8fcd1830](https://github.com/firstlovecenter/fl-pastoral-care/commit/8fcd18301d62f5ea7f00d1d62c6bd647207b4753))
+*  fix admin names appearing as undefined when no admin is present in equipment defaulters flow ([#286](https://github.com/firstlovecenter/fl-pastoral-care/pull/286)) ([3ae69fe2](https://github.com/firstlovecenter/fl-pastoral-care/commit/3ae69fe2a4460a83aaa531aea1c76b69e799e380))
+*  fix confirmed higher aggregate for bussing records ([9e00f9ff](https://github.com/firstlovecenter/fl-pastoral-care/commit/9e00f9ff9a693277e1becfaf97a4346b3d51f85a))
+
+##### Performance Improvements
+
+*  relocate css for menu buttons to keep ui consistent ([ecf2b143](https://github.com/firstlovecenter/fl-pastoral-care/commit/ecf2b1431b471e066f1529238ea60489e750a2f3))
+
 #### 5.1.11 (2022-09-11)
 
 ##### Chores
