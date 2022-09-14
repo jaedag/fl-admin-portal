@@ -58,6 +58,20 @@ const GatheringServiceDashboard = () => {
     ),
   })
 
+  const submitCodeOfTheDay = async () => {
+    const promptBox = window.prompt('Enter the Code of The Day')
+
+    await SetCodeOfTheDay({ variables: { code: promptBox } })
+      .then((res) => {
+        alertMsg(
+          `Code of the day has been set to "${res?.data?.SetCodeOfTheDay}"`
+        )
+      })
+      .catch((error) => {
+        alertMsg(error)
+      })
+  }
+
   const onSubmit = (
     values: AdminFormOptions,
     onSubmitProps: FormikHelpers<AdminFormOptions>
@@ -162,12 +176,7 @@ const GatheringServiceDashboard = () => {
                 </Button>
               )}
 
-              <Button
-                onClick={() => {
-                  const promptBox = window.prompt('Enter the Code of The Day')
-                  SetCodeOfTheDay({ variables: { code: promptBox } })
-                }}
-              >
+              <Button onClick={() => submitCodeOfTheDay()}>
                 Code of the Day
               </Button>
             </RoleView>
