@@ -1,3 +1,5 @@
+import { LazyExoticComponent } from 'react'
+
 export type JSXChildren = {
   children: JSX.Element
 }
@@ -206,9 +208,9 @@ export type UserJobs = {
   link: string
 }
 
-export type RouteTypes = {
+export interface LazyRouteTypes {
   path: string
-  element: () => JSX.Element
+  element: LazyExoticComponent<() => JSX.Element>
   placeholder?: boolean
   roles: Role[]
 }

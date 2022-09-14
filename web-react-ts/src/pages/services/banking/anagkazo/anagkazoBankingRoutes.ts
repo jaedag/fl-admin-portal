@@ -1,11 +1,13 @@
-import { RouteTypes } from 'global-types'
-import ConfirmAnagkazoBanking from './ConfirmAnagkazoBanking'
-import TreasurerSelect from './TellerSelect'
+import { LazyRouteTypes } from 'global-types'
+import { lazy } from 'react'
 
-export const anagkazoRoutes: RouteTypes[] = [
+const ConfirmAnagkazoBanking = lazy(() => import('./ConfirmAnagkazoBanking'))
+const TellerSelect = lazy(() => import('./TellerSelect'))
+
+export const anagkazoRoutes: LazyRouteTypes[] = [
   {
     path: '/anagkazo/treasurer-select',
-    element: TreasurerSelect,
+    element: TellerSelect,
     roles: ['adminStream'],
     placeholder: false,
   },

@@ -1,4 +1,4 @@
-import React, { Dispatch, useState } from 'react'
+import React, { Dispatch, Suspense, useState } from 'react'
 import { Routes, BrowserRouter as Router, Route } from 'react-router-dom'
 import { MemberContext, SearchContext } from './contexts/MemberContext'
 import { ChurchContext } from './contexts/ChurchContext'
@@ -25,6 +25,7 @@ import SetPermissions from 'auth/SetPermissions'
 import { permitMe } from 'permission-utils'
 import useClickCard from 'hooks/useClickCard'
 import { useAuth0 } from '@auth0/auth0-react'
+import LoadingScreen from 'components/base-component/LoadingScreen'
 
 type AppPropsType = {
   themeOptions: {
@@ -143,31 +144,35 @@ const AppWithContext = (props: AppPropsType) => {
                 <>
                   <Navigation />
                   <div className={`bg ${theme}`}>
-                    <Routes>
-                      {[
-                        ...dashboards,
-                        ...directory,
-                        ...services,
-                        ...arrivals,
-                        ...campaigns,
-                        ...reconciliation,
-                        ...graphs,
-                      ].map((route, i) => (
-                        <Route
-                          key={i}
-                          path={route.path}
-                          element={
-                            <ProtectedRoute
-                              roles={route.roles ?? ['all']}
-                              placeholder={route.placeholder}
-                            >
-                              <route.element />
-                            </ProtectedRoute>
-                          }
-                        />
-                      ))}
-                      {[...memberDirectory, ...memberGrids, ...quickFacts].map(
-                        (route, i) => (
+                    <Suspense fallback={<LoadingScreen />}>
+                      <Routes>
+                        {[
+                          ...dashboards,
+                          ...directory,
+                          ...services,
+                          ...arrivals,
+                          ...campaigns,
+                          ...reconciliation,
+                          ...graphs,
+                        ].map((route, i) => (
+                          <Route
+                            key={i}
+                            path={route.path}
+                            element={
+                              <ProtectedRoute
+                                roles={route.roles ?? ['all']}
+                                placeholder={route.placeholder}
+                              >
+                                <route.element />
+                              </ProtectedRoute>
+                            }
+                          />
+                        ))}
+                        {[
+                          ...memberDirectory,
+                          ...memberGrids,
+                          ...quickFacts,
+                        ].map((route, i) => (
                           <Route
                             key={i}
                             path={route.path}
@@ -177,31 +182,31 @@ const AppWithContext = (props: AppPropsType) => {
                               </MembersDirectoryRoute>
                             }
                           />
-                        )
-                      )}
+                        ))}
 
-                      <Route
-                        path="/dashboard/servants"
-                        element={
-                          <ProtectedRouteHome
-                            roles={permitMe('Fellowship')}
-                            component={<ServantsDashboard />}
-                          />
-                        }
-                      />
-                      <Route
-                        path="/servants/church-list"
-                        element={
-                          <ProtectedRoute
-                            roles={permitMe('Fellowship')}
-                            placeholder
-                          >
-                            <ServantsChurchList />
-                          </ProtectedRoute>
-                        }
-                      />
-                      <Route path="*" element={<PageNotFound />} />
-                    </Routes>
+                        <Route
+                          path="/dashboard/servants"
+                          element={
+                            <ProtectedRouteHome
+                              roles={permitMe('Fellowship')}
+                              component={<ServantsDashboard />}
+                            />
+                          }
+                        />
+                        <Route
+                          path="/servants/church-list"
+                          element={
+                            <ProtectedRoute
+                              roles={permitMe('Fellowship')}
+                              placeholder
+                            >
+                              <ServantsChurchList />
+                            </ProtectedRoute>
+                          }
+                        />
+                        <Route path="*" element={<PageNotFound />} />
+                      </Routes>
+                    </Suspense>
                   </div>
                 </>
               </SetPermissions>

@@ -1,56 +1,126 @@
-import BacentaService from 'pages/services/record-service/BacentaService'
-import BacentaServiceDetails from 'pages/services/record-service/BacentaServiceDetails'
-import ConstituencyService from 'pages/services/record-service/ConstituencyService'
-import ConstituencyServiceDetails from 'pages/services/record-service/ConstituencyServiceDetails'
-import FellowshipService from 'pages/services/record-service/FellowshipService'
-import FellowshipServiceCancelled from 'pages/services/record-service/FellowshipServiceCancelled'
-import FellowshipServiceDetails from 'pages/services/record-service/FellowshipServiceDetails'
-import SontaService from 'pages/services/record-service/SontaService'
-import SontaServiceDetails from 'pages/services/record-service/SontaServiceDetails'
-import BacentaReport from 'pages/services/graphs/BacentaGraphs'
-import ConstituencyReport from 'pages/services/graphs/ConstituencyGraphs'
-import CouncilReport from 'pages/services/graphs/CouncilGraphs'
-import FellowshipReport from 'pages/services/graphs/FellowshipGraphs'
-import SontaReport from 'pages/services/graphs/SontaGraphs'
-import BacentaJoint from 'pages/services/BacentaJoint'
-import FellowshipBankingSlipSubmission from 'pages/services/banking/banking-slip/FellowshipSubmission'
-import FellowshipBankingSlipView from 'pages/services/banking/banking-slip/FellowshipView'
-import ConstituencyJoint from 'pages/services/ConstituencyJoint'
-import Banked from 'pages/services/defaulters/Banked'
-import BankingDefaulters from 'pages/services/defaulters/BankingDefaulters'
-import CancelledServicesThisWeek from 'pages/services/defaulters/CancelledServiceThisWeek'
-import CouncilByConstituency from 'pages/services/defaulters/CouncilByConstituency'
-import FormDefaulters from 'pages/services/defaulters/FormDefaulters'
-import ServicesThisWeek from 'pages/services/defaulters/ServicesThisWeek'
-import Fellowship from 'pages/services/Fellowship'
-import ServicesChurchList from 'pages/services/ServicesChurchList'
-import ServicesMenu from 'pages/services/ServicesMenu'
-import StreamReport from 'pages/services/graphs/StreamGraphs'
-import GatheringServiceReport from 'pages/services/graphs/GatheringServiceGraphs'
-import StreamByCouncil from 'pages/services/defaulters/StreamByCouncil'
-import GatheringServiceByStream from 'pages/services/defaulters/GatheringServiceByStream'
 import { permitLeaderAdmin, permitLeaderAdminArrivals } from 'permission-utils'
-import ConstituencyBankingSlipView from 'pages/services/banking/banking-slip/ConstituencyView'
-import ConstituencyBankingSlipSubmission from 'pages/services/banking/banking-slip/ConstituencySubmission'
-import CouncilService from 'pages/services/record-service/CouncilService'
-import CouncilServiceDetails from 'pages/services/record-service/CouncilServiceDetails'
-import CouncilBankingSlipView from 'pages/services/banking/banking-slip/CouncilView'
-import CouncilBankingSlipSubmission from 'pages/services/banking/banking-slip/CouncilSubmission'
-import CouncilJoint from 'pages/services/CouncilJoint'
-import StreamJoint from 'pages/services/StreamJoint'
-import GatheringServiceJoint from 'pages/services/GatheringServiceJoint'
-import StreamService from 'pages/services/record-service/StreamService'
-import StreamServiceDetails from 'pages/services/record-service/StreamServiceDetails'
-import GatheringServiceService from 'pages/services/record-service/GatheringServiceService'
-import GatheringServiceServiceDetails from 'pages/services/record-service/GatheringServiceServiceDetails'
-import Defaulters from './defaulters/Defaulters'
-import DefaultersDashboard from './defaulters/DefaultersDashboard'
-import TrendsMenu from './graphs/TrendsMenu'
 import { banking } from './banking/self-banking/selfBankingRoutes'
-import { RouteTypes } from 'global-types'
 import { anagkazoRoutes } from './banking/anagkazo/anagkazoBankingRoutes'
+import { LazyRouteTypes } from 'global-types'
+import { lazy } from 'react'
 
-export const services: RouteTypes[] = [
+const BacentaService = lazy(
+  () => import('pages/services/record-service/BacentaService')
+)
+const BacentaServiceDetails = lazy(
+  () => import('pages/services/record-service/BacentaServiceDetails')
+)
+const ConstituencyService = lazy(
+  () => import('pages/services/record-service/ConstituencyService')
+)
+const ConstituencyServiceDetails = lazy(
+  () => import('pages/services/record-service/ConstituencyServiceDetails')
+)
+const FellowshipService = lazy(
+  () => import('pages/services/record-service/FellowshipService')
+)
+const FellowshipServiceCancelled = lazy(
+  () => import('pages/services/record-service/FellowshipServiceCancelled')
+)
+const FellowshipServiceDetails = lazy(
+  () => import('pages/services/record-service/FellowshipServiceDetails')
+)
+const SontaService = lazy(
+  () => import('pages/services/record-service/SontaService')
+)
+const SontaServiceDetails = lazy(
+  () => import('pages/services/record-service/SontaServiceDetails')
+)
+const BacentaReport = lazy(() => import('pages/services/graphs/BacentaGraphs'))
+const ConstituencyReport = lazy(
+  () => import('pages/services/graphs/ConstituencyGraphs')
+)
+const CouncilReport = lazy(() => import('pages/services/graphs/CouncilGraphs'))
+const FellowshipReport = lazy(
+  () => import('pages/services/graphs/FellowshipGraphs')
+)
+const SontaReport = lazy(() => import('pages/services/graphs/SontaGraphs'))
+const BacentaJoint = lazy(() => import('pages/services/BacentaJoint'))
+const FellowshipBankingSlipSubmission = lazy(
+  () => import('pages/services/banking/banking-slip/FellowshipSubmission')
+)
+const FellowshipBankingSlipView = lazy(
+  () => import('pages/services/banking/banking-slip/FellowshipView')
+)
+const ConstituencyJoint = lazy(() => import('pages/services/ConstituencyJoint'))
+const Banked = lazy(() => import('pages/services/defaulters/Banked'))
+const BankingDefaulters = lazy(
+  () => import('pages/services/defaulters/BankingDefaulters')
+)
+const CancelledServicesThisWeek = lazy(
+  () => import('pages/services/defaulters/CancelledServiceThisWeek')
+)
+const CouncilByConstituency = lazy(
+  () => import('pages/services/defaulters/CouncilByConstituency')
+)
+const FormDefaulters = lazy(
+  () => import('pages/services/defaulters/FormDefaulters')
+)
+const ServicesThisWeek = lazy(
+  () => import('pages/services/defaulters/ServicesThisWeek')
+)
+const Fellowship = lazy(() => import('pages/services/Fellowship'))
+const ServicesChurchList = lazy(
+  () => import('pages/services/ServicesChurchList')
+)
+const ServicesMenu = lazy(() => import('pages/services/ServicesMenu'))
+const StreamReport = lazy(() => import('pages/services/graphs/StreamGraphs'))
+const GatheringServiceReport = lazy(
+  () => import('pages/services/graphs/GatheringServiceGraphs')
+)
+const StreamByCouncil = lazy(
+  () => import('pages/services/defaulters/StreamByCouncil')
+)
+const GatheringServiceByStream = lazy(
+  () => import('pages/services/defaulters/GatheringServiceByStream')
+)
+const ConstituencyBankingSlipView = lazy(
+  () => import('pages/services/banking/banking-slip/ConstituencyView')
+)
+const ConstituencyBankingSlipSubmission = lazy(
+  () => import('pages/services/banking/banking-slip/ConstituencySubmission')
+)
+const CouncilService = lazy(
+  () => import('pages/services/record-service/CouncilService')
+)
+const CouncilServiceDetails = lazy(
+  () => import('pages/services/record-service/CouncilServiceDetails')
+)
+const CouncilBankingSlipView = lazy(
+  () => import('pages/services/banking/banking-slip/CouncilView')
+)
+const CouncilBankingSlipSubmission = lazy(
+  () => import('pages/services/banking/banking-slip/CouncilSubmission')
+)
+const CouncilJoint = lazy(() => import('pages/services/CouncilJoint'))
+const StreamJoint = lazy(() => import('pages/services/StreamJoint'))
+const GatheringServiceJoint = lazy(
+  () => import('pages/services/GatheringServiceJoint')
+)
+const StreamService = lazy(
+  () => import('pages/services/record-service/StreamService')
+)
+const StreamServiceDetails = lazy(
+  () => import('pages/services/record-service/StreamServiceDetails')
+)
+const GatheringServiceService = lazy(
+  () => import('pages/services/record-service/GatheringServiceService')
+)
+const GatheringServiceServiceDetails = lazy(
+  () => import('pages/services/record-service/GatheringServiceServiceDetails')
+)
+const Defaulters = lazy(() => import('./defaulters/Defaulters'))
+const DefaultersDashboard = lazy(
+  () => import('./defaulters/DefaultersDashboard')
+)
+const TrendsMenu = lazy(() => import('./graphs/TrendsMenu'))
+
+export const services: LazyRouteTypes[] = [
   ...anagkazoRoutes,
   ...banking,
   {
@@ -147,7 +217,7 @@ export const services: RouteTypes[] = [
   },
 ]
 
-export const graphs: RouteTypes[] = [
+export const graphs: LazyRouteTypes[] = [
   {
     path: '/trends',
     element: TrendsMenu,

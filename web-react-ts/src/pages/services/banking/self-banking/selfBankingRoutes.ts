@@ -1,13 +1,15 @@
-import { RouteTypes } from 'global-types'
+import { LazyRouteTypes } from 'global-types'
 import { permitMe } from 'permission-utils'
-import ConfirmPayment from './ConfirmPayment'
-import ConstituencySelfBanking from './ConstituencySelfBanking'
-import FellowshipSelfBanking from './FellowshipSelfBanking'
-import PayConstituencyOffering from './PayConstituencyOffering'
-import PayFellowshipOffering from './PayFellowshipOffering'
-import ReceiptPage from './ReceiptPage'
+import { lazy } from 'react'
 
-export const banking: RouteTypes[] = [
+const ConfirmPayment = lazy(() => import('./ConfirmPayment'))
+const ConstituencySelfBanking = lazy(() => import('./ConstituencySelfBanking'))
+const FellowshipSelfBanking = lazy(() => import('./FellowshipSelfBanking'))
+const PayConstituencyOffering = lazy(() => import('./PayConstituencyOffering'))
+const PayFellowshipOffering = lazy(() => import('./PayFellowshipOffering'))
+const ReceiptPage = lazy(() => import('./ReceiptPage'))
+
+export const banking: LazyRouteTypes[] = [
   //Self Banking Options
   {
     path: '/services/fellowship/self-banking',

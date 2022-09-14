@@ -4,31 +4,47 @@ import {
   permitLeaderAdminArrivals,
   permitArrivalsHelpers,
 } from 'permission-utils'
-import Arrivals from 'pages/arrivals/Arrivals'
-import BacentaArrivals from 'pages/arrivals/BacentaArrivals'
-import StateBacentasNoActivity from 'pages/arrivals/StateBacentasNoActivity'
-import BacentasOnTheWay from 'pages/arrivals/StateBacentasOnTheWay'
-import BusFormConfirmation from 'pages/arrivals/FormAttendanceConfirmation'
-import BusFormDetails from 'pages/arrivals/BusFormDetails'
-import OnTheWaySubmission from 'pages/arrivals/FormAddVehicleRecord'
-import ConstituencyDashboard from 'pages/arrivals/DashboardConstituency'
-import CouncilDashboard from './DashboardCouncil'
-import MobilisationSubmission from './FormMobilisationSubmission'
-import MobilisationPicture from './PreMobilisationPicture'
-import BacentasMobilising from './StateBacentasMobilising'
-import StreamDashboard from './DashboardStream'
-import GatheringSerivceDashboard from './DashboardGatheringService'
-import BacentasHaveArrived from './StateBacentasArrived'
-import ChurchBySubChurch from './ChurchBySubChurch'
-import StateBacentasToCount from './StateBacentasToCount'
-import SetArrivalsTime from './Times/SetArrivalsTimes'
-import ArrivalTimes from './Times/ArrivalTimes'
-import ArrivalsCounters from './Helpers/ArrivalsCounters'
-import BacentasBelow8 from './StateBacentasBelow8'
-import { RouteTypes } from 'global-types'
-import BusVehicleFormDetails from './BusVehicleFormDetails'
+import { LazyRouteTypes } from 'global-types'
+import { lazy } from 'react'
 
-export const arrivals: RouteTypes[] = [
+const Arrivals = lazy(() => import('pages/arrivals/Arrivals'))
+const BacentaArrivals = lazy(() => import('pages/arrivals/BacentaArrivals'))
+const StateBacentasNoActivity = lazy(
+  () => import('pages/arrivals/StateBacentasNoActivity')
+)
+const BacentasOnTheWay = lazy(
+  () => import('pages/arrivals/StateBacentasOnTheWay')
+)
+const BusFormConfirmation = lazy(
+  () => import('pages/arrivals/FormAttendanceConfirmation')
+)
+const BusFormDetails = lazy(() => import('pages/arrivals/BusFormDetails'))
+const OnTheWaySubmission = lazy(
+  () => import('pages/arrivals/FormAddVehicleRecord')
+)
+const ConstituencyDashboard = lazy(
+  () => import('pages/arrivals/DashboardConstituency')
+)
+const CouncilDashboard = lazy(() => import('./DashboardCouncil'))
+const MobilisationSubmission = lazy(
+  () => import('./FormMobilisationSubmission')
+)
+const MobilisationPicture = lazy(() => import('./PreMobilisationPicture'))
+const BacentasMobilising = lazy(() => import('./StateBacentasMobilising'))
+const StreamDashboard = lazy(() => import('./DashboardStream'))
+const GatheringSerivceDashboard = lazy(
+  () => import('./DashboardGatheringService')
+)
+const BacentasHaveArrived = lazy(() => import('./StateBacentasArrived'))
+const ChurchBySubChurch = lazy(() => import('./ChurchBySubChurch'))
+const StateBacentasToCount = lazy(() => import('./StateBacentasToCount'))
+const SetArrivalsTime = lazy(() => import('./Times/SetArrivalsTimes'))
+const ArrivalTimes = lazy(() => import('./Times/ArrivalTimes'))
+const ArrivalsCounters = lazy(() => import('./Helpers/ArrivalsCounters'))
+const BacentasBelow8 = lazy(() => import('./StateBacentasBelow8'))
+const BusVehicleFormDetails = lazy(() => import('./BusVehicleFormDetails'))
+
+export const arrivals: LazyRouteTypes[] = [
   {
     path: '/arrivals',
     element: Arrivals,
