@@ -156,6 +156,7 @@ export const campaignsMutation = {
       const currentDate = new Date()
       const startDate = new Date(equipmentCampaign.campaign.equipmentStartDate)
       const endDate = new Date(equipmentCampaign.campaign.equipmentEndDate)
+      endDate.setDate(endDate.getDate() + 1)
 
       if (currentDate < startDate || currentDate > endDate) {
         throwErrorMsg('Equipment Deadline is up')
@@ -225,8 +226,9 @@ export const campaignsMutation = {
       const currentDate = new Date()
       const startDate = new Date(equipmentCampaign.campaign.equipmentStartDate)
       const endDate = new Date(equipmentCampaign.campaign.equipmentEndDate)
+      endDate.setDate(endDate.getDate() + 1)
 
-      if (!(currentDate >= startDate && currentDate <= endDate)) {
+      if (currentDate < startDate || currentDate > endDate) {
         throwErrorMsg('Equipment Deadline is up')
       }
 
