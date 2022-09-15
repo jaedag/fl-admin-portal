@@ -11,7 +11,6 @@ import {
   matchMemberQuery,
   updateMemberEmail,
   createMember,
-  addMemberToUpperChurch,
 } from '../cypher/resolver-cypher'
 import { getAuthToken } from '../authenticate'
 
@@ -54,11 +53,6 @@ const directoryMutation = {
     })
 
     const member = rearrangeCypherObject(createMemberResponse)
-
-    await session.run(addMemberToUpperChurch, {
-      memberId: member.id,
-      fellowshipId: args?.fellowship,
-    })
 
     return member
   },

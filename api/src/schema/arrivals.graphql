@@ -1,19 +1,43 @@
 extend type GatheringService {
   target: Int!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS*4]->(bacenta:Bacenta)
+      RETURN SUM(DISTINCT bacenta.target)
+      """
+    )
 }
 
 extend type Stream {
   target: Int!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS*3]->(bacenta:Bacenta)
+      RETURN SUM(DISTINCT bacenta.target)
+      """
+    )
 }
 
 extend type Council {
   target: Int!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS*2]->(bacenta:Bacenta)
+      RETURN SUM(DISTINCT bacenta.target)
+      """
+    )
 }
 
 extend type Constituency {
   sprinterCost: Float!
   urvanCost: Float!
   target: Int!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS]->(bacenta:Bacenta)
+      RETURN SUM(DISTINCT bacenta.target)
+      """
+    )
 }
 
 type SwellDate implements TimeGraphNode

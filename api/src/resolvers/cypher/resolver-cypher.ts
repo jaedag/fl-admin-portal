@@ -171,18 +171,3 @@ CREATE (member:Member:idl {whatsappNumber:$whatsappNumber})
            RETURN member  {.id, .firstName,.middleName,.lastName,.email,.phoneNumber,.whatsappNumber,
             fellowship:fellowship {.id,bacenta:bacenta{.id,constituency:constituency{.id}}}}
       `
-
-export const addMemberToUpperChurch = `
-  MATCH (church:Fellowship {id: $fellowshipId}) 
-      SET church.memberCount = church.memberCount + 1,
-      church.ministryMemberCount= church.ministryMemberCount + 1  
-    
-    WITH church
-   OPTIONAL MATCH (m:Member {id: $memberId})-[:BELONGS_TO]->(ministry:Ministry)
-   MATCH (church)<-[:HAS*1..7]-(higherChurch)
-   WITH count(ministry) as ministry, church, higherChurch
-   SET 
-    higherChurch.memberCount = higherChurch.memberCount + 1,
-    higherChurch.ministryMemberCount =  higherChurch.ministryMemberCount + ministry
-   RETURN church, higherChurch
-   `

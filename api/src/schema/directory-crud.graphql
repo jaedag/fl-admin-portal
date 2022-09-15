@@ -176,7 +176,6 @@ extend type Mutation {
     @cypher(
       statement: """
       CREATE (stream:Stream {id:apoc.create.uuid(), name:$name})
-          SET stream.memberCount = 0
 
       WITH stream
       MATCH (leader:Member {id: $leaderId})
@@ -216,7 +215,6 @@ extend type Mutation {
     @cypher(
       statement: """
       CREATE (gatheringService:GatheringService {id:apoc.create.uuid(), name:$name})
-        SET gatheringService.memberCount = 0
 
       WITH gatheringService
       MATCH (leader:Member {id: $leaderId})
@@ -252,7 +250,6 @@ extend type Mutation {
     @cypher(
       statement: """
        CREATE (council:Council {id:apoc.create.uuid(), name:$name})
-          SET council.memberCount = 0
 
       WITH council
       MATCH (leader:Member {id: $leaderId})
@@ -300,8 +297,7 @@ extend type Mutation {
          	SET
       	constituency.id = apoc.create.uuid(),
         constituency.sprinterCost = 0,
-        constituency.urvanCost = 0,
-        constituency.memberCount = 0
+        constituency.urvanCost = 0
       WITH constituency
       MATCH (leader:Member {id: $leaderId})
       MATCH (currentUser:Member {auth_id:$auth.jwt.sub})
@@ -347,8 +343,7 @@ extend type Mutation {
       statement: """
       CREATE (bacenta:Bacenta:IC:Active {name:$name})
         SET	bacenta.id = apoc.create.uuid(),
-        bacenta.target = 10,
-        bacenta.memberCount = 0
+        bacenta.target = 10
 
       WITH bacenta
        MATCH (leader:Member {id:$leaderId})
@@ -397,7 +392,6 @@ extend type Mutation {
       CREATE (sonta:Sonta)
          	SET
       	sonta.id = apoc.create.uuid(),
-        sonta.memberCount = 0
 
       WITH sonta
        MATCH (ministry:Ministry {id:$ministryId})
@@ -461,8 +455,8 @@ extend type Mutation {
          	SET
       	fellowship.id = apoc.create.uuid(),
         fellowship.bankingCode = lastCode.number + 1,
-        lastCode.number = fellowship.bankingCode,
-        fellowship.memberCount = 0
+        lastCode.number = fellowship.bankingCode
+
 
       WITH fellowship
       MATCH (bacenta:Bacenta {id: $bacentaId})
