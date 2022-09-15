@@ -3,7 +3,7 @@ extend type GatheringService {
     @cypher(
       statement: """
       MATCH (this)-[:HAS*4]->(bacenta:Bacenta)
-      RETURN SUM(DISTINCT bacenta.target)
+      RETURN SUM(bacenta.target)
       """
     )
 }
@@ -13,7 +13,7 @@ extend type Stream {
     @cypher(
       statement: """
       MATCH (this)-[:HAS*3]->(bacenta:Bacenta)
-      RETURN SUM(DISTINCT bacenta.target)
+      RETURN SUM(bacenta.target)
       """
     )
 }
@@ -23,7 +23,7 @@ extend type Council {
     @cypher(
       statement: """
       MATCH (this)-[:HAS*2]->(bacenta:Bacenta)
-      RETURN SUM(DISTINCT bacenta.target)
+      RETURN SUM(bacenta.target)
       """
     )
 }
@@ -35,7 +35,7 @@ extend type Constituency {
     @cypher(
       statement: """
       MATCH (this)-[:HAS]->(bacenta:Bacenta)
-      RETURN SUM(DISTINCT bacenta.target)
+      RETURN SUM(bacenta.target)
       """
     )
 }
