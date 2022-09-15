@@ -150,7 +150,7 @@ export const DISPLAY_MEMBER_CHURCH = gql`
       history(limit: 3) {
         id
         timeStamp
-        created_at {
+        createdAt {
           date
         }
         loggedBy {
@@ -214,7 +214,7 @@ export const DISPLAY_FELLOWSHIP_HISTORY = gql`
       history(limit: 5) {
         id
         timeStamp
-        created_at {
+        createdAt {
           date
         }
         loggedBy {
@@ -258,7 +258,7 @@ export const DISPLAY_SONTA = gql`
       history {
         id
         timeStamp
-        created_at {
+        createdAt {
           date
         }
         loggedBy {
@@ -327,7 +327,7 @@ export const DISPLAY_BACENTA = gql`
       history(limit: 5) {
         id
         timeStamp
-        created_at {
+        createdAt {
           date
         }
         loggedBy {
@@ -390,7 +390,7 @@ export const DISPLAY_CONSTITUENCY = gql`
       history(limit: 5) {
         id
         timeStamp
-        created_at {
+        createdAt {
           date
         }
         loggedBy {
@@ -451,7 +451,7 @@ export const DISPLAY_COUNCIL = gql`
       history(limit: 5) {
         id
         timeStamp
-        created_at {
+        createdAt {
           date
         }
         loggedBy {
@@ -506,7 +506,7 @@ export const DISPLAY_STREAM = gql`
       history(limit: 5) {
         id
         timeStamp
-        created_at {
+        createdAt {
           date
         }
         loggedBy {
@@ -564,7 +564,7 @@ export const DISPLAY_GATHERINGSERVICE = gql`
       history(limit: 5) {
         id
         timeStamp
-        created_at {
+        createdAt {
           date
         }
         loggedBy {
@@ -615,7 +615,7 @@ export const DISPLAY_OVERSIGHT = gql`
       history(limit: 5) {
         id
         timeStamp
-        created_at {
+        createdAt {
           date
         }
         loggedBy {

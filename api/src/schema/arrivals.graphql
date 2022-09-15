@@ -863,7 +863,7 @@ type BussingRecord implements Record @auth(rules: [{ isAuthenticated: true }]) {
       """
     )
   # Mobilisation
-  created_at: DateTime! #mobilisation time is the time the record was created
+  createdAt: DateTime! #mobilisation time is the time the record was created
   serviceDate: TimeGraph! @relationship(type: "BUSSED_ON", direction: OUT)
   mobilisationPicture: String!
   created_by: Member! @relationship(type: "LOGGED_BY", direction: OUT)
@@ -908,7 +908,7 @@ type BussingRecord implements Record @auth(rules: [{ isAuthenticated: true }]) {
 type VehicleRecord {
   id: ID!
   created_by: Member! @relationship(type: "LOGGED_BY", direction: OUT)
-  created_at: DateTime! #mobilisation time is the time the record was created
+  createdAt: DateTime! #mobilisation time is the time the record was created
   leaderDeclaration: Int!
   attendance: Int
   picture: String!

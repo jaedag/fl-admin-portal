@@ -7,7 +7,7 @@ MATCH (fellowship:Fellowship)<-[:BELONGS_TO]-(membersInMinistry:Member)-[:BELONG
 
 WITH fellowship, count(membersInMinistry) as ministryMemberCount
 SET fellowship.ministryMemberCount = ministryMemberCount
-RETURN distinct fellowship;
+RETURN distinct fellowship LIMTI 1;
 
 
 //record bacenta membership and ministry membership on the fellowship node

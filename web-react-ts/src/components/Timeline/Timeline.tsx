@@ -9,7 +9,7 @@ export type TimelineElement = {
   historyRecord: string
   loggedBy: Member
   timeStamp: string
-  created_at: {
+  createdAt: {
     date: string
   }
 }
@@ -40,7 +40,7 @@ const Timeline = (props: TimelineProps) => {
                   {element.historyRecord}
                   <br />
                   <small className="text-secondary">
-                    {`${parseDate(element.created_at?.date)} at ${parseNeoTime(
+                    {`${parseDate(element.createdAt?.date)} at ${parseNeoTime(
                       element.timeStamp
                     )}`}
                     {element?.loggedBy && ' by'}
@@ -73,7 +73,7 @@ const Timeline = (props: TimelineProps) => {
                 {element.historyRecord}
                 <br />
                 <small className="text-secondary">
-                  {`${parseDate(element.created_at?.date)} at ${parseNeoTime(
+                  {`${parseDate(element.createdAt?.date)} at ${parseNeoTime(
                     element.timeStamp
                   )}`}
                   {element?.loggedBy && ' by '}

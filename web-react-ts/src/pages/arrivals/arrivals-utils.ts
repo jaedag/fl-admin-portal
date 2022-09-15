@@ -88,7 +88,7 @@ export const beforeCountingDeadline = (
     arrivalStartTime < today &&
     today < countingEndTime
   ) {
-    if (isToday(bussing?.created_at) && !bussing?.arrivalTime) {
+    if (isToday(bussing?.createdAt) && !bussing?.arrivalTime) {
       //If the record was created today
       //And if the time is less than the arrivals cutoff time
       return true
@@ -124,7 +124,7 @@ export const beforeArrivalDeadline = (
       return true
     }
 
-    if (isToday(bussing?.created_at) && !bussing?.leaderDeclaration) {
+    if (isToday(bussing?.createdAt) && !bussing?.leaderDeclaration) {
       //If the record was created today
       //And if the time is less than the arrivals cutoff time
       return true
@@ -161,9 +161,9 @@ export const beforeMobilisationDeadline = (
   ) {
     if (!bussing) return true
 
-    if (!isToday(bussing?.created_at)) return true
+    if (!isToday(bussing?.createdAt)) return true
 
-    if (isToday(bussing?.created_at) && !bussing?.mobilisationPicture) {
+    if (isToday(bussing?.createdAt) && !bussing?.mobilisationPicture) {
       return true //Should Fill
     }
   }

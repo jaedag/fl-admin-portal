@@ -253,7 +253,7 @@ export type VerbTypes =
 export type ServiceRecord = {
   __typename: 'ServiceRecord' | 'RehearsalRecord'
   id: string
-  created_at: string
+  createdAt: string
   created_by: Member
   attendance: number
   income: number

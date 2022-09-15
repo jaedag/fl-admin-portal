@@ -44,7 +44,7 @@ const checkIfLastServiceBanked = async (
   if (!('bankingSlip' in record || record.transactionStatus === 'success')) {
     throwErrorMsg(
       `Please bank outstanding offering for your service filled on ${getHumanReadableDate(
-        record.created_at
+        record.createdAt
       )} before attempting to bank this week's offering`
     )
 

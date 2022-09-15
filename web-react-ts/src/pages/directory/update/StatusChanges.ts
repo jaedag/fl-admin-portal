@@ -65,7 +65,7 @@ export const MAKE_BACENTA_IC = gql`
       history(limit: 5) {
         id
         timeStamp
-        created_at {
+        createdAt {
           date
         }
         loggedBy {
@@ -89,7 +89,7 @@ export const MAKE_BACENTA_GRADUATED = gql`
       history(limit: 5) {
         id
         timeStamp
-        created_at {
+        createdAt {
           date
         }
         loggedBy {

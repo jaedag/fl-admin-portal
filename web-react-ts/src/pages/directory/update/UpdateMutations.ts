@@ -90,7 +90,7 @@ export const LOG_MEMBER_HISTORY = gql`
       history(limit: 3) {
         id
         timeStamp
-        created_at {
+        createdAt {
           date
         }
         loggedBy {
@@ -128,7 +128,7 @@ export const UPDATE_MEMBER_FELLOWSHIP = gql`
       history(limit: 3) {
         id
         timeStamp
-        created_at {
+        createdAt {
           date
         }
         loggedBy {
@@ -187,7 +187,7 @@ export const UPDATE_STREAM_MUTATION = gql`
       history(limit: 5) {
         id
         timeStamp
-        created_at {
+        createdAt {
           date
         }
         loggedBy {
@@ -246,7 +246,7 @@ export const UPDATE_GATHERINGSERVICE_MUTATION = gql`
       history(limit: 5) {
         id
         timeStamp
-        created_at {
+        createdAt {
           date
         }
         loggedBy {
@@ -301,7 +301,7 @@ export const UPDATE_COUNCIL_MUTATION = gql`
       history(limit: 5) {
         id
         timeStamp
-        created_at {
+        createdAt {
           date
         }
         loggedBy {
@@ -363,7 +363,7 @@ export const UPDATE_CONSTITUENCY_MUTATION = gql`
       history(limit: 5) {
         id
         timeStamp
-        created_at {
+        createdAt {
           date
         }
         loggedBy {
@@ -427,7 +427,7 @@ export const UPDATE_BACENTA_MUTATION = gql`
       history(limit: 5) {
         id
         timeStamp
-        created_at {
+        createdAt {
           date
         }
         loggedBy {
@@ -463,7 +463,7 @@ export const UPDATE_SONTA_MUTATION = gql`
       history {
         id
         timeStamp
-        created_at {
+        createdAt {
           date
         }
         loggedBy {
@@ -524,7 +524,7 @@ export const UPDATE_FELLOWSHIP = gql`
       history(limit: 5) {
         id
         timeStamp
-        created_at {
+        createdAt {
           date
         }
         loggedBy {

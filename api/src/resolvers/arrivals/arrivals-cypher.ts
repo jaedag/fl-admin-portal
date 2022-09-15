@@ -106,7 +106,7 @@ RETURN bacenta.sprinterCost AS sprinterCost, bacenta.urvanCost AS uvanCost, bace
 `
 
 export const uploadMobilisationPicture = `
-CREATE (bussingRecord:BussingRecord {created_at:datetime()})
+CREATE (bussingRecord:BussingRecord {createdAt:datetime()})
     SET bussingRecord.id = apoc.create.uuid(),
     bussingRecord.mobilisationPicture = $mobilisationPicture
 
@@ -169,7 +169,7 @@ MATCH (bussingRecord:BussingRecord {id: $bussingRecordId})
 MERGE (bussingRecord)-[:INCLUDES_RECORD]->(vehicleRecord)
 
 SET vehicleRecord.leaderDeclaration = $leaderDeclaration,
-vehicleRecord.created_at = datetime(),
+vehicleRecord.createdAt = datetime(),
 vehicleRecord.vehicleCost = $vehicleCost,
 vehicleRecord.personalContribution = $personalContribution,
 vehicleRecord.vehicle = $vehicle,

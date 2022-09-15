@@ -14,7 +14,7 @@ type Network = 'MTN' | 'Vodafone' | 'AirtelTigo' | 'Airtel' | 'Tigo'
 export interface BussingRecord {
   id: string
   week: number
-  created_at: string
+  createdAt: string
   mobilisationPicture: string
   created_by: Member
   serviceDate: TimeGraph
@@ -59,7 +59,7 @@ export type AggregateBussingRecords = {
 export type VehicleRecord = {
   id: string
   created_by: Member
-  created_at: string
+  createdAt: string
 
   leaderDeclaration: number
   attendance: number

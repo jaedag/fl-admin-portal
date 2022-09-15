@@ -79,7 +79,7 @@ const BusVehicleFormDetails = () => {
                       loading={loading}
                       className="td-placeholder"
                     >
-                      <td>{getHumanReadableDate(vehicle?.created_at)}</td>
+                      <td>{getHumanReadableDate(vehicle?.createdAt)}</td>
                     </PlaceholderCustom>
                   </tr>
 

@@ -1030,7 +1030,7 @@ extend type Constituency {
 
 interface Record {
   id: ID
-  created_at: DateTime!
+  createdAt: DateTime!
   created_by: Member @relationship(type: "LOGGED_BY", direction: OUT)
 }
 
@@ -1042,7 +1042,7 @@ interface HadService {
 
 type ServiceRecord implements Record @auth(rules: [{ isAuthenticated: true }]) {
   id: ID!
-  created_at: DateTime!
+  createdAt: DateTime!
   created_by: Member
   serviceDate: TimeGraph @relationship(type: "SERVICE_HELD_ON", direction: OUT)
   week: Int
@@ -1077,7 +1077,7 @@ type ServiceRecord implements Record @auth(rules: [{ isAuthenticated: true }]) {
 
 type NoService implements Record @auth(rules: [{ isAuthenticated: true }]) {
   id: ID!
-  created_at: DateTime!
+  createdAt: DateTime!
   created_by: Member!
   serviceDate: TimeGraph @relationship(type: "SERVICE_HELD_ON", direction: OUT)
   week: Int!
@@ -1094,7 +1094,7 @@ type NoService implements Record @auth(rules: [{ isAuthenticated: true }]) {
 type ServiceLog @auth(rules: [{ isAuthenticated: true }]) {
   id: ID
   historyRecord: String #leader was transferred to
-  created_at: TimeGraph @relationship(type: "RECORDED_ON", direction: OUT)
+  createdAt: TimeGraph @relationship(type: "RECORDED_ON", direction: OUT)
   loggedBy: Member @relationship(type: "LOGGED_BY", direction: OUT)
   serviceRecords: [ServiceRecord!]!
     @relationship(type: "HAS_SERVICE", direction: OUT)
@@ -1131,7 +1131,7 @@ extend type Mutation {
   ): NoService!
     @cypher(
       statement: """
-      CREATE (serviceRecord:ServiceRecord:NoService {created_at:datetime()})
+      CREATE (serviceRecord:ServiceRecord:NoService {createdAt:datetime()})
         SET serviceRecord.id = apoc.create.uuid(),
         serviceRecord.noServiceReason = $noServiceReason
 

@@ -1,5 +1,5 @@
 const recordService = `
-CREATE (serviceRecord:ServiceRecord {created_at:datetime()})
+CREATE (serviceRecord:ServiceRecord {createdAt:datetime()})
         SET serviceRecord.id = apoc.create.uuid(),
         serviceRecord.attendance = $attendance,
         serviceRecord.familyPicture = $familyPicture

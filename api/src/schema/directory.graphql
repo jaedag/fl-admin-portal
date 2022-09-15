@@ -277,7 +277,7 @@ type HistoryLog @auth(rules: [{ isAuthenticated: true }]) {
   id: ID @id
   timeStamp: DateTime
   historyRecord: String #leader was transferred to
-  created_at: TimeGraph @relationship(type: "RECORDED_ON", direction: OUT)
+  createdAt: TimeGraph @relationship(type: "RECORDED_ON", direction: OUT)
   loggedBy: Member @relationship(type: "LOGGED_BY", direction: OUT)
   leaders: [Member!]! @relationship(type: "HAS_HISTORY", direction: IN)
   fellowship: [Fellowship!]! @relationship(type: "HAS_HISTORY", direction: IN)

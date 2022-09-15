@@ -16,7 +16,7 @@ SET
 record.id = apoc.create.uuid(),
 record.offeringBags = toInteger($offeringBags),
 record.bluetoothSpeakers = toInteger($bluetoothSpeakers),
-record.created_at = datetime()
+record.createdAt = datetime()
 
 MERGE (log)-[:HAS_EQUIPMENT_RECORD]->(record)
 MERGE (date:TimeGraph {date:date($date)})
@@ -41,7 +41,7 @@ CREATE (record:EquipmentRecord)
 SET
 record.id = apoc.create.uuid(),
 record.pulpits = toInteger($pulpits),
-record.created_at = datetime()
+record.createdAt = datetime()
 
 MERGE (log)-[:HAS_EQUIPMENT_RECORD]->(record)
 MERGE (date:TimeGraph {date:date($date)})

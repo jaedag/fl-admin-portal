@@ -34,7 +34,7 @@ type FellowshipEquipment implements EquipmentRecord {
     @relationship(type: "HAS_EQUIPMENT_RECORD", direction: IN)
   equipmentDate: TimeGraph!
     @relationship(type: "HAS_EQUIPMENT_DATE", direction: OUT)
-  created_at: DateTime!
+  createdAt: DateTime!
 }
 
 extend type GatheringService {

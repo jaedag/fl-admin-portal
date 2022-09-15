@@ -9,7 +9,7 @@ RETURN church.id AS id, church.name AS name, labels(church) AS labels, record AS
 `
 
 export const recordService = `
-CREATE (serviceRecord:ServiceRecord {created_at:datetime()})
+CREATE (serviceRecord:ServiceRecord {createdAt:datetime()})
         SET serviceRecord.id = apoc.create.uuid(),
         serviceRecord.attendance = $attendance,
         serviceRecord.income = $income,

@@ -13,7 +13,7 @@ export const FELLOWSHIP_LEADER_DASHBOARD = gql`
         id
         historyRecord
         serviceRecords {
-          created_at
+          createdAt
           attendance
           income
           serviceDate {

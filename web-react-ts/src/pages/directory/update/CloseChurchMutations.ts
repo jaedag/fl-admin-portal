@@ -69,7 +69,7 @@ export const MAKE_STREAM_INACTIVE = gql`
       history(limit: 5) {
         id
         timeStamp
-        created_at {
+        createdAt {
           date
         }
         loggedBy {
@@ -95,7 +95,7 @@ export const MAKE_GATHERING_SERVICE_INACTIVE = gql`
       history(limit: 5) {
         id
         timeStamp
-        created_at {
+        createdAt {
           date
         }
         loggedBy {

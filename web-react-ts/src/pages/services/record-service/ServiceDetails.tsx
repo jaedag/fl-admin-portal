@@ -39,7 +39,7 @@ const ServiceDetails = ({ service, church, loading }: ServiceDetailsProps) => {
         'Date of Service',
         new Date(service.serviceDate.date).toDateString() ?? '',
       ],
-      ['Form Filled At', parseNeoTime(service.created_at) ?? ''],
+      ['Form Filled At', parseNeoTime(service.createdAt) ?? ''],
       ['Attendance', service.attendance.toString()],
       ['Income', service.income.toString()],
       ...service.treasurers.map((treasurer, i) => [
@@ -53,7 +53,7 @@ const ServiceDetails = ({ service, church, loading }: ServiceDetailsProps) => {
         'Date of Service',
         new Date(service.serviceDate.date).toDateString() ?? '',
       ],
-      ['Form Filled At', parseNeoTime(service.created_at) ?? ''],
+      ['Form Filled At', parseNeoTime(service.createdAt) ?? ''],
       ['Attendance', service.attendance.toString()],
     ]
   }

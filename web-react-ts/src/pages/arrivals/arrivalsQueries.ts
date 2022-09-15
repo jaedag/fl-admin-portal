@@ -269,7 +269,7 @@ export const BACENTA_ARRIVALS = gql`
       arrivalsCodeOfTheDay
       bussing(limit: 1) {
         id
-        created_at
+        createdAt
         serviceDate {
           date
         }
@@ -371,7 +371,7 @@ export const DISPLAY_BUSSING_RECORDS = gql`
   query DisplayBussingRecords($bussingRecordId: ID!, $bacentaId: ID!) {
     bussingRecords(where: { id: $bussingRecordId }) {
       id
-      created_at
+      createdAt
       created_by {
         id
         firstName
@@ -422,7 +422,7 @@ export const DISPLAY_VEHICLE_RECORDS = gql`
   query DisplayVehicleRecords($vehicleRecordId: ID!, $bacentaId: ID!) {
     vehicleRecords(where: { id: $vehicleRecordId }) {
       id
-      created_at
+      createdAt
       created_by {
         id
         firstName

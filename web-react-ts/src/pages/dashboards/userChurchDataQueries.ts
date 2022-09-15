@@ -12,7 +12,7 @@ export const SERVANT_FELLOWSHIP_LEADER = gql`
         vacationStatus
 
         services(limit: 4) {
-          created_at
+          createdAt
           attendance
           income
           week
@@ -319,7 +319,7 @@ export const SERVANTS_COUNCIL_ARRIVALS_ADMIN = gql`
           fullName
         }
         services(limit: 4) {
-          created_at
+          createdAt
           attendance
           income
           week
@@ -348,7 +348,7 @@ export const SERVANTS_STREAM_ARRIVALS_ADMIN = gql`
           fullName
         }
         services(limit: 4) {
-          created_at
+          createdAt
           attendance
           income
           week
@@ -371,7 +371,7 @@ export const SERVANTS_GATHERINGSERVICE_ARRIVALS_ADMIN = gql`
         name
 
         services(limit: 4) {
-          created_at
+          createdAt
           attendance
           income
           week

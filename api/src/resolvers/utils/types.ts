@@ -127,7 +127,7 @@ export type ServiceRecord = {
   __typename: 'ServiceRecord' | 'RehearsalRecord'
   id: string
   // eslint-disable-next-line camelcase
-  created_at: string
+  createdAt: string
   attendance: number
   income: number
   week: number

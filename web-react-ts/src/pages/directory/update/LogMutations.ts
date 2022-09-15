@@ -21,7 +21,7 @@ export const LOG_FELLOWSHIP_HISTORY = gql`
       history(limit: 5) {
         id
         timeStamp
-        created_at {
+        createdAt {
           date
         }
         loggedBy {
@@ -62,7 +62,7 @@ export const LOG_BACENTA_HISTORY = gql`
       history(limit: 5) {
         id
         timeStamp
-        created_at {
+        createdAt {
           date
         }
         loggedBy {
@@ -103,7 +103,7 @@ export const LOG_CONSTITUENCY_HISTORY = gql`
       history(limit: 5) {
         id
         timeStamp
-        created_at {
+        createdAt {
           date
         }
         loggedBy {
@@ -144,7 +144,7 @@ export const LOG_COUNCIL_HISTORY = gql`
       history(limit: 5) {
         id
         timeStamp
-        created_at {
+        createdAt {
           date
         }
         loggedBy {
@@ -185,7 +185,7 @@ export const LOG_STREAM_HISTORY = gql`
       history(limit: 5) {
         id
         timeStamp
-        created_at {
+        createdAt {
           date
         }
         loggedBy {
@@ -225,7 +225,7 @@ export const LOG_GATHERINGSERVICE_HISTORY = gql`
       history(limit: 5) {
         id
         timeStamp
-        created_at {
+        createdAt {
           date
         }
         loggedBy {
@@ -261,7 +261,7 @@ export const LOG_SONTA_HISTORY = gql`
       history {
         id
         timeStamp
-        created_at {
+        createdAt {
           date
         }
         loggedBy {

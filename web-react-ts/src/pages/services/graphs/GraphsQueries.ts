@@ -13,7 +13,7 @@ export const FELLOWSHIP_GRAPHS = gql`
       }
       services(limit: 4) {
         id
-        created_at
+        createdAt
         attendance
         income
         week
@@ -50,7 +50,7 @@ export const BACENTA_GRAPHS = gql`
       }
       services(limit: 4) {
         id
-        created_at
+        createdAt
         attendance
         income
         week
@@ -60,7 +60,7 @@ export const BACENTA_GRAPHS = gql`
       }
       bussing(limit: 4) {
         id
-        created_at
+        createdAt
         attendance
         week
         serviceDate {
@@ -113,7 +113,7 @@ export const CONSTITUENCY_GRAPHS = gql`
       }
       services(limit: 4) {
         id
-        created_at
+        createdAt
         attendance
         income
         week
@@ -151,7 +151,7 @@ export const COUNCIL_GRAPHS = gql`
       }
       services(limit: 4) {
         id
-        created_at
+        createdAt
         attendance
         income
         week
@@ -189,7 +189,7 @@ export const STREAM_GRAPHS = gql`
       }
       services(limit: 4) {
         id
-        created_at
+        createdAt
         attendance
         income
         week
@@ -227,7 +227,7 @@ export const GATHERINGSERVICE_GRAPHS = gql`
       }
       services(limit: 4) {
         id
-        created_at
+        createdAt
         attendance
         income
         week
@@ -264,7 +264,7 @@ export const OVERSIGHT_GRAPHS = gql`
       }
       services(limit: 4) {
         id
-        created_at
+        createdAt
         attendance
         income
         week

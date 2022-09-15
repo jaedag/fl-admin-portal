@@ -10,7 +10,7 @@ export const FELLOWSHIP_BANKING_SLIP_QUERIES = gql`
         id
         stream_name
         noServiceReason
-        created_at
+        createdAt
         serviceDate {
           date
         }
@@ -50,7 +50,7 @@ export const CONSTITUENCY_BANKING_SLIP_QUERIES = gql`
       services(limit: 20) {
         id
         noServiceReason
-        created_at
+        createdAt
         serviceDate {
           date
         }
@@ -83,7 +83,7 @@ export const COUNCIL_BANKING_SLIP_QUERIES = gql`
       services(limit: 20) {
         id
         noServiceReason
-        created_at
+        createdAt
         serviceDate {
           date
         }
@@ -136,7 +136,7 @@ export const FELLOWSHIP_SERVICE_RECORDS = gql`
           bankingCode
         }
       }
-      created_at
+      createdAt
       created_by {
         id
         firstName
@@ -163,7 +163,7 @@ export const CONSTITUENCY_SERVICE_RECORDS = gql`
           name
         }
       }
-      created_at
+      createdAt
       created_by {
         id
         firstName
@@ -190,7 +190,7 @@ export const COUNCIL_SERVICE_RECORDS = gql`
           name
         }
       }
-      created_at
+      createdAt
       created_by {
         id
         firstName

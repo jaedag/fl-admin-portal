@@ -61,7 +61,7 @@ export const UPDATE_BACENTA_BUSSING_DETAILS = gql`
       history(limit: 5) {
         id
         timeStamp
-        created_at {
+        createdAt {
           date
         }
         loggedBy {
@@ -98,7 +98,7 @@ export const UPDATE_BUS_PAYMENT_DETAILS = gql`
       history(limit: 5) {
         id
         timeStamp
-        created_at {
+        createdAt {
           date
         }
         loggedBy {
