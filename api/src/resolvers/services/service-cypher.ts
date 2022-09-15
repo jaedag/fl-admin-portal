@@ -44,7 +44,7 @@ export const aggregateServiceDataOnHigherChurches = `
    OR church:Stream OR church:GatheringService OR church:Oversight OR church:Denomination
    MATCH (church)<-[:HAS*1..7]-(higherChurch)
    MATCH (higherChurch)-[:CURRENT_HISTORY]->(log:ServiceLog)
-   MERGE (aggregate:AggregateBussingRecord {id: date().week + '-' + date().year + '-' + log.id})
+   MERGE (aggregate:AggregateServiceRecord {id: date().week + '-' + date().year + '-' + log.id})
    MERGE (log)-[:HAS_SERVICE_AGGREGATE]->(aggregate)
    ON CREATE SET
       aggregate.id = apoc.create.uuid(),
