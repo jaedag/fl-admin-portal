@@ -1,3 +1,18 @@
+#### 5.1.13 (2022-09-15)
+
+##### Bug Fixes
+
+*  fix bug giving error when people submit service data ([74e09dd6](https://github.com/firstlovecenter/fl-pastoral-care/commit/74e09dd67ee0c9fe1ce64dffb0d27144d7fc185a))
+*  change c 'created_at' to createdAt ([01a67341](https://github.com/firstlovecenter/fl-pastoral-care/commit/01a67341655c7d3fdad3b124590ade5b05853f75))
+*  remove the use of the distinct keyword on sum of bacenta target ([d8499164](https://github.com/firstlovecenter/fl-pastoral-care/commit/d8499164fab252b39b5aaffd0a992321dd2049d7))
+*  replace static target and member count with dynamic counts ([5efb9936](https://github.com/firstlovecenter/fl-pastoral-care/commit/5efb99367714eda14aea9f5f676fe2ab4d63e45d))
+*  show modal pop up to confirm code of the day has been set in arrivals ([#287](https://github.com/firstlovecenter/fl-pastoral-care/pull/287)) ([674aebbe](https://github.com/firstlovecenter/fl-pastoral-care/commit/674aebbedbed7c542a9c4eff9a9b298d252515ef))
+*  modify income bar on aggregate graphs to no longer be clickable ([1db6a9e7](https://github.com/firstlovecenter/fl-pastoral-care/commit/1db6a9e7123d4aee890572226d48d8691ed66a61))
+
+##### Performance Improvements
+
+*  implement some non null constraints in the directory api ([5b8d47a5](https://github.com/firstlovecenter/fl-pastoral-care/commit/5b8d47a5a9f2d296cdd3f7cc8487025b9c10f3a7))
+
 #### 5.1.12 (2022-09-14)
 
 ##### Chores
