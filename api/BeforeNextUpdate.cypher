@@ -1,67 +1,3 @@
-MATCH (fellowship:Fellowship)<-[:BELONGS_TO]-(members:Member)
-WITH fellowship, count(members) as memberCount
-SET fellowship.memberCount = memberCount
-
-WITH fellowship
-MATCH (fellowship:Fellowship)<-[:BELONGS_TO]-(membersInMinistry:Member)-[:BELONGS_TO]->(:Ministry)
-
-WITH fellowship, count(membersInMinistry) as ministryMemberCount
-SET fellowship.ministryMemberCount = ministryMemberCount
-RETURN distinct fellowship LIMTI 1;
-
-
-//record bacenta membership and ministry membership on the fellowship node
-MATCH (church:Bacenta)-[:HAS]->(lowerChurch:Fellowship)
-WITH church, sum(lowerChurch.memberCount) as memberCount, sum(lowerChurch.ministryMemberCount) as ministryMemberCount
-SET church.memberCount = memberCount,
-church.ministryMemberCount = ministryMemberCount
-RETURN church limit 25;
-
-//record constituency membership and ministry membership on the fellowship node
-MATCH (church:Constituency)-[:HAS]->(lowerChurch:Bacenta)
-WITH church, sum(lowerChurch.memberCount) as memberCount, sum(lowerChurch.ministryMemberCount) as ministryMemberCount
-SET church.memberCount = memberCount,
-church.ministryMemberCount = ministryMemberCount
-RETURN church limit 25;
-
-//record council membership and ministry membership on the fellowship node
-MATCH (church:Council)-[:HAS]->(lowerChurch:Constituency)
-WITH church, sum(lowerChurch.memberCount) as memberCount, sum(lowerChurch.ministryMemberCount) as ministryMemberCount
-SET church.memberCount = memberCount,
-church.ministryMemberCount = ministryMemberCount
-RETURN church limit 25;
-
-//record stream membership and ministry membership on the fellowship node
-MATCH (church:Stream)-[:HAS]->(lowerChurch:Council)
-WITH church, sum(lowerChurch.memberCount) as memberCount, sum(lowerChurch.ministryMemberCount) as ministryMemberCount
-SET church.memberCount = memberCount,
-church.ministryMemberCount = ministryMemberCount
-RETURN church limit 25;
-
-
-//record gatheringService membership and ministry membership on the fellowship node
-MATCH (church:GatheringService)-[:HAS]->(lowerChurch:Stream)
-WITH church, sum(lowerChurch.memberCount) as memberCount, sum(lowerChurch.ministryMemberCount) as ministryMemberCount
-SET church.memberCount = memberCount,
-church.ministryMemberCount = ministryMemberCount
-RETURN church limit 25;
-
-//record oversight membership and ministry membership on the fellowship node
-MATCH (church:Oversight)-[:HAS]->(lowerChurch:GatheringService)
-WITH church, sum(lowerChurch.memberCount) as memberCount, sum(lowerChurch.ministryMemberCount) as ministryMemberCount
-SET church.memberCount = memberCount,
-church.ministryMemberCount = ministryMemberCount
-RETURN church limit 25;
-
-//record denomination membership and ministry membership on the fellowship node
-MATCH (church:Denomination)-[:HAS]->(lowerChurch:Oversight)
-WITH church, sum(lowerChurch.memberCount) as memberCount, sum(lowerChurch.ministryMemberCount) as ministryMemberCount
-SET church.memberCount = memberCount,
-church.ministryMemberCount = ministryMemberCount
-RETURN church limit 25;
-
-//////////
-
 MATCH (record:ServiceRecord) WHERE record.familyPicture IS NULL AND record.noServiceReason IS NULL
 DETACH DELETE record;
 MATCH (bussing:BussingRecord) WHERE bussing.mobilisationPicture IS NULL
@@ -361,9 +297,111 @@ MERGE (currentLog)-[:HAS_BUSSING_AGGREGATE]->(agg)
 RETURN agg;
 
 
-CREATE CONSTRAINT bussingAggregateNeedsAttendance FOR (n:BussingRecordAggregate) REQUIRE n.target IS NOT NULL;
-CREATE CONSTRAINT bussingAggregateNeedsYear FOR (n:BussingRecordAggregate) REQUIRE n.year IS NOT NULL;
-CREATE CONSTRAINT bussingAggregateNeedsWeek FOR (n:BussingRecordAggregate) REQUIRE n.week IS NOT NULL;
-CREATE CONSTRAINT serviceAggregateNeedsAttendance FOR (n:ServiceRecordAggregate) REQUIRE n.attendance IS NOT NULL;
-CREATE CONSTRAINT serviceAggregateNeedsWeek FOR (n:ServiceRecordAggregate) REQUIRE n.week IS NOT NULL;
-CREATE CONSTRAINT serviceAggregateNeedsYear FOR (n:ServiceRecordAggregate) REQUIRE n.year IS NOT NULL;
+
+
+PROFILE MATCH (fellowship {id: "e81bf51b-7ef5-4cdb-b448-47549741be4e"}) 
+   WHERE fellowship:Fellowship OR fellowship:Bacenta OR fellowship:Constituency OR fellowship:Council
+   OR fellowship:Stream OR fellowship:GatheringService OR fellowship:Oversight OR fellowship:Denomination
+
+
+   MATCH (fellowship)<-[:HAS]-(bacenta)
+   MATCH (bacenta)-[:CURRENT_HISTORY]->(log:ServiceLog)
+   MERGE (aggregate:AggregateServiceRecord {id: date().week + '-' + date().year + '-' + log.id, week: date().week, year: date().year})
+   MERGE (log)-[:HAS_SERVICE_AGGREGATE]->(aggregate)
+
+   WITH bacenta, aggregate
+
+   MATCH (bacenta)-[:HAS]->(fellowships)
+   MATCH (date:TimeGraph {date: date()})
+   MATCH (fellowships)-[:CURRENT_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date)
+   WITH bacenta, aggregate, SUM(record.attendance) AS lowerAttendance, SUM(record.income) AS lowerIncome
+
+   SET aggregate.attendance = lowerAttendance,
+   aggregate.income = lowerIncome
+
+   WITH bacenta AS lowerChurch
+   MATCH (lowerChurch)<-[:HAS]-(constituency)
+   MATCH (constituency)-[:CURRENT_HISTORY]->(log:ServiceLog)
+   MERGE (aggregate:AggregateServiceRecord {id: date().week + '-' + date().year + '-' + log.id, week: date().week, year: date().year})
+   MERGE (log)-[:HAS_SERVICE_AGGREGATE]->(aggregate)
+
+   WITH constituency, aggregate
+   MATCH (constituency)-[:HAS]->(lowerChurch)
+   MATCH (lowerChurch)-[:CURRENT_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(record:AggregateServiceRecord {week: date().week, year: date().year})
+   WITH constituency, aggregate, SUM(record.attendance) AS lowerAttendance, SUM(record.income) AS lowerIncome
+
+   SET aggregate.attendance = lowerAttendance,
+   aggregate.income = lowerIncome
+
+WITH constituency AS lowerChurch
+   MATCH (lowerChurch)<-[:HAS]-(council)
+   MATCH (council)-[:CURRENT_HISTORY]->(log:ServiceLog)
+   MERGE (aggregate:AggregateServiceRecord {id: date().week + '-' + date().year + '-' + log.id, week: date().week, year: date().year})
+   MERGE (log)-[:HAS_SERVICE_AGGREGATE]->(aggregate)
+
+   WITH council, aggregate
+   MATCH (council)-[:HAS]->(lowerChurch)
+   MATCH (lowerChurch)-[:CURRENT_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(record:AggregateServiceRecord {week: date().week, year: date().year})
+   WITH council, aggregate, SUM(record.attendance) AS lowerAttendance, SUM(record.income) AS lowerIncome
+
+   SET aggregate.attendance = lowerAttendance,
+   aggregate.income = lowerIncome
+
+   WITH council AS lowerChurch
+   MATCH (lowerChurch)<-[:HAS]-(stream)
+   MATCH (stream)-[:CURRENT_HISTORY]->(log:ServiceLog)
+   MERGE (aggregate:AggregateServiceRecord {id: date().week + '-' + date().year + '-' + log.id, week: date().week, year: date().year})
+   MERGE (log)-[:HAS_SERVICE_AGGREGATE]->(aggregate)
+
+   WITH stream, aggregate
+   MATCH (stream)-[:HAS]->(lowerChurch)
+   MATCH (lowerChurch)-[:CURRENT_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(record:AggregateServiceRecord {week: date().week, year: date().year})
+   WITH stream, aggregate, SUM(record.attendance) AS lowerAttendance, SUM(record.income) AS lowerIncome
+
+   SET aggregate.attendance = lowerAttendance,
+   aggregate.income = lowerIncome
+
+   WITH stream AS lowerChurch
+   MATCH (lowerChurch)<-[:HAS]-(gathering)
+   MATCH (gathering)-[:CURRENT_HISTORY]->(log:ServiceLog)
+   MERGE (aggregate:AggregateServiceRecord {id: date().week + '-' + date().year + '-' + log.id, week: date().week, year: date().year})
+   MERGE (log)-[:HAS_SERVICE_AGGREGATE]->(aggregate)
+
+   WITH gathering, aggregate
+   MATCH (gathering)-[:HAS]->(lowerChurch)
+   MATCH (lowerChurch)-[:CURRENT_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(record:AggregateServiceRecord {week: date().week, year: date().year})
+   WITH gathering, aggregate, SUM(record.attendance) AS lowerAttendance, SUM(record.income) AS lowerIncome
+
+   SET aggregate.attendance = lowerAttendance,
+   aggregate.income = lowerIncome
+
+   WITH gathering AS lowerChurch
+   MATCH (lowerChurch)<-[:HAS]-(oversight)
+   MATCH (oversight)-[:CURRENT_HISTORY]->(log:ServiceLog)
+   MERGE (aggregate:AggregateServiceRecord {id: date().week + '-' + date().year + '-' + log.id, week: date().week, year: date().year})
+   MERGE (log)-[:HAS_SERVICE_AGGREGATE]->(aggregate)
+
+   WITH oversight, aggregate
+   MATCH (oversight)-[:HAS]->(lowerChurch)
+   MATCH (lowerChurch)-[:CURRENT_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(record:AggregateServiceRecord {week: date().week, year: date().year}) 
+   WITH oversight, aggregate, SUM(record.attendance) AS lowerAttendance, SUM(record.income) AS lowerIncome
+
+   SET aggregate.attendance = lowerAttendance,
+   aggregate.income = lowerIncome
+
+   WITH oversight AS lowerChurch
+   MATCH (lowerChurch)<-[:HAS]-(denomination)
+   MATCH (denomination)-[:CURRENT_HISTORY]->(log:ServiceLog)
+   MERGE (aggregate:AggregateServiceRecord {id: date().week + '-' + date().year + '-' + log.id, week: date().week, year: date().year})
+   MERGE (log)-[:HAS_SERVICE_AGGREGATE]->(aggregate)
+
+   WITH denomination, aggregate
+   MATCH (denomination)-[:HAS]->(lowerChurch)
+   MATCH (lowerChurch)-[:CURRENT_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(record:AggregateServiceRecord {week: date().week, year: date().year}) 
+   WITH denomination, aggregate, SUM(record.attendance) AS lowerAttendance, SUM(record.income) AS lowerIncome
+
+   SET aggregate.attendance = lowerAttendance,
+   aggregate.income = lowerIncome
+
+      
+   RETURN denomination,aggregate

@@ -74,25 +74,6 @@ export const getServiceGraphData = (
       return
     }
 
-    if (
-      ['ComponentServiceAggregate', 'ComponentBussingAggregate'].includes(
-        array[0].__typename
-      )
-    ) {
-      array.forEach((record) => {
-        data.push({
-          id: record?.id,
-          category,
-          date: record?.serviceDate,
-          week: record.week,
-          attendance: record.attendance,
-          income: record.income?.toFixed(2),
-        })
-      })
-
-      return
-    }
-
     if (array[0]?.__typename === 'Sonta') {
       array.forEach((record) => {
         data.push({
@@ -118,6 +99,9 @@ export const getServiceGraphData = (
       })
     })
   }
+  if (category === 'service') {
+    pushIntoData(church.services)
+  }
 
   if (category === 'bussing') {
     pushIntoData(church.bussing)
@@ -131,12 +115,7 @@ export const getServiceGraphData = (
     pushIntoData(church.aggregateBussingRecords)
   }
 
-  //Pushing in direct service data eg. Joint Services and Fellowship Services
-  else {
-    pushIntoData(church.services)
-  }
-
-  data = data.sort(sortingFunction('week'))
+  // data = data.sort(sortingFunction('week'))
 
   if (!data.length) {
     return [
