@@ -96,7 +96,7 @@ const serviceMutation = {
 
     session.close()
     secondSession.close()
-    console.log(rearrangeCypherObject(cypherResponse[1]))
+
     const serviceDetails = rearrangeCypherObject(cypherResponse[0])
 
     return serviceDetails.serviceRecord.properties

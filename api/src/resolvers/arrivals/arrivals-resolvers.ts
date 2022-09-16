@@ -264,12 +264,9 @@ export const arrivalsMutation = {
       })
     )
 
-    const secondResponse = rearrangeCypherObject(
-      await session.run(aggregateLeaderBussingDataOnHigherChurches, args)
-    )
+    await session.run(aggregateLeaderBussingDataOnHigherChurches, args)
 
     const vehicleRecord = response.vehicleRecord.properties
-    const bacenta = secondResponse.church.properties
     const date = new Date().toISOString().slice(0, 10)
 
     const returnToCache = {
@@ -285,7 +282,7 @@ export const arrivalsMutation = {
         serviceLog: {
           bacenta: [
             {
-              id: bacenta.id,
+              id: args.bacentaId,
               stream_name: response.stream_name,
               bussing: [
                 {
