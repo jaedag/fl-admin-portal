@@ -1,3 +1,9 @@
+#### 5.1.15 (2022-09-16)
+
+##### Bug Fixes
+
+*  implement fix for graphs not showing on certain screens ([89bcce35](https://github.com/firstlovecenter/fl-pastoral-care/commit/89bcce355c17a7a5b43f838ed9a616fddf72a832))
+
 #### 5.1.14 (2022-09-16)
 
 ##### Bug Fixes
