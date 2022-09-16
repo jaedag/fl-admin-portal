@@ -43,7 +43,7 @@ export const SERVANT_BACENTA_LEADER = gql`
           }
         }
 
-        aggregateServiceRecords(limit: 6) {
+        aggregateServiceRecords(limit: 4) {
           id
           attendance
           income
@@ -66,7 +66,7 @@ export const SERVANT_CONSTITUENCY_LEADER = gql`
         council {
           id
         }
-        aggregateServiceRecords(limit: 6) {
+        aggregateServiceRecords(limit: 4) {
           id
           attendance
           income
@@ -86,7 +86,7 @@ export const SERVANT_COUNCIL_LEADER = gql`
         name
         stream_name
 
-        aggregateServiceRecords(limit: 6) {
+        aggregateServiceRecords(limit: 4) {
           id
           attendance
           income
@@ -105,7 +105,7 @@ export const SERVANT_STREAM_LEADER = gql`
         id
         name
 
-        aggregateServiceRecords(limit: 6) {
+        aggregateServiceRecords(limit: 4) {
           id
           attendance
           income
@@ -124,7 +124,7 @@ export const SERVANT_GATHERINGSERVICE_LEADER = gql`
         id
         name
 
-        aggregateServiceRecords(limit: 6) {
+        aggregateServiceRecords(limit: 4) {
           id
           attendance
           income
@@ -143,7 +143,7 @@ export const SERVANT_OVERSIGHT_LEADER = gql`
         id
         name
 
-        aggregateServiceRecords(limit: 6) {
+        aggregateServiceRecords(limit: 4) {
           id
           attendance
           income
@@ -172,7 +172,7 @@ export const SERVANT_CONSTITUENCY_ADMIN = gql`
         council {
           id
         }
-        aggregateServiceRecords(limit: 6) {
+        aggregateServiceRecords(limit: 4) {
           id
           attendance
           income
@@ -199,7 +199,7 @@ export const SERVANT_COUNCIL_ADMIN = gql`
           lastName
           fullName
         }
-        aggregateServiceRecords(limit: 6) {
+        aggregateServiceRecords(limit: 4) {
           id
           attendance
           income
@@ -225,7 +225,7 @@ export const SERVANTS_STREAM_ADMIN = gql`
           lastName
           fullName
         }
-        aggregateServiceRecords(limit: 6) {
+        aggregateServiceRecords(limit: 4) {
           id
           attendance
           income
@@ -245,7 +245,7 @@ export const SERVANTS_GATHERINGSERVICE_ADMIN = gql`
         id
         name
 
-        aggregateServiceRecords(limit: 6) {
+        aggregateServiceRecords(limit: 4) {
           id
           attendance
           income
@@ -265,7 +265,7 @@ export const SERVANTS_OVERSIGHT_ADMIN = gql`
         id
         name
 
-        aggregateServiceRecords(limit: 6) {
+        aggregateServiceRecords(limit: 4) {
           id
           attendance
           income
@@ -292,7 +292,7 @@ export const SERVANTS_CONSTITUENCY_ARRIVALS_ADMIN = gql`
           lastName
           fullName
         }
-        aggregateBussingRecords(limit: 6) {
+        aggregateBussingRecords(limit: 4) {
           id
           attendance
           week
@@ -318,14 +318,10 @@ export const SERVANTS_COUNCIL_ARRIVALS_ADMIN = gql`
           lastName
           fullName
         }
-        services(limit: 4) {
-          createdAt
+        aggregateBussingRecords(limit: 4) {
+          id
           attendance
-          income
           week
-          serviceDate {
-            date
-          }
         }
       }
     }
@@ -347,14 +343,10 @@ export const SERVANTS_STREAM_ARRIVALS_ADMIN = gql`
           lastName
           fullName
         }
-        services(limit: 4) {
-          createdAt
+        aggregateBussingRecords(limit: 4) {
+          id
           attendance
-          income
           week
-          serviceDate {
-            date
-          }
         }
       }
     }
@@ -370,14 +362,10 @@ export const SERVANTS_GATHERINGSERVICE_ARRIVALS_ADMIN = gql`
         id
         name
 
-        services(limit: 4) {
-          createdAt
+        aggregateBussingRecords(limit: 4) {
+          id
           attendance
-          income
           week
-          serviceDate {
-            date
-          }
         }
       }
     }
