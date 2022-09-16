@@ -30,6 +30,15 @@ export const recordService = `
       MERGE (serviceRecord)-[:SERVICE_HELD_ON]->(serviceDate)
       MERGE (log)-[:HAS_SERVICE]->(serviceRecord)
 
+      WITH log, serviceRecord
+      MERGE (aggregate:AggregateServiceRecord {id: date().week + '-' + date().year + '-' + log.id})
+      MERGE (log)-[:HAS_SERVICE_AGGREGATE]->(aggregate)
+
+      WITH serviceRecord, aggregate, SUM(serviceRecord.attendance) AS attendance, SUM(serviceRecord.income) AS income, SUM(aggregate.attendance) AS aggregateAttendance, SUM(aggregate.income) AS aggregateIncome
+      MATCH (aggregate)
+      SET aggregate.attendance = aggregateAttendance + attendance,
+      aggregate.income = aggregateIncome + income 
+
       WITH serviceRecord
       UNWIND $treasurers AS treasurerId WITH treasurerId, serviceRecord
       MATCH (treasurer:Member {id: treasurerId})
@@ -56,8 +65,8 @@ export const aggregateServiceDataOnHigherChurches = `
    WHERE fellowship:Fellowship OR fellowship:Bacenta OR fellowship:Constituency OR fellowship:Council
    OR fellowship:Stream OR fellowship:GatheringService OR fellowship:Oversight OR fellowship:Denomination
 
-
-   MATCH (fellowship)<-[:HAS]-(bacenta)
+   WITH fellowship AS lowerChurch
+   MATCH (lowerChurch)<-[:HAS]-(bacenta)
    MATCH (bacenta)-[:CURRENT_HISTORY]->(log:ServiceLog)
    MERGE (aggregate:AggregateServiceRecord {id: date().week + '-' + date().year + '-' + log.id, week: date().week, year: date().year})
    MERGE (log)-[:HAS_SERVICE_AGGREGATE]->(aggregate)
@@ -65,8 +74,7 @@ export const aggregateServiceDataOnHigherChurches = `
    WITH bacenta, aggregate
 
    MATCH (bacenta)-[:HAS]->(fellowships)
-   MATCH (date:TimeGraph {date: date()})
-   MATCH (fellowships)-[:CURRENT_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date)
+   MATCH (fellowships)-[:CURRENT_HISTORY]->(log:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(record:AggregateServiceRecord {id: date().week + '-' + date().year + '-' + log.id})
    WITH bacenta, aggregate, SUM(record.attendance) AS lowerAttendance, SUM(record.income) AS lowerIncome
 
    SET aggregate.attendance = lowerAttendance,
@@ -80,7 +88,7 @@ export const aggregateServiceDataOnHigherChurches = `
 
    WITH constituency, aggregate
    MATCH (constituency)-[:HAS]->(lowerChurch)
-   MATCH (lowerChurch)-[:CURRENT_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(record:AggregateServiceRecord {week: date().week, year: date().year})
+   MATCH (lowerChurch)-[:CURRENT_HISTORY]->(log:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(record:AggregateServiceRecord {id: date().week + '-' + date().year + '-' + log.id})
    WITH constituency, aggregate, SUM(record.attendance) AS lowerAttendance, SUM(record.income) AS lowerIncome
 
    SET aggregate.attendance = lowerAttendance,
@@ -94,7 +102,7 @@ WITH constituency AS lowerChurch
 
    WITH council, aggregate
    MATCH (council)-[:HAS]->(lowerChurch)
-   MATCH (lowerChurch)-[:CURRENT_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(record:AggregateServiceRecord {week: date().week, year: date().year})
+   MATCH (lowerChurch)-[:CURRENT_HISTORY]->(log:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(record:AggregateServiceRecord {id: date().week + '-' + date().year + '-' + log.id})
    WITH council, aggregate, SUM(record.attendance) AS lowerAttendance, SUM(record.income) AS lowerIncome
 
    SET aggregate.attendance = lowerAttendance,
@@ -108,7 +116,7 @@ WITH constituency AS lowerChurch
 
    WITH stream, aggregate
    MATCH (stream)-[:HAS]->(lowerChurch)
-   MATCH (lowerChurch)-[:CURRENT_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(record:AggregateServiceRecord {week: date().week, year: date().year})
+   MATCH (lowerChurch)-[:CURRENT_HISTORY]->(log:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(record:AggregateServiceRecord {id: date().week + '-' + date().year + '-' + log.id})
    WITH stream, aggregate, SUM(record.attendance) AS lowerAttendance, SUM(record.income) AS lowerIncome
 
    SET aggregate.attendance = lowerAttendance,
@@ -122,7 +130,7 @@ WITH constituency AS lowerChurch
 
    WITH gathering, aggregate
    MATCH (gathering)-[:HAS]->(lowerChurch)
-   MATCH (lowerChurch)-[:CURRENT_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(record:AggregateServiceRecord {week: date().week, year: date().year})
+   MATCH (lowerChurch)-[:CURRENT_HISTORY]->(log:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(record:AggregateServiceRecord {id: date().week + '-' + date().year + '-' + log.id})
    WITH gathering, aggregate, SUM(record.attendance) AS lowerAttendance, SUM(record.income) AS lowerIncome
 
    SET aggregate.attendance = lowerAttendance,
@@ -136,7 +144,7 @@ WITH constituency AS lowerChurch
 
    WITH oversight, aggregate
    MATCH (oversight)-[:HAS]->(lowerChurch)
-   MATCH (lowerChurch)-[:CURRENT_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(record:AggregateServiceRecord {week: date().week, year: date().year}) 
+   MATCH (lowerChurch)-[:CURRENT_HISTORY]->(log:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(record:AggregateServiceRecord {id: date().week + '-' + date().year + '-' + log.id}) 
    WITH oversight, aggregate, SUM(record.attendance) AS lowerAttendance, SUM(record.income) AS lowerIncome
 
    SET aggregate.attendance = lowerAttendance,
@@ -150,7 +158,7 @@ WITH constituency AS lowerChurch
 
    WITH denomination, aggregate
    MATCH (denomination)-[:HAS]->(lowerChurch)
-   MATCH (lowerChurch)-[:CURRENT_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(record:AggregateServiceRecord {week: date().week, year: date().year}) 
+   MATCH (lowerChurch)-[:CURRENT_HISTORY]->(log:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(record:AggregateServiceRecord {id: date().week + '-' + date().year + '-' + log.id})
    WITH denomination, aggregate, SUM(record.attendance) AS lowerAttendance, SUM(record.income) AS lowerIncome
 
    SET aggregate.attendance = lowerAttendance,
