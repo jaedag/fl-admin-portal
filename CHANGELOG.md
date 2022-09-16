@@ -1,3 +1,14 @@
+#### 5.1.14 (2022-09-16)
+
+##### Bug Fixes
+
+*  adjust home screen graph to return exactly 4 weeks ([014307dc](https://github.com/firstlovecenter/fl-pastoral-care/commit/014307dc5bca2ecdad6853b05c72b3cde53d9f7c))
+
+##### Refactors
+
+*  aggregate bussing records on the fly the proper way ([fc523bc7](https://github.com/firstlovecenter/fl-pastoral-care/commit/fc523bc7bd4cf901d049b29caa9698480d81bc3f))
+*  aggregate service records on the fly ([a7ceaa29](https://github.com/firstlovecenter/fl-pastoral-care/commit/a7ceaa296302c056675551854a65f4b8ba4dae18))
+
 #### 5.1.13 (2022-09-15)
 
 ##### Bug Fixes

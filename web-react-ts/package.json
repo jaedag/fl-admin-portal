@@ -1,6 +1,6 @@
 {
   "name": "admin-portal-react-frontend",
-  "version": "5.1.16",
+  "version": "5.1.17",
   "description": "React app for FL Admin Portal",
   "private": true,
   "dependencies": {
