@@ -62,7 +62,7 @@ export const getServiceGraphData = (
         aggregateBussingRecords: any[]
       }
     | undefined,
-  category?: 'bussing' | 'bussingAggregate' | 'serviceAggregate' | 'service'
+  category: 'bussing' | 'bussingAggregate' | 'serviceAggregate' | 'service'
 ) => {
   if (!church) {
     return

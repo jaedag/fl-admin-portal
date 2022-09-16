@@ -16,7 +16,7 @@ export const SontaReport = () => {
     variables: { sontaId: sontaId },
   })
 
-  const churchData = getServiceGraphData(data?.sontas[0])
+  const churchData = getServiceGraphData(data?.sontas[0], 'service')
 
   return (
     <ApolloWrapper loading={loading} error={error} data={data}>

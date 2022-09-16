@@ -40,7 +40,7 @@ const ServantsChurchList = () => {
 
     const pushIntoChurch = (servantChurches: any[]) => {
       servantChurches.map((church) => {
-        const serviceData = getServiceGraphData(church)
+        const serviceData = getServiceGraphData(church, 'service')
 
         return churches.push({
           id: church.id,

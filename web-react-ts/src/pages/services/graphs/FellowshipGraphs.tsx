@@ -18,7 +18,7 @@ export const FellowshipReport = () => {
     variables: { fellowshipId },
   })
 
-  const serviceData = getServiceGraphData(data?.fellowships[0])
+  const serviceData = getServiceGraphData(data?.fellowships[0], 'service')
 
   return (
     <ApolloWrapper loading={loading} error={error} data={data}>

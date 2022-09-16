@@ -41,7 +41,7 @@ const GraphDropdown = ({
             onClick={() => {
               setBussing(false)
               setSelected('Services')
-              setChurchData(getServiceGraphData(data))
+              setChurchData(getServiceGraphData(data, 'service'))
             }}
           >
             {`${churchLevel} Services`}
