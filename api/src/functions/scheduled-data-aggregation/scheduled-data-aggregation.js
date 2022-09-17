@@ -2,7 +2,7 @@ const { schedule } = require('@netlify/functions')
 const neo4j = require('neo4j-driver')
 
 const initializeDatabase = (driver) => {
-  const initCypher = ```
+  const getFellowshipServicesForBacentaAggregation = `
     MATCH (bacenta:Bacenta)-[:HAS]->(fellowship:Fellowship)
     MATCH (bacenta)-[:CURRENT_HISTORY]->(currentLog:ServiceLog)
     MATCH (fellowship)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(timeNode:TimeGraph)
@@ -15,8 +15,8 @@ const initializeDatabase = (driver) => {
     MERGE (currentLog)-[:HAS_SERVICE_AGGREGATE]->(agg)
 
     RETURN agg;
-
-    // Get Bacenta Services for Constituency Aggregation
+    `
+  const getBacentaServicesForConstituencyAggregation = `
     MATCH (constituency:Constituency)-[:HAS]->(bacenta:Bacenta)
     MATCH (constituency)-[:CURRENT_HISTORY]->(currentLog:ServiceLog)
     MATCH (bacenta)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(record:AggregateServiceRecord) 
@@ -29,8 +29,9 @@ const initializeDatabase = (driver) => {
     MERGE (currentLog)-[:HAS_SERVICE_AGGREGATE]->(agg)
 
     RETURN agg;
+`
 
-    // Get all Constituency Services for Constituency Aggregation
+  const getConstituencyServicesForConstituencyAggregation = `
     MATCH (constituency:Constituency)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(timeNode:TimeGraph)
     WITH constituency,record, timeNode.date.week AS week, timeNode.date.year AS year, SUM(record.attendance) AS attendance, SUM(record.income) AS income WHERE timeNode.date.week = date().week
     MATCH (constituency)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(agg:AggregateServiceRecord {week: week, year: year})
@@ -38,9 +39,9 @@ const initializeDatabase = (driver) => {
     agg.income = agg.income + income
 
     RETURN agg;
+`
 
-
-    // Get all Constituency Services for Council Aggregation
+  const getConstituencyServicesForCouncilAggregation = `
     MATCH (council:Council)-[:HAS]->(constituency:Constituency)
     MATCH (council)-[:CURRENT_HISTORY]->(currentLog:ServiceLog)
     MATCH (constituency)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(record:AggregateServiceRecord)
@@ -53,8 +54,9 @@ const initializeDatabase = (driver) => {
     MERGE (currentLog)-[:HAS_SERVICE_AGGREGATE]->(agg)
 
     RETURN agg;
+    `
 
-    // Get all Council Services for Council Aggregation
+  const getCouncilServicesForCouncilAggregation = `
     MATCH (council:Council)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(timeNode:TimeGraph)
     WITH council,record, timeNode.date.week AS week, timeNode.date.year AS year, SUM(record.attendance) AS attendance, SUM(record.income) AS income WHERE timeNode.date.week = date().week
     MATCH (council)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(agg:AggregateServiceRecord {week: week, year: year})
@@ -62,8 +64,9 @@ const initializeDatabase = (driver) => {
     agg.income = agg.income + income
 
     RETURN agg;
+    `
 
-    // Get all Council Services for Stream Aggregation
+  const getCouncilServicesForStreamAggregation = `
     MATCH (stream:Stream)-[:HAS]->(council:Council)
     MATCH (stream)-[:CURRENT_HISTORY]->(currentLog:ServiceLog)
     MATCH (council)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(record:AggregateServiceRecord)
@@ -76,8 +79,9 @@ const initializeDatabase = (driver) => {
     MERGE (currentLog)-[:HAS_SERVICE_AGGREGATE]->(agg)
 
     RETURN agg;
+    `
 
-    // Get all Stream Services for Stream Aggregation
+  const getStreamServicesForStreamAggregation = `
     MATCH (stream:Stream)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(timeNode:TimeGraph)
     WITH stream,record, timeNode.date.week AS week, timeNode.date.year AS year, SUM(record.attendance) AS attendance, SUM(record.income) AS income WHERE timeNode.date.week = date().week
     MATCH (stream)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(agg:AggregateServiceRecord {week: week, year: year})
@@ -85,8 +89,9 @@ const initializeDatabase = (driver) => {
     agg.income = agg.income + income
 
     RETURN agg;
+    `
 
-    // Get all Stream services for GatheringService Aggregation
+  const getStreamServicesForGatheringAggregation = `
     MATCH (gathering:GatheringService)-[:HAS]->(stream:Stream)
     MATCH (gathering)-[:CURRENT_HISTORY]->(currentLog:ServiceLog)
     MATCH (stream)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(record:AggregateServiceRecord)
@@ -99,8 +104,9 @@ const initializeDatabase = (driver) => {
     MERGE (currentLog)-[:HAS_SERVICE_AGGREGATE]->(agg)
 
     RETURN agg;
+    `
 
-    // Get all GatheringServices for Oversight Aggregation
+  const getGatheringServicesForOversightAggregation = `
     MATCH (oversight:Oversight)-[:HAS]->(gathering:GatheringService)
     MATCH (oversight)-[:CURRENT_HISTORY]->(currentLog:ServiceLog)
     MATCH (gathering)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(record:AggregateServiceRecord)
@@ -113,8 +119,9 @@ const initializeDatabase = (driver) => {
     MERGE (currentLog)-[:HAS_SERVICE_AGGREGATE]->(agg)
 
     RETURN agg;
+    `
 
-    // Get all Oversight services for Denomination Aggregation
+  const getOversightServicesForDenominationAggregation = `
     MATCH (denomination:Denomination)-[:HAS]->(oversight:Oversight)
     MATCH (denomination)-[:CURRENT_HISTORY]->(currentLog:ServiceLog)
     MATCH (oversight)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(record:AggregateServiceRecord)
@@ -127,13 +134,23 @@ const initializeDatabase = (driver) => {
     MERGE (currentLog)-[:HAS_SERVICE_AGGREGATE]->(agg)
 
     RETURN agg;
-  ```
+  `
 
   const executeQuery = (neoDriver) => {
     const session = neoDriver.session()
     return session
-      .writeTransaction((tx) => tx.run(initCypher))
-      .then()
+      .writeTransaction((tx) => {
+        tx.run(getFellowshipServicesForBacentaAggregation)
+        tx.run(getBacentaServicesForConstituencyAggregation)
+        tx.run(getConstituencyServicesForConstituencyAggregation)
+        tx.run(getConstituencyServicesForCouncilAggregation)
+        tx.run(getCouncilServicesForCouncilAggregation)
+        tx.run(getCouncilServicesForStreamAggregation)
+        tx.run(getStreamServicesForStreamAggregation)
+        tx.run(getStreamServicesForGatheringAggregation)
+        tx.run(getGatheringServicesForOversightAggregation)
+        tx.run(getOversightServicesForDenominationAggregation)
+      })
       .finally(() => session.close())
   }
 
@@ -148,7 +165,7 @@ const initializeDatabase = (driver) => {
 // This module is copied during the build step
 // Be sure to run `npm run build`
 
-const handler = async function (event) {
+const handler = async (event) => {
   console.log('Received event:', event)
   const driver = neo4j.driver(
     process.env.NEO4J_URI || 'bolt://localhost:7687',
@@ -171,7 +188,9 @@ const handler = async function (event) {
    */
 
   init(driver).catch((error) => {
-    console.error('Database initialization failed\n', error.message)
+    throw new Error(
+      `Database initialization failed\n${error.message}\n${error.stack}`
+    )
   })
 
   return {
