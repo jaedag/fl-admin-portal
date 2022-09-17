@@ -1,11 +1,5 @@
-import { Neo4jGraphQL } from '@neo4j/graphql'
-import { Neo4jGraphQLAuthJWTPlugin } from '@neo4j/graphql-plugin-auth'
-import { throwErrorMsg } from 'admin-portal-api/src/resolvers/utils/utils'
-
-const { ApolloServer } = require('apollo-server-lambda')
+const { schedule } = require('@netlify/functions')
 const neo4j = require('neo4j-driver')
-const { typeDefs } = require('./schema/graphql-schema')
-const resolvers = require('../../resolvers/resolvers').default
 
 const initializeDatabase = (driver) => {
   const initCypher = ```
@@ -153,65 +147,36 @@ const initializeDatabase = (driver) => {
 
 // This module is copied during the build step
 // Be sure to run `npm run build`
-const driver = neo4j.driver(
-  process.env.NEO4J_URI || 'bolt://localhost:7687',
-  neo4j.auth.basic(
-    process.env.NEO4J_USER || 'neo4j',
-    process.env.NEO4J_PASSWORD || 'neo4j'
-  )
-)
 
-const init = async (neoDriver) => {
-  try {
+const handler = async function (event) {
+  console.log('Received event:', event)
+  const driver = neo4j.driver(
+    process.env.NEO4J_URI || 'bolt://localhost:7687',
+    neo4j.auth.basic(
+      process.env.NEO4J_USER || 'neo4j',
+      process.env.NEO4J_PASSWORD || 'neo4j'
+    )
+  )
+
+  const init = async (neoDriver) => {
     initializeDatabase(neoDriver)
-  } catch (error) {
-    throwErrorMsg(error)
+  }
+
+  /*
+   * We catch any errors that occur during initialization
+   * to handle cases where we still want the API to start
+   * regardless, such as running with a read only user.
+   * In this case, ensure that any desired initialization steps
+   * have occurred
+   */
+
+  init(driver).catch((error) => {
+    console.error('Database initialization failed\n', error.message)
+  })
+
+  return {
+    statusCode: 200,
   }
 }
 
-/*
- * We catch any errors that occur during initialization
- * to handle cases where we still want the API to start
- * regardless, such as running with a read only user.
- * In this case, ensure that any desired initialization steps
- * have occurred
- */
-
-init(driver).catch((error) => {
-  console.error('Database initialization failed\n', error.message)
-})
-
-const neoSchema = new Neo4jGraphQL({
-  typeDefs,
-  resolvers,
-  driver,
-  plugins: {
-    auth: new Neo4jGraphQLAuthJWTPlugin({
-      secret: process.env.JWT_SECRET.replace(/\\n/gm, '\n'),
-      rolesPath: 'https://flcadmin\\.netlify\\.app/roles',
-    }),
-  },
-})
-
-// eslint-disable-next-line import/prefer-default-export
-export const handler = async (event, context, ...args) => {
-  const schema = await neoSchema.getSchema()
-
-  const server = new ApolloServer({
-    // eslint-disable-next-line no-shadow
-    context: ({ event }) => ({ req: event }),
-    introspection: true,
-    schema,
-  })
-
-  const apolloHandler = server.createHandler()
-
-  return apolloHandler(
-    {
-      ...event,
-      requestContext: context,
-    },
-    context,
-    ...args
-  )
-}
+module.exports.handler = schedule('@hourly', handler)
