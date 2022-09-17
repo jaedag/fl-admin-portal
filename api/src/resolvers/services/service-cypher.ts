@@ -31,7 +31,7 @@ export const recordService = `
       MERGE (log)-[:HAS_SERVICE]->(serviceRecord)
 
       WITH log, serviceRecord
-      MERGE (aggregate:AggregateServiceRecord {id: date().week + '-' + date().year + '-' + log.id})
+      MERGE (aggregate:AggregateServiceRecord {id: date().week + '-' + date().year + '-' + log.id, week: date().week, year: date().year})
       MERGE (log)-[:HAS_SERVICE_AGGREGATE]->(aggregate)
 
       WITH serviceRecord, aggregate, SUM(serviceRecord.attendance) AS attendance, SUM(serviceRecord.income) AS income, SUM(aggregate.attendance) AS aggregateAttendance, SUM(aggregate.income) AS aggregateIncome
