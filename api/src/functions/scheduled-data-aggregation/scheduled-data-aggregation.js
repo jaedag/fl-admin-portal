@@ -1,7 +1,8 @@
 const { schedule } = require('@netlify/functions')
 const neo4j = require('neo4j-driver')
 
-const getFellowshipServicesForBacentaAggregation = `
+const initializeDatabase = (driver) => {
+  const getFellowshipServicesForBacentaAggregation = `
     MATCH (bacenta:Bacenta)-[:HAS]->(fellowship:Fellowship)
     MATCH (bacenta)-[:CURRENT_HISTORY]->(currentLog:ServiceLog)
     MATCH (fellowship)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(timeNode:TimeGraph)
@@ -15,7 +16,7 @@ const getFellowshipServicesForBacentaAggregation = `
 
     RETURN agg;
     `
-const getBacentaServicesForConstituencyAggregation = `
+  const getBacentaServicesForConstituencyAggregation = `
     MATCH (constituency:Constituency)-[:HAS]->(bacenta:Bacenta)
     MATCH (constituency)-[:CURRENT_HISTORY]->(currentLog:ServiceLog)
     MATCH (bacenta)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(record:AggregateServiceRecord) 
@@ -30,7 +31,7 @@ const getBacentaServicesForConstituencyAggregation = `
     RETURN agg;
 `
 
-const getConstituencyServicesForConstituencyAggregation = `
+  const getConstituencyServicesForConstituencyAggregation = `
     MATCH (constituency:Constituency)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(timeNode:TimeGraph)
     WITH constituency,record, timeNode.date.week AS week, timeNode.date.year AS year, SUM(record.attendance) AS attendance, SUM(record.income) AS income WHERE timeNode.date.week = date().week
     MATCH (constituency)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(agg:AggregateServiceRecord {week: week, year: year})
@@ -40,7 +41,7 @@ const getConstituencyServicesForConstituencyAggregation = `
     RETURN agg;
 `
 
-const getConstituencyServicesForCouncilAggregation = `
+  const getConstituencyServicesForCouncilAggregation = `
     MATCH (council:Council)-[:HAS]->(constituency:Constituency)
     MATCH (council)-[:CURRENT_HISTORY]->(currentLog:ServiceLog)
     MATCH (constituency)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(record:AggregateServiceRecord)
@@ -55,7 +56,7 @@ const getConstituencyServicesForCouncilAggregation = `
     RETURN agg;
     `
 
-const getCouncilServicesForCouncilAggregation = `
+  const getCouncilServicesForCouncilAggregation = `
     MATCH (council:Council)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(timeNode:TimeGraph)
     WITH council,record, timeNode.date.week AS week, timeNode.date.year AS year, SUM(record.attendance) AS attendance, SUM(record.income) AS income WHERE timeNode.date.week = date().week
     MATCH (council)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(agg:AggregateServiceRecord {week: week, year: year})
@@ -65,7 +66,7 @@ const getCouncilServicesForCouncilAggregation = `
     RETURN agg;
     `
 
-const getCouncilServicesForStreamAggregation = `
+  const getCouncilServicesForStreamAggregation = `
     MATCH (stream:Stream)-[:HAS]->(council:Council)
     MATCH (stream)-[:CURRENT_HISTORY]->(currentLog:ServiceLog)
     MATCH (council)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(record:AggregateServiceRecord)
@@ -80,7 +81,7 @@ const getCouncilServicesForStreamAggregation = `
     RETURN agg;
     `
 
-const getStreamServicesForStreamAggregation = `
+  const getStreamServicesForStreamAggregation = `
     MATCH (stream:Stream)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(timeNode:TimeGraph)
     WITH stream,record, timeNode.date.week AS week, timeNode.date.year AS year, SUM(record.attendance) AS attendance, SUM(record.income) AS income WHERE timeNode.date.week = date().week
     MATCH (stream)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(agg:AggregateServiceRecord {week: week, year: year})
@@ -90,7 +91,7 @@ const getStreamServicesForStreamAggregation = `
     RETURN agg;
     `
 
-const getStreamServicesForGatheringAggregation = `
+  const getStreamServicesForGatheringAggregation = `
     MATCH (gathering:GatheringService)-[:HAS]->(stream:Stream)
     MATCH (gathering)-[:CURRENT_HISTORY]->(currentLog:ServiceLog)
     MATCH (stream)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(record:AggregateServiceRecord)
@@ -105,7 +106,7 @@ const getStreamServicesForGatheringAggregation = `
     RETURN agg;
     `
 
-const getGatheringServicesForOversightAggregation = `
+  const getGatheringServicesForOversightAggregation = `
     MATCH (oversight:Oversight)-[:HAS]->(gathering:GatheringService)
     MATCH (oversight)-[:CURRENT_HISTORY]->(currentLog:ServiceLog)
     MATCH (gathering)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(record:AggregateServiceRecord)
@@ -120,7 +121,7 @@ const getGatheringServicesForOversightAggregation = `
     RETURN agg;
     `
 
-const getOversightServicesForDenominationAggregation = `
+  const getOversightServicesForDenominationAggregation = `
     MATCH (denomination:Denomination)-[:HAS]->(oversight:Oversight)
     MATCH (denomination)-[:CURRENT_HISTORY]->(currentLog:ServiceLog)
     MATCH (oversight)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(record:AggregateServiceRecord)
@@ -135,8 +136,8 @@ const getOversightServicesForDenominationAggregation = `
     RETURN agg;
   `
 
-// Get all Bacenta Aggregates for Bacenta Aggregation
-const getBacentaBussingForBacentaAggregation = `
+  // Get all Bacenta Aggregates for Bacenta Aggregation
+  const getBacentaBussingForBacentaAggregation = `
 MATCH (bacenta:Bacenta)
 MATCH (bacenta)-[:CURRENT_HISTORY]->(currentLog:ServiceLog)
 MATCH (bacenta)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(record:BussingRecord)-[:BUSSED_ON]->(timeNode:TimeGraph) WHERE timeNode.date.week = date().week
@@ -161,8 +162,8 @@ MERGE (currentLog)-[:HAS_BUSSING_AGGREGATE]->(agg)
 RETURN agg;
 `
 
-// Get Bacenta Bussing for Constituency Aggregation
-const getBacentaBussingForConstituencyAggregation = `
+  // Get Bacenta Bussing for Constituency Aggregation
+  const getBacentaBussingForConstituencyAggregation = `
 MATCH (constituency:Constituency)-[:HAS]->(bacenta:Bacenta)
 MATCH (constituency)-[:CURRENT_HISTORY]->(currentLog:ServiceLog)
 MATCH (bacenta)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(record:BussingRecord)-[:BUSSED_ON]->(timeNode:TimeGraph)   WHERE timeNode.date.week = date().week
@@ -186,7 +187,7 @@ MERGE (currentLog)-[:HAS_BUSSING_AGGREGATE]->(agg)
 RETURN agg;
 `
 
-const getConstituencyBussingForCouncilAggregation = `
+  const getConstituencyBussingForCouncilAggregation = `
 MATCH (council:Council)-[:HAS]->(constituency:Constituency)
 MATCH (council)-[:CURRENT_HISTORY]->(currentLog:ServiceLog)
 MATCH (constituency)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING_AGGREGATE]->(record:AggregateBussingRecord) WHERE record.week = date().week
@@ -210,7 +211,7 @@ MERGE (currentLog)-[:HAS_BUSSING_AGGREGATE]->(agg)
 RETURN agg;
 `
 
-const getCouncilBussingForStreamAggregation = `
+  const getCouncilBussingForStreamAggregation = `
 MATCH (stream:Stream)-[:HAS]->(council:Council)
 MATCH (stream)-[:CURRENT_HISTORY]->(currentLog:ServiceLog)
 MATCH (council)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING_AGGREGATE]->(record:AggregateBussingRecord) WHERE record.week = date().week
@@ -234,7 +235,7 @@ MERGE (currentLog)-[:HAS_BUSSING_AGGREGATE]->(agg)
 RETURN agg;
 `
 
-const getStreamBussingForGatheringAggregation = `
+  const getStreamBussingForGatheringAggregation = `
 MATCH (gathering:GatheringService)-[:HAS]->(stream:Stream)
 MATCH (gathering)-[:CURRENT_HISTORY]->(currentLog:ServiceLog)
 MATCH (stream)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING_AGGREGATE]->(record:AggregateBussingRecord) WHERE record.week = date().week
@@ -258,7 +259,7 @@ MERGE (currentLog)-[:HAS_BUSSING_AGGREGATE]->(agg)
 RETURN agg;
 `
 
-const getGatheringBussingForOversightAggregation = `
+  const getGatheringBussingForOversightAggregation = `
 MATCH (oversight:Oversight)-[:HAS]->(gathering:GatheringService)
 MATCH (oversight)-[:CURRENT_HISTORY]->(currentLog:ServiceLog)
 MATCH (gathering)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING_AGGREGATE]->(record:AggregateBussingRecord)  WHERE record.week = date().week
@@ -282,7 +283,7 @@ MERGE (currentLog)-[:HAS_BUSSING_AGGREGATE]->(agg)
 RETURN agg;
 `
 
-const getOversightBussingForDenominationAggregation = `
+  const getOversightBussingForDenominationAggregation = `
 MATCH (denomination:Denomination)-[:HAS]->(oversight:Oversight)
 MATCH (denomination)-[:CURRENT_HISTORY]->(currentLog:ServiceLog)
 MATCH (oversight)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING_AGGREGATE]->(record:AggregateBussingRecord)  WHERE record.week = date().week
@@ -306,7 +307,6 @@ MERGE (currentLog)-[:HAS_BUSSING_AGGREGATE]->(agg)
 RETURN agg;
 `
 
-const initializeDatabase = (driver) => {
   const executeQuery = (neoDriver) => {
     const session = neoDriver.session()
     return session
@@ -349,7 +349,6 @@ const initializeDatabase = (driver) => {
 // Be sure to run `npm run build`
 
 const handler = async (event) => {
-  console.log('Received event:', event)
   const driver = neo4j.driver(
     process.env.NEO4J_URI || 'bolt://localhost:7687',
     neo4j.auth.basic(
