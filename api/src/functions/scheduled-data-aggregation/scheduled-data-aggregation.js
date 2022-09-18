@@ -97,4 +97,4 @@ const handler = async (event) => {
   }
 }
 
-module.exports.handler = schedule('30 23 * * *', handler)
+module.exports.handler = schedule('30 23 * * 7', handler)
