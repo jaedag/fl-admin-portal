@@ -311,7 +311,6 @@ RETURN agg;
     const session = neoDriver.session()
     return session
       .writeTransaction((tx) => {
-        // Service Record Aggregation
         tx.run(getFellowshipServicesForBacentaAggregation)
         tx.run(getBacentaServicesForConstituencyAggregation)
         tx.run(getConstituencyServicesForConstituencyAggregation)
@@ -322,7 +321,6 @@ RETURN agg;
         tx.run(getStreamServicesForGatheringAggregation)
         tx.run(getGatheringServicesForOversightAggregation)
         tx.run(getOversightServicesForDenominationAggregation)
-
         // Bussing Record Aggregation
         tx.run(getBacentaBussingForBacentaAggregation)
         tx.run(getBacentaBussingForConstituencyAggregation)
@@ -349,6 +347,7 @@ RETURN agg;
 // Be sure to run `npm run build`
 
 const handler = async (event) => {
+  console.log('Received event:', event)
   const driver = neo4j.driver(
     process.env.NEO4J_URI || 'bolt://localhost:7687',
     neo4j.auth.basic(
@@ -380,4 +379,4 @@ const handler = async (event) => {
   }
 }
 
-module.handler = schedule('30 23 * * 7', handler)
+module.exports.handler = schedule('30 23 * * 7', handler)
