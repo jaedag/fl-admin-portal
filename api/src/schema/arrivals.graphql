@@ -1213,7 +1213,7 @@ extend type Mutation {
     @auth(rules: [{ roles: ["arrivalsCounterStream"] }])
     @cypher(
       statement: """
-      MATCH (vehicleRecord:VehicleRecord {id: $vehicleRecordId}) WHERE vehicleRecord.arrivalTime  IS NULL
+      MATCH (vehicleRecord:VehicleRecord {id: $vehicleRecordId}) WHERE vehicleRecord.arrivalTime IS NULL
         SET vehicleRecord.attendance = $attendance,
         vehicleRecord.vehicle = $vehicle,
         vehicleRecord.outbound = $outbound,
@@ -1225,18 +1225,6 @@ extend type Mutation {
 
       RETURN vehicleRecord
       """
-    )
-    @auth(
-      rules: [
-        {
-          roles: [
-            "adminStream"
-            "arrivalsAdminStream"
-            "adminGatheringService"
-            "arrivalsAdminGatheringService"
-          ]
-        }
-      ]
     )
 
   RecordArrivalTime(
