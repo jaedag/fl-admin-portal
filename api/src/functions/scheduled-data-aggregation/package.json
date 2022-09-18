@@ -1,5 +1,5 @@
 {
-  "name": "scheduled-data-aggregatopm",
+  "name": "scheduled-data-aggregation",
   "version": "0.0.1",
   "description": "Ensures that income  and attendance  data is correctly aggregated",
   "main": "scheduled-data-aggregation.js",
