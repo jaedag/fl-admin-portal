@@ -212,6 +212,7 @@ const ServiceForm = ({
                         uploadPreset={
                           process.env.REACT_APP_CLOUDINARY_TREASURERS
                         }
+                        tags="facial-recognition"
                         placeholder="Choose"
                         setFieldValue={formik.setFieldValue}
                         aria-describedby="ImageUpload"

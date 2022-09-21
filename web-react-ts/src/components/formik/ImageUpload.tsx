@@ -8,6 +8,7 @@ import { FormikComponentProps } from './formik-types'
 
 interface ImageUploadProps extends FormikComponentProps {
   uploadPreset?: string
+  tags?: 'facial-recognition'
   initialValue?: string
   setFieldValue: (field: string, value: any) => void
 }
@@ -20,17 +21,25 @@ const ImageUpload = (props: ImageUploadProps) => {
     setFieldValue,
     uploadPreset,
     placeholder,
+    tags,
     ...rest
   } = props
-  const { theme } = useContext(MemberContext)
+  const { theme, currentUser } = useContext(MemberContext)
   const [loading, setLoading] = useState(false)
   const [image, setImage] = useState('')
 
   const uploadImage = async (e: any) => {
     const files = e.target.files
+    const date = new Date().toISOString().slice(0, 10)
+    const username = `${currentUser.firstName.toLowerCase()}-${currentUser.lastName.toLowerCase()}`
     const data = new FormData()
     data.append('file', files[0])
     data.append('upload_preset', uploadPreset || '')
+    data.append(
+      'public_id',
+      `${username}-${currentUser.id}/${date}_${files[0].name}`
+    )
+    data.append('tags', tags || '')
 
     setLoading(true)
 
