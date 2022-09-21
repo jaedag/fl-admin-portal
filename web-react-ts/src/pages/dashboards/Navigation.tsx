@@ -14,6 +14,10 @@ const Navigator = () => {
   const { theme, setTheme } = useContext(MemberContext)
   const navigate = useNavigate()
 
+  const isRunningStandalone = () => {
+    return window.matchMedia('(display-mode: standalone)').matches
+  }
+
   return (
     <Navbar
       collapseOnSelect
@@ -27,14 +31,19 @@ const Navigator = () => {
           aria-controls="offcanvasNavbar"
           className="nav-toggler"
         />
-        <Navbar.Brand>
-          <ChevronLeft
-            className="mx-4"
-            size={24}
-            onClick={() => navigate(-1)}
-          />
-          <ArrowClockwise size={24} onClick={() => window.location.reload()} />
-        </Navbar.Brand>
+        {isRunningStandalone() && (
+          <Navbar.Brand>
+            <ChevronLeft
+              className="mx-4"
+              size={24}
+              onClick={() => navigate(-1)}
+            />
+            <ArrowClockwise
+              size={24}
+              onClick={() => window.location.reload()}
+            />
+          </Navbar.Brand>
+        )}
 
         <Navbar.Offcanvas
           id="offcanvasNavbar"
