@@ -1,3 +1,41 @@
+#### 5.1.16 (2022-09-21)
+
+##### New Features
+
+*  implement self organising folder structure in cloudinary ([7de27995](https://github.com/firstlovecenter/fl-pastoral-care/commit/7de279951aec9d2ef8d084ca52c418ad85e6fdd0))
+*  implement scheduled aggregation for bacenta data ([5d80e055](https://github.com/firstlovecenter/fl-pastoral-care/commit/5d80e055575d31832a10f9e4b72aff4f5167b968))
+*  implement function to aggregate service data that will run on schedule  -final ([9a09cbdb](https://github.com/firstlovecenter/fl-pastoral-care/commit/9a09cbdb56a6a4fe1592c570c8ccb6d9958e70b1))
+*  implement function to aggregate service data that will run on schedule ([7cd9bcd9](https://github.com/firstlovecenter/fl-pastoral-care/commit/7cd9bcd9d7f3a1aa07ef43e1541154756e01cfc7))
+*  implement function to aggregate service data that will run on schedule ([46008934](https://github.com/firstlovecenter/fl-pastoral-care/commit/46008934a4e79ce1494c5cbf1210cb94721cf622))
+
+##### Bug Fixes
+
+*  downgrade neo4j packages in graphql function ([0bd3702b](https://github.com/firstlovecenter/fl-pastoral-care/commit/0bd3702b57045b2eefb77b0752f4bbd31fce3fce))
+*  downgraded neo4j-driver to 4.3.1 to avoid bug in 5.0.1 ([15af93a8](https://github.com/firstlovecenter/fl-pastoral-care/commit/15af93a808fe2d98f9853aa3d3aa6a1cff55455b))
+*  make aggregate function run on monday for the week just ended ([2aa96c50](https://github.com/firstlovecenter/fl-pastoral-care/commit/2aa96c505082f0b5e86e0aaec83878007f765e2d))
+*  schedule function to run on Sunday ? ([b5b03911](https://github.com/firstlovecenter/fl-pastoral-care/commit/b5b039111494da6d033321967a0a4e43f03c2da3))
+*  change scheduled function to runnin on day 1 ([7ad87eaf](https://github.com/firstlovecenter/fl-pastoral-care/commit/7ad87eafd7989ad523dc3b60bdb7c21cb5effe5f))
+*  try using 0 to represent Sunday instead of 7 ([f2a68254](https://github.com/firstlovecenter/fl-pastoral-care/commit/f2a682540977d2bb2966fcd16d143abbe83fb56c))
+*  correct export of handler ([b77f3a49](https://github.com/firstlovecenter/fl-pastoral-care/commit/b77f3a49e70441a7667e77a08ac6bb8384d70976))
+*  correct export of handler ([d9336994](https://github.com/firstlovecenter/fl-pastoral-care/commit/d93369944a328b79753a8183382d165d97cd936d))
+*  move cypher statement inside function ([853a5dbe](https://github.com/firstlovecenter/fl-pastoral-care/commit/853a5dbecbec9d517cc8ae2c0a4c90db394fed48))
+*  fix breaking typo ([d7447760](https://github.com/firstlovecenter/fl-pastoral-care/commit/d744776018f49f183891f2d64a452dc963f28b3a))
+*  remove the word 'export' ([07b93902](https://github.com/firstlovecenter/fl-pastoral-care/commit/07b93902826e31f3767642f7761b92cff39d6a7d))
+*  change schedule of function to run on Sundays only ([c9525076](https://github.com/firstlovecenter/fl-pastoral-care/commit/c95250765810bb7c6da9f1c290eefbc3f5024cb6))
+*  fix cypher that violates creation of aggregatebussing ([63344ff5](https://github.com/firstlovecenter/fl-pastoral-care/commit/63344ff58fd28d91ffa0090cc7f1bba28a3371a3))
+*  change scheduled  function to run once a day ([9714ea08](https://github.com/firstlovecenter/fl-pastoral-care/commit/9714ea08b26055fc2906e98094aba47e6406e590))
+*  fix cypher statement that was violating constraints on creating AggregateServiceRecords ([3c5daed1](https://github.com/firstlovecenter/fl-pastoral-care/commit/3c5daed1cc0274fd872d3a6c9f62552365c28f5c))
+*  implement adjustment for service aggregate calc to  factor for joint services ([c3296cea](https://github.com/firstlovecenter/fl-pastoral-care/commit/c3296cea16dfbb9b265d9913829b7f03bb79997d))
+*  fix equipment deadline to allow users to fill on day of deadline ([c6c5d8aa](https://github.com/firstlovecenter/fl-pastoral-care/commit/c6c5d8aa1732ce4d2987071751b0061ce0df49cc))
+
+##### Other Changes
+
+* 30 pm  each day ([f6dffff1](https://github.com/firstlovecenter/fl-pastoral-care/commit/f6dffff13a80ce8533ceedab815a87b8dd46a679))
+
+##### Refactors
+
+*  move aggregation to the  data aggregation file ([4004d4c6](https://github.com/firstlovecenter/fl-pastoral-care/commit/4004d4c66b8eb5b8890d68f230b1fa2efe1b5280))
+
 #### 5.1.15 (2022-09-16)
 
 ##### Bug Fixes
