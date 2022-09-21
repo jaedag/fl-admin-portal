@@ -6,11 +6,13 @@ import { Container, Nav, Navbar, Offcanvas, Row, Col } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import { menuItems } from './dashboard-utils'
 import SearchBox from 'components/SearchBox'
-import { Moon, Sun } from 'react-bootstrap-icons'
+import { ArrowClockwise, ChevronLeft, Moon, Sun } from 'react-bootstrap-icons'
 import './Navigation.css'
+import { useNavigate } from 'react-router-dom'
 
 const Navigator = () => {
   const { theme, setTheme } = useContext(MemberContext)
+  const navigate = useNavigate()
 
   return (
     <Navbar
@@ -25,6 +27,14 @@ const Navigator = () => {
           aria-controls="offcanvasNavbar"
           className="nav-toggler"
         />
+        <Navbar.Brand>
+          <ChevronLeft
+            className="mx-4"
+            size={24}
+            onClick={() => navigate(-1)}
+          />
+          <ArrowClockwise size={24} onClick={() => window.location.reload()} />
+        </Navbar.Brand>
 
         <Navbar.Offcanvas
           id="offcanvasNavbar"

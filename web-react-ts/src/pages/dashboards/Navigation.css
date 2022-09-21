@@ -5,6 +5,7 @@
 .bg-dark {
   background: #000;
   color: var(--text-primary);
+  background-color: rgba(26, 24, 24, 0.65) !important
 }
 
 .offcanvas-body.dark {
