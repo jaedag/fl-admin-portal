@@ -67,7 +67,6 @@ const FormAttendanceConfirmation = () => {
   const validationSchema = Yup.object({
     attendance: Yup.number()
       .typeError('Please enter a valid number')
-      .positive()
       .integer('You cannot have attendance with decimals!')
       .required('This is a required field'),
     vehicle: Yup.string().required('This is a required field'),
