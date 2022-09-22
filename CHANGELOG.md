@@ -1,3 +1,16 @@
+#### 5.1.17 (2022-09-22)
+
+##### New Features
+
+*  set back and refresh button to only show when app is in standalone mode ([c7bbb9dc](https://github.com/firstlovecenter/fl-pastoral-care/commit/c7bbb9dc458c25ca2bc9f3348edf2d410f094529))
+*  add a refresh and back button to the navbar ([6002241b](https://github.com/firstlovecenter/fl-pastoral-care/commit/6002241b0a3ea4a9cc77d1cd18c2acbe11b41d25))
+
+##### Bug Fixes
+
+*  fix gaping holes in stream teller functionality with permissions ([c8a4194e](https://github.com/firstlovecenter/fl-pastoral-care/commit/c8a4194ea33288090b15d435cdd00de28850e484))
+*  modify attendance confirmation so that arrivals can input 0 for attendance ([b9246b6c](https://github.com/firstlovecenter/fl-pastoral-care/commit/b9246b6cae9442aa8b49d21df61e0860c02c21ae))
+*  fix version numbers in packagelock.json ([c088fb41](https://github.com/firstlovecenter/fl-pastoral-care/commit/c088fb41badadcbb4d6c764b4a2ebc6de02363b7))
+
 #### 5.1.16 (2022-09-21)
 
 ##### New Features
