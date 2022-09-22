@@ -13,6 +13,7 @@ import {
   permitArrivalsHelpers,
   permitLeaderAdmin,
   permitMe,
+  permitTellerStream,
 } from 'permission-utils'
 
 type MenuItem = {
@@ -33,7 +34,7 @@ export const menuItems: MenuItem[] = [
   {
     name: 'Services',
     to: '/services/church-list',
-    roles: permitLeaderAdmin('Fellowship'),
+    roles: [...permitLeaderAdmin('Fellowship'), ...permitTellerStream()],
   },
   {
     name: 'Arrivals',
@@ -69,6 +70,7 @@ export const roles: {
     'isArrivalsAdminFor',
     'isArrivalsCounterFor',
     'isArrivalsConfirmerFor',
+    'isTellerFor',
   ],
   GatheringService: ['leads', 'isAdminFor', 'isArrivalsAdminFor'],
   Oversight: ['leads', 'isAdminFor'],
@@ -88,6 +90,8 @@ export const parseRoles = (role: VerbTypes): VerbTypes => {
       return 'isArrivalsCounterFor'
     case 'arrivalsConfirmer':
       return 'isArrivalsConfirmerFor'
+    case 'teller':
+      return 'isTellerFor'
 
     case 'leads':
       return 'leader'
@@ -99,6 +103,8 @@ export const parseRoles = (role: VerbTypes): VerbTypes => {
       return 'arrivalsCounter'
     case 'isArrivalsConfirmerFor':
       return 'arrivalsConfirmer'
+    case 'isTellerFor':
+      return 'teller'
 
     default:
       return role
@@ -131,6 +137,20 @@ const setServantRoles = (args: ServantRolesArgs) => {
       church: servant[`${verb}`],
       number: servant[`${verb}`]?.length,
       link: authorisedLink(servant, permittedForLink, `/arrivals`),
+    })
+
+    return
+  }
+
+  if (servantType === 'isTellerFor') {
+    const adminsOneChurch = servant[`${verb}`]?.length === 1 ?? false
+    userroles.push({
+      name: adminsOneChurch
+        ? churchType + ' ' + parseRoles(servantType)
+        : plural(churchType) + ' ' + parseRoles(servantType),
+      church: servant[`${verb}`],
+      number: servant[`${verb}`]?.length,
+      link: authorisedLink(servant, permittedForLink, `/services`),
     })
 
     return

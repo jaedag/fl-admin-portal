@@ -123,6 +123,7 @@ export const permitMe = (churchLevel: ChurchLevel): Role[] => {
     ...permitLeaderAdmin(churchLevel),
     ...permitArrivals(churchLevel),
     ...permitArrivalsHelpers(churchLevel),
+    ...permitTellerStream(),
   ]
 }
 

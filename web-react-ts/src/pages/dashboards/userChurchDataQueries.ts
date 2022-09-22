@@ -391,3 +391,24 @@ export const SERVANTS_STREAM_ARRIVALS_COUNTER = gql`
     }
   }
 `
+
+export const SERVANTS_STREAM_TELLER = gql`
+  query streamArrivalsTeller($id: ID!) {
+    members(where: { id: $id }) {
+      id
+
+      isTellerForStream {
+        id
+        name
+        stream_name
+
+        leader {
+          id
+          firstName
+          lastName
+          fullName
+        }
+      }
+    }
+  }
+`

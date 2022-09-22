@@ -109,6 +109,12 @@ export const SERVANT_CHURCH_LIST = gql`
         id
         name
       }
+
+      isTellerForStream {
+        id
+        name
+        stream_name
+      }
     }
   }
 `

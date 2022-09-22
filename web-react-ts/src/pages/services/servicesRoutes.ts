@@ -1,4 +1,8 @@
-import { permitLeaderAdmin, permitLeaderAdminArrivals } from 'permission-utils'
+import {
+  permitLeaderAdmin,
+  permitLeaderAdminArrivals,
+  permitTellerStream,
+} from 'permission-utils'
 import { banking } from './banking/self-banking/selfBankingRoutes'
 import { anagkazoRoutes } from './banking/anagkazo/anagkazoBankingRoutes'
 import { LazyRouteTypes } from 'global-types'
@@ -126,13 +130,13 @@ export const services: LazyRouteTypes[] = [
   {
     path: '/services',
     element: ServicesMenu,
-    roles: permitLeaderAdmin('Fellowship'),
+    roles: [...permitLeaderAdmin('Fellowship'), ...permitTellerStream()],
     placeholder: true,
   },
   {
     path: '/services/church-list',
     element: ServicesChurchList,
-    roles: permitLeaderAdmin('Fellowship'),
+    roles: [...permitLeaderAdmin('Fellowship'), ...permitTellerStream()],
     placeholder: true,
   },
   {

@@ -244,11 +244,13 @@ export type VerbTypes =
   | 'arrivalsAdmin'
   | 'arrivalsCounter'
   | 'arrivalsConfirmer'
+  | 'teller'
   | 'leads'
   | 'isAdminFor'
   | 'isArrivalsAdminFor'
   | 'isArrivalsCounterFor'
   | 'isArrivalsConfirmerFor'
+  | 'isTellerFor'
 
 export type ServiceRecord = {
   __typename: 'ServiceRecord' | 'RehearsalRecord'
