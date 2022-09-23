@@ -7,7 +7,7 @@ import { MemberContext } from 'contexts/MemberContext'
 import { Church, ServiceRecord } from 'global-types'
 import { parseNeoTime } from 'jd-date-utils'
 import React, { useContext, useEffect } from 'react'
-import { Col, Container, Row, Button } from 'react-bootstrap'
+import { Col, Container, Row, Button, Card } from 'react-bootstrap'
 import { useNavigate } from 'react-router'
 import './ServiceDetails.css'
 
@@ -31,31 +31,30 @@ const ServiceDetails = ({ service, church, loading }: ServiceDetailsProps) => {
     return <SpinnerPage />
   }
 
-  let table: string[][] = []
+  let table: string[][] = [
+    [
+      'Date of Service',
+      new Date(service.serviceDate.date).toDateString() ?? '',
+    ],
 
-  if (!currentUser.noIncome) {
-    table = [
-      [
-        'Date of Service',
-        new Date(service.serviceDate.date).toDateString() ?? '',
-      ],
-      ['Form Filled At', parseNeoTime(service.createdAt) ?? ''],
-      ['Attendance', service.attendance.toString()],
-      ['Income', service.income.toString()],
-      ...service.treasurers.map((treasurer, i) => [
-        `Treasurer ${i + 1}`,
-        treasurer.fullName ?? '',
-      ]),
-    ]
-  } else {
-    table = [
-      [
-        'Date of Service',
-        new Date(service.serviceDate.date).toDateString() ?? '',
-      ],
-      ['Form Filled At', parseNeoTime(service.createdAt) ?? ''],
-      ['Attendance', service.attendance.toString()],
-    ]
+    ['Form Filled At', parseNeoTime(service.createdAt) ?? ''],
+  ]
+  if (!service.noServiceReason) {
+    table.push(['Attendance', service?.attendance.toString()])
+
+    if (!currentUser.noIncome) {
+      table.push(
+        ['Income', service.income.toString()],
+        ...service.treasurers.map((treasurer, i) => [
+          `Treasurer ${i + 1}`,
+          treasurer.fullName ?? '',
+        ])
+      )
+    }
+  }
+
+  if (service.noServiceReason) {
+    table.push(['No Service Reason', service.noServiceReason])
   }
 
   return (
@@ -169,12 +168,14 @@ const ServiceDetails = ({ service, church, loading }: ServiceDetailsProps) => {
             </Row>
           )}
           {service?.noServiceReason && (
-            <>
-              <div>{`Cancelled Service was held on ${new Date(
-                service?.serviceDate.date
-              ).toDateString()}`}</div>
-              <div>{`Reason: ${service?.noServiceReason}`}</div>
-            </>
+            <Card>
+              <Card.Body>
+                <div>{`Cancelled Service was held on ${new Date(
+                  service?.serviceDate.date
+                ).toDateString()}`}</div>
+                <div>{`Reason: ${service?.noServiceReason}`}</div>
+              </Card.Body>
+            </Card>
           )}
         </Col>
       </Row>
