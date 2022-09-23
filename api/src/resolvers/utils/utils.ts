@@ -1,4 +1,5 @@
 /* eslint-disable no-relative-import-paths/no-relative-import-paths */
+import { captureException } from '@sentry/node'
 import { ChurchLevel, Member, Role } from './types'
 
 type ErrorCustom = {
@@ -41,6 +42,11 @@ export const throwErrorMsg = (
 
   // eslint-disable-next-line no-console
   console.error(message, errorVar)
+  captureException(error, {
+    tags: {
+      message,
+    },
+  })
   throw new Error(`${message} ${errorVar}`)
 }
 

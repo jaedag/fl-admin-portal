@@ -31,6 +31,8 @@
     "@neo4j/graphql": "^3.6.0",
     "@neo4j/graphql-plugin-auth": "^1.0.0",
     "@netlify/functions": "^1.2.0",
+    "@sentry/node": "^7.13.0",
+    "@sentry/tracing": "^7.13.0",
     "@types/express": "^4.17.13",
     "apollo-server": "^3.5.0",
     "apollo-server-express": "^3.9.0",

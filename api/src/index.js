@@ -7,6 +7,16 @@ import { typeDefs } from './schema/graphql-schema'
 import resolvers from './resolvers/resolvers'
 
 const app = express()
+const Sentry = require('@sentry/node')
+
+Sentry.init({
+  dsn: 'https://cd02d9dbb24041f88bfa297993779123@o1423098.ingest.sentry.io/6770464',
+
+  // Set tracesSampleRate to 1.0 to capture 100%
+  // of transactions for performance monitoring.
+  // We recommend adjusting this value in production
+  tracesSampleRate: 1.0,
+})
 
 const driver = neo4j.driver(
   process.env.NEO4J_URI || 'bolt://localhost:7687/',
