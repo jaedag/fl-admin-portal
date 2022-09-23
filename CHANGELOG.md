@@ -1,3 +1,29 @@
+#### 5.1.18 (2022-09-23)
+
+##### Chores
+
+*  update non breaking changes ([00faf2fd](https://github.com/firstlovecenter/fl-pastoral-care/commit/00faf2fd4d0554543f774642af44ea62d2973193))
+
+##### Continuous Integration
+
+*  optimised Error Screen component to  send data to Sentry ([c6e91cee](https://github.com/firstlovecenter/fl-pastoral-care/commit/c6e91ceed20f863dbf10d1312cbca7789cfe07fb))
+*  implement sentry error tracking in the backend ([fb50248a](https://github.com/firstlovecenter/fl-pastoral-care/commit/fb50248a1755f7d2b95223fc61afb197d545eb17))
+*  implement sentry.io automated error reporting in frontend ([7f2e40fa](https://github.com/firstlovecenter/fl-pastoral-care/commit/7f2e40fab1ad91cf0583abce7b5813955143c09c))
+
+##### New Features
+
+*  implement user feedback for that displays when the app crashes ([357d1d46](https://github.com/firstlovecenter/fl-pastoral-care/commit/357d1d4684ee1decd57f3bce6877da1cbc9aa19d))
+
+##### Bug Fixes
+
+*  improve error handling for failed self banking ([449b9f71](https://github.com/firstlovecenter/fl-pastoral-care/commit/449b9f715864443e50d9568366f593cf3e065ec7))
+*  fix bug where service cancellation could be done multiple times in a week ([f717e000](https://github.com/firstlovecenter/fl-pastoral-care/commit/f717e000ef98fad78b80195a932d3305d28d7b63))
+*  admin-315 fix bug preventing service details from showing when a person cancels service ([9b93a610](https://github.com/firstlovecenter/fl-pastoral-care/commit/9b93a6108926359cd9eb96e0e8dcf7b5372b54de))
+
+##### Refactors
+
+*  remove unnecessary console log ([3e29958f](https://github.com/firstlovecenter/fl-pastoral-care/commit/3e29958fa384ff452a88ad45d7f0126cba88ce00))
+
 #### 5.1.17 (2022-09-22)
 
 ##### New Features
