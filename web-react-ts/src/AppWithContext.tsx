@@ -123,6 +123,12 @@ const AppWithContext = (props: AppPropsType) => {
         ),
       }),
     ],
+    beforeSend(event) {
+      if (event.exception) {
+        Sentry.showReportDialog({ eventId: event.event_id })
+      }
+      return event
+    },
 
     // Set tracesSampleRate to 1.0 to capture 100%
     // of transactions for performance monitoring.
