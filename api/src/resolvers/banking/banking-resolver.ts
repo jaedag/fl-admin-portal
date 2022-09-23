@@ -150,8 +150,6 @@ const bankingMutation = {
     const record = transactionResponse?.record?.properties
     const banker = transactionResponse?.banker?.properties
 
-    // eslint-disable-next-line no-console
-    console.log('response', transactionResponse)
     if (!record?.transactionId) {
       throwErrorMsg(
         'It looks like there was a problem. Please try sending again!'
