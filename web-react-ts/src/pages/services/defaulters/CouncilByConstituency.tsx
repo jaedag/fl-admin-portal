@@ -7,6 +7,7 @@ import React, { useContext } from 'react'
 import { Card, Col, Row, Button, Container } from 'react-bootstrap'
 import { TelephoneFill, Whatsapp } from 'react-bootstrap-icons'
 import { useNavigate } from 'react-router'
+import PullToRefresh from 'react-simple-pull-to-refresh'
 import { HigherChurchWithDefaulters } from './defaulters-types'
 import { COUNCIL_BY_CONSTITUENCY } from './DefaultersQueries'
 import PlaceholderDefaulterList from './PlaceholderDefaulterList'
@@ -14,7 +15,7 @@ import PlaceholderDefaulterList from './PlaceholderDefaulterList'
 const CouncilByConstituency = () => {
   const { councilId, clickCard } = useContext(ChurchContext)
   const { setUser } = useSetUserChurch()
-  const { data, loading, error } = useQuery(COUNCIL_BY_CONSTITUENCY, {
+  const { data, loading, error, refetch } = useQuery(COUNCIL_BY_CONSTITUENCY, {
     variables: {
       id: councilId,
     },
@@ -22,104 +23,108 @@ const CouncilByConstituency = () => {
   const navigate = useNavigate()
 
   return (
-    <ApolloWrapper data={data} loading={loading} error={error} placeholder>
-      <Container>
-        <HeadingPrimary
-          loading={!data}
-        >{`${data?.councils[0].name} Council By Constituency`}</HeadingPrimary>
-        <Row>
-          {data ? (
-            data?.councils[0].constituencies.map(
-              (constituency: HigherChurchWithDefaulters, i: number) => (
-                <Col key={i} xs={12} className="mb-3">
-                  <Card>
-                    <Card.Header className="fw-bold">{`${constituency.name} Constituency`}</Card.Header>
-                    <Card.Body
-                      onClick={() => {
-                        clickCard(constituency)
-                        setUser(constituency)
+    <PullToRefresh onRefresh={refetch}>
+      <ApolloWrapper data={data} loading={loading} error={error} placeholder>
+        <Container>
+          <HeadingPrimary
+            loading={!data}
+          >{`${data?.councils[0].name} Council By Constituency`}</HeadingPrimary>
+          <Row>
+            {data ? (
+              data?.councils[0].constituencies.map(
+                (constituency: HigherChurchWithDefaulters, i: number) => (
+                  <Col key={i} xs={12} className="mb-3">
+                    <Card>
+                      <Card.Header className="fw-bold">{`${constituency.name} Constituency`}</Card.Header>
+                      <Card.Body
+                        onClick={() => {
+                          clickCard(constituency)
+                          setUser(constituency)
 
-                        navigate('/services/defaulters/dashboard')
-                      }}
-                    >
-                      <div className="fw-bold">
-                        Active Fellowships {constituency.activeFellowshipCount}
-                      </div>
-                      <div className="good">
-                        Services This Week {constituency.servicesThisWeekCount}
-                      </div>
-                      <div
-                        className={
-                          constituency.formDefaultersThisWeekCount
-                            ? 'bad'
-                            : 'good'
-                        }
+                          navigate('/services/defaulters/dashboard')
+                        }}
                       >
-                        Form Not Filled This Week{' '}
-                        {constituency.formDefaultersThisWeekCount}
-                      </div>
+                        <div className="fw-bold">
+                          Active Fellowships{' '}
+                          {constituency.activeFellowshipCount}
+                        </div>
+                        <div className="good">
+                          Services This Week{' '}
+                          {constituency.servicesThisWeekCount}
+                        </div>
+                        <div
+                          className={
+                            constituency.formDefaultersThisWeekCount
+                              ? 'bad'
+                              : 'good'
+                          }
+                        >
+                          Form Not Filled This Week{' '}
+                          {constituency.formDefaultersThisWeekCount}
+                        </div>
 
-                      <div
-                        className={
-                          constituency.bankedThisWeekCount ===
-                          constituency.servicesThisWeekCount
-                            ? 'good'
-                            : constituency.bankedThisWeekCount > 0
-                            ? 'yellow'
-                            : 'bad'
-                        }
-                      >
-                        Banked This Week {constituency.bankedThisWeekCount}
-                      </div>
-                      <div
-                        className={
-                          constituency.bankingDefaultersThisWeekCount
-                            ? 'bad'
-                            : 'good'
-                        }
-                      >
-                        Not Banked This Week{' '}
-                        {constituency.bankingDefaultersThisWeekCount}
-                      </div>
-                      <div
-                        className={
-                          constituency.cancelledServicesThisWeekCount
-                            ? 'bad'
-                            : ''
-                        }
-                      >
-                        Cancelled Services This Week{' '}
-                        {constituency.cancelledServicesThisWeekCount}
-                      </div>
-                    </Card.Body>
-                    <Card.Footer>
-                      <div className="mb-2">
-                        Contact Admin: {constituency?.admin?.fullName}
-                      </div>
-                      <a href={`tel:${constituency?.admin?.phoneNumber}`}>
-                        <Button variant="primary">
-                          <TelephoneFill /> Call
-                        </Button>
-                      </a>
-                      <a
-                        href={`https://wa.me/${constituency?.admin?.whatsappNumber}`}
-                        className="ms-3"
-                      >
-                        <Button variant="success">
-                          <Whatsapp /> WhatsApp
-                        </Button>
-                      </a>
-                    </Card.Footer>
-                  </Card>
-                </Col>
+                        <div
+                          className={
+                            constituency.bankedThisWeekCount ===
+                            constituency.servicesThisWeekCount
+                              ? 'good'
+                              : constituency.bankedThisWeekCount > 0
+                              ? 'yellow'
+                              : 'bad'
+                          }
+                        >
+                          Banked This Week {constituency.bankedThisWeekCount}
+                        </div>
+                        <div
+                          className={
+                            constituency.bankingDefaultersThisWeekCount
+                              ? 'bad'
+                              : 'good'
+                          }
+                        >
+                          Not Banked This Week{' '}
+                          {constituency.bankingDefaultersThisWeekCount}
+                        </div>
+                        <div
+                          className={
+                            constituency.cancelledServicesThisWeekCount
+                              ? 'bad'
+                              : ''
+                          }
+                        >
+                          Cancelled Services This Week{' '}
+                          {constituency.cancelledServicesThisWeekCount}
+                        </div>
+                      </Card.Body>
+                      <Card.Footer>
+                        <div className="mb-2">
+                          Contact Admin: {constituency?.admin?.fullName}
+                        </div>
+                        <a href={`tel:${constituency?.admin?.phoneNumber}`}>
+                          <Button variant="primary">
+                            <TelephoneFill /> Call
+                          </Button>
+                        </a>
+                        <a
+                          href={`https://wa.me/${constituency?.admin?.whatsappNumber}`}
+                          className="ms-3"
+                        >
+                          <Button variant="success">
+                            <Whatsapp /> WhatsApp
+                          </Button>
+                        </a>
+                      </Card.Footer>
+                    </Card>
+                  </Col>
+                )
               )
-            )
-          ) : (
-            <PlaceholderDefaulterList />
-          )}
-        </Row>
-      </Container>
-    </ApolloWrapper>
+            ) : (
+              <PlaceholderDefaulterList />
+            )}
+          </Row>
+        </Container>
+      </ApolloWrapper>
+    </PullToRefresh>
   )
 }
 
