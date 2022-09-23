@@ -62,7 +62,7 @@ const FellowshipSelfBanking = () => {
         </Popup>
       )}
 
-      {data?.fellowships[0].services.map(
+      {data?.fellowships[0]?.services?.map(
         (service: ServiceRecord, index: number) => {
           if (service.noServiceReason || service.bankingSlip) {
             return null
