@@ -80,3 +80,10 @@ MATCH (banker:Member {auth_id: $auth.jwt.sub})
 MERGE (banker)-[:UPLOADED_SLIP_FOR]->(record)
 RETURN record
 `
+
+export const checkIfServicePending = `
+MATCH (record:ServiceRecord {id: $serviceRecordId})
+WHERE record.transactionStatus = 'pending'
+
+RETURN record
+`

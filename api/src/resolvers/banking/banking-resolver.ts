@@ -12,6 +12,7 @@ import {
 import { isAuth, rearrangeCypherObject, throwErrorMsg } from '../utils/utils'
 
 import {
+  checkIfServicePending,
   checkTransactionId,
   getLastServiceRecord,
   removeBankingRecordTransactionId,
@@ -234,6 +235,16 @@ const bankingMutation = {
 
     try {
       await checkIfLastServiceBanked(args.serviceRecordId, context)
+
+      const checkIfAnyServicePending = rearrangeCypherObject(
+        await session.run(checkIfServicePending, args)
+      )
+
+      if (checkIfAnyServicePending?.record?.properties?.transactionStatus) {
+        throwErrorMsg(
+          'You will have to confirm your initial self banking before uploading your banking slip'
+        )
+      }
 
       const submissionResponse = rearrangeCypherObject(
         await session.run(submitBankingSlip, { ...args, auth: context.auth })
