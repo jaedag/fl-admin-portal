@@ -1,10 +1,10 @@
+import { throwErrorMsg } from 'global-utils'
 import { Button, Container } from 'react-bootstrap'
 import { ArrowClockwise } from 'react-bootstrap-icons'
 
 const ErrorScreen = ({ error }: { error?: Error }) => {
   if (error) {
-    // eslint-disable-next-line no-console
-    console.log(error)
+    throwErrorMsg('', error)
   }
 
   return (

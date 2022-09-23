@@ -19,9 +19,7 @@ const ApolloWrapper = (props: ApolloWrapperPropsType) => {
   } else if (loading) {
     return <LoadingScreen />
   } else if (error) {
-    // eslint-disable-next-line no-console
-    console.log(error)
-    return <ErrorScreen />
+    return <ErrorScreen error={error} />
   }
 
   return <LoadingScreen />

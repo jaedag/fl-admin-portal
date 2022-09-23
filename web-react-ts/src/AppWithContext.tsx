@@ -1,5 +1,13 @@
 import React, { Dispatch, Suspense, useState } from 'react'
-import { Routes, BrowserRouter as Router, Route } from 'react-router-dom'
+import {
+  Routes,
+  BrowserRouter as Router,
+  Route,
+  useLocation,
+  useNavigationType,
+  createRoutesFromChildren,
+  matchRoutes,
+} from 'react-router-dom'
 import { MemberContext, SearchContext } from './contexts/MemberContext'
 import { ChurchContext } from './contexts/ChurchContext'
 import ProtectedRoute from './auth/ProtectedRoute'
@@ -26,6 +34,8 @@ import { permitMe } from 'permission-utils'
 import useClickCard from 'hooks/useClickCard'
 import { useAuth0 } from '@auth0/auth0-react'
 import LoadingScreen from 'components/base-component/LoadingScreen'
+import * as Sentry from '@sentry/react'
+import { BrowserTracing } from '@sentry/tracing'
 
 type AppPropsType = {
   themeOptions: {
@@ -100,6 +110,28 @@ const AppWithContext = (props: AppPropsType) => {
     ministry: [],
   })
 
+  Sentry.init({
+    dsn: 'https://a6fccd390f7a4cdfa48da901b0e2e22f@o1423098.ingest.sentry.io/6770463',
+    integrations: [
+      new BrowserTracing({
+        routingInstrumentation: Sentry.reactRouterV6Instrumentation(
+          React.useEffect,
+          useLocation,
+          useNavigationType,
+          createRoutesFromChildren,
+          matchRoutes
+        ),
+      }),
+    ],
+
+    // Set tracesSampleRate to 1.0 to capture 100%
+    // of transactions for performance monitoring.
+    // We recommend adjusting this value in production
+    tracesSampleRate: 1.0,
+  })
+
+  const SentryRoutes = Sentry.withSentryReactRouterV6Routing(Routes)
+
   return (
     <Router>
       <ChurchContext.Provider
@@ -145,7 +177,7 @@ const AppWithContext = (props: AppPropsType) => {
                   <Navigation />
                   <div className={`bg ${theme}`}>
                     <Suspense fallback={<LoadingScreen />}>
-                      <Routes>
+                      <SentryRoutes>
                         {[
                           ...dashboards,
                           ...directory,
@@ -205,7 +237,7 @@ const AppWithContext = (props: AppPropsType) => {
                           }
                         />
                         <Route path="*" element={<PageNotFound />} />
-                      </Routes>
+                      </SentryRoutes>
                     </Suspense>
                   </div>
                 </>
