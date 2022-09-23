@@ -33,7 +33,7 @@ const FellowshipTrendsButton = (props: TrendsButtonProps) => {
     >
       <div className="pb-3 pt-2">
         <div className="text">
-          {name.toUpperCase()} {churchType.toUpperCase()}{' '}
+          {name?.toUpperCase()} {churchType?.toUpperCase()}{' '}
         </div>
       </div>
       <div className="d-grid gap-1 pb-3">
