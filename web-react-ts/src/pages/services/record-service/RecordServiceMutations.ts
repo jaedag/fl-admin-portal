@@ -32,12 +32,12 @@ export const RECORD_SERVICE = gql`
 
 export const RECORD_CANCELLED_SERVICE = gql`
   mutation RecordCancelledService(
-    $id: ID!
+    $churchId: ID!
     $serviceDate: String!
     $noServiceReason: String!
   ) {
     RecordCancelledService(
-      id: $id
+      churchId: $churchId
       serviceDate: $serviceDate
       noServiceReason: $noServiceReason
     ) {

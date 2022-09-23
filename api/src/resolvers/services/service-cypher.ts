@@ -47,6 +47,24 @@ export const recordService = `
       RETURN serviceRecord
 `
 
+export const recordCancelledService = `
+CREATE (serviceRecord:ServiceRecord:NoService {createdAt:datetime()})
+SET serviceRecord.id = apoc.create.uuid(),
+serviceRecord.noServiceReason = $noServiceReason
+
+WITH serviceRecord
+MATCH (church {id: $churchId}) WHERE church:Fellowship
+MATCH (church)-[:CURRENT_HISTORY]->(log:ServiceLog)
+MATCH (leader:Member {auth_id: $auth.jwt.sub})
+
+MERGE (serviceDate:TimeGraph {date: date($serviceDate)})
+MERGE (serviceRecord)-[:LOGGED_BY]->(leader)
+MERGE (serviceRecord)-[:SERVICE_HELD_ON]->(serviceDate)
+MERGE (log)-[:HAS_SERVICE]->(serviceRecord)
+
+RETURN serviceRecord
+`
+
 export const checkCurrentServiceLog = `
 MATCH (church {id:$churchId}) WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream
 MATCH (church)-[:CURRENT_HISTORY]->(log:ServiceLog)

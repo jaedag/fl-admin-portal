@@ -12,6 +12,7 @@ import {
   checkCurrentServiceLog,
   checkFormFilledThisWeek,
   getServantAndChurch as getServantAndChurchCypher,
+  recordCancelledService,
   recordService,
 } from './service-cypher'
 
@@ -27,6 +28,12 @@ type RecordServiceArgs = {
   treasurers: string[]
   treasurerSelfie: string
   familyPicture: string
+}
+
+type RecordCancelledServiceArgs = {
+  churchId: string
+  serviceDate: string
+  noServiceReason: string
 }
 
 const serviceMutation = {
@@ -98,6 +105,66 @@ const serviceMutation = {
     secondSession.close()
 
     const serviceDetails = rearrangeCypherObject(cypherResponse[0])
+
+    return serviceDetails.serviceRecord.properties
+  },
+  RecordCancelledService: async (
+    object: any,
+    args: RecordCancelledServiceArgs,
+    context: Context
+  ) => {
+    isAuth(permitLeaderAdmin('Fellowship'), context.auth.roles)
+    const session = context.executionContext.session()
+
+    const relationshipCheck = rearrangeCypherObject(
+      await session.run(checkCurrentServiceLog, args)
+    )
+
+    if (!relationshipCheck.exists) {
+      // Checks if the church has a current history record otherwise creates it
+      const getServantAndChurch = rearrangeCypherObject(
+        await session.run(getServantAndChurchCypher, args)
+      )
+
+      await makeServantCypher({
+        context,
+        churchType: getServantAndChurch.churchType,
+        servantType: 'Leader',
+        servant: {
+          id: getServantAndChurch.servantId,
+          auth_id: getServantAndChurch.auth_id,
+          firstName: getServantAndChurch.firstName,
+          lastName: getServantAndChurch.lastName,
+        },
+        args: {
+          leaderId: getServantAndChurch.servantId,
+        },
+        church: {
+          id: getServantAndChurch.churchId,
+          name: getServantAndChurch.churchName,
+        },
+      })
+    }
+
+    const serviceCheck = rearrangeCypherObject(
+      await session.run(checkFormFilledThisWeek, args)
+    )
+
+    if (serviceCheck.alreadyFilled) {
+      throwErrorMsg(errorMessage.no_double_form_filling)
+    }
+    if (serviceCheck.labels?.includes('Vacation')) {
+      throwErrorMsg(errorMessage.vacation_cannot_fill_service)
+    }
+
+    const cypherResponse = await session.run(recordCancelledService, {
+      ...args,
+      auth: context.auth,
+    })
+
+    session.close()
+
+    const serviceDetails = rearrangeCypherObject(cypherResponse)
 
     return serviceDetails.serviceRecord.properties
   },

@@ -1125,27 +1125,8 @@ extend type Mutation {
   ): ServiceRecord!
 
   RecordCancelledService(
-    id: ID!
+    churchId: ID!
     serviceDate: String!
     noServiceReason: String!
   ): NoService!
-    @cypher(
-      statement: """
-      CREATE (serviceRecord:ServiceRecord:NoService {createdAt:datetime()})
-        SET serviceRecord.id = apoc.create.uuid(),
-        serviceRecord.noServiceReason = $noServiceReason
-
-      WITH serviceRecord
-      MATCH (church {id:$id}) WHERE church:Fellowship
-      MATCH (church)-[:CURRENT_HISTORY]->(log:ServiceLog)
-      MATCH (leader:Member {auth_id: $auth.jwt.sub})
-
-      MERGE (serviceRecord)-[:LOGGED_BY]->(leader)
-      MERGE (serviceDate:TimeGraph {date: date($serviceDate)})
-      MERGE (serviceRecord)-[:SERVICE_HELD_ON]->(serviceDate)
-      MERGE (log)-[:HAS_SERVICE]->(serviceRecord)
-
-      RETURN serviceRecord
-      """
-    )
 }
