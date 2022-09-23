@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import {
   isAuth,
   noEmptyArgsValidation,
@@ -22,12 +23,12 @@ const treasuryMutations = {
     ),
   ConfirmBanking: async (
     object: never,
-    args: any,
+    args: { constituencyId: string },
     context: { auth: { roles: any }; executionContext: { session: () => any } }
   ): Promise<any> => {
     isAuth(permitTeller(), context?.auth.roles)
     const session = context.executionContext.session()
-    noEmptyArgsValidation(['serviceRecordId'])
+    noEmptyArgsValidation(['constituencyId'])
 
     const today = new Date()
     if (today.getDay() > 5) {
@@ -35,12 +36,29 @@ const treasuryMutations = {
     }
 
     try {
-      const checkAlreadyConfirmed = rearrangeCypherObject(
-        await session.run(anagkazo.checkIfConfirmed, args)
+      //  implement checks to make sure that all the fellowships have filled their offering
+
+      const formDefaultersResponse = rearrangeCypherObject(
+        await session.run(anagkazo.formDefaultersCount, args)
       )
 
-      if (checkAlreadyConfirmed.check) {
-        throwErrorMsg('This service offering has already been banked!')
+      const formDefaultersCount = formDefaultersResponse.defaulters.low
+
+      if (formDefaultersCount > 0) {
+        throwErrorMsg(
+          'You cannot confirm this constituency until all the active fellowships have filled their forms'
+        )
+      }
+
+      const checkAlreadyConfirmedResponse = rearrangeCypherObject(
+        await session.run(anagkazo.bankingDefaulersCount, args)
+      )
+
+      const checkAlreadyConfirmed =
+        checkAlreadyConfirmedResponse.bankingDefaulters.low
+
+      if (checkAlreadyConfirmed < 1) {
+        throwErrorMsg("This constitieuncy's offering has already been banked!")
       }
 
       const response = await session.run(anagkazo.confirmBanking, {
@@ -53,7 +71,11 @@ const treasuryMutations = {
         return confirmationResponse
       }
 
-      return confirmationResponse.record.properties
+      // return confirmationResponse.constituency.properties
+      return {
+        ...confirmationResponse.constituency.properties,
+        banked: true,
+      }
     } catch (error: any) {
       throwErrorMsg('There was a problem confirming the banking', error || '')
     }
