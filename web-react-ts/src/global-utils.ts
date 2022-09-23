@@ -1,4 +1,5 @@
 import { ApolloError } from '@apollo/client'
+import { captureException } from '@sentry/react'
 import {
   ChurchLevel,
   CurrentUser,
@@ -56,24 +57,49 @@ export const throwErrorMsg = (message: string, error?: Error | ApolloError) => {
   if (!message && !error) {
     return
   }
+
+  const user = JSON.parse(sessionStorage.getItem('currentUser') || '{}')
+
   if (!error) {
-    // eslint-disable-next-line no-console
-    console.error(message)
+    captureException(error, {
+      tags: {
+        userId: user.id,
+        userName: user.firstName + ' ' + user.lastName,
+        userEmail: user.email,
+        userRole: user.role,
+        userStream: user.stream_name,
+      },
+    })
     // eslint-disable-next-line no-alert
     alert(`${message}`)
     return
   }
 
   if (!message) {
-    // eslint-disable-next-line no-console
-    console.error(error)
+    captureException(error, {
+      tags: {
+        userId: user.id,
+        userName: user.firstName + ' ' + user.lastName,
+        userEmail: user.email,
+        userRole: user.role,
+        userStream: user.stream_name,
+      },
+    })
     // eslint-disable-next-line no-alert
     alert(`${error}`)
+
     return
   }
 
-  // eslint-disable-next-line no-console
-  console.error(message, ' ', error)
+  captureException(error, {
+    tags: {
+      userId: user.id,
+      userName: user.firstName + ' ' + user.lastName,
+      userEmail: user.email,
+      userRoles: user.roles.toString(),
+      userStream: user.stream_name,
+    },
+  })
   // eslint-disable-next-line no-alert
   alert(`${message} ${error}`)
 }

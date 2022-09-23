@@ -18,6 +18,8 @@ import AppWithContext from 'AppWithContext'
 import Login from 'components/Login'
 import Sabbath from 'auth/Sabbath'
 import ReactGA from 'react-ga4'
+import * as Sentry from '@sentry/react'
+import { BrowserTracing } from '@sentry/tracing'
 import SplashSreen from 'pages/splash-screen/SplashSreen'
 
 const AppWithApollo = () => {
@@ -124,6 +126,15 @@ const AppWithAuth = () => (
 
 ReactGA.initialize('G-BT4M7RYZX0')
 ReactGA.send('pageview')
+Sentry.init({
+  dsn: 'https://a6fccd390f7a4cdfa48da901b0e2e22f@o1423098.ingest.sentry.io/6770463',
+  integrations: [new BrowserTracing()],
+
+  // Set tracesSampleRate to 1.0 to capture 100%
+  // of transactions for performance monitoring.
+  // We recommend adjusting this value in production
+  tracesSampleRate: 1.0,
+})
 
 const container: HTMLElement =
   document.getElementById('root') || document.createElement('div')
