@@ -22,9 +22,9 @@ export const checkIfArrayHasRepeatingValues = (array: any[]) => {
   return false
 }
 
-export const throwErrorMsg = (
+export const throwToSentry = (
   message: string,
-  error?: ErrorCustom | string | any
+  error: ErrorCustom | string | any
 ) => {
   let errorVar: string | ErrorCustom = ''
 
@@ -52,19 +52,25 @@ export const throwErrorMsg = (
 
 export const noEmptyArgsValidation = (args: any[]) => {
   if (!args.length) {
-    throwErrorMsg('args must be passed in array')
+    throwToSentry(
+      'Argument not in Array',
+      Error('Args must be passed in array')
+    )
   }
 
   args.forEach((argument, index) => {
     if (!argument) {
-      throwErrorMsg(`${args[index - 1]} Argument Cannot Be Empty`)
+      throwToSentry(
+        'No Empty Arguments Allowed',
+        Error(`${args[index - 1]} Argument Cannot Be Empty`)
+      )
     }
   })
 }
 
 export const errorHandling = (member: Member) => {
   if (!member.email) {
-    throwErrorMsg(
+    throw new Error(
       `${member.firstName} ${member.lastName} does not have a valid email address. Please add an email address and then try again`
     )
   }
@@ -75,6 +81,15 @@ export const rearrangeCypherObject = (response: any) => {
   const member: {
     [key: string]: any
   } = {}
+
+  if (response.records.length === 0) {
+    captureException(`A query returned no data`, {
+      tags: {
+        category: 'cypher',
+      },
+      extra: response.summary,
+    })
+  }
 
   response.records[0]?.keys.forEach((key: string, i: number) => {
     // eslint-disable-next-line no-underscore-dangle
@@ -95,7 +110,7 @@ export const rearrangeCypherObject = (response: any) => {
 
 export const isAuth = (permittedRoles: Role[], userRoles?: Role[]) => {
   if (!permittedRoles.some((r) => userRoles?.includes(r))) {
-    throwErrorMsg('You are not permitted to run this mutation')
+    throw new Error('You are not permitted to run this mutation')
   }
 }
 
