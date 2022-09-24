@@ -78,7 +78,7 @@ export const sendBulkSMS = async (recipient: string[], message: string) => {
     if (res.data.code === '2000') {
       return 'Message sent successfully'
     }
-    throwToSentry('There was a problem sending your message')
+    throw new Error('There was a problem sending your SMSs')
   } catch (error: any) {
     throwToSentry('There was a problem sending your message', error)
   }

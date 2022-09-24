@@ -31,7 +31,7 @@ const directoryMutation = {
     const memberCheck = rearrangeCypherObject(memberResponse)
 
     if (memberCheck.email || memberCheck.whatsappNumber) {
-      throwToSentry(errorMessage.no_duplicate_email_or_whatsapp)
+      throw new Error(errorMessage.no_duplicate_email_or_whatsapp)
     }
 
     const createMemberResponse = await session.run(createMember, {
@@ -95,7 +95,7 @@ const directoryMutation = {
     )
 
     if (memberCheck?.properties) {
-      throwToSentry(
+      throw new Error(
         'This member has active roles in church. Please remove them and try again'
       )
     }
@@ -119,7 +119,7 @@ const directoryMutation = {
       const fellowshipCheck = rearrangeCypherObject(fellowshipCheckResponse)
 
       if (fellowshipCheck.memberCount) {
-        throwToSentry(
+        throw new Error(
           `${fellowshipCheck?.name} Fellowship has ${fellowshipCheck?.memberCount} members. Please transfer all members and try again.`
         )
       }
@@ -168,7 +168,7 @@ const directoryMutation = {
       const bacentaCheck = rearrangeCypherObject(bacentaCheckResponse)
 
       if (bacentaCheck.memberCount) {
-        throwToSentry(
+        throw new Error(
           `${bacentaCheck?.name} Bacenta has ${bacentaCheck?.fellowshipCount} active fellowships. Please close down all fellowships and try again.`
         )
       }
@@ -193,7 +193,7 @@ const directoryMutation = {
       const bacentaResponse = rearrangeCypherObject(closeBacentaResponse)
       return bacentaResponse.constituency
     } catch (error: any) {
-      throwToSentry(error)
+      throwToSentry('There was an error closing down this bacenta', error)
     }
     return null
   },
@@ -210,7 +210,7 @@ const directoryMutation = {
       const constituencyCheck = rearrangeCypherObject(constituencyCheckResponse)
 
       if (constituencyCheck.memberCount) {
-        throwToSentry(
+        throw new Error(
           `${constituencyCheck?.name} Constituency has ${constituencyCheck?.bacentaCount} active bacentas. Please close down all bacentas and try again.`
         )
       }
@@ -237,7 +237,7 @@ const directoryMutation = {
       )
       return constituencyResponse.council
     } catch (error: any) {
-      throwToSentry(error)
+      throwToSentry('There was an error closing down this constituency', error)
     }
     return null
   },

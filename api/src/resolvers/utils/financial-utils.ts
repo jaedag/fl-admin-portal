@@ -56,42 +56,48 @@ export const handlePaymentError = (paymentResponse: {
   switch (code) {
     case '105':
     case '101':
-      throwToSentry('101 Payment Unsuccessful!')
+      throwToSentry('Payment Error', '101 Payment Unsuccessful!')
       break
     case '100':
-      throwToSentry('100 Transaction Failed or Declined')
+      throwToSentry('Payment Error', '100 Transaction Failed or Declined')
       break
     case '102':
-      throwToSentry('102 Number not registered for mobile money')
+      throwToSentry(
+        'Payment Error',
+        '102 Number not registered for mobile money'
+      )
       break
     case '103':
-      throwToSentry('103 Wrong PIN or transaction timed out')
+      throwToSentry('Payment Error', '103 Wrong PIN or transaction timed out')
       break
     case '104':
-      throwToSentry('104 Transaction declined or terminated')
+      throwToSentry('Payment Error', '104 Transaction declined or terminated')
       break
     case '111':
       break
     case '107':
-      throwToSentry('USSD is busy, please try againn later')
+      throwToSentry('Payment Error', 'USSD is busy, please try againn later')
       break
     case '114':
-      throwToSentry('Invalid Voucher Code')
+      throwToSentry('Payment Error', 'Invalid Voucher Code')
       break
     case '200':
-      throwToSentry('VBV Required')
+      throwToSentry('Payment Error', 'VBV Required')
       break
     case '600':
-      throwToSentry('Access Denied')
+      throwToSentry('Payment Error', 'Access Denied')
       break
     case '979':
-      throwToSentry('Access Denied. Invalid Credential')
+      throwToSentry('Payment Error', 'Access Denied. Invalid Credential')
       break
     case '909':
-      throwToSentry('Duplicate Transaction ID. Transaction ID must be unique')
+      throwToSentry(
+        'Payment Error',
+        'Duplicate Transaction ID. Transaction ID must be unique'
+      )
       break
     case '999':
-      throwToSentry('Access Denied. Merchant ID is not set')
+      throwToSentry('Payment Error', 'Access Denied. Merchant ID is not set')
       break
     default:
       break
@@ -105,7 +111,10 @@ export const getStreamFinancials = (stream: StreamOptions) => {
 
   switch (stream.toLowerCase()) {
     case 'anagkazo':
-      throwToSentry('Anagkazo has a different financial system. Thank you!')
+      throwToSentry(
+        'Payment Error',
+        'Anagkazo has a different financial system. Thank you!'
+      )
       break
     case 'campus':
     case 'town':

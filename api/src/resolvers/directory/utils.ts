@@ -83,7 +83,7 @@ export const removeServantCypher = async ({
   const session = context.executionContext.session()
 
   if (!servant.id) {
-    throwToSentry('There is no servant to remove')
+    throw new Error('There is no servant to remove')
   }
 
   // Disconnect him from the Church

@@ -46,7 +46,7 @@ dotenv.config()
 
 const checkIfSelf = (servantId: string, auth: string) => {
   if (servantId === auth.replace('auth0|', '')) {
-    throwToSentry('Sorry! You cannot make yourself an arrivals counter')
+    throw new Error('Sorry! You cannot make yourself an arrivals counter')
   }
 }
 
@@ -311,144 +311,137 @@ export const arrivalsMutation = {
     context: Context
   ) => {
     const session = context.executionContext.session()
-    try {
-      type responseType = {
-        id: string
-        target: neonumber
-        attendance: number
-        vehicle: 'Sprinter' | 'Urvan' | 'Car'
-        vehicleCost: number
-        outbound: boolean
-        personalContribution: number
-        bacentaSprinterCost: number
-        bacentaUrvanCost: number
-        arrivalTime: string
-        leaderPhoneNumber: string
-        leaderFirstName: string
-        dateLabels: string[]
-      }
 
-      const response: responseType = rearrangeCypherObject(
-        await session.run(getVehicleRecordWithDate, args)
+    type responseType = {
+      id: string
+      target: neonumber
+      attendance: number
+      vehicle: 'Sprinter' | 'Urvan' | 'Car'
+      vehicleCost: number
+      outbound: boolean
+      personalContribution: number
+      bacentaSprinterCost: number
+      bacentaUrvanCost: number
+      arrivalTime: string
+      leaderPhoneNumber: string
+      leaderFirstName: string
+      dateLabels: string[]
+    }
+
+    const response: responseType = rearrangeCypherObject(
+      await session.run(getVehicleRecordWithDate, args)
+    )
+    const calculateTopUp = (vehicleCost: number) => {
+      if (vehicleCost <= 100) return 0.5 * vehicleCost
+      if (vehicleCost <= 220) return 0.7 * vehicleCost
+      return 0.8 * vehicleCost
+    }
+
+    if (response.arrivalTime) {
+      throw new Error(
+        'This bacenta has already been marked as arrived and will not receive money'
       )
-      const calculateTopUp = (vehicleCost: number) => {
-        if (vehicleCost <= 100) return 0.5 * vehicleCost
-        if (vehicleCost <= 220) return 0.7 * vehicleCost
-        return 0.8 * vehicleCost
-      }
+    }
 
-      if (response.arrivalTime) {
-        throw new Error(
-          'This bacenta has already been marked as arrived and will not receive money'
-        )
-      }
+    let vehicleRecord: RearragedCypherResponse | undefined
 
-      let vehicleRecord: RearragedCypherResponse | undefined
+    const calculateVehicleTopUp = (data: responseType) => {
+      const sprinterTopUp = calculateTopUp(data.bacentaSprinterCost)
+      const urvanTopUp = calculateTopUp(data.bacentaUrvanCost)
 
-      const calculateVehicleTopUp = (data: responseType) => {
-        const sprinterTopUp = calculateTopUp(data.bacentaSprinterCost)
-        const urvanTopUp = calculateTopUp(data.bacentaUrvanCost)
+      const outbound = response.outbound ? 2 : 1
+      const amountToPay =
+        data.vehicleCost * outbound - data.personalContribution
 
-        const outbound = response.outbound ? 2 : 1
-        const amountToPay =
-          data.vehicleCost * outbound - data.personalContribution
-
-        if (data.vehicle === 'Sprinter') {
-          if (sprinterTopUp === 0) return 0
-          if (data.vehicleCost < sprinterTopUp || amountToPay < sprinterTopUp) {
-            return amountToPay
-          }
-
-          return sprinterTopUp * outbound
+      if (data.vehicle === 'Sprinter') {
+        if (sprinterTopUp === 0) return 0
+        if (data.vehicleCost < sprinterTopUp || amountToPay < sprinterTopUp) {
+          return amountToPay
         }
 
-        if (data.vehicle === 'Urvan') {
-          if (urvanTopUp === 0) return 0
-          if (data.vehicleCost < urvanTopUp || amountToPay < urvanTopUp) {
-            return amountToPay
-          }
+        return sprinterTopUp * outbound
+      }
 
-          return urvanTopUp * outbound
+      if (data.vehicle === 'Urvan') {
+        if (urvanTopUp === 0) return 0
+        if (data.vehicleCost < urvanTopUp || amountToPay < urvanTopUp) {
+          return amountToPay
         }
-        return 0
-      }
-      const vehicleTopUp = calculateVehicleTopUp(response)
 
-      if (response.vehicle === 'Car') {
-        const attendanceRes = await Promise.all([
-          session.run(noVehicleTopUp, { ...args, vehicleTopUp }),
-          sendBulkSMS(
-            [response.leaderPhoneNumber],
-            joinMessageStrings([
-              texts.arrivalsSMS.no_busses_to_pay_for,
-              response.attendance.toString(),
-            ])
-          ),
-        ])
-        vehicleRecord = rearrangeCypherObject(attendanceRes[0])
-        return vehicleRecord?.record.properties
+        return urvanTopUp * outbound
       }
+      return 0
+    }
+    const vehicleTopUp = calculateVehicleTopUp(response)
 
-      if (response.attendance < 8) {
-        try {
-          await Promise.all([
-            session.run(noVehicleTopUp, args),
-            sendBulkSMS(
-              [response.leaderPhoneNumber],
-              joinMessageStrings([
-                `Hi ${response.leaderFirstName}\n\n`,
-                texts.arrivalsSMS.less_than_8,
-                response.attendance.toString(),
-              ])
-            ),
+    if (response.vehicle === 'Car') {
+      const attendanceRes = await Promise.all([
+        session.run(noVehicleTopUp, { ...args, vehicleTopUp }),
+        sendBulkSMS(
+          [response.leaderPhoneNumber],
+          joinMessageStrings([
+            texts.arrivalsSMS.no_busses_to_pay_for,
+            response.attendance.toString(),
           ])
-          throw new Error("Today's Bussing doesn't require a top up")
-        } catch (error: any) {
-          throwToSentry(error)
-        }
-      }
-
-      if (response.vehicleCost === 0 || vehicleTopUp <= 0) {
-        const attendanceRes = await Promise.all([
-          session.run(noVehicleTopUp, { ...args, vehicleTopUp }),
-          sendBulkSMS(
-            [response.leaderPhoneNumber],
-            joinMessageStrings([texts.arrivalsSMS.no_bussing_cost])
-          ),
-        ])
-        vehicleRecord = rearrangeCypherObject(attendanceRes[0])
-        return vehicleRecord?.record.properties
-      }
-
-      if (
-        response.attendance &&
-        (response.vehicle === 'Sprinter' || response.vehicle === 'Urvan')
-      ) {
-        // Did not cross your target, you get your normal zonal top up
-
-        const receiveMoney = joinMessageStrings([
-          `Hi  ${response.leaderFirstName}\n\n`,
-          texts.arrivalsSMS.normal_top_up_p1,
-          vehicleTopUp?.toString(),
-          texts.arrivalsSMS.normal_top_up_p2,
-          response.attendance?.toString(),
-        ])
-
-        const attendanceRes = await Promise.all([
-          session.run(setVehicleTopUp, { ...args, vehicleTopUp }),
-          sendBulkSMS([response.leaderPhoneNumber], `${receiveMoney}`),
-        ])
-        vehicleRecord = rearrangeCypherObject(attendanceRes[0])
-      }
-
+        ),
+      ])
+      vehicleRecord = rearrangeCypherObject(attendanceRes[0])
       return vehicleRecord?.record.properties
-    } catch (error: any) {
-      throwToSentry(error)
     }
-    return {
-      id: args.vehicleRecordId,
-      vehicleTopUp: 0,
+
+    if (response.attendance < 8) {
+      await Promise.all([
+        session.run(noVehicleTopUp, args),
+        sendBulkSMS(
+          [response.leaderPhoneNumber],
+          joinMessageStrings([
+            `Hi ${response.leaderFirstName}\n\n`,
+            texts.arrivalsSMS.less_than_8,
+            response.attendance.toString(),
+          ])
+        ),
+      ]).catch((error) =>
+        throwToSentry('There was an error processing bussing payment', error)
+      )
+      throw new Error("Today's Bussing doesn't require a top up")
     }
+
+    if (response.vehicleCost === 0 || vehicleTopUp <= 0) {
+      const attendanceRes = await Promise.all([
+        session.run(noVehicleTopUp, { ...args, vehicleTopUp }),
+        sendBulkSMS(
+          [response.leaderPhoneNumber],
+          joinMessageStrings([texts.arrivalsSMS.no_bussing_cost])
+        ),
+      ])
+      vehicleRecord = rearrangeCypherObject(attendanceRes[0])
+      return vehicleRecord?.record.properties
+    }
+
+    if (
+      response.attendance &&
+      (response.vehicle === 'Sprinter' || response.vehicle === 'Urvan')
+    ) {
+      // Did not cross your target, you get your normal zonal top up
+
+      const receiveMoney = joinMessageStrings([
+        `Hi  ${response.leaderFirstName}\n\n`,
+        texts.arrivalsSMS.normal_top_up_p1,
+        vehicleTopUp?.toString(),
+        texts.arrivalsSMS.normal_top_up_p2,
+        response.attendance?.toString(),
+      ])
+
+      const attendanceRes = await Promise.all([
+        session.run(setVehicleTopUp, { ...args, vehicleTopUp }),
+        sendBulkSMS([response.leaderPhoneNumber], `${receiveMoney}`),
+      ]).catch((error) =>
+        throwToSentry('There was an error processing bussing payment', error)
+      )
+      vehicleRecord = rearrangeCypherObject(attendanceRes[0])
+    }
+
+    return vehicleRecord?.record.properties
   },
   SendVehicleSupport: async (
     object: any,
@@ -467,14 +460,14 @@ export const arrivalsMutation = {
     const transactionResponse = recordResponse.record.properties
 
     if (transactionResponse?.transactionStatus === 'success') {
-      throwToSentry('Money has already been sent to this bacenta')
+      throw new Error('Money has already been sent to this bacenta')
     } else if (
       !transactionResponse?.arrivalTime ||
       transactionResponse?.attendance < 8 ||
       !transactionResponse?.vehicleTopUp
     ) {
       // If record has not been confirmed, it will return null
-      throwToSentry('This bacenta is not eligible to receive money')
+      throw new Error('This bacenta is not eligible to receive money')
     }
     const cypherResponse = rearrangeCypherObject(
       await session.run(setVehicleRecordTransactionId, args)
@@ -506,12 +499,20 @@ export const arrivalsMutation = {
 
       if (res.data.code !== '000') {
         await session.run(removeVehicleRecordTransactionId, args)
-        throwToSentry(`${res.data.code} ${res.data.reason}`)
+        throwToSentry(
+          'There was an error processing payment',
+          `${res.data.code} ${res.data.reason}`
+        )
       }
 
       await session
         .run(setVehicleRecordTransactionSuccessful, args)
-        .catch((error: any) => throwToSentry(error))
+        .catch((error: any) =>
+          throwToSentry(
+            'There was an error setting Vehicle Record Transaction Status',
+            error
+          )
+        )
 
       // eslint-disable-next-line no-console
       console.log(
@@ -587,7 +588,12 @@ export const arrivalsMutation = {
         auth: context.auth,
       }),
       sessionTwo.run(aggregateConfirmedBussingDataOnHigherChurches, args),
-    ]).catch((error) => throwToSentry(error))
+    ]).catch((error) =>
+      throwToSentry(
+        'There was an error aggregating bussing data for higher churches',
+        error
+      )
+    )
     const response = rearrangeCypherObject(promiseAllResponse[0])
 
     return response.vehicleRecord

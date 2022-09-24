@@ -147,7 +147,7 @@ export const MakeServant = async (
         )
       )
     } catch (error: any) {
-      throwToSentry(error)
+      throwToSentry('Servant had no authId and hit an error', error)
     }
   } else if (servant.auth_id) {
     // Update a user's Auth Profile with Picture and Name Details

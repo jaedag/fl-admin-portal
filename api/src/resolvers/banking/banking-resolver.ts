@@ -103,7 +103,12 @@ const bankingMutation = {
           auth: context.auth,
           ...args,
         })
-        .catch((error: any) => throwToSentry(error))
+        .catch((error: any) =>
+          throwToSentry(
+            'There was an error setting serviceRecordTransactionId',
+            error
+          )
+        )
     )
 
     const serviceRecord = cypherResponse.record.properties
@@ -132,7 +137,7 @@ const bankingMutation = {
 
       handlePaymentError(paymentResponse)
     } catch (error: any) {
-      throwToSentry(error)
+      throwToSentry('There was an error processing your payment', error)
     }
   },
 
@@ -154,7 +159,7 @@ const bankingMutation = {
     const banker = transactionResponse?.banker?.properties
 
     if (!record?.transactionId) {
-      throwToSentry(
+      throw new Error(
         'It looks like there was a problem. Please try sending again!'
       )
     }
@@ -200,10 +205,14 @@ const bankingMutation = {
       try {
         await session.run(removeBankingRecordTransactionId, args)
       } catch (error: any) {
-        throwToSentry(error)
+        throwToSentry(
+          'There was an error removing banking record tranasactionId',
+          error
+        )
       }
 
       throwToSentry(
+        'There was an error processing your payment',
         `${confirmationResponse.data.code} ${confirmationResponse.data.reason}`
       )
     }
@@ -212,7 +221,10 @@ const bankingMutation = {
       try {
         await session.run(setTransactionStatusSuccess, args)
       } catch (error: any) {
-        throwToSentry(error)
+        throwToSentry(
+          'There was an error setting the successful transaction',
+          error
+        )
       }
     }
 
@@ -254,7 +266,7 @@ const bankingMutation = {
 
       return submissionResponse.record.properties
     } catch (error: any) {
-      return throwToSentry(error)
+      return throwToSentry('There was a problem submitting banking slip', error)
     }
   },
 }

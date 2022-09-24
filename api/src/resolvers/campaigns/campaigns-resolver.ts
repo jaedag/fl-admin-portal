@@ -148,7 +148,7 @@ export const campaignsMutation = {
       )
 
       if (typeof equipmentCampaign.campaign === 'undefined') {
-        return throwToSentry(
+        throw new Error(
           'You cannot fill your forms now because an equipment date has not been set'
         )
       }
@@ -159,7 +159,7 @@ export const campaignsMutation = {
       endDate.setDate(endDate.getDate() + 1)
 
       if (currentDate < startDate || currentDate > endDate) {
-        throwToSentry('Equipment Deadline is up')
+        throw new Error('Equipment Deadline is up')
       }
 
       const date = equipmentCampaign.campaign.equipmentDate
@@ -172,7 +172,7 @@ export const campaignsMutation = {
       )
 
       if (Object.keys(equipmentRecordExists).length !== 0) {
-        throwToSentry(
+        throw new Error(
           'You have already filled your constituency equipment form!'
         )
       }
@@ -185,7 +185,10 @@ export const campaignsMutation = {
             date,
           })
           .catch((error: any) => {
-            return throwToSentry(error)
+            return throwToSentry(
+              'There was an error creating the constituency record',
+              error
+            )
           })
       )
 
@@ -218,7 +221,7 @@ export const campaignsMutation = {
       )
 
       if (typeof equipmentCampaign.campaign === 'undefined') {
-        return throwToSentry(
+        throw new Error(
           'You cannot fill your forms now because an equipment date has not been set'
         )
       }
@@ -229,7 +232,7 @@ export const campaignsMutation = {
       endDate.setDate(endDate.getDate() + 1)
 
       if (currentDate < startDate || currentDate > endDate) {
-        throwToSentry('Equipment Deadline is up')
+        throw new Error('Equipment Deadline is up')
       }
 
       const date = equipmentCampaign.campaign.equipmentDate
@@ -242,7 +245,9 @@ export const campaignsMutation = {
       )
 
       if (Object.keys(equipmentRecordExists).length !== 0) {
-        throwToSentry('You have already filled your fellowship equipment form!')
+        throw new Error(
+          'You have already filled your fellowship equipment form!'
+        )
       }
 
       const fellowshipRecord = rearrangeCypherObject(
@@ -253,7 +258,10 @@ export const campaignsMutation = {
             date,
           })
           .catch((error: any) => {
-            return throwToSentry(error)
+            return throwToSentry(
+              'There was an error creating fellowship equipment record',
+              error
+            )
           })
       )
 
