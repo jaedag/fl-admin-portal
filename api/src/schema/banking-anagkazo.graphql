@@ -2,6 +2,10 @@ extend type Stream {
   tellers: [Member!]! @relationship(type: "IS_TELLER_FOR", direction: IN)
 }
 
+extend type ServiceRecord {
+  tellerConfirmationTime: DateTime
+}
+
 extend type Member {
   isTellerForStream: [Stream!]!
     @relationship(type: "IS_TELLER_FOR", direction: OUT)
