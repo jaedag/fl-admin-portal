@@ -34,26 +34,26 @@ const SetPermissions = ({ children }: { children: JSX.Element }) => {
 
       setCurrentUser({
         ...currentUser,
-        id: data.memberByEmail.id,
-        fellowship: data.memberByEmail?.fellowship.id,
+        id: data.memberByEmail?.id,
+        fellowship: data.memberByEmail?.fellowship?.id,
         bacenta: data.memberByEmail?.fellowship?.bacenta?.id,
         council:
-          data.memberByEmail?.fellowship?.bacenta.constituency?.council.id,
-        constituency: data.memberByEmail?.fellowship?.bacenta.constituency?.id,
+          data.memberByEmail?.fellowship?.bacenta?.constituency?.council?.id,
+        constituency: data.memberByEmail?.fellowship?.bacenta?.constituency?.id,
         doNotUse: { doNotUse: doNotUse, subdoNotUse: 'bacenta' },
         stream_name: capitalise(data?.memberByEmail?.stream_name),
         stream:
-          data.memberByEmail?.fellowship?.bacenta.constituency?.council.stream
+          data.memberByEmail?.fellowship?.bacenta?.constituency?.council?.stream
             .id,
         noIncome:
-          data.memberByEmail?.fellowship?.bacenta.constituency?.council.stream
-            .gatheringService.noIncome,
+          data.memberByEmail?.fellowship?.bacenta?.constituency?.council?.stream
+            ?.gatheringService?.noIncome,
         gatheringService:
-          data.memberByEmail?.fellowship?.bacenta.constituency?.council.stream
-            .gatheringService.id,
+          data.memberByEmail?.fellowship?.bacenta?.constituency?.council?.stream
+            ?.gatheringService?.id,
         oversight:
-          data.memberByEmail?.fellowship?.bacenta.constituency?.council.stream
-            .gatheringService.oversight.id,
+          data.memberByEmail?.fellowship?.bacenta?.constituency?.council?.stream
+            ?.gatheringService?.oversight?.id,
       })
       sessionStorage.setItem('currentUser', JSON.stringify({ ...currentUser }))
     },
