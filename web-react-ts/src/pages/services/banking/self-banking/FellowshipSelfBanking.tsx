@@ -27,6 +27,20 @@ const FellowshipSelfBanking = () => {
     FELLOWSHIP_BANKING_SLIP_QUERIES,
     {
       variables: { fellowshipId: fellowshipId },
+      onCompleted: (data) => {
+        const fellowship = data?.fellowships[0]
+        const service = fellowship?.services.find(
+          (service: any) => service.transactionStatus === 'pending'
+        )
+
+        if (service?.transactionStatus === 'pending') {
+          setConfirmService({
+            id: fellowship?.services[0]?.id,
+            stream_name: fellowship?.services[0]?.stream_name,
+          })
+          togglePopup()
+        }
+      },
     }
   )
   const fellowship = data?.fellowships[0]
@@ -73,18 +87,18 @@ const FellowshipSelfBanking = () => {
               key={index}
               className="mb-2"
               onClick={() => {
+                clickCard(service)
                 setConfirmService({
                   id: service.id,
                   stream_name: service.stream_name,
                 })
-                clickCard(service)
-                if (service?.transactionStatus === 'pending') {
+                if (service.transactionStatus === 'pending') {
                   togglePopup()
                   return
                 }
 
-                if (service?.transactionStatus === 'success') {
-                  togglePopup()
+                if (service.transactionStatus === 'success') {
+                  navigate('/self-banking/receipt')
                   return
                 }
                 navigate('/services/fellowship/self-banking/pay')
