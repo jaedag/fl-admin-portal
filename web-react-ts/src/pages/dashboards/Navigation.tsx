@@ -33,15 +33,15 @@ const Navigator = () => {
         />
         {isRunningStandalone() && (
           <Navbar.Brand>
-            <ChevronLeft
-              className="mx-4"
-              size={24}
-              onClick={() => navigate(-1)}
-            />
-            <ArrowClockwise
-              size={24}
-              onClick={() => window.location.reload()}
-            />
+            <button className="btn btn-transparent-outline">
+              <ChevronLeft size={24} onClick={() => navigate(-1)} />
+            </button>
+            <button className="btn btn-transparent-outline">
+              <ArrowClockwise
+                size={24}
+                onClick={() => window.location.reload()}
+              />
+            </button>
           </Navbar.Brand>
         )}
 
