@@ -89,7 +89,7 @@ const FormMobilisationSubmission = () => {
               Upload Pre-Mobilisation Picture
             </HeadingPrimary>
             <HeadingSecondary loading={loading}>
-              {data?.bacentas[0].name} Bacenta
+              {data?.bacentas[0]?.name} Bacenta
             </HeadingSecondary>
             <HeadingSecondary loading={loading}>
               Code of The Day:{' '}
