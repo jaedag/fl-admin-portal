@@ -12,7 +12,7 @@ import {
 import { GET_GATHERINGSERVICE_MINISTRIES } from 'queries/ListQueries'
 import ErrorScreen from 'components/base-component/ErrorScreen'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
-import { Col, Container, Row } from 'react-bootstrap'
+import { Button, Col, Container, Row } from 'react-bootstrap'
 import LoadingScreen from 'components/base-component/LoadingScreen'
 import { permitAdmin } from 'permission-utils'
 import SubmitButton from 'components/formik/SubmitButton'
@@ -23,6 +23,8 @@ import ImageUpload from 'components/formik/ImageUpload'
 import SearchFellowship from 'components/formik/SearchFellowship'
 import Select from 'components/formik/Select'
 import { ChurchContext } from 'contexts/ChurchContext'
+import usePopup from 'hooks/usePopup'
+import Popup from 'components/Popup/Popup'
 
 type MemberFormProps = {
   initialValues: CreateMemberFormOptions
@@ -33,6 +35,10 @@ type MemberFormProps = {
   title: string
   loading: boolean
   update?: boolean
+}
+
+type DeleteMemberProp = {
+  reason: string
 }
 
 const MemberForm = ({
@@ -52,6 +58,44 @@ const MemberForm = ({
       },
     }
   )
+  const { isOpen, togglePopup } = usePopup()
+
+  const deleteValidationSchema = Yup.object({
+    reason: Yup.string().required(
+      "Please provide the reason you're deleting this member"
+    ),
+  })
+
+  const reasonInitialValues: DeleteMemberProp = {
+    reason: '',
+  }
+
+  const onDelete = (
+    values: DeleteMemberProp,
+    onSubmitProps: FormikHelpers<DeleteMemberProp>
+  ) => {
+    onSubmitProps.setSubmitting(true)
+
+    alert(values.reason)
+
+    onSubmitProps.setSubmitting(false)
+
+    // mutation to delete a user from the app
+
+    // MakeConstituencyArrivalsAdmin({
+    //   variables: {
+    //     constituencyId: currentUser?.currentChurch.id,
+    //     newAdminId: values.adminSelect,
+    //     oldAdminId: initialValues.adminSelect || 'no-old-admin',
+    //   },
+    // })
+    //   .then(() => {
+    //     togglePopup()
+    //     onSubmitProps.setSubmitting(false)
+    //     alert('Constituency Arrivals Admin has been changed successfully')
+    //   })
+    //   .catch((e) => throwErrorMsg(e))
+  }
 
   const canChangeEmail = () => {
     if (!update) {
@@ -106,6 +150,32 @@ const MemberForm = ({
       >
         {(formik) => (
           <Container>
+            {isOpen && (
+              <Popup handleClose={togglePopup}>
+                <b>Deleting A Member</b>
+                <p>
+                  Are you sure you want to delete this member? Please enter your
+                  reason below
+                </p>
+
+                <Formik
+                  initialValues={reasonInitialValues}
+                  validationSchema={deleteValidationSchema}
+                  onSubmit={onDelete}
+                >
+                  {(formik) => (
+                    <Form>
+                      <Row className="form-row">
+                        <Col>
+                          <Input name="reason" placeholder="Reason" />
+                          <SubmitButton formik={formik} />
+                        </Col>
+                      </Row>
+                    </Form>
+                  )}
+                </Formik>
+              </Popup>
+            )}
             <h3 className="my-3 text-center">{title}</h3>
             <Form className="form-group">
               <Row className="row-cols-1">
@@ -263,9 +333,14 @@ const MemberForm = ({
                     </Col>
                   </div>
                 </div>
-
                 <Col>
                   <SubmitButton formik={formik} />
+                  <Button
+                    onClick={() => togglePopup()}
+                    className={`btn-graphs btn dark image mt-3`}
+                  >
+                    Delete Member
+                  </Button>
                 </Col>
               </Row>
             </Form>
