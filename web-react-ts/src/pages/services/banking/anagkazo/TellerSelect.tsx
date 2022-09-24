@@ -16,7 +16,7 @@ import './TellerSelect.css'
 import * as Yup from 'yup'
 import { Form, Formik, FormikHelpers } from 'formik'
 import ModalSubmitButton from './ModalSubmitButton'
-import { alertMsg, throwErrorMsg } from 'global-utils'
+import { alertMsg, throwToSentry } from 'global-utils'
 import NoDataComponent from 'pages/arrivals/CompNoData'
 import SearchMember from 'components/formik/SearchMember'
 
@@ -89,7 +89,7 @@ const TellerSelect = () => {
       alert('Anagkazo Teller has been added successfully')
     } catch (e: any) {
       onSubmitProps.setSubmitting(false)
-      throwErrorMsg(e)
+      throwToSentry(e)
     }
     onSubmitProps.setSubmitting(false)
     return
@@ -176,7 +176,7 @@ const TellerSelect = () => {
                       setSubmitting(false)
                       alertMsg(`${teller.fullName} Deleted Successfully`)
                     } catch (error: any) {
-                      throwErrorMsg('', error)
+                      throwToSentry('', error)
                     }
                   }
                 }}

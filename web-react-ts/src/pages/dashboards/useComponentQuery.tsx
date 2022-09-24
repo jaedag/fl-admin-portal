@@ -6,7 +6,7 @@ import {
   Role,
   ServiceRecord,
 } from 'global-types'
-import { throwErrorMsg } from 'global-utils'
+import { throwToSentry } from 'global-utils'
 import {
   AggregateBussingRecords,
   BussingRecord,
@@ -144,7 +144,7 @@ const useComponentQuery = (props?: UseComponentQuery) => {
       })
 
       if (response.error) {
-        throwErrorMsg(response.error)
+        throwToSentry(response.error)
       }
 
       setAssessmentChurch(

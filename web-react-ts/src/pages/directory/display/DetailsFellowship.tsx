@@ -3,7 +3,7 @@ import { useQuery } from '@apollo/client'
 import DisplayChurchDetails from 'components/DisplayChurchDetails/DisplayChurchDetails'
 import { DISPLAY_FELLOWSHIP, DISPLAY_FELLOWSHIP_HISTORY } from './ReadQueries'
 import { ChurchContext } from 'contexts/ChurchContext'
-import { throwErrorMsg } from 'global-utils'
+import { throwToSentry } from 'global-utils'
 import { last3Weeks } from 'jd-date-utils'
 import { permitAdmin } from 'permission-utils'
 import { ServiceRecord } from 'global-types'
@@ -29,7 +29,7 @@ const DetailsFellowship = () => {
   const { data: historyData } = useQuery(DISPLAY_FELLOWSHIP_HISTORY, {
     variables: { id: fellowshipId },
   })
-  throwErrorMsg('', fellowshipError)
+  throwToSentry('', fellowshipError)
   const fellowship = fellowshipData?.fellowships[0]
   const history = historyData?.fellowships[0]
 

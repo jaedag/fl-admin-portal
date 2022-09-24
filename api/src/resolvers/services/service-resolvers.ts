@@ -5,7 +5,7 @@ import {
   checkIfArrayHasRepeatingValues,
   isAuth,
   rearrangeCypherObject,
-  throwErrorMsg,
+  throwToSentry,
 } from '../utils/utils'
 import {
   aggregateServiceDataOnHigherChurches,
@@ -50,7 +50,7 @@ const serviceMutation = {
     )
 
     if (checkIfArrayHasRepeatingValues(args.treasurers)) {
-      throwErrorMsg(errorMessage.repeatingTreasurers)
+      throwToSentry(errorMessage.repeatingTreasurers)
     }
 
     if (!relationshipCheck.exists) {
@@ -84,10 +84,10 @@ const serviceMutation = {
     )
 
     if (serviceCheck.alreadyFilled) {
-      throwErrorMsg(errorMessage.no_double_form_filling)
+      throwToSentry(errorMessage.no_double_form_filling)
     }
     if (serviceCheck.labels?.includes('Vacation')) {
-      throwErrorMsg(errorMessage.vacation_cannot_fill_service)
+      throwToSentry(errorMessage.vacation_cannot_fill_service)
     }
 
     const secondSession = context.executionContext.session()
@@ -151,10 +151,10 @@ const serviceMutation = {
     )
 
     if (serviceCheck.alreadyFilled) {
-      throwErrorMsg(errorMessage.no_double_form_filling)
+      throwToSentry(errorMessage.no_double_form_filling)
     }
     if (serviceCheck.labels?.includes('Vacation')) {
-      throwErrorMsg(errorMessage.vacation_cannot_fill_service)
+      throwToSentry(errorMessage.vacation_cannot_fill_service)
     }
 
     const cypherResponse = await session.run(recordCancelledService, {

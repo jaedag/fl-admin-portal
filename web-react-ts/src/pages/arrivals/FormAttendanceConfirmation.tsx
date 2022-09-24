@@ -18,7 +18,7 @@ import {
 } from './arrivalsMutation'
 import { useNavigate } from 'react-router'
 import SubmitButton from 'components/formik/SubmitButton'
-import { alertMsg, throwErrorMsg } from 'global-utils'
+import { alertMsg, throwToSentry } from 'global-utils'
 import { BacentaWithArrivals, VehicleRecord } from './arrivals-types'
 import Input from 'components/formik/Input'
 import Textarea from 'components/formik/Textarea'
@@ -102,7 +102,7 @@ const FormAttendanceConfirmation = () => {
         outbound: values.outbound === 'In and Out',
       },
     }).catch((error) =>
-      throwErrorMsg('There was an error confirming vehicle', error)
+      throwToSentry('There was an error confirming vehicle', error)
     )
 
     const vehicleData = res?.data.ConfirmVehicleByAdmin
@@ -121,7 +121,7 @@ const FormAttendanceConfirmation = () => {
         },
       }),
     ]).catch((error) =>
-      throwErrorMsg('There was an error setting vehicle support', error)
+      throwToSentry('There was an error setting vehicle support', error)
     )
 
     if (!vehicleData.vehicleTopUp || bacenta?.stream_name === 'Anagkazo') {
@@ -147,7 +147,7 @@ const FormAttendanceConfirmation = () => {
         navigate(`/bacenta/vehicle-details`)
       } catch (error: any) {
         setSubmitting(false)
-        throwErrorMsg(error)
+        throwToSentry(error)
       }
     }
     navigate(`/bacenta/vehicle-details`)

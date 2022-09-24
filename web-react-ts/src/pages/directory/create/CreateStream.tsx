@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useMutation } from '@apollo/client'
-import { throwErrorMsg } from '../../../global-utils'
+import { throwToSentry } from '../../../global-utils'
 import { CREATE_STREAM_MUTATION } from './CreateMutations'
 import { ChurchContext } from '../../../contexts/ChurchContext'
 import { NEW_STREAM_LEADER } from './MakeLeaderMutations'
@@ -48,7 +48,7 @@ const CreateStream = () => {
             streamId: res.data.CreateStream.id,
           },
         }).catch((error) => {
-          throwErrorMsg('There was an error adding leader', error)
+          throwToSentry('There was an error adding leader', error)
         })
 
         clickCard(res.data.CreateStream)
@@ -57,7 +57,7 @@ const CreateStream = () => {
         navigate(`/stream/displaydetails`)
       })
       .catch((error) => {
-        throwErrorMsg('There was an error creating stream', error)
+        throwToSentry('There was an error creating stream', error)
       })
   }
 

@@ -13,7 +13,7 @@ import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { RECORD_BUSSING_FROM_BACENTA } from './arrivalsMutation'
 import { parseDate } from 'jd-date-utils'
 import { ServiceContext } from 'contexts/ServiceContext'
-import { throwErrorMsg } from 'global-utils'
+import { throwToSentry } from 'global-utils'
 import Input from 'components/formik/Input'
 import Select from 'components/formik/Select'
 import { OUTBOUND_OPTIONS, VEHICLE_OPTIONS } from './arrivals-utils'
@@ -97,7 +97,7 @@ const FormAddVehicleRecord = () => {
       onSubmitProps.setSubmitting(false)
       navigate(`/bacenta/vehicle-details`)
     } catch (error: any) {
-      throwErrorMsg('There was a problem submitting your form', error)
+      throwToSentry('There was a problem submitting your form', error)
     }
   }
 

@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useQuery, useMutation } from '@apollo/client'
-import { alertMsg, throwErrorMsg } from '../../../global-utils'
+import { alertMsg, throwToSentry } from '../../../global-utils'
 import { GET_GATHERINGSERVICE_STREAMS } from '../../../queries/ListQueries'
 import {
   UPDATE_STREAM_MUTATION,
@@ -163,7 +163,7 @@ const UpdateStream = () => {
           alertMsg('Leader Changed Successfully')
           navigate(`/stream/displaydetails`)
         } catch (err: any) {
-          throwErrorMsg('There was a problem changing the Overseer', err)
+          throwToSentry('There was a problem changing the Overseer', err)
         }
       }
 
@@ -184,7 +184,7 @@ const UpdateStream = () => {
             },
           })
         } catch (error: any) {
-          throwErrorMsg(error)
+          throwToSentry(error)
         }
       }
 
@@ -220,7 +220,7 @@ const UpdateStream = () => {
       onSubmitProps.resetForm()
       navigate(`/stream/displaydetails`)
     } catch (err: any) {
-      throwErrorMsg('There was a problem updating this stream', err)
+      throwToSentry('There was a problem updating this stream', err)
     }
   }
 

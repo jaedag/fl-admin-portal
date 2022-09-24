@@ -12,7 +12,7 @@ import { CONSTITUENCY_ARRIVALS_DASHBOARD } from './arrivalsQueries'
 import { useNavigate } from 'react-router'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import RoleView from 'auth/RoleView'
-import { throwErrorMsg } from 'global-utils'
+import { throwToSentry } from 'global-utils'
 import { MAKE_CONSTITUENCYARRIVALS_ADMIN } from './arrivalsMutation'
 import { permitAdmin, permitArrivals } from 'permission-utils'
 import HeadingSecondary from 'components/HeadingSecondary'
@@ -73,7 +73,7 @@ const ConstituencyDashboard = () => {
         onSubmitProps.setSubmitting(false)
         alert('Constituency Arrivals Admin has been changed successfully')
       })
-      .catch((e) => throwErrorMsg(e))
+      .catch((e) => throwToSentry(e))
   }
 
   return (

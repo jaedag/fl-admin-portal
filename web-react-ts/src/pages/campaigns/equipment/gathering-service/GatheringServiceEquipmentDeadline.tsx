@@ -6,7 +6,7 @@ import { useMutation } from '@apollo/client'
 import { SET_EQUIPMENT_DEADLINE } from '../../CampaignQueries'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { useNavigate } from 'react-router'
-import { throwErrorMsg } from 'global-utils'
+import { throwToSentry } from 'global-utils'
 import Input from 'components/formik/Input'
 import SubmitButton from 'components/formik/SubmitButton'
 import HeadingSecondary from 'components/HeadingSecondary'
@@ -46,7 +46,7 @@ const GatheringServiceEquipmentDeadline = () => {
         alert('The equipment deadline has been set')
       })
       .catch((error) => {
-        throwErrorMsg(error)
+        throwToSentry(error)
       })
   }
 

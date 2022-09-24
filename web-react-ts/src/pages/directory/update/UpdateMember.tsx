@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useQuery, useMutation } from '@apollo/client'
 
-import { parsePhoneNum, throwErrorMsg } from 'global-utils'
+import { parsePhoneNum, throwToSentry } from 'global-utils'
 import {
   LOG_MEMBER_HISTORY,
   UPDATE_MEMBER_EMAIL,
@@ -145,12 +145,12 @@ const UpdateMember = () => {
       onSubmitProps.resetForm()
       navigate('/member/displaydetails')
     } catch (error: any) {
-      throwErrorMsg('There was an error updating the member profile\n', error)
+      throwToSentry('There was an error updating the member profile\n', error)
     }
   }
 
   if (error) {
-    throwErrorMsg(error)
+    throwToSentry(error)
   }
 
   return (

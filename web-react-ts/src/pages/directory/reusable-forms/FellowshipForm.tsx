@@ -5,7 +5,7 @@ import {
   DECIMAL_NUM_REGEX,
   makeSelectOptions,
   SERVICE_DAY_OPTIONS,
-  throwErrorMsg,
+  throwToSentry,
   VACATION_OPTIONS,
 } from 'global-utils'
 import {
@@ -74,7 +74,7 @@ const FellowshipForm = (props: FellowshipFormProps) => {
   })
 
   if (error) {
-    throwErrorMsg('', error)
+    throwToSentry('', error)
   }
 
   const validationSchema = Yup.object({
@@ -294,7 +294,7 @@ const FellowshipForm = (props: FellowshipFormProps) => {
                       })
                       .catch((error) => {
                         setButtonLoading(false)
-                        throwErrorMsg(
+                        throwToSentry(
                           'There was an error closing down this fellowship',
                           error
                         )

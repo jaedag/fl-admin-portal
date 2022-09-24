@@ -1,6 +1,6 @@
 import { MutationFunction } from '@apollo/client'
 import { Church, ChurchLevel, Role, VerbTypes } from 'global-types'
-import { capitalise, throwErrorMsg } from 'global-utils'
+import { capitalise, throwToSentry } from 'global-utils'
 
 export const churchLevels: ChurchLevel[] = [
   'Fellowship',
@@ -121,7 +121,7 @@ export const removeOldChurches = async (
             },
           })
         } catch (error: any) {
-          throwErrorMsg('There was a problem closing down the church', error)
+          throwToSentry('There was a problem closing down the church', error)
         }
       })
     )

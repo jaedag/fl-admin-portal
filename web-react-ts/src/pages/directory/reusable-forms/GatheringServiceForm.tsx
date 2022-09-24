@@ -2,7 +2,7 @@ import { useMutation, useQuery } from '@apollo/client'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { FieldArray, Form, Formik, FormikHelpers } from 'formik'
 import * as Yup from 'yup'
-import { makeSelectOptions, throwErrorMsg } from 'global-utils'
+import { makeSelectOptions, throwToSentry } from 'global-utils'
 import { GET_OVERSIGHTS } from 'queries/ListQueries'
 import React, { useContext, useState } from 'react'
 import { ChurchContext } from 'contexts/ChurchContext'
@@ -205,7 +205,7 @@ const GatheringServiceForm = ({
                         })
                         .catch((error) => {
                           setButtonLoading(false)
-                          throwErrorMsg(
+                          throwToSentry(
                             `There was an error closing down this gathering service`,
                             error
                           )

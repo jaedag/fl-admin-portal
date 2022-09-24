@@ -1,7 +1,7 @@
 import {
   nextHigherChurch,
   rearrangeCypherObject,
-  throwErrorMsg,
+  throwToSentry,
 } from '../utils/utils'
 import {
   ChurchLevel,
@@ -83,7 +83,7 @@ export const removeServantCypher = async ({
   const session = context.executionContext.session()
 
   if (!servant.id) {
-    throwErrorMsg('There is no servant to remove')
+    throwToSentry('There is no servant to remove')
   }
 
   // Disconnect him from the Church
@@ -142,7 +142,7 @@ export const makeServantCypher = async ({
         auth: context.auth,
       })
       .catch((e: any) =>
-        throwErrorMsg(`Error Connecting Church${servantType}`, e)
+        throwToSentry(`Error Connecting Church${servantType}`, e)
       )
   )
 
@@ -167,7 +167,7 @@ export const makeServantCypher = async ({
         churchType,
         historyRecord: historyRecordString(historyRecordStringArgs),
       })
-      .catch((e: any) => throwErrorMsg(`Error Creating History Log`, e))
+      .catch((e: any) => throwToSentry(`Error Creating History Log`, e))
   )
   if (servantType === 'Leader') {
     await session
@@ -175,7 +175,7 @@ export const makeServantCypher = async ({
         logId: serviceLogRes.id,
       })
       .catch((e: any) =>
-        throwErrorMsg(`Error Converting History to Service Log`, e)
+        throwToSentry(`Error Converting History to Service Log`, e)
       )
     await session
       .run(servantCypher.connectServiceLog, {
@@ -185,7 +185,7 @@ export const makeServantCypher = async ({
         logId: serviceLogRes.id,
         auth: context.auth,
       })
-      .catch((e: any) => throwErrorMsg(`Error Connecting Service Log`, e))
+      .catch((e: any) => throwToSentry(`Error Connecting Service Log`, e))
   } else {
     await session
       .run(servantCypher.connectHistoryLog, {
@@ -195,6 +195,6 @@ export const makeServantCypher = async ({
         logId: serviceLogRes.id,
         auth: context.auth,
       })
-      .catch((e: any) => throwErrorMsg(`Error Connecting History Log`, e))
+      .catch((e: any) => throwToSentry(`Error Connecting History Log`, e))
   }
 }

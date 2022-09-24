@@ -5,7 +5,7 @@ import {
   padNumbers,
 } from '../utils/financial-utils'
 import { Context } from '../utils/neo4j-types'
-import { isAuth, rearrangeCypherObject, throwErrorMsg } from '../utils/utils'
+import { isAuth, rearrangeCypherObject, throwToSentry } from '../utils/utils'
 import {
   permitAdmin,
   permitAdminArrivals,
@@ -46,7 +46,7 @@ dotenv.config()
 
 const checkIfSelf = (servantId: string, auth: string) => {
   if (servantId === auth.replace('auth0|', '')) {
-    throwErrorMsg('Sorry! You cannot make yourself an arrivals counter')
+    throwToSentry('Sorry! You cannot make yourself an arrivals counter')
   }
 }
 
@@ -404,7 +404,7 @@ export const arrivalsMutation = {
           ])
           throw new Error("Today's Bussing doesn't require a top up")
         } catch (error: any) {
-          throwErrorMsg(error)
+          throwToSentry(error)
         }
       }
 
@@ -443,7 +443,7 @@ export const arrivalsMutation = {
 
       return vehicleRecord?.record.properties
     } catch (error: any) {
-      throwErrorMsg(error)
+      throwToSentry(error)
     }
     return {
       id: args.vehicleRecordId,
@@ -467,14 +467,14 @@ export const arrivalsMutation = {
     const transactionResponse = recordResponse.record.properties
 
     if (transactionResponse?.transactionStatus === 'success') {
-      throwErrorMsg('Money has already been sent to this bacenta')
+      throwToSentry('Money has already been sent to this bacenta')
     } else if (
       !transactionResponse?.arrivalTime ||
       transactionResponse?.attendance < 8 ||
       !transactionResponse?.vehicleTopUp
     ) {
       // If record has not been confirmed, it will return null
-      throwErrorMsg('This bacenta is not eligible to receive money')
+      throwToSentry('This bacenta is not eligible to receive money')
     }
     const cypherResponse = rearrangeCypherObject(
       await session.run(setVehicleRecordTransactionId, args)
@@ -506,12 +506,12 @@ export const arrivalsMutation = {
 
       if (res.data.code !== '000') {
         await session.run(removeVehicleRecordTransactionId, args)
-        throwErrorMsg(`${res.data.code} ${res.data.reason}`)
+        throwToSentry(`${res.data.code} ${res.data.reason}`)
       }
 
       await session
         .run(setVehicleRecordTransactionSuccessful, args)
-        .catch((error: any) => throwErrorMsg(error))
+        .catch((error: any) => throwToSentry(error))
 
       // eslint-disable-next-line no-console
       console.log(
@@ -521,7 +521,7 @@ export const arrivalsMutation = {
       )
       return vehicleRecord
     } catch (error: any) {
-      throwErrorMsg(error, 'Money could not be sent!')
+      throwToSentry(error, 'Money could not be sent!')
     }
     return vehicleRecord
   },
@@ -587,7 +587,7 @@ export const arrivalsMutation = {
         auth: context.auth,
       }),
       sessionTwo.run(aggregateConfirmedBussingDataOnHigherChurches, args),
-    ]).catch((error) => throwErrorMsg(error))
+    ]).catch((error) => throwToSentry(error))
     const response = rearrangeCypherObject(promiseAllResponse[0])
 
     return response.vehicleRecord

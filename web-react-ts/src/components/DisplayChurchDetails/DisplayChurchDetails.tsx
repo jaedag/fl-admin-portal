@@ -19,7 +19,7 @@ import {
   MAKE_COUNCIL_ADMIN,
   MAKE_STREAM_ADMIN,
 } from './AdminMutations'
-import { alertMsg, plural, throwErrorMsg } from '../../global-utils'
+import { alertMsg, plural, throwToSentry } from '../../global-utils'
 import { getWeekNumber } from 'jd-date-utils'
 import Breadcrumb from './Breadcrumb'
 import { Button, Col, Container, Row, Spinner } from 'react-bootstrap'
@@ -155,7 +155,7 @@ const DisplayChurchDetails = (props: DisplayChurchDetailsProps) => {
           setSubmitting(false)
           alertMsg('Gathering Service Admin has been changed successfully')
         })
-        .catch((e: any) => throwErrorMsg(e))
+        .catch((e: any) => throwToSentry(e))
     }
 
     if (props.churchType === 'Stream') {
@@ -171,7 +171,7 @@ const DisplayChurchDetails = (props: DisplayChurchDetailsProps) => {
           setSubmitting(false)
           alertMsg('Stream Admin has been changed successfully')
         })
-        .catch((e) => throwErrorMsg(e))
+        .catch((e) => throwToSentry(e))
     }
 
     if (props.churchType === 'Council') {
@@ -187,7 +187,7 @@ const DisplayChurchDetails = (props: DisplayChurchDetailsProps) => {
           setSubmitting(false)
           alertMsg('Council Admin has been changed successfully')
         })
-        .catch((e) => throwErrorMsg(e))
+        .catch((e) => throwToSentry(e))
     }
 
     if (props.churchType === 'Constituency') {
@@ -203,7 +203,7 @@ const DisplayChurchDetails = (props: DisplayChurchDetailsProps) => {
           setSubmitting(false)
           alertMsg('Constituency Admin has been changed successfully')
         })
-        .catch((e) => throwErrorMsg(e))
+        .catch((e) => throwToSentry(e))
     }
 
     onSubmitProps.resetForm()

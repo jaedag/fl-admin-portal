@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useQuery, useMutation } from '@apollo/client'
-import { alertMsg, throwErrorMsg } from '../../../global-utils'
+import { alertMsg, throwToSentry } from '../../../global-utils'
 import { GET_STREAM_COUNCILS } from '../../../queries/ListQueries'
 import {
   UPDATE_COUNCIL_MUTATION,
@@ -163,7 +163,7 @@ const UpdateCouncil = () => {
           alertMsg('Leader Changed Successfully')
           navigate(`/council/displaydetails`)
         } catch (err: any) {
-          throwErrorMsg('There was a problem changing the Overseer', err)
+          throwToSentry('There was a problem changing the Overseer', err)
         }
       }
 
@@ -184,7 +184,7 @@ const UpdateCouncil = () => {
             },
           })
         } catch (error: any) {
-          throwErrorMsg(error)
+          throwToSentry(error)
         }
       }
 
@@ -221,7 +221,7 @@ const UpdateCouncil = () => {
       onSubmitProps.resetForm()
       navigate(`/council/displaydetails`)
     } catch (error: any) {
-      throwErrorMsg('There was a problem updating this council', error)
+      throwToSentry('There was a problem updating this council', error)
     }
   }
 

@@ -2,7 +2,7 @@ import { useMutation, useQuery } from '@apollo/client'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { FieldArray, Form, Formik, FormikHelpers } from 'formik'
 import * as Yup from 'yup'
-import { makeSelectOptions, throwErrorMsg } from 'global-utils'
+import { makeSelectOptions, throwToSentry } from 'global-utils'
 import { permitAdmin } from 'permission-utils'
 import { GET_GATHERINGSERVICES } from 'queries/ListQueries'
 import React, { useContext, useState } from 'react'
@@ -199,7 +199,7 @@ const StreamForm = ({
                           navigate(`/stream/displayall`)
                         })
                         .catch((error) => {
-                          throwErrorMsg(
+                          throwToSentry(
                             `There was an error closing down this stream`,
                             error
                           )

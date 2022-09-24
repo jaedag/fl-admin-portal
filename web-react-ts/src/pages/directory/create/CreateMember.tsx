@@ -1,7 +1,7 @@
 import { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useMutation } from '@apollo/client'
-import { parsePhoneNum, throwErrorMsg } from '../../../global-utils'
+import { parsePhoneNum, throwToSentry } from '../../../global-utils'
 import { CREATE_MEMBER_MUTATION } from './CreateMutations'
 import { ChurchContext } from '../../../contexts/ChurchContext'
 import MemberForm from '../reusable-forms/MemberForm'
@@ -84,7 +84,7 @@ const CreateMember = () => {
         },
       })
     } catch (error: any) {
-      throwErrorMsg('There was an error creating the member profile\n', error)
+      throwToSentry('There was an error creating the member profile\n', error)
     }
 
     setSubmitting(false)

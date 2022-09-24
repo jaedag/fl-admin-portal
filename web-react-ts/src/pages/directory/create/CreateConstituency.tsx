@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useMutation } from '@apollo/client'
-import { throwErrorMsg } from '../../../global-utils'
+import { throwToSentry } from '../../../global-utils'
 import { GET_COUNCIL_CONSTITUENCIES } from '../../../queries/ListQueries'
 import { CREATE_CONSTITUENCY_MUTATION } from './CreateMutations'
 import { ChurchContext } from '../../../contexts/ChurchContext'
@@ -61,14 +61,14 @@ const CreateConstituency = () => {
           },
         })
       } catch (error: any) {
-        throwErrorMsg('There was an error adding the leader', error)
+        throwToSentry('There was an error adding the leader', error)
       }
 
       onSubmitProps.setSubmitting(false)
       onSubmitProps.resetForm()
       navigate(`/constituency/displaydetails`)
     } catch (error: any) {
-      throwErrorMsg('There was an error creating the constituency', error)
+      throwToSentry('There was an error creating the constituency', error)
     }
   }
   return (

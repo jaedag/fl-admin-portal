@@ -9,7 +9,7 @@ import {
   SET_CODE_OF_THE_DAY,
 } from './arrivalsMutation'
 import { GATHERINGSERVICE_ARRIVALS_DASHBOARD } from './arrivalsQueries'
-import { alertMsg, throwErrorMsg } from 'global-utils'
+import { alertMsg, throwToSentry } from 'global-utils'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { Col, Container, Row, Button } from 'react-bootstrap'
 import Popup from 'components/Popup/Popup'
@@ -90,7 +90,7 @@ const GatheringServiceDashboard = () => {
         onSubmitProps.setSubmitting(false)
         alert('Gathering Service Arrivals Admin has been changed successfully')
       })
-      .catch((e) => throwErrorMsg(e))
+      .catch((e) => throwToSentry(e))
   }
 
   const aggregates = {

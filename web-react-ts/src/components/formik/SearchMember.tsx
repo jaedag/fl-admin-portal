@@ -1,7 +1,7 @@
 import { useLazyQuery } from '@apollo/client'
 import { MemberContext } from 'contexts/MemberContext'
 import { ErrorMessage } from 'formik'
-import { DEBOUNCE_TIMER, isAuthorised, throwErrorMsg } from 'global-utils'
+import { DEBOUNCE_TIMER, isAuthorised, throwToSentry } from 'global-utils'
 import { permitMe } from 'permission-utils'
 import React, { useContext, useEffect, useState } from 'react'
 import { RoleBasedSearch } from './formik-types'
@@ -95,7 +95,7 @@ const SearchMember = (props: RoleBasedSearch) => {
     bacentaError ||
     fellowshipError ||
     memberError
-  throwErrorMsg('', error)
+  throwToSentry('', error)
 
   const whichSearch = (searchString: string) => {
     memberSearch({

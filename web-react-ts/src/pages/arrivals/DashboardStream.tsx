@@ -5,7 +5,7 @@ import * as Yup from 'yup'
 import { useNavigate } from 'react-router'
 import { MAKE_STREAMARRIVALS_ADMIN } from './arrivalsMutation'
 import { STREAM_ARRIVALS_DASHBOARD } from './arrivalsQueries'
-import { throwErrorMsg } from 'global-utils'
+import { throwToSentry } from 'global-utils'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { Col, Container, Row } from 'react-bootstrap'
 import Popup from 'components/Popup/Popup'
@@ -73,7 +73,7 @@ const StreamDashboard = () => {
         onSubmitProps.setSubmitting(false)
         alert('stream Arrivals Admin has been changed successfully')
       })
-      .catch((e) => throwErrorMsg(e))
+      .catch((e) => throwToSentry(e))
   }
 
   const aggregates = {

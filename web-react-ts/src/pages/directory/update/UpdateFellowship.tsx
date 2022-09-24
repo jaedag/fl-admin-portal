@@ -14,7 +14,7 @@ import { MAKE_FELLOWSHIP_LEADER } from './ChangeLeaderMutations'
 import FellowshipForm, {
   FellowshipFormValues,
 } from 'pages/directory/reusable-forms/FellowshipForm'
-import { alertMsg, repackDecimals, throwErrorMsg } from 'global-utils'
+import { alertMsg, repackDecimals, throwToSentry } from 'global-utils'
 import { SET_VACATION_FELLOWSHIP, SET_ACTIVE_FELLOWSHIP } from './StatusChanges'
 import { FormikHelpers } from 'formik'
 import LoadingScreen from 'components/base-component/LoadingScreen'
@@ -96,7 +96,7 @@ const UpdateFellowship = () => {
         },
       })
     } catch (error: any) {
-      throwErrorMsg('There was an error updating this fellowship', error)
+      throwToSentry('There was an error updating this fellowship', error)
     }
     //Log If The Bacenta Changes
     if (values.bacenta !== initialValues.bacenta) {
@@ -114,7 +114,7 @@ const UpdateFellowship = () => {
           },
         })
       } catch (error: any) {
-        throwErrorMsg('', error)
+        throwToSentry('', error)
       }
     }
 
@@ -197,7 +197,7 @@ const UpdateFellowship = () => {
         alertMsg('Leader Changed Successfully')
         navigate(`/fellowship/displaydetails`)
       } catch (err: any) {
-        throwErrorMsg('There was a problem changing fellowship leader', err)
+        throwToSentry('There was a problem changing fellowship leader', err)
       }
     }
 

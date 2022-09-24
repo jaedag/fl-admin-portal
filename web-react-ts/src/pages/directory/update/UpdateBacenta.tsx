@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useQuery, useMutation } from '@apollo/client'
-import { alertMsg, capitalise, throwErrorMsg } from '../../../global-utils'
+import { alertMsg, capitalise, throwToSentry } from '../../../global-utils'
 
 import { GET_CONSTITUENCY_BACENTAS } from '../../../queries/ListQueries'
 import {
@@ -147,7 +147,7 @@ const UpdateBacenta = () => {
         },
       })
     } catch (error: any) {
-      throwErrorMsg(error)
+      throwToSentry(error)
     }
     //Log if Bacenta Name Changes
     if (values.name !== initialValues.name) {
@@ -209,7 +209,7 @@ const UpdateBacenta = () => {
         alertMsg('Leader Changed Successfully')
         navigate(`/bacenta/displaydetails`)
       } catch (error: any) {
-        throwErrorMsg('There was an error changing the leader', error)
+        throwToSentry('There was an error changing the leader', error)
       }
     }
 

@@ -1,4 +1,4 @@
-import { throwErrorMsg } from './utils'
+import { throwToSentry } from './utils'
 import { StreamOptions } from './types'
 
 const dotenv = require('dotenv')
@@ -56,42 +56,42 @@ export const handlePaymentError = (paymentResponse: {
   switch (code) {
     case '105':
     case '101':
-      throwErrorMsg('101 Payment Unsuccessful!')
+      throwToSentry('101 Payment Unsuccessful!')
       break
     case '100':
-      throwErrorMsg('100 Transaction Failed or Declined')
+      throwToSentry('100 Transaction Failed or Declined')
       break
     case '102':
-      throwErrorMsg('102 Number not registered for mobile money')
+      throwToSentry('102 Number not registered for mobile money')
       break
     case '103':
-      throwErrorMsg('103 Wrong PIN or transaction timed out')
+      throwToSentry('103 Wrong PIN or transaction timed out')
       break
     case '104':
-      throwErrorMsg('104 Transaction declined or terminated')
+      throwToSentry('104 Transaction declined or terminated')
       break
     case '111':
       break
     case '107':
-      throwErrorMsg('USSD is busy, please try againn later')
+      throwToSentry('USSD is busy, please try againn later')
       break
     case '114':
-      throwErrorMsg('Invalid Voucher Code')
+      throwToSentry('Invalid Voucher Code')
       break
     case '200':
-      throwErrorMsg('VBV Required')
+      throwToSentry('VBV Required')
       break
     case '600':
-      throwErrorMsg('Access Denied')
+      throwToSentry('Access Denied')
       break
     case '979':
-      throwErrorMsg('Access Denied. Invalid Credential')
+      throwToSentry('Access Denied. Invalid Credential')
       break
     case '909':
-      throwErrorMsg('Duplicate Transaction ID. Transaction ID must be unique')
+      throwToSentry('Duplicate Transaction ID. Transaction ID must be unique')
       break
     case '999':
-      throwErrorMsg('Access Denied. Merchant ID is not set')
+      throwToSentry('Access Denied. Merchant ID is not set')
       break
     default:
       break
@@ -105,7 +105,7 @@ export const getStreamFinancials = (stream: StreamOptions) => {
 
   switch (stream.toLowerCase()) {
     case 'anagkazo':
-      throwErrorMsg('Anagkazo has a different financial system. Thank you!')
+      throwToSentry('Anagkazo has a different financial system. Thank you!')
       break
     case 'campus':
     case 'town':

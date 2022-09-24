@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router'
 import { Col, Container, Row } from 'react-bootstrap'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import SubmitButton from 'components/formik/SubmitButton'
-import { throwErrorMsg } from 'global-utils'
+import { throwToSentry } from 'global-utils'
 import { getMondayThisWeek } from 'jd-date-utils'
 import { ChurchContext } from 'contexts/ChurchContext'
 import Input from 'components/formik/Input'
@@ -79,7 +79,7 @@ const ServiceForm = ({
         clickCard(res.data.RecordService)
         navigate(`/${churchType}/service-details`)
       })
-      .catch((error) => throwErrorMsg('', error))
+      .catch((error) => throwToSentry('', error))
   }
 
   return (

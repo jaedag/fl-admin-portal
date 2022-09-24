@@ -11,7 +11,7 @@ import {
 } from './SearchQuery'
 import { MemberContext, SearchContext } from 'contexts/MemberContext'
 import MemberDisplayCard from 'components/card/MemberDisplayCard'
-import { isAuthorised, throwErrorMsg } from 'global-utils'
+import { isAuthorised, throwToSentry } from 'global-utils'
 import { Container, Spinner } from 'react-bootstrap'
 import { Church, MemberWithoutBioData, Stream } from 'global-types'
 import { permitMe } from 'permission-utils'
@@ -145,7 +145,7 @@ const SearchPageMobile = () => {
     bacentaError ||
     fellowshipError
 
-  throwErrorMsg('', error)
+  throwToSentry('', error)
 
   const loading =
     federalLoading ||

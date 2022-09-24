@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useQuery, useMutation } from '@apollo/client'
-import { alertMsg, throwErrorMsg } from '../../../global-utils'
+import { alertMsg, throwToSentry } from '../../../global-utils'
 import { GET_OVERSIGHT_GATHERINGSERVICES } from '../../../queries/ListQueries'
 import {
   UPDATE_GATHERINGSERVICE_MUTATION,
@@ -184,7 +184,7 @@ const UpdateGatheringService = () => {
           alertMsg('Leader Changed Successfully')
           navigate(`/gatheringservice/displaydetails`)
         } catch (err: any) {
-          throwErrorMsg('There was a problem changing the Overseer', err)
+          throwToSentry('There was a problem changing the Overseer', err)
         }
       }
 
@@ -205,7 +205,7 @@ const UpdateGatheringService = () => {
             },
           })
         } catch (error: any) {
-          throwErrorMsg(error)
+          throwToSentry(error)
         }
       }
 
@@ -241,7 +241,7 @@ const UpdateGatheringService = () => {
       onSubmitProps.resetForm()
       navigate(`/gatheringservice/displaydetails`)
     } catch (err: any) {
-      throwErrorMsg('There was a problem updating this gathering service', err)
+      throwToSentry('There was a problem updating this gathering service', err)
     }
   }
 

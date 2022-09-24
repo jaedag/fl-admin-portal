@@ -12,7 +12,7 @@ import {
   REMOVE_STREAMARRIVALS_COUNTER,
   STREAM_ARRIVALS_HELPERS,
 } from './ArrivalsHelpersGQL'
-import { alertMsg, throwErrorMsg } from 'global-utils'
+import { alertMsg, throwToSentry } from 'global-utils'
 import Popup from 'components/Popup/Popup'
 import SubmitButton from 'components/formik/SubmitButton'
 import NoData from '../CompNoData'
@@ -85,7 +85,7 @@ const ArrivalsCounters = () => {
       alert('Arrivals Counter has been added successfully')
     } catch (e: any) {
       onSubmitProps.setSubmitting(false)
-      throwErrorMsg(e)
+      throwToSentry(e)
     }
   }
 
@@ -148,7 +148,7 @@ const ArrivalsCounters = () => {
                     setSubmitting(false)
                     alertMsg(`${counter.fullName} Deleted Successfully`)
                   } catch (error: any) {
-                    throwErrorMsg(error)
+                    throwToSentry(error)
                   }
                 }
               }}

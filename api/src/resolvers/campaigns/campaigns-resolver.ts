@@ -14,7 +14,7 @@ import {
 
 import texts from '../texts.json'
 
-import { isAuth, rearrangeCypherObject, throwErrorMsg } from '../utils/utils'
+import { isAuth, rearrangeCypherObject, throwToSentry } from '../utils/utils'
 import { Context } from '../utils/neo4j-types'
 import { ChurchLevel } from '../utils/types'
 import { sendBulkEmail, sendBulkSMS } from '../utils/notify'
@@ -85,7 +85,7 @@ const sendEmailsandSMS = async (
       `<p>Hi ${texts.equipment.fellowship_text},</p> ${texts.equipment.notify_fellowship_leaders_email} <b>${formattedDeadline}</b> ${texts.equipment.notify_email_p1} ${texts.equipment.fellowship_text}  ${texts.equipment.notify_email_p2}${texts.html.subscription}`
     ),
   ]).catch((error) => {
-    throwErrorMsg(
+    throwToSentry(
       'There was an error sending the equipment notifications',
       error
     )
@@ -130,7 +130,7 @@ export const campaignsMutation = {
           setEquipmentDuration.gatheringService.properties.equipmentEndDate,
       }
     } catch (error: any) {
-      return throwErrorMsg('Setting equipment deadline failed ', error)
+      return throwToSentry('Setting equipment deadline failed ', error)
     }
   },
   CreateConstituencyEquipmentRecord: async (
@@ -148,7 +148,7 @@ export const campaignsMutation = {
       )
 
       if (typeof equipmentCampaign.campaign === 'undefined') {
-        return throwErrorMsg(
+        return throwToSentry(
           'You cannot fill your forms now because an equipment date has not been set'
         )
       }
@@ -159,7 +159,7 @@ export const campaignsMutation = {
       endDate.setDate(endDate.getDate() + 1)
 
       if (currentDate < startDate || currentDate > endDate) {
-        throwErrorMsg('Equipment Deadline is up')
+        throwToSentry('Equipment Deadline is up')
       }
 
       const date = equipmentCampaign.campaign.equipmentDate
@@ -172,7 +172,7 @@ export const campaignsMutation = {
       )
 
       if (Object.keys(equipmentRecordExists).length !== 0) {
-        throwErrorMsg(
+        throwToSentry(
           'You have already filled your constituency equipment form!'
         )
       }
@@ -185,7 +185,7 @@ export const campaignsMutation = {
             date,
           })
           .catch((error: any) => {
-            return throwErrorMsg(error)
+            return throwToSentry(error)
           })
       )
 
@@ -197,7 +197,7 @@ export const campaignsMutation = {
         },
       }
     } catch (error) {
-      return throwErrorMsg(
+      return throwToSentry(
         'Creating Constituency Equipment Record failed ',
         error
       )
@@ -218,7 +218,7 @@ export const campaignsMutation = {
       )
 
       if (typeof equipmentCampaign.campaign === 'undefined') {
-        return throwErrorMsg(
+        return throwToSentry(
           'You cannot fill your forms now because an equipment date has not been set'
         )
       }
@@ -229,7 +229,7 @@ export const campaignsMutation = {
       endDate.setDate(endDate.getDate() + 1)
 
       if (currentDate < startDate || currentDate > endDate) {
-        throwErrorMsg('Equipment Deadline is up')
+        throwToSentry('Equipment Deadline is up')
       }
 
       const date = equipmentCampaign.campaign.equipmentDate
@@ -242,7 +242,7 @@ export const campaignsMutation = {
       )
 
       if (Object.keys(equipmentRecordExists).length !== 0) {
-        throwErrorMsg('You have already filled your fellowship equipment form!')
+        throwToSentry('You have already filled your fellowship equipment form!')
       }
 
       const fellowshipRecord = rearrangeCypherObject(
@@ -253,7 +253,7 @@ export const campaignsMutation = {
             date,
           })
           .catch((error: any) => {
-            return throwErrorMsg(error)
+            return throwToSentry(error)
           })
       )
 
@@ -267,7 +267,7 @@ export const campaignsMutation = {
         },
       }
     } catch (error) {
-      return throwErrorMsg(
+      return throwToSentry(
         'Creating Fellowship Equipment Record failed ',
         error
       )

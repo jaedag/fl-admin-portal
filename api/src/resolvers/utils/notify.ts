@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import axios from 'axios'
 import { Member } from './types'
-import { throwErrorMsg } from './utils'
+import { throwToSentry } from './utils'
 
 const formData = require('form-data')
 const Mailgun = require('mailgun.js')
@@ -78,9 +78,9 @@ export const sendBulkSMS = async (recipient: string[], message: string) => {
     if (res.data.code === '2000') {
       return 'Message sent successfully'
     }
-    throwErrorMsg('There was a problem sending your message')
+    throwToSentry('There was a problem sending your message')
   } catch (error: any) {
-    throwErrorMsg('There was a problem sending your message', error)
+    throwToSentry('There was a problem sending your message', error)
   }
 
   return 'Message sent successfully'

@@ -8,7 +8,7 @@ import { useMutation } from '@apollo/client'
 import { CREATE_FELLOWSHIP_EQUIPMENT_RECORD } from '../../CampaignQueries'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { useNavigate } from 'react-router'
-import { throwErrorMsg } from '../../../../global-utils'
+import { throwToSentry } from '../../../../global-utils'
 import Input from 'components/formik/Input'
 import SubmitButton from 'components/formik/SubmitButton'
 import HeadingSecondary from 'components/HeadingSecondary'
@@ -70,7 +70,7 @@ const FellowshipEquipmentForm = () => {
         },
       })
     } catch (error: any) {
-      throwErrorMsg(error)
+      throwToSentry(error)
       navigate(-1)
     }
     onSubmitProps.setSubmitting(false)

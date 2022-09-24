@@ -3,7 +3,7 @@ import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import PlaceholderCustom from 'components/Placeholder'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { ServiceRecord } from 'global-types'
-import { throwErrorMsg } from 'global-utils'
+import { throwToSentry } from 'global-utils'
 import { parseDate } from 'jd-date-utils'
 import React, { useContext } from 'react'
 import { Card, Col, Container, Row } from 'react-bootstrap'
@@ -19,7 +19,7 @@ const ConstituencyBankingSlipView = () => {
   })
   const constituency = data?.constituencies[0]
   const placeholder = ['', '', '']
-  throwErrorMsg('', error)
+  throwToSentry('', error)
 
   return (
     <Container>

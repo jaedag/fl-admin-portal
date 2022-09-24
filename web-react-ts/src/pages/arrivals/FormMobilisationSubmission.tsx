@@ -13,7 +13,7 @@ import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { UPLOAD_MOBILISATION_PICTURE } from './arrivalsMutation'
 import { beforeMobilisationDeadline } from './arrivals-utils'
 import { isToday } from 'jd-date-utils'
-import { throwErrorMsg } from 'global-utils'
+import { throwToSentry } from 'global-utils'
 import { BacentaWithArrivals, BussingRecord } from './arrivals-types'
 import Input from 'components/formik/Input'
 import ImageUpload from 'components/formik/ImageUpload'
@@ -61,7 +61,7 @@ const FormMobilisationSubmission = () => {
         onSubmitProps.setSubmitting(false)
         navigate(`/bacenta/bussing-details`)
       })
-      .catch((error) => throwErrorMsg('', error))
+      .catch((error) => throwToSentry('', error))
   }
 
   useEffect(() => {

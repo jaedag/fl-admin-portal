@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useMutation } from '@apollo/client'
-import { throwErrorMsg } from '../../../global-utils'
+import { throwToSentry } from '../../../global-utils'
 import { CREATE_GATHERING_SERVICE_MUTATION } from './CreateMutations'
 import { ChurchContext } from '../../../contexts/ChurchContext'
 import { NEW_GATHERING_SERVICE_LEADER } from './MakeLeaderMutations'
@@ -52,10 +52,10 @@ const CreateGatheringService = () => {
           },
         })
       } catch (error: any) {
-        throwErrorMsg('There was an error adding leader', error)
+        throwToSentry('There was an error adding leader', error)
       }
     } catch (error: any) {
-      throwErrorMsg('There was an error creating gathering service', error)
+      throwToSentry('There was an error creating gathering service', error)
     }
 
     onSubmitProps.setSubmitting(false)

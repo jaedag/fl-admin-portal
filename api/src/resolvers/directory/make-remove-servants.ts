@@ -4,7 +4,7 @@ import {
   isAuth,
   noEmptyArgsValidation,
   rearrangeCypherObject,
-  throwErrorMsg,
+  throwToSentry,
 } from '../utils/utils'
 import { ChurchLevel, Member, Role, ServantType } from '../utils/types'
 import { sendSingleEmail } from '../utils/notify'
@@ -147,7 +147,7 @@ export const MakeServant = async (
         )
       )
     } catch (error: any) {
-      throwErrorMsg(error)
+      throwToSentry(error)
     }
   } else if (servant.auth_id) {
     // Update a user's Auth Profile with Picture and Name Details

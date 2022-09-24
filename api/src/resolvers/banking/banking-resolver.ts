@@ -9,7 +9,7 @@ import {
   Network,
   padNumbers,
 } from '../utils/financial-utils'
-import { isAuth, rearrangeCypherObject, throwErrorMsg } from '../utils/utils'
+import { isAuth, rearrangeCypherObject, throwToSentry } from '../utils/utils'
 
 import {
   checkIfServicePending,
@@ -35,7 +35,9 @@ const checkIfLastServiceBanked = async (
       serviceRecordId,
       auth: context.auth,
     })
-    .catch((error: any) => throwErrorMsg(error))
+    .catch((error: any) =>
+      throwToSentry('There was a problem checking the lastService', error)
+    )
   const lastServiceRecord = rearrangeCypherObject(lastServiceResponse)
 
   if (!('lastService' in lastServiceRecord)) return true
@@ -43,13 +45,11 @@ const checkIfLastServiceBanked = async (
   const record: ServiceRecord = lastServiceRecord.lastService.properties
 
   if (!('bankingSlip' in record || record.transactionStatus === 'success')) {
-    throwErrorMsg(
+    throw new Error(
       `Please bank outstanding offering for your service filled on ${getHumanReadableDate(
         record.createdAt
       )} before attempting to bank this week's offering`
     )
-
-    return false
   }
 
   return true
@@ -78,7 +78,9 @@ const bankingMutation = {
     const transactionResponse = rearrangeCypherObject(
       await session
         .run(checkTransactionId, args)
-        .catch((error: any) => throwErrorMsg(error))
+        .catch((error: any) =>
+          throwToSentry('There was a problem checking the transactionId', error)
+        )
     )
 
     await checkIfLastServiceBanked(args.serviceRecordId, context)
@@ -86,11 +88,11 @@ const bankingMutation = {
     const transactionStatus =
       transactionResponse?.record.properties.transactionStatus
     if (transactionStatus === 'success') {
-      throwErrorMsg('Banking has already been done for this service')
+      throw new Error('Banking has already been done for this service')
     }
 
     if (transactionStatus === 'pending') {
-      throwErrorMsg(
+      throw new Error(
         'Please confirm your initial payment before attempting another one'
       )
     }
@@ -101,7 +103,7 @@ const bankingMutation = {
           auth: context.auth,
           ...args,
         })
-        .catch((error: any) => throwErrorMsg(error))
+        .catch((error: any) => throwToSentry(error))
     )
 
     const serviceRecord = cypherResponse.record.properties
@@ -130,7 +132,7 @@ const bankingMutation = {
 
       handlePaymentError(paymentResponse)
     } catch (error: any) {
-      throwErrorMsg(error)
+      throwToSentry(error)
     }
   },
 
@@ -152,7 +154,7 @@ const bankingMutation = {
     const banker = transactionResponse?.banker?.properties
 
     if (!record?.transactionId) {
-      throwErrorMsg(
+      throwToSentry(
         'It looks like there was a problem. Please try sending again!'
       )
     }
@@ -190,7 +192,7 @@ const bankingMutation = {
       try {
         await session.run(setTransactionStatusFailed, args)
       } catch (error: any) {
-        throwErrorMsg('Payment Unsuccessful!', error)
+        throwToSentry('Payment Unsuccessful!', error)
       }
     }
 
@@ -198,10 +200,10 @@ const bankingMutation = {
       try {
         await session.run(removeBankingRecordTransactionId, args)
       } catch (error: any) {
-        throwErrorMsg(error)
+        throwToSentry(error)
       }
 
-      throwErrorMsg(
+      throwToSentry(
         `${confirmationResponse.data.code} ${confirmationResponse.data.reason}`
       )
     }
@@ -210,7 +212,7 @@ const bankingMutation = {
       try {
         await session.run(setTransactionStatusSuccess, args)
       } catch (error: any) {
-        throwErrorMsg(error)
+        throwToSentry(error)
       }
     }
 
@@ -241,7 +243,7 @@ const bankingMutation = {
       )
 
       if (checkIfAnyServicePending?.record?.properties?.transactionStatus) {
-        throwErrorMsg(
+        throw new Error(
           'You will have to confirm your initial self banking before uploading your banking slip'
         )
       }
@@ -252,7 +254,7 @@ const bankingMutation = {
 
       return submissionResponse.record.properties
     } catch (error: any) {
-      return throwErrorMsg(error)
+      return throwToSentry(error)
     }
   },
 }

@@ -10,7 +10,7 @@ import { MAKE_SONTA_LEADER } from './ChangeLeaderMutations'
 import SontaForm, {
   SontaFormValues,
 } from 'pages/directory/reusable-forms/SontaForm'
-import { throwErrorMsg } from 'global-utils'
+import { throwToSentry } from 'global-utils'
 import { FormikHelpers } from 'formik'
 
 const UpdateSonta = () => {
@@ -75,7 +75,7 @@ const UpdateSonta = () => {
           newLeaderId: values.leaderId,
           sontaId: sontaId,
         },
-      }).catch((err) => throwErrorMsg('There was an error adding leader', err))
+      }).catch((err) => throwToSentry('There was an error adding leader', err))
     }
 
     UpdateSonta({
@@ -87,7 +87,7 @@ const UpdateSonta = () => {
     })
       .then(() => navigate(`/sonta/displaydetails`))
       .catch((error: any) =>
-        throwErrorMsg('There was an error updating this sonta', error)
+        throwToSentry('There was an error updating this sonta', error)
       )
 
     onSubmitProps.setSubmitting(false)

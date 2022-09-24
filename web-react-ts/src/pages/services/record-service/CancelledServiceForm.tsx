@@ -9,7 +9,7 @@ import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import HeadingSecondary from 'components/HeadingSecondary'
 import { MemberContext } from 'contexts/MemberContext'
 import { ChurchContext } from 'contexts/ChurchContext'
-import { throwErrorMsg } from 'global-utils'
+import { throwToSentry } from 'global-utils'
 import Input from 'components/formik/Input'
 
 type FormOptionsType = {
@@ -66,7 +66,7 @@ const CancelledServiceForm = ({
         clickCard(res.data.RecordCancelledService)
         navigate(`/${churchType}/service-details`)
       })
-      .catch((error) => throwErrorMsg(error))
+      .catch((error) => throwToSentry(error))
   }
 
   return (

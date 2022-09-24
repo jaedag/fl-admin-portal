@@ -1,7 +1,7 @@
 import { ApolloQueryResult, useMutation } from '@apollo/client'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { StreamOptions } from 'global-types'
-import { alertMsg, throwErrorMsg } from 'global-utils'
+import { alertMsg, throwToSentry } from 'global-utils'
 import React, { useContext, useState } from 'react'
 import { Button, Spinner } from 'react-bootstrap'
 import { useNavigate } from 'react-router'
@@ -68,7 +68,7 @@ const ButtonConfirmPayment = (props: ButtonConfirmPaymentProps) => {
             }
 
             navigate('/services/fellowship/self-banking')
-            throwErrorMsg(error)
+            throwToSentry(error)
           })
           .then(() => {
             refetch({ fellowshipId: fellowshipId })

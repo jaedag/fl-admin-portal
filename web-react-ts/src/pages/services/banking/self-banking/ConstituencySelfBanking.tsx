@@ -2,7 +2,7 @@ import { useQuery } from '@apollo/client'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import PlaceholderCustom from 'components/Placeholder'
 import { ChurchContext } from 'contexts/ChurchContext'
-import { throwErrorMsg } from 'global-utils'
+import { throwToSentry } from 'global-utils'
 import { parseDate } from 'jd-date-utils'
 import React, { useContext, useState } from 'react'
 import { Card, Col, Container, Row } from 'react-bootstrap'
@@ -31,7 +31,7 @@ const ConstituencySelfBanking = () => {
   )
   const constituency = data?.constituencies[0]
   const placeholder = ['', '', '']
-  throwErrorMsg('', error)
+  throwToSentry('', error)
 
   return (
     <Container>

@@ -14,7 +14,7 @@ import { CONFIRM_BANKING } from './Treasury.gql'
 import CloudinaryImage from 'components/CloudinaryImage'
 import { ServiceContext } from 'contexts/ServiceContext'
 import { DISPLAY_FELLOWSHIP_SERVICE } from 'pages/services/record-service/RecordServiceMutations'
-import { alertMsg, throwErrorMsg } from 'global-utils'
+import { alertMsg, throwToSentry } from 'global-utils'
 import Popup from 'components/Popup/Popup'
 import { ServiceRecord } from 'global-types'
 import NoDataComponent from 'pages/arrivals/CompNoData'
@@ -132,7 +132,7 @@ const ConfirmAnagkazoBanking = () => {
                   navigate('/anagkazo/receive-banking')
                 } catch (error: any) {
                   setSubmitting(false)
-                  throwErrorMsg(error)
+                  throwToSentry(error)
                 }
               }}
             >

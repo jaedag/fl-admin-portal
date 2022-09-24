@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useQuery, useMutation } from '@apollo/client'
-import { alertMsg, throwErrorMsg } from '../../../global-utils'
+import { alertMsg, throwToSentry } from '../../../global-utils'
 import { GET_COUNCIL_CONSTITUENCIES } from '../../../queries/ListQueries'
 import {
   UPDATE_CONSTITUENCY_MUTATION,
@@ -158,7 +158,7 @@ const UpdateConstituency = () => {
           alertMsg('Leader Changed Successfully')
           navigate(`/constituency/displaydetails`)
         } catch (error: any) {
-          throwErrorMsg('There was a problem changing the CO', error)
+          throwToSentry('There was a problem changing the CO', error)
         }
       }
 
@@ -211,7 +211,7 @@ const UpdateConstituency = () => {
       onSubmitProps.resetForm()
       navigate(`/constituency/displaydetails`)
     } catch (error: any) {
-      throwErrorMsg('There was a problem updating this constituency', error)
+      throwToSentry('There was a problem updating this constituency', error)
     }
   }
 

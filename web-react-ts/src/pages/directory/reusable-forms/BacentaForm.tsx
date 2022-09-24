@@ -5,7 +5,7 @@ import * as Yup from 'yup'
 import {
   BUSSING_STATUS_OPTIONS,
   makeSelectOptions,
-  throwErrorMsg,
+  throwToSentry,
   VACATION_OPTIONS,
 } from 'global-utils'
 import { permitAdmin, permitAdminArrivals } from 'permission-utils'
@@ -249,7 +249,7 @@ const BacentaForm = ({
                         })
                         .catch((error) => {
                           setButtonLoading(false)
-                          throwErrorMsg(
+                          throwToSentry(
                             'There was an error closing down this bacenta',
                             error
                           )

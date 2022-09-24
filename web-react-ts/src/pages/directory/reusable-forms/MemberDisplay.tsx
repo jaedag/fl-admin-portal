@@ -2,7 +2,7 @@ import React from 'react'
 import { useQuery } from '@apollo/client'
 import Timeline from 'components/Timeline/Timeline'
 import MemberRoleList from 'components/MemberRoleList'
-import { throwErrorMsg, USER_PLACEHOLDER } from 'global-utils'
+import { throwToSentry, USER_PLACEHOLDER } from 'global-utils'
 import { getMemberDob } from 'jd-date-utils'
 import {
   DISPLAY_MEMBER_ADMIN,
@@ -38,7 +38,7 @@ const MemberDisplay = ({ memberId }: { memberId: string }) => {
     variables: { id: memberId },
   })
   const errorToThrow: any = error
-  throwErrorMsg(errorToThrow)
+  throwToSentry(errorToThrow)
 
   const member: Member = bioData?.members[0]
   const memberChurch = churchData?.members[0]

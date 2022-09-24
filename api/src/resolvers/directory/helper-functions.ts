@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import axios from 'axios'
-import { throwErrorMsg } from '../utils/utils'
+import { throwToSentry } from '../utils/utils'
 import {
   Church,
   ChurchIdAndName,
@@ -72,7 +72,7 @@ export const removeRoles = async (
         )
       )
       .catch((err: any) =>
-        throwErrorMsg('There was an error removing role', err)
+        throwToSentry('There was an error removing role', err)
       )
   }
   return servant
@@ -115,7 +115,7 @@ export const assignRoles = async (
         `role successfully added to ${servant.firstName} ${servant.lastName}`
       )
     } catch (err: any) {
-      throwErrorMsg('There was an error assigning role', err)
+      throwToSentry('There was an error assigning role', err)
     }
   }
 }

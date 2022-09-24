@@ -7,7 +7,7 @@ import { NEW_FELLOWSHIP_LEADER } from './MakeLeaderMutations'
 import FellowshipForm, {
   FellowshipFormValues,
 } from 'pages/directory/reusable-forms/FellowshipForm'
-import { throwErrorMsg } from 'global-utils'
+import { throwToSentry } from 'global-utils'
 import { FormikHelpers } from 'formik'
 
 const CreateFellowship = () => {
@@ -58,14 +58,14 @@ const CreateFellowship = () => {
             onSubmitProps.resetForm()
           })
           .catch((error) =>
-            throwErrorMsg('There was an error setting the leader', error)
+            throwToSentry('There was an error setting the leader', error)
           )
 
         clickCard(res.data.CreateFellowship)
         navigate('/fellowship/displaydetails')
       })
       .catch((error) =>
-        throwErrorMsg('There was an error creating fellowship', error)
+        throwToSentry('There was an error creating fellowship', error)
       )
   }
   return (

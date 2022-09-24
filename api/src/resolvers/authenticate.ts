@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { Auth0RoleObject } from './utils/auth0'
-import { throwErrorMsg } from './utils/utils'
+import { throwToSentry } from './utils/utils'
 
 const dotenv = require('dotenv')
 
@@ -23,7 +23,7 @@ export const getAuthToken = async () => {
     const tokenRes = await axios(getTokenConfig)
     return tokenRes.data.access_token
   } catch (error) {
-    return throwErrorMsg('Problem Obtaining Auth Token', error)
+    return throwToSentry('Problem Obtaining Auth Token', error)
   }
 }
 

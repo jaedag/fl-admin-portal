@@ -7,7 +7,7 @@ import { NEW_SONTA_LEADER } from './MakeLeaderMutations'
 import SontaForm, {
   SontaFormValues,
 } from 'pages/directory/reusable-forms/SontaForm'
-import { throwErrorMsg } from 'global-utils'
+import { throwToSentry } from 'global-utils'
 import { FormikHelpers } from 'formik'
 
 const CreateSonta = () => {
@@ -47,14 +47,14 @@ const CreateSonta = () => {
             sontaId: res.data.CreateSonta.sontas[0].id,
           },
         }).catch((error) =>
-          throwErrorMsg('There was an error adding leader', error)
+          throwToSentry('There was an error adding leader', error)
         )
         navigate('/sonta/displaydetails')
         onSubmitProps.setSubmitting(false)
         onSubmitProps.resetForm()
       })
       .catch((error) =>
-        throwErrorMsg('There was an error creating sonta', error)
+        throwToSentry('There was an error creating sonta', error)
       )
   }
 

@@ -5,7 +5,7 @@ import { CREATE_BACENTA_MUTATION } from './CreateMutations'
 import { ChurchContext } from '../../../contexts/ChurchContext'
 import { NEW_BACENTA_LEADER } from './MakeLeaderMutations'
 import BacentaForm, { BacentaFormValues } from '../reusable-forms/BacentaForm'
-import { throwErrorMsg } from 'global-utils'
+import { throwToSentry } from 'global-utils'
 import { FormikHelpers } from 'formik'
 
 const CreateBacenta = () => {
@@ -50,14 +50,14 @@ const CreateBacenta = () => {
           },
         })
       } catch (error: any) {
-        throwErrorMsg('There was an error adding leader', error)
+        throwToSentry('There was an error adding leader', error)
       }
 
       onSubmitProps.setSubmitting(false)
       onSubmitProps.resetForm()
       navigate('/bacenta/displaydetails')
     } catch (error: any) {
-      throwErrorMsg('There was an error creating bacenta', error)
+      throwToSentry('There was an error creating bacenta', error)
     }
   }
 

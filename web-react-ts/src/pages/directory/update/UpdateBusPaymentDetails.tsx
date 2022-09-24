@@ -19,7 +19,7 @@ import {
   alertMsg,
   MOMO_NUM_REGEX,
   randomOTPGenerator,
-  throwErrorMsg,
+  throwToSentry,
 } from 'global-utils'
 import { MOBILE_NETWORK_OPTIONS } from 'pages/arrivals/arrivals-utils'
 import RoleView from 'auth/RoleView'
@@ -114,7 +114,7 @@ const UpdateBusPayment = () => {
           },
         })
       } catch (error: any) {
-        throwErrorMsg('', error)
+        throwToSentry('', error)
       }
 
       if (initialValues.momoNumber === values.momoNumber)
@@ -122,7 +122,7 @@ const UpdateBusPayment = () => {
     }
 
     if (!values.mobileNetwork || !values.momoName || !values.momoNumber) {
-      throwErrorMsg('No bussing details')
+      throwToSentry('No bussing details')
       return
     }
 
@@ -208,7 +208,7 @@ const UpdateBusPayment = () => {
                                   setSubmitting(true)
 
                                   if (formik.values.verificationCode !== otp) {
-                                    throwErrorMsg(
+                                    throwToSentry(
                                       'Your verification code is wrong! Try again 😡'
                                     )
                                     setSubmitting(false)
@@ -233,7 +233,7 @@ const UpdateBusPayment = () => {
                                     navigate(`/bacenta/displaydetails`)
                                   } catch (error) {
                                     setSubmitting(false)
-                                    throwErrorMsg(
+                                    throwToSentry(
                                       'There was a problem updating your momo number 😔'
                                     )
                                   }

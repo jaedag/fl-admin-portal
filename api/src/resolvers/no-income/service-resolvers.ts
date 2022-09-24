@@ -1,4 +1,4 @@
-import { isAuth, rearrangeCypherObject, throwErrorMsg } from '../utils/utils'
+import { isAuth, rearrangeCypherObject } from '../utils/utils'
 import {
   checkCurrentServiceLog,
   checkFormFilledThisWeek,
@@ -56,10 +56,10 @@ const serviceNoIncomeMutations = {
     )
 
     if (serviceCheck.alreadyFilled) {
-      return throwErrorMsg(errorMessage.no_double_form_filling)
+      throw new Error(errorMessage.no_double_form_filling)
     }
     if (serviceCheck.labels?.includes('Vacation')) {
-      throwErrorMsg(errorMessage.vacation_cannot_fill_service)
+      throw new Error(errorMessage.vacation_cannot_fill_service)
     }
 
     const serviceDetails = rearrangeCypherObject(
