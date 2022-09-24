@@ -1,3 +1,17 @@
+#### 5.1.19 (2022-09-24)
+
+##### New Features
+
+*  admin-318 implement a button behind the refresh and back buttons ([cc239105](https://github.com/firstlovecenter/fl-pastoral-care/commit/cc2391059e797266d99ce7bec8058af5a57998bf))
+*  implement pull to refresh functionality for church by subchurch for defaulters ([a8c6a734](https://github.com/firstlovecenter/fl-pastoral-care/commit/a8c6a7341c3bdae2fc8c5dcbed3c5da43589b915))
+
+##### Bug Fixes
+
+*  implement ux to force user to confirm payment if they have outstanding banking to do ([7d8d744f](https://github.com/firstlovecenter/fl-pastoral-care/commit/7d8d744f97098b167aa9338a72d73bb5d02849c5))
+*  improve error handling to know why some vehicles do not get confirmed as arrived ([bf59a206](https://github.com/firstlovecenter/fl-pastoral-care/commit/bf59a206d2d05a3cc1d3fe990d00b318084c852b))
+*  add optional chain in form mobilisation submission ([43b681ab](https://github.com/firstlovecenter/fl-pastoral-care/commit/43b681abc2866ea6acda1dac76f903febf6435ef))
+*  add optional chain to prevent cannot read properties of undefined errors from sentry ([a06578f0](https://github.com/firstlovecenter/fl-pastoral-care/commit/a06578f08e696809b4108ef21ba05489ff7f3cee))
+
 #### 5.1.18 (2022-09-23)
 
 ##### Chores
