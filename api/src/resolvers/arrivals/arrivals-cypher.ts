@@ -136,6 +136,7 @@ WITH bussingRecord, bacenta, serviceDate,  date($serviceDate).week AS week
 export const recordArrivalTime = `
 MATCH (vehicle:VehicleRecord {id: $vehicleRecordId})<-[:INCLUDES_RECORD]-(bussing:BussingRecord)
  SET vehicle.arrivalTime = datetime()
+WITH vehicle, bussing
 MATCH (bussing)-[:INCLUDES_RECORD]->(allVehicles:VehicleRecord)
 WITH bussing, SUM(allVehicles.attendance) AS attendance, SUM(allVehicles.leaderDeclaration) AS leaderDeclaration, SUM(allVehicles.personalContribution) AS personalContribution, SUM(allVehicles.vehicleCost) AS vehicleCost, SUM(allVehicles.vehicleTopUp) AS vehicleTopUp
 SET bussing.attendance = attendance,
