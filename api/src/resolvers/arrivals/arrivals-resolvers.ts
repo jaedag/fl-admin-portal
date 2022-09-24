@@ -189,7 +189,7 @@ export const arrivalsMutation = {
     const today = new Date()
 
     if (today > mobilisationEndTime) {
-      throwErrorMsg('It is now past the time for mobilisation. Thank you!')
+      throw new Error('It is now past the time for mobilisation. Thank you!')
     }
 
     const checkBacentaMomo = rearrangeCypherObject(
@@ -200,7 +200,7 @@ export const arrivalsMutation = {
       !checkBacentaMomo?.momoNumber &&
       (checkBacentaMomo.sprinterCost?.low || checkBacentaMomo.urvanCost?.low)
     ) {
-      throwErrorMsg('You need a mobile money number before filling this form')
+      throw new Error('You need a mobile money number before filling this form')
     }
 
     const response = rearrangeCypherObject(
@@ -338,7 +338,7 @@ export const arrivalsMutation = {
       }
 
       if (response.arrivalTime) {
-        throwErrorMsg(
+        throw new Error(
           'This bacenta has already been marked as arrived and will not receive money'
         )
       }
@@ -402,7 +402,7 @@ export const arrivalsMutation = {
               ])
             ),
           ])
-          throwErrorMsg("Today's Bussing doesn't require a top up")
+          throw new Error("Today's Bussing doesn't require a top up")
         } catch (error: any) {
           throwErrorMsg(error)
         }
@@ -578,7 +578,7 @@ export const arrivalsMutation = {
     const today = new Date()
 
     if (today > arrivalEndTime()) {
-      throwErrorMsg('It is now past the time for arrivals. Thank you!')
+      throw new Error('It is now past the time for arrivals. Thank you!')
     }
 
     const promiseAllResponse = await Promise.all([
@@ -587,7 +587,7 @@ export const arrivalsMutation = {
         auth: context.auth,
       }),
       sessionTwo.run(aggregateConfirmedBussingDataOnHigherChurches, args),
-    ])
+    ]).catch((error) => throwErrorMsg(error))
     const response = rearrangeCypherObject(promiseAllResponse[0])
 
     return response.vehicleRecord
