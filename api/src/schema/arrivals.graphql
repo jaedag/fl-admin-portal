@@ -763,9 +763,9 @@ extend type Constituency {
       MATCH (this)
       RETURN
       CASE
-        WHEN this.sprinterCost <= 100 THEN round(0.5 * this.sprinterCost)
-       WHEN this.sprinterCost <= 220 THEN  round(0.7 * this.sprinterCost)
-       WHEN this.sprinterCost > 220 THEN  round(0.8 * this.sprinterCost)
+        WHEN this.sprinterCost <= 50 THEN round(0.5 * this.sprinterCost)
+       WHEN this.sprinterCost <= 110 THEN  round(0.7 * this.sprinterCost)
+       WHEN this.sprinterCost > 110 THEN  round(0.8 * this.sprinterCost)
        ELSE 0
       END
       """
@@ -777,9 +777,9 @@ extend type Constituency {
       MATCH (this)
       RETURN
       CASE
-       WHEN this.urvanCost <= 100 THEN round(0.5 * this.urvanCost)
-       WHEN this.urvanCost <= 220 THEN  round(0.7 * this.urvanCost)
-       WHEN this.urvanCost > 220 THEN  round(0.8 * this.urvanCost)
+       WHEN this.urvanCost <= 50 THEN round(0.5 * this.urvanCost)
+       WHEN this.urvanCost <= 110 THEN  round(0.7 * this.urvanCost)
+       WHEN this.urvanCost > 110 THEN  round(0.8 * this.urvanCost)
        ELSE 0
       END
       """
@@ -794,9 +794,9 @@ extend type Bacenta {
       MATCH (this)
       RETURN
       CASE
-       WHEN this.sprinterCost <= 100 THEN round(0.5 * this.sprinterCost)
-       WHEN this.sprinterCost <= 220 THEN  round(0.7 * this.sprinterCost)
-       WHEN this.sprinterCost > 220 THEN  round(0.8 * this.sprinterCost)
+       WHEN this.sprinterCost <= 50 THEN round(0.5 * this.sprinterCost)
+       WHEN this.sprinterCost <= 110 THEN  round(0.7 * this.sprinterCost)
+       WHEN this.sprinterCost > 110 THEN  round(0.8 * this.sprinterCost)
        ELSE 0
       END
       """
@@ -808,9 +808,9 @@ extend type Bacenta {
       MATCH (this)
       RETURN
       CASE
-        WHEN this.urvanCost <= 100 THEN round(0.5 * this.urvanCost)
-       WHEN this.urvanCost <= 220 THEN  round(0.7 * this.urvanCost)
-       WHEN this.urvanCost > 220 THEN  round(0.8 * this.urvanCost)
+        WHEN this.urvanCost <= 50 THEN round(0.5 * this.urvanCost)
+       WHEN this.urvanCost <= 110 THEN  round(0.7 * this.urvanCost)
+       WHEN this.urvanCost > 110 THEN  round(0.8 * this.urvanCost)
        ELSE 0
       END
       """
