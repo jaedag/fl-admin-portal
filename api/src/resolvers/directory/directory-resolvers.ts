@@ -111,19 +111,23 @@ const directoryMutation = {
 
     const session = context.executionContext.session()
 
-    try {
-      const fellowshipCheckResponse = await session.run(
-        closeChurchCypher.checkFellowshipHasNoMembers,
-        args
-      )
-      const fellowshipCheck = rearrangeCypherObject(fellowshipCheckResponse)
-
-      if (fellowshipCheck.memberCount) {
-        throw new Error(
-          `${fellowshipCheck?.name} Fellowship has ${fellowshipCheck?.memberCount} members. Please transfer all members and try again.`
+    const fellowshipCheckResponse = await session
+      .run(closeChurchCypher.checkFellowshipHasNoMembers, args)
+      .catch((error: any) => {
+        throwToSentry(
+          'There was an error running checkFellowshipHasNoMembers',
+          error
         )
-      }
+      })
+    const fellowshipCheck = rearrangeCypherObject(fellowshipCheckResponse)
 
+    if (fellowshipCheck.memberCount) {
+      throw new Error(
+        `${fellowshipCheck?.name} Fellowship has ${fellowshipCheck?.memberCount} members. Please transfer all members and try again.`
+      )
+    }
+
+    try {
       // Fellowship Leader must be removed since the fellowship is being closed down
       await RemoveServant(
         context,
