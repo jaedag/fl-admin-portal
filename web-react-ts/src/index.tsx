@@ -22,7 +22,7 @@ import ReactGA from 'react-ga4'
 import SplashSreen from 'pages/splash-screen/SplashSreen'
 
 const AppWithApollo = () => {
-  const [accessToken, setAccessToken] = useState<String>()
+  const [accessToken, setAccessToken] = useState<string>('')
   const { getAccessTokenSilently, isLoading, user } = useAuth0()
 
   const getAccessToken = useCallback(async () => {
@@ -77,7 +77,7 @@ const AppWithApollo = () => {
     return <Sabbath />
   }
 
-  if (isLoading) {
+  if (isLoading || !accessToken) {
     return <SplashSreen />
   }
 

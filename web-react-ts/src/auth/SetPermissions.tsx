@@ -61,10 +61,6 @@ const SetPermissions = ({ children }: { children: JSX.Element }) => {
 
   useEffect(() => {
     const fetchUser = async () => {
-      if (!isAuthenticated) {
-        return
-      }
-
       await Promise.all([
         servantChurchList({ variables: { id: currentUser.id } }),
         getLoggedInUser({ variables: { email: user?.email } }),
