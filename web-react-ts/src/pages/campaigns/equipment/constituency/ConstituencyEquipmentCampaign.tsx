@@ -15,6 +15,7 @@ import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import HeadingSecondary from 'components/HeadingSecondary'
 import { getHumanReadableDate } from 'jd-date-utils'
 import Placeholder from '../../../../components/Placeholder'
+import ApolloWrapper from 'components/base-component/ApolloWrapper'
 
 const ConstituencyEquipmentCampaign = () => {
   const { currentUser } = useContext(MemberContext)
@@ -25,7 +26,7 @@ const ConstituencyEquipmentCampaign = () => {
   const { constituencyId } = useContext(ChurchContext)
   const gatheringServiceId = currentUser?.gatheringService
 
-  const { data } = useQuery(CONSTITUENCY_LATEST_EQUIPMENT_RECORD, {
+  const { data, loading } = useQuery(CONSTITUENCY_LATEST_EQUIPMENT_RECORD, {
     variables: {
       constituencyId: constituencyId,
     },
@@ -33,50 +34,61 @@ const ConstituencyEquipmentCampaign = () => {
 
   const constituencyEquipmentRecord = data?.constituencies[0]?.equipmentRecord
 
-  const { data: equipmentEndDateData, loading } = useQuery(EQUIPMENT_END_DATE, {
-    variables: {
-      gatheringServiceId: gatheringServiceId,
-    },
-  })
+  const { data: equipmentEndDateData, loading: equipmentEndDateLoading } =
+    useQuery(EQUIPMENT_END_DATE, {
+      variables: {
+        gatheringServiceId: gatheringServiceId,
+      },
+    })
 
   const equipmentEndDate =
     equipmentEndDateData?.gatheringServices[0]?.equipmentEndDate
 
   return (
-    <div className="d-flex align-items-center justify-content-center ">
-      <Container>
-        <div className="text-center">
-          <HeadingPrimary>{`${church?.name} ${churchType}`}</HeadingPrimary>
-          <HeadingSecondary>Equipment Campaign</HeadingSecondary>
-        </div>
-        <Placeholder as="h6" loading={loading} className="text-center">
-          <h6 className="text-danger text-center">
-            Current Deadline : {getHumanReadableDate(equipmentEndDate)}{' '}
-          </h6>
-        </Placeholder>
-        <div className="d-grid gap-2 mt-4 text-center px-4">
-          {constituencyEquipmentRecord?.pulpits === null && (
-            <MenuButton
-              name="Fill Campaign Form"
-              onClick={() => navigate(`/campaigns/constituency/equipment/form`)}
-            />
-          )}
+    <ApolloWrapper loading={loading} data={data}>
+      <div className="d-flex align-items-center justify-content-center ">
+        <Container>
+          <div className="text-center">
+            <HeadingPrimary>{`${church?.name} ${churchType}`}</HeadingPrimary>
+            <HeadingSecondary>Equipment Campaign</HeadingSecondary>
+          </div>
+          <Placeholder
+            as="h6"
+            loading={equipmentEndDateLoading}
+            className="text-center"
+          >
+            <h6 className="text-danger text-center">
+              Current Deadline : {getHumanReadableDate(equipmentEndDate)}{' '}
+            </h6>
+          </Placeholder>
+          <div className="d-grid gap-2 mt-4 text-center px-4">
+            {constituencyEquipmentRecord?.pulpits === null && (
+              <MenuButton
+                name="Fill Campaign Form"
+                onClick={() =>
+                  navigate(`/campaigns/constituency/equipment/form`)
+                }
+              />
+            )}
 
-          <MenuButton
-            name="View Trends"
-            onClick={() => navigate(`/campaigns/constituency/equipment/trends`)}
-          />
-          <RoleView roles={permitAdmin('Constituency')}>
             <MenuButton
-              name="Defaulters"
+              name="View Trends"
               onClick={() =>
-                navigate('/campaigns/constituency/equipment/defaulters')
+                navigate(`/campaigns/constituency/equipment/trends`)
               }
             />
-          </RoleView>
-        </div>
-      </Container>
-    </div>
+            <RoleView roles={permitAdmin('Constituency')}>
+              <MenuButton
+                name="Defaulters"
+                onClick={() =>
+                  navigate('/campaigns/constituency/equipment/defaulters')
+                }
+              />
+            </RoleView>
+          </div>
+        </Container>
+      </div>
+    </ApolloWrapper>
   )
 }
 
