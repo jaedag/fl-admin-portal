@@ -593,7 +593,7 @@ export const arrivalsMutation = {
 
     try {
       const res = await axios(sendVehicleSupport)
-
+      console.log(res)
       if (res.data.code !== '000') {
         await session.run(removeVehicleRecordTransactionId, args)
         throwToSentry(
@@ -619,7 +619,9 @@ export const arrivalsMutation = {
       )
       return vehicleRecord
     } catch (error: any) {
-      throw new Error('Money could not be sent!')
+      throw new Error(
+        `Money could not be sent! ${error.response.data.description}`
+      )
     }
   },
   SetSwellDate: async (object: any, args: any, context: Context) => {
