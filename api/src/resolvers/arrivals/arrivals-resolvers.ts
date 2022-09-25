@@ -332,8 +332,8 @@ export const arrivalsMutation = {
       await session.run(getVehicleRecordWithDate, args)
     )
     const calculateTopUp = (vehicleCost: number) => {
-      if (vehicleCost <= 100) return 0.5 * vehicleCost
-      if (vehicleCost <= 220) return 0.7 * vehicleCost
+      if (vehicleCost <= 50) return 0.5 * vehicleCost
+      if (vehicleCost <= 110) return 0.7 * vehicleCost
       return 0.8 * vehicleCost
     }
 
