@@ -38,6 +38,7 @@ import * as Sentry from '@sentry/react'
 import { BrowserTracing } from '@sentry/tracing'
 
 type AppPropsType = {
+  token: string
   themeOptions: {
     theme: string
     setTheme: Dispatch<React.SetStateAction<string>>
@@ -178,7 +179,7 @@ const AppWithContext = (props: AppPropsType) => {
                 vehicleRecordId,
               }}
             >
-              <SetPermissions>
+              <SetPermissions token={props.token}>
                 <>
                   <Navigation />
                   <div className={`bg ${theme}`}>

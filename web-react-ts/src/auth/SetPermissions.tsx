@@ -12,7 +12,13 @@ import { permitMe } from 'permission-utils'
 import React, { useContext, useEffect } from 'react'
 import useAuth from './useAuth'
 
-const SetPermissions = ({ children }: { children: JSX.Element }) => {
+const SetPermissions = ({
+  token,
+  children,
+}: {
+  token: string
+  children: JSX.Element
+}) => {
   const { currentUser, setUserJobs, setCurrentUser } = useContext(MemberContext)
   const { doNotUse } = useContext(ChurchContext)
 
@@ -103,7 +109,7 @@ const SetPermissions = ({ children }: { children: JSX.Element }) => {
     }
   }, [isAuthenticated, currentUser, isAuthorised, doNotUse])
 
-  if (loading) {
+  if (loading || !token) {
     return <InitialLoading text={'Retrieving your church information...'} />
   }
 

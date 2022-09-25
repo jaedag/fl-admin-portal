@@ -77,7 +77,7 @@ const AppWithApollo = () => {
     return <Sabbath />
   }
 
-  if (isLoading || !accessToken) {
+  if (isLoading) {
     return <SplashSreen />
   }
 
@@ -87,7 +87,7 @@ const AppWithApollo = () => {
 
   return (
     <ApolloProvider client={client}>
-      <AppWithContext themeOptions={{ theme, setTheme }} />
+      <AppWithContext token={accessToken} themeOptions={{ theme, setTheme }} />
     </ApolloProvider>
   )
 }
