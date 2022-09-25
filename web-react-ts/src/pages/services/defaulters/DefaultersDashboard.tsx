@@ -10,7 +10,6 @@ import {
   STREAM_DEFAULTERS,
   GATHERINGSERVICE_DEFAULTERS,
 } from './DefaultersQueries'
-import './Defaulters.css'
 import PlaceholderCustom from 'components/Placeholder'
 import DefaulterInfoCard from './DefaulterInfoCard'
 import RoleView from 'auth/RoleView'

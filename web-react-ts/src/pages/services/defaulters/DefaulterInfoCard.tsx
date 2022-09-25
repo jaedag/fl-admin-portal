@@ -2,6 +2,7 @@ import PlaceholderCustom from 'components/Placeholder'
 import React from 'react'
 import { Card } from 'react-bootstrap'
 import { useNavigate } from 'react-router'
+import './Defaulters.css'
 
 const DefaulterInfoCard = ({
   defaulter,
