@@ -27,11 +27,9 @@ RETURN record
 
 export const checkExistingEquipmentRecord = `
 MATCH (church {id:$id}) 
-where church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:GatheringService
-MATCH (church)
-WHERE EXISTS {
-      MATCH (church)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_EQUIPMENT_RECORD]->(:EquipmentRecord)-[:HAS_EQUIPMENT_DATE]->(:TimeGraph {date:date($date)})}
-RETURN church
+WHERE church:Fellowship OR church:Constituency
+OPTIONAL MATCH (church)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_EQUIPMENT_RECORD]->(record:EquipmentRecord)-[:HAS_EQUIPMENT_DATE]->(:TimeGraph {date:date($date)})  
+RETURN church.id AS id, church.name AS name, labels(church) AS labels, record AS alreadyFilled
 `
 export const createConstituencyEquipmentRecord = `
 MATCH (con:Constituency {id:$id})

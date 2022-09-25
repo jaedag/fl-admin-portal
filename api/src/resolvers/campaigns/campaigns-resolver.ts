@@ -171,7 +171,7 @@ export const campaignsMutation = {
         })
       )
 
-      if (Object.keys(equipmentRecordExists).length !== 0) {
+      if (equipmentRecordExists.alreadyFilled) {
         throw new Error(
           'You have already filled your constituency equipment form!'
         )
@@ -244,7 +244,7 @@ export const campaignsMutation = {
         })
       )
 
-      if (Object.keys(equipmentRecordExists).length !== 0) {
+      if (equipmentRecordExists.alreadyFilled) {
         throw new Error(
           'You have already filled your fellowship equipment form!'
         )
