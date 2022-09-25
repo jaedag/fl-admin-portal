@@ -14,6 +14,7 @@ import {
   ArrivalsUseChurchExt,
   HigherChurchWithArrivals,
 } from './arrivals-types'
+import './Árrivals.css'
 import {
   COUNCIL_BY_CONSTITUENCY_ARRIVALS,
   STREAM_BY_COUNCIL_ARRIVALS,

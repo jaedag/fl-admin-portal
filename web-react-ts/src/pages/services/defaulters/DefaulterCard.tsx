@@ -5,6 +5,7 @@ import { Card, Button } from 'react-bootstrap'
 import { TelephoneFill, Whatsapp } from 'react-bootstrap-icons'
 import { useNavigate } from 'react-router'
 import { FellowshipWithDefaulters } from './defaulters-types'
+import './Defaulters.css'
 
 type DefaulterCardProps = {
   defaulter: FellowshipWithDefaulters

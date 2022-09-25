@@ -31,3 +31,7 @@
 .low-opacity {
   opacity: 0.2;
 }
+
+.large-number {
+  font-size: 30px;
+}
