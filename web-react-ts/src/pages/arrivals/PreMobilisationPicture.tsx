@@ -9,6 +9,7 @@ import { Button, Container } from 'react-bootstrap'
 import { useNavigate } from 'react-router'
 import { BussingRecord } from './arrivals-types'
 import { DISPLAY_BUSSING_RECORDS } from './arrivalsQueries'
+import './Arrivals.css'
 
 const PreMobilisationPicture = () => {
   const { bacentaId } = useContext(ChurchContext)

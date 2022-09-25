@@ -35,3 +35,8 @@
 .large-number {
   font-size: 30px;
 }
+
+.report-picture {
+  width: 300px;
+  margin: 10px;
+}

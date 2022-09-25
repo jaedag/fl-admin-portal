@@ -23,6 +23,7 @@ import { BacentaWithArrivals, BussingRecord } from './arrivals-types'
 import CurrencySpan from 'components/CurrencySpan'
 import VehicleButton from './components/VehicleButton'
 import PullToRefresh from 'react-simple-pull-to-refresh'
+import './Arrivals.css'
 
 const BusFormDetails = () => {
   const { bacentaId } = useContext(ChurchContext)

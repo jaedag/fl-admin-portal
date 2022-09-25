@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from '@apollo/client'
+import { useQuery } from '@apollo/client'
 import RoleView from 'auth/RoleView'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import CloudinaryImage from 'components/CloudinaryImage'
@@ -10,38 +10,26 @@ import Popup from 'components/Popup/Popup'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { MemberContext } from 'contexts/MemberContext'
 import { ServiceContext } from 'contexts/ServiceContext'
-import useModal from 'hooks/useModal'
 import usePopup from 'hooks/usePopup'
 import { getHumanReadableDate, parseNeoTime } from 'jd-date-utils'
 import { permitAdminArrivals, permitArrivalsCounter } from 'permission-utils'
-import React, { useContext, useState } from 'react'
-import {
-  Button,
-  Col,
-  Container,
-  Modal,
-  Row,
-  Spinner,
-  Table,
-} from 'react-bootstrap'
+import { useContext, useState } from 'react'
+import { Button, Col, Container, Row, Table } from 'react-bootstrap'
 import { useNavigate } from 'react-router'
 import { BacentaWithArrivals, VehicleRecord } from './arrivals-types'
 import { beforeCountingDeadline } from './arrivals-utils'
-import { RECORD_ARRIVAL_TIME } from './arrivalsMutation'
 import { DISPLAY_VEHICLE_RECORDS } from './arrivalsQueries'
+import './Arrivals.css'
 
 const BusVehicleFormDetails = () => {
   const { bacentaId } = useContext(ChurchContext)
   const { theme } = useContext(MemberContext)
   const { vehicleRecordId } = useContext(ServiceContext)
   const { isOpen, togglePopup } = usePopup()
-  const { show, handleClose } = useModal()
   const [picturePopup, setPicturePopup] = useState('')
   const { data, loading, error } = useQuery(DISPLAY_VEHICLE_RECORDS, {
     variables: { vehicleRecordId: vehicleRecordId, bacentaId: bacentaId },
   })
-  const [RecordArrivalTime, { loading: arrivalLoading }] =
-    useMutation(RECORD_ARRIVAL_TIME)
   const navigate = useNavigate()
   const vehicle: VehicleRecord = data?.vehicleRecords[0]
   const church: BacentaWithArrivals = data?.bacentas[0]
@@ -242,49 +230,6 @@ const BusVehicleFormDetails = () => {
           </Col>
         </Row>
         <div className="d-grid gap-2">
-          <Modal className="dark" show={show} onHide={handleClose} centered>
-            <Modal.Body>
-              <p>Are you sure you want to confirm this arrival?</p>
-              <p>
-                You will <span className="fw-bold text-danger">not</span> be
-                able to{' '}
-                <span className="fw-bold text-danger">
-                  count or add any more people
-                </span>{' '}
-                after this!
-              </p>
-            </Modal.Body>
-            <Modal.Footer>
-              <Button
-                variant="success"
-                disabled={arrivalLoading}
-                onClick={() =>
-                  RecordArrivalTime({
-                    variables: {
-                      vehicleRecordId,
-                    },
-                  }).then(() => handleClose())
-                }
-              >
-                {arrivalLoading ? (
-                  <span>
-                    {'Recording  '}
-                    <Spinner animation="border" size="sm" />
-                  </span>
-                ) : (
-                  'Yes I do'
-                )}
-              </Button>
-              <Button
-                disabled={arrivalLoading}
-                variant="danger"
-                onClick={handleClose}
-              >
-                No, Take Me Back
-              </Button>
-            </Modal.Footer>
-          </Modal>
-
           <RoleView roles={permitArrivalsCounter()}>
             {beforeCountingDeadline(vehicle, church) && (
               <>
@@ -298,9 +243,6 @@ const BusVehicleFormDetails = () => {
                     >
                       I Want to Count
                     </Button>
-                    {/* <Button variant="info" onClick={handleShow}>
-                      This Vehicle Has Arrived Without Filling
-                    </Button> */}
                   </>
                 )}
               </>

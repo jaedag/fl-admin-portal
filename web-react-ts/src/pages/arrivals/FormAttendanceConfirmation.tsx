@@ -12,7 +12,6 @@ import { Card, Container } from 'react-bootstrap'
 import { DISPLAY_VEHICLE_RECORDS } from './arrivalsQueries'
 import {
   CONFIRM_VEHICLE_BY_ADMIN,
-  RECORD_ARRIVAL_TIME,
   SEND_VEHICLE_SUPPORT,
   SET_VEHICLE_SUPPORT,
 } from './arrivalsMutation'
@@ -26,6 +25,7 @@ import CloudinaryImage from 'components/CloudinaryImage'
 import Select from 'components/formik/Select'
 import { OUTBOUND_OPTIONS, VEHICLE_OPTIONS } from './arrivals-utils'
 import RadioButtons from 'components/formik/RadioButtons'
+import './Arrivals.css'
 
 type FormOptions = {
   attendance: string
@@ -45,7 +45,6 @@ const FormAttendanceConfirmation = () => {
   const [ConfirmVehicleByAdmin] = useMutation(CONFIRM_VEHICLE_BY_ADMIN)
   const [SetVehicleSupport] = useMutation(SET_VEHICLE_SUPPORT)
   const [SendVehicleSupport] = useMutation(SEND_VEHICLE_SUPPORT)
-  const [RecordArrivalTime] = useMutation(RECORD_ARRIVAL_TIME)
 
   const vehicle: VehicleRecord = data?.vehicleRecords[0]
   const bacenta: BacentaWithArrivals = data?.bacentas[0]
@@ -107,20 +106,11 @@ const FormAttendanceConfirmation = () => {
 
     const vehicleData = res?.data.ConfirmVehicleByAdmin
 
-    await Promise.all([
-      SetVehicleSupport({
-        variables: {
-          vehicleRecordId: vehicleRecordId,
-        },
-      }),
-      RecordArrivalTime({
-        variables: {
-          bacentaId,
-          attendance: parseInt(values.attendance),
-          vehicleRecordId,
-        },
-      }),
-    ]).catch((error) =>
+    await SetVehicleSupport({
+      variables: {
+        vehicleRecordId: vehicleRecordId,
+      },
+    }).catch((error) =>
       throwToSentry('There was an error setting vehicle support', error)
     )
 

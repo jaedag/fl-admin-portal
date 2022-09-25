@@ -230,6 +230,7 @@ export const CONFIRM_VEHICLE_BY_ADMIN = gql`
     ) {
       id
       attendance
+      arrivalTime
       vehicle
       vehicleTopUp
       momoName
@@ -244,24 +245,6 @@ export const CONFIRM_VEHICLE_BY_ADMIN = gql`
 
       comments
       outbound
-    }
-  }
-`
-
-export const RECORD_ARRIVAL_TIME = gql`
-  mutation RecordArrivalTime(
-    $vehicleRecordId: ID!
-    $bacentaId: ID!
-    $attendance: Int!
-  ) {
-    RecordArrivalTime(
-      vehicleRecordId: $vehicleRecordId
-      bacentaId: $bacentaId
-      attendance: $attendance
-    ) {
-      id
-      vehicleTopUp
-      arrivalTime
     }
   }
 `

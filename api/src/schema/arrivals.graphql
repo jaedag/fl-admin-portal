@@ -1227,11 +1227,6 @@ extend type Mutation {
       """
     )
 
-  RecordArrivalTime(
-    vehicleRecordId: ID!
-    attendance: Int!
-    bacentaId: ID!
-  ): VehicleRecord!
   SetSwellDate(date: String!): TimeGraph!
   SendVehicleSupport(vehicleRecordId: ID!, stream_name: String!): VehicleRecord!
 }

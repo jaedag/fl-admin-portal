@@ -16,14 +16,15 @@ import {
 import { MakeServant, RemoveServant } from '../directory/make-remove-servants'
 import { PaySwitchRequestBody } from '../banking/banking-types'
 import {
-  aggregateConfirmedBussingDataOnHigherChurches,
-  aggregateLeaderBussingDataOnHigherChurches,
+  aggregateBussingDataOnHigherChurches,
+  aggregateVehicleBussingRecordData,
+  checkArrivalTimeFromVehicle,
   checkArrivalTimes,
   checkBacentaMomoDetails,
   checkTransactionId,
+  confirmVehicleByAdmin,
   getVehicleRecordWithDate,
   noVehicleTopUp,
-  recordArrivalTime,
   recordVehicleFromBacenta,
   removeVehicleRecordTransactionId,
   setSwellDate,
@@ -48,6 +49,17 @@ const checkIfSelf = (servantId: string, auth: string) => {
   if (servantId === auth.replace('auth0|', '')) {
     throw new Error('Sorry! You cannot make yourself an arrivals counter')
   }
+}
+const arrivalEndTimeCalculator = (arrivalEndTime: string) => {
+  const endTimeToday = new Date(
+    new Date().toISOString().slice(0, 10) + arrivalEndTime.slice(10)
+  )
+
+  const TwentyMinBuffer = 20 * 60 * 1000
+
+  const endTime = new Date(endTimeToday.getTime() + TwentyMinBuffer)
+
+  return endTime
 }
 
 export const arrivalsMutation = {
@@ -257,14 +269,14 @@ export const arrivalsMutation = {
     isAuth(['leaderBacenta'], context.auth.roles)
     const session = context.executionContext.session()
 
+    const outbound = args.outbound ? 2 : 1
     const response = rearrangeCypherObject(
       await session.run(recordVehicleFromBacenta, {
         ...args,
+        vehicleCostWithOutbound: args.vehicleCost * outbound,
         auth: context.auth,
       })
     )
-
-    await session.run(aggregateLeaderBussingDataOnHigherChurches, args)
 
     const vehicleRecord = response.vehicleRecord.properties
     const date = new Date().toISOString().slice(0, 10)
@@ -305,6 +317,97 @@ export const arrivalsMutation = {
     }
     return returnToCache
   },
+  ConfirmVehicleByAdmin: async (
+    object: never,
+    args: {
+      bacentaId: string
+      bussingRecordId: string
+      leaderDeclaration: number
+      vehicleCost: number
+      personalContribution: number
+      vehicle: string
+      picture: string
+      outbound: boolean
+    },
+    context: Context
+  ) => {
+    isAuth(permitArrivalsCounter(), context.auth.roles)
+    const session = context.executionContext.session()
+
+    const recordResponse = rearrangeCypherObject(
+      await session.run(checkArrivalTimeFromVehicle, args)
+    )
+
+    const { arrivalEndTime, bacentaId } = recordResponse
+
+    const today = new Date()
+
+    if (today > arrivalEndTimeCalculator(arrivalEndTime)) {
+      throw new Error('It is now past the time for arrivals. Thank you!')
+    }
+
+    const response = rearrangeCypherObject(
+      await session.run(confirmVehicleByAdmin, {
+        ...args,
+        auth: context.auth,
+      })
+    )
+
+    await session
+      .run(aggregateVehicleBussingRecordData, args)
+      .catch((error: any) =>
+        throwToSentry('Error Running aggregateVehicleBussingRecordData', error)
+      )
+    await session
+      .run(aggregateBussingDataOnHigherChurches, { bacentaId })
+      .catch((error: any) =>
+        throwToSentry(
+          'Error Running aggregateLeaderBussingDataOnHigherChurches',
+          error
+        )
+      )
+
+    const vehicleRecord = response.vehicleRecord.properties
+    const date = new Date().toISOString().slice(0, 10)
+
+    const returnToCache = {
+      id: vehicleRecord.id,
+      leaderDeclaration: vehicleRecord.leaderDeclaration,
+      attendance: vehicleRecord.attendance,
+      vehicleCost: vehicleRecord.vehicleCost,
+      personalContribution: vehicleRecord.personalContribution,
+      vehicle: vehicleRecord.vehicle,
+      picture: vehicleRecord.picture,
+      outbound: vehicleRecord.outbound,
+      arrivalTime: vehicleRecord.arrivalTime,
+      bussingRecord: {
+        serviceLog: {
+          bacenta: [
+            {
+              id: args.bacentaId,
+              stream_name: response.stream_name,
+              bussing: [
+                {
+                  id: vehicleRecord.id,
+                  serviceDate: {
+                    date,
+                  },
+                  week: response.week,
+                  vehicleCost: vehicleRecord.vehicleCost,
+                  personalContribution: vehicleRecord.personalContribution,
+                  vehicle: vehicleRecord.vehicle,
+                  picture: vehicleRecord.picture,
+                  outbound: vehicleRecord.outbound,
+                },
+              ],
+            },
+          ],
+        },
+      },
+    }
+    return returnToCache
+  },
+
   SetVehicleSupport: async (
     object: never,
     args: { vehicleRecordId: string },
@@ -335,12 +438,6 @@ export const arrivalsMutation = {
       if (vehicleCost <= 50) return 0.5 * vehicleCost
       if (vehicleCost <= 110) return 0.7 * vehicleCost
       return 0.8 * vehicleCost
-    }
-
-    if (response.arrivalTime) {
-      throw new Error(
-        'This bacenta has already been marked as arrived and will not receive money'
-      )
     }
 
     let vehicleRecord: RearragedCypherResponse | undefined
@@ -522,9 +619,8 @@ export const arrivalsMutation = {
       )
       return vehicleRecord
     } catch (error: any) {
-      throwToSentry(error, 'Money could not be sent!')
+      throw new Error('Money could not be sent!')
     }
-    return vehicleRecord
   },
   SetSwellDate: async (object: any, args: any, context: Context) => {
     isAuth(permitAdminArrivals('GatheringService'), context.auth.roles)
@@ -550,53 +646,6 @@ export const arrivalsMutation = {
     )
 
     return response
-  },
-  RecordArrivalTime: async (
-    object: any,
-    args: { vehicleRecordId: string; bacentaId: string; attendance: number },
-    context: Context
-  ) => {
-    isAuth(permitArrivalsCounter(), context.auth.roles)
-    const session = context.executionContext.session()
-    const sessionTwo = context.executionContext.session()
-
-    const recordResponse = rearrangeCypherObject(
-      await session.run(checkTransactionId, args)
-    )
-
-    const stream = recordResponse.stream.properties
-    const arrivalEndTime = () => {
-      const endTimeToday = new Date(
-        new Date().toISOString().slice(0, 10) + stream.arrivalEndTime.slice(10)
-      )
-
-      const TenMinBuffer = 10 * 60 * 1000
-
-      const endTime = new Date(endTimeToday.getTime() + TenMinBuffer)
-
-      return endTime
-    }
-    const today = new Date()
-
-    if (today > arrivalEndTime()) {
-      throw new Error('It is now past the time for arrivals. Thank you!')
-    }
-
-    const promiseAllResponse = await Promise.all([
-      session.run(recordArrivalTime, {
-        ...args,
-        auth: context.auth,
-      }),
-      sessionTwo.run(aggregateConfirmedBussingDataOnHigherChurches, args),
-    ]).catch((error) =>
-      throwToSentry(
-        'There was an error aggregating bussing data for higher churches',
-        error
-      )
-    )
-    const response = rearrangeCypherObject(promiseAllResponse[0])
-
-    return response.vehicleRecord
   },
 }
 
