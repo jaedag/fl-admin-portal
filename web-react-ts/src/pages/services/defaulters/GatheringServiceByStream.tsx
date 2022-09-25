@@ -100,7 +100,11 @@ const GatheringServiceByStream = () => {
                           </Button>
                         </a>
                         <a
-                          href={`https://wa.me/${stream?.admin?.whatsappNumber}`}
+                          href={`https://wa.me/${
+                            stream?.admin?.whatsappNumber
+                          }?text=${encodeURI(
+                            `Hi ${stream.admin.firstName}\nLooks like you have\n\n${stream.formDefaultersThisWeekCount} form defaulters this week and\n${stream.bankingDefaultersThisWeekCount} Banking Defaulters. Please follow up to make sure they fill the forms and bank their offerings.`
+                          )}`}
                           className="ms-3"
                         >
                           <Button variant="success">
