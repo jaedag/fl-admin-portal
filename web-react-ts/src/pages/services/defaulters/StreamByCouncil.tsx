@@ -11,6 +11,7 @@ import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import PlaceholderDefaulterList from './PlaceholderDefaulterList'
 import { HigherChurchWithDefaulters } from './defaulters-types'
 import PullToRefresh from 'react-simple-pull-to-refresh'
+import { messageForAdminsOfDefaulters } from './defaulters-utils'
 
 const StreamByCouncil = () => {
   const { streamId, clickCard } = useContext(ChurchContext)
@@ -98,7 +99,9 @@ const StreamByCouncil = () => {
                           </Button>
                         </a>
                         <a
-                          href={`https://wa.me/${council?.admin?.whatsappNumber}`}
+                          href={`https://wa.me/${
+                            council?.admin?.whatsappNumber
+                          }?text=${messageForAdminsOfDefaulters(council)}`}
                           className="ms-3"
                         >
                           <Button variant="success">

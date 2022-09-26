@@ -9,6 +9,7 @@ import { TelephoneFill, Whatsapp } from 'react-bootstrap-icons'
 import { useNavigate } from 'react-router'
 import PullToRefresh from 'react-simple-pull-to-refresh'
 import { HigherChurchWithDefaulters } from './defaulters-types'
+import { messageForAdminsOfDefaulters } from './defaulters-utils'
 import { COUNCIL_BY_CONSTITUENCY } from './DefaultersQueries'
 import PlaceholderDefaulterList from './PlaceholderDefaulterList'
 
@@ -106,7 +107,9 @@ const CouncilByConstituency = () => {
                           </Button>
                         </a>
                         <a
-                          href={`https://wa.me/${constituency?.admin?.whatsappNumber}`}
+                          href={`https://wa.me/${
+                            constituency?.admin?.whatsappNumber
+                          }?text=${messageForAdminsOfDefaulters(constituency)}`}
                           className="ms-3"
                         >
                           <Button variant="success">

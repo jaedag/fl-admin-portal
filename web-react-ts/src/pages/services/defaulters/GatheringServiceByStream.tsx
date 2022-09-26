@@ -11,6 +11,7 @@ import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import PlaceholderDefaulterList from './PlaceholderDefaulterList'
 import { HigherChurchWithDefaulters } from './defaulters-types'
 import PullToRefresh from 'react-simple-pull-to-refresh'
+import { messageForAdminsOfDefaulters } from './defaulters-utils'
 
 const GatheringServiceByStream = () => {
   const { gatheringServiceId, clickCard } = useContext(ChurchContext)
@@ -102,9 +103,7 @@ const GatheringServiceByStream = () => {
                         <a
                           href={`https://wa.me/${
                             stream?.admin?.whatsappNumber
-                          }?text=${encodeURI(
-                            `Hi ${stream.admin.firstName}\nLooks like you have\n\n${stream.formDefaultersThisWeekCount} form defaulters this week and\n${stream.bankingDefaultersThisWeekCount} Banking Defaulters. Please follow up to make sure they fill the forms and bank their offerings.`
-                          )}`}
+                          }?text=${messageForAdminsOfDefaulters(stream)}`}
                           className="ms-3"
                         >
                           <Button variant="success">
