@@ -121,7 +121,7 @@ const directoryMutation = {
       })
     const fellowshipCheck = rearrangeCypherObject(fellowshipCheckResponse)
 
-    if (fellowshipCheck.memberCount) {
+    if (fellowshipCheck.memberCount > 0) {
       throw new Error(
         `${fellowshipCheck?.name} Fellowship has ${fellowshipCheck?.memberCount} members. Please transfer all members and try again.`
       )
