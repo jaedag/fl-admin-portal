@@ -1,6 +1,6 @@
 export const checkFellowshipHasNoMembers = `
 MATCH (fellowship:Fellowship {id:$fellowshipId})
-MATCH (fellowship)<-[:BELONGS_TO]-(member:Member)
+OPTIONAL MATCH (fellowship)<-[:BELONGS_TO]-(member:Member)
 RETURN fellowship.name AS name, COUNT(member) AS memberCount
 `
 
