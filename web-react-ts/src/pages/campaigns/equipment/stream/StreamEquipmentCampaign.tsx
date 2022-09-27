@@ -11,6 +11,7 @@ import { getHumanReadableDate } from 'jd-date-utils'
 import Placeholder from '../../../../components/Placeholder'
 import { permitAdmin } from 'permission-utils'
 import RoleView from 'auth/RoleView'
+import ApolloWrapper from 'components/base-component/ApolloWrapper'
 
 const StreamEquipmentCampaign = () => {
   const { currentUser } = useContext(MemberContext)
@@ -20,7 +21,7 @@ const StreamEquipmentCampaign = () => {
   const churchType = currentUser.currentChurch?.__typename
   const gatheringServiceId = currentUser?.gatheringService
 
-  const { data, loading } = useQuery(EQUIPMENT_END_DATE, {
+  const { data, loading, error } = useQuery(EQUIPMENT_END_DATE, {
     variables: {
       gatheringServiceId: gatheringServiceId,
     },
@@ -29,31 +30,35 @@ const StreamEquipmentCampaign = () => {
   const equipmentEndDate = data?.gatheringServices[0]?.equipmentEndDate
 
   return (
-    <div className="d-flex align-items-center justify-content-center ">
-      <Container>
-        <div className="text-center">
-          <HeadingPrimary>{`${church?.name} ${churchType}`}</HeadingPrimary>
-          <HeadingSecondary>Equipment Campaign</HeadingSecondary>
-        </div>
-        <Placeholder as="h6" loading={loading} className="text-center">
-          <h6 className="text-danger text-center">
-            Current Deadline : {getHumanReadableDate(equipmentEndDate)}{' '}
-          </h6>
-        </Placeholder>
-        <div className="d-grid gap-2 mt-4 text-center px-4">
-          <MenuButton
-            name="View Trends"
-            onClick={() => navigate(`/campaigns/stream/equipment/trends`)}
-          />
-          <RoleView roles={permitAdmin('Stream')}>
+    <ApolloWrapper data={data} loading={loading} error={error}>
+      <div className="d-flex align-items-center justify-content-center ">
+        <Container>
+          <div className="text-center">
+            <HeadingPrimary>{`${church?.name} ${churchType}`}</HeadingPrimary>
+            <HeadingSecondary>Equipment Campaign</HeadingSecondary>
+          </div>
+          <Placeholder as="h6" loading={loading} className="text-center">
+            <h6 className="text-danger text-center">
+              Current Deadline : {getHumanReadableDate(equipmentEndDate)}{' '}
+            </h6>
+          </Placeholder>
+          <div className="d-grid gap-2 mt-4 text-center px-4">
             <MenuButton
-              name="Defaulters"
-              onClick={() => navigate('/campaigns/stream/equipment/defaulters')}
+              name="View Trends"
+              onClick={() => navigate(`/campaigns/stream/equipment/trends`)}
             />
-          </RoleView>
-        </div>
-      </Container>
-    </div>
+            <RoleView roles={permitAdmin('Stream')}>
+              <MenuButton
+                name="Defaulters"
+                onClick={() =>
+                  navigate('/campaigns/stream/equipment/defaulters')
+                }
+              />
+            </RoleView>
+          </div>
+        </Container>
+      </div>
+    </ApolloWrapper>
   )
 }
 

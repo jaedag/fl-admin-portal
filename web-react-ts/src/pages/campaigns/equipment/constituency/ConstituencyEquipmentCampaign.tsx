@@ -34,18 +34,25 @@ const ConstituencyEquipmentCampaign = () => {
 
   const constituencyEquipmentRecord = data?.constituencies[0]?.equipmentRecord
 
-  const { data: equipmentEndDateData, loading: equipmentEndDateLoading } =
-    useQuery(EQUIPMENT_END_DATE, {
-      variables: {
-        gatheringServiceId: gatheringServiceId,
-      },
-    })
+  const {
+    data: equipmentEndDateData,
+    loading: equipmentEndDateLoading,
+    error,
+  } = useQuery(EQUIPMENT_END_DATE, {
+    variables: {
+      gatheringServiceId: gatheringServiceId,
+    },
+  })
 
   const equipmentEndDate =
     equipmentEndDateData?.gatheringServices[0]?.equipmentEndDate
 
   return (
-    <ApolloWrapper loading={loading} data={data}>
+    <ApolloWrapper
+      loading={loading || equipmentEndDateLoading}
+      data={data && equipmentEndDateData}
+      error={error}
+    >
       <div className="d-flex align-items-center justify-content-center ">
         <Container>
           <div className="text-center">
