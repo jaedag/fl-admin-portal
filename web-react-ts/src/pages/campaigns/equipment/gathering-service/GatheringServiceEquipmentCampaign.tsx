@@ -11,6 +11,7 @@ import { getHumanReadableDate } from 'jd-date-utils'
 import Placeholder from '../../../../components/Placeholder'
 import RoleView from 'auth/RoleView'
 import { permitAdmin } from 'permission-utils'
+import ApolloWrapper from 'components/base-component/ApolloWrapper'
 
 const GatheringServiceEquipmentCampaign = () => {
   const { currentUser } = useContext(MemberContext)
@@ -19,7 +20,7 @@ const GatheringServiceEquipmentCampaign = () => {
   const church = currentUser.currentChurch
   const gatheringServiceId = currentUser?.gatheringService
 
-  const { data, loading } = useQuery(EQUIPMENT_END_DATE, {
+  const { data, loading, error } = useQuery(EQUIPMENT_END_DATE, {
     variables: {
       gatheringServiceId: gatheringServiceId,
     },
@@ -28,41 +29,43 @@ const GatheringServiceEquipmentCampaign = () => {
   const equipmentEndDate = data?.gatheringServices[0]?.equipmentEndDate
 
   return (
-    <div className="d-flex align-items-center justify-content-center ">
-      <Container>
-        <div className="text-center">
-          <HeadingPrimary>{`${church?.name} Gathering Service`}</HeadingPrimary>
-          <HeadingSecondary>Equipment Campaign</HeadingSecondary>
-        </div>
-        <Placeholder as="h6" loading={loading} className="text-center">
-          <h6 className="text-danger text-center">
-            Current Deadline : {getHumanReadableDate(equipmentEndDate)}{' '}
-          </h6>
-        </Placeholder>
-        <div className="d-grid gap-2 mt-4 text-center px-4">
-          <MenuButton
-            name="View Trends"
-            onClick={() =>
-              navigate(`/campaigns/gathering-service/equipment/trends`)
-            }
-          />
-          <MenuButton
-            name="Set Deadline"
-            onClick={() =>
-              navigate(`/campaigns/gathering-service/set-equipment-deadline`)
-            }
-          />
-          <RoleView roles={permitAdmin('GatheringService')}>
+    <ApolloWrapper loading={loading} data={data} error={error}>
+      <div className="d-flex align-items-center justify-content-center ">
+        <Container>
+          <div className="text-center">
+            <HeadingPrimary>{`${church?.name} Gathering Service`}</HeadingPrimary>
+            <HeadingSecondary>Equipment Campaign</HeadingSecondary>
+          </div>
+          <Placeholder as="h6" loading={loading} className="text-center">
+            <h6 className="text-danger text-center">
+              Current Deadline : {getHumanReadableDate(equipmentEndDate)}{' '}
+            </h6>
+          </Placeholder>
+          <div className="d-grid gap-2 mt-4 text-center px-4">
             <MenuButton
-              name="Defaulters"
+              name="View Trends"
               onClick={() =>
-                navigate('/campaigns/gathering-service/equipment/defaulters')
+                navigate(`/campaigns/gathering-service/equipment/trends`)
               }
             />
-          </RoleView>
-        </div>
-      </Container>
-    </div>
+            <MenuButton
+              name="Set Deadline"
+              onClick={() =>
+                navigate(`/campaigns/gathering-service/set-equipment-deadline`)
+              }
+            />
+            <RoleView roles={permitAdmin('GatheringService')}>
+              <MenuButton
+                name="Defaulters"
+                onClick={() =>
+                  navigate('/campaigns/gathering-service/equipment/defaulters')
+                }
+              />
+            </RoleView>
+          </div>
+        </Container>
+      </div>
+    </ApolloWrapper>
   )
 }
 

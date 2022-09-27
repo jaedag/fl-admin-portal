@@ -9,13 +9,14 @@ import { EQUIPMENT_END_DATE } from 'pages/campaigns/CampaignQueries'
 import { useQuery } from '@apollo/client'
 import { getHumanReadableDate } from 'jd-date-utils'
 import Placeholder from '../../../../components/Placeholder'
+import ApolloWrapper from 'components/base-component/ApolloWrapper'
 
 const BacentaEquipmentCampaign = () => {
   const { currentUser } = useContext(MemberContext)
   const navigate = useNavigate()
   const gatheringServiceId = currentUser?.gatheringService
 
-  const { data, loading } = useQuery(EQUIPMENT_END_DATE, {
+  const { data, loading, error } = useQuery(EQUIPMENT_END_DATE, {
     variables: {
       gatheringServiceId: gatheringServiceId,
     },
@@ -26,25 +27,27 @@ const BacentaEquipmentCampaign = () => {
   const church = currentUser.currentChurch
   const churchType = currentUser.currentChurch?.__typename
   return (
-    <div className="d-flex align-items-center justify-content-center ">
-      <Container>
-        <div className="text-center">
-          <HeadingPrimary>{`${church?.name} ${churchType}`}</HeadingPrimary>
-          <HeadingSecondary>Equipment Campaign</HeadingSecondary>
-        </div>
-        <Placeholder as="h6" loading={loading} className="text-center">
-          <h6 className="text-danger text-center">
-            Current Deadline : {getHumanReadableDate(equipmentEndDate)}{' '}
-          </h6>
-        </Placeholder>
-        <div className="d-grid gap-2 mt-4 text-center px-4">
-          <MenuButton
-            name="View Trends"
-            onClick={() => navigate(`/campaigns/bacenta/equipment/trends`)}
-          />
-        </div>
-      </Container>
-    </div>
+    <ApolloWrapper data={data} loading={loading} error={error}>
+      <div className="d-flex align-items-center justify-content-center ">
+        <Container>
+          <div className="text-center">
+            <HeadingPrimary>{`${church?.name} ${churchType}`}</HeadingPrimary>
+            <HeadingSecondary>Equipment Campaign</HeadingSecondary>
+          </div>
+          <Placeholder as="h6" loading={loading} className="text-center">
+            <h6 className="text-danger text-center">
+              Current Deadline : {getHumanReadableDate(equipmentEndDate)}{' '}
+            </h6>
+          </Placeholder>
+          <div className="d-grid gap-2 mt-4 text-center px-4">
+            <MenuButton
+              name="View Trends"
+              onClick={() => navigate(`/campaigns/bacenta/equipment/trends`)}
+            />
+          </div>
+        </Container>
+      </div>
+    </ApolloWrapper>
   )
 }
 
