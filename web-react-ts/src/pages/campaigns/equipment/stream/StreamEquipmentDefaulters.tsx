@@ -57,7 +57,11 @@ const StreamEquipmentDefaulters = () => {
               <Col>
                 <DefaultersMenuButton
                   name="Have not filled"
-                  onClick={() => {}}
+                  onClick={() => {
+                    navigate(
+                      '/campaigns/stream/equipment/have-not-filled/fellowship'
+                    )
+                  }}
                   number={stream?.fellowshipEquipmentNotFilledCount}
                   color="text-danger"
                 />
@@ -81,7 +85,11 @@ const StreamEquipmentDefaulters = () => {
               <Col>
                 <DefaultersMenuButton
                   name="Have not filled"
-                  onClick={() => {}}
+                  onClick={() => {
+                    navigate(
+                      '/campaigns/stream/equipment/have-not-filled/constituency'
+                    )
+                  }}
                   number={stream?.constituencyEquipmentNotFilledCount}
                   color="text-danger"
                 />

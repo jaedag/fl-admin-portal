@@ -2,6 +2,27 @@ import { permitAdmin, permitLeaderAdmin } from 'permission-utils'
 import { LazyRouteTypes } from 'global-types'
 import { lazy } from 'react'
 
+const GatheringServiceEquipmentHaveNotFilledByFellowship = lazy(
+  () =>
+    import(
+      './equipment/gathering-service/GatheringServiceEquipmentHaveNotFilledByFellowship'
+    )
+)
+const GatheringServiceEquipmentHaveNotFilledByConstituency = lazy(
+  () =>
+    import(
+      './equipment/gathering-service/GatheringServiceEquipmentHaveNotFilledByConstituency'
+    )
+)
+
+const StreamEquipmentHaveNotFilledByFellowship = lazy(
+  () => import('./equipment/stream/StreamEquipmentHaveNotFilledByFellowship')
+)
+
+const StreamEquipmentHaveNotFilledByConstituency = lazy(
+  () => import('./equipment/stream/StreamEquipmentHaveNotFilledByConstituency')
+)
+
 const ConstituencyEquipmentCampaign = lazy(
   () =>
     import(
@@ -258,6 +279,18 @@ export const campaigns: LazyRouteTypes[] = [
     roles: permitAdmin('GatheringService'),
     placeholder: true,
   },
+  {
+    path: '/campaigns/gathering-service/equipment/have-not-filled/fellowship',
+    element: GatheringServiceEquipmentHaveNotFilledByFellowship,
+    roles: permitAdmin('Council'),
+    placeholder: true,
+  },
+  {
+    path: '/campaigns/gathering-service/equipment/have-not-filled/constituency',
+    element: GatheringServiceEquipmentHaveNotFilledByConstituency,
+    roles: permitAdmin('Council'),
+    placeholder: true,
+  },
 
   //stream routes
   {
@@ -318,6 +351,18 @@ export const campaigns: LazyRouteTypes[] = [
     path: '/campaigns/stream/equipment/defaulters',
     element: StreamEquipmentDefaulters,
     roles: permitAdmin('Stream'),
+    placeholder: true,
+  },
+  {
+    path: '/campaigns/stream/equipment/have-not-filled/fellowship',
+    element: StreamEquipmentHaveNotFilledByFellowship,
+    roles: permitAdmin('Council'),
+    placeholder: true,
+  },
+  {
+    path: '/campaigns/stream/equipment/have-not-filled/constituency',
+    element: StreamEquipmentHaveNotFilledByConstituency,
+    roles: permitAdmin('Council'),
     placeholder: true,
   },
 
