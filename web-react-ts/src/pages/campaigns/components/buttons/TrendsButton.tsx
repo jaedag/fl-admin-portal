@@ -20,9 +20,17 @@ const TrendsButton = (props: TrendsButtonProps) => {
   const bluetoothSpeakers = church?.equipmentRecord?.bluetoothSpeakers
   const pulpits = church?.equipmentRecord.pulpits
   const name = church?.name
+
+  const constituencyTotal = () => {
+    if (church?.equipmentRecord.pulpits === null) return 0
+    else return 1
+  }
+
   const constituencyCount =
-    churchType === 'Constituency' ? 1 : church?.constituencyCount
-  const fellowshipCount = church?.fellowshipCount
+    churchType === 'Constituency'
+      ? constituencyTotal()
+      : church?.constituencyEquipmentFilledCount
+  const fellowshipCount = church?.fellowshipEquipmentFilledCount
   const offeringBagsPercentage = Math.round(
     (offeringBags / fellowshipCount) * 100
   )
