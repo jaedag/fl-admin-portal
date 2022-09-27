@@ -6,7 +6,7 @@ const initializeDatabase = (driver) => {
     MATCH (bacenta:Bacenta)-[:HAS]->(fellowship:Fellowship)
     MATCH (bacenta)-[:CURRENT_HISTORY]->(currentLog:ServiceLog)
     MATCH (fellowship)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(timeNode:TimeGraph)
-    WITH currentLog,timeNode.date.week AS week, timeNode.date.year AS year, SUM(record.attendance) AS attendance, SUM(record.income) AS income WHERE timeNode.date.week =  date().week
+    WITH currentLog,timeNode.date.week AS week, timeNode.date.year AS year, SUM(record.attendance) AS attendance, SUM(record.income) AS income WHERE timeNode.date =  date()
     MERGE (agg:AggregateServiceRecord {id: week + '-' +year +'-' + currentLog.id})
     SET agg.week = week, 
     agg.year = year,
@@ -20,7 +20,7 @@ const initializeDatabase = (driver) => {
     MATCH (constituency:Constituency)-[:HAS]->(bacenta:Bacenta)
     MATCH (constituency)-[:CURRENT_HISTORY]->(currentLog:ServiceLog)
     MATCH (bacenta)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(record:AggregateServiceRecord) 
-    WITH currentLog,record.week AS week, record.year AS year, SUM(record.attendance) AS attendance, SUM(record.income) AS income WHERE record.week = date().week - 1
+    WITH currentLog,record.week AS week, record.year AS year, SUM(record.attendance) AS attendance, SUM(record.income) AS income WHERE record.week = date().week
     MERGE (agg:AggregateServiceRecord {id: week + '-' + year + '-' + currentLog.id})
     SET agg.week = week, 
     agg.year = year,
@@ -33,7 +33,7 @@ const initializeDatabase = (driver) => {
 
   const getConstituencyServicesForConstituencyAggregation = `
     MATCH (constituency:Constituency)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(timeNode:TimeGraph)
-    WITH constituency,record, timeNode.date.week AS week, timeNode.date.year AS year, SUM(record.attendance) AS attendance, SUM(record.income) AS income WHERE timeNode.date.week = date().week - 1
+    WITH constituency,record, timeNode.date.week AS week, timeNode.date.year AS year, SUM(record.attendance) AS attendance, SUM(record.income) AS income WHERE timeNode.date = date()
     MATCH (constituency)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(agg:AggregateServiceRecord {week: week, year: year})
     SET agg.attendance = agg.attendance + attendance,
     agg.income = agg.income + income
@@ -45,7 +45,7 @@ const initializeDatabase = (driver) => {
     MATCH (council:Council)-[:HAS]->(constituency:Constituency)
     MATCH (council)-[:CURRENT_HISTORY]->(currentLog:ServiceLog)
     MATCH (constituency)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(record:AggregateServiceRecord)
-    WITH currentLog,record.week AS week, record.year AS year, SUM(record.attendance) AS attendance, SUM(record.income) AS income WHERE record.week = date().week - 1
+    WITH currentLog,record.week AS week, record.year AS year, SUM(record.attendance) AS attendance, SUM(record.income) AS income WHERE record.week = date().week
     MERGE (agg:AggregateServiceRecord {id: week + '-' + year + '-' + currentLog.id})
     SET agg.week = week,
     agg.year = year,
@@ -58,7 +58,7 @@ const initializeDatabase = (driver) => {
 
   const getCouncilServicesForCouncilAggregation = `
     MATCH (council:Council)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(timeNode:TimeGraph)
-    WITH council,record, timeNode.date.week AS week, timeNode.date.year AS year, SUM(record.attendance) AS attendance, SUM(record.income) AS income WHERE timeNode.date.week = date().week - 1
+    WITH council,record, timeNode.date.week AS week, timeNode.date.year AS year, SUM(record.attendance) AS attendance, SUM(record.income) AS income WHERE timeNode.date = date()
     MATCH (council)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(agg:AggregateServiceRecord {week: week, year: year})
     SET agg.attendance = agg.attendance + attendance,
     agg.income = agg.income + income
@@ -70,7 +70,7 @@ const initializeDatabase = (driver) => {
     MATCH (stream:Stream)-[:HAS]->(council:Council)
     MATCH (stream)-[:CURRENT_HISTORY]->(currentLog:ServiceLog)
     MATCH (council)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(record:AggregateServiceRecord)
-    WITH currentLog,record.week AS week, record.year AS year, SUM(record.attendance) AS attendance, SUM(record.income) AS income WHERE record.week = date().week - 1
+    WITH currentLog,record.week AS week, record.year AS year, SUM(record.attendance) AS attendance, SUM(record.income) AS income WHERE record.week = date().week
     MERGE (agg:AggregateServiceRecord {id: week + '-' + year +'-' + currentLog.id})
     SET agg.week = week,
     agg.year = year,
@@ -83,7 +83,7 @@ const initializeDatabase = (driver) => {
 
   const getStreamServicesForStreamAggregation = `
     MATCH (stream:Stream)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(timeNode:TimeGraph)
-    WITH stream,record, timeNode.date.week AS week, timeNode.date.year AS year, SUM(record.attendance) AS attendance, SUM(record.income) AS income WHERE timeNode.date.week = date().week - 1
+    WITH stream,record, timeNode.date.week AS week, timeNode.date.year AS year, SUM(record.attendance) AS attendance, SUM(record.income) AS income WHERE timeNode.date = date()
     MATCH (stream)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(agg:AggregateServiceRecord {week: week, year: year})
     SET agg.attendance = agg.attendance + attendance,
     agg.income = agg.income + income
@@ -95,7 +95,7 @@ const initializeDatabase = (driver) => {
     MATCH (gathering:GatheringService)-[:HAS]->(stream:Stream)
     MATCH (gathering)-[:CURRENT_HISTORY]->(currentLog:ServiceLog)
     MATCH (stream)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(record:AggregateServiceRecord)
-    WITH currentLog, record.week AS week, record.year AS year, SUM(record.attendance) AS attendance, SUM(record.income) AS income WHERE record.week = date().week - 1
+    WITH currentLog, record.week AS week, record.year AS year, SUM(record.attendance) AS attendance, SUM(record.income) AS income WHERE record.week = date().week
     MERGE (agg:AggregateServiceRecord {id: week + '-' + year + '-' + currentLog.id})
     SET agg.week = week,
     agg.year = year,
@@ -110,7 +110,7 @@ const initializeDatabase = (driver) => {
     MATCH (oversight:Oversight)-[:HAS]->(gathering:GatheringService)
     MATCH (oversight)-[:CURRENT_HISTORY]->(currentLog:ServiceLog)
     MATCH (gathering)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(record:AggregateServiceRecord)
-    WITH currentLog, record.week AS week, record.year AS year, SUM(record.attendance) AS attendance, SUM(record.income) AS income WHERE record.week = date().week - 1
+    WITH currentLog, record.week AS week, record.year AS year, SUM(record.attendance) AS attendance, SUM(record.income) AS income WHERE record.week = date().week
     MERGE (agg:AggregateServiceRecord {id: week + '-' +year +'-' + currentLog.id})
     SET agg.week = week,
     agg.year = year,
@@ -125,7 +125,7 @@ const initializeDatabase = (driver) => {
     MATCH (denomination:Denomination)-[:HAS]->(oversight:Oversight)
     MATCH (denomination)-[:CURRENT_HISTORY]->(currentLog:ServiceLog)
     MATCH (oversight)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(record:AggregateServiceRecord)
-    WITH currentLog, record.week AS week, record.year AS year, SUM(record.attendance) AS attendance, SUM(record.income) AS income WHERE record.week = date().week - 1
+    WITH currentLog, record.week AS week, record.year AS year, SUM(record.attendance) AS attendance, SUM(record.income) AS income WHERE record.week = date().week
     MERGE (agg:AggregateServiceRecord {id: week + '-' +year +'-' + currentLog.id})
     SET agg.week = week,
     agg.year = year,
@@ -311,6 +311,7 @@ RETURN agg;
     const session = neoDriver.session()
     return session
       .writeTransaction((tx) => {
+        console.log('Running Service Aggreation for the day')
         tx.run(getFellowshipServicesForBacentaAggregation)
         tx.run(getBacentaServicesForConstituencyAggregation)
         tx.run(getConstituencyServicesForConstituencyAggregation)
@@ -321,16 +322,20 @@ RETURN agg;
         tx.run(getStreamServicesForGatheringAggregation)
         tx.run(getGatheringServicesForOversightAggregation)
         tx.run(getOversightServicesForDenominationAggregation)
+
         // Bussing Record Aggregation
-        tx.run(getBacentaBussingForBacentaAggregation)
-        tx.run(getBacentaBussingForConstituencyAggregation)
-        tx.run(getConstituencyBussingForCouncilAggregation)
-        tx.run(getCouncilBussingForStreamAggregation)
-        tx.run(getStreamBussingForGatheringAggregation)
-        tx.run(getCouncilBussingForStreamAggregation)
-        tx.run(getStreamBussingForGatheringAggregation)
-        tx.run(getGatheringBussingForOversightAggregation)
-        tx.run(getOversightBussingForDenominationAggregation)
+        if (new Date().getDay() === 0 || new Date().getDay() === 1) {
+          console.log('Today is Sunday or Monday, running bussing aggregation')
+          tx.run(getBacentaBussingForBacentaAggregation)
+          tx.run(getBacentaBussingForConstituencyAggregation)
+          tx.run(getConstituencyBussingForCouncilAggregation)
+          tx.run(getCouncilBussingForStreamAggregation)
+          tx.run(getStreamBussingForGatheringAggregation)
+          tx.run(getCouncilBussingForStreamAggregation)
+          tx.run(getStreamBussingForGatheringAggregation)
+          tx.run(getGatheringBussingForOversightAggregation)
+          tx.run(getOversightBussingForDenominationAggregation)
+        }
       })
       .finally(() => session.close())
   }
@@ -339,15 +344,13 @@ RETURN agg;
     console.error('Database query failed to complete\n', error.message)
   })
 }
-
 // This module can be used to serve the GraphQL endpoint
 // as a lambda function
 
 // This module is copied during the build step
 // Be sure to run `npm run build`
 
-const handler = async (event) => {
-  console.log('Received event:', event)
+const handler = async () => {
   const driver = neo4j.driver(
     process.env.NEO4J_URI || 'bolt://localhost:7687',
     neo4j.auth.basic(
@@ -379,4 +382,4 @@ const handler = async (event) => {
   }
 }
 
-module.exports.handler = schedule('5 0 * * 1', handler)
+module.exports.handler = schedule('@daily', handler)
