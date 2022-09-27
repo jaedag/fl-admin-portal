@@ -2,6 +2,7 @@ import { MemberContext } from 'contexts/MemberContext'
 import React, { useContext } from 'react'
 import { Col, Row } from 'react-bootstrap'
 import { TelephoneFill, Whatsapp } from 'react-bootstrap-icons'
+import '../../../../components/card/DetailsCard.css'
 
 export interface EquipmentDefaulterProps {
   id: string

@@ -62,7 +62,11 @@ const GatheringServiceEquipmentDefaulters = () => {
               <Col>
                 <DefaultersMenuButton
                   name="Have not filled"
-                  onClick={() => undefined}
+                  onClick={() =>
+                    navigate(
+                      '/campaigns/gathering-service/equipment/have-not-filled/fellowship'
+                    )
+                  }
                   number={gatheringService?.fellowshipEquipmentNotFilledCount}
                   color="text-danger"
                 />
@@ -88,7 +92,11 @@ const GatheringServiceEquipmentDefaulters = () => {
               <Col>
                 <DefaultersMenuButton
                   name="Have not filled"
-                  onClick={() => undefined}
+                  onClick={() =>
+                    navigate(
+                      '/campaigns/gathering-service/equipment/have-not-filled/constituency'
+                    )
+                  }
                   number={gatheringService?.constituencyEquipmentNotFilledCount}
                   color="text-danger"
                 />

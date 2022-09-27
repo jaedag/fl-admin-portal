@@ -116,6 +116,48 @@ export const GATHERING_SERVICE_BY_STREAM_EQUIPMENT_DEFAULTERS = gql`
   }
 `
 
+export const GATHERING_SERVICE_EQUIPMENT_DEFAULTERS_LIST_BY_CONSTITUENCY = gql`
+  query equipmentGatheringServiceDefaultersByConstituency(
+    $gatheringServiceId: ID
+  ) {
+    gatheringServices(where: { id: $gatheringServiceId }) {
+      id
+      constituencyEquipmentNotFilled {
+        id
+        name
+        leader {
+          id
+          firstName
+          lastName
+          phoneNumber
+          whatsappNumber
+        }
+      }
+    }
+  }
+`
+
+export const GATHERING_SERVICE_EQUIPMENT_DEFAULTERS_LIST_BY_FELLOWSHIP = gql`
+  query equipmentGatheringServiceDefaultersByFellowship(
+    $gatheringServiceId: ID
+  ) {
+    gatheringServices(where: { id: $gatheringServiceId }) {
+      id
+      fellowshipEquipmentNotFilled {
+        id
+        name
+        leader {
+          id
+          firstName
+          lastName
+          phoneNumber
+          whatsappNumber
+        }
+      }
+    }
+  }
+`
+
 //Streams Queries and Mutations
 export const STREAM_CAMPAIGN_LIST = gql`
   query streamCampaigns($streamId: ID) {
@@ -201,6 +243,44 @@ export const STREAM_EQUIPMENT_DEFAULTERS_NUMBER_BY_CONSTITUENCY_AND_FELLOWSHIP =
       fellowshipEquipmentFilledCount
       fellowshipEquipmentNotFilledCount
       councilCount
+    }
+  }
+`
+
+export const STREAM_EQUIPMENT_DEFAULTERS_LIST_BY_CONSTITUENCY = gql`
+  query equipmentStreamDefaultersByConstituency($streamId: ID) {
+    streams(where: { id: $streamId }) {
+      id
+      constituencyEquipmentNotFilled {
+        id
+        name
+        leader {
+          id
+          firstName
+          lastName
+          phoneNumber
+          whatsappNumber
+        }
+      }
+    }
+  }
+`
+
+export const STREAM_EQUIPMENT_DEFAULTERS_LIST_BY_FELLOWSHIP = gql`
+  query equipmentStreamDefaultersByFellowship($streamId: ID) {
+    streams(where: { id: $streamId }) {
+      id
+      fellowshipEquipmentNotFilled {
+        id
+        name
+        leader {
+          id
+          firstName
+          lastName
+          phoneNumber
+          whatsappNumber
+        }
+      }
     }
   }
 `
