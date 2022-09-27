@@ -49,9 +49,6 @@ const anagkazo = {
        MATCH (defaulters:Active:Fellowship)<-[:HAS]-(:Bacenta)<-[:HAS]-(this)
        WHERE NOT defaulters IN services
 
-       WITH defaulters, this
-       MATCH (defaulters)-[:MEETS_ON]->(day:ServiceDay)
-        WHERE day.dayNumber < date().dayOfWeek OR (day.dayNumber = date().dayOfWeek AND  time() > time('20:30'))
        RETURN COUNT(DISTINCT defaulters) as defaulters
       `,
   bankingDefaulersCount: `

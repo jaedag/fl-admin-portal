@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { Context } from '../utils/neo4j-types'
 import { Member } from '../utils/types'
-import { isAuth, rearrangeCypherObject, throwErrorMsg } from '../utils/utils'
+import { isAuth, rearrangeCypherObject, throwToSentry } from '../utils/utils'
 import { permitAdmin, permitLeaderAdmin } from '../permissions'
 import { RemoveServant } from './make-remove-servants'
 
@@ -31,7 +31,7 @@ const directoryMutation = {
     const memberCheck = rearrangeCypherObject(memberResponse)
 
     if (memberCheck.email || memberCheck.whatsappNumber) {
-      throwErrorMsg(errorMessage.no_duplicate_email_or_whatsapp)
+      throw new Error(errorMessage.no_duplicate_email_or_whatsapp)
     }
 
     const createMemberResponse = await session.run(createMember, {
@@ -95,7 +95,7 @@ const directoryMutation = {
     )
 
     if (memberCheck?.properties) {
-      throwErrorMsg(
+      throw new Error(
         'This member has active roles in church. Please remove them and try again'
       )
     }
@@ -111,19 +111,23 @@ const directoryMutation = {
 
     const session = context.executionContext.session()
 
-    try {
-      const fellowshipCheckResponse = await session.run(
-        closeChurchCypher.checkFellowshipHasNoMembers,
-        args
-      )
-      const fellowshipCheck = rearrangeCypherObject(fellowshipCheckResponse)
-
-      if (fellowshipCheck.memberCount) {
-        throwErrorMsg(
-          `${fellowshipCheck?.name} Fellowship has ${fellowshipCheck?.memberCount} members. Please transfer all members and try again.`
+    const fellowshipCheckResponse = await session
+      .run(closeChurchCypher.checkFellowshipHasNoMembers, args)
+      .catch((error: any) => {
+        throwToSentry(
+          'There was an error running checkFellowshipHasNoMembers',
+          error
         )
-      }
+      })
+    const fellowshipCheck = rearrangeCypherObject(fellowshipCheckResponse)
 
+    if (fellowshipCheck.memberCount > 0) {
+      throw new Error(
+        `${fellowshipCheck?.name} Fellowship has ${fellowshipCheck?.memberCount} members. Please transfer all members and try again.`
+      )
+    }
+
+    try {
       // Fellowship Leader must be removed since the fellowship is being closed down
       await RemoveServant(
         context,
@@ -150,7 +154,7 @@ const directoryMutation = {
 
       return fellowshipResponse.bacenta
     } catch (error: any) {
-      throwErrorMsg('', error)
+      throwToSentry('', error)
     }
     return null
   },
@@ -168,7 +172,7 @@ const directoryMutation = {
       const bacentaCheck = rearrangeCypherObject(bacentaCheckResponse)
 
       if (bacentaCheck.memberCount) {
-        throwErrorMsg(
+        throw new Error(
           `${bacentaCheck?.name} Bacenta has ${bacentaCheck?.fellowshipCount} active fellowships. Please close down all fellowships and try again.`
         )
       }
@@ -193,7 +197,7 @@ const directoryMutation = {
       const bacentaResponse = rearrangeCypherObject(closeBacentaResponse)
       return bacentaResponse.constituency
     } catch (error: any) {
-      throwErrorMsg(error)
+      throwToSentry('There was an error closing down this bacenta', error)
     }
     return null
   },
@@ -210,7 +214,7 @@ const directoryMutation = {
       const constituencyCheck = rearrangeCypherObject(constituencyCheckResponse)
 
       if (constituencyCheck.memberCount) {
-        throwErrorMsg(
+        throw new Error(
           `${constituencyCheck?.name} Constituency has ${constituencyCheck?.bacentaCount} active bacentas. Please close down all bacentas and try again.`
         )
       }
@@ -237,7 +241,7 @@ const directoryMutation = {
       )
       return constituencyResponse.council
     } catch (error: any) {
-      throwErrorMsg(error)
+      throwToSentry('There was an error closing down this constituency', error)
     }
     return null
   },
