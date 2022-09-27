@@ -22,8 +22,8 @@ export const GATHERING_SERVICE_TRENDS = gql`
         offeringBags
         pulpits
       }
-      fellowshipCount
-      constituencyCount
+      fellowshipEquipmentFilledCount
+      constituencyEquipmentFilledCount
     }
   }
 `
@@ -41,8 +41,8 @@ export const GATHERING_SERVICE_BY_STREAM = gql`
           offeringBags
           pulpits
         }
-        constituencyCount
-        fellowshipCount
+        fellowshipEquipmentFilledCount
+        constituencyEquipmentFilledCount
       }
     }
   }
@@ -179,8 +179,8 @@ export const STREAM_TRENDS = gql`
         offeringBags
         pulpits
       }
-      fellowshipCount
-      constituencyCount
+      fellowshipEquipmentFilledCount
+      constituencyEquipmentFilledCount
     }
   }
 `
@@ -198,8 +198,8 @@ export const STREAM_BY_COUNCIL = gql`
           offeringBags
           pulpits
         }
-        fellowshipCount
-        constituencyCount
+        fellowshipEquipmentFilledCount
+        constituencyEquipmentFilledCount
       }
     }
   }
@@ -306,8 +306,8 @@ export const COUNCIL_TRENDS = gql`
         offeringBags
         pulpits
       }
-      fellowshipCount
-      constituencyCount
+      fellowshipEquipmentFilledCount
+      constituencyEquipmentFilledCount
     }
   }
 `
@@ -326,7 +326,7 @@ export const COUNCIL_BY_CONSTITUENCY = gql`
           offeringBags
           pulpits
         }
-        fellowshipCount
+        fellowshipEquipmentFilledCount
       }
     }
   }
@@ -434,7 +434,7 @@ export const CONSTITUENCY_TRENDS = gql`
         offeringBags
         pulpits
       }
-      fellowshipCount
+      fellowshipEquipmentFilledCount
     }
   }
 `
@@ -479,7 +479,7 @@ export const CONSTITUENCY_BY_BACENTA = gql`
           bluetoothSpeakers
           offeringBags
         }
-        fellowshipCount
+        fellowshipEquipmentFilledCount
       }
     }
   }
@@ -538,7 +538,7 @@ export const BACENTA_TRENDS = gql`
         offeringBags
         bluetoothSpeakers
       }
-      fellowshipCount
+      fellowshipEquipmentFilledCount
     }
   }
 `
@@ -548,7 +548,7 @@ export const BACENTA_BY_FELLOWSHIP = gql`
     bacentas(where: { id: $bacentaId }) {
       id
       name
-      fellowshipCount
+      fellowshipEquipmentFilledCount
       fellowships {
         id
         name
