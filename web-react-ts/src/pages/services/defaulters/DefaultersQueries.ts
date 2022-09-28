@@ -544,6 +544,28 @@ export const STREAM_BANKING_DEFAULTERS_LIST = gql`
   }
 `
 
+export const CONSTITUENCY_BANKING_DEFUALTERS_THIS_WEEK = gql`
+  query constitiuencyBankingDefaultersThisWeek($id: ID!) {
+    streams(where: { id: $id }) {
+      id
+      name
+      constitiuencyBankingDefaultersThisWeek {
+        id
+        name
+        leader {
+          id
+          firstName
+          lastName
+          fullName
+          phoneNumber
+          whatsappNumber
+          pictureUrl
+        }
+      }
+    }
+  }
+`
+
 export const STREAM_BANKED_LIST = gql`
   query streamBanked($id: ID!) {
     streams(where: { id: $id }) {

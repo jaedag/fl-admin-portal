@@ -14,5 +14,130 @@ extend type Member {
 extend type Mutation {
   MakeStreamTeller(streamId: ID!, tellerId: ID!): Member!
   RemoveStreamTeller(streamId: ID!, tellerId: ID!): Member!
-  ConfirmBanking(serviceRecordId: ID!): ServiceRecord!
+  ConfirmBanking(constituencyId: ID!): Constituency!
+}
+
+extend type Stream {
+  constitiuencyBankingDefaultersThisWeek: [Constituency!]!
+    @cypher(
+      statement: """
+      MATCH (this)
+      WITH date() as today, this
+      WITH  today.weekDay as theDay, today, this
+      WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
+      WITH [day in range(0, 5) | startDate + duration({days: day})] AS dates, this
+
+      MATCH (date:TimeGraph)
+      USING INDEX date:TimeGraph(date)
+      WHERE date.date IN dates
+      MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
+
+       WITH DISTINCT record, this
+        WHERE record.noServiceReason IS NULL
+          AND record.bankingSlip IS NULL
+          AND (record.transactionStatus IS NULL OR record.transactionStatus <> 'success')
+          AND record.tellerConfirmationTime IS NULL
+       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships) WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
+
+       WITH DISTINCT fellowships, this
+       MATCH (fellowships)<-[:HAS]-(:Bacenta)<-[:HAS]-(constituencies:Constituency)<-[:HAS]-(:Council)<-[:HAS]-(this)
+
+      RETURN DISTINCT constituencies
+      """
+    )
+  constituencyBankingDefaultersThisWeekCount: Int
+    @cypher(
+      statement: """
+      MATCH (this)
+      WITH date() as today, this
+      WITH  today.weekDay as theDay, today, this
+      WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
+      WITH [day in range(0, 5) | startDate + duration({days: day})] AS dates, this
+
+      MATCH (date:TimeGraph)
+      USING INDEX date:TimeGraph(date)
+      WHERE date.date IN dates
+      MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
+
+       WITH DISTINCT record, this
+        WHERE record.noServiceReason IS NULL
+          AND record.bankingSlip IS NULL
+          AND (record.transactionStatus IS NULL OR record.transactionStatus <> 'success')
+          AND record.tellerConfirmationTime IS NULL
+       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships) WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
+
+       WITH DISTINCT fellowships, this
+       MATCH (fellowships)<-[:HAS]-(:Bacenta)<-[:HAS]-(constituencies:Constituency)<-[:HAS]-(:Council)<-[:HAS]-(this)
+
+      RETURN COUNT(DISTINCT constituencies)
+      """
+    )
+}
+
+extend type AggregateServiceRecord {
+  foreignCurrency: [String]
+}
+
+extend type Constituency {
+  aggregateServiceRecord(week: Int!): AggregateServiceRecord!
+    @cypher(
+      statement: """
+      MATCH (this)
+      MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(agg)
+      MATCH (agg) WHERE agg.week = $week
+
+      WITH agg, this
+      WITH date() as today, this, agg
+      WITH  today.weekDay as theDay, today, this, agg
+      WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this, agg
+      WITH [day in range(0, 5) | startDate + duration({days: day})] AS dates, this, agg
+
+      MATCH (date:TimeGraph)
+      USING INDEX date:TimeGraph(date)
+      WHERE date.date IN dates
+      MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
+
+      WITH collect(record.foreignCurrency) as list, agg
+      RETURN {
+        id: agg.id,
+        attendance: agg.attendance,
+        income: agg.income,
+        week: agg.week,
+        year: agg.year,
+        foreignCurrency: list
+        }
+      """
+    )
+  banked: Boolean!
+    @cypher(
+      statement: """
+      MATCH (this)
+      WITH date() as today, this
+      WITH  today.weekDay as theDay, today, this
+      WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
+      WITH [day in range(0, 5) | startDate + duration({days: day})] AS dates, this
+
+      MATCH (date:TimeGraph)
+      USING INDEX date:TimeGraph(date)
+      WHERE date.date IN dates
+      MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
+
+      WITH DISTINCT record, this
+        WHERE record.noServiceReason IS NULL
+          AND record.bankingSlip IS NULL
+          AND (record.transactionStatus IS NULL OR record.transactionStatus <> 'success')
+          AND record.tellerConfirmationTime IS NULL
+      MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships) WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
+
+      WITH DISTINCT fellowships, this
+      MATCH (fellowships)<-[:HAS]-(:Bacenta)<-[:HAS]-(this)
+
+      WITH COUNT(DISTINCT fellowships) as bankingDefaulters
+      RETURN
+      CASE bankingDefaulters
+      WHEN 0 THEN true
+      ELSE false
+      END AS banked
+      """
+    )
 }

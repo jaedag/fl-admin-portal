@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import {
   isAuth,
   noEmptyArgsValidation,
@@ -22,27 +23,52 @@ const treasuryMutations = {
     ),
   ConfirmBanking: async (
     object: never,
-    args: any,
+    args: { constituencyId: string },
     context: { auth: { roles: any }; executionContext: { session: () => any } }
   ): Promise<any> => {
     isAuth(permitTeller(), context?.auth.roles)
     const session = context.executionContext.session()
-    noEmptyArgsValidation(['serviceRecordId'])
+    noEmptyArgsValidation(['constituencyId'])
 
     const today = new Date()
     if (today.getDay() > 5) {
       throw new Error('You cannot receive offerings today! Thank you')
     }
 
-    try {
-      const checkAlreadyConfirmed = rearrangeCypherObject(
-        await session.run(anagkazo.checkIfConfirmed, args)
+    //  implement checks to make sure that all the fellowships have filled their offering
+
+    const formDefaultersResponse = rearrangeCypherObject(
+      await session
+        .run(anagkazo.formDefaultersCount, args)
+        .catch((error: any) =>
+          throwToSentry('There was an error running cypher', error)
+        )
+    )
+
+    const formDefaultersCount = formDefaultersResponse.defaulters.low
+
+    if (formDefaultersCount > 0) {
+      throw new Error(
+        'You cannot confirm this constituency until all the active fellowships have filled their forms'
       )
+    }
 
-      if (checkAlreadyConfirmed.check) {
-        throw new Error('This service offering has already been banked!')
-      }
+    const checkAlreadyConfirmedResponse = rearrangeCypherObject(
+      await session
+        .run(anagkazo.bankingDefaulersCount, args)
+        .catch((error: any) =>
+          throwToSentry('There was an error running cypher', error)
+        )
+    )
 
+    const checkAlreadyConfirmed =
+      checkAlreadyConfirmedResponse.bankingDefaulters.low
+
+    if (checkAlreadyConfirmed < 1) {
+      throw new Error("This constitieuncy's offering has already been banked!")
+    }
+
+    try {
       const response = await session.run(anagkazo.confirmBanking, {
         ...args,
         auth: context.auth,
@@ -53,7 +79,11 @@ const treasuryMutations = {
         return confirmationResponse
       }
 
-      return confirmationResponse.record.properties
+      // return confirmationResponse.constituency.properties
+      return {
+        ...confirmationResponse.constituency.properties,
+        banked: true,
+      }
     } catch (error: any) {
       throwToSentry('There was a problem confirming the banking', error || '')
     }
