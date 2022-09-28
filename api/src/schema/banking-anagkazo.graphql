@@ -70,6 +70,10 @@ extend type Stream {
     )
 }
 
+extend type AggregateServiceRecord {
+  foreignCurrency: [String]
+}
+
 extend type Constituency {
   aggregateServiceRecord(week: Int!): AggregateServiceRecord!
     @cypher(
@@ -77,7 +81,27 @@ extend type Constituency {
       MATCH (this)
       MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(agg)
       MATCH (agg) WHERE agg.week = $week
-      RETURN agg
+
+      WITH agg, this
+      WITH date() as today, this, agg
+      WITH  today.weekDay as theDay, today, this, agg
+      WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this, agg
+      WITH [day in range(0, 5) | startDate + duration({days: day})] AS dates, this, agg
+
+      MATCH (date:TimeGraph)
+      USING INDEX date:TimeGraph(date)
+      WHERE date.date IN dates
+      MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
+
+      WITH collect(record.foreignCurrency) as list, agg
+      RETURN {
+        id: agg.id,
+        attendance: agg.attendance,
+        income: agg.income,
+        week: agg.week,
+        year: agg.year,
+        foreignCurrency: list
+        }
       """
     )
   banked: Boolean!
