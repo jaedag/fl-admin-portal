@@ -3,7 +3,7 @@ import {
   isAuth,
   noEmptyArgsValidation,
   rearrangeCypherObject,
-  throwErrorMsg,
+  throwToSentry,
 } from '../utils/utils'
 import { MakeServant, RemoveServant } from '../directory/make-remove-servants'
 import { permitTeller, permitAdmin } from '../permissions'
@@ -32,7 +32,7 @@ const treasuryMutations = {
 
     const today = new Date()
     if (today.getDay() > 5) {
-      throwErrorMsg('You cannot receive offerings today! Thank you')
+      throw new Error('You cannot receive offerings today! Thank you')
     }
 
     try {
@@ -45,7 +45,7 @@ const treasuryMutations = {
       const formDefaultersCount = formDefaultersResponse.defaulters.low
 
       if (formDefaultersCount > 0) {
-        throwErrorMsg(
+        throw new Error(
           'You cannot confirm this constituency until all the active fellowships have filled their forms'
         )
       }
@@ -58,7 +58,9 @@ const treasuryMutations = {
         checkAlreadyConfirmedResponse.bankingDefaulters.low
 
       if (checkAlreadyConfirmed < 1) {
-        throwErrorMsg("This constitieuncy's offering has already been banked!")
+        throw new Error(
+          "This constitieuncy's offering has already been banked!"
+        )
       }
 
       const response = await session.run(anagkazo.confirmBanking, {
@@ -77,7 +79,7 @@ const treasuryMutations = {
         banked: true,
       }
     } catch (error: any) {
-      throwErrorMsg('There was a problem confirming the banking', error || '')
+      throwToSentry('There was a problem confirming the banking', error || '')
     }
     return 'Confirmation Successful'
   },
