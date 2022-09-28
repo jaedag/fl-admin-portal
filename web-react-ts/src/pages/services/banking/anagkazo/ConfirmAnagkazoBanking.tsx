@@ -13,7 +13,7 @@ import usePopup from 'hooks/usePopup'
 import { CONFIRM_BANKING } from './Treasury.gql'
 import CloudinaryImage from 'components/CloudinaryImage'
 import { DISPLAY_AGGREGATE_SERVICE_RECORD } from 'pages/services/record-service/RecordServiceMutations'
-import { alertMsg, throwErrorMsg } from 'global-utils'
+import { alertMsg, throwToSentry } from 'global-utils'
 import Popup from 'components/Popup/Popup'
 import NoDataComponent from 'pages/arrivals/CompNoData'
 import Input from 'components/formik/Input'
@@ -133,7 +133,7 @@ const ConfirmAnagkazoBanking = () => {
                   navigate('/anagkazo/receive-banking')
                 } catch (error: any) {
                   setSubmitting(false)
-                  throwErrorMsg(error)
+                  throwToSentry(error)
                 }
               }}
             >
