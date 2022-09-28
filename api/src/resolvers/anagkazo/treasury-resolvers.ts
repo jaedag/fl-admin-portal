@@ -3,7 +3,7 @@ import {
   isAuth,
   noEmptyArgsValidation,
   rearrangeCypherObject,
-  throwToSentry,
+  throwErrorMsg,
 } from '../utils/utils'
 import { MakeServant, RemoveServant } from '../directory/make-remove-servants'
 import { permitTeller, permitAdmin } from '../permissions'
@@ -35,34 +35,40 @@ const treasuryMutations = {
       throw new Error('You cannot receive offerings today! Thank you')
     }
 
+    //  implement checks to make sure that all the fellowships have filled their offering
+
+    const formDefaultersResponse = rearrangeCypherObject(
+      await session
+        .run(anagkazo.formDefaultersCount, args)
+        .catch((error: any) =>
+          throwErrorMsg('There was an error running cypher', error)
+        )
+    )
+
+    const formDefaultersCount = formDefaultersResponse.defaulters.low
+
+    if (formDefaultersCount > 0) {
+      throw new Error(
+        'You cannot confirm this constituency until all the active fellowships have filled their forms'
+      )
+    }
+
+    const checkAlreadyConfirmedResponse = rearrangeCypherObject(
+      await session
+        .run(anagkazo.bankingDefaulersCount, args)
+        .catch((error: any) =>
+          throwErrorMsg('There was an error running cypher', error)
+        )
+    )
+
+    const checkAlreadyConfirmed =
+      checkAlreadyConfirmedResponse.bankingDefaulters.low
+
+    if (checkAlreadyConfirmed < 1) {
+      throw new Error("This constitieuncy's offering has already been banked!")
+    }
+
     try {
-      //  implement checks to make sure that all the fellowships have filled their offering
-
-      const formDefaultersResponse = rearrangeCypherObject(
-        await session.run(anagkazo.formDefaultersCount, args)
-      )
-
-      const formDefaultersCount = formDefaultersResponse.defaulters.low
-
-      if (formDefaultersCount > 0) {
-        throw new Error(
-          'You cannot confirm this constituency until all the active fellowships have filled their forms'
-        )
-      }
-
-      const checkAlreadyConfirmedResponse = rearrangeCypherObject(
-        await session.run(anagkazo.bankingDefaulersCount, args)
-      )
-
-      const checkAlreadyConfirmed =
-        checkAlreadyConfirmedResponse.bankingDefaulters.low
-
-      if (checkAlreadyConfirmed < 1) {
-        throw new Error(
-          "This constitieuncy's offering has already been banked!"
-        )
-      }
-
       const response = await session.run(anagkazo.confirmBanking, {
         ...args,
         auth: context.auth,
@@ -79,7 +85,7 @@ const treasuryMutations = {
         banked: true,
       }
     } catch (error: any) {
-      throwToSentry('There was a problem confirming the banking', error || '')
+      throwErrorMsg('There was a problem confirming the banking', error || '')
     }
     return 'Confirmation Successful'
   },

@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { Context } from '../utils/neo4j-types'
 import { Member } from '../utils/types'
-import { isAuth, rearrangeCypherObject, throwToSentry } from '../utils/utils'
+import { isAuth, rearrangeCypherObject, throwErrorMsg } from '../utils/utils'
 import { permitAdmin, permitLeaderAdmin } from '../permissions'
 import { RemoveServant } from './make-remove-servants'
 
@@ -114,7 +114,7 @@ const directoryMutation = {
     const fellowshipCheckResponse = await session
       .run(closeChurchCypher.checkFellowshipHasNoMembers, args)
       .catch((error: any) => {
-        throwToSentry(
+        throwErrorMsg(
           'There was an error running checkFellowshipHasNoMembers',
           error
         )
@@ -154,7 +154,7 @@ const directoryMutation = {
 
       return fellowshipResponse.bacenta
     } catch (error: any) {
-      throwToSentry('', error)
+      throwErrorMsg('', error)
     }
     return null
   },
@@ -197,7 +197,7 @@ const directoryMutation = {
       const bacentaResponse = rearrangeCypherObject(closeBacentaResponse)
       return bacentaResponse.constituency
     } catch (error: any) {
-      throwToSentry('There was an error closing down this bacenta', error)
+      throwErrorMsg('There was an error closing down this bacenta', error)
     }
     return null
   },
@@ -241,7 +241,7 @@ const directoryMutation = {
       )
       return constituencyResponse.council
     } catch (error: any) {
-      throwToSentry('There was an error closing down this constituency', error)
+      throwErrorMsg('There was an error closing down this constituency', error)
     }
     return null
   },
