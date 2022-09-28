@@ -34,6 +34,7 @@ const ConfirmAnagkazoBanking = () => {
   const { streamId, clickCard, constituencyId } = useContext(ChurchContext)
   const [isSubmitting, setSubmitting] = useState(false)
   const [defaultersData, setDefaultersData] = useState([])
+  const [selectedConstituency, setSelectedConstituency] = useState('')
   const { togglePopup, isOpen } = usePopup()
   const navigate = useNavigate()
 
@@ -42,6 +43,11 @@ const ConfirmAnagkazoBanking = () => {
     {
       variables: { id: streamId },
       fetchPolicy: 'cache-and-network',
+      onCompleted: (data) => {
+        setSelectedConstituency(
+          data?.streams[0]?.constitiuencyBankingDefaultersThisWeek[0].name
+        )
+      },
     }
   )
 
@@ -74,6 +80,11 @@ const ConfirmAnagkazoBanking = () => {
 
     onSubmitProps.setSubmitting(false)
   }
+
+  useEffect(() => {
+    togglePopup()
+    togglePopup()
+  }, [])
 
   useEffect(() => {
     setDefaultersData(bankingDefaultersList)
@@ -111,48 +122,12 @@ const ConfirmAnagkazoBanking = () => {
             </Formik>
             <div className="text-center mt-2 mb-3">Week {getWeekNumber()}</div>
             <Container>
-              <div className="d-grid ">
-                {defaultersData?.map((defaulter: Defaulter, index: number) => (
-                  <Card key={index} className="confirm-banking-card mt-2">
-                    <div className="d-flex align-items-center">
-                      <div className="flex-shrink-0">
-                        <CloudinaryImage
-                          className="rounded-circle img-search"
-                          src={defaulter?.leader.pictureUrl}
-                          alt={defaulter?.leader?.fullName}
-                        />
-                      </div>
-
-                      <div className="flex-grow-1 ms-3">
-                        <h6 className="fw-bold">{`${defaulter?.name} Constituency`}</h6>
-                        <p className={`text-secondary mb-0 ${theme}`}>
-                          <span>{defaulter?.leader?.fullName}</span>
-                        </p>
-                      </div>
-                    </div>
-
-                    <Card.Footer className="text-center">
-                      <Button
-                        onClick={() => {
-                          clickCard(defaulter)
-                          togglePopup()
-                        }}
-                        variant="info"
-                      >
-                        Confirm Offering
-                      </Button>
-                    </Card.Footer>
-                  </Card>
-                ))}
-              </div>
-
-              {!bankingDefaultersList?.length && !loading && (
-                <NoDataComponent text="There are no services to be confirmed" />
-              )}
-
               {isOpen && (
                 <Popup handleClose={togglePopup}>
-                  <h6>Confirm This Constituency Offering</h6>
+                  <h3 className={`${theme} menu-subheading text-center`}>
+                    {selectedConstituency} Constituency
+                  </h3>
+                  <h6 className="text-center">Confirm Offering?</h6>
                   <Table striped bordered hover variant="dark">
                     <tbody>
                       <tr>
@@ -211,6 +186,43 @@ const ConfirmAnagkazoBanking = () => {
                     No, take me back
                   </Button>
                 </Popup>
+              )}
+              <div className="d-grid ">
+                {defaultersData?.map((defaulter: Defaulter, index: number) => (
+                  <Card key={index} className="confirm-banking-card mt-2">
+                    <div className="d-flex align-items-center">
+                      <div className="flex-shrink-0">
+                        <CloudinaryImage
+                          className="rounded-circle img-search"
+                          src={defaulter?.leader.pictureUrl}
+                          alt={defaulter?.leader?.fullName}
+                        />
+                      </div>
+
+                      <div className="flex-grow-1 ms-3">
+                        <h6 className="fw-bold">{`${defaulter?.name} Constituency`}</h6>
+                        <p className={`text-secondary mb-0 ${theme}`}>
+                          <span>{defaulter?.leader?.fullName}</span>
+                        </p>
+                      </div>
+                    </div>
+                    <Card.Footer className="text-center">
+                      <Button
+                        onClick={() => {
+                          clickCard(defaulter)
+                          togglePopup()
+                        }}
+                        variant="info"
+                      >
+                        Confirm Offering
+                      </Button>
+                    </Card.Footer>
+                  </Card>
+                ))}
+              </div>
+
+              {!bankingDefaultersList?.length && !loading && (
+                <NoDataComponent text="There are no services to be confirmed" />
               )}
             </Container>
           </div>
