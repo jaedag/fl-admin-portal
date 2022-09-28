@@ -36,7 +36,7 @@ const UpdateFellowship = () => {
   const initialValues: FellowshipFormValues = {
     name: fellowship?.name,
     leaderId: fellowship?.leader?.id,
-    leaderName: `${fellowship?.leader?.firstName} ${fellowship?.leader.lastName} `,
+    leaderName: `${fellowship?.leader?.firstName} ${fellowship?.leader?.lastName} `,
     constituencySelect: fellowship?.bacenta?.constituency?.id,
     bacenta: fellowship?.bacenta?.id,
     meetingDay: fellowship?.meetingDay?.day,
