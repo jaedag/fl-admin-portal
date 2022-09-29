@@ -97,16 +97,30 @@ RETURN member.email AS email, member.whatsappNumber AS whatsappNumber
 `
 
 export const checkMemberHasNoActiveRelationships = `
-MATCH p=(member:Member {id: $id})-[:LEADS|DOES_ARRIVALS_FOR|IS_ADMIN_FOR]->(church)
-RETURN p
+MATCH p=(member:Member {id:$id})-[:LEADS|DOES_ARRIVALS_FOR|IS_ADMIN_FOR|COUNTS_ARRIVALS_FOR|IS_TELLER_FOR]->(church)
+RETURN COUNT(p) as relatitonshipCount
 `
 
 export const makeMemberInactive = `
-MATCH (member:Member {id: $id})
-SET member:InactiveMember
-REMOVE member:Member
+MATCH (member:Member {id:$id})
+WITH member, ["Active", "Sheep", "Goat", "Deer", "IDL"] as labels
+CALL apoc.create.removeLabels(member, labels)
+YIELD node
+WITH node
+SET node:Inactive
 
-RETURN member
+WITH node
+CREATE (log:HistoryLog)
+SET log.id = apoc.create.uuid(),
+log.timeStamp = datetime(),
+log.historyRecord = "This member was deleted for this reason. " +$reason
+
+WITH log, node
+MATCH (admin:Member {auth_id:$auth.jwt.sub})
+MERGE (admin)<-[:LOGGED_BY]-(log)
+MERGE (node)-[:HAS_HISTORY]->(log)
+
+RETURN node as member
 `
 
 export const createMember = `

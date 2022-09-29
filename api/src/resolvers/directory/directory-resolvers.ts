@@ -86,7 +86,14 @@ const directoryMutation = {
 
     return updatedMember
   },
-  MakeMemberInactive: async (object: any, args: never, context: Context) => {
+  MakeMemberInactive: async (
+    object: any,
+    args: {
+      id: string
+      reason: string
+    },
+    context: Context
+  ) => {
     isAuth(permitLeaderAdmin('Stream'), context.auth.roles)
     const session = context.executionContext.session()
 
@@ -94,14 +101,18 @@ const directoryMutation = {
       await session.run(cypher.checkMemberHasNoActiveRelationships, args)
     )
 
-    if (memberCheck?.properties) {
+    if (memberCheck.relatitonshipCount.low > 0) {
       throw new Error(
         'This member has active roles in church. Please remove them and try again'
       )
     }
 
     const member = rearrangeCypherObject(
-      await session.run(makeMemberInactive, args)
+      await session.run(makeMemberInactive, {
+        id: args.id,
+        reason: args.reason,
+        auth: context.auth,
+      })
     )
 
     return member?.properties
