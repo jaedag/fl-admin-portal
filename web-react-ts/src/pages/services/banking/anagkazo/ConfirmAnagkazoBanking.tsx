@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react'
+import React, { useContext, useState, useEffect, useRef } from 'react'
 import { Button, Card, Container, Spinner, Table } from 'react-bootstrap'
 import { MemberContext } from 'contexts/MemberContext'
 import { ChurchContext } from 'contexts/ChurchContext'
@@ -79,9 +79,14 @@ const ConfirmAnagkazoBanking = () => {
     onSubmitProps.setSubmitting(false)
   }
 
+  const buttonRef = useRef<HTMLButtonElement>(null)
+
   useEffect(() => {
     togglePopup()
-    togglePopup()
+  }, [])
+
+  useEffect(() => {
+    buttonRef?.current?.click()
   }, [])
 
   useEffect(() => {
@@ -211,6 +216,7 @@ const ConfirmAnagkazoBanking = () => {
                     </div>
                     <Card.Footer className="text-center">
                       <Button
+                        ref={buttonRef}
                         onClick={() => {
                           clickCard(defaulter)
                           togglePopup()

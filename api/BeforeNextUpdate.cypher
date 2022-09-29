@@ -1,3 +1,9 @@
+// cypher query to make all members Active
+MATCH (member:Member)
+SET member:Active
+RETURN member
+
+///////////
 MATCH (record:ServiceRecord) WHERE record.familyPicture IS NULL AND record.noServiceReason IS NULL
 DETACH DELETE record;
 MATCH (bussing:BussingRecord) WHERE bussing.mobilisationPicture IS NULL
