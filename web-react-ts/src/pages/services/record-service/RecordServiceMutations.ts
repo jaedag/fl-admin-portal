@@ -126,9 +126,11 @@ export const DISPLAY_AGGREGATE_SERVICE_RECORD = gql`
   query aggregateServiceRecord($week: Int!, $constituencyId: ID!) {
     constituencies(where: { id: $constituencyId }) {
       id
+      name
       aggregateServiceRecord(week: $week) {
         id
         income
+        foreignCurrency
       }
     }
   }

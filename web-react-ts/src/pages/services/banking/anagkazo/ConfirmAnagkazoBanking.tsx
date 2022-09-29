@@ -34,7 +34,6 @@ const ConfirmAnagkazoBanking = () => {
   const { streamId, clickCard, constituencyId } = useContext(ChurchContext)
   const [isSubmitting, setSubmitting] = useState(false)
   const [defaultersData, setDefaultersData] = useState([])
-  const [selectedConstituency, setSelectedConstituency] = useState('')
   const { togglePopup, isOpen } = usePopup()
   const navigate = useNavigate()
 
@@ -43,18 +42,13 @@ const ConfirmAnagkazoBanking = () => {
     {
       variables: { id: streamId },
       fetchPolicy: 'cache-and-network',
-      onCompleted: (data) => {
-        setSelectedConstituency(
-          data?.streams[0]?.constitiuencyBankingDefaultersThisWeek[0].name
-        )
-      },
     }
   )
 
   const { data: constituencyServiceData } = useQuery(
     DISPLAY_AGGREGATE_SERVICE_RECORD,
     {
-      variables: { week: getWeekNumber(), constituencyId: constituencyId },
+      variables: { constituencyId: constituencyId, week: getWeekNumber() },
     }
   )
 
@@ -62,6 +56,10 @@ const ConfirmAnagkazoBanking = () => {
 
   const service =
     constituencyServiceData?.constituencies[0]?.aggregateServiceRecord
+
+  const selectedConstituencyName =
+    constituencyServiceData?.constituencies[0]?.name
+
   const bankingDefaultersList =
     data?.streams[0]?.constitiuencyBankingDefaultersThisWeek
 
@@ -125,7 +123,7 @@ const ConfirmAnagkazoBanking = () => {
               {isOpen && (
                 <Popup handleClose={togglePopup}>
                   <h3 className={`${theme} menu-subheading text-center`}>
-                    {selectedConstituency} Constituency
+                    {selectedConstituencyName} Constituency
                   </h3>
                   <h6 className="text-center">Confirm Offering?</h6>
                   <Table striped bordered hover variant="dark">
@@ -142,6 +140,11 @@ const ConfirmAnagkazoBanking = () => {
                       )}
                     </tbody>
                   </Table>
+                  <i className="text-danger">
+                    NB: You must only click this button if the amount the
+                    constituency is submitting is the same as what is displayed
+                    here
+                  </i>
                   <Button
                     variant="primary"
                     type="submit"
