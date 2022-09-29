@@ -32,7 +32,7 @@ extend type ServiceRecord {
       MATCH (this)
       WITH this WHERE this.bankingSlip IS NOT NULL
       OR  this.transactionStatus = 'success'
-
+      OR this.tellerConfirmationTime IS NOT NULL
       RETURN true
       """
     )
