@@ -68,7 +68,10 @@ export type ServantTypeLowerCase =
   | 'arrivalsConfirmer'
   | 'teller'
 
-export type StreamOptions = 'Campus' | 'Town' | 'Anagkazo'
+export type StreamOptions =
+  | 'Anagkazo Encounter'
+  | 'Gospel Encounter'
+  | 'First Love Experience'
 
 type TitleOptions = 'Pastor' | 'Reverend' | 'Bishop'
 
