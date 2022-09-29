@@ -6,6 +6,71 @@
 
 ##### Documentation Changes
 
+*  update CHANGELOG.md ([fef0c585](https://github.com/firstlovecenter/fl-pastoral-care/commit/fef0c58538482c1cad886254fa20fd2af91d6d6a))
+*  update CHANGELOG.md ([b8b733c6](https://github.com/firstlovecenter/fl-pastoral-care/commit/b8b733c609ef51320f0c78c194a833d0ab54413f))
+
+##### New Features
+
+*  admin-344 change equipment trend denominator to show fellowship ewuipment filled count ([4451a463](https://github.com/firstlovecenter/fl-pastoral-care/commit/4451a4638b6f4acf062a16f8998994d1ed7a1c78))
+*  admin-348 prevent data load until all data have finished loading in equipment campaign ([2298bed7](https://github.com/firstlovecenter/fl-pastoral-care/commit/2298bed780e8f831f304ec9d67ada1fab789fdbb))
+*  add optional foreign currency field to aggregate service record type ([8b954974](https://github.com/firstlovecenter/fl-pastoral-care/commit/8b9549744f94122cb858b20a7503505c57e22ab0))
+*  make havenotfilled buttons clickable to display churches that havent filled the equipment form ([1e547374](https://github.com/firstlovecenter/fl-pastoral-care/commit/1e54737475075694f888e2b9ba654e9a73c91bfa))
+*  implement template message when sending whatsapp to defaulting admins ([ba9aafa7](https://github.com/firstlovecenter/fl-pastoral-care/commit/ba9aafa7e1b9fbb39d72a6d9aebae00411aacc16))
+*  update top up amounts to better reflect the  heart behind the top up amounts ([7e1d8b03](https://github.com/firstlovecenter/fl-pastoral-care/commit/7e1d8b03e8788369423cfe5c6fc7f8b9146554c0))
+*  implement custom whatsapp message template for service defaulters ([b637043d](https://github.com/firstlovecenter/fl-pastoral-care/commit/b637043da12282e72fe2f19a7ca9738ed4329d0b))
+
+##### Bug Fixes
+
+*  change stream names to reflect new stream names ([59eb483d](https://github.com/firstlovecenter/fl-pastoral-care/commit/59eb483d78ca640f576a87671867f064b83d437b))
+*  improve button loading ux when closing down a church ([79216fa6](https://github.com/firstlovecenter/fl-pastoral-care/commit/79216fa638b30843f6d27a1762f0f873e9f85e4f))
+*  data aggregation will happen only on wednesday to sunday ([28f459f6](https://github.com/firstlovecenter/fl-pastoral-care/commit/28f459f68b1611caf59deba858c2b7fd8aa6cc74))
+*  fix issue where constituency name is the same in confirm banking popup ([7360d71a](https://github.com/firstlovecenter/fl-pastoral-care/commit/7360d71af6433871bba9243502cd491c5a4b94c4))
+*  data aggregation will happen only on wednesday to sunday ([abd102da](https://github.com/firstlovecenter/fl-pastoral-care/commit/abd102daa837e7d681a4cb5800993e5562ec53a9))
+*  admin-311 tweak UX so enable popup to work after installing sentry.io ([0dd10a39](https://github.com/firstlovecenter/fl-pastoral-care/commit/0dd10a39f12223f2f6aeea8638594a81b4b95ebe))
+*  admin-311 merge anagkazo banking by constituencies into deploy ([5364ffc6](https://github.com/firstlovecenter/fl-pastoral-care/commit/5364ffc64d60c41f5a4f59f980822ff686890507))
+*  restore throwErrorMsg function ([b3fcecbc](https://github.com/firstlovecenter/fl-pastoral-care/commit/b3fcecbc3fc89c310010eefd2c70e9b742906957))
+*  change throwErrorMsg function to throwToSentry in frontend anagkazo confirmation ([7d8bd1f8](https://github.com/firstlovecenter/fl-pastoral-care/commit/7d8bd1f8849fa861cd6455e94d81dd4b24d80492))
+*  fix error where users is unable to edit a fellowship when there is no leader ([61fb88d6](https://github.com/firstlovecenter/fl-pastoral-care/commit/61fb88d6ce53f2b20cfbc20ce9af32e956b70bd8))
+*  remove service day check on defaulters cypher in confirm anagkazo banking ([f671b87f](https://github.com/firstlovecenter/fl-pastoral-care/commit/f671b87f425396a6976a9019e3fecb37a898e763))
+*  update aggregation scheduled function to run daily ([52ab3d66](https://github.com/firstlovecenter/fl-pastoral-care/commit/52ab3d664d93dc1f56eb59dd799489f3c4318f42))
+*  admin 339 fix cypher that checks if a felowship has members to always return data ([735f52b4](https://github.com/firstlovecenter/fl-pastoral-care/commit/735f52b4c8544d432867a6d637cc56354f495951))
+*  improve error handling when money cannot be sent ([b0607b67](https://github.com/firstlovecenter/fl-pastoral-care/commit/b0607b678615ccee97c7d72ab5da29e29153656a))
+*  combine arrival time and counting into one mutation ([3582a547](https://github.com/firstlovecenter/fl-pastoral-care/commit/3582a547a8459d103ca312e59521714239d7677a))
+*  refactor mutation to close down fellowship to align with sentry.io workflow ([6c3c4647](https://github.com/firstlovecenter/fl-pastoral-care/commit/6c3c46470f8f0e9835722fe64b3516da32904246))
+*  update arrival top up amounts to reflect to in and out percentages ([4980fd99](https://github.com/firstlovecenter/fl-pastoral-care/commit/4980fd994d956e0b0af3fc5aedd5c0b7f5971554))
+*  admin 339 fix cypher that checks if an equipment form has been filled to always return data ([4c39c899](https://github.com/firstlovecenter/fl-pastoral-care/commit/4c39c89935d2293bc4e0974543a535e4fb04bf21))
+*  fix bug preventing login page from showing ([59f2e7b4](https://github.com/firstlovecenter/fl-pastoral-care/commit/59f2e7b438b92350fbf02d366cbd441651cd5b9c))
+*  implement further checks to prevent running query when token has not loaded ([ec46419f](https://github.com/firstlovecenter/fl-pastoral-care/commit/ec46419f4ac48f7829d73193973553f62eb31dd4))
+*  admin-329 implement not running ANY queries until the user is authenticated ([980df7c7](https://github.com/firstlovecenter/fl-pastoral-care/commit/980df7c790e92b78256400b951e94900b7bf9a6f))
+*  fix arrivals typo breaking the build ([085e7935](https://github.com/firstlovecenter/fl-pastoral-care/commit/085e79352d95eadbb702be45ea36f82c9a0831d3))
+*  change import of large-number css to where it is used ([d6fee247](https://github.com/firstlovecenter/fl-pastoral-care/commit/d6fee24703e0f337f3711235ebf2f381ef2a32db))
+*  add with which was breaking the mutation to record arrival time ([7f354023](https://github.com/firstlovecenter/fl-pastoral-care/commit/7f3540238713c20b98d7d7e381f11c84106a44ad))
+*  fix bug preventing bussing data from aggregating on higher churches ([65264448](https://github.com/firstlovecenter/fl-pastoral-care/commit/6526444859e8f7e22d734635fd20a63f0bc08ebf))
+*  implement error message to sentry when any cypher query returns null ([4dede820](https://github.com/firstlovecenter/fl-pastoral-care/commit/4dede820a805801050ef61cf7ba0d6ab16619fbe))
+*  change throwErrorMsg to throwToSentry ([185a6f8d](https://github.com/firstlovecenter/fl-pastoral-care/commit/185a6f8db2911c940467f6338edd2b57e1220f78))
+*  implement tellerConfirmationTime as a field on ServiceRecord in graphql schema ([af56079e](https://github.com/firstlovecenter/fl-pastoral-care/commit/af56079e5cf0e1b87dc62b92178e318c38ec4776))
+
+##### Other Changes
+
+* 55 ([520e14bf](https://github.com/firstlovecenter/fl-pastoral-care/commit/520e14bf204a9215f460930e4f1ec937d760eb2b))
+* 50 pm ([2cd907a3](https://github.com/firstlovecenter/fl-pastoral-care/commit/2cd907a379a215b049ae17dd89b5aad1e0a1fc3b))
+
+##### Refactors
+
+*  change from throwErrorMsg to throwToSentry and throw new Error ([0c894226](https://github.com/firstlovecenter/fl-pastoral-care/commit/0c8942263364df43478e41cc6377feb85905c5ae))
+*  wrap apollo wrapper component over fellowship and constituency equipment campaign page ([029da646](https://github.com/firstlovecenter/fl-pastoral-care/commit/029da646ad15075fb81bd58de69ed3daf05f5431))
+*  redesign confirm banking interface to receive midweek offerings in constituencies ([23ba5416](https://github.com/firstlovecenter/fl-pastoral-care/commit/23ba5416b39a120c5c44e467384134ab9812d086))
+*  refactor error messages to better align with sentry.io workflow ([14c73356](https://github.com/firstlovecenter/fl-pastoral-care/commit/14c7335647f928db012c5a579af39beeeb0d2657))
+*  admin 311 change confirm banking mutation to confirm constituency bakning ([e1fe782e](https://github.com/firstlovecenter/fl-pastoral-care/commit/e1fe782e58eb6a2348200d4fb2303ac0ddbeccb0))
+
+#### 5.1.20 (2022-09-29)
+
+##### Continuous Integration
+
+*  switch to using env variable for mailgun_domain ([2717716c](https://github.com/firstlovecenter/fl-pastoral-care/commit/2717716cc97614104b746762be317c0ece5a4e5d))
+
+##### Documentation Changes
+
 *  update CHANGELOG.md ([b8b733c6](https://github.com/firstlovecenter/fl-pastoral-care/commit/b8b733c609ef51320f0c78c194a833d0ab54413f))
 
 ##### New Features
