@@ -22,7 +22,7 @@ export const sendSingleEmail = (
   html?: string
 ) => {
   mg.messages
-    .create('mg.firstlovecenter.com', {
+    .create(process.env.MAILGUN_DOMAIN, {
       from: 'FL Accra Admin <no-reply@firstlovecenter.org>',
       to: process.env.TEST_EMAIL_ADDRESS || member.email,
       subject,
@@ -41,7 +41,7 @@ export const sendBulkEmail = (
   html?: string
 ) => {
   mg.messages
-    .create('mg.firstlovecenter.com', {
+    .create(process.env.MAILGUN_DOMAIN, {
       from: 'FL Accra Admin <no-reply@firstlovecenter.org>',
       to: process.env.TEST_EMAIL_ADDRESS || recipient,
       subject,
