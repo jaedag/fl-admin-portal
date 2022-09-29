@@ -14,10 +14,12 @@ import Placeholder from '../../components/Placeholder'
 import { ChurchContext } from 'contexts/ChurchContext'
 import useComponentQuery from './useComponentQuery'
 import { Role, UserJobs } from 'global-types'
+import useSetUserChurch from 'hooks/useSetUserChurch'
 
 const UserDashboard = () => {
   const { currentUser, userJobs } = useContext(MemberContext)
   const { clickCard } = useContext(ChurchContext)
+  const { setUserChurch } = useSetUserChurch()
   const navigate = useNavigate()
   const { assessmentChurch } = useComponentQuery()
   const assessmentData =
@@ -43,6 +45,7 @@ const UserDashboard = () => {
                       key={i}
                       onClick={() => {
                         clickCard(currentUser)
+                        setUserChurch(role.church[0])
                         clickCard(role.church[0])
                         navigate(role.link)
                       }}

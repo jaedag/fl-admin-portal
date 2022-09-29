@@ -5,7 +5,7 @@ import { useContext } from 'react'
 const useSetUserChurch = () => {
   const { currentUser, setCurrentUser } = useContext(MemberContext)
 
-  const setUser = (church: ChurchIdAndName) => {
+  const setUserChurch = (church: ChurchIdAndName) => {
     setCurrentUser({
       ...currentUser,
       currentChurch: church,
@@ -20,7 +20,7 @@ const useSetUserChurch = () => {
     )
   }
 
-  return { currentUser, setCurrentUser, setUser }
+  return { currentUser, setCurrentUser, setUserChurch }
 }
 
 export default useSetUserChurch

@@ -80,7 +80,7 @@ type FormOptions = {
 }
 
 const DisplayChurchDetails = (props: DisplayChurchDetailsProps) => {
-  const { setUser } = useSetUserChurch()
+  const { setUserChurch } = useSetUserChurch()
   const navigate = useNavigate()
   let needsAdmin
 
@@ -390,7 +390,7 @@ const DisplayChurchDetails = (props: DisplayChurchDetailsProps) => {
             <Button
               className={`btn-graphs ${theme}`}
               onClick={() => {
-                setUser({
+                setUserChurch({
                   id: props.churchId,
                   name: props.name,
                   __typename: props.churchType,
@@ -411,7 +411,7 @@ const DisplayChurchDetails = (props: DisplayChurchDetailsProps) => {
               <Button
                 className={`btn-graphs ${theme}`}
                 onClick={() => {
-                  setUser({
+                  setUserChurch({
                     id: props.churchId,
                     name: props.name,
                     __typename: props.churchType,

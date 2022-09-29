@@ -15,7 +15,7 @@ import PlaceholderDefaulterList from './PlaceholderDefaulterList'
 
 const CouncilByConstituency = () => {
   const { councilId, clickCard } = useContext(ChurchContext)
-  const { setUser } = useSetUserChurch()
+  const { setUserChurch } = useSetUserChurch()
   const { data, loading, error, refetch } = useQuery(COUNCIL_BY_CONSTITUENCY, {
     variables: {
       id: councilId,
@@ -40,7 +40,7 @@ const CouncilByConstituency = () => {
                       <Card.Body
                         onClick={() => {
                           clickCard(constituency)
-                          setUser(constituency)
+                          setUserChurch(constituency)
 
                           navigate('/services/defaulters/dashboard')
                         }}

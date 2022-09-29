@@ -16,7 +16,7 @@ const ChurchList = ({
 }) => {
   const { userJobs } = useContext(MemberContext)
   const { clickCard } = useContext(ChurchContext)
-  const { setUser } = useSetUserChurch()
+  const { setUserChurch } = useSetUserChurch()
   const navigate = useNavigate()
 
   return (
@@ -50,7 +50,7 @@ const ChurchList = ({
                   iconCaption={church.__typename}
                   onClick={() => {
                     clickCard(church)
-                    setUser(church)
+                    setUserChurch(church)
 
                     if (color === 'arrivals') {
                       navigate(`/arrivals/${church.__typename.toLowerCase()}`)
