@@ -108,7 +108,7 @@ const DisplayChurchDetails = (props: DisplayChurchDetailsProps) => {
       break
   }
 
-  const { theme } = useContext(MemberContext)
+  const { theme, currentUser } = useContext(MemberContext)
   const [submitting, setSubmitting] = useState(false)
   const { clickCard, constituencyId, councilId, streamId, gatheringServiceId } =
     useContext(ChurchContext)
@@ -229,6 +229,15 @@ const DisplayChurchDetails = (props: DisplayChurchDetailsProps) => {
     return shouldFill
   }
 
+  const directoryLock = () => {
+    if (
+      new Date().getDay() === 2 ||
+      permitAdmin('Stream')?.some((r) => currentUser?.roles.includes(r))
+    ) {
+      return true
+    }
+  }
+
   return (
     <>
       <div className="py-2 top-heading title-bar">
@@ -238,9 +247,12 @@ const DisplayChurchDetails = (props: DisplayChurchDetailsProps) => {
           <PlaceholderCustom as="h3" loading={!props.name} xs={12}>
             <h3 className="mx-3 mt-3 font-weight-bold">
               {`${props.name} ${props.churchType}`}
-              <RoleView roles={props.editPermitted}>
-                <EditButton link={props.editlink} />
-              </RoleView>
+
+              {directoryLock() && (
+                <RoleView roles={props.editPermitted}>
+                  <EditButton link={props.editlink} />
+                </RoleView>
+              )}
             </h3>
           </PlaceholderCustom>
 
