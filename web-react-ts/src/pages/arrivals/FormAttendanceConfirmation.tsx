@@ -114,7 +114,10 @@ const FormAttendanceConfirmation = () => {
       throwToSentry('There was an error setting vehicle support', error)
     )
 
-    if (!vehicleData.vehicleTopUp || bacenta?.stream_name === 'Anagkazo') {
+    if (
+      !vehicleData.vehicleTopUp ||
+      bacenta?.stream_name === 'Anagkazo Encounter'
+    ) {
       //if there is no value for the vehicle top up
       navigate(`/bacenta/vehicle-details`)
     }

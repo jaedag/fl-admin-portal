@@ -129,7 +129,16 @@ export const authorisedLink = (
 }
 
 export const capitalise = (str: string) => {
-  return str?.charAt(0).toUpperCase() + str?.slice(1)
+  switch (str) {
+    case 'first love experience':
+      return 'First Love Experience'
+    case 'gospel encounter':
+      return 'Gospel Encounter'
+    case 'anagkazo encounter':
+      return 'Anagkazo Encounter'
+    default:
+      return str?.charAt(0).toUpperCase() + str?.slice(1)
+  }
 }
 export const plural = (church: ChurchLevel | string) => {
   switch (church) {

@@ -353,10 +353,10 @@ const DisplayChurchDetails = (props: DisplayChurchDetailsProps) => {
         (props.church?.sprinterCost !== 0 || props.church?.urvanCost !== 0) ? (
           <RoleView
             roles={['leaderBacenta']}
-            permittedStream={['Campus', 'Town']}
+            permittedStream={['Gospel Encounter', 'First Love Experience']}
             verifyId={props?.leader?.id}
           >
-            {!props.momoNumber && (
+            {(!props.momoNumber || props.loading) && (
               <p className="my-1 bad fw-bold text-center">
                 There is no valid Mobile Money Number! Please update!
               </p>

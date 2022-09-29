@@ -110,14 +110,14 @@ export const getStreamFinancials = (stream: StreamOptions) => {
   let passcode = process.env.PAYSWITCH_PASSCODE
 
   switch (stream.toLowerCase()) {
-    case 'anagkazo':
+    case 'anagkazo encounter':
       throwToSentry(
         'Payment Error',
         'Anagkazo has a different financial system. Thank you!'
       )
       break
-    case 'campus':
-    case 'town':
+    case 'gospel encounter':
+    case 'first love expeience':
       merchantId = process.env.PAYSWITCH_MERCHANT_ID
       auth = process.env.PAYSWITCH_AUTH
       passcode = process.env.PAYSWITCH_PASSCODE

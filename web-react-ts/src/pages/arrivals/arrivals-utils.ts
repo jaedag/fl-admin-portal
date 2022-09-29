@@ -34,8 +34,8 @@ const isArrivalsToday = (bacenta: { stream_name: StreamOptions }) => {
 
   if (
     // today === 6 &&
-    bacenta.stream_name.toLowerCase() === 'anagkazo' ||
-    bacenta.stream_name.toLowerCase() === 'campus'
+    bacenta.stream_name.toLowerCase() === 'anagkazo encounter' ||
+    bacenta.stream_name.toLowerCase() === 'gospel encounter'
   ) {
     // Anagkazo and Campus are on Saturday
     return true
@@ -43,7 +43,7 @@ const isArrivalsToday = (bacenta: { stream_name: StreamOptions }) => {
 
   if (
     // today === 0 &&
-    bacenta.stream_name.toLowerCase() === 'town'
+    bacenta.stream_name.toLowerCase() === 'first love experience'
   ) {
     return true
   }

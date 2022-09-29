@@ -86,7 +86,10 @@ export type ChurchIdAndName = {
   __typename: ChurchLevel
 }
 
-export type StreamOptions = 'Campus' | 'Town' | 'Anagkazo'
+export type StreamOptions =
+  | 'Anagkazo Encounter'
+  | 'Gospel Encounter'
+  | 'First Love Experience'
 export type TitleOptions = 'Pastor' | 'Reverend' | 'Bishop'
 
 export interface Stream extends Church {
