@@ -382,4 +382,4 @@ const handler = async () => {
   }
 }
 
-module.exports.handler = schedule('@daily', handler)
+module.exports.handler = schedule('50 23 * * *', handler)
