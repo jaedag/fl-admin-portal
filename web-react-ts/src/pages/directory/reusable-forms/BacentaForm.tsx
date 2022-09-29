@@ -232,6 +232,7 @@ const BacentaForm = ({
                     variant="primary"
                     size="lg"
                     type="submit"
+                    disabled={buttonLoading}
                     className={`btn-main ${theme}`}
                     onClick={() => {
                       setButtonLoading(true)

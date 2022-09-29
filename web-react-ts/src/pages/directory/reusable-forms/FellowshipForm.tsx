@@ -277,9 +277,10 @@ const FellowshipForm = (props: FellowshipFormProps) => {
                   variant="primary"
                   type="submit"
                   size="lg"
+                  disabled={buttonLoading}
                   className={`btn-main ${theme}`}
                   onClick={() => {
-                    setButtonLoading(false)
+                    setButtonLoading(true)
                     CloseDownFellowship({
                       variables: {
                         id: fellowshipId,

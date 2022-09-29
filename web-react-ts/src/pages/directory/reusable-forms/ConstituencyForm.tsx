@@ -211,9 +211,10 @@ const ConstituencyForm = ({
                   <Button
                     variant="primary"
                     type="submit"
+                    disabled={buttonLoading}
                     className={`btn-main ${theme}`}
                     onClick={() => {
-                      setButtonLoading(false)
+                      setButtonLoading(true)
                       CloseDownConstituency({
                         variables: {
                           id: constituencyId,

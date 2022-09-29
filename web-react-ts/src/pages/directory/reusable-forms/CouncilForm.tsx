@@ -185,9 +185,10 @@ const CouncilForm = ({
                   <Button
                     variant="primary"
                     type="submit"
+                    disabled={buttonLoading}
                     className={`btn-main ${theme}`}
                     onClick={() => {
-                      setButtonLoading(false)
+                      setButtonLoading(true)
                       CloseDownCouncil({
                         variables: {
                           id: councilId,

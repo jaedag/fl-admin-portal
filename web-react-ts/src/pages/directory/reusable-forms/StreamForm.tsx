@@ -183,9 +183,10 @@ const StreamForm = ({
                   <Button
                     variant="primary"
                     type="submit"
+                    disabled={buttonLoading}
                     className={`btn-main ${theme}`}
                     onClick={() => {
-                      setButtonLoading(false)
+                      setButtonLoading(true)
                       CloseDownStream({
                         variables: {
                           id: streamId,

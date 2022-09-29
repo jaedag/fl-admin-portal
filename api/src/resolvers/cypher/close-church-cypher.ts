@@ -18,15 +18,15 @@ RETURN constituency.name AS name, COUNT(member) AS memberCount, COUNT(bacentas) 
 `
 
 export const closeDownFellowship = `
-MATCH (fellowship:Fellowship {id:$fellowshipId})<-[:HAS]-(bacenta)
-MATCH (bacenta)-[:HAS]->(fellowships)
+MATCH (fellowship:Fellowship {id:$fellowshipId})
+MATCH (fellowship)<-[:HAS]-(bacenta:Bacenta)
+
+CREATE (log:HistoryLog {id: apoc.create.uuid()})
+SET log.timeStamp = datetime(),
+log.historyRecord = fellowship.name + ' Fellowship was closed down under ' + bacenta.name +' Bacenta'
+
+WITH fellowship, bacenta, log
 MATCH (admin:Member {auth_id: $auth.jwt.sub})
-
-CREATE (log:HistoryLog {id:apoc.create.uuid()})
-  SET log.timeStamp = datetime(),
-  log.historyRecord = fellowship.name + ' Fellowship was closed down under ' + bacenta.name +' Bacenta'
-
-
 MERGE (date:TimeGraph {date:date()})
 MERGE (log)-[:LOGGED_BY]->(admin)
 MERGE (log)-[:RECORDED_ON]->(date)
@@ -35,6 +35,10 @@ MERGE (bacenta)-[:HAS_HISTORY]->(log)
 
 SET fellowship:ClosedFellowship
 REMOVE fellowship:Fellowship, fellowship:Active
+
+WITH bacenta
+
+MATCH (bacenta)-[:HAS]->(fellowships:Fellowship)
 
 RETURN bacenta {
   .id, .name, 
