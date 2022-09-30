@@ -5,8 +5,8 @@ const initializeDatabase = (driver) => {
   const getFellowshipServicesForBacentaAggregation = `
     MATCH (bacenta:Bacenta)-[:HAS]->(fellowship:Fellowship)
     MATCH (bacenta)-[:CURRENT_HISTORY]->(currentLog:ServiceLog)
-    MATCH (fellowship)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(timeNode:TimeGraph)
-    WITH currentLog,timeNode.date.week AS week, timeNode.date.year AS year, SUM(record.attendance) AS attendance, SUM(record.income) AS income WHERE timeNode.date =  date()
+    MATCH (fellowship)-[:CURRENT_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(timeNode:TimeGraph) WHERE timeNode.date.week =  date().week AND timeNode.date.year = date().year
+    WITH currentLog,timeNode.date.week AS week, timeNode.date.year AS year, SUM(record.attendance) AS attendance, SUM(record.income) AS income 
     MERGE (agg:AggregateServiceRecord {id: week + '-' +year +'-' + currentLog.id})
     SET agg.week = week, 
     agg.year = year,
@@ -19,7 +19,7 @@ const initializeDatabase = (driver) => {
   const getBacentaServicesForConstituencyAggregation = `
     MATCH (constituency:Constituency)-[:HAS]->(bacenta:Bacenta)
     MATCH (constituency)-[:CURRENT_HISTORY]->(currentLog:ServiceLog)
-    MATCH (bacenta)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(record:AggregateServiceRecord) 
+    MATCH (bacenta)-[:CURRENT_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(record:AggregateServiceRecord {year: date().year})
     WITH currentLog,record.week AS week, record.year AS year, SUM(record.attendance) AS attendance, SUM(record.income) AS income WHERE record.week = date().week
     MERGE (agg:AggregateServiceRecord {id: week + '-' + year + '-' + currentLog.id})
     SET agg.week = week, 
@@ -32,9 +32,9 @@ const initializeDatabase = (driver) => {
 `
 
   const getConstituencyServicesForConstituencyAggregation = `
-    MATCH (constituency:Constituency)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(timeNode:TimeGraph)
-    WITH constituency,record, timeNode.date.week AS week, timeNode.date.year AS year, SUM(record.attendance) AS attendance, SUM(record.income) AS income WHERE timeNode.date = date()
-    MATCH (constituency)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(agg:AggregateServiceRecord {week: week, year: year})
+    MATCH (constituency:Constituency)-[:CURRENT_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(timeNode:TimeGraph) WHERE timeNode.date.week =  date().week AND timeNode.date.year = date().year
+    WITH constituency,record, timeNode.date.week AS week, timeNode.date.year AS year, SUM(record.attendance) AS attendance, SUM(record.income) AS income 
+    MATCH (constituency)-[:CURRENT_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(agg:AggregateServiceRecord {week: week, year: year})
     SET agg.attendance = agg.attendance + attendance,
     agg.income = agg.income + income
 
@@ -44,7 +44,7 @@ const initializeDatabase = (driver) => {
   const getConstituencyServicesForCouncilAggregation = `
     MATCH (council:Council)-[:HAS]->(constituency:Constituency)
     MATCH (council)-[:CURRENT_HISTORY]->(currentLog:ServiceLog)
-    MATCH (constituency)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(record:AggregateServiceRecord)
+    MATCH (constituency)-[:CURRENT_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(record:AggregateServiceRecord {year: date().year})
     WITH currentLog,record.week AS week, record.year AS year, SUM(record.attendance) AS attendance, SUM(record.income) AS income WHERE record.week = date().week
     MERGE (agg:AggregateServiceRecord {id: week + '-' + year + '-' + currentLog.id})
     SET agg.week = week,
@@ -57,9 +57,9 @@ const initializeDatabase = (driver) => {
     `
 
   const getCouncilServicesForCouncilAggregation = `
-    MATCH (council:Council)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(timeNode:TimeGraph)
-    WITH council,record, timeNode.date.week AS week, timeNode.date.year AS year, SUM(record.attendance) AS attendance, SUM(record.income) AS income WHERE timeNode.date = date()
-    MATCH (council)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(agg:AggregateServiceRecord {week: week, year: year})
+    MATCH (council:Council)-[:CURRENT_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(timeNode:TimeGraph) WHERE timeNode.date.week =  date().week AND timeNode.date.year = date().year
+    WITH council,record, timeNode.date.week AS week, timeNode.date.year AS year, SUM(record.attendance) AS attendance, SUM(record.income) AS income
+    MATCH (council)-[:CURRENT_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(agg:AggregateServiceRecord {week: week, year: year})
     SET agg.attendance = agg.attendance + attendance,
     agg.income = agg.income + income
 
@@ -69,7 +69,7 @@ const initializeDatabase = (driver) => {
   const getCouncilServicesForStreamAggregation = `
     MATCH (stream:Stream)-[:HAS]->(council:Council)
     MATCH (stream)-[:CURRENT_HISTORY]->(currentLog:ServiceLog)
-    MATCH (council)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(record:AggregateServiceRecord)
+    MATCH (council)-[:CURRENT_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(record:AggregateServiceRecord {year: date().year})
     WITH currentLog,record.week AS week, record.year AS year, SUM(record.attendance) AS attendance, SUM(record.income) AS income WHERE record.week = date().week
     MERGE (agg:AggregateServiceRecord {id: week + '-' + year +'-' + currentLog.id})
     SET agg.week = week,
@@ -82,9 +82,9 @@ const initializeDatabase = (driver) => {
     `
 
   const getStreamServicesForStreamAggregation = `
-    MATCH (stream:Stream)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(timeNode:TimeGraph)
-    WITH stream,record, timeNode.date.week AS week, timeNode.date.year AS year, SUM(record.attendance) AS attendance, SUM(record.income) AS income WHERE timeNode.date = date()
-    MATCH (stream)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(agg:AggregateServiceRecord {week: week, year: year})
+    MATCH (stream:Stream)-[:CURRENT_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(timeNode:TimeGraph) WHERE timeNode.date.week =  date().week AND timeNode.date.year = date().year
+    WITH stream,record, timeNode.date.week AS week, timeNode.date.year AS year, SUM(record.attendance) AS attendance, SUM(record.income) AS income
+    MATCH (stream)-[:CURRENT_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(agg:AggregateServiceRecord {week: week, year: year})
     SET agg.attendance = agg.attendance + attendance,
     agg.income = agg.income + income
 
@@ -94,7 +94,7 @@ const initializeDatabase = (driver) => {
   const getStreamServicesForGatheringAggregation = `
     MATCH (gathering:GatheringService)-[:HAS]->(stream:Stream)
     MATCH (gathering)-[:CURRENT_HISTORY]->(currentLog:ServiceLog)
-    MATCH (stream)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(record:AggregateServiceRecord)
+    MATCH (stream)-[:CURRENT_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(record:AggregateServiceRecord {year: date().year})
     WITH currentLog, record.week AS week, record.year AS year, SUM(record.attendance) AS attendance, SUM(record.income) AS income WHERE record.week = date().week
     MERGE (agg:AggregateServiceRecord {id: week + '-' + year + '-' + currentLog.id})
     SET agg.week = week,
@@ -109,7 +109,7 @@ const initializeDatabase = (driver) => {
   const getGatheringServicesForOversightAggregation = `
     MATCH (oversight:Oversight)-[:HAS]->(gathering:GatheringService)
     MATCH (oversight)-[:CURRENT_HISTORY]->(currentLog:ServiceLog)
-    MATCH (gathering)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(record:AggregateServiceRecord)
+    MATCH (gathering)-[:CURRENT_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(record:AggregateServiceRecord {year: date().year})
     WITH currentLog, record.week AS week, record.year AS year, SUM(record.attendance) AS attendance, SUM(record.income) AS income WHERE record.week = date().week
     MERGE (agg:AggregateServiceRecord {id: week + '-' +year +'-' + currentLog.id})
     SET agg.week = week,
@@ -124,7 +124,7 @@ const initializeDatabase = (driver) => {
   const getOversightServicesForDenominationAggregation = `
     MATCH (denomination:Denomination)-[:HAS]->(oversight:Oversight)
     MATCH (denomination)-[:CURRENT_HISTORY]->(currentLog:ServiceLog)
-    MATCH (oversight)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(record:AggregateServiceRecord)
+    MATCH (oversight)-[:CURRENT_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(record:AggregateServiceRecord {year: date().year})
     WITH currentLog, record.week AS week, record.year AS year, SUM(record.attendance) AS attendance, SUM(record.income) AS income WHERE record.week = date().week
     MERGE (agg:AggregateServiceRecord {id: week + '-' +year +'-' + currentLog.id})
     SET agg.week = week,
@@ -140,7 +140,7 @@ const initializeDatabase = (driver) => {
   const getBacentaBussingForBacentaAggregation = `
 MATCH (bacenta:Bacenta)
 MATCH (bacenta)-[:CURRENT_HISTORY]->(currentLog:ServiceLog)
-MATCH (bacenta)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(record:BussingRecord)-[:BUSSED_ON]->(timeNode:TimeGraph) WHERE timeNode.date.week = date().week - 1
+MATCH (bacenta)-[:CURRENT_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(record:BussingRecord)-[:BUSSED_ON]->(timeNode:TimeGraph) WHERE timeNode.date.week = date().week AND timeNode.date.year = date().year
 WITH currentLog,timeNode.date.week AS week, timeNode.date.year AS year, SUM(record.attendance) AS attendance, SUM(record.leaderDeclaration) AS leaderDeclaration, 
 SUM(record.personalContribution) AS personalContribution, SUM(record.numberOfSprinters) AS numberOfSprinters,
 SUM(record.numberOfUrvans) AS numberOfUrvans, SUM(record.numberOfCars) AS numberOfCars, SUM(record.bussingCost) AS bussingCost, 
@@ -166,7 +166,7 @@ RETURN agg;
   const getBacentaBussingForConstituencyAggregation = `
 MATCH (constituency:Constituency)-[:HAS]->(bacenta:Bacenta)
 MATCH (constituency)-[:CURRENT_HISTORY]->(currentLog:ServiceLog)
-MATCH (bacenta)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(record:BussingRecord)-[:BUSSED_ON]->(timeNode:TimeGraph)   WHERE timeNode.date.week = date().week - 1
+MATCH (bacenta)-[:CURRENT_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(record:BussingRecord)-[:BUSSED_ON]->(timeNode:TimeGraph) WHERE timeNode.date.week = date().week AND timeNode.date.year = date().year
 WITH currentLog,timeNode.date.week AS week, timeNode.date.year AS year, SUM(record.attendance) AS attendance, SUM(record.leaderDeclaration) AS leaderDeclaration, 
 SUM(record.personalContribution) AS personalContribution, SUM(record.numberOfSprinters) AS numberOfSprinters,
 SUM(record.numberOfUrvans) AS numberOfUrvans, SUM(record.numberOfCars) AS numberOfCars, SUM(record.bussingCost) AS bussingCost, 
@@ -190,7 +190,7 @@ RETURN agg;
   const getConstituencyBussingForCouncilAggregation = `
 MATCH (council:Council)-[:HAS]->(constituency:Constituency)
 MATCH (council)-[:CURRENT_HISTORY]->(currentLog:ServiceLog)
-MATCH (constituency)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING_AGGREGATE]->(record:AggregateBussingRecord) WHERE record.week = date().week - 1
+MATCH (constituency)-[:CURRENT_HISTORY]->(:ServiceLog)-[:HAS_BUSSING_AGGREGATE]->(record:AggregateBussingRecord) WHERE timeNode.date.week = date().week AND timeNode.date.year = date().year
 WITH currentLog,record.week AS week, record.year AS year, SUM(record.attendance) AS attendance, SUM(record.leaderDeclaration) AS leaderDeclaration, 
 SUM(record.personalContribution) AS personalContribution, SUM(record.numberOfSprinters) AS numberOfSprinters,
 SUM(record.numberOfUrvans) AS numberOfUrvans, SUM(record.numberOfCars) AS numberOfCars, SUM(record.bussingCost) AS bussingCost, 
@@ -214,7 +214,7 @@ RETURN agg;
   const getCouncilBussingForStreamAggregation = `
 MATCH (stream:Stream)-[:HAS]->(council:Council)
 MATCH (stream)-[:CURRENT_HISTORY]->(currentLog:ServiceLog)
-MATCH (council)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING_AGGREGATE]->(record:AggregateBussingRecord) WHERE record.week = date().week - 1
+MATCH (council)-[:CURRENT_HISTORY]->(:ServiceLog)-[:HAS_BUSSING_AGGREGATE]->(record:AggregateBussingRecord) WHERE timeNode.date.week = date().week AND timeNode.date.year = date().year
 WITH currentLog,record.week AS week, record.year AS year, SUM(record.attendance) AS attendance, SUM(record.leaderDeclaration) AS leaderDeclaration, 
 SUM(record.personalContribution) AS personalContribution, SUM(record.numberOfSprinters) AS numberOfSprinters,
 SUM(record.numberOfUrvans) AS numberOfUrvans, SUM(record.numberOfCars) AS numberOfCars, SUM(record.bussingCost) AS bussingCost, 
@@ -238,7 +238,7 @@ RETURN agg;
   const getStreamBussingForGatheringAggregation = `
 MATCH (gathering:GatheringService)-[:HAS]->(stream:Stream)
 MATCH (gathering)-[:CURRENT_HISTORY]->(currentLog:ServiceLog)
-MATCH (stream)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING_AGGREGATE]->(record:AggregateBussingRecord) WHERE record.week = date().week - 1
+MATCH (stream)-[:CURRENT_HISTORY]->(:ServiceLog)-[:HAS_BUSSING_AGGREGATE]->(record:AggregateBussingRecord) WHERE timeNode.date.week = date().week AND timeNode.date.year = date().year
 WITH currentLog,record.week AS week, record.year AS year, SUM(record.attendance) AS attendance, SUM(record.leaderDeclaration) AS leaderDeclaration, 
 SUM(record.personalContribution) AS personalContribution, SUM(record.numberOfSprinters) AS numberOfSprinters,
 SUM(record.numberOfUrvans) AS numberOfUrvans, SUM(record.numberOfCars) AS numberOfCars, SUM(record.bussingCost) AS bussingCost, 
@@ -262,7 +262,7 @@ RETURN agg;
   const getGatheringBussingForOversightAggregation = `
 MATCH (oversight:Oversight)-[:HAS]->(gathering:GatheringService)
 MATCH (oversight)-[:CURRENT_HISTORY]->(currentLog:ServiceLog)
-MATCH (gathering)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING_AGGREGATE]->(record:AggregateBussingRecord)  WHERE record.week = date().week - 1
+MATCH (gathering)-[:CURRENT_HISTORY]->(:ServiceLog)-[:HAS_BUSSING_AGGREGATE]->(record:AggregateBussingRecord) WHERE timeNode.date.week = date().week AND timeNode.date.year = date().year
 WITH currentLog,record.week AS week, record.year AS year, SUM(record.attendance) AS attendance, SUM(record.leaderDeclaration) AS leaderDeclaration, 
 SUM(record.personalContribution) AS personalContribution, SUM(record.numberOfSprinters) AS numberOfSprinters,
 SUM(record.numberOfUrvans) AS numberOfUrvans, SUM(record.numberOfCars) AS numberOfCars, SUM(record.bussingCost) AS bussingCost, 
@@ -286,7 +286,7 @@ RETURN agg;
   const getOversightBussingForDenominationAggregation = `
 MATCH (denomination:Denomination)-[:HAS]->(oversight:Oversight)
 MATCH (denomination)-[:CURRENT_HISTORY]->(currentLog:ServiceLog)
-MATCH (oversight)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING_AGGREGATE]->(record:AggregateBussingRecord)  WHERE record.week = date().week - 1
+MATCH (oversight)-[:CURRENT_HISTORY]->(:ServiceLog)-[:HAS_BUSSING_AGGREGATE]->(record:AggregateBussingRecord) WHERE timeNode.date.week = date().week AND timeNode.date.year = date().year
 WITH currentLog,record.week AS week, record.year AS year, SUM(record.attendance) AS attendance, SUM(record.leaderDeclaration) AS leaderDeclaration,
 SUM(record.personalContribution) AS personalContribution, SUM(record.numberOfSprinters) AS numberOfSprinters,
 SUM(record.numberOfUrvans) AS numberOfUrvans, SUM(record.numberOfCars) AS numberOfCars, SUM(record.bussingCost) AS bussingCost,
@@ -312,29 +312,39 @@ RETURN agg;
     return session
       .writeTransaction((tx) => {
         console.log('Running Service Aggreation for the day')
-        tx.run(getFellowshipServicesForBacentaAggregation)
-        tx.run(getBacentaServicesForConstituencyAggregation)
-        tx.run(getConstituencyServicesForConstituencyAggregation)
-        tx.run(getConstituencyServicesForCouncilAggregation)
-        tx.run(getCouncilServicesForCouncilAggregation)
-        tx.run(getCouncilServicesForStreamAggregation)
-        tx.run(getStreamServicesForStreamAggregation)
-        tx.run(getStreamServicesForGatheringAggregation)
-        tx.run(getGatheringServicesForOversightAggregation)
-        tx.run(getOversightServicesForDenominationAggregation)
+        try {
+          tx.run(getFellowshipServicesForBacentaAggregation)
+          tx.run(getBacentaServicesForConstituencyAggregation)
+          tx.run(getConstituencyServicesForConstituencyAggregation)
+          tx.run(getConstituencyServicesForCouncilAggregation)
+          tx.run(getCouncilServicesForCouncilAggregation)
+          tx.run(getCouncilServicesForStreamAggregation)
+          tx.run(getStreamServicesForStreamAggregation)
+          tx.run(getStreamServicesForGatheringAggregation)
+          tx.run(getGatheringServicesForOversightAggregation)
+          tx.run(getOversightServicesForDenominationAggregation)
+        } catch (error) {
+          console.log('Error running service aggregation', error)
+        }
 
         // Bussing Record Aggregation
-        if (new Date().getDay() === 0 || new Date().getDay() === 1) {
-          console.log('Today is Sunday or Monday, running bussing aggregation')
-          tx.run(getBacentaBussingForBacentaAggregation)
-          tx.run(getBacentaBussingForConstituencyAggregation)
-          tx.run(getConstituencyBussingForCouncilAggregation)
-          tx.run(getCouncilBussingForStreamAggregation)
-          tx.run(getStreamBussingForGatheringAggregation)
-          tx.run(getCouncilBussingForStreamAggregation)
-          tx.run(getStreamBussingForGatheringAggregation)
-          tx.run(getGatheringBussingForOversightAggregation)
-          tx.run(getOversightBussingForDenominationAggregation)
+        if (new Date().getDay() === 0 || new Date().getDay() === 6) {
+          console.log(
+            'Today is Sunday or Saturday, running bussing aggregation'
+          )
+          try {
+            tx.run(getBacentaBussingForBacentaAggregation)
+            tx.run(getBacentaBussingForConstituencyAggregation)
+            tx.run(getConstituencyBussingForCouncilAggregation)
+            tx.run(getCouncilBussingForStreamAggregation)
+            tx.run(getStreamBussingForGatheringAggregation)
+            tx.run(getCouncilBussingForStreamAggregation)
+            tx.run(getStreamBussingForGatheringAggregation)
+            tx.run(getGatheringBussingForOversightAggregation)
+            tx.run(getOversightBussingForDenominationAggregation)
+          } catch (error) {
+            console.log('Error running bussing aggregation', error)
+          }
         }
       })
       .finally(() => session.close())
@@ -382,4 +392,4 @@ const handler = async () => {
   }
 }
 
-module.exports.handler = schedule('55 23 * * *', handler)
+module.exports.handler = schedule('58 23 * * *', handler)
