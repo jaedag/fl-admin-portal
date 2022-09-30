@@ -3,9 +3,11 @@ export const messageForAdminsOfDefaulters = (church: {
   formDefaultersThisWeekCount: number
   bankingDefaultersThisWeekCount: number
 }) => {
-  return encodeURI(`Hi ${church.admin?.firstName || ''}\n
-  Looks like you have\n\n
-  ${church.formDefaultersThisWeekCount} form defaulters this week and\n
-  ${church.bankingDefaultersThisWeekCount} Banking Defaulters.\n\n
-  Please follow up to make sure they fill the forms and bank their offerings.`)
+  return encodeURI(
+    `Hi ${church.admin?.firstName || ''}\nLooks like you have\n\n${
+      church.formDefaultersThisWeekCount
+    } form defaulters this week and\n${
+      church.bankingDefaultersThisWeekCount
+    } Banking Defaulters.\n\nPlease follow up to make sure they fill the forms and bank their offerings.`
+  )
 }
