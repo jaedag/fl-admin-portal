@@ -14,6 +14,7 @@ import {
 } from '../utils/types'
 import { deleteUserRoles, setUserRoles } from '../utils/auth0'
 import { getAuth0Roles } from '../authenticate'
+import { permitAdmin } from '../permissions'
 
 export type HistoryRecordArgs = {
   servant: MemberWithoutBioData
@@ -27,6 +28,17 @@ export type HistoryRecordArgs = {
     name: string
     type: ChurchLevel
   }
+}
+
+export const directoryLock = (userRoles: string[]) => {
+  if (
+    new Date().getDay() === 2 ||
+    permitAdmin('Stream')?.some((r) => userRoles.includes(r))
+  ) {
+    return false
+  }
+
+  return true
 }
 
 export const historyRecordString = ({
