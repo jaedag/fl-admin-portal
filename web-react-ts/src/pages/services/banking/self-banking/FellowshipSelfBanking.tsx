@@ -33,6 +33,7 @@ const FellowshipSelfBanking = () => {
           (service: any) => service.transactionStatus === 'pending'
         )
 
+        // eslint-disable-next-line no-console
         console.log(service)
         setConfirmService({
           id: fellowship?.services[0]?.id,
