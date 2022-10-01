@@ -154,11 +154,11 @@ const bankingMutation = {
     const transactionResponse = rearrangeCypherObject(
       await session.run(checkTransactionId, args)
     )
+    console.log(transactionResponse)
 
-    const record = transactionResponse?.record?.properties
-    const banker = transactionResponse?.banker?.properties
+    const record = transactionResponse?.record
+    const banker = transactionResponse?.banker
 
-    console.log(record)
     if (!record?.transactionId) {
       throw new Error(
         'It looks like there was a problem. Please try sending again!'
