@@ -155,8 +155,8 @@ const bankingMutation = {
       await session.run(checkTransactionId, args)
     )
 
-    const record = transactionResponse?.record?.properties
-    const banker = transactionResponse?.banker?.properties
+    const record = transactionResponse?.record
+    const banker = transactionResponse?.banker
 
     if (!record?.transactionId) {
       throw new Error(

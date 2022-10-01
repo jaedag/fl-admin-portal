@@ -33,11 +33,12 @@ const FellowshipSelfBanking = () => {
           (service: any) => service.transactionStatus === 'pending'
         )
 
+        setConfirmService({
+          id: service?.id,
+          stream_name: service?.stream_name,
+        })
+
         if (service?.transactionStatus === 'pending') {
-          setConfirmService({
-            id: fellowship?.services[0]?.id,
-            stream_name: fellowship?.services[0]?.stream_name,
-          })
           togglePopup()
         }
       },
@@ -45,7 +46,9 @@ const FellowshipSelfBanking = () => {
   )
   const fellowship = data?.fellowships[0]
   const placeholder = ['', '', '']
-  throwToSentry('', error)
+  if (error) {
+    throwToSentry('', error)
+  }
 
   return (
     <Container>
@@ -88,6 +91,7 @@ const FellowshipSelfBanking = () => {
               className="mb-2"
               onClick={() => {
                 clickCard(service)
+
                 setConfirmService({
                   id: service.id,
                   stream_name: service.stream_name,
