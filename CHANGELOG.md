@@ -1,3 +1,12 @@
+#### 5.1.21 (2022-10-01)
+
+##### Bug Fixes
+
+*  remove spaces in whatsapp defaulters message ([50a1facd](https://github.com/firstlovecenter/fl-pastoral-care/commit/50a1facdfe54e29bf9ea9474ced6562fdafaeef6))
+*  update data aggregation to use CURRENT_HISTORY instead of HAS_HISTORY ([f3e2fb03](https://github.com/firstlovecenter/fl-pastoral-care/commit/f3e2fb03d510593e8db5b9b1485561845349b7a8))
+*  add tellerConfirmationTime as banking proof ([f68d29ec](https://github.com/firstlovecenter/fl-pastoral-care/commit/f68d29ecd4092ca1101072362def0e6358db8229))
+*  clicking on stream teller card no longer gives a blank page and a system crash ([e1a6e8ca](https://github.com/firstlovecenter/fl-pastoral-care/commit/e1a6e8ca05eaf4c800a799b7d490b10a8d9f1fd7))
+
 #### 5.1.20 (2022-09-29)
 
 ##### Continuous Integration
