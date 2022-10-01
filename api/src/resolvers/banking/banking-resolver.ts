@@ -158,6 +158,7 @@ const bankingMutation = {
     const record = transactionResponse?.record?.properties
     const banker = transactionResponse?.banker?.properties
 
+    console.log(record)
     if (!record?.transactionId) {
       throw new Error(
         'It looks like there was a problem. Please try sending again!'
