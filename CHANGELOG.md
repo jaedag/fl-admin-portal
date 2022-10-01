@@ -1,3 +1,22 @@
+#### 5.1.29 (2022-10-01)
+
+##### Chores
+
+*  version bump ([74660128](https://github.com/firstlovecenter/fl-pastoral-care/commit/7466012819a70f3233939b26c23ff35a1fbfce79))
+
+##### Documentation Changes
+
+*  update CHANGELOG.md ([4ac4f5d8](https://github.com/firstlovecenter/fl-pastoral-care/commit/4ac4f5d8fc4ae230dc9c74989d352f660b6db6b0))
+*  update CHANGELOG.md ([0f47b164](https://github.com/firstlovecenter/fl-pastoral-care/commit/0f47b164db79354aa10d3c218752a9f402219f7e))
+
+##### Bug Fixes
+
+*  fix bug preventing multiple time defaulters from confirming self banking ([#317](https://github.com/firstlovecenter/fl-pastoral-care/pull/317)) ([3714664d](https://github.com/firstlovecenter/fl-pastoral-care/commit/3714664dc5e74000de482970bb2da4a50c3f1fe5))
+*  remove spaces in whatsapp defaulters message ([50a1facd](https://github.com/firstlovecenter/fl-pastoral-care/commit/50a1facdfe54e29bf9ea9474ced6562fdafaeef6))
+*  update data aggregation to use CURRENT_HISTORY instead of HAS_HISTORY ([f3e2fb03](https://github.com/firstlovecenter/fl-pastoral-care/commit/f3e2fb03d510593e8db5b9b1485561845349b7a8))
+*  add tellerConfirmationTime as banking proof ([f68d29ec](https://github.com/firstlovecenter/fl-pastoral-care/commit/f68d29ecd4092ca1101072362def0e6358db8229))
+*  clicking on stream teller card no longer gives a blank page and a system crash ([e1a6e8ca](https://github.com/firstlovecenter/fl-pastoral-care/commit/e1a6e8ca05eaf4c800a799b7d490b10a8d9f1fd7))
+
 #### 5.1.22 (2022-10-01)
 
 #### 5.1.21 (2022-10-01)
