@@ -33,13 +33,14 @@ const FellowshipSelfBanking = () => {
           (service: any) => service.transactionStatus === 'pending'
         )
 
-        // eslint-disable-next-line no-console
-        console.log(service)
         setConfirmService({
-          id: fellowship?.services[0]?.id,
-          stream_name: fellowship?.services[0]?.stream_name,
+          id: service?.id,
+          stream_name: service?.stream_name,
         })
-        togglePopup()
+
+        if (service?.transactionStatus === 'pending') {
+          togglePopup()
+        }
       },
     }
   )
@@ -90,6 +91,7 @@ const FellowshipSelfBanking = () => {
               className="mb-2"
               onClick={() => {
                 clickCard(service)
+
                 setConfirmService({
                   id: service.id,
                   stream_name: service.stream_name,
