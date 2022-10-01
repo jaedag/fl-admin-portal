@@ -33,19 +33,20 @@ const FellowshipSelfBanking = () => {
           (service: any) => service.transactionStatus === 'pending'
         )
 
-        if (service?.transactionStatus === 'pending') {
-          setConfirmService({
-            id: fellowship?.services[0]?.id,
-            stream_name: fellowship?.services[0]?.stream_name,
-          })
-          togglePopup()
-        }
+        console.log(service)
+        setConfirmService({
+          id: fellowship?.services[0]?.id,
+          stream_name: fellowship?.services[0]?.stream_name,
+        })
+        togglePopup()
       },
     }
   )
   const fellowship = data?.fellowships[0]
   const placeholder = ['', '', '']
-  throwToSentry('', error)
+  if (error) {
+    throwToSentry('', error)
+  }
 
   return (
     <Container>

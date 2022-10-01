@@ -154,7 +154,6 @@ const bankingMutation = {
     const transactionResponse = rearrangeCypherObject(
       await session.run(checkTransactionId, args)
     )
-    console.log(transactionResponse)
 
     const record = transactionResponse?.record
     const banker = transactionResponse?.banker
