@@ -30,6 +30,7 @@ OPTIONAL MATCH (record)-[:OFFERING_BANKED_BY]->(banker)
 RETURN record {
     .id,
     .transactionId,
+    .transactionStatus,
     .income
 }, banker {
     .id,

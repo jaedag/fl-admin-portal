@@ -85,8 +85,7 @@ const bankingMutation = {
 
     await checkIfLastServiceBanked(args.serviceRecordId, context)
 
-    const transactionStatus =
-      transactionResponse?.record.properties.transactionStatus
+    const transactionStatus = transactionResponse?.record.transactionStatus
     if (transactionStatus === 'success') {
       throw new Error('Banking has already been done for this service')
     }
