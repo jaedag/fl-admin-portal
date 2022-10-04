@@ -215,6 +215,7 @@ const BusVehicleFormDetails = () => {
                             >
                               <CloudinaryImage
                                 className="report-picture"
+                                noLazyLoad
                                 src={vehicle?.picture}
                                 size="respond"
                               />

@@ -14,11 +14,13 @@ const CloudinaryImage = ({
   src,
   size,
   className,
+  noLazyLoad,
   ...rest
 }: {
   src: string
   size?: string
   className?: string
+  noLazyLoad?: boolean
   [key: string]: any
 }) => {
   const getPublicId = (url: string) => {
@@ -48,6 +50,10 @@ const CloudinaryImage = ({
       responsive({ steps: [800, 1000, 1400] }),
       placeholder({ mode: 'blur' }),
     ]
+  }
+
+  if (noLazyLoad) {
+    plugins = plugins.slice(1)
   }
 
   const cld = new Cloudinary({
