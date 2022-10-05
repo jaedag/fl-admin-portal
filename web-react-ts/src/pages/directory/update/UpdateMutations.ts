@@ -895,3 +895,13 @@ export const REMOVE_GATHERINGSERVICE_OVERSIGHT = gql`
     }
   }
 `
+
+export const MAKE_MEMBER_INACTIVE = gql`
+  mutation MakeMemberInactive($memberId: ID!, $reason: String!) {
+    MakeMemberInactive(id: $memberId, reason: $reason) {
+      id
+      firstName
+      lastName
+    }
+  }
+`

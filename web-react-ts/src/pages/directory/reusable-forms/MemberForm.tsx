@@ -1,4 +1,4 @@
-import { useQuery } from '@apollo/client'
+import { useMutation, useQuery } from '@apollo/client'
 import { Form, Formik, FormikHelpers } from 'formik'
 import * as Yup from 'yup'
 import React, { useContext } from 'react'
@@ -8,6 +8,7 @@ import {
   makeSelectOptions,
   MARITAL_STATUS_OPTIONS,
   PHONE_NUM_REGEX,
+  throwToSentry,
 } from 'global-utils'
 import { GET_GATHERINGSERVICE_MINISTRIES } from 'queries/ListQueries'
 import ErrorScreen from 'components/base-component/ErrorScreen'
@@ -23,8 +24,11 @@ import ImageUpload from 'components/formik/ImageUpload'
 import SearchFellowship from 'components/formik/SearchFellowship'
 import Select from 'components/formik/Select'
 import { ChurchContext } from 'contexts/ChurchContext'
+import { MAKE_MEMBER_INACTIVE } from '../update/UpdateMutations'
 import usePopup from 'hooks/usePopup'
 import Popup from 'components/Popup/Popup'
+import { useNavigate } from 'react-router'
+import RoleView from 'auth/RoleView'
 
 type MemberFormProps = {
   initialValues: CreateMemberFormOptions
@@ -48,7 +52,7 @@ const MemberForm = ({
   loading,
   update,
 }: MemberFormProps) => {
-  const { currentUser } = useContext(MemberContext)
+  const { currentUser, memberId } = useContext(MemberContext)
   const { gatheringServiceId } = useContext(ChurchContext)
   const { data: ministriesData, loading: ministriesLoading } = useQuery(
     GET_GATHERINGSERVICE_MINISTRIES,
@@ -58,7 +62,12 @@ const MemberForm = ({
       },
     }
   )
+
+  const [MakeMemberInactive] = useMutation(MAKE_MEMBER_INACTIVE)
+
   const { isOpen, togglePopup } = usePopup()
+
+  const navigate = useNavigate()
 
   const deleteValidationSchema = Yup.object({
     reason: Yup.string().required(
@@ -76,25 +85,19 @@ const MemberForm = ({
   ) => {
     onSubmitProps.setSubmitting(true)
 
-    alert(values.reason)
-
-    onSubmitProps.setSubmitting(false)
-
-    // mutation to delete a user from the app
-
-    // MakeConstituencyArrivalsAdmin({
-    //   variables: {
-    //     constituencyId: currentUser?.currentChurch.id,
-    //     newAdminId: values.adminSelect,
-    //     oldAdminId: initialValues.adminSelect || 'no-old-admin',
-    //   },
-    // })
-    //   .then(() => {
-    //     togglePopup()
-    //     onSubmitProps.setSubmitting(false)
-    //     alert('Constituency Arrivals Admin has been changed successfully')
-    //   })
-    //   .catch((e) => throwErrorMsg(e))
+    MakeMemberInactive({
+      variables: {
+        memberId: memberId,
+        reason: values.reason,
+      },
+    })
+      .then(() => {
+        togglePopup()
+        onSubmitProps.setSubmitting(false)
+        alert('Member has been deleted successfully')
+        navigate('/directory/members')
+      })
+      .catch((e) => throwToSentry('Cannot delete member', e))
   }
 
   const canChangeEmail = () => {
@@ -335,12 +338,14 @@ const MemberForm = ({
                 </div>
                 <Col>
                   <SubmitButton formik={formik} />
-                  <Button
-                    onClick={() => togglePopup()}
-                    className={`btn-graphs btn dark image mt-3`}
-                  >
-                    Delete Member
-                  </Button>
+                  <RoleView roles={permitAdmin('Stream')}>
+                    <Button
+                      onClick={() => togglePopup()}
+                      className={`btn-graphs btn dark image mt-3`}
+                    >
+                      Delete Member
+                    </Button>
+                  </RoleView>
                 </Col>
               </Row>
             </Form>
