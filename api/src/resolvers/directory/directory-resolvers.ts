@@ -101,9 +101,9 @@ const directoryMutation = {
       await session.run(cypher.checkMemberHasNoActiveRelationships, args)
     )
 
-    if (memberCheck.relatitonshipCount.low > 0) {
+    if (memberCheck.relationshipCount.low > 0) {
       throw new Error(
-        'This member has active roles in church. Please remove them and try again'
+        'This member has active roles in church. Please remove all active roles and try again'
       )
     }
 
