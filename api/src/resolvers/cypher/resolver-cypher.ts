@@ -116,8 +116,8 @@ log.timeStamp = datetime(),
 log.historyRecord = "This member was deleted for this reason: " +$reason
 
 WITH log, node
-MERGE (today:TimeGraph {date: date()})
 MATCH (admin:Member {auth_id:$auth.jwt.sub})
+MERGE (today:TimeGraph {date: date()})
 MERGE (admin)<-[:LOGGED_BY]-(log)
 MERGE (node)-[:HAS_HISTORY]->(log)
 MERGE (log)-[:RECORDED_ON]->(today)
@@ -187,3 +187,79 @@ CREATE (member:Active:Member:idl {whatsappNumber:$whatsappNumber})
            RETURN member  {.id, .firstName,.middleName,.lastName,.email,.phoneNumber,.whatsappNumber,
             fellowship:fellowship {.id,bacenta:bacenta{.id,constituency:constituency{.id}}}}
       `
+
+export const activateInactiveMember = `
+MATCH (member:Inactive:Member {id: $id})
+MATCH (fellowship:Fellowship {id: $fellowship})
+MATCH (member)-[r1:BELONGS_TO]->(oldChurch:Fellowship)
+MATCH (member)-[r2:HAS_MARITAL_STATUS]-> (maritalStatus)
+MATCH  (member)-[r3:WAS_BORN_ON]->(date)
+DELETE r1, r2, r3
+
+WITH member, fellowship
+  SET
+        member:idl, member:Active,
+        member.firstName = $firstName,
+        member.middleName = $middleName,
+        member.lastName = $lastName,
+        member.phoneNumber = $phoneNumber,
+        member.location = $location,
+        member.pictureUrl = $pictureUrl
+
+        REMOVE 
+        member:Inactive
+
+      CREATE (log:HistoryLog:RegistrationLog)
+        SET
+        log.id =  apoc.create.uuid(),
+        log.timeStamp = datetime(),
+        log.historyRecord = $firstName +' ' +$lastName+' was reregistered on '+apoc.date.convertFormat(toString(date()), 'date', 'dd MMMM yyyy') + ' with ' + fellowship.name + ' Fellowship'
+
+      WITH member, log
+      MERGE (today:TimeGraph {date: date()})
+      MERGE (date:TimeGraph {date: date($dob)})
+
+      WITH member, log, today, date
+      MATCH (currentUser:Member {auth_id:$auth_id})
+      MATCH (maritalStatus:MaritalStatus {status:$maritalStatus})
+      MATCH (fellowship:Fellowship {id: $fellowship})
+
+      MERGE (log)-[:RECORDED_ON]->(today)
+      MERGE (log)-[:LOGGED_BY]->(currentUser)
+      MERGE (member)-[:HAS_HISTORY]->(log)
+      MERGE (member)-[:HAS_MARITAL_STATUS]-> (maritalStatus)
+      MERGE (member)-[:WAS_BORN_ON]->(date)
+      MERGE (member)-[:BELONGS_TO]->(fellowship)
+
+
+      WITH member
+         CALL {
+          WITH member
+          WITH member  WHERE $occupation IS NOT NULL
+          MERGE (occupation:Occupation {occupation:$occupation})
+        MERGE (member)-[:HAS_OCCUPATION]-> (occupation)
+          RETURN count(member) AS member_occupation
+          }
+
+      WITH member
+      CALL {
+          WITH member
+          WITH member  WHERE $ministry IS NOT NULL
+          MATCH (ministry:Ministry {id:$ministry})
+        MERGE (member)-[:BELONGS_TO]-> (ministry)
+          RETURN count(member) AS member_ministry
+          }
+
+           MATCH (fellowship:Fellowship {id: $fellowship})
+           MATCH (fellowship)<-[:HAS]-(bacenta:Bacenta)
+          MATCH (bacenta:Bacenta)<-[:HAS]-(constituency:Constituency)<-[:HAS]-(council:Council)
+           RETURN member  {.id, .firstName,.middleName,.lastName,.email,.phoneNumber,.whatsappNumber,
+            fellowship:fellowship {.id,bacenta:bacenta{.id,constituency:constituency{.id}}}}
+      `
+
+export const checkInactiveMember = `
+OPTIONAL MATCH (member:Inactive:Member)
+WHERE member.email = $email
+OR member.whatsappNumber = $whatsappNumber
+RETURN count(member) AS count, member.id AS id
+`
