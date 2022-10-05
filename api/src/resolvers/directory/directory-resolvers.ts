@@ -11,6 +11,7 @@ import {
   matchMemberQuery,
   updateMemberEmail,
   createMember,
+  activateInactiveMember,
 } from '../cypher/resolver-cypher'
 import { getAuthToken } from '../authenticate'
 
@@ -23,6 +24,36 @@ const directoryMutation = {
     isAuth(permitLeaderAdmin('Fellowship'), context?.auth.roles)
 
     const session = context.executionContext.session()
+
+    const inactiveMemberResponse = rearrangeCypherObject(
+      await session.run(cypher.checkInactiveMember, args)
+    )
+
+    if (inactiveMemberResponse.count > 0) {
+      const activateInactiveMemberResponse = await session.run(
+        activateInactiveMember,
+        {
+          id: inactiveMemberResponse.id,
+          firstName: args?.firstName ?? '',
+          middleName: args?.middleName ?? '',
+          lastName: args?.lastName ?? '',
+          phoneNumber: args?.phoneNumber ?? '',
+          dob: args?.dob ?? '',
+          maritalStatus: args?.maritalStatus ?? '',
+          occupation: args?.occupation ?? '',
+          fellowship: args?.fellowship ?? '',
+          ministry: args?.ministry ?? '',
+          location: args?.location ?? '',
+          pictureUrl: args?.pictureUrl ?? '',
+          auth_id: context.auth.jwt.sub ?? '',
+        }
+      )
+
+      const member = rearrangeCypherObject(activateInactiveMemberResponse)
+
+      return member
+    }
+
     const memberResponse = await session.run(
       cypher.checkMemberEmailExists,
       args
@@ -30,7 +61,7 @@ const directoryMutation = {
 
     const memberCheck = rearrangeCypherObject(memberResponse)
 
-    if (memberCheck.email || memberCheck.whatsappNumber) {
+    if (memberCheck.check) {
       throw new Error(errorMessage.no_duplicate_email_or_whatsapp)
     }
 
