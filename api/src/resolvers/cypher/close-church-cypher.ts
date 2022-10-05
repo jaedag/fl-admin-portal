@@ -1,19 +1,19 @@
 export const checkFellowshipHasNoMembers = `
 MATCH (fellowship:Fellowship {id:$fellowshipId})
-OPTIONAL MATCH (fellowship)<-[:BELONGS_TO]-(member:Member)
+OPTIONAL MATCH (fellowship)<-[:BELONGS_TO]-(member:Active:Member)
 RETURN fellowship.name AS name, COUNT(member) AS memberCount
 `
 
 export const checkBacentaHasNoMembers = `
 MATCH (bacenta:Bacenta {id:$bacentaId})
-MATCH (bacenta)-[:HAS]->(fellowships:Fellowship)<-[:LEADS]-(member:Member)
+MATCH (bacenta)-[:HAS]->(fellowships:Fellowship)<-[:LEADS]-(member:Active:Member)
 MATCH (fellowships)<-[:LEADS]-(leader:Member)
 RETURN bacenta.name AS name, COUNT(member) AS memberCount, COUNT(fellowships) AS fellowshipCount
 `
 
 export const checkConstituencyHasNoMembers = `
 MATCH (constituency:Constituency {id:$constituencyId})
-MATCH (constituency)-[:HAS]->(bacentas:Bacenta)<-[:LEADS]-(member:Member)
+MATCH (constituency)-[:HAS]->(bacentas:Bacenta)<-[:LEADS]-(member:Active:Member)
 RETURN constituency.name AS name, COUNT(member) AS memberCount, COUNT(bacentas) AS bacentaCount
 `
 

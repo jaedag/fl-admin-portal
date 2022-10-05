@@ -10,7 +10,7 @@ extend type Mutation {
     @cypher(
       statement: """
       MATCH  (stream:Stream {id: $streamId})
-      MATCH (admin:Member {auth_id: $auth.jwt.sub})
+      MATCH (admin:Active:Member {auth_id: $auth.jwt.sub})
       CREATE (log:HistoryLog {id: apoc.create.uuid()})
         SET log.historyRecord = $historyRecord,
           log.timeStamp = datetime()
@@ -23,7 +23,7 @@ extend type Mutation {
       CALL{
         WITH log
         WITH log WHERE $newLeaderId IS NOT NULL
-      MATCH (newLeader:Member {id: $newLeaderId})
+      MATCH (newLeader:Active:Member {id: $newLeaderId})
         SET log :ServiceLog
         WITH log, newLeader
       OPTIONAl MATCH ()-[r0:HAS_HISTORY]->(log)
@@ -39,7 +39,7 @@ extend type Mutation {
       CALL {
         WITH log
         WITH log WHERE $oldLeaderId IS NOT NULL
-        MATCH (oldLeader:Member {id: $oldLeaderId})
+        MATCH (oldLeader:Active:Member {id: $oldLeaderId})
         CREATE (oldLeader)-[:HAS_HISTORY]->(log)
         RETURN COUNT(log)
       }
@@ -78,7 +78,7 @@ extend type Mutation {
     @cypher(
       statement: """
       MATCH  (gatheringService:GatheringService {id: $gatheringServiceId})
-      MATCH (admin:Member {auth_id: $auth.jwt.sub})
+      MATCH (admin:Active:Member {auth_id: $auth.jwt.sub})
       CREATE (log:HistoryLog {id: apoc.create.uuid()})
         SET log.historyRecord = $historyRecord,
           log.timeStamp = datetime()
@@ -91,7 +91,7 @@ extend type Mutation {
       CALL{
         WITH log
         WITH log WHERE $newLeaderId IS NOT NULL
-      MATCH (newLeader:Member {id: $newLeaderId})
+      MATCH (newLeader:Active:Member {id: $newLeaderId})
         SET log :ServiceLog
         WITH log, newLeader
       OPTIONAl MATCH ()-[r0:HAS_HISTORY]->(log)
@@ -107,7 +107,7 @@ extend type Mutation {
       CALL {
         WITH log
         WITH log WHERE $oldLeaderId IS NOT NULL
-        MATCH (oldLeader:Member {id: $oldLeaderId})
+        MATCH (oldLeader:Active:Member {id: $oldLeaderId})
         CREATE (oldLeader)-[:HAS_HISTORY]->(log)
         RETURN COUNT(log)
       }
@@ -147,17 +147,17 @@ extend type Mutation {
       MERGE (date:TimeGraph {date: date()})
 
       WITH log, date
-      MATCH (author:Member {auth_id: $auth.jwt.sub})
+      MATCH (author:Active:Member {auth_id: $auth.jwt.sub})
        MERGE (log)-[:LOGGED_BY]->(author)
        MERGE (log)-[:RECORDED_ON]->(date)
 
 
       WITH log
        UNWIND $ids AS nodeId
-       MATCH (node {id: nodeId}) WHERE node:Member OR node:Fellowship
+       MATCH (node {id: nodeId}) WHERE node:Active:Member OR node:Fellowship
        MERGE (node)-[:HAS_HISTORY]->(log)
 
-       WITH node WHERE node:Member
+       WITH node WHERE node:Active:Member
 
       RETURN node
       """
@@ -174,7 +174,7 @@ extend type Mutation {
     @cypher(
       statement: """
       MATCH  (fellowship:Fellowship {id: $fellowshipId})
-      MATCH (admin:Member {auth_id: $auth.jwt.sub})
+      MATCH (admin:Active:Member {auth_id: $auth.jwt.sub})
       CREATE (log:HistoryLog {id: apoc.create.uuid()})
         SET log.historyRecord = $historyRecord,
           log.timeStamp = datetime()
@@ -216,7 +216,7 @@ extend type Mutation {
     @cypher(
       statement: """
        MATCH  (bacenta:Bacenta {id: $bacentaId})
-       MATCH (admin:Member {auth_id: $auth.jwt.sub})
+       MATCH (admin:Active:Member {auth_id: $auth.jwt.sub})
        CREATE (log:HistoryLog {id: apoc.create.uuid()})
          SET log.historyRecord = $historyRecord,
            log.timeStamp = datetime()
@@ -229,8 +229,8 @@ extend type Mutation {
        CALL{
          WITH log
          WITH log WHERE $newLeaderId IS NOT NULL
-      MATCH (newLeader:Member {id: $newLeaderId})
-      OPTIONAL MATCH (oldLeader:Member {id: $oldLeaderId})
+      MATCH (newLeader:Active:Member {id: $newLeaderId})
+      OPTIONAL MATCH (oldLeader:Active:Member {id: $oldLeaderId})
          SET log :ServiceLog
          WITH log, newLeader,oldLeader
        OPTIONAl MATCH (log)<-[r0:HAS_HISTORY]-()
@@ -275,7 +275,7 @@ extend type Mutation {
     @cypher(
       statement: """
       MATCH  (constituency:Constituency {id: $constituencyId})
-      MATCH (admin:Member {auth_id: $auth.jwt.sub})
+      MATCH (admin:Active:Member {auth_id: $auth.jwt.sub})
       CREATE (log:HistoryLog {id: apoc.create.uuid()})
         SET log.historyRecord = $historyRecord,
           log.timeStamp = datetime()
@@ -288,7 +288,7 @@ extend type Mutation {
       CALL{
         WITH log
         WITH log WHERE $newLeaderId IS NOT NULL
-      MATCH (newLeader:Member {id: $newLeaderId})
+      MATCH (newLeader:Active:Member {id: $newLeaderId})
         SET log :ServiceLog
         WITH log, newLeader
       OPTIONAl MATCH ()-[r0:HAS_HISTORY]->(log)
@@ -304,7 +304,7 @@ extend type Mutation {
       CALL {
         WITH log
         WITH log WHERE $oldLeaderId IS NOT NULL
-        MATCH (oldLeader:Member {id: $oldLeaderId})
+        MATCH (oldLeader:Active:Member {id: $oldLeaderId})
         CREATE (oldLeader)-[:HAS_HISTORY]->(log)
         RETURN COUNT(log)
       }
@@ -343,7 +343,7 @@ extend type Mutation {
     @cypher(
       statement: """
       MATCH  (council:Council {id: $councilId})
-      MATCH (admin:Member {auth_id: $auth.jwt.sub})
+      MATCH (admin:Active:Member {auth_id: $auth.jwt.sub})
       CREATE (log:HistoryLog {id: apoc.create.uuid()})
         SET log.historyRecord = $historyRecord,
           log.timeStamp = datetime()
@@ -356,7 +356,7 @@ extend type Mutation {
       CALL{
         WITH log
         WITH log WHERE $newLeaderId IS NOT NULL
-      MATCH (newLeader:Member {id: $newLeaderId})
+      MATCH (newLeader:Active:Member {id: $newLeaderId})
         SET log :ServiceLog
         WITH log, newLeader
       OPTIONAl MATCH ()-[r0:HAS_HISTORY]->(log)
@@ -372,7 +372,7 @@ extend type Mutation {
       CALL {
         WITH log
         WITH log WHERE $oldLeaderId IS NOT NULL
-        MATCH (oldLeader:Member {id: $oldLeaderId})
+        MATCH (oldLeader:Active:Member {id: $oldLeaderId})
         CREATE (oldLeader)-[:HAS_HISTORY]->(log)
         RETURN COUNT(log)
       }
@@ -409,7 +409,7 @@ extend type Mutation {
     @cypher(
       statement: """
        MATCH  (sonta:Sonta {id: $sontaId})
-       MATCH (admin:Member {auth_id: $auth.jwt.sub})
+       MATCH (admin:Active:Member {auth_id: $auth.jwt.sub})
        CREATE (log:HistoryLog {id: apoc.create.uuid()})
          SET log.historyRecord = $historyRecord,
            log.timeStamp = datetime()
@@ -422,8 +422,8 @@ extend type Mutation {
        CALL{
          WITH log
          WITH log WHERE $newLeaderId IS NOT NULL
-       MATCH (newLeader:Member {id: $newLeaderId})
-      OPTIONAL MATCH (oldLeader:Member {id: $oldLeaderId})
+       MATCH (newLeader:Active:Member {id: $newLeaderId})
+      OPTIONAL MATCH (oldLeader:Active:Member {id: $oldLeaderId})
          SET log :ServiceLog
          WITH log, newLeader,oldLeader
        OPTIONAl MATCH ()-[r0:CURRENT_HISTORY]->(log)

@@ -59,7 +59,7 @@ extend type Mutation {
         log.historyRecord = fellowship.name + ' Fellowship went on vacation mode'
 
       WITH log,fellowship
-      MATCH (admin:Member {auth_id: $auth.jwt.sub})
+      MATCH (admin:Active:Member {auth_id: $auth.jwt.sub})
       MATCH (fellowship)<-[:HAS]-(bacenta:Bacenta)
       MERGE (date:TimeGraph {date:date()})
       MERGE (log)-[:LOGGED_BY]->(admin)
@@ -84,7 +84,7 @@ extend type Mutation {
         log.historyRecord = bacenta.name + ' Bacenta went on vacation mode'
 
       WITH log,bacenta
-      MATCH (admin:Member {auth_id: $auth.jwt.sub})
+      MATCH (admin:Active:Member {auth_id: $auth.jwt.sub})
       MATCH (bacenta)<-[:HAS]-(constituency:Constituency)
       MERGE (date:TimeGraph {date:date()})
       MERGE (log)-[:LOGGED_BY]->(admin)
@@ -110,7 +110,7 @@ extend type Mutation {
         log.historyRecord = fellowship.name + ' Fellowship was made active again'
 
       WITH log,fellowship
-      MATCH (admin:Member {auth_id: $auth.jwt.sub})
+      MATCH (admin:Active:Member {auth_id: $auth.jwt.sub})
       MATCH (fellowship)<-[:HAS]-(bacenta:Bacenta)
       MERGE (date:TimeGraph {date:date()})
       MERGE (log)-[:LOGGED_BY]->(admin)
@@ -136,7 +136,7 @@ extend type Mutation {
         log.historyRecord = bacenta.name + ' Bacenta was made active again'
 
       WITH log,bacenta
-      MATCH (admin:Member {auth_id: $auth.jwt.sub})
+      MATCH (admin:Active:Member {auth_id: $auth.jwt.sub})
       MATCH (bacenta)<-[:HAS]-(constituency:Constituency)
       MERGE (date:TimeGraph {date:date()})
       MERGE (log)-[:LOGGED_BY]->(admin)
@@ -178,8 +178,8 @@ extend type Mutation {
       CREATE (stream:Stream {id:apoc.create.uuid(), name:$name})
 
       WITH stream
-      MATCH (leader:Member {id: $leaderId})
-      MATCH (currentUser:Member {auth_id:$auth.jwt.sub})
+      MATCH (leader:Active:Member {id: $leaderId})
+      MATCH (currentUser:Active:Member {auth_id:$auth.jwt.sub})
       MATCH (gatheringService:GatheringService {id: $gatheringServiceId})
 
 
@@ -217,8 +217,8 @@ extend type Mutation {
       CREATE (gatheringService:GatheringService {id:apoc.create.uuid(), name:$name})
 
       WITH gatheringService
-      MATCH (leader:Member {id: $leaderId})
-      MATCH (currentUser:Member {auth_id:$auth.jwt.sub})
+      MATCH (leader:Active:Member {id: $leaderId})
+      MATCH (currentUser:Active:Member {auth_id:$auth.jwt.sub})
       MATCH (oversight:Oversight {id: $oversightId})
 
 
@@ -252,8 +252,8 @@ extend type Mutation {
        CREATE (council:Council {id:apoc.create.uuid(), name:$name})
 
       WITH council
-      MATCH (leader:Member {id: $leaderId})
-      MATCH (currentUser:Member {auth_id:$auth.jwt.sub})
+      MATCH (leader:Active:Member {id: $leaderId})
+      MATCH (currentUser:Active:Member {auth_id:$auth.jwt.sub})
       MATCH (stream:Stream {id: $streamId})
 
 
@@ -299,8 +299,8 @@ extend type Mutation {
         constituency.sprinterCost = 0,
         constituency.urvanCost = 0
       WITH constituency
-      MATCH (leader:Member {id: $leaderId})
-      MATCH (currentUser:Member {auth_id:$auth.jwt.sub})
+      MATCH (leader:Active:Member {id: $leaderId})
+      MATCH (currentUser:Active:Member {auth_id:$auth.jwt.sub})
       MATCH (council:Council {id: $councilId})
 
        CREATE (log:HistoryLog)
@@ -346,9 +346,9 @@ extend type Mutation {
         bacenta.target = 10
 
       WITH bacenta
-       MATCH (leader:Member {id:$leaderId})
+       MATCH (leader:Active:Member {id:$leaderId})
        MATCH (constituency:Constituency {id:$constituencyId})
-       MATCH (currentUser:Member {auth_id:$auth.jwt.sub})
+       MATCH (currentUser:Active:Member {auth_id:$auth.jwt.sub})
         SET bacenta.sprinterCost = constituency.sprinterCost,
         bacenta.urvanCost = constituency.urvanCost
 
@@ -395,10 +395,10 @@ extend type Mutation {
 
       WITH sonta
        MATCH (ministry:Ministry {id:$ministryId})
-       MATCH (leader:Member {id: $leaderId})
+       MATCH (leader:Active:Member {id: $leaderId})
        MATCH (constituency:Constituency {id:$constituencyId})
 
-       MATCH (currentUser:Member {auth_id:$auth.jwt.sub})
+       MATCH (currentUser:Active:Member {auth_id:$auth.jwt.sub})
        UNWIND labels(constituency) AS stream
 
        CREATE (log:HistoryLog:ServiceLog)
@@ -460,8 +460,8 @@ extend type Mutation {
 
       WITH fellowship
       MATCH (bacenta:Bacenta {id: $bacentaId})
-      MATCH (leader:Member {id:$leaderId})
-      MATCH (currentUser:Member {auth_id:$auth.jwt.sub})
+      MATCH (leader:Active:Member {id:$leaderId})
+      MATCH (currentUser:Active:Member {auth_id:$auth.jwt.sub})
       MATCH (meetingDay:ServiceDay {day: $meetingDay})
 
       MERGE (bacenta)-[:HAS]->(fellowship)
@@ -480,7 +480,7 @@ extend type Mutation {
   UpdateMemberFellowship(memberId: ID!, fellowshipId: ID!): Member
     @cypher(
       statement: """
-      MATCH (member:Member {id: $memberId})
+      MATCH (member:Active:Member {id: $memberId})
       MATCH (fellowship:Fellowship {id: $fellowshipId})
 
       OPTIONAL MATCH (member)-[previous:BELONGS_TO]-> (:Fellowship)
@@ -493,7 +493,7 @@ extend type Mutation {
   UpdateMemberMinistry(memberId: ID!, ministryId: ID!): Member
     @cypher(
       statement: """
-      MATCH (member:Member {id: $memberId})
+      MATCH (member:Active:Member {id: $memberId})
       OPTIONAL MATCH (member)-[previous:BELONGS_TO]->(:Ministry)
       DELETE previous
 
@@ -543,7 +543,7 @@ extend type Mutation {
     )
     @cypher(
       statement: """
-      MATCH (member:Member {id:$id})
+      MATCH (member:Active:Member {id:$id})
       SET
       	member.firstName = $firstName,
       	member.middleName = $middleName,
@@ -559,7 +559,7 @@ extend type Mutation {
         log.historyRecord = $firstName +' ' +$lastName+' Details were updated'
 
       WITH member, log
-      MATCH (currentUser:Member {auth_id:$auth.jwt.sub})
+      MATCH (currentUser:Active:Member {auth_id:$auth.jwt.sub})
       MATCH (gender:Gender {gender: $gender})
       OPTIONAL MATCH (member)-[gen_rel:HAS_GENDER]-> ()
       DELETE gen_rel
@@ -628,7 +628,7 @@ extend type Mutation {
                   MERGE (oversight)-[:HAS]->(gatheringService)
               	RETURN count(gatheringService)
               	}
-      MATCH (gatheringService)<-[:LEADS]-(leader:Member)
+      MATCH (gatheringService)<-[:LEADS]-(leader:Active:Member)
       RETURN gatheringService
       """
     )
@@ -653,7 +653,7 @@ extend type Mutation {
                   MERGE (gatheringService)-[:HAS]->(stream)
               	RETURN count(stream)
               	}
-      MATCH (stream)<-[:LEADS]-(leader:Member)
+      MATCH (stream)<-[:LEADS]-(leader:Active:Member)
       RETURN stream
       """
     )
@@ -674,7 +674,7 @@ extend type Mutation {
                   MERGE (stream)-[:HAS]->(council)
               	RETURN count(council)
               	}
-      MATCH (council)<-[:LEADS]-(leader:Member)
+      MATCH (council)<-[:LEADS]-(leader:Active:Member)
       RETURN council
       """
     )
@@ -704,7 +704,7 @@ extend type Mutation {
                   MERGE (council)-[:HAS]->(constituency)
               	RETURN count(constituency)
               	}
-      MATCH (constituency)<-[:LEADS]-(leader:Member)
+      MATCH (constituency)<-[:LEADS]-(leader:Active:Member)
       RETURN constituency
       """
     )
@@ -741,7 +741,7 @@ extend type Mutation {
             MERGE (constituency)-[:HAS]->(bacenta)
          	RETURN count(bacenta)
          	}
-      MATCH (bacenta)<-[:LEADS]-(leader:Member)
+      MATCH (bacenta)<-[:LEADS]-(leader:Active:Member)
       RETURN bacenta
       """
     )
@@ -765,7 +765,7 @@ extend type Mutation {
       	SET sonta.name = $sontaName
 
       WITH sonta
-      MATCH (sonta)<-[:LEADS]-(leader:Member)
+      MATCH (sonta)<-[:LEADS]-(leader:Active:Member)
       RETURN sonta
       """
     )
@@ -824,7 +824,7 @@ extend type Mutation {
     @cypher(
       statement: """
       MATCH (council:Council {id:$councilId})
-      MATCH (admin:Member {auth_id: $auth.jwt.sub})
+      MATCH (admin:Active:Member {auth_id: $auth.jwt.sub})
       MATCH (council)<-[:HAS]-(stream:Stream)
       OPTIONAL MATCH (council)-[:HAS]->(constituencies)-[:HAS]->(bacentas)-[:HAS]->(fellowships)
 
@@ -849,7 +849,7 @@ extend type Mutation {
     @cypher(
       statement: """
       MATCH (stream:Stream {id:$streamId})
-      MATCH (admin:Member {auth_id: $auth.jwt.sub})
+      MATCH (admin:Active:Member {auth_id: $auth.jwt.sub})
       MATCH (stream)<-[:HAS]-(gatheringService:GatheringService)
       OPTIONAL MATCH (stream)-[:HAS]->(council)-[:HAS]->(constituencies)-[:HAS]->(bacentas)-[:HAS]->(fellowships)
 
@@ -875,7 +875,7 @@ extend type Mutation {
     @cypher(
       statement: """
       MATCH (gatheringService:GatheringService {id:$gatheringServiceId})
-      MATCH (admin:Member {auth_id: $auth.jwt.sub})
+      MATCH (admin:Active:Member {auth_id: $auth.jwt.sub})
       MATCH (gatheringService)<-[:HAS]-(oversight:Oversight)
       OPTIONAL MATCH (gatheringService)-[:HAS]->(stream)-[:HAS]->(council)-[:HAS]->(constituencies)-[:HAS]->(bacentas)-[:HAS]->(fellowships)
 

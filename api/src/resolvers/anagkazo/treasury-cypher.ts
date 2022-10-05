@@ -24,7 +24,7 @@ const anagkazo = {
 
     WITH constituency, record
     
-    MATCH  (teller:Member {auth_id: $auth.jwt.sub})
+    MATCH  (teller:Active:Member {auth_id: $auth.jwt.sub})
     MERGE (teller)-[:CONFIRMED_BANKING_FOR]->(record)
     RETURN constituency
     `,

@@ -41,7 +41,7 @@ export const recordService = `
 
       WITH serviceRecord
       UNWIND $treasurers AS treasurerId WITH treasurerId, serviceRecord
-      MATCH (treasurer:Member {id: treasurerId})
+      MATCH (treasurer:Active:Member {id: treasurerId})
       MERGE (treasurer)-[:WAS_TREASURER_FOR]->(serviceRecord)
 
       RETURN serviceRecord
@@ -55,7 +55,7 @@ serviceRecord.noServiceReason = $noServiceReason
 WITH serviceRecord
 MATCH (church {id: $churchId}) WHERE church:Fellowship
 MATCH (church)-[:CURRENT_HISTORY]->(log:ServiceLog)
-MATCH (leader:Member {auth_id: $auth.jwt.sub})
+MATCH (leader:Active:Member {auth_id: $auth.jwt.sub})
 
 MERGE (serviceDate:TimeGraph {date: date($serviceDate)})
 MERGE (serviceRecord)-[:LOGGED_BY]->(leader)
@@ -72,7 +72,7 @@ RETURN true AS exists
 `
 export const getServantAndChurch = `
 MATCH (church {id:$churchId}) WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream
-MATCH (church)<-[:LEADS]-(servant:Member)
+MATCH (church)<-[:LEADS]-(servant:Active:Member)
 UNWIND labels(church) AS churchType 
 WITH churchType, church, servant WHERE churchType IN ['Fellowship', 'Bacenta', 'Constituency', 'Council', 'Stream']
 RETURN church.id AS churchId, church.name AS churchName, servant.id AS servantId, servant.auth_id AS auth_id, servant.firstName AS firstName, servant.lastName AS lastName, churchType AS churchType

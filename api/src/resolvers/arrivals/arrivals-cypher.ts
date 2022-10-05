@@ -26,7 +26,7 @@ RETURN record, bacenta.name AS bacentaName, date.date AS date
 `
 
 export const getVehicleRecordWithDate = `
-MATCH (record:VehicleRecord {id: $vehicleRecordId})<-[:INCLUDES_RECORD]-(bussing:BussingRecord)<-[:HAS_BUSSING]-(:ServiceLog)<-[:HAS_HISTORY]-(bacenta:Bacenta)<-[:LEADS]-(leader:Member)
+MATCH (record:VehicleRecord {id: $vehicleRecordId})<-[:INCLUDES_RECORD]-(bussing:BussingRecord)<-[:HAS_BUSSING]-(:ServiceLog)<-[:HAS_HISTORY]-(bacenta:Bacenta)<-[:LEADS]-(leader:Active:Member)
 MATCH (bussing)-[:BUSSED_ON]->(date:TimeGraph)
 SET record.target = bacenta.target,
 record.momoNumber = bacenta.momoNumber, 
@@ -53,7 +53,7 @@ labels(date) AS dateLabels
 export const checkTransactionId = `
 MATCH (record:VehicleRecord {id: $vehicleRecordId})<-[:INCLUDES_RECORD]-(:BussingRecord)<-[:HAS_BUSSING]-(:ServiceLog)<-[:HAS_HISTORY]-(bacenta:Bacenta)
 MATCH (bacenta)<-[:HAS]-(:Constituency)<-[:HAS]-(:Council)<-[:HAS]-(stream:Stream)
-MATCH (bacenta)<-[:LEADS]-(leader:Member)
+MATCH (bacenta)<-[:LEADS]-(leader:Active:Member)
 WITH record, bacenta, leader, stream
 
 RETURN record, stream, bacenta, leader.firstName AS firstName, leader.phoneNumber AS phoneNumber

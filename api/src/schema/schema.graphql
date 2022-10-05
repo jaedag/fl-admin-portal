@@ -2,13 +2,13 @@
 type Query {
   currentUser(id: ID): Member
     @cypher(
-      statement: "MATCH (member:Member {auth_id: $auth.jwt.sub}) RETURN member"
+      statement: "MATCH (member:Active:Member {auth_id: $auth.jwt.sub}) RETURN member"
     )
     @auth(rules: [{ isAuthenticated: true }])
 
   memberByEmail(email: String!): Member
     @cypher(
-      statement: "MATCH (member:Member {email:$email}) RETURN member LIMIT 1"
+      statement: "MATCH (member:Active:Member {email:$email}) RETURN member LIMIT 1"
     )
 }
 
@@ -19,7 +19,7 @@ type Mutation {
     @cypher(
       statement: """
       MATCH (fellowship:Fellowship {id:$fellowshipId})
-      MATCH (admin:Member {auth_id: $auth.jwt.sub})
+      MATCH (admin:Active:Member {auth_id: $auth.jwt.sub})
       CREATE (newFellowship:Fellowship {id:apoc.create.uuid()})
        SET newFellowship.name = fellowship.name,
        newFellowship.location = fellowship.location
@@ -30,8 +30,8 @@ type Mutation {
       WITH newFellowship, log, fellowship
       MATCH (fellowship)<-[hasFellowship:HAS]-(:Bacenta)<-[:HAS]-(constituency)
       MATCH (fellowship)-[meetsOnDay:MEETS_ON]->(meetingDay)
-      MATCH (fellowship)<-[belongsTo:BELONGS_TO]-(member:Member)
-      MATCH (fellowship)<-[:LEADS]-(leader:Member)
+      MATCH (fellowship)<-[belongsTo:BELONGS_TO]-(member:Active:Member)
+      MATCH (fellowship)<-[:LEADS]-(leader:Active:Member)
 
       MERGE (date:TimeGraph {date:date()})
       MERGE (constituency)-[:HAS]->(fellowship)
