@@ -116,9 +116,11 @@ log.timeStamp = datetime(),
 log.historyRecord = "This member was deleted for this reason: " +$reason
 
 WITH log, node
+MERGE (today:TimeGraph {date: date()})
 MATCH (admin:Member {auth_id:$auth.jwt.sub})
 MERGE (admin)<-[:LOGGED_BY]-(log)
 MERGE (node)-[:HAS_HISTORY]->(log)
+MERGE (log)-[:RECORDED_ON]->(today)
 
 RETURN node as member
 `
