@@ -232,10 +232,14 @@ const DisplayChurchDetails = (props: DisplayChurchDetailsProps) => {
   const directoryLock = () => {
     if (
       new Date().getDay() === 2 ||
-      permitAdmin('Stream')?.some((r) => currentUser?.roles.includes(r))
+      permitAdmin('Stream')?.some((r) => currentUser?.roles.includes(r)) ||
+      (props.churchType === 'Fellowship' &&
+        currentUser?.roles.includes('leaderFellowship'))
     ) {
       return true
     }
+
+    return false
   }
 
   return (
