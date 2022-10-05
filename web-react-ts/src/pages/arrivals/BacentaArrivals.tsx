@@ -73,7 +73,7 @@ const BacentaArrivals = () => {
   useEffect(() => handleClose(), [])
 
   const END_TIME_IN_MS = new Date(
-    getTodayTime(bacenta?.stream.arrivalEndTime)
+    getTodayTime(bacenta?.stream?.arrivalEndTime)
   ).getTime()
 
   const dateTimeToEnd = END_TIME_IN_MS

@@ -28,7 +28,7 @@ const TrendsMenu = () => {
             iconComponent={Charts}
             title="Graphs"
             color="members"
-            onClick={() => navigate(`/${churchType.toLowerCase()}/graphs`)}
+            onClick={() => navigate(`/${churchType?.toLowerCase()}/graphs`)}
             caption={'Income and Attendance Graphs'}
           />
           <MenuButton
@@ -37,7 +37,7 @@ const TrendsMenu = () => {
             color="quick-facts"
             onClick={() =>
               navigate(
-                `/quick-facts/this-month/${church.__typename.toLowerCase()}`
+                `/quick-facts/this-month/${church?.__typename.toLowerCase()}`
               )
             }
             caption={'Quick facts about your church'}

@@ -44,7 +44,7 @@ const SetPermissions = ({
         fellowship: data.memberByEmail?.fellowship.id,
         bacenta: data.memberByEmail?.fellowship?.bacenta?.id,
         council:
-          data.memberByEmail?.fellowship?.bacenta.constituency?.council.id,
+          data.memberByEmail?.fellowship?.bacenta.constituency?.council?.id,
         constituency: data.memberByEmail?.fellowship?.bacenta.constituency?.id,
         doNotUse: { doNotUse: doNotUse, subdoNotUse: 'bacenta' },
         stream_name: capitalise(data?.memberByEmail?.stream_name),

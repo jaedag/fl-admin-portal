@@ -37,7 +37,7 @@ const ImageUpload = (props: ImageUploadProps) => {
     data.append('upload_preset', uploadPreset || '')
     data.append(
       'public_id',
-      `${username}-${currentUser.id}/${date}_${files[0].name}`
+      `${username}-${currentUser.id}/${date}_${files[0]?.name}`
     )
     data.append('tags', tags || '')
 

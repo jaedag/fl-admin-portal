@@ -46,7 +46,7 @@ const AllChurchesSummary = (props: AllChurchesSummaryProps) => {
               <Link to="/sonta/displayall">
                 <Card.Body className="summary-padding">
                   <Row className="text-muted text-small">Sontas</Row>
-                  <Row className="number">{church.sontas?.length}</Row>
+                  <Row className="number">{church?.sontas?.length}</Row>
                 </Card.Body>
               </Link>
             </Card>

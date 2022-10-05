@@ -24,7 +24,7 @@ export const FellowshipReport = () => {
     <ApolloWrapper loading={loading} error={error} data={data}>
       <div className="container">
         <div className=" my-3">
-          <h5 className="mb-0">{`${data?.fellowships[0].name} Fellowship`}</h5>{' '}
+          <h5 className="mb-0">{`${data?.fellowships[0]?.name} Fellowship`}</h5>{' '}
           <p>
             <span className="text-secondary font-weight-bold">Leader: </span>
             {`${data?.fellowships[0].leader?.fullName}`}

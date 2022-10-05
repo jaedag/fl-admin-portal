@@ -35,7 +35,7 @@ const GatheringServiceDashboard = () => {
   const { data, loading, error, refetch } = useQuery(
     GATHERINGSERVICE_ARRIVALS_DASHBOARD,
     {
-      variables: { id: currentUser?.currentChurch.id, date: today },
+      variables: { id: currentUser?.currentChurch?.id, date: today },
     }
   )
 

@@ -44,7 +44,7 @@ const DisplayAllFellowships = () => {
 
         <AllChurchesSummary
           church={fellowships}
-          memberCount={data?.bacentas[0].memberCount}
+          memberCount={data?.bacentas[0]?.memberCount}
           numberOfChurchesBelow={fellowships?.length}
           churchType="Fellowship"
           route="bacenta"

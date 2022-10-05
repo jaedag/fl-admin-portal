@@ -17,7 +17,7 @@ const DetailsBacenta = () => {
   const bacenta = data?.bacentas[0]
 
   let breadcrumb = [
-    bacenta?.constituency.council,
+    bacenta?.constituency?.council,
     bacenta?.constituency,
     bacenta,
   ]

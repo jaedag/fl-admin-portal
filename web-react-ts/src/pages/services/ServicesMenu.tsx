@@ -104,8 +104,8 @@ const Services = () => {
                 />
               </>
             )}
-          {church.stream_name === 'anagkazo encounter' &&
-            church.__typename === 'Stream' && (
+          {church?.stream_name === 'anagkazo encounter' &&
+            church?.__typename === 'Stream' && (
               <>
                 <RoleView roles={permitAdmin('Stream')}>
                   <MenuButton
