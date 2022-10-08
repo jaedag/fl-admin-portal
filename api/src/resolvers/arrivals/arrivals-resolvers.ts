@@ -14,7 +14,7 @@ import {
   permitArrivalsHelpers,
 } from '../permissions'
 import { MakeServant, RemoveServant } from '../directory/make-remove-servants'
-import { PaySwitchRequestBody } from '../banking/banking-types'
+import { PayStackRequestBody } from '../banking/banking-types'
 import {
   aggregateBussingDataOnHigherChurches,
   aggregateVehicleBussingRecordData,
@@ -571,7 +571,7 @@ export const arrivalsMutation = {
     )
     const vehicleRecord = cypherResponse.record.properties
 
-    const sendVehicleSupport: PaySwitchRequestBody = {
+    const sendVehicleSupport: PayStackRequestBody = {
       method: 'post',
       url: `https://prod.theteller.net/v1.1/transaction/process`,
       headers: {

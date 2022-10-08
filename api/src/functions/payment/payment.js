@@ -1,34 +1,61 @@
 const neo4j = require('neo4j-driver')
 const crypto = require('crypto')
 
-const initializeDatabase = (driver) => {
+const runCypher = (driver, response) => {
   const setTransactionStatusSuccess = `
-      MATCH (record:ServiceRecord {id: $serviceRecordId})
+      MATCH (record:ServiceRecord {transactionReference: $reference})
       SET record.transactionStatus = "success"
       
       RETURN record
-`
+    `
 
-  const executeQuery = (neoDriver) => {
+  const setTransactionStatusFailed = `
+      MATCH (record:ServiceRecord {transactionReference: $reference})
+      SET record.transactionStatus = "success"
+      
+      RETURN record
+    `
+
+  const setTransactionStatusPending = `
+    MATCH (record:ServiceRecord {transactionReference: $reference})
+    SET record.transactionStatus = "success"
+    
+    RETURN record
+  `
+
+  const executeQuery = (neoDriver, paymentResponse) => {
     const session = neoDriver.session()
+
     return session
       .writeTransaction((tx) => {
         try {
-          tx.run(setTransactionStatusSuccess)
+          if (paymentResponse.status === 'success') {
+            tx.run(setTransactionStatusSuccess, {
+              reference: paymentResponse.reference,
+            })
+          } else if (paymentResponse.status === 'failed') {
+            tx.run(setTransactionStatusFailed, {
+              reference: paymentResponse.reference,
+            })
+          } else {
+            tx.run(setTransactionStatusPending, {
+              reference: paymentResponse.reference,
+            })
+          }
         } catch (error) {
-          console.log('Error running bussing aggregation', error)
+          console.log('Error Running Cypher', error)
         }
       })
       .finally(() => session.close())
   }
 
-  executeQuery(driver).catch((error) => {
+  executeQuery(driver, response).catch((error) => {
     console.error('Database query failed to complete\n', error.message)
   })
 }
 
 // eslint-disable-next-line import/prefer-default-export
-export const handler = async (event, context, ...args) => {
+export const handler = async (event) => {
   const driver = neo4j.driver(
     process.env.NEO4J_URI || 'bolt://localhost:7687',
     neo4j.auth.basic(
@@ -38,22 +65,19 @@ export const handler = async (event, context, ...args) => {
   )
 
   const handlePaystackReq = async (neoDriver) => {
-    console.log('event', event)
-    console.log('context', context)
-    console.log('args', args)
-
-    // validate event
     const hash = crypto
       .createHmac('sha512', process.env.PAYSTACK_PRIVATE_KEY)
       .update(JSON.stringify(event.body))
       .digest('hex')
     if (hash === event.headers['x-paystack-signature']) {
-      // Retrieve the request's body
-      const eventNEw = event.body
-      // Do something with event
-      console.log(eventNEw)
+      const { reference, status } = event.body
+      const response = {
+        reference,
+        status,
+      }
+      console.log(response)
+      runCypher(neoDriver, response)
     }
-    initializeDatabase(neoDriver)
   }
 
   /*
