@@ -6,7 +6,7 @@ const dotenv = require('dotenv')
 dotenv.config()
 
 export type Network = 'MTN' | 'Vodafone' | 'AirtelTigo' | 'Airtel' | 'Tigo'
-export type NetworkCode = 'MTN' | 'VDF' | 'ATL' | 'TGO'
+export type NetworkCode = 'mtn' | 'vod' | 'tgo'
 type PaymentErrorCode =
   | '100'
   | '101'
@@ -26,20 +26,20 @@ type PaymentErrorCode =
 export const getMobileCode = (network: Network): NetworkCode => {
   switch (network) {
     case 'MTN':
-      return 'MTN'
+      return 'mtn'
     case 'Vodafone':
-      return 'VDF'
+      return 'vod'
     case 'AirtelTigo':
-      return 'ATL'
+      return 'tgo'
     case 'Airtel':
-      return 'ATL'
+      return 'tgo'
     case 'Tigo':
-      return 'TGO'
+      return 'tgo'
     default:
       break
   }
 
-  return 'MTN'
+  return 'mtn'
 }
 
 export const padNumbers = (number: number): string => {

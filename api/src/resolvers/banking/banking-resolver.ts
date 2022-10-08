@@ -7,21 +7,20 @@ import {
   getStreamFinancials,
   handlePaymentError,
   Network,
-  padNumbers,
 } from '../utils/financial-utils'
 import { isAuth, rearrangeCypherObject, throwToSentry } from '../utils/utils'
 
 import {
   checkIfServicePending,
-  checkTransactionId,
+  checkTransactionReference,
   getLastServiceRecord,
-  removeBankingRecordTransactionId,
-  setServiceRecordTransactionId,
+  removeBankingRecordTransactionReference,
+  initiateServiceRecordTransaction,
   setTransactionStatusFailed,
   setTransactionStatusSuccess,
   submitBankingSlip,
 } from './banking-cypher'
-import { PaySwitchRequestBody } from './banking-types'
+import { PayStackRequestBody } from './banking-types'
 import { ServiceRecord, StreamOptions } from '../utils/types'
 
 const checkIfLastServiceBanked = async (
@@ -72,14 +71,17 @@ const bankingMutation = {
 
     const session = context.executionContext.session()
 
-    const { merchantId, auth } = getStreamFinancials(args.stream_name)
+    const { auth } = getStreamFinancials(args.stream_name)
 
     // This code checks if there has already been a successful transaction
     const transactionResponse = rearrangeCypherObject(
       await session
-        .run(checkTransactionId, args)
+        .run(checkTransactionReference, args)
         .catch((error: any) =>
-          throwToSentry('There was a problem checking the transactionId', error)
+          throwToSentry(
+            'There was a problem checking the transactionReference',
+            error
+          )
         )
     )
 
@@ -98,13 +100,13 @@ const bankingMutation = {
 
     const cypherResponse = rearrangeCypherObject(
       await session
-        .run(setServiceRecordTransactionId, {
+        .run(initiateServiceRecordTransaction, {
           auth: context.auth,
           ...args,
         })
         .catch((error: any) =>
           throwToSentry(
-            'There was an error setting serviceRecordTransactionId',
+            'There was an error setting serviceRecordTransactionReference',
             error
           )
         )
@@ -112,7 +114,7 @@ const bankingMutation = {
 
     const serviceRecord = cypherResponse.record.properties
 
-    const payOffering: PaySwitchRequestBody = {
+    const payOffering: PayStackRequestBody = {
       method: 'post',
       url: `https://prod.theteller.net/v1.1/transaction/process`,
       headers: {
@@ -120,14 +122,23 @@ const bankingMutation = {
         Authorization: auth,
       },
       data: {
-        transaction_id: padNumbers(serviceRecord.transactionId),
-        merchant_id: merchantId,
-        amount: padNumbers(serviceRecord.income * 100),
-        processing_code: '000200',
-        'r-switch': getMobileCode(args.mobileNetwork),
-        desc: `${cypherResponse.churchName} ${cypherResponse.churchLevel} ${args.momoName}`,
-        subscriber_number: args.mobileNumber,
-        voucher: '',
+        amount: serviceRecord.income * 100,
+        email: cypherResponse.author.email,
+        currency: 'GHS',
+        mobile_money: {
+          phone: args.mobileNumber,
+          provider: getMobileCode(args.mobileNetwork),
+        },
+        metadata: {
+          custom_fields: [
+            {
+              church_name: cypherResponse.churchName,
+              church_level: cypherResponse.churchLevel,
+              depositor_firstname: cypherResponse.author.firstName,
+              depositor_lastname: cypherResponse.author.lastName,
+            },
+          ],
+        },
       },
     }
 
@@ -151,23 +162,21 @@ const bankingMutation = {
     const { merchantId, auth } = getStreamFinancials(args.stream_name)
 
     const transactionResponse = rearrangeCypherObject(
-      await session.run(checkTransactionId, args)
+      await session.run(checkTransactionReference, args)
     )
 
     const record = transactionResponse?.record
     const banker = transactionResponse?.banker
 
-    if (!record?.transactionId) {
+    if (!record?.transactionReference) {
       throw new Error(
         'It looks like there was a problem. Please try sending again!'
       )
     }
 
-    const paddedTransactionId = padNumbers(record?.transactionId)
-
     const confirmPaymentBody: any = {
       method: 'get',
-      url: `https://prod.theteller.net/v1.1/users/transactions/${paddedTransactionId}/status`,
+      url: `https://api.paystack.co/transaction/verify/:reference/${record?.transactionReference}`,
       headers: {
         'Content-Type': 'application/json',
         'Merchant-Id': merchantId,
@@ -180,7 +189,7 @@ const bankingMutation = {
     if (confirmationResponse.data.code.toString() === '111') {
       return {
         id: record.id,
-        transactionId: record.transactionId,
+        transactionReference: record.transactionReference,
         transactionStatus: 'pending',
         income: record.income,
         offeringBankedBy: {
@@ -202,7 +211,7 @@ const bankingMutation = {
 
     if (!['000', '111'].includes(confirmationResponse.data.code.toString())) {
       try {
-        await session.run(removeBankingRecordTransactionId, args)
+        await session.run(removeBankingRecordTransactionReference, args)
       } catch (error: any) {
         throwToSentry(
           'There was an error removing banking record tranasactionId',

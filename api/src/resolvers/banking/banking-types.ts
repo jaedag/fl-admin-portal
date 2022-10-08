@@ -2,18 +2,28 @@ import { TransferData } from '../arrivals/arrivals-types'
 import { NetworkCode } from '../utils/financial-utils'
 
 /* eslint-disable camelcase */
+
 interface DebitData {
-  transaction_id: string
-  merchant_id?: string
-  amount: string
-  processing_code: string
-  desc: string
-  'r-switch': NetworkCode
-  subscriber_number: string
-  voucher: string
+  amount: number
+  email: string
+  currency: 'GHS'
+  mobile_money: {
+    phone: string
+    provider: NetworkCode
+  }
+  metadata: {
+    custom_fields: [
+      {
+        church_name: string
+        church_level: string
+        depositor_firstname: string
+        depositor_lastname: string
+      }
+    ]
+  }
 }
 
-export interface PaySwitchRequestBody {
+export interface PayStackRequestBody {
   method: string
   url: string
   headers: any
