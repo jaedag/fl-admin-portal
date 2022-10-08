@@ -46,7 +46,11 @@ export const PAY_OFFERING_MUTATION = gql`
       mobileNetwork: $mobileNetwork
       mobileNumber: $mobileNumber
       momoName: $momoName
-    )
+    ) {
+      id
+      transactionReference
+      transactionStatus
+    }
   }
 `
 export const CONFIRM_OFFERING_PAYMENT = gql`

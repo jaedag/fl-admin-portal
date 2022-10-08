@@ -5,11 +5,11 @@ extend type Mutation {
     mobileNetwork: String!
     mobileNumber: String!
     momoName: String!
-  ): String
+  ): ServiceRecord!
   ConfirmOfferingPayment(
     stream_name: String!
     serviceRecordId: ID!
-  ): ServiceRecord
+  ): ServiceRecord!
   SubmitBankingSlip(serviceRecordId: ID!, bankingSlip: String!): ServiceRecord!
 }
 
@@ -25,6 +25,7 @@ extend type ServiceRecord {
 
 extend type ServiceRecord {
   transactionTime: DateTime
+  transactionReference: ID
   transactionStatus: String
   bankingProof: Boolean
     @cypher(

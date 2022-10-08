@@ -88,7 +88,7 @@ const PayOffering = (props: PayOfferingProps) => {
         },
       })
       setSubmitting(false)
-      navigate('/self-banking/confirm-payment')
+      navigate('/self-banking/receipt')
     } catch (error: any) {
       setErrorMessage(error.message)
       togglePopup()

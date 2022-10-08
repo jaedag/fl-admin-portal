@@ -5,7 +5,6 @@ import { permitLeader } from '../permissions'
 import {
   getMobileCode,
   getStreamFinancials,
-  handlePaymentError,
   Network,
 } from '../utils/financial-utils'
 import { isAuth, rearrangeCypherObject, throwToSentry } from '../utils/utils'
@@ -19,6 +18,7 @@ import {
   setTransactionStatusFailed,
   setTransactionStatusSuccess,
   submitBankingSlip,
+  setRecordTransactionReference,
 } from './banking-cypher'
 import { PayStackRequestBody } from './banking-types'
 import { ServiceRecord, StreamOptions } from '../utils/types'
@@ -116,7 +116,8 @@ const bankingMutation = {
 
     const payOffering: PayStackRequestBody = {
       method: 'post',
-      url: `https://prod.theteller.net/v1.1/transaction/process`,
+      baseURL: 'https://api.paystack.co/',
+      url: `/charge`,
       headers: {
         'content-type': 'application/json',
         Authorization: auth,
@@ -126,7 +127,7 @@ const bankingMutation = {
         email: cypherResponse.author.email,
         currency: 'GHS',
         mobile_money: {
-          phone: args.mobileNumber,
+          phone: '0551234987' ?? args.mobileNumber,
           provider: getMobileCode(args.mobileNetwork),
         },
         metadata: {
@@ -144,11 +145,18 @@ const bankingMutation = {
 
     try {
       const paymentResponse = await axios(payOffering)
+      const paymentCypherRes = rearrangeCypherObject(
+        await session.run(setRecordTransactionReference, {
+          id: serviceRecord.id,
+          reference: paymentResponse.data.data.reference,
+        })
+      )
 
-      handlePaymentError(paymentResponse)
+      return paymentCypherRes.record
     } catch (error: any) {
       throwToSentry('There was an error processing your payment', error)
     }
+    return transactionResponse.record
   },
 
   ConfirmOfferingPayment: async (

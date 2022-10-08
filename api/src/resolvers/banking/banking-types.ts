@@ -25,6 +25,7 @@ interface DebitData {
 
 export interface PayStackRequestBody {
   method: string
+  baseURL: 'https://api.paystack.co/'
   url: string
   headers: any
   data: DebitData | TransferData

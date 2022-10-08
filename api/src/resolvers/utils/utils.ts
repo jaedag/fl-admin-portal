@@ -31,7 +31,7 @@ export const throwToSentry = (
   if (error) {
     errorVar = error
   }
-
+  console.log(error)
   if (error?.response?.data?.message) {
     errorVar = error?.response?.data?.message
   }

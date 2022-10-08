@@ -10,12 +10,10 @@ OR churchLevel = 'Council' OR churchLevel = 'Stream' OR churchLevel = 'Gathering
 
 MATCH (author:Member {auth_id: $auth.jwt.sub})
 MATCH (record)-[:SERVICE_HELD_ON]->(date:TimeGraph)
-MATCH transaction.id = record.transactionId,
-    record.sourceNumber = $mobileNumber,
+SET record.sourceNumber = $mobileNumber,
     record.sourceNetwork = $mobileNetwork,
     record.desc = church.name + ' ' + churchLevel + ' '  + date.date,
-    record.transactionTime = datetime(),
-    record.transactionStatus = 'pending"
+    record.transactionTime = datetime()
 
 MERGE (author)<-[:OFFERING_BANKED_BY]-(record)
 
@@ -24,6 +22,18 @@ RETURN record, church.name AS churchName, date.date AS date, churchLevel AS chur
         .firstName,
         .lastName,
         .email
+    }
+`
+
+export const setRecordTransactionReference = `
+    MATCH (record:ServiceRecord {id: $id})
+    SET record.transactionReference = $reference,
+    record.transactionStatus = 'pending'
+
+    RETURN record {
+        .id,
+        .transactionReference,
+        .transactionStatus
     }
 `
 
