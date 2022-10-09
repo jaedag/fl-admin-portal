@@ -1,5 +1,5 @@
 type Member @auth(rules: [{ isAuthenticated: true }]) {
-  id: ID!
+  id: ID! @id
   auth_id: String
   firstName: String #@search
   middleName: String

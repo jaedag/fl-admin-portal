@@ -1,4 +1,4 @@
-export const setServiceRecordTransactionId = `
+export const initiateServiceRecordTransaction = `
 MATCH (record:ServiceRecord {id: $serviceRecordId})<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(church)
 WHERE church:Fellowship OR church:Constituency OR church:Council OR church:Stream OR church:GatheringService
 
@@ -10,26 +10,51 @@ OR churchLevel = 'Council' OR churchLevel = 'Stream' OR churchLevel = 'Gathering
 
 MATCH (author:Member {auth_id: $auth.jwt.sub})
 MATCH (record)-[:SERVICE_HELD_ON]->(date:TimeGraph)
-MATCH (transaction: LastPaySwitchTransactionId)
-    SET record.transactionId = transaction.id + 1,  
-    transaction.id = record.transactionId,
-    record.sourceNumber = $mobileNumber,
+SET record.sourceNumber = $mobileNumber,
     record.sourceNetwork = $mobileNetwork,
     record.desc = church.name + ' ' + churchLevel + ' '  + date.date,
-    record.transactionTime = datetime(),
-    record.transactionStatus = "pending"
+    record.transactionTime = datetime()
 
 MERGE (author)<-[:OFFERING_BANKED_BY]-(record)
 
-RETURN record, church.name AS churchName, date.date AS date, churchLevel AS churchLevel
+RETURN record, church.name AS churchName, date.date AS date, churchLevel AS churchLevel,
+    author {
+        .firstName,
+        .lastName,
+        .email
+    }
 `
 
-export const checkTransactionId = `
+export const setRecordTransactionReference = `
+    MATCH (record:ServiceRecord {id: $id})
+    SET record.transactionReference = $reference,
+    record.transactionStatus = 'pending'
+
+    RETURN record {
+        .id,
+        .transactionReference,
+        .transactionStatus
+    }
+`
+
+export const setRecordTransactionReferenceWithOTP = `
+    MATCH (record:ServiceRecord {id: $id})
+    SET record.transactionReference = $reference,
+    record.transactionStatus = 'send OTP'
+    
+    RETURN record {
+        .id,
+        .transactionReference,
+        .transactionStatus
+        }
+    `
+
+export const checkTransactionReference = `
 MATCH (record:ServiceRecord {id: $serviceRecordId})
 OPTIONAL MATCH (record)-[:OFFERING_BANKED_BY]->(banker)
 RETURN record {
     .id,
-    .transactionId,
+    .transactionReference,
     .transactionStatus,
     .income
 }, banker {
@@ -41,27 +66,19 @@ RETURN record {
 
 export const setTransactionStatusFailed = `
 MATCH (record:ServiceRecord {id: $serviceRecordId})
+MATCH (record)-[r:OFFERING_BANKED_BY]->(banker)
 SET record.transactionStatus = 'failed'
+
+DELETE r
 
 RETURN record
 `
 
 export const setTransactionStatusSuccess = `
-MATCH (record:ServiceRecord {id: $serviceRecordId})
-SET record.transactionStatus = "success"
-
-RETURN record
-`
-export const removeBankingRecordTransactionId = `
-MATCH (record:ServiceRecord {id: $serviceRecordId})<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(church)
-WHERE church:Fellowship OR church:Constituency OR church:Council OR church:Stream
-
-MATCH (record)-[r:OFFERING_BANKED_BY]->(banker)
-MATCH (record)-[:SERVICE_HELD_ON]->(date:TimeGraph)
-SET record.transactionStatus = 'failed'
-DELETE r
-
-RETURN record, church.name AS churchName, date.date AS date
+   MATCH (record:ServiceRecord {id: $serviceRecordId})
+   SET record.transactionStatus = 'success'
+   
+   RETURN record
 `
 
 export const getLastServiceRecord = `

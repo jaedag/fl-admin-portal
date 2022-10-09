@@ -6,13 +6,14 @@ import { useNavigate } from 'react-router'
 import {
   DISPLAY_OFFERING_DETAILS,
   PAY_OFFERING_MUTATION,
+  SEND_PAYMENT_OTP,
 } from './bankingQueries'
 import * as Yup from 'yup'
 import { Form, Formik, FormikHelpers } from 'formik'
 import { MOMO_NUM_REGEX } from 'global-utils'
 import { MOBILE_NETWORK_OPTIONS } from 'pages/arrivals/arrivals-utils'
 import SubmitButton from 'components/formik/SubmitButton'
-import { Col, Container, Row } from 'react-bootstrap'
+import { Button, Col, Container, Modal, Row } from 'react-bootstrap'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import HeadingSecondary from 'components/HeadingSecondary'
 import { parseDate } from 'jd-date-utils'
@@ -21,6 +22,8 @@ import usePopup from 'hooks/usePopup'
 import ErrorPopup from 'components/Popup/ErrorPopup'
 import Input from 'components/formik/Input'
 import Select from 'components/formik/Select'
+import useModal from 'hooks/useModal'
+import './ConfirmPayment.css'
 
 type PayOfferingProps = {
   church: Fellowship
@@ -43,10 +46,14 @@ const PayOffering = (props: PayOfferingProps) => {
     variables: { serviceRecordId: serviceRecordId },
   })
   const [BankServiceOffering] = useMutation(PAY_OFFERING_MUTATION)
+  const [SendPaymentOTP] = useMutation(SEND_PAYMENT_OTP)
   const navigate = useNavigate()
   const service = data?.serviceRecords[0]
   const { togglePopup, isOpen } = usePopup()
+  const { show, handleClose, handleShow } = useModal()
   const [errorMessage, setErrorMessage] = useState('')
+  const [otp, setOtp] = useState('')
+  const [otpSent, setOtpSent] = useState(false)
 
   const initialValues = {
     bankingDate: new Date().toISOString().slice(0, 10),
@@ -78,7 +85,7 @@ const PayOffering = (props: PayOfferingProps) => {
 
     setSubmitting(true)
     try {
-      await BankServiceOffering({
+      const paymentRes = await BankServiceOffering({
         variables: {
           serviceRecordId: serviceRecordId,
           stream_name: service.stream_name,
@@ -87,8 +94,15 @@ const PayOffering = (props: PayOfferingProps) => {
           momoName: values.momoName,
         },
       })
-      setSubmitting(false)
-      navigate('/self-banking/confirm-payment')
+
+      if (
+        paymentRes.data.BankServiceOffering.transactionStatus === 'send OTP'
+      ) {
+        handleShow()
+      } else {
+        setSubmitting(false)
+        navigate('/self-banking/confirm-payment')
+      }
     } catch (error: any) {
       setErrorMessage(error.message)
       togglePopup()
@@ -105,6 +119,37 @@ const PayOffering = (props: PayOfferingProps) => {
         />
       )}
 
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Body>
+          <div className="p-4">
+            A registration token has just been sent to your phone via text
+            message. Please enter it here 👇🏾
+          </div>
+          <input
+            onChange={(e) => setOtp(e.target.value)}
+            className="form-control bg-dark"
+          ></input>
+          <div className="text-center pt-4">
+            <Button
+              disabled={otpSent}
+              onClick={() => {
+                setOtpSent(true)
+                SendPaymentOTP({
+                  variables: {
+                    serviceRecordId: service.id,
+                    streamName: service.stream_name,
+                    reference: service?.transactionReference,
+                    otp: otp,
+                  },
+                }).then(() => navigate('/self-banking/confirm-payment'))
+              }}
+            >
+              {otpSent ? 'Sending' : 'Submit OTP'}
+            </Button>
+          </div>
+        </Modal.Body>
+      </Modal>
+
       <ApolloWrapper data={data} loading={loading} error={error}>
         <Container>
           <HeadingPrimary loading={loading}>
@@ -116,6 +161,7 @@ const PayOffering = (props: PayOfferingProps) => {
           {church?.bankingCode && (
             <div>{`Banking Code: ${church.bankingCode}`} </div>
           )}
+
           <Formik
             initialValues={initialValues}
             validationSchema={validationSchema}

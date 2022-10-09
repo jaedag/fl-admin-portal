@@ -5,23 +5,26 @@ import { permitLeader } from '../permissions'
 import {
   getMobileCode,
   getStreamFinancials,
-  handlePaymentError,
   Network,
-  padNumbers,
 } from '../utils/financial-utils'
 import { isAuth, rearrangeCypherObject, throwToSentry } from '../utils/utils'
 
 import {
   checkIfServicePending,
-  checkTransactionId,
+  checkTransactionReference,
   getLastServiceRecord,
-  removeBankingRecordTransactionId,
-  setServiceRecordTransactionId,
+  initiateServiceRecordTransaction,
   setTransactionStatusFailed,
   setTransactionStatusSuccess,
   submitBankingSlip,
+  setRecordTransactionReference,
+  setRecordTransactionReferenceWithOTP,
 } from './banking-cypher'
-import { PaySwitchRequestBody } from './banking-types'
+import {
+  DebitDataBody,
+  PayStackRequestBody,
+  SendPaymentOTP,
+} from './banking-types'
 import { ServiceRecord, StreamOptions } from '../utils/types'
 
 const checkIfLastServiceBanked = async (
@@ -72,14 +75,17 @@ const bankingMutation = {
 
     const session = context.executionContext.session()
 
-    const { merchantId, auth } = getStreamFinancials(args.stream_name)
+    const { auth } = getStreamFinancials(args.stream_name)
 
     // This code checks if there has already been a successful transaction
     const transactionResponse = rearrangeCypherObject(
       await session
-        .run(checkTransactionId, args)
+        .run(checkTransactionReference, args)
         .catch((error: any) =>
-          throwToSentry('There was a problem checking the transactionId', error)
+          throwToSentry(
+            'There was a problem checking the transactionReference',
+            error
+          )
         )
     )
 
@@ -98,13 +104,13 @@ const bankingMutation = {
 
     const cypherResponse = rearrangeCypherObject(
       await session
-        .run(setServiceRecordTransactionId, {
+        .run(initiateServiceRecordTransaction, {
           auth: context.auth,
           ...args,
         })
         .catch((error: any) =>
           throwToSentry(
-            'There was an error setting serviceRecordTransactionId',
+            'There was an error setting serviceRecordTransactionReference',
             error
           )
         )
@@ -112,31 +118,127 @@ const bankingMutation = {
 
     const serviceRecord = cypherResponse.record.properties
 
-    const payOffering: PaySwitchRequestBody = {
+    const payOffering: DebitDataBody = {
       method: 'post',
-      url: `https://prod.theteller.net/v1.1/transaction/process`,
+      baseURL: 'https://api.paystack.co/',
+      url: `/charge`,
       headers: {
         'content-type': 'application/json',
         Authorization: auth,
       },
       data: {
-        transaction_id: padNumbers(serviceRecord.transactionId),
-        merchant_id: merchantId,
-        amount: padNumbers(serviceRecord.income * 100),
-        processing_code: '000200',
-        'r-switch': getMobileCode(args.mobileNetwork),
-        desc: `${cypherResponse.churchName} ${cypherResponse.churchLevel} ${args.momoName}`,
-        subscriber_number: args.mobileNumber,
-        voucher: '',
+        amount: Math.round(serviceRecord.income * (100 / 98.05) * 100),
+        email: cypherResponse.author.email,
+        currency: 'GHS',
+        mobile_money: {
+          phone: args.mobileNumber,
+          provider: getMobileCode(args.mobileNetwork),
+        },
+        metadata: {
+          custom_fields: [
+            {
+              church_name: cypherResponse.churchName,
+              church_level: cypherResponse.churchLevel,
+              depositor_firstname: cypherResponse.author.firstName,
+              depositor_lastname: cypherResponse.author.lastName,
+            },
+          ],
+        },
       },
     }
 
     try {
-      const paymentResponse = await axios(payOffering)
+      const paymentResponse = await axios(payOffering).catch((error) =>
+        throwToSentry('There was an error with the payment', error)
+      )
+      if (paymentResponse.data.data.status === 'send_otp') {
+        const paymentCypherRes = rearrangeCypherObject(
+          await session
+            .run(setRecordTransactionReferenceWithOTP, {
+              id: serviceRecord.id,
+              reference: paymentResponse.data.data.reference,
+            })
+            .catch((error: any) =>
+              throwToSentry(
+                'There was an error setting serviceRecordTransactionReference',
+                error
+              )
+            )
+        )
 
-      handlePaymentError(paymentResponse)
+        return paymentCypherRes.record
+      }
+
+      const paymentCypherRes = rearrangeCypherObject(
+        await session.run(setRecordTransactionReference, {
+          id: serviceRecord.id,
+          reference: paymentResponse.data.data.reference,
+        })
+      )
+
+      return paymentCypherRes.record
     } catch (error: any) {
       throwToSentry('There was an error processing your payment', error)
+    }
+    return transactionResponse.record
+  },
+
+  SendPaymentOTP: async (
+    object: any,
+    args: {
+      serviceRecordId: string
+      streamName: StreamOptions
+      reference: string
+      otp: string
+    },
+    context: Context
+  ) => {
+    isAuth(permitLeader('Fellowship'), context.auth.roles)
+
+    const { auth } = getStreamFinancials(args.streamName)
+
+    const session = context.executionContext.session()
+
+    const sendOtp: SendPaymentOTP = {
+      method: 'post',
+      baseURL: 'https://api.paystack.co/',
+      url: `/charge/submit_otp`,
+      headers: {
+        'content-type': 'application/json',
+        Authorization: auth,
+      },
+      data: {
+        otp: args.otp,
+        reference: args.reference,
+      },
+    }
+
+    try {
+      const otpResponse = await axios(sendOtp).catch((error) =>
+        throwToSentry('There was an error sending OTP', error)
+      )
+
+      if (otpResponse.data.data.status !== 'pay_offline') {
+        const paymentCypherRes = rearrangeCypherObject(
+          await session.run(setRecordTransactionReference, {
+            id: args.serviceRecordId,
+            reference: args.reference,
+          })
+        )
+        return paymentCypherRes.record
+      }
+
+      return {
+        id: args.serviceRecordId,
+        transactionStatus: 'send OTP',
+      }
+    } catch (error: any) {
+      throwToSentry('There was an error processing your payment', error)
+    }
+
+    return {
+      id: args.serviceRecordId,
+      transactionStatus: 'send OTP',
     }
   },
 
@@ -148,51 +250,45 @@ const bankingMutation = {
   ) => {
     isAuth(permitLeader('Fellowship'), context.auth.roles)
     const session = context.executionContext.session()
-    const { merchantId, auth } = getStreamFinancials(args.stream_name)
+
+    const { auth } = getStreamFinancials(args.stream_name)
 
     const transactionResponse = rearrangeCypherObject(
-      await session.run(checkTransactionId, args)
+      await session.run(checkTransactionReference, args)
     )
 
     const record = transactionResponse?.record
     const banker = transactionResponse?.banker
 
-    if (!record?.transactionId) {
+    if (!record?.transactionReference) {
       throw new Error(
         'It looks like there was a problem. Please try sending again!'
       )
     }
 
-    const paddedTransactionId = padNumbers(record?.transactionId)
-
-    const confirmPaymentBody: any = {
+    const confirmPaymentBody: PayStackRequestBody = {
       method: 'get',
-      url: `https://prod.theteller.net/v1.1/users/transactions/${paddedTransactionId}/status`,
+      baseURL: 'https://api.paystack.co/',
+      url: `/transaction/verify/${record.transactionReference}`,
       headers: {
         'Content-Type': 'application/json',
-        'Merchant-Id': merchantId,
         Authorization: auth,
       },
     }
 
-    const confirmationResponse = await axios(confirmPaymentBody)
-
-    if (confirmationResponse.data.code.toString() === '111') {
-      return {
-        id: record.id,
-        transactionId: record.transactionId,
-        transactionStatus: 'pending',
-        income: record.income,
-        offeringBankedBy: {
-          id: banker.id,
-          firstName: banker.firstName,
-          lastName: banker.lastName,
-          fullName: `${banker.firstName} ${banker.fullName}`,
-        },
+    const confirmationResponse = await axios(confirmPaymentBody).catch(
+      async (error) => {
+        if (error.response.data.status === false) {
+          await session.run(setTransactionStatusFailed, args)
+        }
+        throwToSentry(
+          'There was an error confirming transaction - ',
+          error.response.data.message
+        )
       }
-    }
+    )
 
-    if (confirmationResponse.data.code.toString() === '104') {
+    if (confirmationResponse?.data.data.status === 'failed') {
       try {
         await session.run(setTransactionStatusFailed, args)
       } catch (error: any) {
@@ -200,23 +296,7 @@ const bankingMutation = {
       }
     }
 
-    if (!['000', '111'].includes(confirmationResponse.data.code.toString())) {
-      try {
-        await session.run(removeBankingRecordTransactionId, args)
-      } catch (error: any) {
-        throwToSentry(
-          'There was an error removing banking record tranasactionId',
-          error
-        )
-      }
-
-      throwToSentry(
-        'There was an error processing your payment',
-        `${confirmationResponse.data.code} ${confirmationResponse.data.reason}`
-      )
-    }
-
-    if (confirmationResponse.data.code.toString() === '000') {
+    if (confirmationResponse?.data.data.status === 'success') {
       try {
         await session.run(setTransactionStatusSuccess, args)
       } catch (error: any) {
@@ -230,6 +310,8 @@ const bankingMutation = {
     return {
       id: record.id,
       income: record.income,
+      transactionId: args.serviceRecordId,
+      transactionStatus: 'pending',
       offeringBankedBy: {
         id: banker.id,
         firstName: banker.firstName,
