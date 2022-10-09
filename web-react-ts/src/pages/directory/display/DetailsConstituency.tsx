@@ -49,7 +49,7 @@ const DetailsConstituency = () => {
   ]
 
   if (!constituency?.sprinterCost || !constituency?.urvanCost) {
-    const moneyItems = [1, 2, 3]
+    const moneyItems = [1, 2]
     moneyItems.forEach(() => details.pop())
   }
 
