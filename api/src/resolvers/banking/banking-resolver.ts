@@ -20,7 +20,11 @@ import {
   setRecordTransactionReference,
   setRecordTransactionReferenceWithOTP,
 } from './banking-cypher'
-import { PayStackRequestBody } from './banking-types'
+import {
+  DebitDataBody,
+  PayStackRequestBody,
+  SendPaymentOTP,
+} from './banking-types'
 import { ServiceRecord, StreamOptions } from '../utils/types'
 
 const checkIfLastServiceBanked = async (
@@ -114,7 +118,7 @@ const bankingMutation = {
 
     const serviceRecord = cypherResponse.record.properties
 
-    const payOffering: PayStackRequestBody = {
+    const payOffering: DebitDataBody = {
       method: 'post',
       baseURL: 'https://api.paystack.co/',
       url: `/charge`,
@@ -187,7 +191,7 @@ const bankingMutation = {
 
     const session = context.executionContext.session()
 
-    const sendOtp: PayStackRequestBody = {
+    const sendOtp: SendPaymentOTP = {
       method: 'post',
       baseURL: 'https://api.paystack.co/',
       url: `/charge/submit_otp`,

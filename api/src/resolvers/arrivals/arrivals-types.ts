@@ -1,14 +1,21 @@
+import { PayStackRequestBody } from '../banking/banking-types'
 import { NetworkCode } from '../utils/financial-utils'
 
 /* eslint-disable camelcase */
-export interface TransferData {
-  transaction_id: string
-  merchant_id?: string
-  amount: string
-  processing_code: string
-  'r-switch': 'FLT'
-  desc: string
-  pass_code?: string
+export interface CreateTransferRecipientBody {
+  type: 'mobile_money'
+  name: string
+  bank_code: NetworkCode
   account_number: string
-  account_issuer: NetworkCode
+  currency: 'GHS'
+}
+
+export interface SendMoneyBody extends PayStackRequestBody {
+  url: '/transfer'
+  data: {
+    source: 'balance'
+    reason: string
+    amount: number
+    recipient: string
+  }
 }

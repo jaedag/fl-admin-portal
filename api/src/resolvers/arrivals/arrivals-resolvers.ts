@@ -1,9 +1,5 @@
 import axios from 'axios'
-import {
-  getMobileCode,
-  getStreamFinancials,
-  padNumbers,
-} from '../utils/financial-utils'
+import { getStreamFinancials } from '../utils/financial-utils'
 import { Context } from '../utils/neo4j-types'
 import { isAuth, rearrangeCypherObject, throwToSentry } from '../utils/utils'
 import {
@@ -14,7 +10,6 @@ import {
   permitArrivalsHelpers,
 } from '../permissions'
 import { MakeServant, RemoveServant } from '../directory/make-remove-servants'
-import { PayStackRequestBody } from '../banking/banking-types'
 import {
   aggregateBussingDataOnHigherChurches,
   aggregateVehicleBussingRecordData,
@@ -40,6 +35,7 @@ import {
   StreamOptions,
 } from '../utils/types'
 import texts from '../texts.json'
+import { SendMoneyBody } from './arrivals-types'
 
 const dotenv = require('dotenv')
 
@@ -549,7 +545,7 @@ export const arrivalsMutation = {
     isAuth(permitArrivalsHelpers(), context.auth.roles)
     const session = context.executionContext.session()
 
-    const { merchantId, auth, passcode } = getStreamFinancials(args.stream_name)
+    const { auth } = getStreamFinancials(args.stream_name)
     const recordResponse = rearrangeCypherObject(
       await session.run(checkTransactionId, args)
     )
@@ -571,24 +567,19 @@ export const arrivalsMutation = {
     )
     const vehicleRecord = cypherResponse.record.properties
 
-    const sendVehicleSupport: PayStackRequestBody = {
+    const sendVehicleSupport: SendMoneyBody = {
       method: 'post',
       baseURL: 'https://api.paystack.co/',
-      url: `/charge/submit_otp`,
+      url: '/transfer',
       headers: {
         'content-type': 'application/json',
         Authorization: auth,
       },
       data: {
-        merchant_id: merchantId,
-        transaction_id: padNumbers(vehicleRecord.transactionId),
-        amount: padNumbers(vehicleRecord.bussingTopUp * 100),
-        processing_code: '404000',
-        'r-switch': 'FLT',
-        desc: `${cypherResponse.bacentaName} Bacenta ${vehicleRecord.momoName}`,
-        pass_code: passcode,
-        account_number: vehicleRecord.momoNumber,
-        account_issuer: getMobileCode(vehicleRecord.mobileNetwork),
+        source: 'balance',
+        reason: `${cypherResponse.bacentaName} Bacenta ${vehicleRecord.momoName}`,
+        amount: vehicleRecord.bussingTopUp * 100,
+        recipient: vehicleRecord.momoNumber,
       },
     }
 
