@@ -573,7 +573,8 @@ export const arrivalsMutation = {
 
     const sendVehicleSupport: PayStackRequestBody = {
       method: 'post',
-      url: `https://prod.theteller.net/v1.1/transaction/process`,
+      baseURL: 'https://api.paystack.co/',
+      url: `/charge/submit_otp`,
       headers: {
         'content-type': 'application/json',
         Authorization: auth,
@@ -593,7 +594,7 @@ export const arrivalsMutation = {
 
     try {
       const res = await axios(sendVehicleSupport)
-      console.log(res)
+
       if (res.data.code !== '000') {
         await session.run(removeVehicleRecordTransactionId, args)
         throwToSentry(
