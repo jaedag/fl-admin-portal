@@ -33,5 +33,5 @@ export interface PayStackRequestBody {
   baseURL: 'https://api.paystack.co/'
   url: string
   headers: any
-  data: DebitData | TransferData | SendPaymentOTP
+  data?: DebitData | TransferData | SendPaymentOTP
 }

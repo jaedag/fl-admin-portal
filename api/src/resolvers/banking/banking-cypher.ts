@@ -68,7 +68,10 @@ RETURN record {
 
 export const setTransactionStatusFailed = `
 MATCH (record:ServiceRecord {id: $serviceRecordId})
+MATCH (record)-[r:OFFERING_BANKED_BY]->(banker)
 SET record.transactionStatus = 'failed'
+
+DELETE r
 
 RETURN record
 `
@@ -78,17 +81,6 @@ MATCH (record:ServiceRecord {id: $serviceRecordId})
 SET record.transactionStatus = "success"
 
 RETURN record
-`
-export const removeBankingRecordTransactionReference = `
-MATCH (record:ServiceRecord {id: $serviceRecordId})<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(church)
-WHERE church:Fellowship OR church:Constituency OR church:Council OR church:Stream
-
-MATCH (record)-[r:OFFERING_BANKED_BY]->(banker)
-MATCH (record)-[:SERVICE_HELD_ON]->(date:TimeGraph)
-SET record.transactionStatus = 'failed'
-DELETE r
-
-RETURN record, church.name AS churchName, date.date AS date
 `
 
 export const getLastServiceRecord = `

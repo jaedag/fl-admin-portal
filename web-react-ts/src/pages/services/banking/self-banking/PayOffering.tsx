@@ -129,6 +129,7 @@ const PayOffering = (props: PayOfferingProps) => {
           ></input>
           <div className="text-center pt-4">
             <Button
+              disabled={otpSent}
               onClick={() => {
                 setOtpSent(true)
                 SendPaymentOTP({

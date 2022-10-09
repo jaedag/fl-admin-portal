@@ -13,7 +13,6 @@ import {
   checkIfServicePending,
   checkTransactionReference,
   getLastServiceRecord,
-  removeBankingRecordTransactionReference,
   initiateServiceRecordTransaction,
   setTransactionStatusFailed,
   setTransactionStatusSuccess,
@@ -237,7 +236,8 @@ const bankingMutation = {
   ) => {
     isAuth(permitLeader('Fellowship'), context.auth.roles)
     const session = context.executionContext.session()
-    const { merchantId, auth } = getStreamFinancials(args.stream_name)
+
+    const { auth } = getStreamFinancials(args.stream_name)
 
     const transactionResponse = rearrangeCypherObject(
       await session.run(checkTransactionReference, args)
@@ -252,34 +252,30 @@ const bankingMutation = {
       )
     }
 
-    const confirmPaymentBody: any = {
+    const confirmPaymentBody: PayStackRequestBody = {
       method: 'get',
-      url: `https://api.paystack.co/transaction/verify/:reference/${record?.transactionReference}`,
+      baseURL: 'https://api.paystack.co/',
+      url: `/transaction/verify/${record.transactionReference}`,
       headers: {
         'Content-Type': 'application/json',
-        'Merchant-Id': merchantId,
         Authorization: auth,
       },
     }
 
-    const confirmationResponse = await axios(confirmPaymentBody)
-
-    if (confirmationResponse.data.code.toString() === '111') {
-      return {
-        id: record.id,
-        transactionReference: record.transactionReference,
-        transactionStatus: 'pending',
-        income: record.income,
-        offeringBankedBy: {
-          id: banker.id,
-          firstName: banker.firstName,
-          lastName: banker.lastName,
-          fullName: `${banker.firstName} ${banker.fullName}`,
-        },
+    const confirmationResponse = await axios(confirmPaymentBody).catch(
+      async (error) => {
+        console.log(error.response.data)
+        if (error.response.data.status === false) {
+          await session.run(setTransactionStatusFailed, args)
+        }
+        throwToSentry(
+          'There was an error confirming transaction - ',
+          error.response.data.message
+        )
       }
-    }
+    )
 
-    if (confirmationResponse.data.code.toString() === '104') {
+    if (confirmationResponse?.data.data.status === 'failed') {
       try {
         await session.run(setTransactionStatusFailed, args)
       } catch (error: any) {
@@ -287,23 +283,7 @@ const bankingMutation = {
       }
     }
 
-    if (!['000', '111'].includes(confirmationResponse.data.code.toString())) {
-      try {
-        await session.run(removeBankingRecordTransactionReference, args)
-      } catch (error: any) {
-        throwToSentry(
-          'There was an error removing banking record tranasactionId',
-          error
-        )
-      }
-
-      throwToSentry(
-        'There was an error processing your payment',
-        `${confirmationResponse.data.code} ${confirmationResponse.data.reason}`
-      )
-    }
-
-    if (confirmationResponse.data.code.toString() === '000') {
+    if (confirmationResponse?.data.data.status === 'success') {
       try {
         await session.run(setTransactionStatusSuccess, args)
       } catch (error: any) {
