@@ -40,14 +40,12 @@ export const setRecordTransactionReference = `
 export const setRecordTransactionReferenceWithOTP = `
     MATCH (record:ServiceRecord {id: $id})
     SET record.transactionReference = $reference,
-    record.transactionStatus = 'send OTP',
-    record.transactionOTP = $otp
+    record.transactionStatus = 'send OTP'
     
     RETURN record {
         .id,
         .transactionReference,
-        .transactionStatus,
-        .transactionOTP   
+        .transactionStatus
         }
     `
 
@@ -77,10 +75,10 @@ RETURN record
 `
 
 export const setTransactionStatusSuccess = `
-MATCH (record:ServiceRecord {id: $serviceRecordId})
-SET record.transactionStatus = "success"
-
-RETURN record
+   MATCH (record:ServiceRecord {id: $serviceRecordId})
+   SET record.transactionStatus = 'success'
+   
+   RETURN record
 `
 
 export const getLastServiceRecord = `

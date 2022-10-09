@@ -131,7 +131,7 @@ const bankingMutation = {
         email: cypherResponse.author.email,
         currency: 'GHS',
         mobile_money: {
-          phone: '0551234987' ?? args.mobileNumber,
+          phone: args.mobileNumber,
           provider: getMobileCode(args.mobileNetwork),
         },
         metadata: {
@@ -148,16 +148,24 @@ const bankingMutation = {
     }
 
     try {
-      const paymentResponse = await axios(payOffering)
-
-      if (paymentResponse.data.data.status !== 'send_otp') {
+      const paymentResponse = await axios(payOffering).catch((error) =>
+        throwToSentry('There was an error with the payment', error)
+      )
+      if (paymentResponse.data.data.status === 'send_otp') {
         const paymentCypherRes = rearrangeCypherObject(
-          await session.run(setRecordTransactionReferenceWithOTP, {
-            id: serviceRecord.id,
-            reference: paymentResponse.data.data.reference,
-            otp: 'newotp' || paymentResponse.data.data.otp,
-          })
+          await session
+            .run(setRecordTransactionReferenceWithOTP, {
+              id: serviceRecord.id,
+              reference: paymentResponse.data.data.reference,
+            })
+            .catch((error: any) =>
+              throwToSentry(
+                'There was an error setting serviceRecordTransactionReference',
+                error
+              )
+            )
         )
+
         return paymentCypherRes.record
       }
 
@@ -206,7 +214,9 @@ const bankingMutation = {
     }
 
     try {
-      const otpResponse = await axios(sendOtp)
+      const otpResponse = await axios(sendOtp).catch((error) =>
+        throwToSentry('There was an error sending OTP', error)
+      )
 
       if (otpResponse.data.data.status !== 'pay_offline') {
         const paymentCypherRes = rearrangeCypherObject(
@@ -268,7 +278,6 @@ const bankingMutation = {
 
     const confirmationResponse = await axios(confirmPaymentBody).catch(
       async (error) => {
-        console.log(error.response.data)
         if (error.response.data.status === false) {
           await session.run(setTransactionStatusFailed, args)
         }
@@ -301,6 +310,8 @@ const bankingMutation = {
     return {
       id: record.id,
       income: record.income,
+      transactionId: args.serviceRecordId,
+      transactionStatus: 'pending',
       offeringBankedBy: {
         id: banker.id,
         firstName: banker.firstName,

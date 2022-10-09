@@ -95,7 +95,9 @@ const PayOffering = (props: PayOfferingProps) => {
         },
       })
 
-      if (paymentRes.data.transactionStatus === 'send OTP') {
+      if (
+        paymentRes.data.BankServiceOffering.transactionStatus === 'send OTP'
+      ) {
         handleShow()
       } else {
         setSubmitting(false)
@@ -117,7 +119,7 @@ const PayOffering = (props: PayOfferingProps) => {
         />
       )}
 
-      <Modal show={!show} onHide={handleClose}>
+      <Modal show={show} onHide={handleClose}>
         <Modal.Body>
           <div className="p-4">
             A registration token has just been sent to your phone via text

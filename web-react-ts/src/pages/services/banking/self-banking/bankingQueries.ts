@@ -51,7 +51,6 @@ export const PAY_OFFERING_MUTATION = gql`
       id
       transactionReference
       transactionStatus
-      transactionOTP
     }
   }
 `
