@@ -19,6 +19,7 @@ import {
   setTransactionStatusSuccess,
   submitBankingSlip,
   setRecordTransactionReference,
+  setRecordTransactionReferenceWithOTP,
 } from './banking-cypher'
 import { PayStackRequestBody } from './banking-types'
 import { ServiceRecord, StreamOptions } from '../utils/types'
@@ -145,6 +146,18 @@ const bankingMutation = {
 
     try {
       const paymentResponse = await axios(payOffering)
+
+      if (paymentResponse.data.data.status !== 'send_otp') {
+        const paymentCypherRes = rearrangeCypherObject(
+          await session.run(setRecordTransactionReferenceWithOTP, {
+            id: serviceRecord.id,
+            reference: paymentResponse.data.data.reference,
+            otp: 'newotp' || paymentResponse.data.data.otp,
+          })
+        )
+        return paymentCypherRes.record
+      }
+
       const paymentCypherRes = rearrangeCypherObject(
         await session.run(setRecordTransactionReference, {
           id: serviceRecord.id,
@@ -157,6 +170,63 @@ const bankingMutation = {
       throwToSentry('There was an error processing your payment', error)
     }
     return transactionResponse.record
+  },
+
+  SendPaymentOTP: async (
+    object: any,
+    args: {
+      serviceRecordId: string
+      streamName: StreamOptions
+      reference: string
+      otp: string
+    },
+    context: Context
+  ) => {
+    isAuth(permitLeader('Fellowship'), context.auth.roles)
+
+    const { auth } = getStreamFinancials(args.streamName)
+
+    const session = context.executionContext.session()
+
+    const sendOtp: PayStackRequestBody = {
+      method: 'post',
+      baseURL: 'https://api.paystack.co/',
+      url: `/charge/submit_otp`,
+      headers: {
+        'content-type': 'application/json',
+        Authorization: auth,
+      },
+      data: {
+        otp: args.otp,
+        reference: args.reference,
+      },
+    }
+
+    try {
+      const otpResponse = await axios(sendOtp)
+
+      if (otpResponse.data.data.status !== 'pay_offline') {
+        const paymentCypherRes = rearrangeCypherObject(
+          await session.run(setRecordTransactionReference, {
+            id: args.serviceRecordId,
+            reference: args.reference,
+          })
+        )
+        return paymentCypherRes.record
+      }
+
+      return {
+        id: args.serviceRecordId,
+        transactionStatus: 'send OTP',
+      }
+    } catch (error: any) {
+      throwToSentry('There was an error processing your payment', error)
+    }
+
+    return {
+      id: args.serviceRecordId,
+      transactionStatus: 'send OTP',
+    }
   },
 
   ConfirmOfferingPayment: async (

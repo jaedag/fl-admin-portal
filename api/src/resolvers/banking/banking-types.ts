@@ -23,10 +23,15 @@ interface DebitData {
   }
 }
 
+interface SendPaymentOTP {
+  reference: string
+  otp: string
+}
+
 export interface PayStackRequestBody {
   method: string
   baseURL: 'https://api.paystack.co/'
   url: string
   headers: any
-  data: DebitData | TransferData
+  data: DebitData | TransferData | SendPaymentOTP
 }

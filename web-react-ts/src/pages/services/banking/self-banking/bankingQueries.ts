@@ -27,6 +27,7 @@ export const DISPLAY_OFFERING_DETAILS = gql`
       }
       income
       transactionTime
+      transactionReference
       stream_name
     }
   }
@@ -50,9 +51,30 @@ export const PAY_OFFERING_MUTATION = gql`
       id
       transactionReference
       transactionStatus
+      transactionOTP
     }
   }
 `
+
+export const SEND_PAYMENT_OTP = gql`
+  mutation SendPaymentOTP(
+    $serviceRecordId: String!
+    $streamName: String!
+    $reference: String!
+    $otp: String!
+  ) {
+    SendPaymentOTP(
+      serviceRecordId: $serviceRecordId
+      streamName: $streamName
+      reference: $reference
+      otp: $otp
+    ) {
+      id
+      transactionStatus
+    }
+  }
+`
+
 export const CONFIRM_OFFERING_PAYMENT = gql`
   mutation ConfirmOfferingPayment(
     $serviceRecordId: ID!

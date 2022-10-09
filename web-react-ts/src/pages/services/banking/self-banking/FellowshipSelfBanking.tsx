@@ -117,7 +117,9 @@ const FellowshipSelfBanking = () => {
                     <span>Offering: {service.income}</span>
                     <div
                       className={`${
-                        service?.transactionStatus === 'pending' && 'yellow'
+                        (service?.transactionStatus === 'pending' ||
+                          service?.transactionStatus === 'send OTP') &&
+                        'yellow'
                       } ${service?.transactionStatus === 'success' && 'good'} ${
                         service?.transactionStatus === 'failed' && 'bad'
                       }`}

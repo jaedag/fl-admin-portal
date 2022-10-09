@@ -6,6 +6,12 @@ extend type Mutation {
     mobileNumber: String!
     momoName: String!
   ): ServiceRecord!
+  SendPaymentOTP(
+    serviceRecordId: String!
+    streamName: String!
+    reference: String
+    otp: String!
+  ): ServiceRecord!
   ConfirmOfferingPayment(
     stream_name: String!
     serviceRecordId: ID!
@@ -26,6 +32,7 @@ extend type ServiceRecord {
 extend type ServiceRecord {
   transactionTime: DateTime
   transactionReference: ID
+  transactionOTP: String
   transactionStatus: String
   bankingProof: Boolean
     @cypher(

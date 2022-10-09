@@ -275,7 +275,7 @@ export type ServiceRecord = {
   treasurerSelfie: string
   bankingProof: boolean
   bankingSlip: string
-  transactionStatus: 'pending' | 'success' | 'failed'
+  transactionStatus: 'pending' | 'success' | 'failed' | 'send OTP'
   bankingSlipUploader: Member
   offeringBankedBy: Member
 }

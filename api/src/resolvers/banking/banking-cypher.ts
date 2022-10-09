@@ -37,6 +37,20 @@ export const setRecordTransactionReference = `
     }
 `
 
+export const setRecordTransactionReferenceWithOTP = `
+    MATCH (record:ServiceRecord {id: $id})
+    SET record.transactionReference = $reference,
+    record.transactionStatus = 'send OTP',
+    record.transactionOTP = $otp
+    
+    RETURN record {
+        .id,
+        .transactionReference,
+        .transactionStatus,
+        .transactionOTP   
+        }
+    `
+
 export const checkTransactionReference = `
 MATCH (record:ServiceRecord {id: $serviceRecordId})
 OPTIONAL MATCH (record)-[:OFFERING_BANKED_BY]->(banker)

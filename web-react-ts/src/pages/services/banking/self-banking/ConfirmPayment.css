@@ -10,3 +10,8 @@
 .force-left {
   text-align: left !important;
 }
+
+.modal-content {
+  background-color: #252525;
+  color: whitesmoke;
+}
