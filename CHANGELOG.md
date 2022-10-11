@@ -1,3 +1,35 @@
+### 5.2.0 (2022-10-11)
+
+##### New Features
+
+*  set up function for paystack transaction webhook ([#321](https://github.com/firstlovecenter/fl-pastoral-care/pull/321)) ([493fa908](https://github.com/firstlovecenter/fl-pastoral-care/commit/493fa9080862629302c042def2865867727350cd))
+*  implement user flow to delete a member on the app ([02a5fcc4](https://github.com/firstlovecenter/fl-pastoral-care/commit/02a5fcc46f3e0fea50f3daf306c8b4388f242012))
+*  add feature that allows an inactive member to be reactivated when reregistered ([038df677](https://github.com/firstlovecenter/fl-pastoral-care/commit/038df677d91102d09d2576fb602a76a8688bf69c))
+*  admin-287 change members lists to return active members lists ([d5062773](https://github.com/firstlovecenter/fl-pastoral-care/commit/d5062773fa1f3fde25f6c8d546f5f39f02943f8e))
+*  admin-286 add cypher to make all members active ([784169b6](https://github.com/firstlovecenter/fl-pastoral-care/commit/784169b65acad7f5cea12afa61a4af005c02b9a9))
+*  implement directory lock till tuesdays in api ([a226a825](https://github.com/firstlovecenter/fl-pastoral-care/commit/a226a8254db58c1109f8ae12dbcc27b1fc8bbb59))
+
+##### Bug Fixes
+
+* **paystack:**  remove math.round around banking amount ([d1efef62](https://github.com/firstlovecenter/fl-pastoral-care/commit/d1efef62dcd86024ef0ac648f40ed86d796acb1b))
+*  modify detailsConstituency to show fellowship Count ([f1c992c9](https://github.com/firstlovecenter/fl-pastoral-care/commit/f1c992c900cc7b4eefa2a7a17fbdf32bacfa4042))
+*  fix bug causing a banking loop when user has multiple unbanked services ([aa94d7d9](https://github.com/firstlovecenter/fl-pastoral-care/commit/aa94d7d951b361d1fb4e4c544a48ff0520e274df))
+*  add relationship to timegraph node from deleting history log ([c0bd8fc8](https://github.com/firstlovecenter/fl-pastoral-care/commit/c0bd8fc8faccfd25edd6f9977acd8cc33ce37418))
+*  implement fellowship leaders being able to update their fellowship coordinates ([1a407e7d](https://github.com/firstlovecenter/fl-pastoral-care/commit/1a407e7dc4e9a349ab2b7d09037fa501f298ca68))
+*  correct typos in cypher ([4b8467c9](https://github.com/firstlovecenter/fl-pastoral-care/commit/4b8467c94d447c15beb2b33e5f700daf427dbe45))
+*  remove lazy load from bus form vehicle details ([5f906964](https://github.com/firstlovecenter/fl-pastoral-care/commit/5f9069645fcfe03c2b046ff9982bf55e6938da73))
+*  implement directory lock except for tuesdays ([35c1cff4](https://github.com/firstlovecenter/fl-pastoral-care/commit/35c1cff44feeb41a953074c91d4570710b1801ca))
+*  update return values from checkTransaction Cypher ([02a8414f](https://github.com/firstlovecenter/fl-pastoral-care/commit/02a8414fa8846069e1c10ae5072a787baf2e0105))
+
+##### Other Changes
+
+* Active at different points in the app ([58a7d5a9](https://github.com/firstlovecenter/fl-pastoral-care/commit/58a7d5a9c415c6f0e76ff376adc0e654da4350ba))
+* inactive label to member ([1062f7af](https://github.com/firstlovecenter/fl-pastoral-care/commit/1062f7afdbca12fb6b08dbbf250793e0bffd7f55))
+
+##### Refactors
+
+*  add mutation to make member inactive ([6ec27bcf](https://github.com/firstlovecenter/fl-pastoral-care/commit/6ec27bcf3758413ff69fc1c1055793f502838e91))
+
 #### 5.1.29 (2022-10-01)
 
 ##### Chores
