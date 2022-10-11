@@ -64,6 +64,7 @@ export const handler = async (event) => {
     )
   )
 
+  console.log(event.body)
   const handlePaystackReq = async (neoDriver) => {
     const hash = crypto
       .createHmac('sha512', process.env.PAYSTACK_PRIVATE_KEY)
@@ -75,7 +76,6 @@ export const handler = async (event) => {
         reference,
         status,
       }
-      console.log(response)
       runCypher(neoDriver, response)
     }
   }
