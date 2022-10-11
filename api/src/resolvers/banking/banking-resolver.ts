@@ -115,7 +115,7 @@ const bankingMutation = {
           )
         )
     )
-    console.log('cypherResponse', cypherResponse)
+
     const serviceRecord = cypherResponse.record.properties
 
     const payOffering: DebitDataBody = {
@@ -147,7 +147,6 @@ const bankingMutation = {
       },
     }
 
-    console.log('request body', payOffering)
     try {
       const paymentResponse = await axios(payOffering).catch((error) =>
         throwToSentry('There was an error with the payment', error)
@@ -219,12 +218,17 @@ const bankingMutation = {
         throwToSentry('There was an error sending OTP', error)
       )
 
-      if (otpResponse.data.data.status !== 'pay_offline') {
+      if (otpResponse.data.data.status === 'pay_offline') {
         const paymentCypherRes = rearrangeCypherObject(
           await session.run(setRecordTransactionReference, {
             id: args.serviceRecordId,
             reference: args.reference,
           })
+        ).catch((error: any) =>
+          throwToSentry(
+            'There was an error setting transaction reference',
+            error
+          )
         )
         return paymentCypherRes.record
       }
