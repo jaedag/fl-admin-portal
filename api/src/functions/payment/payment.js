@@ -4,21 +4,21 @@ const crypto = require('crypto')
 const runCypher = (driver, response) => {
   const setTransactionStatusSuccess = `
       MATCH (record:ServiceRecord {transactionReference: $reference})
-      SET record.transactionStatus = "success"
+      SET record.transactionStatus = 'success'
       
       RETURN record
     `
 
   const setTransactionStatusFailed = `
       MATCH (record:ServiceRecord {transactionReference: $reference})
-      SET record.transactionStatus = "success"
+      SET record.transactionStatus = 'success'
       
       RETURN record
     `
 
   const setTransactionStatusPending = `
     MATCH (record:ServiceRecord {transactionReference: $reference})
-    SET record.transactionStatus = "success"
+    SET record.transactionStatus = 'success'
     
     RETURN record
   `
