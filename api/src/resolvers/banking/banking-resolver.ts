@@ -115,7 +115,7 @@ const bankingMutation = {
           )
         )
     )
-
+    console.log('cypherResponse', cypherResponse)
     const serviceRecord = cypherResponse.record.properties
 
     const payOffering: DebitDataBody = {
@@ -147,6 +147,7 @@ const bankingMutation = {
       },
     }
 
+    console.log('request body', payOffering)
     try {
       const paymentResponse = await axios(payOffering).catch((error) =>
         throwToSentry('There was an error with the payment', error)
