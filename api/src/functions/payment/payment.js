@@ -71,13 +71,15 @@ export const handler = async (event) => {
       .digest('hex')
 
     if (hash === event.headers['x-paystack-signature']) {
-      const { reference, status } = event.body
+      const { reference, status } = event.body.data
       const response = {
         reference,
         status,
       }
 
       runCypher(neoDriver, response)
+    } else {
+      console.error('Hash Mismatch')
     }
   }
 
