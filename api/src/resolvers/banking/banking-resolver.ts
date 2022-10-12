@@ -160,6 +160,7 @@ const bankingMutation = {
       data: {
         first_name: cypherResponse.author.firstName,
         last_name: cypherResponse.author.lastName,
+        phone: args.mobileNumber,
       },
     }
 
