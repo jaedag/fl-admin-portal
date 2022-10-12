@@ -3,13 +3,15 @@ const neo4j = require('neo4j-driver')
 const whitelistIPs = (event) => {
   const validIps = ['52.31.139.75', '52.49.173.169', '52.214.14.220'] // Put your IP whitelist in this array
 
-  if (validIps.includes(event.headers['x-forwarded-for'])) {
+  if (validIps.includes(event.headers['x-nf-client-connection-ip'])) {
     // IP is ok, so go on
     console.log('IP ok')
   } else {
     // Invalid ip
-    console.error(`Bad IP: ${event.headers['x-forwarded-for']}`)
-    const err = new Error(`Bad IP: ${event.headers['x-forwarded-for']}`)
+    console.error(`Bad IP: ${event.headers['x-nf-client-connection-ip']}`)
+    const err = new Error(
+      `Bad IP: ${event.headers['x-nf-client-connection-ip']}`
+    )
     throw err
   }
 }
