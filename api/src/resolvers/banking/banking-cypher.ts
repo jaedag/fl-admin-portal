@@ -21,7 +21,8 @@ RETURN record, church.name AS churchName, date.date AS date, churchLevel AS chur
     author {
         .firstName,
         .lastName,
-        .email
+        .email,
+        .phoneNumber
     }
 `
 
