@@ -83,7 +83,6 @@ export const handler = async (event) => {
     whitelistIPs(event)
 
     const body = JSON.parse(event.body)
-    console.log('data', body)
 
     const { reference, status } = body.data
 

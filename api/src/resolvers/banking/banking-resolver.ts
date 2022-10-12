@@ -149,10 +149,27 @@ const bankingMutation = {
       },
     }
 
+    const updatePaystackCustomer = {
+      method: 'put',
+      baseURL: 'https://api.paystack.co/',
+      url: `/customer/${cypherResponse.author.email}`,
+      headers: {
+        'content-type': 'application/json',
+        Authorization: auth ?? '',
+      },
+      data: {
+        first_name: cypherResponse.author.firstName,
+        last_name: cypherResponse.author.lastName,
+      },
+    }
+
     try {
       const paymentResponse = await axios(payOffering).catch((error) =>
         throwToSentry('There was an error with the payment', error)
       )
+
+      axios(updatePaystackCustomer)
+
       if (paymentResponse.data.data.status === 'send_otp') {
         const paymentCypherRes = rearrangeCypherObject(
           await session
