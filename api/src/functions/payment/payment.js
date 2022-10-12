@@ -66,9 +66,12 @@ export const handler = async (event) => {
   )
 
   const handlePaystackReq = async (neoDriver) => {
+    console.log('event', event.body)
+    console.log('eventBody.data JSON.stringify', JSON.stringify(event.body))
+
     const hash = crypto
       .createHmac('sha512', process.env.PAYSTACK_PRIVATE_KEY)
-      .update(JSON.stringify(event.body.data))
+      .update(JSON.stringify(event.body))
       .digest('hex')
 
     if (hash === event.headers['x-paystack-signature']) {
