@@ -76,6 +76,8 @@ export const handler = async (event) => {
       'event.headers paystack sig',
       event.headers['x-paystack-signature']
     )
+
+    console.log('full event', event)
     if (hash === event.headers['x-paystack-signature']) {
       console.log('Hash Verified')
       const { reference, status } = event.body.data
