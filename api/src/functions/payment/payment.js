@@ -41,7 +41,6 @@ const runCypher = (driver, response) => {
   const executeQuery = (neoDriver, paymentResponse) => {
     const session = neoDriver.session()
 
-    console.log('payment response', paymentResponse)
     return session
       .writeTransaction((tx) => {
         try {
@@ -83,8 +82,10 @@ export const handler = async (event) => {
   const handlePaystackReq = async (neoDriver) => {
     whitelistIPs(event)
 
-    const data = JSON.parse(event.body)
-    const { reference, status } = data
+    const body = JSON.parse(event.body)
+    console.log('data', body)
+
+    const { reference, status } = body.data
 
     const response = {
       reference,
