@@ -51,7 +51,7 @@ const runCypher = (driver, response) => {
   }
 
   executeQuery(driver, response).catch((error) => {
-    console.error('Database query failed to complete\n', error.message)
+    throw new Error('Database query failed to complete\n', error.message)
   })
 }
 
@@ -66,14 +66,16 @@ export const handler = async (event) => {
   )
 
   const handlePaystackReq = async (neoDriver) => {
-    console.log('event', event.body)
-    console.log('eventBody.data JSON.stringify', JSON.stringify(event.body))
-
     const hash = crypto
       .createHmac('sha512', process.env.PAYSTACK_PRIVATE_KEY)
       .update(JSON.stringify(event.body))
       .digest('hex')
 
+    console.log('hash', hash)
+    console.log(
+      'event.headers paystack sig',
+      event.headers['x-paystack-signature']
+    )
     if (hash === event.headers['x-paystack-signature']) {
       console.log('Hash Verified')
       const { reference, status } = event.body.data
