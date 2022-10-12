@@ -1,5 +1,18 @@
 const neo4j = require('neo4j-driver')
-const crypto = require('crypto')
+
+const whitelistIPs = (event) => {
+  const validIps = ['52.31.139.75', '52.49.173.169', '52.214.14.220'] // Put your IP whitelist in this array
+
+  if (validIps.includes(event.headers['x-forwarded-for'])) {
+    // IP is ok, so go on
+    console.log('IP ok')
+  } else {
+    // Invalid ip
+    console.error(`Bad IP: ${event.headers['x-forwarded-for']}`)
+    const err = new Error(`Bad IP: ${event.headers['x-forwarded-for']}`)
+    throw err
+  }
+}
 
 const runCypher = (driver, response) => {
   const setTransactionStatusSuccess = `
@@ -66,31 +79,16 @@ export const handler = async (event) => {
   )
 
   const handlePaystackReq = async (neoDriver) => {
-    const hash = crypto
-      .createHmac('sha512', process.env.PAYSTACK_PRIVATE_KEY)
-      .update(JSON.stringify(event.body))
-      .digest('hex')
+    whitelistIPs(event)
 
-    console.log('hash', hash)
-    console.log(
-      'event.headers paystack sig',
-      event.headers['x-paystack-signature']
-    )
+    const { reference, status } = event.body.data
 
-    console.log('full event', event)
-    if (hash === event.headers['x-paystack-signature']) {
-      console.log('Hash Verified')
-      const { reference, status } = event.body.data
-
-      const response = {
-        reference,
-        status,
-      }
-
-      runCypher(neoDriver, response)
-    } else {
-      throw new Error('Hash Mismatch')
+    const response = {
+      reference,
+      status,
     }
+
+    runCypher(neoDriver, response)
   }
 
   /*
