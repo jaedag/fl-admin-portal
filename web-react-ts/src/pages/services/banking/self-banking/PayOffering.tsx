@@ -1,7 +1,7 @@
 import { ApolloError, useMutation, useQuery } from '@apollo/client'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { ServiceContext } from 'contexts/ServiceContext'
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
 import {
   DISPLAY_OFFERING_DETAILS,
@@ -62,6 +62,13 @@ const PayOffering = (props: PayOfferingProps) => {
     mobileNetwork: '',
     mobileNumber: '',
   }
+
+  useEffect(() => {
+    if (service?.transactionStatus === 'send OTP') {
+      handleShow()
+    }
+  }, [])
+
   const validationSchema = Yup.object({
     mobileNumber: Yup.string().matches(
       MOMO_NUM_REGEX,

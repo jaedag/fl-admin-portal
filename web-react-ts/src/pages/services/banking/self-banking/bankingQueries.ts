@@ -28,6 +28,7 @@ export const DISPLAY_OFFERING_DETAILS = gql`
       income
       transactionTime
       transactionReference
+      transactionStatus
       stream_name
     }
   }
