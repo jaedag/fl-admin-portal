@@ -43,7 +43,7 @@ const runCypher = (driver, response) => {
             })
           }
         } catch (error) {
-          console.log('Error Running Cypher', error)
+          console.error('Error Running Cypher', error)
         }
       })
       .finally(() => session.close())
@@ -64,18 +64,19 @@ export const handler = async (event) => {
     )
   )
 
-  console.log(event.body)
   const handlePaystackReq = async (neoDriver) => {
     const hash = crypto
       .createHmac('sha512', process.env.PAYSTACK_PRIVATE_KEY)
       .update(JSON.stringify(event.body))
       .digest('hex')
+
     if (hash === event.headers['x-paystack-signature']) {
       const { reference, status } = event.body
       const response = {
         reference,
         status,
       }
+
       runCypher(neoDriver, response)
     }
   }
