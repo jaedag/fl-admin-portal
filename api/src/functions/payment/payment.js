@@ -83,7 +83,8 @@ export const handler = async (event) => {
   const handlePaystackReq = async (neoDriver) => {
     whitelistIPs(event)
 
-    const { reference, status } = event.body.data
+    const data = JSON.parse(event.body)
+    const { reference, status } = data
 
     const response = {
       reference,
