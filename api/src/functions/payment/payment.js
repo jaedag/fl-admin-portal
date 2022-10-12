@@ -26,6 +26,7 @@ const runCypher = (driver, response) => {
   const executeQuery = (neoDriver, paymentResponse) => {
     const session = neoDriver.session()
 
+    console.log('payment response', paymentResponse)
     return session
       .writeTransaction((tx) => {
         try {
@@ -71,7 +72,9 @@ export const handler = async (event) => {
       .digest('hex')
 
     if (hash === event.headers['x-paystack-signature']) {
+      console.log('Hash Verified')
       const { reference, status } = event.body.data
+
       const response = {
         reference,
         status,
@@ -79,7 +82,7 @@ export const handler = async (event) => {
 
       runCypher(neoDriver, response)
     } else {
-      console.error('Hash Mismatch')
+      throw new Error('Hash Mismatch')
     }
   }
 
@@ -92,7 +95,7 @@ export const handler = async (event) => {
    */
 
   handlePaystackReq(driver).catch((error) => {
-    throw new Error(`Running Cypher failed\n${error.message}\n${error.stack}`)
+    throw new Error(`\n${error.message}\n${error.stack}`)
   })
 
   return {
