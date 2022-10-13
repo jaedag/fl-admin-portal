@@ -45,14 +45,28 @@ const runCypher = (driver, response) => {
       .writeTransaction((tx) => {
         try {
           if (paymentResponse.status === 'success') {
+            console.log(
+              'Set transaction status to success ',
+              paymentResponse.reference
+            )
             tx.run(setTransactionStatusSuccess, {
               reference: paymentResponse.reference,
             })
           } else if (paymentResponse.status === 'failed') {
+            console.log(
+              'Set transaction status to failed ',
+              paymentResponse.reference
+            )
+
             tx.run(setTransactionStatusFailed, {
               reference: paymentResponse.reference,
             })
           } else {
+            console.log(
+              'Set transaction status to pending ',
+              paymentResponse.reference
+            )
+
             tx.run(setTransactionStatusPending, {
               reference: paymentResponse.reference,
             })
