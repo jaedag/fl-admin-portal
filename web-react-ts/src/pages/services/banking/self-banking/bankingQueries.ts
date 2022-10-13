@@ -115,7 +115,7 @@ export const SELF_BANKING_RECEIPT = gql`
       sourceNetwork
       sourceNumber
       desc
-      transactionId
+      transactionReference
       transactionTime
       transactionStatus
     }

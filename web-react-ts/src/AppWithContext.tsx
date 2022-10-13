@@ -120,6 +120,7 @@ const AppWithContext = (props: AppPropsType) => {
           useLocation,
           useNavigationType,
           createRoutesFromChildren,
+          // @ts-ignore
           matchRoutes
         ),
       }),
