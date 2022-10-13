@@ -1073,6 +1073,15 @@ type ServiceRecord implements Record @auth(rules: [{ isAuthenticated: true }]) {
       RETURN stream.name
       """
     )
+  bankedBy: Member
+    @cypher(
+      statement: """
+      MATCH (this)
+      WHERE NOT  (this:NoService)
+      MATCH (this)<-[:CONFIRMED_BANKING_FOR | :UPLOADED_SLIP_FOR | :OFFERING_BANKED_BY]-(member:Member)
+      RETURN member
+      """
+    )
 }
 
 type NoService implements Record @auth(rules: [{ isAuthenticated: true }]) {
