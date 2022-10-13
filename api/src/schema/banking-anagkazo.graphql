@@ -140,4 +140,32 @@ extend type Constituency {
       END AS banked
       """
     )
+
+  bankedBy: Member
+    @cypher(
+      statement: """
+      MATCH (this)
+      WITH date() as today, this
+      WITH  today.weekDay as theDay, today, this
+      WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
+      WITH [day in range(0, 5) | startDate + duration({days: day})] AS dates, this
+
+      MATCH (date:TimeGraph)
+      USING INDEX date:TimeGraph(date)
+      WHERE date.date IN dates
+      MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
+
+       WITH DISTINCT record, this
+        WHERE record.noServiceReason IS NULL
+        AND (record.bankingSlip IS NOT NULL OR record.transactionStatus ='success' OR record.tellerConfirmationTime IS NOT NULL)
+       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships) WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
+
+
+      WITH DISTINCT  this, record
+      MATCH (teller:Member)-[:CONFIRMED_BANKING_FOR]->(record:ServiceRecord)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships)<-[:HAS]-(:Bacenta)<-[:HAS]-(this)
+
+
+      RETURN DISTINCT teller
+      """
+    )
 }
