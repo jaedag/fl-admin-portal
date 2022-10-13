@@ -14,12 +14,12 @@ type ApolloWrapperPropsType = {
 const ApolloWrapper = (props: ApolloWrapperPropsType) => {
   const { data, loading, error, placeholder } = props
 
-  if (data || placeholder) {
+  if (error) {
+    return <ErrorScreen error={error} />
+  } else if (data || placeholder) {
     return <>{props.children}</>
   } else if (loading) {
     return <LoadingScreen />
-  } else if (error) {
-    return <ErrorScreen error={error} />
   }
 
   return <LoadingScreen />
