@@ -127,7 +127,7 @@ RETURN node as member
 
 export const createMember = `
 MATCH (fellowship:Fellowship {id: $fellowship})
-CREATE (member:Active:Member:idl {whatsappNumber:$whatsappNumber})
+CREATE (member:Active:Member:IDL {whatsappNumber:$whatsappNumber})
       SET
       	member.id = apoc.create.uuid(),
       	member.firstName = $firstName,
@@ -198,7 +198,7 @@ DELETE r1, r2, r3
 
 WITH member, fellowship
   SET
-        member:idl, member:Active,
+        member:IDL, member:Active,
         member.firstName = $firstName,
         member.middleName = $middleName,
         member.lastName = $lastName,
