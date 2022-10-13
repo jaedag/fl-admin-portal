@@ -13,7 +13,7 @@ import { Form, Formik, FormikHelpers } from 'formik'
 import { MOMO_NUM_REGEX } from 'global-utils'
 import { MOBILE_NETWORK_OPTIONS } from 'pages/arrivals/arrivals-utils'
 import SubmitButton from 'components/formik/SubmitButton'
-import { Button, Col, Container, Modal, Row } from 'react-bootstrap'
+import { Button, Col, Container, Modal, Row, Spinner } from 'react-bootstrap'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import HeadingSecondary from 'components/HeadingSecondary'
 import { parseDate } from 'jd-date-utils'
@@ -151,7 +151,14 @@ const PayOffering = (props: PayOfferingProps) => {
                 }).then(() => navigate('/self-banking/confirm-payment'))
               }}
             >
-              {otpSent ? 'Sending' : 'Submit OTP'}
+              {otpSent ? (
+                <>
+                  <span className="me-2">Sending</span>
+                  <Spinner animation="border" size="sm" />
+                </>
+              ) : (
+                'Submit OTP'
+              )}
             </Button>
           </div>
         </Modal.Body>
