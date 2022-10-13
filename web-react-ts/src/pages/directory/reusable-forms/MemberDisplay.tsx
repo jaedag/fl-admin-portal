@@ -64,6 +64,7 @@ const MemberDisplay = ({ memberId }: { memberId: string }) => {
             src={member?.pictureUrl || USER_PLACEHOLDER}
             alt={`${member?.fullName}`}
             size="large"
+            noLazyLoad
           />
         </PlaceholderCustom>
       </div>
