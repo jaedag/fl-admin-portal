@@ -233,32 +233,41 @@ const bankingMutation = {
       },
     }
 
-    try {
-      const otpResponse = await axios(sendOtp).catch((error) =>
-        throwToSentry('There was an error sending OTP', error)
-      )
+    const otpResponse = await axios(sendOtp).catch((error) =>
+      throwToSentry('There was an error sending OTP', error)
+    )
 
-      if (otpResponse.data.data.status === 'pay_offline') {
-        const paymentCypherRes = rearrangeCypherObject(
-          await session.run(setRecordTransactionReference, {
+    if (otpResponse.data.data.status === 'pay_offline') {
+      const paymentCypherRes = rearrangeCypherObject(
+        await session
+          .run(setRecordTransactionReference, {
             id: args.serviceRecordId,
             reference: args.reference,
           })
-        ).catch((error: any) =>
-          throwToSentry(
-            'There was an error setting transaction reference',
-            error
+          .catch((error: any) =>
+            throwToSentry(
+              'There was an error setting transaction reference',
+              error
+            )
           )
-        )
-        return paymentCypherRes.record
-      }
-
-      return {
-        id: args.serviceRecordId,
-        transactionStatus: 'send OTP',
-      }
-    } catch (error: any) {
-      throwToSentry('There was an error processing your payment', error)
+      )
+      return paymentCypherRes.record
+    }
+    if (otpResponse.data.data.status === 'failed') {
+      const paymentCypherRes = rearrangeCypherObject(
+        await session
+          .run(setTransactionStatusFailed, {
+            id: args.serviceRecordId,
+            reference: args.reference,
+          })
+          .catch((error: any) =>
+            throwToSentry(
+              'There was an error setting transaction reference',
+              error
+            )
+          )
+      )
+      return paymentCypherRes.record
     }
 
     return {
