@@ -46,6 +46,8 @@ const runCypher = (driver, response) => {
 
     return session
       .writeTransaction((tx) => {
+        console.log('transaction', tx)
+        console.log(setTransactionStatusSuccess)
         tx.run(setTransactionStatusSuccess, {
           reference: 'i5v91xmtv2zp1ed',
         })
