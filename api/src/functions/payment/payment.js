@@ -46,32 +46,24 @@ const runCypher = (driver, response) => {
 
     return session
       .writeTransaction(async (tx) => {
-        if (paymentResponse.status === 'success') {
-          console.log(
-            'Set transaction status to success ',
-            `'${paymentResponse.reference}'`
-          )
-          const res = await tx
-            .run(setTransactionStatusSuccess, {
-              reference: paymentResponse.reference,
-            })
-            .catch((error) => console.log(error))
+        const res = await tx
+          .run(setTransactionStatusSuccess, {
+            reference: 'i5v91xmtv2zp1ed',
+          })
+          .catch((error) => console.log(error))
 
-          // eslint-disable-next-line no-underscore-dangle
-          console.log(res.records[0]._fields)
-        }
+        // eslint-disable-next-line no-underscore-dangle
+        console.log(res.records[0]._fields)
+
         try {
           if (paymentResponse.status === 'success') {
             console.log(
               'Set transaction status to success ',
-              `'${paymentResponse.reference}'`
+              paymentResponse.reference
             )
-            const res = await tx.run(setTransactionStatusSuccess, {
+            tx.run(setTransactionStatusSuccess, {
               reference: paymentResponse.reference,
             })
-
-            // eslint-disable-next-line no-underscore-dangle
-            console.log(res.records[0]._fields)
           } else if (paymentResponse.status === 'failed') {
             console.log(
               'Set transaction status to failed ',
