@@ -51,9 +51,11 @@ const runCypher = (driver, response) => {
             'Set transaction status to success ',
             `'${paymentResponse.reference}'`
           )
-          const res = await tx.run(setTransactionStatusSuccess, {
-            reference: paymentResponse.reference,
-          })
+          const res = await tx
+            .run(setTransactionStatusSuccess, {
+              reference: paymentResponse.reference,
+            })
+            .catch((error) => console.log(error))
 
           // eslint-disable-next-line no-underscore-dangle
           console.log(res.records[0]._fields)
