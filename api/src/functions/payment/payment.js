@@ -10,13 +10,10 @@ const whitelistIPs = (event) => {
 
   if (validIps.includes(event.headers['x-nf-client-connection-ip'])) {
     console.log('IP OK')
-  } else {
-    console.error(`Bad IP: ${event.headers['x-nf-client-connection-ip']}`)
-    const err = new Error(
-      `Bad IP: ${event.headers['x-nf-client-connection-ip']}`
-    )
-    throw err
+    return true
   }
+  console.error(`Bad IP: ${event.headers['x-nf-client-connection-ip']}`)
+  return false
 }
 
 const setTransactionStatusSuccess = `
@@ -55,14 +52,14 @@ const executeQuery = (neoDriver, paymentResponse) => {
       console.log('Setting transaction status to pending', reference)
       query = setTransactionStatusPending
     }
-    return tx.run(query, { reference }).catch((error) => {
-      throw new Error(error)
-    })
+    return tx.run(query, { reference })
   })
 }
 
 const handlePaystackReq = async (event, neoDriver) => {
-  whitelistIPs(event)
+  if (!whitelistIPs(event)) {
+    throw new Error('IP not whitelisted')
+  }
 
   const body = JSON.parse(event.body)
   const { reference, status } = body.data
