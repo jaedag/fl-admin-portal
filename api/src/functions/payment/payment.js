@@ -44,48 +44,41 @@ const runCypher = (driver, response) => {
   const executeQuery = (neoDriver, paymentResponse) => {
     const session = neoDriver.session()
 
+    if (paymentResponse.status === 'success') {
+      console.log(
+        'Set transaction status to success ',
+        paymentResponse.reference
+      )
+
+      return session
+        .writeTransaction((tx) => {
+          tx.run(setTransactionStatusSuccess, {
+            reference: paymentResponse.reference,
+          }).catch((error) => console.error('Error running cypher', error))
+        })
+        .finally(() => session.close())
+    }
+    if (paymentResponse.status === 'failed') {
+      console.log(
+        'Set transaction status to failed ',
+        paymentResponse.reference
+      )
+
+      return session
+        .writeTransaction((tx) => {
+          tx.run(setTransactionStatusFailed, {
+            reference: paymentResponse.reference,
+          }).catch((error) => console.error('Error running cypher', error))
+        })
+        .finally(() => session.close())
+    }
+
+    console.log('Set transaction status to pending ', paymentResponse.reference)
     return session
       .writeTransaction((tx) => {
-        console.log('transaction', tx)
-        console.log(setTransactionStatusSuccess)
-        tx.run(setTransactionStatusSuccess, {
-          reference: 'i5v91xmtv2zp1ed',
-        })
-          // eslint-disable-next-line no-underscore-dangle
-          .then((res) => console.log(res.records[0]._fields))
-          .catch((error) => console.log(error))
-
-        try {
-          if (paymentResponse.status === 'success') {
-            console.log(
-              'Set transaction status to success ',
-              paymentResponse.reference
-            )
-            tx.run(setTransactionStatusSuccess, {
-              reference: paymentResponse.reference,
-            })
-          } else if (paymentResponse.status === 'failed') {
-            console.log(
-              'Set transaction status to failed ',
-              paymentResponse.reference
-            )
-
-            tx.run(setTransactionStatusFailed, {
-              reference: paymentResponse.reference,
-            })
-          } else {
-            console.log(
-              'Set transaction status to pending ',
-              paymentResponse.reference
-            )
-
-            tx.run(setTransactionStatusPending, {
-              reference: paymentResponse.reference,
-            })
-          }
-        } catch (error) {
-          console.error('Error Running Cypher', error)
-        }
+        tx.run(setTransactionStatusPending, {
+          reference: paymentResponse.reference,
+        }).catch((error) => console.error('Error running cypher', error))
       })
       .finally(() => session.close())
   }
