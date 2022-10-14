@@ -1,12 +1,7 @@
 const neo4j = require('neo4j-driver')
 
 const whitelistIPs = (event) => {
-  const validIps = [
-    '52.31.139.75',
-    '52.49.173.169',
-    '52.214.14.220',
-    '41.242.137.1',
-  ] // Put your IP whitelist in this array
+  const validIps = ['52.31.139.75', '52.49.173.169', '52.214.14.220'] // Put your IP whitelist in this array
 
   if (validIps.includes(event.headers['x-nf-client-connection-ip'])) {
     console.log('IP OK')
@@ -19,71 +14,57 @@ const whitelistIPs = (event) => {
   }
 }
 
-const runCypher = (driver, response) => {
-  const setTransactionStatusSuccess = `
+const setTransactionStatusSuccess = `
       MATCH (record:ServiceRecord {transactionReference: $reference})
       SET record.transactionStatus = 'success'
       
       RETURN record
     `
-
-  const setTransactionStatusFailed = `
+const setTransactionStatusFailed = `
       MATCH (record:ServiceRecord {transactionReference: $reference})
-      SET record.transactionStatus = 'success'
+      SET record.transactionStatus = 'failed'
       
       RETURN record
     `
-
-  const setTransactionStatusPending = `
+const setTransactionStatusPending = `
     MATCH (record:ServiceRecord {transactionReference: $reference})
-    SET record.transactionStatus = 'success'
+    SET record.transactionStatus = 'pending'
     
     RETURN record
   `
 
-  const executeQuery = (neoDriver, paymentResponse) => {
-    const session = neoDriver.session()
+const executeQuery = (neoDriver, paymentResponse) => {
+  const session = neoDriver.session()
 
-    if (paymentResponse.status === 'success') {
-      console.log(
-        'Set transaction status to success ',
-        paymentResponse.reference
-      )
+  return session.writeTransaction((tx) => {
+    const { reference, status } = paymentResponse
+    let query = ''
 
-      return session
-        .run(setTransactionStatusSuccess, {
-          reference: paymentResponse.reference,
-        })
-        .catch((error) => console.error('Error running cypher', error))
-
-        .finally(() => session.close())
+    if (status === 'success') {
+      console.log('Setting transaction status to success', reference)
+      query = setTransactionStatusSuccess
+    } else if (status === 'failed') {
+      console.log('Setting transaction status to failed', reference)
+      query = setTransactionStatusFailed
+    } else if (status === 'pending') {
+      console.log('Setting transaction status to pending', reference)
+      query = setTransactionStatusPending
     }
-    if (paymentResponse.status === 'failed') {
-      console.log(
-        'Set transaction status to failed ',
-        paymentResponse.reference
-      )
-
-      return session
-        .run(setTransactionStatusFailed, {
-          reference: paymentResponse.reference,
-        })
-        .catch((error) => console.error('Error running cypher', error))
-        .finally(() => session.close())
-    }
-
-    console.log('Set transaction status to pending ', paymentResponse.reference)
-    return session
-      .run(setTransactionStatusPending, {
-        reference: paymentResponse.reference,
-      })
-      .catch((error) => console.error('Error running cypher', error))
-      .finally(() => session.close())
-  }
-
-  executeQuery(driver, response).catch((error) => {
-    throw new Error('Database query failed to complete\n', error.message)
+    return tx.run(query, { reference }).catch((error) => {
+      throw new Error(error)
+    })
   })
+}
+
+const handlePaystackReq = async (event, neoDriver) => {
+  whitelistIPs(event)
+
+  const body = JSON.parse(event.body)
+  const { reference, status } = body.data
+
+  executeQuery(neoDriver, { reference, status })
+    .then((res) => console.log(res))
+    .catch((error) => console.error(new Error('Error running cypher', error)))
 }
 
 // eslint-disable-next-line import/prefer-default-export
@@ -96,30 +77,11 @@ export const handler = async (event) => {
     )
   )
 
-  const handlePaystackReq = async (neoDriver) => {
-    whitelistIPs(event)
-
-    const body = JSON.parse(event.body)
-
-    const { reference, status } = body.data
-
-    const response = {
-      reference,
-      status,
-    }
-
-    runCypher(neoDriver, response)
+  const init = async (initVar) => {
+    handlePaystackReq(initVar.event, initVar.neoDriver)
   }
 
-  /*
-   * We catch any errors that occur during initialization
-   * to handle cases where we still want the API to start
-   * regardless, such as running with a read only user.
-   * In this case, ensure that any desired initialization steps
-   * have occurred
-   */
-
-  handlePaystackReq(driver).catch((error) => {
+  init({ event, driver }).catch((error) => {
     throw new Error(`\n${error.message}\n${error.stack}`)
   })
 
