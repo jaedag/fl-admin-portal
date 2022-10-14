@@ -45,17 +45,19 @@ const runCypher = (driver, response) => {
     const session = neoDriver.session()
 
     return session
-      .writeTransaction((tx) => {
+      .writeTransaction(async (tx) => {
         try {
           if (paymentResponse.status === 'success') {
             console.log(
               'Set transaction status to success ',
-              paymentResponse.reference
+              `${paymentResponse.reference}`
             )
-            tx.run(setTransactionStatusSuccess, {
+            const res = await tx.run(setTransactionStatusSuccess, {
               reference: paymentResponse.reference,
-            }) // eslint-disable-next-line no-underscore-dangle
-              .then((res) => console.log(res.records[0]._fields))
+            })
+
+            // eslint-disable-next-line no-underscore-dangle
+            console.log(res.records[0]._fields)
           } else if (paymentResponse.status === 'failed') {
             console.log(
               'Set transaction status to failed ',
