@@ -83,7 +83,7 @@ export const handler = async (event) => {
   )
 
   const init = async (initVar) => {
-    handlePaystackReq(initVar.event, initVar.neoDriver)
+    handlePaystackReq(initVar.event, initVar.driver)
   }
 
   init({ event, driver }).catch((error) => {
