@@ -1,7 +1,12 @@
 const neo4j = require('neo4j-driver')
 
 const whitelistIPs = (event) => {
-  const validIps = ['52.31.139.75', '52.49.173.169', '52.214.14.220'] // Put your IP whitelist in this array
+  const validIps = [
+    '52.31.139.75',
+    '52.49.173.169',
+    '52.214.14.220',
+    '41.242.137.1',
+  ] // Put your IP whitelist in this array
 
   if (validIps.includes(event.headers['x-nf-client-connection-ip'])) {
     console.log('IP OK')
