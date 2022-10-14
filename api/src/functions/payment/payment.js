@@ -54,12 +54,8 @@ const runCypher = (driver, response) => {
             )
             tx.run(setTransactionStatusSuccess, {
               reference: paymentResponse.reference,
-            })
-
-            tx.run(setTransactionStatusSuccess, {
-              reference: '5i38tr2agtbpbgb',
-              // eslint-disable-next-line no-underscore-dangle
-            }).then((res) => console.log(res.records[0]._fields))
+            }) // eslint-disable-next-line no-underscore-dangle
+              .then((res) => console.log(res.records[0]._fields))
           } else if (paymentResponse.status === 'failed') {
             console.log(
               'Set transaction status to failed ',
