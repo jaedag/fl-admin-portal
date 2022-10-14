@@ -79,7 +79,7 @@ export const handler = async (event) => {
   }
 
   init({ event, driver }).catch((error) => {
-    throw new Error(`\n${error.message}\n${error.stack}`)
+    return { statusCode: 500, body: JSON.stringify(error) }
   })
 
   return {
