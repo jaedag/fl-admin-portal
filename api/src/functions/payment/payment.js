@@ -51,11 +51,11 @@ const runCypher = (driver, response) => {
       )
 
       return session
-        .writeTransaction((tx) => {
-          tx.run(setTransactionStatusSuccess, {
-            reference: paymentResponse.reference,
-          }).catch((error) => console.error('Error running cypher', error))
+        .run(setTransactionStatusSuccess, {
+          reference: paymentResponse.reference,
         })
+        .catch((error) => console.error('Error running cypher', error))
+
         .finally(() => session.close())
     }
     if (paymentResponse.status === 'failed') {
@@ -65,21 +65,19 @@ const runCypher = (driver, response) => {
       )
 
       return session
-        .writeTransaction((tx) => {
-          tx.run(setTransactionStatusFailed, {
-            reference: paymentResponse.reference,
-          }).catch((error) => console.error('Error running cypher', error))
+        .run(setTransactionStatusFailed, {
+          reference: paymentResponse.reference,
         })
+        .catch((error) => console.error('Error running cypher', error))
         .finally(() => session.close())
     }
 
     console.log('Set transaction status to pending ', paymentResponse.reference)
     return session
-      .writeTransaction((tx) => {
-        tx.run(setTransactionStatusPending, {
-          reference: paymentResponse.reference,
-        }).catch((error) => console.error('Error running cypher', error))
+      .run(setTransactionStatusPending, {
+        reference: paymentResponse.reference,
       })
+      .catch((error) => console.error('Error running cypher', error))
       .finally(() => session.close())
   }
 
