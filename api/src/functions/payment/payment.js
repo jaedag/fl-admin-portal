@@ -47,6 +47,8 @@ const executeQuery = (neoDriver, paymentResponse) => {
       console.log('Setting transaction status to pending', reference)
       query = setTransactionStatusPending
     }
+
+    
     return tx.run(query, { reference })
   })
 }
@@ -59,9 +61,7 @@ const handlePaystackReq = async (event, neoDriver) => {
   const body = JSON.parse(event.body)
   const { reference, status } = body.data
 
-  executeQuery(neoDriver, { reference, status })
-    .then((res) => console.log(res))
-    .catch((error) => console.error(new Error('Error running cypher', error)))
+  return executeQuery(neoDriver, { reference, status })
 }
 
 // eslint-disable-next-line import/prefer-default-export
@@ -75,7 +75,7 @@ export const handler = async (event) => {
   )
 
   const init = async (initVar) => {
-    handlePaystackReq(initVar.event, initVar.driver)
+    return handlePaystackReq(initVar.event, initVar.driver)
   }
 
   init({ event, driver }).catch((error) => {

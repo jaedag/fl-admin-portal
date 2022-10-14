@@ -233,9 +233,21 @@ const bankingMutation = {
       },
     }
 
-    const otpResponse = await axios(sendOtp).catch((error) =>
-      throwToSentry('There was an error sending OTP', error)
-    )
+    const otpResponse = await axios(sendOtp).catch(async (error) => {
+      if (error.response.data.message === 'Charge attempted') {
+        console.log('OTP was already sent and charge attempted')
+
+        return {
+          data: {
+            data: {
+              status: 'pay_offline',
+            },
+          },
+        }
+      }
+
+      return throwToSentry('There was an error sending OTP', error)
+    })
 
     if (otpResponse.data.data.status === 'pay_offline') {
       const paymentCypherRes = rearrangeCypherObject(
