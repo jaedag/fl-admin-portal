@@ -31,7 +31,7 @@ export const createAuthUserConfig = (member: Member, token: string) => ({
       member.pictureUrl ||
       'https://res.cloudinary.com/firstlovecenter/image/upload/v1627893621/user_qvwhs7.png',
     user_id: member.id,
-    password: 'rAndoMLetteRs',
+    password: 'rAnd0MLetteR5',
   },
 })
 
