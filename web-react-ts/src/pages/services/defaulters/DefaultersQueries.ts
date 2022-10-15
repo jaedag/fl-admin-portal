@@ -373,6 +373,11 @@ export const COUNCIL_BY_CONSTITUENCY = gql`
           phoneNumber
           whatsappNumber
         }
+        bankedBy {
+          id
+          firstName
+          lastName
+        }
         activeFellowshipCount
         formDefaultersThisWeekCount
         bankingDefaultersThisWeekCount

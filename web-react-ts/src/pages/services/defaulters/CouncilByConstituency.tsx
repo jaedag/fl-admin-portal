@@ -98,6 +98,12 @@ const CouncilByConstituency = () => {
                         </div>
                       </Card.Body>
                       <Card.Footer>
+                        {constituency?.bankedBy && (
+                          <div className="text-warning">
+                            Offering Received By :{' '}
+                            {`${constituency.bankedBy.firstName} ${constituency.bankedBy.lastName}`}
+                          </div>
+                        )}
                         <div className="mb-2">
                           Contact Admin: {constituency?.admin?.fullName}
                         </div>

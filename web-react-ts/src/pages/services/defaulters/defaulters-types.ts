@@ -1,5 +1,11 @@
 import { ApolloError } from '@apollo/client'
-import { Church, StreamOptions, Fellowship, ServiceRecord } from 'global-types'
+import {
+  Church,
+  StreamOptions,
+  Fellowship,
+  ServiceRecord,
+  Member,
+} from 'global-types'
 
 export interface FellowshipWithDefaulters extends Fellowship {
   __typename: 'Fellowship'
@@ -27,7 +33,7 @@ export interface HigherChurchWithDefaulters extends Church {
   bankedThisWeek: FellowshipWithDefaulters[]
   bankingDefaultersThisWeek: FellowshipWithDefaulters[]
   cancelledServicesThisWeek: FellowshipWithDefaulters[]
-
+  bankedBy: Member
   servicesThisWeekCount: number
   formDefaultersThisWeekCount: number
   bankedThisWeekCount: number
