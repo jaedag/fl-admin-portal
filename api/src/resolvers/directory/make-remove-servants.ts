@@ -42,7 +42,7 @@ const setUp = (setUpArgs: {
 }) => {
   const { permittedRoles, context, churchLower, servantLower, args } = setUpArgs
 
-  if (directoryLock(context.auth.roles) || servantLower === 'arrivalsCounter') {
+  if (directoryLock(context.auth.roles) && servantLower !== 'arrivalsCounter') {
     throw new Error('Directory is locked till next Tuesday')
   }
   isAuth(permittedRoles, context.auth.roles)
