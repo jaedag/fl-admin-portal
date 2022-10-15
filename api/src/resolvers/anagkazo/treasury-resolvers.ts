@@ -30,10 +30,10 @@ const treasuryMutations = {
     const session = context.executionContext.session()
     noEmptyArgsValidation(['constituencyId'])
 
-    const today = new Date()
-    if (today.getDay() > 5) {
-      throw new Error('You cannot receive offerings today! Thank you')
-    }
+    // const today = new Date()
+    // if (today.getDay() > 5) {
+    //   throw new Error('You cannot receive offerings today! Thank you')
+    // }
 
     //  implement checks to make sure that all the fellowships have filled their offering
 
