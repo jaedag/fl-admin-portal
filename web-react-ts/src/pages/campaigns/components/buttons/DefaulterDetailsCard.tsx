@@ -56,27 +56,55 @@ function DefaulterDetailsCard(props: DefaulterDetailsCardProps) {
           </div>
         )}
 
-        <div className="text-success">
+        <div
+          className={
+            church?.fellowshipEquipmentFilledCount !== 0 &&
+            church?.fellowshipCount === church?.fellowshipEquipmentFilledCount
+              ? 'good'
+              : church?.fellowshipEquipmentFilledCount > 0
+              ? 'text-warning'
+              : 'bad'
+          }
+        >
           Fellowship Filled Count: {church?.fellowshipEquipmentFilledCount}
         </div>
         {props.route === 'constituency/fellowship' ? (
-          <div className="text-success">
+          <div
+            className={church.equipmentRecord.pulpits === null ? 'bad' : 'good'}
+          >
             Constituency Filled:{' '}
             {church.equipmentRecord.pulpits === null ? 'No' : 'Yes'}
           </div>
         ) : (
-          <div className="text-success">
+          <div
+            className={
+              church?.constituencyEquipmentFilledCount !== 0 &&
+              church?.constituencyCount ===
+                church?.constituencyEquipmentFilledCount
+                ? 'good'
+                : church?.constituencyEquipmentFilledCount > 0
+                ? 'text-warning'
+                : 'bad'
+            }
+          >
             Constituency Filled Count:{' '}
             {church?.constituencyEquipmentFilledCount}
           </div>
         )}
-
-        <div className="text-danger">
+        <div
+          className={
+            church?.fellowshipEquipmentNotFilledCount === 0 ? 'good' : 'bad'
+          }
+        >
           Fellowship Not Filled Count:{' '}
           {church?.fellowshipEquipmentNotFilledCount}
         </div>
         {props.route === 'constituency/fellowship' ? null : (
-          <div className="text-danger">
+          <div
+            className={
+              church?.constituencyEquipmentNotFilledCount === 0 ? 'good' : 'bad'
+            }
+          >
             Constituency Not Filled Count:{' '}
             {church?.constituencyEquipmentNotFilledCount}
           </div>
