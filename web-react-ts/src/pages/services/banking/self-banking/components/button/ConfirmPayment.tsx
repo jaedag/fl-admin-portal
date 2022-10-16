@@ -58,6 +58,13 @@ const ButtonConfirmPayment = (props: ButtonConfirmPaymentProps) => {
               navigate('/self-banking/receipt')
               return
             }
+            if (
+              res.data.ConfirmOfferingPayment.transactionStatus === 'failed'
+            ) {
+              alertMsg('Your Payment Failed 😞. Please try again!')
+              navigate('/self-banking/receipt')
+              return
+            }
 
             alertMsg('Payment Confirmed Successfully 😊')
             navigate('/self-banking/receipt')

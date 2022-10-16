@@ -300,10 +300,17 @@ const bankingMutation = {
     const { auth } = getStreamFinancials(args.stream_name)
 
     const transactionResponse = rearrangeCypherObject(
-      await session.run(checkTransactionReference, args)
+      await session
+        .run(checkTransactionReference, args)
+        .catch((error: any) =>
+          throwToSentry(
+            'There was an error checking transaction reference',
+            error
+          )
+        )
     )
 
-    const record = transactionResponse?.record
+    let record = transactionResponse?.record
     const banker = transactionResponse?.banker
 
     if (!record?.transactionReference) {
@@ -325,7 +332,9 @@ const bankingMutation = {
     const confirmationResponse = await axios(confirmPaymentBody).catch(
       async (error) => {
         if (error.response.data.status === false) {
-          await session.run(setTransactionStatusFailed, args)
+          record = rearrangeCypherObject(
+            await session.run(setTransactionStatusFailed, args)
+          )
         }
         throwToSentry(
           'There was an error confirming transaction - ',
@@ -335,29 +344,35 @@ const bankingMutation = {
     )
 
     if (confirmationResponse?.data.data.status === 'failed') {
-      try {
-        await session.run(setTransactionStatusFailed, args)
-      } catch (error: any) {
-        throwToSentry('Payment Unsuccessful!', error)
-      }
+      record = rearrangeCypherObject(
+        await session
+          .run(setTransactionStatusFailed, args)
+          .catch((error: any) =>
+            throwToSentry('There was an error setting the transaction', error)
+          )
+      )
     }
 
     if (confirmationResponse?.data.data.status === 'success') {
-      try {
-        await session.run(setTransactionStatusSuccess, args)
-      } catch (error: any) {
-        throwToSentry(
-          'There was an error setting the successful transaction',
-          error
-        )
-      }
+      record = rearrangeCypherObject(
+        await session
+          .run(setTransactionStatusSuccess, args)
+          .catch((error: any) =>
+            throwToSentry(
+              'There was an error setting the successful transaction',
+              error
+            )
+          )
+      )
     }
+
+    record = record.record.properties
 
     return {
       id: record.id,
       income: record.income,
-      transactionId: args.serviceRecordId,
-      transactionStatus: 'pending',
+      transactionReference: record.transactionReference,
+      transactionStatus: record.transactionStatus,
       offeringBankedBy: {
         id: banker.id,
         firstName: banker.firstName,
