@@ -205,7 +205,7 @@ const BusVehicleFormDetails = () => {
                     <div className="container card-button-row">
                       <table>
                         <tbody>
-                          <tr>
+                          <tr className="col-height">
                             <td
                               onClick={() => {
                                 setPicturePopup(vehicle?.picture)

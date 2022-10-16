@@ -41,7 +41,6 @@
   margin: 10px;
 }
 
-.full-width {
-  width: 100%;
-  min-height: 20vh;
+.col-height {
+  height: 280px;
 }
