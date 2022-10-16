@@ -1,3 +1,66 @@
+#### 5.2.1 (2022-10-16)
+
+##### New Features
+
+* **paystack:**  customer details on the portal are updated when they make payment ([a9ab4bfc](https://github.com/firstlovecenter/fl-pastoral-care/commit/a9ab4bfcbcf9388f874a8b88360f18f219a619ab))
+
+##### Bug Fixes
+
+*  remove error messages when confirming arrival attendance ([e2ab223f](https://github.com/firstlovecenter/fl-pastoral-care/commit/e2ab223f2b860c148c992102551e57ad1e14b896))
+*  replace cloudinary filenames space with hyphhn ([08c663da](https://github.com/firstlovecenter/fl-pastoral-care/commit/08c663da1e9d132d82a8a33858d0c1a9ae7854f2))
+*  increase charges on payswitch so that the correct amount is settled to us ([79eb2359](https://github.com/firstlovecenter/fl-pastoral-care/commit/79eb235988d1a8cafb7f35233a2b3bdef26af613))
+*  fix logic for checking directory lock for arrivals counters ([614ab0a5](https://github.com/firstlovecenter/fl-pastoral-care/commit/614ab0a581fadf7373030dd48ec25c00391a17a6))
+*  implement stronger default password for creating users ([32e45ef0](https://github.com/firstlovecenter/fl-pastoral-care/commit/32e45ef0aeb2a7d75b5fae0d748b9dee0b5d8ed7))
+*  remove day checker on anagkazo banking ([e8b62330](https://github.com/firstlovecenter/fl-pastoral-care/commit/e8b623309ac5f683c9969f86a098cfe6a4cbe016))
+*  handles error for when otp succeeds but state is not changed in db ([7ca295ec](https://github.com/firstlovecenter/fl-pastoral-care/commit/7ca295eccf3c5cbeaefcfe5dad1e585629c23555))
+*  logs error to the console when payment.js ([1c50f005](https://github.com/firstlovecenter/fl-pastoral-care/commit/1c50f0058288161278cc9d0938e752f336a30914))
+*  return 500 if there is an error ([1b794b91](https://github.com/firstlovecenter/fl-pastoral-care/commit/1b794b91ce06c5490df6cecac15be766aee9fe03))
+*  give up on webhook for now ([ab527dab](https://github.com/firstlovecenter/fl-pastoral-care/commit/ab527dab896c7b96da3e02c61f5062ce79806711))
+*  change whitelistedIPs to return boolean ([7450dce3](https://github.com/firstlovecenter/fl-pastoral-care/commit/7450dce3e09cc4e0240e614eb596cc08cabe89d6))
+*  correct wrong variable name from neoDriver to driver in handlePaystackReq ([883e1855](https://github.com/firstlovecenter/fl-pastoral-care/commit/883e1855d46a0f301fa886c55b2804e701bb38ae))
+*  include ip for testing ([17875054](https://github.com/firstlovecenter/fl-pastoral-care/commit/17875054ede3db52fc32a5153e5f450f00af701e))
+*  rewrite payment.js netlify function from scratch ([19208bbc](https://github.com/firstlovecenter/fl-pastoral-care/commit/19208bbcd68a56b3632065689dc858853a89f260))
+*  switch from using session.transactionWrite to session.run ([bd45523f](https://github.com/firstlovecenter/fl-pastoral-care/commit/bd45523f8ff5834bd2f29b32fc45bdc76f8f07e3))
+*  update neo4j-driver ([845892a7](https://github.com/firstlovecenter/fl-pastoral-care/commit/845892a7568c1834117d40cda80e8b1c9a989f82))
+*  refactor payment.js function so that transaction starts during if-logic ([36d8f023](https://github.com/firstlovecenter/fl-pastoral-care/commit/36d8f023c96986f7fe8ef4a78d14235317002a28))
+*  remove async-await syntax ([893aec3b](https://github.com/firstlovecenter/fl-pastoral-care/commit/893aec3b75d219fbabf957b8d03e5fb6fb933b45))
+*  remove async-await syntax ([c9e91281](https://github.com/firstlovecenter/fl-pastoral-care/commit/c9e912819094cdb5a79fe610700a8e17fca3e2ee))
+*  run independent query to set one servicerecord ([71851a00](https://github.com/firstlovecenter/fl-pastoral-care/commit/71851a00788c883402583f6d38323eacbf84eaba))
+*  log out errors to the console so I can see what is happening ([2617eea5](https://github.com/firstlovecenter/fl-pastoral-care/commit/2617eea5cbfe01cfca51c75087f9522ab72def09))
+*  move db transaction out of try catch block ([62a124ac](https://github.com/firstlovecenter/fl-pastoral-care/commit/62a124ac6223b59931cd5a05743a5f275a866518))
+*  try converting writeTransaction to an async function ([43641aeb](https://github.com/firstlovecenter/fl-pastoral-care/commit/43641aeb2e35b2f5019703726deb6c3f9e6ec219))
+*  log result of transaction ([0347f067](https://github.com/firstlovecenter/fl-pastoral-care/commit/0347f0671bbd41331aa68fae0f22d891b1066ec2))
+*  log result of transaction ([2557ccc9](https://github.com/firstlovecenter/fl-pastoral-care/commit/2557ccc95e537a0eb77fae6a1fcdd7e5ed6e2614))
+*  change lowercase 'idl' label to 'IDL' ([0de56ba8](https://github.com/firstlovecenter/fl-pastoral-care/commit/0de56ba864e95714377dd318c7eec8465a34b5df))
+*  log the successful status of payment webhook ([eef5c04c](https://github.com/firstlovecenter/fl-pastoral-care/commit/eef5c04cbd31da7e91bde9bff37b84439ae7ca71))
+*  add ts-ignore to sentry init which was breaking the build ([4fd642b1](https://github.com/firstlovecenter/fl-pastoral-care/commit/4fd642b1d26f8f563e899f42d5e552d37ec7bd8e))
+*  remove lazy loading from member details page ([3e5bc4a8](https://github.com/firstlovecenter/fl-pastoral-care/commit/3e5bc4a80c76cdb16435233ef2ee70cb8d08993c))
+* **arrivals:**  remove directory lock for arrivals counters ([5539c93d](https://github.com/firstlovecenter/fl-pastoral-care/commit/5539c93d8ff87b79246269b12a6b940c742a66a7))
+* **anagkazo-banking:**  treasurers cannot bank after Saturday ([8d714f5f](https://github.com/firstlovecenter/fl-pastoral-care/commit/8d714f5ffc9c0c261a284f1fbe71b29ed2f923e5))
+* **paystack:**
+  *  tidy up api responses to sending otp resolver ([b1eefbc1](https://github.com/firstlovecenter/fl-pastoral-care/commit/b1eefbc1845654024133623ff7d7f3850bcf8fca))
+  *  better design adjustments to the otp sending button ([5d90891a](https://github.com/firstlovecenter/fl-pastoral-care/commit/5d90891af91905afb8294456dd9295bc56edd6cb))
+  *  implement verifying OTP even if user refreshes page or leaves and comes back ([151f6381](https://github.com/firstlovecenter/fl-pastoral-care/commit/151f6381afd181eb6a551180b39669caafceb80a))
+  *  use user phone number instead of payment phone number ([bb9b59c0](https://github.com/firstlovecenter/fl-pastoral-care/commit/bb9b59c0e24e49f904f66a6479d6b16a7f07fc77))
+  *   add mobile number on customer ([04678862](https://github.com/firstlovecenter/fl-pastoral-care/commit/04678862ab947f1ecc0cf1eab22fd236b22ee269))
+  *  remove charge on offerings ([17f5e909](https://github.com/firstlovecenter/fl-pastoral-care/commit/17f5e909963e85720c0bb1a71af9699cc3acfde4))
+  *  json parse for the payment function ([f004579b](https://github.com/firstlovecenter/fl-pastoral-care/commit/f004579ba3699dfcc677bf475515e6e45f250a5e))
+  *  json parse for the payment function ([a9d46f15](https://github.com/firstlovecenter/fl-pastoral-care/commit/a9d46f15d712a1e1767e45e5a226c8f63be42348))
+  *  switch from verifying hash to whitelisting ips try 2 ([846a50ac](https://github.com/firstlovecenter/fl-pastoral-care/commit/846a50ace57cd9118ab14b173c8faace96581b2f))
+  *  switch from verifying hash to whitelisting ips ([e5363d31](https://github.com/firstlovecenter/fl-pastoral-care/commit/e5363d317318bc75c591ad333bd65c7356732d42))
+  *  log hash and paystack header ([8eb80871](https://github.com/firstlovecenter/fl-pastoral-care/commit/8eb808712583d09da55605b13470bab52416da53))
+  *  log hash and paystack header ([44500ad8](https://github.com/firstlovecenter/fl-pastoral-care/commit/44500ad88daa7690970d30ad56d7568eb574055b))
+  *  log evvent body ([912aa3ff](https://github.com/firstlovecenter/fl-pastoral-care/commit/912aa3ff6dbb1aebb43e32ee2a9b2f0bc51d6373))
+  *  log hash verified ([180224ef](https://github.com/firstlovecenter/fl-pastoral-care/commit/180224effc6b4f4b757b47795b448d39bca37242))
+  *  extract event.body.data ([7afd712b](https://github.com/firstlovecenter/fl-pastoral-care/commit/7afd712b8eaf9afffbdc15dfada61a7d68aacb16))
+  *  implement better logging for payment function ([5f94b0da](https://github.com/firstlovecenter/fl-pastoral-care/commit/5f94b0da069262266ba5c132feac74fd7e8cc5b2))
+  *  implement better logging for payment function ([33e83d02](https://github.com/firstlovecenter/fl-pastoral-care/commit/33e83d0290a058747d081303332c83074b1fc766))
+  *  log event body on payment cloud function ([c3e0e1eb](https://github.com/firstlovecenter/fl-pastoral-care/commit/c3e0e1ebd1ad5852d50378f4caceb01d1ee5e4dd))
+
+##### Performance Improvements
+
+*  make it easier to see error rom apollowrapper ([dc83730c](https://github.com/firstlovecenter/fl-pastoral-care/commit/dc83730c4a8f155b7dfc5055225264d048b98ede))
+
 ### 5.2.0 (2022-10-11)
 
 ##### New Features
