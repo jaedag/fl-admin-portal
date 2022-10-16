@@ -140,7 +140,9 @@ const FormAttendanceConfirmation = () => {
         navigate(`/bacenta/vehicle-details`)
       } catch (error: any) {
         setSubmitting(false)
-        throwToSentry(error)
+        // eslint-disable-next-line no-console
+        console.log(error)
+        alertMsg(error)
       }
     }
     navigate(`/bacenta/vehicle-details`)
