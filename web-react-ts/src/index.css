@@ -112,7 +112,7 @@
 .profile-img {
   width: 150px;
   border-radius: 100px;
-  height: intrinsic;
+  height: 150px;
 }
 .profile-img.placeholder-wave {
   height: 150px;

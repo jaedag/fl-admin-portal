@@ -60,7 +60,7 @@ const MemberDisplay = ({ memberId }: { memberId: string }) => {
           xs={12}
         >
           <CloudinaryImage
-            className="profile-img"
+            className="profile-img bg-secondary"
             src={member?.pictureUrl || USER_PLACEHOLDER}
             alt={`${member?.fullName}`}
             size="large"
