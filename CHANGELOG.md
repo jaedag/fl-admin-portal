@@ -1,5 +1,19 @@
 #### 5.2.2 (2022-10-16)
 
+##### Documentation Changes
+
+*  update CHANGELOG.md ([2a1dcf18](https://github.com/firstlovecenter/fl-pastoral-care/commit/2a1dcf18ce141d40224654bd7cf1302810ea696f))
+
+##### Bug Fixes
+
+*  reduce amount so that the church bears the charges ([70a189ae](https://github.com/firstlovecenter/fl-pastoral-care/commit/70a189aed2b497e2e045c3b5bd65e52204abd9e1))
+*  fix height of arrivals picture row ([33ef94fe](https://github.com/firstlovecenter/fl-pastoral-care/commit/33ef94fe42cacc365443e5e8f114ee1036508dca))
+*  update arrivals picture views ([99de0d61](https://github.com/firstlovecenter/fl-pastoral-care/commit/99de0d61abcea7bd248950e0fe69b60600fd59a7))
+*  fix height of member picture for safari users ([280bb2c7](https://github.com/firstlovecenter/fl-pastoral-care/commit/280bb2c7a2c4358fbefbb19df99fd3f5dea0ff91))
+*  enable lazy load on certain screens ([608c51b1](https://github.com/firstlovecenter/fl-pastoral-care/commit/608c51b18a177713fda0d180e251213d9347a06a))
+
+#### 5.2.2 (2022-10-16)
+
 ##### Bug Fixes
 
 *  reduce amount so that the church bears the charges ([70a189ae](https://github.com/firstlovecenter/fl-pastoral-care/commit/70a189aed2b497e2e045c3b5bd65e52204abd9e1))
