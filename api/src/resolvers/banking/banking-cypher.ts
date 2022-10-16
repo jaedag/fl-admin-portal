@@ -110,7 +110,7 @@ RETURN record
 
 export const checkIfServicePending = `
 MATCH (record:ServiceRecord {id: $serviceRecordId})
-WHERE record.transactionStatus = 'pending'
+WHERE record.transactionStatus = 'pending' OR record.transactionStatus = 'send OTP'
 
 RETURN record
 `
