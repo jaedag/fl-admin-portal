@@ -1,7 +1,12 @@
 const neo4j = require('neo4j-driver')
 
 const whitelistIPs = (event) => {
-  const validIps = ['52.31.139.75', '52.49.173.169', '52.214.14.220'] // Put your IP whitelist in this array
+  const validIps = [
+    '52.31.139.75',
+    '52.49.173.169',
+    '52.214.14.220',
+    '41.242.137.1',
+  ]
 
   if (validIps.includes(event.headers['x-nf-client-connection-ip'])) {
     console.log('IP OK')
@@ -33,31 +38,32 @@ const setTransactionStatusPending = `
 const executeQuery = (neoDriver, paymentResponse) => {
   const session = neoDriver.session()
 
-  return session.writeTransaction((tx) => {
-    const { reference, status } = paymentResponse
-    let query = ''
+  return session
+    .writeTransaction((tx) => {
+      const { reference, status } = paymentResponse
+      let query = ''
 
-    if (status === 'success') {
-      console.log('Setting transaction status to success', reference)
-      query = setTransactionStatusSuccess
-    } else if (status === 'failed') {
-      console.log('Setting transaction status to failed', reference)
-      query = setTransactionStatusFailed
-    } else if (status === 'pending') {
-      console.log('Setting transaction status to pending', reference)
-      query = setTransactionStatusPending
-    }
+      if (status === 'success') {
+        console.log('Setting transaction status to success', reference)
+        query = setTransactionStatusSuccess
+      } else if (status === 'failed') {
+        console.log('Setting transaction status to failed', reference)
+        query = setTransactionStatusFailed
+      } else if (status === 'pending') {
+        console.log('Setting transaction status to pending', reference)
+        query = setTransactionStatusPending
+      }
 
-    
-    return tx.run(query, { reference })
-  })
+      return tx.run(query, { reference })
+    })
+    .finally(() => session.close())
 }
 
 const handlePaystackReq = async (event, neoDriver) => {
   if (!whitelistIPs(event)) {
     throw new Error('IP not whitelisted')
   }
-
+  console.log(event)
   const body = JSON.parse(event.body)
   const { reference, status } = body.data
 
@@ -74,9 +80,8 @@ export const handler = async (event) => {
     )
   )
 
-  const init = async (initVar) => {
-    return handlePaystackReq(initVar.event, initVar.driver)
-  }
+  const init = async (initVar) =>
+    handlePaystackReq(initVar.event, initVar.driver)
 
   init({ event, driver }).catch((error) => {
     console.error(`\n${error.message}\n${error.stack}`)
