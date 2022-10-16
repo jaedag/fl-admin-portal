@@ -33,35 +33,42 @@ const setTransactionStatusPending = `
 const executeQuery = (neoDriver, paymentResponse) => {
   const session = neoDriver.session()
 
-  return session.writeTransaction((tx) => {
-    const { reference, status } = paymentResponse
-    let query = ''
+  return session
+    .writeTransaction((tx) => {
+      const { reference, status } = paymentResponse
 
-    if (status === 'success') {
-      console.log('Setting transaction status to success', reference)
-      query = setTransactionStatusSuccess
-    } else if (status === 'failed') {
-      console.log('Setting transaction status to failed', reference)
-      query = setTransactionStatusFailed
-    } else if (status === 'pending') {
-      console.log('Setting transaction status to pending', reference)
-      query = setTransactionStatusPending
-    }
+      let query = setTransactionStatusPending
 
-    
-    return tx.run(query, { reference })
-  })
+      if (status === 'success') {
+        console.log('Setting transaction status to success', reference)
+        query = setTransactionStatusSuccess
+      } else if (status === 'failed') {
+        console.log('Setting transaction status to failed', reference)
+        query = setTransactionStatusFailed
+      } else if (status === 'pending') {
+        console.log('Setting transaction status to pending', reference)
+        query = setTransactionStatusPending
+      }
+
+      return tx.run(query, { reference })
+    })
+    .finally(() => session.close())
 }
 
 const handlePaystackReq = async (event, neoDriver) => {
-  if (!whitelistIPs(event)) {
-    throw new Error('IP not whitelisted')
-  }
+  // if (!whitelistIPs(event)) {
+  //   throw new Error('IP not whitelisted')
+  // }
 
   const body = JSON.parse(event.body)
   const { reference, status } = body.data
 
   return executeQuery(neoDriver, { reference, status })
+    .then((res) =>
+      // eslint-disable-next-line no-underscore-dangle
+      console.log(res.records[0]._fields[0].properties)
+    )
+    .catch((error) => console.error(new Error('Error running cypher', error)))
 }
 
 // eslint-disable-next-line import/prefer-default-export
