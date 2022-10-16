@@ -5,7 +5,7 @@ const whitelistIPs = (event) => {
     '52.31.139.75',
     '52.49.173.169',
     '52.214.14.220',
-    '102.176.94.153',
+    '41.66.203.84',
   ]
 
   if (validIps.includes(event.headers['x-nf-client-connection-ip'])) {
