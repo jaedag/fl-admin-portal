@@ -1,12 +1,7 @@
 const neo4j = require('neo4j-driver')
 
 const whitelistIPs = (event) => {
-  const validIps = [
-    '52.31.139.75',
-    '52.49.173.169',
-    '52.214.14.220',
-    '41.66.203.84',
-  ]
+  const validIps = ['52.31.139.75', '52.49.173.169', '52.214.14.220']
 
   if (validIps.includes(event.headers['x-nf-client-connection-ip'])) {
     console.log('IP OK')
@@ -64,10 +59,8 @@ const handlePaystackReq = async (event, neoDriver) => {
   if (!whitelistIPs(event)) {
     throw new Error('IP not whitelisted')
   }
-  // const { body } = JSON.parse(event.body)
-  // const { reference, status } = body.data
-  const reference = 'ak7t3jpbg97faqg'
-  const status = 'pending'
+  const { body } = JSON.parse(event.body)
+  const { reference, status } = body.data
 
   return executeQuery(neoDriver, { reference, status })
 }
