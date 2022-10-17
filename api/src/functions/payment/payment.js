@@ -85,7 +85,7 @@ export const handler = async (event) => {
   const init = async (initVar) =>
     handlePaystackReq(initVar.event, initVar.driver)
 
-  init({ event, driver }).catch((error) => {
+  await init({ event, driver }).catch((error) => {
     console.error(`\n${error.message}\n${error.stack}`)
     return { statusCode: 500, body: JSON.stringify(error) }
   })
