@@ -63,8 +63,8 @@ const handlePaystackReq = async (event, neoDriver) => {
   if (!whitelistIPs(event)) {
     throw new Error('IP not whitelisted')
   }
-  console.log(event)
-  const body = JSON.parse(event.body)
+  // console.log(event)
+  const { body } = event // JSON.parse(event.body)
   const { reference, status } = body.data
 
   return executeQuery(neoDriver, { reference, status })
