@@ -56,6 +56,7 @@ const executeQuery = (neoDriver, paymentResponse) => {
 
       return tx.run(query, { reference })
     })
+    .then((res) => console.log(res))
     .finally(() => session.close())
 }
 
@@ -63,7 +64,7 @@ const handlePaystackReq = async (event, neoDriver) => {
   if (!whitelistIPs(event)) {
     throw new Error('IP not whitelisted')
   }
-  // console.log(event)
+  console.log(event.body)
   const { body } = event // JSON.parse(event.body)
   const { reference, status } = body.data
 
