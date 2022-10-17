@@ -452,7 +452,7 @@ export const arrivalsMutation = {
           return amountToPay
         }
 
-        return sprinterTopUp * outbound
+        return parseFloat((sprinterTopUp * outbound).toFixed(2))
       }
 
       if (data.vehicle === 'Urvan') {
@@ -461,7 +461,7 @@ export const arrivalsMutation = {
           return amountToPay
         }
 
-        return urvanTopUp * outbound
+        return parseFloat((urvanTopUp * outbound).toFixed(2))
       }
       return 0
     }
