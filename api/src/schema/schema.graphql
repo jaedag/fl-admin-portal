@@ -11,3 +11,7 @@ type Query {
       statement: "MATCH (member:Active:Member {email:$email}) RETURN member LIMIT 1"
     )
 }
+
+type Mutation {
+  MakeFellowshipIntoBacenta(fellowshipId: ID!): Bacenta!
+}
