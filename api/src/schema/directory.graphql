@@ -60,7 +60,7 @@ type Member @auth(rules: [{ isAuthenticated: true }]) {
   basontaMembershipCount: Int
     @cypher(
       statement: """
-      MATCH (this)-[:LEADS|HAS|IS_ADMIN_FOR*1..6]->(:Fellowship)<-[:BELONGS_TO]-(members:ActiveMember)
+      MATCH (this)-[:LEADS|HAS|IS_ADMIN_FOR*1..6]->(:Fellowship)<-[:BELONGS_TO]-(members:Active:Member)
       MATCH (members)-[:BELONGS_TO]->(:Ministry)
       RETURN COUNT(DISTINCT members)
       """

@@ -1,6 +1,6 @@
 #Query Definitions
 type Query {
-  currentUser(id: ID): Member
+  currentUser(id: ID): Member!
     @cypher(
       statement: "MATCH (member:Active:Member {auth_id: $auth.jwt.sub}) RETURN member"
     )
