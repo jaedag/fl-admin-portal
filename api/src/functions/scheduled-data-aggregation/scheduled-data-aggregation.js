@@ -369,6 +369,7 @@ const executeQuery = (neoDriver) => {
         }
       }
     })
+    .then((response) => console.log(response))
     .finally(() => session.close())
 }
 
