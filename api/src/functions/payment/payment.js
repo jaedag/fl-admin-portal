@@ -32,6 +32,7 @@ const setTransactionStatusPending = `
 
 const executeQuery = (neoDriver, paymentResponse) => {
   const session = neoDriver.session()
+  let response = ''
 
   return session
     .writeTransaction((tx) => {
@@ -39,19 +40,19 @@ const executeQuery = (neoDriver, paymentResponse) => {
       let query = ''
 
       if (status === 'success') {
-        console.log('Setting transaction status to success', reference)
         query = setTransactionStatusSuccess
+        response = `Successfully updated transaction status to success ${reference}`
       } else if (status === 'failed') {
-        console.log('Setting transaction status to failed', reference)
         query = setTransactionStatusFailed
+        response = `Successfully updated transaction status to failed ${reference}`
       } else if (status === 'pending') {
-        console.log('Setting transaction status to pending', reference)
         query = setTransactionStatusPending
+        response = `Successfully updated transaction status to pending ${reference}`
       }
 
       return tx.run(query, { reference })
     })
-    .then((res) => console.log(res))
+    .then(() => console.log(response))
     .finally(() => session.close())
 }
 
