@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect, useRef } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import { Button, Card, Container, Spinner, Table } from 'react-bootstrap'
 import { MemberContext } from 'contexts/MemberContext'
 import { ChurchContext } from 'contexts/ChurchContext'
@@ -23,6 +23,7 @@ type FormOptions = {
 }
 
 type Defaulter = {
+  id: string
   leader: { pictureUrl: string; fullName: string }
   name: string
 }
@@ -31,7 +32,7 @@ const ConfirmAnagkazoBanking = () => {
   const { currentUser, theme } = useContext(MemberContext)
   const church = currentUser?.currentChurch
   const churchType = currentUser.currentChurch?.__typename
-  const { streamId, clickCard, constituencyId } = useContext(ChurchContext)
+  const { streamId, constituencyId } = useContext(ChurchContext)
   const [isSubmitting, setSubmitting] = useState(false)
   const [defaultersData, setDefaultersData] = useState([])
   const { togglePopup, isOpen } = usePopup()
@@ -45,12 +46,10 @@ const ConfirmAnagkazoBanking = () => {
     }
   )
 
-  const [getConstituencyServiceRecordThisWeek] = useLazyQuery(
-    DISPLAY_AGGREGATE_SERVICE_RECORD,
-    {
-      variables: { constituencyId, week: getWeekNumber() },
-    }
-  )
+  const [
+    getConstituencyServiceRecordThisWeek,
+    { data: constituencyServiceData },
+  ] = useLazyQuery(DISPLAY_AGGREGATE_SERVICE_RECORD)
 
   const [ConfirmBanking] = useMutation(CONFIRM_BANKING)
 
@@ -78,16 +77,6 @@ const ConfirmAnagkazoBanking = () => {
 
     onSubmitProps.setSubmitting(false)
   }
-
-  const buttonRef = useRef<HTMLButtonElement>(null)
-
-  useEffect(() => {
-    togglePopup()
-  }, [])
-
-  useEffect(() => {
-    buttonRef?.current?.click()
-  }, [])
 
   useEffect(() => {
     setDefaultersData(bankingDefaultersList)
@@ -202,7 +191,7 @@ const ConfirmAnagkazoBanking = () => {
                       <div className="flex-shrink-0">
                         <CloudinaryImage
                           className="rounded-circle img-search"
-                          src={defaulter?.leader.pictureUrl}
+                          src={defaulter?.leader?.pictureUrl}
                           alt={defaulter?.leader?.fullName}
                         />
                       </div>
@@ -216,9 +205,13 @@ const ConfirmAnagkazoBanking = () => {
                     </div>
                     <Card.Footer className="text-center">
                       <Button
-                        ref={buttonRef}
-                        onClick={() => {
-                          clickCard(defaulter)
+                        onClick={async () => {
+                          await getConstituencyServiceRecordThisWeek({
+                            variables: {
+                              constituencyId: defaulter.id,
+                              week: getWeekNumber(),
+                            },
+                          })
                           togglePopup()
                         }}
                         variant="info"
