@@ -13,7 +13,7 @@ const getFellowshipServicesForBacentaAggregation = `
   agg.income = income
   MERGE (currentLog)-[:HAS_SERVICE_AGGREGATE]->(agg)
 
-  RETURN agg;
+  RETURN agg LIMIT 1;
   `
 const getBacentaServicesForConstituencyAggregation = `
   MATCH (constituency:Constituency)-[:HAS]->(bacenta:Bacenta)
@@ -27,7 +27,7 @@ const getBacentaServicesForConstituencyAggregation = `
   agg.income = income
   MERGE (currentLog)-[:HAS_SERVICE_AGGREGATE]->(agg)
 
-  RETURN agg;
+  RETURN agg LIMIT 1;
 `
 
 const getConstituencyServicesForConstituencyAggregation = `
@@ -37,7 +37,7 @@ const getConstituencyServicesForConstituencyAggregation = `
   SET agg.attendance = agg.attendance + attendance,
   agg.income = agg.income + income
 
-  RETURN agg;
+  RETURN agg LIMIT 1;
 `
 
 const getConstituencyServicesForCouncilAggregation = `
@@ -52,7 +52,7 @@ const getConstituencyServicesForCouncilAggregation = `
   agg.income = income
   MERGE (currentLog)-[:HAS_SERVICE_AGGREGATE]->(agg)
 
-  RETURN agg;
+  RETURN agg LIMIT 1;
   `
 
 const getCouncilServicesForCouncilAggregation = `
@@ -62,7 +62,7 @@ const getCouncilServicesForCouncilAggregation = `
   SET agg.attendance = agg.attendance + attendance,
   agg.income = agg.income + income
 
-  RETURN agg;
+  RETURN agg LIMIT 1;
   `
 
 const getCouncilServicesForStreamAggregation = `
@@ -77,7 +77,7 @@ const getCouncilServicesForStreamAggregation = `
   agg.income = income
   MERGE (currentLog)-[:HAS_SERVICE_AGGREGATE]->(agg)
 
-  RETURN agg;
+  RETURN agg LIMIT 1;
   `
 
 const getStreamServicesForStreamAggregation = `
@@ -87,7 +87,7 @@ const getStreamServicesForStreamAggregation = `
   SET agg.attendance = agg.attendance + attendance,
   agg.income = agg.income + income
 
-  RETURN agg;
+  RETURN agg LIMIT 1;
   `
 
 const getStreamServicesForGatheringAggregation = `
@@ -102,7 +102,7 @@ const getStreamServicesForGatheringAggregation = `
   agg.income = income
   MERGE (currentLog)-[:HAS_SERVICE_AGGREGATE]->(agg)
 
-  RETURN agg;
+  RETURN agg LIMIT 1;
   `
 
 const getGatheringServicesForOversightAggregation = `
@@ -117,7 +117,7 @@ const getGatheringServicesForOversightAggregation = `
   agg.income = income
   MERGE (currentLog)-[:HAS_SERVICE_AGGREGATE]->(agg)
 
-  RETURN agg;
+  RETURN agg LIMIT 1;
   `
 
 const getOversightServicesForDenominationAggregation = `
@@ -132,7 +132,7 @@ const getOversightServicesForDenominationAggregation = `
   agg.income = income
   MERGE (currentLog)-[:HAS_SERVICE_AGGREGATE]->(agg)
 
-  RETURN agg;
+  RETURN agg LIMIT 1;
 `
 
 /// // Get all Bacenta Aggregates for Bacenta Aggregation

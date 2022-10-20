@@ -372,7 +372,7 @@ const DisplayChurchDetails = (props: DisplayChurchDetailsProps) => {
             permittedStream={['Gospel Encounter', 'First Love Experience']}
             verifyId={props?.leader?.id}
           >
-            {(!props.momoNumber || props.loading) && (
+            {!props.momoNumber && !props.loading && (
               <p className="my-1 bad fw-bold text-center">
                 There is no valid Mobile Money Number! Please update!
               </p>
