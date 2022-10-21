@@ -312,9 +312,21 @@ const bankingMutation = {
     const banker = transactionResponse?.banker
 
     if (!record?.transactionReference) {
-      throw new Error(
-        'It looks like there was a problem. Please try sending again!'
+      record = rearrangeCypherObject(
+        await session
+          .run(setTransactionStatusFailed, args)
+          .catch((error: any) =>
+            throwToSentry('There was an error setting the transaction', error)
+          )
       )
+
+      record = record.record.properties
+      return {
+        id: record.id,
+        income: record.income,
+        transactionReference: record.transactionReference,
+        transactionStatus: record.transactionStatus,
+      }
     }
 
     const confirmPaymentBody: PayStackRequestBody = {
@@ -349,6 +361,7 @@ const bankingMutation = {
             throwToSentry('There was an error setting the transaction', error)
           )
       )
+      record = record.record.properties
     }
 
     if (confirmationResponse?.data.data.status === 'success') {
@@ -362,9 +375,8 @@ const bankingMutation = {
             )
           )
       )
+      record = record.record.properties
     }
-
-    record = record.record.properties
 
     return {
       id: record.id,

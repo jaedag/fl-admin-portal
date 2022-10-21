@@ -186,6 +186,90 @@ const ConfirmAnagkazoBanking = () => {
                 )}
                 {defaultersData?.map((defaulter: Defaulter, index: number) => (
                   <Card key={index} className="confirm-banking-card mt-2">
+                    {isOpen && (
+                      <Popup handleClose={togglePopup}>
+                        {constituencyServiceLoading ? (
+                          <div className="text-center">
+                            <Spinner animation="border" variant="secondary" />
+                          </div>
+                        ) : (
+                          <React.Fragment>
+                            <h3
+                              className={`${theme} menu-subheading text-center`}
+                            >
+                              {defaulter.name} Constituency
+                            </h3>
+                            <h6 className="text-center">Confirm Offering?</h6>
+                            <Table striped bordered hover variant="dark">
+                              <tbody>
+                                <tr>
+                                  <td>Income</td>
+                                  <td className="text-break">
+                                    {service?.income}
+                                  </td>
+                                </tr>
+                                {service?.foreignCurrency && (
+                                  <tr>
+                                    <td>Foreign Currency</td>
+                                    <td className="text-break">
+                                      {service?.foreignCurrency}
+                                    </td>
+                                  </tr>
+                                )}
+                              </tbody>
+                            </Table>
+                            <i className="text-danger">
+                              NB: You must only click this button if the amount
+                              the constituency is submitting is the same as what
+                              is displayed here
+                            </i>
+                            <Button
+                              variant="primary"
+                              type="submit"
+                              size="lg"
+                              className={`btn-main ${theme}`}
+                              disabled={isSubmitting}
+                              onClick={async () => {
+                                setSubmitting(true)
+
+                                try {
+                                  await ConfirmBanking({
+                                    variables: {
+                                      constituencyId: defaulter.id,
+                                    },
+                                  })
+                                  togglePopup()
+                                  alertMsg('Banking Confirmed Successfully')
+
+                                  setSubmitting(false)
+                                  refetch({ id: streamId })
+                                  navigate('/anagkazo/receive-banking')
+                                } catch (error: any) {
+                                  setSubmitting(false)
+                                  throwToSentry(error)
+                                }
+                              }}
+                            >
+                              {isSubmitting ? (
+                                <>
+                                  <Spinner animation="grow" size="sm" />
+                                  <span> Submitting</span>
+                                </>
+                              ) : (
+                                `Yes, I'm sure`
+                              )}
+                            </Button>
+                            <Button
+                              variant="primary"
+                              className={`btn-secondary mt-2 ${theme}`}
+                              onClick={togglePopup}
+                            >
+                              No, take me back
+                            </Button>
+                          </React.Fragment>
+                        )}
+                      </Popup>
+                    )}
                     <div className="d-flex align-items-center">
                       <div className="flex-shrink-0">
                         <CloudinaryImage
@@ -207,14 +291,13 @@ const ConfirmAnagkazoBanking = () => {
                         disabled={constituencyServiceLoading}
                         onClick={async () => {
                           setDefaulterIndex(index)
-                          setSelected(defaulter)
+                          togglePopup()
                           await getConstituencyServiceRecordThisWeek({
                             variables: {
                               constituencyId: defaulter.id,
                               week: getWeekNumber(),
                             },
                           })
-                          togglePopup()
                         }}
                         variant="info"
                       >
