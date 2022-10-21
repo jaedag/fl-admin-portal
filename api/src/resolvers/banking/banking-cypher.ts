@@ -13,6 +13,7 @@ MATCH (record)-[:SERVICE_HELD_ON]->(date:TimeGraph)
 SET record.sourceNumber = $mobileNumber,
     record.sourceNetwork = $mobileNetwork,
     record.desc = church.name + ' ' + churchLevel + ' '  + date.date,
+    record.transactionStatus = 'pending',
     record.transactionTime = datetime()
 
 MERGE (author)<-[:OFFERING_BANKED_BY]-(record)
