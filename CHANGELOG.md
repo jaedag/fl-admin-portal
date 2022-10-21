@@ -1,3 +1,41 @@
+#### 5.2.3 (2022-10-21)
+
+##### New Features
+
+*  add name of person who recieved offering to counstituency by council defaulter card ([ff822241](https://github.com/firstlovecenter/fl-pastoral-care/commit/ff8222415d3f083ef0e42be763780ef8ff5a3aa1))
+*  add bankedBy field to constituency ([f0c72242](https://github.com/firstlovecenter/fl-pastoral-care/commit/f0c722428509f3375bf2f099d50b471e4ae8b055))
+*  add bankedBy field to service record ([eae19b96](https://github.com/firstlovecenter/fl-pastoral-care/commit/eae19b96a341e0a45fa5d06307338fbb8f45ff60))
+
+##### Bug Fixes
+
+*  fix bug with anagkazo banking preventing confirmation of constituency banking ([#330](https://github.com/firstlovecenter/fl-pastoral-care/pull/330)) ([28982551](https://github.com/firstlovecenter/fl-pastoral-care/commit/289825511456cc38e89dd8d88033521549388fef))
+*  fixed bug in aggregate cypher which was doubling bussing figures ([39bff6a6](https://github.com/firstlovecenter/fl-pastoral-care/commit/39bff6a68f62c7d04f7f4d06c137180c81817564))
+*  admin-396 change replaceAll to regex expression to support older devices ([0f08513e](https://github.com/firstlovecenter/fl-pastoral-care/commit/0f08513e8b9c67f9a9bc246ccb07eca07e615f86))
+*  set up dev instance, minor updates to ui ([e363f4f6](https://github.com/firstlovecenter/fl-pastoral-care/commit/e363f4f6d1fc9db6f4f2a2c380ca61d9ecbab2e7))
+*  let me look at the response to the scheduled data aggregation ([9966f451](https://github.com/firstlovecenter/fl-pastoral-care/commit/9966f4519bb5b52c02a4081edf46eecfff1d056d))
+*  update response on setting payment status ([91ca475c](https://github.com/firstlovecenter/fl-pastoral-care/commit/91ca475c0d2e766215a54f3ca3ac1a97c1ca9f78))
+*  correct destructuring of JSON object from paystack ([bd051068](https://github.com/firstlovecenter/fl-pastoral-care/commit/bd051068acfcb36231fa236c2d7559a036e47fa6))
+*  fix api breaking bug ([814ecbbf](https://github.com/firstlovecenter/fl-pastoral-care/commit/814ecbbfe2f2d681fb897250513f4362f45fa134))
+*  rewrote scheduled-data-aggregation scheduled function ([cb14dd78](https://github.com/firstlovecenter/fl-pastoral-care/commit/cb14dd783d07f547afef71c0c49aad2763c72d16))
+*  implement charge stated i paystack docs to pass charge to users ([1afa7de9](https://github.com/firstlovecenter/fl-pastoral-care/commit/1afa7de93e3b3e504c7f18d92e1c1a825756eead))
+*  round up vehicle top up amount to two decimal places ([5f7e7d6d](https://github.com/firstlovecenter/fl-pastoral-care/commit/5f7e7d6d89d840d22795af9697b2cc62a770b724))
+*  final fix for paystack webhooks ([a28aea98](https://github.com/firstlovecenter/fl-pastoral-care/commit/a28aea983c4639bdca7fb758856351809e50fb07))
+*  testing web hook4 ([896f584d](https://github.com/firstlovecenter/fl-pastoral-care/commit/896f584de9bcc32fd5bfdf6511ada040876ee72a))
+*  testing web hook 3 ([bcd1c881](https://github.com/firstlovecenter/fl-pastoral-care/commit/bcd1c8814cd9338979068204a5ee525b5cf3eaed))
+*  testing web hook 2 ([a3c63a15](https://github.com/firstlovecenter/fl-pastoral-care/commit/a3c63a15737b24fd1873aa9958d10b2dca411063))
+*  testing web hook 1 ([dfc14a89](https://github.com/firstlovecenter/fl-pastoral-care/commit/dfc14a89f5ec08aced5844647890bcae415ec4d5))
+*  fix confirm payment ux flow ([8a1570aa](https://github.com/firstlovecenter/fl-pastoral-care/commit/8a1570aa2f603639cac1894cf94d7d3c7d5196c1))
+*  add whitelisting ip ([e90aa5e4](https://github.com/firstlovecenter/fl-pastoral-care/commit/e90aa5e4879c21bad63effd238a77cef2a4409a2))
+*  remove restrictions on  anagkazo treasurers ([ca43b20e](https://github.com/firstlovecenter/fl-pastoral-care/commit/ca43b20e1cb3917e681bf0ba59c660ea6c131300))
+*  add whitelisting ip ([29a26c85](https://github.com/firstlovecenter/fl-pastoral-care/commit/29a26c856436b1390b5fd2759edcf8f6fedf3537))
+*  trying payment webhook once moore ([5b69661a](https://github.com/firstlovecenter/fl-pastoral-care/commit/5b69661a38b627b81a4114a09ce88d3641b29512))
+*  add check for send OTP when using banking receipt after attempt self banking ([f685fd3b](https://github.com/firstlovecenter/fl-pastoral-care/commit/f685fd3b53fbe16ae493d7b59af90fa63e910e5e))
+*  change color coding of equipment defaulters card values to better display the meaning ([21662038](https://github.com/firstlovecenter/fl-pastoral-care/commit/216620382de235bf0da29a1cefcac97597f38b8f))
+
+##### Refactors
+
+*  setup dev instance file renamed ([dd8642e4](https://github.com/firstlovecenter/fl-pastoral-care/commit/dd8642e41a30997ba80629d329da6d85e8e318ee))
+
 #### 5.2.2 (2022-10-16)
 
 ##### Documentation Changes
