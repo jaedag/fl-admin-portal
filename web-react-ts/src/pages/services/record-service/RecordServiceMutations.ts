@@ -123,11 +123,11 @@ export const DISPLAY_FELLOWSHIP_SERVICE = gql`
   }
 `
 export const DISPLAY_AGGREGATE_SERVICE_RECORD = gql`
-  query aggregateServiceRecord($week: Int!, $constituencyId: ID!) {
+  query aggregateServiceRecordForWeek($week: Int!, $constituencyId: ID!) {
     constituencies(where: { id: $constituencyId }) {
       id
       name
-      aggregateServiceRecord(week: $week) {
+      aggregateServiceRecordForWeek(week: $week) {
         id
         income
         foreignCurrency

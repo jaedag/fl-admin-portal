@@ -1,11 +1,11 @@
-import React, { useContext, useState, useEffect, useRef } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import { Button, Card, Container, Spinner, Table } from 'react-bootstrap'
 import { MemberContext } from 'contexts/MemberContext'
 import { ChurchContext } from 'contexts/ChurchContext'
 import PlaceholderCustom from 'components/Placeholder'
 import { getWeekNumber } from 'jd-date-utils'
 import { CONSTITUENCY_BANKING_DEFUALTERS_THIS_WEEK } from 'pages/services/defaulters/DefaultersQueries'
-import { useQuery, useMutation } from '@apollo/client'
+import { useQuery, useMutation, useLazyQuery } from '@apollo/client'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { Formik, Form, FormikHelpers } from 'formik'
 import { useNavigate } from 'react-router-dom'
@@ -23,6 +23,7 @@ type FormOptions = {
 }
 
 type Defaulter = {
+  id: string
   leader: { pictureUrl: string; fullName: string }
   name: string
 }
@@ -31,8 +32,9 @@ const ConfirmAnagkazoBanking = () => {
   const { currentUser, theme } = useContext(MemberContext)
   const church = currentUser?.currentChurch
   const churchType = currentUser.currentChurch?.__typename
-  const { streamId, clickCard, constituencyId } = useContext(ChurchContext)
+  const { streamId, constituencyId } = useContext(ChurchContext)
   const [isSubmitting, setSubmitting] = useState(false)
+  const [defaulterIndex, setDefaulterIndex] = useState(0)
   const [defaultersData, setDefaultersData] = useState([])
   const { togglePopup, isOpen } = usePopup()
   const navigate = useNavigate()
@@ -45,17 +47,15 @@ const ConfirmAnagkazoBanking = () => {
     }
   )
 
-  const { data: constituencyServiceData } = useQuery(
-    DISPLAY_AGGREGATE_SERVICE_RECORD,
-    {
-      variables: { constituencyId: constituencyId, week: getWeekNumber() },
-    }
-  )
+  const [
+    getConstituencyServiceRecordThisWeek,
+    { data: constituencyServiceData, loading: constituencyServiceLoading },
+  ] = useLazyQuery(DISPLAY_AGGREGATE_SERVICE_RECORD)
 
   const [ConfirmBanking] = useMutation(CONFIRM_BANKING)
 
   const service =
-    constituencyServiceData?.constituencies[0]?.aggregateServiceRecord
+    constituencyServiceData?.constituencies[0]?.aggregateServiceRecordForWeek
 
   const selectedConstituencyName =
     constituencyServiceData?.constituencies[0]?.name
@@ -78,16 +78,6 @@ const ConfirmAnagkazoBanking = () => {
 
     onSubmitProps.setSubmitting(false)
   }
-
-  const buttonRef = useRef<HTMLButtonElement>(null)
-
-  useEffect(() => {
-    togglePopup()
-  }, [])
-
-  useEffect(() => {
-    buttonRef?.current?.click()
-  }, [])
 
   useEffect(() => {
     setDefaultersData(bankingDefaultersList)
@@ -202,7 +192,7 @@ const ConfirmAnagkazoBanking = () => {
                       <div className="flex-shrink-0">
                         <CloudinaryImage
                           className="rounded-circle img-search"
-                          src={defaulter?.leader.pictureUrl}
+                          src={defaulter?.leader?.pictureUrl}
                           alt={defaulter?.leader?.fullName}
                         />
                       </div>
@@ -216,14 +206,28 @@ const ConfirmAnagkazoBanking = () => {
                     </div>
                     <Card.Footer className="text-center">
                       <Button
-                        ref={buttonRef}
-                        onClick={() => {
-                          clickCard(defaulter)
+                        disabled={constituencyServiceLoading}
+                        onClick={async () => {
+                          setDefaulterIndex(index)
+                          await getConstituencyServiceRecordThisWeek({
+                            variables: {
+                              constituencyId: defaulter.id,
+                              week: getWeekNumber(),
+                            },
+                          })
                           togglePopup()
                         }}
                         variant="info"
                       >
-                        Confirm Offering
+                        {constituencyServiceLoading &&
+                        index === defaulterIndex ? (
+                          <>
+                            <Spinner animation="border" size="sm" />{' '}
+                            <span>Loading...</span>
+                          </>
+                        ) : (
+                          'Confirm Offering'
+                        )}
                       </Button>
                     </Card.Footer>
                   </Card>
