@@ -68,7 +68,7 @@ RETURN record {
 
 export const setTransactionStatusFailed = `
 MATCH (record:ServiceRecord {id: $serviceRecordId})
-MATCH (record)-[r:OFFERING_BANKED_BY]->(banker)
+OPTIONAL MATCH (record)-[r:OFFERING_BANKED_BY]->(banker)
 SET record.transactionStatus = 'failed'
 
 DELETE r
