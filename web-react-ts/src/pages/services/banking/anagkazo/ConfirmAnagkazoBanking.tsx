@@ -48,7 +48,7 @@ const ConfirmAnagkazoBanking = () => {
 
   const [
     getConstituencyServiceRecordThisWeek,
-    { data: constituencyServiceData },
+    { data: constituencyServiceData, loading: constituencyServiceLoading },
   ] = useLazyQuery(DISPLAY_AGGREGATE_SERVICE_RECORD)
 
   const [ConfirmBanking] = useMutation(CONFIRM_BANKING)
@@ -216,7 +216,9 @@ const ConfirmAnagkazoBanking = () => {
                         }}
                         variant="info"
                       >
-                        Confirm Offering
+                        {constituencyServiceLoading
+                          ? 'Loading...'
+                          : 'Confirm Offering'}
                       </Button>
                     </Card.Footer>
                   </Card>
