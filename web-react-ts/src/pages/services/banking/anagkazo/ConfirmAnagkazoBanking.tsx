@@ -55,7 +55,7 @@ const ConfirmAnagkazoBanking = () => {
   const [ConfirmBanking] = useMutation(CONFIRM_BANKING)
 
   const service =
-    constituencyServiceData?.constituencies[0]?.aggregateServiceRecord
+    constituencyServiceData?.constituencies[0]?.aggregateServiceRecordForWeek
 
   const selectedConstituencyName =
     constituencyServiceData?.constituencies[0]?.name
@@ -206,9 +206,7 @@ const ConfirmAnagkazoBanking = () => {
                     </div>
                     <Card.Footer className="text-center">
                       <Button
-                        disabled={
-                          constituencyServiceLoading && index === defaulterIndex
-                        }
+                        disabled={constituencyServiceLoading}
                         onClick={async () => {
                           setDefaulterIndex(index)
                           await getConstituencyServiceRecordThisWeek({
