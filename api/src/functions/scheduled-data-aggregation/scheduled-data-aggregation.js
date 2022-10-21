@@ -138,8 +138,8 @@ const getOversightServicesForDenominationAggregation = `
 /// // Get all Bacenta Aggregates for Bacenta Aggregation
 
 const aggregateVehicleRecords = `
-MATCH (vehicle:VehicleRecord)<-[:INCLUDES_RECORD]-(bussing:BussingRecord)
-MATCH (bussing)-[:INCLUDES_RECORD]->(allVehicles:VehicleRecord)
+MATCH (bussing:BussingRecord)-[:INCLUDES_RECORD]->(allVehicles:VehicleRecord)
+WITH DISTINCT bussing, allVehicles
 WITH bussing, SUM(allVehicles.attendance) AS attendance, SUM(allVehicles.leaderDeclaration) AS leaderDeclaration, SUM(allVehicles.personalContribution) AS personalContribution, SUM(allVehicles.vehicleCost) AS vehicleCost, SUM(allVehicles.vehicleTopUp) AS vehicleTopUp
 SET bussing.attendance = attendance,
 bussing.leaderDeclaration = leaderDeclaration,
