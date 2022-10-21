@@ -96,6 +96,32 @@ const ServiceForm = ({
     return false
   }
 
+  const parseForeignCurrency = (string: string) => {
+    const nonOptions = [
+      0,
+      '',
+      'o',
+      '0',
+      '00',
+      '0.0',
+      '0.00',
+      'Gh',
+      'ghana cedis',
+      'No',
+      'None',
+      'n/a',
+      'N/A',
+      'NA',
+      '-',
+    ]
+
+    if (nonOptions.includes(string.toLowerCase().trim())) {
+      return null
+    }
+
+    return null
+  }
+
   const onSubmit = (
     values: FormOptions,
     onSubmitProps: FormikHelpers<FormOptions>
@@ -112,7 +138,7 @@ const ServiceForm = ({
           serviceDate: values.serviceDate,
           attendance: parseInt(values.attendance),
           income: parseFloat(values.cediIncome),
-          foreignCurrency: values.foreignCurrency,
+          foreignCurrency: parseForeignCurrency(values.foreignCurrency),
           numberOfTithers: parseInt(values.numberOfTithers),
           treasurers: values?.treasurers,
           treasurerSelfie: values.treasurerSelfie,
