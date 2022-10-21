@@ -65,7 +65,7 @@ const treasuryMutations = {
       checkAlreadyConfirmedResponse.bankingDefaulters.low
 
     if (checkAlreadyConfirmed < 1) {
-      throw new Error("This constitieuncy's offering has already been banked!")
+      throw new Error("This constituency's offering has already been banked!")
     }
 
     try {

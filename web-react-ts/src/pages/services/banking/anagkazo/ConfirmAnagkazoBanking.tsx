@@ -32,7 +32,7 @@ const ConfirmAnagkazoBanking = () => {
   const { currentUser, theme } = useContext(MemberContext)
   const church = currentUser?.currentChurch
   const churchType = currentUser.currentChurch?.__typename
-  const { streamId, constituencyId } = useContext(ChurchContext)
+  const { streamId } = useContext(ChurchContext)
   const [isSubmitting, setSubmitting] = useState(false)
   const [defaulterIndex, setDefaulterIndex] = useState(0)
   const [defaultersData, setDefaultersData] = useState([])
@@ -56,9 +56,6 @@ const ConfirmAnagkazoBanking = () => {
 
   const service =
     constituencyServiceData?.constituencies[0]?.aggregateServiceRecordForWeek
-
-  const selectedConstituencyName =
-    constituencyServiceData?.constituencies[0]?.name
 
   const bankingDefaultersList =
     data?.streams[0]?.constitiuencyBankingDefaultersThisWeek
@@ -115,79 +112,79 @@ const ConfirmAnagkazoBanking = () => {
             </Formik>
             <div className="text-center mt-2 mb-3">Week {getWeekNumber()}</div>
             <Container>
-              {isOpen && (
-                <Popup handleClose={togglePopup}>
-                  <h3 className={`${theme} menu-subheading text-center`}>
-                    {selectedConstituencyName} Constituency
-                  </h3>
-                  <h6 className="text-center">Confirm Offering?</h6>
-                  <Table striped bordered hover variant="dark">
-                    <tbody>
-                      <tr>
-                        <td>Income</td>
-                        <td>{service?.income}</td>
-                      </tr>
-                      {service?.foreignCurrency && (
-                        <tr>
-                          <td>Foreign Currency</td>
-                          <td>{service?.foreignCurrency}</td>
-                        </tr>
-                      )}
-                    </tbody>
-                  </Table>
-                  <i className="text-danger">
-                    NB: You must only click this button if the amount the
-                    constituency is submitting is the same as what is displayed
-                    here
-                  </i>
-                  <Button
-                    variant="primary"
-                    type="submit"
-                    size="lg"
-                    className={`btn-main ${theme}`}
-                    disabled={isSubmitting}
-                    onClick={async () => {
-                      setSubmitting(true)
-
-                      try {
-                        await ConfirmBanking({
-                          variables: {
-                            constituencyId: constituencyId,
-                          },
-                        })
-                        togglePopup()
-                        alertMsg('Banking Confirmed Successfully')
-
-                        setSubmitting(false)
-                        refetch({ id: streamId })
-                        navigate('/anagkazo/receive-banking')
-                      } catch (error: any) {
-                        setSubmitting(false)
-                        throwToSentry(error)
-                      }
-                    }}
-                  >
-                    {isSubmitting ? (
-                      <>
-                        <Spinner animation="grow" size="sm" />
-                        <span> Submitting</span>
-                      </>
-                    ) : (
-                      `Yes, I'm sure`
-                    )}
-                  </Button>
-                  <Button
-                    variant="primary"
-                    className={`btn-secondary mt-2 ${theme}`}
-                    onClick={togglePopup}
-                  >
-                    No, take me back
-                  </Button>
-                </Popup>
-              )}
               <div className="d-grid ">
                 {defaultersData?.map((defaulter: Defaulter, index: number) => (
                   <Card key={index} className="confirm-banking-card mt-2">
+                    {isOpen && (
+                      <Popup handleClose={togglePopup}>
+                        <h3 className={`${theme} menu-subheading text-center`}>
+                          {defaulter.name} Constituency
+                        </h3>
+                        <h6 className="text-center">Confirm Offering?</h6>
+                        <Table striped bordered hover variant="dark">
+                          <tbody>
+                            <tr>
+                              <td>Income</td>
+                              <td>{service?.income}</td>
+                            </tr>
+                            {service?.foreignCurrency && (
+                              <tr>
+                                <td>Foreign Currency</td>
+                                <td>{service?.foreignCurrency}</td>
+                              </tr>
+                            )}
+                          </tbody>
+                        </Table>
+                        <i className="text-danger">
+                          NB: You must only click this button if the amount the
+                          constituency is submitting is the same as what is
+                          displayed here
+                        </i>
+                        <Button
+                          variant="primary"
+                          type="submit"
+                          size="lg"
+                          className={`btn-main ${theme}`}
+                          disabled={isSubmitting}
+                          onClick={async () => {
+                            setSubmitting(true)
+
+                            try {
+                              await ConfirmBanking({
+                                variables: {
+                                  constituencyId: defaulter.id,
+                                },
+                              })
+                              togglePopup()
+                              alertMsg('Banking Confirmed Successfully')
+
+                              setSubmitting(false)
+                              refetch({ id: streamId })
+                              navigate('/anagkazo/receive-banking')
+                            } catch (error: any) {
+                              setSubmitting(false)
+                              throwToSentry(error)
+                            }
+                          }}
+                        >
+                          {isSubmitting ? (
+                            <>
+                              <Spinner animation="grow" size="sm" />
+                              <span> Submitting</span>
+                            </>
+                          ) : (
+                            `Yes, I'm sure`
+                          )}
+                        </Button>
+                        <Button
+                          variant="primary"
+                          className={`btn-secondary mt-2 ${theme}`}
+                          onClick={togglePopup}
+                        >
+                          No, take me back
+                        </Button>
+                      </Popup>
+                    )}
                     <div className="d-flex align-items-center">
                       <div className="flex-shrink-0">
                         <CloudinaryImage
