@@ -40,3 +40,64 @@ MATCH (member:Member)-[:BELONGS_TO]->(fellowship:Fellowship)
 MATCH (fellowship)<-[:HAS]-(bacenta:Bacenta)<-[:HAS]-(constituency:Constituency)<-[:HAS]-(council:Council)<-[:HAS]-(stream:Stream)<-[:HAS]-(gathering:Gathering)
 MERGE (member)-[:LEADS]->(gathering)
 RETURN member, gathering;
+MATCH (f {name: "Greater Love Club"})
+MATCH (m:Member {email: "jaedagy@gmail.com"})
+MERGE (m)-[:LEADS]->(f)
+RETURN f,m;
+
+MATCH (member:Member)
+MATCH (f:Fellowship {name: "Greater Love Club"})
+MERGE (member)-[:BELONGS_TO]->(f)
+RETURN member, f;
+
+WITH datetime({year: date().year, month: date().month, day: 1}) AS startDate,
+        datetime({year: date().year, month: date().month, day: 1,  hour: 23, minute: 59, second: 59}) + duration({months: 1}) - duration({days: 1}) AS endDate
+
+      MERGE (cycle:BacentaCycle {month: date().month, year: date().year})
+        ON CREATE SET cycle.id = apoc.create.uuid(),
+          cycle.startDate = startDate,
+          cycle.endDate = endDate,
+          cycle.duration = duration.inDays(startDate,endDate)
+
+      RETURN cycle;
+
+      WITH datetime({year: date().year, month: date().month, day: 1}) AS startDate,
+        datetime({year: date().year, month: date().month, day: 1,  hour: 23, minute: 59, second: 59}) + duration({months: 1}) - duration({days: 1}) AS endDate
+
+      MERGE (cycle:BacentaCycle {month: date().month, year: date().year})
+        ON CREATE SET cycle.id = apoc.create.uuid(),
+          cycle.startDate = startDate,
+          cycle.endDate = endDate,
+          cycle.duration = duration.inDays(startDate,endDate)
+
+      RETURN cycle;
+
+WITH datetime({year: date().year, quarter: date().quarter, dayOfQuarter: 1}) AS startDate,
+      datetime({year: date().year, quarter: date().quarter, dayOfQuarter: 1,  hour: 23, minute: 59, second: 59}) + duration({months: 3}) - duration({days: 1}) AS endDate
+
+      MERGE (cycle:ConstituencyCycle {quarter: date().quarter, year: date().year})
+        ON CREATE SET cycle.id = apoc.create.uuid(),
+          cycle.startDate = startDate,
+          cycle.endDate = endDate,
+          cycle.duration = duration.inDays(startDate,endDate)
+
+      RETURN cycle;
+
+      WITH toInteger(ceil(toFloat(date().month)/toFloat(6))) - 1 AS halfOfYear,
+        [1,7] AS month
+
+      WITH month,
+       halfOfYear,
+      datetime({year: date().year, month: month[halfOfYear], day: 1}) AS startDate,
+      datetime({year: date().year, month: month[halfOfYear], day: 1,  hour: 23, minute: 59, second: 59})
+        + duration({months: 6}) - duration({days: 1})  AS endDate
+
+        MERGE (cycle:CouncilCycle {half: halfOfYear, year: date().year})
+        ON CREATE SET cycle.id = apoc.create.uuid(),
+          cycle.startDate = startDate,
+          cycle.endDate = endDate,
+          cycle.duration = duration.inDays(startDate,endDate)
+
+      RETURN cycle;
+
+      
