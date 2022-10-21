@@ -58,6 +58,12 @@ const serviceMutation = {
         await session.run(getServantAndChurchCypher, args)
       )
 
+      if (Object.keys(getServantAndChurch).length === 0) {
+        throw new Error(
+          'You must set a leader over this church before you can fill this form'
+        )
+      }
+
       await makeServantCypher({
         context,
         churchType: getServantAndChurch.churchType,

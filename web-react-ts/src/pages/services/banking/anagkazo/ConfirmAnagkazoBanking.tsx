@@ -34,6 +34,7 @@ const ConfirmAnagkazoBanking = () => {
   const churchType = currentUser.currentChurch?.__typename
   const { streamId, constituencyId } = useContext(ChurchContext)
   const [isSubmitting, setSubmitting] = useState(false)
+  const [ind, setIndex] = useState(0)
   const [defaultersData, setDefaultersData] = useState([])
   const { togglePopup, isOpen } = usePopup()
   const navigate = useNavigate()
@@ -206,6 +207,7 @@ const ConfirmAnagkazoBanking = () => {
                     <Card.Footer className="text-center">
                       <Button
                         onClick={async () => {
+                          setIndex(index)
                           await getConstituencyServiceRecordThisWeek({
                             variables: {
                               constituencyId: defaulter.id,
