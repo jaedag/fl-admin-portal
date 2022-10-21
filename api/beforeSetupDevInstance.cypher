@@ -28,9 +28,15 @@ where not exists {
 }
 detach delete n;
 
-match (n:Member) where n.email in ['jaedagy@gmail.com', 'dabick14@gmail.com', 'ahadzi.airdem@gmail.com']
+match (n:Member) where n.email in ['jaedagy@gmail.com', 'dabick14@gmail.com', 'ahadzi.airdem@gmail.com', 'asiaknathan@gmail.com']
 
 with collect(n) as remainder
 
 MATCH (member:Member) WHERE NOT member  IN remainder
 detach delete member;
+
+
+MATCH (member:Member)-[:BELONGS_TO]->(fellowship:Fellowship)
+MATCH (fellowship)<-[:HAS]-(bacenta:Bacenta)<-[:HAS]-(constituency:Constituency)<-[:HAS]-(council:Council)<-[:HAS]-(stream:Stream)<-[:HAS]-(gathering:Gathering)
+MERGE (member)-[:LEADS]->(gathering)
+RETURN member, gathering;
