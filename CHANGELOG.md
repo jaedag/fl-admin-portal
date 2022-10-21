@@ -1,3 +1,14 @@
+#### 5.2.4 (2022-10-21)
+
+##### Bug Fixes
+
+*  fix bug with anagkazo defaulters ([e301e45c](https://github.com/firstlovecenter/fl-pastoral-care/commit/e301e45c080f6731a28e809306530aac5fb33cec))
+*  update dev set up cypher ([5aa6aa7e](https://github.com/firstlovecenter/fl-pastoral-care/commit/5aa6aa7e59890fcfc1a46b25a5591080b3d61416))
+*  add configs to set up dev  instance cypher ([f3880cbc](https://github.com/firstlovecenter/fl-pastoral-care/commit/f3880cbc5f166ce6dac4530b35df864f89457e4b))
+*  set transaction status as pending even before transactionReference is gotten from paystack ([6866ad2d](https://github.com/firstlovecenter/fl-pastoral-care/commit/6866ad2d60c14606cfb5c618bf913c210c83d8f2))
+*  correct issue where already banked service ids were being passed to confirm banking ([c74ea528](https://github.com/firstlovecenter/fl-pastoral-care/commit/c74ea52824caddf4694476f794e4cb3ccf9e8266))
+*  add a parser for foreign Currency to remove 00 and other strange values ([1d0bcc3d](https://github.com/firstlovecenter/fl-pastoral-care/commit/1d0bcc3d42c2201fd6889b339c3373a0c1c6e61f))
+
 #### 5.2.3 (2022-10-21)
 
 ##### New Features
