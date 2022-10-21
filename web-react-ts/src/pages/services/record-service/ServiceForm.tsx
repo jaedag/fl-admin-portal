@@ -190,7 +190,7 @@ const ServiceForm = ({
                     <Input name="cediIncome" label="Income (in Cedis)*" />
                     <Input
                       name="foreignCurrency"
-                      label="Foreign Currency (if any)*"
+                      label="Foreign Currency (if any) (Optional)"
                     />
                     <Input name="numberOfTithers" label="Number of Tithers*" />
                     <small className="label">Treasurers (minimum of 2)</small>
