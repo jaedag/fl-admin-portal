@@ -32,16 +32,11 @@ const ImageUpload = (props: ImageUploadProps) => {
     const files = e.target.files
     const date = new Date().toISOString().slice(0, 10)
     const username = `${currentUser.firstName.toLowerCase()}-${currentUser.lastName.toLowerCase()}`
-
+    const filename = `${username}-${currentUser.id}/${date}_${files[0].name}`
     const data = new FormData()
     data.append('file', files[0])
     data.append('upload_preset', uploadPreset || '')
-    data.append(
-      'public_id',
-      `${username.replace(/\s/g, '-')}-${currentUser.id}/${date}_${
-        files[0].name
-      }`
-    )
+    data.append('public_id', filename.replace(/\s/g, '-'))
 
     data.append('tags', tags || '')
 
