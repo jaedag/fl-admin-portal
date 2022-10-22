@@ -58,7 +58,7 @@ const DisplayAllCouncils = () => {
               </Link>
             ) : null}
           </Col>
-          <RoleView roles={permitAdmin('Stream')}>
+          <RoleView roles={permitAdmin('Stream')} directoryLock>
             <Col className="col-auto">
               <Link to="/council/addcouncil" className="btn btn-danger">
                 Add Council

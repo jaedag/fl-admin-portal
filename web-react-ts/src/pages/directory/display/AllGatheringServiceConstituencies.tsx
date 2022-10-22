@@ -64,7 +64,7 @@ const AllGatheringServiceConstituencies = () => {
                 </Link>
               ) : null}
             </Col>
-            <RoleView roles={permitAdmin('Council')}>
+            <RoleView roles={permitAdmin('Council')} directoryLock>
               <Col className="col-auto">
                 <Link
                   to="/constituency/addconstituency"

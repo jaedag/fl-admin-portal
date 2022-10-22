@@ -58,7 +58,7 @@ const DisplayAllBacentas = () => {
               </Link>
             ) : null}
           </Col>
-          <RoleView roles={permitAdmin('Constituency')}>
+          <RoleView directoryLock roles={permitAdmin('Constituency')}>
             <Col className="col-auto">
               <Link
                 to="/bacenta/addbacenta"

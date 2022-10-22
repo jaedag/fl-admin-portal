@@ -33,7 +33,7 @@ const DisplayAllFellowships = () => {
               <h2 className="text-white">{`${fellowships?.[0].bacenta.name} Bacenta`}</h2>
             </Link>
           </Col>
-          <RoleView roles={permitAdmin('Constituency')}>
+          <RoleView roles={permitAdmin('Constituency')} directoryLock>
             <Col className="col-auto">
               <Link to="/fellowship/addfellowship" className="btn btn-danger">
                 Add Fellowship

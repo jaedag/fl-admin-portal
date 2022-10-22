@@ -59,7 +59,7 @@ const AllStreamConstituencies = () => {
                 </Link>
               ) : null}
             </Col>
-            <RoleView roles={permitAdmin('Stream')}>
+            <RoleView roles={permitAdmin('Stream')} directoryLock>
               <Col className="col-auto">
                 <Link
                   to="/constituency/addconstituency"

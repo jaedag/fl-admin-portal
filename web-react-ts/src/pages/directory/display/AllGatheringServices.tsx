@@ -57,7 +57,7 @@ const DisplayAllGatheringServices = () => {
               </Link>
             ) : null}
           </Col>
-          <RoleView roles={permitAdmin('GatheringService')}>
+          <RoleView roles={permitAdmin('GatheringService')} directoryLock>
             <Col className="col-auto">
               <Link
                 to="/gatheringservice/addgatheringservice"
