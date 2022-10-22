@@ -1,3 +1,10 @@
+#### 5.2.5 (2022-10-22)
+
+##### Bug Fixes
+
+*  improve handling of upload for files with spaces in ([ef6ace00](https://github.com/firstlovecenter/fl-pastoral-care/commit/ef6ace0037cee104cf63be3ebff7f08e0fc79850))
+*  fix ux bugs for paystack edge cases ([98499789](https://github.com/firstlovecenter/fl-pastoral-care/commit/9849978932df99f53f2302dc76fc4e175e5c7e12))
+
 #### 5.2.4 (2022-10-21)
 
 ##### Bug Fixes
