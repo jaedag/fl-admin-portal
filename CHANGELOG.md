@@ -1,3 +1,10 @@
+#### 5.2.6 (2022-10-22)
+
+##### Bug Fixes
+
+*  implement check current history on filling bacenta form ([b5078da4](https://github.com/firstlovecenter/fl-pastoral-care/commit/b5078da44b2f21ab88adc79fe4a248b2bdeef6e6))
+*  update directory lock to include creation of churches ([25df27be](https://github.com/firstlovecenter/fl-pastoral-care/commit/25df27be5c03f316fcb237f494ade5a93c304c39))
+
 #### 5.2.5 (2022-10-22)
 
 ##### Bug Fixes
