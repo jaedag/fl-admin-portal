@@ -6,3 +6,10 @@
 .btn-close {
   color: var(--text-primary);
 }
+
+.center-spinner {
+  min-height: 15vh;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}

@@ -17,6 +17,7 @@ import { alertMsg, throwToSentry } from 'global-utils'
 import Popup from 'components/Popup/Popup'
 import NoDataComponent from 'pages/arrivals/CompNoData'
 import Input from 'components/formik/Input'
+import './TellerSelect.css'
 
 type FormOptions = {
   defaulterSearch: string
@@ -116,72 +117,82 @@ const ConfirmAnagkazoBanking = () => {
               <div className="d-grid ">
                 {isOpen && (
                   <Popup handleClose={togglePopup}>
-                    <h3 className={`${theme} menu-subheading text-center`}>
-                      {selected?.name} Constituency
-                    </h3>
-                    <h6 className="text-center">Confirm Offering?</h6>
-                    <Table striped bordered hover variant="dark">
-                      <tbody>
-                        <tr>
-                          <td>Income</td>
-                          <td>{service?.income}</td>
-                        </tr>
-                        {service?.foreignCurrency && (
-                          <tr>
-                            <td>Foreign Currency</td>
-                            <td>{service?.foreignCurrency}</td>
-                          </tr>
-                        )}
-                      </tbody>
-                    </Table>
-                    <i className="text-danger">
-                      NB: You must only click this button if the amount the
-                      constituency is submitting is the same as what is
-                      displayed here
-                    </i>
-                    <Button
-                      variant="primary"
-                      type="submit"
-                      size="lg"
-                      className={`btn-main ${theme}`}
-                      disabled={isSubmitting}
-                      onClick={async () => {
-                        setSubmitting(true)
+                    {constituencyServiceLoading ? (
+                      <div className="center-spinner">
+                        <Spinner animation="border" variant="secondary" />
+                      </div>
+                    ) : (
+                      <React.Fragment>
+                        <h3 className={`${theme} menu-subheading text-center`}>
+                          {selected?.name} Constituency
+                        </h3>
+                        <h6 className="text-center">Confirm Offering?</h6>
+                        <Table striped bordered hover variant="dark">
+                          <tbody>
+                            <tr>
+                              <td>Income</td>
+                              <td className="text-break">{service?.income}</td>
+                            </tr>
+                            {service?.foreignCurrency && (
+                              <tr>
+                                <td>Foreign Currency</td>
+                                <td className="text-break">
+                                  {service?.foreignCurrency}
+                                </td>
+                              </tr>
+                            )}
+                          </tbody>
+                        </Table>
+                        <i className="text-danger">
+                          NB: You must only click this button if the amount the
+                          constituency is submitting is the same as what is
+                          displayed here
+                        </i>
+                        <Button
+                          variant="primary"
+                          type="submit"
+                          size="lg"
+                          className={`btn-main ${theme}`}
+                          disabled={isSubmitting}
+                          onClick={async () => {
+                            setSubmitting(true)
 
-                        try {
-                          await ConfirmBanking({
-                            variables: {
-                              constituencyId: selected?.id,
-                            },
-                          })
-                          togglePopup()
-                          alertMsg('Banking Confirmed Successfully')
+                            try {
+                              await ConfirmBanking({
+                                variables: {
+                                  constituencyId: selected?.id,
+                                },
+                              })
+                              togglePopup()
+                              alertMsg('Banking Confirmed Successfully')
 
-                          setSubmitting(false)
-                          refetch({ id: streamId })
-                          navigate('/anagkazo/receive-banking')
-                        } catch (error: any) {
-                          setSubmitting(false)
-                          throwToSentry(error)
-                        }
-                      }}
-                    >
-                      {isSubmitting ? (
-                        <>
-                          <Spinner animation="grow" size="sm" />
-                          <span> Submitting</span>
-                        </>
-                      ) : (
-                        `Yes, I'm sure`
-                      )}
-                    </Button>
-                    <Button
-                      variant="primary"
-                      className={`btn-secondary mt-2 ${theme}`}
-                      onClick={togglePopup}
-                    >
-                      No, take me back
-                    </Button>
+                              setSubmitting(false)
+                              refetch({ id: streamId })
+                              navigate('/anagkazo/receive-banking')
+                            } catch (error: any) {
+                              setSubmitting(false)
+                              throwToSentry(error)
+                            }
+                          }}
+                        >
+                          {isSubmitting ? (
+                            <>
+                              <Spinner animation="grow" size="sm" />
+                              <span> Submitting</span>
+                            </>
+                          ) : (
+                            `Yes, I'm sure`
+                          )}
+                        </Button>
+                        <Button
+                          variant="primary"
+                          className={`btn-secondary mt-2 ${theme}`}
+                          onClick={togglePopup}
+                        >
+                          No, take me back
+                        </Button>
+                      </React.Fragment>
+                    )}
                   </Popup>
                 )}
                 {defaultersData?.map((defaulter: Defaulter, index: number) => (
@@ -208,13 +219,13 @@ const ConfirmAnagkazoBanking = () => {
                         onClick={async () => {
                           setDefaulterIndex(index)
                           setSelected(defaulter)
+                          togglePopup()
                           await getConstituencyServiceRecordThisWeek({
                             variables: {
                               constituencyId: defaulter.id,
                               week: getWeekNumber(),
                             },
                           })
-                          togglePopup()
                         }}
                         variant="info"
                       >
