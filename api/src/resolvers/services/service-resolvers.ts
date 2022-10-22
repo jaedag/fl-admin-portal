@@ -35,6 +35,47 @@ type RecordCancelledServiceArgs = {
   noServiceReason: string
 }
 
+export const checkServantHasCurrentHistory = async (
+  session: any,
+  context: Context,
+  args: { churchId: string }
+) => {
+  const relationshipCheck = rearrangeCypherObject(
+    await session.run(checkCurrentServiceLog, { churchId: args.churchId })
+  )
+  if (!relationshipCheck.exists) {
+    // Checks if the church has a current history record otherwise creates it
+    const getServantAndChurch = rearrangeCypherObject(
+      await session.run(getServantAndChurchCypher, { churchId: args.churchId })
+    )
+
+    if (Object.keys(getServantAndChurch).length === 0) {
+      throw new Error(
+        'You must set a leader over this church before you can fill this form'
+      )
+    }
+
+    await makeServantCypher({
+      context,
+      churchType: getServantAndChurch.churchType,
+      servantType: 'Leader',
+      servant: {
+        id: getServantAndChurch.servantId,
+        auth_id: getServantAndChurch.auth_id,
+        firstName: getServantAndChurch.firstName,
+        lastName: getServantAndChurch.lastName,
+      },
+      args: {
+        leaderId: getServantAndChurch.servantId,
+      },
+      church: {
+        id: getServantAndChurch.churchId,
+        name: getServantAndChurch.churchName,
+      },
+    })
+  }
+}
+
 const serviceMutation = {
   RecordService: async (
     object: any,
@@ -44,45 +85,13 @@ const serviceMutation = {
     isAuth(permitLeaderAdmin('Fellowship'), context.auth.roles)
     const session = context.executionContext.session()
 
-    const relationshipCheck = rearrangeCypherObject(
-      await session.run(checkCurrentServiceLog, args)
-    )
-
     if (checkIfArrayHasRepeatingValues(args.treasurers)) {
       throw new Error(errorMessage.repeatingTreasurers)
     }
 
-    if (!relationshipCheck.exists) {
-      // Checks if the church has a current history record otherwise creates it
-      const getServantAndChurch = rearrangeCypherObject(
-        await session.run(getServantAndChurchCypher, args)
-      )
-
-      if (Object.keys(getServantAndChurch).length === 0) {
-        throw new Error(
-          'You must set a leader over this church before you can fill this form'
-        )
-      }
-
-      await makeServantCypher({
-        context,
-        churchType: getServantAndChurch.churchType,
-        servantType: 'Leader',
-        servant: {
-          id: getServantAndChurch.servantId,
-          auth_id: getServantAndChurch.auth_id,
-          firstName: getServantAndChurch.firstName,
-          lastName: getServantAndChurch.lastName,
-        },
-        args: {
-          leaderId: getServantAndChurch.servantId,
-        },
-        church: {
-          id: getServantAndChurch.churchId,
-          name: getServantAndChurch.churchName,
-        },
-      })
-    }
+    await checkServantHasCurrentHistory(session, context, {
+      churchId: args.churchId,
+    })
 
     const serviceCheck = rearrangeCypherObject(
       await session.run(checkFormFilledThisWeek, args)

@@ -36,6 +36,7 @@ import {
 } from '../utils/types'
 import texts from '../texts.json'
 import { SendMoneyBody } from './arrivals-types'
+import { checkServantHasCurrentHistory } from '../services/service-resolvers'
 
 const dotenv = require('dotenv')
 
@@ -188,6 +189,10 @@ export const arrivalsMutation = {
     const recordResponse = rearrangeCypherObject(
       await session.run(checkArrivalTimes, args)
     )
+
+    await checkServantHasCurrentHistory(session, context, {
+      churchId: args.bacentaId,
+    })
 
     const stream = recordResponse.stream.properties
     const mobilisationEndTime = new Date(
