@@ -334,7 +334,7 @@ const executeQuery = (neoDriver) => {
 
   return session
     .writeTransaction(async (tx) => {
-      console.log('Running Service Aggreation for the day')
+      console.log('Running Service Aggregation for the day')
       try {
         await tx.run(getFellowshipServicesForBacentaAggregation)
         await tx.run(getBacentaServicesForConstituencyAggregation)

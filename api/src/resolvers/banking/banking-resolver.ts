@@ -127,7 +127,7 @@ const bankingMutation = {
         Authorization: auth,
       },
       data: {
-        amount: Math.round((serviceRecord.income * 100) / (1 - 0.0195) + 0.01),
+        amount: Math.round((serviceRecord.income / (1 - 0.0195) + 0.01) * 100),
         email: cypherResponse.author.email,
         currency: 'GHS',
         mobile_money: {

@@ -31,4 +31,4 @@ const SubmitButton = (props: SubmitButtonProps) => {
   )
 }
 
-export default SubmitButton
+export default SubmitButto
