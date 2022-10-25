@@ -1,3 +1,10 @@
+#### 5.2.7 (2022-10-25)
+
+##### Bug Fixes
+
+*  fix bug breaking the build ([61747833](https://github.com/firstlovecenter/fl-pastoral-care/commit/61747833194b05c4992ccf8d00e078972ce7f5fb))
+*  adjust paystack calculation for trailing pesewa decimals ([01d22dfb](https://github.com/firstlovecenter/fl-pastoral-care/commit/01d22dfb992135a577607e84dbb52e0fda3b4815))
+
 #### 5.2.6 (2022-10-22)
 
 ##### Bug Fixes
