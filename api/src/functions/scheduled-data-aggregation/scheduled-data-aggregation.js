@@ -2,7 +2,8 @@ const { schedule } = require('@netlify/functions')
 const neo4j = require('neo4j-driver')
 
 const getFellowshipServicesForBacentaAggregation = `
-  MATCH (bacenta:Bacenta)-[:HAS]->(fellowship:Fellowship)
+  MATCH (bacenta:Bacenta)-[:HAS]->(fellowship)
+  WHERE fellowship:Fellowship OR fellowship:ClosedFellowship
   MATCH (bacenta)-[:CURRENT_HISTORY]->(currentLog:ServiceLog)
   MATCH (fellowship)-[:CURRENT_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(timeNode:TimeGraph) WHERE timeNode.date.week =  date().week AND timeNode.date.year = date().year
   WITH currentLog,timeNode.date.week AS week, timeNode.date.year AS year, SUM(record.attendance) AS attendance, SUM(record.income) AS income 
@@ -16,7 +17,8 @@ const getFellowshipServicesForBacentaAggregation = `
   RETURN agg LIMIT 1;
   `
 const getBacentaServicesForConstituencyAggregation = `
-  MATCH (constituency:Constituency)-[:HAS]->(bacenta:Bacenta)
+  MATCH (constituency:Constituency)-[:HAS]->(bacenta)
+  WHERE bacenta:Bacenta OR bacenta:ClosedBacenta
   MATCH (constituency)-[:CURRENT_HISTORY]->(currentLog:ServiceLog)
   MATCH (bacenta)-[:CURRENT_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(record:AggregateServiceRecord {year: date().year})
   WITH currentLog,record.week AS week, record.year AS year, SUM(record.attendance) AS attendance, SUM(record.income) AS income WHERE record.week = date().week
@@ -41,7 +43,8 @@ const getConstituencyServicesForConstituencyAggregation = `
 `
 
 const getConstituencyServicesForCouncilAggregation = `
-  MATCH (council:Council)-[:HAS]->(constituency:Constituency)
+  MATCH (council:Council)-[:HAS]->(constituency)
+  WHERE constituency:Constituency OR constituency:ClosedConstituency
   MATCH (council)-[:CURRENT_HISTORY]->(currentLog:ServiceLog)
   MATCH (constituency)-[:CURRENT_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(record:AggregateServiceRecord {year: date().year})
   WITH currentLog,record.week AS week, record.year AS year, SUM(record.attendance) AS attendance, SUM(record.income) AS income WHERE record.week = date().week
@@ -66,7 +69,8 @@ const getCouncilServicesForCouncilAggregation = `
   `
 
 const getCouncilServicesForStreamAggregation = `
-  MATCH (stream:Stream)-[:HAS]->(council:Council)
+  MATCH (stream:Stream)-[:HAS]->(council)
+  WHERE council:Council OR council:ClosedCouncil
   MATCH (stream)-[:CURRENT_HISTORY]->(currentLog:ServiceLog)
   MATCH (council)-[:CURRENT_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(record:AggregateServiceRecord {year: date().year})
   WITH currentLog,record.week AS week, record.year AS year, SUM(record.attendance) AS attendance, SUM(record.income) AS income WHERE record.week = date().week
@@ -161,7 +165,8 @@ RETURN bussing LIMIT 1;
 `
 
 const getBacentaBussingForBacentaAggregation = `
-MATCH (bacenta:Bacenta)-[:CURRENT_HISTORY]->(currentLog:ServiceLog)
+MATCH (bacenta) WHERE bacenta:Bacenta OR bacenta:ClosedBacenta
+MATCH (bacenta)-[:CURRENT_HISTORY]->(currentLog:ServiceLog)
 MATCH (bacenta)-[:CURRENT_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(record:BussingRecord)-[:BUSSED_ON]->(timeNode:TimeGraph) WHERE timeNode.date.week = date().week AND timeNode.date.year = date().year
 WITH currentLog,timeNode.date.week AS week, timeNode.date.year AS year, SUM(record.attendance) AS attendance, SUM(record.leaderDeclaration) AS leaderDeclaration, 
 SUM(record.personalContribution) AS personalContribution, SUM(record.numberOfSprinters) AS numberOfSprinters,
@@ -186,9 +191,10 @@ RETURN agg LIMIT 1;
 
 // Get Bacenta Bussing for Constituency Aggregation
 const getBacentaBussingForConstituencyAggregation = `
-MATCH (constituency:Constituency)-[:HAS]->(bacenta:Bacenta)
+MATCH (constituency:Constituency)-[:HAS]->(bacenta)
+WHERE bacenta:Bacenta OR bacenta:ClosedBacenta
 MATCH (constituency)-[:CURRENT_HISTORY]->(currentLog:ServiceLog)
-MATCH (constituency)-[:CURRENT_HISTORY]->(:ServiceLog)-[:HAS_BUSSING_AGGREGATE]->(record:AggregateBussingRecord) WHERE record.week = date().week AND record.year = date().year
+MATCH (bacenta)-[:CURRENT_HISTORY]->(:ServiceLog)-[:HAS_BUSSING_AGGREGATE]->(record:AggregateBussingRecord) WHERE record.week = date().week AND record.year = date().year
 WITH currentLog,record.week AS week, record.year AS year, SUM(record.attendance) AS attendance, SUM(record.leaderDeclaration) AS leaderDeclaration, 
 SUM(record.personalContribution) AS personalContribution, SUM(record.numberOfSprinters) AS numberOfSprinters,
 SUM(record.numberOfUrvans) AS numberOfUrvans, SUM(record.numberOfCars) AS numberOfCars, SUM(record.bussingCost) AS bussingCost, 
@@ -210,7 +216,8 @@ RETURN agg LIMIT 1;
 `
 
 const getConstituencyBussingForCouncilAggregation = `
-MATCH (council:Council)-[:HAS]->(constituency:Constituency)
+MATCH (council:Council)-[:HAS]->(constituency)
+WHERE constituency:Constituency OR constituency:ClosedConstituency
 MATCH (council)-[:CURRENT_HISTORY]->(currentLog:ServiceLog)
 MATCH (constituency)-[:CURRENT_HISTORY]->(:ServiceLog)-[:HAS_BUSSING_AGGREGATE]->(record:AggregateBussingRecord) WHERE record.week = date().week AND record.year = date().year
 WITH currentLog,record.week AS week, record.year AS year, SUM(record.attendance) AS attendance, SUM(record.leaderDeclaration) AS leaderDeclaration, 
@@ -234,7 +241,8 @@ RETURN agg LIMIT 1;
 `
 
 const getCouncilBussingForStreamAggregation = `
-MATCH (stream:Stream)-[:HAS]->(council:Council)
+MATCH (stream:Stream)-[:HAS]->(council)
+WHERE council:Council OR council:ClosedCouncil
 MATCH (stream)-[:CURRENT_HISTORY]->(currentLog:ServiceLog)
 MATCH (council)-[:CURRENT_HISTORY]->(:ServiceLog)-[:HAS_BUSSING_AGGREGATE]->(record:AggregateBussingRecord) WHERE record.week = date().week AND record.year = date().year
 WITH currentLog,record.week AS week, record.year AS year, SUM(record.attendance) AS attendance, SUM(record.leaderDeclaration) AS leaderDeclaration, 
