@@ -3,7 +3,8 @@ MATCH (church {id: $churchId})
 WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Sonta OR church:Ministry
 
 
-OPTIONAL MATCH (church)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph) WHERE date(date.date).week = date().week
+OPTIONAL MATCH (church)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
+WHERE date(date.date).week = date().week AND date(date.date).year = date().year
         
 RETURN church.id AS id, church.name AS name, labels(church) AS labels, record AS alreadyFilled
 `
