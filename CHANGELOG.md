@@ -1,3 +1,12 @@
+#### 5.2.8 (2022-10-29)
+
+##### Bug Fixes
+
+*  prefer <> to <React.Fragment> syntax ([ab58d4be](https://github.com/firstlovecenter/fl-pastoral-care/commit/ab58d4bee33dd34e24a01e36a569deab839b0d93))
+*  place loader in the pop up on confirm anagkazo banking page ([dace8d1b](https://github.com/firstlovecenter/fl-pastoral-care/commit/dace8d1b526484060539c230a0c5287b67052db9))
+*  add ability to handle abandoned state ([0f9a3db7](https://github.com/firstlovecenter/fl-pastoral-care/commit/0f9a3db7947613bee1abd8e0aecd262d5a256786))
+*  fix check already filled cypher for services to also check for year ([fff1eebe](https://github.com/firstlovecenter/fl-pastoral-care/commit/fff1eebe91c893389ebc4ad00cd7ab2bda52796c))
+
 #### 5.2.7 (2022-10-25)
 
 ##### Bug Fixes
