@@ -122,7 +122,7 @@ const ConfirmAnagkazoBanking = () => {
                         <Spinner animation="border" variant="secondary" />
                       </div>
                     ) : (
-                      <React.Fragment>
+                      <>
                         <h3 className={`${theme} menu-subheading text-center`}>
                           {selected?.name} Constituency
                         </h3>
@@ -191,7 +191,7 @@ const ConfirmAnagkazoBanking = () => {
                         >
                           No, take me back
                         </Button>
-                      </React.Fragment>
+                      </>
                     )}
                   </Popup>
                 )}
