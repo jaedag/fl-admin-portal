@@ -353,7 +353,10 @@ const bankingMutation = {
       }
     )
 
-    if (confirmationResponse?.data.data.status === 'failed') {
+    if (
+      confirmationResponse?.data.data.status === 'failed' ||
+      confirmationResponse?.data.data.status === 'abandoned'
+    ) {
       record = rearrangeCypherObject(
         await session
           .run(setTransactionStatusFailed, args)

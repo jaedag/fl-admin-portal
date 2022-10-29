@@ -7,6 +7,12 @@ detach delete n;
 match (b:BussingRecord)
 detach delete b;
 
+match (n:AggregateServiceRecord)
+detach delete n;
+
+match (n:AggregateBussingRecord)
+detach delete n;
+
 match (v:VehicleRecord)
 detach delete v;
 
@@ -22,8 +28,11 @@ detach delete c;
 match (record:EquipmentRecord)
 detach delete record;
 
-match (n)
-where not exists {
+match (n:HistoryLog) WHERE NOT n:ServiceLog
+detach delete n;
+
+match (n) where NOT n:ArrivalsCodeOfTheDay 
+and not exists {
     match (n)-[]-()
 }
 detach delete n;
