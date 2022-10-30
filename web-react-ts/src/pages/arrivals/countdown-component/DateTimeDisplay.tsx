@@ -7,7 +7,7 @@ type DateTimeDisplayProps = {
 }
 
 const DateTimeDisplay = ({ value, type, isDanger }: DateTimeDisplayProps) => {
-  if (!value) return null
+  if (!value && !['Seconds', 'Mins'].includes(type)) return null
   return (
     <span>
       <span>{value.toString().padStart(2, '0')}</span>
