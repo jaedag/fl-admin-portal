@@ -4,13 +4,14 @@ import { ServiceContext } from 'contexts/ServiceContext'
 import React, { useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
 import {
+  CONFIRM_OFFERING_PAYMENT,
   DISPLAY_OFFERING_DETAILS,
   PAY_OFFERING_MUTATION,
   SEND_PAYMENT_OTP,
 } from './bankingQueries'
 import * as Yup from 'yup'
 import { Form, Formik, FormikHelpers } from 'formik'
-import { MOMO_NUM_REGEX } from 'global-utils'
+import { MOMO_NUM_REGEX, throwToSentry } from 'global-utils'
 import { MOBILE_NETWORK_OPTIONS } from 'pages/arrivals/arrivals-utils'
 import SubmitButton from 'components/formik/SubmitButton'
 import { Button, Col, Container, Modal, Row, Spinner } from 'react-bootstrap'
@@ -47,6 +48,7 @@ const PayOffering = (props: PayOfferingProps) => {
   })
   const [BankServiceOffering] = useMutation(PAY_OFFERING_MUTATION)
   const [SendPaymentOTP] = useMutation(SEND_PAYMENT_OTP)
+  const [ConfirmOfferingPayment] = useMutation(CONFIRM_OFFERING_PAYMENT)
   const navigate = useNavigate()
   const service = data?.serviceRecords[0]
   const { togglePopup, isOpen } = usePopup()
@@ -67,7 +69,7 @@ const PayOffering = (props: PayOfferingProps) => {
     if (service?.transactionStatus === 'send OTP') {
       handleShow()
     }
-  }, [])
+  }, [service])
 
   const validationSchema = Yup.object({
     mobileNumber: Yup.string().matches(
@@ -126,44 +128,6 @@ const PayOffering = (props: PayOfferingProps) => {
         />
       )}
 
-      <Modal show={show} onHide={handleClose}>
-        <Modal.Body>
-          <div className="p-4">
-            A registration token has just been sent to your phone via text
-            message. Please enter it here 👇🏾
-          </div>
-          <input
-            onChange={(e) => setOtp(e.target.value)}
-            className="form-control bg-dark"
-          ></input>
-          <div className="text-center pt-4">
-            <Button
-              disabled={otpSent}
-              onClick={() => {
-                setOtpSent(true)
-                SendPaymentOTP({
-                  variables: {
-                    serviceRecordId: service.id,
-                    streamName: service.stream_name,
-                    reference: service?.transactionReference,
-                    otp: otp,
-                  },
-                }).then(() => navigate('/self-banking/confirm-payment'))
-              }}
-            >
-              {otpSent ? (
-                <>
-                  <span className="me-2">Sending</span>
-                  <Spinner animation="border" size="sm" />
-                </>
-              ) : (
-                'Submit OTP'
-              )}
-            </Button>
-          </div>
-        </Modal.Body>
-      </Modal>
-
       <ApolloWrapper data={data} loading={loading} error={error}>
         <Container>
           <HeadingPrimary loading={loading}>
@@ -183,6 +147,71 @@ const PayOffering = (props: PayOfferingProps) => {
           >
             {(formik) => (
               <Form>
+                <Modal show={show} onHide={handleClose}>
+                  <Modal.Body>
+                    <div className="p-4">
+                      A registration token has just been sent to your phone via
+                      text message. Please enter it here 👇🏾
+                    </div>
+                    <input
+                      onChange={(e) => setOtp(e.target.value)}
+                      className="form-control bg-dark"
+                    ></input>
+                    <div className="text-center pt-4">
+                      <Button
+                        disabled={otpSent}
+                        onClick={() => {
+                          setOtpSent(true)
+                          SendPaymentOTP({
+                            variables: {
+                              serviceRecordId: service.id,
+                              streamName: service.stream_name,
+                              reference: service?.transactionReference,
+                              otp: otp,
+                            },
+                          }).then(() =>
+                            navigate('/self-banking/confirm-payment')
+                          )
+                        }}
+                      >
+                        {otpSent ? (
+                          <>
+                            <span className="me-2">Sending</span>
+                            <Spinner animation="border" size="sm" />
+                          </>
+                        ) : (
+                          'Submit OTP'
+                        )}
+                      </Button>
+                      <p
+                        className="text-secondary mt-2"
+                        onClick={() => {
+                          setOtpSent(true)
+                          ConfirmOfferingPayment({
+                            variables: {
+                              serviceRecordId: service.id,
+                              stream_name: service.stream_name,
+                            },
+                          })
+                            .then(() => {
+                              setOtpSent(false)
+                              navigate('/self-banking/confirm-payment')
+                            })
+                            .catch((error: any) => {
+                              setOtpSent(false)
+                              setErrorMessage(error.message)
+                              throwToSentry(
+                                'Error Confirming Offering Payment',
+                                error
+                              )
+                            })
+                        }}
+                      >
+                        Didn't receive a token? Click <u>here</u> to resend
+                      </p>
+                    </div>
+                  </Modal.Body>
+                </Modal>
                 <Row className="row-cols-1 row-cols-md-2 mt-2">
                   <Col className="mb-2">
                     <small className="form-text label">Date of Service</small>
