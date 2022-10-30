@@ -1,3 +1,10 @@
+#### 5.2.9 (2022-10-30)
+
+##### Bug Fixes
+
+*  remove tilde from image filenames being uploaded ([97a1bc22](https://github.com/firstlovecenter/fl-pastoral-care/commit/97a1bc223f3e2de71e040355d0eb6aa932ca3815))
+*  fix bug preventing seconds from showing when value is 0 ([a140fa7b](https://github.com/firstlovecenter/fl-pastoral-care/commit/a140fa7bd1b02541a57878436a5d2151527163ff))
+
 #### 5.2.8 (2022-10-29)
 
 ##### Bug Fixes
