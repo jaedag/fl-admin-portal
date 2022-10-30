@@ -29,7 +29,7 @@ const GatheringServiceReport = () => {
   })
 
   return (
-    <ApolloWrapper loading={loading} error={error} data={data} placeholder>
+    <ApolloWrapper loading={loading} error={error} data={data}>
       <Container>
         <PlaceholderCustom loading={loading} as="h5" xs={10}>
           <h5 className="mb-0">{`${data?.gatheringServices[0]?.name} Gathering Service`}</h5>

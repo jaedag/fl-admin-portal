@@ -28,7 +28,7 @@ const StreamReport = () => {
   })
 
   return (
-    <ApolloWrapper loading={loading} error={error} data={data} placeholder>
+    <ApolloWrapper loading={loading} error={error} data={data}>
       <Container>
         <PlaceholderCustom loading={loading} as="h5" xs={10}>
           <h5 className="mb-0">{`${data?.streams[0]?.name} Stream`}</h5>

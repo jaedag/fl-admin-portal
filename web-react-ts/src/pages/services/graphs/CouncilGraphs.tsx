@@ -28,7 +28,7 @@ const CouncilReport = () => {
   })
 
   return (
-    <ApolloWrapper loading={loading} error={error} data={data} placeholder>
+    <ApolloWrapper loading={loading} error={error} data={data}>
       <Container>
         <PlaceholderCustom loading={loading} as="h5" xs={10}>
           <h5 className="mb-0">{`${data?.councils[0]?.name} Council`}</h5>
