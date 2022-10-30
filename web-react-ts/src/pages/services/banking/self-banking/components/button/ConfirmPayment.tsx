@@ -59,7 +59,9 @@ const ButtonConfirmPayment = (props: ButtonConfirmPaymentProps) => {
               return
             }
             if (
-              res.data.ConfirmOfferingPayment.transactionStatus === 'failed'
+              ['failed', 'abandoned'].includes(
+                res.data.ConfirmOfferingPayment.transactionStatus
+              )
             ) {
               alertMsg('Your Payment Failed 😞. Please try again!')
               navigate('/self-banking/receipt')
