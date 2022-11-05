@@ -3,6 +3,7 @@ import serviceNoIncomeMutations from './no-income/service-resolvers'
 import serviceMutation from './services/service-resolvers'
 import { Member } from './utils/types'
 import treasuryMutations from './anagkazo/treasury-resolvers'
+import sheepSeekingMutations from './sheep-seeking/sheep-seeking-resolvers'
 import directoryMutation from './directory/directory-resolvers'
 import {
   arrivalsMutation,
@@ -69,6 +70,7 @@ const resolvers = {
     ...treasuryMutations,
     ...serviceNoIncomeMutations,
     ...campaignsMutation,
+    ...sheepSeekingMutations,
   },
 }
 
