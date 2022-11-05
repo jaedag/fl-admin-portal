@@ -90,10 +90,10 @@ CREATE (log:HistoryLog)
 RETURN member.id`
 
 export const checkMemberEmailExists = `
-MATCH (member:Member)
-WHERE member.email = $email
-OR member.whatsappNumber = $whatsappNumber
-RETURN member.email AS email, member.whatsappNumber AS whatsappNumber
+OPTIONAL MATCH (member:Member)
+WHERE member.email = $email 
+OR member.whatsappNumber = $whatsappNumber 
+RETURN member IS NOT NULL AS predicate
 `
 
 export const checkMemberHasNoActiveRelationships = `

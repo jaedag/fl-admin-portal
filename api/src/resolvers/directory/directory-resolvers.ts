@@ -61,7 +61,7 @@ const directoryMutation = {
 
     const memberCheck = rearrangeCypherObject(memberResponse)
 
-    if (memberCheck.check) {
+    if (memberCheck.predicate) {
       throw new Error(errorMessage.no_duplicate_email_or_whatsapp)
     }
 
