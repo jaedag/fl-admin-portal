@@ -72,7 +72,6 @@ export const MakeServant = async (
 ) => {
   const authToken = await getAuthToken()
   const authRoles = await getAuth0Roles(authToken)
-
   const terms = formatting(churchType, servantType)
   const { verb, servantLower, churchLower, memberQuery } = terms
 
