@@ -122,12 +122,14 @@ const UpdateMember = () => {
           ministryHistoryLog = `${member.firstName} ${member.lastName} left ${memberChurch?.ministry.name} Ministry`
         }
 
-        await LogMemberHistory({
-          variables: {
-            ids: [memberId, newMinistry?.name, memberChurch?.ministry?.id],
-            historyRecord: ministryHistoryLog,
-          },
-        })
+        if (values.ministry && memberChurch?.ministry) {
+          await LogMemberHistory({
+            variables: {
+              ids: [memberId, newMinistry?.name, memberChurch?.ministry?.id],
+              historyRecord: ministryHistoryLog,
+            },
+          })
+        }
       }
 
       if (memberChurch?.fellowship.id !== values.fellowship.id) {

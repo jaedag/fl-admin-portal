@@ -227,10 +227,14 @@ export const RemoveServant = async (
   const servantRes = await session.run(memberQuery, {
     id: args[`${servantLower}Id`],
   })
+  const newServantRes = await session.run(memberQuery, {
+    id: args[`new${servantType}Id`] ?? '',
+  })
 
   const servant: MemberWithKeys = rearrangeCypherObject(servantRes)
+  const newServant: MemberWithKeys = rearrangeCypherObject(newServantRes)
 
-  if (!servantValidation(servant)) {
+  if (!servantValidation(servant) || !servantValidation(newServant)) {
     return null
   }
 

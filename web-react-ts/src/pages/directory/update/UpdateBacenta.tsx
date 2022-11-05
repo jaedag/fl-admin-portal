@@ -208,8 +208,16 @@ const UpdateBacenta = () => {
         })
         alertMsg('Leader Changed Successfully')
         navigate(`/bacenta/displaydetails`)
-      } catch (error: any) {
-        throwToSentry('There was an error changing the leader', error)
+      } catch (err: any) {
+        const errorArray = err.toString().replace('Error: ', '').split('\n')
+        if (errorArray[0] === errorArray[1]) {
+          throwToSentry(
+            'There was a problem changing the leader',
+            errorArray[0]
+          )
+        } else {
+          throwToSentry('There was a problem changing the leader', err)
+        }
       }
     }
 

@@ -9,6 +9,7 @@ export const MAKE_FELLOWSHIP_LEADER = gql`
     RemoveFellowshipLeader(
       fellowshipId: $fellowshipId
       leaderId: $oldLeaderId
+      newLeaderId: $newLeaderId
     ) {
       id
       firstName
@@ -41,7 +42,11 @@ export const MAKE_BACENTA_LEADER = gql`
     $newLeaderId: ID!
     $oldLeaderId: ID!
   ) {
-    RemoveBacentaLeader(bacentaId: $bacentaId, leaderId: $oldLeaderId) {
+    RemoveBacentaLeader(
+      bacentaId: $bacentaId
+      leaderId: $oldLeaderId
+      newLeaderId: $newLeaderId
+    ) {
       id
       firstName
       lastName
@@ -85,7 +90,11 @@ export const MAKE_SONTA_LEADER = gql`
     $newLeaderId: ID!
     $oldLeaderId: ID!
   ) {
-    RemoveSontaLeader(sontaId: $sontaId, leaderId: $oldLeaderId) {
+    RemoveSontaLeader(
+      sontaId: $sontaId
+      leaderId: $oldLeaderId
+      newLeaderId: $newLeaderId
+    ) {
       id
       firstName
       lastName
@@ -128,6 +137,7 @@ export const MAKE_CONSTITUENCY_LEADER = gql`
     RemoveConstituencyLeader(
       constituencyId: $constituencyId
       leaderId: $oldLeaderId
+      newLeaderId: $newLeaderId
     ) {
       id
       firstName
@@ -172,7 +182,11 @@ export const MAKE_COUNCIL_LEADER = gql`
     $newLeaderId: ID!
     $oldLeaderId: ID!
   ) {
-    RemoveCouncilLeader(councilId: $councilId, leaderId: $oldLeaderId) {
+    RemoveCouncilLeader(
+      councilId: $councilId
+      leaderId: $oldLeaderId
+      newLeaderId: $newLeaderId
+    ) {
       id
       firstName
       lastName
@@ -216,7 +230,11 @@ export const MAKE_STREAM_LEADER = gql`
     $newLeaderId: ID!
     $oldLeaderId: ID!
   ) {
-    RemoveStreamLeader(streamId: $streamId, leaderId: $oldLeaderId) {
+    RemoveStreamLeader(
+      streamId: $streamId
+      leaderId: $oldLeaderId
+      newLeaderId: $newLeaderId
+    ) {
       id
       firstName
       lastName
@@ -263,6 +281,7 @@ export const MAKE_GATHERINGSERVICE_LEADER = gql`
     RemoveGatheringServiceLeader(
       gatheringServiceId: $gatheringServiceId
       leaderId: $oldLeaderId
+      newLeaderId: $newLeaderId
     ) {
       id
       firstName

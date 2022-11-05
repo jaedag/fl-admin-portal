@@ -197,7 +197,15 @@ const UpdateFellowship = () => {
         alertMsg('Leader Changed Successfully')
         navigate(`/fellowship/displaydetails`)
       } catch (err: any) {
-        throwToSentry('There was a problem changing fellowship leader', err)
+        const errorArray = err.toString().replace('Error: ', '').split('\n')
+        if (errorArray[0] === errorArray[1]) {
+          throwToSentry(
+            'There was a problem changing the leader',
+            errorArray[0]
+          )
+        } else {
+          throwToSentry('There was a problem changing the leader', err)
+        }
       }
     }
 
