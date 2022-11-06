@@ -1,6 +1,6 @@
 extend type Mutation {
-  MakeStreamSheepSeeker(streamId: ID!, sheepSeekerId: ID!): Member!
-  RemoveStreamSheepSeeker(streamId: ID!, sheepSeekerId: ID!): Member!
+  MakeStreamSheepSeeker(streamId: ID!, sheepseekerId: ID!): Member!
+  RemoveStreamSheepSeeker(streamId: ID!, sheepseekerId: ID!): Member!
 }
 
 extend type Member {
@@ -9,6 +9,6 @@ extend type Member {
 }
 
 extend type Stream {
-  sheepSeekers: [Member!]!
+  sheepseekers: [Member!]!
     @relationship(type: "IS_SHEEP_SEEKER_FOR", direction: IN)
 }

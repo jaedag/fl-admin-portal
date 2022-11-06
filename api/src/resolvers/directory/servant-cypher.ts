@@ -74,7 +74,7 @@ const servantCypher = {
   disconnectChurchSheepSeeker: `
    MATCH (church {id: $churchId})
    WHERE church:Stream OR church:GatheringService
-   MATCH (church)<-[oldSeeker:IS_SHEEP_SEEKER_FOR]-(admin:Member {id: $sheepSeekerId})
+   MATCH (church)<-[oldSeeker:IS_SHEEP_SEEKER_FOR]-(admin:Member {id: $sheepseekerId})
    DELETE oldSeeker 
    
    WITH church, admin
@@ -145,7 +145,7 @@ const servantCypher = {
   connectChurchSheepSeeker: `
    MATCH (church {id:$churchId})<-[:HAS]-(higherChurch)
    WHERE church:Stream OR church:GatheringService 
-   MATCH (seeker:Member {id: $sheepSeekerId})
+   MATCH (seeker:Member {id: $sheepseekerId})
       SET seeker.auth_id =  $auth_id
    MERGE (seeker)-[:IS_SHEEP_SEEKER_FOR]->(church)
    

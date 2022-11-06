@@ -51,7 +51,7 @@ export const formatting = (
   }
   if (servantType === 'SheepSeeker') {
     verb = `isSheepSeekerFor${churchType}`
-    servantLower = 'sheepSeeker'
+    servantLower = 'sheepseeker'
     memberQuery = matchMemberSheepSeekerQuery
   }
 

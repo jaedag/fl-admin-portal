@@ -211,6 +211,14 @@ const StreamEquipmentDefaulters = lazy(
   () => import('./equipment/stream/StreamEquipmentDefaulters')
 )
 
+const SheepSeekerSelect = lazy(
+  () => import('../campaigns/sheep-seeking/stream/SheepSeekerSelect')
+)
+
+const StreamSheepSeekerCampaign = lazy(
+  () => import('../campaigns/sheep-seeking/stream/StreamSheepSeekerCampaign')
+)
+
 export const campaigns: LazyRouteTypes[] = [
   //gathering-service routes
   {
@@ -256,7 +264,7 @@ export const campaigns: LazyRouteTypes[] = [
     placeholder: true,
   },
   {
-    path: '/campaigns/gathering-service/swollen%20sunday',
+    path: '/campaigns/gathering-service/swollen-sunday',
     element: GatheringServiceSwollenSundayCampaign,
     roles: permitLeaderAdmin('GatheringService'),
     placeholder: true,
@@ -330,7 +338,7 @@ export const campaigns: LazyRouteTypes[] = [
     placeholder: true,
   },
   {
-    path: '/campaigns/stream/swollen%20sunday',
+    path: '/campaigns/stream/swollen-sunday',
     element: StreamSwollenSundayCampaign,
     roles: permitLeaderAdmin('Stream'),
     placeholder: true,
@@ -363,6 +371,18 @@ export const campaigns: LazyRouteTypes[] = [
     path: '/campaigns/stream/equipment/have-not-filled/constituency',
     element: StreamEquipmentHaveNotFilledByConstituency,
     roles: permitAdmin('Council'),
+    placeholder: true,
+  },
+  {
+    path: '/campaigns/stream/sheepseeker-select',
+    element: SheepSeekerSelect,
+    roles: ['adminStream'],
+    placeholder: true,
+  },
+  {
+    path: '/campaigns/stream/sheep-seeking',
+    element: StreamSheepSeekerCampaign,
+    roles: ['adminStream'],
     placeholder: true,
   },
 
@@ -404,7 +424,7 @@ export const campaigns: LazyRouteTypes[] = [
     placeholder: true,
   },
   {
-    path: '/campaigns/council/swollen%20sunday',
+    path: '/campaigns/council/swollen-sunday',
     element: CouncilSwollenSundayCampaign,
     roles: permitLeaderAdmin('Council'),
     placeholder: true,
@@ -490,7 +510,7 @@ export const campaigns: LazyRouteTypes[] = [
     placeholder: true,
   },
   {
-    path: '/campaigns/constituency/swollen%20sunday',
+    path: '/campaigns/constituency/swollen-sunday',
     element: ConstituencySwollenSundayCampaign,
     roles: permitLeaderAdmin('Constituency'),
     placeholder: true,
@@ -540,7 +560,7 @@ export const campaigns: LazyRouteTypes[] = [
     placeholder: true,
   },
   {
-    path: '/campaigns/bacenta/swollen%20sunday',
+    path: '/campaigns/bacenta/swollen-sunday',
     element: BacentaSwollenSundayCampaign,
     roles: permitLeaderAdmin('Bacenta'),
     placeholder: true,
