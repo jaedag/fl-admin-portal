@@ -29,7 +29,7 @@ All Contributors welcome. Go ahead and fork the project and submit a PR. Read th
 2.  Be able to search and filter all membership records based on selected criteria.
 3.  Be able to display information on one member
 4.  Display registration numbers at all levels (Constituency, Bacenta, Basonta)
-5.  Be able to import data in a csv file, and export data in a csv file.
+5.  Be able to import data in a csv file, and export data in a csv file
 6.  An extensive transaction log of leadership histories.
 7.  Database Backups to occur every day or twice a day.
     <br/>
