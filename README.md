@@ -25,7 +25,7 @@ All Contributors welcome. Go ahead and fork the project and submit a PR. Read th
 
 ## PHASE 1: Directory (State of the Flock Part 1) ✅
 
-1.  Be able to hold all membership and leadership records (Bacenta and Basonta).
+1.  Be able to hold all membership and leadership records (Bacenta and Basonta)
 2.  Be able to search and filter all membership records based on selected criteria.
 3.  Be able to display information on one member
 4.  Display registration numbers at all levels (Constituency, Bacenta, Basonta)
