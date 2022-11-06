@@ -39,7 +39,7 @@ export type Role =
   | 'arrivalsConfirmerStream'
   | 'arrivalsCounterStream'
   | 'tellerStream'
-  | 'sheepSeekerStream'
+  | 'sheepseekerStream'
   | 'all'
 
 export type VerbTypes =
@@ -69,7 +69,7 @@ export type ServantTypeLowerCase =
   | 'arrivalsCounter'
   | 'arrivalsConfirmer'
   | 'teller'
-  | 'sheepSeeker'
+  | 'sheepseeker'
 
 export type StreamOptions =
   | 'Anagkazo Encounter'
