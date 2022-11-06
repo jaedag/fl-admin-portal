@@ -288,6 +288,14 @@ const churchCampaigns = async (church: ChurchLevel) => {
     case 'Oversight':
     case 'GatheringService':
     case 'Stream':
+      return [
+        'Equipment',
+        'Anti-Brutish',
+        'Multiplication',
+        'Swollen Sunday',
+        'Telepastoring',
+        'Sheep Seeking',
+      ]
     case 'Council':
     case 'Constituency':
       return [
