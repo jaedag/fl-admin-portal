@@ -214,7 +214,6 @@ const BusVehicleFormDetails = () => {
                               key={vehicle?.picture}
                             >
                               <CloudinaryImage
-                                className="report-picture"
                                 src={vehicle?.picture}
                                 size="respond"
                               />
