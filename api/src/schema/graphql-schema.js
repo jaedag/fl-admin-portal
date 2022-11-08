@@ -65,7 +65,7 @@ const equipmentCampaign = fs
   .toString('utf-8')
 
 const sheepSeeking = fs
-  .readFileSync(path.join(__dirname, './sheep-seeking.graphql'))
+  .readFileSync(path.join(__dirname, './campaigns-sheep-seeking.graphql'))
   .toString('utf-8')
 
 const array = [
