@@ -1,3 +1,30 @@
+#### 5.2.10 (2022-11-08)
+
+##### Chores
+
+*  edited readme file ([45f3c75c](https://github.com/firstlovecenter/fl-pastoral-care/commit/45f3c75c2cdb841bc911c1ae427d5e298cb21353))
+
+##### New Features
+
+*  add a sheep seeker flow to the frontend ([9ac69447](https://github.com/firstlovecenter/fl-pastoral-care/commit/9ac694473d57a7abb761cfdbfe5bdcd15d70080d))
+*  add sheep seeking campaign to list of campaings from stream upwards ([ddb40e33](https://github.com/firstlovecenter/fl-pastoral-care/commit/ddb40e33581f5ae8bcfeff5e45eba0ab85e2469f))
+*  add make and remove stream sheep seeker mutations ([10432c9d](https://github.com/firstlovecenter/fl-pastoral-care/commit/10432c9d75324a1a81492be1265fb92e3ef6a2e4))
+
+##### Bug Fixes
+
+*  fixed 'no bussing details' crash' ([1e3686e0](https://github.com/firstlovecenter/fl-pastoral-care/commit/1e3686e07d96aa393389d64a6eb38443ebf0fc45))
+*  adjust image dimensions for vehicle pictures ([a6c4a4fc](https://github.com/firstlovecenter/fl-pastoral-care/commit/a6c4a4fc1bcb4dde5ef71ca2a5f8ce24f1446073))
+*  remove email as an optional field for registering members ([ec67822c](https://github.com/firstlovecenter/fl-pastoral-care/commit/ec67822c6497fa248730eb92d3102d97ec88bbc6))
+*  cypher query to check if member exists ([4c087da8](https://github.com/firstlovecenter/fl-pastoral-care/commit/4c087da83b9042e62abd01a4af1e30d93329f33e))
+*  remove scheduled-data aggregation function ([8da6576b](https://github.com/firstlovecenter/fl-pastoral-care/commit/8da6576b760422c282e0d5605692f4f654c073ca))
+*  optimise ux flow for send otp ([bcd2633b](https://github.com/firstlovecenter/fl-pastoral-care/commit/bcd2633b199912f7afb1cc7c6252de83df0f324d))
+*  implement handling for abandoned transactions ([5bb5be2f](https://github.com/firstlovecenter/fl-pastoral-care/commit/5bb5be2f30207655f98a37db4564727d04d05a77))
+*  remove placeholder loading for council, stream, gathering pages ([d7ea1c44](https://github.com/firstlovecenter/fl-pastoral-care/commit/d7ea1c44ce5a383d2e0aaf59e9b7d2e8e1b06ddb))
+
+##### Refactors
+
+*  rename sheep-seeking.graphql to campaigns-sheep-seeking.graphql ([b3b901f2](https://github.com/firstlovecenter/fl-pastoral-care/commit/b3b901f2c8789da1f2c1dad6068c75a6139694b0))
+
 #### 5.2.9 (2022-10-30)
 
 ##### Bug Fixes
