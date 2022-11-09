@@ -1,3 +1,10 @@
+#### 5.2.11 (2022-11-09)
+
+##### Bug Fixes
+
+*  fix issue where joint services where not being added in aggregate service record ([afbfffa4](https://github.com/firstlovecenter/fl-pastoral-care/commit/afbfffa4269acd8bc26edf3ef9103a4d6f697f87))
+*  fix broken link to sheep seeking graphql file ([fdfbca89](https://github.com/firstlovecenter/fl-pastoral-care/commit/fdfbca89c15c73faf71c6028b443efc6ff18c3b9))
+
 #### 5.2.10 (2022-11-08)
 
 ##### Chores
