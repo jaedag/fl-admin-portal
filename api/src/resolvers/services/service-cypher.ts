@@ -92,9 +92,10 @@ export const aggregateServiceDataOnHigherChurches = `
 
    WITH bacenta, aggregate
 
-   MATCH (bacenta)-[:HAS]->(fellowships)
-   MATCH (fellowships)-[:CURRENT_HISTORY]->(log:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(record:AggregateServiceRecord {id: date().week + '-' + date().year + '-' + log.id})
-   WITH bacenta, aggregate, SUM(record.attendance) AS lowerAttendance, SUM(record.income) AS lowerIncome
+   MATCH (bacenta)-[:HAS]->(lowerChurch)
+   OPTIONAL MATCH (bacenta)-[:CURRENT_HISTORY]->(higherLog:ServiceLog)-[:HAS_SERVICE]->(higherRecord:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph) WHERE date.date.week = date().week
+   MATCH (lowerChurch)-[:CURRENT_HISTORY]->(log:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(record:AggregateServiceRecord {id: date().week + '-' + date().year + '-' + log.id})
+   WITH bacenta, aggregate, SUM(record.attendance) + SUM(higherRecord.attendance) AS lowerAttendance, SUM(record.income) + SUM(higherRecord.income) AS lowerIncome
 
    SET aggregate.attendance = lowerAttendance,
    aggregate.income = lowerIncome
@@ -107,8 +108,9 @@ export const aggregateServiceDataOnHigherChurches = `
 
    WITH constituency, aggregate
    MATCH (constituency)-[:HAS]->(lowerChurch)
+   OPTIONAL MATCH (constituency)-[:CURRENT_HISTORY]->(higherLog:ServiceLog)-[:HAS_SERVICE]->(higherRecord:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph) WHERE date.date.week = date().week
    MATCH (lowerChurch)-[:CURRENT_HISTORY]->(log:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(record:AggregateServiceRecord {id: date().week + '-' + date().year + '-' + log.id})
-   WITH constituency, aggregate, SUM(record.attendance) AS lowerAttendance, SUM(record.income) AS lowerIncome
+   WITH constituency, aggregate, SUM(record.attendance) + SUM(higherRecord.attendance) AS lowerAttendance, SUM(record.income) + SUM(higherRecord.income) AS lowerIncome
 
    SET aggregate.attendance = lowerAttendance,
    aggregate.income = lowerIncome
@@ -121,8 +123,9 @@ WITH constituency AS lowerChurch
 
    WITH council, aggregate
    MATCH (council)-[:HAS]->(lowerChurch)
+   OPTIONAL MATCH (council)-[:CURRENT_HISTORY]->(higherLog:ServiceLog)-[:HAS_SERVICE]->(higherRecord:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph) WHERE date.date.week = date().week
    MATCH (lowerChurch)-[:CURRENT_HISTORY]->(log:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(record:AggregateServiceRecord {id: date().week + '-' + date().year + '-' + log.id})
-   WITH council, aggregate, SUM(record.attendance) AS lowerAttendance, SUM(record.income) AS lowerIncome
+   WITH council, aggregate, SUM(record.attendance) + SUM(higherRecord.attendance) AS lowerAttendance, SUM(record.income) + SUM(higherRecord.income) AS lowerIncome
 
    SET aggregate.attendance = lowerAttendance,
    aggregate.income = lowerIncome
@@ -135,8 +138,9 @@ WITH constituency AS lowerChurch
 
    WITH stream, aggregate
    MATCH (stream)-[:HAS]->(lowerChurch)
+   OPTIONAL MATCH (stream)-[:CURRENT_HISTORY]->(higherLog:ServiceLog)-[:HAS_SERVICE]->(higherRecord:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph) WHERE date.date.week = date().week
    MATCH (lowerChurch)-[:CURRENT_HISTORY]->(log:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(record:AggregateServiceRecord {id: date().week + '-' + date().year + '-' + log.id})
-   WITH stream, aggregate, SUM(record.attendance) AS lowerAttendance, SUM(record.income) AS lowerIncome
+   WITH stream, aggregate, SUM(record.attendance) + SUM(higherRecord.attendance) AS lowerAttendance, SUM(record.income) + SUM(higherRecord.income) AS lowerIncome
 
    SET aggregate.attendance = lowerAttendance,
    aggregate.income = lowerIncome
@@ -149,8 +153,9 @@ WITH constituency AS lowerChurch
 
    WITH gathering, aggregate
    MATCH (gathering)-[:HAS]->(lowerChurch)
+   OPTIONAL MATCH (gathering)-[:CURRENT_HISTORY]->(higherLog:ServiceLog)-[:HAS_SERVICE]->(higherRecord:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph) WHERE date.date.week = date().week
    MATCH (lowerChurch)-[:CURRENT_HISTORY]->(log:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(record:AggregateServiceRecord {id: date().week + '-' + date().year + '-' + log.id})
-   WITH gathering, aggregate, SUM(record.attendance) AS lowerAttendance, SUM(record.income) AS lowerIncome
+   WITH gathering, aggregate, SUM(record.attendance) + SUM(higherRecord.attendance) AS lowerAttendance, SUM(record.income) + SUM(higherRecord.income) AS lowerIncome
 
    SET aggregate.attendance = lowerAttendance,
    aggregate.income = lowerIncome
@@ -163,8 +168,9 @@ WITH constituency AS lowerChurch
 
    WITH oversight, aggregate
    MATCH (oversight)-[:HAS]->(lowerChurch)
-   MATCH (lowerChurch)-[:CURRENT_HISTORY]->(log:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(record:AggregateServiceRecord {id: date().week + '-' + date().year + '-' + log.id}) 
-   WITH oversight, aggregate, SUM(record.attendance) AS lowerAttendance, SUM(record.income) AS lowerIncome
+   OPTIONAL MATCH (oversight)-[:CURRENT_HISTORY]->(higherLog:ServiceLog)-[:HAS_SERVICE]->(higherRecord:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph) WHERE date.date.week = date().week
+   MATCH (lowerChurch)-[:CURRENT_HISTORY]->(log:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(record:AggregateServiceRecord {id: date().week + '-' + date().year + '-' + log.id})
+   WITH oversight, aggregate, SUM(record.attendance) + SUM(higherRecord.attendance) AS lowerAttendance, SUM(record.income) + SUM(higherRecord.income) AS lowerIncome
 
    SET aggregate.attendance = lowerAttendance,
    aggregate.income = lowerIncome
@@ -177,8 +183,9 @@ WITH constituency AS lowerChurch
 
    WITH denomination, aggregate
    MATCH (denomination)-[:HAS]->(lowerChurch)
+   OPTIONAL MATCH (denomination)-[:CURRENT_HISTORY]->(higherLog:ServiceLog)-[:HAS_SERVICE]->(higherRecord:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph) WHERE date.date.week = date().week
    MATCH (lowerChurch)-[:CURRENT_HISTORY]->(log:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(record:AggregateServiceRecord {id: date().week + '-' + date().year + '-' + log.id})
-   WITH denomination, aggregate, SUM(record.attendance) AS lowerAttendance, SUM(record.income) AS lowerIncome
+   WITH denomination, aggregate, SUM(record.attendance) + SUM(higherRecord.attendance) AS lowerAttendance, SUM(record.income) + SUM(higherRecord.income) AS lowerIncome
 
    SET aggregate.attendance = lowerAttendance,
    aggregate.income = lowerIncome
