@@ -1,3 +1,9 @@
+#### 5.2.12 (2022-11-11)
+
+##### Bug Fixes
+
+*  fix issue where joint service calculation was getting mangled ([df3d2a32](https://github.com/firstlovecenter/fl-pastoral-care/commit/df3d2a32385e85593c14982c5c1373e6973eb214))
+
 #### 5.2.11 (2022-11-09)
 
 ##### Bug Fixes
