@@ -1,10 +1,12 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { createRoot } from 'react-dom/client'
+import { RetryLink } from '@apollo/client/link/retry'
 
 import {
   ApolloClient,
   ApolloProvider,
   createHttpLink,
+  from,
   InMemoryCache,
 } from '@apollo/client'
 import { setContext } from '@apollo/client/link/context'
@@ -61,9 +63,20 @@ const AppWithApollo = () => {
     }
   })
 
+  const retryLink = new RetryLink({
+    delay: {
+      initial: 300,
+      max: 2000,
+      jitter: true,
+    },
+    attempts: {
+      max: 5,
+    },
+  })
+
   const client = new ApolloClient({
     uri: process.env.REACT_APP_GRAPHQL_URI || '/graphql',
-    link: authLink.concat(httpLink),
+    link: from([retryLink, authLink.concat(httpLink)]),
     cache: new InMemoryCache(),
   })
 
