@@ -12,6 +12,21 @@ WITH max(n.bacentaCode) as code
 CREATE (lastCode:LastCampusBacentaCode {number:code})
 RETURN lastCode;
 
+//set all town bacenta codes
+MATCH (n:Bacenta)<-[:HAS*3]-(stream:Stream {name:"First Love Experience"}) 
+WITH collect(n) as nodes
+WITH apoc.coll.zip(nodes, range(5000, size(nodes)+5000)) as bacentas
+UNWIND bacentas as bacenta 
+SET (bacenta[0]).bacentaCode = bacenta[1];
+
+//Create last town code node for town
+MATCH (n:Bacenta)<-[:HAS*3]-(stream:Stream {name:"First Love Experience"}) 
+WITH max(n.bacentaCode) as code
+
+CREATE (lastCode:LastTownBacentaCode {number:code})
+RETURN lastCode;
+
+
 // Get all Bacenta Aggregates for Bacenta Aggregation
 MATCH (vehicle:VehicleRecord)<-[:INCLUDES_RECORD]-(bussing:BussingRecord)
 MATCH (bussing)-[:INCLUDES_RECORD]->(allVehicles:VehicleRecord)
