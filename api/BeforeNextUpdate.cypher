@@ -1,3 +1,17 @@
+//set all campus bacenta codes
+MATCH (n:Bacenta)<-[:HAS*3]-(stream:Stream {name:"Gospel Encounter"}) 
+WITH collect(n) as nodes
+WITH apoc.coll.zip(nodes, range(0, size(nodes))) as bacentas
+UNWIND bacentas as bacenta 
+SET (bacenta[0]).bacentaCode = bacenta[1];
+
+//Create last campus code node for campus
+MATCH (n:Bacenta)<-[:HAS*3]-(stream:Stream {name:"Gospel Encounter"}) 
+WITH max(n.bacentaCode) as code
+
+CREATE (lastCode:LastCampusBacentaCode {number:code})
+RETURN lastCode;
+
 // Get all Bacenta Aggregates for Bacenta Aggregation
 MATCH (vehicle:VehicleRecord)<-[:INCLUDES_RECORD]-(bussing:BussingRecord)
 MATCH (bussing)-[:INCLUDES_RECORD]->(allVehicles:VehicleRecord)
