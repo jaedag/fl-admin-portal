@@ -1,0 +1,139 @@
+import { useQuery } from '@apollo/client'
+import ApolloWrapper from 'components/base-component/ApolloWrapper'
+import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
+import HeadingSecondary from 'components/HeadingSecondary'
+import { MemberContext } from 'contexts/MemberContext'
+import React, { useContext } from 'react'
+import { Container, Button } from 'react-bootstrap'
+import { CSVLink } from 'react-csv'
+import { DISPLAY_ARRIVALS_PAYMENT_DATA } from '../arrivalsQueries'
+import NoDataComponent from '../CompNoData'
+
+interface ArrivalPaymentData {
+  stream: string
+  bacenta: string
+  leader: string
+  bacentaCode: string
+  attendance: number
+  confirmedAttendance: number
+  vehicle: string
+  topUp: number
+  vehicleCost: number
+  comments: string
+  council: string
+  constituency: string
+  society: string
+  date: string
+  arrivalTime: string
+}
+
+const ArrivalsPaymentData = () => {
+  const today = new Date().toISOString().slice(0, 10).toString()
+  const { currentUser } = useContext(MemberContext)
+  const church = currentUser?.currentChurch
+  const headers = [
+    { label: 'Stream', key: 'stream' },
+    { label: 'Bacenta', key: 'bacenta' },
+    { label: 'Leader', key: 'leader' },
+    { label: 'Bacenta Code', key: 'bacentaCode' },
+    { label: 'Attendance', key: 'attendance' },
+    { label: 'Confirmed Attendance', key: 'confirmedAttendance' },
+    { label: 'Vehicle', key: 'vehicle' },
+    { label: 'Top Up', key: 'topUp' },
+    { label: 'Vehicle Cost', key: 'vehicleCost' },
+    { label: 'Comments', key: 'comments' },
+    { label: 'Council', key: 'council' },
+    { label: 'Constituency', key: 'constituency' },
+    { label: 'Society', key: 'society' },
+    { label: 'Date', key: 'date' },
+    { label: 'Arrival Time', key: 'arrivalTime' },
+  ]
+
+  const { data, loading, error } = useQuery(DISPLAY_ARRIVALS_PAYMENT_DATA, {
+    variables: {
+      streamId: currentUser?.currentChurch.id,
+      arrivalsDate: today,
+    },
+  })
+
+  const arrivalPaymentData = data?.streams[0]?.arrivalsPaymentData
+
+  return (
+    <ApolloWrapper data={data} loading={loading} error={error}>
+      <Container>
+        <div className="text-center">
+          <HeadingPrimary>Arrival's Payment Data</HeadingPrimary>
+          <HeadingSecondary>{`${church?.name} ${church?.__typename}`}</HeadingSecondary>
+        </div>
+        {arrivalPaymentData?.length === 0 ? (
+          <NoDataComponent text="No Arrivals Payment Data for Today" />
+        ) : (
+          <div>
+            <div style={{ width: 'auto', overflowX: 'scroll' }}>
+              <table className="table table-dark">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Stream</th>
+                    <th scope="col">Bacenta</th>
+                    <th scope="col">Leader</th>
+                    <th scope="col">Bacenta Code</th>
+                    <th scope="col">Attendance</th>
+                    <th scope="col">Confirmed Attendance</th>
+                    <th scope="col">Vehicle</th>
+                    <th scope="col">Top Up</th>
+                    <th scope="col">Vehicle Cost</th>
+                    <th scope="col">Comments</th>
+                    <th scope="col">Council</th>
+                    <th scope="col">Constituency</th>
+                    <th scope="col">Society</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Arrival Time</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {arrivalPaymentData
+                    ?.slice(0, 5)
+                    ?.map((data: ArrivalPaymentData, index: number) => (
+                      <tr key={index}>
+                        <th scope="row">{index}</th>
+                        <td>{data?.stream}</td>
+                        <td>{data?.bacenta}</td>
+                        <td>{data?.leader}</td>
+                        <td>{data?.bacentaCode}</td>
+                        <td>{data?.attendance}</td>
+                        <td>{data?.confirmedAttendance}</td>
+                        <td>{data?.vehicle}</td>
+                        <td>{data?.topUp}</td>
+                        <td>{data?.vehicleCost}</td>
+                        <td>{data?.comments}</td>
+                        <td>{data?.council}</td>
+                        <td>{data?.constituency}</td>
+                        <td>{data?.society}</td>
+                        <td>{data?.date}</td>
+                        <td>{data?.arrivalTime}</td>
+                      </tr>
+                    ))}
+                </tbody>
+              </table>
+            </div>
+            <div className="text-center mt-3">
+              <Button>
+                <CSVLink
+                  filename="Today's Buses to be paid.csv"
+                  headers={headers}
+                  data={arrivalPaymentData}
+                >
+                  {' '}
+                  <span className="text-white">Download data</span>
+                </CSVLink>
+              </Button>
+            </div>
+          </div>
+        )}
+      </Container>
+    </ApolloWrapper>
+  )
+}
+
+export default ArrivalsPaymentData

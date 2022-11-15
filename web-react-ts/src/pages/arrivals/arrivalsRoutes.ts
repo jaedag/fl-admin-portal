@@ -43,6 +43,9 @@ const ArrivalTimes = lazy(() => import('./Times/ArrivalTimes'))
 const ArrivalsCounters = lazy(() => import('./Helpers/ArrivalsCounters'))
 const BacentasBelow8 = lazy(() => import('./StateBacentasBelow8'))
 const BusVehicleFormDetails = lazy(() => import('./BusVehicleFormDetails'))
+const ArrivalsPaymentData = lazy(
+  () => import('./arrival-payment-data/ArrivalsPaymentData')
+)
 
 export const arrivals: LazyRouteTypes[] = [
   {
@@ -221,6 +224,14 @@ export const arrivals: LazyRouteTypes[] = [
     path: '/stream/set-arrivals-time',
     roles: permitAdminArrivals('Stream'),
     element: SetArrivalsTime,
+    placeholder: false,
+  },
+
+  //Arrivals Excel Data
+  {
+    path: '/stream/arrival-excel-data',
+    roles: permitAdminArrivals('Stream'),
+    element: ArrivalsPaymentData,
     placeholder: false,
   },
 ]
