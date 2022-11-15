@@ -459,3 +459,30 @@ export const DISPLAY_VEHICLE_RECORDS = gql`
     }
   }
 `
+
+export const DISPLAY_ARRIVALS_PAYMENT_DATA = gql`
+  query DisplayArrivalsPaymentData($arrivalsDate: String!, $streamId: ID!) {
+    streams(where: { id: $streamId }) {
+      id
+      name
+      arrivalsPaymentData(arrivalsDate: $arrivalsDate) {
+        stream
+        bacenta
+        leader
+        bacentaCode
+        attendance
+        confirmedAttendance
+        vehicle
+        topUp
+        vehicleCost
+        momoNumber
+        comments
+        council
+        constituency
+        society
+        date
+        arrivalTime
+      }
+    }
+  }
+`
