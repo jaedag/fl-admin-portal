@@ -29,6 +29,20 @@ MERGE (stream)<-[:IS_LAST_BACENTA_CODE_FOR]-(lastCode)
 RETURN lastCode;
 
 
+//cypher to create bussing society nodes
+LOAD CSV WITH HEADERS FROM 'https://docs.google.com/spreadsheets/d/13TGwia1sjsOXbVkgOfLIxEGK9VUYvdG9XnwZ_n3Jl8I/export?format=csv' AS row
+WITH row WHERE row.society IS NOT NULL
+MERGE (society:BussingSociety {society:row.society})
+ON CREATE 
+SET society.id = apoc.create.uuid()
+
+WITH society, row.constituency as constituenyName
+MATCH (constituency:Constituency {name:constituenyName})
+MERGE (society)<-[:IS_SUPPORTED_BY]-(constituency)
+
+return distinct society order by society.society
+
+
 // Get all Bacenta Aggregates for Bacenta Aggregation
 MATCH (vehicle:VehicleRecord)<-[:INCLUDES_RECORD]-(bussing:BussingRecord)
 MATCH (bussing)-[:INCLUDES_RECORD]->(allVehicles:VehicleRecord)
