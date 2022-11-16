@@ -850,6 +850,7 @@ extend type Bacenta {
       RETURN bussing ORDER BY date.date
       """
     )
+  code: Int!
 }
 
 type BussingRecord implements Record @auth(rules: [{ isAuthenticated: true }]) {

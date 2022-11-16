@@ -7,9 +7,10 @@ SET (bacenta[0]).bacentaCode = bacenta[1];
 
 //Create last campus code node for campus
 MATCH (n:Bacenta)<-[:HAS*3]-(stream:Stream {name:"Gospel Encounter"}) 
-WITH max(n.bacentaCode) as code
+WITH max(n.bacentaCode) as code, stream
 
-CREATE (lastCode:LastCampusBacentaCode {number:code})
+CREATE (lastCode:LastBacentaCode {number:code})
+MERGE (stream)<-[:IS_LAST_BACENTA_CODE_FOR]-(lastCode)
 RETURN lastCode;
 
 //set all town bacenta codes
@@ -23,7 +24,8 @@ SET (bacenta[0]).bacentaCode = bacenta[1];
 MATCH (n:Bacenta)<-[:HAS*3]-(stream:Stream {name:"First Love Experience"}) 
 WITH max(n.bacentaCode) as code
 
-CREATE (lastCode:LastTownBacentaCode {number:code})
+CREATE (lastCode:LastBacentaCode {number:code})
+MERGE (stream)<-[:IS_LAST_BACENTA_CODE_FOR]-(lastCode)
 RETURN lastCode;
 
 
