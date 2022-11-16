@@ -37,7 +37,7 @@ and not exists {
 }
 detach delete n;
 
-match (n:Member) where n.email in ['jaedagy@gmail.com', 'dabick14@gmail.com', 'ahadzi.airdem@gmail.com', 'asiaknathan@gmail.com', 'pri.davidakumah@gmail.com', 'enlogeesa@gmail.com', 'cranksonv@yahoo.com','skaduteye@gmail.com']
+match (n:Member) where n.email in ['jaedagy@gmail.com', 'dabick14@gmail.com', 'ahadzi.airdem@gmail.com', 'asiaknathan@gmail.com', 'pri.davidakumah@gmail.com', 'enlogeesa@gmail.com', 'cranksonv@yahoo.com','skaduteye@gmail.com', 'adomakomartha5@gmail.com']
 
 with collect(n) as remainder
 
