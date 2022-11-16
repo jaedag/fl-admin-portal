@@ -40,7 +40,14 @@ WITH society, row.constituency as constituenyName
 MATCH (constituency:Constituency {name:constituenyName})
 MERGE (society)<-[:IS_SUPPORTED_BY]-(constituency)
 
-return distinct society order by society.society
+return distinct society order by society.society;
+
+//import Lp Ivy's bacenta costs for town
+LOAD CSV WITH HEADERS FROM 'https://docs.google.com/spreadsheets/d/1cdtySNMwyqJzTF9IJhOFhfco03GExpQlyE0eb2ftgMc/export?format=csv' AS row
+WITH row WHERE row.date IS NOT NULL
+MATCH (bacenta:Bacenta {name:trim(row.bacenta)})
+SET bacenta.topUp = row.vehicleTopUp
+return bacenta.name;
 
 
 // Get all Bacenta Aggregates for Bacenta Aggregation
