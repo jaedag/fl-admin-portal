@@ -160,6 +160,15 @@ return distinct society order by society.society;
 LOAD CSV WITH HEADERS FROM 'https://docs.google.com/spreadsheets/d/1cdtySNMwyqJzTF9IJhOFhfco03GExpQlyE0eb2ftgMc/export?format=csv' AS row
 WITH row WHERE row.date IS NOT NULL
 MATCH (bacenta:Bacenta {name:trim(row.bacenta)})
-SET bacenta.topUp = row.vehicleTopUp
+SET bacenta.lpIvyTopUp = row.vehicleTopUp
 return bacenta.name;
+
+//set arrivals prefixes
+MATCH (stream:Stream {name:"Gospel Encounter"})
+SET stream.arrivalsPrefix = "CP"
+RETURN stream;
+
+MATCH (stream:Stream {name:"First Love Experience"})
+SET stream.arrivalsPrefix = "TN"
+RETURN stream;
       

@@ -49,6 +49,15 @@ MATCH (bacenta:Bacenta {name:trim(row.bacenta)})
 SET bacenta.topUp = row.vehicleTopUp
 return bacenta.name;
 
+//set arrivals prefixes
+MATCH (stream:Stream {name:"Gospel Encounter"})
+SET stream.arrivalsPrefix = "CP"
+RETURN stream;
+
+MATCH (stream:Stream {name:"First Love Experience"})
+SET stream.arrivalsPrefix = "TN"
+RETURN stream;
+
 
 // Get all Bacenta Aggregates for Bacenta Aggregation
 MATCH (vehicle:VehicleRecord)<-[:INCLUDES_RECORD]-(bussing:BussingRecord)
