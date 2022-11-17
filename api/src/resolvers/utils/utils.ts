@@ -101,9 +101,6 @@ export const rearrangeCypherObject = (response: any, horizontal?: boolean) => {
       record?.keys.forEach((key: string, j: number) => {
         // eslint-disable-next-line no-underscore-dangle
         member[key] = response.records[index]._fields[j]
-
-        // eslint-disable-next-line no-underscore-dangle
-        // console.log('member', response.records[index]._fields[j])
       })
     }
   )
@@ -119,9 +116,6 @@ export const rearrangeCypherObject = (response: any, horizontal?: boolean) => {
         record?.keys.forEach((key: string, j: number) => {
           // eslint-disable-next-line no-underscore-dangle
           object[key] = response.records[index]._fields[j]
-
-          // eslint-disable-next-line no-underscore-dangle
-          // console.log('member', response.records[index]._fields[j])
         })
         records.push(object)
       }
