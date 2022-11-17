@@ -652,7 +652,7 @@ export const arrivalsMutation = {
 const getArrivalsPaymentData = async (
   object: any,
   // eslint-disable-next-line camelcase
-  args: { streamId: string; arrivalsDate: string },
+  args: { arrivalsDate: string },
   context: Context
 ) => {
   isAuth(permitAdminArrivals('Stream'), context.auth.roles)
@@ -661,7 +661,7 @@ const getArrivalsPaymentData = async (
 
   const cypherResponse = rearrangeCypherObject(
     await session.run(getArrivalsPaymentDataCypher, {
-      streamId: args.streamId,
+      streamId: object.id,
       date: args.arrivalsDate,
     }),
     true
@@ -674,7 +674,7 @@ export const arrivalsResolvers = {
   Stream: {
     arrivalsPaymentData: async (
       object: any,
-      args: { streamId: string; arrivalsDate: string },
+      args: { arrivalsDate: string },
       context: Context
     ) => getArrivalsPaymentData(object, args, context),
   },
