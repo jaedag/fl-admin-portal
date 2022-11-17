@@ -1330,20 +1330,5 @@ type ArrivalsSheetData {
 }
 
 extend type Stream {
-  arrivalsPaymentData(
-    streamId: String
-    arrivalsDate: String
-  ): [ArrivalsSheetData!]!
-  #@auth(
-  #  rules: [
-  #    {
-  #      roles: [
-  #        "adminStream"
-  #        "arrivalsAdminStream"
-  #        "adminGatheringService"
-  #        "arrivalsAdminGatheringService"
-  #      ]
-  #    }
-  #  ]
-  #)
+  arrivalsPaymentData(arrivalsDate: String): [ArrivalsSheetData!]!
 }
