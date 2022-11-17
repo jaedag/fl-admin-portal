@@ -663,12 +663,11 @@ const getArrivalsPaymentData = async (
     await session.run(getArrivalsPaymentDataCypher, {
       streamId: args.streamId,
       date: args.arrivalsDate,
-    })
+    }),
+    true
   )
 
-  console.log(cypherResponse)
-
-  return { data: { ...cypherResponse } }
+  return cypherResponse
 }
 
 export const arrivalsResolvers = {

@@ -77,7 +77,7 @@ export const errorHandling = (member: Member) => {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const rearrangeCypherObject = (response: any) => {
+export const rearrangeCypherObject = (response: any, horizontal?: boolean) => {
   const member: {
     [key: string]: any
   } = {}
@@ -101,9 +101,34 @@ export const rearrangeCypherObject = (response: any) => {
       record?.keys.forEach((key: string, j: number) => {
         // eslint-disable-next-line no-underscore-dangle
         member[key] = response.records[index]._fields[j]
+
+        // eslint-disable-next-line no-underscore-dangle
+        // console.log('member', response.records[index]._fields[j])
       })
     }
   )
+
+  if (horizontal) {
+    const records: any[] = []
+    response.records.forEach(
+      (record: { [keys: string]: string[] }, index: number) => {
+        const object: {
+          [key: string]: any
+        } = {}
+
+        record?.keys.forEach((key: string, j: number) => {
+          // eslint-disable-next-line no-underscore-dangle
+          object[key] = response.records[index]._fields[j]
+
+          // eslint-disable-next-line no-underscore-dangle
+          // console.log('member', response.records[index]._fields[j])
+        })
+        records.push(object)
+      }
+    )
+
+    return records
+  }
 
   return member?.member || member
 }
