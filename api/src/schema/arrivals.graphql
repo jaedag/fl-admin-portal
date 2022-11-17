@@ -1310,7 +1310,7 @@ extend type Mutation {
     )
 }
 
-type ArrivalsSheet {
+type ArrivalsSheetData {
   date: Date
   stream: String
   bacenta: String
@@ -1327,21 +1327,23 @@ type ArrivalsSheet {
   council: String
   constituency: String
   society: String
-  data: String
 }
 
 extend type Stream {
-  arrivalsPaymentData(streamId: String, arrivalsDate: String): ArrivalsSheet
-    @auth(
-      rules: [
-        {
-          roles: [
-            "adminStream"
-            "arrivalsAdminStream"
-            "adminGatheringService"
-            "arrivalsAdminGatheringService"
-          ]
-        }
-      ]
-    )
+  arrivalsPaymentData(
+    streamId: String
+    arrivalsDate: String
+  ): [ArrivalsSheetData!]!
+  #@auth(
+  #  rules: [
+  #    {
+  #      roles: [
+  #        "adminStream"
+  #        "arrivalsAdminStream"
+  #        "adminGatheringService"
+  #        "arrivalsAdminGatheringService"
+  #      ]
+  #    }
+  #  ]
+  #)
 }
