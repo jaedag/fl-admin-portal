@@ -1,3 +1,15 @@
+#### 5.2.13 (2022-11-18)
+
+##### New Features
+
+*  admin-422 add cypher scripts for members and churches in test env script ([79688e24](https://github.com/firstlovecenter/fl-pastoral-care/commit/79688e2468361b6ffa4724755ff0f34558ddf65a))
+*  admin-430 replace telepastoring with shepherding control from bacenta upwards ([a312c4f7](https://github.com/firstlovecenter/fl-pastoral-care/commit/a312c4f7e68f716d3e55011c5e3a402afdb3baa1))
+
+##### Bug Fixes
+
+*  edit mutation so that users can really register members without emails ([485d84f2](https://github.com/firstlovecenter/fl-pastoral-care/commit/485d84f20195562fa16074c1b71e4ef6d3e6e8f0))
+*  add Martha Adomako's email to list of testers ([30c64452](https://github.com/firstlovecenter/fl-pastoral-care/commit/30c64452a39bb2beed41d07b4ce64771c972c676))
+
 #### 5.2.12 (2022-11-11)
 
 ##### Bug Fixes
