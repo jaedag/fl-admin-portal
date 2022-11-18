@@ -146,7 +146,7 @@ WITH datetime({year: date().year, quarter: date().quarter, dayOfQuarter: 1}) AS 
       RETURN cycle;
 
 
-////
+
 //set all campus bacenta codes
 MATCH (n:Bacenta)<-[:HAS*3]-(stream:Stream {name:"Gospel Encounter"}) 
 WITH collect(n) as nodes

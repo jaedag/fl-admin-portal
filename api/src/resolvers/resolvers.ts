@@ -56,11 +56,12 @@ const resolvers = {
   },
   Stream: {
     ...campaignsResolvers.Stream,
+    ...arrivalsResolvers.Stream,
   },
   GatheringService: {
     ...campaignsResolvers.GatheringService,
   },
-  ...arrivalsResolvers,
+
   Mutation: {
     ...MakeServantResolvers,
     ...directoryMutation,
