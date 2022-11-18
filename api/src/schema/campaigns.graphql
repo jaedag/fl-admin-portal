@@ -3,6 +3,10 @@ type Campaign {
   type: String!
 }
 
+extend type Oversight {
+  campaigns: [String!]!
+}
+
 extend type GatheringService {
   campaigns: [String!]!
 }
