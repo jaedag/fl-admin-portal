@@ -1,3 +1,20 @@
+### 5.3.0 (2022-11-18)
+
+##### New Features
+
+*  implement a table in the frontend to display the data for the bussing of that day ([d5ff00aa](https://github.com/firstlovecenter/fl-pastoral-care/commit/d5ff00aaf797641a4b81b979b63041683ad866fd))
+*  admin-418 add cypher to retrieve bussing data per stream ([5bf39c21](https://github.com/firstlovecenter/fl-pastoral-care/commit/5bf39c21dc9d1f2f6d4b1d8c00be57c98cfeb7e2))
+*  admin-416 add cypher to import bussing topups ([f01af476](https://github.com/firstlovecenter/fl-pastoral-care/commit/f01af476abe4abb0c871c7172de3a35c6c197da0))
+*  admin-417 add cypher to create bussing society nodes ([9a59e271](https://github.com/firstlovecenter/fl-pastoral-care/commit/9a59e271e2e5bafc2a685db8fad6720387961fe5))
+*  admin-415 add town codes  and edit createbacenta mutation to create codes for new bacentas ([ef7e2819](https://github.com/firstlovecenter/fl-pastoral-care/commit/ef7e2819fd77668812a3001c0f4797d3fd53ce07))
+
+##### Bug Fixes
+
+*  fix error in resolvers.ts where stream resolvers was being overwritten ([67f8b170](https://github.com/firstlovecenter/fl-pastoral-care/commit/67f8b170423ea105c5ef50b9964432baf46697e1))
+*  clean up cypher query for fetching bussing data ([85539891](https://github.com/firstlovecenter/fl-pastoral-care/commit/855398911eb544b297b5e00ab35cb16f12247983))
+*  remove unused comments ([7c2f07f4](https://github.com/firstlovecenter/fl-pastoral-care/commit/7c2f07f4772095b6ce4964267206b0adbefb9fa2))
+*  implement fix for rearrangeCypher Object to return table-like data as an array of objects ([657673a7](https://github.com/firstlovecenter/fl-pastoral-care/commit/657673a7a1a2d6fe6f1976e76faafe79301b34eb))
+
 #### 5.2.13 (2022-11-18)
 
 ##### New Features
