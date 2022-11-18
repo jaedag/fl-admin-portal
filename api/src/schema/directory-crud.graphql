@@ -170,7 +170,7 @@ extend type Mutation {
     firstName: String!
     middleName: String
     lastName: String!
-    email: String!
+    email: String
     phoneNumber: String!
     whatsappNumber: String!
     dob: String!
