@@ -120,12 +120,12 @@ const ArrivalsPaymentData = () => {
             <div className="text-center mt-3">
               <Button>
                 <CSVLink
-                  filename="Today's Buses to be paid.csv"
+                  filename="Today's Busses To Be Paid.csv"
                   headers={headers}
                   data={arrivalPaymentData}
                 >
                   {' '}
-                  <span className="text-white">Download data</span>
+                  <span className="text-white">Download Data</span>
                 </CSVLink>
               </Button>
             </div>
