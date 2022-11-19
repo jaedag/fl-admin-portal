@@ -1,11 +1,15 @@
 MATCH (lastCode:LastBacentaCode)
 DETACH DELETE lastCode;
 
+MATCH (bacenta:Bacenta)
+REMOVE bacenta.bacentaCode, bacenta.topUp,
+RETURN bacenta LIMIT 1;
+
 //import Lp Ivy's bacenta costs for town
 LOAD CSV WITH HEADERS FROM 'https://docs.google.com/spreadsheets/d/1UwFcbj46X1wzc8q8inEIEeBCWsOMJi0cSdUZkZa-_Os/export?format=csv' AS row
 WITH row WHERE row.name IS NOT NULL
 MATCH (bacenta:Bacenta {name:trim(row.name)})
-SET bacenta.bacentaCode = row.code
+SET bacenta.code = row.code
 return bacenta;
 
 MATCH (lastCode:LastBacentaCode)
@@ -13,7 +17,7 @@ DETACH DELETE lastCode;
 
 //create last bacenta code node
 MATCH (n:Bacenta)
-WITH max(n.bacentaCode) as code
+WITH max(n.code) as code
 MERGE (lastCode:LastBacentaCode {number:code})
 RETURN lastCode;
 
@@ -22,12 +26,13 @@ WITH collect(n) as nodes
 MATCH (lastCode:LastBacentaCode)
 WITH apoc.coll.zip(nodes, range(toInteger(lastCode.number), size(nodes)+toInteger(lastCode.number))) as bacentas
 UNWIND bacentas as bacenta 
-SET (bacenta[0]).bacentaCode = bacenta[1];
+SET (bacenta[0]).code = bacenta[1];
 
 //create last bacenta code node
 MATCH (n:Bacenta)
-WITH max(n.bacentaCode) as code
-MERGE (lastCode:LastBacentaCode {number:code})
+WITH max(n.code) as code
+MATCH  (lastCode:LastBacentaCode)
+SET lastCode.number = code
 RETURN lastCode;
 
 
