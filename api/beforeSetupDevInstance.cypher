@@ -80,17 +80,16 @@ MATCH (church:Fellowship)
 WHERE NOT church IN remainder
 DETACH DELETE church;
 
-
 MATCH (member:Member)-[:BELONGS_TO]->(fellowship:Fellowship)
 MATCH (fellowship)<-[:HAS]-(bacenta:Bacenta)<-[:HAS]-(constituency:Constituency)<-[:HAS]-(council:Council)<-[:HAS]-(stream:Stream)<-[:HAS]-(gathering:Gathering)
 MERGE (member)-[:LEADS]->(gathering)
 RETURN member, gathering;
-MATCH (f {name: "Greater Love Club"})
+MATCH (f) WHERE f:Fellowship OR f:Bacenta OR f:Constituency OR f:Council OR f:Stream OR f:GatheringService
 MATCH (m:Member {email: "jaedagy@gmail.com"})
 MERGE (m)-[:LEADS]->(f)
 RETURN f,m;
 
 MATCH (member:Member)
-MATCH (f:Fellowship {name: "Greater Love Club"})
+MATCH (f:Fellowship)
 MERGE (member)-[:BELONGS_TO]->(f)
 RETURN member, f;
