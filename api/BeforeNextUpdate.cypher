@@ -1,31 +1,33 @@
-//set all campus bacenta codes
-MATCH (n:Bacenta)<-[:HAS*3]-(stream:Stream {name:"Gospel Encounter"}) 
-WITH collect(n) as nodes
-WITH apoc.coll.zip(nodes, range(0, size(nodes))) as bacentas
-UNWIND bacentas as bacenta 
-SET (bacenta[0]).bacentaCode = bacenta[1];
+MATCH (lastCode:LastBacentaCode)
+DETACH DELETE lastCode;
 
-//Create last campus code node for campus
-MATCH (n:Bacenta)<-[:HAS*3]-(stream:Stream {name:"Gospel Encounter"}) 
-WITH max(n.bacentaCode) as code, stream
+//import Lp Ivy's bacenta costs for town
+LOAD CSV WITH HEADERS FROM 'https://docs.google.com/spreadsheets/d/1UwFcbj46X1wzc8q8inEIEeBCWsOMJi0cSdUZkZa-_Os/export?format=csv' AS row
+WITH row WHERE row.name IS NOT NULL
+MATCH (bacenta:Bacenta {name:trim(row.name)})
+SET bacenta.bacentaCode = row.code
+return bacenta;
 
-CREATE (lastCode:LastBacentaCode {number:code})
-MERGE (stream)<-[:IS_LAST_BACENTA_CODE_FOR]-(lastCode)
+MATCH (lastCode:LastBacentaCode)
+DETACH DELETE lastCode;
+
+//create last bacenta code node
+MATCH (n:Bacenta)
+WITH max(n.bacentaCode) as code
+MERGE (lastCode:LastBacentaCode {number:code})
 RETURN lastCode;
 
-//set all town bacenta codes
-MATCH (n:Bacenta)<-[:HAS*3]-(stream:Stream {name:"First Love Experience"}) 
+MATCH (n:Bacenta) WHERE n.bacentaCode IS NULL
 WITH collect(n) as nodes
-WITH apoc.coll.zip(nodes, range(5000, size(nodes)+5000)) as bacentas
+MATCH (lastCode:LastBacentaCode)
+WITH apoc.coll.zip(nodes, range(toInteger(lastCode.number), size(nodes)+toInteger(lastCode.number))) as bacentas
 UNWIND bacentas as bacenta 
 SET (bacenta[0]).bacentaCode = bacenta[1];
 
-//Create last town code node for town
-MATCH (n:Bacenta)<-[:HAS*3]-(stream:Stream {name:"First Love Experience"}) 
+//create last bacenta code node
+MATCH (n:Bacenta)
 WITH max(n.bacentaCode) as code
-
-CREATE (lastCode:LastBacentaCode {number:code})
-MERGE (stream)<-[:IS_LAST_BACENTA_CODE_FOR]-(lastCode)
+MERGE (lastCode:LastBacentaCode {number:code})
 RETURN lastCode;
 
 
@@ -46,7 +48,7 @@ return distinct society order by society.society;
 LOAD CSV WITH HEADERS FROM 'https://docs.google.com/spreadsheets/d/1cdtySNMwyqJzTF9IJhOFhfco03GExpQlyE0eb2ftgMc/export?format=csv' AS row
 WITH row WHERE row.date IS NOT NULL
 MATCH (bacenta:Bacenta {name:trim(row.bacenta)})
-SET bacenta.topUp = row.vehicleTopUp
+SET bacenta.lpIvyTopUp = row.vehicleTopUp
 return bacenta.name;
 
 //set arrivals prefixes

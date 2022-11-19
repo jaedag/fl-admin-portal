@@ -379,9 +379,9 @@ extend type Mutation {
        MERGE (constituency)-[r1:HAS_HISTORY]->(log)
 
        WITH bacenta
-       MATCH (bacenta)<-[:HAS*3]-(:Stream)<-[:IS_LAST_BACENTA_CODE_FOR]-(lastCode:LastBacentaCode)
+       MATCH (lastCode:LastBacentaCode)
        SET
-        bacenta.code = lastCode.number + 1,
+        bacenta.bacentaCode = lastCode.number + 1,
         lastCode.number = bacenta.code
 
 
