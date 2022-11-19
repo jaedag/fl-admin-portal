@@ -2,7 +2,7 @@ MATCH (lastCode:LastBacentaCode)
 DETACH DELETE lastCode;
 
 MATCH (bacenta:Bacenta)
-REMOVE bacenta.bacentaCode, bacenta.topUp,
+REMOVE bacenta.bacentaCode, bacenta.topUp
 RETURN bacenta LIMIT 1;
 
 //import Lp Ivy's bacenta costs for town
