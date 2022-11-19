@@ -381,7 +381,7 @@ extend type Mutation {
        WITH bacenta
        MATCH (lastCode:LastBacentaCode)
        SET
-        bacenta.bacentaCode = lastCode.number + 1,
+        bacenta.code = lastCode.number + 1,
         lastCode.number = bacenta.code
 
 
