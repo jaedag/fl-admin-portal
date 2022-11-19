@@ -19,6 +19,7 @@ interface ArrivalPaymentData {
   vehicle: string
   topUp: number
   vehicleCost: number
+  momoNumber: number
   comments: string
   council: string
   constituency: string
@@ -41,6 +42,7 @@ const ArrivalsPaymentData = () => {
     { label: 'Vehicle', key: 'vehicle' },
     { label: 'Top Up', key: 'topUp' },
     { label: 'Vehicle Cost', key: 'vehicleCost' },
+    { label: 'Momo Number', key: 'momoNumber' },
     { label: 'Comments', key: 'comments' },
     { label: 'Council', key: 'council' },
     { label: 'Constituency', key: 'constituency' },
@@ -83,6 +85,7 @@ const ArrivalsPaymentData = () => {
                     <th scope="col">Vehicle</th>
                     <th scope="col">Top Up</th>
                     <th scope="col">Vehicle Cost</th>
+                    <th scope="col">Momo Number</th>
                     <th scope="col">Comments</th>
                     <th scope="col">Council</th>
                     <th scope="col">Constituency</th>
@@ -106,6 +109,7 @@ const ArrivalsPaymentData = () => {
                         <td>{data?.vehicle}</td>
                         <td>{data?.topUp}</td>
                         <td>{data?.vehicleCost}</td>
+                        <td>{data?.momoNumber}</td>
                         <td>{data?.comments}</td>
                         <td>{data?.council}</td>
                         <td>{data?.constituency}</td>
