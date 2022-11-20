@@ -1,3 +1,23 @@
+#### 5.3.1 (2022-11-20)
+
+##### New Features
+
+*  implement visible charges when using the self banking feature ([db940ba6](https://github.com/firstlovecenter/fl-pastoral-care/commit/db940ba6565a44d4ebb9ec828eadecb95b8e11d3))
+
+##### Bug Fixes
+
+*  make all members leaders ([d248278b](https://github.com/firstlovecenter/fl-pastoral-care/commit/d248278b9676437b0f07b01445fab34c5edc846f))
+*  add momo name to arrivals payment excel sheet ([c1039261](https://github.com/firstlovecenter/fl-pastoral-care/commit/c1039261dcafc2f4b864e371a19ec47caace13ec))
+*  order arrivals payment sheet by society ([7e2e8eb3](https://github.com/firstlovecenter/fl-pastoral-care/commit/7e2e8eb3b98d311e77d73c2bf7b0e748dacf2c63))
+*  add momo number to arrivals payment excel sheet ([2c2f0497](https://github.com/firstlovecenter/fl-pastoral-care/commit/2c2f0497a447eac980f4dc9541a96d32635b7c58))
+*  remove unnecessary comma from before next update file ([471d1f91](https://github.com/firstlovecenter/fl-pastoral-care/commit/471d1f9153b752d4e4c213990665e55827cf37e7))
+*  change bacenta.bacentaCode property on bacenta to bacenta.code ([20598d23](https://github.com/firstlovecenter/fl-pastoral-care/commit/20598d235a912fdd08beddcf04883861362070e4))
+*  import bacenta codes from Lp Ivy's list ([86008015](https://github.com/firstlovecenter/fl-pastoral-care/commit/86008015e4dbcf280fe24b11c5ba9e341631a6ef))
+*  update banking slip mutation so that admins can use it ([ff4272f8](https://github.com/firstlovecenter/fl-pastoral-care/commit/ff4272f814ca3423ecb10fd1a3f9950c4ec2af8d))
+*  capitalise arrivals payment data filename ([51b3f0c0](https://github.com/firstlovecenter/fl-pastoral-care/commit/51b3f0c0a26c5749df5c36664880bf97b31b7de8))
+*  update code that forms leader relationships ([a0916ec1](https://github.com/firstlovecenter/fl-pastoral-care/commit/a0916ec1563e3af171d6a7a1049b9aca46f53f64))
+*  remove unnecessary code in setupDevInstance ([53e9511c](https://github.com/firstlovecenter/fl-pastoral-care/commit/53e9511c2be1fd37403eea034f76ad2d536ae1c4))
+
 ### 5.3.0 (2022-11-18)
 
 ##### New Features
