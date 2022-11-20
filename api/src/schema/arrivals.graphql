@@ -1327,6 +1327,7 @@ type ArrivalsSheetData {
   council: String
   constituency: String
   society: String
+  momoName: String
 }
 
 extend type Stream {
