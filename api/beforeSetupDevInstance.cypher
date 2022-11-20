@@ -85,7 +85,7 @@ MATCH (fellowship)<-[:HAS]-(bacenta:Bacenta)<-[:HAS]-(constituency:Constituency)
 MERGE (member)-[:LEADS]->(gathering)
 RETURN member, gathering;
 MATCH (f) WHERE f:Fellowship OR f:Bacenta OR f:Constituency OR f:Council OR f:Stream OR f:GatheringService
-MATCH (m:Member {email: "jaedagy@gmail.com"})
+MATCH (m:Member)
 MERGE (m)-[:LEADS]->(f)
 RETURN f,m;
 
