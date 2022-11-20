@@ -20,6 +20,7 @@ interface ArrivalPaymentData {
   topUp: number
   vehicleCost: number
   momoNumber: number
+  momoName: string
   comments: string
   council: string
   constituency: string
@@ -33,6 +34,7 @@ const ArrivalsPaymentData = () => {
   const { currentUser } = useContext(MemberContext)
   const church = currentUser?.currentChurch
   const headers = [
+    { label: 'Date', key: 'date' },
     { label: 'Stream', key: 'stream' },
     { label: 'Bacenta', key: 'bacenta' },
     { label: 'Leader', key: 'leader' },
@@ -43,11 +45,11 @@ const ArrivalsPaymentData = () => {
     { label: 'Top Up', key: 'topUp' },
     { label: 'Vehicle Cost', key: 'vehicleCost' },
     { label: 'Momo Number', key: 'momoNumber' },
+    { label: 'Momo Name', key: 'momoName' },
     { label: 'Comments', key: 'comments' },
     { label: 'Council', key: 'council' },
     { label: 'Constituency', key: 'constituency' },
     { label: 'Society', key: 'society' },
-    { label: 'Date', key: 'date' },
     { label: 'Arrival Time', key: 'arrivalTime' },
   ]
 
@@ -76,6 +78,7 @@ const ArrivalsPaymentData = () => {
                 <thead>
                   <tr>
                     <th scope="col">#</th>
+                    <th scope="col">Date</th>
                     <th scope="col">Stream</th>
                     <th scope="col">Bacenta</th>
                     <th scope="col">Leader</th>
@@ -86,11 +89,11 @@ const ArrivalsPaymentData = () => {
                     <th scope="col">Top Up</th>
                     <th scope="col">Vehicle Cost</th>
                     <th scope="col">Momo Number</th>
+                    <th scope="col">Momo Name</th>
                     <th scope="col">Comments</th>
                     <th scope="col">Council</th>
                     <th scope="col">Constituency</th>
                     <th scope="col">Society</th>
-                    <th scope="col">Date</th>
                     <th scope="col">Arrival Time</th>
                   </tr>
                 </thead>
@@ -100,6 +103,7 @@ const ArrivalsPaymentData = () => {
                     ?.map((data: ArrivalPaymentData, index: number) => (
                       <tr key={index}>
                         <th scope="row">{index}</th>
+                        <td>{data?.date}</td>
                         <td>{data?.stream}</td>
                         <td>{data?.bacenta}</td>
                         <td>{data?.leader}</td>
@@ -110,11 +114,11 @@ const ArrivalsPaymentData = () => {
                         <td>{data?.topUp}</td>
                         <td>{data?.vehicleCost}</td>
                         <td>{data?.momoNumber}</td>
+                        <td>{data?.momoName}</td>
                         <td>{data?.comments}</td>
                         <td>{data?.council}</td>
                         <td>{data?.constituency}</td>
                         <td>{data?.society}</td>
-                        <td>{data?.date}</td>
                         <td>{data?.arrivalTime}</td>
                       </tr>
                     ))}

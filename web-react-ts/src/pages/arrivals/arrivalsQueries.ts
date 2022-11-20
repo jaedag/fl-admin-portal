@@ -476,6 +476,7 @@ export const DISPLAY_ARRIVALS_PAYMENT_DATA = gql`
         topUp
         vehicleCost
         momoNumber
+        momoName
         comments
         council
         constituency
