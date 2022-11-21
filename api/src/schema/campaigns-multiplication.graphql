@@ -1,0 +1,42 @@
+extend type Mutation {
+  RecordMultiplicationEvent(
+    churchId: ID!
+    preacherId: String!
+    crusadeLocation: String!
+    attendance: Int!
+    income: Float!
+    foreignCurrency: String
+    souls: Int!
+    miracles: Int!
+    crusadePictures: [String!]!
+    treasurerSelfie: String!
+    crusadeDate: Date!
+    treasurers: [ID]!
+  ): MultiplicationRecord
+}
+
+type MultiplicationRecord {
+  id: ID!
+  crusadeDate: TimeGraph! @relationship(type: "CRUSADE_HELD_ON", direction: OUT)
+  preacher: Member! @relationship(type: "PREACHED_AT", direction: IN)
+  crusadeLocation: String!
+  attendance: Int!
+  income: Float!
+  foreignCurrency: String
+  souls: Int!
+  miracles: Int!
+  crusadePictures: [String!]!
+  treasurers: [Member!]!
+}
+
+extend type Member {
+  preacher: [MultiplicationRecord!]!
+    @relationship(type: "PREACHED_AT", direction: OUT)
+  multiplicationTreasurers: [MultiplicationRecord!]!
+    @relationship(type: "WAS_TREASURER_FOR", direction: OUT)
+}
+
+extend type TimeGraph {
+  multiplicationRecordDate: [MultiplicationRecord!]!
+    @relationship(type: "CRUSADE_HELD_ON", direction: IN)
+}
