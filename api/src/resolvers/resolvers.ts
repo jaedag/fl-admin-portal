@@ -10,11 +10,12 @@ import {
   arrivalsResolvers,
 } from './arrivals/arrivals-resolvers'
 import bankingMutation from './banking/banking-resolver'
+import multiplicationCampaignMutations from './campaigns/multiplication-campaign-resolvers'
+import campaignsResolvers from './campaigns/campaigns-resolver'
 import {
-  campaignsMutation,
-  campaignsResolvers,
-} from './campaigns/campaigns-resolver'
-import multiplicationCampaignsMutations from './campaigns/multiplication-resolvers'
+  equipmentCampaignMutations,
+  equipmentCampaignResolvers,
+} from './campaigns/equipment-campaign-resolvers'
 
 const dotenv = require('dotenv')
 
@@ -51,16 +52,20 @@ const resolvers = {
   },
   Constituency: {
     ...campaignsResolvers.Constituency,
+    ...equipmentCampaignResolvers.Constituency,
   },
   Council: {
     ...campaignsResolvers.Council,
+    ...equipmentCampaignResolvers.Council,
   },
   Stream: {
     ...campaignsResolvers.Stream,
     ...arrivalsResolvers.Stream,
+    ...equipmentCampaignResolvers.Stream,
   },
   GatheringService: {
     ...campaignsResolvers.GatheringService,
+    ...equipmentCampaignResolvers.GatheringService,
   },
 
   Mutation: {
@@ -71,9 +76,9 @@ const resolvers = {
     ...bankingMutation,
     ...treasuryMutations,
     ...serviceNoIncomeMutations,
-    ...campaignsMutation,
     ...sheepSeekingMutations,
-    ...multiplicationCampaignsMutations,
+    ...multiplicationCampaignMutations,
+    ...equipmentCampaignMutations,
   },
 }
 

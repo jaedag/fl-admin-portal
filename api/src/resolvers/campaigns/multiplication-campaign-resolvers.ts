@@ -27,7 +27,7 @@ type RecordMultiplicationEventArgs = {
   crusadeDate: Date
 }
 
-const multiplicationCampaignsMutations = {
+const multiplicationCampaignMutations = {
   RecordMultiplicationEvent: async (
     object: never,
     args: RecordMultiplicationEventArgs,
@@ -61,4 +61,4 @@ const multiplicationCampaignsMutations = {
   },
 }
 
-export default multiplicationCampaignsMutations
+export default multiplicationCampaignMutations
