@@ -1,3 +1,13 @@
+#### 5.3.2 (2022-11-22)
+
+##### New Features
+
+*  implement apollo client query retry ([ab2504ab](https://github.com/firstlovecenter/fl-pastoral-care/commit/ab2504ab8895bf9a506401fee1e2f469780bdf2b))
+
+##### Bug Fixes
+
+*  remove functionality to report to sentry when a query returns no data ([dcdfe32d](https://github.com/firstlovecenter/fl-pastoral-care/commit/dcdfe32d6cb5e7ebe5f2d7572a0576c271fd3b7c))
+
 #### 5.3.1 (2022-11-20)
 
 ##### New Features
