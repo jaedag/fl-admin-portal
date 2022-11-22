@@ -82,15 +82,6 @@ export const rearrangeCypherObject = (response: any, horizontal?: boolean) => {
     [key: string]: any
   } = {}
 
-  if (response.records.length === 0) {
-    captureException(`A query returned no data`, {
-      tags: {
-        category: 'cypher',
-      },
-      extra: response.summary,
-    })
-  }
-
   response.records[0]?.keys.forEach((key: string, i: number) => {
     // eslint-disable-next-line no-underscore-dangle
     member[key] = response.records[0]._fields[i]
