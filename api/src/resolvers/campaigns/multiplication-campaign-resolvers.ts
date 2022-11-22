@@ -1,5 +1,4 @@
 import { permitLeaderAdmin } from '../permissions'
-import { aggregateMultiplicationDataOnHigherChurches } from '../services/service-cypher'
 import { checkServantHasCurrentHistory } from '../services/service-resolvers'
 import { Context } from '../utils/neo4j-types'
 import {
@@ -8,7 +7,10 @@ import {
   rearrangeCypherObject,
   throwToSentry,
 } from '../utils/utils'
-import { recordMultiplicationEvent } from './multiplication-campaign-cypher'
+import {
+  aggregateMultiplicationDataOnHigherChurches,
+  recordMultiplicationEvent,
+} from './multiplication-campaign-cypher'
 
 const errorMessage = require('../texts.json').error
 
