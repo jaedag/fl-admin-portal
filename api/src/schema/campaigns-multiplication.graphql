@@ -27,6 +27,8 @@ type MultiplicationRecord {
   miracles: Int!
   crusadePictures: [String!]!
   treasurers: [Member!]!
+  bankingSlipUploader: Member
+    @relationship(type: "UPLOADED_SLIP_FOR", direction: IN)
 }
 
 type AggregateMultiplicationRecord @auth(rules: [{ isAuthenticated: true }]) {
@@ -44,6 +46,8 @@ extend type Member {
     @relationship(type: "PREACHED_AT", direction: OUT)
   multiplicationTreasurers: [MultiplicationRecord!]!
     @relationship(type: "WAS_TREASURER_FOR", direction: OUT)
+  multiplicationBankingSlipUploader: [MultiplicationRecord!]!
+    @relationship(type: "UPLOADED_SLIP_FOR", direction: OUT)
 }
 
 extend type TimeGraph {
