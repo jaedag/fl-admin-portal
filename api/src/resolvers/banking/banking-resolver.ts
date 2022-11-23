@@ -25,7 +25,7 @@ import {
   PayStackRequestBody,
   SendPaymentOTP,
 } from './banking-types'
-import { ServiceRecord, StreamOptions } from '../utils/types'
+import { StreamOptions } from '../utils/types'
 
 const checkIfLastServiceBanked = async (
   serviceRecordId: string,
@@ -46,7 +46,7 @@ const checkIfLastServiceBanked = async (
 
   if (!('lastService' in lastServiceRecord)) return true
 
-  const record: ServiceRecord = lastServiceRecord.lastService.properties
+  const record = lastServiceRecord.lastService.properties
 
   if (!('bankingSlip' in record || record.transactionStatus === 'success')) {
     throw new Error(
