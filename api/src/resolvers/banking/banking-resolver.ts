@@ -32,6 +32,7 @@ const checkIfLastServiceBanked = async (
   context: Context
 ) => {
   const session = context.executionContext.session()
+
   // this checks if the person has banked their last offering
   const lastServiceResponse = await session
     .run(getLastServiceRecord, {
@@ -41,7 +42,7 @@ const checkIfLastServiceBanked = async (
     .catch((error: any) =>
       throwToSentry('There was a problem checking the lastService', error)
     )
-  const lastServiceRecord = rearrangeCypherObject(lastServiceResponse)
+  const lastServiceRecord: any = rearrangeCypherObject(lastServiceResponse)
 
   if (!('lastService' in lastServiceRecord)) return true
 
@@ -163,7 +164,7 @@ const bankingMutation = {
     }
 
     try {
-      const paymentResponse = await axios(payOffering).catch((error) =>
+      const paymentResponse = await axios(payOffering).catch((error: any) =>
         throwToSentry('There was an error with the payment', error)
       )
 
