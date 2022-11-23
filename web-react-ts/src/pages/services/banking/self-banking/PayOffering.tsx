@@ -73,10 +73,12 @@ const PayOffering = (props: PayOfferingProps) => {
   }, [service])
 
   const validationSchema = Yup.object({
-    mobileNumber: Yup.string().matches(
-      MOMO_NUM_REGEX,
-      `Enter a valid MoMo Number without spaces. eg. (02XXXXXXXX)`
-    ),
+    mobileNumber: Yup.string()
+      .required('You must enter a mobile number')
+      .matches(
+        MOMO_NUM_REGEX,
+        `Enter a valid MoMo Number without spaces. eg. (02XXXXXXXX)`
+      ),
     momoName: Yup.string().when('mobileNumber', {
       is: (mobileNumber: string) => mobileNumber && mobileNumber.length > 0,
       then: Yup.string().required('Please enter the Momo Name'),
