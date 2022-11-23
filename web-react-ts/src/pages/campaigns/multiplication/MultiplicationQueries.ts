@@ -51,6 +51,7 @@ export const MULTIPLICATION_RECORDS = gql`
       souls
       miracles
       crusadePictures
+      treasurerSelfie
       crusadeDate {
         date
       }

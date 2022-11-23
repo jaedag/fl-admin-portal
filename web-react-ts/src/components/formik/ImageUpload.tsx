@@ -84,6 +84,7 @@ const ImageUpload = (props: ImageUploadProps) => {
           type="file"
           accept="image/png, image/webp, image/jpg, image/jpeg"
           onChange={uploadImage}
+          multiple
           {...rest}
         />
 

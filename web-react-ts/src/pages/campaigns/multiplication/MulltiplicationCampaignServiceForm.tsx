@@ -127,7 +127,7 @@ const MultiplicationCampaignServiceForm = ({
           foreignCurrency: parseForeignCurrency(values.foreignCurrency),
           souls: parseInt(values.souls),
           treasurers: values?.treasurers,
-          treasurerSelfie: values.treasurerSelfie,
+          treasurerSelfie: values?.treasurerSelfie,
           miracles: parseInt(values.miracles),
           crusadePictures: values.crusadePictures,
         },
@@ -135,11 +135,10 @@ const MultiplicationCampaignServiceForm = ({
         .then((res) => {
           onSubmitProps.setSubmitting(false)
           onSubmitProps.resetForm()
-          clickCard(res.data.RecordService)
-          alert('You have successfully filled your multiplication event form')
-          // navigate(
-          //   `/campaigns/${churchType.toLowerCase()}/multiplication/service-details`
-          // )
+          clickCard(res.data.RecordMultiplicationEvent)
+          navigate(
+            `/campaigns/${churchType.toLowerCase()}/multiplication/service-details`
+          )
         })
         .catch((error) => {
           onSubmitProps.setSubmitting(false)

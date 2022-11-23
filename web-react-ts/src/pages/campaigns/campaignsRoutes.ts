@@ -246,6 +246,33 @@ const ConstituencyMultiplicationCampaignServiceForm = lazy(
       '../campaigns/multiplication/constituency/ConstituencyMultiplicationCampaignServiceForm'
     )
 )
+const ConstituencyMultiplicationCampaignServiceDetails = lazy(
+  () =>
+    import(
+      '../campaigns/multiplication/constituency/ConstituencyMultiplicationCampaignServiceDetails'
+    )
+)
+
+const CouncilMultiplicationCampaignServiceDetails = lazy(
+  () =>
+    import(
+      '../campaigns/multiplication/council/CouncilMultiplicationCampaignServiceDetails'
+    )
+)
+
+const GatheringServiceMultiplicationCampaignServiceDetails = lazy(
+  () =>
+    import(
+      '../campaigns/multiplication/gathering-service/GatheringServiceMultiplicationCampaignServiceDetails'
+    )
+)
+
+const StreamMultiplicationCampaignServiceDetails = lazy(
+  () =>
+    import(
+      '../campaigns/multiplication/stream/StreamMultiplicationCampaignServiceDetails'
+    )
+)
 
 export const campaigns: LazyRouteTypes[] = [
   //gathering-service routes
@@ -330,6 +357,12 @@ export const campaigns: LazyRouteTypes[] = [
   {
     path: '/campaigns/gathering-service/multiplication/service-form',
     element: GatheringServiceMultiplicationCampaignServiceForm,
+    roles: permitAdmin('GatheringService'),
+    placeholder: true,
+  },
+  {
+    path: '/campaigns/gathering-service/multiplication/service-details',
+    element: GatheringServiceMultiplicationCampaignServiceDetails,
     roles: permitAdmin('GatheringService'),
     placeholder: true,
   },
@@ -425,6 +458,12 @@ export const campaigns: LazyRouteTypes[] = [
     roles: permitAdmin('Stream'),
     placeholder: true,
   },
+  {
+    path: '/campaigns/stream/multiplication/service-details',
+    element: StreamMultiplicationCampaignServiceDetails,
+    roles: permitAdmin('Stream'),
+    placeholder: true,
+  },
 
   //council routes
   {
@@ -505,6 +544,12 @@ export const campaigns: LazyRouteTypes[] = [
     roles: permitAdmin('Council'),
     placeholder: true,
   },
+  {
+    path: '/campaigns/council/multiplication/service-details',
+    element: CouncilMultiplicationCampaignServiceDetails,
+    roles: permitAdmin('Council'),
+    placeholder: true,
+  },
 
   //constituency routes
   {
@@ -582,6 +627,12 @@ export const campaigns: LazyRouteTypes[] = [
   {
     path: '/campaigns/constituency/multiplication/service-form',
     element: ConstituencyMultiplicationCampaignServiceForm,
+    roles: permitAdmin('Constituency'),
+    placeholder: true,
+  },
+  {
+    path: '/campaigns/constituency/multiplication/service-details',
+    element: ConstituencyMultiplicationCampaignServiceDetails,
     roles: permitAdmin('Constituency'),
     placeholder: true,
   },

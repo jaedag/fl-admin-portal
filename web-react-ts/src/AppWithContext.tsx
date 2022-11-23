@@ -63,6 +63,7 @@ const AppWithContext = (props: AppPropsType) => {
     serviceRecordId,
     vehicleRecordId,
     oversightId,
+    multiplicationRecordId,
 
     //Set State
     setOversightId,
@@ -178,6 +179,7 @@ const AppWithContext = (props: AppPropsType) => {
                 serviceRecordId,
                 bussingRecordId,
                 vehicleRecordId,
+                multiplicationRecordId,
               }}
             >
               <SetPermissions token={props.token}>
