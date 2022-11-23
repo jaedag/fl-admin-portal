@@ -27,6 +27,7 @@ type MultiplicationRecord {
   miracles: Int!
   crusadePictures: [String!]!
   treasurers: [Member!]!
+  treasurerSelfie: String!
   bankingSlipUploader: Member
     @relationship(type: "UPLOADED_SLIP_FOR", direction: IN)
 }
