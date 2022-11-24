@@ -120,11 +120,9 @@ const ServiceDetails = ({ service, church, loading }: ServiceDetailsProps) => {
                   <div className="mb-4">
                     {`${service?.offeringBankedBy.fullName} used the Self Banking Feature. Click this button to see
                     Details`}
-                    <div className="d-grid gap-2">
-                      <Button onClick={() => navigate('/self-banking/receipt')}>
-                        View Banking Details
-                      </Button>
-                    </div>
+                    <Button onClick={() => navigate('/self-banking/receipt')}>
+                      View Banking Details
+                    </Button>
                   </div>
                 )}
                 {!currentUser.noIncome && service?.bankingSlip && (
