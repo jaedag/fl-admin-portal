@@ -6,7 +6,7 @@ import { ChurchContext } from 'contexts/ChurchContext'
 import { STREAM_BY_COUNCIL_EQUIPMENT_DEFAULTERS } from 'pages/campaigns/CampaignQueries'
 import DefaulterDetailsCard, {
   EquipmentDefaulters,
-} from 'pages/campaigns/components/buttons/DefaulterDetailsCard'
+} from 'pages/campaigns/components/cards/DefaulterDetailsCard'
 import React, { useContext } from 'react'
 import { Container, Row } from 'react-bootstrap'
 

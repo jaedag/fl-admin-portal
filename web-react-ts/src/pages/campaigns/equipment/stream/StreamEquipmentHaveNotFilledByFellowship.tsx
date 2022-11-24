@@ -2,7 +2,7 @@ import { ChurchContext } from 'contexts/ChurchContext'
 import { MemberContext } from 'contexts/MemberContext'
 import DefaultersCard, {
   EquipmentDefaulterProps,
-} from 'pages/campaigns/components/buttons/DefaultersCard'
+} from 'pages/campaigns/components/cards/DefaultersCard'
 import React, { useContext } from 'react'
 import { Container, Row } from 'react-bootstrap'
 import { useQuery } from '@apollo/client'

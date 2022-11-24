@@ -255,53 +255,19 @@ const MultiplicationCampaignServiceForm = ({
                       <small className="mb-3">
                         Upload 10 Pictures Of Crusade Event*
                       </small>
-                      <FieldArray name="crusadePictures">
-                        {(fieldArrayProps) => {
-                          const { push, remove, form } = fieldArrayProps
-                          const { values } = form
-                          const {
-                            crusadePictures,
-                          }: { crusadePictures: string[] } = values
 
-                          return (
-                            <>
-                              {crusadePictures.map((crusadePicture, index) => (
-                                <Row key={index} className="form-row">
-                                  <Col>
-                                    <ImageUpload
-                                      name={`crusadePictures[${index}]`}
-                                      uploadPreset={
-                                        process.env
-                                          .REACT_APP_CLOUDINARY_MULTIPLICATION_SERVICES
-                                      }
-                                      placeholder="Choose"
-                                      setFieldValue={formik.setFieldValue}
-                                      aria-describedby="UploadcrusadePicture"
-                                      error={
-                                        !Array.isArray(
-                                          formik.errors.crusadePictures
-                                        )
-                                          ? formik.errors.crusadePictures
-                                          : formik.errors.crusadePictures &&
-                                            formik.errors.crusadePictures[index]
-                                      }
-                                    />
-                                  </Col>
-
-                                  <Col className="col-auto d-flex">
-                                    <PlusSign onClick={() => push('')} />
-                                    {index > 0 && (
-                                      <MinusSign
-                                        onClick={() => remove(index)}
-                                      />
-                                    )}
-                                  </Col>
-                                </Row>
-                              ))}
-                            </>
-                          )
-                        }}
-                      </FieldArray>
+                      <Col>
+                        <ImageUpload
+                          name={`crusadePictures`}
+                          uploadPreset={
+                            process.env
+                              .REACT_APP_CLOUDINARY_MULTIPLICATION_SERVICES
+                          }
+                          placeholder="Choose"
+                          setFieldValue={formik.setFieldValue}
+                          aria-describedby="UploadcrusadePicture"
+                        />
+                      </Col>
                     </Col>
                     <div className="d-flex justify-content-center mt-5">
                       <SubmitButton formik={formik} />
