@@ -99,7 +99,7 @@ const FormMobilisationSubmission = () => {
             </HeadingPrimary>
 
             <Form>
-              <Row className="row-cols-1 row-cols-md-2 mt-2">
+              <Row className="row-cols-1 mt-2">
                 <Col className="mb-2">
                   <small className="form-text label">
                     Date of Service*
@@ -122,10 +122,11 @@ const FormMobilisationSubmission = () => {
                     aria-describedby="ImageUpload"
                   />
                 </Col>
-
-                <div className="d-flex justify-content-center">
-                  <SubmitButton formik={formik} />
-                </div>
+                <Col>
+                  <div className="d-grid gap-2">
+                    <SubmitButton formik={formik} />
+                  </div>
+                </Col>
               </Row>
             </Form>
           </Container>
