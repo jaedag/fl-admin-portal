@@ -97,7 +97,7 @@ export const aggregateServiceDataOnHigherChurches = `
       CALL {
          WITH bacenta
          WITH bacenta
-         MATCH (bacenta)-[:CURRENT_HISTORY]->(higherLog:ServiceLog)-[:HAS_SERVICE]->(higherRecord:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph) WHERE date.date.week = date().week
+         MATCH (bacenta)-[:CURRENT_HISTORY]->(higherLog:ServiceLog)-[:HAS_SERVICE]->(higherRecord:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph) WHERE date.date.week = date().week AND date.date.year = date().year
          WITH DISTINCT higherRecord
          WITH AVG(higherRecord.attendance) AS avgAttendance, SUM(higherRecord.income) AS totalIncome
          RETURN  SUM(avgAttendance) as avgAttendance, totalIncome
@@ -120,7 +120,7 @@ export const aggregateServiceDataOnHigherChurches = `
       CALL {
          WITH constituency 
          WITH constituency 
-         MATCH (constituency)-[:CURRENT_HISTORY]->(higherLog:ServiceLog)-[:HAS_SERVICE]->(higherRecord:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph) WHERE date.date.week = date().week
+         MATCH (constituency)-[:CURRENT_HISTORY]->(higherLog:ServiceLog)-[:HAS_SERVICE]->(higherRecord:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph) WHERE date.date.week = date().week AND date.date.year = date().year
          WITH DISTINCT higherRecord
          WITH AVG(higherRecord.attendance) AS avgAttendance, SUM(higherRecord.income) AS totalIncome
          RETURN  SUM(avgAttendance) as avgAttendance, totalIncome
@@ -143,7 +143,7 @@ WITH constituency AS lowerChurch
       CALL {
          WITH council 
          WITH council 
-         MATCH (council)-[:CURRENT_HISTORY]->(higherLog:ServiceLog)-[:HAS_SERVICE]->(higherRecord:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph) WHERE date.date.week = date().week
+         MATCH (council)-[:CURRENT_HISTORY]->(higherLog:ServiceLog)-[:HAS_SERVICE]->(higherRecord:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph) WHERE date.date.week = date().week AND date.date.year = date().year
          WITH DISTINCT higherRecord
          WITH AVG(higherRecord.attendance) AS avgAttendance, SUM(higherRecord.income) AS totalIncome
          RETURN  SUM(avgAttendance) as avgAttendance, totalIncome
@@ -166,7 +166,7 @@ WITH constituency AS lowerChurch
       CALL {
          WITH stream 
          WITH stream 
-         MATCH (stream)-[:CURRENT_HISTORY]->(higherLog:ServiceLog)-[:HAS_SERVICE]->(higherRecord:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph) WHERE date.date.week = date().week
+         MATCH (stream)-[:CURRENT_HISTORY]->(higherLog:ServiceLog)-[:HAS_SERVICE]->(higherRecord:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph) WHERE date.date.week = date().week AND date.date.year = date().year
          WITH DISTINCT higherRecord
          WITH AVG(higherRecord.attendance) AS avgAttendance, SUM(higherRecord.income) AS totalIncome
          RETURN  SUM(avgAttendance) as avgAttendance, totalIncome
@@ -189,7 +189,7 @@ WITH constituency AS lowerChurch
       CALL {
          WITH gathering 
          WITH gathering 
-         MATCH (gathering)-[:CURRENT_HISTORY]->(higherLog:ServiceLog)-[:HAS_SERVICE]->(higherRecord:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph) WHERE date.date.week = date().week
+         MATCH (gathering)-[:CURRENT_HISTORY]->(higherLog:ServiceLog)-[:HAS_SERVICE]->(higherRecord:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph) WHERE date.date.week = date().week AND date.date.year = date().year
          WITH DISTINCT higherRecord
          WITH AVG(higherRecord.attendance) AS avgAttendance, SUM(higherRecord.income) AS totalIncome
          RETURN  SUM(avgAttendance) as avgAttendance, totalIncome
@@ -212,7 +212,7 @@ WITH constituency AS lowerChurch
       CALL {
          WITH oversight 
          WITH oversight 
-         MATCH (oversight)-[:CURRENT_HISTORY]->(higherLog:ServiceLog)-[:HAS_SERVICE]->(higherRecord:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph) WHERE date.date.week = date().week
+         MATCH (oversight)-[:CURRENT_HISTORY]->(higherLog:ServiceLog)-[:HAS_SERVICE]->(higherRecord:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph) WHERE date.date.week = date().week AND date.date.year = date().year
          WITH DISTINCT higherRecord
          WITH AVG(higherRecord.attendance) AS avgAttendance, SUM(higherRecord.income) AS totalIncome
          RETURN  SUM(avgAttendance) as avgAttendance, totalIncome
@@ -235,7 +235,7 @@ WITH constituency AS lowerChurch
       CALL {
          WITH denomination 
          WITH denomination 
-         MATCH (denomination)-[:CURRENT_HISTORY]->(higherLog:ServiceLog)-[:HAS_SERVICE]->(higherRecord:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph) WHERE date.date.week = date().week
+         MATCH (denomination)-[:CURRENT_HISTORY]->(higherLog:ServiceLog)-[:HAS_SERVICE]->(higherRecord:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph) WHERE date.date.week = date().week AND date.date.year = date().year
          WITH DISTINCT higherRecord
          WITH AVG(higherRecord.attendance) AS avgAttendance, SUM(higherRecord.income) AS totalIncome
          RETURN  SUM(avgAttendance) as avgAttendance, totalIncome
