@@ -51,7 +51,9 @@ const PayOffering = (props: PayOfferingProps) => {
   const [ConfirmOfferingPayment] = useMutation(CONFIRM_OFFERING_PAYMENT)
   const navigate = useNavigate()
   const service = data?.serviceRecords[0]
-  const incomeAndCharges = Math.round(service?.income / (1 - 0.0195) + 0.01)
+  const incomeAndCharges = parseFloat(
+    (service?.income / (1 - 0.0195) + 0.01).toFixed(2)
+  )
   const { togglePopup, isOpen } = usePopup()
   const { show, handleClose, handleShow } = useModal()
   const [errorMessage, setErrorMessage] = useState('')
