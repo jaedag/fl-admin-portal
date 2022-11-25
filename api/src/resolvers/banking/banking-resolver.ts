@@ -403,27 +403,34 @@ const bankingMutation = {
     isAuth(permitLeaderAdmin('Fellowship'), context.auth.roles)
     const session = context.executionContext.session()
 
-    try {
-      await checkIfLastServiceBanked(args.serviceRecordId, context)
-
-      const checkIfAnyServicePending = rearrangeCypherObject(
-        await session.run(checkIfServicePending, args)
-      )
-
-      if (checkIfAnyServicePending?.record?.properties?.transactionStatus) {
-        throw new Error(
-          'You will have to confirm your initial self banking before uploading your banking slip'
+    await checkIfLastServiceBanked(args.serviceRecordId, context).catch(
+      (error: any) => {
+        throwToSentry(
+          'There was an error checking if last service banked',
+          error
         )
       }
+    )
 
-      const submissionResponse = rearrangeCypherObject(
-        await session.run(submitBankingSlip, { ...args, auth: context.auth })
+    const checkIfAnyServicePending = rearrangeCypherObject(
+      await session.run(checkIfServicePending, args)
+    ).catch((error: any) => {
+      throwToSentry('There was an error checking if any service pending', error)
+    })
+
+    if (checkIfAnyServicePending?.record?.properties?.transactionStatus) {
+      throw new Error(
+        'You will have to confirm your initial self banking before uploading your banking slip'
       )
-
-      return submissionResponse.record.properties
-    } catch (error: any) {
-      return throwToSentry('There was a problem submitting banking slip', error)
     }
+
+    const submissionResponse = rearrangeCypherObject(
+      await session.run(submitBankingSlip, { ...args, auth: context.auth })
+    ).catch((error: any) =>
+      throwToSentry('There was an error submitting banking slip', error)
+    )
+
+    return submissionResponse.record.properties
   },
 }
 
