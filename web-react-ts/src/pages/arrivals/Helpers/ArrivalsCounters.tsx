@@ -138,6 +138,7 @@ const ArrivalsCounters = () => {
                 )
 
                 if (confirmBox === true) {
+                  setSubmitting(true)
                   try {
                     await RemoveStreamArrivalsCounter({
                       variables: {
