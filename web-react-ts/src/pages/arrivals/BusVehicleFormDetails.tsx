@@ -240,7 +240,7 @@ const BusVehicleFormDetails = () => {
             </Row>
           </Col>
         </Row>
-        <div className="d-grid gap-2 mt-2">
+        <div className="d-grid gap-2 mt-5">
           <RoleView roles={permitArrivalsCounter()}>
             {beforeCountingDeadline(vehicle, church) && (
               <>
