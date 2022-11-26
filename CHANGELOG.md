@@ -1,3 +1,21 @@
+#### 5.3.4 (2022-11-26)
+
+##### Bug Fixes
+
+*  remove bug preventing viewing self banking details ([617f2296](https://github.com/firstlovecenter/fl-pastoral-care/commit/617f2296141062ef802798935b16295ac59a304b))
+*  improve padding on service details page ([6e129344](https://github.com/firstlovecenter/fl-pastoral-care/commit/6e129344168b1e3b24851b4935da8b594f68cf8e))
+*  implement padding for vehicle details ([e358c6f2](https://github.com/firstlovecenter/fl-pastoral-care/commit/e358c6f2a13d6b3408c4b299ddaae1b166f054ec))
+*  enable deleting arrivals counters ([3c20f46d](https://github.com/firstlovecenter/fl-pastoral-care/commit/3c20f46d7f1933d3c067cdae39710628d223442c))
+*  fix bug in submit banking slip function ([c62f8c98](https://github.com/firstlovecenter/fl-pastoral-care/commit/c62f8c98870eb3a1a99ed2bdc3623983ceb14d52))
+*  fix sentry error reporting error when it should display a user message ([f94355c2](https://github.com/firstlovecenter/fl-pastoral-care/commit/f94355c2e750ca7591129a7d913bafe94e31a8a6))
+*  adjust image size for vehicle pictures ([801005d3](https://github.com/firstlovecenter/fl-pastoral-care/commit/801005d3e6b4ff32b5346a6355b6950534d1c97d))
+*  fix error where service from the same week but different year were added to aggregate ([86b3b959](https://github.com/firstlovecenter/fl-pastoral-care/commit/86b3b959920253acf58cad325bd817bda16680f1))
+*  fix error calculating self banking charges to the 2nd decimal place ([e32a699c](https://github.com/firstlovecenter/fl-pastoral-care/commit/e32a699c3e056d3180b0ead7a28d8c01bb7100f3))
+*  remove block button on service details page ([4f145563](https://github.com/firstlovecenter/fl-pastoral-care/commit/4f145563200a5c9c3bd200795c33bc5e5617d141))
+*  remove typedef breakiing the build ([e34cf863](https://github.com/firstlovecenter/fl-pastoral-care/commit/e34cf863e5afb36bf7182ce65a5f8af8375e52dc))
+*  downgrade npm packages ([bbd2b601](https://github.com/firstlovecenter/fl-pastoral-care/commit/bbd2b601b612d2b5a079d0b7ca80a25eee2fc1b3))
+*  implement block button for viewing banking details ([e96dcfef](https://github.com/firstlovecenter/fl-pastoral-care/commit/e96dcfefdfd3638e814c8bab1030517d53e9278d))
+
 #### 5.3.3 (2022-11-23)
 
 ##### Chores
