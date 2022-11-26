@@ -116,7 +116,7 @@ const ServiceDetails = ({ service, church, loading }: ServiceDetailsProps) => {
                     </div>
                   </>
                 )}
-                {!currentUser.noIncome && !service?.offeringBankedBy && (
+                {!currentUser.noIncome && service?.offeringBankedBy && (
                   <div className="mb-4">
                     {`${service?.offeringBankedBy.fullName} used the Self Banking Feature. Click this button to see
                     Details`}
