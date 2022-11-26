@@ -413,10 +413,13 @@ const bankingMutation = {
     )
 
     const checkIfAnyServicePending = rearrangeCypherObject(
-      await session.run(checkIfServicePending, args)
-    ).catch((error: any) => {
-      throwToSentry('There was an error checking if any service pending', error)
-    })
+      await session.run(checkIfServicePending, args).catch((error: any) => {
+        throwToSentry(
+          'There was an error checking if any service pending',
+          error
+        )
+      })
+    )
 
     if (checkIfAnyServicePending?.record?.properties?.transactionStatus) {
       throw new Error(
@@ -425,9 +428,11 @@ const bankingMutation = {
     }
 
     const submissionResponse = rearrangeCypherObject(
-      await session.run(submitBankingSlip, { ...args, auth: context.auth })
-    ).catch((error: any) =>
-      throwToSentry('There was an error submitting banking slip', error)
+      await session
+        .run(submitBankingSlip, { ...args, auth: context.auth })
+        .catch((error: any) =>
+          throwToSentry('There was an error submitting banking slip', error)
+        )
     )
 
     return submissionResponse.record.properties
