@@ -26,7 +26,10 @@ const directoryMutation = {
     const session = context.executionContext.session()
 
     const inactiveMemberResponse = rearrangeCypherObject(
-      await session.run(cypher.checkInactiveMember, args)
+      await session.run(cypher.checkInactiveMember, {
+        email: args.email ?? null,
+        whatsappNumber: args?.whatsappNumber ?? null,
+      })
     )
 
     if (inactiveMemberResponse.count > 0) {
@@ -54,11 +57,10 @@ const directoryMutation = {
       return member
     }
 
-    const memberResponse = await session.run(
-      cypher.checkMemberEmailExists,
-      args
-    )
-
+    const memberResponse = await session.run(cypher.checkMemberEmailExists, {
+      email: args.email ?? null,
+      whatsappNumber: args?.whatsappNumber ?? null,
+    })
     const memberCheck = rearrangeCypherObject(memberResponse)
 
     if (memberCheck.predicate) {
@@ -67,9 +69,9 @@ const directoryMutation = {
 
     const createMemberResponse = await session.run(createMember, {
       firstName: args?.firstName ?? '',
-      middleName: args?.middleName ?? '',
+      middleName: args?.middleName ?? null,
       lastName: args?.lastName ?? '',
-      email: args?.email ?? '',
+      email: args?.email ?? null,
       phoneNumber: args?.phoneNumber ?? '',
       whatsappNumber: args?.whatsappNumber ?? '',
       dob: args?.dob ?? '',

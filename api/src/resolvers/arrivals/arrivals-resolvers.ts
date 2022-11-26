@@ -18,6 +18,7 @@ import {
   checkBacentaMomoDetails,
   checkTransactionId,
   confirmVehicleByAdmin,
+  getArrivalsPaymentDataCypher,
   getVehicleRecordWithDate,
   noVehicleTopUp,
   recordVehicleFromBacenta,
@@ -662,4 +663,33 @@ export const arrivalsMutation = {
   },
 }
 
-export const arrivalsResolvers = {}
+const getArrivalsPaymentData = async (
+  object: any,
+  // eslint-disable-next-line camelcase
+  args: { arrivalsDate: string },
+  context: Context
+) => {
+  isAuth(permitAdminArrivals('Stream'), context.auth.roles)
+
+  const session = context.executionContext.session()
+
+  const cypherResponse = rearrangeCypherObject(
+    await session.run(getArrivalsPaymentDataCypher, {
+      streamId: object.id,
+      date: args.arrivalsDate,
+    }),
+    true
+  )
+
+  return cypherResponse
+}
+
+export const arrivalsResolvers = {
+  Stream: {
+    arrivalsPaymentData: async (
+      object: any,
+      args: { arrivalsDate: string },
+      context: Context
+    ) => getArrivalsPaymentData(object, args, context),
+  },
+}

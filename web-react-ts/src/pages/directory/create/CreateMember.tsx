@@ -15,7 +15,7 @@ export type CreateMemberFormOptions = {
   gender: 'Male' | 'Female' | ''
   phoneNumber: string
   whatsappNumber: string
-  email: string
+  email?: string
   dob: string
   maritalStatus: 'Single' | 'Married' | ''
   occupation: string
@@ -33,7 +33,7 @@ const CreateMember = () => {
     gender: '',
     phoneNumber: '',
     whatsappNumber: '',
-    email: '',
+    email: undefined,
     dob: '',
     maritalStatus: '',
     occupation: '',
@@ -72,7 +72,7 @@ const CreateMember = () => {
           gender: values.gender,
           phoneNumber: parsePhoneNum(values.phoneNumber),
           whatsappNumber: parsePhoneNum(values.whatsappNumber),
-          email: values.email.trim().toLowerCase(),
+          email: values.email?.trim().toLowerCase(),
           dob: values.dob,
           maritalStatus: values.maritalStatus,
           occupation: values.occupation,

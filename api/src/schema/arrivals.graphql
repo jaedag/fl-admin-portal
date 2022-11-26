@@ -850,6 +850,7 @@ extend type Bacenta {
       RETURN bussing ORDER BY date.date
       """
     )
+  code: Int!
 }
 
 type BussingRecord implements Record @auth(rules: [{ isAuthenticated: true }]) {
@@ -1307,4 +1308,28 @@ extend type Mutation {
         }
       ]
     )
+}
+
+type ArrivalsSheetData {
+  date: Date
+  stream: String
+  bacenta: String
+  leader: String
+  bacentaCode: String
+  attendance: Int
+  confirmedAttendance: Int
+  vehicle: String
+  topUp: Float
+  vehicleCost: Float
+  momoNumber: String
+  comments: String
+  arrivalTime: DateTime
+  council: String
+  constituency: String
+  society: String
+  momoName: String
+}
+
+extend type Stream {
+  arrivalsPaymentData(arrivalsDate: String): [ArrivalsSheetData!]!
 }

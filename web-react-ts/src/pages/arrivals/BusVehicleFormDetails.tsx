@@ -225,7 +225,7 @@ const BusVehicleFormDetails = () => {
                               key={vehicle?.picture}
                             >
                               <CloudinaryImage
-                                className="report-picture"
+                                className="bus-picture"
                                 src={vehicle?.picture}
                                 size="respond"
                               />
@@ -240,7 +240,7 @@ const BusVehicleFormDetails = () => {
             </Row>
           </Col>
         </Row>
-        <div className="d-grid gap-2">
+        <div className="d-grid gap-2 mt-2">
           <RoleView roles={permitArrivalsCounter()}>
             {beforeCountingDeadline(vehicle, church) && (
               <>

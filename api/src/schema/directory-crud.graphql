@@ -170,7 +170,7 @@ extend type Mutation {
     firstName: String!
     middleName: String
     lastName: String!
-    email: String!
+    email: String
     phoneNumber: String!
     whatsappNumber: String!
     dob: String!
@@ -377,6 +377,12 @@ extend type Mutation {
        MERGE (log)-[:LOGGED_BY]->(currentUser)
        MERGE (log)-[:RECORDED_ON]->(date)
        MERGE (constituency)-[r1:HAS_HISTORY]->(log)
+
+       WITH bacenta
+       MATCH (lastCode:LastBacentaCode)
+       SET
+        bacenta.code = lastCode.number + 1,
+        lastCode.number = bacenta.code
 
 
       RETURN bacenta

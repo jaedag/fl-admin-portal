@@ -96,7 +96,7 @@ const UpdateMember = () => {
         await UpdateMemberEmail({
           variables: {
             id: memberId,
-            email: values.email.trim().toLowerCase(),
+            email: values.email?.trim().toLowerCase(),
           },
         })
       }
