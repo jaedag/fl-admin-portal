@@ -270,6 +270,20 @@ export const arrivalsMutation = {
     isAuth(['leaderBacenta'], context.auth.roles)
     const session = context.executionContext.session()
 
+    const recordResponse = rearrangeCypherObject(
+      await session.run(checkArrivalTimes, args)
+    )
+
+    const stream = recordResponse.stream.properties
+    const arrivalEndTime = new Date(
+      new Date().toISOString().slice(0, 10) + stream.arrivalEndTime.slice(10)
+    )
+    const today = new Date()
+
+    if (today > arrivalEndTime) {
+      throw new Error('It is past the time to fill your forms. Thank you!')
+    }
+
     const outbound = args.outbound ? 2 : 1
     const response = rearrangeCypherObject(
       await session.run(recordVehicleFromBacenta, {
