@@ -1,3 +1,15 @@
+#### 5.3.5 (2022-11-26)
+
+##### Bug Fixes
+
+*  implement padding for vehicle form details ([1662b083](https://github.com/firstlovecenter/fl-pastoral-care/commit/1662b083b78a0b258259b1348672f387818cf9a0))
+*  prevent people from filling vehicle data using the time change hack on the client ([53c945a2](https://github.com/firstlovecenter/fl-pastoral-care/commit/53c945a2ba5163aa23e37cbc58ebc07df528d446))
+*  add time form was filled to vehicle count ([dd2defca](https://github.com/firstlovecenter/fl-pastoral-care/commit/dd2defca617abdc75320304e2230737b64d0361b))
+
+##### Other Changes
+
+* //github.com/firstlovecenter/fl-admin-portal into deploy ([f81e1bb7](https://github.com/firstlovecenter/fl-pastoral-care/commit/f81e1bb744aed2ccde7b17d9661808f767bcefdf))
+
 #### 5.3.4 (2022-11-26)
 
 ##### Bug Fixes
