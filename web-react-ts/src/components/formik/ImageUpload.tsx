@@ -26,46 +26,37 @@ const ImageUpload = (props: ImageUploadProps) => {
   } = props
   const { theme, currentUser } = useContext(MemberContext)
   const [loading, setLoading] = useState(false)
-
-  const [uploadedImages, setUploadedImages] = useState<string[]>([])
+  const [image, setImage] = useState('')
 
   const uploadImage = async (e: any) => {
-    const chosenImages = Array.prototype.slice.call(e.target.files)
-    handleUploadImages(chosenImages)
-  }
+    const files = e.target.files
+    const date = new Date().toISOString().slice(0, 10)
+    const username = `${currentUser.firstName.toLowerCase()}-${currentUser.lastName.toLowerCase()}`
+    let filename = `${username}-${currentUser.id}/${date}_${files[0].name}`
+    filename = filename.replace(/\s/g, '-')
+    filename = filename.replace(/~/g, '-')
+    const data = new FormData()
+    data.append('file', files[0])
+    data.append('upload_preset', uploadPreset || '')
+    data.append('public_id', filename)
 
-  const handleUploadImages = async (files: any[]) => {
-    const uploaded: string[] = [...uploadedImages]
+    data.append('tags', tags || '')
 
-    files.forEach(async (file: any) => {
-      const date = new Date().toISOString().slice(0, 10)
-      const username = `${currentUser.firstName.toLowerCase()}-${currentUser.lastName.toLowerCase()}`
-      let filename = `${username}-${currentUser.id}/${date}_${file.name}`
-      filename = filename.replace(/\s/g, '-')
-      filename = filename.replace(/~/g, '-')
-      const data = new FormData()
-      data.append('file', file)
-      data.append('upload_preset', uploadPreset || '')
-      data.append('public_id', filename)
+    setLoading(true)
 
-      data.append('tags', tags || '')
+    const res = await fetch(
+      'https://api.cloudinary.com/v1_1/firstlovecenter/image/upload',
+      {
+        method: 'POST',
+        body: data,
+      }
+    )
+    const file = await res.json()
 
-      setLoading(true)
+    setImage(file.secure_url)
 
-      const res = await fetch(
-        'https://api.cloudinary.com/v1_1/firstlovecenter/image/upload',
-        {
-          method: 'POST',
-          body: data,
-        }
-      )
-      const image = await res.json()
-
-      uploaded.push(image.secure_url)
-      setUploadedImages([...uploaded])
-      setFieldValue(`${name}`, file.secure_url)
-      setLoading(false)
-    })
+    setFieldValue(`${name}`, file.secure_url)
+    setLoading(false)
   }
 
   return (
@@ -80,21 +71,19 @@ const ImageUpload = (props: ImageUploadProps) => {
           <Spinner animation="grow" />
         </Container>
       )}
-      {uploadedImages?.map((image, index) => (
-        <img
-          key={index}
-          src={image || initialValue}
-          className="img-preview"
-          alt=""
-        />
-      ))}
+      {(image || initialValue) && (
+        <>
+          <img src={image || initialValue} className="img-preview" alt="" />
+        </>
+      )}
       <label className="w-100">
         <input
+          id={name}
+          name={name}
           style={{ display: 'none' }}
           type="file"
           accept="image/png, image/webp, image/jpg, image/jpeg"
-          onChange={(e) => uploadImage(e)}
-          multiple
+          onChange={uploadImage}
           {...rest}
         />
 

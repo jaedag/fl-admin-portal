@@ -19,6 +19,7 @@ import ImageUpload from 'components/formik/ImageUpload'
 import SearchMember from 'components/formik/SearchMember'
 import MinusSign from 'components/buttons/PlusMinusSign/MinusSign'
 import PlusSign from 'components/buttons/PlusMinusSign/PlusSign'
+import MultiImageUpload from 'components/formik/MultiImageUpload'
 
 type ServiceFormProps = {
   church: Church
@@ -257,8 +258,8 @@ const MultiplicationCampaignServiceForm = ({
                       </small>
 
                       <Col>
-                        <ImageUpload
-                          name={`crusadePictures`}
+                        <MultiImageUpload
+                          name="crusadePictures"
                           uploadPreset={
                             process.env
                               .REACT_APP_CLOUDINARY_MULTIPLICATION_SERVICES
@@ -266,6 +267,7 @@ const MultiplicationCampaignServiceForm = ({
                           placeholder="Choose"
                           setFieldValue={formik.setFieldValue}
                           aria-describedby="UploadcrusadePicture"
+                          error={formik.errors.crusadePictures}
                         />
                       </Col>
                     </Col>
