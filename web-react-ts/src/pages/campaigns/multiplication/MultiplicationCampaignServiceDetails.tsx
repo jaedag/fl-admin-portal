@@ -128,21 +128,34 @@ const MultiplicationCampaignServiceDetails = ({
                 {service?.crusadePictures && (
                   <>
                     <h6>Crusade Pictures</h6>
-                    {service?.crusadePictures?.map((crusadePicture, index) => (
-                      <div key={index}>
-                        <PlaceholderCustom
-                          loading={loading}
-                          className="report-picture placeholder"
-                          xs={12}
-                        >
-                          <img
-                            className="report-picture"
-                            src={crusadePicture}
-                            alt="service report"
-                          />
-                        </PlaceholderCustom>
-                      </div>
-                    ))}
+                    <div className="container mb-4 card-button-row">
+                      <table>
+                        <tbody>
+                          <tr>
+                            {service?.crusadePictures?.map(
+                              (crusadePicture, index) => (
+                                <td className="col-auto" key={index}>
+                                  <div key={index}>
+                                    <PlaceholderCustom
+                                      loading={loading}
+                                      className="report-picture placeholder"
+                                      xs={12}
+                                    >
+                                      <img
+                                        height={200}
+                                        className="report-picture"
+                                        src={crusadePicture}
+                                        alt="service report"
+                                      />
+                                    </PlaceholderCustom>
+                                  </div>
+                                </td>
+                              )
+                            )}
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
                   </>
                 )}
                 {service?.bankingSlip && (

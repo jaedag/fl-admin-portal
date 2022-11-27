@@ -164,7 +164,7 @@ const MultiplicationCampaignServiceForm = ({
             <Row className="row-cols-1 row-cols-md-2">
               {/* <!-- Campaign Service Form--> */}
               <Col className="mb-2">
-                <div className="form-row d-flex justify-content-center">
+                <div className="form-row justify-content-center">
                   <Col>
                     <small className="form-text label">
                       Date of Crusade*

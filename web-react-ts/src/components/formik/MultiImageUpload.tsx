@@ -81,14 +81,25 @@ const MultiImageUpload = (props: ImageUploadProps) => {
         </Container>
       )}
 
-      {uploadedImages?.map((image, index) => (
-        <img
-          key={index}
-          src={image || initialValue}
-          className="img-preview"
-          alt=""
-        />
-      ))}
+      <div className="container mb-4 card-button-row">
+        <table>
+          <tbody>
+            <tr>
+              {uploadedImages?.map((image, index) => (
+                <td className="col-auto" key={index}>
+                  <img
+                    // key={index}
+                    src={image || initialValue}
+                    className="multiimage-preview"
+                    alt=""
+                  />
+                </td>
+              ))}
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
       <label className="w-100">
         <input
           style={{ display: 'none' }}
