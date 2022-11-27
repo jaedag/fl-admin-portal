@@ -388,3 +388,39 @@ export const randomOTPGenerator = () => {
 
   return result
 }
+
+export const parseForeignCurrency = (string: string) => {
+  const nonOptions = [
+    0,
+    '',
+    'o',
+    '0',
+    '00',
+    '0.0',
+    '0.00',
+    'Gh',
+    'ghana cedis',
+    'No',
+    'None',
+    'n/a',
+    'N/A',
+    'NA',
+    '-',
+  ]
+
+  if (nonOptions.includes(string.toLowerCase().trim())) {
+    return null
+  }
+
+  return null
+}
+
+export const checkIfArrayHasRepeatingValues = (array: any[]) => {
+  const sortedArray = array.sort()
+  for (let i = 0; i < sortedArray.length - 1; i++) {
+    if (sortedArray[i + 1] === sortedArray[i]) {
+      return true
+    }
+  }
+  return false
+}

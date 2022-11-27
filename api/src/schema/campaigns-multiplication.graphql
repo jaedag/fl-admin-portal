@@ -1,0 +1,144 @@
+extend type Mutation {
+  RecordMultiplicationEvent(
+    churchId: ID!
+    preacherId: String!
+    crusadeLocation: String!
+    attendance: Int!
+    income: Float!
+    foreignCurrency: String
+    souls: Int!
+    miracles: Int!
+    crusadePictures: [String!]!
+    treasurerSelfie: String!
+    crusadeDate: Date!
+    treasurers: [ID]!
+  ): MultiplicationRecord
+}
+
+type MultiplicationRecord {
+  id: ID!
+  crusadeDate: TimeGraph! @relationship(type: "CRUSADE_HELD_ON", direction: OUT)
+  preacher: Member! @relationship(type: "PREACHED_AT", direction: IN)
+  crusadeLocation: String!
+  attendance: Int!
+  income: Float!
+  foreignCurrency: String
+  souls: Int!
+  miracles: Int!
+  crusadePictures: [String!]!
+  treasurers: [Member!]!
+  treasurerSelfie: String!
+  bankingSlipUploader: Member
+    @relationship(type: "UPLOADED_SLIP_FOR", direction: IN)
+}
+
+type AggregateMultiplicationRecord @auth(rules: [{ isAuthenticated: true }]) {
+  id: ID!
+  week: Int!
+  year: Int!
+  attendance: Int!
+  income: Float!
+  souls: Int!
+  miracles: Int!
+}
+
+extend type Member {
+  preacher: [MultiplicationRecord!]!
+    @relationship(type: "PREACHED_AT", direction: OUT)
+  multiplicationTreasurers: [MultiplicationRecord!]!
+    @relationship(type: "WAS_TREASURER_FOR", direction: OUT)
+  multiplicationBankingSlipUploader: [MultiplicationRecord!]!
+    @relationship(type: "UPLOADED_SLIP_FOR", direction: OUT)
+}
+
+extend type TimeGraph {
+  multiplicationRecordDate: [MultiplicationRecord!]!
+    @relationship(type: "CRUSADE_HELD_ON", direction: IN)
+}
+
+extend type GatheringService {
+  multiplicationRecords(limit: Int): [MultiplicationRecord!]!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_MULTIPLICATION_RECORD]->(records:MultiplicationRecord)-[:CRUSADE_HELD_ON]->(date:TimeGraph)
+      WITH DISTINCT records, date
+      RETURN records ORDER BY date.date DESC LIMIT $limit
+      """
+    )
+  aggregateMultiplicationRecords(
+    limit: Int! = 4
+  ): [AggregateMultiplicationRecord!]!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_MULTIPLICATION_AGGREGATE]->(aggregate:AggregateMultiplicationRecord)
+      WHERE aggregate.year = date().year
+      RETURN aggregate ORDER BY aggregate.year, aggregate.week DESC LIMIT $limit
+      """
+    )
+}
+
+extend type Stream {
+  multiplicationRecords(limit: Int): [MultiplicationRecord!]!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_MULTIPLICATION_RECORD]->(records:MultiplicationRecord)-[:CRUSADE_HELD_ON]->(date:TimeGraph)
+      WITH DISTINCT records, date
+      RETURN records ORDER BY date.date DESC LIMIT $limit
+      """
+    )
+
+  aggregateMultiplicationRecords(
+    limit: Int! = 4
+  ): [AggregateMultiplicationRecord!]!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_MULTIPLICATION_AGGREGATE]->(aggregate:AggregateMultiplicationRecord)
+      WHERE aggregate.year = date().year
+      RETURN aggregate ORDER BY aggregate.year, aggregate.week DESC LIMIT $limit
+      """
+    )
+}
+
+extend type Council {
+  multiplicationRecords(limit: Int): [MultiplicationRecord!]!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_MULTIPLICATION_RECORD]->(records:MultiplicationRecord)-[:CRUSADE_HELD_ON]->(date:TimeGraph)
+      WITH DISTINCT records, date
+      RETURN records ORDER BY date.date DESC LIMIT $limit
+      """
+    )
+
+  aggregateMultiplicationRecords(
+    limit: Int! = 4
+  ): [AggregateMultiplicationRecord!]!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_MULTIPLICATION_AGGREGATE]->(aggregate:AggregateMultiplicationRecord)
+      WHERE aggregate.year = date().year
+      RETURN aggregate ORDER BY aggregate.year, aggregate.week DESC LIMIT $limit
+      """
+    )
+}
+
+extend type Constituency {
+  multiplicationRecords(limit: Int): [MultiplicationRecord!]!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_MULTIPLICATION_RECORD]->(records:MultiplicationRecord)-[:CRUSADE_HELD_ON]->(date:TimeGraph)
+      WITH DISTINCT records, date
+      RETURN records ORDER BY date.date DESC LIMIT $limit
+      """
+    )
+
+  aggregateMultiplicationRecords(
+    limit: Int! = 4
+  ): [AggregateMultiplicationRecord!]!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_MULTIPLICATION_AGGREGATE]->(aggregate:AggregateMultiplicationRecord)
+      WHERE aggregate.year = date().year
+      RETURN aggregate ORDER BY aggregate.year, aggregate.week DESC LIMIT $limit
+      """
+    )
+}

@@ -1,5 +1,3 @@
-import MinusSign from 'components/buttons/PlusMinusSign/MinusSign'
-import PlusSign from 'components/buttons/PlusMinusSign/PlusSign'
 import { FieldArray, Form, Formik, FormikHelpers } from 'formik'
 import * as Yup from 'yup'
 import React, { useContext } from 'react'
@@ -19,6 +17,9 @@ import { MutationFunction } from '@apollo/client'
 import Input from 'components/formik/Input'
 import ImageUpload from 'components/formik/ImageUpload'
 import SearchMember from 'components/formik/SearchMember'
+import MinusSign from 'components/buttons/PlusMinusSign/MinusSign'
+import PlusSign from 'components/buttons/PlusMinusSign/PlusSign'
+import MultiImageUpload from 'components/formik/MultiImageUpload'
 
 type ServiceFormProps = {
   church: Church
@@ -28,17 +29,20 @@ type ServiceFormProps = {
 }
 
 type FormOptions = {
-  serviceDate: string
+  crusadeDate: string
+  preacher: string
+  crusadeLocation: string
+  attendance: string
   cediIncome: string
   foreignCurrency: string
-  numberOfTithers: string
-  attendance: string
+  souls: string
+  miracles: string
+  crusadePictures: string[]
   treasurers: string[]
   treasurerSelfie: string
-  familyPicture: string
 }
 
-const ServiceForm = ({
+const MultiplicationCampaignServiceForm = ({
   church,
   churchId,
   churchType,
@@ -48,43 +52,56 @@ const ServiceForm = ({
   const navigate = useNavigate()
 
   const initialValues: FormOptions = {
-    serviceDate: new Date().toISOString().slice(0, 10),
+    crusadeDate: new Date().toISOString().slice(0, 10),
+    preacher: '',
+    crusadeLocation: '',
+    attendance: '',
     cediIncome: '',
     foreignCurrency: '',
-    numberOfTithers: '',
-    attendance: '',
+    souls: '',
+    miracles: '',
+    crusadePictures: [''],
     treasurers: [''],
     treasurerSelfie: '',
-    familyPicture: '',
   }
 
   const today = new Date()
 
   const validationSchema = Yup.object({
-    serviceDate: Yup.date()
+    crusadeDate: Yup.date()
       .max(new Date(), 'Service could not possibly have happened after today')
       .min(getMondayThisWeek(today), 'You can only fill forms for this week')
       .required('Date is a required field'),
-    cediIncome: Yup.number()
-      .typeError('Please enter a valid number')
-      .positive()
-      .required('You cannot submit this form without entering your income'),
-    foreignCurrency: Yup.string(),
-    numberOfTithers: Yup.number()
-      .typeError('Please enter a valid number')
-      .integer('You cannot enter decimals here')
-      .required(
-        'You cannot submit this form without entering your number of tithers'
-      ),
+    preacher: Yup.string().required('Please pick a name from the dropdown'),
+    crusadeLocation: Yup.string().required(
+      'You cannot submit this form without entering the location of crusade'
+    ),
     attendance: Yup.number()
       .typeError('Please enter a valid number')
       .positive()
       .integer('You cannot have attendance with decimals!')
       .required('You cannot submit this form without entering your attendance'),
+    cediIncome: Yup.number()
+      .typeError('Please enter a valid number')
+      .positive()
+      .required('You cannot submit this form without entering your income'),
+    foreignCurrency: Yup.string(),
+    souls: Yup.number()
+      .typeError('Please enter a valid number')
+      .integer('You cannot enter decimals here')
+      .required(
+        'You cannot submit this form without entering your number of souls won'
+      ),
+    miracles: Yup.number()
+      .typeError('Please enter a valid number')
+      .integer('You cannot enter decimals here')
+      .required(
+        'You cannot submit this form without entering your number of miracles'
+      ),
+    crusadePictures: Yup.array()
+      .min(10, 'You must have at least 10 event pictures')
+      .of(Yup.string().required('You must have at least 10 event pictures')),
     treasurerSelfie: Yup.string().required('You must take a treasurers selfie'),
-    familyPicture: Yup.string().required(
-      'Please submit a picture of your service'
-    ),
     treasurers: Yup.array()
       .min(2, 'You must have at least two treasurers')
       .of(Yup.string().required('Please pick a name from the dropdown')),
@@ -103,21 +120,26 @@ const ServiceForm = ({
       RecordServiceMutation({
         variables: {
           churchId: churchId,
-          serviceDate: values.serviceDate,
+          crusadeDate: values.crusadeDate,
+          preacherId: values?.preacher,
+          crusadeLocation: values?.crusadeLocation,
           attendance: parseInt(values.attendance),
           income: parseFloat(values.cediIncome),
           foreignCurrency: parseForeignCurrency(values.foreignCurrency),
-          numberOfTithers: parseInt(values.numberOfTithers),
+          souls: parseInt(values.souls),
           treasurers: values?.treasurers,
-          treasurerSelfie: values.treasurerSelfie,
-          familyPicture: values.familyPicture,
+          treasurerSelfie: values?.treasurerSelfie,
+          miracles: parseInt(values.miracles),
+          crusadePictures: values.crusadePictures,
         },
       })
         .then((res) => {
           onSubmitProps.setSubmitting(false)
           onSubmitProps.resetForm()
-          clickCard(res.data.RecordService)
-          navigate(`/${churchType.toLowerCase()}/service-details`)
+          clickCard(res.data.RecordMultiplicationEvent)
+          navigate(
+            `/campaigns/${churchType.toLowerCase()}/multiplication/service-details`
+          )
         })
         .catch((error) => {
           onSubmitProps.setSubmitting(false)
@@ -135,24 +157,39 @@ const ServiceForm = ({
     >
       {(formik) => (
         <Container>
-          <HeadingPrimary>Record Your Service Details</HeadingPrimary>
+          <HeadingPrimary>Record Your Multiplication Event</HeadingPrimary>
           <h5 className="text-secondary">{`${church?.name} ${church?.__typename}`}</h5>
 
           <Form className="form-group">
             <Row className="row-cols-1 row-cols-md-2">
-              {/* <!-- Service Form--> */}
+              {/* <!-- Campaign Service Form--> */}
               <Col className="mb-2">
-                <div className="form-row d-flex justify-content-center">
+                <div className="form-row justify-content-center">
                   <Col>
                     <small className="form-text label">
-                      Date of Service*
+                      Date of Crusade*
                       <i className="text-secondary">(Day/Month/Year)</i>
                     </small>
                     <Input
-                      name="serviceDate"
+                      name="crusadeDate"
                       type="date"
                       placeholder="dd/mm/yyyy"
-                      aria-describedby="dateofservice"
+                      aria-describedby="dateofscrusade"
+                    />
+                    <small className="label">Name of Preacher</small>
+                    <Col>
+                      <SearchMember
+                        name="preacher"
+                        placeholder="Start typing"
+                        setFieldValue={formik.setFieldValue}
+                        aria-describedby="Member List"
+                        error={formik.errors.preacher}
+                      />
+                    </Col>
+
+                    <Input
+                      name="crusadeLocation"
+                      label="Location Of Crusade*"
                     />
                     <Input name="attendance" label="Attendance*" />
                     <Input name="cediIncome" label="Income (in Cedis)*" />
@@ -160,7 +197,8 @@ const ServiceForm = ({
                       name="foreignCurrency"
                       label="Foreign Currency (if any) (Optional)"
                     />
-                    <Input name="numberOfTithers" label="Number of Tithers*" />
+                    <Input name="souls" label="Number of Souls Won*" />
+                    <Input name="miracles" label="Number of Miracles*" />
                     <small className="label">Treasurers (minimum of 2)</small>
                     <FieldArray name="treasurers">
                       {(fieldArrayProps) => {
@@ -199,6 +237,7 @@ const ServiceForm = ({
                         )
                       }}
                     </FieldArray>
+
                     <Col className="my-2 mt-5">
                       <small>Upload Treasurer Selfie*</small>
                       <ImageUpload
@@ -212,17 +251,25 @@ const ServiceForm = ({
                         aria-describedby="ImageUpload"
                       />
                     </Col>
-                    <Col className="my-2">
+
+                    <Col className="my-2 mt-5">
                       <small className="mb-3">
-                        Upload a Picture of Your Service*
+                        Upload 10 Pictures Of Crusade Event*
                       </small>
-                      <ImageUpload
-                        name="familyPicture"
-                        uploadPreset={process.env.REACT_APP_CLOUDINARY_SERVICES}
-                        placeholder="Choose"
-                        setFieldValue={formik.setFieldValue}
-                        aria-describedby="UploadfamilyPicture"
-                      />
+
+                      <Col>
+                        <MultiImageUpload
+                          name="crusadePictures"
+                          uploadPreset={
+                            process.env
+                              .REACT_APP_CLOUDINARY_MULTIPLICATION_SERVICES
+                          }
+                          placeholder="Choose"
+                          setFieldValue={formik.setFieldValue}
+                          aria-describedby="UploadcrusadePicture"
+                          error={formik.errors.crusadePictures}
+                        />
+                      </Col>
                     </Col>
                     <div className="d-flex justify-content-center mt-5">
                       <SubmitButton formik={formik} />
@@ -238,4 +285,4 @@ const ServiceForm = ({
   )
 }
 
-export default ServiceForm
+export default MultiplicationCampaignServiceForm

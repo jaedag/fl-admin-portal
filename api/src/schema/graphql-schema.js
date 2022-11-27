@@ -68,6 +68,10 @@ const sheepSeeking = fs
   .readFileSync(path.join(__dirname, './campaigns-sheep-seeking.graphql'))
   .toString('utf-8')
 
+const multiplicationCampaign = fs
+  .readFileSync(path.join(__dirname, './campaigns-multiplication.graphql'))
+  .toString('utf-8')
+
 const array = [
   schema,
   directory,
@@ -84,6 +88,7 @@ const array = [
   servicesNoIncome,
   equipmentCampaign,
   sheepSeeking,
+  multiplicationCampaign,
 ]
 
 exports.typeDefs = array.join(' ')
