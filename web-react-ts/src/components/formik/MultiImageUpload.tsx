@@ -64,8 +64,8 @@ const MultiImageUpload = (props: ImageUploadProps) => {
       uploaded.push(image.secure_url)
       setUploadedImages([...uploaded])
       setFieldValue(`${name}`, uploaded)
-      setLoading(false)
     })
+    setLoading((prev) => !prev)
   }
 
   return (
@@ -88,7 +88,6 @@ const MultiImageUpload = (props: ImageUploadProps) => {
               {uploadedImages?.map((image, index) => (
                 <td className="col-auto" key={index}>
                   <img
-                    // key={index}
                     src={image || initialValue}
                     className="multiimage-preview"
                     alt=""

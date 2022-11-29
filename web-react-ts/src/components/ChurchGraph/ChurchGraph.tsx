@@ -162,7 +162,8 @@ const ChurchGraph = (props: ChurchGraphProps) => {
                 onClick={(data) => {
                   if (
                     data.category === 'bussingAggregate' ||
-                    data.category === 'serviceAggregate'
+                    data.category === 'serviceAggregate' ||
+                    data.category === 'multiplicationAggregate'
                   ) {
                     return
                   }
@@ -193,7 +194,8 @@ const ChurchGraph = (props: ChurchGraphProps) => {
                   onClick={(data) => {
                     if (
                       data.category === 'bussingAggregate' ||
-                      data.category === 'serviceAggregate'
+                      data.category === 'serviceAggregate' ||
+                      data.category === 'multiplicationAggregate'
                     ) {
                       return
                     }
