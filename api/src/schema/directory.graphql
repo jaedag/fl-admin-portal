@@ -13,7 +13,7 @@ type Member @auth(rules: [{ isAuthenticated: true }]) {
       """
     )
   nameWithTitle: String @computed
-  email: String!
+  email: String
   phoneNumber: String
   whatsappNumber: String!
   pictureUrl: String

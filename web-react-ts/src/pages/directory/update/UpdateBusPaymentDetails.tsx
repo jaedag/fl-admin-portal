@@ -122,7 +122,7 @@ const UpdateBusPayment = () => {
     }
 
     if (!values.mobileNetwork || !values.momoName || !values.momoNumber) {
-      throwToSentry('No bussing details')
+      alert('Leader has no momo payment details')
       return
     }
 

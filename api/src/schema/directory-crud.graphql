@@ -23,27 +23,39 @@ extend type Mutation {
     fellowshipId: ID!
     oldLeaderId: ID
   ): Member
-  RemoveFellowshipLeader(leaderId: ID!, fellowshipId: ID!): Member
+  RemoveFellowshipLeader(
+    leaderId: ID!
+    newLeaderId: ID!
+    fellowshipId: ID!
+  ): Member
   MakeBacentaLeader(leaderId: ID!, bacentaId: ID!, oldLeaderId: ID): Member
-  RemoveBacentaLeader(leaderId: ID!, bacentaId: ID!): Member
+  RemoveBacentaLeader(leaderId: ID!, newLeaderId: ID!, bacentaId: ID!): Member
   MakeSontaLeader(leaderId: ID!, sontaId: ID!, oldLeaderId: ID): Member
-  RemoveSontaLeader(leaderId: ID!, sontaId: ID!): Member
+  RemoveSontaLeader(leaderId: ID!, newLeaderId: ID!, sontaId: ID!): Member
   MakeConstituencyLeader(
     leaderId: ID!
     constituencyId: ID!
     oldLeaderId: ID
   ): Member
-  RemoveConstituencyLeader(leaderId: ID!, constituencyId: ID!): Member
+  RemoveConstituencyLeader(
+    leaderId: ID!
+    newLeaderId: ID!
+    constituencyId: ID!
+  ): Member
   MakeCouncilLeader(leaderId: ID!, councilId: ID!, oldLeaderId: ID): Member
-  RemoveCouncilLeader(leaderId: ID!, councilId: ID!): Member
+  RemoveCouncilLeader(leaderId: ID!, newLeaderId: ID!, councilId: ID!): Member
   MakeStreamLeader(leaderId: ID!, streamId: ID!, oldLeaderId: ID): Member
-  RemoveStreamLeader(leaderId: ID!, streamId: ID!): Member
+  RemoveStreamLeader(leaderId: ID!, newLeaderId: ID!, streamId: ID!): Member
   MakeGatheringServiceLeader(
     leaderId: ID!
     gatheringServiceId: ID!
     oldLeaderId: ID
   ): Member
-  RemoveGatheringServiceLeader(leaderId: ID!, gatheringServiceId: ID!): Member
+  RemoveGatheringServiceLeader(
+    leaderId: ID!
+    newLeaderId: ID!
+    gatheringServiceId: ID!
+  ): Member
 }
 
 #### GO ON VACATION AND COME BACK ###
@@ -158,7 +170,7 @@ extend type Mutation {
     firstName: String!
     middleName: String
     lastName: String!
-    email: String!
+    email: String
     phoneNumber: String!
     whatsappNumber: String!
     dob: String!
@@ -365,6 +377,12 @@ extend type Mutation {
        MERGE (log)-[:LOGGED_BY]->(currentUser)
        MERGE (log)-[:RECORDED_ON]->(date)
        MERGE (constituency)-[r1:HAS_HISTORY]->(log)
+
+       WITH bacenta
+       MATCH (lastCode:LastBacentaCode)
+       SET
+        bacenta.code = lastCode.number + 1,
+        lastCode.number = bacenta.code
 
 
       RETURN bacenta

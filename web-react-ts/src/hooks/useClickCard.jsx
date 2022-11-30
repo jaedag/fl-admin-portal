@@ -44,6 +44,9 @@ const useClickCard = () => {
   const [vehicleRecordId, setVehicleRecordId] = useState(
     sessionStorage.getItem('vehicleRecordId') ?? ''
   )
+  const [multiplicationRecordId, setMultiplicationRecordId] = useState(
+    sessionStorage.getItem('multiplicationRecordId') ?? ''
+  )
 
   const [sontaId, setSontaId] = useState(
     sessionStorage.getItem('sontaId') ?? ''
@@ -394,6 +397,10 @@ const useClickCard = () => {
         setVehicleRecordId(card.id)
         sessionStorage.setItem('vehicleRecordId', card.id)
         break
+      case 'MultiplicationRecord':
+        setMultiplicationRecordId(card.id)
+        sessionStorage.setItem('multiplicationRecordId', card.id)
+        break
       default:
         break
     }
@@ -422,6 +429,7 @@ const useClickCard = () => {
     bussingRecordId,
     vehicleRecordId,
     serviceRecordId,
+    multiplicationRecordId,
 
     //Set State
     setOversightId,

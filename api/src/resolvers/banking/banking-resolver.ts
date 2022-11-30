@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { getHumanReadableDate } from 'jd-date-utils'
 import { Context } from '../utils/neo4j-types'
-import { permitLeader } from '../permissions'
+import { permitLeader, permitLeaderAdmin } from '../permissions'
 import {
   getMobileCode,
   getStreamFinancials,
@@ -25,13 +25,14 @@ import {
   PayStackRequestBody,
   SendPaymentOTP,
 } from './banking-types'
-import { ServiceRecord, StreamOptions } from '../utils/types'
+import { StreamOptions } from '../utils/types'
 
 const checkIfLastServiceBanked = async (
   serviceRecordId: string,
   context: Context
 ) => {
   const session = context.executionContext.session()
+
   // this checks if the person has banked their last offering
   const lastServiceResponse = await session
     .run(getLastServiceRecord, {
@@ -41,11 +42,11 @@ const checkIfLastServiceBanked = async (
     .catch((error: any) =>
       throwToSentry('There was a problem checking the lastService', error)
     )
-  const lastServiceRecord = rearrangeCypherObject(lastServiceResponse)
+  const lastServiceRecord: any = rearrangeCypherObject(lastServiceResponse)
 
   if (!('lastService' in lastServiceRecord)) return true
 
-  const record: ServiceRecord = lastServiceRecord.lastService.properties
+  const record = lastServiceRecord.lastService.properties
 
   if (!('bankingSlip' in record || record.transactionStatus === 'success')) {
     throw new Error(
@@ -163,7 +164,7 @@ const bankingMutation = {
     }
 
     try {
-      const paymentResponse = await axios(payOffering).catch((error) =>
+      const paymentResponse = await axios(payOffering).catch((error: any) =>
         throwToSentry('There was an error with the payment', error)
       )
 
@@ -399,30 +400,42 @@ const bankingMutation = {
     args: { serviceRecordId: string; bankingSlip: string },
     context: Context
   ) => {
-    isAuth(permitLeader('Fellowship'), context.auth.roles)
+    isAuth(permitLeaderAdmin('Fellowship'), context.auth.roles)
     const session = context.executionContext.session()
 
-    try {
-      await checkIfLastServiceBanked(args.serviceRecordId, context)
-
-      const checkIfAnyServicePending = rearrangeCypherObject(
-        await session.run(checkIfServicePending, args)
-      )
-
-      if (checkIfAnyServicePending?.record?.properties?.transactionStatus) {
-        throw new Error(
-          'You will have to confirm your initial self banking before uploading your banking slip'
+    await checkIfLastServiceBanked(args.serviceRecordId, context).catch(
+      (error: any) => {
+        throwToSentry(
+          'There was an error checking if last service banked',
+          error
         )
       }
+    )
 
-      const submissionResponse = rearrangeCypherObject(
-        await session.run(submitBankingSlip, { ...args, auth: context.auth })
+    const checkIfAnyServicePending = rearrangeCypherObject(
+      await session.run(checkIfServicePending, args).catch((error: any) => {
+        throwToSentry(
+          'There was an error checking if any service pending',
+          error
+        )
+      })
+    )
+
+    if (checkIfAnyServicePending?.record?.properties?.transactionStatus) {
+      throw new Error(
+        'You will have to confirm your initial self banking before uploading your banking slip'
       )
-
-      return submissionResponse.record.properties
-    } catch (error: any) {
-      return throwToSentry('There was a problem submitting banking slip', error)
     }
+
+    const submissionResponse = rearrangeCypherObject(
+      await session
+        .run(submitBankingSlip, { ...args, auth: context.auth })
+        .catch((error: any) =>
+          throwToSentry('There was an error submitting banking slip', error)
+        )
+    )
+
+    return submissionResponse.record.properties
   },
 }
 

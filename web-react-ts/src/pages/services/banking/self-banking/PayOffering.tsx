@@ -51,6 +51,9 @@ const PayOffering = (props: PayOfferingProps) => {
   const [ConfirmOfferingPayment] = useMutation(CONFIRM_OFFERING_PAYMENT)
   const navigate = useNavigate()
   const service = data?.serviceRecords[0]
+  const incomeAndCharges = parseFloat(
+    (service?.income / (1 - 0.0195) + 0.01).toFixed(2)
+  )
   const { togglePopup, isOpen } = usePopup()
   const { show, handleClose, handleShow } = useModal()
   const [errorMessage, setErrorMessage] = useState('')
@@ -72,10 +75,12 @@ const PayOffering = (props: PayOfferingProps) => {
   }, [service])
 
   const validationSchema = Yup.object({
-    mobileNumber: Yup.string().matches(
-      MOMO_NUM_REGEX,
-      `Enter a valid MoMo Number without spaces. eg. (02XXXXXXXX)`
-    ),
+    mobileNumber: Yup.string()
+      .required('You must enter a mobile number')
+      .matches(
+        MOMO_NUM_REGEX,
+        `Enter a valid MoMo Number without spaces. eg. (02XXXXXXXX)`
+      ),
     momoName: Yup.string().when('mobileNumber', {
       is: (mobileNumber: string) => mobileNumber && mobileNumber.length > 0,
       then: Yup.string().required('Please enter the Momo Name'),
@@ -219,8 +224,31 @@ const PayOffering = (props: PayOfferingProps) => {
                       {parseDate(service?.serviceDate.date)}
                     </HeadingPrimary>
 
-                    <small className="form-text label">Income</small>
-                    <div className="fw-bold">{service?.income} GHS</div>
+                    <Row className="row-cols-2 mb-2">
+                      <Col>
+                        <small className="form-text label">Income</small>
+                        <div className="fw-bold">{service?.income} GHS</div>
+                      </Col>
+                      <Col>
+                        <small className="form-text label ">Charges</small>
+                        <div className="fw-bold yellow">
+                          {incomeAndCharges - service?.income} GHS
+                        </div>
+                      </Col>
+                    </Row>
+                    <small>
+                      The charge represents a small fee for using the self
+                      banking feature, and is cheaper than expressPay
+                    </small>
+                    <Row className="my-4">
+                      <Col>
+                        <small className="form-text label">
+                          Income + Charges
+                        </small>
+                        <div className="fw-bold">{incomeAndCharges} GHS</div>
+                      </Col>
+                    </Row>
+
                     <Select
                       name="mobileNetwork"
                       label="Mobile Network"

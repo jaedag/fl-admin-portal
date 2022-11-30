@@ -37,7 +37,11 @@ const StreamCampaigns = () => {
                 key={index}
                 name={campaign}
                 onClick={() =>
-                  navigate(`/campaigns/stream/${campaign.toLowerCase()}`)
+                  navigate(
+                    `/campaigns/stream/${campaign
+                      .toLowerCase()
+                      .replace(' ', '-')}`
+                  )
                 }
               />
             ))}

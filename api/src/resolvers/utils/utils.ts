@@ -77,19 +77,10 @@ export const errorHandling = (member: Member) => {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const rearrangeCypherObject = (response: any) => {
+export const rearrangeCypherObject = (response: any, horizontal?: boolean) => {
   const member: {
     [key: string]: any
   } = {}
-
-  if (response.records.length === 0) {
-    captureException(`A query returned no data`, {
-      tags: {
-        category: 'cypher',
-      },
-      extra: response.summary,
-    })
-  }
 
   response.records[0]?.keys.forEach((key: string, i: number) => {
     // eslint-disable-next-line no-underscore-dangle
@@ -104,6 +95,25 @@ export const rearrangeCypherObject = (response: any) => {
       })
     }
   )
+
+  if (horizontal) {
+    const records: any[] = []
+    response.records.forEach(
+      (record: { [keys: string]: string[] }, index: number) => {
+        const object: {
+          [key: string]: any
+        } = {}
+
+        record?.keys.forEach((key: string, j: number) => {
+          // eslint-disable-next-line no-underscore-dangle
+          object[key] = response.records[index]._fields[j]
+        })
+        records.push(object)
+      }
+    )
+
+    return records
+  }
 
   return member?.member || member
 }

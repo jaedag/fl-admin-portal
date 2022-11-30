@@ -18,6 +18,7 @@ import {
   checkBacentaMomoDetails,
   checkTransactionId,
   confirmVehicleByAdmin,
+  getArrivalsPaymentDataCypher,
   getVehicleRecordWithDate,
   noVehicleTopUp,
   recordVehicleFromBacenta,
@@ -270,6 +271,20 @@ export const arrivalsMutation = {
   ) => {
     isAuth(['leaderBacenta'], context.auth.roles)
     const session = context.executionContext.session()
+
+    const recordResponse = rearrangeCypherObject(
+      await session.run(checkArrivalTimes, args)
+    )
+
+    const stream = recordResponse.stream.properties
+    const arrivalEndTime = new Date(
+      new Date().toISOString().slice(0, 10) + stream.arrivalEndTime.slice(10)
+    )
+    const today = new Date()
+
+    if (today > arrivalEndTime) {
+      throw new Error('It is past the time to fill your forms. Thank you!')
+    }
 
     const outbound = args.outbound ? 2 : 1
     const response = rearrangeCypherObject(
@@ -657,4 +672,33 @@ export const arrivalsMutation = {
   },
 }
 
-export const arrivalsResolvers = {}
+const getArrivalsPaymentData = async (
+  object: any,
+  // eslint-disable-next-line camelcase
+  args: { arrivalsDate: string },
+  context: Context
+) => {
+  isAuth(permitAdminArrivals('Stream'), context.auth.roles)
+
+  const session = context.executionContext.session()
+
+  const cypherResponse = rearrangeCypherObject(
+    await session.run(getArrivalsPaymentDataCypher, {
+      streamId: object.id,
+      date: args.arrivalsDate,
+    }),
+    true
+  )
+
+  return cypherResponse
+}
+
+export const arrivalsResolvers = {
+  Stream: {
+    arrivalsPaymentData: async (
+      object: any,
+      args: { arrivalsDate: string },
+      context: Context
+    ) => getArrivalsPaymentData(object, args, context),
+  },
+}

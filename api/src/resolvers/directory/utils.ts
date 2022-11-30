@@ -14,6 +14,7 @@ import { HistoryRecordArgs, historyRecordString } from './helper-functions'
 import servantCypher from './servant-cypher'
 import {
   matchMemberQuery,
+  matchMemberSheepSeekerQuery,
   matchMemberTellerQuery,
 } from '../cypher/resolver-cypher'
 
@@ -47,6 +48,11 @@ export const formatting = (
     verb = `isTellerFor${churchType}`
     servantLower = 'teller'
     memberQuery = matchMemberTellerQuery
+  }
+  if (servantType === 'SheepSeeker') {
+    verb = `isSheepSeekerFor${churchType}`
+    servantLower = 'sheepseeker'
+    memberQuery = matchMemberSheepSeekerQuery
   }
 
   if (churchType === 'GatheringService') {

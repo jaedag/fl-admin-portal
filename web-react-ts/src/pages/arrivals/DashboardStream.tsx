@@ -92,6 +92,10 @@ const StreamDashboard = () => {
       title: 'Arrival Times',
       onClick: () => navigate('/stream/arrival-times'),
     },
+    {
+      title: "Dowload Arrival's Payment Data",
+      onClick: () => navigate('/stream/arrival-excel-data'),
+    },
   ]
   return (
     <PullToRefresh onRefresh={refetch}>

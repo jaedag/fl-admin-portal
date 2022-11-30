@@ -5,6 +5,7 @@ import {
   checkIfArrayHasRepeatingValues,
   isAuth,
   rearrangeCypherObject,
+  throwToSentry,
 } from '../utils/utils'
 import {
   aggregateServiceDataOnHigherChurches,
@@ -113,7 +114,7 @@ const serviceMutation = {
       secondSession.run(aggregateServiceDataOnHigherChurches, {
         ...args,
       }),
-    ])
+    ]).catch((error) => throwToSentry('Error Recording Service', error))
 
     session.close()
     secondSession.close()

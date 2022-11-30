@@ -1,3 +1,144 @@
+#### 5.3.6 (2022-11-26)
+
+#### 5.3.5 (2022-11-26)
+
+##### Bug Fixes
+
+*  implement padding for vehicle form details ([1662b083](https://github.com/firstlovecenter/fl-pastoral-care/commit/1662b083b78a0b258259b1348672f387818cf9a0))
+*  prevent people from filling vehicle data using the time change hack on the client ([53c945a2](https://github.com/firstlovecenter/fl-pastoral-care/commit/53c945a2ba5163aa23e37cbc58ebc07df528d446))
+*  add time form was filled to vehicle count ([dd2defca](https://github.com/firstlovecenter/fl-pastoral-care/commit/dd2defca617abdc75320304e2230737b64d0361b))
+
+##### Other Changes
+
+* //github.com/firstlovecenter/fl-admin-portal into deploy ([f81e1bb7](https://github.com/firstlovecenter/fl-pastoral-care/commit/f81e1bb744aed2ccde7b17d9661808f767bcefdf))
+
+#### 5.3.4 (2022-11-26)
+
+##### Bug Fixes
+
+*  remove bug preventing viewing self banking details ([617f2296](https://github.com/firstlovecenter/fl-pastoral-care/commit/617f2296141062ef802798935b16295ac59a304b))
+*  improve padding on service details page ([6e129344](https://github.com/firstlovecenter/fl-pastoral-care/commit/6e129344168b1e3b24851b4935da8b594f68cf8e))
+*  implement padding for vehicle details ([e358c6f2](https://github.com/firstlovecenter/fl-pastoral-care/commit/e358c6f2a13d6b3408c4b299ddaae1b166f054ec))
+*  enable deleting arrivals counters ([3c20f46d](https://github.com/firstlovecenter/fl-pastoral-care/commit/3c20f46d7f1933d3c067cdae39710628d223442c))
+*  fix bug in submit banking slip function ([c62f8c98](https://github.com/firstlovecenter/fl-pastoral-care/commit/c62f8c98870eb3a1a99ed2bdc3623983ceb14d52))
+*  fix sentry error reporting error when it should display a user message ([f94355c2](https://github.com/firstlovecenter/fl-pastoral-care/commit/f94355c2e750ca7591129a7d913bafe94e31a8a6))
+*  adjust image size for vehicle pictures ([801005d3](https://github.com/firstlovecenter/fl-pastoral-care/commit/801005d3e6b4ff32b5346a6355b6950534d1c97d))
+*  fix error where service from the same week but different year were added to aggregate ([86b3b959](https://github.com/firstlovecenter/fl-pastoral-care/commit/86b3b959920253acf58cad325bd817bda16680f1))
+*  fix error calculating self banking charges to the 2nd decimal place ([e32a699c](https://github.com/firstlovecenter/fl-pastoral-care/commit/e32a699c3e056d3180b0ead7a28d8c01bb7100f3))
+*  remove block button on service details page ([4f145563](https://github.com/firstlovecenter/fl-pastoral-care/commit/4f145563200a5c9c3bd200795c33bc5e5617d141))
+*  remove typedef breakiing the build ([e34cf863](https://github.com/firstlovecenter/fl-pastoral-care/commit/e34cf863e5afb36bf7182ce65a5f8af8375e52dc))
+*  downgrade npm packages ([bbd2b601](https://github.com/firstlovecenter/fl-pastoral-care/commit/bbd2b601b612d2b5a079d0b7ca80a25eee2fc1b3))
+*  implement block button for viewing banking details ([e96dcfef](https://github.com/firstlovecenter/fl-pastoral-care/commit/e96dcfefdfd3638e814c8bab1030517d53e9278d))
+
+#### 5.3.3 (2022-11-23)
+
+##### Chores
+
+*  update package-lock.json file ([00e3b858](https://github.com/firstlovecenter/fl-pastoral-care/commit/00e3b858d809db8179212068c12dcbad99366b86))
+
+##### Bug Fixes
+
+*  implement validation for momo  number on offering payment ([9a8f6ae7](https://github.com/firstlovecenter/fl-pastoral-care/commit/9a8f6ae7a0d3713045e4e674691dcd5152e60cb6))
+
+#### 5.3.2 (2022-11-22)
+
+##### New Features
+
+*  implement apollo client query retry ([ab2504ab](https://github.com/firstlovecenter/fl-pastoral-care/commit/ab2504ab8895bf9a506401fee1e2f469780bdf2b))
+
+##### Bug Fixes
+
+*  remove functionality to report to sentry when a query returns no data ([dcdfe32d](https://github.com/firstlovecenter/fl-pastoral-care/commit/dcdfe32d6cb5e7ebe5f2d7572a0576c271fd3b7c))
+
+#### 5.3.1 (2022-11-20)
+
+##### New Features
+
+*  implement visible charges when using the self banking feature ([db940ba6](https://github.com/firstlovecenter/fl-pastoral-care/commit/db940ba6565a44d4ebb9ec828eadecb95b8e11d3))
+
+##### Bug Fixes
+
+*  make all members leaders ([d248278b](https://github.com/firstlovecenter/fl-pastoral-care/commit/d248278b9676437b0f07b01445fab34c5edc846f))
+*  add momo name to arrivals payment excel sheet ([c1039261](https://github.com/firstlovecenter/fl-pastoral-care/commit/c1039261dcafc2f4b864e371a19ec47caace13ec))
+*  order arrivals payment sheet by society ([7e2e8eb3](https://github.com/firstlovecenter/fl-pastoral-care/commit/7e2e8eb3b98d311e77d73c2bf7b0e748dacf2c63))
+*  add momo number to arrivals payment excel sheet ([2c2f0497](https://github.com/firstlovecenter/fl-pastoral-care/commit/2c2f0497a447eac980f4dc9541a96d32635b7c58))
+*  remove unnecessary comma from before next update file ([471d1f91](https://github.com/firstlovecenter/fl-pastoral-care/commit/471d1f9153b752d4e4c213990665e55827cf37e7))
+*  change bacenta.bacentaCode property on bacenta to bacenta.code ([20598d23](https://github.com/firstlovecenter/fl-pastoral-care/commit/20598d235a912fdd08beddcf04883861362070e4))
+*  import bacenta codes from Lp Ivy's list ([86008015](https://github.com/firstlovecenter/fl-pastoral-care/commit/86008015e4dbcf280fe24b11c5ba9e341631a6ef))
+*  update banking slip mutation so that admins can use it ([ff4272f8](https://github.com/firstlovecenter/fl-pastoral-care/commit/ff4272f814ca3423ecb10fd1a3f9950c4ec2af8d))
+*  capitalise arrivals payment data filename ([51b3f0c0](https://github.com/firstlovecenter/fl-pastoral-care/commit/51b3f0c0a26c5749df5c36664880bf97b31b7de8))
+*  update code that forms leader relationships ([a0916ec1](https://github.com/firstlovecenter/fl-pastoral-care/commit/a0916ec1563e3af171d6a7a1049b9aca46f53f64))
+*  remove unnecessary code in setupDevInstance ([53e9511c](https://github.com/firstlovecenter/fl-pastoral-care/commit/53e9511c2be1fd37403eea034f76ad2d536ae1c4))
+
+### 5.3.0 (2022-11-18)
+
+##### New Features
+
+*  implement a table in the frontend to display the data for the bussing of that day ([d5ff00aa](https://github.com/firstlovecenter/fl-pastoral-care/commit/d5ff00aaf797641a4b81b979b63041683ad866fd))
+*  admin-418 add cypher to retrieve bussing data per stream ([5bf39c21](https://github.com/firstlovecenter/fl-pastoral-care/commit/5bf39c21dc9d1f2f6d4b1d8c00be57c98cfeb7e2))
+*  admin-416 add cypher to import bussing topups ([f01af476](https://github.com/firstlovecenter/fl-pastoral-care/commit/f01af476abe4abb0c871c7172de3a35c6c197da0))
+*  admin-417 add cypher to create bussing society nodes ([9a59e271](https://github.com/firstlovecenter/fl-pastoral-care/commit/9a59e271e2e5bafc2a685db8fad6720387961fe5))
+*  admin-415 add town codes  and edit createbacenta mutation to create codes for new bacentas ([ef7e2819](https://github.com/firstlovecenter/fl-pastoral-care/commit/ef7e2819fd77668812a3001c0f4797d3fd53ce07))
+
+##### Bug Fixes
+
+*  fix error in resolvers.ts where stream resolvers was being overwritten ([67f8b170](https://github.com/firstlovecenter/fl-pastoral-care/commit/67f8b170423ea105c5ef50b9964432baf46697e1))
+*  clean up cypher query for fetching bussing data ([85539891](https://github.com/firstlovecenter/fl-pastoral-care/commit/855398911eb544b297b5e00ab35cb16f12247983))
+*  remove unused comments ([7c2f07f4](https://github.com/firstlovecenter/fl-pastoral-care/commit/7c2f07f4772095b6ce4964267206b0adbefb9fa2))
+*  implement fix for rearrangeCypher Object to return table-like data as an array of objects ([657673a7](https://github.com/firstlovecenter/fl-pastoral-care/commit/657673a7a1a2d6fe6f1976e76faafe79301b34eb))
+
+#### 5.2.13 (2022-11-18)
+
+##### New Features
+
+*  admin-422 add cypher scripts for members and churches in test env script ([79688e24](https://github.com/firstlovecenter/fl-pastoral-care/commit/79688e2468361b6ffa4724755ff0f34558ddf65a))
+*  admin-430 replace telepastoring with shepherding control from bacenta upwards ([a312c4f7](https://github.com/firstlovecenter/fl-pastoral-care/commit/a312c4f7e68f716d3e55011c5e3a402afdb3baa1))
+
+##### Bug Fixes
+
+*  edit mutation so that users can really register members without emails ([485d84f2](https://github.com/firstlovecenter/fl-pastoral-care/commit/485d84f20195562fa16074c1b71e4ef6d3e6e8f0))
+*  add Martha Adomako's email to list of testers ([30c64452](https://github.com/firstlovecenter/fl-pastoral-care/commit/30c64452a39bb2beed41d07b4ce64771c972c676))
+
+#### 5.2.12 (2022-11-11)
+
+##### Bug Fixes
+
+*  fix issue where joint service calculation was getting mangled ([df3d2a32](https://github.com/firstlovecenter/fl-pastoral-care/commit/df3d2a32385e85593c14982c5c1373e6973eb214))
+
+#### 5.2.11 (2022-11-09)
+
+##### Bug Fixes
+
+*  fix issue where joint services where not being added in aggregate service record ([afbfffa4](https://github.com/firstlovecenter/fl-pastoral-care/commit/afbfffa4269acd8bc26edf3ef9103a4d6f697f87))
+*  fix broken link to sheep seeking graphql file ([fdfbca89](https://github.com/firstlovecenter/fl-pastoral-care/commit/fdfbca89c15c73faf71c6028b443efc6ff18c3b9))
+
+#### 5.2.10 (2022-11-08)
+
+##### Chores
+
+*  edited readme file ([45f3c75c](https://github.com/firstlovecenter/fl-pastoral-care/commit/45f3c75c2cdb841bc911c1ae427d5e298cb21353))
+
+##### New Features
+
+*  add a sheep seeker flow to the frontend ([9ac69447](https://github.com/firstlovecenter/fl-pastoral-care/commit/9ac694473d57a7abb761cfdbfe5bdcd15d70080d))
+*  add sheep seeking campaign to list of campaings from stream upwards ([ddb40e33](https://github.com/firstlovecenter/fl-pastoral-care/commit/ddb40e33581f5ae8bcfeff5e45eba0ab85e2469f))
+*  add make and remove stream sheep seeker mutations ([10432c9d](https://github.com/firstlovecenter/fl-pastoral-care/commit/10432c9d75324a1a81492be1265fb92e3ef6a2e4))
+
+##### Bug Fixes
+
+*  fixed 'no bussing details' crash' ([1e3686e0](https://github.com/firstlovecenter/fl-pastoral-care/commit/1e3686e07d96aa393389d64a6eb38443ebf0fc45))
+*  adjust image dimensions for vehicle pictures ([a6c4a4fc](https://github.com/firstlovecenter/fl-pastoral-care/commit/a6c4a4fc1bcb4dde5ef71ca2a5f8ce24f1446073))
+*  remove email as an optional field for registering members ([ec67822c](https://github.com/firstlovecenter/fl-pastoral-care/commit/ec67822c6497fa248730eb92d3102d97ec88bbc6))
+*  cypher query to check if member exists ([4c087da8](https://github.com/firstlovecenter/fl-pastoral-care/commit/4c087da83b9042e62abd01a4af1e30d93329f33e))
+*  remove scheduled-data aggregation function ([8da6576b](https://github.com/firstlovecenter/fl-pastoral-care/commit/8da6576b760422c282e0d5605692f4f654c073ca))
+*  optimise ux flow for send otp ([bcd2633b](https://github.com/firstlovecenter/fl-pastoral-care/commit/bcd2633b199912f7afb1cc7c6252de83df0f324d))
+*  implement handling for abandoned transactions ([5bb5be2f](https://github.com/firstlovecenter/fl-pastoral-care/commit/5bb5be2f30207655f98a37db4564727d04d05a77))
+*  remove placeholder loading for council, stream, gathering pages ([d7ea1c44](https://github.com/firstlovecenter/fl-pastoral-care/commit/d7ea1c44ce5a383d2e0aaf59e9b7d2e8e1b06ddb))
+
+##### Refactors
+
+*  rename sheep-seeking.graphql to campaigns-sheep-seeking.graphql ([b3b901f2](https://github.com/firstlovecenter/fl-pastoral-care/commit/b3b901f2c8789da1f2c1dad6068c75a6139694b0))
+
 #### 5.2.9 (2022-10-30)
 
 ##### Bug Fixes

@@ -60,9 +60,15 @@ export const getServiceGraphData = (
         services: any[]
         aggregateServiceRecords: any[]
         aggregateBussingRecords: any[]
+        aggregateMultiplicationRecords: any[]
       }
     | undefined,
-  category: 'bussing' | 'bussingAggregate' | 'serviceAggregate' | 'service'
+  category:
+    | 'bussing'
+    | 'bussingAggregate'
+    | 'serviceAggregate'
+    | 'service'
+    | 'multiplicationAggregate'
 ) => {
   if (!church) {
     return
@@ -113,6 +119,10 @@ export const getServiceGraphData = (
 
   if (category === 'bussingAggregate') {
     pushIntoData(church.aggregateBussingRecords)
+  }
+
+  if (category === 'multiplicationAggregate') {
+    pushIntoData(church.aggregateMultiplicationRecords)
   }
 
   // data = data.sort(sortingFunction('week'))

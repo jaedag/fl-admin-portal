@@ -1,6 +1,6 @@
 {
   "name": "admin-portal-api",
-  "version": "5.2.10",
+  "version": "5.3.6",
   "description": "API app for First Love Church Admin Portal",
   "main": "src/index.js",
   "scripts": {
@@ -46,8 +46,7 @@
     "jd-date-utils": "^1.0.7",
     "mailgun.js": "^7.0.0",
     "neo4j-driver": "^4.3.1",
-    "node-fetch": "^2.6.0",
-    "react": "^16.13.1"
+    "node-fetch": "^2.6.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.8.4",

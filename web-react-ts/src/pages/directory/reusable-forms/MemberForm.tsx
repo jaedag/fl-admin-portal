@@ -275,7 +275,9 @@ const MemberForm = ({
                     {canChangeEmail() && (
                       <Col sm={10}>
                         <Input
-                          label="Email Address*"
+                          label={`Email Address ${
+                            !update ? '(Optional)' : '*'
+                          }`}
                           name="email"
                           placeholder="Enter Email Address"
                           aria-describedby="emailHelp"

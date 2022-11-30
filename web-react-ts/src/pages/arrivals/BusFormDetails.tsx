@@ -295,7 +295,7 @@ const BusFormDetails = () => {
               />
             </span>
           ))}
-          <div className="d-grid gap-2">
+          <div className="d-grid gap-2 mb-2">
             <Button
               variant="outline-primary"
               size="lg"

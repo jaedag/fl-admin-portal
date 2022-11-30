@@ -163,7 +163,7 @@ const FormAttendanceConfirmation = () => {
           <Card>
             <Card.Body>
               <CloudinaryImage
-                className="report-picture"
+                className="confirmation-picture"
                 src={vehicle?.picture}
                 size="respond"
               />

@@ -72,7 +72,6 @@ export const MakeServant = async (
 ) => {
   const authToken = await getAuthToken()
   const authRoles = await getAuth0Roles(authToken)
-
   const terms = formatting(churchType, servantType)
   const { verb, servantLower, churchLower, memberQuery } = terms
 
@@ -227,10 +226,17 @@ export const RemoveServant = async (
   const servantRes = await session.run(memberQuery, {
     id: args[`${servantLower}Id`],
   })
+  const newServantRes = await session.run(memberQuery, {
+    id: args[`new${servantType}Id`] ?? '',
+  })
 
   const servant: MemberWithKeys = rearrangeCypherObject(servantRes)
+  const newServant: MemberWithKeys = rearrangeCypherObject(newServantRes)
 
-  if (!servantValidation(servant)) {
+  if (
+    servantType !== 'ArrivalsCounter' &&
+    (!servantValidation(servant) || !servantValidation(newServant))
+  ) {
     return null
   }
 
