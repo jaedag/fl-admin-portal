@@ -44,6 +44,7 @@ type DashboardChurchType = {
   services: ServiceRecord[]
   aggregateServiceRecords: AggregateServiceRecord[]
   aggregateBussingRecords: AggregateBussingRecords[]
+  aggregateMultiplicationRecords: AggregateServiceRecord[]
 }
 
 type UseComponentQuery = {
