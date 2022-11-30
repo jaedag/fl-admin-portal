@@ -36,8 +36,10 @@ const MultiImageUpload = (props: ImageUploadProps) => {
 
   const handleUploadImages = async (files: any[]) => {
     const uploaded: string[] = [...uploadedImages]
-
+    let iterationCount = 0
     files.forEach(async (file: any) => {
+      setLoading(true)
+
       const date = new Date().toISOString().slice(0, 10)
       const username = `${currentUser.firstName.toLowerCase()}-${currentUser.lastName.toLowerCase()}`
       let filename = `${username}-${currentUser.id}/${date}_${file.name}`
@@ -50,8 +52,6 @@ const MultiImageUpload = (props: ImageUploadProps) => {
 
       data.append('tags', tags || '')
 
-      setLoading(true)
-
       const res = await fetch(
         'https://api.cloudinary.com/v1_1/firstlovecenter/image/upload',
         {
@@ -59,13 +59,19 @@ const MultiImageUpload = (props: ImageUploadProps) => {
           body: data,
         }
       )
-      const image = await res.json()
+      if (res) {
+        iterationCount++
+        const image = await res.json()
 
-      uploaded.push(image.secure_url)
-      setUploadedImages([...uploaded])
-      setFieldValue(`${name}`, uploaded)
+        uploaded.push(image.secure_url)
+        setUploadedImages([...uploaded])
+        setFieldValue(`${name}`, uploaded)
+
+        if (iterationCount >= files.length) {
+          setLoading(false)
+        }
+      }
     })
-    setLoading((prev) => !prev)
   }
 
   return (

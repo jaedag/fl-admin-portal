@@ -18,8 +18,8 @@ const MultiplicationCampaignServiceTrends = ({
 }: MultiplicationCampaignServiceTrendsProps) => {
   return (
     <div>
-      <Row className="row-cols-2 mb-3 mt-4">
-        <Col>
+      <Row className="mb-3 mt-4">
+        <Col xs={4}>
           <CloudinaryImage
             src={church?.leader?.pictureUrl || USER_PLACEHOLDER}
             className="img-trends bg-secondary m-2 rounded-circle"
