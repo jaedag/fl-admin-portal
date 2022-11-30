@@ -126,3 +126,26 @@ aggregate.miracles = lowerMiracles
    
 RETURN gathering,aggregate
 `
+export const getLastMultiplicationRecord = `
+MATCH (record:MultiplicationRecord {id: $multiplicationRecordId})-[:CRUSADE_HELD_ON]->(date:TimeGraph)
+MATCH (record)<-[:HAS_MULTIPLICATION_RECORD]-(:ServiceLog)<-[:HAS_HISTORY]-(church) WHERE church:Constituency OR church:Council OR church:Stream OR church:GatheringService
+MATCH (church)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_MULTIPLICATION_RECORD]->(otherRecords:MultiplicationRecord)-[:CRUSADE_HELD_ON]->(otherDate:TimeGraph)
+WHERE NOT (otherRecords:NoService) AND otherDate.date.week < date.date.week
+
+WITH DISTINCT record,otherRecords ORDER BY otherRecords.createdAt DESC LIMIT 2
+WITH collect(otherRecords.id) AS recordIds, record.id AS currentRecordId
+
+WITH apoc.coll.indexOf(recordIds,currentRecordId) + 1 AS lastRecordIndex, recordIds WHERE lastRecordIndex >= 0
+MATCH (lastRecord:MultiplicationRecord {id: recordIds[lastRecordIndex]})
+
+RETURN lastRecord
+`
+
+export const submitMultiplicationBankingSlip = `
+MATCH (record:MultiplicationRecord {id: $multiplicationRecordId})
+SET record.bankingSlip = $bankingSlip
+WITH record
+MATCH (banker:Member {auth_id: $auth.jwt.sub})
+MERGE (banker)-[:UPLOADED_SLIP_FOR]->(record)
+RETURN record
+`
