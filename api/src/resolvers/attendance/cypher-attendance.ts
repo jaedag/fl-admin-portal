@@ -1,5 +1,5 @@
 export const getBacentaLastFourBussing = `
-MATCH (bacenta:Bacenta  {id:$bacentaId})
+MATCH (bacenta:Bacenta  {id: $bacentaId})
 MATCH (bacenta)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
 WITH bacenta, bussing, date ORDER BY date.date DESC LIMIT 4 
 
@@ -18,7 +18,6 @@ export const setBacentaGraduated = `
 MATCH (bacenta:Bacenta {id:  $bacentaId})
 REMOVE bacenta:IC
 SET bacenta:Graduated
-
 
 RETURN bacenta
 `

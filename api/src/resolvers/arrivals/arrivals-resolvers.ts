@@ -369,9 +369,13 @@ export const arrivalsMutation = {
         )
       )
 
-    Promise.all([setBacentaStatus(bacentaId, context)]).catch((error: any) =>
-      throwToSentry('Error Setting Bacenta Status', error)
+    // console.log("Hiiii")
+
+    await setBacentaStatus(bacentaId, context).catch((error: any) =>
+      console.log('Error Setting bacenta Status', error)
     )
+
+    // console.log("toc")
 
     const vehicleRecord = response.vehicleRecord.properties
     const date = new Date().toISOString().slice(0, 10)

@@ -35,17 +35,15 @@ export const setBacentaGraduatedStatus = async (
   }
 }
 
-type BacentaWithName = {
-  __typename: string[]
-  id: string
-  name: string
-  bussingRecord: number
-}
+// type BacentaWithName = {
+//   __typename: string[]
+//   id: string
+//   name: string
+//   bussingRecord: number
+// }
 
-export const setBacentaStatus = async (
-  bacentaId: string,
-  context: Context
-): Promise<BacentaWithName> => {
+export const setBacentaStatus = async (bacentaId: string, context: Context) => {
+  console.log('Hi, there!')
   const session = context.executionContext.session()
 
   const last4ServicesResponse: serviceType[] = rearrangeCypherObject(
