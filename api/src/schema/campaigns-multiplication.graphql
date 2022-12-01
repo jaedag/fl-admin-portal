@@ -14,7 +14,6 @@ extend type Mutation {
     treasurers: [ID]!
   ): MultiplicationRecord
 
-
   SubmitMultiplicationBankingSlip(
     multiplicationRecordId: String!
     bankingSlip: String!
@@ -46,6 +45,8 @@ type MultiplicationRecord {
       RETURN true
       """
     )
+  createdAt: Date!
+  created_by: Member! @relationship(type: "LOGGED_BY", direction: OUT)
 }
 
 type AggregateMultiplicationRecord @auth(rules: [{ isAuthenticated: true }]) {
