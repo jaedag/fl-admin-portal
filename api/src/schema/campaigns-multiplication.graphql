@@ -47,6 +47,7 @@ type MultiplicationRecord {
     )
   createdAt: Date!
   created_by: Member! @relationship(type: "LOGGED_BY", direction: OUT)
+  bankingSlip: String
 }
 
 type AggregateMultiplicationRecord @auth(rules: [{ isAuthenticated: true }]) {
