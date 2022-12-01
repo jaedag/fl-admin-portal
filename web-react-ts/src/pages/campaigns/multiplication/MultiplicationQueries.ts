@@ -161,7 +161,7 @@ export const COUNCIL_MULTIPLICATION_GRAPHS = gql`
 `
 
 export const STREAM_MULTIPLICATION_GRAPHS = gql`
-  query constituencyServiceMultiplicationGraphs($streamId: ID!) {
+  query streamServiceMultiplicationGraphs($streamId: ID!) {
     streams(where: { id: $streamId }) {
       id
       name
