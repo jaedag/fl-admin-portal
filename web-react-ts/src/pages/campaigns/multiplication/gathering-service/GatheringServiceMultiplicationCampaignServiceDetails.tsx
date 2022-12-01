@@ -14,6 +14,7 @@ const GatheringServiceMultiplicationCampaignServiceDetails = () => {
     variables: {
       id: multiplicationRecordId,
     },
+    fetchPolicy: 'cache-and-network',
   })
 
   return (

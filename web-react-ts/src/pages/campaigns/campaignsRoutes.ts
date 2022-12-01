@@ -302,6 +302,59 @@ const GatheringServiceMultiplicationCampaignTrends = lazy(
     )
 )
 
+const ConstituencyMultiplicationCampaignUploadReceipts = lazy(
+  () =>
+    import(
+      '../campaigns/multiplication/constituency/ConstituencyMultiplicationCampaignUploadReceipts'
+    )
+)
+
+const CouncilMultiplicationCampaignUploadReceipts = lazy(
+  () =>
+    import(
+      '../campaigns/multiplication/council/CouncilMultiplicationCampaignUploadReceipts'
+    )
+)
+
+const GatheringServiceMultiplicationCampaignUploadReceipts = lazy(
+  () =>
+    import(
+      '../campaigns/multiplication/gathering-service/GatheringServiceMultiplicationCampaignUploadReceipts'
+    )
+)
+
+const StreamMultiplicationCampaignUploadReceipts = lazy(
+  () =>
+    import(
+      '../campaigns/multiplication/stream/StreamMultiplicationCampaignUploadReceipts'
+    )
+)
+
+const ConstituencyMultiplicationCampaignBankingSlipView = lazy(
+  () =>
+    import(
+      '../campaigns/multiplication/constituency/ConstituencyMultiplicationCampaignBankingSlipView'
+    )
+)
+const CouncilMultiplicationCampaignBankingSlipView = lazy(
+  () =>
+    import(
+      '../campaigns/multiplication/council/CouncilMultiplicationCampaignBankingSlipView'
+    )
+)
+const StreamMultiplicationCampaignBankingSlipView = lazy(
+  () =>
+    import(
+      '../campaigns/multiplication/stream/StreamMultiplicationCampaignBankingSlipView'
+    )
+)
+const GatheringServiceMultiplicationCampaignBankingSlipView = lazy(
+  () =>
+    import(
+      '../campaigns/multiplication/gathering-service/GatheringServiceMultiplicationCampaignBankingSlipView'
+    )
+)
+
 export const campaigns: LazyRouteTypes[] = [
   //gathering-service routes
   {
@@ -397,6 +450,18 @@ export const campaigns: LazyRouteTypes[] = [
   {
     path: '/campaigns/gathering-service/multiplication/trends',
     element: GatheringServiceMultiplicationCampaignTrends,
+    roles: permitAdmin('GatheringService'),
+    placeholder: true,
+  },
+  {
+    path: '/campaigns/gathering-service/multiplication/upload-receipts',
+    element: GatheringServiceMultiplicationCampaignUploadReceipts,
+    roles: permitAdmin('GatheringService'),
+    placeholder: true,
+  },
+  {
+    path: '/campaigns/gathering-service/multiplication/banking-slips',
+    element: GatheringServiceMultiplicationCampaignBankingSlipView,
     roles: permitAdmin('GatheringService'),
     placeholder: true,
   },
@@ -504,6 +569,18 @@ export const campaigns: LazyRouteTypes[] = [
     roles: permitAdmin('Stream'),
     placeholder: true,
   },
+  {
+    path: '/campaigns/stream/multiplication/upload-receipts',
+    element: StreamMultiplicationCampaignUploadReceipts,
+    roles: permitAdmin('Stream'),
+    placeholder: true,
+  },
+  {
+    path: '/campaigns/stream/multiplication/banking-slips',
+    element: StreamMultiplicationCampaignBankingSlipView,
+    roles: permitAdmin('Stream'),
+    placeholder: true,
+  },
 
   //council routes
   {
@@ -596,6 +673,18 @@ export const campaigns: LazyRouteTypes[] = [
     roles: permitAdmin('Council'),
     placeholder: true,
   },
+  {
+    path: '/campaigns/council/multiplication/upload-receipts',
+    element: CouncilMultiplicationCampaignUploadReceipts,
+    roles: permitAdmin('Council'),
+    placeholder: true,
+  },
+  {
+    path: '/campaigns/council/multiplication/banking-slips',
+    element: CouncilMultiplicationCampaignBankingSlipView,
+    roles: permitAdmin('Council'),
+    placeholder: true,
+  },
 
   //constituency routes
   {
@@ -685,6 +774,18 @@ export const campaigns: LazyRouteTypes[] = [
   {
     path: '/campaigns/constituency/multiplication/trends',
     element: ConstituencyMultiplicationCampaignTrends,
+    roles: permitAdmin('Constituency'),
+    placeholder: true,
+  },
+  {
+    path: '/campaigns/constituency/multiplication/upload-receipts',
+    element: ConstituencyMultiplicationCampaignUploadReceipts,
+    roles: permitAdmin('Constituency'),
+    placeholder: true,
+  },
+  {
+    path: '/campaigns/constituency/multiplication/banking-slips',
+    element: ConstituencyMultiplicationCampaignBankingSlipView,
     roles: permitAdmin('Constituency'),
     placeholder: true,
   },

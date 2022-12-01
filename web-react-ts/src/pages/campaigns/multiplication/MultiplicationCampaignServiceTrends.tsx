@@ -38,14 +38,14 @@ const MultiplicationCampaignServiceTrends = ({
       <Row className="mt-2">
         <Col>
           <StatDisplay
-            title={`Avg Weekly Attendance`}
+            title={`Avg Attendance`}
             statistic={getMonthlyStatAverage(churchData, 'attendance')}
           />
         </Col>
 
         <Col>
           <StatDisplay
-            title="Avg Weekly Income"
+            title="Avg Income"
             statistic={getMonthlyStatAverage(churchData, 'income')}
           />
         </Col>

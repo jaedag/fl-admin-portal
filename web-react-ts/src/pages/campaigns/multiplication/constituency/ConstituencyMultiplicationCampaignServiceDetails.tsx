@@ -12,6 +12,7 @@ const ConstituencyMultiplicationCampaignServiceDetails = () => {
   const { multiplicationRecordId } = useContext(ServiceContext)
   const { data, loading, error } = useQuery(MULTIPLICATION_RECORDS, {
     variables: { id: multiplicationRecordId },
+    fetchPolicy: 'cache-and-network',
   })
 
   return (
