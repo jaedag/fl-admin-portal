@@ -35,19 +35,12 @@ export const setBacentaGraduatedStatus = async (
   }
 }
 
-// type BacentaWithName = {
-//   __typename: string[]
-//   id: string
-//   name: string
-//   bussingRecord: number
-// }
-
 export const setBacentaStatus = async (bacentaId: string, context: Context) => {
-  console.log('Hi, there!')
   const session = context.executionContext.session()
 
   const last4ServicesResponse: serviceType[] = rearrangeCypherObject(
-    await session.run(getBacentaLastFourBussing, { bacentaId })
+    await session.run(getBacentaLastFourBussing, { bacentaId }),
+    true
   )
 
   const bacentaName = {
@@ -65,7 +58,7 @@ export const setBacentaStatus = async (bacentaId: string, context: Context) => {
     (bussing) => bussing.bussingRecord
   )
 
-  if (last4ServicesResponse[0].bacentaStatus.includes('IC')) {
+  if (last4ServicesResponse[0].bacentaStatus.includes('Graduated')) {
     await setBacentaICStatus(last4Bussing, session, bacentaId)
     return {
       ...bacentaName,
@@ -73,7 +66,7 @@ export const setBacentaStatus = async (bacentaId: string, context: Context) => {
     }
   }
 
-  if (last4ServicesResponse[0].bacentaStatus.includes('Graduated')) {
+  if (last4ServicesResponse[0].bacentaStatus.includes('IC')) {
     await setBacentaGraduatedStatus(last4Bussing, session, bacentaId)
     return {
       ...bacentaName,
