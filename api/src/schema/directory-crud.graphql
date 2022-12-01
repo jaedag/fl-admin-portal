@@ -2,20 +2,28 @@ extend type Mutation {
   #resolver Mutations
   MakeGatheringServiceAdmin(
     adminId: ID!
+    oldAdminId: ID!
     gatheringServiceId: ID!
-    oldAdminId: ID
   ): Member
-  RemoveGatheringServiceAdmin(adminId: ID!, gatheringServiceId: ID!): Member
-  MakeStreamAdmin(adminId: ID!, streamId: ID!, oldAdminId: ID): Member
-  RemoveStreamAdmin(adminId: ID!, streamId: ID!): Member
-  MakeCouncilAdmin(adminId: ID!, councilId: ID!, oldAdminId: ID): Member
-  RemoveCouncilAdmin(adminId: ID!, councilId: ID!): Member
+  RemoveGatheringServiceAdmin(
+    adminId: ID!
+    newAdminId: ID
+    gatheringServiceId: ID!
+  ): Member
+  MakeStreamAdmin(adminId: ID!, oldAdminId: ID!, streamId: ID!): Member
+  RemoveStreamAdmin(adminId: ID!, newAdminId: ID, streamId: ID!): Member
+  MakeCouncilAdmin(adminId: ID!, oldAdminId: ID, councilId: ID!): Member
+  RemoveCouncilAdmin(adminId: ID!, newAdminId: ID!, councilId: ID!): Member
   MakeConstituencyAdmin(
     adminId: ID!
-    constituencyId: ID!
     oldAdminId: ID
+    constituencyId: ID!
   ): Member
-  RemoveConstituencyAdmin(adminId: ID!, constituencyId: ID!): Member
+  RemoveConstituencyAdmin(
+    adminId: ID!
+    newAdminId: ID!
+    constituencyId: ID!
+  ): Member
 
   #Pastoral Roles
   MakeFellowshipLeader(
