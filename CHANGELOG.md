@@ -1,3 +1,14 @@
+#### 5.3.7 (2022-12-01)
+
+##### New Features
+
+*  implement multiplication crusade trends ([#353](https://github.com/firstlovecenter/fl-pastoral-care/pull/353)) ([13bffea1](https://github.com/firstlovecenter/fl-pastoral-care/commit/13bffea1fab26f041c2a1c835d3af0d9aa4cb9e3))
+
+##### Bug Fixes
+
+*  fix bug where roles of old admins were not being removed ([e97fc758](https://github.com/firstlovecenter/fl-pastoral-care/commit/e97fc7587e8e6aa9eefa3093e30c38529a21d744))
+*  improve width for form attendance confirmation picture ([01c59645](https://github.com/firstlovecenter/fl-pastoral-care/commit/01c59645ea38a692255a7801a519637dadcfe66c))
+
 #### 5.3.6 (2022-11-26)
 
 #### 5.3.5 (2022-11-26)
