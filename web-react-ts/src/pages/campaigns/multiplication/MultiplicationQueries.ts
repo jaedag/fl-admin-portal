@@ -50,6 +50,7 @@ export const MULTIPLICATION_RECORDS = gql`
       foreignCurrency
       souls
       miracles
+      bankingSlip
       bankingProof
       created_by {
         id
