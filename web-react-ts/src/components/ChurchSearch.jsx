@@ -20,8 +20,17 @@ const ChurchSearch = (props) => {
   const onSubmit = (values, onSubmitProps) => {
     onSubmitProps.setSubmitting(true)
     setChurchData(
-      churchDataLoaded.filter((church) =>
-        church.name.toLowerCase().includes(values.churchSearch.toLowerCase())
+      churchDataLoaded.filter(
+        (church) =>
+          church.name
+            .toLowerCase()
+            .includes(values.churchSearch.toLowerCase()) ||
+          church.leader.firstName
+            .toLowerCase()
+            .includes(values.churchSearch.toLowerCase()) ||
+          church.leader.lastName
+            .toLowerCase()
+            .includes(values.churchSearch.toLowerCase())
       )
     )
 
@@ -38,7 +47,7 @@ const ChurchSearch = (props) => {
                 <Input
                   className="form-control church-search search-center"
                   name="churchSearch"
-                  placeholder="Search Churches"
+                  placeholder="Search Churches or Leader"
                   aria-describedby="Church Search"
                 />
               </div>
