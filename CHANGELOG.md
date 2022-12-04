@@ -1,3 +1,10 @@
+#### 5.3.9 (2022-12-04)
+
+##### Bug Fixes
+
+*  remove non alphanumeric characters from image filename ([2088c868](https://github.com/firstlovecenter/fl-pastoral-care/commit/2088c868e4831b7ffef9a4f2302310d9a3e7acf9))
+*  fix bug preventing council arrivals admins from being  changed ([8eb0a34b](https://github.com/firstlovecenter/fl-pastoral-care/commit/8eb0a34b860bbbe1ec0e2d8c41a60ad15023e58a))
+
 #### 5.3.8 (2022-12-04)
 
 ##### New Features
