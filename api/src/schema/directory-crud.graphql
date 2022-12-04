@@ -491,9 +491,8 @@ extend type Mutation {
       MATCH (meetingDay:ServiceDay {day: $meetingDay})
 
       MERGE (bacenta)-[:HAS]->(fellowship)
-      MERGE (leader)-[r:LEADS]->(fellowship)
+      MERGE (leader)-[:LEADS]->(fellowship)
       MERGE (fellowship)-[:MEETS_ON]->(meetingDay)
-        SET r.current = true
 
       RETURN fellowship
       """

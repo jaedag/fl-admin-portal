@@ -45,9 +45,9 @@ const CreateFellowship = () => {
         venueLatitude: parseFloat(values.venueLatitude.toString()),
       },
     })
-      .then((res) => {
+      .then(async (res) => {
         clickCard(res.data.CreateFellowship)
-        NewFellowshipLeader({
+        await NewFellowshipLeader({
           variables: {
             leaderId: values.leaderId,
             fellowshipId: res.data.CreateFellowship.id,

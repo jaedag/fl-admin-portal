@@ -134,6 +134,8 @@ export const capitalise = (str: string) => {
       return 'First Love Experience'
     case 'gospel encounter':
       return 'Gospel Encounter'
+    case 'holy ghost encounter':
+      return 'Holy Ghost Encounter'
     case 'anagkazo encounter':
       return 'Anagkazo Encounter'
     default:
