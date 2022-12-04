@@ -1,3 +1,18 @@
+#### 5.3.8 (2022-12-04)
+
+##### New Features
+
+*  support search for leaders as well as churches in churchSearch ([37310fcb](https://github.com/firstlovecenter/fl-pastoral-care/commit/37310fcbfaf8778b784ae807453f491eb028e51a))
+*  add banking slip to multiplication details page ([b44a7722](https://github.com/firstlovecenter/fl-pastoral-care/commit/b44a77220fd3c41b36ed45ac719d7d24ae8e7e69))
+*  implement upload multiplication banking receipts ([fbe9acb2](https://github.com/firstlovecenter/fl-pastoral-care/commit/fbe9acb242a8402f462abab00bdd05e77d49c653))
+*  admin-448 mutation for uploading banking slip ([4abc1e83](https://github.com/firstlovecenter/fl-pastoral-care/commit/4abc1e83215740e6e8d0abf401823ca92b899cfe))
+
+##### Bug Fixes
+
+*  add in support for holy ghost encounter ([3d37eada](https://github.com/firstlovecenter/fl-pastoral-care/commit/3d37eadab27483dea0c2d29ab5dbfc1b88c32106))
+*  add bankingSlip property to multiplication record ([f89748d4](https://github.com/firstlovecenter/fl-pastoral-care/commit/f89748d40a68ef770b89e25d14239c3b214a3c4c))
+*  correct query name mistake in multiplication queries ([cd291017](https://github.com/firstlovecenter/fl-pastoral-care/commit/cd29101735b544cbe98c330e4474ed9b6fb6d01e))
+
 #### 5.3.7 (2022-12-01)
 
 ##### New Features
