@@ -9,6 +9,7 @@ export const MAKE_CONSTITUENCYARRIVALS_ADMIN = gql`
     RemoveConstituencyArrivalsAdmin(
       constituencyId: $constituencyId
       arrivalsAdminId: $oldAdminId
+      newArrivalsAdminId: $newAdminId
     ) {
       id
       firstName
@@ -45,6 +46,7 @@ export const MAKE_COUNCILARRIVALS_ADMIN = gql`
     RemoveCouncilArrivalsAdmin(
       councilId: $councilId
       arrivalsAdminId: $oldAdminId
+      newArrivalsAdminId: $newAdminId
     ) {
       id
       firstName
@@ -80,6 +82,7 @@ export const MAKE_STREAMARRIVALS_ADMIN = gql`
     RemoveStreamArrivalsAdmin(
       streamId: $streamId
       arrivalsAdminId: $oldAdminId
+      newArrivalsAdminId: $newAdminId
     ) {
       id
       firstName
@@ -114,6 +117,7 @@ export const MAKE_GATHERINGSERVICEARRIVALS_ADMIN = gql`
     RemoveGatheringServiceArrivalsAdmin(
       gatheringServiceId: $gatheringServiceId
       arrivalsAdminId: $oldAdminId
+      newArrivalsAdminId: $newAdminId
     ) {
       id
       firstName
