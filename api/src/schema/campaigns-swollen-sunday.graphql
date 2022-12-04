@@ -1,0 +1,132 @@
+extend type Denomination {
+  swellBussingRecords(
+    startDate: String!
+    endDate: String!
+  ): [AggregateBussingRecord!]!
+    @cypher(
+      statement: """
+      MATCH (this)
+      MATCH (swell:SwellDate)
+      WHERE date(swell.date) >= date($startDate) AND date(swell.date) <= date($endDate)
+      MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING_AGGREGATE]->(aggregate:AggregateBussingRecord)
+
+      WITH collect(DISTINCT(date(swell.date).week)) as list, aggregate
+      MATCH (aggregate) WHERE aggregate.week IN list
+      RETURN aggregate
+      """
+    )
+}
+
+extend type Oversight {
+  swellBussingRecords(
+    startDate: String!
+    endDate: String!
+  ): [AggregateBussingRecord!]!
+    @cypher(
+      statement: """
+      MATCH (this)
+      MATCH (swell:SwellDate)
+      WHERE date(swell.date) >= date($startDate) AND date(swell.date) <= date($endDate)
+      MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING_AGGREGATE]->(aggregate:AggregateBussingRecord)
+
+      WITH collect(DISTINCT(date(swell.date).week)) as list, aggregate
+      MATCH (aggregate) WHERE aggregate.week IN list
+      RETURN aggregate
+      """
+    )
+}
+
+extend type GatheringService {
+  swellBussingRecords(
+    startDate: String!
+    endDate: String!
+  ): [AggregateBussingRecord!]!
+    @cypher(
+      statement: """
+      MATCH (this)
+      MATCH (swell:SwellDate)
+      WHERE date(swell.date) >= date($startDate) AND date(swell.date) <= date($endDate)
+      MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING_AGGREGATE]->(aggregate:AggregateBussingRecord)
+
+      WITH collect(DISTINCT(date(swell.date).week)) as list, aggregate
+      MATCH (aggregate) WHERE aggregate.week IN list
+      RETURN aggregate
+      """
+    )
+}
+
+extend type Stream {
+  swellBussingRecords(
+    startDate: String!
+    endDate: String!
+  ): [AggregateBussingRecord!]!
+    @cypher(
+      statement: """
+      MATCH (this)
+      MATCH (swell:SwellDate)
+      WHERE date(swell.date) >= date($startDate) AND date(swell.date) <= date($endDate)
+      MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING_AGGREGATE]->(aggregate:AggregateBussingRecord)
+
+      WITH collect(DISTINCT(date(swell.date).week)) as list, aggregate
+      MATCH (aggregate) WHERE aggregate.week IN list
+      RETURN aggregate
+      """
+    )
+}
+
+extend type Council {
+  swellBussingRecords(
+    startDate: String!
+    endDate: String!
+  ): [AggregateBussingRecord!]!
+    @cypher(
+      statement: """
+      MATCH (this)
+      MATCH (swell:SwellDate)
+      WHERE date(swell.date) >= date($startDate) AND date(swell.date) <= date($endDate)
+      MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING_AGGREGATE]->(aggregate:AggregateBussingRecord)
+
+      WITH collect(DISTINCT(date(swell.date).week)) as list, aggregate
+      MATCH (aggregate) WHERE aggregate.week IN list
+      RETURN aggregate
+      """
+    )
+}
+
+extend type Constituency {
+  swellBussingRecords(
+    startDate: String!
+    endDate: String!
+  ): [AggregateBussingRecord!]!
+    @cypher(
+      statement: """
+      MATCH (this)
+      MATCH (swell:SwellDate)
+      WHERE date(swell.date) >= date($startDate) AND date(swell.date) <= date($endDate)
+      MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING_AGGREGATE]->(aggregate:AggregateBussingRecord)
+
+      WITH collect(DISTINCT(date(swell.date).week)) as list, aggregate
+      MATCH (aggregate) WHERE aggregate.week IN list
+      RETURN aggregate
+      """
+    )
+}
+
+extend type Bacenta {
+  swellBussingRecords(
+    startDate: String!
+    endDate: String!
+  ): [AggregateBussingRecord!]!
+    @cypher(
+      statement: """
+      MATCH (this)
+      MATCH (swell:SwellDate)
+      WHERE date(swell.date) >= date($startDate) AND date(swell.date) <= date($endDate)
+      MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING_AGGREGATE]->(aggregate:AggregateBussingRecord)
+
+      WITH collect(DISTINCT(date(swell.date).week)) as list, aggregate
+      MATCH (aggregate) WHERE aggregate.week IN list
+      RETURN aggregate
+      """
+    )
+}
