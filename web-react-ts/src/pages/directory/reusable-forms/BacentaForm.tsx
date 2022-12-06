@@ -138,12 +138,6 @@ const BacentaForm = ({
                             placeholder="Enter Name Here"
                           />
                           <Select
-                            name="graduationStatus"
-                            options={BUSSING_STATUS_OPTIONS}
-                            defaultOption="Choose Graduation Status"
-                            label="Status"
-                          />
-                          <Select
                             name="vacationStatus"
                             options={VACATION_OPTIONS}
                             defaultOption="Choose Vacation Status"
