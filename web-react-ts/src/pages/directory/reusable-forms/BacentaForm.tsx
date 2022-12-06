@@ -3,7 +3,6 @@ import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { FieldArray, Form, Formik, FormikHelpers } from 'formik'
 import * as Yup from 'yup'
 import {
-  BUSSING_STATUS_OPTIONS,
   makeSelectOptions,
   throwToSentry,
   VACATION_OPTIONS,
