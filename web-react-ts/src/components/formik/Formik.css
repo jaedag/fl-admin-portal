@@ -23,3 +23,9 @@
 .invalid {
   opacity: 0.65;
 }
+
+.multiimage-preview {
+  padding: 5px;
+  height: 20vh;
+  margin-bottom: 10px;
+}

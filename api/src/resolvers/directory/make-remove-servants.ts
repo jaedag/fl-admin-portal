@@ -233,7 +233,10 @@ export const RemoveServant = async (
   const servant: MemberWithKeys = rearrangeCypherObject(servantRes)
   const newServant: MemberWithKeys = rearrangeCypherObject(newServantRes)
 
-  if (!servantValidation(servant) || !servantValidation(newServant)) {
+  if (
+    servantType !== 'ArrivalsCounter' &&
+    (!servantValidation(servant) || !servantValidation(newServant))
+  ) {
     return null
   }
 

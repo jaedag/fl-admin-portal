@@ -11,7 +11,7 @@ import { ChurchContext } from 'contexts/ChurchContext'
 import { MemberContext } from 'contexts/MemberContext'
 import { ServiceContext } from 'contexts/ServiceContext'
 import usePopup from 'hooks/usePopup'
-import { getHumanReadableDate, parseNeoTime } from 'jd-date-utils'
+import { getHumanReadableDate, getTime, parseNeoTime } from 'jd-date-utils'
 import { permitAdminArrivals, permitArrivalsCounter } from 'permission-utils'
 import { useContext, useState } from 'react'
 import { Button, Col, Container, Row, Table } from 'react-bootstrap'
@@ -68,6 +68,17 @@ const BusVehicleFormDetails = () => {
                       className="td-placeholder"
                     >
                       <td>{getHumanReadableDate(vehicle?.createdAt)}</td>
+                    </PlaceholderCustom>
+                  </tr>
+                  <tr>
+                    <td>Time Filled</td>
+                    <PlaceholderCustom
+                      as="td"
+                      xs={12}
+                      loading={loading}
+                      className="td-placeholder"
+                    >
+                      <td>{getTime(new Date(vehicle?.createdAt))}</td>
                     </PlaceholderCustom>
                   </tr>
 
@@ -214,6 +225,7 @@ const BusVehicleFormDetails = () => {
                               key={vehicle?.picture}
                             >
                               <CloudinaryImage
+                                className="bus-picture"
                                 src={vehicle?.picture}
                                 size="respond"
                               />
@@ -228,7 +240,7 @@ const BusVehicleFormDetails = () => {
             </Row>
           </Col>
         </Row>
-        <div className="d-grid gap-2">
+        <div className="d-grid gap-2 mt-5">
           <RoleView roles={permitArrivalsCounter()}>
             {beforeCountingDeadline(vehicle, church) && (
               <>

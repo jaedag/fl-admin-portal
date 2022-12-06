@@ -120,11 +120,11 @@ const ServiceDetails = ({ service, church, loading }: ServiceDetailsProps) => {
                   <div className="mb-4">
                     {`${service?.offeringBankedBy.fullName} used the Self Banking Feature. Click this button to see
                     Details`}
-                    <div className="d-grid gap-2">
+                    <p>
                       <Button onClick={() => navigate('/self-banking/receipt')}>
                         View Banking Details
                       </Button>
-                    </div>
+                    </p>
                   </div>
                 )}
                 {!currentUser.noIncome && service?.bankingSlip && (
@@ -134,7 +134,7 @@ const ServiceDetails = ({ service, church, loading }: ServiceDetailsProps) => {
                     <div>
                       <PlaceholderCustom
                         loading={loading}
-                        className="report-picture  placeholder"
+                        className="report-picture placeholder"
                         xs={12}
                       >
                         <img

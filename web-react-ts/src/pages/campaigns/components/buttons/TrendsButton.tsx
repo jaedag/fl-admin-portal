@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import { MemberContext } from 'contexts/MemberContext'
 import { Button } from 'react-bootstrap'
 import './TrendsButton.css'
-import ProgressBar from './ProgressBar'
+import ProgressBar from '../progress-bar/ProgressBar'
 import { EquipmentChurch } from 'global-types'
 
 export interface TrendsButtonProps {

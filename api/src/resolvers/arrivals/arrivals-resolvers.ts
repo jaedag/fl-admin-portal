@@ -38,6 +38,7 @@ import {
 import texts from '../texts.json'
 import { SendMoneyBody } from './arrivals-types'
 import { checkServantHasCurrentHistory } from '../services/service-resolvers'
+import { setBacentaStatus } from '../attendance/utils-attendance'
 
 const dotenv = require('dotenv')
 
@@ -271,6 +272,20 @@ export const arrivalsMutation = {
     isAuth(['leaderBacenta'], context.auth.roles)
     const session = context.executionContext.session()
 
+    const recordResponse = rearrangeCypherObject(
+      await session.run(checkArrivalTimes, args)
+    )
+
+    const stream = recordResponse.stream.properties
+    const arrivalEndTime = new Date(
+      new Date().toISOString().slice(0, 10) + stream.arrivalEndTime.slice(10)
+    )
+    const today = new Date()
+
+    if (today > arrivalEndTime) {
+      throw new Error('It is past the time to fill your forms. Thank you!')
+    }
+
     const outbound = args.outbound ? 2 : 1
     const response = rearrangeCypherObject(
       await session.run(recordVehicleFromBacenta, {
@@ -368,6 +383,10 @@ export const arrivalsMutation = {
           error
         )
       )
+
+    await setBacentaStatus(bacentaId, context).catch((error: any) =>
+      console.log('Error Setting bacenta Status', error)
+    )
 
     const vehicleRecord = response.vehicleRecord.properties
     const date = new Date().toISOString().slice(0, 10)

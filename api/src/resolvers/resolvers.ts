@@ -3,17 +3,19 @@ import serviceNoIncomeMutations from './no-income/service-resolvers'
 import serviceMutation from './services/service-resolvers'
 import { Member } from './utils/types'
 import treasuryMutations from './anagkazo/treasury-resolvers'
-import sheepSeekingMutations from './sheep-seeking/sheep-seeking-resolvers'
+import sheepSeekingMutations from './campaigns/sheep-seeking-resolvers'
 import directoryMutation from './directory/directory-resolvers'
 import {
   arrivalsMutation,
   arrivalsResolvers,
 } from './arrivals/arrivals-resolvers'
 import bankingMutation from './banking/banking-resolver'
+import multiplicationCampaignMutations from './campaigns/multiplication-campaign-resolvers'
+import campaignsResolvers from './campaigns/campaigns-resolver'
 import {
-  campaignsMutation,
-  campaignsResolvers,
-} from './campaigns/campaigns-resolver'
+  equipmentCampaignMutations,
+  equipmentCampaignResolvers,
+} from './campaigns/equipment-campaign-resolvers'
 
 const dotenv = require('dotenv')
 
@@ -50,16 +52,20 @@ const resolvers = {
   },
   Constituency: {
     ...campaignsResolvers.Constituency,
+    ...equipmentCampaignResolvers.Constituency,
   },
   Council: {
     ...campaignsResolvers.Council,
+    ...equipmentCampaignResolvers.Council,
   },
   Stream: {
     ...campaignsResolvers.Stream,
     ...arrivalsResolvers.Stream,
+    ...equipmentCampaignResolvers.Stream,
   },
   GatheringService: {
     ...campaignsResolvers.GatheringService,
+    ...equipmentCampaignResolvers.GatheringService,
   },
 
   Mutation: {
@@ -70,8 +76,9 @@ const resolvers = {
     ...bankingMutation,
     ...treasuryMutations,
     ...serviceNoIncomeMutations,
-    ...campaignsMutation,
     ...sheepSeekingMutations,
+    ...multiplicationCampaignMutations,
+    ...equipmentCampaignMutations,
   },
 }
 

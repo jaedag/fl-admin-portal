@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useQuery, useMutation } from '@apollo/client'
 import { alertMsg, capitalise, throwToSentry } from '../../../global-utils'
@@ -17,12 +17,7 @@ import { LOG_BACENTA_HISTORY, LOG_FELLOWSHIP_HISTORY } from './LogMutations'
 import { MAKE_BACENTA_LEADER } from './ChangeLeaderMutations'
 import BacentaForm, { BacentaFormValues } from '../reusable-forms/BacentaForm'
 import { MAKE_FELLOWSHIP_INACTIVE } from './CloseChurchMutations'
-import {
-  MAKE_BACENTA_GRADUATED,
-  MAKE_BACENTA_IC,
-  SET_ACTIVE_BACENTA,
-  SET_VACATION_BACENTA,
-} from './StatusChanges'
+import { SET_ACTIVE_BACENTA, SET_VACATION_BACENTA } from './StatusChanges'
 import { addNewChurches, removeOldChurches } from './directory-utils'
 import LoadingScreen from 'components/base-component/LoadingScreen'
 import { FormikHelpers } from 'formik'
@@ -56,8 +51,6 @@ const UpdateBacenta = () => {
   })
 
   const [MakeBacentaLeader] = useMutation(MAKE_BACENTA_LEADER)
-  const [MakeBacentaIC] = useMutation(MAKE_BACENTA_IC)
-  const [MakeBacentaGraduated] = useMutation(MAKE_BACENTA_GRADUATED)
   const [SetBacentaOnVacation] = useMutation(SET_VACATION_BACENTA)
   const [SetBacentaActive] = useMutation(SET_ACTIVE_BACENTA)
   const [UpdateBacenta] = useMutation(UPDATE_BACENTA_MUTATION, {
@@ -161,21 +154,6 @@ const UpdateBacenta = () => {
           historyRecord: `Bacenta name has been changed from ${initialValues.name} to ${values.name}`,
         },
       })
-    }
-
-    //Change from IC to Graduated
-    if (values.graduationStatus !== initialValues.graduationStatus) {
-      if (values.graduationStatus === 'IC') {
-        await MakeBacentaIC({
-          variables: {
-            bacentaId: bacentaId,
-          },
-        })
-      }
-
-      if (values.graduationStatus === 'Graduated') {
-        await MakeBacentaGraduated({ variables: { bacentaId: bacentaId } })
-      }
     }
 
     //Change if the vacation status changes

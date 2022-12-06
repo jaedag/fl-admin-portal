@@ -1,5 +1,5 @@
 import React from 'react'
-import './TrendsButton.css'
+import '../buttons/TrendsButton.css'
 
 type Props = {
   percentage: number | typeof NaN
