@@ -1,3 +1,30 @@
+#### 5.3.15 (2022-12-07)
+
+##### Chores
+
+*  version bump ([c157684e](https://github.com/firstlovecenter/fl-pastoral-care/commit/c157684e58fe97d69ce9b8868929ddd77ec0aa6a))
+
+##### New Features
+
+*  automate bacenta status ([766d44d8](https://github.com/firstlovecenter/fl-pastoral-care/commit/766d44d81b88b1241d528732e53c03fbd1c0b478))
+*  automate bacenta status ([634f1763](https://github.com/firstlovecenter/fl-pastoral-care/commit/634f1763f0aa8eef38a94edb6913a5aad6688576))
+*  automate bacenta status ([5e124af2](https://github.com/firstlovecenter/fl-pastoral-care/commit/5e124af2cc7d35262cbcfaa31c159d19e3f65c29))
+*  set-bacenta-status ([0621c8aa](https://github.com/firstlovecenter/fl-pastoral-care/commit/0621c8aa3cdf14c5dc0e57b542492c84ea6a8415))
+*  resolvers for set-bacenta-status ([ad56a890](https://github.com/firstlovecenter/fl-pastoral-care/commit/ad56a890addf4f47ea72894cd4a5a803d421690a))
+*  set bacenta status to IC or graduated ([8da3e61f](https://github.com/firstlovecenter/fl-pastoral-care/commit/8da3e61f7768dd0644b4114e2ee6e205df9d2776))
+
+##### Bug Fixes
+
+*  resolve merge conflict merging automated bacenta status ([ffe11920](https://github.com/firstlovecenter/fl-pastoral-care/commit/ffe11920511445b45272eed81c9b3ad471c9447f))
+*  resolve merge conflict merging deploy into pr 355 ([4ac4ee0f](https://github.com/firstlovecenter/fl-pastoral-care/commit/4ac4ee0f8ba38b6a59af99c8ef4c28a93dd8998a))
+*  fix bug preventing teller and sheep seekers from being removed final ([9cca4090](https://github.com/firstlovecenter/fl-pastoral-care/commit/9cca40901095bba57f1faff2b7ad2717a514d49f))
+*  fix bug preventing teller and sheep seekers from being removed ([be136933](https://github.com/firstlovecenter/fl-pastoral-care/commit/be13693332cf1246bda810b0a21b15b5c1352c5f))
+*  solve issue where people  can't self bank constituency services ([b0d0000f](https://github.com/firstlovecenter/fl-pastoral-care/commit/b0d0000f3567a17b1b7ac62dd58e9b48f7771a4c))
+*  remove unused import in bacentaform.tsx ([64c15d22](https://github.com/firstlovecenter/fl-pastoral-care/commit/64c15d2299446d4949987ede787920dc2e273931))
+*  remove option to change bacenta status from bacenta update form ([a7e7a18d](https://github.com/firstlovecenter/fl-pastoral-care/commit/a7e7a18d8d42bf33e3b30746e3a20704fce13182))
+*  merge conflicts by accepting changes from remote ([afb338eb](https://github.com/firstlovecenter/fl-pastoral-care/commit/afb338ebb2b2f9065493c84a51d236f7ce349478))
+*  cypher query to check if member exists ([25f06424](https://github.com/firstlovecenter/fl-pastoral-care/commit/25f06424e3d8ccfe8aea65b4ce366004bb0caf50))
+
 #### 5.3.9 (2022-12-04)
 
 ##### Bug Fixes
