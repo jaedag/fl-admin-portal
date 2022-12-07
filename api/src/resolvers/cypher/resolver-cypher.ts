@@ -145,7 +145,14 @@ CREATE (member:Active:Member:IDL {whatsappNumber:$whatsappNumber})
       	member.email = $email,
       	member.phoneNumber = $phoneNumber,
         member.location = $location,
-      	member.pictureUrl = $pictureUrl
+      	member.pictureUrl = $pictureUrl,
+        
+        member.hasHolyGhostBaptism = false,
+        member.hasWaterBaptism = false,
+        member.graduatedUnderstandingSchools = [],
+        member.hasAudioCollections = false,
+        member.hasCampAttendance = false,
+        member.hasBibleTranslations = false
 
       CREATE (log:HistoryLog:RegistrationLog)
         SET
