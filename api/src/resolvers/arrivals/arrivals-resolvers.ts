@@ -38,6 +38,7 @@ import {
 import texts from '../texts.json'
 import { SendMoneyBody } from './arrivals-types'
 import { checkServantHasCurrentHistory } from '../services/service-resolvers'
+import { setBacentaStatus } from '../attendance/utils-attendance'
 
 const dotenv = require('dotenv')
 
@@ -383,6 +384,10 @@ export const arrivalsMutation = {
           error
         )
       )
+
+    await setBacentaStatus(bacentaId, context).catch((error: any) =>
+      console.log('Error Setting bacenta Status', error)
+    )
 
     const vehicleRecord = response.vehicleRecord.properties
     const date = new Date().toISOString().slice(0, 10)
