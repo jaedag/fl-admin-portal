@@ -16,6 +16,7 @@ import {
   equipmentCampaignMutations,
   equipmentCampaignResolvers,
 } from './campaigns/equipment-campaign-resolvers'
+import swollenSundaayMutations from './campaigns/swollen-sunday-campaign-resolvers'
 
 const dotenv = require('dotenv')
 
@@ -79,6 +80,7 @@ const resolvers = {
     ...sheepSeekingMutations,
     ...multiplicationCampaignMutations,
     ...equipmentCampaignMutations,
+    ...swollenSundaayMutations,
   },
 }
 
