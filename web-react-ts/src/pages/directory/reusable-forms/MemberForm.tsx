@@ -104,7 +104,7 @@ const MemberForm = ({
     if (!update) {
       return true
     }
-    if (update && isAuthorised(permitAdmin('Stream'), currentUser.roles)) {
+    if (update && isAuthorised(permitAdmin('Fellowship'), currentUser.roles)) {
       return true
     }
 
