@@ -35,6 +35,8 @@ const ImageUpload = (props: ImageUploadProps) => {
     let filename = `${username}-${currentUser.id}/${date}_${files[0].name}`
     filename = filename.replace(/\s/g, '-')
     filename = filename.replace(/~/g, '-')
+    filename = filename.replace(/[^a-zA-Z0-9-_]/g, '')
+
     const data = new FormData()
     data.append('file', files[0])
     data.append('upload_preset', uploadPreset || '')

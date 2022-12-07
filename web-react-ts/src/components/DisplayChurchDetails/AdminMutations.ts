@@ -9,6 +9,7 @@ export const MAKE_CONSTITUENCY_ADMIN = gql`
     RemoveConstituencyAdmin(
       constituencyId: $constituencyId
       adminId: $oldAdminId
+      newAdminId: $newAdminId
     ) {
       id
       firstName
@@ -40,7 +41,11 @@ export const MAKE_COUNCIL_ADMIN = gql`
     $newAdminId: ID!
     $oldAdminId: ID!
   ) {
-    RemoveCouncilAdmin(councilId: $councilId, adminId: $oldAdminId) {
+    RemoveCouncilAdmin(
+      councilId: $councilId
+      adminId: $oldAdminId
+      newAdminId: $newAdminId
+    ) {
       id
       firstName
       lastName
@@ -65,6 +70,37 @@ export const MAKE_COUNCIL_ADMIN = gql`
   }
 `
 
+export const MAKE_STREAM_ADMIN = gql`
+  mutation MakeStreamAdmin($streamId: ID!, $newAdminId: ID!, $oldAdminId: ID!) {
+    RemoveStreamAdmin(
+      streamId: $streamId
+      adminId: $oldAdminId
+      newAdminId: $newAdminId
+    ) {
+      id
+      firstName
+      lastName
+    }
+    MakeStreamAdmin(
+      streamId: $streamId
+      adminId: $newAdminId
+      oldAdminId: $oldAdminId
+    ) {
+      id
+      firstName
+      lastName
+      isAdminForStream {
+        id
+        admin {
+          id
+          firstName
+          lastName
+        }
+      }
+    }
+  }
+`
+
 export const MAKE_GATHERING_SERVICE_ADMIN = gql`
   mutation MakeGatheringServiceAdmin(
     $gatheringServiceId: ID!
@@ -74,6 +110,7 @@ export const MAKE_GATHERING_SERVICE_ADMIN = gql`
     RemoveGatheringServiceAdmin(
       gatheringServiceId: $gatheringServiceId
       adminId: $oldAdminId
+      newAdminId: $newAdminId
     ) {
       id
       firstName
@@ -88,33 +125,6 @@ export const MAKE_GATHERING_SERVICE_ADMIN = gql`
       firstName
       lastName
       isAdminForGatheringService {
-        id
-        admin {
-          id
-          firstName
-          lastName
-        }
-      }
-    }
-  }
-`
-
-export const MAKE_STREAM_ADMIN = gql`
-  mutation MakeStreamAdmin($streamId: ID!, $newAdminId: ID!, $oldAdminId: ID!) {
-    RemoveStreamAdmin(streamId: $streamId, adminId: $oldAdminId) {
-      id
-      firstName
-      lastName
-    }
-    MakeStreamAdmin(
-      streamId: $streamId
-      adminId: $newAdminId
-      oldAdminId: $oldAdminId
-    ) {
-      id
-      firstName
-      lastName
-      isAdminForStream {
         id
         admin {
           id

@@ -47,6 +47,7 @@ export const getStreamFinancials = (stream: StreamOptions) => {
       )
       break
     case 'gospel encounter':
+    case 'holy ghost encounter':
     case 'first love experience':
       auth = process.env.PAYSTACK_PRIVATE_KEY
       break

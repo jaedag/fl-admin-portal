@@ -938,32 +938,42 @@ extend type Mutation {
   #Arrivals Roles
   MakeConstituencyArrivalsAdmin(
     arrivalsAdminId: ID!
-    constituencyId: ID!
     oldArrivalsAdminId: ID
+    constituencyId: ID!
   ): Member!
   RemoveConstituencyArrivalsAdmin(
     arrivalsAdminId: ID!
+    newArrivalsAdminId: ID!
     constituencyId: ID!
   ): Member
   MakeCouncilArrivalsAdmin(
     arrivalsAdminId: ID!
-    councilId: ID!
     oldArrivalsAdminId: ID
+    councilId: ID!
   ): Member!
-  RemoveCouncilArrivalsAdmin(arrivalsAdminId: ID!, councilId: ID!): Member
+  RemoveCouncilArrivalsAdmin(
+    arrivalsAdminId: ID!
+    newArrivalsAdminId: ID!
+    councilId: ID!
+  ): Member
   MakeStreamArrivalsAdmin(
     arrivalsAdminId: ID!
-    streamId: ID!
     oldArrivalsAdminId: ID
+    streamId: ID!
   ): Member!
-  RemoveStreamArrivalsAdmin(arrivalsAdminId: ID!, streamId: ID!): Member
+  RemoveStreamArrivalsAdmin(
+    arrivalsAdminId: ID!
+    newArrivalsAdminId: ID!
+    streamId: ID!
+  ): Member
   MakeGatheringServiceArrivalsAdmin(
     arrivalsAdminId: ID!
+    newArrivalsAdminId: ID!
     gatheringServiceId: ID!
-    oldArrivalsAdminId: ID
   ): Member!
   RemoveGatheringServiceArrivalsAdmin(
     arrivalsAdminId: ID!
+    oldArrivalsAdminId: ID
     gatheringServiceId: ID!
   ): Member
 

@@ -85,8 +85,8 @@ export const setTransactionStatusSuccess = `
 
 export const getLastServiceRecord = `
 MATCH (record:ServiceRecord {id: $serviceRecordId})-[:SERVICE_HELD_ON]->(date:TimeGraph)
-MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowship:Fellowship)
-MATCH (fellowship)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(otherRecords:ServiceRecord)-[:SERVICE_HELD_ON]->(otherDate:TimeGraph)
+MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(church) WHERE church:Fellowship OR church:Constituency OR church:Council
+MATCH (church)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(otherRecords:ServiceRecord)-[:SERVICE_HELD_ON]->(otherDate:TimeGraph)
 WHERE NOT (otherRecords:NoService) AND otherDate.date.week < date.date.week
 
 WITH DISTINCT record,otherRecords ORDER BY otherRecords.createdAt DESC LIMIT 2

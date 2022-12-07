@@ -14,6 +14,7 @@ const StreamMultiplicationCampaignServiceDetails = () => {
     variables: {
       id: multiplicationRecordId,
     },
+    fetchPolicy: 'cache-and-network',
   })
 
   return (

@@ -17,6 +17,7 @@ type ServiceDetailsProps = {
 }
 
 export type MultiplicationServiceRecord = {
+  bankingProof: boolean
   __typename: 'MultiplicationRecord'
   id: string
   createdAt: string
@@ -177,7 +178,7 @@ const MultiplicationCampaignServiceDetails = ({
                     </div>
                   </>
                 )}{' '}
-                {!service.bankingSlip && service?.treasurerSelfie && (
+                {!service.bankingProof && service?.treasurerSelfie && (
                   <p className="fw-bold text-danger">
                     You Have Not Submitted Your Banking Slip!!!
                   </p>

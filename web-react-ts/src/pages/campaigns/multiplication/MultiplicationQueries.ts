@@ -50,6 +50,14 @@ export const MULTIPLICATION_RECORDS = gql`
       foreignCurrency
       souls
       miracles
+      bankingSlip
+      bankingProof
+      created_by {
+        id
+        firstName
+        lastName
+        fullName
+      }
       crusadePictures
       treasurerSelfie
       crusadeDate {
@@ -154,7 +162,7 @@ export const COUNCIL_MULTIPLICATION_GRAPHS = gql`
 `
 
 export const STREAM_MULTIPLICATION_GRAPHS = gql`
-  query constituencyServiceMultiplicationGraphs($streamId: ID!) {
+  query streamServiceMultiplicationGraphs($streamId: ID!) {
     streams(where: { id: $streamId }) {
       id
       name
@@ -178,6 +186,136 @@ export const STREAM_MULTIPLICATION_GRAPHS = gql`
         crusadeDate {
           date
         }
+      }
+    }
+  }
+`
+
+export const MULTIPLICATION_BANKING_SLIP_SUBMISSION = gql`
+  mutation MultiplicationBankingSlipSubmission(
+    $multiplicationRecordId: String!
+    $bankingSlip: String!
+  ) {
+    SubmitMultiplicationBankingSlip(
+      multiplicationRecordId: $multiplicationRecordId
+      bankingSlip: $bankingSlip
+    ) {
+      id
+      bankingProof
+      bankingSlipUploader {
+        id
+        firstName
+        lastName
+      }
+    }
+  }
+`
+
+export const GATHERING_SERVICE_MULTIPLICATION_BANKING_SLIP_QUERY = gql`
+  query gatheringServiceMultiplicationBankingSlipQueries(
+    $gatheringServiceId: ID!
+  ) {
+    gatheringServices(where: { id: $gatheringServiceId }) {
+      id
+      name
+      multiplicationRecords(limit: 20) {
+        id
+        created_by {
+          id
+          firstName
+          lastName
+        }
+        crusadeDate {
+          date
+        }
+        bankingProof
+        bankingSlipUploader {
+          id
+          firstName
+          lastName
+        }
+        income
+      }
+    }
+  }
+`
+
+export const STREAM_MULTIPLICATION_BANKING_SLIP_QUERY = gql`
+  query streamMultiplicationBankingSlipQueries($streamId: ID!) {
+    streams(where: { id: $streamId }) {
+      id
+      name
+      multiplicationRecords(limit: 20) {
+        id
+        created_by {
+          id
+          firstName
+          lastName
+        }
+        crusadeDate {
+          date
+        }
+        bankingProof
+        bankingSlipUploader {
+          id
+          firstName
+          lastName
+        }
+        income
+      }
+    }
+  }
+`
+
+export const COUNCIL_MULTIPLICATION_BANKING_SLIP_QUERY = gql`
+  query councilMultiplicationBankingSlipQueries($councilId: ID!) {
+    councils(where: { id: $councilId }) {
+      id
+      name
+      multiplicationRecords(limit: 20) {
+        id
+        created_by {
+          id
+          firstName
+          lastName
+        }
+        crusadeDate {
+          date
+        }
+        bankingProof
+        bankingSlipUploader {
+          id
+          firstName
+          lastName
+        }
+        income
+      }
+    }
+  }
+`
+
+export const CONSTITUENCY_MULTIPLICATION_BANKING_SLIP_QUERY = gql`
+  query constituencyMultiplicationBankingSlipQueries($constituencyId: ID!) {
+    constituencies(where: { id: $constituencyId }) {
+      id
+      name
+      multiplicationRecords(limit: 20) {
+        id
+        created_by {
+          id
+          firstName
+          lastName
+        }
+        crusadeDate {
+          date
+        }
+        bankingProof
+        bankingSlipUploader {
+          id
+          firstName
+          lastName
+        }
+        income
       }
     }
   }

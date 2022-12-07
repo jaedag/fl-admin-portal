@@ -369,7 +369,11 @@ const DisplayChurchDetails = (props: DisplayChurchDetailsProps) => {
         (props.church?.sprinterCost !== 0 || props.church?.urvanCost !== 0) ? (
           <RoleView
             roles={['leaderBacenta']}
-            permittedStream={['Gospel Encounter', 'First Love Experience']}
+            permittedStream={[
+              'Gospel Encounter',
+              'First Love Experience',
+              'Holy Ghost Encounter',
+            ]}
             verifyId={props?.leader?.id}
           >
             {!props.momoNumber && !props.loading && (

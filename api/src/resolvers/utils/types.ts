@@ -74,6 +74,7 @@ export type ServantTypeLowerCase =
 export type StreamOptions =
   | 'Anagkazo Encounter'
   | 'Gospel Encounter'
+  | 'Holy Ghost Encounter'
   | 'First Love Experience'
 
 type TitleOptions = 'Pastor' | 'Reverend' | 'Bishop'

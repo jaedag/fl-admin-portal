@@ -199,7 +199,7 @@ export const arrivalsMutation = {
     const stream = recordResponse.stream.properties
     const mobilisationEndTime = new Date(
       new Date().toISOString().slice(0, 10) +
-        stream.mobilisationEndTime.slice(10)
+        new Date(stream.mobilisationEndTime).toISOString().slice(10)
     )
     const today = new Date()
 
@@ -278,7 +278,8 @@ export const arrivalsMutation = {
 
     const stream = recordResponse.stream.properties
     const arrivalEndTime = new Date(
-      new Date().toISOString().slice(0, 10) + stream.arrivalEndTime.slice(10)
+      new Date().toISOString().slice(0, 10) +
+        new Date(stream.arrivalEndTime).toISOString().slice(10)
     )
     const today = new Date()
 

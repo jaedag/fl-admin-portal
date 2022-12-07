@@ -13,6 +13,11 @@ extend type Mutation {
     crusadeDate: Date!
     treasurers: [ID]!
   ): MultiplicationRecord
+
+  SubmitMultiplicationBankingSlip(
+    multiplicationRecordId: String!
+    bankingSlip: String!
+  ): MultiplicationRecord
 }
 
 type MultiplicationRecord {
@@ -30,6 +35,19 @@ type MultiplicationRecord {
   treasurerSelfie: String!
   bankingSlipUploader: Member
     @relationship(type: "UPLOADED_SLIP_FOR", direction: IN)
+  bankingProof: Boolean
+    @cypher(
+      statement: """
+      MATCH (this)
+      WITH this WHERE this.bankingSlip IS NOT NULL
+      OR  this.transactionStatus = 'success'
+      OR this.tellerConfirmationTime IS NOT NULL
+      RETURN true
+      """
+    )
+  createdAt: Date!
+  created_by: Member! @relationship(type: "LOGGED_BY", direction: OUT)
+  bankingSlip: String
 }
 
 type AggregateMultiplicationRecord @auth(rules: [{ isAuthenticated: true }]) {

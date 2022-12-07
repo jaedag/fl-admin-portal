@@ -89,6 +89,7 @@ export type ChurchIdAndName = {
 export type StreamOptions =
   | 'Anagkazo Encounter'
   | 'Gospel Encounter'
+  | 'Holy Ghost Encounter'
   | 'First Love Experience'
 export type TitleOptions = 'Pastor' | 'Reverend' | 'Bishop'
 

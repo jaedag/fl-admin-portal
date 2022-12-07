@@ -43,7 +43,8 @@ const isArrivalsToday = (bacenta: { stream_name: StreamOptions }) => {
 
   if (
     // today === 0 &&
-    bacenta.stream_name.toLowerCase() === 'first love experience'
+    bacenta.stream_name.toLowerCase() === 'first love experience' ||
+    bacenta.stream_name.toLowerCase() === 'holy ghost encounter'
   ) {
     return true
   }

@@ -1,3 +1,36 @@
+#### 5.3.9 (2022-12-04)
+
+##### Bug Fixes
+
+*  remove non alphanumeric characters from image filename ([2088c868](https://github.com/firstlovecenter/fl-pastoral-care/commit/2088c868e4831b7ffef9a4f2302310d9a3e7acf9))
+*  fix bug preventing council arrivals admins from being  changed ([8eb0a34b](https://github.com/firstlovecenter/fl-pastoral-care/commit/8eb0a34b860bbbe1ec0e2d8c41a60ad15023e58a))
+
+#### 5.3.8 (2022-12-04)
+
+##### New Features
+
+*  support search for leaders as well as churches in churchSearch ([37310fcb](https://github.com/firstlovecenter/fl-pastoral-care/commit/37310fcbfaf8778b784ae807453f491eb028e51a))
+*  add banking slip to multiplication details page ([b44a7722](https://github.com/firstlovecenter/fl-pastoral-care/commit/b44a77220fd3c41b36ed45ac719d7d24ae8e7e69))
+*  implement upload multiplication banking receipts ([fbe9acb2](https://github.com/firstlovecenter/fl-pastoral-care/commit/fbe9acb242a8402f462abab00bdd05e77d49c653))
+*  admin-448 mutation for uploading banking slip ([4abc1e83](https://github.com/firstlovecenter/fl-pastoral-care/commit/4abc1e83215740e6e8d0abf401823ca92b899cfe))
+
+##### Bug Fixes
+
+*  add in support for holy ghost encounter ([3d37eada](https://github.com/firstlovecenter/fl-pastoral-care/commit/3d37eadab27483dea0c2d29ab5dbfc1b88c32106))
+*  add bankingSlip property to multiplication record ([f89748d4](https://github.com/firstlovecenter/fl-pastoral-care/commit/f89748d40a68ef770b89e25d14239c3b214a3c4c))
+*  correct query name mistake in multiplication queries ([cd291017](https://github.com/firstlovecenter/fl-pastoral-care/commit/cd29101735b544cbe98c330e4474ed9b6fb6d01e))
+
+#### 5.3.7 (2022-12-01)
+
+##### New Features
+
+*  implement multiplication crusade trends ([#353](https://github.com/firstlovecenter/fl-pastoral-care/pull/353)) ([13bffea1](https://github.com/firstlovecenter/fl-pastoral-care/commit/13bffea1fab26f041c2a1c835d3af0d9aa4cb9e3))
+
+##### Bug Fixes
+
+*  fix bug where roles of old admins were not being removed ([e97fc758](https://github.com/firstlovecenter/fl-pastoral-care/commit/e97fc7587e8e6aa9eefa3093e30c38529a21d744))
+*  improve width for form attendance confirmation picture ([01c59645](https://github.com/firstlovecenter/fl-pastoral-care/commit/01c59645ea38a692255a7801a519637dadcfe66c))
+
 #### 5.3.6 (2022-11-26)
 
 #### 5.3.5 (2022-11-26)
