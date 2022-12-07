@@ -22,10 +22,7 @@ extend type Oversight {
 }
 
 extend type GatheringService {
-  swellBussingRecords(
-    startDate: String!
-    endDate: String!
-  ): [AggregateBussingRecord!]!
+  swellBussingRecords(startDate: String!, endDate: String!): [SwellStats!]!
     @cypher(
       statement: """
        MATCH (this)
@@ -76,10 +73,7 @@ extend type Council {
 }
 
 extend type Constituency {
-  swellBussingRecords(
-    startDate: String!
-    endDate: String!
-  ): [AggregateBussingRecord!]!
+  swellBussingRecords(startDate: String!, endDate: String!): [SwellStats!]!
     @cypher(
       statement: """
       MATCH (this)
@@ -96,10 +90,7 @@ extend type Constituency {
 }
 
 extend type Bacenta {
-  swellBussingRecords(
-    startDate: String!
-    endDate: String!
-  ): [AggregateBussingRecord!]!
+  swellBussingRecords(startDate: String!, endDate: String!): [SwellStats!]!
     @cypher(
       statement: """
       MATCH (this)
@@ -113,4 +104,9 @@ extend type Bacenta {
       RETURN {attendance: toFloat(aggregate.attendance), date: swell.date, target: target.target}
       """
     )
+}
+
+extend type Mutation {
+  UploadBacentaTargets(url: String!, swellDate: String!): Boolean!
+  ShareTargetsByCouncil(councilId: String!): Council!
 }
