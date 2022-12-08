@@ -199,7 +199,8 @@ export const RemoveServant = async (
   args: any,
   permittedRoles: Role[],
   churchType: ChurchLevel,
-  servantType: ServantType
+  servantType: ServantType,
+  removeOnly?: boolean
 ) => {
   const authToken: string = await getAuthToken()
   const authRoles = await getAuth0Roles(authToken)
@@ -235,7 +236,8 @@ export const RemoveServant = async (
 
   if (
     (!servantValidation(servant) || !servantValidation(newServant)) &&
-    !['ArrivalsCounter', 'Teller', 'SheepSeeker'].includes(servantType)
+    !['ArrivalsCounter', 'Teller', 'SheepSeeker'].includes(servantType) &&
+    !removeOnly
   ) {
     return null
   }

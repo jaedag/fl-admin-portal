@@ -183,7 +183,8 @@ const directoryMutation = {
           'adminConstituency',
         ],
         'Fellowship',
-        'Leader'
+        'Leader',
+        true
       )
 
       const closeFellowshipResponse = await session.run(
