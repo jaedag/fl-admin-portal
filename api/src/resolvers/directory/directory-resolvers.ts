@@ -228,7 +228,8 @@ const directoryMutation = {
         args,
         permitAdmin('Constituency'),
         'Bacenta',
-        'Leader'
+        'Leader',
+        true
       )
 
       const closeBacentaResponse = await session.run(
@@ -270,7 +271,8 @@ const directoryMutation = {
         args,
         permitAdmin('Council'),
         'Constituency',
-        'Leader'
+        'Leader',
+        true
       )
 
       const closeConstituencyResponse = await session.run(
