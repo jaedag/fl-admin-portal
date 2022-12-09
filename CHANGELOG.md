@@ -1,3 +1,9 @@
+#### 5.3.19 (2022-12-09)
+
+##### Bug Fixes
+
+*  solve issue where constituency transactionStatuses were not showing ([1ecc6db8](https://github.com/firstlovecenter/fl-pastoral-care/commit/1ecc6db88b1f6385b2a5ea2454797717222efb9a))
+
 #### 5.3.18 (2022-12-09)
 
 ##### Bug Fixes
