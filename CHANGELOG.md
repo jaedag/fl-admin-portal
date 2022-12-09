@@ -1,3 +1,9 @@
+#### 5.3.17 (2022-12-09)
+
+##### Bug Fixes
+
+*  update permissions for adminConstituency to do self banking for constituency services ([0e3ac794](https://github.com/firstlovecenter/fl-pastoral-care/commit/0e3ac7949275b51e75d8b0ec4ccd98cba4c024d8))
+
 #### 5.3.16 (2022-12-09)
 
 ##### Bug Fixes
