@@ -51,7 +51,9 @@ const PayOffering = (props: PayOfferingProps) => {
   const [ConfirmOfferingPayment] = useMutation(CONFIRM_OFFERING_PAYMENT)
   const navigate = useNavigate()
   const service = data?.serviceRecords[0]
-  const incomeAndCharges = (service?.income / (1 - 0.0195) + 0.01).toFixed(2)
+  const incomeAndCharges = parseFloat(
+    (service?.income / (1 - 0.0195) + 0.01).toFixed(2)
+  )
 
   const { togglePopup, isOpen } = usePopup()
   const { show, handleClose, handleShow } = useModal()
@@ -231,7 +233,7 @@ const PayOffering = (props: PayOfferingProps) => {
                       <Col>
                         <small className="form-text label ">Charges</small>
                         <div className="fw-bold yellow">
-                          {parseFloat(incomeAndCharges) - service?.income} GHS
+                          {(incomeAndCharges - service?.income).toFixed(2)} GHS
                         </div>
                       </Col>
                     </Row>
