@@ -108,7 +108,9 @@ const SelfBankingList = ({
                 navigate('/self-banking/receipt')
                 return
               }
-              navigate('/services/church/self-banking/pay')
+              navigate(
+                `/services/${church.__typename.toLowerCase()}/self-banking/pay`
+              )
             }}
           >
             <Card.Header>
