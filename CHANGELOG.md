@@ -1,3 +1,10 @@
+#### 5.3.18 (2022-12-09)
+
+##### Bug Fixes
+
+*  add backend permissions for constituency admin to use self banking ([448aa3b9](https://github.com/firstlovecenter/fl-pastoral-care/commit/448aa3b9c8e9c9fbba944a3f2c7b5aa33452d04a))
+*  remove trailing decimal on charges ([4afc5673](https://github.com/firstlovecenter/fl-pastoral-care/commit/4afc5673561a0c4cd3c0b433b735f3e9197f7f7d))
+
 #### 5.3.17 (2022-12-09)
 
 ##### Bug Fixes
