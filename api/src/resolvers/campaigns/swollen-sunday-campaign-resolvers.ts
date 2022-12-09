@@ -7,6 +7,11 @@ import {
   uploadBacentaTargetsCypher,
 } from './swollen-sunday-campaign-cypher'
 
+type TargetArgs = {
+  councilId: string
+  target: number
+}
+
 const UploadBacentaTargets = async (
   object: never,
   args: { data: string; swellDate: string },
@@ -15,7 +20,6 @@ const UploadBacentaTargets = async (
   isAuth(permitAdmin('Council'), context.auth.roles)
   const session = context.executionContext.session()
 
-  console.log(JSON.parse(args.data))
   try {
     const response = rearrangeCypherObject(
       await session.run(uploadBacentaTargetsCypher, {
@@ -33,47 +37,65 @@ const UploadBacentaTargets = async (
   }
 }
 
+const runShareBacenta = async (
+  councilId: string,
+  target: number | string,
+  swellDate: string,
+  context: Context
+) => {
+  try {
+    const session = context.executionContext.session()
+    const averageCouncilBussing = rearrangeCypherObject(
+      await session.run(getCouncilAverage, {
+        councilId,
+      })
+    )
+
+    const response = rearrangeCypherObject(
+      await session.run(shareBacentaTargetsCypher, {
+        councilId,
+        averageCouncilBussing: averageCouncilBussing.averageCouncilBussing,
+        swellDate,
+        target,
+      })
+    )
+
+    return response.target?.properties
+  } catch (error) {
+    return throwToSentry(
+      'There was an error setting the bacenta targets',
+      error
+    )
+  }
+}
+
+const convertToNumber = (key: any, value: any) => {
+  if (typeof value.target === 'string') {
+    return parseInt(value.target, 10)
+  }
+  return value
+}
+
 const ShareBacentaTargets = async (
   object: never,
   args: { data: string; swellDate: string },
   context: Context
 ) => {
   isAuth(permitAdmin('Council'), context.auth.roles)
-  const session = context.executionContext.session()
 
-  const runShareBacenta = async (
-    councilId: string,
-    swellDate: string,
-    target: number
-  ) => {
-    try {
-      const averageCouncilBussing = rearrangeCypherObject(
-        await session.run(getCouncilAverage, {
-          councilId,
-        })
+  const parsed: TargetArgs[] = JSON.parse(args.data, convertToNumber)
+  const stuff = await Promise.all(
+    // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
+    Object.entries(parsed).map(([index, targetArgs]) =>
+      runShareBacenta(
+        targetArgs.councilId,
+        targetArgs.target,
+        args.swellDate,
+        context
       )
-      await session.run(shareBacentaTargetsCypher, {
-        councilId,
-        averageCouncilBussing,
-        swellDate,
-        target,
-      })
-
-      return true
-    } catch (error) {
-      return throwToSentry(
-        'There was an error setting the bacenta targets',
-        error
-      )
-    }
-  }
-
-  const parsed: { councilId: string; target: number } = JSON.parse(args.data)
-  const array = Object.entries(parsed).map(([councilId, target]) =>
-    runShareBacenta(councilId, args.swellDate, Number(target))
+    )
   )
-
-  return array
+  return stuff
 }
 
 const swollenSundayMutations = {

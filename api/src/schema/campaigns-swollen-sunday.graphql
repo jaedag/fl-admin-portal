@@ -4,6 +4,25 @@ type SwellStats {
   target: Int
 }
 
+type Target {
+  target: Int
+  date: TimeGraph! @relationship(type: "TARGET_FOR", direction: OUT)
+  bacenta: Bacenta!
+    @cypher(
+      statement: """
+      MATCH (this)-[:TARGET_FOR]->(:ServiceLog)-[:HAS_HISTORY]->(bacenta:Bacenta)
+      RETURN bacenta
+      """
+    )
+  council: Council!
+    @cypher(
+      statement: """
+      MATCH (this)-[:TARGET_FOR]->(:ServiceLog)-[:HAS_HISTORY]->(bacenta:Bacenta)
+      RETURN bacenta
+      """
+    )
+}
+
 extend type Oversight {
   swellBussingRecords(startDate: String!, endDate: String!): [SwellStats!]!
     @cypher(
@@ -70,6 +89,13 @@ extend type Council {
       RETURN {attendance: toFloat(aggregate.attendance), date: swell.date, target: target.target}
       """
     )
+  swellTarget: Target!
+    @cypher(
+      statement: """
+      MATCH (target:Target)-[:TARGET_FOR]->(:ServiceLog)-[:HAS_HISTORY]->(this)
+      RETURN target
+      """
+    )
 }
 
 extend type Constituency {
@@ -108,5 +134,5 @@ extend type Bacenta {
 
 extend type Mutation {
   UploadBacentaTargets(data: String!, swellDate: String!): Boolean!
-  ShareTargetsByCouncil(data: String!, swellDate: String!): Council!
+  ShareTargetsByCouncil(data: String!, swellDate: String!): [Target]
 }
