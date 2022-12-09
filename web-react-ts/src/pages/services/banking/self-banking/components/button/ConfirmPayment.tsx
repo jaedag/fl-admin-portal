@@ -19,6 +19,7 @@ type ButtonConfirmPaymentProps = {
           serviceRecordId?: string
           fellowshipId?: string
           constituencyId?: string
+          councilId?: string
         }>
       | undefined
   ) => Promise<ApolloQueryResult<any>>
