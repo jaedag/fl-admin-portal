@@ -49,6 +49,7 @@ export const CONSTITUENCY_BANKING_SLIP_QUERIES = gql`
       name
       services(limit: 20) {
         id
+        stream_name
         noServiceReason
         createdAt
         serviceDate {
@@ -68,7 +69,15 @@ export const CONSTITUENCY_BANKING_SLIP_QUERIES = gql`
           lastName
           fullName
         }
+        offeringBankedBy {
+          id
+          firstName
+          lastName
+          fullName
+        }
         income
+        transactionId
+        transactionStatus
       }
     }
   }
@@ -82,6 +91,7 @@ export const COUNCIL_BANKING_SLIP_QUERIES = gql`
       name
       services(limit: 20) {
         id
+        stream_name
         noServiceReason
         createdAt
         serviceDate {
@@ -101,7 +111,15 @@ export const COUNCIL_BANKING_SLIP_QUERIES = gql`
           lastName
           fullName
         }
+        offeringBankedBy {
+          id
+          firstName
+          lastName
+          fullName
+        }
         income
+        transactionId
+        transactionStatus
       }
     }
   }
