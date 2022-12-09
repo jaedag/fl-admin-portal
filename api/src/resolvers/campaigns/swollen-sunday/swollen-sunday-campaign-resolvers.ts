@@ -1,6 +1,6 @@
-import { permitAdmin } from '../permissions'
-import { Context } from '../utils/neo4j-types'
-import { isAuth, rearrangeCypherObject, throwToSentry } from '../utils/utils'
+import { permitAdmin } from '../../permissions'
+import { Context } from '../../utils/neo4j-types'
+import { isAuth, rearrangeCypherObject, throwToSentry } from '../../utils/utils'
 import {
   getCouncilAverage,
   shareBacentaTargetsCypher,

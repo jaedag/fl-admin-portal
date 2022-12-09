@@ -1,4 +1,6 @@
+import { Context } from '../utils/neo4j-types'
 import { ChurchLevel } from '../utils/types'
+import { getEquipmentDetails } from './equipment/equipment-campaign-resolvers'
 
 const churchCampaigns = async (church: ChurchLevel) => {
   switch (church) {
@@ -38,15 +40,23 @@ const campaignsResolvers = {
   },
   GatheringService: {
     campaigns: async () => churchCampaigns('GatheringService'),
+    equipmentRecord: (obj: any, args: any, context: Context) =>
+      getEquipmentDetails(obj, args, context, 'GatheringService'),
   },
   Stream: {
     campaigns: async () => churchCampaigns('Stream'),
+    equipmentRecord: (obj: any, args: any, context: Context) =>
+      getEquipmentDetails(obj, args, context, 'Stream'),
   },
   Council: {
     campaigns: async () => churchCampaigns('Council'),
+    equipmentRecord: (obj: any, args: any, context: Context) =>
+      getEquipmentDetails(obj, args, context, 'Council'),
   },
   Constituency: {
     campaigns: async () => churchCampaigns('Constituency'),
+    equipmentRecord: (obj: any, args: any, context: Context) =>
+      getEquipmentDetails(obj, args, context, 'Constituency'),
   },
   Bacenta: {
     campaigns: async () => churchCampaigns('Bacenta'),
