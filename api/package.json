@@ -1,6 +1,6 @@
 {
   "name": "admin-portal-api",
-  "version": "5.3.20",
+  "version": "5.3.21",
   "description": "API app for First Love Church Admin Portal",
   "main": "src/index.js",
   "scripts": {

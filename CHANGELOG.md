@@ -1,3 +1,10 @@
+#### 5.3.21 (2022-12-09)
+
+##### Bug Fixes
+
+*  correct navigation to self banking payment page ([fa9fa345](https://github.com/firstlovecenter/fl-pastoral-care/commit/fa9fa3456e30664bb11583601682f14f9bede5bd))
+*  add permission for constituency admin to confirm offering payment ([84f69184](https://github.com/firstlovecenter/fl-pastoral-care/commit/84f6918452fb1ecb9accb18afe1e45ac8cefa797))
+
 #### 5.3.20 (2022-12-09)
 
 ##### Bug Fixes
