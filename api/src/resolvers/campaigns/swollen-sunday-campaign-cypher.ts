@@ -1,4 +1,3 @@
-/* eslint-disable import/prefer-default-export */
 export const uploadBacentaTargetsCypher = `
 UNWIND $data as details
 CREATE (target:Target {id: apoc.create.uuid()})
@@ -52,5 +51,5 @@ WITH swellDate, log, target
 MERGE (target)<-[:HAS_TARGET]-(log)
 MERGE (target)-[:TARGET_FOR]->(swellDate)
 
-RETURN target
+RETURN "success" as result
 `
