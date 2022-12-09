@@ -1,3 +1,14 @@
+#### 5.3.16 (2022-12-09)
+
+##### Bug Fixes
+
+*  fix breaking change in incomeCharges data type ([dd898e7e](https://github.com/firstlovecenter/fl-pastoral-care/commit/dd898e7e41cc151628ff80ec9866c25c17437629))
+*  remove trailing decimals on charges, round to 2 dp ([9acac02c](https://github.com/firstlovecenter/fl-pastoral-care/commit/9acac02c5ed4936ee85dd16b3e395cd5ed743867))
+*  allow RemoveServant cypher to run when closing down bacenta and constituency ([a4777415](https://github.com/firstlovecenter/fl-pastoral-care/commit/a47774156a500d89dba3486882a3d6a8c4dd4948))
+*  allow RemoveServant cypher to run when closing down fellowship ([38ca1e07](https://github.com/firstlovecenter/fl-pastoral-care/commit/38ca1e0774e3ba2bc9025306e24918bfaa617318))
+*  update permissions so that all roles can update emails ([d24eff83](https://github.com/firstlovecenter/fl-pastoral-care/commit/d24eff83ca841fab078fd5689abfc3c1558bcc87))
+*  implement initialisation of pastoral care values when creating members ([ee367d4b](https://github.com/firstlovecenter/fl-pastoral-care/commit/ee367d4be900c53925302c634a1198576a7774e2))
+
 #### 5.3.15 (2022-12-07)
 
 ##### Chores
