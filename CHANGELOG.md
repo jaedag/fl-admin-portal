@@ -1,3 +1,9 @@
+#### 5.3.20 (2022-12-09)
+
+##### Bug Fixes
+
+*  clean up flow for self banking for constituencies ([7e96c840](https://github.com/firstlovecenter/fl-pastoral-care/commit/7e96c840ab76df39aa035b71285546f0f0ecb45f))
+
 #### 5.3.19 (2022-12-09)
 
 ##### Bug Fixes
