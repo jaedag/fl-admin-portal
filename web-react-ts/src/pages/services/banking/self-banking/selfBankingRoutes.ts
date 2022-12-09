@@ -20,7 +20,7 @@ export const banking: LazyRouteTypes[] = [
   {
     path: '/services/constituency/self-banking',
     element: ConstituencySelfBanking,
-    roles: ['leaderConstituency'],
+    roles: ['leaderConstituency', 'adminConstituency'],
     placeholder: true,
   },
   {
@@ -31,7 +31,7 @@ export const banking: LazyRouteTypes[] = [
   {
     path: '/services/constituency/self-banking/pay',
     element: PayConstituencyOffering,
-    roles: ['leaderConstituency'],
+    roles: ['leaderConstituency', 'adminConstituency'],
   },
   {
     path: '/self-banking/confirm-payment',
