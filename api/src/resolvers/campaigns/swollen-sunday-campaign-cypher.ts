@@ -5,7 +5,7 @@ CREATE (target:Target {id: apoc.create.uuid()})
 SET target.target = details.target
 
 WITH target, details
-MATCH (bacenta:Bacenta {code: details.code})
+MATCH (bacenta:Bacenta {code: toInteger(details.code)})
 MATCH (bacenta)-[:CURRENT_HISTORY]->(log:ServiceLog)
 MERGE (swellDate:TimeGraph {date:date($swellDate)})
 SET swellDate:SwellDate

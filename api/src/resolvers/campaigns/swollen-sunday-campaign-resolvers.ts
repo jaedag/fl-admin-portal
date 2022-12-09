@@ -15,6 +15,7 @@ const UploadBacentaTargets = async (
   isAuth(permitAdmin('Council'), context.auth.roles)
   const session = context.executionContext.session()
 
+  console.log(JSON.parse(args.data))
   try {
     const response = rearrangeCypherObject(
       await session.run(uploadBacentaTargetsCypher, {
