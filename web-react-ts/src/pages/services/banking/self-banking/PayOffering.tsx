@@ -53,7 +53,7 @@ const PayOffering = (props: PayOfferingProps) => {
   const service = data?.serviceRecords[0]
   const incomeAndCharges = parseFloat(
     (service?.income / (1 - 0.0195) + 0.01).toFixed(2)
-  )
+  ).toFixed(2)
   const { togglePopup, isOpen } = usePopup()
   const { show, handleClose, handleShow } = useModal()
   const [errorMessage, setErrorMessage] = useState('')
