@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { getHumanReadableDate } from 'jd-date-utils'
 import { Context } from '../utils/neo4j-types'
-import { permitLeader, permitLeaderAdmin } from '../permissions'
+import { permitLeader, permitLeaderAdmin, permitMe } from '../permissions'
 import {
   getMobileCode,
   getStreamFinancials,
@@ -293,7 +293,7 @@ const bankingMutation = {
     args: { stream_name: StreamOptions; serviceRecordId: string },
     context: Context
   ) => {
-    isAuth(permitLeader('Fellowship'), context.auth.roles)
+    isAuth(permitMe('Fellowship'), context.auth.roles)
     const session = context.executionContext.session()
 
     const { auth } = getStreamFinancials(args.stream_name)
