@@ -8,7 +8,13 @@ import {
   throwToSentry,
 } from '../utils/utils'
 import {
-  aggregateServiceDataOnHigherChurches,
+  aggregateServiceDataForBacenta,
+  aggregateServiceDataForConstituency,
+  aggregateServiceDataForCouncil,
+  aggregateServiceDataForDenomination,
+  aggregateServiceDataForGatheringService,
+  aggregateServiceDataForOversight,
+  aggregateServiceDataForStream,
   checkCurrentServiceLog,
   checkFormFilledThisWeek,
   getServantAndChurch as getServantAndChurchCypher,
@@ -106,20 +112,39 @@ const serviceMutation = {
     }
 
     const secondSession = context.executionContext.session()
-    const cypherResponse = await Promise.all([
-      session.run(recordService, {
+    let aggregateCypher = ''
+
+    if (serviceCheck.higherChurchLabels?.includes('Bacenta')) {
+      aggregateCypher = aggregateServiceDataForBacenta
+    } else if (serviceCheck.higherChurchLabels?.includes('Constituency')) {
+      aggregateCypher = aggregateServiceDataForConstituency
+    } else if (serviceCheck.higherChurchLabels?.includes('Council')) {
+      aggregateCypher = aggregateServiceDataForCouncil
+    } else if (serviceCheck.higherChurchLabels?.includes('Stream')) {
+      aggregateCypher = aggregateServiceDataForStream
+    } else if (serviceCheck.higherChurchLabels?.includes('GatheringService')) {
+      aggregateCypher = aggregateServiceDataForGatheringService
+    } else if (serviceCheck.higherChurchLabels?.includes('Oversight')) {
+      aggregateCypher = aggregateServiceDataForOversight
+    } else if (serviceCheck.higherChurchLabels?.includes('Denomination')) {
+      aggregateCypher = aggregateServiceDataForDenomination
+    }
+
+    const cypherResponse = await session
+      .run(recordService, {
         ...args,
         auth: context.auth,
-      }),
-      secondSession.run(aggregateServiceDataOnHigherChurches, {
-        ...args,
-      }),
-    ]).catch((error) => throwToSentry('Error Recording Service', error))
+      })
+      .catch((error: any) => throwToSentry('Error Recording Service', error))
+    secondSession
+      .run(aggregateCypher, {
+        churchId: serviceCheck.higherChurchId,
+      })
+      .catch((error: any) => console.error('Error Aggregating Service', error))
 
     session.close()
-    secondSession.close()
 
-    const serviceDetails = rearrangeCypherObject(cypherResponse[0])
+    const serviceDetails = rearrangeCypherObject(cypherResponse)
 
     return serviceDetails.serviceRecord.properties
   },
