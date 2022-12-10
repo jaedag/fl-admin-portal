@@ -104,6 +104,24 @@ const DefaultersDashboard = () => {
         ? '/services/cancelled-services'
         : '#',
     },
+    {
+      title: 'Constituency Joint',
+      data: church?.constituencyBankingDefaultersThisWeekCount,
+      color: church?.constituencyBankingDefaultersThisWeekCount
+        ? 'bad'
+        : 'good',
+      link: church?.constituencyBankingDefaultersThisWeekCount
+        ? '/services/constituency-banking-defaulters'
+        : '#',
+    },
+    {
+      title: 'Coucil Joint',
+      data: church?.councilBankingDefaultersThisWeekCount,
+      color: church?.councilBankingDefaultersThisWeekCount ? 'bad' : 'good',
+      link: church?.councilBankingDefaultersThisWeekCount
+        ? '/services/council-banking-defaulters'
+        : '#',
+    },
   ]
 
   const aggregates = {

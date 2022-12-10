@@ -647,6 +647,7 @@ export const GATHERINGSERVICE_DEFAULTERS = gql`
       bankedThisWeekCount
       servicesThisWeekCount
       cancelledServicesThisWeekCount
+      constituencyBankingDefaultersThisWeekCount
     }
   }
 `
