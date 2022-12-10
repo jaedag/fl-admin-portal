@@ -6,6 +6,7 @@ import {
   ServiceRecord,
   Member,
   Constituency,
+  Council,
 } from 'global-types'
 
 export interface FellowshipWithDefaulters extends Fellowship {
@@ -19,6 +20,17 @@ export interface FellowshipWithDefaulters extends Fellowship {
 }
 export interface ConstituencyWithDefaulters extends Constituency {
   __typename: 'Constituency'
+  council: {
+    __typename: string
+    id: string
+    name: string
+    stream: Church
+  }
+  services: ServiceRecord[]
+}
+
+export interface CouncilWithDefaulters extends Council {
+  __typename: 'Council'
   council: {
     __typename: string
     id: string
@@ -45,7 +57,7 @@ export interface HigherChurchWithDefaulters extends Church {
   bankingDefaultersThisWeek: FellowshipWithDefaulters[]
   cancelledServicesThisWeek: FellowshipWithDefaulters[]
   constituencyBankingDefaultersThisWeek: ConstituencyWithDefaulters[]
-  // councilBankingDefaultersThisWeek: CouncilWithDefaulters[]
+  councilBankingDefaultersThisWeek: CouncilWithDefaulters[]
 
   bankedBy: Member
   servicesThisWeekCount: number

@@ -71,6 +71,9 @@ const ServicesThisWeek = lazy(
 const ConstituencyJointNotBanked = lazy(
   () => import('pages/services/defaulters/ConstituencyNotBankedThisWeek')
 )
+const CouncilJointNotBanked = lazy(
+  () => import('pages/services/defaulters/CouncilNotBankedThisWeek')
+)
 const Fellowship = lazy(() => import('pages/services/Fellowship'))
 const ServicesChurchList = lazy(
   () => import('pages/services/ServicesChurchList')
@@ -407,7 +410,13 @@ export const graphs: LazyRouteTypes[] = [
   {
     path: '/services/constituency-banking-defaulters',
     element: ConstituencyJointNotBanked,
-    roles: permitLeaderAdmin('Constituency'),
+    roles: permitLeaderAdmin('Council'),
+    placeholder: true,
+  },
+  {
+    path: '/services/council-banking-defaulters',
+    element: CouncilJointNotBanked,
+    roles: permitLeaderAdmin('Stream'),
     placeholder: true,
   },
   {
