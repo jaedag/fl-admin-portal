@@ -4,11 +4,14 @@ import React, { useContext } from 'react'
 import { Card, Button } from 'react-bootstrap'
 import { TelephoneFill, Whatsapp } from 'react-bootstrap-icons'
 import { useNavigate } from 'react-router'
-import { ConstituencyWithDefaulters } from './defaulters-types'
+import {
+  ConstituencyWithDefaulters,
+  CouncilWithDefaulters,
+} from './defaulters-types'
 import './Defaulters.css'
 
 type DefaulterCardProps = {
-  defaulter: ConstituencyWithDefaulters
+  defaulter: ConstituencyWithDefaulters | CouncilWithDefaulters
   link?: string
 }
 
@@ -35,7 +38,10 @@ const JointServiceDefaulterCard = ({ defaulter, link }: DefaulterCardProps) => {
         >
           {`${defaulter?.name} ${defaulter?.__typename}`}
           <br />
-          {`${defaulter?.council.name} ${defaulter?.council.__typename}`}
+          {defaulter?.council
+            ? `${defaulter?.council?.name} ${defaulter?.council?.__typename}`
+            : null}
+          {`${defaulter?.stream?.name} ${defaulter?.stream?.__typename}`}
         </Card.Header>
         <Card.Body>
           <Card.Text

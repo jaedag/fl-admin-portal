@@ -970,3 +970,74 @@ export const COUNCIL_CONSTITUENCY_JOINT_LIST = gql`
     }
   }
 `
+
+export const GATHERINGSERVICE_SERVICES_COUNCIL_JOINT_LIST = gql`
+  query gatheringCouncilJointServicesThisWeek($id: ID!) {
+    gatheringServices(where: { id: $id }) {
+      id
+      name
+
+      councilBankingDefaultersThisWeek {
+        id
+        name
+        leader {
+          id
+          firstName
+          lastName
+          fullName
+          phoneNumber
+          whatsappNumber
+        }
+
+        stream {
+          id
+          name
+        }
+
+        services(limit: 1) {
+          id
+          noServiceReason
+          attendance
+          income
+        }
+      }
+    }
+  }
+`
+
+export const STREAM_COUNCIL_JOINT_LIST = gql`
+  query streamCouncilJointServicesThisWeek($id: ID!) {
+    streams(where: { id: $id }) {
+      id
+      name
+
+      councilBankingDefaultersThisWeek {
+        id
+        name
+        leader {
+          id
+          firstName
+          lastName
+          fullName
+          phoneNumber
+          whatsappNumber
+        }
+
+        council {
+          id
+          name
+          stream {
+            id
+            name
+          }
+        }
+        services(limit: 1) {
+          id
+          noServiceReason
+          attendance
+          income
+        }
+      }
+    }
+  }
+`
