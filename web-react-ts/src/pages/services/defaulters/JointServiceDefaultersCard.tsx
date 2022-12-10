@@ -35,6 +35,7 @@ const JointServiceDefaulterCard = ({ defaulter, link }: DefaulterCardProps) => {
         >
           {`${defaulter?.name} ${defaulter?.__typename}`}
           <br />
+          {`${defaulter?.council.name} ${defaulter?.council.__typename}`}
         </Card.Header>
         <Card.Body>
           <Card.Text
