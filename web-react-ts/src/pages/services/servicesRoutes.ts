@@ -68,6 +68,9 @@ const FormDefaulters = lazy(
 const ServicesThisWeek = lazy(
   () => import('pages/services/defaulters/ServicesThisWeek')
 )
+const ConstituencyJointNotBanked = lazy(
+  () => import('pages/services/defaulters/ConstituencyNotBankedThisWeek')
+)
 const Fellowship = lazy(() => import('pages/services/Fellowship'))
 const ServicesChurchList = lazy(
   () => import('pages/services/ServicesChurchList')
@@ -398,6 +401,12 @@ export const graphs: LazyRouteTypes[] = [
   {
     path: '/services/banking-defaulters',
     element: BankingDefaulters,
+    roles: permitLeaderAdmin('Constituency'),
+    placeholder: true,
+  },
+  {
+    path: '/services/constituency-banking-defaulters',
+    element: ConstituencyJointNotBanked,
     roles: permitLeaderAdmin('Constituency'),
     placeholder: true,
   },

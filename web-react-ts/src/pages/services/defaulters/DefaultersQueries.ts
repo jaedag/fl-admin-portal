@@ -648,6 +648,43 @@ export const GATHERINGSERVICE_DEFAULTERS = gql`
       servicesThisWeekCount
       cancelledServicesThisWeekCount
       constituencyBankingDefaultersThisWeekCount
+      councilBankingDefaultersThisWeekCount
+    }
+  }
+`
+
+export const GATHERINGSERVICE_SERVICES_CONSTITUENCY_JOINT_LIST = gql`
+  query gatheringConstituencyJointServicesThisWeek($id: ID!) {
+    gatheringServices(where: { id: $id }) {
+      id
+      name
+
+      constituencyBankingDefaultersThisWeek {
+        id
+        name
+        leader {
+          id
+          firstName
+          lastName
+          fullName
+          phoneNumber
+          whatsappNumber
+        }
+
+        council {
+          id
+          stream {
+            id
+            name
+          }
+        }
+        services(limit: 1) {
+          id
+          noServiceReason
+          attendance
+          income
+        }
+      }
     }
   }
 `
