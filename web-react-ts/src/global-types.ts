@@ -59,7 +59,7 @@ export interface Church {
     whatsappNumber: string
     pictureUrl: string
   }
-  vacationStatus: 'Vacation' | 'Active'
+  vacationStatus?: 'Vacation' | 'Active'
   __typename: ChurchLevel
   sontas?: Sonta[]
 }
@@ -100,6 +100,11 @@ export interface Stream extends Church {
 }
 export interface Constituency extends Church {
   __typename: 'Constituency'
+  stream: Stream
+}
+
+export interface Council extends Church {
+  __typename: 'Council'
   stream: Stream
 }
 

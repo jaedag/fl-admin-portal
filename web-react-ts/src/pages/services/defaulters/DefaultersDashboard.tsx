@@ -105,7 +105,7 @@ const DefaultersDashboard = () => {
         : '#',
     },
     {
-      title: 'Constituency Joint',
+      title: 'Constituency Not Banked',
       data: church?.constituencyBankingDefaultersThisWeekCount,
       color: church?.constituencyBankingDefaultersThisWeekCount
         ? 'bad'
@@ -115,7 +115,7 @@ const DefaultersDashboard = () => {
         : '#',
     },
     {
-      title: 'Coucil Joint',
+      title: 'Council Not Banked',
       data: church?.councilBankingDefaultersThisWeekCount,
       color: church?.councilBankingDefaultersThisWeekCount ? 'bad' : 'good',
       link: church?.councilBankingDefaultersThisWeekCount
