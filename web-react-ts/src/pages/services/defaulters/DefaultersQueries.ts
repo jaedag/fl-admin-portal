@@ -653,42 +653,6 @@ export const GATHERINGSERVICE_DEFAULTERS = gql`
   }
 `
 
-export const GATHERINGSERVICE_SERVICES_CONSTITUENCY_JOINT_LIST = gql`
-  query gatheringConstituencyJointServicesThisWeek($id: ID!) {
-    gatheringServices(where: { id: $id }) {
-      id
-      name
-
-      constituencyBankingDefaultersThisWeek {
-        id
-        name
-        leader {
-          id
-          firstName
-          lastName
-          fullName
-          phoneNumber
-          whatsappNumber
-        }
-
-        council {
-          id
-          stream {
-            id
-            name
-          }
-        }
-        services(limit: 1) {
-          id
-          noServiceReason
-          attendance
-          income
-        }
-      }
-    }
-  }
-`
-
 export const GATHERINGSERVICE_SERVICES_LIST = gql`
   query gatheringServicesThisWeek($id: ID!) {
     gatheringServices(where: { id: $id }) {
@@ -891,6 +855,117 @@ export const GATHERINGSERVICE_BY_STREAM = gql`
         bankedThisWeekCount
         servicesThisWeekCount
         cancelledServicesThisWeekCount
+      }
+    }
+  }
+`
+
+export const GATHERINGSERVICE_SERVICES_CONSTITUENCY_JOINT_LIST = gql`
+  query gatheringConstituencyJointServicesThisWeek($id: ID!) {
+    gatheringServices(where: { id: $id }) {
+      id
+      name
+
+      constituencyBankingDefaultersThisWeek {
+        id
+        name
+        leader {
+          id
+          firstName
+          lastName
+          fullName
+          phoneNumber
+          whatsappNumber
+        }
+
+        council {
+          id
+          name
+          stream {
+            id
+            name
+          }
+        }
+        services(limit: 1) {
+          id
+          noServiceReason
+          attendance
+          income
+        }
+      }
+    }
+  }
+`
+
+export const STREAM_CONSTITUENCY_JOINT_LIST = gql`
+  query streamConstituencyJointServicesThisWeek($id: ID!) {
+    streams(where: { id: $id }) {
+      id
+      name
+
+      constituencyBankingDefaultersThisWeek {
+        id
+        name
+        leader {
+          id
+          firstName
+          lastName
+          fullName
+          phoneNumber
+          whatsappNumber
+        }
+
+        council {
+          id
+          name
+          stream {
+            id
+            name
+          }
+        }
+        services(limit: 1) {
+          id
+          noServiceReason
+          attendance
+          income
+        }
+      }
+    }
+  }
+`
+
+export const COUNCIL_CONSTITUENCY_JOINT_LIST = gql`
+  query councilConstituencyJointServicesThisWeek($id: ID!) {
+    councils(where: { id: $id }) {
+      id
+      name
+
+      constituencyBankingDefaultersThisWeek {
+        id
+        name
+        leader {
+          id
+          firstName
+          lastName
+          fullName
+          phoneNumber
+          whatsappNumber
+        }
+
+        council {
+          id
+          name
+          stream {
+            id
+            name
+          }
+        }
+        services(limit: 1) {
+          id
+          noServiceReason
+          attendance
+          income
+        }
       }
     }
   }
