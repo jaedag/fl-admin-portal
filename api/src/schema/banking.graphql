@@ -113,7 +113,12 @@ extend type Council {
        WITH DISTINCT constituencies, this
        MATCH (constituencies)<-[:HAS]-(this)
 
-      RETURN COUNT(DISTINCT constituencies)
+       WITH COUNT(DISTINCT constituencies) as count
+      RETURN
+      CASE
+      WHEN count < 1 THEN null
+      ELSE count
+      END AS result
       """
     )
 
@@ -143,7 +148,12 @@ extend type Council {
          AND (record.transactionStatus IS NULL OR record.transactionStatus <> 'success')
          AND record.tellerConfirmationTime IS NULL
 
-       RETURN COUNT(DISTINCT constituencies)
+        WITH COUNT(DISTINCT constituencies) as count
+      RETURN
+      CASE
+      WHEN count < 1 THEN null
+      ELSE count
+      END AS result
       """
     )
   servicesNotBanked: [ServiceRecord!]!
@@ -212,7 +222,12 @@ extend type Stream {
        WITH DISTINCT constituencies, this
        MATCH (constituencies)<-[:HAS]-(:Council)<-[:HAS]-(this)
 
-      RETURN COUNT(DISTINCT constituencies)
+       WITH COUNT(DISTINCT constituencies) as count
+      RETURN
+      CASE
+      WHEN count < 1 THEN null
+      ELSE count
+      END AS result
       """
     )
 
@@ -242,7 +257,12 @@ extend type Stream {
         AND (record.transactionStatus IS NULL OR record.transactionStatus <> 'success')
         AND record.tellerConfirmationTime IS NULL
 
-       RETURN COUNT(DISTINCT constituencies)
+        WITH COUNT(DISTINCT constituencies) as count
+      RETURN
+      CASE
+      WHEN count < 1 THEN null
+      ELSE count
+      END AS result
       """
     )
 
@@ -272,7 +292,12 @@ extend type Stream {
         AND (record.transactionStatus IS NULL OR record.transactionStatus <> 'success')
         AND record.tellerConfirmationTime IS NULL
 
-       RETURN COUNT(DISTINCT council)
+        WITH COUNT(DISTINCT council) as count
+      RETURN
+      CASE
+      WHEN count < 1 THEN null
+      ELSE count
+      END AS result
       """
     )
 
@@ -310,7 +335,7 @@ extend type Stream {
           AND record.tellerConfirmationTime IS NULL
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(council) WHERE council:Council OR council:ClosedCouncil
 
-       WITH DISTINCT constituencies, this
+       WITH DISTINCT council, this
       MATCH (council:Council)<-[:HAS]-(this)
 
       RETURN DISTINCT council
@@ -337,10 +362,15 @@ extend type Stream {
           AND record.tellerConfirmationTime IS NULL
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(council) WHERE council:Council OR council:ClosedCouncil
 
-       WITH DISTINCT constituencies, this
+       WITH DISTINCT council, this
        MATCH (council:Council)<-[:HAS]-(this)
 
-      RETURN COUNT(DISTINCT council)
+      WITH COUNT(DISTINCT council) as count
+      RETURN
+      CASE
+      WHEN count < 1 THEN null
+      ELSE count
+      END AS result
       """
     )
 }
@@ -376,28 +406,33 @@ extend type GatheringService {
   constituencyBankingDefaultersThisWeekCount: Int
     @cypher(
       statement: """
-      MATCH (this)
-      WITH date() as today, this
-      WITH  today.weekDay as theDay, today, this
-      WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
-      WITH [day in range(0, 5) | startDate + duration({days: day})] AS dates, this
+       MATCH (this)
+       WITH date() as today, this
+       WITH  today.weekDay as theDay, today, this
+       WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
+       WITH [day in range(0, 5) | startDate + duration({days: day})] AS dates, this
 
-      MATCH (date:TimeGraph)
-      USING INDEX date:TimeGraph(date)
-      WHERE date.date IN dates
-      MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
+       MATCH (date:TimeGraph)
+       USING INDEX date:TimeGraph(date)
+       WHERE date.date IN dates
+       MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
 
-       WITH DISTINCT record, this
-        WHERE record.noServiceReason IS NULL
-          AND record.bankingSlip IS NULL
-          AND (record.transactionStatus IS NULL OR record.transactionStatus <> 'success')
-          AND record.tellerConfirmationTime IS NULL
-       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(constituencies) WHERE constituencies:Constituency OR constituencies:ClosedConstituency
+        WITH DISTINCT record, this
+         WHERE record.noServiceReason IS NULL
+           AND record.bankingSlip IS NULL
+           AND (record.transactionStatus IS NULL OR record.transactionStatus <> 'success')
+           AND record.tellerConfirmationTime IS NULL
+        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(constituencies) WHERE constituencies:Constituency OR constituencies:ClosedConstituency
 
-       WITH DISTINCT constituencies, this
-       MATCH (constituencies)<-[:HAS]-(:Council)<-[:HAS]-(:Stream)<-[:HAS]-(this)
+        WITH DISTINCT constituencies, this
+        MATCH (constituencies)<-[:HAS]-(:Council)<-[:HAS]-(:Stream)<-[:HAS]-(this)
 
-      RETURN COUNT(DISTINCT constituencies)
+      WITH COUNT(DISTINCT constituencies) as count
+       RETURN
+       CASE
+       WHEN count < 1 THEN null
+       ELSE count
+       END AS result
       """
     )
 
@@ -429,7 +464,12 @@ extend type GatheringService {
          AND (record.transactionStatus IS NULL OR record.transactionStatus <> 'success')
          AND record.tellerConfirmationTime IS NULL
 
-        RETURN COUNT(DISTINCT constituencies)
+      WITH COUNT(DISTINCT constituencies) as count
+      RETURN
+      CASE
+      WHEN count < 1 THEN null
+      ELSE count
+      END AS result
       """
     )
 
@@ -459,7 +499,12 @@ extend type GatheringService {
         AND (record.transactionStatus IS NULL OR record.transactionStatus <> 'success')
         AND record.tellerConfirmationTime IS NULL
 
-       RETURN COUNT(DISTINCT council)
+      WITH COUNT(DISTINCT council) as count
+      RETURN
+      CASE
+      WHEN count < 1 THEN null
+      ELSE count
+      END AS result
       """
     )
   councilBankingDefaultersThisWeek: [Council!]!
@@ -483,7 +528,7 @@ extend type GatheringService {
           AND record.tellerConfirmationTime IS NULL
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(council) WHERE council:Council OR council:ClosedCouncil
 
-       WITH DISTINCT constituencies, this
+       WITH DISTINCT council, this
        MATCH (council:Council)<-[:HAS]-(:Stream)<-[:HAS]-(this)
 
       RETURN DISTINCT council
@@ -510,10 +555,15 @@ extend type GatheringService {
           AND record.tellerConfirmationTime IS NULL
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(council) WHERE council:Council OR council:ClosedCouncil
 
-       WITH DISTINCT constituencies, this
+       WITH DISTINCT council, this
        MATCH (council:Council)<-[:HAS]-(:Stream)<-[:HAS]-(this)
 
-      RETURN COUNT(DISTINCT council)
+      WITH COUNT(DISTINCT council) as count
+      RETURN
+      CASE
+      WHEN count < 1 THEN null
+      ELSE count
+      END AS result
       """
     )
 }
@@ -570,7 +620,12 @@ extend type Oversight {
        WITH DISTINCT constituencies, this
        MATCH (constituencies)<-[:HAS]-(:Council)<-[:HAS]-(:Stream)<-[:HAS]-(:GatheringService)<-[:HAS]-(this)
 
-      RETURN COUNT(DISTINCT constituencies)
+      WITH COUNT(DISTINCT constituencies) as count
+      RETURN
+      CASE
+      WHEN count < 1 THEN null
+      ELSE count
+      END AS result
       """
     )
 
@@ -602,7 +657,12 @@ extend type Oversight {
          AND (record.transactionStatus IS NULL OR record.transactionStatus <> 'success')
          AND record.tellerConfirmationTime IS NULL
 
-        RETURN COUNT(DISTINCT constituencies)
+      WITH COUNT(DISTINCT constituencies) as count
+      RETURN
+      CASE
+      WHEN count < 1 THEN null
+      ELSE count
+      END AS result
       """
     )
 
@@ -632,7 +692,12 @@ extend type Oversight {
         AND (record.transactionStatus IS NULL OR record.transactionStatus <> 'success')
         AND record.tellerConfirmationTime IS NULL
 
-       RETURN COUNT(DISTINCT council)
+      WITH COUNT(DISTINCT council) as count
+      RETURN
+      CASE
+      WHEN count < 1 THEN null
+      ELSE count
+      END AS result
       """
     )
 
@@ -657,7 +722,7 @@ extend type Oversight {
           AND record.tellerConfirmationTime IS NULL
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(council) WHERE council:Council OR council:ClosedCouncil
 
-       WITH DISTINCT constituencies, this
+       WITH DISTINCT council, this
        MATCH (council:Council)<-[:HAS]-(:Stream)<-[:HAS]-(:GatheringService)<-[:HAS]-(this)
 
       RETURN DISTINCT council
@@ -684,10 +749,15 @@ extend type Oversight {
           AND record.tellerConfirmationTime IS NULL
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(council) WHERE council:Council OR council:ClosedCouncil
 
-       WITH DISTINCT constituencies, this
+       WITH DISTINCT council, this
        MATCH (council:Council)<-[:HAS]-(:Stream)<-[:HAS]-(:GatheringService)<-[:HAS]-(this)
 
-      RETURN COUNT(DISTINCT council)
+      WITH COUNT(DISTINCT council) as count
+      RETURN
+      CASE
+      WHEN count < 1 THEN null
+      ELSE count
+      END AS result
       """
     )
 }
