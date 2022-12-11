@@ -3,7 +3,6 @@ import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { FieldArray, Form, Formik, FormikHelpers } from 'formik'
 import * as Yup from 'yup'
 import {
-  BUSSING_STATUS_OPTIONS,
   makeSelectOptions,
   throwToSentry,
   VACATION_OPTIONS,
@@ -136,12 +135,6 @@ const BacentaForm = ({
                             name="name"
                             label="Name of Bacenta"
                             placeholder="Enter Name Here"
-                          />
-                          <Select
-                            name="graduationStatus"
-                            options={BUSSING_STATUS_OPTIONS}
-                            defaultOption="Choose Graduation Status"
-                            label="Status"
                           />
                           <Select
                             name="vacationStatus"
