@@ -84,9 +84,6 @@ const BacentaForm = ({
       : Yup.array().of(
           Yup.object().required('Please pick a fellowship from the dropdown')
         ),
-    graduationStatus: Yup.string().required(
-      'Graduation Status is a required field'
-    ),
     vacationStatus: Yup.string().required(
       'Vacation Status is a required field'
     ),
