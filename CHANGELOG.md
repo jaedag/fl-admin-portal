@@ -1,3 +1,20 @@
+#### 5.3.22 (2022-12-11)
+
+##### New Features
+
+*  implement constituency banking screens for stream, council ([40abc687](https://github.com/firstlovecenter/fl-pastoral-care/commit/40abc6871d4bf4d328f74443b11b407acc08ea51))
+*  implement constituency banking defaulters list ([cad167c6](https://github.com/firstlovecenter/fl-pastoral-care/commit/cad167c60e85700eb79397a5829b91ab8534ce73))
+*  add councilThisWeekBankingDefaulters ([e955a5b1](https://github.com/firstlovecenter/fl-pastoral-care/commit/e955a5b12dac042606454dadb1d4cdb589dc83aa))
+*  implement constituency banking defaulters ([2a6fe698](https://github.com/firstlovecenter/fl-pastoral-care/commit/2a6fe69845d111fa2faeb137449b618bf48539fc))
+*  admin-471 admin-472 implement queries to retrieve constituency and council banking defaulters ([f2a8cd4f](https://github.com/firstlovecenter/fl-pastoral-care/commit/f2a8cd4f9dc7c1ee12a0169cd1b1138b162eb7fb))
+
+##### Bug Fixes
+
+*  remove form validation on graduation status ([49f184dc](https://github.com/firstlovecenter/fl-pastoral-care/commit/49f184dc1b5708cb374fe63bc643722d240afb6e))
+*  add council joint service defaulters cards and screens ([c9dce930](https://github.com/firstlovecenter/fl-pastoral-care/commit/c9dce9308dcd507d987132f3959f083c273c1bf5))
+*  fix cypher error in councilbanking defaulters query ([e1a5c4bc](https://github.com/firstlovecenter/fl-pastoral-care/commit/e1a5c4bc6b56c951f5f067f6a133a4c9ba90acf0))
+*  attempt a new approach at aggregating service data damning the db hits ([1fec7bea](https://github.com/firstlovecenter/fl-pastoral-care/commit/1fec7beaadff5b0b3cbbc116b634c84575e77160))
+
 #### 5.3.21 (2022-12-09)
 
 ##### Bug Fixes
