@@ -2,8 +2,7 @@ export const getBacentaLastFourBussing = `
 MATCH (bacenta:Bacenta  {id: $bacentaId})
 MATCH (bacenta)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
 WITH bacenta, bussing, date ORDER BY date.date DESC 
-SKIP 1
-LIMIT 4 
+LIMIT 5
 RETURN bacenta.id AS id, bacenta.name AS bacentaName, bussing.attendance AS bussingRecord, labels(bacenta) AS bacentaStatus, date.date AS date   
 `
 
