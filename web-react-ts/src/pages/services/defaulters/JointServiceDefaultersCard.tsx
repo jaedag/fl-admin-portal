@@ -41,7 +41,10 @@ const JointServiceDefaulterCard = ({ defaulter, link }: DefaulterCardProps) => {
           {defaulter?.council
             ? `${defaulter?.council?.name} ${defaulter?.council?.__typename}`
             : null}
-          {`${defaulter?.stream?.name} ${defaulter?.stream?.__typename}`}
+
+          {defaulter?.stream
+            ? `${defaulter?.stream?.name} ${defaulter?.stream?.__typename}`
+            : null}
         </Card.Header>
         <Card.Body>
           <Card.Text
