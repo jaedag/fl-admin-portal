@@ -111,7 +111,7 @@ const FormAttendanceConfirmation = () => {
         vehicleRecordId: vehicleRecordId,
       },
     }).catch((error) =>
-      throwToSentry('There was an error setting vehicle support', error)
+      alertMsg(`There was an error setting vehicle support ${error}`)
     )
 
     if (
