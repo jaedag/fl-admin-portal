@@ -104,6 +104,27 @@ const DefaultersDashboard = () => {
         ? '/services/cancelled-services'
         : '#',
     },
+  ]
+
+  const jointServiceDefaulters = [
+    {
+      title: 'Constituency Not Banked',
+      data: church?.constituencyBankingDefaultersThisWeekCount,
+      color: church?.constituencyBankingDefaultersThisWeekCount
+        ? 'bad'
+        : 'good',
+      link: church?.constituencyBankingDefaultersThisWeekCount
+        ? '/services/constituency-banking-defaulters'
+        : '#',
+    },
+    {
+      title: 'Council Not Banked',
+      data: church?.councilBankingDefaultersThisWeekCount,
+      color: church?.councilBankingDefaultersThisWeekCount ? 'bad' : 'good',
+      link: church?.councilBankingDefaultersThisWeekCount
+        ? '/services/council-banking-defaulters'
+        : '#',
+    },
     {
       title: 'Constituency Not Banked',
       data: church?.constituencyBankingDefaultersThisWeekCount,
@@ -156,6 +177,20 @@ const DefaultersDashboard = () => {
                 <DefaulterInfoCard defaulter={defaulter} />
               </Col>
             ))}
+
+            <Col xs={12} className="mb-3">
+              <hr />
+            </Col>
+
+            {jointServiceDefaulters.map((defaulter, i) => {
+              if (!defaulter.data) return null
+
+              return (
+                <Col key={i} xs={6} className="mb-3">
+                  <DefaulterInfoCard defaulter={defaulter} />
+                </Col>
+              )
+            })}
           </Row>
         </Container>
       </ApolloWrapper>
