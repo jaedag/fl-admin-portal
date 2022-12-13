@@ -173,6 +173,7 @@ export const COUNCIL_DEFAULTERS = gql`
       bankedThisWeekCount
       servicesThisWeekCount
       cancelledServicesThisWeekCount
+      constituencyBankedThisWeekCount
       constituencyBankingDefaultersThisWeekCount
     }
   }
@@ -402,7 +403,9 @@ export const STREAM_DEFAULTERS = gql`
       bankedThisWeekCount
       servicesThisWeekCount
       cancelledServicesThisWeekCount
+      constituencyBankedThisWeekCount
       constituencyBankingDefaultersThisWeekCount
+      councilBankedThisWeekCount
       councilBankingDefaultersThisWeekCount
     }
   }
@@ -650,7 +653,6 @@ export const GATHERINGSERVICE_DEFAULTERS = gql`
       bankedThisWeekCount
       servicesThisWeekCount
       cancelledServicesThisWeekCount
-      constituencyServicesThisWeekCount
       constituencyBankedThisWeekCount
       constituencyBankingDefaultersThisWeekCount
       councilBankedThisWeekCount
