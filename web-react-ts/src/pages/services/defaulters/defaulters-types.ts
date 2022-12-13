@@ -58,6 +58,8 @@ export interface HigherChurchWithDefaulters extends Church {
   cancelledServicesThisWeek: FellowshipWithDefaulters[]
   constituencyBankingDefaultersThisWeek: ConstituencyWithDefaulters[]
   councilBankingDefaultersThisWeek: CouncilWithDefaulters[]
+  constituencyBankedThisWeek: ConstituencyWithDefaulters[]
+  councilBankedThisWeek: CouncilWithDefaulters[]
 
   bankedBy: Member
   servicesThisWeekCount: number

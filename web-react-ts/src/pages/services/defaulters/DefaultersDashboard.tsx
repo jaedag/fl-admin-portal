@@ -110,7 +110,7 @@ const DefaultersDashboard = () => {
     {
       title: 'Constituency Banked',
       data: church?.constituencyBankedThisWeekCount,
-      color: church?.constituencyBankedThisWeekCount ? 'bad' : 'good',
+      color: church?.constituencyBankedThisWeekCount ? 'good' : 'bad',
       link: church?.constituencyBankedThisWeekCount
         ? '/services/constituency-banked'
         : '#',
@@ -128,7 +128,7 @@ const DefaultersDashboard = () => {
     {
       title: 'Council Banked',
       data: church?.councilBankedThisWeekCount,
-      color: church?.councilBankedThisWeekCount ? 'bad' : 'good',
+      color: church?.councilBankedThisWeekCount ? 'good' : 'bad',
       link: church?.councilBankedThisWeekCount
         ? '/services/council-banked'
         : '#',
