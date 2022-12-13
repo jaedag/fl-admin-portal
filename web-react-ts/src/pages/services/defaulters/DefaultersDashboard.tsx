@@ -108,21 +108,11 @@ const DefaultersDashboard = () => {
 
   const jointServiceDefaulters = [
     {
-      title: 'Constituency Not Banked',
-      data: church?.constituencyBankingDefaultersThisWeekCount,
-      color: church?.constituencyBankingDefaultersThisWeekCount
-        ? 'bad'
-        : 'good',
-      link: church?.constituencyBankingDefaultersThisWeekCount
-        ? '/services/constituency-banking-defaulters'
-        : '#',
-    },
-    {
-      title: 'Council Not Banked',
-      data: church?.councilBankingDefaultersThisWeekCount,
-      color: church?.councilBankingDefaultersThisWeekCount ? 'bad' : 'good',
-      link: church?.councilBankingDefaultersThisWeekCount
-        ? '/services/council-banking-defaulters'
+      title: 'Constituency Banked',
+      data: church?.constituencyBankedThisWeekCount,
+      color: church?.constituencyBankedThisWeekCount ? 'bad' : 'good',
+      link: church?.constituencyBankedThisWeekCount
+        ? '/services/constituency-banked'
         : '#',
     },
     {
@@ -133,6 +123,14 @@ const DefaultersDashboard = () => {
         : 'good',
       link: church?.constituencyBankingDefaultersThisWeekCount
         ? '/services/constituency-banking-defaulters'
+        : '#',
+    },
+    {
+      title: 'Council Banked',
+      data: church?.councilBankedThisWeekCount,
+      color: church?.councilBankedThisWeekCount ? 'bad' : 'good',
+      link: church?.councilBankedThisWeekCount
+        ? '/services/council-banked'
         : '#',
     },
     {
