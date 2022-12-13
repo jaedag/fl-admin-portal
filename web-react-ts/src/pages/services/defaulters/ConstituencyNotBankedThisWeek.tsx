@@ -5,9 +5,9 @@ import PlaceholderCustom from 'components/Placeholder'
 import { getWeekNumber } from 'jd-date-utils'
 import { Col, Container, Row } from 'react-bootstrap'
 import {
-  GATHERINGSERVICE_SERVICES_CONSTITUENCY_JOINT_LIST,
-  COUNCIL_CONSTITUENCY_JOINT_LIST,
-  STREAM_CONSTITUENCY_JOINT_LIST,
+  GATHERINGSERVICE_SERVICES_CONSTITUENCY_JOINT_DEFAULTERS_LIST,
+  COUNCIL_CONSTITUENCY_JOINT_DEFAULTERS_LIST,
+  STREAM_CONSTITUENCY_JOINT_DEFAULTERS_LIST,
 } from './DefaultersQueries'
 import useChurchLevel from 'hooks/useChurchLevel'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
@@ -18,11 +18,11 @@ import JointServiceDefaulterCard from './JointServiceDefaultersCard'
 
 const ConstituencyNotBankedThisWeek = () => {
   const [councilConstituencyNotBankedThisWeek, { refetch: councilRefetch }] =
-    useLazyQuery(COUNCIL_CONSTITUENCY_JOINT_LIST)
+    useLazyQuery(COUNCIL_CONSTITUENCY_JOINT_DEFAULTERS_LIST)
   const [streamConstituencyNotBankedThisWeek, { refetch: streamRefetch }] =
-    useLazyQuery(STREAM_CONSTITUENCY_JOINT_LIST)
+    useLazyQuery(STREAM_CONSTITUENCY_JOINT_DEFAULTERS_LIST)
   const [gatheringServiceThisWeek, { refetch: gatheringServiceRefetch }] =
-    useLazyQuery(GATHERINGSERVICE_SERVICES_CONSTITUENCY_JOINT_LIST)
+    useLazyQuery(GATHERINGSERVICE_SERVICES_CONSTITUENCY_JOINT_DEFAULTERS_LIST)
 
   const data: DefaultersUseChurchType = useChurchLevel({
     councilFunction: councilConstituencyNotBankedThisWeek,
