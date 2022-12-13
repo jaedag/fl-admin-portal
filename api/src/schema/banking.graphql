@@ -62,6 +62,63 @@ extend type Constituency {
 }
 
 extend type Council {
+  constituencyBankedThisWeek: [Constituency!]!
+    @cypher(
+      statement: """
+      MATCH (this)
+      WITH date() as today, this
+      WITH  today.weekDay as theDay, today, this
+      WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
+      WITH [day in range(0, 5) | startDate + duration({days: day})] AS dates, this
+
+      MATCH (date:TimeGraph)
+      USING INDEX date:TimeGraph(date)
+      WHERE date.date IN dates
+      MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord) WHERE NOT record:NoService
+
+       WITH DISTINCT record, this
+        WHERE record.bankingSlip IS NOT NULL
+          OR record.transactionStatus = 'success'
+          OR record.tellerConfirmationTime IS NOT NULL
+       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(constituencies) WHERE constituencies:Constituency OR constituencies:ClosedConstituency
+
+       WITH DISTINCT constituencies, this
+       MATCH (constituencies)<-[:HAS]-(this)
+
+      RETURN DISTINCT constituencies
+      """
+    )
+  constituencyBankedThisWeekCount: Int
+    @cypher(
+      statement: """
+       MATCH (this)
+       WITH date() as today, this
+       WITH  today.weekDay as theDay, today, this
+       WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
+       WITH [day in range(0, 5) | startDate + duration({days: day})] AS dates, this
+
+       MATCH (date:TimeGraph)
+       USING INDEX date:TimeGraph(date)
+       WHERE date.date IN dates
+       MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord) WHERE NOT record:NoService
+
+       WITH DISTINCT record, this
+        WHERE record.bankingSlip IS NOT NULL
+          OR record.transactionStatus = 'success'
+          OR record.tellerConfirmationTime IS NOT NULL
+        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(constituencies) WHERE constituencies:Constituency OR constituencies:ClosedConstituency
+
+        WITH DISTINCT constituencies, this
+         MATCH (constituencies)<-[:HAS]-(this)
+
+      WITH COUNT(DISTINCT constituencies) as count
+       RETURN
+       CASE
+       WHEN count < 1 THEN null
+       ELSE count
+       END AS result
+      """
+    )
   constituencyBankingDefaultersThisWeek: [Constituency!]!
     @cypher(
       statement: """
@@ -171,6 +228,63 @@ extend type Council {
 }
 
 extend type Stream {
+  constituencyBankedThisWeek: [Constituency!]!
+    @cypher(
+      statement: """
+      MATCH (this)
+      WITH date() as today, this
+      WITH  today.weekDay as theDay, today, this
+      WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
+      WITH [day in range(0, 5) | startDate + duration({days: day})] AS dates, this
+
+      MATCH (date:TimeGraph)
+      USING INDEX date:TimeGraph(date)
+      WHERE date.date IN dates
+      MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord) WHERE NOT record:NoService
+
+       WITH DISTINCT record, this
+        WHERE record.bankingSlip IS NOT NULL
+          OR record.transactionStatus = 'success'
+          OR record.tellerConfirmationTime IS NOT NULL
+       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(constituencies) WHERE constituencies:Constituency OR constituencies:ClosedConstituency
+
+       WITH DISTINCT constituencies, this
+       MATCH (constituencies)<-[:HAS]-(:Council)<-[:HAS]-(this)
+
+      RETURN DISTINCT constituencies
+      """
+    )
+  constituencyBankedThisWeekCount: Int
+    @cypher(
+      statement: """
+       MATCH (this)
+       WITH date() as today, this
+       WITH  today.weekDay as theDay, today, this
+       WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
+       WITH [day in range(0, 5) | startDate + duration({days: day})] AS dates, this
+
+       MATCH (date:TimeGraph)
+       USING INDEX date:TimeGraph(date)
+       WHERE date.date IN dates
+       MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord) WHERE NOT record:NoService
+
+       WITH DISTINCT record, this
+        WHERE record.bankingSlip IS NOT NULL
+          OR record.transactionStatus = 'success'
+          OR record.tellerConfirmationTime IS NOT NULL
+        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(constituencies) WHERE constituencies:Constituency OR constituencies:ClosedConstituency
+
+        WITH DISTINCT constituencies, this
+        MATCH (constituencies)<-[:HAS]-(:Council)<-[:HAS]-(this)
+
+      WITH COUNT(DISTINCT constituencies) as count
+       RETURN
+       CASE
+       WHEN count < 1 THEN null
+       ELSE count
+       END AS result
+      """
+    )
   constituencyBankingDefaultersThisWeek: [Constituency!]!
     @cypher(
       statement: """
@@ -266,6 +380,63 @@ extend type Stream {
       """
     )
 
+  councilBankedThisWeek: [Council!]!
+    @cypher(
+      statement: """
+      MATCH (this)
+      WITH date() as today, this
+      WITH  today.weekDay as theDay, today, this
+      WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
+      WITH [day in range(0, 5) | startDate + duration({days: day})] AS dates, this
+
+      MATCH (date:TimeGraph)
+      USING INDEX date:TimeGraph(date)
+      WHERE date.date IN dates
+      MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord) WHERE NOT record:NoService
+
+       WITH DISTINCT record, this
+        WHERE record.bankingSlip IS NOT NULL
+          OR record.transactionStatus = 'success'
+          OR record.tellerConfirmationTime IS NOT NULL
+       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(council) WHERE council:Council OR council:ClosedCouncil
+
+       WITH DISTINCT council, this
+      MATCH (council:Council)<-[:HAS]-(this)
+
+      RETURN DISTINCT council
+      """
+    )
+  councilBankedThisWeekCount: Int
+    @cypher(
+      statement: """
+      MATCH (this)
+      WITH date() as today, this
+      WITH  today.weekDay as theDay, today, this
+      WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
+      WITH [day in range(0, 5) | startDate + duration({days: day})] AS dates, this
+
+      MATCH (date:TimeGraph)
+      USING INDEX date:TimeGraph(date)
+      WHERE date.date IN dates
+      MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord) WHERE NOT record:NoService
+
+       WITH DISTINCT record, this
+        WHERE record.bankingSlip IS NOT NULL
+          OR record.transactionStatus = 'success'
+          OR record.tellerConfirmationTime IS NOT NULL
+       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(council) WHERE council:Council OR council:ClosedCouncil
+
+       WITH DISTINCT council, this
+       MATCH (council:Council)<-[:HAS]-(this)
+
+      WITH COUNT(DISTINCT council) as count
+      RETURN
+      CASE
+      WHEN count < 1 THEN null
+      ELSE count
+      END AS result
+      """
+    )
   councilBankingDefaulters: [Council!]!
     @cypher(
       statement: """
@@ -683,6 +854,63 @@ extend type GatheringService {
 }
 
 extend type Oversight {
+  constituencyBankedThisWeek: [Constituency!]!
+    @cypher(
+      statement: """
+      MATCH (this)
+      WITH date() as today, this
+      WITH  today.weekDay as theDay, today, this
+      WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
+      WITH [day in range(0, 5) | startDate + duration({days: day})] AS dates, this
+
+      MATCH (date:TimeGraph)
+      USING INDEX date:TimeGraph(date)
+      WHERE date.date IN dates
+      MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord) WHERE NOT record:NoService
+
+       WITH DISTINCT record, this
+        WHERE record.bankingSlip IS NOT NULL
+          OR record.transactionStatus = 'success'
+          OR record.tellerConfirmationTime IS NOT NULL
+       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(constituencies) WHERE constituencies:Constituency OR constituencies:ClosedConstituency
+
+       WITH DISTINCT constituencies, this
+       MATCH (constituencies)<-[:HAS]-(:Council)<-[:HAS]-(:Stream)<-[:HAS]-(:GatheringService)<-[:HAS]-(this)
+
+      RETURN DISTINCT constituencies
+      """
+    )
+  constituencyBankedThisWeekCount: Int
+    @cypher(
+      statement: """
+       MATCH (this)
+       WITH date() as today, this
+       WITH  today.weekDay as theDay, today, this
+       WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
+       WITH [day in range(0, 5) | startDate + duration({days: day})] AS dates, this
+
+       MATCH (date:TimeGraph)
+       USING INDEX date:TimeGraph(date)
+       WHERE date.date IN dates
+       MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord) WHERE NOT record:NoService
+
+       WITH DISTINCT record, this
+        WHERE record.bankingSlip IS NOT NULL
+          OR record.transactionStatus = 'success'
+          OR record.tellerConfirmationTime IS NOT NULL
+        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(constituencies) WHERE constituencies:Constituency OR constituencies:ClosedConstituency
+
+        WITH DISTINCT constituencies, this
+        MATCH (constituencies)<-[:HAS]-(:Council)<-[:HAS]-(:Stream)<-[:HAS]-(:GatheringService)<-[:HAS]-(this)
+
+      WITH COUNT(DISTINCT constituencies) as count
+       RETURN
+       CASE
+       WHEN count < 1 THEN null
+       ELSE count
+       END AS result
+      """
+    )
   constituencyBankingDefaultersThisWeek: [Constituency!]!
     @cypher(
       statement: """
@@ -780,6 +1008,63 @@ extend type Oversight {
       """
     )
 
+  councilBankedThisWeek: [Council!]!
+    @cypher(
+      statement: """
+      MATCH (this)
+      WITH date() as today, this
+      WITH  today.weekDay as theDay, today, this
+      WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
+      WITH [day in range(0, 5) | startDate + duration({days: day})] AS dates, this
+
+      MATCH (date:TimeGraph)
+      USING INDEX date:TimeGraph(date)
+      WHERE date.date IN dates
+      MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord) WHERE NOT record:NoService
+
+       WITH DISTINCT record, this
+        WHERE record.bankingSlip IS NOT NULL
+          OR record.transactionStatus = 'success'
+          OR record.tellerConfirmationTime IS NOT NULL
+       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(council) WHERE council:Council OR council:ClosedCouncil
+
+       WITH DISTINCT council, this
+       MATCH (council:Council)<-[:HAS]-(:Stream)<-[:HAS]-(:GatheringService)<-[:HAS]-(this)
+
+      RETURN DISTINCT council
+      """
+    )
+  councilBankedThisWeekCount: Int
+    @cypher(
+      statement: """
+      MATCH (this)
+      WITH date() as today, this
+      WITH  today.weekDay as theDay, today, this
+      WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
+      WITH [day in range(0, 5) | startDate + duration({days: day})] AS dates, this
+
+      MATCH (date:TimeGraph)
+      USING INDEX date:TimeGraph(date)
+      WHERE date.date IN dates
+      MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord) WHERE NOT record:NoService
+
+       WITH DISTINCT record, this
+        WHERE record.bankingSlip IS NOT NULL
+          OR record.transactionStatus = 'success'
+          OR record.tellerConfirmationTime IS NOT NULL
+       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(council) WHERE council:Council OR council:ClosedCouncil
+
+       WITH DISTINCT council, this
+       MATCH (council:Council)<-[:HAS]-(:Stream)<-[:HAS]-(:GatheringService)<-[:HAS]-(this)
+
+      WITH COUNT(DISTINCT council) as count
+      RETURN
+      CASE
+      WHEN count < 1 THEN null
+      ELSE count
+      END AS result
+      """
+    )
   councilBankingDefaulters: [Council!]!
     @cypher(
       statement: """
