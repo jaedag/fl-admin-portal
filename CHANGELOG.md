@@ -1,3 +1,27 @@
+### 5.5.0 (2022-12-13)
+
+##### Chores
+
+*  version bump ([1ff6d836](https://github.com/firstlovecenter/fl-pastoral-care/commit/1ff6d836f32ab48c29e159b0029700ef0fda7c4f))
+*  migration change @computed to @customResolver in api ([e458d7ce](https://github.com/firstlovecenter/fl-pastoral-care/commit/e458d7ce336e340cde0e3731599ada3929f65451))
+
+##### New Features
+
+*  add queries for constituency/coucil bankedThisWeek to rest of churches ([715110c2](https://github.com/firstlovecenter/fl-pastoral-care/commit/715110c23e72b8ac8e847cc2a8e0013c2afc77ea))
+*  implement pages to show joint services which have been banked ([1369ca8d](https://github.com/firstlovecenter/fl-pastoral-care/commit/1369ca8d7313bbc9d30abd6dc0169f19e72508b6))
+*  add cards for showing banked joint services this week ([d146c7b9](https://github.com/firstlovecenter/fl-pastoral-care/commit/d146c7b96b8b5bb5588fdb55623111bc8ae25afe))
+*  add backed query for constituencyBankedThisWeek and  CouncilBankedThisWeek ([d5e7d15d](https://github.com/firstlovecenter/fl-pastoral-care/commit/d5e7d15d1b9201a6d9c5b3b54c6712e65a0ed1a1))
+*  add a divider  to  defaulters screen ([38d3044f](https://github.com/firstlovecenter/fl-pastoral-care/commit/38d3044f945588404a3c27fa9abaa8f883741266))
+*  admin-476 admin-477 add queries for list for constituency/council joint service ([cbd0f4cb](https://github.com/firstlovecenter/fl-pastoral-care/commit/cbd0f4cb5e6d676d0f164d3e6b95125a1a560147))
+
+##### Bug Fixes
+
+*  fix error with data aggregation ([ecc0bfc7](https://github.com/firstlovecenter/fl-pastoral-care/commit/ecc0bfc744e7a1e636917a0e755a765e44213730))
+*  final touches for defaulters view ([700a8239](https://github.com/firstlovecenter/fl-pastoral-care/commit/700a82394a99529ae83e9380050dfd33544694ea))
+*  stop firing error messages to  sentry that  should be alerts to the user ([f4b67165](https://github.com/firstlovecenter/fl-pastoral-care/commit/f4b6716561ac76fb638e47b5a199a6c50ff0ecf4))
+*  hide 'undefined undefined' when there is need to show stream ([aa9ec4ce](https://github.com/firstlovecenter/fl-pastoral-care/commit/aa9ec4ce321e18b1dfaa1f8f8b5414eb2ab45a30))
+*  automate bacenta status ([da1ac20d](https://github.com/firstlovecenter/fl-pastoral-care/commit/da1ac20dcb3bd1ff8126dfe5a86459a6ef09a646))
+
 #### 5.3.22 (2022-12-11)
 
 ##### New Features
