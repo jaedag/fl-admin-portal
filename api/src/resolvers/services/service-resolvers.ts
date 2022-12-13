@@ -104,7 +104,16 @@ const serviceMutation = {
       await session.run(checkFormFilledThisWeek, args)
     )
 
-    if (serviceCheck.alreadyFilled) {
+    if (
+      serviceCheck.alreadyFilled &&
+      ![
+        'Council',
+        'Stream',
+        'GatheringService',
+        'Oversight',
+        'Denomination',
+      ].some((label) => serviceCheck.higherChurchLabels?.includes(label))
+    ) {
       throw new Error(errorMessage.no_double_form_filling)
     }
     if (serviceCheck.labels?.includes('Vacation')) {

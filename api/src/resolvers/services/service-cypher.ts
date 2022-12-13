@@ -1,6 +1,6 @@
 export const checkFormFilledThisWeek = `
 MATCH (church {id: $churchId})
-WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Sonta OR church:Ministry
+WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:Sonta OR church:Ministry
 MATCH (church)<-[:HAS]-(higherChurch)
 
 OPTIONAL MATCH (church)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)

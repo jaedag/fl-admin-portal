@@ -173,6 +173,7 @@ export const COUNCIL_DEFAULTERS = gql`
       bankedThisWeekCount
       servicesThisWeekCount
       cancelledServicesThisWeekCount
+      constituencyBankingDefaultersThisWeekCount
     }
   }
 `
@@ -401,6 +402,8 @@ export const STREAM_DEFAULTERS = gql`
       bankedThisWeekCount
       servicesThisWeekCount
       cancelledServicesThisWeekCount
+      constituencyBankingDefaultersThisWeekCount
+      councilBankingDefaultersThisWeekCount
     }
   }
 `
@@ -1023,20 +1026,16 @@ export const STREAM_COUNCIL_JOINT_LIST = gql`
           whatsappNumber
         }
 
-        council {
+        stream {
           id
           name
-          stream {
-            id
-            name
-          }
         }
-        services(limit: 1) {
-          id
-          noServiceReason
-          attendance
-          income
-        }
+      }
+      services(limit: 1) {
+        id
+        noServiceReason
+        attendance
+        income
       }
     }
   }
