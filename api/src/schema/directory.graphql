@@ -4,7 +4,7 @@ type Member @auth(rules: [{ isAuthenticated: true }]) {
   firstName: String #@search
   middleName: String
   lastName: String
-  fullName: String @computed
+  fullName: String @customResolver
   currentTitle: String
     @cypher(
       statement: """
@@ -12,7 +12,7 @@ type Member @auth(rules: [{ isAuthenticated: true }]) {
       RETURN title.name ORDER BY title.weight DESC LIMIT 1
       """
     )
-  nameWithTitle: String @computed
+  nameWithTitle: String @customResolver
   email: String
   phoneNumber: String
   whatsappNumber: String!
