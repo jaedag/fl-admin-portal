@@ -16,13 +16,11 @@ const DefaulterInfoCard = ({
 }) => {
   const navigate = useNavigate()
 
-  if (defaulter.data === undefined || defaulter.data === null) {
-    return null
-  }
-
   return (
     <Card className="text-center" onClick={() => navigate(defaulter.link)}>
-      <Card.Header>{defaulter.title}</Card.Header>
+      <Card.Header>
+        <div className=" text-nowrap text-truncate">{defaulter.title}</div>
+      </Card.Header>
       <PlaceholderCustom
         loading={defaulter.data === undefined || defaulter.data === null}
         className={`fw-bold large-number pb-3 ${defaulter.color}`}

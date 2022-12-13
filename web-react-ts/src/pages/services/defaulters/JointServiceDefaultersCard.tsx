@@ -47,7 +47,8 @@ const JointServiceDefaulterCard = ({ defaulter, link }: DefaulterCardProps) => {
             : null}
         </Card.Header>
         <Card.Body>
-          <Card.Text
+          <div
+            className="card-text"
             onClick={() => {
               clickCard(defaulter)
               clickCard(serviceDetails)
@@ -77,7 +78,7 @@ const JointServiceDefaulterCard = ({ defaulter, link }: DefaulterCardProps) => {
                 {serviceDetails?.noServiceReason}
               </div>
             )}
-          </Card.Text>
+          </div>
           <a href={`tel:${defaulter?.leader?.phoneNumber}`}>
             <Button variant="primary">
               <TelephoneFill /> Call

@@ -45,13 +45,13 @@ const ConstituencyBankedThisWeek = () => {
 
           <PlaceholderCustom
             as="h6"
-            loading={!church?.constituencyBankingDefaultersThisWeek.length}
+            loading={!church?.constituencyBankedThisWeek.length}
           >
-            <h6>{`Services Which Banked This Week: ${church?.constituencyBankingDefaultersThisWeek.length}`}</h6>
+            <h6>{`Services Which Banked This Week: ${church?.constituencyBankedThisWeek.length}`}</h6>
           </PlaceholderCustom>
 
           <Row>
-            {church?.constituencyBankingDefaultersThisWeek.map((service, i) => (
+            {church?.constituencyBankedThisWeek.map((service, i) => (
               <Col key={i} xs={12} className="mb-3">
                 <JointServiceDefaulterCard
                   defaulter={service}
