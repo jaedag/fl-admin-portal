@@ -88,7 +88,7 @@ export const aggregateServiceDataForBacenta = `
    WITH DISTINCT bacenta, record
    MATCH (bacenta)-[:CURRENT_HISTORY]->(log:ServiceLog)
    MERGE (aggregate:AggregateServiceRecord {id: date().week + '-' + date().year + '-' + log.id, week: date().week, year: date().year})
-   MERGE (bacenta)-[:HAS_SERVICE_AGGREGATE]->(aggregate)
+   MERGE (log)-[:HAS_SERVICE_AGGREGATE]->(aggregate)
    WITH bacenta, aggregate, SUM(record.attendance) AS totalAttendance, SUM(record.income) AS totalIncome
        SET aggregate.attendance = totalAttendance,
        aggregate.income = totalIncome
@@ -99,7 +99,7 @@ export const aggregateServiceDataForBacenta = `
    WITH DISTINCT constituency, record
    MATCH (constituency)-[:CURRENT_HISTORY]->(log:ServiceLog)
    MERGE (aggregate:AggregateServiceRecord {id: date().week + '-' + date().year + '-' + log.id, week: date().week, year: date().year})
-   MERGE (constituency)-[:HAS_SERVICE_AGGREGATE]->(aggregate)
+   MERGE (log)-[:HAS_SERVICE_AGGREGATE]->(aggregate)
    WITH constituency, aggregate, SUM(record.attendance) AS totalAttendance, SUM(record.income) AS totalIncome
        SET aggregate.attendance = totalAttendance,
        aggregate.income = totalIncome
@@ -110,7 +110,7 @@ export const aggregateServiceDataForBacenta = `
    WITH DISTINCT council, record
    MATCH (council)-[:CURRENT_HISTORY]->(log:ServiceLog)
    MERGE (aggregate:AggregateServiceRecord {id: date().week + '-' + date().year + '-' + log.id, week: date().week, year: date().year})
-   MERGE (council)-[:HAS_SERVICE_AGGREGATE]->(aggregate)
+   MERGE (log)-[:HAS_SERVICE_AGGREGATE]->(aggregate)
    WITH council, aggregate, SUM(record.attendance) AS totalAttendance, SUM(record.income) AS totalIncome
        SET aggregate.attendance = totalAttendance,
        aggregate.income = totalIncome
@@ -121,7 +121,7 @@ export const aggregateServiceDataForBacenta = `
    WITH DISTINCT stream, record
    MATCH (stream)-[:CURRENT_HISTORY]->(log:ServiceLog)
    MERGE (aggregate:AggregateServiceRecord {id: date().week + '-' + date().year + '-' + log.id, week: date().week, year: date().year})
-   MERGE (stream)-[:HAS_SERVICE_AGGREGATE]->(aggregate)
+   MERGE (log)-[:HAS_SERVICE_AGGREGATE]->(aggregate)
    WITH stream, aggregate, SUM(record.attendance) AS totalAttendance, SUM(record.income) AS totalIncome
        SET aggregate.attendance = totalAttendance,
        aggregate.income = totalIncome
@@ -132,7 +132,7 @@ export const aggregateServiceDataForBacenta = `
    WITH DISTINCT gathering, record
    MATCH (gathering)-[:CURRENT_HISTORY]->(log:ServiceLog)
    MERGE (aggregate:AggregateServiceRecord {id: date().week + '-' + date().year + '-' + log.id, week: date().week, year: date().year})
-   MERGE (gathering)-[:HAS_SERVICE_AGGREGATE]->(aggregate)
+   MERGE (log)-[:HAS_SERVICE_AGGREGATE]->(aggregate)
    WITH gathering, aggregate, SUM(record.attendance) AS totalAttendance, SUM(record.income) AS totalIncome
        SET aggregate.attendance = totalAttendance,
        aggregate.income = totalIncome
@@ -143,7 +143,7 @@ export const aggregateServiceDataForBacenta = `
    WITH DISTINCT oversight, record
    MATCH (oversight)-[:CURRENT_HISTORY]->(log:ServiceLog)
    MERGE (aggregate:AggregateServiceRecord {id: date().week + '-' + date().year + '-' + log.id, week: date().week, year: date().year})
-   MERGE (oversight)-[:HAS_SERVICE_AGGREGATE]->(aggregate)
+   MERGE (log)-[:HAS_SERVICE_AGGREGATE]->(aggregate)
    WITH oversight, aggregate, SUM(record.attendance) AS totalAttendance, SUM(record.income) AS totalIncome
        SET aggregate.attendance = totalAttendance,
        aggregate.income = totalIncome
@@ -154,7 +154,7 @@ export const aggregateServiceDataForBacenta = `
    WITH DISTINCT denomination, record
    MATCH (denomination)-[:CURRENT_HISTORY]->(log:ServiceLog)
    MERGE (aggregate:AggregateServiceRecord {id: date().week + '-' + date().year + '-' + log.id, week: date().week, year: date().year})
-   MERGE (denomination)-[:HAS_SERVICE_AGGREGATE]->(aggregate)
+   MERGE (log)-[:HAS_SERVICE_AGGREGATE]->(aggregate)
    WITH denomination, aggregate, SUM(record.attendance) AS totalAttendance, SUM(record.income) AS totalIncome
        SET aggregate.attendance = totalAttendance,
        aggregate.income = totalIncome
