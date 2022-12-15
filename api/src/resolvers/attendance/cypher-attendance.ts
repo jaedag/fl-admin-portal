@@ -11,6 +11,16 @@ MATCH (bacenta:Bacenta {id: $bacentaId})
 REMOVE bacenta:Graduated
 SET bacenta:IC
 
+CREATE (log:HistoryLog)
+        SET
+        log.id =  apoc.create.uuid(),
+        log.timeStamp = datetime(),
+        log.historyRecord = bacenta.name has been demoted to IC
+
+WITH bacenta, log
+MATCH (bacenta)-[:CURRENT_HISTORY]->(servicelog:ServiceLog)
+MERGE (log)-[:HAS_BACENTA_STATUS_CHANGE]->(servicelog)
+
 RETURN bacenta
 `
 
@@ -18,6 +28,16 @@ export const setBacentaGraduated = `
 MATCH (bacenta:Bacenta {id:  $bacentaId})
 REMOVE bacenta:IC
 SET bacenta:Graduated
+
+CREATE (log:HistoryLog)
+        SET
+        log.id =  apoc.create.uuid(),
+        log.timeStamp = datetime(),
+        log.historyRecord = bacenta status been changed to Graduated
+
+WITH bacenta, log
+MATCH (bacenta)-[:CURRENT_HISTORY]->(servicelog:ServiceLog)
+MERGE (log)-[:HAS_BACENTA_STATUS_CHANGE]->(servicelog)
 
 RETURN bacenta
 `
