@@ -147,7 +147,7 @@ const serviceMutation = {
       .catch((error: any) => throwToSentry('Error Recording Service', error))
     secondSession
       .run(aggregateCypher, {
-        churchId: serviceCheck.higherChurchId,
+        churchId: args.churchId,
       })
       .catch((error: any) => console.error('Error Aggregating Service', error))
 
