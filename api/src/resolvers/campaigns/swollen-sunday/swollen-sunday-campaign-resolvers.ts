@@ -2,6 +2,7 @@ import { permitAdmin } from '../../permissions'
 import { Context } from '../../utils/neo4j-types'
 import { isAuth, rearrangeCypherObject, throwToSentry } from '../../utils/utils'
 import {
+  aggregateTargetsCypher,
   getCouncilAverage,
   shareBacentaTargetsCypher,
   uploadBacentaTargetsCypher,
@@ -68,6 +69,10 @@ const UploadBacentaTargets = async (
       })
     )
 
+    await session.run(aggregateTargetsCypher, {
+      swellDate: args.swellDate,
+    })
+
     if (response.result) {
       return 'Targets uploaded successfully'
     }
@@ -89,6 +94,7 @@ const ShareBacentaTargets = async (
   context: Context
 ) => {
   isAuth(permitAdmin('Council'), context.auth.roles)
+  const session = context.executionContext.session()
 
   const parsedTargets: TargetArg[] = JSON.parse(args.data, convertToNumber)
 
@@ -102,6 +108,11 @@ const ShareBacentaTargets = async (
       )
     )
   )
+
+  await session.run(aggregateTargetsCypher, {
+    swellDate: args.swellDate,
+  })
+
   return true
 }
 const swollenSundayMutations = {
