@@ -61,6 +61,7 @@ export const getServiceGraphData = (
         aggregateServiceRecords: any[]
         aggregateBussingRecords: any[]
         aggregateMultiplicationRecords: any[]
+        swellBussingRecords: any[]
       }
     | undefined,
   category:
@@ -69,6 +70,7 @@ export const getServiceGraphData = (
     | 'serviceAggregate'
     | 'service'
     | 'multiplicationAggregate'
+    | 'swellBussing'
 ) => {
   if (!church) {
     return
@@ -102,6 +104,7 @@ export const getServiceGraphData = (
         week: record.week,
         attendance: record.attendance,
         income: record.income?.toFixed(2),
+        target: record?.target,
       })
     })
   }
@@ -119,6 +122,9 @@ export const getServiceGraphData = (
 
   if (category === 'bussingAggregate') {
     pushIntoData(church.aggregateBussingRecords)
+  }
+  if (category === 'swellBussing') {
+    pushIntoData(church.swellBussingRecords)
   }
 
   if (category === 'multiplicationAggregate') {

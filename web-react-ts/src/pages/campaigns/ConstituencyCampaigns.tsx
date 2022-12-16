@@ -37,7 +37,11 @@ const ConstituencyCampaigns = () => {
                 key={index}
                 name={campaign}
                 onClick={() =>
-                  navigate(`/campaigns/constituency/${campaign.toLowerCase()}`)
+                  navigate(
+                    `/campaigns/constituency/${campaign
+                      .toLowerCase()
+                      .replace(' ', '-')}`
+                  )
                 }
               />
             ))}

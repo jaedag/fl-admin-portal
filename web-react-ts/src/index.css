@@ -325,3 +325,17 @@ a {
   width: 100px;
   border: 3px solid var(--infobar-color);
 }
+
+.img-swollen-sunday {
+  width: 70px;
+  border: 3px solid var(--infobar-color);
+}
+
+.card-width.btn-dark:hover,
+.btn-dark:focus,
+.btn-dark:active,
+.open > .dropdown-toggle.btn-dark {
+  color: var(--text-primary);
+  background-color: #2a2d31;
+  border-color: none;
+}

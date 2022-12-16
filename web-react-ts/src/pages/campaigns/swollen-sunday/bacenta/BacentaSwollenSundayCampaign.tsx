@@ -1,13 +1,7 @@
 import React from 'react'
-import { Container } from 'react-bootstrap'
-import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
+import SwollenSundayLandingPage from '../SwollenSundayLandingPage'
 
 const BacentaSwollenSundayCampaign = () => {
-  return (
-    <Container>
-      <HeadingPrimary>Swollen Sunday Campaign</HeadingPrimary>
-      The Swollen Sunday Feature is still being worked on. Will update soon!
-    </Container>
-  )
+  return <SwollenSundayLandingPage />
 }
 export default BacentaSwollenSundayCampaign

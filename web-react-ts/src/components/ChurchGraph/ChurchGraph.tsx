@@ -19,7 +19,7 @@ import './ChurchGraph.css'
 type ChurchGraphProps = {
   loading?: boolean
   stat1: 'attendance' | 'income'
-  stat2: 'attendance' | 'income' | null
+  stat2: 'attendance' | 'income' | 'target' | null
   churchData: any[]
   secondaryTitle?: string
   bussing?: boolean
@@ -37,7 +37,8 @@ const ChurchGraph = (props: ChurchGraphProps) => {
   const [dataMax, setDataMax] = useState<{
     attendance: number
     income: number
-  }>({ attendance: 0, income: 0 })
+    target: number
+  }>({ attendance: 0, income: 0, target: 0 })
 
   type WeekSortObject = {
     week: number
@@ -67,6 +68,13 @@ const ChurchGraph = (props: ChurchGraphProps) => {
           Math,
           churchData?.map((max: any) => {
             return max.income
+          })
+        ) + 1.2,
+      target:
+        Math.max.apply(
+          Math,
+          churchData?.map((max: any) => {
+            return max.target
           })
         ) + 1.2,
     })
