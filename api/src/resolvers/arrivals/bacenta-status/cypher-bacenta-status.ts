@@ -15,7 +15,7 @@ CREATE (log:HistoryLog)
         SET
         log.id =  apoc.create.uuid(),
         log.timeStamp = datetime(),
-        log.historyRecord = bacenta.name + 'has been demoted to IC status'
+        log.historyRecord = bacenta.name + 'Bacenta has been demoted to IC status'
 
 
         
@@ -36,7 +36,7 @@ CREATE (log:HistoryLog)
         SET
         log.id =  apoc.create.uuid(),
         log.timeStamp = datetime(),
-        log.historyRecord = bacenta.name + 'has been promoted to graduated status'
+        log.historyRecord = bacenta.name + 'Bacenta has been promoted to graduated status'
 
 MERGE (date:TimeGraph {date: date()})
 WITH bacenta, log, date

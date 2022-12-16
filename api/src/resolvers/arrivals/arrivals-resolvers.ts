@@ -38,7 +38,7 @@ import {
 import texts from '../texts.json'
 import { SendMoneyBody } from './arrivals-types'
 import { checkServantHasCurrentHistory } from '../services/service-resolvers'
-import { setBacentaStatus } from '../attendance/utils-attendance'
+import { setBacentaStatus } from './bacenta-status/utils-bacenta-status'
 
 const dotenv = require('dotenv')
 
