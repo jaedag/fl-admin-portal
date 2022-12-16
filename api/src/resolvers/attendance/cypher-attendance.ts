@@ -40,9 +40,8 @@ CREATE (log:HistoryLog)
 
 MERGE (date:TimeGraph {date: date()})
 WITH bacenta, log, date
-MERGE (bacenta)-[:HAS_HISTORY]->(log)
 MERGE (log)-[:RECORDED_ON]->(date)
-
+MERGE (bacenta)-[:HAS_HISTORY]->(log)
 
 RETURN bacenta
 `
