@@ -14,7 +14,7 @@ type TargetArg = {
 
 const convertToNumber = (key: any, value: any) => {
   if (typeof value.target === 'string') {
-    return parseInt(value.target, 10)
+    return { councilId: value.councilId, target: parseInt(value.target, 10) }
   }
   return value
 }
@@ -27,6 +27,7 @@ const runShareBacenta = async (
 ) => {
   try {
     const session = context.executionContext.session()
+
     const averageCouncilBussing = rearrangeCypherObject(
       await session.run(getCouncilAverage, {
         councilId,
@@ -67,7 +68,13 @@ const UploadBacentaTargets = async (
       })
     )
 
-    return response.result
+    if (response.result) {
+      return 'Targets uploaded successfully'
+    }
+    return throwToSentry(
+      'There was an error uploading the bacenta taregts',
+      response
+    )
   } catch (error) {
     return throwToSentry(
       'There was an error uploading the bacenta taregts',

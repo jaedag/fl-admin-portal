@@ -134,6 +134,6 @@ extend type Bacenta {
 }
 
 extend type Mutation {
-  UploadBacentaTargets(data: String!, swellDate: String!): Boolean!
+  UploadBacentaTargets(data: String!, swellDate: String!): String!
   ShareTargetsByCouncil(data: String!, swellDate: String!): Boolean!
 }

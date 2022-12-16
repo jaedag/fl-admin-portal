@@ -1,7 +1,8 @@
 export const uploadBacentaTargetsCypher = `
 UNWIND $data as details
 CREATE (target:Target {id: apoc.create.uuid()})
-SET target.target = details.target
+SET target.target = details.target,
+target.date = date($swellDate)
 
 WITH target, details
 MATCH (bacenta:Bacenta {code: toInteger(details.code)})
