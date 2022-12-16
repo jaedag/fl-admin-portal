@@ -26,9 +26,6 @@ export const setBacentaICStatus = async (
       await session.run(setBacentaIC, { bacentaId })
     }
   }
-  // if (last4Bussing.every((bussing) => bussing < 8)) {
-  //   await session.run(setBacentaIC, { bacentaId })
-  // }
 }
 
 export const setBacentaGraduatedStatus = async (
@@ -41,9 +38,7 @@ export const setBacentaGraduatedStatus = async (
     if (last4Bussing.every((bussing) => bussing > 8)) {
       await session.run(setBacentaGraduated, { bacentaId })
     }
-  }
-
-  if (last4Bussing.every((bussing) => bussing > 8)) {
+  } else if (last4Bussing.every((bussing) => bussing > 8)) {
     await session.run(setBacentaGraduated, { bacentaId })
   }
 }
