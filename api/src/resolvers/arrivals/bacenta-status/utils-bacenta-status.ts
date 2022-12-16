@@ -1,11 +1,11 @@
-import { Context } from '../utils/neo4j-types'
-import { rearrangeCypherObject } from '../utils/utils'
+import { Context } from '../../utils/neo4j-types'
+import { rearrangeCypherObject } from '../../utils/utils'
 
 import {
   getBacentaLastFourBussing,
   setBacentaIC,
   setBacentaGraduated,
-} from './cypher-attendance'
+} from './cypher-bacenta-status'
 
 export type serviceType = {
   bacentaId: string
