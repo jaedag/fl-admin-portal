@@ -1,6 +1,5 @@
 type SwellStats {
   attendance: Int!
-  date: Date!
   target: Int
   week: Int!
 }

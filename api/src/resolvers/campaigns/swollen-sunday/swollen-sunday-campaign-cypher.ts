@@ -76,10 +76,13 @@ MATCH (lowerChurch)-[:CURRENT_HISTORY]->(:ServiceLog)-[:HAS_TARGET]->(target:Tar
 WHERE target.date = date($swellDate)
 
 WITH sum(target.target) as aggregate, higherChurch
-CREATE (target:Target)
+MERGE (target:Target {code: higherChurch.id + '-' + toString(date($swellDate))})
+ON CREATE
 SET target.target = aggregate,
 target.id = apoc.create.uuid(),
 target.date = date($swellDate)
+ON MATCH 
+SET target.target = aggregate
 
 WITH target, higherChurch
 MATCH (higherChurch)-[:CURRENT_HISTORY]->(log:ServiceLog)
@@ -92,10 +95,13 @@ MATCH (lowerChurch)-[:CURRENT_HISTORY]->(:ServiceLog)-[:HAS_TARGET]->(target:Tar
 WHERE target.date = date($swellDate)
 
 WITH sum(target.target) as aggregate, higherChurch
-CREATE (target:Target)
+MERGE (target:Target {code: higherChurch.id + '-' + toString(date($swellDate))})
+ON CREATE
 SET target.target = aggregate,
 target.id = apoc.create.uuid(),
 target.date = date($swellDate)
+ON MATCH 
+SET target.target = aggregate
 
 WITH target, higherChurch
 MATCH (higherChurch)-[:CURRENT_HISTORY]->(log:ServiceLog)
@@ -108,10 +114,13 @@ MATCH (lowerChurch)-[:CURRENT_HISTORY]->(:ServiceLog)-[:HAS_TARGET]->(target:Tar
 WHERE target.date = date($swellDate)
 
 WITH sum(target.target) as aggregate, higherChurch
-CREATE (target:Target)
+MERGE (target:Target {code: higherChurch.id + '-' + toString(date($swellDate))})
+ON CREATE
 SET target.target = aggregate,
 target.id = apoc.create.uuid(),
 target.date = date($swellDate)
+ON MATCH 
+SET target.target = aggregate
 
 WITH target, higherChurch
 MATCH (higherChurch)-[:CURRENT_HISTORY]->(log:ServiceLog)
