@@ -29,7 +29,7 @@ const SwollenSundayLandingPage = () => {
               )
             }
           />
-          {(churchType === 'Stream' || churchType == 'Council') && (
+          {(churchType === 'Stream' || churchType === 'Council') && (
             <MenuButton
               name="Import Target"
               onClick={() =>

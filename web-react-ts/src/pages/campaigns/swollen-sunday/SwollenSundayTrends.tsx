@@ -40,7 +40,7 @@ const SwollenSundayTrends = ({
           <tbody>
             <tr>
               {churchBelow.map((church, index) => (
-                <td className="col-auto" key={index}>
+                <td className="col-auto px-1" key={index}>
                   <div key={index}>
                     <Button
                       variant="dark"

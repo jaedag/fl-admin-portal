@@ -25,11 +25,20 @@ type ChurchGraphProps = {
   bussing?: boolean
   income: boolean
   church: ChurchLevelLower | string
+  swollenSunday?: boolean
 }
 
 const ChurchGraph = (props: ChurchGraphProps) => {
-  const { loading, stat1, stat2, churchData, secondaryTitle, bussing, income } =
-    props
+  const {
+    loading,
+    stat1,
+    stat2,
+    churchData,
+    secondaryTitle,
+    bussing,
+    income,
+    swollenSunday,
+  } = props
   const { clickCard } = useContext(ChurchContext)
   const navigate = useNavigate()
 
@@ -132,12 +141,20 @@ const ChurchGraph = (props: ChurchGraphProps) => {
                 >
                   <stop
                     offset="0%"
-                    stopColor="var(--chart-primary-color)"
+                    stopColor={
+                      swollenSunday
+                        ? 'var(--chart-swollen-bussing-attendance-color)'
+                        : 'var(--chart-primary-color)'
+                    }
                     stopOpacity="1"
                   />
                   <stop
                     offset="80%"
-                    stopColor="var(--chart-primary-color)"
+                    stopColor={
+                      swollenSunday
+                        ? 'var(--chart-swollen-bussing-attendance-color)'
+                        : 'var(--chart-primary-color)'
+                    }
                     stopOpacity="0.1"
                   />
                 </linearGradient>
@@ -150,12 +167,20 @@ const ChurchGraph = (props: ChurchGraphProps) => {
                 >
                   <stop
                     offset="0%"
-                    stopColor="var(--chart-secondary-color)"
+                    stopColor={
+                      swollenSunday
+                        ? 'var(--chart-swollen-bussing-target-color)'
+                        : 'var(--chart-secondary-color)'
+                    }
                     stopOpacity="1"
                   />
                   <stop
                     offset="80%"
-                    stopColor="var(--chart-secondary-color)"
+                    stopColor={
+                      swollenSunday
+                        ? 'var(--chart-swollen-bussing-target-color)'
+                        : 'var(--chart-secondary-color)'
+                    }
                     stopOpacity="0.1"
                   />
                 </linearGradient>

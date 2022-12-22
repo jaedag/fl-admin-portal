@@ -27,6 +27,7 @@ const ConstituencySwollenSundayTrends = () => {
   const { constituencyId } = useContext(ChurchContext)
   const navigate = useNavigate()
   const [bussing] = useState(true)
+  const [selectedView, setSelectedView] = useState('BussingVsTarget')
 
   const initialValues: FormOptions = {
     fromDate: '2022-01-01',
@@ -99,6 +100,10 @@ const ConstituencySwollenSundayTrends = () => {
       ),
   })
 
+  const handleSelectChange = (value: string) => {
+    setSelectedView(value)
+  }
+
   return (
     <ApolloWrapper
       loading={constituencyLoading}
@@ -120,11 +125,14 @@ const ConstituencySwollenSundayTrends = () => {
             <>
               <div className="text-center mt-3">
                 <select
-                  className="dropdown-quick-facts"
+                  value={selectedView}
+                  className="dropdown-quick-facts text-center"
                   name="dropdown"
                   id="dropdown"
+                  onChange={(e) => handleSelectChange(e.target.value)}
                 >
-                  <option>Bussing</option>
+                  <option value="Bussing">Bussing</option>
+                  <option value="BussingVsTarget">Bussing Vs Target</option>
                 </select>
               </div>
               <Form>
@@ -156,9 +164,10 @@ const ConstituencySwollenSundayTrends = () => {
               </Form>
               <div>
                 <ChurchGraph
+                  swollenSunday={true}
                   loading={loading}
                   stat1="attendance"
-                  stat2="target"
+                  stat2={selectedView === 'Bussing' ? null : 'target'}
                   churchData={churchData || []}
                   church={church?.__typename?.toLowerCase()}
                   bussing={bussing}
