@@ -1,3 +1,17 @@
+### 5.6.0 (2022-12-22)
+
+##### Bug Fixes
+
+*  add correct spacing to history log ([c00b53ec](https://github.com/firstlovecenter/fl-pastoral-care/commit/c00b53ece4c8beff0e39f9c7ffe0a502ca6d5f5e))
+*  unhandled if statement ([788741f5](https://github.com/firstlovecenter/fl-pastoral-care/commit/788741f5dbff415ea3ca08a0112c7bd7d72c24d0))
+*  add history log to track change in bacenta status ([82207ce0](https://github.com/firstlovecenter/fl-pastoral-care/commit/82207ce08f5d4c8d55b41243d412040b83c215f9))
+*  pass correct argument to cypher calculating aggregate service ([dca064e2](https://github.com/firstlovecenter/fl-pastoral-care/commit/dca064e2058af3be74b6a2d476b12722a9d8a432))
+*  fix error in cypher where aggregate service records were not being recorded properly ([6a337d0c](https://github.com/firstlovecenter/fl-pastoral-care/commit/6a337d0cceb37cd71c75c4115cfd397a55dee37b))
+
+##### Refactors
+
+*  placed bacenta status cypher within arrivals folder ([62474226](https://github.com/firstlovecenter/fl-pastoral-care/commit/62474226104887e32fde4bdbb5dba11665c6777e))
+
 ### 5.5.0 (2022-12-13)
 
 ##### Chores
