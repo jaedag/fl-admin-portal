@@ -1,6 +1,6 @@
 /* eslint-disable no-underscore-dangle */
-import { Context } from '../utils/neo4j-types'
-import { sendBulkEmail, sendBulkSMS } from '../utils/notify'
+import { Context } from '../../utils/neo4j-types'
+import { sendBulkEmail, sendBulkSMS } from '../../utils/notify'
 import {
   checkExistingEquipmentRecord,
   createConstituencyEquipmentRecord,
@@ -11,10 +11,10 @@ import {
   getFellowshipLeadersEmailsAndNumbers,
   SetEquipmentDeadline,
 } from './equipment-campaign-cypher'
-import texts from '../texts.json'
-import { isAuth, rearrangeCypherObject, throwToSentry } from '../utils/utils'
-import { permitAdmin, permitLeaderAdmin } from '../permissions'
-import { ChurchLevel } from '../utils/types'
+import texts from '../../texts.json'
+import { isAuth, rearrangeCypherObject, throwToSentry } from '../../utils/utils'
+import { permitAdmin, permitLeaderAdmin } from '../../permissions'
+import { ChurchLevel } from '../../utils/types'
 
 const campaignsCypher = require('./equipment-campaign-cypher')
 
@@ -280,7 +280,7 @@ export const equipmentCampaignMutations = {
   },
 }
 
-const getEquipmentDetails = async (
+export const getEquipmentDetails = async (
   obj: any,
   args: any,
   context: Context,
@@ -322,23 +322,4 @@ const getEquipmentDetails = async (
     default:
       return { pulpits, bluetoothSpeakers, offeringBags }
   }
-}
-
-export const equipmentCampaignResolvers = {
-  GatheringService: {
-    equipmentRecord: (obj: any, args: any, context: Context) =>
-      getEquipmentDetails(obj, args, context, 'GatheringService'),
-  },
-  Stream: {
-    equipmentRecord: (obj: any, args: any, context: Context) =>
-      getEquipmentDetails(obj, args, context, 'Stream'),
-  },
-  Council: {
-    equipmentRecord: (obj: any, args: any, context: Context) =>
-      getEquipmentDetails(obj, args, context, 'Council'),
-  },
-  Constituency: {
-    equipmentRecord: (obj: any, args: any, context: Context) =>
-      getEquipmentDetails(obj, args, context, 'Constituency'),
-  },
 }

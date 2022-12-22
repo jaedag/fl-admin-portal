@@ -1,4 +1,3 @@
-/* eslint-disable import/prefer-default-export */
 export const recordMultiplicationEvent = `
 CREATE (record:MultiplicationRecord {id: apoc.create.uuid()})
 SET record.createdAt = datetime(),

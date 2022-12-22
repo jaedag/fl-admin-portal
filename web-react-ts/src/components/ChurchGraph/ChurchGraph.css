@@ -1,7 +1,8 @@
 :root {
   --chart-primary-color: #690c13;
-
   --chart-secondary-color: #097778;
+  --chart-swollen-bussing-attendance-color: #3d4ea8;
+  --chart-swollen-bussing-target-color: #ffc107;
 }
 
 .chart-title {

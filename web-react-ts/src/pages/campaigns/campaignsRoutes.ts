@@ -274,6 +274,74 @@ const StreamMultiplicationCampaignServiceDetails = lazy(
     )
 )
 
+const GatheringServiceSwollenSundayTrends = lazy(
+  () =>
+    import(
+      '../campaigns/swollen-sunday/gathering-service/GatheringServiceSwollenSundayTrends'
+    )
+)
+
+const StreamSwollenSundayTrends = lazy(
+  () => import('../campaigns/swollen-sunday/stream/StreamSwollenSundayTrends')
+)
+
+const CouncilSwollenSundayTrends = lazy(
+  () => import('../campaigns/swollen-sunday/council/CouncilSwollenSundayTrends')
+)
+
+const ConstituencySwollenSundayTrends = lazy(
+  () =>
+    import(
+      '../campaigns/swollen-sunday/constituency/ConstituencySwollenSundayTrends'
+    )
+)
+
+const BacentaSwollenSundayTrends = lazy(
+  () => import('../campaigns/swollen-sunday/bacenta/BacentaSwollenSundayTrends')
+)
+
+const CouncilSwollenSundayUploadTargets = lazy(
+  () =>
+    import(
+      '../campaigns/swollen-sunday/council/CouncilSwollenSundayUploadTargets'
+    )
+)
+
+const StreamSwollenSundayUploadTargets = lazy(
+  () =>
+    import(
+      '../campaigns/swollen-sunday/stream/StreamSwollenSundayUploadTargets'
+    )
+)
+
+const CouncilSwollenSundayTarget = lazy(
+  () => import('../campaigns/swollen-sunday/council/CouncilSwollenSundayTarget')
+)
+
+const StreamSwollenSundayTarget = lazy(
+  () => import('../campaigns/swollen-sunday/stream/StreamSwollenSundayTarget')
+)
+
+const StreamSwollenSundayShareTargetByCouncil = lazy(
+  () =>
+    import(
+      '../campaigns/swollen-sunday/stream/StreamSwollenSundayShareTargetByCouncil'
+    )
+)
+
+const SwollenSundayStreamList = lazy(
+  () => import('./swollen-sunday/stream/SwollenSundayStreamList')
+)
+const SwollenSundayCouncilList = lazy(
+  () => import('./swollen-sunday/council/SwollenSundayCouncilList')
+)
+const SwollenSundayConstituencyList = lazy(
+  () => import('./swollen-sunday/constituency/SwollenSundayConstituencyList')
+)
+const SwollenSundayBacentaList = lazy(
+  () => import('./swollen-sunday/bacenta/SwollenSundayBacentaList')
+)
+
 const ConstituencyMultiplicationCampaignTrends = lazy(
   () =>
     import(
@@ -448,6 +516,12 @@ export const campaigns: LazyRouteTypes[] = [
     placeholder: true,
   },
   {
+    path: '/campaigns/gatheringservice/swollen-sunday/trends',
+    element: GatheringServiceSwollenSundayTrends,
+    roles: permitAdmin('GatheringService'),
+    placeholder: true,
+  },
+  {
     path: '/campaigns/gathering-service/multiplication/trends',
     element: GatheringServiceMultiplicationCampaignTrends,
     roles: permitAdmin('GatheringService'),
@@ -564,6 +638,36 @@ export const campaigns: LazyRouteTypes[] = [
     placeholder: true,
   },
   {
+    path: '/campaigns/stream/swollen-sunday/trends',
+    element: StreamSwollenSundayTrends,
+    roles: permitAdmin('Stream'),
+    placeholder: true,
+  },
+  {
+    path: '/campaigns/stream/swollen-sunday/target',
+    element: StreamSwollenSundayTarget,
+    roles: permitAdmin('Stream'),
+    placeholder: true,
+  },
+  {
+    path: '/campaigns/stream/swollen-sunday/upload-targets',
+    element: StreamSwollenSundayUploadTargets,
+    roles: permitAdmin('Stream'),
+    placeholder: true,
+  },
+  {
+    path: '/campaigns/stream/swollen-sunday/share-target-by-council',
+    element: StreamSwollenSundayShareTargetByCouncil,
+    roles: permitAdmin('Stream'),
+    placeholder: true,
+  },
+  {
+    path: '/campaigns/stream/swollen-sunday/streams',
+    element: SwollenSundayStreamList,
+    roles: permitAdmin('Stream'),
+    placeholder: true,
+  },
+  {
     path: '/campaigns/stream/multiplication/trends',
     element: StreamMultiplicationCampaignTrends,
     roles: permitAdmin('Stream'),
@@ -664,6 +768,30 @@ export const campaigns: LazyRouteTypes[] = [
   {
     path: '/campaigns/council/multiplication/service-details',
     element: CouncilMultiplicationCampaignServiceDetails,
+    roles: permitAdmin('Council'),
+    placeholder: true,
+  },
+  {
+    path: '/campaigns/council/swollen-sunday/trends',
+    element: CouncilSwollenSundayTrends,
+    roles: permitAdmin('Council'),
+    placeholder: true,
+  },
+  {
+    path: '/campaigns/council/swollen-sunday/target',
+    element: CouncilSwollenSundayTarget,
+    roles: permitAdmin('Council'),
+    placeholder: true,
+  },
+  {
+    path: '/campaigns/council/swollen-sunday/upload-targets',
+    element: CouncilSwollenSundayUploadTargets,
+    roles: permitAdmin('Council'),
+    placeholder: true,
+  },
+  {
+    path: '/campaigns/council/swollen-sunday/councils',
+    element: SwollenSundayCouncilList,
     roles: permitAdmin('Council'),
     placeholder: true,
   },
@@ -772,6 +900,18 @@ export const campaigns: LazyRouteTypes[] = [
     placeholder: true,
   },
   {
+    path: '/campaigns/constituency/swollen-sunday/trends',
+    element: ConstituencySwollenSundayTrends,
+    roles: permitAdmin('Constituency'),
+    placeholder: true,
+  },
+  {
+    path: '/campaigns/constituency/swollen-sunday/constituencies',
+    element: SwollenSundayConstituencyList,
+    roles: permitAdmin('Constituency'),
+    placeholder: true,
+  },
+  {
     path: '/campaigns/constituency/multiplication/trends',
     element: ConstituencyMultiplicationCampaignTrends,
     roles: permitAdmin('Constituency'),
@@ -818,6 +958,18 @@ export const campaigns: LazyRouteTypes[] = [
   {
     path: '/campaigns/bacenta/swollen-sunday',
     element: BacentaSwollenSundayCampaign,
+    roles: permitLeaderAdmin('Bacenta'),
+    placeholder: true,
+  },
+  {
+    path: '/campaigns/bacenta/swollen-sunday/trends',
+    element: BacentaSwollenSundayTrends,
+    roles: permitLeaderAdmin('Bacenta'),
+    placeholder: true,
+  },
+  {
+    path: '/campaigns/bacenta/swollen-sunday/bacentas',
+    element: SwollenSundayBacentaList,
     roles: permitLeaderAdmin('Bacenta'),
     placeholder: true,
   },

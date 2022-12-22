@@ -37,7 +37,11 @@ const BacentaCampaigns = () => {
                 key={index}
                 name={campaign}
                 onClick={() =>
-                  navigate(`/campaigns/bacenta/${campaign.toLowerCase()}`)
+                  navigate(
+                    `/campaigns/bacenta/${campaign
+                      .toLowerCase()
+                      .replace(' ', '-')}`
+                  )
                 }
               />
             ))}

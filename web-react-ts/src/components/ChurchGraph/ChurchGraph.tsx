@@ -19,17 +19,26 @@ import './ChurchGraph.css'
 type ChurchGraphProps = {
   loading?: boolean
   stat1: 'attendance' | 'income'
-  stat2: 'attendance' | 'income' | null
+  stat2: 'attendance' | 'income' | 'target' | null
   churchData: any[]
   secondaryTitle?: string
   bussing?: boolean
   income: boolean
   church: ChurchLevelLower | string
+  swollenSunday?: boolean
 }
 
 const ChurchGraph = (props: ChurchGraphProps) => {
-  const { loading, stat1, stat2, churchData, secondaryTitle, bussing, income } =
-    props
+  const {
+    loading,
+    stat1,
+    stat2,
+    churchData,
+    secondaryTitle,
+    bussing,
+    income,
+    swollenSunday,
+  } = props
   const { clickCard } = useContext(ChurchContext)
   const navigate = useNavigate()
 
@@ -37,7 +46,8 @@ const ChurchGraph = (props: ChurchGraphProps) => {
   const [dataMax, setDataMax] = useState<{
     attendance: number
     income: number
-  }>({ attendance: 0, income: 0 })
+    target: number
+  }>({ attendance: 0, income: 0, target: 0 })
 
   type WeekSortObject = {
     week: number
@@ -67,6 +77,13 @@ const ChurchGraph = (props: ChurchGraphProps) => {
           Math,
           churchData?.map((max: any) => {
             return max.income
+          })
+        ) + 1.2,
+      target:
+        Math.max.apply(
+          Math,
+          churchData?.map((max: any) => {
+            return max.target
           })
         ) + 1.2,
     })
@@ -124,12 +141,20 @@ const ChurchGraph = (props: ChurchGraphProps) => {
                 >
                   <stop
                     offset="0%"
-                    stopColor="var(--chart-primary-color)"
+                    stopColor={
+                      swollenSunday
+                        ? 'var(--chart-swollen-bussing-attendance-color)'
+                        : 'var(--chart-primary-color)'
+                    }
                     stopOpacity="1"
                   />
                   <stop
                     offset="80%"
-                    stopColor="var(--chart-primary-color)"
+                    stopColor={
+                      swollenSunday
+                        ? 'var(--chart-swollen-bussing-attendance-color)'
+                        : 'var(--chart-primary-color)'
+                    }
                     stopOpacity="0.1"
                   />
                 </linearGradient>
@@ -142,12 +167,20 @@ const ChurchGraph = (props: ChurchGraphProps) => {
                 >
                   <stop
                     offset="0%"
-                    stopColor="var(--chart-secondary-color)"
+                    stopColor={
+                      swollenSunday
+                        ? 'var(--chart-swollen-bussing-target-color)'
+                        : 'var(--chart-secondary-color)'
+                    }
                     stopOpacity="1"
                   />
                   <stop
                     offset="80%"
-                    stopColor="var(--chart-secondary-color)"
+                    stopColor={
+                      swollenSunday
+                        ? 'var(--chart-swollen-bussing-target-color)'
+                        : 'var(--chart-secondary-color)'
+                    }
                     stopOpacity="0.1"
                   />
                 </linearGradient>
