@@ -20,7 +20,6 @@ export const COUNCIL_SWOLLEN_SUNDAY_GRAPHS = gql`
       }
       swellBussingRecords(startDate: $startDate, endDate: $endDate) {
         attendance
-        date
         target
         week
       }
@@ -67,7 +66,6 @@ export const STREAM_SWOLLEN_SUNDAY_GRAPHS = gql`
       }
       swellBussingRecords(startDate: $startDate, endDate: $endDate) {
         attendance
-        date
         target
         week
       }
@@ -113,7 +111,6 @@ export const CONSTITUENCY_SWOLLEN_SUNDAY_GRAPHS = gql`
       }
       swellBussingRecords(startDate: $startDate, endDate: $endDate) {
         attendance
-        date
         target
         week
       }
@@ -160,7 +157,6 @@ export const GATHERING_SERVICE_SWOLLEN_SUNDAY_GRAPHS = gql`
       }
       swellBussingRecords(startDate: $startDate, endDate: $endDate) {
         attendance
-        date
         target
         week
       }
@@ -206,7 +202,6 @@ export const BACENTA_SWOLLEN_SUNDAY_GRAPHS = gql`
       }
       swellBussingRecords(startDate: $startDate, endDate: $endDate) {
         attendance
-        date
         target
         week
       }
