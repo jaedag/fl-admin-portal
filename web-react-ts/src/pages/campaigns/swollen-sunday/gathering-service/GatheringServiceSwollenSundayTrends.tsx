@@ -7,7 +7,7 @@ import HeadingSecondary from 'components/HeadingSecondary'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { FormikHelpers, Formik, Form } from 'formik'
 import { getServiceGraphData } from 'pages/services/graphs/graphs-utils'
-import { useContext, useState } from 'react'
+import { useContext, useState, useEffect } from 'react'
 import { Col, Container, Row } from 'react-bootstrap'
 import { Check2Circle } from 'react-bootstrap-icons'
 import { useNavigate } from 'react-router'
@@ -114,6 +114,16 @@ const GatheringServiceSwollenSundayTrends = () => {
   const handleSelectChange = (value: string) => {
     setSelectedView(value)
   }
+
+  useEffect(() => {
+    gatheringServiceSwollenSundayGraph({
+      variables: {
+        gatheringServiceId,
+        startDate: initialValues.fromDate,
+        endDate: initialValues.toDate,
+      },
+    })
+  }, [])
 
   return (
     <ApolloWrapper

@@ -7,7 +7,7 @@ import HeadingSecondary from 'components/HeadingSecondary'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { Form, Formik, FormikHelpers } from 'formik'
 import { getServiceGraphData } from 'pages/services/graphs/graphs-utils'
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import { Col, Container, Row } from 'react-bootstrap'
 import { Check2Circle } from 'react-bootstrap-icons'
 import {
@@ -93,6 +93,16 @@ const BacentaSwollenSundayTrends = () => {
   const handleSelectChange = (value: string) => {
     setSelectedView(value)
   }
+
+  useEffect(() => {
+    bacentaSwollenSundayGraph({
+      variables: {
+        bacentaId,
+        startDate: initialValues.fromDate,
+        endDate: initialValues.toDate,
+      },
+    })
+  }, [])
 
   return (
     <ApolloWrapper
