@@ -323,7 +323,11 @@ type Oversight implements Church {
     )
   bacentas: [Bacenta!]!
     @cypher(
-      statement: "MATCH (this)-[:HAS*5]->(bacenta:Bacenta) RETURN bacenta"
+      statement: "MATCH (this)-[:HAS*5]->(bacenta:Bacenta) WHERE bacenta:Graduated RETURN bacenta"
+    )
+  ics: [Bacenta!]!
+    @cypher(
+      statement: "MATCH (this)-[:HAS*5]->(bacenta:Bacenta) WHERE bacenta:IC RETURN bacenta"
     )
   members: [Member!]!
     @cypher(
@@ -365,16 +369,21 @@ type Oversight implements Church {
     )
   bacentaCount: Int
     @cypher(
-      statement: "MATCH (this)-[:HAS*5]->(bacentas:Bacenta) RETURN COUNT(DISTINCT bacentas)"
+      statement: "MATCH (this)-[:HAS*5]->(bacentas:Bacenta) WHERE bacenta:Graduated RETURN COUNT(DISTINCT bacentas)"
+    )
+  icCount: Int
+    @cypher(
+      statement: "MATCH (this)-[:HAS*5]->(bacentas:Bacenta) WHERE bacenta:IC RETURN COUNT(DISTINCT bacentas)"
     )
   activeBacentaCount: Int
     @cypher(
-      statement: "MATCH (this)-[:HAS*5]->(bacentas:Bacenta:Active) RETURN COUNT(DISTINCT bacentas)"
+      statement: "MATCH (this)-[:HAS*5]->(bacentas:Bacenta:Active) WHERE bacenta:Graduated RETURN COUNT(DISTINCT bacentas)"
     )
   vacationBacentaCount: Int
     @cypher(
       statement: "MATCH (this)-[:HAS*5]-(bacenta:Vacation:Bacenta) RETURN COUNT(bacenta)"
     )
+    
   fellowshipCount: Int
     @cypher(
       statement: "MATCH (this)-[:HAS*6]->(fellowships:Fellowship) RETURN COUNT(DISTINCT fellowships)"
@@ -422,7 +431,7 @@ type GatheringService implements Church {
     )
   bacentas: [Bacenta!]!
     @cypher(
-      statement: "MATCH (this)-[:HAS*4]->(bacenta:Bacenta) RETURN bacenta"
+      statement: "MATCH (this)-[:HAS*4]->(bacenta:Bacenta) WHERE bacenta:Graduated RETURN bacenta"
     )
   members: [Member!]!
     @cypher(
