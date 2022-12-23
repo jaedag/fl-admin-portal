@@ -3,6 +3,7 @@ import { ChurchContext } from 'contexts/ChurchContext'
 import { ChurchLevelLower } from 'global-types'
 import React, { useState, useEffect, useContext } from 'react'
 import { useNavigate } from 'react-router'
+import { Container, Spinner } from 'react-bootstrap'
 import {
   ResponsiveContainer,
   XAxis,
@@ -127,6 +128,11 @@ const ChurchGraph = (props: ChurchGraphProps) => {
           <PlaceholderCustom loading={loading} as="p">
             <p className="chart-title church-name">{`${secondaryTitle}`}</p>
           </PlaceholderCustom>
+        )}
+        {loading && (
+          <Container className="text-center ">
+            <Spinner animation="grow" className="mt-5" />
+          </Container>
         )}
         {!loading && (
           <ResponsiveContainer width="100%" height={330}>
