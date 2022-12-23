@@ -1,3 +1,15 @@
+#### 5.6.1 (2022-12-23)
+
+##### New Features
+
+*  admin-493 show swollen sunday graphs on render ([f5cdba10](https://github.com/firstlovecenter/fl-pastoral-care/commit/f5cdba1044f1900c0f498727c6dbad1b37f5d7f6))
+*  admin-489 implement a loader on a church graph page ([bb8e4864](https://github.com/firstlovecenter/fl-pastoral-care/commit/bb8e4864329ac8566ac6aa4f3a063b338c47e8b6))
+*  add heading to Swollen Sunday church list page ([9fe99479](https://github.com/firstlovecenter/fl-pastoral-care/commit/9fe994792aad6dcf596ebbca9099d2f2c893bb49))
+
+##### Bug Fixes
+
+*  admin-492 fix order in which swell stats are returned ([a4b87fe2](https://github.com/firstlovecenter/fl-pastoral-care/commit/a4b87fe299afb58f3b5ae86b58b7d08906f60c1d))
+
 ### 5.6.0 (2022-12-22)
 
 ##### Bug Fixes
