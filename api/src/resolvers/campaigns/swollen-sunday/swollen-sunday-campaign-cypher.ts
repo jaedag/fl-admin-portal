@@ -24,19 +24,32 @@ RETURN true as result
 
 export const getCouncilAverage = `
 MATCH (this:Council {id:$councilId})
-MATCH (this)-[:HAS]->(:Constituency)-[:HAS]->(bacenta:Bacenta)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord) 
+MATCH (this)-[:HAS]->(:Constituency)-[:HAS]->(bacenta:Active:Bacenta)
 
-WITH avg(bussing.attendance) as averageBacentaAttendance, bacenta
+CALL apoc.cypher.run('
+ WITH $bacenta AS bacenta
+ MATCH (bacenta:Bacenta)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING_AGGREGATE]->(bussing:AggregateBussingRecord) 
+ WITH bussing ORDER BY bussing.year, bussing.week DESC
+ RETURN DISTINCT bussing  LIMIT 4',
+ {bacenta:bacenta}) YIELD value
+
+WITH avg(value.bussing.attendance) as averageBacentaAttendance, bacenta
 WITH sum(averageBacentaAttendance) as averageCouncilBussing
-
-RETURN toFloat(averageCouncilBussing) as averageCouncilBussing
+RETURN round(toFloat(averageCouncilBussing)) as averageCouncilBussing
 `
 
 export const shareBacentaTargetsCypher = `
 MATCH (this:Council {id:$councilId})
-MATCH (this)-[:HAS]->(:Constituency)-[:HAS]->(bacenta:Bacenta)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord) 
+MATCH (this)-[:HAS]->(:Constituency)-[:HAS]->(bacenta:Active:Bacenta)
 
-WITH avg(bussing.attendance) as averageBacentaAttendance, bacenta
+CALL apoc.cypher.run('
+ WITH $bacenta AS bacenta
+ MATCH (bacenta)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING_AGGREGATE]->(bussing:AggregateBussingRecord) 
+ WITH bussing ORDER BY bussing.year, bussing.week DESC
+ RETURN DISTINCT bussing  LIMIT 4',
+ {bacenta:bacenta}) YIELD value
+
+WITH round(avg(value.bussing.attendance)) as averageBacentaAttendance, bacenta
 WITH ((averageBacentaAttendance/$averageCouncilBussing) * $target) as bacentaTarget, bacenta
 
 WITH bacenta, ROUND(bacentaTarget) as target
