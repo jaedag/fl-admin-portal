@@ -74,6 +74,28 @@ extend type Member {
   isArrivalsCounterForStream: [Stream!]!
     @relationship(type: "COUNTS_ARRIVALS_FOR", direction: OUT)
 }
+
+extend type Oversight {
+  graduatedBacentas: [Bacenta!]!
+    @cypher(
+      statement: "MATCH (this)-[:HAS*5]->(bacentas:Graduated) RETURN bacentas"
+    )
+  icBacentas: [Bacenta!]!
+    @cypher(statement: "MATCH (this)-[:HAS*5]->(bacentas:IC) RETURN bacentas")
+  icBacentaCount: Int
+    @cypher(
+      statement: "MATCH (this)-[:HAS*5]->(bacentas:IC) RETURN COUNT(DISTINCT bacentas)"
+    )
+  activeIcBacentaCount: Int
+    @cypher(
+      statement: "MATCH (this)-[:HAS*5]->(bacentas:IC:Active) RETURN COUNT(DISTINCT bacentas)"
+    )
+  vacationIcBacentaCount: Int
+    @cypher(
+      statement: "MATCH (this)-[:HAS*5]-(bacentas:IC:Vacation) RETURN COUNT(bacentas)"
+    )
+}
+
 extend type GatheringService {
   arrivalsAdmin: Member @relationship(type: "DOES_ARRIVALS_FOR", direction: IN)
   bacentasNoActivity: [Bacenta!]!
@@ -240,6 +262,24 @@ extend type GatheringService {
         WHERE record.arrivalTime IS NOT NULL
       RETURN SUM(record.attendance)
       """
+    )
+  graduatedBacentas: [Bacenta!]!
+    @cypher(
+      statement: "MATCH (this)-[:HAS*4]->(bacentas:Graduated) RETURN bacentas"
+    )
+  icBacentas: [Bacenta!]!
+    @cypher(statement: "MATCH (this)-[:HAS*4]->(bacentas:IC) RETURN bacentas")
+  icBacentaCount: Int
+    @cypher(
+      statement: "MATCH (this)-[:HAS*4]->(bacentas:IC) RETURN COUNT(DISTINCT bacentas)"
+    )
+  activeIcBacentaCount: Int
+    @cypher(
+      statement: "MATCH (this)-[:HAS*4]->(bacentas:IC:Active) RETURN COUNT(DISTINCT bacentas)"
+    )
+  vacationIcBacentaCount: Int
+    @cypher(
+      statement: "MATCH (this)-[:HAS*4]-(bacentas:IC:Vacation) RETURN COUNT(DISTINCT bacentas)"
     )
 }
 
@@ -412,12 +452,28 @@ extend type Stream {
       RETURN SUM(record.attendance)
       """
     )
+  graduatedBacentas: [Bacenta!]!
+    @cypher(
+      statement: "MATCH (this)-[:HAS*3]->(bacentas:Graduated) RETURN bacentas"
+    )
+  icBacentas: [Bacenta!]!
+    @cypher(statement: "MATCH (this)-[:HAS*3]->(bacentas:IC) RETURN bacentas")
+  icBacentaCount: Int
+    @cypher(
+      statement: "MATCH (this)-[:HAS*3]->(bacentas:IC) RETURN COUNT(DISTINCT bacentas)"
+    )
+  activeIcBacentaCount: Int
+    @cypher(
+      statement: "MATCH (this)-[:HAS*3]->(bacentas:IC:Active) RETURN COUNT(DISTINCT bacentas)"
+    )
+  vacationIcBacentaCount: Int
+    @cypher(
+      statement: "MATCH (this)-[:HAS*3]-(bacentas:IC:Vacation) RETURN COUNT(DISTINCT bacentas)"
+    )
 }
 
 extend type Council {
   arrivalsAdmin: Member @relationship(type: "DOES_ARRIVALS_FOR", direction: IN)
-  graduatedBacentas: [Bacenta!]!
-  icBacentas: [Bacenta!]!
   bacentasNoActivity: [Bacenta!]!
     @cypher(
       statement: """
@@ -582,6 +638,24 @@ extend type Council {
         WHERE record.arrivalTime IS NOT NULL
       RETURN SUM(record.attendance)
       """
+    )
+  graduatedBacentas: [Bacenta!]!
+    @cypher(
+      statement: "MATCH (this)-[:HAS*2]->(bacentas:Graduated) RETURN bacentas"
+    )
+  icBacentas: [Bacenta!]!
+    @cypher(statement: "MATCH (this)-[:HAS*2]->(bacentas:IC) RETURN bacentas")
+  icBacentaCount: Int
+    @cypher(
+      statement: "MATCH (this)-[:HAS*2]->(bacentas:IC) RETURN COUNT(DISTINCT bacentas)"
+    )
+  activeIcBacentaCount: Int
+    @cypher(
+      statement: "MATCH (this)-[:HAS*2]->(bacentas:IC:Active) RETURN COUNT(DISTINCT bacentas)"
+    )
+  vacationIcBacentaCount: Int
+    @cypher(
+      statement: "MATCH (this)-[:HAS*2]-(bacentas:IC:Vacation) RETURN COUNT(DISTINCT bacentas)"
     )
 }
 
@@ -752,6 +826,24 @@ extend type Constituency {
         WHERE record.arrivalTime IS NOT NULL
       RETURN SUM(record.attendance)
       """
+    )
+  graduatedBacentas: [Bacenta!]!
+    @cypher(
+      statement: "MATCH (this)-[:HAS]->(bacentas:Graduated) RETURN bacentas"
+    )
+  icBacentas: [Bacenta!]!
+    @cypher(statement: "MATCH (this)-[:HAS]->(bacentas:IC) RETURN bacentas")
+  icBacentaCount: Int
+    @cypher(
+      statement: "MATCH (this)-[:HAS]->(bacentas:IC) RETURN COUNT(DISTINCT bacentas)"
+    )
+  activeIcBacentaCount: Int
+    @cypher(
+      statement: "MATCH (this)-[:HAS]->(bacentas:IC:Active) RETURN COUNT(DISTINCT bacentas)"
+    )
+  vacationIcBacentaCount: Int
+    @cypher(
+      statement: "MATCH (this)-[:HAS]-(bacentas:IC:Vacation) RETURN COUNT(DISTINCT bacentas)"
     )
 }
 
