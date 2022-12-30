@@ -6,7 +6,7 @@ import './AllChurchesSummary.css'
 
 type AllChurchesSummaryProps = {
   church: Church
-  churchType: ChurchLevel
+  churchType: ChurchLevel | 'IC Bacenta'
   numberOfChurchesBelow: number
   route: string
   memberCount: number
@@ -40,7 +40,7 @@ const AllChurchesSummary = (props: AllChurchesSummaryProps) => {
             </Link>
           </Card>
         </Col>
-        {churchType === 'Bacenta' ? (
+        {churchType === 'Bacenta' || 'IC Bacenta' ? (
           <Col>
             <Card className="mb-2 card-border">
               <Link to="/sonta/displayall">

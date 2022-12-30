@@ -41,9 +41,9 @@ const DetailsStream = () => {
       link: `#`,
     },
     {
-      title: 'ICs',
-      number: stream?.activeIcCount,
-      vacationCount: stream?.vacationIcCount,
+      title: 'IC Bacentas',
+      number: stream?.activeIcBacentaCount,
+      vacationCount: stream?.vacationIcBacentaCount,
       link: '#',
     },
     {

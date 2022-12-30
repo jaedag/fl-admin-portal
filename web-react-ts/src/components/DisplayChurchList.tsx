@@ -16,7 +16,7 @@ const DisplayChurchList = (props: {
   return (
     <Container className="mt-3">
       <Row>
-        {data.map((church, index: number) => {
+        {data?.map((church, index: number) => {
           return (
             <Col key={index} sm={6} lg={4}>
               <Link to={`/${church.__typename.toLowerCase()}/displaydetails`}>

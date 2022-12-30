@@ -42,9 +42,9 @@ const DetailsCouncil = () => {
       link: `#`,
     },
     {
-      title: 'ICs',
-      number: council?.activeIcCount,
-      vacationCount: council?.vacationIcCount,
+      title: 'IC Bacentas',
+      number: council?.activeIcBacentaCount,
+      vacationCount: council?.vacationIcBacentaCount,
       link: '#',
     },
     {

@@ -14,8 +14,8 @@ export type DetailsArray = {
   link: string
   width?: number
   vacationCount?: number
-  activeIcCount?: number
-  vacationIcCount?: number
+  activeIcBacentaCount?: number
+  vacationIcBacentaCount?: number
 }[]
 
 const DetailsFellowship = () => {

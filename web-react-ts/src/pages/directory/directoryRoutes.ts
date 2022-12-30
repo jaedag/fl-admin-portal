@@ -89,6 +89,7 @@ const DisplayAllStreams = lazy(
 const DisplayAllGatheringServices = lazy(
   () => import('pages/directory/display/AllGatheringServices')
 )
+const DisplayAllIcs = lazy(() => import('pages/directory/display/AllICs'))
 const CreateCouncil = lazy(() => import('pages/directory/create/CreateCouncil'))
 const AllGatheringServiceConstituencies = lazy(
   () => import('pages/directory/display/AllGatheringServiceConstituencies')
@@ -367,6 +368,12 @@ export const directory: LazyRouteTypes[] = [
   {
     path: '/bacenta/displayall',
     element: DisplayAllBacentas,
+    roles: permitMe('Constituency'),
+    placeholder: false,
+  },
+  {
+    path: '/ic/displayall',
+    element: DisplayAllIcs,
     roles: permitMe('Constituency'),
     placeholder: false,
   },
