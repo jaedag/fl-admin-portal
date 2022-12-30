@@ -15,6 +15,7 @@ type DetailsCardPropsType = {
   bgNone?: boolean
   img?: string
   vacationCount?: string
+  vacationIcCount?: string
 }
 
 const DetailsCard = (props: DetailsCardPropsType) => {
@@ -52,6 +53,16 @@ const DetailsCard = (props: DetailsCardPropsType) => {
               {props.detail?.replace('GHS', '')}{' '}
               <small>{props.detail?.match('GHS')}</small>
             </h2>
+            <div>
+              {props.heading === 'ICs' && props?.vacationIcCount !== '0' && (
+                <>
+                  <Badge bg="danger" className="badge-vacation mt-auto">
+                    <span className="font-danger">{`+ `}</span>
+                    {`${props?.vacationIcCount} on Vacation`}
+                  </Badge>
+                </>
+              )}
+            </div>
             <div>
               {(props.heading === 'Bacentas' ||
                 props.heading === 'Fellowships') &&

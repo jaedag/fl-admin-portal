@@ -31,6 +31,12 @@ const DetailsConstituency = () => {
       vacationCount: constituency?.vacationBacentaCount,
     },
     {
+      title: 'ICs',
+      number: constituency?.activeIcCount,
+      vacationCount: constituency?.vacationIcCount,
+      link: '#',
+    },
+    {
       title: 'Fellowships',
       number: constituency?.activeFellowshipCount,
       vacationCount: constituency?.vacationFellowshipCount,
