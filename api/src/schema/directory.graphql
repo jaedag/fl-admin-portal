@@ -321,11 +321,11 @@ type Oversight implements Church {
     @cypher(
       statement: "MATCH (this)-[:HAS*4]->(constituencies:Constituency) RETURN constituencies"
     )
-  bacentas: [Bacenta!]!
+  bacentas(limit: Int): [Bacenta!]!
     @cypher(
       statement: "MATCH (this)-[:HAS*5]->(bacentas:Bacenta) WHERE bacentas:Graduated RETURN bacentas"
     )
-  ics: [Bacenta!]!
+  ics(limit: Int): [Bacenta!]!
     @cypher(statement: "MATCH (this)-[:HAS*5]->(bacentas:IC) RETURN bacentas")
   members: [Member!]!
     @cypher(
@@ -435,11 +435,11 @@ type GatheringService implements Church {
     @cypher(
       statement: "MATCH (this)-[:HAS*3]->(constituencies:Constituency) RETURN constituencies"
     )
-  bacentas: [Bacenta!]!
+  bacentas(limit: Int): [Bacenta!]!
     @cypher(
       statement: "MATCH (this)-[:HAS*4]->(bacentas:Bacenta) WHERE bacentas:Graduated RETURN bacentas"
     )
-  ics: [Bacenta!]!
+  ics(limit: Int): [Bacenta!]!
     @cypher(
       statement: "MATCH (this)-[:HAS*4]->(bacentas:IC) WHERE bacentas:Graduated RETURN bacentas"
     )
@@ -546,11 +546,11 @@ type Stream implements Church {
     @cypher(
       statement: "MATCH (this)-[:HAS*2]->(constituencies:Constituency) RETURN constituencies"
     )
-  bacentas: [Bacenta!]!
+  bacentas(limit: Int): [Bacenta!]!
     @cypher(
       statement: "MATCH (this)-[:HAS*3]->(bacentas:Bacenta) WHERE bacentas:Graduated RETURN bacentas"
     )
-  ics: [Bacenta!]!
+  ics(limit: Int): [Bacenta!]!
     @cypher(statement: "MATCH (this)-[:HAS*3]->(bacentas:IC) RETURN bacentas")
 
   members: [Member!]!
@@ -648,11 +648,11 @@ type Council implements Church {
       """
     )
   stream: Stream @relationship(type: "HAS", direction: IN)
-  bacentas: [Bacenta!]!
+  bacentas(limit: Int): [Bacenta!]!
     @cypher(
       statement: "MATCH (this)-[:HAS*1..2]->(bacentas:Bacenta) WHERE bacentas:Graduated RETURN bacentas"
     )
-  ics: [Bacenta!]!
+  ics(limit: Int): [Bacenta!]!
     @cypher(
       statement: "MATCH (this)-[:HAS*1..2]->(bacentas:IC) RETURN bacentas"
     )
@@ -768,11 +768,11 @@ type Constituency implements Church {
       RETURN COUNT(DISTINCT pastors)
       """
     )
-  bacentas: [Bacenta!]!
+  bacentas(limit: Int): [Bacenta!]!
     @cypher(
       statement: "MATCH (this)-[:HAS]-(bacentas:Bacenta) WHERE bacentas:Graduated RETURN bacentas"
     )
-  ics: [Bacenta!]!
+  ics(limit: Int): [Bacenta!]!
     @cypher(statement: "MATCH (this)-[:HAS]-(bacentas:IC) RETURN bacentas")
   fellowshipCount: Int
     @cypher(
