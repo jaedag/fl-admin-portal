@@ -42,6 +42,12 @@ const DetailsCouncil = () => {
       link: `#`,
     },
     {
+      title: 'ICs',
+      number: council?.activeIcCount,
+      vacationCount: council?.vacationIcCount,
+      link: '#',
+    },
+    {
       title: 'Fellowships',
       number: council?.activeFellowshipCount,
       vacationCount: council?.vacationFellowshipCount,

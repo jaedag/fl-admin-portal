@@ -353,7 +353,9 @@ export const DISPLAY_CONSTITUENCY = gql`
       activeBacentaCount
       vacationBacentaCount
       vacationFellowshipCount
-      bacentas(options: { limit: 5 }) {
+      activeIcCount
+      vacationIcCount
+      bacentas(limit: 5) {
         id
         name
         leader {
@@ -425,6 +427,8 @@ export const DISPLAY_COUNCIL = gql`
       pastorCount
       vacationBacentaCount
       vacationFellowshipCount
+      activeIcCount
+      vacationIcCount
       stream {
         id
         name
@@ -480,6 +484,8 @@ export const DISPLAY_STREAM = gql`
       pastorCount
       vacationBacentaCount
       vacationFellowshipCount
+      activeIcCount
+      vacationIcCount
       gatheringService {
         id
         name
@@ -536,6 +542,8 @@ export const DISPLAY_GATHERINGSERVICE = gql`
       pastorCount
       vacationBacentaCount
       vacationFellowshipCount
+      activeIcCount
+      vacationIcCount
       oversight {
         id
         name
@@ -594,6 +602,8 @@ export const DISPLAY_OVERSIGHT = gql`
       pastorCount
       vacationBacentaCount
       vacationFellowshipCount
+      activeIcCount
+      vacationIcCount
       gatheringServices {
         id
         name

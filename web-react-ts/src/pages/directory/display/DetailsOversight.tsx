@@ -50,6 +50,12 @@ const DetailsOversight = () => {
       link: `#`,
     },
     {
+      title: 'ICs',
+      number: oversight?.activeIcCount,
+      vacationCount: oversight?.vacationIcCount,
+      link: '#',
+    },
+    {
       title: 'Fellowships',
       number: oversight?.activeFellowshipCount,
       vacationCount: oversight?.vacationFellowshipCount,

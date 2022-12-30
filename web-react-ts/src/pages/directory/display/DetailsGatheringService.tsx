@@ -48,6 +48,12 @@ const DetailsGatheringService = () => {
       link: `#`,
     },
     {
+      title: 'ICs',
+      number: gathering?.activeIcCount,
+      vacationCount: gathering?.vacationIcCount,
+      link: '#',
+    },
+    {
       title: 'Fellowships',
       number: gathering?.activeFellowshipCount,
       vacationCount: gathering?.vacationFellowshipCount,
