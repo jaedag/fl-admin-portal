@@ -59,6 +59,54 @@ export const GET_CONSTITUENCY_BACENTAS = gql`
   }
 `
 
+export const GET_CONSTITUENCY_ICBACENTAS = gql`
+  query getConstituencyIcBacentas($id: ID!) {
+    constituencies(where: { id: $id }) {
+      id
+      name
+
+      stream_name
+      council {
+        id
+      }
+      leader {
+        id
+        firstName
+        lastName
+        fullName
+      }
+
+      memberCount
+      sontas {
+        id
+        name
+        leader {
+          id
+          firstName
+          lastName
+        }
+      }
+      icBacentas {
+        id
+        name
+        stream_name
+        vacationStatus
+        fellowshipCount
+        target
+        council {
+          id
+        }
+        leader {
+          id
+          firstName
+          lastName
+          pictureUrl
+        }
+      }
+    }
+  }
+`
+
 export const GET_COUNCIL_CONSTITUENCIES = gql`
   query getCouncilConstituencies($id: ID!) {
     councils(where: { id: $id }) {

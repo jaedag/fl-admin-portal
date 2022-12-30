@@ -40,8 +40,8 @@ type DisplayChurchDetailsProps = {
     link: string
     width?: number
     vacationCount?: number
-    activeIcCount?: number
-    vacationIcCount?: number
+    activeIcBacentaCount?: number
+    vacationIcBacentaCount?: number
   }[]
   loading: boolean
   church?: BacentaWithArrivals
@@ -362,9 +362,9 @@ const DisplayChurchDetails = (props: DisplayChurchDetailsProps) => {
                       ? detail?.vacationCount?.toString() || '0'
                       : ''
                   }
-                  vacationIcCount={
+                  vacationIcBacentaCount={
                     !props.loading
-                      ? detail?.vacationIcCount?.toString() || '0'
+                      ? detail?.vacationIcBacentaCount?.toString() || '0'
                       : ''
                   }
                 />

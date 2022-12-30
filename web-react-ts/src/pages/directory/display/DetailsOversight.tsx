@@ -50,9 +50,9 @@ const DetailsOversight = () => {
       link: `#`,
     },
     {
-      title: 'ICs',
-      number: oversight?.activeIcCount,
-      vacationCount: oversight?.vacationIcCount,
+      title: 'IC Bacentas',
+      number: oversight?.activeIcBacentaCount,
+      vacationCount: oversight?.vacationIcBacentaCount,
       link: '#',
     },
     {

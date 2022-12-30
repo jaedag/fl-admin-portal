@@ -15,7 +15,7 @@ type DetailsCardPropsType = {
   bgNone?: boolean
   img?: string
   vacationCount?: string
-  vacationIcCount?: string
+  vacationIcBacentaCount?: string
 }
 
 const DetailsCard = (props: DetailsCardPropsType) => {
@@ -54,14 +54,15 @@ const DetailsCard = (props: DetailsCardPropsType) => {
               <small>{props.detail?.match('GHS')}</small>
             </h2>
             <div>
-              {props.heading === 'ICs' && props?.vacationIcCount !== '0' && (
-                <>
-                  <Badge bg="danger" className="badge-vacation mt-auto">
-                    <span className="font-danger">{`+ `}</span>
-                    {`${props?.vacationIcCount} on Vacation`}
-                  </Badge>
-                </>
-              )}
+              {props.heading === 'IC Bacentas' &&
+                props?.vacationIcBacentaCount !== '0' && (
+                  <>
+                    <Badge bg="danger" className="badge-vacation mt-auto">
+                      <span className="font-danger">{`+ `}</span>
+                      {`${props?.vacationIcBacentaCount} on Vacation`}
+                    </Badge>
+                  </>
+                )}
             </div>
             <div>
               {(props.heading === 'Bacentas' ||

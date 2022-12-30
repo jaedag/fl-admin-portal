@@ -31,10 +31,10 @@ const DetailsConstituency = () => {
       vacationCount: constituency?.vacationBacentaCount,
     },
     {
-      title: 'ICs',
-      number: constituency?.activeIcCount,
-      vacationCount: constituency?.vacationIcCount,
-      link: '#',
+      title: 'IC Bacentas',
+      number: constituency?.activeIcBacentaCount,
+      vacationCount: constituency?.vacationIcBacentaCount,
+      link: '/ic/displayall',
     },
     {
       title: 'Fellowships',
