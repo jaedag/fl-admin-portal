@@ -78,7 +78,7 @@ extend type Member {
 extend type Oversight {
   graduatedBacentas: [Bacenta!]!
     @cypher(
-      statement: "MATCH (this)-[:HAS*5]->(bacentas:Graduated) RETURN bacentas"
+      statement: "MATCH (this)-[:HAS*5]->(bacentas:Graduated:Bacenta) RETURN bacentas"
     )
   icBacentas: [Bacenta!]!
     @cypher(statement: "MATCH (this)-[:HAS*5]->(bacentas:IC) RETURN bacentas")
@@ -265,7 +265,7 @@ extend type GatheringService {
     )
   graduatedBacentas: [Bacenta!]!
     @cypher(
-      statement: "MATCH (this)-[:HAS*4]->(bacentas:Graduated) RETURN bacentas"
+      statement: "MATCH (this)-[:HAS*4]->(bacentas:Graduated:Bacenta) RETURN bacentas"
     )
   icBacentas: [Bacenta!]!
     @cypher(statement: "MATCH (this)-[:HAS*4]->(bacentas:IC) RETURN bacentas")
@@ -454,7 +454,7 @@ extend type Stream {
     )
   graduatedBacentas: [Bacenta!]!
     @cypher(
-      statement: "MATCH (this)-[:HAS*3]->(bacentas:Graduated) RETURN bacentas"
+      statement: "MATCH (this)-[:HAS*3]->(bacentas:Graduated:Bacenta) RETURN bacentas"
     )
   icBacentas: [Bacenta!]!
     @cypher(statement: "MATCH (this)-[:HAS*3]->(bacentas:IC) RETURN bacentas")
@@ -641,7 +641,7 @@ extend type Council {
     )
   graduatedBacentas: [Bacenta!]!
     @cypher(
-      statement: "MATCH (this)-[:HAS*2]->(bacentas:Graduated) RETURN bacentas"
+      statement: "MATCH (this)-[:HAS*2]->(bacentas:Graduated:Bacenta) RETURN bacentas"
     )
   icBacentas: [Bacenta!]!
     @cypher(statement: "MATCH (this)-[:HAS*2]->(bacentas:IC) RETURN bacentas")
@@ -829,7 +829,7 @@ extend type Constituency {
     )
   graduatedBacentas: [Bacenta!]!
     @cypher(
-      statement: "MATCH (this)-[:HAS]->(bacentas:Graduated) RETURN bacentas"
+      statement: "MATCH (this)-[:HAS]->(bacentas:Graduated:Bacenta) RETURN bacentas"
     )
   icBacentas: [Bacenta!]!
     @cypher(statement: "MATCH (this)-[:HAS]->(bacentas:IC) RETURN bacentas")
