@@ -76,6 +76,10 @@ const swollenSundayCampaign = fs
   .readFileSync(path.join(__dirname, './campaigns-swollen-sunday.graphql'))
   .toString('utf-8')
 
+const shepherdingControlCampaign = fs
+  .readFileSync(path.join(__dirname, './campaigns-shepherding-control.graphql'))
+  .toString('utf-8')
+
 const array = [
   schema,
   directory,
@@ -94,6 +98,7 @@ const array = [
   sheepSeeking,
   multiplicationCampaign,
   swollenSundayCampaign,
+  shepherdingControlCampaign,
 ]
 
 exports.typeDefs = array.join(' ')
