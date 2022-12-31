@@ -171,6 +171,16 @@
   height: 50px;
 }
 
+.form-control:disabled {
+  background-color: var(--text-box-inner);
+  color: var(--text-focus-white);
+  border: none;
+  border-radius: 10px;
+  margin: 5px 5px 5px 0px;
+  height: 70px;
+  font-size: 25px;
+}
+
 .form-control:focus {
   background-color: var(--text-box-inner);
   color: var(--text-focus-white);

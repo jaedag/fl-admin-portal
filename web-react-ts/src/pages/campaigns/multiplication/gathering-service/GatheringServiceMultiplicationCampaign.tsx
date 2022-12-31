@@ -25,7 +25,7 @@ const GatheringServiceMultiplicationCampaign = () => {
             name="Fill Multiplication Event"
             onClick={() =>
               navigate(
-                `/campaigns/gathering-service/multiplication/service-form`
+                `/campaigns/gatheringservice/multiplication/service-form`
               )
             }
           />
@@ -33,14 +33,14 @@ const GatheringServiceMultiplicationCampaign = () => {
             name="Upload Receipts"
             onClick={() =>
               navigate(
-                `/campaigns/gathering-service/multiplication/banking-slips`
+                `/campaigns/gatheringservice/multiplication/banking-slips`
               )
             }
           />
           <MenuButton
             name="View Trends"
             onClick={() =>
-              navigate(`/campaigns/gathering-service/multiplication/trends`)
+              navigate(`/campaigns/gatheringservice/multiplication/trends`)
             }
           />
         </div>

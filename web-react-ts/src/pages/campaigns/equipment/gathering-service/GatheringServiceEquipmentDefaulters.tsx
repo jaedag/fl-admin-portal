@@ -44,7 +44,7 @@ const GatheringServiceEquipmentDefaulters = () => {
             onClick={() => {
               clickCard(gatheringService)
               navigate(
-                '/campaigns/gathering-service/stream/equipment/defaulters'
+                '/campaigns/gatheringservice/stream/equipment/defaulters'
               )
             }}
             number={gatheringService?.streamCount}
@@ -64,7 +64,7 @@ const GatheringServiceEquipmentDefaulters = () => {
                   name="Have not filled"
                   onClick={() =>
                     navigate(
-                      '/campaigns/gathering-service/equipment/have-not-filled/fellowship'
+                      '/campaigns/gatheringservice/equipment/have-not-filled/fellowship'
                     )
                   }
                   number={gatheringService?.fellowshipEquipmentNotFilledCount}
@@ -94,7 +94,7 @@ const GatheringServiceEquipmentDefaulters = () => {
                   name="Have not filled"
                   onClick={() =>
                     navigate(
-                      '/campaigns/gathering-service/equipment/have-not-filled/constituency'
+                      '/campaigns/gatheringservice/equipment/have-not-filled/constituency'
                     )
                   }
                   number={gatheringService?.constituencyEquipmentNotFilledCount}

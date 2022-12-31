@@ -423,6 +423,70 @@ const GatheringServiceMultiplicationCampaignBankingSlipView = lazy(
     )
 )
 
+const BacentaShepherdingControlCampaign = lazy(
+  () =>
+    import(
+      '../campaigns/shepherding-control/bacenta/BacentaShepherdingControlCampaign'
+    )
+)
+
+const ConstituencyShepherdingControlCampaign = lazy(
+  () =>
+    import(
+      '../campaigns/shepherding-control/constituency/ConstituencyShepherdingControlCampaign'
+    )
+)
+const CouncilShepherdingControlCampaign = lazy(
+  () =>
+    import(
+      '../campaigns/shepherding-control/council/CouncilShepherdingControlCampaign'
+    )
+)
+const StreamShepherdingControlCampaign = lazy(
+  () =>
+    import(
+      '../campaigns/shepherding-control/stream/StreamShepherdingControlCampaign'
+    )
+)
+const GatheringServiceShepherdingControlCampaign = lazy(
+  () =>
+    import(
+      '../campaigns/shepherding-control/gathering-service/GatheringServiceShepherdingControlCampaign'
+    )
+)
+
+const BacentaShepherdingControlYearTillDate = lazy(
+  () =>
+    import(
+      '../campaigns/shepherding-control/bacenta/BacentaShepherdingControlYearTillDate'
+    )
+)
+
+const ConstituencyShepherdingControlYearTillDate = lazy(
+  () =>
+    import(
+      '../campaigns/shepherding-control/constituency/ConstituencyShepherdingControlYearTillDate'
+    )
+)
+const CouncilShepherdingControlYearTillDate = lazy(
+  () =>
+    import(
+      '../campaigns/shepherding-control/council/CouncilShepherdingControlYearTillDate'
+    )
+)
+const StreamShepherdingControlYearTillDate = lazy(
+  () =>
+    import(
+      '../campaigns/shepherding-control/stream/StreamShepherdingControlYearTillDate'
+    )
+)
+const GatheringServiceShepherdingControlYearTillDate = lazy(
+  () =>
+    import(
+      '../campaigns/shepherding-control/gathering-service/GatheringServiceShepherdingControlYearTillDate'
+    )
+)
+
 export const campaigns: LazyRouteTypes[] = [
   //gathering-service routes
   {
@@ -432,85 +496,85 @@ export const campaigns: LazyRouteTypes[] = [
     placeholder: true,
   },
   {
-    path: '/campaigns/gathering-service/equipment',
+    path: '/campaigns/gatheringservice/equipment',
     element: GatheringServiceEquipmentCampaign,
     roles: permitLeaderAdmin('GatheringService'),
     placeholder: true,
   },
   {
-    path: '/campaigns/gathering-service/equipment/trends',
+    path: '/campaigns/gatheringservice/equipment/trends',
     element: GatheringServiceTrends,
     roles: permitLeaderAdmin('GatheringService'),
     placeholder: true,
   },
   {
-    path: '/campaigns/equipment/gathering-service/stream',
+    path: '/campaigns/equipment/gatheringservice/stream',
     element: GatheringServiceByStream,
     roles: permitLeaderAdmin('GatheringService'),
     placeholder: true,
   },
   {
-    path: '/campaigns/gathering-service/set-equipment-deadline',
+    path: '/campaigns/gatheringservice/set-equipment-deadline',
     element: GatheringServiceEquipmentDeadline,
     roles: permitLeaderAdmin('GatheringService'),
     placeholder: true,
   },
   {
-    path: '/campaigns/gathering-service/anti-brutish',
+    path: '/campaigns/gatheringservice/anti-brutish',
     element: GatheringServiceAntiBrutishCampaign,
     roles: permitLeaderAdmin('GatheringService'),
     placeholder: true,
   },
   {
-    path: '/campaigns/gathering-service/multiplication',
+    path: '/campaigns/gatheringservice/multiplication',
     element: GatheringServiceMultiplicationCampaign,
     roles: permitLeaderAdmin('GatheringService'),
     placeholder: true,
   },
   {
-    path: '/campaigns/gathering-service/swollen-sunday',
+    path: '/campaigns/gatheringservice/swollen-sunday',
     element: GatheringServiceSwollenSundayCampaign,
     roles: permitLeaderAdmin('GatheringService'),
     placeholder: true,
   },
   {
-    path: '/campaigns/gathering-service/telepastoring',
+    path: '/campaigns/gatheringservice/telepastoring',
     element: GatheringServiceTelepastoringCampaign,
     roles: permitLeaderAdmin('GatheringService'),
     placeholder: true,
   },
   {
-    path: '/campaigns/gathering-service/equipment/defaulters',
+    path: '/campaigns/gatheringservice/equipment/defaulters',
     element: GatheringServiceEquipmentDefaulters,
     roles: permitAdmin('GatheringService'),
     placeholder: true,
   },
   {
-    path: '/campaigns/gathering-service/stream/equipment/defaulters',
+    path: '/campaigns/gatheringservice/stream/equipment/defaulters',
     element: GatheringServiceByStreamEquipmentDefaulters,
     roles: permitAdmin('GatheringService'),
     placeholder: true,
   },
   {
-    path: '/campaigns/gathering-service/equipment/have-not-filled/fellowship',
+    path: '/campaigns/gatheringservice/equipment/have-not-filled/fellowship',
     element: GatheringServiceEquipmentHaveNotFilledByFellowship,
     roles: permitAdmin('Council'),
     placeholder: true,
   },
   {
-    path: '/campaigns/gathering-service/equipment/have-not-filled/constituency',
+    path: '/campaigns/gatheringservice/equipment/have-not-filled/constituency',
     element: GatheringServiceEquipmentHaveNotFilledByConstituency,
     roles: permitAdmin('Council'),
     placeholder: true,
   },
   {
-    path: '/campaigns/gathering-service/multiplication/service-form',
+    path: '/campaigns/gatheringservice/multiplication/service-form',
     element: GatheringServiceMultiplicationCampaignServiceForm,
     roles: permitAdmin('GatheringService'),
     placeholder: true,
   },
   {
-    path: '/campaigns/gathering-service/multiplication/service-details',
+    path: '/campaigns/gatheringservice/multiplication/service-details',
     element: GatheringServiceMultiplicationCampaignServiceDetails,
     roles: permitAdmin('GatheringService'),
     placeholder: true,
@@ -522,20 +586,32 @@ export const campaigns: LazyRouteTypes[] = [
     placeholder: true,
   },
   {
-    path: '/campaigns/gathering-service/multiplication/trends',
+    path: '/campaigns/gatheringservice/multiplication/trends',
     element: GatheringServiceMultiplicationCampaignTrends,
     roles: permitAdmin('GatheringService'),
     placeholder: true,
   },
   {
-    path: '/campaigns/gathering-service/multiplication/upload-receipts',
+    path: '/campaigns/gatheringservice/multiplication/upload-receipts',
     element: GatheringServiceMultiplicationCampaignUploadReceipts,
     roles: permitAdmin('GatheringService'),
     placeholder: true,
   },
   {
-    path: '/campaigns/gathering-service/multiplication/banking-slips',
+    path: '/campaigns/gatheringservice/multiplication/banking-slips',
     element: GatheringServiceMultiplicationCampaignBankingSlipView,
+    roles: permitAdmin('GatheringService'),
+    placeholder: true,
+  },
+  {
+    path: '/campaigns/gatheringservice/shepherding-control',
+    element: GatheringServiceShepherdingControlCampaign,
+    roles: permitAdmin('GatheringService'),
+    placeholder: true,
+  },
+  {
+    path: '/campaigns/gatheringservice/shepherding-control/year-to-date',
+    element: GatheringServiceShepherdingControlYearTillDate,
     roles: permitAdmin('GatheringService'),
     placeholder: true,
   },
@@ -685,6 +761,18 @@ export const campaigns: LazyRouteTypes[] = [
     roles: permitAdmin('Stream'),
     placeholder: true,
   },
+  {
+    path: '/campaigns/stream/shepherding-control',
+    element: StreamShepherdingControlCampaign,
+    roles: permitAdmin('Stream'),
+    placeholder: true,
+  },
+  {
+    path: '/campaigns/stream/shepherding-control/year-to-date',
+    element: StreamShepherdingControlYearTillDate,
+    roles: permitAdmin('Stream'),
+    placeholder: true,
+  },
 
   //council routes
   {
@@ -813,6 +901,18 @@ export const campaigns: LazyRouteTypes[] = [
     roles: permitAdmin('Council'),
     placeholder: true,
   },
+  {
+    path: '/campaigns/council/shepherding-control',
+    element: CouncilShepherdingControlCampaign,
+    roles: permitAdmin('Council'),
+    placeholder: true,
+  },
+  {
+    path: '/campaigns/council/shepherding-control/year-to-date',
+    element: CouncilShepherdingControlYearTillDate,
+    roles: permitAdmin('Council'),
+    placeholder: true,
+  },
 
   //constituency routes
   {
@@ -929,6 +1029,18 @@ export const campaigns: LazyRouteTypes[] = [
     roles: permitAdmin('Constituency'),
     placeholder: true,
   },
+  {
+    path: '/campaigns/constituency/shepherding-control',
+    element: ConstituencyShepherdingControlCampaign,
+    roles: permitAdmin('Constituency'),
+    placeholder: true,
+  },
+  {
+    path: '/campaigns/constituency/shepherding-control/year-to-date',
+    element: ConstituencyShepherdingControlYearTillDate,
+    roles: permitAdmin('Constituency'),
+    placeholder: true,
+  },
 
   //bacenta routes
   {
@@ -970,6 +1082,18 @@ export const campaigns: LazyRouteTypes[] = [
   {
     path: '/campaigns/bacenta/swollen-sunday/bacentas',
     element: SwollenSundayBacentaList,
+    roles: permitLeaderAdmin('Bacenta'),
+    placeholder: true,
+  },
+  {
+    path: '/campaigns/bacenta/shepherding-control',
+    element: BacentaShepherdingControlCampaign,
+    roles: permitLeaderAdmin('Bacenta'),
+    placeholder: true,
+  },
+  {
+    path: '/campaigns/bacenta/shepherding-control/year-to-date',
+    element: BacentaShepherdingControlYearTillDate,
     roles: permitLeaderAdmin('Bacenta'),
     placeholder: true,
   },

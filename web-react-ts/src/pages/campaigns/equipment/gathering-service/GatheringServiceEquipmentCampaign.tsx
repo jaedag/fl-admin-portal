@@ -45,20 +45,20 @@ const GatheringServiceEquipmentCampaign = () => {
             <MenuButton
               name="View Trends"
               onClick={() =>
-                navigate(`/campaigns/gathering-service/equipment/trends`)
+                navigate(`/campaigns/gatheringservice/equipment/trends`)
               }
             />
             <MenuButton
               name="Set Deadline"
               onClick={() =>
-                navigate(`/campaigns/gathering-service/set-equipment-deadline`)
+                navigate(`/campaigns/gatheringservice/set-equipment-deadline`)
               }
             />
             <RoleView roles={permitAdmin('GatheringService')}>
               <MenuButton
                 name="Defaulters"
                 onClick={() =>
-                  navigate('/campaigns/gathering-service/equipment/defaulters')
+                  navigate('/campaigns/gatheringservice/equipment/defaulters')
                 }
               />
             </RoleView>
