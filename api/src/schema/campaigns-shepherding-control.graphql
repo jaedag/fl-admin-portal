@@ -5,8 +5,8 @@ type IncomeAttendanceBussing {
 }
 
 type IncomeAttendance {
-  income: Float!
-  attendance: Int!
+  income: Float
+  attendance: Int
 }
 
 extend type Oversight {
@@ -16,19 +16,18 @@ extend type Oversight {
   ): IncomeAttendanceBussing!
     @cypher(
       statement: """
-      MATCH (this)
+       MATCH (this)
       WITH date($endDate) as endDate, this
       WITH (endDate.week -  duration.inDays(date($startDate), endDate).weeks) as startWeek, this, endDate
       WITH  range(startWeek, endDate.week) as weeks, this
+      WITH range(date($startDate).year, date($endDate).year) as years, weeks, this
 
-      MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(agg:AggregateServiceRecord)
-      MATCH (agg)
-      WHERE agg.week IN weeks and agg.year = date().year
-      WITH avg(agg.attendance) AS attendance, sum(agg.income) as income, weeks, this
+      OPTIONAL MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(agg:AggregateServiceRecord)
+      WHERE agg.week IN weeks and agg.year IN years
+      WITH avg(agg.attendance) AS attendance, sum(agg.income) as income, weeks, this, years
 
-      MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING_AGGREGATE]->(agg:AggregateBussingRecord)
-      MATCH (agg)
-      WHERE agg.week IN weeks and agg.year = date().year
+      OPTIONAL MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING_AGGREGATE]->(agg:AggregateBussingRecord)
+      WHERE agg.week IN weeks and agg.year IN years
 
       WITH avg(agg.attendance) AS bussing, income, attendance
       RETURN  {
@@ -47,19 +46,18 @@ extend type GatheringService {
   ): IncomeAttendanceBussing!
     @cypher(
       statement: """
-      MATCH (this)
+       MATCH (this)
       WITH date($endDate) as endDate, this
       WITH (endDate.week -  duration.inDays(date($startDate), endDate).weeks) as startWeek, this, endDate
       WITH  range(startWeek, endDate.week) as weeks, this
+      WITH range(date($startDate).year, date($endDate).year) as years, weeks, this
 
-      MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(agg:AggregateServiceRecord)
-      MATCH (agg)
-      WHERE agg.week IN weeks and agg.year = date().year
-      WITH avg(agg.attendance) AS attendance, sum(agg.income) as income, weeks, this
+      OPTIONAL MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(agg:AggregateServiceRecord)
+      WHERE agg.week IN weeks and agg.year IN years
+      WITH avg(agg.attendance) AS attendance, sum(agg.income) as income, weeks, this, years
 
-      MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING_AGGREGATE]->(agg:AggregateBussingRecord)
-      MATCH (agg)
-      WHERE agg.week IN weeks and agg.year = date().year
+      OPTIONAL MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING_AGGREGATE]->(agg:AggregateBussingRecord)
+      WHERE agg.week IN weeks and agg.year IN years
 
       WITH avg(agg.attendance) AS bussing, income, attendance
       RETURN  {
@@ -78,19 +76,18 @@ extend type Stream {
   ): IncomeAttendanceBussing!
     @cypher(
       statement: """
-      MATCH (this)
+       MATCH (this)
       WITH date($endDate) as endDate, this
       WITH (endDate.week -  duration.inDays(date($startDate), endDate).weeks) as startWeek, this, endDate
       WITH  range(startWeek, endDate.week) as weeks, this
+      WITH range(date($startDate).year, date($endDate).year) as years, weeks, this
 
-      MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(agg:AggregateServiceRecord)
-      MATCH (agg)
-      WHERE agg.week IN weeks and agg.year = date().year
-      WITH avg(agg.attendance) AS attendance, sum(agg.income) as income, weeks, this
+      OPTIONAL MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(agg:AggregateServiceRecord)
+      WHERE agg.week IN weeks and agg.year IN years
+      WITH avg(agg.attendance) AS attendance, sum(agg.income) as income, weeks, this, years
 
-      MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING_AGGREGATE]->(agg:AggregateBussingRecord)
-      MATCH (agg)
-      WHERE agg.week IN weeks and agg.year = date().year
+      OPTIONAL MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING_AGGREGATE]->(agg:AggregateBussingRecord)
+      WHERE agg.week IN weeks and agg.year IN years
 
       WITH avg(agg.attendance) AS bussing, income, attendance
       RETURN  {
@@ -109,19 +106,18 @@ extend type Council {
   ): IncomeAttendanceBussing
     @cypher(
       statement: """
-      MATCH (this)
+       MATCH (this)
       WITH date($endDate) as endDate, this
       WITH (endDate.week -  duration.inDays(date($startDate), endDate).weeks) as startWeek, this, endDate
       WITH  range(startWeek, endDate.week) as weeks, this
+      WITH range(date($startDate).year, date($endDate).year) as years, weeks, this
 
-      MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(agg:AggregateServiceRecord)
-      MATCH (agg)
-      WHERE agg.week IN weeks and agg.year = date().year
-      WITH avg(agg.attendance) AS attendance, sum(agg.income) as income, weeks, this
+      OPTIONAL MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(agg:AggregateServiceRecord)
+      WHERE agg.week IN weeks and agg.year IN years
+      WITH avg(agg.attendance) AS attendance, sum(agg.income) as income, weeks, this, years
 
-      MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING_AGGREGATE]->(agg:AggregateBussingRecord)
-      MATCH (agg)
-      WHERE agg.week IN weeks and agg.year = date().year
+      OPTIONAL MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING_AGGREGATE]->(agg:AggregateBussingRecord)
+      WHERE agg.week IN weeks and agg.year IN years
 
       WITH avg(agg.attendance) AS bussing, income, attendance
       RETURN  {
@@ -140,19 +136,18 @@ extend type Constituency {
   ): IncomeAttendanceBussing!
     @cypher(
       statement: """
-      MATCH (this)
+       MATCH (this)
       WITH date($endDate) as endDate, this
       WITH (endDate.week -  duration.inDays(date($startDate), endDate).weeks) as startWeek, this, endDate
       WITH  range(startWeek, endDate.week) as weeks, this
+      WITH range(date($startDate).year, date($endDate).year) as years, weeks, this
 
-      MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(agg:AggregateServiceRecord)
-      MATCH (agg)
-      WHERE agg.week IN weeks and agg.year = date().year
-      WITH avg(agg.attendance) AS attendance, sum(agg.income) as income, weeks, this
+      OPTIONAL MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(agg:AggregateServiceRecord)
+      WHERE agg.week IN weeks and agg.year IN years
+      WITH avg(agg.attendance) AS attendance, sum(agg.income) as income, weeks, this, years
 
-      MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING_AGGREGATE]->(agg:AggregateBussingRecord)
-      MATCH (agg)
-      WHERE agg.week IN weeks and agg.year = date().year
+      OPTIONAL MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING_AGGREGATE]->(agg:AggregateBussingRecord)
+      WHERE agg.week IN weeks and agg.year IN years
 
       WITH avg(agg.attendance) AS bussing, income, attendance
       RETURN  {
@@ -168,24 +163,23 @@ extend type Bacenta {
   statsForYearTillDate(
     startDate: String!
     endDate: String!
-  ): IncomeAttendanceBussing!
+  ): IncomeAttendanceBussing
     @cypher(
       statement: """
       MATCH (this)
       WITH date($endDate) as endDate, this
       WITH (endDate.week -  duration.inDays(date($startDate), endDate).weeks) as startWeek, this, endDate
       WITH  range(startWeek, endDate.week) as weeks, this
+      WITH range(date($startDate).year, date($endDate).year) as years, weeks, this
 
-      MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(agg:AggregateServiceRecord)
-      MATCH (agg)
-      WHERE agg.week IN weeks and agg.year = date().year
-      WITH avg(agg.attendance) AS attendance, sum(agg.income) as income, weeks, this
+      OPTIONAL MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(agg:AggregateServiceRecord)
+      WHERE agg.week IN weeks and agg.year IN years
+      WITH avg(agg.attendance) AS attendance, sum(agg.income) as income, weeks, this, years
 
-      MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING_AGGREGATE]->(agg:AggregateBussingRecord)
-      MATCH (agg)
-      WHERE agg.week IN weeks and agg.year = date().year
+      OPTIONAL MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)
+      WHERE date(bussing.createdAt).week IN weeks AND date(bussing.createdAt).year IN years
 
-      WITH avg(agg.attendance) AS bussing, income, attendance
+      WITH avg(bussing.attendance) AS bussing, income, attendance
       RETURN  {
         attendance: round(attendance),
         income: round(income, 2),
@@ -196,25 +190,22 @@ extend type Bacenta {
 }
 
 extend type Fellowship {
-  statsForYearTillDate(
-    startDate: String!
-    endDate: String!
-  ): IncomeAttendanceBussing!
+  statsForYearTillDate(startDate: String!, endDate: String!): IncomeAttendance!
     @cypher(
       statement: """
       MATCH (this)
       WITH date($endDate) as endDate, this
       WITH (endDate.week -  duration.inDays(date($startDate), endDate).weeks) as startWeek, this, endDate
       WITH  range(startWeek, endDate.week) as weeks, this
+       WITH range(date($startDate).year, date($endDate).year) as years, weeks, this
 
-      MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(agg:AggregateServiceRecord)
-      MATCH (agg)
-      WHERE agg.week IN weeks and agg.year = date().year
+      OPTIONAL MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(agg:AggregateServiceRecord)
+      WHERE agg.week IN weeks and agg.year IN years
       WITH avg(agg.attendance) AS attendance, sum(agg.income) as income, weeks, this
 
       RETURN  {
         attendance: round(attendance),
-        income: round(income, 2),
+        income: round(income, 2)
         }
       """
     )
