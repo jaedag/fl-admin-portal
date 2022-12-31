@@ -33,7 +33,7 @@ const GatheringServiceTrends = () => {
             <TrendsButton
               church={gatheringServices}
               onClick={() =>
-                navigate(`/campaigns/equipment/gathering-service/stream`)
+                navigate(`/campaigns/equipment/gatheringservice/stream`)
               }
             />
           </div>

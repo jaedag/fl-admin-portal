@@ -37,7 +37,7 @@ const GatheringServiceCampaigns = () => {
                 name={campaign}
                 onClick={() =>
                   navigate(
-                    `/campaigns/gathering-service/${campaign.toLowerCase()}`.replace(
+                    `/campaigns/gatheringservice/${campaign.toLowerCase()}`.replace(
                       ' ',
                       '-'
                     )
