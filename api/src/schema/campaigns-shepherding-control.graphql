@@ -2,11 +2,13 @@ type IncomeAttendanceBussing {
   income: Float
   attendance: Int
   bussing: Int
+  avgWeeklyIncome: Float
 }
 
 type IncomeAttendance {
   income: Float
   attendance: Int
+  avgWeeklyIncome: Float
 }
 
 extend type Oversight {
@@ -24,16 +26,17 @@ extend type Oversight {
 
       OPTIONAL MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(agg:AggregateServiceRecord)
       WHERE agg.week IN weeks and agg.year IN years
-      WITH avg(agg.attendance) AS attendance, sum(agg.income) as income, weeks, this, years
+      WITH avg(agg.attendance) AS attendance, sum(agg.income) as income, avg(agg.income) as avgWeeklyIncome, weeks, this, years
 
       OPTIONAL MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING_AGGREGATE]->(agg:AggregateBussingRecord)
       WHERE agg.week IN weeks and agg.year IN years
 
-      WITH avg(agg.attendance) AS bussing, income, attendance
+      WITH avg(agg.attendance) AS bussing, income, attendance, avgWeeklyIncome
       RETURN  {
         attendance: round(attendance),
         income: round(income, 2),
-        bussing: round(bussing)
+        bussing: round(bussing),
+        avgWeeklyIncome: round(avgWeeklyIncome, 2)
         }
       """
     )
@@ -54,16 +57,17 @@ extend type GatheringService {
 
       OPTIONAL MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(agg:AggregateServiceRecord)
       WHERE agg.week IN weeks and agg.year IN years
-      WITH avg(agg.attendance) AS attendance, sum(agg.income) as income, weeks, this, years
+      WITH avg(agg.attendance) AS attendance, sum(agg.income) as income, avg(agg.income) as avgWeeklyIncome, weeks, this, years
 
       OPTIONAL MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING_AGGREGATE]->(agg:AggregateBussingRecord)
       WHERE agg.week IN weeks and agg.year IN years
 
-      WITH avg(agg.attendance) AS bussing, income, attendance
+      WITH avg(agg.attendance) AS bussing, income, attendance, avgWeeklyIncome
       RETURN  {
         attendance: round(attendance),
         income: round(income, 2),
-        bussing: round(bussing)
+        bussing: round(bussing),
+        avgWeeklyIncome: round(avgWeeklyIncome, 2)
         }
       """
     )
@@ -84,16 +88,17 @@ extend type Stream {
 
       OPTIONAL MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(agg:AggregateServiceRecord)
       WHERE agg.week IN weeks and agg.year IN years
-      WITH avg(agg.attendance) AS attendance, sum(agg.income) as income, weeks, this, years
+      WITH avg(agg.attendance) AS attendance, sum(agg.income) as income, avg(agg.income) as avgWeeklyIncome, weeks, this, years
 
       OPTIONAL MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING_AGGREGATE]->(agg:AggregateBussingRecord)
       WHERE agg.week IN weeks and agg.year IN years
 
-      WITH avg(agg.attendance) AS bussing, income, attendance
+      WITH avg(agg.attendance) AS bussing, income, attendance, avgWeeklyIncome
       RETURN  {
         attendance: round(attendance),
         income: round(income, 2),
-        bussing: round(bussing)
+        bussing: round(bussing),
+        avgWeeklyIncome: round(avgWeeklyIncome, 2)
         }
       """
     )
@@ -114,16 +119,17 @@ extend type Council {
 
       OPTIONAL MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(agg:AggregateServiceRecord)
       WHERE agg.week IN weeks and agg.year IN years
-      WITH avg(agg.attendance) AS attendance, sum(agg.income) as income, weeks, this, years
+      WITH avg(agg.attendance) AS attendance, sum(agg.income) as income, avg(agg.income) as avgWeeklyIncome, weeks, this, years
 
       OPTIONAL MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING_AGGREGATE]->(agg:AggregateBussingRecord)
       WHERE agg.week IN weeks and agg.year IN years
 
-      WITH avg(agg.attendance) AS bussing, income, attendance
+      WITH avg(agg.attendance) AS bussing, income, attendance, avgWeeklyIncome
       RETURN  {
         attendance: round(attendance),
         income: round(income, 2),
-        bussing: round(bussing)
+        bussing: round(bussing),
+        avgWeeklyIncome: round(avgWeeklyIncome, 2)
         }
       """
     )
@@ -144,16 +150,17 @@ extend type Constituency {
 
       OPTIONAL MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(agg:AggregateServiceRecord)
       WHERE agg.week IN weeks and agg.year IN years
-      WITH avg(agg.attendance) AS attendance, sum(agg.income) as income, weeks, this, years
+      WITH avg(agg.attendance) AS attendance, sum(agg.income) as income, avg(agg.income) as avgWeeklyIncome, weeks, this, years
 
       OPTIONAL MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING_AGGREGATE]->(agg:AggregateBussingRecord)
       WHERE agg.week IN weeks and agg.year IN years
 
-      WITH avg(agg.attendance) AS bussing, income, attendance
+      WITH avg(agg.attendance) AS bussing, income, attendance, avgWeeklyIncome
       RETURN  {
         attendance: round(attendance),
         income: round(income, 2),
-        bussing: round(bussing)
+        bussing: round(bussing),
+        avgWeeklyIncome: round(avgWeeklyIncome, 2)
         }
       """
     )
@@ -166,7 +173,7 @@ extend type Bacenta {
   ): IncomeAttendanceBussing
     @cypher(
       statement: """
-      MATCH (this)
+       MATCH (this)
       WITH date($endDate) as endDate, this
       WITH (endDate.week -  duration.inDays(date($startDate), endDate).weeks) as startWeek, this, endDate
       WITH  range(startWeek, endDate.week) as weeks, this
@@ -174,16 +181,17 @@ extend type Bacenta {
 
       OPTIONAL MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(agg:AggregateServiceRecord)
       WHERE agg.week IN weeks and agg.year IN years
-      WITH avg(agg.attendance) AS attendance, sum(agg.income) as income, weeks, this, years
+      WITH avg(agg.attendance) AS attendance, sum(agg.income) as income, avg(agg.income) as avgWeeklyIncome, weeks, this, years
 
       OPTIONAL MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)
       WHERE date(bussing.createdAt).week IN weeks AND date(bussing.createdAt).year IN years
 
-      WITH avg(bussing.attendance) AS bussing, income, attendance
+      WITH avg(bussing.attendance) AS bussing, income, attendance, avgWeeklyIncome
       RETURN  {
         attendance: round(attendance),
         income: round(income, 2),
-        bussing: round(bussing)
+        bussing: round(bussing),
+        avgWeeklyIncome: round(avgWeeklyIncome, 2)
         }
       """
     )
@@ -201,11 +209,12 @@ extend type Fellowship {
 
       OPTIONAL MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(agg:AggregateServiceRecord)
       WHERE agg.week IN weeks and agg.year IN years
-      WITH avg(agg.attendance) AS attendance, sum(agg.income) as income, weeks, this
+      WITH avg(agg.attendance) AS attendance, sum(agg.income) as income, avg(agg.income) as avgWeeklyIncome, weeks, this
 
       RETURN  {
         attendance: round(attendance),
-        income: round(income, 2)
+        income: round(income, 2),
+        avgWeeklyIncome: round(avgWeeklyIncome, 2)
         }
       """
     )
