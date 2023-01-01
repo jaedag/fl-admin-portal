@@ -13,6 +13,7 @@ export const GATHERING_SERVICE_STAT_FOR_YEAR_TILL_DATE = gql`
         income
         attendance
         bussing
+        avgWeeklyIncome
       }
     }
   }
@@ -31,6 +32,7 @@ export const STREAM_STAT_FOR_YEAR_TILL_DATE = gql`
         income
         attendance
         bussing
+        avgWeeklyIncome
       }
     }
   }
@@ -49,6 +51,7 @@ export const COUNCIL_STAT_FOR_YEAR_TILL_DATE = gql`
         income
         attendance
         bussing
+        avgWeeklyIncome
       }
     }
   }
@@ -67,6 +70,7 @@ export const CONSTITUENCY_STAT_FOR_YEAR_TILL_DATE = gql`
         income
         attendance
         bussing
+        avgWeeklyIncome
       }
     }
   }
@@ -85,6 +89,7 @@ export const BACENTA_STAT_FOR_YEAR_TILL_DATE = gql`
         income
         attendance
         bussing
+        avgWeeklyIncome
       }
     }
   }
