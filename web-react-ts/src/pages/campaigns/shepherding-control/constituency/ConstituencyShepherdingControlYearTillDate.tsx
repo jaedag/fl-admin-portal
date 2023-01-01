@@ -114,21 +114,27 @@ const ConstituencyShepherdingControlYearTillDate = () => {
             <ApolloWrapper loading={loading} error={error} data={data}>
               <div className="d-grid gap-2 mt-2">
                 <FloatingLabelFormControl
-                  label="Average Monthly Bussing Attendance"
+                  label="Average Weekly Bussing Attendance"
                   type={'number'}
                   value={statsForYearTillDate?.bussing}
-                  disabled={true}
-                />
-                <FloatingLabelFormControl
-                  label="Income"
-                  type="number"
-                  value={statsForYearTillDate?.income}
                   disabled={true}
                 />
                 <FloatingLabelFormControl
                   label="Average Weekly Weekday Attendance"
                   type={'number'}
                   value={statsForYearTillDate?.attendance}
+                  disabled={true}
+                />
+                <FloatingLabelFormControl
+                  label="Average Weekly Weekday Income"
+                  type={'number'}
+                  value={statsForYearTillDate?.avgWeeklyIncome}
+                  disabled={true}
+                />
+                <FloatingLabelFormControl
+                  label="Cumulative Income for the Period"
+                  type="number"
+                  value={statsForYearTillDate?.income}
                   disabled={true}
                 />
               </div>
