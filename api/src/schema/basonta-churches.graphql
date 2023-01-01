@@ -1,0 +1,224 @@
+extend type Mutation{
+    CreateSonta(
+        ministryId: ID!
+        hubId: ID!
+        leaderId: ID!
+    ): Constituency
+     @auth(
+      rules: [
+        {
+          roles: [
+            "adminGatheringService"
+            "adminStream"
+          ]
+        }
+      ]
+    )
+     @cypher(
+      statement: """
+      CREATE (sonta:Sonta)
+         	SET sonta.id = apoc.create.uuid()
+
+      WITH sonta
+       MATCH (ministry:Ministry {id:$ministryId})
+       MATCH (leader:Active:Member {id: $leaderId})
+       MATCH (hub:Hub {id:$hubId})
+
+       MATCH (currentUser:Active:Member {auth_id:$auth.jwt.sub})
+       UNWIND LABELS(hub) as stream
+       
+       SET sonta.name = hub.name + ' ' + ministry.name
+
+       CREATE (log:HistoryLog:ServiceLog)
+        SET log.id = apoc.create.uuid(),
+         log.timeStamp = datetime(),
+         log.historyRecord = leader.firstName + ' ' +leader.lastName + ' started ' + sonta.name +' Sonta under '+ hub.name + ' ' + stream
+
+
+       MERGE (hub)-[:HAS]->(sonta)
+       MERGE (leader)-[:LEADS]->(sonta)
+
+      MERGE (date:TimeGraph {date: date()})
+      MERGE (log)-[:LOGGED_BY]->(currentUser)
+       MERGE (log)-[:RECORDED_ON]->(date)
+       MERGE (hub)-[r1:HAS_HISTORY]->(log)
+       MERGE (sonta)-[r2:HAS_HISTORY]->(log)
+       MERGE (leader)-[r3:HAS_HISTORY]->(log)
+    
+      RETURN sonta
+      """
+    )
+
+    CreateMinistry(
+        name: String!
+        leaderId: ID!
+        streamId: ID!
+    ):Ministry
+      @auth(
+      rules: [
+        {
+          roles: [
+            "adminGatheringService",
+            "adminStream"
+          ]
+        }
+      ]
+    )
+      @cypher (
+      statement: """
+      CREATE (ministry:Ministry {name: $name})
+        SET	ministry.id = apoc.create.uuid()
+
+      WITH ministry
+      MATCH (leader:Active:Member {id:$leaderId})
+      MATCH (stream:Stream {id:$streamId})
+      MATCH (currentUser:Active:Member {auth_id:$auth.jwt.sub})
+
+
+      CREATE (log:HistoryLog:ServiceLog)
+        SET log.id = apoc.create.uuid(),
+          log.timeStamp = datetime(),
+          log.historyRecord = ministry.name +' Ministry History Begins'
+          
+
+      MERGE (stream)-[:HAS]->(ministry)
+      MERGE (leader)-[:LEADS]->(ministry)
+
+      MERGE (date:TimeGraph {date: date()})
+      WITH ministry, log
+      MERGE (log)-[:LOGGED_BY]->(currentUser)
+      MERGE (log)-[:RECORDED_ON]->(date)
+      MERGE (ministry)-[:HAS_HISTORY]->(log)
+
+      RETURN ministry
+      """
+    ) 
+    CreateBasonta(
+        name: String!
+        leaderId: ID!
+        sontaId: ID!
+    ): Basonta
+     @auth(
+      rules: [
+        {
+          roles: [
+            "adminGatheringService",
+            "adminStream"
+          ]
+        }
+      ]
+    )
+     @cypher(
+      statement: """
+      CREATE (basonta:Basonta:Active {name: $name})
+        SET	basonta.id = apoc.create.uuid()
+
+      WITH basonta
+      MATCH (leader:Active:Member {id:$leaderId})
+      MATCH (sonta:Sonta {id:$sontaId})
+      MATCH (currentUser:Active:Member {auth_id:$auth.jwt.sub})
+
+
+      CREATE (log:HistoryLog:ServiceLog)
+        SET log.id = apoc.create.uuid(),
+          log.timeStamp = datetime(),
+          log.historyRecord = basonta.name +' Basonta History Begins'
+
+      MERGE (sonta)-[:HAS]->(basonta)
+      MERGE (leader)-[:LEADS]->(basonta)
+
+      MERGE (date:TimeGraph {date: date()})
+      WITH basonta, log
+      MERGE (log)-[:LOGGED_BY]->(currentUser)
+      MERGE (log)-[:RECORDED_ON]->(date)
+      MERGE (basonta)-[:HAS_HISTORY]->(log)
+
+      RETURN basonta
+      """
+    )
+    CreateFederalministry(
+        name: String!
+        leaderId: ID!
+    ): Federalministry 
+     @auth(
+      rules: [
+        {
+          roles:[
+            "adminGatheringService",
+            "adminStream"
+          ]
+        }
+      ]
+    )
+     @cypher(
+      statement: """
+      CREATE (federalMinistry:Federalministry {name:$name})
+        SET federalMinistry.id = apoc.create.uuid()
+
+      WITH federalMinistry
+      MATCH (leader:Member:Active {id:$leaderId})
+      MATCH (gatheringService:GatheringService {id:$gatheringServiceId})
+      MATCH (currentUser:Active:Member {auth_id:$auth.jwt.sub})
+
+      CREATE (log:HistoryLog:ServiceLog)
+        SET log.id = apoc.create.uuid(),
+          log.timeStamp = datetime(),
+          log.historyRecord = federalMinistry.name +' Federal Ministry History Begins'
+
+      MERGE (leader)-[:LEADS]->(federalMinistry)
+      MERGE (gatheringService)-[:HAS_MINISTRY]->(federalMinistry)
+
+      MERGE (date:TimeGraph {date: date()})
+      WITH federalMinistry, log
+      MERGE (log)-[:LOGGED_BY]->(currentUser)
+      MERGE (log)-[:RECORDED_ON]->(date)
+      MERGE (federalMinistry)-[:HAS_HISTORY]->(log)
+
+      RETURN federalMinistry
+
+      """
+    )
+    CreateHub(
+        name: String!
+        leaderId: ID!
+        ministryId: ID!
+    ):Hub
+     @auth(
+      rules: [
+        {
+          roles: [
+            "adminGatheringService"
+            "adminStream"
+          ]
+        }
+      ]
+    )
+     @cypher(
+      statement: """
+      CREATE (hub:Hub {name: $name})
+        SET hub.id = apoc.create.uuid()
+
+      WITH hub
+      MATCH (leader:Active:Member {id:$leaderId})
+      MATCH (ministry:Ministry {id:$ministryId})
+      MATCH (currentUser:Active:Member {auth_id:$auth.jwt.sub})
+
+      CREATE (log:HistoryLog:ServiceLog)
+        SET log.id = apoc.create.uuid(),
+          log.timeStamp = datetime(),
+          log.historyRecord = hub.name +' hub History Begins'
+
+      MERGE (ministry)-[:HAS]->(hub)
+      MERGE (leader)-[:LEADS]->(hub)
+
+      MERGE (date:TimeGraph {date: date()})
+      WITH hub, log
+      MERGE (log)-[:LOGGED_BY]->(currentUser)
+      MERGE (log)-[:RECORDED_ON]->(date)
+      MERGE (hub)-[:HAS_HISTORY]->(log)
+
+      RETURN hub
+      """
+    )
+}
+    
