@@ -3,22 +3,19 @@ import { FloatingLabel, Form } from 'react-bootstrap'
 
 type FormControlProps = {
   label: string
-  type: string
-  value: number | string
+  value: string
   disabled: boolean
 }
 
 function FloatingLabelFormControl({
   label,
-  type,
   value,
   disabled,
 }: FormControlProps) {
   return (
     <FloatingLabel label={label}>
       <Form.Control
-        type={type}
-        value={value === null ? 0 : value}
+        value={value === null ? 0 : value.toLocaleString()}
         disabled={disabled}
       />
     </FloatingLabel>
