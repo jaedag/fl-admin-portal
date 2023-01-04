@@ -1,6 +1,5 @@
 import React, { useContext } from 'react'
 import { Container } from 'react-bootstrap'
-import MenuButton from '../../components/buttons/MenuButton'
 import { useNavigate } from 'react-router'
 import { MemberContext } from 'contexts/MemberContext'
 import {
@@ -14,6 +13,8 @@ import HeadingSecondary from 'components/HeadingSecondary'
 import { getHumanReadableDate } from 'jd-date-utils'
 import Placeholder from '../../../../components/Placeholder'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
+import { BarChartFill, PencilSquare } from 'react-bootstrap-icons'
+import MenuButton from 'components/buttons/MenuButton'
 
 const FellowshipEquipmentCampaign = () => {
   const { currentUser } = useContext(MemberContext)
@@ -69,14 +70,20 @@ const FellowshipEquipmentCampaign = () => {
           <div className="d-grid gap-2 mt-4 text-center px-4">
             {fellowshipEquipmentRecord === null && (
               <MenuButton
-                name="Fill Campaign Form"
+                title="Fill Campaign Form"
+                iconComponent={PencilSquare}
+                color="equipment"
                 onClick={() => navigate(`/campaigns/fellowship/equipment/form`)}
+                noCaption
               />
             )}
 
             <MenuButton
-              name="View Trends"
+              title="View Trends"
+              color="equipment"
+              iconComponent={BarChartFill}
               onClick={() => navigate(`/campaigns/fellowship/equipment/trends`)}
+              noCaption
             />
           </div>
         </Container>

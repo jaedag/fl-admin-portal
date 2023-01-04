@@ -1,6 +1,5 @@
 import React, { useContext } from 'react'
 import { Container } from 'react-bootstrap'
-import MenuButton from '../../components/buttons/MenuButton'
 import { useNavigate } from 'react-router'
 import { MemberContext } from 'contexts/MemberContext'
 import RoleView from 'auth/RoleView'
@@ -12,6 +11,8 @@ import { useQuery } from '@apollo/client'
 import { getHumanReadableDate } from 'jd-date-utils'
 import Placeholder from '../../../../components/Placeholder'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
+import MenuButton from 'components/buttons/MenuButton'
+import { BarChartFill, EmojiFrown } from 'react-bootstrap-icons'
 
 const CouncilEquipmentCampaign = () => {
   const { currentUser } = useContext(MemberContext)
@@ -43,15 +44,21 @@ const CouncilEquipmentCampaign = () => {
           </Placeholder>
           <div className="d-grid gap-2 mt-4 text-center px-4">
             <MenuButton
-              name="View Trends"
+              iconComponent={BarChartFill}
+              title="View Trends"
+              color="equipment"
               onClick={() => navigate(`/campaigns/council/equipment/trends`)}
+              noCaption
             />
             <RoleView roles={permitAdmin('Council')}>
               <MenuButton
-                name="Defaulters"
+                iconComponent={EmojiFrown}
+                color="danger"
+                title="Defaulters"
                 onClick={() =>
                   navigate('/campaigns/council/equipment/defaulters')
                 }
+                noCaption
               />
             </RoleView>
           </div>

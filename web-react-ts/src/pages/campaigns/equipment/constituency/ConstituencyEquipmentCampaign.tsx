@@ -1,6 +1,5 @@
 import React, { useContext } from 'react'
 import { Container } from 'react-bootstrap'
-import MenuButton from '../../components/buttons/MenuButton'
 import { useNavigate } from 'react-router'
 import { MemberContext } from 'contexts/MemberContext'
 import {
@@ -16,6 +15,8 @@ import HeadingSecondary from 'components/HeadingSecondary'
 import { getHumanReadableDate } from 'jd-date-utils'
 import Placeholder from '../../../../components/Placeholder'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
+import MenuButton from 'components/buttons/MenuButton'
+import { BarChartFill, EmojiFrown, PencilSquare } from 'react-bootstrap-icons'
 
 const ConstituencyEquipmentCampaign = () => {
   const { currentUser } = useContext(MemberContext)
@@ -71,25 +72,34 @@ const ConstituencyEquipmentCampaign = () => {
           <div className="d-grid gap-2 mt-4 text-center px-4">
             {constituencyEquipmentRecord?.pulpits === null && (
               <MenuButton
-                name="Fill Campaign Form"
+                title="Fill Campaign Form"
+                iconComponent={PencilSquare}
                 onClick={() =>
                   navigate(`/campaigns/constituency/equipment/form`)
                 }
+                noCaption
+                color="equipment"
               />
             )}
 
             <MenuButton
-              name="View Trends"
+              title="View Trends"
+              color="equipment"
+              iconComponent={BarChartFill}
               onClick={() =>
                 navigate(`/campaigns/constituency/equipment/trends`)
               }
+              noCaption
             />
             <RoleView roles={permitAdmin('Constituency')}>
               <MenuButton
-                name="Defaulters"
+                title="Defaulters"
+                color="danger"
+                iconComponent={EmojiFrown}
                 onClick={() =>
                   navigate('/campaigns/constituency/equipment/defaulters')
                 }
+                noCaption
               />
             </RoleView>
           </div>

@@ -1,6 +1,5 @@
 import React, { useContext } from 'react'
 import { Container } from 'react-bootstrap'
-import MenuButton from '../../components/buttons/MenuButton'
 import { useNavigate } from 'react-router'
 import { MemberContext } from 'contexts/MemberContext'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
@@ -10,6 +9,8 @@ import { useQuery } from '@apollo/client'
 import { getHumanReadableDate } from 'jd-date-utils'
 import Placeholder from '../../../../components/Placeholder'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
+import MenuButton from 'components/buttons/MenuButton'
+import { BarChartFill } from 'react-bootstrap-icons'
 
 const BacentaEquipmentCampaign = () => {
   const { currentUser } = useContext(MemberContext)
@@ -41,8 +42,11 @@ const BacentaEquipmentCampaign = () => {
           </Placeholder>
           <div className="d-grid gap-2 mt-4 text-center px-4">
             <MenuButton
-              name="View Trends"
+              iconComponent={BarChartFill}
+              title="View Trends"
               onClick={() => navigate(`/campaigns/bacenta/equipment/trends`)}
+              noCaption
+              color="equipment"
             />
           </div>
         </Container>

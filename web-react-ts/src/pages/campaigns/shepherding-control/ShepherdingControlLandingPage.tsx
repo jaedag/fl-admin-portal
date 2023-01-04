@@ -1,10 +1,12 @@
+import MenuButton from 'components/buttons/MenuButton'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import HeadingSecondary from 'components/HeadingSecondary'
 import { MemberContext } from 'contexts/MemberContext'
 import React, { useContext } from 'react'
 import { Container } from 'react-bootstrap'
+import { GraphDown } from 'react-bootstrap-icons'
+import { GiHumanPyramid } from 'react-icons/gi'
 import { useNavigate } from 'react-router'
-import MenuButton from '../components/buttons/MenuButton'
 
 const ShepherdingControlLandingPage = () => {
   const { currentUser } = useContext(MemberContext)
@@ -22,7 +24,10 @@ const ShepherdingControlLandingPage = () => {
         </div>
         <div className="d-grid gap-2 mt-4 text-center px-4">
           <MenuButton
-            name="Stats for Year Till Date"
+            title="Stats for Year Till Date"
+            color="shepherdingcontrol"
+            iconComponent={GraphDown}
+            noCaption
             onClick={() =>
               navigate(
                 `/campaigns/${churchType.toLowerCase()}/shepherding-control/year-to-date`
@@ -31,7 +36,10 @@ const ShepherdingControlLandingPage = () => {
           />
 
           <MenuButton
-            name="Swollen Sunday"
+            title="Swollen Sunday"
+            color="swollensunday"
+            iconComponent={GiHumanPyramid}
+            noCaption
             onClick={() =>
               navigate(`/campaigns/${churchType.toLowerCase()}/swollen-sunday`)
             }
