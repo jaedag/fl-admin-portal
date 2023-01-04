@@ -1,7 +1,5 @@
 import React, { useContext } from 'react'
 import { Container } from 'react-bootstrap'
-import MenuButton from './components/buttons/MenuButton'
-import { useNavigate } from 'react-router'
 import { useQuery } from '@apollo/client'
 import { FELLOWSHIP_CAMPAIGN_LIST } from './CampaignQueries'
 import { ChurchContext } from 'contexts/ChurchContext'
@@ -9,6 +7,7 @@ import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { MemberContext } from 'contexts/MemberContext'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import HeadingSecondary from 'components/HeadingSecondary'
+import CampaignsWithIcons from './components/buttons/CampaignsWithIcons'
 
 const FellowshipCampaigns = () => {
   const { fellowshipId } = useContext(ChurchContext)
@@ -20,7 +19,6 @@ const FellowshipCampaigns = () => {
     variables: { fellowshipId: fellowshipId },
   })
 
-  const navigate = useNavigate()
   const campaigns = data?.fellowships[0]?.campaigns
 
   return (
@@ -33,16 +31,10 @@ const FellowshipCampaigns = () => {
           </div>
           <div className="d-grid gap-2 mt-4 text-center px-4">
             {campaigns?.map((campaign: string, index: number) => (
-              <MenuButton
+              <CampaignsWithIcons
                 key={index}
-                name={campaign}
-                onClick={() =>
-                  navigate(
-                    `/campaigns/fellowship/${campaign
-                      .toLowerCase()
-                      .replace(' ', '-')}`
-                  )
-                }
+                campaign={campaign}
+                churchLevel="Fellowship"
               />
             ))}
           </div>

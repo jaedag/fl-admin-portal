@@ -1,12 +1,13 @@
 import React, { useContext } from 'react'
 import { Container } from 'react-bootstrap'
-import MenuButton from '../../components/buttons/MenuButton'
 import { useNavigate } from 'react-router'
 import { MemberContext } from 'contexts/MemberContext'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import HeadingSecondary from 'components/HeadingSecondary'
 import { permitAdmin } from 'permission-utils'
 import RoleView from 'auth/RoleView'
+import MenuButton from 'components/buttons/MenuButton'
+import { PersonAdd } from 'react-bootstrap-icons'
 
 const StreamSheepSeekerCampaign = () => {
   const { currentUser } = useContext(MemberContext)
@@ -25,7 +26,10 @@ const StreamSheepSeekerCampaign = () => {
         <div className="d-grid gap-2 mt-4 text-center px-4">
           <RoleView roles={permitAdmin('Stream')}>
             <MenuButton
-              name="Make Sheep Seeker"
+              title="Make Sheep Seeker"
+              iconComponent={PersonAdd}
+              color="sheepseeking"
+              noCaption
               onClick={() => navigate('/campaigns/stream/sheepseeker-select')}
             />
           </RoleView>

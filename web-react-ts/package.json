@@ -24,6 +24,7 @@
     "react-csv": "^2.2.2",
     "react-dom": "^18.1.0",
     "react-ga4": "^1.4.1",
+    "react-icons": "^4.7.1",
     "react-router": "^6.4.1",
     "react-router-dom": "^6.4.1",
     "react-scripts": "^5.0.1",

@@ -47,6 +47,41 @@
   fill: var(--banking-accent);
 }
 
+.equipment.dark {
+  color: var(--equipment);
+  fill: var(--equipment);
+}
+
+.equipment.dark {
+  color: var(--equipment);
+  fill: var(--equipment);
+}
+
+.antibrutish.dark {
+  color: var(--antibrutish);
+  fill: var(--antibrutish);
+}
+
+.multiplication.dark {
+  color: var(--multiplication);
+  fill: var(--multiplication);
+}
+
+.swollensunday.dark {
+  color: var(--swollensunday);
+  fill: var(--swollensunday);
+}
+
+.shepherdingcontrol.dark {
+  color: var(--shepherdingcontrol);
+  fill: var(--shepherdingcontrol);
+}
+
+.sheepseeking.dark {
+  color: var(--sheepseeking);
+  fill: var(--sheepseeking);
+}
+
 .quick-facts.dark {
   color: var(--quickfacts-accent);
   fill: var(--quickfacts-accent);

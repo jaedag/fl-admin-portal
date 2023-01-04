@@ -1,10 +1,15 @@
 import React, { useContext } from 'react'
 import { Container } from 'react-bootstrap'
-import MenuButton from '../../components/buttons/MenuButton'
 import { useNavigate } from 'react-router'
 import { MemberContext } from 'contexts/MemberContext'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import HeadingSecondary from 'components/HeadingSecondary'
+import MenuButton from 'components/buttons/MenuButton'
+import {
+  BarChartFill,
+  FileEarmarkArrowUpFill,
+  PencilSquare,
+} from 'react-bootstrap-icons'
 
 const GatheringServiceMultiplicationCampaign = () => {
   const { currentUser } = useContext(MemberContext)
@@ -22,26 +27,35 @@ const GatheringServiceMultiplicationCampaign = () => {
         </div>
         <div className="d-grid gap-2 mt-4 text-center px-4">
           <MenuButton
-            name="Fill Multiplication Event"
+            title="Fill Multiplication Event"
+            iconComponent={PencilSquare}
+            color="multiplication"
             onClick={() =>
               navigate(
                 `/campaigns/gatheringservice/multiplication/service-form`
               )
             }
+            noCaption
           />
           <MenuButton
-            name="Upload Receipts"
+            title="Upload Receipts"
+            color="multiplication"
+            iconComponent={FileEarmarkArrowUpFill}
             onClick={() =>
               navigate(
                 `/campaigns/gatheringservice/multiplication/banking-slips`
               )
             }
+            noCaption
           />
           <MenuButton
-            name="View Trends"
+            color="multiplication"
+            iconComponent={BarChartFill}
+            title="View Trends"
             onClick={() =>
               navigate(`/campaigns/gatheringservice/multiplication/trends`)
             }
+            noCaption
           />
         </div>
       </Container>

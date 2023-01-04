@@ -1,6 +1,5 @@
 import React, { useContext } from 'react'
 import { Container } from 'react-bootstrap'
-import MenuButton from '../../components/buttons/MenuButton'
 import { useNavigate } from 'react-router'
 import { MemberContext } from 'contexts/MemberContext'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
@@ -12,6 +11,8 @@ import Placeholder from '../../../../components/Placeholder'
 import RoleView from 'auth/RoleView'
 import { permitAdmin } from 'permission-utils'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
+import MenuButton from 'components/buttons/MenuButton'
+import { BarChartFill, Alarm, EmojiFrown } from 'react-bootstrap-icons'
 
 const GatheringServiceEquipmentCampaign = () => {
   const { currentUser } = useContext(MemberContext)
@@ -43,23 +44,32 @@ const GatheringServiceEquipmentCampaign = () => {
           </Placeholder>
           <div className="d-grid gap-2 mt-4 text-center px-4">
             <MenuButton
-              name="View Trends"
+              iconComponent={BarChartFill}
+              title="View Trends"
+              color="equipment"
               onClick={() =>
                 navigate(`/campaigns/gatheringservice/equipment/trends`)
               }
+              noCaption
             />
             <MenuButton
-              name="Set Deadline"
+              iconComponent={Alarm}
+              title="Set Deadline"
+              color="equipment"
               onClick={() =>
                 navigate(`/campaigns/gatheringservice/set-equipment-deadline`)
               }
+              noCaption
             />
             <RoleView roles={permitAdmin('GatheringService')}>
               <MenuButton
-                name="Defaulters"
+                iconComponent={EmojiFrown}
+                color="danger"
+                title="Defaulters"
                 onClick={() =>
                   navigate('/campaigns/gatheringservice/equipment/defaulters')
                 }
+                noCaption
               />
             </RoleView>
           </div>

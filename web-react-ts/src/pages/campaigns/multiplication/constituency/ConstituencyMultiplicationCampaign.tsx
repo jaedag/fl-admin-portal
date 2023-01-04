@@ -1,10 +1,15 @@
 import React, { useContext } from 'react'
 import { Container } from 'react-bootstrap'
-import MenuButton from '../../components/buttons/MenuButton'
 import { useNavigate } from 'react-router'
 import { MemberContext } from 'contexts/MemberContext'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import HeadingSecondary from 'components/HeadingSecondary'
+import MenuButton from 'components/buttons/MenuButton'
+import {
+  BarChartFill,
+  FileEarmarkArrowUpFill,
+  PencilSquare,
+} from 'react-bootstrap-icons'
 
 const ConstituencyMultiplicationCampaign = () => {
   const { currentUser } = useContext(MemberContext)
@@ -22,19 +27,28 @@ const ConstituencyMultiplicationCampaign = () => {
         </div>
         <div className="d-grid gap-2 mt-4 text-center px-4">
           <MenuButton
-            name="Fill Multiplication Event"
+            title="Fill Multiplication Event"
+            color="multiplication"
+            iconComponent={PencilSquare}
+            noCaption
             onClick={() =>
               navigate(`/campaigns/constituency/multiplication/service-form`)
             }
           />
           <MenuButton
-            name="Upload Receipts"
+            title="Upload Receipts"
+            color="multiplication"
+            iconComponent={FileEarmarkArrowUpFill}
+            noCaption
             onClick={() =>
               navigate(`/campaigns/constituency/multiplication/banking-slips`)
             }
           />
           <MenuButton
-            name="View Trends"
+            iconComponent={BarChartFill}
+            title="View Trends"
+            color="multiplication"
+            noCaption
             onClick={() =>
               navigate(`/campaigns/constituency/multiplication/trends`)
             }

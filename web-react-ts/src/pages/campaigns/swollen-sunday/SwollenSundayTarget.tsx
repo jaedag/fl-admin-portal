@@ -4,10 +4,10 @@ import { MemberContext } from 'contexts/MemberContext'
 import React, { useContext } from 'react'
 import { Button, Container } from 'react-bootstrap'
 import { useNavigate } from 'react-router'
-import MenuButton from '../components/buttons/MenuButton'
-import { CloudArrowDownFill } from 'react-bootstrap-icons'
+import { CloudArrowDownFill, Upload, ShareFill } from 'react-bootstrap-icons'
 import { CSVLink } from 'react-csv'
 import './SwollenSunday.css'
+import MenuButton from 'components/buttons/MenuButton'
 
 interface BacentaTarget {
   constituency: string
@@ -71,16 +71,22 @@ const SwollenSundayTarget = ({
         </div>
         <div className="d-grid gap-2">
           <MenuButton
-            name="Upload Bacenta Targets"
+            title="Upload Bacenta Targets"
+            color="swollensunday"
+            iconComponent={Upload}
             onClick={() =>
               navigate(
                 `/campaigns/${churchType.toLowerCase()}/swollen-sunday/upload-targets`
               )
             }
+            noCaption
           />
           {churchType === 'Stream' && (
             <MenuButton
-              name="Share Target By Council"
+              title="Share Target By Council"
+              iconComponent={ShareFill}
+              noCaption
+              color="swollensunday"
               onClick={() =>
                 navigate(
                   `/campaigns/${churchType.toLowerCase()}/swollen-sunday/share-target-by-council`
