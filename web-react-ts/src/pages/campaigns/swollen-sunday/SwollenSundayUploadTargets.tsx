@@ -79,10 +79,27 @@ const SwollenSundayUploadTargets = () => {
               bacenta: column[1],
               code: column[2],
               leader: column[3],
-              target: parseInt(column[4]),
+              target: column[4],
             }
           })
           jsonData.shift()
+
+          for (const i in jsonData) {
+            if (
+              jsonData[i].constituency === '' ||
+              jsonData[i].bacenta === '' ||
+              jsonData[i].code === '' ||
+              jsonData[i].leader === '' ||
+              jsonData[i].target === ''
+            ) {
+              alert(
+                'No field must be left empty. Please update all fields and upload the file again'
+              )
+              navigate(
+                `/campaigns/${churchType.toLowerCase()}/swollen-sunday/target`
+              )
+            }
+          }
 
           const stringifyData = JSON.stringify(jsonData)
           setData(stringifyData)
