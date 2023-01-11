@@ -79,7 +79,7 @@ const SwollenSundayUploadTargets = () => {
               bacenta: column[1],
               code: column[2],
               leader: column[3],
-              target: column[4],
+              target: parseInt(column[4]),
             }
           })
           jsonData.shift()
