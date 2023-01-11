@@ -245,6 +245,7 @@ export type Role =
   | 'arrivalsConfirmerStream'
   | 'arrivalsCounterStream'
   | 'tellerStream'
+  | 'sheepseekerStream'
   | 'all'
 
 export type VerbTypes =

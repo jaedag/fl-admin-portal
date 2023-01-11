@@ -194,3 +194,7 @@ export const permitAdminArrivals = (churchLevel: ChurchLevel): Role[] => {
 export const permitTellerStream = (): Role[] => {
   return ['tellerStream']
 }
+
+export const permitSheepSeeker = (): Role[] => {
+  return ['sheepseekerStream']
+}
