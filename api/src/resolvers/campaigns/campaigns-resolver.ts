@@ -1,68 +1,90 @@
+import { permitAdmin, permitLeader } from '../permissions'
 import { Context } from '../utils/neo4j-types'
-import { ChurchLevel } from '../utils/types'
+import { ChurchLevel, Role } from '../utils/types'
 import { getEquipmentDetails } from './equipment/equipment-campaign-resolvers'
 
-const churchCampaigns = async (church: ChurchLevel) => {
+const churchCampaigns = async (context: Context, church: ChurchLevel) => {
+  let campaignsList: string[] = []
   switch (church) {
     case 'Oversight':
     case 'GatheringService':
     case 'Stream':
-      return [
+      campaignsList = [
         'Equipment',
         'Anti-Brutish',
         'Multiplication',
         'Swollen Sunday',
         'Shepherding Control',
-        'Sheep Seeking',
       ]
+      break
     case 'Council':
     case 'Constituency':
-      return [
+      campaignsList = [
         'Equipment',
         'Anti-Brutish',
         'Multiplication',
         'Swollen Sunday',
         'Shepherding Control',
       ]
+      break
     case 'Bacenta':
-      return ['Equipment', 'Swollen Sunday', 'Shepherding Control']
+      campaignsList = ['Equipment', 'Swollen Sunday', 'Shepherding Control']
+      break
     case 'Fellowship':
-      return ['Equipment']
+      campaignsList = ['Equipment']
+      break
 
     default:
-      return []
+      campaignsList = []
   }
+  const userRoles: Role[] = context.auth?.roles
+  const permittedRoles: Role[] = ['sheepseekerStream']
+  permittedRoles.push(...permitAdmin('Stream'))
+  permittedRoles.push(...permitLeader('Stream'))
+
+  if (permittedRoles.some((r) => userRoles.includes(r))) {
+    campaignsList.push('Sheep Seeking')
+  }
+
+  return campaignsList
 }
 
 const campaignsResolvers = {
   Oversight: {
-    campaigns: async () => churchCampaigns('Oversight'),
+    campaigns: async (obj: any, args: any, context: Context) =>
+      churchCampaigns(context, 'Oversight'),
   },
   GatheringService: {
-    campaigns: async () => churchCampaigns('GatheringService'),
+    campaigns: async (obj: any, args: any, context: Context) =>
+      churchCampaigns(context, 'GatheringService'),
     equipmentRecord: (obj: any, args: any, context: Context) =>
       getEquipmentDetails(obj, args, context, 'GatheringService'),
   },
   Stream: {
-    campaigns: async () => churchCampaigns('Stream'),
+    campaigns: async (obj: any, args: any, context: Context) =>
+      churchCampaigns(context, 'Stream'),
     equipmentRecord: (obj: any, args: any, context: Context) =>
       getEquipmentDetails(obj, args, context, 'Stream'),
   },
   Council: {
-    campaigns: async () => churchCampaigns('Council'),
+    campaigns: async (obj: any, args: any, context: Context) =>
+      churchCampaigns(context, 'Council'),
     equipmentRecord: (obj: any, args: any, context: Context) =>
       getEquipmentDetails(obj, args, context, 'Council'),
   },
   Constituency: {
-    campaigns: async () => churchCampaigns('Constituency'),
+    campaigns: async (obj: any, args: any, context: Context) =>
+      churchCampaigns(context, 'Constituency'),
     equipmentRecord: (obj: any, args: any, context: Context) =>
       getEquipmentDetails(obj, args, context, 'Constituency'),
   },
   Bacenta: {
-    campaigns: async () => churchCampaigns('Bacenta'),
+    campaigns: async (obj: any, args: any, context: Context) =>
+      churchCampaigns(context, 'Bacenta'),
   },
   Fellowship: {
-    campaigns: async () => churchCampaigns('Fellowship'),
+    campaigns: async (obj: any, args: any, context: Context) =>
+      churchCampaigns(context, 'Fellowship'),
   },
 }
 
