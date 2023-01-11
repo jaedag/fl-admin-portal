@@ -219,6 +219,13 @@ const StreamSheepSeekerCampaign = lazy(
   () => import('../campaigns/sheep-seeking/stream/StreamSheepSeekerCampaign')
 )
 
+const GatheringServiceSheepSeekerCampaign = lazy(
+  () =>
+    import(
+      '../campaigns/sheep-seeking/gathering-service/GatheringServiceSheepSeekerCampaign'
+    )
+)
+
 const GatheringServiceMultiplicationCampaignServiceForm = lazy(
   () =>
     import(
@@ -625,6 +632,12 @@ export const campaigns: LazyRouteTypes[] = [
   {
     path: '/campaigns/gatheringservice/shepherding-control/year-to-date',
     element: GatheringServiceShepherdingControlYearTillDate,
+    roles: permitAdmin('GatheringService'),
+    placeholder: true,
+  },
+  {
+    path: '/campaigns/gatheringservice/sheep-seeking',
+    element: GatheringServiceSheepSeekerCampaign,
     roles: permitAdmin('GatheringService'),
     placeholder: true,
   },
