@@ -13,6 +13,14 @@ type TargetArg = {
   target: number
 }
 
+type TargetFields = {
+  constituency: string
+  bacenta: string
+  target: number
+  code: number
+  leader: string
+}
+
 const convertToNumber = (key: any, value: any) => {
   if (typeof value.target === 'string') {
     return { councilId: value.councilId, target: parseInt(value.target, 10) }
@@ -60,6 +68,34 @@ const UploadBacentaTargets = async (
 ) => {
   isAuth(permitAdmin('Council'), context.auth.roles)
   const session = context.executionContext.session()
+
+  const jsonData: [] = JSON.parse(args.data)
+
+  jsonData.every((item: TargetFields) => {
+    if (
+      item.constituency === '' ||
+      item.bacenta === '' ||
+      item.code === null ||
+      item.leader === '' ||
+      item.target === null
+    ) {
+      throw new Error('No field must be left empty')
+    }
+
+    if (
+      !(
+        'hasOwnProperty' in item &&
+        'bacenta' in item &&
+        'code' in item &&
+        'leader' in item &&
+        'target' in item
+      )
+    ) {
+      throw new Error('Every field has to have a value!')
+    }
+
+    return true
+  })
 
   try {
     const response = rearrangeCypherObject(
