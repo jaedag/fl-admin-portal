@@ -9,6 +9,7 @@ import RoleView from 'auth/RoleView'
 import MenuButton from 'components/buttons/MenuButton'
 import { CiViewList } from 'react-icons/ci'
 import { PersonAdd } from 'react-bootstrap-icons'
+import { IoPersonAddOutline } from 'react-icons/io5'
 
 const StreamSheepSeekerCampaign = () => {
   const { currentUser } = useContext(MemberContext)
@@ -37,7 +38,7 @@ const StreamSheepSeekerCampaign = () => {
           <RoleView roles={permitSheepSeeker()}>
             <MenuButton
               title="Register Members"
-              iconComponent={PersonAdd}
+              iconComponent={IoPersonAddOutline}
               color="sheepseeking"
               noCaption
               onClick={() => navigate('/member/addmember')}
