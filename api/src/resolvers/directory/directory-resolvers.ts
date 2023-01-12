@@ -2,7 +2,11 @@ import axios from 'axios'
 import { Context } from '../utils/neo4j-types'
 import { Member } from '../utils/types'
 import { isAuth, rearrangeCypherObject, throwToSentry } from '../utils/utils'
-import { permitAdmin, permitLeaderAdmin } from '../permissions'
+import {
+  permitSheepSeeker,
+  permitAdmin,
+  permitLeaderAdmin,
+} from '../permissions'
 import { RemoveServant } from './make-remove-servants'
 
 import { updateAuthUserConfig } from '../utils/auth0'
@@ -21,7 +25,7 @@ const errorMessage = require('../texts.json').error
 
 const directoryMutation = {
   CreateMember: async (object: any, args: Member, context: Context) => {
-    isAuth(permitLeaderAdmin('Fellowship'), context?.auth.roles)
+    isAuth(permitSheepSeeker(), context?.auth.roles)
 
     const session = context.executionContext.session()
 
