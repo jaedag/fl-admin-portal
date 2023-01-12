@@ -42,7 +42,10 @@ const churchCampaigns = async (context: Context, church: ChurchLevel) => {
   permittedRoles.push(...permitAdmin('Stream'))
   permittedRoles.push(...permitLeader('Stream'))
 
-  if (permittedRoles.some((r) => userRoles.includes(r))) {
+  if (
+    permittedRoles.some((r) => userRoles.includes(r)) &&
+    church === 'Stream'
+  ) {
     campaignsList.push('Sheep Seeking')
   }
 
