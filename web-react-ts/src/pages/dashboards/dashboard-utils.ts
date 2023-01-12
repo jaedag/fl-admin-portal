@@ -92,6 +92,8 @@ export const parseRoles = (role: VerbTypes): VerbTypes => {
       return 'isArrivalsConfirmerFor'
     case 'teller':
       return 'isTellerFor'
+    case 'sheepseeker':
+      return 'isSheepSeekerFor'
 
     case 'leads':
       return 'leader'
@@ -105,6 +107,8 @@ export const parseRoles = (role: VerbTypes): VerbTypes => {
       return 'arrivalsConfirmer'
     case 'isTellerFor':
       return 'teller'
+    case 'isSheepSeekerFor':
+      return 'sheepseeker'
 
     default:
       return role
