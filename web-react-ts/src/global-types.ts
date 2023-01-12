@@ -255,12 +255,14 @@ export type VerbTypes =
   | 'arrivalsCounter'
   | 'arrivalsConfirmer'
   | 'teller'
+  | 'sheepseeker'
   | 'leads'
   | 'isAdminFor'
   | 'isArrivalsAdminFor'
   | 'isArrivalsCounterFor'
   | 'isArrivalsConfirmerFor'
   | 'isTellerFor'
+  | 'isSheepSeekerFor'
 
 export type ServiceRecord = {
   __typename: 'ServiceRecord' | 'RehearsalRecord'
