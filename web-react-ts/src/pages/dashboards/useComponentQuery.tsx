@@ -35,6 +35,7 @@ import {
   SERVANTS_CONSTITUENCY_ARRIVALS_ADMIN,
   SERVANTS_STREAM_ARRIVALS_COUNTER,
   SERVANTS_STREAM_TELLER,
+  SERVANTS_SHEEP_SEEKER_STREAM,
 } from './userChurchDataQueries'
 
 type DashboardChurchType = {
@@ -92,6 +93,7 @@ const useComponentQuery = (props?: UseComponentQuery) => {
   )
 
   const [streamTellerQuery] = useLazyQuery(SERVANTS_STREAM_TELLER)
+  const [sheepseekerStream] = useLazyQuery(SERVANTS_SHEEP_SEEKER_STREAM)
 
   const church: {
     [key: string]: any
@@ -118,6 +120,7 @@ const useComponentQuery = (props?: UseComponentQuery) => {
       arrivalsAdmin: streamArrivalsAdminQuery,
       arrivalsCounter: streamArrivalsCounterQuery,
       teller: streamTellerQuery,
+      sheepseeker: sheepseekerStream,
     },
     GatheringService: {
       leader: gatheringServiceLeaderQuery,
