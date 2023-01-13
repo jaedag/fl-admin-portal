@@ -176,6 +176,7 @@ export interface MemberWithChurches extends Member {
   isArrivalsAdminForStream: Church[]
   isArrivalsAdminForGatheringService: Church[]
   isArrivalsAdminForOversight: Church[]
+  isSheepSeekerForStream: Church[]
 }
 
 export interface Servant {
