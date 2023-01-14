@@ -90,7 +90,7 @@ const SwollenSundayUploadTargets = () => {
               jsonData[i].bacenta === '' ||
               jsonData[i].code === '' ||
               jsonData[i].leader === '' ||
-              jsonData[i].target === ''
+              !jsonData[i].target
             ) {
               alert(
                 'No field must be left empty. Please update all fields and upload the file again'
@@ -98,6 +98,7 @@ const SwollenSundayUploadTargets = () => {
               navigate(
                 `/campaigns/${churchType.toLowerCase()}/swollen-sunday/target`
               )
+              break
             }
           }
 
