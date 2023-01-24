@@ -92,6 +92,15 @@ export const STREAM_SWOLLEN_DETAILS = gql`
   }
 `
 
+export const GATHERING_SERVICE = gql`
+  query gatheringService($gatheringServiceId: ID!) {
+    gatheringServices(where: { id: $gatheringServiceId }) {
+      id
+      name
+    }
+  }
+`
+
 export const CONSTITUENCY_SWOLLEN_SUNDAY_GRAPHS = gql`
   query constituencySwollenSundayGraphs(
     $constituencyId: ID!
