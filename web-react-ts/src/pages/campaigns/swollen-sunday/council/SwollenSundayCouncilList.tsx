@@ -4,7 +4,7 @@ import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import HeadingSecondary from 'components/HeadingSecondary'
 import { ChurchContext } from 'contexts/ChurchContext'
 import React, { useContext } from 'react'
-import SwollenSundayChurchList from '../SwollenSundayChurchList'
+import CampaignChurchList from '../../CampaignChurchList'
 import { COUNCIL_LIST } from '../SwollenSundayQueries'
 
 const SwollenSundayCouncilList = () => {
@@ -25,7 +25,7 @@ const SwollenSundayCouncilList = () => {
         <HeadingSecondary>
           {`${data?.streams[0]?.name} ${data?.streams[0]?.__typename}`} Councils
         </HeadingSecondary>
-        <SwollenSundayChurchList data={councils} />
+        <CampaignChurchList data={councils} page="swollen-sunday" />
       </div>
     </ApolloWrapper>
   )

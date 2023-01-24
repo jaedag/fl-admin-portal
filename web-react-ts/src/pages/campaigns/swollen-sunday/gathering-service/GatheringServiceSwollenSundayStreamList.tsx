@@ -3,11 +3,11 @@ import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import HeadingSecondary from 'components/HeadingSecondary'
 import { ChurchContext } from 'contexts/ChurchContext'
-import React, { useContext } from 'react'
-import CampaignChurchList from '../../CampaignChurchList'
+import CampaignChurchList from 'pages/campaigns/CampaignChurchList'
+import { useContext } from 'react'
 import { STREAM_LIST } from '../SwollenSundayQueries'
 
-const SwollenSundayStreamList = () => {
+const GatheringServiceSwollenSundayCampaign = () => {
   const { gatheringServiceId } = useContext(ChurchContext)
 
   const { data, loading, error } = useQuery(STREAM_LIST, {
@@ -17,7 +17,6 @@ const SwollenSundayStreamList = () => {
   })
 
   const streams = data?.gatheringServices[0]?.streams
-
   return (
     <ApolloWrapper loading={loading} error={error} data={data}>
       <div className="text-center">
@@ -26,10 +25,10 @@ const SwollenSundayStreamList = () => {
           {`${data?.gatheringServices[0]?.name} ${data?.gatheringServices[0]?.__typename}`}{' '}
           Streams
         </HeadingSecondary>
-        <CampaignChurchList data={streams} page="swollen-sunday" />
+        <CampaignChurchList data={streams} page="swollen-sunday-dashboard" />
       </div>
     </ApolloWrapper>
   )
 }
 
-export default SwollenSundayStreamList
+export default GatheringServiceSwollenSundayCampaign

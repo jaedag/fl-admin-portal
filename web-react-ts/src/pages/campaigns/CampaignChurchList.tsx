@@ -15,9 +15,10 @@ type FormOptions = {
 
 type SwollenSundayChurchProps = {
   data: any
+  page: string
 }
 
-const SwollenSundayChurchList = ({ data }: SwollenSundayChurchProps) => {
+const CampaignChurchList = ({ data, page }: SwollenSundayChurchProps) => {
   const churchDataLoaded = data
   const [churchData, setChurchData] = useState([])
   const { clickCard } = useContext(ChurchContext)
@@ -77,9 +78,15 @@ const SwollenSundayChurchList = ({ data }: SwollenSundayChurchProps) => {
                 onClick={() => {
                   clickCard(church)
                   setUserChurch(church)
-                  navigate(
-                    `/campaigns/${church?.__typename?.toLowerCase()}/swollen-sunday/trends`
-                  )
+                  if (page === 'swollen-sunday') {
+                    navigate(
+                      `/campaigns/${church?.__typename?.toLowerCase()}/swollen-sunday/trends`
+                    )
+                  } else if (page === 'swollen-sunday-dashboard') {
+                    navigate(`/campaigns/stream/swollen-sunday`)
+                  } else {
+                    navigate('#')
+                  }
                 }}
                 color={'campaigns'}
               />
@@ -91,4 +98,4 @@ const SwollenSundayChurchList = ({ data }: SwollenSundayChurchProps) => {
   )
 }
 
-export default SwollenSundayChurchList
+export default CampaignChurchList

@@ -4,7 +4,7 @@ import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import HeadingSecondary from 'components/HeadingSecondary'
 import { ChurchContext } from 'contexts/ChurchContext'
 import React, { useContext } from 'react'
-import SwollenSundayChurchList from '../SwollenSundayChurchList'
+import CampaignChurchList from '../../CampaignChurchList'
 import { BACENTA_LIST } from '../SwollenSundayQueries'
 
 const SwollenSundayBacentaList = () => {
@@ -26,7 +26,7 @@ const SwollenSundayBacentaList = () => {
           {`${data?.constituencies[0]?.name} ${data?.constituencies[0]?.__typename}`}{' '}
           Bacentas
         </HeadingSecondary>
-        <SwollenSundayChurchList data={bacentas} />
+        <CampaignChurchList data={bacentas} page="swollen-sunday" />
       </div>
     </ApolloWrapper>
   )

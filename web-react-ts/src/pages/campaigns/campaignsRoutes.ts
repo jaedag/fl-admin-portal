@@ -281,6 +281,13 @@ const GatheringServiceSwollenSundayTrends = lazy(
     )
 )
 
+const GatheringServiceSwollenSundayStreamList = lazy(
+  () =>
+    import(
+      '../campaigns/swollen-sunday/gathering-service/GatheringServiceSwollenSundayStreamList'
+    )
+)
+
 const StreamSwollenSundayTrends = lazy(
   () => import('../campaigns/swollen-sunday/stream/StreamSwollenSundayTrends')
 )
@@ -582,6 +589,12 @@ export const campaigns: LazyRouteTypes[] = [
   {
     path: '/campaigns/gatheringservice/swollen-sunday/trends',
     element: GatheringServiceSwollenSundayTrends,
+    roles: permitAdmin('GatheringService'),
+    placeholder: true,
+  },
+  {
+    path: '/campaigns/gatheringservice/swollen-sunday/streams',
+    element: GatheringServiceSwollenSundayStreamList,
     roles: permitAdmin('GatheringService'),
     placeholder: true,
   },

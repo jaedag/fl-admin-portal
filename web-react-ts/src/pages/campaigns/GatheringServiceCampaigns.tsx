@@ -4,15 +4,12 @@ import { useQuery } from '@apollo/client'
 import { GATHERING_SERVICE_CAMPAIGN_LIST } from './CampaignQueries'
 import { ChurchContext } from 'contexts/ChurchContext'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
-import { MemberContext } from 'contexts/MemberContext'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import HeadingSecondary from 'components/HeadingSecondary'
 import CampaignsWithIcons from './components/buttons/CampaignsWithIcons'
 
 const GatheringServiceCampaigns = () => {
   const { gatheringServiceId } = useContext(ChurchContext)
-  const { currentUser } = useContext(MemberContext)
-  const church = currentUser.currentChurch
 
   const { data, loading, error } = useQuery(GATHERING_SERVICE_CAMPAIGN_LIST, {
     variables: { gatheringServiceId: gatheringServiceId },
@@ -25,7 +22,7 @@ const GatheringServiceCampaigns = () => {
       <div className="d-flex align-items-center justify-content-center ">
         <Container>
           <div className="text-center">
-            <HeadingPrimary>{`${church?.name} Gathering Service`}</HeadingPrimary>
+            <HeadingPrimary>{`${data?.gatheringServices[0]?.name} Gathering Service`}</HeadingPrimary>
             <HeadingSecondary>SSMG Campaigns</HeadingSecondary>
           </div>
           <div className="d-grid gap-2 mt-4 text-center px-4">
