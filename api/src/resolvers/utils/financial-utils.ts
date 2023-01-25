@@ -47,9 +47,13 @@ export const getStreamFinancials = (stream: StreamOptions) => {
       )
       break
     case 'gospel encounter':
+      auth = process.env.PAYSTACK_PRIVATE_KEY_GE
+      break
     case 'holy ghost encounter':
+      auth = process.env.PAYSTACK_PRIVATE_KEY_HGE
+      break
     case 'first love experience':
-      auth = process.env.PAYSTACK_PRIVATE_KEY
+      auth = process.env.PAYSTACK_PRIVATE_KEY_FLE
       break
 
     default:
