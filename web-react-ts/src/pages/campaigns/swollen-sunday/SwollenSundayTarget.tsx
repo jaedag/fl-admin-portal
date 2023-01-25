@@ -57,7 +57,7 @@ const SwollenSundayTarget = ({
             size="sm"
           >
             <CSVLink
-              filename="Bacenta Target Template.csv"
+              filename={`${church?.name} Bacenta Target Template.csv`}
               headers={headers}
               data={swollenTargetTemplate}
             >
