@@ -1,3 +1,40 @@
+### 5.7.0 (2023-01-25)
+
+##### New Features
+
+*  admin-504 implement gathering service swollen sunday drill down ([18653725](https://github.com/firstlovecenter/fl-pastoral-care/commit/18653725f0851486d502c72b89dac8e099ea1307))
+*  admin-488  add fields checker to upload targets mutation ([5844ee6c](https://github.com/firstlovecenter/fl-pastoral-care/commit/5844ee6c15927ac5ddd375e7e0a3140434b9f5d7))
+*  admin-499 check frontend to ensure  excel fields are not empty when uploading bacenta targets ([69058e65](https://github.com/firstlovecenter/fl-pastoral-care/commit/69058e65a05277106ebddc76e1d89f5397fbbb9a))
+*  implement icons for all buttons on the campaign pages ([e30e9f05](https://github.com/firstlovecenter/fl-pastoral-care/commit/e30e9f05d37ac5f58bc4e303ebf86e37c1dcfb80))
+*  add property for average weekly income ([dc5bb814](https://github.com/firstlovecenter/fl-pastoral-care/commit/dc5bb814ba70d84c8165a7156114542361bda0a3))
+*  add shepherding control campaign ([203e9e8d](https://github.com/firstlovecenter/fl-pastoral-care/commit/203e9e8d29fe40efd698bde8626f24ba980fe49f))
+*  add queries for shepherding control backend ([afdc0a9a](https://github.com/firstlovecenter/fl-pastoral-care/commit/afdc0a9a0c4ae575419849993214c9154e2c6628))
+*  add display all ic bacentas page ([50895bba](https://github.com/firstlovecenter/fl-pastoral-care/commit/50895bbaa51d5fc86717893bdb5e5edf04225be1))
+*  admin-483 add a card to show the number of ICs at all level ([280b5114](https://github.com/firstlovecenter/fl-pastoral-care/commit/280b511445a7f9ed27c40b126278bd75eed41e8a))
+*  admin-484 implement backend so as to add a card to show the number of ICs at all level ([11ab9b7d](https://github.com/firstlovecenter/fl-pastoral-care/commit/11ab9b7dbf0ab7d41c640970e5e542e5bd1cbf6e))
+*  admin-484 add ic property and ic active and vacation counts ([bc673dec](https://github.com/firstlovecenter/fl-pastoral-care/commit/bc673decefd4e42d09651b082cf5a026d3783056))
+
+##### Bug Fixes
+
+*  prevent multiple errors from one upload ([2576fcca](https://github.com/firstlovecenter/fl-pastoral-care/commit/2576fccae802b8f523ab3e6fa75f8d9037078c7d))
+*  correct years in cypher query and add optional matching ([5cf3dee6](https://github.com/firstlovecenter/fl-pastoral-care/commit/5cf3dee684c756642725c9636689938e2edad3b9))
+*  change share bacenta targets cypher to use last 4 bussing records for averages ([6ba9f537](https://github.com/firstlovecenter/fl-pastoral-care/commit/6ba9f537cbcbcd70f0245c7b09467b5a19386159))
+*  add active to all Graduated bacenta cypher statements ([7afe69f3](https://github.com/firstlovecenter/fl-pastoral-care/commit/7afe69f34851f009206e7aeb8cf8723325ee1b4b))
+*  change name from ics to icBacentas and add graduatedBacenta query ([36011dde](https://github.com/firstlovecenter/fl-pastoral-care/commit/36011dde18d96d039a7323b0a601275ef1ab7d8a))
+*  add limit as an arguement to bacentas and ics ([92398304](https://github.com/firstlovecenter/fl-pastoral-care/commit/9239830450ef0138230306740fe64bee9972b712))
+*  change name of property for easier identification in the future ([211e16bf](https://github.com/firstlovecenter/fl-pastoral-care/commit/211e16bf64f8286ed6b703e834b450d85c42b8a5))
+*  add component record Ids to Aggregate Bussing Record ([bc856c06](https://github.com/firstlovecenter/fl-pastoral-care/commit/bc856c0635da1a524a4cb3e99872b3bbe80da97e))
+*  add component record Ids to Aggregate Service Record ([6d3d2f40](https://github.com/firstlovecenter/fl-pastoral-care/commit/6d3d2f40d3304057773e370bda165b5bfab8df34))
+
+##### Other Changes
+
+* Bacenta ([216b1df2](https://github.com/firstlovecenter/fl-pastoral-care/commit/216b1df279fb9de40ee41af71960b7ab5fe4007e))
+
+##### Refactors
+
+*  separate values in FloatingLabelFormControl with commas ([abcf6e1b](https://github.com/firstlovecenter/fl-pastoral-care/commit/abcf6e1b38d9417564476a56343e6d3ee88feb7d))
+*  change labels for stats till date page ([edd01356](https://github.com/firstlovecenter/fl-pastoral-care/commit/edd01356674dc1c1ff96b95f0686e8c3fdd2404a))
+
 #### 5.6.1 (2022-12-23)
 
 ##### New Features
