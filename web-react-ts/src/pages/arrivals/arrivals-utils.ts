@@ -19,7 +19,6 @@ export const MOBILE_NETWORK_OPTIONS: FormikSelectOptions = [
 export const VEHICLE_OPTIONS: FormikSelectOptions = [
   { key: 'Urvan', value: 'Urvan' },
   { key: 'Sprinter', value: 'Sprinter' },
-  { key: 'Private Car', value: 'Car' },
 ]
 
 export const OUTBOUND_OPTIONS: FormikSelectOptions = [
