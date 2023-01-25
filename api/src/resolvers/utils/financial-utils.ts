@@ -1,4 +1,3 @@
-import { throwToSentry } from './utils'
 import { StreamOptions } from './types'
 
 const dotenv = require('dotenv')
@@ -41,11 +40,10 @@ export const getStreamFinancials = (stream: StreamOptions) => {
 
   switch (stream.toLowerCase()) {
     case 'anagkazo encounter':
-      throwToSentry(
-        'Payment Error',
-        'Anagkazo has a different financial system. Thank you!'
+      throw new Error(
+        'Payment Error' +
+          'Anagkazo has a different financial system. Thank you!'
       )
-      break
     case 'gospel encounter':
       auth = process.env.PAYSTACK_PRIVATE_KEY_GE
       break
