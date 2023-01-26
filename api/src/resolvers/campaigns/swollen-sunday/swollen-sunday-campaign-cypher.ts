@@ -20,7 +20,7 @@ WITH log, target, swellDate
 MERGE (target)<-[:HAS_TARGET]-(log)
 
 WITH log
-MATCH (log)<-[:HAS_HISTORY|:CURRENT_HISTORY]-(bacenta:Bacenta)
+MATCH (log)<-[:HAS_HISTORY]-(bacenta:Bacenta)
 
 WITH DISTINCT bacenta
 CREATE (log:HistoryLog)
