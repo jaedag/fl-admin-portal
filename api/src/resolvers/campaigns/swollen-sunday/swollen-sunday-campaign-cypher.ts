@@ -19,6 +19,21 @@ SET swellDate:SwellDate
 WITH log, target, swellDate
 MERGE (target)<-[:HAS_TARGET]-(log)
 
+WITH log
+MATCH (log)<-[:HAS_HISTORY|:CURRENT_HISTORY]-(bacenta:Bacenta)
+
+WITH DISTINCT bacenta
+CREATE (log:HistoryLog)
+SET
+log.id =  apoc.create.uuid(),
+log.timeStamp = datetime(),
+log.historyRecord = bacenta.name + ' bacenta target has been updated'
+
+MERGE (date:TimeGraph {date: date()})
+WITH bacenta, log, date
+MERGE (bacenta)-[:HAS_HISTORY]->(log)
+MERGE (log)-[:RECORDED_ON]->(date)
+
 RETURN true as result
 `
 
@@ -49,7 +64,7 @@ CALL apoc.cypher.run('
  RETURN DISTINCT bussing  LIMIT 4',
  {bacenta:bacenta}) YIELD value
 
-WITH round(avg(value.bussing.attendance)) as averageBacentaAttendance, bacenta
+WITH avg(value.bussing.attendance) as averageBacentaAttendance, bacenta
 WITH ((averageBacentaAttendance/$averageCouncilBussing) * $target) as bacentaTarget, bacenta
 
 WITH bacenta, ROUND(bacentaTarget) as target
@@ -78,6 +93,22 @@ SET swellDate:SwellDate
 WITH swellDate, log, target
 MERGE (target)<-[:HAS_TARGET]-(log)
 
+WITH log
+MATCH (log)<-[:HAS_HISTORY|:CURRENT_HISTORY]-(bacenta:Bacenta)
+
+WITH DISTINCT bacenta
+CREATE (log:HistoryLog)
+SET
+log.id =  apoc.create.uuid(),
+log.timeStamp = datetime(),
+log.historyRecord = bacenta.name + ' bacenta target has been updated'
+
+MERGE (date:TimeGraph {date: date()})
+WITH bacenta, log, date
+MERGE (bacenta)-[:HAS_HISTORY]->(log)
+MERGE (log)-[:RECORDED_ON]->(date)
+
+
 RETURN "success" as result
 `
 export const aggregateTargetsCypher = `
@@ -88,6 +119,7 @@ MATCH (lowerChurch)<-[:HAS]-(higherChurch)
 MATCH (lowerChurch)-[:CURRENT_HISTORY]->(:ServiceLog)-[:HAS_TARGET]->(target:Target)
 WHERE target.date = date($swellDate)
 
+WITH DISTINCT target, higherChurch
 WITH sum(target.target) as aggregate, higherChurch
 MERGE (target:Target {code: higherChurch.id + '-' + toString(date($swellDate))})
 ON CREATE
@@ -97,7 +129,7 @@ target.date = date($swellDate)
 ON MATCH 
 SET target.target = aggregate
 
-WITH target, higherChurch
+WITH DISTINCT target, higherChurch
 MATCH (higherChurch)-[:CURRENT_HISTORY]->(log:ServiceLog)
 MERGE (log)-[:HAS_TARGET]->(target)
 
@@ -107,6 +139,7 @@ MATCH (lowerChurch)<-[:HAS]-(higherChurch)
 MATCH (lowerChurch)-[:CURRENT_HISTORY]->(:ServiceLog)-[:HAS_TARGET]->(target:Target)
 WHERE target.date = date($swellDate)
 
+WITH DISTINCT target, higherChurch
 WITH sum(target.target) as aggregate, higherChurch
 MERGE (target:Target {code: higherChurch.id + '-' + toString(date($swellDate))})
 ON CREATE
@@ -116,7 +149,7 @@ target.date = date($swellDate)
 ON MATCH 
 SET target.target = aggregate
 
-WITH target, higherChurch
+WITH DISTINCT target, higherChurch
 MATCH (higherChurch)-[:CURRENT_HISTORY]->(log:ServiceLog)
 MERGE (log)-[:HAS_TARGET]->(target)
 
@@ -126,6 +159,7 @@ MATCH (lowerChurch)<-[:HAS]-(higherChurch)
 MATCH (lowerChurch)-[:CURRENT_HISTORY]->(:ServiceLog)-[:HAS_TARGET]->(target:Target)
 WHERE target.date = date($swellDate)
 
+WITH DISTINCT target, higherChurch
 WITH sum(target.target) as aggregate, higherChurch
 MERGE (target:Target {code: higherChurch.id + '-' + toString(date($swellDate))})
 ON CREATE
@@ -135,7 +169,8 @@ target.date = date($swellDate)
 ON MATCH 
 SET target.target = aggregate
 
-WITH target, higherChurch
+
+WITH DISTINCT target, higherChurch
 MATCH (higherChurch)-[:CURRENT_HISTORY]->(log:ServiceLog)
 MERGE (log)-[:HAS_TARGET]->(target)
 
