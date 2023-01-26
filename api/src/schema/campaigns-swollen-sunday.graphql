@@ -119,7 +119,7 @@ extend type Constituency {
       RETURN {attendance: toFloat(aggregate.attendance),target: target.target, week: aggregate.week} ORDER BY aggregate.week DESC
       """
     )
-  swellTarget: Target!
+  swellTarget: Target
     @cypher(
       statement: """
       MATCH (this)
@@ -145,7 +145,7 @@ extend type Bacenta {
       RETURN {attendance: toFloat(aggregate.attendance),target: target.target, week: aggregate.week} ORDER BY aggregate.week DESC
       """
     )
-  swellTarget: Target!
+  swellTarget: Target
     @cypher(
       statement: """
       MATCH (this)
