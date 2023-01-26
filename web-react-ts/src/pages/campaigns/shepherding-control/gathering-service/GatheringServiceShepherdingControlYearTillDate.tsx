@@ -25,7 +25,7 @@ const GatheringServiceShepherdingControlYearTillDate = () => {
   const church = currentUser?.currentChurch
 
   const initialValues: FormOptions = {
-    startDate: '2022-01-01',
+    startDate: `${new Date().getFullYear()}-01-01`,
     endDate: new Date().toISOString().slice(0, 10),
   }
 
