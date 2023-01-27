@@ -131,7 +131,7 @@ const StreamShepherdingControlYearTillDate = () => {
                 />
                 <FloatingLabelFormControl
                   label="Cumulative Income for the Period"
-                  value={statsForYearTillDate?.income}
+                  value={statsForYearTillDate?.income?.toFixed(2)}
                   disabled={true}
                 />
               </div>
