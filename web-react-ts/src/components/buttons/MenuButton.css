@@ -87,6 +87,11 @@
   fill: var(--quickfacts-accent);
 }
 
+.maps.dark {
+  color: var(--maps-accent);
+  fill: var(--maps-accent);
+}
+
 .danger.dark {
   color: var(--bad);
 }

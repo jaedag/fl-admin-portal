@@ -11,7 +11,13 @@ const ChurchList = ({
   color,
   link,
 }: {
-  color: 'defaulters' | 'arrivals' | 'campaigns' | 'quick-facts' | 'churches'
+  color:
+    | 'defaulters'
+    | 'arrivals'
+    | 'campaigns'
+    | 'quick-facts'
+    | 'churches'
+    | 'maps'
   link?: string
 }) => {
   const { userJobs } = useContext(MemberContext)
@@ -60,6 +66,8 @@ const ChurchList = ({
                       )
                     } else if (color === 'campaigns') {
                       navigate(`/campaigns/${church.__typename.toLowerCase()}`)
+                    } else if (color === 'maps') {
+                      navigate(`/maps/${church.__typename.toLowerCase()}`)
                     } else {
                       navigate(link || '#')
                     }
