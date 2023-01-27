@@ -26,7 +26,7 @@ const GatheringServiceStreamSeekerCampaign = () => {
           {`${data?.gatheringServices[0]?.name} ${data?.gatheringServices[0]?.__typename}`}{' '}
           Streams
         </HeadingSecondary>
-        <CampaignChurchList data={streams} campaign={'sheep-seeking'} />
+        <CampaignChurchList data={streams} page={'sheep-seeking'} />
       </div>
     </ApolloWrapper>
   )
