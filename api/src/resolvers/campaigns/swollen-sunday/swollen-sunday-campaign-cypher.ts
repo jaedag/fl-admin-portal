@@ -64,7 +64,7 @@ CALL apoc.cypher.run('
  RETURN DISTINCT bussing  LIMIT 4',
  {bacenta:bacenta}) YIELD value
 
-WITH avg(value.bussing.attendance) as averageBacentaAttendance, bacenta
+WITH ROUND(avg(value.bussing.attendance)) as averageBacentaAttendance, bacenta
 WITH ((averageBacentaAttendance/$averageCouncilBussing) * $target) as bacentaTarget, bacenta
 
 WITH bacenta, ROUND(bacentaTarget) as target
