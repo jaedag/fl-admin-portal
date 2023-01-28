@@ -15,6 +15,10 @@
   height: 90vh;
 }
 
+.offcanvas {
+  height: 80vh !important;
+}
+
 .floating-action {
   position: absolute;
   bottom: 4rem;
