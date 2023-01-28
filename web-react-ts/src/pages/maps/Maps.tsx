@@ -1,7 +1,5 @@
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
-import React from 'react'
 import { Container } from 'react-bootstrap'
-
 import ChurchList from 'pages/services/ChurchList'
 import HeadingSecondary from 'components/HeadingSecondary'
 

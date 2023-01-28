@@ -4,7 +4,7 @@ import React, { useCallback, useMemo, useRef } from 'react'
 import { useLoadScript } from '@react-google-maps/api'
 import { useState } from 'react'
 import './Map.css'
-import { Button } from 'react-bootstrap'
+import { Button, Offcanvas } from 'react-bootstrap'
 import { IoChevronUp } from 'react-icons/io5'
 
 type LatLngLiteral = google.maps.LatLngLiteral
@@ -24,6 +24,12 @@ const MapComponent = () => {
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY ?? '',
     libraries,
   })
+
+  const [show, setShow] = useState(false)
+  const [position, setPosition] = useState<LatLngLiteral | undefined>(undefined)
+
+  const handleClose = () => setShow(false)
+  const handleShow = () => setShow(true)
 
   const mapRef = useRef<GoogleMap>()
   const center = useMemo<LatLngLiteral>(
@@ -49,13 +55,44 @@ const MapComponent = () => {
     <div className="map">
       <GoogleMap
         zoom={20}
-        center={center}
+        center={position ?? center}
         mapContainerClassName="map-container"
         options={options}
         onLoad={onLoad}
       />
+      <Offcanvas show={show} onHide={handleClose} placement="bottom">
+        <Offcanvas.Header closeButton>
+          <Offcanvas.Title>Offcanvas</Offcanvas.Title>
+        </Offcanvas.Header>
+        <Offcanvas.Body>
+          Some text as placeholder. In real life you can have the elements you
+          have chosen. Like, text, images, lists, etc.
+          <Button
+            onClick={() => {
+              window.navigator.geolocation.getCurrentPosition((position) => {
+                setPosition({
+                  lat: position.coords.latitude,
+                  lng: position.coords.longitude,
+                })
+
+                console.log(position.coords)
+
+                document.getElementById('venueLongitude')?.focus()
+                document.getElementById('venueLatitude')?.focus()
+                document.getElementById('venueLatitude')?.blur()
+              })
+            }}
+          >
+            My location
+          </Button>
+        </Offcanvas.Body>
+      </Offcanvas>
       <div className="floating-action">
-        <Button variant="primary" className="rounded-circle">
+        <Button
+          variant="primary"
+          onClick={handleShow}
+          className="rounded-circle"
+        >
           <IoChevronUp />
         </Button>
       </div>
