@@ -4,11 +4,6 @@ type SwellStats {
   week: Int!
 }
 
-type Target {
-  target: Int!
-  date: Date!
-}
-
 extend type Oversight {
   swellBussingRecords(startDate: String!, endDate: String!): [SwellStats!]!
     @cypher(
@@ -41,13 +36,13 @@ extend type GatheringService {
       RETURN {attendance: toFloat(aggregate.attendance),target: target.target, week: aggregate.week} ORDER BY aggregate.week DESC
       """
     )
-  swellTarget: Target
+  target: Int
     @cypher(
       statement: """
       MATCH (this)
       MATCH (this)-[:CURRENT_HISTORY]->(:ServiceLog)-[:HAS_TARGET]->(target:Target)
 
-      RETURN target ORDER BY target.date DESC LIMIT 1
+      RETURN target.target ORDER BY target.date DESC LIMIT 1
       """
     )
 }
@@ -67,13 +62,13 @@ extend type Stream {
       RETURN {attendance: toFloat(aggregate.attendance),target: target.target, week: aggregate.week} ORDER BY aggregate.week DESC
       """
     )
-  swellTarget: Target
+  target: Int
     @cypher(
       statement: """
       MATCH (this)
       MATCH (this)-[:CURRENT_HISTORY]->(:ServiceLog)-[:HAS_TARGET]->(target:Target)
 
-      RETURN target ORDER BY target.date DESC LIMIT 1
+      RETURN target.target ORDER BY target.date DESC LIMIT 1
       """
     )
 }
@@ -93,13 +88,13 @@ extend type Council {
       RETURN {attendance: toFloat(aggregate.attendance),target: target.target, week: aggregate.week} ORDER BY aggregate.week DESC
       """
     )
-  swellTarget: Target
+  target: Int
     @cypher(
       statement: """
       MATCH (this)
       MATCH (this)-[:CURRENT_HISTORY]->(log:ServiceLog)-[:HAS_TARGET]->(target)
 
-      RETURN target ORDER BY target.date DESC LIMIT 1
+      RETURN target.target ORDER BY target.date DESC LIMIT 1
       """
     )
 }
@@ -119,13 +114,13 @@ extend type Constituency {
       RETURN {attendance: toFloat(aggregate.attendance),target: target.target, week: aggregate.week} ORDER BY aggregate.week DESC
       """
     )
-  swellTarget: Target
+  target: Int
     @cypher(
       statement: """
       MATCH (this)
       MATCH (this)-[:CURRENT_HISTORY]->(log:ServiceLog)-[:HAS_TARGET]->(target)
 
-      RETURN target ORDER BY target.date DESC LIMIT 1
+      RETURN target.target ORDER BY target.date DESC LIMIT 1
       """
     )
 }
@@ -145,13 +140,13 @@ extend type Bacenta {
       RETURN {attendance: toFloat(aggregate.attendance),target: target.target, week: aggregate.week} ORDER BY aggregate.week DESC
       """
     )
-  swellTarget: Target
+  target: Int
     @cypher(
       statement: """
       MATCH (this)
       MATCH (this)-[:CURRENT_HISTORY]->(log:ServiceLog)-[:HAS_TARGET]->(target)
 
-      RETURN target ORDER BY target.date DESC LIMIT 1
+      RETURN target.target ORDER BY target.date DESC LIMIT 1
       """
     )
 }

@@ -1,43 +1,6 @@
-extend type GatheringService {
-  target: Int!
-    @cypher(
-      statement: """
-      MATCH (this)-[:HAS*4]->(bacenta:Bacenta)
-      RETURN SUM(bacenta.target)
-      """
-    )
-}
-
-extend type Stream {
-  target: Int!
-    @cypher(
-      statement: """
-      MATCH (this)-[:HAS*3]->(bacenta:Bacenta)
-      RETURN SUM(bacenta.target)
-      """
-    )
-}
-
-extend type Council {
-  target: Int!
-    @cypher(
-      statement: """
-      MATCH (this)-[:HAS*2]->(bacenta:Bacenta)
-      RETURN SUM(bacenta.target)
-      """
-    )
-}
-
 extend type Constituency {
   sprinterCost: Float!
   urvanCost: Float!
-  target: Int!
-    @cypher(
-      statement: """
-      MATCH (this)-[:HAS]->(bacenta:Bacenta)
-      RETURN SUM(bacenta.target)
-      """
-    )
 }
 
 type SwellDate implements TimeGraphNode
@@ -1193,7 +1156,7 @@ extend type Mutation {
     @cypher(
       statement: """
       MATCH (bacenta:Bacenta {id: $bacentaId})<-[:HAS*1..7]-(higherChurch)
-      	SET higherChurch.target = higherChurch.target - bacenta.target + $target,
+        SET higherChurch.target = higherChurch.target - bacenta.target + $target,
           bacenta.target = $target,
           bacenta.sprinterCost = $sprinterCost,
           bacenta.urvanCost = $urvanCost
@@ -1225,7 +1188,7 @@ extend type Mutation {
     @cypher(
       statement: """
       MATCH (bacenta:Bacenta {id: $bacentaId})
-      	SET bacenta.mobileNetwork = $mobileNetwork,
+        SET bacenta.mobileNetwork = $mobileNetwork,
         bacenta.momoName = $momoName,
         bacenta.momoNumber = $momoNumber
 
