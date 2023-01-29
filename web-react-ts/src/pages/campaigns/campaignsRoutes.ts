@@ -718,13 +718,13 @@ export const campaigns: LazyRouteTypes[] = [
   {
     path: '/campaigns/stream/sheepseeker-select',
     element: SheepSeekerSelect,
-    roles: ['adminStream'],
+    roles: permitAdmin('Stream'),
     placeholder: true,
   },
   {
     path: '/campaigns/stream/sheep-seeking',
     element: StreamSheepSeekerCampaign,
-    roles: ['adminStream'],
+    roles: ['adminStream', 'adminGatheringService', 'sheepseekerStream'],
     placeholder: true,
   },
   {
