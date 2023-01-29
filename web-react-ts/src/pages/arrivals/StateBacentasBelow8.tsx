@@ -69,7 +69,11 @@ const BacentasBelow8 = () => {
                 clickCard(bacenta.bussing[0])
                 navigate('/bacenta/bussing-details')
               }}
-            />
+            >
+              <span className="fw-bold">
+                Attendance: {bacenta.bussing[0].attendance}
+              </span>
+            </MemberDisplayCard>
           ))}
 
           {!church?.bacentasBelow8.length && loading && (

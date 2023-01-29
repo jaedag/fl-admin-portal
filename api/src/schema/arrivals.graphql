@@ -215,6 +215,7 @@ extend type GatheringService {
       MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
         WHERE date(date.date)=date()
         AND bussing.attendance < 8
+        WITH bacentas, bussing ORDER BY bussing.attendance ASC
       RETURN DISTINCT bacentas
       """
     )
@@ -225,6 +226,7 @@ extend type GatheringService {
       MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
         WHERE date(date.date)=date()
         AND bussing.attendance < 8
+        WITH bacentas, bussing ORDER BY bussing.attendance ASC
       RETURN COUNT(DISTINCT bacentas)
       """
     )
@@ -238,6 +240,7 @@ extend type GatheringService {
         MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
         WHERE record.arrivalTime IS NOT NULL
         }
+        WITH bacentas, bussing ORDER BY bussing.attendance DESC
       RETURN DISTINCT bacentas
       """
     )
@@ -406,6 +409,7 @@ extend type Stream {
       MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
         WHERE date(date.date)=date()
         AND bussing.attendance < 8
+        WITH bacentas, bussing ORDER BY bussing.attendance ASC
       RETURN DISTINCT bacentas
       """
     )
@@ -416,6 +420,7 @@ extend type Stream {
       MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
         WHERE date(date.date)=date()
         AND bussing.attendance < 8
+        WITH bacentas, bussing ORDER BY bussing.attendance ASC
       RETURN COUNT(DISTINCT bacentas)
       """
     )
@@ -429,6 +434,7 @@ extend type Stream {
         MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
         WHERE record.arrivalTime IS NOT NULL
         }
+        WITH bacentas, bussing ORDER BY bussing.attendance DESC
       RETURN DISTINCT bacentas
       """
     )
@@ -595,6 +601,7 @@ extend type Council {
       MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
         WHERE date(date.date)=date()
         AND bussing.attendance < 8
+        WITH bacentas, bussing ORDER BY bussing.attendance ASC
       RETURN DISTINCT bacentas
       """
     )
@@ -605,6 +612,7 @@ extend type Council {
       MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
         WHERE date(date.date)=date()
         AND bussing.attendance < 8
+        WITH bacentas, bussing ORDER BY bussing.attendance ASC
       RETURN COUNT(DISTINCT bacentas)
       """
     )
@@ -618,6 +626,7 @@ extend type Council {
         MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
         WHERE record.arrivalTime IS NOT NULL
         }
+        WITH bacentas, bussing ORDER BY bussing.attendance DESC
       RETURN DISTINCT bacentas
       """
     )
@@ -785,6 +794,7 @@ extend type Constituency {
       MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
         WHERE date(date.date)=date()
         AND bussing.attendance < 8
+        WITH bacentas, bussing ORDER BY bussing.attendance ASC
       RETURN DISTINCT bacentas
       """
     )
@@ -795,6 +805,7 @@ extend type Constituency {
       MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
         WHERE date(date.date)=date()
         AND bussing.attendance < 8
+        WITH bacentas, bussing ORDER BY bussing.attendance ASC
       RETURN COUNT(DISTINCT bacentas)
       """
     )
@@ -808,6 +819,7 @@ extend type Constituency {
         MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
         WHERE record.arrivalTime IS NOT NULL
         }
+        WITH bacentas, bussing ORDER BY bussing.attendance DESC
       RETURN DISTINCT bacentas
       """
     )

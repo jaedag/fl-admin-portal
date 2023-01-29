@@ -45,6 +45,7 @@ type MemberDisplayCardProps = {
     whatsappNumber: string
     pictureUrl: string
   }
+  attendance?: number
   onClick?: () => void
   contact?: boolean
   children?: React.ReactNode
