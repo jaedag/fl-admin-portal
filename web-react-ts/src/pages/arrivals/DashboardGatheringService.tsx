@@ -240,6 +240,13 @@ const GatheringServiceDashboard = () => {
                 iconBg
                 noCaption
               />
+              <MenuButton
+                title="Busses That Have Arrived"
+                number={gatheringService?.bussesThatArrivedCount.toString()}
+                color="green"
+                iconBg
+                noCaption
+              />
             </div>
           </div>
         </Container>

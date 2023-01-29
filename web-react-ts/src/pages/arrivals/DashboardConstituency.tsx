@@ -191,6 +191,13 @@ const ConstituencyDashboard = () => {
                 iconBg
                 noCaption
               />
+              <MenuButton
+                title="Busses That Have Arrived"
+                number={constituency?.bussesThatArrivedCount.toString()}
+                color="green"
+                iconBg
+                noCaption
+              />
             </div>
           </div>
         </Container>

@@ -191,6 +191,13 @@ const CouncilDashboard = () => {
                 iconBg
                 noCaption
               />
+              <MenuButton
+                title="Busses That Have Arrived"
+                number={council?.bussesThatArrivedCount.toString()}
+                color="green"
+                iconBg
+                noCaption
+              />
             </div>
           </div>
         </Container>

@@ -106,6 +106,11 @@ const ChurchBySubChurch = () => {
                       number: subChurch.bussingMembersHaveArrivedCount,
                       color: 'green',
                     },
+                    {
+                      title: 'Busses Arrived',
+                      number: subChurch.bussesThatArrivedCount,
+                      color: 'green',
+                    },
                   ]
 
                   return (

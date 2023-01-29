@@ -268,6 +268,17 @@ extend type GatheringService {
       RETURN SUM(record.attendance)
       """
     )
+  bussesThatArrivedCount: Int
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS*4]->(bacentas:Active:Bacenta)
+      MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
+         WHERE date(date.date)=date()
+        MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
+        WHERE record.arrivalTime IS NOT NULL
+      RETURN COUNT(DISTINCT record)
+      """
+    )
   graduatedBacentas: [Bacenta!]!
     @cypher(
       statement: "MATCH (this)-[:HAS*4]->(bacentas:Graduated:Bacenta) RETURN bacentas"
@@ -462,6 +473,17 @@ extend type Stream {
       RETURN SUM(record.attendance)
       """
     )
+  bussesThatArrivedCount: Int
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS*3]->(bacentas:Active:Bacenta)
+      MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
+         WHERE date(date.date)=date()
+        MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
+        WHERE record.arrivalTime IS NOT NULL
+      RETURN COUNT(DISTINCT record)
+      """
+    )
   graduatedBacentas: [Bacenta!]!
     @cypher(
       statement: "MATCH (this)-[:HAS*3]->(bacentas:Graduated:Bacenta) RETURN bacentas"
@@ -652,6 +674,17 @@ extend type Council {
         MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
         WHERE record.arrivalTime IS NOT NULL
       RETURN SUM(record.attendance)
+      """
+    )
+  bussesThatArrivedCount: Int
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS*2]->(bacentas:Active:Bacenta)
+      MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
+         WHERE date(date.date)=date()
+        MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
+        WHERE record.arrivalTime IS NOT NULL
+      RETURN COUNT(DISTINCT record)
       """
     )
   graduatedBacentas: [Bacenta!]!
@@ -845,6 +878,17 @@ extend type Constituency {
         MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
         WHERE record.arrivalTime IS NOT NULL
       RETURN SUM(record.attendance)
+      """
+    )
+  bussesThatArrivedCount: Int
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS]->(bacentas:Active:Bacenta)
+      MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
+         WHERE date(date.date)=date()
+        MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
+        WHERE record.arrivalTime IS NOT NULL
+      RETURN COUNT(DISTINCT record)
       """
     )
   graduatedBacentas: [Bacenta!]!

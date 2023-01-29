@@ -218,6 +218,13 @@ const StreamDashboard = () => {
                 iconBg
                 noCaption
               />
+              <MenuButton
+                title="Busses That Have Arrived"
+                number={stream?.bussesThatArrivedCount.toString()}
+                color="green"
+                iconBg
+                noCaption
+              />
             </div>
           </div>
         </Container>
