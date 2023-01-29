@@ -1,3 +1,38 @@
+#### 5.7.1 (2023-01-29)
+
+##### Documentation Changes
+
+*  update README.md ([543cba7c](https://github.com/firstlovecenter/fl-pastoral-care/commit/543cba7cca5093cd2091aef2a774f191616c077f))
+
+##### New Features
+
+*  add a card to show the busses that have arrived ([76992530](https://github.com/firstlovecenter/fl-pastoral-care/commit/7699253047fe077634dd61ede169cc6655ddd8ab))
+*  order bacentas arrived and bacentasUnder8 by attendance and display attendance on card ([7260c2dc](https://github.com/firstlovecenter/fl-pastoral-care/commit/7260c2dc9e98c58ca0d2ec33da044f37f53f0903))
+*  add sheep seeker role card to user dashboard ([6a292242](https://github.com/firstlovecenter/fl-pastoral-care/commit/6a292242263c38c58622ef82aae5637bc2457e7c))
+*  add sheep seeker stream to dashboard church list query ([28cc3e9e](https://github.com/firstlovecenter/fl-pastoral-care/commit/28cc3e9e5ee123b85f23f1aa2bc3b460f06bab77))
+*  remove permissions for a fellowship leader to register members ([d3a113e2](https://github.com/firstlovecenter/fl-pastoral-care/commit/d3a113e279d45f140bade30c196d9a2dadea2999))
+*  allow only sheep seekers add and delete members ([79e1441c](https://github.com/firstlovecenter/fl-pastoral-care/commit/79e1441cca7b936fe6341402834a5e3bf098e44c))
+*  change register member icon ([86da6faf](https://github.com/firstlovecenter/fl-pastoral-care/commit/86da6fafae2ca75619c961a213485a808a2ed39d))
+*  add sheep seeking to campaign list if user has stream or sheep seeking permissions ([ab86620d](https://github.com/firstlovecenter/fl-pastoral-care/commit/ab86620db0d9d85c38673961c91296ec36861be1))
+*  add sheep seeking flow for gathering service ([8dad6e53](https://github.com/firstlovecenter/fl-pastoral-care/commit/8dad6e53c55840d3b2326d74dc8fbef932b9ae4e))
+*  admin-498 add sheep seeking interface for sheep seekers ([a1191b43](https://github.com/firstlovecenter/fl-pastoral-care/commit/a1191b431368061377f9c2082408e40d24d45762))
+*  admin-503 add stream name to swollen sunday template ([ebafa9de](https://github.com/firstlovecenter/fl-pastoral-care/commit/ebafa9deeb8f4abdb9c3376d732f6c1e8fa710db))
+*  update auth private keys for the different services accounts ([95146084](https://github.com/firstlovecenter/fl-pastoral-care/commit/95146084d07a2af43823f71f80aec126849374ff))
+
+##### Bug Fixes
+
+*  fix bug where a user could fill premobilisation multiple times ([74597cff](https://github.com/firstlovecenter/fl-pastoral-care/commit/74597cff15a7bb2efda225e4c047dfeb49c9f7ea))
+*  allow gathering service admin view sheep seeking dashboard ([2dedb808](https://github.com/firstlovecenter/fl-pastoral-care/commit/2dedb808522d3c1105d5039fb27f688264d18a04))
+*  fix bug where gathering service admin coesn't get shepherding control in list of campaigns ([0896a3c1](https://github.com/firstlovecenter/fl-pastoral-care/commit/0896a3c15aa8696f66af4d3055c7d2ce7a406a83))
+*  remove redundant current history in uploadbacenta targets cypher ([b4bd53b6](https://github.com/firstlovecenter/fl-pastoral-care/commit/b4bd53b6b93cf369938913cba4afab447d462f91))
+*  admin-509 fix target sharing ([6c2ccfab](https://github.com/firstlovecenter/fl-pastoral-care/commit/6c2ccfabb57f76fce6a98d2a4905f6bf13712729))
+*  remove option for private car in bussing form ([7ba3f153](https://github.com/firstlovecenter/fl-pastoral-care/commit/7ba3f15376c817da112f0122befe898429e916da))
+*  remove unnecessary throwToSentry call ([b223a20b](https://github.com/firstlovecenter/fl-pastoral-care/commit/b223a20b4874f7009b92129f58bab68f2566d298))
+
+##### Refactors
+
+*  resolve merge conflicts ([33908fac](https://github.com/firstlovecenter/fl-pastoral-care/commit/33908fac8bf1010c1b6c900f535f59b52e47e8bc))
+
 ### 5.7.0 (2023-01-25)
 
 ##### New Features
