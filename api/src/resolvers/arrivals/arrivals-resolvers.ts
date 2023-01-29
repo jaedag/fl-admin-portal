@@ -16,6 +16,7 @@ import {
   checkArrivalTimeFromVehicle,
   checkArrivalTimes,
   checkBacentaMomoDetails,
+  checkIfPreMobilisationFilled,
   checkTransactionId,
   confirmVehicleByAdmin,
   getArrivalsPaymentDataCypher,
@@ -195,6 +196,12 @@ export const arrivalsMutation = {
     await checkServantHasCurrentHistory(session, context, {
       churchId: args.bacentaId,
     })
+    const preMobCheck = rearrangeCypherObject(
+      await session.run(checkIfPreMobilisationFilled, args)
+    )
+    if (preMobCheck.status) {
+      throw new Error('You have already filled the pre-mobilisation form')
+    }
 
     const stream = recordResponse.stream.properties
     const mobilisationEndTime = new Date(

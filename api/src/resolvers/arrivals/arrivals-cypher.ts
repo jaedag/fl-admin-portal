@@ -63,6 +63,13 @@ export const checkArrivalTimes = `
 MATCH (bacenta {id: $bacentaId})<-[:HAS]-(:Constituency)<-[:HAS]-(:Council)<-[:HAS]-(stream:Stream)
 RETURN stream
 `
+
+export const checkIfPreMobilisationFilled = `
+OPTIONAL MATCH (bacenta {id: $bacentaId})-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
+WHERE date(date.date)=date()
+RETURN bussing.mobilisationPicture IS NOT NULL AS status
+`
+
 export const checkArrivalTimeFromVehicle = `
 MATCH (record:VehicleRecord {id: $vehicleRecordId})<-[:INCLUDES_RECORD]-(bussing:BussingRecord)<-[:HAS_BUSSING]-(:ServiceLog)<-[:HAS_HISTORY]-(bacenta:Bacenta)<-[:HAS]-(:Constituency)<-[:HAS]-(:Council)<-[:HAS]-(stream:Stream)
 RETURN stream.arrivalEndTime AS arrivalEndTime, bacenta.id AS bacentaId
