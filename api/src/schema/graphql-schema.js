@@ -103,7 +103,7 @@ const array = [
   multiplicationCampaign,
   swollenSundayCampaign,
   shepherdingControlCampaign,
-  basontachurches,
+  basontaChurches,
 ]
 
 exports.typeDefs = array.join(' ')

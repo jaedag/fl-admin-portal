@@ -1,5 +1,5 @@
 extend type Mutation {
-  CreateFederalministry(name: String!, leaderId: ID!): Federalministry
+  CreateFederalministry(name: String!, leaderId: ID!, gatheringServiceId: ID!): Federalministry
     @auth(rules: [{ roles: ["adminGatheringService", "adminStream"] }])
     @cypher(
       statement: """
@@ -39,7 +39,8 @@ extend type Mutation {
       MATCH (leader:Active:Member {id:$leaderId})
       MATCH (stream:Stream {id:$streamId})
       MATCH (currentUser:Active:Member {auth_id:$auth.jwt.sub})
-
+      UNWIND LABELS(stream) as stream_label
+      SET ministry.name = stream_label + ' ' +  ministry.name 
 
       CREATE (log:HistoryLog:ServiceLog)
         SET log.id = apoc.create.uuid(),
@@ -103,7 +104,7 @@ extend type Mutation {
        MATCH (currentUser:Active:Member {auth_id:$auth.jwt.sub})
        UNWIND LABELS(hub) as stream
 
-       SET sonta.name = hub.name + ' ' + ministry.name
+       SET sonta.name = leader.first_name + ' ' + leader.last_name
 
        CREATE (log:HistoryLog:ServiceLog)
         SET log.id = apoc.create.uuid(),
@@ -122,37 +123,6 @@ extend type Mutation {
        MERGE (leader)-[r3:HAS_HISTORY]->(log)
 
       RETURN sonta
-      """
-    )
-
-  CreateBasonta(name: String!, leaderId: ID!, sontaId: ID!): Basonta
-    @auth(rules: [{ roles: ["adminGatheringService", "adminStream"] }])
-    @cypher(
-      statement: """
-      CREATE (basonta:Basonta:Active {name: $name})
-        SET	basonta.id = apoc.create.uuid()
-
-      WITH basonta
-      MATCH (leader:Active:Member {id:$leaderId})
-      MATCH (sonta:Sonta {id:$sontaId})
-      MATCH (currentUser:Active:Member {auth_id:$auth.jwt.sub})
-
-
-      CREATE (log:HistoryLog:ServiceLog)
-        SET log.id = apoc.create.uuid(),
-          log.timeStamp = datetime(),
-          log.historyRecord = basonta.name +' Basonta History Begins'
-
-      MERGE (sonta)-[:HAS]->(basonta)
-      MERGE (leader)-[:LEADS]->(basonta)
-
-      MERGE (date:TimeGraph {date: date()})
-      WITH basonta, log
-      MERGE (log)-[:LOGGED_BY]->(currentUser)
-      MERGE (log)-[:RECORDED_ON]->(date)
-      MERGE (basonta)-[:HAS_HISTORY]->(log)
-
-      RETURN basonta
       """
     )
 }
