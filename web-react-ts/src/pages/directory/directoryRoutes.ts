@@ -4,7 +4,6 @@ import {
   permitAdminArrivals,
   permitLeaderAdmin,
   permitMe,
-  permitSheepSeeker,
 } from 'permission-utils'
 import { lazy } from 'react'
 
@@ -284,13 +283,13 @@ export const directory: LazyRouteTypes[] = [
   {
     path: '/member/addmember',
     element: CreateMember,
-    roles: permitSheepSeeker(),
+    roles: ['sheepseekerStream', 'adminStream', 'adminGatheringService'],
     placeholder: true,
   },
   {
     path: '/member/editmember',
     element: UpdateMember,
-    roles: permitSheepSeeker(),
+    roles: ['sheepseekerStream', 'adminStream', 'adminGatheringService'],
     placeholder: true,
   },
 

@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router'
 import { MemberContext } from 'contexts/MemberContext'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import HeadingSecondary from 'components/HeadingSecondary'
-import { permitAdmin, permitSheepSeeker } from 'permission-utils'
+import { permitAdmin } from 'permission-utils'
 import RoleView from 'auth/RoleView'
 import MenuButton from 'components/buttons/MenuButton'
 import { CiViewList } from 'react-icons/ci'
@@ -35,7 +35,13 @@ const StreamSheepSeekerCampaign = () => {
               onClick={() => navigate('/campaigns/stream/sheepseeker-select')}
             />
           </RoleView>
-          <RoleView roles={permitSheepSeeker()}>
+          <RoleView
+            roles={[
+              'sheepseekerStream',
+              'adminStream',
+              'adminGatheringService',
+            ]}
+          >
             <MenuButton
               title="Register Members"
               iconComponent={IoPersonAddOutline}
@@ -44,7 +50,13 @@ const StreamSheepSeekerCampaign = () => {
               onClick={() => navigate('/member/addmember')}
             />
           </RoleView>
-          <RoleView roles={permitSheepSeeker()}>
+          <RoleView
+            roles={[
+              'sheepseekerStream',
+              'adminStream',
+              'adminGatheringService',
+            ]}
+          >
             <MenuButton
               title="View Membership"
               iconComponent={CiViewList}
