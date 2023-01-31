@@ -18,7 +18,6 @@ import Filters from './Filters'
 import { Form, Formik } from 'formik'
 import Input from 'components/formik/Input'
 import RoleView from 'auth/RoleView'
-import { permitSheepSeeker } from 'permission-utils'
 
 const MembersGrid = (props) => {
   const { data, error, loading, title } = props
@@ -116,7 +115,13 @@ const MembersGrid = (props) => {
         <Accordion>
           <Row className="justify-content-between py-2">
             <Col className="my-auto">
-              <RoleView roles={permitSheepSeeker()}>
+              <RoleView
+                roles={[
+                  'sheepseekerStream',
+                  'adminStream',
+                  'adminGatheringService',
+                ]}
+              >
                 <Link to="/member/addmember" className="just-text-btn">
                   ADD NEW
                 </Link>

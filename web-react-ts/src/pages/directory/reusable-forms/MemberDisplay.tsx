@@ -16,7 +16,6 @@ import DetailsCard from 'components/card/DetailsCard'
 import EditButton from 'components/buttons/EditButton'
 import RoleView from 'auth/RoleView'
 import ViewAll from 'components/buttons/ViewAll'
-import { permitAdmin } from 'permission-utils'
 import CloudinaryImage from 'components/CloudinaryImage'
 import { Member } from 'global-types'
 
@@ -48,7 +47,9 @@ const MemberDisplay = ({ memberId }: { memberId: string }) => {
 
   return (
     <Container>
-      <RoleView roles={permitAdmin('Constituency')}>
+      <RoleView
+        roles={['sheepseekerStream', 'adminStream', 'adminGatheringService']}
+      >
         <EditButton link="/member/editmember" />
       </RoleView>
 

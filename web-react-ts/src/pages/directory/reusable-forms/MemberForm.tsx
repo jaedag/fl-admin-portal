@@ -15,7 +15,7 @@ import ErrorScreen from 'components/base-component/ErrorScreen'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import { Button, Col, Container, Row } from 'react-bootstrap'
 import LoadingScreen from 'components/base-component/LoadingScreen'
-import { permitAdmin, permitSheepSeeker } from 'permission-utils'
+import { permitAdmin } from 'permission-utils'
 import SubmitButton from 'components/formik/SubmitButton'
 import { MemberContext } from 'contexts/MemberContext'
 import { CreateMemberFormOptions } from '../create/CreateMember'
@@ -340,7 +340,13 @@ const MemberForm = ({
                 </div>
                 <Col>
                   <SubmitButton formik={formik} />
-                  <RoleView roles={permitSheepSeeker()}>
+                  <RoleView
+                    roles={[
+                      'sheepseekerStream',
+                      'adminStream',
+                      'adminGatheringService',
+                    ]}
+                  >
                     <Button
                       onClick={() => togglePopup()}
                       className={`btn-graphs btn dark image mt-3`}
