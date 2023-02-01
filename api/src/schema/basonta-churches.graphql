@@ -126,3 +126,36 @@ extend type Mutation {
       """
     )
 }
+
+extend type Mutation{
+  UpdateFederalMinistry(
+    federalMinistryId: ID!
+    gatheringServiceId: ID!
+    name: String!
+    ): Federalministry
+      @auth(rules: [
+        {
+          roles: ["adminGatheringService"]
+        }
+      ])
+      @cypher(
+      statement """
+      MATCH (federalMinistry:Federalministry {id: $federalMinistryId})
+       SET federalMinistry.name = $name
+
+       WITH federalMinistry 
+          CALL{
+            WITH federalMinistry
+
+              MATCH (gatheringService:gatheringService {id: $gatheringServiceId})
+              OPTIONAL MATCH (federalMinistry)<-[r:HAS_MINISTRY]
+              DELETE r 
+              MERGE (gatheringService)->[:HAS_MINISTRY]->(federalMinistry)
+            
+            RETURN count(federalMinistry)
+          }
+      MATCH (federalMinistry)<-[:LEADS]-[leader:Active:Member]
+      RETURN federalMinistry
+    )
+  
+}
