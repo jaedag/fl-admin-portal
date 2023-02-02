@@ -1,6 +1,6 @@
 export const uploadBacentaTargetsCypher = `
 UNWIND $data as details
-MERGE (target:Target {code: details.code + '-' + toString(date($swellDate))})
+MERGE (target:Target {code: toInteger(details.code) + '-' + toString(date($swellDate))})
 ON CREATE
 SET target.target = details.target,
 target.id = apoc.create.uuid(),
@@ -50,12 +50,16 @@ CALL apoc.cypher.run('
 
 WITH avg(value.bussing.attendance) as averageBacentaAttendance, bacenta
 WITH sum(averageBacentaAttendance) as averageCouncilBussing
-RETURN round(toFloat(averageCouncilBussing)) as averageCouncilBussing
+RETURN toFloat(averageCouncilBussing) as averageCouncilBussing
 `
 
 export const shareBacentaTargetsCypher = `
 MATCH (this:Council {id:$councilId})
 MATCH (this)-[:HAS]->(:Constituency)-[:HAS]->(bacenta:Active:Bacenta)
+OPTIONAL MATCH (bacenta)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_TARGET]->(oldTarget:Target {date:date($swellDate)})
+DETACH DELETE oldTarget
+
+WITH bacenta, this
 
 CALL apoc.cypher.run('
  WITH $bacenta AS bacenta
@@ -64,7 +68,7 @@ CALL apoc.cypher.run('
  RETURN DISTINCT bussing  LIMIT 4',
  {bacenta:bacenta}) YIELD value
 
-WITH ROUND(avg(value.bussing.attendance)) as averageBacentaAttendance, bacenta
+WITH avg(value.bussing.attendance) as averageBacentaAttendance, bacenta
 WITH ((averageBacentaAttendance/$averageCouncilBussing) * $target) as bacentaTarget, bacenta
 
 WITH bacenta, ROUND(bacentaTarget) as target
@@ -119,15 +123,17 @@ MATCH (lowerChurch)<-[:HAS]-(higherChurch)
 MATCH (lowerChurch)-[:CURRENT_HISTORY]->(:ServiceLog)-[:HAS_TARGET]->(target:Target)
 WHERE target.date = date($swellDate)
 
-WITH DISTINCT target, higherChurch
-WITH sum(target.target) as aggregate, higherChurch
+WITH DISTINCT target as lowerTarget, higherChurch
+WITH sum(lowerTarget.target) as aggregate, higherChurch, collect(lowerTarget.id) as componentTargetIds
 MERGE (target:Target {code: higherChurch.id + '-' + toString(date($swellDate))})
 ON CREATE
 SET target.target = aggregate,
 target.id = apoc.create.uuid(),
-target.date = date($swellDate)
+target.date = date($swellDate),
+target.componentTargetIds = componentTargetIds
 ON MATCH 
-SET target.target = aggregate
+SET target.target = aggregate,
+target.componentTargetIds = componentTargetIds
 
 WITH DISTINCT target, higherChurch
 MATCH (higherChurch)-[:CURRENT_HISTORY]->(log:ServiceLog)
@@ -139,15 +145,17 @@ MATCH (lowerChurch)<-[:HAS]-(higherChurch)
 MATCH (lowerChurch)-[:CURRENT_HISTORY]->(:ServiceLog)-[:HAS_TARGET]->(target:Target)
 WHERE target.date = date($swellDate)
 
-WITH DISTINCT target, higherChurch
-WITH sum(target.target) as aggregate, higherChurch
+WITH DISTINCT target as lowerTarget, higherChurch
+WITH sum(lowerTarget.target) as aggregate, higherChurch, collect(lowerTarget.id) as componentTargetIds
 MERGE (target:Target {code: higherChurch.id + '-' + toString(date($swellDate))})
 ON CREATE
 SET target.target = aggregate,
 target.id = apoc.create.uuid(),
-target.date = date($swellDate)
+target.date = date($swellDate),
+target.componentTargetIds = componentTargetIds
 ON MATCH 
-SET target.target = aggregate
+SET target.target = aggregate,
+target.componentTargetIds = componentTargetIds
 
 WITH DISTINCT target, higherChurch
 MATCH (higherChurch)-[:CURRENT_HISTORY]->(log:ServiceLog)
@@ -159,15 +167,63 @@ MATCH (lowerChurch)<-[:HAS]-(higherChurch)
 MATCH (lowerChurch)-[:CURRENT_HISTORY]->(:ServiceLog)-[:HAS_TARGET]->(target:Target)
 WHERE target.date = date($swellDate)
 
-WITH DISTINCT target, higherChurch
-WITH sum(target.target) as aggregate, higherChurch
+WITH DISTINCT target as lowerTarget, higherChurch
+WITH sum(lowerTarget.target) as aggregate, higherChurch, collect(lowerTarget.id) as componentTargetIds
 MERGE (target:Target {code: higherChurch.id + '-' + toString(date($swellDate))})
 ON CREATE
 SET target.target = aggregate,
 target.id = apoc.create.uuid(),
-target.date = date($swellDate)
+target.date = date($swellDate),
+target.componentTargetIds = componentTargetIds
 ON MATCH 
-SET target.target = aggregate
+SET target.target = aggregate,
+target.componentTargetIds = componentTargetIds
+
+
+WITH DISTINCT target, higherChurch
+MATCH (higherChurch)-[:CURRENT_HISTORY]->(log:ServiceLog)
+MERGE (log)-[:HAS_TARGET]->(target)
+
+//gathering Service
+WITH higherChurch as lowerChurch
+MATCH (lowerChurch)<-[:HAS]-(higherChurch)
+MATCH (lowerChurch)-[:CURRENT_HISTORY]->(:ServiceLog)-[:HAS_TARGET]->(target:Target)
+WHERE target.date = date($swellDate)
+
+WITH DISTINCT target as lowerTarget, higherChurch
+WITH sum(lowerTarget.target) as aggregate, higherChurch, collect(lowerTarget.id) as componentTargetIds
+MERGE (target:Target {code: higherChurch.id + '-' + toString(date($swellDate))})
+ON CREATE
+SET target.target = aggregate,
+target.id = apoc.create.uuid(),
+target.date = date($swellDate),
+target.componentTargetIds = componentTargetIds
+ON MATCH 
+SET target.target = aggregate,
+target.componentTargetIds = componentTargetIds
+
+
+WITH DISTINCT target, higherChurch
+MATCH (higherChurch)-[:CURRENT_HISTORY]->(log:ServiceLog)
+MERGE (log)-[:HAS_TARGET]->(target)
+
+//oversight
+WITH higherChurch as lowerChurch
+MATCH (lowerChurch)<-[:HAS]-(higherChurch)
+MATCH (lowerChurch)-[:CURRENT_HISTORY]->(:ServiceLog)-[:HAS_TARGET]->(target:Target)
+WHERE target.date = date($swellDate)
+
+WITH DISTINCT target as lowerTarget, higherChurch
+WITH sum(lowerTarget.target) as aggregate, higherChurch, collect(lowerTarget.id) as componentTargetIds
+MERGE (target:Target {code: higherChurch.id + '-' + toString(date($swellDate))})
+ON CREATE
+SET target.target = aggregate,
+target.id = apoc.create.uuid(),
+target.date = date($swellDate),
+target.componentTargetIds = componentTargetIds
+ON MATCH 
+SET target.target = aggregate,
+target.componentTargetIds = componentTargetIds
 
 
 WITH DISTINCT target, higherChurch
