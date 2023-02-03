@@ -177,7 +177,7 @@ WITH bussing, COUNT(DISTINCT cars) AS cars, COUNT(DISTINCT sprinters) AS sprinte
 MATCH (vehicleRecord:VehicleRecord {id: $vehicleRecordId})
 SET bussing.numberOfSprinters = sprinters,
  bussing.numberOfCars = cars,
- bussing.numberOfUrvan = urvan
+ bussing.numberOfUrvans = urvan
 
 RETURN vehicleRecord {
     .id,
