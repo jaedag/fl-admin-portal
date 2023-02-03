@@ -40,7 +40,7 @@ const AllChurchesSummary = (props: AllChurchesSummaryProps) => {
             </Link>
           </Card>
         </Col>
-        {churchType === 'Bacenta' || 'IC Bacenta' ? (
+        {churchType === 'Bacenta' || churchType === 'IC Bacenta' ? (
           <Col>
             <Card className="mb-2 card-border">
               <Link to="/sonta/displayall">
