@@ -18,6 +18,7 @@ import Filters from './Filters'
 import { Form, Formik } from 'formik'
 import Input from 'components/formik/Input'
 import RoleView from 'auth/RoleView'
+import { permitLeaderAdmin } from 'permission-utils'
 
 const MembersGrid = (props) => {
   const { data, error, loading, title } = props
@@ -118,8 +119,7 @@ const MembersGrid = (props) => {
               <RoleView
                 roles={[
                   'sheepseekerStream',
-                  'adminStream',
-                  'adminGatheringService',
+                  ...permitLeaderAdmin('Fellowship'),
                 ]}
               >
                 <Link to="/member/addmember" className="just-text-btn">
