@@ -189,12 +189,20 @@ const servantCypher = {
    MERGE (leader)-[:CURRENT_HISTORY]->(log)
    MERGE (church)-[:CURRENT_HISTORY]->(log)
    
-   WITH church
+   WITH church, log
       MATCH (oldLeader:Member {id: $oldServantId})
       MERGE (oldLeader)-[:OLD_HISTORY]->(log)
    
    WITH church
-   
+   MATCH (swellDate:SwellDate)
+   OPTIONAL MATCH (isBacenta:Bacenta {id: $churchId})-[:CURRENT_HISTORY]->(log:ServiceLog)
+   WITH church, log, isBacenta, swellDate ORDER BY swellDate.date DESC LIMIT 1
+   MATCH (target:Target {code: isBacenta.code + '-' + toString(swellDate.date)})
+   MERGE (log)-[:HAS_TARGET]->(target)
+     SET target.target = 0,
+     target.id = apoc.create.uuid(),
+     target.date = swellDate.date
+
    RETURN church.id AS id
    `,
 

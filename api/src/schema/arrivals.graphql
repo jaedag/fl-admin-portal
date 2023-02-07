@@ -1159,13 +1159,20 @@ extend type Mutation {
     )
     @cypher(
       statement: """
-      MATCH (bacenta:Bacenta {id: $bacentaId})-[:CURRENT_HISTORY]->(log:ServiceLog)-[:HAS_TARGET]->(targetNode:Target)
-        WITH bacenta, targetNode, targetNode.target AS oldTarget ORDER BY targetNode.date DESC LIMIT 1
-        SET targetNode.target = $target
-      WITH bacenta, oldTarget
+      MATCH (swellDate:SwellDate)
+      WITH swellDate ORDER BY swellDate.date DESC LIMIT 1
+      MATCH (bacenta:Bacenta {id: $bacentaId})-[:CURRENT_HISTORY]->(log:ServiceLog)
+      MERGE (targetNode:Target {code: bacenta.code + '-' + toString(swellDate.date)})
+       ON CREATE SET
+        targetNode.id = apoc.create.uuid(),
+        targetNode.date = swellDate.date
+      MERGE (log)-[:HAS_TARGET]->(targetNode)
+
+      WITH bacenta, targetNode, targetNode.target AS oldTarget ORDER BY targetNode.date DESC LIMIT 1
       MATCH (bacenta)<-[:HAS*1..7]-(higherChurch)
-      MATCH (higherChurch)-[:CURRENT_HISTORY]->(log:ServiceLog)-[:HAS_TARGET]->(targetNode:Target) 
-        SET targetNode.target = targetNode.target - oldTarget + toInteger($target),
+      MATCH (higherChurch)-[:CURRENT_HISTORY]->(log:ServiceLog)-[:HAS_TARGET]->(higherTargetNode:Target)
+        SET higherTargetNode.target = higherTargetNode.target - oldTarget + toInteger($target),
+          targetNode.target = $target,
           bacenta.sprinterCost = $sprinterCost,
           bacenta.urvanCost = $urvanCost
 
