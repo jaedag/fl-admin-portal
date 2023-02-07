@@ -1,3 +1,29 @@
+#### 5.8.1 (2023-02-07)
+
+##### New Features
+
+*  finalise updates for permissions for registering members ([518af29f](https://github.com/firstlovecenter/fl-pastoral-care/commit/518af29f2011566305ab50b82712a97e77494fb1))
+
+##### Bug Fixes
+
+*  update visibility for council admins to view add member page ([f0f8b7c9](https://github.com/firstlovecenter/fl-pastoral-care/commit/f0f8b7c9b30db881233f4a029d18462ab7d5f994))
+*  add permissions for gathering service and stream admins to register members ([e48b88e0](https://github.com/firstlovecenter/fl-pastoral-care/commit/e48b88e0fdca4e13c0abc57e67f9e897bf12f363))
+*  add  permissions for gatheringServiceAdmin and streamAdmins to create and edit members ([fa4b86a1](https://github.com/firstlovecenter/fl-pastoral-care/commit/fa4b86a135187e4e3b933a568c09c58d1fff8a1d))
+*  enable editing of bacenta target after swollen sunday changes final ([43398bff](https://github.com/firstlovecenter/fl-pastoral-care/commit/43398bff5950ed0052b2e95a8557db3c28462d78))
+*  enable editing of bacenta target after swollen sunday changes ([32672a12](https://github.com/firstlovecenter/fl-pastoral-care/commit/32672a12163a5a53a79c29f3cb7b4162f0e8daf3))
+*  re edit name of bussing data file ([f91cba75](https://github.com/firstlovecenter/fl-pastoral-care/commit/f91cba75020d0ae3ee1a651cd35510d204a1d550))
+*  change name of csv sheet for arrivals payment download ([6a5aee90](https://github.com/firstlovecenter/fl-pastoral-care/commit/6a5aee90ffa14865211e6370470e5ee8eac6c89b))
+*  include distinct to prevent adding error in addition ([81c3d433](https://github.com/firstlovecenter/fl-pastoral-care/commit/81c3d433a9cdda490f7c597fda3134eef3b97b33))
+*  fix bug where sontacard does not display numbers ([9a03a4a1](https://github.com/firstlovecenter/fl-pastoral-care/commit/9a03a4a1dd3c0a7a25d5c86d000769d01fa9e7bd))
+*  numberOfUrvans was not appearing due to  misspelling in backend ([53f41e5b](https://github.com/firstlovecenter/fl-pastoral-care/commit/53f41e5beb0973b155044f45eca47bb197aed02c))
+*  change componentTargetIds to include all targets relating to date for said date ([77c62a94](https://github.com/firstlovecenter/fl-pastoral-care/commit/77c62a942a77f08d682e3b2336accbf9d0b2411a))
+*  add componentTargetIds to aggregateTargets and other refinements ([aad695fb](https://github.com/firstlovecenter/fl-pastoral-care/commit/aad695fb47cf1f947fafa44b7332b8dfa5ca4f6c))
+*  change target property on church levels to last swell taregt ([86541034](https://github.com/firstlovecenter/fl-pastoral-care/commit/86541034c42a204409c32d2d5c9268a8c70017f7))
+
+##### Refactors
+
+*  add NoDataComponent to MultiplicationCampaignBankingSlipView ([6ac91f75](https://github.com/firstlovecenter/fl-pastoral-care/commit/6ac91f752beb089599c9a730da321d12b772b3cc))
+
 ### 5.8.0 (2023-02-07)
 
 ##### New Features
