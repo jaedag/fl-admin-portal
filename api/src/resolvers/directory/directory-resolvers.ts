@@ -26,7 +26,7 @@ const errorMessage = require('../texts.json').error
 const directoryMutation = {
   CreateMember: async (object: any, args: Member, context: Context) => {
     isAuth(
-      [...permitSheepSeeker(), ...permitAdmin('Stream')],
+      [...permitSheepSeeker(), ...permitLeaderAdmin('Fellowship')],
       context?.auth.roles
     )
 
@@ -102,7 +102,7 @@ const directoryMutation = {
     context: Context
   ) => {
     isAuth(
-      [...permitAdmin('Fellowship'), permitSheepSeeker()],
+      [...permitAdmin('Fellowship'), ...permitSheepSeeker()],
       context.auth.roles
     )
 
@@ -138,7 +138,7 @@ const directoryMutation = {
     context: Context
   ) => {
     isAuth(
-      [...permitLeaderAdmin('Stream'), permitSheepSeeker()],
+      [...permitLeaderAdmin('Stream'), ...permitSheepSeeker()],
       context.auth.roles
     )
     const session = context.executionContext.session()
