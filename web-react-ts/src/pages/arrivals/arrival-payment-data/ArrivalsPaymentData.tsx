@@ -131,9 +131,9 @@ const ArrivalsPaymentData = () => {
                 <CSVLink
                   filename={`${church?.name} ${
                     church?.__typename
-                  } Today's Busses To Be Paid ${getHumanReadableDate(
+                  } - ${getHumanReadableDate(
                     new Date().toLocaleDateString()
-                  )}.csv`}
+                  )} -  Today's Busses To Be Paid.csv`}
                   headers={headers}
                   data={arrivalPaymentData}
                 >
