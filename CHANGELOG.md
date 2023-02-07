@@ -1,3 +1,16 @@
+### 5.8.0 (2023-02-07)
+
+##### New Features
+
+*  finalise updates for permissions for registering members ([de4cbff2](https://github.com/firstlovecenter/fl-pastoral-care/commit/de4cbff26a507305a53384dfc504da065d5e2cec))
+
+##### Bug Fixes
+
+*  add missing permissions for fellowship leaders ([e16b7c1c](https://github.com/firstlovecenter/fl-pastoral-care/commit/e16b7c1ce69997848da4a4c1b42c455e9a2ea913))
+*  add permissions for gathering service and stream admins to register members ([c94faf9e](https://github.com/firstlovecenter/fl-pastoral-care/commit/c94faf9e8299d96de2f2211aeeab98e40ed5bf18))
+*  add  permissions for gatheringServiceAdmin and streamAdmins to create and edit members ([08d6106c](https://github.com/firstlovecenter/fl-pastoral-care/commit/08d6106c7f5e0fd06dac3cc6f37e8ca6faa255f2))
+*  update default bussing cost to be two way instead of one way ([42510815](https://github.com/firstlovecenter/fl-pastoral-care/commit/4251081509d3e34a86de22377de78f913ff32f24))
+
 #### 5.7.1 (2023-01-29)
 
 ##### Documentation Changes
