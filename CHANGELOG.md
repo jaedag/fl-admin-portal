@@ -1,3 +1,9 @@
+#### 5.8.2 (2023-02-07)
+
+##### Bug Fixes
+
+*  update visibility for council admins to view edit member page ([b733a6e2](https://github.com/firstlovecenter/fl-pastoral-care/commit/b733a6e20b457cce2157571406160416ae0670b8))
+
 #### 5.8.1 (2023-02-07)
 
 ##### New Features
