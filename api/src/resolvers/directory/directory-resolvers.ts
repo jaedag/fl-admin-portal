@@ -25,7 +25,10 @@ const errorMessage = require('../texts.json').error
 
 const directoryMutation = {
   CreateMember: async (object: any, args: Member, context: Context) => {
-    isAuth(permitSheepSeeker(), context?.auth.roles)
+    isAuth(
+      [...permitSheepSeeker(), ...permitAdmin('Stream')],
+      context?.auth.roles
+    )
 
     const session = context.executionContext.session()
 
@@ -98,7 +101,10 @@ const directoryMutation = {
     args: { id: string; email: string },
     context: Context
   ) => {
-    isAuth(permitAdmin('Fellowship'), context.auth.roles)
+    isAuth(
+      [...permitAdmin('Fellowship'), permitSheepSeeker()],
+      context.auth.roles
+    )
 
     const authToken: string = await getAuthToken()
     const session = context.executionContext.session()
@@ -131,7 +137,10 @@ const directoryMutation = {
     },
     context: Context
   ) => {
-    isAuth(permitLeaderAdmin('Stream'), context.auth.roles)
+    isAuth(
+      [...permitLeaderAdmin('Stream'), permitSheepSeeker()],
+      context.auth.roles
+    )
     const session = context.executionContext.session()
 
     const memberCheck = rearrangeCypherObject(

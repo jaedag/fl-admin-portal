@@ -18,6 +18,7 @@ import RoleView from 'auth/RoleView'
 import ViewAll from 'components/buttons/ViewAll'
 import CloudinaryImage from 'components/CloudinaryImage'
 import { Member } from 'global-types'
+import { permitAdmin, permitLeader, permitSheepSeeker } from 'permission-utils'
 
 const MemberDisplay = ({ memberId }: { memberId: string }) => {
   const {
@@ -48,7 +49,11 @@ const MemberDisplay = ({ memberId }: { memberId: string }) => {
   return (
     <Container>
       <RoleView
-        roles={['sheepseekerStream', 'adminStream', 'adminGatheringService']}
+        roles={[
+          ...permitSheepSeeker(),
+          ...permitAdmin('Constituency'),
+          ...permitLeader('Fellowship'),
+        ]}
       >
         <EditButton link="/member/editmember" />
       </RoleView>
