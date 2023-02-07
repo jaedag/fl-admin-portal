@@ -1159,9 +1159,13 @@ extend type Mutation {
     )
     @cypher(
       statement: """
-      MATCH (bacenta:Bacenta {id: $bacentaId})<-[:HAS*1..7]-(higherChurch)
-        SET higherChurch.target = higherChurch.target - bacenta.target + $target,
-          bacenta.target = $target,
+      MATCH (bacenta:Bacenta {id: $bacentaId})-[:CURRENT_HISTORY]->(log:ServiceLog)-[:HAS_TARGET]->(targetNode:Target)
+        WITH bacenta, targetNode, targetNode.target AS oldTarget ORDER BY targetNode.date DESC LIMIT 1
+        SET targetNode.target = $target
+      WITH bacenta, oldTarget
+      MATCH (bacenta)<-[:HAS*1..7]-(higherChurch)
+      MATCH (higherChurch)-[:CURRENT_HISTORY]->(log:ServiceLog)-[:HAS_TARGET]->(targetNode:Target) 
+        SET targetNode.target = targetNode.target - oldTarget + toInteger($target),
           bacenta.sprinterCost = $sprinterCost,
           bacenta.urvanCost = $urvanCost
 
