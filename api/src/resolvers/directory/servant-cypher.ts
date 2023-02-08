@@ -163,8 +163,16 @@ const servantCypher = {
    `,
 
   makeHistoryServiceLog: `
+   MATCH (swellDate:SwellDate)
+      WITH swellDate ORDER BY swellDate.date DESC LIMIT 1
    MATCH (log:HistoryLog {id: $logId})
    SET log:ServiceLog
+
+   WITH log, swellDate
+   CREATE (target:Target {id: apoc.create.uuid()})
+      SET target.target = 8,
+      target.date = swellDate.date
+   MERGE (log)-[:HAS_TARGET]->(target)
    RETURN log AS log
    `,
 
