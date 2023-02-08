@@ -1,3 +1,9 @@
+#### 5.8.6 (2023-02-08)
+
+##### Bug Fixes
+
+*  fix bug in setting of swollen sunday targets ([1d249a70](https://github.com/firstlovecenter/fl-pastoral-care/commit/1d249a704a0af0c3bc979316e134a89bb548e714))
+
 #### 5.8.5 (2023-02-07)
 
 #### 5.8.4 (2023-02-07)
