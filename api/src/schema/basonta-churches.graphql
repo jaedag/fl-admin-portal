@@ -156,6 +156,37 @@ extend type Mutation{
           }
       MATCH (federalMinistry)<-[:LEADS]-[leader:Active:Member]
       RETURN federalMinistry
+      """
     )
-  
+  UpdateMinistry(
+    ministryId: ID!, 
+    streamId: ID!,
+    name: String!
+  ): Ministry
+    @auth(rules: [
+      {
+        roles: ["adminGatheringService", "adminStream"]
+      }
+    ])
+    @cypher (
+      statement (
+        """
+        MATCH (ministry:Ministry {id: $ministryId})
+          SET miinistry.name = $name,
+        
+        WITH ministry
+          CALL {
+              WITH ministry
+                MATCH (stream:Stream {id:$streamId})
+                OPTIONAL MATCH (ministry)<-[r:HAS]-()
+                DELEte r
+                MERGE (stream)->[:HAS]->(ministry)
+
+              RETURN count(ministry)
+          }
+          MATCH (ministry)<-[:LEADS]-[leader:Active:Member]
+          RETURN ministry
+        """
+      )
+    )
 }
