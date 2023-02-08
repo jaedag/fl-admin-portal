@@ -56,5 +56,5 @@ export const getStreamFinancials = (stream: StreamOptions) => {
       break
   }
 
-  return { merchantId, auth, passcode }
+  return { auth }
 }
