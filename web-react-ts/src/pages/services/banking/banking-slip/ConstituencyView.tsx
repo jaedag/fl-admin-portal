@@ -5,6 +5,7 @@ import { ChurchContext } from 'contexts/ChurchContext'
 import { ServiceRecord } from 'global-types'
 import { throwToSentry } from 'global-utils'
 import { parseDate } from 'jd-date-utils'
+import NoDataComponent from 'pages/arrivals/CompNoData'
 import React, { useContext } from 'react'
 import { Card, Col, Container, Row } from 'react-bootstrap'
 import { CheckCircleFill, XCircleFill } from 'react-bootstrap-icons'
@@ -25,45 +26,53 @@ const ConstituencyBankingSlipView = () => {
     <Container>
       <HeadingPrimary loading={loading}>{constituency?.name}</HeadingPrimary>
 
-      {data?.constituencies[0].services.map((service: ServiceRecord) => {
-        if (service.noServiceReason) {
-          return null
-        }
+      {data?.constituencies[0].services.map(
+        (service: ServiceRecord, index: number) => {
+          if (service.noServiceReason) {
+            if (index === 0) {
+              return (
+                <NoDataComponent text="No services to bank. When you have a service, it will show up here" />
+              )
+            }
 
-        return (
-          <Card
-            key={service.id}
-            className="mb-2"
-            onClick={() => {
-              clickCard(service)
-              !service.bankingProof &&
-                navigate('/constituency/banking-slip/submission')
-            }}
-          >
-            <Card.Header>
-              <b>{parseDate(service.serviceDate.date)}</b>
-            </Card.Header>
-            <Card.Body>
-              <Row>
-                <Col>
-                  <span>Offering: {service.income}</span>
-                </Col>
-                <Col className="col-auto">
-                  {service.bankingSlip ? (
-                    <span className="text-success fw-bold">
-                      <CheckCircleFill color="green" size={35} /> Filled
-                    </span>
-                  ) : (
-                    <span className="text-danger fw-bold">
-                      <XCircleFill color="red" size={35} /> Not Filled
-                    </span>
-                  )}
-                </Col>
-              </Row>
-            </Card.Body>
-          </Card>
-        )
-      })}
+            return null
+          }
+
+          return (
+            <Card
+              key={service.id}
+              className="mb-2"
+              onClick={() => {
+                clickCard(service)
+                !service.bankingProof &&
+                  navigate('/constituency/banking-slip/submission')
+              }}
+            >
+              <Card.Header>
+                <b>{parseDate(service.serviceDate.date)}</b>
+              </Card.Header>
+              <Card.Body>
+                <Row>
+                  <Col>
+                    <span>Offering: {service.income}</span>
+                  </Col>
+                  <Col className="col-auto">
+                    {service.bankingSlip ? (
+                      <span className="text-success fw-bold">
+                        <CheckCircleFill color="green" size={35} /> Filled
+                      </span>
+                    ) : (
+                      <span className="text-danger fw-bold">
+                        <XCircleFill color="red" size={35} /> Not Filled
+                      </span>
+                    )}
+                  </Col>
+                </Row>
+              </Card.Body>
+            </Card>
+          )
+        }
+      )}
 
       {loading &&
         placeholder.map((service, index) => {
