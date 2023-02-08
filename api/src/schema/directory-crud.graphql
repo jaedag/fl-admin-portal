@@ -715,29 +715,7 @@ extend type Mutation {
       """
     )
 
-  UpdateSontaDetails(sontaId: ID!, sontaName: String!): Sonta
-    @auth(
-      rules: [
-        {
-          roles: [
-            "adminGatheringService"
-            "adminStream"
-            "adminCouncil"
-            "adminConstituency"
-          ]
-        }
-      ]
-    )
-    @cypher(
-      statement: """
-      MATCH (sonta:Sonta {id: $sontaId})
-      	SET sonta.name = $sontaName
 
-      WITH sonta
-      MATCH (sonta)<-[:LEADS]-(leader:Active:Member)
-      RETURN sonta
-      """
-    )
 
   UpdateFellowshipDetails(
     id: ID!
