@@ -253,9 +253,71 @@ extend type Mutation{
 ## DELETE OPERATIONS
 
 extend type Mutation {
-  closeDownfederalMinistry()
-  closeDownMinistry 
-  closeDownHub()
+  closeDownfederalMinistry(federalMinistryId:ID!, leaderId:ID!):GatheringService
+    @cypher(
+      statement:"""
+      MATCH (federalMinistry:Federalministry {id:$federalMinistryId})
+      MATCH (admin:Active:Member {auth_id: $auth.jwt.sub})
+      MATCH (hub)<-[:HAS]-(gatheringService:GatheringService)
+
+      CREATE (log:HistoryLog {id:apoc.create.uuid()})
+        SET log.timestamp = datetime()
+        SET log.historyRecord = federalMinistry.name + ' federal ministry was closed down under' + 
+                                gatheringService.name +' gathering service'
+
+      MERGE (date:Timegraph {date:date()})
+      MERGE (log)-[:LOGGED_BY]->(admin)
+      MERGE (log)-[:RECORDED_ON]->(date)
+      MERGE (gatheringService)-[:HAS_HISTORY]->(log)
+
+      SET federalMinistry:ClosedFederalministry
+      REMOVE federalMinistry:Federalministry
+      RETURN gatheringService
+      """
+    )
+  closeDownMinistry(ministryId:ID!, leaderId:ID!):Federalministry
+    @cypher(
+      statement:"""
+      MATCH (ministry:Ministry {id:$ministryId})
+      MATCH (admin:Active:Member {auth_id: $auth.jwt.sub})
+      MATCH (hub)<-[:HAS]-(federalMinistry:Federalministry)
+
+      CREATE (log:HistoryLog {id:apoc.create.uuid()})
+        SET log.timestamp = datetime()
+        SET log.historyRecord = ministry.name + ' ministry was closed down under' + 
+                                federalMinistry.name +' ministry'
+
+      MERGE (date:Timegraph {date:date()})
+      MERGE (log)-[:LOGGED_BY]->(admin)
+      MERGE (log)-[:RECORDED_ON]->(date)
+      MERGE (federalMinistry)-[:HAS_HISTORY]->(log)
+
+      SET ministry:ClosedMinistry
+      REMOVE ministry:Ministry
+      RETURN federalMinistry
+      """
+    )
+  closeDownHub(hubId:ID!, leaderId:ID! ):Ministry
+    @cypher(
+      statement:"""
+      MATCH (hub:Hub {id:$hubId})
+      MATCH (admin:Active:Member {auth_id: $auth.jwt.sub})
+      MATCH (hub)<-[:HAS]-(ministry:Ministry)
+
+      CREATE (log:HistoryLog {id:apoc.create.uuid()})
+        SET log.timestamp = datetime()
+        SET log.historyRecord = hub.name + ' hub was closed down under' + ministry.name +' ministry'
+
+      MERGE (date:Timegraph {date:date()})
+      MERGE (log)-[:LOGGED_BY]->(admin)
+      MERGE (log)-[:RECORDED_ON]->(date)
+      MERGE (ministry)-[:HAS_HISTORY]->(log)
+
+      SET hub:ClosedHub
+      REMOVE hub:Hub
+      RETURN ministry
+      """
+    )
   closeDownSonta(sontaId:ID!, leaderId:ID!):Hub
     @cypher(
       statement:"""
