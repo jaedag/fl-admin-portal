@@ -1,3 +1,11 @@
+#### 5.8.7 (2023-02-09)
+
+##### Bug Fixes
+
+*  update version for jd-date-utils ([df30cb9b](https://github.com/firstlovecenter/fl-pastoral-care/commit/df30cb9bd8d8f82fd557044201e65e9f37b174e2))
+*  add a message for self banking and receipt submission list when there are no services ([0a63e014](https://github.com/firstlovecenter/fl-pastoral-care/commit/0a63e0141391cad8bcc9ca6275425ca69b320931))
+*  all new bacentas are started with targets ([9b4c30e5](https://github.com/firstlovecenter/fl-pastoral-care/commit/9b4c30e55a3069e7a7388551072e3943ec272f29))
+
 #### 5.8.6 (2023-02-08)
 
 ##### Bug Fixes
