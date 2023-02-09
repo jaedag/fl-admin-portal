@@ -1,3 +1,24 @@
+#### 5.8.9 (2023-02-09)
+
+##### Documentation Changes
+
+*  update CHANGELOG.md ([1f9906a3](https://github.com/firstlovecenter/fl-pastoral-care/commit/1f9906a3e59f429c5416afe6731d79aa99ea41d3))
+*  update CHANGELOG.md ([c88d3e71](https://github.com/firstlovecenter/fl-pastoral-care/commit/c88d3e7104c824fda52ba9c8ec0a4d9f10bf01d2))
+
+##### Bug Fixes
+
+*  update version for jd-date-utils ([fc9bd616](https://github.com/firstlovecenter/fl-pastoral-care/commit/fc9bd61602989277d13d35d591c8550274b3bd44))
+*  remove error breaking redundant code ([ec558444](https://github.com/firstlovecenter/fl-pastoral-care/commit/ec558444c33d0d5bf0bf6ea0cc61551ba78b1a77))
+*  remove redundant code ([157bd7c1](https://github.com/firstlovecenter/fl-pastoral-care/commit/157bd7c10e826b4b85c15ac1def3d3b758e7f49e))
+*  update auth details for new services ([e47a301c](https://github.com/firstlovecenter/fl-pastoral-care/commit/e47a301cb9ee0c866b4b34eac785b67ab0c68294))
+*  log financial details for debugging purposes ([23264b14](https://github.com/firstlovecenter/fl-pastoral-care/commit/23264b14d52a268cd4a47034cc0d1078fbf7ce1e))
+*  add a message for self banking and receipt submission list when there are no services ([0a63e014](https://github.com/firstlovecenter/fl-pastoral-care/commit/0a63e0141391cad8bcc9ca6275425ca69b320931))
+*  all new bacentas are started with targets ([9b4c30e5](https://github.com/firstlovecenter/fl-pastoral-care/commit/9b4c30e55a3069e7a7388551072e3943ec272f29))
+
+##### Other Changes
+
+* //github.com/firstlovecenter/fl-admin-portal into deploy ([de9090ee](https://github.com/firstlovecenter/fl-pastoral-care/commit/de9090ee25a997663d1dd7f5c4408a478f90c104))
+
 #### 5.8.8 (2023-02-09)
 
 #### 5.8.7 (2023-02-09)
