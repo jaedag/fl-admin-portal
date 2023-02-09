@@ -15,7 +15,7 @@
     "enzyme": "^3.11.0",
     "formik": "^2.2.9",
     "graphql": "^16.2.0",
-    "jd-date-utils": "^1.0.7",
+    "jd-date-utils": "^1.0.9",
     "papaparse": "^5.3.2",
     "react": "^18.1.0",
     "react-autosuggest": "^10.1.0",
