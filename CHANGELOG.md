@@ -1,3 +1,9 @@
+#### 5.9.1 (2023-02-12)
+
+##### Bug Fixes
+
+*  fix wrongful date when downloading arrivals payment data ([d838b4ab](https://github.com/firstlovecenter/fl-pastoral-care/commit/d838b4abaecf94a8a7e1019a501ad5604f8e2b48))
+
 ### 5.9.0 (2023-02-12)
 
 ##### Bug Fixes
