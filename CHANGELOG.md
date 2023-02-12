@@ -1,5 +1,20 @@
 #### 5.8.10 (2023-02-12)
 
+##### Documentation Changes
+
+*  update CHANGELOG.md ([84f989aa](https://github.com/firstlovecenter/fl-pastoral-care/commit/84f989aacda75c315e9f68e71c5110e49c6b0a70))
+
+##### New Features
+
+*  create custom route path for sheep seeker permissions ([e0a66210](https://github.com/firstlovecenter/fl-pastoral-care/commit/e0a66210356e81bcabd3aebdc7093913d0994bf0))
+
+##### Bug Fixes
+
+*  remove busses with attendance of zero from busses arrived count ([8598aac1](https://github.com/firstlovecenter/fl-pastoral-care/commit/8598aac1cf5ce7416496ca48068ffec6671c63cb))
+*  fix bug where sheep seekers could not access their portal ([9e7ff6a2](https://github.com/firstlovecenter/fl-pastoral-care/commit/9e7ff6a20595c8adfc0703d9ac3eff72d2f4f0db))
+
+#### 5.8.10 (2023-02-12)
+
 ##### New Features
 
 *  create custom route path for sheep seeker permissions ([e0a66210](https://github.com/firstlovecenter/fl-pastoral-care/commit/e0a66210356e81bcabd3aebdc7093913d0994bf0))
