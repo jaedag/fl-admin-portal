@@ -13,6 +13,7 @@ import {
   permitArrivalsHelpers,
   permitLeaderAdmin,
   permitMe,
+  permitSheepSeeker,
   permitTellerStream,
 } from 'permission-utils'
 
@@ -495,7 +496,7 @@ export const getServantRoles = (servant: MemberWithChurches) => {
       number: servant?.isSheepSeekerForStream?.length,
       link: authorisedLink(
         servant,
-        permitMe('Stream'),
+        permitSheepSeeker(),
         `campaigns/stream/sheep-seeking`
       ),
     })
