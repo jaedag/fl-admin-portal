@@ -1,3 +1,10 @@
+### 5.9.0 (2023-02-12)
+
+##### Bug Fixes
+
+*  implement sheep seeker searching for churches in stream ([0fae14ac](https://github.com/firstlovecenter/fl-pastoral-care/commit/0fae14acefa69b87b39bd2e83f831a525c84157d))
+*  implement sheep seeker being able to see all fellowships in stream ([3ebbe88b](https://github.com/firstlovecenter/fl-pastoral-care/commit/3ebbe88b5d75922bf94d21caf4ce6d79d4483203))
+
 #### 5.8.10 (2023-02-12)
 
 ##### Documentation Changes
