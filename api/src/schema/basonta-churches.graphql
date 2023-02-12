@@ -149,7 +149,7 @@ extend type Mutation{
               WITH federalMinistry
 
                 MATCH (gatheringService:gatheringService {id: $gatheringServiceId})
-                OPTIONAL MATCH (federalMinistry)<-[r:HAS_MINISTRY]
+                OPTIONAL MATCH (federalMinistry)<-[r:HAS_MINISTRY]-()
                 DELETE r 
                 MERGE (gatheringService)-[:HAS_MINISTRY]->(federalMinistry)
               
@@ -170,23 +170,21 @@ extend type Mutation{
       }
     ])
     @cypher (
-      statement:
-        """
-        MATCH (ministry:Ministry {id: $ministryId})
-          SET ministry.name = $ministryName,
-        
+      statement:"""
+       MATCH (ministry:Ministry {id:$ministryId})
+        SET ministry.name = $ministryName
+
         WITH ministry
           CALL {
-              WITH ministry
-                MATCH (stream:Stream {id:$streamId})
-                OPTIONAL MATCH (ministry)<-[r:HAS]-()
-                DELETE r
-                MERGE (stream)-[:HAS]->(ministry)
-
-              RETURN count(ministry)
+            WITH ministry
+              MATCH (stream:Stream {id:$streamId})
+              OPTIONAL MATCH (stream)<-[r:HAS]-()
+              DELETE r
+              MERGE (stream)-[:HAS]->(ministry)
+            RETURN COUNT(ministry)
           }
-          MATCH (ministry)<-[:LEADS]-(leader:Active:Member)
-          RETURN ministry
+      MATCH (ministry)<-[:LEADS]-(leader:Active:Member)
+      RETURN ministry
         """
     )
   UpdateHubDetails(
@@ -214,11 +212,11 @@ extend type Mutation{
               MERGE (ministry)-[:HAS]->(hub)
             RETURN COUNT(hub)
           }
-        MATCH (hub)<-[:LEADS]-(leader:Active:Member)
-        RETURN hub
+      MATCH (hub)<-[:LEADS]-(leader:Active:Member)
+      RETURN hub
       """
     )
-   UpdateSontaDetails(sontaId: ID!, sontaName: String!): Sonta
+   UpdateSontaDetails(sontaId: ID!, hubId: ID!, sontaName: String!): Sonta
     @auth(
       rules: [
         {
@@ -239,7 +237,7 @@ extend type Mutation{
         CALL{
           WITH sonta
           MATCH (hub:Hub {id:$hubId})
-          OPTIONAL MATCH (sonta)<-[:HAS]-(hub)
+          OPTIONAL MATCH (sonta)<-[r:HAS]-()
           DELETE r
           MERGE (hub)-[:HAS]-(sonta)
           RETURN COUNT(sonta)
@@ -306,7 +304,7 @@ extend type Mutation {
 
       CREATE (log:HistoryLog {id:apoc.create.uuid()})
         SET log.timestamp = datetime()
-        SET log.historyRecord = hub.name + ' hub was closed down under' + ministry.name +' ministry'
+        SET log.historyRecord = hub.name + ' hub was closed down under ' + ministry.name +' ministry'
 
       MERGE (date:Timegraph {date:date()})
       MERGE (log)-[:LOGGED_BY]->(admin)
