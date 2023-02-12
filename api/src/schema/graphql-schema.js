@@ -80,7 +80,7 @@ const shepherdingControlCampaign = fs
   .readFileSync(path.join(__dirname, './campaigns-shepherding-control.graphql'))
   .toString('utf-8')
 
-const basontachurches = fs
+const basontaChurches = fs
   .readFileSync(path.join(__dirname, './basonta-churches.graphql'))
   .toString('utf-8')
 
