@@ -33,9 +33,8 @@ const StreamCampaigns = () => {
           </div>
           <div className="d-grid gap-2 mt-4 text-center px-4">
             {campaigns?.map((campaign: string, index: number) => {
-              console.log('campaign', campaign)
-
               let roles = permitLeaderAdmin('Stream')
+
               if (campaign === 'Sheep Seeking') {
                 roles = [...roles, ...permitSheepSeeker()]
               }
