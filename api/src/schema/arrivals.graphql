@@ -240,6 +240,7 @@ extend type GatheringService {
          WHERE date(date.date)=date()
         MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
         WHERE record.arrivalTime IS NOT NULL
+        AND record.attendance > 0
       RETURN COUNT(DISTINCT record)
       """
     )
@@ -446,6 +447,7 @@ extend type Stream {
          WHERE date(date.date)=date()
         MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
         WHERE record.arrivalTime IS NOT NULL
+        AND record.attendance > 0
       RETURN COUNT(DISTINCT record)
       """
     )
@@ -650,6 +652,7 @@ extend type Council {
          WHERE date(date.date)=date()
         MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
         WHERE record.arrivalTime IS NOT NULL
+        AND record.attendance > 0
       RETURN COUNT(DISTINCT record)
       """
     )
@@ -855,6 +858,7 @@ extend type Constituency {
          WHERE date(date.date)=date()
         MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
         WHERE record.arrivalTime IS NOT NULL
+        AND record.attendance > 0
       RETURN COUNT(DISTINCT record)
       """
     )

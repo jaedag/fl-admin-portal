@@ -119,19 +119,12 @@ export const permitLeaderAdmin = (churchLevel: ChurchLevel): Role[] => {
 }
 
 export const permitMe = (churchLevel: ChurchLevel): Role[] => {
-  if (churchLevel === 'Stream') {
-    return [
-      ...permitLeaderAdmin(churchLevel),
-      ...permitArrivals(churchLevel),
-      ...permitArrivalsHelpers(churchLevel),
-      ...permitTellerStream(),
-      ...permitSheepSeeker(),
-    ]
-  }
   return [
     ...permitLeaderAdmin(churchLevel),
     ...permitArrivals(churchLevel),
     ...permitArrivalsHelpers(churchLevel),
+    ...permitTellerStream(),
+    ...permitSheepSeeker(),
   ]
 }
 
