@@ -2,7 +2,7 @@ extend type Member {
   memberSearch(key: String!, limit: Int! = 5): [Member!]!
     @cypher(
       statement: """
-      MATCH (this)-[:LEADS|HAS|DOES_ARRIVALS_FOR|IS_ADMIN_FOR*1..7]->(:Fellowship)<-[:BELONGS_TO]-(members:Active:Member)
+      MATCH (this)-[:LEADS|HAS|DOES_ARRIVALS_FOR|IS_ADMIN_FOR|IS_SHEEP_SEEKER_FOR*1..7]->(:Fellowship)<-[:BELONGS_TO]-(members:Active:Member)
       WHERE toLower(members.firstName+ ' ' + members.lastName) CONTAINS toLower($key)
       RETURN DISTINCT members ORDER BY toLower(members.lastName), toLower(members.firstName) LIMIT $limit
       """
@@ -10,7 +10,7 @@ extend type Member {
   fellowshipSearch(key: String!, limit: Int! = 5): [Fellowship!]!
     @cypher(
       statement: """
-      MATCH (this)-[:LEADS|HAS|DOES_ARRIVALS_FOR|IS_ADMIN_FOR*1..7]->(fellowship:Fellowship)
+      MATCH (this)-[:LEADS|HAS|DOES_ARRIVALS_FOR|IS_ADMIN_FOR|IS_SHEEP_SEEKER_FOR*1..7]->(fellowship:Fellowship)
       WHERE toLower(fellowship.name) CONTAINS toLower($key)
       RETURN DISTINCT fellowship LIMIT $limit
       """
@@ -18,7 +18,7 @@ extend type Member {
   bacentaSearch(key: String!, limit: Int! = 5): [Bacenta!]!
     @cypher(
       statement: """
-      MATCH (this)-[:LEADS|HAS|DOES_ARRIVALS_FOR|IS_ADMIN_FOR*1..6]->(bacenta:Bacenta)
+      MATCH (this)-[:LEADS|HAS|DOES_ARRIVALS_FOR|IS_ADMIN_FOR|IS_SHEEP_SEEKER_FOR*1..6]->(bacenta:Bacenta)
       WHERE toLower(bacenta.name) CONTAINS toLower($key)
       RETURN DISTINCT bacenta LIMIT $limit
       """
@@ -26,7 +26,7 @@ extend type Member {
   constituencySearch(key: String!, limit: Int! = 5): [Constituency!]!
     @cypher(
       statement: """
-      MATCH (this)-[:LEADS|HAS|DOES_ARRIVALS_FOR|IS_ADMIN_FOR*1..5]->(constituency:Constituency)
+      MATCH (this)-[:LEADS|HAS|DOES_ARRIVALS_FOR|IS_ADMIN_FOR|IS_SHEEP_SEEKER_FOR*1..5]->(constituency:Constituency)
       WHERE toLower(constituency.name) CONTAINS toLower($key)
       RETURN DISTINCT constituency LIMIT $limit
       """
@@ -34,7 +34,7 @@ extend type Member {
   councilSearch(key: String!, limit: Int! = 5): [Council!]!
     @cypher(
       statement: """
-      MATCH (this)-[:LEADS|HAS|DOES_ARRIVALS_FOR|IS_ADMIN_FOR*1..4]->(council:Council)
+      MATCH (this)-[:LEADS|HAS|DOES_ARRIVALS_FOR|IS_ADMIN_FOR|IS_SHEEP_SEEKER_FOR*1..4]->(council:Council)
       WHERE toLower(council.name) CONTAINS toLower($key)
       RETURN DISTINCT council LIMIT $limit
       """
@@ -42,7 +42,7 @@ extend type Member {
   streamSearch(key: String!, limit: Int! = 5): [Stream!]!
     @cypher(
       statement: """
-      MATCH (this)-[:LEADS|HAS|DOES_ARRIVALS_FOR|IS_ADMIN_FOR*1..2]->(stream:Stream)
+      MATCH (this)-[:LEADS|HAS|DOES_ARRIVALS_FOR|IS_ADMIN_FOR|IS_SHEEP_SEEKER_FOR*1..2]->(stream:Stream)
       WHERE toLower(stream.name) CONTAINS toLower($key)
       RETURN DISTINCT stream LIMIT $limit
       """

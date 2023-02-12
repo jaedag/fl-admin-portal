@@ -45,7 +45,7 @@ type Member @auth(rules: [{ isAuthenticated: true }]) {
   memberCount: Int
     @cypher(
       statement: """
-      MATCH (this)-[:LEADS|HAS|DOES_ARRIVALS_FOR|IS_ADMIN_FOR*1..6]->(:Fellowship)<-[:BELONGS_TO]-(members:Active:Member)
+      MATCH (this)-[:LEADS|HAS|DOES_ARRIVALS_FOR|IS_ADMIN_FOR|IS_SHEEP_SEEKER_FOR*1..6]->(:Fellowship)<-[:BELONGS_TO]-(members:Active:Member)
       RETURN COUNT(DISTINCT members)
       """
     )
