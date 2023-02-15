@@ -89,7 +89,7 @@ extend type Mutation {
       RETURN hub
       """
     )
-  CreateSonta(ministryId: ID!, hubId: ID!, leaderId: ID!): Constituency
+  CreateSonta(ministryId: ID!, hubId: ID!, leaderId: ID!): Sonta
     @auth(rules: [{ roles: ["adminGatheringService", "adminStream"] }])
     @cypher(
       statement: """
@@ -104,7 +104,7 @@ extend type Mutation {
        MATCH (currentUser:Active:Member {auth_id:$auth.jwt.sub})
        UNWIND LABELS(hub) as stream
 
-       SET sonta.name = leader.first_name + ' ' + leader.last_name
+       SET sonta.name = leader.firstName + ' ' + leader.lastName
 
        CREATE (log:HistoryLog:ServiceLog)
         SET log.id = apoc.create.uuid(),
