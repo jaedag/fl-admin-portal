@@ -1,5 +1,4 @@
 const servantCypher = {
-  // Remove Fellowship Leader Connection
   disconnectChurchLeader: `
    MATCH (church {id: $churchId}) 
    WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:GatheringService OR church:Sonta OR church:Ministry
@@ -8,7 +7,11 @@ const servantCypher = {
    DELETE oldLeads
    
    WITH church, leader
-   
+
+   OPTIONAL MATCH (bacenta:Bacenta {id: $churchId})
+   REMOVE bacenta.momoNumber
+
+   WITH church,leader
    
    OPTIONAL MATCH (church)-[oldHistory:CURRENT_HISTORY]->(:ServiceLog)<-[oldLeaderHistory:CURRENT_HISTORY]-(leader)
    DELETE oldHistory, oldLeaderHistory
