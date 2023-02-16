@@ -1,3 +1,13 @@
+#### 5.9.2 (2023-02-16)
+
+##### Bug Fixes
+
+*  enable reactivation of a member if he was made inactive and then the fellowship was closed ([c1b0e187](https://github.com/firstlovecenter/fl-pastoral-care/commit/c1b0e1872adc10f3c53c577fede20de34f6ffd01))
+*  when a counter counts a bus that is less than 8, the number is instantly zeroed ([6edf1d03](https://github.com/firstlovecenter/fl-pastoral-care/commit/6edf1d03a3ac2e14cf15e1c2d4422ea2a1805678))
+*  change bacentas below 8 text to bacentasThatDidnt bus ([af72ce53](https://github.com/firstlovecenter/fl-pastoral-care/commit/af72ce53ef6d96767266a1d098568375925271a3))
+*  return null for momo Number for apollo cache ([077610d6](https://github.com/firstlovecenter/fl-pastoral-care/commit/077610d689a85066d20b978292f590be1ff13d63))
+*  delete momo number from bacenta when leader is transferred ([746c43c2](https://github.com/firstlovecenter/fl-pastoral-care/commit/746c43c20e61ba99a5ca59862a9d3522897d8e8c))
+
 #### 5.9.1 (2023-02-12)
 
 ##### Bug Fixes
