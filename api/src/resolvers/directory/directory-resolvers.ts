@@ -60,7 +60,6 @@ const directoryMutation = {
       )
 
       const member = rearrangeCypherObject(activateInactiveMemberResponse)
-
       return member
     }
 
