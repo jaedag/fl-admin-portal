@@ -161,7 +161,7 @@ const ConstituencyDashboard = () => {
               noCaption
             />
             <MenuButton
-              title="Bacentas Below 8"
+              title={`Bacentas That Didn't Bus`}
               onClick={() => navigate('/arrivals/bacentas-below-8')}
               number={constituency?.bacentasBelow8Count.toString()}
               iconBg
