@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { getHumanReadableDate } from 'jd-date-utils'
 import { Context } from '../utils/neo4j-types'
 import { Member } from '../utils/types'
 import { isAuth, rearrangeCypherObject, throwToSentry } from '../utils/utils'
@@ -166,20 +167,36 @@ const directoryMutation = {
     isAuth(permitAdmin('Constituency'), context.auth.roles)
 
     const session = context.executionContext.session()
+    const sessionTwo = context.executionContext.session()
 
-    const fellowshipCheckResponse = await session
-      .run(closeChurchCypher.checkFellowshipHasNoMembers, args)
-      .catch((error: any) => {
-        throwToSentry(
-          'There was an error running checkFellowshipHasNoMembers',
-          error
-        )
-      })
-    const fellowshipCheck = rearrangeCypherObject(fellowshipCheckResponse)
+    const res: any = await Promise.all([
+      session.run(closeChurchCypher.checkFellowshipHasNoMembers, args),
+      sessionTwo.run(closeChurchCypher.getLastServiceRecord, {
+        churchId: args.fellowshipId,
+      }),
+    ]).catch((error: any) => {
+      throwToSentry(
+        'There was an error running checkFellowshipHasNoMembers',
+        error
+      )
+    })
+
+    const fellowshipCheck = rearrangeCypherObject(res[0])
+    const lastServiceRecord = rearrangeCypherObject(res[1])
 
     if (fellowshipCheck.memberCount > 0) {
       throw new Error(
         `${fellowshipCheck?.name} Fellowship has ${fellowshipCheck?.memberCount} members. Please transfer all members and try again.`
+      )
+    }
+
+    const record = lastServiceRecord.lastService.properties
+
+    if (!('bankingSlip' in record || record.transactionStatus === 'success')) {
+      throw new Error(
+        `Please bank outstanding offering for your service filled on ${getHumanReadableDate(
+          record.createdAt
+        )} before attempting to bank this week's offering`
       )
     }
 
