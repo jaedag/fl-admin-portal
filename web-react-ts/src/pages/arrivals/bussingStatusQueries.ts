@@ -428,6 +428,7 @@ export const CONSTITUENCY_BACENTAS_ARRIVED = gql`
         }
         bussing(limit: 1) {
           id
+          attendance
         }
       }
     }
@@ -454,6 +455,7 @@ export const COUNCIL_BACENTAS_ARRIVED = gql`
         }
         bussing(limit: 1) {
           id
+          attendance
         }
       }
     }
@@ -480,6 +482,7 @@ export const STREAM_BACENTAS_ARRIVED = gql`
         }
         bussing(limit: 1) {
           id
+          attendance
         }
       }
     }
@@ -506,6 +509,7 @@ export const GATHERINGSERVICES_BACENTAS_ARRIVED = gql`
         }
         bussing(limit: 1) {
           id
+          attendance
         }
       }
     }
@@ -532,6 +536,7 @@ export const CONSTITUENCY_BACENTAS_BELOW_8 = gql`
         }
         bussing(limit: 1) {
           id
+          attendance
         }
       }
     }
@@ -558,6 +563,7 @@ export const COUNCIL_BACENTAS_BELOW_8 = gql`
         }
         bussing(limit: 1) {
           id
+          attendance
         }
       }
     }
@@ -584,6 +590,7 @@ export const STREAM_BACENTAS_BELOW_8 = gql`
         }
         bussing(limit: 1) {
           id
+          attendanced
         }
       }
     }
@@ -610,6 +617,7 @@ export const GATHERINGSERVICE_BACENTAS_BELOW_8 = gql`
         }
         bussing(limit: 1) {
           id
+          attendance
         }
       }
     }

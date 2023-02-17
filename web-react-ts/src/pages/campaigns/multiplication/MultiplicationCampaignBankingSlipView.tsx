@@ -3,6 +3,7 @@ import PlaceholderCustom from 'components/Placeholder'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { Church } from 'global-types'
 import { parseDate } from 'jd-date-utils'
+import NoDataComponent from 'pages/arrivals/CompNoData'
 import React, { useContext } from 'react'
 import { Container, Card, Row, Col } from 'react-bootstrap'
 import { CheckCircleFill, XCircleFill } from 'react-bootstrap-icons'
@@ -86,6 +87,10 @@ const MultiplicationCampaignBankingSlipView = ({
             </Card>
           )
         })}
+
+      {services.length === 0 && (
+        <NoDataComponent text="There is no data to be found" />
+      )}
     </Container>
   )
 }

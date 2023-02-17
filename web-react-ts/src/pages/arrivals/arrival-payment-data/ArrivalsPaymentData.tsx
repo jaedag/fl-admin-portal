@@ -3,6 +3,7 @@ import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import HeadingSecondary from 'components/HeadingSecondary'
 import { MemberContext } from 'contexts/MemberContext'
+import { getHumanReadableDate } from 'jd-date-utils'
 import React, { useContext } from 'react'
 import { Container, Button } from 'react-bootstrap'
 import { CSVLink } from 'react-csv'
@@ -128,7 +129,11 @@ const ArrivalsPaymentData = () => {
             <div className="text-center mt-3">
               <Button>
                 <CSVLink
-                  filename="Today's Busses To Be Paid.csv"
+                  filename={`${church?.name} ${
+                    church?.__typename
+                  } - ${getHumanReadableDate(
+                    today
+                  )} -  Today's Busses To Be Paid.csv`}
                   headers={headers}
                   data={arrivalPaymentData}
                 >

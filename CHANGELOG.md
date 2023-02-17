@@ -1,3 +1,226 @@
+#### 5.9.2 (2023-02-16)
+
+##### Bug Fixes
+
+*  enable reactivation of a member if he was made inactive and then the fellowship was closed ([c1b0e187](https://github.com/firstlovecenter/fl-pastoral-care/commit/c1b0e1872adc10f3c53c577fede20de34f6ffd01))
+*  when a counter counts a bus that is less than 8, the number is instantly zeroed ([6edf1d03](https://github.com/firstlovecenter/fl-pastoral-care/commit/6edf1d03a3ac2e14cf15e1c2d4422ea2a1805678))
+*  change bacentas below 8 text to bacentasThatDidnt bus ([af72ce53](https://github.com/firstlovecenter/fl-pastoral-care/commit/af72ce53ef6d96767266a1d098568375925271a3))
+*  return null for momo Number for apollo cache ([077610d6](https://github.com/firstlovecenter/fl-pastoral-care/commit/077610d689a85066d20b978292f590be1ff13d63))
+*  delete momo number from bacenta when leader is transferred ([746c43c2](https://github.com/firstlovecenter/fl-pastoral-care/commit/746c43c20e61ba99a5ca59862a9d3522897d8e8c))
+
+#### 5.9.1 (2023-02-12)
+
+##### Bug Fixes
+
+*  fix wrongful date when downloading arrivals payment data ([d838b4ab](https://github.com/firstlovecenter/fl-pastoral-care/commit/d838b4abaecf94a8a7e1019a501ad5604f8e2b48))
+
+### 5.9.0 (2023-02-12)
+
+##### Bug Fixes
+
+*  implement sheep seeker searching for churches in stream ([0fae14ac](https://github.com/firstlovecenter/fl-pastoral-care/commit/0fae14acefa69b87b39bd2e83f831a525c84157d))
+*  implement sheep seeker being able to see all fellowships in stream ([3ebbe88b](https://github.com/firstlovecenter/fl-pastoral-care/commit/3ebbe88b5d75922bf94d21caf4ce6d79d4483203))
+
+#### 5.8.10 (2023-02-12)
+
+##### Documentation Changes
+
+*  update CHANGELOG.md ([ef540cad](https://github.com/firstlovecenter/fl-pastoral-care/commit/ef540cadc051fcab7285d00365989cc48408f494))
+*  update CHANGELOG.md ([03870c92](https://github.com/firstlovecenter/fl-pastoral-care/commit/03870c92c3bcabab4bc79e0e4886ea676bb0dc1a))
+*  update CHANGELOG.md ([84f989aa](https://github.com/firstlovecenter/fl-pastoral-care/commit/84f989aacda75c315e9f68e71c5110e49c6b0a70))
+
+##### New Features
+
+*  create custom route path for sheep seeker permissions ([e0a66210](https://github.com/firstlovecenter/fl-pastoral-care/commit/e0a66210356e81bcabd3aebdc7093913d0994bf0))
+
+##### Bug Fixes
+
+*  delete redundant code ([cfe24e29](https://github.com/firstlovecenter/fl-pastoral-care/commit/cfe24e299cb6dae63e1f721273963a4578b3a397))
+*  remove busses with attendance of zero from busses arrived count ([8598aac1](https://github.com/firstlovecenter/fl-pastoral-care/commit/8598aac1cf5ce7416496ca48068ffec6671c63cb))
+*  fix bug where sheep seekers could not access their portal ([9e7ff6a2](https://github.com/firstlovecenter/fl-pastoral-care/commit/9e7ff6a20595c8adfc0703d9ac3eff72d2f4f0db))
+
+#### 5.8.10 (2023-02-12)
+
+##### Documentation Changes
+
+*  update CHANGELOG.md ([ef540cad](https://github.com/firstlovecenter/fl-pastoral-care/commit/ef540cadc051fcab7285d00365989cc48408f494))
+*  update CHANGELOG.md ([03870c92](https://github.com/firstlovecenter/fl-pastoral-care/commit/03870c92c3bcabab4bc79e0e4886ea676bb0dc1a))
+*  update CHANGELOG.md ([84f989aa](https://github.com/firstlovecenter/fl-pastoral-care/commit/84f989aacda75c315e9f68e71c5110e49c6b0a70))
+
+##### New Features
+
+*  create custom route path for sheep seeker permissions ([e0a66210](https://github.com/firstlovecenter/fl-pastoral-care/commit/e0a66210356e81bcabd3aebdc7093913d0994bf0))
+
+##### Bug Fixes
+
+*  remove busses with attendance of zero from busses arrived count ([8598aac1](https://github.com/firstlovecenter/fl-pastoral-care/commit/8598aac1cf5ce7416496ca48068ffec6671c63cb))
+*  fix bug where sheep seekers could not access their portal ([9e7ff6a2](https://github.com/firstlovecenter/fl-pastoral-care/commit/9e7ff6a20595c8adfc0703d9ac3eff72d2f4f0db))
+
+#### 5.8.10 (2023-02-12)
+
+##### Documentation Changes
+
+*  update CHANGELOG.md ([03870c92](https://github.com/firstlovecenter/fl-pastoral-care/commit/03870c92c3bcabab4bc79e0e4886ea676bb0dc1a))
+*  update CHANGELOG.md ([84f989aa](https://github.com/firstlovecenter/fl-pastoral-care/commit/84f989aacda75c315e9f68e71c5110e49c6b0a70))
+
+##### New Features
+
+*  create custom route path for sheep seeker permissions ([e0a66210](https://github.com/firstlovecenter/fl-pastoral-care/commit/e0a66210356e81bcabd3aebdc7093913d0994bf0))
+
+##### Bug Fixes
+
+*  remove busses with attendance of zero from busses arrived count ([8598aac1](https://github.com/firstlovecenter/fl-pastoral-care/commit/8598aac1cf5ce7416496ca48068ffec6671c63cb))
+*  fix bug where sheep seekers could not access their portal ([9e7ff6a2](https://github.com/firstlovecenter/fl-pastoral-care/commit/9e7ff6a20595c8adfc0703d9ac3eff72d2f4f0db))
+
+#### 5.8.10 (2023-02-12)
+
+##### Documentation Changes
+
+*  update CHANGELOG.md ([84f989aa](https://github.com/firstlovecenter/fl-pastoral-care/commit/84f989aacda75c315e9f68e71c5110e49c6b0a70))
+
+##### New Features
+
+*  create custom route path for sheep seeker permissions ([e0a66210](https://github.com/firstlovecenter/fl-pastoral-care/commit/e0a66210356e81bcabd3aebdc7093913d0994bf0))
+
+##### Bug Fixes
+
+*  remove busses with attendance of zero from busses arrived count ([8598aac1](https://github.com/firstlovecenter/fl-pastoral-care/commit/8598aac1cf5ce7416496ca48068ffec6671c63cb))
+*  fix bug where sheep seekers could not access their portal ([9e7ff6a2](https://github.com/firstlovecenter/fl-pastoral-care/commit/9e7ff6a20595c8adfc0703d9ac3eff72d2f4f0db))
+
+#### 5.8.10 (2023-02-12)
+
+##### New Features
+
+*  create custom route path for sheep seeker permissions ([e0a66210](https://github.com/firstlovecenter/fl-pastoral-care/commit/e0a66210356e81bcabd3aebdc7093913d0994bf0))
+
+##### Bug Fixes
+
+*  remove busses with attendance of zero from busses arrived count ([8598aac1](https://github.com/firstlovecenter/fl-pastoral-care/commit/8598aac1cf5ce7416496ca48068ffec6671c63cb))
+*  fix bug where sheep seekers could not access their portal ([9e7ff6a2](https://github.com/firstlovecenter/fl-pastoral-care/commit/9e7ff6a20595c8adfc0703d9ac3eff72d2f4f0db))
+
+#### 5.8.9 (2023-02-09)
+
+##### Documentation Changes
+
+*  update CHANGELOG.md ([1f9906a3](https://github.com/firstlovecenter/fl-pastoral-care/commit/1f9906a3e59f429c5416afe6731d79aa99ea41d3))
+*  update CHANGELOG.md ([c88d3e71](https://github.com/firstlovecenter/fl-pastoral-care/commit/c88d3e7104c824fda52ba9c8ec0a4d9f10bf01d2))
+
+##### Bug Fixes
+
+*  update version for jd-date-utils ([fc9bd616](https://github.com/firstlovecenter/fl-pastoral-care/commit/fc9bd61602989277d13d35d591c8550274b3bd44))
+*  remove error breaking redundant code ([ec558444](https://github.com/firstlovecenter/fl-pastoral-care/commit/ec558444c33d0d5bf0bf6ea0cc61551ba78b1a77))
+*  remove redundant code ([157bd7c1](https://github.com/firstlovecenter/fl-pastoral-care/commit/157bd7c10e826b4b85c15ac1def3d3b758e7f49e))
+*  update auth details for new services ([e47a301c](https://github.com/firstlovecenter/fl-pastoral-care/commit/e47a301cb9ee0c866b4b34eac785b67ab0c68294))
+*  log financial details for debugging purposes ([23264b14](https://github.com/firstlovecenter/fl-pastoral-care/commit/23264b14d52a268cd4a47034cc0d1078fbf7ce1e))
+*  add a message for self banking and receipt submission list when there are no services ([0a63e014](https://github.com/firstlovecenter/fl-pastoral-care/commit/0a63e0141391cad8bcc9ca6275425ca69b320931))
+*  all new bacentas are started with targets ([9b4c30e5](https://github.com/firstlovecenter/fl-pastoral-care/commit/9b4c30e55a3069e7a7388551072e3943ec272f29))
+
+##### Other Changes
+
+* //github.com/firstlovecenter/fl-admin-portal into deploy ([de9090ee](https://github.com/firstlovecenter/fl-pastoral-care/commit/de9090ee25a997663d1dd7f5c4408a478f90c104))
+
+#### 5.8.8 (2023-02-09)
+
+#### 5.8.7 (2023-02-09)
+
+##### Bug Fixes
+
+*  update version for jd-date-utils ([df30cb9b](https://github.com/firstlovecenter/fl-pastoral-care/commit/df30cb9bd8d8f82fd557044201e65e9f37b174e2))
+*  add a message for self banking and receipt submission list when there are no services ([0a63e014](https://github.com/firstlovecenter/fl-pastoral-care/commit/0a63e0141391cad8bcc9ca6275425ca69b320931))
+*  all new bacentas are started with targets ([9b4c30e5](https://github.com/firstlovecenter/fl-pastoral-care/commit/9b4c30e55a3069e7a7388551072e3943ec272f29))
+
+#### 5.8.6 (2023-02-08)
+
+##### Bug Fixes
+
+*  fix bug in setting of swollen sunday targets ([1d249a70](https://github.com/firstlovecenter/fl-pastoral-care/commit/1d249a704a0af0c3bc979316e134a89bb548e714))
+
+#### 5.8.5 (2023-02-07)
+
+#### 5.8.4 (2023-02-07)
+
+#### 5.8.3 (2023-02-07)
+
+#### 5.8.2 (2023-02-07)
+
+##### Bug Fixes
+
+*  update visibility for council admins to view edit member page ([b733a6e2](https://github.com/firstlovecenter/fl-pastoral-care/commit/b733a6e20b457cce2157571406160416ae0670b8))
+
+#### 5.8.1 (2023-02-07)
+
+##### New Features
+
+*  finalise updates for permissions for registering members ([518af29f](https://github.com/firstlovecenter/fl-pastoral-care/commit/518af29f2011566305ab50b82712a97e77494fb1))
+
+##### Bug Fixes
+
+*  update visibility for council admins to view add member page ([f0f8b7c9](https://github.com/firstlovecenter/fl-pastoral-care/commit/f0f8b7c9b30db881233f4a029d18462ab7d5f994))
+*  add permissions for gathering service and stream admins to register members ([e48b88e0](https://github.com/firstlovecenter/fl-pastoral-care/commit/e48b88e0fdca4e13c0abc57e67f9e897bf12f363))
+*  add  permissions for gatheringServiceAdmin and streamAdmins to create and edit members ([fa4b86a1](https://github.com/firstlovecenter/fl-pastoral-care/commit/fa4b86a135187e4e3b933a568c09c58d1fff8a1d))
+*  enable editing of bacenta target after swollen sunday changes final ([43398bff](https://github.com/firstlovecenter/fl-pastoral-care/commit/43398bff5950ed0052b2e95a8557db3c28462d78))
+*  enable editing of bacenta target after swollen sunday changes ([32672a12](https://github.com/firstlovecenter/fl-pastoral-care/commit/32672a12163a5a53a79c29f3cb7b4162f0e8daf3))
+*  re edit name of bussing data file ([f91cba75](https://github.com/firstlovecenter/fl-pastoral-care/commit/f91cba75020d0ae3ee1a651cd35510d204a1d550))
+*  change name of csv sheet for arrivals payment download ([6a5aee90](https://github.com/firstlovecenter/fl-pastoral-care/commit/6a5aee90ffa14865211e6370470e5ee8eac6c89b))
+*  include distinct to prevent adding error in addition ([81c3d433](https://github.com/firstlovecenter/fl-pastoral-care/commit/81c3d433a9cdda490f7c597fda3134eef3b97b33))
+*  fix bug where sontacard does not display numbers ([9a03a4a1](https://github.com/firstlovecenter/fl-pastoral-care/commit/9a03a4a1dd3c0a7a25d5c86d000769d01fa9e7bd))
+*  numberOfUrvans was not appearing due to  misspelling in backend ([53f41e5b](https://github.com/firstlovecenter/fl-pastoral-care/commit/53f41e5beb0973b155044f45eca47bb197aed02c))
+*  change componentTargetIds to include all targets relating to date for said date ([77c62a94](https://github.com/firstlovecenter/fl-pastoral-care/commit/77c62a942a77f08d682e3b2336accbf9d0b2411a))
+*  add componentTargetIds to aggregateTargets and other refinements ([aad695fb](https://github.com/firstlovecenter/fl-pastoral-care/commit/aad695fb47cf1f947fafa44b7332b8dfa5ca4f6c))
+*  change target property on church levels to last swell taregt ([86541034](https://github.com/firstlovecenter/fl-pastoral-care/commit/86541034c42a204409c32d2d5c9268a8c70017f7))
+
+##### Refactors
+
+*  add NoDataComponent to MultiplicationCampaignBankingSlipView ([6ac91f75](https://github.com/firstlovecenter/fl-pastoral-care/commit/6ac91f752beb089599c9a730da321d12b772b3cc))
+
+### 5.8.0 (2023-02-07)
+
+##### New Features
+
+*  finalise updates for permissions for registering members ([de4cbff2](https://github.com/firstlovecenter/fl-pastoral-care/commit/de4cbff26a507305a53384dfc504da065d5e2cec))
+
+##### Bug Fixes
+
+*  add missing permissions for fellowship leaders ([e16b7c1c](https://github.com/firstlovecenter/fl-pastoral-care/commit/e16b7c1ce69997848da4a4c1b42c455e9a2ea913))
+*  add permissions for gathering service and stream admins to register members ([c94faf9e](https://github.com/firstlovecenter/fl-pastoral-care/commit/c94faf9e8299d96de2f2211aeeab98e40ed5bf18))
+*  add  permissions for gatheringServiceAdmin and streamAdmins to create and edit members ([08d6106c](https://github.com/firstlovecenter/fl-pastoral-care/commit/08d6106c7f5e0fd06dac3cc6f37e8ca6faa255f2))
+*  update default bussing cost to be two way instead of one way ([42510815](https://github.com/firstlovecenter/fl-pastoral-care/commit/4251081509d3e34a86de22377de78f913ff32f24))
+
+#### 5.7.1 (2023-01-29)
+
+##### Documentation Changes
+
+*  update README.md ([543cba7c](https://github.com/firstlovecenter/fl-pastoral-care/commit/543cba7cca5093cd2091aef2a774f191616c077f))
+
+##### New Features
+
+*  add a card to show the busses that have arrived ([76992530](https://github.com/firstlovecenter/fl-pastoral-care/commit/7699253047fe077634dd61ede169cc6655ddd8ab))
+*  order bacentas arrived and bacentasUnder8 by attendance and display attendance on card ([7260c2dc](https://github.com/firstlovecenter/fl-pastoral-care/commit/7260c2dc9e98c58ca0d2ec33da044f37f53f0903))
+*  add sheep seeker role card to user dashboard ([6a292242](https://github.com/firstlovecenter/fl-pastoral-care/commit/6a292242263c38c58622ef82aae5637bc2457e7c))
+*  add sheep seeker stream to dashboard church list query ([28cc3e9e](https://github.com/firstlovecenter/fl-pastoral-care/commit/28cc3e9e5ee123b85f23f1aa2bc3b460f06bab77))
+*  remove permissions for a fellowship leader to register members ([d3a113e2](https://github.com/firstlovecenter/fl-pastoral-care/commit/d3a113e279d45f140bade30c196d9a2dadea2999))
+*  allow only sheep seekers add and delete members ([79e1441c](https://github.com/firstlovecenter/fl-pastoral-care/commit/79e1441cca7b936fe6341402834a5e3bf098e44c))
+*  change register member icon ([86da6faf](https://github.com/firstlovecenter/fl-pastoral-care/commit/86da6fafae2ca75619c961a213485a808a2ed39d))
+*  add sheep seeking to campaign list if user has stream or sheep seeking permissions ([ab86620d](https://github.com/firstlovecenter/fl-pastoral-care/commit/ab86620db0d9d85c38673961c91296ec36861be1))
+*  add sheep seeking flow for gathering service ([8dad6e53](https://github.com/firstlovecenter/fl-pastoral-care/commit/8dad6e53c55840d3b2326d74dc8fbef932b9ae4e))
+*  admin-498 add sheep seeking interface for sheep seekers ([a1191b43](https://github.com/firstlovecenter/fl-pastoral-care/commit/a1191b431368061377f9c2082408e40d24d45762))
+*  admin-503 add stream name to swollen sunday template ([ebafa9de](https://github.com/firstlovecenter/fl-pastoral-care/commit/ebafa9deeb8f4abdb9c3376d732f6c1e8fa710db))
+*  update auth private keys for the different services accounts ([95146084](https://github.com/firstlovecenter/fl-pastoral-care/commit/95146084d07a2af43823f71f80aec126849374ff))
+
+##### Bug Fixes
+
+*  fix bug where a user could fill premobilisation multiple times ([74597cff](https://github.com/firstlovecenter/fl-pastoral-care/commit/74597cff15a7bb2efda225e4c047dfeb49c9f7ea))
+*  allow gathering service admin view sheep seeking dashboard ([2dedb808](https://github.com/firstlovecenter/fl-pastoral-care/commit/2dedb808522d3c1105d5039fb27f688264d18a04))
+*  fix bug where gathering service admin coesn't get shepherding control in list of campaigns ([0896a3c1](https://github.com/firstlovecenter/fl-pastoral-care/commit/0896a3c15aa8696f66af4d3055c7d2ce7a406a83))
+*  remove redundant current history in uploadbacenta targets cypher ([b4bd53b6](https://github.com/firstlovecenter/fl-pastoral-care/commit/b4bd53b6b93cf369938913cba4afab447d462f91))
+*  admin-509 fix target sharing ([6c2ccfab](https://github.com/firstlovecenter/fl-pastoral-care/commit/6c2ccfabb57f76fce6a98d2a4905f6bf13712729))
+*  remove option for private car in bussing form ([7ba3f153](https://github.com/firstlovecenter/fl-pastoral-care/commit/7ba3f15376c817da112f0122befe898429e916da))
+*  remove unnecessary throwToSentry call ([b223a20b](https://github.com/firstlovecenter/fl-pastoral-care/commit/b223a20b4874f7009b92129f58bab68f2566d298))
+
+##### Refactors
+
+*  resolve merge conflicts ([33908fac](https://github.com/firstlovecenter/fl-pastoral-care/commit/33908fac8bf1010c1b6c900f535f59b52e47e8bc))
+
 ### 5.7.0 (2023-01-25)
 
 ##### New Features

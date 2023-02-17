@@ -2,7 +2,11 @@ import axios from 'axios'
 import { Context } from '../utils/neo4j-types'
 import { Member } from '../utils/types'
 import { isAuth, rearrangeCypherObject, throwToSentry } from '../utils/utils'
-import { permitAdmin, permitLeaderAdmin } from '../permissions'
+import {
+  permitSheepSeeker,
+  permitAdmin,
+  permitLeaderAdmin,
+} from '../permissions'
 import { RemoveServant } from './make-remove-servants'
 
 import { updateAuthUserConfig } from '../utils/auth0'
@@ -21,7 +25,10 @@ const errorMessage = require('../texts.json').error
 
 const directoryMutation = {
   CreateMember: async (object: any, args: Member, context: Context) => {
-    isAuth(permitLeaderAdmin('Fellowship'), context?.auth.roles)
+    isAuth(
+      [...permitSheepSeeker(), ...permitLeaderAdmin('Fellowship')],
+      context?.auth.roles
+    )
 
     const session = context.executionContext.session()
 
@@ -53,7 +60,6 @@ const directoryMutation = {
       )
 
       const member = rearrangeCypherObject(activateInactiveMemberResponse)
-
       return member
     }
 
@@ -94,7 +100,10 @@ const directoryMutation = {
     args: { id: string; email: string },
     context: Context
   ) => {
-    isAuth(permitAdmin('Fellowship'), context.auth.roles)
+    isAuth(
+      [...permitAdmin('Fellowship'), ...permitSheepSeeker()],
+      context.auth.roles
+    )
 
     const authToken: string = await getAuthToken()
     const session = context.executionContext.session()
@@ -127,7 +136,10 @@ const directoryMutation = {
     },
     context: Context
   ) => {
-    isAuth(permitLeaderAdmin('Stream'), context.auth.roles)
+    isAuth(
+      [...permitLeaderAdmin('Stream'), ...permitSheepSeeker()],
+      context.auth.roles
+    )
     const session = context.executionContext.session()
 
     const memberCheck = rearrangeCypherObject(

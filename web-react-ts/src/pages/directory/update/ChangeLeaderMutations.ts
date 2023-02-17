@@ -61,6 +61,7 @@ export const MAKE_BACENTA_LEADER = gql`
       lastName
       leadsBacenta {
         id
+        momoNumber
         leader {
           id
           firstName

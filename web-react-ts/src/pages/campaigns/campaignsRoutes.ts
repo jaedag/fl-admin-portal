@@ -1,4 +1,8 @@
-import { permitAdmin, permitLeaderAdmin } from 'permission-utils'
+import {
+  permitAdmin,
+  permitLeaderAdmin,
+  permitSheepSeeker,
+} from 'permission-utils'
 import { LazyRouteTypes } from 'global-types'
 import { lazy } from 'react'
 
@@ -217,6 +221,13 @@ const SheepSeekerSelect = lazy(
 
 const StreamSheepSeekerCampaign = lazy(
   () => import('../campaigns/sheep-seeking/stream/StreamSheepSeekerCampaign')
+)
+
+const GatheringServiceSheepSeekerCampaign = lazy(
+  () =>
+    import(
+      '../campaigns/sheep-seeking/gathering-service/GatheringServiceSheepSeekerCampaign'
+    )
 )
 
 const GatheringServiceMultiplicationCampaignServiceForm = lazy(
@@ -628,12 +639,18 @@ export const campaigns: LazyRouteTypes[] = [
     roles: permitAdmin('GatheringService'),
     placeholder: true,
   },
+  {
+    path: '/campaigns/gatheringservice/sheep-seeking',
+    element: GatheringServiceSheepSeekerCampaign,
+    roles: permitAdmin('GatheringService'),
+    placeholder: true,
+  },
 
   //stream routes
   {
     path: '/campaigns/stream',
     element: StreamCampaigns,
-    roles: permitLeaderAdmin('Stream'),
+    roles: [...permitLeaderAdmin('Stream'), ...permitSheepSeeker()],
     placeholder: true,
   },
   {
@@ -705,13 +722,13 @@ export const campaigns: LazyRouteTypes[] = [
   {
     path: '/campaigns/stream/sheepseeker-select',
     element: SheepSeekerSelect,
-    roles: ['adminStream'],
+    roles: permitAdmin('Stream'),
     placeholder: true,
   },
   {
     path: '/campaigns/stream/sheep-seeking',
     element: StreamSheepSeekerCampaign,
-    roles: ['adminStream'],
+    roles: ['adminStream', 'adminGatheringService', 'sheepseekerStream'],
     placeholder: true,
   },
   {

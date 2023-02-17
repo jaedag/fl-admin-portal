@@ -61,7 +61,10 @@ const FormMobilisationSubmission = () => {
         onSubmitProps.setSubmitting(false)
         navigate(`/bacenta/bussing-details`)
       })
-      .catch((error) => alertMsg(error))
+      .catch((error) => {
+        alertMsg(error)
+        onSubmitProps.setSubmitting(false)
+      })
   }
 
   useEffect(() => {

@@ -16,6 +16,7 @@ import {
   checkArrivalTimeFromVehicle,
   checkArrivalTimes,
   checkBacentaMomoDetails,
+  checkIfPreMobilisationFilled,
   checkTransactionId,
   confirmVehicleByAdmin,
   getArrivalsPaymentDataCypher,
@@ -195,6 +196,12 @@ export const arrivalsMutation = {
     await checkServantHasCurrentHistory(session, context, {
       churchId: args.bacentaId,
     })
+    const preMobCheck = rearrangeCypherObject(
+      await session.run(checkIfPreMobilisationFilled, args)
+    )
+    if (preMobCheck.status) {
+      throw new Error('You have already filled the pre-mobilisation form')
+    }
 
     const stream = recordResponse.stream.properties
     const mobilisationEndTime = new Date(
@@ -287,7 +294,7 @@ export const arrivalsMutation = {
       throw new Error('It is past the time to fill your forms. Thank you!')
     }
 
-    const outbound = args.outbound ? 2 : 1
+    const outbound = args.outbound ? 1 : 0.5
     const response = rearrangeCypherObject(
       await session.run(recordVehicleFromBacenta, {
         ...args,

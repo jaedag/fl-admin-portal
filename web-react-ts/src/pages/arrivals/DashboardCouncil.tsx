@@ -160,7 +160,7 @@ const CouncilDashboard = () => {
               noCaption
             />
             <MenuButton
-              title="Bacentas Below 8"
+              title={`Bacentas That Didn't Bus`}
               onClick={() => navigate('/arrivals/bacentas-below-8')}
               number={council?.bacentasBelow8Count.toString()}
               iconBg
@@ -187,6 +187,13 @@ const CouncilDashboard = () => {
               <MenuButton
                 title="Members That Have Arrived"
                 number={council?.bussingMembersHaveArrivedCount.toString()}
+                color="green"
+                iconBg
+                noCaption
+              />
+              <MenuButton
+                title="Busses That Have Arrived"
+                number={council?.bussesThatArrivedCount.toString()}
                 color="green"
                 iconBg
                 noCaption

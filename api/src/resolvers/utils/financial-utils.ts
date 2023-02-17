@@ -34,9 +34,7 @@ export const padNumbers = (number: number): string => {
 }
 
 export const getStreamFinancials = (stream: StreamOptions) => {
-  const merchantId = process.env.PAYSWITCH_MERCHANT_ID
-  let auth = process.env.PAYSTACK_PRIVATE_KEY
-  const passcode = process.env.PAYSWITCH_PASSCODE
+  let auth
 
   switch (stream.toLowerCase()) {
     case 'anagkazo encounter':
@@ -58,5 +56,5 @@ export const getStreamFinancials = (stream: StreamOptions) => {
       break
   }
 
-  return { merchantId, auth, passcode }
+  return { auth }
 }

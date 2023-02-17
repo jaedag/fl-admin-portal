@@ -167,6 +167,7 @@ export const parseForCache = (
   servant[`${verb}`].push({
     id: church.id,
     name: church.name,
+    momoNumber: null,
     [`${role}`]: {
       id: servant.id,
       firstName: servant.firstName,

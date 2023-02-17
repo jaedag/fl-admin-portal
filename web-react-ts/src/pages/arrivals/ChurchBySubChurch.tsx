@@ -85,7 +85,7 @@ const ChurchBySubChurch = () => {
                       color: 'yellow',
                     },
                     {
-                      title: 'Bacentas Below 8',
+                      title: `Bacentas That Didn't Bus`,
                       number: subChurch.bacentasBelow8Count,
                       color: 'red',
                     },
@@ -104,6 +104,11 @@ const ChurchBySubChurch = () => {
                     {
                       title: 'Members Arrived',
                       number: subChurch.bussingMembersHaveArrivedCount,
+                      color: 'green',
+                    },
+                    {
+                      title: 'Busses Arrived',
+                      number: subChurch.bussesThatArrivedCount,
                       color: 'green',
                     },
                   ]

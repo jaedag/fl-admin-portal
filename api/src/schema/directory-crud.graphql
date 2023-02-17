@@ -362,8 +362,7 @@ extend type Mutation {
     @cypher(
       statement: """
       CREATE (bacenta:Bacenta:IC:Active {name:$name})
-        SET	bacenta.id = apoc.create.uuid(),
-        bacenta.target = 10
+        SET	bacenta.id = apoc.create.uuid()
 
       WITH bacenta
        MATCH (leader:Active:Member {id:$leaderId})

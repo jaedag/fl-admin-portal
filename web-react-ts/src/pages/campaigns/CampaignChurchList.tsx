@@ -75,6 +75,7 @@ const CampaignChurchList = ({ data, page }: SwollenSundayChurchProps) => {
                 iconBg={true}
                 noCaption
                 iconCaption={church.__typename}
+                color={'campaigns'}
                 onClick={() => {
                   clickCard(church)
                   setUserChurch(church)
@@ -84,11 +85,12 @@ const CampaignChurchList = ({ data, page }: SwollenSundayChurchProps) => {
                     )
                   } else if (page === 'swollen-sunday-dashboard') {
                     navigate(`/campaigns/stream/swollen-sunday`)
+                  }else if (page === 'sheep-seeking') {
+                    navigate(`/campaigns/stream/sheep-seeking`)
                   } else {
                     navigate('#')
                   }
                 }}
-                color={'campaigns'}
               />
             )
           })}

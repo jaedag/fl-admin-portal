@@ -11,6 +11,7 @@ import { useNavigate } from 'react-router'
 import { FELLOWSHIP_BANKING_SLIP_QUERIES } from '../../ServicesQueries'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { ServiceRecord } from 'global-types'
+import NoDataComponent from 'pages/arrivals/CompNoData'
 
 const FellowshipBankingSlipView = () => {
   const { clickCard, fellowshipId } = useContext(ChurchContext)
@@ -31,55 +32,63 @@ const FellowshipBankingSlipView = () => {
           <p>Banking Code: {fellowship?.bankingCode}</p>
         </PlaceholderCustom>
 
-        {data?.fellowships[0]?.services.map((service: ServiceRecord) => {
-          if (service.noServiceReason) {
-            return null
-          }
+        {data?.fellowships[0]?.services.map(
+          (service: ServiceRecord, index: number) => {
+            if (service.noServiceReason) {
+              if (index === 0) {
+                return (
+                  <NoDataComponent text="No services to bank. When you have a service, it will show up here" />
+                )
+              }
 
-          return (
-            <Card
-              key={service.id}
-              className="mb-2"
-              onClick={() => {
-                clickCard(service)
-                if (service.transactionStatus === 'pending') {
-                  navigate('/services/fellowship/self-banking')
-                  return
-                }
-                !service.bankingProof
-                  ? navigate('/fellowship/banking-slip/submission')
-                  : navigate('/fellowship/service-details')
-              }}
-            >
-              <Card.Header>
-                <b>{parseDate(service.serviceDate.date)}</b>
-              </Card.Header>
-              <Card.Body>
-                <Row>
-                  <Col>
-                    <span>Offering: {service.income}</span>
-                  </Col>
-                  <Col className="col-auto">
-                    {service?.transactionStatus === 'pending' ? (
-                      <span className="text-warning fw-bold">
-                        <XCircleFill color="yellow" size={35} />{' '}
-                        {capitalise(service.transactionStatus)}
-                      </span>
-                    ) : service?.bankingProof ? (
-                      <span className="text-success fw-bold">
-                        <CheckCircleFill color="green" size={35} /> Filled
-                      </span>
-                    ) : (
-                      <span className="text-danger fw-bold">
-                        <XCircleFill color="red" size={35} /> Not Filled
-                      </span>
-                    )}
-                  </Col>
-                </Row>
-              </Card.Body>
-            </Card>
-          )
-        })}
+              return null
+            }
+
+            return (
+              <Card
+                key={service.id}
+                className="mb-2"
+                onClick={() => {
+                  clickCard(service)
+                  if (service.transactionStatus === 'pending') {
+                    navigate('/services/fellowship/self-banking')
+                    return
+                  }
+                  !service.bankingProof
+                    ? navigate('/fellowship/banking-slip/submission')
+                    : navigate('/fellowship/service-details')
+                }}
+              >
+                <Card.Header>
+                  <b>{parseDate(service.serviceDate.date)}</b>
+                </Card.Header>
+                <Card.Body>
+                  <Row>
+                    <Col>
+                      <span>Offering: {service.income}</span>
+                    </Col>
+                    <Col className="col-auto">
+                      {service?.transactionStatus === 'pending' ? (
+                        <span className="text-warning fw-bold">
+                          <XCircleFill color="yellow" size={35} />{' '}
+                          {capitalise(service.transactionStatus)}
+                        </span>
+                      ) : service?.bankingProof ? (
+                        <span className="text-success fw-bold">
+                          <CheckCircleFill color="green" size={35} /> Filled
+                        </span>
+                      ) : (
+                        <span className="text-danger fw-bold">
+                          <XCircleFill color="red" size={35} /> Not Filled
+                        </span>
+                      )}
+                    </Col>
+                  </Row>
+                </Card.Body>
+              </Card>
+            )
+          }
+        )}
 
         {loading &&
           placeholder.map((service, index) => {

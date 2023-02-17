@@ -1,5 +1,4 @@
 const servantCypher = {
-  // Remove Fellowship Leader Connection
   disconnectChurchLeader: `
    MATCH (church {id: $churchId}) 
    WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:GatheringService OR church:Sonta OR church:Ministry
@@ -8,7 +7,11 @@ const servantCypher = {
    DELETE oldLeads
    
    WITH church, leader
-   
+
+   OPTIONAL MATCH (bacenta:Bacenta {id: $churchId})
+   REMOVE bacenta.momoNumber
+
+   WITH church,leader
    
    OPTIONAL MATCH (church)-[oldHistory:CURRENT_HISTORY]->(:ServiceLog)<-[oldLeaderHistory:CURRENT_HISTORY]-(leader)
    DELETE oldHistory, oldLeaderHistory
@@ -163,8 +166,16 @@ const servantCypher = {
    `,
 
   makeHistoryServiceLog: `
+   MATCH (swellDate:SwellDate)
+      WITH swellDate ORDER BY swellDate.date DESC LIMIT 1
    MATCH (log:HistoryLog {id: $logId})
    SET log:ServiceLog
+
+   WITH log, swellDate
+   CREATE (target:Target {id: apoc.create.uuid()})
+      SET target.target = 8,
+      target.date = swellDate.date
+   MERGE (log)-[:HAS_TARGET]->(target)
    RETURN log AS log
    `,
 
@@ -189,12 +200,20 @@ const servantCypher = {
    MERGE (leader)-[:CURRENT_HISTORY]->(log)
    MERGE (church)-[:CURRENT_HISTORY]->(log)
    
-   WITH church
+   WITH church, log
       MATCH (oldLeader:Member {id: $oldServantId})
       MERGE (oldLeader)-[:OLD_HISTORY]->(log)
    
    WITH church
-   
+   MATCH (swellDate:SwellDate)
+   OPTIONAL MATCH (isBacenta:Bacenta {id: $churchId})-[:CURRENT_HISTORY]->(log:ServiceLog)
+   WITH church, log, isBacenta, swellDate ORDER BY swellDate.date DESC LIMIT 1
+   MATCH (target:Target {code: isBacenta.code + '-' + toString(swellDate.date)})
+   MERGE (log)-[:HAS_TARGET]->(target)
+     SET target.target = 0,
+     target.id = apoc.create.uuid(),
+     target.date = swellDate.date
+
    RETURN church.id AS id
    `,
 

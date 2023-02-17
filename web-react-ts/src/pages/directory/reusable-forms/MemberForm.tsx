@@ -340,7 +340,13 @@ const MemberForm = ({
                 </div>
                 <Col>
                   <SubmitButton formik={formik} />
-                  <RoleView roles={permitAdmin('Stream')}>
+                  <RoleView
+                    roles={[
+                      'sheepseekerStream',
+                      'adminStream',
+                      'adminGatheringService',
+                    ]}
+                  >
                     <Button
                       onClick={() => togglePopup()}
                       className={`btn-graphs btn dark image mt-3`}

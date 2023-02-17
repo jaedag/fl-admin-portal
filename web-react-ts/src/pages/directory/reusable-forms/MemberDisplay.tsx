@@ -16,9 +16,9 @@ import DetailsCard from 'components/card/DetailsCard'
 import EditButton from 'components/buttons/EditButton'
 import RoleView from 'auth/RoleView'
 import ViewAll from 'components/buttons/ViewAll'
-import { permitAdmin } from 'permission-utils'
 import CloudinaryImage from 'components/CloudinaryImage'
 import { Member } from 'global-types'
+import { permitAdmin, permitLeader, permitSheepSeeker } from 'permission-utils'
 
 const MemberDisplay = ({ memberId }: { memberId: string }) => {
   const {
@@ -48,7 +48,13 @@ const MemberDisplay = ({ memberId }: { memberId: string }) => {
 
   return (
     <Container>
-      <RoleView roles={permitAdmin('Constituency')}>
+      <RoleView
+        roles={[
+          ...permitSheepSeeker(),
+          ...permitAdmin('Constituency'),
+          ...permitLeader('Fellowship'),
+        ]}
+      >
         <EditButton link="/member/editmember" />
       </RoleView>
 
