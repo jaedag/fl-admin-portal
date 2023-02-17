@@ -87,7 +87,7 @@ export const getLastServiceRecord = `
 MATCH (record:ServiceRecord {id: $serviceRecordId})-[:SERVICE_HELD_ON]->(date:TimeGraph)
 MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(church) WHERE church:Fellowship OR church:Constituency OR church:Council
 MATCH (church)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(otherRecords:ServiceRecord)-[:SERVICE_HELD_ON]->(otherDate:TimeGraph)
-WHERE NOT (otherRecords:NoService) AND otherDate.date.week < date.date.week
+WHERE NOT (otherRecords:NoService) AND duration.between(otherDate.date, date.date).weeks < 52
 
 WITH DISTINCT record,otherRecords ORDER BY otherRecords.createdAt DESC LIMIT 2
 WITH collect(otherRecords.id) AS recordIds, record.id AS currentServiceId

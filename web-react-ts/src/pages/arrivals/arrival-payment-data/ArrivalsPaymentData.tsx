@@ -132,7 +132,7 @@ const ArrivalsPaymentData = () => {
                   filename={`${church?.name} ${
                     church?.__typename
                   } - ${getHumanReadableDate(
-                    new Date().toLocaleDateString()
+                    today
                   )} -  Today's Busses To Be Paid.csv`}
                   headers={headers}
                   data={arrivalPaymentData}

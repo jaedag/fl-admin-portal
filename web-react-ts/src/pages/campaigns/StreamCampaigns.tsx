@@ -8,6 +8,8 @@ import { MemberContext } from 'contexts/MemberContext'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import HeadingSecondary from 'components/HeadingSecondary'
 import CampaignsWithIcons from './components/buttons/CampaignsWithIcons'
+import RoleView from 'auth/RoleView'
+import { permitLeaderAdmin, permitSheepSeeker } from 'permission-utils'
 
 const StreamCampaigns = () => {
   const { streamId } = useContext(ChurchContext)
@@ -30,13 +32,22 @@ const StreamCampaigns = () => {
             <HeadingSecondary>SSMG Campaigns</HeadingSecondary>
           </div>
           <div className="d-grid gap-2 mt-4 text-center px-4">
-            {campaigns?.map((campaign: string, index: number) => (
-              <CampaignsWithIcons
-                key={index}
-                campaign={campaign}
-                churchLevel="Stream"
-              />
-            ))}
+            {campaigns?.map((campaign: string, index: number) => {
+              let roles = permitLeaderAdmin('Stream')
+
+              if (campaign === 'Sheep Seeking') {
+                roles = [...roles, ...permitSheepSeeker()]
+              }
+              return (
+                <RoleView roles={roles}>
+                  <CampaignsWithIcons
+                    key={index}
+                    campaign={campaign}
+                    churchLevel="Stream"
+                  />
+                </RoleView>
+              )
+            })}
           </div>
         </Container>
       </div>

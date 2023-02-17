@@ -124,6 +124,7 @@ export const permitMe = (churchLevel: ChurchLevel): Role[] => {
     ...permitArrivals(churchLevel),
     ...permitArrivalsHelpers(churchLevel),
     ...permitTellerStream(),
+    ...permitSheepSeeker(),
   ]
 }
 

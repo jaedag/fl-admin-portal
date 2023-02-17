@@ -117,10 +117,10 @@ RETURN "success" as result
 `
 export const aggregateTargetsCypher = `
 MATCH (bacenta:Bacenta)
-//constituency aggregation
+
 WITH bacenta as lowerChurch
-MATCH (lowerChurch)<-[:HAS]-(higherChurch)
-MATCH (lowerChurch)-[:CURRENT_HISTORY|HAS_TARGET|HAS*2..3]->(target:Target)
+MATCH (lowerChurch)<-[:HAS]-(higherChurch:Constituency)
+MATCH (lowerChurch)-[:CURRENT_HISTORY]->(lowerLog:ServiceLog)-[:HAS_TARGET]->(target:Target)
 WHERE target.date = date($swellDate)
 
 WITH DISTINCT target as lowerTarget, higherChurch
@@ -139,10 +139,9 @@ WITH DISTINCT target, higherChurch
 MATCH (higherChurch)-[:CURRENT_HISTORY]->(log:ServiceLog)
 MERGE (log)-[:HAS_TARGET]->(target)
 
-//council aggregation
 WITH higherChurch as lowerChurch
-MATCH (lowerChurch)<-[:HAS]-(higherChurch)
-MATCH (lowerChurch)-[:CURRENT_HISTORY|HAS_TARGET|HAS*2..4]->(target:Target)
+MATCH (lowerChurch)<-[:HAS]-(higherChurch:Council)
+MATCH (lowerChurch)-[:CURRENT_HISTORY]->(lowerLog:ServiceLog)-[:HAS_TARGET]->(target:Target)
 WHERE target.date = date($swellDate)
 
 WITH DISTINCT target as lowerTarget, higherChurch
@@ -161,10 +160,9 @@ WITH DISTINCT target, higherChurch
 MATCH (higherChurch)-[:CURRENT_HISTORY]->(log:ServiceLog)
 MERGE (log)-[:HAS_TARGET]->(target)
 
-//stream aggregation
 WITH higherChurch as lowerChurch
-MATCH (lowerChurch)<-[:HAS]-(higherChurch)
-MATCH (lowerChurch)-[:CURRENT_HISTORY|HAS_TARGET|HAS*2..5]->(target:Target)
+MATCH (lowerChurch)<-[:HAS]-(higherChurch:Stream)
+MATCH (lowerChurch)-[:CURRENT_HISTORY]->(lowerLog:ServiceLog)-[:HAS_TARGET]->(target:Target)
 WHERE target.date = date($swellDate)
 
 WITH DISTINCT target as lowerTarget, higherChurch
@@ -183,10 +181,9 @@ WITH DISTINCT target, higherChurch
 MATCH (higherChurch)-[:CURRENT_HISTORY]->(log:ServiceLog)
 MERGE (log)-[:HAS_TARGET]->(target)
 
-//gatheringService
 WITH higherChurch as lowerChurch
-MATCH (lowerChurch)<-[:HAS]-(higherChurch)
-MATCH (lowerChurch)-[:CURRENT_HISTORY|HAS_TARGET|HAS*2..6]->(target:Target)
+MATCH (lowerChurch)<-[:HAS]-(higherChurch:GatheringService)
+MATCH (lowerChurch)-[:CURRENT_HISTORY]->(lowerLog:ServiceLog)-[:HAS_TARGET]->(target:Target)
 WHERE target.date = date($swellDate)
 
 WITH DISTINCT target as lowerTarget, higherChurch
@@ -205,10 +202,9 @@ WITH DISTINCT target, higherChurch
 MATCH (higherChurch)-[:CURRENT_HISTORY]->(log:ServiceLog)
 MERGE (log)-[:HAS_TARGET]->(target)
 
-//oversight
 WITH higherChurch as lowerChurch
-MATCH (lowerChurch)<-[:HAS]-(higherChurch)
-MATCH (lowerChurch)-[:CURRENT_HISTORY|HAS_TARGET|HAS*2..7]->(target:Target)
+MATCH (lowerChurch)<-[:HAS]-(higherChurch:Oversight)
+MATCH (lowerChurch)-[:CURRENT_HISTORY]->(lowerLog:ServiceLog)-[:HAS_TARGET]->(target:Target)
 WHERE target.date = date($swellDate)
 
 WITH DISTINCT target as lowerTarget, higherChurch

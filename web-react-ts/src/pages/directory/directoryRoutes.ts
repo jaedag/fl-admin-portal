@@ -290,7 +290,7 @@ export const directory: LazyRouteTypes[] = [
   {
     path: '/member/editmember',
     element: UpdateMember,
-    roles: ['sheepseekerStream', 'adminStream', 'adminGatheringService'],
+    roles: [...permitLeaderAdmin('Fellowship'), ...permitSheepSeeker()],
     placeholder: true,
   },
 

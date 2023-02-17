@@ -7,6 +7,7 @@ import { ChurchContext } from 'contexts/ChurchContext'
 import { ServiceRecord } from 'global-types'
 import { capitalise, throwToSentry } from 'global-utils'
 import { parseDate } from 'jd-date-utils'
+import NoDataComponent from 'pages/arrivals/CompNoData'
 import { useContext } from 'react'
 import { Card, Col, Container, Row } from 'react-bootstrap'
 import { useNavigate } from 'react-router'
@@ -85,6 +86,12 @@ const SelfBankingList = ({
 
       {church?.services?.map((service: ServiceRecord, index: number) => {
         if (service.noServiceReason || service.bankingSlip) {
+          if (index === 0) {
+            return (
+              <NoDataComponent text="No services to bank. When you have a service, it will show up here" />
+            )
+          }
+
           return null
         }
 

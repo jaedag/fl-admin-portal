@@ -85,7 +85,7 @@ const ChurchBySubChurch = () => {
                       color: 'yellow',
                     },
                     {
-                      title: 'Bacentas Below 8',
+                      title: `Bacentas That Didn't Bus`,
                       number: subChurch.bacentasBelow8Count,
                       color: 'red',
                     },

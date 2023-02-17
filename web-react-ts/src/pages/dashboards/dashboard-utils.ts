@@ -13,6 +13,7 @@ import {
   permitArrivalsHelpers,
   permitLeaderAdmin,
   permitMe,
+  permitSheepSeeker,
   permitTellerStream,
 } from 'permission-utils'
 
@@ -48,7 +49,7 @@ export const menuItems: MenuItem[] = [
   {
     name: 'Campaigns',
     to: '/campaigns/churchlist',
-    roles: permitLeaderAdmin('Fellowship'),
+    roles: [...permitLeaderAdmin('Fellowship'), ...permitSheepSeeker()],
   },
   {
     name: 'Maps',
@@ -495,7 +496,7 @@ export const getServantRoles = (servant: MemberWithChurches) => {
       number: servant?.isSheepSeekerForStream?.length,
       link: authorisedLink(
         servant,
-        permitMe('Stream'),
+        permitSheepSeeker(),
         `campaigns/stream/sheep-seeking`
       ),
     })

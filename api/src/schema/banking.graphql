@@ -111,12 +111,7 @@ extend type Council {
         WITH DISTINCT constituencies, this
          MATCH (constituencies)<-[:HAS]-(this)
 
-      WITH COUNT(DISTINCT constituencies) as count
-       RETURN
-       CASE
-       WHEN count < 1 THEN null
-       ELSE count
-       END AS result
+      RETURN COUNT(DISTINCT constituencies) as count
       """
     )
   constituencyBankingDefaultersThisWeek: [Constituency!]!

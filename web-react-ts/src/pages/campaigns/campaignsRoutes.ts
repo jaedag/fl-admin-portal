@@ -1,4 +1,8 @@
-import { permitAdmin, permitLeaderAdmin } from 'permission-utils'
+import {
+  permitAdmin,
+  permitLeaderAdmin,
+  permitSheepSeeker,
+} from 'permission-utils'
 import { LazyRouteTypes } from 'global-types'
 import { lazy } from 'react'
 
@@ -646,7 +650,7 @@ export const campaigns: LazyRouteTypes[] = [
   {
     path: '/campaigns/stream',
     element: StreamCampaigns,
-    roles: permitLeaderAdmin('Stream'),
+    roles: [...permitLeaderAdmin('Stream'), ...permitSheepSeeker()],
     placeholder: true,
   },
   {

@@ -207,7 +207,7 @@ CREATE (member:Active:Member:IDL {whatsappNumber:$whatsappNumber})
 export const activateInactiveMember = `
 MATCH (member:Inactive:Member {id: $id})
 MATCH (fellowship:Fellowship {id: $fellowship})
-MATCH (member)-[r1:BELONGS_TO]->(oldChurch:Fellowship)
+MATCH (member)-[r1:BELONGS_TO]->(oldChurch) WHERE oldChurch:Fellowship OR oldChurch:ClosedFellowship
 MATCH (member)-[r2:HAS_MARITAL_STATUS]-> (maritalStatus)
 MATCH  (member)-[r3:WAS_BORN_ON]->(date)
 DELETE r1, r2, r3
