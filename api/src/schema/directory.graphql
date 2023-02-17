@@ -1005,6 +1005,13 @@ type Sonta {
       RETURN DISTINCT toLower(stream.name)
       """
     )
+   memberCount: Int!
+    @cypher(
+      statement: """
+      MATCH (this)<-[:BELONGS_TO]-(members:Active:Member)
+      RETURN COUNT(DISTINCT members)
+      """
+    )
   members: [Member!]!
   leader: Member @relationship(type: "LEADS", direction: IN)
   basonta: [Basonta!]! @relationship(type: "HAS", direction: OUT)
