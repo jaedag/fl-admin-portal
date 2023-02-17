@@ -56,7 +56,7 @@ type FellowshipFormProps = {
 const FellowshipForm = (props: FellowshipFormProps) => {
   const { fellowshipId, councilId, clickCard } = useContext(ChurchContext)
   const { togglePopup, isOpen } = usePopup()
-  const { theme } = useContext(MemberContext)
+  const { theme, currentUser } = useContext(MemberContext)
   const navigate = useNavigate()
 
   const { data, error } = useQuery(GET_COUNCIL_CONSTITUENCIES, {
@@ -134,7 +134,10 @@ const FellowshipForm = (props: FellowshipFormProps) => {
                   {/* <!-- Basic Info Div --> */}
                   <Col className="mb-2">
                     <Row className="form-row">
-                      <RoleView roles={permitAdmin('Constituency')}>
+                      <RoleView
+                        roles={permitAdmin('Constituency')}
+                        verifyNotId={currentUser.id}
+                      >
                         <Col>
                           <Select
                             label={`Constituency`}
@@ -167,7 +170,10 @@ const FellowshipForm = (props: FellowshipFormProps) => {
                     </Row>
 
                     <Row className="form-row">
-                      <RoleView roles={permitAdmin('Constituency')}>
+                      <RoleView
+                        roles={permitAdmin('Constituency')}
+                        verifyNotId={currentUser.id}
+                      >
                         <Col sm={12}>
                           <Input
                             name="name"
@@ -194,7 +200,10 @@ const FellowshipForm = (props: FellowshipFormProps) => {
                           />
                         </Col>
                       </RoleView>
-                      <RoleView roles={permitAdmin('Constituency')}>
+                      <RoleView
+                        roles={permitAdmin('Constituency')}
+                        verifyNotId={currentUser.id}
+                      >
                         <Col sm={12}>
                           <SearchMember
                             name="leaderId"
