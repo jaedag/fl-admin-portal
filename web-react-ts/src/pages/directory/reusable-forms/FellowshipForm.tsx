@@ -134,10 +134,7 @@ const FellowshipForm = (props: FellowshipFormProps) => {
                   {/* <!-- Basic Info Div --> */}
                   <Col className="mb-2">
                     <Row className="form-row">
-                      <RoleView
-                        roles={permitAdmin('Constituency')}
-                        verifyNotId={currentUser.id}
-                      >
+                      <RoleView roles={permitAdmin('Constituency')}>
                         <Col>
                           <Select
                             label={`Constituency`}
@@ -170,10 +167,7 @@ const FellowshipForm = (props: FellowshipFormProps) => {
                     </Row>
 
                     <Row className="form-row">
-                      <RoleView
-                        roles={permitAdmin('Constituency')}
-                        verifyNotId={currentUser.id}
-                      >
+                      <RoleView roles={permitAdmin('Constituency')}>
                         <Col sm={12}>
                           <Input
                             name="name"
@@ -200,10 +194,7 @@ const FellowshipForm = (props: FellowshipFormProps) => {
                           />
                         </Col>
                       </RoleView>
-                      <RoleView
-                        roles={permitAdmin('Constituency')}
-                        verifyNotId={currentUser.id}
-                      >
+                      <RoleView roles={permitAdmin('Constituency')}>
                         <Col sm={12}>
                           <SearchMember
                             name="leaderId"
