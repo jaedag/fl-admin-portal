@@ -1027,6 +1027,7 @@ type Basonta {
   sonta: Sonta @relationship(type: "HAS", direction: IN)
   historyLogs: [HistoryLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
   serviceLogs: [ServiceLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
+<<<<<<< HEAD
 }
 
 type Hub {
@@ -1039,6 +1040,20 @@ type Hub {
   serviceLogs: [ServiceLog!]! @relationship(type:"HAS_HISTORY", direction: OUT)
 }
 
+=======
+}
+
+type Hub {
+  id: ID @id
+  name: String!
+  leader: Member @relationship(type: "LEADS", direction: IN)
+  history: [HistoryLog!]! @relationship(type:"HAS_HISTORY", direction: OUT)
+  sonta: [Sonta!]! @relationship(type: "HAS", direction: OUT)
+  ministry: Ministry @relationship(type:"HAS", direction: IN)
+  serviceLogs: [ServiceLog!]! @relationship(type:"HAS_HISTORY", direction: OUT)
+}
+
+>>>>>>> 2bf833712dea4488a2bcb0d288f4051928afa4b6
 type Federalministry {
   id: ID @id
   name: String!
