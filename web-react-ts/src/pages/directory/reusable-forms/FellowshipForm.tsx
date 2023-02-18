@@ -53,10 +53,26 @@ type FellowshipFormProps = {
   ) => void
 }
 
+const VerifyNotMe = ({
+  leaderId,
+  children,
+}: {
+  leaderId: string
+  children: JSX.Element
+}) => {
+  const { currentUser } = useContext(MemberContext)
+
+  if (currentUser?.id === leaderId) {
+    return <></>
+  }
+
+  return children
+}
+
 const FellowshipForm = (props: FellowshipFormProps) => {
   const { fellowshipId, councilId, clickCard } = useContext(ChurchContext)
-  const { togglePopup, isOpen } = usePopup()
   const { theme } = useContext(MemberContext)
+  const { togglePopup, isOpen } = usePopup()
   const navigate = useNavigate()
 
   const { data, error } = useQuery(GET_COUNCIL_CONSTITUENCIES, {
@@ -168,44 +184,50 @@ const FellowshipForm = (props: FellowshipFormProps) => {
 
                     <Row className="form-row">
                       <RoleView roles={permitAdmin('Constituency')}>
-                        <Col sm={12}>
-                          <Input
-                            name="name"
-                            label="Name of Fellowship"
-                            placeholder="Name of Fellowship"
-                          />
-                        </Col>
+                        <VerifyNotMe leaderId={props.initialValues.leaderId}>
+                          <>
+                            <Col sm={12}>
+                              <Input
+                                name="name"
+                                label="Name of Fellowship"
+                                placeholder="Name of Fellowship"
+                              />
+                            </Col>
 
-                        <Col sm={12}>
-                          <Select
-                            label="Meeting Day"
-                            name="meetingDay"
-                            options={SERVICE_DAY_OPTIONS}
-                            defaultOption="Pick a Service Day"
-                          />
-                        </Col>
+                            <Col sm={12}>
+                              <Select
+                                label="Meeting Day"
+                                name="meetingDay"
+                                options={SERVICE_DAY_OPTIONS}
+                                defaultOption="Pick a Service Day"
+                              />
+                            </Col>
 
-                        <Col sm={12}>
-                          <Select
-                            label="Vacation Status"
-                            name="vacationStatus"
-                            options={VACATION_OPTIONS}
-                            defaultOption="Select Vacation Status"
-                          />
-                        </Col>
+                            <Col sm={12}>
+                              <Select
+                                label="Vacation Status"
+                                name="vacationStatus"
+                                options={VACATION_OPTIONS}
+                                defaultOption="Select Vacation Status"
+                              />
+                            </Col>
+                          </>
+                        </VerifyNotMe>
                       </RoleView>
                       <RoleView roles={permitAdmin('Constituency')}>
-                        <Col sm={12}>
-                          <SearchMember
-                            name="leaderId"
-                            label="Fellowship Leader"
-                            initialValue={props.initialValues.leaderName}
-                            placeholder="Select a Leader"
-                            setFieldValue={formik.setFieldValue}
-                            aria-describedby="Member Search Box"
-                            error={formik.errors.leaderId}
-                          />
-                        </Col>
+                        <VerifyNotMe leaderId={props.initialValues.leaderId}>
+                          <Col sm={12}>
+                            <SearchMember
+                              name="leaderId"
+                              label="Fellowship Leader"
+                              initialValue={props.initialValues.leaderName}
+                              placeholder="Select a Leader"
+                              setFieldValue={formik.setFieldValue}
+                              aria-describedby="Member Search Box"
+                              error={formik.errors.leaderId}
+                            />
+                          </Col>
+                        </VerifyNotMe>
                       </RoleView>
                     </Row>
                     <small className="text-muted">
