@@ -1015,7 +1015,7 @@ type Sonta {
   leader: Member @relationship(type: "LEADS", direction: IN)
   basonta: [Basonta!]! @relationship(type: "HAS", direction: OUT)
   history: [HistoryLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
-  hub: Hub @relationship(type: "HAS", direction: IN)
+  hub: [Hub!]! @relationship(type: "HAS", direction: IN)
   serviceLogs: [ServiceLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
 }
 
