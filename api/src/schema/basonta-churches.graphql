@@ -28,7 +28,7 @@ extend type Mutation {
       RETURN federalMinistry
       """
     )
-  CreateMinistry(name: String!, leaderId: ID!, streamId: ID!): Ministry
+  CreateMinistry(name: String!, leaderId: ID!, streamId: ID!, federalMinistryId:ID!): Ministry
     @auth(rules: [{ roles: ["adminGatheringService", "adminStream"] }])
     @cypher(
       statement: """
@@ -38,6 +38,7 @@ extend type Mutation {
       WITH ministry
       MATCH (leader:Active:Member {id:$leaderId})
       MATCH (stream:Stream {id:$streamId})
+      MATCH (federalMinistry:Federalministry {id:$federalMinistryId})
       MATCH (currentUser:Active:Member {auth_id:$auth.jwt.sub})
       UNWIND LABELS(stream) as stream_label
       SET ministry.name = stream_label + ' ' +  ministry.name 
@@ -50,6 +51,7 @@ extend type Mutation {
 
       MERGE (stream)-[:HAS]->(ministry)
       MERGE (leader)-[:LEADS]->(ministry)
+      MERGE (federalMinistry)-[:HAS]->(ministry)
 
       MERGE (date:TimeGraph {date: date()})
       WITH ministry, log
@@ -163,6 +165,7 @@ extend type Mutation{
     ministryId: ID!, 
     streamId: ID!,
     ministryName: String!
+    federalMinistryId: ID!
   ): Ministry
     @auth(rules: [
       {
@@ -178,9 +181,11 @@ extend type Mutation{
           CALL {
             WITH ministry
               MATCH (stream:Stream {id:$streamId})
-              OPTIONAL MATCH (stream)<-[r:HAS]-()
+              MATCH (federalMinistry:Federalministry {id:$federalMinistryId})
+              OPTIONAL MATCH (ministry)-[r:HAS]->()
               DELETE r
               MERGE (stream)-[:HAS]->(ministry)
+              MERGE (federalMinistry)-[:HAS]->(ministry)
             RETURN COUNT(ministry)
           }
       MATCH (ministry)<-[:LEADS]-(leader:Active:Member)
@@ -256,7 +261,7 @@ extend type Mutation {
       statement:"""
       MATCH (federalMinistry:Federalministry {id:$federalMinistryId})
       MATCH (admin:Active:Member {auth_id: $auth.jwt.sub})
-      MATCH (hub)<-[:HAS]-(gatheringService:GatheringService)
+      MATCH (federalMinistry)<-[:HAS]-(gatheringService:GatheringService)
 
       CREATE (log:HistoryLog {id:apoc.create.uuid()})
         SET log.timestamp = datetime()
@@ -278,7 +283,7 @@ extend type Mutation {
       statement:"""
       MATCH (ministry:Ministry {id:$ministryId})
       MATCH (admin:Active:Member {auth_id: $auth.jwt.sub})
-      MATCH (hub)<-[:HAS]-(federalMinistry:Federalministry)
+      MATCH (ministry)<-[:HAS]-(federalMinistry:Federalministry)
 
       CREATE (log:HistoryLog {id:apoc.create.uuid()})
         SET log.timestamp = datetime()

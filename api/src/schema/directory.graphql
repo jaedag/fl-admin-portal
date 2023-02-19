@@ -999,6 +999,7 @@ type Ministry {
   stream: Stream @relationship(type: "HAS", direction: IN)
   history: [HistoryLog!]! @relationship(type:"HAS_HISTORY", direction: OUT)
   servicelogs: [ServiceLog!]! @relationship(type:"HAS_HISTORY", direction: OUT)
+  federalMinistry: Federalministry @relationship(type:"HAS", direction:IN)
 }
 
 type Sonta {
@@ -1060,4 +1061,5 @@ type Federalministry {
   gatheringService: GatheringService @relationship(type: "HAS_MINISTRY", direction: IN)
   history: [HistoryLog!]! @relationship(type:"HAS_HISTORY", direction: OUT)
   serviceLogs: [ServiceLog!]! @relationship(type:"HAS_HISTORY", direction: OUT)
+  ministry: Ministry @relationship(type:"HAS", direction:OUT)
 }
