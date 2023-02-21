@@ -81,7 +81,7 @@ const shepherdingControlCampaign = fs
   .toString('utf-8')
 
 const basontaChurches = fs
-  .readFileSync(path.join(__dirname, './basonta-churches.graphql'))
+  .readFileSync(path.join(__dirname, './directory-basonta.graphql'))
   .toString('utf-8')
 
 const array = [
