@@ -991,6 +991,20 @@ type Ministry {
       RETURN COUNT(DISTINCT members)
       """
     )
+    sontaCount: Int!
+    @cypher(
+      statement: """
+      MATCH (this)<-[:HAS]-(sontas:Sonta)
+      RETURN COUNT(DISTINCT sontas)
+      """
+    )
+   hubCount: Int!
+    @cypher(
+      statement:"""
+      MATCH (this)<-[:HAS]-(hubs:Hub)
+      RETURN COUNT(DISTINCT hubs)
+      """
+    )
   id: ID @id
   name: String!
   leader: Member @relationship(type: "LEADS", direction: IN)
@@ -1045,6 +1059,13 @@ type Hub {
       RETURN COUNT(DISTINCT members)
       """
     )
+   sontaCount: Int!
+    @cypher(
+      statement: """
+      MATCH (this)<-[:HAS]-(sontas:Sonta)
+      RETURN COUNT(DISTINCT sontas)
+      """ 
+    )     
   id: ID @id
   name: String!
   leader: Member @relationship(type: "LEADS", direction: IN)
@@ -1055,6 +1076,34 @@ type Hub {
 }
 
 type Federalministry {
+    memberCount: Int!
+    @cypher(
+      statement: """
+      MATCH (this)<-[:BELONGS_TO]-(members:Active:Member)
+      RETURN COUNT(DISTINCT members)
+      """
+    )
+   sontaCount: Int!
+    @cypher(
+      statement: """
+      MATCH (this)<-[:HAS]-(sontas:Sonta)
+      RETURN COUNT(DISTINCT sontas)
+      """
+    )
+   hubCount: Int!
+    @cypher(
+      statement:"""
+      MATCH (this)<-[:HAS]-(hubs:Hub)
+      RETURN COUNT(DISTINCT hubs)
+      """
+    )
+   ministryCount: Int!
+    @cypher(
+      statement: """
+      MATCH (this)<-[:HAS]-(ministries:Ministry)
+      RETURN COUNT(DISTINCT hubs)
+      """
+    )
   id: ID @id
   name: String!
   leader: Member @relationship(type: "LEADS", direction: IN)
