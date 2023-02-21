@@ -1,17 +1,7 @@
 export const checkFellowshipHasNoMembers = `
-MATCH (fellowship:Fellowship {id: $fellowshipId})
+MATCH (fellowship:Fellowship {id:$fellowshipId})
 OPTIONAL MATCH (fellowship)<-[:BELONGS_TO]-(member:Active:Member)
 RETURN fellowship.name AS name, COUNT(member) AS memberCount
-`
-
-export const getLastServiceRecord = `
-MATCH (church {id: $churchId}) WHERE church:Fellowship OR church:Constituency OR church:Council
-MATCH (church)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(otherRecords:ServiceRecord)-[:SERVICE_HELD_ON]->(otherDate:TimeGraph)
-WHERE NOT (otherRecords:NoService) AND duration.between(otherDate.date, date()).weeks < 52
-
-WITH DISTINCT otherRecords AS lastService ORDER BY otherRecords.createdAt DESC LIMIT 1
-
-RETURN lastService
 `
 
 export const checkBacentaHasNoMembers = `

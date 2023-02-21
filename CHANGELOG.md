@@ -1,14 +1,3 @@
-#### 5.9.3 (2023-02-17)
-
-##### Bug Fixes
-
-*  fine tune fellowship form views ([dcae0f8d](https://github.com/firstlovecenter/fl-pastoral-care/commit/dcae0f8d26a3997c2da37551e7b8ee1982e3bb62))
-*  remove block in creating fellowships ([ad87a9f8](https://github.com/firstlovecenter/fl-pastoral-care/commit/ad87a9f8df142ffb019da5dd5c688476790009d5))
-*  constituency cannot be closed down if it has outstanding banking ([777ecdf4](https://github.com/firstlovecenter/fl-pastoral-care/commit/777ecdf4a0a34ce0f54f39e27ed96ee929d987b0))
-*  fellowship cannot be closed down if it has outstanding banking ([15c22386](https://github.com/firstlovecenter/fl-pastoral-care/commit/15c223869a3c859707805875b43fe530ff881ee9))
-*  constituency admin cannot edit fellowship details of their own service ([a509650e](https://github.com/firstlovecenter/fl-pastoral-care/commit/a509650e74360707500d2088c1dbe3fb5951f5a7))
-*  fix bug in cypher such that lastService during banking check has to be in the last 52 weeks ([f234f253](https://github.com/firstlovecenter/fl-pastoral-care/commit/f234f2533fafd6285288657de691d7b07ce8129d))
-
 #### 5.9.2 (2023-02-16)
 
 ##### Bug Fixes

@@ -8,7 +8,6 @@ type RoleViewProps = {
   roles: Role[]
   children: React.ReactNode
   verifyId?: string
-  verifyNotId?: string
   permittedStream?: StreamOptions[]
   noIncome?: boolean
   directoryLock?: boolean
@@ -19,7 +18,6 @@ const RoleView = (props: RoleViewProps) => {
     roles,
     children,
     verifyId,
-    verifyNotId,
     permittedStream,
     noIncome,
     directoryLock,
@@ -31,16 +29,6 @@ const RoleView = (props: RoleViewProps) => {
     if (!verifyId) return true
 
     if (currentUser.id === verifyId) {
-      return true
-    }
-
-    return false
-  }
-
-  const verifyNot = (verifyNotId: string | undefined) => {
-    if (!verifyNotId) return true
-
-    if (currentUser.id !== verifyNotId) {
       return true
     }
 
@@ -85,7 +73,6 @@ const RoleView = (props: RoleViewProps) => {
   if (
     isAuthorised(roles) &&
     verify(verifyId) &&
-    verifyNot(verifyNotId) &&
     permitStream(permittedStream) &&
     includeIncome(noIncome) &&
     lockDirectory(directoryLock)
