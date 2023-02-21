@@ -29,6 +29,8 @@ export const permitLeader = (churchLevel: ChurchLevel) => {
       permittedFor = [
         'leaderGatheringService',
         'leaderStream',
+        'leaderMinistry',
+        'leaderFederalMinistry',
         'leaderSonta',
         'leaderHub',
       ]
@@ -67,10 +69,21 @@ export const permitLeader = (churchLevel: ChurchLevel) => {
       permittedFor = ['leaderGatheringService', 'leaderFederalMinistry']
       break
     case 'ministry':
-      permittedFor = ['leaderStream', 'leaderFederalMinistry', 'leaderMinistry']
+      permittedFor = [
+        'leaderGatheringService',
+        'leaderStream',
+        'leaderFederalMinistry',
+        'leaderMinistry',
+      ]
       break
     case 'hub':
-      permittedFor = ['leaderMinistry', 'leaderHub']
+      permittedFor = [
+        'leaderGatheringService',
+        'leaderFederalMinistry',
+        'leaderStream',
+        'leaderMinistry',
+        'leaderHub',
+      ]
       break
     default:
       permittedFor = []
