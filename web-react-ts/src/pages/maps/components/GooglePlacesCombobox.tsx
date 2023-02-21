@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import Autosuggest from 'react-autosuggest'
 import { FormikComponentProps } from '../../../components/formik/formik-types'
 import 'components/formik/Formik.css'
@@ -54,14 +54,19 @@ const GooglePlacesCombobox = (props: ComboBoxProps) => {
 
           try {
             setSuggestions(
-              data.map((suggestion, index) => {
-                if (index > 6) return null
-                return {
-                  description: suggestion.description,
-                  place_id: suggestion.place_id,
-                  name: suggestion.description,
+              data.map(
+                (
+                  suggestion: { description: any; place_id: any },
+                  index: number
+                ) => {
+                  if (index > 6) return null
+                  return {
+                    description: suggestion.description,
+                    place_id: suggestion.place_id,
+                    name: suggestion.description,
+                  }
                 }
-              })
+              )
             )
           } catch {
             clearSuggestions()
