@@ -32,7 +32,7 @@ extend type Mutation {
     @auth(rules: [{ roles: ["adminGatheringService", "adminStream"] }])
     @cypher(
       statement: """
-      CREATE (ministry:Ministry {name: $name})
+      CREATE (ministry:Ministry)
         SET	ministry.id = apoc.create.uuid()
 
       WITH ministry
