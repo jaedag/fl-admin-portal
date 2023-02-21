@@ -117,7 +117,7 @@ export interface HigherChurchWithArrivals extends Church {
   bacentasHaveArrived: BacentaWithArrivals[]
   bacentasNotCounted: BacentaWithArrivals[]
 
-  bacentasNotCountedCount: number
+  vehiclesNotCountedCount: number
   bacentasNoActivityCount: number
   bacentasMobilisingCount: number
   bacentasOnTheWayCount: number

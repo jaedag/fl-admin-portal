@@ -158,7 +158,7 @@ extend type GatheringService {
       RETURN DISTINCT bacentas
       """
     )
-  bacentasNotCountedCount: Int
+  vehiclesNotCountedCount: Int
     @cypher(
       statement: """
       MATCH (this)-[:HAS*4]->(bacentas:Active:Bacenta)
@@ -168,7 +168,7 @@ extend type GatheringService {
       WHERE NOT EXISTS {
        MATCH (record)-[:COUNTED_BY]->(:Member)
       }
-      RETURN COUNT(DISTINCT bacentas)
+      RETURN COUNT(DISTINCT record)
       """
     )
   bacentasBelow8: [Bacenta!]!
@@ -365,7 +365,7 @@ extend type Stream {
       RETURN DISTINCT bacentas
       """
     )
-  bacentasNotCountedCount: Int
+  vehiclesNotCountedCount: Int
     @cypher(
       statement: """
       MATCH (this)-[:HAS*3]->(bacentas:Active:Bacenta)
@@ -375,7 +375,7 @@ extend type Stream {
       WHERE NOT EXISTS {
        MATCH (record)-[:COUNTED_BY]->(:Member)
       }
-      RETURN COUNT(DISTINCT bacentas)
+      RETURN COUNT(DISTINCT record)
       """
     )
   bacentasBelow8: [Bacenta!]!
@@ -570,7 +570,7 @@ extend type Council {
       RETURN DISTINCT bacentas
       """
     )
-  bacentasNotCountedCount: Int
+  vehiclesNotCountedCount: Int
     @cypher(
       statement: """
       MATCH (this)-[:HAS*2]->(bacentas:Active:Bacenta)
@@ -580,7 +580,7 @@ extend type Council {
       WHERE NOT EXISTS {
        MATCH (record)-[:COUNTED_BY]->(:Member)
       }
-      RETURN COUNT(DISTINCT bacentas)
+      RETURN COUNT(DISTINCT record)
       """
     )
   bacentasBelow8: [Bacenta!]!
@@ -776,7 +776,7 @@ extend type Constituency {
       RETURN DISTINCT bacentas
       """
     )
-  bacentasNotCountedCount: Int
+  vehiclesNotCountedCount: Int
     @cypher(
       statement: """
        MATCH (this)-[:HAS]->(bacentas:Active:Bacenta)
@@ -786,7 +786,7 @@ extend type Constituency {
       WHERE NOT EXISTS {
        MATCH (record)-[:COUNTED_BY]->(:Member)
       }
-      RETURN COUNT(DISTINCT bacentas)
+      RETURN COUNT(DISTINCT record)
       """
     )
   bacentasBelow8: [Bacenta!]!

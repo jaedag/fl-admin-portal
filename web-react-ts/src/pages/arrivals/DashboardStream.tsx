@@ -178,7 +178,7 @@ const StreamDashboard = () => {
               <MenuButton
                 title="Vehicles To Be Counted"
                 onClick={() => navigate('/arrivals/bacentas-to-count')}
-                number={stream?.bacentasNotCountedCount.toString()}
+                number={stream?.vehiclesNotCountedCount.toString()}
                 color="yellow"
                 iconBg
                 noCaption
