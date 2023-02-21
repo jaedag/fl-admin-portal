@@ -49,7 +49,9 @@ const BacentasBelow8 = () => {
     <PullToRefresh onRefresh={refetch}>
       <ApolloWrapper data={church} loading={loading} error={error} placeholder>
         <Container>
-          <HeadingPrimary loading={loading}>Bacentas Below 8</HeadingPrimary>
+          <HeadingPrimary loading={loading}>
+            Bacentas That Didn't Bus
+          </HeadingPrimary>
           <HeadingSecondary loading={!church?.name}>
             {church?.name} {church?.__typename}
           </HeadingSecondary>
