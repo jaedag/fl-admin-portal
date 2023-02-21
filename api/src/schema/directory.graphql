@@ -984,6 +984,13 @@ type ClosedFellowship {
 # union ChurchWithServices = Fellowship | Constituency | Council
 ###Basonta Church Types####
 type Ministry {
+   memberCount: Int!
+    @cypher(
+      statement: """
+      MATCH (this)<-[:BELONGS_TO]-(members:Active:Member)
+      RETURN COUNT(DISTINCT members)
+      """
+    )
   id: ID @id
   name: String!
   leader: Member @relationship(type: "LEADS", direction: IN)
@@ -992,6 +999,7 @@ type Ministry {
   stream: Stream @relationship(type: "HAS", direction: IN)
   history: [HistoryLog!]! @relationship(type:"HAS_HISTORY", direction: OUT)
   servicelogs: [ServiceLog!]! @relationship(type:"HAS_HISTORY", direction: OUT)
+  federalMinistry: Federalministry @relationship(type:"HAS", direction:IN)
 }
 
 type Sonta {
@@ -1027,10 +1035,16 @@ type Basonta {
   sonta: Sonta @relationship(type: "HAS", direction: IN)
   historyLogs: [HistoryLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
   serviceLogs: [ServiceLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
-<<<<<<< HEAD
 }
 
 type Hub {
+   memberCount: Int!
+    @cypher(
+      statement: """
+      MATCH (this)<-[:BELONGS_TO]-(members:Active:Member)
+      RETURN COUNT(DISTINCT members)
+      """
+    )
   id: ID @id
   name: String!
   leader: Member @relationship(type: "LEADS", direction: IN)
@@ -1040,20 +1054,6 @@ type Hub {
   serviceLogs: [ServiceLog!]! @relationship(type:"HAS_HISTORY", direction: OUT)
 }
 
-=======
-}
-
-type Hub {
-  id: ID @id
-  name: String!
-  leader: Member @relationship(type: "LEADS", direction: IN)
-  history: [HistoryLog!]! @relationship(type:"HAS_HISTORY", direction: OUT)
-  sonta: [Sonta!]! @relationship(type: "HAS", direction: OUT)
-  ministry: Ministry @relationship(type:"HAS", direction: IN)
-  serviceLogs: [ServiceLog!]! @relationship(type:"HAS_HISTORY", direction: OUT)
-}
-
->>>>>>> 2bf833712dea4488a2bcb0d288f4051928afa4b6
 type Federalministry {
   id: ID @id
   name: String!
@@ -1061,4 +1061,5 @@ type Federalministry {
   gatheringService: GatheringService @relationship(type: "HAS_MINISTRY", direction: IN)
   history: [HistoryLog!]! @relationship(type:"HAS_HISTORY", direction: OUT)
   serviceLogs: [ServiceLog!]! @relationship(type:"HAS_HISTORY", direction: OUT)
+  ministry: Ministry @relationship(type:"HAS", direction:OUT)
 }
