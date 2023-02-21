@@ -9,7 +9,7 @@ const servantCypher = {
    WITH church, leader
 
    OPTIONAL MATCH (bacenta:Bacenta {id: $churchId})
-   REMOVE bacenta.momoNumber
+   REMOVE bacenta.momoNumber, bacenta.momoName, bacenta.mobileNetwork
 
    WITH church,leader
    

@@ -294,11 +294,10 @@ export const arrivalsMutation = {
       throw new Error('It is past the time to fill your forms. Thank you!')
     }
 
-    const outbound = args.outbound ? 1 : 0.5
     const response = rearrangeCypherObject(
       await session.run(recordVehicleFromBacenta, {
         ...args,
-        vehicleCostWithOutbound: args.vehicleCost * outbound,
+        vehicleCostWithOutbound: args.vehicleCost,
         auth: context.auth,
       })
     )

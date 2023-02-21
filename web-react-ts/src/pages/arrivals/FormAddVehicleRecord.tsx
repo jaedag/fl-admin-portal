@@ -138,11 +138,8 @@ const FormAddVehicleRecord = () => {
                     options={VEHICLE_OPTIONS}
                     defaultOption="Select a vehicle type"
                   />
-                  <div className="mb-2 yellow">
-                    Please ensure that you fill for{' '}
-                    <span className="fw-bold">In and Out</span>
-                  </div>
-                  <Input name="vehicleCost" label="Vehicle Cost (Two Way)*" />
+
+                  <Input name="vehicleCost" label="Vehicle Cost*" />
                 </Col>
 
                 <hr />
