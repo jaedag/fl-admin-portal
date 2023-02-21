@@ -27,7 +27,7 @@ import {
 } from './banking-types'
 import { StreamOptions } from '../utils/types'
 
-export const checkIfLastServiceBanked = async (
+const checkIfLastServiceBanked = async (
   serviceRecordId: string,
   context: Context
 ) => {

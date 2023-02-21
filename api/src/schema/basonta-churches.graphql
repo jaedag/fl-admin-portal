@@ -40,7 +40,8 @@ extend type Mutation {
       MATCH (stream:Stream {id:$streamId})
       MATCH (federalMinistry:Federalministry {id:$federalMinistryId})
       MATCH (currentUser:Active:Member {auth_id:$auth.jwt.sub})
-      SET ministry.name = stream.name + ' ' +  federalMinistry.name 
+      UNWIND LABELS(stream) as stream_label
+      SET ministry.name = stream_label + ' ' +  ministry.name 
 
       CREATE (log:HistoryLog:ServiceLog)
         SET log.id = apoc.create.uuid(),
