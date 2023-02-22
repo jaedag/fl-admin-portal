@@ -20,7 +20,6 @@ extend type Mutation {
       MERGE (gatheringService)-[:HAS_MINISTRY]->(federalMinistry)
 
       MERGE (date:TimeGraph {date: date()})
-      WITH federalMinistry, log
       MERGE (log)-[:LOGGED_BY]->(currentUser)
       MERGE (log)-[:RECORDED_ON]->(date)
       MERGE (federalMinistry)-[:HAS_HISTORY]->(log)
@@ -53,7 +52,6 @@ extend type Mutation {
       MERGE (federalMinistry)-[:HAS]->(ministry)
 
       MERGE (date:TimeGraph {date: date()})
-      WITH ministry, log
       MERGE (log)-[:LOGGED_BY]->(currentUser)
       MERGE (log)-[:RECORDED_ON]->(date)
       MERGE (ministry)-[:HAS_HISTORY]->(log)
@@ -82,7 +80,6 @@ extend type Mutation {
       MERGE (leader)-[:LEADS]->(hub)
 
       MERGE (date:TimeGraph {date: date()})
-      WITH hub, log
       MERGE (log)-[:LOGGED_BY]->(currentUser)
       MERGE (log)-[:RECORDED_ON]->(date)
       MERGE (hub)-[:HAS_HISTORY]->(log)
@@ -343,7 +340,7 @@ extend type Mutation {
 }
 
 extend type Member {
-  leadsFederalMinistry: [Federalministry!]! @relationship(type: "LEADS", direction: OUT)
+  leadsFederalministry: [Federalministry!]! @relationship(type: "LEADS", direction: OUT)
   leadsHub: [Hub!]! @relationship(type: "LEADS", direction: OUT)
   leadsSontaCount: Int
     @cypher(
@@ -404,6 +401,6 @@ extend type Member {
   isAdminForMinistry: [Ministry!]!
     @relationship(type: "IS_ADMIN_FOR", direction:OUT)
 
-  isAdminForFederalMinistry:[Federalministry!]!
+  isAdminForFederalministry:[Federalministry!]!
     @relationship(type: "IS_ADMIN_FOR", direction:OUT)
 }
