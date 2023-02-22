@@ -80,6 +80,10 @@ const shepherdingControlCampaign = fs
   .readFileSync(path.join(__dirname, './campaigns-shepherding-control.graphql'))
   .toString('utf-8')
 
+const basontaChurches = fs
+  .readFileSync(path.join(__dirname, './directory-basonta.graphql'))
+  .toString('utf-8')
+
 const array = [
   schema,
   directory,
@@ -99,6 +103,7 @@ const array = [
   multiplicationCampaign,
   swollenSundayCampaign,
   shepherdingControlCampaign,
+  basontaChurches,
 ]
 
 exports.typeDefs = array.join(' ')
