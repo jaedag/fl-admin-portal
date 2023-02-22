@@ -131,6 +131,7 @@ export interface Member {
   middleName?: string
   lastName: string
   fullName: string
+  idlLocation?: string
   location?: string
   nameWithTitle?: string
   currentTitle: TitleOptions

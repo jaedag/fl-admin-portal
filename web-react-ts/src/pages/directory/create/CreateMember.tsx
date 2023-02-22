@@ -20,7 +20,7 @@ export type CreateMemberFormOptions = {
   maritalStatus: 'Single' | 'Married' | ''
   occupation: string
   pictureUrl: string
-  location: string
+  idlLocation: string
   fellowship: Fellowship | { [key: string]: any }
   ministry: string
 }
@@ -38,7 +38,7 @@ const CreateMember = () => {
     maritalStatus: '',
     occupation: '',
     pictureUrl: '',
-    location: '',
+    idlLocation: '',
     fellowship: {},
     ministry: '',
   }
@@ -78,7 +78,7 @@ const CreateMember = () => {
           occupation: values.occupation,
           pictureUrl: values.pictureUrl,
 
-          location: values.location,
+          idlLocation: values.idlLocation,
           fellowship: values.fellowship?.id,
           ministry: values.ministry,
         },

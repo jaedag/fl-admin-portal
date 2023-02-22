@@ -139,9 +139,12 @@ const MemberDisplay = ({ memberId }: { memberId: string }) => {
             <DetailsCard heading="Email Address" detail={member?.email} />
           </Col>
         )}
-        {member?.location && (
+        {member?.idlLocation && (
           <Col sm={1} md="auto">
-            <DetailsCard heading="Location for IDL" detail={member?.location} />
+            <DetailsCard
+              heading="Location for IDL"
+              detail={member?.idlLocation}
+            />
           </Col>
         )}
         <Col sm={1} md="auto">

@@ -219,7 +219,7 @@ WITH member, fellowship
         member.middleName = $middleName,
         member.lastName = $lastName,
         member.phoneNumber = $phoneNumber,
-        member.location = $location,
+        member.idlLocation = $idlLocation,
         member.pictureUrl = $pictureUrl
 
         REMOVE 

@@ -13,7 +13,7 @@ export const DISPLAY_MEMBER_BIO = gql`
       email
       phoneNumber
       pictureUrl
-      location
+      idlLocation
       whatsappNumber
       pictureUrl
       dob {

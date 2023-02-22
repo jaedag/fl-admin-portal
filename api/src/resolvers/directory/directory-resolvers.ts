@@ -46,7 +46,7 @@ const directoryMutation = {
           occupation: args?.occupation ?? '',
           fellowship: args?.fellowship ?? '',
           ministry: args?.ministry ?? '',
-          location: args?.location ?? '',
+          idlLocation: args?.idlLocation ?? '',
           pictureUrl: args?.pictureUrl ?? '',
           auth_id: context.auth.jwt.sub ?? '',
         }
