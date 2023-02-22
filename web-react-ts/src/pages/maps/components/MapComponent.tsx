@@ -6,7 +6,7 @@ import { useState } from 'react'
 import '../Map.css'
 import { Button, Offcanvas } from 'react-bootstrap'
 import { IoChevronUp } from 'react-icons/io5'
-import Places from '../Places'
+import { GooglePlaces, MemberPlaces } from '../Places'
 import { LazyQueryExecFunction, OperationVariables } from '@apollo/client'
 
 type LatLngLiteral = google.maps.LatLngLiteral
@@ -76,15 +76,23 @@ const MapComponent = (props: MapComponentProps) => {
           <Offcanvas.Title>Maps Menu</Offcanvas.Title>
         </Offcanvas.Header>
         <Offcanvas.Body className="dark">
-          Some text as placeholder. In real life you can have the elements you
-          have chosen. Like, text, images, lists, etc.
-          <Places
+          <div>Search for a place</div>
+          <GooglePlaces
             setOffice={(position) => {
               setOffice(position)
               mapRef.current?.panTo(position)
             }}
             {...props}
-          ></Places>
+          />
+
+          <div>Search our FLC Database</div>
+          <MemberPlaces
+            setOffice={(position) => {
+              setOffice(position)
+              mapRef.current?.panTo(position)
+            }}
+            {...props}
+          />
           <Button
             onClick={() => {
               window.navigator.geolocation.getCurrentPosition((position) => {

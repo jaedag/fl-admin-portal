@@ -1,22 +1,20 @@
-import { useContext, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import Autosuggest from 'react-autosuggest'
 import { FormikComponentProps } from '../../../components/formik/formik-types'
 import 'components/formik/Formik.css'
 import 'components/formik/react-autosuggest.css'
-import usePlacesAutocomplete from 'use-places-autocomplete'
-import { LazyQueryExecFunction, OperationVariables } from '@apollo/client'
-import { MemberContext } from 'contexts/MemberContext'
+import usePlacesAutocomplete, {
+  getGeocode,
+  getLatLng,
+} from 'use-places-autocomplete'
 
 interface ComboBoxProps extends FormikComponentProps {
   initialValue: string
   setOffice: (position: google.maps.LatLngLiteral) => void
-  memberSearch: LazyQueryExecFunction<any, OperationVariables>
-  fellowshipSearch?: LazyQueryExecFunction<any, OperationVariables>
 }
 
 const GooglePlacesCombobox = (props: ComboBoxProps) => {
   const { label, name, placeholder, initialValue } = props
-  const { currentUser } = useContext(MemberContext)
 
   const {
     ready,
@@ -31,29 +29,16 @@ const GooglePlacesCombobox = (props: ComboBoxProps) => {
   // TODO: Suggestions are generated after the first keystroke.  This is not ideal.
   // They should be generated before the first keystroke.
 
-  const searchFunctions = async () => {
-    const memberResults = await props.memberSearch({
-      variables: {
-        id: currentUser.id,
-        key: searchString.trim(),
-      },
-    })
+  useEffect(() => {}, [searchString])
 
-    setSuggestions([...memberResults.data.members[0].memberSearch])
+  const handleSelect = async (val: string) => {
+    setValue(val, false)
+    clearSuggestions()
 
-    if (props.fellowshipSearch) {
-      props.fellowshipSearch({
-        variables: {
-          id: currentUser.id,
-          key: searchString.trim(),
-        },
-      })
-    }
+    const results = await getGeocode({ address: val })
+    const { lat, lng } = await getLatLng(results[0])
+    props.setOffice({ lat, lng })
   }
-
-  useEffect(() => {
-    searchFunctions()
-  }, [searchString])
 
   return (
     <div>
@@ -83,24 +68,21 @@ const GooglePlacesCombobox = (props: ComboBoxProps) => {
             clearSuggestions()
           }
 
+          const places = data.map(
+            (
+              suggestion: { description: any; place_id: any },
+              index: number
+            ) => {
+              if (index > 6) return null
+              return {
+                description: suggestion.description,
+                place_id: suggestion.place_id,
+                name: suggestion.description,
+              }
+            }
+          )
           try {
-            setSuggestions([
-              ...suggestions,
-              ...data.map(
-                (
-                  suggestion: { description: any; place_id: any },
-                  index: number
-                ) => {
-                  if (index > 6) return null
-                  return {
-                    description: suggestion.description,
-                    place_id: suggestion.place_id,
-                    name: suggestion.description,
-                  }
-                }
-              ),
-            ])
-            console.log(suggestions)
+            setSuggestions(places)
           } catch {
             clearSuggestions()
           }
@@ -111,6 +93,7 @@ const GooglePlacesCombobox = (props: ComboBoxProps) => {
             event.preventDefault()
           }
           setSearchString(suggestion.description)
+          handleSelect(suggestion.description)
         }}
         getSuggestionValue={(suggestion: any) => {
           if (suggestion.name) {
@@ -125,17 +108,7 @@ const GooglePlacesCombobox = (props: ComboBoxProps) => {
         }}
         highlightFirstSuggestion={true}
         renderSuggestion={(suggestion: any) => {
-          if (suggestion.name) {
-            return <div className="combobox-control">{suggestion.name}</div>
-          }
-          if (suggestion.firstName) {
-            return (
-              <div className="combobox-control">
-                {suggestion.firstName + ' ' + suggestion.lastName}
-              </div>
-            )
-          }
-          return null
+          return <div className="combobox-control">{suggestion.name}</div>
         }}
       />
     </div>
