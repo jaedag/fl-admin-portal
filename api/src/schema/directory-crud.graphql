@@ -395,64 +395,7 @@ extend type Mutation {
       RETURN bacenta
       """
     )
-  CreateSonta(
-    ministryId: ID!
-    constituencyId: ID!
-    leaderId: ID!
-  ): Constituency
-    @auth(
-      rules: [
-        {
-          roles: [
-            "adminGatheringService"
-            "adminStream"
-            "adminCouncil"
-            "adminConstituency"
-          ]
-        }
-      ]
-    )
-    @cypher(
-      statement: """
-      CREATE (sonta:Sonta)
-         	SET
-      	sonta.id = apoc.create.uuid(),
-
-      WITH sonta
-       MATCH (ministry:Ministry {id:$ministryId})
-       MATCH (leader:Active:Member {id: $leaderId})
-       MATCH (constituency:Constituency {id:$constituencyId})
-
-       MATCH (currentUser:Active:Member {auth_id:$auth.jwt.sub})
-       UNWIND labels(constituency) AS stream
-
-       CREATE (log:HistoryLog:ServiceLog)
-        SET log.id = apoc.create.uuid(),
-         log.timeStamp = datetime(),
-         log.historyRecord = leader.firstName + ' ' +leader.lastName + ' started ' + sonta.name +' Sonta under '+ constituency.name + ' ' + stream
-
-
-       SET sonta.name = constituency.name + ' ' + ministry.name
-
-       MERGE (ministry)-[:HAS_SONTA]->(sonta)
-       MERGE (constituency)-[:HAS_SONTA]->(sonta)
-       MERGE (leader)-[:LEADS]->(sonta)
-
-      MERGE (date:TimeGraph {date: date()})
-      MERGE (log)-[:LOGGED_BY]->(currentUser)
-       MERGE (log)-[:RECORDED_ON]->(date)
-       MERGE (constituency)-[r1:HAS_HISTORY]->(log)
-       MERGE (sonta)-[r2:HAS_HISTORY]->(log)
-       MERGE (leader)-[r3:HAS_HISTORY]->(log)
-         SET r1.current = true,
-        r2.current = true,
-        r3.current = true SET r1.current = true,
-        r2.current = true,
-        r3.current = true
-
-      RETURN constituency
-      """
-    )
+ 
   CreateFellowship(
     name: String!
     bacentaId: ID!
@@ -496,6 +439,7 @@ extend type Mutation {
       RETURN fellowship
       """
     )
+  
 }
 
 ### UPDATE OPERATIONS ###
@@ -770,29 +714,7 @@ extend type Mutation {
       """
     )
 
-  UpdateSontaDetails(sontaId: ID!, sontaName: String!): Sonta
-    @auth(
-      rules: [
-        {
-          roles: [
-            "adminGatheringService"
-            "adminStream"
-            "adminCouncil"
-            "adminConstituency"
-          ]
-        }
-      ]
-    )
-    @cypher(
-      statement: """
-      MATCH (sonta:Sonta {id: $sontaId})
-      	SET sonta.name = $sontaName
 
-      WITH sonta
-      MATCH (sonta)<-[:LEADS]-(leader:Active:Member)
-      RETURN sonta
-      """
-    )
 
   UpdateFellowshipDetails(
     id: ID!

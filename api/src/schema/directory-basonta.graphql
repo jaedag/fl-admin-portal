@@ -1,0 +1,343 @@
+extend type Mutation {
+  CreateFederalministry(name: String!, leaderId: ID!, gatheringServiceId: ID!): Federalministry
+    @auth(rules: [{ roles: ["adminGatheringService", "adminStream"] }])
+    @cypher(
+      statement: """
+      CREATE (federalMinistry:Federalministry {name:$name})
+        SET federalMinistry.id = apoc.create.uuid()
+
+      WITH federalMinistry
+      MATCH (leader:Member:Active {id:$leaderId})
+      MATCH (gatheringService:GatheringService {id:$gatheringServiceId})
+      MATCH (currentUser:Active:Member {auth_id:$auth.jwt.sub})
+
+      CREATE (log:HistoryLog:ServiceLog)
+        SET log.id = apoc.create.uuid(),
+          log.timeStamp = datetime(),
+          log.historyRecord = federalMinistry.name +' Federal Ministry History Begins'
+
+      MERGE (leader)-[:LEADS]->(federalMinistry)
+      MERGE (gatheringService)-[:HAS_MINISTRY]->(federalMinistry)
+
+      MERGE (date:TimeGraph {date: date()})
+      WITH federalMinistry, log
+      MERGE (log)-[:LOGGED_BY]->(currentUser)
+      MERGE (log)-[:RECORDED_ON]->(date)
+      MERGE (federalMinistry)-[:HAS_HISTORY]->(log)
+
+      RETURN federalMinistry
+      """
+    )
+  CreateMinistry(leaderId: ID!, streamId: ID!, federalMinistryId:ID!): Ministry
+    @auth(rules: [{ roles: ["adminGatheringService", "adminStream"] }])
+    @cypher(
+      statement: """
+      CREATE (ministry:Ministry)
+        SET	ministry.id = apoc.create.uuid()
+
+      WITH ministry
+      MATCH (leader:Active:Member {id:$leaderId})
+      MATCH (stream:Stream {id:$streamId})
+      MATCH (federalMinistry:Federalministry {id:$federalMinistryId})
+      MATCH (currentUser:Active:Member {auth_id:$auth.jwt.sub})
+      SET ministry.name = stream.name + ' ' +  federalMinistry.name 
+
+      CREATE (log:HistoryLog:ServiceLog)
+        SET log.id = apoc.create.uuid(),
+          log.timeStamp = datetime(),
+          log.historyRecord = ministry.name +' Ministry History Begins'
+
+
+      MERGE (stream)-[:HAS]->(ministry)
+      MERGE (leader)-[:LEADS]->(ministry)
+      MERGE (federalMinistry)-[:HAS]->(ministry)
+
+      MERGE (date:TimeGraph {date: date()})
+      WITH ministry, log
+      MERGE (log)-[:LOGGED_BY]->(currentUser)
+      MERGE (log)-[:RECORDED_ON]->(date)
+      MERGE (ministry)-[:HAS_HISTORY]->(log)
+
+      RETURN ministry
+      """
+    )
+  CreateHub(name: String!, leaderId: ID!, ministryId: ID!): Hub
+    @auth(rules: [{ roles: ["adminGatheringService", "adminStream"] }])
+    @cypher(
+      statement: """
+      CREATE (hub:Hub {name: $name})
+        SET hub.id = apoc.create.uuid()
+
+      WITH hub
+      MATCH (leader:Active:Member {id:$leaderId})
+      MATCH (ministry:Ministry {id:$ministryId})
+      MATCH (currentUser:Active:Member {auth_id:$auth.jwt.sub})
+
+      CREATE (log:HistoryLog:ServiceLog)
+        SET log.id = apoc.create.uuid(),
+          log.timeStamp = datetime(),
+          log.historyRecord = hub.name +' hub history Begins'
+
+      MERGE (ministry)-[:HAS]->(hub)
+      MERGE (leader)-[:LEADS]->(hub)
+
+      MERGE (date:TimeGraph {date: date()})
+      WITH hub, log
+      MERGE (log)-[:LOGGED_BY]->(currentUser)
+      MERGE (log)-[:RECORDED_ON]->(date)
+      MERGE (hub)-[:HAS_HISTORY]->(log)
+
+      RETURN hub
+      """
+    )
+  CreateSonta(ministryId: ID!, hubId: ID!, leaderId: ID!): Sonta
+    @auth(rules: [{ roles: ["adminGatheringService", "adminStream"] }])
+    @cypher(
+      statement: """
+      CREATE (sonta:Sonta)
+         	SET sonta.id = apoc.create.uuid()
+
+      WITH sonta
+       MATCH (ministry:Ministry {id:$ministryId})
+       MATCH (leader:Active:Member {id: $leaderId})
+       MATCH (hub:Hub {id:$hubId})
+
+       MATCH (currentUser:Active:Member {auth_id:$auth.jwt.sub})
+       UNWIND LABELS(hub) as stream
+
+       SET sonta.name = leader.firstName + ' ' + leader.lastName
+
+       CREATE (log:HistoryLog:ServiceLog)
+        SET log.id = apoc.create.uuid(),
+         log.timeStamp = datetime(),
+         log.historyRecord = leader.firstName + ' ' +leader.lastName + ' started ' + sonta.name +' Sonta under '+ hub.name + ' ' + stream
+
+
+       MERGE (hub)-[:HAS]->(sonta)
+       MERGE (leader)-[:LEADS]->(sonta)
+
+      MERGE (date:TimeGraph {date: date()})
+      MERGE (log)-[:LOGGED_BY]->(currentUser)
+       MERGE (log)-[:RECORDED_ON]->(date)
+       MERGE (hub)-[r1:HAS_HISTORY]->(log)
+       MERGE (sonta)-[r2:HAS_HISTORY]->(log)
+       MERGE (leader)-[r3:HAS_HISTORY]->(log)
+
+      RETURN sonta
+      """
+    )
+}
+
+extend type Mutation{
+  UpdateFederalMinistryDetails(
+    federalMinistryId: ID!
+    gatheringServiceId: ID!
+    federalMinistryName: String!
+    ): Federalministry
+      @auth(rules: [
+        {
+          roles: ["adminGatheringService"]
+        }
+      ])
+      @cypher(
+        statement:
+        """
+        MATCH (federalMinistry:Federalministry {id: $federalMinistryId})
+        SET federalMinistry.name = $federalMinistryName
+
+        WITH federalMinistry 
+            CALL{
+              WITH federalMinistry
+
+                MATCH (gatheringService:gatheringService {id: $gatheringServiceId})
+                OPTIONAL MATCH (federalMinistry)<-[r:HAS_MINISTRY]-()
+                DELETE r 
+                MERGE (gatheringService)-[:HAS_MINISTRY]->(federalMinistry)
+              
+              RETURN count(federalMinistry)
+            }
+        MATCH (federalMinistry)<-[:LEADS]-(leader:Active:Member)
+        RETURN federalMinistry
+        """
+      )
+  UpdateMinistryDetails(
+    ministryId: ID!, 
+    streamId: ID!,
+    ministryName: String!
+    federalMinistryId: ID!
+  ): Ministry
+    @auth(rules: [
+      {
+        roles: ["adminGatheringService", "adminStream"]
+      }
+    ])
+    @cypher (
+      statement:"""
+       MATCH (ministry:Ministry {id:$ministryId})
+        SET ministry.name = $ministryName
+
+        WITH ministry
+          CALL {
+            WITH ministry
+              MATCH (stream:Stream {id:$streamId})
+              MATCH (federalMinistry:Federalministry {id:$federalMinistryId})
+              OPTIONAL MATCH (ministry)-[r:HAS]->()
+              DELETE r
+              MERGE (stream)-[:HAS]->(ministry)
+              MERGE (federalMinistry)-[:HAS]->(ministry)
+            RETURN COUNT(ministry)
+          }
+      MATCH (ministry)<-[:LEADS]-(leader:Active:Member)
+      RETURN ministry
+        """
+    )
+  UpdateHubDetails(
+    hubId: ID!, 
+    ministryId: ID!, 
+    hubName: String!
+  ): Hub
+   @auth(rules: [
+    {
+      roles: ["adminGatheringService", "adminStream"]
+    }
+   ])
+   @cypher(
+     statement: 
+      """
+      MATCH (hub:Hub {id:$hubId})
+        set hub.name = $hubName
+
+        WITH hub
+          CALL {
+            WITH hub
+              MATCH (ministry:Ministry {id:$ministryId})
+              OPTIONAL MATCH (ministry)<-[r:HAS]-()
+              DELETE r
+              MERGE (ministry)-[:HAS]->(hub)
+            RETURN COUNT(hub)
+          }
+      MATCH (hub)<-[:LEADS]-(leader:Active:Member)
+      RETURN hub
+      """
+    )
+   UpdateSontaDetails(sontaId: ID!, hubId: ID!, sontaName: String!): Sonta
+    @auth(
+      rules: [
+        {
+          roles: [
+            "adminGatheringService"
+            "adminStream"
+            "adminCouncil"
+          ]
+        }
+      ]
+    )
+    @cypher(
+      statement: """
+      MATCH (sonta:Sonta {id: $sontaId})
+      	SET sonta.name = $sontaName
+
+      WITH sonta
+        CALL{
+          WITH sonta
+          MATCH (hub:Hub {id:$hubId})
+          OPTIONAL MATCH (sonta)<-[r:HAS]-()
+          DELETE r
+          MERGE (hub)-[:HAS]-(sonta)
+          RETURN COUNT(sonta)
+        }
+      MATCH (sonta)<-[:LEADS]-(leader:Active:Member)
+      RETURN sonta
+      """
+    )
+}
+
+## DELETE OPERATIONS
+
+extend type Mutation {
+  closeDownfederalMinistry(federalMinistryId:ID!, leaderId:ID!):GatheringService
+    @cypher(
+      statement:"""
+      MATCH (federalMinistry:Federalministry {id:$federalMinistryId})
+      MATCH (admin:Active:Member {auth_id: $auth.jwt.sub})
+      MATCH (federalMinistry)<-[:HAS]-(gatheringService:GatheringService)
+
+      CREATE (log:HistoryLog {id:apoc.create.uuid()})
+        SET log.timestamp = datetime()
+        SET log.historyRecord = federalMinistry.name + ' federal ministry was closed down under' + gatheringService.name +' gathering service'
+
+      MERGE (date:Timegraph {date:date()})
+      MERGE (log)-[:LOGGED_BY]->(admin)
+      MERGE (log)-[:RECORDED_ON]->(date)
+      MERGE (gatheringService)-[:HAS_HISTORY]->(log)
+
+      SET federalMinistry:ClosedFederalministry
+      REMOVE federalMinistry:Federalministry
+      RETURN gatheringService
+      """
+    )
+  closeDownMinistry(ministryId:ID!, leaderId:ID!):Federalministry
+    @cypher(
+      statement:"""
+      MATCH (ministry:Ministry {id:$ministryId})
+      MATCH (admin:Active:Member {auth_id: $auth.jwt.sub})
+      MATCH (ministry)<-[:HAS]-(federalMinistry:Federalministry)
+
+      CREATE (log:HistoryLog {id:apoc.create.uuid()})
+        SET log.timestamp = datetime()
+        SET log.historyRecord = ministry.name + ' ministry was closed down under' + federalMinistry.name +' ministry'
+
+      MERGE (date:Timegraph {date:date()})
+      MERGE (log)-[:LOGGED_BY]->(admin)
+      MERGE (log)-[:RECORDED_ON]->(date)
+      MERGE (federalMinistry)-[:HAS_HISTORY]->(log)
+
+      SET ministry:ClosedMinistry
+      REMOVE ministry:Ministry
+      RETURN federalMinistry
+      """
+    )
+  closeDownHub(hubId:ID!, leaderId:ID! ):Ministry
+    @cypher(
+      statement:"""
+      MATCH (hub:Hub {id:$hubId})
+      MATCH (admin:Active:Member {auth_id: $auth.jwt.sub})
+      MATCH (hub)<-[:HAS]-(ministry:Ministry)
+
+      CREATE (log:HistoryLog {id:apoc.create.uuid()})
+        SET log.timestamp = datetime()
+        SET log.historyRecord = hub.name + ' hub was closed down under ' + ministry.name +' ministry'
+
+      MERGE (date:Timegraph {date:date()})
+      MERGE (log)-[:LOGGED_BY]->(admin)
+      MERGE (log)-[:RECORDED_ON]->(date)
+      MERGE (ministry)-[:HAS_HISTORY]->(log)
+
+      SET hub:ClosedHub
+      REMOVE hub:Hub
+      RETURN ministry
+      """
+    )
+  closeDownSonta(sontaId:ID!, leaderId:ID!):Hub
+    @cypher(
+      statement:"""
+      MATCH (sonta:Sonta {id:$sontaId})
+      MATCH (admin:Active:Member {auth_id: $auth.jwt.sub})
+      MATCH (sonta)<-[:HAS]-(hub:Hub)
+
+      CREATE (log:HistoryLog {id: apoc.create.uuid()})
+        SET log.timestamp = datetime(),
+        log.historyRecord = sonta.name + ' sonta was closed down under' + hub.name +' hub'
+
+      MERGE (date:Timegraph {date:date()})
+      MERGE (log)-[:LOGGED_BY]->(admin)
+      MERGE (log)-[:RECORDED_ON]->(date)
+      MERGE (hub)-[:HAS_HISTORY]->(log)
+
+      SET sonta:ClosedSonta
+      REMOVE sonta:Sonta
+
+      RETURN hub
+      """
+    )
+}
