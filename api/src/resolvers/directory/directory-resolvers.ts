@@ -190,7 +190,9 @@ const directoryMutation = {
       )
     }
 
-    const record = lastServiceRecord.lastService.properties
+    const record = lastServiceRecord.lastService?.properties ?? {
+      bankingSlip: null,
+    }
 
     if (!('bankingSlip' in record || record.transactionStatus === 'success')) {
       throw new Error(
