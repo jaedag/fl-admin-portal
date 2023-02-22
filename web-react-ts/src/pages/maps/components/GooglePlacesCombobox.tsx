@@ -1,16 +1,22 @@
-import { useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import Autosuggest from 'react-autosuggest'
 import { FormikComponentProps } from '../../../components/formik/formik-types'
 import 'components/formik/Formik.css'
 import 'components/formik/react-autosuggest.css'
 import usePlacesAutocomplete from 'use-places-autocomplete'
+import { LazyQueryExecFunction, OperationVariables } from '@apollo/client'
+import { MemberContext } from 'contexts/MemberContext'
 
 interface ComboBoxProps extends FormikComponentProps {
   initialValue: string
+  setOffice: (position: google.maps.LatLngLiteral) => void
+  memberSearch: LazyQueryExecFunction<any, OperationVariables>
+  fellowshipSearch?: LazyQueryExecFunction<any, OperationVariables>
 }
 
 const GooglePlacesCombobox = (props: ComboBoxProps) => {
   const { label, name, placeholder, initialValue } = props
+  const { currentUser } = useContext(MemberContext)
 
   const {
     ready,
@@ -21,8 +27,33 @@ const GooglePlacesCombobox = (props: ComboBoxProps) => {
 
   const [searchString, setSearchString] = useState(initialValue ?? '')
   const [suggestions, setSuggestions] = useState<any[]>([])
+
   // TODO: Suggestions are generated after the first keystroke.  This is not ideal.
   // They should be generated before the first keystroke.
+
+  const searchFunctions = async () => {
+    const memberResults = await props.memberSearch({
+      variables: {
+        id: currentUser.id,
+        key: searchString.trim(),
+      },
+    })
+
+    setSuggestions([...memberResults.data.members[0].memberSearch])
+
+    if (props.fellowshipSearch) {
+      props.fellowshipSearch({
+        variables: {
+          id: currentUser.id,
+          key: searchString.trim(),
+        },
+      })
+    }
+  }
+
+  useEffect(() => {
+    searchFunctions()
+  }, [searchString])
 
   return (
     <div>
@@ -53,8 +84,9 @@ const GooglePlacesCombobox = (props: ComboBoxProps) => {
           }
 
           try {
-            setSuggestions(
-              data.map(
+            setSuggestions([
+              ...suggestions,
+              ...data.map(
                 (
                   suggestion: { description: any; place_id: any },
                   index: number
@@ -66,8 +98,9 @@ const GooglePlacesCombobox = (props: ComboBoxProps) => {
                     name: suggestion.description,
                   }
                 }
-              )
-            )
+              ),
+            ])
+            console.log(suggestions)
           } catch {
             clearSuggestions()
           }
@@ -79,11 +112,31 @@ const GooglePlacesCombobox = (props: ComboBoxProps) => {
           }
           setSearchString(suggestion.description)
         }}
-        getSuggestionValue={(suggestion: { name: string }) => suggestion.name}
+        getSuggestionValue={(suggestion: any) => {
+          if (suggestion.name) {
+            return suggestion.name
+          }
+
+          if (suggestion.firstName) {
+            return suggestion.firstName + ' ' + suggestion.lastName
+          }
+
+          if (suggestion) return
+        }}
         highlightFirstSuggestion={true}
-        renderSuggestion={(suggestion) => (
-          <div className="combobox-control">{suggestion.name}</div>
-        )}
+        renderSuggestion={(suggestion: any) => {
+          if (suggestion.name) {
+            return <div className="combobox-control">{suggestion.name}</div>
+          }
+          if (suggestion.firstName) {
+            return (
+              <div className="combobox-control">
+                {suggestion.firstName + ' ' + suggestion.lastName}
+              </div>
+            )
+          }
+          return null
+        }}
       />
     </div>
   )

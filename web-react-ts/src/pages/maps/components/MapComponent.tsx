@@ -7,6 +7,7 @@ import '../Map.css'
 import { Button, Offcanvas } from 'react-bootstrap'
 import { IoChevronUp } from 'react-icons/io5'
 import Places from '../Places'
+import { LazyQueryExecFunction, OperationVariables } from '@apollo/client'
 
 type LatLngLiteral = google.maps.LatLngLiteral
 type MapOptions = google.maps.MapOptions
@@ -19,7 +20,11 @@ type LibrariesOptions = (
   | 'visualization'
 )[]
 
-const MapComponent = () => {
+type MapComponentProps = {
+  memberSearch: LazyQueryExecFunction<any, OperationVariables>
+}
+
+const MapComponent = (props: MapComponentProps) => {
   const [libraries] = useState<LibrariesOptions>(['places'])
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY ?? '',
@@ -78,6 +83,7 @@ const MapComponent = () => {
               setOffice(position)
               mapRef.current?.panTo(position)
             }}
+            {...props}
           ></Places>
           <Button
             onClick={() => {
