@@ -341,3 +341,69 @@ extend type Mutation {
       """
     )
 }
+
+extend type Member {
+  leadsFederalMinistry: [Federalministry!]! @relationship(type: "LEADS", direction: OUT)
+  leadsHub: [Hub!]! @relationship(type: "LEADS", direction: OUT)
+  leadsSontaCount: Int
+    @cypher(
+      statement: """
+      MATCH (this)-[:LEADS]->(sontas:Sonta)
+      RETURN COUNT(sontas)
+      """
+    )
+  leadsHubCount: Int 
+    @cypher(
+      statement: """
+      MATCH (this)-[:LEADS]->(hubs:Hub)
+      RETURN COUNT(hubs)
+      """
+    )
+  leadsMinistryCount: Int 
+    @cypher(
+      statement: """
+      MATCH (this)-[:LEADS]->(ministries:Ministry)
+      RETURN COUNT(ministries)
+      """
+    )
+  isAdminForMinistryCount: Int
+    @cypher(
+      statement: """
+      MATCH (this)-[:IS_ADMIN_FOR]->(ministries:Ministry)
+      RETURN COUNT (ministries)
+      """
+    )
+  leadsAdminsMinistryCount: Int 
+    @cypher(
+      statement: """
+      MATCH (this)-[:LEADS|IS_ADMIN_FOR]->(ministries:Ministry)
+      RETURN COUNT(ministries)
+      """
+    )
+  leadsFederalMinistryCount: Int 
+    @cypher(
+      statement: """
+      MATCH (this)-[:LEADS]->(federalMinistries:Federalministry)
+      RETURN COUNT(federalMinistries)
+      """
+    )
+  isAdminForFederalMinistryCount: Int
+    @cypher(
+      statement: """
+      MATCH (this)-[:IS_ADMIN_FOR]->(federalMinistries:Federalministry)
+      RETURN COUNT (federalMinistries)
+      """
+    )
+  leadsAdminsFederalMinistryCount: Int 
+    @cypher(
+      statement: """
+      MATCH (this)-[:LEADS|IS_ADMIN_FOR]->(federalMinistries:Federalministry)
+      RETURN COUNT(federalMinistries)
+      """
+    )
+  isAdminForMinistry: [Ministry!]!
+    @relationship(type: "IS_ADMIN_FOR", direction:OUT)
+
+  isAdminForFederalMinistry:[Federalministry!]!
+    @relationship(type: "IS_ADMIN_FOR", direction:OUT)
+}
