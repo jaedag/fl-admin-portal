@@ -1101,7 +1101,7 @@ type Federalministry {
     @cypher(
       statement: """
       MATCH (this)<-[:HAS]-(ministries:Ministry)
-      RETURN COUNT(DISTINCT hubs)
+      RETURN COUNT(DISTINCT ministries)
       """
     )
   id: ID @id
