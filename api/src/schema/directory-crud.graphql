@@ -38,8 +38,6 @@ extend type Mutation {
   ): Member
   MakeBacentaLeader(leaderId: ID!, bacentaId: ID!, oldLeaderId: ID): Member
   RemoveBacentaLeader(leaderId: ID!, newLeaderId: ID!, bacentaId: ID!): Member
-  MakeSontaLeader(leaderId: ID!, sontaId: ID!, oldLeaderId: ID): Member
-  RemoveSontaLeader(leaderId: ID!, newLeaderId: ID!, sontaId: ID!): Member
   MakeConstituencyLeader(
     leaderId: ID!
     constituencyId: ID!

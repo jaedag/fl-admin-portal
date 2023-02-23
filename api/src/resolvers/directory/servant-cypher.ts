@@ -2,7 +2,7 @@ const servantCypher = {
   disconnectChurchLeader: `
    MATCH (church {id: $churchId}) 
    WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:GatheringService OR church:Sonta OR church:Ministry
-   OR church:ClosedFellowship OR church:ClosedBacenta
+   OR church:ClosedFellowship OR church:ClosedBacenta OR church:Federalministry OR church:Hub
    MATCH (church)<-[oldLeads:LEADS]-(leader:Member)
    DELETE oldLeads
    
@@ -88,7 +88,7 @@ const servantCypher = {
   connectChurchLeader: `
    MATCH (church {id: $churchId})<-[:HAS]-(higherChurch)
    WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:GatheringService OR church:Sonta OR church:Ministry
-   OR church:ClosedFellowship OR church:ClosedBacenta
+   OR church:ClosedFellowship OR church:ClosedBacenta OR church:Federalministry or church:Hub
    MATCH (leader:Member {id:$leaderId})
       SET leader.auth_id =  $auth_id
    MERGE (leader)-[:LEADS]->(church)

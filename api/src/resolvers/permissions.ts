@@ -99,6 +99,7 @@ export const permitAdmin = (churchLevel: ChurchLevel) => {
     case 'Fellowship':
     case 'Bacenta':
     case 'Sonta':
+    case 'Hub':
     case 'Constituency':
       permittedFor = [
         'adminOversight',
