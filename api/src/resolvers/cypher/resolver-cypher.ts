@@ -18,6 +18,12 @@ WITH apoc.cypher.runFirstColumn(
   RETURN gatheringService", {this: member}, true) | member_gatheringService { .id,.name }],
   leadsSonta: [ member_sontas IN apoc.cypher.runFirstColumn("MATCH (this)-[:LEADS]->(sonta:Sonta)
   RETURN sonta", {this: member}, true) | member_sontas { .id,.name }],
+  leadsHub: [ member_hubs IN apoc.cypher.runFirstColumn("MATCH (this)-[:LEADS]->(hub:Hub)
+  RETURN hub", {this:member}, true) | member_hubs {.id, .name}],
+  leadsFederalministry: [member_federalMinistry IN apoc.cypher.runFirstColumn("MATCH (this)-[:LEADS]->(federalMinistry:Federalministry)
+  RETURN federalMinistry", {this:member}, true) | member_federalMinistry {.id, .name}], 
+  leadsMinistry: [ member_ministry IN apoc.cypher.runFirstColumn("MATCH (this)-[:LEADS]->(ministry:Ministry)
+  RETURN ministry", {this:member}, true) | member_ministry {.id, .name}],
   isAdminForGatheringService: [ member_adminGatheringServices IN apoc.cypher.runFirstColumn("MATCH (this)-[:IS_ADMIN_FOR]->(adminGatheringService:GatheringService)
   RETURN adminGatheringService", {this: member}, true) | member_adminGatheringServices { .id,.name }],
   isAdminForConstituency: [ member_adminConstituencies IN apoc.cypher.runFirstColumn("MATCH (this)-[:IS_ADMIN_FOR]->(adminConstituency:Constituency)
@@ -62,7 +68,7 @@ export const matchMemberSheepSeekerQuery = `
 export const matchChurchQuery = `
   MATCH (church {id:$id}) 
   WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:GatheringService OR church:Sonta OR church:Ministry OR church:Member 
-  OR church:ClosedFellowship OR church:ClosedBacenta
+  OR church:ClosedFellowship OR church:ClosedBacenta OR church:Federalministry OR church:Hub
   RETURN church.id AS id, church.name AS name, church.firstName AS firstName, church.lastName AS lastName, labels(church) AS type
   `
 
