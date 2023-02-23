@@ -1,3 +1,22 @@
+#### 5.9.4 (2023-02-23)
+
+##### New Features
+
+*  replace location nwith idlLocation ([c8816a64](https://github.com/firstlovecenter/fl-pastoral-care/commit/c8816a648a8784fd1746e5c2a7ccb44eedd565d8))
+
+##### Bug Fixes
+
+*  fix bug preventing closing fellowships without previous service info ([437580b7](https://github.com/firstlovecenter/fl-pastoral-care/commit/437580b7f2c74aa35c6815ac189a1e1fd8e24cd1))
+*  remove momoname and mobile network from bacenta after transfer ([b758c15b](https://github.com/firstlovecenter/fl-pastoral-care/commit/b758c15bf7f6f35c08d0b67d33ba26999bdd08e3))
+*  aggregate bussing data in a more correct fashion ([a8503027](https://github.com/firstlovecenter/fl-pastoral-care/commit/a8503027030f08769c2381a648a8e903555d0b95))
+*  update cypher for retrieving bussing data ([c5969498](https://github.com/firstlovecenter/fl-pastoral-care/commit/c59694988b435db16f4b7352966b2fdcc42d7782))
+*  change text 'Bacentas Below 8' to 'Bacentas that Didnt Bus' ([1ceec0bd](https://github.com/firstlovecenter/fl-pastoral-care/commit/1ceec0bd636299aa835bd1fe9ca409081a6e946e))
+*  correct count of vehicles to be counted ([c75e5739](https://github.com/firstlovecenter/fl-pastoral-care/commit/c75e5739dc0ece3f265bcedc7d556a0ad6fa1ce7))
+
+##### Refactors
+
+*  change names to prevent breaking of apollo vscode ext ([ca0b8fce](https://github.com/firstlovecenter/fl-pastoral-care/commit/ca0b8fcefbf0648ed7840e5140045afe38d011fe))
+
 #### 5.9.3 (2023-02-17)
 
 ##### Bug Fixes
