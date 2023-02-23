@@ -18,24 +18,6 @@ export const NEW_FELLOWSHIP_LEADER = gql`
   }
 `
 
-export const NEW_SONTA_LEADER = gql`
-  mutation NewSontaLeader($sontaId: ID!, $leaderId: ID!) {
-    MakeSontaLeader(sontaId: $sontaId, leaderId: $leaderId) {
-      id
-      firstName
-      lastName
-      leadsSonta {
-        id
-        leader {
-          id
-          firstName
-          lastName
-        }
-      }
-    }
-  }
-`
-
 export const NEW_BACENTA_LEADER = gql`
   mutation NewBacentaLeader($bacentaId: ID!, $leaderId: ID!) {
     MakeBacentaLeader(bacentaId: $bacentaId, leaderId: $leaderId) {
@@ -121,6 +103,81 @@ export const NEW_GATHERING_SERVICE_LEADER = gql`
       firstName
       lastName
       leadsGatheringService {
+        id
+        leader {
+          id
+          firstName
+          lastName
+        }
+      }
+    }
+  }
+`
+
+export const NEW_FEDERAL_MINISTRY_LEADER = gql`
+  mutation NewFederalministryLeader($federalMinistryId: ID!, $leaderId: ID!) {
+    MakeFederalministryLeader(
+      federalMinistryId: $federalMinistryId
+      leaderId: $leaderId
+    ) {
+      id
+      firstName
+      lastName
+      leadsFederalministry {
+        id
+        leader {
+          id
+          firstName
+          lastName
+        }
+      }
+    }
+  }
+`
+
+export const NEW_MINISTRY_LEADER = gql`
+  mutation NewMinistryLeader($ministryId: ID!, $leaderId: ID!) {
+    MakeMinistryLeader(ministryId: $ministryId, leaderId: $leaderId) {
+      id
+      firstName
+      lastName
+      leadsMinistry {
+        id
+        leader {
+          id
+          firstName
+          lastName
+        }
+      }
+    }
+  }
+`
+
+export const NEW_HUB_LEADER = gql`
+  mutation NewHubLeader($hubId: ID!, $leaderId: ID!) {
+    MakeHubLeader(hubId: $hubId, leaderId: $leaderId) {
+      id
+      firstName
+      lastName
+      leadsHub {
+        id
+        leader {
+          id
+          firstName
+          lastName
+        }
+      }
+    }
+  }
+`
+
+export const NEW_SONTA_LEADER = gql`
+  mutation NewSontaLeader($sontaId: ID!, $leaderId: ID!) {
+    MakeSontaLeader(sontaId: $sontaId, leaderId: $leaderId) {
+      id
+      firstName
+      lastName
+      leadsSonta {
         id
         leader {
           id

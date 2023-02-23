@@ -108,3 +108,97 @@ export const MAKE_GATHERING_SERVICE_INACTIVE = gql`
     }
   }
 `
+
+export const MAKE_SONTA_INACTIVE = gql`
+  mutation CloseDownSonta($leaderId: ID!, $sontaId: ID!) {
+    closeDownSonta(leaderId: $leaderId, sontaId: $sontaId) {
+      id
+      name
+
+      history {
+        id
+        timeStamp
+        createdAt {
+          date
+        }
+        loggedBy {
+          id
+          firstName
+          lastName
+        }
+        historyRecord
+      }
+    }
+  }
+`
+
+export const MAKE_HUB_INACTIVE = gql`
+  mutation CloseDownHub($leaderId: ID!, $hubId: ID!) {
+    closeDownHub(leaderId: $leaderId, hubId: $hubId) {
+      id
+      name
+
+      history {
+        id
+        timeStamp
+        createdAt {
+          date
+        }
+        loggedBy {
+          id
+          firstName
+          lastName
+        }
+        historyRecord
+      }
+    }
+  }
+`
+
+export const MAKE_MINISTRY_INACTIVE = gql`
+  mutation CloseDownMinistry($ministryId: ID!, $leaderId: ID!) {
+    closeDownMinistry(ministryId: $ministryId, leaderId: $leaderId) {
+      id
+      name
+
+      history {
+        id
+        timeStamp
+        createdAt {
+          date
+        }
+        loggedBy {
+          id
+          firstName
+          lastName
+        }
+        historyRecord
+      }
+    }
+  }
+`
+
+export const MAKE_FEDERAL_MINISTRY_INACTIVE = gql`
+  mutation CloseDownfederalMinistry($federalMinistryId: ID!, $leaderId: ID!) {
+    closeDownfederalMinistry(
+      federalMinistryId: $federalMinistryId
+      leaderId: $leaderId
+    ) {
+      id
+      name
+      history {
+        id
+        timeStamp
+        createdAt {
+          date
+        }
+        loggedBy {
+          id
+          firstName
+          lastName
+        }
+        historyRecord
+      }
+    }
+  }
+`

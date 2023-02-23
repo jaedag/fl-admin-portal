@@ -2,72 +2,70 @@ import React, { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useMutation } from '@apollo/client'
 import { throwToSentry } from '../../../global-utils'
-import { CREATE_SONTA_MUTATION } from './CreateMutations'
+import { CREATE_HUB_MUTATION } from './CreateMutations'
 import { ChurchContext } from '../../../contexts/ChurchContext'
-import { NEW_SONTA_LEADER } from './MakeLeaderMutations'
+import { NEW_HUB_LEADER } from './MakeLeaderMutations'
 import { FormikHelpers } from 'formik'
-import SontaForm, { SontaFormValues } from '../reusable-forms/SontaForm'
+import HubForm, { HubFormValues } from '../reusable-forms/HubForm'
 
-const CreateSonta = () => {
+const CreateHub = () => {
   const { clickCard } = useContext(ChurchContext)
 
   const navigate = useNavigate()
 
-  const initialValues: SontaFormValues = {
+  const initialValues: HubFormValues = {
     ministry: '',
     leaderId: '',
     leaderName: '',
-    hub: '',
+    name: '',
   }
 
-  const [NewSontaLeader] = useMutation(NEW_SONTA_LEADER)
-  const [CreateSonta] = useMutation(CREATE_SONTA_MUTATION)
+  const [NewHubLeader] = useMutation(NEW_HUB_LEADER)
+  const [CreateHub] = useMutation(CREATE_HUB_MUTATION)
 
   //onSubmit receives the form state as argument
   const onSubmit = (
-    values: SontaFormValues,
-    onSubmitProps: FormikHelpers<SontaFormValues>
+    values: HubFormValues,
+    onSubmitProps: FormikHelpers<HubFormValues>
   ) => {
     onSubmitProps.setSubmitting(true)
     clickCard({ id: values.ministry, __typename: 'Ministry' })
-    clickCard({ id: values.hub, __typename: 'Hub' })
 
-    CreateSonta({
+    CreateHub({
       variables: {
         ministryId: values.ministry,
         leaderId: values.leaderId,
-        hubId: values.hub,
+        name: values.name,
       },
     })
       .then((res) => {
-        clickCard(res.data.CreateSonta)
-        NewSontaLeader({
+        clickCard(res.data.CreateHub)
+        NewHubLeader({
           variables: {
             leaderId: values.leaderId,
-            sontaId: res.data.CreateSonta.id,
+            hubId: res.data.CreateHub.id,
           },
         }).catch((error) => {
           throwToSentry('There was an error adding leader', error)
         })
 
-        clickCard(res.data.CreateSonta)
+        clickCard(res.data.CreateHub)
         onSubmitProps.setSubmitting(false)
         onSubmitProps.resetForm()
-        navigate(`/sonta/displaydetails`)
+        navigate(`/hub/displaydetails`)
       })
       .catch((error) => {
-        throwToSentry('There was an error creating sonta', error)
+        throwToSentry('There was an error creating hub', error)
       })
   }
 
   return (
-    <SontaForm
+    <HubForm
       initialValues={initialValues}
       onSubmit={onSubmit}
-      title={`Create a New Sonta`}
-      newSonta
+      title={`Create a New Hub`}
+      newHub
     />
   )
 }
-
-export default CreateSonta
+export default CreateHub

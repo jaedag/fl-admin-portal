@@ -3,10 +3,10 @@ import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { Form, Formik, FormikHelpers } from 'formik'
 import * as Yup from 'yup'
 import { makeSelectOptions, throwToSentry } from 'global-utils'
-import { GET_HUBS, GET_MINISTRIES } from 'queries/ListQueries'
+import { GET_MINISTRIES } from 'queries/ListQueries'
 import React, { useContext, useState } from 'react'
 import { ChurchContext } from 'contexts/ChurchContext'
-import { MAKE_SONTA_INACTIVE } from 'pages/directory/update/CloseChurchMutations'
+import { MAKE_HUB_INACTIVE } from 'pages/directory/update/CloseChurchMutations'
 import { useNavigate } from 'react-router'
 import Popup from 'components/Popup/Popup'
 import { Button, Container, Row, Col } from 'react-bootstrap'
@@ -16,64 +16,47 @@ import SubmitButton from 'components/formik/SubmitButton'
 import usePopup from 'hooks/usePopup'
 import Select from 'components/formik/Select'
 import SearchMember from 'components/formik/SearchMember'
+import Input from 'components/formik/Input'
 
-export interface SontaFormValues {
-  hub: string
+export interface HubFormValues {
+  name: string
   ministry: string
   leaderId: string
   leaderName: string
 }
 
-type SontaFormProps = {
-  initialValues: SontaFormValues
+type HubFormProps = {
+  initialValues: HubFormValues
   onSubmit: (
-    values: SontaFormValues,
-    onSubmitProps: FormikHelpers<SontaFormValues>
+    values: HubFormValues,
+    onSubmitProps: FormikHelpers<HubFormValues>
   ) => void
   title: string
-  newSonta: boolean
+  newHub: boolean
 }
 
-const SontaForm = ({
-  initialValues,
-  onSubmit,
-  title,
-  newSonta,
-}: SontaFormProps) => {
-  const { clickCard, sontaId } = useContext(ChurchContext)
+const HubForm = ({ initialValues, onSubmit, title, newHub }: HubFormProps) => {
+  const { clickCard, hubId } = useContext(ChurchContext)
   const { theme } = useContext(MemberContext)
   const { togglePopup, isOpen } = usePopup()
   const navigate = useNavigate()
-  const {
-    data: hubData,
-    loading: hubLoading,
-    error: hubError,
-  } = useQuery(GET_HUBS)
-  const {
-    data: ministryData,
-    loading: ministryLoading,
-    error: ministryError,
-  } = useQuery(GET_MINISTRIES)
-  const [buttonLoading, setButtonLoading] = useState(false)
-  const [CloseDownSonta] = useMutation(MAKE_SONTA_INACTIVE)
 
-  const hubsOptions = makeSelectOptions(hubData?.hubs)
-  const ministriesOptions = makeSelectOptions(ministryData?.ministries)
+  const { data, loading, error } = useQuery(GET_MINISTRIES)
+  const [buttonLoading, setButtonLoading] = useState(false)
+  const [CloseDownHub] = useMutation(MAKE_HUB_INACTIVE)
+
+  const ministriesOptions = makeSelectOptions(data?.ministries)
 
   const validationSchema = Yup.object({
     ministry: Yup.string().required(`Ministry is a required field`),
-    hub: Yup.string().required(`Hub is a required field`),
+    name: Yup.string().required(`Hub Name is a required field`),
     leaderId: Yup.string().required(
       'Please choose a leader from the drop down'
     ),
   })
 
   return (
-    <ApolloWrapper
-      loading={hubLoading && ministryLoading}
-      error={hubError && ministryError}
-      data={hubData && ministryData && initialValues}
-    >
+    <ApolloWrapper loading={loading} error={error} data={data && initialValues}>
       <>
         <Container>
           <HeadingPrimary>{title}</HeadingPrimary>
@@ -98,11 +81,10 @@ const SontaForm = ({
                         defaultOption="Select a Ministry"
                       />
 
-                      <Select
-                        name="hub"
-                        label="Select a Hub"
-                        options={hubsOptions}
-                        defaultOption="Select a Hub"
+                      <Input
+                        name="name"
+                        label={`Name of Hub`}
+                        placeholder={`Name of Hub`}
                       />
 
                       <Row className="d-flex align-items-center mb-3">
@@ -127,7 +109,7 @@ const SontaForm = ({
 
               {isOpen && (
                 <Popup handleClose={togglePopup}>
-                  Are you sure you want to close down this sonta?
+                  Are you sure you want to close down this hub?
                   <Button
                     variant="primary"
                     type="submit"
@@ -135,21 +117,21 @@ const SontaForm = ({
                     className={`btn-main ${theme}`}
                     onClick={() => {
                       setButtonLoading(true)
-                      CloseDownSonta({
+                      CloseDownHub({
                         variables: {
-                          id: sontaId,
+                          id: hubId,
                           leaderId: initialValues.leaderId,
                         },
                       })
                         .then((res) => {
                           setButtonLoading(false)
-                          clickCard(res.data.CloseDownSonta)
+                          clickCard(res.data.CloseDownHub)
                           togglePopup()
-                          navigate(`/sonta/displayall`)
+                          navigate(`/hub/displayall`)
                         })
                         .catch((error) => {
                           throwToSentry(
-                            `There was an error closing down this Sonta`,
+                            `There was an error closing down this Hub`,
                             error
                           )
                         })
@@ -167,7 +149,7 @@ const SontaForm = ({
                 </Popup>
               )}
 
-              {!newSonta && (
+              {!newHub && (
                 <Button
                   variant="primary"
                   size="lg"
@@ -175,7 +157,7 @@ const SontaForm = ({
                   className={`btn-secondary ${theme} mt-3`}
                   onClick={togglePopup}
                 >
-                  {`Close Down Sonta`}
+                  {`Close Down Hub`}
                 </Button>
               )}
             </Container>
@@ -186,4 +168,4 @@ const SontaForm = ({
   )
 }
 
-export default SontaForm
+export default HubForm

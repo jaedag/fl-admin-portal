@@ -433,3 +433,77 @@ export const SERVANTS_SHEEP_SEEKER_STREAM = gql`
     }
   }
 `
+
+export const SERVANTS_SONTA_LEADER = gql`
+  query sontaLeader($id: ID!) {
+    members(where: { id: $id }) {
+      id
+      leadsSonta {
+        id
+        name
+      }
+    }
+  }
+`
+
+export const SERVANTS_HUB_LEADER = gql`
+  query hubLeader($id: ID!) {
+    members(where: { id: $id }) {
+      id
+      leadsHub {
+        id
+        name
+        stream_name
+      }
+    }
+  }
+`
+
+export const SERVANTS_MINISTRY_LEADER = gql`
+  query ministryLeader($id: ID!) {
+    members(where: { id: $id }) {
+      id
+      leadsMinistry {
+        id
+        name
+      }
+    }
+  }
+`
+
+export const SERVANTS_FEDERAL_MINISTRY_LEADER = gql`
+  query federalMinistryLeader($id: ID!) {
+    members(where: { id: $id }) {
+      id
+      leadsFederalministry {
+        id
+        name
+      }
+    }
+  }
+`
+export const SERVANTS_MINISTRY_ADMIN = gql`
+  query ministryAdmin($id: ID!) {
+    members(where: { id: $id }) {
+      id
+
+      isAdminForMinistry {
+        id
+        name
+      }
+    }
+  }
+`
+
+export const SERVANTS_FEDERAL_MINISTRY_ADMIN = gql`
+  query federalMinistryAdmin($id: ID!) {
+    members(where: { id: $id }) {
+      id
+
+      isAdminForFederalministry {
+        id
+        name
+      }
+    }
+  }
+`

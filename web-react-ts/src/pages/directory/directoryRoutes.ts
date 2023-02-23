@@ -49,6 +49,13 @@ const DetailsStream = lazy(
   () => import('pages/directory/display/DetailsStream')
 )
 const DetailsSonta = lazy(() => import('pages/directory/display/DetailsSonta'))
+const DetailsHub = lazy(() => import('pages/directory/display/DetailsHub'))
+const DetailsMinistry = lazy(
+  () => import('pages/directory/display/DetailsMinistry')
+)
+const DetailsFederalMinistry = lazy(
+  () => import('pages/directory/display/DetailsFederalMinistry')
+)
 const DisplayAllBacentas = lazy(
   () => import('pages/directory/display/AllBacentas')
 )
@@ -67,11 +74,17 @@ const CreateFellowship = lazy(
   () => import('pages/directory/create/CreateFellowship')
 )
 const CreateSonta = lazy(() => import('pages/directory/create/CreateSonta'))
+const CreateHub = lazy(() => import('pages/directory/create/CreateHub'))
+const CreateMinistry = lazy(
+  () => import('pages/directory/create/CreateMinistry')
+)
+const CreateFederalMinistry = lazy(
+  () => import('pages/directory/create/CreateFederalMinistry')
+)
 const UpdateFellowship = lazy(
   () => import('pages/directory/update/UpdateFellowship')
 )
 const UpdateBacenta = lazy(() => import('pages/directory/update/UpdateBacenta'))
-const UpdateSonta = lazy(() => import('pages/directory/update/UpdateSonta'))
 const UpdateConstituency = lazy(
   () => import('pages/directory/update/UpdateConstituency')
 )
@@ -361,7 +374,25 @@ export const directory: LazyRouteTypes[] = [
   {
     path: '/sonta/displaydetails',
     element: DetailsSonta,
-    roles: permitLeaderAdmin('Sonta'),
+    roles: permitMe('Sonta'),
+    placeholder: true,
+  },
+  {
+    path: '/hub/displaydetails',
+    element: DetailsHub,
+    roles: permitMe('Hub'),
+    placeholder: true,
+  },
+  {
+    path: '/ministry/displaydetails',
+    element: DetailsMinistry,
+    roles: permitMe('Ministry'),
+    placeholder: true,
+  },
+  {
+    path: '/federalministry/displaydetails',
+    element: DetailsFederalMinistry,
+    roles: permitMe('Federalministry'),
     placeholder: true,
   },
 
@@ -432,7 +463,25 @@ export const directory: LazyRouteTypes[] = [
   {
     path: '/sonta/addsonta',
     element: CreateSonta,
-    roles: permitAdmin('Constituency'),
+    roles: permitAdmin('Ministry'),
+    placeholder: false,
+  },
+  {
+    path: '/hub/addhub',
+    element: CreateHub,
+    roles: permitAdmin('Ministry'),
+    placeholder: false,
+  },
+  {
+    path: '/ministry/addministry',
+    element: CreateMinistry,
+    roles: permitAdmin('Federalministry'),
+    placeholder: false,
+  },
+  {
+    path: '/federalministry/addfederalministry',
+    element: CreateFederalMinistry,
+    roles: permitAdmin('GatheringService'),
     placeholder: false,
   },
   {
@@ -478,12 +527,6 @@ export const directory: LazyRouteTypes[] = [
     element: UpdateBacentaBussing,
     roles: ['leaderBacenta', ...permitAdminArrivals('Stream')],
     placeholder: true,
-  },
-  {
-    path: '/sonta/editsonta',
-    element: UpdateSonta,
-    roles: permitAdmin('Constituency'),
-    placeholder: false,
   },
   {
     path: '/constituency/editconstituency',

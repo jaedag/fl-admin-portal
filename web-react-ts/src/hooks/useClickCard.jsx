@@ -51,9 +51,14 @@ const useClickCard = () => {
   const [sontaId, setSontaId] = useState(
     sessionStorage.getItem('sontaId') ?? ''
   )
+  const [hubId, setHubId] = useState(sessionStorage.getItem('hubId') ?? '')
   const [ministryId, setMinistryId] = useState(
     sessionStorage.getItem('ministryId') ?? ''
   )
+  const [federalMinistryId, setFederalMinistryId] = useState(
+    sessionStorage.getItem('federalMinistryId') ?? ''
+  )
+
   const [memberId, setMemberId] = useState(
     sessionStorage.getItem('memberId') ?? ''
   )
@@ -349,6 +354,18 @@ const useClickCard = () => {
         setSontaId(card.id)
         sessionStorage.setItem('sontaId', card.id)
         break
+      case 'Hub':
+        setHubId(card.id)
+        sessionStorage.setItem('hubId', card.id)
+        break
+      case 'Ministry':
+        setMinistryId(card.id)
+        sessionStorage.setItem('ministryId', card.id)
+        break
+      case 'Federalministry':
+        setFederalMinistryId(card.id)
+        sessionStorage.setItem('federalMinistryId', card.id)
+        break
       case 'Fellowship':
         setFellowshipId(card.id)
         sessionStorage.setItem('fellowshipId', card.id)
@@ -425,7 +442,9 @@ const useClickCard = () => {
     bacentaId,
     fellowshipId,
     sontaId,
+    hubId,
     ministryId,
+    federalMinistryId,
     bussingRecordId,
     vehicleRecordId,
     serviceRecordId,
@@ -438,6 +457,11 @@ const useClickCard = () => {
     setStreamId,
     setCouncilId,
     setConstituencyId,
+    setSontaId,
+    setHubId,
+    setMinistryId,
+    setFederalMinistryId
+
   }
 }
 

@@ -3,10 +3,10 @@ import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { Form, Formik, FormikHelpers } from 'formik'
 import * as Yup from 'yup'
 import { makeSelectOptions, throwToSentry } from 'global-utils'
-import { GET_HUBS, GET_MINISTRIES } from 'queries/ListQueries'
+import { GET_FEDERALMINISTRIES, GET_STREAMS } from 'queries/ListQueries'
 import React, { useContext, useState } from 'react'
 import { ChurchContext } from 'contexts/ChurchContext'
-import { MAKE_SONTA_INACTIVE } from 'pages/directory/update/CloseChurchMutations'
+import { MAKE_MINISTRY_INACTIVE } from 'pages/directory/update/CloseChurchMutations'
 import { useNavigate } from 'react-router'
 import Popup from 'components/Popup/Popup'
 import { Button, Container, Row, Col } from 'react-bootstrap'
@@ -17,52 +17,58 @@ import usePopup from 'hooks/usePopup'
 import Select from 'components/formik/Select'
 import SearchMember from 'components/formik/SearchMember'
 
-export interface SontaFormValues {
-  hub: string
-  ministry: string
+export interface MinistryFormValues {
+  federalMinistry: string
   leaderId: string
   leaderName: string
+  stream: string
 }
 
-type SontaFormProps = {
-  initialValues: SontaFormValues
+type MinistryFormProps = {
+  initialValues: MinistryFormValues
   onSubmit: (
-    values: SontaFormValues,
-    onSubmitProps: FormikHelpers<SontaFormValues>
+    values: MinistryFormValues,
+    onSubmitProps: FormikHelpers<MinistryFormValues>
   ) => void
   title: string
-  newSonta: boolean
+  newMinistry: boolean
 }
 
-const SontaForm = ({
+const MinistryForm = ({
   initialValues,
   onSubmit,
   title,
-  newSonta,
-}: SontaFormProps) => {
-  const { clickCard, sontaId } = useContext(ChurchContext)
+  newMinistry,
+}: MinistryFormProps) => {
+  const { clickCard, ministryId } = useContext(ChurchContext)
   const { theme } = useContext(MemberContext)
   const { togglePopup, isOpen } = usePopup()
   const navigate = useNavigate()
-  const {
-    data: hubData,
-    loading: hubLoading,
-    error: hubError,
-  } = useQuery(GET_HUBS)
-  const {
-    data: ministryData,
-    loading: ministryLoading,
-    error: ministryError,
-  } = useQuery(GET_MINISTRIES)
-  const [buttonLoading, setButtonLoading] = useState(false)
-  const [CloseDownSonta] = useMutation(MAKE_SONTA_INACTIVE)
 
-  const hubsOptions = makeSelectOptions(hubData?.hubs)
-  const ministriesOptions = makeSelectOptions(ministryData?.ministries)
+  const {
+    data: federalMinistryData,
+    loading: federalMinistryLoading,
+    error: federalMinistryError,
+  } = useQuery(GET_FEDERALMINISTRIES)
+  const {
+    data: streamData,
+    loading: streamLoading,
+    error: streamError,
+  } = useQuery(GET_STREAMS)
+  const [buttonLoading, setButtonLoading] = useState(false)
+  const [CloseDownMinistry] = useMutation(MAKE_MINISTRY_INACTIVE)
+
+  const federalMinistriesOptions = makeSelectOptions(
+    federalMinistryData?.federalministries
+  )
+
+  const streamsOptions = makeSelectOptions(streamData?.streams)
 
   const validationSchema = Yup.object({
-    ministry: Yup.string().required(`Ministry is a required field`),
-    hub: Yup.string().required(`Hub is a required field`),
+    federalMinistry: Yup.string().required(
+      `Federal Ministry is a required field`
+    ),
+    stream: Yup.string().required(`Stream is a required field`),
     leaderId: Yup.string().required(
       'Please choose a leader from the drop down'
     ),
@@ -70,9 +76,9 @@ const SontaForm = ({
 
   return (
     <ApolloWrapper
-      loading={hubLoading && ministryLoading}
-      error={hubError && ministryError}
-      data={hubData && ministryData && initialValues}
+      loading={streamLoading && federalMinistryLoading}
+      error={streamError && federalMinistryError}
+      data={streamData && federalMinistryData && initialValues}
     >
       <>
         <Container>
@@ -92,17 +98,17 @@ const SontaForm = ({
                     {/* <!-- Basic Info Div --> */}
                     <Col className="mb-2">
                       <Select
-                        name="ministry"
-                        label="Select a Ministry"
-                        options={ministriesOptions}
-                        defaultOption="Select a Ministry"
+                        name="stream"
+                        label="Select a Stream"
+                        options={streamsOptions}
+                        defaultOption="Select a Stream"
                       />
 
                       <Select
-                        name="hub"
-                        label="Select a Hub"
-                        options={hubsOptions}
-                        defaultOption="Select a Hub"
+                        name="federalMinistry"
+                        label="Select a Federal Ministry"
+                        options={federalMinistriesOptions}
+                        defaultOption="Select a Federal Ministry"
                       />
 
                       <Row className="d-flex align-items-center mb-3">
@@ -127,7 +133,7 @@ const SontaForm = ({
 
               {isOpen && (
                 <Popup handleClose={togglePopup}>
-                  Are you sure you want to close down this sonta?
+                  Are you sure you want to close down this Ministry?
                   <Button
                     variant="primary"
                     type="submit"
@@ -135,21 +141,21 @@ const SontaForm = ({
                     className={`btn-main ${theme}`}
                     onClick={() => {
                       setButtonLoading(true)
-                      CloseDownSonta({
+                      CloseDownMinistry({
                         variables: {
-                          id: sontaId,
+                          id: ministryId,
                           leaderId: initialValues.leaderId,
                         },
                       })
                         .then((res) => {
                           setButtonLoading(false)
-                          clickCard(res.data.CloseDownSonta)
+                          clickCard(res.data.CloseDownMinistry)
                           togglePopup()
-                          navigate(`/sonta/displayall`)
+                          navigate(`/ministry/displayall`)
                         })
                         .catch((error) => {
                           throwToSentry(
-                            `There was an error closing down this Sonta`,
+                            `There was an error closing down this Ministry`,
                             error
                           )
                         })
@@ -167,7 +173,7 @@ const SontaForm = ({
                 </Popup>
               )}
 
-              {!newSonta && (
+              {!newMinistry && (
                 <Button
                   variant="primary"
                   size="lg"
@@ -175,7 +181,7 @@ const SontaForm = ({
                   className={`btn-secondary ${theme} mt-3`}
                   onClick={togglePopup}
                 >
-                  {`Close Down Sonta`}
+                  {`Close Down Ministry`}
                 </Button>
               )}
             </Container>
@@ -186,4 +192,4 @@ const SontaForm = ({
   )
 }
 
-export default SontaForm
+export default MinistryForm

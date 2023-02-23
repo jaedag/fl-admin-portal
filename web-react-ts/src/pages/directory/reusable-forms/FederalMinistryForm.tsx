@@ -3,10 +3,10 @@ import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { Form, Formik, FormikHelpers } from 'formik'
 import * as Yup from 'yup'
 import { makeSelectOptions, throwToSentry } from 'global-utils'
-import { GET_HUBS, GET_MINISTRIES } from 'queries/ListQueries'
+import { GET_GATHERINGSERVICES } from 'queries/ListQueries'
 import React, { useContext, useState } from 'react'
 import { ChurchContext } from 'contexts/ChurchContext'
-import { MAKE_SONTA_INACTIVE } from 'pages/directory/update/CloseChurchMutations'
+import { MAKE_FEDERAL_MINISTRY_INACTIVE } from 'pages/directory/update/CloseChurchMutations'
 import { useNavigate } from 'react-router'
 import Popup from 'components/Popup/Popup'
 import { Button, Container, Row, Col } from 'react-bootstrap'
@@ -16,64 +16,54 @@ import SubmitButton from 'components/formik/SubmitButton'
 import usePopup from 'hooks/usePopup'
 import Select from 'components/formik/Select'
 import SearchMember from 'components/formik/SearchMember'
+import Input from 'components/formik/Input'
 
-export interface SontaFormValues {
-  hub: string
-  ministry: string
+export interface FederalMinistryFormValues {
+  name: string
+  gatheringService: string
   leaderId: string
   leaderName: string
 }
 
-type SontaFormProps = {
-  initialValues: SontaFormValues
+type FederalMinistryFormProps = {
+  initialValues: FederalMinistryFormValues
   onSubmit: (
-    values: SontaFormValues,
-    onSubmitProps: FormikHelpers<SontaFormValues>
+    values: FederalMinistryFormValues,
+    onSubmitProps: FormikHelpers<FederalMinistryFormValues>
   ) => void
   title: string
-  newSonta: boolean
+  newFederalMinistry: boolean
 }
 
-const SontaForm = ({
+const FederalMinistryForm = ({
   initialValues,
   onSubmit,
   title,
-  newSonta,
-}: SontaFormProps) => {
-  const { clickCard, sontaId } = useContext(ChurchContext)
+  newFederalMinistry,
+}: FederalMinistryFormProps) => {
+  const { clickCard, federalMinstryId } = useContext(ChurchContext)
   const { theme } = useContext(MemberContext)
   const { togglePopup, isOpen } = usePopup()
   const navigate = useNavigate()
-  const {
-    data: hubData,
-    loading: hubLoading,
-    error: hubError,
-  } = useQuery(GET_HUBS)
-  const {
-    data: ministryData,
-    loading: ministryLoading,
-    error: ministryError,
-  } = useQuery(GET_MINISTRIES)
-  const [buttonLoading, setButtonLoading] = useState(false)
-  const [CloseDownSonta] = useMutation(MAKE_SONTA_INACTIVE)
 
-  const hubsOptions = makeSelectOptions(hubData?.hubs)
-  const ministriesOptions = makeSelectOptions(ministryData?.ministries)
+  const { data, loading, error } = useQuery(GET_GATHERINGSERVICES)
+  const [buttonLoading, setButtonLoading] = useState(false)
+  const [CloseDownFederalMinistry] = useMutation(MAKE_FEDERAL_MINISTRY_INACTIVE)
+
+  const gatheringServiceOptions = makeSelectOptions(data?.gatheringServices)
 
   const validationSchema = Yup.object({
-    ministry: Yup.string().required(`Ministry is a required field`),
-    hub: Yup.string().required(`Hub is a required field`),
+    gatheringService: Yup.string().required(
+      `Gathering Service is a required field`
+    ),
+    name: Yup.string().required(`Federal Ministry Name is a required field`),
     leaderId: Yup.string().required(
       'Please choose a leader from the drop down'
     ),
   })
 
   return (
-    <ApolloWrapper
-      loading={hubLoading && ministryLoading}
-      error={hubError && ministryError}
-      data={hubData && ministryData && initialValues}
-    >
+    <ApolloWrapper loading={loading} error={error} data={data && initialValues}>
       <>
         <Container>
           <HeadingPrimary>{title}</HeadingPrimary>
@@ -92,17 +82,16 @@ const SontaForm = ({
                     {/* <!-- Basic Info Div --> */}
                     <Col className="mb-2">
                       <Select
-                        name="ministry"
-                        label="Select a Ministry"
-                        options={ministriesOptions}
-                        defaultOption="Select a Ministry"
+                        name="gatheringService"
+                        label="Select a Gathering Service"
+                        options={gatheringServiceOptions}
+                        defaultOption="Select a Gathering Service"
                       />
 
-                      <Select
-                        name="hub"
-                        label="Select a Hub"
-                        options={hubsOptions}
-                        defaultOption="Select a Hub"
+                      <Input
+                        name="name"
+                        label={`Name of Federal Ministry`}
+                        placeholder={`Name of Federal Ministry`}
                       />
 
                       <Row className="d-flex align-items-center mb-3">
@@ -127,7 +116,7 @@ const SontaForm = ({
 
               {isOpen && (
                 <Popup handleClose={togglePopup}>
-                  Are you sure you want to close down this sonta?
+                  Are you sure you want to close down this Federal Ministry?
                   <Button
                     variant="primary"
                     type="submit"
@@ -135,21 +124,21 @@ const SontaForm = ({
                     className={`btn-main ${theme}`}
                     onClick={() => {
                       setButtonLoading(true)
-                      CloseDownSonta({
+                      CloseDownFederalMinistry({
                         variables: {
-                          id: sontaId,
+                          id: federalMinstryId,
                           leaderId: initialValues.leaderId,
                         },
                       })
                         .then((res) => {
                           setButtonLoading(false)
-                          clickCard(res.data.CloseDownSonta)
+                          clickCard(res.data.CloseDownFederalMinistry)
                           togglePopup()
-                          navigate(`/sonta/displayall`)
+                          navigate(`/federalministry/displayall`)
                         })
                         .catch((error) => {
                           throwToSentry(
-                            `There was an error closing down this Sonta`,
+                            `There was an error closing down this Federal Ministry`,
                             error
                           )
                         })
@@ -167,7 +156,7 @@ const SontaForm = ({
                 </Popup>
               )}
 
-              {!newSonta && (
+              {!newFederalMinistry && (
                 <Button
                   variant="primary"
                   size="lg"
@@ -175,7 +164,7 @@ const SontaForm = ({
                   className={`btn-secondary ${theme} mt-3`}
                   onClick={togglePopup}
                 >
-                  {`Close Down Sonta`}
+                  {`Close Down Federal Ministry`}
                 </Button>
               )}
             </Container>
@@ -186,4 +175,4 @@ const SontaForm = ({
   )
 }
 
-export default SontaForm
+export default FederalMinistryForm

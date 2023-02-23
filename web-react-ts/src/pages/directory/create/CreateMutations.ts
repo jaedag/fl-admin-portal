@@ -147,30 +147,6 @@ export const CREATE_BACENTA_MUTATION = gql`
   }
 `
 
-export const CREATE_SONTA_MUTATION = gql`
-  mutation CreateSonta($ministryId: ID!, $constituencyId: ID!, $leaderId: ID!) {
-    CreateSonta(
-      ministryId: $ministryId
-      constituencyId: $constituencyId
-      leaderId: $leaderId
-    ) {
-      id
-      name
-      sontas {
-        id
-        name
-        stream_name
-        leader {
-          id
-          firstName
-          lastName
-          fullName
-        }
-      }
-    }
-  }
-`
-
 export const CREATE_CONSTITUENCY_MUTATION = gql`
   mutation CreateConstituency($name: String!, $leaderId: ID!, $councilId: ID!) {
     CreateConstituency(
@@ -254,6 +230,58 @@ export const CREATE_GATHERING_SERVICE_MUTATION = gql`
           name
         }
       }
+    }
+  }
+`
+
+export const CREATE_FEDERAL_MINISTRY_MUTATION = gql`
+  mutation CreateFederalministry(
+    $name: String!
+    $leaderId: ID!
+    $gatheringServiceId: ID!
+  ) {
+    CreateFederalministry(
+      name: $name
+      leaderId: $leaderId
+      gatheringServiceId: $gatheringServiceId
+    ) {
+      id
+      name
+    }
+  }
+`
+
+export const CREATE_MINISTRY_MUTATION = gql`
+  mutation CreateMinistry(
+    $federalMinistryId: ID!
+    $leaderId: ID!
+    $streamId: ID!
+  ) {
+    CreateMinistry(
+      federalMinistryId: $federalMinistryId
+      leaderId: $leaderId
+      streamId: $streamId
+    ) {
+      id
+      name
+    }
+  }
+`
+
+export const CREATE_HUB_MUTATION = gql`
+  mutation CreateHub($name: String!, $leaderId: ID!, $ministryId: ID!) {
+    CreateHub(name: $name, leaderId: $leaderId, ministryId: $ministryId) {
+      id
+      name
+    }
+  }
+`
+
+export const CREATE_SONTA_MUTATION = gql`
+  mutation CreateSonta($ministryId: ID!, $hubId: ID!, $leaderId: ID!) {
+    CreateSonta(ministryId: $ministryId, hubId: $hubId, leaderId: $leaderId) {
+      id
+      name
     }
   }
 `

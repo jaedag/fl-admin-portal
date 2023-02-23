@@ -59,6 +59,10 @@ export const formatting = (
     churchLower = 'gatheringService'
   }
 
+  if (churchType === 'Federalministry') {
+    churchLower = 'federalMinistry'
+  }
+
   return {
     verb,
     servantLower,
