@@ -144,7 +144,7 @@ CREATE (member:Active:Member:IDL {whatsappNumber:$whatsappNumber})
       	member.lastName = $lastName,
       	member.email = $email,
       	member.phoneNumber = $phoneNumber,
-        member.location = $location,
+        member.idlLocation = $idlLocation,
       	member.pictureUrl = $pictureUrl,
         
         member.hasHolyGhostBaptism = false,
@@ -219,7 +219,7 @@ WITH member, fellowship
         member.middleName = $middleName,
         member.lastName = $lastName,
         member.phoneNumber = $phoneNumber,
-        member.location = $location,
+        member.idlLocation = $idlLocation,
         member.pictureUrl = $pictureUrl
 
         REMOVE 

@@ -185,7 +185,7 @@ extend type Mutation {
     maritalStatus: String!
     gender: String!
     occupation: String
-    location: String!
+    idlLocation: String!
     fellowship: String!
     ministry: String
     pictureUrl: String!
