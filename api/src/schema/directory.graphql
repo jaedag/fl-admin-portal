@@ -995,14 +995,14 @@ type Ministry {
     sontaCount: Int!
     @cypher(
       statement: """
-      MATCH (this)<-[:HAS]-(sontas:Sonta)
+      MATCH (this)-[:HAS*2]->(sontas:Sonta)
       RETURN COUNT(DISTINCT sontas)
       """
     )
    hubCount: Int!
     @cypher(
       statement:"""
-      MATCH (this)<-[:HAS]-(hubs:Hub)
+      MATCH (this)-[:HAS]->(hubs:Hub)
       RETURN COUNT(DISTINCT hubs)
       """
     )
@@ -1027,10 +1027,10 @@ type Sonta {
       RETURN DISTINCT toLower(stream.name)
       """
     )
-   memberCount: Int!
+    memberCount: Int!
     @cypher(
       statement: """
-      MATCH (this)<-[:BELONGS_TO]-(members:Active:Member)
+      MATCH (this)-[:HAS*2]->(ministry:Ministry)<-[:BELONGS_TO]-(members:Active:Member)
       RETURN COUNT(DISTINCT members)
       """
     )
@@ -1053,17 +1053,17 @@ type Basonta {
 }
 
 type Hub {
-   memberCount: Int!
+    memberCount: Int!
     @cypher(
       statement: """
-      MATCH (this)<-[:BELONGS_TO]-(members:Active:Member)
+      MATCH (this)-[:HAS]->(ministry:Ministry)<-[:BELONGS_TO]-(members:Active:Member)
       RETURN COUNT(DISTINCT members)
       """
     )
    sontaCount: Int!
     @cypher(
       statement: """
-      MATCH (this)<-[:HAS]-(sontas:Sonta)
+      MATCH (this)-[:HAS]->(sontas:Sonta)
       RETURN COUNT(DISTINCT sontas)
       """ 
     )     
@@ -1071,7 +1071,7 @@ type Hub {
   name: String!
   leader: Member @relationship(type: "LEADS", direction: IN)
   history: [HistoryLog!]! @relationship(type:"HAS_HISTORY", direction: OUT)
-  sonta: [Sonta!]! @relationship(type: "HAS", direction: OUT)
+  sontas: [Sonta!]! @relationship(type: "HAS", direction: OUT)
   ministry: Ministry @relationship(type:"HAS", direction: IN)
   serviceLogs: [ServiceLog!]! @relationship(type:"HAS_HISTORY", direction: OUT)
 }
@@ -1080,28 +1080,28 @@ type Federalministry {
     memberCount: Int!
     @cypher(
       statement: """
-      MATCH (this)<-[:BELONGS_TO]-(members:Active:Member)
+      MATCH (this)-[:HAS]->(ministry:Ministry)<-[:BELONGS_TO]-(members:Active:Member)
       RETURN COUNT(DISTINCT members)
       """
     )
    sontaCount: Int!
     @cypher(
       statement: """
-      MATCH (this)<-[:HAS]-(sontas:Sonta)
+      MATCH (this)-[:HAS*3]->(sontas:Sonta)
       RETURN COUNT(DISTINCT sontas)
       """
     )
    hubCount: Int!
     @cypher(
       statement:"""
-      MATCH (this)<-[:HAS]-(hubs:Hub)
+      MATCH (this)-[:HAS*2]->(hubs:Hub)
       RETURN COUNT(DISTINCT hubs)
       """
     )
    ministryCount: Int!
     @cypher(
       statement: """
-      MATCH (this)<-[:HAS]-(ministries:Ministry)
+      MATCH (this)-[:HAS]->(ministries:Ministry)
       RETURN COUNT(DISTINCT ministries)
       """
     )
@@ -1111,5 +1111,5 @@ type Federalministry {
   gatheringService: GatheringService @relationship(type: "HAS_MINISTRY", direction: IN)
   history: [HistoryLog!]! @relationship(type:"HAS_HISTORY", direction: OUT)
   serviceLogs: [ServiceLog!]! @relationship(type:"HAS_HISTORY", direction: OUT)
-  ministry: Ministry @relationship(type:"HAS", direction:OUT)
+  ministries: [Ministry!]! @relationship(type:"HAS", direction:OUT)
 }
