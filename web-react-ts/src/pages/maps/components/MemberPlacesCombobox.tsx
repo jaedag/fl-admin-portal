@@ -12,10 +12,11 @@ interface ComboBoxProps extends FormikComponentProps {
   setOffice: (position: google.maps.LatLngLiteral) => void
   memberSearch: LazyQueryExecFunction<any, OperationVariables>
   fellowshipSearch?: LazyQueryExecFunction<any, OperationVariables>
+  handleClose: () => void
 }
 
 const MemberPlacesCombobox = (props: ComboBoxProps) => {
-  const { label, name, placeholder, initialValue } = props
+  const { label, name, placeholder, initialValue, handleClose } = props
   const { currentUser } = useContext(MemberContext)
 
   const [searchString, setSearchString] = useState(initialValue ?? '')
@@ -92,6 +93,7 @@ const MemberPlacesCombobox = (props: ComboBoxProps) => {
             event.preventDefault()
           }
 
+          handleClose()
           const location: google.maps.LatLngLiteral = {
             lat: parseFloat(suggestion.location.latitude),
             lng: parseFloat(suggestion.location.longitude),

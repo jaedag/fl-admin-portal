@@ -4,21 +4,24 @@ import MemberPlacesCombobox from './components/MemberPlacesCombobox'
 
 type GooglePlacesProps = {
   setOffice: (position: google.maps.LatLngLiteral) => void
+  handleClose: () => void
 }
 
 type MemberPlacesProps = {
+  handleClose: () => void
   setOffice: (position: google.maps.LatLngLiteral) => void
   memberSearch: LazyQueryExecFunction<any, OperationVariables>
   fellowshipSearch?: LazyQueryExecFunction<any, OperationVariables>
 }
 
-export const GooglePlaces = ({ setOffice }: GooglePlacesProps) => {
+export const GooglePlaces = ({ setOffice, handleClose }: GooglePlacesProps) => {
   return (
     <GooglePlacesCombobox
       placeholder="Search an address"
       initialValue=""
       name="google-places-search"
       setOffice={setOffice}
+      handleClose={handleClose}
     />
   )
 }
@@ -27,6 +30,7 @@ export const MemberPlaces = ({
   setOffice,
   memberSearch,
   fellowshipSearch,
+  handleClose,
 }: MemberPlacesProps) => {
   return (
     <MemberPlacesCombobox
@@ -36,6 +40,7 @@ export const MemberPlaces = ({
       setOffice={setOffice}
       memberSearch={memberSearch}
       fellowshipSearch={fellowshipSearch}
+      handleClose={handleClose}
     />
   )
 }

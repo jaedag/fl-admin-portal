@@ -11,10 +11,11 @@ import usePlacesAutocomplete, {
 interface ComboBoxProps extends FormikComponentProps {
   initialValue: string
   setOffice: (position: google.maps.LatLngLiteral) => void
+  handleClose: () => void
 }
 
 const GooglePlacesCombobox = (props: ComboBoxProps) => {
-  const { label, name, placeholder, initialValue } = props
+  const { label, name, placeholder, initialValue, handleClose } = props
 
   const {
     ready,
@@ -92,6 +93,8 @@ const GooglePlacesCombobox = (props: ComboBoxProps) => {
           if (method === 'enter') {
             event.preventDefault()
           }
+
+          handleClose()
           setSearchString(suggestion.description)
           handleSelect(suggestion.description)
         }}

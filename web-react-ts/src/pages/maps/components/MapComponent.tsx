@@ -1,4 +1,4 @@
-import { GoogleMap } from '@react-google-maps/api'
+import { GoogleMap, Marker } from '@react-google-maps/api'
 import LoadingScreen from 'components/base-component/LoadingScreen'
 import React, { useCallback, useMemo, useRef } from 'react'
 import { useLoadScript } from '@react-google-maps/api'
@@ -66,6 +66,7 @@ const MapComponent = (props: MapComponentProps) => {
         options={options}
         onLoad={onLoad}
       />
+      {office && <Marker position={office} />}
       <Offcanvas
         show={show}
         onHide={handleClose}
@@ -78,6 +79,7 @@ const MapComponent = (props: MapComponentProps) => {
         <Offcanvas.Body className="dark">
           <div>Search for a place</div>
           <GooglePlaces
+            handleClose={handleClose}
             setOffice={(position) => {
               setOffice(position)
               mapRef.current?.panTo(position)
@@ -87,6 +89,7 @@ const MapComponent = (props: MapComponentProps) => {
 
           <div>Search our FLC Database</div>
           <MemberPlaces
+            handleClose={handleClose}
             setOffice={(position) => {
               setOffice(position)
               mapRef.current?.panTo(position)
@@ -101,14 +104,18 @@ const MapComponent = (props: MapComponentProps) => {
                   lng: position.coords.longitude,
                 })
               })
+
+              handleClose()
             }}
           >
             My location
           </Button>
           <Button
-            onClick={() =>
+            onClick={() => {
               mapRef.current?.panTo({ lat: 5.655949, lng: -0.167033 })
-            }
+
+              handleClose()
+            }}
           >
             First Love Center
           </Button>
