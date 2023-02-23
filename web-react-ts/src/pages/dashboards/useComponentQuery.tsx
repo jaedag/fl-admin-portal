@@ -36,6 +36,12 @@ import {
   SERVANTS_STREAM_ARRIVALS_COUNTER,
   SERVANTS_STREAM_TELLER,
   SERVANTS_SHEEP_SEEKER_STREAM,
+  SERVANTS_SONTA_LEADER,
+  SERVANTS_HUB_LEADER,
+  SERVANTS_MINISTRY_LEADER,
+  SERVANTS_FEDERAL_MINISTRY_LEADER,
+  SERVANTS_MINISTRY_ADMIN,
+  SERVANTS_FEDERAL_MINISTRY_ADMIN,
 } from './userChurchDataQueries'
 
 type DashboardChurchType = {
@@ -95,6 +101,18 @@ const useComponentQuery = (props?: UseComponentQuery) => {
   const [streamTellerQuery] = useLazyQuery(SERVANTS_STREAM_TELLER)
   const [sheepseekerStream] = useLazyQuery(SERVANTS_SHEEP_SEEKER_STREAM)
 
+  //sonta
+  const [sontaLeaderQuery] = useLazyQuery(SERVANTS_SONTA_LEADER)
+  const [hubLeaderQuery] = useLazyQuery(SERVANTS_HUB_LEADER)
+  const [ministryLeaderQuery] = useLazyQuery(SERVANTS_MINISTRY_LEADER)
+  const [federalMinistryLeaderQuery] = useLazyQuery(
+    SERVANTS_FEDERAL_MINISTRY_LEADER
+  )
+  const [ministryAdminQuery] = useLazyQuery(SERVANTS_MINISTRY_ADMIN)
+  const [federalMinistryAdminQuery] = useLazyQuery(
+    SERVANTS_FEDERAL_MINISTRY_ADMIN
+  )
+
   const church: {
     [key: string]: any
   } = {
@@ -132,9 +150,21 @@ const useComponentQuery = (props?: UseComponentQuery) => {
       admin: oversightAdminQuery,
       arrivalsAdmin: '',
     },
-    Sonta: {},
+    Sonta: {
+      leader: sontaLeaderQuery,
+    },
+    Hub: {
+      leader: hubLeaderQuery,
+    },
     Basonta: {},
-    Ministry: {},
+    Ministry: {
+      leader: ministryLeaderQuery,
+      admin: ministryAdminQuery,
+    },
+    Federalministry: {
+      leader: federalMinistryLeaderQuery,
+      admin: federalMinistryAdminQuery,
+    },
   }
 
   useEffect(() => {

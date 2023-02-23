@@ -29,6 +29,9 @@ export type ChurchLevel =
   | 'Oversight'
   | 'Sonta'
   | 'Basonta'
+  | 'Ministry'
+  | 'Hub'
+  | 'Federalministry'
 
 export type ChurchLevelLower =
   | 'fellowship'
@@ -39,6 +42,7 @@ export type ChurchLevelLower =
   | 'gatheringService'
   | 'oversight'
   | 'ministry'
+  | 'hub'
   | 'sonta'
   | 'basonta'
 
@@ -160,11 +164,17 @@ export interface MemberWithChurches extends Member {
   leadsConstituency: Church[]
   leadsCouncil: Church[]
   leadsStream: Church[]
+
+  //sonta
   leadsSonta: Church[]
-  leadsBasonta: Church[]
+  leadsHub: Church[]
+  leadsMinistry: Church[]
+  leadsFederalministry: Church[]
+  isAdminForMinistry: Church[]
+  isAdminForFederalministry: Church[]
+
   leadsGatheringService: Church[]
   leadsOversight: Church[]
-  leadsMinistry: Church[]
   isAdminForConstituency: Church[]
   isAdminForCouncil: Church[]
   isAdminForStream: Church[]
@@ -232,6 +242,9 @@ export type Role =
   | 'leaderCouncil'
   | 'leaderStream'
   | 'leaderSonta'
+  | 'leaderHub'
+  | 'leaderMinistry'
+  | 'leaderFederalministry'
   | 'leaderGatheringService'
   | 'leaderOversight'
   | 'adminConstituency'
@@ -239,6 +252,8 @@ export type Role =
   | 'adminStream'
   | 'adminGatheringService'
   | 'adminOversight'
+  | 'adminMinistry'
+  | 'adminFederalministry'
   | 'arrivalsAdminGatheringService'
   | 'arrivalsAdminStream'
   | 'arrivalsAdminCouncil'
@@ -322,5 +337,8 @@ export interface HigherChurch extends Church {
   councilCount: number
   streamCount: number
   memberCount: number
+  hubCount: number
+  sontaCount: number
+  ministryCount: number
   target: number
 }

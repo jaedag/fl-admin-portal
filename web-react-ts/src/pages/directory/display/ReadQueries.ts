@@ -229,50 +229,6 @@ export const DISPLAY_FELLOWSHIP_HISTORY = gql`
   }
 `
 
-export const DISPLAY_SONTA = gql`
-  query DisplaySonta($id: ID!) {
-    sontas(where: { id: $id }, options: { limit: 1 }) {
-      id
-      name
-      ministry {
-        id
-        name
-      }
-      leader {
-        id
-        firstName
-        lastName
-        currentTitle
-        nameWithTitle
-        pictureUrl
-      }
-
-      constituency {
-        id
-        name
-        council {
-          id
-          name
-        }
-      }
-      history {
-        id
-        timeStamp
-        createdAt {
-          date
-        }
-        loggedBy {
-          id
-          firstName
-          lastName
-          stream_name
-        }
-        historyRecord
-      }
-    }
-  }
-`
-
 export const DISPLAY_BACENTA = gql`
   query displayBacenta($id: ID!) {
     bacentas(where: { id: $id }, options: { limit: 1 }) {
@@ -623,6 +579,193 @@ export const DISPLAY_OVERSIGHT = gql`
         pictureUrl
       }
       history(limit: 5) {
+        id
+        timeStamp
+        createdAt {
+          date
+        }
+        loggedBy {
+          id
+          firstName
+          lastName
+          stream_name
+        }
+        historyRecord
+      }
+    }
+  }
+`
+
+export const DISPLAY_FEDERAL_MINISTRY = gql`
+  query DisplayFederalMinistries($id: ID!) {
+    federalministries(where: { id: $id }, options: { limit: 1 }) {
+      id
+      name
+      leader {
+        id
+        firstName
+        lastName
+        currentTitle
+        nameWithTitle
+        pictureUrl
+      }
+      memberCount
+      ministryCount
+      hubCount
+      sontaCount
+      ministries {
+        id
+        name
+      }
+      gatheringService {
+        id
+        name
+      }
+      history {
+        id
+        timeStamp
+        createdAt {
+          date
+        }
+        loggedBy {
+          id
+          firstName
+          lastName
+          stream_name
+        }
+        historyRecord
+      }
+    }
+  }
+`
+
+export const DISPLAY_MINISTRY = gql`
+  query DisplayMinistry($id: ID!) {
+    ministries(where: { id: $id }, options: { limit: 1 }) {
+      id
+      name
+      leader {
+        id
+        firstName
+        lastName
+        currentTitle
+        nameWithTitle
+        pictureUrl
+      }
+      memberCount
+      sontaCount
+      history {
+        id
+        timeStamp
+        createdAt {
+          date
+        }
+        loggedBy {
+          id
+          firstName
+          lastName
+          stream_name
+        }
+        historyRecord
+      }
+      hubs {
+        id
+        name
+      }
+      federalMinistry {
+        id
+        name
+        gatheringService {
+          id
+          name
+        }
+      }
+    }
+  }
+`
+
+export const DISPLAY_HUB = gql`
+  query DisplayHub($id: ID!) {
+    hubs(where: { id: $id }, options: { limit: 1 }) {
+      id
+      name
+      leader {
+        id
+        firstName
+        lastName
+        currentTitle
+        nameWithTitle
+        pictureUrl
+      }
+      sontaCount
+      memberCount
+      history {
+        id
+        timeStamp
+        createdAt {
+          date
+        }
+        loggedBy {
+          id
+          firstName
+          lastName
+          stream_name
+        }
+        historyRecord
+      }
+      ministry {
+        id
+        name
+        federalMinistry {
+          id
+          name
+          gatheringService {
+            id
+            name
+          }
+        }
+      }
+      sontas {
+        id
+        name
+      }
+    }
+  }
+`
+
+export const DISPLAY_SONTA = gql`
+  query DisplaySonta($id: ID!) {
+    sontas(where: { id: $id }, options: { limit: 1 }) {
+      id
+      name
+      leader {
+        id
+        firstName
+        lastName
+        currentTitle
+        nameWithTitle
+        pictureUrl
+      }
+
+      hub {
+        id
+        name
+        ministry {
+          id
+          name
+          federalMinistry {
+            id
+            name
+            gatheringService {
+              id
+              name
+            }
+          }
+        }
+      }
+
+      memberCount
+      history {
         id
         timeStamp
         createdAt {

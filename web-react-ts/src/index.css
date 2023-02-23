@@ -333,6 +333,13 @@ a {
   font-size: 20px;
 }
 
+.btn-sonta {
+  height: 52px;
+  font-size: 15px;
+  background-color: #B96434;
+  border: none;
+}
+
 .text-muted.d-block .text-danger {
   padding: 0;
 }

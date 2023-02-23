@@ -122,6 +122,37 @@ export const SERVANT_CHURCH_LIST = gql`
         name
         stream_name
       }
+
+      #sonta
+      leadsSonta {
+        id
+        name
+      }
+
+      leadsHub {
+        id
+        name
+      }
+
+      leadsMinistry {
+        id
+        name
+      }
+
+      leadsFederalministry {
+        id
+        name
+      }
+
+      isAdminForMinistry {
+        id
+        name
+      }
+
+      isAdminForFederalministry {
+        id
+        name
+      }
     }
   }
 `
@@ -137,6 +168,10 @@ export const SERVANT_CHURCHES_COUNT = gql`
       leadsAdminsConstituencyCount
       leadsAdminsCouncilCount
       leadsAdminsGatheringServiceCount
+      leadsSontaCount
+      leadsHubCount
+      leadsAdminsMinistryCount
+      leadsAdminsFederalMinistryCount
     }
   }
 `

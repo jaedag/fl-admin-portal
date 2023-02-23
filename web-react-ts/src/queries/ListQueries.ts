@@ -421,6 +421,33 @@ export const GET_OVERSIGHTS = gql`
   }
 `
 
+export const GET_FEDERALMINISTRIES = gql`
+  query getFederalMinistries {
+    federalministries {
+      id
+      name
+    }
+  }
+`
+
+export const GET_MINISTRIES = gql`
+  query getMinistries {
+    ministries {
+      id
+      name
+    }
+  }
+`
+
+export const GET_HUBS = gql`
+  query getHubs {
+    hubs {
+      id
+      name
+    }
+  }
+`
+
 export const GET_GATHERINGSERVICE_MINISTRIES = gql`
   query getGatheringServiceMinistries($id: ID!) {
     gatheringServices(where: { id: $id }) {

@@ -78,6 +78,9 @@ export const roles: {
   Oversight: ['leads', 'isAdminFor'],
   Sonta: ['leads'],
   Basonta: ['leads'],
+  Hub: ['leads'],
+  Ministry: ['leads', 'isAdminFor'],
+  Federalministry: ['leads', 'isAdminFor'],
 }
 
 export const parseRoles = (role: VerbTypes): VerbTypes => {
@@ -273,6 +276,8 @@ export const getServantRoles = (servant: MemberWithChurches) => {
       ),
     })
   }
+
+  //sonta
   if (servant?.leadsSonta?.length) {
     roleTitles.push('leaderSonta')
     userroles.push({
@@ -282,6 +287,68 @@ export const getServantRoles = (servant: MemberWithChurches) => {
       link: authorisedLink(servant, permitMe('Sonta'), '/sonta/displaydetails'),
     })
   }
+  if (servant?.leadsHub?.length) {
+    roleTitles.push('leaderHub')
+    userroles.push({
+      name: 'Hub',
+      church: servant?.leadsHub,
+      number: servant?.leadsHub?.length,
+      link: authorisedLink(servant, permitMe('Hub'), '/hub/displaydetails'),
+    })
+  }
+  if (servant?.leadsMinistry?.length) {
+    roleTitles.push('leaderMinistry')
+    userroles.push({
+      name: 'Ministry',
+      church: servant?.leadsMinistry,
+      number: servant?.leadsMinistry?.length,
+      link: authorisedLink(
+        servant,
+        permitMe('Ministry'),
+        '/ministry/displaydetails'
+      ),
+    })
+  }
+  if (servant?.isAdminForMinistry?.length) {
+    roleTitles.push('adminMinistry')
+    userroles.push({
+      name: 'Ministry Admin',
+      church: servant?.isAdminForMinistry,
+      number: servant?.isAdminForMinistry?.length,
+      link: authorisedLink(
+        servant,
+        permitMe('Ministry'),
+        '/ministry/displaydetails'
+      ),
+    })
+  }
+  if (servant?.leadsFederalministry?.length) {
+    roleTitles.push('leaderFederalministry')
+    userroles.push({
+      name: 'Federal Ministry',
+      church: servant?.leadsFederalministry,
+      number: servant?.leadsFederalministry?.length,
+      link: authorisedLink(
+        servant,
+        permitMe('Federalministry'),
+        '/federalministry/displaydetails'
+      ),
+    })
+  }
+  if (servant?.isAdminForFederalministry?.length) {
+    roleTitles.push('adminFederalministry')
+    userroles.push({
+      name: 'Federal Ministry Admin',
+      church: servant?.isAdminForFederalministry,
+      number: servant?.isAdminForFederalministry?.length,
+      link: authorisedLink(
+        servant,
+        permitMe('Federalministry'),
+        '/federalministry/displaydetails'
+      ),
+    })
+  }
+
   if (servant?.leadsConstituency?.length) {
     roleTitles.push('leaderConstituency')
     userroles.push({
@@ -357,18 +424,6 @@ export const getServantRoles = (servant: MemberWithChurches) => {
         servant,
         permitMe('Council'),
         `/council/displaydetails`
-      ),
-    })
-  }
-  if (servant?.leadsMinistry?.length) {
-    userroles.push({
-      name: 'Ministry',
-      church: servant?.leadsMinistry,
-      number: servant?.leadsMinistry?.length,
-      link: authorisedLink(
-        servant,
-        permitMe('GatheringService'),
-        '/ministry/displaydetails'
       ),
     })
   }
@@ -473,18 +528,6 @@ export const getServantRoles = (servant: MemberWithChurches) => {
         servant,
         permitMe('GatheringService'),
         `/gatheringservice/displaydetails`
-      ),
-    })
-  }
-  if (servant?.leadsBasonta?.length) {
-    userroles.push({
-      name: 'Basonta',
-      church: servant?.leadsBasonta,
-      number: servant?.leadsBasonta?.length,
-      link: authorisedLink(
-        servant,
-        permitMe('Basonta'),
-        '/basonta/displaydetails'
       ),
     })
   }

@@ -1,12 +1,12 @@
 import React, { useContext } from 'react'
 import { useQuery } from '@apollo/client'
-import DisplayChurchDetails from 'components/DisplayChurchDetails/DisplayChurchDetails'
-
 import { DISPLAY_SONTA } from './ReadQueries'
 import { ChurchContext } from '../../../contexts/ChurchContext'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { permitAdmin } from 'permission-utils'
 import { Church } from 'global-types'
+import DisplaySontaDetails from 'components/DisplayChurchDetails/DisplaySontaDetails'
+import { DetailsArray } from './DetailsFellowship'
 
 const DetailsSonta = () => {
   const { sontaId } = useContext(ChurchContext)
@@ -22,29 +22,37 @@ const DetailsSonta = () => {
   let breadcrumb: Church[]
 
   breadcrumb = [
-    sontaData?.sontas[0].constituency?.council,
-    sontaData?.sontas[0].constituency,
-    sontaData?.sontas[0],
+    sonta?.hub[0]?.ministry?.federalMinistry?.gatheringService,
+    sonta?.hub[0]?.ministry?.federalMinistry,
+    sonta?.hub[0]?.ministry,
+    sonta?.hub[0],
+    sonta,
+  ]
+
+  const details: DetailsArray = [
+    {
+      title: 'Members',
+      number: sonta?.memberCount,
+      link: '#',
+      width: 12,
+    },
   ]
 
   return (
     <ApolloWrapper loading={sontaLoading} error={sontaError} data={sontaData}>
-      <DisplayChurchDetails
-        details={[]}
+      <DisplaySontaDetails
+        details={details}
         church={sonta}
         loading={sontaLoading}
-        name={sontaData?.sontas[0]?.name}
+        name={sonta?.name}
         leaderTitle="Sonta Leader"
-        editPermitted={permitAdmin('Sonta')}
+        editPermitted={permitAdmin('Hub')}
         churchId={sontaId}
-        leader={sontaData?.sontas[0]?.leader}
+        leader={sonta?.leader}
         churchType="Sonta"
         editlink="/sonta/editsonta"
-        history={
-          sontaData?.sontas[0]?.history.length !== 0 &&
-          sontaData?.sontas[0]?.history
-        }
-        breadcrumb={breadcrumb}
+        history={sonta?.history.length !== 0 && sonta?.history}
+        breadcrumb={breadcrumb && breadcrumb}
         buttons={[]}
       />
     </ApolloWrapper>

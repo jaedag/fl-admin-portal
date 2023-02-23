@@ -176,6 +176,14 @@ export const plural = (church: ChurchLevel | string) => {
       return 'sontas'
     case 'Sonta':
       return 'Sontas'
+    case 'hub':
+      return 'hubs'
+    case 'Hub':
+      return 'Hubs'
+    case 'ministry':
+      return 'ministries'
+    case 'Ministry':
+      return 'Ministries'
     case 'fellowship':
       return 'fellowships'
     case 'Fellowship':
@@ -262,6 +270,12 @@ interface MemberWithChurchCount extends Member {
   leadsAdminsConstituencyCount: number
   leadsAdminsGatheringServiceCount: number
   leadsAdminsOversightCount: number
+
+  //sonta
+  leadsSontaCount: number
+  leadsHubCount: number
+  leadsAdminsMinistryCount: number
+  leadsAdminsFederalMinistryCount: number
 }
 export const getMemberCount = (servant: MemberWithChurchCount) => {
   if (!servant?.memberCount) {
@@ -359,6 +373,70 @@ export const getChurchCount = (servant: MemberWithChurchCount) => {
     }
   }
 
+  if (servant?.leadsSontaCount) {
+    if (churchesCount) {
+      churchesCount += ','
+
+      if (servant.leadsSontaCount === 1) {
+        churchesCount = `${churchesCount} ${servant.leadsSontaCount} Sonta`
+      } else {
+        churchesCount = `${churchesCount} ${servant.leadsSontaCount} Sontas`
+      }
+    } else if (servant.leadsSontaCount === 1) {
+      churchesCount = `${servant.leadsSontaCount} Sonta`
+    } else {
+      churchesCount = `${servant.leadsSontaCount} Sontas`
+    }
+  }
+
+  if (servant?.leadsHubCount) {
+    if (churchesCount) {
+      churchesCount += ','
+
+      if (servant.leadsHubCount === 1) {
+        churchesCount = `${churchesCount} ${servant.leadsHubCount} Hub`
+      } else {
+        churchesCount = `${churchesCount} ${servant.leadsHubCount} Hubs`
+      }
+    } else if (servant.leadsHubCount === 1) {
+      churchesCount = `${servant.leadsHubCount} Hub`
+    } else {
+      churchesCount = `${servant.leadsHubCount} Hubs`
+    }
+  }
+
+  if (servant?.leadsAdminsMinistryCount) {
+    if (churchesCount) {
+      churchesCount += ','
+
+      if (servant.leadsAdminsMinistryCount === 1) {
+        churchesCount = `${churchesCount} ${servant.leadsAdminsMinistryCount} Ministry`
+      } else {
+        churchesCount = `${churchesCount} ${servant.leadsAdminsMinistryCount} Ministries`
+      }
+    } else if (servant.leadsAdminsMinistryCount === 1) {
+      churchesCount = `${servant.leadsAdminsMinistryCount} Ministry`
+    } else {
+      churchesCount = `${servant.leadsAdminsMinistryCount} Ministries`
+    }
+  }
+
+  if (servant?.leadsAdminsFederalMinistryCount) {
+    if (churchesCount) {
+      churchesCount += ','
+
+      if (servant.leadsAdminsFederalMinistryCount === 1) {
+        churchesCount = `${churchesCount} ${servant.leadsAdminsFederalMinistryCount} Federal Ministry`
+      } else {
+        churchesCount = `${churchesCount} ${servant.leadsAdminsFederalMinistryCount} Federal Ministries`
+      }
+    } else if (servant.leadsAdminsFederalMinistryCount === 1) {
+      churchesCount = `${servant.leadsAdminsFederalMinistryCount} Federal Ministry`
+    } else {
+      churchesCount = `${servant.leadsAdminsFederalMinistryCount} Federal Ministries`
+    }
+  }
+
   return churchesCount
 }
 
@@ -374,6 +452,12 @@ export const getSubChurchLevel = (churchType: ChurchLevel) => {
       return 'Stream'
     case 'Oversight':
       return 'GatheringService'
+    case 'Federalministry':
+      return 'Ministry'
+    case 'Ministry':
+      return 'Hub'
+    case 'Hub':
+      return 'Sonta'
     default:
       return 'Fellowship'
   }
