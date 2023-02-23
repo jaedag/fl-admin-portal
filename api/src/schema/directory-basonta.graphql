@@ -1,6 +1,6 @@
 extend type Mutation {
   CreateFederalministry(name: String!, leaderId: ID!, gatheringServiceId: ID!): Federalministry
-    @auth(rules: [{ roles: ["adminGatheringService", "adminStream"] }])
+    @auth(rules: [{ roles: ["adminGatheringService"] }])
     @cypher(
       statement: """
       CREATE (federalMinistry:Federalministry {name:$name})
@@ -28,7 +28,7 @@ extend type Mutation {
       """
     )
   CreateMinistry(leaderId: ID!, streamId: ID!, federalMinistryId:ID!): Ministry
-    @auth(rules: [{ roles: ["adminGatheringService", "adminStream"] }])
+    @auth(rules: [{ roles: ["adminGatheringService", "adminStream", "adminFederalministry"] }])
     @cypher(
       statement: """
       CREATE (ministry:Ministry)
@@ -60,7 +60,7 @@ extend type Mutation {
       """
     )
   CreateHub(name: String!, leaderId: ID!, ministryId: ID!): Hub
-    @auth(rules: [{ roles: ["adminGatheringService", "adminStream"] }])
+    @auth(rules: [{ roles: ["adminGatheringService", "adminStream", "adminFederalministry", "adminMinistry"] }])
     @cypher(
       statement: """
       CREATE (hub:Hub {name: $name})
@@ -88,7 +88,7 @@ extend type Mutation {
       """
     )
   CreateSonta(ministryId: ID!, hubId: ID!, leaderId: ID!): Sonta
-    @auth(rules: [{ roles: ["adminGatheringService", "adminStream"] }])
+    @auth(rules: [{ roles: ["adminGatheringService", "adminStream", "adminFederalministry", "adminMinistry"] }])
     @cypher(
       statement: """
       CREATE (sonta:Sonta)
@@ -165,7 +165,7 @@ extend type Mutation{
   ): Ministry
     @auth(rules: [
       {
-        roles: ["adminGatheringService", "adminStream"]
+        roles: ["adminGatheringService", "adminStream", "adminFederalministry"]
       }
     ])
     @cypher (
@@ -195,7 +195,7 @@ extend type Mutation{
   ): Hub
    @auth(rules: [
     {
-      roles: ["adminGatheringService", "adminStream"]
+      roles: ["adminGatheringService", "adminStream", "adminFederalministry", "adminMinistry"]
     }
    ])
    @cypher(
@@ -224,7 +224,8 @@ extend type Mutation{
           roles: [
             "adminGatheringService"
             "adminStream"
-            "adminCouncil"
+            "adminFederalministry",
+            "adminMinistry"
           ]
         }
       ]
