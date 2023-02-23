@@ -404,3 +404,14 @@ extend type Member {
   isAdminForFederalministry:[Federalministry!]!
     @relationship(type: "IS_ADMIN_FOR", direction:OUT)
 }
+
+extend type Mutation {
+  MakeFederalministryLeader(leaderId: ID!, federalMinistryId: ID!, oldLeaderId: ID) : Member
+  RemoveFederalministryLeader(leaderId: ID!, federalMinistryId: ID!, newLeaderId: ID!) : Member
+  MakeMinistryLeader(leaderId: ID!, ministryId: ID!, oldLeaderId: ID) : Member
+  RemoveMinistryLeader(leaderId: ID!, ministryId: ID!, newLeaderId: ID!) : Member
+  MakeHubLeader(leaderId: ID!, hubId: ID!, oldLeaderId: ID): Member
+  RemoveHubLeader(leaderId: ID!, hubId:ID!, newLeaderId: ID!): Member
+  MakeSontaLeader(leaderId: ID!, sontaId: ID!, oldLeaderId: ID): Member
+  RemoveSontaLeader(leaderId: ID!, newLeaderId: ID!, sontaId: ID!): Member
+}
