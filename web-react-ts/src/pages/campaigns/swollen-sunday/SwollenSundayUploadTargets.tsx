@@ -90,7 +90,7 @@ const SwollenSundayUploadTargets = () => {
               jsonData[i].bacenta === '' ||
               jsonData[i].code === '' ||
               jsonData[i].leader === '' ||
-              !jsonData[i].target
+              isNaN(jsonData[i].target)
             ) {
               alert(
                 'No field must be left empty. Please update all fields and upload the file again'
