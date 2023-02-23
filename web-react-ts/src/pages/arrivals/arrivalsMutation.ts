@@ -116,8 +116,8 @@ export const MAKE_GATHERINGSERVICEARRIVALS_ADMIN = gql`
   ) {
     RemoveGatheringServiceArrivalsAdmin(
       gatheringServiceId: $gatheringServiceId
-      arrivalsAdminId: $oldAdminId
-      newArrivalsAdminId: $newAdminId
+      oldArrivalsAdminId: $oldAdminId
+      arrivalsAdminId: $newAdminId
     ) {
       id
       firstName
@@ -125,8 +125,8 @@ export const MAKE_GATHERINGSERVICEARRIVALS_ADMIN = gql`
     }
     MakeGatheringServiceArrivalsAdmin(
       gatheringServiceId: $gatheringServiceId
-      arrivalsAdminId: $newAdminId
-      oldArrivalsAdminId: $oldAdminId
+      newArrivalsAdminId: $newAdminId
+      arrivalsAdminId: $oldAdminId
     ) {
       id
       firstName

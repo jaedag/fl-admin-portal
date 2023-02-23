@@ -906,7 +906,7 @@ export const GATHERINGSERVICE_SERVICES_CONSTITUENCY_JOINT_DEFAULTERS_LIST = gql`
 `
 
 export const GATHERINGSERVICE_SERVICES_CONSTITUENCY_JOINT_BANKED_LIST = gql`
-  query gatheringConstituencyJointServicesThisWeek($id: ID!) {
+  query gatheringConstituencyJointServicesBankedThisWeek($id: ID!) {
     gatheringServices(where: { id: $id }) {
       id
       name
@@ -943,7 +943,7 @@ export const GATHERINGSERVICE_SERVICES_CONSTITUENCY_JOINT_BANKED_LIST = gql`
 `
 
 export const STREAM_CONSTITUENCY_JOINT_DEFAULTERS_LIST = gql`
-  query streamConstituencyJointServicesThisWeek($id: ID!) {
+  query streamConstituencyJointServicesDefaultersThisWeek($id: ID!) {
     streams(where: { id: $id }) {
       id
       name
@@ -980,7 +980,7 @@ export const STREAM_CONSTITUENCY_JOINT_DEFAULTERS_LIST = gql`
 `
 
 export const STREAM_CONSTITUENCY_JOINT_BANKED_LIST = gql`
-  query streamConstituencyJointServicesThisWeek($id: ID!) {
+  query streamConstituencyJointServicesBankedThisWeek($id: ID!) {
     streams(where: { id: $id }) {
       id
       name
@@ -1017,7 +1017,7 @@ export const STREAM_CONSTITUENCY_JOINT_BANKED_LIST = gql`
 `
 
 export const COUNCIL_CONSTITUENCY_JOINT_DEFAULTERS_LIST = gql`
-  query councilConstituencyJointServicesThisWeek($id: ID!) {
+  query councilConstituencyJointServicesDefaultersThisWeek($id: ID!) {
     councils(where: { id: $id }) {
       id
       name
@@ -1054,7 +1054,7 @@ export const COUNCIL_CONSTITUENCY_JOINT_DEFAULTERS_LIST = gql`
 `
 
 export const COUNCIL_CONSTITUENCY_JOINT_BANKED_LIST = gql`
-  query councilConstituencyJointServicesThisWeek($id: ID!) {
+  query councilConstituencyJointServicesBankedThisWeek($id: ID!) {
     councils(where: { id: $id }) {
       id
       name
@@ -1091,7 +1091,7 @@ export const COUNCIL_CONSTITUENCY_JOINT_BANKED_LIST = gql`
 `
 
 export const GATHERINGSERVICE_SERVICES_COUNCIL_JOINT_DEFAULTERS_LIST = gql`
-  query gatheringCouncilJointServicesThisWeek($id: ID!) {
+  query gatheringCouncilJointServicesDefaultersThisWeek($id: ID!) {
     gatheringServices(where: { id: $id }) {
       id
       name
@@ -1125,7 +1125,7 @@ export const GATHERINGSERVICE_SERVICES_COUNCIL_JOINT_DEFAULTERS_LIST = gql`
 `
 
 export const GATHERINGSERVICE_SERVICES_COUNCIL_JOINT_BANKED_LIST = gql`
-  query gatheringCouncilJointServicesThisWeek($id: ID!) {
+  query gatheringCouncilJointServicesBankedThisWeek($id: ID!) {
     gatheringServices(where: { id: $id }) {
       id
       name
@@ -1159,7 +1159,7 @@ export const GATHERINGSERVICE_SERVICES_COUNCIL_JOINT_BANKED_LIST = gql`
 `
 
 export const STREAM_COUNCIL_JOINT_DEFAULTERS_LIST = gql`
-  query streamCouncilJointServicesThisWeek($id: ID!) {
+  query streamCouncilJointServicesDefaultersThisWeek($id: ID!) {
     streams(where: { id: $id }) {
       id
       name
@@ -1192,7 +1192,7 @@ export const STREAM_COUNCIL_JOINT_DEFAULTERS_LIST = gql`
 `
 
 export const STREAM_COUNCIL_JOINT_BANKED_LIST = gql`
-  query streamCouncilJointServicesThisWeek($id: ID!) {
+  query streamCouncilJointServicesBankedThisWeek($id: ID!) {
     streams(where: { id: $id }) {
       id
       name
