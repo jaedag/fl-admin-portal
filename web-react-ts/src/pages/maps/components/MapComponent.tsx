@@ -107,10 +107,10 @@ const MapComponent = (props: MapComponentProps) => {
           <div>Search our FLC Database</div>
           <MemberPlaces
             handleClose={handleClose}
-            setOffice={(position) => {
+            setOffice={async (position) => {
               setOffice(position)
 
-              props.placesSearch({
+              const response = await props.placesSearch({
                 variables: {
                   id: currentUser.id,
                   latitude: position.lat,
@@ -137,8 +137,18 @@ const MapComponent = (props: MapComponentProps) => {
             My location
           </Button>
           <Button
-            onClick={() => {
-              mapRef.current?.panTo({ lat: 5.655949, lng: -0.167033 })
+            onClick={async () => {
+              const position = { lat: 5.655949, lng: -0.167033 }
+
+              const response = await props.placesSearch({
+                variables: {
+                  id: currentUser.id,
+                  latitude: position.lat,
+                  longitude: position.lng,
+                },
+              })
+
+              mapRef.current?.panTo(position)
 
               handleClose()
             }}

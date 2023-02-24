@@ -10,5 +10,5 @@ type Place {
 }
 
 extend type Member {
-  placesSearch(latitude: Float!, longitude: Float!, limit: Int! = 30): [Place]
+  placesSearch(latitude: Float!, longitude: Float!, limit: Int = 30): [Place]
 }
