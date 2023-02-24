@@ -1,13 +1,13 @@
-import { GoogleMap, Marker } from '@react-google-maps/api'
 import LoadingScreen from 'components/base-component/LoadingScreen'
-import React, { useCallback, useMemo, useRef } from 'react'
-import { useLoadScript } from '@react-google-maps/api'
+import React, { useCallback, useContext, useMemo, useRef } from 'react'
+import { useLoadScript, GoogleMap, Marker } from '@react-google-maps/api'
 import { useState } from 'react'
 import '../Map.css'
 import { Button, Offcanvas } from 'react-bootstrap'
 import { IoChevronUp } from 'react-icons/io5'
 import { GooglePlaces, MemberPlaces } from '../Places'
 import { LazyQueryExecFunction, OperationVariables } from '@apollo/client'
+import { MemberContext } from 'contexts/MemberContext'
 
 type LatLngLiteral = google.maps.LatLngLiteral
 type MapOptions = google.maps.MapOptions
@@ -22,6 +22,7 @@ type LibrariesOptions = (
 
 type MapComponentProps = {
   memberSearch: LazyQueryExecFunction<any, OperationVariables>
+  placesSearch: LazyQueryExecFunction<any, OperationVariables>
 }
 
 const MapComponent = (props: MapComponentProps) => {
@@ -36,6 +37,8 @@ const MapComponent = (props: MapComponentProps) => {
 
   const handleClose = () => setShow(false)
   const handleShow = () => setShow(true)
+
+  const { currentUser } = useContext(MemberContext)
 
   const mapRef = useRef<GoogleMap>()
   const center = useMemo<LatLngLiteral>(
@@ -65,8 +68,13 @@ const MapComponent = (props: MapComponentProps) => {
         mapContainerClassName="map-container"
         options={options}
         onLoad={onLoad}
-      />
-      {office && <Marker position={office} />}
+      >
+        {office && (
+          <>
+            <Marker position={office} />
+          </>
+        )}
+      </GoogleMap>
       <Offcanvas
         show={show}
         onHide={handleClose}
@@ -82,6 +90,15 @@ const MapComponent = (props: MapComponentProps) => {
             handleClose={handleClose}
             setOffice={(position) => {
               setOffice(position)
+
+              props.placesSearch({
+                variables: {
+                  id: currentUser.id,
+                  latitude: position.lat,
+                  longitude: position.lng,
+                },
+              })
+
               mapRef.current?.panTo(position)
             }}
             {...props}
@@ -92,6 +109,15 @@ const MapComponent = (props: MapComponentProps) => {
             handleClose={handleClose}
             setOffice={(position) => {
               setOffice(position)
+
+              props.placesSearch({
+                variables: {
+                  id: currentUser.id,
+                  latitude: position.lat,
+                  longitude: position.lng,
+                },
+              })
+
               mapRef.current?.panTo(position)
             }}
             {...props}

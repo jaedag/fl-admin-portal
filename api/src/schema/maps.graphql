@@ -1,0 +1,14 @@
+type Place {
+  id: ID!
+  name: String
+  firstName: String
+  lastName: String
+  latitude: Float!
+  longitude: Float!
+  description: String
+  picture: String
+}
+
+extend type Member {
+  placesSearch(latitude: Float!, longitude: Float!, limit: Int! = 30): [Place]
+}
