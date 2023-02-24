@@ -1,3 +1,9 @@
+#### 5.9.6 (2023-02-24)
+
+##### Bug Fixes
+
+*  prevent fellowship venue location from being unnecessarily updated ([a498e504](https://github.com/firstlovecenter/fl-pastoral-care/commit/a498e504b9882f928c0f13d99fa46481cf160608))
+
 #### 5.9.5 (2023-02-24)
 
 ##### Bug Fixes
