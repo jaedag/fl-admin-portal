@@ -1,3 +1,9 @@
+#### 5.9.5 (2023-02-24)
+
+##### Bug Fixes
+
+*  refactor location to idlLocation in memberBio query ([680887ef](https://github.com/firstlovecenter/fl-pastoral-care/commit/680887efb6a4849190b8ad03a05e59251a7fb086))
+
 #### 5.9.4 (2023-02-23)
 
 ##### New Features
