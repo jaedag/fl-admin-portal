@@ -168,8 +168,10 @@ const UpdateFellowship = () => {
 
     //Log if the Venue Changes
     if (
-      repackDecimals(values.venueLongitude) !== initialValues.venueLongitude ||
-      repackDecimals(values.venueLatitude) !== initialValues.venueLatitude
+      repackDecimals(values.venueLongitude) !==
+        repackDecimals(initialValues.venueLongitude) ||
+      repackDecimals(values.venueLatitude) !==
+        repackDecimals(initialValues.venueLatitude)
     ) {
       LogFellowshipHistory({
         variables: {
