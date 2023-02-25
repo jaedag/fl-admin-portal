@@ -1,3 +1,9 @@
+#### 5.9.7 (2023-02-25)
+
+##### New Features
+
+*  add easy debugging scripts cypher file for the most common debugging scripts ([2320751a](https://github.com/firstlovecenter/fl-pastoral-care/commit/2320751a38ff0486150df3759f29cb060df01b9e))
+
 #### 5.9.6 (2023-02-24)
 
 ##### Bug Fixes
