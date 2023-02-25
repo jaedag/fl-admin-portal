@@ -87,7 +87,9 @@ SET record.vehicleTopUp = 0
 
 WITH bussing, record
 MATCH (bussing)-[:INCLUDES_RECORD]->(records:VehicleRecord)
-SET bussing.bussingTopUp = SUM(records.vehicleTopUp)
+
+WITH bussing, record, SUM(records.vehicleTopUp) AS summedVehicleTopUp
+SET bussing.bussingTopUp = summedVehicleTopUp
 
 RETURN record AS record
 `
@@ -98,7 +100,9 @@ SET record.vehicleTopUp = $vehicleTopUp
 
 WITH bussing, record
 MATCH (bussing)-[:INCLUDES_RECORD]->(records:VehicleRecord)
-SET bussing.bussingTopUp = SUM(records.vehicleTopUp)
+
+WITH bussing, record, SUM(records.vehicleTopUp) AS summedVehicleTopUp
+SET bussing.bussingTopUp = summedVehicleTopUp
 
 RETURN record
 `
