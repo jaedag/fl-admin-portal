@@ -1,3 +1,9 @@
+#### 5.9.8 (2023-02-25)
+
+##### Bug Fixes
+
+*  fixed calculation of vehicle top up ([55d4e5bc](https://github.com/firstlovecenter/fl-pastoral-care/commit/55d4e5bc3937f42865b2af7e7974d107b71a168a))
+
 #### 5.9.7 (2023-02-25)
 
 ##### New Features
