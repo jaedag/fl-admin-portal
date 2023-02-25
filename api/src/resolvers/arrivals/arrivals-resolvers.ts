@@ -471,12 +471,11 @@ export const arrivalsMutation = {
     let vehicleRecord: RearragedCypherResponse | undefined
 
     const calculateVehicleTopUp = (data: responseType) => {
-      const sprinterTopUp = calculateTopUp(data.bacentaSprinterCost)
-      const urvanTopUp = calculateTopUp(data.bacentaUrvanCost)
-
       const outbound = response.outbound ? 2 : 1
-      const amountToPay =
-        data.vehicleCost * outbound - data.personalContribution
+      const sprinterTopUp = calculateTopUp(data.bacentaSprinterCost) * outbound
+      const urvanTopUp = calculateTopUp(data.bacentaUrvanCost) * outbound
+
+      const amountToPay = data.vehicleCost - data.personalContribution
 
       if (data.vehicle === 'Sprinter') {
         if (sprinterTopUp === 0) return 0
@@ -484,7 +483,7 @@ export const arrivalsMutation = {
           return amountToPay
         }
 
-        return parseFloat((sprinterTopUp * outbound).toFixed(2))
+        return parseFloat(sprinterTopUp.toFixed(2))
       }
 
       if (data.vehicle === 'Urvan') {
@@ -493,7 +492,7 @@ export const arrivalsMutation = {
           return amountToPay
         }
 
-        return parseFloat((urvanTopUp * outbound).toFixed(2))
+        return parseFloat(urvanTopUp.toFixed(2))
       }
       return 0
     }
@@ -547,8 +546,6 @@ export const arrivalsMutation = {
       response.attendance &&
       (response.vehicle === 'Sprinter' || response.vehicle === 'Urvan')
     ) {
-      // Did not cross your target, you get your normal zonal top up
-
       const receiveMoney = joinMessageStrings([
         `Hi  ${response.leaderFirstName}\n\n`,
         texts.arrivalsSMS.normal_top_up_p1,
