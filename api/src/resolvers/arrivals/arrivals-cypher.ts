@@ -85,12 +85,20 @@ export const noVehicleTopUp = `
 MATCH (record:VehicleRecord {id: $vehicleRecordId})<-[:INCLUDES_RECORD]-(bussing:BussingRecord)
 SET record.vehicleTopUp = 0
 
+WITH bussing, record
+MATCH (bussing)-[:INCLUDES_RECORD]->(records:VehicleRecord)
+SET bussing.bussingTopUp = SUM(records.vehicleTopUp)
+
 RETURN record AS record
 `
 
 export const setVehicleTopUp = `
-MATCH (record:VehicleRecord {id: $vehicleRecordId})
+MATCH (record:VehicleRecord {id: $vehicleRecordId})-[:INCLUDES_RECORD]->(bussing:BussingRecord)
 SET record.vehicleTopUp = $vehicleTopUp
+
+WITH bussing, record
+MATCH (bussing)-[:INCLUDES_RECORD]->(records:VehicleRecord)
+SET bussing.bussingTopUp = SUM(records.vehicleTopUp)
 
 RETURN record
 `
