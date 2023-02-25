@@ -1,3 +1,10 @@
+#### 5.9.11 (2023-02-25)
+
+##### Bug Fixes
+
+*  fix cypher error with summing vehicle topup ([b0c728fc](https://github.com/firstlovecenter/fl-pastoral-care/commit/b0c728fcf83e212aa5152a4a15b2652d88cfa5fb))
+*  update bussing top up when vehicle is confirmed ([b7421c5c](https://github.com/firstlovecenter/fl-pastoral-care/commit/b7421c5c50cebf17f928db4540ef5a77a6f1d58e))
+
 #### 5.9.10 (2023-02-25)
 
 #### 5.9.9 (2023-02-25)
