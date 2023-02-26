@@ -1,3 +1,20 @@
+#### 5.9.13 (2023-02-26)
+
+##### New Features
+
+*  admin-524 implement sonta display ([78c30bbe](https://github.com/firstlovecenter/fl-pastoral-care/commit/78c30bbe9172c642038356f77416f7fb9e971b41))
+
+##### Bug Fixes
+
+*  add 'in and out' option to arrivals payment data csv ([0f27ef39](https://github.com/firstlovecenter/fl-pastoral-care/commit/0f27ef3971413e948aa6214942817c6bdc861c1c))
+*  update debugging scripts for cypher ([a3f76a87](https://github.com/firstlovecenter/fl-pastoral-care/commit/a3f76a87b9a810b4a06cc71009629416583b57d1))
+*  permissions for create mutations ([#404](https://github.com/firstlovecenter/fl-pastoral-care/pull/404)) ([b1b4d9c6](https://github.com/firstlovecenter/fl-pastoral-care/commit/b1b4d9c6d9b152ebc94aa92c87ee92ce77864f82))
+*  make leader mutations ([#402](https://github.com/firstlovecenter/fl-pastoral-care/pull/402)) ([612f61d7](https://github.com/firstlovecenter/fl-pastoral-care/commit/612f61d79da515d5cefd166866e1d83cc79fdbf2))
+*  sonta count queries ([#401](https://github.com/firstlovecenter/fl-pastoral-care/pull/401)) ([c1379fa2](https://github.com/firstlovecenter/fl-pastoral-care/commit/c1379fa2ca463d68e39c363b1cb7e3a8e02f109d))
+*  fix date on history log and standardised federalministry name ([b202561b](https://github.com/firstlovecenter/fl-pastoral-care/commit/b202561b82c60d7fe822d37485d06e193c99799f))
+*  member basonta queries on member node ([#400](https://github.com/firstlovecenter/fl-pastoral-care/pull/400)) ([8764082e](https://github.com/firstlovecenter/fl-pastoral-care/commit/8764082e6a0edceed6a0120914d603717d8d1432))
+*  admin-525 fix issue where upload target failswhen target value is 0 ([21409612](https://github.com/firstlovecenter/fl-pastoral-care/commit/21409612c1c8d153392e6cba7682a636024a6056))
+
 #### 5.9.12 (2023-02-25)
 
 #### 5.9.11 (2023-02-25)
