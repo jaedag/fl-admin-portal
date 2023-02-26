@@ -1389,6 +1389,7 @@ type ArrivalsSheetData {
   attendance: Int
   confirmedAttendance: Int
   vehicle: String
+  outbound: Boolean
   topUp: Float
   vehicleCost: Float
   momoNumber: String

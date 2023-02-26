@@ -18,6 +18,7 @@ interface ArrivalPaymentData {
   attendance: number
   confirmedAttendance: number
   vehicle: string
+  outbound: boolean
   topUp: number
   vehicleCost: number
   momoNumber: number
@@ -43,6 +44,7 @@ const ArrivalsPaymentData = () => {
     { label: 'Attendance', key: 'attendance' },
     { label: 'Confirmed Attendance', key: 'confirmedAttendance' },
     { label: 'Vehicle', key: 'vehicle' },
+    { label: 'In and Out', key: 'outbound' },
     { label: 'Top Up', key: 'topUp' },
     { label: 'Vehicle Cost', key: 'vehicleCost' },
     { label: 'Momo Number', key: 'momoNumber' },
@@ -87,6 +89,7 @@ const ArrivalsPaymentData = () => {
                     <th scope="col">Attendance</th>
                     <th scope="col">Confirmed Attendance</th>
                     <th scope="col">Vehicle</th>
+                    <th scope="col">In and Out</th>
                     <th scope="col">Top Up</th>
                     <th scope="col">Vehicle Cost</th>
                     <th scope="col">Momo Number</th>
@@ -112,6 +115,7 @@ const ArrivalsPaymentData = () => {
                         <td>{data?.attendance}</td>
                         <td>{data?.confirmedAttendance}</td>
                         <td>{data?.vehicle}</td>
+                        <td>{data?.outbound ? 'In and Out' : 'In Only'}</td>
                         <td>{data?.topUp}</td>
                         <td>{data?.vehicleCost}</td>
                         <td>{data?.momoNumber}</td>

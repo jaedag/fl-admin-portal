@@ -477,6 +477,7 @@ export const DISPLAY_ARRIVALS_PAYMENT_DATA = gql`
         attendance
         confirmedAttendance
         vehicle
+        outbound
         topUp
         vehicleCost
         momoNumber
