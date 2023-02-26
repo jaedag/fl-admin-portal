@@ -115,7 +115,7 @@ const ArrivalsPaymentData = () => {
                         <td>{data?.attendance}</td>
                         <td>{data?.confirmedAttendance}</td>
                         <td>{data?.vehicle}</td>
-                        <td>{data?.outbound ? 'In and Out' : 'In Only'}</td>
+                        <td>{data?.outbound}</td>
                         <td>{data?.topUp}</td>
                         <td>{data?.vehicleCost}</td>
                         <td>{data?.momoNumber}</td>

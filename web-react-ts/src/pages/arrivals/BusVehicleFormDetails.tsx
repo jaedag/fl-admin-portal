@@ -176,16 +176,14 @@ const BusVehicleFormDetails = () => {
                       </td>
                     </tr>
                   )}
-                  {vehicle?.outbound && (
-                    <tr>
-                      <td>In and Out</td>
-                      <td className="fw-bold text-warning">
-                        <PlaceholderCustom loading={loading}>
-                          {vehicle?.outbound ? 'In and Out' : 'In Only'}
-                        </PlaceholderCustom>
-                      </td>
-                    </tr>
-                  )}
+                  <tr>
+                    <td>In and Out</td>
+                    <td className="fw-bold text-warning">
+                      <PlaceholderCustom loading={loading}>
+                        {vehicle?.outbound ? 'In and Out' : 'In Only'}
+                      </PlaceholderCustom>
+                    </td>
+                  </tr>
                   {vehicle?.comments && (
                     <tr>
                       <td>Comments</td>
