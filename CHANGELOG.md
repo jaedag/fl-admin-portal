@@ -1,3 +1,9 @@
+#### 5.9.14 (2023-02-26)
+
+##### Bug Fixes
+
+*  show in and out status as a string instead of a boolean ([96c6c8ff](https://github.com/firstlovecenter/fl-pastoral-care/commit/96c6c8ff804d5dc7ca374a99e208f1764a41a0c7))
+
 #### 5.9.13 (2023-02-26)
 
 ##### New Features
