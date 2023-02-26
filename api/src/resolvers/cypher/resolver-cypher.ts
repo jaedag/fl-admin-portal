@@ -108,7 +108,7 @@ export const checkMemberEmailExists = `
 OPTIONAL MATCH (member:Member)
 WHERE member.email = $email 
 OR member.whatsappNumber = $whatsappNumber 
-RETURN member IS NOT NULL AS predicate
+RETURN member IS NOT NULL AS predicate, member AS member
 `
 
 export const checkMemberHasNoActiveRelationships = `

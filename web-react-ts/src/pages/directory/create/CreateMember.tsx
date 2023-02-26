@@ -84,6 +84,41 @@ const CreateMember = () => {
         },
       })
     } catch (error: any) {
+      if (error.message.toLowerCase().includes('email')) {
+        const confirmBox = window.confirm(
+          'There was an error creating the member profile\n' +
+            error +
+            '\n\nWould you like to request for the member?'
+        )
+
+        if (confirmBox === true) {
+          window.open(
+            'https://airtable.com/shrw3wTXx5q8kbHwP',
+            '_blank',
+            'noopener,noreferrer'
+          )
+        }
+
+        setSubmitting(false)
+      }
+
+      if (error.message.toLowerCase().includes('whatsapp')) {
+        const confirmBox = window.confirm(
+          'There was an error creating the member profile\n' +
+            error +
+            '\n\nWould you like to request for the member?'
+        )
+
+        if (confirmBox === true) {
+          window.open(
+            'https://airtable.com/shrw3wTXx5q8kbHwP',
+            '_blank',
+            'noopener,noreferrer'
+          )
+        }
+
+        setSubmitting(false)
+      }
       throwToSentry('There was an error creating the member profile\n', error)
     }
 

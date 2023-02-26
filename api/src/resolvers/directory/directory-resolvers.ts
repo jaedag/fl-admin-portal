@@ -22,7 +22,6 @@ import { getAuthToken } from '../authenticate'
 
 const cypher = require('../cypher/resolver-cypher')
 const closeChurchCypher = require('../cypher/close-church-cypher')
-const errorMessage = require('../texts.json').error
 
 const directoryMutation = {
   CreateMember: async (object: any, args: Member, context: Context) => {
@@ -68,10 +67,25 @@ const directoryMutation = {
       email: args.email ?? null,
       whatsappNumber: args?.whatsappNumber ?? null,
     })
-    const memberCheck = rearrangeCypherObject(memberResponse)
+    const memberCheck = rearrangeCypherObject(memberResponse, true)[0]
+    const duplicateMember = memberCheck.member.properties
 
     if (memberCheck.predicate) {
-      throw new Error(errorMessage.no_duplicate_email_or_whatsapp)
+      if (duplicateMember.email === args.email) {
+        const errorMsg = `There is a member with this email "${duplicateMember.email}" called ${duplicateMember.firstName} ${duplicateMember.lastName}`
+
+        const error = new Error(errorMsg)
+        error.name = 'DuplicateEmail'
+
+        throw error
+      }
+
+      if (duplicateMember.whatsappNumber === args.whatsappNumber) {
+        const errorMsg = `There is a member with this whatsapp number "${duplicateMember.whatsappNumber}" called ${duplicateMember.firstName} ${duplicateMember.lastName}`
+        const error = new Error(errorMsg)
+        error.name = 'DuplicateWhatsappNumber'
+        throw error
+      }
     }
 
     const createMemberResponse = await session.run(createMember, {
