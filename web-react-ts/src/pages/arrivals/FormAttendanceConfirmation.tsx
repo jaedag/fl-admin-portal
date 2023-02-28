@@ -92,15 +92,10 @@ const FormAttendanceConfirmation = () => {
     const { setSubmitting } = onSubmitProps
     setSubmitting(true)
 
-    let attendance = parseInt(values.attendance)
-    if (attendance < 8) {
-      attendance = 0
-    }
-
     const res = await ConfirmVehicleByAdmin({
       variables: {
         vehicleRecordId: vehicleRecordId,
-        attendance: attendance,
+        attendance: parseInt(values.attendance),
         vehicle: values.vehicle,
         comments: values.comments,
         outbound: values.outbound === 'In and Out',
