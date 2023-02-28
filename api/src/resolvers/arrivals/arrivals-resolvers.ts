@@ -347,6 +347,7 @@ export const arrivalsMutation = {
       bacentaId: string
       bussingRecordId: string
       leaderDeclaration: number
+      attendance: number
       vehicleCost: number
       personalContribution: number
       vehicle: string
@@ -362,12 +363,22 @@ export const arrivalsMutation = {
       await session.run(checkArrivalTimeFromVehicle, args)
     )
 
-    const { arrivalEndTime, bacentaId } = recordResponse
+    const { arrivalEndTime, bacentaId, streamName } = recordResponse
 
     const today = new Date()
 
     if (today > arrivalEndTimeCalculator(arrivalEndTime)) {
       throw new Error('It is now past the time for arrivals. Thank you!')
+    }
+
+    const adjustedArgs = args
+
+    if (args.attendance < 20 && streamName === 'anagkazo encounter') {
+      adjustedArgs.attendance = 0
+    }
+
+    if (args.attendance < 8) {
+      adjustedArgs.attendance = 0
     }
 
     const response = rearrangeCypherObject(
