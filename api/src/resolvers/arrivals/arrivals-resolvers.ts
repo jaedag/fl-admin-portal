@@ -363,7 +363,8 @@ export const arrivalsMutation = {
       await session.run(checkArrivalTimeFromVehicle, args)
     )
 
-    const { arrivalEndTime, bacentaId, streamName } = recordResponse
+    const { arrivalEndTime, bacentaId, streamName, numberOfVehicles } =
+      recordResponse
 
     const today = new Date()
 
@@ -373,11 +374,15 @@ export const arrivalsMutation = {
 
     const adjustedArgs = args
 
-    if (args.attendance < 20 && streamName === 'anagkazo encounter') {
+    if (
+      numberOfVehicles.low < 2 &&
+      args.attendance < 20 &&
+      streamName === 'anagkazo encounter'
+    ) {
       adjustedArgs.attendance = 0
     }
 
-    if (args.attendance < 8) {
+    if (args.attendance < 8 && numberOfVehicles.low < 2) {
       adjustedArgs.attendance = 0
     }
 
