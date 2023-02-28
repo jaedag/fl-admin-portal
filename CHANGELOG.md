@@ -1,3 +1,17 @@
+#### 5.9.15 (2023-02-28)
+
+##### New Features
+
+*  implement membership transfer request form when duplicate member exists ([b3e4692c](https://github.com/firstlovecenter/fl-pastoral-care/commit/b3e4692cff9c99436bb6878e4802fb37efea2093))
+
+##### Bug Fixes
+
+*  fix bug preventing members from registering new members ([f11aea4a](https://github.com/firstlovecenter/fl-pastoral-care/commit/f11aea4acf6be5dbe7da167a2816042b2c51e30c))
+*  inputting the right arguments to the cypher queries ([0508d3e7](https://github.com/firstlovecenter/fl-pastoral-care/commit/0508d3e7b64f48edc563311bf0f6378baee6ada2))
+*  from the second bus, people should be able to top up their bussing ([3bfc0b6e](https://github.com/firstlovecenter/fl-pastoral-care/commit/3bfc0b6e89a646d8b510505cce32ed2a4be8213c))
+*  remove redundant code from the frontend ([ae6adf6c](https://github.com/firstlovecenter/fl-pastoral-care/commit/ae6adf6c4f59ad711f6874b978dd8ec63902a9ed))
+*  adjust attendance criteria for anagkazo ([317208b0](https://github.com/firstlovecenter/fl-pastoral-care/commit/317208b0de07bc91ac8b373775a9ee8aa87137cb))
+
 #### 5.9.14 (2023-02-26)
 
 ##### Bug Fixes
