@@ -100,9 +100,7 @@ const CreateMember = () => {
         }
 
         setSubmitting(false)
-      }
-
-      if (error.message.toLowerCase().includes('whatsapp')) {
+      } else if (error.message.toLowerCase().includes('whatsapp')) {
         const confirmBox = window.confirm(
           'There was an error creating the member profile\n' +
             error +
@@ -118,8 +116,9 @@ const CreateMember = () => {
         }
 
         setSubmitting(false)
+      } else {
+        throwToSentry('There was an error creating the member profile\n', error)
       }
-      throwToSentry('There was an error creating the member profile\n', error)
     }
 
     setSubmitting(false)
