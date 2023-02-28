@@ -388,13 +388,13 @@ export const arrivalsMutation = {
 
     const response = rearrangeCypherObject(
       await session.run(confirmVehicleByAdmin, {
-        ...args,
+        ...adjustedArgs,
         auth: context.auth,
       })
     )
 
     await session
-      .run(aggregateVehicleBussingRecordData, args)
+      .run(aggregateVehicleBussingRecordData, adjustedArgs)
       .catch((error: any) =>
         throwToSentry('Error Running aggregateVehicleBussingRecordData', error)
       )
