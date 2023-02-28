@@ -68,7 +68,7 @@ const directoryMutation = {
       whatsappNumber: args?.whatsappNumber ?? null,
     })
     const memberCheck = rearrangeCypherObject(memberResponse, true)[0]
-    const duplicateMember = memberCheck.member.properties
+    const duplicateMember = memberCheck.member?.properties
 
     if (memberCheck.predicate) {
       if (duplicateMember.email === args.email) {
