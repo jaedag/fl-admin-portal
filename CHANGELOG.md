@@ -1,3 +1,12 @@
+#### 5.9.16 (2023-03-01)
+
+##### Bug Fixes
+
+*  fix issue where button wasnt toggling to submitting state on directory forms ([7f44281a](https://github.com/firstlovecenter/fl-pastoral-care/commit/7f44281a1b62f81262935f7327f224956f910277))
+*  fix issue where button wasn't toggled to submitting state for bacenta, constituency, council ([86284f43](https://github.com/firstlovecenter/fl-pastoral-care/commit/86284f43291feb670a6d5ddd29eca8fcfb94cd98))
+*  fix issue where button wasn't toggled to submitting state in fellowship form ([83ab9628](https://github.com/firstlovecenter/fl-pastoral-care/commit/83ab9628c56c045c86e7b7ffe8a73b9bb98e3aef))
+*  remove throw to sentry error when member is a duplicate ([d7c7977a](https://github.com/firstlovecenter/fl-pastoral-care/commit/d7c7977a6bddf48bc591be6257980f93faaaeea3))
+
 #### 5.9.15 (2023-02-28)
 
 ##### New Features
