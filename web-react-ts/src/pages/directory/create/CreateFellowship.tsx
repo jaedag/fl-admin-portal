@@ -61,7 +61,6 @@ const CreateFellowship = () => {
     } catch (error: any) {
       throwToSentry('There was an error creating fellowship', error)
       onSubmitProps.setSubmitting(false)
-      onSubmitProps.resetForm()
     }
   }
 

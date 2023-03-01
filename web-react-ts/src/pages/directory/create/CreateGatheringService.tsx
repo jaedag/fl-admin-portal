@@ -33,7 +33,6 @@ const CreateGatheringService = () => {
     onSubmitProps: FormikHelpers<GatheringServiceFormValues>
   ) => {
     onSubmitProps.setSubmitting(true)
-    clickCard({ id: values.oversight, __typename: 'Oversight' })
     try {
       const res = await CreateGatheringService({
         variables: {
@@ -42,25 +41,23 @@ const CreateGatheringService = () => {
           oversightId: values.oversight,
         },
       })
-      clickCard(res.data.createGatheringService)
 
-      try {
-        await NewGatheringServiceLeader({
-          variables: {
-            leaderId: values.leaderId,
-            gatheringServiceId: res.data.CreateGatheringService.id,
-          },
-        })
-      } catch (error: any) {
-        throwToSentry('There was an error adding leader', error)
-      }
+      await NewGatheringServiceLeader({
+        variables: {
+          leaderId: values.leaderId,
+          gatheringServiceId: res.data.CreateGatheringService.id,
+        },
+      })
+
+      clickCard({ id: values.oversight, __typename: 'Oversight' })
+      clickCard(res.data.createGatheringService)
+      onSubmitProps.setSubmitting(false)
+      onSubmitProps.resetForm()
+      navigate(`/gatheringservice/displaydetails`)
     } catch (error: any) {
+      onSubmitProps.setSubmitting(false)
       throwToSentry('There was an error creating gathering service', error)
     }
-
-    onSubmitProps.setSubmitting(false)
-    onSubmitProps.resetForm()
-    navigate(`/gatheringservice/displaydetails`)
   }
 
   return (

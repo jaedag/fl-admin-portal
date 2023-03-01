@@ -41,7 +41,6 @@ const CreateConstituency = () => {
     onSubmitProps: FormikHelpers<ConstituencyFormValues>
   ) => {
     onSubmitProps.setSubmitting(true)
-    clickCard({ id: values.council, __typename: 'Council' })
     try {
       const res = await CreateConstituency({
         variables: {
@@ -51,24 +50,22 @@ const CreateConstituency = () => {
         },
       })
 
-      clickCard(res.data.CreateConstituency)
-      try {
-        await NewConstituencyLeader({
-          variables: {
-            leaderId: values.leaderId,
-            constituencyId:
-              res.data.CreateConstituency.council.constituencies[0].id,
-          },
-        })
-      } catch (error: any) {
-        throwToSentry('There was an error adding the leader', error)
-      }
+      await NewConstituencyLeader({
+        variables: {
+          leaderId: values.leaderId,
+          constituencyId:
+            res.data.CreateConstituency.council.constituencies[0].id,
+        },
+      })
 
+      clickCard({ id: values.council, __typename: 'Council' })
+      clickCard(res.data.CreateConstituency)
       onSubmitProps.setSubmitting(false)
       onSubmitProps.resetForm()
       navigate(`/constituency/displaydetails`)
     } catch (error: any) {
       throwToSentry('There was an error creating the constituency', error)
+      onSubmitProps.setSubmitting(false)
     }
   }
   return (

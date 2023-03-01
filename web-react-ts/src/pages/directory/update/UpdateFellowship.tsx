@@ -59,9 +59,9 @@ const UpdateFellowship = () => {
   const [RemoveFellowshipFromBacenta] = useMutation(REMOVE_FELLOWSHIP_BACENTA)
 
   const [AddFellowshipBacenta] = useMutation(ADD_FELLOWSHIP_BACENTA, {
-    onCompleted: (data) => {
+    onCompleted: async (data) => {
       //After Adding the fellowship to a bacenta, then you log that change.
-      LogFellowshipHistory({
+      await LogFellowshipHistory({
         variables: {
           fellowshipId: fellowshipId,
           newLeaderId: '',
@@ -95,12 +95,9 @@ const UpdateFellowship = () => {
           venueLatitude: values.venueLatitude,
         },
       })
-    } catch (error: any) {
-      throwToSentry('There was an error updating this fellowship', error)
-    }
-    //Log If The Bacenta Changes
-    if (values.bacenta !== initialValues.bacenta) {
-      try {
+
+      //Log If The Bacenta Changes
+      if (values.bacenta !== initialValues.bacenta) {
         await RemoveFellowshipFromBacenta({
           variables: {
             higherChurch: initialValues.bacenta,
@@ -113,82 +110,78 @@ const UpdateFellowship = () => {
             fellowshipId: fellowshipId,
           },
         })
-      } catch (error: any) {
-        throwToSentry('', error)
       }
-    }
 
-    //Log if the Fellowship Name Changes
-    if (values.name !== initialValues.name) {
-      await LogFellowshipHistory({
-        variables: {
-          fellowshipId: fellowshipId,
-          newLeaderId: '',
-          oldLeaderId: '',
-          oldBacentaId: '',
-          newBacentaId: '',
-
-          historyRecord: `The Fellowship name has been changed from ${initialValues.name} to ${values.name}`,
-        },
-      })
-    }
-
-    // Log if the Meeting Day Changes
-    if (values.meetingDay !== initialValues.meetingDay) {
-      await LogFellowshipHistory({
-        variables: {
-          fellowshipId: fellowshipId,
-          newLeaderId: '',
-          oldLeaderId: '',
-          oldBacentaId: '',
-          newBacentaId: '',
-
-          historyRecord: `${values.name} Fellowship has changed their meeting day from ${initialValues.meetingDay} to ${values.meetingDay}`,
-        },
-      })
-    }
-
-    // Log if the Vacation Status Changes
-    if (values.vacationStatus !== initialValues.vacationStatus) {
-      if (values.vacationStatus === 'Vacation') {
-        await SetFellowshipOnVacation({
+      //Log if the Fellowship Name Changes
+      if (values.name !== initialValues.name) {
+        await LogFellowshipHistory({
           variables: {
             fellowshipId: fellowshipId,
+            newLeaderId: '',
+            oldLeaderId: '',
+            oldBacentaId: '',
+            newBacentaId: '',
+
+            historyRecord: `The Fellowship name has been changed from ${initialValues.name} to ${values.name}`,
           },
         })
       }
-      if (values.vacationStatus === 'Active') {
-        await SetFellowshipActive({
+
+      // Log if the Meeting Day Changes
+      if (values.meetingDay !== initialValues.meetingDay) {
+        await LogFellowshipHistory({
           variables: {
             fellowshipId: fellowshipId,
+            newLeaderId: '',
+            oldLeaderId: '',
+            oldBacentaId: '',
+            newBacentaId: '',
+
+            historyRecord: `${values.name} Fellowship has changed their meeting day from ${initialValues.meetingDay} to ${values.meetingDay}`,
           },
         })
       }
-    }
 
-    //Log if the Venue Changes
-    if (
-      repackDecimals(values.venueLongitude) !==
-        repackDecimals(initialValues.venueLongitude) ||
-      repackDecimals(values.venueLatitude) !==
-        repackDecimals(initialValues.venueLatitude)
-    ) {
-      LogFellowshipHistory({
-        variables: {
-          fellowshipId: fellowshipId,
-          newLeaderId: '',
-          oldLeaderId: '',
-          oldBacentaId: '',
-          newBacentaId: '',
+      // Log if the Vacation Status Changes
+      if (values.vacationStatus !== initialValues.vacationStatus) {
+        if (values.vacationStatus === 'Vacation') {
+          await SetFellowshipOnVacation({
+            variables: {
+              fellowshipId: fellowshipId,
+            },
+          })
+        }
+        if (values.vacationStatus === 'Active') {
+          await SetFellowshipActive({
+            variables: {
+              fellowshipId: fellowshipId,
+            },
+          })
+        }
+      }
 
-          historyRecord: `${values.name} Fellowship has changed their venue`,
-        },
-      })
-    }
+      //Log if the Venue Changes
+      if (
+        repackDecimals(values.venueLongitude) !==
+          repackDecimals(initialValues.venueLongitude) ||
+        repackDecimals(values.venueLatitude) !==
+          repackDecimals(initialValues.venueLatitude)
+      ) {
+        await LogFellowshipHistory({
+          variables: {
+            fellowshipId: fellowshipId,
+            newLeaderId: '',
+            oldLeaderId: '',
+            oldBacentaId: '',
+            newBacentaId: '',
 
-    //Log if the Leader Changes
-    if (values.leaderId !== initialValues.leaderId) {
-      try {
+            historyRecord: `${values.name} Fellowship has changed their venue`,
+          },
+        })
+      }
+
+      //Log if the Leader Changes
+      if (values.leaderId !== initialValues.leaderId) {
         await MakeFellowshipLeader({
           variables: {
             oldLeaderId: initialValues.leaderId || 'old-leader',
@@ -197,24 +190,22 @@ const UpdateFellowship = () => {
           },
         })
         alertMsg('Leader Changed Successfully')
-        navigate(`/fellowship/displaydetails`)
-      } catch (err: any) {
-        const errorArray = err.toString().replace('Error: ', '').split('\n')
-        if (errorArray[0] === errorArray[1]) {
-          throwToSentry(
-            'There was a problem changing the leader',
-            errorArray[0]
-          )
-        } else {
-          throwToSentry('There was a problem changing the leader', err)
-        }
       }
-    }
 
-    onSubmitProps.setSubmitting(false)
-    onSubmitProps.resetForm()
-    navigate(`/fellowship/displaydetails`)
+      onSubmitProps.setSubmitting(false)
+      onSubmitProps.resetForm()
+      navigate(`/fellowship/displaydetails`)
+    } catch (error: any) {
+      const errorArray = error.toString().replace('Error: ', '').split('\n')
+      if (errorArray[0] === errorArray[1]) {
+        throwToSentry('There was a problem changing the leader', errorArray[0])
+      } else {
+        throwToSentry('There was an error updating this fellowship', error)
+      }
+      onSubmitProps.setSubmitting(false)
+    }
   }
+
   if (fellowshipLoading) {
     return <LoadingScreen />
   }

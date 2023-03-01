@@ -31,7 +31,7 @@ const CreateCouncil = () => {
     onSubmitProps: FormikHelpers<CouncilFormValues>
   ) => {
     onSubmitProps.setSubmitting(true)
-    clickCard({ id: values.stream, __typename: 'Stream' })
+
     try {
       const res = await CreateCouncil({
         variables: {
@@ -40,25 +40,23 @@ const CreateCouncil = () => {
           streamId: values.stream,
         },
       })
-      clickCard(res.data.CreateCouncil)
 
-      try {
-        await NewCouncilLeader({
-          variables: {
-            leaderId: values.leaderId,
-            councilId: res.data.CreateCouncil.id,
-          },
-        })
-      } catch (error: any) {
-        throwToSentry('There was an error adding leader', error)
-      }
+      await NewCouncilLeader({
+        variables: {
+          leaderId: values.leaderId,
+          councilId: res.data.CreateCouncil.id,
+        },
+      })
+
+      clickCard(res.data.CreateCouncil)
+      clickCard({ id: values.stream, __typename: 'Stream' })
+      onSubmitProps.setSubmitting(false)
+      onSubmitProps.resetForm()
+      navigate(`/council/displaydetails`)
     } catch (error: any) {
+      onSubmitProps.setSubmitting(false)
       throwToSentry('There was an error creating council', error)
     }
-
-    onSubmitProps.setSubmitting(false)
-    onSubmitProps.resetForm()
-    navigate(`/council/displaydetails`)
   }
 
   return (

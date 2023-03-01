@@ -30,7 +30,6 @@ const CreateBacenta = () => {
     onSubmitProps: FormikHelpers<BacentaFormValues>
   ) => {
     onSubmitProps.setSubmitting(true)
-    clickCard({ id: values.constituency, __typename: 'Bacenta' })
 
     try {
       const res = await CreateBacenta({
@@ -41,23 +40,21 @@ const CreateBacenta = () => {
         },
       })
 
-      clickCard(res.data.CreateBacenta)
-      try {
-        await NewBacentaLeader({
-          variables: {
-            leaderId: values.leaderId,
-            bacentaId: res.data.CreateBacenta.id,
-          },
-        })
-      } catch (error: any) {
-        throwToSentry('There was an error adding leader', error)
-      }
+      await NewBacentaLeader({
+        variables: {
+          leaderId: values.leaderId,
+          bacentaId: res.data.CreateBacenta.id,
+        },
+      })
 
+      clickCard({ id: values.constituency, __typename: 'Bacenta' })
+      clickCard(res.data.CreateBacenta)
       onSubmitProps.setSubmitting(false)
       onSubmitProps.resetForm()
       navigate('/bacenta/displaydetails')
     } catch (error: any) {
       throwToSentry('There was an error creating bacenta', error)
+      onSubmitProps.setSubmitting(false)
     }
   }
 
