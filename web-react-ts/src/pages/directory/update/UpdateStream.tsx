@@ -126,7 +126,7 @@ const UpdateStream = () => {
     onSubmitProps: FormikHelpers<StreamFormValues>
   ) => {
     onSubmitProps.setSubmitting(true)
-    clickCard({ id: values.gatheringService, __typename: 'GatheringService' })
+
     try {
       await UpdateStream({
         variables: {
@@ -224,11 +224,13 @@ const UpdateStream = () => {
         await addNewChurches(lists, mutations, args),
       ])
 
+      clickCard({ id: values.gatheringService, __typename: 'GatheringService' })
       onSubmitProps.setSubmitting(false)
       onSubmitProps.resetForm()
       navigate(`/stream/displaydetails`)
     } catch (err: any) {
       throwToSentry('There was a problem updating this stream', err)
+      onSubmitProps.setSubmitting(false)
     }
   }
 

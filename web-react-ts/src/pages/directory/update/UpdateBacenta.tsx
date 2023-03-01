@@ -129,7 +129,6 @@ const UpdateBacenta = () => {
     onSubmitProps: FormikHelpers<BacentaFormValues>
   ) => {
     onSubmitProps.setSubmitting(true)
-    clickCard({ id: values.constituency, __typename: 'Constituency' })
     try {
       await UpdateBacenta({
         variables: {
@@ -139,116 +138,119 @@ const UpdateBacenta = () => {
           constituencyId: values.constituency,
         },
       })
-    } catch (error: any) {
-      throwToSentry(error)
-    }
-    //Log if Bacenta Name Changes
-    if (values.name !== initialValues.name) {
-      await LogBacentaHistory({
-        variables: {
-          bacentaId: bacentaId,
-          newLeaderId: '',
-          oldLeaderId: '',
-          oldConstituencyId: '',
-          newConstituencyId: '',
-          historyRecord: `Bacenta name has been changed from ${initialValues.name} to ${values.name}`,
-        },
-      })
-    }
 
-    //Change if the vacation status changes
-    if (values.vacationStatus !== initialValues.vacationStatus) {
-      if (values.vacationStatus === 'Vacation') {
-        await SetBacentaOnVacation({
+      //Log if Bacenta Name Changes
+      if (values.name !== initialValues.name) {
+        await LogBacentaHistory({
           variables: {
             bacentaId: bacentaId,
+            newLeaderId: '',
+            oldLeaderId: '',
+            oldConstituencyId: '',
+            newConstituencyId: '',
+            historyRecord: `Bacenta name has been changed from ${initialValues.name} to ${values.name}`,
           },
         })
       }
-      if (values.vacationStatus === 'Active') {
-        await SetBacentaActive({
-          variables: {
-            bacentaId: bacentaId,
-          },
-        })
-      }
-    }
 
-    //Log if the Leader Changes
-    if (values.leaderId !== initialValues.leaderId) {
-      try {
-        await MakeBacentaLeader({
-          variables: {
-            oldLeaderId: initialValues.leaderId || 'old-leader',
-            newLeaderId: values.leaderId,
-            bacentaId: bacentaId,
-          },
-        })
-        alertMsg('Leader Changed Successfully')
-        navigate(`/bacenta/displaydetails`)
-      } catch (err: any) {
-        const errorArray = err.toString().replace('Error: ', '').split('\n')
-        if (errorArray[0] === errorArray[1]) {
-          throwToSentry(
-            'There was a problem changing the leader',
-            errorArray[0]
-          )
-        } else {
-          throwToSentry('There was a problem changing the leader', err)
+      //Change if the vacation status changes
+      if (values.vacationStatus !== initialValues.vacationStatus) {
+        if (values.vacationStatus === 'Vacation') {
+          await SetBacentaOnVacation({
+            variables: {
+              bacentaId: bacentaId,
+            },
+          })
+        }
+        if (values.vacationStatus === 'Active') {
+          await SetBacentaActive({
+            variables: {
+              bacentaId: bacentaId,
+            },
+          })
         }
       }
+
+      //Log if the Leader Changes
+      if (values.leaderId !== initialValues.leaderId) {
+        try {
+          await MakeBacentaLeader({
+            variables: {
+              oldLeaderId: initialValues.leaderId || 'old-leader',
+              newLeaderId: values.leaderId,
+              bacentaId: bacentaId,
+            },
+          })
+          alertMsg('Leader Changed Successfully')
+          navigate(`/bacenta/displaydetails`)
+        } catch (err: any) {
+          const errorArray = err.toString().replace('Error: ', '').split('\n')
+          if (errorArray[0] === errorArray[1]) {
+            throwToSentry(
+              'There was a problem changing the leader',
+              errorArray[0]
+            )
+          } else {
+            throwToSentry('There was a problem changing the leader', err)
+          }
+        }
+      }
+
+      //Log If The Constituency Changes
+      if (values.constituency !== initialValues.constituency) {
+        await RemoveBacentaConstituency({
+          variables: {
+            higherChurch: initialValues.constituency,
+            lowerChurch: [bacentaId],
+          },
+        })
+        await AddBacentaConstituency({
+          variables: {
+            constituencyId: values.constituency,
+            oldConstituencyId: initialValues.constituency,
+            bacentaId: bacentaId,
+          },
+        })
+      }
+
+      //For the adding and removing of fellowships
+      const oldFellowships =
+        initialValues.fellowships?.map((fellowship) => fellowship) || []
+
+      const newFellowships =
+        values.fellowships?.map((fellowship) => fellowship) || []
+
+      const lists = {
+        oldChurches: oldFellowships,
+        newChurches: newFellowships,
+      }
+
+      const mutations = {
+        closeDownChurch: CloseDownFellowship,
+        removeChurch: RemoveFellowshipFromBacenta,
+        addChurch: AddBacentaFellowships,
+        logChurchHistory: LogFellowshipHistory,
+      }
+
+      const args = {
+        initialValues,
+        bacentaId,
+      }
+
+      Promise.all([
+        await removeOldChurches(lists, mutations),
+        await addNewChurches(lists, mutations, args),
+      ])
+
+      clickCard({ id: values.constituency, __typename: 'Constituency' })
+      onSubmitProps.setSubmitting(false)
+      onSubmitProps.resetForm()
+
+      navigate(`/bacenta/displaydetails`)
+    } catch (error: any) {
+      throwToSentry(error)
+      onSubmitProps.setSubmitting(false)
     }
-
-    //Log If The Constituency Changes
-    if (values.constituency !== initialValues.constituency) {
-      await RemoveBacentaConstituency({
-        variables: {
-          higherChurch: initialValues.constituency,
-          lowerChurch: [bacentaId],
-        },
-      })
-      await AddBacentaConstituency({
-        variables: {
-          constituencyId: values.constituency,
-          oldConstituencyId: initialValues.constituency,
-          bacentaId: bacentaId,
-        },
-      })
-    }
-
-    //For the adding and removing of fellowships
-    const oldFellowships =
-      initialValues.fellowships?.map((fellowship) => fellowship) || []
-
-    const newFellowships =
-      values.fellowships?.map((fellowship) => fellowship) || []
-
-    const lists = {
-      oldChurches: oldFellowships,
-      newChurches: newFellowships,
-    }
-
-    const mutations = {
-      closeDownChurch: CloseDownFellowship,
-      removeChurch: RemoveFellowshipFromBacenta,
-      addChurch: AddBacentaFellowships,
-      logChurchHistory: LogFellowshipHistory,
-    }
-
-    const args = {
-      initialValues,
-      bacentaId,
-    }
-
-    Promise.all([
-      await removeOldChurches(lists, mutations),
-      await addNewChurches(lists, mutations, args),
-    ])
-
-    onSubmitProps.setSubmitting(false)
-    onSubmitProps.resetForm()
-
-    navigate(`/bacenta/displaydetails`)
   }
   if (bacentaLoading) {
     return <LoadingScreen />

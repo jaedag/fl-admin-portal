@@ -147,7 +147,7 @@ const UpdateGatheringService = () => {
     onSubmitProps: FormikHelpers<GatheringServiceFormValues>
   ) => {
     onSubmitProps.setSubmitting(true)
-    clickCard({ id: values.oversight, __typename: 'Oversight' })
+
     try {
       await UpdateGatheringService({
         variables: {
@@ -245,11 +245,13 @@ const UpdateGatheringService = () => {
         await addNewChurches(lists, mutations, args),
       ])
 
+      clickCard({ id: values.oversight, __typename: 'Oversight' })
       onSubmitProps.setSubmitting(false)
       onSubmitProps.resetForm()
       navigate(`/gatheringservice/displaydetails`)
     } catch (err: any) {
       throwToSentry('There was a problem updating this gathering service', err)
+      onSubmitProps.setSubmitting(false)
     }
   }
 

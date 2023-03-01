@@ -121,7 +121,7 @@ const UpdateConstituency = () => {
     onSubmitProps: FormikHelpers<ConstituencyFormValues>
   ) => {
     onSubmitProps.setSubmitting(true)
-    clickCard({ id: values.council, __typename: 'Council' })
+
     try {
       await UpdateConstituency({
         variables: {
@@ -156,7 +156,6 @@ const UpdateConstituency = () => {
           })
 
           alertMsg('Leader Changed Successfully')
-          navigate(`/constituency/displaydetails`)
         } catch (err: any) {
           const errorArray = err.toString().replace('Error: ', '').split('\n')
           if (errorArray[0] === errorArray[1]) {
@@ -215,11 +214,13 @@ const UpdateConstituency = () => {
         await addNewChurches(lists, mutations, args),
       ])
 
+      clickCard({ id: values.council, __typename: 'Council' })
       onSubmitProps.setSubmitting(false)
       onSubmitProps.resetForm()
       navigate(`/constituency/displaydetails`)
     } catch (error: any) {
       throwToSentry('There was a problem updating this constituency', error)
+      onSubmitProps.setSubmitting(false)
     }
   }
 

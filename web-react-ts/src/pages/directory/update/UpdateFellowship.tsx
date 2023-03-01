@@ -80,7 +80,7 @@ const UpdateFellowship = () => {
     onSubmitProps: FormikHelpers<FellowshipFormValues>
   ) => {
     onSubmitProps.setSubmitting(true)
-    clickCard({ id: values.bacenta, __typename: 'Bacenta' })
+
     values.venueLongitude = parseFloat(values.venueLongitude.toString())
     values.venueLatitude = parseFloat(values.venueLatitude.toString())
 
@@ -192,6 +192,7 @@ const UpdateFellowship = () => {
         alertMsg('Leader Changed Successfully')
       }
 
+      clickCard({ id: values.bacenta, __typename: 'Bacenta' })
       onSubmitProps.setSubmitting(false)
       onSubmitProps.resetForm()
       navigate(`/fellowship/displaydetails`)

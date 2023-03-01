@@ -125,7 +125,6 @@ const UpdateCouncil = () => {
     onSubmitProps: FormikHelpers<CouncilFormValues>
   ) => {
     onSubmitProps.setSubmitting(true)
-    clickCard({ id: values.stream, __typename: 'Stream' })
 
     try {
       await UpdateCouncil({
@@ -225,11 +224,13 @@ const UpdateCouncil = () => {
         await addNewChurches(lists, mutations, args),
       ])
 
+      clickCard({ id: values.stream, __typename: 'Stream' })
       onSubmitProps.setSubmitting(false)
       onSubmitProps.resetForm()
       navigate(`/council/displaydetails`)
     } catch (error: any) {
       throwToSentry('There was a problem updating this council', error)
+      onSubmitProps.setSubmitting(false)
     }
   }
 
