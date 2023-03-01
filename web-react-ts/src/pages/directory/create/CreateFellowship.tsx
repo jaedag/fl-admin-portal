@@ -30,44 +30,41 @@ const CreateFellowship = () => {
   const [CreateFellowship] = useMutation(CREATE_FELLOWSHIP_MUTATION)
 
   //onSubmit receives the form state as argument
-  const onSubmit = (
+  const onSubmit = async (
     values: FellowshipFormValues,
     onSubmitProps: FormikHelpers<FellowshipFormValues>
   ) => {
     onSubmitProps.setSubmitting(true)
-    CreateFellowship({
-      variables: {
-        name: values.name,
-        bacentaId: values.bacenta,
-        meetingDay: values.meetingDay,
-        leaderId: values.leaderId,
-        venueLongitude: parseFloat(values.venueLongitude.toString()),
-        venueLatitude: parseFloat(values.venueLatitude.toString()),
-      },
-    })
-      .then(async (res) => {
-        clickCard(res.data.CreateFellowship)
-        await NewFellowshipLeader({
-          variables: {
-            leaderId: values.leaderId,
-            fellowshipId: res.data.CreateFellowship.id,
-          },
-        })
-          .then(() => {
-            onSubmitProps.setSubmitting(false)
-            onSubmitProps.resetForm()
-          })
-          .catch((error) =>
-            throwToSentry('There was an error setting the leader', error)
-          )
-
-        clickCard(res.data.CreateFellowship)
-        navigate('/fellowship/displaydetails')
+    try {
+      const res = await CreateFellowship({
+        variables: {
+          name: values.name,
+          bacentaId: values.bacenta,
+          meetingDay: values.meetingDay,
+          leaderId: values.leaderId,
+          venueLongitude: parseFloat(values.venueLongitude.toString()),
+          venueLatitude: parseFloat(values.venueLatitude.toString()),
+        },
       })
-      .catch((error) =>
-        throwToSentry('There was an error creating fellowship', error)
-      )
+
+      await NewFellowshipLeader({
+        variables: {
+          leaderId: values.leaderId,
+          fellowshipId: res.data.CreateFellowship.id,
+        },
+      })
+
+      clickCard(res.data.CreateFellowship)
+      onSubmitProps.setSubmitting(false)
+      onSubmitProps.resetForm()
+      navigate('/fellowship/displaydetails')
+    } catch (error: any) {
+      throwToSentry('There was an error creating fellowship', error)
+      onSubmitProps.setSubmitting(false)
+      onSubmitProps.resetForm()
+    }
   }
+
   return (
     <FellowshipForm
       title="Start a New Fellowship"

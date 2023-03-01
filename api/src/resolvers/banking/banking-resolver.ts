@@ -342,15 +342,15 @@ const bankingMutation = {
 
     const confirmationResponse = await axios(confirmPaymentBody).catch(
       async (error) => {
+        throwToSentry(
+          'There was an error confirming transaction - ',
+          error.response.data.message
+        )
         if (error.response.data.status === false) {
           record = rearrangeCypherObject(
             await session.run(setTransactionStatusFailed, args)
           )
         }
-        throwToSentry(
-          'There was an error confirming transaction - ',
-          error.response.data.message
-        )
       }
     )
 
