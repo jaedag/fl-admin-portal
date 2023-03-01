@@ -3,9 +3,7 @@ import { permitMe } from 'permission-utils'
 import { lazy } from 'react'
 
 const Maps = lazy(() => import('pages/maps/Maps'))
-const FellowshipMapsLandingPage = lazy(
-  () => import('pages/maps/fellowship/FellowshipMapsLandingPage')
-)
+const ViewMaps = lazy(() => import('pages/maps/fellowship/ViewMaps'))
 
 export const maps: LazyRouteTypes[] = [
   {
@@ -15,8 +13,8 @@ export const maps: LazyRouteTypes[] = [
     roles: ['all'],
   },
   {
-    path: '/maps/fellowship',
-    element: FellowshipMapsLandingPage,
+    path: '/maps/view-maps',
+    element: ViewMaps,
     placeholder: false,
     roles: permitMe('Fellowship'),
   },

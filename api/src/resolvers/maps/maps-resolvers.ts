@@ -1,7 +1,7 @@
 import type { Node, Integer, Point } from 'neo4j-driver'
 import { Context } from '../utils/neo4j-types'
 import { Member } from '../utils/types'
-import { rearrangeCypherObject } from '../utils/utils'
+import { rearrangeCypherObject, throwToSentry } from '../utils/utils'
 import { memberFellowshipSearch, memberMemberSearch } from './maps-cypher'
 
 export const mapsResolvers = {
@@ -75,7 +75,6 @@ export const mapsResolvers = {
         const formattedPlaces = places
           .map((place) => {
             if ('member' in place) {
-              console.log(place.member.properties.location)
               return {
                 id: place.member.properties.id,
                 name: `${place.member.properties.firstName} ${place.member.properties.lastName}`,
@@ -102,7 +101,7 @@ export const mapsResolvers = {
         return formattedPlaces
       } catch (e) {
         // Handle Error
-        console.log('e', e)
+        throwToSentry('e', e)
       } finally {
         // Close the session
         await session.close()
