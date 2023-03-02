@@ -1,3 +1,9 @@
+#### 5.9.17 (2023-03-02)
+
+##### Bug Fixes
+
+*  remove feature to confirm offering payments and just refetch data from the backend ([a8435577](https://github.com/firstlovecenter/fl-pastoral-care/commit/a8435577c370234bb13d1407261ab598d1e15209))
+
 #### 5.9.16 (2023-03-01)
 
 ##### Bug Fixes
