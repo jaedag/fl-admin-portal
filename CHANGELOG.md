@@ -1,5 +1,15 @@
 #### 5.9.18 (2023-03-02)
 
+##### Documentation Changes
+
+*  update CHANGELOG.md ([a6bfcf37](https://github.com/firstlovecenter/fl-pastoral-care/commit/a6bfcf377a8bdc476f4b9fba7e56db43841d02f9))
+
+##### Bug Fixes
+
+*  add a condition so that payment confirmation only happens in the event of unsuccessful transact ([391da5e4](https://github.com/firstlovecenter/fl-pastoral-care/commit/391da5e4e49b8f3bda89c96728b54b95c74be03f))
+
+#### 5.9.18 (2023-03-02)
+
 ##### Bug Fixes
 
 *  add a condition so that payment confirmation only happens in the event of unsuccessful transact ([391da5e4](https://github.com/firstlovecenter/fl-pastoral-care/commit/391da5e4e49b8f3bda89c96728b54b95c74be03f))
