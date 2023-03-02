@@ -5,6 +5,7 @@ import { alertMsg, throwToSentry } from 'global-utils'
 import { useContext, useState } from 'react'
 import { Button, Spinner } from 'react-bootstrap'
 import { useNavigate } from 'react-router'
+import { CONFIRM_OFFERING_PAYMENT } from '../../bankingQueries'
 
 export type ConfirmPaymentServiceType = {
   id: string
@@ -32,6 +33,7 @@ const ButtonConfirmPayment = (props: ButtonConfirmPaymentProps) => {
   const [sending, setSending] = useState(false)
   const navigate = useNavigate()
   const { fellowshipId, constituencyId, councilId } = useContext(ChurchContext)
+  const [ConfirmOfferingPayment] = useMutation(CONFIRM_OFFERING_PAYMENT)
 
   return (
     <Button
@@ -72,12 +74,34 @@ const ButtonConfirmPayment = (props: ButtonConfirmPaymentProps) => {
           }
 
           if (serviceRecord.transactionStatus === 'pending') {
-            alertMsg(
-              'Your Payment is still pending please follow the manual steps for approval'
-            )
-            navigate('/self-banking/receipt')
-            return
+            const confirmationRes = await ConfirmOfferingPayment({
+              variables: {
+                serviceRecordId: service?.id,
+                stream_name: service?.stream_name,
+              },
+            })
+
+            if (
+              confirmationRes.data.ConfirmOfferingPayment.transactionStatus ===
+              'pending'
+            ) {
+              alertMsg(
+                'Your Payment is still pending please follow the manual steps for approval'
+              )
+              navigate('/self-banking/receipt')
+              return
+            }
+
+            if (
+              confirmationRes.data.ConfirmOfferingPayment.transactionStatus ===
+              'failed'
+            ) {
+              alertMsg('Your Payment Failed 😞. Please try again!')
+              navigate('/self-banking/receipt')
+              return
+            }
           }
+
           if (
             ['failed', 'abandoned'].includes(serviceRecord.transactionStatus)
           ) {
