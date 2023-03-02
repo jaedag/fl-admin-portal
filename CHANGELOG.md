@@ -1,3 +1,10 @@
+#### 5.9.19 (2023-03-02)
+
+##### Bug Fixes
+
+*  failed payments should no longer redirect to the self baking receipt ([517e4078](https://github.com/firstlovecenter/fl-pastoral-care/commit/517e40789c040b47636e47baef2b4c23a36e055c))
+*  add missing useMutation reference that was breaking the front end ([f80b267f](https://github.com/firstlovecenter/fl-pastoral-care/commit/f80b267fb38cc9e00555f629dec5c3a6b23f9b10))
+
 #### 5.9.18 (2023-03-02)
 
 ##### Documentation Changes
