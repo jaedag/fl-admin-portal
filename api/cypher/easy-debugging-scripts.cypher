@@ -13,6 +13,6 @@ MATCH (m:Member {id: $banker})
 MERGE (m)<-[:OFFERING_BANKED_BY]-(r)
 RETURN r.transactionStatus, r. transactionReference;
 
-MATCH (r:ServiceRecord)
-SET r.transactionStatus = 'pending'
-RETURN r
+MATCH (r:ServiceRecord {transactionReference: $reference})
+// SET r.transactionStatus = 'pending'
+RETURN r.transactionReference
