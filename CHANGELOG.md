@@ -1,3 +1,9 @@
+#### 5.9.18 (2023-03-02)
+
+##### Bug Fixes
+
+*  add a condition so that payment confirmation only happens in the event of unsuccessful transact ([391da5e4](https://github.com/firstlovecenter/fl-pastoral-care/commit/391da5e4e49b8f3bda89c96728b54b95c74be03f))
+
 #### 5.9.17 (2023-03-02)
 
 ##### Bug Fixes
