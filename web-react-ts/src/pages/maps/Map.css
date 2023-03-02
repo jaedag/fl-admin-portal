@@ -15,6 +15,10 @@
   height: 90vh;
 }
 
+.dark-loading {
+  background: #14161a;
+}
+
 .offcanvas {
   height: 80vh !important;
 }

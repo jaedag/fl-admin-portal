@@ -1,4 +1,3 @@
-import LoadingScreen from 'components/base-component/LoadingScreen'
 import React, { useCallback, useContext, useMemo, useRef } from 'react'
 import { useLoadScript, GoogleMap, Marker } from '@react-google-maps/api'
 import { useState } from 'react'
@@ -6,8 +5,13 @@ import '../Map.css'
 import { Button, Offcanvas } from 'react-bootstrap'
 import { IoChevronUp } from 'react-icons/io5'
 import { GooglePlaces, MemberPlaces } from '../Places'
-import { LazyQueryExecFunction, OperationVariables } from '@apollo/client'
+import {
+  ApolloError,
+  LazyQueryExecFunction,
+  OperationVariables,
+} from '@apollo/client'
 import { MemberContext } from 'contexts/MemberContext'
+import LoadingScreen from 'components/base-component/LoadingScreen'
 
 type LatLngLiteral = google.maps.LatLngLiteral
 type MapOptions = google.maps.MapOptions
@@ -24,6 +28,8 @@ type MapComponentProps = {
   memberSearch: LazyQueryExecFunction<any, OperationVariables>
   placesSearchByLocation: LazyQueryExecFunction<any, OperationVariables>
   placesSearchByName: LazyQueryExecFunction<any, OperationVariables>
+  loading: boolean
+  error: ApolloError | undefined
 }
 
 const MapComponent = (props: MapComponentProps) => {
@@ -62,7 +68,7 @@ const MapComponent = (props: MapComponentProps) => {
   }
 
   return (
-    <div className="map">
+    <div className={`map`}>
       <GoogleMap
         zoom={20}
         center={center}
@@ -148,6 +154,8 @@ const MapComponent = (props: MapComponentProps) => {
                   longitude: position.lng,
                 },
               })
+
+              console.log(response)
 
               mapRef.current?.panTo(position)
 

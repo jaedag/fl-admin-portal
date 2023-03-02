@@ -15,6 +15,16 @@ interface ComboBoxProps extends FormikComponentProps {
   handleClose: () => void
 }
 
+const getName = (place: any) => {
+  if (place.name) {
+    return place.name
+  }
+  if (place.firstName) {
+    return place.firstName + ' ' + place.lastName
+  }
+  return ''
+}
+
 const MemberPlacesCombobox = (props: ComboBoxProps) => {
   const {
     label,
@@ -91,15 +101,15 @@ const MemberPlacesCombobox = (props: ComboBoxProps) => {
             event.preventDefault()
           }
 
-          handleClose()
-
           const location: google.maps.LatLngLiteral = {
             lat: parseFloat(suggestion.latitude),
             lng: parseFloat(suggestion.longitude),
           }
 
           props.setOffice(location)
-          setSearchString(suggestion.firstName + ' ' + suggestion.lastName)
+          handleClose()
+
+          setSearchString(getName(suggestion))
         }}
         getSuggestionValue={(suggestion: any) => {
           if (suggestion.name) {
@@ -114,18 +124,7 @@ const MemberPlacesCombobox = (props: ComboBoxProps) => {
         }}
         highlightFirstSuggestion={true}
         renderSuggestion={(suggestion: any) => {
-          if (suggestion.name) {
-            return <div className="combobox-control">{suggestion.name}</div>
-          }
-
-          if (suggestion.firstName) {
-            return (
-              <div className="combobox-control">
-                {suggestion.firstName + ' ' + suggestion.lastName}
-              </div>
-            )
-          }
-          return null
+          return <div className="combobox-control">{getName(suggestion)}</div>
         }}
       />
     </div>

@@ -8,16 +8,23 @@ import {
 
 const ViewMaps = () => {
   const [memberSearch] = useLazyQuery(MEMBER_MEMBER_SEARCH)
-  const [placesSearchByLocation] = useLazyQuery(
-    MEMBER_PLACES_SEARCH_BY_LOCATION
-  )
-  const [placesSearchByName] = useLazyQuery(MEMBER_PLACES_SEARCH_BY_NAME)
+  const [
+    placesSearchByLocation,
+    { loading: locationLoading, error: locationError },
+  ] = useLazyQuery(MEMBER_PLACES_SEARCH_BY_LOCATION)
+  const [placesSearchByName, { loading: nameLoading, error: nameError }] =
+    useLazyQuery(MEMBER_PLACES_SEARCH_BY_NAME)
+
+  const loading = locationLoading || nameLoading
+  const error = locationError || nameError
 
   return (
     <MapComponent
       memberSearch={memberSearch}
       placesSearchByLocation={placesSearchByLocation}
       placesSearchByName={placesSearchByName}
+      loading={loading}
+      error={error}
     />
   )
 }

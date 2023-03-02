@@ -94,9 +94,9 @@ const GooglePlacesCombobox = (props: ComboBoxProps) => {
             event.preventDefault()
           }
 
-          handleClose()
           setSearchString(suggestion.description)
           handleSelect(suggestion.description)
+          handleClose()
         }}
         getSuggestionValue={(suggestion: any) => {
           if (suggestion.name) {
