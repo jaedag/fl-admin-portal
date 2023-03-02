@@ -22,7 +22,8 @@ type LibrariesOptions = (
 
 type MapComponentProps = {
   memberSearch: LazyQueryExecFunction<any, OperationVariables>
-  placesSearch: LazyQueryExecFunction<any, OperationVariables>
+  placesSearchByLocation: LazyQueryExecFunction<any, OperationVariables>
+  placesSearchByName: LazyQueryExecFunction<any, OperationVariables>
 }
 
 const MapComponent = (props: MapComponentProps) => {
@@ -91,7 +92,7 @@ const MapComponent = (props: MapComponentProps) => {
             setOffice={(position) => {
               setOffice(position)
 
-              props.placesSearch({
+              props.placesSearchByLocation({
                 variables: {
                   id: currentUser.id,
                   latitude: position.lat,
@@ -110,14 +111,14 @@ const MapComponent = (props: MapComponentProps) => {
             setOffice={async (position) => {
               setOffice(position)
 
-              const response = await props.placesSearch({
+              const response = await props.placesSearchByLocation({
                 variables: {
                   id: currentUser.id,
                   latitude: position.lat,
                   longitude: position.lng,
                 },
               })
-
+              console.log(response)
               mapRef.current?.panTo(position)
             }}
             {...props}
@@ -140,7 +141,7 @@ const MapComponent = (props: MapComponentProps) => {
             onClick={async () => {
               const position = { lat: 5.655949, lng: -0.167033 }
 
-              const response = await props.placesSearch({
+              const response = await props.placesSearchByLocation({
                 variables: {
                   id: currentUser.id,
                   latitude: position.lat,

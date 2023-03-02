@@ -11,7 +11,8 @@ type MemberPlacesProps = {
   handleClose: () => void
   setOffice: (position: google.maps.LatLngLiteral) => void
   memberSearch: LazyQueryExecFunction<any, OperationVariables>
-  fellowshipSearch?: LazyQueryExecFunction<any, OperationVariables>
+  placesSearchByLocation: LazyQueryExecFunction<any, OperationVariables>
+  placesSearchByName: LazyQueryExecFunction<any, OperationVariables>
 }
 
 export const GooglePlaces = ({ setOffice, handleClose }: GooglePlacesProps) => {
@@ -29,7 +30,8 @@ export const GooglePlaces = ({ setOffice, handleClose }: GooglePlacesProps) => {
 export const MemberPlaces = ({
   setOffice,
   memberSearch,
-  fellowshipSearch,
+  placesSearchByLocation,
+  placesSearchByName,
   handleClose,
 }: MemberPlacesProps) => {
   return (
@@ -39,7 +41,7 @@ export const MemberPlaces = ({
       initialValue=""
       setOffice={setOffice}
       memberSearch={memberSearch}
-      fellowshipSearch={fellowshipSearch}
+      placesSearchByName={placesSearchByName}
       handleClose={handleClose}
     />
   )

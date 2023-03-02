@@ -10,7 +10,7 @@ extend type Member {
   fellowshipSearch(key: String!, limit: Int! = 5): [Fellowship!]!
     @cypher(
       statement: """
-      MATCH (this)-[:LEADS|HAS|DOES_ARRIVALS_FOR|IS_ADMIN_FOR*1..7]->(fellowship:Fellowship)
+      MATCH (this)-[:LEADS|HAS|DOES_ARRIVALS_FOR|IS_ADMIN_FOR*1..7]->(fellowship:Active:Fellowship)
       WHERE toLower(fellowship.name) CONTAINS toLower($key)
       RETURN DISTINCT fellowship LIMIT $limit
       """

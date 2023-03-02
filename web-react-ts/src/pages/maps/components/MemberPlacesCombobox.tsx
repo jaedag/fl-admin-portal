@@ -11,12 +11,19 @@ interface ComboBoxProps extends FormikComponentProps {
   initialValue: string
   setOffice: (position: google.maps.LatLngLiteral) => void
   memberSearch: LazyQueryExecFunction<any, OperationVariables>
-  fellowshipSearch?: LazyQueryExecFunction<any, OperationVariables>
+  placesSearchByName: LazyQueryExecFunction<any, OperationVariables>
   handleClose: () => void
 }
 
 const MemberPlacesCombobox = (props: ComboBoxProps) => {
-  const { label, name, placeholder, initialValue, handleClose } = props
+  const {
+    label,
+    name,
+    placeholder,
+    initialValue,
+    handleClose,
+    placesSearchByName,
+  } = props
   const { currentUser } = useContext(MemberContext)
 
   const [searchString, setSearchString] = useState(initialValue ?? '')
@@ -26,27 +33,18 @@ const MemberPlacesCombobox = (props: ComboBoxProps) => {
   // They should be generated before the first keystroke.
 
   const searchFunctions = async () => {
-    const memberResults = await props.memberSearch({
+    const placesResults = await placesSearchByName({
       variables: {
         id: currentUser.id,
         key: searchString.trim(),
       },
     })
 
-    if (memberResults.data.members[0].memberSearch.length === 0) {
+    if (placesResults.data.members[0].placesSearchByName.length === 0) {
       return
     }
 
-    setSuggestions(memberResults.data.members[0].memberSearch)
-
-    if (props.fellowshipSearch) {
-      props.fellowshipSearch({
-        variables: {
-          id: currentUser.id,
-          key: searchString.trim(),
-        },
-      })
-    }
+    setSuggestions(placesResults.data.members[0].placesSearchByName)
   }
 
   useEffect(() => {
@@ -94,10 +92,12 @@ const MemberPlacesCombobox = (props: ComboBoxProps) => {
           }
 
           handleClose()
+
           const location: google.maps.LatLngLiteral = {
-            lat: parseFloat(suggestion.location.latitude),
-            lng: parseFloat(suggestion.location.longitude),
+            lat: parseFloat(suggestion.latitude),
+            lng: parseFloat(suggestion.longitude),
           }
+
           props.setOffice(location)
           setSearchString(suggestion.firstName + ' ' + suggestion.lastName)
         }}

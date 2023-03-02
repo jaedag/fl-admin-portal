@@ -143,7 +143,7 @@ CREATE (member:Active:Member:IDL {whatsappNumber:$whatsappNumber})
       	member.middleName = $middleName,
       	member.lastName = $lastName,
       	member.email = $email,
-      	member.phoneNumber = $phoneNumber,
+      	member.phoneNumber = $phoneNumber,   console.log(place.member.properties)
         member.location = $location,
       	member.pictureUrl = $pictureUrl,
         member.registrationDate = datetime(),
