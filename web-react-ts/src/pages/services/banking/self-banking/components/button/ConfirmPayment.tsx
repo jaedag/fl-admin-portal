@@ -97,7 +97,7 @@ const ButtonConfirmPayment = (props: ButtonConfirmPaymentProps) => {
               'failed'
             ) {
               alertMsg('Your Payment Failed 😞. Please try again!')
-              navigate('/self-banking/receipt')
+
               return
             }
           }
@@ -106,7 +106,7 @@ const ButtonConfirmPayment = (props: ButtonConfirmPaymentProps) => {
             ['failed', 'abandoned'].includes(serviceRecord.transactionStatus)
           ) {
             alertMsg('Your Payment Failed 😞. Please try again!')
-            navigate('/self-banking/receipt')
+
             return
           }
 
