@@ -1,15 +1,16 @@
 import { LazyQueryExecFunction, OperationVariables } from '@apollo/client'
 import GooglePlacesCombobox from './components/GooglePlacesCombobox'
+import { PlaceType } from './components/MapComponent'
 import MemberPlacesCombobox from './components/MemberPlacesCombobox'
 
 type GooglePlacesProps = {
-  setOffice: (position: google.maps.LatLngLiteral) => void
+  setOffice: (position: PlaceType) => void
   handleClose: () => void
 }
 
 type MemberPlacesProps = {
   handleClose: () => void
-  setOffice: (position: google.maps.LatLngLiteral) => void
+  setOffice: (position: PlaceType) => void
   memberSearch: LazyQueryExecFunction<any, OperationVariables>
   placesSearchByLocation: LazyQueryExecFunction<any, OperationVariables>
   placesSearchByName: LazyQueryExecFunction<any, OperationVariables>

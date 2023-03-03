@@ -32,6 +32,15 @@ type MapComponentProps = {
   error: ApolloError | undefined
 }
 
+export type PlaceType = {
+  id: string
+  name: string
+  typename: 'GooglePlace' | 'Member' | 'Fellowship' | 'UniversityVenue'
+  picture?: string
+  description?: string
+  position: LatLngLiteral
+}
+
 const MapComponent = (props: MapComponentProps) => {
   const [libraries] = useState<LibrariesOptions>(['places'])
   const { isLoaded } = useLoadScript({
@@ -40,7 +49,7 @@ const MapComponent = (props: MapComponentProps) => {
   })
 
   const [show, setShow] = useState(false)
-  const [office, setOffice] = useState<LatLngLiteral>()
+  const [office, setOffice] = useState<PlaceType>()
 
   const handleClose = () => setShow(false)
   const handleShow = () => setShow(true)
@@ -78,7 +87,7 @@ const MapComponent = (props: MapComponentProps) => {
       >
         {office && (
           <>
-            <Marker position={office} />
+            <Marker position={office.position} />
           </>
         )}
       </GoogleMap>
@@ -101,12 +110,12 @@ const MapComponent = (props: MapComponentProps) => {
               props.placesSearchByLocation({
                 variables: {
                   id: currentUser.id,
-                  latitude: position.lat,
-                  longitude: position.lng,
+                  latitude: position.position.lat,
+                  longitude: position.position.lng,
                 },
               })
 
-              mapRef.current?.panTo(position)
+              mapRef.current?.panTo(position.position)
             }}
             {...props}
           />
@@ -120,12 +129,12 @@ const MapComponent = (props: MapComponentProps) => {
               const response = await props.placesSearchByLocation({
                 variables: {
                   id: currentUser.id,
-                  latitude: position.lat,
-                  longitude: position.lng,
+                  latitude: position.position.lat,
+                  longitude: position.position.lng,
                 },
               })
               console.log(response)
-              mapRef.current?.panTo(position)
+              mapRef.current?.panTo(position.position)
             }}
             {...props}
           />

@@ -7,10 +7,11 @@ import usePlacesAutocomplete, {
   getGeocode,
   getLatLng,
 } from 'use-places-autocomplete'
+import { PlaceType } from './MapComponent'
 
 interface ComboBoxProps extends FormikComponentProps {
   initialValue: string
-  setOffice: (position: google.maps.LatLngLiteral) => void
+  setOffice: (position: PlaceType) => void
   handleClose: () => void
 }
 
@@ -37,8 +38,13 @@ const GooglePlacesCombobox = (props: ComboBoxProps) => {
     clearSuggestions()
 
     const results = await getGeocode({ address: val })
-    const { lat, lng } = await getLatLng(results[0])
-    props.setOffice({ lat, lng })
+    const { lat, lng } = getLatLng(results[0])
+    props.setOffice({
+      id: '',
+      name: '',
+      typename: 'GooglePlace',
+      position: { lat, lng },
+    })
   }
 
   return (

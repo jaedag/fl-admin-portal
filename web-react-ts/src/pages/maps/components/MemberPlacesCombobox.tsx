@@ -6,10 +6,11 @@ import 'components/formik/react-autosuggest.css'
 import { LazyQueryExecFunction, OperationVariables } from '@apollo/client'
 import { MemberContext } from 'contexts/MemberContext'
 import { DEBOUNCE_TIMER } from 'global-utils'
+import { PlaceType } from './MapComponent'
 
 interface ComboBoxProps extends FormikComponentProps {
   initialValue: string
-  setOffice: (position: google.maps.LatLngLiteral) => void
+  setOffice: (position: PlaceType) => void
   memberSearch: LazyQueryExecFunction<any, OperationVariables>
   placesSearchByName: LazyQueryExecFunction<any, OperationVariables>
   handleClose: () => void
@@ -106,7 +107,14 @@ const MemberPlacesCombobox = (props: ComboBoxProps) => {
             lng: parseFloat(suggestion.longitude),
           }
 
-          props.setOffice(location)
+          props.setOffice({
+            id: suggestion.id,
+            name: suggestion.name,
+            typename: suggestion.typename,
+            description: suggestion.description,
+            picture: suggestion.pictureUrl,
+            position: location,
+          })
           handleClose()
 
           setSearchString(getName(suggestion))
