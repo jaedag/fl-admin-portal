@@ -1,10 +1,7 @@
 export const setVehicleRecordTransactionId = `
 MATCH (record:VehicleRecord {id: $vehicleRecordId})<-[:INCLUDES_RECORD]-(bussing:BussingRecord)<-[:HAS_BUSSING]-(:ServiceLog)<-[:HAS_HISTORY]-(bacenta:Bacenta)
 MATCH (bussing)-[:BUSSED_ON]->(date:TimeGraph)
-MATCH (transaction: LastPaySwitchTransactionId)
-SET record.transactionId = transaction.id + 1,
-transaction.id = record.transactionId,
-record.transactionTime = datetime(),
+SET record.transactionTime = datetime(),
 record.transactionStatus = 'pending'
 
 RETURN record, bacenta.name AS bacentaName, date.date AS date
@@ -73,7 +70,7 @@ RETURN bussing.mobilisationPicture IS NOT NULL AS status
 export const checkArrivalTimeFromVehicle = `
 MATCH (record:VehicleRecord {id: $vehicleRecordId})<-[:INCLUDES_RECORD]-(bussing:BussingRecord)<-[:HAS_BUSSING]-(:ServiceLog)<-[:HAS_HISTORY]-(bacenta:Bacenta)<-[:HAS]-(:Constituency)<-[:HAS]-(:Council)<-[:HAS]-(stream:Stream)
 MATCH (bussing)-[:INCLUDES_RECORD]->(records:VehicleRecord)
-RETURN toLower(stream.name) AS streamName, stream.arrivalEndTime AS arrivalEndTime, bacenta.id AS bacentaId, COUNT(DISTINCT records) AS numberOfVehicle, SUM(records.attendance) AS totalAttendance
+RETURN toLower(stream.name) AS streamName, stream.arrivalEndTime AS arrivalEndTime, bacenta.id AS bacentaId, COUNT(DISTINCT records) AS numberOfVehicles, SUM(records.attendance) AS totalAttendance
 `
 
 export const setSwellDate = `
