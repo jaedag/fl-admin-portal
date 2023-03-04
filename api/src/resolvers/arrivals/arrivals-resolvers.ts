@@ -566,7 +566,10 @@ export const arrivalsMutation = {
         session.run(noVehicleTopUp, { ...args, vehicleTopUp }),
         sendBulkSMS(
           [response.leaderPhoneNumber],
-          joinMessageStrings([texts.arrivalsSMS.no_bussing_cost])
+          joinMessageStrings([
+            texts.arrivalsSMS.no_bussing_cost,
+            response.attendance.toString(),
+          ])
         ),
       ])
       vehicleRecord = rearrangeCypherObject(attendanceRes[0])

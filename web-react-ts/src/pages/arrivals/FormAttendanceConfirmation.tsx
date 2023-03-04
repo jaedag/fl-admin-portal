@@ -149,7 +149,7 @@ const FormAttendanceConfirmation = () => {
     }
     navigate(`/bacenta/vehicle-details`)
   }
-  console.log(bacenta)
+
   return (
     <ApolloWrapper data={data} loading={loading} error={error}>
       <>
