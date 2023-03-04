@@ -1,3 +1,10 @@
+#### 5.9.20 (2023-03-04)
+
+##### Bug Fixes
+
+*  error in returning bacentas below 8, error in bacentas that arrived count ([e2c824b3](https://github.com/firstlovecenter/fl-pastoral-care/commit/e2c824b3a50ac7d1432a03f3a54314f8a5204444))
+*  fix issue with anagkazo treasurers were seeing services from last year ([c9ec18a8](https://github.com/firstlovecenter/fl-pastoral-care/commit/c9ec18a8cd266f6d94e0dc064113a238491f2ffb))
+
 #### 5.9.19 (2023-03-02)
 
 ##### Bug Fixes
