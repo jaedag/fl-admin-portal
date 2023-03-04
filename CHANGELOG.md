@@ -1,3 +1,12 @@
+#### 5.9.21 (2023-03-04)
+
+##### Bug Fixes
+
+*  add private car option for second vehicle going forward ([92ca3853](https://github.com/firstlovecenter/fl-pastoral-care/commit/92ca3853ea8831ca3e463150814fa029fc5eac35))
+*  remove condition which would have meant that all busses have to be above 8 ([7f918e3e](https://github.com/firstlovecenter/fl-pastoral-care/commit/7f918e3e09cebe0819bec778f34876a3c37ce2d2))
+*  include a condition so that second bus exploit cant be used ([5716af3e](https://github.com/firstlovecenter/fl-pastoral-care/commit/5716af3e4bd7ea7ef44c0a1a0c00ffbda9abba1f))
+*  show zero instead of - ([1da739fb](https://github.com/firstlovecenter/fl-pastoral-care/commit/1da739fb3bb00e7991547df1a2115f47731c78d8))
+
 #### 5.9.20 (2023-03-04)
 
 ##### Bug Fixes
