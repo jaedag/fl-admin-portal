@@ -387,7 +387,7 @@ export const arrivalsMutation = {
       adjustedArgs.attendance = 0
     } else if (
       numberOfVehicles.low >= 2 &&
-      totalAttendance + args.attendance < numberOfVehicles.low * 20 &&
+      totalAttendance < 20 &&
       streamName === 'anagkazo encounter'
     ) {
       // Two or more vehicles but the combined attendance is less than the expected minimum
@@ -396,10 +396,7 @@ export const arrivalsMutation = {
 
     if (args.attendance < 8 && numberOfVehicles.low < 2) {
       adjustedArgs.attendance = 0
-    } else if (
-      numberOfVehicles.low >= 2 &&
-      totalAttendance + args.attendance < numberOfVehicles.low * 8
-    ) {
+    } else if (numberOfVehicles.low >= 2 && totalAttendance < 8) {
       // Two or more vehicles but the combined attendance is less than the expected minimum
       adjustedArgs.attendance = 0
     }
