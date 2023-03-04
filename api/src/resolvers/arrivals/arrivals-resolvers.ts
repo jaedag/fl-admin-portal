@@ -363,8 +363,13 @@ export const arrivalsMutation = {
       await session.run(checkArrivalTimeFromVehicle, args)
     )
 
-    const { arrivalEndTime, bacentaId, streamName, numberOfVehicles } =
-      recordResponse
+    const {
+      arrivalEndTime,
+      bacentaId,
+      streamName,
+      numberOfVehicles,
+      totalAttendance,
+    } = recordResponse
 
     const today = new Date()
 
@@ -380,9 +385,22 @@ export const arrivalsMutation = {
       streamName === 'anagkazo encounter'
     ) {
       adjustedArgs.attendance = 0
+    } else if (
+      numberOfVehicles.low >= 2 &&
+      totalAttendance + args.attendance < numberOfVehicles.low * 20 &&
+      streamName === 'anagkazo encounter'
+    ) {
+      // Two or more vehicles but the combined attendance is less than the expected minimum
+      adjustedArgs.attendance = 0
     }
 
     if (args.attendance < 8 && numberOfVehicles.low < 2) {
+      adjustedArgs.attendance = 0
+    } else if (
+      numberOfVehicles.low >= 2 &&
+      totalAttendance + args.attendance < numberOfVehicles.low * 8
+    ) {
+      // Two or more vehicles but the combined attendance is less than the expected minimum
       adjustedArgs.attendance = 0
     }
 

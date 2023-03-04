@@ -73,7 +73,7 @@ RETURN bussing.mobilisationPicture IS NOT NULL AS status
 export const checkArrivalTimeFromVehicle = `
 MATCH (record:VehicleRecord {id: $vehicleRecordId})<-[:INCLUDES_RECORD]-(bussing:BussingRecord)<-[:HAS_BUSSING]-(:ServiceLog)<-[:HAS_HISTORY]-(bacenta:Bacenta)<-[:HAS]-(:Constituency)<-[:HAS]-(:Council)<-[:HAS]-(stream:Stream)
 MATCH (bussing)-[:INCLUDES_RECORD]->(records:VehicleRecord)
-RETURN toLower(stream.name) AS streamName, stream.arrivalEndTime AS arrivalEndTime, bacenta.id AS bacentaId, COUNT(DISTINCT records) AS numberOfVehicles 
+RETURN toLower(stream.name) AS streamName, stream.arrivalEndTime AS arrivalEndTime, bacenta.id AS bacentaId, COUNT(DISTINCT records) AS numberOfVehicle, SUM(records.attendance) AS totalAttendance
 `
 
 export const setSwellDate = `
