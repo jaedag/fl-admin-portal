@@ -402,9 +402,9 @@ export const arrivalsMutation = {
     }
 
     if (adjustedArgs.attendance === 0) {
-      console.log('totalAttendance', totalAttendance)
-      console.log('numberOfVehicles', numberOfVehicles)
-      console.log('attendance', args.attendance)
+      console.error('totalAttendance', totalAttendance)
+      console.error('numberOfVehicles', numberOfVehicles)
+      console.error('attendance', args.attendance)
       throwToSentry(`totalAttendance ${totalAttendance}`, totalAttendance)
       throwToSentry(`numberOfVehicles ${numberOfVehicles}`, numberOfVehicles)
       throwToSentry(`attendance ${args.attendance}`, args.attendance)
