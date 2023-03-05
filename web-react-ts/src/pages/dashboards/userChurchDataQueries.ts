@@ -453,7 +453,6 @@ export const SERVANTS_HUB_LEADER = gql`
       leadsHub {
         id
         name
-        stream_name
       }
     }
   }

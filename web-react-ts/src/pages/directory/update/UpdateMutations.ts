@@ -442,15 +442,14 @@ export const UPDATE_BACENTA_MUTATION = gql`
 `
 
 export const UPDATE_SONTA_MUTATION = gql`
-  mutation UpdateSonta($sontaId: ID!, $name: String!) {
-    UpdateSontaDetails(sontaId: $sontaId, sontaName: $name) {
+  mutation UpdateSonta($sontaId: ID!, $sontaName: String!, $hubId: ID!) {
+    UpdateSontaDetails(
+      sontaId: $sontaId
+      sontaName: $sontaName
+      hubId: $hubId
+    ) {
       id
       name
-      constituency {
-        id
-        name
-      }
-
       leader {
         id
         firstName
