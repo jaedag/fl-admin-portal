@@ -39,9 +39,7 @@ extend type GatheringService {
   target: Int
     @cypher(
       statement: """
-      MATCH (this)
       MATCH (this)-[:CURRENT_HISTORY]->(:ServiceLog)-[:HAS_TARGET]->(target:Target)
-
       RETURN target.target ORDER BY target.date DESC LIMIT 1
       """
     )
@@ -65,9 +63,7 @@ extend type Stream {
   target: Int
     @cypher(
       statement: """
-      MATCH (this)
       MATCH (this)-[:CURRENT_HISTORY]->(:ServiceLog)-[:HAS_TARGET]->(target:Target)
-
       RETURN target.target ORDER BY target.date DESC LIMIT 1
       """
     )
@@ -91,9 +87,7 @@ extend type Council {
   target: Int
     @cypher(
       statement: """
-      MATCH (this)
       MATCH (this)-[:CURRENT_HISTORY]->(log:ServiceLog)-[:HAS_TARGET]->(target)
-
       RETURN target.target ORDER BY target.date DESC LIMIT 1
       """
     )
@@ -143,9 +137,7 @@ extend type Bacenta {
   target: Int
     @cypher(
       statement: """
-      MATCH (this)
       MATCH (this)-[:CURRENT_HISTORY]->(log:ServiceLog)-[:HAS_TARGET]->(target)
-
       RETURN target.target ORDER BY target.date DESC LIMIT 1
       """
     )
