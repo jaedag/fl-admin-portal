@@ -1,3 +1,10 @@
+#### 5.9.22 (2023-03-05)
+
+##### Refactors
+
+*  refactor arrivals resolvers into slightly more readable code ([3ebf3ed2](https://github.com/firstlovecenter/fl-pastoral-care/commit/3ebf3ed2625652d8b4927e1297c907a782d9baa6))
+*  improve wording when there is no cost to the church ([7fd22f66](https://github.com/firstlovecenter/fl-pastoral-care/commit/7fd22f6620a460cde06c56016b8556de99d809b4))
+
 #### 5.9.21 (2023-03-04)
 
 ##### Bug Fixes
