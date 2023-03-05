@@ -350,7 +350,7 @@ export const arrivalsMutation = {
       attendance: number
       vehicleCost: number
       personalContribution: number
-      vehicle: string
+      vehicle: 'Urvan' | 'Sprinter' | 'Car'
       picture: string
       outbound: boolean
     },
@@ -369,6 +369,12 @@ export const arrivalsMutation = {
       streamName,
       numberOfVehicles,
       totalAttendance,
+    }: {
+      arrivalEndTime: string
+      bacentaId: string
+      streamName: string
+      numberOfVehicles: neonumber
+      totalAttendance: number
     } = recordResponse
 
     const today = new Date()
@@ -379,26 +385,20 @@ export const arrivalsMutation = {
 
     const adjustedArgs = args
 
-    if (
-      numberOfVehicles.low < 2 &&
-      args.attendance < 20 &&
-      streamName === 'anagkazo encounter'
-    ) {
-      adjustedArgs.attendance = 0
-    } else if (
-      numberOfVehicles.low >= 2 &&
-      totalAttendance < 20 &&
-      streamName === 'anagkazo encounter'
-    ) {
-      // Two or more vehicles but the combined attendance is less than the expected minimum
-      adjustedArgs.attendance = 0
-    }
-
-    if (args.attendance < 8 && numberOfVehicles.low < 2) {
-      adjustedArgs.attendance = 0
-    } else if (numberOfVehicles.low >= 2 && totalAttendance < 8) {
-      // Two or more vehicles but the combined attendance is less than the expected minimum
-      adjustedArgs.attendance = 0
+    if (streamName === 'anagkazo encounter') {
+      if (args.attendance < 20 && numberOfVehicles.low < 2) {
+        adjustedArgs.attendance = 0
+      } else if (numberOfVehicles.low >= 2 && totalAttendance < 20) {
+        // Two or more vehicles but the combined attendance is less than the expected minimum
+        adjustedArgs.attendance = 0
+      }
+    } else if (args.vehicle !== 'Car') {
+      if (args.attendance < 8 && numberOfVehicles.low < 2) {
+        adjustedArgs.attendance = 0
+      } else if (numberOfVehicles.low >= 2 && totalAttendance < 8) {
+        // Two or more vehicles but the combined attendance is less than the expected minimum
+        adjustedArgs.attendance = 0
+      }
     }
 
     const response = rearrangeCypherObject(
