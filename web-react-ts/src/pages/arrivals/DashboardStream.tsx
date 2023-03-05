@@ -102,7 +102,7 @@ const StreamDashboard = () => {
       <ApolloWrapper data={data} loading={loading} error={error}>
         <Container>
           <HeadingPrimary loading={loading}>
-            {stream?.name} Stream Arrivals Summary
+            {stream?.name} Stream Arrivals Real Time Dashboard
           </HeadingPrimary>
           <HeadingSecondary loading={loading}>
             Arrivals Admin: {stream?.arrivalsAdmin?.fullName}

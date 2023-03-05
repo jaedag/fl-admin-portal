@@ -82,7 +82,7 @@ const CouncilDashboard = () => {
       <ApolloWrapper data={data} loading={loading} error={error}>
         <Container>
           <HeadingPrimary loading={loading}>
-            {council?.name} Council Arrivals Summary
+            {council?.name} Council Arrivals Real Time Dashboard
           </HeadingPrimary>
           <HeadingSecondary>{`Arrivals Rep: ${
             council?.arrivalsAdmin?.fullName ?? 'None'

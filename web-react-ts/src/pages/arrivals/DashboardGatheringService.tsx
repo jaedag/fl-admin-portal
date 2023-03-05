@@ -104,7 +104,8 @@ const GatheringServiceDashboard = () => {
       <ApolloWrapper data={data} loading={loading} error={error}>
         <Container>
           <HeadingPrimary loading={loading}>
-            {gatheringService?.name} Gathering Service Arrivals Summary
+            {gatheringService?.name} Gathering Service Arrivals Real Time
+            Dashboard
           </HeadingPrimary>
           <HeadingSecondary loading={loading}>
             Arrivals Admin: {gatheringService?.arrivalsAdmin?.fullName}

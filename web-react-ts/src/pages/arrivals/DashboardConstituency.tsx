@@ -81,7 +81,7 @@ const ConstituencyDashboard = () => {
       <ApolloWrapper data={data} loading={loading} error={error}>
         <Container>
           <HeadingPrimary loading={loading}>
-            {constituency?.name} Constituency Arrivals Summary
+            {constituency?.name} Constituency Arrivals Real Time Dashboard
           </HeadingPrimary>
           <HeadingSecondary>{`Arrivals Rep: ${
             constituency?.arrivalsAdmin?.fullName ?? 'None'
