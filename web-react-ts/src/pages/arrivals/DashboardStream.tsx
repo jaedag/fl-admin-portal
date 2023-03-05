@@ -5,7 +5,7 @@ import * as Yup from 'yup'
 import { useNavigate } from 'react-router'
 import { MAKE_STREAMARRIVALS_ADMIN } from './arrivalsMutation'
 import { STREAM_ARRIVALS_DASHBOARD } from './arrivalsQueries'
-import { throwToSentry } from 'global-utils'
+import { SHORT_POLL_INTERVAL, throwToSentry } from 'global-utils'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { Col, Container, Row } from 'react-bootstrap'
 import Popup from 'components/Popup/Popup'
@@ -38,7 +38,7 @@ const StreamDashboard = () => {
     STREAM_ARRIVALS_DASHBOARD,
     {
       variables: { id: currentUser?.currentChurch.id },
-      pollInterval: 2000,
+      pollInterval: SHORT_POLL_INTERVAL,
     }
   )
   const [MakeStreamArrivalsAdmin] = useMutation(MAKE_STREAMARRIVALS_ADMIN)

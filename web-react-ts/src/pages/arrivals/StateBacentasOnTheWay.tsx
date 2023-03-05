@@ -4,6 +4,7 @@ import MemberDisplayCard from 'components/card/MemberDisplayCard'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import HeadingSecondary from 'components/HeadingSecondary'
 import { ChurchContext } from 'contexts/ChurchContext'
+import { LONG_POLL_INTERVAL } from 'global-utils'
 import useChurchLevel from 'hooks/useChurchLevel'
 import PlaceholderDefaulterList from 'pages/services/defaulters/PlaceholderDefaulterList'
 import React, { useContext } from 'react'
@@ -25,24 +26,24 @@ const BacentasOnTheWay = () => {
   const [constituencyOnTheWay, { refetch: constituencyRefetch }] = useLazyQuery(
     CONSTITUENCY_BACENTAS_ON_THE_WAY,
     {
-      pollInterval: 2000,
+      pollInterval: LONG_POLL_INTERVAL,
     }
   )
   const [councilOnTheWay, { refetch: councilRefetch }] = useLazyQuery(
     COUNCIL_BACENTAS_ON_THE_WAY,
     {
-      pollInterval: 2000,
+      pollInterval: LONG_POLL_INTERVAL,
     }
   )
   const [streamOnTheWay, { refetch: streamRefetch }] = useLazyQuery(
     STREAM_BACENTAS_ON_THE_WAY,
     {
-      pollInterval: 2000,
+      pollInterval: LONG_POLL_INTERVAL,
     }
   )
   const [gatheringServiceOnTheWay, { refetch: gatheringServiceRefetch }] =
     useLazyQuery(GATHERINGSERVICE_BACENTAS_ON_THE_WAY, {
-      pollInterval: 2000,
+      pollInterval: LONG_POLL_INTERVAL,
     })
 
   const data: ArrivalsUseChurchType = useChurchLevel({

@@ -6,6 +6,7 @@ import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import HeadingSecondary from 'components/HeadingSecondary'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { Form, Formik, FormikHelpers } from 'formik'
+import { LONG_POLL_INTERVAL, SHORT_POLL_INTERVAL } from 'global-utils'
 import useChurchLevel from 'hooks/useChurchLevel'
 import PlaceholderDefaulterList from 'pages/services/defaulters/PlaceholderDefaulterList'
 import { useContext, useEffect, useState } from 'react'
@@ -30,19 +31,19 @@ const StateBacentasToCount = () => {
   const [constituencyOnTheWay, { refetch: constituencyRefetch }] = useLazyQuery(
     CONSTITUENCY_BACENTAS_TO_COUNT,
     {
-      pollInterval: 2000,
+      pollInterval: SHORT_POLL_INTERVAL,
     }
   )
   const [councilOnTheWay, { refetch: councilRefetch }] = useLazyQuery(
     COUNCIL_BACENTAS_TO_COUNT,
     {
-      pollInterval: 2000,
+      pollInterval: SHORT_POLL_INTERVAL,
     }
   )
   const [streamOnTheWay, { refetch: streamRefetch }] = useLazyQuery(
     STREAM_BACENTAS_TO_COUNT,
     {
-      pollInterval: 2000,
+      pollInterval: SHORT_POLL_INTERVAL,
     }
   )
   const [gatheringServiceOnTheWay, { refetch: gatheringServiceRefetch }] =

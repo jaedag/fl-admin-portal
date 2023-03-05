@@ -1,7 +1,7 @@
 import { useLazyQuery } from '@apollo/client'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import HeadingSecondary from 'components/HeadingSecondary'
-import { plural } from 'global-utils'
+import { LONG_POLL_INTERVAL, plural } from 'global-utils'
 import React, { useContext } from 'react'
 import { Col, Container, Row } from 'react-bootstrap'
 import {
@@ -25,23 +25,23 @@ const DefaultersDashboard = () => {
   const { currentUser } = useContext(MemberContext)
   const [constituencyDefaulters, { refetch: constituencyRefetch }] =
     useLazyQuery(CONSTITUENCY_DEFAULTERS, {
-      pollInterval: 2000,
+      pollInterval: LONG_POLL_INTERVAL,
     })
   const [councilDefaulters, { refetch: councilRefetch }] = useLazyQuery(
     COUNCIL_DEFAULTERS,
     {
-      pollInterval: 2000,
+      pollInterval: LONG_POLL_INTERVAL,
     }
   )
   const [streamDefaulters, { refetch: streamRefetch }] = useLazyQuery(
     STREAM_DEFAULTERS,
     {
-      pollInterval: 2000,
+      pollInterval: LONG_POLL_INTERVAL,
     }
   )
   const [gatheringServiceDefaulters, { refetch: gatheringServiceRefetch }] =
     useLazyQuery(GATHERINGSERVICE_DEFAULTERS, {
-      pollInterval: 2000,
+      pollInterval: LONG_POLL_INTERVAL,
     })
 
   let subChurch: ChurchLevel | string = ''
