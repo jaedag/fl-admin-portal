@@ -1,3 +1,9 @@
+#### 5.9.24 (2023-03-05)
+
+##### Bug Fixes
+
+*  replace hardcoded poll intervals with global constants ([679d4753](https://github.com/firstlovecenter/fl-pastoral-care/commit/679d475308db2f1d819565c921686e1617c01e25))
+
 #### 5.9.23 (2023-03-05)
 
 ##### New Features
