@@ -1,3 +1,20 @@
+#### 5.9.23 (2023-03-05)
+
+##### New Features
+
+*  add poll interval on arrivals state screens ([425d08cd](https://github.com/firstlovecenter/fl-pastoral-care/commit/425d08cdc8b0a4c180ed6627850e280ef465be37))
+*  implement polling on arrivals screens every 2 seconds ([6452a704](https://github.com/firstlovecenter/fl-pastoral-care/commit/6452a704dd42d28970cb405103ee264dd99aa3c1))
+
+##### Bug Fixes
+
+*  fixed condition where a bacenta that has submitted two vehicles was being zeroed when the vehicles were submitted both before counting ([4bc5fff1](https://github.com/firstlovecenter/fl-pastoral-care/commit/4bc5fff13bab1a06a415c14ac03f67f05174754a))
+*  add condition for handling null values in parseNeoNumber ([ce5521ba](https://github.com/firstlovecenter/fl-pastoral-care/commit/ce5521ba1b41b858f24ff1b7b965b9889ef55740))
+*  set as arrivals real time dashboard ([c91370fd](https://github.com/firstlovecenter/fl-pastoral-care/commit/c91370fd972b8a60df2cf4d827e4637b4cf82b06))
+*  minor improvements to parseNeoNumber function ([4cd6c37d](https://github.com/firstlovecenter/fl-pastoral-care/commit/4cd6c37d6c43ac33406a36e7af2d1d89dacc15aa))
+*  implement parseNeoNumber function ([714aaced](https://github.com/firstlovecenter/fl-pastoral-care/commit/714aacedcb90f74454b6056ee5836d6415d5aa5b))
+*  log attendance for zeroed attenndance ([adf9c813](https://github.com/firstlovecenter/fl-pastoral-care/commit/adf9c813473130f20b3cd2874fb20852caa22c74))
+*  log attendance for zeroed attenndance ([616bb296](https://github.com/firstlovecenter/fl-pastoral-care/commit/616bb29676001deaece2ee66021e7cee21297edf))
+
 #### 5.9.22 (2023-03-05)
 
 ##### Refactors
