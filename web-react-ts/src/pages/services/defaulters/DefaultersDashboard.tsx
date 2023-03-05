@@ -24,13 +24,25 @@ import PullToRefresh from 'react-simple-pull-to-refresh'
 const DefaultersDashboard = () => {
   const { currentUser } = useContext(MemberContext)
   const [constituencyDefaulters, { refetch: constituencyRefetch }] =
-    useLazyQuery(CONSTITUENCY_DEFAULTERS)
-  const [councilDefaulters, { refetch: councilRefetch }] =
-    useLazyQuery(COUNCIL_DEFAULTERS)
-  const [streamDefaulters, { refetch: streamRefetch }] =
-    useLazyQuery(STREAM_DEFAULTERS)
+    useLazyQuery(CONSTITUENCY_DEFAULTERS, {
+      pollInterval: 2000,
+    })
+  const [councilDefaulters, { refetch: councilRefetch }] = useLazyQuery(
+    COUNCIL_DEFAULTERS,
+    {
+      pollInterval: 2000,
+    }
+  )
+  const [streamDefaulters, { refetch: streamRefetch }] = useLazyQuery(
+    STREAM_DEFAULTERS,
+    {
+      pollInterval: 2000,
+    }
+  )
   const [gatheringServiceDefaulters, { refetch: gatheringServiceRefetch }] =
-    useLazyQuery(GATHERINGSERVICE_DEFAULTERS)
+    useLazyQuery(GATHERINGSERVICE_DEFAULTERS, {
+      pollInterval: 2000,
+    })
 
   let subChurch: ChurchLevel | string = ''
 

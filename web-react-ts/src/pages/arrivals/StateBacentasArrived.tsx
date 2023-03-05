@@ -23,12 +23,20 @@ const BacentasHaveArrived = () => {
   const navigate = useNavigate()
   const { clickCard } = useContext(ChurchContext)
   const [constituencyBacentasArrived, { refetch: constituencyRefetch }] =
-    useLazyQuery(CONSTITUENCY_BACENTAS_ARRIVED)
+    useLazyQuery(CONSTITUENCY_BACENTAS_ARRIVED, {
+      pollInterval: 2000,
+    })
   const [councilBacentasArrived, { refetch: councilRefetch }] = useLazyQuery(
-    COUNCIL_BACENTAS_ARRIVED
+    COUNCIL_BACENTAS_ARRIVED,
+    {
+      pollInterval: 2000,
+    }
   )
   const [streamBacentasArrived, { refetch: streamRefetch }] = useLazyQuery(
-    STREAM_BACENTAS_ARRIVED
+    STREAM_BACENTAS_ARRIVED,
+    {
+      pollInterval: 2000,
+    }
   )
   const [
     gatheringServiceBacentasArrived,

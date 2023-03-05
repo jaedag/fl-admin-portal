@@ -23,16 +23,27 @@ const BacentasOnTheWay = () => {
   const { clickCard } = useContext(ChurchContext)
   const navigate = useNavigate()
   const [constituencyOnTheWay, { refetch: constituencyRefetch }] = useLazyQuery(
-    CONSTITUENCY_BACENTAS_ON_THE_WAY
+    CONSTITUENCY_BACENTAS_ON_THE_WAY,
+    {
+      pollInterval: 2000,
+    }
   )
   const [councilOnTheWay, { refetch: councilRefetch }] = useLazyQuery(
-    COUNCIL_BACENTAS_ON_THE_WAY
+    COUNCIL_BACENTAS_ON_THE_WAY,
+    {
+      pollInterval: 2000,
+    }
   )
   const [streamOnTheWay, { refetch: streamRefetch }] = useLazyQuery(
-    STREAM_BACENTAS_ON_THE_WAY
+    STREAM_BACENTAS_ON_THE_WAY,
+    {
+      pollInterval: 2000,
+    }
   )
   const [gatheringServiceOnTheWay, { refetch: gatheringServiceRefetch }] =
-    useLazyQuery(GATHERINGSERVICE_BACENTAS_ON_THE_WAY)
+    useLazyQuery(GATHERINGSERVICE_BACENTAS_ON_THE_WAY, {
+      pollInterval: 2000,
+    })
 
   const data: ArrivalsUseChurchType = useChurchLevel({
     constituencyFunction: constituencyOnTheWay,

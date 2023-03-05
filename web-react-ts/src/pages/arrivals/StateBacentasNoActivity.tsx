@@ -19,17 +19,27 @@ import PullToRefresh from 'react-simple-pull-to-refresh'
 
 const BacentasNoActiviity = () => {
   const [constituencyBacentasNoActivity, { refetch: constituencyRefetch }] =
-    useLazyQuery(CONSTITUENCY_BACENTAS_NO_ACTIVITY)
+    useLazyQuery(CONSTITUENCY_BACENTAS_NO_ACTIVITY, {
+      pollInterval: 2000,
+    })
   const [councilBacentasNoActivity, { refetch: councilRefetch }] = useLazyQuery(
-    COUNCIL_BACENTAS_NO_ACTIVITY
+    COUNCIL_BACENTAS_NO_ACTIVITY,
+    {
+      pollInterval: 2000,
+    }
   )
   const [streamBacentasNoActivity, { refetch: streamRefetch }] = useLazyQuery(
-    STREAM_BACENTAS_NO_ACTIVITY
+    STREAM_BACENTAS_NO_ACTIVITY,
+    {
+      pollInterval: 2000,
+    }
   )
   const [
     gatheringServiceBacentasNoActivity,
     { refetch: gatheringServiceRefetch },
-  ] = useLazyQuery(GATHERINGSERVICE_BACENTAS_NO_ACTIVITY)
+  ] = useLazyQuery(GATHERINGSERVICE_BACENTAS_NO_ACTIVITY, {
+    pollInterval: 2000,
+  })
 
   const data: ArrivalsUseChurchType = useChurchLevel({
     constituencyFunction: constituencyBacentasNoActivity,

@@ -20,14 +20,27 @@ import PullToRefresh from 'react-simple-pull-to-refresh'
 
 const Banked = () => {
   const [constituencyBanked, { refetch: constituencyRefetch }] = useLazyQuery(
-    CONSTITUENCY_BANKED_LIST
+    CONSTITUENCY_BANKED_LIST,
+    {
+      pollInterval: 2000,
+    }
   )
-  const [councilBanked, { refetch: councilRefetch }] =
-    useLazyQuery(COUNCIL_BANKED_LIST)
-  const [streamBanked, { refetch: streamRefetch }] =
-    useLazyQuery(STREAM_BANKED_LIST)
+  const [councilBanked, { refetch: councilRefetch }] = useLazyQuery(
+    COUNCIL_BANKED_LIST,
+    {
+      pollInterval: 2000,
+    }
+  )
+  const [streamBanked, { refetch: streamRefetch }] = useLazyQuery(
+    STREAM_BANKED_LIST,
+    {
+      pollInterval: 2000,
+    }
+  )
   const [gatheringServiceBanked, { refetch: gatheringServiceRefetch }] =
-    useLazyQuery(GATHERINGSERVICE_BANKED_LIST)
+    useLazyQuery(GATHERINGSERVICE_BANKED_LIST, {
+      pollInterval: 2000,
+    })
 
   const data: DefaultersUseChurchType = useChurchLevel({
     constituencyFunction: constituencyBanked,
