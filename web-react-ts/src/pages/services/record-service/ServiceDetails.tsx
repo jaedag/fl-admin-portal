@@ -44,10 +44,12 @@ const ServiceDetails = ({ service, church, loading }: ServiceDetailsProps) => {
 
     if (!currentUser.noIncome) {
       table.push(['Number of Tithers', service?.numberOfTithers.toString()])
-      table.push([
-        'Foreign Currency',
-        service?.foreignCurrency?.toString() ?? '',
-      ])
+      if (service?.foreignCurrency) {
+        table.push([
+          'Foreign Currency',
+          service?.foreignCurrency?.toString() ?? '',
+        ])
+      }
       table.push(
         ['Income', service.income.toString()],
         ...service.treasurers.map((treasurer, i) => [
