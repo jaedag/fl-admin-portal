@@ -66,6 +66,25 @@ const DisplayAllConstituencies = lazy(
 const DisplayAllFellowships = lazy(
   () => import('pages/directory/display/AllFellowships')
 )
+const DisplayAllHubs = lazy(() => import('pages/directory/display/AllHubs'))
+const DisplayAllStreamMinistries = lazy(
+  () => import('pages/directory/display/AllStreamMinistries')
+)
+const DisplayAllMinistries = lazy(
+  () => import('pages/directory/display/AllMinistries')
+)
+const DisplayAllStreamHubs = lazy(
+  () => import('pages/directory/display/AllStreamHubs')
+)
+const DisplayAllStreamSontas = lazy(
+  () => import('pages/directory/display/AllStreamSontas')
+)
+const DisplayAllMinistrySontas = lazy(
+  () => import('pages/directory/display/AllMinistrySontas')
+)
+const DisplayAllGatheringServiceFederalMinistries = lazy(
+  () => import('pages/directory/display/AllGatheringServiceFederalMinistries')
+)
 const CreateConstituency = lazy(
   () => import('pages/directory/create/CreateConstituency')
 )
@@ -412,10 +431,51 @@ export const directory: LazyRouteTypes[] = [
   {
     path: '/sonta/displayall',
     element: DisplayAllSontas,
-    roles: permitLeaderAdmin('Constituency'),
+    roles: ['all'],
     placeholder: false,
   },
-
+  {
+    path: '/hub/displayall',
+    element: DisplayAllHubs,
+    roles: ['all'],
+    placeholder: false,
+  },
+  {
+    path: '/stream/ministries',
+    element: DisplayAllStreamMinistries,
+    roles: ['all'],
+    placeholder: false,
+  },
+  {
+    path: '/ministry/displayall',
+    element: DisplayAllMinistries,
+    roles: ['all'],
+    placeholder: false,
+  },
+  {
+    path: '/stream/hubs',
+    element: DisplayAllStreamHubs,
+    roles: ['all'],
+    placeholder: false,
+  },
+  {
+    path: '/stream/sontas',
+    element: DisplayAllStreamSontas,
+    roles: ['all'],
+    placeholder: false,
+  },
+  {
+    path: '/ministry/sontas',
+    element: DisplayAllMinistrySontas,
+    roles: ['all'],
+    placeholder: false,
+  },
+  {
+    path: '/gatheringservice/federalministries',
+    element: DisplayAllGatheringServiceFederalMinistries,
+    roles: ['all'],
+    placeholder: false,
+  },
   {
     path: '/constituency/displayall',
     element: DisplayAllConstituencies,

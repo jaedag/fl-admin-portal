@@ -36,13 +36,13 @@ const DetailsMinistry = () => {
     },
     {
       title: 'Hubs',
-      number: ministry?.hubs.length,
-      link: '#',
+      number: ministry?.hubCount,
+      link: '/hub/displayall',
     },
     {
       title: 'Sontas',
       number: ministry?.sontaCount,
-      link: '#',
+      link: '/ministry/sontas',
     },
   ]
 

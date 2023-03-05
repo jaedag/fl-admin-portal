@@ -465,6 +465,10 @@ export const DISPLAY_STREAM = gql`
         nameWithTitle
         pictureUrl
       }
+      ministries {
+        id
+        name
+      }
       history(limit: 5) {
         id
         timeStamp
@@ -654,6 +658,7 @@ export const DISPLAY_MINISTRY = gql`
       }
       memberCount
       sontaCount
+      hubCount
       history {
         id
         timeStamp
