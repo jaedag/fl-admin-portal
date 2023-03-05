@@ -1,3 +1,9 @@
+#### 5.9.26 (2023-03-05)
+
+##### Bug Fixes
+
+*  add numberOfTithers to other display service details ([6606d028](https://github.com/firstlovecenter/fl-pastoral-care/commit/6606d028f08da20116ef88b8f2a9605a52655942))
+
 #### 5.9.25 (2023-03-05)
 
 ##### Documentation Changes
