@@ -15,4 +15,10 @@ RETURN r.transactionStatus, r. transactionReference;
 
 MATCH (r:ServiceRecord {transactionReference: $reference})
 // SET r.transactionStatus = 'pending'
-RETURN r.transactionReference
+RETURN r.transactionReference;
+
+MATCH (v:VehicleRecord)
+DETACH DELETE v;
+
+MATCH (target:Target)
+DETACH DELETE target;

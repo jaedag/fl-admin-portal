@@ -1,7 +1,12 @@
 import axios from 'axios'
 import { getStreamFinancials } from '../utils/financial-utils'
 import { Context } from '../utils/neo4j-types'
-import { isAuth, rearrangeCypherObject, throwToSentry } from '../utils/utils'
+import {
+  isAuth,
+  parseNeoNumber,
+  rearrangeCypherObject,
+  throwToSentry,
+} from '../utils/utils'
 import {
   permitAdmin,
   permitAdminArrivals,
@@ -374,7 +379,7 @@ export const arrivalsMutation = {
       bacentaId: string
       streamName: string
       numberOfVehicles: neonumber
-      totalAttendance: number
+      totalAttendance: neonumber
     } = recordResponse
 
     const today = new Date()
@@ -386,29 +391,31 @@ export const arrivalsMutation = {
     const adjustedArgs = args
 
     if (streamName === 'anagkazo encounter') {
-      if (args.attendance < 20 && numberOfVehicles.low < 2) {
+      if (args.attendance < 20 && parseNeoNumber(numberOfVehicles) < 2) {
         adjustedArgs.attendance = 0
-      } else if (numberOfVehicles.low >= 2 && totalAttendance < 20) {
+      } else if (
+        numberOfVehicles.low >= 2 &&
+        parseNeoNumber(totalAttendance) < 20
+      ) {
         // Two or more vehicles but the combined attendance is less than the expected minimum
         adjustedArgs.attendance = 0
       }
     } else if (args.vehicle !== 'Car') {
-      if (args.attendance < 8 && numberOfVehicles.low < 2) {
+      if (args.attendance < 8 && parseNeoNumber(numberOfVehicles) < 2) {
         adjustedArgs.attendance = 0
-      } else if (numberOfVehicles.low >= 2 && totalAttendance < 8) {
+      } else if (
+        parseNeoNumber(numberOfVehicles) >= 2 &&
+        parseNeoNumber(totalAttendance) < 8
+      ) {
         // Two or more vehicles but the combined attendance is less than the expected minimum
         adjustedArgs.attendance = 0
       }
     }
 
-    if (adjustedArgs.attendance === 0) {
-      console.error('totalAttendance', totalAttendance)
-      console.error('numberOfVehicles', numberOfVehicles)
-      console.error('attendance', args.attendance)
-      throwToSentry(`totalAttendance ${totalAttendance}`, totalAttendance)
-      throwToSentry(`numberOfVehicles ${numberOfVehicles}`, numberOfVehicles)
-      throwToSentry(`attendance ${args.attendance}`, args.attendance)
-    }
+    console.log(adjustedArgs)
+    console.error('totalAttendance', totalAttendance)
+    console.error('numberOfVehicles', numberOfVehicles)
+    console.error('attendance', args.attendance)
 
     const response = rearrangeCypherObject(
       await session.run(confirmVehicleByAdmin, {
