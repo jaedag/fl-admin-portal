@@ -1,7 +1,7 @@
 import { useLazyQuery } from '@apollo/client'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import HeadingSecondary from 'components/HeadingSecondary'
-import { LONG_POLL_INTERVAL, plural } from 'global-utils'
+import { plural } from 'global-utils'
 import React, { useContext } from 'react'
 import { Col, Container, Row } from 'react-bootstrap'
 import {
@@ -24,25 +24,13 @@ import PullToRefresh from 'react-simple-pull-to-refresh'
 const DefaultersDashboard = () => {
   const { currentUser } = useContext(MemberContext)
   const [constituencyDefaulters, { refetch: constituencyRefetch }] =
-    useLazyQuery(CONSTITUENCY_DEFAULTERS, {
-      pollInterval: LONG_POLL_INTERVAL,
-    })
-  const [councilDefaulters, { refetch: councilRefetch }] = useLazyQuery(
-    COUNCIL_DEFAULTERS,
-    {
-      pollInterval: LONG_POLL_INTERVAL,
-    }
-  )
-  const [streamDefaulters, { refetch: streamRefetch }] = useLazyQuery(
-    STREAM_DEFAULTERS,
-    {
-      pollInterval: LONG_POLL_INTERVAL,
-    }
-  )
+    useLazyQuery(CONSTITUENCY_DEFAULTERS)
+  const [councilDefaulters, { refetch: councilRefetch }] =
+    useLazyQuery(COUNCIL_DEFAULTERS)
+  const [streamDefaulters, { refetch: streamRefetch }] =
+    useLazyQuery(STREAM_DEFAULTERS)
   const [gatheringServiceDefaulters, { refetch: gatheringServiceRefetch }] =
-    useLazyQuery(GATHERINGSERVICE_DEFAULTERS, {
-      pollInterval: LONG_POLL_INTERVAL,
-    })
+    useLazyQuery(GATHERINGSERVICE_DEFAULTERS)
 
   let subChurch: ChurchLevel | string = ''
 
