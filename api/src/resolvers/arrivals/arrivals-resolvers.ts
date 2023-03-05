@@ -225,7 +225,8 @@ export const arrivalsMutation = {
 
     if (
       !checkBacentaMomo?.momoNumber &&
-      (checkBacentaMomo.sprinterCost?.low || checkBacentaMomo.urvanCost?.low)
+      (parseNeoNumber(checkBacentaMomo.sprinterCost) ||
+        parseNeoNumber(checkBacentaMomo.urvanCost))
     ) {
       throw new Error('You need a mobile money number before filling this form')
     }
@@ -394,7 +395,7 @@ export const arrivalsMutation = {
       if (args.attendance < 20 && parseNeoNumber(numberOfVehicles) < 2) {
         adjustedArgs.attendance = 0
       } else if (
-        numberOfVehicles.low >= 2 &&
+        parseNeoNumber(numberOfVehicles) >= 2 &&
         parseNeoNumber(totalAttendance) < 20
       ) {
         // Two or more vehicles but the combined attendance is less than the expected minimum
@@ -411,11 +412,6 @@ export const arrivalsMutation = {
         adjustedArgs.attendance = 0
       }
     }
-
-    console.log(adjustedArgs)
-    console.error('totalAttendance', totalAttendance)
-    console.error('numberOfVehicles', numberOfVehicles)
-    console.error('attendance', args.attendance)
 
     const response = rearrangeCypherObject(
       await session.run(confirmVehicleByAdmin, {
