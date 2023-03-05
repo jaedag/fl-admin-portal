@@ -1,3 +1,9 @@
+#### 5.9.27 (2023-03-05)
+
+##### Bug Fixes
+
+*  add optional chain on foreigncurrency ([37409ee4](https://github.com/firstlovecenter/fl-pastoral-care/commit/37409ee47a48e6ad31141bebe3bd1ed5692bcb93))
+
 #### 5.9.26 (2023-03-05)
 
 ##### Bug Fixes
