@@ -36,6 +36,7 @@ const ConstituencyDashboard = () => {
     CONSTITUENCY_ARRIVALS_DASHBOARD,
     {
       variables: { id: currentUser?.currentChurch.id },
+      pollInterval: 2000,
     }
   )
   const [MakeConstituencyArrivalsAdmin] = useMutation(

@@ -36,6 +36,7 @@ const GatheringServiceDashboard = () => {
     GATHERINGSERVICE_ARRIVALS_DASHBOARD,
     {
       variables: { id: currentUser?.currentChurch.id, date: today },
+      pollInterval: 2000,
     }
   )
 

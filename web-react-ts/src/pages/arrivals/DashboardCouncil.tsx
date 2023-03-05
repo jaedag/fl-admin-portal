@@ -33,6 +33,7 @@ const CouncilDashboard = () => {
     COUNCIL_ARRIVALS_DASHBOARD,
     {
       variables: { id: currentUser?.currentChurch.id },
+      pollInterval: 2000,
     }
   )
   const [MakeCouncilArrivalsAdmin] = useMutation(MAKE_COUNCILARRIVALS_ADMIN)

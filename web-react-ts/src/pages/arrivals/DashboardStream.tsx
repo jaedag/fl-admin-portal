@@ -38,6 +38,7 @@ const StreamDashboard = () => {
     STREAM_ARRIVALS_DASHBOARD,
     {
       variables: { id: currentUser?.currentChurch.id },
+      pollInterval: 2000,
     }
   )
   const [MakeStreamArrivalsAdmin] = useMutation(MAKE_STREAMARRIVALS_ADMIN)
