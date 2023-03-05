@@ -150,7 +150,9 @@ export const nextHigherChurch = (churchLevel: ChurchLevel) => {
 }
 
 export const parseNeoNumber = (neoNumber: neonumber) => {
-  if (neoNumber.low) return neoNumber.low
+  if (!neoNumber) return 0
+
+  if (neoNumber?.low) return neoNumber.low
 
   if (typeof neoNumber === 'number') return neoNumber
 
