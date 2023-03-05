@@ -212,7 +212,7 @@ export const mapsResolvers = {
           true
         )
 
-        // merge the two arrays and order by distance in ascending order
+        // merge the  arrays and order by distance in ascending order
         const places = [...peopleRes, ...fellowshipsRes, ...uniVenuesRes].sort(
           (a, b) => a.distance - b.distance
         )

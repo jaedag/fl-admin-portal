@@ -1,5 +1,10 @@
 import React, { useCallback, useContext, useMemo, useRef } from 'react'
-import { useLoadScript, GoogleMap, Marker } from '@react-google-maps/api'
+import {
+  useLoadScript,
+  GoogleMap,
+  Marker,
+  MarkerClusterer,
+} from '@react-google-maps/api'
 import { useState } from 'react'
 import '../Map.css'
 import { Button, Offcanvas } from 'react-bootstrap'
@@ -49,7 +54,8 @@ const MapComponent = (props: MapComponentProps) => {
   })
 
   const [show, setShow] = useState(false)
-  const [office, setOffice] = useState<PlaceType>()
+  const [selected, setOffice] = useState<PlaceType>()
+  const [places, setPlaces] = useState<PlaceType[]>([])
 
   const handleClose = () => setShow(false)
   const handleShow = () => setShow(true)
@@ -85,9 +91,29 @@ const MapComponent = (props: MapComponentProps) => {
         options={options}
         onLoad={onLoad}
       >
-        {office && (
+        {selected && (
           <>
-            <Marker position={office.position} />
+            <Marker position={selected.position} label={selected.name} />
+            {console.log(places[1])}
+
+            <Marker position={places[1]?.position} label={places[1]?.name} />
+            <MarkerClusterer>
+              {(clusterer) => (
+                <div>
+                  {places.map((place) => (
+                    <Marker
+                      key={place.id}
+                      label={place.name}
+                      position={place.position}
+                      clusterer={clusterer}
+                      // onClick={() => {
+                      //   fetchDirections(house)
+                      // }}
+                    />
+                  ))}
+                </div>
+              )}
+            </MarkerClusterer>
           </>
         )}
       </GoogleMap>
@@ -133,7 +159,19 @@ const MapComponent = (props: MapComponentProps) => {
                   longitude: position.position.lng,
                 },
               })
-              console.log(response)
+
+              setPlaces(
+                response.data.members[0].placesSearchByLocation.map(
+                  (place: any) => ({
+                    ...place,
+                    position: {
+                      lat: place.latitude,
+                      lng: place.longitude,
+                    },
+                  })
+                )
+              )
+              console.log(places)
               mapRef.current?.panTo(position.position)
             }}
             {...props}
