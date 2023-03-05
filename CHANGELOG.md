@@ -1,3 +1,17 @@
+#### 5.9.25 (2023-03-05)
+
+##### Documentation Changes
+
+*  update README ([230e44da](https://github.com/firstlovecenter/fl-pastoral-care/commit/230e44da50fe20ddca58ace73525787a99df974d))
+
+##### New Features
+
+*  add number of tithers and foreign currency as fields on service details ([af2db295](https://github.com/firstlovecenter/fl-pastoral-care/commit/af2db2958d9ff29377d91cbaec0bb79b1261075d))
+
+##### Bug Fixes
+
+*  remove unneeded poll intervals ([c10d1354](https://github.com/firstlovecenter/fl-pastoral-care/commit/c10d13542af8468ce86400b5a23e6323f61464a0))
+
 #### 5.9.24 (2023-03-05)
 
 ##### Bug Fixes
