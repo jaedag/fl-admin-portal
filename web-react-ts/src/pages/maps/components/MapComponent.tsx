@@ -17,6 +17,7 @@ import {
 } from '@apollo/client'
 import { MemberContext } from 'contexts/MemberContext'
 import LoadingScreen from 'components/base-component/LoadingScreen'
+import './MapComponent.css'
 
 type LatLngLiteral = google.maps.LatLngLiteral
 type MapOptions = google.maps.MapOptions
@@ -93,24 +94,29 @@ const MapComponent = (props: MapComponentProps) => {
       >
         {selected && (
           <>
-            <Marker position={selected.position} label={selected.name} />
-            {console.log(places[1])}
+            <Marker
+              position={selected.position}
+              label={{ text: selected.name, className: 'key-marker-label' }}
+            />
 
-            <Marker position={places[1]?.position} label={places[1]?.name} />
             <MarkerClusterer>
               {(clusterer) => (
                 <div>
-                  {places.map((place) => (
-                    <Marker
-                      key={place.id}
-                      label={place.name}
-                      position={place.position}
-                      clusterer={clusterer}
-                      // onClick={() => {
-                      //   fetchDirections(house)
-                      // }}
-                    />
-                  ))}
+                  {places.map((place, index) => {
+                    if (index === 0) return null
+
+                    return (
+                      <Marker
+                        key={place.id}
+                        label={place.name}
+                        position={place.position}
+                        clusterer={clusterer}
+                        // onClick={() => {
+                        //   fetchDirections(house)
+                        // }}
+                      />
+                    )
+                  })}
                 </div>
               )}
             </MarkerClusterer>
@@ -171,7 +177,7 @@ const MapComponent = (props: MapComponentProps) => {
                   })
                 )
               )
-              console.log(places)
+
               mapRef.current?.panTo(position.position)
             }}
             {...props}
