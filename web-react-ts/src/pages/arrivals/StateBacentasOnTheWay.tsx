@@ -4,7 +4,6 @@ import MemberDisplayCard from 'components/card/MemberDisplayCard'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import HeadingSecondary from 'components/HeadingSecondary'
 import { ChurchContext } from 'contexts/ChurchContext'
-import { LONG_POLL_INTERVAL } from 'global-utils'
 import useChurchLevel from 'hooks/useChurchLevel'
 import PlaceholderDefaulterList from 'pages/services/defaulters/PlaceholderDefaulterList'
 import React, { useContext } from 'react'
@@ -24,27 +23,16 @@ const BacentasOnTheWay = () => {
   const { clickCard } = useContext(ChurchContext)
   const navigate = useNavigate()
   const [constituencyOnTheWay, { refetch: constituencyRefetch }] = useLazyQuery(
-    CONSTITUENCY_BACENTAS_ON_THE_WAY,
-    {
-      pollInterval: LONG_POLL_INTERVAL,
-    }
+    CONSTITUENCY_BACENTAS_ON_THE_WAY
   )
   const [councilOnTheWay, { refetch: councilRefetch }] = useLazyQuery(
-    COUNCIL_BACENTAS_ON_THE_WAY,
-    {
-      pollInterval: LONG_POLL_INTERVAL,
-    }
+    COUNCIL_BACENTAS_ON_THE_WAY
   )
   const [streamOnTheWay, { refetch: streamRefetch }] = useLazyQuery(
-    STREAM_BACENTAS_ON_THE_WAY,
-    {
-      pollInterval: LONG_POLL_INTERVAL,
-    }
+    STREAM_BACENTAS_ON_THE_WAY
   )
   const [gatheringServiceOnTheWay, { refetch: gatheringServiceRefetch }] =
-    useLazyQuery(GATHERINGSERVICE_BACENTAS_ON_THE_WAY, {
-      pollInterval: LONG_POLL_INTERVAL,
-    })
+    useLazyQuery(GATHERINGSERVICE_BACENTAS_ON_THE_WAY)
 
   const data: ArrivalsUseChurchType = useChurchLevel({
     constituencyFunction: constituencyOnTheWay,

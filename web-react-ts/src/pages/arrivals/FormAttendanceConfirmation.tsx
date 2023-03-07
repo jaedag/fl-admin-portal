@@ -23,11 +23,7 @@ import Input from 'components/formik/Input'
 import Textarea from 'components/formik/Textarea'
 import CloudinaryImage from 'components/CloudinaryImage'
 import Select from 'components/formik/Select'
-import {
-  OUTBOUND_OPTIONS,
-  VEHICLE_OPTIONS,
-  VEHICLE_OPTIONS_WITH_CAR,
-} from './arrivals-utils'
+import { OUTBOUND_OPTIONS, VEHICLE_OPTIONS } from './arrivals-utils'
 import RadioButtons from 'components/formik/RadioButtons'
 import './Arrivals.css'
 
@@ -197,11 +193,7 @@ const FormAttendanceConfirmation = () => {
                 <Select
                   name="vehicle"
                   label="Type of Vehicle"
-                  options={
-                    bacenta.bussing[0].vehicleRecords.length > 1
-                      ? VEHICLE_OPTIONS_WITH_CAR
-                      : VEHICLE_OPTIONS
-                  }
+                  options={VEHICLE_OPTIONS}
                   defaultOption="Select a vehicle type"
                 />
                 <Card border="warning" className="my-2">

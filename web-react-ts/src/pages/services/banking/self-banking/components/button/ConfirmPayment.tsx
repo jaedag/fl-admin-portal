@@ -2,7 +2,7 @@ import { ApolloQueryResult, useMutation } from '@apollo/client'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { StreamOptions } from 'global-types'
 import { alertMsg, throwToSentry } from 'global-utils'
-import { useContext, useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { Button, Spinner } from 'react-bootstrap'
 import { useNavigate } from 'react-router'
 import { CONFIRM_OFFERING_PAYMENT } from '../../bankingQueries'
@@ -31,9 +31,9 @@ type ButtonConfirmPaymentProps = {
 const ButtonConfirmPayment = (props: ButtonConfirmPaymentProps) => {
   const { refetch, service, togglePopup, ...rest } = props
   const [sending, setSending] = useState(false)
-  const navigate = useNavigate()
-  const { fellowshipId, constituencyId, councilId } = useContext(ChurchContext)
   const [ConfirmOfferingPayment] = useMutation(CONFIRM_OFFERING_PAYMENT)
+  const navigate = useNavigate()
+  const { fellowshipId } = useContext(ChurchContext)
 
   return (
     <Button
@@ -41,49 +41,17 @@ const ButtonConfirmPayment = (props: ButtonConfirmPaymentProps) => {
       size="lg"
       className="p-3 mt-5"
       {...rest}
-      onClick={async () => {
+      onClick={() => {
         setSending(true)
-
-        try {
-          const res = await refetch({
-            fellowshipId,
-            constituencyId,
-            councilId,
-          })
-
-          let serviceRecord: { id: string; transactionStatus: string } = {
-            id: '',
-            transactionStatus: '',
-          }
-
-          if (res.data?.fellowships) {
-            serviceRecord = res.data?.fellowships[0].services.find(
-              (serviceFromList: ConfirmPaymentServiceType) =>
-                serviceFromList?.id === service?.id
-            )
-          } else if (res.data?.constituencies) {
-            serviceRecord = res.data?.constituencies[0].services.find(
-              (serviceFromList: ConfirmPaymentServiceType) =>
-                serviceFromList?.id === service?.id
-            )
-          } else if (res.data?.councils) {
-            serviceRecord = res.data?.councils[0].services.find(
-              (serviceFromList: ConfirmPaymentServiceType) =>
-                serviceFromList?.id === service?.id
-            )
-          }
-
-          if (serviceRecord.transactionStatus === 'pending') {
-            const confirmationRes = await ConfirmOfferingPayment({
-              variables: {
-                serviceRecordId: service?.id,
-                stream_name: service?.stream_name,
-              },
-            })
-
+        ConfirmOfferingPayment({
+          variables: {
+            serviceRecordId: service?.id,
+            stream_name: service?.stream_name,
+          },
+        })
+          .then((res) => {
             if (
-              confirmationRes.data.ConfirmOfferingPayment.transactionStatus ===
-              'pending'
+              res.data.ConfirmOfferingPayment.transactionStatus === 'pending'
             ) {
               alertMsg(
                 'Your Payment is still pending please follow the manual steps for approval'
@@ -91,37 +59,31 @@ const ButtonConfirmPayment = (props: ButtonConfirmPaymentProps) => {
               navigate('/self-banking/receipt')
               return
             }
-
             if (
-              confirmationRes.data.ConfirmOfferingPayment.transactionStatus ===
-              'failed'
+              ['failed', 'abandoned'].includes(
+                res.data.ConfirmOfferingPayment.transactionStatus
+              )
             ) {
               alertMsg('Your Payment Failed 😞. Please try again!')
-
+              navigate('/self-banking/receipt')
               return
             }
-          }
 
-          if (
-            ['failed', 'abandoned'].includes(serviceRecord.transactionStatus)
-          ) {
-            alertMsg('Your Payment Failed 😞. Please try again!')
+            alertMsg('Payment Confirmed Successfully 😊')
+            navigate('/self-banking/receipt')
+          })
+          .catch((error) => {
+            if (togglePopup) {
+              togglePopup()
+            }
 
-            return
-          }
-
-          alertMsg('Payment Confirmed Successfully 😊')
-          navigate('/self-banking/receipt')
-        } catch (error: any) {
-          if (togglePopup) {
-            togglePopup()
-          }
-
-          navigate('/services/fellowship/self-banking')
-          throwToSentry(error)
-        } finally {
-          setSending(false)
-        }
+            navigate('/services/fellowship/self-banking')
+            throwToSentry(error)
+          })
+          .then(() => {
+            refetch({ fellowshipId: fellowshipId })
+            setSending(false)
+          })
       }}
     >
       Confirm Transaction {sending && <Spinner animation="grow" size="sm" />}

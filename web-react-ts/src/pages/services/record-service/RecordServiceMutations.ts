@@ -91,7 +91,6 @@ export const DISPLAY_FELLOWSHIP_SERVICE = gql`
       noServiceReason
       attendance
       income
-      numberOfTithers
       foreignCurrency
       treasurerSelfie
       familyPicture
@@ -154,7 +153,6 @@ export const DISPLAY_BACENTA_SERVICE = gql`
       noServiceReason
       attendance
       income
-      numberOfTithers
       foreignCurrency
       treasurerSelfie
       familyPicture
@@ -234,7 +232,6 @@ export const DISPLAY_CONSTITUENCY_SERVICE = gql`
       noServiceReason
       attendance
       income
-      numberOfTithers
       foreignCurrency
       transactionId
       treasurerSelfie
@@ -284,7 +281,6 @@ export const DISPLAY_COUNCIL_SERVICE = gql`
       noServiceReason
       attendance
       income
-      numberOfTithers
       transactionId
       foreignCurrency
       treasurerSelfie
@@ -334,7 +330,6 @@ export const DISPLAY_STREAM_SERVICE = gql`
       noServiceReason
       attendance
       income
-      numberOfTithers
       foreignCurrency
       transactionId
       treasurerSelfie
@@ -387,7 +382,6 @@ export const DISPLAY_GATHERINGSERVICE_SERVICE = gql`
       noServiceReason
       attendance
       income
-      numberOfTithers
       transactionId
       foreignCurrency
       treasurerSelfie
