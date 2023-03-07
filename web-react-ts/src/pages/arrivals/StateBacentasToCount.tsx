@@ -6,7 +6,6 @@ import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import HeadingSecondary from 'components/HeadingSecondary'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { Form, Formik, FormikHelpers } from 'formik'
-import { SHORT_POLL_INTERVAL } from 'global-utils'
 import useChurchLevel from 'hooks/useChurchLevel'
 import PlaceholderDefaulterList from 'pages/services/defaulters/PlaceholderDefaulterList'
 import { useContext, useEffect, useState } from 'react'
@@ -29,22 +28,13 @@ type FormOptions = {
 const StateBacentasToCount = () => {
   const { clickCard } = useContext(ChurchContext)
   const [constituencyOnTheWay, { refetch: constituencyRefetch }] = useLazyQuery(
-    CONSTITUENCY_BACENTAS_TO_COUNT,
-    {
-      pollInterval: SHORT_POLL_INTERVAL,
-    }
+    CONSTITUENCY_BACENTAS_TO_COUNT
   )
   const [councilOnTheWay, { refetch: councilRefetch }] = useLazyQuery(
-    COUNCIL_BACENTAS_TO_COUNT,
-    {
-      pollInterval: SHORT_POLL_INTERVAL,
-    }
+    COUNCIL_BACENTAS_TO_COUNT
   )
   const [streamOnTheWay, { refetch: streamRefetch }] = useLazyQuery(
-    STREAM_BACENTAS_TO_COUNT,
-    {
-      pollInterval: SHORT_POLL_INTERVAL,
-    }
+    STREAM_BACENTAS_TO_COUNT
   )
   const [gatheringServiceOnTheWay, { refetch: gatheringServiceRefetch }] =
     useLazyQuery(GATHERINGSERVICE_BACENTAS_TO_COUNT)

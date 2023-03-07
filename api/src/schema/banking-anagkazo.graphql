@@ -82,8 +82,8 @@ extend type Constituency {
   aggregateServiceRecordForWeek(week: Int!): AggregateServiceRecord!
     @cypher(
       statement: """
-      MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(agg:AggregateServiceRecord)
-      MATCH (agg) WHERE agg.week = $week AND agg.year = date().year
+      MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(agg)
+      MATCH (agg) WHERE agg.week = $week
 
       WITH agg, this
       WITH date() as today, this, agg
@@ -97,7 +97,7 @@ extend type Constituency {
       MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
 
       WITH collect(record.foreignCurrency) as list, agg
-
+      
       RETURN {
         id: agg.id,
         attendance: agg.attendance,
@@ -105,7 +105,7 @@ extend type Constituency {
         week: agg.week,
         year: agg.year,
         foreignCurrency: list
-      }
+        }
       """
     )
   banked: Boolean!

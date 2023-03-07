@@ -16,31 +16,20 @@ import NoData from './CompNoData'
 import PlaceholderDefaulterList from 'pages/services/defaulters/PlaceholderDefaulterList'
 import { ArrivalsUseChurchType } from './arrivals-types'
 import PullToRefresh from 'react-simple-pull-to-refresh'
-import { LONG_POLL_INTERVAL } from 'global-utils'
 
 const BacentasNoActiviity = () => {
   const [constituencyBacentasNoActivity, { refetch: constituencyRefetch }] =
-    useLazyQuery(CONSTITUENCY_BACENTAS_NO_ACTIVITY, {
-      pollInterval: LONG_POLL_INTERVAL,
-    })
+    useLazyQuery(CONSTITUENCY_BACENTAS_NO_ACTIVITY)
   const [councilBacentasNoActivity, { refetch: councilRefetch }] = useLazyQuery(
-    COUNCIL_BACENTAS_NO_ACTIVITY,
-    {
-      pollInterval: LONG_POLL_INTERVAL,
-    }
+    COUNCIL_BACENTAS_NO_ACTIVITY
   )
   const [streamBacentasNoActivity, { refetch: streamRefetch }] = useLazyQuery(
-    STREAM_BACENTAS_NO_ACTIVITY,
-    {
-      pollInterval: LONG_POLL_INTERVAL,
-    }
+    STREAM_BACENTAS_NO_ACTIVITY
   )
   const [
     gatheringServiceBacentasNoActivity,
     { refetch: gatheringServiceRefetch },
-  ] = useLazyQuery(GATHERINGSERVICE_BACENTAS_NO_ACTIVITY, {
-    pollInterval: LONG_POLL_INTERVAL,
-  })
+  ] = useLazyQuery(GATHERINGSERVICE_BACENTAS_NO_ACTIVITY)
 
   const data: ArrivalsUseChurchType = useChurchLevel({
     constituencyFunction: constituencyBacentasNoActivity,

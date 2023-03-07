@@ -21,12 +21,6 @@ export const VEHICLE_OPTIONS: FormikSelectOptions = [
   { key: 'Sprinter', value: 'Sprinter' },
 ]
 
-export const VEHICLE_OPTIONS_WITH_CAR: FormikSelectOptions = [
-  { key: 'Urvan', value: 'Urvan' },
-  { key: 'Sprinter', value: 'Sprinter' },
-  { key: 'Private Car', value: 'Car' },
-]
-
 export const OUTBOUND_OPTIONS: FormikSelectOptions = [
   { key: 'In Only', value: 'In Only' },
   { key: 'In and Out', value: 'In and Out' },

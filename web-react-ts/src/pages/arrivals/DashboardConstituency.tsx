@@ -12,7 +12,7 @@ import { CONSTITUENCY_ARRIVALS_DASHBOARD } from './arrivalsQueries'
 import { useNavigate } from 'react-router'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import RoleView from 'auth/RoleView'
-import { SHORT_POLL_INTERVAL, throwToSentry } from 'global-utils'
+import { throwToSentry } from 'global-utils'
 import { MAKE_CONSTITUENCYARRIVALS_ADMIN } from './arrivalsMutation'
 import { permitAdmin, permitArrivals } from 'permission-utils'
 import HeadingSecondary from 'components/HeadingSecondary'
@@ -36,7 +36,6 @@ const ConstituencyDashboard = () => {
     CONSTITUENCY_ARRIVALS_DASHBOARD,
     {
       variables: { id: currentUser?.currentChurch.id },
-      pollInterval: SHORT_POLL_INTERVAL,
     }
   )
   const [MakeConstituencyArrivalsAdmin] = useMutation(
@@ -82,7 +81,7 @@ const ConstituencyDashboard = () => {
       <ApolloWrapper data={data} loading={loading} error={error}>
         <Container>
           <HeadingPrimary loading={loading}>
-            {constituency?.name} Constituency Arrivals Real Time Dashboard
+            {constituency?.name} Constituency Arrivals Summary
           </HeadingPrimary>
           <HeadingSecondary>{`Arrivals Rep: ${
             constituency?.arrivalsAdmin?.fullName ?? 'None'

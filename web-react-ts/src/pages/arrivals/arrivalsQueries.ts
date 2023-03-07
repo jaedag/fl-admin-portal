@@ -460,12 +460,6 @@ export const DISPLAY_VEHICLE_RECORDS = gql`
         arrivalStartTime
         arrivalEndTime
       }
-      bussing(limit: 1) {
-        id
-        vehicleRecords {
-          id
-        }
-      }
     }
   }
 `
