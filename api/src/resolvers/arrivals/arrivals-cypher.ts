@@ -235,7 +235,7 @@ export const aggregateBussingDataOnHigherChurches = `
 
    MATCH (constituency)-[:HAS]->(bacentas:Bacenta)
    MATCH (date:TimeGraph {date: date()})
-   MATCH (bacentas)-[:CURRENT_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(record:BussingRecord)-[:BUSSED_ON]->(date)
+   MATCH (bacentas)-[:CURRENT_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(record:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph) WHERE date.date.week = date().week
    WITH DISTINCT constituency, aggregate, record
    WITH constituency, aggregate, collect(record.id) AS componentBussingIds, SUM(record.leaderDeclaration) AS leaderDeclaration, SUM(record.bussingCost) AS bussingCost, SUM(record.personalContribution) AS personalContribution, SUM(record.attendance) AS attendance, SUM(record.bussingTopUp) AS bussingTopUp
 
@@ -254,7 +254,7 @@ export const aggregateBussingDataOnHigherChurches = `
 
    WITH council, aggregate
    MATCH (council)-[:HAS]->(:Constituency)-[:HAS]->(bacentas:Bacenta)
-   MATCH (bacentas)-[:CURRENT_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(record:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph {date: date()})
+   MATCH (bacentas)-[:CURRENT_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(record:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph) WHERE date.date.week = date().week
    WITH DISTINCT council, aggregate, record
    WITH council, aggregate, collect(record.id) AS componentBussingIds, SUM(record.leaderDeclaration) AS leaderDeclaration, SUM(record.bussingCost) AS bussingCost, SUM(record.personalContribution) AS personalContribution, SUM(record.attendance) AS attendance, SUM(record.bussingTopUp) AS bussingTopUp
 
@@ -273,7 +273,7 @@ WITH council AS lowerChurch
 
    WITH stream, aggregate
    MATCH (stream)-[:HAS]->(:Council)-[:HAS]->(:Constituency)-[:HAS]->(bacentas:Bacenta)
-   MATCH (bacentas)-[:CURRENT_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(record:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph {date: date()})
+   MATCH (bacentas)-[:CURRENT_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(record:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph) WHERE date.date.week = date().week
    WITH DISTINCT stream, aggregate, record
     WITH stream, aggregate, collect(record.id) AS componentBussingIds, SUM(record.leaderDeclaration) AS leaderDeclaration, SUM(record.bussingCost) AS bussingCost, SUM(record.personalContribution) AS personalContribution, SUM(record.attendance) AS attendance, SUM(record.bussingTopUp) AS bussingTopUp
 
@@ -292,7 +292,7 @@ WITH council AS lowerChurch
 
    WITH gathering, aggregate
    MATCH (gathering)-[:HAS]->(:Stream)-[:HAS]->(:Council)-[:HAS]->(:Constituency)-[:HAS]->(bacentas:Bacenta)
-   MATCH (bacentas)-[:CURRENT_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(record:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph {date: date()})
+   MATCH (bacentas)-[:CURRENT_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(record:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph) WHERE date.date.week = date().week
    WITH DISTINCT gathering, aggregate, record
     WITH gathering, aggregate, collect(record.id) AS componentBussingIds, SUM(record.leaderDeclaration) AS leaderDeclaration, SUM(record.bussingCost) AS bussingCost, SUM(record.personalContribution) AS personalContribution, SUM(record.attendance) AS attendance, SUM(record.bussingTopUp) AS bussingTopUp
 
@@ -311,7 +311,7 @@ WITH council AS lowerChurch
 
    WITH oversight, aggregate
    MATCH (oversight)-[:HAS]->(:GatheringService)-[:HAS]->(:Stream)-[:HAS]->(:Council)-[:HAS]->(:Constituency)-[:HAS]->(bacentas:Bacenta)
-   MATCH (bacentas)-[:CURRENT_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(record:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph {date: date()})
+   MATCH (bacentas)-[:CURRENT_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(record:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph) WHERE date.date.week = date().week
    WITH DISTINCT oversight, aggregate, record
     WITH oversight, aggregate, collect(record.id) AS componentBussingIds, SUM(record.leaderDeclaration) AS leaderDeclaration, SUM(record.bussingCost) AS bussingCost, SUM(record.personalContribution) AS personalContribution, SUM(record.attendance) AS attendance, SUM(record.bussingTopUp) AS bussingTopUp
 
@@ -330,7 +330,7 @@ WITH council AS lowerChurch
 
    WITH denomination, aggregate
    MATCH (denomination)-[:HAS]->(:Oversight)-[:HAS]->(:GatheringService)-[:HAS]->(:Stream)-[:HAS]->(:Council)-[:HAS]->(:Constituency)-[:HAS]->(bacentas:Bacenta)
-   MATCH (bacentas)-[:CURRENT_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(record:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph {date: date()})
+   MATCH (bacentas)-[:CURRENT_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(record:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph) WHERE date.date.week = date().week
    WITH DISTINCT denomination, aggregate, record
    WITH denomination, aggregate, collect(record.id) AS componentBussingIds, SUM(record.leaderDeclaration) AS leaderDeclaration, SUM(record.bussingCost) AS bussingCost, SUM(record.personalContribution) AS personalContribution, SUM(record.attendance) AS attendance, SUM(record.bussingTopUp) AS bussingTopUp
 
