@@ -12,7 +12,7 @@ import { COUNCIL_ARRIVALS_DASHBOARD } from './arrivalsQueries'
 import { useNavigate } from 'react-router'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import RoleView from 'auth/RoleView'
-import { throwToSentry } from 'global-utils'
+import { SHORT_POLL_INTERVAL, throwToSentry } from 'global-utils'
 import { MAKE_COUNCILARRIVALS_ADMIN } from './arrivalsMutation'
 import { permitAdmin, permitArrivals } from 'permission-utils'
 import HeadingSecondary from 'components/HeadingSecondary'
@@ -33,6 +33,7 @@ const CouncilDashboard = () => {
     COUNCIL_ARRIVALS_DASHBOARD,
     {
       variables: { id: currentUser?.currentChurch.id },
+      pollInterval: SHORT_POLL_INTERVAL,
     }
   )
   const [MakeCouncilArrivalsAdmin] = useMutation(MAKE_COUNCILARRIVALS_ADMIN)
@@ -82,7 +83,7 @@ const CouncilDashboard = () => {
       <ApolloWrapper data={data} loading={loading} error={error}>
         <Container>
           <HeadingPrimary loading={loading}>
-            {council?.name} Council Arrivals Summary
+            {council?.name} Council Arrivals Real Time Dashboard
           </HeadingPrimary>
           <HeadingSecondary>{`Arrivals Rep: ${
             council?.arrivalsAdmin?.fullName ?? 'None'

@@ -65,6 +65,7 @@ All Contributors welcome. Go ahead and fork the project and submit a PR. Read th
 1. Plot fellowships, bacentas, and centres on a map
 2. Plot all members on a map
 3. Plot outreach venues on a map with information on area populations, cost of bussing, etc
+4. Plot hostel information of universities on the map
    <br/>
 
 ## PHASE 5: Bussing Registration and Monitoring (Bacenta Proliferation) ✅

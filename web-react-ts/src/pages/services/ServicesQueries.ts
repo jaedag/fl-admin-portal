@@ -35,6 +35,8 @@ export const FELLOWSHIP_BANKING_SLIP_QUERIES = gql`
           fullName
         }
         income
+        numberOfTithers
+        foreignCurrency
         transactionId
         transactionStatus
       }

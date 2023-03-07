@@ -33,7 +33,7 @@ const VehicleButton = ({
       }}
     >
       <ButtonIcons type={record?.vehicle} />
-      {record?.vehicle} ({record?.attendance || '-'}){'  '}
+      {record?.vehicle} ({record?.attendance || '0'}){'  '}
       {record?.arrivalTime ? (
         <CheckCircleFill className="ms-3" color="white" size={20} />
       ) : null}

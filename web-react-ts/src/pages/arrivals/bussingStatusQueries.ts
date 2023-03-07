@@ -590,7 +590,7 @@ export const STREAM_BACENTAS_BELOW_8 = gql`
         }
         bussing(limit: 1) {
           id
-          attendanced
+          attendance
         }
       }
     }

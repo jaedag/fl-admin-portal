@@ -9,7 +9,7 @@ import {
   SET_CODE_OF_THE_DAY,
 } from './arrivalsMutation'
 import { GATHERINGSERVICE_ARRIVALS_DASHBOARD } from './arrivalsQueries'
-import { alertMsg, throwToSentry } from 'global-utils'
+import { alertMsg, SHORT_POLL_INTERVAL, throwToSentry } from 'global-utils'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { Col, Container, Row, Button } from 'react-bootstrap'
 import Popup from 'components/Popup/Popup'
@@ -36,6 +36,7 @@ const GatheringServiceDashboard = () => {
     GATHERINGSERVICE_ARRIVALS_DASHBOARD,
     {
       variables: { id: currentUser?.currentChurch.id, date: today },
+      pollInterval: SHORT_POLL_INTERVAL,
     }
   )
 
@@ -104,7 +105,8 @@ const GatheringServiceDashboard = () => {
       <ApolloWrapper data={data} loading={loading} error={error}>
         <Container>
           <HeadingPrimary loading={loading}>
-            {gatheringService?.name} Gathering Service Arrivals Summary
+            {gatheringService?.name} Gathering Service Arrivals Real Time
+            Dashboard
           </HeadingPrimary>
           <HeadingSecondary loading={loading}>
             Arrivals Admin: {gatheringService?.arrivalsAdmin?.fullName}

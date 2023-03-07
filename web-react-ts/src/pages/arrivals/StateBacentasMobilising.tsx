@@ -18,22 +18,33 @@ import { ChurchContext } from 'contexts/ChurchContext'
 import { useNavigate } from 'react-router'
 import { ArrivalsUseChurchType } from './arrivals-types'
 import PullToRefresh from 'react-simple-pull-to-refresh'
+import { LONG_POLL_INTERVAL } from 'global-utils'
 
 const BacentasMobilising = () => {
   const { clickCard } = useContext(ChurchContext)
   const navigate = useNavigate()
   const [constituencyBacentasMobilising, { refetch: constituencyRefetch }] =
-    useLazyQuery(CONSTITUENCY_BACENTAS_MOBILISING)
+    useLazyQuery(CONSTITUENCY_BACENTAS_MOBILISING, {
+      pollInterval: LONG_POLL_INTERVAL,
+    })
   const [councilBacentasMobilising, { refetch: councilRefetch }] = useLazyQuery(
-    COUNCIL_BACENTAS_MOBILISING
+    COUNCIL_BACENTAS_MOBILISING,
+    {
+      pollInterval: LONG_POLL_INTERVAL,
+    }
   )
   const [streamBacentasMobilising, { refetch: streamRefetch }] = useLazyQuery(
-    STREAM_BACENTAS_MOBILISING
+    STREAM_BACENTAS_MOBILISING,
+    {
+      pollInterval: LONG_POLL_INTERVAL,
+    }
   )
   const [
     gatheringServiceBacentasMobilising,
     { refetch: gatheringServiceRefetch },
-  ] = useLazyQuery(GATHERINGSERVICE_BACENTAS_MOBILISING)
+  ] = useLazyQuery(GATHERINGSERVICE_BACENTAS_MOBILISING, {
+    pollInterval: LONG_POLL_INTERVAL,
+  })
 
   const data: ArrivalsUseChurchType = useChurchLevel({
     constituencyFunction: constituencyBacentasMobilising,

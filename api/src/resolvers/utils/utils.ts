@@ -1,6 +1,6 @@
 /* eslint-disable no-relative-import-paths/no-relative-import-paths */
 import { captureException } from '@sentry/node'
-import { ChurchLevel, Member, Role } from './types'
+import { ChurchLevel, Member, neonumber, Role } from './types'
 
 type ErrorCustom = {
   response: {
@@ -147,4 +147,14 @@ export const nextHigherChurch = (churchLevel: ChurchLevel) => {
     default:
       return 'Oversight'
   }
+}
+
+export const parseNeoNumber = (neoNumber: neonumber) => {
+  if (!neoNumber) return 0
+
+  if (neoNumber?.low) return neoNumber.low
+
+  if (typeof neoNumber === 'number') return neoNumber
+
+  return 0
 }

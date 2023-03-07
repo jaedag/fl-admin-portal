@@ -16,9 +16,14 @@ import { ServiceContext } from 'contexts/ServiceContext'
 import { throwToSentry } from 'global-utils'
 import Input from 'components/formik/Input'
 import Select from 'components/formik/Select'
-import { OUTBOUND_OPTIONS, VEHICLE_OPTIONS } from './arrivals-utils'
+import {
+  OUTBOUND_OPTIONS,
+  VEHICLE_OPTIONS,
+  VEHICLE_OPTIONS_WITH_CAR,
+} from './arrivals-utils'
 import ImageUpload from 'components/formik/ImageUpload'
 import RadioButtons from 'components/formik/RadioButtons'
+import { BacentaWithArrivals } from './arrivals-types'
 
 type FormOptions = {
   leaderDeclaration: string
@@ -53,7 +58,7 @@ const FormAddVehicleRecord = () => {
     variables: { id: bacentaId },
   })
 
-  const bacenta = data?.bacentas[0]
+  const bacenta: BacentaWithArrivals = data?.bacentas[0]
   const [RecordVehicleFromBacenta] = useMutation(RECORD_BUSSING_FROM_BACENTA)
   const validationSchema = Yup.object({
     leaderDeclaration: Yup.number()
@@ -128,14 +133,18 @@ const FormAddVehicleRecord = () => {
                 <Col className="mb-2">
                   <small className="form-text label">Date of Service</small>
                   <HeadingPrimary>
-                    {parseDate(bacenta?.bussing[0].serviceDate.date)}
+                    {parseDate(bacenta?.bussing[0].serviceDate.date.toString())}
                   </HeadingPrimary>
 
                   <Input name="leaderDeclaration" label="Attendance*" />
                   <Select
                     name="vehicle"
                     label="Type of Vehicle"
-                    options={VEHICLE_OPTIONS}
+                    options={
+                      bacenta?.bussing[0].vehicleRecords.length >= 1
+                        ? VEHICLE_OPTIONS_WITH_CAR
+                        : VEHICLE_OPTIONS
+                    }
                     defaultOption="Select a vehicle type"
                   />
 

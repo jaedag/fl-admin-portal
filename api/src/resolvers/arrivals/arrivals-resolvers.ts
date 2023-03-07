@@ -1,7 +1,12 @@
 import axios from 'axios'
 import { getStreamFinancials } from '../utils/financial-utils'
 import { Context } from '../utils/neo4j-types'
-import { isAuth, rearrangeCypherObject, throwToSentry } from '../utils/utils'
+import {
+  isAuth,
+  parseNeoNumber,
+  rearrangeCypherObject,
+  throwToSentry,
+} from '../utils/utils'
 import {
   permitAdmin,
   permitAdminArrivals,
@@ -220,7 +225,8 @@ export const arrivalsMutation = {
 
     if (
       !checkBacentaMomo?.momoNumber &&
-      (checkBacentaMomo.sprinterCost?.low || checkBacentaMomo.urvanCost?.low)
+      (parseNeoNumber(checkBacentaMomo.sprinterCost) ||
+        parseNeoNumber(checkBacentaMomo.urvanCost))
     ) {
       throw new Error('You need a mobile money number before filling this form')
     }
@@ -350,7 +356,7 @@ export const arrivalsMutation = {
       attendance: number
       vehicleCost: number
       personalContribution: number
-      vehicle: string
+      vehicle: 'Urvan' | 'Sprinter' | 'Car'
       picture: string
       outbound: boolean
     },
@@ -363,8 +369,19 @@ export const arrivalsMutation = {
       await session.run(checkArrivalTimeFromVehicle, args)
     )
 
-    const { arrivalEndTime, bacentaId, streamName, numberOfVehicles } =
-      recordResponse
+    const {
+      arrivalEndTime,
+      bacentaId,
+      streamName,
+      numberOfVehicles,
+      totalAttendance,
+    }: {
+      arrivalEndTime: string
+      bacentaId: string
+      streamName: string
+      numberOfVehicles: neonumber
+      totalAttendance: neonumber
+    } = recordResponse
 
     const today = new Date()
 
@@ -374,16 +391,26 @@ export const arrivalsMutation = {
 
     const adjustedArgs = args
 
-    if (
-      numberOfVehicles.low < 2 &&
-      args.attendance < 20 &&
-      streamName === 'anagkazo encounter'
-    ) {
-      adjustedArgs.attendance = 0
-    }
-
-    if (args.attendance < 8 && numberOfVehicles.low < 2) {
-      adjustedArgs.attendance = 0
+    if (streamName === 'anagkazo encounter') {
+      if (args.attendance < 20 && parseNeoNumber(numberOfVehicles) < 2) {
+        adjustedArgs.attendance = 0
+      } else if (
+        parseNeoNumber(numberOfVehicles) >= 2 &&
+        parseNeoNumber(totalAttendance) < 20
+      ) {
+        // Two or more vehicles but the combined attendance is less than the expected minimum
+        adjustedArgs.attendance = 0
+      }
+    } else if (args.vehicle !== 'Car') {
+      if (args.attendance < 8 && parseNeoNumber(numberOfVehicles) < 2) {
+        adjustedArgs.attendance = 0
+      } else if (
+        parseNeoNumber(numberOfVehicles) >= 2 &&
+        parseNeoNumber(totalAttendance) < 8
+      ) {
+        // Two or more vehicles but the combined attendance is less than the expected minimum
+        adjustedArgs.attendance = 0
+      }
     }
 
     const response = rearrangeCypherObject(
@@ -551,7 +578,10 @@ export const arrivalsMutation = {
         session.run(noVehicleTopUp, { ...args, vehicleTopUp }),
         sendBulkSMS(
           [response.leaderPhoneNumber],
-          joinMessageStrings([texts.arrivalsSMS.no_bussing_cost])
+          joinMessageStrings([
+            texts.arrivalsSMS.no_bussing_cost,
+            response.attendance.toString(),
+          ])
         ),
       ])
       vehicleRecord = rearrangeCypherObject(attendanceRes[0])
