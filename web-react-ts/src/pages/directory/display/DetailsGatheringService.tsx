@@ -61,7 +61,7 @@ const DetailsGatheringService = () => {
     },
     {
       title: 'Federal Ministries',
-      number: gathering?.federalministryCount,
+      number: gathering?.federalMinistryCount,
       link: '/gatheringservice/federalministries',
     },
   ]

@@ -528,13 +528,6 @@ export const GET_STREAM_MINISTRIES = gql`
           stream_name
           pictureUrl
         }
-        # admin {
-        #   id
-        #   firstName
-        #   lastName
-        #   stream_name
-        #   fullName
-        # }
       }
     }
   }
@@ -560,19 +553,19 @@ export const GET_STREAM_HUBS = gql`
         fullName
         stream_name
       }
-      # hubs {
-      #   name
-      #   id
-      #   memberCount
-      #   sontaCount
-      #   leader {
-      #     id
-      #     firstName
-      #     lastName
-      #     stream_name
-      #     pictureUrl
-      #   }
-      # }
+      hubs {
+        name
+        id
+        memberCount
+        sontaCount
+        leader {
+          id
+          firstName
+          lastName
+          stream_name
+          pictureUrl
+        }
+      }
     }
   }
 `
@@ -589,6 +582,7 @@ export const GET_STREAM_SONTAS = gql`
         lastName
         fullName
       }
+      sontaCount
       memberCount
       admin {
         id
@@ -597,19 +591,18 @@ export const GET_STREAM_SONTAS = gql`
         fullName
         stream_name
       }
-      # sontas {
-      #   name
-      #   id
-      #   memberCount
-      #   sontaCount
-      #   leader {
-      #     id
-      #     firstName
-      #     lastName
-      #     stream_name
-      #     pictureUrl
-      #   }
-      # }
+      sontas {
+        name
+        id
+        memberCount
+        leader {
+          id
+          firstName
+          lastName
+          stream_name
+          pictureUrl
+        }
+      }
     }
   }
 `
@@ -626,20 +619,13 @@ export const GET_MINISTRY_HUBS = gql`
         lastName
         fullName
       }
-      # admin {
-      #     id
-      #     firstName
-      #     lastName
-      #     stream_name
-      #     fullName
-      #   }
       memberCount
 
       hubs {
         name
         id
         memberCount
-
+        sontaCount
         leader {
           id
           firstName
@@ -664,28 +650,21 @@ export const GET_MINISTRY_SONTAS = gql`
         lastName
         fullName
       }
-      # admin {
-      #     id
-      #     firstName
-      #     lastName
-      #     stream_name
-      #     fullName
-      #   }
       memberCount
 
-      # sontas {
-      #   name
-      #   id
-      #   memberCount
+      sontas {
+        name
+        id
+        memberCount
 
-      #   leader {
-      #     id
-      #     firstName
-      #     lastName
-      #     stream_name
-      #     pictureUrl
-      #   }
-      # }
+        leader {
+          id
+          firstName
+          lastName
+          stream_name
+          pictureUrl
+        }
+      }
     }
   }
 `
@@ -785,29 +764,22 @@ export const GET_GATHERINGSERVICE_FEDERALMINISTRIES = gql`
         fullName
         stream_name
       }
-      # federalministryCount
-      # federalministries {
-      #   name
-      #   id
-      #   memberCount
-      #   hubCount
-      #   sontaCount
-      # ministryCount
-      #   leader {
-      #     id
-      #     firstName
-      #     lastName
-      #     stream_name
-      #     pictureUrl
-      #   }
-      # admin {
-      #   id
-      #   firstName
-      #   lastName
-      #   stream_name
-      #   fullName
-      # }
-      # }
+      federalMinistryCount
+      federalMinistries {
+        name
+        id
+        memberCount
+        hubCount
+        sontaCount
+        ministryCount
+        leader {
+          id
+          firstName
+          lastName
+          stream_name
+          pictureUrl
+        }
+      }
     }
   }
 `

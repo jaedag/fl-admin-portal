@@ -442,6 +442,8 @@ export const DISPLAY_STREAM = gql`
       vacationFellowshipCount
       activeIcBacentaCount
       vacationIcBacentaCount
+      hubCount
+      sontaCount
       gatheringService {
         id
         name
@@ -504,6 +506,7 @@ export const DISPLAY_GATHERINGSERVICE = gql`
       vacationFellowshipCount
       activeIcBacentaCount
       vacationIcBacentaCount
+      federalMinistryCount
       oversight {
         id
         name

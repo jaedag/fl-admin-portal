@@ -20,7 +20,7 @@ const DisplayAllGatheringServiceFederalMinistries = () => {
     }
   )
 
-  const federalMinistries = data?.gatheringServices[0]?.federalministries
+  const federalMinistries = data?.gatheringServices[0]?.federalMinistries
   const gatheringService = data?.gatheringServices[0]
 
   return (

@@ -184,6 +184,8 @@ export const plural = (church: ChurchLevel | string) => {
       return 'ministries'
     case 'Ministry':
       return 'Ministries'
+    case 'Federalministry':
+      return 'Federal Ministries'
     case 'fellowship':
       return 'fellowships'
     case 'Fellowship':

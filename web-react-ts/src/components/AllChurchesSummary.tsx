@@ -1,4 +1,5 @@
 import { Church, ChurchLevel } from 'global-types'
+import { plural } from 'global-utils'
 import React from 'react'
 import { Container, Card, Row, Col } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
@@ -21,11 +22,7 @@ const AllChurchesSummary = (props: AllChurchesSummaryProps) => {
         <Col>
           <Card className="mb-2 card-border">
             <Card.Body className="summary-padding">
-              <Row className="text-muted text-small">
-                {churchType === 'Constituency'
-                  ? 'Constituencies'
-                  : `${churchType}s`}
-              </Row>
+              <Row className="text-muted text-small">{plural(churchType)}</Row>
               <Row className="number">{numberOfChurchesBelow}</Row>
             </Card.Body>
           </Card>

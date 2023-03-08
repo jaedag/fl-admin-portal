@@ -59,12 +59,12 @@ const DetailsStream = () => {
     },
     {
       title: 'Hubs',
-      number: stream?.hubs?.length || 0,
+      number: stream?.hubCount || 0,
       link: `/stream/hubs`,
     },
     {
       title: 'Sontas',
-      number: stream?.sontas?.length || 0,
+      number: stream?.sontaCount || 0,
       link: '/stream/sontas',
     },
   ]
