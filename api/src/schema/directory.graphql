@@ -1060,6 +1060,10 @@ type Ministry {
   history: [HistoryLog!]! @relationship(type:"HAS_HISTORY", direction: OUT)
   servicelogs: [ServiceLog!]! @relationship(type:"HAS_HISTORY", direction: OUT)
   federalMinistry: Federalministry @relationship(type:"HAS", direction:IN)
+  sontas: [Sonta!]!
+    @cypher(
+      statement: "MATCH (this)-[:HAS*2]->(sonta:Sonta) RETURN sonta"
+    )
 }
 
 type Sonta {
