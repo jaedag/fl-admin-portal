@@ -504,7 +504,7 @@ type GatheringService implements Church {
     )
     federalMinistryCount: Int
     @cypher(
-      statement: "MATCH (this)-[:HAS]->(federalMinistry:Federalministry) RETURN COUNT(federalMinistry)"
+      statement: "MATCH (this)-[:HAS_MINISTRY]->(federalMinistry:Federalministry) RETURN COUNT(federalMinistry)"
     )
 
      ministryCount: Int!
