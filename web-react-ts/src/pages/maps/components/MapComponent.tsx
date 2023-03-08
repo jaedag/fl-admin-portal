@@ -99,7 +99,7 @@ const MapComponent = (props: MapComponentProps) => {
               position={selected.position}
               label={{
                 text: selected.name,
-                className: 'marker ' + getMapIconClass(selected),
+                className: 'marker selected ' + getMapIconClass(selected),
               }}
             />
 
@@ -185,7 +185,6 @@ const MapComponent = (props: MapComponentProps) => {
                   })
                 )
               )
-
               mapRef.current?.panTo(position.position)
             }}
             {...props}

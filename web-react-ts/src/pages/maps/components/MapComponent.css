@@ -6,5 +6,9 @@
 }
 
 .university-venue-label {
-  color: #ffea00 !important;
+  color: #a1f6fc !important;
+}
+
+.selected {
+  color: #f6ff00 !important;
 }
