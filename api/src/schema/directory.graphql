@@ -504,7 +504,7 @@ type GatheringService implements Church {
     )
     federalMinistryCount: Int
     @cypher(
-      statement: "MATCH (this)-[:HAS]->(federalMinistry:Federalministry) RETURN COUNT(federalMinistry)"
+      statement: "MATCH (this)-[:HAS_MINISTRY]->(federalMinistry:Federalministry) RETURN COUNT(federalMinistry)"
     )
 
      ministryCount: Int!
@@ -1060,6 +1060,10 @@ type Ministry {
   history: [HistoryLog!]! @relationship(type:"HAS_HISTORY", direction: OUT)
   servicelogs: [ServiceLog!]! @relationship(type:"HAS_HISTORY", direction: OUT)
   federalMinistry: Federalministry @relationship(type:"HAS", direction:IN)
+  sontas: [Sonta!]!
+    @cypher(
+      statement: "MATCH (this)-[:HAS*2]->(sonta:Sonta) RETURN sonta"
+    )
 }
 
 type Sonta {
