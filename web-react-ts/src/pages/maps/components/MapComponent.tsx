@@ -18,6 +18,7 @@ import {
 import { MemberContext } from 'contexts/MemberContext'
 import LoadingScreen from 'components/base-component/LoadingScreen'
 import './MapComponent.css'
+import { getMapIcon, getMapIconClass } from './map-utils'
 
 type LatLngLiteral = google.maps.LatLngLiteral
 type MapOptions = google.maps.MapOptions
@@ -96,7 +97,10 @@ const MapComponent = (props: MapComponentProps) => {
           <>
             <Marker
               position={selected.position}
-              label={{ text: selected.name, className: 'key-marker-label' }}
+              label={{
+                text: selected.name,
+                className: 'marker ' + getMapIconClass(selected),
+              }}
             />
 
             <MarkerClusterer>
@@ -108,9 +112,13 @@ const MapComponent = (props: MapComponentProps) => {
                     return (
                       <Marker
                         key={place.id}
-                        label={place.name}
+                        label={{
+                          text: place.name,
+                          className: 'marker ' + getMapIconClass(place),
+                        }}
                         position={place.position}
                         clusterer={clusterer}
+                        icon={getMapIcon(place)}
                         // onClick={() => {
                         //   fetchDirections(house)
                         // }}
@@ -208,7 +216,17 @@ const MapComponent = (props: MapComponentProps) => {
                 },
               })
 
-              console.log(response)
+              setPlaces(
+                response.data.members[0].placesSearchByLocation.map(
+                  (place: any) => ({
+                    ...place,
+                    position: {
+                      lat: place.latitude,
+                      lng: place.longitude,
+                    },
+                  })
+                )
+              )
 
               mapRef.current?.panTo(position)
 
