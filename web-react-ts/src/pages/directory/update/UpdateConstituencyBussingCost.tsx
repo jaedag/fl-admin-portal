@@ -74,8 +74,8 @@ const UpdateConstituencyBussingCost = () => {
             <Form>
               <Row className="form-row">
                 <Col>
-                  <Input name="sprinterCost" label="Sprinter Cost" />
-                  <Input name="urvanCost" label="Urvan Cost" />
+                  <Input name="sprinterCost" label="Sprinter Cost (One Way)" />
+                  <Input name="urvanCost" label="Urvan Cost (One Way)" />
                 </Col>
               </Row>
               <div className="mt-4">
