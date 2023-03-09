@@ -4,6 +4,8 @@ extend type Stream {
 
 extend type ServiceRecord {
   tellerConfirmationTime: DateTime
+  bankingConfirmer: Member
+    @relationship(type: "CONFIRMED_BANKING_FOR", direction: IN)
 }
 
 extend type Member {

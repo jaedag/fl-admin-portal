@@ -116,6 +116,12 @@ export const DISPLAY_FELLOWSHIP_SERVICE = gql`
         lastName
         fullName
       }
+      bankingConfirmer {
+        id
+        firstName
+        lastName
+        fullName
+      }
     }
     fellowships(where: { id: $fellowshipId }) {
       id

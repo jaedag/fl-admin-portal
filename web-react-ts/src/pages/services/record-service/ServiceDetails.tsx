@@ -1,3 +1,4 @@
+import RoleView from 'auth/RoleView'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import HeadingSecondary from 'components/HeadingSecondary'
 import PlaceholderCustom from 'components/Placeholder'
@@ -6,6 +7,7 @@ import TableFromArrays from 'components/TableFromArrays/TableFromArrays'
 import { MemberContext } from 'contexts/MemberContext'
 import { Church, ServiceRecord } from 'global-types'
 import { parseNeoTime } from 'jd-date-utils'
+import { permitAdmin } from 'permission-utils'
 import React, { useContext, useEffect } from 'react'
 import { Col, Container, Row, Button, Card } from 'react-bootstrap'
 import { useNavigate } from 'react-router'
@@ -80,6 +82,11 @@ const ServiceDetails = ({ service, church, loading }: ServiceDetailsProps) => {
         {!currentUser.noIncome && service?.offeringBankedBy && (
           <p className="fw-bold">{`Offering Banked by ${service?.offeringBankedBy.fullName}`}</p>
         )}
+        <RoleView roles={permitAdmin('Council')}>
+          {!currentUser.noIncome && service?.bankingConfirmer && (
+            <p className="fw-bold">{`Offering Confirmed by ${service?.offeringBankedBy.fullName}`}</p>
+          )}
+        </RoleView>
       </PlaceholderCustom>
       <Row>
         <Col>

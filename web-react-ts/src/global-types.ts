@@ -306,6 +306,7 @@ export type ServiceRecord = {
   transactionStatus: 'pending' | 'success' | 'failed' | 'send OTP'
   bankingSlipUploader: Member
   offeringBankedBy: Member
+  bankingConfirmer: Member
 }
 
 export type AggregateServiceRecord = {
