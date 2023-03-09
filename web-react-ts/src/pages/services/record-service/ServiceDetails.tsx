@@ -84,7 +84,7 @@ const ServiceDetails = ({ service, church, loading }: ServiceDetailsProps) => {
         )}
         <RoleView roles={permitAdmin('Council')}>
           {!currentUser.noIncome && service?.bankingConfirmer && (
-            <p className="fw-bold">{`Offering Confirmed by ${service?.offeringBankedBy.fullName}`}</p>
+            <p className="fw-bold">{`Offering Confirmed by ${service?.bankingConfirmer.fullName}`}</p>
           )}
         </RoleView>
       </PlaceholderCustom>
