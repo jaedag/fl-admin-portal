@@ -52,7 +52,7 @@ export const checkIfLastServiceBanked = async (
     !(
       'bankingSlip' in record ||
       record.transactionStatus === 'success' ||
-      record.tellerConfirmationTime
+      'tellerConfirmationTime' in record
     )
   ) {
     throw new Error(
