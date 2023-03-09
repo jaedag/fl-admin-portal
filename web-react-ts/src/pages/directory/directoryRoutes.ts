@@ -2,6 +2,7 @@ import { LazyRouteTypes } from 'global-types'
 import {
   permitAdmin,
   permitAdminArrivals,
+  permitArrivals,
   permitLeaderAdmin,
   permitMe,
   permitSheepSeeker,
@@ -457,7 +458,7 @@ export const directory: LazyRouteTypes[] = [
   {
     path: '/bacenta/addbacenta',
     element: CreateBacenta,
-    roles: permitAdmin('Constituency'),
+    roles: permitArrivals('GatheringService'),
     placeholder: false,
   },
   {

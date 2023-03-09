@@ -347,14 +347,7 @@ extend type Mutation {
   CreateBacenta(name: String!, constituencyId: ID!, leaderId: ID!): Bacenta  #Return constituency and drill down to get bacenta info
     @auth(
       rules: [
-        {
-          roles: [
-            "adminGatheringService"
-            "adminStream"
-            "adminCouncil"
-            "adminConstituency"
-          ]
-        }
+        { roles: ["adminGatheringService", "arrivalsAdminGatheringService"] }
       ]
     )
     @cypher(
@@ -393,7 +386,7 @@ extend type Mutation {
       RETURN bacenta
       """
     )
- 
+
   CreateFellowship(
     name: String!
     bacentaId: ID!
@@ -437,7 +430,6 @@ extend type Mutation {
       RETURN fellowship
       """
     )
-  
 }
 
 ### UPDATE OPERATIONS ###
@@ -711,8 +703,6 @@ extend type Mutation {
       RETURN bacenta
       """
     )
-
-
 
   UpdateFellowshipDetails(
     id: ID!

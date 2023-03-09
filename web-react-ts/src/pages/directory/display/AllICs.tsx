@@ -6,7 +6,7 @@ import { ChurchContext } from '../../../contexts/ChurchContext'
 import RoleView from '../../../auth/RoleView'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { Col, Container, Row } from 'react-bootstrap'
-import { permitAdmin } from 'permission-utils'
+import { permitAdmin, permitArrivals } from 'permission-utils'
 import AllChurchesSummary from 'components/AllChurchesSummary'
 import 'components/AllChurchesSummary.css'
 import ChurchSearch from 'components/ChurchSearch'
@@ -58,7 +58,7 @@ const DisplayAllICs = () => {
               </Link>
             ) : null}
           </Col>
-          <RoleView directoryLock roles={permitAdmin('Constituency')}>
+          <RoleView directoryLock roles={permitArrivals('GatheringService')}>
             <Col className="col-auto">
               <Link
                 to="/bacenta/addbacenta"
