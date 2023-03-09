@@ -52,6 +52,21 @@ const DetailsStream = () => {
       vacationCount: stream?.vacationFellowshipCount,
       link: '#',
     },
+    {
+      title: 'Ministries',
+      number: stream?.ministries?.length || 0,
+      link: `/stream/ministries`,
+    },
+    {
+      title: 'Hubs',
+      number: stream?.hubCount || 0,
+      link: `/stream/hubs`,
+    },
+    {
+      title: 'Sontas',
+      number: stream?.sontaCount || 0,
+      link: '/stream/sontas',
+    },
   ]
 
   return (

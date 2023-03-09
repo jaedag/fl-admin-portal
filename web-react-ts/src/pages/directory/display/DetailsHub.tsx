@@ -38,7 +38,7 @@ const DetailsHub = () => {
     {
       title: 'Sontas',
       number: hub?.sontaCount,
-      link: '#',
+      link: '/sonta/displayall',
     },
   ]
 

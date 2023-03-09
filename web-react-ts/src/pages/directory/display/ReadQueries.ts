@@ -442,6 +442,8 @@ export const DISPLAY_STREAM = gql`
       vacationFellowshipCount
       activeIcBacentaCount
       vacationIcBacentaCount
+      hubCount
+      sontaCount
       gatheringService {
         id
         name
@@ -464,6 +466,10 @@ export const DISPLAY_STREAM = gql`
         currentTitle
         nameWithTitle
         pictureUrl
+      }
+      ministries {
+        id
+        name
       }
       history(limit: 5) {
         id
@@ -500,6 +506,7 @@ export const DISPLAY_GATHERINGSERVICE = gql`
       vacationFellowshipCount
       activeIcBacentaCount
       vacationIcBacentaCount
+      federalMinistryCount
       oversight {
         id
         name
@@ -654,6 +661,7 @@ export const DISPLAY_MINISTRY = gql`
       }
       memberCount
       sontaCount
+      hubCount
       history {
         id
         timeStamp

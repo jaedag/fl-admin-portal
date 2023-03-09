@@ -59,6 +59,11 @@ const DetailsGatheringService = () => {
       vacationCount: gathering?.vacationFellowshipCount,
       link: '#',
     },
+    {
+      title: 'Federal Ministries',
+      number: gathering?.federalMinistryCount,
+      link: '/gatheringservice/federalministries',
+    },
   ]
 
   return (

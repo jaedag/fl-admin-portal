@@ -31,7 +31,6 @@ const CreateFederalMinistry = () => {
     onSubmitProps: FormikHelpers<FederalMinistryFormValues>
   ) => {
     onSubmitProps.setSubmitting(true)
-    clickCard({ id: values.gatheringService, __typename: 'GatheringService' })
 
     CreateFederalministry({
       variables: {
@@ -50,7 +49,10 @@ const CreateFederalMinistry = () => {
         }).catch((error) => {
           throwToSentry('There was an error adding leader', error)
         })
-
+        clickCard({
+          id: values.gatheringService,
+          __typename: 'GatheringService',
+        })
         clickCard(res.data.CreateFederalministry)
         onSubmitProps.setSubmitting(false)
         onSubmitProps.resetForm()

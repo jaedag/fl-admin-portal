@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { useQuery } from '@apollo/client'
-import { GET_HUB_SONTAS } from '../../../queries/ListQueries'
+import { GET_GATHERINGSERVICE_FEDERALMINISTRIES } from '../../../queries/ListQueries'
 import { ChurchContext } from '../../../contexts/ChurchContext'
 import RoleView from '../../../auth/RoleView'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
@@ -10,15 +10,18 @@ import { permitAdmin } from 'permission-utils'
 import AllChurchesSummary from 'components/AllChurchesSummary'
 import ChurchSearch from 'components/ChurchSearch'
 
-const DisplayAllSontas = () => {
-  const { clickCard, hubId } = useContext(ChurchContext)
+const DisplayAllGatheringServiceFederalMinistries = () => {
+  const { clickCard, gatheringServiceId } = useContext(ChurchContext)
 
-  const { data, loading, error } = useQuery(GET_HUB_SONTAS, {
-    variables: { id: hubId },
-  })
+  const { data, loading, error } = useQuery(
+    GET_GATHERINGSERVICE_FEDERALMINISTRIES,
+    {
+      variables: { id: gatheringServiceId },
+    }
+  )
 
-  const sontas = data?.hubs[0]?.sontas
-  const hub = data?.hubs[0]
+  const federalMinistries = data?.gatheringServices[0]?.federalMinistries
+  const gatheringService = data?.gatheringServices[0]
 
   return (
     <ApolloWrapper data={data} loading={loading} error={error}>
@@ -26,57 +29,62 @@ const DisplayAllSontas = () => {
         <Row className="mb-2">
           <Col>
             <Link
-              to="/hub/displaydetails"
+              to="/gatheringservice/displaydetails"
               onClick={() => {
-                clickCard(hub)
+                clickCard(gatheringService)
               }}
             >
-              <h4 className="text-white">{`${hub?.name} Sontas`}</h4>
+              <h4 className="text-white">{`${gatheringService?.name} Federal Ministries`}</h4>
             </Link>
             <Link
               to="/member/displaydetails"
               onClick={() => {
-                clickCard(hub?.leader)
+                clickCard(gatheringService?.leader)
               }}
             >
               <h6 className="text-white text-small d-block ">
                 <span className="text-muted">Leader: </span>
-                {hub?.leader ? ` ${hub.leader.fullName}` : null}
+                {gatheringService?.leader
+                  ? ` ${gatheringService.leader.fullName}`
+                  : null}
               </h6>
             </Link>
-            {hub?.admin ? (
+            {gatheringService?.admin ? (
               <Link
                 className="pb-4 text-white text-small"
                 to="/member/displaydetails"
                 onClick={() => {
-                  clickCard(hub?.admin)
+                  clickCard(gatheringService?.admin)
                 }}
               >
                 <span className="text-muted">Admin :</span>{' '}
-                {`${hub?.admin?.fullName}`}
+                {`${gatheringService?.admin?.fullName}`}
               </Link>
             ) : null}
           </Col>
           <RoleView roles={permitAdmin('GatheringService')} directoryLock>
             <Col className="col-auto">
-              <Link to="/sonta/addsonta" className="btn btn-danger">
-                Add Sonta
+              <Link
+                to="/federalministry/addfederalministry"
+                className="btn btn-danger"
+              >
+                Add Federal Ministry
               </Link>
             </Col>
           </RoleView>
         </Row>
 
         <AllChurchesSummary
-          church={sontas}
-          memberCount={hub?.memberCount}
-          numberOfChurchesBelow={sontas?.length}
-          churchType="Sonta"
-          route="hub"
+          church={federalMinistries}
+          memberCount={gatheringService?.memberCount}
+          numberOfChurchesBelow={federalMinistries?.length}
+          churchType="Federalministry"
+          route="gatheringService"
         />
-        <ChurchSearch data={sontas} churchType="Sonta" />
+        <ChurchSearch data={federalMinistries} churchType="Federalministry" />
       </Container>
     </ApolloWrapper>
   )
 }
 
-export default DisplayAllSontas
+export default DisplayAllGatheringServiceFederalMinistries

@@ -29,7 +29,6 @@ const CreateHub = () => {
     onSubmitProps: FormikHelpers<HubFormValues>
   ) => {
     onSubmitProps.setSubmitting(true)
-    clickCard({ id: values.ministry, __typename: 'Ministry' })
 
     CreateHub({
       variables: {
@@ -49,6 +48,7 @@ const CreateHub = () => {
           throwToSentry('There was an error adding leader', error)
         })
 
+        clickCard({ id: values.ministry, __typename: 'Ministry' })
         clickCard(res.data.CreateHub)
         onSubmitProps.setSubmitting(false)
         onSubmitProps.resetForm()

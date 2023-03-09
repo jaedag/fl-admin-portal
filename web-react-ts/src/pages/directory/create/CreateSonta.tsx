@@ -29,8 +29,6 @@ const CreateSonta = () => {
     onSubmitProps: FormikHelpers<SontaFormValues>
   ) => {
     onSubmitProps.setSubmitting(true)
-    clickCard({ id: values.ministry, __typename: 'Ministry' })
-    clickCard({ id: values.hub, __typename: 'Hub' })
 
     CreateSonta({
       variables: {
@@ -50,6 +48,8 @@ const CreateSonta = () => {
           throwToSentry('There was an error adding leader', error)
         })
 
+        clickCard({ id: values.ministry, __typename: 'Ministry' })
+        clickCard({ id: values.hub, __typename: 'Hub' })
         clickCard(res.data.CreateSonta)
         onSubmitProps.setSubmitting(false)
         onSubmitProps.resetForm()
