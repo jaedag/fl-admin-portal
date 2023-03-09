@@ -208,7 +208,13 @@ const directoryMutation = {
       bankingSlip: null,
     }
 
-    if (!('bankingSlip' in record || record.transactionStatus === 'success')) {
+    if (
+      !(
+        'bankingSlip' in record ||
+        record.transactionStatus === 'success' ||
+        'tellerConfirmationTime' in record
+      )
+    ) {
       throw new Error(
         `Please bank outstanding offering for your service filled on ${getHumanReadableDate(
           record.createdAt
@@ -323,7 +329,11 @@ const directoryMutation = {
       const record = lastServiceRecord.lastService.properties
 
       if (
-        !('bankingSlip' in record || record.transactionStatus === 'success')
+        !(
+          'bankingSlip' in record ||
+          record.transactionStatus === 'success' ||
+          'tellerConfirmationTime' in record
+        )
       ) {
         throw new Error(
           `Please bank outstanding offering for your service filled on ${getHumanReadableDate(
