@@ -1,3 +1,12 @@
+#### 5.9.28 (2023-03-09)
+
+##### Bug Fixes
+
+*  implement permission for only gathering service admin to create bacentas ([95c778a5](https://github.com/firstlovecenter/fl-pastoral-care/commit/95c778a5b8e1e8af67b1139983383801864c9c58))
+*  update constituency bussing costs ([e8ceaf47](https://github.com/firstlovecenter/fl-pastoral-care/commit/e8ceaf474cee07587a8df565d400395a5870807f))
+*  ensure that bussing data is added per week, and not per day ([608f91ae](https://github.com/firstlovecenter/fl-pastoral-care/commit/608f91ae662e30a6e681cf7737ad68115452295a))
+*  optionally display foreign currency of a service ([6bbb68bb](https://github.com/firstlovecenter/fl-pastoral-care/commit/6bbb68bb86398acaf65b789351b73583076b7e17))
+
 #### 5.9.27 (2023-03-05)
 
 ##### Bug Fixes
