@@ -1,3 +1,21 @@
+### 5.10.0 (2023-03-10)
+
+##### New Features
+
+*  implement a manual submission of banking slip for gs admins ([2090fd3e](https://github.com/firstlovecenter/fl-pastoral-care/commit/2090fd3ee2e586c27f4e2bc9a17a18f8f504391a))
+*  implement button to undo a cancelled service ([96378838](https://github.com/firstlovecenter/fl-pastoral-care/commit/9637883809e1878ebc283596c26d70bb5e8dce6c))
+
+##### Bug Fixes
+
+*  implement roles on the mutation in the api ([a7126394](https://github.com/firstlovecenter/fl-pastoral-care/commit/a7126394301cf1475082c043228070cb75bf85f2))
+*  implement a role view on the undocancelledservice button ([51b8388a](https://github.com/firstlovecenter/fl-pastoral-care/commit/51b8388a4fe51ff23148b74a0ae62e198e8c5833))
+*  change wrong param to service Record Id ([668969b3](https://github.com/firstlovecenter/fl-pastoral-care/commit/668969b3c24fefa25ca1321d10e9ff44050e313c))
+*  remove redundant code breaking the build ([931f7f08](https://github.com/firstlovecenter/fl-pastoral-care/commit/931f7f083ecce23d5a683eea781fbe58d2f17412))
+*  fix bug where anagkazo services are being seen as not banked ([d662d741](https://github.com/firstlovecenter/fl-pastoral-care/commit/d662d7418690da95b235077d3534cc1d27ead372))
+*  fix bug where anagkazo services are being seen as not banked ([798f3589](https://github.com/firstlovecenter/fl-pastoral-care/commit/798f3589f2a6718b7f42109d9b7caf2e8d3ea0be))
+*  fix bug where anagkazo services are being seen as not banked ([7d06a6eb](https://github.com/firstlovecenter/fl-pastoral-care/commit/7d06a6ebcfcea9461313de6f16fd557ef33922c3))
+*  implement a field for viewing anagkazo confirmers on service details page ([f612ab84](https://github.com/firstlovecenter/fl-pastoral-care/commit/f612ab848b275058c855794cec5c6751d776ad53))
+
 #### 5.9.28 (2023-03-09)
 
 ##### Bug Fixes
