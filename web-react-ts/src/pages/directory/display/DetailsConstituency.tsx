@@ -43,20 +43,27 @@ const DetailsConstituency = () => {
       link: '#',
     },
     {
-      title: 'Sprinter Cost',
-      number: constituency?.sprinterCost + ' GHS',
-      link: '#',
-    },
-    {
       title: 'Urvan Cost',
       number: constituency?.urvanCost + ' GHS',
       link: '#',
     },
+    {
+      title: 'Sprinter Cost',
+      number: constituency?.sprinterCost + ' GHS',
+      link: '#',
+    },
   ]
 
-  if (!constituency?.sprinterCost || !constituency?.urvanCost) {
-    const moneyItems = [1, 2]
-    moneyItems.forEach(() => details.pop())
+  if (!constituency?.urvanCost && !constituency?.sprinterCost) {
+    details.splice(5, 2)
+  }
+
+  if (!constituency?.sprinterCost && constituency?.urvanCost) {
+    details.splice(6, 1)
+  }
+
+  if (!constituency?.urvanCost && constituency?.sprinterCost) {
+    details.splice(5, 1)
   }
 
   return (
