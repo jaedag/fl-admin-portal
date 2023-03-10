@@ -416,7 +416,7 @@ type GatheringService implements Church {
   leader: Member @relationship(type: "LEADS", direction: IN)
   oversight: Oversight! @relationship(type: "HAS", direction: IN)
   streams: [Stream!]! @relationship(type: "HAS", direction: OUT)
-  ministries: [Federalministry!]! @relationship(type: "HAS_MINISTRY", direction: OUT)
+  federalMinistries: [Federalministry!]! @relationship(type: "HAS_MINISTRY", direction: OUT)
 
   councils: [Council!]!
     @cypher(
@@ -501,6 +501,31 @@ type GatheringService implements Church {
       WITH DISTINCT records, date
       RETURN records ORDER BY date.date DESC LIMIT $limit
       """
+    )
+    federalMinistryCount: Int
+    @cypher(
+      statement: "MATCH (this)-[:HAS]->(federalMinistry:Federalministry) RETURN COUNT(federalMinistry)"
+    )
+
+     ministryCount: Int!
+    @cypher(
+      statement: "MATCH (this)-[:HAS*2]->(ministry:Ministry) RETURN COUNT(ministry)"
+    )
+  hubCount:  Int! 
+    @cypher(
+      statement: "MATCH (this)-[:HAS*3]->(hub:Hub) RETURN COUNT(hub)"
+    )
+  sontaCount:  Int!
+    @cypher(
+      statement:  "MATCH (this)-[:HAS*4]->(sonta:Sonta) RETURN COUNT(sonta)"
+    )
+  sontas: [Sonta!]!
+    @cypher(
+      statement: "MATCH (this)-[:HAS*4]->(sonta:Sonta) RETURN sonta"
+    )
+  hubs:  [Hub!]!
+    @cypher(
+      statement: "MATCH (this)-[:HAS*3]->(hub:Hub) RETURN hub"
     )
 }
 
@@ -598,6 +623,26 @@ type Stream implements Church {
       WITH DISTINCT records, date
       RETURN records ORDER BY date.date DESC LIMIT $limit
       """
+    )
+  ministryCount: Int!
+    @cypher(
+      statement: "MATCH (this)-[:HAS]->(ministry:Ministry) RETURN COUNT(ministry)"
+    )
+  hubCount:  Int! 
+    @cypher(
+      statement: "MATCH (this)-[:HAS*2]->(hub:Hub) RETURN COUNT(hub)"
+    )
+  sontaCount:  Int!
+    @cypher(
+      statement:  "MATCH (this)-[:HAS*3]->(sonta:Sonta) RETURN COUNT(sonta)"
+    )
+  sontas: [Sonta!]!
+    @cypher(
+      statement: "MATCH (this)-[:HAS*3]->(sonta:Sonta) RETURN sonta"
+    )
+  hubs:  [Hub!]!
+    @cypher(
+      statement: "MATCH (this)-[:HAS*2]->(hub:Hub) RETURN hub"
     )
 }
 
@@ -1015,6 +1060,10 @@ type Ministry {
   history: [HistoryLog!]! @relationship(type:"HAS_HISTORY", direction: OUT)
   servicelogs: [ServiceLog!]! @relationship(type:"HAS_HISTORY", direction: OUT)
   federalMinistry: Federalministry @relationship(type:"HAS", direction:IN)
+  sontas: [Sonta!]!
+    @cypher(
+      statement: "MATCH (this)-[:HAS*2]->(sonta:Sonta) RETURN sonta"
+    )
 }
 
 type Sonta {
