@@ -1,7 +1,3 @@
-// Show the transactionStatus and reference
-MATCH (record:ServiceRecord {id: $service})
-
-RETURN record.transactionReference, record.income, record.transactionStatus;
 
 // Set transaction as successful with member banked offering
 MATCH (r:ServiceRecord {id: $service})
@@ -16,11 +12,19 @@ RETURN r.transactionStatus, r. transactionReference;
 MATCH (r:ServiceRecord {transactionReference: $reference})
 RETURN r.transactionReference;
 
-
-MATCH (r:ServiceRecord {id: '5457ffa8-474a-4e4b-9b31-b8bbd1d0e569'})
-REMOVE r.tellerConfirmationTime
-RETURN r.attendance, r.tellerConfirmationTime
-
-MATCH ()-[rel:CONFIRMED_BANKING_FOR]->()
-DELETE rel
-RETURN COUNT(rel)
+// set urvan and sprinter costs to be the same as the constituency
+MATCH (council:Council {name: "adsfa"})-[:HAS]->(constituency:Constituency)-[:HAS]->(bacenta:Bacenta)
+MATCH (bacenta)<-[:LEADS]-(leader:Member)
+// SET bacenta.urvanCost = constituency.urvanCost,
+// bacenta.sprinterCost = constituency.sprinterCost
+RETURN council.name, constituency.name, bacenta.name, leader.firstName+" "+ leader.lastName, bacenta.urvanCost, (CASE
+        WHEN bacenta.urvanCost <= 50 THEN round(0.5 * bacenta.urvanCost)
+       WHEN bacenta.urvanCost <= 110 THEN  round(0.7 * bacenta.urvanCost)
+       WHEN bacenta.urvanCost > 110 THEN  round(0.8 * bacenta.urvanCost)
+       ELSE 0
+      END) AS urvanTopUp, bacenta.sprinterCost, (CASE
+        WHEN bacenta.sprinterCost <= 50 THEN round(0.5 * bacenta.sprinterCost)
+       WHEN bacenta.sprinterCost <= 110 THEN  round(0.7 * bacenta.sprinterCost)
+       WHEN bacenta.sprinterCost > 110 THEN  round(0.8 * bacenta.sprinterCost)
+       ELSE 0
+      END) AS sprinterTopUp  
