@@ -1,7 +1,9 @@
 import { useMutation } from '@apollo/client'
+import RoleView from 'auth/RoleView'
 import PlaceholderCustom from 'components/Placeholder'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { alertMsg } from 'global-utils'
+import { permitAdmin } from 'permission-utils'
 import React, { useContext } from 'react'
 import { Card, Button } from 'react-bootstrap'
 import {
@@ -95,29 +97,31 @@ const DefaulterCard = ({ defaulter, link }: DefaulterCardProps) => {
             </Button>
           </a>
           {serviceDetails?.noServiceReason && (
-            <Button
-              className="ms-3"
-              variant="warning"
-              onClick={() => {
-                const confirmBox = window.confirm(
-                  'Do you want to undo the cancellation of this service?'
-                )
+            <RoleView roles={permitAdmin('Fellowship')}>
+              <Button
+                className="ms-3"
+                variant="warning"
+                onClick={() => {
+                  const confirmBox = window.confirm(
+                    'Do you want to undo the cancellation of this service?'
+                  )
 
-                if (confirmBox === true) {
-                  UndoCancelledService({
-                    variables: { serviceRecordId: serviceDetails.id },
-                  }).then(() => {
-                    alertMsg('Leader can now fill the form again. Thank you!')
-                    clickCard(defaulter)
-                    navigate(
-                      `/${defaulter?.__typename.toLowerCase()}/displaydetails`
-                    )
-                  })
-                }
-              }}
-            >
-              <ArrowCounterclockwise /> Undo
-            </Button>
+                  if (confirmBox === true) {
+                    UndoCancelledService({
+                      variables: { serviceRecordId: serviceDetails.id },
+                    }).then(() => {
+                      alertMsg('Leader can now fill the form again. Thank you!')
+                      clickCard(defaulter)
+                      navigate(
+                        `/${defaulter?.__typename.toLowerCase()}/displaydetails`
+                      )
+                    })
+                  }
+                }}
+              >
+                <ArrowCounterclockwise /> Undo
+              </Button>
+            </RoleView>
           )}
         </Card.Body>
         <Card.Footer className="text-muted">{`Meeting Day: ${defaulter?.meetingDay?.day}`}</Card.Footer>
