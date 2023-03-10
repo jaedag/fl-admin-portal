@@ -17,6 +17,20 @@ extend type Mutation {
     serviceRecordId: ID!
   ): ServiceRecord!
   SubmitBankingSlip(serviceRecordId: ID!, bankingSlip: String!): ServiceRecord!
+  ManuallyConfirmOfferingPayment(serviceRecordId: ID!): ServiceRecord!
+    @auth(rules: [{ roles: ["adminGatheringService"] }])
+    @cypher(
+      statement: """
+      MATCH (service:ServiceRecord)
+      WHERE service.id = $serviceRecordId
+      SET service.tellerConfirmationTime = datetime()
+
+      WITH service
+      MATCH (author:Member {auth_id: $auth.jwt.sub})
+      MERGE (service)<-[:CONFIRMED_BANKING_FOR]-(author)
+      RETURN service
+      """
+    )
 }
 
 extend type ServiceRecord {

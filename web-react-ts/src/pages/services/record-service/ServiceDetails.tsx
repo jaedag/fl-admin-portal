@@ -1,3 +1,4 @@
+import { useMutation } from '@apollo/client'
 import RoleView from 'auth/RoleView'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import HeadingSecondary from 'components/HeadingSecondary'
@@ -6,11 +7,14 @@ import SpinnerPage from 'components/SpinnerPage'
 import TableFromArrays from 'components/TableFromArrays/TableFromArrays'
 import { MemberContext } from 'contexts/MemberContext'
 import { Church, ServiceRecord } from 'global-types'
+import { alertMsg } from 'global-utils'
 import { parseNeoTime } from 'jd-date-utils'
 import { permitAdmin } from 'permission-utils'
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Col, Container, Row, Button, Card } from 'react-bootstrap'
+import { CheckCircleFill } from 'react-bootstrap-icons'
 import { useNavigate } from 'react-router'
+import { MANUALLY_CONFIRM_OFFERING_PAYMENT } from './RecordServiceMutations'
 import './ServiceDetails.css'
 
 type ServiceDetailsProps = {
@@ -22,6 +26,10 @@ type ServiceDetailsProps = {
 const ServiceDetails = ({ service, church, loading }: ServiceDetailsProps) => {
   const { theme, currentUser } = useContext(MemberContext)
   const navigate = useNavigate()
+  const [ManuallyConfirmOfferingPayment] = useMutation(
+    MANUALLY_CONFIRM_OFFERING_PAYMENT
+  )
+  const [submitting, setSubmitting] = useState(false)
 
   useEffect(() => {
     if (!service && !loading) {
@@ -65,6 +73,9 @@ const ServiceDetails = ({ service, church, loading }: ServiceDetailsProps) => {
   if (service.noServiceReason) {
     table.push(['No Service Reason', service.noServiceReason])
   }
+
+  const noBankingProof =
+    !currentUser.noIncome && !service?.bankingProof && !service?.bankingSlip
 
   return (
     <Container>
@@ -160,14 +171,42 @@ const ServiceDetails = ({ service, church, loading }: ServiceDetailsProps) => {
                     </div>
                   </>
                 )}{' '}
-                {!currentUser.noIncome &&
-                  !service?.bankingProof &&
-                  !service.bankingSlip &&
-                  service?.treasurerSelfie && (
-                    <p className="fw-bold text-danger">
-                      You Have Not Submitted Your Banking Slip!!!
-                    </p>
-                  )}
+                {noBankingProof && (
+                  <p className="fw-bold text-danger">
+                    You Have Not Submitted Your Banking Slip!!!
+                  </p>
+                )}
+                {noBankingProof && (
+                  <RoleView roles={permitAdmin('GatheringService')}>
+                    <div className="d-grid gap-2">
+                      <Button
+                        className="my-3"
+                        variant="warning"
+                        disabled={submitting}
+                        onClick={() => {
+                          setSubmitting(true)
+                          const confirmBox = window.confirm(
+                            'Do you want to confirm banking for this service?'
+                          )
+
+                          if (confirmBox === true) {
+                            ManuallyConfirmOfferingPayment({
+                              variables: { serviceRecordId: service.id },
+                            }).then(() => {
+                              setSubmitting(false)
+                              alertMsg(
+                                'Offering Payment has been confirmed. Thank you!'
+                              )
+                            })
+                          }
+                        }}
+                      >
+                        <CheckCircleFill />
+                        {submitting ? 'Confirmin...' : 'Confirm Offering'}
+                      </Button>
+                    </div>
+                  </RoleView>
+                )}
                 <div className="d-grid gap-2">
                   <Button
                     className={`btn-graphs ${theme}`}

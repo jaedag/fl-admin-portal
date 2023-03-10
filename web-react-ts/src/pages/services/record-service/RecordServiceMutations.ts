@@ -68,6 +68,58 @@ export const UNDO_CANCELLED_SERVICE = gql`
   }
 `
 
+export const MANUALLY_CONFIRM_OFFERING_PAYMENT = gql`
+  mutation ManuallyConfirmOfferingPayment($serviceRecordId: ID!) {
+    ManuallyConfirmOfferingPayment(serviceRecordId: $serviceRecordId) {
+      id
+      createdAt
+      created_by {
+        id
+        firstName
+        lastName
+        fullName
+      }
+      serviceDate {
+        date
+      }
+      noServiceReason
+      attendance
+      income
+      numberOfTithers
+      foreignCurrency
+      treasurerSelfie
+      familyPicture
+      bankingProof
+      bankingSlip
+      bankingSlipUploader {
+        id
+        firstName
+        lastName
+        fullName
+      }
+      offeringBankedBy {
+        id
+        firstName
+        lastName
+        fullName
+      }
+      transactionId
+      treasurers {
+        id
+        firstName
+        lastName
+        fullName
+      }
+      bankingConfirmer {
+        id
+        firstName
+        lastName
+        fullName
+      }
+    }
+  }
+`
+
 export const RECORD_SERVICE_NO_INCOME = gql`
   mutation RecordServiceNoIncome(
     $churchId: ID!
@@ -191,6 +243,12 @@ export const DISPLAY_BACENTA_SERVICE = gql`
         lastName
         fullName
       }
+      bankingConfirmer {
+        id
+        firstName
+        lastName
+        fullName
+      }
       transactionId
       treasurers {
         id
@@ -272,6 +330,12 @@ export const DISPLAY_CONSTITUENCY_SERVICE = gql`
         lastName
         fullName
       }
+      bankingConfirmer {
+        id
+        firstName
+        lastName
+        fullName
+      }
       treasurers {
         id
         firstName
@@ -317,6 +381,12 @@ export const DISPLAY_COUNCIL_SERVICE = gql`
         fullName
       }
       offeringBankedBy {
+        id
+        firstName
+        lastName
+        fullName
+      }
+      bankingConfirmer {
         id
         firstName
         lastName
@@ -372,6 +442,12 @@ export const DISPLAY_STREAM_SERVICE = gql`
         lastName
         fullName
       }
+      bankingConfirmer {
+        id
+        firstName
+        lastName
+        fullName
+      }
       treasurers {
         id
         firstName
@@ -420,6 +496,12 @@ export const DISPLAY_GATHERINGSERVICE_SERVICE = gql`
         fullName
       }
       offeringBankedBy {
+        id
+        firstName
+        lastName
+        fullName
+      }
+      bankingConfirmer {
         id
         firstName
         lastName

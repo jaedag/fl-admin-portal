@@ -17,12 +17,10 @@ MATCH (r:ServiceRecord {transactionReference: $reference})
 RETURN r.transactionReference;
 
 
-MATCH (stream:Stream {name:'Anagkazo Encounter'})-[:HAS*4]->(fellowship:Fellowship)
-MATCH p=(fellowship)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(service:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
-WHERE date.date.year < 2023 
-AND NOT EXISTS {
-    MATCH (service)-[:CONFIRMED_BANKING_FOR]-(:Member)
-}
-MATCH (betty:Member {email:"bettylove.darko11@gmail.com"})
-MERGE (service)<-[:CONFIRMED_BANKING_FOR]-(betty)
-RETURN p,betty LIMIT 4;
+MATCH (r:ServiceRecord {id: '5457ffa8-474a-4e4b-9b31-b8bbd1d0e569'})
+REMOVE r.tellerConfirmationTime
+RETURN r.attendance, r.tellerConfirmationTime
+
+MATCH ()-[rel:CONFIRMED_BANKING_FOR]->()
+DELETE rel
+RETURN COUNT(rel)
