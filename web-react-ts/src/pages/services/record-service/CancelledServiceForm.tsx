@@ -4,13 +4,13 @@ import React, { useContext } from 'react'
 import { useNavigate } from 'react-router'
 import { RECORD_CANCELLED_SERVICE } from './RecordServiceMutations'
 import { useMutation } from '@apollo/client'
-import { Button, Col, Container, Row } from 'react-bootstrap'
+import { Col, Container, Row } from 'react-bootstrap'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import HeadingSecondary from 'components/HeadingSecondary'
-import { MemberContext } from 'contexts/MemberContext'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { throwToSentry } from 'global-utils'
 import Input from 'components/formik/Input'
+import SubmitButton from 'components/formik/SubmitButton'
 
 type FormOptionsType = {
   serviceDate: string
@@ -30,7 +30,6 @@ const CancelledServiceForm = ({
   churchId: string
   churchType: string
 }) => {
-  const { theme } = useContext(MemberContext)
   const { clickCard } = useContext(ChurchContext)
   const navigate = useNavigate()
 
@@ -99,15 +98,7 @@ const CancelledServiceForm = ({
                     <Input name="noServiceReason" label="Reason" />
 
                     <div className="d-flex justify-content-center mt-5">
-                      <Button
-                        variant="primary"
-                        size="lg"
-                        type="submit"
-                        className={`btn-main ${theme}`}
-                        disabled={!formik.isValid || formik.isSubmitting}
-                      >
-                        Submit
-                      </Button>
+                      <SubmitButton formik={formik} />
                     </div>
                   </Col>
                 </div>

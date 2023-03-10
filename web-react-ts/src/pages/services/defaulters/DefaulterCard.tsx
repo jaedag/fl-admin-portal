@@ -1,9 +1,16 @@
+import { useMutation } from '@apollo/client'
 import PlaceholderCustom from 'components/Placeholder'
 import { ChurchContext } from 'contexts/ChurchContext'
+import { alertMsg } from 'global-utils'
 import React, { useContext } from 'react'
 import { Card, Button } from 'react-bootstrap'
-import { TelephoneFill, Whatsapp } from 'react-bootstrap-icons'
+import {
+  ArrowCounterclockwise,
+  TelephoneFill,
+  Whatsapp,
+} from 'react-bootstrap-icons'
 import { useNavigate } from 'react-router'
+import { UNDO_CANCELLED_SERVICE } from '../record-service/RecordServiceMutations'
 import { FellowshipWithDefaulters } from './defaulters-types'
 import './Defaulters.css'
 
@@ -15,6 +22,7 @@ type DefaulterCardProps = {
 const DefaulterCard = ({ defaulter, link }: DefaulterCardProps) => {
   const navigate = useNavigate()
   const { clickCard } = useContext(ChurchContext)
+  const [UndoCancelledService] = useMutation(UNDO_CANCELLED_SERVICE)
 
   const serviceDetails = defaulter?.services?.length
     ? defaulter?.services[0]
@@ -86,6 +94,31 @@ const DefaulterCard = ({ defaulter, link }: DefaulterCardProps) => {
               <Whatsapp /> WhatsApp
             </Button>
           </a>
+          {serviceDetails?.noServiceReason && (
+            <Button
+              className="ms-3"
+              variant="warning"
+              onClick={() => {
+                const confirmBox = window.confirm(
+                  'Do you want to undo the cancellation of this service?'
+                )
+
+                if (confirmBox === true) {
+                  UndoCancelledService({
+                    variables: { serviceRecordId: serviceDetails.id },
+                  }).then(() => {
+                    alertMsg('Leader can now fill the form again. Thank you!')
+                    clickCard(defaulter)
+                    navigate(
+                      `/${defaulter?.__typename.toLowerCase()}/displaydetails`
+                    )
+                  })
+                }
+              }}
+            >
+              <ArrowCounterclockwise /> Undo
+            </Button>
+          )}
         </Card.Body>
         <Card.Footer className="text-muted">{`Meeting Day: ${defaulter?.meetingDay?.day}`}</Card.Footer>
       </PlaceholderCustom>

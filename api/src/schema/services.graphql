@@ -1369,4 +1369,13 @@ extend type Mutation {
     serviceDate: String!
     noServiceReason: String!
   ): NoService!
+
+  UndoCancelledService(serviceRecordId: ID!): Fellowship!
+    @cypher(
+      statement: """
+      MATCH (this:NoService {id: $serviceRecordId})<-[:HAS_SERVICE]-(serviceLog:ServiceLog)<-[:HAS_HISTORY]-(fellowship:Fellowship)
+      DETACH DELETE this
+      RETURN fellowship
+      """
+    )
 }

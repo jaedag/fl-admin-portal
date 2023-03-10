@@ -55,6 +55,19 @@ export const RECORD_CANCELLED_SERVICE = gql`
   }
 `
 
+export const UNDO_CANCELLED_SERVICE = gql`
+  mutation UndoCancelledService($serviceRecordId: ID!) {
+    UndoCancelledService(serviceRecordId: $serviceRecordId) {
+      id
+      services(limit: 3) {
+        id
+        noServiceReason
+        bankingProof
+      }
+    }
+  }
+`
+
 export const RECORD_SERVICE_NO_INCOME = gql`
   mutation RecordServiceNoIncome(
     $churchId: ID!
