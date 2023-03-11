@@ -5,6 +5,18 @@
   text-align: center;
 }
 
+.info-window-header {
+  font-size: 16px;
+  font-weight: bold;
+  color: black;
+}
+
+.info-window-text {
+  font-size: 12px;
+  font-weight: bold;
+  color: black;
+}
+
 .indoor-venue-label {
   color: #a1f6fc !important;
 }

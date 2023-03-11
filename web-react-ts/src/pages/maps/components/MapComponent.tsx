@@ -4,10 +4,11 @@ import {
   GoogleMap,
   Marker,
   MarkerClusterer,
+  InfoWindow,
 } from '@react-google-maps/api'
 import { useState } from 'react'
 import '../Map.css'
-import { Button, Offcanvas } from 'react-bootstrap'
+import { Button, Col, Container, Offcanvas, Row } from 'react-bootstrap'
 import { IoChevronUp } from 'react-icons/io5'
 import { GooglePlaces, MemberPlaces } from '../Places'
 import {
@@ -19,6 +20,7 @@ import { MemberContext } from 'contexts/MemberContext'
 import LoadingScreen from 'components/base-component/LoadingScreen'
 import './MapComponent.css'
 import { getMapIcon, getMapIconClass } from './map-utils'
+import CloudinaryImage from 'components/CloudinaryImage'
 
 type LatLngLiteral = google.maps.LatLngLiteral
 type MapOptions = google.maps.MapOptions
@@ -63,6 +65,7 @@ const MapComponent = (props: MapComponentProps) => {
 
   const [show, setShow] = useState(false)
   const [selected, setOffice] = useState<PlaceType>()
+  const [clickedMarker, setClickedMarker] = useState<PlaceType>()
   const [places, setPlaces] = useState<PlaceType[]>([])
 
   const handleClose = () => setShow(false)
@@ -86,6 +89,10 @@ const MapComponent = (props: MapComponentProps) => {
   )
   const onLoad = useCallback((map: any) => (mapRef.current = map), [])
 
+  const handleMarkerClick = (marker: PlaceType) => {
+    setClickedMarker(marker)
+  }
+
   if (!isLoaded) {
     return <LoadingScreen />
   }
@@ -107,8 +114,30 @@ const MapComponent = (props: MapComponentProps) => {
                 text: selected.name,
                 className: 'marker selected ' + getMapIconClass(selected),
               }}
+              onClick={() => handleMarkerClick(selected)}
             />
-
+            {clickedMarker && (
+              <InfoWindow
+                position={clickedMarker.position}
+                onCloseClick={() => setClickedMarker(undefined)}
+              >
+                <Container>
+                  <Row>
+                    {clickedMarker.picture && (
+                      <Col>
+                        <CloudinaryImage src={clickedMarker.picture} />
+                      </Col>
+                    )}
+                    <Col>
+                      <p className="info-window-header">{clickedMarker.name}</p>
+                      <p className="info-window-text">
+                        {clickedMarker.description}
+                      </p>
+                    </Col>
+                  </Row>
+                </Container>
+              </InfoWindow>
+            )}
             <MarkerClusterer>
               {(clusterer) => (
                 <div>
@@ -125,9 +154,7 @@ const MapComponent = (props: MapComponentProps) => {
                         position={place.position}
                         clusterer={clusterer}
                         icon={getMapIcon(place)}
-                        // onClick={() => {
-                        //   fetchDirections(house)
-                        // }}
+                        onClick={() => handleMarkerClick(place)}
                       />
                     )
                   })}
@@ -170,6 +197,7 @@ const MapComponent = (props: MapComponentProps) => {
             handleClose={handleClose}
             setOffice={async (position) => {
               setOffice(position)
+
               mapRef.current?.panTo(position.position)
 
               const response = await props.placesSearchByLocation({

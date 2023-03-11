@@ -9,6 +9,12 @@ export const getMapIcon = (place: PlaceType) => {
       scaledSize: new google.maps.Size(40, 40),
     } as MapIconType
   }
+  if (place.typename === 'Fellowship') {
+    return {
+      url: 'https://res.cloudinary.com/firstlovecenter/image/upload/v1678533889/map-icons/bible-fellowship-service_hlpo0d.png',
+      scaledSize: new google.maps.Size(40, 40),
+    } as MapIconType
+  }
   if (place.typename === 'IndoorVenue') {
     return {
       url: 'https://res.cloudinary.com/firstlovecenter/image/upload/v1678534118/map-icons/univenue-marker_n2zdqi.png',
@@ -19,13 +25,6 @@ export const getMapIcon = (place: PlaceType) => {
     return {
       url: 'https://res.cloudinary.com/firstlovecenter/image/upload/v1678533891/map-icons/loud-speaker-outdoor-venue_wqpjqr.png',
       scaledSize: new google.maps.Size(30, 30),
-    } as MapIconType
-  }
-
-  if (place.typename === 'Fellowship') {
-    return {
-      url: 'https://res.cloudinary.com/firstlovecenter/image/upload/v1678533889/map-icons/bible-fellowship-service_hlpo0d.png',
-      scaledSize: new google.maps.Size(40, 40),
     } as MapIconType
   }
 
@@ -43,15 +42,15 @@ export const getMapIconClass = (place: PlaceType) => {
   if (place.typename === 'Member') {
     return 'member-label'
   }
+
+  if (place.typename === 'Fellowship') {
+    return 'fellowship-label'
+  }
   if (place.typename === 'IndoorVenue') {
     return 'indoor-venue-label'
   }
   if (place.typename === 'OutdoorVenue') {
     return 'outdoor-venue-label'
-  }
-
-  if (place.typename === 'Fellowship') {
-    return 'fellowship-label'
   }
 
   if (place.typename === 'HighSchool') {

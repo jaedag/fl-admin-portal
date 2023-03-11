@@ -12,6 +12,8 @@ export const MEMBER_PLACES_SEARCH_BY_LOCATION = gql`
         id
         name
         typename
+        description
+        picture
         # TODO: We must eventually switch from these to a location property object
         latitude
         longitude
@@ -28,6 +30,8 @@ export const MEMBER_PLACES_SEARCH_BY_NAME = gql`
         id
         name
         typename
+        description
+        picture
         latitude
         longitude
       }

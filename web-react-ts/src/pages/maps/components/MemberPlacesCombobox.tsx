@@ -112,7 +112,7 @@ const MemberPlacesCombobox = (props: ComboBoxProps) => {
             name: suggestion.name,
             typename: suggestion.typename,
             description: suggestion.description,
-            picture: suggestion.pictureUrl,
+            picture: suggestion.picture,
             position: location,
           })
           handleClose()

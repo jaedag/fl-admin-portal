@@ -20,6 +20,7 @@ interface FellowshipResultShape {
       id: string
       name: string
       location: Point
+      description: string
     }
   >
   distance: number
@@ -33,6 +34,8 @@ interface PeopleResultShape {
       firstName: string
       lastName: string
       location: Point
+      pictureUrl: string
+      description: string
     }
   >
   distance: number
@@ -45,6 +48,7 @@ interface OutreachVenueResultShape {
       id: string
       name: string
       location: Point
+      description: string
     }
   >
   distance: number
@@ -62,6 +66,8 @@ const parseMapData = (
       latitude: place.member.properties.location.y,
       longitude: place.member.properties.location.x,
       distance: place.distance,
+      picture: place.member.properties.pictureUrl,
+      description: 'This is a member in the church',
     }
   }
 
@@ -169,6 +175,8 @@ export const mapsResolvers = {
         // Close the session
         await session.close()
         await sessionTwo.close()
+        await sessionThree.close()
+        await sessionFour.close()
       }
       return null
     },
@@ -255,6 +263,8 @@ export const mapsResolvers = {
         // Close the session
         await session.close()
         await sessionTwo.close()
+        await sessionThree.close()
+        await sessionFour.close()
       }
       return null
     },
