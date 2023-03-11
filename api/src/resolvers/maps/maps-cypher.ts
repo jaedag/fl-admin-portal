@@ -16,6 +16,12 @@ WHERE toLower(outreachVenue.name) CONTAINS toLower($key)
 RETURN DISTINCT outreachVenue LIMIT toInteger($limit)
 `
 
+export const outdoorOutreachVenuesSearchByName = `
+MATCH (outreachVenue:OutdoorVenue)
+WHERE toLower(outreachVenue.name) CONTAINS toLower($key)
+RETURN DISTINCT outreachVenue LIMIT toInteger($limit)
+`
+
 export const memberFellowshipSearchByLocation = `
   MATCH (this:Member {id: $id})-[:LEADS|HAS|DOES_ARRIVALS_FOR|IS_ADMIN_FOR*1..6]->(fellowship:Fellowship)
   WITH fellowship, point.distance(point({latitude: fellowship.location.latitude, longitude: fellowship.location.longitude}), point({latitude: $latitude, longitude: $longitude})) AS distance
@@ -32,6 +38,13 @@ export const memberMemberSearchByLocation = `
 
 export const indoorOutreachVenuesSearchByLocation = `
   MATCH (outreachVenue:IndoorVenue)
+  WITH outreachVenue, point.distance(point({latitude: outreachVenue.location.latitude, longitude: outreachVenue.location.longitude}), point({latitude: $latitude, longitude: $longitude})) AS distance
+  WHERE distance <= 5000
+  RETURN DISTINCT outreachVenue, distance ORDER BY distance, outreachVenue.name ASC LIMIT 30
+`
+
+export const outdoorOutreachVenuesSearchByLocation = `
+  MATCH (outreachVenue:OutdoorVenue)
   WITH outreachVenue, point.distance(point({latitude: outreachVenue.location.latitude, longitude: outreachVenue.location.longitude}), point({latitude: $latitude, longitude: $longitude})) AS distance
   WHERE distance <= 5000
   RETURN DISTINCT outreachVenue, distance ORDER BY distance, outreachVenue.name ASC LIMIT 30

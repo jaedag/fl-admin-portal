@@ -9,6 +9,8 @@ import {
   memberMemberSearchByName,
   indoorOutreachVenuesSearchByLocation,
   indoorOutreachVenuesSearchByName,
+  outdoorOutreachVenuesSearchByName,
+  outdoorOutreachVenuesSearchByLocation,
 } from './maps-cypher'
 
 interface FellowshipResultShape {
@@ -98,6 +100,7 @@ export const mapsResolvers = {
       const session = context.executionContext.session()
       const sessionTwo = context.executionContext.session()
       const sessionThree = context.executionContext.session()
+      const sessionFour = context.executionContext.session()
 
       try {
         const res = await Promise.all([
@@ -122,6 +125,13 @@ export const mapsResolvers = {
               limit: args.limit,
             })
           ),
+          sessionFour.readTransaction((tx: any) =>
+            tx.run(outdoorOutreachVenuesSearchByName, {
+              id: source.id,
+              key: args.key,
+              limit: args.limit,
+            })
+          ),
         ])
 
         // Process Results
@@ -135,12 +145,15 @@ export const mapsResolvers = {
         )
         const indoorVenuesRes: OutreachVenueResultShape[] =
           rearrangeCypherObject(res[2], true)
+        const outdoorVenuesRes: OutreachVenueResultShape[] =
+          rearrangeCypherObject(res[3], true)
 
         // merge the two arrays and order by distance in ascending order
         const places = [
           ...peopleRes,
           ...fellowshipsRes,
           ...indoorVenuesRes,
+          ...outdoorVenuesRes,
         ].sort((a, b) => a.distance - b.distance)
 
         // return the 30 closest places
@@ -168,6 +181,7 @@ export const mapsResolvers = {
       const session = context.executionContext.session()
       const sessionTwo = context.executionContext.session()
       const sessionThree = context.executionContext.session()
+      const sessionFour = context.executionContext.session()
 
       try {
         const res = await Promise.all([
@@ -196,6 +210,14 @@ export const mapsResolvers = {
               limit: args.limit,
             })
           ),
+          sessionFour.readTransaction((tx: any) =>
+            tx.run(outdoorOutreachVenuesSearchByLocation, {
+              id: source.id,
+              latitude: args.latitude,
+              longitude: args.longitude,
+              limit: args.limit,
+            })
+          ),
         ])
 
         // Process Results
@@ -209,12 +231,15 @@ export const mapsResolvers = {
         )
         const indoorVenuesRes: OutreachVenueResultShape[] =
           rearrangeCypherObject(res[2], true)
+        const outdoorVenuesRes: OutreachVenueResultShape[] =
+          rearrangeCypherObject(res[3], true)
 
         // merge the  arrays and order by distance in ascending order
         const places = [
           ...peopleRes,
           ...fellowshipsRes,
           ...indoorVenuesRes,
+          ...outdoorVenuesRes,
         ].sort((a, b) => a.distance - b.distance)
 
         // return the 30 closest places
