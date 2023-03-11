@@ -36,6 +36,7 @@ import { useAuth0 } from '@auth0/auth0-react'
 import LoadingScreen from 'components/base-component/LoadingScreen'
 import * as Sentry from '@sentry/react'
 import { BrowserTracing } from '@sentry/tracing'
+import { maps } from 'pages/maps/mapsRoutes'
 
 type AppPropsType = {
   token: string
@@ -208,6 +209,7 @@ const AppWithContext = (props: AppPropsType) => {
                           ...campaigns,
                           ...reconciliation,
                           ...graphs,
+                          ...maps,
                         ].map((route, i) => (
                           <Route
                             key={i}

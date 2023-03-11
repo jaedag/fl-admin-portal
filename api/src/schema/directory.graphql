@@ -17,8 +17,8 @@ type Member @auth(rules: [{ isAuthenticated: true }]) {
   phoneNumber: String
   whatsappNumber: String!
   pictureUrl: String
-  location: Point!
   idlLocation: String
+  location: Point
   gender: Gender! @relationship(type: "HAS_GENDER", direction: OUT)
   maritalStatus: MaritalStatus!
     @relationship(type: "HAS_MARITAL_STATUS", direction: OUT)

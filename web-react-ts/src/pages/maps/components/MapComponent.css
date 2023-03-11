@@ -1,0 +1,35 @@
+.marker {
+  font-size: 12px;
+  font-weight: bold;
+  text-shadow: 0 0 4px #000;
+  text-align: center;
+}
+
+.info-window-header {
+  font-size: 16px;
+  font-weight: bold;
+  color: black;
+}
+
+.info-window-text {
+  font-size: 12px;
+  font-weight: bold;
+  color: black;
+}
+
+.indoor-venue-label {
+  color: #a1f6fc !important;
+}
+.outdoor-venue-label {
+  color: #a3fca1 !important;
+}
+.fellowship-label {
+  color: #fca1a1 !important;
+}
+.high-school-label {
+  color: #fca1f1 !important;
+}
+
+.selected {
+  color: #f6ff00 !important;
+}

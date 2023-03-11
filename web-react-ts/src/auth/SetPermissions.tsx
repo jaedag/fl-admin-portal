@@ -53,13 +53,13 @@ const SetPermissions = ({
             .id,
         noIncome:
           data.memberByEmail?.fellowship?.bacenta.constituency?.council.stream
-            .gatheringService.noIncome,
+            .gatheringService?.noIncome,
         gatheringService:
           data.memberByEmail?.fellowship?.bacenta.constituency?.council.stream
-            .gatheringService.id,
+            .gatheringService?.id,
         oversight:
           data.memberByEmail?.fellowship?.bacenta.constituency?.council.stream
-            .gatheringService.oversight.id,
+            .gatheringService?.oversight.id,
       })
       sessionStorage.setItem('currentUser', JSON.stringify({ ...currentUser }))
     },

@@ -84,6 +84,10 @@ const basontaChurches = fs
   .readFileSync(path.join(__dirname, './directory-basonta.graphql'))
   .toString('utf-8')
 
+const maps = fs
+  .readFileSync(path.join(__dirname, './maps.graphql'))
+  .toString('utf-8')
+
 const array = [
   schema,
   directory,
@@ -104,6 +108,7 @@ const array = [
   swollenSundayCampaign,
   shepherdingControlCampaign,
   basontaChurches,
+  maps,
 ]
 
 exports.typeDefs = array.join(' ')

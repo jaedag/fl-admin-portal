@@ -87,6 +87,7 @@ export const CONFIRM_OFFERING_PAYMENT = gql`
       id
       income
       transactionId
+      transactionReference
       transactionStatus
       offeringBankedBy {
         id

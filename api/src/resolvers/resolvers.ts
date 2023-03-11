@@ -11,6 +11,7 @@ import {
 import bankingMutation from './banking/banking-resolver'
 import campaignsResolvers from './campaigns/campaigns-resolver'
 import campaignMutations from './campaigns/campaign-mutations'
+import { mapsResolvers } from './maps/maps-resolvers'
 
 const dotenv = require('dotenv')
 
@@ -38,6 +39,7 @@ const resolvers = {
 
       return `${shortTitle}${source.firstName} ${source.lastName}`
     },
+    ...mapsResolvers.Member,
   },
   Fellowship: {
     ...campaignsResolvers.Fellowship,

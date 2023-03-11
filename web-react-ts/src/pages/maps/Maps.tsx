@@ -1,34 +1,31 @@
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
-import React from 'react'
 import { Container } from 'react-bootstrap'
-import { useLoadScript } from '@react-google-maps/api'
-import Map from './MapComponent'
-import { useState } from 'react'
-import LoadingScreen from 'components/base-component/LoadingScreen'
-
-type LibrariesOptions = (
-  | 'places'
-  | 'drawing'
-  | 'geometry'
-  | 'localContext'
-  | 'visualization'
-)[]
+import HeadingSecondary from 'components/HeadingSecondary'
+import MenuButton from 'components/buttons/MenuButton'
+import { Map } from 'react-bootstrap-icons'
+import { useNavigate } from 'react-router'
 
 const Maps = () => {
-  const [libraries] = useState<LibrariesOptions>(['places'])
-  const { isLoaded } = useLoadScript({
-    googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY ?? '',
-    libraries,
-  })
-
-  if (!isLoaded) {
-    return <LoadingScreen />
-  }
+  const navigate = useNavigate()
 
   return (
     <Container>
       <HeadingPrimary>Maps</HeadingPrimary>
-      <Map />
+      <HeadingSecondary>Click on one of churches below</HeadingSecondary>
+      <div className="py-3" />
+      <div className="d-grid gap-2 text-left">
+        <MenuButton
+          title="View Map"
+          iconComponent={Map}
+          iconBg={true}
+          noCaption
+          iconCaption={`Map`}
+          onClick={() => {
+            navigate(`/maps/view-maps`)
+          }}
+          color={`maps`}
+        />
+      </div>
     </Container>
   )
 }

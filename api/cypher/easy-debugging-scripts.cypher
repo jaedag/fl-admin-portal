@@ -28,3 +28,9 @@ RETURN council.name, constituency.name, bacenta.name, leader.firstName+" "+ lead
        WHEN bacenta.sprinterCost > 110 THEN  round(0.8 * bacenta.sprinterCost)
        ELSE 0
       END) AS sprinterTopUp  
+MATCH (r:ServiceRecord)
+SET r.transactionStatus = 'pending'
+RETURN r;
+
+MATCH (council:Council)-[:IS_ADMIN_FOR]-(member:Member)
+RETURN council.id, council.name, member.firstName, member.lastName

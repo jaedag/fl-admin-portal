@@ -1,0 +1,23 @@
+type Place {
+  id: ID!
+  name: String!
+  typename: String
+  firstName: String
+  lastName: String
+  latitude: Float!
+  longitude: Float!
+  # TODO: We must eventually switch from these to a location property object
+  # Currently this code is breaking in neo4j/graphql
+  location: Point!
+  description: String
+  picture: String
+}
+
+extend type Member {
+  placesSearchByLocation(
+    latitude: Float!
+    longitude: Float!
+    limit: Int = 30
+  ): [Place]
+  placesSearchByName(key: String!, limit: Int = 30): [Place]
+}

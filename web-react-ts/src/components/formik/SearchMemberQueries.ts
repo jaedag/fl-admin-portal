@@ -86,6 +86,10 @@ export const MEMBER_MEMBER_SEARCH = gql`
         id
         firstName
         lastName
+        location {
+          latitude
+          longitude
+        }
       }
     }
   }
