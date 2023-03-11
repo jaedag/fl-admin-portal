@@ -10,7 +10,7 @@ WHERE toLower(member.firstName+ ' ' + member.lastName) CONTAINS toLower($key)
 RETURN DISTINCT member ORDER BY toLower(member.lastName), toLower(member.firstName) LIMIT toInteger($limit)
 `
 
-export const universityOutreachVenuesSearchByName = `
+export const indoorOutreachVenuesSearchByName = `
 MATCH (outreachVenue:IndoorVenue)
 WHERE toLower(outreachVenue.name) CONTAINS toLower($key)
 RETURN DISTINCT outreachVenue LIMIT toInteger($limit)
@@ -30,7 +30,7 @@ export const memberMemberSearchByLocation = `
   RETURN DISTINCT member, distance ORDER BY distance ASC LIMIT 30
 `
 
-export const universityOutreachVenuesSearchByLocation = `
+export const indoorOutreachVenuesSearchByLocation = `
   MATCH (outreachVenue:IndoorVenue)
   WITH outreachVenue, point.distance(point({latitude: outreachVenue.location.latitude, longitude: outreachVenue.location.longitude}), point({latitude: $latitude, longitude: $longitude})) AS distance
   WHERE distance <= 5000

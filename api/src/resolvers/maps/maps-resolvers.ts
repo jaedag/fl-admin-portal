@@ -7,8 +7,8 @@ import {
   memberFellowshipSearchByName,
   memberMemberSearchByLocation,
   memberMemberSearchByName,
-  universityOutreachVenuesSearchByLocation,
-  universityOutreachVenuesSearchByName,
+  indoorOutreachVenuesSearchByLocation,
+  indoorOutreachVenuesSearchByName,
 } from './maps-cypher'
 
 interface FellowshipResultShape {
@@ -116,7 +116,7 @@ export const mapsResolvers = {
             })
           ),
           sessionThree.readTransaction((tx: any) =>
-            tx.run(universityOutreachVenuesSearchByName, {
+            tx.run(indoorOutreachVenuesSearchByName, {
               id: source.id,
               key: args.key,
               limit: args.limit,
@@ -133,15 +133,15 @@ export const mapsResolvers = {
           res[1],
           true
         )
-        const uniVenuesRes: OutreachVenueResultShape[] = rearrangeCypherObject(
-          res[2],
-          true
-        )
+        const indoorVenuesRes: OutreachVenueResultShape[] =
+          rearrangeCypherObject(res[2], true)
 
         // merge the two arrays and order by distance in ascending order
-        const places = [...peopleRes, ...fellowshipsRes, ...uniVenuesRes].sort(
-          (a, b) => a.distance - b.distance
-        )
+        const places = [
+          ...peopleRes,
+          ...fellowshipsRes,
+          ...indoorVenuesRes,
+        ].sort((a, b) => a.distance - b.distance)
 
         // return the 30 closest places
         const formattedPlaces = places
@@ -189,7 +189,7 @@ export const mapsResolvers = {
             })
           ),
           sessionThree.readTransaction((tx: any) =>
-            tx.run(universityOutreachVenuesSearchByLocation, {
+            tx.run(indoorOutreachVenuesSearchByLocation, {
               id: source.id,
               latitude: args.latitude,
               longitude: args.longitude,
@@ -207,15 +207,15 @@ export const mapsResolvers = {
           res[1],
           true
         )
-        const uniVenuesRes: OutreachVenueResultShape[] = rearrangeCypherObject(
-          res[2],
-          true
-        )
+        const indoorVenuesRes: OutreachVenueResultShape[] =
+          rearrangeCypherObject(res[2], true)
 
         // merge the  arrays and order by distance in ascending order
-        const places = [...peopleRes, ...fellowshipsRes, ...uniVenuesRes].sort(
-          (a, b) => a.distance - b.distance
-        )
+        const places = [
+          ...peopleRes,
+          ...fellowshipsRes,
+          ...indoorVenuesRes,
+        ].sort((a, b) => a.distance - b.distance)
 
         // return the 30 closest places
         const formattedPlaces = places
