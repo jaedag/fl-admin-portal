@@ -1,3 +1,51 @@
+## 6.0.0 (2023-03-11)
+
+##### Chores
+
+*  merge branch 'admin-515-STORY/show-fellowship-location' into deploy ([ddf7bc19](https://github.com/firstlovecenter/fl-pastoral-care/commit/ddf7bc19473d67a316412b7b4e91cb5a791ecd2b))
+
+##### Documentation Changes
+
+*  update cypher import scripts for map areas ([7e8a1236](https://github.com/firstlovecenter/fl-pastoral-care/commit/7e8a123692e45d937682e4b20883d46fab3ff80e))
+
+##### New Features
+
+*  add outdoor venues to map places search ([8f8f68e2](https://github.com/firstlovecenter/fl-pastoral-care/commit/8f8f68e299f2e2befa7ddf943965f67f17bf708d))
+*  implement css class for selected marker point ([ee95f45d](https://github.com/firstlovecenter/fl-pastoral-care/commit/ee95f45d94b4dfd1c1f42a45394c5e457b14dcb3))
+*  implement styling for marker icons and labels ([e0ea32c1](https://github.com/firstlovecenter/fl-pastoral-care/commit/e0ea32c1d3f0c905076eea75bab340f74a08e327))
+*  display markers for places within a 5km radius ([a983d1f3](https://github.com/firstlovecenter/fl-pastoral-care/commit/a983d1f3acae37cc6d04360eda7d41947175daa2))
+*  implement cypher script for importing university outreach venues ([6da5d64d](https://github.com/firstlovecenter/fl-pastoral-care/commit/6da5d64deddcb87a202f539339658a45778097a3))
+*  implemented resolver for returning member places search ([a1f646af](https://github.com/firstlovecenter/fl-pastoral-care/commit/a1f646afab806b53b7cedd6802f52253605deaee))
+*  implement resolver for member places search ([e8ebb28b](https://github.com/firstlovecenter/fl-pastoral-care/commit/e8ebb28b348890b21dd3897c14e5d8aef3f52f35))
+*  add registrationDate as a property on member ([bc363474](https://github.com/firstlovecenter/fl-pastoral-care/commit/bc363474fb397b3867b15e2c7585ca3244482409))
+*  implement panning map to selected place or person ([6ffe36ad](https://github.com/firstlovecenter/fl-pastoral-care/commit/6ffe36ad5f4a8e0cf972cda10de71d8f7f45be39))
+*  enable search box for searching FLC database ([5e07533d](https://github.com/firstlovecenter/fl-pastoral-care/commit/5e07533d6314527e9ea5b6b0c76db1157a3f0fbf))
+*  add search of members to google places combobox ([fe4fc5be](https://github.com/firstlovecenter/fl-pastoral-care/commit/fe4fc5be5ed3508b3841001a58683dcad7f11ec1))
+*  implement button to search for google places in maps ([9472c9d5](https://github.com/firstlovecenter/fl-pastoral-care/commit/9472c9d56114190d2f426645f2aeb7227299596b))
+*  implement foating action button and menu overlay on map ([ac88e1dd](https://github.com/firstlovecenter/fl-pastoral-care/commit/ac88e1dd250604563cc104bfe2297c0c2ed6797c))
+*  implement fellowship map landing page ([7db72ac0](https://github.com/firstlovecenter/fl-pastoral-care/commit/7db72ac019911df864bc6449f29f2569a93895d3))
+
+##### Bug Fixes
+
+*  fix bug not showing member picture on map ([9b351843](https://github.com/firstlovecenter/fl-pastoral-care/commit/9b3518431fe4c7dfee17405f3e959fb0fa7fd038))
+*  fix bugs with styling of outdoor venues ([1833e5ce](https://github.com/firstlovecenter/fl-pastoral-care/commit/1833e5cec35182bfbf3907f401f08334ec62b015))
+*  add a marker icon for member place type ([acbe4c96](https://github.com/firstlovecenter/fl-pastoral-care/commit/acbe4c96d3ac09951e2819bac383879541b4d67c))
+*  fix bug preventing constituency from being closed when there has been no service ([480a9801](https://github.com/firstlovecenter/fl-pastoral-care/commit/480a98011df7128d1aec206448991b8a1ecaeee2))
+*  add teller ConfirmationTime as a property for outstanding offering check ([c083c9e9](https://github.com/firstlovecenter/fl-pastoral-care/commit/c083c9e9e5176d78ab587b0cb8dccd985860cedb))
+*  implement custom icons for map markers ([358165e5](https://github.com/firstlovecenter/fl-pastoral-care/commit/358165e586bd69b1adc173df0d0a58c1f13a0d87))
+*  include cypher script for making urvan and sprinter costs the same as constituency ([555212dd](https://github.com/firstlovecenter/fl-pastoral-care/commit/555212dd93826a885fe098bb870e2f86a5c98db8))
+*  show each card correctly depending on which costs are available ([da3c3277](https://github.com/firstlovecenter/fl-pastoral-care/commit/da3c3277adf597e425a2c294fc6f9213b0ef15fb))
+*  add styling for marker component ([ac460612](https://github.com/firstlovecenter/fl-pastoral-care/commit/ac460612f68186f57fef1fbb130472ba9e2db54a))
+*  return transaction Reference after confirming transaction ([d929332b](https://github.com/firstlovecenter/fl-pastoral-care/commit/d929332b2bdc341e4cf1efda88ddc35cef88feb4))
+*  implement searching of FLC database for uni outreach venues ([df59c79d](https://github.com/firstlovecenter/fl-pastoral-care/commit/df59c79d11125f0a8af8e30f2b595e64c53c09bc))
+*  remove console.log from backend api ([9bd2fd09](https://github.com/firstlovecenter/fl-pastoral-care/commit/9bd2fd097aa2ddfa3e8bf0b35a6ad3075e564f61))
+*  changed specific churchlevel  maps to generic view maps ([d7fb0e62](https://github.com/firstlovecenter/fl-pastoral-care/commit/d7fb0e628955c0997729952006395c4b1b1eccb7))
+*  infer types for suggestions ([d0033887](https://github.com/firstlovecenter/fl-pastoral-care/commit/d003388797a3866cc434fcc113a432229d762fad))
+
+##### Refactors
+
+*  change original location to idlLocation and introduced a new location property ([b98ddbfd](https://github.com/firstlovecenter/fl-pastoral-care/commit/b98ddbfdcabec74206f7cba922e15febbae446b7))
+
 ### 5.10.0 (2023-03-10)
 
 ##### New Features
