@@ -42,7 +42,13 @@ type MapComponentProps = {
 export type PlaceType = {
   id: string
   name: string
-  typename: 'GooglePlace' | 'Member' | 'Fellowship' | 'UniversityVenue'
+  typename:
+    | 'GooglePlace'
+    | 'Member'
+    | 'Fellowship'
+    | 'UniversityVenue'
+    | 'OutdoorPark'
+    | 'HighSchool'
   picture?: string
   description?: string
   position: LatLngLiteral
