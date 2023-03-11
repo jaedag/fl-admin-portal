@@ -46,7 +46,7 @@ export type PlaceType = {
     | 'GooglePlace'
     | 'Member'
     | 'Fellowship'
-    | 'UniversityVenue'
+    | 'IndoorVenue'
     | 'OutdoorPark'
     | 'HighSchool'
   picture?: string
@@ -152,6 +152,7 @@ const MapComponent = (props: MapComponentProps) => {
             handleClose={handleClose}
             setOffice={(position) => {
               setOffice(position)
+              mapRef.current?.panTo(position.position)
 
               props.placesSearchByLocation({
                 variables: {
@@ -160,8 +161,6 @@ const MapComponent = (props: MapComponentProps) => {
                   longitude: position.position.lng,
                 },
               })
-
-              mapRef.current?.panTo(position.position)
             }}
             {...props}
           />
@@ -171,6 +170,7 @@ const MapComponent = (props: MapComponentProps) => {
             handleClose={handleClose}
             setOffice={async (position) => {
               setOffice(position)
+              mapRef.current?.panTo(position.position)
 
               const response = await props.placesSearchByLocation({
                 variables: {
@@ -191,7 +191,6 @@ const MapComponent = (props: MapComponentProps) => {
                   })
                 )
               )
-              mapRef.current?.panTo(position.position)
             }}
             {...props}
           />

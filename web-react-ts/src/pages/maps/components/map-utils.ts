@@ -3,7 +3,7 @@ import { PlaceType } from './MapComponent'
 type MapIconType = google.maps.Icon
 
 export const getMapIcon = (place: PlaceType) => {
-  if (place.typename === 'UniversityVenue') {
+  if (place.typename === 'IndoorVenue') {
     return {
       url: 'https://res.cloudinary.com/firstlovecenter/image/upload/v1678534118/map-icons/univenue-marker_n2zdqi.png',
       scaledSize: new google.maps.Size(40, 40),
@@ -34,7 +34,7 @@ export const getMapIcon = (place: PlaceType) => {
 }
 
 export const getMapIconClass = (place: PlaceType) => {
-  if (place.typename === 'UniversityVenue') {
+  if (place.typename === 'IndoorVenue') {
     return 'university-venue-label'
   }
   if (place.typename === 'OutdoorPark') {
