@@ -326,7 +326,9 @@ const directoryMutation = {
         )
       }
 
-      const record = lastServiceRecord.lastService.properties
+      const record = lastServiceRecord.lastService?.properties ?? {
+        bankingSlip: null,
+      }
 
       if (
         !(
