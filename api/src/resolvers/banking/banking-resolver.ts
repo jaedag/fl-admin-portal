@@ -48,7 +48,13 @@ export const checkIfLastServiceBanked = async (
 
   const record = lastServiceRecord.lastService.properties
 
-  if (!('bankingSlip' in record || record.transactionStatus === 'success')) {
+  if (
+    !(
+      'bankingSlip' in record ||
+      record.transactionStatus === 'success' ||
+      'tellerConfirmationTime' in record
+    )
+  ) {
     throw new Error(
       `Please bank outstanding offering for your service filled on ${getHumanReadableDate(
         record.createdAt
