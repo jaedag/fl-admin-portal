@@ -47,7 +47,7 @@ export type PlaceType = {
     | 'Member'
     | 'Fellowship'
     | 'IndoorVenue'
-    | 'OutdoorPark'
+    | 'OutdoorVenue'
     | 'HighSchool'
   picture?: string
   description?: string

@@ -15,7 +15,7 @@ export const getMapIcon = (place: PlaceType) => {
       scaledSize: new google.maps.Size(40, 40),
     } as MapIconType
   }
-  if (place.typename === 'OutdoorPark') {
+  if (place.typename === 'OutdoorVenue') {
     return {
       url: 'https://res.cloudinary.com/firstlovecenter/image/upload/v1678533891/map-icons/loud-speaker-outdoor-venue_wqpjqr.png',
       scaledSize: new google.maps.Size(30, 30),
@@ -44,10 +44,10 @@ export const getMapIconClass = (place: PlaceType) => {
     return 'member-label'
   }
   if (place.typename === 'IndoorVenue') {
-    return 'university-venue-label'
+    return 'indoor-venue-label'
   }
-  if (place.typename === 'OutdoorPark') {
-    return 'outdoor-park-label'
+  if (place.typename === 'OutdoorVenue') {
+    return 'outdoor-venue-label'
   }
 
   if (place.typename === 'Fellowship') {
