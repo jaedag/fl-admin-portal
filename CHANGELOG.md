@@ -1,3 +1,13 @@
+#### 6.0.1 (2023-03-12)
+
+##### New Features
+
+*  implement self banking for council services ([2bf36168](https://github.com/firstlovecenter/fl-pastoral-care/commit/2bf361682aeaccbf0f07b746d359bf6daf83fdc7))
+
+##### Bug Fixes
+
+*  remove reference to expressPay in self banking ([d1818ae1](https://github.com/firstlovecenter/fl-pastoral-care/commit/d1818ae1e6692fb51f3e9795ec89dcff7a0f56fe))
+
 ## 6.0.0 (2023-03-11)
 
 ##### Chores
