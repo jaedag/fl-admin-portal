@@ -246,9 +246,7 @@ const PayOffering = (props: PayOfferingProps) => {
                         <small className="form-text label">
                           Income + Charges
                         </small>
-                        <div className="fw-bold">
-                          {incomeAndCharges} Ggti HS
-                        </div>
+                        <div className="fw-bold">{incomeAndCharges} GHS</div>
                       </Col>
                     </Row>
 
