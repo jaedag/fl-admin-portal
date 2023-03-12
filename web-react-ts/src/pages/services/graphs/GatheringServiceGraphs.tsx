@@ -9,9 +9,9 @@ import MembershipCard from './CompMembershipCard'
 import StatDisplay from './CompStatDisplay'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { Col, Container, Row } from 'react-bootstrap'
-import PlaceholderCustom from 'components/Placeholder'
 import GraphDropdown from './GraphDropdown'
 import { MemberContext } from 'contexts/MemberContext'
+import CloudinaryImage from 'components/CloudinaryImage'
 
 const GatheringServiceReport = () => {
   const { gatheringServiceId } = useContext(ChurchContext)
@@ -31,14 +31,21 @@ const GatheringServiceReport = () => {
   return (
     <ApolloWrapper loading={loading} error={error} data={data}>
       <Container>
-        <PlaceholderCustom loading={loading} as="h5" xs={10}>
-          <h5 className="mb-0">{`${data?.gatheringServices[0]?.name} Gathering Service`}</h5>
-        </PlaceholderCustom>
-        <PlaceholderCustom loading={loading} as="span" xs={10}>
-          <span className="text-secondary font-weight-bold">
-            {`Leader: ${data?.gatheringServices[0]?.leader.fullName}`}
-          </span>
-        </PlaceholderCustom>
+        <Row className=" my-3">
+          <Col className="col-auto">
+            <CloudinaryImage
+              src={data?.gatheringServices[0].leader.pictureUrl}
+              className="rounded-circle user-image"
+            />
+          </Col>
+          <Col className="my-auto">
+            <h5 className="mb-0">{`${data?.gatheringServices[0].name} Bacenta`}</h5>{' '}
+            <p className="mb-0">
+              <span className="text-secondary font-weight-bold">Leader: </span>
+              {`${data?.gatheringServices[0].leader.fullName}`}
+            </p>
+          </Col>
+        </Row>
 
         <Row className="mt-3 row-cols-2">
           <Col>

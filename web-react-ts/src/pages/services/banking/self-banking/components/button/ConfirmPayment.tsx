@@ -80,7 +80,7 @@ const ButtonConfirmPayment = (props: ButtonConfirmPaymentProps) => {
                 stream_name: service?.stream_name,
               },
             })
-            console.log('confirmationRes', confirmationRes)
+
             if (
               confirmationRes.data.ConfirmOfferingPayment?.transactionStatus ===
               'pending'

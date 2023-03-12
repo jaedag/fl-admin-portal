@@ -85,6 +85,7 @@ export const SONTA_GRAPHS = gql`
         firstName
         lastName
         fullName
+        pictureUrl
       }
       # memberCount
     }
@@ -256,6 +257,7 @@ export const OVERSIGHT_GRAPHS = gql`
         firstName
         lastName
         fullName
+        pictureUrl
       }
       aggregateServiceRecords(limit: 4) {
         id

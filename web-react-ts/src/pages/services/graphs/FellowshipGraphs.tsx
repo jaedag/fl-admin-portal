@@ -9,6 +9,8 @@ import MembershipCard from './CompMembershipCard'
 import StatDisplay from './CompStatDisplay'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { MemberContext } from 'contexts/MemberContext'
+import { Col, Container, Row } from 'react-bootstrap'
+import CloudinaryImage from 'components/CloudinaryImage'
 
 export const FellowshipReport = () => {
   const { fellowshipId } = useContext(ChurchContext)
@@ -22,14 +24,22 @@ export const FellowshipReport = () => {
 
   return (
     <ApolloWrapper loading={loading} error={error} data={data}>
-      <div className="container">
-        <div className=" my-3">
-          <h5 className="mb-0">{`${data?.fellowships[0].name} Fellowship`}</h5>{' '}
-          <p>
-            <span className="text-secondary font-weight-bold">Leader: </span>
-            {`${data?.fellowships[0].leader?.fullName}`}
-          </p>
-        </div>
+      <Container>
+        <Row className=" my-3">
+          <Col className="col-auto">
+            <CloudinaryImage
+              src={data?.fellowships[0].leader.pictureUrl}
+              className="rounded-circle user-image"
+            />
+          </Col>
+          <Col className="my-auto">
+            <h5 className="mb-0">{`${data?.fellowships[0].name} Bacenta`}</h5>{' '}
+            <p className="mb-0">
+              <span className="text-secondary font-weight-bold">Leader: </span>
+              {`${data?.fellowships[0].leader.fullName}`}
+            </p>
+          </Col>
+        </Row>
 
         <div className="row">
           <div className="col">
@@ -75,7 +85,7 @@ export const FellowshipReport = () => {
             church="fellowship"
           />
         )}
-      </div>
+      </Container>
     </ApolloWrapper>
   )
 }
