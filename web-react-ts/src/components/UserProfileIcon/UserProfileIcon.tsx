@@ -19,7 +19,7 @@ function UserProfileIcon() {
           <div className="d-flex">
             <div className="flex-shrink-0">
               <CloudinaryImage
-                className="user-navbar-img "
+                className="user-navbar-img"
                 src={currentUser?.picture || USER_PLACEHOLDER}
                 alt={currentUser?.firstName || null}
               />

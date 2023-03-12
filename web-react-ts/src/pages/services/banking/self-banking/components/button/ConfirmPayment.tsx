@@ -80,9 +80,9 @@ const ButtonConfirmPayment = (props: ButtonConfirmPaymentProps) => {
                 stream_name: service?.stream_name,
               },
             })
-
+            console.log('confirmationRes', confirmationRes)
             if (
-              confirmationRes.data.ConfirmOfferingPayment.transactionStatus ===
+              confirmationRes.data.ConfirmOfferingPayment?.transactionStatus ===
               'pending'
             ) {
               alertMsg(
@@ -93,7 +93,7 @@ const ButtonConfirmPayment = (props: ButtonConfirmPaymentProps) => {
             }
 
             if (
-              confirmationRes.data.ConfirmOfferingPayment.transactionStatus ===
+              confirmationRes.data.ConfirmOfferingPayment?.transactionStatus ===
               'failed'
             ) {
               alertMsg('Your Payment Failed 😞. Please try again!')

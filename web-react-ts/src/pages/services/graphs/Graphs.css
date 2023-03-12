@@ -2,6 +2,10 @@
   border-radius: 25px;
 }
 
+.user-image {
+  width: 80px;
+}
+
 .btn-rounded {
   border-radius: 15px;
 }

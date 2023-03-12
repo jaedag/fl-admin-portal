@@ -10,6 +10,7 @@ export const FELLOWSHIP_GRAPHS = gql`
         firstName
         lastName
         fullName
+        pictureUrl
       }
       services(limit: 4) {
         id
@@ -36,6 +37,7 @@ export const BACENTA_GRAPHS = gql`
         firstName
         lastName
         fullName
+        pictureUrl
       }
       aggregateServiceRecords(limit: 4) {
         id
@@ -99,6 +101,7 @@ export const CONSTITUENCY_GRAPHS = gql`
         firstName
         lastName
         fullName
+        pictureUrl
       }
       aggregateServiceRecords(limit: 4) {
         id
@@ -137,6 +140,7 @@ export const COUNCIL_GRAPHS = gql`
         firstName
         lastName
         fullName
+        pictureUrl
       }
       aggregateServiceRecords(limit: 4) {
         id
@@ -175,6 +179,7 @@ export const STREAM_GRAPHS = gql`
         firstName
         lastName
         fullName
+        pictureUrl
       }
       aggregateServiceRecords(limit: 4) {
         id
@@ -213,6 +218,7 @@ export const GATHERINGSERVICE_GRAPHS = gql`
         firstName
         lastName
         fullName
+        pictureUrl
       }
       aggregateServiceRecords(limit: 4) {
         id
