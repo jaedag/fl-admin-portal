@@ -202,7 +202,7 @@ const ServiceDetails = ({ service, church, loading }: ServiceDetailsProps) => {
                         }}
                       >
                         <CheckCircleFill />
-                        {submitting ? 'Confirmin...' : 'Confirm Offering'}
+                        {submitting ? 'Confirming...' : 'Confirm Offering'}
                       </Button>
                     </div>
                   </RoleView>
