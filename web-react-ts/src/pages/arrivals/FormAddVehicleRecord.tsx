@@ -141,9 +141,10 @@ const FormAddVehicleRecord = () => {
                     name="vehicle"
                     label="Type of Vehicle"
                     options={
-                      bacenta?.bussing[0].attendance >= 8
-                        ? VEHICLE_OPTIONS_WITH_CAR
-                        : VEHICLE_OPTIONS
+                      // bacenta?.bussing[0].attendance >= 8
+                      //   ? VEHICLE_OPTIONS_WITH_CAR
+                      //   :
+                      VEHICLE_OPTIONS
                     }
                     defaultOption="Select a vehicle type"
                   />
