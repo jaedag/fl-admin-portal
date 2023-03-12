@@ -277,6 +277,7 @@ export const BACENTA_ARRIVALS = gql`
         serviceDate {
           date
         }
+        attendance
         vehicleRecords {
           id
           vehicle
