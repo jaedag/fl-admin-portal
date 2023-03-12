@@ -1,3 +1,21 @@
+#### 6.0.2 (2023-03-12)
+
+##### New Features
+
+*  implement picture of leader on graphs ([fbf20aee](https://github.com/firstlovecenter/fl-pastoral-care/commit/fbf20aeedd227e3e434fc8e690e1c2de8fecf7fb))
+*  includee subaccount in payment api call ([bea899ab](https://github.com/firstlovecenter/fl-pastoral-care/commit/bea899ab9ad7d6d1770a462eb7c206fac45348f8))
+
+##### Bug Fixes
+
+*  remove redundant code ([0857184d](https://github.com/firstlovecenter/fl-pastoral-care/commit/0857184d5bd50956520eb69495bc3655f71c69f5))
+*  update permissions for undoing cancelled service ([38a7b3ef](https://github.com/firstlovecenter/fl-pastoral-care/commit/38a7b3ef5a0f94d5e27fc4c8b983735ee67c7824))
+*  remove directory lock for creating bacentas ([4abd8931](https://github.com/firstlovecenter/fl-pastoral-care/commit/4abd8931341346238667e8e41440a4819b5cedb3))
+*  fix spelling mistake with env variables ([bb9eb780](https://github.com/firstlovecenter/fl-pastoral-care/commit/bb9eb7808a6b4349e837cd5500cd231a46b6583b))
+*  implement a scheduled function to set the code of the day each weekend ([f4ab0f47](https://github.com/firstlovecenter/fl-pastoral-care/commit/f4ab0f47bda71831cae62a7a1682dfe7da6cb35a))
+*  fix multiple history logs being created when a church is closeed down ([c2abbb27](https://github.com/firstlovecenter/fl-pastoral-care/commit/c2abbb278763c4676c3a910f2967d8e130e928f1))
+*  fix spelling error ([1ec85566](https://github.com/firstlovecenter/fl-pastoral-care/commit/1ec855667080930319d2435e94b439344829b393))
+*  fix spelling error ([ca6b42f5](https://github.com/firstlovecenter/fl-pastoral-care/commit/ca6b42f58110780d505b193e5976405322969cf8))
+
 #### 6.0.1 (2023-03-12)
 
 ##### New Features
