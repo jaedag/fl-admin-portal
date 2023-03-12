@@ -18,6 +18,15 @@ export const CONSTITUENCY_SERVICE_PAYMENT = gql`
   }
 `
 
+export const COUNCIL_SERVICE_PAYMENT = gql`
+  query councilServicePayment($id: ID!) {
+    councils(where: { id: $id }) {
+      id
+      name
+    }
+  }
+`
+
 export const DISPLAY_OFFERING_DETAILS = gql`
   query displayOfferingDetails($serviceRecordId: ID!) {
     serviceRecords(where: { id: $serviceRecordId }) {

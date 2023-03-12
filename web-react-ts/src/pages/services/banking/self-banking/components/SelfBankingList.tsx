@@ -60,9 +60,11 @@ const SelfBankingList = ({
       <HeadingPrimary loading={loading}>
         {church?.name} {church?.__typename}
       </HeadingPrimary>
-      <PlaceholderCustom as="p" loading={loading}>
-        <p>Banking Code: {church?.bankingCode}</p>
-      </PlaceholderCustom>
+      {church?.bankingCode && (
+        <PlaceholderCustom as="p" loading={loading}>
+          <p>Banking Code: {church?.bankingCode}</p>
+        </PlaceholderCustom>
+      )}
 
       <HeadingSecondary loading={loading}>
         Please click to bank any of these services

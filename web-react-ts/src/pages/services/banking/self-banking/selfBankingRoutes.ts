@@ -3,8 +3,10 @@ import { permitMe } from 'permission-utils'
 import { lazy } from 'react'
 
 const ConfirmPayment = lazy(() => import('./ConfirmPayment'))
+const CouncilSelfBanking = lazy(() => import('./CouncilSelfBanking'))
 const ConstituencySelfBanking = lazy(() => import('./ConstituencySelfBanking'))
 const FellowshipSelfBanking = lazy(() => import('./FellowshipSelfBanking'))
+const PayCouncilOffering = lazy(() => import('./PayCouncilOffering'))
 const PayConstituencyOffering = lazy(() => import('./PayConstituencyOffering'))
 const PayFellowshipOffering = lazy(() => import('./PayFellowshipOffering'))
 const ReceiptPage = lazy(() => import('./ReceiptPage'))
@@ -24,6 +26,12 @@ export const banking: LazyRouteTypes[] = [
     placeholder: true,
   },
   {
+    path: '/services/council/self-banking',
+    element: CouncilSelfBanking,
+    roles: ['leaderCouncil', 'adminCouncil'],
+    placeholder: true,
+  },
+  {
     path: '/services/fellowship/self-banking/pay',
     element: PayFellowshipOffering,
     roles: ['leaderFellowship'],
@@ -32,6 +40,11 @@ export const banking: LazyRouteTypes[] = [
     path: '/services/constituency/self-banking/pay',
     element: PayConstituencyOffering,
     roles: ['leaderConstituency', 'adminConstituency'],
+  },
+  {
+    path: '/services/council/self-banking/pay',
+    element: PayCouncilOffering,
+    roles: ['leaderCouncil', 'adminCouncil'],
   },
   {
     path: '/self-banking/confirm-payment',
