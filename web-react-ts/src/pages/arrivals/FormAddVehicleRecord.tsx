@@ -59,6 +59,7 @@ const FormAddVehicleRecord = () => {
   })
 
   const bacenta: BacentaWithArrivals = data?.bacentas[0]
+  const swell = data?.timeGraphs[0].swell
   const [RecordVehicleFromBacenta] = useMutation(RECORD_BUSSING_FROM_BACENTA)
   const validationSchema = Yup.object({
     leaderDeclaration: Yup.number()
@@ -141,10 +142,9 @@ const FormAddVehicleRecord = () => {
                     name="vehicle"
                     label="Type of Vehicle"
                     options={
-                      // bacenta?.bussing[0].attendance >= 8
-                      //   ? VEHICLE_OPTIONS_WITH_CAR
-                      //   :
-                      VEHICLE_OPTIONS
+                      bacenta?.bussing[0].attendance >= 8 && swell
+                        ? VEHICLE_OPTIONS_WITH_CAR
+                        : VEHICLE_OPTIONS
                     }
                     defaultOption="Select a vehicle type"
                   />
