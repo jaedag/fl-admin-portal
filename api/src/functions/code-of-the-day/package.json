@@ -1,12 +1,13 @@
 {
-  "name": "payment-webhook",
+  "name": "code-of-the-day-setter",
   "version": "0.0.1",
-  "description": "When paystack payments are made, this function is called to update the database",
+  "description": "Ensures that income  and attendance  data is correctly aggregated",
   "main": "scheduled-data-aggregation.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
+    "@netlify/functions": "^1.2.0",
     "neo4j-driver": "^5.0.1"
   }
 }
