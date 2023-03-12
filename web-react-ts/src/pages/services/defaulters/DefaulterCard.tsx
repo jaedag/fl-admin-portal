@@ -3,7 +3,7 @@ import RoleView from 'auth/RoleView'
 import PlaceholderCustom from 'components/Placeholder'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { alertMsg } from 'global-utils'
-import { permitAdmin } from 'permission-utils'
+import { permitLeaderAdmin } from 'permission-utils'
 import React, { useContext } from 'react'
 import { Card, Button } from 'react-bootstrap'
 import {
@@ -97,7 +97,7 @@ const DefaulterCard = ({ defaulter, link }: DefaulterCardProps) => {
             </Button>
           </a>
           {serviceDetails?.noServiceReason && (
-            <RoleView roles={permitAdmin('Fellowship')}>
+            <RoleView roles={permitLeaderAdmin('Constituency')}>
               <Button
                 className="ms-3"
                 variant="warning"
