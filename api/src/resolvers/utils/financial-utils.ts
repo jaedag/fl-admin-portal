@@ -44,7 +44,7 @@ export const getStreamFinancials = (stream: StreamOptions) => {
           'Anagkazo has a different financial system. Thank you!'
       )
     case 'gospel encounter':
-      subaccount = process.env.PAYSTACK_SUBACCOUNT_GE
+      subaccount = process.env.PAYSTACK_SUBACCOUNT_GES
       break
     case 'holy ghost encounter':
       subaccount = process.env.PAYSTACK_SUBACCOUNT_HGE
