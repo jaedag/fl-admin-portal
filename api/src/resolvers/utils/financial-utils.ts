@@ -34,7 +34,8 @@ export const padNumbers = (number: number): string => {
 }
 
 export const getStreamFinancials = (stream: StreamOptions) => {
-  let auth
+  const auth = process.env.PAYSTACK_PRIVATE_KEY_WEEKDAY
+  let subaccount
 
   switch (stream.toLowerCase()) {
     case 'anagkazo encounter':
@@ -43,18 +44,18 @@ export const getStreamFinancials = (stream: StreamOptions) => {
           'Anagkazo has a different financial system. Thank you!'
       )
     case 'gospel encounter':
-      auth = process.env.PAYSTACK_PRIVATE_KEY_GE
+      subaccount = process.env.PAYSTACK_SUBACCOUNT_GE
       break
     case 'holy ghost encounter':
-      auth = process.env.PAYSTACK_PRIVATE_KEY_HGE
+      subaccount = process.env.PAYSTACK_SUBACCOUNT_HGE
       break
     case 'first love experience':
-      auth = process.env.PAYSTACK_PRIVATE_KEY_FLE
+      subaccount = process.env.PAYSTACK_SUBACCOUNT_FLE
       break
 
     default:
       break
   }
 
-  return { auth }
+  return { auth, subaccount }
 }

@@ -15,6 +15,7 @@ export interface DebitDataBody extends PayStackRequestBody {
     amount: number
     email: string
     currency: 'GHS'
+    subaccount: string | undefined
     mobile_money: {
       phone: string
       provider: NetworkCode

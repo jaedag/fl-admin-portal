@@ -82,7 +82,7 @@ const bankingMutation = {
 
     const session = context.executionContext.session()
 
-    const { auth } = getStreamFinancials(args.stream_name)
+    const { auth, subaccount } = getStreamFinancials(args.stream_name)
 
     // This code checks if there has already been a successful transaction
     const transactionResponse = rearrangeCypherObject(
@@ -137,6 +137,7 @@ const bankingMutation = {
         amount: Math.round((serviceRecord.income / (1 - 0.0195) + 0.01) * 100),
         email: cypherResponse.author.email,
         currency: 'GHS',
+        subaccount,
         mobile_money: {
           phone: args.mobileNumber,
           provider: getMobileCode(args.mobileNetwork),
