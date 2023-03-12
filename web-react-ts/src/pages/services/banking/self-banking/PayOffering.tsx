@@ -239,7 +239,7 @@ const PayOffering = (props: PayOfferingProps) => {
                     </Row>
                     <small>
                       The charge represents a small fee for using the self
-                      banking feature, and is cheaper than expressPay
+                      banking feature
                     </small>
                     <Row className="my-4">
                       <Col>
