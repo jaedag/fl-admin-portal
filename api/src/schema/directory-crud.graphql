@@ -757,15 +757,16 @@ extend type Mutation {
   CloseDownCouncil(councilId: ID!, leaderId: ID!): Stream
     @cypher(
       statement: """
-      MATCH (council:Council {id:$councilId})
-      MATCH (admin:Active:Member {auth_id: $auth.jwt.sub})
-      MATCH (council)<-[:HAS]-(stream:Stream)
-      OPTIONAL MATCH (council)-[:HAS]->(constituencies)-[:HAS]->(bacentas)-[:HAS]->(fellowships)
+      MATCH (council:Council {id: $councilId})<-[:HAS]-(stream:Stream)
 
+      WITH council, stream
       CREATE (log:HistoryLog {id:apoc.create.uuid()})
         SET log.timeStamp = datetime(),
         log.historyRecord = council.name + ' Council was closed down under ' + stream.name +' Stream'
 
+      WITH council, stream, log
+      MATCH (admin:Active:Member {auth_id: $auth.jwt.sub})
+      OPTIONAL MATCH (council)-[:HAS]->(constituencies)-[:HAS]->(bacentas)-[:HAS]->(fellowships)
 
       MERGE (date:TimeGraph {date:date()})
       MERGE (log)-[:LOGGED_BY]->(admin)
@@ -782,15 +783,16 @@ extend type Mutation {
   CloseDownStream(streamId: ID!): GatheringService
     @cypher(
       statement: """
-      MATCH (stream:Stream {id:$streamId})
-      MATCH (admin:Active:Member {auth_id: $auth.jwt.sub})
-      MATCH (stream)<-[:HAS]-(gatheringService:GatheringService)
-      OPTIONAL MATCH (stream)-[:HAS]->(council)-[:HAS]->(constituencies)-[:HAS]->(bacentas)-[:HAS]->(fellowships)
+      MATCH (stream:Stream {id: $streamId})<-[:HAS]-(gatheringService:GatheringService)
 
+      WITH stream, gatheringService
       CREATE (log:HistoryLog {id:apoc.create.uuid()})
         SET log.timeStamp = datetime(),
         log.historyRecord = stream.name + ' Stream was closed down under ' + gatheringService.name +' Gathering Service'
-
+      
+      WITH stream, gatheringService, log
+      MATCH (admin:Active:Member {auth_id: $auth.jwt.sub})
+      OPTIONAL MATCH (stream)-[:HAS]->(council)-[:HAS]->(constituencies)-[:HAS]->(bacentas)-[:HAS]->(fellowships)
 
       MERGE (date:TimeGraph {date:date()})
       MERGE (log)-[:LOGGED_BY]->(admin)
@@ -808,14 +810,16 @@ extend type Mutation {
   CloseDownGatheringService(gatheringServiceId: ID!): Oversight
     @cypher(
       statement: """
-      MATCH (gatheringService:GatheringService {id:$gatheringServiceId})
-      MATCH (admin:Active:Member {auth_id: $auth.jwt.sub})
-      MATCH (gatheringService)<-[:HAS]-(oversight:Oversight)
-      OPTIONAL MATCH (gatheringService)-[:HAS]->(stream)-[:HAS]->(council)-[:HAS]->(constituencies)-[:HAS]->(bacentas)-[:HAS]->(fellowships)
+      MATCH (gatheringService:GatheringService {id: $gatheringServiceId})<-[:HAS]-(oversight:Oversight)
 
+      WITH gatheringService, oversight
       CREATE (log:HistoryLog {id:apoc.create.uuid()})
         SET log.timeStamp = datetime(),
         log.historyRecord = gatheringService.name + ' Gathering Service was closed down under ' + oversight.name +' Oversight'
+
+      WITH gatheringService, oversight, log
+      MATCH (admin:Active:Member {auth_id: $auth.jwt.sub})
+      OPTIONAL MATCH (gatheringService)-[:HAS]->(stream)-[:HAS]->(council)-[:HAS]->(constituencies)-[:HAS]->(bacentas)-[:HAS]->(fellowships)
 
 
       MERGE (date:TimeGraph {date:date()})

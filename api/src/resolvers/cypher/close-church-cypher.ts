@@ -28,8 +28,7 @@ RETURN constituency.name AS name, COUNT(member) AS memberCount, COUNT(bacentas) 
 `
 
 export const closeDownFellowship = `
-MATCH (fellowship:Fellowship {id:$fellowshipId})
-MATCH (fellowship)<-[:HAS]-(bacenta:Bacenta)
+MATCH (fellowship:Fellowship {id: $fellowshipId})<-[:HAS]-(bacenta:Bacenta)
 
 CREATE (log:HistoryLog {id: apoc.create.uuid()})
 SET log.timeStamp = datetime(),
@@ -58,14 +57,17 @@ RETURN bacenta {
 
 export const closeDownBacenta = `
 MATCH (bacenta:Bacenta {id:$bacentaId})<-[:HAS]-(constituency:Constituency)
+
+WITH bacenta, constituency
+CREATE (log:HistoryLog {id:apoc.create.uuid()})
+  SET log.timeStamp = datetime(),
+  log.historyRecord = bacenta.name + ' Bacenta was closed down under ' + constituency.name +' Constituency with all its fellowships'
+
+WITH bacenta, constituency, log
 MATCH (constituency)-[:HAS]->(bacentas:Bacenta)   
 MATCH (admin:Member {auth_id: $auth.jwt.sub})
 OPTIONAL MATCH (bacenta)-[:HAS]->(fellowships:Fellowship)
 UNWIND labels(constituency) AS stream
-
-CREATE (log:HistoryLog {id:apoc.create.uuid()})
-  SET log.timeStamp = datetime(),
-  log.historyRecord = bacenta.name + ' Bacenta was closed down under ' + constituency.name +' Constituency with all its fellowships'
 
 
 MERGE (date:TimeGraph {date:date()})
@@ -85,13 +87,17 @@ RETURN constituency {
 
 export const closeDownConstituency = `
 MATCH (constituency:Constituency {id:$constituencyId})<-[:HAS]-(council:Council)
-MATCH (admin:Member {auth_id: $auth.jwt.sub})
-MATCH (council)-[:HAS]->(constituencies)
-OPTIONAL MATCH (constituency)-[:HAS]->(bacentas)-[:HAS]->(fellowships)
+WITH constituency, council
 
 CREATE (log:HistoryLog {id:apoc.create.uuid()})
   SET log.timeStamp = datetime(),
   log.historyRecord = constituency.name + ' Constituency was closed down under ' + council.name +' Council'
+
+WITH constituency, council, log
+MATCH (admin:Member {auth_id: $auth.jwt.sub})
+MATCH (council)-[:HAS]->(constituencies)
+OPTIONAL MATCH (constituency)-[:HAS]->(bacentas)-[:HAS]->(fellowships)
+
 
 
 MERGE (date:TimeGraph {date:date()})
