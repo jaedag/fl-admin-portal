@@ -58,7 +58,7 @@ const DisplayAllBacentas = () => {
               </Link>
             ) : null}
           </Col>
-          <RoleView directoryLock roles={permitArrivals('GatheringService')}>
+          <RoleView roles={permitArrivals('GatheringService')}>
             <Col className="col-auto">
               <Link
                 to="/bacenta/addbacenta"
