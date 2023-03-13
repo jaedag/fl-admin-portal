@@ -34,7 +34,7 @@ const StreamReport = () => {
           <Col className="col-auto">
             <CloudinaryImage
               src={data?.streams[0].leader.pictureUrl}
-              className="rounded-circle user-image"
+              className="rounded-circle graph-user-image"
             />
           </Col>
           <Col className="my-auto">

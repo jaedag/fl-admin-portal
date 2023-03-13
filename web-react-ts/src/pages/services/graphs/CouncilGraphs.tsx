@@ -34,7 +34,7 @@ const CouncilReport = () => {
           <Col className="col-auto">
             <CloudinaryImage
               src={data?.councils[0].leader.pictureUrl}
-              className="rounded-circle user-image"
+              className="rounded-circle graph-user-image"
             />
           </Col>
           <Col className="my-auto">
