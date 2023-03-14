@@ -167,9 +167,6 @@ const GatheringServiceAvgWeekdayQuickFacts = lazy(
 const QuickFactsChurchList = lazy(
   () => import('pages/directory/quick-facts/QuickFactsChurchList')
 )
-const UpdateConstituencyBussingCost = lazy(
-  () => import('pages/directory/update/UpdateConstituencyBussingCost')
-)
 
 export const memberDirectory: LazyRouteTypes[] = [
   {
@@ -533,12 +530,6 @@ export const directory: LazyRouteTypes[] = [
     path: '/constituency/editconstituency',
     element: UpdateConstituency,
     roles: permitAdmin('Council'),
-    placeholder: false,
-  },
-  {
-    path: 'constituency/change-bussing-cost',
-    element: UpdateConstituencyBussingCost,
-    roles: permitAdmin('Stream'),
     placeholder: false,
   },
   {

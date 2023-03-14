@@ -10,7 +10,7 @@ import {
 import * as Yup from 'yup'
 import { useNavigate } from 'react-router'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
-import { Button, Col, Container, Row } from 'react-bootstrap'
+import { Button, Card, Col, Container, Row } from 'react-bootstrap'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import HeadingSecondary from 'components/HeadingSecondary'
 import { Form, Formik, FormikHelpers } from 'formik'
@@ -21,7 +21,10 @@ import {
   randomOTPGenerator,
   throwToSentry,
 } from 'global-utils'
-import { MOBILE_NETWORK_OPTIONS } from 'pages/arrivals/arrivals-utils'
+import {
+  MOBILE_NETWORK_OPTIONS,
+  OUTBOUND_OPTIONS,
+} from 'pages/arrivals/arrivals-utils'
 import RoleView from 'auth/RoleView'
 import { permitAdminArrivals } from 'permission-utils'
 import useAuth from 'auth/useAuth'
@@ -30,16 +33,30 @@ import usePopup from 'hooks/usePopup'
 import { MemberContext } from 'contexts/MemberContext'
 import Select from 'components/formik/Select'
 import Input from 'components/formik/Input'
+import RadioButtons from 'components/formik/RadioButtons'
 
 type FormOptions = {
   name: string
   target: string
-  urvanCost: string
-  sprinterCost: string
+  urvanTopUp: string
+  sprinterTopUp: string
+  outbound: string
   mobileNetwork: string
   momoName: string
   momoNumber: string
   verificationCode: string
+}
+
+const convertToBoolean = (value: string | boolean) => {
+  return value === 'In and Out'
+}
+
+const convertToString = (value: boolean) => {
+  if (value === true) {
+    return 'In and Out'
+  }
+
+  return 'In Only'
 }
 
 const UpdateBusPayment = () => {
@@ -71,8 +88,9 @@ const UpdateBusPayment = () => {
   const initialValues: FormOptions = {
     name: bacenta?.name,
     target: bacenta?.target ?? '',
-    urvanCost: bacenta?.urvanCost ?? '',
-    sprinterCost: bacenta?.sprinterCost ?? '',
+    urvanTopUp: bacenta?.urvanTopUp ?? '',
+    sprinterTopUp: bacenta?.sprinterTopUp ?? '',
+    outbound: convertToString(bacenta?.outbound) ?? 'In Only',
 
     mobileNetwork: bacenta?.mobileNetwork ?? '',
     momoName: bacenta?.momoName ?? '',
@@ -87,6 +105,7 @@ const UpdateBusPayment = () => {
       MOMO_NUM_REGEX,
       `Enter a valid MoMo Number without spaces. eg. (02XXXXXXXX)`
     ),
+    outbound: Yup.string().required('Please select an option'),
     momoName: Yup.string().when('momoNumber', {
       is: (momoNumber: string) => momoNumber && momoNumber.length > 0,
       then: Yup.string().required('Please enter the Momo Name'),
@@ -108,8 +127,9 @@ const UpdateBusPayment = () => {
         await UpdateBacentaBussingDetails({
           variables: {
             bacentaId,
-            sprinterCost: parseFloat(values.sprinterCost),
-            urvanCost: parseFloat(values.urvanCost),
+            sprinterTopUp: parseFloat(values.sprinterTopUp),
+            urvanTopUp: parseFloat(values.urvanTopUp),
+            outbound: convertToBoolean(values.outbound),
             target: parseInt(values.target),
           },
         })
@@ -170,15 +190,26 @@ const UpdateBusPayment = () => {
                             />
                           </Col>
                           <Input
-                            name="urvanCost"
-                            label="Cost of Urvan Bus (One Way)"
+                            name="urvanTopUp"
+                            label="Urvan Church Top Up (One Way)"
                             placeholder="Enter Amount in GHS"
                           />
                           <Input
-                            name="sprinterCost"
-                            label="Cost Of Sprinter Bus (One Way)"
+                            name="sprinterTopUp"
+                            label="Sprinter Church Top Up (One Way)"
                             placeholder="Enter Amount in GHS"
                           />
+                          <Container className="my-2">
+                            <Card border="warning">
+                              <Card.Body>
+                                <RadioButtons
+                                  name="outbound"
+                                  label="Are They Bussing Back?"
+                                  options={OUTBOUND_OPTIONS}
+                                />
+                              </Card.Body>
+                            </Card>
+                          </Container>
                         </Row>
                       </RoleView>
                       <RoleView

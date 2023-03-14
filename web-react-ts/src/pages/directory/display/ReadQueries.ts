@@ -237,8 +237,6 @@ export const DISPLAY_BACENTA = gql`
       vacationStatus
       graduationStatus
       target
-      sprinterCost
-      urvanCost
       sprinterTopUp
       urvanTopUp
 
@@ -333,9 +331,7 @@ export const DISPLAY_CONSTITUENCY = gql`
       }
 
       sprinterCost
-      sprinterTopUp
       urvanCost
-      urvanTopUp
 
       leader {
         id

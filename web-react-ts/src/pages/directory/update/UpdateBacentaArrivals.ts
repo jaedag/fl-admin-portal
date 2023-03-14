@@ -11,8 +11,9 @@ export const DISPLAY_BACENTA_BUSSING_DETAILS = gql`
         firstName
       }
       target
-      sprinterCost
-      urvanCost
+      sprinterTopUp
+      urvanTopUp
+      outbound
       vacationStatus
       graduationStatus
 
@@ -23,39 +24,25 @@ export const DISPLAY_BACENTA_BUSSING_DETAILS = gql`
   }
 `
 
-export const DISPLAY_CONSTITUENCY_BUSSING_DETAILS = gql`
-  query DisplayConstituencyBussingDetails($id: ID!) {
-    constituencies(where: { id: $id }, options: { limit: 1 }) {
-      id
-      name
-
-      sprinterCost
-      sprinterTopUp
-      urvanCost
-      urvanTopUp
-    }
-  }
-`
-
 export const UPDATE_BACENTA_BUSSING_DETAILS = gql`
   mutation UpdateBacentaBussingDetails(
     $bacentaId: ID!
     $target: Int!
-    $sprinterCost: Float!
-    $urvanCost: Float!
+    $sprinterTopUp: Float!
+    $urvanTopUp: Float!
+    $outbound: Boolean!
   ) {
     UpdateBacentaBussingDetails(
       bacentaId: $bacentaId
       target: $target
-      sprinterCost: $sprinterCost
-      urvanCost: $urvanCost
+      sprinterTopUp: $sprinterTopUp
+      urvanTopUp: $urvanTopUp
+      outbound: $outbound
     ) {
       id
       name
       target
 
-      sprinterCost
-      urvanCost
       sprinterTopUp
       urvanTopUp
       history(limit: 5) {
@@ -108,27 +95,6 @@ export const UPDATE_BUS_PAYMENT_DETAILS = gql`
         }
         historyRecord
       }
-    }
-  }
-`
-
-export const UPDATE_CONSTITUENCY_BUSSING_COST = gql`
-  mutation UpdateConstituencyBussingCost(
-    $constituencyId: ID!
-    $sprinterCost: Float!
-    $urvanCost: Float!
-  ) {
-    UpdateConstituencyBussingCost(
-      constituencyId: $constituencyId
-      sprinterCost: $sprinterCost
-      urvanCost: $urvanCost
-    ) {
-      id
-      name
-      sprinterCost
-      sprinterTopUp
-      urvanCost
-      urvanTopUp
     }
   }
 `

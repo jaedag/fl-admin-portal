@@ -8,6 +8,14 @@ import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { permitAdminArrivals } from 'permission-utils'
 import { DetailsArray } from './DetailsFellowship'
 
+const convertToString = (value: string | boolean) => {
+  if (value === true) {
+    return 'In and Out'
+  }
+
+  return 'In Only'
+}
+
 const DetailsBacenta = () => {
   const { bacentaId } = useContext(ChurchContext)
   const { data, loading, error } = useQuery(DISPLAY_BACENTA, {
@@ -55,7 +63,11 @@ const DetailsBacenta = () => {
       title: 'Momo Number',
       number: bacenta?.momoNumber || '-',
       link: `#`,
-      width: 12,
+    },
+    {
+      title: 'Outbound Status',
+      number: convertToString(bacenta?.outbound),
+      link: `#`,
     },
     {
       title: 'Urvan (One Way)\n\nTop Up',
@@ -68,14 +80,15 @@ const DetailsBacenta = () => {
       link: `#`,
     },
   ]
-  if (!bacenta?.urvanCost && bacenta?.sprinterCost) {
-    details.splice(6, 1)
-  }
-  if (!bacenta?.sprinterCost && bacenta?.urvanCost) {
+
+  if (!bacenta?.urvanTopUp && bacenta?.sprinterTopUp) {
     details.splice(7, 1)
   }
+  if (!bacenta?.sprinterTopUp && bacenta?.urvanTopUp) {
+    details.splice(8, 1)
+  }
 
-  if (!bacenta?.sprinterCost && !bacenta?.urvanCost) {
+  if (!bacenta?.sprinterTopUp && !bacenta?.urvanTopUp) {
     details.splice(6, 3)
     details.splice(5, 1)
   }

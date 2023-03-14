@@ -97,9 +97,8 @@ export interface BacentaWithArrivals extends Bacenta {
   stream_name: StreamOptions
   arrivalsCodeOfTheDay: string
   momoNumber: string
-  sprinterCost: number
+  outbound: boolean
   sprinterTopUp: number
-  urvanCost: number
   urvanTopUp: number
   bussing: BussingRecord[]
 }
