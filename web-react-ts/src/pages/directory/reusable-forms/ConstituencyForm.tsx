@@ -100,21 +100,21 @@ const ConstituencyForm = ({
                 <div className="form-group">
                   <Row className="row-cols-1 row-cols-md-2">
                     {/* <!-- Basic Info Div --> */}
-                    <RoleView roles={permitAdmin('Stream')}>
-                      {!newConstituency && (
-                        <div className="d-grid gap-2 mb-2">
-                          <Button
-                            variant="warning"
-                            onClick={() =>
-                              navigate('/constituency/change-bussing-cost')
-                            }
-                          >
-                            Change Constituency Bussing Costs
-                          </Button>
-                        </div>
-                      )}
-                    </RoleView>
                     <Col className="mb-2">
+                      <RoleView roles={permitAdmin('Stream')}>
+                        {!newConstituency && (
+                          <div className="d-grid gap-2 mb-2">
+                            <Button
+                              variant="warning"
+                              onClick={() =>
+                                navigate('/constituency/change-bussing-cost')
+                              }
+                            >
+                              Change Constituency Bussing Costs
+                            </Button>
+                          </div>
+                        )}
+                      </RoleView>
                       <RoleView roles={permitAdmin('Stream')}>
                         <Row className="form-row">
                           <Col>
