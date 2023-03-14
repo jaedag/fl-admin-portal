@@ -143,7 +143,7 @@ const BacentaForm = ({
                       </Row>
 
                       <Row className="d-flex align-items-center mb-3">
-                        <RoleView roles={permitAdmin('Constituency')}>
+                        <RoleView roles={permitAdminArrivals('Constituency')}>
                           <Col>
                             <SearchMember
                               name="leaderId"
