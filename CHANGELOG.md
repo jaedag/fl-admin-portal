@@ -1,3 +1,18 @@
+### 6.1.0 (2023-03-14)
+
+##### New Features
+
+* **arrivals:**  include onne way and top up amount as a property on bacenta node ([e9311940](https://github.com/firstlovecenter/fl-pastoral-care/commit/e931194041415694f490f9a1a717fb9f37004e93))
+
+##### Bug Fixes
+
+*  fix vehicle top up with arrivals 8.0 changes ([bdfb5270](https://github.com/firstlovecenter/fl-pastoral-care/commit/bdfb52708ccf6a75fa7ef256a63a0dd74fc588f9))
+*  switch from computed top up values to static values ([4ee09f7d](https://github.com/firstlovecenter/fl-pastoral-care/commit/4ee09f7d8e96d92c023f9ecd0e048861f31c8f76))
+*  add permission for arrivals admins to change leaders ([24151bc3](https://github.com/firstlovecenter/fl-pastoral-care/commit/24151bc35bc2823b7d2bcfc766a8d4a46ec702f6))
+*  redesign of maps button ([d8990ebf](https://github.com/firstlovecenter/fl-pastoral-care/commit/d8990ebfb45587268acf9a5c8caf221a40b7997a))
+*  adjust proportions for change constituency bussing costs button ([bc1b5e17](https://github.com/firstlovecenter/fl-pastoral-care/commit/bc1b5e173be68ed673686793337a03bca23a994c))
+*  correct typo on graph pages ([a75186d8](https://github.com/firstlovecenter/fl-pastoral-care/commit/a75186d8c86af0e4eee18ec9701328fe06517ff3))
+
 #### 6.0.3 (2023-03-14)
 
 ##### Bug Fixes
