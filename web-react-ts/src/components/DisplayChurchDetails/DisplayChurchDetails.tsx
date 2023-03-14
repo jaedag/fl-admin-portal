@@ -373,7 +373,8 @@ const DisplayChurchDetails = (props: DisplayChurchDetailsProps) => {
           </Row>
         )}
         {props.churchType === 'Bacenta' &&
-        (props.church?.sprinterCost !== 0 || props.church?.urvanCost !== 0) ? (
+        (props.church?.sprinterTopUp !== 0 ||
+          props.church?.urvanTopUp !== 0) ? (
           <RoleView
             roles={['leaderBacenta']}
             permittedStream={[

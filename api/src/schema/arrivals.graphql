@@ -1,8 +1,3 @@
-extend type Constituency {
-  sprinterCost: Float!
-  urvanCost: Float!
-}
-
 type SwellDate implements TimeGraphNode
   @auth(rules: [{ isAuthenticated: true }]) {
   id: ID!
@@ -885,8 +880,8 @@ extend type Constituency {
 }
 
 extend type Bacenta {
-  sprinterTopUp: Float!
-  urvanTopUp: Float!
+  sprinterTopUp: Float
+  urvanTopUp: Float
   outbound: Boolean!
 
   graduationStatus: String!
@@ -1090,8 +1085,9 @@ extend type Mutation {
   UpdateBacentaBussingDetails(
     bacentaId: ID!
     target: Int!
-    sprinterCost: Float!
-    urvanCost: Float!
+    sprinterTopUp: Float!
+    urvanTopUp: Float!
+    outbound: Boolean!
   ): Bacenta!
     @auth(
       rules: [
@@ -1121,8 +1117,9 @@ extend type Mutation {
       MATCH (higherChurch)-[:CURRENT_HISTORY]->(log:ServiceLog)-[:HAS_TARGET]->(higherTargetNode:Target)
         SET higherTargetNode.target = higherTargetNode.target - oldTarget + toInteger($target),
           targetNode.target = $target,
-          bacenta.sprinterCost = $sprinterCost,
-          bacenta.urvanCost = $urvanCost
+          bacenta.sprinterTopUp = $sprinterTopUp,
+          bacenta.urvanTopUp = $urvanTopUp,
+          bacenta.outbound = $outbound
 
       WITH DISTINCT bacenta
       CREATE (log:HistoryLog {id:apoc.create.uuid()})

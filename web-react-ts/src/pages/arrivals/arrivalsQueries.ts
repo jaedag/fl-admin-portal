@@ -265,9 +265,7 @@ export const BACENTA_ARRIVALS = gql`
         arrivalEndTime
       }
       momoNumber
-      sprinterCost
       sprinterTopUp
-      urvanCost
       urvanTopUp
 
       arrivalsCodeOfTheDay

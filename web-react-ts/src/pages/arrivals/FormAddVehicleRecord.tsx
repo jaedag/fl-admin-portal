@@ -16,13 +16,8 @@ import { ServiceContext } from 'contexts/ServiceContext'
 import { throwToSentry } from 'global-utils'
 import Input from 'components/formik/Input'
 import Select from 'components/formik/Select'
-import {
-  OUTBOUND_OPTIONS,
-  VEHICLE_OPTIONS,
-  VEHICLE_OPTIONS_WITH_CAR,
-} from './arrivals-utils'
+import { VEHICLE_OPTIONS, VEHICLE_OPTIONS_WITH_CAR } from './arrivals-utils'
 import ImageUpload from 'components/formik/ImageUpload'
-import RadioButtons from 'components/formik/RadioButtons'
 import { BacentaWithArrivals } from './arrivals-types'
 
 type FormOptions = {
@@ -31,34 +26,26 @@ type FormOptions = {
   personalContribution: string
   vehicle: string
   picture: string
-  outbound: string
 }
 
 const FormAddVehicleRecord = () => {
   const navigate = useNavigate()
   const { bacentaId, clickCard } = useContext(ChurchContext)
   const { bussingRecordId } = useContext(ServiceContext)
+
+  const { data, loading, error } = useQuery(BACENTA_ARRIVALS, {
+    variables: { id: bacentaId },
+  })
+  const bacenta: BacentaWithArrivals = data?.bacentas[0]
+
   const initialValues: FormOptions = {
     leaderDeclaration: '',
     vehicleCost: '',
     personalContribution: '',
     vehicle: '',
     picture: '',
-    outbound: 'In Only',
   }
 
-  const convertToBoolean = (value: string) => {
-    if (value === 'In and Out') {
-      return true
-    }
-    return false
-  }
-
-  const { data, loading, error } = useQuery(BACENTA_ARRIVALS, {
-    variables: { id: bacentaId },
-  })
-
-  const bacenta: BacentaWithArrivals = data?.bacentas[0]
   const swell = data?.timeGraphs[0].swell
   const [RecordVehicleFromBacenta] = useMutation(RECORD_BUSSING_FROM_BACENTA)
   const validationSchema = Yup.object({
@@ -75,7 +62,6 @@ const FormAddVehicleRecord = () => {
       .required('This is a required field'),
     vehicle: Yup.string().required('This is a required field'),
     picture: Yup.string().required('This is a required field'),
-    outbound: Yup.string().required('This is a required field'),
   })
 
   const onSubmit = async (
@@ -93,7 +79,6 @@ const FormAddVehicleRecord = () => {
           personalContribution: parseFloat(values.personalContribution),
           vehicle: values.vehicle,
           picture: values.picture,
-          outbound: convertToBoolean(values.outbound),
         },
       })
 
@@ -161,17 +146,6 @@ const FormAddVehicleRecord = () => {
                   name="personalContribution"
                   label="Personal Contribution* (in Cedis)"
                 />
-                <Container className="my-2">
-                  <Card border="warning">
-                    <Card.Body>
-                      <RadioButtons
-                        name="outbound"
-                        label="Are You Bussing Back?"
-                        options={OUTBOUND_OPTIONS}
-                      />
-                    </Card.Body>
-                  </Card>
-                </Container>
 
                 <ImageUpload
                   label="Upload A Bussing Picture"
