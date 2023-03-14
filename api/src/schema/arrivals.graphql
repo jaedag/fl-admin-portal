@@ -1210,7 +1210,6 @@ extend type Mutation {
     personalContribution: Float!
     vehicle: String!
     picture: String!
-    outbound: Boolean!
   ): VehicleRecord!
 
   SetVehicleSupport(vehicleRecordId: ID!): VehicleRecord!
@@ -1219,7 +1218,6 @@ extend type Mutation {
     vehicleRecordId: ID!
     attendance: Int!
     vehicle: String!
-    outbound: Boolean!
     comments: String
   ): VehicleRecord!
     @auth(rules: [{ roles: ["arrivalsCounterStream"] }])
@@ -1228,7 +1226,6 @@ extend type Mutation {
       MATCH (vehicleRecord:VehicleRecord {id: $vehicleRecordId}) WHERE vehicleRecord.arrivalTime IS NULL
         SET vehicleRecord.attendance = $attendance,
         vehicleRecord.vehicle = $vehicle,
-        vehicleRecord.outbound = $outbound,
         vehicleRecord.comments = $comments
 
          WITH vehicleRecord

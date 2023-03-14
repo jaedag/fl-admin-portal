@@ -23,19 +23,13 @@ import Input from 'components/formik/Input'
 import Textarea from 'components/formik/Textarea'
 import CloudinaryImage from 'components/CloudinaryImage'
 import Select from 'components/formik/Select'
-import {
-  OUTBOUND_OPTIONS,
-  VEHICLE_OPTIONS,
-  VEHICLE_OPTIONS_WITH_CAR,
-} from './arrivals-utils'
-import RadioButtons from 'components/formik/RadioButtons'
+import { VEHICLE_OPTIONS, VEHICLE_OPTIONS_WITH_CAR } from './arrivals-utils'
 import './Arrivals.css'
 
 type FormOptions = {
   attendance: string
   vehicle: string
   comments: string
-  outbound: string
 }
 
 const FormAttendanceConfirmation = () => {
@@ -64,7 +58,6 @@ const FormAttendanceConfirmation = () => {
     attendance: '',
     vehicle: vehicle?.vehicle,
     comments: '',
-    outbound: convertToString(vehicle?.outbound),
   }
 
   const validationSchema = Yup.object({
@@ -73,7 +66,6 @@ const FormAttendanceConfirmation = () => {
       .integer('You cannot have attendance with decimals!')
       .required('This is a required field'),
     vehicle: Yup.string().required('This is a required field'),
-    outbound: Yup.string().required('This is a required field'),
     comments: Yup.string().when(['attendance', 'vehicle'], {
       is: (attendance: number, vehicleType: string) => {
         if (
@@ -102,7 +94,6 @@ const FormAttendanceConfirmation = () => {
         attendance: parseInt(values.attendance),
         vehicle: values.vehicle,
         comments: values.comments,
-        outbound: values.outbound === 'In and Out',
       },
     }).catch((error) =>
       throwToSentry('There was an error confirming vehicle', error)
@@ -204,15 +195,6 @@ const FormAttendanceConfirmation = () => {
                   }
                   defaultOption="Select a vehicle type"
                 />
-                <Card border="warning" className="my-2">
-                  <Card.Body>
-                    <RadioButtons
-                      name="outbound"
-                      label="Are They Bussing Back?"
-                      options={OUTBOUND_OPTIONS}
-                    />
-                  </Card.Body>
-                </Card>
 
                 <Textarea name="comments" label="Comments" />
                 <Card className="text-center">
