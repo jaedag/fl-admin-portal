@@ -35,10 +35,10 @@ export const setBacentaGraduatedStatus = async (
 ) => {
   if (last4Bussing.length === 5) {
     last4Bussing.pop()
-    if (last4Bussing.every((bussing) => bussing > 8)) {
+    if (last4Bussing.every((bussing) => bussing >= 8)) {
       await session.run(setBacentaGraduated, { bacentaId })
     }
-  } else if (last4Bussing.every((bussing) => bussing > 8)) {
+  } else if (last4Bussing.every((bussing) => bussing >= 8)) {
     await session.run(setBacentaGraduated, { bacentaId })
   }
 }
