@@ -38,7 +38,7 @@ const CouncilReport = () => {
             />
           </Col>
           <Col className="my-auto">
-            <h5 className="mb-0">{`${data?.councils[0].name} Bacenta`}</h5>{' '}
+            <h5 className="mb-0">{`${data?.councils[0].name} Council`}</h5>{' '}
             <p className="mb-0">
               <span className="text-secondary font-weight-bold">Leader: </span>
               {`${data?.councils[0].leader.fullName}`}

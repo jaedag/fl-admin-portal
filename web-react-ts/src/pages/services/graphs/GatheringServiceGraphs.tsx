@@ -39,7 +39,7 @@ const GatheringServiceReport = () => {
             />
           </Col>
           <Col className="my-auto">
-            <h5 className="mb-0">{`${data?.gatheringServices[0].name} Bacenta`}</h5>{' '}
+            <h5 className="mb-0">{`${data?.gatheringServices[0].name} Gathering Service`}</h5>{' '}
             <p className="mb-0">
               <span className="text-secondary font-weight-bold">Leader: </span>
               {`${data?.gatheringServices[0].leader.fullName}`}

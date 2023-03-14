@@ -38,7 +38,7 @@ const StreamReport = () => {
             />
           </Col>
           <Col className="my-auto">
-            <h5 className="mb-0">{`${data?.streams[0].name} Bacenta`}</h5>{' '}
+            <h5 className="mb-0">{`${data?.streams[0].name} Stream`}</h5>{' '}
             <p className="mb-0">
               <span className="text-secondary font-weight-bold">Leader: </span>
               {`${data?.streams[0].leader.fullName}`}

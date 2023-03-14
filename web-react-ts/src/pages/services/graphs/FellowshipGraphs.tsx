@@ -33,7 +33,7 @@ export const FellowshipReport = () => {
             />
           </Col>
           <Col className="my-auto">
-            <h5 className="mb-0">{`${data?.fellowships[0].name} Bacenta`}</h5>{' '}
+            <h5 className="mb-0">{`${data?.fellowships[0].name} Fellowship`}</h5>{' '}
             <p className="mb-0">
               <span className="text-secondary font-weight-bold">Leader: </span>
               {`${data?.fellowships[0].leader.fullName}`}
