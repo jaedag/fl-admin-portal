@@ -47,13 +47,6 @@ const FormAttendanceConfirmation = () => {
   const vehicle: VehicleRecord = data?.vehicleRecords[0]
   const bacenta: BacentaWithArrivals = data?.bacentas[0]
 
-  const convertToString = (value: boolean) => {
-    if (value) {
-      return 'In and Out'
-    }
-    return 'In Only'
-  }
-
   const initialValues: FormOptions = {
     attendance: '',
     vehicle: vehicle?.vehicle,
