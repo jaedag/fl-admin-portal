@@ -1,3 +1,13 @@
+#### 6.0.3 (2023-03-14)
+
+##### Bug Fixes
+
+*  add council to swollen sunday target template ([be4a34a2](https://github.com/firstlovecenter/fl-pastoral-care/commit/be4a34a26c9d8b250c3a33dbcfac0da1ee481b0d))
+*  fix small leader picture on member cards ([c96aa974](https://github.com/firstlovecenter/fl-pastoral-care/commit/c96aa97426d81f048136cc89777a248a9e08b8f6))
+*  enable car option only for swell dates ([63f0c706](https://github.com/firstlovecenter/fl-pastoral-care/commit/63f0c706b3c424b4bc1ba46e1dd01301dbcdf002))
+*  remove car option for bussing ([7f8b7c98](https://github.com/firstlovecenter/fl-pastoral-care/commit/7f8b7c98134ad40f138776b30c29c234b1a7bc9b))
+*  change condition for car option to after first bussing ([5acdece1](https://github.com/firstlovecenter/fl-pastoral-care/commit/5acdece1a05a691b0dde2bf09911bc8e444c75dc))
+
 #### 6.0.2 (2023-03-12)
 
 ##### New Features
