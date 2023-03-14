@@ -240,14 +240,21 @@ export const STREAM_SWOLLEN_TARGET_TEMPLATE = gql`
       id
       name
       bacentas {
+        id
         code
         name
         leader {
+          id
           firstName
           lastName
         }
         constituency {
+          id
           name
+          council {
+            id
+            name
+          }
         }
       }
     }

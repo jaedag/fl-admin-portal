@@ -18,6 +18,7 @@ const StreamSwollenSundayTarget = () => {
 
   const swollenTargetTemplate = bacentas?.map((bacenta: any) => {
     return {
+      council: bacenta?.constituency?.council?.name,
       constituency: bacenta?.constituency?.name,
       bacenta: bacenta?.name,
       code: bacenta?.code,

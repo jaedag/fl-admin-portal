@@ -10,6 +10,7 @@ import './SwollenSunday.css'
 import MenuButton from 'components/buttons/MenuButton'
 
 interface BacentaTarget {
+  council: string
   constituency: string
   bacenta: string
   code: number
@@ -31,6 +32,7 @@ const SwollenSundayTarget = ({
   const churchType = currentUser.currentChurch?.__typename
 
   const headers = [
+    { label: 'Council', key: 'council' },
     { label: 'Constituency', key: 'constituency' },
     { label: 'Bacenta', key: 'bacenta' },
     { label: 'Code', key: 'code' },
