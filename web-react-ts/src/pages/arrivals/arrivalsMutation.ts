@@ -183,7 +183,6 @@ export const RECORD_BUSSING_FROM_BACENTA = gql`
     $personalContribution: Float!
     $vehicle: String!
     $picture: String!
-    $outbound: Boolean!
   ) {
     RecordVehicleFromBacenta(
       bacentaId: $bacentaId
@@ -193,7 +192,6 @@ export const RECORD_BUSSING_FROM_BACENTA = gql`
       personalContribution: $personalContribution
       vehicle: $vehicle
       picture: $picture
-      outbound: $outbound
     ) {
       id
       leaderDeclaration
@@ -223,14 +221,12 @@ export const CONFIRM_VEHICLE_BY_ADMIN = gql`
     $attendance: Int!
     $vehicle: String!
     $comments: String!
-    $outbound: Boolean!
   ) {
     ConfirmVehicleByAdmin(
       vehicleRecordId: $vehicleRecordId
       attendance: $attendance
       vehicle: $vehicle
       comments: $comments
-      outbound: $outbound
     ) {
       id
       attendance

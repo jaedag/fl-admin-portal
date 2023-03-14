@@ -330,9 +330,6 @@ export const DISPLAY_CONSTITUENCY = gql`
         name
       }
 
-      sprinterCost
-      urvanCost
-
       leader {
         id
         firstName

@@ -278,7 +278,6 @@ export const arrivalsMutation = {
       personalContribution: number
       vehicle: string
       picture: string
-      outbound: boolean
     },
     context: Context
   ) => {
@@ -290,6 +289,7 @@ export const arrivalsMutation = {
     )
 
     const stream = recordResponse.stream.properties
+    const bacenta = recordResponse.bacenta.properties
     const arrivalEndTime = new Date(
       new Date().toISOString().slice(0, 10) +
         new Date(stream.arrivalEndTime).toISOString().slice(10)
@@ -303,6 +303,7 @@ export const arrivalsMutation = {
     const response = rearrangeCypherObject(
       await session.run(recordVehicleFromBacenta, {
         ...args,
+        outbound: bacenta.outbound,
         vehicleCostWithOutbound: args.vehicleCost,
         auth: context.auth,
       })
@@ -358,7 +359,6 @@ export const arrivalsMutation = {
       personalContribution: number
       vehicle: 'Urvan' | 'Sprinter' | 'Car'
       picture: string
-      outbound: boolean
     },
     context: Context
   ) => {
@@ -505,18 +505,13 @@ export const arrivalsMutation = {
     const response: responseType = rearrangeCypherObject(
       await session.run(getVehicleRecordWithDate, args)
     )
-    const calculateTopUp = (vehicleCost: number) => {
-      if (vehicleCost <= 50) return 0.5 * vehicleCost
-      if (vehicleCost <= 110) return 0.7 * vehicleCost
-      return 0.8 * vehicleCost
-    }
 
     let vehicleRecord: RearragedCypherResponse | undefined
 
     const calculateVehicleTopUp = (data: responseType) => {
       const outbound = response.outbound ? 2 : 1
-      const sprinterTopUp = calculateTopUp(data.bacentaSprinterCost) * outbound
-      const urvanTopUp = calculateTopUp(data.bacentaUrvanCost) * outbound
+      const sprinterTopUp = data.bacentaSprinterCost * outbound
+      const urvanTopUp = data.bacentaUrvanCost * outbound
 
       const amountToPay = data.vehicleCost - data.personalContribution
 

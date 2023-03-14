@@ -7,5 +7,5 @@ REMOVE bacenta.urvanTopUp, bacenta.sprinterTopUp, bacenta.urvanCost, bacenta.spr
 RETURN COUNT(bacenta);
 
 MATCH (t:Bacenta)
-SET t.outbound = false,
+SET t.outbound = false
 RETURN COUNT(t);

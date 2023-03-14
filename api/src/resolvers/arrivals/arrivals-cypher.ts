@@ -28,7 +28,8 @@ MATCH (bussing)-[:BUSSED_ON]->(date:TimeGraph)
 SET record.target = bacenta.target,
 record.momoNumber = bacenta.momoNumber, 
 record.mobileNetwork = bacenta.mobileNetwork,
-record.momoName = bacenta.momoName
+record.momoName = bacenta.momoName,
+record.outbound = bacenta.outbound
 
 RETURN record.id AS vehicleRecordId,
 record.target AS target,
@@ -58,7 +59,7 @@ RETURN record, stream, bacenta, leader.firstName AS firstName, leader.phoneNumbe
 
 export const checkArrivalTimes = `
 MATCH (bacenta {id: $bacentaId})<-[:HAS]-(:Constituency)<-[:HAS]-(:Council)<-[:HAS]-(stream:Stream)
-RETURN stream
+RETURN stream, bacenta
 `
 
 export const checkIfPreMobilisationFilled = `
@@ -156,7 +157,6 @@ export const confirmVehicleByAdmin = `
 MATCH (vehicleRecord:VehicleRecord {id: $vehicleRecordId}) 
     SET vehicleRecord.attendance = $attendance,
       vehicleRecord.vehicle = $vehicle,
-      vehicleRecord.outbound = $outbound,
       vehicleRecord.comments = $comments,
       vehicleRecord.arrivalTime = datetime()
 
@@ -198,6 +198,7 @@ RETURN vehicleRecord {
 
 export const recordVehicleFromBacenta = `
 CREATE (vehicleRecord:VehicleRecord  {id: apoc.create.uuid()})
+
 WITH vehicleRecord
 MATCH (bussingRecord:BussingRecord {id: $bussingRecordId})
 MERGE (bussingRecord)-[:INCLUDES_RECORD]->(vehicleRecord)
