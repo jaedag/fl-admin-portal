@@ -884,66 +884,10 @@ extend type Constituency {
     )
 }
 
-extend type Constituency {
-  sprinterCost: Float!
-  sprinterTopUp: Float!
-    @cypher(
-      statement: """
-      MATCH (this)
-      RETURN
-      CASE
-        WHEN this.sprinterCost <= 50 THEN round(0.5 * this.sprinterCost)
-       WHEN this.sprinterCost <= 110 THEN  round(0.7 * this.sprinterCost)
-       WHEN this.sprinterCost > 110 THEN  round(0.8 * this.sprinterCost)
-       ELSE 0
-      END
-      """
-    )
-  urvanCost: Float!
-  urvanTopUp: Float!
-    @cypher(
-      statement: """
-      MATCH (this)
-      RETURN
-      CASE
-       WHEN this.urvanCost <= 50 THEN round(0.5 * this.urvanCost)
-       WHEN this.urvanCost <= 110 THEN  round(0.7 * this.urvanCost)
-       WHEN this.urvanCost > 110 THEN  round(0.8 * this.urvanCost)
-       ELSE 0
-      END
-      """
-    )
-}
-
 extend type Bacenta {
-  sprinterCost: Float!
   sprinterTopUp: Float!
-    @cypher(
-      statement: """
-      MATCH (this)
-      RETURN
-      CASE
-       WHEN this.sprinterCost <= 50 THEN round(0.5 * this.sprinterCost)
-       WHEN this.sprinterCost <= 110 THEN  round(0.7 * this.sprinterCost)
-       WHEN this.sprinterCost > 110 THEN  round(0.8 * this.sprinterCost)
-       ELSE 0
-      END
-      """
-    )
-  urvanCost: Float!
   urvanTopUp: Float!
-    @cypher(
-      statement: """
-      MATCH (this)
-      RETURN
-      CASE
-        WHEN this.urvanCost <= 50 THEN round(0.5 * this.urvanCost)
-       WHEN this.urvanCost <= 110 THEN  round(0.7 * this.urvanCost)
-       WHEN this.urvanCost > 110 THEN  round(0.8 * this.urvanCost)
-       ELSE 0
-      END
-      """
-    )
+  outbound: Boolean!
 
   graduationStatus: String!
     @cypher(
