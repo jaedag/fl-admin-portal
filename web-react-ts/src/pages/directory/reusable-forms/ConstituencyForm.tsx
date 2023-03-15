@@ -102,20 +102,6 @@ const ConstituencyForm = ({
                     {/* <!-- Basic Info Div --> */}
                     <Col className="mb-2">
                       <RoleView roles={permitAdmin('Stream')}>
-                        {!newConstituency && (
-                          <div className="d-grid gap-2 mb-2">
-                            <Button
-                              variant="warning"
-                              onClick={() =>
-                                navigate('/constituency/change-bussing-cost')
-                              }
-                            >
-                              Change Constituency Bussing Costs
-                            </Button>
-                          </div>
-                        )}
-                      </RoleView>
-                      <RoleView roles={permitAdmin('Stream')}>
                         <Row className="form-row">
                           <Col>
                             <Select
