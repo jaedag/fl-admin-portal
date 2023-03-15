@@ -43,6 +43,7 @@ export const UPDATE_BACENTA_BUSSING_DETAILS = gql`
       name
       target
 
+      outbound
       sprinterTopUp
       urvanTopUp
       history(limit: 5) {

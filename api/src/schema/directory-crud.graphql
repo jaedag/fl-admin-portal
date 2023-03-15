@@ -354,6 +354,8 @@ extend type Mutation {
       statement: """
       CREATE (bacenta:Bacenta:IC:Active {name:$name})
         SET	bacenta.id = apoc.create.uuid(),
+        bacenta.sprinterTopUp = 0,
+        bacenta.urvanTopUp = 0,
         bacenta.outbound = false
 
       WITH bacenta

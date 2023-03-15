@@ -880,8 +880,8 @@ extend type Constituency {
 }
 
 extend type Bacenta {
-  sprinterTopUp: Float
-  urvanTopUp: Float
+  sprinterTopUp: Float!
+  urvanTopUp: Float!
   outbound: Boolean!
 
   graduationStatus: String!

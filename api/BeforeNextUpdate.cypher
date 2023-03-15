@@ -22,3 +22,20 @@ MATCH (bacenta:Active:Bacenta)<-[:HAS*2]-(council:Council)
 WHERE bacenta.urvanTopUp IS NULL
 MATCH (council)-[:LEADS]-(leader:Member)
 RETURN council.name, COUNT(bacenta), leader.firstName + " " + leader.lastName;
+
+
+MATCH (bacenta:Bacenta)
+WHERE bacenta.urvanTopUp IS NULL    
+SET bacenta.urvanTopUp = 0
+RETURN COUNT(bacenta);
+
+MATCH (bacenta:Bacenta)
+WHERE bacenta.sprinterTopUp IS NULL
+SET bacenta.sprinterTopUp = 0
+RETURN COUNT(bacenta);
+
+CREATE CONSTRAINT bacentaNeedsUrvanTopUp IF NOT EXISTS ON (b:Bacenta) ASSERT b.urvanTopUp IS NOT NULL;
+CREATE CONSTRAINT bacentaNeedsSprinterTopUp IF NOT EXISTS ON (b:Bacenta) ASSERT b.sprinterTopUp IS NOT NULL;
+
+// create node key constraint on sprinterTopup and urvanTopUp
+CREATE CONSTRAINT bacentaNeedsTopUp IF NOT EXISTS ON (b:Bacenta) ASSERT b.urvanTopUp IS NOT NULL AND b.sprinterTopUp IS NOT NULL;
