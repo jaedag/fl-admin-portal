@@ -1,3 +1,28 @@
+#### 6.4.1 (2023-03-15)
+
+##### Documentation Changes
+
+*  update CHANGELOG.md ([5052c634](https://github.com/firstlovecenter/fl-pastoral-care/commit/5052c634f2799d04a4f006325c03d7d6d135dd65))
+*  update CHANGELOG.md ([c324c639](https://github.com/firstlovecenter/fl-pastoral-care/commit/c324c6390a5824890fcd61dc718da7313941973b))
+*  update CHANGELOG.md ([28869ea3](https://github.com/firstlovecenter/fl-pastoral-care/commit/28869ea3bc0b9544e38f5151212dead288d38bb9))
+*  update CHANGELOG.md ([9cc4ca05](https://github.com/firstlovecenter/fl-pastoral-care/commit/9cc4ca05b5987b65d7b9ecc7e7a046b569bf9bf6))
+
+##### New Features
+
+* **arrivals:**  include onne way and top up amount as a property on bacenta node ([f7aa13cc](https://github.com/firstlovecenter/fl-pastoral-care/commit/f7aa13cc913d371bc56e31ca2d459db797dd8b9a))
+
+##### Bug Fixes
+
+*  add outbound status to graphql query to display bacenta ([98e404df](https://github.com/firstlovecenter/fl-pastoral-care/commit/98e404df4eca98406cbbec9992f3f81236c451f8))
+*  remove unused function convertToString ([cdf7e56e](https://github.com/firstlovecenter/fl-pastoral-care/commit/cdf7e56e469f5ece37badce4a853c851be6ffa66))
+*  bacenta status change bug for bussing 8 and above ([cf2099ce](https://github.com/firstlovecenter/fl-pastoral-care/commit/cf2099ce1bd07e82acb226138a84db6c5887a86a))
+*  fix vehicle top up with arrivals 8.0 changes ([2ccbd5d7](https://github.com/firstlovecenter/fl-pastoral-care/commit/2ccbd5d79f176dd5258196772b5c290e74f758ce))
+*  switch from computed top up values to static values ([673f2474](https://github.com/firstlovecenter/fl-pastoral-care/commit/673f247455b224e6d54391c05949b992839dbcfb))
+*  add permission for arrivals admins to change leaders ([b77bdf74](https://github.com/firstlovecenter/fl-pastoral-care/commit/b77bdf740517d6b732fb233dcc5922583e818d60))
+*  redesign of maps button ([27ec9bd6](https://github.com/firstlovecenter/fl-pastoral-care/commit/27ec9bd6012f2d41ccb492be5e399572aeffdb83))
+*  adjust proportions for change constituency bussing costs button ([bc1b5e17](https://github.com/firstlovecenter/fl-pastoral-care/commit/bc1b5e173be68ed673686793337a03bca23a994c))
+*  correct typo on graph pages ([a75186d8](https://github.com/firstlovecenter/fl-pastoral-care/commit/a75186d8c86af0e4eee18ec9701328fe06517ff3))
+
 ### 6.4.0 (2023-03-14)
 
 ### 6.3.0 (2023-03-14)
