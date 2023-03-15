@@ -22,7 +22,7 @@ import {
   checkArrivalTimes,
   checkBacentaMomoDetails,
   checkIfPreMobilisationFilled,
-  checkTransactionId,
+  checkTransactionReference,
   confirmVehicleByAdmin,
   getArrivalsPaymentDataCypher,
   getVehicleRecordWithDate,
@@ -30,7 +30,6 @@ import {
   recordVehicleFromBacenta,
   removeVehicleRecordTransactionId,
   setSwellDate,
-  setVehicleRecordTransactionId,
   setVehicleRecordTransactionSuccessful,
   setVehicleTopUp,
   uploadMobilisationPicture,
@@ -42,7 +41,7 @@ import {
   StreamOptions,
 } from '../utils/types'
 import texts from '../texts.json'
-import { SendMoneyBody } from './arrivals-types'
+import { CreateTransferRecipientBody, SendMoneyBody } from './arrivals-types'
 import { checkServantHasCurrentHistory } from '../services/service-resolvers'
 import { setBacentaStatus } from './bacenta-status/utils-bacenta-status'
 
@@ -303,6 +302,9 @@ export const arrivalsMutation = {
     const response = rearrangeCypherObject(
       await session.run(recordVehicleFromBacenta, {
         ...args,
+        recipientCode: bacenta.recipientCode,
+        momoNumber: bacenta.momoNumber,
+        mobileNetwork: bacenta.mobileNetwork,
         outbound: bacenta.outbound,
         vehicleCostWithOutbound: args.vehicleCost,
         auth: context.auth,
@@ -617,25 +619,54 @@ export const arrivalsMutation = {
 
     const { auth } = getStreamFinancials(args.stream_name)
     const recordResponse = rearrangeCypherObject(
-      await session.run(checkTransactionId, args)
+      await session.run(checkTransactionReference, args)
     )
 
-    const transactionResponse = recordResponse.record.properties
+    const vehicleRecord = recordResponse.record.properties
+    const bacenta = recordResponse.bacenta.properties
+    console.log(vehicleRecord)
 
-    if (transactionResponse?.transactionStatus === 'success') {
+    let recipient = vehicleRecord
+
+    if (vehicleRecord?.transactionStatus === 'success') {
       throw new Error('Money has already been sent to this bacenta')
     } else if (
-      !transactionResponse?.arrivalTime ||
-      transactionResponse?.attendance < 8 ||
-      !transactionResponse?.vehicleTopUp
+      !vehicleRecord?.arrivalTime ||
+      vehicleRecord?.attendance < 8 ||
+      !vehicleRecord?.vehicleTopUp
     ) {
       // If record has not been confirmed, it will return null
       throw new Error('This bacenta is not eligible to receive money')
     }
-    const cypherResponse = rearrangeCypherObject(
-      await session.run(setVehicleRecordTransactionId, args)
-    )
-    const vehicleRecord = cypherResponse.record.properties
+
+    if (!vehicleRecord.recipientCode) {
+      const createRecipient: CreateTransferRecipientBody = {
+        method: 'post',
+        baseURL: 'https://api.paystack.co/',
+        url: '/transferrecipient',
+        headers: {
+          'content-type': 'application/json',
+          Authorization: auth,
+        },
+        data: {
+          type: 'mobile_money',
+          name: vehicleRecord.momoName,
+          account_number: vehicleRecord.momoNumber,
+          bank_code: vehicleRecord.mobileNetwork,
+          currency: 'GHS',
+          metadata: {
+            bacentaId: bacenta.id,
+            bacenta: bacenta.name,
+          },
+        },
+      }
+
+      const recipientResponse = await axios(createRecipient)
+      recipient = {
+        ...recipientResponse.data.data,
+        recipientCode: recipient.data.data.recipient_code,
+      }
+    }
 
     const sendVehicleSupport: SendMoneyBody = {
       method: 'post',
@@ -647,15 +678,16 @@ export const arrivalsMutation = {
       },
       data: {
         source: 'balance',
-        reason: `${cypherResponse.bacentaName} Bacenta ${vehicleRecord.momoName}`,
+        reason: `${bacenta.bacentaName} Bacenta ${vehicleRecord.momoName}`,
         amount: vehicleRecord.bussingTopUp * 100,
-        recipient: vehicleRecord.momoNumber,
+        currency: 'GHS',
+        recipient: recipient.recipientCode,
       },
     }
 
     try {
       const res = await axios(sendVehicleSupport)
-
+      console.log(res.data)
       if (res.data.code !== '000') {
         await session.run(removeVehicleRecordTransactionId, args)
         throwToSentry(

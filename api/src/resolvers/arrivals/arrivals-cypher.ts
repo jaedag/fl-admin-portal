@@ -1,12 +1,3 @@
-export const setVehicleRecordTransactionId = `
-MATCH (record:VehicleRecord {id: $vehicleRecordId})<-[:INCLUDES_RECORD]-(bussing:BussingRecord)<-[:HAS_BUSSING]-(:ServiceLog)<-[:HAS_HISTORY]-(bacenta:Bacenta)
-MATCH (bussing)-[:BUSSED_ON]->(date:TimeGraph)
-SET record.transactionTime = datetime(),
-record.transactionStatus = 'pending'
-
-RETURN record, bacenta.name AS bacentaName, date.date AS date
-`
-
 export const setVehicleRecordTransactionSuccessful = `
 MATCH (record:VehicleRecord {id: $vehicleRecordId})
 SET record.transactionStatus = "success"
@@ -48,7 +39,7 @@ bacenta.urvanCost AS bacentaUrvanCost,
 labels(date) AS dateLabels
 `
 
-export const checkTransactionId = `
+export const checkTransactionReference = `
 MATCH (record:VehicleRecord {id: $vehicleRecordId})<-[:INCLUDES_RECORD]-(:BussingRecord)<-[:HAS_BUSSING]-(:ServiceLog)<-[:HAS_HISTORY]-(bacenta:Bacenta)
 MATCH (bacenta)<-[:HAS]-(:Constituency)<-[:HAS]-(:Council)<-[:HAS]-(stream:Stream)
 MATCH (bacenta)<-[:LEADS]-(leader:Active:Member)
@@ -209,7 +200,10 @@ vehicleRecord.vehicleCost = $vehicleCostWithOutbound,
 vehicleRecord.personalContribution = $personalContribution,
 vehicleRecord.vehicle = $vehicle,
 vehicleRecord.picture =  $picture,
-vehicleRecord.outbound = $outbound
+vehicleRecord.outbound = $outbound,
+vehicleRecord.recipientCode = $recipientCode,
+vehicleRecord.momoNumber = $momoNumber,
+vehicleRecord.mobileNetwork = $mobileNetwork
 
 WITH vehicleRecord, bussingRecord
 MATCH (leader:Member {auth_id: $auth.jwt.sub})
