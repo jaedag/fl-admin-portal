@@ -10,6 +10,11 @@
   height: 100%;
 }
 
+.bg.dark {
+  padding-top: 0px;
+  padding-bottom: 0px;
+}
+
 .map {
   margin-top: -20px;
   height: 90vh;

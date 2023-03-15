@@ -93,8 +93,39 @@ const MapComponent = (props: MapComponentProps) => {
     setClickedMarker(marker)
   }
 
+  const getTypename = (place: PlaceType) => {
+    switch (place.typename) {
+      case 'GooglePlace':
+        return 'Office'
+      case 'Member':
+        return ''
+      case 'Fellowship':
+        return 'Fellowship'
+      case 'IndoorVenue':
+        return 'Indoor Venue'
+      case 'OutdoorVenue':
+        return 'Outdoor Venue'
+      case 'HighSchool':
+        return 'High School'
+      default:
+        return ''
+    }
+  }
+
   if (!isLoaded) {
     return <LoadingScreen />
+  }
+
+  const parseDescription = (description: string) => {
+    return description.split('\n').map((item, i) => (
+      <p key={i} className="mb-0">
+        {item.split(':').map((item, i) => (
+          <span key={i} className={i % 2 ? 'fw-bold' : 'text-secondary'}>
+            {i % 2 ? `: ${item}` : item}
+          </span>
+        ))}
+      </p>
+    ))
   }
 
   return (
@@ -129,10 +160,12 @@ const MapComponent = (props: MapComponentProps) => {
                       </Col>
                     )}
                     <Col>
-                      <p className="info-window-header">{clickedMarker.name}</p>
-                      <p className="info-window-text">
-                        {clickedMarker.description}
-                      </p>
+                      <p className="info-window-header">{`${getTypename(
+                        clickedMarker
+                      )}: ${clickedMarker.name}`}</p>
+                      <div className="info-window-text">
+                        {parseDescription(clickedMarker.description ?? '')}
+                      </div>
                     </Col>
                   </Row>
                 </Container>
@@ -148,7 +181,7 @@ const MapComponent = (props: MapComponentProps) => {
                       <Marker
                         key={place.id}
                         label={{
-                          text: place.name,
+                          text: place.name + ' ' + getTypename(place),
                           className: 'marker ' + getMapIconClass(place),
                         }}
                         position={place.position}

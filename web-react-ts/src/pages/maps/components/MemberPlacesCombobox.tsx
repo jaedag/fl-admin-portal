@@ -18,10 +18,10 @@ interface ComboBoxProps extends FormikComponentProps {
 
 const getName = (place: any) => {
   if (place.name) {
-    return place.name
+    return place.typename + ': ' + place.name
   }
   if (place.firstName) {
-    return place.firstName + ' ' + place.lastName
+    return place.typename + ': ' + place.firstName + ' ' + place.lastName
   }
   return ''
 }
@@ -120,15 +120,15 @@ const MemberPlacesCombobox = (props: ComboBoxProps) => {
           setSearchString(getName(suggestion))
         }}
         getSuggestionValue={(suggestion: any) => {
-          if (suggestion.name) {
-            return suggestion.name
+          if (suggestion?.name) {
+            return `${suggestion.typename}: ${suggestion.name}`
           }
 
-          if (suggestion.firstName) {
-            return suggestion.firstName + ' ' + suggestion.lastName
+          if (suggestion?.firstName) {
+            return `${suggestion.typename}: ${suggestion.firstName} ${suggestion.lastName}`
           }
 
-          if (suggestion) return
+          return ''
         }}
         highlightFirstSuggestion={true}
         renderSuggestion={(suggestion: any) => {

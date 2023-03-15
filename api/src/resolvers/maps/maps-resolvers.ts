@@ -1,6 +1,6 @@
 import type { Node, Integer, Point } from 'neo4j-driver'
 import { Context } from '../utils/neo4j-types'
-import { Member } from '../utils/types'
+import { ChurchIdAndName, Member } from '../utils/types'
 import { rearrangeCypherObject, throwToSentry } from '../utils/utils'
 import {
   memberFellowshipSearchByLocation,
@@ -35,9 +35,29 @@ interface PeopleResultShape {
       lastName: string
       location: Point
       pictureUrl: string
+      phoneNumber: string
+      whatsappNumber: string
       description: string
     }
   >
+  fellowship: {
+    id: string
+    name: string
+    location: Point
+  }
+
+  council: {
+    id: string
+    name: string
+  }
+
+  pastor: {
+    id: string
+    firstName: string
+    lastName: string
+    phoneNumber: string
+  }
+
   distance: number
 }
 
@@ -57,6 +77,21 @@ interface OutreachVenueResultShape {
 const parseMapData = (
   place: FellowshipResultShape | OutreachVenueResultShape | PeopleResultShape
 ) => {
+  const createMemberDescription = ({
+    fellowship,
+    council,
+    pastor,
+    phone,
+    WhatsApp,
+  }: {
+    fellowship: string
+    council: ChurchIdAndName
+    pastor: { firstName: string; lastName: string }
+    phone: string
+    WhatsApp: string
+  }) => {
+    return `Fellowship: ${fellowship}\n\nCouncil: ${council.name}\n\nCouncil Pastor: ${pastor.firstName} ${pastor.lastName}\n\nPhone Number: ${phone}\n\nWhatsapp Number: ${WhatsApp}`
+  }
   if ('member' in place) {
     return {
       id: place.member.properties.id,
@@ -65,9 +100,15 @@ const parseMapData = (
       location: place.member.properties.location,
       latitude: place.member.properties.location.y,
       longitude: place.member.properties.location.x,
-      distance: place.distance,
+      distance: place?.distance,
       picture: place.member.properties.pictureUrl,
-      description: 'This is a member in the church',
+      description: createMemberDescription({
+        fellowship: place.fellowship.name,
+        council: place.council,
+        pastor: place.pastor,
+        phone: place.member.properties.phoneNumber,
+        WhatsApp: place.member.properties.whatsappNumber,
+      }),
     }
   }
 
