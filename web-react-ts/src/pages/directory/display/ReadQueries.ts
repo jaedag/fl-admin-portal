@@ -237,6 +237,7 @@ export const DISPLAY_BACENTA = gql`
       vacationStatus
       graduationStatus
       target
+      outbound
       sprinterTopUp
       urvanTopUp
 

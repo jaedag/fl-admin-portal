@@ -9,3 +9,16 @@ RETURN COUNT(bacenta);
 MATCH (t:Bacenta)
 SET t.outbound = false
 RETURN COUNT(t);
+
+LOAD CSV WITH HEADERS FROM "https://docs.google.com/spreadsheets/d/e/2PACX-1vTz-vW-0XdoyVAFElknysMQFZHFXcphcEWOSeqZ8ysCu6CmGmRG7oLYB9MeirIWIQHzI4Hv6kkfoifi/pub?output=csv" as line
+MATCH (bacenta:Bacenta {name: line.Bacenta})<-[:HAS]-(constituency:Constituency {name: line.Constituency})
+SET bacenta.urvanTopUp = toFloat(line.`Urvan - church top up`), 
+bacenta.sprinterTopUp = toFloat(line.`Sprinter - church top up`),
+bacenta.outbound = toBoolean(line.Outbound)
+
+RETURN  constituency.name, bacenta.name, toBoolean(line.Outbound);
+
+MATCH (bacenta:Active:Bacenta)<-[:HAS*2]-(council:Council)
+WHERE bacenta.urvanTopUp IS NULL
+MATCH (council)-[:LEADS]-(leader:Member)
+RETURN council.name, COUNT(bacenta), leader.firstName + " " + leader.lastName;
