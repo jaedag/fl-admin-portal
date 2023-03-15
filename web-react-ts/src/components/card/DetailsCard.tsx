@@ -43,7 +43,9 @@ const DetailsCard = (props: DetailsCardPropsType) => {
 
       <div className="flex-grow-1">
         <PlaceholderCustom loading={loading} as="span" xs={12}>
-          <span className={`text-secondary card-heading ${theme}`}>
+          <span
+            className={`text-secondary card-heading ${theme} text-truncate`}
+          >
             {props.heading}
           </span>
         </PlaceholderCustom>
