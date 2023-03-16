@@ -131,7 +131,7 @@ const MapComponent = (props: MapComponentProps) => {
   return (
     <div className={`map`}>
       <GoogleMap
-        zoom={20}
+        zoom={18}
         center={center}
         mapContainerClassName="map-container"
         options={options}
