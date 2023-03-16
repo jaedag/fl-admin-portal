@@ -21,6 +21,7 @@ import LoadingScreen from 'components/base-component/LoadingScreen'
 import './MapComponent.css'
 import { getMapIcon, getMapIconClass } from './map-utils'
 import CloudinaryImage from 'components/CloudinaryImage'
+import { FaChurch, FaLocationArrow } from 'react-icons/fa'
 
 type LatLngLiteral = google.maps.LatLngLiteral
 type MapOptions = google.maps.MapOptions
@@ -279,8 +280,22 @@ const MapComponent = (props: MapComponentProps) => {
             setCentre={handleSetCentre}
             {...props}
           />
-          <Button onClick={handleMyLocationClick}>My location</Button>
-          <Button onClick={handleFlcClick}>First Love Center</Button>
+          <Row className="mt-4">
+            <div>Go to your location</div>
+            <Container>
+              <Button onClick={handleMyLocationClick} size="lg" variant="dark">
+                My location <FaLocationArrow />
+              </Button>
+            </Container>
+          </Row>
+          <Row className="mt-4">
+            <Col>
+              <div>Go to First Love Center</div>
+              <Button onClick={handleFlcClick} size="lg" variant="dark">
+                First Love Center <FaChurch />
+              </Button>
+            </Col>
+          </Row>
         </Offcanvas.Body>
       </Offcanvas>
       <div className="floating-action">
