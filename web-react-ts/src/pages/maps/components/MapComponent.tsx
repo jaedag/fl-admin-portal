@@ -64,7 +64,7 @@ const MapComponent = (props: MapComponentProps) => {
   })
 
   const [show, setShow] = useState(false)
-  const [selected, setOffice] = useState<PlaceType>()
+  const [selected, setCentre] = useState<PlaceType>()
   const [clickedMarker, setClickedMarker] = useState<PlaceType>()
   const [places, setPlaces] = useState<PlaceType[]>([])
 
@@ -96,7 +96,7 @@ const MapComponent = (props: MapComponentProps) => {
   const getTypename = (place: PlaceType) => {
     switch (place.typename) {
       case 'GooglePlace':
-        return 'Office'
+        return 'Centre'
       case 'Member':
         return ''
       case 'Fellowship':
@@ -112,8 +112,69 @@ const MapComponent = (props: MapComponentProps) => {
     }
   }
 
+  console.log(isLoaded)
   if (!isLoaded) {
     return <LoadingScreen />
+  }
+
+  const searchByLocation = async (position: LatLngLiteral) => {
+    const response = await props.placesSearchByLocation({
+      variables: {
+        id: currentUser.id,
+        latitude: position.lat,
+        longitude: position.lng,
+      },
+    })
+
+    return response.data.members[0].placesSearchByLocation.map(
+      (place: any) => ({
+        ...place,
+        position: {
+          lat: place.latitude,
+          lng: place.longitude,
+        },
+      })
+    )
+  }
+
+  const handleSetCentre = async (position: PlaceType) => {
+    setCentre(position)
+    mapRef.current?.panTo(position.position)
+    setPlaces(await searchByLocation(position.position))
+    handleClose()
+  }
+
+  const handleMyLocationClick = () => {
+    window.navigator.geolocation.getCurrentPosition((position) => {
+      setCentre({
+        position: {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+        },
+        name: 'Your Location',
+        typename: 'Fellowship',
+        id: 'fellowship',
+      })
+      mapRef.current?.panTo({
+        lat: position.coords.latitude,
+        lng: position.coords.longitude,
+      })
+    })
+
+    handleClose()
+  }
+
+  const handleFlcClick = async () => {
+    const position = { lat: 5.655949, lng: -0.167033 }
+    setCentre({
+      position: position,
+      name: 'First Love Center',
+      typename: 'Fellowship',
+      id: 'fellowship',
+    })
+    setPlaces(await searchByLocation(position))
+    mapRef.current?.panTo(position)
+    handleClose()
   }
 
   const parseDescription = (description: string) => {
@@ -210,96 +271,17 @@ const MapComponent = (props: MapComponentProps) => {
           <div>Search for a place</div>
           <GooglePlaces
             handleClose={handleClose}
-            setOffice={(position) => {
-              setOffice(position)
-              mapRef.current?.panTo(position.position)
-
-              props.placesSearchByLocation({
-                variables: {
-                  id: currentUser.id,
-                  latitude: position.position.lat,
-                  longitude: position.position.lng,
-                },
-              })
-            }}
+            setCentre={handleSetCentre}
             {...props}
           />
-
           <div>Search our FLC Database</div>
           <MemberPlaces
             handleClose={handleClose}
-            setOffice={async (position) => {
-              setOffice(position)
-
-              mapRef.current?.panTo(position.position)
-
-              const response = await props.placesSearchByLocation({
-                variables: {
-                  id: currentUser.id,
-                  latitude: position.position.lat,
-                  longitude: position.position.lng,
-                },
-              })
-
-              setPlaces(
-                response.data.members[0].placesSearchByLocation.map(
-                  (place: any) => ({
-                    ...place,
-                    position: {
-                      lat: place.latitude,
-                      lng: place.longitude,
-                    },
-                  })
-                )
-              )
-            }}
+            setCentre={handleSetCentre}
             {...props}
           />
-          <Button
-            onClick={() => {
-              window.navigator.geolocation.getCurrentPosition((position) => {
-                mapRef.current?.panTo({
-                  lat: position.coords.latitude,
-                  lng: position.coords.longitude,
-                })
-              })
-
-              handleClose()
-            }}
-          >
-            My location
-          </Button>
-          <Button
-            onClick={async () => {
-              const position = { lat: 5.655949, lng: -0.167033 }
-
-              const response = await props.placesSearchByLocation({
-                variables: {
-                  id: currentUser.id,
-                  latitude: position.lat,
-                  longitude: position.lng,
-                },
-              })
-
-              setPlaces(
-                response.data.members[0].placesSearchByLocation.map(
-                  (place: any) => ({
-                    ...place,
-                    position: {
-                      lat: place.latitude,
-                      lng: place.longitude,
-                    },
-                  })
-                )
-              )
-
-              mapRef.current?.panTo(position)
-
-              handleClose()
-            }}
-          >
-            First Love Center
-          </Button>
+          <Button onClick={handleMyLocationClick}>My location</Button>
+          <Button onClick={handleFlcClick}>First Love Center</Button>
         </Offcanvas.Body>
       </Offcanvas>
       <div className="floating-action">

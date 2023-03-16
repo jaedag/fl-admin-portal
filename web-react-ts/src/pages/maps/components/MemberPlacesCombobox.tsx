@@ -10,7 +10,7 @@ import { PlaceType } from './MapComponent'
 
 interface ComboBoxProps extends FormikComponentProps {
   initialValue: string
-  setOffice: (position: PlaceType) => void
+  setCentre: (position: PlaceType) => void
   memberSearch: LazyQueryExecFunction<any, OperationVariables>
   placesSearchByName: LazyQueryExecFunction<any, OperationVariables>
   handleClose: () => void
@@ -107,7 +107,7 @@ const MemberPlacesCombobox = (props: ComboBoxProps) => {
             lng: parseFloat(suggestion.longitude),
           }
 
-          props.setOffice({
+          props.setCentre({
             id: suggestion.id,
             name: suggestion.name,
             typename: suggestion.typename,

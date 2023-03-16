@@ -11,7 +11,7 @@ import { PlaceType } from './MapComponent'
 
 interface ComboBoxProps extends FormikComponentProps {
   initialValue: string
-  setOffice: (position: PlaceType) => void
+  setCentre: (position: PlaceType) => void
   handleClose: () => void
 }
 
@@ -39,7 +39,7 @@ const GooglePlacesCombobox = (props: ComboBoxProps) => {
 
     const results = await getGeocode({ address: val })
     const { lat, lng } = getLatLng(results[0])
-    props.setOffice({
+    props.setCentre({
       id: '',
       name: '',
       typename: 'GooglePlace',
