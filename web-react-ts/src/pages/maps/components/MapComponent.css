@@ -17,6 +17,11 @@
   color: black;
 }
 
+.map-btn {
+  width: 180px;
+  text-align: left;
+}
+
 .indoor-venue-label {
   color: #a1f6fc !important;
 }

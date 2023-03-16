@@ -283,7 +283,11 @@ const MapComponent = (props: MapComponentProps) => {
           <Row className="mt-4">
             <div>Go to your location</div>
             <Container>
-              <Button onClick={handleMyLocationClick} size="lg" variant="dark">
+              <Button
+                onClick={handleMyLocationClick}
+                variant="dark"
+                className="map-btn"
+              >
                 My location <FaLocationArrow />
               </Button>
             </Container>
@@ -291,7 +295,11 @@ const MapComponent = (props: MapComponentProps) => {
           <Row className="mt-4">
             <Col>
               <div>Go to First Love Center</div>
-              <Button onClick={handleFlcClick} size="lg" variant="dark">
+              <Button
+                onClick={handleFlcClick}
+                variant="dark"
+                className="map-btn"
+              >
                 First Love Center <FaChurch />
               </Button>
             </Col>
