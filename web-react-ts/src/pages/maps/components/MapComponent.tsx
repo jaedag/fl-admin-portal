@@ -112,7 +112,6 @@ const MapComponent = (props: MapComponentProps) => {
     }
   }
 
-  console.log(isLoaded)
   if (!isLoaded) {
     return <LoadingScreen />
   }
