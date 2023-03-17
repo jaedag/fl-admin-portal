@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ChurchContext } from 'contexts/ChurchContext'
 import BusIcon from 'assets/icons/BusIcon'
@@ -9,7 +9,7 @@ import CouncilIcon from 'assets/icons/CouncilIcon'
 import StreamIcon from 'assets/icons/StreamIcon'
 import { Button, Card } from 'react-bootstrap'
 import { MemberContext } from 'contexts/MemberContext'
-import '../../components/members-grids/MemberTable.css'
+import 'components/members-grids/MemberTable.css'
 import './MemberDisplayCard.css'
 import { TelephoneFill, Whatsapp } from 'react-bootstrap-icons'
 import CloudinaryImage from 'components/CloudinaryImage'
@@ -65,59 +65,59 @@ const Icons = ({ icon, className }: { icon: string; className: string }) => {
 }
 
 const MemberDisplayCard = (props: MemberDisplayCardProps) => {
-  const { member, leader, children, ...rest } = props
+  const { member, leader, children, contact, ...rest } = props
   const { clickCard } = useContext(ChurchContext)
   const { theme } = useContext(MemberContext)
   const navigate = useNavigate()
-  let icon: string = ''
+  let icon = ''
   let name: string | undefined
   let details: string[] = []
 
   const noPicture = !member?.pictureUrl && !leader?.pictureUrl
-  let picture = member?.pictureUrl || leader?.pictureUrl || USER_PLACEHOLDER
+  const picture = member?.pictureUrl || leader?.pictureUrl || USER_PLACEHOLDER
 
   switch (member.__typename) {
     case 'Member':
-      name = member?.fullName || member.firstName + ' ' + member.lastName
+      name = member?.fullName || `${member.firstName} ${member.lastName}`
       details = [
-        member.fellowship ? member.fellowship.name + ' Fellowship' : '',
+        member.fellowship ? `${member.fellowship.name} Fellowship` : '',
         member.ministry ? member.ministry.name : '',
       ]
       break
     case 'Fellowship':
       icon = 'fellowship'
-      name = member.name + ' Fellowship'
+      name = `${member.name} Fellowship`
       details = [member?.leader?.fullName || '']
       break
     case 'Bacenta':
       icon = 'bacenta'
-      name = member.name + ' Bacenta'
+      name = `${member.name} Bacenta`
       details = [member?.leader?.fullName || '']
       break
 
     case 'Constituency':
       icon = 'constituency'
-      name = member.name + ' Constituency'
+      name = `${member.name} Constituency`
       details = [member?.leader?.fullName || '']
       break
     case 'Council':
       icon = 'council'
-      name = member.name + ' Council'
+      name = `${member.name} Council`
       details = [member?.leader?.fullName || '']
       break
     case 'Stream':
       icon = 'stream'
-      name = member.name + ' Stream'
+      name = `${member.name} Stream`
       details = [member?.leader?.fullName || '']
       break
     case 'GatheringService':
       icon = 'stream'
-      name = member.name + ' Gathering Service'
+      name = `${member.name} Gathering Service`
       details = [member?.leader?.fullName || '']
       break
     case 'Sonta':
       icon = 'stream'
-      name = member.name + ' Sonta'
+      name = `${member.name} Sonta`
       details = [member?.leader?.fullName || '']
       break
     default:
@@ -131,7 +131,7 @@ const MemberDisplayCard = (props: MemberDisplayCardProps) => {
 
   return (
     <Card className="mobile-search-card">
-      <Card.Body {...rest} onClick={props.onClick || clickFunction}>
+      <Card.Body {...rest} onClick={onClick || clickFunction}>
         <div className="d-flex align-items-center">
           <div className="flex-shrink-0">
             {noPicture && member.__typename !== 'Member' ? (
@@ -152,7 +152,7 @@ const MemberDisplayCard = (props: MemberDisplayCardProps) => {
             <div className={`text-secondary mb-0 ${theme}`}>
               {details?.length &&
                 details.map((detail, i) => (
-                  <div key={i}>
+                  <div key={detail}>
                     <span>{detail}</span>
                     <br />
                   </div>
@@ -162,7 +162,7 @@ const MemberDisplayCard = (props: MemberDisplayCardProps) => {
           </div>
         </div>
       </Card.Body>
-      {props.contact && (
+      {contact && (
         <Card.Footer>
           <div className="d-flex align-items-center">
             <a href={`tel:${leader?.phoneNumber}`}>

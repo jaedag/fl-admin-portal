@@ -7,17 +7,17 @@ import { useContext } from 'react'
 import * as Yup from 'yup'
 import { Card, Col, Container, Row } from 'react-bootstrap'
 import { useNavigate } from 'react-router'
-import { BACENTA_ARRIVALS } from './arrivalsQueries'
 import { ChurchContext } from 'contexts/ChurchContext'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
-import { RECORD_BUSSING_FROM_BACENTA } from './arrivalsMutation'
 import { parseDate } from 'jd-date-utils'
 import { ServiceContext } from 'contexts/ServiceContext'
 import { throwToSentry } from 'global-utils'
 import Input from 'components/formik/Input'
 import Select from 'components/formik/Select'
-import { VEHICLE_OPTIONS, VEHICLE_OPTIONS_WITH_CAR } from './arrivals-utils'
 import ImageUpload from 'components/formik/ImageUpload'
+import { VEHICLE_OPTIONS, VEHICLE_OPTIONS_WITH_CAR } from './arrivals-utils'
+import { RECORD_BUSSING_FROM_BACENTA } from './arrivalsMutation'
+import { BACENTA_ARRIVALS } from './arrivalsQueries'
 import { BacentaWithArrivals } from './arrivals-types'
 
 type FormOptions = {
@@ -74,7 +74,7 @@ const FormAddVehicleRecord = () => {
         variables: {
           bacentaId,
           leaderDeclaration: parseInt(values.leaderDeclaration),
-          bussingRecordId: bussingRecordId,
+          bussingRecordId,
           vehicleCost: parseFloat(values.vehicleCost),
           personalContribution: parseFloat(values.personalContribution),
           vehicle: values.vehicle,
@@ -87,8 +87,8 @@ const FormAddVehicleRecord = () => {
       onSubmitProps.resetForm()
       onSubmitProps.setSubmitting(false)
       navigate(`/bacenta/vehicle-details`)
-    } catch (error: any) {
-      throwToSentry('There was a problem submitting your form', error)
+    } catch (err: unknown) {
+      throwToSentry('There was a problem submitting your form', err)
     }
   }
 
@@ -150,7 +150,7 @@ const FormAddVehicleRecord = () => {
                 <ImageUpload
                   label="Upload A Bussing Picture"
                   name="picture"
-                  uploadPreset={process.env.REACT_APP_CLOUDINARY_BUSSING}
+                  uploadPreset={import.meta.env.VITE_CLOUDINARY_BUSSING}
                   placeholder="Choose"
                   setFieldValue={formik.setFieldValue}
                   aria-describedby="UploadBussingPicture"

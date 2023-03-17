@@ -1,6 +1,19 @@
-import { PlaceType } from './MapComponent'
-
 type MapIconType = google.maps.Icon
+
+export type PlaceType = {
+  id: string
+  name: string
+  typename:
+    | 'GooglePlace'
+    | 'Member'
+    | 'Fellowship'
+    | 'IndoorVenue'
+    | 'OutdoorVenue'
+    | 'HighSchool'
+  picture?: string
+  description?: string
+  position: LatLngLiteral
+}
 
 export const getMapIcon = (place: PlaceType) => {
   if (place.typename === 'Member') {

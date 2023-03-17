@@ -31,6 +31,10 @@
     "import/resolver": {
       "typescript": {
         "alwaysTryTypes": true
+      },
+      "node": {
+        "extensions": [".js", ".jsx", ".ts", ".tsx"],
+        "moduleDirectory": ["node_modules", "src/"]
       }
     }
   },
@@ -46,6 +50,9 @@
     "react/prop-types": "error",
     "no-unused-vars": "error",
     "no-console": "error",
+    "no-underscore-dangle": "off",
+    "radix": "off",
+    "jsx-props-no-spreading": "off",
     "import/extensions": "off",
     "react/react-in-jsx-scope": "off",
     "@typescript-eslint/no-var-requires": "off",

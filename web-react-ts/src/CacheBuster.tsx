@@ -1,8 +1,10 @@
-/* eslint-disable no-console*/
-// @ts-nocheck
+/* eslint-disable no-console */
+
 import React from 'react'
-import packageJson from '../package.json'
-global.appVersion = packageJson.version
+
+import packageJson from '/web-react-ts/package.json'
+
+const globalAppVersion = packageJson.version
 
 // version from response - first param, local version second param
 const semverGreaterThan = (versionA: string, versionB: string) => {
@@ -55,8 +57,8 @@ class CacheBuster extends React.Component {
       .then((response) => response.json())
       .then((meta) => {
         const latestVersion = meta.version
-        //@ts-ignore
-        const currentVersion = global.appVersion
+
+        const currentVersion = globalAppVersion
 
         const shouldForceRefresh = semverGreaterThan(
           latestVersion,
@@ -75,6 +77,7 @@ class CacheBuster extends React.Component {
         }
       })
   }
+
   render() {
     const { loading, isLatestVersion, refreshCacheAndReload } = this.state
 

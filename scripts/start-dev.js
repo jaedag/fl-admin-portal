@@ -27,7 +27,7 @@ if (templateName === 'Flutter') {
 } else {
   jobs.push({
     name: templateName,
-    command: `cd ${TEMPLATE_DIR} && ${runner} run start`,
+    command: `cd ${TEMPLATE_DIR} && ${runner} run dev`,
     prefixColor: 'blue',
   })
 }

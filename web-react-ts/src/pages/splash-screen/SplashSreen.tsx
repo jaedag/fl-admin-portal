@@ -1,9 +1,7 @@
-import React from 'react'
 import './SplashScreen.css'
+import logo from 'assets/splash-screen-flc-logo.png'
 
 const SplashSreen = () => {
-  const logo = require('../../assets/splash-screen-flc-logo.png')
-
   return (
     <div className="cover">
       <div className="d-flex aligns-items-center justify-content-center ">

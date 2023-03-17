@@ -3,20 +3,20 @@ import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import HeadingSecondary from 'components/HeadingSecondary'
 import { Form, Formik, FormikHelpers } from 'formik'
 import { useMutation, useQuery } from '@apollo/client'
-import React, { useContext, useEffect } from 'react'
+import { useContext, useEffect } from 'react'
 import * as Yup from 'yup'
 import { Col, Container, Row } from 'react-bootstrap'
 import { useNavigate } from 'react-router'
-import { BACENTA_ARRIVALS } from './arrivalsQueries'
 import { ChurchContext } from 'contexts/ChurchContext'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
-import { UPLOAD_MOBILISATION_PICTURE } from './arrivalsMutation'
-import { beforeMobilisationDeadline } from './arrivals-utils'
 import { isToday } from 'jd-date-utils'
 import { alertMsg } from 'global-utils'
-import { BacentaWithArrivals, BussingRecord } from './arrivals-types'
 import Input from 'components/formik/Input'
 import ImageUpload from 'components/formik/ImageUpload'
+import { BacentaWithArrivals, BussingRecord } from './arrivals-types'
+import { beforeMobilisationDeadline } from './arrivals-utils'
+import { UPLOAD_MOBILISATION_PICTURE } from './arrivalsMutation'
+import { BACENTA_ARRIVALS } from './arrivalsQueries'
 
 type FormOptions = {
   serviceDate: string
@@ -50,7 +50,7 @@ const FormMobilisationSubmission = () => {
     onSubmitProps.setSubmitting(true)
     UploadMobilisationPicture({
       variables: {
-        bacentaId: bacentaId,
+        bacentaId,
         serviceDate: values.serviceDate,
         mobilisationPicture: values.mobilisationPicture,
       },
@@ -61,16 +61,16 @@ const FormMobilisationSubmission = () => {
         onSubmitProps.setSubmitting(false)
         navigate(`/bacenta/bussing-details`)
       })
-      .catch((error) => {
-        alertMsg(error)
+      .catch((err) => {
+        alertMsg(err)
         onSubmitProps.setSubmitting(false)
       })
   }
 
   useEffect(() => {
     const bacenta: BacentaWithArrivals = data?.bacentas[0]
-    const bussing = bacenta?.bussing.find((data: BussingRecord) =>
-      isToday(data.serviceDate.date.toString())
+    const bussing = bacenta?.bussing.find((bussingData: BussingRecord) =>
+      isToday(bussingData.serviceDate.date.toString())
     )
 
     if (data && !beforeMobilisationDeadline(data?.bacentas[0], bussing)) {
@@ -84,7 +84,7 @@ const FormMobilisationSubmission = () => {
         initialValues={initialValues}
         validationSchema={validationSchema}
         onSubmit={onSubmit}
-        validateOnMount={true}
+        validateOnMount
       >
         {(formik) => (
           <Container>
@@ -117,7 +117,7 @@ const FormMobilisationSubmission = () => {
                   <ImageUpload
                     name="mobilisationPicture"
                     uploadPreset={
-                      process.env.REACT_APP_CLOUDINARY_BUS_MOBILISATION
+                      import.meta.env.VITE_CLOUDINARY_BUS_MOBILISATION
                     }
                     error={formik.errors.mobilisationPicture}
                     placeholder="Upload Mobilisation Picture"

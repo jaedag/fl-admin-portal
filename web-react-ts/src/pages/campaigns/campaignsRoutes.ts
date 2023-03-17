@@ -216,135 +216,118 @@ const StreamEquipmentDefaulters = lazy(
 )
 
 const SheepSeekerSelect = lazy(
-  () => import('../campaigns/sheep-seeking/stream/SheepSeekerSelect')
+  () => import('./sheep-seeking/stream/SheepSeekerSelect')
 )
 
 const StreamSheepSeekerCampaign = lazy(
-  () => import('../campaigns/sheep-seeking/stream/StreamSheepSeekerCampaign')
+  () => import('./sheep-seeking/stream/StreamSheepSeekerCampaign')
 )
 
 const GatheringServiceSheepSeekerCampaign = lazy(
   () =>
     import(
-      '../campaigns/sheep-seeking/gathering-service/GatheringServiceSheepSeekerCampaign'
+      './sheep-seeking/gathering-service/GatheringServiceSheepSeekerCampaign'
     )
 )
 
 const GatheringServiceMultiplicationCampaignServiceForm = lazy(
   () =>
     import(
-      '../campaigns/multiplication/gathering-service/GatheringServiceMultiplicationCampaignServiceForm'
+      './multiplication/gathering-service/GatheringServiceMultiplicationCampaignServiceForm'
     )
 )
 
 const StreamMultiplicationCampaignServiceForm = lazy(
   () =>
-    import(
-      '../campaigns/multiplication/stream/StreamMultiplicationCampaignServiceForm'
-    )
+    import('./multiplication/stream/StreamMultiplicationCampaignServiceForm')
 )
 
 const CouncilMultiplicationCampaignServiceForm = lazy(
   () =>
-    import(
-      '../campaigns/multiplication/council/CouncilMultiplicationCampaignServiceForm'
-    )
+    import('./multiplication/council/CouncilMultiplicationCampaignServiceForm')
 )
 
 const ConstituencyMultiplicationCampaignServiceForm = lazy(
   () =>
     import(
-      '../campaigns/multiplication/constituency/ConstituencyMultiplicationCampaignServiceForm'
+      './multiplication/constituency/ConstituencyMultiplicationCampaignServiceForm'
     )
 )
 const ConstituencyMultiplicationCampaignServiceDetails = lazy(
   () =>
     import(
-      '../campaigns/multiplication/constituency/ConstituencyMultiplicationCampaignServiceDetails'
+      './multiplication/constituency/ConstituencyMultiplicationCampaignServiceDetails'
     )
 )
 
 const CouncilMultiplicationCampaignServiceDetails = lazy(
   () =>
     import(
-      '../campaigns/multiplication/council/CouncilMultiplicationCampaignServiceDetails'
+      './multiplication/council/CouncilMultiplicationCampaignServiceDetails'
     )
 )
 
 const GatheringServiceMultiplicationCampaignServiceDetails = lazy(
   () =>
     import(
-      '../campaigns/multiplication/gathering-service/GatheringServiceMultiplicationCampaignServiceDetails'
+      './multiplication/gathering-service/GatheringServiceMultiplicationCampaignServiceDetails'
     )
 )
 
 const StreamMultiplicationCampaignServiceDetails = lazy(
   () =>
-    import(
-      '../campaigns/multiplication/stream/StreamMultiplicationCampaignServiceDetails'
-    )
+    import('./multiplication/stream/StreamMultiplicationCampaignServiceDetails')
 )
 
 const GatheringServiceSwollenSundayTrends = lazy(
   () =>
     import(
-      '../campaigns/swollen-sunday/gathering-service/GatheringServiceSwollenSundayTrends'
+      './swollen-sunday/gathering-service/GatheringServiceSwollenSundayTrends'
     )
 )
 
 const GatheringServiceSwollenSundayStreamList = lazy(
   () =>
     import(
-      '../campaigns/swollen-sunday/gathering-service/GatheringServiceSwollenSundayStreamList'
+      './swollen-sunday/gathering-service/GatheringServiceSwollenSundayStreamList'
     )
 )
 
 const StreamSwollenSundayTrends = lazy(
-  () => import('../campaigns/swollen-sunday/stream/StreamSwollenSundayTrends')
+  () => import('./swollen-sunday/stream/StreamSwollenSundayTrends')
 )
 
 const CouncilSwollenSundayTrends = lazy(
-  () => import('../campaigns/swollen-sunday/council/CouncilSwollenSundayTrends')
+  () => import('./swollen-sunday/council/CouncilSwollenSundayTrends')
 )
 
 const ConstituencySwollenSundayTrends = lazy(
-  () =>
-    import(
-      '../campaigns/swollen-sunday/constituency/ConstituencySwollenSundayTrends'
-    )
+  () => import('./swollen-sunday/constituency/ConstituencySwollenSundayTrends')
 )
 
 const BacentaSwollenSundayTrends = lazy(
-  () => import('../campaigns/swollen-sunday/bacenta/BacentaSwollenSundayTrends')
+  () => import('./swollen-sunday/bacenta/BacentaSwollenSundayTrends')
 )
 
 const CouncilSwollenSundayUploadTargets = lazy(
-  () =>
-    import(
-      '../campaigns/swollen-sunday/council/CouncilSwollenSundayUploadTargets'
-    )
+  () => import('./swollen-sunday/council/CouncilSwollenSundayUploadTargets')
 )
 
 const StreamSwollenSundayUploadTargets = lazy(
-  () =>
-    import(
-      '../campaigns/swollen-sunday/stream/StreamSwollenSundayUploadTargets'
-    )
+  () => import('./swollen-sunday/stream/StreamSwollenSundayUploadTargets')
 )
 
 const CouncilSwollenSundayTarget = lazy(
-  () => import('../campaigns/swollen-sunday/council/CouncilSwollenSundayTarget')
+  () => import('./swollen-sunday/council/CouncilSwollenSundayTarget')
 )
 
 const StreamSwollenSundayTarget = lazy(
-  () => import('../campaigns/swollen-sunday/stream/StreamSwollenSundayTarget')
+  () => import('./swollen-sunday/stream/StreamSwollenSundayTarget')
 )
 
 const StreamSwollenSundayShareTargetByCouncil = lazy(
   () =>
-    import(
-      '../campaigns/swollen-sunday/stream/StreamSwollenSundayShareTargetByCouncil'
-    )
+    import('./swollen-sunday/stream/StreamSwollenSundayShareTargetByCouncil')
 )
 
 const SwollenSundayStreamList = lazy(
@@ -363,150 +346,133 @@ const SwollenSundayBacentaList = lazy(
 const ConstituencyMultiplicationCampaignTrends = lazy(
   () =>
     import(
-      '../campaigns/multiplication/constituency/ConstituencyMultiplicationCampaignTrends'
+      './multiplication/constituency/ConstituencyMultiplicationCampaignTrends'
     )
 )
 
 const CouncilMultiplicationCampaignTrends = lazy(
-  () =>
-    import(
-      '../campaigns/multiplication/council/CouncilMultiplicationCampaignTrends'
-    )
+  () => import('./multiplication/council/CouncilMultiplicationCampaignTrends')
 )
 
 const StreamMultiplicationCampaignTrends = lazy(
-  () =>
-    import(
-      '../campaigns/multiplication/stream/StreamMultiplicationCampaignTrends'
-    )
+  () => import('./multiplication/stream/StreamMultiplicationCampaignTrends')
 )
 
 const GatheringServiceMultiplicationCampaignTrends = lazy(
   () =>
     import(
-      '../campaigns/multiplication/gathering-service/GatheringServiceMultiplicationCampaignTrends'
+      './multiplication/gathering-service/GatheringServiceMultiplicationCampaignTrends'
     )
 )
 
 const ConstituencyMultiplicationCampaignUploadReceipts = lazy(
   () =>
     import(
-      '../campaigns/multiplication/constituency/ConstituencyMultiplicationCampaignUploadReceipts'
+      './multiplication/constituency/ConstituencyMultiplicationCampaignUploadReceipts'
     )
 )
 
 const CouncilMultiplicationCampaignUploadReceipts = lazy(
   () =>
     import(
-      '../campaigns/multiplication/council/CouncilMultiplicationCampaignUploadReceipts'
+      './multiplication/council/CouncilMultiplicationCampaignUploadReceipts'
     )
 )
 
 const GatheringServiceMultiplicationCampaignUploadReceipts = lazy(
   () =>
     import(
-      '../campaigns/multiplication/gathering-service/GatheringServiceMultiplicationCampaignUploadReceipts'
+      './multiplication/gathering-service/GatheringServiceMultiplicationCampaignUploadReceipts'
     )
 )
 
 const StreamMultiplicationCampaignUploadReceipts = lazy(
   () =>
-    import(
-      '../campaigns/multiplication/stream/StreamMultiplicationCampaignUploadReceipts'
-    )
+    import('./multiplication/stream/StreamMultiplicationCampaignUploadReceipts')
 )
 
 const ConstituencyMultiplicationCampaignBankingSlipView = lazy(
   () =>
     import(
-      '../campaigns/multiplication/constituency/ConstituencyMultiplicationCampaignBankingSlipView'
+      './multiplication/constituency/ConstituencyMultiplicationCampaignBankingSlipView'
     )
 )
 const CouncilMultiplicationCampaignBankingSlipView = lazy(
   () =>
     import(
-      '../campaigns/multiplication/council/CouncilMultiplicationCampaignBankingSlipView'
+      './multiplication/council/CouncilMultiplicationCampaignBankingSlipView'
     )
 )
 const StreamMultiplicationCampaignBankingSlipView = lazy(
   () =>
     import(
-      '../campaigns/multiplication/stream/StreamMultiplicationCampaignBankingSlipView'
+      './multiplication/stream/StreamMultiplicationCampaignBankingSlipView'
     )
 )
 const GatheringServiceMultiplicationCampaignBankingSlipView = lazy(
   () =>
     import(
-      '../campaigns/multiplication/gathering-service/GatheringServiceMultiplicationCampaignBankingSlipView'
+      './multiplication/gathering-service/GatheringServiceMultiplicationCampaignBankingSlipView'
     )
 )
 
 const BacentaShepherdingControlCampaign = lazy(
   () =>
-    import(
-      '../campaigns/shepherding-control/bacenta/BacentaShepherdingControlCampaign'
-    )
+    import('./shepherding-control/bacenta/BacentaShepherdingControlCampaign')
 )
 
 const ConstituencyShepherdingControlCampaign = lazy(
   () =>
     import(
-      '../campaigns/shepherding-control/constituency/ConstituencyShepherdingControlCampaign'
+      './shepherding-control/constituency/ConstituencyShepherdingControlCampaign'
     )
 )
 const CouncilShepherdingControlCampaign = lazy(
   () =>
-    import(
-      '../campaigns/shepherding-control/council/CouncilShepherdingControlCampaign'
-    )
+    import('./shepherding-control/council/CouncilShepherdingControlCampaign')
 )
 const StreamShepherdingControlCampaign = lazy(
-  () =>
-    import(
-      '../campaigns/shepherding-control/stream/StreamShepherdingControlCampaign'
-    )
+  () => import('./shepherding-control/stream/StreamShepherdingControlCampaign')
 )
 const GatheringServiceShepherdingControlCampaign = lazy(
   () =>
     import(
-      '../campaigns/shepherding-control/gathering-service/GatheringServiceShepherdingControlCampaign'
+      './shepherding-control/gathering-service/GatheringServiceShepherdingControlCampaign'
     )
 )
 
 const BacentaShepherdingControlYearTillDate = lazy(
   () =>
     import(
-      '../campaigns/shepherding-control/bacenta/BacentaShepherdingControlYearTillDate'
+      './shepherding-control/bacenta/BacentaShepherdingControlYearTillDate'
     )
 )
 
 const ConstituencyShepherdingControlYearTillDate = lazy(
   () =>
     import(
-      '../campaigns/shepherding-control/constituency/ConstituencyShepherdingControlYearTillDate'
+      './shepherding-control/constituency/ConstituencyShepherdingControlYearTillDate'
     )
 )
 const CouncilShepherdingControlYearTillDate = lazy(
   () =>
     import(
-      '../campaigns/shepherding-control/council/CouncilShepherdingControlYearTillDate'
+      './shepherding-control/council/CouncilShepherdingControlYearTillDate'
     )
 )
 const StreamShepherdingControlYearTillDate = lazy(
   () =>
-    import(
-      '../campaigns/shepherding-control/stream/StreamShepherdingControlYearTillDate'
-    )
+    import('./shepherding-control/stream/StreamShepherdingControlYearTillDate')
 )
 const GatheringServiceShepherdingControlYearTillDate = lazy(
   () =>
     import(
-      '../campaigns/shepherding-control/gathering-service/GatheringServiceShepherdingControlYearTillDate'
+      './shepherding-control/gathering-service/GatheringServiceShepherdingControlYearTillDate'
     )
 )
 
 export const campaigns: LazyRouteTypes[] = [
-  //gathering-service routes
+  // gathering-service routes
   {
     path: '/campaigns/gatheringservice',
     element: GatheringServiceCampaigns,
@@ -646,7 +612,7 @@ export const campaigns: LazyRouteTypes[] = [
     placeholder: true,
   },
 
-  //stream routes
+  // stream routes
   {
     path: '/campaigns/stream',
     element: StreamCampaigns,
@@ -804,7 +770,7 @@ export const campaigns: LazyRouteTypes[] = [
     placeholder: true,
   },
 
-  //council routes
+  // council routes
   {
     path: '/campaigns/council',
     element: CouncilCampaigns,
@@ -944,7 +910,7 @@ export const campaigns: LazyRouteTypes[] = [
     placeholder: true,
   },
 
-  //constituency routes
+  // constituency routes
   {
     path: '/campaigns/constituency',
     element: ConstituencyCampaigns,
@@ -1072,7 +1038,7 @@ export const campaigns: LazyRouteTypes[] = [
     placeholder: true,
   },
 
-  //bacenta routes
+  // bacenta routes
   {
     path: '/campaigns/bacenta',
     element: BacentaCampaigns,
@@ -1128,7 +1094,7 @@ export const campaigns: LazyRouteTypes[] = [
     placeholder: true,
   },
 
-  //fellowship routes
+  // fellowship routes
   {
     path: '/campaigns/fellowship',
     element: FellowshipCampaigns,
@@ -1160,7 +1126,7 @@ export const campaigns: LazyRouteTypes[] = [
     placeholder: true,
   },
 
-  //general
+  // general
 
   {
     path: '/campaigns/churchlist',
@@ -1169,3 +1135,5 @@ export const campaigns: LazyRouteTypes[] = [
     placeholder: true,
   },
 ]
+
+export default campaigns

@@ -1,29 +1,12 @@
 import { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useMutation } from '@apollo/client'
-import { parsePhoneNum, throwToSentry } from '../../../global-utils'
-import { CREATE_MEMBER_MUTATION } from './CreateMutations'
-import { ChurchContext } from '../../../contexts/ChurchContext'
-import MemberForm from '../reusable-forms/MemberForm'
-import { Fellowship } from 'global-types'
 import { FormikHelpers } from 'formik'
-
-export type CreateMemberFormOptions = {
-  firstName: string
-  middleName: string
-  lastName: string
-  gender: 'Male' | 'Female' | ''
-  phoneNumber: string
-  whatsappNumber: string
-  email?: string
-  dob: string
-  maritalStatus: 'Single' | 'Married' | ''
-  occupation: string
-  pictureUrl: string
-  idlLocation: string
-  fellowship: Fellowship | { [key: string]: any }
-  ministry: string
-}
+import { parsePhoneNum, throwToSentry } from 'global-utils'
+import { ChurchContext } from 'contexts/ChurchContext'
+import MemberForm from 'pages/directory/reusable-forms/MemberForm'
+import { CREATE_MEMBER_MUTATION } from './CreateMutations'
+import { CreateMemberFormOptions } from './form-utils'
 
 const CreateMember = () => {
   const initialValues: CreateMemberFormOptions = {
@@ -45,9 +28,9 @@ const CreateMember = () => {
 
   const { clickCard } = useContext(ChurchContext)
 
-  //All of the Hooks!
+  // All of the Hooks!
 
-  const [CreateMember] = useMutation(CREATE_MEMBER_MUTATION, {
+  const [CreateMemberMutation] = useMutation(CREATE_MEMBER_MUTATION, {
     onCompleted: (newMemberData) => {
       clickCard(newMemberData.CreateMember)
     },
@@ -64,7 +47,7 @@ const CreateMember = () => {
     // Variables that are not controlled by formik
 
     try {
-      await CreateMember({
+      await CreateMemberMutation({
         variables: {
           firstName: values.firstName.trim(),
           middleName: values.middleName.trim(),
@@ -86,9 +69,7 @@ const CreateMember = () => {
     } catch (error: any) {
       if (error.message.toLowerCase().includes('email')) {
         const confirmBox = window.confirm(
-          'There was an error creating the member profile\n' +
-            error +
-            '\n\nWould you like to request for the member?'
+          `There was an error creating the member profile\n${error}\n\nWould you like to request for the member?`
         )
 
         if (confirmBox === true) {
@@ -102,9 +83,7 @@ const CreateMember = () => {
         setSubmitting(false)
       } else if (error.message.toLowerCase().includes('whatsapp')) {
         const confirmBox = window.confirm(
-          'There was an error creating the member profile\n' +
-            error +
-            '\n\nWould you like to request for the member?'
+          `There was an error creating the member profile\n${error}\n\nWould you like to request for the member?`
         )
 
         if (confirmBox === true) {
@@ -127,14 +106,12 @@ const CreateMember = () => {
   }
 
   return (
-    <>
-      <MemberForm
-        title="Register a New Member"
-        initialValues={initialValues}
-        loading={false}
-        onSubmit={onSubmit}
-      />
-    </>
+    <MemberForm
+      title="Register a New Member"
+      initialValues={initialValues}
+      loading={false}
+      onSubmit={onSubmit}
+    />
   )
 }
 

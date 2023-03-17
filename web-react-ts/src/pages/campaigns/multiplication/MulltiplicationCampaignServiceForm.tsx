@@ -1,6 +1,6 @@
 import { FieldArray, Form, Formik, FormikHelpers } from 'formik'
 import * as Yup from 'yup'
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { useNavigate } from 'react-router'
 import { Col, Container, Row } from 'react-bootstrap'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
@@ -114,12 +114,11 @@ const MultiplicationCampaignServiceForm = ({
     if (checkIfArrayHasRepeatingValues(values.treasurers)) {
       throwToSentry('You cannot choose the same treasurer twice!')
       onSubmitProps.setSubmitting(false)
-      return
     } else {
       onSubmitProps.setSubmitting(true)
       RecordServiceMutation({
         variables: {
-          churchId: churchId,
+          churchId,
           crusadeDate: values.crusadeDate,
           preacherId: values?.preacher,
           crusadeLocation: values?.crusadeLocation,
@@ -243,7 +242,7 @@ const MultiplicationCampaignServiceForm = ({
                       <ImageUpload
                         name="treasurerSelfie"
                         uploadPreset={
-                          process.env.REACT_APP_CLOUDINARY_TREASURERS
+                          import.meta.env.VITE_CLOUDINARY_TREASURERS
                         }
                         tags="facial-recognition"
                         placeholder="Choose"

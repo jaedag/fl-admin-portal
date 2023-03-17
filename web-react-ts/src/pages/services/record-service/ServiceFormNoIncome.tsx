@@ -1,6 +1,6 @@
 import { Form, Formik, FormikHelpers } from 'formik'
 import * as Yup from 'yup'
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { useNavigate } from 'react-router'
 import { Col, Container, Row } from 'react-bootstrap'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
@@ -67,9 +67,9 @@ const ServiceForm = ({
     onSubmitProps.setSubmitting(true)
     RecordServiceMutation({
       variables: {
-        churchId: churchId,
+        churchId,
         serviceDate: values.serviceDate,
-        attendance: parseInt(values.attendance),
+        attendance: parseInt(values.attendance, 10),
         familyPicture: values.familyPicture,
       },
     })
@@ -118,7 +118,7 @@ const ServiceForm = ({
                       </small>
                       <ImageUpload
                         name="familyPicture"
-                        uploadPreset={process.env.REACT_APP_CLOUDINARY_SERVICES}
+                        uploadPreset={import.meta.env.VITE_CLOUDINARY_SERVICES}
                         placeholder="Choose"
                         setFieldValue={formik.setFieldValue}
                         aria-describedby="UploadfamilyPicture"

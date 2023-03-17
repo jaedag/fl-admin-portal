@@ -2,7 +2,7 @@ import MinusSign from 'components/buttons/PlusMinusSign/MinusSign'
 import PlusSign from 'components/buttons/PlusMinusSign/PlusSign'
 import { FieldArray, Form, Formik, FormikHelpers } from 'formik'
 import * as Yup from 'yup'
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { useNavigate } from 'react-router'
 import { Col, Container, Row } from 'react-bootstrap'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
@@ -97,17 +97,16 @@ const ServiceForm = ({
     if (checkIfArrayHasRepeatingValues(values.treasurers)) {
       throwToSentry('You cannot choose the same treasurer twice!')
       onSubmitProps.setSubmitting(false)
-      return
     } else {
       onSubmitProps.setSubmitting(true)
       RecordServiceMutation({
         variables: {
-          churchId: churchId,
+          churchId,
           serviceDate: values.serviceDate,
-          attendance: parseInt(values.attendance),
+          attendance: parseInt(values.attendance, 10),
           income: parseFloat(values.cediIncome),
           foreignCurrency: parseForeignCurrency(values.foreignCurrency),
-          numberOfTithers: parseInt(values.numberOfTithers),
+          numberOfTithers: parseInt(values.numberOfTithers, 10),
           treasurers: values?.treasurers,
           treasurerSelfie: values.treasurerSelfie,
           familyPicture: values.familyPicture,
@@ -171,7 +170,7 @@ const ServiceForm = ({
                         return (
                           <>
                             {treasurers.map((treasurer, index) => (
-                              <Row key={index} className="form-row">
+                              <Row key={treasurer} className="form-row">
                                 <Col>
                                   <SearchMember
                                     name={`treasurers[${index}]`}
@@ -204,7 +203,7 @@ const ServiceForm = ({
                       <ImageUpload
                         name="treasurerSelfie"
                         uploadPreset={
-                          process.env.REACT_APP_CLOUDINARY_TREASURERS
+                          import.meta.env.VITE_CLOUDINARY_TREASURERS
                         }
                         tags="facial-recognition"
                         placeholder="Choose"
@@ -218,7 +217,7 @@ const ServiceForm = ({
                       </small>
                       <ImageUpload
                         name="familyPicture"
-                        uploadPreset={process.env.REACT_APP_CLOUDINARY_SERVICES}
+                        uploadPreset={import.meta.env.VITE_CLOUDINARY_SERVICES}
                         placeholder="Choose"
                         setFieldValue={formik.setFieldValue}
                         aria-describedby="UploadfamilyPicture"

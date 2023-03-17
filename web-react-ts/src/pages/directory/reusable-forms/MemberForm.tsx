@@ -1,8 +1,9 @@
 import { useMutation, useQuery } from '@apollo/client'
 import { Form, Formik, FormikHelpers } from 'formik'
 import * as Yup from 'yup'
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import {
+  alertMsg,
   GENDER_OPTIONS,
   isAuthorised,
   makeSelectOptions,
@@ -18,28 +19,17 @@ import LoadingScreen from 'components/base-component/LoadingScreen'
 import { permitAdmin } from 'permission-utils'
 import SubmitButton from 'components/formik/SubmitButton'
 import { MemberContext } from 'contexts/MemberContext'
-import { CreateMemberFormOptions } from '../create/CreateMember'
 import Input from 'components/formik/Input'
 import ImageUpload from 'components/formik/ImageUpload'
 import SearchFellowship from 'components/formik/SearchFellowship'
 import Select from 'components/formik/Select'
 import { ChurchContext } from 'contexts/ChurchContext'
-import { MAKE_MEMBER_INACTIVE } from '../update/UpdateMutations'
 import usePopup from 'hooks/usePopup'
 import Popup from 'components/Popup/Popup'
 import { useNavigate } from 'react-router'
 import RoleView from 'auth/RoleView'
-
-type MemberFormProps = {
-  initialValues: CreateMemberFormOptions
-  onSubmit: (
-    values: CreateMemberFormOptions,
-    onSubmitProps: FormikHelpers<CreateMemberFormOptions>
-  ) => void
-  title: string
-  loading: boolean
-  update?: boolean
-}
+import { MAKE_MEMBER_INACTIVE } from 'pages/directory/update/UpdateMutations'
+import { MemberFormProps } from 'pages/directory/create/form-utils'
 
 type DeleteMemberProp = {
   reason: string
@@ -87,14 +77,14 @@ const MemberForm = ({
 
     MakeMemberInactive({
       variables: {
-        memberId: memberId,
+        memberId,
         reason: values.reason,
       },
     })
       .then(() => {
         togglePopup()
         onSubmitProps.setSubmitting(false)
-        alert('Member has been deleted successfully')
+        alertMsg('Member has been deleted successfully')
         navigate('/directory/members')
       })
       .catch((e) => throwToSentry('Cannot delete member', e))
@@ -139,7 +129,8 @@ const MemberForm = ({
 
   if (ministriesLoading || loading) {
     return <LoadingScreen />
-  } else if (ministriesData) {
+  }
+  if (ministriesData) {
     const ministryArray =
       makeSelectOptions(ministriesData.gatheringServices[0]?.ministries) || []
     const ministryOptions = [{ key: 'None', value: 'None' }, ...ministryArray]
@@ -189,7 +180,7 @@ const MemberForm = ({
                     name="pictureUrl"
                     initialValue={initialValues.pictureUrl}
                     error={formik.errors.pictureUrl}
-                    uploadPreset={process.env.REACT_APP_CLOUDINARY_MEMBERS}
+                    uploadPreset={import.meta.env.VITE_CLOUDINARY_MEMBERS}
                     placeholder="Upload New Picture"
                     setFieldValue={formik.setFieldValue}
                     aria-describedby="ImageUpload"
@@ -349,7 +340,7 @@ const MemberForm = ({
                   >
                     <Button
                       onClick={() => togglePopup()}
-                      className={`btn-graphs btn dark image mt-3`}
+                      className="btn-graphs btn dark image mt-3"
                     >
                       Delete Member
                     </Button>
@@ -361,9 +352,8 @@ const MemberForm = ({
         )}
       </Formik>
     )
-  } else {
-    return <ErrorScreen />
   }
+  return <ErrorScreen />
 }
 
 export default MemberForm

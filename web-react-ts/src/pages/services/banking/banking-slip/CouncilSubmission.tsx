@@ -2,12 +2,8 @@ import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import { ServiceContext } from 'contexts/ServiceContext'
 import { Formik, Form, FormikHelpers } from 'formik'
 import * as Yup from 'yup'
-import React, { useContext, useState } from 'react'
+import { useContext, useState } from 'react'
 import { Col, Container, Row } from 'react-bootstrap'
-import {
-  BANKING_SLIP_SUBMISSION,
-  COUNCIL_SERVICE_RECORDS,
-} from '../../ServicesQueries'
 import { useMutation, useQuery } from '@apollo/client'
 import HeadingSecondary from 'components/HeadingSecondary'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
@@ -17,6 +13,10 @@ import SubmitButton from 'components/formik/SubmitButton'
 import usePopup from 'hooks/usePopup'
 import ErrorPopup from 'components/Popup/ErrorPopup'
 import ImageUpload from 'components/formik/ImageUpload'
+import {
+  BANKING_SLIP_SUBMISSION,
+  COUNCIL_SERVICE_RECORDS,
+} from 'pages/services/ServicesQueries'
 
 type FormOptions = {
   bankingSlip: string
@@ -49,7 +49,7 @@ const CouncilBankingSlipSubmission = () => {
     try {
       await SubmitBankingSlip({
         variables: {
-          serviceRecordId: serviceRecordId,
+          serviceRecordId,
           bankingSlip: values.bankingSlip,
         },
       })
@@ -57,8 +57,8 @@ const CouncilBankingSlipSubmission = () => {
       onSubmitProps.resetForm()
 
       navigate(`/council/service-details`)
-    } catch (error: any) {
-      setErrorMessage(error.message)
+    } catch (err: unknown) {
+      setErrorMessage(err.message)
       togglePopup()
     }
   }
@@ -78,7 +78,7 @@ const CouncilBankingSlipSubmission = () => {
           initialValues={initialValues}
           validationSchema={validationSchema}
           onSubmit={onSubmit}
-          validateOnMount={true}
+          validateOnMount
         >
           {(formik) => (
             <Container>
@@ -98,7 +98,7 @@ const CouncilBankingSlipSubmission = () => {
                     <ImageUpload
                       label="Upload a Picture of Your Banking Slip"
                       name="bankingSlip"
-                      uploadPreset={process.env.REACT_APP_CLOUDINARY_BANKING}
+                      uploadPreset={import.meta.env.VITE_CLOUDINARY_BANKING}
                       placeholder="Choose"
                       setFieldValue={formik.setFieldValue}
                       aria-describedby="UploadBankingSlip"

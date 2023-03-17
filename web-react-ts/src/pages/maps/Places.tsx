@@ -1,6 +1,5 @@
 import { LazyQueryExecFunction, OperationVariables } from '@apollo/client'
 import GooglePlacesCombobox from './components/GooglePlacesCombobox'
-import { PlaceType } from './components/MapComponent'
 import MemberPlacesCombobox from './components/MemberPlacesCombobox'
 
 type GooglePlacesProps = {

@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useMemo, useRef } from 'react'
+import { useCallback, useContext, useMemo, useRef, useState } from 'react'
 import {
   useLoadScript,
   GoogleMap,
@@ -6,11 +6,9 @@ import {
   MarkerClusterer,
   InfoWindow,
 } from '@react-google-maps/api'
-import { useState } from 'react'
-import '../Map.css'
+import 'pages/maps/Map.css'
 import { Button, Col, Container, Offcanvas, Row } from 'react-bootstrap'
 import { IoChevronUp } from 'react-icons/io5'
-import { GooglePlaces, MemberPlaces } from '../Places'
 import {
   ApolloError,
   LazyQueryExecFunction,
@@ -19,9 +17,10 @@ import {
 import { MemberContext } from 'contexts/MemberContext'
 import LoadingScreen from 'components/base-component/LoadingScreen'
 import './MapComponent.css'
-import { getMapIcon, getMapIconClass } from './map-utils'
 import CloudinaryImage from 'components/CloudinaryImage'
 import { FaChurch, FaLocationArrow } from 'react-icons/fa'
+import { GooglePlaces, MemberPlaces } from 'pages/maps/Places'
+import { getMapIcon, getMapIconClass, PlaceType } from './map-utils'
 
 type LatLngLiteral = google.maps.LatLngLiteral
 type MapOptions = google.maps.MapOptions
@@ -42,25 +41,10 @@ type MapComponentProps = {
   error: ApolloError | undefined
 }
 
-export type PlaceType = {
-  id: string
-  name: string
-  typename:
-    | 'GooglePlace'
-    | 'Member'
-    | 'Fellowship'
-    | 'IndoorVenue'
-    | 'OutdoorVenue'
-    | 'HighSchool'
-  picture?: string
-  description?: string
-  position: LatLngLiteral
-}
-
 const MapComponent = (props: MapComponentProps) => {
   const [libraries] = useState<LibrariesOptions>(['places'])
   const { isLoaded } = useLoadScript({
-    googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY ?? '',
+    googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY ?? '',
     libraries,
   })
 
@@ -167,7 +151,7 @@ const MapComponent = (props: MapComponentProps) => {
   const handleFlcClick = async () => {
     const position = { lat: 5.655949, lng: -0.167033 }
     setCentre({
-      position: position,
+      position,
       name: 'First Love Center',
       typename: 'Fellowship',
       id: 'fellowship',
@@ -190,7 +174,7 @@ const MapComponent = (props: MapComponentProps) => {
   }
 
   return (
-    <div className={`map`}>
+    <div className="map">
       <GoogleMap
         zoom={18}
         center={center}
@@ -204,7 +188,7 @@ const MapComponent = (props: MapComponentProps) => {
               position={selected.position}
               label={{
                 text: selected.name,
-                className: 'marker selected ' + getMapIconClass(selected),
+                className: `marker selected ${getMapIconClass(selected)}`,
               }}
               onClick={() => handleMarkerClick(selected)}
             />
@@ -242,8 +226,8 @@ const MapComponent = (props: MapComponentProps) => {
                       <Marker
                         key={place.id}
                         label={{
-                          text: place.name + ' ' + getTypename(place),
-                          className: 'marker ' + getMapIconClass(place),
+                          text: `${place.name} ${getTypename(place)}`,
+                          className: `marker ${getMapIconClass(place)}`,
                         }}
                         position={place.position}
                         clusterer={clusterer}
