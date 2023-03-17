@@ -36,12 +36,27 @@ const ChurchList = ({
             })
             .map((church: Church) => {
               if (color === 'arrivals') {
-                if (['Fellowship'].includes(church.__typename)) {
+                if (
+                  ![
+                    'Bacenta',
+                    'Constituency',
+                    'Council',
+                    'Stream',
+                    'GatheringService',
+                  ].includes(church.__typename)
+                ) {
                   return null
                 }
               }
               if (color === 'defaulters') {
-                if (['Fellowship', 'Bacenta'].includes(church.__typename)) {
+                if (
+                  ![
+                    'Constituency',
+                    'Council',
+                    'Stream',
+                    'GatheringService',
+                  ].includes(church.__typename)
+                ) {
                   return null
                 }
               }
