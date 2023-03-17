@@ -1151,6 +1151,7 @@ extend type Mutation {
         SET bacenta.mobileNetwork = $mobileNetwork,
         bacenta.momoName = $momoName,
         bacenta.momoNumber = $momoNumber
+      REMOVE bacenta.recipientCode
 
       WITH bacenta
       CREATE (log:HistoryLog {id:apoc.create.uuid()})
@@ -1158,7 +1159,7 @@ extend type Mutation {
         log.historyRecord = bacenta.name + ' Bus Payment Details were updated'
 
       WITH log,bacenta
-      MATCH (admin:Member {auth_id: $auth.jwt.sub})
+      MATCH (admin:Member {auth_id: $auth})
       MERGE (date:TimeGraph {date:date()})
       MERGE (log)-[:LOGGED_BY]->(admin)
       MERGE (log)-[:RECORDED_ON]->(date)
