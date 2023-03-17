@@ -375,12 +375,18 @@ export const arrivalsMutation = {
       streamName,
       numberOfVehicles,
       totalAttendance,
+      leaderPhoneNumber,
+      leaderFirstName,
+      bacentaName,
     }: {
       arrivalEndTime: string
       bacentaId: string
       streamName: string
       numberOfVehicles: neonumber
       totalAttendance: neonumber
+      leaderPhoneNumber: string
+      leaderFirstName: string
+      bacentaName: string
     } = recordResponse
 
     const today = new Date()
@@ -434,9 +440,13 @@ export const arrivalsMutation = {
         )
       )
 
-    await setBacentaStatus(bacentaId, context).catch((error: any) =>
-      console.log('Error Setting bacenta Status', error)
-    )
+    await setBacentaStatus(
+      bacentaId,
+      leaderFirstName,
+      leaderPhoneNumber,
+      bacentaName,
+      context
+    ).catch((error: any) => console.log('Error Setting bacenta Status', error))
 
     const vehicleRecord = response.vehicleRecord.properties
     const date = new Date().toISOString().slice(0, 10)

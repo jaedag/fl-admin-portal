@@ -1,6 +1,8 @@
 import { Context } from '../../utils/neo4j-types'
 import { rearrangeCypherObject } from '../../utils/utils'
+import { joinMessageStrings, sendBulkSMS } from '../../utils/notify'
 
+import texts from '../../texts.json'
 import {
   getBacentaLastFourBussing,
   setBacentaIC,
@@ -18,32 +20,58 @@ export type serviceType = {
 export const setBacentaICStatus = async (
   last4Bussing: number[],
   session: any,
-  bacentaId: string
+  bacentaId: string,
+  leaderFirstName: string,
+  leaderPhoneNumber: string,
+  bacentaName: string
 ) => {
-  if (last4Bussing.length === 5) {
-    last4Bussing.shift()
-    if (last4Bussing.every((bussing) => bussing < 8)) {
-      await session.run(setBacentaIC, { bacentaId })
-    }
+  if (last4Bussing.every((bussing) => bussing < 8)) {
+    await Promise.all([
+      session.run(setBacentaIC, { bacentaId }),
+      sendBulkSMS(
+        [leaderPhoneNumber],
+        joinMessageStrings([
+          `Hi ${leaderFirstName}\n\n`,
+          texts.arrivalsSMS.bacenta_demoted_to_ic_p1,
+          bacentaName,
+          texts.arrivalsSMS.bacenta_demoted_to_ic_p2,
+        ])
+      ),
+    ])
   }
 }
 
 export const setBacentaGraduatedStatus = async (
   last4Bussing: number[],
   session: any,
-  bacentaId: string
+  bacentaId: string,
+  leaderFirstName: string,
+  leaderPhoneNumber: string,
+  bacentaName: string
 ) => {
-  if (last4Bussing.length === 5) {
-    last4Bussing.pop()
-    if (last4Bussing.every((bussing) => bussing >= 8)) {
-      await session.run(setBacentaGraduated, { bacentaId })
-    }
-  } else if (last4Bussing.every((bussing) => bussing >= 8)) {
-    await session.run(setBacentaGraduated, { bacentaId })
+  if (last4Bussing.every((bussing) => bussing >= 8)) {
+    await Promise.all([
+      session.run(setBacentaGraduated, { bacentaId }),
+      sendBulkSMS(
+        [leaderPhoneNumber],
+        joinMessageStrings([
+          `Hi ${leaderFirstName}\n\n`,
+          texts.arrivalsSMS.bacenta_graduated_p1,
+          bacentaName,
+          texts.arrivalsSMS.bacenta_graduated_p2,
+        ])
+      ),
+    ])
   }
 }
 
-export const setBacentaStatus = async (bacentaId: string, context: Context) => {
+export const setBacentaStatus = async (
+  bacentaId: string,
+  leaderFirstName: string,
+  leaderPhoneNumber: string,
+  bacentaName: string,
+  context: Context
+) => {
   const session = context.executionContext.session()
 
   const last4ServicesResponse: serviceType[] = rearrangeCypherObject(
@@ -51,7 +79,7 @@ export const setBacentaStatus = async (bacentaId: string, context: Context) => {
     true
   )
 
-  const bacentaName = {
+  const bacenta = {
     id: bacentaId,
     name: last4ServicesResponse[0].bacentaName,
     __typename: last4ServicesResponse[0].bacentaStatus,
@@ -67,17 +95,31 @@ export const setBacentaStatus = async (bacentaId: string, context: Context) => {
   )
 
   if (last4ServicesResponse[0].bacentaStatus.includes('Graduated')) {
-    await setBacentaICStatus(last4Bussing, session, bacentaId)
+    await setBacentaICStatus(
+      last4Bussing,
+      session,
+      bacentaId,
+      leaderFirstName,
+      leaderPhoneNumber,
+      bacentaName
+    )
     return {
-      ...bacentaName,
+      ...bacenta,
       __typename: ['IC', 'Bacenta'],
     }
   }
 
   if (last4ServicesResponse[0].bacentaStatus.includes('IC')) {
-    await setBacentaGraduatedStatus(last4Bussing, session, bacentaId)
+    await setBacentaGraduatedStatus(
+      last4Bussing,
+      session,
+      bacentaId,
+      leaderFirstName,
+      leaderPhoneNumber,
+      bacentaName
+    )
     return {
-      ...bacentaName,
+      ...bacenta,
       __typename: ['Graduated', 'Bacenta'],
     }
   }
