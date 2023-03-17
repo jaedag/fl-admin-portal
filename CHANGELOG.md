@@ -1,3 +1,10 @@
+#### 6.4.3 (2023-03-17)
+
+##### Bug Fixes
+
+*  remove directory lock for arrivals admins in the front end ([fea6cef4](https://github.com/firstlovecenter/fl-pastoral-care/commit/fea6cef40b0dbd8569432fe042bc6feec855cc89))
+*  remove directory lock for arrivals admins ([184fc13c](https://github.com/firstlovecenter/fl-pastoral-care/commit/184fc13c6128d049d4c81447675d6cac939b07a8))
+
 #### 6.4.2 (2023-03-17)
 
 ##### Bug Fixes
