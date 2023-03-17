@@ -1,3 +1,18 @@
+#### 6.4.2 (2023-03-17)
+
+##### Bug Fixes
+
+*  implement permission for gs arrivalsAdmin to view all streams ([b9a50c1a](https://github.com/firstlovecenter/fl-pastoral-care/commit/b9a50c1a04c14301f38717f9024969788cff5679))
+*  make map overlay buttons the same size ([dc54a206](https://github.com/firstlovecenter/fl-pastoral-care/commit/dc54a206871f6a8447bb4cd9756d6084fe8f98c1))
+*  implement some styling on the buttons in the map overlay ([fd74fa2a](https://github.com/firstlovecenter/fl-pastoral-care/commit/fd74fa2a160d296a13227e28a07a65050283ea2a))
+*  implement permission for map to be viewed by the whole church ([81b2f9e9](https://github.com/firstlovecenter/fl-pastoral-care/commit/81b2f9e9c3e38b6e698bcfeaba65864156c94f80))
+*  implement marker when selecting first lovecenter and current location ([d2210f74](https://github.com/firstlovecenter/fl-pastoral-care/commit/d2210f74a94850b0eca010910ca6eda2233dc3db))
+*  decrease initial zoom on map load ([8e6ca6c2](https://github.com/firstlovecenter/fl-pastoral-care/commit/8e6ca6c23b15524499d83dd72d1b4ca3e73c5e0c))
+*  remove redundant constituency bussing button ([e99fe70b](https://github.com/firstlovecenter/fl-pastoral-care/commit/e99fe70b6a8b7a509cb6a0f7bb1410c12e213c10))
+*  return a little data about members on the map ([7c9f0598](https://github.com/firstlovecenter/fl-pastoral-care/commit/7c9f0598b4124b77bdc57ebcf5654cf7f2783146))
+*  ensure that all created bacentas have topup of amount 0 ([4abbf057](https://github.com/firstlovecenter/fl-pastoral-care/commit/4abbf0571b84b8934eb780889b78fb550109bf5c))
+*  prevent text from wrapping on bacenta details page ([07f965bb](https://github.com/firstlovecenter/fl-pastoral-care/commit/07f965bb139742ffaf2a8b52aa67515f24f1ce38))
+
 #### 6.4.1 (2023-03-15)
 
 ##### Documentation Changes
