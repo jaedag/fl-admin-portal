@@ -4,7 +4,6 @@ import {
   permitAdminArrivals,
   permitArrivals,
   permitLeaderAdmin,
-  permitLeaderAdminArrivals,
   permitMe,
   permitSheepSeeker,
 } from 'permission-utils'
