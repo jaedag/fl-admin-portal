@@ -12,6 +12,7 @@ import {
   permitArrivals,
   permitArrivalsHelpers,
   permitLeaderAdmin,
+  permitLeaderAdminArrivals,
   permitMe,
   permitSheepSeeker,
   permitTellerStream,
@@ -54,7 +55,7 @@ export const menuItems: MenuItem[] = [
   {
     name: 'Maps',
     to: '/maps',
-    roles: ['adminGatheringService', 'adminStream'],
+    roles: permitLeaderAdminArrivals('Fellowship'),
   },
 ]
 

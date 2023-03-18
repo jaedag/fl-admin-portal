@@ -7,6 +7,7 @@ import {
   permitSheepSeeker,
   permitAdmin,
   permitLeaderAdmin,
+  permitAdminArrivals,
 } from '../permissions'
 import { RemoveServant } from './make-remove-servants'
 
@@ -256,7 +257,7 @@ const directoryMutation = {
   },
 
   CloseDownBacenta: async (object: any, args: any, context: Context) => {
-    isAuth(permitAdmin('Constituency'), context.auth.roles)
+    isAuth(permitAdminArrivals('Constituency'), context.auth.roles)
 
     const session = context.executionContext.session()
 

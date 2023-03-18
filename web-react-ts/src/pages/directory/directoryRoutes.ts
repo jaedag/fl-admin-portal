@@ -436,7 +436,7 @@ export const directory: LazyRouteTypes[] = [
   {
     path: '/stream/displayall',
     element: DisplayAllStreams,
-    roles: permitLeaderAdmin('GatheringService'),
+    roles: permitMe('GatheringService'),
     placeholder: false,
   },
   {

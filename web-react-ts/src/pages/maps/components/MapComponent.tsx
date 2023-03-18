@@ -21,6 +21,7 @@ import LoadingScreen from 'components/base-component/LoadingScreen'
 import './MapComponent.css'
 import { getMapIcon, getMapIconClass } from './map-utils'
 import CloudinaryImage from 'components/CloudinaryImage'
+import { FaChurch, FaLocationArrow } from 'react-icons/fa'
 
 type LatLngLiteral = google.maps.LatLngLiteral
 type MapOptions = google.maps.MapOptions
@@ -112,32 +113,87 @@ const MapComponent = (props: MapComponentProps) => {
     setClickedMarker(marker)
   }
 
-  const handleSetCentre = async (position: PlaceType) => {
-    setCentre(position)
+  const getTypename = (place: PlaceType) => {
+    switch (place.typename) {
+      case 'GooglePlace':
+        return 'Centre'
+      case 'Member':
+        return ''
+      case 'Fellowship':
+        return 'Fellowship'
+      case 'IndoorVenue':
+        return 'Indoor Venue'
+      case 'OutdoorVenue':
+        return 'Outdoor Venue'
+      case 'HighSchool':
+        return 'High School'
+      default:
+        return ''
+    }
+  }
 
-    mapRef.current?.panTo(position.position)
+  if (!isLoaded) {
+    return <LoadingScreen />
+  }
 
+  const searchByLocation = async (position: LatLngLiteral) => {
     const response = await props.placesSearchByLocation({
       variables: {
         id: currentUser.id,
-        latitude: position.position.lat,
-        longitude: position.position.lng,
+        latitude: position.lat,
+        longitude: position.lng,
       },
     })
 
-    setPlaces(
-      response.data.members[0].placesSearchByLocation.map((place: any) => ({
+    return response.data.members[0].placesSearchByLocation.map(
+      (place: any) => ({
         ...place,
         position: {
           lat: place.latitude,
           lng: place.longitude,
         },
-      }))
+      })
     )
   }
 
-  if (!isLoaded) {
-    return <LoadingScreen />
+  const handleSetCentre = async (position: PlaceType) => {
+    setCentre(position)
+    mapRef.current?.panTo(position.position)
+    setPlaces(await searchByLocation(position.position))
+    handleClose()
+  }
+
+  const handleMyLocationClick = () => {
+    window.navigator.geolocation.getCurrentPosition((position) => {
+      setCentre({
+        position: {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+        },
+        name: 'Your Location',
+        typename: 'Fellowship',
+        id: 'fellowship',
+      })
+      mapRef.current?.panTo({
+        lat: position.coords.latitude,
+        lng: position.coords.longitude,
+      })
+    })
+
+    handleClose()
+  }
+
+  const handleFlcClick = async () => {
+    const position = { lat: 5.655949, lng: -0.167033 }
+    setCentre({
+      position: position,
+      name: 'First Love Center',
+      typename: 'Fellowship',
+      id: 'fellowship',
+    })
+    setPlaces(await searchByLocation(position))
+    mapRef.current?.panTo(position)
+    handleClose()
   }
 
   const parseDescription = (description: string) => {
@@ -155,7 +211,7 @@ const MapComponent = (props: MapComponentProps) => {
   return (
     <div className={`map`}>
       <GoogleMap
-        zoom={20}
+        zoom={18}
         center={center}
         mapContainerClassName="map-container"
         options={options}
@@ -237,39 +293,36 @@ const MapComponent = (props: MapComponentProps) => {
             setCentre={handleSetCentre}
             {...props}
           />
-
           <div>Search our FLC Database</div>
           <MemberPlaces
             handleClose={handleClose}
             setCentre={handleSetCentre}
             {...props}
           />
-          <Button
-            onClick={() => {
-              window.navigator.geolocation.getCurrentPosition((position) => {
-                mapRef.current?.panTo({
-                  lat: position.coords.latitude,
-                  lng: position.coords.longitude,
-                })
-              })
-
-              handleClose()
-            }}
-          >
-            My location
-          </Button>
-          <Button
-            onClick={() =>
-              handleSetCentre({
-                id: '1',
-                name: 'First Love Center',
-                typename: 'Fellowship',
-                position: { lat: 5.655949, lng: -0.167033 },
-              })
-            }
-          >
-            First Love Center
-          </Button>
+          <Row className="mt-4">
+            <div>Go to your location</div>
+            <Container>
+              <Button
+                onClick={handleMyLocationClick}
+                variant="dark"
+                className="map-btn"
+              >
+                My location <FaLocationArrow />
+              </Button>
+            </Container>
+          </Row>
+          <Row className="mt-4">
+            <Col>
+              <div>Go to First Love Center</div>
+              <Button
+                onClick={handleFlcClick}
+                variant="dark"
+                className="map-btn"
+              >
+                First Love Center <FaChurch />
+              </Button>
+            </Col>
+          </Row>
         </Offcanvas.Body>
       </Offcanvas>
       <div className="floating-action">

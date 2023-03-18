@@ -26,7 +26,7 @@ import { Button, Col, Container, Row, Spinner } from 'react-bootstrap'
 import PlaceholderCustom from 'components/Placeholder'
 import { Geo, PencilSquare } from 'react-bootstrap-icons'
 import ViewAll from 'components/buttons/ViewAll'
-import { permitAdmin } from 'permission-utils'
+import { permitAdmin, permitAdminArrivals } from 'permission-utils'
 import useSetUserChurch from 'hooks/useSetUserChurch'
 import usePopup from 'hooks/usePopup'
 import { Church, ChurchLevel, MemberWithoutBioData, Role } from 'global-types'
@@ -234,7 +234,9 @@ const DisplayChurchDetails = (props: DisplayChurchDetailsProps) => {
   const directoryLock = () => {
     if (
       new Date().getDay() === 2 ||
-      permitAdmin('Stream')?.some((r) => currentUser?.roles.includes(r)) ||
+      permitAdminArrivals('Stream')?.some((r) =>
+        currentUser?.roles.includes(r)
+      ) ||
       (props.churchType === 'Fellowship' &&
         currentUser?.roles.includes('leaderFellowship'))
     ) {

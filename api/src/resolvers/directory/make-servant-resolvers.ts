@@ -1,6 +1,6 @@
 import { Context } from '../utils/neo4j-types'
 import { Member } from '../utils/types'
-import { permitAdmin } from '../permissions'
+import { permitAdmin, permitAdminArrivals } from '../permissions'
 import { MakeServant, RemoveServant } from './make-remove-servants'
 
 const MakeServantResolvers = {
@@ -89,7 +89,7 @@ const MakeServantResolvers = {
     MakeServant(
       context,
       args,
-      permitAdmin('Constituency'),
+      permitAdminArrivals('Constituency'),
       'Bacenta',
       'Leader'
     ),
@@ -97,7 +97,7 @@ const MakeServantResolvers = {
     RemoveServant(
       context,
       args,
-      permitAdmin('Constituency'),
+      permitAdminArrivals('Constituency'),
       'Bacenta',
       'Leader'
     ),
