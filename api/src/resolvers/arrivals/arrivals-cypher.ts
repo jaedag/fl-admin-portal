@@ -33,8 +33,8 @@ record.personalContribution AS personalContribution,
 leader.phoneNumber AS leaderPhoneNumber,
 leader.firstName AS leaderFirstName,
 
-bacenta.sprinterCost AS bacentaSprinterCost,
-bacenta.urvanCost AS bacentaUrvanCost,
+bacenta.sprinterTopUp AS bacentaSprinterTopUp,
+bacenta.urvanTopUp AS bacentaUrvanTopUp,
 
 labels(date) AS dateLabels
 `
@@ -114,7 +114,7 @@ RETURN church
 
 export const checkBacentaMomoDetails = `
 MATCH (bacenta:Bacenta {id: $bacentaId})
-RETURN bacenta.sprinterCost AS sprinterCost, bacenta.urvanCost AS uvanCost, bacenta.momoNumber AS momoNumber
+RETURN bacenta.sprinterTopUp AS sprinterTopUp, bacenta.urvanTopUp AS uvanTopUp, bacenta.momoNumber AS momoNumber
 `
 
 export const uploadMobilisationPicture = `
@@ -201,7 +201,6 @@ vehicleRecord.personalContribution = $personalContribution,
 vehicleRecord.vehicle = $vehicle,
 vehicleRecord.picture =  $picture,
 vehicleRecord.outbound = $outbound,
-vehicleRecord.recipientCode = $recipientCode,
 vehicleRecord.momoNumber = $momoNumber,
 vehicleRecord.mobileNetwork = $mobileNetwork
 

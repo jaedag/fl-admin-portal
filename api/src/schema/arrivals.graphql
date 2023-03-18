@@ -1169,33 +1169,6 @@ extend type Mutation {
       """
     )
 
-  UpdateConstituencyBussingCost(
-    constituencyId: ID!
-    sprinterCost: Float!
-    urvanCost: Float!
-  ): Constituency!
-    @auth(
-      rules: [
-        {
-          roles: [
-            "adminGatheringService"
-            "arrivalsAdminGatheringService"
-            "adminStream"
-            "arrivalsAdminStream"
-          ]
-        }
-      ]
-    )
-    @cypher(
-      statement: """
-      MATCH (constituency:Constituency {id: $constituencyId})
-      SET constituency.sprinterCost = $sprinterCost,
-      constituency.urvanCost = $urvanCost
-
-      RETURN constituency
-      """
-    )
-
   UploadMobilisationPicture(
     bacentaId: ID!
     serviceDate: String!

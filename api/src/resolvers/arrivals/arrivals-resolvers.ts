@@ -224,8 +224,8 @@ export const arrivalsMutation = {
 
     if (
       !checkBacentaMomo?.momoNumber &&
-      (parseNeoNumber(checkBacentaMomo.sprinterCost) ||
-        parseNeoNumber(checkBacentaMomo.urvanCost))
+      (parseNeoNumber(checkBacentaMomo.sprinterTopUp) ||
+        parseNeoNumber(checkBacentaMomo.urvanTopUp))
     ) {
       throw new Error('You need a mobile money number before filling this form')
     }
@@ -496,8 +496,8 @@ export const arrivalsMutation = {
       vehicleCost: number
       outbound: boolean
       personalContribution: number
-      bacentaSprinterCost: number
-      bacentaUrvanCost: number
+      bacentaSprinterTopUp: number
+      bacentaUrvanTopUp: number
       arrivalTime: string
       leaderPhoneNumber: string
       leaderFirstName: string
@@ -507,13 +507,13 @@ export const arrivalsMutation = {
     const response: responseType = rearrangeCypherObject(
       await session.run(getVehicleRecordWithDate, args)
     )
-
+    console.log('set topup response ', response)
     let vehicleRecord: RearragedCypherResponse | undefined
 
     const calculateVehicleTopUp = (data: responseType) => {
       const outbound = response.outbound ? 2 : 1
-      const sprinterTopUp = data.bacentaSprinterCost * outbound
-      const urvanTopUp = data.bacentaUrvanCost * outbound
+      const sprinterTopUp = data.bacentaSprinterTopUp * outbound
+      const urvanTopUp = data.bacentaUrvanTopUp * outbound
 
       const amountToPay = data.vehicleCost - data.personalContribution
 
@@ -624,7 +624,6 @@ export const arrivalsMutation = {
 
     const vehicleRecord = recordResponse.record.properties
     const bacenta = recordResponse.bacenta.properties
-    console.log(vehicleRecord)
 
     let recipient = vehicleRecord
 
@@ -662,6 +661,8 @@ export const arrivalsMutation = {
       }
 
       const recipientResponse = await axios(createRecipient)
+
+      console.log('recipientResponse', createRecipient)
       recipient = {
         ...recipientResponse.data.data,
         recipientCode: recipient.data.data.recipient_code,
