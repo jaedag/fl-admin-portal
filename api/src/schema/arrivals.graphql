@@ -995,7 +995,8 @@ type VehicleRecord {
   #Arrived
   comments: String
   arrivalTime: DateTime
-  transactionId: Int
+  paystackTransferCode: String
+  transactionStatus: String
   outbound: Boolean!
 
   bussingRecord: BussingRecord!

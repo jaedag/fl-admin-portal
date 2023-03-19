@@ -28,7 +28,6 @@ import {
   getVehicleRecordWithDate,
   noVehicleTopUp,
   recordVehicleFromBacenta,
-  removeVehicleRecordTransactionId,
   setSwellDate,
   setVehicleRecordTransactionSuccessful,
   setVehicleTopUp,
@@ -507,7 +506,7 @@ export const arrivalsMutation = {
     const response: responseType = rearrangeCypherObject(
       await session.run(getVehicleRecordWithDate, args)
     )
-    console.log('set topup response ', response)
+
     let vehicleRecord: RearragedCypherResponse | undefined
 
     const calculateVehicleTopUp = (data: responseType) => {
@@ -660,12 +659,13 @@ export const arrivalsMutation = {
         },
       }
 
-      const recipientResponse = await axios(createRecipient)
+      const recipientResponse = await axios(createRecipient).catch((err) =>
+        throwToSentry('Error creating transfer recipient', err)
+      )
 
-      console.log('recipientResponse', createRecipient)
       recipient = {
         ...recipientResponse.data.data,
-        recipientCode: recipient.data.data.recipient_code,
+        recipientCode: recipientResponse.data.data.recipient_code,
       }
     }
 
@@ -679,8 +679,8 @@ export const arrivalsMutation = {
       },
       data: {
         source: 'balance',
-        reason: `${bacenta.bacentaName} Bacenta ${vehicleRecord.momoName}`,
-        amount: vehicleRecord.bussingTopUp * 100,
+        reason: `${bacenta.name} Bacenta bussed ${vehicleRecord.attendance}`,
+        amount: vehicleRecord.vehicleTopUp * 100,
         currency: 'GHS',
         recipient: recipient.recipientCode,
       },
@@ -688,17 +688,17 @@ export const arrivalsMutation = {
 
     try {
       const res = await axios(sendVehicleSupport)
-      console.log(res.data)
-      if (res.data.code !== '000') {
-        await session.run(removeVehicleRecordTransactionId, args)
-        throwToSentry(
-          'There was an error processing payment',
-          `${res.data.code} ${res.data.reason}`
-        )
-      }
+
+      const responseData = res.data.data
 
       await session
-        .run(setVehicleRecordTransactionSuccessful, args)
+        .run(setVehicleRecordTransactionSuccessful, {
+          ...args,
+          recipientCode: recipient.recipientCode,
+          transactionReference: responseData.reference,
+          transferCode: responseData.transfer_code,
+          responseStatus: responseData.status,
+        })
         .catch((error: any) =>
           throwToSentry(
             'There was an error setting Vehicle Record Transaction Status',
@@ -706,18 +706,17 @@ export const arrivalsMutation = {
           )
         )
 
-      // eslint-disable-next-line no-console
-      console.log(
-        'Money Sent Successfully to',
-        vehicleRecord.momoNumber,
-        res.data
-      )
+      console.log('Money Sent Successfully to', vehicleRecord.momoNumber)
+
       return vehicleRecord
     } catch (error: any) {
-      throw new Error(
-        `Money could not be sent! ${error.response.data.description}`
+      throwToSentry(
+        `Money could not be sent! ${error.response.data.message}`,
+        error
       )
     }
+
+    return vehicleRecord
   },
   SetSwellDate: async (object: any, args: any, context: Context) => {
     isAuth(permitAdminArrivals('GatheringService'), context.auth.roles)

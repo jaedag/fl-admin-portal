@@ -134,14 +134,14 @@ const FormAddVehicleRecord = () => {
                     defaultOption="Select a vehicle type"
                   />
 
+                  <hr />
+                  <div className="mb-2 yellow">
+                    This section will be used to calculate your bussing top up
+                    so fill it carefully
+                  </div>
                   <Input name="vehicleCost" label="Vehicle Cost*" />
                 </Col>
 
-                <hr />
-                <div className="mb-2 yellow">
-                  This section will be used to calculate your bussing top up so
-                  fill it carefully
-                </div>
                 <Input
                   name="personalContribution"
                   label="Personal Contribution* (in Cedis)"

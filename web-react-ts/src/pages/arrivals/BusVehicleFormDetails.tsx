@@ -184,6 +184,26 @@ const BusVehicleFormDetails = () => {
                       </PlaceholderCustom>
                     </td>
                   </tr>
+                  {vehicle?.paystackTransferCode && (
+                    <tr>
+                      <td>Transaction Code</td>
+                      <td className="fw-bold text-warning">
+                        <PlaceholderCustom loading={loading}>
+                          {vehicle?.paystackTransferCode}
+                        </PlaceholderCustom>
+                      </td>
+                    </tr>
+                  )}
+                  {vehicle?.transactionStatus && (
+                    <tr>
+                      <td>Transaction Status</td>
+                      <td className="fw-bold text-warning">
+                        <PlaceholderCustom loading={loading}>
+                          {vehicle?.transactionStatus}
+                        </PlaceholderCustom>
+                      </td>
+                    </tr>
+                  )}
                   {vehicle?.comments && (
                     <tr>
                       <td>Comments</td>
