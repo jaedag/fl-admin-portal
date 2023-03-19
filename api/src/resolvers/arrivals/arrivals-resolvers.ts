@@ -446,7 +446,9 @@ export const arrivalsMutation = {
       leaderPhoneNumber,
       bacentaName,
       context
-    ).catch((error: any) => console.log('Error Setting bacenta Status', error))
+    ).catch((error: any) =>
+      console.error('Error Setting bacenta Status', error)
+    )
 
     const vehicleRecord = response.vehicleRecord.properties
     const date = new Date().toISOString().slice(0, 10)
