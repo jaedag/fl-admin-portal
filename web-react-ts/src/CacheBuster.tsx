@@ -1,8 +1,10 @@
+/* eslint-disable react/destructuring-assignment */
 /* eslint-disable no-console */
 
 import React from 'react'
 
-import packageJson from '/web-react-ts/package.json'
+// eslint-disable-next-line no-relative-import-paths/no-relative-import-paths
+import packageJson from '../package.json'
 
 const globalAppVersion = packageJson.version
 

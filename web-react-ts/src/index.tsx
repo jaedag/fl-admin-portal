@@ -1,4 +1,6 @@
-import { useCallback, useEffect, useState } from 'react'
+/* eslint-disable react/no-unused-prop-types */
+// eslint-disable-next-line no-use-before-define
+import React, { useCallback, useEffect, useState } from 'react'
 import { createRoot } from 'react-dom/client'
 import { RetryLink } from '@apollo/client/link/retry'
 
