@@ -635,6 +635,7 @@ export const arrivalsMutation = {
 
     const vehicleRecord = recordResponse.record.properties
     const bacenta = recordResponse.bacenta.properties
+    const leader = recordResponse.leader.properties
 
     let recipient = vehicleRecord
 
@@ -661,12 +662,22 @@ export const arrivalsMutation = {
         data: {
           type: 'mobile_money',
           name: vehicleRecord.momoName,
+          email: leader.email,
           account_number: vehicleRecord.momoNumber,
           bank_code: vehicleRecord.mobileNetwork,
           currency: 'GHS',
           metadata: {
-            bacentaId: bacenta.id,
-            bacenta: bacenta.name,
+            bacenta: {
+              id: bacenta.id,
+              name: bacenta.name,
+            },
+            leader: {
+              id: leader.id,
+              firstName: leader.firstName,
+              lastName: leader.lastName,
+              phoneNumber: leader.phoneNumber,
+              whatsappNumber: leader.whatsappNumber,
+            },
           },
         },
       }

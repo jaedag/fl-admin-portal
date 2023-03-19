@@ -7,12 +7,13 @@ export interface CreateTransferRecipientBody extends PayStackRequestBody {
   data: {
     type: 'mobile_money'
     name: string
+    email: string
     bank_code: NetworkCode
     account_number: string
     currency: 'GHS'
     metadata: {
-      bacentaId: string
-      bacenta: string
+      bacenta: any
+      leader: any
     }
   }
 }
