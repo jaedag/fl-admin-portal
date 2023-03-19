@@ -8,6 +8,12 @@ record.paystackTransferCode = $transferCode
 RETURN record
 `
 
+export const setBacentaRecipientCode = `
+MATCH (bacenta:Bacenta {id: $bacentaId})
+    SET bacenta.recipientCode = $recipientCode
+RETURN bacenta
+`
+
 export const removeVehicleRecordTransactionId = `
 MATCH (record:VehicleRecord {id: $vehicleRecordId})<-[:INCLUDES_RECORD]-(bussing:BussingRecord)<-[:HAS_BUSSING]-(:ServiceLog)<-[:HAS_HISTORY]-(bacenta:Bacenta)
 MATCH (bussing)-[:BUSSED_ON]->(date:TimeGraph)

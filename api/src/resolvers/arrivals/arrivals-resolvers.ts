@@ -28,6 +28,7 @@ import {
   getVehicleRecordWithDate,
   noVehicleTopUp,
   recordVehicleFromBacenta,
+  setBacentaRecipientCode,
   setSwellDate,
   setVehicleRecordTransactionSuccessful,
   setVehicleTopUp,
@@ -685,6 +686,11 @@ export const arrivalsMutation = {
       const recipientResponse = await axios(createRecipient).catch((err) =>
         throwToSentry('Error creating transfer recipient', err)
       )
+
+      await session.run(setBacentaRecipientCode, {
+        bacentaId: bacenta.id,
+        recipientCode: recipientResponse.data.data.recipient_code,
+      })
 
       recipient = {
         ...recipientResponse.data.data,
