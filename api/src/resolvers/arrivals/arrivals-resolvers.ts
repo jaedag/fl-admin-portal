@@ -302,8 +302,8 @@ export const arrivalsMutation = {
       await session.run(recordVehicleFromBacenta, {
         ...args,
         recipientCode: bacenta.recipientCode,
-        momoNumber: bacenta.momoNumber,
-        mobileNetwork: bacenta.mobileNetwork,
+        momoNumber: bacenta.momoNumber ?? '',
+        mobileNetwork: bacenta.mobileNetwork ?? '',
         outbound: bacenta.outbound,
         vehicleCostWithOutbound: args.vehicleCost,
         auth: context.auth,
