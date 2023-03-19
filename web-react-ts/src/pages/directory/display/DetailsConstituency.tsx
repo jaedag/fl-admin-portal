@@ -5,7 +5,7 @@ import DisplayChurchDetails from '../../../components/DisplayChurchDetails/Displ
 import { DISPLAY_CONSTITUENCY } from './ReadQueries'
 import { ChurchContext } from '../../../contexts/ChurchContext'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
-import { permitAdmin } from 'permission-utils'
+import { permitAdminArrivals } from 'permission-utils'
 import { DetailsArray } from './DetailsFellowship'
 
 const DetailsConstituency = () => {
@@ -59,7 +59,7 @@ const DetailsConstituency = () => {
         buttons={data?.constituencies[0]?.bacentas}
         buttonsSecondRow={data?.constituencies[0]?.sontas}
         editlink="/constituency/editconstituency"
-        editPermitted={permitAdmin('Council')}
+        editPermitted={permitAdminArrivals('Council')}
         history={
           data?.constituencies[0]?.history.length !== 0 &&
           data?.constituencies[0]?.history
