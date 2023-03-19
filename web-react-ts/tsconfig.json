@@ -20,5 +20,5 @@
     "strictNullChecks": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src", "generate-build-version.js", "src/global-types.ts"]
+  "include": ["src", "generate-build-version.cjs", "src/global-types.ts"]
 }
