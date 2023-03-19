@@ -57,25 +57,6 @@ export type PlaceType = {
   position: LatLngLiteral
 }
 
-const getTypename = (place: PlaceType) => {
-  switch (place.typename) {
-    case 'GooglePlace':
-      return 'Centre'
-    case 'Member':
-      return ''
-    case 'Fellowship':
-      return 'Fellowship'
-    case 'IndoorVenue':
-      return 'Indoor Venue'
-    case 'OutdoorVenue':
-      return 'Outdoor Venue'
-    case 'HighSchool':
-      return 'High School'
-    default:
-      return ''
-  }
-}
-
 const MapComponent = (props: MapComponentProps) => {
   const [libraries] = useState<LibrariesOptions>(['places'])
   const { isLoaded } = useLoadScript({
