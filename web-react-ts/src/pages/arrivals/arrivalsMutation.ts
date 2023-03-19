@@ -267,7 +267,8 @@ export const SEND_VEHICLE_SUPPORT = gql`
       id
       vehicleTopUp
       momoNumber
-      transactionId
+      paystackTransferCode
+      transactionStatus
     }
   }
 `

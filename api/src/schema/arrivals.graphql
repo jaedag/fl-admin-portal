@@ -995,7 +995,8 @@ type VehicleRecord {
   #Arrived
   comments: String
   arrivalTime: DateTime
-  transactionId: Int
+  paystackTransferCode: String
+  transactionStatus: String
   outbound: Boolean!
 
   bussingRecord: BussingRecord!
@@ -1151,6 +1152,7 @@ extend type Mutation {
         SET bacenta.mobileNetwork = $mobileNetwork,
         bacenta.momoName = $momoName,
         bacenta.momoNumber = $momoNumber
+      REMOVE bacenta.recipientCode
 
       WITH bacenta
       CREATE (log:HistoryLog {id:apoc.create.uuid()})
@@ -1158,40 +1160,13 @@ extend type Mutation {
         log.historyRecord = bacenta.name + ' Bus Payment Details were updated'
 
       WITH log,bacenta
-      MATCH (admin:Member {auth_id: $auth.jwt.sub})
+      MATCH (admin:Member {auth_id: $auth})
       MERGE (date:TimeGraph {date:date()})
       MERGE (log)-[:LOGGED_BY]->(admin)
       MERGE (log)-[:RECORDED_ON]->(date)
       MERGE (bacenta)-[:HAS_HISTORY]->(log)
 
       RETURN bacenta
-      """
-    )
-
-  UpdateConstituencyBussingCost(
-    constituencyId: ID!
-    sprinterCost: Float!
-    urvanCost: Float!
-  ): Constituency!
-    @auth(
-      rules: [
-        {
-          roles: [
-            "adminGatheringService"
-            "arrivalsAdminGatheringService"
-            "adminStream"
-            "arrivalsAdminStream"
-          ]
-        }
-      ]
-    )
-    @cypher(
-      statement: """
-      MATCH (constituency:Constituency {id: $constituencyId})
-      SET constituency.sprinterCost = $sprinterCost,
-      constituency.urvanCost = $urvanCost
-
-      RETURN constituency
       """
     )
 

@@ -26,12 +26,12 @@ RETURN council.name, COUNT(bacenta), leader.firstName + " " + leader.lastName;
 
 MATCH (bacenta:Bacenta)
 WHERE bacenta.urvanTopUp IS NULL    
-SET bacenta.urvanTopUp = 0
+SET bacenta.urvanTopUp = 1
 RETURN COUNT(bacenta);
 
 MATCH (bacenta:Bacenta)
 WHERE bacenta.sprinterTopUp IS NULL
-SET bacenta.sprinterTopUp = 0
+SET bacenta.sprinterTopUp = 1
 RETURN COUNT(bacenta);
 
 CREATE CONSTRAINT bacentaNeedsUrvanTopUp IF NOT EXISTS ON (b:Bacenta) ASSERT b.urvanTopUp IS NOT NULL;

@@ -42,29 +42,7 @@ const DetailsConstituency = () => {
       vacationCount: constituency?.vacationFellowshipCount,
       link: '#',
     },
-    {
-      title: 'Urvan Cost',
-      number: constituency?.urvanCost + ' GHS',
-      link: '#',
-    },
-    {
-      title: 'Sprinter Cost',
-      number: constituency?.sprinterCost + ' GHS',
-      link: '#',
-    },
   ]
-
-  if (!constituency?.urvanCost && !constituency?.sprinterCost) {
-    details.splice(5, 2)
-  }
-
-  if (!constituency?.sprinterCost && constituency?.urvanCost) {
-    details.splice(6, 1)
-  }
-
-  if (!constituency?.urvanCost && constituency?.sprinterCost) {
-    details.splice(5, 1)
-  }
 
   return (
     <ApolloWrapper loading={loading} error={error} data={data} placeholder>

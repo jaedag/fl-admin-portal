@@ -314,8 +314,6 @@ extend type Mutation {
        CREATE (constituency:Constituency {name:$name})
          	SET
       	constituency.id = apoc.create.uuid(),
-        constituency.sprinterCost = 0,
-        constituency.urvanCost = 0
       WITH constituency
       MATCH (leader:Active:Member {id: $leaderId})
       MATCH (currentUser:Active:Member {auth_id:$auth.jwt.sub})
@@ -790,7 +788,7 @@ extend type Mutation {
       CREATE (log:HistoryLog {id:apoc.create.uuid()})
         SET log.timeStamp = datetime(),
         log.historyRecord = stream.name + ' Stream was closed down under ' + gatheringService.name +' Gathering Service'
-      
+
       WITH stream, gatheringService, log
       MATCH (admin:Active:Member {auth_id: $auth.jwt.sub})
       OPTIONAL MATCH (stream)-[:HAS]->(council)-[:HAS]->(constituencies)-[:HAS]->(bacentas)-[:HAS]->(fellowships)

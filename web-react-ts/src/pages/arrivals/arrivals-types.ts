@@ -78,7 +78,8 @@ export type VehicleRecord = {
   outbound: boolean
   comments: string
   arrivalTime: string
-  transactionId: number
+  paystackTransferCode?: string
+  transactionStatus?: string
 }
 
 export interface StreamWithArrivals extends Stream, HigherChurchWithArrivals {

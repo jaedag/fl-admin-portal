@@ -449,6 +449,8 @@ export const DISPLAY_VEHICLE_RECORDS = gql`
       comments
       arrivalTime
       outbound
+      paystackTransferCode
+      transactionStatus
     }
     bacentas(where: { id: $bacentaId }) {
       id
