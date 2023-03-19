@@ -1,3 +1,36 @@
+#### 6.4.4 (2023-03-19)
+
+##### Chores
+
+*  merge branch 'arrivals-payment-new' into deploy ([a26a7ff8](https://github.com/firstlovecenter/fl-pastoral-care/commit/a26a7ff8b5d6e38a7c1aee581367e4cbf5f3b7f9))
+*  merge branch 'deploy' into arrivals-payment-new ([a8377a0d](https://github.com/firstlovecenter/fl-pastoral-care/commit/a8377a0df9d357c1d26fef8b462d7dc79e5188fc))
+
+##### New Features
+
+*  implement automated payment with paystack api ([c007a39b](https://github.com/firstlovecenter/fl-pastoral-care/commit/c007a39b9efaff68abc1c80bc53773b9e202f2ce))
+*  implement code to create recipient on paystack portal ([09300de8](https://github.com/firstlovecenter/fl-pastoral-care/commit/09300de8acf954d03b0fc04b28eaa1977325bf63))
+
+##### Bug Fixes
+
+*  fix bug preventing leaders from updating momo number ([58c29cea](https://github.com/firstlovecenter/fl-pastoral-care/commit/58c29cea0f5f8d542a8105850d423bb4648503b6))
+*  update metadata in paystack recipient creation ([77f7cf75](https://github.com/firstlovecenter/fl-pastoral-care/commit/77f7cf75b4f50500bea20b0368001e07c257415c))
+*  fix bug with automatic code of the day setter ([6cc7bb3e](https://github.com/firstlovecenter/fl-pastoral-care/commit/6cc7bb3eaa6d68dfab0bb97023f32b52239d83b1))
+*  throw errors from bacenta status utils to sentry ([32d8e4af](https://github.com/firstlovecenter/fl-pastoral-care/commit/32d8e4af7060fa23f9a1989459852f08e8b604c9))
+*  set more descriptive error logging ([17751c11](https://github.com/firstlovecenter/fl-pastoral-care/commit/17751c11ade4506a278f63260861c23e2a44fa82))
+*  send sms for bacenta status change ([52a9a255](https://github.com/firstlovecenter/fl-pastoral-care/commit/52a9a255d84d625d28375fa1e5b06897553836ea))
+*  send sms for bacenta status change ([088c64ec](https://github.com/firstlovecenter/fl-pastoral-care/commit/088c64ec179f9cd11c051cf33099fa187f3029fc))
+*  fix bug where top ups were not being properly calculated ([7908fa4e](https://github.com/firstlovecenter/fl-pastoral-care/commit/7908fa4edc790f2548822dc6591367f97070cea5))
+*  add permission for arrivals admin to close down bacenta ([646e0b11](https://github.com/firstlovecenter/fl-pastoral-care/commit/646e0b11d20e71a76a9dd2980224489e14edf4e5))
+*  add permission for bacenta leader to be made by arrivals admins ([15e1b558](https://github.com/firstlovecenter/fl-pastoral-care/commit/15e1b5589906b098030607c0677c9d4d13efb177))
+* **arrivals:**
+  *  implement only arrivals related church levels showing in arrivals menu ([3e8bbc97](https://github.com/firstlovecenter/fl-pastoral-care/commit/3e8bbc974dd9a3392ead14a4c4a4b1ca2c2797d7))
+  *  remove recipientCode on bacenta when momoNumber is updated ([a3116310](https://github.com/firstlovecenter/fl-pastoral-care/commit/a3116310e504b6bcbf215eaf0562b1712ddfc12a))
+
+##### Refactors
+
+*  remove redundant imports ([0d3da1f0](https://github.com/firstlovecenter/fl-pastoral-care/commit/0d3da1f0175a4343ed1f89b90037679b2b40cf5f))
+*  remove redundant imports ([6e4208e8](https://github.com/firstlovecenter/fl-pastoral-care/commit/6e4208e80c18b9f376161f7d037f7e882215fcb6))
+
 #### 6.4.3 (2023-03-17)
 
 ##### Bug Fixes
