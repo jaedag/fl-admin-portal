@@ -1160,7 +1160,7 @@ extend type Mutation {
         log.historyRecord = bacenta.name + ' Bus Payment Details were updated'
 
       WITH log,bacenta
-      MATCH (admin:Member {auth_id: $auth})
+      MATCH (admin:Member {auth_id: $auth.jwt.sub})
       MERGE (date:TimeGraph {date:date()})
       MERGE (log)-[:LOGGED_BY]->(admin)
       MERGE (log)-[:RECORDED_ON]->(date)

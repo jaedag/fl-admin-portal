@@ -34,3 +34,7 @@ RETURN r;
 
 MATCH (council:Council)-[:IS_ADMIN_FOR]-(member:Member)
 RETURN council.id, council.name, member.firstName, member.lastName
+
+MATCH (bacenta:Bacenta)
+   REMOVE bacenta.momoNumber, bacenta.momoName, bacenta.mobileNetwork, bacenta.recipientCode
+   RETURN bacenta
