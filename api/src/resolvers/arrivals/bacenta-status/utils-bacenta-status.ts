@@ -1,5 +1,5 @@
 import { Context } from '../../utils/neo4j-types'
-import { rearrangeCypherObject } from '../../utils/utils'
+import { rearrangeCypherObject, throwToSentry } from '../../utils/utils'
 import { joinMessageStrings, sendBulkSMS } from '../../utils/notify'
 
 import texts from '../../texts.json'
@@ -37,7 +37,7 @@ export const setBacentaICStatus = async (
           texts.arrivalsSMS.bacenta_demoted_to_ic_p2,
         ])
       ),
-    ])
+    ]).catch((err) => throwToSentry('Error setting Bacenta as IC', err))
   }
 }
 
@@ -61,7 +61,7 @@ export const setBacentaGraduatedStatus = async (
           texts.arrivalsSMS.bacenta_graduated_p2,
         ])
       ),
-    ])
+    ]).catch((err) => throwToSentry('Error setting bacenta as Graduated', err))
   }
 }
 
