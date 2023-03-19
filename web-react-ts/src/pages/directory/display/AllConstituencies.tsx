@@ -31,7 +31,7 @@ const DisplayAllConstituencies = () => {
                 clickCard(constituencies?.council)
               }}
             >
-              <h2 className="text-white">{`${council?.leader.fullName}'s Constituencies`}</h2>
+              <h2 className="text-white">{`${council?.name} Constituencies`}</h2>
             </Link>
             {council?.admin ? (
               <Link
