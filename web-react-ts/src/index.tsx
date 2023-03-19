@@ -22,6 +22,14 @@ import Login from 'components/Login'
 import Sabbath from 'auth/Sabbath'
 import ReactGA from 'react-ga4'
 import SplashSreen from 'pages/splash-screen/SplashSreen'
+import * as Sentry from '@sentry/react'
+import {
+  useLocation,
+  useNavigationType,
+  createRoutesFromChildren,
+  matchRoutes,
+} from 'react-router-dom'
+import { BrowserTracing } from '@sentry/tracing'
 
 const AppWithApollo = () => {
   const [accessToken, setAccessToken] = useState<string>('')
@@ -142,6 +150,41 @@ ReactGA.send('pageview')
 const container: HTMLElement =
   document.getElementById('root') || document.createElement('div')
 const root = createRoot(container)
+
+Sentry.init({
+  dsn: 'https://a6fccd390f7a4cdfa48da901b0e2e22f@o1423098.ingest.sentry.io/6770463',
+
+  // This sets the sample rate to be 10%. You may want this to be 100% while
+  // in development and sample at a lower rate in production
+  replaysSessionSampleRate: 0.1,
+  // If the entire session is not sampled, use the below sample rate to sample
+  // sessions when an error occurs.
+  replaysOnErrorSampleRate: 1.0,
+  integrations: [
+    new Sentry.Replay(),
+    new BrowserTracing({
+      routingInstrumentation: Sentry.reactRouterV6Instrumentation(
+        React.useEffect,
+        useLocation,
+        useNavigationType,
+        createRoutesFromChildren,
+        // @ts-ignore
+        matchRoutes
+      ),
+    }),
+  ],
+  beforeSend(event) {
+    if (event.exception) {
+      Sentry.showReportDialog({ eventId: event.event_id })
+    }
+    return event
+  },
+
+  // Set tracesSampleRate to 1.0 to capture 100%
+  // of transactions for performance monitoring.
+  // We recommend adjusting this value in production
+  tracesSampleRate: 1.0,
+})
 
 root.render(
   <React.StrictMode>
