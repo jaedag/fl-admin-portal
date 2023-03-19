@@ -49,12 +49,15 @@ const executeQuery = (neoDriver) => {
   return session
     .writeTransaction(async (tx) => {
       console.log('Setting code of the day')
+
+      const pad = (n) => (n < 10 ? `0${n}` : n)
+
       try {
         const today = new Date()
         const day = today.getDate()
         const month = today.getMonth() + 1
         const year = today.getFullYear()
-        const date = `${year}-${month}-${day}`
+        const date = `${year}-${pad(month)}-${pad(day)}`
         const code = codeOfTheDay.find((item) => item.date === date)
 
         console.log('code', code)
@@ -63,7 +66,7 @@ const executeQuery = (neoDriver) => {
           code: code.code,
         })
       } catch (error) {
-        console.log('Error setting code of the day', error)
+        console.error('Error setting code of the day', error)
       }
     })
     .then((response) => console.log(response))
