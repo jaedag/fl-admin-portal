@@ -45,12 +45,7 @@ const FellowshipReport = lazy(
 )
 const SontaReport = lazy(() => import('pages/services/graphs/SontaGraphs'))
 const BacentaJoint = lazy(() => import('pages/services/BacentaJoint'))
-const FellowshipBankingSlipSubmission = lazy(
-  () => import('pages/services/banking/banking-slip/FellowshipSubmission')
-)
-const FellowshipBankingSlipView = lazy(
-  () => import('pages/services/banking/banking-slip/FellowshipView')
-)
+
 const ConstituencyJoint = lazy(() => import('pages/services/ConstituencyJoint'))
 const Banked = lazy(() => import('pages/services/defaulters/Banked'))
 const BankingDefaulters = lazy(
@@ -195,13 +190,6 @@ export const services: LazyRouteTypes[] = [
   },
 
   {
-    path: '/services/fellowship/banking-slips',
-    element: FellowshipBankingSlipView,
-    roles: ['leaderFellowship'],
-    placeholder: true,
-  },
-
-  {
     path: '/services/constituency/banking-slips',
     element: ConstituencyBankingSlipView,
     roles: permitLeaderAdmin('Constituency'),
@@ -211,12 +199,6 @@ export const services: LazyRouteTypes[] = [
     path: '/services/council/banking-slips',
     element: CouncilBankingSlipView,
     roles: permitLeaderAdmin('Council'),
-    placeholder: true,
-  },
-  {
-    path: '/fellowship/banking-slip/submission',
-    element: FellowshipBankingSlipSubmission,
-    roles: ['leaderFellowship'],
     placeholder: true,
   },
   {

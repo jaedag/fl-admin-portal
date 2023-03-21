@@ -85,9 +85,9 @@ const Services = () => {
                   noCaption
                   onClick={() => {
                     clickCard(church)
-                    navigate(
-                      `/services/${churchType.toLowerCase()}/banking-slips`
-                    )
+                    // navigate(
+                    //   `/services/${churchType.toLowerCase()}/banking-slips`
+                    // )
                   }}
                 />
 
