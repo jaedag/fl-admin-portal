@@ -1,3 +1,35 @@
+### 6.5.0 (2023-03-21)
+
+##### New Features
+
+*  migrate from CRA to vite ([f29221f1](https://github.com/firstlovecenter/fl-pastoral-care/commit/f29221f1b234660ba6baf80d7e1747a939b04b92))
+
+##### Bug Fixes
+
+*  remove redundant code ([175c7356](https://github.com/firstlovecenter/fl-pastoral-care/commit/175c735616f7576b43dd2ee1b62c455630edb401))
+*  remove unused imports ([e6f0ad36](https://github.com/firstlovecenter/fl-pastoral-care/commit/e6f0ad361c5ba47c6e03c26c323e547aa125d8d9))
+*  write  recipientCode to db from paystack ([6bc6d4a0](https://github.com/firstlovecenter/fl-pastoral-care/commit/6bc6d4a0e9cd63aa16343fc0b0800728d2166d08))
+*  remove sonta church levels from service form filled already ([6bc20a5f](https://github.com/firstlovecenter/fl-pastoral-care/commit/6bc20a5f33ae2b0565645b120006108dfed6ea73))
+*  update allConstituencies page to show council name instead of council leader cons ([5edc9c5d](https://github.com/firstlovecenter/fl-pastoral-care/commit/5edc9c5df35fbd3bd275261523946a7f650b6a9c))
+*  update permissions for gs arrivalsAdmin to edit constituencies ([9e77dc0e](https://github.com/firstlovecenter/fl-pastoral-care/commit/9e77dc0e5c78a3f3b3097cfc5e5cf8c17b6e5c53))
+*  fix bug where params were expected from bacentas that should be sending money params ([46dc8932](https://github.com/firstlovecenter/fl-pastoral-care/commit/46dc8932d54ae5b31086d9f2a0bdf7ff23da702c))
+
+### 6.5.0 (2023-03-21)
+
+##### New Features
+
+*  migrate from CRA to vite ([f29221f1](https://github.com/firstlovecenter/fl-pastoral-care/commit/f29221f1b234660ba6baf80d7e1747a939b04b92))
+
+##### Bug Fixes
+
+*  remove redundant code ([175c7356](https://github.com/firstlovecenter/fl-pastoral-care/commit/175c735616f7576b43dd2ee1b62c455630edb401))
+*  remove unused imports ([e6f0ad36](https://github.com/firstlovecenter/fl-pastoral-care/commit/e6f0ad361c5ba47c6e03c26c323e547aa125d8d9))
+*  write  recipientCode to db from paystack ([6bc6d4a0](https://github.com/firstlovecenter/fl-pastoral-care/commit/6bc6d4a0e9cd63aa16343fc0b0800728d2166d08))
+*  remove sonta church levels from service form filled already ([6bc20a5f](https://github.com/firstlovecenter/fl-pastoral-care/commit/6bc20a5f33ae2b0565645b120006108dfed6ea73))
+*  update allConstituencies page to show council name instead of council leader cons ([5edc9c5d](https://github.com/firstlovecenter/fl-pastoral-care/commit/5edc9c5df35fbd3bd275261523946a7f650b6a9c))
+*  update permissions for gs arrivalsAdmin to edit constituencies ([9e77dc0e](https://github.com/firstlovecenter/fl-pastoral-care/commit/9e77dc0e5c78a3f3b3097cfc5e5cf8c17b6e5c53))
+*  fix bug where params were expected from bacentas that should be sending money params ([46dc8932](https://github.com/firstlovecenter/fl-pastoral-care/commit/46dc8932d54ae5b31086d9f2a0bdf7ff23da702c))
+
 #### 6.4.4 (2023-03-19)
 
 ##### Chores
