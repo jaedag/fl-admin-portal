@@ -1,3 +1,19 @@
+#### 6.5.2 (2023-03-21)
+
+##### Bug Fixes
+
+*  delete fellowship submission page ([c332fa43](https://github.com/firstlovecenter/fl-pastoral-care/commit/c332fa43bd92722ddd13e032bc731b0d0358d8a2))
+*  remove fellowship banking slip option ([4cbc9ee5](https://github.com/firstlovecenter/fl-pastoral-care/commit/4cbc9ee5e55ac04891768f4e9b20522b8e95d557))
+*  add memberId for member search ([0ff38d15](https://github.com/firstlovecenter/fl-pastoral-care/commit/0ff38d15ec92953921642eec54603194233b9d9e))
+*  fix bugs in parsing data for cache ([1c3ec05a](https://github.com/firstlovecenter/fl-pastoral-care/commit/1c3ec05a56809660471289c0a32aeffc3d686c39))
+*  fix bugs preventing the movement of members ([27d67731](https://github.com/firstlovecenter/fl-pastoral-care/commit/27d67731824d18f14599bc9c24b1405768ca533c))
+*  fix issue with update sonta mutation ([1c692d5a](https://github.com/firstlovecenter/fl-pastoral-care/commit/1c692d5a1b8ed3c41274212425c626794f53936e))
+*  placesSearchQueries should always return empty array ([17015b01](https://github.com/firstlovecenter/fl-pastoral-care/commit/17015b01847c6b7edbacc9567e71abfd5727ec84))
+
+##### Refactors
+
+*  move and rename cypher script files in api ([c8803991](https://github.com/firstlovecenter/fl-pastoral-care/commit/c8803991972b6446870b770cda9c6a6440689ccf))
+
 #### 6.5.1 (2023-03-21)
 
 ### 6.5.0 (2023-03-21)
