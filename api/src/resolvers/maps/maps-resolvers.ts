@@ -219,7 +219,7 @@ export const mapsResolvers = {
         await sessionThree.close()
         await sessionFour.close()
       }
-      return null
+      return []
     },
 
     placesSearchByLocation: async (
@@ -307,7 +307,7 @@ export const mapsResolvers = {
         await sessionThree.close()
         await sessionFour.close()
       }
-      return null
+      return []
     },
   },
 }

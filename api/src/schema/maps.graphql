@@ -18,6 +18,6 @@ extend type Member {
     latitude: Float!
     longitude: Float!
     limit: Int = 30
-  ): [Place]
-  placesSearchByName(key: String!, limit: Int = 30): [Place]
+  ): [Place!]!
+  placesSearchByName(key: String!, limit: Int = 30): [Place!]!
 }
