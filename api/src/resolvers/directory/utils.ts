@@ -17,6 +17,12 @@ import {
   matchMemberSheepSeekerQuery,
   matchMemberTellerQuery,
 } from '../cypher/resolver-cypher'
+import {
+  matchMemberFederalMinistryQuery,
+  matchMemberHubQuery,
+  matchMemberMinistryQuery,
+  matchMemberSontaQuery,
+} from '../cypher/ministry-directory-cypher'
 
 export const formatting = (
   churchType: ChurchLevel,
@@ -61,6 +67,19 @@ export const formatting = (
 
   if (churchType === 'Federalministry') {
     churchLower = 'federalMinistry'
+    memberQuery = matchMemberFederalMinistryQuery
+  }
+  if (churchType === 'Ministry') {
+    churchLower = 'ministry'
+    memberQuery = matchMemberMinistryQuery
+  }
+  if (churchType === 'Hub') {
+    churchLower = 'hub'
+    memberQuery = matchMemberHubQuery
+  }
+  if (churchType === 'Sonta') {
+    churchLower = 'sonta'
+    memberQuery = matchMemberSontaQuery
   }
 
   return {

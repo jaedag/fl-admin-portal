@@ -16,14 +16,6 @@ WITH apoc.cypher.runFirstColumn(
   RETURN stream", {this: member}, true) | member_stream { .id,.name }],
   leadsGatheringService: [ member_gatheringService IN apoc.cypher.runFirstColumn("MATCH (this)-[:LEADS]->(gatheringService:GatheringService)
   RETURN gatheringService", {this: member}, true) | member_gatheringService { .id,.name }],
-  leadsSonta: [ member_sontas IN apoc.cypher.runFirstColumn("MATCH (this)-[:LEADS]->(sonta:Sonta)
-  RETURN sonta", {this: member}, true) | member_sontas { .id,.name }],
-  leadsHub: [ member_hubs IN apoc.cypher.runFirstColumn("MATCH (this)-[:LEADS]->(hub:Hub)
-  RETURN hub", {this:member}, true) | member_hubs {.id, .name}],
-  leadsFederalministry: [member_federalMinistry IN apoc.cypher.runFirstColumn("MATCH (this)-[:LEADS]->(federalMinistry:Federalministry)
-  RETURN federalMinistry", {this:member}, true) | member_federalMinistry {.id, .name}], 
-  leadsFederalMinistry: [ member_ministry IN apoc.cypher.runFirstColumn("MATCH (this)-[:LEADS]->(ministry:Federalministry)
-  RETURN ministry", {this:member}, true) | member_ministry {.id, .name}],
   isAdminForGatheringService: [ member_adminGatheringServices IN apoc.cypher.runFirstColumn("MATCH (this)-[:IS_ADMIN_FOR]->(adminGatheringService:GatheringService)
   RETURN adminGatheringService", {this: member}, true) | member_adminGatheringServices { .id,.name }],
   isAdminForConstituency: [ member_adminConstituencies IN apoc.cypher.runFirstColumn("MATCH (this)-[:IS_ADMIN_FOR]->(adminConstituency:Constituency)

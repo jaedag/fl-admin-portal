@@ -88,7 +88,12 @@ type Member @auth(rules: [{ isAuthenticated: true }]) {
       RETURN COUNT(bacentas)
       """
     )
+
+  ### BASONTA WORK ###
+  leadsFederalMinistry: [Federalministry!]!
+    @relationship(type: "LEADS", direction: OUT)
   leadsMinistry: [Ministry!]! @relationship(type: "LEADS", direction: OUT)
+  leadsHub: [Hub!]! @relationship(type: "LEADS", direction: OUT)
   leadsSonta: [Sonta!]! @relationship(type: "LEADS", direction: OUT)
   leadsBasonta: [Basonta!]! @relationship(type: "LEADS", direction: OUT)
   leadsConstituency: [Constituency!]!
