@@ -10,13 +10,11 @@ import {
 import { isAuth, rearrangeCypherObject, throwToSentry } from '../utils/utils'
 
 import {
-  checkIfServicePending,
   checkTransactionReference,
   getLastServiceRecord,
   initiateServiceRecordTransaction,
   setTransactionStatusFailed,
   setTransactionStatusSuccess,
-  submitBankingSlip,
   setRecordTransactionReference,
   setRecordTransactionReferenceWithOTP,
 } from './banking-cypher'
@@ -401,48 +399,6 @@ const bankingMutation = {
         fullName: `${banker.firstName} ${banker.fullName}`,
       },
     }
-  },
-  SubmitBankingSlip: async (
-    object: any,
-    args: { serviceRecordId: string; bankingSlip: string },
-    context: Context
-  ) => {
-    isAuth(permitLeaderAdmin('Fellowship'), context.auth.roles)
-    const session = context.executionContext.session()
-
-    await checkIfLastServiceBanked(args.serviceRecordId, context).catch(
-      (error: any) => {
-        throwToSentry(
-          'There was an error checking if last service banked',
-          error
-        )
-      }
-    )
-
-    const checkIfAnyServicePending = rearrangeCypherObject(
-      await session.run(checkIfServicePending, args).catch((error: any) => {
-        throwToSentry(
-          'There was an error checking if any service pending',
-          error
-        )
-      })
-    )
-
-    if (checkIfAnyServicePending?.record?.properties?.transactionStatus) {
-      throw new Error(
-        'You will have to confirm your initial self banking before uploading your banking slip'
-      )
-    }
-
-    const submissionResponse = rearrangeCypherObject(
-      await session
-        .run(submitBankingSlip, { ...args, auth: context.auth })
-        .catch((error: any) =>
-          throwToSentry('There was an error submitting banking slip', error)
-        )
-    )
-
-    return submissionResponse.record.properties
   },
 }
 

@@ -16,7 +16,6 @@ extend type Mutation {
     stream_name: String!
     serviceRecordId: ID!
   ): ServiceRecord!
-  SubmitBankingSlip(serviceRecordId: ID!, bankingSlip: String!): ServiceRecord!
   ManuallyConfirmOfferingPayment(serviceRecordId: ID!): ServiceRecord!
     @auth(rules: [{ roles: ["adminGatheringService"] }])
     @cypher(
