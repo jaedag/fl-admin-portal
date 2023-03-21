@@ -150,7 +150,7 @@ const FormAddVehicleRecord = () => {
                 <ImageUpload
                   label="Upload A Bussing Picture"
                   name="picture"
-                  uploadPreset={process.env.REACT_APP_CLOUDINARY_BUSSING}
+                  uploadPreset={import.meta.env.VITE_CLOUDINARY_BUSSING}
                   placeholder="Choose"
                   setFieldValue={formik.setFieldValue}
                   aria-describedby="UploadBussingPicture"
