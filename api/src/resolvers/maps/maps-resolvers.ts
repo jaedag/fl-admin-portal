@@ -186,6 +186,7 @@ export const mapsResolvers = {
           res[0],
           true
         )
+
         const fellowshipsRes: FellowshipResultShape[] = rearrangeCypherObject(
           res[1],
           true
