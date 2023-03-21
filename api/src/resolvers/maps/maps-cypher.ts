@@ -5,7 +5,7 @@ RETURN DISTINCT fellowship LIMIT toInteger($limit)
 `
 
 export const memberMemberSearchByName = `
-MATCH (this)-[:LEADS|HAS|IS_ADMIN_FOR*1..7]->(:Fellowship)<-[:BELONGS_TO]-(member:Active:Member)
+MATCH (this:Member {id: $id})-[:LEADS|HAS|IS_ADMIN_FOR*1..7]->(:Fellowship)<-[:BELONGS_TO]-(member:Active:Member)
 WHERE toLower(member.firstName+ ' ' + member.lastName) CONTAINS toLower($key)
 WITH DISTINCT member
 MATCH (member)-[:BELONGS_TO]->(fellowship:Fellowship)<-[:HAS*3]-(council:Council)<-[:LEADS]-(pastor:Member)
