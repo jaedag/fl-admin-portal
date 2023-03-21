@@ -95,7 +95,7 @@ const FellowshipBankingSlipSubmission = () => {
                     <ImageUpload
                       label="Upload a Picture of Your Banking Slip"
                       name="bankingSlip"
-                      uploadPreset={process.env.REACT_APP_CLOUDINARY_BANKING}
+                      uploadPreset={import.meta.env.VITE_CLOUDINARY_BANKING}
                       placeholder="Choose"
                       setFieldValue={formik.setFieldValue}
                       aria-describedby="UploadBankingSlip"

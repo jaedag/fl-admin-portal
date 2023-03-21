@@ -243,7 +243,7 @@ const MultiplicationCampaignServiceForm = ({
                       <ImageUpload
                         name="treasurerSelfie"
                         uploadPreset={
-                          process.env.REACT_APP_CLOUDINARY_TREASURERS
+                          import.meta.env.VITE_CLOUDINARY_TREASURERS
                         }
                         tags="facial-recognition"
                         placeholder="Choose"

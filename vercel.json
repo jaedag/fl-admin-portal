@@ -3,9 +3,9 @@
   "builds": [
     { "src": "api/src/index.js", "use": "@vercel/node" },
     {
-      "src": "web-react/package.json",
+      "src": "web-react-ts/package.json",
       "use": "@vercel/static-build",
-      "config": { "distDir": "build" }
+      "config": { "distDir": "dist" }
     }
   ],
   "routes": [

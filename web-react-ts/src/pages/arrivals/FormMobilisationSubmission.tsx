@@ -117,7 +117,7 @@ const FormMobilisationSubmission = () => {
                   <ImageUpload
                     name="mobilisationPicture"
                     uploadPreset={
-                      process.env.REACT_APP_CLOUDINARY_BUS_MOBILISATION
+                      import.meta.env.VITE_CLOUDINARY_BUS_MOBILISATION
                     }
                     error={formik.errors.mobilisationPicture}
                     placeholder="Upload Mobilisation Picture"

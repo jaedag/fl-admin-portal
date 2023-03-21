@@ -55,7 +55,7 @@ const AppWithApollo = () => {
   }, [getAccessToken])
 
   const httpLink = createHttpLink({
-    uri: process.env.REACT_APP_GRAPHQL_URI || '/graphql',
+    uri: import.meta.env.VITE_GRAPHQL_URI || '/graphql',
   })
 
   const authLink = setContext((_, { headers }) => {
@@ -83,7 +83,7 @@ const AppWithApollo = () => {
   })
 
   const client = new ApolloClient({
-    uri: process.env.REACT_APP_GRAPHQL_URI || '/graphql',
+    uri: import.meta.env.VITE_GRAPHQL_URI || '/graphql',
     link: from([retryLink, authLink.concat(httpLink)]),
     cache: new InMemoryCache(),
   })
@@ -131,8 +131,8 @@ const AppWithAuth = () => (
 
       return (
         <Auth0Provider
-          domain={process.env.REACT_APP_AUTH0_DOMAIN || ''}
-          clientId={process.env.REACT_APP_AUTH0_CLIENT_ID || ''}
+          domain={import.meta.env.VITE_AUTH0_DOMAIN || ''}
+          clientId={import.meta.env.VITE_AUTH0_CLIENT_ID || ''}
           redirectUri={window.location.origin}
           audience="https://flcadmin.netlify.app/graphql"
           scope="true"
