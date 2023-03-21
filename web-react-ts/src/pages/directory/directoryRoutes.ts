@@ -2,7 +2,6 @@ import { LazyRouteTypes } from 'global-types'
 import {
   permitAdmin,
   permitAdminArrivals,
-  permitArrivals,
   permitLeaderAdmin,
   permitMe,
   permitSheepSeeker,
@@ -66,6 +65,25 @@ const DisplayAllConstituencies = lazy(
 )
 const DisplayAllFellowships = lazy(
   () => import('pages/directory/display/AllFellowships')
+)
+const DisplayAllHubs = lazy(() => import('pages/directory/display/AllHubs'))
+const DisplayAllStreamMinistries = lazy(
+  () => import('pages/directory/display/AllStreamMinistries')
+)
+const DisplayAllMinistries = lazy(
+  () => import('pages/directory/display/AllMinistries')
+)
+const DisplayAllStreamHubs = lazy(
+  () => import('pages/directory/display/AllStreamHubs')
+)
+const DisplayAllStreamSontas = lazy(
+  () => import('pages/directory/display/AllStreamSontas')
+)
+const DisplayAllMinistrySontas = lazy(
+  () => import('pages/directory/display/AllMinistrySontas')
+)
+const DisplayAllGatheringServiceFederalMinistries = lazy(
+  () => import('pages/directory/display/AllGatheringServiceFederalMinistries')
 )
 const CreateConstituency = lazy(
   () => import('pages/directory/create/CreateConstituency')
@@ -410,10 +428,51 @@ export const directory: LazyRouteTypes[] = [
   {
     path: '/sonta/displayall',
     element: DisplayAllSontas,
-    roles: permitLeaderAdmin('Constituency'),
+    roles: permitMe('Sonta'),
     placeholder: false,
   },
-
+  {
+    path: '/hub/displayall',
+    element: DisplayAllHubs,
+    roles: permitMe('Hub'),
+    placeholder: false,
+  },
+  {
+    path: '/stream/ministries',
+    element: DisplayAllStreamMinistries,
+    roles: permitMe('Ministry'),
+    placeholder: false,
+  },
+  {
+    path: '/ministry/displayall',
+    element: DisplayAllMinistries,
+    roles: permitMe('Ministry'),
+    placeholder: false,
+  },
+  {
+    path: '/stream/hubs',
+    element: DisplayAllStreamHubs,
+    roles: permitMe('Hub'),
+    placeholder: false,
+  },
+  {
+    path: '/stream/sontas',
+    element: DisplayAllStreamSontas,
+    roles: permitMe('Sonta'),
+    placeholder: false,
+  },
+  {
+    path: '/ministry/sontas',
+    element: DisplayAllMinistrySontas,
+    roles: permitMe('Sonta'),
+    placeholder: false,
+  },
+  {
+    path: '/gatheringservice/federalministries',
+    element: DisplayAllGatheringServiceFederalMinistries,
+    roles: permitMe('Federalministry'),
+    placeholder: false,
+  },
   {
     path: '/constituency/displayall',
     element: DisplayAllConstituencies,
@@ -455,7 +514,7 @@ export const directory: LazyRouteTypes[] = [
   {
     path: '/bacenta/addbacenta',
     element: CreateBacenta,
-    roles: permitArrivals('GatheringService'),
+    roles: permitAdmin('Constituency'),
     placeholder: false,
   },
   {

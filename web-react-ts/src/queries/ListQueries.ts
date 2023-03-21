@@ -494,3 +494,292 @@ export const GET_BACENTA_FELLOWSHIPS = gql`
     }
   }
 `
+
+export const GET_STREAM_MINISTRIES = gql`
+  query getStreamMinistries($id: ID!) {
+    streams(where: { id: $id }) {
+      id
+      name
+
+      leader {
+        id
+        firstName
+        lastName
+        fullName
+      }
+      memberCount
+      admin {
+        id
+        firstName
+        lastName
+        fullName
+        stream_name
+      }
+      ministries {
+        name
+        id
+        memberCount
+        hubCount
+        sontaCount
+        leader {
+          id
+          firstName
+          lastName
+          stream_name
+          pictureUrl
+        }
+      }
+    }
+  }
+`
+
+export const GET_STREAM_HUBS = gql`
+  query getStreamHubs($id: ID!) {
+    streams(where: { id: $id }) {
+      id
+      name
+
+      leader {
+        id
+        firstName
+        lastName
+        fullName
+      }
+      memberCount
+      admin {
+        id
+        firstName
+        lastName
+        fullName
+        stream_name
+      }
+      hubs {
+        name
+        id
+        memberCount
+        sontaCount
+        leader {
+          id
+          firstName
+          lastName
+          stream_name
+          pictureUrl
+        }
+      }
+    }
+  }
+`
+
+export const GET_STREAM_SONTAS = gql`
+  query getStreamSontas($id: ID!) {
+    streams(where: { id: $id }) {
+      id
+      name
+
+      leader {
+        id
+        firstName
+        lastName
+        fullName
+      }
+      sontaCount
+      memberCount
+      admin {
+        id
+        firstName
+        lastName
+        fullName
+        stream_name
+      }
+      sontas {
+        name
+        id
+        memberCount
+        leader {
+          id
+          firstName
+          lastName
+          stream_name
+          pictureUrl
+        }
+      }
+    }
+  }
+`
+
+export const GET_MINISTRY_HUBS = gql`
+  query getMinistryHubs($id: ID!) {
+    ministries(where: { id: $id }) {
+      id
+      name
+
+      leader {
+        id
+        firstName
+        lastName
+        fullName
+      }
+      memberCount
+
+      hubs {
+        name
+        id
+        memberCount
+        sontaCount
+        leader {
+          id
+          firstName
+          lastName
+          stream_name
+          pictureUrl
+        }
+      }
+    }
+  }
+`
+
+export const GET_MINISTRY_SONTAS = gql`
+  query getMinistrySontas($id: ID!) {
+    ministries(where: { id: $id }) {
+      id
+      name
+
+      leader {
+        id
+        firstName
+        lastName
+        fullName
+      }
+      memberCount
+
+      sontas {
+        name
+        id
+        memberCount
+
+        leader {
+          id
+          firstName
+          lastName
+          stream_name
+          pictureUrl
+        }
+      }
+    }
+  }
+`
+
+export const GET_HUB_SONTAS = gql`
+  query getHubSontas($id: ID!) {
+    hubs(where: { id: $id }) {
+      id
+      name
+
+      leader {
+        id
+        firstName
+        lastName
+        fullName
+      }
+      memberCount
+
+      sontas {
+        name
+        id
+        memberCount
+        leader {
+          id
+          firstName
+          lastName
+          stream_name
+          pictureUrl
+        }
+      }
+    }
+  }
+`
+
+export const GET_FEDERALMINISTRY_MINISTRIES = gql`
+  query getFederalministryMinistries($id: ID!) {
+    federalministries(where: { id: $id }) {
+      id
+      name
+
+      leader {
+        id
+        firstName
+        lastName
+        fullName
+      }
+      memberCount
+      # admin {
+      #   id
+      #   firstName
+      #   lastName
+      #   fullName
+      #   stream_name
+      # }
+      ministries {
+        name
+        id
+        memberCount
+        hubCount
+        sontaCount
+        leader {
+          id
+          firstName
+          lastName
+          stream_name
+          pictureUrl
+        }
+        # admin {
+        #   id
+        #   firstName
+        #   lastName
+        #   stream_name
+        #   fullName
+        # }
+      }
+    }
+  }
+`
+
+export const GET_GATHERINGSERVICE_FEDERALMINISTRIES = gql`
+  query getGatheringServiceFederalMinistries($id: ID!) {
+    gatheringServices(where: { id: $id }) {
+      id
+      name
+
+      leader {
+        id
+        firstName
+        lastName
+        fullName
+      }
+      memberCount
+      admin {
+        id
+        firstName
+        lastName
+        fullName
+        stream_name
+      }
+      federalMinistryCount
+      federalMinistries {
+        name
+        id
+        memberCount
+        hubCount
+        sontaCount
+        ministryCount
+        leader {
+          id
+          firstName
+          lastName
+          stream_name
+          pictureUrl
+        }
+      }
+    }
+  }
+`

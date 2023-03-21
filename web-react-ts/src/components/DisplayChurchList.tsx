@@ -69,6 +69,15 @@ const DisplayChurchList = (props: {
                             {church.streamCount
                               ? `${church?.streamCount} Streams`
                               : null}{' '}
+                            {church.sontaCount
+                              ? `| ${church?.sontaCount} Sontas`
+                              : null}{' '}
+                            {church.hubCount
+                              ? `| ${church?.hubCount} Hubs`
+                              : null}{' '}
+                            {church.ministryCount
+                              ? `| ${church?.ministryCount} Ministries`
+                              : null}{' '}
                             {church.memberCount
                               ? `| ${church?.memberCount} Members`
                               : null}{' '}

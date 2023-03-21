@@ -33,7 +33,7 @@ const DetailsFederalMinistry = () => {
     {
       title: 'Ministries',
       number: federalMinistry?.ministryCount,
-      link: '#',
+      link: '/ministry/displayall',
     },
     {
       title: 'Hubs',
