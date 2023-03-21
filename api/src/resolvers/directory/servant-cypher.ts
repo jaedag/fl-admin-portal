@@ -1,8 +1,8 @@
 const servantCypher = {
   disconnectChurchLeader: `
    MATCH (church {id: $churchId}) 
-   WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:GatheringService OR church:Sonta OR church:Ministry
-   OR church:ClosedFellowship OR church:ClosedBacenta OR church:Federalministry OR church:Hub
+   WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:GatheringService 
+   OR church:Federalministry OR church:Ministry OR church:Hub OR church:Sonta
    MATCH (church)<-[oldLeads:LEADS]-(leader:Member)
    DELETE oldLeads
    
@@ -21,8 +21,8 @@ const servantCypher = {
 
   disconnectChurchAdmin: `
    MATCH (church {id: $churchId}) 
-   WHERE church:Constituency OR church:Council OR church:Stream OR church:GatheringService OR church:Sonta OR church:Ministry
-   OR church:ClosedFellowship OR church:ClosedBacenta
+   WHERE church:Constituency OR church:Council OR church:Stream OR church:GatheringService 
+   OR church:Federalministry OR church:Ministry
    MATCH (church)<-[oldAdmin:IS_ADMIN_FOR]-(admin:Member)
    DELETE oldAdmin
    
@@ -31,8 +31,8 @@ const servantCypher = {
    `,
   disconnectChurchArrivalsAdmin: `
    MATCH (church {id: $churchId}) 
-   WHERE church:Constituency OR church:Council OR church:Stream OR church:GatheringService OR church:Sonta OR church:Ministry
-   OR church:ClosedFellowship OR church:ClosedBacenta
+   WHERE church:Constituency OR church:Council OR church:Stream OR church:GatheringService OR church:Sonta OR church:Federalministry
+   OR church:Federalministry OR church:Ministry
    MATCH (church)<-[oldAdmin:DOES_ARRIVALS_FOR]-(admin:Member)
    DELETE oldAdmin
    
@@ -43,7 +43,7 @@ const servantCypher = {
 
   disconnectChurchArrivalsCounter: `
    MATCH (church {id: $churchId}) 
-   WHERE church:Stream OR church:GatheringService
+   WHERE church:Stream
    MATCH (church)<-[oldAdmin:COUNTS_ARRIVALS_FOR]-(admin:Member {id: $arrivalsCounterId})
    DELETE oldAdmin
    
@@ -54,7 +54,7 @@ const servantCypher = {
 
   disconnectChurchArrivalsConfirmer: `
    MATCH (church {id: $churchId}) 
-   WHERE church:Stream OR church:GatheringService
+   WHERE church:Stream
    MATCH (church)<-[oldAdmin:CONFIRMS_ARRIVALS_FOR]-(admin:Member {id: $arrivalsConfirmerId})
    DELETE oldAdmin
    
@@ -66,7 +66,7 @@ const servantCypher = {
 
   disconnectChurchTeller: `
    MATCH (church {id: $churchId})
-   WHERE church:Stream OR church:GatheringService
+   WHERE church:Stream
    MATCH (church)<-[oldTeller:IS_TELLER_FOR]-(admin:Member {id: $tellerId})
    DELETE oldTeller 
    
@@ -76,7 +76,7 @@ const servantCypher = {
 
   disconnectChurchSheepSeeker: `
    MATCH (church {id: $churchId})
-   WHERE church:Stream OR church:GatheringService
+   WHERE church:Stream
    MATCH (church)<-[oldSeeker:IS_SHEEP_SEEKER_FOR]-(admin:Member {id: $sheepseekerId})
    DELETE oldSeeker 
    
@@ -87,8 +87,8 @@ const servantCypher = {
   // Create Church Leader Connection
   connectChurchLeader: `
    MATCH (church {id: $churchId})<-[:HAS]-(higherChurch)
-   WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:GatheringService OR church:Sonta OR church:Ministry
-   OR church:ClosedFellowship OR church:ClosedBacenta OR church:Federalministry or church:Hub
+   WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:GatheringService 
+   OR church:Federalministry OR church:Ministry OR church:Hub OR church:Sonta
    MATCH (leader:Member {id:$leaderId})
       SET leader.auth_id =  $auth_id
    MERGE (leader)-[:LEADS]->(church)
@@ -97,7 +97,8 @@ const servantCypher = {
    `,
   connectChurchAdmin: `
    MATCH (church {id:$churchId})<-[:HAS]-(higherChurch)
-   WHERE church:Constituency OR church:Council OR church:Stream OR church:GatheringService OR church:Sonta OR church:Ministry
+   WHERE church:Constituency OR church:Council OR church:Stream OR church:GatheringService
+   OR church:Federalministry OR church:Ministry
    MATCH (admin:Member {id:$adminId})
       SET admin.auth_id =  $auth_id
    MERGE (admin)-[:IS_ADMIN_FOR]->(church)
@@ -107,7 +108,7 @@ const servantCypher = {
 
   connectChurchArrivalsAdmin: `
    MATCH (church {id:$churchId})<-[:HAS]-(higherChurch)
-   WHERE church:Constituency OR church:Council OR church:Stream OR church:GatheringService OR church:Sonta OR church:Ministry
+   WHERE church:Constituency OR church:Council OR church:Stream OR church:GatheringService
    MATCH (admin:Member {id: $arrivalsAdminId})
       SET admin.auth_id =  $auth_id
    MERGE (admin)-[:DOES_ARRIVALS_FOR]->(church)
@@ -117,7 +118,7 @@ const servantCypher = {
 
   connectChurchArrivalsCounter: `
    MATCH (church {id:$churchId})<-[:HAS]-(higherChurch)
-   WHERE church:Stream OR church:GatheringService
+   WHERE church:Stream
    MATCH (admin:Member {id: $arrivalsCounterId})
       SET admin.auth_id =  $auth_id
    MERGE (admin)-[:COUNTS_ARRIVALS_FOR]->(church)
@@ -127,7 +128,7 @@ const servantCypher = {
 
   connectChurchArrivalsConfirmer: `
    MATCH (church {id:$churchId})<-[:HAS]-(higherChurch)
-   WHERE church:Stream OR church:GatheringService
+   WHERE church:Stream
    MATCH (admin:Member {id: $arrivalsConfirmerId})
       SET admin.auth_id =  $auth_id
    MERGE (admin)-[:CONFIRMS_ARRIVALS_FOR]->(church)
@@ -137,7 +138,7 @@ const servantCypher = {
 
   connectChurchTeller: `
    MATCH (church {id:$churchId})<-[:HAS]-(higherChurch)
-   WHERE church:Stream OR church:GatheringService 
+   WHERE church:Stream
    MATCH (admin:Member {id: $tellerId})
       SET admin.auth_id =  $auth_id
    MERGE (admin)-[:IS_TELLER_FOR]->(church)
@@ -147,7 +148,7 @@ const servantCypher = {
 
   connectChurchSheepSeeker: `
    MATCH (church {id:$churchId})<-[:HAS]-(higherChurch)
-   WHERE church:Stream OR church:GatheringService 
+   WHERE church:Stream 
    MATCH (seeker:Member {id: $sheepseekerId})
       SET seeker.auth_id =  $auth_id
    MERGE (seeker)-[:IS_SHEEP_SEEKER_FOR]->(church)
@@ -182,11 +183,8 @@ const servantCypher = {
   // Connect log to leader, new church, and old leader
   connectServiceLog: `
    MATCH (church {id: $churchId}) 
-   WHERE church:Fellowship OR church:Bacenta 
-   OR church:Constituency OR church:Council 
-   OR church:Stream OR church:GatheringService 
-   OR church:Sonta OR church:Ministry
-   OR church:ClosedFellowship OR church:ClosedBacenta
+   WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:GatheringService 
+   OR church:Federalministry OR church:Ministry OR church:Hub OR church:Sonta
    
    MATCH (leader:Member {id: $servantId})
    MATCH (currentUser:Member {auth_id: $auth.jwt.sub}) 
@@ -221,11 +219,8 @@ const servantCypher = {
   // First Connection
   connectHistoryLog: `
    MATCH (church {id:$churchId}) 
-   WHERE church:Fellowship OR church:Bacenta 
-   OR church:Constituency OR church:Council 
-   OR church:Stream OR church:GatheringService 
-   OR church:Sonta OR church:Ministry OR church:Member 
-   OR church:ClosedFellowship OR church:ClosedBacenta
+   WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:GatheringService 
+   OR church:Federalministry OR church:Ministry OR church:Hub OR church:Sonta
    
    MATCH (leader:Member {id: $servantId})
    MATCH (currentUser:Member {auth_id: $auth.jwt.sub}) 

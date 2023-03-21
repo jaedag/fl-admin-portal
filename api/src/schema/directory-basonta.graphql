@@ -35,19 +35,20 @@ extend type Mutation {
         SET	ministry.id = apoc.create.uuid()
 
       WITH ministry
-      MATCH (leader:Active:Member {id:$leaderId})
-      MATCH (stream:Stream {id:$streamId})
-      MATCH (federalMinistry:Federalministry {id:$federalMinistryId})
-      MATCH (currentUser:Active:Member {auth_id:$auth.jwt.sub})
-      SET ministry.name = stream.name + ' ' +  federalMinistry.name 
+      MATCH (leader:Active:Member {id: $leaderId})
+      MATCH (stream:Stream {id: $streamId})
+      MATCH (federalMinistry:Federalministry {id: $federalMinistryId})
+      MATCH (currentUser:Active:Member {auth_id: $auth.jwt.sub})
+        SET ministry.name = stream.name + ' ' +  federalMinistry.name 
 
+      WITH ministry, stream, leader, federalMinistry, currentUser
       CREATE (log:HistoryLog:ServiceLog)
         SET log.id = apoc.create.uuid(),
           log.timeStamp = datetime(),
           log.historyRecord = ministry.name +' Ministry History Begins'
 
-
-      MERGE (stream)-[:HAS]->(ministry)
+      WITH ministry, stream, leader, federalMinistry, currentUser, log
+      MERGE (stream)-[:HAS_MINISTRY]->(ministry)
       MERGE (leader)-[:LEADS]->(ministry)
       MERGE (federalMinistry)-[:HAS]->(ministry)
 
@@ -67,15 +68,17 @@ extend type Mutation {
         SET hub.id = apoc.create.uuid()
 
       WITH hub
-      MATCH (leader:Active:Member {id:$leaderId})
-      MATCH (ministry:Ministry {id:$ministryId})
-      MATCH (currentUser:Active:Member {auth_id:$auth.jwt.sub})
+      MATCH (leader:Active:Member {id: $leaderId})
+      MATCH (ministry:Ministry {id: $ministryId})
+      MATCH (currentUser:Active:Member {auth_id: $auth.jwt.sub})
 
+      WITH hub, leader, ministry, currentUser
       CREATE (log:HistoryLog:ServiceLog)
         SET log.id = apoc.create.uuid(),
           log.timeStamp = datetime(),
           log.historyRecord = hub.name +' hub history Begins'
 
+      WITH hub, leader, ministry, currentUser, log
       MERGE (ministry)-[:HAS]->(hub)
       MERGE (leader)-[:LEADS]->(hub)
 
@@ -95,15 +98,16 @@ extend type Mutation {
          	SET sonta.id = apoc.create.uuid()
 
       WITH sonta
-       MATCH (ministry:Ministry {id:$ministryId})
+       MATCH (ministry:Ministry {id: $ministryId})
        MATCH (leader:Active:Member {id: $leaderId})
-       MATCH (hub:Hub {id:$hubId})
+       MATCH (hub:Hub {id: $hubId})
 
        MATCH (currentUser:Active:Member {auth_id:$auth.jwt.sub})
        UNWIND LABELS(hub) as stream
 
        SET sonta.name = leader.firstName + ' ' + leader.lastName
 
+      WITH sonta, ministry, leader, hub, currentUser, stream
        CREATE (log:HistoryLog:ServiceLog)
         SET log.id = apoc.create.uuid(),
          log.timeStamp = datetime(),

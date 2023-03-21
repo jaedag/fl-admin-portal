@@ -141,7 +141,9 @@ const MemberForm = ({
     return <LoadingScreen />
   } else if (ministriesData) {
     const ministryArray =
-      makeSelectOptions(ministriesData.gatheringServices[0]?.ministries) || []
+      makeSelectOptions(
+        ministriesData.gatheringServices[0]?.federalMinistries
+      ) || []
     const ministryOptions = [{ key: 'None', value: 'None' }, ...ministryArray]
 
     return (

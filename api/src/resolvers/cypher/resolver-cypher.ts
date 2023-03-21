@@ -22,7 +22,7 @@ WITH apoc.cypher.runFirstColumn(
   RETURN hub", {this:member}, true) | member_hubs {.id, .name}],
   leadsFederalministry: [member_federalMinistry IN apoc.cypher.runFirstColumn("MATCH (this)-[:LEADS]->(federalMinistry:Federalministry)
   RETURN federalMinistry", {this:member}, true) | member_federalMinistry {.id, .name}], 
-  leadsMinistry: [ member_ministry IN apoc.cypher.runFirstColumn("MATCH (this)-[:LEADS]->(ministry:Ministry)
+  leadsFederalMinistry: [ member_ministry IN apoc.cypher.runFirstColumn("MATCH (this)-[:LEADS]->(ministry:Federalministry)
   RETURN ministry", {this:member}, true) | member_ministry {.id, .name}],
   isAdminForGatheringService: [ member_adminGatheringServices IN apoc.cypher.runFirstColumn("MATCH (this)-[:IS_ADMIN_FOR]->(adminGatheringService:GatheringService)
   RETURN adminGatheringService", {this: member}, true) | member_adminGatheringServices { .id,.name }],
@@ -199,7 +199,7 @@ CREATE (member:Active:Member:IDL {whatsappNumber:$whatsappNumber})
       CALL {
          	WITH member
          	WITH member  WHERE $ministry IS NOT NULL
-         	MATCH (ministry:Ministry {id:$ministry})
+         	MATCH (ministry:Federalministry {id:$ministry})
       	MERGE (member)-[:BELONGS_TO]-> (ministry)
          	RETURN count(member) AS member_ministry
          	}
@@ -268,7 +268,7 @@ WITH member, fellowship
       CALL {
           WITH member
           WITH member  WHERE $ministry IS NOT NULL
-          MATCH (ministry:Ministry {id:$ministry})
+          MATCH (ministry:Federalministry {id:$ministry})
         MERGE (member)-[:BELONGS_TO]-> (ministry)
           RETURN count(member) AS member_ministry
           }

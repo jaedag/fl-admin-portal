@@ -453,7 +453,7 @@ export const GET_GATHERINGSERVICE_MINISTRIES = gql`
     gatheringServices(where: { id: $id }) {
       id
       name
-      ministries {
+      federalMinistries {
         id
         name
       }
