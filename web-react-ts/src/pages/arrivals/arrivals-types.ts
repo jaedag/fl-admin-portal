@@ -109,7 +109,7 @@ export interface HigherChurchWithArrivals extends Church {
   stream_name: StreamOptions
   stream: Stream
   arrivalsAdmin: Member
-  activeBacentaCount: number
+  activeBacentaICCount: number
   bacentasNoActivity: BacentaWithArrivals[]
   bacentasMobilising: BacentaWithArrivals[]
   bacentasOnTheWay: BacentaWithArrivals[]

@@ -16,7 +16,7 @@ export const COUNCIL_BY_CONSTITUENCY_ARRIVALS = gql`
           currentTitle
           nameWithTitle
         }
-        activeBacentaCount
+        activeBacentaICCount
         bacentasNoActivityCount
         bacentasMobilisingCount
         bacentasOnTheWayCount
@@ -47,7 +47,7 @@ export const STREAM_BY_COUNCIL_ARRIVALS = gql`
           currentTitle
           nameWithTitle
         }
-        activeBacentaCount
+        activeBacentaICCount
         bacentasNoActivityCount
         bacentasMobilisingCount
         bacentasOnTheWayCount
@@ -79,7 +79,7 @@ export const GATHERINGSERVICE_BY_STREAM_ARRIVALS = gql`
           nameWithTitle
         }
 
-        activeBacentaCount
+        activeBacentaICCount
         bacentasNoActivityCount
         bacentasMobilisingCount
         bacentasOnTheWayCount
