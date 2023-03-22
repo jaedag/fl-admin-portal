@@ -54,7 +54,7 @@ const Services = () => {
               noCaption
             />
           )}
-          {['Constituency', 'Council'].includes(churchType) && (
+          {['Stream', 'Constituency', 'Council'].includes(churchType) && (
             <MenuButton
               iconComponent={Book}
               title={`${churchType} Joint Service`}
