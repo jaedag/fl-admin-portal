@@ -14,6 +14,7 @@ import { throwToSentry } from 'global-utils'
 import './SwollenSunday.css'
 import { useNavigate } from 'react-router'
 import * as Yup from 'yup'
+import fileIcon from '../../../assets/excel.png'
 
 type FormOptions = {
   swellDate: string
@@ -22,7 +23,6 @@ type FormOptions = {
 
 const SwollenSundayUploadTargets = () => {
   const { currentUser } = useContext(MemberContext)
-  const fileIcon = require('../../../assets/excel.png')
 
   const [data, setData] = useState('')
   const [fileName, setFileName] = useState(false)
@@ -75,11 +75,12 @@ const SwollenSundayUploadTargets = () => {
         complete: (results: any) => {
           const jsonData = results?.data?.map((column: any) => {
             return {
-              constituency: column[0],
-              bacenta: column[1],
-              code: column[2],
-              leader: column[3],
-              target: parseInt(column[4]),
+              council: column[0],
+              constituency: column[1],
+              bacenta: column[2],
+              code: column[3],
+              leader: column[4],
+              target: parseInt(column[5]),
             }
           })
           jsonData.shift()
