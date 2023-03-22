@@ -90,7 +90,7 @@ const CouncilByConstituency = () => {
                           className={
                             constituency.cancelledServicesThisWeekCount
                               ? 'bad'
-                              : ''
+                              : 'good'
                           }
                         >
                           Cancelled Services This Week{' '}

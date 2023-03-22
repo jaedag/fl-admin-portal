@@ -66,7 +66,7 @@ const ChurchBySubChurch = () => {
                   const array = [
                     {
                       title: 'Active Bacentas',
-                      number: subChurch.activeBacentaCount,
+                      number: subChurch.activeBacentaICCount,
                       color: 'white',
                     },
                     {

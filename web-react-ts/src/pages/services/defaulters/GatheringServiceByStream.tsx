@@ -84,7 +84,9 @@ const GatheringServiceByStream = () => {
                         </div>
                         <div
                           className={
-                            stream.cancelledServicesThisWeekCount ? 'bad' : ''
+                            stream.cancelledServicesThisWeekCount
+                              ? 'bad'
+                              : 'good'
                           }
                         >
                           Cancelled Services This Week{' '}

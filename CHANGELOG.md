@@ -1,3 +1,11 @@
+#### 6.5.3 (2023-03-22)
+
+##### Bug Fixes
+
+*  update the bacenta figure and the IC figure on church level details ([37a1c911](https://github.com/firstlovecenter/fl-pastoral-care/commit/37a1c9110b2219f5fb78e3f97fd85044553dff7c))
+*  fix bug where maps searches were returning members without location data ([297c4f76](https://github.com/firstlovecenter/fl-pastoral-care/commit/297c4f76c44ffca2896767a6cd4d15ac4ce2c811))
+*  remove option for uploading banking slip from api ([4b6fe74f](https://github.com/firstlovecenter/fl-pastoral-care/commit/4b6fe74fdeb0e15b65c6478e308b72c4b7f6a367))
+
 #### 6.5.2 (2023-03-21)
 
 ##### Bug Fixes
