@@ -81,8 +81,9 @@ const StreamByCouncil = () => {
                         </div>
                         <div
                           className={
-                            council.cancelledServicesThisWeekCount.toString() &&
-                            'bad'
+                            council.cancelledServicesThisWeekCount
+                              ? 'bad'
+                              : 'good'
                           }
                         >
                           Cancelled Services This Week{' '}
