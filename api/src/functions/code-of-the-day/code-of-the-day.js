@@ -19,7 +19,6 @@ const executeQuery = (neoDriver) => {
       date: '2023-03-18',
       code: 'Glory',
     },
-
     {
       date: '2023-03-25',
       code: 'Power',
@@ -58,7 +57,8 @@ const executeQuery = (neoDriver) => {
         const month = today.getMonth() + 1
         const year = today.getFullYear()
         const date = `${year}-${pad(month)}-${pad(day)}`
-        const code = codeOfTheDay.find((item) => item.date === date)
+
+        const code = codeOfTheDay.filter((item) => item.date <= date).pop()
 
         console.log('code', code)
 
