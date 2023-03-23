@@ -305,46 +305,46 @@ const directoryMutation = {
     const session = context.executionContext.session()
     const sessionTwo = context.executionContext.session()
 
+    const res: any = await Promise.all([
+      session.run(closeChurchCypher.checkConstituencyHasNoMembers, args),
+      sessionTwo.run(closeChurchCypher.getLastServiceRecord, {
+        churchId: args.constituencyId,
+      }),
+    ]).catch((error: any) => {
+      throwToSentry(
+        'There was an error running checkConstituencyHasNoMembers',
+        error
+      )
+    })
+
+    const constituencyCheck = rearrangeCypherObject(res[0])
+    const lastServiceRecord = rearrangeCypherObject(res[1])
+
+    if (constituencyCheck.memberCount) {
+      throw new Error(
+        `${constituencyCheck?.name} Constituency has ${constituencyCheck?.bacentaCount} active bacentas. Please close down all bacentas and try again.`
+      )
+    }
+
+    const record = lastServiceRecord.lastService?.properties ?? {
+      bankingSlip: null,
+    }
+
+    if (
+      !(
+        'bankingSlip' in record ||
+        record.transactionStatus === 'success' ||
+        'tellerConfirmationTime' in record
+      )
+    ) {
+      throw new Error(
+        `Please bank outstanding offering for your service filled on ${getHumanReadableDate(
+          record.createdAt
+        )} before attempting to close down this constituency`
+      )
+    }
+
     try {
-      const res: any = await Promise.all([
-        session.run(closeChurchCypher.checkConstituencyHasNoMembers, args),
-        sessionTwo.run(closeChurchCypher.getLastServiceRecord, {
-          churchId: args.constituencyId,
-        }),
-      ]).catch((error: any) => {
-        throwToSentry(
-          'There was an error running checkConstituencyHasNoMembers',
-          error
-        )
-      })
-
-      const constituencyCheck = rearrangeCypherObject(res[0])
-      const lastServiceRecord = rearrangeCypherObject(res[1])
-
-      if (constituencyCheck.memberCount) {
-        throw new Error(
-          `${constituencyCheck?.name} Constituency has ${constituencyCheck?.bacentaCount} active bacentas. Please close down all bacentas and try again.`
-        )
-      }
-
-      const record = lastServiceRecord.lastService?.properties ?? {
-        bankingSlip: null,
-      }
-
-      if (
-        !(
-          'bankingSlip' in record ||
-          record.transactionStatus === 'success' ||
-          'tellerConfirmationTime' in record
-        )
-      ) {
-        throw new Error(
-          `Please bank outstanding offering for your service filled on ${getHumanReadableDate(
-            record.createdAt
-          )} before attempting to bank this week's offering`
-        )
-      }
-
       // Bacenta Leader must be removed since the Bacenta is being closed down
       await RemoveServant(
         context,

@@ -75,16 +75,6 @@ const MakeServantResolvers = {
       'Fellowship',
       'Leader'
     ),
-  MakeSontaLeader: async (object: any, args: Member, context: Context) =>
-    MakeServant(context, args, permitAdmin('Constituency'), 'Sonta', 'Leader'),
-  RemoveSontaLeader: (object: any, args: Member, context: Context) =>
-    RemoveServant(
-      context,
-      args,
-      permitAdmin('Constituency'),
-      'Sonta',
-      'Leader'
-    ),
   MakeBacentaLeader: async (object: any, args: Member, context: Context) =>
     MakeServant(
       context,
@@ -209,6 +199,16 @@ const MakeServantResolvers = {
     MakeServant(context, args, permitAdmin('Ministry'), 'Hub', 'Leader'),
   RemoveHubLeader: async (object: any, args: Member, context: Context) =>
     RemoveServant(context, args, permitAdmin('Ministry'), 'Hub', 'Leader'),
+  MakeSontaLeader: async (object: any, args: Member, context: Context) =>
+    MakeServant(context, args, permitAdmin('Ministry'), 'Sonta', 'Leader'),
+  RemoveSontaLeader: (object: any, args: Member, context: Context) =>
+    RemoveServant(
+      context,
+      args,
+      permitAdmin('Constituency'),
+      'Sonta',
+      'Leader'
+    ),
 }
 
 export default MakeServantResolvers
