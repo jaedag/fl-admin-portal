@@ -7,7 +7,7 @@ const setCodeOfTheDay = `
  RETURN arr.code
 `
 
-const executeQuery = (neoDriver) => {
+const executeQuery = async (neoDriver) => {
   const session = neoDriver.session()
 
   const codeOfTheDay = [
@@ -45,32 +45,33 @@ const executeQuery = (neoDriver) => {
     },
   ]
 
-  return session
-    .writeTransaction(async (tx) => {
+  try {
+    const response = await session.writeTransaction(async (tx) => {
       console.log('Setting code of the day')
 
       const pad = (n) => (n < 10 ? `0${n}` : n)
 
-      try {
-        const today = new Date()
-        const day = today.getDate()
-        const month = today.getMonth() + 1
-        const year = today.getFullYear()
-        const date = `${year}-${pad(month)}-${pad(day)}`
+      const today = new Date()
+      const day = today.getDate()
+      const month = today.getMonth() + 1
+      const year = today.getFullYear()
+      const date = `${year}-${pad(month)}-${pad(day)}`
 
-        const code = codeOfTheDay.filter((item) => item.date <= date).pop()
+      const code = codeOfTheDay.filter((item) => item.date <= date).pop()
 
-        console.log('code', code)
+      console.log('code', code)
 
-        await tx.run(setCodeOfTheDay, {
-          code: code.code,
-        })
-      } catch (error) {
-        console.error('Error setting code of the day', error)
-      }
+      return tx.run(setCodeOfTheDay, {
+        code: code.code,
+      })
     })
-    .then((response) => console.log(response))
-    .finally(() => session.close())
+
+    console.log(response)
+  } catch (error) {
+    console.error('Error setting code of the day', error)
+  } finally {
+    session.close()
+  }
 }
 
 const initializeDatabase = (driver) => {
