@@ -19,6 +19,7 @@ const CreateStream = () => {
     name: '',
     leaderId: '',
     leaderName: '',
+    leaderEmail: '',
     gatheringService: gatheringServiceId,
   }
 
@@ -32,6 +33,11 @@ const CreateStream = () => {
   ) => {
     onSubmitProps.setSubmitting(true)
     clickCard({ id: values.gatheringService, __typename: 'GatheringService' })
+
+    if (!values.leaderEmail) {
+      onSubmitProps.setSubmitting(false)
+      throw new Error('Leader email is required')
+    }
 
     CreateStream({
       variables: {

@@ -193,6 +193,7 @@ const SearchMember = (props: RoleBasedSearch) => {
           setSearchString(suggestion.firstName + ' ' + suggestion.lastName)
 
           props.setFieldValue(`${props.name}`, suggestion.id)
+          props.setFieldValue('leaderEmail', suggestion?.email)
         }}
         getSuggestionValue={(suggestion) =>
           suggestion.firstName + ' ' + suggestion.lastName

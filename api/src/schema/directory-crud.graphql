@@ -408,6 +408,7 @@ extend type Mutation {
     )
     @cypher(
       statement: """
+      MATCH (leader:Active:Member {id:$leaderId}) WHERE leader.email IS NOT NULL
       MATCH (lastCode:LastBankingCode)
       CREATE (fellowship:Fellowship:Active {name:$name,location: point({latitude:toFloat($venueLatitude), longitude:toFloat($venueLongitude), crs:'WGS-84'})})
          	SET
@@ -416,9 +417,8 @@ extend type Mutation {
         lastCode.number = fellowship.bankingCode
 
 
-      WITH fellowship
+      WITH fellowship, leader
       MATCH (bacenta:Bacenta {id: $bacentaId})
-      MATCH (leader:Active:Member {id:$leaderId})
       MATCH (currentUser:Active:Member {auth_id:$auth.jwt.sub})
       MATCH (meetingDay:ServiceDay {day: $meetingDay})
 

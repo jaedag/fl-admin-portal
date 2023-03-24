@@ -20,6 +20,7 @@ const CreateConstituency = () => {
     name: '',
     leaderId: '',
     leaderName: '',
+    leaderEmail: '',
     council: councilId,
   }
 
@@ -42,6 +43,11 @@ const CreateConstituency = () => {
   ) => {
     onSubmitProps.setSubmitting(true)
     try {
+      if (!values.leaderEmail) {
+        onSubmitProps.setSubmitting(false)
+        throw new Error('Leader email is required')
+      }
+
       const res = await CreateConstituency({
         variables: {
           name: values.name,

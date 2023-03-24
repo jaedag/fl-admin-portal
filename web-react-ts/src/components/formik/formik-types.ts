@@ -42,4 +42,5 @@ export interface FormikInitialValues {
   name: string
   leaderId: string
   leaderName: string
+  leaderEmail: string
 }

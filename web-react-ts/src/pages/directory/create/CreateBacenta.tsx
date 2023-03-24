@@ -16,6 +16,7 @@ const CreateBacenta = () => {
     name: '',
     leaderId: '',
     leaderName: '',
+    leaderEmail: '',
     constituency: constituencyId ?? '',
     graduationStatus: '',
     vacationStatus: '',
@@ -32,6 +33,11 @@ const CreateBacenta = () => {
     onSubmitProps.setSubmitting(true)
 
     try {
+      if (!values.leaderEmail) {
+        onSubmitProps.setSubmitting(false)
+        throw new Error('Leader email is required')
+      }
+
       const res = await CreateBacenta({
         variables: {
           name: values.name,

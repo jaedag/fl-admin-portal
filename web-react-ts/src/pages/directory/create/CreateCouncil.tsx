@@ -19,6 +19,7 @@ const CreateCouncil = () => {
     name: '',
     leaderId: '',
     leaderName: '',
+    leaderEmail: '',
     stream: streamId,
   }
 
@@ -33,6 +34,11 @@ const CreateCouncil = () => {
     onSubmitProps.setSubmitting(true)
 
     try {
+      if (!values.leaderEmail) {
+        onSubmitProps.setSubmitting(false)
+        throw new Error('Leader email is required')
+      }
+
       const res = await CreateCouncil({
         variables: {
           name: values.name,
