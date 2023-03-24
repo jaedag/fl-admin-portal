@@ -110,7 +110,7 @@ RETURN COUNT(p) as relationshipCount
 
 export const makeMemberInactive = `
 MATCH (member:Member {id:$id})
-WITH member, ["Active", "Sheep", "Goat", "Deer", "IDL"] as labels
+WITH member, ["Active"] as labels
 CALL apoc.create.removeLabels(member, labels)
 YIELD node
 WITH node
@@ -134,7 +134,7 @@ RETURN node as member
 
 export const createMember = `
 MATCH (fellowship:Fellowship {id: $fellowship})
-CREATE (member:Active:Member:IDL {whatsappNumber:$whatsappNumber})
+CREATE (member:Active:Member:IDL:Deer {whatsappNumber:$whatsappNumber})
       SET
       	member.id = apoc.create.uuid(),
       	member.firstName = $firstName,
