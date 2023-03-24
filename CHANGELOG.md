@@ -1,3 +1,24 @@
+#### 6.5.4 (2023-03-24)
+
+##### Bug Fixes
+
+*  church update screens to handle leaderEmail variable ([33d92345](https://github.com/firstlovecenter/fl-pastoral-care/commit/33d923454b709c618dc4bb4518c7f4d2c389cd53))
+*  fix bug where members without emails were able to be made as leaders ([d3a475ff](https://github.com/firstlovecenter/fl-pastoral-care/commit/d3a475ffd93bc3f6de64fa1516f791d15f608c3d))
+*  better error handling when a leader doesn't have an email ([d1904b5b](https://github.com/firstlovecenter/fl-pastoral-care/commit/d1904b5b693962d1d8bc6af3a550ed18d2c48f25))
+*  remove unnecessary white space ([c89af588](https://github.com/firstlovecenter/fl-pastoral-care/commit/c89af588d4e39c41d56228fdc5a52d08f9e3943b))
+*  code of the day should return the latest code before today instead of just today's code ([6b870925](https://github.com/firstlovecenter/fl-pastoral-care/commit/6b8709252e9391e2bf793677e5367df8065f6ba8))
+*  fix require statement to es6 syntax to prevent breaking the vite build ([008523a6](https://github.com/firstlovecenter/fl-pastoral-care/commit/008523a6908483e9b9ebaa674d5f58f7d43a37e2))
+*  when cancelled services is 0 text should be green on defaulter cards ([03b09f9e](https://github.com/firstlovecenter/fl-pastoral-care/commit/03b09f9e4985f8083dc6c4b76ea2504f905c21b2))
+*  restore option for stream services to be recorded ([51bb1875](https://github.com/firstlovecenter/fl-pastoral-care/commit/51bb187525f035e620cd11bebc09b0883199c501))
+
+##### Other Changes
+
+* //github.com/firstlovecenter/fl-admin-portal into deploy ([92259cbd](https://github.com/firstlovecenter/fl-pastoral-care/commit/92259cbd103aaec29d031d3ff03c04a3be46c944))
+
+##### Refactors
+
+*  reorganise sonta leader resolvers, prevent unnecesary error from throwing ([b91bd038](https://github.com/firstlovecenter/fl-pastoral-care/commit/b91bd038fc1056edf963e7880d61122743c13de6))
+
 #### 6.5.3 (2023-03-22)
 
 ##### Bug Fixes
