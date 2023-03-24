@@ -170,7 +170,10 @@ const bankingMutation = {
 
     try {
       const paymentResponse = await axios(payOffering).catch((error: any) =>
-        throwToSentry('There was an error with the payment', error)
+        throwToSentry(
+          'There was an error with the payment',
+          error.response.data
+        )
       )
 
       axios(updatePaystackCustomer)
