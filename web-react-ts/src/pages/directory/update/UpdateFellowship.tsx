@@ -37,6 +37,7 @@ const UpdateFellowship = () => {
     name: fellowship?.name,
     leaderId: fellowship?.leader?.id,
     leaderName: `${fellowship?.leader?.firstName} ${fellowship?.leader?.lastName} `,
+    leaderEmail: fellowship?.leader?.email,
     constituencySelect: fellowship?.bacenta?.constituency?.id,
     bacenta: fellowship?.bacenta?.id,
     meetingDay: fellowship?.meetingDay?.day,

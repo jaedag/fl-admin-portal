@@ -35,6 +35,7 @@ const UpdateStream = () => {
     name: stream?.name,
     leaderName: stream?.leader?.firstName + ' ' + stream?.leader.lastName ?? '',
     leaderId: stream?.leader?.id || '',
+    leaderEmail: stream?.leader?.email || '',
     gatheringService: stream?.gatheringService?.id ?? '',
     councils: stream?.councils?.length ? stream.councils : [''],
   }

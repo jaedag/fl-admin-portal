@@ -38,6 +38,7 @@ const UpdateBacenta = () => {
     leaderName:
       bacenta?.leader?.firstName + ' ' + bacenta?.leader?.lastName ?? '',
     leaderId: bacenta?.leader?.id || '',
+    leaderEmail: bacenta?.leader?.email ?? '',
     constituency: bacenta?.constituency?.id,
     fellowships: bacenta?.fellowships.length ? bacenta?.fellowships : [''],
     vacationStatus: bacenta?.vacationStatus,

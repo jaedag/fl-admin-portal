@@ -37,6 +37,7 @@ const UpdateGatheringService = () => {
     name: gatheringService?.name,
     leaderName: gatheringService?.leader?.fullName ?? '',
     leaderId: gatheringService?.leader?.id || '',
+    leaderEmail: gatheringService?.leader?.email || '',
     oversight: gatheringService?.oversight?.id,
     streams: gatheringService?.streams?.length
       ? gatheringService.streams
