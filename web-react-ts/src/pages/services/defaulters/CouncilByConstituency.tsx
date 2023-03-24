@@ -100,7 +100,7 @@ const CouncilByConstituency = () => {
                       <Card.Footer>
                         {constituency?.bankedBy && (
                           <div className="text-warning">
-                            Offering Received By :{' '}
+                            Offering Received By:{' '}
                             {`${constituency.bankedBy.firstName} ${constituency.bankedBy.lastName}`}
                           </div>
                         )}
