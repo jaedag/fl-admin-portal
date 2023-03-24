@@ -16,12 +16,11 @@ import SubmitButton from 'components/formik/SubmitButton'
 import usePopup from 'hooks/usePopup'
 import Select from 'components/formik/Select'
 import SearchMember from 'components/formik/SearchMember'
+import { FormikInitialValues } from 'components/formik/formik-types'
 
-export interface SontaFormValues {
+export interface SontaFormValues extends FormikInitialValues {
   hub: string
   ministry: string
-  leaderId: string
-  leaderName: string
 }
 
 type SontaFormProps = {

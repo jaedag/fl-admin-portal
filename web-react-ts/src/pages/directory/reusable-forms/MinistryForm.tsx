@@ -16,8 +16,9 @@ import SubmitButton from 'components/formik/SubmitButton'
 import usePopup from 'hooks/usePopup'
 import Select from 'components/formik/Select'
 import SearchMember from 'components/formik/SearchMember'
+import { FormikInitialValues } from 'components/formik/formik-types'
 
-export interface MinistryFormValues {
+export interface MinistryFormValues extends FormikInitialValues {
   federalMinistry: string
   leaderId: string
   leaderName: string

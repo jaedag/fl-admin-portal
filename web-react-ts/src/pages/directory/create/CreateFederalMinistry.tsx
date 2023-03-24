@@ -18,6 +18,7 @@ const CreateFederalMinistry = () => {
   const initialValues: FederalMinistryFormValues = {
     leaderId: '',
     leaderName: '',
+    leaderEmail: '',
     name: '',
     gatheringService: '',
   }
@@ -26,41 +27,43 @@ const CreateFederalMinistry = () => {
   const [CreateFederalministry] = useMutation(CREATE_FEDERAL_MINISTRY_MUTATION)
 
   //onSubmit receives the form state as argument
-  const onSubmit = (
+  const onSubmit = async (
     values: FederalMinistryFormValues,
     onSubmitProps: FormikHelpers<FederalMinistryFormValues>
   ) => {
-    onSubmitProps.setSubmitting(true)
+    try {
+      onSubmitProps.setSubmitting(true)
 
-    CreateFederalministry({
-      variables: {
-        gatheringServiceId: values.gatheringService,
-        leaderId: values.leaderId,
-        name: values.name,
-      },
-    })
-      .then((res) => {
-        clickCard(res.data.CreateFederalministry)
-        NewFederalministryLeader({
-          variables: {
-            leaderId: values.leaderId,
-            federalMinistryId: res.data.CreateFederalministry.id,
-          },
-        }).catch((error) => {
-          throwToSentry('There was an error adding leader', error)
-        })
-        clickCard({
-          id: values.gatheringService,
-          __typename: 'GatheringService',
-        })
-        clickCard(res.data.CreateFederalministry)
-        onSubmitProps.setSubmitting(false)
-        onSubmitProps.resetForm()
-        navigate(`/federalministry/displaydetails`)
+      if (!values.leaderEmail) {
+        throw new Error('Leader email is required')
+      }
+
+      const res = await CreateFederalministry({
+        variables: {
+          gatheringServiceId: values.gatheringService,
+          leaderId: values.leaderId,
+          name: values.name,
+        },
       })
-      .catch((error) => {
-        throwToSentry('There was an error creating Federal Ministry', error)
+
+      await NewFederalministryLeader({
+        variables: {
+          leaderId: values.leaderId,
+          federalMinistryId: res.data.CreateFederalministry.id,
+        },
       })
+
+      clickCard({
+        id: values.gatheringService,
+        __typename: 'GatheringService',
+      })
+      clickCard(res.data.CreateFederalministry)
+      onSubmitProps.setSubmitting(false)
+      onSubmitProps.resetForm()
+      navigate(`/federalministry/displaydetails`)
+    } catch (error: unknown) {
+      throwToSentry('There was an error creating Federal Ministry', error)
+    }
   }
 
   return (

@@ -55,7 +55,10 @@ export const BUSSING_STATUS_OPTIONS: FormikSelectOptions = [
   { key: 'Graduated', value: 'Graduated' },
 ]
 
-export const throwToSentry = (message: string, error?: Error | ApolloError) => {
+export const throwToSentry = (
+  message: string,
+  error?: Error | ApolloError | unknown
+) => {
   if (!message && !error) {
     return
   }

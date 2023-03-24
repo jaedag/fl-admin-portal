@@ -193,10 +193,10 @@ extend type Mutation {
     @auth(rules: [{ roles: ["adminGatheringService"] }])
     @cypher(
       statement: """
-      CREATE (stream:Stream {id:apoc.create.uuid(), name:$name})
+      CREATE (stream:Stream {id:apoc.create.uuid(), name: $name})
 
       WITH stream
-      MATCH (leader:Active:Member {id: $leaderId})
+      MATCH (leader:Active:Member {id: $leaderId}) WHERE leader.email IS NOT NULL
       MATCH (currentUser:Active:Member {auth_id:$auth.jwt.sub})
       MATCH (gatheringService:GatheringService {id: $gatheringServiceId})
 
@@ -235,7 +235,7 @@ extend type Mutation {
       CREATE (gatheringService:GatheringService {id:apoc.create.uuid(), name:$name})
 
       WITH gatheringService
-      MATCH (leader:Active:Member {id: $leaderId})
+      MATCH (leader:Active:Member {id: $leaderId}) WHERE leader.email IS NOT NULL
       MATCH (currentUser:Active:Member {auth_id:$auth.jwt.sub})
       MATCH (oversight:Oversight {id: $oversightId})
 
@@ -270,7 +270,7 @@ extend type Mutation {
        CREATE (council:Council {id:apoc.create.uuid(), name:$name})
 
       WITH council
-      MATCH (leader:Active:Member {id: $leaderId})
+      MATCH (leader:Active:Member {id: $leaderId}) WHERE leader.email IS NOT NULL
       MATCH (currentUser:Active:Member {auth_id:$auth.jwt.sub})
       MATCH (stream:Stream {id: $streamId})
 
@@ -315,7 +315,7 @@ extend type Mutation {
          	SET
       	constituency.id = apoc.create.uuid(),
       WITH constituency
-      MATCH (leader:Active:Member {id: $leaderId})
+      MATCH (leader:Active:Member {id: $leaderId}) WHERE leader.email IS NOT NULL
       MATCH (currentUser:Active:Member {auth_id:$auth.jwt.sub})
       MATCH (council:Council {id: $councilId})
 
@@ -357,7 +357,7 @@ extend type Mutation {
         bacenta.outbound = false
 
       WITH bacenta
-       MATCH (leader:Active:Member {id:$leaderId})
+       MATCH (leader:Active:Member {id:$leaderId}) WHERE leader.email IS NOT NULL
        MATCH (constituency:Constituency {id:$constituencyId})
        MATCH (currentUser:Active:Member {auth_id:$auth.jwt.sub})
 

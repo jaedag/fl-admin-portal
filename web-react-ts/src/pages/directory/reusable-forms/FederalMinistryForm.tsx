@@ -17,12 +17,11 @@ import usePopup from 'hooks/usePopup'
 import Select from 'components/formik/Select'
 import SearchMember from 'components/formik/SearchMember'
 import Input from 'components/formik/Input'
+import { FormikInitialValues } from 'components/formik/formik-types'
 
-export interface FederalMinistryFormValues {
+export interface FederalMinistryFormValues extends FormikInitialValues {
   name: string
   gatheringService: string
-  leaderId: string
-  leaderName: string
 }
 
 type FederalMinistryFormProps = {

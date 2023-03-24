@@ -17,8 +17,9 @@ import usePopup from 'hooks/usePopup'
 import Select from 'components/formik/Select'
 import SearchMember from 'components/formik/SearchMember'
 import Input from 'components/formik/Input'
+import { FormikInitialValues } from 'components/formik/formik-types'
 
-export interface HubFormValues {
+export interface HubFormValues extends FormikInitialValues {
   name: string
   ministry: string
   leaderId: string

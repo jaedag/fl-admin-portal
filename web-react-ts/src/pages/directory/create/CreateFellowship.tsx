@@ -18,6 +18,7 @@ const CreateFellowship = () => {
     name: '',
     leaderId: '',
     leaderName: '',
+    leaderEmail: '',
     constituencySelect: constituencyId ?? '',
     bacenta: bacentaId ?? '',
     meetingDay: '',
@@ -35,7 +36,13 @@ const CreateFellowship = () => {
     onSubmitProps: FormikHelpers<FellowshipFormValues>
   ) => {
     onSubmitProps.setSubmitting(true)
+
     try {
+      if (!values.leaderEmail) {
+        onSubmitProps.setSubmitting(false)
+        throw new Error('Leader email is required')
+      }
+
       const res = await CreateFellowship({
         variables: {
           name: values.name,
@@ -50,7 +57,7 @@ const CreateFellowship = () => {
       await NewFellowshipLeader({
         variables: {
           leaderId: values.leaderId,
-          fellowshipId: res.data.CreateFellowship.id,
+          fellowshipId: res.data.CreateFellowship?.id ?? '',
         },
       })
 

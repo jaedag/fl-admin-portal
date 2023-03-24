@@ -7,7 +7,7 @@ extend type Mutation {
         SET federalMinistry.id = apoc.create.uuid()
 
       WITH federalMinistry
-      MATCH (leader:Member:Active {id:$leaderId})
+      MATCH (leader:Member:Active {id:$leaderId}) WHERE leader.email IS NOT NULL
       MATCH (gatheringService:GatheringService {id:$gatheringServiceId})
       MATCH (currentUser:Active:Member {auth_id:$auth.jwt.sub})
 
@@ -35,7 +35,7 @@ extend type Mutation {
         SET	ministry.id = apoc.create.uuid()
 
       WITH ministry
-      MATCH (leader:Active:Member {id: $leaderId})
+      MATCH (leader:Active:Member {id: $leaderId}) WHERE leader.email IS NOT NULL
       MATCH (stream:Stream {id: $streamId})
       MATCH (federalMinistry:Federalministry {id: $federalMinistryId})
       MATCH (currentUser:Active:Member {auth_id: $auth.jwt.sub})
@@ -68,7 +68,7 @@ extend type Mutation {
         SET hub.id = apoc.create.uuid()
 
       WITH hub
-      MATCH (leader:Active:Member {id: $leaderId})
+      MATCH (leader:Active:Member {id: $leaderId}) WHERE leader.email IS NOT NULL
       MATCH (ministry:Ministry {id: $ministryId})
       MATCH (currentUser:Active:Member {auth_id: $auth.jwt.sub})
 
@@ -99,7 +99,7 @@ extend type Mutation {
 
       WITH sonta
        MATCH (ministry:Ministry {id: $ministryId})
-       MATCH (leader:Active:Member {id: $leaderId})
+       MATCH (leader:Active:Member {id: $leaderId}) WHERE leader.email IS NOT NULL
        MATCH (hub:Hub {id: $hubId})
 
        MATCH (currentUser:Active:Member {auth_id:$auth.jwt.sub})

@@ -19,6 +19,7 @@ const CreateGatheringService = () => {
     name: '',
     leaderId: '',
     leaderName: '',
+    leaderEmail: '',
     oversight: oversightId,
   }
 
@@ -34,6 +35,11 @@ const CreateGatheringService = () => {
   ) => {
     onSubmitProps.setSubmitting(true)
     try {
+      if (!values.leaderEmail) {
+        onSubmitProps.setSubmitting(false)
+        throw new Error('Leader email is required')
+      }
+
       const res = await CreateGatheringService({
         variables: {
           name: values.name,

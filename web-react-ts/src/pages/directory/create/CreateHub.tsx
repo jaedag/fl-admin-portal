@@ -17,46 +17,48 @@ const CreateHub = () => {
     ministry: '',
     leaderId: '',
     leaderName: '',
+    leaderEmail: '',
     name: '',
   }
 
   const [NewHubLeader] = useMutation(NEW_HUB_LEADER)
   const [CreateHub] = useMutation(CREATE_HUB_MUTATION)
 
-  //onSubmit receives the form state as argument
-  const onSubmit = (
+  const onSubmit = async (
     values: HubFormValues,
     onSubmitProps: FormikHelpers<HubFormValues>
   ) => {
     onSubmitProps.setSubmitting(true)
 
-    CreateHub({
-      variables: {
-        ministryId: values.ministry,
-        leaderId: values.leaderId,
-        name: values.name,
-      },
-    })
-      .then((res) => {
-        clickCard(res.data.CreateHub)
-        NewHubLeader({
-          variables: {
-            leaderId: values.leaderId,
-            hubId: res.data.CreateHub.id,
-          },
-        }).catch((error) => {
-          throwToSentry('There was an error adding leader', error)
-        })
-
-        clickCard({ id: values.ministry, __typename: 'Ministry' })
-        clickCard(res.data.CreateHub)
+    try {
+      if (!values.leaderEmail) {
         onSubmitProps.setSubmitting(false)
-        onSubmitProps.resetForm()
-        navigate(`/hub/displaydetails`)
+        throw new Error('Leader email is required')
+      }
+
+      const res = await CreateHub({
+        variables: {
+          ministryId: values.ministry,
+          leaderId: values.leaderId,
+          name: values.name,
+        },
       })
-      .catch((error) => {
-        throwToSentry('There was an error creating hub', error)
+
+      await NewHubLeader({
+        variables: {
+          leaderId: values.leaderId,
+          hubId: res.data.CreateHub.id,
+        },
       })
+
+      clickCard({ id: values.ministry, __typename: 'Ministry' })
+      clickCard(res.data.CreateHub)
+      onSubmitProps.setSubmitting(false)
+      onSubmitProps.resetForm()
+      navigate(`/hub/displaydetails`)
+    } catch (error: unknown) {
+      throwToSentry('There was an error creating hub', error)
+    }
   }
 
   return (

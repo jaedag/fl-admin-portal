@@ -36,6 +36,7 @@ import { FormikInitialValues } from 'components/formik/formik-types'
 
 export interface FellowshipFormValues extends FormikInitialValues {
   constituencySelect: string
+
   bacenta: string
   meetingDay: string
   vacationStatus: string

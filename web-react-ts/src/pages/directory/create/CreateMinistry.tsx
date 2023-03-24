@@ -16,8 +16,10 @@ const CreateMinistry = () => {
   const navigate = useNavigate()
 
   const initialValues: MinistryFormValues = {
+    name: '',
     leaderId: '',
     leaderName: '',
+    leaderEmail: '',
     federalMinistry: '',
     stream: '',
   }
@@ -26,40 +28,42 @@ const CreateMinistry = () => {
   const [CreateMinistry] = useMutation(CREATE_MINISTRY_MUTATION)
 
   //onSubmit receives the form state as argument
-  const onSubmit = (
+  const onSubmit = async (
     values: MinistryFormValues,
     onSubmitProps: FormikHelpers<MinistryFormValues>
   ) => {
     onSubmitProps.setSubmitting(true)
 
-    CreateMinistry({
-      variables: {
-        federalMinistryId: values.federalMinistry,
-        leaderId: values.leaderId,
-        streamId: values.stream,
-      },
-    })
-      .then((res) => {
-        clickCard(res.data.CreateMinistry)
-        NewMinistryLeader({
-          variables: {
-            leaderId: values.leaderId,
-            ministryId: res.data.CreateMinistry.id,
-          },
-        }).catch((error) => {
-          throwToSentry('There was an error adding leader', error)
-        })
-
-        clickCard({ id: values.federalMinistry, __typename: 'Federalministry' })
-        clickCard({ id: values.stream, __typename: 'Stream' })
-        clickCard(res.data.CreateMinistry)
+    try {
+      if (!values.leaderEmail) {
         onSubmitProps.setSubmitting(false)
-        onSubmitProps.resetForm()
-        navigate(`/ministry/displaydetails`)
+        throw new Error('Leader email is required')
+      }
+
+      const res = await CreateMinistry({
+        variables: {
+          federalMinistryId: values.federalMinistry,
+          leaderId: values.leaderId,
+          streamId: values.stream,
+        },
       })
-      .catch((error) => {
-        throwToSentry('There was an error creating ministry', error)
+
+      await NewMinistryLeader({
+        variables: {
+          leaderId: values.leaderId,
+          ministryId: res.data.CreateMinistry.id,
+        },
       })
+
+      clickCard({ id: values.federalMinistry, __typename: 'Federalministry' })
+      clickCard({ id: values.stream, __typename: 'Stream' })
+      clickCard(res.data.CreateMinistry)
+      onSubmitProps.setSubmitting(false)
+      onSubmitProps.resetForm()
+      navigate(`/ministry/displaydetails`)
+    } catch (error: unknown) {
+      throwToSentry('There was an error creating ministry', error)
+    }
   }
 
   return (

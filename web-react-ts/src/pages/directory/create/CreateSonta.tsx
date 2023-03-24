@@ -14,9 +14,11 @@ const CreateSonta = () => {
   const navigate = useNavigate()
 
   const initialValues: SontaFormValues = {
+    name: '',
     ministry: '',
     leaderId: '',
     leaderName: '',
+    leaderEmail: '',
     hub: '',
   }
 
@@ -24,40 +26,43 @@ const CreateSonta = () => {
   const [CreateSonta] = useMutation(CREATE_SONTA_MUTATION)
 
   //onSubmit receives the form state as argument
-  const onSubmit = (
+  const onSubmit = async (
     values: SontaFormValues,
     onSubmitProps: FormikHelpers<SontaFormValues>
   ) => {
     onSubmitProps.setSubmitting(true)
 
-    CreateSonta({
-      variables: {
-        ministryId: values.ministry,
-        leaderId: values.leaderId,
-        hubId: values.hub,
-      },
-    })
-      .then((res) => {
-        clickCard(res.data.CreateSonta)
-        NewSontaLeader({
-          variables: {
-            leaderId: values.leaderId,
-            sontaId: res.data.CreateSonta.id,
-          },
-        }).catch((error) => {
-          throwToSentry('There was an error adding leader', error)
-        })
-
-        clickCard({ id: values.ministry, __typename: 'Ministry' })
-        clickCard({ id: values.hub, __typename: 'Hub' })
-        clickCard(res.data.CreateSonta)
+    try {
+      if (!values.leaderEmail) {
         onSubmitProps.setSubmitting(false)
-        onSubmitProps.resetForm()
-        navigate(`/sonta/displaydetails`)
+        throw new Error('Leader email is required')
+      }
+
+      const res = await CreateSonta({
+        variables: {
+          ministryId: values.ministry,
+          leaderId: values.leaderId,
+          hubId: values.hub,
+        },
       })
-      .catch((error) => {
-        throwToSentry('There was an error creating sonta', error)
+
+      await NewSontaLeader({
+        variables: {
+          leaderId: values.leaderId,
+          sontaId: res.data.CreateSonta.id,
+        },
       })
+
+      clickCard({ id: values.ministry, __typename: 'Ministry' })
+      clickCard({ id: values.hub, __typename: 'Hub' })
+      clickCard(res.data.CreateSonta)
+      onSubmitProps.setSubmitting(false)
+      onSubmitProps.resetForm()
+      navigate(`/sonta/displaydetails`)
+    } catch (error: any) {
+      onSubmitProps.setSubmitting(false)
+      throwToSentry('There was an error creating sonta', error)
+    }
   }
 
   return (
