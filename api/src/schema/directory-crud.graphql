@@ -311,9 +311,8 @@ extend type Mutation {
     )
     @cypher(
       statement: """
-       CREATE (constituency:Constituency {name:$name})
-         	SET
-      	constituency.id = apoc.create.uuid(),
+       CREATE (constituency:Constituency {name: $name})
+         	SET	constituency.id = apoc.create.uuid()
       WITH constituency
       MATCH (leader:Active:Member {id: $leaderId}) WHERE leader.email IS NOT NULL
       MATCH (currentUser:Active:Member {auth_id:$auth.jwt.sub})

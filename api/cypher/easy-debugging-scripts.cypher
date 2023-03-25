@@ -6,5 +6,6 @@ REMOVE ministry:Ministry
 
 RETURN gs,ministry;
 
-MATCH (record:ServiceRecord {id: 'b1ed8e62-5dc4-4e6e-b0dd-f45808f3be80'})
-RETURN record.attendance, record.momoName, record.mobileNetwork, record.momoNumber
+MATCH (this:Fellowship {id: '99985480-349d-41e1-857b-431d6775fa00'})-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(records:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
+      WITH DISTINCT records,date
+      RETURN date.date, records.attendance, records.income, records.noServiceReason ORDER BY date.date DESC LIMIT 12
