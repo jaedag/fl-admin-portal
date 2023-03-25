@@ -79,7 +79,7 @@ const MakeServantResolvers = {
     MakeServant(
       context,
       args,
-      permitAdminArrivals('Constituency'),
+      permitAdminArrivals('GatheringService'),
       'Bacenta',
       'Leader'
     ),
@@ -87,7 +87,7 @@ const MakeServantResolvers = {
     RemoveServant(
       context,
       args,
-      permitAdminArrivals('Constituency'),
+      permitAdminArrivals('GatheringService'),
       'Bacenta',
       'Leader'
     ),
