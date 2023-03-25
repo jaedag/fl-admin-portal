@@ -1,3 +1,16 @@
+#### 6.5.5 (2023-03-25)
+
+##### Bug Fixes
+
+*  bring back permissions for arrivals gs admin to create bacentas ([5dfcbce4](https://github.com/firstlovecenter/fl-pastoral-care/commit/5dfcbce46e138848eed1ede11768d8a64ea1db36))
+*  implement more descriptive error handling for errors with payment ([fd5a2d6a](https://github.com/firstlovecenter/fl-pastoral-care/commit/fd5a2d6a0ca754dd8256d06742ab810e7c4c6c16))
+*  implement more descriptive error handling for errors with payment ([7556f8f7](https://github.com/firstlovecenter/fl-pastoral-care/commit/7556f8f79a60e869c7c1cee170551e3122c1f40e))
+*  update labels on new and inactive members for poimen app ([0ff29ef8](https://github.com/firstlovecenter/fl-pastoral-care/commit/0ff29ef8331f7e87e1bfc799a736c96f2f2ce73c))
+
+##### Refactors
+
+*  rewrite the code of the day function using async-await syntax only ([730d6be9](https://github.com/firstlovecenter/fl-pastoral-care/commit/730d6be9a12face7c3a7aa54f9de676152400dfd))
+
 #### 6.5.4 (2023-03-24)
 
 ##### Bug Fixes
