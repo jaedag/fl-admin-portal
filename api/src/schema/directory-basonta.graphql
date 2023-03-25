@@ -476,7 +476,7 @@ type RehearsalRecord implements Record @auth(rules: [{ isAuthenticated: true}]){
 }
 
 extend type Mutation {
-   RecordSontaService(
+   RecordSontaSundayMeeting(
     churchId: ID!
     serviceDate: String!
     attendance: Int!

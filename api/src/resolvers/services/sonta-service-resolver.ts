@@ -63,7 +63,7 @@ export const checkServantHasCurrentHistory = async (
 }
 
 const SontaServiceMutation = {
-  RecordSontaService: async (
+  RecordSontaSundayMeeting: async (
     object: any,
     args: RecordServiceArgs,
     context: Context
