@@ -365,7 +365,5 @@ RETURN DISTINCT date.date as date, stream.name as stream, bacenta.name as bacent
     WHEN record.outbound = true THEN 'In and Out'
     WHEN record.outbound = false THEN 'In Only'
     END) as outbound, 
-(CASE 
-WHEN bacenta.lpIvyTopUp IS NULL THEN round(toFloat(record.vehicleTopUp), 2)
-ELSE round(toFloat(bacenta.lpIvyTopUp), 2) END) as topUp, record.vehicleCost as vehicleCost, record.momoNumber as momoNumber, record.comments as comments, record.arrivalTime as arrivalTime, (leader.firstName+ " "+ leader.lastName) as leader, council.name as council, constituency.name as constituency, record.momoName as momoName, society.society as society ORDER BY toInteger(society) ASC
+round(toFloat(record.vehicleTopUp), 2) as topUp, record.vehicleCost as vehicleCost, record.momoNumber as momoNumber, record.comments as comments, record.arrivalTime as arrivalTime, (leader.firstName+ " "+ leader.lastName) as leader, council.name as council, constituency.name as constituency, record.momoName as momoName, society.society as society ORDER BY toInteger(society) ASC
 `
