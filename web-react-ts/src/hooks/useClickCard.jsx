@@ -406,6 +406,14 @@ const useClickCard = () => {
         setServiceRecordId(card.id)
         sessionStorage.setItem('serviceRecordId', card.id)
         break
+      case 'RehearsalRecord':
+        setServiceRecordId(card.id)
+        sessionStorage.setItem('serviceRecordId', card.id)
+        break
+      case 'MinistryAttendanceRecord':
+        setServiceRecordId(card.id)
+        sessionStorage.setItem('serviceRecordId', card.id)
+        break
       case 'BussingRecord':
         setBussingRecordId(card.id)
         sessionStorage.setItem('bussingRecordId', card.id)
@@ -460,8 +468,7 @@ const useClickCard = () => {
     setSontaId,
     setHubId,
     setMinistryId,
-    setFederalMinistryId
-
+    setFederalMinistryId,
   }
 }
 

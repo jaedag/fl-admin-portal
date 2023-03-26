@@ -52,7 +52,7 @@ const ServiceDetails = ({ service, church, loading }: ServiceDetailsProps) => {
   if (!service.noServiceReason) {
     table.push(['Attendance', service?.attendance.toString()])
 
-    if (!currentUser.noIncome) {
+    if (!currentUser.noIncome && church.__typename !== 'Sonta') {
       table.push(['Number of Tithers', service?.numberOfTithers.toString()])
       if (service?.foreignCurrency) {
         table.push([
@@ -171,12 +171,12 @@ const ServiceDetails = ({ service, church, loading }: ServiceDetailsProps) => {
                     </div>
                   </>
                 )}{' '}
-                {noBankingProof && (
+                {noBankingProof && church.__typename !== 'Sonta' && (
                   <p className="fw-bold text-danger">
                     You Have Not Submitted Your Banking Slip!!!
                   </p>
                 )}
-                {noBankingProof && (
+                {noBankingProof && church.__typename !== 'Sonta' && (
                   <RoleView roles={permitAdmin('GatheringService')}>
                     <div className="d-grid gap-2">
                       <Button
