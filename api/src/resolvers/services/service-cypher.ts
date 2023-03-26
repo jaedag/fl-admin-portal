@@ -1,9 +1,11 @@
 export const checkFormFilledThisWeek = `
 MATCH (church {id: $churchId})
-WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream 
+WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream  OR church:Sonta or church:Ministry 
 MATCH (church)<-[:HAS]-(higherChurch)
 
 OPTIONAL MATCH (church)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
+OPTIONAL MATCH (church)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(record:MinistryAttendanceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
+OPTIONAL MATCH (church)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(record:RehearsalRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
 WHERE date(date.date).week = date().week AND date(date.date).year = date().year
         
 RETURN church.id AS id, church.name AS name, labels(church) AS labels, labels(higherChurch) AS higherChurchLabels, higherChurch.id AS higherChurchId, record AS alreadyFilled
@@ -54,7 +56,7 @@ SET serviceRecord.id = apoc.create.uuid(),
 serviceRecord.noServiceReason = $noServiceReason
 
 WITH serviceRecord
-MATCH (church {id: $churchId}) WHERE church:Fellowship
+MATCH (church {id: $churchId}) WHERE church:Fellowship OR church:Sonta
 MATCH (church)-[:CURRENT_HISTORY]->(log:ServiceLog)
 MATCH (leader:Active:Member {auth_id: $auth.jwt.sub})
 
@@ -72,10 +74,10 @@ MATCH (church)-[:CURRENT_HISTORY]->(log:ServiceLog)
 RETURN true AS exists
 `
 export const getServantAndChurch = `
-MATCH (church {id:$churchId}) WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream
+MATCH (church {id:$churchId}) WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:Sonta
 MATCH (church)<-[:LEADS]-(servant:Active:Member)
 UNWIND labels(church) AS churchType 
-WITH churchType, church, servant WHERE churchType IN ['Fellowship', 'Bacenta', 'Constituency', 'Council', 'Stream']
+WITH churchType, church, servant WHERE churchType IN ['Fellowship', 'Bacenta', 'Constituency', 'Council', 'Stream', 'Sonta']
 RETURN church.id AS churchId, church.name AS churchName, servant.id AS servantId, servant.auth_id AS auth_id, servant.firstName AS firstName, servant.lastName AS lastName, churchType AS churchType
 `
 

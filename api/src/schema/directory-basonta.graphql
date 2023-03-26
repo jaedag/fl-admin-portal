@@ -420,3 +420,73 @@ extend type Mutation {
   MakeSontaLeader(leaderId: ID!, sontaId: ID!, oldLeaderId: ID): Member
   RemoveSontaLeader(leaderId: ID!, newLeaderId: ID!, sontaId: ID!): Member
 }
+
+type MinistryAttendanceRecord implements Record @auth(rules: [{ isAuthenticated: true}]){
+  id: ID!
+  createdAt: DateTime!
+  created_by: Member
+  serviceDate: TimeGraph @relationship(type: "SERVICE_HELD_ON", direction: OUT)
+  week: Int
+    @cypher(
+      statement: """
+      MATCH (this)-[:SERVICE_HELD_ON]->(date:TimeGraph)
+      RETURN date(date.date).week
+      """
+    )
+  attendance: Int
+  familyPicture: String
+  serviceLog: ServiceLog! @relationship(type: "HAS_SERVICE", direction: IN)
+  noServiceReason: String
+  stream_name: String
+    @cypher(
+      statement: """
+      MATCH (this)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(church)
+      WHERE church:Sonta
+      MATCH (church)<-[:HAS*1..4]-(stream:Stream)
+      RETURN stream.name
+      """
+    )
+}
+
+type RehearsalRecord implements Record @auth(rules: [{ isAuthenticated: true}]){
+  id: ID!
+  createdAt: DateTime!
+  created_by: Member
+  serviceDate: TimeGraph @relationship(type: "SERVICE_HELD_ON", direction: OUT)
+  week: Int
+    @cypher(
+      statement: """
+      MATCH (this)-[:SERVICE_HELD_ON]->(date:TimeGraph)
+      RETURN date(date.date).week
+      """
+    )
+  attendance: Int
+  familyPicture: String
+  serviceLog: ServiceLog! @relationship(type: "HAS_SERVICE", direction: IN)
+  noServiceReason: String
+  stream_name: String
+    @cypher(
+      statement: """
+      MATCH (this)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(church)
+      WHERE church:Sonta
+      MATCH (church)<-[:HAS*1..4]-(stream:Stream)
+      RETURN stream.name
+      """
+    )
+}
+
+extend type Mutation {
+   RecordSontaSundayMeeting(
+    churchId: ID!
+    serviceDate: String!
+    attendance: Int!
+    familyPicture: String!
+  ): MinistryAttendanceRecord!
+
+  RecordSontaRehearsalService(
+    churchId: ID!
+    serviceDate: String!
+    attendance: Int!
+    familyPicture: String!
+  ): RehearsalRecord!
+}

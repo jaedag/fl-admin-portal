@@ -12,6 +12,7 @@ import bankingMutation from './banking/banking-resolver'
 import campaignsResolvers from './campaigns/campaigns-resolver'
 import campaignMutations from './campaigns/campaign-mutations'
 import { mapsResolvers } from './maps/maps-resolvers'
+import SontaServiceMutation from './services/sonta-service-resolver'
 
 const dotenv = require('dotenv')
 
@@ -70,6 +71,7 @@ const resolvers = {
     ...treasuryMutations,
     ...serviceNoIncomeMutations,
     ...campaignMutations,
+    ...SontaServiceMutation,
   },
 }
 
