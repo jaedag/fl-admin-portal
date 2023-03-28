@@ -97,7 +97,7 @@ const MapComponent = (props: MapComponentProps) => {
   const getTypename = (place: PlaceType) => {
     switch (place.typename) {
       case 'GooglePlace':
-        return 'Centre'
+        return 'Google Place'
       case 'Member':
         return ''
       case 'Fellowship':
@@ -181,7 +181,7 @@ const MapComponent = (props: MapComponentProps) => {
     return description.split('\n').map((item, i) => (
       <p key={i} className="mb-0">
         {item.split(':').map((item, i) => (
-          <span key={i} className={i % 2 ? 'fw-bold' : 'text-secondary'}>
+          <span key={i} className={i % 2 ? 'text-seconday' : 'fw-bold'}>
             {i % 2 ? `: ${item}` : item}
           </span>
         ))}

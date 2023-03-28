@@ -16,7 +16,8 @@ interface ComboBoxProps extends FormikComponentProps {
 }
 
 const GooglePlacesCombobox = (props: ComboBoxProps) => {
-  const { label, name, placeholder, initialValue, handleClose } = props
+  const { label, name, placeholder, initialValue, handleClose, setCentre } =
+    props
 
   const {
     ready,
@@ -33,15 +34,15 @@ const GooglePlacesCombobox = (props: ComboBoxProps) => {
 
   useEffect(() => {}, [searchString])
 
-  const handleSelect = async (val: string) => {
-    setValue(val, false)
+  const handleSelect = async (val: { description: string; name: string }) => {
+    setValue(val.description, false)
     clearSuggestions()
 
-    const results = await getGeocode({ address: val })
+    const results = await getGeocode({ address: val.description })
     const { lat, lng } = getLatLng(results[0])
-    props.setCentre({
+    setCentre({
       id: '',
-      name: '',
+      name: val.name,
       typename: 'GooglePlace',
       position: { lat, lng },
     })
@@ -101,7 +102,7 @@ const GooglePlacesCombobox = (props: ComboBoxProps) => {
           }
 
           setSearchString(suggestion.description)
-          handleSelect(suggestion.description)
+          handleSelect(suggestion)
           handleClose()
         }}
         getSuggestionValue={(suggestion: any) => {
