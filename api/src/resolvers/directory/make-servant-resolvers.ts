@@ -79,7 +79,7 @@ const MakeServantResolvers = {
     MakeServant(
       context,
       args,
-      permitAdminArrivals('GatheringService'),
+      permitAdminArrivals('Fellowship'),
       'Bacenta',
       'Leader'
     ),
