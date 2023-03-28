@@ -351,6 +351,30 @@ export const COUNCIL_BACENTAS_TO_COUNT = gql`
     }
   }
 `
+
+export const STREAM_VEHICLES_TO_BE_PAID = gql`
+  query streamVehiclesToBePaid($id: ID!) {
+    streams(where: { id: $id }, options: { limit: 1 }) {
+      id
+      name
+
+      vehiclesToBePaid {
+        id
+        name
+        leader {
+          id
+          firstName
+          lastName
+          fullName
+          pictureUrl
+          phoneNumber
+          whatsappNumber
+        }
+      }
+    }
+  }
+`
+
 export const STREAM_BACENTAS_TO_COUNT = gql`
   query streamBacentasToCount($id: ID!) {
     streams(where: { id: $id }, options: { limit: 1 }) {

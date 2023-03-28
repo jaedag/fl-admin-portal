@@ -110,27 +110,27 @@ const FormAttendanceConfirmation = () => {
       navigate(`/bacenta/vehicle-details`)
     }
 
-    if (vehicleData.arrivalTime) {
-      //If arrival time has been logged then send vehicle support
-      try {
-        const supportRes = await SendVehicleSupport({
-          variables: {
-            vehicleRecordId: vehicleRecordId,
-            stream_name: bacenta?.stream_name,
-          },
-        })
+    // if (vehicleData.arrivalTime) {
+    //   //If arrival time has been logged then send vehicle support
+    //   try {
+    //     const supportRes = await SendVehicleSupport({
+    //       variables: {
+    //         vehicleRecordId: vehicleRecordId,
+    //         stream_name: bacenta?.stream_name,
+    //       },
+    //     })
 
-        alertMsg(
-          'Money Successfully Sent to ' +
-            supportRes.data.SendVehicleSupport.momoNumber
-        )
-        setSubmitting(false)
-        navigate(`/bacenta/vehicle-details`)
-      } catch (error: any) {
-        setSubmitting(false)
-        alertMsg(error)
-      }
-    }
+    //     alertMsg(
+    //       'Money Successfully Sent to ' +
+    //         supportRes.data.SendVehicleSupport.momoNumber
+    //     )
+    //     setSubmitting(false)
+    //     navigate(`/bacenta/vehicle-details`)
+    //   } catch (error: any) {
+    //     setSubmitting(false)
+    //     alertMsg(error)
+    //   }
+    // }
     navigate(`/bacenta/vehicle-details`)
   }
 

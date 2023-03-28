@@ -43,6 +43,9 @@ const banking = fs
 const arrivals = fs
   .readFileSync(path.join(__dirname, './arrivals.graphql'))
   .toString('utf-8')
+const arrivalsPayment = fs
+  .readFileSync(path.join(__dirname, './arrivals-payment.graphql'))
+  .toString('utf-8')
 
 const aggregates = fs
   .readFileSync(path.join(__dirname, './aggregates.graphql'))
@@ -98,6 +101,7 @@ const array = [
   banking,
   bankingAnagkazo,
   arrivals,
+  arrivalsPayment,
   aggregates,
   campaigns,
   quickFacts,

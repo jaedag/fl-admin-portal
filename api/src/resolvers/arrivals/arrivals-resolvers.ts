@@ -611,7 +611,7 @@ export const arrivalsMutation = {
 
       const attendanceRes = await Promise.all([
         session.run(setVehicleTopUp, { ...args, vehicleTopUp }),
-        sendBulkSMS([response.leaderPhoneNumber], `${receiveMoney}`),
+        // sendBulkSMS([response.leaderPhoneNumber], `${receiveMoney}`),
       ]).catch((error) =>
         throwToSentry('There was an error processing bussing payment', error)
       )

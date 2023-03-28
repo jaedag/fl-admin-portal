@@ -82,6 +82,7 @@ export const STREAM_ARRIVALS_DASHBOARD = gql`
       bacentasMobilisingCount
       bacentasOnTheWayCount
       vehiclesNotCountedCount
+      vehiclesToBePaidCount
       bacentasBelow8Count
       bacentasHaveArrivedCount
       bussingMembersOnTheWayCount

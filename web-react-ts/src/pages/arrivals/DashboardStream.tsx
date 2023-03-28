@@ -185,6 +185,14 @@ const StreamDashboard = () => {
                 noCaption
               />
             </RoleView>
+            <MenuButton
+              title="Vehicles To Be Paid"
+              onClick={() => navigate('/arrivals/vehicles-to-be-paid')}
+              number={stream?.vehiclesToBePaidCount.toString()}
+              color="yellow"
+              iconBg
+              noCaption
+            />
 
             <MenuButton
               title="Bacentas That Didn't Bus"
