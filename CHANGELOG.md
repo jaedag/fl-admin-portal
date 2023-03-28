@@ -1,3 +1,15 @@
+#### 6.5.6 (2023-03-28)
+
+##### Bug Fixes
+
+*  closing down constituency also removes constituency admin ([7d9930d8](https://github.com/firstlovecenter/fl-pastoral-care/commit/7d9930d80cd810440737c940e38fb428ea6d270d))
+*  add permissions for admins to make bacenta leaders ([89a18db3](https://github.com/firstlovecenter/fl-pastoral-care/commit/89a18db382d1c2a337f5eddd0a980136f8c272d2))
+*  when closing down a constituency, the admin should also be removed ([397e80a2](https://github.com/firstlovecenter/fl-pastoral-care/commit/397e80a2422b2a4c6e745b2e3888c77c6f794de2))
+*  searching for google places displays the name correctly ([57d14591](https://github.com/firstlovecenter/fl-pastoral-care/commit/57d14591d7d9210553f84258b4a0a56b661f5a63))
+*  update vite config to start server at localhost instead of 127.0.0.1 ([da1811de](https://github.com/firstlovecenter/fl-pastoral-care/commit/da1811deffbca269661eee909e62380ba6892be0))
+*  removed code that returns lpIvyTopUp in the system ([52a7c787](https://github.com/firstlovecenter/fl-pastoral-care/commit/52a7c787869fcee3945381b5d1820cb04efcfdd0))
+*  fix bug preventing new constituencies from being created ([29b47e63](https://github.com/firstlovecenter/fl-pastoral-care/commit/29b47e6319aaaf0ab6e19968d74753d1997cec53))
+
 #### 6.5.5 (2023-03-25)
 
 ##### Bug Fixes
