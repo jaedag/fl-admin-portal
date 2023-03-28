@@ -750,7 +750,11 @@ extend type Mutation {
   MakeMemberInactive(id: ID!, reason: String!): Member
   CloseDownFellowship(fellowshipId: ID!, leaderId: ID!): Bacenta
   CloseDownBacenta(bacentaId: ID!, leaderId: ID!): Constituency
-  CloseDownConstituency(constituencyId: ID!, leaderId: ID!): Council
+  CloseDownConstituency(
+    constituencyId: ID!
+    leaderId: ID!
+    adminId: ID!
+  ): Council
 
   CloseDownCouncil(councilId: ID!, leaderId: ID!): Stream
     @cypher(

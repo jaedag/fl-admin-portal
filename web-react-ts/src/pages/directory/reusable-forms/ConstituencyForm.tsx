@@ -201,10 +201,12 @@ const ConstituencyForm = ({
                     className={`btn-main ${theme}`}
                     onClick={() => {
                       setButtonLoading(true)
+                      console.log(initialValues.adminId)
                       CloseDownConstituency({
                         variables: {
                           id: constituencyId,
                           leaderId: initialValues.leaderId,
+                          adminId: initialValues.adminId,
                         },
                       })
                         .then((res) => {

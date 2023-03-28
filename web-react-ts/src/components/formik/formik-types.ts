@@ -41,6 +41,7 @@ export interface RoleBasedSearch extends FormikComponentProps {
 export interface FormikInitialValues {
   name: string
   leaderId: string
+  adminId?: string
   leaderName: string
   leaderEmail: string
 }

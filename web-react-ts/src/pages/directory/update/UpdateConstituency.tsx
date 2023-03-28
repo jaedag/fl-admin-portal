@@ -35,6 +35,7 @@ const UpdateConstituency = () => {
     leaderName:
       constituency?.leader?.firstName + ' ' + constituency?.leader?.lastName ??
       '',
+    adminId: constituency?.admin?.id || '',
     leaderId: constituency?.leader?.id || '',
     leaderEmail: constituency?.leader?.email || '',
     council: constituency?.council?.id,
