@@ -346,14 +346,23 @@ const directoryMutation = {
 
     try {
       // Bacenta Leader must be removed since the Bacenta is being closed down
-      await RemoveServant(
-        context,
-        args,
-        permitAdmin('Council'),
-        'Constituency',
-        'Leader',
-        true
-      )
+      await Promise.all([
+        RemoveServant(
+          context,
+          args,
+          permitAdmin('Council'),
+          'Constituency',
+          'Leader',
+          true
+        ),
+        RemoveServant(
+          context,
+          args,
+          permitAdmin('Council'),
+          'Constituency',
+          'Admin'
+        ),
+      ])
 
       const closeConstituencyResponse = await session.run(
         closeChurchCypher.closeDownConstituency,
