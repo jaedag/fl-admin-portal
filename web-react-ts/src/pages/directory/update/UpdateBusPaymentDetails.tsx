@@ -141,11 +141,6 @@ const UpdateBusPayment = () => {
         navigate(`/bacenta/displaydetails`)
     }
 
-    if (!values.mobileNetwork || !values.momoName || !values.momoNumber) {
-      alert('Leader has no momo payment details')
-      return
-    }
-
     if (initialValues.momoNumber !== values.momoNumber) {
       await SendMobileVerificationNumber({
         variables: {
