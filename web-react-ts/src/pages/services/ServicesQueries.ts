@@ -44,6 +44,25 @@ export const FELLOWSHIP_BANKING_SLIP_QUERIES = gql`
     }
   }
 `
+
+export const BANKING_SLIP_SUBMISSION = gql`
+  mutation SubmitBankingSlip($serviceRecordId: ID!, $bankingSlip: String!) {
+    SubmitBankingSlip(
+      serviceRecordId: $serviceRecordId
+      bankingSlip: $bankingSlip
+    ) {
+      id
+      bankingProof
+      bankingSlip
+      bankingSlipUploader {
+        id
+        firstName
+        lastName
+      }
+    }
+  }
+`
+
 export const CONSTITUENCY_BANKING_SLIP_QUERIES = gql`
   query constituencyServices($constituencyId: ID!) {
     constituencies(where: { id: $constituencyId }) {

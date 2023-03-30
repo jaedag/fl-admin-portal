@@ -97,3 +97,20 @@ MATCH (lastService:ServiceRecord {id: recordIds[lastServiceIndex]})
 
 RETURN lastService
 `
+
+export const submitBankingSlip = `
+MATCH (record:ServiceRecord {id: $serviceRecordId})
+WHERE record.transactionStatus IS NULL
+OR record.transactionStatus = 'failed'
+SET record.bankingSlip = $bankingSlip
+WITH record
+MATCH (banker:Member {auth_id: $auth.jwt.sub})
+MERGE (banker)-[:UPLOADED_SLIP_FOR]->(record)
+RETURN record
+`
+
+export const checkIfServicePending = `
+MATCH (record:ServiceRecord {id: $serviceRecordId})
+WHERE record.transactionStatus = 'pending' OR record.transactionStatus = 'send OTP'
+RETURN record
+`
