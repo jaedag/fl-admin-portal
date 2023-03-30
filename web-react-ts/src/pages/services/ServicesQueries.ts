@@ -38,6 +38,7 @@ export const FELLOWSHIP_BANKING_SLIP_QUERIES = gql`
         numberOfTithers
         foreignCurrency
         transactionId
+        transactionReference
         transactionStatus
       }
     }
@@ -122,24 +123,6 @@ export const COUNCIL_BANKING_SLIP_QUERIES = gql`
         income
         transactionId
         transactionStatus
-      }
-    }
-  }
-`
-
-export const BANKING_SLIP_SUBMISSION = gql`
-  mutation SubmitBankingSlip($serviceRecordId: ID!, $bankingSlip: String!) {
-    SubmitBankingSlip(
-      serviceRecordId: $serviceRecordId
-      bankingSlip: $bankingSlip
-    ) {
-      id
-      bankingProof
-      bankingSlip
-      bankingSlipUploader {
-        id
-        firstName
-        lastName
       }
     }
   }

@@ -10,6 +10,7 @@ import { CONFIRM_OFFERING_PAYMENT } from '../../bankingQueries'
 export type ConfirmPaymentServiceType = {
   id: string
   stream_name: StreamOptions
+  transactionStatus?: 'success' | 'pending' | 'failed' | 'abandoned'
 } | null
 
 type ButtonConfirmPaymentProps = {
@@ -97,7 +98,15 @@ const ButtonConfirmPayment = (props: ButtonConfirmPaymentProps) => {
               'failed'
             ) {
               alertMsg('Your Payment Failed 😞. Please try again!')
+              return
+            }
 
+            if (
+              confirmationRes.data.ConfirmOfferingPayment?.transactionStatus ===
+              'success'
+            ) {
+              alertMsg('Payment Confirmed Successfully 😊')
+              navigate('/self-banking/receipt')
               return
             }
           }
@@ -106,12 +115,14 @@ const ButtonConfirmPayment = (props: ButtonConfirmPaymentProps) => {
             ['failed', 'abandoned'].includes(serviceRecord.transactionStatus)
           ) {
             alertMsg('Your Payment Failed 😞. Please try again!')
-
             return
           }
 
-          alertMsg('Payment Confirmed Successfully 😊')
-          navigate('/self-banking/receipt')
+          if (serviceRecord.transactionStatus === 'success') {
+            alertMsg('Payment Confirmed Successfully 😊')
+            navigate('/self-banking/receipt')
+            return
+          }
         } catch (error: any) {
           if (togglePopup) {
             togglePopup()
