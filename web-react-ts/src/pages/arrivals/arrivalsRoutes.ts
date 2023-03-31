@@ -42,6 +42,7 @@ const SetArrivalsTime = lazy(() => import('./Times/SetArrivalsTimes'))
 const ArrivalTimes = lazy(() => import('./Times/ArrivalTimes'))
 const ArrivalsCounters = lazy(() => import('./Helpers/ArrivalsCounters'))
 const BacentasBelow8 = lazy(() => import('./StateBacentasBelow8'))
+const VehiclesToBePaid = lazy(() => import('./StateVehiclesToBePaid'))
 const BusVehicleFormDetails = lazy(() => import('./BusVehicleFormDetails'))
 const ArrivalsPaymentData = lazy(
   () => import('./arrival-payment-data/ArrivalsPaymentData')
@@ -157,6 +158,11 @@ export const arrivals: LazyRouteTypes[] = [
     roles: permitArrivalsCounter(),
     element: StateBacentasToCount,
     placeholder: true,
+  },
+  {
+    path: '/arrivals/vehicles-to-be-paid',
+    roles: permitArrivalsCounter(),
+    element: VehiclesToBePaid,
   },
   {
     path: '/arrivals/bacentas-have-arrived',

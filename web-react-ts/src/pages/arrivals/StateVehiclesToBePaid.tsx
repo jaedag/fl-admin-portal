@@ -15,22 +15,23 @@ import { BacentaWithArrivals } from './arrivals-types'
 import { STREAM_VEHICLES_TO_BE_PAID } from './bussingStatusQueries'
 import NoData from './CompNoData'
 import VehicleButton from './components/VehicleButton'
+import VehicleButtonPayment from './components/VehiclePaymentButton'
 
 type FormOptions = {
   bacentaSearch: string
 }
 
-const StateBacentasToCount = () => {
-  const { clickCard } = useContext(ChurchContext)
+const StateBacentasToBePaid = () => {
+  const { streamId, clickCard } = useContext(ChurchContext)
   const { data, loading, error, refetch } = useQuery(
     STREAM_VEHICLES_TO_BE_PAID,
     {
+      variables: {
+        id: streamId,
+      },
       pollInterval: SHORT_POLL_INTERVAL,
     }
   )
-
-  const [seeCars, setSeeCars] = useState(true)
-  const [seeBusses, setSeeBusses] = useState(true)
 
   const church = data?.streams[0]
 
@@ -39,7 +40,7 @@ const StateBacentasToCount = () => {
     bacentaSearch: '',
   }
 
-  const bacentaDataLoaded = church ? church?.vehiclesToBePaid : []
+  const bacentaDataLoaded = church ? church?.bacentasToBePaid : []
   const [bacentaData, setBacentaData] = useState<
     BacentaWithArrivals[] | undefined
   >([])
@@ -55,7 +56,7 @@ const StateBacentasToCount = () => {
     onSubmitProps.setSubmitting(true)
     const searchTerm = values.bacentaSearch.toLowerCase()
     setBacentaData(
-      church?.bacentasNotCounted.filter((bacenta: BacentaWithArrivals) => {
+      church?.bacentasToBePaid.filter((bacenta: BacentaWithArrivals) => {
         if (bacenta.name.toLowerCase().includes(searchTerm)) {
           return true
         } else if (bacenta.leader.fullName.toLowerCase().includes(searchTerm)) {
@@ -74,7 +75,9 @@ const StateBacentasToCount = () => {
       <ApolloWrapper data={church} loading={loading} error={error} placeholder>
         <Container>
           <>
-            <HeadingPrimary loading={loading}>Bacentas To Count</HeadingPrimary>
+            <HeadingPrimary loading={loading}>
+              Bacentas To Be Paid
+            </HeadingPrimary>
             <HeadingSecondary loading={!church?.name}>
               {church?.name} {church?.__typename}
             </HeadingSecondary>
@@ -92,38 +95,13 @@ const StateBacentasToCount = () => {
                 </Form>
               )}
             </Formik>
-            <div className="text-center mt-2">
-              <Button
-                variant={'info'}
-                className={`${!seeBusses && 'low-opacity'} me-2`}
-                onClick={() => setSeeBusses(!seeBusses)}
-              >
-                Sprinter and Urvan
-              </Button>
-              <Button
-                variant={`success`}
-                className={`${!seeCars && 'low-opacity'}`}
-                onClick={() => setSeeCars(!seeCars)}
-              >
-                Car and Uber
-              </Button>
-            </div>
+
             {church && !bacentaData?.length && (
-              <NoData text="There are no bacentas to be counted" />
+              <NoData text="There are no bacentas to be be paid" />
             )}
             {bacentaData?.map((bacenta: BacentaWithArrivals) =>
               bacenta.bussing[0].vehicleRecords.map((record, i) => {
-                if (record.arrivalTime) {
-                  return null
-                }
-                if (
-                  !seeBusses &&
-                  (record.vehicle === 'Sprinter' || record.vehicle === 'Urvan')
-                ) {
-                  return null
-                }
-
-                if (!seeCars && record.vehicle === 'Car') {
+                if (record.transactionStatus === 'success') {
                   return null
                 }
 
@@ -139,13 +117,13 @@ const StateBacentasToCount = () => {
                     }}
                   >
                     <div className="d-grid gap-2 mt-2">
-                      <VehicleButton record={record} />
+                      <VehicleButtonPayment record={record} />
                     </div>
                   </MemberDisplayCard>
                 )
               })
             )}
-            {!church?.bacentasNotCounted.length && loading && (
+            {!church?.bacentasToBePaid.length && loading && (
               <PlaceholderDefaulterList />
             )}
           </>
@@ -155,4 +133,4 @@ const StateBacentasToCount = () => {
   )
 }
 
-export default StateBacentasToCount
+export default StateBacentasToBePaid

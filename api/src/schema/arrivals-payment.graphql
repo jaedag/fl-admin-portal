@@ -11,7 +11,7 @@ extend type Stream {
       RETURN COUNT(record)
       """
     )
- bacentasToBePaid: [Bacenta!]!
+  bacentasToBePaid: [Bacenta!]!
     @cypher(
       statement: """
       MATCH (this)-[:HAS*3]->(bacentas:Active:Bacenta)
@@ -19,8 +19,8 @@ extend type Stream {
       WHERE date.date = date()
       MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
         WHERE record.vehicleTopUp > 0 AND record.transactionStatus IS NULL
-      WITH DISTINCT record
-      RETURN record
+      WITH DISTINCT bacentas
+      RETURN bacentas
       """
     )
 }

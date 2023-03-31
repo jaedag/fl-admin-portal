@@ -358,7 +358,7 @@ export const STREAM_VEHICLES_TO_BE_PAID = gql`
       id
       name
 
-      vehiclesToBePaid {
+      bacentasToBePaid {
         id
         name
         leader {
@@ -369,6 +369,15 @@ export const STREAM_VEHICLES_TO_BE_PAID = gql`
           pictureUrl
           phoneNumber
           whatsappNumber
+        }
+        bussing(limit: 1) {
+          vehicleRecords(where: { arrivalTime_NOT: null }) {
+            id
+            attendance
+            vehicle
+            vehicleTopUp
+            arrivalTime
+          }
         }
       }
     }
