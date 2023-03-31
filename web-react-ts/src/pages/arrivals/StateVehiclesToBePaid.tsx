@@ -9,13 +9,14 @@ import { Form, Formik, FormikHelpers } from 'formik'
 import { SHORT_POLL_INTERVAL } from 'global-utils'
 import PlaceholderDefaulterList from 'pages/services/defaulters/PlaceholderDefaulterList'
 import { useContext, useEffect, useState } from 'react'
-import { Button, Container } from 'react-bootstrap'
+import { Button, ButtonGroup, Container, Modal } from 'react-bootstrap'
 import PullToRefresh from 'react-simple-pull-to-refresh'
 import { BacentaWithArrivals } from './arrivals-types'
 import { STREAM_VEHICLES_TO_BE_PAID } from './bussingStatusQueries'
 import NoData from './CompNoData'
 import VehicleButton from './components/VehicleButton'
 import VehicleButtonPayment from './components/VehiclePaymentButton'
+import { FunctionReturnsVoid } from 'global-types'
 
 type FormOptions = {
   bacentaSearch: string
@@ -32,6 +33,12 @@ const StateBacentasToBePaid = () => {
       pollInterval: SHORT_POLL_INTERVAL,
     }
   )
+  const [submitting, setSubmitting] = useState(false)
+  const [show, setShow] = useState(false)
+  const [seePaid, setSeePaid] = useState(false)
+  const handleOpen: FunctionReturnsVoid = () => setShow(true)
+  const handleClose: FunctionReturnsVoid = () => setShow(false)
+  console.log(show)
 
   const church = data?.streams[0]
 
@@ -74,38 +81,74 @@ const StateBacentasToBePaid = () => {
     <PullToRefresh onRefresh={refetch}>
       <ApolloWrapper data={church} loading={loading} error={error} placeholder>
         <Container>
-          <>
-            <HeadingPrimary loading={loading}>
-              Bacentas To Be Paid
-            </HeadingPrimary>
-            <HeadingSecondary loading={!church?.name}>
-              {church?.name} {church?.__typename}
-            </HeadingSecondary>
-            <Formik initialValues={initialValues} onSubmit={onSubmit}>
-              {() => (
-                <Form>
-                  <div className="align-middle">
-                    <Input
-                      className="form-control member-search w-100"
-                      name="bacentaSearch"
-                      placeholder="Search Bacentas"
-                      aria-describedby="Bacenta Search"
-                    />
-                  </div>
-                </Form>
-              )}
-            </Formik>
-
-            {church && !bacentaData?.length && (
-              <NoData text="There are no bacentas to be be paid" />
+          <HeadingPrimary loading={loading}>Bacentas To Be Paid</HeadingPrimary>
+          <HeadingSecondary loading={!church?.name}>
+            {church?.name} {church?.__typename}
+          </HeadingSecondary>
+          <Formik initialValues={initialValues} onSubmit={onSubmit}>
+            {() => (
+              <Form>
+                <div className="align-middle">
+                  <Input
+                    className="form-control member-search w-100"
+                    name="bacentaSearch"
+                    placeholder="Search Bacentas"
+                    aria-describedby="Bacenta Search"
+                  />
+                </div>
+              </Form>
             )}
-            {bacentaData?.map((bacenta: BacentaWithArrivals) =>
-              bacenta.bussing[0].vehicleRecords.map((record, i) => {
-                if (record.transactionStatus === 'success') {
-                  return null
-                }
+          </Formik>
+          {church && bacentaData?.length ? (
+            <div className="d-grid gap-2">
+              <ButtonGroup className="mt-2">
+                <Button
+                  variant={'warning'}
+                  disabled={!seePaid}
+                  onClick={() => setSeePaid(false)}
+                >
+                  Unpaid
+                </Button>
+                <Button
+                  variant={`success`}
+                  disabled={seePaid}
+                  onClick={() => setSeePaid(true)}
+                >
+                  Paid
+                </Button>
+              </ButtonGroup>
+            </div>
+          ) : null}
 
+          {church && !bacentaData?.length && (
+            <NoData text="There are no bacentas to be be paid" />
+          )}
+
+          <Modal
+            contentClassName="dark"
+            show={show}
+            onHide={handleClose}
+            centered
+          >
+            <Modal.Header closeButton>
+              <Modal.Title>Payment Information</Modal.Title>
+            </Modal.Header>
+          </Modal>
+
+          {bacentaData?.map((bacenta: BacentaWithArrivals) =>
+            bacenta.bussing[0].vehicleRecords.map((record, i) => {
+              if (!seePaid && record.transactionStatus === 'success') {
+                return <NoData text="There are no bacentas to be paid" />
+              }
+
+              if (seePaid && record.transactionStatus !== 'success') {
                 return (
+                  <NoData text="There are no bacentas that have been paid" />
+                )
+              }
+
+              return (
+                <>
                   <MemberDisplayCard
                     key={i}
                     member={bacenta}
@@ -117,16 +160,19 @@ const StateBacentasToBePaid = () => {
                     }}
                   >
                     <div className="d-grid gap-2 mt-2">
-                      <VehicleButtonPayment record={record} />
+                      <VehicleButtonPayment
+                        record={record}
+                        togglePopup={handleOpen}
+                      />
                     </div>
                   </MemberDisplayCard>
-                )
-              })
-            )}
-            {!church?.bacentasToBePaid.length && loading && (
-              <PlaceholderDefaulterList />
-            )}
-          </>
+                </>
+              )
+            })
+          )}
+          {!church?.bacentasToBePaid.length && loading && (
+            <PlaceholderDefaulterList />
+          )}
         </Container>
       </ApolloWrapper>
     </PullToRefresh>

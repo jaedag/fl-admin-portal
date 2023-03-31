@@ -3,6 +3,7 @@ import {
   permitArrivalsCounter,
   permitLeaderAdminArrivals,
   permitArrivalsHelpers,
+  permitArrivalsPayer,
 } from 'permission-utils'
 import { LazyRouteTypes } from 'global-types'
 import { lazy } from 'react'
@@ -161,7 +162,7 @@ export const arrivals: LazyRouteTypes[] = [
   },
   {
     path: '/arrivals/vehicles-to-be-paid',
-    roles: permitArrivalsCounter(),
+    roles: permitArrivalsPayer(),
     element: VehiclesToBePaid,
   },
   {

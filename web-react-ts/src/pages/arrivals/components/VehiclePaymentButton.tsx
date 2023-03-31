@@ -2,24 +2,22 @@ import { ChurchContext } from 'contexts/ChurchContext'
 import React, { useContext } from 'react'
 import { Button } from 'react-bootstrap'
 import { CheckCircleFill } from 'react-bootstrap-icons'
-import { useNavigate } from 'react-router'
 import { VehicleRecord } from '../arrivals-types'
 import ButtonIcons from './ButtonIcons'
 import CurrencySpan from 'components/CurrencySpan'
 
 const VehicleButtonPayment = ({
   record,
-  canFillOnTheWay,
+  togglePopup,
   size,
   className,
 }: {
   record: VehicleRecord
-  canFillOnTheWay?: boolean | null
+  togglePopup: () => void
   size?: 'sm' | 'lg'
   className?: string
 }) => {
   const { clickCard } = useContext(ChurchContext)
-  const navigate = useNavigate()
 
   return (
     <Button
@@ -30,7 +28,7 @@ const VehicleButtonPayment = ({
       disabled={record?.transactionStatus === 'success'}
       onClick={() => {
         clickCard(record)
-        navigate('/bacenta/vehicle-details')
+        togglePopup()
       }}
     >
       <ButtonIcons type={record?.vehicle} /> {record?.vehicle} (
