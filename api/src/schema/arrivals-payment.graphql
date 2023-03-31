@@ -18,7 +18,7 @@ extend type Stream {
       MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
       WHERE date.date = date()
       MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
-        WHERE record.vehicleTopUp > 0 AND record.transactionStatus IS NULL
+        WHERE record.vehicleTopUp > 0
       WITH DISTINCT bacentas
       RETURN bacentas
       """
