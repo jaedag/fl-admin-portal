@@ -6,7 +6,7 @@ import { ChurchContext } from '../../../contexts/ChurchContext'
 import RoleView from '../../../auth/RoleView'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { Col, Container, Row } from 'react-bootstrap'
-import { permitArrivals } from 'permission-utils'
+import { permitAdminArrivals } from 'permission-utils'
 import AllChurchesSummary from 'components/AllChurchesSummary'
 import 'components/AllChurchesSummary.css'
 import ChurchSearch from 'components/ChurchSearch'
@@ -58,7 +58,7 @@ const DisplayAllBacentas = () => {
               </Link>
             ) : null}
           </Col>
-          <RoleView roles={permitArrivals('GatheringService')}>
+          <RoleView roles={permitAdminArrivals('GatheringService')}>
             <Col className="col-auto">
               <Link
                 to="/bacenta/addbacenta"

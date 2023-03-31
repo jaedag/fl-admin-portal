@@ -6,6 +6,16 @@ REMOVE ministry:Ministry
 
 RETURN gs,ministry;
 
-MATCH (this:Fellowship {id: '99985480-349d-41e1-857b-431d6775fa00'})-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(records:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
-      WITH DISTINCT records,date
-      RETURN date.date, records.attendance, records.income, records.noServiceReason ORDER BY date.date DESC LIMIT 12
+
+
+
+//  
+
+MATCH (record:ServiceRecord {id: '0e13d8f3-8ed6-4212-aa47-512c36bd5ff6'})
+MATCH (fellowship:Fellowship {id: '81e5fe1b-8aa3-4e50-8c6d-b33f02e9f17d'})<-[:LEADS]-(leader:Member)
+SET record.transactionReference = 'iy9qoif5xad2zdk',
+    record.transactionStatus = 'success'
+
+WITH record, fellowship
+MERGE (record)<-[:OFFERING_BANKED_BY]-(leader)
+RETURN record.income, record.transactionReference;
