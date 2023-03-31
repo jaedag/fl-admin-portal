@@ -1,4 +1,5 @@
 /* eslint-disable no-underscore-dangle */
+import { Transaction } from 'neo4j-driver'
 import {
   isAuth,
   noEmptyArgsValidation,
@@ -69,10 +70,12 @@ const treasuryMutations = {
     }
 
     try {
-      const response = await session.run(anagkazo.confirmBanking, {
-        ...args,
-        auth: context.auth,
-      })
+      const response = await session.executeWrite((tx: Transaction) =>
+        tx.run(anagkazo.confirmBanking, {
+          ...args,
+          auth: context.auth,
+        })
+      )
       const confirmationResponse = rearrangeCypherObject(response)
 
       if (typeof confirmationResponse === 'string') {
