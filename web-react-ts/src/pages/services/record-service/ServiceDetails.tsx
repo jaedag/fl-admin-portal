@@ -180,7 +180,7 @@ const ServiceDetails = ({ service, church, loading }: ServiceDetailsProps) => {
                   <RoleView roles={permitAdmin('GatheringService')}>
                     <div className="d-grid gap-2">
                       <Button
-                        className="my-3"
+                        className="mt-3"
                         variant="warning"
                         disabled={submitting}
                         onClick={() => {
@@ -206,8 +206,8 @@ const ServiceDetails = ({ service, church, loading }: ServiceDetailsProps) => {
                       </Button>
 
                       <Button
-                        className="my-3"
-                        variant="warning"
+                        className="mb-3"
+                        variant="danger"
                         onClick={() => {
                           navigate(
                             `/${church?.__typename.toLowerCase()}/banking-slip/submission`

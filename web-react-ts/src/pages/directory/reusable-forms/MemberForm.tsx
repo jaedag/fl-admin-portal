@@ -342,20 +342,22 @@ const MemberForm = ({
                 </div>
                 <Col>
                   <SubmitButton formik={formik} />
-                  <RoleView
-                    roles={[
-                      'sheepseekerStream',
-                      'adminStream',
-                      'adminGatheringService',
-                    ]}
-                  >
-                    <Button
-                      onClick={() => togglePopup()}
-                      className={`btn-graphs btn dark image mt-3`}
+                  {update && (
+                    <RoleView
+                      roles={[
+                        'sheepseekerStream',
+                        'adminStream',
+                        'adminGatheringService',
+                      ]}
                     >
-                      Delete Member
-                    </Button>
-                  </RoleView>
+                      <Button
+                        onClick={() => togglePopup()}
+                        className={`btn-graphs btn dark image mt-3`}
+                      >
+                        Delete Member
+                      </Button>
+                    </RoleView>
+                  )}
                 </Col>
               </Row>
             </Form>

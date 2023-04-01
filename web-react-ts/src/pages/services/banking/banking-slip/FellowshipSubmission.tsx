@@ -86,7 +86,7 @@ const FellowshipBankingSlipSubmission = () => {
               <HeadingPrimary>Banking Slip Submission</HeadingPrimary>
               <HeadingSecondary>{fellowship?.name}</HeadingSecondary>
               <p>
-                Date of Joint Service :{' '}
+                Date of Service :{' '}
                 {getHumanReadableDate(
                   data.serviceRecords[0].serviceDate.date,
                   true
