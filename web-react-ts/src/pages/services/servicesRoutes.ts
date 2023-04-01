@@ -223,13 +223,13 @@ export const services: LazyRouteTypes[] = [
   {
     path: '/constituency/banking-slip/submission',
     element: ConstituencyBankingSlipSubmission,
-    roles: ['leaderConstituency', 'adminConstituency'],
+    roles: ['adminGatheringService'],
     placeholder: true,
   },
   {
     path: '/council/banking-slip/submission',
     element: CouncilBankingSlipSubmission,
-    roles: ['leaderCouncil', 'adminCouncil', 'adminGatheringService'],
+    roles: ['adminGatheringService'],
     placeholder: true,
   },
 ]
