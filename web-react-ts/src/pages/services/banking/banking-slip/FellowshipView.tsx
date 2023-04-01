@@ -10,23 +10,23 @@ import React, { useContext } from 'react'
 import { Card, Col, Container, Row } from 'react-bootstrap'
 import { CheckCircleFill, XCircleFill } from 'react-bootstrap-icons'
 import { useNavigate } from 'react-router'
-import { COUNCIL_BANKING_SLIP_QUERIES } from '../../ServicesQueries'
+import { FELLOWSHIP_BANKING_SLIP_QUERIES } from '../../ServicesQueries'
 
-const CouncilBankingSlipView = () => {
-  const { councilId, clickCard } = useContext(ChurchContext)
+const FellowshipBankingSlipView = () => {
+  const { fellowshipId, clickCard } = useContext(ChurchContext)
   const navigate = useNavigate()
-  const { data, loading, error } = useQuery(COUNCIL_BANKING_SLIP_QUERIES, {
-    variables: { councilId: councilId },
+  const { data, loading, error } = useQuery(FELLOWSHIP_BANKING_SLIP_QUERIES, {
+    variables: { fellowshipId: fellowshipId },
   })
-  const council = data?.councils[0]
+  const fellowship = data?.fellowships[0]
   const placeholder = ['', '', '']
   throwToSentry('', error)
 
   return (
     <Container>
-      <HeadingPrimary loading={loading}>{council?.name}</HeadingPrimary>
+      <HeadingPrimary loading={loading}>{fellowship?.name}</HeadingPrimary>
 
-      {data?.councils[0].services.map(
+      {data?.fellowships[0].services.map(
         (service: ServiceRecord, index: number) => {
           if (service.noServiceReason) {
             if (index === 0) {
@@ -44,8 +44,7 @@ const CouncilBankingSlipView = () => {
               className="mb-2"
               onClick={() => {
                 clickCard(service)
-
-                navigate('/council/service-details')
+                navigate('/fellowship/service-details')
               }}
             >
               <Card.Header>
@@ -84,7 +83,10 @@ const CouncilBankingSlipView = () => {
               <Card.Body>
                 <Row>
                   <Col>
-                    <PlaceholderCustom as="span" loading={loading} />
+                    <PlaceholderCustom
+                      as="span"
+                      loading={loading}
+                    ></PlaceholderCustom>
                   </Col>
                 </Row>
               </Card.Body>
@@ -95,4 +97,4 @@ const CouncilBankingSlipView = () => {
   )
 }
 
-export default CouncilBankingSlipView
+export default FellowshipBankingSlipView

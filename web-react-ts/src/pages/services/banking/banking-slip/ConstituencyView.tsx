@@ -44,8 +44,8 @@ const ConstituencyBankingSlipView = () => {
               className="mb-2"
               onClick={() => {
                 clickCard(service)
-                !service.bankingProof &&
-                  navigate('/constituency/banking-slip/submission')
+
+                navigate('/constituency/service-details')
               }}
             >
               <Card.Header>

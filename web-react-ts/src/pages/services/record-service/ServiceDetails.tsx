@@ -12,7 +12,7 @@ import { parseNeoTime } from 'jd-date-utils'
 import { permitAdmin } from 'permission-utils'
 import React, { useContext, useEffect, useState } from 'react'
 import { Col, Container, Row, Button, Card } from 'react-bootstrap'
-import { CheckCircleFill } from 'react-bootstrap-icons'
+import { CheckCircleFill, FileEarmarkArrowUpFill } from 'react-bootstrap-icons'
 import { useNavigate } from 'react-router'
 import { MANUALLY_CONFIRM_OFFERING_PAYMENT } from './RecordServiceMutations'
 import './ServiceDetails.css'
@@ -203,6 +203,19 @@ const ServiceDetails = ({ service, church, loading }: ServiceDetailsProps) => {
                       >
                         <CheckCircleFill />
                         {submitting ? 'Confirming...' : 'Confirm Offering'}
+                      </Button>
+
+                      <Button
+                        className="my-3"
+                        variant="warning"
+                        onClick={() => {
+                          navigate(
+                            `/${church?.__typename.toLowerCase()}/banking-slip/submission`
+                          )
+                        }}
+                      >
+                        <FileEarmarkArrowUpFill />
+                        Upload Banking Slip
                       </Button>
                     </div>
                   </RoleView>

@@ -131,6 +131,13 @@ const DefaultersDashboard = lazy(
 )
 const TrendsMenu = lazy(() => import('./graphs/TrendsMenu'))
 
+const FellowshipBankingSlipSubmission = lazy(
+  () => import('pages/services/banking/banking-slip/FellowshipSubmission')
+)
+const FellowshipBankingSlipView = lazy(
+  () => import('pages/services/banking/banking-slip/FellowshipView')
+)
+
 export const services: LazyRouteTypes[] = [
   ...anagkazoRoutes,
   ...banking,
@@ -189,6 +196,18 @@ export const services: LazyRouteTypes[] = [
     placeholder: true,
   },
 
+  {
+    path: '/services/fellowship/banking-slips',
+    element: FellowshipBankingSlipView,
+    roles: permitLeaderAdmin('Fellowship'),
+    placeholder: true,
+  },
+  {
+    path: '/fellowship/banking-slip/submission',
+    element: FellowshipBankingSlipSubmission,
+    roles: ['leaderFellowship'],
+    placeholder: true,
+  },
   {
     path: '/services/constituency/banking-slips',
     element: ConstituencyBankingSlipView,
