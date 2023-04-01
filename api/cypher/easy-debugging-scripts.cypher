@@ -12,11 +12,11 @@ RETURN gs,ministry;
 
 //  
 
-MATCH (record:ServiceRecord {id: '095c76c6-8d3f-4544-a78e-6694e3ced9b8'})
-MATCH (fellowship:Fellowship {id: '19907aa2-aa66-422e-a35f-ccac4c22f7d4'})<-[:LEADS]-(leader:Member)
-SET record.transactionReference = '8m5lc5bg9e3hagb',
+MATCH (record:ServiceRecord {id: 'fae06c05-189e-4a9c-ad86-de331766e6e3'})
+MATCH (fellowship:Fellowship {id: '1b36ea27-0695-4d23-9f21-a72665cde6d4'})<-[:LEADS]-(leader:Member)
+SET record.transactionReference = 'ghbxeivbew3y8on',
     record.transactionStatus = 'success'
 
-WITH record, fellowship
+WITH record, fellowship, leader
 MERGE (record)<-[:OFFERING_BANKED_BY]-(leader)
-RETURN record.income, record.transactionReference;
+RETURN record.income, record.transactionReference, record.transactionStatus,fellowship.name,  leader.firstName;
