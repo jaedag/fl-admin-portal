@@ -1,3 +1,14 @@
+#### 6.5.7 (2023-04-01)
+
+##### Bug Fixes
+
+*  implement upload of banking slip by gs admin ([1d498366](https://github.com/firstlovecenter/fl-pastoral-care/commit/1d498366334e68e9eca68d46a9374d54e34d101a))
+*  give gs admin ability to create new bacentas ([98b9c853](https://github.com/firstlovecenter/fl-pastoral-care/commit/98b9c853c1fa5567c7e4169353b3df204d82e567))
+*  bring back resolver to submit banking slip in anticipation of new feature ([ae9fa924](https://github.com/firstlovecenter/fl-pastoral-care/commit/ae9fa92494fb48bad7cc965489c7545cf9614da2))
+*  return more verbose data coming from confirming offering ([4ea260b8](https://github.com/firstlovecenter/fl-pastoral-care/commit/4ea260b86993d559157ac663c50bcc522f2b7ad8))
+*  some minor improvements to the banking flow ([e2808271](https://github.com/firstlovecenter/fl-pastoral-care/commit/e2808271f89fb8cccb0d1899831f2c6777e33dcf))
+*  add permissions for adminns to change bacenta leaders ([60d2038f](https://github.com/firstlovecenter/fl-pastoral-care/commit/60d2038fe8d7d2f38952c4a5659cad61125ec39b))
+
 #### 6.5.6 (2023-03-28)
 
 ##### Bug Fixes
