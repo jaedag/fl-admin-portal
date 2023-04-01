@@ -1,9 +1,9 @@
 {
   "string": {
-    "subscription": "\n\nIf you do not understand this message or you believe it has been sent in error, kindly contact your council admin for clarification.\n\nPlease do not respond to this email address as it is unmonitored and will not receive a reply.\n\nOn behalf of the Resident Bishop,\nRegards\nThe Administrator\nFirst Love Center HQ\nAccra"
+    "subscription": "\n\nIf you do not understand this message or you believe it has been sent in error, kindly contact your council admin for clarification.\n\nPlease do not respond to this email address as it is unmonitored and will not receive a reply.\n\nOn behalf of the Lead Pastor,\nRegards\nThe Administrator\nFirst Love Center HQ\nAccra"
   },
   "html": {
-    "subscription": "If you do not understand this message or you believe it has been sent in error, kindly contact your council admin for clarification.<br/><br/>Please do not respond to this email address as it is unmonitored and will not receive a reply.<br/><br/>On behalf of the Resident Bishop,<br/>Regards<br/>The Administrator<br/>First Love Center HQ<br/>Accra",
+    "subscription": "If you do not understand this message or you believe it has been sent in error, kindly contact your council admin for clarification.<br/><br/>Please do not respond to this email address as it is unmonitored and will not receive a reply.<br/><br/>On behalf of the Lead Pastor,<br/>Regards<br/>The Administrator<br/>First Love Center HQ<br/>Accra",
     "helpdesk": "<b><a href='https://reports.firstlovecenter.com/helpdesk'>this website</a></b>"
   },
   "error": {
@@ -19,11 +19,10 @@
     "normal_top_up_p1": "We just counted your attendance at the terminal. You will receive a top up of ",
     "normal_top_up_p2": " GHS. Today's attendance was ",
     "normal_no_top_up": "We just counted your attendance at the terminal. Today you bussed ",
-    "bacenta_demoted_to_ic_p1": "Sorry to inform you that you have not met the quota of 8 for the last 4 weeks and your bacenta ", 
-    "bacenta_demoted_to_ic_p2": " is being demoted to IC status.", 
+    "bacenta_demoted_to_ic_p1": "Sorry to inform you that you have not met the quota of 8 for the last 4 weeks and your bacenta ",
+    "bacenta_demoted_to_ic_p2": " is being demoted to IC status.",
     "bacenta_graduated_p1": "Congrats, your bacenta ",
     "bacenta_graduated_p2": " has just graduated from IC status to Bacenta status. Keep on working for the Lord!"
-
   },
   "equipment": {
     "notify_fellowship_leaders_sms": "Hi Fellowship Leader,\nNote: Equipment Campaign Data Collection is ongoing. You are required to fill forms on the Admin Portal. Check your mail for more info.",
