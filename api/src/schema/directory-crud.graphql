@@ -349,7 +349,7 @@ extend type Mutation {
     )
     @cypher(
       statement: """
-      CREATE (bacenta:Bacenta:IC:Active {name:$name})
+      CREATE (bacenta:Bacenta:Graduated:Active {name:$name})
         SET	bacenta.id = apoc.create.uuid(),
         bacenta.sprinterTopUp = 0,
         bacenta.urvanTopUp = 0,
