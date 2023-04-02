@@ -419,6 +419,10 @@ export const arrivalsMutation = {
         // Two or more vehicles but the combined attendance is less than the expected minimum
         adjustedArgs.attendance = 0
       }
+
+      if (args.attendance < 8) {
+        adjustedArgs.vehicle = 'Car'
+      }
     }
 
     const response = rearrangeCypherObject(
