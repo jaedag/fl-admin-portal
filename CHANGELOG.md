@@ -1,3 +1,10 @@
+#### 6.5.9 (2023-04-02)
+
+##### Bug Fixes
+
+*  fix error choosing timegrpah instead of swelldate ([1de05274](https://github.com/firstlovecenter/fl-pastoral-care/commit/1de05274eb70b39931a810ce9fedb6d7ad6f2689))
+*  add required option for form mobilisation ([2b6a14ae](https://github.com/firstlovecenter/fl-pastoral-care/commit/2b6a14ae5313923f07b8264b5e227f83e5f2700c))
+
 #### 6.5.8 (2023-04-02)
 
 ##### Bug Fixes
