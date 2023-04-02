@@ -286,7 +286,7 @@ export const BACENTA_ARRIVALS = gql`
         mobilisationPicture
       }
     }
-    swellDates(where: { date: $date }) {
+    timeGraphs(where: { date: $date }) {
       id
       date
       swell
