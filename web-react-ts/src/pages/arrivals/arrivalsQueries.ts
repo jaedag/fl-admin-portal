@@ -251,7 +251,7 @@ export const CONFIRM_GATHERINGSERVICE_ARRIVALS = gql`
 `
 
 export const BACENTA_ARRIVALS = gql`
-  query bacentaArrivals($id: ID!, $date: Date) {
+  query bacentaArrivals($id: ID!, $date: Date!) {
     bacentas(where: { id: $id }, options: { limit: 1 }) {
       id
       name
@@ -286,7 +286,7 @@ export const BACENTA_ARRIVALS = gql`
         mobilisationPicture
       }
     }
-    timeGraphs(where: { date: $date }) {
+    swellDates(where: { date: $date }) {
       id
       date
       swell

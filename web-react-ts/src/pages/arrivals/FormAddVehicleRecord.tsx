@@ -34,7 +34,7 @@ const FormAddVehicleRecord = () => {
   const { bussingRecordId } = useContext(ServiceContext)
 
   const { data, loading, error } = useQuery(BACENTA_ARRIVALS, {
-    variables: { id: bacentaId },
+    variables: { id: bacentaId, date: new Date().toISOString().slice(0, 10) },
   })
   const bacenta: BacentaWithArrivals = data?.bacentas[0]
 
