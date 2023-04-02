@@ -1,3 +1,12 @@
+#### 6.5.8 (2023-04-02)
+
+##### Bug Fixes
+
+*  fix private car option not showing on swell dates ([f60703de](https://github.com/firstlovecenter/fl-pastoral-care/commit/f60703dea846c1df6cf9543b80d6a2c656279e24))
+*  change text saying 'Resident Pastor' to 'Lead Pastor' ([7e3e0a22](https://github.com/firstlovecenter/fl-pastoral-care/commit/7e3e0a22062b3fa8b647e84a4b033d27189a99aa))
+*  add permission for gs admin to upload banking slip for constituency ([00cacf47](https://github.com/firstlovecenter/fl-pastoral-care/commit/00cacf47f08c66b65bf1becbaf8e9b28d1d5933f))
+*  remove delete member when registering member ([6d08237f](https://github.com/firstlovecenter/fl-pastoral-care/commit/6d08237f5c2d6f390de813a33973b03dabb6a5fc))
+
 #### 6.5.7 (2023-04-01)
 
 ##### Bug Fixes
