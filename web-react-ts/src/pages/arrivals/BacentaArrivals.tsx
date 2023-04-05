@@ -87,7 +87,7 @@ const BacentaArrivals = () => {
           </HeadingPrimary>
           {date?.swell && (
             <HeadingSecondary loading={loading}>
-              <h4 className="fw-bold text-center yellow">Swell Weekend!!!</h4>
+              <h4 className="fw-bold text-center yellow">Swollen Weekend!!!</h4>
             </HeadingSecondary>
           )}
 
