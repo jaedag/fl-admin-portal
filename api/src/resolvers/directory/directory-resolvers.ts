@@ -2,12 +2,7 @@ import axios from 'axios'
 import { getHumanReadableDate } from 'jd-date-utils'
 import { Context } from '../utils/neo4j-types'
 import { Member } from '../utils/types'
-import {
-  isAuth,
-  noEmptyArgsValidation,
-  rearrangeCypherObject,
-  throwToSentry,
-} from '../utils/utils'
+import { isAuth, rearrangeCypherObject, throwToSentry } from '../utils/utils'
 import {
   permitSheepSeeker,
   permitAdmin,
@@ -306,7 +301,6 @@ const directoryMutation = {
   },
   CloseDownConstituency: async (object: any, args: any, context: Context) => {
     isAuth(permitAdmin('Council'), context.auth.roles)
-    noEmptyArgsValidation(args)
 
     const session = context.executionContext.session()
     const sessionTwo = context.executionContext.session()
@@ -361,13 +355,15 @@ const directoryMutation = {
           'Leader',
           true
         ),
-        RemoveServant(
-          context,
-          args,
-          permitAdmin('Council'),
-          'Constituency',
-          'Admin'
-        ),
+        args.adminId
+          ? RemoveServant(
+              context,
+              args,
+              permitAdmin('Council'),
+              'Constituency',
+              'Admin'
+            )
+          : null,
       ])
 
       const closeConstituencyResponse = await session.run(
