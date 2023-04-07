@@ -1,5 +1,4 @@
 import MenuButton from 'components/buttons/MenuButton'
-import PlaceholderCustom from 'components/Placeholder'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { MemberContext } from 'contexts/MemberContext'
 import React, { useContext } from 'react'
@@ -7,6 +6,7 @@ import { Container } from 'react-bootstrap'
 import { useNavigate } from 'react-router'
 import People2Icon from 'assets/icons/People2'
 import { Church, UserRole } from 'global-types'
+import PlaceholderCustom from 'components/Placeholder'
 
 const Churches = () => {
   const { currentUser, userJobs } = useContext(MemberContext)
