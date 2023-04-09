@@ -1,54 +1,49 @@
 import { useMutation, useQuery } from '@apollo/client'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
-import HeadingSecondary from 'components/HeadingSecondary'
 import PlaceholderCustom from 'components/Placeholder'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { ServiceContext } from 'contexts/ServiceContext'
 import { Formik, Form, FormikHelpers } from 'formik'
 import * as Yup from 'yup'
 import { useContext } from 'react'
-import { Card, Container } from 'react-bootstrap'
-import { DISPLAY_VEHICLE_RECORDS } from './arrivalsQueries'
-import {
-  CONFIRM_VEHICLE_BY_ADMIN,
-  SET_VEHICLE_SUPPORT,
-} from './arrivalsMutation'
+import { Card, Col, Container, Row } from 'react-bootstrap'
+import { DISPLAY_VEHICLE_PAYMENT_RECORDS } from './arrivalsQueries'
+import { SEND_VEHICLE_SUPPORT } from './arrivalsMutation'
 import { useNavigate } from 'react-router'
 import SubmitButton from 'components/formik/SubmitButton'
-import { alertMsg, throwToSentry } from 'global-utils'
-import { BacentaWithArrivals, VehicleRecord } from './arrivals-types'
+import { alertMsg } from 'global-utils'
+import { VehicleRecord } from './arrivals-types'
 import Input from 'components/formik/Input'
-import Textarea from 'components/formik/Textarea'
 import CloudinaryImage from 'components/CloudinaryImage'
-import Select from 'components/formik/Select'
-import { VEHICLE_OPTIONS, VEHICLE_OPTIONS_WITH_CAR } from './arrivals-utils'
 import './Arrivals.css'
+import { convertOutboundToString } from 'pages/directory/update/UpdateBusPaymentDetails'
+import CurrencySpan from 'components/CurrencySpan'
+import TableFromArrays from 'components/TableFromArrays/TableFromArrays'
 
 type FormOptions = {
-  attendance: string
-  vehicle: string
-  comments: string
+  momoNumber: string
+  momoName: string
+  vehicleTopUp: number
 }
 
-const FormAttendanceConfirmation = () => {
+const FormPayVehicleRecord = () => {
   const navigate = useNavigate()
   const { bacentaId } = useContext(ChurchContext)
   const { vehicleRecordId } = useContext(ServiceContext)
 
-  const { data, loading, error } = useQuery(DISPLAY_VEHICLE_RECORDS, {
+  const { data, loading, error } = useQuery(DISPLAY_VEHICLE_PAYMENT_RECORDS, {
     variables: { vehicleRecordId, bacentaId },
   })
-  const [ConfirmVehicleByAdmin] = useMutation(CONFIRM_VEHICLE_BY_ADMIN)
-  const [SetVehicleSupport] = useMutation(SET_VEHICLE_SUPPORT)
+  const [SendVehicleSupport] = useMutation(SEND_VEHICLE_SUPPORT)
 
   const vehicle: VehicleRecord = data?.vehicleRecords[0]
-  const bacenta: BacentaWithArrivals = data?.bacentas[0]
+  const bacenta = data?.bacentas[0]
 
   const initialValues: FormOptions = {
-    attendance: '',
-    vehicle: vehicle?.vehicle,
-    comments: '',
+    momoName: vehicle?.momoName,
+    momoNumber: vehicle?.momoNumber,
+    vehicleTopUp: vehicle?.vehicleTopUp,
   }
 
   const validationSchema = Yup.object({
@@ -79,37 +74,53 @@ const FormAttendanceConfirmation = () => {
     const { setSubmitting } = onSubmitProps
     setSubmitting(true)
 
-    const res = await ConfirmVehicleByAdmin({
+    await SendVehicleSupport({
       variables: {
         vehicleRecordId: vehicleRecordId,
-        attendance: parseInt(values.attendance),
-        vehicle: values.vehicle,
-        comments: values.comments,
-      },
-    }).catch((error) =>
-      throwToSentry('There was an error confirming vehicle', error)
-    )
-
-    const vehicleData = res?.data.ConfirmVehicleByAdmin
-
-    await SetVehicleSupport({
-      variables: {
-        vehicleRecordId: vehicleRecordId,
+        momoNumber: values.momoNumber,
+        momoName: values.momoName,
+        vehicleTopUp: values.vehicleTopUp,
       },
     }).catch((error) =>
       alertMsg(`There was an error setting vehicle support ${error}`)
     )
 
-    if (
-      !vehicleData.vehicleTopUp ||
-      bacenta?.stream_name === 'Anagkazo Encounter'
-    ) {
-      //if there is no value for the vehicle top up
+    //If arrival time has been logged then send vehicle support
+    try {
+      const supportRes = await SendVehicleSupport({
+        variables: {
+          vehicleRecordId: vehicleRecordId,
+          stream_name: bacenta?.stream_name,
+        },
+      })
+
+      alertMsg(
+        'Money Successfully Sent to ' +
+          supportRes.data.SendVehicleSupport.momoNumber
+      )
+      setSubmitting(false)
       navigate(`/bacenta/vehicle-details`)
+    } catch (error: any) {
+      setSubmitting(false)
+      alertMsg(error)
     }
 
     navigate(`/bacenta/vehicle-details`)
   }
+
+  const detailRows = [
+    ['Stream', bacenta?.stream.name],
+    ['Council Pastor', bacenta?.constituency.council.leader.fullName],
+    ['Council', bacenta?.constituency.council.name],
+    ['Constituency', bacenta?.constituency.name],
+    ['Attendance', `${vehicle?.attendance || 0}`],
+    ['Vehicle Type', vehicle?.vehicle || 0],
+    ['In and Out', convertOutboundToString(vehicle?.outbound) || 0],
+    [
+      'Top Up From Church',
+      <CurrencySpan className="fw-bold good" number={vehicle?.vehicleTopUp} />,
+    ],
+  ]
 
   return (
     <ApolloWrapper data={data} loading={loading} error={error}>
@@ -118,26 +129,28 @@ const FormAttendanceConfirmation = () => {
           <PlaceholderCustom as="h3" loading={loading}>
             <HeadingPrimary>{`Vehicle Attendance Form`}</HeadingPrimary>
           </PlaceholderCustom>
-          <PlaceholderCustom as="h6" loading={loading}>
-            <HeadingSecondary>{`${bacenta?.name} ${bacenta?.__typename}`}</HeadingSecondary>
-            <p>{`Picture Submitted by ${vehicle?.created_by.fullName}`}</p>
-          </PlaceholderCustom>
         </Container>
 
-        <Container className="mb-2">
+        <Container className="my-4">
           <Card>
+            <Card.Header>
+              <Row>
+                <Col className="col-auto">
+                  <CloudinaryImage
+                    src={bacenta?.leader.pictureUrl}
+                    className="avatar"
+                  />
+                </Col>
+                <Col>
+                  <div>{`${bacenta?.name} Bacenta`}</div>
+                  <div className="text-secondary">{`Leader: ${bacenta?.leader.fullName}`}</div>
+                </Col>
+              </Row>
+            </Card.Header>
             <Card.Body>
-              <CloudinaryImage
-                className="confirmation-picture"
-                src={vehicle?.picture}
-                size="respond"
-              />
-              <div className="text-secondary">
-                Total Vehicle Cost:{' '}
-                <span className="fw-bold text-info">
-                  GHS {vehicle?.vehicleCost || 0}
-                </span>
-              </div>
+              <Row>
+                <TableFromArrays tableArray={detailRows} loading={loading} />
+              </Row>
             </Card.Body>
           </Card>
         </Container>
@@ -151,23 +164,23 @@ const FormAttendanceConfirmation = () => {
             <Container>
               <Form>
                 <Input
-                  name="attendance"
-                  label="Attendance (from Picture)*"
-                  placeholder={vehicle?.leaderDeclaration.toString()}
-                />
-                <Select
-                  name="vehicle"
-                  label="Type of Vehicle"
-                  options={
-                    bacenta.bussing[0].vehicleRecords.length > 1
-                      ? VEHICLE_OPTIONS_WITH_CAR
-                      : VEHICLE_OPTIONS
-                  }
-                  defaultOption="Select a vehicle type"
+                  name="vehicleTopUp"
+                  label="Vehicle Top Up Amount*"
+                  placeholder={vehicle?.vehicleTopUp.toString()}
                 />
 
-                <Textarea name="comments" label="Comments" />
-                <Card className="text-center">
+                <Input
+                  name="momoNumber"
+                  label="Momo Number*"
+                  placeholder={vehicle?.momoNumber.toString()}
+                />
+                <Input
+                  name="momoName"
+                  label="Momo Name*"
+                  placeholder={vehicle?.momoName.toString()}
+                />
+
+                <Card className="text-center mt-4">
                   <Card.Body>
                     I can confirm that the above data is correct and I approve
                     the vehicle top up for this bacenta
@@ -185,4 +198,4 @@ const FormAttendanceConfirmation = () => {
   )
 }
 
-export default FormAttendanceConfirmation
+export default FormPayVehicleRecord

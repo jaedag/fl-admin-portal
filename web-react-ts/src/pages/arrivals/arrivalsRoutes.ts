@@ -19,6 +19,9 @@ const BacentasOnTheWay = lazy(
 const BusFormConfirmation = lazy(
   () => import('pages/arrivals/FormAttendanceConfirmation')
 )
+const PayVehicleRecord = lazy(
+  () => import('pages/arrivals/FormPayVehicleRecord')
+)
 const BusFormDetails = lazy(() => import('pages/arrivals/BusFormDetails'))
 const OnTheWaySubmission = lazy(
   () => import('pages/arrivals/FormAddVehicleRecord')
@@ -164,6 +167,11 @@ export const arrivals: LazyRouteTypes[] = [
     path: '/arrivals/vehicles-to-be-paid',
     roles: permitArrivalsPayer(),
     element: VehiclesToBePaid,
+  },
+  {
+    path: '/arrivals/pay-vehicle',
+    roles: permitArrivalsPayer(),
+    element: PayVehicleRecord,
   },
   {
     path: '/arrivals/bacentas-have-arrived',

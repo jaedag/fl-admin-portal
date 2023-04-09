@@ -1,5 +1,3 @@
-import { ChurchContext } from 'contexts/ChurchContext'
-import React, { useContext } from 'react'
 import { Button } from 'react-bootstrap'
 import { CheckCircleFill } from 'react-bootstrap-icons'
 import { VehicleRecord } from '../arrivals-types'
@@ -8,17 +6,15 @@ import CurrencySpan from 'components/CurrencySpan'
 
 const VehicleButtonPayment = ({
   record,
-  togglePopup,
   size,
   className,
+  onClick,
 }: {
   record: VehicleRecord
-  togglePopup: () => void
   size?: 'sm' | 'lg'
   className?: string
+  onClick: () => void
 }) => {
-  const { clickCard } = useContext(ChurchContext)
-
   return (
     <Button
       key={record.id}
@@ -26,10 +22,7 @@ const VehicleButtonPayment = ({
       size={size || 'lg'}
       className={`text-start ${className}`}
       disabled={record?.transactionStatus === 'success'}
-      onClick={() => {
-        clickCard(record)
-        togglePopup()
-      }}
+      onClick={onClick}
     >
       <ButtonIcons type={record?.vehicle} /> {record?.vehicle} (
       <CurrencySpan number={record?.vehicleTopUp} />)

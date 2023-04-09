@@ -9,14 +9,13 @@ import { Form, Formik, FormikHelpers } from 'formik'
 import { SHORT_POLL_INTERVAL } from 'global-utils'
 import PlaceholderDefaulterList from 'pages/services/defaulters/PlaceholderDefaulterList'
 import { useContext, useEffect, useState } from 'react'
-import { Button, ButtonGroup, Container, Modal } from 'react-bootstrap'
+import { Button, ButtonGroup, Container } from 'react-bootstrap'
 import PullToRefresh from 'react-simple-pull-to-refresh'
 import { BacentaWithArrivals } from './arrivals-types'
 import { STREAM_VEHICLES_TO_BE_PAID } from './bussingStatusQueries'
 import NoData from './CompNoData'
-import VehicleButton from './components/VehicleButton'
 import VehicleButtonPayment from './components/VehiclePaymentButton'
-import { FunctionReturnsVoid } from 'global-types'
+import { useNavigate } from 'react-router'
 
 type FormOptions = {
   bacentaSearch: string
@@ -33,16 +32,11 @@ const StateBacentasToBePaid = () => {
       pollInterval: SHORT_POLL_INTERVAL,
     }
   )
-  const [submitting, setSubmitting] = useState(false)
-  const [show, setShow] = useState(false)
   const [seePaid, setSeePaid] = useState(false)
-  const handleOpen: FunctionReturnsVoid = () => setShow(true)
-  const handleClose: FunctionReturnsVoid = () => setShow(false)
-  console.log(show)
+  const navigate = useNavigate()
 
   const church = data?.streams[0]
 
-  // Searching Feature
   const initialValues: FormOptions = {
     bacentaSearch: '',
   }
@@ -124,17 +118,6 @@ const StateBacentasToBePaid = () => {
             <NoData text="There are no bacentas to be be paid" />
           )}
 
-          <Modal
-            contentClassName="dark"
-            show={show}
-            onHide={handleClose}
-            centered
-          >
-            <Modal.Header closeButton>
-              <Modal.Title>Payment Information</Modal.Title>
-            </Modal.Header>
-          </Modal>
-
           {bacentaData?.map((bacenta: BacentaWithArrivals) =>
             bacenta.bussing[0].vehicleRecords.map((record, i) => {
               if (!seePaid && record.transactionStatus === 'success') {
@@ -162,7 +145,10 @@ const StateBacentasToBePaid = () => {
                     <div className="d-grid gap-2 mt-2">
                       <VehicleButtonPayment
                         record={record}
-                        togglePopup={handleOpen}
+                        onClick={() => {
+                          clickCard(record)
+                          navigate('/arrivals/pay-vehicle')
+                        }}
                       />
                     </div>
                   </MemberDisplayCard>

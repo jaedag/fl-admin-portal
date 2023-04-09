@@ -51,7 +51,7 @@ const convertToBoolean = (value: string | boolean) => {
   return value === 'In and Out'
 }
 
-const convertToString = (value: boolean) => {
+export const convertOutboundToString = (value: boolean) => {
   if (value === true) {
     return 'In and Out'
   }
@@ -90,7 +90,7 @@ const UpdateBusPayment = () => {
     target: bacenta?.target ?? '',
     urvanTopUp: bacenta?.urvanTopUp ?? '',
     sprinterTopUp: bacenta?.sprinterTopUp ?? '',
-    outbound: convertToString(bacenta?.outbound) ?? 'In Only',
+    outbound: convertOutboundToString(bacenta?.outbound) ?? 'In Only',
 
     mobileNetwork: bacenta?.mobileNetwork ?? '',
     momoName: bacenta?.momoName ?? '',
