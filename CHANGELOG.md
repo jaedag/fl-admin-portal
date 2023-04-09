@@ -1,3 +1,13 @@
+#### 6.5.10 (2023-04-09)
+
+##### Bug Fixes
+
+*  update easy debugging script ([c1b9ba40](https://github.com/firstlovecenter/fl-pastoral-care/commit/c1b9ba40e54b3dc3b82d2c7e365809ff43ab9196))
+*  change swell weekend to swollen weekend ([8b03ef00](https://github.com/firstlovecenter/fl-pastoral-care/commit/8b03ef00314d91e6b06d7142d8685a02ceb43fdd))
+*  fix bug preventing constituency from being closed down ([38e7e0a9](https://github.com/firstlovecenter/fl-pastoral-care/commit/38e7e0a93b3b12eda945bb8a02f1bf34db797d58))
+*  active BacentaCount should include both graduated and IC Bacentas ([a680c32a](https://github.com/firstlovecenter/fl-pastoral-care/commit/a680c32adac662f8e035d5a024a2d1507e99a267))
+*  if a vehicle is less than 8, it is automatically classed as a car ([21945c15](https://github.com/firstlovecenter/fl-pastoral-care/commit/21945c15cd77bd16f889710e19bb19923916c3ee))
+
 #### 6.5.9 (2023-04-02)
 
 ##### Bug Fixes
