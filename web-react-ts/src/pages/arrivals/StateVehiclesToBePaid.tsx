@@ -114,48 +114,54 @@ const StateBacentasToBePaid = () => {
             </div>
           ) : null}
 
-          {church && !bacentaData?.length && (
-            <NoData text="There are no bacentas to be be paid" />
-          )}
-
-          {bacentaData?.map((bacenta: BacentaWithArrivals) =>
-            bacenta.bussing[0].vehicleRecords.map((record, i) => {
-              if (!seePaid && record.transactionStatus === 'success') {
-                return <NoData text="There are no bacentas to be paid" />
-              }
-
-              if (seePaid && record.transactionStatus !== 'success') {
-                return (
-                  <NoData text="There are no bacentas that have been paid" />
+          {bacentaData?.map((bacenta: BacentaWithArrivals) => {
+            const recordsToRender = seePaid
+              ? bacenta.bussing[0].vehicleRecords.filter(
+                  (record) => record.transactionStatus === 'success'
                 )
-              }
+              : bacenta.bussing[0].vehicleRecords.filter(
+                  (record) => record.transactionStatus !== 'success'
+                )
 
+            if (recordsToRender.length === 0) {
               return (
-                <>
-                  <MemberDisplayCard
-                    key={i}
-                    member={bacenta}
-                    leader={bacenta.leader}
-                    contact
-                    onClick={() => {
-                      clickCard(bacenta)
-                      clickCard(bacenta.bussing[0])
-                    }}
-                  >
-                    <div className="d-grid gap-2 mt-2">
-                      <VehicleButtonPayment
-                        record={record}
-                        onClick={() => {
-                          clickCard(record)
-                          navigate('/arrivals/pay-vehicle')
-                        }}
-                      />
-                    </div>
-                  </MemberDisplayCard>
-                </>
+                <NoData
+                  key={bacenta.id}
+                  text={
+                    seePaid
+                      ? 'There are no bacentas that have been paid'
+                      : 'There are no bacentas to be paid'
+                  }
+                />
               )
-            })
-          )}
+            }
+
+            return recordsToRender.map((record, i) => (
+              <MemberDisplayCard
+                key={i}
+                member={bacenta}
+                leader={bacenta.leader}
+                contact
+                onClick={() => {
+                  clickCard(bacenta)
+                  clickCard(bacenta.bussing[0])
+                }}
+              >
+                <div className="d-grid gap-2 mt-2">
+                  <VehicleButtonPayment
+                    record={record}
+                    onClick={() => {
+                      clickCard(record)
+                      record.transactionStatus === 'success'
+                        ? navigate('/bacenta/vehicle-details')
+                        : navigate('/arrivals/pay-vehicle')
+                    }}
+                  />
+                </div>
+              </MemberDisplayCard>
+            ))
+          })}
+
           {!church?.bacentasToBePaid.length && loading && (
             <PlaceholderDefaulterList />
           )}

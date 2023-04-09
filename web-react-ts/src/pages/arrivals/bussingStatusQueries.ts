@@ -371,12 +371,14 @@ export const STREAM_VEHICLES_TO_BE_PAID = gql`
           whatsappNumber
         }
         bussing(limit: 1) {
-          vehicleRecords(where: { arrivalTime_NOT: null }) {
+          vehicleRecords(where: { arrivalTime_NOT: null, vehicleTopUp_GT: 0 }) {
             id
             attendance
             vehicle
             vehicleTopUp
             arrivalTime
+            transactionStatus
+            transactionReference
           }
         }
       }

@@ -997,6 +997,7 @@ type VehicleRecord {
   arrivalTime: DateTime
   paystackTransferCode: String
   transactionStatus: String
+  transactionReference: String
   outbound: Boolean!
 
   bussingRecord: BussingRecord!
@@ -1212,7 +1213,13 @@ extend type Mutation {
     )
 
   SetSwellDate(date: String!): TimeGraph!
-  SendVehicleSupport(vehicleRecordId: ID!, stream_name: String!): VehicleRecord!
+  SendVehicleSupport(
+    vehicleRecordId: ID!
+    stream_name: String!
+    momoName: String!
+    momoNumber: String!
+    vehicleTopUp: Int!
+  ): VehicleRecord!
 }
 
 extend type Mutation {

@@ -47,24 +47,12 @@ const FormPayVehicleRecord = () => {
   }
 
   const validationSchema = Yup.object({
-    attendance: Yup.number()
+    vehicleTopUp: Yup.number()
       .typeError('Please enter a valid number')
       .integer('You cannot have attendance with decimals!')
       .required('This is a required field'),
-    vehicle: Yup.string().required('This is a required field'),
-    comments: Yup.string().when(['attendance', 'vehicle'], {
-      is: (attendance: number, vehicleType: string) => {
-        if (
-          attendance !== vehicle?.leaderDeclaration ||
-          vehicleType !== vehicle?.vehicle
-        ) {
-          return true
-        }
-      },
-      then: Yup.string().required(
-        'You need to explain if the numbers are different'
-      ),
-    }),
+    momoName: Yup.string().required('This is a required field'),
+    momoNumber: Yup.string().required('This is a required field'),
   })
 
   const onSubmit = async (
@@ -74,23 +62,15 @@ const FormPayVehicleRecord = () => {
     const { setSubmitting } = onSubmitProps
     setSubmitting(true)
 
-    await SendVehicleSupport({
-      variables: {
-        vehicleRecordId: vehicleRecordId,
-        momoNumber: values.momoNumber,
-        momoName: values.momoName,
-        vehicleTopUp: values.vehicleTopUp,
-      },
-    }).catch((error) =>
-      alertMsg(`There was an error setting vehicle support ${error}`)
-    )
-
     //If arrival time has been logged then send vehicle support
     try {
       const supportRes = await SendVehicleSupport({
         variables: {
           vehicleRecordId: vehicleRecordId,
-          stream_name: bacenta?.stream_name,
+          stream_name: bacenta.stream.name,
+          momoNumber: values.momoNumber,
+          momoName: values.momoName,
+          vehicleTopUp: values.vehicleTopUp,
         },
       })
 
@@ -132,27 +112,22 @@ const FormPayVehicleRecord = () => {
         </Container>
 
         <Container className="my-4">
-          <Card>
-            <Card.Header>
-              <Row>
-                <Col className="col-auto">
-                  <CloudinaryImage
-                    src={bacenta?.leader.pictureUrl}
-                    className="avatar"
-                  />
-                </Col>
-                <Col>
-                  <div>{`${bacenta?.name} Bacenta`}</div>
-                  <div className="text-secondary">{`Leader: ${bacenta?.leader.fullName}`}</div>
-                </Col>
-              </Row>
-            </Card.Header>
-            <Card.Body>
-              <Row>
-                <TableFromArrays tableArray={detailRows} loading={loading} />
-              </Row>
-            </Card.Body>
-          </Card>
+          <Row>
+            <Col className="col-auto">
+              <CloudinaryImage
+                src={bacenta?.leader.pictureUrl}
+                className="avatar"
+              />
+            </Col>
+            <Col>
+              <div>{`${bacenta?.name} Bacenta`}</div>
+              <div className="text-secondary">{`Leader: ${bacenta?.leader.fullName}`}</div>
+            </Col>
+          </Row>
+
+          <Row className="mt-4">
+            <TableFromArrays tableArray={detailRows} loading={loading} />
+          </Row>
         </Container>
 
         <Formik

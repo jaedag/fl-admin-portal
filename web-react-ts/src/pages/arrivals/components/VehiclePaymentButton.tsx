@@ -21,13 +21,13 @@ const VehicleButtonPayment = ({
       variant={record?.transactionStatus === 'success' ? 'success' : 'warning'}
       size={size || 'lg'}
       className={`text-start ${className}`}
-      disabled={record?.transactionStatus === 'success'}
       onClick={onClick}
     >
-      <ButtonIcons type={record?.vehicle} /> {record?.vehicle} (
+      <ButtonIcons type={record?.vehicle} />
+      {record?.vehicle} (
       <CurrencySpan number={record?.vehicleTopUp} />)
       {record?.transactionStatus === 'success' ? (
-        <CheckCircleFill className="ms-3" color="white" size={20} />
+        <CheckCircleFill className="ms-2" color="white" size={20} />
       ) : null}
     </Button>
   )

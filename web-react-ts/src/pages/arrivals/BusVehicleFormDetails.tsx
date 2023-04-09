@@ -12,7 +12,11 @@ import { MemberContext } from 'contexts/MemberContext'
 import { ServiceContext } from 'contexts/ServiceContext'
 import usePopup from 'hooks/usePopup'
 import { getHumanReadableDate, getTime, parseNeoTime } from 'jd-date-utils'
-import { permitAdminArrivals, permitArrivalsCounter } from 'permission-utils'
+import {
+  permitAdminArrivals,
+  permitArrivalsCounter,
+  permitArrivalsPayer,
+} from 'permission-utils'
 import { useContext, useState } from 'react'
 import { Button, Col, Container, Row, Table } from 'react-bootstrap'
 import { useNavigate } from 'react-router'
@@ -20,6 +24,7 @@ import { BacentaWithArrivals, VehicleRecord } from './arrivals-types'
 import { beforeCountingDeadline } from './arrivals-utils'
 import { DISPLAY_VEHICLE_RECORDS } from './arrivalsQueries'
 import './Arrivals.css'
+import { capitalise } from 'global-utils'
 
 const BusVehicleFormDetails = () => {
   const { bacentaId } = useContext(ChurchContext)
@@ -184,12 +189,12 @@ const BusVehicleFormDetails = () => {
                       </PlaceholderCustom>
                     </td>
                   </tr>
-                  {vehicle?.paystackTransferCode && (
+                  {vehicle?.transactionReference && (
                     <tr>
-                      <td>Transaction Code</td>
-                      <td className="fw-bold text-warning">
+                      <td>Transaction Reference</td>
+                      <td>
                         <PlaceholderCustom loading={loading}>
-                          {vehicle?.paystackTransferCode}
+                          {vehicle?.transactionReference}
                         </PlaceholderCustom>
                       </td>
                     </tr>
@@ -197,9 +202,15 @@ const BusVehicleFormDetails = () => {
                   {vehicle?.transactionStatus && (
                     <tr>
                       <td>Transaction Status</td>
-                      <td className="fw-bold text-warning">
+                      <td
+                        className={`fw-bold ${
+                          vehicle.transactionStatus === 'success'
+                            ? 'good'
+                            : 'warning'
+                        }`}
+                      >
                         <PlaceholderCustom loading={loading}>
-                          {vehicle?.transactionStatus}
+                          {capitalise(vehicle?.transactionStatus)}
                         </PlaceholderCustom>
                       </td>
                     </tr>
@@ -259,6 +270,15 @@ const BusVehicleFormDetails = () => {
           </Col>
         </Row>
         <div className="d-grid gap-2 mt-5">
+          <RoleView roles={permitArrivalsPayer()}>
+            <Button
+              variant="outline-info"
+              onClick={() => navigate('/arrivals/vehicles-to-be-paid')}
+            >
+              Continue Payments
+            </Button>
+          </RoleView>
+
           <RoleView roles={permitArrivalsCounter()}>
             {beforeCountingDeadline(vehicle, church) && (
               <>
