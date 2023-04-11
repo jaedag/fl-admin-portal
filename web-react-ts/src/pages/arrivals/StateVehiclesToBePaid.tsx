@@ -75,7 +75,9 @@ const StateBacentasToBePaid = () => {
     <PullToRefresh onRefresh={refetch}>
       <ApolloWrapper data={church} loading={loading} error={error} placeholder>
         <Container>
-          <HeadingPrimary loading={loading}>Bacentas To Be Paid</HeadingPrimary>
+          <HeadingPrimary loading={loading}>
+            Bacentas {seePaid ? 'To Be Paid' : 'Yet To Be Paid'}
+          </HeadingPrimary>
           <HeadingSecondary loading={!church?.name}>
             {church?.name} {church?.__typename}
           </HeadingSecondary>

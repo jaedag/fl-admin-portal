@@ -133,9 +133,9 @@ const FormAttendanceConfirmation = () => {
                 size="respond"
               />
               <div className="text-secondary">
-                Total Vehicle Cost:{' '}
+                Total Attendance:{' '}
                 <span className="fw-bold text-info">
-                  GHS {vehicle?.vehicleCost || 0}
+                  GHS {vehicle?.attendance || 0}
                 </span>
               </div>
             </Card.Body>

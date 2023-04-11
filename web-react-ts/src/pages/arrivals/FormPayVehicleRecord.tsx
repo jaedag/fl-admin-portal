@@ -7,7 +7,7 @@ import { ServiceContext } from 'contexts/ServiceContext'
 import { Formik, Form, FormikHelpers } from 'formik'
 import * as Yup from 'yup'
 import { useContext } from 'react'
-import { Card, Col, Container, Row } from 'react-bootstrap'
+import { Button, Card, Col, Container, Modal, Row } from 'react-bootstrap'
 import { DISPLAY_VEHICLE_PAYMENT_RECORDS } from './arrivalsQueries'
 import { SEND_VEHICLE_SUPPORT } from './arrivalsMutation'
 import { useNavigate } from 'react-router'
@@ -20,6 +20,7 @@ import './Arrivals.css'
 import { convertOutboundToString } from 'pages/directory/update/UpdateBusPaymentDetails'
 import CurrencySpan from 'components/CurrencySpan'
 import TableFromArrays from 'components/TableFromArrays/TableFromArrays'
+import useModal from 'hooks/useModal'
 
 type FormOptions = {
   momoNumber: string
@@ -31,6 +32,7 @@ const FormPayVehicleRecord = () => {
   const navigate = useNavigate()
   const { bacentaId } = useContext(ChurchContext)
   const { vehicleRecordId } = useContext(ServiceContext)
+  const { show, handleShow, handleClose } = useModal()
 
   const { data, loading, error } = useQuery(DISPLAY_VEHICLE_PAYMENT_RECORDS, {
     variables: { vehicleRecordId, bacentaId },
@@ -76,7 +78,7 @@ const FormPayVehicleRecord = () => {
 
       alertMsg(
         'Money Successfully Sent to ' +
-          supportRes.data.SendVehicleSupport.momoNumber
+          supportRes.data.SendVehicleSupport.momoName
       )
       setSubmitting(false)
       navigate(`/bacenta/vehicle-details`)
@@ -95,7 +97,18 @@ const FormPayVehicleRecord = () => {
     ['Constituency', bacenta?.constituency.name],
     ['Attendance', `${vehicle?.attendance || 0}`],
     ['Vehicle Type', vehicle?.vehicle || 0],
-    ['In and Out', convertOutboundToString(vehicle?.outbound) || 0],
+    [
+      'In and Out',
+      <span className="yellow">
+        {convertOutboundToString(vehicle?.outbound) || 0}
+      </span>,
+    ],
+    [
+      'View Picture',
+      <span className="text-primary" onClick={() => handleShow()}>
+        Click Here
+      </span>,
+    ],
     [
       'Top Up From Church',
       <CurrencySpan className="fw-bold good" number={vehicle?.vehicleTopUp} />,
@@ -124,7 +137,23 @@ const FormPayVehicleRecord = () => {
               <div className="text-secondary">{`Leader: ${bacenta?.leader.fullName}`}</div>
             </Col>
           </Row>
-
+          <Modal className="dark" show={show} onHide={handleClose} centered>
+            <Modal.Header>
+              <Modal.Title>{bacenta?.name} Bacenta Picture</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <CloudinaryImage
+                className="bus-picture"
+                src={vehicle?.picture}
+                size="respond"
+              />
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={handleClose}>
+                Close
+              </Button>
+            </Modal.Footer>
+          </Modal>
           <Row className="mt-4">
             <TableFromArrays tableArray={detailRows} loading={loading} />
           </Row>

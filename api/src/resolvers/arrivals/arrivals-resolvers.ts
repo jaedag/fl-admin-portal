@@ -748,7 +748,7 @@ export const arrivalsMutation = {
           )
         )
 
-      console.log('Money Sent Successfully to', vehicleRecord.momoNumber)
+      console.log('Money Sent Successfully to', vehicleRecord.momoName)
 
       return vehicleRecord
     } catch (error: any) {

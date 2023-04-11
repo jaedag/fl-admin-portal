@@ -400,6 +400,7 @@ export const DISPLAY_BUSSING_RECORDS = gql`
       personalContribution
       bussingTopUp
       numberOfBusses
+      bussingPictures
       numberOfSprinters
       numberOfUrvans
       numberOfCars
@@ -450,6 +451,8 @@ export const DISPLAY_VEHICLE_RECORDS = gql`
       comments
       arrivalTime
       outbound
+      momoName
+      momoNumber
       transactionReference
       transactionStatus
     }
@@ -494,6 +497,7 @@ export const DISPLAY_VEHICLE_PAYMENT_RECORDS = gql`
       leaderDeclaration
       attendance
       vehicleCost
+      picture
       personalContribution
       vehicleTopUp
       momoNumber

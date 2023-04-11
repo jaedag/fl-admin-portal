@@ -215,6 +215,26 @@ const BusVehicleFormDetails = () => {
                       </td>
                     </tr>
                   )}
+                  {vehicle?.transactionStatus && (
+                    <tr>
+                      <td>Momo Name</td>
+                      <td>
+                        <PlaceholderCustom loading={loading}>
+                          {capitalise(vehicle?.momoName)}
+                        </PlaceholderCustom>
+                      </td>
+                    </tr>
+                  )}
+                  {vehicle?.transactionStatus && (
+                    <tr>
+                      <td>Momo Number</td>
+                      <td>
+                        <PlaceholderCustom loading={loading}>
+                          {capitalise(vehicle?.momoNumber)}
+                        </PlaceholderCustom>
+                      </td>
+                    </tr>
+                  )}
                   {vehicle?.comments && (
                     <tr>
                       <td>Comments</td>
@@ -270,14 +290,16 @@ const BusVehicleFormDetails = () => {
           </Col>
         </Row>
         <div className="d-grid gap-2 mt-5">
-          <RoleView roles={permitArrivalsPayer()}>
-            <Button
-              variant="outline-info"
-              onClick={() => navigate('/arrivals/vehicles-to-be-paid')}
-            >
-              Continue Payments
-            </Button>
-          </RoleView>
+          {!beforeCountingDeadline(vehicle, church) && (
+            <RoleView roles={permitArrivalsPayer()}>
+              <Button
+                variant="outline-info"
+                onClick={() => navigate('/arrivals/vehicles-to-be-paid')}
+              >
+                Continue Payments
+              </Button>
+            </RoleView>
+          )}
 
           <RoleView roles={permitArrivalsCounter()}>
             {beforeCountingDeadline(vehicle, church) && (
