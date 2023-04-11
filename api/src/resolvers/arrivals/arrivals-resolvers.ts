@@ -671,7 +671,7 @@ export const arrivalsMutation = {
         },
         data: {
           type: 'mobile_money',
-          name: vehicleRecord.momoName,
+          name: `${leader.firstName}${leader.lastName} ${vehicleRecord.momoName}`,
           email: leader.email,
           account_number: vehicleRecord.momoNumber,
           bank_code: vehicleRecord.mobileNetwork,
