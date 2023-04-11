@@ -229,8 +229,8 @@ export const arrivals: LazyRouteTypes[] = [
     element: ArrivalsCounters,
   },
   {
-    path: '/stream/arrivals-payers',
-    roles: permitAdminArrivals('Stream'),
+    path: '/council/arrivals-payers',
+    roles: permitAdminArrivals('GatheringService'),
     element: ArrivalsPayerSelect,
   },
 

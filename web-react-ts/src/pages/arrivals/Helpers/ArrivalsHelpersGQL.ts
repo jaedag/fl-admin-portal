@@ -56,9 +56,9 @@ export const REMOVE_STREAMARRIVALS_COUNTER = gql`
   }
 `
 
-export const STREAM_ARRIVALSPAYERS = gql`
-  query streamArrivalsPayers($id: ID!) {
-    streams(where: { id: $id }, options: { limit: 1 }) {
+export const COUNCIL_ARRIVALSPAYERS = gql`
+  query councilArrivalsPayers($id: ID!) {
+    councils(where: { id: $id }, options: { limit: 1 }) {
       id
       name
 
@@ -83,10 +83,10 @@ export const STREAM_ARRIVALSPAYERS = gql`
   }
 `
 
-export const MAKE_STREAM_ARRIVALSPAYER = gql`
-  mutation MakeStreamArrivalsPayer($streamId: ID!, $arrivalsPayerId: ID!) {
-    MakeStreamArrivalsPayer(
-      streamId: $streamId
+export const MAKE_COUNCIL_ARRIVALSPAYER = gql`
+  mutation MakeCouncilArrivalsPayer($councilId: ID!, $arrivalsPayerId: ID!) {
+    MakeCouncilArrivalsPayer(
+      councilId: $councilId
       arrivalsPayerId: $arrivalsPayerId
     ) {
       id
@@ -96,10 +96,10 @@ export const MAKE_STREAM_ARRIVALSPAYER = gql`
   }
 `
 
-export const REMOVE_STREAM_ARRIVALSPAYER = gql`
-  mutation RemoveStreamArrivalsPayer($streamId: ID!, $arrivalsPayerId: ID!) {
-    RemoveStreamArrivalsPayer(
-      streamId: $streamId
+export const REMOVE_COUNCIL_ARRIVALSPAYER = gql`
+  mutation RemoveCouncilArrivalsPayer($councilId: ID!, $arrivalsPayerId: ID!) {
+    RemoveCouncilArrivalsPayer(
+      councilId: $councilId
       arrivalsPayerId: $arrivalsPayerId
     ) {
       id

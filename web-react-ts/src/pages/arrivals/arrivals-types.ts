@@ -122,9 +122,17 @@ export interface HigherChurchWithArrivals extends Church {
   bacentasMobilisingCount: number
   bacentasOnTheWayCount: number
   bacentasBelow8Count: number
+
+  vehiclesToBePaidCount: number
+  vehiclesHaveBeenPaidCount: number
+  vehicleAmountToBePaid: number
+  vehicleAmountHasBeenPaid: number
+
   bacentasHaveArrivedCount: number
   bussingMembersOnTheWayCount: number
   bussingMembersHaveArrivedCount: number
+  bussesThatArrivedCount: number
+  bussesOnTheWayCount: number
   [key: string]: any
 }
 

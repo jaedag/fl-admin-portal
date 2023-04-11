@@ -227,6 +227,18 @@ extend type GatheringService {
       RETURN SUM(record.attendance)
       """
     )
+  bussesOnTheWayCount: Int
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS*4]->(bacentas:Active:Bacenta)
+      MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
+         WHERE date(date.date)=date()
+        MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
+        WHERE record.arrivalTime IS NULL
+        AND record.attendance > 0
+      RETURN COUNT(DISTINCT record)
+      """
+    )
   bussesThatArrivedCount: Int
     @cypher(
       statement: """
@@ -333,6 +345,18 @@ extend type Stream {
         WHERE record.arrivalTime IS NULL
         }
       RETURN COUNT(DISTINCT bacentas)
+      """
+    )
+  bussesOnTheWayCount: Int
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS*3]->(bacentas:Active:Bacenta)
+      MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
+         WHERE date(date.date)=date()
+        MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
+        WHERE record.arrivalTime IS NULL
+        AND record.attendance > 0
+      RETURN COUNT(DISTINCT record)
       """
     )
   bussingMembersOnTheWayCount: Int
@@ -540,6 +564,18 @@ extend type Council {
       RETURN COUNT(DISTINCT bacentas)
       """
     )
+  bussesOnTheWayCount: Int
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS*2]->(bacentas:Active:Bacenta)
+      MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
+         WHERE date(date.date)=date()
+        MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
+        WHERE record.arrivalTime IS NULL
+        AND record.attendance > 0
+      RETURN COUNT(DISTINCT record)
+      """
+    )
   bussingMembersOnTheWayCount: Int
     @cypher(
       statement: """
@@ -744,6 +780,18 @@ extend type Constituency {
         WHERE record.arrivalTime IS NULL
         }
       RETURN COUNT(DISTINCT bacentas)
+      """
+    )
+  bussesOnTheWayCount: Int
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS]->(bacentas:Active:Bacenta)
+      MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
+         WHERE date(date.date)=date()
+        MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
+        WHERE record.arrivalTime IS NULL
+        AND record.attendance > 0
+      RETURN COUNT(DISTINCT record)
       """
     )
   bussingMembersOnTheWayCount: Int

@@ -28,6 +28,12 @@ export const CONSTITUENCY_ARRIVALS_DASHBOARD = gql`
       bussingMembersOnTheWayCount
       bussingMembersHaveArrivedCount
       bussesThatArrivedCount
+
+      bacentasHaveArrivedCount
+      bussingMembersOnTheWayCount
+      bussingMembersHaveArrivedCount
+      bussesOnTheWayCount
+      bussesThatArrivedCount
     }
   }
 `
@@ -55,10 +61,17 @@ export const COUNCIL_ARRIVALS_DASHBOARD = gql`
       bacentasMobilisingCount
       bacentasOnTheWayCount
       bacentasBelow8Count
+
       bacentasHaveArrivedCount
       bussingMembersOnTheWayCount
       bussingMembersHaveArrivedCount
+      bussesOnTheWayCount
       bussesThatArrivedCount
+
+      vehiclesToBePaidCount
+      vehiclesHaveBeenPaidCount
+      vehicleAmountToBePaid
+      vehicleAmountHasBeenPaid
     }
   }
 `
@@ -81,13 +94,20 @@ export const STREAM_ARRIVALS_DASHBOARD = gql`
       bacentasNoActivityCount
       bacentasMobilisingCount
       bacentasOnTheWayCount
-      vehiclesNotCountedCount
-      vehiclesToBePaidCount
       bacentasBelow8Count
+
       bacentasHaveArrivedCount
       bussingMembersOnTheWayCount
       bussingMembersHaveArrivedCount
+      bussesOnTheWayCount
       bussesThatArrivedCount
+
+      vehiclesNotCountedCount
+
+      vehiclesToBePaidCount
+      vehiclesHaveBeenPaidCount
+      vehicleAmountToBePaid
+      vehicleAmountHasBeenPaid
     }
   }
 `
@@ -477,7 +497,7 @@ export const DISPLAY_VEHICLE_RECORDS = gql`
 `
 
 export const DISPLAY_VEHICLE_PAYMENT_RECORDS = gql`
-  query DisplayVehicleRecords($vehicleRecordId: ID!, $bacentaId: ID!) {
+  query DisplayVehiclePaymentRecords($vehicleRecordId: ID!, $bacentaId: ID!) {
     vehicleRecords(where: { id: $vehicleRecordId }) {
       id
       createdAt

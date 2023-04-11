@@ -181,7 +181,7 @@ export const arrivalsMutation = {
       'Stream',
       'ArrivalsCounter'
     ),
-  MakeStreamArrivalsPayer: async (
+  MakeCouncilArrivalsPayer: async (
     object: never,
     args: never,
     context: Context
@@ -189,11 +189,11 @@ export const arrivalsMutation = {
     MakeServant(
       context,
       args,
-      [...permitAdmin('Stream')],
-      'Stream',
+      [...permitAdminArrivals('GatheringService')],
+      'Council',
       'ArrivalsPayer'
     ),
-  RemoveStreamArrivalsPayer: async (
+  RemoveCouncilArrivalsPayer: async (
     object: never,
     args: never,
     context: Context
@@ -201,8 +201,8 @@ export const arrivalsMutation = {
     RemoveServant(
       context,
       args,
-      [...permitAdmin('Stream')],
-      'Stream',
+      [...permitAdminArrivals('GatheringService')],
+      'Council',
       'ArrivalsPayer'
     ),
 

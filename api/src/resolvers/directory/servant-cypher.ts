@@ -54,7 +54,7 @@ const servantCypher = {
 
   disconnectChurchArrivalsPayer: `
    MATCH (church {id: $churchId}) 
-   WHERE church:Stream
+   WHERE church:Council
    MATCH (church)<-[oldAdmin:IS_ARRIVALS_PAYER_FOR]-(admin:Member {id: $arrivalsPayerId})
    DELETE oldAdmin
    
@@ -128,7 +128,7 @@ const servantCypher = {
 
   connectChurchArrivalsPayer: `
    MATCH (church {id:$churchId})<-[:HAS]-(higherChurch)
-   WHERE church:Stream
+   WHERE church:Council
    MATCH (admin:Member {id: $arrivalsPayerId})
       SET admin.auth_id =  $auth_id
    MERGE (admin)-[:IS_ARRIVALS_PAYER_FOR]->(church)

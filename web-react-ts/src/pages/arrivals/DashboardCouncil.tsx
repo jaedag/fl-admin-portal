@@ -5,16 +5,19 @@ import SubmitButton from 'components/formik/SubmitButton'
 import Popup from 'components/Popup/Popup'
 import { Form, Formik, FormikHelpers } from 'formik'
 import * as Yup from 'yup'
-import React from 'react'
 import { useContext } from 'react'
-import { Button, Col, Container, Row } from 'react-bootstrap'
+import { Col, Container, Row } from 'react-bootstrap'
 import { COUNCIL_ARRIVALS_DASHBOARD } from './arrivalsQueries'
 import { useNavigate } from 'react-router'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import RoleView from 'auth/RoleView'
 import { SHORT_POLL_INTERVAL, throwToSentry } from 'global-utils'
 import { MAKE_COUNCILARRIVALS_ADMIN } from './arrivalsMutation'
-import { permitAdmin, permitArrivals } from 'permission-utils'
+import {
+  permitAdmin,
+  permitArrivals,
+  permitArrivalsPayer,
+} from 'permission-utils'
 import HeadingSecondary from 'components/HeadingSecondary'
 import DefaulterInfoCard from 'pages/services/defaulters/DefaulterInfoCard'
 import { MemberContext } from 'contexts/MemberContext'
@@ -24,6 +27,7 @@ import SearchMember from 'components/formik/SearchMember'
 import { beforeStreamArrivalsDeadline } from './arrivals-utils'
 import ErrorText from 'components/ErrorText'
 import PullToRefresh from 'react-simple-pull-to-refresh'
+import ArrivalsMenuDropdown from './ArrivalsMenuDropdown'
 
 const CouncilDashboard = () => {
   const { isOpen, togglePopup } = usePopup()
@@ -78,6 +82,14 @@ const CouncilDashboard = () => {
     link: `/arrivals/council-by-constituency`,
   }
 
+  const ArrivalsMenu = [
+    { title: 'Change Arrivals Admin', onClick: togglePopup },
+    {
+      title: 'Arrivals Payment Team',
+      onClick: () => navigate('/council/arrivals-payers'),
+    },
+  ]
+
   return (
     <PullToRefresh onRefresh={refetch}>
       <ApolloWrapper data={data} loading={loading} error={error}>
@@ -120,18 +132,16 @@ const CouncilDashboard = () => {
             </Popup>
           )}
 
-          <div className="d-grid gap-2">
-            <RoleView
-              roles={[...permitAdmin('Council'), ...permitArrivals('Stream')]}
-            >
-              <Button
-                variant="outline-secondary my-3"
-                onClick={() => togglePopup()}
-              >
-                Change Arrivals Admin
-              </Button>
-            </RoleView>
+          <RoleView
+            roles={[
+              ...permitAdmin('GatheringService'),
+              ...permitArrivals('GatheringService'),
+            ]}
+          >
+            <ArrivalsMenuDropdown menuItems={ArrivalsMenu} />
+          </RoleView>
 
+          <div className="d-grid gap-2">
             <DefaulterInfoCard defaulter={aggregates} />
             {!beforeStreamArrivalsDeadline(council?.stream) && (
               <ErrorText>Arrival Deadline is up! Thank you very much</ErrorText>
@@ -160,6 +170,18 @@ const CouncilDashboard = () => {
               iconBg
               noCaption
             />
+
+            <RoleView roles={[...permitArrivalsPayer()]}>
+              <MenuButton
+                title="Vehicles To Be Paid"
+                onClick={() => navigate('/arrivals/vehicles-to-be-paid')}
+                number={council?.vehiclesToBePaidCount.toString()}
+                color="yellow"
+                iconBg
+                noCaption
+              />
+            </RoleView>
+
             <MenuButton
               title={`Bacentas That Didn't Bus`}
               onClick={() => navigate('/arrivals/bacentas-below-8')}

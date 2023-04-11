@@ -4,13 +4,13 @@ import MemberDisplayCard from 'components/card/MemberDisplayCard'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import HeadingSecondary from 'components/HeadingSecondary'
 import { ChurchContext } from 'contexts/ChurchContext'
-import { FunctionReturnsVoid, Member, Stream } from 'global-types'
+import { FunctionReturnsVoid, Member, Council } from 'global-types'
 import React, { useContext, useState } from 'react'
 import { Button, Col, Container, Modal, Row, Spinner } from 'react-bootstrap'
 import {
-  MAKE_STREAM_ARRIVALSPAYER,
-  REMOVE_STREAM_ARRIVALSPAYER,
-  STREAM_ARRIVALSPAYERS,
+  MAKE_COUNCIL_ARRIVALSPAYER,
+  REMOVE_COUNCIL_ARRIVALSPAYER,
+  COUNCIL_ARRIVALSPAYERS,
 } from './ArrivalsHelpersGQL'
 import './ArrivalsHelpers.css'
 import * as Yup from 'yup'
@@ -20,7 +20,7 @@ import NoDataComponent from 'pages/arrivals/CompNoData'
 import SearchMember from 'components/formik/SearchMember'
 import ModalSubmitButton from 'pages/services/banking/anagkazo/ModalSubmitButton'
 
-interface StreamWithArrivalsPayers extends Stream {
+interface CouncilWithArrivalsPayers extends Council {
   arrivalsPayers: Member[]
   activeBacentaCount: number
 }
@@ -31,34 +31,37 @@ type FormOptions = {
 }
 
 const ArrivalsPayerSelect = () => {
-  const { streamId } = useContext(ChurchContext)
-  const { data, loading, error } = useQuery(STREAM_ARRIVALSPAYERS, {
-    variables: { id: streamId },
+  const { councilId } = useContext(ChurchContext)
+  const { data, loading, error } = useQuery(COUNCIL_ARRIVALSPAYERS, {
+    variables: { id: councilId },
   })
   const [submitting, setSubmitting] = useState(false)
   const [show, setShow] = useState(false)
   const handleOpen: FunctionReturnsVoid = () => setShow(true)
   const handleClose: FunctionReturnsVoid = () => setShow(false)
 
-  const stream: StreamWithArrivalsPayers = data?.streams[0]
+  const council: CouncilWithArrivalsPayers = data?.councils[0]
 
-  const [MakeStreamArrivalsPayer] = useMutation(MAKE_STREAM_ARRIVALSPAYER, {
+  const [MakeCouncilArrivalsPayer] = useMutation(MAKE_COUNCIL_ARRIVALSPAYER, {
     refetchQueries: [
       {
-        query: STREAM_ARRIVALSPAYERS,
-        variables: { id: streamId },
+        query: COUNCIL_ARRIVALSPAYERS,
+        variables: { id: councilId },
       },
     ],
   })
 
-  const [RemoveStreamArrivalsPayer] = useMutation(REMOVE_STREAM_ARRIVALSPAYER, {
-    refetchQueries: [
-      {
-        query: STREAM_ARRIVALSPAYERS,
-        variables: { id: streamId },
-      },
-    ],
-  })
+  const [RemoveCouncilArrivalsPayer] = useMutation(
+    REMOVE_COUNCIL_ARRIVALSPAYER,
+    {
+      refetchQueries: [
+        {
+          query: COUNCIL_ARRIVALSPAYERS,
+          variables: { id: councilId },
+        },
+      ],
+    }
+  )
 
   const initialValues: FormOptions = {
     arrivalsPayerName: '',
@@ -77,9 +80,9 @@ const ArrivalsPayerSelect = () => {
   ) => {
     onSubmitProps.setSubmitting(true)
     try {
-      await MakeStreamArrivalsPayer({
+      await MakeCouncilArrivalsPayer({
         variables: {
-          streamId: streamId,
+          councilId: councilId,
           arrivalsPayerId: values.arrivalsPayerSelect,
         },
       })
@@ -98,11 +101,11 @@ const ArrivalsPayerSelect = () => {
   return (
     <ApolloWrapper data={data} loading={loading} error={error}>
       <Container>
-        <HeadingPrimary>{`Select ${stream?.name} Arrivals Payment Team Members`}</HeadingPrimary>
+        <HeadingPrimary>{`Select ${council?.name} Council Arrivals Payment Team Members`}</HeadingPrimary>
         <HeadingSecondary>
           Use the buttons below to choose Arrivals Payment Team Members
         </HeadingSecondary>
-        <div>{`Number of Active Bacentas: ${stream?.activeBacentaCount}`}</div>
+        <div>{`Number of Active Bacentas: ${council?.activeBacentaCount}`}</div>
 
         <Modal
           contentClassName="dark"
@@ -152,7 +155,7 @@ const ArrivalsPayerSelect = () => {
           </Button>
         </div>
 
-        {stream?.arrivalsPayers?.map((arrivalsPayer: Member) => (
+        {council?.arrivalsPayers?.map((arrivalsPayer: Member) => (
           <div key={arrivalsPayer.id}>
             <MemberDisplayCard member={arrivalsPayer} />
             <div className="d-grid gap-2">
@@ -167,9 +170,9 @@ const ArrivalsPayerSelect = () => {
                   if (confirmBox === true) {
                     setSubmitting(true)
                     try {
-                      await RemoveStreamArrivalsPayer({
+                      await RemoveCouncilArrivalsPayer({
                         variables: {
-                          streamId: streamId,
+                          councilId,
                           arrivalsPayerId: arrivalsPayer.id,
                         },
                       })
@@ -194,7 +197,7 @@ const ArrivalsPayerSelect = () => {
           </div>
         ))}
 
-        {!stream?.arrivalsPayers?.length && (
+        {!council?.arrivalsPayers?.length && (
           <NoDataComponent text="You have no Arrivals Payment Team Members at this time" />
         )}
       </Container>
