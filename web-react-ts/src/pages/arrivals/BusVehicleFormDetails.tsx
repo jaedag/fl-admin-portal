@@ -141,36 +141,6 @@ const BusVehicleFormDetails = () => {
                     </tr>
                   )}
 
-                  {vehicle?.mobileNetwork && (
-                    <tr>
-                      <td>Mobile Network</td>
-                      <td>
-                        <PlaceholderCustom loading={loading}>
-                          {vehicle?.mobileNetwork}
-                        </PlaceholderCustom>
-                      </td>
-                    </tr>
-                  )}
-                  {vehicle?.momoNumber && (
-                    <tr>
-                      <td>Momo Number</td>
-                      <td>
-                        <PlaceholderCustom loading={loading}>
-                          {vehicle?.momoNumber}
-                        </PlaceholderCustom>
-                      </td>
-                    </tr>
-                  )}
-                  {vehicle?.momoName && (
-                    <tr>
-                      <td>Momo Name</td>
-                      <td>
-                        <PlaceholderCustom loading={loading}>
-                          {vehicle?.momoName}
-                        </PlaceholderCustom>
-                      </td>
-                    </tr>
-                  )}
                   {vehicle?.arrivalTime && (
                     <tr>
                       <td>Arrival Time</td>
@@ -211,6 +181,16 @@ const BusVehicleFormDetails = () => {
                       >
                         <PlaceholderCustom loading={loading}>
                           {capitalise(vehicle?.transactionStatus)}
+                        </PlaceholderCustom>
+                      </td>
+                    </tr>
+                  )}
+                  {vehicle?.transactionStatus && (
+                    <tr>
+                      <td>Mobile Network</td>
+                      <td>
+                        <PlaceholderCustom loading={loading}>
+                          {vehicle?.mobileNetwork}
                         </PlaceholderCustom>
                       </td>
                     </tr>
