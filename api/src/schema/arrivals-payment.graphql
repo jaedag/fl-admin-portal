@@ -1,4 +1,6 @@
 extend type Stream {
+  arrivalsPayers: [Member!]!
+    @relationship(type: "IS_ARRIVALS_PAYER_FOR", direction: IN)
   vehiclesToBePaidCount: Int!
     @cypher(
       statement: """
@@ -23,4 +25,20 @@ extend type Stream {
       RETURN bacentas
       """
     )
+}
+
+extend type VehicleRecord {
+  paymentConfirmationTime: DateTime
+  paymentConfirmer: Member
+    @relationship(type: "CONFIRMED_BPAYMENT_FOR", direction: IN)
+}
+
+extend type Member {
+  isArrivalsPayerForStream: [Stream!]!
+    @relationship(type: "IS_ARRIVALS_PAYER_FOR", direction: OUT)
+}
+
+extend type Mutation {
+  MakeStreamArrivalsPayer(streamId: ID!, arrivalsPayerId: ID!): Member!
+  RemoveStreamArrivalsPayer(streamId: ID!, arrivalsPayerId: ID!): Member!
 }

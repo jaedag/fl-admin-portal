@@ -71,9 +71,9 @@ export const roles: {
     'isAdminFor',
     'isArrivalsAdminFor',
     'isArrivalsCounterFor',
-    'isArrivalsConfirmerFor',
     'isTellerFor',
     'isSheepSeekerFor',
+    'isArrivalsPayerFor',
   ],
   GatheringService: ['leads', 'isAdminFor', 'isArrivalsAdminFor'],
   Oversight: ['leads', 'isAdminFor'],
@@ -94,8 +94,8 @@ export const parseRoles = (role: VerbTypes): VerbTypes => {
       return 'isArrivalsAdminFor'
     case 'arrivalsCounter':
       return 'isArrivalsCounterFor'
-    case 'arrivalsConfirmer':
-      return 'isArrivalsConfirmerFor'
+    case 'arrivalsPayer':
+      return 'isArrivalsPayerFor'
     case 'teller':
       return 'isTellerFor'
     case 'sheepseeker':
@@ -109,8 +109,8 @@ export const parseRoles = (role: VerbTypes): VerbTypes => {
       return 'arrivalsAdmin'
     case 'isArrivalsCounterFor':
       return 'arrivalsCounter'
-    case 'isArrivalsConfirmerFor':
-      return 'arrivalsConfirmer'
+    case 'isArrivalsPayerFor':
+      return 'arrivalsPayer'
     case 'isTellerFor':
       return 'teller'
     case 'isSheepSeekerFor':
@@ -136,7 +136,7 @@ const setServantRoles = (args: ServantRolesArgs) => {
   const permittedForLink = permitMe(churchType)
 
   if (
-    servantType === 'isArrivalsConfirmerFor' ||
+    servantType === 'isArrivalsPayerFor' ||
     servantType === 'isArrivalsCounterFor'
   ) {
     const adminsOneChurch = servant[`${verb}`]?.length === 1 ?? false

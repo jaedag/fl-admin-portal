@@ -89,7 +89,7 @@ export interface StreamWithArrivals extends Stream, HigherChurchWithArrivals {
   mobilisationEndTime: string
   arrivalStartTime: string
   arrivalEndTime: string
-  arrivalsConfirmers: Member[]
+  arrivalsPayers: Member[]
   arrivalsCounters: Member[]
 }
 

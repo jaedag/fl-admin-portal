@@ -45,6 +45,7 @@ const StateBacentasToCount = lazy(() => import('./StateBacentasToCount'))
 const SetArrivalsTime = lazy(() => import('./Times/SetArrivalsTimes'))
 const ArrivalTimes = lazy(() => import('./Times/ArrivalTimes'))
 const ArrivalsCounters = lazy(() => import('./Helpers/ArrivalsCounters'))
+const ArrivalsPayerSelect = lazy(() => import('./Helpers/ArrivalsPayers'))
 const BacentasBelow8 = lazy(() => import('./StateBacentasBelow8'))
 const VehiclesToBePaid = lazy(() => import('./StateVehiclesToBePaid'))
 const BusVehicleFormDetails = lazy(() => import('./BusVehicleFormDetails'))
@@ -226,6 +227,11 @@ export const arrivals: LazyRouteTypes[] = [
     path: '/stream/arrivals-counters',
     roles: permitAdminArrivals('Stream'),
     element: ArrivalsCounters,
+  },
+  {
+    path: '/stream/arrivals-payers',
+    roles: permitAdminArrivals('Stream'),
+    element: ArrivalsPayerSelect,
   },
 
   //Arrivals Times

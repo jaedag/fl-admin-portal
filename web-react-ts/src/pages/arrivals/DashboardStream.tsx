@@ -91,6 +91,10 @@ const StreamDashboard = () => {
       onClick: () => navigate('/stream/arrivals-counters'),
     },
     {
+      title: 'Arrivals Payment Team',
+      onClick: () => navigate('/stream/arrivals-payers'),
+    },
+    {
       title: 'Arrival Times',
       onClick: () => navigate('/stream/arrival-times'),
     },

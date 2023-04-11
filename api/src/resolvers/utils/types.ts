@@ -44,8 +44,8 @@ export type Role =
   | 'arrivalsAdminStream'
   | 'arrivalsAdminCouncil'
   | 'arrivalsAdminConstituency'
-  | 'arrivalsConfirmerStream'
   | 'arrivalsCounterStream'
+  | 'arrivalsPayerStream'
   | 'tellerStream'
   | 'sheepseekerStream'
   | 'all'
@@ -55,29 +55,29 @@ export type VerbTypes =
   | 'admin'
   | 'arrivalsAdmin'
   | 'arrivalsCounter'
-  | 'arrivalsConfirmer'
+  | 'arrivalsPayer'
   | 'leads'
   | 'isAdminFor'
   | 'isArrivalsAdminFor'
   | 'isArrivalsCounterFor'
-  | 'isArrivalsConfirmerFor'
+  | 'isArrivalsPayerFor'
 
 export type ServantType =
   | 'Leader'
   | 'Admin'
   | 'ArrivalsAdmin'
   | 'ArrivalsCounter'
-  | 'ArrivalsConfirmer'
   | 'Teller'
   | 'SheepSeeker'
+  | 'ArrivalsPayer'
 export type ServantTypeLowerCase =
   | 'leader'
   | 'admin'
   | 'arrivalsAdmin'
   | 'arrivalsCounter'
-  | 'arrivalsConfirmer'
   | 'teller'
   | 'sheepseeker'
+  | 'arrivalsPayer'
 
 export type StreamOptions =
   | 'Anagkazo Encounter'
@@ -126,7 +126,7 @@ export interface Church {
   admin: MemberWithoutBioData
   arrivalsAdmin: MemberWithoutBioData
   arrivalsCounter: MemberWithoutBioData
-  arrivalsConfirmer: MemberWithoutBioData
+  arrivalsPayer: MemberWithoutBioData
 }
 
 export type ChurchIdAndName = {

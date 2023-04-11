@@ -181,6 +181,30 @@ export const arrivalsMutation = {
       'Stream',
       'ArrivalsCounter'
     ),
+  MakeStreamArrivalsPayer: async (
+    object: never,
+    args: never,
+    context: Context
+  ) =>
+    MakeServant(
+      context,
+      args,
+      [...permitAdmin('Stream'), ...permitArrivals('Stream')],
+      'Stream',
+      'ArrivalsPayer'
+    ),
+  RemoveStreamArrivalsPayer: async (
+    object: never,
+    args: never,
+    context: Context
+  ) =>
+    RemoveServant(
+      context,
+      args,
+      [...permitAdmin('Stream'), ...permitArrivals('Stream')],
+      'Stream',
+      'ArrivalsPayer'
+    ),
 
   UploadMobilisationPicture: async (
     object: any,

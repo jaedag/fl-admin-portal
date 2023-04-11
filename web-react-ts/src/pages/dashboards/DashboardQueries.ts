@@ -115,6 +115,10 @@ export const SERVANT_CHURCH_LIST = gql`
         name
         stream_name
       }
+      isArrivalsPayerForStream {
+        id
+        name
+      }
 
       #sheepSeeking
       isSheepSeekerForStream {

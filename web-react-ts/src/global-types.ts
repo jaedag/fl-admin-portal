@@ -200,7 +200,6 @@ export type ServantType =
   | 'Admin'
   | 'ArrivalsAdmin'
   | 'ArrivalsCounter'
-  | 'ArrivalsConfirmer'
   | 'Teller'
 
 export type ServantTypeLowerCase =
@@ -208,7 +207,6 @@ export type ServantTypeLowerCase =
   | 'admin'
   | 'arrivalsAdmin'
   | 'arrivalsCounter'
-  | 'arrivalsConfirmer'
 
 export type CurrentUser = {
   id: string
@@ -259,7 +257,6 @@ export type Role =
   | 'arrivalsAdminStream'
   | 'arrivalsAdminCouncil'
   | 'arrivalsAdminConstituency'
-  | 'arrivalsConfirmerStream'
   | 'arrivalsCounterStream'
   | 'arrivalsPayerStream'
   | 'tellerStream'
@@ -271,7 +268,7 @@ export type VerbTypes =
   | 'admin'
   | 'arrivalsAdmin'
   | 'arrivalsCounter'
-  | 'arrivalsConfirmer'
+  | 'arrivalsPayer'
   | 'teller'
   | 'sheepseeker'
   | 'leads'
@@ -279,7 +276,6 @@ export type VerbTypes =
   | 'isArrivalsAdminFor'
   | 'isArrivalsCounterFor'
   | 'isArrivalsPayerFor'
-  | 'isArrivalsConfirmerFor'
   | 'isTellerFor'
   | 'isSheepSeekerFor'
 

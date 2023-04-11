@@ -34,8 +34,8 @@ WITH apoc.cypher.runFirstColumn(
   RETURN arrivalsAdminGatheringService", {this: member}, true) | member_arrivalsAdminGatheringServices { .id,.name}],
   isArrivalsCounterForStream: [ member_arrivalsCounterStreams IN apoc.cypher.runFirstColumn("MATCH (this)-[:COUNTS_ARRIVALS_FOR]->(arrivalsCounterStream:Stream)
   RETURN arrivalsCounterStream", {this: member}, true) | member_arrivalsCounterStreams { .id,.name}],
-  isArrivalsConfirmerForStream: [ member_arrivalsConfirmerStreams IN apoc.cypher.runFirstColumn("MATCH (this)-[:CONFIRMS_ARRIVALS_FOR]->(arrivalsConfirmerStream:Stream)
-  RETURN arrivalsConfirmerStream", {this: member}, true) | member_arrivalsConfirmerStreams { .id,.name}]
+  isArrivalsPayerForStream: [ member_arrivalsPayerStreams IN apoc.cypher.runFirstColumn("MATCH (this)-[:CONFIRMS_ARRIVALS_FOR]->(arrivalsPayerStream:Stream)
+  RETURN arrivalsPayerStream", {this: member}, true) | member_arrivalsPayerStreams { .id,.name}]
   } AS member
   `
 

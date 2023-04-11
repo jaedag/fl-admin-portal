@@ -55,3 +55,56 @@ export const REMOVE_STREAMARRIVALS_COUNTER = gql`
     }
   }
 `
+
+export const STREAM_ARRIVALSPAYERS = gql`
+  query streamArrivalsPayers($id: ID!) {
+    streams(where: { id: $id }, options: { limit: 1 }) {
+      id
+      name
+
+      arrivalsPayers {
+        id
+        firstName
+        lastName
+        fullName
+        pictureUrl
+        fellowship {
+          id
+          name
+        }
+        ministry {
+          id
+          name
+        }
+      }
+
+      activeBacentaCount
+    }
+  }
+`
+
+export const MAKE_STREAM_ARRIVALSPAYER = gql`
+  mutation MakeStreamArrivalsPayer($streamId: ID!, $arrivalsPayerId: ID!) {
+    MakeStreamArrivalsPayer(
+      streamId: $streamId
+      arrivalsPayerId: $arrivalsPayerId
+    ) {
+      id
+      firstName
+      lastName
+    }
+  }
+`
+
+export const REMOVE_STREAM_ARRIVALSPAYER = gql`
+  mutation RemoveStreamArrivalsPayer($streamId: ID!, $arrivalsPayerId: ID!) {
+    RemoveStreamArrivalsPayer(
+      streamId: $streamId
+      arrivalsPayerId: $arrivalsPayerId
+    ) {
+      id
+      firstName
+      lastName
+    }
+  }
+`
