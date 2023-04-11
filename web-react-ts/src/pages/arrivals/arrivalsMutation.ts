@@ -265,6 +265,7 @@ export const SEND_VEHICLE_SUPPORT = gql`
     $momoName: String!
     $momoNumber: String!
     $vehicleTopUp: Int!
+    $outbound: Boolean!
   ) {
     SendVehicleSupport(
       vehicleRecordId: $vehicleRecordId
@@ -272,10 +273,13 @@ export const SEND_VEHICLE_SUPPORT = gql`
       momoName: $momoName
       momoNumber: $momoNumber
       vehicleTopUp: $vehicleTopUp
+      outbound: $outbound
     ) {
       id
       vehicleTopUp
       momoNumber
+      momoName
+      outbound
       paystackTransferCode
       transactionStatus
     }

@@ -17,15 +17,21 @@ import { VehicleRecord } from './arrivals-types'
 import Input from 'components/formik/Input'
 import CloudinaryImage from 'components/CloudinaryImage'
 import './Arrivals.css'
-import { convertOutboundToString } from 'pages/directory/update/UpdateBusPaymentDetails'
+import {
+  convertOutboundToString,
+  convertOutboundToBoolean,
+} from 'pages/directory/update/UpdateBusPaymentDetails'
 import CurrencySpan from 'components/CurrencySpan'
 import TableFromArrays from 'components/TableFromArrays/TableFromArrays'
 import useModal from 'hooks/useModal'
+import RadioButtons from 'components/formik/RadioButtons'
+import { OUTBOUND_OPTIONS } from './arrivals-utils'
 
 type FormOptions = {
   momoNumber: string
   momoName: string
   vehicleTopUp: number
+  outbound: string
 }
 
 const FormPayVehicleRecord = () => {
@@ -46,6 +52,7 @@ const FormPayVehicleRecord = () => {
     momoName: vehicle?.momoName,
     momoNumber: vehicle?.momoNumber,
     vehicleTopUp: vehicle?.vehicleTopUp,
+    outbound: convertOutboundToString(bacenta?.outbound) ?? 'In Only',
   }
 
   const validationSchema = Yup.object({
@@ -55,6 +62,7 @@ const FormPayVehicleRecord = () => {
       .required('This is a required field'),
     momoName: Yup.string().required('This is a required field'),
     momoNumber: Yup.string().required('This is a required field'),
+    outbound: Yup.string().required('Please select an option'),
   })
 
   const onSubmit = async (
@@ -73,6 +81,7 @@ const FormPayVehicleRecord = () => {
           momoNumber: values.momoNumber,
           momoName: values.momoName,
           vehicleTopUp: values.vehicleTopUp,
+          outbound: convertOutboundToBoolean(values.outbound),
         },
       })
 
@@ -172,7 +181,15 @@ const FormPayVehicleRecord = () => {
                   label="Vehicle Top Up Amount*"
                   placeholder={vehicle?.vehicleTopUp.toString()}
                 />
-
+                <Card border="warning" className="my-3">
+                  <Card.Body>
+                    <RadioButtons
+                      name="outbound"
+                      label="Are They Bussing Back?"
+                      options={OUTBOUND_OPTIONS}
+                    />
+                  </Card.Body>
+                </Card>
                 <Input
                   name="momoNumber"
                   label="Momo Number*"

@@ -12,7 +12,7 @@ import { useContext, useEffect, useState } from 'react'
 import { Button, ButtonGroup, Container } from 'react-bootstrap'
 import PullToRefresh from 'react-simple-pull-to-refresh'
 import { BacentaWithArrivals } from './arrivals-types'
-import { STREAM_VEHICLES_TO_BE_PAID } from './bussingStatusQueries'
+import { COUNCIL_VEHICLES_TO_BE_PAID } from './bussingStatusQueries'
 import NoData from './CompNoData'
 import VehicleButtonPayment from './components/VehiclePaymentButton'
 import { useNavigate } from 'react-router'
@@ -22,12 +22,12 @@ type FormOptions = {
 }
 
 const StateBacentasToBePaid = () => {
-  const { streamId, clickCard } = useContext(ChurchContext)
+  const { councilId, clickCard } = useContext(ChurchContext)
   const { data, loading, error, refetch } = useQuery(
-    STREAM_VEHICLES_TO_BE_PAID,
+    COUNCIL_VEHICLES_TO_BE_PAID,
     {
       variables: {
-        id: streamId,
+        id: councilId,
       },
       pollInterval: SHORT_POLL_INTERVAL,
     }
@@ -35,7 +35,7 @@ const StateBacentasToBePaid = () => {
   const [seePaid, setSeePaid] = useState(false)
   const navigate = useNavigate()
 
-  const church = data?.streams[0]
+  const church = data?.councils[0]
 
   const initialValues: FormOptions = {
     bacentaSearch: '',

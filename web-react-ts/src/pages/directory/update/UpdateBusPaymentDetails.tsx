@@ -47,7 +47,7 @@ type FormOptions = {
   verificationCode: string
 }
 
-const convertToBoolean = (value: string | boolean) => {
+export const convertOutboundToBoolean = (value: string | boolean) => {
   return value === 'In and Out'
 }
 
@@ -129,7 +129,7 @@ const UpdateBusPayment = () => {
             bacentaId,
             sprinterTopUp: parseFloat(values.sprinterTopUp),
             urvanTopUp: parseFloat(values.urvanTopUp),
-            outbound: convertToBoolean(values.outbound),
+            outbound: convertOutboundToBoolean(values.outbound),
             target: parseInt(values.target),
           },
         })

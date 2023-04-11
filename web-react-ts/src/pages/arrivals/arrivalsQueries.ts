@@ -471,6 +471,7 @@ export const DISPLAY_VEHICLE_RECORDS = gql`
       comments
       arrivalTime
       outbound
+      mobileNetwork
       momoName
       momoNumber
       transactionReference

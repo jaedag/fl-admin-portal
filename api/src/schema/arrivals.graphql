@@ -1267,6 +1267,7 @@ extend type Mutation {
     momoName: String!
     momoNumber: String!
     vehicleTopUp: Int!
+    outbound: Boolean!
   ): VehicleRecord!
 }
 

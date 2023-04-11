@@ -56,7 +56,8 @@ WITH record, bacenta, leader, stream
 
 SET record.vehicleTopUp = $vehicleTopUp,
 record.momoNumber = $momoNumber,
-record.momoName = $momoName
+record.momoName = $momoName,
+record.outbound = $outbound
 
 WITH record, bacenta, leader, stream
 

@@ -658,6 +658,7 @@ export const arrivalsMutation = {
       momoName: string
       momoNumber: string
       vehicleTopUp: number
+      outbound: boolean
     },
     context: Context
   ) => {
@@ -670,7 +671,7 @@ export const arrivalsMutation = {
         tx.run(checkTransactionReference, args)
       )
     )
-    console.log(recordResponse)
+
     const vehicleRecord = recordResponse.record.properties
     const bacenta = recordResponse.bacenta.properties
     const leader = recordResponse.leader.properties
@@ -699,12 +700,16 @@ export const arrivalsMutation = {
         },
         data: {
           type: 'mobile_money',
-          name: `${leader.firstName}${leader.lastName} ${vehicleRecord.momoName}`,
+          name: `${leader.firstName}${leader.lastName}`,
           email: leader.email,
           account_number: vehicleRecord.momoNumber,
           bank_code: vehicleRecord.mobileNetwork,
           currency: 'GHS',
           metadata: {
+            momo: {
+              name: vehicleRecord.momoName,
+              number: vehicleRecord.momoNumber,
+            },
             bacenta: {
               id: bacenta.id,
               name: bacenta.name,

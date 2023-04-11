@@ -12,6 +12,7 @@ export interface CreateTransferRecipientBody extends PayStackRequestBody {
     account_number: string
     currency: 'GHS'
     metadata: {
+      momo: any
       bacenta: any
       leader: any
     }
