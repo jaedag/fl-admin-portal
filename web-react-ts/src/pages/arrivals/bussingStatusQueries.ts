@@ -351,6 +351,41 @@ export const COUNCIL_BACENTAS_TO_COUNT = gql`
     }
   }
 `
+
+export const STREAM_VEHICLES_TO_BE_PAID = gql`
+  query streamVehiclesToBePaid($id: ID!) {
+    streams(where: { id: $id }, options: { limit: 1 }) {
+      id
+      name
+
+      bacentasToBePaid {
+        id
+        name
+        leader {
+          id
+          firstName
+          lastName
+          fullName
+          pictureUrl
+          phoneNumber
+          whatsappNumber
+        }
+        bussing(limit: 1) {
+          vehicleRecords(where: { arrivalTime_NOT: null, vehicleTopUp_GT: 0 }) {
+            id
+            attendance
+            vehicle
+            vehicleTopUp
+            arrivalTime
+            transactionStatus
+            transactionReference
+          }
+        }
+      }
+    }
+  }
+`
+
 export const STREAM_BACENTAS_TO_COUNT = gql`
   query streamBacentasToCount($id: ID!) {
     streams(where: { id: $id }, options: { limit: 1 }) {

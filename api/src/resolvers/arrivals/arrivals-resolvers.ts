@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { Transaction } from 'neo4j-driver'
 import { getStreamFinancials } from '../utils/financial-utils'
 import { Context } from '../utils/neo4j-types'
 import {
@@ -627,7 +628,13 @@ export const arrivalsMutation = {
   SendVehicleSupport: async (
     object: any,
     // eslint-disable-next-line camelcase
-    args: { vehicleRecordId: string; stream_name: StreamOptions },
+    args: {
+      vehicleRecordId: string
+      stream_name: StreamOptions
+      momoName: string
+      momoNumber: string
+      vehicleTopUp: number
+    },
     context: Context
   ) => {
     isAuth(permitArrivalsHelpers(), context.auth.roles)
@@ -635,9 +642,11 @@ export const arrivalsMutation = {
 
     const { auth } = getStreamFinancials(args.stream_name)
     const recordResponse = rearrangeCypherObject(
-      await session.run(checkTransactionReference, args)
+      await session.executeWrite((tx: Transaction) =>
+        tx.run(checkTransactionReference, args)
+      )
     )
-
+    console.log(recordResponse)
     const vehicleRecord = recordResponse.record.properties
     const bacenta = recordResponse.bacenta.properties
     const leader = recordResponse.leader.properties
@@ -666,7 +675,7 @@ export const arrivalsMutation = {
         },
         data: {
           type: 'mobile_money',
-          name: vehicleRecord.momoName,
+          name: `${leader.firstName}${leader.lastName} ${vehicleRecord.momoName}`,
           email: leader.email,
           account_number: vehicleRecord.momoNumber,
           bank_code: vehicleRecord.mobileNetwork,
@@ -691,10 +700,12 @@ export const arrivalsMutation = {
         throwToSentry('Error creating transfer recipient', err)
       )
 
-      await session.run(setBacentaRecipientCode, {
-        bacentaId: bacenta.id,
-        recipientCode: recipientResponse.data.data.recipient_code,
-      })
+      await session.executeWrite((tx: Transaction) =>
+        tx.run(setBacentaRecipientCode, {
+          bacentaId: bacenta.id,
+          recipientCode: recipientResponse.data.data.recipient_code,
+        })
+      )
 
       recipient = {
         ...recipientResponse.data.data,
@@ -725,13 +736,15 @@ export const arrivalsMutation = {
       const responseData = res.data.data
 
       await session
-        .run(setVehicleRecordTransactionSuccessful, {
-          ...args,
-          recipientCode: recipient.recipientCode,
-          transactionReference: responseData.reference,
-          transferCode: responseData.transfer_code,
-          responseStatus: responseData.status,
-        })
+        .executeWrite((tx: Transaction) =>
+          tx.run(setVehicleRecordTransactionSuccessful, {
+            ...args,
+            recipientCode: recipient.recipientCode,
+            transactionReference: responseData.reference,
+            transferCode: responseData.transfer_code,
+            responseStatus: responseData.status,
+          })
+        )
         .catch((error: any) =>
           throwToSentry(
             'There was an error setting Vehicle Record Transaction Status',
@@ -739,7 +752,7 @@ export const arrivalsMutation = {
           )
         )
 
-      console.log('Money Sent Successfully to', vehicleRecord.momoNumber)
+      console.log('Money Sent Successfully to', vehicleRecord.momoName)
 
       return vehicleRecord
     } catch (error: any) {

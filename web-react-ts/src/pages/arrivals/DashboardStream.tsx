@@ -16,6 +16,7 @@ import {
   permitAdmin,
   permitArrivals,
   permitArrivalsCounter,
+  permitArrivalsPayer,
 } from 'permission-utils'
 import MenuButton from 'components/buttons/MenuButton'
 import DefaulterInfoCard from 'pages/services/defaulters/DefaulterInfoCard'
@@ -180,6 +181,16 @@ const StreamDashboard = () => {
                 title="Vehicles To Be Counted"
                 onClick={() => navigate('/arrivals/bacentas-to-count')}
                 number={stream?.vehiclesNotCountedCount.toString()}
+                color="yellow"
+                iconBg
+                noCaption
+              />
+            </RoleView>
+            <RoleView roles={permitArrivalsPayer()}>
+              <MenuButton
+                title="Vehicles To Be Paid"
+                onClick={() => navigate('/arrivals/vehicles-to-be-paid')}
+                number={stream?.vehiclesToBePaidCount.toString()}
                 color="yellow"
                 iconBg
                 noCaption

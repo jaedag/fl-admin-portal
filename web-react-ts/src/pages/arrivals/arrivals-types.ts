@@ -1,4 +1,4 @@
-import { ApolloError, ApolloQueryResult } from '@apollo/client'
+import { ApolloError } from '@apollo/client'
 import {
   Bacenta,
   Church,
@@ -78,7 +78,7 @@ export type VehicleRecord = {
   outbound: boolean
   comments: string
   arrivalTime: string
-  paystackTransferCode?: string
+  transactionReference?: string
   transactionStatus?: string
 }
 

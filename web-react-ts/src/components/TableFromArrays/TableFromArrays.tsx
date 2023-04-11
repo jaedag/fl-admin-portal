@@ -5,7 +5,7 @@ import PlaceholderCustom from '../Placeholder'
 import './TableFromArrays.css'
 
 type TableFromArrayProps = {
-  tableArray: string[][]
+  tableArray: ((string | JSX.Element)[] | (string | number)[])[]
   loading: boolean
 }
 
@@ -15,9 +15,9 @@ const TableFromArrays = ({ tableArray, loading }: TableFromArrayProps) => {
   return (
     <Table variant={theme} striped bordered>
       <tbody>
-        {tableArray?.map((row: string[], i: number) => (
+        {tableArray?.map((row, i: number) => (
           <tr key={i}>
-            {row.map((col: string, j: number) => (
+            {row.map((col, j: number) => (
               <PlaceholderCustom
                 key={j}
                 as="td"

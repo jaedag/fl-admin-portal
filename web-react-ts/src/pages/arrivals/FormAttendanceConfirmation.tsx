@@ -12,7 +12,6 @@ import { Card, Container } from 'react-bootstrap'
 import { DISPLAY_VEHICLE_RECORDS } from './arrivalsQueries'
 import {
   CONFIRM_VEHICLE_BY_ADMIN,
-  SEND_VEHICLE_SUPPORT,
   SET_VEHICLE_SUPPORT,
 } from './arrivalsMutation'
 import { useNavigate } from 'react-router'
@@ -42,7 +41,6 @@ const FormAttendanceConfirmation = () => {
   })
   const [ConfirmVehicleByAdmin] = useMutation(CONFIRM_VEHICLE_BY_ADMIN)
   const [SetVehicleSupport] = useMutation(SET_VEHICLE_SUPPORT)
-  const [SendVehicleSupport] = useMutation(SEND_VEHICLE_SUPPORT)
 
   const vehicle: VehicleRecord = data?.vehicleRecords[0]
   const bacenta: BacentaWithArrivals = data?.bacentas[0]
@@ -110,27 +108,6 @@ const FormAttendanceConfirmation = () => {
       navigate(`/bacenta/vehicle-details`)
     }
 
-    if (vehicleData.arrivalTime) {
-      //If arrival time has been logged then send vehicle support
-      try {
-        const supportRes = await SendVehicleSupport({
-          variables: {
-            vehicleRecordId: vehicleRecordId,
-            stream_name: bacenta?.stream_name,
-          },
-        })
-
-        alertMsg(
-          'Money Successfully Sent to ' +
-            supportRes.data.SendVehicleSupport.momoNumber
-        )
-        setSubmitting(false)
-        navigate(`/bacenta/vehicle-details`)
-      } catch (error: any) {
-        setSubmitting(false)
-        alertMsg(error)
-      }
-    }
     navigate(`/bacenta/vehicle-details`)
   }
 
@@ -156,9 +133,9 @@ const FormAttendanceConfirmation = () => {
                 size="respond"
               />
               <div className="text-secondary">
-                Total Vehicle Cost:{' '}
+                Total Attendance:{' '}
                 <span className="fw-bold text-info">
-                  GHS {vehicle?.vehicleCost || 0}
+                  GHS {vehicle?.attendance || 0}
                 </span>
               </div>
             </Card.Body>

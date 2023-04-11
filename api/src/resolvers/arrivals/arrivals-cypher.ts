@@ -54,6 +54,12 @@ MATCH (bacenta)<-[:HAS]-(:Constituency)<-[:HAS]-(:Council)<-[:HAS]-(stream:Strea
 MATCH (bacenta)<-[:LEADS]-(leader:Active:Member)
 WITH record, bacenta, leader, stream
 
+SET record.vehicleTopUp = $vehicleTopUp,
+record.momoNumber = $momoNumber,
+record.momoName = $momoName
+
+WITH record, bacenta, leader, stream
+
 RETURN record, stream, bacenta, leader
 `
 

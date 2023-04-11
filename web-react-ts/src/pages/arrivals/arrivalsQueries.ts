@@ -82,6 +82,7 @@ export const STREAM_ARRIVALS_DASHBOARD = gql`
       bacentasMobilisingCount
       bacentasOnTheWayCount
       vehiclesNotCountedCount
+      vehiclesToBePaidCount
       bacentasBelow8Count
       bacentasHaveArrivedCount
       bussingMembersOnTheWayCount
@@ -399,6 +400,7 @@ export const DISPLAY_BUSSING_RECORDS = gql`
       personalContribution
       bussingTopUp
       numberOfBusses
+      bussingPictures
       numberOfSprinters
       numberOfUrvans
       numberOfCars
@@ -449,6 +451,60 @@ export const DISPLAY_VEHICLE_RECORDS = gql`
       comments
       arrivalTime
       outbound
+      momoName
+      momoNumber
+      transactionReference
+      transactionStatus
+    }
+    bacentas(where: { id: $bacentaId }) {
+      id
+      name
+      stream_name
+
+      stream {
+        id
+        arrivalStartTime
+        arrivalEndTime
+      }
+      bussing(limit: 1) {
+        id
+        vehicleRecords {
+          id
+        }
+      }
+    }
+  }
+`
+
+export const DISPLAY_VEHICLE_PAYMENT_RECORDS = gql`
+  query DisplayVehicleRecords($vehicleRecordId: ID!, $bacentaId: ID!) {
+    vehicleRecords(where: { id: $vehicleRecordId }) {
+      id
+      createdAt
+      created_by {
+        id
+        firstName
+        lastName
+        fullName
+      }
+      counted_by {
+        id
+        firstName
+        lastName
+        fullName
+      }
+
+      leaderDeclaration
+      attendance
+      vehicleCost
+      picture
+      personalContribution
+      vehicleTopUp
+      momoNumber
+      momoName
+      vehicle
+      arrivalTime
+      outbound
       paystackTransferCode
       transactionStatus
     }
@@ -456,10 +512,30 @@ export const DISPLAY_VEHICLE_RECORDS = gql`
       id
       name
       stream_name
+      leader {
+        id
+        firstName
+        lastName
+        fullName
+        pictureUrl
+      }
+      constituency {
+        id
+        name
+        council {
+          id
+          name
+          leader {
+            id
+            firstName
+            lastName
+            fullName
+          }
+        }
+      }
       stream {
         id
-        arrivalStartTime
-        arrivalEndTime
+        name
       }
       bussing(limit: 1) {
         id
