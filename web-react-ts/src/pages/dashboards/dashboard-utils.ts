@@ -65,7 +65,7 @@ export const roles: {
   Fellowship: ['leads'],
   Bacenta: ['leads'],
   Constituency: ['leads', 'isAdminFor', 'isArrivalsAdminFor'],
-  Council: ['leads', 'isAdminFor', 'isArrivalsAdminFor'],
+  Council: ['leads', 'isAdminFor', 'isArrivalsAdminFor', 'isArrivalsPayerFor'],
   Stream: [
     'leads',
     'isAdminFor',
@@ -73,7 +73,6 @@ export const roles: {
     'isArrivalsCounterFor',
     'isTellerFor',
     'isSheepSeekerFor',
-    'isArrivalsPayerFor',
   ],
   GatheringService: ['leads', 'isAdminFor', 'isArrivalsAdminFor'],
   Oversight: ['leads', 'isAdminFor'],

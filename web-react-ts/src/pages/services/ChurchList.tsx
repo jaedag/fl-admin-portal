@@ -28,8 +28,8 @@ const ChurchList = ({
   return (
     <div className="d-grid gap-2 text-left">
       {userJobs.length ? (
-        userJobs.map((role: UserRole) => {
-          return role.church
+        userJobs.map((role: UserRole) =>
+          role.church
             .filter((church: Church) => {
               if (color === 'campaigns') return true
               return church?.vacationStatus !== 'Vacation'
@@ -91,7 +91,7 @@ const ChurchList = ({
                 />
               )
             })
-        })
+        )
       ) : (
         <>
           <MenuButton color={color} />

@@ -6,17 +6,22 @@ import Popup from 'components/Popup/Popup'
 import { Form, Formik, FormikHelpers } from 'formik'
 import * as Yup from 'yup'
 import { useContext } from 'react'
-import { Col, Container, Row } from 'react-bootstrap'
+import { Accordion, Col, Container, Row } from 'react-bootstrap'
 import { COUNCIL_ARRIVALS_DASHBOARD } from './arrivalsQueries'
 import { useNavigate } from 'react-router'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import RoleView from 'auth/RoleView'
-import { SHORT_POLL_INTERVAL, throwToSentry } from 'global-utils'
+import {
+  SHORT_POLL_INTERVAL,
+  authorisedLink,
+  throwToSentry,
+} from 'global-utils'
 import { MAKE_COUNCILARRIVALS_ADMIN } from './arrivalsMutation'
 import {
   permitAdmin,
   permitArrivals,
   permitArrivalsPayer,
+  permitLeaderAdmin,
 } from 'permission-utils'
 import HeadingSecondary from 'components/HeadingSecondary'
 import DefaulterInfoCard from 'pages/services/defaulters/DefaulterInfoCard'
@@ -146,82 +151,156 @@ const CouncilDashboard = () => {
             {!beforeStreamArrivalsDeadline(council?.stream) && (
               <ErrorText>Arrival Deadline is up! Thank you very much</ErrorText>
             )}
-            <MenuButton
-              title="Bacentas With No Activity"
-              onClick={() => navigate('/arrivals/bacentas-no-activity')}
-              number={council?.bacentasNoActivityCount.toString()}
-              color="red"
-              iconBg
-              noCaption
-            />
-            <MenuButton
-              title="Bacentas Mobilising"
-              onClick={() => navigate('/arrivals/bacentas-mobilising')}
-              number={council?.bacentasMobilisingCount.toString()}
-              color="orange"
-              iconBg
-              noCaption
-            />
-            <MenuButton
-              title="Bacentas On The Way"
-              onClick={() => navigate('/arrivals/bacentas-on-the-way')}
-              number={council?.bacentasOnTheWayCount.toString()}
-              color="yellow"
-              iconBg
-              noCaption
-            />
+            <Accordion defaultActiveKey="0">
+              <Accordion.Item eventKey="0">
+                <Accordion.Header>Bacenta Monitoring</Accordion.Header>
+                <Accordion.Body>
+                  <div className="d-grid gap-2">
+                    <MenuButton
+                      title="Bacentas With No Activity"
+                      onClick={() => navigate('/arrivals/bacentas-no-activity')}
+                      number={council?.bacentasNoActivityCount.toString()}
+                      color="red"
+                      iconBg
+                      noCaption
+                    />
+                    <MenuButton
+                      title="Bacentas Mobilising"
+                      onClick={() => navigate('/arrivals/bacentas-mobilising')}
+                      number={council?.bacentasMobilisingCount.toString()}
+                      color="orange"
+                      iconBg
+                      noCaption
+                    />
+                    <MenuButton
+                      title="Bacentas On The Way"
+                      onClick={() => navigate('/arrivals/bacentas-on-the-way')}
+                      number={council?.bacentasOnTheWayCount.toString()}
+                      color="yellow"
+                      iconBg
+                      noCaption
+                    />
 
-            <RoleView roles={[...permitArrivalsPayer()]}>
-              <MenuButton
-                title="Vehicles To Be Paid"
-                onClick={() => navigate('/arrivals/vehicles-to-be-paid')}
-                number={council?.vehiclesToBePaidCount.toString()}
-                color="yellow"
-                iconBg
-                noCaption
-              />
-            </RoleView>
+                    <MenuButton
+                      title="Bacentas That Didn't Bus"
+                      onClick={() => navigate('/arrivals/bacentas-below-8')}
+                      number={council?.bacentasBelow8Count.toString()}
+                      iconBg
+                      color="red"
+                      noCaption
+                    />
 
-            <MenuButton
-              title={`Bacentas That Didn't Bus`}
-              onClick={() => navigate('/arrivals/bacentas-below-8')}
-              number={council?.bacentasBelow8Count.toString()}
-              iconBg
-              color="red"
-              noCaption
-            />
+                    <MenuButton
+                      title="Bacentas That Have Arrived"
+                      onClick={() =>
+                        navigate('/arrivals/bacentas-have-arrived')
+                      }
+                      number={council?.bacentasHaveArrivedCount.toString()}
+                      iconBg
+                      color="green"
+                      noCaption
+                    />
+                  </div>
+                </Accordion.Body>
+              </Accordion.Item>
 
-            <MenuButton
-              title="Bacentas That Have Arrived"
-              onClick={() => navigate('/arrivals/bacentas-have-arrived')}
-              number={council?.bacentasHaveArrivedCount.toString()}
-              color="green"
-              iconBg
-              noCaption
-            />
-            <div className="mt-5 d-grid gap-2">
-              <MenuButton
-                title="Members On The Way"
-                number={council?.bussingMembersOnTheWayCount.toString()}
-                color="yellow"
-                iconBg
-                noCaption
-              />
-              <MenuButton
-                title="Members That Have Arrived"
-                number={council?.bussingMembersHaveArrivedCount.toString()}
-                color="green"
-                iconBg
-                noCaption
-              />
-              <MenuButton
-                title="Busses That Have Arrived"
-                number={council?.bussesThatArrivedCount.toString()}
-                color="green"
-                iconBg
-                noCaption
-              />
-            </div>
+              <RoleView
+                roles={[
+                  ...permitArrivals('GatheringService'),
+                  ...permitLeaderAdmin('Council'),
+                ]}
+              >
+                <Accordion.Item eventKey="1">
+                  <Accordion.Header>Financial Data</Accordion.Header>
+                  <Accordion.Body>
+                    <div className="d-grid gap-2">
+                      <MenuButton
+                        title="Vehicles That Have Been Paid"
+                        onClick={() =>
+                          navigate(
+                            authorisedLink(
+                              currentUser,
+                              permitArrivalsPayer(),
+                              '/arrivals/vehicles-to-be-paid'
+                            )
+                          )
+                        }
+                        number={council?.vehiclesHaveBeenPaidCount.toString()}
+                        color="green"
+                        iconBg
+                        noCaption
+                      />
+                      <MenuButton
+                        title="Vehicles To Be Paid"
+                        onClick={() =>
+                          navigate(
+                            authorisedLink(
+                              currentUser,
+                              permitArrivalsPayer(),
+                              '/arrivals/vehicles-to-be-paid'
+                            )
+                          )
+                        }
+                        number={council?.vehiclesToBePaidCount.toString()}
+                        color="yellow"
+                        iconBg
+                        noCaption
+                      />
+
+                      <MenuButton
+                        title="Amount That Has Been Paid"
+                        onClick={() => navigate('#')}
+                        number={council?.vehicleAmountHasBeenPaid.toString()}
+                        color="yellow"
+                        noCaption
+                      />
+                      <MenuButton
+                        title="Amount To Be Paid"
+                        onClick={() => navigate('#')}
+                        number={council?.vehicleAmountToBePaid.toString()}
+                        color="yellow"
+                        noCaption
+                      />
+                    </div>
+                  </Accordion.Body>
+                </Accordion.Item>
+              </RoleView>
+              <Accordion.Item eventKey="2">
+                <Accordion.Header>Bussing Data</Accordion.Header>
+                <Accordion.Body>
+                  <div className="d-grid gap-2">
+                    <MenuButton
+                      title="Members On The Way"
+                      number={council?.bussingMembersOnTheWayCount.toString()}
+                      color="yellow"
+                      iconBg
+                      noCaption
+                    />
+                    <MenuButton
+                      title="Members That Have Arrived"
+                      number={council?.bussingMembersHaveArrivedCount.toString()}
+                      color="green"
+                      iconBg
+                      noCaption
+                    />
+                    <MenuButton
+                      title="Busses On The Way"
+                      number={council?.bussesOnTheWayCount.toString()}
+                      color="yellow"
+                      iconBg
+                      noCaption
+                    />
+                    <MenuButton
+                      title="Busses That Have Arrived"
+                      number={council?.bussesThatArrivedCount.toString()}
+                      color="green"
+                      iconBg
+                      noCaption
+                    />
+                  </div>
+                </Accordion.Body>
+              </Accordion.Item>
+            </Accordion>
           </div>
         </Container>
       </ApolloWrapper>

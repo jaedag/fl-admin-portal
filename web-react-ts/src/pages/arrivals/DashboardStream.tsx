@@ -102,198 +102,204 @@ const StreamDashboard = () => {
   return (
     <PullToRefresh onRefresh={refetch}>
       <ApolloWrapper data={data} loading={loading} error={error}>
-        <Container>
-          <HeadingPrimary loading={loading}>
-            {stream?.name} Stream Arrivals Real Time Dashboard
-          </HeadingPrimary>
-          <HeadingSecondary loading={loading}>
-            Arrivals Admin: {stream?.arrivalsAdmin?.fullName}
-          </HeadingSecondary>
-          {isOpen && (
-            <Popup handleClose={togglePopup}>
-              <b>Change Arrivals Admin</b>
-              <p>Please enter the name of the new arrivals rep</p>
+        <>
+          <Container>
+            <HeadingPrimary loading={loading}>
+              {stream?.name} Stream Arrivals Real Time Dashboard
+            </HeadingPrimary>
+            <HeadingSecondary loading={loading}>
+              Arrivals Admin: {stream?.arrivalsAdmin?.fullName}
+            </HeadingSecondary>
+            {isOpen && (
+              <Popup handleClose={togglePopup}>
+                <b>Change Arrivals Admin</b>
+                <p>Please enter the name of the new arrivals rep</p>
 
-              <Formik
-                initialValues={initialValues}
-                validationSchema={validationSchema}
-                onSubmit={onSubmit}
-              >
-                {(formik) => (
-                  <Form>
-                    <Row className="form-row">
-                      <Col>
-                        <SearchMember
-                          name="adminSelect"
-                          initialValue={initialValues?.adminName}
-                          placeholder="Select an Admin"
-                          setFieldValue={formik.setFieldValue}
-                          aria-describedby="Member Search"
-                          error={formik.errors.adminSelect}
-                        />
-                      </Col>
-                    </Row>
+                <Formik
+                  initialValues={initialValues}
+                  validationSchema={validationSchema}
+                  onSubmit={onSubmit}
+                >
+                  {(formik) => (
+                    <Form>
+                      <Row className="form-row">
+                        <Col>
+                          <SearchMember
+                            name="adminSelect"
+                            initialValue={initialValues?.adminName}
+                            placeholder="Select an Admin"
+                            setFieldValue={formik.setFieldValue}
+                            aria-describedby="Member Search"
+                            error={formik.errors.adminSelect}
+                          />
+                        </Col>
+                      </Row>
 
-                    <SubmitButton formik={formik} />
-                  </Form>
-                )}
-              </Formik>
-            </Popup>
-          )}
-
-          <RoleView
-            roles={[...permitAdmin('Stream'), ...permitArrivals('Stream')]}
-          >
-            <ArrivalsMenuDropdown menuItems={ArrivalsMenu} />
-          </RoleView>
-
-          <div className="d-grid gap-2 my-3">
-            <DefaulterInfoCard defaulter={aggregates} />
-            {!beforeStreamArrivalsDeadline(stream) && (
-              <ErrorText>Arrival Deadline is up! Thank you very much</ErrorText>
+                      <SubmitButton formik={formik} />
+                    </Form>
+                  )}
+                </Formik>
+              </Popup>
             )}
-          </div>
-        </Container>
-        <Accordion defaultActiveKey="0">
-          <Accordion.Item eventKey="0">
-            <Accordion.Header>Bacenta Monitoring</Accordion.Header>
-            <Accordion.Body>
-              <div className="mt-5 d-grid gap-2">
-                <MenuButton
-                  title="Bacentas With No Activity"
-                  onClick={() => navigate('/arrivals/bacentas-no-activity')}
-                  number={stream?.bacentasNoActivityCount.toString()}
-                  color="red"
-                  iconBg
-                  noCaption
-                />
-                <MenuButton
-                  title="Bacentas Mobilising"
-                  onClick={() => navigate('/arrivals/bacentas-mobilising')}
-                  number={stream?.bacentasMobilisingCount.toString()}
-                  color="orange"
-                  iconBg
-                  noCaption
-                />
-                <MenuButton
-                  title="Bacentas On The Way"
-                  onClick={() => navigate('/arrivals/bacentas-on-the-way')}
-                  number={stream?.bacentasOnTheWayCount.toString()}
-                  color="yellow"
-                  iconBg
-                  noCaption
-                />
-                <RoleView roles={permitArrivalsCounter()}>
+
+            <RoleView
+              roles={[...permitAdmin('Stream'), ...permitArrivals('Stream')]}
+            >
+              <ArrivalsMenuDropdown menuItems={ArrivalsMenu} />
+            </RoleView>
+
+            <div className="d-grid gap-2 my-3">
+              <DefaulterInfoCard defaulter={aggregates} />
+              {!beforeStreamArrivalsDeadline(stream) && (
+                <ErrorText>
+                  Arrival Deadline is up! Thank you very much
+                </ErrorText>
+              )}
+            </div>
+          </Container>
+          <Accordion defaultActiveKey="0">
+            <Accordion.Item eventKey="0">
+              <Accordion.Header>Bacenta Monitoring</Accordion.Header>
+              <Accordion.Body>
+                <div className="d-grid gap-2">
                   <MenuButton
-                    title="Vehicles To Be Counted"
-                    onClick={() => navigate('/arrivals/bacentas-to-count')}
-                    number={stream?.vehiclesNotCountedCount.toString()}
+                    title="Bacentas With No Activity"
+                    onClick={() => navigate('/arrivals/bacentas-no-activity')}
+                    number={stream?.bacentasNoActivityCount.toString()}
+                    color="red"
+                    iconBg
+                    noCaption
+                  />
+                  <MenuButton
+                    title="Bacentas Mobilising"
+                    onClick={() => navigate('/arrivals/bacentas-mobilising')}
+                    number={stream?.bacentasMobilisingCount.toString()}
+                    color="orange"
+                    iconBg
+                    noCaption
+                  />
+                  <MenuButton
+                    title="Bacentas On The Way"
+                    onClick={() => navigate('/arrivals/bacentas-on-the-way')}
+                    number={stream?.bacentasOnTheWayCount.toString()}
                     color="yellow"
                     iconBg
                     noCaption
                   />
-                </RoleView>
+                  <RoleView roles={permitArrivalsCounter()}>
+                    <MenuButton
+                      title="Vehicles To Be Counted"
+                      onClick={() => navigate('/arrivals/bacentas-to-count')}
+                      number={stream?.vehiclesNotCountedCount.toString()}
+                      color="yellow"
+                      iconBg
+                      noCaption
+                    />
+                  </RoleView>
 
-                <MenuButton
-                  title="Bacentas That Didn't Bus"
-                  onClick={() => navigate('/arrivals/bacentas-below-8')}
-                  number={stream?.bacentasBelow8Count.toString()}
-                  iconBg
-                  color="red"
-                  noCaption
-                />
-
-                <MenuButton
-                  title="Bacentas That Have Arrived"
-                  onClick={() => navigate('/arrivals/bacentas-have-arrived')}
-                  number={stream?.bacentasHaveArrivedCount.toString()}
-                  iconBg
-                  color="green"
-                  noCaption
-                />
-              </div>
-            </Accordion.Body>
-          </Accordion.Item>
-          <Accordion.Item eventKey="1">
-            <Accordion.Header>Financial Data</Accordion.Header>
-            <Accordion.Body>
-              <div className="mt-5 d-grid gap-2">
-                <RoleView
-                  roles={[
-                    ...permitArrivals('GatheringService'),
-                    ...permitLeaderAdmin('Stream'),
-                  ]}
-                >
                   <MenuButton
-                    title="Vehicles That Have Been Paid"
-                    onClick={() => navigate('#')}
-                    number={stream?.vehiclesHaveBeenPaidCount.toString()}
+                    title="Bacentas That Didn't Bus"
+                    onClick={() => navigate('/arrivals/bacentas-below-8')}
+                    number={stream?.bacentasBelow8Count.toString()}
+                    iconBg
+                    color="red"
+                    noCaption
+                  />
+
+                  <MenuButton
+                    title="Bacentas That Have Arrived"
+                    onClick={() => navigate('/arrivals/bacentas-have-arrived')}
+                    number={stream?.bacentasHaveArrivedCount.toString()}
+                    iconBg
+                    color="green"
+                    noCaption
+                  />
+                </div>
+              </Accordion.Body>
+            </Accordion.Item>
+
+            <RoleView
+              roles={[
+                ...permitArrivals('GatheringService'),
+                ...permitLeaderAdmin('Stream'),
+              ]}
+            >
+              <Accordion.Item eventKey="1">
+                <Accordion.Header>Financial Data</Accordion.Header>
+                <Accordion.Body>
+                  <div className="d-grid gap-2">
+                    <MenuButton
+                      title="Vehicles That Have Been Paid"
+                      onClick={() => navigate('#')}
+                      number={stream?.vehiclesHaveBeenPaidCount.toString()}
+                      color="green"
+                      iconBg
+                      noCaption
+                    />
+                    <MenuButton
+                      title="Vehicles To Be Paid"
+                      onClick={() => navigate('#')}
+                      number={stream?.vehiclesToBePaidCount.toString()}
+                      color="yellow"
+                      iconBg
+                      noCaption
+                    />
+
+                    <MenuButton
+                      title="Amount That Has Been Paid"
+                      onClick={() => navigate('#')}
+                      number={stream?.vehicleAmountHasBeenPaid.toString()}
+                      color="yellow"
+                      noCaption
+                    />
+                    <MenuButton
+                      title="Amount To Be Paid"
+                      onClick={() => navigate('#')}
+                      number={stream?.vehicleAmountToBePaid.toString()}
+                      color="yellow"
+                      noCaption
+                    />
+                  </div>
+                </Accordion.Body>
+              </Accordion.Item>
+            </RoleView>
+            <Accordion.Item eventKey="2">
+              <Accordion.Header>Bussing Data</Accordion.Header>
+              <Accordion.Body>
+                <div className="d-grid gap-2">
+                  <MenuButton
+                    title="Members On The Way"
+                    number={stream?.bussingMembersOnTheWayCount.toString()}
+                    color="yellow"
+                    iconBg
+                    noCaption
+                  />
+                  <MenuButton
+                    title="Members That Have Arrived"
+                    number={stream?.bussingMembersHaveArrivedCount.toString()}
                     color="green"
                     iconBg
                     noCaption
                   />
                   <MenuButton
-                    title="Vehicles To Be Paid"
-                    onClick={() => navigate('#')}
-                    number={stream?.vehiclesToBePaidCount.toString()}
+                    title="Busses On The Way"
+                    number={stream?.bussesOnTheWayCount.toString()}
                     color="yellow"
                     iconBg
                     noCaption
                   />
                   <MenuButton
-                    title="Amount That Has Been Paid"
-                    onClick={() => navigate('#')}
-                    number={stream?.vehicleAmountHasBeenPaid.toString()}
-                    color="yellow"
+                    title="Busses That Have Arrived"
+                    number={stream?.bussesThatArrivedCount.toString()}
+                    color="green"
+                    iconBg
                     noCaption
                   />
-                  <MenuButton
-                    title="Amount To Be Paid"
-                    onClick={() => navigate('#')}
-                    number={stream?.vehicleAmountToBePaid.toString()}
-                    color="yellow"
-                    noCaption
-                  />
-                </RoleView>
-              </div>
-            </Accordion.Body>
-          </Accordion.Item>
-          <Accordion.Item eventKey="2">
-            <Accordion.Header>Bussing Data</Accordion.Header>
-            <Accordion.Body>
-              <div className="mt-5 d-grid gap-2">
-                <MenuButton
-                  title="Members On The Way"
-                  number={stream?.bussingMembersOnTheWayCount.toString()}
-                  color="yellow"
-                  iconBg
-                  noCaption
-                />
-                <MenuButton
-                  title="Members That Have Arrived"
-                  number={stream?.bussingMembersHaveArrivedCount.toString()}
-                  color="green"
-                  iconBg
-                  noCaption
-                />
-                <MenuButton
-                  title="Busses On The Way"
-                  number={stream?.bussesOnTheWayCount.toString()}
-                  color="yellow"
-                  iconBg
-                  noCaption
-                />
-                <MenuButton
-                  title="Busses That Have Arrived"
-                  number={stream?.bussesThatArrivedCount.toString()}
-                  color="green"
-                  iconBg
-                  noCaption
-                />
-              </div>
-            </Accordion.Body>
-          </Accordion.Item>
-        </Accordion>
+                </div>
+              </Accordion.Body>
+            </Accordion.Item>
+          </Accordion>
+        </>
       </ApolloWrapper>
     </PullToRefresh>
   )

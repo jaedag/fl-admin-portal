@@ -21,6 +21,8 @@ import {
   GATHERINGSERVICE_BY_STREAM_ARRIVALS,
 } from './churchBySubchurchQueries'
 import ConstituencyDashboard from './DashboardConstituency'
+import { permitArrivals, permitLeaderAdmin } from 'permission-utils'
+import RoleView from 'auth/RoleView'
 
 const ChurchBySubChurch = () => {
   const { clickCard } = useContext(ChurchContext)
@@ -95,6 +97,32 @@ const ChurchBySubChurch = () => {
                       color: 'green',
                     },
                   ]
+                  const moneyLevel =
+                    subChurch.vehiclesHaveBeenPaidCount +
+                      subChurch.vehiclesToBePaidCount >
+                    0
+                  const moneyArray = [
+                    {
+                      title: 'Vehicles That Have Been Paid',
+                      number: subChurch.vehiclesHaveBeenPaidCount,
+                      color: 'green',
+                    },
+                    {
+                      title: 'Vehicles To Be Paid',
+                      number: subChurch.vehiclesToBePaidCount,
+                      color: 'orange',
+                    },
+                    {
+                      title: 'Amount That Has Been Paid',
+                      number: subChurch.vehicleAmountHasBeenPaid,
+                      color: 'green',
+                    },
+                    {
+                      title: 'Amount To Be Paid',
+                      number: subChurch.vehicleAmountToBePaid,
+                      color: 'orange',
+                    },
+                  ]
                   const membersArray = [
                     {
                       title: 'Members On The Way',
@@ -105,6 +133,11 @@ const ChurchBySubChurch = () => {
                       title: 'Members Arrived',
                       number: subChurch.bussingMembersHaveArrivedCount,
                       color: 'green',
+                    },
+                    {
+                      title: 'Busses On The Way',
+                      number: subChurch.bussesOnTheWayCount,
+                      color: 'yellow',
                     },
                     {
                       title: 'Busses Arrived',
@@ -118,7 +151,7 @@ const ChurchBySubChurch = () => {
                       <Card>
                         <Card.Header>
                           <div className="fw-bold">{`${subChurch.name} ${subChurch.__typename}`}</div>
-                          <div className="text-secondary">{`Leader: ${subChurch.leader.nameWithTitle}`}</div>
+                          <div className="text-secondary">{`Leader: ${subChurch.leader?.nameWithTitle}`}</div>
                         </Card.Header>
                         <Card.Body
                           onClick={() => {
@@ -134,6 +167,24 @@ const ChurchBySubChurch = () => {
                               </div>
                             ))}
                           </div>
+
+                          <RoleView
+                            roles={[
+                              ...permitArrivals('GatheringService'),
+                              ...permitLeaderAdmin('Council'),
+                            ]}
+                          >
+                            {moneyLevel ? <hr /> : null}
+                            <div>
+                              {moneyLevel
+                                ? moneyArray.map((col, index) => (
+                                    <div key={index} className={col.color}>
+                                      {`${col.title} - ${col.number}`}
+                                    </div>
+                                  ))
+                                : null}
+                            </div>
+                          </RoleView>
                           <hr />
                           <div>
                             {membersArray.map((col, index) => (

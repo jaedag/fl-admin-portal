@@ -25,6 +25,7 @@ export const COUNCIL_BY_CONSTITUENCY_ARRIVALS = gql`
 
         bussingMembersOnTheWayCount
         bussingMembersHaveArrivedCount
+        bussesOnTheWayCount
         bussesThatArrivedCount
       }
     }
@@ -51,12 +52,18 @@ export const STREAM_BY_COUNCIL_ARRIVALS = gql`
         bacentasNoActivityCount
         bacentasMobilisingCount
         bacentasOnTheWayCount
-        bacentasHaveArrivedCount
         bacentasBelow8Count
 
+        bacentasHaveArrivedCount
         bussingMembersOnTheWayCount
         bussingMembersHaveArrivedCount
+        bussesOnTheWayCount
         bussesThatArrivedCount
+
+        vehiclesToBePaidCount
+        vehiclesHaveBeenPaidCount
+        vehicleAmountToBePaid
+        vehicleAmountHasBeenPaid
       }
     }
   }
@@ -83,12 +90,18 @@ export const GATHERINGSERVICE_BY_STREAM_ARRIVALS = gql`
         bacentasNoActivityCount
         bacentasMobilisingCount
         bacentasOnTheWayCount
-        bacentasHaveArrivedCount
         bacentasBelow8Count
 
+        bacentasHaveArrivedCount
         bussingMembersOnTheWayCount
         bussingMembersHaveArrivedCount
+        bussesOnTheWayCount
         bussesThatArrivedCount
+
+        vehiclesToBePaidCount
+        vehiclesHaveBeenPaidCount
+        vehicleAmountToBePaid
+        vehicleAmountHasBeenPaid
       }
     }
   }
