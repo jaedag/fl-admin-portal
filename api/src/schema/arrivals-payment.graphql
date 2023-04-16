@@ -23,7 +23,7 @@ extend type Stream {
       RETURN COUNT(record)
       """
     )
-  vehicleAmountHasBeenPaid: Int!
+  vehicleAmountHasBeenPaid: Float!
     @cypher(
       statement: """
       MATCH (this)-[:HAS*3]->(bacentas:Active:Bacenta)
@@ -35,7 +35,7 @@ extend type Stream {
       RETURN SUM(record.vehicleTopUp)
       """
     )
-  vehicleAmountToBePaid: Int!
+  vehicleAmountToBePaid: Float!
     @cypher(
       statement: """
       MATCH (this)-[:HAS*3]->(bacentas:Active:Bacenta)
@@ -88,7 +88,7 @@ extend type Council {
       RETURN COUNT(record)
       """
     )
-  vehicleAmountHasBeenPaid: Int!
+  vehicleAmountHasBeenPaid: Float!
     @cypher(
       statement: """
       MATCH (this)-[:HAS*2]->(bacentas:Active:Bacenta)
@@ -100,7 +100,7 @@ extend type Council {
       RETURN SUM(record.vehicleTopUp)
       """
     )
-  vehicleAmountToBePaid: Int!
+  vehicleAmountToBePaid: Float!
     @cypher(
       statement: """
       MATCH (this)-[:HAS*2]->(bacentas:Active:Bacenta)
