@@ -1,3 +1,35 @@
+#### 6.5.11 (2023-04-17)
+
+##### Chores
+
+*  fix merge conflicts in easy-debugging script ([989d5285](https://github.com/firstlovecenter/fl-pastoral-care/commit/989d5285485512f8f5168fa127fe89ee6c105107))
+
+##### New Features
+
+*  remove the sabbath feature ([7c633978](https://github.com/firstlovecenter/fl-pastoral-care/commit/7c633978545450a35b2392c2778f5c243737a5d1))
+*  implement cypher script to change church level Names ([f0a7a936](https://github.com/firstlovecenter/fl-pastoral-care/commit/f0a7a936ccc8f9de0a1eed836503010cf918fd72))
+*  implement financial info on vehicle details page ([9bbaf6e4](https://github.com/firstlovecenter/fl-pastoral-care/commit/9bbaf6e431cf969b89e663f68a90185e2a071a4c))
+*  implement arrivals payment at the council level and not the stream level ([3b835030](https://github.com/firstlovecenter/fl-pastoral-care/commit/3b835030982bb16b62cda7454e0cf2b9e11e1c36))
+*  implement three sections of arrivals monitoring ([8538f7e8](https://github.com/firstlovecenter/fl-pastoral-care/commit/8538f7e8feafc6aa597b77d6c8d600bb5cc6d870))
+*  implement user flow for creating arrivals payment team members ([ba2242b6](https://github.com/firstlovecenter/fl-pastoral-care/commit/ba2242b6155c8fae845d758f3612e99df3b7a2f8))
+*  implement user flow for paying arrivals vehicles ([fd9c0101](https://github.com/firstlovecenter/fl-pastoral-care/commit/fd9c0101119a191a8ccfb7e402327cba77ff138f))
+*  implement arrivals pay vehicle page ([4bc380c0](https://github.com/firstlovecenter/fl-pastoral-care/commit/4bc380c0cb5b3eaeef0f6ed1c8f990ffa7ac2888))
+*  implement arrivalsPayer role and toggle for paid and unpaid ([12c51f8c](https://github.com/firstlovecenter/fl-pastoral-care/commit/12c51f8c4b65b8698b4a0bcd3fd5851fa45d6678))
+*  implement screen for vehicle to be paid ([c071ac49](https://github.com/firstlovecenter/fl-pastoral-care/commit/c071ac496cfc0a72bbb64b5b60701462502a48b1))
+
+##### Bug Fixes
+
+*  change arrivals payment money into float ([ba13af6b](https://github.com/firstlovecenter/fl-pastoral-care/commit/ba13af6b1070564e9834cf6b66a2bae7bb56bea3))
+*  fix bug preventing arrivals payers from being removed ([bdd13307](https://github.com/firstlovecenter/fl-pastoral-care/commit/bdd133070dcb12219cdc038250b9682e36f0da83))
+*   final touches to the arrivals payment system ([64084d91](https://github.com/firstlovecenter/fl-pastoral-care/commit/64084d915491ad391fe560127931259d80db101c))
+*   adjust transfer recipient to show the name of the leader as well as the momoName ([f3ac2ef3](https://github.com/firstlovecenter/fl-pastoral-care/commit/f3ac2ef366d5d47ec8c3f2499e5aa097efaa94d0))
+*  update easy debugging script ([6eaab2a6](https://github.com/firstlovecenter/fl-pastoral-care/commit/6eaab2a6f5979b07b186bdcd4cc830a59bbbeb17))
+*  bacentas are now created as graduated instead of IC ([680b4859](https://github.com/firstlovecenter/fl-pastoral-care/commit/680b485997eb7a1333f19fa9e2fba1e1560ea1a4))
+*  bacentas which have been paid should be returned from api for bacenta Payment Info ([e2ca8d50](https://github.com/firstlovecenter/fl-pastoral-care/commit/e2ca8d50f3c860a8bfc37ee57a24ba25f68133aa))
+*  initial migrating to session.executeWrite syntax ([de4f3802](https://github.com/firstlovecenter/fl-pastoral-care/commit/de4f38026a263be3e79aaa690a1f035f769063c3))
+*  scaffold arrivals payment platform ([a78e88ae](https://github.com/firstlovecenter/fl-pastoral-care/commit/a78e88aed49ced9e40c7facd9f541b85cf72519d))
+*  remove unnecessary leader has no momo payment details warning ([a5105901](https://github.com/firstlovecenter/fl-pastoral-care/commit/a5105901f878dbeedc0f45c944f1c35de4dbccdb))
+
 #### 6.5.10 (2023-04-09)
 
 ##### Bug Fixes
