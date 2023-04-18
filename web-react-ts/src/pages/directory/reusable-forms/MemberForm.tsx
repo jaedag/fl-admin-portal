@@ -3,6 +3,7 @@ import { Form, Formik, FormikHelpers } from 'formik'
 import * as Yup from 'yup'
 import React, { useContext } from 'react'
 import {
+  DELETE_MEMBER_CATEGORY_OPTIONS,
   GENDER_OPTIONS,
   isAuthorised,
   makeSelectOptions,
@@ -29,6 +30,7 @@ import usePopup from 'hooks/usePopup'
 import Popup from 'components/Popup/Popup'
 import { useNavigate } from 'react-router'
 import RoleView from 'auth/RoleView'
+import RadioButtons from 'components/formik/RadioButtons'
 
 type MemberFormProps = {
   initialValues: CreateMemberFormOptions
@@ -43,6 +45,7 @@ type MemberFormProps = {
 
 type DeleteMemberProp = {
   reason: string
+  reasonCategory: string
 }
 
 const MemberForm = ({
@@ -70,6 +73,7 @@ const MemberForm = ({
   const navigate = useNavigate()
 
   const deleteValidationSchema = Yup.object({
+    reasonCategory: Yup.string().required(),
     reason: Yup.string().required(
       "Please provide the reason you're deleting this member"
     ),
@@ -77,6 +81,7 @@ const MemberForm = ({
 
   const reasonInitialValues: DeleteMemberProp = {
     reason: '',
+    reasonCategory: '',
   }
 
   const onDelete = (
@@ -88,7 +93,7 @@ const MemberForm = ({
     MakeMemberInactive({
       variables: {
         memberId: memberId,
-        reason: values.reason,
+        reason: values.reasonCategory + ': ' + values.reason,
       },
     })
       .then(() => {
@@ -172,6 +177,10 @@ const MemberForm = ({
                     <Form>
                       <Row className="form-row">
                         <Col>
+                          <RadioButtons
+                            name="reasonCategory"
+                            options={DELETE_MEMBER_CATEGORY_OPTIONS}
+                          />
                           <Input name="reason" placeholder="Reason" />
                           <SubmitButton formik={formik} />
                         </Col>

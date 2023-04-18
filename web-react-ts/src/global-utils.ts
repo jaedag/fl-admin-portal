@@ -50,6 +50,14 @@ export const SERVICE_DAY_OPTIONS: FormikSelectOptions = [
   { key: 'Saturday', value: 'Saturday' },
 ]
 
+export const DELETE_MEMBER_CATEGORY_OPTIONS: FormikSelectOptions = [
+  { key: 'Moved Country', value: 'Moved Country' },
+  {
+    key: 'Left the Church In Spite of Calls and Visits',
+    value: 'Left the Church In Spite of Calls and Visits',
+  },
+]
+
 export const BUSSING_STATUS_OPTIONS: FormikSelectOptions = [
   { key: 'IC', value: 'IC' },
   { key: 'Graduated', value: 'Graduated' },
