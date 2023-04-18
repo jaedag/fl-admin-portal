@@ -120,13 +120,15 @@ WITH node
 CREATE (log:HistoryLog)
 SET log.id = apoc.create.uuid(),
 log.timeStamp = datetime(),
-log.historyRecord = "This member was deleted for this reason: " +$reason
+log.historyRecord = "Member Deleted: " +$reason
 
 WITH log, node
+MATCH (node)-[:BELONGS_TO]->(church)
 MATCH (admin:Member {auth_id:$auth.jwt.sub})
 MERGE (today:TimeGraph {date: date()})
 MERGE (admin)<-[:LOGGED_BY]-(log)
 MERGE (node)-[:HAS_HISTORY]->(log)
+MERGE (church)-[:HAS_HISTORY]->(log)
 MERGE (log)-[:RECORDED_ON]->(today)
 
 RETURN node as member
