@@ -1,3 +1,9 @@
+#### 6.5.12 (2023-04-18)
+
+##### New Features
+
+*  update member delete form ([7ab06b85](https://github.com/firstlovecenter/fl-pastoral-care/commit/7ab06b855de97982874e1d6bf1bf850f049df953))
+
 #### 6.5.11 (2023-04-17)
 
 ##### Chores
