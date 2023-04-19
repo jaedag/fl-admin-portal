@@ -438,6 +438,9 @@ export const DISPLAY_STREAM = gql`
       vacationIcBacentaCount
       hubCount
       sontaCount
+      meetingDay {
+        day
+      }
       gatheringService {
         id
         name

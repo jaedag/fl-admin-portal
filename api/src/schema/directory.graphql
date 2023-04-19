@@ -553,6 +553,7 @@ type Stream implements Church {
   councils: [Council!]! @relationship(type: "HAS", direction: OUT)
   gatheringService: GatheringService @relationship(type: "HAS", direction: IN)
   ministries: [Ministry!]! @relationship(type: "HAS", direction: OUT)
+  meetingDay: ServiceDay @relationship(type: "MEETS_ON", direction: OUT)
 
   stream_name: String
     @cypher(

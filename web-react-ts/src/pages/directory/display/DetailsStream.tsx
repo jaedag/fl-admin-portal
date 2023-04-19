@@ -23,6 +23,11 @@ const DetailsStream = () => {
       width: 12,
     },
     {
+      title: 'Meeting Day',
+      number: stream?.meetingDay.day,
+      link: '#',
+    },
+    {
       title: 'Councils',
       number: stream?.councilCount || 0,
       link: `/${`Council`.toLowerCase()}/displayall`,

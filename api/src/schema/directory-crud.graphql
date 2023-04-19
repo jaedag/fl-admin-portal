@@ -189,38 +189,46 @@ extend type Mutation {
     pictureUrl: String!
   ): Member
 
-  CreateStream(name: String!, leaderId: ID!, gatheringServiceId: ID!): Stream
+  CreateStream(
+    name: String!
+    leaderId: ID!
+    gatheringServiceId: ID!
+    meetingDay: String!
+  ): Stream
     @auth(rules: [{ roles: ["adminGatheringService"] }])
     @cypher(
       statement: """
       CREATE (stream:Stream {id:apoc.create.uuid(), name: $name})
 
-      WITH stream
-      MATCH (leader:Active:Member {id: $leaderId}) WHERE leader.email IS NOT NULL
-      MATCH (currentUser:Active:Member {auth_id:$auth.jwt.sub})
-      MATCH (gatheringService:GatheringService {id: $gatheringServiceId})
+       WITH stream
+        CREATE (log:HistoryLog:ServiceLog)
+         SET
+         log.id =  apoc.create.uuid(),
+         log.timeStamp = datetime(),
+         log.historyRecord =  $name +' Stream History Begins'
+
+       WITH log, stream
+       MATCH (leader:Active:Member {id: $leaderId}) WHERE leader.email IS NOT NULL
+       MATCH (currentUser:Active:Member {auth_id:$auth.jwt.sub})
+       MATCH (gatheringService:GatheringService {id: $gatheringServiceId})
+       MATCH (meetingDay:ServiceDay {day: $meetingDay})
+
+       WITH log,stream,leader,currentUser, gatheringService, meetingDay
+       MERGE (gatheringService)-[:HAS]->(stream)
+       MERGE (stream)-[:MEETS_ON]->(meetingDay)
+       MERGE (leader)-[:LEADS]->(stream)
+
+       MERGE (date:TimeGraph {date: date()})
+       MERGE (log)-[:LOGGED_BY]->(currentUser)
+       MERGE (log)-[:RECORDED_ON]->(date)
+       MERGE (stream)-[:HAS_HISTORY]->(log)
+       MERGE (gatheringService)-[r2:HAS_HISTORY]->(log)
+       MERGE (leader)-[r3:HAS_HISTORY]->(log)
+         SET r2.current = true,
+         r3.current = true
 
 
-       CREATE (log:HistoryLog:ServiceLog)
-        SET
-        log.id =  apoc.create.uuid(),
-        log.timeStamp = datetime(),
-        log.historyRecord =  $name +' Stream History Begins'
-
-      MERGE (gatheringService)-[:HAS]->(stream)
-      MERGE (leader)-[:LEADS]->(stream)
-
-      MERGE (date:TimeGraph {date: date()})
-      MERGE (log)-[:LOGGED_BY]->(currentUser)
-      MERGE (log)-[:RECORDED_ON]->(date)
-      MERGE (stream)-[:HAS_HISTORY]->(log)
-      MERGE (gatheringService)-[r2:HAS_HISTORY]->(log)
-      MERGE (leader)-[r3:HAS_HISTORY]->(log)
-        SET r2.current = true,
-        r3.current = true
-
-
-      RETURN stream
+       RETURN stream
       """
     )
 
@@ -314,15 +322,16 @@ extend type Mutation {
        CREATE (constituency:Constituency {name: $name})
          	SET	constituency.id = apoc.create.uuid()
       WITH constituency
-      MATCH (leader:Active:Member {id: $leaderId}) WHERE leader.email IS NOT NULL
-      MATCH (currentUser:Active:Member {auth_id:$auth.jwt.sub})
-      MATCH (council:Council {id: $councilId})
-
        CREATE (log:HistoryLog)
         SET
         log.id =  apoc.create.uuid(),
         log.timeStamp = datetime(),
         log.historyRecord = $name +' Constituency History Begins'
+      WITH log, constituency
+      MATCH (leader:Active:Member {id: $leaderId}) WHERE leader.email IS NOT NULL
+      MATCH (currentUser:Active:Member {auth_id:$auth.jwt.sub})
+      MATCH (council:Council {id: $councilId})
+
 
       MERGE (council)-[:HAS]->(constituency)
       MERGE (leader)-[:LEADS]->(constituency)
@@ -592,6 +601,7 @@ extend type Mutation {
     streamId: ID!
     name: String!
     gatheringServiceId: ID!
+    meetingDay: String!
   ): Stream
     @auth(rules: [{ roles: ["adminGatheringService"] }])
     @cypher(
@@ -602,6 +612,7 @@ extend type Mutation {
            WITH stream
               CALL {
               	WITH stream
+                WITH stream WHERE $gatheringServiceId IS NOT NULL
 
                   MATCH (gatheringService:GatheringService {id: $gatheringServiceId})
                   OPTIONAL MATCH (stream)<-[r:HAS]-()
@@ -609,6 +620,17 @@ extend type Mutation {
                   MERGE (gatheringService)-[:HAS]->(stream)
               	RETURN count(stream)
               	}
+            WITH stream 
+                    CALL {
+                     	WITH stream 
+                      WITH  stream WHERE $meetingDay IS NOT NULL
+                      MATCH (meetingDay:ServiceDay {day: $meetingDay})
+                      OPTIONAL MATCH (stream)-[r:MEETS_ON]->()
+                      DELETE r
+                      MERGE (stream)-[:MEETS_ON]->(meetingDay)
+                     	RETURN count(stream)
+                     	}
+
       MATCH (stream)<-[:LEADS]-(leader:Active:Member)
       RETURN stream
       """

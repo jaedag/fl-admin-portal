@@ -147,14 +147,20 @@ export const UPDATE_STREAM_MUTATION = gql`
     $streamId: ID!
     $name: String!
     $gatheringServiceId: ID!
+    $meetingDay: String!
   ) {
     UpdateStreamDetails(
       streamId: $streamId
       name: $name
       gatheringServiceId: $gatheringServiceId
+      meetingDay: $meetingDay
     ) {
       id
       name
+      meetingDay {
+        day
+        dayNumber
+      }
       councils {
         id
         name

@@ -50,6 +50,11 @@ export const SERVICE_DAY_OPTIONS: FormikSelectOptions = [
   { key: 'Saturday', value: 'Saturday' },
 ]
 
+export const STREAM_SERVICE_DAY_OPTIONS: FormikSelectOptions = [
+  { key: 'Saturday', value: 'Saturday' },
+  { key: 'Sunday', value: 'Sunday' },
+]
+
 export const DELETE_MEMBER_CATEGORY_OPTIONS: FormikSelectOptions = [
   { key: 'Moved Country', value: 'Moved Country' },
   {

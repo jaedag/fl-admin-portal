@@ -190,14 +190,20 @@ export const CREATE_STREAM_MUTATION = gql`
     $name: String!
     $leaderId: ID!
     $gatheringServiceId: ID!
+    $meetingDay: String!
   ) {
     CreateStream(
       name: $name
       leaderId: $leaderId
       gatheringServiceId: $gatheringServiceId
+      meetingDay: $meetingDay
     ) {
       id
       name
+      meetingDay {
+        day
+        dayNumber
+      }
 
       gatheringService {
         id
