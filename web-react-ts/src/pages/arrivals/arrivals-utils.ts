@@ -1,5 +1,5 @@
-import { StreamOptions } from 'global-types'
 import { FormikSelectOptions } from 'global-utils'
+import { convertNeoWeekdayToJSWeekday } from '@jaedag/admin-portal-core'
 import { addMinutes } from 'jd-date-utils'
 import { getTodayTime } from 'jd-date-utils'
 import { isToday } from 'jd-date-utils'
@@ -32,36 +32,23 @@ export const OUTBOUND_OPTIONS: FormikSelectOptions = [
   { key: 'In and Out', value: 'In and Out' },
 ]
 
-const isArrivalsToday = (bacenta: { stream_name: StreamOptions }) => {
+const isArrivalsToday = (bacenta: { stream: StreamWithArrivals }) => {
   if (!bacenta) return false
 
-  // const today = new Date().getDay()
-
+  const today = new Date().getDay()
   if (
-    // today === 6 &&
-    bacenta.stream_name.toLowerCase() === 'anagkazo encounter' ||
-    bacenta.stream_name.toLowerCase() === 'gospel encounter'
-  ) {
-    // Anagkazo and Campus are on Saturday
+    convertNeoWeekdayToJSWeekday(bacenta.stream.meetingDay.dayNumber) === today
+  )
     return true
-  }
 
-  if (
-    // today === 0 &&
-    bacenta.stream_name.toLowerCase() === 'first love experience' ||
-    bacenta.stream_name.toLowerCase() === 'holy ghost encounter'
-  ) {
-    return true
-  }
-
-  return false
+  return true
 }
 export const beforeStreamArrivalsDeadline = (stream: StreamWithArrivals) => {
   if (!stream) return false
 
   const church = {
     ...stream,
-    stream_name: stream.name,
+    stream: stream,
   }
 
   const today = new Date()

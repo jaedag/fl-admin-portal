@@ -85,6 +85,10 @@ export type VehicleRecord = {
 export interface StreamWithArrivals extends Stream, HigherChurchWithArrivals {
   __typename: 'Stream'
   name: StreamOptions
+  meetingDay: {
+    day: string
+    dayNumber: number
+  }
   mobilisationStartTime: string
   mobilisationEndTime: string
   arrivalStartTime: string

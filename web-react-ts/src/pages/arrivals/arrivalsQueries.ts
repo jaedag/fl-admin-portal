@@ -10,6 +10,10 @@ export const CONSTITUENCY_ARRIVALS_DASHBOARD = gql`
         stream {
           id
           name
+          meetingDay {
+            day
+            dayNumber
+          }
           arrivalEndTime
         }
       }
@@ -46,6 +50,10 @@ export const COUNCIL_ARRIVALS_DASHBOARD = gql`
       stream {
         id
         name
+        meetingDay {
+          day
+          dayNumber
+        }
         arrivalEndTime
       }
 
@@ -81,7 +89,10 @@ export const STREAM_ARRIVALS_DASHBOARD = gql`
     streams(where: { id: $id }, options: { limit: 1 }) {
       id
       name
-
+      meetingDay {
+        day
+        dayNumber
+      }
       arrivalsAdmin {
         id
         firstName
