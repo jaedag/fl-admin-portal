@@ -146,6 +146,10 @@ export const authorisedLink = (
   return '#'
 }
 
+export const convertNeoWeekdayToJSWeekday = (neoWeekday: number): number => {
+  return neoWeekday === 7 ? 0 : neoWeekday
+}
+
 export const capitalise = (str: string) => {
   switch (str) {
     case 'first love experience':

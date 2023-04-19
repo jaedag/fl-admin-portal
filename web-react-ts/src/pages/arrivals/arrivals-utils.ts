@@ -1,5 +1,4 @@
-import { FormikSelectOptions } from 'global-utils'
-import { convertNeoWeekdayToJSWeekday } from '@jaedag/admin-portal-core'
+import { FormikSelectOptions, convertNeoWeekdayToJSWeekday } from 'global-utils'
 import { addMinutes } from 'jd-date-utils'
 import { getTodayTime } from 'jd-date-utils'
 import { isToday } from 'jd-date-utils'
