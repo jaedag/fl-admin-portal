@@ -41,7 +41,7 @@ const isArrivalsToday = (bacenta: { stream: StreamWithArrivals }) => {
   )
     return true
 
-  return true
+  return false
 }
 export const beforeStreamArrivalsDeadline = (stream: StreamWithArrivals) => {
   if (!stream) return false
