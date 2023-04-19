@@ -1,48 +1,20 @@
-MATCH (church:Federalministry)
-SET church.levelName = 'Federal Ministry'
-RETURN COUNT(church);
+CREATE (day:ServiceDay)
+SET day.day = 'Sunday',
+day.dayNumber = 7
+RETURN day;
 
-MATCH (church:Ministry)
-SET church.levelName = 'Ministry'
-RETURN COUNT(church);
+MATCH (stream:Stream)
+MATCH (day:ServiceDay)
+WHERE day.day = 'Sunday'
 
-MATCH (church:Hub)
-SET church.levelName = 'Hub'
-RETURN COUNT(church);
+MERGE (stream)-[:MEETS_ON]->(day)
 
-MATCH (church:Sonta)
-SET church.levelName = 'Sonta'
-RETURN COUNT(church);
+RETURN stream, day;
 
-MATCH (church:Fellowship)
-SET church.levelName = 'Fellowship'
-RETURN COUNT(church);
-
-MATCH (church:Bacenta)
-SET church.levelName = 'Bacenta'
-RETURN COUNT(church);
-
-MATCH (church:Constituency)
-SET church.levelName = 'Constituency'
-RETURN COUNT(church);
-
-MATCH (church:Council)
-SET church.levelName = 'Council'
-RETURN COUNT(church);
-
-MATCH (church:Stream)
-SET church.levelName = 'Stream'
-RETURN COUNT(church);
-
-
-MATCH (church:GatheringService)
-SET church.levelName = 'Gathering Service'
-RETURN COUNT(church);
-
-MATCH (church:Oversight)
-SET church.levelName = 'Oversight'
-RETURN COUNT(church);
-
-MATCH (church:Denomination)
-SET church.levelName = 'Denomination'
-RETURN COUNT(church);
+MATCH (stream:Stream) WHERE stream.name = 'Gospel Encounter' OR stream.name = 'Anagkazo Encounter'
+MATCH (stream)-[r:MEETS_ON]->(day:ServiceDay)
+DELETE r
+WITH stream
+MATCH (day:ServiceDay) WHERE day.day = 'Saturday'
+MERGE (stream)-[:MEETS_ON]->(day)
+RETURN stream, day;
