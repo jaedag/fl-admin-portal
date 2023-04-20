@@ -29,7 +29,7 @@ RETURN oversight, jd;
 // DELETE r
 
 MATCH (g:GatheringService)
-SET g.noIncome = false
+SET g.conversionRateToDollar = 10 
 RETURN COUNT(g);
 
 // create a constraint so that every gatheringservice has to have the property noIncome 

@@ -7,6 +7,7 @@ import { ChurchContext } from 'contexts/ChurchContext'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { permitAdminArrivals } from 'permission-utils'
 import { DetailsArray } from './DetailsFellowship'
+import { MemberContext } from 'contexts/MemberContext'
 
 const convertToString = (value: string | boolean) => {
   if (value === true) {
@@ -18,6 +19,7 @@ const convertToString = (value: string | boolean) => {
 
 const DetailsBacenta = () => {
   const { bacentaId } = useContext(ChurchContext)
+  const { currentUser } = useContext(MemberContext)
   const { data, loading, error } = useQuery(DISPLAY_BACENTA, {
     variables: { id: bacentaId },
   })
@@ -71,12 +73,12 @@ const DetailsBacenta = () => {
     },
     {
       title: 'Urvan Top Up (One Way)',
-      number: bacenta?.urvanTopUp + ' GHS',
+      number: bacenta?.urvanTopUp + ' ' + currentUser.currency,
       link: `#`,
     },
     {
       title: 'Sprinter Top Up (One Way)',
-      number: bacenta?.sprinterTopUp + ' GHS',
+      number: bacenta?.sprinterTopUp + ' ' + currentUser.currency,
       link: `#`,
     },
   ]
