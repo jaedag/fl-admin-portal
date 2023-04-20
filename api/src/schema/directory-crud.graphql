@@ -195,7 +195,7 @@ extend type Mutation {
     gatheringServiceId: ID!
     meetingDay: String!
   ): Stream
-    @auth(rules: [{ roles: ["adminGatheringService"] }])
+    @auth(rules: [{ roles: ["adminGatheringService", "adminOversight"] }])
     @cypher(
       statement: """
       CREATE (stream:Stream {id:apoc.create.uuid(), name: $name})
@@ -236,11 +236,17 @@ extend type Mutation {
     name: String!
     leaderId: ID!
     oversightId: ID!
+    noIncome: Boolean!
+    currency: String!
+    conversionRateToDollar: Float!
   ): GatheringService
-    @auth(rules: [{ roles: ["adminOversight"] }])
+    @auth(rules: [{ roles: ["adminOversight", "adminDenomination"] }])
     @cypher(
       statement: """
       CREATE (gatheringService:GatheringService {id:apoc.create.uuid(), name:$name})
+        SET gatheringService.noIncome = $noIncome,
+        gatheringService.currency = $currency,
+        gatheringService.conversionRateToDollar = $conversionRateToDollar
 
       WITH gatheringService
       MATCH (leader:Active:Member {id: $leaderId}) WHERE leader.email IS NOT NULL
@@ -576,12 +582,18 @@ extend type Mutation {
     gatheringServiceId: ID!
     name: String!
     oversightId: ID!
+    noIncome: Boolean!
+    currency: String!
+    conversionRateToDollar: Float!
   ): GatheringService
     @auth(rules: [{ roles: ["adminOversight"] }])
     @cypher(
       statement: """
            MATCH (gatheringService:GatheringService {id: $gatheringServiceId})
-           	SET gatheringService.name = $name
+           	SET gatheringService.name = $name,
+            gatheringService.noIncome = $noIncome,
+            gatheringService.currency = $currency,
+            gatheringService.conversionRateToDollar = $conversionRateToDollar
 
            WITH gatheringService
               CALL {
@@ -620,9 +632,9 @@ extend type Mutation {
                   MERGE (gatheringService)-[:HAS]->(stream)
               	RETURN count(stream)
               	}
-            WITH stream 
+            WITH stream
                     CALL {
-                     	WITH stream 
+                     	WITH stream
                       WITH  stream WHERE $meetingDay IS NOT NULL
                       MATCH (meetingDay:ServiceDay {day: $meetingDay})
                       OPTIONAL MATCH (stream)-[r:MEETS_ON]->()

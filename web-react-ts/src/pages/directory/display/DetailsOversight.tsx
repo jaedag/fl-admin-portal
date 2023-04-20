@@ -31,7 +31,7 @@ const DetailsOversight = () => {
     {
       title: 'Gathering Services',
       number: oversight?.gatheringServiceCount,
-      link: `/${`GatheringService`.toLowerCase()}/displayall`,
+      link: `/${`gatheringService`.toLowerCase()}/displayall`,
     },
     {
       title: 'Councils',
@@ -73,7 +73,7 @@ const DetailsOversight = () => {
         churchType={oversight?.__typename}
         subChurch="GatheringService"
         details={details}
-        editlink="/gatheringservice/editgatheringservice"
+        editlink="/oversight/editoversight"
         editPermitted={['adminOversight']}
         history={oversight?.history.length !== 0 && oversight?.history}
         buttons={oversight?.gatheringServices ?? []}

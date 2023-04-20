@@ -26,12 +26,12 @@ const DisplayAllGatheringServices = () => {
         <Row className="mb-2">
           <Col>
             <Link
-              to="/gatheringService/displaydetails"
+              to="/oversight/displaydetails"
               onClick={() => {
                 clickCard(oversight)
               }}
             >
-              <h4 className="text-white">{`${oversight?.name} Gathering Services`}</h4>
+              <h4 className="text-white">{`${oversight?.name} Oversight`}</h4>
             </Link>
             <Link
               to="/member/displaydetails"
@@ -40,7 +40,7 @@ const DisplayAllGatheringServices = () => {
               }}
             >
               <h6 className="text-white text-small d-block ">
-                <span className="text-muted">Overseer: </span>
+                <span className="text-muted">Oversight Leader: </span>
                 {oversight?.leader ? ` ${oversight.leader.fullName}` : null}
               </h6>
             </Link>

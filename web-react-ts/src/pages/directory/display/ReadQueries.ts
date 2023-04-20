@@ -180,6 +180,7 @@ export const DISPLAY_FELLOWSHIP = gql`
       }
       meetingDay {
         day
+        dayNumber
       }
       bacenta {
         id
@@ -440,6 +441,7 @@ export const DISPLAY_STREAM = gql`
       sontaCount
       meetingDay {
         day
+        dayNumber
       }
       gatheringService {
         id
@@ -491,6 +493,9 @@ export const DISPLAY_GATHERINGSERVICE = gql`
     gatheringServices(where: { id: $id }, options: { limit: 1 }) {
       id
       name
+      noIncome
+      currency
+      conversionRateToDollar
       target
       streamCount
       councilCount
@@ -525,6 +530,7 @@ export const DISPLAY_GATHERINGSERVICE = gql`
         id
         firstName
         lastName
+        fullName
         currentTitle
         nameWithTitle
         pictureUrl

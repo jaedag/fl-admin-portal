@@ -23,6 +23,11 @@ export type FormikSelectOptions = {
   value: string
 }[]
 
+export const YES_NO_OPTIONS: FormikSelectOptions = [
+  { key: 'Yes', value: 'Yes' },
+  { key: 'No', value: 'No' },
+]
+
 export const GENDER_OPTIONS: FormikSelectOptions = [
   { key: 'Male', value: 'Male' },
   { key: 'Female', value: 'Female' },
@@ -53,6 +58,11 @@ export const SERVICE_DAY_OPTIONS: FormikSelectOptions = [
 export const STREAM_SERVICE_DAY_OPTIONS: FormikSelectOptions = [
   { key: 'Saturday', value: 'Saturday' },
   { key: 'Sunday', value: 'Sunday' },
+]
+
+export const CURRENCY_OPTIONS: FormikSelectOptions = [
+  { key: 'GHS', value: 'GHS' },
+  { key: 'ZMW', value: 'ZMW' },
 ]
 
 export const DELETE_MEMBER_CATEGORY_OPTIONS: FormikSelectOptions = [

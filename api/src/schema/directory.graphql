@@ -426,7 +426,10 @@ type Oversight implements Church {
 type GatheringService implements Church {
   id: ID @id
   name: String!
-  noIncome: Boolean
+  noIncome: Boolean!
+  currency: String!
+  conversionRateToDollar: String!
+
   leader: Member @relationship(type: "LEADS", direction: IN)
   oversight: Oversight! @relationship(type: "HAS", direction: IN)
   streams: [Stream!]! @relationship(type: "HAS", direction: OUT)

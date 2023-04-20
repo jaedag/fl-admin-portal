@@ -20,6 +20,9 @@ const CreateGatheringService = () => {
     leaderId: '',
     leaderName: '',
     leaderEmail: '',
+    noIncome: '',
+    currency: '',
+    conversionRateToDollar: 0,
     oversight: oversightId,
   }
 
@@ -45,6 +48,11 @@ const CreateGatheringService = () => {
           name: values.name,
           leaderId: values.leaderId,
           oversightId: values.oversight,
+          noIncome: values.noIncome === 'Yes' ? true : false,
+          currency: values.currency,
+          conversionRateToDollar: parseFloat(
+            values.conversionRateToDollar.toString()
+          ),
         },
       })
 

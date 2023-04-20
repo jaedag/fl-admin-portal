@@ -212,14 +212,23 @@ export const UPDATE_GATHERINGSERVICE_MUTATION = gql`
     $gatheringServiceId: ID!
     $name: String!
     $oversightId: ID!
+    $noIncome: Boolean!
+    $currency: String!
+    $conversionRateToDollar: Float!
   ) {
     UpdateGatheringServiceDetails(
       gatheringServiceId: $gatheringServiceId
       name: $name
       oversightId: $oversightId
+      noIncome: $noIncome
+      currency: $currency
+      conversionRateToDollar: $conversionRateToDollar
     ) {
       id
       name
+      noIncome
+      currency
+      conversionRateToDollar
       streams {
         id
         name
@@ -509,6 +518,7 @@ export const UPDATE_FELLOWSHIP = gql`
       }
       meetingDay {
         day
+        dayNumber
       }
       bacenta {
         id

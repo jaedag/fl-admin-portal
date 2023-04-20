@@ -220,14 +220,23 @@ export const CREATE_GATHERING_SERVICE_MUTATION = gql`
     $name: String!
     $leaderId: ID!
     $oversightId: ID!
+    $noIncome: Boolean!
+    $currency: String!
+    $conversionRateToDollar: Float!
   ) {
     CreateGatheringService(
       name: $name
       leaderId: $leaderId
       oversightId: $oversightId
+      noIncome: $noIncome
+      currency: $currency
+      conversionRateToDollar: $conversionRateToDollar
     ) {
       id
       name
+      noIncome
+      currency
+      conversionRateToDollar
 
       oversight {
         id
