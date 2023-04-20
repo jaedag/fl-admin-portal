@@ -1,3 +1,27 @@
+### 6.6.0 (2023-04-20)
+
+##### New Features
+
+*  implement search for oversight role ([96af0f15](https://github.com/firstlovecenter/fl-pastoral-care/commit/96af0f159b3a00c423bbf9e8e8a1d253219c2198))
+*  implement select stream meeting day in form ([e918140d](https://github.com/firstlovecenter/fl-pastoral-care/commit/e918140dfa1ce9cf810e9870558da2ce1c80136a))
+
+##### Bug Fixes
+
+*  final tidy ups to noincometracking property ([03798ffd](https://github.com/firstlovecenter/fl-pastoral-care/commit/03798ffdebafc47809e7c67a096bf805b58e2bd4))
+*  change the prop noIncome to noIncomeTracking ([201c4cd0](https://github.com/firstlovecenter/fl-pastoral-care/commit/201c4cd0324aaf13172e95c15596bad50337237b))
+*  fix oversight display page not showing leader ([1469ef47](https://github.com/firstlovecenter/fl-pastoral-care/commit/1469ef47a89c58a0423e398495b8096b46693ebb))
+*  implement no currency and conversion rate ([3a5e1709](https://github.com/firstlovecenter/fl-pastoral-care/commit/3a5e170905704d428b268c2f6b3e17aa33bd4987))
+*  ditched private package and put in global-utils ([09217d69](https://github.com/firstlovecenter/fl-pastoral-care/commit/09217d691f964d1175fddb554af5e465cbc579f4))
+*  update npmrc file - deleted ([634b4e4d](https://github.com/firstlovecenter/fl-pastoral-care/commit/634b4e4dd62f8bd0abaf0aef846d3e2870ca8a7e))
+*  update npmrc file ([a9d7be27](https://github.com/firstlovecenter/fl-pastoral-care/commit/a9d7be27bf8d4c76a4c0b9906ec8eb557e648ae4))
+*  remove .npmrc file ([15f7a95d](https://github.com/firstlovecenter/fl-pastoral-care/commit/15f7a95de3c89786ae04a23b2b2259df8f4b8135))
+*  add npm authentication ([da0febef](https://github.com/firstlovecenter/fl-pastoral-care/commit/da0febef7c59cb5bdd69650770ba6ecdbcb08083))
+*  remove whitespace ([b6537d36](https://github.com/firstlovecenter/fl-pastoral-care/commit/b6537d361625c078d85ef496cd230fb5aecf5280))
+*  implement checking of stream meeting Day for arrivals Day ([a907d756](https://github.com/firstlovecenter/fl-pastoral-care/commit/a907d756db7e977c6d3b7a23154d1b3d2dfa1508))
+*  implement checking of stream meeting Day for arrivals Day ([71c08ffd](https://github.com/firstlovecenter/fl-pastoral-care/commit/71c08ffd156fc1a65c4fc264ea2c02c3f07f16ac))
+*  implement cypher query to create sunday as a meeting day ([4fdedbfc](https://github.com/firstlovecenter/fl-pastoral-care/commit/4fdedbfc47cb14e61b8bbf076895ca2673f3bcdb))
+*  update delete script to also log on the church when a member is deleted ([73d8571d](https://github.com/firstlovecenter/fl-pastoral-care/commit/73d8571d6f917048ce1db9ef096222726ba04092))
+
 #### 6.5.12 (2023-04-18)
 
 ##### New Features
