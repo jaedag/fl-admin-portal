@@ -27,6 +27,7 @@ export type ChurchLevel =
   | 'Stream'
   | 'GatheringService'
   | 'Oversight'
+  | 'Denomination'
   | 'Sonta'
   | 'Basonta'
   | 'Ministry'

@@ -4,6 +4,7 @@ import DisplayChurchDetails from 'components/DisplayChurchDetails/DisplayChurchD
 import { ChurchContext } from 'contexts/ChurchContext'
 import React, { useContext } from 'react'
 import { DISPLAY_OVERSIGHT } from './ReadQueries'
+import { permitMe } from 'permission-utils'
 
 const DetailsOversight = () => {
   const { oversightId } = useContext(ChurchContext)
@@ -74,7 +75,7 @@ const DetailsOversight = () => {
         subChurch="GatheringService"
         details={details}
         editlink="/oversight/editoversight"
-        editPermitted={['adminOversight']}
+        editPermitted={permitMe('Denomination')}
         history={oversight?.history.length !== 0 && oversight?.history}
         buttons={oversight?.gatheringServices ?? []}
         breadcrumb={breadcrumb && breadcrumb}

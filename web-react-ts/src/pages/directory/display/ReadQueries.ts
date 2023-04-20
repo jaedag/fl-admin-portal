@@ -586,6 +586,8 @@ export const DISPLAY_OVERSIGHT = gql`
         firstName
         lastName
         fullName
+        currentTitle
+        nameWithTitle
         pictureUrl
       }
       history(limit: 5) {

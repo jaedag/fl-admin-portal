@@ -29,3 +29,13 @@ SET record.transactionReference = 'ghbxeivbew3y8on',
 WITH record, fellowship, leader
 MERGE (record)<-[:OFFERING_BANKED_BY]-(leader)
 RETURN record.income, record.transactionReference, record.transactionStatus,fellowship.name,  leader.firstName;
+MATCH (this:Fellowship {id: '99985480-349d-41e1-857b-431d6775fa00'})-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(records:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
+      WITH DISTINCT records,date
+      RETURN date.date, records.attendance, records.income, records.noServiceReason ORDER BY date.date DESC LIMIT 12
+
+
+MATCH (oversight:Oversight)
+MATCH (leader:Member {firstName: "Joshua", lastName: "Heward-Mills"})
+MERGE (oversight)<-[r:LEADS]-(leader)
+SET oversight.name = 'Bishop Joshua'
+RETURN oversight.name, leader.firstName, leader.lastName
