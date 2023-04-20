@@ -76,6 +76,7 @@ export const roles: {
   ],
   GatheringService: ['leads', 'isAdminFor', 'isArrivalsAdminFor'],
   Oversight: ['leads', 'isAdminFor'],
+  Denomination: ['leads', 'isAdminFor'],
   Sonta: ['leads'],
   Basonta: ['leads'],
   Hub: ['leads'],
