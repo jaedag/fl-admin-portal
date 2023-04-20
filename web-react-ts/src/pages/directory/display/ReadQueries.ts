@@ -493,7 +493,7 @@ export const DISPLAY_GATHERINGSERVICE = gql`
     gatheringServices(where: { id: $id }, options: { limit: 1 }) {
       id
       name
-      noIncome
+      noIncomeTracking
       currency
       conversionRateToDollar
       target

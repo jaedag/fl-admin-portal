@@ -36,6 +36,6 @@ MATCH (this:Fellowship {id: '99985480-349d-41e1-857b-431d6775fa00'})-[:HAS_HISTO
 
 MATCH (oversight:Oversight)
 MATCH (leader:Member {firstName: "Joshua", lastName: "Heward-Mills"})
-MERGE (oversight)<-[r:LEADS]-(leader)
-SET oversight.name = 'Bishop Joshua'
+// MERGE (oversight)<-[r:LEADS]-(leader)
+SET oversight.name = 'B Josh'
 RETURN oversight.name, leader.firstName, leader.lastName

@@ -52,7 +52,7 @@ const ServiceDetails = ({ service, church, loading }: ServiceDetailsProps) => {
   if (!service.noServiceReason) {
     table.push(['Attendance', service?.attendance.toString()])
 
-    if (!currentUser.noIncome) {
+    if (!currentUser.noIncomeTracking) {
       table.push(['Number of Tithers', service?.numberOfTithers.toString()])
       if (service?.foreignCurrency) {
         table.push([
@@ -75,7 +75,9 @@ const ServiceDetails = ({ service, church, loading }: ServiceDetailsProps) => {
   }
 
   const noBankingProof =
-    !currentUser.noIncome && !service?.bankingProof && !service?.bankingSlip
+    !currentUser.noIncomeTracking &&
+    !service?.bankingProof &&
+    !service?.bankingSlip
 
   return (
     <Container>
@@ -87,14 +89,14 @@ const ServiceDetails = ({ service, church, loading }: ServiceDetailsProps) => {
         {service?.created_by && (
           <p>{`Recorded by ${service?.created_by?.fullName}`}</p>
         )}
-        {!currentUser.noIncome && service?.bankingSlipUploader && (
+        {!currentUser.noIncomeTracking && service?.bankingSlipUploader && (
           <p className="fw-bold">{`Banking Slip Uploaded by ${service?.bankingSlipUploader.fullName}`}</p>
         )}
-        {!currentUser.noIncome && service?.offeringBankedBy && (
+        {!currentUser.noIncomeTracking && service?.offeringBankedBy && (
           <p className="fw-bold">{`Offering Banked by ${service?.offeringBankedBy.fullName}`}</p>
         )}
         <RoleView roles={permitAdmin('Council')}>
-          {!currentUser.noIncome && service?.bankingConfirmer && (
+          {!currentUser.noIncomeTracking && service?.bankingConfirmer && (
             <p className="fw-bold">{`Offering Confirmed by ${service?.bankingConfirmer.fullName}`}</p>
           )}
         </RoleView>
@@ -105,7 +107,7 @@ const ServiceDetails = ({ service, church, loading }: ServiceDetailsProps) => {
             <Row className="d-flex justify-content-center">
               <TableFromArrays tableArray={table} loading={loading} />
               <div className="text-center">
-                {!currentUser.noIncome && service?.treasurerSelfie && (
+                {!currentUser.noIncomeTracking && service?.treasurerSelfie && (
                   <>
                     <h6>Treasurer Selfie</h6>
                     <div>
@@ -141,7 +143,7 @@ const ServiceDetails = ({ service, church, loading }: ServiceDetailsProps) => {
                     </div>
                   </>
                 )}
-                {!currentUser.noIncome && service?.offeringBankedBy && (
+                {!currentUser.noIncomeTracking && service?.offeringBankedBy && (
                   <div className="mb-4">
                     {`${service?.offeringBankedBy.fullName} used the Self Banking Feature. Click this button to see
                     Details`}
@@ -152,7 +154,7 @@ const ServiceDetails = ({ service, church, loading }: ServiceDetailsProps) => {
                     </p>
                   </div>
                 )}
-                {!currentUser.noIncome && service?.bankingSlip && (
+                {!currentUser.noIncomeTracking && service?.bankingSlip && (
                   <>
                     <h6>Banking Slip</h6>
 

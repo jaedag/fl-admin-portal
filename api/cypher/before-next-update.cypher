@@ -32,6 +32,16 @@ MATCH (g:GatheringService)
 SET g.conversionRateToDollar = 10 
 RETURN COUNT(g);
 
-// create a constraint so that every gatheringservice has to have the property noIncome 
+// create a constraint so that every gatheringservice has to have the property noIncomeTracking 
+
+// constraint to remove the noIncome property from all gatheringservices
+DROP CONSTRAINT gatheringServiceNeedsNoIncome;
 
 
+MATCH (g:GatheringService)
+WHERE g.noIncome IS NOT NULL
+SET g.noIncomeTracking = g.noIncome
+REMOVE g.noIncome
+RETURN g;
+
+CREATE CONSTRAINT gatheringServiceNeedsNoIncomeTracking IF NOT EXISTS ON (g:GatheringService) ASSERT exists(g.noIncomeTracking);

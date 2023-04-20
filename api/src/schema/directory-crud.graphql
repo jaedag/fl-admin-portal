@@ -236,7 +236,7 @@ extend type Mutation {
     name: String!
     leaderId: ID!
     oversightId: ID!
-    noIncome: Boolean!
+    noIncomeTracking: Boolean!
     currency: String!
     conversionRateToDollar: Float!
   ): GatheringService
@@ -244,7 +244,7 @@ extend type Mutation {
     @cypher(
       statement: """
       CREATE (gatheringService:GatheringService {id:apoc.create.uuid(), name:$name})
-        SET gatheringService.noIncome = $noIncome,
+        SET gatheringService.noIncomeTracking = $noIncomeTracking,
         gatheringService.currency = $currency,
         gatheringService.conversionRateToDollar = $conversionRateToDollar
 
@@ -582,7 +582,7 @@ extend type Mutation {
     gatheringServiceId: ID!
     name: String!
     oversightId: ID!
-    noIncome: Boolean!
+    noIncomeTracking: Boolean!
     currency: String!
     conversionRateToDollar: Float!
   ): GatheringService
@@ -591,7 +591,7 @@ extend type Mutation {
       statement: """
            MATCH (gatheringService:GatheringService {id: $gatheringServiceId})
            	SET gatheringService.name = $name,
-            gatheringService.noIncome = $noIncome,
+            gatheringService.noIncomeTracking = $noIncomeTracking,
             gatheringService.currency = $currency,
             gatheringService.conversionRateToDollar = $conversionRateToDollar
 

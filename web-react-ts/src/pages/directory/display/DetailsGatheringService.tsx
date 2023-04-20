@@ -67,7 +67,7 @@ const DetailsGatheringService = () => {
     },
     {
       title: 'Income Tracking',
-      number: gathering?.noIncome ? 'No' : 'Yes',
+      number: gathering?.noIncomeTracking ? 'No' : 'Yes',
       link: `#`,
     },
     {
@@ -82,9 +82,9 @@ const DetailsGatheringService = () => {
     },
   ]
 
-  // if noIncome is true, remove the last two elements in the array
+  // if noIncomeTracking is true, remove the last two elements in the array
 
-  if (gathering?.noIncome) {
+  if (gathering?.noIncomeTracking) {
     details.pop()
     details.pop()
   }

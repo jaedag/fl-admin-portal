@@ -220,7 +220,7 @@ export const CREATE_GATHERING_SERVICE_MUTATION = gql`
     $name: String!
     $leaderId: ID!
     $oversightId: ID!
-    $noIncome: Boolean!
+    $noIncomeTracking: Boolean!
     $currency: String!
     $conversionRateToDollar: Float!
   ) {
@@ -228,13 +228,13 @@ export const CREATE_GATHERING_SERVICE_MUTATION = gql`
       name: $name
       leaderId: $leaderId
       oversightId: $oversightId
-      noIncome: $noIncome
+      noIncomeTracking: $noIncomeTracking
       currency: $currency
       conversionRateToDollar: $conversionRateToDollar
     ) {
       id
       name
-      noIncome
+      noIncomeTracking
       currency
       conversionRateToDollar
 

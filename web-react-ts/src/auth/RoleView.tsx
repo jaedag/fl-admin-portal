@@ -10,7 +10,7 @@ type RoleViewProps = {
   verifyId?: string
   verifyNotId?: string
   permittedStream?: StreamOptions[]
-  noIncome?: boolean
+  noIncomeTracking?: boolean
   directoryLock?: boolean
 }
 
@@ -21,7 +21,7 @@ const RoleView = (props: RoleViewProps) => {
     verifyId,
     verifyNotId,
     permittedStream,
-    noIncome,
+    noIncomeTracking,
     directoryLock,
   } = props
   const { currentUser } = useContext(MemberContext)
@@ -57,10 +57,10 @@ const RoleView = (props: RoleViewProps) => {
     return false
   }
 
-  const includeIncome = (noIncome: boolean | undefined) => {
-    if (!noIncome) return true
+  const includeIncome = (noIncomeTracking: boolean | undefined) => {
+    if (!noIncomeTracking) return true
 
-    if (currentUser.noIncome === noIncome) {
+    if (currentUser.noIncomeTracking === noIncomeTracking) {
       return true
     }
 
@@ -87,7 +87,7 @@ const RoleView = (props: RoleViewProps) => {
     verify(verifyId) &&
     verifyNot(verifyNotId) &&
     permitStream(permittedStream) &&
-    includeIncome(noIncome) &&
+    includeIncome(noIncomeTracking) &&
     lockDirectory(directoryLock)
   ) {
     return <>{children}</>

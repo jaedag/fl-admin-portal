@@ -319,7 +319,7 @@ interface Church @auth(rules: [{ isAuthenticated: true }]) {
 type Oversight implements Church {
   id: ID @id
   name: String!
-  noIncome: Boolean
+  noIncomeTracking: Boolean
   leader: Member @relationship(type: "LEADS", direction: IN)
   gatheringServices: [GatheringService!]!
     @relationship(type: "HAS", direction: OUT)
@@ -426,7 +426,7 @@ type Oversight implements Church {
 type GatheringService implements Church {
   id: ID @id
   name: String!
-  noIncome: Boolean!
+  noIncomeTracking: Boolean!
   currency: String!
   conversionRateToDollar: Float!
 

@@ -24,7 +24,7 @@ const CouncilService = () => {
 
   return (
     <ApolloWrapper loading={loading} error={error} data={data}>
-      {currentUser.noIncome ? (
+      {currentUser.noIncomeTracking ? (
         <ServiceFormNoIncome
           RecordServiceMutation={RecordServiceNoIncome}
           church={data?.councils[0]}

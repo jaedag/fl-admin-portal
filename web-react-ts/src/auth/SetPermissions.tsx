@@ -51,9 +51,9 @@ const SetPermissions = ({
         stream:
           data.memberByEmail?.fellowship?.bacenta.constituency?.council.stream
             .id,
-        noIncome:
+        noIncomeTracking:
           data.memberByEmail?.fellowship?.bacenta.constituency?.council.stream
-            .gatheringService?.noIncome,
+            .gatheringService?.noIncomeTracking,
         currency:
           data.memberByEmail?.fellowship?.bacenta.constituency?.council.stream
             .gatheringService?.currency,

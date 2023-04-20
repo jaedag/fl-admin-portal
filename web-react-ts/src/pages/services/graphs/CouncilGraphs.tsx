@@ -72,7 +72,7 @@ const CouncilReport = () => {
           </Col>
 
           <Col>
-            {((!bussing && !currentUser.noIncome) || loading) && (
+            {((!bussing && !currentUser.noIncomeTracking) || loading) && (
               <StatDisplay
                 title="Avg Weekly Income"
                 statistic={getMonthlyStatAverage(churchData, 'income')}
@@ -81,7 +81,7 @@ const CouncilReport = () => {
           </Col>
         </Row>
 
-        {!currentUser.noIncome ? (
+        {!currentUser.noIncomeTracking ? (
           <ChurchGraph
             loading={loading}
             stat1="attendance"

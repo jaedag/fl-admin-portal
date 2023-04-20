@@ -34,7 +34,7 @@ import { Church } from 'global-types'
 
 export interface GatheringServiceFormValues extends FormikInitialValues {
   conversionRateToDollar: number
-  noIncome: string
+  noIncomeTracking: string
   currency: string
   oversight: string
   streams?: Church[]
