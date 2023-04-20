@@ -34,7 +34,7 @@ import { Church } from 'global-types'
 
 export interface GatheringServiceFormValues extends FormikInitialValues {
   conversionRateToDollar: number
-  noIncomeTracking: string
+  incomeTracking: string
   currency: string
   oversight: string
   streams?: Church[]
@@ -73,7 +73,7 @@ const GatheringServiceForm = ({
     leaderId: Yup.string().required(
       'Please choose a leader from the drop down'
     ),
-    noIncome: Yup.string().required(),
+    incomeTracking: Yup.string().required(),
     currency: Yup.string(),
     conversionRateToDollar: Yup.number(),
     streams: newGatheringService
@@ -125,7 +125,7 @@ const GatheringServiceForm = ({
                       />
 
                       <Select
-                        name="noIncome"
+                        name="incomeTracking"
                         label="Will you be tracking income for this Gathering Service?"
                         options={YES_NO_OPTIONS}
                         defaultOption="Choose One"

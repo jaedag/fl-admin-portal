@@ -22,7 +22,7 @@ RETURN stream, day;
 
 MATCH (oversight:Oversight)
 MATCH (jd:Member {email: "jaedagy@gmail.com"})
-MERGE (jd)-[:IS_ADMIN_FOR]->(oversight)
+MERGE (jd)-[:LEADS]->(oversight)
 RETURN oversight, jd;
 
 // MATCH (g:GatheringService)<-[r:IS_ADMIN_FOR]-(jd:Member {email: "jaedagy@gmail.com"})

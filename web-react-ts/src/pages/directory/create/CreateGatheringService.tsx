@@ -20,7 +20,7 @@ const CreateGatheringService = () => {
     leaderId: '',
     leaderName: '',
     leaderEmail: '',
-    noIncomeTracking: '',
+    incomeTracking: '',
     currency: '',
     conversionRateToDollar: 0,
     oversight: oversightId,
@@ -48,7 +48,7 @@ const CreateGatheringService = () => {
           name: values.name,
           leaderId: values.leaderId,
           oversightId: values.oversight,
-          noIncomeTracking: values.noIncomeTracking === 'Yes' ? true : false,
+          noIncomeTracking: values.incomeTracking === 'Yes' ? false : true,
           currency: values.currency,
           conversionRateToDollar: parseFloat(
             values.conversionRateToDollar.toString()
@@ -64,7 +64,7 @@ const CreateGatheringService = () => {
       })
 
       clickCard({ id: values.oversight, __typename: 'Oversight' })
-      clickCard(res.data.createGatheringService)
+      clickCard(res.data.CreateGatheringService)
       onSubmitProps.setSubmitting(false)
       onSubmitProps.resetForm()
       navigate(`/gatheringservice/displaydetails`)

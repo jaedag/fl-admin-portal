@@ -39,7 +39,7 @@ const UpdateGatheringService = () => {
     leaderId: gatheringService?.leader?.id || '',
     leaderEmail: gatheringService?.leader?.email || '',
     oversight: gatheringService?.oversight?.id,
-    noIncomeTracking: gatheringService?.noIncomeTracking ? 'No' : 'Yes',
+    incomeTracking: gatheringService?.noIncomeTracking ? 'No' : 'Yes',
     currency: gatheringService?.currency,
     conversionRateToDollar: gatheringService?.conversionRateToDollar,
     streams: gatheringService?.streams?.length
@@ -158,7 +158,7 @@ const UpdateGatheringService = () => {
           gatheringServiceId: gatheringServiceId,
           name: values.name,
           oversightId: values.oversight,
-          noIncomeTracking: values.noIncomeTracking === 'No' ? true : false,
+          noIncomeTracking: values.incomeTracking === 'No' ? true : false,
           currency: values.currency,
           conversionRateToDollar: parseFloat(
             values.conversionRateToDollar.toString()
