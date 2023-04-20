@@ -1,3 +1,9 @@
+#### 6.6.1 (2023-04-20)
+
+##### Bug Fixes
+
+*  add denomination to roles in dashboard utils ([6041f908](https://github.com/firstlovecenter/fl-pastoral-care/commit/6041f908463848fe2111163e040e2d3c1c821e1c))
+
 ### 6.6.0 (2023-04-20)
 
 ##### New Features
