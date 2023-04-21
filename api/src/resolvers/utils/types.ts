@@ -106,6 +106,7 @@ export interface Member {
   maritalStatus: string
   gender: string
   idlLocation?: string
+  howYouJoined: string
   occupation: string
   fellowship: string
   ministry: string

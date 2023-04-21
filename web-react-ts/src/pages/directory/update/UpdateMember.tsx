@@ -52,6 +52,7 @@ const UpdateMember = () => {
     idlLocation: member?.idlLocation ?? 'no-location',
     fellowship: memberChurch?.fellowship,
     ministry: memberChurch?.ministry?.id ?? '',
+    howYouJoined: member?.howYouJoined ?? '',
   }
 
   const navigate = useNavigate()
@@ -87,6 +88,7 @@ const UpdateMember = () => {
           maritalStatus: values.maritalStatus,
           occupation: values.occupation,
           pictureUrl: values.pictureUrl,
+          howYouJoined: values.howYouJoined,
 
           fellowship: values.fellowship?.id,
         },

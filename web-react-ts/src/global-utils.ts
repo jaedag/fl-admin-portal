@@ -73,6 +73,31 @@ export const DELETE_MEMBER_CATEGORY_OPTIONS: FormikSelectOptions = [
   },
 ]
 
+export const HOW_YOU_JOINED_OPTIONS: FormikSelectOptions = [
+  {
+    key: 'I Joined After Attending A Weekday Fellowship Meeting',
+    value: 'Weekday Fellowship Meeting',
+  },
+  {
+    key: 'I Joined After Attending A Service With A Bishop',
+    value: 'Service With A Bishop',
+  },
+  {
+    key: 'I Was Invited By A Friend Or Family Member',
+    value: 'Invitation By Friend',
+  },
+  {
+    key: 'A Person I Had Never Met Spoke To Me And Invited Me',
+    value: 'Invitation By Stranger',
+  },
+  { key: 'I Joined After Attending An Area Crusade', value: 'Area Crusade' },
+  { key: 'I Joined After Attending A Campus Crusade', value: 'Campus Crusade' },
+  {
+    key: 'I Joined After Attending A Creative Arts Outreach (Choir Concert, Boogie King, Stage Play)',
+    value: 'Creative Arts Outreach',
+  },
+]
+
 export const BUSSING_STATUS_OPTIONS: FormikSelectOptions = [
   { key: 'IC', value: 'IC' },
   { key: 'Graduated', value: 'Graduated' },

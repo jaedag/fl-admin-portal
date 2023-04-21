@@ -147,6 +147,7 @@ CREATE (member:Active:Member:IDL:Deer {whatsappNumber:$whatsappNumber})
         member.idlLocation = $idlLocation,
       	member.pictureUrl = $pictureUrl,
         member.registrationDate = datetime(),
+        member.howYouJoined = $howYouJoined,
         
         member.hasHolyGhostBaptism = false,
         member.hasWaterBaptism = false,

@@ -104,6 +104,7 @@ const directoryMutation = {
       ministry: args?.ministry ?? '',
       idlLocation: args?.idlLocation ?? '',
       pictureUrl: args?.pictureUrl ?? '',
+      howYouJoined: args?.howYouJoined ?? '',
       auth_id: context.auth.jwt.sub ?? '',
     })
 

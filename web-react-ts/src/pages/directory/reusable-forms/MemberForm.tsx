@@ -5,6 +5,7 @@ import React, { useContext } from 'react'
 import {
   DELETE_MEMBER_CATEGORY_OPTIONS,
   GENDER_OPTIONS,
+  HOW_YOU_JOINED_OPTIONS,
   isAuthorised,
   makeSelectOptions,
   MARITAL_STATUS_OPTIONS,
@@ -137,6 +138,7 @@ const MemberForm = ({
       `Phone Number must start with + and country code (eg. '+233')`
     ),
     idlLocation: Yup.string().required('Location is a required field'),
+    howYouJoined: Yup.string().required('You must select how you joined'),
     fellowship: Yup.object().required(
       'Please pick a fellowship from the dropdown'
     ),
@@ -326,6 +328,13 @@ const MemberForm = ({
                         />
                       </Col>
                     )}
+                    <Select
+                      label="How Did You Join First Love Church?"
+                      name="howYouJoined"
+                      options={HOW_YOU_JOINED_OPTIONS}
+                      placeholder="Tell us how you joined"
+                      aria-describedby="howYouJoined"
+                    />
                     <Col sm={10}>
                       <SearchFellowship
                         name="fellowship"

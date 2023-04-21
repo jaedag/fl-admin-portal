@@ -21,6 +21,7 @@ export type CreateMemberFormOptions = {
   occupation: string
   pictureUrl: string
   idlLocation: string
+  howYouJoined: string
   fellowship: Fellowship | { [key: string]: any }
   ministry: string
 }
@@ -39,6 +40,7 @@ const CreateMember = () => {
     occupation: '',
     pictureUrl: '',
     idlLocation: '',
+    howYouJoined: '',
     fellowship: {},
     ministry: '',
   }
@@ -81,8 +83,12 @@ const CreateMember = () => {
           idlLocation: values.idlLocation,
           fellowship: values.fellowship?.id,
           ministry: values.ministry,
+          howYouJoined: values.howYouJoined,
         },
       })
+      setSubmitting(false)
+      resetForm()
+      navigate('/member/displaydetails')
     } catch (error: any) {
       if (error.message.toLowerCase().includes('email')) {
         const confirmBox = window.confirm(
@@ -117,13 +123,10 @@ const CreateMember = () => {
 
         setSubmitting(false)
       } else {
+        setSubmitting(false)
         throwToSentry('There was an error creating the member profile\n', error)
       }
     }
-
-    setSubmitting(false)
-    resetForm()
-    navigate('/member/displaydetails')
   }
 
   return (

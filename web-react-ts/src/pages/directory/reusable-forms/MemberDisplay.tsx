@@ -153,6 +153,14 @@ const MemberDisplay = ({ memberId }: { memberId: string }) => {
             />
           </Col>
         )}
+        {member?.howYouJoined && (
+          <Col sm={1} md="auto">
+            <DetailsCard
+              heading="How You Joined"
+              detail={member?.howYouJoined.toString()}
+            />
+          </Col>
+        )}
         <Col sm={1} md="auto">
           <DetailsCard
             heading="Fellowship"

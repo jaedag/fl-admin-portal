@@ -187,6 +187,7 @@ extend type Mutation {
     fellowship: String!
     ministry: String
     pictureUrl: String!
+    howYouJoined: String!
   ): Member
 
   CreateStream(
@@ -496,11 +497,13 @@ extend type Mutation {
     fellowship: String!
     ministry: String
     pictureUrl: String!
+    howYouJoined: String!
   ): Member
     @auth(
       rules: [
         {
           roles: [
+            "adminOversight"
             "adminGatheringService"
             "adminStream"
             "adminCouncil"
@@ -521,7 +524,8 @@ extend type Mutation {
       	member.lastName = $lastName,
       	member.phoneNumber = $phoneNumber,
         member.whatsappNumber = $whatsappNumber,
-      	member.pictureUrl = $pictureUrl
+      	member.pictureUrl = $pictureUrl,
+        member.howYouJoined = $howYouJoined
 
        CREATE (log:HistoryLog)
         SET

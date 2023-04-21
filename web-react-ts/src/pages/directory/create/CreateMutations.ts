@@ -16,6 +16,7 @@ export const CREATE_MEMBER_MUTATION = gql`
     $idlLocation: String!
     $ministry: String
     $pictureUrl: String!
+    $howYouJoined: String!
   ) {
     CreateMember(
       firstName: $firstName
@@ -32,6 +33,7 @@ export const CREATE_MEMBER_MUTATION = gql`
       fellowship: $fellowship
       ministry: $ministry
       pictureUrl: $pictureUrl
+      howYouJoined: $howYouJoined
     ) {
       id
       firstName

@@ -14,6 +14,7 @@ export const UPDATE_MEMBER_MUTATION = gql`
     $occupation: String
     $fellowship: String!
     $pictureUrl: String!
+    $howYouJoined: String!
   ) {
     UpdateMemberDetails(
       id: $id
@@ -28,6 +29,7 @@ export const UPDATE_MEMBER_MUTATION = gql`
       occupation: $occupation
       fellowship: $fellowship
       pictureUrl: $pictureUrl
+      howYouJoined: $howYouJoined
     ) {
       firstName
       middleName
@@ -37,6 +39,7 @@ export const UPDATE_MEMBER_MUTATION = gql`
       phoneNumber
       pictureUrl
       whatsappNumber
+      howYouJoined
       dob {
         date
       }
