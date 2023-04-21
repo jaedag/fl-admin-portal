@@ -95,6 +95,7 @@ const UserProfileEditPage = () => {
         initialValues={initialValues}
         onSubmit={onSubmit}
         loading={memberLoading}
+        update
       />
     </ApolloWrapper>
   )
