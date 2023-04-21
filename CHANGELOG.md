@@ -1,3 +1,9 @@
+#### 6.6.3 (2023-04-21)
+
+##### New Features
+
+*  add howYouJoined property on user profile page ([99be4477](https://github.com/firstlovecenter/fl-pastoral-care/commit/99be4477ff33356ec586f0532cdd6099776fb081))
+
 #### 6.6.2 (2023-04-21)
 
 ##### New Features
