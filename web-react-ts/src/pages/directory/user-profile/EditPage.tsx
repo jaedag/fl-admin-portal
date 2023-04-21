@@ -44,9 +44,10 @@ const UserProfileEditPage = () => {
     maritalStatus: member?.maritalStatus ? member?.maritalStatus.status : '',
     occupation: member?.occupation ? member?.occupation.occupation : '',
     pictureUrl: member?.pictureUrl ? member?.pictureUrl : '',
-    fellowship: memberChurch?.fellowship?.name ?? '',
+    fellowship: memberChurch?.fellowship ?? '',
     idlLocation: member?.idlLocation ?? '',
     ministry: memberChurch?.ministry ? memberChurch?.ministry.id : '',
+    howYouJoined: member?.howYouJoined ? member?.howYouJoined : '',
   }
 
   const [UpdateMember] = useMutation(UPDATE_MEMBER_MUTATION)
@@ -72,8 +73,9 @@ const UserProfileEditPage = () => {
         maritalStatus: values.maritalStatus,
         occupation: values.occupation,
         pictureUrl: values.pictureUrl,
+        howYouJoined: values.howYouJoined,
 
-        fellowship: values.fellowship,
+        fellowship: values.fellowship.id,
         ministry: values.ministry,
       },
     })
