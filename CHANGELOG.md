@@ -1,3 +1,14 @@
+#### 6.6.2 (2023-04-21)
+
+##### New Features
+
+*  add option born into the church for howYouJoined ([007ed6ac](https://github.com/firstlovecenter/fl-pastoral-care/commit/007ed6ace073de09beb0e1f0ec5ce5337549ca67))
+*  implement a section in the form for how you joined the church for new registration ([07c7b540](https://github.com/firstlovecenter/fl-pastoral-care/commit/07c7b540547f073887c6869d9cf472fd3987eb3e))
+
+##### Bug Fixes
+
+*  update the title of gathering service members page ([da0878bb](https://github.com/firstlovecenter/fl-pastoral-care/commit/da0878bb6b06a21b268cc4aaa8864ebbcc9588c0))
+
 #### 6.6.1 (2023-04-20)
 
 ##### Bug Fixes
