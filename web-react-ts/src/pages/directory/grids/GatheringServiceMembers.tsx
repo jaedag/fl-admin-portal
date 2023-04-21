@@ -12,7 +12,9 @@ const GatheringServiceMembers = () => {
 
   return (
     <MembersGrid
-      title={data ? `${data?.gatheringServices[0]?.name}` : null}
+      title={
+        data ? `${data?.gatheringServices[0]?.name} Gathering Service` : null
+      }
       data={data && data.gatheringServices[0].members}
       loading={loading}
       error={error}
