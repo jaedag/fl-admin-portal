@@ -96,6 +96,10 @@ export const HOW_YOU_JOINED_OPTIONS: FormikSelectOptions = [
     key: 'I Joined After Attending A Creative Arts Outreach (Choir Concert, Boogie King, Stage Play)',
     value: 'Creative Arts Outreach',
   },
+  {
+    key: 'I Was Born Into The Church',
+    value: 'Born Into The Church',
+  },
 ]
 
 export const BUSSING_STATUS_OPTIONS: FormikSelectOptions = [
