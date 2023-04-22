@@ -199,11 +199,7 @@ const ChurchGraph = (props: ChurchGraphProps) => {
                 yAxisId="left"
                 fill="url(#colorPrimary)"
                 onClick={(data) => {
-                  if (
-                    data.category === 'bussingAggregate' ||
-                    data.category === 'serviceAggregate' ||
-                    data.category === 'multiplicationAggregate'
-                  ) {
+                  if (data.category.includes('Aggregate')) {
                     return
                   }
 
@@ -231,11 +227,7 @@ const ChurchGraph = (props: ChurchGraphProps) => {
                   yAxisId="right"
                   fill="url(#colorSecondary)"
                   onClick={(data) => {
-                    if (
-                      data.category === 'bussingAggregate' ||
-                      data.category === 'serviceAggregate' ||
-                      data.category === 'multiplicationAggregate'
-                    ) {
+                    if (data.category.includes('Aggregate')) {
                       return
                     }
 
