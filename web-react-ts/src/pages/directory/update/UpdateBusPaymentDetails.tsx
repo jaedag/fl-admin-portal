@@ -61,7 +61,7 @@ export const convertOutboundToString = (value: boolean) => {
 
 const UpdateBusPayment = () => {
   const { bacentaId } = useContext(ChurchContext)
-  const { theme } = useContext(MemberContext)
+  const { theme, currentUser } = useContext(MemberContext)
   const { isOpen, togglePopup } = usePopup()
   const { isAuthorised } = useAuth()
   const [otp] = useState(randomOTPGenerator())
@@ -187,12 +187,12 @@ const UpdateBusPayment = () => {
                           <Input
                             name="urvanTopUp"
                             label="Urvan Church Top Up (One Way)"
-                            placeholder="Enter Amount in GHS"
+                            placeholder={`Enter Amount in ${currentUser.currency}`}
                           />
                           <Input
                             name="sprinterTopUp"
                             label="Sprinter Church Top Up (One Way)"
-                            placeholder="Enter Amount in GHS"
+                            placeholder={`Enter Amount in ${currentUser.currency}`}
                           />
                           <Container className="my-2">
                             <Card border="warning">

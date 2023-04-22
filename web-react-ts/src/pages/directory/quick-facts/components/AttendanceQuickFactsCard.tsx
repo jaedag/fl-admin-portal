@@ -3,16 +3,18 @@ import { Badge } from 'react-bootstrap'
 import '../QuickFacts.css'
 import { getPercentageChange } from './quick-fact-utils'
 
+export interface AttendanceDetailsInterface {
+  churchType: string
+  cardType: string
+  leadersName: string
+  churchName: string
+  churchAvgAttendanceThisMonth: number | string
+  avgHigherLevelAttendanceThisMonth: number | string
+  higherLevelName: string
+}
+
 export interface AttendanceQuickFactsProps {
-  attendanceDetails: {
-    churchType: string
-    cardType: string
-    leadersName: string
-    churchName: string
-    churchAvgAttendanceThisMonth: number | string
-    avgHigherLevelAttendanceThisMonth: number | string
-    higherLevelName: string
-  }[]
+  attendanceDetails: AttendanceDetailsInterface[]
 }
 
 const AttendanceQuickFactsCard = (props: AttendanceQuickFactsProps) => {
@@ -24,12 +26,12 @@ const AttendanceQuickFactsCard = (props: AttendanceQuickFactsProps) => {
   )
 
   const getBadgeBackground = () => {
-    if (percentageRiseOrFall >= 0) return 'green'
+    if ((percentageRiseOrFall as number) >= 0) return 'green'
     return 'red'
   }
 
   const getBadgeColor = () => {
-    if (percentageRiseOrFall >= 0) return 'badge-percentage-green'
+    if ((percentageRiseOrFall as number) >= 0) return 'badge-percentage-green'
     return 'badge-percentage-red'
   }
 
@@ -57,7 +59,7 @@ const AttendanceQuickFactsCard = (props: AttendanceQuickFactsProps) => {
           bg={`${getBadgeBackground()}`}
           className={`${getBadgeColor()} mt-auto`}
         >
-          {percentageRiseOrFall >= 0 ? '+' : ''}
+          {(percentageRiseOrFall as number) >= 0 ? '+' : ''}
           {percentageRiseOrFall}%
         </Badge>
       </div>

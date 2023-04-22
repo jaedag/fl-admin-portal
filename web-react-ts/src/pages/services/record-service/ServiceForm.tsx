@@ -19,6 +19,7 @@ import { MutationFunction } from '@apollo/client'
 import Input from 'components/formik/Input'
 import ImageUpload from 'components/formik/ImageUpload'
 import SearchMember from 'components/formik/SearchMember'
+import { MemberContext } from 'contexts/MemberContext'
 
 type ServiceFormProps = {
   church: Church
@@ -45,6 +46,7 @@ const ServiceForm = ({
   RecordServiceMutation,
 }: ServiceFormProps) => {
   const { clickCard } = useContext(ChurchContext)
+  const { currentUser } = useContext(MemberContext)
   const navigate = useNavigate()
 
   const initialValues: FormOptions = {
@@ -155,7 +157,10 @@ const ServiceForm = ({
                       aria-describedby="dateofservice"
                     />
                     <Input name="attendance" label="Attendance*" />
-                    <Input name="cediIncome" label="Income (in Cedis)*" />
+                    <Input
+                      name="cediIncome"
+                      label={`Income (in ${currentUser.currency})*`}
+                    />
                     <Input
                       name="foreignCurrency"
                       label="Foreign Currency (if any) (Optional)"

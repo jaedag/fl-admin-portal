@@ -9,6 +9,7 @@ import {
   CouncilWithDefaulters,
 } from './defaulters-types'
 import './Defaulters.css'
+import { MemberContext } from 'contexts/MemberContext'
 
 type DefaulterCardProps = {
   defaulter: ConstituencyWithDefaulters | CouncilWithDefaulters
@@ -18,6 +19,7 @@ type DefaulterCardProps = {
 const JointServiceDefaulterCard = ({ defaulter, link }: DefaulterCardProps) => {
   const navigate = useNavigate()
   const { clickCard } = useContext(ChurchContext)
+  const { currentUser } = useContext(MemberContext)
 
   const serviceDetails = defaulter?.services?.length
     ? defaulter?.services[0]
@@ -67,7 +69,7 @@ const JointServiceDefaulterCard = ({ defaulter, link }: DefaulterCardProps) => {
             {serviceDetails?.income && (
               <div>
                 <span className="text-muted">Income: </span>
-                GHS {serviceDetails?.income}
+                {currentUser.currency} {serviceDetails?.income}
               </div>
             )}
             {serviceDetails?.noServiceReason && (

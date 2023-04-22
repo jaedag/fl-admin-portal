@@ -52,8 +52,8 @@ const DetailsCard = (props: DetailsCardPropsType) => {
         <PlaceholderCustom loading={loading} as="h2" xs={12}>
           <div className="d-flex justify-content-between">
             <h2 className={`font-primary card-detail`}>
-              {props.detail?.replace('GHS', '')}{' '}
-              <small>{props.detail?.match('GHS')}</small>
+              {props.detail?.replace(currentUser.currency, '')}{' '}
+              <small>{props.detail?.match(currentUser.currency)}</small>
             </h2>
             <div>
               {props.heading === 'IC Bacentas' &&

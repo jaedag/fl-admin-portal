@@ -15,6 +15,7 @@ import { useNavigate } from 'react-router'
 import { UNDO_CANCELLED_SERVICE } from '../record-service/RecordServiceMutations'
 import { FellowshipWithDefaulters } from './defaulters-types'
 import './Defaulters.css'
+import { MemberContext } from 'contexts/MemberContext'
 
 type DefaulterCardProps = {
   defaulter: FellowshipWithDefaulters
@@ -24,6 +25,7 @@ type DefaulterCardProps = {
 const DefaulterCard = ({ defaulter, link }: DefaulterCardProps) => {
   const navigate = useNavigate()
   const { clickCard } = useContext(ChurchContext)
+  const { currentUser } = useContext(MemberContext)
   const [UndoCancelledService] = useMutation(UNDO_CANCELLED_SERVICE)
 
   const serviceDetails = defaulter?.services?.length
@@ -71,7 +73,7 @@ const DefaulterCard = ({ defaulter, link }: DefaulterCardProps) => {
             {serviceDetails?.income && (
               <div>
                 <span className="text-muted">Income: </span>
-                GHS {serviceDetails?.income}
+                {currentUser.currency} {serviceDetails?.income}
               </div>
             )}
             {serviceDetails?.noServiceReason && (

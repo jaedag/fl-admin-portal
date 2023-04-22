@@ -24,6 +24,7 @@ import CloudinaryImage from 'components/CloudinaryImage'
 import Select from 'components/formik/Select'
 import { VEHICLE_OPTIONS, VEHICLE_OPTIONS_WITH_CAR } from './arrivals-utils'
 import './Arrivals.css'
+import { MemberContext } from 'contexts/MemberContext'
 
 type FormOptions = {
   attendance: string
@@ -35,6 +36,7 @@ const FormAttendanceConfirmation = () => {
   const navigate = useNavigate()
   const { bacentaId } = useContext(ChurchContext)
   const { vehicleRecordId } = useContext(ServiceContext)
+  const { currentUser } = useContext(MemberContext)
 
   const { data, loading, error } = useQuery(DISPLAY_VEHICLE_RECORDS, {
     variables: { vehicleRecordId, bacentaId },
@@ -135,7 +137,7 @@ const FormAttendanceConfirmation = () => {
               <div className="text-secondary">
                 Total Attendance:{' '}
                 <span className="fw-bold text-info">
-                  GHS {vehicle?.attendance || 0}
+                  {currentUser.currency} {vehicle?.attendance || 0}
                 </span>
               </div>
             </Card.Body>

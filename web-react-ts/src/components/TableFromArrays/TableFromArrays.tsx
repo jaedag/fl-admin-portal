@@ -4,6 +4,8 @@ import { Table } from 'react-bootstrap'
 import PlaceholderCustom from '../Placeholder'
 import './TableFromArrays.css'
 
+export type TableArray = ((string | JSX.Element)[] | (string | number)[])[]
+
 type TableFromArrayProps = {
   tableArray: ((string | JSX.Element)[] | (string | number)[])[]
   loading: boolean

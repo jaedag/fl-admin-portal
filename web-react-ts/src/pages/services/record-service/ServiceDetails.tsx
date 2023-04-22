@@ -4,7 +4,9 @@ import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import HeadingSecondary from 'components/HeadingSecondary'
 import PlaceholderCustom from 'components/Placeholder'
 import SpinnerPage from 'components/SpinnerPage'
-import TableFromArrays from 'components/TableFromArrays/TableFromArrays'
+import TableFromArrays, {
+  TableArray,
+} from 'components/TableFromArrays/TableFromArrays'
 import { MemberContext } from 'contexts/MemberContext'
 import { Church, ServiceRecord } from 'global-types'
 import { alertMsg } from 'global-utils'
@@ -16,6 +18,7 @@ import { CheckCircleFill, FileEarmarkArrowUpFill } from 'react-bootstrap-icons'
 import { useNavigate } from 'react-router'
 import { MANUALLY_CONFIRM_OFFERING_PAYMENT } from './RecordServiceMutations'
 import './ServiceDetails.css'
+import CurrencySpan from 'components/CurrencySpan'
 
 type ServiceDetailsProps = {
   service: ServiceRecord
@@ -41,7 +44,7 @@ const ServiceDetails = ({ service, church, loading }: ServiceDetailsProps) => {
     return <SpinnerPage />
   }
 
-  let table: string[][] = [
+  let table: TableArray = [
     [
       'Date of Service',
       new Date(service.serviceDate.date).toDateString() ?? '',
@@ -61,7 +64,7 @@ const ServiceDetails = ({ service, church, loading }: ServiceDetailsProps) => {
         ])
       }
       table.push(
-        ['Income', service.income.toString()],
+        ['Income', <CurrencySpan number={service.income} />],
         ...service.treasurers.map((treasurer, i) => [
           `Treasurer ${i + 1}`,
           treasurer.fullName ?? '',
