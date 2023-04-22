@@ -1,3 +1,9 @@
+#### 7.5.9 (2023-04-22)
+
+##### Bug Fixes
+
+*  version bump ([c0fc09a6](https://github.com/firstlovecenter/fl-pastoral-care/commit/c0fc09a60f0a7af693c9cec3dffb7853030d0f01))
+
 #### 6.6.7 (2023-04-22)
 
 ##### Bug Fixes
