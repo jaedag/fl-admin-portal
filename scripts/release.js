@@ -11,19 +11,19 @@ switch (process.argv[2]) {
     versionBump.push(
       {
         name: 'bump-api',
-        command: `cd ${API_DIR} && ${runner} version patch && git add package.json package-lock.json`,
+        command: `cd ${API_DIR} && ${runner} version patch `,
         prefixColor: 'red',
       },
       {
         name: 'bump-frontend',
-        command: `cd ${TEMPLATE_DIR} && ${runner} version patch && git add package.json package-lock.json`,
+        command: `cd ${TEMPLATE_DIR} && ${runner} version patch`,
         prefixColor: 'red',
       }
     )
     release.push({
       name: 'release:patch',
       command:
-        "changelog -p && git add CHANGELOG.md && git commit -m 'docs: update CHANGELOG.md' && npm version patch && git push origin && git push origin --tags",
+        "changelog -p && git add . && git commit -m 'docs: update CHANGELOG.md' && npm version patch && git push origin && git push origin --tags",
       prefixColor: 'yellow',
     })
     break
@@ -31,19 +31,19 @@ switch (process.argv[2]) {
     versionBump.push(
       {
         name: 'bump-api',
-        command: `cd ${API_DIR} && ${runner} version minor && git add package.json package-lock.json`,
+        command: `cd ${API_DIR} && ${runner} version minor`,
         prefixColor: 'red',
       },
       {
         name: 'bump-frontend',
-        command: `cd ${TEMPLATE_DIR} && ${runner} version minor && git add package.json package-lock.json`,
+        command: `cd ${TEMPLATE_DIR} && ${runner} version minor`,
         prefixColor: 'red',
       }
     )
     release.push({
       name: 'release:minor',
       command:
-        "changelog -m && git add CHANGELOG.md && git commit -m 'docs: update CHANGELOG.md' && npm version minor && git push origin && git push origin --tags",
+        "changelog -m && git add . && git commit -m 'docs: update CHANGELOG.md' && npm version minor && git push origin && git push origin --tags",
       prefixColor: 'yellow',
     })
     break
@@ -51,19 +51,19 @@ switch (process.argv[2]) {
     versionBump.push(
       {
         name: 'bump-api',
-        command: `cd ${API_DIR} && ${runner} version major && git add package.json package-lock.json`,
+        command: `cd ${API_DIR} && ${runner} version major`,
         prefixColor: 'red',
       },
       {
         name: 'bump-frontend',
-        command: `cd ${TEMPLATE_DIR} && ${runner} version major && git add package.json package-lock.json`,
+        command: `cd ${TEMPLATE_DIR} && ${runner} version major`,
         prefixColor: 'red',
       }
     )
     release.push({
       name: 'release:major',
       command:
-        "changelog -M && git add CHANGELOG.md && git commit -m 'docs: update CHANGELOG.md' && npm version major && git push origin && git push origin --tags",
+        "changelog -M && git add . && git commit -m 'docs: update CHANGELOG.md' && npm version major && git push origin && git push origin --tags",
       prefixColor: 'yellow',
     })
     break
