@@ -14,7 +14,6 @@ export const DISPLAY_MEMBER_BIO = gql`
       phoneNumber
       pictureUrl
       idlLocation
-      howYouJoined
       whatsappNumber
       pictureUrl
       dob {
@@ -181,7 +180,6 @@ export const DISPLAY_FELLOWSHIP = gql`
       }
       meetingDay {
         day
-        dayNumber
       }
       bacenta {
         id
@@ -440,10 +438,6 @@ export const DISPLAY_STREAM = gql`
       vacationIcBacentaCount
       hubCount
       sontaCount
-      meetingDay {
-        day
-        dayNumber
-      }
       gatheringService {
         id
         name
@@ -494,9 +488,6 @@ export const DISPLAY_GATHERINGSERVICE = gql`
     gatheringServices(where: { id: $id }, options: { limit: 1 }) {
       id
       name
-      noIncomeTracking
-      currency
-      conversionRateToDollar
       target
       streamCount
       councilCount
@@ -531,7 +522,6 @@ export const DISPLAY_GATHERINGSERVICE = gql`
         id
         firstName
         lastName
-        fullName
         currentTitle
         nameWithTitle
         pictureUrl
@@ -587,8 +577,6 @@ export const DISPLAY_OVERSIGHT = gql`
         firstName
         lastName
         fullName
-        currentTitle
-        nameWithTitle
         pictureUrl
       }
       history(limit: 5) {
@@ -779,6 +767,163 @@ export const DISPLAY_SONTA = gql`
       }
 
       memberCount
+      history {
+        id
+        timeStamp
+        createdAt {
+          date
+        }
+        loggedBy {
+          id
+          firstName
+          lastName
+          stream_name
+        }
+        historyRecord
+      }
+    }
+  }
+`
+
+export const MEMBER_HISTORY = gql`
+  query MemberHistory($id: ID!) {
+    members(where: { id: $id }) {
+      id
+      firstName
+      lastName
+      history(limit: 10) {
+        id
+        timeStamp
+        createdAt {
+          date
+        }
+        loggedBy {
+          id
+          stream_name
+          firstName
+          lastName
+        }
+        historyRecord
+      }
+    }
+  }
+`
+export const STREAM_HISTORY = gql`
+  query StreamsHistory($id: ID!) {
+    streams(where: { id: $id }) {
+      id
+      name
+      history {
+        id
+        timeStamp
+        createdAt {
+          date
+        }
+        loggedBy {
+          id
+          firstName
+          lastName
+          stream_name
+        }
+        historyRecord
+      }
+    }
+  }
+`
+export const COUNCIL_HISTORY = gql`
+  query CouncilsHistory($id: ID!) {
+    councils(where: { id: $id }) {
+      id
+      name
+      history {
+        id
+        timeStamp
+        createdAt {
+          date
+        }
+        loggedBy {
+          id
+          firstName
+          lastName
+          stream_name
+        }
+        historyRecord
+      }
+    }
+  }
+`
+export const CONSTITUENCY_HISTORY = gql`
+  query ConstituenciesHistory($id: ID!) {
+    constituencies(where: { id: $id }) {
+      id
+      name
+      history {
+        id
+        timeStamp
+        createdAt {
+          date
+        }
+        loggedBy {
+          id
+          firstName
+          lastName
+          stream_name
+        }
+        historyRecord
+      }
+    }
+  }
+`
+
+export const BACENTA_HISTORY = gql`
+  query BacentasHistory($id: ID!) {
+    bacentas(where: { id: $id }) {
+      id
+      name
+      history {
+        id
+        timeStamp
+        createdAt {
+          date
+        }
+        loggedBy {
+          id
+          firstName
+          lastName
+          stream_name
+        }
+        historyRecord
+      }
+    }
+  }
+`
+export const FELLOWSHIP_HISTORY = gql`
+  query FellowshipsHistory($id: ID!) {
+    fellowships(where: { id: $id }) {
+      id
+      name
+      history {
+        id
+        timeStamp
+        createdAt {
+          date
+        }
+        loggedBy {
+          id
+          firstName
+          lastName
+          stream_name
+        }
+        historyRecord
+      }
+    }
+  }
+`
+export const GATHERING_SERVICE_HISTORY = gql`
+  query GatheringServiceHistory($id: ID!) {
+    gatheringServices(where: { id: $id }) {
+      id
+      name
       history {
         id
         timeStamp

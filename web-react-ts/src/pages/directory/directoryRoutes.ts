@@ -11,6 +11,27 @@ import { lazy } from 'react'
 const UserDisplayPage = lazy(
   () => import('pages/directory/user-profile/DisplayPage')
 )
+const MemberHistory = lazy(
+  () => import('pages/directory/display/church-history/MemberHistory')
+)
+const StreamHistory = lazy(
+  () => import('pages/directory/display/church-history/StreamHistory')
+)
+const CouncilHistory = lazy(
+  () => import('pages/directory/display/church-history/CouncilHistory')
+)
+const ConstituencyHistory = lazy(
+  () => import('pages/directory/display/church-history/ConstituencyHistory')
+)
+const FellowshipHistory = lazy(
+  () => import('pages/directory/display/church-history/FellowshipHistory')
+)
+const BacentaHistory = lazy(
+  () => import('pages/directory/display/church-history/BacentaHistory')
+)
+const GatheringServiceHistory = lazy(
+  () => import('pages/directory/display/church-history/GatheringServiceHistory')
+)
 const DisplayMember = lazy(
   () => import('pages/directory/display/DetailsMember')
 )
@@ -295,6 +316,48 @@ export const directory: LazyRouteTypes[] = [
   {
     path: '/user-profile',
     element: UserDisplayPage,
+    roles: ['all'],
+    placeholder: true,
+  },
+  {
+    path: '/member/history',
+    element: MemberHistory,
+    roles: ['all'],
+    placeholder: true,
+  },
+  {
+    path: '/stream/history',
+    element: StreamHistory,
+    roles: ['all'],
+    placeholder: true,
+  },
+  {
+    path: '/council/history',
+    element: CouncilHistory,
+    roles: ['all'],
+    placeholder: true,
+  },
+  {
+    path: '/constituency/history',
+    element: ConstituencyHistory,
+    roles: ['all'],
+    placeholder: true,
+  },
+  {
+    path: '/bacenta/history',
+    element: BacentaHistory,
+    roles: ['all'],
+    placeholder: true,
+  },
+  {
+    path: '/fellowship/history',
+    element: FellowshipHistory,
+    roles: ['all'],
+    placeholder: true,
+  },
+  {
+    path: '/gatheringservice/history',
+    element: GatheringServiceHistory,
     roles: ['all'],
     placeholder: true,
   },
