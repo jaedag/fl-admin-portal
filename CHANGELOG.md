@@ -1,3 +1,10 @@
+#### 6.6.4 (2023-04-22)
+
+##### Bug Fixes
+
+*  fix stream meetingDay dayNumber ([2a3b62c0](https://github.com/firstlovecenter/fl-pastoral-care/commit/2a3b62c0aa085dee9e14aed282de5825021639c4))
+*  implement update option on edit profile form ([8e1ba5c2](https://github.com/firstlovecenter/fl-pastoral-care/commit/8e1ba5c23889512554e91d135d89a7e96f0965ce))
+
 #### 6.6.3 (2023-04-21)
 
 ##### New Features
