@@ -24,7 +24,7 @@ const DetailsStream = () => {
     },
     {
       title: 'Meeting Day',
-      number: stream?.meetingDay.day,
+      number: stream?.meetingDay?.day,
       link: '#',
     },
     {
