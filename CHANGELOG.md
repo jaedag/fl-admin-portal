@@ -1,3 +1,9 @@
+#### 6.6.6 (2023-04-22)
+
+##### Bug Fixes
+
+*  fix broken test file ([74c31059](https://github.com/firstlovecenter/fl-pastoral-care/commit/74c3105942dd5a396de7e36ac4f60173c6b04ba5))
+
 #### 6.6.5 (2023-04-22)
 
 ##### Bug Fixes
