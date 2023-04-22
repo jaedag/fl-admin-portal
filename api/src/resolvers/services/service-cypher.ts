@@ -43,11 +43,11 @@ export const recordService = `
       MERGE (aggregate:AggregateServiceRecord {id: date().week + '-' + date().year + '-' + log.id, week: date().week, year: date().year})
       MERGE (log)-[:HAS_SERVICE_AGGREGATE]->(aggregate)
 
-      WITH serviceRecord, aggregate, SUM(serviceRecord.attendance) AS attendance, SUM(serviceRecord.income) AS income, SUM(serviceRecord.dollarIncome) AS dollarIncome, SUM(aggregate.attendance) AS aggregateAttendance, SUM(aggregate.income) AS aggregateIncome
+      WITH serviceRecord, aggregate, SUM(serviceRecord.attendance) AS attendance, SUM(serviceRecord.income) AS income, SUM(serviceRecord.dollarIncome) AS dollarIncome, SUM(aggregate.attendance) AS aggregateAttendance, SUM(aggregate.income) AS aggregateIncome, SUM(aggregate.dollarIncome) AS aggregateDollarIncome
       MATCH (aggregate)
       SET aggregate.attendance = aggregateAttendance + attendance,
       aggregate.income = aggregateIncome + income,
-      aggregate.dollarIncome = aggregate.dollarIncome + dollarIncome 
+      aggregate.dollarIncome = aggregateDollarIncome + dollarIncome 
 
       WITH serviceRecord
       UNWIND $treasurers AS treasurerId WITH treasurerId, serviceRecord
