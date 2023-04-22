@@ -72,6 +72,20 @@ const GraphDropdown = ({
             Services Total
           </Dropdown.Item>
         )}
+        {['GatheringService'].includes(churchLevel) && (
+          <Dropdown.Item
+            className="py-3"
+            onClick={() => {
+              setBussing(false)
+              setSelected('Services Total (USD)')
+              setChurchData(
+                getServiceGraphData(data, 'serviceAggregateWithDollar')
+              )
+            }}
+          >
+            Services Total (USD)
+          </Dropdown.Item>
+        )}
       </Dropdown.Menu>
     </Dropdown>
   )

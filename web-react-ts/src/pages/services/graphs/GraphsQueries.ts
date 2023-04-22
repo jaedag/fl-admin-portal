@@ -225,6 +225,7 @@ export const GATHERINGSERVICE_GRAPHS = gql`
         id
         attendance
         income
+        dollarIncome
         week
       }
       aggregateBussingRecords(limit: 4) {

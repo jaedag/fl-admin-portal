@@ -53,6 +53,14 @@ export const sortingFunction = (key: string, order = 'asc') => {
   }
 }
 
+const extractServiceDataWithDollars = (arr: any[]) =>
+  arr.map(({ id, attendance, dollarIncome: income, week }) => ({
+    id,
+    attendance,
+    income,
+    week,
+  }))
+
 export const getServiceGraphData = (
   church:
     | {
@@ -68,6 +76,7 @@ export const getServiceGraphData = (
     | 'bussing'
     | 'bussingAggregate'
     | 'serviceAggregate'
+    | 'serviceAggregateWithDollar'
     | 'service'
     | 'multiplicationAggregate'
     | 'swellBussing'
@@ -108,6 +117,7 @@ export const getServiceGraphData = (
       })
     })
   }
+
   if (category === 'service') {
     pushIntoData(church.services)
   }
@@ -118,6 +128,9 @@ export const getServiceGraphData = (
 
   if (category === 'serviceAggregate') {
     pushIntoData(church.aggregateServiceRecords)
+  }
+  if (category === 'serviceAggregateWithDollar') {
+    pushIntoData(extractServiceDataWithDollars(church.aggregateServiceRecords))
   }
 
   if (category === 'bussingAggregate') {
