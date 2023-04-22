@@ -35,13 +35,17 @@ const isArrivalsToday = (bacenta: { stream: StreamWithArrivals }) => {
   if (!bacenta) return false
 
   const today = new Date().getDay()
+
   if (
     convertNeoWeekdayToJSWeekday(bacenta.stream.meetingDay.dayNumber) === today
   )
     return true
 
+  if (bacenta.stream.name === 'Anagkazo Encounter') return true
+
   return false
 }
+
 export const beforeStreamArrivalsDeadline = (stream: StreamWithArrivals) => {
   if (!stream) return false
 

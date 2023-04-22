@@ -291,6 +291,10 @@ export const BACENTA_ARRIVALS = gql`
       stream {
         id
         name
+        meetingDay {
+          day
+          dayNumber
+        }
         mobilisationStartTime
         mobilisationEndTime
         arrivalStartTime
