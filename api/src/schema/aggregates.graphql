@@ -5,6 +5,7 @@ type AggregateServiceRecord implements HadService
   year: Int!
   attendance: Int!
   income: Float!
+  dollarIncome: Float!
 }
 
 type AggregateBussingRecord @auth(rules: [{ isAuthenticated: true }]) {
