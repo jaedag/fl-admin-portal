@@ -21,21 +21,12 @@ RETURN record.income, record.transactionReference;
 
 //  
 
-MATCH (record:ServiceRecord {id: 'fae06c05-189e-4a9c-ad86-de331766e6e3'})
-MATCH (fellowship:Fellowship {id: '1b36ea27-0695-4d23-9f21-a72665cde6d4'})<-[:LEADS]-(leader:Member)
-SET record.transactionReference = 'ghbxeivbew3y8on',
+MATCH (record:ServiceRecord {id: '2c1f9e0e-9050-4a6a-a9ef-46acaeb53379'})
+MATCH (fellowship:Fellowship {id: 'a0645198-ae7e-4895-9d7e-0326e0f058fe'})<-[:LEADS]-(leader:Member)
+SET record.transactionReference = 'ety3met24ex1wv6',
     record.transactionStatus = 'success'
 
 WITH record, fellowship, leader
-MERGE (record)<-[:OFFERING_BANKED_BY]-(leader)
+MERGE (record)-[:OFFERING_BANKED_BY]->(leader)
 RETURN record.income, record.transactionReference, record.transactionStatus,fellowship.name,  leader.firstName;
-MATCH (this:Fellowship {id: '99985480-349d-41e1-857b-431d6775fa00'})-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(records:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
-      WITH DISTINCT records,date
-      RETURN date.date, records.attendance, records.income, records.noServiceReason ORDER BY date.date DESC LIMIT 12
 
-
-MATCH (oversight:Oversight)
-MATCH (leader:Member {firstName: "Joshua", lastName: "Heward-Mills"})
-// MERGE (oversight)<-[r:LEADS]-(leader)
-SET oversight.name = 'B Josh'
-RETURN oversight.name, leader.firstName, leader.lastName
