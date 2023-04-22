@@ -1,3 +1,4 @@
+import { Transaction } from 'neo4j-driver'
 import { makeServantCypher } from '../directory/utils'
 import { permitLeaderAdmin } from '../permissions'
 import { Context } from '../utils/neo4j-types'
@@ -17,6 +18,7 @@ import {
   aggregateServiceDataForStream,
   checkCurrentServiceLog,
   checkFormFilledThisWeek,
+  getCurrency,
   getServantAndChurch as getServantAndChurchCypher,
   recordCancelledService,
   recordService,
@@ -91,6 +93,7 @@ const serviceMutation = {
   ) => {
     isAuth(permitLeaderAdmin('Fellowship'), context.auth.roles)
     const session = context.executionContext.session()
+    const sessionTwo = context.executionContext.session()
 
     if (checkIfArrayHasRepeatingValues(args.treasurers)) {
       throw new Error(errorMessage.repeatingTreasurers)
@@ -100,19 +103,21 @@ const serviceMutation = {
       churchId: args.churchId,
     })
 
-    const serviceCheck = rearrangeCypherObject(
-      await session.run(checkFormFilledThisWeek, args)
-    )
+    const serviceCheckRes = await Promise.all([
+      session.executeRead((tx: Transaction) =>
+        tx.run(checkFormFilledThisWeek, args)
+      ),
+      sessionTwo.executeRead((tx: Transaction) => tx.run(getCurrency, args)),
+    ])
+
+    const serviceCheck = rearrangeCypherObject(serviceCheckRes[0])
+    const currencyCheck = rearrangeCypherObject(serviceCheckRes[1])
 
     if (
       serviceCheck.alreadyFilled &&
-      ![
-        'Council',
-        'Stream',
-        'GatheringService',
-        'Oversight',
-        'Denomination',
-      ].some((label) => serviceCheck.higherChurchLabels?.includes(label))
+      !['Council', 'Stream', 'Oversight', 'Denomination'].some((label) =>
+        serviceCheck.higherChurchLabels?.includes(label)
+      )
     ) {
       throw new Error(errorMessage.no_double_form_filling)
     }
@@ -120,7 +125,6 @@ const serviceMutation = {
       throw new Error(errorMessage.vacation_cannot_fill_service)
     }
 
-    const secondSession = context.executionContext.session()
     let aggregateCypher = ''
 
     if (serviceCheck.higherChurchLabels?.includes('Bacenta')) {
@@ -142,14 +146,18 @@ const serviceMutation = {
     const cypherResponse = await session
       .run(recordService, {
         ...args,
+        conversionRateToDollar: currencyCheck.conversionRateToDollar,
         auth: context.auth,
       })
       .catch((error: any) => throwToSentry('Error Recording Service', error))
-    secondSession
+    sessionTwo
       .run(aggregateCypher, {
         churchId: args.churchId,
       })
       .catch((error: any) => console.error('Error Aggregating Service', error))
+      .then(() => {
+        sessionTwo.close()
+      })
 
     session.close()
 

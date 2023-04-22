@@ -561,7 +561,7 @@ export const parseForeignCurrency = (string: string) => {
     return null
   }
 
-  return null
+  return string
 }
 
 export const checkIfArrayHasRepeatingValues = (array: any[]) => {

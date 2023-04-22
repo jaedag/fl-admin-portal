@@ -30,3 +30,7 @@ WITH record, fellowship, leader
 MERGE (record)-[:OFFERING_BANKED_BY]->(leader)
 RETURN record.income, record.transactionReference, record.transactionStatus,fellowship.name,  leader.firstName;
 
+
+MATCH (n {id: 'fbc33e96-0352-4c79-a9a8-fe1084ada687'})
+set n.foreignCurrency = "USD 590"
+RETURN n

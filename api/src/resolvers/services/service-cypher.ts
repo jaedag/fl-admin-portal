@@ -9,11 +9,19 @@ WHERE date(date.date).week = date().week AND date(date.date).year = date().year
 RETURN church.id AS id, church.name AS name, labels(church) AS labels, labels(higherChurch) AS higherChurchLabels, higherChurch.id AS higherChurchId, record AS alreadyFilled
 `
 
+export const getCurrency = `
+MATCH (church {id: $churchId})<-[:HAS*0..5]-(gathering:GatheringService)
+WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:GatheringService
+
+RETURN gathering.currency AS currency, gathering.conversionRateToDollar AS conversionRateToDollar
+`
+
 export const recordService = `
       CREATE (serviceRecord:ServiceRecord {id: apoc.create.uuid()})
         SET serviceRecord.createdAt = datetime(),
         serviceRecord.attendance = $attendance,
         serviceRecord.income = $income,
+        serviceRecord.dollarIncome = $income * $conversionRateToDollar,
         serviceRecord.foreignCurrency = $foreignCurrency,
         serviceRecord.numberOfTithers = $numberOfTithers,
         serviceRecord.treasurerSelfie = $treasurerSelfie,
