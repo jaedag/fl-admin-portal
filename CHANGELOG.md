@@ -1,3 +1,12 @@
+#### 6.6.5 (2023-04-22)
+
+##### Bug Fixes
+
+*  fix breaking change in vehicle change ([677478a0](https://github.com/firstlovecenter/fl-pastoral-care/commit/677478a0ecf4ca6319d0160426b078a07deafa57))
+*  implement dollar income calculation on filling service form ([fb7d5798](https://github.com/firstlovecenter/fl-pastoral-care/commit/fb7d579830fb6ff96c8e3e49a524c5f32873c90e))
+*  change static ghs value to currentUser.currency ([5e91ce9a](https://github.com/firstlovecenter/fl-pastoral-care/commit/5e91ce9ac6f96f0e41a89e9ebee78a5e5efbcdfb))
+*  update easy debugging script ([02ca122e](https://github.com/firstlovecenter/fl-pastoral-care/commit/02ca122e740828ba61d88006ca01eefa48d5ee02))
+
 #### 6.6.4 (2023-04-22)
 
 ##### Bug Fixes
