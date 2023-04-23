@@ -41,7 +41,7 @@ const CreateMember = () => {
     pictureUrl: '',
     idlLocation: '',
     howYouJoined: '',
-    fellowship: {},
+    fellowship: '' as unknown as Fellowship,
     ministry: '',
   }
 

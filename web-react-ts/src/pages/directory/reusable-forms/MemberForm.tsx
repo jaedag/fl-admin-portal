@@ -133,10 +133,12 @@ const MemberForm = ({
         `Phone Number must start with + and country code (eg. '+233')`
       )
       .required('Phone Number is required'),
-    whatsappNumber: Yup.string().matches(
-      PHONE_NUM_REGEX,
-      `Phone Number must start with + and country code (eg. '+233')`
-    ),
+    whatsappNumber: Yup.string()
+      .required('Whatsapp Number is required')
+      .matches(
+        PHONE_NUM_REGEX,
+        `Phone Number must start with + and country code (eg. '+233')`
+      ),
     idlLocation: Yup.string().required('Location is a required field'),
     howYouJoined: Yup.string().required('You must select how you joined'),
     fellowship: Yup.object().required(
@@ -169,7 +171,6 @@ const MemberForm = ({
                   Are you sure you want to delete this member? Please enter your
                   reason below
                 </p>
-
                 <Formik
                   initialValues={reasonInitialValues}
                   validationSchema={deleteValidationSchema}
@@ -332,6 +333,7 @@ const MemberForm = ({
                       label="How Did You Join First Love Church?"
                       name="howYouJoined"
                       options={HOW_YOU_JOINED_OPTIONS}
+                      defaultOption="Select How Did You Join?"
                       placeholder="Tell us how you joined"
                       aria-describedby="howYouJoined"
                     />
