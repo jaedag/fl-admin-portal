@@ -499,6 +499,7 @@ export const DISPLAY_VEHICLE_RECORDS = gql`
 
       stream {
         id
+        name
         meetingDay {
           day
           dayNumber
