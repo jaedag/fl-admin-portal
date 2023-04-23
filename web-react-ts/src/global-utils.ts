@@ -79,7 +79,7 @@ export const HOW_YOU_JOINED_OPTIONS: FormikSelectOptions = [
     value: 'Weekday Fellowship Meeting',
   },
   {
-    key: 'I Joined After Attending A Service With A Bishop',
+    key: 'I Joined After Attending A Service With A Bishop Or Pastor',
     value: 'Service With A Bishop',
   },
   {
