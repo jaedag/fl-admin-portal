@@ -1,3 +1,22 @@
+#### 7.5.10 (2023-04-23)
+
+##### Continuous Integration
+
+*  configure sentry to upload source maps with vite in react ([52b13395](https://github.com/firstlovecenter/fl-pastoral-care/commit/52b13395ac800748dd73fea1eb520a539ade4622))
+
+##### Documentation Changes
+
+*  update readme for project scripts ([af1ab5c0](https://github.com/firstlovecenter/fl-pastoral-care/commit/af1ab5c05342f7c3a382692a332205ef578bfd12))
+
+##### Bug Fixes
+
+*  return stream name for anagkazo patch ([9110b968](https://github.com/firstlovecenter/fl-pastoral-care/commit/9110b96873901148a238878858b8971c64af696c))
+*  update member howYouJoined options ([12322528](https://github.com/firstlovecenter/fl-pastoral-care/commit/123225285e3089928756f52e799def48a2863df4))
+*  prevent aggregateServiceWithDollar graph bars from being clicked ([aeea9848](https://github.com/firstlovecenter/fl-pastoral-care/commit/aeea9848e343fc3aabee66ab0080d9976f3f7edf))
+*  fix error writing dollar income ([a8427866](https://github.com/firstlovecenter/fl-pastoral-care/commit/a8427866c9c8dfe86c07ec67a3bb1ceaac8d2fa9))
+*  implement graph on gathering service level to show dollars ([f0ed20a9](https://github.com/firstlovecenter/fl-pastoral-care/commit/f0ed20a910a98feacf55cc1f2329941f1f08d0b0))
+*  aggregate dollar income on all church levels ([71c611ea](https://github.com/firstlovecenter/fl-pastoral-care/commit/71c611ea7f411037cee0dfaf257c14683e57aeb3))
+
 #### 7.5.9 (2023-04-22)
 
 ##### Bug Fixes
