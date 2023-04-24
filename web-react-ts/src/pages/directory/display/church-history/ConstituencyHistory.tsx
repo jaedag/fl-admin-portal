@@ -4,9 +4,9 @@ import HeadingSecondary from 'components/HeadingSecondary'
 import Timeline from 'components/Timeline/Timeline'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { ChurchContext } from 'contexts/ChurchContext'
-import { CONSTITUENCY_HISTORY } from 'pages/directory/display/ReadQueries'
 import React, { useContext } from 'react'
 import { Container } from 'react-bootstrap'
+import { CONSTITUENCY_HISTORY } from './HistoryQueries'
 
 function ConstituencyHistory() {
   const { constituencyId } = useContext(ChurchContext)

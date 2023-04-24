@@ -3,10 +3,10 @@ import HeadingSecondary from 'components/HeadingSecondary'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import React, { useContext } from 'react'
 import { Container } from 'react-bootstrap'
-import { GATHERING_SERVICE_HISTORY } from '../ReadQueries'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { useQuery } from '@apollo/client'
 import Timeline from 'components/Timeline/Timeline'
+import { GATHERING_SERVICE_HISTORY } from './HistoryQueries'
 
 function GatheringServiceHistory() {
   const { gatheringServiceId } = useContext(ChurchContext)
