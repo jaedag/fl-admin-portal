@@ -6,7 +6,7 @@ export const MEMBER_HISTORY = gql`
       id
       firstName
       lastName
-      history {
+      history(limit: 10) {
         id
         timeStamp
         createdAt {
@@ -28,7 +28,7 @@ export const STREAM_HISTORY = gql`
     streams(where: { id: $id }) {
       id
       name
-      history {
+      history(limit: 10) {
         id
         timeStamp
         createdAt {
@@ -50,7 +50,7 @@ export const COUNCIL_HISTORY = gql`
     councils(where: { id: $id }) {
       id
       name
-      history {
+      history(limit: 10) {
         id
         timeStamp
         createdAt {
@@ -72,7 +72,7 @@ export const CONSTITUENCY_HISTORY = gql`
     constituencies(where: { id: $id }) {
       id
       name
-      history {
+      history(limit: 10) {
         id
         timeStamp
         createdAt {
@@ -95,7 +95,7 @@ export const BACENTA_HISTORY = gql`
     bacentas(where: { id: $id }) {
       id
       name
-      history {
+      history(limit: 10) {
         id
         timeStamp
         createdAt {
@@ -117,7 +117,7 @@ export const FELLOWSHIP_HISTORY = gql`
     fellowships(where: { id: $id }) {
       id
       name
-      history {
+      history(limit: 10) {
         id
         timeStamp
         createdAt {
@@ -139,7 +139,7 @@ export const GATHERING_SERVICE_HISTORY = gql`
     gatheringServices(where: { id: $id }) {
       id
       name
-      history {
+      history(limit: 10) {
         id
         timeStamp
         createdAt {
