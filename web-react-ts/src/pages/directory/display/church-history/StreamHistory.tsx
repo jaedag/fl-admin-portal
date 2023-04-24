@@ -4,7 +4,7 @@ import HeadingSecondary from 'components/HeadingSecondary'
 import Timeline from 'components/Timeline/Timeline'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { ChurchContext } from 'contexts/ChurchContext'
-import { STREAM_HISTORY } from 'pages/directory/display/ReadQueries'
+import { STREAM_HISTORY } from './HistoryQueries'
 import React, { useContext } from 'react'
 import { Container } from 'react-bootstrap'
 

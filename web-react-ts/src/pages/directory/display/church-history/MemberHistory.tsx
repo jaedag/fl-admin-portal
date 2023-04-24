@@ -2,11 +2,11 @@ import React, { useContext } from 'react'
 import { Container } from 'react-bootstrap'
 
 import { useQuery } from '@apollo/client'
-import { MEMBER_HISTORY } from 'pages/directory/display/ReadQueries'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { MemberContext } from 'contexts/MemberContext'
 import Timeline from 'components/Timeline/Timeline'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
+import { MEMBER_HISTORY } from './HistoryQueries'
 import HeadingSecondary from 'components/HeadingSecondary'
 
 function MemberHistory() {

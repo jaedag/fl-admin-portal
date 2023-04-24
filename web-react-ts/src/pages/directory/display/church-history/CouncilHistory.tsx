@@ -4,9 +4,9 @@ import HeadingSecondary from 'components/HeadingSecondary'
 import Timeline from 'components/Timeline/Timeline'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { ChurchContext } from 'contexts/ChurchContext'
-import { COUNCIL_HISTORY } from 'pages/directory/display/ReadQueries'
 import React, { useContext } from 'react'
 import { Container } from 'react-bootstrap'
+import { COUNCIL_HISTORY } from './HistoryQueries'
 
 function CouncilHistory() {
   const { councilId } = useContext(ChurchContext)
