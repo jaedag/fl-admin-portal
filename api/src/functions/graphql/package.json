@@ -8,8 +8,8 @@
   },
   "dependencies": {
     "@apollo/server": "^4.7.0",
-    "@neo4j/graphql": "^3.6.0",
-    "@neo4j/graphql-plugin-auth": "^1.0.0",
+    "@neo4j/graphql": "^3.18.2",
+    "@neo4j/graphql-plugin-auth": "^2.2.0",
     "@sentry/node": "^7.13.0",
     "@sentry/tracing": "^7.13.0",
     "body-parser": "^1.20.2",
