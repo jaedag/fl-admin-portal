@@ -574,6 +574,9 @@ export const DISPLAY_OVERSIGHT = gql`
       gatheringServices {
         id
         name
+        noIncomeTracking
+        currency
+        conversionRateToDollar
       }
       admin {
         id

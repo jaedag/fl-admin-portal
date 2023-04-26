@@ -8,6 +8,9 @@ export const OVERSIGHT_SEARCH = gql`
     ) {
       id
       name
+      noIncomeTracking
+      currency
+      conversionRateToDollar
       leader {
         id
         firstName

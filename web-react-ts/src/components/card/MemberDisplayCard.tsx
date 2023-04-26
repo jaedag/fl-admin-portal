@@ -15,6 +15,7 @@ import { TelephoneFill, Whatsapp } from 'react-bootstrap-icons'
 import CloudinaryImage from 'components/CloudinaryImage'
 import { USER_PLACEHOLDER } from 'global-utils'
 import { ChurchLevel } from 'global-types'
+import useSetUserChurch from 'hooks/useSetUserChurch'
 
 type MemberDisplayCardProps = {
   member: {
@@ -68,6 +69,7 @@ const MemberDisplayCard = (props: MemberDisplayCardProps) => {
   const { member, leader, children, ...rest } = props
   const { clickCard } = useContext(ChurchContext)
   const { theme } = useContext(MemberContext)
+  const { setUserFinancials } = useSetUserChurch()
   const navigate = useNavigate()
   let icon: string = ''
   let name: string | undefined
@@ -126,6 +128,9 @@ const MemberDisplayCard = (props: MemberDisplayCardProps) => {
 
   const clickFunction = () => {
     clickCard(member)
+    if (member.__typename === 'GatheringService') {
+      setUserFinancials(member)
+    }
     navigate(`/${member.__typename.toLowerCase()}/displaydetails`)
   }
 

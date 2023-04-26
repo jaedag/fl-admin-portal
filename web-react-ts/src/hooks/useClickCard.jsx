@@ -460,8 +460,7 @@ const useClickCard = () => {
     setSontaId,
     setHubId,
     setMinistryId,
-    setFederalMinistryId
-
+    setFederalMinistryId,
   }
 }
 

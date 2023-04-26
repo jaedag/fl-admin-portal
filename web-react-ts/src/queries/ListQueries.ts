@@ -162,6 +162,9 @@ export const GET_GATHERING_SERVICE_CONSTITUENCIES = gql`
     gatheringServices(where: { id: $id }) {
       id
       name
+      noIncomeTracking
+      currency
+      conversionRateToDollar
       leader {
         id
         firstName
@@ -252,6 +255,9 @@ export const GET_GATHERINGSERVICE_STREAMS = gql`
     gatheringServices(where: { id: $id }) {
       id
       name
+      noIncomeTracking
+      currency
+      conversionRateToDollar
 
       leader {
         id
@@ -314,6 +320,9 @@ export const GET_OVERSIGHT_GATHERINGSERVICES = gql`
       gatheringServices {
         name
         id
+        currency
+        conversionRateToDollar
+        noIncomeTracking
         memberCount
         councilCount
         target
@@ -749,7 +758,9 @@ export const GET_GATHERINGSERVICE_FEDERALMINISTRIES = gql`
     gatheringServices(where: { id: $id }) {
       id
       name
-
+      noIncomeTracking
+      currency
+      conversionRateToDollar
       leader {
         id
         firstName
