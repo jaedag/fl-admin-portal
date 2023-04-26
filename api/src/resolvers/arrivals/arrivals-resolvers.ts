@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { Transaction } from 'neo4j-driver'
+import { getHumanReadableDate } from 'jd-date-utils'
 import { getStreamFinancials } from '../utils/financial-utils'
 import { Context } from '../utils/neo4j-types'
 import {
@@ -537,8 +538,8 @@ export const arrivalsMutation = {
       vehicleCost: number
       outbound: boolean
       personalContribution: number
-      bacentaSprinterTopUp: number
-      bacentaUrvanTopUp: number
+      bacentaSprinterTopUp: neonumber
+      bacentaUrvanTopUp: neonumber
       arrivalTime: string
       leaderPhoneNumber: string
       leaderFirstName: string
@@ -553,13 +554,14 @@ export const arrivalsMutation = {
 
     const calculateVehicleTopUp = (data: responseType) => {
       const outbound = response.outbound ? 2 : 1
-      const sprinterTopUp = data.bacentaSprinterTopUp * outbound
-      const urvanTopUp = data.bacentaUrvanTopUp * outbound
+      const sprinterTopUp = data.bacentaSprinterTopUp.low * outbound
+      const urvanTopUp = data.bacentaUrvanTopUp.low * outbound
 
       const amountToPay = data.vehicleCost - data.personalContribution
 
       if (data.vehicle === 'Sprinter') {
         if (sprinterTopUp === 0) return 0
+
         if (data.vehicleCost < sprinterTopUp || amountToPay < sprinterTopUp) {
           return amountToPay
         }
@@ -667,7 +669,7 @@ export const arrivalsMutation = {
 
     const { auth } = getStreamFinancials(args.stream_name)
     const recordResponse = rearrangeCypherObject(
-      await session.executeWrite((tx: Transaction) =>
+      await session.executeRead((tx: Transaction) =>
         tx.run(checkTransactionReference, args)
       )
     )
@@ -700,7 +702,7 @@ export const arrivalsMutation = {
         },
         data: {
           type: 'mobile_money',
-          name: `${leader.firstName}${leader.lastName}`,
+          name: `${leader.firstName} ${leader.lastName}`,
           email: leader.email,
           account_number: vehicleRecord.momoNumber,
           bank_code: vehicleRecord.mobileNetwork,
@@ -732,6 +734,7 @@ export const arrivalsMutation = {
       await session.executeWrite((tx: Transaction) =>
         tx.run(setBacentaRecipientCode, {
           bacentaId: bacenta.id,
+          vehicleRecordId: vehicleRecord.id,
           recipientCode: recipientResponse.data.data.recipient_code,
         })
       )
@@ -752,7 +755,9 @@ export const arrivalsMutation = {
       },
       data: {
         source: 'balance',
-        reason: `${bacenta.name} Bacenta bussed ${vehicleRecord.attendance}`,
+        reason: `${bacenta.name} Bacenta bussed ${
+          vehicleRecord.attendance
+        } on ${getHumanReadableDate(new Date().toISOString())}`,
         amount: vehicleRecord.vehicleTopUp * 100,
         currency: 'GHS',
         recipient: recipient.recipientCode,
@@ -768,7 +773,6 @@ export const arrivalsMutation = {
         .executeWrite((tx: Transaction) =>
           tx.run(setVehicleRecordTransactionSuccessful, {
             ...args,
-            recipientCode: recipient.recipientCode,
             transactionReference: responseData.reference,
             transferCode: responseData.transfer_code,
             responseStatus: responseData.status,

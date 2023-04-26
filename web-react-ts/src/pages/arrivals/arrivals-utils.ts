@@ -36,6 +36,8 @@ const isArrivalsToday = (bacenta: { stream: StreamWithArrivals }) => {
 
   const today = new Date().getDay()
 
+  return true
+
   if (
     convertNeoWeekdayToJSWeekday(bacenta.stream.meetingDay.dayNumber) === today
   )
@@ -61,6 +63,7 @@ export const beforeStreamArrivalsDeadline = (stream: StreamWithArrivals) => {
     today < new Date(getTodayTime(stream.arrivalEndTime))
   )
 }
+
 export const beforeCountingDeadline = (
   bussing: VehicleRecord,
   church: BacentaWithArrivals
