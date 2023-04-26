@@ -1,3 +1,10 @@
+#### 7.5.12 (2023-04-26)
+
+##### Bug Fixes
+
+*  update packages ([8bc9e371](https://github.com/firstlovecenter/fl-pastoral-care/commit/8bc9e371f00a4c108e4f438ebc8ac0935a5db94b))
+*  update packages ([513d3458](https://github.com/firstlovecenter/fl-pastoral-care/commit/513d3458c8f867d15f5b4726a1e5db047e2d690f))
+
 #### 7.5.11 (2023-04-26)
 
 ##### New Features
