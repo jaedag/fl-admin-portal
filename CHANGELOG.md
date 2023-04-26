@@ -1,3 +1,18 @@
+#### 7.5.11 (2023-04-26)
+
+##### New Features
+
+*  implement currency switching on clicking gathering service card ([35a3419f](https://github.com/firstlovecenter/fl-pastoral-care/commit/35a3419f8564ef25ab52ed86d6443349e83eff92))
+*  update history limit property ([7cb49931](https://github.com/firstlovecenter/fl-pastoral-care/commit/7cb49931498b9452129268e10c1003da89d4d1d6))
+*  admin-561 create separate history page ([33974fc7](https://github.com/firstlovecenter/fl-pastoral-care/commit/33974fc78ec25de057af7e408e3f8d42def7e4da))
+*  admin-561 create separate history page ([fe888719](https://github.com/firstlovecenter/fl-pastoral-care/commit/fe8887195c4ec87704c62078a37eaa2ee6a642a6))
+*  admin-561 create history pages for various church levels ([01983906](https://github.com/firstlovecenter/fl-pastoral-care/commit/019839062e0b0a5ed1547719b1db26f2e7d5f261))
+
+##### Bug Fixes
+
+*  fix stray bugs in arrivals payments flow ([da591bf6](https://github.com/firstlovecenter/fl-pastoral-care/commit/da591bf6e2940a196067d7fa3da809d20d4e2c79))
+*  without choosing a fellowship from the dropdown, you cannot create a member ([bb650b2e](https://github.com/firstlovecenter/fl-pastoral-care/commit/bb650b2ed410595811e32fceab3816b0fb85a5cd))
+
 #### 7.5.10 (2023-04-23)
 
 ##### Continuous Integration
