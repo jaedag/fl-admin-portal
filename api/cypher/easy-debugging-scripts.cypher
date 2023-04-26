@@ -21,9 +21,9 @@ RETURN record.income, record.transactionReference;
 
 //  
 
-MATCH (record:ServiceRecord {id: '2c1f9e0e-9050-4a6a-a9ef-46acaeb53379'})
-MATCH (fellowship:Fellowship {id: 'a0645198-ae7e-4895-9d7e-0326e0f058fe'})<-[:LEADS]-(leader:Member)
-SET record.transactionReference = 'ety3met24ex1wv6',
+MATCH (record:ServiceRecord {id: 'b92910f1-0190-4cf8-b211-9e751af54d63'})
+MATCH (fellowship:Fellowship {id: '9107bffb-22b5-4eb2-bed0-d9dd3d4d1ccc'})<-[:LEADS]-(leader:Member)
+SET record.transactionReference = '0db3wi30bwia91r',
     record.transactionStatus = 'success'
 
 WITH record, fellowship, leader
@@ -31,6 +31,13 @@ MERGE (record)-[:OFFERING_BANKED_BY]->(leader)
 RETURN record.income, record.transactionReference, record.transactionStatus,fellowship.name,  leader.firstName;
 
 
-MATCH (n {id: 'fbc33e96-0352-4c79-a9a8-fe1084ada687'})
-set n.foreignCurrency = "USD 590"
-RETURN n
+MATCH (member:Member {email: "jaedagy@gmail.com"})
+MATCH (bacenta:Bacenta {name: "SOZO "})
+MERGE (member)-[:LEADS]->(bacenta)
+RETURN member.firstName, bacenta.name;
+
+MATCH (record:VehicleRecord {id:  "4e5dda20-4fd7-40f5-a895-2041ca84a514"})
+RETURN record.recipientCode
+
+MATCH(b:Bacenta {name: "Ashaiman Lebanon"})
+REMOVE b.recipientCode
