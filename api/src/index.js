@@ -1,4 +1,4 @@
-import { ApolloServer } from 'apollo-server'
+import { ApolloServer } from '@apollo/server'
 import { expressMiddleware } from '@apollo/server/express4'
 import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer'
 import express from 'express'
@@ -79,10 +79,7 @@ const startServer = async () => {
     plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
   })
 
-  await server.listen({ host, port, path }, () => {
-    // eslint-disable-next-line
-    console.log(`🚀  GraphQL Server ready at http://${host}:${port}/${path}`)
-  })
+  await server.start()
 
   app.use(
     path,
@@ -94,6 +91,11 @@ const startServer = async () => {
       }),
     })
   )
+
+  // eslint-disable-next-line no-promise-executor-return
+  await new Promise((resolve) => httpServer.listen({ port }, resolve))
+  // eslint-disable-next-line
+  console.log(`🚀  GraphQL Server ready at http://${host}:${port}${path}`)
 }
 
 startServer()
