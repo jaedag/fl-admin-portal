@@ -1,3 +1,26 @@
+#### 7.5.13 (2023-04-27)
+
+##### Documentation Changes
+
+*  update CHANGELOG.md ([a17b8998](https://github.com/firstlovecenter/fl-pastoral-care/commit/a17b89987a40b43e8e0905818033b978b7bc5f69))
+*  update CHANGELOG.md ([a32de772](https://github.com/firstlovecenter/fl-pastoral-care/commit/a32de7721e032f0b0a5b72556a16864ba04555e5))
+
+##### New Features
+
+*  implement currency switching on clicking gathering service card ([721546b1](https://github.com/firstlovecenter/fl-pastoral-care/commit/721546b1225162ebca873b28e5c512fe29deda96))
+*  update history limit property ([7cb49931](https://github.com/firstlovecenter/fl-pastoral-care/commit/7cb49931498b9452129268e10c1003da89d4d1d6))
+*  admin-561 create separate history page ([33974fc7](https://github.com/firstlovecenter/fl-pastoral-care/commit/33974fc78ec25de057af7e408e3f8d42def7e4da))
+*  admin-561 create separate history page ([fe888719](https://github.com/firstlovecenter/fl-pastoral-care/commit/fe8887195c4ec87704c62078a37eaa2ee6a642a6))
+*  admin-561 create history pages for various church levels ([01983906](https://github.com/firstlovecenter/fl-pastoral-care/commit/019839062e0b0a5ed1547719b1db26f2e7d5f261))
+
+##### Bug Fixes
+
+*  update packages ([24c231cd](https://github.com/firstlovecenter/fl-pastoral-care/commit/24c231cda61cc63483c7cd0efcb48dadc6e75554))
+*  update packages ([f227be13](https://github.com/firstlovecenter/fl-pastoral-care/commit/f227be13ac4bb102f9fbe46491f33221934d8b19))
+*  fix stray bugs in arrivals payments flow ([fe98279c](https://github.com/firstlovecenter/fl-pastoral-care/commit/fe98279c9c54a6a3d628fe71e58b0a84d2b7cfd4))
+*  update package.json with latest workinng settings ([af24bf76](https://github.com/firstlovecenter/fl-pastoral-care/commit/af24bf76d7b1010a14ff00bb6102755daeaff411))
+*  without choosing a fellowship from the dropdown, you cannot create a member ([bb650b2e](https://github.com/firstlovecenter/fl-pastoral-care/commit/bb650b2ed410595811e32fceab3816b0fb85a5cd))
+
 #### 7.5.12 (2023-04-26)
 
 ##### Bug Fixes
