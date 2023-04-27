@@ -230,6 +230,7 @@ const CouncilDashboard = () => {
                         iconBg
                         noCaption
                       />
+
                       <MenuButton
                         title="Vehicles To Be Paid"
                         onClick={() =>
@@ -251,7 +252,8 @@ const CouncilDashboard = () => {
                         title="Amount That Has Been Paid"
                         onClick={() => navigate('#')}
                         number={council?.vehicleAmountHasBeenPaid.toString()}
-                        color="yellow"
+                        color="green"
+                        iconBg
                         noCaption
                       />
                       <MenuButton
@@ -259,6 +261,7 @@ const CouncilDashboard = () => {
                         onClick={() => navigate('#')}
                         number={council?.vehicleAmountToBePaid.toString()}
                         color="yellow"
+                        iconBg
                         noCaption
                       />
                     </div>

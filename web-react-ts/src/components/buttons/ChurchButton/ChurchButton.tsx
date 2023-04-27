@@ -3,6 +3,7 @@ import { ChurchContext } from 'contexts/ChurchContext'
 import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
 import './ChurchButton.css'
+import useSetUserChurch from 'hooks/useSetUserChurch'
 
 type ChurchButtonProps = {
   church: {
@@ -15,6 +16,7 @@ type ChurchButtonProps = {
 const ChurchButton = (props: ChurchButtonProps) => {
   const { church } = props
   const { clickCard } = useContext(ChurchContext)
+  const { setUserFinancials } = useSetUserChurch()
 
   return (
     <PlaceholderCustom
@@ -26,6 +28,9 @@ const ChurchButton = (props: ChurchButtonProps) => {
           className="card-buttons py-2 px-3 text-center text-nowrap text-white"
           onClick={() => {
             clickCard(church)
+            if (church.__typename === 'GatheringService') {
+              setUserFinancials(church)
+            }
           }}
         >
           {church.name}

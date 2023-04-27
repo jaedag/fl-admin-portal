@@ -61,6 +61,7 @@ export const beforeStreamArrivalsDeadline = (stream: StreamWithArrivals) => {
     today < new Date(getTodayTime(stream.arrivalEndTime))
   )
 }
+
 export const beforeCountingDeadline = (
   bussing: VehicleRecord,
   church: BacentaWithArrivals

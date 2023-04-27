@@ -1,7 +1,6 @@
 export const setVehicleRecordTransactionSuccessful = `
 MATCH (record:VehicleRecord {id: $vehicleRecordId})<-[:INCLUDES_RECORD]-(bussing:BussingRecord)<-[:HAS_BUSSING]-(:ServiceLog)<-[:HAS_HISTORY]-(bacenta:Bacenta)
 SET record.transactionStatus = $responseStatus,
-bacenta.recipientCode = $recipientCode,
 record.transactionReference = $transactionReference,
 record.paystackTransferCode = $transferCode
 
@@ -10,7 +9,9 @@ RETURN record
 
 export const setBacentaRecipientCode = `
 MATCH (bacenta:Bacenta {id: $bacentaId})
-    SET bacenta.recipientCode = $recipientCode
+MATCH (record:VehicleRecord {id: $vehicleRecordId})
+    SET bacenta.recipientCode = $recipientCode,
+    record.recipientCode = $recipientCode
 RETURN bacenta
 `
 
@@ -29,7 +30,8 @@ SET record.target = bacenta.target,
 record.momoNumber = bacenta.momoNumber, 
 record.mobileNetwork = bacenta.mobileNetwork,
 record.momoName = bacenta.momoName,
-record.outbound = bacenta.outbound
+record.outbound = bacenta.outbound,
+record.recipientCode = bacenta.recipientCode
 
 RETURN record.id AS vehicleRecordId,
 record.target AS target,
@@ -54,12 +56,6 @@ MATCH (bacenta)<-[:HAS]-(:Constituency)<-[:HAS]-(:Council)<-[:HAS]-(stream:Strea
 MATCH (bacenta)<-[:LEADS]-(leader:Active:Member)
 WITH record, bacenta, leader, stream
 
-SET record.vehicleTopUp = $vehicleTopUp,
-record.momoNumber = $momoNumber,
-record.momoName = $momoName,
-record.outbound = $outbound
-
-WITH record, bacenta, leader, stream
 
 RETURN record, stream, bacenta, leader
 `
