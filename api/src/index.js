@@ -86,16 +86,14 @@ const startServer = async () => {
     cors(),
     json(),
     expressMiddleware(server, {
-      context: async ({ req }) => ({
-        token: req.headers.authorization,
-      }),
+      context: async ({ req }) => ({ token: req.headers.authorization }),
     })
   )
 
   // eslint-disable-next-line no-promise-executor-return
   await new Promise((resolve) => httpServer.listen({ port }, resolve))
   // eslint-disable-next-line
-  console.log(`🚀  GraphQL Server ready at http://${host}:${port}${path}`)
+  console.log(`🚀 GraphQL Server ready at http://${host}:${port}${path}`)
 }
 
 startServer()
