@@ -1,12 +1,7 @@
 // This module can be used to serve the GraphQL endpoint
 // as a lambda function
 
-const { ApolloServer } = require('@apollo/server')
-const {
-  startServerAndCreateLambdaHandler,
-  handlers,
-} = require('@as-integrations/aws-lambda')
-
+const { ApolloServer } = require('apollo-server-lambda')
 const { Neo4jGraphQL } = require('@neo4j/graphql')
 const { Neo4jGraphQLAuthJWTPlugin } = require('@neo4j/graphql-plugin-auth')
 const neo4j = require('neo4j-driver')
@@ -46,18 +41,25 @@ const neoSchema = new Neo4jGraphQL({
   },
 })
 
-const schema = await neoSchema.getSchema()
+// eslint-disable-next-line import/prefer-default-export
+export const handler = async (event, context, ...args) => {
+  const schema = await neoSchema.getSchema()
 
-const server = new ApolloServer({
-  // eslint-disable-next-line no-shadow
-  context: ({ event }) => ({ req: event, executionContext: driver }),
-  introspection: true,
-  schema,
-})
+  const server = new ApolloServer({
+    // eslint-disable-next-line no-shadow
+    context: ({ event }) => ({ req: event }),
+    introspection: true,
+    schema,
+  })
 
-export const graphqlHandler = startServerAndCreateLambdaHandler(
-  server,
-  handlers.createAPIGatewayProxyEventV2RequestHandler()
-)
+  const apolloHandler = server.createHandler()
 
-export default graphqlHandler
+  return apolloHandler(
+    {
+      ...event,
+      requestContext: context,
+    },
+    context,
+    ...args
+  )
+}
