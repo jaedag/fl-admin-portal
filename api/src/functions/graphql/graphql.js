@@ -51,10 +51,7 @@ const initializeApolloServer = async () => {
 
   const server = new ApolloServer({
     // eslint-disable-next-line no-shadow
-    context: ({ event }) => {
-      console.log('event', event)
-      return { req: event, executionContext: driver }
-    },
+    context: ({ event }) => ({ req: event, executionContext: driver }),
     introspection: true,
     schema,
   })
@@ -64,14 +61,12 @@ const initializeApolloServer = async () => {
 
 const graphqlHandler = async () => {
   const server = await initializeApolloServer()
+
   return startServerAndCreateLambdaHandler(
     server,
     handlers.createAPIGatewayProxyEventV2RequestHandler(),
     {
-      context: ({ event }) => {
-        console.log('event', event)
-        return { req: event, executionContext: driver }
-      },
+      context: ({ event }) => ({ req: event, executionContext: driver }),
     }
   )
 }
