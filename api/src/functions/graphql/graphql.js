@@ -34,31 +34,46 @@ const driver = neo4j.driver(
   )
 )
 
-const neoSchema = new Neo4jGraphQL({
-  typeDefs,
-  resolvers,
-  driver,
-  plugins: {
-    auth: new Neo4jGraphQLAuthJWTPlugin({
-      secret: process.env.JWT_SECRET.replace(/\\n/gm, '\n'),
-      rolesPath: 'https://flcadmin\\.netlify\\.app/roles',
-    }),
-  },
-})
+const initializeApolloServer = async () => {
+  const neoSchema = new Neo4jGraphQL({
+    typeDefs,
+    resolvers,
+    driver,
+    plugins: {
+      auth: new Neo4jGraphQLAuthJWTPlugin({
+        secret: process.env.JWT_SECRET.replace(/\\n/gm, '\n'),
+        rolesPath: 'https://flcadmin\\.netlify\\.app/roles',
+      }),
+    },
+  })
 
-const schema = await neoSchema.getSchema()
+  const schema = await neoSchema.getSchema()
 
-const server = new ApolloServer({
-  // eslint-disable-next-line no-shadow
-  context: ({ event }) => ({ req: event, executionContext: driver }),
-  introspection: true,
-  schema,
-})
+  const server = new ApolloServer({
+    // eslint-disable-next-line no-shadow
+    context: ({ event }) => {
+      console.log('event', event)
+      return { req: event, executionContext: driver }
+    },
+    introspection: true,
+    schema,
+  })
 
-export const graphqlHandler = startServerAndCreateLambdaHandler(
-  server,
-  handlers.createAPIGatewayProxyEventV2RequestHandler(),
-  { context: ({ event }) => ({ req: event, executionContext: driver }) }
-)
+  return server
+}
+
+const graphqlHandler = async () => {
+  const server = await initializeApolloServer()
+  return startServerAndCreateLambdaHandler(
+    server,
+    handlers.createAPIGatewayProxyEventV2RequestHandler(),
+    {
+      context: ({ event }) => {
+        console.log('event', event)
+        return { req: event, executionContext: driver }
+      },
+    }
+  )
+}
 
 export default graphqlHandler
