@@ -8,14 +8,12 @@
   },
   "dependencies": {
     "@apollo/server": "^4.7.0",
+    "@as-integrations/aws-lambda": "^2.0.1",
     "@neo4j/graphql": "^3.18.2",
     "@neo4j/graphql-plugin-auth": "^2.2.0",
     "@sentry/node": "^7.13.0",
     "@sentry/tracing": "^7.13.0",
-    "body-parser": "^1.20.2",
-    "cors": "^2.8.5",
     "form-data": "^4.0.0",
-    "graphql": "^16.3.0",
     "mailgun.js": "^7.0.0",
     "neo4j-driver": "^4.3.1"
   }

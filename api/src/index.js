@@ -86,7 +86,11 @@ const startServer = async () => {
     cors(),
     json(),
     expressMiddleware(server, {
-      context: async ({ req }) => ({ token: req.headers.authorization }),
+      context: async ({ req }) => ({
+        req,
+        executionContext: driver,
+        token: req.headers.authorization,
+      }),
     })
   )
 
