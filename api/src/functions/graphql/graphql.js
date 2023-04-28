@@ -59,18 +59,3 @@ export default startServerAndCreateLambdaHandler(
   server,
   handlers.createAPIGatewayProxyEventV2RequestHandler()
 )
-// eslint-disable-next-line import/prefer-default-export
-// export const handler = async () => {
-//   return startServerAndCreateLambdaHandler(
-//     server,
-//     handlers.createAPIGatewayProxyEventV2RequestHandler()
-//   )
-//   // apolloHandler(
-//   //   {
-//   //     ...event,
-//   //     requestContext: context,
-//   //   },
-//   //   context,
-//   //   ...args
-//   // )
-// }
