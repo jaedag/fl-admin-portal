@@ -100,6 +100,10 @@ export const HOW_YOU_JOINED_OPTIONS: FormikSelectOptions = [
     key: 'I Was Born Into The Church',
     value: 'Born Into The Church',
   },
+  {
+    key: 'I Saw A Flyer And Came To A Service',
+    value: 'Social Media',
+  },
 ]
 
 export const BUSSING_STATUS_OPTIONS: FormikSelectOptions = [
