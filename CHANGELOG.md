@@ -1,3 +1,39 @@
+### 7.6.0 (2023-04-28)
+
+##### Chores
+
+*  delete comments in graphql.js ([5f6aa3fe](https://github.com/firstlovecenter/fl-pastoral-care/commit/5f6aa3fede8fe192da5f955ee0c111d38194d50c))
+*  retrieve accidentally deleted multiplication folder ([3db5cec8](https://github.com/firstlovecenter/fl-pastoral-care/commit/3db5cec8cae0d0bd0191f84cfc37aa880b7e7b69))
+*  update graphql config ([979fe8b2](https://github.com/firstlovecenter/fl-pastoral-care/commit/979fe8b2f61bdcd9a3c5774460a6fd1d48f28dcf))
+*  update graphql config ([ef77a56a](https://github.com/firstlovecenter/fl-pastoral-care/commit/ef77a56abd0fea1b3716d18903f948c258280c64))
+*  fix merge conflicts ([f561dc1b](https://github.com/firstlovecenter/fl-pastoral-care/commit/f561dc1b5b0e1208dd087e6eedddd28133b65b04))
+*  edit index.js ([5e598208](https://github.com/firstlovecenter/fl-pastoral-care/commit/5e598208f03d93b5ef586b380f3185c31b6fcfc2))
+*  update neo4j/graph auth plugin ([e2b21895](https://github.com/firstlovecenter/fl-pastoral-care/commit/e2b2189566fc6ca9ddb313359d5290c9a003d6d2))
+*  update apollo server to v4 ([ee4a786f](https://github.com/firstlovecenter/fl-pastoral-care/commit/ee4a786f6dfbcc8990e0dfe28e4279456b8b4a18))
+*  update packages in graphql function ([eb2ec9eb](https://github.com/firstlovecenter/fl-pastoral-care/commit/eb2ec9ebae4eadc6b832ddf20f13814768f1214b))
+
+##### Documentation Changes
+
+*  update CHANGELOG.md ([4c8595e3](https://github.com/firstlovecenter/fl-pastoral-care/commit/4c8595e30f1574ae491bc9207cbb928bc1d9de4e))
+*  update CHANGELOG.md ([bdf0f26a](https://github.com/firstlovecenter/fl-pastoral-care/commit/bdf0f26a05ef1615a90517d13962a8894b8692ef))
+
+##### New Features
+
+*  implement currency switching on clicking gathering service card ([35a3419f](https://github.com/firstlovecenter/fl-pastoral-care/commit/35a3419f8564ef25ab52ed86d6443349e83eff92))
+
+##### Bug Fixes
+
+*  install dep aws-integration in root folder ([ee0f91c2](https://github.com/firstlovecenter/fl-pastoral-care/commit/ee0f91c243599016d33adb29649903c0cbecd17c))
+*  update packages intending to clear cache and deploy ([33bf9e6b](https://github.com/firstlovecenter/fl-pastoral-care/commit/33bf9e6bcb66ea763cf2edaf24f6e9ffdd65e1f3))
+*  revert to apollo-server-lambda ([0cb09690](https://github.com/firstlovecenter/fl-pastoral-care/commit/0cb0969017f33d5e121dc28ce393f00ff9c445d2))
+*  update neo4j-driver ([fae37fc3](https://github.com/firstlovecenter/fl-pastoral-care/commit/fae37fc3700c5052bf97f0aa356e672e803c1cca))
+*  install graphql package ([101c267e](https://github.com/firstlovecenter/fl-pastoral-care/commit/101c267ef6945f0d6c72db5ca3303dc8ac2d5f7a))
+*  reinstall npm packages in graphql function ([a3e67208](https://github.com/firstlovecenter/fl-pastoral-care/commit/a3e6720874c50b487e3a58124e3770172260b05d))
+*  update packages ([df669b0d](https://github.com/firstlovecenter/fl-pastoral-care/commit/df669b0d7a990ee532fb6d037456275391990cd9))
+*  update packages ([8bc9e371](https://github.com/firstlovecenter/fl-pastoral-care/commit/8bc9e371f00a4c108e4f438ebc8ac0935a5db94b))
+*  update packages ([513d3458](https://github.com/firstlovecenter/fl-pastoral-care/commit/513d3458c8f867d15f5b4726a1e5db047e2d690f))
+*  fix stray bugs in arrivals payments flow ([da591bf6](https://github.com/firstlovecenter/fl-pastoral-care/commit/da591bf6e2940a196067d7fa3da809d20d4e2c79))
+
 #### 7.5.14 (2023-04-27)
 
 #### 7.5.13 (2023-04-27)
