@@ -71,4 +71,8 @@ const graphqlHandler = async () => {
   )
 }
 
-export default graphqlHandler
+const graphqlHandlerObj = {
+  graphqlHandler,
+}
+
+export default graphqlHandlerObj
