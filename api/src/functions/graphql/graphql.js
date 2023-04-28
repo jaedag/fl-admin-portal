@@ -1,12 +1,7 @@
 // This module can be used to serve the GraphQL endpoint
 // as a lambda function
 
-const { ApolloServer } = require('@apollo/server')
-const {
-  startServerAndCreateLambdaHandler,
-  handlers,
-} = require('@as-integrations/aws-lambda')
-
+const { ApolloServer } = require('apollo-server-lambda')
 const { Neo4jGraphQL } = require('@neo4j/graphql')
 const { Neo4jGraphQLAuthJWTPlugin } = require('@neo4j/graphql-plugin-auth')
 const neo4j = require('neo4j-driver')
@@ -34,41 +29,37 @@ const driver = neo4j.driver(
   )
 )
 
-const initializeApolloServer = async () => {
-  const neoSchema = new Neo4jGraphQL({
-    typeDefs,
-    resolvers,
-    driver,
-    plugins: {
-      auth: new Neo4jGraphQLAuthJWTPlugin({
-        secret: process.env.JWT_SECRET.replace(/\\n/gm, '\n'),
-        rolesPath: 'https://flcadmin\\.netlify\\.app/roles',
-      }),
-    },
-  })
+const neoSchema = new Neo4jGraphQL({
+  typeDefs,
+  resolvers,
+  driver,
+  plugins: {
+    auth: new Neo4jGraphQLAuthJWTPlugin({
+      secret: process.env.JWT_SECRET.replace(/\\n/gm, '\n'),
+      rolesPath: 'https://flcadmin\\.netlify\\.app/roles',
+    }),
+  },
+})
 
+// eslint-disable-next-line import/prefer-default-export
+export const handler = async (event, context, ...args) => {
   const schema = await neoSchema.getSchema()
 
   const server = new ApolloServer({
     // eslint-disable-next-line no-shadow
-    context: ({ event }) => ({ req: event, executionContext: driver }),
+    context: ({ event }) => ({ req: event }),
     introspection: true,
     schema,
   })
 
-  return server
-}
+  const apolloHandler = server.createHandler()
 
-const graphqlHandler = async () => {
-  const server = await initializeApolloServer()
-
-  return startServerAndCreateLambdaHandler(
-    server,
-    handlers.createAPIGatewayProxyEventV2RequestHandler(),
+  return apolloHandler(
     {
-      context: ({ event }) => ({ req: event, executionContext: driver }),
-    }
+      ...event,
+      requestContext: context,
+    },
+    context,
+    ...args
   )
 }
-
-export default graphqlHandler()
