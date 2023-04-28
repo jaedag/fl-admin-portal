@@ -29,6 +29,7 @@
   "dependencies": {
     "@apollo/client": "^3.2.5",
     "@apollo/server": "^4.7.0",
+    "@as-integrations/aws-lambda": "^2.0.1",
     "@neo4j/graphql": "^3.18.2",
     "@neo4j/graphql-plugin-auth": "^2.2.0",
     "@netlify/functions": "^1.2.0",
