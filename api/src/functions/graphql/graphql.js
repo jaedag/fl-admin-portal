@@ -59,7 +59,7 @@ const initializeApolloServer = async () => {
   return server
 }
 
-const graphqlHandler = async () => {
+export const graphqlHandler = async () => {
   const server = await initializeApolloServer()
 
   return startServerAndCreateLambdaHandler(
@@ -71,4 +71,4 @@ const graphqlHandler = async () => {
   )
 }
 
-export default graphqlHandler()
+export default graphqlHandler
