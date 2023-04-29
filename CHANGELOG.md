@@ -1,3 +1,25 @@
+#### 7.6.1 (2023-04-29)
+
+##### New Features
+
+*  implement graphs for oversight level ([ca29a03e](https://github.com/firstlovecenter/fl-pastoral-care/commit/ca29a03e261d2ee7bd33dcf867959424b49287fe))
+
+##### Bug Fixes
+
+*  revert to apollo-server-lambda ([c1022188](https://github.com/firstlovecenter/fl-pastoral-care/commit/c102218826c535abae5af394688545664acc1667))
+*  correct exports of gql handler ([2499b07f](https://github.com/firstlovecenter/fl-pastoral-care/commit/2499b07fbfe89a20097323615f476034427aa477))
+*  return graphqlHandler() ([224ff932](https://github.com/firstlovecenter/fl-pastoral-care/commit/224ff932d2ca0b6a73e6b292fe74bf88bcb7d2d6))
+*  revert back to apollo client ([017253a0](https://github.com/firstlovecenter/fl-pastoral-care/commit/017253a0b71ae45bc0eec641c861cd72c2820567))
+*  update apollo/client package ([7f1fcbee](https://github.com/firstlovecenter/fl-pastoral-care/commit/7f1fcbeec68e0e497062cfd87a1aa6250f0ab82a))
+*  switch to apollo-server-lambda ([238d291d](https://github.com/firstlovecenter/fl-pastoral-care/commit/238d291dc1414508be9b015c795ea390b1907896))
+*  switch to apollo-server-lambda ([321569db](https://github.com/firstlovecenter/fl-pastoral-care/commit/321569dbc6c897b79d0847e6b90ed5670d2c16bb))
+*  export graphqlHandler function ([835894cd](https://github.com/firstlovecenter/fl-pastoral-care/commit/835894cd164e26a523c665207ae7b95a47d68054))
+*  correct export of graphqlHandler ([9de5f280](https://github.com/firstlovecenter/fl-pastoral-care/commit/9de5f2800b8347261861f4e6d842bf2c3114d51c))
+*  update apollo server lambda v4 config ([#426](https://github.com/firstlovecenter/fl-pastoral-care/pull/426)) ([7394f3d6](https://github.com/firstlovecenter/fl-pastoral-care/commit/7394f3d6c25baf9879683781bad073cd441de8d8))
+*  refactor context function ([04f6d28f](https://github.com/firstlovecenter/fl-pastoral-care/commit/04f6d28f02a2450bea66ccbd6e3ad45d9e57563b))
+*  console.log event object ([a88d123c](https://github.com/firstlovecenter/fl-pastoral-care/commit/a88d123cf4e2dd63875f4a80e344897408b61d4d))
+*  pass context in graphql js ([d04428ef](https://github.com/firstlovecenter/fl-pastoral-care/commit/d04428ef0222fa81263fcf82a50ca4f104cf1c26))
+
 ### 7.6.0 (2023-04-28)
 
 ##### Chores
