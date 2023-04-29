@@ -23,6 +23,7 @@ const useSetUserChurch = () => {
   const setUserFinancials = (financials: any) => {
     setCurrentUser({
       ...currentUser,
+      currentChurch: financials,
       currency: financials.currency,
       conversionRateToDollar: financials.conversionRateToDollar,
       noIncomeTracking: financials.noIncomeTracking,
@@ -32,6 +33,7 @@ const useSetUserChurch = () => {
       'currentUser',
       JSON.stringify({
         ...currentUser,
+        currentChurch: financials,
         currency: financials.currency,
         conversionRateToDollar: financials.conversionRateToDollar,
         noIncomeTracking: financials.noIncomeTracking,

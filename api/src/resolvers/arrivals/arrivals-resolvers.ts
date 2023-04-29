@@ -538,8 +538,8 @@ export const arrivalsMutation = {
       vehicleCost: number
       outbound: boolean
       personalContribution: number
-      bacentaSprinterTopUp: neonumber
-      bacentaUrvanTopUp: neonumber
+      bacentaSprinterTopUp: number
+      bacentaUrvanTopUp: number
       arrivalTime: string
       leaderPhoneNumber: string
       leaderFirstName: string
@@ -554,8 +554,8 @@ export const arrivalsMutation = {
 
     const calculateVehicleTopUp = (data: responseType) => {
       const outbound = response.outbound ? 2 : 1
-      const sprinterTopUp = data.bacentaSprinterTopUp.low * outbound
-      const urvanTopUp = data.bacentaUrvanTopUp.low * outbound
+      const sprinterTopUp = data.bacentaSprinterTopUp * outbound
+      const urvanTopUp = data.bacentaUrvanTopUp * outbound
 
       const amountToPay = data.vehicleCost - data.personalContribution
 
@@ -577,6 +577,7 @@ export const arrivalsMutation = {
 
         return parseFloat(urvanTopUp.toFixed(2))
       }
+
       return 0
     }
     const vehicleTopUp = calculateVehicleTopUp(response)

@@ -71,9 +71,10 @@ const ChurchList = ({
                   iconCaption={church.__typename}
                   onClick={() => {
                     clickCard(church)
-                    setUserChurch(church)
                     if (church.__typename === 'GatheringService') {
                       setUserFinancials(church)
+                    } else {
+                      setUserChurch(church)
                     }
 
                     if (color === 'arrivals') {
