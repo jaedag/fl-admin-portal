@@ -84,6 +84,9 @@ const StreamReport = lazy(() => import('pages/services/graphs/StreamGraphs'))
 const GatheringServiceReport = lazy(
   () => import('pages/services/graphs/GatheringServiceGraphs')
 )
+const OversightReport = lazy(
+  () => import('pages/services/graphs/OversightGraphs')
+)
 const StreamByCouncil = lazy(
   () => import('pages/services/defaulters/StreamByCouncil')
 )
@@ -282,6 +285,12 @@ export const graphs: LazyRouteTypes[] = [
     path: '/gatheringservice/graphs',
     element: GatheringServiceReport,
     roles: permitLeaderAdminArrivals('GatheringService'),
+    placeholder: true,
+  },
+  {
+    path: '/oversight/graphs',
+    element: OversightReport,
+    roles: permitLeaderAdminArrivals('Oversight'),
     placeholder: true,
   },
 
