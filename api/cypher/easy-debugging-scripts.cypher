@@ -19,8 +19,6 @@ WITH record, fellowship
 MERGE (record)<-[:OFFERING_BANKED_BY]-(leader)
 RETURN record.income, record.transactionReference;
 
-//  
-
 MATCH (record:ServiceRecord {id: 'b92910f1-0190-4cf8-b211-9e751af54d63'})
 MATCH (fellowship:Fellowship {id: '9107bffb-22b5-4eb2-bed0-d9dd3d4d1ccc'})<-[:LEADS]-(leader:Member)
 SET record.transactionReference = '0db3wi30bwia91r',
@@ -41,3 +39,7 @@ RETURN record.recipientCode
 
 MATCH(b:Bacenta {name: "Ashaiman Lebanon"})
 REMOVE b.recipientCode
+
+MATCH (record:VehicleRecord {id: "b393eb04-c250-4668-b429-0246f0cda683"})
+SET record.vehicleTopUp = toFloat(65 * 2)
+RETURN record.vehicleTopUp
