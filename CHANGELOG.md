@@ -1,3 +1,14 @@
+#### 7.6.2 (2023-04-30)
+
+##### New Features
+
+*  implement switching currencies when selecting any church in the church list ([cb796cfa](https://github.com/firstlovecenter/fl-pastoral-care/commit/cb796cfa7e540f1e2696f7490f8108605999620a))
+
+##### Bug Fixes
+
+*  implement npmrc with gh package manager ([d9029b88](https://github.com/firstlovecenter/fl-pastoral-care/commit/d9029b888aa0d3238279942e47011efd834c0a5d))
+*  fix calculateVehicleTopUp ([0c113c90](https://github.com/firstlovecenter/fl-pastoral-care/commit/0c113c90f1bfc7053ae00ee82d9e1064838489fd))
+
 #### 7.6.1 (2023-04-29)
 
 ##### New Features
