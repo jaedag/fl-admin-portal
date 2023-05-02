@@ -140,7 +140,7 @@ const GatheringServiceForm = ({
 
                       <Input
                         name="conversionRateToDollar"
-                        label={`Dollar Conversion Rate`}
+                        label={`Dollar Conversion Rate (How Much Is $1 In Currency)`}
                         placeholder={`Dollar Conversion Rate`}
                       />
 
