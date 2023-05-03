@@ -54,7 +54,7 @@ const directoryMutation = {
           occupation: args?.occupation ?? '',
           fellowship: args?.fellowship ?? '',
           ministry: args?.ministry ?? '',
-          idlLocation: args?.idlLocation ?? '',
+          visitationLocation: args?.visitationLocation ?? '',
           pictureUrl: args?.pictureUrl ?? '',
           auth_id: context.auth.jwt.sub ?? '',
         }
@@ -102,7 +102,7 @@ const directoryMutation = {
       occupation: args?.occupation ?? '',
       fellowship: args?.fellowship ?? '',
       ministry: args?.ministry ?? '',
-      idlLocation: args?.idlLocation ?? '',
+      visitationLocation: args?.visitationLocation ?? '',
       pictureUrl: args?.pictureUrl ?? '',
       howYouJoined: args?.howYouJoined ?? '',
       auth_id: context.auth.jwt.sub ?? '',

@@ -49,7 +49,7 @@ const UpdateMember = () => {
     maritalStatus: member?.maritalStatus?.status ?? '',
     occupation: member?.occupation?.occupation ?? '',
     pictureUrl: member?.pictureUrl ?? '',
-    idlLocation: member?.idlLocation ?? 'no-location',
+    visitationLocation: member?.visitationLocation ?? 'no-location',
     fellowship: memberChurch?.fellowship,
     ministry: memberChurch?.ministry?.id ?? '',
     howYouJoined: member?.howYouJoined ?? '',

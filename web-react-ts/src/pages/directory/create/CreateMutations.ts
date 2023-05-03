@@ -13,7 +13,7 @@ export const CREATE_MEMBER_MUTATION = gql`
     $gender: String!
     $occupation: String
     $fellowship: String!
-    $idlLocation: String!
+    $visitationLocation: String!
     $ministry: String
     $pictureUrl: String!
     $howYouJoined: String!
@@ -29,7 +29,7 @@ export const CREATE_MEMBER_MUTATION = gql`
       maritalStatus: $maritalStatus
       gender: $gender
       occupation: $occupation
-      idlLocation: $idlLocation
+      visitationLocation: $visitationLocation
       fellowship: $fellowship
       ministry: $ministry
       pictureUrl: $pictureUrl

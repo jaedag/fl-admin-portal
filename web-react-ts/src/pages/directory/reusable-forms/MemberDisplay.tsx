@@ -145,11 +145,11 @@ const MemberDisplay = ({ memberId }: { memberId: string }) => {
             <DetailsCard heading="Email Address" detail={member?.email} />
           </Col>
         )}
-        {member?.idlLocation && (
+        {member?.visitationLocation && (
           <Col sm={1} md="auto">
             <DetailsCard
               heading="Location for IDL"
-              detail={member?.idlLocation.toString()}
+              detail={member?.visitationLocation.toString()}
             />
           </Col>
         )}

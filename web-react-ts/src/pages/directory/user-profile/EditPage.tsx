@@ -45,7 +45,7 @@ const UserProfileEditPage = () => {
     occupation: member?.occupation ? member?.occupation.occupation : '',
     pictureUrl: member?.pictureUrl ? member?.pictureUrl : '',
     fellowship: memberChurch?.fellowship ?? '',
-    idlLocation: member?.idlLocation ?? '',
+    visitationLocation: member?.visitationLocation ?? '',
     ministry: memberChurch?.ministry ? memberChurch?.ministry.id : '',
     howYouJoined: member?.howYouJoined ? member?.howYouJoined : '',
   }
