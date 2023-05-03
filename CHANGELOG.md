@@ -1,3 +1,12 @@
+#### 7.6.3 (2023-05-03)
+
+##### Bug Fixes
+
+*  log all apollo errors to the console as well for sentry ([6dca7b8f](https://github.com/firstlovecenter/fl-pastoral-care/commit/6dca7b8f127374430c3e11818f36d4fd67e78f3f))
+*  update label in gs form ([1dd4d037](https://github.com/firstlovecenter/fl-pastoral-care/commit/1dd4d03769a107e094b1826d421745aabfea824f))
+*  add ariary to currency options ([beb204c0](https://github.com/firstlovecenter/fl-pastoral-care/commit/beb204c03996bcb273f63952e031c518d3ae5e78))
+*  update code of the day to include new values ([66bbe6a5](https://github.com/firstlovecenter/fl-pastoral-care/commit/66bbe6a570b216ae4bf5f210d5c456162706a51b))
+
 #### 7.6.2 (2023-04-30)
 
 ##### New Features

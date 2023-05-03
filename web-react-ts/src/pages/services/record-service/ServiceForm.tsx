@@ -69,7 +69,6 @@ const ServiceForm = ({
       .required('Date is a required field'),
     cediIncome: Yup.number()
       .typeError('Please enter a valid number')
-      .positive()
       .required('You cannot submit this form without entering your income'),
     foreignCurrency: Yup.string(),
     numberOfTithers: Yup.number()
