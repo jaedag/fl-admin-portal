@@ -123,6 +123,8 @@ export const throwToSentry = (
   const user = JSON.parse(sessionStorage.getItem('currentUser') || '{}')
 
   if (!error) {
+    // eslint-disable-next-line no-console
+    console.error(message)
     captureException(error, {
       tags: {
         userId: user.id,
@@ -138,6 +140,8 @@ export const throwToSentry = (
   }
 
   if (!message) {
+    // eslint-disable-next-line no-console
+    console.error(error)
     captureException(error, {
       tags: {
         userId: user.id,
@@ -153,6 +157,8 @@ export const throwToSentry = (
     return
   }
 
+  // eslint-disable-next-line no-console
+  console.error(error)
   captureException(error, {
     tags: {
       userId: user.id,
