@@ -139,7 +139,7 @@ const MemberForm = ({
         PHONE_NUM_REGEX,
         `Phone Number must start with + and country code (eg. '+233')`
       ),
-    visitationLocation: Yup.string().required('Location is a required field'),
+    visitationArea: Yup.string().required('Location is a required field'),
     howYouJoined: Yup.string().required('You must select how you joined'),
     fellowship: Yup.object().required(
       'Please pick a fellowship from the dropdown'
@@ -323,9 +323,9 @@ const MemberForm = ({
                       <Col sm={10}>
                         <Input
                           label="Home/Campus Location * (for IDL)"
-                          name="visitationLocation"
+                          name="visitationArea"
                           placeholder="Enter the location for IDL Visitaion"
-                          aria-describedby="visitationLocation"
+                          aria-describedby="visitationArea"
                         />
                       </Col>
                     )}

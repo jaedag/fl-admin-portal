@@ -105,7 +105,7 @@ export interface Member {
   dob: string
   maritalStatus: string
   gender: string
-  visitationLocation?: string
+  visitationArea?: string
   howYouJoined: string
   occupation: string
   fellowship: string

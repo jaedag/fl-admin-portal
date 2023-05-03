@@ -587,7 +587,7 @@
 
 ##### Refactors
 
-- change original location to visitationLocation and introduced a new location property ([b98ddbfd](https://github.com/firstlovecenter/fl-pastoral-care/commit/b98ddbfdcabec74206f7cba922e15febbae446b7))
+- change original location to visitationArea and introduced a new location property ([b98ddbfd](https://github.com/firstlovecenter/fl-pastoral-care/commit/b98ddbfdcabec74206f7cba922e15febbae446b7))
 
 ### 5.10.0 (2023-03-10)
 
@@ -798,13 +798,13 @@
 
 ##### Bug Fixes
 
-- refactor location to visitationLocation in memberBio query ([680887ef](https://github.com/firstlovecenter/fl-pastoral-care/commit/680887efb6a4849190b8ad03a05e59251a7fb086))
+- refactor location to visitationArea in memberBio query ([680887ef](https://github.com/firstlovecenter/fl-pastoral-care/commit/680887efb6a4849190b8ad03a05e59251a7fb086))
 
 #### 5.9.4 (2023-02-23)
 
 ##### New Features
 
-- replace location nwith visitationLocation ([c8816a64](https://github.com/firstlovecenter/fl-pastoral-care/commit/c8816a648a8784fd1746e5c2a7ccb44eedd565d8))
+- replace location nwith visitationArea ([c8816a64](https://github.com/firstlovecenter/fl-pastoral-care/commit/c8816a648a8784fd1746e5c2a7ccb44eedd565d8))
 
 ##### Bug Fixes
 

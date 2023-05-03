@@ -43,3 +43,9 @@ REMOVE b.recipientCode
 MATCH (record:VehicleRecord {id: "b393eb04-c250-4668-b429-0246f0cda683"})
 SET record.vehicleTopUp = toFloat(65 * 2)
 RETURN record.vehicleTopUp
+
+MATCH (member:Member) WHERE member.visitationLocation IS NOT NULL
+SET member.visitationArea = member.visitationLocation
+REMOVE member.visitationLocation
+
+RETURN COUNT(member)

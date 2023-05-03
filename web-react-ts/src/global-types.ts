@@ -136,7 +136,7 @@ export interface Member {
   middleName?: string
   lastName: string
   fullName: string
-  visitationLocation?: string
+  visitationArea?: string
   location?: string
   nameWithTitle?: string
   currentTitle: TitleOptions
