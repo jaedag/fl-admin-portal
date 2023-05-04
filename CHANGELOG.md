@@ -1,3 +1,11 @@
+#### 7.6.4 (2023-05-04)
+
+##### Bug Fixes
+
+*  add permission for council multiplication ([6b99ab44](https://github.com/firstlovecenter/fl-pastoral-care/commit/6b99ab44d87876734c578bcdf260a06cb9d97a14))
+*  change visitationLocation to visitationArea ([8659278f](https://github.com/firstlovecenter/fl-pastoral-care/commit/8659278f0183349d792abc94b784552e1044bfec))
+*  change idlLocation to visitationLocation ([31ce27c4](https://github.com/firstlovecenter/fl-pastoral-care/commit/31ce27c45b375a7169af34280c864aa8e451136f))
+
 #### 7.6.3 (2023-05-03)
 
 ##### Bug Fixes
