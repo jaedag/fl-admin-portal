@@ -1,3 +1,11 @@
+#### 7.6.5 (2023-05-05)
+
+##### Bug Fixes
+
+*  update reasonCategory for deleting members ([fc9298f4](https://github.com/firstlovecenter/fl-pastoral-care/commit/fc9298f46dab516c48f8cb322bf750699ad5da48))
+*  add GMD as a currency option ([ae86736b](https://github.com/firstlovecenter/fl-pastoral-care/commit/ae86736b7c580fbc16324a57a4bf04bc24e4cefa))
+*  add permissions for all leaders to see campaign screens ([c3761303](https://github.com/firstlovecenter/fl-pastoral-care/commit/c3761303a23a58740c43e200fd04513c41293dc7))
+
 #### 7.6.4 (2023-05-04)
 
 ##### Bug Fixes
