@@ -90,7 +90,7 @@ export const HOW_YOU_JOINED_OPTIONS: FormikSelectOptions = [
   },
   {
     key: 'I Was Invited By A Friend Or Family Member',
-    value: 'Invitation By Friend',
+    value: 'Invitation By Friend Or Family',
   },
   {
     key: 'A Person I Had Never Met Spoke To Me And Invited Me',
