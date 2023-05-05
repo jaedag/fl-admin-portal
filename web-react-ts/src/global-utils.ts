@@ -63,6 +63,7 @@ export const STREAM_SERVICE_DAY_OPTIONS: FormikSelectOptions = [
 export const CURRENCY_OPTIONS: FormikSelectOptions = [
   { key: 'GHS', value: 'GHS' },
   { key: 'MGA', value: 'MGA' },
+  { key: 'GMD', value: 'GMD' },
   { key: 'ZMW', value: 'ZMW' },
 ]
 
