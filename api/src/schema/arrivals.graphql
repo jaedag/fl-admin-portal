@@ -58,45 +58,45 @@ extend type Oversight {
 
 extend type GatheringService {
   arrivalsAdmin: Member @relationship(type: "DOES_ARRIVALS_FOR", direction: IN)
-  bacentasNoActivity(date: Date): [Bacenta!]!
+  bacentasNoActivity(arrivalDate: Date): [Bacenta!]!
     @cypher(
       statement: """
       MATCH (this)-[:HAS*4]->(bacentas:Active:Bacenta)
       WHERE NOT EXISTS {
         MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
-        WHERE date(date.date)=$date
+        WHERE date(date.date)=$arrivalDate
         }
       RETURN DISTINCT bacentas
       """
     )
-  bacentasNoActivityCount(date: Date): Int
+  bacentasNoActivityCount(arrivalDate: Date): Int
     @cypher(
       statement: """
       MATCH (this)-[:HAS*4]->(bacentas:Active:Bacenta)
        WHERE NOT EXISTS {
          MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
-         WHERE date(date.date)=$date
+         WHERE date(date.date)=$arrivalDate
          }
       RETURN COUNT(DISTINCT bacentas)
       """
     )
-  bacentasMobilising(date:Date): [Bacenta!]!
+  bacentasMobilising(arrivalDate:Date): [Bacenta!]!
     @cypher(
       statement: """
       MATCH (this)-[:HAS*4]->(bacentas:Active:Bacenta)
       MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
-        WHERE date(date.date)=$date
+        WHERE date(date.date)=$arrivalDate
         AND bussing.mobilisationPicture IS NOT NULL
         AND bussing.leaderDeclaration IS NULL
       RETURN DISTINCT bacentas
       """
     )
-  bacentasMobilisingCount(date: Date): Int
+  bacentasMobilisingCount(arrivalDate: Date): Int
     @cypher(
       statement: """
       MATCH (this)-[:HAS*4]->(bacentas:Active:Bacenta)
       MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
-        WHERE date(date.date)=$date
+        WHERE date(date.date)=$arrivalDate
         AND bussing.mobilisationPicture IS NOT NULL
         AND bussing.leaderDeclaration IS NULL
       RETURN COUNT(DISTINCT bacentas)
