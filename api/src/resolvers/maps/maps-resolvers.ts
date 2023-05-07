@@ -1,6 +1,6 @@
 import type { Node, Integer, Point } from 'neo4j-driver'
 import { Context } from '../utils/neo4j-types'
-import { ChurchIdAndName, Member } from '../utils/types'
+import { Member } from '../utils/types'
 import { rearrangeCypherObject, throwToSentry } from '../utils/utils'
 import {
   memberFellowshipSearchByLocation,
@@ -12,6 +12,10 @@ import {
   outdoorOutreachVenuesSearchByName,
   outdoorOutreachVenuesSearchByLocation,
 } from './maps-cypher'
+import {
+  createFellowshipDescription,
+  createMemberDescription,
+} from './maps-utils'
 
 interface FellowshipResultShape {
   fellowship: Node<
@@ -23,6 +27,30 @@ interface FellowshipResultShape {
       description: string
     }
   >
+
+  fellowshipLeader: {
+    id: string
+    firstName: string
+    lastName: string
+    phoneNumber: string
+    whatsappNumber: string
+    pictureUrl: string
+  }
+
+  council: {
+    id: string
+    name: string
+  }
+
+  councilLeader: {
+    id: string
+    firstName: string
+    lastName: string
+    phoneNumber: string
+    whatsappNumber: string
+    pictureUrl: string
+  }
+
   distance: number
 }
 
@@ -77,27 +105,6 @@ interface OutreachVenueResultShape {
 const parseMapData = (
   place: FellowshipResultShape | OutreachVenueResultShape | PeopleResultShape
 ) => {
-  const createMemberDescription = ({
-    fellowship,
-    council,
-    pastor,
-    phone,
-    WhatsApp,
-  }: {
-    fellowship: ChurchIdAndName
-    council: ChurchIdAndName
-    pastor: { firstName: string; lastName: string }
-    phone: string
-    WhatsApp: string
-  }) =>
-    JSON.stringify({
-      fellowship,
-      council,
-      pastor,
-      phoneNumber: phone,
-      whatsappNumber: WhatsApp,
-    })
-
   if ('member' in place) {
     return {
       id: place.member.properties.id,
@@ -109,6 +116,7 @@ const parseMapData = (
       distance: place?.distance,
       picture: place.member.properties.pictureUrl,
       description: createMemberDescription({
+        member: place.member.properties,
         fellowship: place.fellowship,
         council: place.council,
         pastor: place.pastor,
@@ -123,10 +131,17 @@ const parseMapData = (
       id: place.fellowship.properties.id,
       name: place.fellowship.properties.name,
       typename: 'Fellowship',
+      picture: place.fellowshipLeader?.pictureUrl,
       location: place.fellowship.properties.location,
       latitude: place.fellowship.properties.location.y,
       longitude: place.fellowship.properties.location.x,
       distance: place.distance,
+      description: createFellowshipDescription({
+        fellowshipLeader: place.fellowshipLeader,
+        fellowship: place.fellowship.properties,
+        council: place.council,
+        councilLeader: place.councilLeader,
+      }),
     }
   }
 
@@ -197,6 +212,7 @@ export const mapsResolvers = {
           res[1],
           true
         )
+
         const indoorVenuesRes: OutreachVenueResultShape[] =
           rearrangeCypherObject(res[2], true)
         const outdoorVenuesRes: OutreachVenueResultShape[] =

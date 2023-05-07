@@ -8,7 +8,7 @@ import {
 } from '@react-google-maps/api'
 import { useState } from 'react'
 import '../Map.css'
-import { Button, Col, Container, Offcanvas, Row } from 'react-bootstrap'
+import { Button, Card, Col, Container, Offcanvas, Row } from 'react-bootstrap'
 import { IoChevronUp } from 'react-icons/io5'
 import { GooglePlaces, MemberPlaces } from '../Places'
 import {
@@ -19,7 +19,12 @@ import {
 import { MemberContext } from 'contexts/MemberContext'
 import LoadingScreen from 'components/base-component/LoadingScreen'
 import './MapComponent.css'
-import { getMapIcon, getMapIconClass } from './map-utils'
+import {
+  MemberMapData,
+  Neo4jLocation,
+  getMapIcon,
+  getMapIconClass,
+} from './map-utils'
 import CloudinaryImage from 'components/CloudinaryImage'
 import { FaChurch, FaLocationArrow } from 'react-icons/fa'
 import { TelephoneFill, Whatsapp } from 'react-bootstrap-icons'
@@ -189,20 +194,21 @@ const MapComponent = (props: MapComponentProps) => {
     handleClose()
   }
 
-  const parseDescription = (description: string) => {
+  const parseMemberDesc = (description: string) => {
     const parsedDesc: {
+      member: MemberMapData
       fellowship: {
         id: string
         name: string
         location: { x: number; y: number }
       }
       council: ChurchIdAndName
-      pastor: { firstName: string; lastName: string }
+      pastor: MemberMapData
       phoneNumber: string
       whatsappNumber: string
     } = JSON.parse(description)
 
-    const { fellowship, council, pastor, phoneNumber, whatsappNumber } =
+    const { member, fellowship, council, pastor, phoneNumber, whatsappNumber } =
       parsedDesc
 
     return (
@@ -230,22 +236,138 @@ const MapComponent = (props: MapComponentProps) => {
           <span className="fw-bold">Pastor:</span> {pastor.firstName}{' '}
           {pastor.lastName}
         </p>
-        <p className="mb-2">
-          <a href={`tel:${phoneNumber}`}>
-            <Button size="sm" variant="primary">
-              <TelephoneFill /> Call
-            </Button>
-          </a>
-        </p>
-        <p className="mb-2">
-          <a href={`https://wa.me/${whatsappNumber}`}>
-            <Button size="sm" variant="success">
-              <Whatsapp /> WhatsApp
-            </Button>
-          </a>
-        </p>
+        <Row className="mb-2">
+          <Col className="col-auto p-0">
+            <a href={`tel:${phoneNumber}`}>
+              <Button size="sm" variant="primary">
+                <TelephoneFill /> Call
+              </Button>
+            </a>
+          </Col>
+
+          <Col className="col-auto">
+            <a href={`https://wa.me/${whatsappNumber}`}>
+              <Button size="sm" variant="success">
+                <Whatsapp /> WhatsApp
+              </Button>
+            </a>
+          </Col>
+        </Row>
+        <Card.Footer>
+          <Button
+            size="sm"
+            variant="secondary"
+            onClick={() => {
+              clickCard({ id: member.id, __typename: 'Member' })
+              navigate('/member/displaydetails')
+            }}
+          >
+            View Member Profile
+          </Button>
+        </Card.Footer>
       </>
     )
+  }
+
+  const parseFellowshipDesc = (description: string) => {
+    const parsedDesc: {
+      fellowship: {
+        id: string
+        name: string
+        location: Neo4jLocation
+      }
+      council: ChurchIdAndName
+      fellowshipLeader: MemberMapData
+      councilLeader: MemberMapData
+    } = JSON.parse(description)
+
+    const { fellowship, council, fellowshipLeader, councilLeader } = parsedDesc
+
+    return (
+      <>
+        <p
+          className="mb-2"
+          onClick={() => {
+            handleSetCentre({
+              id: fellowshipLeader.id,
+              name:
+                fellowshipLeader.firstName + ' ' + fellowshipLeader.lastName,
+              typename: 'Member',
+              position: {
+                lat: fellowshipLeader.location.y,
+                lng: fellowshipLeader.location.x,
+              },
+            })
+          }}
+        >
+          <span className="fw-bold">Fellowship:</span> {fellowship.name}
+        </p>
+        <p className="mb-2">
+          <span className="fw-bold">Council:</span> {council.name}
+        </p>
+        <p className="mb-2">
+          <span className="fw-bold">Council Leader:</span>{' '}
+          {councilLeader.firstName} {councilLeader.lastName}
+        </p>
+        <p
+          className="mb-2"
+          onClick={() => {
+            handleSetCentre({
+              id: fellowshipLeader.id,
+              name:
+                fellowshipLeader.firstName + ' ' + fellowshipLeader.lastName,
+              typename: 'Fellowship',
+              position: {
+                lat: fellowshipLeader.location.y,
+                lng: fellowshipLeader.location.x,
+              },
+            })
+          }}
+        >
+          <span className="fw-bold">Fellowship Leader:</span>{' '}
+          {fellowshipLeader.firstName} {fellowshipLeader.lastName}
+        </p>
+        <Row className="mb-2">
+          <Col>
+            <a href={`tel:${fellowshipLeader.phoneNumber}`}>
+              <Button size="sm" variant="primary">
+                <TelephoneFill /> Call
+              </Button>
+            </a>
+          </Col>
+          <Col className="col-auto">
+            <a href={`https://wa.me/${fellowshipLeader.whatsappNumber}`}>
+              <Button size="sm" variant="success">
+                <Whatsapp /> WhatsApp
+              </Button>
+            </a>
+          </Col>
+        </Row>
+        <Card.Footer>
+          <Button
+            size="sm"
+            variant="secondary"
+            onClick={() => {
+              clickCard({ id: fellowship.id, __typename: 'Fellowship' })
+              navigate('/fellowship/displaydetails')
+            }}
+          >
+            View Fellowship Profile
+          </Button>
+        </Card.Footer>
+      </>
+    )
+  }
+
+  const chooseParsingFunction = (place: PlaceType) => {
+    switch (place.typename) {
+      case 'Member':
+        return parseMemberDesc(place.description ?? '')
+      case 'Fellowship':
+        return parseFellowshipDesc(place.description ?? '')
+      default:
+        return ''
+    }
   }
 
   return (
@@ -272,26 +394,28 @@ const MapComponent = (props: MapComponentProps) => {
                 position={clickedMarker.position}
                 onCloseClick={() => setClickedMarker(undefined)}
               >
-                <Container>
-                  <Row>
-                    {clickedMarker.picture && (
+                <Card>
+                  <Card.Body>
+                    <Row>
+                      {clickedMarker.picture && (
+                        <Col>
+                          <CloudinaryImage
+                            src={clickedMarker.picture}
+                            className="rounded"
+                          />
+                        </Col>
+                      )}
                       <Col>
-                        <CloudinaryImage
-                          src={clickedMarker.picture}
-                          className="rounded"
-                        />
+                        <p className=" fw-bold info-window-header">{`${getTypename(
+                          clickedMarker
+                        )} ${clickedMarker.name}`}</p>
+                        <div className="info-window-text">
+                          {chooseParsingFunction(clickedMarker ?? '')}
+                        </div>
                       </Col>
-                    )}
-                    <Col>
-                      <p className="info-window-header">{`${getTypename(
-                        clickedMarker
-                      )} ${clickedMarker.name}`}</p>
-                      <div className="info-window-text">
-                        {parseDescription(clickedMarker.description ?? '')}
-                      </div>
-                    </Col>
-                  </Row>
-                </Container>
+                    </Row>
+                  </Card.Body>
+                </Card>
               </InfoWindow>
             )}
             <MarkerClusterer>

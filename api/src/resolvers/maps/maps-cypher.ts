@@ -1,7 +1,29 @@
 export const memberFellowshipSearchByName = `
-MATCH (this:Member {id: $id})-[:LEADS|HAS|IS_ADMIN_FOR*1..6]->(fellowship:Active:Fellowship) 
+MATCH (this:Member {id: $id})-[:LEADS|HAS|IS_ADMIN_FOR*1..6]->(fellowship:Active:Fellowship)<-[:LEADS]-(fellowshipLeader:Member)
+MATCH (fellowship)<-[:HAS]-(:Bacenta)<-[:HAS]-(:Constituency)<-[:HAS]-(council:Council)<-[:LEADS]-(councilLeader:Member)
 WHERE toLower(fellowship.name) CONTAINS toLower($key) AND fellowship.location IS NOT NULL
-RETURN DISTINCT fellowship LIMIT toInteger($limit)
+RETURN DISTINCT fellowship,
+fellowshipLeader {
+  .id,
+  .firstName,
+  .lastName,
+  .phoneNumber,
+  .whatsappNumber,
+  .pictureUrl
+},
+council {
+  .id,
+  .name
+},
+councilLeader {
+  .id,
+  .firstName,
+  .lastName,
+  .phoneNumber,
+  .whatsappNumber,
+  .pictureUrl
+}
+LIMIT toInteger($limit)
 `
 
 export const memberMemberSearchByName = `
