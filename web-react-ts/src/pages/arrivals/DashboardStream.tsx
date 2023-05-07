@@ -1,6 +1,6 @@
-import { useMutation, useQuery } from '@apollo/client'
+import { useLazyQuery, useMutation, useQuery } from '@apollo/client'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 import * as Yup from 'yup'
 import { useNavigate } from 'react-router'
 import { MAKE_STREAMARRIVALS_ADMIN } from './arrivalsMutation'
@@ -30,18 +30,36 @@ import { beforeStreamArrivalsDeadline } from './arrivals-utils'
 import { StreamWithArrivals } from './arrivals-types'
 import ErrorText from 'components/ErrorText'
 import PullToRefresh from 'react-simple-pull-to-refresh'
+import Input from 'components/formik/Input'
+import { AiOutlineSend } from 'react-icons/ai'
+
+type DateFormOptions = {
+  arrivalDate: string
+}
 
 const StreamDashboard = () => {
   const { isOpen, togglePopup } = usePopup()
   const { currentUser } = useContext(MemberContext)
   const navigate = useNavigate()
-  const { data, loading, error, refetch } = useQuery(
-    STREAM_ARRIVALS_DASHBOARD,
+  const today = new Date().toISOString().slice(0, 10)
+  const { data, loading, error } = useQuery(STREAM_ARRIVALS_DASHBOARD, {
+    variables: { id: currentUser?.currentChurch.id, arrivalDate: today },
+  })
+
+  const [
+    streamArrivalsDashboard,
     {
-      variables: { id: currentUser?.currentChurch.id },
-      pollInterval: SHORT_POLL_INTERVAL,
-    }
-  )
+      data: dashboardData,
+      loading: dashboardLoading,
+      error: dashboardError,
+      refetch,
+    },
+  ] = useLazyQuery(STREAM_ARRIVALS_DASHBOARD, {
+    variables: { id: currentUser?.currentChurch.id, arrivalDate: today },
+    pollInterval: SHORT_POLL_INTERVAL,
+    fetchPolicy: 'cache-and-network',
+  })
+
   const [MakeStreamArrivalsAdmin] = useMutation(MAKE_STREAMARRIVALS_ADMIN)
   const stream: StreamWithArrivals = data?.streams[0]
 
@@ -99,6 +117,39 @@ const StreamDashboard = () => {
       onClick: () => navigate('/stream/arrival-excel-data'),
     },
   ]
+
+  useEffect(() => {
+    streamArrivalsDashboard({
+      variables: {
+        id: currentUser?.currentChurch.id,
+        arrivalDate: today,
+      },
+    })
+  }, [])
+
+  const dateValidationSchema = Yup.object({
+    date: Yup.date().notRequired(),
+  })
+
+  const dateInitialValues: DateFormOptions = {
+    arrivalDate: today,
+  }
+
+  const onDateSubmit = (
+    values: DateFormOptions,
+    onSubmitProps: FormikHelpers<DateFormOptions>
+  ) => {
+    onSubmitProps.setSubmitting(true)
+
+    streamArrivalsDashboard({
+      variables: {
+        id: currentUser?.currentChurch.id,
+        arrivalDate: values.arrivalDate,
+      },
+    })
+    onSubmitProps.setSubmitting(false)
+  }
+
   return (
     <PullToRefresh onRefresh={refetch}>
       <ApolloWrapper data={data} loading={loading} error={error}>
@@ -142,11 +193,44 @@ const StreamDashboard = () => {
               </Popup>
             )}
 
-            <RoleView
-              roles={[...permitAdmin('Stream'), ...permitArrivals('Stream')]}
-            >
-              <ArrivalsMenuDropdown menuItems={ArrivalsMenu} />
-            </RoleView>
+            <div className="d-grid gap-2">
+              <Formik
+                initialValues={dateInitialValues}
+                validationSchema={dateValidationSchema}
+                onSubmit={onDateSubmit}
+                validateOnMount
+              >
+                {(formik) => (
+                  <Form>
+                    <Row className="align-items-center gx-0 justify-content-between">
+                      <Col className="d-inline-block" xs={5}>
+                        <Input
+                          name="arrivalDate"
+                          type="date"
+                          placeholder="dd/mm/yyyy"
+                          aria-describedby="date"
+                        />
+                      </Col>
+                      <Col xs={2}>
+                        <SubmitButton formik={formik}>
+                          <AiOutlineSend size={23} />
+                        </SubmitButton>
+                      </Col>
+                      <Col>
+                        <RoleView
+                          roles={[
+                            ...permitAdmin('Stream'),
+                            ...permitArrivals('Stream'),
+                          ]}
+                        >
+                          <ArrivalsMenuDropdown menuItems={ArrivalsMenu} />
+                        </RoleView>
+                      </Col>
+                    </Row>
+                  </Form>
+                )}
+              </Formik>
+            </div>
 
             <div className="d-grid gap-2 my-3">
               <DefaulterInfoCard defaulter={aggregates} />
@@ -157,148 +241,156 @@ const StreamDashboard = () => {
               )}
             </div>
           </Container>
-          <Accordion defaultActiveKey="0">
-            <Accordion.Item eventKey="0">
-              <Accordion.Header>Bacenta Monitoring</Accordion.Header>
-              <Accordion.Body>
-                <div className="d-grid gap-2">
-                  <MenuButton
-                    title="Bacentas With No Activity"
-                    onClick={() => navigate('/arrivals/bacentas-no-activity')}
-                    number={stream?.bacentasNoActivityCount.toString()}
-                    color="red"
-                    iconBg
-                    noCaption
-                  />
-                  <MenuButton
-                    title="Bacentas Mobilising"
-                    onClick={() => navigate('/arrivals/bacentas-mobilising')}
-                    number={stream?.bacentasMobilisingCount.toString()}
-                    color="orange"
-                    iconBg
-                    noCaption
-                  />
-                  <MenuButton
-                    title="Bacentas On The Way"
-                    onClick={() => navigate('/arrivals/bacentas-on-the-way')}
-                    number={stream?.bacentasOnTheWayCount.toString()}
-                    color="yellow"
-                    iconBg
-                    noCaption
-                  />
-                  <RoleView roles={permitArrivalsCounter()}>
-                    <MenuButton
-                      title="Vehicles To Be Counted"
-                      onClick={() => navigate('/arrivals/bacentas-to-count')}
-                      number={stream?.vehiclesNotCountedCount.toString()}
-                      color="yellow"
-                      iconBg
-                      noCaption
-                    />
-                  </RoleView>
-
-                  <MenuButton
-                    title="Bacentas That Didn't Bus"
-                    onClick={() => navigate('/arrivals/bacentas-below-8')}
-                    number={stream?.bacentasBelow8Count.toString()}
-                    iconBg
-                    color="red"
-                    noCaption
-                  />
-
-                  <MenuButton
-                    title="Bacentas That Have Arrived"
-                    onClick={() => navigate('/arrivals/bacentas-have-arrived')}
-                    number={stream?.bacentasHaveArrivedCount.toString()}
-                    iconBg
-                    color="green"
-                    noCaption
-                  />
-                </div>
-              </Accordion.Body>
-            </Accordion.Item>
-
-            <RoleView
-              roles={[
-                ...permitArrivals('GatheringService'),
-                ...permitLeaderAdmin('Stream'),
-              ]}
-            >
-              <Accordion.Item eventKey="1">
-                <Accordion.Header>Financial Data</Accordion.Header>
+          <ApolloWrapper
+            loading={dashboardLoading}
+            data={dashboardData}
+            error={dashboardError}
+          >
+            <Accordion defaultActiveKey="0">
+              <Accordion.Item eventKey="0">
+                <Accordion.Header>Bacenta Monitoring</Accordion.Header>
                 <Accordion.Body>
                   <div className="d-grid gap-2">
                     <MenuButton
-                      title="Vehicles That Have Been Paid"
-                      onClick={() => navigate('#')}
-                      number={stream?.vehiclesHaveBeenPaidCount.toString()}
-                      color="green"
+                      title="Bacentas With No Activity"
+                      onClick={() => navigate('/arrivals/bacentas-no-activity')}
+                      number={stream?.bacentasNoActivityCount.toString()}
+                      color="red"
                       iconBg
                       noCaption
                     />
                     <MenuButton
-                      title="Vehicles To Be Paid"
-                      onClick={() => navigate('#')}
-                      number={stream?.vehiclesToBePaidCount.toString()}
+                      title="Bacentas Mobilising"
+                      onClick={() => navigate('/arrivals/bacentas-mobilising')}
+                      number={stream?.bacentasMobilisingCount.toString()}
+                      color="orange"
+                      iconBg
+                      noCaption
+                    />
+                    <MenuButton
+                      title="Bacentas On The Way"
+                      onClick={() => navigate('/arrivals/bacentas-on-the-way')}
+                      number={stream?.bacentasOnTheWayCount.toString()}
                       color="yellow"
                       iconBg
+                      noCaption
+                    />
+                    <RoleView roles={permitArrivalsCounter()}>
+                      <MenuButton
+                        title="Vehicles To Be Counted"
+                        onClick={() => navigate('/arrivals/bacentas-to-count')}
+                        number={stream?.vehiclesNotCountedCount.toString()}
+                        color="yellow"
+                        iconBg
+                        noCaption
+                      />
+                    </RoleView>
+
+                    <MenuButton
+                      title="Bacentas That Didn't Bus"
+                      onClick={() => navigate('/arrivals/bacentas-below-8')}
+                      number={stream?.bacentasBelow8Count.toString()}
+                      iconBg
+                      color="red"
                       noCaption
                     />
 
                     <MenuButton
-                      title="Amount That Has Been Paid"
-                      onClick={() => navigate('#')}
-                      number={stream?.vehicleAmountHasBeenPaid.toString()}
-                      color="yellow"
-                      noCaption
-                    />
-                    <MenuButton
-                      title="Amount To Be Paid"
-                      onClick={() => navigate('#')}
-                      number={stream?.vehicleAmountToBePaid.toString()}
-                      color="yellow"
+                      title="Bacentas That Have Arrived"
+                      onClick={() =>
+                        navigate('/arrivals/bacentas-have-arrived')
+                      }
+                      number={stream?.bacentasHaveArrivedCount.toString()}
+                      iconBg
+                      color="green"
                       noCaption
                     />
                   </div>
                 </Accordion.Body>
               </Accordion.Item>
-            </RoleView>
-            <Accordion.Item eventKey="2">
-              <Accordion.Header>Bussing Data</Accordion.Header>
-              <Accordion.Body>
-                <div className="d-grid gap-2">
-                  <MenuButton
-                    title="Members On The Way"
-                    number={stream?.bussingMembersOnTheWayCount.toString()}
-                    color="yellow"
-                    iconBg
-                    noCaption
-                  />
-                  <MenuButton
-                    title="Members That Have Arrived"
-                    number={stream?.bussingMembersHaveArrivedCount.toString()}
-                    color="green"
-                    iconBg
-                    noCaption
-                  />
-                  <MenuButton
-                    title="Busses On The Way"
-                    number={stream?.bussesOnTheWayCount.toString()}
-                    color="yellow"
-                    iconBg
-                    noCaption
-                  />
-                  <MenuButton
-                    title="Busses That Have Arrived"
-                    number={stream?.bussesThatArrivedCount.toString()}
-                    color="green"
-                    iconBg
-                    noCaption
-                  />
-                </div>
-              </Accordion.Body>
-            </Accordion.Item>
-          </Accordion>
+
+              <RoleView
+                roles={[
+                  ...permitArrivals('GatheringService'),
+                  ...permitLeaderAdmin('Stream'),
+                ]}
+              >
+                <Accordion.Item eventKey="1">
+                  <Accordion.Header>Financial Data</Accordion.Header>
+                  <Accordion.Body>
+                    <div className="d-grid gap-2">
+                      <MenuButton
+                        title="Vehicles That Have Been Paid"
+                        onClick={() => navigate('#')}
+                        number={stream?.vehiclesHaveBeenPaidCount.toString()}
+                        color="green"
+                        iconBg
+                        noCaption
+                      />
+                      <MenuButton
+                        title="Vehicles To Be Paid"
+                        onClick={() => navigate('#')}
+                        number={stream?.vehiclesToBePaidCount.toString()}
+                        color="yellow"
+                        iconBg
+                        noCaption
+                      />
+
+                      <MenuButton
+                        title="Amount That Has Been Paid"
+                        onClick={() => navigate('#')}
+                        number={stream?.vehicleAmountHasBeenPaid.toString()}
+                        color="yellow"
+                        noCaption
+                      />
+                      <MenuButton
+                        title="Amount To Be Paid"
+                        onClick={() => navigate('#')}
+                        number={stream?.vehicleAmountToBePaid.toString()}
+                        color="yellow"
+                        noCaption
+                      />
+                    </div>
+                  </Accordion.Body>
+                </Accordion.Item>
+              </RoleView>
+              <Accordion.Item eventKey="2">
+                <Accordion.Header>Bussing Data</Accordion.Header>
+                <Accordion.Body>
+                  <div className="d-grid gap-2">
+                    <MenuButton
+                      title="Members On The Way"
+                      number={stream?.bussingMembersOnTheWayCount.toString()}
+                      color="yellow"
+                      iconBg
+                      noCaption
+                    />
+                    <MenuButton
+                      title="Members That Have Arrived"
+                      number={stream?.bussingMembersHaveArrivedCount.toString()}
+                      color="green"
+                      iconBg
+                      noCaption
+                    />
+                    <MenuButton
+                      title="Busses On The Way"
+                      number={stream?.bussesOnTheWayCount.toString()}
+                      color="yellow"
+                      iconBg
+                      noCaption
+                    />
+                    <MenuButton
+                      title="Busses That Have Arrived"
+                      number={stream?.bussesThatArrivedCount.toString()}
+                      color="green"
+                      iconBg
+                      noCaption
+                    />
+                  </div>
+                </Accordion.Body>
+              </Accordion.Item>
+            </Accordion>
+          </ApolloWrapper>
         </>
       </ApolloWrapper>
     </PullToRefresh>
