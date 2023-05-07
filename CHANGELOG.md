@@ -1,3 +1,15 @@
+#### 7.6.6 (2023-05-07)
+
+##### New Features
+
+*  implement more description for venue map icons ([abbdebf1](https://github.com/firstlovecenter/fl-pastoral-care/commit/abbdebf1503315579857b9bae3a3350fcc7eae51))
+*  implement more description for fellowship map icons ([7479c7bd](https://github.com/firstlovecenter/fl-pastoral-care/commit/7479c7bdd40415ec9a6430bc18befd6a4969282a))
+
+##### Bug Fixes
+
+*  implement better more descriptive map info window ([b75f3aea](https://github.com/firstlovecenter/fl-pastoral-care/commit/b75f3aea6446546181e9076531a538d22ab8d71d))
+*  update 'invitation by friend' to 'invitation by friend or family' ([e07293f0](https://github.com/firstlovecenter/fl-pastoral-care/commit/e07293f0d9fcd4f81886dbd44b209b81f2d483a7))
+
 #### 7.6.5 (2023-05-05)
 
 ##### Bug Fixes
