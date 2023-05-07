@@ -5,6 +5,10 @@
   text-align: center;
 }
 
+.gm-style-iw-t {
+  background-color: var(--card) !important;
+}
+
 .info-window-header {
   font-size: 16px;
   font-weight: bold;
@@ -13,13 +17,16 @@
 
 .info-window-text {
   font-size: 12px;
-  font-weight: bold;
   color: black;
 }
 
 .map-btn {
   width: 180px;
   text-align: left;
+}
+
+.lightblue {
+  color: #181e77 !important;
 }
 
 .indoor-venue-label {

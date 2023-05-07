@@ -84,14 +84,20 @@ const parseMapData = (
     phone,
     WhatsApp,
   }: {
-    fellowship: string
+    fellowship: ChurchIdAndName
     council: ChurchIdAndName
     pastor: { firstName: string; lastName: string }
     phone: string
     WhatsApp: string
-  }) => {
-    return `Fellowship: ${fellowship}\n\nCouncil: ${council.name}\n\nCouncil Pastor: ${pastor.firstName} ${pastor.lastName}\n\nPhone Number: ${phone}\n\nWhatsapp Number: ${WhatsApp}`
-  }
+  }) =>
+    JSON.stringify({
+      fellowship,
+      council,
+      pastor,
+      phoneNumber: phone,
+      whatsappNumber: WhatsApp,
+    })
+
   if ('member' in place) {
     return {
       id: place.member.properties.id,
@@ -103,7 +109,7 @@ const parseMapData = (
       distance: place?.distance,
       picture: place.member.properties.pictureUrl,
       description: createMemberDescription({
-        fellowship: place.fellowship.name,
+        fellowship: place.fellowship,
         council: place.council,
         pastor: place.pastor,
         phone: place.member.properties.phoneNumber,

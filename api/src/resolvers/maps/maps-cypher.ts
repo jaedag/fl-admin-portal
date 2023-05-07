@@ -13,7 +13,8 @@ MATCH (member)-[:BELONGS_TO]->(fellowship:Fellowship)<-[:HAS*3]-(council:Council
   RETURN DISTINCT member, 
   fellowship {
     .id,
-    .name
+    .name,
+    .location
   },
   council {
     .id,
@@ -60,7 +61,8 @@ MATCH (member)-[:BELONGS_TO]->(fellowship:Fellowship)<-[:HAS*3]-(council:Council
 RETURN DISTINCT member, 
   fellowship {
     .id,
-    .name
+    .name,
+    .location
   },
   council {
     .id,

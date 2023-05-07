@@ -22,6 +22,11 @@ import './MapComponent.css'
 import { getMapIcon, getMapIconClass } from './map-utils'
 import CloudinaryImage from 'components/CloudinaryImage'
 import { FaChurch, FaLocationArrow } from 'react-icons/fa'
+import { TelephoneFill, Whatsapp } from 'react-bootstrap-icons'
+import { ChurchIdAndName } from 'global-types'
+import { ChurchContext } from 'contexts/ChurchContext'
+import { useNavigate } from 'react-router'
+import { alertMsg } from 'global-utils'
 
 type LatLngLiteral = google.maps.LatLngLiteral
 type MapOptions = google.maps.MapOptions
@@ -73,6 +78,8 @@ const MapComponent = (props: MapComponentProps) => {
   const handleShow = () => setShow(true)
 
   const { currentUser } = useContext(MemberContext)
+  const { clickCard } = useContext(ChurchContext)
+  const navigate = useNavigate()
 
   const mapRef = useRef<GoogleMap>()
   const center = useMemo<LatLngLiteral>(
@@ -138,6 +145,11 @@ const MapComponent = (props: MapComponentProps) => {
   }
 
   const handleSetCentre = async (position: PlaceType) => {
+    if (position.position.lat === 0 && position.position.lng === 0) {
+      alertMsg('No location found')
+      return
+    }
+
     setCentre(position)
     mapRef.current?.panTo(position.position)
     setPlaces(await searchByLocation(position.position))
@@ -178,15 +190,62 @@ const MapComponent = (props: MapComponentProps) => {
   }
 
   const parseDescription = (description: string) => {
-    return description.split('\n').map((item, i) => (
-      <p key={i} className="mb-0">
-        {item.split(':').map((item, i) => (
-          <span key={i} className={i % 2 ? 'text-seconday' : 'fw-bold'}>
-            {i % 2 ? `: ${item}` : item}
-          </span>
-        ))}
-      </p>
-    ))
+    const parsedDesc: {
+      fellowship: {
+        id: string
+        name: string
+        location: { x: number; y: number }
+      }
+      council: ChurchIdAndName
+      pastor: { firstName: string; lastName: string }
+      phoneNumber: string
+      whatsappNumber: string
+    } = JSON.parse(description)
+
+    const { fellowship, council, pastor, phoneNumber, whatsappNumber } =
+      parsedDesc
+
+    return (
+      <>
+        <p
+          className="mb-2"
+          onClick={() => {
+            handleSetCentre({
+              id: fellowship.id,
+              name: fellowship.name,
+              typename: 'Fellowship',
+              position: {
+                lat: fellowship.location.y,
+                lng: fellowship.location.x,
+              },
+            })
+          }}
+        >
+          <span className="fw-bold">Fellowship:</span> {fellowship.name}
+        </p>
+        <p className="mb-2">
+          <span className="fw-bold">Council:</span> {council.name}
+        </p>
+        <p className="mb-2">
+          <span className="fw-bold">Pastor:</span> {pastor.firstName}{' '}
+          {pastor.lastName}
+        </p>
+        <p className="mb-2">
+          <a href={`tel:${phoneNumber}`}>
+            <Button size="sm" variant="primary">
+              <TelephoneFill /> Call
+            </Button>
+          </a>
+        </p>
+        <p className="mb-2">
+          <a href={`https://wa.me/${whatsappNumber}`}>
+            <Button size="sm" variant="success">
+              <Whatsapp /> WhatsApp
+            </Button>
+          </a>
+        </p>
+      </>
+    )
   }
 
   return (
@@ -217,13 +276,16 @@ const MapComponent = (props: MapComponentProps) => {
                   <Row>
                     {clickedMarker.picture && (
                       <Col>
-                        <CloudinaryImage src={clickedMarker.picture} />
+                        <CloudinaryImage
+                          src={clickedMarker.picture}
+                          className="rounded"
+                        />
                       </Col>
                     )}
                     <Col>
                       <p className="info-window-header">{`${getTypename(
                         clickedMarker
-                      )}: ${clickedMarker.name}`}</p>
+                      )} ${clickedMarker.name}`}</p>
                       <div className="info-window-text">
                         {parseDescription(clickedMarker.description ?? '')}
                       </div>
