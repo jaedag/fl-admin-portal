@@ -15,6 +15,7 @@ import {
 import {
   createFellowshipDescription,
   createMemberDescription,
+  createVenueDescription,
 } from './maps-utils'
 
 interface FellowshipResultShape {
@@ -97,6 +98,7 @@ interface OutreachVenueResultShape {
       name: string
       location: Point
       description: string
+      capacity: number
     }
   >
   distance: number
@@ -156,6 +158,10 @@ const parseMapData = (
       latitude: place.outreachVenue.properties.location.y,
       longitude: place.outreachVenue.properties.location.x,
       distance: place.distance,
+      description: createVenueDescription({
+        venue: place.outreachVenue.properties,
+        category: 'Outdoor',
+      }),
     }
   }
 

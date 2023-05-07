@@ -1,3 +1,4 @@
+import { Point } from 'neo4j-driver'
 import { ChurchIdAndName } from '../utils/types'
 
 export const createMemberDescription = ({
@@ -41,3 +42,21 @@ export const createFellowshipDescription = ({
     council,
     councilLeader,
   })
+
+export const createVenueDescription = ({
+  venue,
+  category,
+}: {
+  venue: {
+    id: string
+    name: string
+    location: Point
+    capacity: number
+  }
+  category: string
+}) => {
+  return JSON.stringify({
+    venue,
+    category,
+  })
+}

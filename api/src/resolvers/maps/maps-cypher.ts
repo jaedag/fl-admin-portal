@@ -66,10 +66,31 @@ RETURN DISTINCT outreachVenue LIMIT toInteger($limit)
 `
 
 export const memberFellowshipSearchByLocation = `
-  MATCH (this:Member {id: $id})-[:LEADS|HAS|IS_ADMIN_FOR*1..6]->(fellowship:Fellowship)
-  WITH fellowship, point.distance(point({latitude: fellowship.location.latitude, longitude: fellowship.location.longitude}), point({latitude: $latitude, longitude: $longitude})) AS distance
+  MATCH (this:Member {id: $id})-[:LEADS|HAS|IS_ADMIN_FOR*1..6]->(fellowship:Fellowship)<-[:LEADS]-(fellowshipLeader:Member)
+  MATCH (fellowship)<-[:HAS]-(:Bacenta)<-[:HAS]-(:Constituency)<-[:HAS]-(council:Council)<-[:LEADS]-(councilLeader:Member)
+  WITH fellowship, fellowshipLeader, council, councilLeader, point.distance(point({latitude: fellowship.location.latitude, longitude: fellowship.location.longitude}), point({latitude: $latitude, longitude: $longitude})) AS distance
   WHERE distance <= 5000
-  RETURN DISTINCT fellowship, distance ORDER BY distance, fellowship.name ASC LIMIT 30
+  RETURN DISTINCT fellowship,
+  fellowshipLeader {
+    .id,
+    .firstName,
+    .lastName,
+    .phoneNumber,
+    .whatsappNumber,
+    .pictureUrl
+  },
+  council {
+    .id,
+    .name
+  },
+  councilLeader {
+    .id,
+    .firstName,
+    .lastName,
+    .phoneNumber,
+    .whatsappNumber,
+    .pictureUrl
+  }, distance ORDER BY distance, fellowship.name ASC LIMIT 30
 `
 
 export const memberMemberSearchByLocation = `

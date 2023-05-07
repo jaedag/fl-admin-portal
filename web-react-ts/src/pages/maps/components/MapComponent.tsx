@@ -359,12 +359,43 @@ const MapComponent = (props: MapComponentProps) => {
     )
   }
 
+  const parseVenueDesc = (description: string) => {
+    const parsedDesc: {
+      venue: {
+        id: string
+        name: string
+        capacity: unknown
+      }
+      category: 'Outdoor' | 'Indoor'
+    } = JSON.parse(description)
+
+    const { venue, category } = parsedDesc
+
+    return (
+      <>
+        <p className="mb-2">
+          <span className="fw-bold">Capacity:</span>{' '}
+          {venue.capacity?.low ?? venue.capacity}
+        </p>
+        <p className="mb-2">
+          <span className="fw-bold">Category:</span> {category}
+        </p>
+        <p className="mb-2">
+          <span className="fw-bold">Area:</span> {venue.name}
+        </p>
+      </>
+    )
+  }
+
   const chooseParsingFunction = (place: PlaceType) => {
     switch (place.typename) {
       case 'Member':
         return parseMemberDesc(place.description ?? '')
       case 'Fellowship':
         return parseFellowshipDesc(place.description ?? '')
+      case 'IndoorVenue':
+      case 'OutdoorVenue':
+        return parseVenueDesc(place.description ?? '')
       default:
         return ''
     }
