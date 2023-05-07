@@ -486,7 +486,7 @@ extend type Stream {
     @cypher(
       statement: "MATCH (this)-[:HAS*3]->(bacentas:IC:Bacenta:Active) RETURN COUNT(DISTINCT bacentas)"
     )
-  vacationIcBacentaCount: Int
+    : Int
     @cypher(
       statement: "MATCH (this)-[:HAS*3]-(bacentas:IC:Bacenta:Vacation) RETURN COUNT(DISTINCT bacentas)"
     )
@@ -723,7 +723,7 @@ extend type Constituency {
       RETURN DISTINCT bacentas
       """
     )
-  bacentasNoActivityCoun(arrivalDate: String): Int
+  bacentasNoActivityCount(arrivalDate: String): Int
     @cypher(
       statement: """
       MATCH (this)-[:HAS]->(bacentas:Active:Bacenta)
