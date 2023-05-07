@@ -364,7 +364,7 @@ const MapComponent = (props: MapComponentProps) => {
       venue: {
         id: string
         name: string
-        capacity: unknown
+        capacity: { low: number }
       }
       category: 'Outdoor' | 'Indoor'
     } = JSON.parse(description)
