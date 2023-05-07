@@ -1,10 +1,11 @@
 import React from 'react'
 import { Dropdown } from 'react-bootstrap'
 import { GearFill } from 'react-bootstrap-icons'
+import './Arrivals.css'
 
 export type MenuItemsProps = {
-  title: string
-  onClick: () => void
+  title?: string
+  onClick?: () => void
 }[]
 
 export type ArrivalsMenuDropdownProps = {
@@ -13,7 +14,7 @@ export type ArrivalsMenuDropdownProps = {
 
 const ArrivalsMenuDropdown = ({ menuItems }: ArrivalsMenuDropdownProps) => {
   return (
-    <Dropdown className="border-none text-end">
+    <Dropdown className="border-none text-end py-1 arrivals-menu-dropdown">
       <Dropdown.Toggle variant="danger">
         <GearFill /> Settings
       </Dropdown.Toggle>
