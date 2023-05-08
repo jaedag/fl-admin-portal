@@ -35,6 +35,7 @@ import PullToRefresh from 'react-simple-pull-to-refresh'
 import ArrivalsMenuDropdown from './ArrivalsMenuDropdown'
 import Input from 'components/formik/Input'
 import { AiOutlineSend } from 'react-icons/ai'
+import { ChurchContext } from 'contexts/ChurchContext'
 
 type DateFormOptions = {
   arrivalDate: string
@@ -43,6 +44,7 @@ type DateFormOptions = {
 const CouncilDashboard = () => {
   const { isOpen, togglePopup } = usePopup()
   const { currentUser } = useContext(MemberContext)
+  const { arrivalDate, setArrivalDate } = useContext(ChurchContext)
   const navigate = useNavigate()
   const today = new Date().toISOString().slice(0, 10)
   const { data, loading, error } = useQuery(COUNCIL_ARRIVALS_DASHBOARD, {
@@ -64,7 +66,7 @@ const CouncilDashboard = () => {
   })
 
   const [MakeCouncilArrivalsAdmin] = useMutation(MAKE_COUNCILARRIVALS_ADMIN)
-  const council = data?.councils[0]
+  const council = dashboardData?.councils[0]
 
   const initialValues: AdminFormOptions = {
     adminName: council?.arrivalsAdmin
@@ -117,7 +119,7 @@ const CouncilDashboard = () => {
     councilArrivalsDashboard({
       variables: {
         id: currentUser?.currentChurch.id,
-        arrivalDate: today,
+        arrivalDate: arrivalDate,
       },
     })
   }, [])
@@ -127,7 +129,7 @@ const CouncilDashboard = () => {
   })
 
   const dateInitialValues: DateFormOptions = {
-    arrivalDate: today,
+    arrivalDate: arrivalDate,
   }
 
   const onDateSubmit = (
@@ -139,9 +141,10 @@ const CouncilDashboard = () => {
     councilArrivalsDashboard({
       variables: {
         id: currentUser?.currentChurch.id,
-        arrivalDate: values.arrivalDate,
+        arrivalDate: arrivalDate,
       },
     })
+    setArrivalDate(values.arrivalDate)
     onSubmitProps.setSubmitting(false)
   }
   return (
