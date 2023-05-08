@@ -32,6 +32,7 @@ import ErrorText from 'components/ErrorText'
 import PullToRefresh from 'react-simple-pull-to-refresh'
 import Input from 'components/formik/Input'
 import { AiOutlineSend } from 'react-icons/ai'
+import { ChurchContext } from 'contexts/ChurchContext'
 
 type DateFormOptions = {
   arrivalDate: string
@@ -40,6 +41,7 @@ type DateFormOptions = {
 const StreamDashboard = () => {
   const { isOpen, togglePopup } = usePopup()
   const { currentUser } = useContext(MemberContext)
+  const { arrivalDate, setArrivalDate } = useContext(ChurchContext)
   const navigate = useNavigate()
   const today = new Date().toISOString().slice(0, 10)
   const { data, loading, error } = useQuery(STREAM_ARRIVALS_DASHBOARD, {
@@ -61,7 +63,7 @@ const StreamDashboard = () => {
   })
 
   const [MakeStreamArrivalsAdmin] = useMutation(MAKE_STREAMARRIVALS_ADMIN)
-  const stream: StreamWithArrivals = data?.streams[0]
+  const stream: StreamWithArrivals = dashboardData?.streams[0]
 
   const initialValues: AdminFormOptions = {
     adminName: stream?.arrivalsAdmin
@@ -122,7 +124,7 @@ const StreamDashboard = () => {
     streamArrivalsDashboard({
       variables: {
         id: currentUser?.currentChurch.id,
-        arrivalDate: today,
+        arrivalDate: arrivalDate,
       },
     })
   }, [])
@@ -132,7 +134,7 @@ const StreamDashboard = () => {
   })
 
   const dateInitialValues: DateFormOptions = {
-    arrivalDate: today,
+    arrivalDate: arrivalDate,
   }
 
   const onDateSubmit = (
@@ -147,6 +149,7 @@ const StreamDashboard = () => {
         arrivalDate: values.arrivalDate,
       },
     })
+    setArrivalDate(values.arrivalDate)
     onSubmitProps.setSubmitting(false)
   }
 

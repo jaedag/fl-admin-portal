@@ -25,6 +25,7 @@ import PullToRefresh from 'react-simple-pull-to-refresh'
 import ArrivalsMenuDropdown from './ArrivalsMenuDropdown'
 import { AiOutlineSend } from 'react-icons/ai'
 import Input from 'components/formik/Input'
+import { ChurchContext } from 'contexts/ChurchContext'
 
 export type AdminFormOptions = {
   adminName: string
@@ -39,6 +40,7 @@ const ConstituencyDashboard = () => {
   const { isOpen, togglePopup } = usePopup()
   const { currentUser } = useContext(MemberContext)
   const navigate = useNavigate()
+  const { arrivalDate, setArrivalDate } = useContext(ChurchContext)
   const today = new Date().toISOString().slice(0, 10)
   const { data, loading, error } = useQuery(CONSTITUENCY_ARRIVALS_DASHBOARD, {
     variables: { id: currentUser?.currentChurch.id, arrivalDate: today },
@@ -61,7 +63,7 @@ const ConstituencyDashboard = () => {
   const [MakeConstituencyArrivalsAdmin] = useMutation(
     MAKE_CONSTITUENCYARRIVALS_ADMIN
   )
-  const constituency = data?.constituencies[0]
+  const constituency = dashboardData?.constituencies[0]
 
   const initialValues: AdminFormOptions = {
     adminName: constituency?.arrivalsAdmin
@@ -104,7 +106,7 @@ const ConstituencyDashboard = () => {
     constituencyArrivalsDashboard({
       variables: {
         id: currentUser?.currentChurch.id,
-        arrivalDate: today,
+        arrivalDate: arrivalDate,
       },
     })
   }, [])
@@ -114,7 +116,7 @@ const ConstituencyDashboard = () => {
   })
 
   const dateInitialValues: DateFormOptions = {
-    arrivalDate: today,
+    arrivalDate: arrivalDate,
   }
 
   const onDateSubmit = (
@@ -129,6 +131,7 @@ const ConstituencyDashboard = () => {
         arrivalDate: values.arrivalDate,
       },
     })
+    setArrivalDate(values.arrivalDate)
     onSubmitProps.setSubmitting(false)
   }
 
