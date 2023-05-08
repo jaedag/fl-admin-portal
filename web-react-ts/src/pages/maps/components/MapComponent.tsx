@@ -26,7 +26,7 @@ import {
   getMapIconClass,
 } from './map-utils'
 import CloudinaryImage from 'components/CloudinaryImage'
-import { FaChurch, FaLocationArrow } from 'react-icons/fa'
+import { FaChurch, FaDirections, FaLocationArrow } from 'react-icons/fa'
 import { TelephoneFill, Whatsapp } from 'react-bootstrap-icons'
 import { ChurchIdAndName } from 'global-types'
 import { ChurchContext } from 'contexts/ChurchContext'
@@ -150,7 +150,7 @@ const MapComponent = (props: MapComponentProps) => {
   }
 
   const handleSetCentre = async (position: PlaceType) => {
-    if (position.position.lat === 0 && position.position.lng === 0) {
+    if (!position.position.lat && !position.position.lng) {
       alertMsg('No location found')
       return
     }
@@ -264,6 +264,19 @@ const MapComponent = (props: MapComponentProps) => {
           >
             View Member Profile
           </Button>
+
+          <Button
+            size="sm"
+            className="mt-2"
+            variant="outline-info"
+            onClick={() =>
+              window.open(
+                `https://www.google.com/maps/search/?api=1&query=${member.location.y}%2C${member.location.x}`
+              )
+            }
+          >
+            Get Directions <FaDirections />
+          </Button>
         </Card.Footer>
       </>
     )
@@ -292,10 +305,28 @@ const MapComponent = (props: MapComponentProps) => {
               id: fellowshipLeader.id,
               name:
                 fellowshipLeader.firstName + ' ' + fellowshipLeader.lastName,
+              typename: 'Fellowship',
+              position: {
+                lat: fellowshipLeader.location?.y,
+                lng: fellowshipLeader.location?.x,
+              },
+            })
+          }}
+        >
+          <span className="fw-bold">Fellowship Leader:</span>{' '}
+          {fellowshipLeader.firstName} {fellowshipLeader.lastName}
+        </p>
+        <p
+          className="mb-2"
+          onClick={() => {
+            handleSetCentre({
+              id: fellowshipLeader.id,
+              name:
+                fellowshipLeader.firstName + ' ' + fellowshipLeader.lastName,
               typename: 'Member',
               position: {
-                lat: fellowshipLeader.location.y,
-                lng: fellowshipLeader.location.x,
+                lat: fellowshipLeader.location?.y,
+                lng: fellowshipLeader.location?.x,
               },
             })
           }}
@@ -309,26 +340,8 @@ const MapComponent = (props: MapComponentProps) => {
           <span className="fw-bold">Council Leader:</span>{' '}
           {councilLeader.firstName} {councilLeader.lastName}
         </p>
-        <p
-          className="mb-2"
-          onClick={() => {
-            handleSetCentre({
-              id: fellowshipLeader.id,
-              name:
-                fellowshipLeader.firstName + ' ' + fellowshipLeader.lastName,
-              typename: 'Fellowship',
-              position: {
-                lat: fellowshipLeader.location.y,
-                lng: fellowshipLeader.location.x,
-              },
-            })
-          }}
-        >
-          <span className="fw-bold">Fellowship Leader:</span>{' '}
-          {fellowshipLeader.firstName} {fellowshipLeader.lastName}
-        </p>
         <Row className="mb-2">
-          <Col>
+          <Col className="col-auto">
             <a href={`tel:${fellowshipLeader.phoneNumber}`}>
               <Button size="sm" variant="primary">
                 <TelephoneFill /> Call
@@ -353,6 +366,19 @@ const MapComponent = (props: MapComponentProps) => {
             }}
           >
             View Fellowship Profile
+          </Button>
+
+          <Button
+            size="sm"
+            className="mt-2"
+            variant="outline-info"
+            onClick={() =>
+              window.open(
+                `https://www.google.com/maps/search/?api=1&query=${fellowship.location.y}%2C${fellowship.location.x}`
+              )
+            }
+          >
+            Get Directions <FaDirections />
           </Button>
         </Card.Footer>
       </>
