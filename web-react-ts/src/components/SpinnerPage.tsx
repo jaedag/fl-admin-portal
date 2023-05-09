@@ -5,7 +5,7 @@ import './SpinnerPage.css'
 const SpinnerPage = () => {
   return (
     <div className="row align-items-center center-page">
-      <div className="col text-center ">
+      <div className="col text-center">
         <Spinner animation="border" className="spinner-large" variant="white" />
       </div>
     </div>
