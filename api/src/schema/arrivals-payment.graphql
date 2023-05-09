@@ -1,5 +1,68 @@
+extend type GatheringService {
+  vehiclesHaveBeenPaidCount(arrivalDate: String!): Int!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS*4]->(bacentas:Active:Bacenta)
+      MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
+      WHERE date.date = date($arrivalDate)
+      MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
+        WHERE record.vehicleTopUp > 0 AND record.transactionStatus = 'success'
+      WITH DISTINCT record
+      RETURN COUNT(record)
+      """
+    )
+  vehiclesToBePaidCount(arrivalDate: String!): Int!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS*4]->(bacentas:Active:Bacenta)
+      MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
+      WHERE date.date = date($arrivalDate)
+      MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
+        WHERE record.vehicleTopUp > 0 AND record.transactionStatus IS NULL
+      WITH DISTINCT record
+      RETURN COUNT(record)
+      """
+    )
+  vehicleAmountHasBeenPaid(arrivalDate: String!): Float!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS*4]->(bacentas:Active:Bacenta)
+      MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
+      WHERE date.date = date($arrivalDate)
+      MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
+        WHERE record.vehicleTopUp > 0 AND record.transactionStatus = 'success'
+      WITH DISTINCT record
+      RETURN SUM(record.vehicleTopUp)
+      """
+    )
+  vehicleAmountToBePaid(arrivalDate: String!): Float!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS*4]->(bacentas:Active:Bacenta)
+      MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
+      WHERE date.date = date($arrivalDate)
+      MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
+        WHERE record.vehicleTopUp > 0 AND record.transactionStatus IS NULL
+      WITH DISTINCT record
+      RETURN SUM(record.vehicleTopUp)
+      """
+    )
+  bacentasToBePaid(arrivalDate: String!): [Bacenta!]!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS*4]->(bacentas:Active:Bacenta)
+      MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
+      WHERE date.date = date($arrivalDate)
+      MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
+        WHERE record.vehicleTopUp > 0
+      WITH DISTINCT bacentas
+      RETURN bacentas
+      """
+    )
+}
+
 extend type Stream {
-  vehiclesHaveBeenPaidCount(arrivalDate: String): Int!
+  vehiclesHaveBeenPaidCount(arrivalDate: String!): Int!
     @cypher(
       statement: """
       MATCH (this)-[:HAS*3]->(bacentas:Active:Bacenta)
@@ -11,7 +74,7 @@ extend type Stream {
       RETURN COUNT(record)
       """
     )
-  vehiclesToBePaidCount(arrivalDate: String): Int!
+  vehiclesToBePaidCount(arrivalDate: String!): Int!
     @cypher(
       statement: """
       MATCH (this)-[:HAS*3]->(bacentas:Active:Bacenta)
@@ -23,7 +86,7 @@ extend type Stream {
       RETURN COUNT(record)
       """
     )
-  vehicleAmountHasBeenPaid(arrivalDate: String): Float!
+  vehicleAmountHasBeenPaid(arrivalDate: String!): Float!
     @cypher(
       statement: """
       MATCH (this)-[:HAS*3]->(bacentas:Active:Bacenta)
@@ -35,7 +98,7 @@ extend type Stream {
       RETURN SUM(record.vehicleTopUp)
       """
     )
-  vehicleAmountToBePaid(arrivalDate: String): Float!
+  vehicleAmountToBePaid(arrivalDate: String!): Float!
     @cypher(
       statement: """
       MATCH (this)-[:HAS*3]->(bacentas:Active:Bacenta)
@@ -47,7 +110,7 @@ extend type Stream {
       RETURN SUM(record.vehicleTopUp)
       """
     )
-  bacentasToBePaid(arrivalDate: String): [Bacenta!]!
+  bacentasToBePaid(arrivalDate: String!): [Bacenta!]!
     @cypher(
       statement: """
       MATCH (this)-[:HAS*3]->(bacentas:Active:Bacenta)
@@ -64,7 +127,7 @@ extend type Stream {
 extend type Council {
   arrivalsPayers: [Member!]!
     @relationship(type: "IS_ARRIVALS_PAYER_FOR", direction: IN)
-  vehiclesHaveBeenPaidCount(arrivalDate: String): Int!
+  vehiclesHaveBeenPaidCount(arrivalDate: String!): Int!
     @cypher(
       statement: """
       MATCH (this)-[:HAS*2]->(bacentas:Active:Bacenta)
@@ -76,7 +139,7 @@ extend type Council {
       RETURN COUNT(record)
       """
     )
-  vehiclesToBePaidCount(arrivalDate: String): Int!
+  vehiclesToBePaidCount(arrivalDate: String!): Int!
     @cypher(
       statement: """
       MATCH (this)-[:HAS*2]->(bacentas:Active:Bacenta)
@@ -88,7 +151,7 @@ extend type Council {
       RETURN COUNT(record)
       """
     )
-  vehicleAmountHasBeenPaid(arrivalDate: String): Float!
+  vehicleAmountHasBeenPaid(arrivalDate: String!): Float!
     @cypher(
       statement: """
       MATCH (this)-[:HAS*2]->(bacentas:Active:Bacenta)
@@ -100,7 +163,7 @@ extend type Council {
       RETURN SUM(record.vehicleTopUp)
       """
     )
-  vehicleAmountToBePaid(arrivalDate: String): Float!
+  vehicleAmountToBePaid(arrivalDate: String!): Float!
     @cypher(
       statement: """
       MATCH (this)-[:HAS*2]->(bacentas:Active:Bacenta)
@@ -112,7 +175,7 @@ extend type Council {
       RETURN SUM(record.vehicleTopUp)
       """
     )
-  bacentasToBePaid(arrivalDate: String): [Bacenta!]!
+  bacentasToBePaid(arrivalDate: String!): [Bacenta!]!
     @cypher(
       statement: """
       MATCH (this)-[:HAS*2]->(bacentas:Active:Bacenta)

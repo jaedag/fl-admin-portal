@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client'
 
 export const CONSTITUENCY_ARRIVALS_DASHBOARD = gql`
-  query constituencyArrivalsDashboard($id: ID!, $arrivalDate: String) {
+  query constituencyArrivalsDashboard($id: ID!, $arrivalDate: String!) {
     constituencies(where: { id: $id }, options: { limit: 1 }) {
       id
       name
@@ -43,7 +43,7 @@ export const CONSTITUENCY_ARRIVALS_DASHBOARD = gql`
 `
 
 export const COUNCIL_ARRIVALS_DASHBOARD = gql`
-  query councilArrivalsDashboard($id: ID!, $arrivalDate: String) {
+  query councilArrivalsDashboard($id: ID!, $arrivalDate: String!) {
     councils(where: { id: $id }, options: { limit: 1 }) {
       id
       name
@@ -85,7 +85,7 @@ export const COUNCIL_ARRIVALS_DASHBOARD = gql`
 `
 
 export const STREAM_ARRIVALS_DASHBOARD = gql`
-  query streamArrivalsDashboard($id: ID!, $arrivalDate: String) {
+  query streamArrivalsDashboard($id: ID!, $arrivalDate: String!) {
     streams(where: { id: $id }, options: { limit: 1 }) {
       id
       name
@@ -127,7 +127,7 @@ export const GATHERINGSERVICE_ARRIVALS_DASHBOARD = gql`
   query gatheringArrivalsDashboard(
     $id: ID!
     $date: Date!
-    $arrivalDate: String
+    $arrivalDate: String!
   ) {
     gatheringServices(where: { id: $id }, options: { limit: 1 }) {
       id
@@ -145,10 +145,19 @@ export const GATHERINGSERVICE_ARRIVALS_DASHBOARD = gql`
       bacentasMobilisingCount(arrivalDate: $arrivalDate)
       bacentasOnTheWayCount(arrivalDate: $arrivalDate)
       bacentasBelow8Count(arrivalDate: $arrivalDate)
+
       bacentasHaveArrivedCount(arrivalDate: $arrivalDate)
       bussingMembersOnTheWayCount(arrivalDate: $arrivalDate)
       bussingMembersHaveArrivedCount(arrivalDate: $arrivalDate)
+      bussesOnTheWayCount(arrivalDate: $arrivalDate)
       bussesThatArrivedCount(arrivalDate: $arrivalDate)
+
+      vehiclesNotCountedCount(arrivalDate: $arrivalDate)
+
+      vehiclesToBePaidCount(arrivalDate: $arrivalDate)
+      vehiclesHaveBeenPaidCount(arrivalDate: $arrivalDate)
+      vehicleAmountToBePaid(arrivalDate: $arrivalDate)
+      vehicleAmountHasBeenPaid(arrivalDate: $arrivalDate)
     }
     timeGraphs(where: { date: $date }) {
       id

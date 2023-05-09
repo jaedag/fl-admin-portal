@@ -215,8 +215,8 @@ const CouncilDashboard = () => {
                     <Col>
                       <RoleView
                         roles={[
-                          ...permitAdmin('GatheringService'),
-                          ...permitArrivals('GatheringService'),
+                          ...permitAdmin('Council'),
+                          ...permitArrivals('Stream'),
                         ]}
                       >
                         <ArrivalsMenuDropdown menuItems={ArrivalsMenu} />

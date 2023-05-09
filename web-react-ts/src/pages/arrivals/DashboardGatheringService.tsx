@@ -11,12 +11,16 @@ import {
 import { GATHERINGSERVICE_ARRIVALS_DASHBOARD } from './arrivalsQueries'
 import { alertMsg, SHORT_POLL_INTERVAL, throwToSentry } from 'global-utils'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
-import { Col, Container, Row, Button } from 'react-bootstrap'
+import { Accordion, Col, Container, Row } from 'react-bootstrap'
 import Popup from 'components/Popup/Popup'
 import { Form, Formik, FormikHelpers } from 'formik'
 import SubmitButton from 'components/formik/SubmitButton'
 import RoleView from 'auth/RoleView'
-import { permitAdmin } from 'permission-utils'
+import {
+  permitAdmin,
+  permitArrivals,
+  permitLeaderAdmin,
+} from 'permission-utils'
 import MenuButton from 'components/buttons/MenuButton'
 import HeadingSecondary from 'components/HeadingSecondary'
 import { getHumanReadableDate } from 'jd-date-utils'
@@ -274,74 +278,148 @@ const GatheringServiceDashboard = () => {
               data={dashboardData}
               error={dashboardError}
             >
-              <>
-                <MenuButton
-                  title="Bacentas With No Activity"
-                  onClick={() => navigate('/arrivals/bacentas-no-activity')}
-                  number={gatheringService?.bacentasNoActivityCount.toString()}
-                  color="red"
-                  iconBg
-                  noCaption
-                />
-                <MenuButton
-                  title="Bacentas Mobilising"
-                  onClick={() => navigate('/arrivals/bacentas-mobilising')}
-                  number={gatheringService?.bacentasMobilisingCount.toString()}
-                  color="orange"
-                  iconBg
-                  noCaption
-                />
-                <MenuButton
-                  title="Bacentas On The Way"
-                  onClick={() => navigate('/arrivals/bacentas-on-the-way')}
-                  number={gatheringService?.bacentasOnTheWayCount.toString()}
-                  color="yellow"
-                  iconBg
-                  noCaption
-                />
+              <Accordion defaultActiveKey="0">
+                <Accordion.Item eventKey="0">
+                  <Accordion.Header>Bacenta Monitoring</Accordion.Header>
+                  <Accordion.Body>
+                    <div className="d-grid gap-2">
+                      <MenuButton
+                        title="Bacentas With No Activity"
+                        onClick={() =>
+                          navigate('/arrivals/bacentas-no-activity')
+                        }
+                        number={gatheringService?.bacentasNoActivityCount.toString()}
+                        color="red"
+                        iconBg
+                        noCaption
+                      />
+                      <MenuButton
+                        title="Bacentas Mobilising"
+                        onClick={() =>
+                          navigate('/arrivals/bacentas-mobilising')
+                        }
+                        number={gatheringService?.bacentasMobilisingCount.toString()}
+                        color="orange"
+                        iconBg
+                        noCaption
+                      />
+                      <MenuButton
+                        title="Bacentas On The Way"
+                        onClick={() =>
+                          navigate('/arrivals/bacentas-on-the-way')
+                        }
+                        number={gatheringService?.bacentasOnTheWayCount.toString()}
+                        color="yellow"
+                        iconBg
+                        noCaption
+                      />
 
-                <MenuButton
-                  title={`Bacentas That Didn't Bus`}
-                  onClick={() => navigate('/arrivals/bacentas-below-8')}
-                  number={gatheringService?.bacentasBelow8Count.toString()}
-                  iconBg
-                  color="red"
-                  noCaption
-                />
+                      <MenuButton
+                        title="Bacentas That Didn't Bus"
+                        onClick={() => navigate('/arrivals/bacentas-below-8')}
+                        number={gatheringService?.bacentasBelow8Count.toString()}
+                        iconBg
+                        color="red"
+                        noCaption
+                      />
 
-                <MenuButton
-                  title="Bacentas That Have Arrived"
-                  onClick={() => navigate('/arrivals/bacentas-have-arrived')}
-                  number={gatheringService?.bacentasHaveArrivedCount.toString()}
-                  color="green"
-                  iconBg
-                  noCaption
-                />
+                      <MenuButton
+                        title="Bacentas That Have Arrived"
+                        onClick={() =>
+                          navigate('/arrivals/bacentas-have-arrived')
+                        }
+                        number={gatheringService?.bacentasHaveArrivedCount.toString()}
+                        iconBg
+                        color="green"
+                        noCaption
+                      />
+                    </div>
+                  </Accordion.Body>
+                </Accordion.Item>
 
-                <div className="mt-5 d-grid gap-2">
-                  <MenuButton
-                    title="Members On The Way"
-                    number={gatheringService?.bussingMembersOnTheWayCount.toString()}
-                    color="yellow"
-                    iconBg
-                    noCaption
-                  />
-                  <MenuButton
-                    title="Members That Have Arrived"
-                    number={gatheringService?.bussingMembersHaveArrivedCount.toString()}
-                    color="green"
-                    iconBg
-                    noCaption
-                  />
-                  <MenuButton
-                    title="Busses That Have Arrived"
-                    number={gatheringService?.bussesThatArrivedCount.toString()}
-                    color="green"
-                    iconBg
-                    noCaption
-                  />
-                </div>
-              </>
+                <RoleView
+                  roles={[
+                    ...permitArrivals('GatheringService'),
+                    ...permitLeaderAdmin('GatheringService'),
+                  ]}
+                >
+                  <Accordion.Item eventKey="1">
+                    <Accordion.Header>Financial Data</Accordion.Header>
+                    <Accordion.Body>
+                      <div className="d-grid gap-2">
+                        <MenuButton
+                          title="Vehicles That Have Been Paid"
+                          onClick={() => navigate('#')}
+                          number={gatheringService?.vehiclesHaveBeenPaidCount.toString()}
+                          color="green"
+                          iconBg
+                          noCaption
+                        />
+                        <MenuButton
+                          title="Vehicles To Be Paid"
+                          onClick={() => navigate('#')}
+                          number={gatheringService?.vehiclesToBePaidCount.toString()}
+                          color="yellow"
+                          iconBg
+                          noCaption
+                        />
+
+                        <MenuButton
+                          title="Amount That Has Been Paid"
+                          onClick={() => navigate('#')}
+                          number={gatheringService?.vehicleAmountHasBeenPaid.toString()}
+                          color="green"
+                          noCaption
+                          iconBg
+                        />
+                        <MenuButton
+                          title="Amount To Be Paid"
+                          onClick={() => navigate('#')}
+                          number={gatheringService?.vehicleAmountToBePaid.toString()}
+                          color="yellow"
+                          noCaption
+                          iconBg
+                        />
+                      </div>
+                    </Accordion.Body>
+                  </Accordion.Item>
+                </RoleView>
+                <Accordion.Item eventKey="2">
+                  <Accordion.Header>Bussing Data</Accordion.Header>
+                  <Accordion.Body>
+                    <div className="d-grid gap-2">
+                      <MenuButton
+                        title="Members On The Way"
+                        number={gatheringService?.bussingMembersOnTheWayCount.toString()}
+                        color="yellow"
+                        iconBg
+                        noCaption
+                      />
+                      <MenuButton
+                        title="Members That Have Arrived"
+                        number={gatheringService?.bussingMembersHaveArrivedCount.toString()}
+                        color="green"
+                        iconBg
+                        noCaption
+                      />
+                      <MenuButton
+                        title="Busses On The Way"
+                        number={gatheringService?.bussesOnTheWayCount.toString()}
+                        color="yellow"
+                        iconBg
+                        noCaption
+                      />
+                      <MenuButton
+                        title="Busses That Have Arrived"
+                        number={gatheringService?.bussesThatArrivedCount.toString()}
+                        color="green"
+                        iconBg
+                        noCaption
+                      />
+                    </div>
+                  </Accordion.Body>
+                </Accordion.Item>
+              </Accordion>
             </ApolloWrapper>
           </div>
         </Container>

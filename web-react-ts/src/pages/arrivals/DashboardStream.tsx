@@ -343,8 +343,9 @@ const StreamDashboard = () => {
                         title="Amount That Has Been Paid"
                         onClick={() => navigate('#')}
                         number={stream?.vehicleAmountHasBeenPaid.toString()}
-                        color="yellow"
+                        color="green"
                         noCaption
+                        iconBg
                       />
                       <MenuButton
                         title="Amount To Be Paid"
@@ -352,6 +353,7 @@ const StreamDashboard = () => {
                         number={stream?.vehicleAmountToBePaid.toString()}
                         color="yellow"
                         noCaption
+                        iconBg
                       />
                     </div>
                   </Accordion.Body>
