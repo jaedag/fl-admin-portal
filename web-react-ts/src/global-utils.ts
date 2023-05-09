@@ -86,7 +86,7 @@ export const HOW_YOU_JOINED_OPTIONS: FormikSelectOptions = [
   },
   {
     key: 'I Joined After Attending A Service With A Bishop Or Pastor',
-    value: 'Service With A Bishop',
+    value: 'Service With A Pastor',
   },
   {
     key: 'I Was Invited By A Friend Or Family Member',
