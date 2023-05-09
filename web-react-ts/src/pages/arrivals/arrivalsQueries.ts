@@ -168,12 +168,12 @@ export const GATHERINGSERVICE_ARRIVALS_DASHBOARD = gql`
 `
 
 export const CONFIRM_CONSTITUENCY_ARRIVALS = gql`
-  query confirmConstituencyArrivals($id: ID!) {
+  query confirmConstituencyArrivals($id: ID!, $arrivalDate: String!) {
     constituencies(where: { id: $id }, options: { limit: 1 }) {
       id
       name
       stream_name
-      bacentasOnTheWay {
+      bacentasOnTheWay(arrivalDate: $arrivalDate) {
         id
         name
         leader {
@@ -200,12 +200,12 @@ export const CONFIRM_CONSTITUENCY_ARRIVALS = gql`
 `
 
 export const CONFIRM_COUNCIL_ARRIVALS = gql`
-  query confirmCouncilArrivals($id: ID!) {
+  query confirmCouncilArrivals($id: ID!, $arrivalDate: String!) {
     councils(where: { id: $id }, options: { limit: 1 }) {
       id
       name
       stream_name
-      bacentasOnTheWay {
+      bacentasOnTheWay(arrivalDate: $arrivalDate) {
         id
         name
         leader {
@@ -232,12 +232,12 @@ export const CONFIRM_COUNCIL_ARRIVALS = gql`
 `
 
 export const CONFIRM_STREAM_ARRIVALS = gql`
-  query confirmStreamArrivals($id: ID!) {
+  query confirmStreamArrivals($id: ID!, $arrivalDate: String!) {
     streams(where: { id: $id }, options: { limit: 1 }) {
       id
       name
       stream_name
-      bacentasOnTheWay {
+      bacentasOnTheWay(arrivalDate: $arrivalDate) {
         id
         name
         leader {
@@ -264,12 +264,12 @@ export const CONFIRM_STREAM_ARRIVALS = gql`
 `
 
 export const CONFIRM_GATHERINGSERVICE_ARRIVALS = gql`
-  query confirmGatheringArrivals($id: ID!) {
+  query confirmGatheringArrivals($id: ID!, $arrivalDate: String!) {
     gatheringServices(where: { id: $id }, options: { limit: 1 }) {
       id
       name
 
-      bacentasOnTheWay {
+      bacentasOnTheWay(arrivalDate: $arrivalDate) {
         id
         name
         leader {
