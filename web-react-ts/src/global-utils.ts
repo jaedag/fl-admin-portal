@@ -85,16 +85,16 @@ export const HOW_YOU_JOINED_OPTIONS: FormikSelectOptions = [
     value: 'Weekday Fellowship Meeting',
   },
   {
-    key: 'I Joined After Attending A Service With A Bishop Or Pastor',
-    value: 'Service With A Pastor',
-  },
-  {
     key: 'I Was Invited By A Friend Or Family Member',
     value: 'Invitation By Friend Or Family',
   },
   {
     key: 'A Person I Had Never Met Spoke To Me And Invited Me',
     value: 'Invitation By Stranger',
+  },
+  {
+    key: 'I Joined After Attending A Service With A Bishop Or Pastor',
+    value: 'Service With A Pastor',
   },
   { key: 'I Joined After Attending An Area Crusade', value: 'Area Crusade' },
   { key: 'I Joined After Attending A Campus Crusade', value: 'Campus Crusade' },
