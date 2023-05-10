@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client'
 
 export const CONSTITUENCY_ARRIVALS_DASHBOARD = gql`
-  query constituencyArrivalsDashboard($id: ID!) {
+  query constituencyArrivalsDashboard($id: ID!, $arrivalDate: String!) {
     constituencies(where: { id: $id }, options: { limit: 1 }) {
       id
       name
@@ -24,26 +24,26 @@ export const CONSTITUENCY_ARRIVALS_DASHBOARD = gql`
         fullName
         pictureUrl
       }
-      bacentasNoActivityCount
-      bacentasMobilisingCount
-      bacentasOnTheWayCount
-      bacentasBelow8Count
-      bacentasHaveArrivedCount
-      bussingMembersOnTheWayCount
-      bussingMembersHaveArrivedCount
-      bussesThatArrivedCount
+      bacentasNoActivityCount(arrivalDate: $arrivalDate)
+      bacentasMobilisingCount(arrivalDate: $arrivalDate)
+      bacentasOnTheWayCount(arrivalDate: $arrivalDate)
+      bacentasBelow8Count(arrivalDate: $arrivalDate)
+      bacentasHaveArrivedCount(arrivalDate: $arrivalDate)
+      bussingMembersOnTheWayCount(arrivalDate: $arrivalDate)
+      bussingMembersHaveArrivedCount(arrivalDate: $arrivalDate)
+      bussesThatArrivedCount(arrivalDate: $arrivalDate)
 
-      bacentasHaveArrivedCount
-      bussingMembersOnTheWayCount
-      bussingMembersHaveArrivedCount
-      bussesOnTheWayCount
-      bussesThatArrivedCount
+      bacentasHaveArrivedCount(arrivalDate: $arrivalDate)
+      bussingMembersOnTheWayCount(arrivalDate: $arrivalDate)
+      bussingMembersHaveArrivedCount(arrivalDate: $arrivalDate)
+      bussesOnTheWayCount(arrivalDate: $arrivalDate)
+      bussesThatArrivedCount(arrivalDate: $arrivalDate)
     }
   }
 `
 
 export const COUNCIL_ARRIVALS_DASHBOARD = gql`
-  query councilArrivalsDashboard($id: ID!) {
+  query councilArrivalsDashboard($id: ID!, $arrivalDate: String!) {
     councils(where: { id: $id }, options: { limit: 1 }) {
       id
       name
@@ -65,27 +65,27 @@ export const COUNCIL_ARRIVALS_DASHBOARD = gql`
         pictureUrl
       }
       constituencyCount
-      bacentasNoActivityCount
-      bacentasMobilisingCount
-      bacentasOnTheWayCount
-      bacentasBelow8Count
+      bacentasNoActivityCount(arrivalDate: $arrivalDate)
+      bacentasMobilisingCount(arrivalDate: $arrivalDate)
+      bacentasOnTheWayCount(arrivalDate: $arrivalDate)
+      bacentasBelow8Count(arrivalDate: $arrivalDate)
 
-      bacentasHaveArrivedCount
-      bussingMembersOnTheWayCount
-      bussingMembersHaveArrivedCount
-      bussesOnTheWayCount
-      bussesThatArrivedCount
+      bacentasHaveArrivedCount(arrivalDate: $arrivalDate)
+      bussingMembersOnTheWayCount(arrivalDate: $arrivalDate)
+      bussingMembersHaveArrivedCount(arrivalDate: $arrivalDate)
+      bussesOnTheWayCount(arrivalDate: $arrivalDate)
+      bussesThatArrivedCount(arrivalDate: $arrivalDate)
 
-      vehiclesToBePaidCount
-      vehiclesHaveBeenPaidCount
-      vehicleAmountToBePaid
-      vehicleAmountHasBeenPaid
+      vehiclesToBePaidCount(arrivalDate: $arrivalDate)
+      vehiclesHaveBeenPaidCount(arrivalDate: $arrivalDate)
+      vehicleAmountToBePaid(arrivalDate: $arrivalDate)
+      vehicleAmountHasBeenPaid(arrivalDate: $arrivalDate)
     }
   }
 `
 
 export const STREAM_ARRIVALS_DASHBOARD = gql`
-  query streamArrivalsDashboard($id: ID!) {
+  query streamArrivalsDashboard($id: ID!, $arrivalDate: String!) {
     streams(where: { id: $id }, options: { limit: 1 }) {
       id
       name
@@ -102,29 +102,33 @@ export const STREAM_ARRIVALS_DASHBOARD = gql`
       }
       arrivalEndTime
       councilCount
-      bacentasNoActivityCount
-      bacentasMobilisingCount
-      bacentasOnTheWayCount
-      bacentasBelow8Count
+      bacentasNoActivityCount(arrivalDate: $arrivalDate)
+      bacentasMobilisingCount(arrivalDate: $arrivalDate)
+      bacentasOnTheWayCount(arrivalDate: $arrivalDate)
+      bacentasBelow8Count(arrivalDate: $arrivalDate)
 
-      bacentasHaveArrivedCount
-      bussingMembersOnTheWayCount
-      bussingMembersHaveArrivedCount
-      bussesOnTheWayCount
-      bussesThatArrivedCount
+      bacentasHaveArrivedCount(arrivalDate: $arrivalDate)
+      bussingMembersOnTheWayCount(arrivalDate: $arrivalDate)
+      bussingMembersHaveArrivedCount(arrivalDate: $arrivalDate)
+      bussesOnTheWayCount(arrivalDate: $arrivalDate)
+      bussesThatArrivedCount(arrivalDate: $arrivalDate)
 
-      vehiclesNotCountedCount
+      vehiclesNotCountedCount(arrivalDate: $arrivalDate)
 
-      vehiclesToBePaidCount
-      vehiclesHaveBeenPaidCount
-      vehicleAmountToBePaid
-      vehicleAmountHasBeenPaid
+      vehiclesToBePaidCount(arrivalDate: $arrivalDate)
+      vehiclesHaveBeenPaidCount(arrivalDate: $arrivalDate)
+      vehicleAmountToBePaid(arrivalDate: $arrivalDate)
+      vehicleAmountHasBeenPaid(arrivalDate: $arrivalDate)
     }
   }
 `
 
 export const GATHERINGSERVICE_ARRIVALS_DASHBOARD = gql`
-  query gatheringArrivalsDashboard($id: ID!, $date: Date!) {
+  query gatheringArrivalsDashboard(
+    $id: ID!
+    $date: Date!
+    $arrivalDate: String!
+  ) {
     gatheringServices(where: { id: $id }, options: { limit: 1 }) {
       id
       name
@@ -137,14 +141,23 @@ export const GATHERINGSERVICE_ARRIVALS_DASHBOARD = gql`
         pictureUrl
       }
       streamCount
-      bacentasNoActivityCount
-      bacentasMobilisingCount
-      bacentasOnTheWayCount
-      bacentasBelow8Count
-      bacentasHaveArrivedCount
-      bussingMembersOnTheWayCount
-      bussingMembersHaveArrivedCount
-      bussesThatArrivedCount
+      bacentasNoActivityCount(arrivalDate: $arrivalDate)
+      bacentasMobilisingCount(arrivalDate: $arrivalDate)
+      bacentasOnTheWayCount(arrivalDate: $arrivalDate)
+      bacentasBelow8Count(arrivalDate: $arrivalDate)
+
+      bacentasHaveArrivedCount(arrivalDate: $arrivalDate)
+      bussingMembersOnTheWayCount(arrivalDate: $arrivalDate)
+      bussingMembersHaveArrivedCount(arrivalDate: $arrivalDate)
+      bussesOnTheWayCount(arrivalDate: $arrivalDate)
+      bussesThatArrivedCount(arrivalDate: $arrivalDate)
+
+      vehiclesNotCountedCount(arrivalDate: $arrivalDate)
+
+      vehiclesToBePaidCount(arrivalDate: $arrivalDate)
+      vehiclesHaveBeenPaidCount(arrivalDate: $arrivalDate)
+      vehicleAmountToBePaid(arrivalDate: $arrivalDate)
+      vehicleAmountHasBeenPaid(arrivalDate: $arrivalDate)
     }
     timeGraphs(where: { date: $date }) {
       id
@@ -155,12 +168,12 @@ export const GATHERINGSERVICE_ARRIVALS_DASHBOARD = gql`
 `
 
 export const CONFIRM_CONSTITUENCY_ARRIVALS = gql`
-  query confirmConstituencyArrivals($id: ID!) {
+  query confirmConstituencyArrivals($id: ID!, $arrivalDate: String!) {
     constituencies(where: { id: $id }, options: { limit: 1 }) {
       id
       name
       stream_name
-      bacentasOnTheWay {
+      bacentasOnTheWay(arrivalDate: $arrivalDate) {
         id
         name
         leader {
@@ -187,12 +200,12 @@ export const CONFIRM_CONSTITUENCY_ARRIVALS = gql`
 `
 
 export const CONFIRM_COUNCIL_ARRIVALS = gql`
-  query confirmCouncilArrivals($id: ID!) {
+  query confirmCouncilArrivals($id: ID!, $arrivalDate: String!) {
     councils(where: { id: $id }, options: { limit: 1 }) {
       id
       name
       stream_name
-      bacentasOnTheWay {
+      bacentasOnTheWay(arrivalDate: $arrivalDate) {
         id
         name
         leader {
@@ -219,12 +232,12 @@ export const CONFIRM_COUNCIL_ARRIVALS = gql`
 `
 
 export const CONFIRM_STREAM_ARRIVALS = gql`
-  query confirmStreamArrivals($id: ID!) {
+  query confirmStreamArrivals($id: ID!, $arrivalDate: String!) {
     streams(where: { id: $id }, options: { limit: 1 }) {
       id
       name
       stream_name
-      bacentasOnTheWay {
+      bacentasOnTheWay(arrivalDate: $arrivalDate) {
         id
         name
         leader {
@@ -251,12 +264,12 @@ export const CONFIRM_STREAM_ARRIVALS = gql`
 `
 
 export const CONFIRM_GATHERINGSERVICE_ARRIVALS = gql`
-  query confirmGatheringArrivals($id: ID!) {
+  query confirmGatheringArrivals($id: ID!, $arrivalDate: String!) {
     gatheringServices(where: { id: $id }, options: { limit: 1 }) {
       id
       name
 
-      bacentasOnTheWay {
+      bacentasOnTheWay(arrivalDate: $arrivalDate) {
         id
         name
         leader {

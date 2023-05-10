@@ -5,21 +5,27 @@
   text-align: center;
 }
 
+/* .gm-style-iw-a * {
+  background-color: black;
+  color: white;
+} */
+
 .info-window-header {
   font-size: 16px;
   font-weight: bold;
-  color: black;
 }
 
 .info-window-text {
   font-size: 12px;
-  font-weight: bold;
-  color: black;
 }
 
 .map-btn {
   width: 180px;
   text-align: left;
+}
+
+.lightblue {
+  color: #181e77 !important;
 }
 
 .indoor-venue-label {

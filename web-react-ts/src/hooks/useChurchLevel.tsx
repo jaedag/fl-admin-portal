@@ -4,6 +4,7 @@ import {
   LazyQueryExecFunction,
   OperationVariables,
 } from '@apollo/client'
+import { ChurchContext } from 'contexts/ChurchContext'
 import { MemberContext } from 'contexts/MemberContext'
 import { ChurchLevel } from 'global-types'
 import { getSubChurchLevel } from 'global-utils'
@@ -33,6 +34,8 @@ const useChurchLevel = (props: useChurchLevelProps) => {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<undefined | ApolloError>()
 
+  const { arrivalDate } = useContext(ChurchContext)
+
   const chooseRefetch = () => {
     switch (churchLevel) {
       case 'Constituency':
@@ -56,6 +59,7 @@ const useChurchLevel = (props: useChurchLevelProps) => {
             const res = await props.constituencyFunction({
               variables: {
                 id: currentChurch?.id,
+                arrivalDate: arrivalDate,
               },
             })
 
@@ -69,6 +73,7 @@ const useChurchLevel = (props: useChurchLevelProps) => {
             const res = await props.councilFunction({
               variables: {
                 id: currentChurch?.id,
+                arrivalDate: arrivalDate,
               },
             })
 
@@ -83,6 +88,7 @@ const useChurchLevel = (props: useChurchLevelProps) => {
             const res = await props.streamFunction({
               variables: {
                 id: currentChurch?.id,
+                arrivalDate: arrivalDate,
               },
             })
             setChurch(res?.data?.streams[0])
@@ -96,6 +102,7 @@ const useChurchLevel = (props: useChurchLevelProps) => {
             const res = await props.gatheringServiceFunction({
               variables: {
                 id: currentChurch?.id,
+                arrivalDate: arrivalDate,
               },
             })
 

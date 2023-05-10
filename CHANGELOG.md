@@ -1,3 +1,37 @@
+#### 7.6.9 (2023-05-09)
+
+#### 7.6.8 (2023-05-09)
+
+#### 7.6.7 (2023-05-09)
+
+##### New Features
+
+*  implement a button to navigate to location in google maps ([0b07bb5c](https://github.com/firstlovecenter/fl-pastoral-care/commit/0b07bb5cb5f4deaac60e3446df9d420a2886231b))
+*  admin-572 implement arrivals history ([b657856f](https://github.com/firstlovecenter/fl-pastoral-care/commit/b657856fc330175e181417661ed2b2961713bc33))
+
+##### Bug Fixes
+
+*  minor improvements to arrivals dashboards ([e0022f13](https://github.com/firstlovecenter/fl-pastoral-care/commit/e0022f139b557f1e6b4caf1545d6176818df988e))
+*  reorder howYouJoined options ([0ab6f2e0](https://github.com/firstlovecenter/fl-pastoral-care/commit/0ab6f2e0aeec123685f3a9b78c9552a3d3fa72da))
+*  change  howYouJoined option to 'Service With A Pastor' ([99351e9f](https://github.com/firstlovecenter/fl-pastoral-care/commit/99351e9ffd9de4e2cc0cc4bc3afca4c7185a43b0))
+*  fix bug preventing arrivals data from being displayed when date is changed ([eb7176c5](https://github.com/firstlovecenter/fl-pastoral-care/commit/eb7176c531eb8bf38ea2970889d2e5c700cea585))
+*  clear easy debugging scripts ([cf4f09c8](https://github.com/firstlovecenter/fl-pastoral-care/commit/cf4f09c857abb064a077e8cf0c14812d2dd11fcb))
+*  extend date filter to arrivals payment queries ([#429](https://github.com/firstlovecenter/fl-pastoral-care/pull/429)) ([92d036a2](https://github.com/firstlovecenter/fl-pastoral-care/commit/92d036a21d8cbf21e0e8728d2071baebad6e1b3a))
+*  implement arrivals history ([#428](https://github.com/firstlovecenter/fl-pastoral-care/pull/428)) ([5755f732](https://github.com/firstlovecenter/fl-pastoral-care/commit/5755f7326b7f083f8c935798588148f3c0ce7472))
+*  fix bug breaking the build ([2428e9f4](https://github.com/firstlovecenter/fl-pastoral-care/commit/2428e9f4195f8147c581e6173348719c1c7547c2))
+
+#### 7.6.6 (2023-05-07)
+
+##### New Features
+
+*  implement more description for venue map icons ([abbdebf1](https://github.com/firstlovecenter/fl-pastoral-care/commit/abbdebf1503315579857b9bae3a3350fcc7eae51))
+*  implement more description for fellowship map icons ([7479c7bd](https://github.com/firstlovecenter/fl-pastoral-care/commit/7479c7bdd40415ec9a6430bc18befd6a4969282a))
+
+##### Bug Fixes
+
+*  implement better more descriptive map info window ([b75f3aea](https://github.com/firstlovecenter/fl-pastoral-care/commit/b75f3aea6446546181e9076531a538d22ab8d71d))
+*  update 'invitation by friend' to 'invitation by friend or family' ([e07293f0](https://github.com/firstlovecenter/fl-pastoral-care/commit/e07293f0d9fcd4f81886dbd44b209b81f2d483a7))
+
 #### 7.6.5 (2023-05-05)
 
 ##### Bug Fixes

@@ -1,6 +1,15 @@
 import { PlaceType } from './MapComponent'
 
 type MapIconType = google.maps.Icon
+export type Neo4jLocation = { x: number; y: number }
+export type MemberMapData = {
+  id: string
+  firstName: string
+  lastName: string
+  phoneNumber: string
+  whatsappNumber: string
+  location: Neo4jLocation
+}
 
 export const getMapIcon = (place: PlaceType) => {
   if (place.typename === 'Member') {

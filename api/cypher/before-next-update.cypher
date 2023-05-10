@@ -45,3 +45,7 @@ REMOVE g.noIncome
 RETURN g;
 
 CREATE CONSTRAINT gatheringServiceNeedsNoIncomeTracking IF NOT EXISTS ON (g:GatheringService) ASSERT exists(g.noIncomeTracking);
+
+MATCH (member:Member) WHERE member.howYouJoined = 'Service With A Bishop'
+SET member.howYouJoined = 'Service With A Pastor'
+RETURN COUNT(member)

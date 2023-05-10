@@ -1,6 +1,6 @@
-import { useMutation, useQuery } from '@apollo/client'
+import { useLazyQuery, useMutation, useQuery } from '@apollo/client'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import * as Yup from 'yup'
 import { useNavigate } from 'react-router'
 import {
@@ -11,41 +11,75 @@ import {
 import { GATHERINGSERVICE_ARRIVALS_DASHBOARD } from './arrivalsQueries'
 import { alertMsg, SHORT_POLL_INTERVAL, throwToSentry } from 'global-utils'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
-import { Col, Container, Row, Button } from 'react-bootstrap'
+import { Accordion, Col, Container, Row } from 'react-bootstrap'
 import Popup from 'components/Popup/Popup'
 import { Form, Formik, FormikHelpers } from 'formik'
 import SubmitButton from 'components/formik/SubmitButton'
 import RoleView from 'auth/RoleView'
-import { permitAdmin } from 'permission-utils'
+import {
+  permitAdmin,
+  permitArrivals,
+  permitLeaderAdmin,
+} from 'permission-utils'
 import MenuButton from 'components/buttons/MenuButton'
 import HeadingSecondary from 'components/HeadingSecondary'
 import { getHumanReadableDate } from 'jd-date-utils'
 import DefaulterInfoCard from 'pages/services/defaulters/DefaulterInfoCard'
 import { MemberContext } from 'contexts/MemberContext'
 import usePopup from 'hooks/usePopup'
+import ArrivalsMenuDropdown from './ArrivalsMenuDropdown'
 import { AdminFormOptions } from './DashboardConstituency'
 import SearchMember from 'components/formik/SearchMember'
 import PullToRefresh from 'react-simple-pull-to-refresh'
+import Input from 'components/formik/Input'
+import { AiOutlineSend } from 'react-icons/ai'
+import { ChurchContext } from 'contexts/ChurchContext'
+
+type DateFormOptions = {
+  arrivalDate: string
+}
 
 const GatheringServiceDashboard = () => {
   const { isOpen, togglePopup } = usePopup()
   const { currentUser } = useContext(MemberContext)
+  const { arrivalDate, setArrivalDate } = useContext(ChurchContext)
   const navigate = useNavigate()
   const today = new Date().toISOString().slice(0, 10)
-  const { data, loading, error, refetch } = useQuery(
+  const { data, loading, error } = useQuery(
     GATHERINGSERVICE_ARRIVALS_DASHBOARD,
     {
-      variables: { id: currentUser?.currentChurch.id, date: today },
-      pollInterval: SHORT_POLL_INTERVAL,
+      variables: {
+        id: currentUser?.currentChurch.id,
+        date: today,
+        arrivalDate: today,
+      },
     }
   )
+
+  const [
+    gatheringArrivalsDashboard,
+    {
+      data: dashboardData,
+      loading: dashboardLoading,
+      error: dashboardError,
+      refetch,
+    },
+  ] = useLazyQuery(GATHERINGSERVICE_ARRIVALS_DASHBOARD, {
+    variables: {
+      id: currentUser?.currentChurch.id,
+      date: today,
+      arrivalDate: today,
+    },
+    pollInterval: SHORT_POLL_INTERVAL,
+    fetchPolicy: 'cache-and-network',
+  })
 
   const [SetSwellDate] = useMutation(SET_SWELL_DATE)
   const [SetCodeOfTheDay] = useMutation(SET_CODE_OF_THE_DAY)
   const [MakeGatheringServiceArrivalsAdmin] = useMutation(
     MAKE_GATHERINGSERVICEARRIVALS_ADMIN
   )
-  const gatheringService = data?.gatheringServices[0]
+  const gatheringService = dashboardData?.gatheringServices[0]
 
   const initialValues: AdminFormOptions = {
     adminName: gatheringService?.arrivalsAdmin
@@ -100,6 +134,61 @@ const GatheringServiceDashboard = () => {
     link: `/arrivals/gatheringservice-by-stream`,
   }
 
+  const ArrivalsMenu = [
+    { title: 'Change Arrivals Admin', onClick: togglePopup },
+    !data?.timeGraphs.length || !data?.timeGraphs[0]?.swell
+      ? {
+          title: ' Set Today as Swell',
+          onClick: () => {
+            const confirmBox = window.confirm(
+              'Do you want to set today as a swell day?'
+            )
+
+            if (confirmBox === true) {
+              SetSwellDate({
+                variables: { date: today },
+              }).then(() => alertMsg('Swell Date Set Succesffully'))
+            }
+          },
+        }
+      : {},
+    { title: 'Code of the Day', onClick: () => submitCodeOfTheDay() },
+  ]
+
+  useEffect(() => {
+    gatheringArrivalsDashboard({
+      variables: {
+        id: currentUser?.currentChurch.id,
+        arrivalDate: arrivalDate,
+        date: arrivalDate,
+      },
+    })
+  }, [])
+
+  const dateValidationSchema = Yup.object({
+    date: Yup.date().notRequired(),
+  })
+
+  const dateInitialValues: DateFormOptions = {
+    arrivalDate: arrivalDate,
+  }
+
+  const onDateSubmit = (
+    values: DateFormOptions,
+    onSubmitProps: FormikHelpers<DateFormOptions>
+  ) => {
+    onSubmitProps.setSubmitting(true)
+    gatheringArrivalsDashboard({
+      variables: {
+        id: currentUser?.currentChurch.id,
+        arrivalDate: values.arrivalDate,
+        date: values.arrivalDate,
+      },
+    })
+    setArrivalDate(values.arrivalDate)
+    onSubmitProps.setSubmitting(false)
+  }
+
   return (
     <PullToRefresh onRefresh={refetch}>
       <ApolloWrapper data={data} loading={loading} error={error}>
@@ -151,105 +240,187 @@ const GatheringServiceDashboard = () => {
           ) : null}
 
           <div className="d-grid gap-2">
-            <RoleView roles={permitAdmin('GatheringService')}>
-              <Button
-                variant="outline-secondary"
-                size="lg"
-                onClick={() => togglePopup()}
-              >
-                Change Arrivals Admin
-              </Button>
-
-              {(!data?.timeGraphs.length || !data?.timeGraphs[0]?.swell) && (
-                <Button
-                  onClick={() => {
-                    const confirmBox = window.confirm(
-                      'Do you want to set today as a swell day?'
-                    )
-
-                    if (confirmBox === true) {
-                      SetSwellDate({
-                        variables: { date: today },
-                      }).then(() => alertMsg('Swell Date Set Succesffully'))
-                    }
-                  }}
-                >
-                  Set Today as Swell
-                </Button>
+            <Formik
+              initialValues={dateInitialValues}
+              validationSchema={dateValidationSchema}
+              onSubmit={onDateSubmit}
+              validateOnMount
+            >
+              {(formik) => (
+                <Form>
+                  <Row className="align-items-center gx-0 justify-content-between">
+                    <Col className="d-inline-block" xs={5}>
+                      <Input
+                        name="arrivalDate"
+                        type="date"
+                        placeholder="dd/mm/yyyy"
+                        aria-describedby="date"
+                      />
+                    </Col>
+                    <Col xs={2}>
+                      <SubmitButton formik={formik}>
+                        <AiOutlineSend size={23} />
+                      </SubmitButton>
+                    </Col>
+                    <Col>
+                      <RoleView roles={permitAdmin('GatheringService')}>
+                        <ArrivalsMenuDropdown menuItems={ArrivalsMenu} />
+                      </RoleView>
+                    </Col>
+                  </Row>
+                </Form>
               )}
+            </Formik>
 
-              <Button onClick={() => submitCodeOfTheDay()}>
-                Code of the Day
-              </Button>
-            </RoleView>
             <DefaulterInfoCard defaulter={aggregates} />
+            <ApolloWrapper
+              loading={dashboardLoading}
+              data={dashboardData}
+              error={dashboardError}
+            >
+              <Accordion defaultActiveKey="0">
+                <Accordion.Item eventKey="0">
+                  <Accordion.Header>Bacenta Monitoring</Accordion.Header>
+                  <Accordion.Body>
+                    <div className="d-grid gap-2">
+                      <MenuButton
+                        title="Bacentas With No Activity"
+                        onClick={() =>
+                          navigate('/arrivals/bacentas-no-activity')
+                        }
+                        number={gatheringService?.bacentasNoActivityCount.toString()}
+                        color="red"
+                        iconBg
+                        noCaption
+                      />
+                      <MenuButton
+                        title="Bacentas Mobilising"
+                        onClick={() =>
+                          navigate('/arrivals/bacentas-mobilising')
+                        }
+                        number={gatheringService?.bacentasMobilisingCount.toString()}
+                        color="orange"
+                        iconBg
+                        noCaption
+                      />
+                      <MenuButton
+                        title="Bacentas On The Way"
+                        onClick={() =>
+                          navigate('/arrivals/bacentas-on-the-way')
+                        }
+                        number={gatheringService?.bacentasOnTheWayCount.toString()}
+                        color="yellow"
+                        iconBg
+                        noCaption
+                      />
 
-            <MenuButton
-              title="Bacentas With No Activity"
-              onClick={() => navigate('/arrivals/bacentas-no-activity')}
-              number={gatheringService?.bacentasNoActivityCount.toString()}
-              color="red"
-              iconBg
-              noCaption
-            />
-            <MenuButton
-              title="Bacentas Mobilising"
-              onClick={() => navigate('/arrivals/bacentas-mobilising')}
-              number={gatheringService?.bacentasMobilisingCount.toString()}
-              color="orange"
-              iconBg
-              noCaption
-            />
-            <MenuButton
-              title="Bacentas On The Way"
-              onClick={() => navigate('/arrivals/bacentas-on-the-way')}
-              number={gatheringService?.bacentasOnTheWayCount.toString()}
-              color="yellow"
-              iconBg
-              noCaption
-            />
+                      <MenuButton
+                        title="Bacentas That Didn't Bus"
+                        onClick={() => navigate('/arrivals/bacentas-below-8')}
+                        number={gatheringService?.bacentasBelow8Count.toString()}
+                        iconBg
+                        color="red"
+                        noCaption
+                      />
 
-            <MenuButton
-              title={`Bacentas That Didn't Bus`}
-              onClick={() => navigate('/arrivals/bacentas-below-8')}
-              number={gatheringService?.bacentasBelow8Count.toString()}
-              iconBg
-              color="red"
-              noCaption
-            />
+                      <MenuButton
+                        title="Bacentas That Have Arrived"
+                        onClick={() =>
+                          navigate('/arrivals/bacentas-have-arrived')
+                        }
+                        number={gatheringService?.bacentasHaveArrivedCount.toString()}
+                        iconBg
+                        color="green"
+                        noCaption
+                      />
+                    </div>
+                  </Accordion.Body>
+                </Accordion.Item>
 
-            <MenuButton
-              title="Bacentas That Have Arrived"
-              onClick={() => navigate('/arrivals/bacentas-have-arrived')}
-              number={gatheringService?.bacentasHaveArrivedCount.toString()}
-              color="green"
-              iconBg
-              noCaption
-            />
+                <RoleView
+                  roles={[
+                    ...permitArrivals('GatheringService'),
+                    ...permitLeaderAdmin('GatheringService'),
+                  ]}
+                >
+                  <Accordion.Item eventKey="1">
+                    <Accordion.Header>Financial Data</Accordion.Header>
+                    <Accordion.Body>
+                      <div className="d-grid gap-2">
+                        <MenuButton
+                          title="Vehicles That Have Been Paid"
+                          onClick={() => navigate('#')}
+                          number={gatheringService?.vehiclesHaveBeenPaidCount.toString()}
+                          color="green"
+                          iconBg
+                          noCaption
+                        />
+                        <MenuButton
+                          title="Vehicles To Be Paid"
+                          onClick={() => navigate('#')}
+                          number={gatheringService?.vehiclesToBePaidCount.toString()}
+                          color="yellow"
+                          iconBg
+                          noCaption
+                        />
 
-            <div className="mt-5 d-grid gap-2">
-              <MenuButton
-                title="Members On The Way"
-                number={gatheringService?.bussingMembersOnTheWayCount.toString()}
-                color="yellow"
-                iconBg
-                noCaption
-              />
-              <MenuButton
-                title="Members That Have Arrived"
-                number={gatheringService?.bussingMembersHaveArrivedCount.toString()}
-                color="green"
-                iconBg
-                noCaption
-              />
-              <MenuButton
-                title="Busses That Have Arrived"
-                number={gatheringService?.bussesThatArrivedCount.toString()}
-                color="green"
-                iconBg
-                noCaption
-              />
-            </div>
+                        <MenuButton
+                          title="Amount That Has Been Paid"
+                          onClick={() => navigate('#')}
+                          number={gatheringService?.vehicleAmountHasBeenPaid.toString()}
+                          color="green"
+                          noCaption
+                          iconBg
+                        />
+                        <MenuButton
+                          title="Amount To Be Paid"
+                          onClick={() => navigate('#')}
+                          number={gatheringService?.vehicleAmountToBePaid.toString()}
+                          color="yellow"
+                          noCaption
+                          iconBg
+                        />
+                      </div>
+                    </Accordion.Body>
+                  </Accordion.Item>
+                </RoleView>
+                <Accordion.Item eventKey="2">
+                  <Accordion.Header>Bussing Data</Accordion.Header>
+                  <Accordion.Body>
+                    <div className="d-grid gap-2">
+                      <MenuButton
+                        title="Members On The Way"
+                        number={gatheringService?.bussingMembersOnTheWayCount.toString()}
+                        color="yellow"
+                        iconBg
+                        noCaption
+                      />
+                      <MenuButton
+                        title="Members That Have Arrived"
+                        number={gatheringService?.bussingMembersHaveArrivedCount.toString()}
+                        color="green"
+                        iconBg
+                        noCaption
+                      />
+                      <MenuButton
+                        title="Busses On The Way"
+                        number={gatheringService?.bussesOnTheWayCount.toString()}
+                        color="yellow"
+                        iconBg
+                        noCaption
+                      />
+                      <MenuButton
+                        title="Busses That Have Arrived"
+                        number={gatheringService?.bussesThatArrivedCount.toString()}
+                        color="green"
+                        iconBg
+                        noCaption
+                      />
+                    </div>
+                  </Accordion.Body>
+                </Accordion.Item>
+              </Accordion>
+            </ApolloWrapper>
           </div>
         </Container>
       </ApolloWrapper>

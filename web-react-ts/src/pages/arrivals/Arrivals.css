@@ -51,3 +51,7 @@
 .col-height {
   height: 280px;
 }
+
+.arrivals-menu-dropdown > .dropdown-toggle {
+  height: 50px;
+}
