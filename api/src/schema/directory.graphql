@@ -299,6 +299,10 @@ type HistoryLog @auth(rules: [{ isAuthenticated: true }]) {
     @relationship(type: "HAS_HISTORY", direction: IN)
 }
 
+type MemberConversion {
+  howyoujoined: String
+  percentage: Float
+}
 ##Church Types##
 
 interface Church @auth(rules: [{ isAuthenticated: true }]) {
@@ -420,6 +424,18 @@ type Oversight implements Church {
       MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(records:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
       WITH DISTINCT records, date
       RETURN records ORDER BY date.date DESC LIMIT $limit
+      """
+    )
+    aggregateMemberConversion: [MemberConversion]
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS*6]->(:Fellowship)<-[:BELONGS_TO]-(members:Active:Member)
+      WITH COUNT(DISTINCT members) AS total
+      MATCH (members:Active:Member)
+      WITH members.howYouJoined as howyoujoined, ROUND(100.0*(COUNT(members))/total)  AS conversion_percent
+      WITH COLLECT({howyoujoined:howyoujoined, percent:conversion_percent}) AS data 
+      UNWIND data as row 
+      RETURN DISTINCT row
       """
     )
 }
@@ -548,6 +564,20 @@ type GatheringService implements Church {
     @cypher(statement: "MATCH (this)-[:HAS*4]->(sonta:Sonta) RETURN sonta")
   hubs: [Hub!]!
     @cypher(statement: "MATCH (this)-[:HAS*3]->(hub:Hub) RETURN hub")
+
+  aggregateMemberConversion: MemberConversion
+    @cypher(
+      statement: """
+        OPTIONAL MATCH (this)-[:HAS*5]->(:Fellowship)<-[:BELONGS_TO]-(members:Active:Member)
+        WITH COUNT(DISTINCT members) AS total, members
+        WHERE total > 0
+        WITH total,    members
+        WITH members.howYouJoined AS howyoujoined, ROUND(100.0*(COUNT(members))/total) AS conversion_percent
+        WITH COLLECT({howyoujoined: howyoujoined, percent:conversion_percent}) AS data 
+        UNWIND data AS row 
+        RETURN DISTINCT row
+      """
+    )
 }
 
 type Stream implements Church {
@@ -668,6 +698,18 @@ type Stream implements Church {
     @cypher(statement: "MATCH (this)-[:HAS*3]->(sonta:Sonta) RETURN sonta")
   hubs: [Hub!]!
     @cypher(statement: "MATCH (this)-[:HAS*2]->(hub:Hub) RETURN hub")
+  aggregateMemberConversion: [MemberConversion]
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS*4]->(:Fellowship)<-[:BELONGS_TO]-(members:Active:Member)
+      WITH COUNT(DISTINCT members) AS total
+      MATCH (members:Active:Member)
+      WITH members.howYouJoined as howyoujoined, ROUND(100.0*(COUNT(members))/total)  AS conversion_percent
+      WITH COLLECT({howyoujoined:howyoujoined, percent:conversion_percent}) AS data 
+      UNWIND data as row 
+      RETURN DISTINCT row
+      """
+    )
 }
 
 type Council implements Church {
@@ -761,6 +803,18 @@ type Council implements Church {
       RETURN records ORDER BY date.date DESC LIMIT $limit
       """
     )
+  aggregateMemberConversion: [MemberConversion]
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS*3]->(:Fellowship)<-[:BELONGS_TO]-(members:Active:Member)
+      WITH COUNT(DISTINCT members) AS total
+      MATCH (members:Active:Member)
+      WITH members.howYouJoined as howyoujoined, ROUND(100.0*(COUNT(members))/total)  AS conversion_percent
+      WITH COLLECT({howyoujoined:howyoujoined, percent:conversion_percent}) AS data 
+      UNWIND data as row 
+      RETURN DISTINCT row
+      """
+    )
 }
 
 type Constituency implements Church {
@@ -846,6 +900,18 @@ type Constituency implements Church {
       MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(records:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
       WITH DISTINCT records, date
       RETURN records ORDER BY date.date DESC LIMIT $limit
+      """
+    )
+  aggregateMemberConversion: [MemberConversion]
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS*2]->(:Fellowship)<-[:BELONGS_TO]-(members:Active:Member)
+      WITH COUNT(DISTINCT members) AS total
+      MATCH (members:Active:Member)
+      WITH members.howYouJoined as howyoujoined, ROUND(100.0*(COUNT(members))/total)  AS conversion_percent
+      WITH COLLECT({howyoujoined:howyoujoined, percent:conversion_percent}) AS data 
+      UNWIND data as row 
+      RETURN DISTINCT row
       """
     )
 }
@@ -942,6 +1008,19 @@ type Bacenta implements Church {
     )
   stream: Stream
     @cypher(statement: "MATCH (this)<-[:HAS*3]-(stream:Stream) RETURN stream")
+
+  aggregateMemberConversion: [MemberConversion]
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS]->(:Fellowship)<-[:BELONGS_TO]-(members:Active:Member)
+      WITH COUNT(DISTINCT members) AS total
+      MATCH (members:Active:Member)
+      WITH members.howYouJoined as howyoujoined, ROUND(100.0*(COUNT(members))/total)  AS conversion_percent
+      WITH COLLECT({howyoujoined:howyoujoined, percent:conversion_percent}) AS data 
+      UNWIND data as row 
+      RETURN DISTINCT row
+      """
+    )
 }
 
 # Shared Units: Fellowship, Fellowship, Sonta
@@ -1022,6 +1101,18 @@ type Fellowship implements Church {
       statement: """
       MATCH (this)<-[:HAS*3]-(council:Council)
       RETURN council
+      """
+    )
+    aggregateMemberConversion: [MemberConversion]
+    @cypher(
+      statement: """
+      MATCH (this)<-[:BELONGS_TO]-(members:Active:Member)
+      WITH COUNT(DISTINCT members) AS total
+      MATCH (members:Active:Member)
+      WITH members.howYouJoined as howyoujoined, ROUND(100.0*(COUNT(members))/total)  AS conversion_percent
+      WITH COLLECT({howyoujoined:howyoujoined, percent:conversion_percent}) AS data 
+      UNWIND data as row 
+      RETURN DISTINCT row
       """
     )
 }
