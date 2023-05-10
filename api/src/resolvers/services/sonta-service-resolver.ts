@@ -12,8 +12,9 @@ import {
   aggregateServiceDataForHub,
   aggregateServiceDataForMinistry,
   recordSontaRehearsalService,
-  checkFormFilledThisWeek,
   aggregateServiceDataForFederalMinistry,
+  checkServiceFormFilledThisWeek,
+  checkRehearsalFormFilledThisWeek,
 } from './sonta-service-cypher'
 
 const errorMessage = require('../texts.json').error
@@ -77,7 +78,7 @@ const SontaServiceMutation = {
     })
 
     const serviceCheck = rearrangeCypherObject(
-      await session.run(checkFormFilledThisWeek, args)
+      await session.run(checkServiceFormFilledThisWeek, args)
     )
 
     if (
@@ -120,7 +121,6 @@ const SontaServiceMutation = {
     session.close()
 
     const serviceDetails = rearrangeCypherObject(cypherResponse)
-    console.log(serviceDetails)
 
     return serviceDetails.ministryAttendanceRecord.properties
   },
@@ -137,7 +137,7 @@ const SontaServiceMutation = {
     })
 
     const serviceCheck = rearrangeCypherObject(
-      await session.run(checkFormFilledThisWeek, args)
+      await session.run(checkRehearsalFormFilledThisWeek, args)
     )
 
     if (
