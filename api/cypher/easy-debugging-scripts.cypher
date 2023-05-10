@@ -1,4 +1,73 @@
-MATCH (ministry:Ministry)
+MATCH (this:`Fellowship`)
+ WHERE (this.id = $param0 AND apoc.util.validatePredicate(NOT (apoc.util.validatePredicate(NOT ($auth.isAuthenticated = true), "@neo4j/graphql/UNAUTHENTICATED", [0])), "@neo4j/graphql/FORBIDDEN", [0]))
+ CALL {
+     WITH this
+     UNWIND apoc.cypher.runFirstColumnSingle("MATCH (this)<-[:BELONGS_TO]-(members:Active:Member)
+     RETURN COUNT(DISTINCT members)", { this: this, auth: $auth }) AS this0
+     RETURN head(collect(this0)) AS this0
+ }
+ CALL {
+     WITH this
+     UNWIND apoc.cypher.runFirstColumnMany("MATCH (this {id: 'e81bf51b-7ef5-4cdb-b448-47549741be4e'})<-[:BELONGS_TO]-(members:Active:Member)
+     WITH COUNT(DISTINCT members) AS total
+     MATCH (members:Active:Member)
+     WITH members.howYouJoined as howyoujoined, ROUND(100.0*(COUNT(members))/total)  AS conversion_percent
+     WITH COLLECT({howyoujoined:howyoujoined, percent:conversion_percent}) AS data
+     UNWIND data as row
+     RETURN DISTINCT row", { this: this, auth: $auth }) AS this1
+     RETURN collect(this1 { .howyoujoined, .percentage }) AS this1
+ }
+ RETURN this { .name, memberCount: this0, aggregateMemberConversion: this1 } AS this
+ Params:
+ {
+   "param0": "e81bf51b-7ef5-4cdb-b448-47549741be4e",
+   "auth": {
+     "isAuthenticated": true,
+     "roles": [
+       "adminGatheringService",
+       "adminOversight",
+       "arrivalsCounterStream",
+       "arrivalsPayerCouncil",
+       "leaderBacenta"
+     ],
+     "jwt": {
+       "https://flcadmin.netlify.app/roles": [
+         "adminGatheringService",
+         "adminOversight",
+         "arrivalsCounterStream",
+         "arrivalsPayerCouncil",
+         "leaderBacenta"
+       ],
+       "iss": "https://flcadmin-test.us.auth0.com/",
+       "sub": "auth0|6089feb8e1e3e700697f7eff",
+       "aud": [
+         "https://flcadmin.netlify.app/graphql",
+         "https://flcadmin-test.us.auth0.com/userinfo"
+       ],
+       "iat": 1683719515,
+       "exp": 1686311515,
+       "azp": "LoGX4Q4c4WKZS507URu08bVVYc5iFaBi",
+       "scope": "openid profile email",
+       "permissions": [
+         "adminConstituency",
+         "adminConstituencyArrivals",
+         "adminCouncil",
+         "adminGatheringService",
+         "adminStream",
+         "leaderBacenta",
+         "leaderConstituency",
+         "leaderCouncil",
+         "leaderFellowship",
+         "leaderGatheringService",
+         "leaderStream"
+       ]
+     }
+   }
+ }
+ 
+ 
+ 
+ MATCH (ministry:Ministry)
 MATCH (gs:GatheringService)
 MERGE (gs)-[r:HAS_MINISTRY]->(ministry)
 SET ministry:Federalministry
@@ -49,3 +118,80 @@ SET member.visitationArea = member.visitationLocation
 REMOVE member.visitationLocation
 
 RETURN COUNT(member)
+
+
+MATCH (this:`Fellowship`)
+ WHERE (this.id = $param0 AND apoc.util.validatePredicate(NOT (apoc.util.validatePredicate(NOT ($auth.isAuthenticated = true), "@neo4j/graphql/UNAUTHENTICATED", [0])), "@neo4j/graphql/FORBIDDEN", [0]))
+ CALL {
+     WITH this
+     UNWIND apoc.cypher.runFirstColumnSingle("MATCH (this)<-[:BELONGS_TO]-(members:Active:Member)
+     RETURN COUNT(DISTINCT members)", { this: this, auth: $auth }) AS this0
+     RETURN head(collect(this0)) AS this0
+ }
+ CALL {
+     WITH this
+     UNWIND apoc.cypher.runFirstColumnMany("MATCH (this {id: 'e81bf51b-7ef5-4cdb-b448-47549741be4e'})<-[:BELONGS_TO]-(members:Active:Member)
+     WITH COUNT(DISTINCT members) AS total
+     MATCH (members:Active:Member)
+     WITH members.howYouJoined as howyoujoined, ROUND(100.0*(COUNT(members))/total)  AS conversion_percent
+     WITH COLLECT({howyoujoined:howyoujoined, percent:conversion_percent}) AS data
+     UNWIND data as row
+     RETURN DISTINCT row", { this: this, auth: $auth }) AS this1
+     RETURN collect(this1 { .howyoujoined, .percentage }) AS this1
+ }
+ RETURN this { .name, memberCount: this0, aggregateMemberConversion: this1 } AS this
+ Params:
+ {
+   "param0": "e81bf51b-7ef5-4cdb-b448-47549741be4e",
+   "auth": {
+     "isAuthenticated": true,
+     "roles": [
+       "adminGatheringService",
+       "adminOversight",
+       "arrivalsCounterStream",
+       "arrivalsPayerCouncil",
+       "leaderBacenta"
+     ],
+     "jwt": {
+       "https://flcadmin.netlify.app/roles": [
+         "adminGatheringService",
+         "adminOversight",
+         "arrivalsCounterStream",
+         "arrivalsPayerCouncil",
+         "leaderBacenta"
+       ],
+       "iss": "https://flcadmin-test.us.auth0.com/",
+       "sub": "auth0|6089feb8e1e3e700697f7eff",
+       "aud": [
+         "https://flcadmin.netlify.app/graphql",
+         "https://flcadmin-test.us.auth0.com/userinfo"
+       ],
+       "iat": 1683719515,
+       "exp": 1686311515,
+       "azp": "LoGX4Q4c4WKZS507URu08bVVYc5iFaBi",
+       "scope": "openid profile email",
+       "permissions": [
+         "adminConstituency",
+         "adminConstituencyArrivals",
+         "adminCouncil",
+         "adminGatheringService",
+         "adminStream",
+         "leaderBacenta",
+         "leaderConstituency",
+         "leaderCouncil",
+         "leaderFellowship",
+         "leaderGatheringService",
+         "leaderStream"
+       ]
+     }
+   }
+ }
+
+   MATCH (this:Fellowship)<-[:BELONGS_TO]-(members:Active:Member)
+      RETURN DISTINCT this, collect(members.firstName), COUNT(DISTINCT members) AS total
+      
+      RETURN this.name, members.howYouJoined as howYouJoined, COUNT(DISTINCT members) AS numberOfMembers, total  WHERE total > 0 
+      WITH howYouJoined, ROUND(100*numberOfMembers/total)  AS conversion_percent
+      WITH COLLECT({howYouJoined:howYouJoined, percentage:conversion_percent}) AS data
+      UNWIND data as row
+      RETURN DISTINCT row

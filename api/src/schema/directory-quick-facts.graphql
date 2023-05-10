@@ -14,6 +14,12 @@ type Stats {
   income: Float
 }
 
+type MemberConversion {
+  howYouJoined: String
+  percentage: Float!
+  number: Int!
+}
+
 extend type Fellowship {
   avgWeekdayStats(days: Int!): Stats!
     @cypher(
@@ -57,6 +63,21 @@ extend type Fellowship {
       MATCH (fellowship)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)
       WHERE record.income = max
       RETURN record LIMIT 1
+      """
+    )
+  aggregateMemberConversion: [MemberConversion!]!
+    @cypher(
+      statement: """
+      MATCH (this)<-[:BELONGS_TO]-(members:Active:Member)
+      WITH this,COUNT(DISTINCT members) AS total
+
+      MATCH (this)<-[:BELONGS_TO]-(members:Active:Member)
+
+      WITH total, members.howYouJoined as howYouJoined, COUNT(DISTINCT members) AS numberOfMembers
+      WITH total, howYouJoined, ROUND(100.0*numberOfMembers/total,2)  AS conversion_percent, numberOfMembers
+      WITH COLLECT({howYouJoined:howYouJoined, percentage:conversion_percent, number: numberOfMembers}) AS data
+      UNWIND data as row
+      RETURN DISTINCT row
       """
     )
 }
@@ -123,6 +144,19 @@ extend type Bacenta {
       RETURN round(avg(sum)) AS average
       """
     )
+
+  aggregateMemberConversion: [MemberConversion]
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS]->(:Fellowship)<-[:BELONGS_TO]-(members:Active:Member)
+      WITH COUNT(DISTINCT members) AS total
+      MATCH (members:Active:Member)
+      WITH members.howYouJoined as howyoujoined, ROUND(100.0*(COUNT(members))/total)  AS conversion_percent
+      WITH COLLECT({howyoujoined:howyoujoined, percent:conversion_percent}) AS data
+      UNWIND data as row
+      RETURN DISTINCT row
+      """
+    )
 }
 
 extend type Constituency {
@@ -174,6 +208,18 @@ extend type Constituency {
       WHERE agg.week IN weeks and agg.year = date().year
       WITH sum(agg.attendance) AS attendance, this, agg.week as weeknumber
        RETURN round(avg(attendance)) AS average
+      """
+    )
+  aggregateMemberConversion: [MemberConversion]
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS*2]->(:Fellowship)<-[:BELONGS_TO]-(members:Active:Member)
+      WITH COUNT(DISTINCT members) AS total
+      MATCH (members:Active:Member)
+      WITH members.howYouJoined as howyoujoined, ROUND(100.0*(COUNT(members))/total)  AS conversion_percent
+      WITH COLLECT({howyoujoined:howyoujoined, percent:conversion_percent}) AS data
+      UNWIND data as row
+      RETURN DISTINCT row
       """
     )
 }
@@ -301,6 +347,19 @@ extend type Council {
       RETURN round(avg(attendance)) AS average
       """
     )
+
+  aggregateMemberConversion: [MemberConversion]
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS*3]->(:Fellowship)<-[:BELONGS_TO]-(members:Active:Member)
+      WITH COUNT(DISTINCT members) AS total
+      MATCH (members:Active:Member)
+      WITH members.howYouJoined as howyoujoined, ROUND(100.0*(COUNT(members))/total)  AS conversion_percent
+      WITH COLLECT({howyoujoined:howyoujoined, percent:conversion_percent}) AS data
+      UNWIND data as row
+      RETURN DISTINCT row
+      """
+    )
 }
 
 extend type Stream {
@@ -371,6 +430,18 @@ extend type Stream {
       WHERE agg.week IN weeks and agg.year = date().year
       WITH sum(agg.attendance) AS attendance, this, agg.week as weeknumber
       RETURN round(avg(attendance)) AS average
+      """
+    )
+  aggregateMemberConversion: [MemberConversion]
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS*4]->(:Fellowship)<-[:BELONGS_TO]-(members:Active:Member)
+      WITH COUNT(DISTINCT members) AS total
+      MATCH (members:Active:Member)
+      WITH members.howYouJoined as howyoujoined, ROUND(100.0*(COUNT(members))/total)  AS conversion_percent
+      WITH COLLECT({howyoujoined:howyoujoined, percent:conversion_percent}) AS data
+      UNWIND data as row
+      RETURN DISTINCT row
       """
     )
 }
@@ -496,6 +567,19 @@ extend type GatheringService {
         }
       """
     )
+  aggregateMemberConversion: MemberConversion
+    @cypher(
+      statement: """
+      OPTIONAL MATCH (this)-[:HAS*5]->(:Fellowship)<-[:BELONGS_TO]-(members:Active:Member)
+      WITH COUNT(DISTINCT members) AS total, members
+      WHERE total > 0
+      WITH total,    members
+      WITH members.howYouJoined AS howyoujoined, ROUND(100.0*(COUNT(members))/total) AS conversion_percent
+      WITH COLLECT({howyoujoined: howyoujoined, percent:conversion_percent}) AS data
+      UNWIND data AS row
+      RETURN DISTINCT row
+      """
+    )
 }
 
 extend type Oversight {
@@ -531,6 +615,18 @@ extend type Oversight {
       WHERE agg.week IN weeks and agg.year = date().year
       WITH sum(agg.attendance) AS attendance, gatheringService, agg.week as weeknumber
       RETURN round(avg(attendance)) AS average
+      """
+    )
+  aggregateMemberConversion: [MemberConversion]
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS*6]->(:Fellowship)<-[:BELONGS_TO]-(members:Active:Member)
+      WITH COUNT(DISTINCT members) AS total
+      MATCH (members:Active:Member)
+      WITH members.howYouJoined as howyoujoined, ROUND(100.0*(COUNT(members))/total)  AS conversion_percent
+      WITH COLLECT({howyoujoined:howyoujoined, percent:conversion_percent}) AS data
+      UNWIND data as row
+      RETURN DISTINCT row
       """
     )
 }
