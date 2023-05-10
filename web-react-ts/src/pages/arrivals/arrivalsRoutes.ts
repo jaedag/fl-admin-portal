@@ -3,6 +3,7 @@ import {
   permitArrivalsCounter,
   permitLeaderAdminArrivals,
   permitArrivalsHelpers,
+  permitArrivalsPayer,
 } from 'permission-utils'
 import { LazyRouteTypes } from 'global-types'
 import { lazy } from 'react'
@@ -17,6 +18,9 @@ const BacentasOnTheWay = lazy(
 )
 const BusFormConfirmation = lazy(
   () => import('pages/arrivals/FormAttendanceConfirmation')
+)
+const PayVehicleRecord = lazy(
+  () => import('pages/arrivals/FormPayVehicleRecord')
 )
 const BusFormDetails = lazy(() => import('pages/arrivals/BusFormDetails'))
 const OnTheWaySubmission = lazy(
@@ -41,7 +45,9 @@ const StateBacentasToCount = lazy(() => import('./StateBacentasToCount'))
 const SetArrivalsTime = lazy(() => import('./Times/SetArrivalsTimes'))
 const ArrivalTimes = lazy(() => import('./Times/ArrivalTimes'))
 const ArrivalsCounters = lazy(() => import('./Helpers/ArrivalsCounters'))
+const ArrivalsPayerSelect = lazy(() => import('./Helpers/ArrivalsPayers'))
 const BacentasBelow8 = lazy(() => import('./StateBacentasBelow8'))
+const VehiclesToBePaid = lazy(() => import('./StateVehiclesToBePaid'))
 const BusVehicleFormDetails = lazy(() => import('./BusVehicleFormDetails'))
 const ArrivalsPaymentData = lazy(
   () => import('./arrival-payment-data/ArrivalsPaymentData')
@@ -159,6 +165,16 @@ export const arrivals: LazyRouteTypes[] = [
     placeholder: true,
   },
   {
+    path: '/arrivals/vehicles-to-be-paid',
+    roles: permitArrivalsPayer(),
+    element: VehiclesToBePaid,
+  },
+  {
+    path: '/arrivals/pay-vehicle',
+    roles: permitArrivalsPayer(),
+    element: PayVehicleRecord,
+  },
+  {
     path: '/arrivals/bacentas-have-arrived',
     roles: [
       ...permitLeaderAdminArrivals('Constituency'),
@@ -211,6 +227,11 @@ export const arrivals: LazyRouteTypes[] = [
     path: '/stream/arrivals-counters',
     roles: permitAdminArrivals('Stream'),
     element: ArrivalsCounters,
+  },
+  {
+    path: '/council/arrivals-payers',
+    roles: permitAdminArrivals('GatheringService'),
+    element: ArrivalsPayerSelect,
   },
 
   //Arrivals Times

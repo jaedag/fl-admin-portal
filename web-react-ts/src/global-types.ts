@@ -27,6 +27,7 @@ export type ChurchLevel =
   | 'Stream'
   | 'GatheringService'
   | 'Oversight'
+  | 'Denomination'
   | 'Sonta'
   | 'Basonta'
   | 'Ministry'
@@ -135,7 +136,7 @@ export interface Member {
   middleName?: string
   lastName: string
   fullName: string
-  idlLocation?: string
+  visitationArea?: string
   location?: string
   nameWithTitle?: string
   currentTitle: TitleOptions
@@ -144,6 +145,7 @@ export interface Member {
   pictureUrl: string
   phoneNumber: string
   whatsappNumber: string
+  howYouJoined: string
   dob: { date: string }
   maritalStatus: { status: 'Married' | 'Single' }
   gender: { gender: 'Male' | 'Female' }
@@ -200,7 +202,6 @@ export type ServantType =
   | 'Admin'
   | 'ArrivalsAdmin'
   | 'ArrivalsCounter'
-  | 'ArrivalsConfirmer'
   | 'Teller'
 
 export type ServantTypeLowerCase =
@@ -208,7 +209,6 @@ export type ServantTypeLowerCase =
   | 'admin'
   | 'arrivalsAdmin'
   | 'arrivalsCounter'
-  | 'arrivalsConfirmer'
 
 export type CurrentUser = {
   id: string
@@ -259,8 +259,8 @@ export type Role =
   | 'arrivalsAdminStream'
   | 'arrivalsAdminCouncil'
   | 'arrivalsAdminConstituency'
-  | 'arrivalsConfirmerStream'
   | 'arrivalsCounterStream'
+  | 'arrivalsPayerCouncil'
   | 'tellerStream'
   | 'sheepseekerStream'
   | 'all'
@@ -270,14 +270,14 @@ export type VerbTypes =
   | 'admin'
   | 'arrivalsAdmin'
   | 'arrivalsCounter'
-  | 'arrivalsConfirmer'
+  | 'arrivalsPayer'
   | 'teller'
   | 'sheepseeker'
   | 'leads'
   | 'isAdminFor'
   | 'isArrivalsAdminFor'
   | 'isArrivalsCounterFor'
-  | 'isArrivalsConfirmerFor'
+  | 'isArrivalsPayerFor'
   | 'isTellerFor'
   | 'isSheepSeekerFor'
 

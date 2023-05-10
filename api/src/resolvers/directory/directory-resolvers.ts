@@ -54,7 +54,7 @@ const directoryMutation = {
           occupation: args?.occupation ?? '',
           fellowship: args?.fellowship ?? '',
           ministry: args?.ministry ?? '',
-          idlLocation: args?.idlLocation ?? '',
+          visitationArea: args?.visitationArea ?? '',
           pictureUrl: args?.pictureUrl ?? '',
           auth_id: context.auth.jwt.sub ?? '',
         }
@@ -102,8 +102,9 @@ const directoryMutation = {
       occupation: args?.occupation ?? '',
       fellowship: args?.fellowship ?? '',
       ministry: args?.ministry ?? '',
-      idlLocation: args?.idlLocation ?? '',
+      visitationArea: args?.visitationArea ?? '',
       pictureUrl: args?.pictureUrl ?? '',
+      howYouJoined: args?.howYouJoined ?? '',
       auth_id: context.auth.jwt.sub ?? '',
     })
 
@@ -346,14 +347,25 @@ const directoryMutation = {
 
     try {
       // Bacenta Leader must be removed since the Bacenta is being closed down
-      await RemoveServant(
-        context,
-        args,
-        permitAdmin('Council'),
-        'Constituency',
-        'Leader',
-        true
-      )
+      await Promise.all([
+        RemoveServant(
+          context,
+          args,
+          permitAdmin('Council'),
+          'Constituency',
+          'Leader',
+          true
+        ),
+        args.adminId
+          ? RemoveServant(
+              context,
+              args,
+              permitAdmin('Council'),
+              'Constituency',
+              'Admin'
+            )
+          : null,
+      ])
 
       const closeConstituencyResponse = await session.run(
         closeChurchCypher.closeDownConstituency,

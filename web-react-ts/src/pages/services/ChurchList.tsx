@@ -22,14 +22,14 @@ const ChurchList = ({
 }) => {
   const { userJobs } = useContext(MemberContext)
   const { clickCard } = useContext(ChurchContext)
-  const { setUserChurch } = useSetUserChurch()
+  const { setUserChurch, setUserFinancials } = useSetUserChurch()
   const navigate = useNavigate()
 
   return (
     <div className="d-grid gap-2 text-left">
       {userJobs.length ? (
-        userJobs.map((role: UserRole) => {
-          return role.church
+        userJobs.map((role: UserRole) =>
+          role.church
             .filter((church: Church) => {
               if (color === 'campaigns') return true
               return church?.vacationStatus !== 'Vacation'
@@ -71,7 +71,11 @@ const ChurchList = ({
                   iconCaption={church.__typename}
                   onClick={() => {
                     clickCard(church)
-                    setUserChurch(church)
+                    if (church.__typename === 'GatheringService') {
+                      setUserFinancials(church)
+                    } else {
+                      setUserChurch(church)
+                    }
 
                     if (color === 'arrivals') {
                       navigate(`/arrivals/${church.__typename.toLowerCase()}`)
@@ -91,7 +95,7 @@ const ChurchList = ({
                 />
               )
             })
-        })
+        )
       ) : (
         <>
           <MenuButton color={color} />

@@ -10,7 +10,7 @@ import { SHORT_POLL_INTERVAL } from 'global-utils'
 import useChurchLevel from 'hooks/useChurchLevel'
 import PlaceholderDefaulterList from 'pages/services/defaulters/PlaceholderDefaulterList'
 import { useContext, useEffect, useState } from 'react'
-import { Button, Container } from 'react-bootstrap'
+import { Button, ButtonGroup, Container } from 'react-bootstrap'
 import PullToRefresh from 'react-simple-pull-to-refresh'
 import { ArrivalsUseChurchType, BacentaWithArrivals } from './arrivals-types'
 import {
@@ -121,22 +121,26 @@ const StateBacentasToCount = () => {
                 </Form>
               )}
             </Formik>
-            <div className="text-center mt-2">
-              <Button
-                variant={'info'}
-                className={`${!seeBusses && 'low-opacity'} me-2`}
-                onClick={() => setSeeBusses(!seeBusses)}
-              >
-                Sprinter and Urvan
-              </Button>
-              <Button
-                variant={`success`}
-                className={`${!seeCars && 'low-opacity'}`}
-                onClick={() => setSeeCars(!seeCars)}
-              >
-                Car and Uber
-              </Button>
-            </div>
+            {church && bacentaData?.length ? (
+              <div className="d-grid gap-2">
+                <ButtonGroup className="mt-2">
+                  <Button
+                    variant={'info'}
+                    className={`${!seeBusses && 'low-opacity'} me-2`}
+                    onClick={() => setSeeBusses(!seeBusses)}
+                  >
+                    Sprinter and Urvan
+                  </Button>
+                  <Button
+                    variant={`success`}
+                    className={`${!seeCars && 'low-opacity'}`}
+                    onClick={() => setSeeCars(!seeCars)}
+                  >
+                    Car and Uber
+                  </Button>
+                </ButtonGroup>
+              </div>
+            ) : null}
             {church && !bacentaData?.length && (
               <NoData text="There are no bacentas to be counted" />
             )}

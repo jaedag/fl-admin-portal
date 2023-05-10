@@ -1,21 +1,26 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Badge } from 'react-bootstrap'
 import '../QuickFacts.css'
 import { getPercentageChange } from './quick-fact-utils'
+import { MemberContext } from 'contexts/MemberContext'
+
+export interface IncomeDetailsInterface {
+  churchType: string
+  cardType: string
+  leadersName: string
+  churchName: string
+  currency: string
+  churchAvgIncomeThisMonth: number | string
+  avgHigherLevelIncomeThisMonth: number | string
+  higherLevelName: string
+}
 
 export interface IncomeQuickFactsProps {
-  incomeDetails: {
-    churchType: string
-    cardType: string
-    leadersName: string
-    churchName: string
-    churchAvgIncomeThisMonth: number | string
-    avgHigherLevelIncomeThisMonth: number | string
-    higherLevelName: string
-  }[]
+  incomeDetails: IncomeDetailsInterface[]
 }
 
 const IncomeQuickFactsCard = (props: IncomeQuickFactsProps) => {
+  const { currentUser } = useContext(MemberContext)
   const details = props?.incomeDetails[0]
 
   const percentageRiseOrFall = getPercentageChange(
@@ -24,12 +29,12 @@ const IncomeQuickFactsCard = (props: IncomeQuickFactsProps) => {
   )
 
   const getBadgeBackground = () => {
-    if (percentageRiseOrFall >= 0) return 'green'
+    if ((percentageRiseOrFall as number) >= 0) return 'green'
     return 'red'
   }
 
   const getBadgeColor = () => {
-    if (percentageRiseOrFall >= 0) return 'badge-percentage-green'
+    if ((percentageRiseOrFall as number) >= 0) return 'badge-percentage-green'
     return 'badge-percentage-red'
   }
 
@@ -46,7 +51,7 @@ const IncomeQuickFactsCard = (props: IncomeQuickFactsProps) => {
         {details?.churchName + ' ' + details?.churchType}
       </div>
       <div className="income-number">
-        <span className="currency">GHS </span>
+        <span className="currency">{currentUser.currency} </span>
         {details?.churchAvgIncomeThisMonth === 'null'
           ? '--'
           : details?.churchAvgIncomeThisMonth}
@@ -56,13 +61,13 @@ const IncomeQuickFactsCard = (props: IncomeQuickFactsProps) => {
           bg={`${getBadgeBackground()}`}
           className={`${getBadgeColor()} mt-auto`}
         >
-          {percentageRiseOrFall >= 0 ? '+' : ''}
+          {(percentageRiseOrFall as number) >= 0 ? '+' : ''}
           {percentageRiseOrFall}%
         </Badge>
       </div>
       <hr className="separator" />
       <div className="income-number">
-        <span className="currency">GHS </span>
+        <span className="currency">{currentUser.currency} </span>
         {details?.avgHigherLevelIncomeThisMonth === 'null'
           ? '--'
           : details?.avgHigherLevelIncomeThisMonth}

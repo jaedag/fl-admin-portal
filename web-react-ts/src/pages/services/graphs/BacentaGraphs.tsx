@@ -69,7 +69,7 @@ export const BacentaGraphs = () => {
               statistic={getMonthlyStatAverage(churchData, 'attendance')}
             />
           </Col>
-          {((!bussing && !currentUser.noIncome) || loading) && (
+          {((!bussing && !currentUser.noIncomeTracking) || loading) && (
             <Col>
               <StatDisplay
                 title="Avg Weekly Income"
@@ -79,7 +79,7 @@ export const BacentaGraphs = () => {
           )}
         </Row>
 
-        {!currentUser.noIncome ? (
+        {!currentUser.noIncomeTracking ? (
           <ChurchGraph
             stat1="attendance"
             stat2={!bussing ? 'income' : null}

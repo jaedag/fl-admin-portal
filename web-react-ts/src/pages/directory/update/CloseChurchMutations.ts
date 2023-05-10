@@ -31,8 +31,12 @@ export const MAKE_BACENTA_INACTIVE = gql`
 `
 
 export const MAKE_CONSTITUENCY_INACTIVE = gql`
-  mutation CloseDownConstituency($id: ID!, $leaderId: ID!) {
-    CloseDownConstituency(constituencyId: $id, leaderId: $leaderId) {
+  mutation CloseDownConstituency($id: ID!, $leaderId: ID!, $adminId: ID!) {
+    CloseDownConstituency(
+      constituencyId: $id
+      leaderId: $leaderId
+      adminId: $adminId
+    ) {
       id
       name
       constituencies {

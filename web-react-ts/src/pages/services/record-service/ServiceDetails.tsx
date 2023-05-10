@@ -4,7 +4,9 @@ import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import HeadingSecondary from 'components/HeadingSecondary'
 import PlaceholderCustom from 'components/Placeholder'
 import SpinnerPage from 'components/SpinnerPage'
-import TableFromArrays from 'components/TableFromArrays/TableFromArrays'
+import TableFromArrays, {
+  TableArray,
+} from 'components/TableFromArrays/TableFromArrays'
 import { MemberContext } from 'contexts/MemberContext'
 import { Church, ServiceRecord } from 'global-types'
 import { alertMsg } from 'global-utils'
@@ -12,10 +14,11 @@ import { parseNeoTime } from 'jd-date-utils'
 import { permitAdmin } from 'permission-utils'
 import React, { useContext, useEffect, useState } from 'react'
 import { Col, Container, Row, Button, Card } from 'react-bootstrap'
-import { CheckCircleFill } from 'react-bootstrap-icons'
+import { CheckCircleFill, FileEarmarkArrowUpFill } from 'react-bootstrap-icons'
 import { useNavigate } from 'react-router'
 import { MANUALLY_CONFIRM_OFFERING_PAYMENT } from './RecordServiceMutations'
 import './ServiceDetails.css'
+import CurrencySpan from 'components/CurrencySpan'
 
 type ServiceDetailsProps = {
   service: ServiceRecord
@@ -41,7 +44,7 @@ const ServiceDetails = ({ service, church, loading }: ServiceDetailsProps) => {
     return <SpinnerPage />
   }
 
-  let table: string[][] = [
+  let table: TableArray = [
     [
       'Date of Service',
       new Date(service.serviceDate.date).toDateString() ?? '',
@@ -52,7 +55,7 @@ const ServiceDetails = ({ service, church, loading }: ServiceDetailsProps) => {
   if (!service.noServiceReason) {
     table.push(['Attendance', service?.attendance.toString()])
 
-    if (!currentUser.noIncome && church.__typename !== 'Sonta') {
+    if (!currentUser.noIncomeTracking && church.__typename !== 'Sonta') {
       table.push(['Number of Tithers', service?.numberOfTithers.toString()])
       if (service?.foreignCurrency) {
         table.push([
@@ -61,7 +64,7 @@ const ServiceDetails = ({ service, church, loading }: ServiceDetailsProps) => {
         ])
       }
       table.push(
-        ['Income', service.income.toString()],
+        ['Income', <CurrencySpan number={service.income} />],
         ...service.treasurers.map((treasurer, i) => [
           `Treasurer ${i + 1}`,
           treasurer.fullName ?? '',
@@ -75,7 +78,9 @@ const ServiceDetails = ({ service, church, loading }: ServiceDetailsProps) => {
   }
 
   const noBankingProof =
-    !currentUser.noIncome && !service?.bankingProof && !service?.bankingSlip
+    !currentUser.noIncomeTracking &&
+    !service?.bankingProof &&
+    !service?.bankingSlip
 
   return (
     <Container>
@@ -87,14 +92,14 @@ const ServiceDetails = ({ service, church, loading }: ServiceDetailsProps) => {
         {service?.created_by && (
           <p>{`Recorded by ${service?.created_by?.fullName}`}</p>
         )}
-        {!currentUser.noIncome && service?.bankingSlipUploader && (
+        {!currentUser.noIncomeTracking && service?.bankingSlipUploader && (
           <p className="fw-bold">{`Banking Slip Uploaded by ${service?.bankingSlipUploader.fullName}`}</p>
         )}
-        {!currentUser.noIncome && service?.offeringBankedBy && (
+        {!currentUser.noIncomeTracking && service?.offeringBankedBy && (
           <p className="fw-bold">{`Offering Banked by ${service?.offeringBankedBy.fullName}`}</p>
         )}
         <RoleView roles={permitAdmin('Council')}>
-          {!currentUser.noIncome && service?.bankingConfirmer && (
+          {!currentUser.noIncomeTracking && service?.bankingConfirmer && (
             <p className="fw-bold">{`Offering Confirmed by ${service?.bankingConfirmer.fullName}`}</p>
           )}
         </RoleView>
@@ -105,7 +110,7 @@ const ServiceDetails = ({ service, church, loading }: ServiceDetailsProps) => {
             <Row className="d-flex justify-content-center">
               <TableFromArrays tableArray={table} loading={loading} />
               <div className="text-center">
-                {!currentUser.noIncome && service?.treasurerSelfie && (
+                {!currentUser.noIncomeTracking && service?.treasurerSelfie && (
                   <>
                     <h6>Treasurer Selfie</h6>
                     <div>
@@ -141,7 +146,7 @@ const ServiceDetails = ({ service, church, loading }: ServiceDetailsProps) => {
                     </div>
                   </>
                 )}
-                {!currentUser.noIncome && service?.offeringBankedBy && (
+                {!currentUser.noIncomeTracking && service?.offeringBankedBy && (
                   <div className="mb-4">
                     {`${service?.offeringBankedBy.fullName} used the Self Banking Feature. Click this button to see
                     Details`}
@@ -152,7 +157,7 @@ const ServiceDetails = ({ service, church, loading }: ServiceDetailsProps) => {
                     </p>
                   </div>
                 )}
-                {!currentUser.noIncome && service?.bankingSlip && (
+                {!currentUser.noIncomeTracking && service?.bankingSlip && (
                   <>
                     <h6>Banking Slip</h6>
 
@@ -180,7 +185,7 @@ const ServiceDetails = ({ service, church, loading }: ServiceDetailsProps) => {
                   <RoleView roles={permitAdmin('GatheringService')}>
                     <div className="d-grid gap-2">
                       <Button
-                        className="my-3"
+                        className="mt-3"
                         variant="warning"
                         disabled={submitting}
                         onClick={() => {
@@ -203,6 +208,19 @@ const ServiceDetails = ({ service, church, loading }: ServiceDetailsProps) => {
                       >
                         <CheckCircleFill />
                         {submitting ? 'Confirming...' : 'Confirm Offering'}
+                      </Button>
+
+                      <Button
+                        className="mb-3"
+                        variant="danger"
+                        onClick={() => {
+                          navigate(
+                            `/${church?.__typename.toLowerCase()}/banking-slip/submission`
+                          )
+                        }}
+                      >
+                        <FileEarmarkArrowUpFill />
+                        Upload Banking Slip
                       </Button>
                     </div>
                   </RoleView>

@@ -1,41 +1,51 @@
-MATCH (con:Constituency)
-REMOVE con.urvanTopUp, con.sprinterTopUp, con.urvanCost, con.sprinterCost
-RETURN COUNT(con);
+CREATE (day:ServiceDay)
+SET day.day = 'Sunday',
+day.dayNumber = 7
+RETURN day;
 
-MATCH (bacenta:Bacenta)
-REMOVE bacenta.urvanTopUp, bacenta.sprinterTopUp, bacenta.urvanCost, bacenta.sprinterCost
-RETURN COUNT(bacenta);
+MATCH (stream:Stream)
+MATCH (day:ServiceDay)
+WHERE day.day = 'Sunday'
 
-MATCH (t:Bacenta)
-SET t.outbound = false
-RETURN COUNT(t);
+MERGE (stream)-[:MEETS_ON]->(day)
 
-LOAD CSV WITH HEADERS FROM "https://docs.google.com/spreadsheets/d/e/2PACX-1vTz-vW-0XdoyVAFElknysMQFZHFXcphcEWOSeqZ8ysCu6CmGmRG7oLYB9MeirIWIQHzI4Hv6kkfoifi/pub?output=csv" as line
-MATCH (bacenta:Bacenta {name: line.Bacenta})<-[:HAS]-(constituency:Constituency {name: line.Constituency})
-SET bacenta.urvanTopUp = toFloat(line.`Urvan - church top up`), 
-bacenta.sprinterTopUp = toFloat(line.`Sprinter - church top up`),
-bacenta.outbound = toBoolean(line.Outbound)
+RETURN stream, day;
 
-RETURN  constituency.name, bacenta.name, toBoolean(line.Outbound);
-
-MATCH (bacenta:Active:Bacenta)<-[:HAS*2]-(council:Council)
-WHERE bacenta.urvanTopUp IS NULL
-MATCH (council)-[:LEADS]-(leader:Member)
-RETURN council.name, COUNT(bacenta), leader.firstName + " " + leader.lastName;
+MATCH (stream:Stream) WHERE stream.name = 'Gospel Encounter' OR stream.name = 'Anagkazo Encounter'
+MATCH (stream)-[r:MEETS_ON]->(day:ServiceDay)
+DELETE r
+WITH stream
+MATCH (day:ServiceDay) WHERE day.day = 'Saturday'
+MERGE (stream)-[:MEETS_ON]->(day)
+RETURN stream, day;
 
 
-MATCH (bacenta:Bacenta)
-WHERE bacenta.urvanTopUp IS NULL    
-SET bacenta.urvanTopUp = 1
-RETURN COUNT(bacenta);
+MATCH (oversight:Oversight)
+MATCH (jd:Member {email: "jaedagy@gmail.com"})
+MERGE (jd)-[:LEADS]->(oversight)
+RETURN oversight, jd;
 
-MATCH (bacenta:Bacenta)
-WHERE bacenta.sprinterTopUp IS NULL
-SET bacenta.sprinterTopUp = 1
-RETURN COUNT(bacenta);
+// MATCH (g:GatheringService)<-[r:IS_ADMIN_FOR]-(jd:Member {email: "jaedagy@gmail.com"})
+// DELETE r
 
-CREATE CONSTRAINT bacentaNeedsUrvanTopUp IF NOT EXISTS ON (b:Bacenta) ASSERT b.urvanTopUp IS NOT NULL;
-CREATE CONSTRAINT bacentaNeedsSprinterTopUp IF NOT EXISTS ON (b:Bacenta) ASSERT b.sprinterTopUp IS NOT NULL;
+MATCH (g:GatheringService)
+SET g.conversionRateToDollar = 10 
+RETURN COUNT(g);
 
-// create node key constraint on sprinterTopup and urvanTopUp
-CREATE CONSTRAINT bacentaNeedsTopUp IF NOT EXISTS ON (b:Bacenta) ASSERT b.urvanTopUp IS NOT NULL AND b.sprinterTopUp IS NOT NULL;
+// create a constraint so that every gatheringservice has to have the property noIncomeTracking 
+
+// constraint to remove the noIncome property from all gatheringservices
+DROP CONSTRAINT gatheringServiceNeedsNoIncome;
+
+
+MATCH (g:GatheringService)
+WHERE g.noIncome IS NOT NULL
+SET g.noIncomeTracking = g.noIncome
+REMOVE g.noIncome
+RETURN g;
+
+CREATE CONSTRAINT gatheringServiceNeedsNoIncomeTracking IF NOT EXISTS ON (g:GatheringService) ASSERT exists(g.noIncomeTracking);
+
+MATCH (member:Member) WHERE member.howYouJoined = 'Service With A Bishop'
+SET member.howYouJoined = 'Service With A Pastor'
+RETURN COUNT(member)

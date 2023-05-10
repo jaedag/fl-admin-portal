@@ -14,7 +14,7 @@ export interface DebitDataBody extends PayStackRequestBody {
   data: {
     amount: number
     email: string
-    currency: 'GHS'
+    currency: 'GHS' | 'ZMW' | 'USD' | 'EUR' | 'GBP' | 'NGN' | 'ZAR'
     subaccount: string | undefined
     mobile_money: {
       phone: string

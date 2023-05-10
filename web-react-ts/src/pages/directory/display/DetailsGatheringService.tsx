@@ -24,6 +24,7 @@ const DetailsGatheringService = () => {
       link: `/${gathering?.__typename?.toLowerCase()}/members`,
       width: 12,
     },
+
     {
       title: 'Streams',
       number: gathering?.streamCount || 0,
@@ -64,13 +65,35 @@ const DetailsGatheringService = () => {
       number: gathering?.federalMinistryCount,
       link: '/gatheringservice/federalministries',
     },
+    {
+      title: 'Income Tracking',
+      number: gathering?.noIncomeTracking ? 'No' : 'Yes',
+      link: `#`,
+    },
+    {
+      title: 'Currency',
+      number: gathering?.currency,
+      link: `#`,
+    },
+    {
+      title: 'Converstion Rate ($)',
+      number: gathering?.conversionRateToDollar,
+      link: `#`,
+    },
   ]
+
+  // if noIncomeTracking is true, remove the last two elements in the array
+
+  if (gathering?.noIncomeTracking) {
+    details.pop()
+    details.pop()
+  }
 
   return (
     <ApolloWrapper loading={loading} error={error} data={data} placeholder>
       <DisplayChurchDetails
         name={gathering?.name}
-        leaderTitle={'Resident Bishop'}
+        leaderTitle={'Lead Pastor'}
         church={gathering}
         churchId={gatheringServiceId}
         leader={gathering?.leader}

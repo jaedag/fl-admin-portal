@@ -4,6 +4,7 @@ import DisplayChurchDetails from 'components/DisplayChurchDetails/DisplayChurchD
 import { ChurchContext } from 'contexts/ChurchContext'
 import React, { useContext } from 'react'
 import { DISPLAY_OVERSIGHT } from './ReadQueries'
+import { permitMe } from 'permission-utils'
 
 const DetailsOversight = () => {
   const { oversightId } = useContext(ChurchContext)
@@ -31,7 +32,7 @@ const DetailsOversight = () => {
     {
       title: 'Gathering Services',
       number: oversight?.gatheringServiceCount,
-      link: `/${`GatheringService`.toLowerCase()}/displayall`,
+      link: `/${`gatheringService`.toLowerCase()}/displayall`,
     },
     {
       title: 'Councils',
@@ -67,14 +68,14 @@ const DetailsOversight = () => {
     <ApolloWrapper loading={loading} error={error} data={data} placeholder>
       <DisplayChurchDetails
         name={oversight?.name}
-        leaderTitle="Resident Bishop"
+        leaderTitle="Lead Pastor"
         churchId={oversightId}
         leader={oversight?.leader}
         churchType={oversight?.__typename}
         subChurch="GatheringService"
         details={details}
-        editlink="/gatheringservice/editgatheringservice"
-        editPermitted={['adminOversight']}
+        editlink="/oversight/editoversight"
+        editPermitted={permitMe('Denomination')}
         history={oversight?.history.length !== 0 && oversight?.history}
         buttons={oversight?.gatheringServices ?? []}
         breadcrumb={breadcrumb && breadcrumb}

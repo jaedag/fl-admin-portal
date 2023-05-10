@@ -34,8 +34,8 @@ WITH apoc.cypher.runFirstColumn(
   RETURN arrivalsAdminGatheringService", {this: member}, true) | member_arrivalsAdminGatheringServices { .id,.name}],
   isArrivalsCounterForStream: [ member_arrivalsCounterStreams IN apoc.cypher.runFirstColumn("MATCH (this)-[:COUNTS_ARRIVALS_FOR]->(arrivalsCounterStream:Stream)
   RETURN arrivalsCounterStream", {this: member}, true) | member_arrivalsCounterStreams { .id,.name}],
-  isArrivalsConfirmerForStream: [ member_arrivalsConfirmerStreams IN apoc.cypher.runFirstColumn("MATCH (this)-[:CONFIRMS_ARRIVALS_FOR]->(arrivalsConfirmerStream:Stream)
-  RETURN arrivalsConfirmerStream", {this: member}, true) | member_arrivalsConfirmerStreams { .id,.name}]
+  isArrivalsPayerForCouncil: [ member_arrivalsPayerCouncils IN apoc.cypher.runFirstColumn("MATCH (this)-[:CONFIRMS_ARRIVALS_FOR]->(arrivalsPayerCouncil:Council)
+  RETURN arrivalsPayerCouncil", {this: member}, true) | member_arrivalsPayerCouncils { .id,.name}]
   } AS member
   `
 
@@ -120,13 +120,15 @@ WITH node
 CREATE (log:HistoryLog)
 SET log.id = apoc.create.uuid(),
 log.timeStamp = datetime(),
-log.historyRecord = "This member was deleted for this reason: " +$reason
+log.historyRecord = "Member Deleted: " +$reason
 
 WITH log, node
+MATCH (node)-[:BELONGS_TO]->(church)
 MATCH (admin:Member {auth_id:$auth.jwt.sub})
 MERGE (today:TimeGraph {date: date()})
 MERGE (admin)<-[:LOGGED_BY]-(log)
 MERGE (node)-[:HAS_HISTORY]->(log)
+MERGE (church)-[:HAS_HISTORY]->(log)
 MERGE (log)-[:RECORDED_ON]->(today)
 
 RETURN node as member
@@ -142,9 +144,10 @@ CREATE (member:Active:Member:IDL:Deer {whatsappNumber:$whatsappNumber})
       	member.lastName = $lastName,
       	member.email = $email,
       	member.phoneNumber = $phoneNumber,
-        member.idlLocation = $idlLocation,
+        member.visitationArea = $visitationArea,
       	member.pictureUrl = $pictureUrl,
         member.registrationDate = datetime(),
+        member.howYouJoined = $howYouJoined,
         
         member.hasHolyGhostBaptism = false,
         member.hasWaterBaptism = false,
@@ -218,7 +221,7 @@ WITH member, fellowship
         member.middleName = $middleName,
         member.lastName = $lastName,
         member.phoneNumber = $phoneNumber,
-        member.idlLocation = $idlLocation,
+        member.visitationArea = $visitationArea,
         member.pictureUrl = $pictureUrl
 
         REMOVE 

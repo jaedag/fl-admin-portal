@@ -26,7 +26,7 @@ const BacentaService = () => {
       error={bacentaError}
       data={bacentaData}
     >
-      {currentUser.noIncome ? (
+      {currentUser.noIncomeTracking ? (
         <ServiceFormNoIncome
           RecordServiceMutation={RecordService}
           church={bacentaData?.bacentas[0]}

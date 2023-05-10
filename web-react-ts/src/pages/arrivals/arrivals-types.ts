@@ -1,4 +1,4 @@
-import { ApolloError, ApolloQueryResult } from '@apollo/client'
+import { ApolloError } from '@apollo/client'
 import {
   Bacenta,
   Church,
@@ -78,18 +78,22 @@ export type VehicleRecord = {
   outbound: boolean
   comments: string
   arrivalTime: string
-  paystackTransferCode?: string
+  transactionReference?: string
   transactionStatus?: string
 }
 
 export interface StreamWithArrivals extends Stream, HigherChurchWithArrivals {
   __typename: 'Stream'
   name: StreamOptions
+  meetingDay: {
+    day: string
+    dayNumber: number
+  }
   mobilisationStartTime: string
   mobilisationEndTime: string
   arrivalStartTime: string
   arrivalEndTime: string
-  arrivalsConfirmers: Member[]
+  arrivalsPayers: Member[]
   arrivalsCounters: Member[]
 }
 
@@ -122,9 +126,17 @@ export interface HigherChurchWithArrivals extends Church {
   bacentasMobilisingCount: number
   bacentasOnTheWayCount: number
   bacentasBelow8Count: number
+
+  vehiclesToBePaidCount: number
+  vehiclesHaveBeenPaidCount: number
+  vehicleAmountToBePaid: number
+  vehicleAmountHasBeenPaid: number
+
   bacentasHaveArrivedCount: number
   bussingMembersOnTheWayCount: number
   bussingMembersHaveArrivedCount: number
+  bussesThatArrivedCount: number
+  bussesOnTheWayCount: number
   [key: string]: any
 }
 

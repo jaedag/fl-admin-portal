@@ -3,7 +3,9 @@ import { Form, Formik, FormikHelpers } from 'formik'
 import * as Yup from 'yup'
 import React, { useContext } from 'react'
 import {
+  DELETE_MEMBER_CATEGORY_OPTIONS,
   GENDER_OPTIONS,
+  HOW_YOU_JOINED_OPTIONS,
   isAuthorised,
   makeSelectOptions,
   MARITAL_STATUS_OPTIONS,
@@ -29,6 +31,7 @@ import usePopup from 'hooks/usePopup'
 import Popup from 'components/Popup/Popup'
 import { useNavigate } from 'react-router'
 import RoleView from 'auth/RoleView'
+import RadioButtons from 'components/formik/RadioButtons'
 
 type MemberFormProps = {
   initialValues: CreateMemberFormOptions
@@ -43,6 +46,7 @@ type MemberFormProps = {
 
 type DeleteMemberProp = {
   reason: string
+  reasonCategory: string
 }
 
 const MemberForm = ({
@@ -70,6 +74,7 @@ const MemberForm = ({
   const navigate = useNavigate()
 
   const deleteValidationSchema = Yup.object({
+    reasonCategory: Yup.string().required(),
     reason: Yup.string().required(
       "Please provide the reason you're deleting this member"
     ),
@@ -77,6 +82,7 @@ const MemberForm = ({
 
   const reasonInitialValues: DeleteMemberProp = {
     reason: '',
+    reasonCategory: '',
   }
 
   const onDelete = (
@@ -88,7 +94,7 @@ const MemberForm = ({
     MakeMemberInactive({
       variables: {
         memberId: memberId,
-        reason: values.reason,
+        reason: `${values.reasonCategory}: ${values.reason}`,
       },
     })
       .then(() => {
@@ -127,11 +133,14 @@ const MemberForm = ({
         `Phone Number must start with + and country code (eg. '+233')`
       )
       .required('Phone Number is required'),
-    whatsappNumber: Yup.string().matches(
-      PHONE_NUM_REGEX,
-      `Phone Number must start with + and country code (eg. '+233')`
-    ),
-    idlLocation: Yup.string().required('Location is a required field'),
+    whatsappNumber: Yup.string()
+      .required('Whatsapp Number is required')
+      .matches(
+        PHONE_NUM_REGEX,
+        `Phone Number must start with + and country code (eg. '+233')`
+      ),
+    visitationArea: Yup.string().required('Location is a required field'),
+    howYouJoined: Yup.string().required('You must select how you joined'),
     fellowship: Yup.object().required(
       'Please pick a fellowship from the dropdown'
     ),
@@ -162,7 +171,6 @@ const MemberForm = ({
                   Are you sure you want to delete this member? Please enter your
                   reason below
                 </p>
-
                 <Formik
                   initialValues={reasonInitialValues}
                   validationSchema={deleteValidationSchema}
@@ -172,6 +180,10 @@ const MemberForm = ({
                     <Form>
                       <Row className="form-row">
                         <Col>
+                          <RadioButtons
+                            name="reasonCategory"
+                            options={DELETE_MEMBER_CATEGORY_OPTIONS}
+                          />
                           <Input name="reason" placeholder="Reason" />
                           <SubmitButton formik={formik} />
                         </Col>
@@ -311,12 +323,20 @@ const MemberForm = ({
                       <Col sm={10}>
                         <Input
                           label="Home/Campus Location * (for IDL)"
-                          name="idlLocation"
+                          name="visitationArea"
                           placeholder="Enter the location for IDL Visitaion"
-                          aria-describedby="idlLocation"
+                          aria-describedby="visitationArea"
                         />
                       </Col>
                     )}
+                    <Select
+                      label="How Did You Join First Love Church?"
+                      name="howYouJoined"
+                      options={HOW_YOU_JOINED_OPTIONS}
+                      defaultOption="Select How Did You Join?"
+                      placeholder="Tell us how you joined"
+                      aria-describedby="howYouJoined"
+                    />
                     <Col sm={10}>
                       <SearchFellowship
                         name="fellowship"
@@ -342,20 +362,22 @@ const MemberForm = ({
                 </div>
                 <Col>
                   <SubmitButton formik={formik} />
-                  <RoleView
-                    roles={[
-                      'sheepseekerStream',
-                      'adminStream',
-                      'adminGatheringService',
-                    ]}
-                  >
-                    <Button
-                      onClick={() => togglePopup()}
-                      className={`btn-graphs btn dark image mt-3`}
+                  {update && (
+                    <RoleView
+                      roles={[
+                        'sheepseekerStream',
+                        'adminStream',
+                        'adminGatheringService',
+                      ]}
                     >
-                      Delete Member
-                    </Button>
-                  </RoleView>
+                      <Button
+                        onClick={() => togglePopup()}
+                        className={`btn-graphs btn dark image mt-3`}
+                      >
+                        Delete Member
+                      </Button>
+                    </RoleView>
+                  )}
                 </Col>
               </Row>
             </Form>

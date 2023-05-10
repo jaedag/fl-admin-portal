@@ -1,7 +1,6 @@
 export const setVehicleRecordTransactionSuccessful = `
 MATCH (record:VehicleRecord {id: $vehicleRecordId})<-[:INCLUDES_RECORD]-(bussing:BussingRecord)<-[:HAS_BUSSING]-(:ServiceLog)<-[:HAS_HISTORY]-(bacenta:Bacenta)
 SET record.transactionStatus = $responseStatus,
-bacenta.recipientCode = $recipientCode,
 record.transactionReference = $transactionReference,
 record.paystackTransferCode = $transferCode
 
@@ -10,7 +9,9 @@ RETURN record
 
 export const setBacentaRecipientCode = `
 MATCH (bacenta:Bacenta {id: $bacentaId})
-    SET bacenta.recipientCode = $recipientCode
+MATCH (record:VehicleRecord {id: $vehicleRecordId})
+    SET bacenta.recipientCode = $recipientCode,
+    record.recipientCode = $recipientCode
 RETURN bacenta
 `
 
@@ -29,7 +30,8 @@ SET record.target = bacenta.target,
 record.momoNumber = bacenta.momoNumber, 
 record.mobileNetwork = bacenta.mobileNetwork,
 record.momoName = bacenta.momoName,
-record.outbound = bacenta.outbound
+record.outbound = bacenta.outbound,
+record.recipientCode = bacenta.recipientCode
 
 RETURN record.id AS vehicleRecordId,
 record.target AS target,
@@ -53,6 +55,7 @@ MATCH (record:VehicleRecord {id: $vehicleRecordId})<-[:INCLUDES_RECORD]-(:Bussin
 MATCH (bacenta)<-[:HAS]-(:Constituency)<-[:HAS]-(:Council)<-[:HAS]-(stream:Stream)
 MATCH (bacenta)<-[:LEADS]-(leader:Active:Member)
 WITH record, bacenta, leader, stream
+
 
 RETURN record, stream, bacenta, leader
 `
@@ -365,7 +368,5 @@ RETURN DISTINCT date.date as date, stream.name as stream, bacenta.name as bacent
     WHEN record.outbound = true THEN 'In and Out'
     WHEN record.outbound = false THEN 'In Only'
     END) as outbound, 
-(CASE 
-WHEN bacenta.lpIvyTopUp IS NULL THEN round(toFloat(record.vehicleTopUp), 2)
-ELSE round(toFloat(bacenta.lpIvyTopUp), 2) END) as topUp, record.vehicleCost as vehicleCost, record.momoNumber as momoNumber, record.comments as comments, record.arrivalTime as arrivalTime, (leader.firstName+ " "+ leader.lastName) as leader, council.name as council, constituency.name as constituency, record.momoName as momoName, society.society as society ORDER BY toInteger(society) ASC
+round(toFloat(record.vehicleTopUp), 2) as topUp, record.vehicleCost as vehicleCost, record.momoNumber as momoNumber, record.comments as comments, record.arrivalTime as arrivalTime, (leader.firstName+ " "+ leader.lastName) as leader, council.name as council, constituency.name as constituency, record.momoName as momoName, society.society as society ORDER BY toInteger(society) ASC
 `

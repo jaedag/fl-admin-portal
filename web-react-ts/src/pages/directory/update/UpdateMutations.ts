@@ -14,6 +14,7 @@ export const UPDATE_MEMBER_MUTATION = gql`
     $occupation: String
     $fellowship: String!
     $pictureUrl: String!
+    $howYouJoined: String!
   ) {
     UpdateMemberDetails(
       id: $id
@@ -28,6 +29,7 @@ export const UPDATE_MEMBER_MUTATION = gql`
       occupation: $occupation
       fellowship: $fellowship
       pictureUrl: $pictureUrl
+      howYouJoined: $howYouJoined
     ) {
       firstName
       middleName
@@ -37,6 +39,7 @@ export const UPDATE_MEMBER_MUTATION = gql`
       phoneNumber
       pictureUrl
       whatsappNumber
+      howYouJoined
       dob {
         date
       }
@@ -147,14 +150,20 @@ export const UPDATE_STREAM_MUTATION = gql`
     $streamId: ID!
     $name: String!
     $gatheringServiceId: ID!
+    $meetingDay: String!
   ) {
     UpdateStreamDetails(
       streamId: $streamId
       name: $name
       gatheringServiceId: $gatheringServiceId
+      meetingDay: $meetingDay
     ) {
       id
       name
+      meetingDay {
+        day
+        dayNumber
+      }
       councils {
         id
         name
@@ -206,14 +215,23 @@ export const UPDATE_GATHERINGSERVICE_MUTATION = gql`
     $gatheringServiceId: ID!
     $name: String!
     $oversightId: ID!
+    $noIncomeTracking: Boolean!
+    $currency: String!
+    $conversionRateToDollar: Float!
   ) {
     UpdateGatheringServiceDetails(
       gatheringServiceId: $gatheringServiceId
       name: $name
       oversightId: $oversightId
+      noIncomeTracking: $noIncomeTracking
+      currency: $currency
+      conversionRateToDollar: $conversionRateToDollar
     ) {
       id
       name
+      noIncomeTracking
+      currency
+      conversionRateToDollar
       streams {
         id
         name
@@ -503,6 +521,7 @@ export const UPDATE_FELLOWSHIP = gql`
       }
       meetingDay {
         day
+        dayNumber
       }
       bacenta {
         id

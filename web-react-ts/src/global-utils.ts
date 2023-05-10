@@ -23,6 +23,11 @@ export type FormikSelectOptions = {
   value: string
 }[]
 
+export const YES_NO_OPTIONS: FormikSelectOptions = [
+  { key: 'Yes', value: 'Yes' },
+  { key: 'No', value: 'No' },
+]
+
 export const GENDER_OPTIONS: FormikSelectOptions = [
   { key: 'Male', value: 'Male' },
   { key: 'Female', value: 'Female' },
@@ -50,6 +55,63 @@ export const SERVICE_DAY_OPTIONS: FormikSelectOptions = [
   { key: 'Saturday', value: 'Saturday' },
 ]
 
+export const STREAM_SERVICE_DAY_OPTIONS: FormikSelectOptions = [
+  { key: 'Saturday', value: 'Saturday' },
+  { key: 'Sunday', value: 'Sunday' },
+]
+
+export const CURRENCY_OPTIONS: FormikSelectOptions = [
+  { key: 'GHS', value: 'GHS' },
+  { key: 'MGA', value: 'MGA' },
+  { key: 'GMD', value: 'GMD' },
+  { key: 'ZMW', value: 'ZMW' },
+]
+
+export const DELETE_MEMBER_CATEGORY_OPTIONS: FormikSelectOptions = [
+  { key: 'Moved Country', value: 'Moved Country' },
+  {
+    key: 'Left the Church In Spite of Calls and Visits',
+    value: 'Left the Church In Spite of Calls and Visits',
+  },
+  {
+    key: 'Duplicate Member',
+    value: 'Duplicate Member',
+  },
+]
+
+export const HOW_YOU_JOINED_OPTIONS: FormikSelectOptions = [
+  {
+    key: 'I Joined After Attending A Weekday Fellowship Meeting',
+    value: 'Weekday Fellowship Meeting',
+  },
+  {
+    key: 'I Was Invited By A Friend Or Family Member',
+    value: 'Invitation By Friend Or Family',
+  },
+  {
+    key: 'A Person I Had Never Met Spoke To Me And Invited Me',
+    value: 'Invitation By Stranger',
+  },
+  {
+    key: 'I Joined After Attending A Service With A Bishop Or Pastor',
+    value: 'Service With A Pastor',
+  },
+  { key: 'I Joined After Attending An Area Crusade', value: 'Area Crusade' },
+  { key: 'I Joined After Attending A Campus Crusade', value: 'Campus Crusade' },
+  {
+    key: 'I Joined After Attending A Creative Arts Outreach (Choir Concert, Boogie King, Stage Play)',
+    value: 'Creative Arts Outreach',
+  },
+  {
+    key: 'I Was Born Into The Church',
+    value: 'Born Into The Church',
+  },
+  {
+    key: 'I Saw A Flyer And Came To A Service',
+    value: 'Social Media',
+  },
+]
+
 export const BUSSING_STATUS_OPTIONS: FormikSelectOptions = [
   { key: 'IC', value: 'IC' },
   { key: 'Graduated', value: 'Graduated' },
@@ -66,6 +128,8 @@ export const throwToSentry = (
   const user = JSON.parse(sessionStorage.getItem('currentUser') || '{}')
 
   if (!error) {
+    // eslint-disable-next-line no-console
+    console.error(message)
     captureException(error, {
       tags: {
         userId: user.id,
@@ -81,6 +145,8 @@ export const throwToSentry = (
   }
 
   if (!message) {
+    // eslint-disable-next-line no-console
+    console.error(error)
     captureException(error, {
       tags: {
         userId: user.id,
@@ -96,6 +162,8 @@ export const throwToSentry = (
     return
   }
 
+  // eslint-disable-next-line no-console
+  console.error(error)
   captureException(error, {
     tags: {
       userId: user.id,
@@ -131,6 +199,10 @@ export const authorisedLink = (
     return link
   }
   return '#'
+}
+
+export const convertNeoWeekdayToJSWeekday = (neoWeekday: number): number => {
+  return neoWeekday === 7 ? 0 : neoWeekday
 }
 
 export const capitalise = (str: string) => {
@@ -505,7 +577,7 @@ export const parseForeignCurrency = (string: string) => {
     return null
   }
 
-  return null
+  return string
 }
 
 export const checkIfArrayHasRepeatingValues = (array: any[]) => {

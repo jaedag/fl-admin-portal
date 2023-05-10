@@ -8,7 +8,7 @@ import {
 } from '@react-google-maps/api'
 import { useState } from 'react'
 import '../Map.css'
-import { Button, Col, Container, Offcanvas, Row } from 'react-bootstrap'
+import { Button, Card, Col, Container, Offcanvas, Row } from 'react-bootstrap'
 import { IoChevronUp } from 'react-icons/io5'
 import { GooglePlaces, MemberPlaces } from '../Places'
 import {
@@ -19,9 +19,19 @@ import {
 import { MemberContext } from 'contexts/MemberContext'
 import LoadingScreen from 'components/base-component/LoadingScreen'
 import './MapComponent.css'
-import { getMapIcon, getMapIconClass } from './map-utils'
+import {
+  MemberMapData,
+  Neo4jLocation,
+  getMapIcon,
+  getMapIconClass,
+} from './map-utils'
 import CloudinaryImage from 'components/CloudinaryImage'
-import { FaChurch, FaLocationArrow } from 'react-icons/fa'
+import { FaChurch, FaDirections, FaLocationArrow } from 'react-icons/fa'
+import { TelephoneFill, Whatsapp } from 'react-bootstrap-icons'
+import { ChurchIdAndName } from 'global-types'
+import { ChurchContext } from 'contexts/ChurchContext'
+import { useNavigate } from 'react-router'
+import { alertMsg } from 'global-utils'
 
 type LatLngLiteral = google.maps.LatLngLiteral
 type MapOptions = google.maps.MapOptions
@@ -73,6 +83,8 @@ const MapComponent = (props: MapComponentProps) => {
   const handleShow = () => setShow(true)
 
   const { currentUser } = useContext(MemberContext)
+  const { clickCard } = useContext(ChurchContext)
+  const navigate = useNavigate()
 
   const mapRef = useRef<GoogleMap>()
   const center = useMemo<LatLngLiteral>(
@@ -97,7 +109,7 @@ const MapComponent = (props: MapComponentProps) => {
   const getTypename = (place: PlaceType) => {
     switch (place.typename) {
       case 'GooglePlace':
-        return 'Centre'
+        return 'Google Place'
       case 'Member':
         return ''
       case 'Fellowship':
@@ -138,6 +150,11 @@ const MapComponent = (props: MapComponentProps) => {
   }
 
   const handleSetCentre = async (position: PlaceType) => {
+    if (!position.position.lat && !position.position.lng) {
+      alertMsg('No location found')
+      return
+    }
+
     setCentre(position)
     mapRef.current?.panTo(position.position)
     setPlaces(await searchByLocation(position.position))
@@ -177,16 +194,237 @@ const MapComponent = (props: MapComponentProps) => {
     handleClose()
   }
 
-  const parseDescription = (description: string) => {
-    return description.split('\n').map((item, i) => (
-      <p key={i} className="mb-0">
-        {item.split(':').map((item, i) => (
-          <span key={i} className={i % 2 ? 'fw-bold' : 'text-secondary'}>
-            {i % 2 ? `: ${item}` : item}
-          </span>
-        ))}
-      </p>
-    ))
+  const parseMemberDesc = (description: string) => {
+    const parsedDesc: {
+      member: MemberMapData
+      fellowship: {
+        id: string
+        name: string
+        location: { x: number; y: number }
+      }
+      council: ChurchIdAndName
+      pastor: MemberMapData
+      phoneNumber: string
+      whatsappNumber: string
+    } = JSON.parse(description)
+
+    const { member, fellowship, council, pastor, phoneNumber, whatsappNumber } =
+      parsedDesc
+
+    return (
+      <>
+        <p
+          className="mb-2"
+          onClick={() => {
+            handleSetCentre({
+              id: fellowship.id,
+              name: fellowship.name,
+              typename: 'Fellowship',
+              position: {
+                lat: fellowship.location.y,
+                lng: fellowship.location.x,
+              },
+            })
+          }}
+        >
+          <span className="fw-bold">Fellowship:</span> {fellowship.name}
+        </p>
+        <p className="mb-2">
+          <span className="fw-bold">Council:</span> {council.name}
+        </p>
+        <p className="mb-2">
+          <span className="fw-bold">Pastor:</span> {pastor.firstName}{' '}
+          {pastor.lastName}
+        </p>
+        <Row className="mb-2">
+          <Col className="col-auto p-0">
+            <a href={`tel:${phoneNumber}`}>
+              <Button size="sm" variant="primary">
+                <TelephoneFill /> Call
+              </Button>
+            </a>
+          </Col>
+
+          <Col className="col-auto">
+            <a href={`https://wa.me/${whatsappNumber}`}>
+              <Button size="sm" variant="success">
+                <Whatsapp /> WhatsApp
+              </Button>
+            </a>
+          </Col>
+        </Row>
+        <Card.Footer>
+          <Button
+            size="sm"
+            variant="secondary"
+            onClick={() => {
+              clickCard({ id: member.id, __typename: 'Member' })
+              navigate('/member/displaydetails')
+            }}
+          >
+            View Member Profile
+          </Button>
+
+          <Button
+            size="sm"
+            className="mt-2"
+            variant="outline-info"
+            onClick={() =>
+              window.open(
+                `https://www.google.com/maps/search/?api=1&query=${member.location.y}%2C${member.location.x}`
+              )
+            }
+          >
+            Get Directions <FaDirections />
+          </Button>
+        </Card.Footer>
+      </>
+    )
+  }
+
+  const parseFellowshipDesc = (description: string) => {
+    const parsedDesc: {
+      fellowship: {
+        id: string
+        name: string
+        location: Neo4jLocation
+      }
+      council: ChurchIdAndName
+      fellowshipLeader: MemberMapData
+      councilLeader: MemberMapData
+    } = JSON.parse(description)
+
+    const { fellowship, council, fellowshipLeader, councilLeader } = parsedDesc
+
+    return (
+      <>
+        <p
+          className="mb-2"
+          onClick={() => {
+            handleSetCentre({
+              id: fellowshipLeader.id,
+              name:
+                fellowshipLeader.firstName + ' ' + fellowshipLeader.lastName,
+              typename: 'Fellowship',
+              position: {
+                lat: fellowshipLeader.location?.y,
+                lng: fellowshipLeader.location?.x,
+              },
+            })
+          }}
+        >
+          <span className="fw-bold">Fellowship Leader:</span>{' '}
+          {fellowshipLeader.firstName} {fellowshipLeader.lastName}
+        </p>
+        <p
+          className="mb-2"
+          onClick={() => {
+            handleSetCentre({
+              id: fellowshipLeader.id,
+              name:
+                fellowshipLeader.firstName + ' ' + fellowshipLeader.lastName,
+              typename: 'Member',
+              position: {
+                lat: fellowshipLeader.location?.y,
+                lng: fellowshipLeader.location?.x,
+              },
+            })
+          }}
+        >
+          <span className="fw-bold">Fellowship:</span> {fellowship.name}
+        </p>
+        <p className="mb-2">
+          <span className="fw-bold">Council:</span> {council.name}
+        </p>
+        <p className="mb-2">
+          <span className="fw-bold">Council Leader:</span>{' '}
+          {councilLeader.firstName} {councilLeader.lastName}
+        </p>
+        <Row className="mb-2">
+          <Col className="col-auto">
+            <a href={`tel:${fellowshipLeader.phoneNumber}`}>
+              <Button size="sm" variant="primary">
+                <TelephoneFill /> Call
+              </Button>
+            </a>
+          </Col>
+          <Col className="col-auto">
+            <a href={`https://wa.me/${fellowshipLeader.whatsappNumber}`}>
+              <Button size="sm" variant="success">
+                <Whatsapp /> WhatsApp
+              </Button>
+            </a>
+          </Col>
+        </Row>
+        <Card.Footer>
+          <Button
+            size="sm"
+            variant="secondary"
+            onClick={() => {
+              clickCard({ id: fellowship.id, __typename: 'Fellowship' })
+              navigate('/fellowship/displaydetails')
+            }}
+          >
+            View Fellowship Profile
+          </Button>
+
+          <Button
+            size="sm"
+            className="mt-2"
+            variant="outline-info"
+            onClick={() =>
+              window.open(
+                `https://www.google.com/maps/search/?api=1&query=${fellowship.location.y}%2C${fellowship.location.x}`
+              )
+            }
+          >
+            Get Directions <FaDirections />
+          </Button>
+        </Card.Footer>
+      </>
+    )
+  }
+
+  const parseVenueDesc = (description: string) => {
+    const parsedDesc: {
+      venue: {
+        id: string
+        name: string
+        capacity: { low: number }
+      }
+      category: 'Outdoor' | 'Indoor'
+    } = JSON.parse(description)
+
+    const { venue, category } = parsedDesc
+
+    return (
+      <>
+        <p className="mb-2">
+          <span className="fw-bold">Capacity:</span>{' '}
+          {venue.capacity?.low ?? venue.capacity}
+        </p>
+        <p className="mb-2">
+          <span className="fw-bold">Category:</span> {category}
+        </p>
+        <p className="mb-2">
+          <span className="fw-bold">Area:</span> {venue.name}
+        </p>
+      </>
+    )
+  }
+
+  const chooseParsingFunction = (place: PlaceType) => {
+    switch (place.typename) {
+      case 'Member':
+        return parseMemberDesc(place.description ?? '')
+      case 'Fellowship':
+        return parseFellowshipDesc(place.description ?? '')
+      case 'IndoorVenue':
+      case 'OutdoorVenue':
+        return parseVenueDesc(place.description ?? '')
+      default:
+        return ''
+    }
   }
 
   return (
@@ -213,23 +451,28 @@ const MapComponent = (props: MapComponentProps) => {
                 position={clickedMarker.position}
                 onCloseClick={() => setClickedMarker(undefined)}
               >
-                <Container>
-                  <Row>
-                    {clickedMarker.picture && (
+                <Card>
+                  <Card.Body>
+                    <Row>
+                      {clickedMarker.picture && (
+                        <Col>
+                          <CloudinaryImage
+                            src={clickedMarker.picture}
+                            className="rounded"
+                          />
+                        </Col>
+                      )}
                       <Col>
-                        <CloudinaryImage src={clickedMarker.picture} />
+                        <p className=" fw-bold info-window-header">{`${getTypename(
+                          clickedMarker
+                        )} ${clickedMarker.name}`}</p>
+                        <div className="info-window-text">
+                          {chooseParsingFunction(clickedMarker ?? '')}
+                        </div>
                       </Col>
-                    )}
-                    <Col>
-                      <p className="info-window-header">{`${getTypename(
-                        clickedMarker
-                      )}: ${clickedMarker.name}`}</p>
-                      <div className="info-window-text">
-                        {parseDescription(clickedMarker.description ?? '')}
-                      </div>
-                    </Col>
-                  </Row>
-                </Container>
+                    </Row>
+                  </Card.Body>
+                </Card>
               </InfoWindow>
             )}
             <MarkerClusterer>

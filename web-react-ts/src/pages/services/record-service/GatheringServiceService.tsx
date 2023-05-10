@@ -24,7 +24,7 @@ const GatheringServiceService = () => {
 
   return (
     <ApolloWrapper loading={loading} error={error} data={data}>
-      {currentUser.noIncome ? (
+      {currentUser.noIncomeTracking ? (
         <ServiceFormNoIncome
           RecordServiceMutation={RecordServiceNoIncome}
           church={data?.gatheringServices[0]}

@@ -44,7 +44,7 @@ const AllGatheringServiceConstituencies = () => {
                 }}
               >
                 <h6 className="text-white text-small d-block ">
-                  <span className="text-muted">Resident Pastor: </span>
+                  <span className="text-muted">Lead Pastor: </span>
 
                   {gatheringService?.leader
                     ? ` ${gatheringService.leader.fullName}`

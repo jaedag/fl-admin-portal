@@ -1,8 +1,23 @@
 import { gql } from '@apollo/client'
 
-export const FEDERAL_SEARCH = gql`
-  query federalSearch($searchKey: String) {
-    federalStreamSearch(searchKey: $searchKey) {
+export const OVERSIGHT_SEARCH = gql`
+  query oversightSearch($searchKey: String!, $oversightId: ID!) {
+    oversightGatheringServiceSearch(
+      searchKey: $searchKey
+      oversightId: $oversightId
+    ) {
+      id
+      name
+      noIncomeTracking
+      currency
+      conversionRateToDollar
+      leader {
+        id
+        firstName
+        lastName
+      }
+    }
+    oversightStreamSearch(searchKey: $searchKey, oversightId: $oversightId) {
       id
       name
       stream_name
@@ -12,7 +27,92 @@ export const FEDERAL_SEARCH = gql`
         lastName
       }
     }
-    federalCouncilSearch(searchKey: $searchKey) {
+    oversightCouncilSearch(searchKey: $searchKey, oversightId: $oversightId) {
+      id
+      name
+      stream_name
+      leader {
+        id
+        firstName
+        lastName
+      }
+    }
+    oversightConstituencySearch(
+      searchKey: $searchKey
+      oversightId: $oversightId
+    ) {
+      id
+      name
+      stream_name
+      leader {
+        id
+        firstName
+        lastName
+        fullName
+      }
+    }
+    oversightBacentaSearch(searchKey: $searchKey, oversightId: $oversightId) {
+      id
+      name
+      stream_name
+      leader {
+        id
+        firstName
+        lastName
+        fullName
+      }
+    }
+    oversightFellowshipSearch(
+      searchKey: $searchKey
+      oversightId: $oversightId
+    ) {
+      id
+      name
+      stream_name
+      leader {
+        id
+        firstName
+        lastName
+        fullName
+      }
+    }
+    oversightMemberSearch(searchKey: $searchKey, oversightId: $oversightId) {
+      id
+      firstName
+      lastName
+      pictureUrl
+      stream_name
+      fellowship {
+        id
+        name
+      }
+      ministry {
+        id
+        name
+      }
+    }
+  }
+`
+
+export const GATHERINGSERVICE_SEARCH = gql`
+  query gatheringServiceSearch($searchKey: String!, $gatheringId: ID!) {
+    gatheringServiceStreamSearch(
+      searchKey: $searchKey
+      gatheringId: $gatheringId
+    ) {
+      id
+      name
+      stream_name
+      leader {
+        id
+        firstName
+        lastName
+      }
+    }
+    gatheringServiceCouncilSearch(
+      searchKey: $searchKey
+      gatheringId: $gatheringId
+    ) {
       id
       name
       stream_name
@@ -24,7 +124,10 @@ export const FEDERAL_SEARCH = gql`
       }
     }
 
-    federalConstituencySearch(searchKey: $searchKey) {
+    gatheringServiceConstituencySearch(
+      searchKey: $searchKey
+      gatheringId: $gatheringId
+    ) {
       id
       name
       stream_name
@@ -35,7 +138,10 @@ export const FEDERAL_SEARCH = gql`
         fullName
       }
     }
-    federalBacentaSearch(searchKey: $searchKey) {
+    gatheringServiceBacentaSearch(
+      searchKey: $searchKey
+      gatheringId: $gatheringId
+    ) {
       id
       name
       stream_name
@@ -46,7 +152,10 @@ export const FEDERAL_SEARCH = gql`
         fullName
       }
     }
-    federalFellowshipSearch(searchKey: $searchKey) {
+    gatheringServiceFellowshipSearch(
+      searchKey: $searchKey
+      gatheringId: $gatheringId
+    ) {
       id
       name
       stream_name
@@ -57,7 +166,10 @@ export const FEDERAL_SEARCH = gql`
         fullName
       }
     }
-    federalMemberSearch(searchKey: $searchKey) {
+    gatheringServiceMemberSearch(
+      searchKey: $searchKey
+      gatheringId: $gatheringId
+    ) {
       id
       firstName
       lastName
@@ -76,7 +188,7 @@ export const FEDERAL_SEARCH = gql`
 `
 
 export const STREAM_SEARCH = gql`
-  query streamSearch($searchKey: String, $streamId: ID!) {
+  query streamSearch($searchKey: String!, $streamId: ID!) {
     streamCouncilSearch(searchKey: $searchKey, streamId: $streamId) {
       id
       name
@@ -140,7 +252,7 @@ export const STREAM_SEARCH = gql`
 `
 
 export const COUNCIL_SEARCH = gql`
-  query councilSearch($searchKey: String, $councilId: ID!) {
+  query councilSearch($searchKey: String!, $councilId: ID!) {
     councilConstituencySearch(searchKey: $searchKey, councilId: $councilId) {
       id
       name
@@ -191,7 +303,7 @@ export const COUNCIL_SEARCH = gql`
 `
 
 export const CONSTITUENCY_SEARCH = gql`
-  query constituencySearch($searchKey: String, $constituencyId: ID!) {
+  query constituencySearch($searchKey: String!, $constituencyId: ID!) {
     constituencyBacentaSearch(
       searchKey: $searchKey
       constituencyId: $constituencyId
@@ -241,7 +353,7 @@ export const CONSTITUENCY_SEARCH = gql`
 `
 
 export const BACENTA_SEARCH = gql`
-  query bacentaSearch($searchKey: String, $bacentaId: ID!) {
+  query bacentaSearch($searchKey: String!, $bacentaId: ID!) {
     bacentaFellowshipSearch(searchKey: $searchKey, bacentaId: $bacentaId) {
       id
       name
@@ -272,7 +384,7 @@ export const BACENTA_SEARCH = gql`
 `
 
 export const FELLOWSHIP_SEARCH = gql`
-  query fellowshipSearch($searchKey: String, $fellowshipId: ID!) {
+  query fellowshipSearch($searchKey: String!, $fellowshipId: ID!) {
     fellowshipMemberSearch(searchKey: $searchKey, fellowshipId: $fellowshipId) {
       id
       firstName

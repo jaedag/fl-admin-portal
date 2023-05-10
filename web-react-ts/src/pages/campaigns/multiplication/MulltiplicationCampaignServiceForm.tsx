@@ -20,6 +20,7 @@ import SearchMember from 'components/formik/SearchMember'
 import MinusSign from 'components/buttons/PlusMinusSign/MinusSign'
 import PlusSign from 'components/buttons/PlusMinusSign/PlusSign'
 import MultiImageUpload from 'components/formik/MultiImageUpload'
+import { MemberContext } from 'contexts/MemberContext'
 
 type ServiceFormProps = {
   church: Church
@@ -49,6 +50,7 @@ const MultiplicationCampaignServiceForm = ({
   RecordServiceMutation,
 }: ServiceFormProps) => {
   const { clickCard } = useContext(ChurchContext)
+  const { currentUser } = useContext(MemberContext)
   const navigate = useNavigate()
 
   const initialValues: FormOptions = {
@@ -192,7 +194,10 @@ const MultiplicationCampaignServiceForm = ({
                       label="Location Of Crusade*"
                     />
                     <Input name="attendance" label="Attendance*" />
-                    <Input name="cediIncome" label="Income (in Cedis)*" />
+                    <Input
+                      name="cediIncome"
+                      label={`Income (in ${currentUser.currency})*`}
+                    />
                     <Input
                       name="foreignCurrency"
                       label="Foreign Currency (if any) (Optional)"

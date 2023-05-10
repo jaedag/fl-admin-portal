@@ -2,7 +2,12 @@ import { useMutation, useQuery } from '@apollo/client'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { FieldArray, Form, Formik, FormikHelpers } from 'formik'
 import * as Yup from 'yup'
-import { makeSelectOptions, throwToSentry } from 'global-utils'
+import {
+  CURRENCY_OPTIONS,
+  YES_NO_OPTIONS,
+  makeSelectOptions,
+  throwToSentry,
+} from 'global-utils'
 import { GET_OVERSIGHTS } from 'queries/ListQueries'
 import React, { useContext, useState } from 'react'
 import { ChurchContext } from 'contexts/ChurchContext'
@@ -28,6 +33,9 @@ import { FormikInitialValues } from 'components/formik/formik-types'
 import { Church } from 'global-types'
 
 export interface GatheringServiceFormValues extends FormikInitialValues {
+  conversionRateToDollar: number
+  incomeTracking: string
+  currency: string
   oversight: string
   streams?: Church[]
 }
@@ -65,6 +73,9 @@ const GatheringServiceForm = ({
     leaderId: Yup.string().required(
       'Please choose a leader from the drop down'
     ),
+    incomeTracking: Yup.string().required(),
+    currency: Yup.string(),
+    conversionRateToDollar: Yup.number(),
     streams: newGatheringService
       ? Yup.array().nullable()
       : Yup.array().of(
@@ -111,6 +122,26 @@ const GatheringServiceForm = ({
                         name="name"
                         label={`Name of Gathering Service`}
                         placeholder={`Name of Gathering Service`}
+                      />
+
+                      <Select
+                        name="incomeTracking"
+                        label="Will you be tracking income for this Gathering Service?"
+                        options={YES_NO_OPTIONS}
+                        defaultOption="Choose One"
+                      />
+
+                      <Select
+                        name="currency"
+                        label="Currency"
+                        options={CURRENCY_OPTIONS}
+                        defaultOption="Select a Currency"
+                      />
+
+                      <Input
+                        name="conversionRateToDollar"
+                        label={`Dollar Conversion Rate (How Much Is $1 In Currency)`}
+                        placeholder={`Dollar Conversion Rate`}
                       />
 
                       <Row className="d-flex align-items-center mb-3">

@@ -59,6 +59,11 @@ const useClickCard = () => {
     sessionStorage.getItem('federalMinistryId') ?? ''
   )
 
+  const [arrivalDate, setArrivalDate] = useState(
+    sessionStorage.getItem('arrivaldate') ??
+      new Date().toISOString().slice(0, 10)
+  )
+
   const [memberId, setMemberId] = useState(
     sessionStorage.getItem('memberId') ?? ''
   )
@@ -457,6 +462,7 @@ const useClickCard = () => {
     vehicleRecordId,
     serviceRecordId,
     multiplicationRecordId,
+    arrivalDate,
 
     //Set State
     setOversightId,
@@ -469,6 +475,7 @@ const useClickCard = () => {
     setHubId,
     setMinistryId,
     setFederalMinistryId,
+    setArrivalDate,
   }
 }
 

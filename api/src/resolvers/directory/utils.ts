@@ -46,9 +46,9 @@ export const formatting = (
     servantLower = 'arrivalsCounter'
   }
 
-  if (servantType === 'ArrivalsConfirmer') {
-    verb = `isArrivalsConfirmerFor${churchType}`
-    servantLower = 'arrivalsConfirmer'
+  if (servantType === 'ArrivalsPayer') {
+    verb = `isArrivalsPayerFor${churchType}`
+    servantLower = 'arrivalsPayer'
   }
   if (servantType === 'Teller') {
     verb = `isTellerFor${churchType}`

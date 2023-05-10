@@ -45,8 +45,7 @@ const CouncilBankingSlipView = () => {
               onClick={() => {
                 clickCard(service)
 
-                !service.bankingProof &&
-                  navigate('/council/banking-slip/submission')
+                navigate('/council/service-details')
               }}
             >
               <Card.Header>

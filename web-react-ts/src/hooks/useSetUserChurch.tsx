@@ -20,7 +20,28 @@ const useSetUserChurch = () => {
     )
   }
 
-  return { currentUser, setCurrentUser, setUserChurch }
+  const setUserFinancials = (financials: any) => {
+    setCurrentUser({
+      ...currentUser,
+      currentChurch: financials,
+      currency: financials.currency,
+      conversionRateToDollar: financials.conversionRateToDollar,
+      noIncomeTracking: financials.noIncomeTracking,
+    })
+
+    sessionStorage.setItem(
+      'currentUser',
+      JSON.stringify({
+        ...currentUser,
+        currentChurch: financials,
+        currency: financials.currency,
+        conversionRateToDollar: financials.conversionRateToDollar,
+        noIncomeTracking: financials.noIncomeTracking,
+      })
+    )
+  }
+
+  return { currentUser, setCurrentUser, setUserChurch, setUserFinancials }
 }
 
 export default useSetUserChurch

@@ -4,7 +4,7 @@ import React from 'react'
 import { Button, Spinner } from 'react-bootstrap'
 
 type SubmitButtonProps = {
-  formik: FormikProps<{ tellerName: string; tellerSelect: string }>
+  formik: FormikProps<any>
   children?: React.ReactNode
   onClick?: FunctionReturnsVoid
 }

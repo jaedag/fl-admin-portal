@@ -1,10 +1,10 @@
 {
   "name": "admin-portal-react-frontend",
-  "version": "7.3.5",
+  "version": "7.6.7",
   "description": "React app for FL Admin Portal",
   "private": true,
   "dependencies": {
-    "@apollo/client": "^3.6.5",
+    "@apollo/client": "^3.7.13",
     "@auth0/auth0-react": "^1.11.0",
     "@cloudinary/react": "^1.2.0",
     "@cloudinary/url-gen": "^1.7.0",
@@ -52,6 +52,7 @@
     "yup": "^0.32.9"
   },
   "devDependencies": {
+    "@sentry/vite-plugin": "^0.7.2",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.3.0",
     "@testing-library/user-event": "^14.2.5",

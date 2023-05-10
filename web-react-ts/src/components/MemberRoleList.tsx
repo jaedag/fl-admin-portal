@@ -27,12 +27,14 @@ const MemberRoleList = ({
 
   //To Display Ranks on the Member Card
   let rank = {
+    oversightLeader: [],
     gatheringserviceLeader: [],
     streamLeader: [],
     councilLeader: [],
     constituencyLeader: [],
     bacentaLeader: [],
     fellowshipLeader: [],
+    oversightAdmin: [],
     gatheringserviceAdmin: [],
     streamAdmin: [],
     councilAdmin: [],

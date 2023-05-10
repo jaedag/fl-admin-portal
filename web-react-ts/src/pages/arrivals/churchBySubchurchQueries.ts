@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client'
 
 export const COUNCIL_BY_CONSTITUENCY_ARRIVALS = gql`
-  query councilByConstituencyArrivals($id: ID!) {
+  query councilByConstituencyArrivals($id: ID!, $arrivalDate: String!) {
     councils(where: { id: $id }, options: { limit: 1 }) {
       id
       name
@@ -16,23 +16,24 @@ export const COUNCIL_BY_CONSTITUENCY_ARRIVALS = gql`
           currentTitle
           nameWithTitle
         }
-        activeBacentaICCount
-        bacentasNoActivityCount
-        bacentasMobilisingCount
-        bacentasOnTheWayCount
-        bacentasHaveArrivedCount
-        bacentasBelow8Count
+        activeBacentaCount
+        bacentasNoActivityCount(arrivalDate: $arrivalDate)
+        bacentasMobilisingCount(arrivalDate: $arrivalDate)
+        bacentasOnTheWayCount(arrivalDate: $arrivalDate)
+        bacentasHaveArrivedCount(arrivalDate: $arrivalDate)
+        bacentasBelow8Count(arrivalDate: $arrivalDate)
 
-        bussingMembersOnTheWayCount
-        bussingMembersHaveArrivedCount
-        bussesThatArrivedCount
+        bussingMembersOnTheWayCount(arrivalDate: $arrivalDate)
+        bussingMembersHaveArrivedCount(arrivalDate: $arrivalDate)
+        bussesOnTheWayCount(arrivalDate: $arrivalDate)
+        bussesThatArrivedCount(arrivalDate: $arrivalDate)
       }
     }
   }
 `
 
 export const STREAM_BY_COUNCIL_ARRIVALS = gql`
-  query streamByCouncilArrivals($id: ID!) {
+  query streamByCouncilArrivals($id: ID!, $arrivalDate: String!) {
     streams(where: { id: $id }, options: { limit: 1 }) {
       id
       name
@@ -47,23 +48,29 @@ export const STREAM_BY_COUNCIL_ARRIVALS = gql`
           currentTitle
           nameWithTitle
         }
-        activeBacentaICCount
-        bacentasNoActivityCount
-        bacentasMobilisingCount
-        bacentasOnTheWayCount
-        bacentasHaveArrivedCount
-        bacentasBelow8Count
+        activeBacentaCount
+        bacentasNoActivityCount(arrivalDate: $arrivalDate)
+        bacentasMobilisingCount(arrivalDate: $arrivalDate)
+        bacentasOnTheWayCount(arrivalDate: $arrivalDate)
+        bacentasBelow8Count(arrivalDate: $arrivalDate)
 
-        bussingMembersOnTheWayCount
-        bussingMembersHaveArrivedCount
-        bussesThatArrivedCount
+        bacentasHaveArrivedCount(arrivalDate: $arrivalDate)
+        bussingMembersOnTheWayCount(arrivalDate: $arrivalDate)
+        bussingMembersHaveArrivedCount(arrivalDate: $arrivalDate)
+        bussesOnTheWayCount(arrivalDate: $arrivalDate)
+        bussesThatArrivedCount(arrivalDate: $arrivalDate)
+
+        vehiclesToBePaidCount(arrivalDate: $arrivalDate)
+        vehiclesHaveBeenPaidCount(arrivalDate: $arrivalDate)
+        vehicleAmountToBePaid(arrivalDate: $arrivalDate)
+        vehicleAmountHasBeenPaid(arrivalDate: $arrivalDate)
       }
     }
   }
 `
 
 export const GATHERINGSERVICE_BY_STREAM_ARRIVALS = gql`
-  query gatheringByStreamArrivals($id: ID!) {
+  query gatheringByStreamArrivals($id: ID!, $arrivalDate: String!) {
     gatheringServices(where: { id: $id }, options: { limit: 1 }) {
       id
       name
@@ -79,16 +86,22 @@ export const GATHERINGSERVICE_BY_STREAM_ARRIVALS = gql`
           nameWithTitle
         }
 
-        activeBacentaICCount
-        bacentasNoActivityCount
-        bacentasMobilisingCount
-        bacentasOnTheWayCount
-        bacentasHaveArrivedCount
-        bacentasBelow8Count
+        activeBacentaCount
+        bacentasNoActivityCount(arrivalDate: $arrivalDate)
+        bacentasMobilisingCount(arrivalDate: $arrivalDate)
+        bacentasOnTheWayCount(arrivalDate: $arrivalDate)
+        bacentasBelow8Count(arrivalDate: $arrivalDate)
 
-        bussingMembersOnTheWayCount
-        bussingMembersHaveArrivedCount
-        bussesThatArrivedCount
+        bacentasHaveArrivedCount(arrivalDate: $arrivalDate)
+        bussingMembersOnTheWayCount(arrivalDate: $arrivalDate)
+        bussingMembersHaveArrivedCount(arrivalDate: $arrivalDate)
+        bussesOnTheWayCount(arrivalDate: $arrivalDate)
+        bussesThatArrivedCount(arrivalDate: $arrivalDate)
+
+        vehiclesToBePaidCount(arrivalDate: $arrivalDate)
+        vehiclesHaveBeenPaidCount(arrivalDate: $arrivalDate)
+        vehicleAmountToBePaid(arrivalDate: $arrivalDate)
+        vehicleAmountHasBeenPaid(arrivalDate: $arrivalDate)
       }
     }
   }

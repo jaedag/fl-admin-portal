@@ -87,7 +87,7 @@ const UserDashboard = () => {
               />
             </Col>
           </Row>
-          {!currentUser.noIncome ? (
+          {!currentUser.noIncomeTracking ? (
             <ChurchGraph
               loading={!assessmentChurch}
               stat1="attendance"

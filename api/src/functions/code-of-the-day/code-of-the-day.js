@@ -12,41 +12,41 @@ const executeQuery = async (neoDriver) => {
 
   const codeOfTheDay = [
     {
-      date: '2023-03-11',
-      code: 'Wonders',
+      date: '2023-05-06',
+      code: 'Covenant',
     },
     {
-      date: '2023-03-18',
+      date: '2023-05-13',
+      code: 'Founders Day',
+    },
+    {
+      date: '2023-05-20',
+      code: 'Vision',
+    },
+    {
+      date: '2023-05-27',
+      code: 'Holy Spirit',
+    },
+    {
+      date: '2023-06-03',
+      code: 'Gifts',
+    },
+    {
+      date: '2023-06-10',
+      code: 'Happy',
+    },
+    {
+      date: '2023-06-17',
       code: 'Glory',
     },
     {
-      date: '2023-03-25',
-      code: 'Power',
-    },
-    {
-      date: '2023-04-02',
-      code: 'John 3:16',
-    },
-    {
-      date: '2023-04-08',
-      code: 'Retention',
-    },
-    {
-      date: '2023-04-15',
-      code: 'Growth',
-    },
-    {
-      date: '2023-04-22',
-      code: 'Enlargement',
-    },
-    {
-      date: '2023-04-29',
-      code: 'Zion',
+      date: '2023-06-24',
+      code: 'Presence',
     },
   ]
 
   try {
-    const response = await session.writeTransaction(async (tx) => {
+    await session.writeTransaction(async (tx) => {
       console.log('Setting code of the day')
 
       const pad = (n) => (n < 10 ? `0${n}` : n)
@@ -65,8 +65,6 @@ const executeQuery = async (neoDriver) => {
         code: code.code,
       })
     })
-
-    console.log(response)
   } catch (error) {
     console.error('Error setting code of the day', error)
   } finally {

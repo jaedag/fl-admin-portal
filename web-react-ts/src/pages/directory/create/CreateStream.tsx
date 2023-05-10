@@ -18,6 +18,7 @@ const CreateStream = () => {
   const initialValues: StreamFormValues = {
     name: '',
     leaderId: '',
+    meetingDay: '',
     leaderName: '',
     leaderEmail: '',
     gatheringService: gatheringServiceId,
@@ -27,44 +28,43 @@ const CreateStream = () => {
   const [CreateStream] = useMutation(CREATE_STREAM_MUTATION)
 
   //onSubmit receives the form state as argument
-  const onSubmit = (
+  const onSubmit = async (
     values: StreamFormValues,
     onSubmitProps: FormikHelpers<StreamFormValues>
   ) => {
-    onSubmitProps.setSubmitting(true)
-    clickCard({ id: values.gatheringService, __typename: 'GatheringService' })
+    try {
+      onSubmitProps.setSubmitting(true)
 
-    if (!values.leaderEmail) {
-      onSubmitProps.setSubmitting(false)
-      throw new Error('Leader email is required')
-    }
-
-    CreateStream({
-      variables: {
-        name: values.name,
-        leaderId: values.leaderId,
-        gatheringServiceId: values.gatheringService,
-      },
-    })
-      .then((res) => {
-        clickCard(res.data.CreateStream)
-        NewStreamLeader({
-          variables: {
-            leaderId: values.leaderId,
-            streamId: res.data.CreateStream.id,
-          },
-        }).catch((error) => {
-          throwToSentry('There was an error adding leader', error)
-        })
-
-        clickCard(res.data.CreateStream)
+      if (!values.leaderEmail) {
         onSubmitProps.setSubmitting(false)
-        onSubmitProps.resetForm()
-        navigate(`/stream/displaydetails`)
+        throw new Error('Leader email is required')
+      }
+
+      const res = await CreateStream({
+        variables: {
+          name: values.name,
+          leaderId: values.leaderId,
+          gatheringServiceId: values.gatheringService,
+          meetingDay: values.meetingDay,
+        },
       })
-      .catch((error) => {
-        throwToSentry('There was an error creating stream', error)
+
+      await NewStreamLeader({
+        variables: {
+          leaderId: values.leaderId,
+          streamId: res.data.CreateStream.id,
+        },
       })
+
+      clickCard({ id: values.gatheringService, __typename: 'GatheringService' })
+      clickCard(res.data.CreateStream)
+      onSubmitProps.setSubmitting(false)
+      onSubmitProps.resetForm()
+      navigate(`/stream/displaydetails`)
+    } catch (error) {
+      throwToSentry('There was an error creating stream', error)
+      onSubmitProps.setSubmitting(false)
+    }
   }
 
   return (

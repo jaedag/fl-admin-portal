@@ -1,4 +1,6 @@
 import axios from 'axios'
+import { Transaction } from 'neo4j-driver'
+import { getHumanReadableDate } from 'jd-date-utils'
 import { getStreamFinancials } from '../utils/financial-utils'
 import { Context } from '../utils/neo4j-types'
 import {
@@ -179,6 +181,30 @@ export const arrivalsMutation = {
       [...permitAdmin('Stream'), ...permitArrivals('Stream')],
       'Stream',
       'ArrivalsCounter'
+    ),
+  MakeCouncilArrivalsPayer: async (
+    object: never,
+    args: never,
+    context: Context
+  ) =>
+    MakeServant(
+      context,
+      args,
+      [...permitAdminArrivals('GatheringService')],
+      'Council',
+      'ArrivalsPayer'
+    ),
+  RemoveCouncilArrivalsPayer: async (
+    object: never,
+    args: never,
+    context: Context
+  ) =>
+    RemoveServant(
+      context,
+      args,
+      [...permitAdminArrivals('GatheringService')],
+      'Council',
+      'ArrivalsPayer'
     ),
 
   UploadMobilisationPicture: async (
@@ -421,6 +447,10 @@ export const arrivalsMutation = {
       }
     }
 
+    if (args.attendance < 8) {
+      adjustedArgs.vehicle = 'Car'
+    }
+
     const response = rearrangeCypherObject(
       await session.run(confirmVehicleByAdmin, {
         ...adjustedArgs,
@@ -531,6 +561,7 @@ export const arrivalsMutation = {
 
       if (data.vehicle === 'Sprinter') {
         if (sprinterTopUp === 0) return 0
+
         if (data.vehicleCost < sprinterTopUp || amountToPay < sprinterTopUp) {
           return amountToPay
         }
@@ -546,6 +577,7 @@ export const arrivalsMutation = {
 
         return parseFloat(urvanTopUp.toFixed(2))
       }
+
       return 0
     }
     const vehicleTopUp = calculateVehicleTopUp(response)
@@ -623,7 +655,14 @@ export const arrivalsMutation = {
   SendVehicleSupport: async (
     object: any,
     // eslint-disable-next-line camelcase
-    args: { vehicleRecordId: string; stream_name: StreamOptions },
+    args: {
+      vehicleRecordId: string
+      stream_name: StreamOptions
+      momoName: string
+      momoNumber: string
+      vehicleTopUp: number
+      outbound: boolean
+    },
     context: Context
   ) => {
     isAuth(permitArrivalsHelpers(), context.auth.roles)
@@ -631,7 +670,9 @@ export const arrivalsMutation = {
 
     const { auth } = getStreamFinancials(args.stream_name)
     const recordResponse = rearrangeCypherObject(
-      await session.run(checkTransactionReference, args)
+      await session.executeRead((tx: Transaction) =>
+        tx.run(checkTransactionReference, args)
+      )
     )
 
     const vehicleRecord = recordResponse.record.properties
@@ -662,12 +703,16 @@ export const arrivalsMutation = {
         },
         data: {
           type: 'mobile_money',
-          name: vehicleRecord.momoName,
+          name: `${leader.firstName} ${leader.lastName}`,
           email: leader.email,
           account_number: vehicleRecord.momoNumber,
           bank_code: vehicleRecord.mobileNetwork,
           currency: 'GHS',
           metadata: {
+            momo: {
+              name: vehicleRecord.momoName,
+              number: vehicleRecord.momoNumber,
+            },
             bacenta: {
               id: bacenta.id,
               name: bacenta.name,
@@ -687,10 +732,13 @@ export const arrivalsMutation = {
         throwToSentry('Error creating transfer recipient', err)
       )
 
-      await session.run(setBacentaRecipientCode, {
-        bacentaId: bacenta.id,
-        recipientCode: recipientResponse.data.data.recipient_code,
-      })
+      await session.executeWrite((tx: Transaction) =>
+        tx.run(setBacentaRecipientCode, {
+          bacentaId: bacenta.id,
+          vehicleRecordId: vehicleRecord.id,
+          recipientCode: recipientResponse.data.data.recipient_code,
+        })
+      )
 
       recipient = {
         ...recipientResponse.data.data,
@@ -708,7 +756,9 @@ export const arrivalsMutation = {
       },
       data: {
         source: 'balance',
-        reason: `${bacenta.name} Bacenta bussed ${vehicleRecord.attendance}`,
+        reason: `${bacenta.name} Bacenta bussed ${
+          vehicleRecord.attendance
+        } on ${getHumanReadableDate(new Date().toISOString())}`,
         amount: vehicleRecord.vehicleTopUp * 100,
         currency: 'GHS',
         recipient: recipient.recipientCode,
@@ -721,13 +771,14 @@ export const arrivalsMutation = {
       const responseData = res.data.data
 
       await session
-        .run(setVehicleRecordTransactionSuccessful, {
-          ...args,
-          recipientCode: recipient.recipientCode,
-          transactionReference: responseData.reference,
-          transferCode: responseData.transfer_code,
-          responseStatus: responseData.status,
-        })
+        .executeWrite((tx: Transaction) =>
+          tx.run(setVehicleRecordTransactionSuccessful, {
+            ...args,
+            transactionReference: responseData.reference,
+            transferCode: responseData.transfer_code,
+            responseStatus: responseData.status,
+          })
+        )
         .catch((error: any) =>
           throwToSentry(
             'There was an error setting Vehicle Record Transaction Status',
@@ -735,7 +786,7 @@ export const arrivalsMutation = {
           )
         )
 
-      console.log('Money Sent Successfully to', vehicleRecord.momoNumber)
+      console.log('Money Sent Successfully to', vehicleRecord.momoName)
 
       return vehicleRecord
     } catch (error: any) {

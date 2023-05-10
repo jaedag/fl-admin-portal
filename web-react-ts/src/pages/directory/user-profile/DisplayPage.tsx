@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { Row, Col, Accordion, Stack } from 'react-bootstrap'
+import { Row, Col, Accordion, Stack, Button, Container } from 'react-bootstrap'
 import { useQuery } from '@apollo/client'
 import { MemberContext } from 'contexts/MemberContext'
 import { getMemberDob } from 'jd-date-utils'
@@ -14,9 +14,11 @@ import './UserProfile.css'
 import AuthButton from 'components/buttons/AuthButton'
 import CloudinaryImage from 'components/CloudinaryImage'
 import { USER_PLACEHOLDER } from 'global-utils'
+import { useNavigate } from 'react-router'
 
 const DisplayPage = () => {
   const { currentUser, theme } = useContext(MemberContext)
+  const navigate = useNavigate()
 
   const {
     data: bioData,
@@ -54,6 +56,7 @@ const DisplayPage = () => {
               </Col>
             </Row>
           </div>
+
           <div>
             <PlaceholderCustom
               loading={!member?.nameWithTitle}
@@ -62,6 +65,17 @@ const DisplayPage = () => {
             >
               <h1 className="text-center">{`${member?.fullName}`}</h1>
             </PlaceholderCustom>
+            <Container className="px-5 mb-2">
+              <div className="d-grid gap-2">
+                <Button
+                  className="dark"
+                  onClick={() => navigate('/user-profile/edit')}
+                >
+                  Edit Your Profile
+                </Button>
+              </div>
+            </Container>
+
             <PlaceholderCustom as="h6" className="text-center">
               <h6 className="text-center text-secondary">
                 {memberChurch?.fellowship?.name}
@@ -165,6 +179,14 @@ const DisplayPage = () => {
                                 >
                                   {member?.whatsappNumber}
                                 </a>
+                              </Col>
+                            </Row>
+                            <Row>
+                              <Col className="text-secondary placeholder-display">
+                                How You Joined
+                              </Col>
+                              <Col className="placeholder-display">
+                                {member?.howYouJoined}
                               </Col>
                             </Row>
                           </div>

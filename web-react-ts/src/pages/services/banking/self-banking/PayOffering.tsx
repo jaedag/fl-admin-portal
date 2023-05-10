@@ -25,6 +25,7 @@ import Input from 'components/formik/Input'
 import Select from 'components/formik/Select'
 import useModal from 'hooks/useModal'
 import './ConfirmPayment.css'
+import { MemberContext } from 'contexts/MemberContext'
 
 type PayOfferingProps = {
   church: Fellowship
@@ -43,6 +44,7 @@ type FormOptions = {
 const PayOffering = (props: PayOfferingProps) => {
   const { church } = props
   const { serviceRecordId } = useContext(ServiceContext)
+  const { currentUser } = useContext(MemberContext)
   const { data, loading, error } = useQuery(DISPLAY_OFFERING_DETAILS, {
     variables: { serviceRecordId: serviceRecordId },
   })
@@ -228,12 +230,15 @@ const PayOffering = (props: PayOfferingProps) => {
                     <Row className="row-cols-2 mb-2">
                       <Col>
                         <small className="form-text label">Income</small>
-                        <div className="fw-bold">{service?.income} GHS</div>
+                        <div className="fw-bold">
+                          {service?.income} {currentUser.currency}
+                        </div>
                       </Col>
                       <Col>
                         <small className="form-text label ">Charges</small>
                         <div className="fw-bold yellow">
-                          {(incomeAndCharges - service?.income).toFixed(2)} GHS
+                          {(incomeAndCharges - service?.income).toFixed(2)}{' '}
+                          {currentUser.currency}
                         </div>
                       </Col>
                     </Row>
@@ -246,7 +251,9 @@ const PayOffering = (props: PayOfferingProps) => {
                         <small className="form-text label">
                           Income + Charges
                         </small>
-                        <div className="fw-bold">{incomeAndCharges} GHS</div>
+                        <div className="fw-bold">
+                          {incomeAndCharges} {currentUser.currency}
+                        </div>
                       </Col>
                     </Row>
 

@@ -59,6 +59,9 @@ export const SERVANT_CHURCH_LIST = gql`
       leadsGatheringService {
         id
         name
+        currency
+        conversionRateToDollar
+        noIncomeTracking
       }
       leadsOversight {
         id
@@ -80,6 +83,9 @@ export const SERVANT_CHURCH_LIST = gql`
       isAdminForGatheringService {
         id
         name
+        currency
+        conversionRateToDollar
+        noIncomeTracking
       }
 
       isAdminForOversight {
@@ -114,6 +120,10 @@ export const SERVANT_CHURCH_LIST = gql`
         id
         name
         stream_name
+      }
+      isArrivalsPayerForCouncil {
+        id
+        name
       }
 
       #sheepSeeking

@@ -5,6 +5,7 @@ import { Card, Col, Container, Row } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import { ChurchContext } from '../contexts/ChurchContext'
 import CloudinaryImage from './CloudinaryImage'
+import useSetUserChurch from 'hooks/useSetUserChurch'
 
 const DisplayChurchList = (props: {
   data: HigherChurch[]
@@ -12,6 +13,7 @@ const DisplayChurchList = (props: {
 }) => {
   const { data, churchType } = props
   const { clickCard } = useContext(ChurchContext)
+  const { setUserFinancials } = useSetUserChurch()
 
   return (
     <Container className="mt-3">
@@ -24,6 +26,9 @@ const DisplayChurchList = (props: {
                   className="mb-2"
                   onClick={() => {
                     clickCard(church)
+                    if (churchType === 'GatheringService') {
+                      setUserFinancials(church)
+                    }
                   }}
                 >
                   <Card.Body>

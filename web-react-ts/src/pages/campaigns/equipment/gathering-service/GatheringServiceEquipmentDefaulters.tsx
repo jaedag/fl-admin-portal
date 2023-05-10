@@ -9,9 +9,11 @@ import { GATHERING_SERVICE_EQUIPMENT_DEFAULTERS_NUMBER_BY_CONSTITUENCY_AND_FELLO
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import HeadingSecondary from 'components/HeadingSecondary'
+import useSetUserChurch from 'hooks/useSetUserChurch'
 
 const GatheringServiceEquipmentDefaulters = () => {
   const { currentUser } = useContext(MemberContext)
+  const { setUserFinancials } = useSetUserChurch()
   const navigate = useNavigate()
 
   const church = currentUser.currentChurch
@@ -43,6 +45,7 @@ const GatheringServiceEquipmentDefaulters = () => {
             name="Streams"
             onClick={() => {
               clickCard(gatheringService)
+              setUserFinancials(gatheringService)
               navigate(
                 '/campaigns/gatheringservice/stream/equipment/defaulters'
               )

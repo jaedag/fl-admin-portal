@@ -13,7 +13,8 @@ export const DISPLAY_MEMBER_BIO = gql`
       email
       phoneNumber
       pictureUrl
-      idlLocation
+      visitationArea
+      howYouJoined
       whatsappNumber
       pictureUrl
       dob {
@@ -180,6 +181,7 @@ export const DISPLAY_FELLOWSHIP = gql`
       }
       meetingDay {
         day
+        dayNumber
       }
       bacenta {
         id
@@ -438,6 +440,10 @@ export const DISPLAY_STREAM = gql`
       vacationIcBacentaCount
       hubCount
       sontaCount
+      meetingDay {
+        day
+        dayNumber
+      }
       gatheringService {
         id
         name
@@ -488,6 +494,9 @@ export const DISPLAY_GATHERINGSERVICE = gql`
     gatheringServices(where: { id: $id }, options: { limit: 1 }) {
       id
       name
+      noIncomeTracking
+      currency
+      conversionRateToDollar
       target
       streamCount
       councilCount
@@ -522,6 +531,7 @@ export const DISPLAY_GATHERINGSERVICE = gql`
         id
         firstName
         lastName
+        fullName
         currentTitle
         nameWithTitle
         pictureUrl
@@ -564,6 +574,9 @@ export const DISPLAY_OVERSIGHT = gql`
       gatheringServices {
         id
         name
+        noIncomeTracking
+        currency
+        conversionRateToDollar
       }
       admin {
         id
@@ -577,6 +590,8 @@ export const DISPLAY_OVERSIGHT = gql`
         firstName
         lastName
         fullName
+        currentTitle
+        nameWithTitle
         pictureUrl
       }
       history(limit: 5) {

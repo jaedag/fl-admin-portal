@@ -28,7 +28,7 @@ const FellowshipService = () => {
 
   return (
     <ApolloWrapper loading={loading} error={error} data={data}>
-      {currentUser.noIncome ? (
+      {currentUser.noIncomeTracking ? (
         <ServiceFormNoIncome
           RecordServiceMutation={RecordServiceNoIncome}
           church={data?.fellowships[0]}

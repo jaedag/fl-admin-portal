@@ -2,7 +2,11 @@ import { useMutation, useQuery } from '@apollo/client'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { FieldArray, Form, Formik, FormikHelpers } from 'formik'
 import * as Yup from 'yup'
-import { makeSelectOptions, throwToSentry } from 'global-utils'
+import {
+  STREAM_SERVICE_DAY_OPTIONS,
+  makeSelectOptions,
+  throwToSentry,
+} from 'global-utils'
 import { permitAdmin } from 'permission-utils'
 import { GET_GATHERINGSERVICES } from 'queries/ListQueries'
 import React, { useContext, useState } from 'react'
@@ -27,6 +31,7 @@ import { FormikInitialValues } from 'components/formik/formik-types'
 import { Church } from 'global-types'
 
 export interface StreamFormValues extends FormikInitialValues {
+  meetingDay: string
   gatheringService: string
   councils?: Church[]
 }
@@ -106,6 +111,13 @@ const StreamForm = ({
                         name="name"
                         label={`Name of Stream`}
                         placeholder={`Name of Stream`}
+                      />
+
+                      <Select
+                        label="Meeting Day"
+                        name="meetingDay"
+                        options={STREAM_SERVICE_DAY_OPTIONS}
+                        defaultOption="Pick a Service Day"
                       />
 
                       <Row className="d-flex align-items-center mb-3">

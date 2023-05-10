@@ -12,14 +12,19 @@ import { MemberContext } from 'contexts/MemberContext'
 import { ServiceContext } from 'contexts/ServiceContext'
 import usePopup from 'hooks/usePopup'
 import { getHumanReadableDate, getTime, parseNeoTime } from 'jd-date-utils'
-import { permitAdminArrivals, permitArrivalsCounter } from 'permission-utils'
+import {
+  permitAdminArrivals,
+  permitArrivalsCounter,
+  permitArrivalsPayer,
+} from 'permission-utils'
 import { useContext, useState } from 'react'
-import { Button, Col, Container, Row, Table } from 'react-bootstrap'
+import { Accordion, Button, Col, Container, Row, Table } from 'react-bootstrap'
 import { useNavigate } from 'react-router'
 import { BacentaWithArrivals, VehicleRecord } from './arrivals-types'
 import { beforeCountingDeadline } from './arrivals-utils'
 import { DISPLAY_VEHICLE_RECORDS } from './arrivalsQueries'
 import './Arrivals.css'
+import { capitalise } from 'global-utils'
 
 const BusVehicleFormDetails = () => {
   const { bacentaId } = useContext(ChurchContext)
@@ -136,36 +141,6 @@ const BusVehicleFormDetails = () => {
                     </tr>
                   )}
 
-                  {vehicle?.mobileNetwork && (
-                    <tr>
-                      <td>Mobile Network</td>
-                      <td>
-                        <PlaceholderCustom loading={loading}>
-                          {vehicle?.mobileNetwork}
-                        </PlaceholderCustom>
-                      </td>
-                    </tr>
-                  )}
-                  {vehicle?.momoNumber && (
-                    <tr>
-                      <td>Momo Number</td>
-                      <td>
-                        <PlaceholderCustom loading={loading}>
-                          {vehicle?.momoNumber}
-                        </PlaceholderCustom>
-                      </td>
-                    </tr>
-                  )}
-                  {vehicle?.momoName && (
-                    <tr>
-                      <td>Momo Name</td>
-                      <td>
-                        <PlaceholderCustom loading={loading}>
-                          {vehicle?.momoName}
-                        </PlaceholderCustom>
-                      </td>
-                    </tr>
-                  )}
                   {vehicle?.arrivalTime && (
                     <tr>
                       <td>Arrival Time</td>
@@ -176,6 +151,7 @@ const BusVehicleFormDetails = () => {
                       </td>
                     </tr>
                   )}
+
                   <tr>
                     <td>In and Out</td>
                     <td className="fw-bold text-warning">
@@ -184,26 +160,7 @@ const BusVehicleFormDetails = () => {
                       </PlaceholderCustom>
                     </td>
                   </tr>
-                  {vehicle?.paystackTransferCode && (
-                    <tr>
-                      <td>Transaction Code</td>
-                      <td className="fw-bold text-warning">
-                        <PlaceholderCustom loading={loading}>
-                          {vehicle?.paystackTransferCode}
-                        </PlaceholderCustom>
-                      </td>
-                    </tr>
-                  )}
-                  {vehicle?.transactionStatus && (
-                    <tr>
-                      <td>Transaction Status</td>
-                      <td className="fw-bold text-warning">
-                        <PlaceholderCustom loading={loading}>
-                          {vehicle?.transactionStatus}
-                        </PlaceholderCustom>
-                      </td>
-                    </tr>
-                  )}
+
                   {vehicle?.comments && (
                     <tr>
                       <td>Comments</td>
@@ -218,6 +175,66 @@ const BusVehicleFormDetails = () => {
                   )}
                 </tbody>
               </Table>
+
+              {vehicle?.transactionStatus && (
+                <Accordion flush>
+                  <Accordion.Item eventKey="0">
+                    <Accordion.Header>Financial Details</Accordion.Header>
+                    <Accordion.Body className="p-0">
+                      <Table variant={theme} striped bordered>
+                        <tbody>
+                          <tr>
+                            <td>Transaction Reference</td>
+                            <td>
+                              <PlaceholderCustom loading={loading}>
+                                {vehicle?.transactionReference}
+                              </PlaceholderCustom>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>Transaction Status</td>
+                            <td
+                              className={`fw-bold ${
+                                vehicle.transactionStatus === 'success'
+                                  ? 'good'
+                                  : 'warning'
+                              }`}
+                            >
+                              <PlaceholderCustom loading={loading}>
+                                {capitalise(vehicle?.transactionStatus ?? '')}
+                              </PlaceholderCustom>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>Mobile Network</td>
+                            <td>
+                              <PlaceholderCustom loading={loading}>
+                                {vehicle?.mobileNetwork}
+                              </PlaceholderCustom>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>Momo Name</td>
+                            <td>
+                              <PlaceholderCustom loading={loading}>
+                                {capitalise(vehicle?.momoName)}
+                              </PlaceholderCustom>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>Momo Number</td>
+                            <td>
+                              <PlaceholderCustom loading={loading}>
+                                {capitalise(vehicle?.momoNumber)}
+                              </PlaceholderCustom>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </Table>
+                    </Accordion.Body>
+                  </Accordion.Item>
+                </Accordion>
+              )}
               <Row className="text-center">
                 {isOpen && (
                   <Popup handleClose={togglePopup}>
@@ -229,7 +246,7 @@ const BusVehicleFormDetails = () => {
                   </Popup>
                 )}
                 {vehicle?.picture ? (
-                  <>
+                  <div className="mt-5">
                     <h6>Vehicle Picture</h6>
                     <div className="container card-button-row">
                       <table>
@@ -252,13 +269,24 @@ const BusVehicleFormDetails = () => {
                         </tbody>
                       </table>
                     </div>
-                  </>
+                  </div>
                 ) : null}
               </Row>
             </Row>
           </Col>
         </Row>
         <div className="d-grid gap-2 mt-5">
+          {!beforeCountingDeadline(vehicle, church) && (
+            <RoleView roles={permitArrivalsPayer()}>
+              <Button
+                variant="outline-info"
+                onClick={() => navigate('/arrivals/vehicles-to-be-paid')}
+              >
+                Continue Payments
+              </Button>
+            </RoleView>
+          )}
+
           <RoleView roles={permitArrivalsCounter()}>
             {beforeCountingDeadline(vehicle, church) && (
               <>

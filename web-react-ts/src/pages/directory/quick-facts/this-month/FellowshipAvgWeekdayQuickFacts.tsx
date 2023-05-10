@@ -7,9 +7,13 @@ import { FELLOWSHIP_AVG_WEEKDAY_STATS } from '../QuickFactsQueries'
 import QuickFactsHeader from '../components/QuickFactsHeader'
 import PlaceholderCustom from 'components/Placeholder'
 import QuickFactsSlider from '../components/QuickFactsSlider'
+import { MemberContext } from 'contexts/MemberContext'
+import { IncomeDetailsInterface } from '../components/IncomeQuickFactsCard'
+import { AttendanceDetailsInterface } from '../components/AttendanceQuickFactsCard'
 
 const FellowshipAvgWeekdayQuickFacts = () => {
   const { fellowshipId } = useContext(ChurchContext)
+  const { currentUser } = useContext(MemberContext)
 
   const { data, loading, error } = useQuery(FELLOWSHIP_AVG_WEEKDAY_STATS, {
     variables: { fellowshipId: fellowshipId, days: 30 },
@@ -20,7 +24,7 @@ const FellowshipAvgWeekdayQuickFacts = () => {
   const churchName = `${fellowship?.name}`
   const higherLevelName = `${fellowship?.council?.name} ${fellowship?.council?.__typename}`
 
-  const attendanceDetails = [
+  const attendanceDetails: AttendanceDetailsInterface[] = [
     {
       churchType: 'Fellowship',
       cardType: 'Attendance',
@@ -32,12 +36,13 @@ const FellowshipAvgWeekdayQuickFacts = () => {
     },
   ]
 
-  const incomeDetails = [
+  const incomeDetails: IncomeDetailsInterface[] = [
     {
       churchType: 'Fellowship',
       cardType: 'Income',
       leadersName: leadersName,
       churchName: churchName,
+      currency: currentUser.currency,
       churchAvgIncomeThisMonth: `${fellowship?.avgWeekdayStats?.income}`,
       avgHigherLevelIncomeThisMonth: `${fellowship?.council?.avgFellowshipWeekdayStats?.income}`,
       higherLevelName: higherLevelName,

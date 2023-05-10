@@ -7,9 +7,14 @@ import { CONSTITUENCY_AVG_WEEKDAY_STATS } from '../QuickFactsQueries'
 import QuickFactsHeader from '../components/QuickFactsHeader'
 import QuickFactsSlider from '../components/QuickFactsSlider'
 import PlaceholderCustom from 'components/Placeholder'
+import { AttendanceDetailsInterface } from '../components/AttendanceQuickFactsCard'
+import { IncomeDetailsInterface } from '../components/IncomeQuickFactsCard'
+import { MemberContext } from 'contexts/MemberContext'
+import { BussingDetailsInterface } from '../components/BussingQuickFactsCard'
 
 const ConstituencyAvgWeekdayQuickFacts = () => {
   const { constituencyId } = useContext(ChurchContext)
+  const { currentUser } = useContext(MemberContext)
 
   const { data, loading, error } = useQuery(CONSTITUENCY_AVG_WEEKDAY_STATS, {
     variables: { constituencyId: constituencyId, days: 30 },
@@ -20,7 +25,7 @@ const ConstituencyAvgWeekdayQuickFacts = () => {
   const churchName = `${constituency?.name}`
   const higherLevelName = `${constituency?.council?.name} ${constituency?.council?.__typename}`
 
-  const attendanceDetails = [
+  const attendanceDetails: AttendanceDetailsInterface[] = [
     {
       churchType: 'Constituency',
       cardType: 'Attendance',
@@ -32,19 +37,20 @@ const ConstituencyAvgWeekdayQuickFacts = () => {
     },
   ]
 
-  const incomeDetails = [
+  const incomeDetails: IncomeDetailsInterface[] = [
     {
       churchType: 'Constituency',
       cardType: 'Income',
       leadersName: leadersName,
       churchName: churchName,
+      currency: currentUser.currency,
       churchAvgIncomeThisMonth: `${constituency?.avgWeekdayStats?.income}`,
       avgHigherLevelIncomeThisMonth: `${constituency?.council?.avgConstituencyWeekdayStats.income}`,
       higherLevelName: higherLevelName,
     },
   ]
 
-  const bussingDetails = [
+  const bussingDetails: BussingDetailsInterface[] = [
     {
       churchType: 'Constituency',
       cardType: 'Bussing',

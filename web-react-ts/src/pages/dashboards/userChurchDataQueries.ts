@@ -249,6 +249,7 @@ export const SERVANTS_GATHERINGSERVICE_ADMIN = gql`
           id
           attendance
           income
+          dollarIncome
           week
         }
       }
@@ -269,6 +270,7 @@ export const SERVANTS_OVERSIGHT_ADMIN = gql`
           id
           attendance
           income
+          dollarIncome
           week
         }
       }

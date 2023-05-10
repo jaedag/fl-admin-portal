@@ -19,6 +19,7 @@ import Select from 'components/formik/Select'
 import { VEHICLE_OPTIONS, VEHICLE_OPTIONS_WITH_CAR } from './arrivals-utils'
 import ImageUpload from 'components/formik/ImageUpload'
 import { BacentaWithArrivals } from './arrivals-types'
+import { MemberContext } from 'contexts/MemberContext'
 
 type FormOptions = {
   leaderDeclaration: string
@@ -31,10 +32,11 @@ type FormOptions = {
 const FormAddVehicleRecord = () => {
   const navigate = useNavigate()
   const { bacentaId, clickCard } = useContext(ChurchContext)
+  const { currentUser } = useContext(MemberContext)
   const { bussingRecordId } = useContext(ServiceContext)
 
   const { data, loading, error } = useQuery(BACENTA_ARRIVALS, {
-    variables: { id: bacentaId },
+    variables: { id: bacentaId, date: new Date().toISOString().slice(0, 10) },
   })
   const bacenta: BacentaWithArrivals = data?.bacentas[0]
 
@@ -144,7 +146,7 @@ const FormAddVehicleRecord = () => {
 
                 <Input
                   name="personalContribution"
-                  label="Personal Contribution* (in Cedis)"
+                  label={`Personal Contribution* (in ${currentUser.currency})`}
                 />
 
                 <ImageUpload

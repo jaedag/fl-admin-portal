@@ -1,7 +1,12 @@
 import axios from 'axios'
 import { getHumanReadableDate } from 'jd-date-utils'
 import { Context } from '../utils/neo4j-types'
-import { permitLeader, permitLeaderAdmin, permitMe } from '../permissions'
+import {
+  permitAdmin,
+  permitLeader,
+  permitLeaderAdmin,
+  permitMe,
+} from '../permissions'
 import {
   getMobileCode,
   getStreamFinancials,
@@ -17,6 +22,7 @@ import {
   setTransactionStatusSuccess,
   setRecordTransactionReference,
   setRecordTransactionReferenceWithOTP,
+  submitBankingSlip,
 } from './banking-cypher'
 import {
   DebitDataBody,
@@ -402,6 +408,33 @@ const bankingMutation = {
         fullName: `${banker.firstName} ${banker.fullName}`,
       },
     }
+  },
+  SubmitBankingSlip: async (
+    object: any,
+    args: { serviceRecordId: string; bankingSlip: string },
+    context: Context
+  ) => {
+    isAuth(permitAdmin('GatheringService'), context.auth.roles)
+    const session = context.executionContext.session()
+
+    await checkIfLastServiceBanked(args.serviceRecordId, context).catch(
+      (error: any) => {
+        throwToSentry(
+          'There was an error checking if last service banked',
+          error
+        )
+      }
+    )
+
+    const submissionResponse = rearrangeCypherObject(
+      await session
+        .run(submitBankingSlip, { ...args, auth: context.auth })
+        .catch((error: any) =>
+          throwToSentry('There was an error submitting banking slip', error)
+        )
+    )
+
+    return submissionResponse.record.properties
   },
 }
 

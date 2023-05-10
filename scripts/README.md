@@ -8,5 +8,4 @@ npm run start
 
 - `start-dev.js` - starts the GraphQL API and web-react servers
 - `build.js` - builds the api and web-react projects
-- `inferSchema.js` - connect to Neo4j and generate inferred GraphQL type definitions, written to `./api/src/schema.graphql`
-- `seed.js` - seeds the database locally from the api directory
+= `release.js` - runs the build script and deploys the api and web-react projects to netlify

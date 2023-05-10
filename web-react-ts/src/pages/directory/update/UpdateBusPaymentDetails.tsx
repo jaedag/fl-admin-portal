@@ -47,11 +47,11 @@ type FormOptions = {
   verificationCode: string
 }
 
-const convertToBoolean = (value: string | boolean) => {
+export const convertOutboundToBoolean = (value: string | boolean) => {
   return value === 'In and Out'
 }
 
-const convertToString = (value: boolean) => {
+export const convertOutboundToString = (value: boolean) => {
   if (value === true) {
     return 'In and Out'
   }
@@ -61,7 +61,7 @@ const convertToString = (value: boolean) => {
 
 const UpdateBusPayment = () => {
   const { bacentaId } = useContext(ChurchContext)
-  const { theme } = useContext(MemberContext)
+  const { theme, currentUser } = useContext(MemberContext)
   const { isOpen, togglePopup } = usePopup()
   const { isAuthorised } = useAuth()
   const [otp] = useState(randomOTPGenerator())
@@ -90,7 +90,7 @@ const UpdateBusPayment = () => {
     target: bacenta?.target ?? '',
     urvanTopUp: bacenta?.urvanTopUp ?? '',
     sprinterTopUp: bacenta?.sprinterTopUp ?? '',
-    outbound: convertToString(bacenta?.outbound) ?? 'In Only',
+    outbound: convertOutboundToString(bacenta?.outbound) ?? 'In Only',
 
     mobileNetwork: bacenta?.mobileNetwork ?? '',
     momoName: bacenta?.momoName ?? '',
@@ -129,7 +129,7 @@ const UpdateBusPayment = () => {
             bacentaId,
             sprinterTopUp: parseFloat(values.sprinterTopUp),
             urvanTopUp: parseFloat(values.urvanTopUp),
-            outbound: convertToBoolean(values.outbound),
+            outbound: convertOutboundToBoolean(values.outbound),
             target: parseInt(values.target),
           },
         })
@@ -139,11 +139,6 @@ const UpdateBusPayment = () => {
 
       if (initialValues.momoNumber === values.momoNumber)
         navigate(`/bacenta/displaydetails`)
-    }
-
-    if (!values.mobileNetwork || !values.momoName || !values.momoNumber) {
-      alert('Leader has no momo payment details')
-      return
     }
 
     if (initialValues.momoNumber !== values.momoNumber) {
@@ -192,12 +187,12 @@ const UpdateBusPayment = () => {
                           <Input
                             name="urvanTopUp"
                             label="Urvan Church Top Up (One Way)"
-                            placeholder="Enter Amount in GHS"
+                            placeholder={`Enter Amount in ${currentUser.currency}`}
                           />
                           <Input
                             name="sprinterTopUp"
                             label="Sprinter Church Top Up (One Way)"
-                            placeholder="Enter Amount in GHS"
+                            placeholder={`Enter Amount in ${currentUser.currency}`}
                           />
                           <Container className="my-2">
                             <Card border="warning">

@@ -7,9 +7,13 @@ import { GATHERING_SERVICE_AVG_WEEKDAY_STATS } from '../QuickFactsQueries'
 import QuickFactsHeader from '../components/QuickFactsHeader'
 import QuickFactsSlider from '../components/QuickFactsSlider'
 import PlaceholderCustom from 'components/Placeholder'
+import { AttendanceDetailsInterface } from '../components/AttendanceQuickFactsCard'
+import { IncomeDetailsInterface } from '../components/IncomeQuickFactsCard'
+import { MemberContext } from 'contexts/MemberContext'
 
 const GatheringServiceAvgWeekdayQuickFacts = () => {
   const { gatheringServiceId } = useContext(ChurchContext)
+  const { currentUser } = useContext(MemberContext)
 
   const { data, loading, error } = useQuery(
     GATHERING_SERVICE_AVG_WEEKDAY_STATS,
@@ -23,7 +27,7 @@ const GatheringServiceAvgWeekdayQuickFacts = () => {
   const churchName = `${gatheringService?.name}`
   const higherLevelName = `${gatheringService?.oversight?.name} `
 
-  const attendanceDetails = [
+  const attendanceDetails: AttendanceDetailsInterface[] = [
     {
       churchType: 'Gathering Service',
       cardType: 'Attendance',
@@ -35,12 +39,13 @@ const GatheringServiceAvgWeekdayQuickFacts = () => {
     },
   ]
 
-  const incomeDetails = [
+  const incomeDetails: IncomeDetailsInterface[] = [
     {
       churchType: 'Gathering Service',
       cardType: 'Income',
       leadersName: leadersName,
       churchName: churchName,
+      currency: currentUser.currency,
       churchAvgIncomeThisMonth: `${gatheringService?.avgWeekdayStats?.income}`,
       avgHigherLevelIncomeThisMonth: `${gatheringService?.oversight?.avgGatheringServiceWeekdayStats?.income}`,
       higherLevelName: higherLevelName,

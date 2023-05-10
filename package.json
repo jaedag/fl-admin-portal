@@ -1,5 +1,5 @@
 {
-  "version": "6.5.5",
+  "version": "7.6.9",
   "devDependencies": {
     "@commitlint/cli": "^16.1.0",
     "@commitlint/config-conventional": "^16.0.0",
@@ -32,7 +32,6 @@
     "build": "node scripts/build.js",
     "format": "find . -name \"*.js\" | grep -v node_modules | grep -v build | xargs prettier --write",
     "format:log": "find . -name \"*.js\" | grep -v node_modules | grep -v build | xargs prettier",
-    "inferschema:write": "node scripts/inferSchema.js",
     "clean:git": "cd web-react-ts && rm -f ./.git/index.lock && cd ../api && rm -f ./.git/index.lock && cd .. && rm -f ./.git/index.lock",
     "release:major": "npm run clean:git && node scripts/release.js major",
     "release:minor": "npm run clean:git && node scripts/release.js minor",

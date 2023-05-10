@@ -58,6 +58,7 @@ const AppWithContext = (props: AppPropsType) => {
     vehicleRecordId,
     oversightId,
     multiplicationRecordId,
+    arrivalDate,
 
     //Set State
     setOversightId,
@@ -70,6 +71,7 @@ const AppWithContext = (props: AppPropsType) => {
     setHubId,
     setMinistryId,
     setFederalMinistryId,
+    setArrivalDate,
   } = useClickCard()
 
   const doNotUse = {
@@ -137,6 +139,8 @@ const AppWithContext = (props: AppPropsType) => {
           federalMinistryId,
           oversightId,
           doNotUse,
+          arrivalDate,
+          setArrivalDate,
         }}
       >
         <MemberContext.Provider

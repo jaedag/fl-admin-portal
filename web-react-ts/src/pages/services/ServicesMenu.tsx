@@ -80,14 +80,14 @@ const Services = () => {
               <>
                 <MenuButton
                   iconComponent={FileEarmarkArrowUpFill}
-                  title="Upload Banking Slips"
+                  title="Banking Slips"
                   color="banking"
                   noCaption
                   onClick={() => {
                     clickCard(church)
-                    // navigate(
-                    //   `/services/${churchType.toLowerCase()}/banking-slips`
-                    // )
+                    navigate(
+                      `/services/${churchType.toLowerCase()}/banking-slips`
+                    )
                   }}
                 />
 

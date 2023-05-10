@@ -13,9 +13,10 @@ export const CREATE_MEMBER_MUTATION = gql`
     $gender: String!
     $occupation: String
     $fellowship: String!
-    $idlLocation: String!
+    $visitationArea: String!
     $ministry: String
     $pictureUrl: String!
+    $howYouJoined: String!
   ) {
     CreateMember(
       firstName: $firstName
@@ -28,10 +29,11 @@ export const CREATE_MEMBER_MUTATION = gql`
       maritalStatus: $maritalStatus
       gender: $gender
       occupation: $occupation
-      idlLocation: $idlLocation
+      visitationArea: $visitationArea
       fellowship: $fellowship
       ministry: $ministry
       pictureUrl: $pictureUrl
+      howYouJoined: $howYouJoined
     ) {
       id
       firstName
@@ -190,14 +192,20 @@ export const CREATE_STREAM_MUTATION = gql`
     $name: String!
     $leaderId: ID!
     $gatheringServiceId: ID!
+    $meetingDay: String!
   ) {
     CreateStream(
       name: $name
       leaderId: $leaderId
       gatheringServiceId: $gatheringServiceId
+      meetingDay: $meetingDay
     ) {
       id
       name
+      meetingDay {
+        day
+        dayNumber
+      }
 
       gatheringService {
         id
@@ -214,14 +222,23 @@ export const CREATE_GATHERING_SERVICE_MUTATION = gql`
     $name: String!
     $leaderId: ID!
     $oversightId: ID!
+    $noIncomeTracking: Boolean!
+    $currency: String!
+    $conversionRateToDollar: Float!
   ) {
     CreateGatheringService(
       name: $name
       leaderId: $leaderId
       oversightId: $oversightId
+      noIncomeTracking: $noIncomeTracking
+      currency: $currency
+      conversionRateToDollar: $conversionRateToDollar
     ) {
       id
       name
+      noIncomeTracking
+      currency
+      conversionRateToDollar
 
       oversight {
         id

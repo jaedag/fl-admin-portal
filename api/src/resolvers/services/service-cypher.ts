@@ -9,11 +9,19 @@ WHERE date(date.date).week = date().week AND date(date.date).year = date().year
 RETURN church.id AS id, church.name AS name, labels(church) AS labels, labels(higherChurch) AS higherChurchLabels, higherChurch.id AS higherChurchId, record AS alreadyFilled
 `
 
+export const getCurrency = `
+MATCH (church {id: $churchId})<-[:HAS*0..5]-(gathering:GatheringService)
+WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:GatheringService
+
+RETURN gathering.currency AS currency, gathering.conversionRateToDollar AS conversionRateToDollar
+`
+
 export const recordService = `
       CREATE (serviceRecord:ServiceRecord {id: apoc.create.uuid()})
         SET serviceRecord.createdAt = datetime(),
         serviceRecord.attendance = $attendance,
         serviceRecord.income = $income,
+        serviceRecord.dollarIncome = round(toFloat($income / $conversionRateToDollar), 2),
         serviceRecord.foreignCurrency = $foreignCurrency,
         serviceRecord.numberOfTithers = $numberOfTithers,
         serviceRecord.treasurerSelfie = $treasurerSelfie,
@@ -35,10 +43,11 @@ export const recordService = `
       MERGE (aggregate:AggregateServiceRecord {id: date().week + '-' + date().year + '-' + log.id, week: date().week, year: date().year})
       MERGE (log)-[:HAS_SERVICE_AGGREGATE]->(aggregate)
 
-      WITH serviceRecord, aggregate, SUM(serviceRecord.attendance) AS attendance, SUM(serviceRecord.income) AS income, SUM(aggregate.attendance) AS aggregateAttendance, SUM(aggregate.income) AS aggregateIncome
+      WITH serviceRecord, aggregate, SUM(serviceRecord.attendance) AS attendance, SUM(serviceRecord.income) AS income, SUM(serviceRecord.dollarIncome) AS dollarIncome, SUM(aggregate.attendance) AS aggregateAttendance, SUM(aggregate.income) AS aggregateIncome, SUM(aggregate.dollarIncome) AS aggregateDollarIncome
       MATCH (aggregate)
       SET aggregate.attendance = aggregateAttendance + attendance,
-      aggregate.income = aggregateIncome + income 
+      aggregate.income = aggregateIncome + income,
+      aggregate.dollarIncome = aggregateDollarIncome + dollarIncome 
 
       WITH serviceRecord
       UNWIND $treasurers AS treasurerId WITH treasurerId, serviceRecord
@@ -93,9 +102,10 @@ export const aggregateServiceDataForBacenta = `
    MATCH (bacenta)-[:CURRENT_HISTORY]->(log:ServiceLog)
    MERGE (aggregate:AggregateServiceRecord {id: date().week + '-' + date().year + '-' + log.id, week: date().week, year: date().year})
    MERGE (log)-[:HAS_SERVICE_AGGREGATE]->(aggregate)
-   WITH bacenta, aggregate, collect(record.id) AS componentServiceIds, SUM(record.attendance) AS totalAttendance, SUM(record.income) AS totalIncome
+   WITH bacenta, aggregate, collect(record.id) AS componentServiceIds, SUM(record.attendance) AS totalAttendance, SUM(record.income) AS totalIncome, SUM(record.dollarIncome) AS totalDollarIncome
        SET aggregate.attendance = totalAttendance,
        aggregate.income = totalIncome,
+         aggregate.dollarIncome = totalDollarIncome,
        aggregate.componentServiceIds = componentServiceIds
    WITH bacenta AS lowerChurch
    MATCH (lowerChurch)<-[:HAS]-(constituency:Constituency)
@@ -105,9 +115,10 @@ export const aggregateServiceDataForBacenta = `
    MATCH (constituency)-[:CURRENT_HISTORY]->(log:ServiceLog)
    MERGE (aggregate:AggregateServiceRecord {id: date().week + '-' + date().year + '-' + log.id, week: date().week, year: date().year})
    MERGE (log)-[:HAS_SERVICE_AGGREGATE]->(aggregate)
-   WITH constituency, aggregate, collect(record.id) AS componentServiceIds, SUM(record.attendance) AS totalAttendance, SUM(record.income) AS totalIncome
+   WITH constituency, aggregate, collect(record.id) AS componentServiceIds, SUM(record.attendance) AS totalAttendance, SUM(record.income) AS totalIncome, SUM(record.dollarIncome) AS totalDollarIncome
        SET aggregate.attendance = totalAttendance,
        aggregate.income = totalIncome,
+       aggregate.dollarIncome = totalDollarIncome,
        aggregate.componentServiceIds = componentServiceIds
    WITH constituency AS lowerChurch
    MATCH (lowerChurch)<-[:HAS]-(council:Council)
@@ -117,9 +128,10 @@ export const aggregateServiceDataForBacenta = `
    MATCH (council)-[:CURRENT_HISTORY]->(log:ServiceLog)
    MERGE (aggregate:AggregateServiceRecord {id: date().week + '-' + date().year + '-' + log.id, week: date().week, year: date().year})
    MERGE (log)-[:HAS_SERVICE_AGGREGATE]->(aggregate)
-   WITH council, aggregate, collect(record.id) AS componentServiceIds, SUM(record.attendance) AS totalAttendance, SUM(record.income) AS totalIncome
+   WITH council, aggregate, collect(record.id) AS componentServiceIds, SUM(record.attendance) AS totalAttendance, SUM(record.income) AS totalIncome, SUM(record.dollarIncome) AS totalDollarIncome
        SET aggregate.attendance = totalAttendance,
        aggregate.income = totalIncome,
+       aggregate.dollarIncome = totalDollarIncome,
        aggregate.componentServiceIds = componentServiceIds
    WITH council AS lowerChurch
    MATCH (lowerChurch)<-[:HAS]-(stream:Stream)
@@ -129,9 +141,10 @@ export const aggregateServiceDataForBacenta = `
    MATCH (stream)-[:CURRENT_HISTORY]->(log:ServiceLog)
    MERGE (aggregate:AggregateServiceRecord {id: date().week + '-' + date().year + '-' + log.id, week: date().week, year: date().year})
    MERGE (log)-[:HAS_SERVICE_AGGREGATE]->(aggregate)
-   WITH stream, aggregate, collect(record.id) AS componentServiceIds, SUM(record.attendance) AS totalAttendance, SUM(record.income) AS totalIncome
+   WITH stream, aggregate, collect(record.id) AS componentServiceIds, SUM(record.attendance) AS totalAttendance, SUM(record.income) AS totalIncome, SUM(record.dollarIncome) AS totalDollarIncome
        SET aggregate.attendance = totalAttendance,
        aggregate.income = totalIncome,
+       aggregate.dollarIncome = totalDollarIncome,
        aggregate.componentServiceIds = componentServiceIds
    WITH stream AS lowerChurch
    MATCH (lowerChurch)<-[:HAS]-(gathering:GatheringService)
@@ -141,9 +154,10 @@ export const aggregateServiceDataForBacenta = `
    MATCH (gathering)-[:CURRENT_HISTORY]->(log:ServiceLog)
    MERGE (aggregate:AggregateServiceRecord {id: date().week + '-' + date().year + '-' + log.id, week: date().week, year: date().year})
    MERGE (log)-[:HAS_SERVICE_AGGREGATE]->(aggregate)
-   WITH gathering, aggregate, collect(record.id) AS componentServiceIds, SUM(record.attendance) AS totalAttendance, SUM(record.income) AS totalIncome
+   WITH gathering, aggregate, collect(record.id) AS componentServiceIds, SUM(record.attendance) AS totalAttendance, SUM(record.income) AS totalIncome, SUM(record.dollarIncome) AS totalDollarIncome
        SET aggregate.attendance = totalAttendance,
        aggregate.income = totalIncome,
+       aggregate.dollarIncome = totalDollarIncome,
        aggregate.componentServiceIds = componentServiceIds
    WITH gathering AS lowerChurch
    MATCH (lowerChurch)<-[:HAS]-(oversight:Oversight)
@@ -153,9 +167,10 @@ export const aggregateServiceDataForBacenta = `
    MATCH (oversight)-[:CURRENT_HISTORY]->(log:ServiceLog)
    MERGE (aggregate:AggregateServiceRecord {id: date().week + '-' + date().year + '-' + log.id, week: date().week, year: date().year})
    MERGE (log)-[:HAS_SERVICE_AGGREGATE]->(aggregate)
-   WITH oversight, aggregate, collect(record.id) AS componentServiceIds, SUM(record.attendance) AS totalAttendance, SUM(record.income) AS totalIncome
+   WITH oversight, aggregate, collect(record.id) AS componentServiceIds, SUM(record.attendance) AS totalAttendance, SUM(record.income) AS totalIncome, SUM(record.dollarIncome) AS totalDollarIncome
        SET aggregate.attendance = totalAttendance,
-       aggregate.income = totalIncome,
+       aggregate.income = totalDollarIncome,
+       aggregate.dollarIncome = totalDollarIncome,
        aggregate.componentServiceIds = componentServiceIds
    WITH oversight AS lowerChurch
    MATCH (lowerChurch)<-[:HAS]-(denomination:Denomination)
@@ -165,9 +180,10 @@ export const aggregateServiceDataForBacenta = `
    MATCH (denomination)-[:CURRENT_HISTORY]->(log:ServiceLog)
    MERGE (aggregate:AggregateServiceRecord {id: date().week + '-' + date().year + '-' + log.id, week: date().week, year: date().year})
    MERGE (log)-[:HAS_SERVICE_AGGREGATE]->(aggregate)
-   WITH denomination, aggregate, collect(record.id) AS componentServiceIds, SUM(record.attendance) AS totalAttendance, SUM(record.income) AS totalIncome
+   WITH denomination, aggregate, collect(record.id) AS componentServiceIds, SUM(record.attendance) AS totalAttendance, SUM(record.income) AS totalIncome, SUM(record.dollarIncome) AS totalDollarIncome
        SET aggregate.attendance = totalAttendance,
-       aggregate.income = totalIncome,
+       aggregate.income = totalDollarIncome,
+       aggregate.dollarIncome = totalDollarIncome,
        aggregate.componentServiceIds = componentServiceIds
 
    RETURN denomination,aggregate
@@ -183,9 +199,10 @@ export const aggregateServiceDataForConstituency = `
    MATCH (constituency)-[:CURRENT_HISTORY]->(log:ServiceLog)
    MERGE (aggregate:AggregateServiceRecord {id: date().week + '-' + date().year + '-' + log.id, week: date().week, year: date().year})
    MERGE (log)-[:HAS_SERVICE_AGGREGATE]->(aggregate)
-   WITH constituency, aggregate, collect(record.id) AS componentServiceIds, SUM(record.attendance) AS totalAttendance, SUM(record.income) AS totalIncome
+   WITH constituency, aggregate, collect(record.id) AS componentServiceIds, SUM(record.attendance) AS totalAttendance, SUM(record.income) AS totalIncome, SUM(record.dollarIncome) AS totalDollarIncome
        SET aggregate.attendance = totalAttendance,
        aggregate.income = totalIncome,
+       aggregate.dollarIncome = totalDollarIncome,
        aggregate.componentServiceIds = componentServiceIds
    WITH constituency AS lowerChurch
    MATCH (lowerChurch)<-[:HAS]-(council:Council)
@@ -195,9 +212,10 @@ export const aggregateServiceDataForConstituency = `
    MATCH (council)-[:CURRENT_HISTORY]->(log:ServiceLog)
    MERGE (aggregate:AggregateServiceRecord {id: date().week + '-' + date().year + '-' + log.id, week: date().week, year: date().year})
    MERGE (log)-[:HAS_SERVICE_AGGREGATE]->(aggregate)
-   WITH council, aggregate, collect(record.id) AS componentServiceIds, SUM(record.attendance) AS totalAttendance, SUM(record.income) AS totalIncome
+   WITH council, aggregate, collect(record.id) AS componentServiceIds, SUM(record.attendance) AS totalAttendance, SUM(record.income) AS totalIncome, SUM(record.dollarIncome) AS totalDollarIncome
        SET aggregate.attendance = totalAttendance,
        aggregate.income = totalIncome,
+       aggregate.dollarIncome = totalDollarIncome,
        aggregate.componentServiceIds = componentServiceIds
    WITH council AS lowerChurch
    MATCH (lowerChurch)<-[:HAS]-(stream:Stream)
@@ -207,9 +225,10 @@ export const aggregateServiceDataForConstituency = `
    MATCH (stream)-[:CURRENT_HISTORY]->(log:ServiceLog)
    MERGE (aggregate:AggregateServiceRecord {id: date().week + '-' + date().year + '-' + log.id, week: date().week, year: date().year})
    MERGE (log)-[:HAS_SERVICE_AGGREGATE]->(aggregate)
-   WITH stream, aggregate, collect(record.id) AS componentServiceIds, SUM(record.attendance) AS totalAttendance, SUM(record.income) AS totalIncome
+   WITH stream, aggregate, collect(record.id) AS componentServiceIds, SUM(record.attendance) AS totalAttendance, SUM(record.income) AS totalIncome, SUM(record.dollarIncome) AS totalDollarIncome
        SET aggregate.attendance = totalAttendance,
        aggregate.income = totalIncome,
+       aggregate.dollarIncome = totalDollarIncome,
        aggregate.componentServiceIds = componentServiceIds
    WITH stream AS lowerChurch
    MATCH (lowerChurch)<-[:HAS]-(gathering:GatheringService)
@@ -219,9 +238,10 @@ export const aggregateServiceDataForConstituency = `
    MATCH (gathering)-[:CURRENT_HISTORY]->(log:ServiceLog)
    MERGE (aggregate:AggregateServiceRecord {id: date().week + '-' + date().year + '-' + log.id, week: date().week, year: date().year})
    MERGE (log)-[:HAS_SERVICE_AGGREGATE]->(aggregate)
-   WITH gathering, aggregate, collect(record.id) AS componentServiceIds, SUM(record.attendance) AS totalAttendance, SUM(record.income) AS totalIncome
+   WITH gathering, aggregate, collect(record.id) AS componentServiceIds, SUM(record.attendance) AS totalAttendance, SUM(record.income) AS totalIncome, SUM(record.dollarIncome) AS totalDollarIncome
        SET aggregate.attendance = totalAttendance,
        aggregate.income = totalIncome,
+       aggregate.dollarIncome = totalDollarIncome,
        aggregate.componentServiceIds = componentServiceIds
    WITH gathering AS lowerChurch
    MATCH (lowerChurch)<-[:HAS]-(oversight:Oversight)
@@ -231,9 +251,10 @@ export const aggregateServiceDataForConstituency = `
    MATCH (oversight)-[:CURRENT_HISTORY]->(log:ServiceLog)
    MERGE (aggregate:AggregateServiceRecord {id: date().week + '-' + date().year + '-' + log.id, week: date().week, year: date().year})
    MERGE (log)-[:HAS_SERVICE_AGGREGATE]->(aggregate)
-   WITH oversight, aggregate, collect(record.id) AS componentServiceIds, SUM(record.attendance) AS totalAttendance, SUM(record.income) AS totalIncome
+   WITH oversight, aggregate, collect(record.id) AS componentServiceIds, SUM(record.attendance) AS totalAttendance, SUM(record.income) AS totalIncome, SUM(record.dollarIncome) AS totalDollarIncome
        SET aggregate.attendance = totalAttendance,
-       aggregate.income = totalIncome,
+       aggregate.income = totalDollarIncome,
+       aggregate.dollarIncome = totalDollarIncome,
        aggregate.componentServiceIds = componentServiceIds
    WITH oversight AS lowerChurch
    MATCH (lowerChurch)<-[:HAS]-(denomination:Denomination)
@@ -243,9 +264,10 @@ export const aggregateServiceDataForConstituency = `
    MATCH (denomination)-[:CURRENT_HISTORY]->(log:ServiceLog)
    MERGE (aggregate:AggregateServiceRecord {id: date().week + '-' + date().year + '-' + log.id, week: date().week, year: date().year})
    MERGE (log)-[:HAS_SERVICE_AGGREGATE]->(aggregate)
-   WITH denomination, aggregate, collect(record.id) AS componentServiceIds, SUM(record.attendance) AS totalAttendance, SUM(record.income) AS totalIncome
+   WITH denomination, aggregate, collect(record.id) AS componentServiceIds, SUM(record.attendance) AS totalAttendance, SUM(record.income) AS totalIncome, SUM(record.dollarIncome) AS totalDollarIncome
        SET aggregate.attendance = totalAttendance,
-       aggregate.income = totalIncome,
+       aggregate.income = totalDollarIncome,
+       aggregate.dollarIncome = totalDollarIncome,
        aggregate.componentServiceIds = componentServiceIds
 
    RETURN denomination,aggregate
@@ -261,9 +283,10 @@ export const aggregateServiceDataForCouncil = `
    MATCH (council)-[:CURRENT_HISTORY]->(log:ServiceLog)
    MERGE (aggregate:AggregateServiceRecord {id: date().week + '-' + date().year + '-' + log.id, week: date().week, year: date().year})
    MERGE (log)-[:HAS_SERVICE_AGGREGATE]->(aggregate)
-   WITH council, aggregate, collect(record.id) AS componentServiceIds, SUM(record.attendance) AS totalAttendance, SUM(record.income) AS totalIncome
+   WITH council, aggregate, collect(record.id) AS componentServiceIds, SUM(record.attendance) AS totalAttendance, SUM(record.income) AS totalIncome, SUM(record.dollarIncome) AS totalDollarIncome
        SET aggregate.attendance = totalAttendance,
        aggregate.income = totalIncome,
+       aggregate.dollarIncome = totalDollarIncome,
        aggregate.componentServiceIds = componentServiceIds
    WITH council AS lowerChurch
    MATCH (lowerChurch)<-[:HAS]-(stream:Stream)
@@ -273,9 +296,10 @@ export const aggregateServiceDataForCouncil = `
    MATCH (stream)-[:CURRENT_HISTORY]->(log:ServiceLog)
    MERGE (aggregate:AggregateServiceRecord {id: date().week + '-' + date().year + '-' + log.id, week: date().week, year: date().year})
    MERGE (log)-[:HAS_SERVICE_AGGREGATE]->(aggregate)
-   WITH stream, aggregate, collect(record.id) AS componentServiceIds, SUM(record.attendance) AS totalAttendance, SUM(record.income) AS totalIncome
+   WITH stream, aggregate, collect(record.id) AS componentServiceIds, SUM(record.attendance) AS totalAttendance, SUM(record.income) AS totalIncome, SUM(record.dollarIncome) AS totalDollarIncome
        SET aggregate.attendance = totalAttendance,
        aggregate.income = totalIncome,
+       aggregate.dollarIncome = totalDollarIncome,
        aggregate.componentServiceIds = componentServiceIds
    WITH stream AS lowerChurch
    MATCH (lowerChurch)<-[:HAS]-(gathering:GatheringService)
@@ -285,9 +309,10 @@ export const aggregateServiceDataForCouncil = `
    MATCH (gathering)-[:CURRENT_HISTORY]->(log:ServiceLog)
    MERGE (aggregate:AggregateServiceRecord {id: date().week + '-' + date().year + '-' + log.id, week: date().week, year: date().year})
    MERGE (log)-[:HAS_SERVICE_AGGREGATE]->(aggregate)
-   WITH gathering, aggregate, collect(record.id) AS componentServiceIds, SUM(record.attendance) AS totalAttendance, SUM(record.income) AS totalIncome
+   WITH gathering, aggregate, collect(record.id) AS componentServiceIds, SUM(record.attendance) AS totalAttendance, SUM(record.income) AS totalIncome, SUM(record.dollarIncome) AS totalDollarIncome
        SET aggregate.attendance = totalAttendance,
        aggregate.income = totalIncome,
+       aggregate.dollarIncome = totalDollarIncome,
        aggregate.componentServiceIds = componentServiceIds
    WITH gathering AS lowerChurch
    MATCH (lowerChurch)<-[:HAS]-(oversight:Oversight)
@@ -297,9 +322,10 @@ export const aggregateServiceDataForCouncil = `
    MATCH (oversight)-[:CURRENT_HISTORY]->(log:ServiceLog)
    MERGE (aggregate:AggregateServiceRecord {id: date().week + '-' + date().year + '-' + log.id, week: date().week, year: date().year})
    MERGE (log)-[:HAS_SERVICE_AGGREGATE]->(aggregate)
-   WITH oversight, aggregate, collect(record.id) AS componentServiceIds, SUM(record.attendance) AS totalAttendance, SUM(record.income) AS totalIncome
+   WITH oversight, aggregate, collect(record.id) AS componentServiceIds, SUM(record.attendance) AS totalAttendance, SUM(record.income) AS totalIncome, SUM(record.dollarIncome) AS totalDollarIncome
        SET aggregate.attendance = totalAttendance,
-       aggregate.income = totalIncome,
+       aggregate.income = totalDollarIncome,
+       aggregate.dollarIncome = totalDollarIncome,
        aggregate.componentServiceIds = componentServiceIds
    WITH oversight AS lowerChurch
    MATCH (lowerChurch)<-[:HAS]-(denomination:Denomination)
@@ -309,9 +335,10 @@ export const aggregateServiceDataForCouncil = `
    MATCH (denomination)-[:CURRENT_HISTORY]->(log:ServiceLog)
    MERGE (aggregate:AggregateServiceRecord {id: date().week + '-' + date().year + '-' + log.id, week: date().week, year: date().year})
    MERGE (log)-[:HAS_SERVICE_AGGREGATE]->(aggregate)
-   WITH denomination, aggregate, collect(record.id) AS componentServiceIds, SUM(record.attendance) AS totalAttendance, SUM(record.income) AS totalIncome
+   WITH denomination, aggregate, collect(record.id) AS componentServiceIds, SUM(record.attendance) AS totalAttendance, SUM(record.income) AS totalDollarIncome, SUM(record.dollarIncome) AS totalDollarIncome
        SET aggregate.attendance = totalAttendance,
-       aggregate.income = totalIncome,
+       aggregate.income = totalDollarIncome,
+       aggregate.dollarIncome = totalDollarIncome,
        aggregate.componentServiceIds = componentServiceIds
 
    RETURN denomination,aggregate
@@ -327,9 +354,10 @@ export const aggregateServiceDataForStream = `
    MATCH (stream)-[:CURRENT_HISTORY]->(log:ServiceLog)
    MERGE (aggregate:AggregateServiceRecord {id: date().week + '-' + date().year + '-' + log.id, week: date().week, year: date().year})
    MERGE (log)-[:HAS_SERVICE_AGGREGATE]->(aggregate)
-   WITH stream, aggregate, collect(record.id) AS componentServiceIds, SUM(record.attendance) AS totalAttendance, SUM(record.income) AS totalIncome
+   WITH stream, aggregate, collect(record.id) AS componentServiceIds, SUM(record.attendance) AS totalAttendance, SUM(record.income) AS totalIncome, SUM(record.dollarIncome) AS totalDollarIncome
        SET aggregate.attendance = totalAttendance,
        aggregate.income = totalIncome,
+       aggregate.dollarIncome = totalDollarIncome,
        aggregate.componentServiceIds = componentServiceIds
    WITH stream AS lowerChurch
    MATCH (lowerChurch)<-[:HAS]-(gathering:GatheringService)
@@ -339,9 +367,10 @@ export const aggregateServiceDataForStream = `
    MATCH (gathering)-[:CURRENT_HISTORY]->(log:ServiceLog)
    MERGE (aggregate:AggregateServiceRecord {id: date().week + '-' + date().year + '-' + log.id, week: date().week, year: date().year})
    MERGE (log)-[:HAS_SERVICE_AGGREGATE]->(aggregate)
-   WITH gathering, aggregate, collect(record.id) AS componentServiceIds, SUM(record.attendance) AS totalAttendance, SUM(record.income) AS totalIncome
+   WITH gathering, aggregate, collect(record.id) AS componentServiceIds, SUM(record.attendance) AS totalAttendance, SUM(record.income) AS totalIncome, SUM(record.dollarIncome) AS totalDollarIncome
        SET aggregate.attendance = totalAttendance,
        aggregate.income = totalIncome,
+       aggregate.dollarIncome = totalDollarIncome,
        aggregate.componentServiceIds = componentServiceIds
    WITH gathering AS lowerChurch
    MATCH (lowerChurch)<-[:HAS]-(oversight:Oversight)
@@ -351,9 +380,10 @@ export const aggregateServiceDataForStream = `
    MATCH (oversight)-[:CURRENT_HISTORY]->(log:ServiceLog)
    MERGE (aggregate:AggregateServiceRecord {id: date().week + '-' + date().year + '-' + log.id, week: date().week, year: date().year})
    MERGE (log)-[:HAS_SERVICE_AGGREGATE]->(aggregate)
-   WITH oversight, aggregate, collect(record.id) AS componentServiceIds, SUM(record.attendance) AS totalAttendance, SUM(record.income) AS totalIncome
+   WITH oversight, aggregate, collect(record.id) AS componentServiceIds, SUM(record.attendance) AS totalAttendance, SUM(record.income) AS totalIncome, SUM(record.dollarIncome) AS totalDollarIncome
        SET aggregate.attendance = totalAttendance,
-       aggregate.income = totalIncome,
+       aggregate.income = totalDollarIncome,
+       aggregate.dollarIncome = totalDollarIncome,
        aggregate.componentServiceIds = componentServiceIds
    WITH oversight AS lowerChurch
    MATCH (lowerChurch)<-[:HAS]-(denomination:Denomination)
@@ -363,9 +393,10 @@ export const aggregateServiceDataForStream = `
    MATCH (denomination)-[:CURRENT_HISTORY]->(log:ServiceLog)
    MERGE (aggregate:AggregateServiceRecord {id: date().week + '-' + date().year + '-' + log.id, week: date().week, year: date().year})
    MERGE (log)-[:HAS_SERVICE_AGGREGATE]->(aggregate)
-   WITH denomination, aggregate, collect(record.id) AS componentServiceIds, SUM(record.attendance) AS totalAttendance, SUM(record.income) AS totalIncome
+   WITH denomination, aggregate, collect(record.id) AS componentServiceIds, SUM(record.attendance) AS totalAttendance, SUM(record.income) AS totalDollarIncome, SUM(record.dollarIncome) AS totalDollarIncome
        SET aggregate.attendance = totalAttendance,
-       aggregate.income = totalIncome,
+       aggregate.income = totalDollarIncome,
+       aggregate.dollarIncome = totalDollarIncome,
        aggregate.componentServiceIds = componentServiceIds
 
    RETURN denomination,aggregate
@@ -381,9 +412,10 @@ export const aggregateServiceDataForGatheringService = `
    MATCH (gathering)-[:CURRENT_HISTORY]->(log:ServiceLog)
    MERGE (aggregate:AggregateServiceRecord {id: date().week + '-' + date().year + '-' + log.id, week: date().week, year: date().year})
    MERGE (log)-[:HAS_SERVICE_AGGREGATE]->(aggregate)
-   WITH gathering, aggregate, collect(record.id) AS componentServiceIds, SUM(record.attendance) AS totalAttendance, SUM(record.income) AS totalIncome
+   WITH gathering, aggregate, collect(record.id) AS componentServiceIds, SUM(record.attendance) AS totalAttendance, SUM(record.income) AS totalIncome, SUM(record.dollarIncome) AS totalDollarIncome
        SET aggregate.attendance = totalAttendance,
        aggregate.income = totalIncome,
+       aggregate.dollarIncome = totalDollarIncome,
        aggregate.componentServiceIds = componentServiceIds
    WITH gathering AS lowerChurch
    MATCH (lowerChurch)<-[:HAS]-(oversight:Oversight)
@@ -393,9 +425,10 @@ export const aggregateServiceDataForGatheringService = `
    MATCH (oversight)-[:CURRENT_HISTORY]->(log:ServiceLog)
    MERGE (aggregate:AggregateServiceRecord {id: date().week + '-' + date().year + '-' + log.id, week: date().week, year: date().year})
    MERGE (log)-[:HAS_SERVICE_AGGREGATE]->(aggregate)
-   WITH oversight, aggregate, collect(record.id) AS componentServiceIds, SUM(record.attendance) AS totalAttendance, SUM(record.income) AS totalIncome
+   WITH oversight, aggregate, collect(record.id) AS componentServiceIds, SUM(record.attendance) AS totalAttendance, SUM(record.income) AS totalIncome, SUM(record.dollarIncome) AS totalDollarIncome
        SET aggregate.attendance = totalAttendance,
-       aggregate.income = totalIncome,
+       aggregate.income = totalDollarIncome,
+       aggregate.dollarIncome = totalDollarIncome,
        aggregate.componentServiceIds = componentServiceIds
    WITH oversight AS lowerChurch
    MATCH (lowerChurch)<-[:HAS]-(denomination:Denomination)
@@ -405,9 +438,10 @@ export const aggregateServiceDataForGatheringService = `
    MATCH (denomination)-[:CURRENT_HISTORY]->(log:ServiceLog)
    MERGE (aggregate:AggregateServiceRecord {id: date().week + '-' + date().year + '-' + log.id, week: date().week, year: date().year})
    MERGE (log)-[:HAS_SERVICE_AGGREGATE]->(aggregate)
-   WITH denomination, aggregate, collect(record.id) AS componentServiceIds, SUM(record.attendance) AS totalAttendance, SUM(record.income) AS totalIncome
+   WITH denomination, aggregate, collect(record.id) AS componentServiceIds, SUM(record.attendance) AS totalAttendance, SUM(record.income) AS totalDollarIncome, SUM(record.dollarIncome) AS totalDollarIncome
        SET aggregate.attendance = totalAttendance,
-       aggregate.income = totalIncome,
+       aggregate.income = totalDollarIncome,
+       aggregate.dollarIncome = totalDollarIncome,
        aggregate.componentServiceIds = componentServiceIds
 
    RETURN denomination,aggregate
@@ -423,9 +457,10 @@ export const aggregateServiceDataForOversight = `
    MATCH (oversight)-[:CURRENT_HISTORY]->(log:ServiceLog)
    MERGE (aggregate:AggregateServiceRecord {id: date().week + '-' + date().year + '-' + log.id, week: date().week, year: date().year})
    MERGE (log)-[:HAS_SERVICE_AGGREGATE]->(aggregate)
-   WITH oversight, aggregate, collect(record.id) AS componentServiceIds, SUM(record.attendance) AS totalAttendance, SUM(record.income) AS totalIncome
+   WITH oversight, aggregate, collect(record.id) AS componentServiceIds, SUM(record.attendance) AS totalAttendance, SUM(record.income) AS totalIncome, SUM(record.dollarIncome) AS totalDollarIncome
        SET aggregate.attendance = totalAttendance,
-       aggregate.income = totalIncome,
+       aggregate.income = totalDollarIncome,
+       aggregate.dollarIncome = totalDollarIncome,
        aggregate.componentServiceIds = componentServiceIds
    WITH oversight AS lowerChurch
    MATCH (lowerChurch)<-[:HAS]-(denomination:Denomination)
@@ -435,9 +470,10 @@ export const aggregateServiceDataForOversight = `
    MATCH (denomination)-[:CURRENT_HISTORY]->(log:ServiceLog)
    MERGE (aggregate:AggregateServiceRecord {id: date().week + '-' + date().year + '-' + log.id, week: date().week, year: date().year})
    MERGE (log)-[:HAS_SERVICE_AGGREGATE]->(aggregate)
-   WITH denomination, aggregate, collect(record.id) AS componentServiceIds, SUM(record.attendance) AS totalAttendance, SUM(record.income) AS totalIncome
+   WITH denomination, aggregate, collect(record.id) AS componentServiceIds, SUM(record.attendance) AS totalAttendance, SUM(record.income) AS totalIncome, SUM(record.dollarIncome) AS totalDollarIncome
        SET aggregate.attendance = totalAttendance,
-       aggregate.income = totalIncome,
+       aggregate.income = totalDollarIncome,
+       aggregate.dollarIncome = totalDollarIncome,
        aggregate.componentServiceIds = componentServiceIds
 
    RETURN denomination,aggregate
@@ -453,9 +489,10 @@ export const aggregateServiceDataForDenomination = `
    MATCH (denomination)-[:CURRENT_HISTORY]->(log:ServiceLog)
    MERGE (aggregate:AggregateServiceRecord {id: date().week + '-' + date().year + '-' + log.id, week: date().week, year: date().year})
    MERGE (log)-[:HAS_SERVICE_AGGREGATE]->(aggregate)
-   WITH denomination, aggregate, collect(record.id) AS componentServiceIds, SUM(record.attendance) AS totalAttendance, SUM(record.income) AS totalIncome
+   WITH denomination, aggregate, collect(record.id) AS componentServiceIds, SUM(record.attendance) AS totalAttendance, SUM(record.income) AS totalIncome, SUM(record.dollarIncome) AS totalDollarIncome
        SET aggregate.attendance = totalAttendance,
-       aggregate.income = totalIncome,
+       aggregate.income = totalDollarIncome,
+       aggregate.dollarIncome = totalDollarIncome,
        aggregate.componentServiceIds = componentServiceIds
 
    RETURN denomination,aggregate

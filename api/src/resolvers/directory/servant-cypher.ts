@@ -52,10 +52,10 @@ const servantCypher = {
    RETURN admin.id AS id, admin.auth_id AS auth_id, admin.firstName AS firstName, admin.lastName AS lastName
    `,
 
-  disconnectChurchArrivalsConfirmer: `
+  disconnectChurchArrivalsPayer: `
    MATCH (church {id: $churchId}) 
-   WHERE church:Stream
-   MATCH (church)<-[oldAdmin:CONFIRMS_ARRIVALS_FOR]-(admin:Member {id: $arrivalsConfirmerId})
+   WHERE church:Council
+   MATCH (church)<-[oldAdmin:IS_ARRIVALS_PAYER_FOR]-(admin:Member {id: $arrivalsPayerId})
    DELETE oldAdmin
    
    WITH church, admin
@@ -126,12 +126,12 @@ const servantCypher = {
    RETURN church.id AS id, church.name AS name, higherChurch.id AS higherChurchId, higherChurch.name AS higherChurchName
    `,
 
-  connectChurchArrivalsConfirmer: `
+  connectChurchArrivalsPayer: `
    MATCH (church {id:$churchId})<-[:HAS]-(higherChurch)
-   WHERE church:Stream
-   MATCH (admin:Member {id: $arrivalsConfirmerId})
+   WHERE church:Council
+   MATCH (admin:Member {id: $arrivalsPayerId})
       SET admin.auth_id =  $auth_id
-   MERGE (admin)-[:CONFIRMS_ARRIVALS_FOR]->(church)
+   MERGE (admin)-[:IS_ARRIVALS_PAYER_FOR]->(church)
    
    RETURN church.id AS id, church.name AS name, higherChurch.id AS higherChurchId, higherChurch.name AS higherChurchName
    `,

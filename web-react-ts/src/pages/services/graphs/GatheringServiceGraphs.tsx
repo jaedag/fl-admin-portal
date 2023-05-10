@@ -72,7 +72,7 @@ const GatheringServiceReport = () => {
             />
           </Col>
 
-          {((!bussing && !currentUser.noIncome) || loading) && (
+          {((!bussing && !currentUser.noIncomeTracking) || loading) && (
             <Col>
               <StatDisplay
                 title="Avg Weekly Income"
@@ -82,7 +82,7 @@ const GatheringServiceReport = () => {
           )}
         </Row>
 
-        {!currentUser.noIncome ? (
+        {!currentUser.noIncomeTracking ? (
           <ChurchGraph
             loading={loading}
             stat1="attendance"

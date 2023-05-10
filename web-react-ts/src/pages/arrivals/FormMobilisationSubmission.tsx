@@ -26,13 +26,14 @@ type FormOptions = {
 const FormMobilisationSubmission = () => {
   const navigate = useNavigate()
   const { bacentaId, clickCard } = useContext(ChurchContext)
+  const today = new Date().toISOString().slice(0, 10)
   const initialValues: FormOptions = {
-    serviceDate: new Date().toISOString().slice(0, 10),
+    serviceDate: today,
     mobilisationPicture: '',
   }
 
   const { data, loading, error } = useQuery(BACENTA_ARRIVALS, {
-    variables: { id: bacentaId },
+    variables: { id: bacentaId, date: today },
   })
   const [UploadMobilisationPicture] = useMutation(UPLOAD_MOBILISATION_PICTURE)
 

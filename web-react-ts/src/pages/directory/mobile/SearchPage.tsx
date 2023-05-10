@@ -5,9 +5,10 @@ import {
   STREAM_SEARCH,
   COUNCIL_SEARCH,
   CONSTITUENCY_SEARCH,
-  FEDERAL_SEARCH,
+  GATHERINGSERVICE_SEARCH,
   BACENTA_SEARCH,
   FELLOWSHIP_SEARCH,
+  OVERSIGHT_SEARCH,
 } from './SearchQuery'
 import { MemberContext, SearchContext } from 'contexts/MemberContext'
 import MemberDisplayCard from 'components/card/MemberDisplayCard'
@@ -15,13 +16,23 @@ import { isAuthorised, throwToSentry } from 'global-utils'
 import { Container, Spinner } from 'react-bootstrap'
 import { Church, MemberWithoutBioData, Stream } from 'global-types'
 import { permitMe } from 'permission-utils'
-type FederalSearchResult = {
-  federalMemberSearch: MemberWithoutBioData[]
-  federalStreamSearch: Stream[]
-  federalCouncilSearch: Church[]
-  federalConstituencySearch: Church[]
-  federalBacentaSearch: Church[]
-  federalFellowshipSearch: Church[]
+
+type OversightSearchResult = {
+  oversightMemberSearch: MemberWithoutBioData[]
+  oversightGatheringServiceSearch: Church[]
+  oversightStreamSearch: Stream[]
+  oversightCouncilSearch: Church[]
+  oversightConstituencySearch: Church[]
+  oversightBacentaSearch: Church[]
+  oversightFellowshipSearch: Church[]
+}
+type GatheringServiceSearchResult = {
+  gatheringServiceMemberSearch: MemberWithoutBioData[]
+  gatheringServiceStreamSearch: Stream[]
+  gatheringServiceCouncilSearch: Church[]
+  gatheringServiceConstituencySearch: Church[]
+  gatheringServiceBacentaSearch: Church[]
+  gatheringServiceFellowshipSearch: Church[]
 }
 
 type StreamSearchResult = {
@@ -62,20 +73,40 @@ const SearchPageMobile = () => {
 
   const [combinedData, setCombinedData] = useState<SearchResult[]>([])
 
-  const [federalSearch, { loading: federalLoading, error: federalError }] =
-    useLazyQuery(FEDERAL_SEARCH, {
-      onCompleted: (data: FederalSearchResult) => {
-        setCombinedData([
-          ...data.federalMemberSearch,
-          ...data.federalStreamSearch,
-          ...data.federalCouncilSearch,
-          ...data.federalConstituencySearch,
-          ...data.federalBacentaSearch,
-          ...data.federalFellowshipSearch,
-        ])
-        return
-      },
-    })
+  const [
+    oversightSearch,
+    { loading: oversightLoading, error: oversightError },
+  ] = useLazyQuery(OVERSIGHT_SEARCH, {
+    onCompleted: (data: OversightSearchResult) => {
+      setCombinedData([
+        ...data.oversightMemberSearch,
+        ...data.oversightGatheringServiceSearch,
+        ...data.oversightStreamSearch,
+        ...data.oversightCouncilSearch,
+        ...data.oversightConstituencySearch,
+        ...data.oversightBacentaSearch,
+        ...data.oversightFellowshipSearch,
+      ])
+      return
+    },
+  })
+
+  const [
+    gatheringServiceSearch,
+    { loading: gatheringServiceLoading, error: gatheringServiceError },
+  ] = useLazyQuery(GATHERINGSERVICE_SEARCH, {
+    onCompleted: (data: GatheringServiceSearchResult) => {
+      setCombinedData([
+        ...data.gatheringServiceMemberSearch,
+        ...data.gatheringServiceStreamSearch,
+        ...data.gatheringServiceCouncilSearch,
+        ...data.gatheringServiceConstituencySearch,
+        ...data.gatheringServiceBacentaSearch,
+        ...data.gatheringServiceFellowshipSearch,
+      ])
+      return
+    },
+  })
 
   const [streamSearch, { loading: streamLoading, error: streamError }] =
     useLazyQuery(STREAM_SEARCH, {
@@ -138,7 +169,8 @@ const SearchPageMobile = () => {
     },
   })
   const error =
-    federalError ||
+    oversightError ||
+    gatheringServiceError ||
     streamError ||
     councilError ||
     constituencyError ||
@@ -148,7 +180,8 @@ const SearchPageMobile = () => {
   throwToSentry('', error)
 
   const loading =
-    federalLoading ||
+    oversightLoading ||
+    gatheringServiceLoading ||
     streamLoading ||
     councilLoading ||
     constituencyLoading ||
@@ -157,9 +190,21 @@ const SearchPageMobile = () => {
 
   useEffect(() => {
     const whichSearch = (searchString: string) => {
-      if (isAuthorised(permitMe('GatheringService'), currentUser.roles)) {
-        federalSearch({
-          variables: { searchKey: searchString?.trim() },
+      if (isAuthorised(permitMe('Oversight'), currentUser.roles)) {
+        oversightSearch({
+          variables: {
+            oversightId: currentUser.oversight,
+            searchKey: searchString?.trim(),
+          },
+        })
+      } else if (
+        isAuthorised(permitMe('GatheringService'), currentUser.roles)
+      ) {
+        gatheringServiceSearch({
+          variables: {
+            gatheringId: currentUser.gatheringService,
+            searchKey: searchString?.trim(),
+          },
         })
       } else if (isAuthorised(permitMe('Stream'), currentUser.roles)) {
         streamSearch({
@@ -207,7 +252,7 @@ const SearchPageMobile = () => {
     constituencySearch,
     councilSearch,
     streamSearch,
-    federalSearch,
+    gatheringServiceSearch,
     fellowshipSearch,
   ])
 

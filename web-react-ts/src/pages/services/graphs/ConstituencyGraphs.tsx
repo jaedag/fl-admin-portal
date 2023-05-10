@@ -74,7 +74,7 @@ export const ConstituencyGraphs = () => {
           </Col>
 
           <Col>
-            {((!bussing && !currentUser.noIncome) || loading) && (
+            {((!bussing && !currentUser.noIncomeTracking) || loading) && (
               <StatDisplay
                 title="Avg Weekly Income"
                 statistic={getMonthlyStatAverage(churchData, 'income')}
@@ -83,7 +83,7 @@ export const ConstituencyGraphs = () => {
           </Col>
         </Row>
 
-        {!currentUser.noIncome ? (
+        {!currentUser.noIncomeTracking ? (
           <ChurchGraph
             stat1="attendance"
             stat2={!bussing ? 'income' : null}

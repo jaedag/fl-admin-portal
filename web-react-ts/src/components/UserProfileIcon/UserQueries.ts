@@ -22,7 +22,9 @@ export const GET_LOGGED_IN_USER = gql`
                 id
                 gatheringService {
                   id
-                  noIncome
+                  noIncomeTracking
+                  currency
+                  conversionRateToDollar
                   oversight {
                     id
                   }

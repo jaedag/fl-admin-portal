@@ -91,6 +91,9 @@ const StreamReport = lazy(() => import('pages/services/graphs/StreamGraphs'))
 const GatheringServiceReport = lazy(
   () => import('pages/services/graphs/GatheringServiceGraphs')
 )
+const OversightReport = lazy(
+  () => import('pages/services/graphs/OversightGraphs')
+)
 const StreamByCouncil = lazy(
   () => import('pages/services/defaulters/StreamByCouncil')
 )
@@ -139,6 +142,12 @@ const DefaultersDashboard = lazy(
 const TrendsMenu = lazy(() => import('./graphs/TrendsMenu'))
 
 const SontaFormMenu = lazy(() => import('./SontaFormMenu'))
+const FellowshipBankingSlipSubmission = lazy(
+  () => import('pages/services/banking/banking-slip/FellowshipSubmission')
+)
+const FellowshipBankingSlipView = lazy(
+  () => import('pages/services/banking/banking-slip/FellowshipView')
+)
 
 export const services: LazyRouteTypes[] = [
   ...anagkazoRoutes,
@@ -199,6 +208,18 @@ export const services: LazyRouteTypes[] = [
   },
 
   {
+    path: '/services/fellowship/banking-slips',
+    element: FellowshipBankingSlipView,
+    roles: permitLeaderAdmin('Fellowship'),
+    placeholder: true,
+  },
+  {
+    path: '/fellowship/banking-slip/submission',
+    element: FellowshipBankingSlipSubmission,
+    roles: ['leaderFellowship'],
+    placeholder: true,
+  },
+  {
     path: '/services/constituency/banking-slips',
     element: ConstituencyBankingSlipView,
     roles: permitLeaderAdmin('Constituency'),
@@ -213,13 +234,13 @@ export const services: LazyRouteTypes[] = [
   {
     path: '/constituency/banking-slip/submission',
     element: ConstituencyBankingSlipSubmission,
-    roles: ['leaderConstituency', 'adminConstituency'],
+    roles: ['adminGatheringService'],
     placeholder: true,
   },
   {
     path: '/council/banking-slip/submission',
     element: CouncilBankingSlipSubmission,
-    roles: ['leaderCouncil', 'adminCouncil', 'adminGatheringService'],
+    roles: ['adminGatheringService'],
     placeholder: true,
   },
 
@@ -279,6 +300,12 @@ export const graphs: LazyRouteTypes[] = [
     path: '/gatheringservice/graphs',
     element: GatheringServiceReport,
     roles: permitLeaderAdminArrivals('GatheringService'),
+    placeholder: true,
+  },
+  {
+    path: '/oversight/graphs',
+    element: OversightReport,
+    roles: permitLeaderAdminArrivals('Oversight'),
     placeholder: true,
   },
 

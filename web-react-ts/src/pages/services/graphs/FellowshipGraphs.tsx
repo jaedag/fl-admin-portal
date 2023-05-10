@@ -58,7 +58,7 @@ export const FellowshipReport = () => {
             />
           </div>
 
-          {!currentUser.noIncome && (
+          {!currentUser.noIncomeTracking && (
             <div className="col">
               <StatDisplay
                 title="Avg Weekly Income"
@@ -68,7 +68,7 @@ export const FellowshipReport = () => {
           )}
         </div>
 
-        {!currentUser.noIncome ? (
+        {!currentUser.noIncomeTracking ? (
           <ChurchGraph
             stat1="attendance"
             stat2="income"

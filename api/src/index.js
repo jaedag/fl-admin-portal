@@ -1,5 +1,10 @@
-import { ApolloServer } from 'apollo-server-express'
+import { ApolloServer } from '@apollo/server'
+import { expressMiddleware } from '@apollo/server/express4'
+import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer'
 import express from 'express'
+import http from 'http'
+import cors from 'cors'
+import { json } from 'body-parser'
 import neo4j from 'neo4j-driver'
 import { Neo4jGraphQL } from '@neo4j/graphql'
 import { Neo4jGraphQLAuthJWTPlugin } from '@neo4j/graphql-plugin-auth'
@@ -7,6 +12,7 @@ import { typeDefs } from './schema/graphql-schema'
 import resolvers from './resolvers/resolvers'
 
 const app = express()
+const httpServer = http.createServer(app)
 const Sentry = require('@sentry/node')
 
 Sentry.init({
@@ -70,15 +76,28 @@ const startServer = async () => {
     context: ({ req }) => ({ req, executionContext: driver }),
     introspection: true,
     schema,
+    plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
   })
 
   await server.start()
-  server.applyMiddleware({ app, path })
+
+  app.use(
+    path,
+    cors(),
+    json(),
+    expressMiddleware(server, {
+      context: async ({ req }) => ({
+        req,
+        executionContext: driver,
+        token: req.headers.authorization,
+      }),
+    })
+  )
+
+  // eslint-disable-next-line no-promise-executor-return
+  await new Promise((resolve) => httpServer.listen({ port }, resolve))
+  // eslint-disable-next-line
+  console.log(`🚀 GraphQL Server ready at http://${host}:${port}${path}`)
 }
 
 startServer()
-
-app.listen({ host, port, path }, () => {
-  // eslint-disable-next-line
-  console.log(`GraphQL server ready at http://${host}:${port}${path}`)
-})
