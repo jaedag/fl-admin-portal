@@ -1,11 +1,9 @@
 export const checkFormFilledThisWeek = `
 MATCH (church {id: $churchId})
-WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream  OR church:Sonta or church:Ministry 
+WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream 
 MATCH (church)<-[:HAS]-(higherChurch)
 
 OPTIONAL MATCH (church)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
-OPTIONAL MATCH (church)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(record:MinistryAttendanceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
-OPTIONAL MATCH (church)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(record:RehearsalRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
 WHERE date(date.date).week = date().week AND date(date.date).year = date().year
         
 RETURN church.id AS id, church.name AS name, labels(church) AS labels, labels(higherChurch) AS higherChurchLabels, higherChurch.id AS higherChurchId, record AS alreadyFilled
@@ -69,12 +67,16 @@ RETURN serviceRecord
 `
 
 export const checkCurrentServiceLog = `
-MATCH (church {id:$churchId}) WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream
+MATCH (church {id:$churchId}) 
+WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream
+OR church:Sonta OR church:Hub
 MATCH (church)-[:CURRENT_HISTORY]->(log:ServiceLog)
 RETURN true AS exists
 `
 export const getServantAndChurch = `
-MATCH (church {id:$churchId}) WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:Sonta
+MATCH (church {id:$churchId}) 
+WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream 
+OR church:Sonta OR church:Hub
 MATCH (church)<-[:LEADS]-(servant:Active:Member)
 UNWIND labels(church) AS churchType 
 WITH churchType, church, servant WHERE churchType IN ['Fellowship', 'Bacenta', 'Constituency', 'Council', 'Stream', 'Sonta']

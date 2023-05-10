@@ -1,11 +1,10 @@
 import { makeServantCypher } from '../directory/utils'
-import { permitLeaderAdmin } from '../permissions'
+import { permitLeader, permitLeaderAdmin } from '../permissions'
 import { Context } from '../utils/neo4j-types'
 import { isAuth, rearrangeCypherObject, throwToSentry } from '../utils/utils'
 import {
   checkCurrentServiceLog,
   getServantAndChurch as getServantAndChurchCypher,
-  checkFormFilledThisWeek,
 } from './service-cypher'
 
 import {
@@ -13,6 +12,8 @@ import {
   aggregateServiceDataForHub,
   aggregateServiceDataForMinistry,
   recordSontaRehearsalService,
+  checkFormFilledThisWeek,
+  aggregateServiceDataForFederalMinistry,
 } from './sonta-service-cypher'
 
 const errorMessage = require('../texts.json').error
@@ -49,7 +50,7 @@ export const checkServantHasCurrentHistory = async (
         id: getServantAndChurch.servantId,
         auth_id: getServantAndChurch.auth_id,
         firstName: getServantAndChurch.firstName,
-        lastName: getServantAndChurch.las,
+        lastName: getServantAndChurch.lastName,
       },
       args: {
         leaderId: getServantAndChurch.servantId,
@@ -99,6 +100,8 @@ const SontaServiceMutation = {
       aggregateCypher = aggregateServiceDataForHub
     } else if (serviceCheck.higherChurchLabels?.includes('Ministry')) {
       aggregateCypher = aggregateServiceDataForMinistry
+    } else if (serviceCheck.higherChurchLabels?.includes('Federalministry')) {
+      aggregateCypher = aggregateServiceDataForFederalMinistry
     }
 
     const cypherResponse = await session
@@ -126,7 +129,7 @@ const SontaServiceMutation = {
     args: RecordServiceArgs,
     context: Context
   ) => {
-    isAuth(permitLeaderAdmin('Sonta'), context.auth.roles)
+    isAuth(permitLeader('Sonta'), context.auth.roles)
     const session = context.executionContext.session()
 
     await checkServantHasCurrentHistory(session, context, {
@@ -157,6 +160,8 @@ const SontaServiceMutation = {
       aggregateCypher = aggregateServiceDataForHub
     } else if (serviceCheck.higherChurchLabels?.includes('Ministry')) {
       aggregateCypher = aggregateServiceDataForMinistry
+    } else if (serviceCheck.higherChurchLabels?.includes('Federalministry')) {
+      aggregateCypher = aggregateServiceDataForFederalMinistry
     }
 
     const cypherResponse = await session

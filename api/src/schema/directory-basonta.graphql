@@ -103,22 +103,21 @@ extend type Mutation {
        MATCH (hub:Hub {id: $hubId})
 
        MATCH (currentUser:Active:Member {auth_id:$auth.jwt.sub})
-       UNWIND LABELS(hub) as stream
 
-       SET sonta.name = leader.firstName + ' ' + leader.lastName
 
-      WITH sonta, ministry, leader, hub, currentUser, stream
+      WITH sonta, ministry, leader, hub, currentUser
        CREATE (log:HistoryLog:ServiceLog)
         SET log.id = apoc.create.uuid(),
+         sonta.name = leader.firstName + ' ' + leader.lastName,
          log.timeStamp = datetime(),
-         log.historyRecord = leader.firstName + ' ' +leader.lastName + ' started ' + sonta.name +' Sonta under '+ hub.name + ' ' + stream
+         log.historyRecord = leader.firstName + ' ' +leader.lastName + ' started ' + sonta.name +' Sonta under '+ hub.name + ' Hub' 
 
 
        MERGE (hub)-[:HAS]->(sonta)
        MERGE (leader)-[:LEADS]->(sonta)
 
-      MERGE (date:TimeGraph {date: date()})
-      MERGE (log)-[:LOGGED_BY]->(currentUser)
+       MERGE (date:TimeGraph {date: date()})
+       MERGE (log)-[:LOGGED_BY]->(currentUser)
        MERGE (log)-[:RECORDED_ON]->(date)
        MERGE (hub)-[r1:HAS_HISTORY]->(log)
        MERGE (sonta)-[r2:HAS_HISTORY]->(log)

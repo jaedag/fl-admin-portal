@@ -1,3 +1,16 @@
+export const checkFormFilledThisWeek = `
+MATCH (church {id: $churchId})
+WHERE church:Sonta OR church:Hub OR church:Ministry 
+MATCH (church)<-[:HAS]-(higherChurch)
+MATCH (date:TimeGraph) WHERE date(date.date).week = date().week AND date(date.date).year = date().year
+
+
+OPTIONAL MATCH (church)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(ministryRecord:MinistryAttendanceRecord)-[:SERVICE_HELD_ON]->(date)
+OPTIONAL MATCH (church)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(rehearsal:RehearsalRecord)-[:SERVICE_HELD_ON]->(date)
+     
+RETURN church.id AS id, church.name AS name, labels(church) AS labels, labels(higherChurch) AS higherChurchLabels, higherChurch.id AS higherChurchId, ministryRecord IS NOT NULL OR rehearsal IS NOT NULL AS alreadyFilled
+`
+
 export const recordSontaService = `
     CREATE (ministryAttendanceRecord:MinistryAttendanceRecord {id: apoc.create.uuid()})
         SET ministryAttendanceRecord.createdAt = datetime(), 
@@ -121,6 +134,24 @@ export const aggregateServiceDataForMinistry = `
     MERGE (aggregate:AggregateServiceRecord {id: date().week + '-' + date().year + '-' + log.id, week: date().week, year: date().year})
     MERGE (log)-[:HAS_SERVICE_AGGREGATE]->(aggregate)
     WITH  federalMinistry, aggregate, collect(record.id) AS componentServiceIds, SUM(record.attendance) AS totalAttendance
+        SET aggregate.attendance = totalAttendance,
+        aggregate.componentServiceIds = componentServiceIds
+
+    RETURN federalMinistry, aggregate
+`
+
+export const aggregateServiceDataForFederalMinistry = `
+    MATCH (ministry:Ministry {id: $churchId})
+    WITH ministry as lowerChurch
+
+    MATCH (lowerChurch)<-[:HAS]-(federalMinistry:Federalministry)
+    MATCH (federalMinistry)-[:CURRENT_HISTORY|HAS_SERVICE|HAS*2..5]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
+    WHERE date.date.week = date().week AND date.date.year = date().year AND NOT record:NoService
+    WITH DISTINCT federalMinistry, record
+    MATCH (federalMinistry)-[:CURRENT_HISTORY]->(log:ServiceLog)
+    MERGE (aggregate:AggregateServiceRecord {id: date().week + '-' + date().year + '-' + log.id, week: date().week, year: date().year})
+    MERGE (log)-[:HAS_SERVICE_AGGREGATE]->(aggregate)
+    WITH  federalMinistry, aggregate, collect(record.id) AS componentServiceIds, SUM(record.attendance) AS totalAttendance  
         SET aggregate.attendance = totalAttendance,
         aggregate.componentServiceIds = componentServiceIds
 
