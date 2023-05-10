@@ -145,14 +145,17 @@ extend type Bacenta {
       """
     )
 
-  aggregateMemberConversion: [MemberConversion]
+  aggregateMemberConversion: [MemberConversion!]!
     @cypher(
       statement: """
       MATCH (this)-[:HAS]->(:Fellowship)<-[:BELONGS_TO]-(members:Active:Member)
-      WITH COUNT(DISTINCT members) AS total
-      MATCH (members:Active:Member)
-      WITH members.howYouJoined as howyoujoined, ROUND(100.0*(COUNT(members))/total)  AS conversion_percent
-      WITH COLLECT({howyoujoined:howyoujoined, percent:conversion_percent}) AS data
+      WITH this,COUNT(DISTINCT members) AS total
+
+      MATCH (this)-[:HAS]->(:Fellowship)<-[:BELONGS_TO]-(members:Active:Member)
+
+      WITH total, members.howYouJoined as howYouJoined, COUNT(DISTINCT members) AS numberOfMembers
+      WITH total, howYouJoined, ROUND(100.0*numberOfMembers/total,2)  AS conversion_percent, numberOfMembers
+      WITH COLLECT({howYouJoined:howYouJoined, percentage:conversion_percent, number: numberOfMembers}) AS data
       UNWIND data as row
       RETURN DISTINCT row
       """
@@ -210,18 +213,20 @@ extend type Constituency {
        RETURN round(avg(attendance)) AS average
       """
     )
-  aggregateMemberConversion: [MemberConversion]
+  aggregateMemberConversion: [MemberConversion!]!
     @cypher(
       statement: """
       MATCH (this)-[:HAS*2]->(:Fellowship)<-[:BELONGS_TO]-(members:Active:Member)
-      WITH COUNT(DISTINCT members) AS total
-      MATCH (members:Active:Member)
-      WITH members.howYouJoined as howyoujoined, ROUND(100.0*(COUNT(members))/total)  AS conversion_percent
-      WITH COLLECT({howyoujoined:howyoujoined, percent:conversion_percent}) AS data
+      WITH this,COUNT(DISTINCT members) AS total
+
+      MATCH (this)-[:HAS*2]->(:Fellowship)<-[:BELONGS_TO]-(members:Active:Member)
+
+      WITH total, members.howYouJoined as howYouJoined, COUNT(DISTINCT members) AS numberOfMembers
+      WITH total, howYouJoined, ROUND(100.0*numberOfMembers/total,2)  AS conversion_percent, numberOfMembers
+      WITH COLLECT({howYouJoined:howYouJoined, percentage:conversion_percent, number: numberOfMembers}) AS data
       UNWIND data as row
       RETURN DISTINCT row
-      """
-    )
+      """    )
 }
 
 extend type Council {
@@ -348,14 +353,17 @@ extend type Council {
       """
     )
 
-  aggregateMemberConversion: [MemberConversion]
+  aggregateMemberConversion: [MemberConversion!]!
     @cypher(
       statement: """
       MATCH (this)-[:HAS*3]->(:Fellowship)<-[:BELONGS_TO]-(members:Active:Member)
-      WITH COUNT(DISTINCT members) AS total
-      MATCH (members:Active:Member)
-      WITH members.howYouJoined as howyoujoined, ROUND(100.0*(COUNT(members))/total)  AS conversion_percent
-      WITH COLLECT({howyoujoined:howyoujoined, percent:conversion_percent}) AS data
+      WITH this,COUNT(DISTINCT members) AS total
+
+      MATCH (this)-[:HAS*3]->(:Fellowship)<-[:BELONGS_TO]-(members:Active:Member)
+
+      WITH total, members.howYouJoined as howYouJoined, COUNT(DISTINCT members) AS numberOfMembers
+      WITH total, howYouJoined, ROUND(100.0*numberOfMembers/total,2)  AS conversion_percent, numberOfMembers
+      WITH COLLECT({howYouJoined:howYouJoined, percentage:conversion_percent, number: numberOfMembers}) AS data
       UNWIND data as row
       RETURN DISTINCT row
       """
@@ -432,14 +440,17 @@ extend type Stream {
       RETURN round(avg(attendance)) AS average
       """
     )
-  aggregateMemberConversion: [MemberConversion]
+  aggregateMemberConversion: [MemberConversion!]!
     @cypher(
       statement: """
       MATCH (this)-[:HAS*4]->(:Fellowship)<-[:BELONGS_TO]-(members:Active:Member)
-      WITH COUNT(DISTINCT members) AS total
-      MATCH (members:Active:Member)
-      WITH members.howYouJoined as howyoujoined, ROUND(100.0*(COUNT(members))/total)  AS conversion_percent
-      WITH COLLECT({howyoujoined:howyoujoined, percent:conversion_percent}) AS data
+      WITH this,COUNT(DISTINCT members) AS total
+
+      MATCH (this)-[:HAS*4]->(:Fellowship)<-[:BELONGS_TO]-(members:Active:Member)
+
+      WITH total, members.howYouJoined as howYouJoined, COUNT(DISTINCT members) AS numberOfMembers
+      WITH total, howYouJoined, ROUND(100.0*numberOfMembers/total,2)  AS conversion_percent, numberOfMembers
+      WITH COLLECT({howYouJoined:howYouJoined, percentage:conversion_percent, number: numberOfMembers}) AS data
       UNWIND data as row
       RETURN DISTINCT row
       """
@@ -567,17 +578,19 @@ extend type GatheringService {
         }
       """
     )
-  aggregateMemberConversion: MemberConversion
+  aggregateMemberConversion: [MemberConversion!]!
     @cypher(
       statement: """
-      OPTIONAL MATCH (this)-[:HAS*5]->(:Fellowship)<-[:BELONGS_TO]-(members:Active:Member)
-      WITH COUNT(DISTINCT members) AS total, members
-      WHERE total > 0
-      WITH total,    members
-      WITH members.howYouJoined AS howyoujoined, ROUND(100.0*(COUNT(members))/total) AS conversion_percent
-      WITH COLLECT({howyoujoined: howyoujoined, percent:conversion_percent}) AS data
-      UNWIND data AS row
-      RETURN DISTINCT row
+      MATCH (this)-[:HAS*5]->(:Fellowship)<-[:BELONGS_TO]-(members:Active:Member)
+      WITH this,COUNT(DISTINCT members) AS total
+
+      MATCH (this)-[:HAS*5]->(:Fellowship)<-[:BELONGS_TO]-(members:Active:Member)
+
+      WITH total, members.howYouJoined as howYouJoined, COUNT(DISTINCT members) AS numberOfMembers
+      WITH total, howYouJoined, ROUND(100.0*numberOfMembers/total,2)  AS conversion_percent, numberOfMembers
+      WITH COLLECT({howYouJoined:howYouJoined, percentage:conversion_percent, number: numberOfMembers}) AS data
+      UNWIND data as row
+      RETURN DISTINCT row 
       """
     )
 }
@@ -617,16 +630,19 @@ extend type Oversight {
       RETURN round(avg(attendance)) AS average
       """
     )
-  aggregateMemberConversion: [MemberConversion]
+  aggregateMemberConversion: [MemberConversion!]!
     @cypher(
       statement: """
       MATCH (this)-[:HAS*6]->(:Fellowship)<-[:BELONGS_TO]-(members:Active:Member)
-      WITH COUNT(DISTINCT members) AS total
-      MATCH (members:Active:Member)
-      WITH members.howYouJoined as howyoujoined, ROUND(100.0*(COUNT(members))/total)  AS conversion_percent
-      WITH COLLECT({howyoujoined:howyoujoined, percent:conversion_percent}) AS data
+      WITH this,COUNT(DISTINCT members) AS total
+
+      MATCH (this)-[:HAS*6]->(:Fellowship)<-[:BELONGS_TO]-(members:Active:Member)
+
+      WITH total, members.howYouJoined as howYouJoined, COUNT(DISTINCT members) AS numberOfMembers
+      WITH total, howYouJoined, ROUND(100.0*numberOfMembers/total,2)  AS conversion_percent, numberOfMembers
+      WITH COLLECT({howYouJoined:howYouJoined, percentage:conversion_percent, number: numberOfMembers}) AS data
       UNWIND data as row
-      RETURN DISTINCT row
+      RETURN DISTINCT row 
       """
     )
 }
