@@ -32,7 +32,7 @@ const ImageUpload = (props: ImageUploadProps) => {
     const files = e.target.files
     const date = new Date().toISOString().slice(0, 10)
     const username = `${currentUser.firstName.toLowerCase()}-${currentUser.lastName.toLowerCase()}`
-    let filename = `fl-admin-portal/${username}-${currentUser.id}/${date}_${files[0].name}`
+    let filename = `${username}-${currentUser.id}/${date}_${files[0].name}`
     filename = filename.replace(/\s/g, '-')
     filename = filename.replace(/~/g, '-')
     filename = filename.replace(/[^a-zA-Z0-9-_]/g, '')
