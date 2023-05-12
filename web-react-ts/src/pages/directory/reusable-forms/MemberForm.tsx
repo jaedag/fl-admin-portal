@@ -94,7 +94,7 @@ const MemberForm = ({
     MakeMemberInactive({
       variables: {
         memberId: memberId,
-        reason: `${values.reasonCategory}: ${values.reason}`,
+        reason: `${values.reasonCategory}: ${initialValues.firstName} ${initialValues.lastName} ${values.reason}`,
       },
     })
       .then(() => {
