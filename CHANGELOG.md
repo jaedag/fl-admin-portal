@@ -1,3 +1,10 @@
+#### 7.6.11 (2023-05-12)
+
+##### Bug Fixes
+
+*  add friday as stream service day option ([61f5aea7](https://github.com/firstlovecenter/fl-pastoral-care/commit/61f5aea753671cae67a383f40ffbcd9540ae1a87))
+*  udpate currency options list with full names ([2e7d59a6](https://github.com/firstlovecenter/fl-pastoral-care/commit/2e7d59a6729f4e01db1d04ddc55c7ba5cafebe70))
+
 #### 7.6.10 (2023-05-12)
 
 ##### Documentation Changes
