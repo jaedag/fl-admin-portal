@@ -1,3 +1,27 @@
+#### 7.6.10 (2023-05-12)
+
+##### Documentation Changes
+
+*  update CHANGELOG.md ([06e16854](https://github.com/firstlovecenter/fl-pastoral-care/commit/06e1685430df843bb23370c5ead6d88b8f21bbe5))
+*  update CHANGELOG.md ([f8ed353c](https://github.com/firstlovecenter/fl-pastoral-care/commit/f8ed353cf2e1a07a0828c98153b206c9cab3d546))
+
+##### Bug Fixes
+
+*  udpate currency options list ([93da3048](https://github.com/firstlovecenter/fl-pastoral-care/commit/93da3048678d73a2e5945ed74303473f20822a61))
+*  update member deletion history log text ([0687e451](https://github.com/firstlovecenter/fl-pastoral-care/commit/0687e451722b05087898f18448a94aba67464494))
+*  exchange double quotes for single quotes ([bcc2f284](https://github.com/firstlovecenter/fl-pastoral-care/commit/bcc2f2842b11587133c6dc05026839b1d0fd1b94))
+*  update delete member category options ([0d673c64](https://github.com/firstlovecenter/fl-pastoral-care/commit/0d673c64844b069f316d3e6fcf0c19718111495e))
+*  update member deletion history log text ([36d32ed9](https://github.com/firstlovecenter/fl-pastoral-care/commit/36d32ed9c120efa0b6fa4494c8eb3dcca2bc7a79))
+*  update cloudinary uplaodgs ([da4535db](https://github.com/firstlovecenter/fl-pastoral-care/commit/da4535db06fe30044d2121e2f22e269d73f40b4c))
+*  subfolder cloudinary uploads ([f23f1be5](https://github.com/firstlovecenter/fl-pastoral-care/commit/f23f1be5369620df0a2ed309bdbb83be4c75007e))
+*  update arrivalsQueries and bussingStatusQueries with arrivalDate ([80cb93e6](https://github.com/firstlovecenter/fl-pastoral-care/commit/80cb93e6f5dfc964e826545eb636cb121b13e966))
+*  remove whitespace ([d8942ed5](https://github.com/firstlovecenter/fl-pastoral-care/commit/d8942ed50d10900b47fd5b4ebe7a11ab4c04cc1b))
+*  fix number of bacentas on ChurchBySubChurch pages ([6ea55bbe](https://github.com/firstlovecenter/fl-pastoral-care/commit/6ea55bbe1f797887abf7e6c769e6ef73383333a6))
+
+##### Refactors
+
+*  include whitespace ([2b576cb0](https://github.com/firstlovecenter/fl-pastoral-care/commit/2b576cb0a3d29f25175ecb6b7444153c5bc7e1d8))
+
 #### 7.6.9 (2023-05-09)
 
 #### 7.6.8 (2023-05-09)
