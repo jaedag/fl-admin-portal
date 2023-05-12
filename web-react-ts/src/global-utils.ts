@@ -56,6 +56,7 @@ export const SERVICE_DAY_OPTIONS: FormikSelectOptions = [
 ]
 
 export const STREAM_SERVICE_DAY_OPTIONS: FormikSelectOptions = [
+  { key: 'Friday', value: 'Friday' },
   { key: 'Saturday', value: 'Saturday' },
   { key: 'Sunday', value: 'Sunday' },
 ]
