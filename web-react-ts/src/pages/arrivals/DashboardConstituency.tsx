@@ -46,6 +46,12 @@ const ConstituencyDashboard = () => {
     variables: { id: currentUser?.currentChurch?.id, arrivalDate: today },
   })
 
+  useEffect(() => {
+    if (!currentUser?.currentChurch?.id) {
+      navigate('/arrivals')
+    }
+  }, [])
+
   const [
     constituencyArrivalsDashboard,
     {
