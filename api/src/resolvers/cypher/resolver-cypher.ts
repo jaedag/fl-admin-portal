@@ -120,7 +120,7 @@ WITH node
 CREATE (log:HistoryLog)
 SET log.id = apoc.create.uuid(),
 log.timeStamp = datetime(),
-log.historyRecord = member.firstName + ' ' + member.lastName + " Deleted: " + $reason
+log.historyRecord = member.firstName + ' ' + member.lastName + ' Deleted: ' + $reason
 
 WITH log, node
 MATCH (node)-[:BELONGS_TO]->(church)
