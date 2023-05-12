@@ -76,7 +76,7 @@ const Services = () => {
             }}
           />
           {['Council', 'Constituency', 'Fellowship'].includes(churchType) &&
-            church.stream_name !== 'anagkazo encounter' && (
+            church?.stream_name !== 'anagkazo encounter' && (
               <>
                 <MenuButton
                   iconComponent={FileEarmarkArrowUpFill}
@@ -104,7 +104,7 @@ const Services = () => {
                 />
               </>
             )}
-          {church.stream_name === 'anagkazo encounter' &&
+          {church?.stream_name === 'anagkazo encounter' &&
             church.__typename === 'Stream' && (
               <>
                 <RoleView roles={permitAdmin('Stream')}>
