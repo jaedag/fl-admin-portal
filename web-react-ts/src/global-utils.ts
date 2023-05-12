@@ -65,6 +65,7 @@ export const CURRENCY_OPTIONS: FormikSelectOptions = [
   { key: 'MGA', value: 'MGA' },
   { key: 'GMD', value: 'GMD' },
   { key: 'ZMW', value: 'ZMW' },
+  { key: 'BDT', value: 'BDT' },
 ]
 
 export const DELETE_MEMBER_CATEGORY_OPTIONS: FormikSelectOptions = [
