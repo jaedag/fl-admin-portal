@@ -28,11 +28,23 @@ const ImageUpload = (props: ImageUploadProps) => {
   const [loading, setLoading] = useState(false)
   const [image, setImage] = useState('')
 
+  // genereate a random 12 character string
+  const randomString = (length: number) => {
+    const chars =
+      '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+    let result = ''
+    for (let i = length; i > 0; --i)
+      result += chars[Math.floor(Math.random() * 62)]
+    return result
+  }
+
   const uploadImage = async (e: any) => {
     const files = e.target.files
     const date = new Date().toISOString().slice(0, 10)
     const username = `${currentUser.firstName.toLowerCase()}-${currentUser.lastName.toLowerCase()}`
-    let filename = `${username}-${currentUser.id}/${date}_${files[0].name}`
+    let filename = `${username}-${currentUser.id}/${date}_${
+      files[0]?.name ?? randomString(12)
+    }`
     filename = filename.replace(/\s/g, '-')
     filename = filename.replace(/~/g, '-')
     filename = filename.replace(/[^a-zA-Z0-9-_]/g, '')
