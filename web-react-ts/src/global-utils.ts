@@ -68,7 +68,7 @@ export const CURRENCY_OPTIONS: FormikSelectOptions = [
 ]
 
 export const DELETE_MEMBER_CATEGORY_OPTIONS: FormikSelectOptions = [
-  { key: 'Moved Country', value: 'Moved Country' },
+  { key: 'Moved Cities', value: 'Moved Cities' },
   {
     key: 'Left the Church In Spite of Calls and Visits',
     value: 'Left the Church In Spite of Calls and Visits',
