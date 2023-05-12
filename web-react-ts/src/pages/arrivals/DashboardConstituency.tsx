@@ -43,7 +43,7 @@ const ConstituencyDashboard = () => {
   const { arrivalDate, setArrivalDate } = useContext(ChurchContext)
   const today = new Date().toISOString().slice(0, 10)
   const { data, loading, error } = useQuery(CONSTITUENCY_ARRIVALS_DASHBOARD, {
-    variables: { id: currentUser?.currentChurch.id, arrivalDate: today },
+    variables: { id: currentUser?.currentChurch?.id, arrivalDate: today },
   })
 
   const [
@@ -55,7 +55,7 @@ const ConstituencyDashboard = () => {
       refetch,
     },
   ] = useLazyQuery(CONSTITUENCY_ARRIVALS_DASHBOARD, {
-    variables: { id: currentUser?.currentChurch.id, arrivalDate: today },
+    variables: { id: currentUser?.currentChurch?.id, arrivalDate: today },
     pollInterval: SHORT_POLL_INTERVAL,
     fetchPolicy: 'cache-and-network',
   })
@@ -85,7 +85,7 @@ const ConstituencyDashboard = () => {
 
     MakeConstituencyArrivalsAdmin({
       variables: {
-        constituencyId: currentUser?.currentChurch.id,
+        constituencyId: currentUser?.currentChurch?.id,
         newAdminId: values.adminSelect,
         oldAdminId: initialValues.adminSelect || 'no-old-admin',
       },
@@ -105,7 +105,7 @@ const ConstituencyDashboard = () => {
   useEffect(() => {
     constituencyArrivalsDashboard({
       variables: {
-        id: currentUser?.currentChurch.id,
+        id: currentUser?.currentChurch?.id,
         arrivalDate: arrivalDate,
       },
     })
@@ -127,7 +127,7 @@ const ConstituencyDashboard = () => {
 
     constituencyArrivalsDashboard({
       variables: {
-        id: currentUser?.currentChurch.id,
+        id: currentUser?.currentChurch?.id,
         arrivalDate: values.arrivalDate,
       },
     })
