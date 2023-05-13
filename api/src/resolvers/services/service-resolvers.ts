@@ -164,8 +164,8 @@ const serviceMutation = {
       )
       .catch((error: any) => throwToSentry('Error Aggregating Service', error))
 
-    session.close()
-    sessionTwo.close()
+    await session.close()
+    await sessionTwo.close()
 
     const serviceDetails = rearrangeCypherObject(cypherResponse)
 
@@ -229,7 +229,7 @@ const serviceMutation = {
       })
     )
 
-    session.close()
+    await session.close()
 
     const serviceDetails = rearrangeCypherObject(cypherResponse)
 

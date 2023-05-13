@@ -214,6 +214,8 @@ const bankingMutation = {
       return paymentCypherRes.record
     } catch (error: any) {
       throwToSentry('There was an error processing your payment', error)
+    } finally {
+      await session.close()
     }
     return transactionResponse.record
   },

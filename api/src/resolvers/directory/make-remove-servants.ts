@@ -87,18 +87,24 @@ export const MakeServant = async (
 
   const session = context.executionContext.session()
 
-  const churchRes = await session.run(matchChurchQuery, {
-    id: args[`${churchLower}Id`],
-  })
+  const churchRes = await session.executeRead((tx) =>
+    tx.run(matchChurchQuery, {
+      id: args[`${churchLower}Id`],
+    })
+  )
   const church = rearrangeCypherObject(churchRes)
   const churchNameInEmail = `${church.name} ${church.type[0]}`
 
-  const servantRes = await session.run(memberQuery, {
-    id: args[`${servantLower}Id`],
-  })
-  const oldServantRes = await session.run(memberQuery, {
-    id: args[`old${servantType}Id`] ?? '',
-  })
+  const servantRes = await session.executeRead((tx) =>
+    tx.run(memberQuery, {
+      id: args[`${servantLower}Id`],
+    })
+  )
+  const oldServantRes = await session.executeRead((tx) =>
+    tx.run(memberQuery, {
+      id: args[`old${servantType}Id`] ?? '',
+    })
+  )
   const servant = rearrangeCypherObject(servantRes)
   const oldServant = rearrangeCypherObject(oldServantRes)
   servantValidation(servant)
@@ -191,6 +197,8 @@ export const MakeServant = async (
     ])
   }
 
+  await session.close()
+
   return parseForCache(servant, church, verb, servantLower)
 }
 
@@ -219,17 +227,23 @@ export const RemoveServant = async (
 
   const session = context.executionContext.session()
 
-  const churchRes = await session.run(matchChurchQuery, {
-    id: args[`${churchLower}Id`],
-  })
+  const churchRes = await session.executeRead((tx) =>
+    tx.run(matchChurchQuery, {
+      id: args[`${churchLower}Id`],
+    })
+  )
   const church = rearrangeCypherObject(churchRes)
 
-  const servantRes = await session.run(memberQuery, {
-    id: args[`${servantLower}Id`],
-  })
-  const newServantRes = await session.run(memberQuery, {
-    id: args[`new${servantType}Id`] ?? '',
-  })
+  const servantRes = await session.executeRead((tx) =>
+    tx.run(memberQuery, {
+      id: args[`${servantLower}Id`],
+    })
+  )
+  const newServantRes = await session.executeRead((tx) =>
+    tx.run(memberQuery, {
+      id: args[`new${servantType}Id`] ?? '',
+    })
+  )
 
   const servant: MemberWithKeys = rearrangeCypherObject(servantRes)
   const newServant: MemberWithKeys = rearrangeCypherObject(newServantRes)
@@ -286,6 +300,7 @@ export const RemoveServant = async (
       ),
     ])
 
+    await session.close()
     return parseForCacheRemoval(servant, church, verb, servantLower)
   }
 
@@ -307,11 +322,13 @@ export const RemoveServant = async (
     )
     // Remove Auth0 ID of Leader from Neo4j DB
     removeServantCypher({ context, churchType, servantType, servant, church })
-    await session.run(removeMemberAuthId, {
-      log: `${servant.firstName} ${servant.lastName} was removed as a ${churchType} ${servantType}`,
-      auth_id: servant.auth_id,
-      auth: context.auth,
-    })
+    await session.executeWrite((tx) =>
+      tx.run(removeMemberAuthId, {
+        log: `${servant.firstName} ${servant.lastName} was removed as a ${churchType} ${servantType}`,
+        auth_id: servant.auth_id,
+        auth: context.auth,
+      })
+    )
 
     // Send a Mail to That Effect
     sendSingleEmail(
@@ -326,6 +343,8 @@ export const RemoveServant = async (
         texts.html.subscription
       }`
     )
+
+    await session.close()
     return parseForCacheRemoval(servant, church, verb, servantLower)
   }
 
@@ -356,5 +375,6 @@ export const RemoveServant = async (
     )
   }
 
+  await session.close()
   return parseForCacheRemoval(servant, church, verb, servantLower)
 }

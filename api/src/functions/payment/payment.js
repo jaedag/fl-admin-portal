@@ -35,7 +35,7 @@ const executeQuery = (neoDriver, paymentResponse) => {
   let response = ''
 
   return session
-    .writeTransaction((tx) => {
+    .executeWrite((tx) => {
       const { reference, status } = paymentResponse
       let query = ''
 

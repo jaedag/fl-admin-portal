@@ -46,7 +46,7 @@ const executeQuery = async (neoDriver) => {
   ]
 
   try {
-    await session.writeTransaction(async (tx) => {
+    await session.executeWrite(async (tx) => {
       console.log('Setting code of the day')
 
       const pad = (n) => (n < 10 ? `0${n}` : n)
@@ -68,7 +68,7 @@ const executeQuery = async (neoDriver) => {
   } catch (error) {
     console.error('Error setting code of the day', error)
   } finally {
-    session.close()
+    await session.close()
   }
 }
 

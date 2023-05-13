@@ -791,6 +791,8 @@ export const arrivalsMutation = {
         `Money could not be sent! ${error.response.data.message}`,
         error
       )
+    } finally {
+      await session.close()
     }
 
     return vehicleRecord

@@ -89,6 +89,7 @@ const treasuryMutations = {
     } catch (error: any) {
       throwToSentry('There was a problem confirming the banking', error || '')
     }
+    await session.close()
     return 'Confirmation Successful'
   },
 }

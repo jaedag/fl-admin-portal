@@ -1,5 +1,8 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
 /* eslint-disable no-relative-import-paths/no-relative-import-paths */
 import { captureException } from '@sentry/node'
+import { QueryResult } from 'neo4j-driver'
 import { ChurchLevel, Member, neonumber, Role } from './types'
 
 type ErrorCustom = {
@@ -77,40 +80,39 @@ export const errorHandling = (member: Member) => {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const rearrangeCypherObject = (response: any, horizontal?: boolean) => {
+export const rearrangeCypherObject = (
+  response: QueryResult,
+  horizontal?: boolean
+) => {
   const member: {
     [key: string]: any
   } = {}
 
-  response.records[0]?.keys.forEach((key: string, i: number) => {
+  response.records[0]?.keys.forEach((value, index) => {
     // eslint-disable-next-line no-underscore-dangle
-    member[key] = response.records[0]._fields[i]
+    member[value] = response.records[0]._fields[index]
   })
 
-  response.records.forEach(
-    (record: { [keys: string]: string[] }, index: number) => {
-      record?.keys.forEach((key: string, j: number) => {
-        // eslint-disable-next-line no-underscore-dangle
-        member[key] = response.records[index]._fields[j]
-      })
-    }
-  )
+  response.records.forEach((record, index) => {
+    record.keys.forEach((value, j) => {
+      // eslint-disable-next-line no-underscore-dangle
+      member[value] = response.records[index]._fields[j]
+    })
+  })
 
   if (horizontal) {
     const records: any[] = []
-    response.records.forEach(
-      (record: { [keys: string]: string[] }, index: number) => {
-        const object: {
-          [key: string]: any
-        } = {}
+    response.records.forEach((record, index) => {
+      const object: {
+        [key: string]: any
+      } = {}
 
-        record?.keys.forEach((key: string, j: number) => {
-          // eslint-disable-next-line no-underscore-dangle
-          object[key] = response.records[index]._fields[j]
-        })
-        records.push(object)
-      }
-    )
+      record?.keys.forEach((key, j) => {
+        // eslint-disable-next-line no-underscore-dangle
+        object[key] = response.records[index]._fields[j]
+      })
+      records.push(object)
+    })
 
     return records
   }

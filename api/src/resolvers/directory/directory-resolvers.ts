@@ -114,6 +114,7 @@ const directoryMutation = {
     )
 
     const member = rearrangeCypherObject(createMemberResponse)
+    await session.close()
 
     return member
   },
@@ -152,6 +153,8 @@ const directoryMutation = {
       await axios(updateAuthUserConfig(updatedMember, authToken))
     }
 
+    await session.close()
+
     return updatedMember
   },
   MakeMemberInactive: async (
@@ -186,6 +189,7 @@ const directoryMutation = {
       })
     )
 
+    await session.close()
     return member?.properties
   },
   CloseDownFellowship: async (object: any, args: any, context: Context) => {
@@ -262,6 +266,9 @@ const directoryMutation = {
       return fellowshipResponse.bacenta
     } catch (error: any) {
       throwToSentry('', error)
+    } finally {
+      await session.close()
+      await sessionTwo.close()
     }
     return null
   },
@@ -306,6 +313,8 @@ const directoryMutation = {
       return bacentaResponse.constituency
     } catch (error: any) {
       throwToSentry('There was an error closing down this bacenta', error)
+    } finally {
+      await session.close()
     }
     return null
   },
@@ -390,6 +399,9 @@ const directoryMutation = {
       return constituencyResponse.council
     } catch (error: any) {
       throwToSentry('There was an error closing down this constituency', error)
+    } finally {
+      await session.close()
+      await sessionTwo.close()
     }
     return null
   },
