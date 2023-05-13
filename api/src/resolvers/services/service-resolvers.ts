@@ -103,12 +103,14 @@ const serviceMutation = {
       churchId: args.churchId,
     })
 
-    const serviceCheckRes = await Promise.all([
+    const promises = [
       session.executeRead((tx: Transaction) =>
         tx.run(checkFormFilledThisWeek, args)
       ),
       sessionTwo.executeRead((tx: Transaction) => tx.run(getCurrency, args)),
-    ])
+    ]
+
+    const serviceCheckRes = await Promise.all(promises)
 
     const serviceCheck = rearrangeCypherObject(serviceCheckRes[0])
     const currencyCheck = rearrangeCypherObject(serviceCheckRes[1])
@@ -144,22 +146,24 @@ const serviceMutation = {
     }
 
     const cypherResponse = await session
-      .run(recordService, {
-        ...args,
-        conversionRateToDollar: currencyCheck.conversionRateToDollar,
-        auth: context.auth,
-      })
+      .executeWrite((tx: Transaction) =>
+        tx.run(recordService, {
+          ...args,
+          conversionRateToDollar: currencyCheck.conversionRateToDollar,
+          auth: context.auth,
+        })
+      )
       .catch((error: any) => throwToSentry('Error Recording Service', error))
-    sessionTwo
-      .run(aggregateCypher, {
-        churchId: args.churchId,
-      })
-      .catch((error: any) => console.error('Error Aggregating Service', error))
-      .then(() => {
-        sessionTwo.close()
-      })
+    await sessionTwo
+      .executeWrite((tx: Transaction) =>
+        tx.run(aggregateCypher, {
+          churchId: args.churchId,
+        })
+      )
+      .catch((error: any) => throwToSentry('Error Aggregating Service', error))
 
     session.close()
+    sessionTwo.close()
 
     const serviceDetails = rearrangeCypherObject(cypherResponse)
 
