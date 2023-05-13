@@ -203,10 +203,12 @@ const bankingMutation = {
       }
 
       const paymentCypherRes = rearrangeCypherObject(
-        await session.run(setRecordTransactionReference, {
-          id: serviceRecord.id,
-          reference: paymentResponse.data.data.reference,
-        })
+        await session.executeWrite((tx) =>
+          tx.run(setRecordTransactionReference, {
+            id: serviceRecord.id,
+            reference: paymentResponse.data.data.reference,
+          })
+        )
       )
 
       return paymentCypherRes.record
@@ -362,7 +364,9 @@ const bankingMutation = {
         )
         if (error.response.data.status === false) {
           record = rearrangeCypherObject(
-            await session.run(setTransactionStatusFailed, args)
+            await session.executeWrite((tx) =>
+              tx.run(setTransactionStatusFailed, args)
+            )
           )
         }
       }

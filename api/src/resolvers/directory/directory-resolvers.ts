@@ -34,16 +34,17 @@ const directoryMutation = {
     const session = context.executionContext.session()
 
     const inactiveMemberResponse = rearrangeCypherObject(
-      await session.run(cypher.checkInactiveMember, {
-        email: args.email ?? null,
-        whatsappNumber: args?.whatsappNumber ?? null,
-      })
+      await session.executeRead((tx) =>
+        tx.run(cypher.checkInactiveMember, {
+          email: args.email ?? null,
+          whatsappNumber: args?.whatsappNumber ?? null,
+        })
+      )
     )
 
     if (inactiveMemberResponse.count > 0) {
-      const activateInactiveMemberResponse = await session.run(
-        activateInactiveMember,
-        {
+      const activateInactiveMemberResponse = await session.executeWrite((tx) =>
+        tx.run(activateInactiveMember, {
           id: inactiveMemberResponse.id,
           firstName: args?.firstName ?? '',
           middleName: args?.middleName ?? '',
@@ -57,17 +58,19 @@ const directoryMutation = {
           visitationArea: args?.visitationArea ?? '',
           pictureUrl: args?.pictureUrl ?? '',
           auth_id: context.auth.jwt.sub ?? '',
-        }
+        })
       )
 
       const member = rearrangeCypherObject(activateInactiveMemberResponse)
       return member
     }
 
-    const memberResponse = await session.run(cypher.checkMemberEmailExists, {
-      email: args.email ?? null,
-      whatsappNumber: args?.whatsappNumber ?? null,
-    })
+    const memberResponse = await session.executeRead((tx) =>
+      tx.run(cypher.checkMemberEmailExists, {
+        email: args.email ?? null,
+        whatsappNumber: args?.whatsappNumber ?? null,
+      })
+    )
     const memberCheck = rearrangeCypherObject(memberResponse, true)[0]
     const duplicateMember = memberCheck.member?.properties
 
@@ -89,24 +92,26 @@ const directoryMutation = {
       }
     }
 
-    const createMemberResponse = await session.run(createMember, {
-      firstName: args?.firstName ?? '',
-      middleName: args?.middleName ?? null,
-      lastName: args?.lastName ?? '',
-      email: args?.email ?? null,
-      phoneNumber: args?.phoneNumber ?? '',
-      whatsappNumber: args?.whatsappNumber ?? '',
-      dob: args?.dob ?? '',
-      maritalStatus: args?.maritalStatus ?? '',
-      gender: args?.gender ?? '',
-      occupation: args?.occupation ?? '',
-      fellowship: args?.fellowship ?? '',
-      ministry: args?.ministry ?? '',
-      visitationArea: args?.visitationArea ?? '',
-      pictureUrl: args?.pictureUrl ?? '',
-      howYouJoined: args?.howYouJoined ?? '',
-      auth_id: context.auth.jwt.sub ?? '',
-    })
+    const createMemberResponse = await session.executeWrite((tx) =>
+      tx.run(createMember, {
+        firstName: args?.firstName ?? '',
+        middleName: args?.middleName ?? null,
+        lastName: args?.lastName ?? '',
+        email: args?.email ?? null,
+        phoneNumber: args?.phoneNumber ?? '',
+        whatsappNumber: args?.whatsappNumber ?? '',
+        dob: args?.dob ?? '',
+        maritalStatus: args?.maritalStatus ?? '',
+        gender: args?.gender ?? '',
+        occupation: args?.occupation ?? '',
+        fellowship: args?.fellowship ?? '',
+        ministry: args?.ministry ?? '',
+        visitationArea: args?.visitationArea ?? '',
+        pictureUrl: args?.pictureUrl ?? '',
+        howYouJoined: args?.howYouJoined ?? '',
+        auth_id: context.auth.jwt.sub ?? '',
+      })
+    )
 
     const member = rearrangeCypherObject(createMemberResponse)
 
@@ -126,16 +131,20 @@ const directoryMutation = {
     const session = context.executionContext.session()
 
     const member = rearrangeCypherObject(
-      await session.run(matchMemberQuery, {
-        id: args.id,
-      })
+      await session.executeRead((tx) =>
+        tx.run(matchMemberQuery, {
+          id: args.id,
+        })
+      )
     )
 
     const updatedMember: Member = rearrangeCypherObject(
-      await session.run(updateMemberEmail, {
-        id: args.id,
-        email: args.email,
-      })
+      await session.executeWrite((tx) =>
+        tx.run(updateMemberEmail, {
+          id: args.id,
+          email: args.email,
+        })
+      )
     )
 
     if (member.auth_id) {

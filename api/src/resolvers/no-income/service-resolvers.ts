@@ -22,13 +22,15 @@ const serviceNoIncomeMutations = {
     const session = context.executionContext.session()
 
     const relationshipCheck = rearrangeCypherObject(
-      await session.run(checkCurrentServiceLog, args)
+      await session.executeRead((tx) => tx.run(checkCurrentServiceLog, args))
     )
 
     if (!relationshipCheck.exists) {
       // Checks if the church has a current history record otherwise creates it
       const getServantAndChurch = rearrangeCypherObject(
-        await session.run(getServantAndChurchCypher, args)
+        await session.executeRead((tx) =>
+          tx.run(getServantAndChurchCypher, args)
+        )
       )
 
       await makeServantCypher({
@@ -52,7 +54,7 @@ const serviceNoIncomeMutations = {
     }
 
     const serviceCheck = rearrangeCypherObject(
-      await session.run(checkFormFilledThisWeek, args)
+      await session.executeRead((tx) => tx.run(checkFormFilledThisWeek, args))
     )
 
     if (serviceCheck.alreadyFilled) {
@@ -63,10 +65,12 @@ const serviceNoIncomeMutations = {
     }
 
     const serviceDetails = rearrangeCypherObject(
-      await session.run(recordService, {
-        ...args,
-        auth: context.auth,
-      })
+      await session.executeWrite((tx) =>
+        tx.run(recordService, {
+          ...args,
+          auth: context.auth,
+        })
+      )
     )
 
     return serviceDetails.serviceRecord.properties

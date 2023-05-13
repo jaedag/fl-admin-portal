@@ -1,5 +1,4 @@
 import axios from 'axios'
-import { Transaction } from 'neo4j-driver'
 import { getHumanReadableDate } from 'jd-date-utils'
 import { getStreamFinancials } from '../utils/financial-utils'
 import { Context } from '../utils/neo4j-types'
@@ -670,9 +669,7 @@ export const arrivalsMutation = {
 
     const { auth } = getStreamFinancials(args.stream_name)
     const recordResponse = rearrangeCypherObject(
-      await session.executeRead((tx: Transaction) =>
-        tx.run(checkTransactionReference, args)
-      )
+      await session.executeRead((tx) => tx.run(checkTransactionReference, args))
     )
 
     const vehicleRecord = recordResponse.record.properties
@@ -732,7 +729,7 @@ export const arrivalsMutation = {
         throwToSentry('Error creating transfer recipient', err)
       )
 
-      await session.executeWrite((tx: Transaction) =>
+      await session.executeWrite((tx) =>
         tx.run(setBacentaRecipientCode, {
           bacentaId: bacenta.id,
           vehicleRecordId: vehicleRecord.id,
@@ -771,7 +768,7 @@ export const arrivalsMutation = {
       const responseData = res.data.data
 
       await session
-        .executeWrite((tx: Transaction) =>
+        .executeWrite((tx) =>
           tx.run(setVehicleRecordTransactionSuccessful, {
             ...args,
             transactionReference: responseData.reference,

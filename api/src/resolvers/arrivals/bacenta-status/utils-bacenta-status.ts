@@ -1,3 +1,4 @@
+import { Session } from 'neo4j-driver'
 import { Context } from '../../utils/neo4j-types'
 import { rearrangeCypherObject, throwToSentry } from '../../utils/utils'
 import { joinMessageStrings, sendBulkSMS } from '../../utils/notify'
@@ -19,7 +20,7 @@ export type serviceType = {
 
 export const setBacentaICStatus = async (
   last4Bussing: number[],
-  session: any,
+  session: Session,
   bacentaId: string,
   leaderFirstName: string,
   leaderPhoneNumber: string,
@@ -27,7 +28,7 @@ export const setBacentaICStatus = async (
 ) => {
   if (last4Bussing.every((bussing) => bussing < 8)) {
     await Promise.all([
-      session.run(setBacentaIC, { bacentaId }),
+      session.executeWrite((tx) => tx.run(setBacentaIC, { bacentaId })),
       sendBulkSMS(
         [leaderPhoneNumber],
         joinMessageStrings([
@@ -43,7 +44,7 @@ export const setBacentaICStatus = async (
 
 export const setBacentaGraduatedStatus = async (
   last4Bussing: number[],
-  session: any,
+  session: Session,
   bacentaId: string,
   leaderFirstName: string,
   leaderPhoneNumber: string,
@@ -51,7 +52,7 @@ export const setBacentaGraduatedStatus = async (
 ) => {
   if (last4Bussing.every((bussing) => bussing >= 8)) {
     await Promise.all([
-      session.run(setBacentaGraduated, { bacentaId }),
+      session.executeWrite((tx) => tx.run(setBacentaGraduated, { bacentaId })),
       sendBulkSMS(
         [leaderPhoneNumber],
         joinMessageStrings([
@@ -75,7 +76,9 @@ export const setBacentaStatus = async (
   const session = context.executionContext.session()
 
   const last4ServicesResponse: serviceType[] = rearrangeCypherObject(
-    await session.run(getBacentaLastFourBussing, { bacentaId }),
+    await session.executeRead((tx) =>
+      tx.run(getBacentaLastFourBussing, { bacentaId })
+    ),
     true
   )
 

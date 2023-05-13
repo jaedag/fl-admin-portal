@@ -1,4 +1,6 @@
-export type neonumber = { low: number; high: number }
+import { Integer } from 'neo4j-driver'
+
+export type neonumber = Integer
 export type RearragedCypherResponse = {
   record: {
     identity: number

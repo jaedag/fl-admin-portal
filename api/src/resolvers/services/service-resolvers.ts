@@ -1,4 +1,4 @@
-import { Transaction } from 'neo4j-driver'
+import { Session } from 'neo4j-driver'
 import { makeServantCypher } from '../directory/utils'
 import { permitLeaderAdmin } from '../permissions'
 import { Context } from '../utils/neo4j-types'
@@ -45,17 +45,21 @@ type RecordCancelledServiceArgs = {
 }
 
 export const checkServantHasCurrentHistory = async (
-  session: any,
+  session: Session,
   context: Context,
   args: { churchId: string }
 ) => {
   const relationshipCheck = rearrangeCypherObject(
-    await session.run(checkCurrentServiceLog, { churchId: args.churchId })
+    await session.executeRead((tx) =>
+      tx.run(checkCurrentServiceLog, { churchId: args.churchId })
+    )
   )
   if (!relationshipCheck.exists) {
     // Checks if the church has a current history record otherwise creates it
     const getServantAndChurch = rearrangeCypherObject(
-      await session.run(getServantAndChurchCypher, { churchId: args.churchId })
+      await session.executeRead((tx) =>
+        tx.run(getServantAndChurchCypher, { churchId: args.churchId })
+      )
     )
 
     if (Object.keys(getServantAndChurch).length === 0) {
@@ -104,10 +108,8 @@ const serviceMutation = {
     })
 
     const promises = [
-      session.executeRead((tx: Transaction) =>
-        tx.run(checkFormFilledThisWeek, args)
-      ),
-      sessionTwo.executeRead((tx: Transaction) => tx.run(getCurrency, args)),
+      session.executeRead((tx) => tx.run(checkFormFilledThisWeek, args)),
+      sessionTwo.executeRead((tx) => tx.run(getCurrency, args)),
     ]
 
     const serviceCheckRes = await Promise.all(promises)
@@ -146,7 +148,7 @@ const serviceMutation = {
     }
 
     const cypherResponse = await session
-      .executeWrite((tx: Transaction) =>
+      .executeWrite((tx) =>
         tx.run(recordService, {
           ...args,
           conversionRateToDollar: currencyCheck.conversionRateToDollar,
@@ -155,7 +157,7 @@ const serviceMutation = {
       )
       .catch((error: any) => throwToSentry('Error Recording Service', error))
     await sessionTwo
-      .executeWrite((tx: Transaction) =>
+      .executeWrite((tx) =>
         tx.run(aggregateCypher, {
           churchId: args.churchId,
         })
@@ -178,13 +180,15 @@ const serviceMutation = {
     const session = context.executionContext.session()
 
     const relationshipCheck = rearrangeCypherObject(
-      await session.run(checkCurrentServiceLog, args)
+      await session.executeRead((tx) => tx.run(checkCurrentServiceLog, args))
     )
 
     if (!relationshipCheck.exists) {
       // Checks if the church has a current history record otherwise creates it
       const getServantAndChurch = rearrangeCypherObject(
-        await session.run(getServantAndChurchCypher, args)
+        await session.executeRead((tx) =>
+          tx.run(getServantAndChurchCypher, args)
+        )
       )
 
       await makeServantCypher({
@@ -208,7 +212,7 @@ const serviceMutation = {
     }
 
     const serviceCheck = rearrangeCypherObject(
-      await session.run(checkFormFilledThisWeek, args)
+      await session.executeRead((tx) => tx.run(checkFormFilledThisWeek, args))
     )
 
     if (serviceCheck.alreadyFilled) {
@@ -218,10 +222,12 @@ const serviceMutation = {
       throw new Error(errorMessage.vacation_cannot_fill_service)
     }
 
-    const cypherResponse = await session.run(recordCancelledService, {
-      ...args,
-      auth: context.auth,
-    })
+    const cypherResponse = await session.executeWrite((tx) =>
+      tx.run(recordCancelledService, {
+        ...args,
+        auth: context.auth,
+      })
+    )
 
     session.close()
 

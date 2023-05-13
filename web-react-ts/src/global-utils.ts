@@ -570,6 +570,7 @@ export const parseForeignCurrency = (string: string) => {
     'ghana cedis',
     'No',
     'None',
+    'none',
     'n/a',
     'N/A',
     'NA',
