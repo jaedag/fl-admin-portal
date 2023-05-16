@@ -216,6 +216,14 @@ const MemberForm = ({
 
                   <div className="form-row row-cols-1 row-cols-md-2 justify-content-center">
                     <HeadingPrimary className="mb-4">Basic Info</HeadingPrimary>
+                    <RoleView roles={permitAdmin('GatheringService')}>
+                      <Button
+                        className="py-2"
+                        onClick={() => navigate('/member/title-form')}
+                      >
+                        Add Title
+                      </Button>
+                    </RoleView>
                     <Col sm={10}>
                       <Input
                         label="First Name*"

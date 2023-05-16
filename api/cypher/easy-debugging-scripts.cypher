@@ -12,3 +12,6 @@ MATCH (constituency {id: '2899f839-5f75-4a9c-9061-cf723a34f365'})-[:CURRENT_HIST
    MATCH (constituency  {id: '2899f839-5f75-4a9c-9061-cf723a34f365'})-[:HAS_HISTORY]->(:ServiceLog)-[r:HAS_SERVICE_AGGREGATE]->(record:AggregateServiceRecord)
    WHERE record.week = date().week AND record.year = date().year
    RETURN constituency.name, record.income
+
+   MATCH (member:Member)-[r:HAS_TITLE]->(title:Title)
+   DELETE r

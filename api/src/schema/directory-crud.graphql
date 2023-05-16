@@ -449,6 +449,45 @@ extend type Mutation {
 ### UPDATE OPERATIONS ###
 extend type Mutation {
   UpdateMemberEmail(id: ID!, email: String!): Member
+  UpdateMemberAppointmentDate(id: ID!, appointmentDate: String): Member!
+    @cypher(
+      statement: """
+      MATCH (member:Active:Member {id: $id})
+      MATCH (pastor:Title {name: 'Pastor'})
+      OPTIONAL MATCH (member)-[r:HAS_TITLE]->(pastor)
+      DELETE r
+
+      WITH member, pastor
+      MERGE (member)-[:HAS_TITLE {date: $appointmentDate}]->(pastor)
+      RETURN member
+      """
+    )
+  UpdateMemberOrdinationDate(id: ID!, ordinationDate: String!): Member!
+    @cypher(
+      statement: """
+      MATCH (member:Active:Member {id: $id})
+      MATCH (reverend:Title {name: 'Reverend'})
+      OPTIONAL MATCH (member)-[r:HAS_TITLE]->(reverend)
+      DELETE r
+
+      WITH member, reverend
+      MERGE (member)-[:HAS_TITLE {date: $ordinationDate}]->(reverend)
+      RETURN member
+      """
+    )
+  UpdateMemberConsecrationDate(id: ID!, consecrationDate: String!): Member!
+    @cypher(
+      statement: """
+      MATCH (member:Active:Member {id: $id})
+      MATCH (bishop:Title {name: 'Bishop'})
+      OPTIONAL MATCH (member)-[r:HAS_TITLE]->(bishop)
+      DELETE r
+
+      WITH member,bishop
+      MERGE (member)-[:HAS_TITLE {date: $consecrationDate}]->(bishop)
+      RETURN member
+      """
+    )
   UpdateMemberFellowship(memberId: ID!, fellowshipId: ID!): Member
     @cypher(
       statement: """
