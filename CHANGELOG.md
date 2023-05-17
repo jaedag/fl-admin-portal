@@ -1,3 +1,23 @@
+#### 7.6.12 (2023-05-17)
+
+##### Bug Fixes
+
+*  improvements to the nameWithTitle property ([e870caa5](https://github.com/firstlovecenter/fl-pastoral-care/commit/e870caa5108212ab27d29b9323ffd7ffc78060e3))
+*  update member title form ([1eebea47](https://github.com/firstlovecenter/fl-pastoral-care/commit/1eebea47973667832717d0a2d1a0f29e393351bd))
+*  implement form for updating member titles ([3101b3e6](https://github.com/firstlovecenter/fl-pastoral-care/commit/3101b3e6b1250be761fccbad211249372d4473dc))
+*  ts-nocheck on _fields in equipment resolvers ([8162cd83](https://github.com/firstlovecenter/fl-pastoral-care/commit/8162cd830621592d50e286f3e69c8649aadab51b))
+*  fix bug with council service aggregations ([aaa94ba8](https://github.com/firstlovecenter/fl-pastoral-care/commit/aaa94ba80a52a88b61b4dbb4afff009e5f6282e9))
+*  solves admin-584 ([f3725211](https://github.com/firstlovecenter/fl-pastoral-care/commit/f37252114646489528bb095b08ea7c8f7de4e0ce))
+*  admin-576 solves breaking of ServiceDetails Page ([0c87789f](https://github.com/firstlovecenter/fl-pastoral-care/commit/0c87789f256c51f66a02e685c2f3f39a9c024d12))
+*  admin-571 if no currentUser navigate to /arrivals ([28a30552](https://github.com/firstlovecenter/fl-pastoral-care/commit/28a305528c545d8d8395902fc9323c81e5876591))
+*  admin-571 fixed bug breaking the page ([9507221c](https://github.com/firstlovecenter/fl-pastoral-care/commit/9507221cc8ecdc07ec833dd79f904a54e2d6ed81))
+*  prevent error when there is no .stream_name on ServicesMenu ([e4e56ed3](https://github.com/firstlovecenter/fl-pastoral-care/commit/e4e56ed3d51b8b8ff246e378b94b105145915057))
+
+##### Refactors
+
+*  minor improvemens and migrations to updated session config ([6078b494](https://github.com/firstlovecenter/fl-pastoral-care/commit/6078b49471d5a60860b3dbc198061c3d2aced64a))
+*  change session.run to updated session.executeRead/Write ([fe4d774d](https://github.com/firstlovecenter/fl-pastoral-care/commit/fe4d774d80bd4a9318b914d0e48f99d04886a380))
+
 #### 7.6.11 (2023-05-12)
 
 ##### Bug Fixes
