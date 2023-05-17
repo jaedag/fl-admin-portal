@@ -15,3 +15,4 @@ MATCH (constituency {id: '2899f839-5f75-4a9c-9061-cf723a34f365'})-[:CURRENT_HIST
 
    MATCH (member:Member)-[r:HAS_TITLE]->(title:Title)
    DELETE r
+   RETURN COUNT(member)

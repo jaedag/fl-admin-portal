@@ -17,6 +17,54 @@ import { MemberContext } from 'contexts/MemberContext'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { useMutation, useQuery } from '@apollo/client'
 import { throwToSentry } from 'global-utils'
+interface MemberTitleRelationship {
+  date: string
+  node: {
+    name: string
+    __typename: string
+  }
+  __typename: string
+}
+
+interface TitleConnection {
+  edges: MemberTitleRelationship[]
+  __typename: string
+}
+
+interface Member {
+  id: string
+  firstName: string
+  lastName: string
+  titleConnection: TitleConnection
+  __typename: string
+}
+
+interface Data {
+  members: Member[]
+}
+
+const parseData = (data: Data) => {
+  const result = {
+    pastorDate: '',
+    reverendDate: '',
+    bishopDate: '',
+  }
+
+  const member = data.members[0] // Assuming there's only one member in the array
+
+  member.titleConnection.edges.forEach((edge) => {
+    const { date, node } = edge
+    if (node.name === 'Pastor') {
+      result.pastorDate = date
+    } else if (node.name === 'Reverend') {
+      result.reverendDate = date
+    } else if (node.name === 'Bishop') {
+      result.bishopDate = date
+    }
+  })
+
+  return result
+}
 
 const MemberTitleForm = () => {
   const { memberId } = useContext(MemberContext)
@@ -37,10 +85,18 @@ const MemberTitleForm = () => {
   )
   const member = data?.members[0]
 
+  const titles = data
+    ? parseData(data)
+    : {
+        pastorDate: '',
+        reverendDate: '',
+        bishopDate: '',
+      }
+
   const initialValues = {
-    appointmentDate: '',
-    ordinationDate: '',
-    consecrationDate: '',
+    appointmentDate: titles.pastorDate ?? '',
+    ordinationDate: titles.reverendDate ?? '',
+    consecrationDate: titles.bishopDate ?? '',
   }
 
   const validationSchema = Yup.object({
@@ -136,7 +192,9 @@ const MemberTitleForm = () => {
                     />
                   </Col>
                 </Row>
-                <SubmitButton formik={formik} />
+                <div className="mt-5">
+                  <SubmitButton formik={formik} />
+                </div>
               </div>
             </Form>
           )}
