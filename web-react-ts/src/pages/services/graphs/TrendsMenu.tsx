@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router'
 import MenuButton from 'components/buttons/MenuButton'
 import Stars from 'assets/icons/Stars'
 import Charts from 'assets/icons/Charts'
+import PieChart from 'assets/icons/PieChart'
 
 const TrendsMenu = () => {
   const { currentUser, theme } = useContext(MemberContext)
@@ -41,6 +42,17 @@ const TrendsMenu = () => {
               )
             }
             caption={'Quick facts about your church'}
+          />
+          <MenuButton
+            iconComponent={PieChart}
+            title="Member Conversion Chart"
+            color="multiplication"
+            onClick={() =>
+              navigate(
+                `/campaigns/${church.__typename.toLowerCase()}/multiplication/member-conversion-chart`
+              )
+            }
+            caption={'Member conversion chart of your church'}
           />
         </div>
       </Container>

@@ -320,3 +320,87 @@ export const CONSTITUENCY_MULTIPLICATION_BANKING_SLIP_QUERY = gql`
     }
   }
 `
+
+export const GATHERING_SERVICE_AGGREGATE_MEMBER_CONVERSION = gql`
+  query gatheringServiceAggregateMemberConversion($gatheringServiceId: ID!) {
+    gatheringServices(where: { id: $gatheringServiceId }) {
+      id
+      name
+      aggregateMemberConversion {
+        howYouJoined
+        number
+        percentage
+      }
+    }
+  }
+`
+
+export const STREAM_AGGREGATE_MEMBER_CONVERSION = gql`
+  query streamAggregateMemberConversion($streamId: ID!) {
+    streams(where: { id: $streamId }) {
+      id
+      name
+      aggregateMemberConversion {
+        howYouJoined
+        number
+        percentage
+      }
+    }
+  }
+`
+
+export const COUNCIL_AGGREGATE_MEMBER_CONVERSION = gql`
+  query councilAggregateMemberConversion($councilId: ID!) {
+    councils(where: { id: $councilId }) {
+      id
+      name
+      aggregateMemberConversion {
+        howYouJoined
+        number
+        percentage
+      }
+    }
+  }
+`
+
+export const CONSTITUENCY_AGGREGATE_MEMBER_CONVERSION = gql`
+  query constituencyAggregateMemberConversion($constituencyId: ID!) {
+    constituencies(where: { id: $constituencyId }) {
+      id
+      name
+      aggregateMemberConversion {
+        howYouJoined
+        number
+        percentage
+      }
+    }
+  }
+`
+
+export const BACENTA_AGGREGATE_MEMBER_CONVERSION = gql`
+  query bacentaAggregateMemberConversion($bacentaId: ID!) {
+    bacentas(where: { id: $bacentaId }) {
+      id
+      name
+      aggregateMemberConversion {
+        howYouJoined
+        number
+        percentage
+      }
+    }
+  }
+`
+
+export const FELLOWSHIP_AGGREGATE_MEMBER_CONVERSION = gql`
+  query fellowshipAggregateMemberConversion($fellowshipId: ID!) {
+    fellowships(where: { id: $fellowshipId }) {
+      id
+      name
+      aggregateMemberConversion {
+        howYouJoined
+        number
+        percentage
+      }
+    }
+  }
+`
