@@ -6,6 +6,7 @@ export const GET_MEMBER_TITLES = gql`
       id
       firstName
       lastName
+      nameWithTitle
       titleConnection {
         edges {
           date
@@ -24,6 +25,7 @@ export const UPDATE_MEMBER_APPOINTMENT_DATE = gql`
       id
       firstName
       lastName
+      nameWithTitle
       titleConnection {
         edges {
           date
@@ -42,6 +44,7 @@ export const UPDATE_MEMBER_ORDINATION_DATE = gql`
       id
       firstName
       lastName
+      nameWithTitle
       titleConnection {
         edges {
           date
@@ -60,6 +63,7 @@ export const UPDATE_MEMBER_CONSECRATION_DATE = gql`
       id
       firstName
       lastName
+      nameWithTitle
       titleConnection {
         edges {
           date

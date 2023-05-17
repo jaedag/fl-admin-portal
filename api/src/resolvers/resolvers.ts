@@ -12,6 +12,7 @@ import bankingMutation from './banking/banking-resolver'
 import campaignsResolvers from './campaigns/campaigns-resolver'
 import campaignMutations from './campaigns/campaign-mutations'
 import { mapsResolvers } from './maps/maps-resolvers'
+import { Context } from './utils/neo4j-types'
 
 const dotenv = require('dotenv')
 
@@ -26,15 +27,42 @@ const resolvers = {
 
   Member: {
     fullName: (source: Member) => `${source.firstName} ${source.lastName}`,
-    nameWithTitle: (source: Member) => {
-      const title = source.currentTitle ? `${source.currentTitle} ` : ''
-      let shortTitle = title
+    nameWithTitle: async (source: Member, args: unknown, context: Context) => {
+      const session = context.executionContext.session()
 
-      if (source.currentTitle === 'Reverend') {
+      const res = await session.executeRead((tx) =>
+        tx.run(
+          `MATCH (member:Member {id: $id})-[:HAS_GENDER]->(gender:Gender)
+          MATCH (member)-[:HAS_TITLE]->(title:Title)
+          RETURN member AS member, gender.gender AS gender, title.name AS title, title.priority AS priority ORDER BY priority DESC LIMIT 1`,
+          {
+            id: source.id,
+          }
+        )
+      )
+
+      const gender = res.records[0]?.get('gender')
+      const title = res.records[0]?.get('title') ?? ''
+      let shortTitle = ''
+
+      if (title === 'Bishop') {
+        shortTitle = 'Bishop '
+      }
+      if (title === 'Bishop' && gender === 'Female') {
+        shortTitle = 'Mother '
+      }
+
+      if (title === 'Reverend') {
         shortTitle = 'Rev. '
       }
-      if (source.currentTitle === 'Pastor') {
+      if (title === 'Reverend' && gender === 'Female') {
+        shortTitle = 'LR '
+      }
+      if (title === 'Pastor') {
         shortTitle = 'Ps. '
+      }
+      if (title === 'Pastor' && gender === 'Female') {
+        shortTitle = 'LP '
       }
 
       return `${shortTitle}${source.firstName} ${source.lastName}`

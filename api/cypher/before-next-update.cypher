@@ -49,3 +49,19 @@ CREATE CONSTRAINT gatheringServiceNeedsNoIncomeTracking IF NOT EXISTS ON (g:Gath
 MATCH (member:Member) WHERE member.howYouJoined = 'Service With A Bishop'
 SET member.howYouJoined = 'Service With A Pastor'
 RETURN COUNT(member)
+
+MATCH (title:Title {name: "Bishop"})
+SET title.priority = 3
+RETURN title.name, title.priority;
+
+MATCH (title:Title {name: "Reverend"})
+SET title.priority = 2
+RETURN title.name, title.priority;
+
+MATCH (title:Title {name: "Pastor"})
+SET title.priority = 1
+RETURN title.name, title.priority;
+
+MATCH (title:Title )
+REMOVE title.weight
+RETURN COUNT(title);
