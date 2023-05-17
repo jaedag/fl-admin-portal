@@ -9,6 +9,7 @@ import {
   PencilSquare,
   FileEarmarkArrowUpFill,
   BarChartFill,
+  PieChartFill,
 } from 'react-bootstrap-icons'
 
 const CouncilMultiplicationCampaign = () => {
@@ -50,6 +51,17 @@ const CouncilMultiplicationCampaign = () => {
             color="multiplication"
             noCaption
             onClick={() => navigate(`/campaigns/council/multiplication/trends`)}
+          />
+          <MenuButton
+            iconComponent={PieChartFill}
+            title="Member Conversion Chart"
+            color="multiplication"
+            noCaption
+            onClick={() =>
+              navigate(
+                `/campaigns/council/multiplication/member-conversion-chart`
+              )
+            }
           />
         </div>
       </Container>

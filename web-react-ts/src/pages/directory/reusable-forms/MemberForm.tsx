@@ -94,7 +94,7 @@ const MemberForm = ({
     MakeMemberInactive({
       variables: {
         memberId: memberId,
-        reason: `${values.reasonCategory}: ${values.reason}`,
+        reason: `${values.reasonCategory}: ${initialValues.firstName} ${initialValues.lastName} ${values.reason}`,
       },
     })
       .then(() => {
@@ -215,7 +215,17 @@ const MemberForm = ({
                   </p>
 
                   <div className="form-row row-cols-1 row-cols-md-2 justify-content-center">
-                    <HeadingPrimary className="mb-4">Basic Info</HeadingPrimary>
+                    <HeadingPrimary>Basic Info</HeadingPrimary>
+                    <RoleView roles={permitAdmin('GatheringService')}>
+                      <Button
+                        variant="success"
+                        size="lg"
+                        className="my-2 mb-4"
+                        onClick={() => navigate('/member/title-form')}
+                      >
+                        Add Title
+                      </Button>
+                    </RoleView>
                     <Col sm={10}>
                       <Input
                         label="First Name*"

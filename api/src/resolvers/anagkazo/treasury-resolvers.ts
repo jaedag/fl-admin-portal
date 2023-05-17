@@ -1,5 +1,4 @@
 /* eslint-disable no-underscore-dangle */
-import { Transaction } from 'neo4j-driver'
 import {
   isAuth,
   noEmptyArgsValidation,
@@ -25,7 +24,7 @@ const treasuryMutations = {
   ConfirmBanking: async (
     object: never,
     args: { constituencyId: string },
-    context: { auth: { roles: any }; executionContext: { session: () => any } }
+    context: Context
   ): Promise<any> => {
     isAuth(permitTeller(), context?.auth.roles)
     const session = context.executionContext.session()
@@ -70,7 +69,7 @@ const treasuryMutations = {
     }
 
     try {
-      const response = await session.executeWrite((tx: Transaction) =>
+      const response = await session.executeWrite((tx) =>
         tx.run(anagkazo.confirmBanking, {
           ...args,
           auth: context.auth,
@@ -90,6 +89,7 @@ const treasuryMutations = {
     } catch (error: any) {
       throwToSentry('There was a problem confirming the banking', error || '')
     }
+    await session.close()
     return 'Confirmation Successful'
   },
 }

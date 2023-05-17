@@ -1,4 +1,8 @@
-import { permitLeaderAdmin, permitSheepSeeker } from 'permission-utils'
+import {
+  permitLeader,
+  permitLeaderAdmin,
+  permitSheepSeeker,
+} from 'permission-utils'
 import { LazyRouteTypes } from 'global-types'
 import { lazy } from 'react'
 
@@ -43,6 +47,12 @@ const ConstituencyCampaigns = lazy(
 const FellowshipEquipmentCampaign = lazy(
   () =>
     import('pages/campaigns/equipment/fellowship/FellowshipEquipmentCampaign')
+)
+const FellowshipMultiplicationCampaign = lazy(
+  () => import('./multiplication/fellowship/FellowshipMultiplicationCampaign')
+)
+const BacentaMultiplicationCampaign = lazy(
+  () => import('./multiplication/bacenta/BacentaMultiplicationCampaign')
 )
 const FellowshipEquipmentForm = lazy(
   () => import('pages/campaigns/equipment/fellowship/FellowshipEquipmentForm')
@@ -119,6 +129,29 @@ const GatheringServiceMultiplicationCampaign = lazy(
       './multiplication/gathering-service/GatheringServiceMultiplicationCampaign'
     )
 )
+const GatheringServiceMemberConversionChart = lazy(
+  () =>
+    import(
+      './multiplication/gathering-service/GatheringServiceMemberConversionChart'
+    )
+)
+const StreamMemberConversionChart = lazy(
+  () => import('./multiplication/stream/StreamMemberConversionChart')
+)
+const CouncilMemberConversionChart = lazy(
+  () => import('./multiplication/council/CouncilMemberConversionChart')
+)
+const ConstituencyMemberConversionChart = lazy(
+  () =>
+    import('./multiplication/constituency/ConstituencyMemberConversionChart')
+)
+const BacentaMemberConversionChart = lazy(
+  () => import('./multiplication/bacenta/BacentaMemberConversionChart')
+)
+const FellowshipMemberConversionChart = lazy(
+  () => import('./multiplication/fellowship/FellowshipMemberConversionChart')
+)
+
 const GatheringServiceSwollenSundayCampaign = lazy(
   () =>
     import(
@@ -641,6 +674,12 @@ export const campaigns: LazyRouteTypes[] = [
     roles: permitLeaderAdmin('GatheringService'),
     placeholder: true,
   },
+  {
+    path: '/campaigns/gatheringservice/multiplication/member-conversion-chart',
+    element: GatheringServiceMemberConversionChart,
+    roles: permitLeaderAdmin('GatheringService'),
+    placeholder: true,
+  },
 
   //stream routes
   {
@@ -799,6 +838,12 @@ export const campaigns: LazyRouteTypes[] = [
     roles: permitLeaderAdmin('Stream'),
     placeholder: true,
   },
+  {
+    path: '/campaigns/stream/multiplication/member-conversion-chart',
+    element: StreamMemberConversionChart,
+    roles: permitLeaderAdmin('Stream'),
+    placeholder: true,
+  },
 
   //council routes
   {
@@ -939,6 +984,12 @@ export const campaigns: LazyRouteTypes[] = [
     roles: permitLeaderAdmin('Council'),
     placeholder: true,
   },
+  {
+    path: '/campaigns/council/multiplication/member-conversion-chart',
+    element: CouncilMemberConversionChart,
+    roles: permitLeaderAdmin('Council'),
+    placeholder: true,
+  },
 
   //constituency routes
   {
@@ -1067,6 +1118,12 @@ export const campaigns: LazyRouteTypes[] = [
     roles: permitLeaderAdmin('Constituency'),
     placeholder: true,
   },
+  {
+    path: '/campaigns/constituency/multiplication/member-conversion-chart',
+    element: ConstituencyMemberConversionChart,
+    roles: permitLeaderAdmin('Constituency'),
+    placeholder: true,
+  },
 
   //bacenta routes
   {
@@ -1123,6 +1180,18 @@ export const campaigns: LazyRouteTypes[] = [
     roles: permitLeaderAdmin('Bacenta'),
     placeholder: true,
   },
+  {
+    path: '/campaigns/bacenta/multiplication/member-conversion-chart',
+    element: BacentaMemberConversionChart,
+    roles: permitLeader('Bacenta'),
+    placeholder: true,
+  },
+  {
+    path: '/campaigns/bacenta/multiplication',
+    element: BacentaMultiplicationCampaign,
+    roles: permitLeader('Bacenta'),
+    placeholder: true,
+  },
 
   //fellowship routes
   {
@@ -1153,6 +1222,18 @@ export const campaigns: LazyRouteTypes[] = [
     path: '/campaigns/fellowship/equipment/form-details',
     element: FellowshipEquipmentFormDetails,
     roles: permitLeaderAdmin('Fellowship'),
+    placeholder: true,
+  },
+  {
+    path: '/campaigns/fellowship/multiplication/member-conversion-chart',
+    element: FellowshipMemberConversionChart,
+    roles: permitLeader('Fellowship'),
+    placeholder: true,
+  },
+  {
+    path: '/campaigns/fellowship/multiplication',
+    element: FellowshipMultiplicationCampaign,
+    roles: permitLeader('Fellowship'),
     placeholder: true,
   },
 
