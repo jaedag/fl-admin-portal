@@ -1,3 +1,54 @@
+#### 7.6.12 (2023-05-17)
+
+##### Bug Fixes
+
+*  improvements to the nameWithTitle property ([e870caa5](https://github.com/firstlovecenter/fl-pastoral-care/commit/e870caa5108212ab27d29b9323ffd7ffc78060e3))
+*  update member title form ([1eebea47](https://github.com/firstlovecenter/fl-pastoral-care/commit/1eebea47973667832717d0a2d1a0f29e393351bd))
+*  implement form for updating member titles ([3101b3e6](https://github.com/firstlovecenter/fl-pastoral-care/commit/3101b3e6b1250be761fccbad211249372d4473dc))
+*  ts-nocheck on _fields in equipment resolvers ([8162cd83](https://github.com/firstlovecenter/fl-pastoral-care/commit/8162cd830621592d50e286f3e69c8649aadab51b))
+*  fix bug with council service aggregations ([aaa94ba8](https://github.com/firstlovecenter/fl-pastoral-care/commit/aaa94ba80a52a88b61b4dbb4afff009e5f6282e9))
+*  solves admin-584 ([f3725211](https://github.com/firstlovecenter/fl-pastoral-care/commit/f37252114646489528bb095b08ea7c8f7de4e0ce))
+*  admin-576 solves breaking of ServiceDetails Page ([0c87789f](https://github.com/firstlovecenter/fl-pastoral-care/commit/0c87789f256c51f66a02e685c2f3f39a9c024d12))
+*  admin-571 if no currentUser navigate to /arrivals ([28a30552](https://github.com/firstlovecenter/fl-pastoral-care/commit/28a305528c545d8d8395902fc9323c81e5876591))
+*  admin-571 fixed bug breaking the page ([9507221c](https://github.com/firstlovecenter/fl-pastoral-care/commit/9507221cc8ecdc07ec833dd79f904a54e2d6ed81))
+*  prevent error when there is no .stream_name on ServicesMenu ([e4e56ed3](https://github.com/firstlovecenter/fl-pastoral-care/commit/e4e56ed3d51b8b8ff246e378b94b105145915057))
+
+##### Refactors
+
+*  minor improvemens and migrations to updated session config ([6078b494](https://github.com/firstlovecenter/fl-pastoral-care/commit/6078b49471d5a60860b3dbc198061c3d2aced64a))
+*  change session.run to updated session.executeRead/Write ([fe4d774d](https://github.com/firstlovecenter/fl-pastoral-care/commit/fe4d774d80bd4a9318b914d0e48f99d04886a380))
+
+#### 7.6.11 (2023-05-12)
+
+##### Bug Fixes
+
+*  add friday as stream service day option ([61f5aea7](https://github.com/firstlovecenter/fl-pastoral-care/commit/61f5aea753671cae67a383f40ffbcd9540ae1a87))
+*  udpate currency options list with full names ([2e7d59a6](https://github.com/firstlovecenter/fl-pastoral-care/commit/2e7d59a6729f4e01db1d04ddc55c7ba5cafebe70))
+
+#### 7.6.10 (2023-05-12)
+
+##### Documentation Changes
+
+*  update CHANGELOG.md ([06e16854](https://github.com/firstlovecenter/fl-pastoral-care/commit/06e1685430df843bb23370c5ead6d88b8f21bbe5))
+*  update CHANGELOG.md ([f8ed353c](https://github.com/firstlovecenter/fl-pastoral-care/commit/f8ed353cf2e1a07a0828c98153b206c9cab3d546))
+
+##### Bug Fixes
+
+*  udpate currency options list ([93da3048](https://github.com/firstlovecenter/fl-pastoral-care/commit/93da3048678d73a2e5945ed74303473f20822a61))
+*  update member deletion history log text ([0687e451](https://github.com/firstlovecenter/fl-pastoral-care/commit/0687e451722b05087898f18448a94aba67464494))
+*  exchange double quotes for single quotes ([bcc2f284](https://github.com/firstlovecenter/fl-pastoral-care/commit/bcc2f2842b11587133c6dc05026839b1d0fd1b94))
+*  update delete member category options ([0d673c64](https://github.com/firstlovecenter/fl-pastoral-care/commit/0d673c64844b069f316d3e6fcf0c19718111495e))
+*  update member deletion history log text ([36d32ed9](https://github.com/firstlovecenter/fl-pastoral-care/commit/36d32ed9c120efa0b6fa4494c8eb3dcca2bc7a79))
+*  update cloudinary uplaodgs ([da4535db](https://github.com/firstlovecenter/fl-pastoral-care/commit/da4535db06fe30044d2121e2f22e269d73f40b4c))
+*  subfolder cloudinary uploads ([f23f1be5](https://github.com/firstlovecenter/fl-pastoral-care/commit/f23f1be5369620df0a2ed309bdbb83be4c75007e))
+*  update arrivalsQueries and bussingStatusQueries with arrivalDate ([80cb93e6](https://github.com/firstlovecenter/fl-pastoral-care/commit/80cb93e6f5dfc964e826545eb636cb121b13e966))
+*  remove whitespace ([d8942ed5](https://github.com/firstlovecenter/fl-pastoral-care/commit/d8942ed50d10900b47fd5b4ebe7a11ab4c04cc1b))
+*  fix number of bacentas on ChurchBySubChurch pages ([6ea55bbe](https://github.com/firstlovecenter/fl-pastoral-care/commit/6ea55bbe1f797887abf7e6c769e6ef73383333a6))
+
+##### Refactors
+
+*  include whitespace ([2b576cb0](https://github.com/firstlovecenter/fl-pastoral-care/commit/2b576cb0a3d29f25175ecb6b7444153c5bc7e1d8))
+
 #### 7.6.9 (2023-05-09)
 
 #### 7.6.8 (2023-05-09)

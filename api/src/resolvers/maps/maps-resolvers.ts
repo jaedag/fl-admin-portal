@@ -1,5 +1,4 @@
 import type { Node, Integer, Point } from 'neo4j-driver'
-import { Context } from '../utils/neo4j-types'
 import { Member } from '../utils/types'
 import { rearrangeCypherObject, throwToSentry } from '../utils/utils'
 import {
@@ -17,6 +16,7 @@ import {
   createMemberDescription,
   createVenueDescription,
 } from './maps-utils'
+import { Context } from '../utils/neo4j-types'
 
 interface FellowshipResultShape {
   fellowship: Node<
@@ -178,28 +178,28 @@ export const mapsResolvers = {
 
       try {
         const res = await Promise.all([
-          session.readTransaction((tx: any) =>
+          session.executeRead((tx: any) =>
             tx.run(memberMemberSearchByName, {
               id: source.id,
               key: args.key,
               limit: args.limit,
             })
           ),
-          sessionTwo.readTransaction((tx: any) =>
+          sessionTwo.executeRead((tx: any) =>
             tx.run(memberFellowshipSearchByName, {
               id: source.id,
               key: args.key,
               limit: args.limit,
             })
           ),
-          sessionThree.readTransaction((tx: any) =>
+          sessionThree.executeRead((tx: any) =>
             tx.run(indoorOutreachVenuesSearchByName, {
               id: source.id,
               key: args.key,
               limit: args.limit,
             })
           ),
-          sessionFour.readTransaction((tx: any) =>
+          sessionFour.executeRead((tx: any) =>
             tx.run(outdoorOutreachVenuesSearchByName, {
               id: source.id,
               key: args.key,
@@ -263,7 +263,7 @@ export const mapsResolvers = {
 
       try {
         const res = await Promise.all([
-          session.readTransaction((tx: any) =>
+          session.executeRead((tx: any) =>
             tx.run(memberMemberSearchByLocation, {
               id: source.id,
               latitude: args.latitude,
@@ -271,7 +271,7 @@ export const mapsResolvers = {
               limit: args.limit,
             })
           ),
-          sessionTwo.readTransaction((tx: any) =>
+          sessionTwo.executeRead((tx: any) =>
             tx.run(memberFellowshipSearchByLocation, {
               id: source.id,
 
@@ -280,7 +280,7 @@ export const mapsResolvers = {
               limit: args.limit,
             })
           ),
-          sessionThree.readTransaction((tx: any) =>
+          sessionThree.executeRead((tx: any) =>
             tx.run(indoorOutreachVenuesSearchByLocation, {
               id: source.id,
               latitude: args.latitude,
@@ -288,7 +288,7 @@ export const mapsResolvers = {
               limit: args.limit,
             })
           ),
-          sessionFour.readTransaction((tx: any) =>
+          sessionFour.executeRead((tx: any) =>
             tx.run(outdoorOutreachVenuesSearchByLocation, {
               id: source.id,
               latitude: args.latitude,

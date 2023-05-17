@@ -331,7 +331,7 @@ export const aggregateServiceDataForCouncil = `
    MATCH (denomination)-[:CURRENT_HISTORY]->(log:ServiceLog)
    MERGE (aggregate:AggregateServiceRecord {id: date().week + '-' + date().year + '-' + log.id, week: date().week, year: date().year})
    MERGE (log)-[:HAS_SERVICE_AGGREGATE]->(aggregate)
-   WITH denomination, aggregate, collect(record.id) AS componentServiceIds, SUM(record.attendance) AS totalAttendance, SUM(record.income) AS totalDollarIncome, SUM(record.dollarIncome) AS totalDollarIncome
+   WITH denomination, aggregate, collect(record.id) AS componentServiceIds, SUM(record.attendance) AS totalAttendance, SUM(record.income) AS totalIncome, SUM(record.dollarIncome) AS totalDollarIncome
        SET aggregate.attendance = totalAttendance,
        aggregate.income = totalDollarIncome,
        aggregate.dollarIncome = totalDollarIncome,
@@ -389,7 +389,7 @@ export const aggregateServiceDataForStream = `
    MATCH (denomination)-[:CURRENT_HISTORY]->(log:ServiceLog)
    MERGE (aggregate:AggregateServiceRecord {id: date().week + '-' + date().year + '-' + log.id, week: date().week, year: date().year})
    MERGE (log)-[:HAS_SERVICE_AGGREGATE]->(aggregate)
-   WITH denomination, aggregate, collect(record.id) AS componentServiceIds, SUM(record.attendance) AS totalAttendance, SUM(record.income) AS totalDollarIncome, SUM(record.dollarIncome) AS totalDollarIncome
+   WITH denomination, aggregate, collect(record.id) AS componentServiceIds, SUM(record.attendance) AS totalAttendance, SUM(record.income) AS totalIncome, SUM(record.dollarIncome) AS totalDollarIncome
        SET aggregate.attendance = totalAttendance,
        aggregate.income = totalDollarIncome,
        aggregate.dollarIncome = totalDollarIncome,
@@ -434,7 +434,7 @@ export const aggregateServiceDataForGatheringService = `
    MATCH (denomination)-[:CURRENT_HISTORY]->(log:ServiceLog)
    MERGE (aggregate:AggregateServiceRecord {id: date().week + '-' + date().year + '-' + log.id, week: date().week, year: date().year})
    MERGE (log)-[:HAS_SERVICE_AGGREGATE]->(aggregate)
-   WITH denomination, aggregate, collect(record.id) AS componentServiceIds, SUM(record.attendance) AS totalAttendance, SUM(record.income) AS totalDollarIncome, SUM(record.dollarIncome) AS totalDollarIncome
+   WITH denomination, aggregate, collect(record.id) AS componentServiceIds, SUM(record.attendance) AS totalAttendance, SUM(record.income) AS totalIncome, SUM(record.dollarIncome) AS totalDollarIncome
        SET aggregate.attendance = totalAttendance,
        aggregate.income = totalDollarIncome,
        aggregate.dollarIncome = totalDollarIncome,

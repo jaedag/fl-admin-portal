@@ -10,7 +10,7 @@ import {
 
 //Global Constants
 export const PHONE_NUM_REGEX = /^[+][(]{0,1}[1-9]{1,4}[)]{0,1}[-\s/0-9]*$/
-export const MOMO_NUM_REGEX = /^[0][\s/0-9]{9}$/
+export const MOMO_NUM_REGEX = /^(0[1-9]\d{8}|[1-9]\d{9})$/
 export const DECIMAL_NUM_REGEX = /^-?\d*\.{1}\d*$/
 export const DECIMAL_NUM_REGEX_POSITIVE_ONLY = /^\d*\.{1}\d*$/
 export const USER_PLACEHOLDER = 'v1627893621/user_qvwhs7webp'
@@ -56,19 +56,22 @@ export const SERVICE_DAY_OPTIONS: FormikSelectOptions = [
 ]
 
 export const STREAM_SERVICE_DAY_OPTIONS: FormikSelectOptions = [
+  { key: 'Friday', value: 'Friday' },
   { key: 'Saturday', value: 'Saturday' },
   { key: 'Sunday', value: 'Sunday' },
 ]
 
 export const CURRENCY_OPTIONS: FormikSelectOptions = [
-  { key: 'GHS', value: 'GHS' },
-  { key: 'MGA', value: 'MGA' },
-  { key: 'GMD', value: 'GMD' },
-  { key: 'ZMW', value: 'ZMW' },
+  { key: 'Ghanaian Cedis (GHS)', value: 'GHS' },
+  { key: 'Zambian Kwacha (ZMW)', value: 'ZMW' },
+  { key: 'Bangladesh Taka (BDT)', value: 'BDT' },
+  { key: 'Madagascar Ariary (MGA)', value: 'MGA' },
+  { key: 'Gambia Dalasi (GMD)', value: 'GMD' },
+  { key: 'US Dollars (USD)', value: 'USD' },
 ]
 
 export const DELETE_MEMBER_CATEGORY_OPTIONS: FormikSelectOptions = [
-  { key: 'Moved Country', value: 'Moved Country' },
+  { key: 'Moved Out of Accra', value: 'Moved Out of Accra' },
   {
     key: 'Left the Church In Spite of Calls and Visits',
     value: 'Left the Church In Spite of Calls and Visits',
@@ -567,6 +570,7 @@ export const parseForeignCurrency = (string: string) => {
     'ghana cedis',
     'No',
     'None',
+    'none',
     'n/a',
     'N/A',
     'NA',

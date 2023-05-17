@@ -9,7 +9,7 @@ type Member @auth(rules: [{ isAuthenticated: true }]) {
     @cypher(
       statement: """
       MATCH (this)-[:HAS_TITLE]->(title:Title)
-      RETURN title.name ORDER BY title.weight DESC LIMIT 1
+      RETURN title.name ORDER BY title.priority DESC LIMIT 1
       """
     )
   nameWithTitle: String @customResolver

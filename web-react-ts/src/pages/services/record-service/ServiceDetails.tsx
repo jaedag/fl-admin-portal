@@ -47,12 +47,12 @@ const ServiceDetails = ({ service, church, loading }: ServiceDetailsProps) => {
   let table: TableArray = [
     [
       'Date of Service',
-      new Date(service.serviceDate.date).toDateString() ?? '',
+      new Date(service?.serviceDate.date).toDateString() ?? '',
     ],
 
-    ['Form Filled At', parseNeoTime(service.createdAt) ?? ''],
+    ['Form Filled At', parseNeoTime(service?.createdAt) ?? ''],
   ]
-  if (!service.noServiceReason) {
+  if (!service?.noServiceReason) {
     table.push(['Attendance', service?.attendance.toString()])
 
     if (!currentUser.noIncomeTracking) {
@@ -64,8 +64,8 @@ const ServiceDetails = ({ service, church, loading }: ServiceDetailsProps) => {
         ])
       }
       table.push(
-        ['Income', <CurrencySpan number={service.income} />],
-        ...service.treasurers.map((treasurer, i) => [
+        ['Income', <CurrencySpan number={service?.income} />],
+        ...service?.treasurers.map((treasurer, i) => [
           `Treasurer ${i + 1}`,
           treasurer.fullName ?? '',
         ])
@@ -73,8 +73,8 @@ const ServiceDetails = ({ service, church, loading }: ServiceDetailsProps) => {
     }
   }
 
-  if (service.noServiceReason) {
-    table.push(['No Service Reason', service.noServiceReason])
+  if (service?.noServiceReason) {
+    table.push(['No Service Reason', service?.noServiceReason])
   }
 
   const noBankingProof =
@@ -121,14 +121,14 @@ const ServiceDetails = ({ service, church, loading }: ServiceDetailsProps) => {
                       >
                         <img
                           className="report-picture"
-                          src={service.treasurerSelfie}
+                          src={service?.treasurerSelfie}
                           alt="treasurer selfie"
                         />
                       </PlaceholderCustom>
                     </div>
                   </>
                 )}
-                {service.familyPicture && (
+                {service?.familyPicture && (
                   <>
                     <h6>Family Picture</h6>
                     <div>
@@ -139,7 +139,7 @@ const ServiceDetails = ({ service, church, loading }: ServiceDetailsProps) => {
                       >
                         <img
                           className="report-picture"
-                          src={service.familyPicture}
+                          src={service?.familyPicture}
                           alt="service report"
                         />
                       </PlaceholderCustom>
@@ -169,7 +169,7 @@ const ServiceDetails = ({ service, church, loading }: ServiceDetailsProps) => {
                       >
                         <img
                           className="report-picture"
-                          src={service.bankingSlip}
+                          src={service?.bankingSlip}
                           alt="banking slip"
                         />
                       </PlaceholderCustom>
@@ -196,7 +196,7 @@ const ServiceDetails = ({ service, church, loading }: ServiceDetailsProps) => {
 
                           if (confirmBox === true) {
                             ManuallyConfirmOfferingPayment({
-                              variables: { serviceRecordId: service.id },
+                              variables: { serviceRecordId: service?.id },
                             }).then(() => {
                               setSubmitting(false)
                               alertMsg(

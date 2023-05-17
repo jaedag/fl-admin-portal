@@ -116,12 +116,14 @@ export const removeServantCypher = async ({
   }
 
   // Disconnect him from the Church
-  await session.run(servantCypher[`disconnectChurch${servantType}`], {
-    [`${servantLower}Id`]: servant.id ?? '',
-    churchId: church.id,
-    auth_id: servant.auth_id,
-    auth: context.auth,
-  })
+  await session.executeWrite((tx) =>
+    tx.run(servantCypher[`disconnectChurch${servantType}`], {
+      [`${servantLower}Id`]: servant.id ?? '',
+      churchId: church.id,
+      auth_id: servant.auth_id,
+      auth: context.auth,
+    })
+  )
 
   const historyRecordStringArgs = {
     servant,
@@ -132,19 +134,23 @@ export const removeServantCypher = async ({
   }
 
   const historyLogRes = rearrangeCypherObject(
-    await session.run(servantCypher.createHistoryLog, {
-      id: servant.id,
-      churchType,
-      historyRecord: historyRecordString(historyRecordStringArgs),
-    })
+    await session.executeWrite((tx) =>
+      tx.run(servantCypher.createHistoryLog, {
+        id: servant.id,
+        churchType,
+        historyRecord: historyRecordString(historyRecordStringArgs),
+      })
+    )
   )
 
-  await session.run(servantCypher.connectHistoryLog, {
-    churchId: church.id,
-    servantId: servant.id,
-    logId: historyLogRes.id,
-    auth: context.auth,
-  })
+  await session.executeWrite((tx) =>
+    tx.run(servantCypher.connectHistoryLog, {
+      churchId: church.id,
+      servantId: servant.id,
+      logId: historyLogRes.id,
+      auth: context.auth,
+    })
+  )
 }
 
 export const makeServantCypher = async ({

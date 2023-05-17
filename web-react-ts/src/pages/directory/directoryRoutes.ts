@@ -40,6 +40,9 @@ const UserProfileEditPage = lazy(
 )
 const CreateMember = lazy(() => import('pages/directory/create/CreateMember'))
 const UpdateMember = lazy(() => import('pages/directory/update/UpdateMember'))
+const MemberTitleForm = lazy(
+  () => import('pages/directory/reusable-forms/MemberTitleForm')
+)
 const SearchPageMobile = lazy(() => import('pages/directory/mobile/SearchPage'))
 const CouncilMembers = lazy(
   () => import('pages/directory/grids/CouncilMembers')
@@ -384,6 +387,12 @@ export const directory: LazyRouteTypes[] = [
     element: UpdateMember,
     roles: [...permitLeaderAdmin('Fellowship'), ...permitSheepSeeker()],
     placeholder: true,
+  },
+  {
+    path: '/member/title-form',
+    element: MemberTitleForm,
+    roles: [...permitAdmin('Oversight')],
+    placeholder: false,
   },
 
   //Search Routes
