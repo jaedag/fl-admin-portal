@@ -593,3 +593,26 @@ export const checkIfArrayHasRepeatingValues = (array: any[]) => {
   }
   return false
 }
+
+export const PIE_CHART_COLORS = [
+  '#FF5733', // Coral
+  '#FFC300', // Sunflower
+  '#FF6384', // Hot Pink
+  '#FFB6C1', // Light Pink
+  '#E763FA', // Purple
+  '#C7E7FF', // Baby Blue
+  '#00CED1', // Dark Turquoise
+  '#7CFC00', // Lawn Green
+  '#FFD700', // Gold
+  '#FF69B4', // Hot Pink
+  '#6495ED', // Cornflower Blue
+  '#FF8C00', // Dark Orange
+  '#8A2BE2', // Blue Violet
+  '#3CB371', // Medium Sea Green
+  '#DA70D6', // Orchid
+  '#FF1493', // Deep Pink
+  '#1E90FF', // Dodger Blue
+  '#FF4500', // Orange Red
+  '#48D1CC', // Medium Turquoise
+  '#FF00FF', // Magenta
+]

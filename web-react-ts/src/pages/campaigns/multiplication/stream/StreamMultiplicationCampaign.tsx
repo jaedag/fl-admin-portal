@@ -9,6 +9,7 @@ import {
   PencilSquare,
   FileEarmarkArrowUpFill,
   BarChartFill,
+  PieChartFill,
 } from 'react-bootstrap-icons'
 
 const StreamMultiplicationCampaign = () => {
@@ -50,6 +51,17 @@ const StreamMultiplicationCampaign = () => {
             color="multiplication"
             noCaption
             onClick={() => navigate(`/campaigns/stream/multiplication/trends`)}
+          />
+          <MenuButton
+            iconComponent={PieChartFill}
+            title="Member Conversion Chart"
+            color="multiplication"
+            noCaption
+            onClick={() =>
+              navigate(
+                `/campaigns/stream/multiplication/member-conversion-chart`
+              )
+            }
           />
         </div>
       </Container>

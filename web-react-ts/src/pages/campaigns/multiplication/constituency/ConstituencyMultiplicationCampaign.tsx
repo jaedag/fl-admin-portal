@@ -9,6 +9,7 @@ import {
   BarChartFill,
   FileEarmarkArrowUpFill,
   PencilSquare,
+  PieChartFill,
 } from 'react-bootstrap-icons'
 
 const ConstituencyMultiplicationCampaign = () => {
@@ -51,6 +52,17 @@ const ConstituencyMultiplicationCampaign = () => {
             noCaption
             onClick={() =>
               navigate(`/campaigns/constituency/multiplication/trends`)
+            }
+          />
+          <MenuButton
+            iconComponent={PieChartFill}
+            title="Member Conversion Chart"
+            color="multiplication"
+            noCaption
+            onClick={() =>
+              navigate(
+                `/campaigns/constituency/multiplication/member-conversion-chart`
+              )
             }
           />
         </div>
