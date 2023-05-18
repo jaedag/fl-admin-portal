@@ -18,6 +18,7 @@ type ServiceFormProps = {
   churchId: string
   churchType: ChurchLevel
   RecordServiceMutation: MutationFunction
+  recordType?: string
 }
 
 type FormOptions = {
@@ -33,6 +34,7 @@ const ServiceForm = ({
   churchId,
   churchType,
   RecordServiceMutation,
+  recordType,
 }: ServiceFormProps) => {
   const { clickCard } = useContext(ChurchContext)
   const navigate = useNavigate()
@@ -76,8 +78,16 @@ const ServiceForm = ({
       .then((res) => {
         onSubmitProps.setSubmitting(false)
         onSubmitProps.resetForm()
-        clickCard(res.data.RecordService)
-        navigate(`/${churchType}/service-details`)
+        if (recordType === 'RehearsalRecord') {
+          clickCard(res.data.RecordSontaRehearsalService)
+          navigate(`/sonta/rehearsal-service-details`)
+        } else if (recordType === 'MinistryAttendanceRecord') {
+          clickCard(res.data.RecordSontaSundayMeeting)
+          navigate(`/sonta/sunday-meeting-details`)
+        } else {
+          clickCard(res.data.RecordService)
+          navigate(`/${churchType}/service-details`)
+        }
       })
       .catch((error) => throwToSentry('', error))
   }

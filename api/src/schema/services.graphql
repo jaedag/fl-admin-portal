@@ -1349,6 +1349,7 @@ type ServiceLog @auth(rules: [{ isAuthenticated: true }]) {
     @relationship(type: "HAS_HISTORY", direction: IN)
   council: [Council!]! @relationship(type: "HAS_HISTORY", direction: IN)
   sonta: [Sonta!]! @relationship(type: "HAS_HISTORY", direction: IN)
+  ministry: [Ministry!]! @relationship(type: "HAS_HISTORY", direction: IN)
 }
 
 extend type Mutation {

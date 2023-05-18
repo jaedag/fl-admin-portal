@@ -1093,6 +1093,14 @@ type Sonta {
   history: [HistoryLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
   hub: [Hub!]! @relationship(type: "HAS", direction: IN)
   serviceLogs: [ServiceLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
+  services(limit: Int!): [ServiceRecord!]!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(records:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
+      WITH DISTINCT records, date
+      RETURN records ORDER BY date.date DESC LIMIT $limit
+      """
+    )
 }
 
 type Basonta {

@@ -29,11 +29,18 @@ const FellowshipServiceCancelled = lazy(
 const FellowshipServiceDetails = lazy(
   () => import('pages/services/record-service/FellowshipServiceDetails')
 )
-const SontaService = lazy(
-  () => import('pages/services/record-service/SontaService')
+const SontaRehearsalService = lazy(
+  () => import('pages/services/record-service/SontaRehearsalService')
 )
-const SontaServiceDetails = lazy(
-  () => import('pages/services/record-service/SontaServiceDetails')
+const SontaSundayMeeting = lazy(
+  () => import('pages/services/record-service/SontaSundayMeeting')
+)
+const SontaRehearsalServiceDetails = lazy(
+  () => import('pages/services/record-service/SontaRehearsalServiceDetails')
+)
+
+const SontaSundayMeetingDetails = lazy(
+  () => import('pages/services/record-service/SontaSundayMeetingDetails')
 )
 const BacentaReport = lazy(() => import('pages/services/graphs/BacentaGraphs'))
 const ConstituencyReport = lazy(
@@ -134,6 +141,7 @@ const DefaultersDashboard = lazy(
 )
 const TrendsMenu = lazy(() => import('./graphs/TrendsMenu'))
 
+const SontaFormMenu = lazy(() => import('./SontaFormMenu'))
 const FellowshipBankingSlipSubmission = lazy(
   () => import('pages/services/banking/banking-slip/FellowshipSubmission')
 )
@@ -235,6 +243,13 @@ export const services: LazyRouteTypes[] = [
     roles: ['adminGatheringService'],
     placeholder: true,
   },
+
+  {
+    path: '/services/sonta',
+    element: SontaFormMenu,
+    roles: ['all'],
+    placeholder: true,
+  },
 ]
 
 export const graphs: LazyRouteTypes[] = [
@@ -316,14 +331,26 @@ export const graphs: LazyRouteTypes[] = [
 
   //Sonta Service Details
   {
-    path: '/sonta/record-service',
-    element: SontaService,
+    path: '/sonta/record-rehearsal',
+    element: SontaRehearsalService,
     roles: permitLeaderAdmin('Sonta'),
     placeholder: false,
   },
   {
-    path: '/sonta/service-details',
-    element: SontaServiceDetails,
+    path: '/sonta/record-sundayservice',
+    element: SontaSundayMeeting,
+    roles: permitLeaderAdmin('Sonta'),
+    placeholder: false,
+  },
+  {
+    path: '/sonta/rehearsal-service-details',
+    element: SontaRehearsalServiceDetails,
+    roles: permitLeaderAdmin('Sonta'),
+    placeholder: false,
+  },
+  {
+    path: '/sonta/sunday-meeting-details',
+    element: SontaSundayMeetingDetails,
     roles: permitLeaderAdmin('Sonta'),
     placeholder: false,
   },

@@ -139,6 +139,44 @@ export const RECORD_SERVICE_NO_INCOME = gql`
   }
 `
 
+export const RECORD_SONTA_REHEARSAL_SERVICE = gql`
+  mutation RecordSontaRehearsalService(
+    $churchId: ID!
+    $attendance: Int!
+    $familyPicture: String!
+    $serviceDate: String!
+  ) {
+    RecordSontaRehearsalService(
+      churchId: $churchId
+      attendance: $attendance
+      familyPicture: $familyPicture
+      serviceDate: $serviceDate
+    ) {
+      id
+      week
+    }
+  }
+`
+
+export const RECORD_SONTA_SUNDAY_MEETING = gql`
+  mutation RecordSontaSundayMeeting(
+    $churchId: ID!
+    $serviceDate: String!
+    $attendance: Int!
+    $familyPicture: String!
+  ) {
+    RecordSontaSundayMeeting(
+      churchId: $churchId
+      serviceDate: $serviceDate
+      attendance: $attendance
+      familyPicture: $familyPicture
+    ) {
+      id
+      week
+    }
+  }
+`
+
 export const DISPLAY_FELLOWSHIP_SERVICE = gql`
   query fellowshipDisplayServiceRecords($serviceId: ID!, $fellowshipId: ID!) {
     serviceRecords(where: { id: $serviceId }) {
@@ -278,6 +316,56 @@ export const DISPLAY_SONTA_SERVICE = gql`
       treasurerSelfie
       familyPicture
       treasurers {
+        id
+        firstName
+        lastName
+        fullName
+      }
+    }
+    sontas(where: { id: $sontaId }) {
+      id
+      name
+    }
+  }
+`
+
+export const DISPLAY_SONTA_SUNDAY_MEETING = gql`
+  query sontaDisplaySundayMeetingRecords($serviceId: ID!, $sontaId: ID!) {
+    ministryAttendanceRecords(where: { id: $serviceId }) {
+      id
+      createdAt
+      serviceDate {
+        date
+      }
+      attendance
+      familyPicture
+      week
+      created_by {
+        id
+        firstName
+        lastName
+        fullName
+      }
+    }
+    sontas(where: { id: $sontaId }) {
+      id
+      name
+    }
+  }
+`
+
+export const DISPLAY_SONTA_REHEARSAL = gql`
+  query sontaDisplayRehearsalRecords($serviceId: ID!, $sontaId: ID!) {
+    rehearsalRecords(where: { id: $serviceId }) {
+      id
+      createdAt
+      serviceDate {
+        date
+      }
+      attendance
+      familyPicture
+      week
+      created_by {
         id
         firstName
         lastName

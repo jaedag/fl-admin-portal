@@ -183,9 +183,12 @@ const servantCypher = {
   // Connect log to leader, new church, and old leader
   connectServiceLog: `
    MATCH (church {id: $churchId}) 
-   WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:GatheringService 
-   OR church:Federalministry OR church:Ministry OR church:Hub OR church:Sonta
-   
+   WHERE church:Fellowship OR church:Bacenta 
+   OR church:Constituency OR church:Council 
+   OR church:Stream OR church:GatheringService 
+   OR church:Sonta OR church:Ministry
+   OR church:ClosedFellowship OR church:ClosedBacenta
+   OR church:Sonta OR church:Hub OR church:FederalMinistry
    MATCH (leader:Member {id: $servantId})
    MATCH (currentUser:Member {auth_id: $auth.jwt.sub}) 
    MATCH (log:ServiceLog {id: $logId})
@@ -219,9 +222,12 @@ const servantCypher = {
   // First Connection
   connectHistoryLog: `
    MATCH (church {id:$churchId}) 
-   WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:GatheringService 
-   OR church:Federalministry OR church:Ministry OR church:Hub OR church:Sonta
-   
+   WHERE church:Fellowship OR church:Bacenta 
+   OR church:Constituency OR church:Council 
+   OR church:Stream OR church:GatheringService 
+   OR church:Sonta OR church:Ministry OR church:Member 
+   OR church:ClosedFellowship OR church:ClosedBacenta
+   OR church:Sonta OR church:Hub OR church:FederalMinistry
    MATCH (leader:Member {id: $servantId})
    MATCH (currentUser:Member {auth_id: $auth.jwt.sub}) 
    MATCH (log:HistoryLog {id: $logId})
