@@ -71,7 +71,7 @@ export const CURRENCY_OPTIONS: FormikSelectOptions = [
 ]
 
 export const DELETE_MEMBER_CATEGORY_OPTIONS: FormikSelectOptions = [
-  { key: 'Moved Out of Accra', value: 'Moved Out of Accra' },
+  { key: 'Moved Cities', value: 'Moved Cities' },
   {
     key: 'Left the Church In Spite of Calls and Visits',
     value: 'Left the Church In Spite of Calls and Visits',
