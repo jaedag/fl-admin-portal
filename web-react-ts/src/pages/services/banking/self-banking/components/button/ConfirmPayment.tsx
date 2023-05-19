@@ -86,10 +86,10 @@ const ButtonConfirmPayment = (props: ButtonConfirmPaymentProps) => {
               confirmationRes.data.ConfirmOfferingPayment?.transactionStatus ===
               'pending'
             ) {
+              navigate('/self-banking/receipt')
               alertMsg(
                 'Your Payment is still pending please follow the manual steps for approval'
               )
-              navigate('/self-banking/receipt')
               return
             }
 
@@ -97,6 +97,7 @@ const ButtonConfirmPayment = (props: ButtonConfirmPaymentProps) => {
               confirmationRes.data.ConfirmOfferingPayment?.transactionStatus ===
               'failed'
             ) {
+              navigate('/services/fellowship/self-banking')
               alertMsg('Your Payment Failed 😞. Please try again!')
               return
             }
@@ -105,8 +106,8 @@ const ButtonConfirmPayment = (props: ButtonConfirmPaymentProps) => {
               confirmationRes.data.ConfirmOfferingPayment?.transactionStatus ===
               'success'
             ) {
-              alertMsg('Payment Confirmed Successfully 😊')
               navigate('/self-banking/receipt')
+              alertMsg('Payment Confirmed Successfully 😊')
               return
             }
           }
@@ -114,6 +115,7 @@ const ButtonConfirmPayment = (props: ButtonConfirmPaymentProps) => {
           if (
             ['failed', 'abandoned'].includes(serviceRecord.transactionStatus)
           ) {
+            navigate('/services/fellowship/self-banking')
             alertMsg('Your Payment Failed 😞. Please try again!')
             return
           }
