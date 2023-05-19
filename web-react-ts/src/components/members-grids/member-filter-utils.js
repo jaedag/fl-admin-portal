@@ -14,9 +14,9 @@ export const memberFilter = (memberData, filters) => {
         return member
       }
 
-      if (subsubfield === 'title') {
+      if (subsubfield === 'name') {
         for (let i = 0; i < member.title.length; i++) {
-          if (member.title[i]?.title === criteria) {
+          if (member.title[i]?.name === criteria) {
             return member
           }
         }
@@ -140,7 +140,7 @@ export const memberFilter = (memberData, filters) => {
       'title',
       'Title',
       'Pastor',
-      'title'
+      'name'
     )
   }
   if (filters.leaderTitle.includes('Reverend')) {
@@ -149,7 +149,7 @@ export const memberFilter = (memberData, filters) => {
       'title',
       'Title',
       'Reverend',
-      'title'
+      'name'
     )
   }
   if (filters.leaderTitle.includes('Bishop')) {
@@ -158,7 +158,7 @@ export const memberFilter = (memberData, filters) => {
       'title',
       'Title',
       'Bishop',
-      'title'
+      'name'
     )
   }
 
