@@ -41,6 +41,7 @@ const SetPermissions = ({
       setCurrentUser({
         ...currentUser,
         id: data.memberByEmail.id,
+        nameWithTitle: data.memberByEmail.nameWithTitle,
         fellowship: data.memberByEmail?.fellowship.id,
         bacenta: data.memberByEmail?.fellowship?.bacenta?.id,
         council:

@@ -25,7 +25,9 @@ function UserProfileIcon() {
               />
             </div>
             <div className="flex-grow-1 ms-3">
-              <div className="text-secondary small">{currentUser.fullName}</div>
+              <div className="text-secondary small">
+                {currentUser.nameWithTitle}
+              </div>
               <div className="text-secondary small">{currentUser.email}</div>
             </div>
           </div>

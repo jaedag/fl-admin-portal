@@ -8,7 +8,6 @@ export const DISPLAY_MEMBER_BIO = gql`
       middleName
       lastName
       fullName
-      currentTitle
       nameWithTitle
       email
       phoneNumber

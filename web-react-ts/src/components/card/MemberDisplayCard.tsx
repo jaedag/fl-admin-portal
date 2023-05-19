@@ -24,7 +24,7 @@ type MemberDisplayCardProps = {
     name?: string
     firstName?: string
     lastName?: string
-    fullName?: string
+    nameWithTitle?: string
     pictureUrl?: string
     fellowship?: {
       id: string
@@ -36,12 +36,12 @@ type MemberDisplayCardProps = {
     }
     leader?: {
       id: string
-      fullName: string
+      nameWithTitle: string
     }
   }
   leader?: {
     id: string
-    fullName: string
+    nameWithTitle: string
     phoneNumber: string
     whatsappNumber: string
     pictureUrl: string
@@ -80,7 +80,7 @@ const MemberDisplayCard = (props: MemberDisplayCardProps) => {
 
   switch (member.__typename) {
     case 'Member':
-      name = member?.fullName || member.firstName + ' ' + member.lastName
+      name = member?.nameWithTitle || member.firstName + ' ' + member.lastName
       details = [
         member.fellowship ? member.fellowship.name + ' Fellowship' : '',
         member.ministry ? member.ministry.name : '',
@@ -89,38 +89,38 @@ const MemberDisplayCard = (props: MemberDisplayCardProps) => {
     case 'Fellowship':
       icon = 'fellowship'
       name = member.name + ' Fellowship'
-      details = [member?.leader?.fullName || '']
+      details = [member?.leader?.nameWithTitle || '']
       break
     case 'Bacenta':
       icon = 'bacenta'
       name = member.name + ' Bacenta'
-      details = [member?.leader?.fullName || '']
+      details = [member?.leader?.nameWithTitle || '']
       break
 
     case 'Constituency':
       icon = 'constituency'
       name = member.name + ' Constituency'
-      details = [member?.leader?.fullName || '']
+      details = [member?.leader?.nameWithTitle || '']
       break
     case 'Council':
       icon = 'council'
       name = member.name + ' Council'
-      details = [member?.leader?.fullName || '']
+      details = [member?.leader?.nameWithTitle || '']
       break
     case 'Stream':
       icon = 'stream'
       name = member.name + ' Stream'
-      details = [member?.leader?.fullName || '']
+      details = [member?.leader?.nameWithTitle || '']
       break
     case 'GatheringService':
       icon = 'stream'
       name = member.name + ' Gathering Service'
-      details = [member?.leader?.fullName || '']
+      details = [member?.leader?.nameWithTitle || '']
       break
     case 'Sonta':
       icon = 'stream'
       name = member.name + ' Sonta'
-      details = [member?.leader?.fullName || '']
+      details = [member?.leader?.nameWithTitle || '']
       break
     default:
       break
@@ -147,7 +147,7 @@ const MemberDisplayCard = (props: MemberDisplayCardProps) => {
             ) : (
               <CloudinaryImage
                 src={picture}
-                alt={member.fullName}
+                alt={member.nameWithTitle}
                 className={`${picture && 'rounded-circle'} img-search`}
               />
             )}

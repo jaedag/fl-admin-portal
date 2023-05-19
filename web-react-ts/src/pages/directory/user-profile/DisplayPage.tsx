@@ -63,7 +63,7 @@ const DisplayPage = () => {
               as="h1"
               className="text-center"
             >
-              <h1 className="text-center">{`${member?.fullName}`}</h1>
+              <h1 className="text-center">{`${member?.nameWithTitle}`}</h1>
             </PlaceholderCustom>
             <Container className="px-5 mb-2">
               <div className="d-grid gap-2">

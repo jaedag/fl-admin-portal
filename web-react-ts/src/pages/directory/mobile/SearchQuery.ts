@@ -48,7 +48,7 @@ export const OVERSIGHT_SEARCH = gql`
         id
         firstName
         lastName
-        fullName
+        nameWithTitle
       }
     }
     oversightBacentaSearch(searchKey: $searchKey, oversightId: $oversightId) {
@@ -59,7 +59,7 @@ export const OVERSIGHT_SEARCH = gql`
         id
         firstName
         lastName
-        fullName
+        nameWithTitle
       }
     }
     oversightFellowshipSearch(
@@ -73,13 +73,14 @@ export const OVERSIGHT_SEARCH = gql`
         id
         firstName
         lastName
-        fullName
+        nameWithTitle
       }
     }
     oversightMemberSearch(searchKey: $searchKey, oversightId: $oversightId) {
       id
       firstName
       lastName
+      nameWithTitle
       pictureUrl
       stream_name
       fellowship {
@@ -120,7 +121,7 @@ export const GATHERINGSERVICE_SEARCH = gql`
         id
         firstName
         lastName
-        fullName
+        nameWithTitle
       }
     }
 
@@ -135,7 +136,7 @@ export const GATHERINGSERVICE_SEARCH = gql`
         id
         firstName
         lastName
-        fullName
+        nameWithTitle
       }
     }
     gatheringServiceBacentaSearch(
@@ -149,7 +150,7 @@ export const GATHERINGSERVICE_SEARCH = gql`
         id
         firstName
         lastName
-        fullName
+        nameWithTitle
       }
     }
     gatheringServiceFellowshipSearch(
@@ -163,7 +164,7 @@ export const GATHERINGSERVICE_SEARCH = gql`
         id
         firstName
         lastName
-        fullName
+        nameWithTitle
       }
     }
     gatheringServiceMemberSearch(
@@ -173,6 +174,7 @@ export const GATHERINGSERVICE_SEARCH = gql`
       id
       firstName
       lastName
+      nameWithTitle
       pictureUrl
       stream_name
       fellowship {
@@ -197,7 +199,7 @@ export const STREAM_SEARCH = gql`
         id
         firstName
         lastName
-        fullName
+        nameWithTitle
       }
     }
     streamConstituencySearch(searchKey: $searchKey, streamId: $streamId) {
@@ -208,7 +210,7 @@ export const STREAM_SEARCH = gql`
         id
         firstName
         lastName
-        fullName
+        nameWithTitle
       }
     }
     streamBacentaSearch(searchKey: $searchKey, streamId: $streamId) {
@@ -219,7 +221,7 @@ export const STREAM_SEARCH = gql`
         id
         firstName
         lastName
-        fullName
+        nameWithTitle
       }
     }
     streamFellowshipSearch(searchKey: $searchKey, streamId: $streamId) {
@@ -230,13 +232,14 @@ export const STREAM_SEARCH = gql`
         id
         firstName
         lastName
-        fullName
+        nameWithTitle
       }
     }
     streamMemberSearch(searchKey: $searchKey, streamId: $streamId) {
       id
       firstName
       lastName
+      nameWithTitle
       pictureUrl
       stream_name
       fellowship {
@@ -260,7 +263,7 @@ export const COUNCIL_SEARCH = gql`
         id
         firstName
         lastName
-        fullName
+        nameWithTitle
       }
     }
     councilBacentaSearch(searchKey: $searchKey, councilId: $councilId) {
@@ -270,7 +273,7 @@ export const COUNCIL_SEARCH = gql`
         id
         firstName
         lastName
-        fullName
+        nameWithTitle
       }
     }
     councilFellowshipSearch(searchKey: $searchKey, councilId: $councilId) {
@@ -280,14 +283,14 @@ export const COUNCIL_SEARCH = gql`
         id
         firstName
         lastName
-        fullName
+        nameWithTitle
       }
     }
     councilMemberSearch(searchKey: $searchKey, councilId: $councilId) {
       id
       firstName
       lastName
-      fullName
+      nameWithTitle
       pictureUrl
       stream_name
       fellowship {
@@ -314,7 +317,7 @@ export const CONSTITUENCY_SEARCH = gql`
         id
         firstName
         lastName
-        fullName
+        nameWithTitle
       }
     }
     constituencyFellowshipSearch(
@@ -327,7 +330,7 @@ export const CONSTITUENCY_SEARCH = gql`
         id
         firstName
         lastName
-        fullName
+        nameWithTitle
       }
     }
     constituencyMemberSearch(
@@ -337,7 +340,7 @@ export const CONSTITUENCY_SEARCH = gql`
       id
       firstName
       lastName
-      fullName
+      nameWithTitle
       pictureUrl
       stream_name
       fellowship {
@@ -361,14 +364,14 @@ export const BACENTA_SEARCH = gql`
         id
         firstName
         lastName
-        fullName
+        nameWithTitle
       }
     }
     bacentaMemberSearch(searchKey: $searchKey, bacentaId: $bacentaId) {
       id
       firstName
       lastName
-      fullName
+      nameWithTitle
       pictureUrl
       stream_name
       fellowship {
@@ -389,7 +392,7 @@ export const FELLOWSHIP_SEARCH = gql`
       id
       firstName
       lastName
-      fullName
+      nameWithTitle
       pictureUrl
       stream_name
       fellowship {
