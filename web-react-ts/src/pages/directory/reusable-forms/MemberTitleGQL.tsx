@@ -6,6 +6,7 @@ export const GET_MEMBER_TITLES = gql`
       id
       firstName
       lastName
+      fullName
       nameWithTitle
       titleConnection {
         edges {

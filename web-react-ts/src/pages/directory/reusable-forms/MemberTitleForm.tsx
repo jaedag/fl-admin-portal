@@ -160,7 +160,7 @@ const MemberTitleForm = () => {
     <ApolloWrapper data={data} loading={loading} error={error}>
       <Container>
         <HeadingPrimary>Member Title Form</HeadingPrimary>
-        <HeadingSecondary>{member?.name}</HeadingSecondary>
+        <HeadingSecondary>{member?.fullName}</HeadingSecondary>
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}
