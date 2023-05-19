@@ -851,7 +851,7 @@ extend type Mutation {
       MERGE (log)-[:LOGGED_BY]->(admin)
       MERGE (log)-[:RECORDED_ON]->(date)
       MERGE (stream)-[:HAS_HISTORY]->(log)
-      MERGE (stream)-[:HAS_HISTORY]->(log)
+      MERGE (council)-[:HAS_HISTORY]->(log)
 
       SET council:ClosedCouncil, constituencies:ClosedConstituency, bacentas:ClosedBacenta, fellowships:ClosedFellowship
       REMOVE council:Council,constituencies:Constituency,bacentas:Bacenta, fellowships:Fellowship

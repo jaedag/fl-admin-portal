@@ -24,7 +24,8 @@ MATCH (constituency {id: '2899f839-5f75-4a9c-9061-cf723a34f365'})-[:CURRENT_HIST
    WHERE record.week = date().week AND record.year = date().year
    RETURN constituency.name, record.income
 
-   MATCH (member:Member)-[r:HAS_TITLE]->(title:Title)
-   DELETE r
-   RETURN COUNT(member)
+ 
 
+MATCH (member:Member)-[r:IS_SHEEP_SEEKER_FOR]->(gkl)
+DELETE r
+RETURN COUNT(member)
