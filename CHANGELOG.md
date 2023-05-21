@@ -1,3 +1,19 @@
+#### 7.6.13 (2023-05-21)
+
+##### New Features
+
+*  add title to many places of the app ([039404cf](https://github.com/firstlovecenter/fl-pastoral-care/commit/039404cf8262644f775cd6d996cc928155f2b712))
+
+##### Bug Fixes
+
+*  update nameWithTitle on bussingStatus Queries ([e86deec4](https://github.com/firstlovecenter/fl-pastoral-care/commit/e86deec450414c6919201a6345bbaad5f8c958f6))
+*  add auth rules to updating member title ([731ec1a4](https://github.com/firstlovecenter/fl-pastoral-care/commit/731ec1a40bb96706598797167280ec183c3e02e0))
+*  udpate the cypher to close councils ([9226e5a0](https://github.com/firstlovecenter/fl-pastoral-care/commit/9226e5a04d614c1907f1ffe083aea045a64b95fa))
+*  add navigation to the confirm payment button ([7b1fc849](https://github.com/firstlovecenter/fl-pastoral-care/commit/7b1fc8491bf03ea003657dd8ba6fb11a2d20eb3d))
+*  fix bug not allowing member title filters ([d64c2d50](https://github.com/firstlovecenter/fl-pastoral-care/commit/d64c2d50ae7629cf6d82e1065afd494d74dbb211))
+*  add name to member title form ([1fcb65a9](https://github.com/firstlovecenter/fl-pastoral-care/commit/1fcb65a9d530470262f0a3838f9cabf1f3ab7185))
+*  update member deletion options ([fc6afdd9](https://github.com/firstlovecenter/fl-pastoral-care/commit/fc6afdd9e60b52b8c787aac619a1254cabd97045))
+
 #### 7.6.12 (2023-05-17)
 
 ##### Bug Fixes
