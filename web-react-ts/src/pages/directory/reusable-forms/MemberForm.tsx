@@ -216,7 +216,7 @@ const MemberForm = ({
 
                   <div className="form-row row-cols-1 row-cols-md-2 justify-content-center">
                     <HeadingPrimary>Basic Info</HeadingPrimary>
-                    <RoleView roles={permitAdmin('GatheringService')}>
+                    <RoleView roles={permitAdmin('Denomination')}>
                       <Button
                         variant="success"
                         size="lg"

@@ -450,6 +450,7 @@ extend type Mutation {
 extend type Mutation {
   UpdateMemberEmail(id: ID!, email: String!): Member
   UpdateMemberAppointmentDate(id: ID!, appointmentDate: String): Member!
+    @auth(rules: [{ roles: ["adminDenomination"] }])
     @cypher(
       statement: """
       MATCH (member:Active:Member {id: $id})
@@ -463,6 +464,7 @@ extend type Mutation {
       """
     )
   UpdateMemberOrdinationDate(id: ID!, ordinationDate: String!): Member!
+    @auth(rules: [{ roles: ["adminDenomination"] }])
     @cypher(
       statement: """
       MATCH (member:Active:Member {id: $id})
@@ -476,6 +478,7 @@ extend type Mutation {
       """
     )
   UpdateMemberConsecrationDate(id: ID!, consecrationDate: String!): Member!
+    @auth(rules: [{ roles: ["adminDenomination"] }])
     @cypher(
       statement: """
       MATCH (member:Active:Member {id: $id})

@@ -391,7 +391,7 @@ export const directory: LazyRouteTypes[] = [
   {
     path: '/member/title-form',
     element: MemberTitleForm,
-    roles: [...permitAdmin('Oversight')],
+    roles: [...permitAdmin('Denomination')],
     placeholder: false,
   },
 
