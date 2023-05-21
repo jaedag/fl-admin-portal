@@ -15,6 +15,7 @@ export const CONSTITUENCY_BACENTAS_NO_ACTIVITY = gql`
           firstName
           lastName
           fullName
+          nameWithTitle
           pictureUrl
           phoneNumber
           whatsappNumber
@@ -38,6 +39,7 @@ export const COUNCIL_BACENTAS_NO_ACTIVITY = gql`
           firstName
           lastName
           fullName
+          nameWithTitle
           pictureUrl
           phoneNumber
           whatsappNumber
@@ -61,6 +63,7 @@ export const STREAM_BACENTAS_NO_ACTIVITY = gql`
           firstName
           lastName
           fullName
+          nameWithTitle
           pictureUrl
           phoneNumber
           whatsappNumber
@@ -84,6 +87,7 @@ export const GATHERINGSERVICE_BACENTAS_NO_ACTIVITY = gql`
           firstName
           lastName
           fullName
+          nameWithTitle
           pictureUrl
           phoneNumber
           whatsappNumber
@@ -107,6 +111,7 @@ export const CONSTITUENCY_BACENTAS_MOBILISING = gql`
           firstName
           lastName
           fullName
+          nameWithTitle
           pictureUrl
           phoneNumber
           whatsappNumber
@@ -133,6 +138,7 @@ export const COUNCIL_BACENTAS_MOBILISING = gql`
           firstName
           lastName
           fullName
+          nameWithTitle
           pictureUrl
           phoneNumber
           whatsappNumber
@@ -159,6 +165,7 @@ export const STREAM_BACENTAS_MOBILISING = gql`
           firstName
           lastName
           fullName
+          nameWithTitle
           pictureUrl
           phoneNumber
           whatsappNumber
@@ -185,6 +192,7 @@ export const GATHERINGSERVICE_BACENTAS_MOBILISING = gql`
           firstName
           lastName
           fullName
+          nameWithTitle
           pictureUrl
           phoneNumber
           whatsappNumber
@@ -211,6 +219,7 @@ export const CONSTITUENCY_BACENTAS_ON_THE_WAY = gql`
           firstName
           lastName
           fullName
+          nameWithTitle
           pictureUrl
           phoneNumber
           whatsappNumber
@@ -237,6 +246,7 @@ export const COUNCIL_BACENTAS_ON_THE_WAY = gql`
           firstName
           lastName
           fullName
+          nameWithTitle
           pictureUrl
           phoneNumber
           whatsappNumber
@@ -262,6 +272,7 @@ export const STREAM_BACENTAS_ON_THE_WAY = gql`
           firstName
           lastName
           fullName
+          nameWithTitle
           pictureUrl
           phoneNumber
           whatsappNumber
@@ -288,6 +299,7 @@ export const GATHERINGSERVICE_BACENTAS_ON_THE_WAY = gql`
           firstName
           lastName
           fullName
+          nameWithTitle
           pictureUrl
           phoneNumber
           whatsappNumber
@@ -314,6 +326,7 @@ export const CONSTITUENCY_BACENTAS_TO_COUNT = gql`
           firstName
           lastName
           fullName
+          nameWithTitle
           pictureUrl
           phoneNumber
           whatsappNumber
@@ -340,6 +353,7 @@ export const COUNCIL_BACENTAS_TO_COUNT = gql`
           firstName
           lastName
           fullName
+          nameWithTitle
           pictureUrl
           phoneNumber
           whatsappNumber
@@ -366,6 +380,7 @@ export const COUNCIL_VEHICLES_TO_BE_PAID = gql`
           firstName
           lastName
           fullName
+          nameWithTitle
           pictureUrl
           phoneNumber
           whatsappNumber
@@ -400,6 +415,7 @@ export const STREAM_BACENTAS_TO_COUNT = gql`
           firstName
           lastName
           fullName
+          nameWithTitle
           pictureUrl
           phoneNumber
           whatsappNumber
@@ -431,6 +447,7 @@ export const GATHERINGSERVICE_BACENTAS_TO_COUNT = gql`
           firstName
           lastName
           fullName
+          nameWithTitle
           pictureUrl
           phoneNumber
           whatsappNumber
@@ -457,6 +474,7 @@ export const CONSTITUENCY_BACENTAS_ARRIVED = gql`
           firstName
           lastName
           fullName
+          nameWithTitle
           pictureUrl
           phoneNumber
           whatsappNumber
@@ -484,6 +502,7 @@ export const COUNCIL_BACENTAS_ARRIVED = gql`
           firstName
           lastName
           fullName
+          nameWithTitle
           pictureUrl
           phoneNumber
           whatsappNumber
@@ -511,6 +530,7 @@ export const STREAM_BACENTAS_ARRIVED = gql`
           firstName
           lastName
           fullName
+          nameWithTitle
           pictureUrl
           phoneNumber
           whatsappNumber
@@ -538,6 +558,7 @@ export const GATHERINGSERVICES_BACENTAS_ARRIVED = gql`
           firstName
           lastName
           fullName
+          nameWithTitle
           pictureUrl
           phoneNumber
           whatsappNumber
@@ -565,6 +586,7 @@ export const CONSTITUENCY_BACENTAS_BELOW_8 = gql`
           firstName
           lastName
           fullName
+          nameWithTitle
           pictureUrl
           phoneNumber
           whatsappNumber
@@ -592,6 +614,7 @@ export const COUNCIL_BACENTAS_BELOW_8 = gql`
           firstName
           lastName
           fullName
+          nameWithTitle
           pictureUrl
           phoneNumber
           whatsappNumber
@@ -619,6 +642,7 @@ export const STREAM_BACENTAS_BELOW_8 = gql`
           firstName
           lastName
           fullName
+          nameWithTitle
           pictureUrl
           phoneNumber
           whatsappNumber
@@ -646,6 +670,7 @@ export const GATHERINGSERVICE_BACENTAS_BELOW_8 = gql`
           firstName
           lastName
           fullName
+          nameWithTitle
           pictureUrl
           phoneNumber
           whatsappNumber
