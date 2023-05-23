@@ -1,3 +1,11 @@
+#### 7.6.14 (2023-05-23)
+
+##### Bug Fixes
+
+*  prevent double form filling in a week for all levels except oversight and denomination ([3bb50f93](https://github.com/firstlovecenter/fl-pastoral-care/commit/3bb50f9321de7e8e02bc19a0fd5c545ece8ce520))
+*  prevent double form filling in a week for all levels ([fb3f18c1](https://github.com/firstlovecenter/fl-pastoral-care/commit/fb3f18c195487ade96171f4437aff009f1540e78))
+*  add adminDenomination to permit Admin ([ea52768b](https://github.com/firstlovecenter/fl-pastoral-care/commit/ea52768bd05283fdb070be1df5476a26a7f1723c))
+
 #### 7.6.13 (2023-05-21)
 
 ##### New Features
