@@ -65,3 +65,19 @@ RETURN title.name, title.priority;
 MATCH (title:Title )
 REMOVE title.weight
 RETURN COUNT(title);
+
+MATCH (stream:Stream {name: "Gospel Encounter"})
+SET stream.accountName = "ges_account"
+RETURN stream;
+
+MATCH (stream:Stream {name: "Anagkazo Encounter"})
+SET stream.accountName = "aes_account"
+RETURN stream;
+
+MATCH (stream:Stream {name: "Holy Ghost Encounter"})
+SET stream.accountName = "hge_account"
+RETURN stream;
+
+MATCH (stream:Stream {name: "First Love Experience"})
+SET stream.accountName = "fle_account"
+RETURN stream;

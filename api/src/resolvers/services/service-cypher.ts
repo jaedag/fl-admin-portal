@@ -6,7 +6,7 @@ MATCH (church)<-[:HAS]-(higherChurch)
 OPTIONAL MATCH (church)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
 WHERE date(date.date).week = date().week AND date(date.date).year = date().year
         
-RETURN church.id AS id, church.name AS name, labels(church) AS labels, labels(higherChurch) AS higherChurchLabels, higherChurch.id AS higherChurchId, record AS alreadyFilled
+RETURN church.id AS id, church.name AS name, labels(church) AS labels, labels(higherChurch) AS higherChurchLabels, higherChurch.id AS higherChurchId, record IS NOT NULL AS alreadyFilled
 `
 
 export const getCurrency = `

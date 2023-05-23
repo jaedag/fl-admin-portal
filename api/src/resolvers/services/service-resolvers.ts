@@ -120,7 +120,7 @@ const serviceMutation = {
     if (
       serviceCheck.alreadyFilled &&
       !['Council', 'Stream', 'Oversight', 'Denomination'].some((label) =>
-        serviceCheck.higherChurchLabels?.includes(label)
+        serviceCheck.labels?.includes(label)
       )
     ) {
       throw new Error(errorMessage.no_double_form_filling)
