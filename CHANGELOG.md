@@ -1,3 +1,9 @@
+#### 7.6.15 (2023-05-23)
+
+##### Bug Fixes
+
+*  implement dynamic selection of bank accounts per stream ([910f2561](https://github.com/firstlovecenter/fl-pastoral-care/commit/910f2561b1ddaeee9945511cd88a36f48aee9838))
+
 #### 7.6.14 (2023-05-23)
 
 ##### Bug Fixes
