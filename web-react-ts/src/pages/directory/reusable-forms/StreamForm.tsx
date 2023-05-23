@@ -3,6 +3,7 @@ import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { FieldArray, Form, Formik, FormikHelpers } from 'formik'
 import * as Yup from 'yup'
 import {
+  STREAM_ACCOUNT_OPTIONS,
   STREAM_SERVICE_DAY_OPTIONS,
   makeSelectOptions,
   throwToSentry,
@@ -29,9 +30,11 @@ import SearchMember from 'components/formik/SearchMember'
 import SearchCouncil from 'components/formik/SearchCouncil'
 import { FormikInitialValues } from 'components/formik/formik-types'
 import { Church } from 'global-types'
+import { streamAccountType } from '@jaedag/admin-portal-types'
 
 export interface StreamFormValues extends FormikInitialValues {
   meetingDay: string
+  bankAccount: streamAccountType
   gatheringService: string
   councils?: Church[]
 }
@@ -118,6 +121,11 @@ const StreamForm = ({
                         name="meetingDay"
                         options={STREAM_SERVICE_DAY_OPTIONS}
                         defaultOption="Pick a Service Day"
+                      />
+                      <Select
+                        label="Stream Account"
+                        name="bankAccount"
+                        options={STREAM_ACCOUNT_OPTIONS}
                       />
 
                       <Row className="d-flex align-items-center mb-3">

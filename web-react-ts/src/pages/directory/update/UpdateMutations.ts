@@ -149,17 +149,20 @@ export const UPDATE_STREAM_MUTATION = gql`
   mutation UpdateStream(
     $streamId: ID!
     $name: String!
+    $bankAccount: String!
     $gatheringServiceId: ID!
     $meetingDay: String!
   ) {
     UpdateStreamDetails(
       streamId: $streamId
       name: $name
+      bankAccount: $bankAccount
       gatheringServiceId: $gatheringServiceId
       meetingDay: $meetingDay
     ) {
       id
       name
+      bankAccount
       meetingDay {
         day
         dayNumber

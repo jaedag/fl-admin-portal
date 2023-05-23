@@ -80,6 +80,10 @@ export const DELETE_MEMBER_CATEGORY_OPTIONS: FormikSelectOptions = [
     key: 'Duplicate Member',
     value: 'Duplicate Member',
   },
+  {
+    key: 'Deceased',
+    value: 'Deceased',
+  },
 ]
 
 export const HOW_YOU_JOINED_OPTIONS: FormikSelectOptions = [
@@ -118,6 +122,14 @@ export const HOW_YOU_JOINED_OPTIONS: FormikSelectOptions = [
 export const BUSSING_STATUS_OPTIONS: FormikSelectOptions = [
   { key: 'IC', value: 'IC' },
   { key: 'Graduated', value: 'Graduated' },
+]
+
+export const STREAM_ACCOUNT_OPTIONS: FormikSelectOptions = [
+  { key: 'Manual Finances', value: 'manual' },
+  { key: 'FLE Account', value: 'fle_account' },
+  { key: 'AES Account', value: 'aes_account' },
+  { key: 'GES Account', value: 'ges_account' },
+  { key: 'HGE Account', value: 'hge_account' },
 ]
 
 export const throwToSentry = (

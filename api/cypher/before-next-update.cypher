@@ -67,17 +67,21 @@ REMOVE title.weight
 RETURN COUNT(title);
 
 MATCH (stream:Stream {name: "Gospel Encounter"})
-SET stream.accountName = "ges_account"
+SET stream.bankAccount = "ges_account"
 RETURN stream;
 
 MATCH (stream:Stream {name: "Anagkazo Encounter"})
-SET stream.accountName = "aes_account"
+SET stream.bankAccount = "aes_account"
 RETURN stream;
 
 MATCH (stream:Stream {name: "Holy Ghost Encounter"})
-SET stream.accountName = "hge_account"
+SET stream.bankAccount = "hge_account"
 RETURN stream;
 
-MATCH (stream:Stream {name: "First Love Experience"})
-SET stream.accountName = "fle_account"
+MATCH (stream:Stream)
+SET stream.bankAccount = "fle_account"
+RETURN stream;
+
+MATCH (stream:Stream)
+REMOVE stream.accountName
 RETURN stream;

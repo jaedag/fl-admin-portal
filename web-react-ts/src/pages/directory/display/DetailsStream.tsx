@@ -28,6 +28,11 @@ const DetailsStream = () => {
       link: '#',
     },
     {
+      title: 'Bank Account',
+      number: stream?.bankAccount,
+      link: '#',
+    },
+    {
       title: 'Councils',
       number: stream?.councilCount || 0,
       link: `/${`Council`.toLowerCase()}/displayall`,

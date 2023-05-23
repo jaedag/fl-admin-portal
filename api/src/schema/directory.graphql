@@ -553,6 +553,7 @@ type GatheringService implements Church {
 type Stream implements Church {
   id: ID @id
   name: String!
+  bankAccount: String!
   leader: Member @relationship(type: "LEADS", direction: IN)
   councils: [Council!]! @relationship(type: "HAS", direction: OUT)
   gatheringService: GatheringService @relationship(type: "HAS", direction: IN)

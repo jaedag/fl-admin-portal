@@ -426,6 +426,7 @@ export const DISPLAY_STREAM = gql`
     streams(where: { id: $id }, options: { limit: 1 }) {
       id
       name
+      bankAccount
       target
       councilCount
       constituencyCount

@@ -20,6 +20,7 @@ const CreateStream = () => {
     leaderId: '',
     meetingDay: '',
     leaderName: '',
+    bankAccount: 'manual',
     leaderEmail: '',
     gatheringService: gatheringServiceId,
   }
@@ -44,6 +45,7 @@ const CreateStream = () => {
         variables: {
           name: values.name,
           leaderId: values.leaderId,
+          bankAccount: values.bankAccount,
           gatheringServiceId: values.gatheringService,
           meetingDay: values.meetingDay,
         },

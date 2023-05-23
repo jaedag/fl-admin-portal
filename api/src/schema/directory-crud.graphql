@@ -658,6 +658,7 @@ extend type Mutation {
   UpdateStreamDetails(
     streamId: ID!
     name: String!
+    bankAccount: String!
     gatheringServiceId: ID!
     meetingDay: String!
   ): Stream
@@ -665,7 +666,8 @@ extend type Mutation {
     @cypher(
       statement: """
            MATCH (stream:Stream {id: $streamId})
-           	SET stream.name = $name
+           	SET stream.name = $name,
+            stream.bankAccount = $bankAccount
 
            WITH stream
               CALL {

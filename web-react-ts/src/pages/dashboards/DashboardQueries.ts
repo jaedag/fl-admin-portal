@@ -78,7 +78,7 @@ export const SERVANT_CHURCH_LIST = gql`
       isAdminForStream {
         id
         name
-        stream_name
+        bankAccount
       }
       isAdminForGatheringService {
         id
