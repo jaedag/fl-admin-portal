@@ -25,6 +25,8 @@ DELETE r
 WITH DISTINCT serviceRecord, transaction
 MERGE (transaction)-[:GIVEN_AT]->(serviceRecord)
 
+WITH DISTINCT serviceRecord, transaction WHERE transaction.status = 'success'
+
 WITH serviceRecord, SUM(transaction.amount) AS amount
      SET serviceRecord.mobileMoney = amount,
      serviceRecord.cash = serviceRecord.income,
@@ -38,6 +40,7 @@ export const recordService = `
         SET serviceRecord.createdAt = datetime(),
         serviceRecord.attendance = $attendance,
         serviceRecord.income = $income,
+        serviceRecord.cash = $income,
         serviceRecord.dollarIncome = round(toFloat($income / $conversionRateToDollar), 2),
         serviceRecord.foreignCurrency = $foreignCurrency,
         serviceRecord.numberOfTithers = $numberOfTithers,

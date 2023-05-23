@@ -14,19 +14,19 @@ const whitelistIPs = (event) => {
 }
 
 const setTransactionStatusSuccess = `
-      MATCH (record:ServiceRecord {transactionReference: $reference})
+      MATCH (record {transactionReference: $reference}) WHERE record:ServiceRecord OR record:Transaction
       SET record.transactionStatus = 'success'
       
       RETURN record
     `
 const setTransactionStatusFailed = `
-      MATCH (record:ServiceRecord {transactionReference: $reference})
+      MATCH (record {transactionReference: $reference}) WHERE record:ServiceRecord OR record:Transaction
       SET record.transactionStatus = 'failed'
       
       RETURN record
     `
 const setTransactionStatusPending = `
-    MATCH (record:ServiceRecord {transactionReference: $reference})
+    MATCH (record {transactionReference: $reference}) WHERE record:ServiceRecord OR record:Transaction
     SET record.transactionStatus = 'pending'
     
     RETURN record
@@ -65,10 +65,20 @@ const handlePaystackReq = async (event, neoDriver) => {
   const parsedBody = JSON.parse(event.body)
   const { reference, status } = parsedBody.data
 
-  return Promise.all([
-    db.collection('offerings').doc(reference).update({ status }),
-    executeQuery(neoDriver, { reference, status }),
-  ])
+  const neoRes = await executeQuery(neoDriver, { reference, status })
+  const categories = neoRes.records[0].get('record').labels
+
+  if (categories.includes('Offering')) {
+    await db.collection('offerings').doc(reference).update({ status })
+  }
+  if (categories.includes('Tithe')) {
+    await db.collection('tithes').doc(reference).update({ status })
+  }
+  if (categories.includes('BENMP')) {
+    await db.collection('benmp').doc(reference).update({ status })
+  }
+
+  return executeQuery(neoDriver, { reference, status })
 }
 
 // eslint-disable-next-line import/prefer-default-export
