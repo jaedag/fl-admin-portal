@@ -65,6 +65,15 @@ const ServiceDetails = ({ service, church, loading }: ServiceDetailsProps) => {
       }
       table.push(
         ['Income', <CurrencySpan number={service?.income} />],
+        ['Cash', <CurrencySpan number={service?.cash} />]
+      )
+      if (service?.mobileMoney) {
+        table.push([
+          'Mobile Money',
+          <CurrencySpan number={service?.mobileMoney} />,
+        ])
+      }
+      table.push(
         ...service?.treasurers.map((treasurer, i) => [
           `Treasurer ${i + 1}`,
           treasurer.fullName ?? '',

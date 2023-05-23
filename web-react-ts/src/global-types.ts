@@ -290,6 +290,7 @@ export type ServiceRecord = {
   created_by: Member
   attendance: number
   income: number
+  mobileMoney?: number
   numberOfTithers: number
   foreignCurrency: string
   week: number

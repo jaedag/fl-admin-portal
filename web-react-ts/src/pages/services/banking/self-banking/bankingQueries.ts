@@ -34,7 +34,7 @@ export const DISPLAY_OFFERING_DETAILS = gql`
       serviceDate {
         date
       }
-      income
+      cash
       transactionTime
       transactionReference
       transactionStatus
@@ -94,7 +94,7 @@ export const CONFIRM_OFFERING_PAYMENT = gql`
       stream_name: $stream_name
     ) {
       id
-      income
+      cash
       transactionId
       sourceNetwork
       sourceNumber
@@ -116,7 +116,7 @@ export const SELF_BANKING_RECEIPT = gql`
   query selfBankingReceipt($id: ID!) {
     serviceRecords(where: { id: $id }) {
       id
-      income
+      cash
       serviceDate {
         date
       }

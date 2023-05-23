@@ -128,7 +128,7 @@ const SelfBankingList = ({
             <Card.Body>
               <Row>
                 <Col>
-                  <span>Offering: {service.income}</span>
+                  <span>Offering: {service.cash}</span>
                   <div
                     className={`${
                       (service?.transactionStatus === 'pending' ||

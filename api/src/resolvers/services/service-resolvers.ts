@@ -9,6 +9,7 @@ import {
   throwToSentry,
 } from '../utils/utils'
 import {
+  absorbAllTransactions,
   aggregateServiceDataForBacenta,
   aggregateServiceDataForConstituency,
   aggregateServiceDataForCouncil,
@@ -156,6 +157,17 @@ const serviceMutation = {
         })
       )
       .catch((error: any) => throwToSentry('Error Recording Service', error))
+
+    const serviceRecordId =
+      cypherResponse.records[0].get('serviceRecord').properties.id
+
+    await session.executeWrite((tx) =>
+      tx.run(absorbAllTransactions, {
+        ...args,
+        serviceRecordId,
+      })
+    )
+
     await sessionTwo
       .executeWrite((tx) =>
         tx.run(aggregateCypher, {

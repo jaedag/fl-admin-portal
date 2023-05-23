@@ -26,6 +26,7 @@ export const RECORD_SERVICE = gql`
       id
       attendance
       income
+      mobileMoney
     }
   }
 `
@@ -194,6 +195,8 @@ export const DISPLAY_FELLOWSHIP_SERVICE = gql`
       noServiceReason
       attendance
       income
+      cash
+      mobileMoney
       numberOfTithers
       foreignCurrency
       treasurerSelfie
@@ -263,6 +266,8 @@ export const DISPLAY_BACENTA_SERVICE = gql`
       noServiceReason
       attendance
       income
+      cash
+      mobileMoney
       numberOfTithers
       foreignCurrency
       treasurerSelfie
@@ -399,6 +404,8 @@ export const DISPLAY_CONSTITUENCY_SERVICE = gql`
       noServiceReason
       attendance
       income
+      cash
+      mobileMoney
       numberOfTithers
       foreignCurrency
       transactionId
@@ -455,6 +462,8 @@ export const DISPLAY_COUNCIL_SERVICE = gql`
       noServiceReason
       attendance
       income
+      cash
+      mobileMoney
       numberOfTithers
       transactionId
       foreignCurrency
@@ -511,6 +520,8 @@ export const DISPLAY_STREAM_SERVICE = gql`
       noServiceReason
       attendance
       income
+      cash
+      mobileMoney
       numberOfTithers
       foreignCurrency
       transactionId

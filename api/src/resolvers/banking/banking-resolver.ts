@@ -138,7 +138,7 @@ const bankingMutation = {
         Authorization: auth,
       },
       data: {
-        amount: Math.round((serviceRecord.income / (1 - 0.0195) + 0.01) * 100),
+        amount: Math.round((serviceRecord.cash / (1 - 0.0195) + 0.01) * 100),
         email: cypherResponse.author.email,
         currency: 'GHS',
         subaccount,
@@ -342,7 +342,7 @@ const bankingMutation = {
       record = record.record.properties
       return {
         id: record.id,
-        income: record.income,
+        cash: record.cash,
         transactionReference: record.transactionReference,
         transactionStatus: record.transactionStatus,
       }
@@ -404,7 +404,7 @@ const bankingMutation = {
 
     return {
       id: record.id,
-      income: record.income,
+      cash: record.cash,
       transactionReference: record.transactionReference,
       transactionStatus: record.transactionStatus,
       offeringBankedBy: {

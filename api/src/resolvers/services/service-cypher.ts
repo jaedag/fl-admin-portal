@@ -16,6 +16,23 @@ WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Counc
 RETURN gathering.currency AS currency, gathering.conversionRateToDollar AS conversionRateToDollar
 `
 
+export const absorbAllTransactions = `
+MATCH (serviceRecord:ServiceRecord {id: $serviceRecordId})<-[:HAS_SERVICE]-(:ServiceLog)<-[:CURRENT_HISTORY]-(church)
+WHERE church:Fellowship OR church:Constituency OR church:Council OR church:Stream OR church:GatheringService
+MATCH (church)<-[r:GIVEN_AT]-(transaction:Transaction)
+DELETE r
+
+WITH DISTINCT serviceRecord, transaction
+MERGE (transaction)-[:GIVEN_AT]->(serviceRecord)
+
+WITH serviceRecord, SUM(transaction.amount) AS amount
+     SET serviceRecord.mobileMoney = amount,
+     serviceRecord.cash = serviceRecord.income,
+     serviceRecord.income = amount + serviceRecord.income
+
+RETURN serviceRecord
+`
+
 export const recordService = `
       CREATE (serviceRecord:ServiceRecord {id: apoc.create.uuid()})
         SET serviceRecord.createdAt = datetime(),

@@ -1,3 +1,5 @@
+import { db } from './firebase'
+
 const neo4j = require('neo4j-driver')
 
 const whitelistIPs = (event) => {
@@ -63,7 +65,10 @@ const handlePaystackReq = async (event, neoDriver) => {
   const parsedBody = JSON.parse(event.body)
   const { reference, status } = parsedBody.data
 
-  return executeQuery(neoDriver, { reference, status })
+  return Promise.all([
+    db.collection('offerings').doc(reference).update({ status }),
+    executeQuery(neoDriver, { reference, status }),
+  ])
 }
 
 // eslint-disable-next-line import/prefer-default-export

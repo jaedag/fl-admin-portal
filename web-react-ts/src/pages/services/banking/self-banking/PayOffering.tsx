@@ -35,7 +35,7 @@ type PayOfferingProps = {
 
 type FormOptions = {
   bankingDate: string
-  income: number
+  cash: number
   momoName: string
   mobileNetwork: string
   mobileNumber: string
@@ -53,8 +53,8 @@ const PayOffering = (props: PayOfferingProps) => {
   const [ConfirmOfferingPayment] = useMutation(CONFIRM_OFFERING_PAYMENT)
   const navigate = useNavigate()
   const service = data?.serviceRecords[0]
-  const incomeAndCharges = parseFloat(
-    (service?.income / (1 - 0.0195) + 0.01).toFixed(2)
+  const cashAndCharges = parseFloat(
+    (service?.cash / (1 - 0.0195) + 0.01).toFixed(2)
   )
 
   const { togglePopup, isOpen } = usePopup()
@@ -65,7 +65,7 @@ const PayOffering = (props: PayOfferingProps) => {
 
   const initialValues = {
     bankingDate: new Date().toISOString().slice(0, 10),
-    income: service?.income,
+    cash: service?.cash,
     momoName: '',
     mobileNetwork: '',
     mobileNumber: '',
@@ -229,15 +229,15 @@ const PayOffering = (props: PayOfferingProps) => {
 
                     <Row className="row-cols-2 mb-2">
                       <Col>
-                        <small className="form-text label">Income</small>
+                        <small className="form-text label">Cash</small>
                         <div className="fw-bold">
-                          {service?.income} {currentUser.currency}
+                          {service?.cash} {currentUser.currency}
                         </div>
                       </Col>
                       <Col>
                         <small className="form-text label ">Charges</small>
                         <div className="fw-bold yellow">
-                          {(incomeAndCharges - service?.income).toFixed(2)}{' '}
+                          {(cashAndCharges - service?.cash).toFixed(2)}{' '}
                           {currentUser.currency}
                         </div>
                       </Col>
@@ -249,10 +249,10 @@ const PayOffering = (props: PayOfferingProps) => {
                     <Row className="my-4">
                       <Col>
                         <small className="form-text label">
-                          Income + Charges
+                          Cash + Charges
                         </small>
                         <div className="fw-bold">
-                          {incomeAndCharges} {currentUser.currency}
+                          {cashAndCharges} {currentUser.currency}
                         </div>
                       </Col>
                     </Row>

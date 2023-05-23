@@ -23,7 +23,7 @@ const ReceiptPage = () => {
   const service = data?.serviceRecords[0]
   const tablevalues = [
     ['Date of Service', getHumanReadableDate(service?.serviceDate.date)],
-    ['Income', service?.income],
+    ['Cash', service?.cash],
     ['Offering Banked By', service?.offeringBankedBy?.fullName],
     ['Transaction Ref', service?.transactionReference],
     ['Transaction Status', capitalise(service?.transactionStatus)],

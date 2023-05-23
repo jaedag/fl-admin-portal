@@ -35,6 +35,7 @@ export const FELLOWSHIP_BANKING_SLIP_QUERIES = gql`
           fullName
         }
         income
+        cash
         numberOfTithers
         foreignCurrency
         transactionId
@@ -98,6 +99,7 @@ export const CONSTITUENCY_BANKING_SLIP_QUERIES = gql`
           fullName
         }
         income
+        cash
         transactionId
         transactionStatus
       }
@@ -140,6 +142,7 @@ export const COUNCIL_BANKING_SLIP_QUERIES = gql`
           fullName
         }
         income
+        cash
         transactionId
         transactionStatus
       }
@@ -170,6 +173,7 @@ export const FELLOWSHIP_SERVICE_RECORDS = gql`
       }
       attendance
       income
+      cash
       foreignCurrency
     }
   }
@@ -197,6 +201,7 @@ export const CONSTITUENCY_SERVICE_RECORDS = gql`
       }
       attendance
       income
+      cash
       foreignCurrency
     }
   }
@@ -224,6 +229,7 @@ export const COUNCIL_SERVICE_RECORDS = gql`
       }
       attendance
       income
+      cash
       foreignCurrency
     }
   }
