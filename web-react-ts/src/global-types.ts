@@ -289,6 +289,7 @@ export type ServiceRecord = {
   createdAt: string
   created_by: Member
   attendance: number
+  cash: number
   income: number
   mobileMoney?: number
   numberOfTithers: number
