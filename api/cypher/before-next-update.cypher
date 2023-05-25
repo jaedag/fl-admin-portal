@@ -86,6 +86,6 @@ MATCH (stream:Stream)
 REMOVE stream.accountName
 RETURN stream;
 
-MATCH (record:ServiceRecord)
+MATCH (record:ServiceRecord) WHERE record.cash IS NULL
 SET record.cash = record.income
 RETURN COUNT(record);
