@@ -195,11 +195,13 @@ extend type Mutation {
     leaderId: ID!
     gatheringServiceId: ID!
     meetingDay: String!
+    bankAccount: String!
   ): Stream
     @auth(rules: [{ roles: ["adminGatheringService", "adminOversight"] }])
     @cypher(
       statement: """
       CREATE (stream:Stream {id:apoc.create.uuid(), name: $name})
+        SET stream.bankAccount = $bankAccount
 
        WITH stream
         CREATE (log:HistoryLog:ServiceLog)
