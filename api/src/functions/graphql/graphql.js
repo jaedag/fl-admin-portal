@@ -45,11 +45,6 @@ const neoSchema = new Neo4jGraphQL({
 export const handler = async (event, context, ...args) => {
   const schema = await neoSchema.getSchema()
 
-  console.log('process.env', process.env)
-
-  if (!process.env.JWT_SECRET) {
-    return 'JWT_SECRET not set'
-  }
   const server = new ApolloServer({
     // eslint-disable-next-line no-shadow
     context: ({ event }) => ({ req: event }),
