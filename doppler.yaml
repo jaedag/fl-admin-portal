@@ -1,0 +1,3 @@
+setup:
+  project: fl-admin-portal 
+  config: prd_fl-admin-portal
