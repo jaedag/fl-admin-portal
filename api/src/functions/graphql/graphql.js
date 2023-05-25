@@ -29,8 +29,6 @@ const driver = neo4j.driver(
   )
 )
 
-console.log('process.env', process.env)
-
 const neoSchema = new Neo4jGraphQL({
   typeDefs,
   resolvers,
@@ -47,6 +45,11 @@ const neoSchema = new Neo4jGraphQL({
 export const handler = async (event, context, ...args) => {
   const schema = await neoSchema.getSchema()
 
+  console.log('process.env', process.env)
+
+  if (!process.env.JWT_SECRET) {
+    return
+  }
   const server = new ApolloServer({
     // eslint-disable-next-line no-shadow
     context: ({ event }) => ({ req: event }),
