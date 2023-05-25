@@ -1,3 +1,19 @@
 setup:
-  project: fl-admin-portal 
-  config: prd_fl-admin-portal
+  - project: fl-admin-portal
+    config: prd_fl-admin-portal
+    path: .
+  - project: fl-admin-portal
+    config: prd_fl-admin-portal
+    path: web-react-ts/
+  - project: fl-admin-portal
+    config: prd_fl-admin-portal
+    path: api/
+  - project: fl-admin-portal
+    config: prd_fl-admin-portal
+    path: api/src/functions/graphql/
+  - project: fl-admin-portal
+    config: prd_fl-admin-portal
+    path: api/src/functions/payment/
+  - project: fl-admin-portal
+    config: prd_fl-admin-portal
+    path: api/src/functions/code-of-the-day/

@@ -78,8 +78,8 @@ MATCH (stream:Stream {name: "Holy Ghost Encounter"})
 SET stream.bankAccount = "hge_account"
 RETURN stream;
 
-MATCH (stream:Stream)
-SET stream.bankAccount = "fle_account"
+MATCH (stream:Stream) //WHERE stream.bankAccount IS NULL
+SET stream.bankAccount = "manual"
 RETURN stream;
 
 MATCH (stream:Stream)
