@@ -6,7 +6,7 @@
             "required": true
         },
         "NEO4J_USER": {
-            "description": "The database user that the API application will use to connect to Neo4j",
+            "description": "The database user that the API application will use to connect to Neo4j ",
             "required": true
         },
         "NEO4J_PASSWORD": {
