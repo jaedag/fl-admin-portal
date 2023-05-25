@@ -10,10 +10,10 @@ setup:
     path: api/
   - project: fl-admin-portal
     config: prd_fl-admin-portal
-    path: api/src/functions/graphql/
+    path: api/build/functions/graphql/
   - project: fl-admin-portal
     config: prd_fl-admin-portal
-    path: api/src/functions/payment/
+    path: api/build/functions/payment/
   - project: fl-admin-portal
     config: prd_fl-admin-portal
-    path: api/src/functions/code-of-the-day/
+    path: api/build/functions/code-of-the-day/
