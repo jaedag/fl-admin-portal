@@ -7,10 +7,10 @@
   command = "npm start"
 
 [context.production]
-  command = "npm run doppler-install && ./doppler --token $DOPPLER_TOKEN_PRD setup --no-interactive && npm i && cd api && npm i && cd ../web-react-ts && npm i && cd .. && ./doppler run --token $DOPPLER_TOKEN_PRD --command='npm run build && cp api/src/resolvers/texts.json api/build/resolvers/. && cp -r api/build/schema api/build/functions/graphql/. && cd api/src/functions/graphql && npm i'"
+  command = "npm run doppler-install && ./doppler setup --no-interactive --token $DOPPLER_TOKEN_PRD && npm i && cd api && npm i && cd ../web-react-ts && npm i && cd .. && ./doppler run --token $DOPPLER_TOKEN_PRD --command='npm run build && cp api/src/resolvers/texts.json api/build/resolvers/. && cp -r api/build/schema api/build/functions/graphql/. && cd api/src/functions/graphql && npm i'"
 
 [context.deploy-preview]
-  command = "npm run doppler-install && ./doppler --token $DOPPLER_TOKEN_PRD setup --no-interactive && npm i && cd api && npm i && cd ../web-react-ts && npm i && cd .. && ./doppler run --token $DOPPLER_TOKEN_STG --command='npm run build && cp api/src/resolvers/texts.json api/build/resolvers/. && cp -r api/build/schema api/build/functions/graphql/. && cd api/src/functions/graphql && npm i'"
+  command = "npm run doppler-install && ./doppler setup --no-interactive --token $DOPPLER_TOKEN_STG setup && npm i && cd api && npm i && cd ../web-react-ts && npm i && cd .. && ./doppler run --token $DOPPLER_TOKEN_STG --command='npm run build && cp api/src/resolvers/texts.json api/build/resolvers/. && cp -r api/build/schema api/build/functions/graphql/. && cd api/src/functions/graphql && npm i'"
 
 [template.environment]
   NEO4J_URI = "Neo4j URI (ex: bolt://localhost:7687)"
