@@ -13,7 +13,7 @@ const {
 const jobs = [
   {
     name: 'api',
-    command: `cd ${API_DIR} && ../doppler run --token $DOPPLER_TOKEN_PRD -- setup --no-interactive && ${runner} run build`,
+    command: `cd ${API_DIR} && ../doppler run --token $DOPPLER_TOKEN_PRD setup --no-interactive && ${runner} run build`,
     prefixColor: 'green',
   },
 ]
@@ -27,11 +27,12 @@ if (templateName === 'Flutter') {
 } else {
   jobs.push({
     name: templateName,
-    command: `cd ${TEMPLATE_DIR} &&  ../doppler run --token $DOPPLER_TOKEN_PRD -- setup --no-interactive && ${runner} run build`,
+    command: `cd ${TEMPLATE_DIR} &&  ../doppler run --token $DOPPLER_TOKEN_PRD setup --no-interactive && ${runner} run build`,
     prefixColor: 'blue',
   })
 }
 
 concurrently(jobs, concurrentOpts).result.catch((e) => {
+  // eslint-disable-next-line no-console
   console.error(e.message)
 })
