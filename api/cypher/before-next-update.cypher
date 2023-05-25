@@ -85,3 +85,7 @@ RETURN stream;
 MATCH (stream:Stream)
 REMOVE stream.accountName
 RETURN stream;
+
+MATCH (record:ServiceRecord)
+SET record.cash = record.income
+RETURN COUNT(record);
