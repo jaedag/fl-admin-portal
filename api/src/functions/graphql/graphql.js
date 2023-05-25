@@ -29,6 +29,8 @@ const driver = neo4j.driver(
   )
 )
 
+console.log('process.env', process.env)
+
 const neoSchema = new Neo4jGraphQL({
   typeDefs,
   resolvers,
