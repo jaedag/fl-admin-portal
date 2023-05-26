@@ -2,4 +2,4 @@ const { loadSecrets } = require('../lib/secrets.js')
 
 loadSecrets().populateEnv()
 
-console.log('Secrets loaded successfully', process.env)
+console.log('Secrets loaded successfully')
