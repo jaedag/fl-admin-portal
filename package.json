@@ -33,6 +33,7 @@
     "build": "node scripts/build.js",
     "doppler-install": "(curl -Ls https://cli.doppler.com/install.sh || wget -qO- https://cli.doppler.com/install.sh) | sh -s -- --no-install --no-package-manager",
     "encrypt-secrets": "./doppler run node scripts/encrypt-secrets.js",
+    "inject-secrets": "./doppler run node scripts/inject-secrets.js",
     "format": "find . -name \"*.js\" | grep -v node_modules | grep -v build | xargs prettier --write",
     "format:log": "find . -name \"*.js\" | grep -v node_modules | grep -v build | xargs prettier",
     "clean:git": "cd web-react-ts && rm -f ./.git/index.lock && cd ../api && rm -f ./.git/index.lock && cd .. && rm -f ./.git/index.lock",
