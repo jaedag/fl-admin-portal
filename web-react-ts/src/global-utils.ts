@@ -68,6 +68,7 @@ export const CURRENCY_OPTIONS: FormikSelectOptions = [
   { key: 'Madagascar Ariary (MGA)', value: 'MGA' },
   { key: 'Gambia Dalasi (GMD)', value: 'GMD' },
   { key: 'US Dollars (USD)', value: 'USD' },
+  { key: 'Sierra Leone Leone (SLL)', value: 'SLL' },
 ]
 
 export const DELETE_MEMBER_CATEGORY_OPTIONS: FormikSelectOptions = [
