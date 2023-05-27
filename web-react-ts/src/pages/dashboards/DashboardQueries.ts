@@ -55,6 +55,7 @@ export const SERVANT_CHURCH_LIST = gql`
       leadsStream {
         id
         name
+        bankAccount
       }
       leadsGatheringService {
         id
@@ -130,7 +131,7 @@ export const SERVANT_CHURCH_LIST = gql`
       isSheepSeekerForStream {
         id
         name
-        stream_name
+        bankAccount
       }
 
       #sonta
