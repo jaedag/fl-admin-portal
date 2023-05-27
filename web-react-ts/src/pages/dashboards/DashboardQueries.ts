@@ -119,7 +119,7 @@ export const SERVANT_CHURCH_LIST = gql`
       isTellerForStream {
         id
         name
-        stream_name
+        bankAccount
       }
       isArrivalsPayerForCouncil {
         id
