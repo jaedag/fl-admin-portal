@@ -12,7 +12,12 @@ dns.setDefaultResultOrder('verbatim')
 export default defineConfig(({ command, mode }) => {
   // Load env file based on `mode` in the current working directory.
   // Set the third parameter to '' to load all env regardless of the `VITE_` prefix.
-  const env = loadEnv(mode, process.cwd(), '')
+  const { loadSecrets } = require('./secrets.js')
+
+  const secrets = loadSecrets()
+
+  // eslint-disable-next-line no-console
+  console.log('Secrets loaded successfully', secrets.SENTRY_AUTH_TOKEN)
 
   return {
     server: {
@@ -33,7 +38,7 @@ export default defineConfig(({ command, mode }) => {
 
         // Auth tokens can be obtained from https://sentry.io/settings/account/api/auth-tokens/
         // and need `project:releases` and `org:read` scopes
-        authToken: env.SENTRY_AUTH_TOKEN,
+        authToken: secrets.SENTRY_AUTH_TOKEN,
 
         sourcemaps: {
           // Specify the directory containing build artifacts

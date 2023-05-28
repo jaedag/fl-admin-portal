@@ -6,17 +6,13 @@ const { Neo4jGraphQL } = require('@neo4j/graphql')
 const { Neo4jGraphQLAuthJWTPlugin } = require('@neo4j/graphql-plugin-auth')
 const neo4j = require('neo4j-driver')
 const Sentry = require('@sentry/node')
-const { loadSecrets } = require('./secrets.js')
-
-loadSecrets().populateEnv()
-
-// eslint-disable-next-line no-console
-console.log('Secrets loaded successfully')
 
 // This module is copied during the build step
 // Be sure to run `npm run build`
 const { typeDefs } = require('./schema/graphql-schema')
 const resolvers = require('../../resolvers/resolvers').default
+
+console.log('process.env.JWT_SECRET', process.env.JWT_SECRET)
 
 Sentry.init({
   dsn: 'https://cd02d9dbb24041f88bfa297993779123@o1423098.ingest.sentry.io/6770464',
