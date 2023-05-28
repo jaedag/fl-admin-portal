@@ -10,6 +10,7 @@ import { Neo4jGraphQL } from '@neo4j/graphql'
 import { Neo4jGraphQLAuthJWTPlugin } from '@neo4j/graphql-plugin-auth'
 import { typeDefs } from './schema/graphql-schema'
 import resolvers from './resolvers/resolvers'
+import SECRETS from './resolvers/getSecrets'
 
 const app = express()
 const httpServer = http.createServer(app)
@@ -25,13 +26,13 @@ Sentry.init({
 })
 
 const driver = neo4j.driver(
-  process.env.NEO4J_URI || 'bolt://localhost:7687/',
+  SECRETS.NEO4J_URI || 'bolt://localhost:7687/',
   neo4j.auth.basic(
-    process.env.NEO4J_USER || 'neo4j',
-    process.env.NEO4J_PASSWORD || 'letmein'
+    SECRETS.NEO4J_USER || 'neo4j',
+    SECRETS.NEO4J_PASSWORD || 'letmein'
   ),
   {
-    encrypted: process.env.NEO4J_ENCRYPTED ? 'ENCRYPTION_ON' : 'ENCRYPTION_OFF',
+    encrypted: SECRETS.NEO4J_ENCRYPTED ? 'ENCRYPTION_ON' : 'ENCRYPTION_OFF',
   }
 )
 
@@ -41,7 +42,7 @@ const neoSchema = new Neo4jGraphQL({
   driver,
   plugins: {
     auth: new Neo4jGraphQLAuthJWTPlugin({
-      secret: process.env.JWT_SECRET,
+      secret: SECRETS.JWT_SECRET,
       rolesPath: 'https://flcadmin\\.netlify\\.app/roles',
     }),
   },
@@ -61,9 +62,9 @@ const neoSchema = new Neo4jGraphQL({
  */
 
 // Specify host, port and path for GraphQL endpoint
-const port = process.env.GRAPHQL_SERVER_PORT || 4001
-const path = process.env.GRAPHQL_SERVER_PATH || '/graphql'
-const host = process.env.GRAPHQL_SERVER_HOST || '0.0.0.0'
+const port = SECRETS.GRAPHQL_SERVER_PORT || 4001
+const path = SECRETS.GRAPHQL_SERVER_PATH || '/graphql'
+const host = SECRETS.GRAPHQL_SERVER_HOST || '0.0.0.0'
 
 /*
  * Optionally, apply Express middleware for authentication, etc
