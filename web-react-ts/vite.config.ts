@@ -16,9 +16,6 @@ export default defineConfig(({ command, mode }) => {
 
   const secrets = loadSecrets()
 
-  // eslint-disable-next-line no-console
-  console.log('Secrets loaded successfully', secrets.SENTRY_AUTH_TOKEN)
-
   return {
     server: {
       open: true,
