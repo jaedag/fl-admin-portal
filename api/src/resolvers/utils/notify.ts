@@ -2,6 +2,7 @@
 import axios from 'axios'
 import { Member } from './types'
 import { throwToSentry } from './utils'
+import SECRETS from '../getSecrets'
 
 const formData = require('form-data')
 const Mailgun = require('mailgun.js')
@@ -12,7 +13,7 @@ dotenv.config()
 const mailgun = new Mailgun(formData)
 const mg = mailgun.client({
   username: 'api',
-  key: process.env.MAILGUN_API_KEY,
+  key: SECRETS.MAILGUN_API_KEY,
 })
 
 export const sendSingleEmail = (
@@ -22,9 +23,9 @@ export const sendSingleEmail = (
   html?: string
 ) => {
   mg.messages
-    .create(process.env.MAILGUN_DOMAIN, {
+    .create(SECRETS.MAILGUN_DOMAIN, {
       from: 'FL Accra Admin <no-reply@firstlovecenter.org>',
-      to: process.env.TEST_EMAIL_ADDRESS || member.email,
+      to: SECRETS.TEST_EMAIL_ADDRESS || member.email,
       subject,
       text: body,
       template: '',
@@ -41,9 +42,9 @@ export const sendBulkEmail = (
   html?: string
 ) => {
   mg.messages
-    .create(process.env.MAILGUN_DOMAIN, {
+    .create(SECRETS.MAILGUN_DOMAIN, {
       from: 'FL Accra Admin <no-reply@firstlovecenter.org>',
-      to: process.env.TEST_EMAIL_ADDRESS || recipient,
+      to: SECRETS.TEST_EMAIL_ADDRESS || recipient,
       subject,
       text: body,
       template: '',
@@ -56,13 +57,13 @@ export const sendBulkEmail = (
 export const sendBulkSMS = async (recipient: string[], message: string) => {
   const sendMessage = {
     method: 'post',
-    url: `https://api.mnotify.com/api/sms/quick?key=${process.env.MNOTIFY_KEY}`,
+    url: `https://api.mnotify.com/api/sms/quick?key=${SECRETS.MNOTIFY_KEY}`,
     headers: {
       'content-type': 'application/json',
     },
     data: {
-      recipient: process.env.TEST_PHONE_NUMBER
-        ? [process.env.TEST_PHONE_NUMBER]
+      recipient: SECRETS.TEST_PHONE_NUMBER
+        ? [SECRETS.TEST_PHONE_NUMBER]
         : recipient,
       sender: 'FLC Admin',
       message,

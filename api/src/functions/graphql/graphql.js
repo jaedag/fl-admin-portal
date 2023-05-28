@@ -11,9 +11,7 @@ const Sentry = require('@sentry/node')
 // Be sure to run `npm run build`
 const { typeDefs } = require('./schema/graphql-schema')
 const resolvers = require('../../resolvers/resolvers').default
-const { loadSecrets } = require('./secrets')
-
-const SECRETS = loadSecrets()
+const { SECRETS } = require('../../resolvers/resolvers')
 
 Sentry.init({
   dsn: 'https://cd02d9dbb24041f88bfa297993779123@o1423098.ingest.sentry.io/6770464',
