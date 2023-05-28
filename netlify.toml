@@ -7,7 +7,7 @@
   command = "npm start"
 
 # with gitops
-[context.production]
+[context.deploy-preview]
   command = "npm run doppler-install && npm i && cd api && npm i && cd ../web-react-ts && npm i && cd .. && npm run encrypt-secrets && npm run inject-secrets && npm run build && cp api/src/resolvers/texts.json api/build/resolvers/. && cp -r api/build/schema api/build/functions/graphql/. && cd api/src/functions/graphql && npm i"
 
 # [context.production]

@@ -10,6 +10,13 @@ const jsonData = {
 
 var jsonContent = JSON.stringify(jsonData)
 
+const { loadSecrets } = require('./secrets.js')
+
+loadSecrets().populateEnv()
+
+// eslint-disable-next-line no-console
+console.log('Secrets loaded successfully')
+
 fs.writeFile('./public/meta.json', jsonContent, 'utf8', function (err) {
   if (err) {
     console.log('An error occured while writing JSON Object to meta.json')

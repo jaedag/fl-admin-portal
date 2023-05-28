@@ -32,13 +32,6 @@ import {
 import { BrowserTracing } from '@sentry/tracing'
 
 const AppWithApollo = () => {
-  const { loadSecrets } = require('./secrets.js')
-
-  loadSecrets().populateEnv()
-
-  // eslint-disable-next-line no-console
-  console.log('Secrets loaded successfully')
-
   const [accessToken, setAccessToken] = useState<string>('')
   const { getAccessTokenSilently, isLoading, user } = useAuth0()
 
