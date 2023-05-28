@@ -1,5 +1,8 @@
 const neo4j = require('neo4j-driver')
 const { schedule } = require('@netlify/functions')
+const { loadSecrets } = require('./secrets.js')
+
+const SECRETS = loadSecrets()
 
 const setCodeOfTheDay = `
  MATCH (arr:ArrivalsCodeOfTheDay)
@@ -85,10 +88,10 @@ const initializeDatabase = (driver) => {
 
 const handler = async () => {
   const driver = neo4j.driver(
-    process.env.NEO4J_URI || 'bolt://localhost:7687',
+    SECRETS.NEO4J_URI || 'bolt://localhost:7687',
     neo4j.auth.basic(
-      process.env.NEO4J_USER || 'neo4j',
-      process.env.NEO4J_PASSWORD || 'neo4j'
+      SECRETS.NEO4J_USER || 'neo4j',
+      SECRETS.NEO4J_PASSWORD || 'neo4j'
     )
   )
 
