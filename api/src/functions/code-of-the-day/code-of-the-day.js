@@ -1,5 +1,11 @@
 const neo4j = require('neo4j-driver')
 const { schedule } = require('@netlify/functions')
+const { loadSecrets } = require('./secrets.js')
+
+loadSecrets().populateEnv()
+
+// eslint-disable-next-line no-console
+console.log('Secrets loaded successfully')
 
 const setCodeOfTheDay = `
  MATCH (arr:ArrivalsCodeOfTheDay)

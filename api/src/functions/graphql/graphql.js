@@ -6,6 +6,12 @@ const { Neo4jGraphQL } = require('@neo4j/graphql')
 const { Neo4jGraphQLAuthJWTPlugin } = require('@neo4j/graphql-plugin-auth')
 const neo4j = require('neo4j-driver')
 const Sentry = require('@sentry/node')
+const { loadSecrets } = require('./secrets.js')
+
+loadSecrets().populateEnv()
+
+// eslint-disable-next-line no-console
+console.log('Secrets loaded successfully')
 
 // This module is copied during the build step
 // Be sure to run `npm run build`

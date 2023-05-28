@@ -1,6 +1,12 @@
 // import { db } from './firebase'
 
 const neo4j = require('neo4j-driver')
+const { loadSecrets } = require('./secrets.js')
+
+loadSecrets().populateEnv()
+
+// eslint-disable-next-line no-console
+console.log('Secrets loaded successfully')
 
 const whitelistIPs = (event) => {
   const validIps = ['52.31.139.75', '52.49.173.169', '52.214.14.220']
