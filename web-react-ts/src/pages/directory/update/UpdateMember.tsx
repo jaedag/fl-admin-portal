@@ -87,8 +87,7 @@ const UpdateMember = () => {
           maritalStatus: values.maritalStatus,
           occupation: values.occupation,
           pictureUrl: values.pictureUrl,
-
-          fellowship: values.fellowship?.id,
+          ellowship: values.fellowship?.id,
         },
       })
 
