@@ -21,7 +21,6 @@ export type CreateMemberFormOptions = {
   occupation: string
   pictureUrl: string
   visitationArea: string
-  howYouJoined: string
   fellowship: Fellowship | { [key: string]: any }
   ministry: string
 }
@@ -40,7 +39,6 @@ const CreateMember = () => {
     occupation: '',
     pictureUrl: '',
     visitationArea: '',
-    howYouJoined: '',
     fellowship: '' as unknown as Fellowship,
     ministry: '',
   }
@@ -83,7 +81,6 @@ const CreateMember = () => {
           visitationArea: values.visitationArea,
           fellowship: values.fellowship?.id,
           ministry: values.ministry,
-          howYouJoined: values.howYouJoined,
         },
       })
       setSubmitting(false)

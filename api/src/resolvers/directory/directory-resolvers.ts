@@ -108,7 +108,6 @@ const directoryMutation = {
         ministry: args?.ministry ?? '',
         visitationArea: args?.visitationArea ?? '',
         pictureUrl: args?.pictureUrl ?? '',
-        howYouJoined: args?.howYouJoined ?? '',
         auth_id: context.auth.jwt.sub ?? '',
       })
     )

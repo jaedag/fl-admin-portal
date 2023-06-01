@@ -47,7 +47,6 @@ const UserProfileEditPage = () => {
     fellowship: memberChurch?.fellowship ?? '',
     visitationArea: member?.visitationArea ?? '',
     ministry: memberChurch?.ministry ? memberChurch?.ministry.id : '',
-    howYouJoined: member?.howYouJoined ? member?.howYouJoined : '',
   }
 
   const [UpdateMember] = useMutation(UPDATE_MEMBER_MUTATION)
@@ -73,7 +72,6 @@ const UserProfileEditPage = () => {
         maritalStatus: values.maritalStatus,
         occupation: values.occupation,
         pictureUrl: values.pictureUrl,
-        howYouJoined: values.howYouJoined,
 
         fellowship: values.fellowship.id,
         ministry: values.ministry,

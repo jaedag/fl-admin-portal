@@ -181,14 +181,6 @@ const DisplayPage = () => {
                                 </a>
                               </Col>
                             </Row>
-                            <Row>
-                              <Col className="text-secondary placeholder-display">
-                                How You Joined
-                              </Col>
-                              <Col className="placeholder-display">
-                                {member?.howYouJoined}
-                              </Col>
-                            </Row>
                           </div>
                         </Accordion.Body>
                       </Accordion.Item>

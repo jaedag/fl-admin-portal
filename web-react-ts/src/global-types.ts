@@ -145,7 +145,6 @@ export interface Member {
   pictureUrl: string
   phoneNumber: string
   whatsappNumber: string
-  howYouJoined: string
   dob: { date: string }
   maritalStatus: { status: 'Married' | 'Single' }
   gender: { gender: 'Male' | 'Female' }
