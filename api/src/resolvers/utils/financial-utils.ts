@@ -1,3 +1,4 @@
+import SECRETS from '../getSecrets'
 import { StreamOptions } from './types'
 
 const dotenv = require('dotenv')
@@ -34,7 +35,7 @@ export const padNumbers = (number: number): string => {
 }
 
 export const getStreamFinancials = (stream: StreamOptions) => {
-  const auth = process.env.PAYSTACK_PRIVATE_KEY_WEEKDAY
+  const auth = SECRETS.PAYSTACK_PRIVATE_KEY_WEEKDAY
   let subaccount
 
   switch (stream.toLowerCase()) {
@@ -44,13 +45,13 @@ export const getStreamFinancials = (stream: StreamOptions) => {
           'Anagkazo has a different financial system. Thank you!'
       )
     case 'gospel encounter':
-      subaccount = process.env.PAYSTACK_SUBACCOUNT_GES
+      subaccount = SECRETS.PAYSTACK_SUBACCOUNT_GES
       break
     case 'holy ghost encounter':
-      subaccount = process.env.PAYSTACK_SUBACCOUNT_HGE
+      subaccount = SECRETS.PAYSTACK_SUBACCOUNT_HGE
       break
     case 'first love experience':
-      subaccount = process.env.PAYSTACK_SUBACCOUNT_FLE
+      subaccount = SECRETS.PAYSTACK_SUBACCOUNT_FLE
       break
 
     default:

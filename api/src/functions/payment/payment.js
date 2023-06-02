@@ -1,6 +1,9 @@
 // import { db } from './firebase'
 
 const neo4j = require('neo4j-driver')
+const { loadSecrets } = require('./secrets')
+
+const SECRETS = loadSecrets()
 
 const whitelistIPs = (event) => {
   const validIps = ['52.31.139.75', '52.49.173.169', '52.214.14.220']
@@ -85,10 +88,10 @@ const handlePaystackReq = async (event, neoDriver) => {
 // eslint-disable-next-line import/prefer-default-export
 export const handler = async (event) => {
   const driver = neo4j.driver(
-    process.env.NEO4J_URI || 'bolt://localhost:7687',
+    SECRETS.NEO4J_URI || 'bolt://localhost:7687',
     neo4j.auth.basic(
-      process.env.NEO4J_USER || 'neo4j',
-      process.env.NEO4J_PASSWORD || 'neo4j'
+      SECRETS.NEO4J_USER || 'neo4j',
+      SECRETS.NEO4J_PASSWORD || 'neo4j'
     )
   )
 

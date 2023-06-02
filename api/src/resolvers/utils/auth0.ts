@@ -1,8 +1,5 @@
+import SECRETS from '../getSecrets'
 import { Member, Role } from './types'
-
-const dotenv = require('dotenv')
-
-dotenv.config()
 
 export type Auth0RoleObject = {
   // eslint-disable-next-line no-unused-vars
@@ -15,14 +12,14 @@ export type Auth0RoleObject = {
 
 export const createAuthUserConfig = (member: Member, token: string) => ({
   method: 'post',
-  baseURL: process.env.AUTH0_BASE_URL,
+  baseURL: SECRETS.AUTH0_BASE_URL,
   url: `/api/v2/users`,
   headers: {
     autho: '',
     Authorization: `Bearer ${token}`,
   },
   data: {
-    connection: `flcadmin${process.env.TEST_ENV ? '-test' : ''}`,
+    connection: `flcadmin${SECRETS.TEST_ENV ? '-test' : ''}`,
     email: member.email,
     given_name: member.firstName,
     family_name: member.lastName,
@@ -37,14 +34,14 @@ export const createAuthUserConfig = (member: Member, token: string) => ({
 
 export const updateAuthUserConfig = (member: Member, token: string) => ({
   method: 'patch',
-  baseURL: process.env.AUTH0_BASE_URL,
+  baseURL: SECRETS.AUTH0_BASE_URL,
   url: `/api/v2/users/${member.auth_id}`,
   headers: {
     autho: '',
     Authorization: `Bearer ${token}`,
   },
   data: {
-    connection: `flcadmin${process.env.TEST_ENV ? '-test' : ''}`,
+    connection: `flcadmin${SECRETS.TEST_ENV ? '-test' : ''}`,
     email: member.email,
     given_name: member.firstName,
     family_name: member.lastName,
@@ -57,7 +54,7 @@ export const updateAuthUserConfig = (member: Member, token: string) => ({
 
 export const changePasswordConfig = (member: Member, token: string) => ({
   method: 'post',
-  baseURL: process.env.AUTH0_BASE_URL,
+  baseURL: SECRETS.AUTH0_BASE_URL,
   url: `/api/v2/tickets/password-change`,
   headers: {
     autho: '',
@@ -65,7 +62,7 @@ export const changePasswordConfig = (member: Member, token: string) => ({
   },
 
   data: {
-    connection_id: process.env.AUTH0_DB_CONNECTION_ID,
+    connection_id: SECRETS.AUTH0_DB_CONNECTION_ID,
     email: member.email,
     mark_email_as_verified: true,
   },
@@ -73,7 +70,7 @@ export const changePasswordConfig = (member: Member, token: string) => ({
 
 export const deleteAuthUserConfig = (memberId: string, token: string) => ({
   method: 'delete',
-  baseURL: process.env.AUTH0_BASE_URL,
+  baseURL: SECRETS.AUTH0_BASE_URL,
   url: `/api/v2/users/${memberId}`,
   headers: {
     autho: '',
@@ -83,7 +80,7 @@ export const deleteAuthUserConfig = (memberId: string, token: string) => ({
 
 export const getAuthIdConfig = (member: Member, token: string) => ({
   method: 'get',
-  baseURL: process.env.AUTH0_BASE_URL,
+  baseURL: SECRETS.AUTH0_BASE_URL,
   url: `/api/v2/users-by-email?email=${member.email}`,
   headers: {
     autho: '',
@@ -92,7 +89,7 @@ export const getAuthIdConfig = (member: Member, token: string) => ({
 })
 export const getUserRoles = (memberId: string, token: string) => ({
   method: 'get',
-  baseURL: process.env.AUTH0_BASE_URL,
+  baseURL: SECRETS.AUTH0_BASE_URL,
   url: `/api/v2/users/${memberId}/roles`,
   headers: {
     autho: '',
@@ -105,7 +102,7 @@ export const setUserRoles = (
   token: string
 ) => ({
   method: 'post',
-  baseURL: process.env.AUTH0_BASE_URL,
+  baseURL: SECRETS.AUTH0_BASE_URL,
   url: `/api/v2/users/${memberId}/roles`,
   headers: {
     autho: '',
@@ -121,7 +118,7 @@ export const deleteUserRoles = (
   token: string
 ) => ({
   method: 'delete',
-  baseURL: process.env.AUTH0_BASE_URL,
+  baseURL: SECRETS.AUTH0_BASE_URL,
   url: `/api/v2/users/${memberId}/roles`,
   headers: {
     autho: '',
@@ -141,7 +138,7 @@ export const deleteRole = (
 
   return {
     method: 'delete',
-    baseURL: process.env.AUTH0_BASE_URL,
+    baseURL: SECRETS.AUTH0_BASE_URL,
     url: `/api/v2/roles/${getRoleId(role)}`,
     headers: {
       autho: '',

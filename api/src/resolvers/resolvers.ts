@@ -1,4 +1,3 @@
-import MakeServantResolvers from './directory/make-servant-resolvers'
 import serviceNoIncomeMutations from './no-income/service-resolvers'
 import serviceMutation from './services/service-resolvers'
 import { Member } from './utils/types'
@@ -14,6 +13,7 @@ import campaignMutations from './campaigns/campaign-mutations'
 import { mapsResolvers } from './maps/maps-resolvers'
 import SontaServiceMutation from './services/sonta-service-resolver'
 import { Context } from './utils/neo4j-types'
+import MakeServantResolvers from './directory/make-servant-resolvers'
 
 const dotenv = require('dotenv')
 

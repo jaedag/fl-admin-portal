@@ -1,19 +1,16 @@
 import axios from 'axios'
 import { Auth0RoleObject } from './utils/auth0'
 import { throwToSentry } from './utils/utils'
-
-const dotenv = require('dotenv')
-
-dotenv.config()
+import SECRETS from './getSecrets'
 
 const getTokenConfig = {
   method: 'post',
-  url: `${process.env.AUTH0_BASE_URL}oauth/token`,
+  url: `${SECRETS.AUTH0_BASE_URL}oauth/token`,
   headers: { 'content-type': 'application/json' },
   data: {
-    client_id: process.env.AUTH0_MGMT_CLIENT_ID,
-    client_secret: process.env.AUTH0_CLIENT_SECRET,
-    audience: `${process.env.AUTH0_BASE_URL}api/v2/`,
+    client_id: SECRETS.AUTH0_MGMT_CLIENT_ID,
+    client_secret: SECRETS.AUTH0_CLIENT_SECRET,
+    audience: `${SECRETS.AUTH0_BASE_URL}api/v2/`,
     grant_type: 'client_credentials',
   },
 }
@@ -30,7 +27,7 @@ export const getAuthToken = async () => {
 export const getAuth0Roles = async (authToken: string) => {
   const getRolesConfig = {
     method: 'get',
-    baseURL: process.env.AUTH0_BASE_URL,
+    baseURL: SECRETS.AUTH0_BASE_URL,
     url: `/api/v2/roles`,
     headers: {
       autho: '',
