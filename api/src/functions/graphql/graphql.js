@@ -13,7 +13,7 @@ const { typeDefs } = require('./schema/graphql-schema')
 const resolvers = require('../../resolvers/resolvers').default
 const SECRETS = require('../../resolvers/getSecrets').default
 
-console.log('SECRETS', SECRETS.JWT_SECRET.replace(/\\n/gm, '\n'))
+console.log('SECRETS ', SECRETS.JWT_SECRET.replace(/\\n/gm, '\n'))
 Sentry.init({
   dsn: 'https://cd02d9dbb24041f88bfa297993779123@o1423098.ingest.sentry.io/6770464',
 
