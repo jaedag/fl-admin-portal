@@ -191,7 +191,7 @@ const ServiceDetails = ({ service, church, loading }: ServiceDetailsProps) => {
                   </p>
                 )}
                 {noBankingProof && church.__typename !== 'Sonta' && (
-                  <RoleView roles={permitAdmin('GatheringService')}>
+                  <RoleView roles={permitAdmin('Oversight')}>
                     <div className="d-grid gap-2">
                       <Button
                         className="mt-3"
