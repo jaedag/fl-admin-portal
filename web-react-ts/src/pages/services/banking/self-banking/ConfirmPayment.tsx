@@ -10,6 +10,7 @@ import { DISPLAY_OFFERING_DETAILS } from './bankingQueries'
 import ButtonConfirmPayment from './components/button/ConfirmPayment'
 import './ConfirmPayment.css'
 import ManualApprovalSteps from './ManualApprovalSteps'
+import { useNavigate } from 'react-router'
 
 const ConfirmPayment = () => {
   const { togglePopup, isOpen } = usePopup()
@@ -17,6 +18,7 @@ const ConfirmPayment = () => {
   const { data, loading, error, refetch } = useQuery(DISPLAY_OFFERING_DETAILS, {
     variables: { serviceRecordId: serviceRecordId },
   })
+  const navigate = useNavigate()
 
   const [countdown, setCountdown] = useState(15)
   const service = data?.serviceRecords[0]
@@ -24,6 +26,10 @@ const ConfirmPayment = () => {
   useEffect(() => {
     countdown > 0 && setTimeout(() => setCountdown(countdown - 1), 1000)
   }, [countdown, setCountdown])
+
+  if (countdown === 0) {
+    navigate('/self-banking/receipt')
+  }
 
   return (
     <ApolloWrapper data={data} loading={loading} error={error}>

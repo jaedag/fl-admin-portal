@@ -59,7 +59,21 @@ export const PAY_OFFERING_MUTATION = gql`
       momoName: $momoName
     ) {
       id
+      cash
+      serviceDate {
+        date
+      }
+      offeringBankedBy {
+        id
+        firstName
+        lastName
+        fullName
+      }
+      sourceNetwork
+      sourceNumber
+      desc
       transactionReference
+      transactionTime
       transactionStatus
     }
   }
