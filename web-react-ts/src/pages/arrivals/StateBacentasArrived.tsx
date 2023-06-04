@@ -80,12 +80,12 @@ const BacentasHaveArrived = () => {
                 contact
                 onClick={() => {
                   clickCard(bacenta)
-                  clickCard(bacenta.bussing[0])
+                  clickCard(bacenta.bussingThisWeek[0])
                   navigate('/bacenta/bussing-details')
                 }}
               >
                 <span className="fw-bold">
-                  Attendance: {bacenta.bussing[0].attendance}
+                  Attendance: {bacenta.bussingThisWeek[0].attendance}
                 </span>
               </MemberDisplayCard>
             )

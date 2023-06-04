@@ -118,10 +118,10 @@ const StateBacentasToBePaid = () => {
 
           {bacentaData?.map((bacenta: BacentaWithArrivals) => {
             const recordsToRender = seePaid
-              ? bacenta.bussing[0].vehicleRecords.filter(
+              ? bacenta.bussingThisWeek[0].vehicleRecords.filter(
                   (record) => record.transactionStatus === 'success'
                 )
-              : bacenta.bussing[0].vehicleRecords.filter(
+              : bacenta.bussingThisWeek[0].vehicleRecords.filter(
                   (record) => record.transactionStatus !== 'success'
                 )
 
@@ -146,7 +146,7 @@ const StateBacentasToBePaid = () => {
                 contact
                 onClick={() => {
                   clickCard(bacenta)
-                  clickCard(bacenta.bussing[0])
+                  clickCard(bacenta.bussingThisWeek[0])
                 }}
               >
                 <div className="d-grid gap-2 mt-2">

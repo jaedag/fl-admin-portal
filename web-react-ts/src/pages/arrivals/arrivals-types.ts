@@ -106,6 +106,7 @@ export interface BacentaWithArrivals extends Bacenta {
   sprinterTopUp: number
   urvanTopUp: number
   bussing: BussingRecord[]
+  bussingThisWeek: BussingRecord[]
 }
 
 export interface HigherChurchWithArrivals extends Church {
