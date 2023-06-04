@@ -958,12 +958,13 @@ extend type Bacenta {
       RETURN bussing ORDER BY date.date DESC LIMIT $limit
       """
     )
-  bussingThisWeek(bussingDate: String!): BussingRecord
+  bussingThisWeek(limit: Int! = 1, bussingDate: String!): BussingRecord
     @cypher(
       statement: """
       MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
       WHERE date(date.date).week = date($bussingDate).week
-      RETURN bussing ORDER BY date.date
+      RETURN bussing ORDER BY date.date DESC LIMIT $limit
+      """
       """
     )
   code: Int!
