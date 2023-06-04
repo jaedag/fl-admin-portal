@@ -80,7 +80,7 @@ extend type GatheringService {
       RETURN COUNT(DISTINCT bacentas)
       """
     )
-  bacentasMobilising(arrivalDate:String): [Bacenta!]!
+  bacentasMobilising(arrivalDate: String): [Bacenta!]!
     @cypher(
       statement: """
       MATCH (this)-[:HAS*4]->(bacentas:Active:Bacenta)
@@ -486,7 +486,7 @@ extend type Stream {
     @cypher(
       statement: "MATCH (this)-[:HAS*3]->(bacentas:IC:Bacenta:Active) RETURN COUNT(DISTINCT bacentas)"
     )
-    vacationIcBacentaCount: Int
+  vacationIcBacentaCount: Int
     @cypher(
       statement: "MATCH (this)-[:HAS*3]-(bacentas:IC:Bacenta:Vacation) RETURN COUNT(DISTINCT bacentas)"
     )
@@ -951,10 +951,11 @@ extend type Bacenta {
     @cypher(
       statement: "MATCH (arrivals:ArrivalsCodeOfTheDay) RETURN arrivals.code"
     )
-  bussing(limit: Int!): [BussingRecord!]!
+  bussing(limit: Int!, bussingDate: String): [BussingRecord!]!
     @cypher(
       statement: """
       MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
+      WHERE date.date = date($bussingDate)
       RETURN bussing ORDER BY date.date DESC LIMIT $limit
       """
     )
