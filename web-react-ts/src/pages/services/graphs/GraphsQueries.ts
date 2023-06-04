@@ -109,6 +109,7 @@ export const CONSTITUENCY_GRAPHS = gql`
         id
         attendance
         income
+        numberOfServices
         week
       }
       aggregateBussingRecords(limit: 4) {
@@ -148,6 +149,7 @@ export const COUNCIL_GRAPHS = gql`
         id
         attendance
         income
+        numberOfServices
         week
       }
       aggregateBussingRecords(limit: 4) {
@@ -187,6 +189,7 @@ export const STREAM_GRAPHS = gql`
         id
         attendance
         income
+        numberOfServices
         week
       }
       aggregateBussingRecords(limit: 4) {
@@ -227,6 +230,7 @@ export const GATHERINGSERVICE_GRAPHS = gql`
         attendance
         income
         dollarIncome
+        numberOfServices
         week
       }
       aggregateBussingRecords(limit: 4) {
@@ -265,6 +269,7 @@ export const OVERSIGHT_GRAPHS = gql`
         id
         attendance
         income
+        numberOfServices
         week
       }
       aggregateBussingRecords(limit: 4) {
