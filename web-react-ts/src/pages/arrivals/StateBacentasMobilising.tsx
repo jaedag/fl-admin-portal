@@ -80,7 +80,7 @@ const BacentasMobilising = () => {
                 contact
                 onClick={() => {
                   clickCard(bacenta)
-                  clickCard(bacenta.bussingThisWeek[0])
+                  clickCard(bacenta.bussingThisWeek)
                   navigate('/bacenta/bussing-details')
                 }}
               />

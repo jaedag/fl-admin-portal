@@ -145,7 +145,7 @@ const StateBacentasToCount = () => {
               <NoData text="There are no bacentas to be counted" />
             )}
             {bacentaData?.map((bacenta: BacentaWithArrivals) =>
-              bacenta.bussingThisWeek[0].vehicleRecords.map((record, i) => {
+              bacenta.bussingThisWeek.vehicleRecords.map((record, i) => {
                 if (record.arrivalTime) {
                   return null
                 }
@@ -168,7 +168,7 @@ const StateBacentasToCount = () => {
                     contact
                     onClick={() => {
                       clickCard(bacenta)
-                      clickCard(bacenta.bussingThisWeek[0])
+                      clickCard(bacenta.bussingThisWeek)
                     }}
                   >
                     <div className="d-grid gap-2 mt-2">
