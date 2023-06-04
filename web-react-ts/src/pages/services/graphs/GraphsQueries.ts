@@ -43,6 +43,7 @@ export const BACENTA_GRAPHS = gql`
         id
         attendance
         income
+        numberOfServices
         week
       }
       aggregateBussingRecords(limit: 4) {

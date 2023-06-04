@@ -98,11 +98,14 @@ const ChurchGraph = (props: ChurchGraphProps) => {
   const CustomTooltip = ({ active, payload, label }: CustomToolTipProps) => {
     if (active && payload && payload.length) {
       return (
-        <div className="custom-tooltip">
+        <div className="custom-tooltip p-2">
           <p className="label">{`Week ${label}`}</p>
           <p className="intro">{`${payload[0].name}: ${payload[0].value}`}</p>
           {payload[1] && (
             <p className="intro">{`${payload[1].name}: ${payload[1].value}`}</p>
+          )}
+          {payload[0] && payload[0].payload.numberOfServices && (
+            <p className="intro">{`Number of Services: ${payload[0].payload.numberOfServices}`}</p>
           )}
           {/* <p className="desc">Anything you want can be displayed here.</p> */}
         </div>
