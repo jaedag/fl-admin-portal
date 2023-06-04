@@ -1,3 +1,65 @@
+#### 7.6.16 (2023-06-04)
+
+##### Documentation Changes
+
+*  update build command ([6e83a4ef](https://github.com/firstlovecenter/fl-pastoral-care/commit/6e83a4ef4b6729702334cb8bff9ef7d2e11fe496))
+*  write cypher to set serviceRecord.cash to income ([74d6bfdf](https://github.com/firstlovecenter/fl-pastoral-care/commit/74d6bfdf42e81404640367325b36f251ce3ae96e))
+*  write cypher to set serviceRecord.cash to income ([33dd296e](https://github.com/firstlovecenter/fl-pastoral-care/commit/33dd296e78ed16a299f92c9d34bc3cf663b8fd9c))
+
+##### New Features
+
+*  implement showing number of services in bar graph ([0cf0fdf5](https://github.com/firstlovecenter/fl-pastoral-care/commit/0cf0fdf5e249fac52425b6b20593cacafdc49b33))
+*  log out the env vars ([72f451f8](https://github.com/firstlovecenter/fl-pastoral-care/commit/72f451f8282f4ec2cb06dd8c78820fcd29a3c3a3))
+*  implement doppler staging environment ([170b84ca](https://github.com/firstlovecenter/fl-pastoral-care/commit/170b84cac3c1207bd56f9b005d60b83f7aaa3440))
+
+##### Bug Fixes
+
+*  removed non null on numberOfServices ([5264bfda](https://github.com/firstlovecenter/fl-pastoral-care/commit/5264bfdaab7d8bf7bd2bb651c3593ce0a8374e4b))
+*  implement numberOfServices on all churchlevels ([1f194bca](https://github.com/firstlovecenter/fl-pastoral-care/commit/1f194bcac2d98131ea1eefb0fe3d6eab4b78f889))
+*  bug where past bussing data wasnt being returned ([4462ba69](https://github.com/firstlovecenter/fl-pastoral-care/commit/4462ba692ccdb48c99ffef95086bddaa8cc7ff9b))
+*  improve self banking user flow ([68d6fb5d](https://github.com/firstlovecenter/fl-pastoral-care/commit/68d6fb5d6e37bd947cfebe43ff5d4f4baa88bb21))
+*  only oversight admin can confirm offering ([bd3e0958](https://github.com/firstlovecenter/fl-pastoral-care/commit/bd3e0958de2c3a273ec8951055221135425e17a5))
+*  load the home page on error ([61fa5108](https://github.com/firstlovecenter/fl-pastoral-care/commit/61fa510807920e876fd35a81d5edc7b3f2d20e4b))
+*  change secrets to secrets.ts ([ebd95d71](https://github.com/firstlovecenter/fl-pastoral-care/commit/ebd95d715dcaecacdd900b9d60eba6b27aa75210))
+*  fix bug preventing doppler usage when in dev on localhost ([20657497](https://github.com/firstlovecenter/fl-pastoral-care/commit/206574971b668402873ca03e49c2a8c56f3355e5))
+*  delete app.json file from root ([a7a8cfa7](https://github.com/firstlovecenter/fl-pastoral-care/commit/a7a8cfa7cb0208f04c2e2157cf0464e38154e0cb))
+*  update netlify.toml build prod ([2103e74f](https://github.com/firstlovecenter/fl-pastoral-care/commit/2103e74f00411cbab2ac6a26fc7f6aeb259826d4))
+*  setup doppler config ([d314d729](https://github.com/firstlovecenter/fl-pastoral-care/commit/d314d729eadab4a7e6cf0f260e2991b1657c9d6c))
+*  delete howYouJoined as an option in createMember form ([f5a540b3](https://github.com/firstlovecenter/fl-pastoral-care/commit/f5a540b3cd6413e33f2276f46b38127bb3260b17))
+*  update DashboardQueries.ts ([f0c0afef](https://github.com/firstlovecenter/fl-pastoral-care/commit/f0c0afef6b17c8b41bc8fe9763b5910044f29f5e))
+*  revert to original setting ([893a9295](https://github.com/firstlovecenter/fl-pastoral-care/commit/893a92957691f56e5bda68657fefe333ef940efa))
+*  update netlify.toml build scripts ([06f9c3cf](https://github.com/firstlovecenter/fl-pastoral-care/commit/06f9c3cfead904a5a5e947332bd82fbc7a62b387))
+*  log env vars in vite.config.ts ([1c030122](https://github.com/firstlovecenter/fl-pastoral-care/commit/1c0301229240ee54d62d6e12e21b5bb204ebf5c1))
+*  log process.env to the command line ([8cc5c007](https://github.com/firstlovecenter/fl-pastoral-care/commit/8cc5c0076fcdfd501d1729e55c76bf1c31aa2841))
+*  attempt populateEnv in web-react-ts ([792632bb](https://github.com/firstlovecenter/fl-pastoral-care/commit/792632bbb946a4923f85447ba5e9c21e3acc18ae))
+*  get SENTRY_AUTH_TOKEN from process.env ([7881deaa](https://github.com/firstlovecenter/fl-pastoral-care/commit/7881deaa1ec75e3f6199476944af0243e588493e))
+*  log out loaded Secrets ([b703be27](https://github.com/firstlovecenter/fl-pastoral-care/commit/b703be2748ee15d6dcf472addfe8e1d2b0cd5219))
+*  inject secrets as env variables 2 ([72fb6e07](https://github.com/firstlovecenter/fl-pastoral-care/commit/72fb6e07b0cc24c3a0c0124da288a873ec083ff8))
+*  inject secrets as env variables ([937c3d5e](https://github.com/firstlovecenter/fl-pastoral-care/commit/937c3d5e46fd8c4bef8e27f5984105d8ce4122f4))
+*  update with encrypt-secrets ([d39d2196](https://github.com/firstlovecenter/fl-pastoral-care/commit/d39d21962b864bc83823eb09d4bcf7427bb2cd45))
+*  update currency options for sierra leone ([936f098b](https://github.com/firstlovecenter/fl-pastoral-care/commit/936f098b295d0e65330b16443bb88b6c61fa55da))
+*  update create stream with bankAccount ([cff9c1b9](https://github.com/firstlovecenter/fl-pastoral-care/commit/cff9c1b9c4c49a92707c49e14dd8bf27cca4fc57))
+*  remove firebase config from payemnt.js ([de63ae26](https://github.com/firstlovecenter/fl-pastoral-care/commit/de63ae263f30f997021372265fcf1cbe499cb6a3))
+*  delete doppler.yaml ([ecadad01](https://github.com/firstlovecenter/fl-pastoral-care/commit/ecadad015e3caccd1d0c9c1bd7439d9f7570f1d2))
+*  update doppler commands for building ([7782faa3](https://github.com/firstlovecenter/fl-pastoral-care/commit/7782faa34734f63ee05556f4196430c6278e1b93))
+*  delete doppler.yaml ([24ef44c3](https://github.com/firstlovecenter/fl-pastoral-care/commit/24ef44c32b1feec63343ae0a82458ea5c1f5bea3))
+*  update build.js ([09b64c7c](https://github.com/firstlovecenter/fl-pastoral-care/commit/09b64c7cd7f3cdb8891dd035707e81a8a6f84937))
+*  update doppler.yaml 4 ([a4bfb890](https://github.com/firstlovecenter/fl-pastoral-care/commit/a4bfb8900c6467fda24dd1d28aa554d39fdf379a))
+*  update doppler.yaml 3 ([f8b5781e](https://github.com/firstlovecenter/fl-pastoral-care/commit/f8b5781e5c22079a52a3689b056635aee5a87601))
+*  update doppler.yaml 2 ([2592ff95](https://github.com/firstlovecenter/fl-pastoral-care/commit/2592ff956a4cb1a7ed749fb7fb92010910c61133))
+*  update doppler.yaml ([5f7d4273](https://github.com/firstlovecenter/fl-pastoral-care/commit/5f7d42730b1fecfad2dda86efe17f7129fb467d3))
+*  udpate build command ([d091fee7](https://github.com/firstlovecenter/fl-pastoral-care/commit/d091fee75b207811a248a167e6f4f87da5f2f1ce))
+*  update netlify build command ([ea88adbd](https://github.com/firstlovecenter/fl-pastoral-care/commit/ea88adbd5de455fdc9c603259a91eee1cc76ffc6))
+*  udpate payment function ([54eec8c6](https://github.com/firstlovecenter/fl-pastoral-care/commit/54eec8c609064f9ae417e50c6793dc63104c87a8))
+*  install firebase-admin for api package.json ([b975bee1](https://github.com/firstlovecenter/fl-pastoral-care/commit/b975bee13dfad7a1f4161e77b6351d20a390c204))
+*  add property cash to type ServiceRecord ([855e1361](https://github.com/firstlovecenter/fl-pastoral-care/commit/855e13617aa96be4314d0cee7b16b7b483acc34f))
+*  implement payment webhook function for firebase transactions ([5418dfb6](https://github.com/firstlovecenter/fl-pastoral-care/commit/5418dfb64ee8def8da6871e5051a8e54fe68c4a0))
+*  filling service form absorbs all hanging transactions ([79f2ce6d](https://github.com/firstlovecenter/fl-pastoral-care/commit/79f2ce6d8d2f39f9e949f531c60396d866620245))
+
+##### Other Changes
+
+* //github.com/firstlovecenter/fl-admin-portal into deploy ([40eb25c3](https://github.com/firstlovecenter/fl-pastoral-care/commit/40eb25c371cfec0183807a580e96f669d39be371))
+
 #### 7.6.15 (2023-05-23)
 
 ##### Bug Fixes
