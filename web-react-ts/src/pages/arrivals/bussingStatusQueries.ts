@@ -116,7 +116,7 @@ export const CONSTITUENCY_BACENTAS_MOBILISING = gql`
           phoneNumber
           whatsappNumber
         }
-        bussing(limit: 1, bussingDate: $arrivalDate) {
+        bussingThisWeek(limit: 1, bussingDate: $arrivalDate) {
           id
         }
       }
@@ -143,7 +143,7 @@ export const COUNCIL_BACENTAS_MOBILISING = gql`
           phoneNumber
           whatsappNumber
         }
-        bussing(limit: 1, bussingDate: $arrivalDate) {
+        bussingThisWeek(limit: 1, bussingDate: $arrivalDate) {
           id
         }
       }
@@ -170,7 +170,7 @@ export const STREAM_BACENTAS_MOBILISING = gql`
           phoneNumber
           whatsappNumber
         }
-        bussing(limit: 1, bussingDate: $arrivalDate) {
+        bussingThisWeek(limit: 1, bussingDate: $arrivalDate) {
           id
         }
       }
@@ -197,7 +197,7 @@ export const GATHERINGSERVICE_BACENTAS_MOBILISING = gql`
           phoneNumber
           whatsappNumber
         }
-        bussing(limit: 1, bussingDate: $arrivalDate) {
+        bussingThisWeek(limit: 1, bussingDate: $arrivalDate) {
           id
         }
       }
@@ -224,7 +224,7 @@ export const CONSTITUENCY_BACENTAS_ON_THE_WAY = gql`
           phoneNumber
           whatsappNumber
         }
-        bussing(limit: 1, bussingDate: $arrivalDate) {
+        bussingThisWeek(limit: 1, bussingDate: $arrivalDate) {
           id
         }
       }
@@ -251,7 +251,7 @@ export const COUNCIL_BACENTAS_ON_THE_WAY = gql`
           phoneNumber
           whatsappNumber
         }
-        bussing(limit: 1, bussingDate: $arrivalDate) {
+        bussingThisWeek(limit: 1, bussingDate: $arrivalDate) {
           id
         }
       }
@@ -277,7 +277,7 @@ export const STREAM_BACENTAS_ON_THE_WAY = gql`
           phoneNumber
           whatsappNumber
         }
-        bussing(limit: 1, bussingDate: $arrivalDate) {
+        bussingThisWeek(limit: 1, bussingDate: $arrivalDate) {
           id
         }
       }
@@ -304,7 +304,7 @@ export const GATHERINGSERVICE_BACENTAS_ON_THE_WAY = gql`
           phoneNumber
           whatsappNumber
         }
-        bussing(limit: 1, bussingDate: $arrivalDate) {
+        bussingThisWeek(limit: 1, bussingDate: $arrivalDate) {
           id
         }
       }
@@ -331,7 +331,7 @@ export const CONSTITUENCY_BACENTAS_TO_COUNT = gql`
           phoneNumber
           whatsappNumber
         }
-        bussing(limit: 1, bussingDate: $arrivalDate) {
+        bussingThisWeek(limit: 1, bussingDate: $arrivalDate) {
           id
         }
       }
@@ -358,7 +358,7 @@ export const COUNCIL_BACENTAS_TO_COUNT = gql`
           phoneNumber
           whatsappNumber
         }
-        bussing(limit: 1, bussingDate: $arrivalDate) {
+        bussingThisWeek(limit: 1, bussingDate: $arrivalDate) {
           id
         }
       }
@@ -385,7 +385,7 @@ export const COUNCIL_VEHICLES_TO_BE_PAID = gql`
           phoneNumber
           whatsappNumber
         }
-        bussing(limit: 1, bussingDate: $arrivalDate) {
+        bussingThisWeek(limit: 1, bussingDate: $arrivalDate) {
           vehicleRecords(where: { arrivalTime_NOT: null, vehicleTopUp_GT: 0 }) {
             id
             attendance
@@ -420,7 +420,7 @@ export const STREAM_BACENTAS_TO_COUNT = gql`
           phoneNumber
           whatsappNumber
         }
-        bussing(limit: 1, bussingDate: $arrivalDate) {
+        bussingThisWeek(limit: 1, bussingDate: $arrivalDate) {
           vehicleRecords(where: { arrivalTime: null }) {
             id
             attendance
@@ -452,7 +452,7 @@ export const GATHERINGSERVICE_BACENTAS_TO_COUNT = gql`
           phoneNumber
           whatsappNumber
         }
-        bussing(limit: 1, bussingDate: $arrivalDate) {
+        bussingThisWeek(limit: 1, bussingDate: $arrivalDate) {
           id
         }
       }
@@ -479,7 +479,7 @@ export const CONSTITUENCY_BACENTAS_ARRIVED = gql`
           phoneNumber
           whatsappNumber
         }
-        bussing(limit: 1, bussingDate: $arrivalDate) {
+        bussingThisWeek(limit: 1, bussingDate: $arrivalDate) {
           id
           attendance
         }
@@ -507,7 +507,7 @@ export const COUNCIL_BACENTAS_ARRIVED = gql`
           phoneNumber
           whatsappNumber
         }
-        bussing(limit: 1, bussingDate: $arrivalDate) {
+        bussingThisWeek(limit: 1, bussingDate: $arrivalDate) {
           id
           attendance
         }
@@ -535,7 +535,7 @@ export const STREAM_BACENTAS_ARRIVED = gql`
           phoneNumber
           whatsappNumber
         }
-        bussing(limit: 1, bussingDate: $arrivalDate) {
+        bussingThisWeek(limit: 1, bussingDate: $arrivalDate) {
           id
           attendance
         }
@@ -563,7 +563,7 @@ export const GATHERINGSERVICES_BACENTAS_ARRIVED = gql`
           phoneNumber
           whatsappNumber
         }
-        bussing(limit: 1, bussingDate: $arrivalDate) {
+        bussingThisWeek(limit: 1, bussingDate: $arrivalDate) {
           id
           attendance
         }
@@ -591,7 +591,7 @@ export const CONSTITUENCY_BACENTAS_BELOW_8 = gql`
           phoneNumber
           whatsappNumber
         }
-        bussing(limit: 1, bussingDate: $arrivalDate) {
+        bussingThisWeek(limit: 1, bussingDate: $arrivalDate) {
           id
           attendance
         }
@@ -619,7 +619,7 @@ export const COUNCIL_BACENTAS_BELOW_8 = gql`
           phoneNumber
           whatsappNumber
         }
-        bussing(limit: 1, bussingDate: $arrivalDate) {
+        bussingThisWeek(limit: 1, bussingDate: $arrivalDate) {
           id
           attendance
         }
@@ -647,7 +647,7 @@ export const STREAM_BACENTAS_BELOW_8 = gql`
           phoneNumber
           whatsappNumber
         }
-        bussing(limit: 1, bussingDate: $arrivalDate) {
+        bussingThisWeek(limit: 1, bussingDate: $arrivalDate) {
           id
           attendance
         }
@@ -675,7 +675,7 @@ export const GATHERINGSERVICE_BACENTAS_BELOW_8 = gql`
           phoneNumber
           whatsappNumber
         }
-        bussing(limit: 1, bussingDate: $arrivalDate) {
+        bussingThisWeek(limit: 1, bussingDate: $arrivalDate) {
           id
           attendance
         }
