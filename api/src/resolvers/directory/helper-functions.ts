@@ -32,7 +32,7 @@ export type HistoryRecordArgs = {
 
 export const directoryLock = (userRoles: string[]) => {
   if (
-    new Date().getDay() === 1 ||
+    (new Date().getDay() === 1 && new Date().getHours() >= 12) ||
     new Date().getDay() === 2 ||
     permitAdminArrivals('Stream')?.some((r) => userRoles.includes(r))
   ) {
