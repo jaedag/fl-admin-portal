@@ -73,13 +73,12 @@ const RoleView = (props: RoleViewProps) => {
     }
 
     if (
+      (new Date().getDay() === 1 && new Date().getHours() >= 12) ||
       new Date().getDay() === 2 ||
       permitAdmin('Stream')?.some((r) => currentUser?.roles.includes(r))
     ) {
       return true
     }
-
-    return false
   }
 
   if (

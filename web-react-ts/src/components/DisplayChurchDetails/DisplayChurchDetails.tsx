@@ -258,7 +258,7 @@ const DisplayChurchDetails = (props: DisplayChurchDetailsProps) => {
               {`${props.name} ${props.churchType}`}
 
               {directoryLock() && (
-                <RoleView roles={props.editPermitted}>
+                <RoleView roles={props.editPermitted} directoryLock>
                   <EditButton link={props.editlink} />
                 </RoleView>
               )}
