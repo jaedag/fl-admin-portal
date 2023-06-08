@@ -1,5 +1,4 @@
 import SECRETS from '../getSecrets'
-import { StreamOptions } from './types'
 
 const dotenv = require('dotenv')
 
@@ -33,24 +32,32 @@ export const padNumbers = (number: number): string => {
   }
   return number.toString().padStart(12, '0')
 }
+type Stream = {
+  bankAccount:
+    | 'aes_account'
+    | 'ges_account'
+    | 'hge_account'
+    | 'fle_account'
+    | 'manual'
+}
 
-export const getStreamFinancials = (stream: StreamOptions) => {
+export const getStreamFinancials = (stream: Stream) => {
   const auth = SECRETS.PAYSTACK_PRIVATE_KEY_WEEKDAY
   let subaccount
 
-  switch (stream.toLowerCase()) {
-    case 'anagkazo encounter':
+  switch (stream.bankAccount) {
+    case 'aes_account':
       throw new Error(
         'Payment Error' +
           'Anagkazo has a different financial system. Thank you!'
       )
-    case 'gospel encounter':
+    case 'ges_account':
       subaccount = SECRETS.PAYSTACK_SUBACCOUNT_GES
       break
-    case 'holy ghost encounter':
+    case 'hge_account':
       subaccount = SECRETS.PAYSTACK_SUBACCOUNT_HGE
       break
-    case 'first love experience':
+    case 'fle_account':
       subaccount = SECRETS.PAYSTACK_SUBACCOUNT_FLE
       break
 

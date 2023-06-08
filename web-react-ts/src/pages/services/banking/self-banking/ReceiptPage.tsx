@@ -14,15 +14,17 @@ import { SELF_BANKING_RECEIPT } from './bankingQueries'
 
 const ReceiptPage = () => {
   const { serviceRecordId } = useContext(ServiceContext)
+
   const { data, loading, error } = useQuery(SELF_BANKING_RECEIPT, {
     variables: {
       id: serviceRecordId,
     },
   })
+
   const navigate = useNavigate()
   const service = data?.serviceRecords[0]
   const tablevalues = [
-    ['Date of Service', getHumanReadableDate(service?.serviceDate.date)],
+    ['Date of Service', getHumanReadableDate(service?.serviceDate?.date)],
     ['Cash', service?.cash],
     ['Offering Banked By', service?.offeringBankedBy?.fullName],
     ['Transaction Ref', service?.transactionReference],

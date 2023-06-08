@@ -1,6 +1,5 @@
 extend type Mutation {
   BankServiceOffering(
-    stream_name: String!
     serviceRecordId: ID!
     mobileNetwork: String!
     mobileNumber: String!
@@ -13,7 +12,6 @@ extend type Mutation {
     otp: String!
   ): ServiceRecord!
   ConfirmOfferingPayment(
-    stream_name: String!
     serviceRecordId: ID!
   ): ServiceRecord!
   SubmitBankingSlip(serviceRecordId: ID!, bankingSlip: String!): ServiceRecord!

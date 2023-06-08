@@ -74,7 +74,6 @@ const bankingMutation = {
     object: any,
     args: {
       // eslint-disable-next-line camelcase
-      stream_name: StreamOptions
       serviceRecordId: string
       mobileNetwork: Network
       mobileNumber: string
@@ -86,8 +85,6 @@ const bankingMutation = {
 
     const session = context.executionContext.session()
 
-    const { auth, subaccount } = getStreamFinancials(args.stream_name)
-
     // This code checks if there has already been a successful transaction
     const transactionResponse = rearrangeCypherObject(
       await session
@@ -98,6 +95,10 @@ const bankingMutation = {
             error
           )
         )
+    )
+
+    const { auth, subaccount } = getStreamFinancials(
+      transactionResponse?.stream.bankAccount
     )
 
     await checkIfLastServiceBanked(args.serviceRecordId, context)
@@ -178,7 +179,9 @@ const bankingMutation = {
       const paymentResponse = await axios(payOffering).catch((error: any) =>
         throwToSentry(
           'There was an error with the payment',
-          error?.response?.data?.data ?? error
+          error?.response?.data?.data
+            ? JSON.stringify(error?.response?.data?.data)
+            : error
         )
       )
 
@@ -232,9 +235,22 @@ const bankingMutation = {
   ) => {
     isAuth(permitLeader('Fellowship'), context.auth.roles)
 
-    const { auth } = getStreamFinancials(args.streamName)
-
     const session = context.executionContext.session()
+
+    const transactionResponse = rearrangeCypherObject(
+      await session
+        .run(checkTransactionReference, args)
+        .catch((error: any) =>
+          throwToSentry(
+            'There was a problem checking the transactionReference',
+            error
+          )
+        )
+    )
+
+    const { auth } = getStreamFinancials(
+      transactionResponse?.stream.bankAccount
+    )
 
     const sendOtp: SendPaymentOTP = {
       method: 'post',
@@ -308,13 +324,11 @@ const bankingMutation = {
   ConfirmOfferingPayment: async (
     object: any,
     // eslint-disable-next-line camelcase
-    args: { stream_name: StreamOptions; serviceRecordId: string },
+    args: { serviceRecordId: string },
     context: Context
   ) => {
     isAuth(permitMe('Fellowship'), context.auth.roles)
     const session = context.executionContext.session()
-
-    const { auth } = getStreamFinancials(args.stream_name)
 
     const transactionResponse = rearrangeCypherObject(
       await session
@@ -329,6 +343,28 @@ const bankingMutation = {
 
     let record = transactionResponse?.record
     const banker = transactionResponse?.banker
+    const stream = transactionResponse?.stream
+    const { auth } = getStreamFinancials(stream.bankAccount)
+
+    // if transactionTime is within the last 1 minute then return the record
+    if (
+      record?.transactionTime &&
+      new Date().getTime() - new Date(record?.transactionTime).getTime() < 60000
+    ) {
+      console.log('transactionTime is within the last 1 minute')
+      return {
+        id: record.id,
+        cash: record.cash,
+        transactionReference: record.transactionReference,
+        transactionStatus: record.transactionStatus,
+        offeringBankedBy: {
+          id: banker.id,
+          firstName: banker.firstName,
+          lastName: banker.lastName,
+          fullName: `${banker.firstName} ${banker.fullName}`,
+        },
+      }
+    }
 
     if (!record?.transactionReference) {
       record = rearrangeCypherObject(
