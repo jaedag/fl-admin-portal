@@ -1263,7 +1263,6 @@ extend type Mutation {
   SetSwellDate(date: String!): TimeGraph!
   SendVehicleSupport(
     vehicleRecordId: ID!
-    stream_name: String!
     momoName: String!
     momoNumber: String!
     vehicleTopUp: Int!

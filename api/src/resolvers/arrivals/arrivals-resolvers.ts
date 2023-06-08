@@ -36,11 +36,7 @@ import {
   uploadMobilisationPicture,
 } from './arrivals-cypher'
 import { joinMessageStrings, sendBulkSMS } from '../utils/notify'
-import {
-  neonumber,
-  RearragedCypherResponse,
-  StreamOptions,
-} from '../utils/types'
+import { neonumber, RearragedCypherResponse } from '../utils/types'
 import texts from '../texts.json'
 import { CreateTransferRecipientBody, SendMoneyBody } from './arrivals-types'
 import { checkServantHasCurrentHistory } from '../services/service-resolvers'
@@ -658,7 +654,6 @@ export const arrivalsMutation = {
     // eslint-disable-next-line camelcase
     args: {
       vehicleRecordId: string
-      stream_name: StreamOptions
       momoName: string
       momoNumber: string
       vehicleTopUp: number
@@ -669,10 +664,10 @@ export const arrivalsMutation = {
     isAuth(permitArrivalsHelpers(), context.auth.roles)
     const session = context.executionContext.session()
 
-    const { auth } = getStreamFinancials(args.stream_name)
     const recordResponse = rearrangeCypherObject(
       await session.executeRead((tx) => tx.run(checkTransactionReference, args))
     )
+    const { auth } = getStreamFinancials(recordResponse.stream.properties)
 
     const vehicleRecord = recordResponse.record.properties
     const bacenta = recordResponse.bacenta.properties

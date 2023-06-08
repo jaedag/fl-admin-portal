@@ -77,7 +77,6 @@ const FormPayVehicleRecord = () => {
       const supportRes = await SendVehicleSupport({
         variables: {
           vehicleRecordId: vehicleRecordId,
-          stream_name: bacenta.stream.name,
           momoNumber: values.momoNumber,
           momoName: values.momoName,
           vehicleTopUp: values.vehicleTopUp,
