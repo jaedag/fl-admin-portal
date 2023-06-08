@@ -346,26 +346,6 @@ const bankingMutation = {
     const stream = transactionResponse?.stream
     const { auth } = getStreamFinancials(stream.bankAccount)
 
-    // if transactionTime is within the last 1 minute then return the record
-    if (
-      record?.transactionTime &&
-      new Date().getTime() - new Date(record?.transactionTime).getTime() < 60000
-    ) {
-      console.log('transactionTime is within the last 1 minute')
-      return {
-        id: record.id,
-        cash: record.cash,
-        transactionReference: record.transactionReference,
-        transactionStatus: record.transactionStatus,
-        offeringBankedBy: {
-          id: banker.id,
-          firstName: banker.firstName,
-          lastName: banker.lastName,
-          fullName: `${banker.firstName} ${banker.fullName}`,
-        },
-      }
-    }
-
     if (!record?.transactionReference) {
       record = rearrangeCypherObject(
         await session
@@ -410,20 +390,6 @@ const bankingMutation = {
       }
     )
 
-    if (
-      confirmationResponse?.data.data.status === 'failed' ||
-      confirmationResponse?.data.data.status === 'abandoned'
-    ) {
-      record = rearrangeCypherObject(
-        await session
-          .run(setTransactionStatusFailed, args)
-          .catch((error: any) =>
-            throwToSentry('There was an error setting the transaction', error)
-          )
-      )
-      record = record.record.properties
-    }
-
     if (confirmationResponse?.data.data.status === 'success') {
       record = rearrangeCypherObject(
         await session
@@ -433,6 +399,39 @@ const bankingMutation = {
               'There was an error setting the successful transaction',
               error
             )
+          )
+      )
+      record = record.record.properties
+    }
+
+    // if transactionTime is within the last 1:30 minute then return the record
+    if (
+      record?.transactionTime &&
+      new Date().getTime() - new Date(record?.transactionTime).getTime() < 90000
+    ) {
+      return {
+        id: record.id,
+        cash: record.cash,
+        transactionReference: record.transactionReference,
+        transactionStatus: record.transactionStatus,
+        offeringBankedBy: {
+          id: banker.id,
+          firstName: banker.firstName,
+          lastName: banker.lastName,
+          fullName: `${banker.firstName} ${banker.fullName}`,
+        },
+      }
+    }
+
+    if (
+      confirmationResponse?.data.data.status === 'failed' ||
+      confirmationResponse?.data.data.status === 'abandoned'
+    ) {
+      record = rearrangeCypherObject(
+        await session
+          .run(setTransactionStatusFailed, args)
+          .catch((error: any) =>
+            throwToSentry('There was an error setting the transaction', error)
           )
       )
       record = record.record.properties
