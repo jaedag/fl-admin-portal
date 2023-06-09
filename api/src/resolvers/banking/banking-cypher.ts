@@ -47,7 +47,12 @@ export const setRecordTransactionReferenceWithOTP = `
     RETURN record {
         .id,
         .transactionReference,
-        .transactionStatus
+        .transactionStatus,
+        .cash,
+        .desc,
+        .sourceNetwork,
+        .sourceNumber,
+        .transactionTime
         }
     `
 

@@ -146,13 +146,12 @@ const ButtonConfirmPayment = (props: ButtonConfirmPaymentProps) => {
             return
           }
         } catch (error: any) {
-          if (togglePopup) {
-            togglePopup()
-          }
-
           navigate('/services/fellowship/self-banking')
           throwToSentry(error)
         } finally {
+          if (togglePopup) {
+            togglePopup()
+          }
           if (location.pathname === '/self-banking/confirm-payment') {
             navigate(-3)
           }
