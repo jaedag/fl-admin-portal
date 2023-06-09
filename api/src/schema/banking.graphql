@@ -7,13 +7,10 @@ extend type Mutation {
   ): ServiceRecord!
   SendPaymentOTP(
     serviceRecordId: String!
-    streamName: String!
     reference: String
     otp: String!
   ): ServiceRecord!
-  ConfirmOfferingPayment(
-    serviceRecordId: ID!
-  ): ServiceRecord!
+  ConfirmOfferingPayment(serviceRecordId: ID!): ServiceRecord!
   SubmitBankingSlip(serviceRecordId: ID!, bankingSlip: String!): ServiceRecord!
   ManuallyConfirmOfferingPayment(serviceRecordId: ID!): ServiceRecord!
     @auth(rules: [{ roles: ["adminGatheringService"] }])

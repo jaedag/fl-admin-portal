@@ -173,7 +173,6 @@ const PayOffering = (props: PayOfferingProps) => {
                           SendPaymentOTP({
                             variables: {
                               serviceRecordId: service.id,
-                              streamName: service.stream_name,
                               reference: service?.transactionReference,
                               otp: otp,
                             },

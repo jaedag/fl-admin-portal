@@ -70,13 +70,11 @@ export const PAY_OFFERING_MUTATION = gql`
 export const SEND_PAYMENT_OTP = gql`
   mutation SendPaymentOTP(
     $serviceRecordId: String!
-    $streamName: String!
     $reference: String!
     $otp: String!
   ) {
     SendPaymentOTP(
       serviceRecordId: $serviceRecordId
-      streamName: $streamName
       reference: $reference
       otp: $otp
     ) {

@@ -29,7 +29,6 @@ import {
   PayStackRequestBody,
   SendPaymentOTP,
 } from './banking-types'
-import { StreamOptions } from '../utils/types'
 
 export const checkIfLastServiceBanked = async (
   serviceRecordId: string,
@@ -227,7 +226,6 @@ const bankingMutation = {
     object: any,
     args: {
       serviceRecordId: string
-      streamName: StreamOptions
       reference: string
       otp: string
     },
