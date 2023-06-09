@@ -354,12 +354,7 @@ const bankingMutation = {
       )
 
       record = record.record.properties
-      return {
-        id: record.id,
-        cash: record.cash,
-        transactionReference: record.transactionReference,
-        transactionStatus: record.transactionStatus,
-      }
+      return record
     }
 
     const confirmPaymentBody: PayStackRequestBody = {
@@ -408,10 +403,7 @@ const bankingMutation = {
       new Date().getTime() - new Date(record?.transactionTime).getTime() < 90000
     ) {
       return {
-        id: record.id,
-        cash: record.cash,
-        transactionReference: record.transactionReference,
-        transactionStatus: record.transactionStatus,
+        ...record,
         offeringBankedBy: {
           id: banker.id,
           firstName: banker.firstName,
@@ -436,10 +428,7 @@ const bankingMutation = {
     }
 
     return {
-      id: record.id,
-      cash: record.cash,
-      transactionReference: record.transactionReference,
-      transactionStatus: record.transactionStatus,
+      ...record,
       offeringBankedBy: {
         id: banker.id,
         firstName: banker.firstName,
