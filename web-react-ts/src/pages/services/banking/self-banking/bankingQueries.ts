@@ -57,15 +57,6 @@ export const PAY_OFFERING_MUTATION = gql`
     ) {
       id
       cash
-      serviceDate {
-        date
-      }
-      offeringBankedBy {
-        id
-        firstName
-        lastName
-        fullName
-      }
       sourceNetwork
       sourceNumber
       desc
