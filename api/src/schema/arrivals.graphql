@@ -962,7 +962,7 @@ extend type Bacenta {
     @cypher(
       statement: """
       MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
-      WHERE date(date.date).week = date($bussingDate).week date(date.date).year = date($bussingDate).year
+      WHERE date(date.date).week = date($bussingDate).week AND date(date.date).year = date($bussingDate).year
       RETURN bussing ORDER BY date.date LIMIT $limit
       """
     )
