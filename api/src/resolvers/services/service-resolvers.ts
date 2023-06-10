@@ -120,7 +120,7 @@ const serviceMutation = {
 
     if (
       serviceCheck.alreadyFilled &&
-      !['Oversight', 'Denomination'].some((label) =>
+      !['Council', 'Oversight', 'Denomination'].some((label) =>
         serviceCheck.labels?.includes(label)
       )
     ) {
