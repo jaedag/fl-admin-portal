@@ -69,7 +69,7 @@ const handlePaystackReq = async (event, neoDriver) => {
   const { reference, status } = parsedBody.data
 
   // const neoRes =
-  await executeQuery(neoDriver, { reference, status })
+  // await executeQuery(neoDriver, { reference, status })
   // const categories = neoRes.records[0].get('record').labels
 
   // if (categories.includes('Offering')) {

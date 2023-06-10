@@ -261,7 +261,6 @@ export const SET_VEHICLE_SUPPORT = gql`
 export const SEND_VEHICLE_SUPPORT = gql`
   mutation SendVehicleSupport(
     $vehicleRecordId: ID!
-    $stream_name: String!
     $momoName: String!
     $momoNumber: String!
     $vehicleTopUp: Int!
@@ -269,7 +268,6 @@ export const SEND_VEHICLE_SUPPORT = gql`
   ) {
     SendVehicleSupport(
       vehicleRecordId: $vehicleRecordId
-      stream_name: $stream_name
       momoName: $momoName
       momoNumber: $momoNumber
       vehicleTopUp: $vehicleTopUp

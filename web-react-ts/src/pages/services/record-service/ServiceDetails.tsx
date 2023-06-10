@@ -12,7 +12,7 @@ import { Church, ServiceRecord } from 'global-types'
 import { alertMsg } from 'global-utils'
 import { parseNeoTime } from 'jd-date-utils'
 import { permitAdmin } from 'permission-utils'
-import React, { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { Col, Container, Row, Button, Card } from 'react-bootstrap'
 import { CheckCircleFill, FileEarmarkArrowUpFill } from 'react-bootstrap-icons'
 import { useNavigate } from 'react-router'
@@ -191,8 +191,8 @@ const ServiceDetails = ({ service, church, loading }: ServiceDetailsProps) => {
                   </p>
                 )}
                 {noBankingProof && church.__typename !== 'Sonta' && (
-                  <RoleView roles={permitAdmin('Oversight')}>
-                    <div className="d-grid gap-2">
+                  <div className="d-grid gap-2">
+                    <RoleView roles={permitAdmin('Oversight')}>
                       <Button
                         className="mt-3"
                         variant="warning"
@@ -218,7 +218,8 @@ const ServiceDetails = ({ service, church, loading }: ServiceDetailsProps) => {
                         <CheckCircleFill />
                         {submitting ? 'Confirming...' : 'Confirm Offering'}
                       </Button>
-
+                    </RoleView>
+                    <RoleView roles={permitAdmin('GatheringService')}>
                       <Button
                         className="mb-3"
                         variant="danger"
@@ -231,8 +232,8 @@ const ServiceDetails = ({ service, church, loading }: ServiceDetailsProps) => {
                         <FileEarmarkArrowUpFill />
                         Upload Banking Slip
                       </Button>
-                    </div>
-                  </RoleView>
+                    </RoleView>
+                  </div>
                 )}
                 <div className="d-grid gap-2">
                   <Button

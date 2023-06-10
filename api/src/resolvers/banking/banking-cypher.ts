@@ -47,22 +47,32 @@ export const setRecordTransactionReferenceWithOTP = `
     RETURN record {
         .id,
         .transactionReference,
-        .transactionStatus
+        .transactionStatus,
+        .cash,
+        .desc,
+        .sourceNetwork,
+        .sourceNumber,
+        .transactionTime
         }
     `
 
 export const checkTransactionReference = `
-MATCH (record:ServiceRecord {id: $serviceRecordId})
+MATCH (record:ServiceRecord {id: $serviceRecordId})<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(church)-[:HAS*0..5]-(stream:Stream)
 OPTIONAL MATCH (record)-[:OFFERING_BANKED_BY]->(banker)
 RETURN record {
     .id,
     .transactionReference,
     .transactionStatus,
+    .transactionTime,
     .income
 }, banker {
     .id,
     .firstName, 
     .lastName
+}, stream {
+    .id,
+    .bankAccount,
+    .name
 } 
 `
 

@@ -4,8 +4,11 @@ import { StreamOptions } from 'global-types'
 import { alertMsg, throwToSentry } from 'global-utils'
 import { useContext, useState } from 'react'
 import { Button, Spinner } from 'react-bootstrap'
-import { useNavigate } from 'react-router'
-import { CONFIRM_OFFERING_PAYMENT } from '../../bankingQueries'
+import { useLocation, useNavigate } from 'react-router'
+import {
+  CONFIRM_OFFERING_PAYMENT,
+  SELF_BANKING_RECEIPT,
+} from '../../bankingQueries'
 
 export type ConfirmPaymentServiceType = {
   id: string
@@ -17,6 +20,7 @@ type ButtonConfirmPaymentProps = {
   refetch: (
     variables?:
       | Partial<{
+          id?: string
           serviceRecordId?: string
           fellowshipId?: string
           constituencyId?: string
@@ -33,8 +37,10 @@ const ButtonConfirmPayment = (props: ButtonConfirmPaymentProps) => {
   const { refetch, service, togglePopup, ...rest } = props
   const [sending, setSending] = useState(false)
   const navigate = useNavigate()
-  const { fellowshipId, constituencyId, councilId } = useContext(ChurchContext)
+  const { fellowshipId, constituencyId, councilId, clickCard } =
+    useContext(ChurchContext)
   const [ConfirmOfferingPayment] = useMutation(CONFIRM_OFFERING_PAYMENT)
+  const location = useLocation()
 
   return (
     <Button
@@ -50,6 +56,10 @@ const ButtonConfirmPayment = (props: ButtonConfirmPaymentProps) => {
             fellowshipId,
             constituencyId,
             councilId,
+          })
+          clickCard({
+            id: service?.id,
+            __typename: 'ServiceRecord',
           })
 
           let serviceRecord: { id: string; transactionStatus: string } = {
@@ -74,12 +84,22 @@ const ButtonConfirmPayment = (props: ButtonConfirmPaymentProps) => {
             )
           }
 
+          if (res.data?.serviceRecords) {
+            serviceRecord = res.data?.serviceRecords[0]
+          }
+
           if (serviceRecord.transactionStatus === 'pending') {
             const confirmationRes = await ConfirmOfferingPayment({
               variables: {
                 serviceRecordId: service?.id,
                 stream_name: service?.stream_name,
               },
+              refetchQueries: [
+                {
+                  query: SELF_BANKING_RECEIPT,
+                  variables: { id: service?.id },
+                },
+              ],
             })
 
             if (
@@ -126,13 +146,15 @@ const ButtonConfirmPayment = (props: ButtonConfirmPaymentProps) => {
             return
           }
         } catch (error: any) {
-          if (togglePopup) {
-            togglePopup()
-          }
-
           navigate('/services/fellowship/self-banking')
           throwToSentry(error)
         } finally {
+          if (togglePopup) {
+            togglePopup()
+          }
+          if (location.pathname === '/self-banking/confirm-payment') {
+            navigate(-3)
+          }
           setSending(false)
         }
       }}

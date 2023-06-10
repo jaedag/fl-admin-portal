@@ -565,7 +565,6 @@ export const DISPLAY_VEHICLE_PAYMENT_RECORDS = gql`
     bacentas(where: { id: $bacentaId }) {
       id
       name
-      stream_name
       leader {
         id
         firstName

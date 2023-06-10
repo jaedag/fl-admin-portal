@@ -1,6 +1,5 @@
 extend type Mutation {
   BankServiceOffering(
-    stream_name: String!
     serviceRecordId: ID!
     mobileNetwork: String!
     mobileNumber: String!
@@ -8,14 +7,10 @@ extend type Mutation {
   ): ServiceRecord!
   SendPaymentOTP(
     serviceRecordId: String!
-    streamName: String!
     reference: String
     otp: String!
   ): ServiceRecord!
-  ConfirmOfferingPayment(
-    stream_name: String!
-    serviceRecordId: ID!
-  ): ServiceRecord!
+  ConfirmOfferingPayment(serviceRecordId: ID!): ServiceRecord!
   SubmitBankingSlip(serviceRecordId: ID!, bankingSlip: String!): ServiceRecord!
   ManuallyConfirmOfferingPayment(serviceRecordId: ID!): ServiceRecord!
     @auth(rules: [{ roles: ["adminGatheringService"] }])

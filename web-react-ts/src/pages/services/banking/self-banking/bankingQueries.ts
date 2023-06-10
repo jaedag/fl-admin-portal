@@ -38,7 +38,6 @@ export const DISPLAY_OFFERING_DETAILS = gql`
       transactionTime
       transactionReference
       transactionStatus
-      stream_name
     }
   }
 `
@@ -46,29 +45,18 @@ export const DISPLAY_OFFERING_DETAILS = gql`
 export const PAY_OFFERING_MUTATION = gql`
   mutation PayOfferingMutation(
     $serviceRecordId: ID!
-    $stream_name: String!
     $mobileNetwork: String!
     $momoName: String!
     $mobileNumber: String!
   ) {
     BankServiceOffering(
       serviceRecordId: $serviceRecordId
-      stream_name: $stream_name
       mobileNetwork: $mobileNetwork
       mobileNumber: $mobileNumber
       momoName: $momoName
     ) {
       id
       cash
-      serviceDate {
-        date
-      }
-      offeringBankedBy {
-        id
-        firstName
-        lastName
-        fullName
-      }
       sourceNetwork
       sourceNumber
       desc
@@ -82,13 +70,11 @@ export const PAY_OFFERING_MUTATION = gql`
 export const SEND_PAYMENT_OTP = gql`
   mutation SendPaymentOTP(
     $serviceRecordId: String!
-    $streamName: String!
     $reference: String!
     $otp: String!
   ) {
     SendPaymentOTP(
       serviceRecordId: $serviceRecordId
-      streamName: $streamName
       reference: $reference
       otp: $otp
     ) {
@@ -99,14 +85,8 @@ export const SEND_PAYMENT_OTP = gql`
 `
 
 export const CONFIRM_OFFERING_PAYMENT = gql`
-  mutation ConfirmOfferingPayment(
-    $serviceRecordId: ID!
-    $stream_name: String!
-  ) {
-    ConfirmOfferingPayment(
-      serviceRecordId: $serviceRecordId
-      stream_name: $stream_name
-    ) {
+  mutation ConfirmOfferingPayment($serviceRecordId: ID!) {
+    ConfirmOfferingPayment(serviceRecordId: $serviceRecordId) {
       id
       cash
       transactionId

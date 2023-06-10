@@ -1,3 +1,27 @@
+#### 7.6.17 (2023-06-09)
+
+##### Bug Fixes
+
+*  remove unused import of StreamOptions ([6da6fecb](https://github.com/firstlovecenter/fl-pastoral-care/commit/6da6fecb205283058e5fd6a72cad03625ff93c42))
+*  prevent mutation from rewriting cache with incomplete data ([efffa3d5](https://github.com/firstlovecenter/fl-pastoral-care/commit/efffa3d569c5055d2360125cf8779a0305ec0533))
+*  remove duplicate running of payment webhook ([a2fcce49](https://github.com/firstlovecenter/fl-pastoral-care/commit/a2fcce49028aeeb3be34fa4ee2adb780e9b6c019))
+*  fix broken reference in arrivals money file ([27d333af](https://github.com/firstlovecenter/fl-pastoral-care/commit/27d333af1625c7886ce9f64cf9617e022351211b))
+*  if transaction occurred in the last minute, return pending ([dcb112b3](https://github.com/firstlovecenter/fl-pastoral-care/commit/dcb112b3bc154e92186d56cb9cc9d3fcc5ebab96))
+*  fix gs admin not being able to upload banking slip ([a5cdfa9c](https://github.com/firstlovecenter/fl-pastoral-care/commit/a5cdfa9ce557a4b1863c055147a919715a5b005b))
+*  update directory lock for display church details ([f40c52f5](https://github.com/firstlovecenter/fl-pastoral-care/commit/f40c52f57b3701d92e58de273574b45ac9043526))
+*  push the monday edit access to start after 12noon ([731aba9d](https://github.com/firstlovecenter/fl-pastoral-care/commit/731aba9da1582f884c5bd1f7b8b297dc52411087))
+*  add monday as a day for directory changes ([6431e649](https://github.com/firstlovecenter/fl-pastoral-care/commit/6431e64938bbfff3bf2c4f020aca15b9ca3da02c))
+*  correct wrongfully setting bussingThisWeek as array ([785c900f](https://github.com/firstlovecenter/fl-pastoral-care/commit/785c900f52761b8b8af32975c2f4b58aa768ca80))
+*  update frontend object path for bussingThisWeek ([3819a0c5](https://github.com/firstlovecenter/fl-pastoral-care/commit/3819a0c5bf3ba81bc81237a98e3d333f317d68ac))
+*  correct slight glitches in the arrivals calc for second busses ([09192a05](https://github.com/firstlovecenter/fl-pastoral-care/commit/09192a05921e3bb39ea58b44c896103fb6d50f01))
+*  remove breaking lines ([69009176](https://github.com/firstlovecenter/fl-pastoral-care/commit/69009176d0639c74abf4646f6166560552cb721b))
+*  add a limit to bussingThisWeek query ([d8d51f65](https://github.com/firstlovecenter/fl-pastoral-care/commit/d8d51f652d4f31115782cb4342721aed5733f06b))
+*  update bussingStatusQueries ([e8639c47](https://github.com/firstlovecenter/fl-pastoral-care/commit/e8639c478dfac2bdbd764a178943841672c85f33))
+
+##### Other Changes
+
+* 30 mins ([a3b80832](https://github.com/firstlovecenter/fl-pastoral-care/commit/a3b808321ffd10ff02c2754e1694d203d1de664b))
+
 #### 7.6.16 (2023-06-04)
 
 ##### Documentation Changes

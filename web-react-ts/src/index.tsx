@@ -86,6 +86,7 @@ const AppWithApollo = () => {
     uri: import.meta.env.VITE_GRAPHQL_URI || '/graphql',
     link: from([retryLink, authLink.concat(httpLink)]),
     cache: new InMemoryCache(),
+    connectToDevTools: true,
   })
 
   const [theme, setTheme] = useState('dark')
