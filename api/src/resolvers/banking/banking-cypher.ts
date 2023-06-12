@@ -97,15 +97,15 @@ export const getLastServiceRecord = `
 MATCH (record:ServiceRecord {id: $serviceRecordId})-[:SERVICE_HELD_ON]->(date:TimeGraph)
 MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(church) WHERE church:Fellowship OR church:Constituency OR church:Council
 MATCH (church)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(otherRecords:ServiceRecord)-[:SERVICE_HELD_ON]->(otherDate:TimeGraph)
-WHERE NOT (otherRecords:NoService) AND duration.between(otherDate.date, date.date).weeks < 52
+WHERE NOT (otherRecords:NoService) AND duration.between(otherDate.date, date.date).weeks < 52 AND otherDate.date < date.date
 
 WITH DISTINCT record,otherRecords ORDER BY otherRecords.createdAt DESC LIMIT 2
 WITH collect(otherRecords.id) AS recordIds, record.id AS currentServiceId
 
 WITH apoc.coll.indexOf(recordIds,currentServiceId) + 1 AS lastServiceIndex, recordIds WHERE lastServiceIndex >= 0
-MATCH (lastService:ServiceRecord {id: recordIds[lastServiceIndex]})
+MATCH (lastService:ServiceRecord {id: recordIds[lastServiceIndex]})-[:SERVICE_HELD_ON]->(lastDate:TimeGraph)
 
-RETURN lastService
+RETURN lastService, lastDate
 `
 
 export const submitBankingSlip = `

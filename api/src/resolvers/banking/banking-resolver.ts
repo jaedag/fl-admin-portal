@@ -50,6 +50,7 @@ export const checkIfLastServiceBanked = async (
   if (!('lastService' in lastServiceRecord)) return true
 
   const record = lastServiceRecord.lastService.properties
+  const date = lastServiceRecord.lastDate.properties
 
   if (
     !(
@@ -60,7 +61,7 @@ export const checkIfLastServiceBanked = async (
   ) {
     throw new Error(
       `Please bank outstanding offering for your service filled on ${getHumanReadableDate(
-        record.createdAt
+        date.date
       )} before attempting to bank this week's offering`
     )
   }
