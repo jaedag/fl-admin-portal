@@ -134,6 +134,29 @@ MERGE (log)-[:RECORDED_ON]->(today)
 RETURN node as member
 `
 
+export const removeDuplicateMember = `
+MATCH (member:Member {id:$id})
+SET member:Inactive, member:DuplicateMember
+REMOVE member:Active, member:Member
+
+WITH member 
+CREATE (log:HistoryLog)
+SET log.id = apoc.create.uuid(),
+log.timeStamp = datetime(),
+log.historyRecord = $reason
+
+WITH log, member 
+MATCH (member)-[:BELONGS_TO]->(church)
+MATCH (admin:Member {auth_id:$auth.jwt.sub})
+MERGE (today:TimeGraph {date: date()})
+MERGE (admin)<-[:LOGGED_BY]-(log)
+MERGE (member)-[:HAS_HISTORY]->(log)
+MERGE (church)-[:HAS_HISTORY]->(log)
+MERGE (log)-[:RECORDED_ON]->(today)
+
+DETACH DELETE member
+`
+
 export const createMember = `
 MATCH (fellowship:Fellowship {id: $fellowship})
 CREATE (member:Active:Member:IDL:Deer {whatsappNumber:$whatsappNumber})

@@ -18,6 +18,7 @@ import {
   updateMemberEmail,
   createMember,
   activateInactiveMember,
+  removeDuplicateMember,
 } from '../cypher/resolver-cypher'
 import { getAuthToken } from '../authenticate'
 
@@ -180,8 +181,14 @@ const directoryMutation = {
       )
     }
 
+    let mutation = makeMemberInactive
+
+    if (args.reason.toLowerCase().includes('duplicate')) {
+      mutation = removeDuplicateMember
+    }
+
     const member = rearrangeCypherObject(
-      await session.run(makeMemberInactive, {
+      await session.run(mutation, {
         id: args.id,
         reason: args.reason,
         auth: context.auth,
