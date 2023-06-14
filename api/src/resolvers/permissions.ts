@@ -13,6 +13,9 @@ export const permitLeader = (churchLevel: ChurchLevel) => {
         'leaderConstituency',
         'leaderBacenta',
         'leaderFellowship',
+        'leaderHub',
+        'leaderMinistry',
+        'leaderCreativeArt',
       ]
       break
     case 'bacenta':
@@ -51,33 +54,23 @@ export const permitLeader = (churchLevel: ChurchLevel) => {
     case 'oversight':
       permittedFor = ['leaderOversight']
       break
-    case 'federalministry':
-      permittedFor = ['leaderCampus', 'leaderFederalMinistry']
+    case 'creativeart':
+      permittedFor = ['leaderCampus', 'leaderCreativeArt']
       break
     case 'ministry':
       permittedFor = [
         'leaderCampus',
         'leaderStream',
-        'leaderFederalMinistry',
+        'leaderCreativeArt',
         'leaderMinistry',
       ]
       break
     case 'hub':
       permittedFor = [
         'leaderCampus',
-        'leaderFederalMinistry',
+        'leaderCreativeArt',
         'leaderStream',
         'leaderMinistry',
-        'leaderHub',
-      ]
-      break
-    case 'sonta':
-      permittedFor = [
-        'leaderCampus',
-        'leaderStream',
-        'leaderMinistry',
-        'leaderFederalMinistry',
-        'leaderSonta',
         'leaderHub',
       ]
       break
@@ -94,7 +87,6 @@ export const permitAdmin = (churchLevel: ChurchLevel) => {
   switch (churchLevel) {
     case 'Fellowship':
     case 'Bacenta':
-    case 'Sonta':
     case 'Hub':
     case 'Constituency':
       permittedFor = [
@@ -123,11 +115,11 @@ export const permitAdmin = (churchLevel: ChurchLevel) => {
     case 'Oversight':
       permittedFor = ['adminOversight', 'adminCampus']
       break
-    case 'Federalministry':
-      permittedFor = ['adminCampus', 'adminFederalministry']
+    case 'CreativeArt':
+      permittedFor = ['adminCampus', 'adminCreativeArt']
       break
     case 'Ministry':
-      permittedFor = ['adminStream', 'adminFederalministry', 'adminMinistry']
+      permittedFor = ['adminStream', 'adminCreativeArt', 'adminMinistry']
       break
     default:
       permittedFor = []

@@ -551,14 +551,14 @@ extend type Mutation {
     @cypher(
       statement: """
       MATCH (member:Active:Member {id: $memberId})
-      OPTIONAL MATCH (member)-[previous:BELONGS_TO]->(:Federalministry)
+      OPTIONAL MATCH (member)-[previous:BELONGS_TO]->(:CreativeArt)
       DELETE previous
 
       WITH member
       CALL {
       	WITH member
       	WITH member  WHERE $ministryId <> 'None'
-        MATCH (ministry:Federalministry {id: $ministryId})
+        MATCH (ministry:CreativeArt {id: $ministryId})
         MERGE (member)-[:BELONGS_TO]->(ministry)
 
         RETURN count(member)
@@ -915,16 +915,16 @@ extend type Mutation {
 
       WITH council, stream, log
       MATCH (admin:Active:Member {auth_id: $auth.jwt.sub})
-      OPTIONAL MATCH (council)-[:HAS]->(constituencies)-[:HAS]->(bacentas)-[:HAS]->(fellowships)
-
+      OPTIONAL MATCH (council)-[:HAS]->(constituencies:Constituency)-[:HAS]->(bacentas)-[:HAS]->(fellowships)
+      OPTIONAL MATCH (council)-[:HAS]->(hubs:Hub)
       MERGE (date:TimeGraph {date:date()})
       MERGE (log)-[:LOGGED_BY]->(admin)
       MERGE (log)-[:RECORDED_ON]->(date)
       MERGE (stream)-[:HAS_HISTORY]->(log)
       MERGE (council)-[:HAS_HISTORY]->(log)
 
-      SET council:ClosedCouncil, constituencies:ClosedConstituency, bacentas:ClosedBacenta, fellowships:ClosedFellowship
-      REMOVE council:Council,constituencies:Constituency,bacentas:Bacenta, fellowships:Fellowship
+      SET council:ClosedCouncil, constituencies:ClosedConstituency, bacentas:ClosedBacenta, fellowships:ClosedFellowship, hubs:ClosedHub
+      REMOVE council:Council,constituencies:Constituency,bacentas:Bacenta, fellowships:Fellowship, hubs:Hub
 
       RETURN stream
       """
@@ -942,6 +942,7 @@ extend type Mutation {
       WITH stream, campus, log
       MATCH (admin:Active:Member {auth_id: $auth.jwt.sub})
       OPTIONAL MATCH (stream)-[:HAS]->(council)-[:HAS]->(constituencies)-[:HAS]->(bacentas)-[:HAS]->(fellowships)
+      OPTIONAL MATCH (stream)-[:HAS]->(council)-[:HAS]->(hubs:Hub)
 
       MERGE (date:TimeGraph {date:date()})
       MERGE (log)-[:LOGGED_BY]->(admin)
@@ -949,8 +950,8 @@ extend type Mutation {
       MERGE (stream)-[:HAS_HISTORY]->(log)
       MERGE (campus)-[:HAS_HISTORY]->(log)
 
-      SET stream:ClosedStream, council:ClosedCouncil, constituencies:Closedconstituency, bacentas:ClosedBacenta, fellowships:ClosedFellowship
-      REMOVE stream:Stream, council:Council, constituencies:Constituency,bacentas:Bacenta,fellowships:Fellowship
+      SET stream:ClosedStream, council:ClosedCouncil, constituencies:Closedconstituency, bacentas:ClosedBacenta, fellowships:ClosedFellowship, hubs:ClosedHub
+      REMOVE stream:Stream, council:Council, constituencies:Constituency,bacentas:Bacenta,fellowships:Fellowship, hubs:Hub
 
       RETURN campus
       """
@@ -969,16 +970,17 @@ extend type Mutation {
       WITH campus, oversight, log
       MATCH (admin:Active:Member {auth_id: $auth.jwt.sub})
       OPTIONAL MATCH (campus)-[:HAS]->(stream)-[:HAS]->(council)-[:HAS]->(constituencies)-[:HAS]->(bacentas)-[:HAS]->(fellowships)
-
-
+      OPTIONAL MATCH (campus)-[:HAS]->(stream)-[:HAS]->(council)-[:HAS]->(hubs:Hub)
+      
+      
       MERGE (date:TimeGraph {date:date()})
       MERGE (log)-[:LOGGED_BY]->(admin)
       MERGE (log)-[:RECORDED_ON]->(date)
       MERGE (campus)-[:HAS_HISTORY]->(log)
       MERGE (oversight)-[:HAS_HISTORY]->(log)
 
-      SET campus:ClosedCampus, stream:ClosedStream, council:ClosedCouncil, constituencies:Closedconstituency, bacentas:ClosedBacenta, fellowships:ClosedFellowship
-      REMOVE campus:ClosedCampus, stream:Stream, council:Council, constituencies:Constituency,bacentas:Bacenta,fellowships:Fellowship
+      SET campus:ClosedCampus, stream:ClosedStream, council:ClosedCouncil, constituencies:Closedconstituency, bacentas:ClosedBacenta, fellowships:ClosedFellowship, hubs:ClosedHub
+      REMOVE campus:ClosedCampus, stream:Stream, council:Council, constituencies:Constituency,bacentas:Bacenta,fellowships:Fellowship, hubs:Hub
 
       RETURN oversight
       """

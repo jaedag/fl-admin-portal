@@ -29,5 +29,10 @@
     "titleBar.inactiveBackground": "#29020a99",
     "titleBar.inactiveForeground": "#e7e7e799"
   },
-  "peacock.color": "#29020a"
+  "peacock.color": "#29020a", 
+
+  "files.exclude": {
+    "**/*.js": { "when": "$(basename).ts" },
+    "**/**.js": { "when": "$(basename).tsx" }
+  }
 }
