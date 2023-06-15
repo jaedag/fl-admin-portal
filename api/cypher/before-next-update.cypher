@@ -89,3 +89,10 @@ RETURN stream;
 MATCH (record:ServiceRecord) WHERE record.cash IS NULL
 SET record.cash = record.income
 RETURN COUNT(record);
+
+MATCH (g:GatheringService)
+SET g:Campus
+REMOVE g:GatheringService
+RETURN COUNT(g);
+
+CREATE CONSTRAINT campusNeedsNoIncomeTracking IF NOT EXISTS ON (g:Campus) ASSERT exists(g.noIncomeTracking);

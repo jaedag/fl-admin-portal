@@ -6,7 +6,7 @@ import {
   RECORD_SERVICE,
   RECORD_SERVICE_NO_INCOME,
 } from './RecordServiceMutations'
-import { DISPLAY_CAMPUSE } from '../../directory/display/ReadQueries'
+import { DISPLAY_CAMPUS } from '../../directory/display/ReadQueries'
 import ServiceForm from './ServiceForm'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { MemberContext } from '../../../contexts/MemberContext'
@@ -16,7 +16,7 @@ const CampusService = () => {
   const { currentUser } = useContext(MemberContext)
 
   const { campusId } = useContext(ChurchContext)
-  const { data, loading, error } = useQuery(DISPLAY_CAMPUSE, {
+  const { data, loading, error } = useQuery(DISPLAY_CAMPUS, {
     variables: { id: campusId },
   })
   const [RecordService] = useMutation(RECORD_SERVICE)
