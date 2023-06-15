@@ -26,7 +26,7 @@ const DisplayChurchList = (props: {
                   className="mb-2"
                   onClick={() => {
                     clickCard(church)
-                    if (churchType === 'GatheringService') {
+                    if (churchType === 'Campus') {
                       setUserFinancials(church)
                     }
                   }}
@@ -94,7 +94,7 @@ const DisplayChurchList = (props: {
                             ) : church.vacationStatus ? (
                               `| ${church?.vacationStatus}`
                             ) : null}{' '}
-                            {churchType === 'GatheringService'
+                            {churchType === 'Campus'
                               ? `${capitalise(church?.stream_name)}`
                               : null}
                           </Row>

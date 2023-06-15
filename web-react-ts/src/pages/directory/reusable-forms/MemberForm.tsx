@@ -12,7 +12,7 @@ import {
   PHONE_NUM_REGEX,
   throwToSentry,
 } from 'global-utils'
-import { GET_GATHERINGSERVICE_MINISTRIES } from 'queries/ListQueries'
+import { GET_CAMPUS_MINISTRIES } from 'queries/ListQueries'
 import ErrorScreen from 'components/base-component/ErrorScreen'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import { Button, Col, Container, Row } from 'react-bootstrap'
@@ -57,12 +57,12 @@ const MemberForm = ({
   update,
 }: MemberFormProps) => {
   const { currentUser, memberId } = useContext(MemberContext)
-  const { gatheringServiceId } = useContext(ChurchContext)
+  const { campusId } = useContext(ChurchContext)
   const { data: ministriesData, loading: ministriesLoading } = useQuery(
-    GET_GATHERINGSERVICE_MINISTRIES,
+    GET_CAMPUS_MINISTRIES,
     {
       variables: {
-        id: gatheringServiceId,
+        id: campusId,
       },
     }
   )
@@ -149,9 +149,7 @@ const MemberForm = ({
     return <LoadingScreen />
   } else if (ministriesData) {
     const ministryArray =
-      makeSelectOptions(
-        ministriesData.gatheringServices[0]?.federalMinistries
-      ) || []
+      makeSelectOptions(ministriesData.campuses[0]?.federalMinistries) || []
     const ministryOptions = [{ key: 'None', value: 'None' }, ...ministryArray]
 
     return (
@@ -369,7 +367,7 @@ const MemberForm = ({
                       roles={[
                         'sheepseekerStream',
                         'adminStream',
-                        'adminGatheringService',
+                        'adminCampus',
                       ]}
                     >
                       <Button

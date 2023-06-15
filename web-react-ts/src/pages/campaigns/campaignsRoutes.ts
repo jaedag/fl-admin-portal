@@ -6,17 +6,11 @@ import {
 import { LazyRouteTypes } from 'global-types'
 import { lazy } from 'react'
 
-const GatheringServiceEquipmentHaveNotFilledByFellowship = lazy(
-  () =>
-    import(
-      './equipment/gathering-service/GatheringServiceEquipmentHaveNotFilledByFellowship'
-    )
+const CampusEquipmentHaveNotFilledByFellowship = lazy(
+  () => import('./equipment/campus/CampusEquipmentHaveNotFilledByFellowship')
 )
-const GatheringServiceEquipmentHaveNotFilledByConstituency = lazy(
-  () =>
-    import(
-      './equipment/gathering-service/GatheringServiceEquipmentHaveNotFilledByConstituency'
-    )
+const CampusEquipmentHaveNotFilledByConstituency = lazy(
+  () => import('./equipment/campus/CampusEquipmentHaveNotFilledByConstituency')
 )
 
 const StreamEquipmentHaveNotFilledByFellowship = lazy(
@@ -75,9 +69,7 @@ const FellowshipEquipmentFormDetails = lazy(
 const FellowshipTrends = lazy(
   () => import('./equipment/fellowship/FellowshipTrends')
 )
-const GatheringServiceCampaigns = lazy(
-  () => import('./GatheringServiceCampaigns')
-)
+const CampusCampaigns = lazy(() => import('./CampusCampaigns'))
 const StreamCampaigns = lazy(() => import('./StreamCampaigns'))
 const CouncilCampaigns = lazy(() => import('./CouncilCampaigns'))
 const BacentaCampaigns = lazy(() => import('./BacentaCampaigns'))
@@ -90,15 +82,11 @@ const CouncilEquipmentCampaign = lazy(
 const BacentaEquipmentCampaign = lazy(
   () => import('./equipment/bacenta/BacentaEquipmentCampaign')
 )
-const GatheringServiceTrends = lazy(
-  () => import('./equipment/gathering-service/GatheringServiceTrends')
-)
+const CampusTrends = lazy(() => import('./equipment/campus/CampusTrends'))
 const StreamTrends = lazy(() => import('./equipment/stream/StreamTrends'))
 const CouncilTrends = lazy(() => import('./equipment/council/CouncilTrends'))
 const BacentaTrends = lazy(() => import('./equipment/bacenta/BacentaTrends'))
-const GatheringServiceByStream = lazy(
-  () => import('./equipment/gathering-service/GatheringServiceByStream')
-)
+const CampusByStream = lazy(() => import('./equipment/campus/CampusByStream'))
 const StreamByCouncil = lazy(() => import('./equipment/stream/StreamByCouncil'))
 const CouncilByConstituency = lazy(
   () => import('./equipment/council/CouncilByConstituency')
@@ -109,31 +97,20 @@ const ConstituencyByBacenta = lazy(
 const BacentaByFellowship = lazy(
   () => import('./equipment/bacenta/BacentaByFellowship')
 )
-const GatheringServiceEquipmentDeadline = lazy(
-  () =>
-    import('./equipment/gathering-service/GatheringServiceEquipmentDeadline')
+const CampusEquipmentDeadline = lazy(
+  () => import('./equipment/campus/CampusEquipmentDeadline')
 )
-const GatheringServiceEquipmentCampaign = lazy(
-  () =>
-    import('./equipment/gathering-service/GatheringServiceEquipmentCampaign')
+const CampusEquipmentCampaign = lazy(
+  () => import('./equipment/campus/CampusEquipmentCampaign')
 )
-const GatheringServiceAntiBrutishCampaign = lazy(
-  () =>
-    import(
-      './anti-brutish/gathering-service/GatheringServiceAntiBrutishCampaign'
-    )
+const CampusAntiBrutishCampaign = lazy(
+  () => import('./anti-brutish/campus/CampusAntiBrutishCampaign')
 )
-const GatheringServiceMultiplicationCampaign = lazy(
-  () =>
-    import(
-      './multiplication/gathering-service/GatheringServiceMultiplicationCampaign'
-    )
+const CampusMultiplicationCampaign = lazy(
+  () => import('./multiplication/campus/CampusMultiplicationCampaign')
 )
-const GatheringServiceMemberConversionChart = lazy(
-  () =>
-    import(
-      './multiplication/gathering-service/GatheringServiceMemberConversionChart'
-    )
+const CampusMemberConversionChart = lazy(
+  () => import('./multiplication/campus/CampusMemberConversionChart')
 )
 const StreamMemberConversionChart = lazy(
   () => import('./multiplication/stream/StreamMemberConversionChart')
@@ -152,17 +129,11 @@ const FellowshipMemberConversionChart = lazy(
   () => import('./multiplication/fellowship/FellowshipMemberConversionChart')
 )
 
-const GatheringServiceSwollenSundayCampaign = lazy(
-  () =>
-    import(
-      './swollen-sunday/gathering-service/GatheringServiceSwollenSundayCampaign'
-    )
+const CampusSwollenSundayCampaign = lazy(
+  () => import('./swollen-sunday/campus/CampusSwollenSundayCampaign')
 )
-const GatheringServiceTelepastoringCampaign = lazy(
-  () =>
-    import(
-      './telepastoring/gathering-service/GatheringServiceTelepastoringCampaign'
-    )
+const CampusTelepastoringCampaign = lazy(
+  () => import('./telepastoring/campus/CampusTelepastoringCampaign')
 )
 const StreamAntiBrutishCampaign = lazy(
   () => import('./anti-brutish/stream/StreamAntiBrutishCampaign')
@@ -224,15 +195,11 @@ const CouncilEquipmentHaveNotFilledByConstituency = lazy(
   () =>
     import('./equipment/council/CouncilEquipmentHaveNotFilledByConstituency')
 )
-const GatheringServiceEquipmentDefaulters = lazy(
-  () =>
-    import('./equipment/gathering-service/GatheringServiceEquipmentDefaulters')
+const CampusEquipmentDefaulters = lazy(
+  () => import('./equipment/campus/CampusEquipmentDefaulters')
 )
-const GatheringServiceByStreamEquipmentDefaulters = lazy(
-  () =>
-    import(
-      './equipment/gathering-service/GatheringServiceByStreamEquipmentDefaulters'
-    )
+const CampusByStreamEquipmentDefaulters = lazy(
+  () => import('./equipment/campus/CampusByStreamEquipmentDefaulters')
 )
 const StreamByCouncilEquipmentDefaulters = lazy(
   () => import('./equipment/stream/StreamByCouncilEquipmentDefaulters')
@@ -252,18 +219,13 @@ const StreamSheepSeekerCampaign = lazy(
   () => import('../campaigns/sheep-seeking/stream/StreamSheepSeekerCampaign')
 )
 
-const GatheringServiceSheepSeekerCampaign = lazy(
-  () =>
-    import(
-      '../campaigns/sheep-seeking/gathering-service/GatheringServiceSheepSeekerCampaign'
-    )
+const CampusSheepSeekerCampaign = lazy(
+  () => import('../campaigns/sheep-seeking/campus/CampusSheepSeekerCampaign')
 )
 
-const GatheringServiceMultiplicationCampaignServiceForm = lazy(
+const CampusMultiplicationCampaignServiceForm = lazy(
   () =>
-    import(
-      '../campaigns/multiplication/gathering-service/GatheringServiceMultiplicationCampaignServiceForm'
-    )
+    import('./multiplication/campus/CampusMultiplicationCampaignServiceForm')
 )
 
 const StreamMultiplicationCampaignServiceForm = lazy(
@@ -300,11 +262,9 @@ const CouncilMultiplicationCampaignServiceDetails = lazy(
     )
 )
 
-const GatheringServiceMultiplicationCampaignServiceDetails = lazy(
+const CampusMultiplicationCampaignServiceDetails = lazy(
   () =>
-    import(
-      '../campaigns/multiplication/gathering-service/GatheringServiceMultiplicationCampaignServiceDetails'
-    )
+    import('./multiplication/campus/CampusMultiplicationCampaignServiceDetails')
 )
 
 const StreamMultiplicationCampaignServiceDetails = lazy(
@@ -314,18 +274,13 @@ const StreamMultiplicationCampaignServiceDetails = lazy(
     )
 )
 
-const GatheringServiceSwollenSundayTrends = lazy(
-  () =>
-    import(
-      '../campaigns/swollen-sunday/gathering-service/GatheringServiceSwollenSundayTrends'
-    )
+const CampusSwollenSundayTrends = lazy(
+  () => import('../campaigns/swollen-sunday/campus/CampusSwollenSundayTrends')
 )
 
-const GatheringServiceSwollenSundayStreamList = lazy(
+const CampusSwollenSundayStreamList = lazy(
   () =>
-    import(
-      '../campaigns/swollen-sunday/gathering-service/GatheringServiceSwollenSundayStreamList'
-    )
+    import('../campaigns/swollen-sunday/campus/CampusSwollenSundayStreamList')
 )
 
 const StreamSwollenSundayTrends = lazy(
@@ -410,11 +365,8 @@ const StreamMultiplicationCampaignTrends = lazy(
     )
 )
 
-const GatheringServiceMultiplicationCampaignTrends = lazy(
-  () =>
-    import(
-      '../campaigns/multiplication/gathering-service/GatheringServiceMultiplicationCampaignTrends'
-    )
+const CampusMultiplicationCampaignTrends = lazy(
+  () => import('./multiplication/campus/CampusMultiplicationCampaignTrends')
 )
 
 const ConstituencyMultiplicationCampaignUploadReceipts = lazy(
@@ -431,11 +383,9 @@ const CouncilMultiplicationCampaignUploadReceipts = lazy(
     )
 )
 
-const GatheringServiceMultiplicationCampaignUploadReceipts = lazy(
+const CampusMultiplicationCampaignUploadReceipts = lazy(
   () =>
-    import(
-      '../campaigns/multiplication/gathering-service/GatheringServiceMultiplicationCampaignUploadReceipts'
-    )
+    import('./multiplication/campus/CampusMultiplicationCampaignUploadReceipts')
 )
 
 const StreamMultiplicationCampaignUploadReceipts = lazy(
@@ -463,10 +413,10 @@ const StreamMultiplicationCampaignBankingSlipView = lazy(
       '../campaigns/multiplication/stream/StreamMultiplicationCampaignBankingSlipView'
     )
 )
-const GatheringServiceMultiplicationCampaignBankingSlipView = lazy(
+const CampusMultiplicationCampaignBankingSlipView = lazy(
   () =>
     import(
-      '../campaigns/multiplication/gathering-service/GatheringServiceMultiplicationCampaignBankingSlipView'
+      './multiplication/campus/CampusMultiplicationCampaignBankingSlipView'
     )
 )
 
@@ -495,10 +445,10 @@ const StreamShepherdingControlCampaign = lazy(
       '../campaigns/shepherding-control/stream/StreamShepherdingControlCampaign'
     )
 )
-const GatheringServiceShepherdingControlCampaign = lazy(
+const CampusShepherdingControlCampaign = lazy(
   () =>
     import(
-      '../campaigns/shepherding-control/gathering-service/GatheringServiceShepherdingControlCampaign'
+      '../campaigns/shepherding-control/campus/CampusShepherdingControlCampaign'
     )
 )
 
@@ -527,157 +477,157 @@ const StreamShepherdingControlYearTillDate = lazy(
       '../campaigns/shepherding-control/stream/StreamShepherdingControlYearTillDate'
     )
 )
-const GatheringServiceShepherdingControlYearTillDate = lazy(
+const CampusShepherdingControlYearTillDate = lazy(
   () =>
     import(
-      '../campaigns/shepherding-control/gathering-service/GatheringServiceShepherdingControlYearTillDate'
+      '../campaigns/shepherding-control/campus/CampusShepherdingControlYearTillDate'
     )
 )
 
 export const campaigns: LazyRouteTypes[] = [
-  //gathering-service routes
+  //campus routes
   {
-    path: '/campaigns/gatheringservice',
-    element: GatheringServiceCampaigns,
-    roles: permitLeaderAdmin('GatheringService'),
+    path: '/campaigns/campus',
+    element: CampusCampaigns,
+    roles: permitLeaderAdmin('Campus'),
     placeholder: true,
   },
   {
-    path: '/campaigns/gatheringservice/equipment',
-    element: GatheringServiceEquipmentCampaign,
-    roles: permitLeaderAdmin('GatheringService'),
+    path: '/campaigns/campus/equipment',
+    element: CampusEquipmentCampaign,
+    roles: permitLeaderAdmin('Campus'),
     placeholder: true,
   },
   {
-    path: '/campaigns/gatheringservice/equipment/trends',
-    element: GatheringServiceTrends,
-    roles: permitLeaderAdmin('GatheringService'),
+    path: '/campaigns/campus/equipment/trends',
+    element: CampusTrends,
+    roles: permitLeaderAdmin('Campus'),
     placeholder: true,
   },
   {
-    path: '/campaigns/equipment/gatheringservice/stream',
-    element: GatheringServiceByStream,
-    roles: permitLeaderAdmin('GatheringService'),
+    path: '/campaigns/equipment/campus/stream',
+    element: CampusByStream,
+    roles: permitLeaderAdmin('Campus'),
     placeholder: true,
   },
   {
-    path: '/campaigns/gatheringservice/set-equipment-deadline',
-    element: GatheringServiceEquipmentDeadline,
-    roles: permitLeaderAdmin('GatheringService'),
+    path: '/campaigns/campus/set-equipment-deadline',
+    element: CampusEquipmentDeadline,
+    roles: permitLeaderAdmin('Campus'),
     placeholder: true,
   },
   {
-    path: '/campaigns/gatheringservice/anti-brutish',
-    element: GatheringServiceAntiBrutishCampaign,
-    roles: permitLeaderAdmin('GatheringService'),
+    path: '/campaigns/campus/anti-brutish',
+    element: CampusAntiBrutishCampaign,
+    roles: permitLeaderAdmin('Campus'),
     placeholder: true,
   },
   {
-    path: '/campaigns/gatheringservice/multiplication',
-    element: GatheringServiceMultiplicationCampaign,
-    roles: permitLeaderAdmin('GatheringService'),
+    path: '/campaigns/campus/multiplication',
+    element: CampusMultiplicationCampaign,
+    roles: permitLeaderAdmin('Campus'),
     placeholder: true,
   },
   {
-    path: '/campaigns/gatheringservice/swollen-sunday',
-    element: GatheringServiceSwollenSundayCampaign,
-    roles: permitLeaderAdmin('GatheringService'),
+    path: '/campaigns/campus/swollen-sunday',
+    element: CampusSwollenSundayCampaign,
+    roles: permitLeaderAdmin('Campus'),
     placeholder: true,
   },
   {
-    path: '/campaigns/gatheringservice/telepastoring',
-    element: GatheringServiceTelepastoringCampaign,
-    roles: permitLeaderAdmin('GatheringService'),
+    path: '/campaigns/campus/telepastoring',
+    element: CampusTelepastoringCampaign,
+    roles: permitLeaderAdmin('Campus'),
     placeholder: true,
   },
   {
-    path: '/campaigns/gatheringservice/equipment/defaulters',
-    element: GatheringServiceEquipmentDefaulters,
-    roles: permitLeaderAdmin('GatheringService'),
+    path: '/campaigns/campus/equipment/defaulters',
+    element: CampusEquipmentDefaulters,
+    roles: permitLeaderAdmin('Campus'),
     placeholder: true,
   },
   {
-    path: '/campaigns/gatheringservice/stream/equipment/defaulters',
-    element: GatheringServiceByStreamEquipmentDefaulters,
-    roles: permitLeaderAdmin('GatheringService'),
+    path: '/campaigns/campus/stream/equipment/defaulters',
+    element: CampusByStreamEquipmentDefaulters,
+    roles: permitLeaderAdmin('Campus'),
     placeholder: true,
   },
   {
-    path: '/campaigns/gatheringservice/equipment/have-not-filled/fellowship',
-    element: GatheringServiceEquipmentHaveNotFilledByFellowship,
+    path: '/campaigns/campus/equipment/have-not-filled/fellowship',
+    element: CampusEquipmentHaveNotFilledByFellowship,
     roles: permitLeaderAdmin('Council'),
     placeholder: true,
   },
   {
-    path: '/campaigns/gatheringservice/equipment/have-not-filled/constituency',
-    element: GatheringServiceEquipmentHaveNotFilledByConstituency,
+    path: '/campaigns/campus/equipment/have-not-filled/constituency',
+    element: CampusEquipmentHaveNotFilledByConstituency,
     roles: permitLeaderAdmin('Council'),
     placeholder: true,
   },
   {
-    path: '/campaigns/gatheringservice/multiplication/service-form',
-    element: GatheringServiceMultiplicationCampaignServiceForm,
-    roles: permitLeaderAdmin('GatheringService'),
+    path: '/campaigns/campus/multiplication/service-form',
+    element: CampusMultiplicationCampaignServiceForm,
+    roles: permitLeaderAdmin('Campus'),
     placeholder: true,
   },
   {
-    path: '/campaigns/gatheringservice/multiplication/service-details',
-    element: GatheringServiceMultiplicationCampaignServiceDetails,
-    roles: permitLeaderAdmin('GatheringService'),
+    path: '/campaigns/campus/multiplication/service-details',
+    element: CampusMultiplicationCampaignServiceDetails,
+    roles: permitLeaderAdmin('Campus'),
     placeholder: true,
   },
   {
-    path: '/campaigns/gatheringservice/swollen-sunday/trends',
-    element: GatheringServiceSwollenSundayTrends,
-    roles: permitLeaderAdmin('GatheringService'),
+    path: '/campaigns/campus/swollen-sunday/trends',
+    element: CampusSwollenSundayTrends,
+    roles: permitLeaderAdmin('Campus'),
     placeholder: true,
   },
   {
-    path: '/campaigns/gatheringservice/swollen-sunday/streams',
-    element: GatheringServiceSwollenSundayStreamList,
-    roles: permitLeaderAdmin('GatheringService'),
+    path: '/campaigns/campus/swollen-sunday/streams',
+    element: CampusSwollenSundayStreamList,
+    roles: permitLeaderAdmin('Campus'),
     placeholder: true,
   },
   {
-    path: '/campaigns/gatheringservice/multiplication/trends',
-    element: GatheringServiceMultiplicationCampaignTrends,
-    roles: permitLeaderAdmin('GatheringService'),
+    path: '/campaigns/campus/multiplication/trends',
+    element: CampusMultiplicationCampaignTrends,
+    roles: permitLeaderAdmin('Campus'),
     placeholder: true,
   },
   {
-    path: '/campaigns/gatheringservice/multiplication/upload-receipts',
-    element: GatheringServiceMultiplicationCampaignUploadReceipts,
-    roles: permitLeaderAdmin('GatheringService'),
+    path: '/campaigns/campus/multiplication/upload-receipts',
+    element: CampusMultiplicationCampaignUploadReceipts,
+    roles: permitLeaderAdmin('Campus'),
     placeholder: true,
   },
   {
-    path: '/campaigns/gatheringservice/multiplication/banking-slips',
-    element: GatheringServiceMultiplicationCampaignBankingSlipView,
-    roles: permitLeaderAdmin('GatheringService'),
+    path: '/campaigns/campus/multiplication/banking-slips',
+    element: CampusMultiplicationCampaignBankingSlipView,
+    roles: permitLeaderAdmin('Campus'),
     placeholder: true,
   },
   {
-    path: '/campaigns/gatheringservice/shepherding-control',
-    element: GatheringServiceShepherdingControlCampaign,
-    roles: permitLeaderAdmin('GatheringService'),
+    path: '/campaigns/campus/shepherding-control',
+    element: CampusShepherdingControlCampaign,
+    roles: permitLeaderAdmin('Campus'),
     placeholder: true,
   },
   {
-    path: '/campaigns/gatheringservice/shepherding-control/year-to-date',
-    element: GatheringServiceShepherdingControlYearTillDate,
-    roles: permitLeaderAdmin('GatheringService'),
+    path: '/campaigns/campus/shepherding-control/year-to-date',
+    element: CampusShepherdingControlYearTillDate,
+    roles: permitLeaderAdmin('Campus'),
     placeholder: true,
   },
   {
-    path: '/campaigns/gatheringservice/sheep-seeking',
-    element: GatheringServiceSheepSeekerCampaign,
-    roles: permitLeaderAdmin('GatheringService'),
+    path: '/campaigns/campus/sheep-seeking',
+    element: CampusSheepSeekerCampaign,
+    roles: permitLeaderAdmin('Campus'),
     placeholder: true,
   },
   {
-    path: '/campaigns/gatheringservice/multiplication/member-conversion-chart',
-    element: GatheringServiceMemberConversionChart,
-    roles: permitLeaderAdmin('GatheringService'),
+    path: '/campaigns/campus/multiplication/member-conversion-chart',
+    element: CampusMemberConversionChart,
+    roles: permitLeaderAdmin('Campus'),
     placeholder: true,
   },
 
@@ -763,7 +713,7 @@ export const campaigns: LazyRouteTypes[] = [
   {
     path: '/campaigns/stream/sheep-seeking',
     element: StreamSheepSeekerCampaign,
-    roles: ['adminStream', 'adminGatheringService', 'sheepseekerStream'],
+    roles: ['adminStream', 'adminCampus', 'sheepseekerStream'],
     placeholder: true,
   },
   {

@@ -7,7 +7,7 @@ const churchCampaigns = async (context: Context, church: ChurchLevel) => {
   let campaignsList: string[] = []
   switch (church) {
     case 'Oversight':
-    case 'GatheringService':
+    case 'Campus':
     case 'Stream':
       campaignsList = [
         'Equipment',
@@ -42,7 +42,7 @@ const churchCampaigns = async (context: Context, church: ChurchLevel) => {
   permittedRoles.push(...permitAdmin('Stream'))
   permittedRoles.push(...permitLeader('Stream'))
 
-  const permittedChurches: ChurchLevel[] = ['GatheringService', 'Stream']
+  const permittedChurches: ChurchLevel[] = ['Campus', 'Stream']
 
   if (
     permittedRoles.some((r) => userRoles.includes(r)) &&
@@ -59,11 +59,11 @@ const campaignsResolvers = {
     campaigns: async (obj: any, args: any, context: Context) =>
       churchCampaigns(context, 'Oversight'),
   },
-  GatheringService: {
+  Campus: {
     campaigns: async (obj: any, args: any, context: Context) =>
-      churchCampaigns(context, 'GatheringService'),
+      churchCampaigns(context, 'Campus'),
     equipmentRecord: (obj: any, args: any, context: Context) =>
-      getEquipmentDetails(obj, args, context, 'GatheringService'),
+      getEquipmentDetails(obj, args, context, 'Campus'),
   },
   Stream: {
     campaigns: async (obj: any, args: any, context: Context) =>

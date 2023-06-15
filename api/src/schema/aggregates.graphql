@@ -99,7 +99,7 @@ extend type Stream {
     )
 }
 
-extend type GatheringService {
+extend type Campus {
   aggregateServiceRecords(limit: Int! = 4): [AggregateServiceRecord!]!
     @cypher(
       statement: """

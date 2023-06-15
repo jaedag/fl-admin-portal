@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client'
 
-export const GATHERINGSERVICE_BACENTA_SEARCH = gql`
+export const CAMPUS_BACENTA_SEARCH = gql`
   query gatheringBacentaSearch($id: ID!, $key: String!) {
-    gatheringServices(where: { id: $id }) {
+    campuses(where: { id: $id }) {
       id
       bacentaSearch(key: $key, limit: 5) {
         id

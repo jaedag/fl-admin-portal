@@ -62,9 +62,9 @@ const ProtectedRoute: (props: ProtectedRouteProps) => JSX.Element = (props) => {
     } else if (isAuthorised(permitMe('Stream'), currentUser.roles)) {
       //If the user does not have permission but is a Stream Leader
       church.setStreamId(currentUser.stream)
-    } else if (isAuthorised(permitMe('GatheringService'), currentUser.roles)) {
-      //If the user does not have permission but is a GatheringService Leader
-      church.setGatheringServiceId(currentUser.gatheringService)
+    } else if (isAuthorised(permitMe('Campus'), currentUser.roles)) {
+      //If the user does not have permission but is a Campus Leader
+      church.setCampusId(currentUser.campus)
     }
 
     return children

@@ -1,74 +1,74 @@
 .role-card {
-    border: none;
-    border-radius: 30px;
-    margin-right: 5px;
-    width: 120px;
-    height: 120px;
+  border: none;
+  border-radius: 30px;
+  margin-right: 5px;
+  width: 120px;
+  height: 120px;
 }
 
 .colour-fellowships,
 .colour-fellowship {
-    background-image: linear-gradient(#38760b, #173d07, #082b07);
+  background-image: linear-gradient(#38760b, #173d07, #082b07);
 }
 
 .colour-bacentas,
 .colour-bacenta,
 .colour-sonta,
 .colour-sontas {
-    background-image: linear-gradient(#770e0b, #4e0a09, #2b0707);
+  background-image: linear-gradient(#770e0b, #4e0a09, #2b0707);
 }
 
 .colour-constituencies,
 .colour-constituency {
-    background-image: linear-gradient(#3c096f, #2c0b53, #1b0e36);
+  background-image: linear-gradient(#3c096f, #2c0b53, #1b0e36);
 }
 
 .colour-admin {
-    background-image: linear-gradient(#3c096f, #2c0b53, #1b0e36);
+  background-image: linear-gradient(#3c096f, #2c0b53, #1b0e36);
 }
 
 .colour-council,
 .colour-councils {
-    background-image: linear-gradient(#3c096f, #2c0b53, #1b0e36);
+  background-image: linear-gradient(#3c096f, #2c0b53, #1b0e36);
 }
 
 .colour-stream,
 .colour-streams {
-    background-image: linear-gradient(#3c096f, #2c0b53, #1b0e36);
+  background-image: linear-gradient(#3c096f, #2c0b53, #1b0e36);
 }
 
-.colour-gatheringservice,
-.colour-gatheringservices {
-    background-image: linear-gradient(#3c096f, #2c0b53, #1b0e36);
+.colour-campus,
+.colour-campuses {
+  background-image: linear-gradient(#3c096f, #2c0b53, #1b0e36);
 }
 
 .colour-oversight,
 .colour-oversights {
-    background-image: linear-gradient(#7c3417, #421f11, #442012);
+  background-image: linear-gradient(#7c3417, #421f11, #442012);
 }
 
 .church-number {
-    font-size: 3.7rem;
-    font-weight: bold;
-    margin: 0px;
-    height: 80px;
-    font-family: 'Roboto', Calibri, 'Trebuchet MS', sans-serif;
+  font-size: 3.7rem;
+  font-weight: bold;
+  margin: 0px;
+  height: 80px;
+  font-family: 'Roboto', Calibri, 'Trebuchet MS', sans-serif;
 }
 
 .roboto {
-    font-family: 'Roboto', Calibri, 'Trebuchet MS', sans-serif;
+  font-family: 'Roboto', Calibri, 'Trebuchet MS', sans-serif;
 }
 
 .church-string {
-    font-size: 1.5rem;
-    font-weight: bold;
-    margin: 0px;
-    height: 80px;
-    font-family: 'Roboto', Calibri, 'Trebuchet MS', sans-serif;
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin: 0px;
+  height: 80px;
+  font-family: 'Roboto', Calibri, 'Trebuchet MS', sans-serif;
 }
 
 .leader-img {
-    width: 30px;
-    border: 2px solid var(--infobar-color);
-    border-radius: 100px;
+  width: 30px;
+  border: 2px solid var(--infobar-color);
+  border-radius: 100px;
 }

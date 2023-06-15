@@ -99,9 +99,9 @@ const DisplayChurchDetails = (props: DisplayChurchDetailsProps) => {
       break
     case 'Stream':
       needsAdmin = true
-      roles = permitAdmin('GatheringService')
+      roles = permitAdmin('Campus')
       break
-    case 'GatheringService':
+    case 'Campus':
       needsAdmin = true
       roles = permitAdmin('Oversight')
       break
@@ -112,7 +112,7 @@ const DisplayChurchDetails = (props: DisplayChurchDetailsProps) => {
 
   const { theme, currentUser } = useContext(MemberContext)
   const [submitting, setSubmitting] = useState(false)
-  const { clickCard, constituencyId, councilId, streamId, gatheringServiceId } =
+  const { clickCard, constituencyId, councilId, streamId, campusId } =
     useContext(ChurchContext)
   const { togglePopup, isOpen } = usePopup()
 
@@ -120,7 +120,7 @@ const DisplayChurchDetails = (props: DisplayChurchDetailsProps) => {
   const [MakeConstituencyAdmin] = useMutation(MAKE_CONSTITUENCY_ADMIN)
   const [MakeCouncilAdmin] = useMutation(MAKE_COUNCIL_ADMIN)
   const [MakeStreamAdmin] = useMutation(MAKE_STREAM_ADMIN)
-  const [MakeGatheringServiceAdmin] = useMutation(MAKE_GATHERING_SERVICE_ADMIN)
+  const [MakeCampusAdmin] = useMutation(MAKE_GATHERING_SERVICE_ADMIN)
 
   const initialValues: FormOptions = {
     adminName: props.admin
@@ -144,10 +144,10 @@ const DisplayChurchDetails = (props: DisplayChurchDetailsProps) => {
 
     setSubmitting(true)
 
-    if (props.churchType === 'GatheringService') {
-      MakeGatheringServiceAdmin({
+    if (props.churchType === 'Campus') {
+      MakeCampusAdmin({
         variables: {
-          gatheringServiceId: gatheringServiceId,
+          campusId: campusId,
           newAdminId: values.adminSelect,
           oldAdminId: initialValues.adminSelect || 'no-old-admin',
         },

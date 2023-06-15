@@ -6,7 +6,7 @@ import ConstituencyMembers from './grids/ConstituencyMembers'
 import { isAuthorised } from '../../global-utils'
 import FellowshipMembers from 'pages/directory/grids/FellowshipMembers'
 import BacentaMembers from 'pages/directory/grids/BacentaMembers'
-import GatheringServiceMembers from 'pages/directory/grids/GatheringServiceMembers'
+import CampusMembers from 'pages/directory/grids/CampusMembers'
 import StreamMembers from './grids/StreamMembers'
 import { permitMe } from 'permission-utils'
 import { Role } from 'global-types'
@@ -24,9 +24,9 @@ const MembersDirectoryRoute = ({
   if (isAuthorised(roles, currentUser.roles)) {
     //if the user has permission to access the route
     return children
-  } else if (isAuthorised(permitMe('GatheringService'), currentUser.roles)) {
+  } else if (isAuthorised(permitMe('Campus'), currentUser.roles)) {
     //if the user does not have permission but is a Bishop's Admin
-    return <GatheringServiceMembers />
+    return <CampusMembers />
   } else if (isAuthorised(permitMe('Stream'), currentUser.roles)) {
     //if the user does not have permission but is a Bishop's Admin
     return <StreamMembers />

@@ -57,7 +57,7 @@ export const SERVANT_CHURCH_LIST = gql`
         name
         bankAccount
       }
-      leadsGatheringService {
+      leadsCampus {
         id
         name
         currency
@@ -81,7 +81,7 @@ export const SERVANT_CHURCH_LIST = gql`
         name
         bankAccount
       }
-      isAdminForGatheringService {
+      isAdminForCampus {
         id
         name
         currency
@@ -102,7 +102,7 @@ export const SERVANT_CHURCH_LIST = gql`
         id
         name
       }
-      isArrivalsAdminForGatheringService {
+      isArrivalsAdminForCampus {
         id
         name
       }
@@ -178,7 +178,7 @@ export const SERVANT_CHURCHES_COUNT = gql`
       leadsBacentaCount
       leadsAdminsConstituencyCount
       leadsAdminsCouncilCount
-      leadsAdminsGatheringServiceCount
+      leadsAdminsCampusCount
       leadsSontaCount
       leadsHubCount
       leadsAdminsMinistryCount

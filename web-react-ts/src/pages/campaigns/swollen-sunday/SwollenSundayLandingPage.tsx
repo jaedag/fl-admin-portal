@@ -52,14 +52,14 @@ const SwollenSundayLandingPage = ({ churchLevel, churchName }: Props) => {
               }
             />
           )}
-          {churchType === 'GatheringService' && (
+          {churchType === 'Campus' && (
             <MenuButton
               title="Import Target"
               color="swollensunday"
               iconComponent={Download}
               noCaption
               onClick={() =>
-                navigate(`/campaigns/gatheringservice/swollen-sunday/streams`)
+                navigate(`/campaigns/campus/swollen-sunday/streams`)
               }
             />
           )}

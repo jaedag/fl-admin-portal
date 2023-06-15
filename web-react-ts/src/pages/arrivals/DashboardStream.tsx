@@ -314,7 +314,7 @@ const StreamDashboard = () => {
 
               <RoleView
                 roles={[
-                  ...permitArrivals('GatheringService'),
+                  ...permitArrivals('Campus'),
                   ...permitLeaderAdmin('Stream'),
                 ]}
               >

@@ -9,7 +9,7 @@ import Autosuggest from 'react-autosuggest'
 import './react-autosuggest.css'
 import {
   COUNCIL_MEMBER_SEARCH,
-  GATHERINGSERVICE_MEMBER_SEARCH,
+  CAMPUS_MEMBER_SEARCH,
   STREAM_MEMBER_SEARCH,
   CONSTITUENCY_MEMBER_SEARCH,
   BACENTA_MEMBER_SEARCH,
@@ -23,13 +23,15 @@ const SearchMember = (props: RoleBasedSearch) => {
   const [suggestions, setSuggestions] = useState([])
   const [searchString, setSearchString] = useState(props.initialValue ?? '')
 
-  const [gatheringServiceSearch, { error: gatheringServiceError }] =
-    useLazyQuery(GATHERINGSERVICE_MEMBER_SEARCH, {
+  const [campusSearch, { error: campusError }] = useLazyQuery(
+    CAMPUS_MEMBER_SEARCH,
+    {
       onCompleted: (data) => {
-        setSuggestions(data.gatheringServices[0].memberSearch)
+        setSuggestions(data.campuses[0].memberSearch)
         return
       },
-    })
+    }
+  )
   const [streamSearch, { error: streamError }] = useLazyQuery(
     STREAM_MEMBER_SEARCH,
     {
@@ -88,7 +90,7 @@ const SearchMember = (props: RoleBasedSearch) => {
   )
 
   const error =
-    gatheringServiceError ||
+    campusError ||
     streamError ||
     councilError ||
     constituencyError ||
@@ -105,10 +107,10 @@ const SearchMember = (props: RoleBasedSearch) => {
       },
     })
     if (props.roleBased) {
-      if (isAuthorised(permitMe('GatheringService'), currentUser.roles)) {
-        gatheringServiceSearch({
+      if (isAuthorised(permitMe('Campus'), currentUser.roles)) {
+        campusSearch({
           variables: {
-            id: currentUser.gatheringService,
+            id: currentUser.campus,
             key: searchString?.trim(),
           },
         })

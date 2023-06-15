@@ -10,7 +10,7 @@ import { RoleBasedSearch } from './formik-types'
 import { initialise } from './search-utils'
 import {
   COUNCIL_FELLOWSHIP_SEARCH,
-  GATHERINGSERVICE_FELLOWSHIP_SEARCH,
+  CAMPUS_FELLOWSHIP_SEARCH,
   STREAM_FELLOWSHIP_SEARCH,
   CONSTITUENCY_FELLOWSHIP_SEARCH,
   BACENTA_FELLOWSHIP_SEARCH,
@@ -23,13 +23,15 @@ const SearchFellowship = (props: RoleBasedSearch) => {
   const [suggestions, setSuggestions] = useState([])
   const [searchString, setSearchString] = useState(props.initialValue ?? '')
 
-  const [gatheringServiceSearch, { error: gatheringServiceError }] =
-    useLazyQuery(GATHERINGSERVICE_FELLOWSHIP_SEARCH, {
+  const [campusSearch, { error: campusError }] = useLazyQuery(
+    CAMPUS_FELLOWSHIP_SEARCH,
+    {
       onCompleted: (data) => {
-        setSuggestions(data.gatheringServices[0].fellowshipSearch)
+        setSuggestions(data.campuses[0].fellowshipSearch)
         return
       },
-    })
+    }
+  )
   const [streamSearch, { error: streamError }] = useLazyQuery(
     STREAM_FELLOWSHIP_SEARCH,
     {
@@ -79,7 +81,7 @@ const SearchFellowship = (props: RoleBasedSearch) => {
   )
 
   const error =
-    gatheringServiceError ||
+    campusError ||
     streamError ||
     councilError ||
     constituencyError ||
@@ -95,10 +97,10 @@ const SearchFellowship = (props: RoleBasedSearch) => {
       },
     })
     if (props.roleBased) {
-      if (isAuthorised(permitMe('GatheringService'), currentUser.roles)) {
-        gatheringServiceSearch({
+      if (isAuthorised(permitMe('Campus'), currentUser.roles)) {
+        campusSearch({
           variables: {
-            id: currentUser.gatheringService,
+            id: currentUser.campus,
             key: searchString?.trim(),
           },
         })

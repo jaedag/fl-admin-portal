@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { useQuery } from '@apollo/client'
-import { GET_GATHERINGSERVICE_STREAMS } from '../../../queries/ListQueries'
+import { GET_CAMPUS_STREAMS } from '../../../queries/ListQueries'
 import { ChurchContext } from '../../../contexts/ChurchContext'
 import RoleView from '../../../auth/RoleView'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
@@ -11,14 +11,14 @@ import AllChurchesSummary from 'components/AllChurchesSummary'
 import ChurchSearch from 'components/ChurchSearch'
 
 const DisplayAllStreams = () => {
-  const { clickCard, gatheringServiceId } = useContext(ChurchContext)
+  const { clickCard, campusId } = useContext(ChurchContext)
 
-  const { data, loading, error } = useQuery(GET_GATHERINGSERVICE_STREAMS, {
-    variables: { id: gatheringServiceId },
+  const { data, loading, error } = useQuery(GET_CAMPUS_STREAMS, {
+    variables: { id: campusId },
   })
 
-  const streams = data?.gatheringServices[0]?.streams
-  const gatheringService = data?.gatheringServices[0]
+  const streams = data?.campuses[0]?.streams
+  const campus = data?.campuses[0]
 
   return (
     <ApolloWrapper data={data} loading={loading} error={error}>
@@ -26,40 +26,38 @@ const DisplayAllStreams = () => {
         <Row className="mb-2">
           <Col>
             <Link
-              to="/gatheringService/displaydetails"
+              to="/campus/displaydetails"
               onClick={() => {
-                clickCard(gatheringService)
+                clickCard(campus)
               }}
             >
-              <h4 className="text-white">{`${gatheringService?.name} Streams`}</h4>
+              <h4 className="text-white">{`${campus?.name} Streams`}</h4>
             </Link>
             <Link
               to="/member/displaydetails"
               onClick={() => {
-                clickCard(gatheringService?.leader)
+                clickCard(campus?.leader)
               }}
             >
               <h6 className="text-white text-small d-block ">
                 <span className="text-muted">Overseer: </span>
-                {gatheringService?.leader
-                  ? ` ${gatheringService.leader.fullName}`
-                  : null}
+                {campus?.leader ? ` ${campus.leader.fullName}` : null}
               </h6>
             </Link>
-            {gatheringService?.admin ? (
+            {campus?.admin ? (
               <Link
                 className="pb-4 text-white text-small"
                 to="/member/displaydetails"
                 onClick={() => {
-                  clickCard(gatheringService?.admin)
+                  clickCard(campus?.admin)
                 }}
               >
                 <span className="text-muted">Admin :</span>{' '}
-                {`${gatheringService?.admin?.fullName}`}
+                {`${campus?.admin?.fullName}`}
               </Link>
             ) : null}
           </Col>
-          <RoleView roles={permitAdmin('GatheringService')} directoryLock>
+          <RoleView roles={permitAdmin('Campus')} directoryLock>
             <Col className="col-auto">
               <Link to="/stream/addstream" className="btn btn-danger">
                 Add Stream
@@ -70,10 +68,10 @@ const DisplayAllStreams = () => {
 
         <AllChurchesSummary
           church={streams}
-          memberCount={gatheringService?.memberCount}
+          memberCount={campus?.memberCount}
           numberOfChurchesBelow={streams?.length}
           churchType="Stream"
-          route="gatheringService"
+          route="campus"
         />
         <ChurchSearch data={streams} churchType="Stream" />
       </Container>

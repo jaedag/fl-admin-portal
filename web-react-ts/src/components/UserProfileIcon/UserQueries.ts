@@ -20,7 +20,7 @@ export const GET_LOGGED_IN_USER = gql`
               id
               stream {
                 id
-                gatheringService {
+                campus {
                   id
                   noIncomeTracking
                   currency

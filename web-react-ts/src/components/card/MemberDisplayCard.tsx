@@ -112,7 +112,7 @@ const MemberDisplayCard = (props: MemberDisplayCardProps) => {
       name = member.name + ' Stream'
       details = [member?.leader?.nameWithTitle || '']
       break
-    case 'GatheringService':
+    case 'Campus':
       icon = 'stream'
       name = member.name + ' Gathering Service'
       details = [member?.leader?.nameWithTitle || '']
@@ -128,7 +128,7 @@ const MemberDisplayCard = (props: MemberDisplayCardProps) => {
 
   const clickFunction = () => {
     clickCard(member)
-    if (member.__typename === 'GatheringService') {
+    if (member.__typename === 'Campus') {
       setUserFinancials(member)
     }
     navigate(`/${member.__typename.toLowerCase()}/displaydetails`)

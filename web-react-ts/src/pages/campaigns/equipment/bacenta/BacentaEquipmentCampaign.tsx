@@ -15,15 +15,15 @@ import { BarChartFill } from 'react-bootstrap-icons'
 const BacentaEquipmentCampaign = () => {
   const { currentUser } = useContext(MemberContext)
   const navigate = useNavigate()
-  const gatheringServiceId = currentUser?.gatheringService
+  const campusId = currentUser?.campus
 
   const { data, loading, error } = useQuery(EQUIPMENT_END_DATE, {
     variables: {
-      gatheringServiceId: gatheringServiceId,
+      campusId: campusId,
     },
   })
 
-  const equipmentEndDate = data?.gatheringServices[0]?.equipmentEndDate
+  const equipmentEndDate = data?.campuses[0]?.equipmentEndDate
 
   const church = currentUser.currentChurch
   const churchType = currentUser.currentChurch?.__typename

@@ -16,7 +16,7 @@ import { ArrivalsUseChurchType, BacentaWithArrivals } from './arrivals-types'
 import {
   CONSTITUENCY_BACENTAS_TO_COUNT,
   COUNCIL_BACENTAS_TO_COUNT,
-  GATHERINGSERVICE_BACENTAS_TO_COUNT,
+  CAMPUS_BACENTAS_TO_COUNT,
   STREAM_BACENTAS_TO_COUNT,
 } from './bussingStatusQueries'
 import NoData from './CompNoData'
@@ -46,8 +46,9 @@ const StateBacentasToCount = () => {
       pollInterval: SHORT_POLL_INTERVAL,
     }
   )
-  const [gatheringServiceOnTheWay, { refetch: gatheringServiceRefetch }] =
-    useLazyQuery(GATHERINGSERVICE_BACENTAS_TO_COUNT)
+  const [campusOnTheWay, { refetch: campusRefetch }] = useLazyQuery(
+    CAMPUS_BACENTAS_TO_COUNT
+  )
   const [seeCars, setSeeCars] = useState(true)
   const [seeBusses, setSeeBusses] = useState(true)
 
@@ -58,8 +59,8 @@ const StateBacentasToCount = () => {
     councilRefetch,
     streamFunction: streamOnTheWay,
     streamRefetch,
-    gatheringServiceFunction: gatheringServiceOnTheWay,
-    gatheringServiceRefetch,
+    campusFunction: campusOnTheWay,
+    campusRefetch,
   })
   const { church, loading, error, refetch } = data
 

@@ -108,14 +108,14 @@ export const MAKE_STREAMARRIVALS_ADMIN = gql`
   }
 `
 
-export const MAKE_GATHERINGSERVICEARRIVALS_ADMIN = gql`
-  mutation MakeGatheringServiceArrrivalsAdmin(
-    $gatheringServiceId: ID!
+export const MAKE_CAMPUSARRIVALS_ADMIN = gql`
+  mutation MakeCampusArrrivalsAdmin(
+    $campusId: ID!
     $newAdminId: ID!
     $oldAdminId: ID!
   ) {
-    RemoveGatheringServiceArrivalsAdmin(
-      gatheringServiceId: $gatheringServiceId
+    RemoveCampusArrivalsAdmin(
+      campusId: $campusId
       oldArrivalsAdminId: $oldAdminId
       arrivalsAdminId: $newAdminId
     ) {
@@ -123,15 +123,15 @@ export const MAKE_GATHERINGSERVICEARRIVALS_ADMIN = gql`
       firstName
       lastName
     }
-    MakeGatheringServiceArrivalsAdmin(
-      gatheringServiceId: $gatheringServiceId
+    MakeCampusArrivalsAdmin(
+      campusId: $campusId
       newArrivalsAdminId: $newAdminId
       arrivalsAdminId: $oldAdminId
     ) {
       id
       firstName
       lastName
-      isArrivalsAdminForGatheringService {
+      isArrivalsAdminForCampus {
         id
         arrivalsAdmin {
           id

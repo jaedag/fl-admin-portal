@@ -156,27 +156,26 @@ type Member @auth(rules: [{ isAuthenticated: true }]) {
       RETURN COUNT(DISTINCT stream)
       """
     )
-  leadsGatheringService: [GatheringService!]!
-    @relationship(type: "LEADS", direction: OUT)
-  isAdminForGatheringServiceCount: Int
+  leadsCampus: [Campus!]! @relationship(type: "LEADS", direction: OUT)
+  isAdminForCampusCount: Int
     @cypher(
       statement: """
-      MATCH (this)-[:IS_ADMIN_FOR]->(gatheringService:GatheringService)
-      RETURN COUNT(DISTINCT gatheringService)
+      MATCH (this)-[:IS_ADMIN_FOR]->(campus:Campus)
+      RETURN COUNT(DISTINCT campus)
       """
     )
-  leadsGatheringServiceCount: Int
+  leadsCampusCount: Int
     @cypher(
       statement: """
-      MATCH (this)-[:LEADS]->(gatheringService:GatheringService)
-      RETURN COUNT(DISTINCT gatheringService)
+      MATCH (this)-[:LEADS]->(campus:Campus)
+      RETURN COUNT(DISTINCT campus)
       """
     )
-  leadsAdminsGatheringServiceCount: Int
+  leadsAdminsCampusCount: Int
     @cypher(
       statement: """
-      MATCH (this)-[:LEADS|IS_ADMIN_FOR]->(gatheringService:GatheringService)
-      RETURN COUNT(DISTINCT gatheringService)
+      MATCH (this)-[:LEADS|IS_ADMIN_FOR]->(campus:Campus)
+      RETURN COUNT(DISTINCT campus)
       """
     )
 
@@ -205,7 +204,7 @@ type Member @auth(rules: [{ isAuthenticated: true }]) {
 
   isAdminForOversight: [Oversight!]!
     @relationship(type: "IS_ADMIN_FOR", direction: OUT)
-  isAdminForGatheringService: [GatheringService!]!
+  isAdminForCampus: [Campus!]!
     @relationship(type: "IS_ADMIN_FOR", direction: OUT)
   isAdminForStream: [Stream!]!
     @relationship(type: "IS_ADMIN_FOR", direction: OUT)
@@ -321,8 +320,7 @@ type Oversight implements Church {
   name: String!
   noIncomeTracking: Boolean
   leader: Member @relationship(type: "LEADS", direction: IN)
-  gatheringServices: [GatheringService!]!
-    @relationship(type: "HAS", direction: OUT)
+  campuses: [Campus!]! @relationship(type: "HAS", direction: OUT)
   streams: [Stream!]! @relationship(type: "HAS", direction: OUT)
   councils: [Council!]!
     @cypher(
@@ -358,9 +356,9 @@ type Oversight implements Church {
       RETURN COUNT(DISTINCT pastors)
       """
     )
-  gatheringServiceCount: Int
+  campusCount: Int
     @cypher(
-      statement: "MATCH (this)-[:HAS]->(gatheringservice:GatheringService) RETURN COUNT(gatheringservice)"
+      statement: "MATCH (this)-[:HAS]->(campus:Campus) RETURN COUNT(campus)"
     )
   streamCount: Int
     @cypher(
@@ -423,7 +421,7 @@ type Oversight implements Church {
     )
 }
 
-type GatheringService implements Church {
+type Campus implements Church {
   id: ID @id
   name: String!
   noIncomeTracking: Boolean!
@@ -555,7 +553,7 @@ type Stream implements Church {
   bankAccount: String!
   leader: Member @relationship(type: "LEADS", direction: IN)
   councils: [Council!]! @relationship(type: "HAS", direction: OUT)
-  gatheringService: GatheringService @relationship(type: "HAS", direction: IN)
+  campus: Campus @relationship(type: "HAS", direction: IN)
   ministries: [Ministry!]! @relationship(type: "HAS", direction: OUT)
   meetingDay: ServiceDay @relationship(type: "MEETS_ON", direction: OUT)
 
@@ -1204,8 +1202,7 @@ type Federalministry {
   id: ID @id
   name: String!
   leader: Member @relationship(type: "LEADS", direction: IN)
-  gatheringService: GatheringService
-    @relationship(type: "HAS_MINISTRY", direction: IN)
+  campus: Campus @relationship(type: "HAS_MINISTRY", direction: IN)
   history: [HistoryLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
   serviceLogs: [ServiceLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
   ministries: [Ministry!]! @relationship(type: "HAS", direction: OUT)

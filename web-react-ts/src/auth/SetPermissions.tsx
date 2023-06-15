@@ -54,19 +54,19 @@ const SetPermissions = ({
             .id,
         noIncomeTracking:
           data.memberByEmail?.fellowship?.bacenta.constituency?.council.stream
-            .gatheringService?.noIncomeTracking,
+            .campus?.noIncomeTracking,
         currency:
           data.memberByEmail?.fellowship?.bacenta.constituency?.council.stream
-            .gatheringService?.currency,
+            .campus?.currency,
         conversionRateToDollar:
           data.memberByEmail?.fellowship?.bacenta.constituency?.council.stream
-            .gatheringService?.conversionRateToDollar,
-        gatheringService:
+            .campus?.conversionRateToDollar,
+        campus:
           data.memberByEmail?.fellowship?.bacenta.constituency?.council.stream
-            .gatheringService?.id,
+            .campus?.id,
         oversight:
           data.memberByEmail?.fellowship?.bacenta.constituency?.council.stream
-            .gatheringService?.oversight.id,
+            .campus?.oversight.id,
       })
       sessionStorage.setItem('currentUser', JSON.stringify({ ...currentUser }))
     },
@@ -88,8 +88,8 @@ const SetPermissions = ({
       if (!isAuthorised(permitMe('Oversight'))) {
         doNotUse.setOversightId(currentUser.oversight)
 
-        if (!isAuthorised(permitMe('GatheringService'))) {
-          doNotUse.setGatheringServiceId(currentUser.gatheringService)
+        if (!isAuthorised(permitMe('Campus'))) {
+          doNotUse.setCampusId(currentUser.campus)
           //if User is not a federal admin
 
           if (!isAuthorised(permitMe('Stream'))) {

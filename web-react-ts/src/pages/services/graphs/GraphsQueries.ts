@@ -213,9 +213,9 @@ export const STREAM_GRAPHS = gql`
   }
 `
 
-export const GATHERINGSERVICE_GRAPHS = gql`
-  query gatheringServiceGraphs($gatheringServiceId: ID!) {
-    gatheringServices(where: { id: $gatheringServiceId }) {
+export const CAMPUS_GRAPHS = gql`
+  query campusGraphs($campusId: ID!) {
+    campuses(where: { id: $campusId }) {
       id
       name
       leader {

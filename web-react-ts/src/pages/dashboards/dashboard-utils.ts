@@ -74,7 +74,7 @@ export const roles: {
     'isTellerFor',
     'isSheepSeekerFor',
   ],
-  GatheringService: ['leads', 'isAdminFor', 'isArrivalsAdminFor'],
+  Campus: ['leads', 'isAdminFor', 'isArrivalsAdminFor'],
   Oversight: ['leads', 'isAdminFor'],
   Denomination: ['leads', 'isAdminFor'],
   Sonta: ['leads'],
@@ -467,29 +467,29 @@ export const getServantRoles = (servant: MemberWithChurches) => {
       ),
     })
   }
-  if (servant?.leadsGatheringService?.length) {
-    roleTitles.push('leaderGatheringService')
+  if (servant?.leadsCampus?.length) {
+    roleTitles.push('leaderCampus')
     userroles.push({
       name: 'Gathering Service',
-      church: servant?.leadsGatheringService,
-      number: servant?.leadsGatheringService?.length,
+      church: servant?.leadsCampus,
+      number: servant?.leadsCampus?.length,
       link: authorisedLink(
         servant,
-        permitMe('GatheringService'),
-        '/gatheringservice/displaydetails'
+        permitMe('Campus'),
+        '/campus/displaydetails'
       ),
     })
   }
-  if (servant?.isAdminForGatheringService?.length) {
-    roleTitles.push('adminGatheringService')
+  if (servant?.isAdminForCampus?.length) {
+    roleTitles.push('adminCampus')
     userroles.push({
       name: 'Gathering Service Admin',
-      church: servant?.isAdminForGatheringService,
-      number: servant?.isAdminForGatheringService?.length,
+      church: servant?.isAdminForCampus,
+      number: servant?.isAdminForCampus?.length,
       link: authorisedLink(
         servant,
-        permitMe('GatheringService'),
-        '/gatheringservice/displaydetails'
+        permitMe('Campus'),
+        '/campus/displaydetails'
       ),
     })
   }
@@ -519,16 +519,16 @@ export const getServantRoles = (servant: MemberWithChurches) => {
       ),
     })
   }
-  if (servant?.isArrivalsAdminForGatheringService?.length) {
-    roleTitles.push('arrivalsAdminGatheringService')
+  if (servant?.isArrivalsAdminForCampus?.length) {
+    roleTitles.push('arrivalsAdminCampus')
     userroles.push({
       name: 'Gathering Service Arrivals Admin',
-      church: servant?.isArrivalsAdminForGatheringService,
-      number: servant?.isArrivalsAdminForGatheringService?.length,
+      church: servant?.isArrivalsAdminForCampus,
+      number: servant?.isArrivalsAdminForCampus?.length,
       link: authorisedLink(
         servant,
-        permitMe('GatheringService'),
-        `/gatheringservice/displaydetails`
+        permitMe('Campus'),
+        `/campus/displaydetails`
       ),
     })
   }

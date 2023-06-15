@@ -99,7 +99,7 @@ export const equipmentCampaignMutations = {
     context: Context
   ) => {
     const session = context.executionContext.session()
-    isAuth(permitAdmin('GatheringService'), context.auth.roles)
+    isAuth(permitAdmin('Campus'), context.auth.roles)
 
     try {
       const equipmentCampaign = rearrangeCypherObject(
@@ -121,12 +121,12 @@ export const equipmentCampaignMutations = {
       }
 
       return {
-        id: setEquipmentDuration.gatheringService.properties.id,
-        name: setEquipmentDuration.gatheringService.properties.name,
+        id: setEquipmentDuration.campus.properties.id,
+        name: setEquipmentDuration.campus.properties.name,
         equipmentStartDate:
-          setEquipmentDuration.gatheringService.properties.equipmentStartDate,
+          setEquipmentDuration.campus.properties.equipmentStartDate,
         equipmentEndDate:
-          setEquipmentDuration.gatheringService.properties.equipmentEndDate,
+          setEquipmentDuration.campus.properties.equipmentEndDate,
       }
     } catch (error: any) {
       return throwToSentry('Setting equipment deadline failed ', error)

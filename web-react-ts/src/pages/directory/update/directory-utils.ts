@@ -12,7 +12,7 @@ export const churchLevels: ChurchLevel[] = [
   'Constituency',
   'Council',
   'Stream',
-  'GatheringService',
+  'Campus',
   'Oversight',
 ]
 
@@ -60,8 +60,8 @@ export const nextHigherChurch = (churchLevel: ChurchLevel): ChurchLevel => {
     case 'Council':
       return 'Stream'
     case 'Stream':
-      return 'GatheringService'
-    case 'GatheringService':
+      return 'Campus'
+    case 'Campus':
       return 'Oversight'
     default:
       return 'Fellowship'
@@ -80,10 +80,10 @@ export const nextLowerChurch = (churchLevel: ChurchLevel) => {
       return 'Constituency'
     case 'Stream':
       return 'Council'
-    case 'GatheringService':
+    case 'Campus':
       return 'Stream'
     case 'Oversight':
-      return 'GatheringService'
+      return 'Campus'
     default:
       break
   }
@@ -180,8 +180,8 @@ export const addNewChurches = async (
           })
         }
 
-        if (higherChurch === 'gatheringservice') {
-          higherChurch = 'gatheringService'
+        if (higherChurch === 'campus') {
+          higherChurch = 'campus'
         }
 
         await mutations.addChurch({

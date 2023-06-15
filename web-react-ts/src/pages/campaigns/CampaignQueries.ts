@@ -2,8 +2,8 @@ import { gql } from '@apollo/client'
 
 //Gathering Service Queries and Mutations
 export const GATHERING_SERVICE_CAMPAIGN_LIST = gql`
-  query gatheringServiceCampaigns($gatheringServiceId: ID) {
-    gatheringServices(where: { id: $gatheringServiceId }) {
+  query campusCampaigns($campusId: ID) {
+    campuses(where: { id: $campusId }) {
       id
       name
       campaigns
@@ -12,8 +12,8 @@ export const GATHERING_SERVICE_CAMPAIGN_LIST = gql`
 `
 
 export const GATHERING_SERVICE_TRENDS = gql`
-  query gatheringServiceTrends($gatheringServiceId: ID) {
-    gatheringServices(where: { id: $gatheringServiceId }) {
+  query campusTrends($campusId: ID) {
+    campuses(where: { id: $campusId }) {
       id
       name
       campaigns
@@ -29,8 +29,8 @@ export const GATHERING_SERVICE_TRENDS = gql`
 `
 
 export const GATHERING_SERVICE_BY_STREAM = gql`
-  query equipmentGatheringServiceByStream($gatheringServiceId: ID) {
-    gatheringServices(where: { id: $gatheringServiceId }) {
+  query equipmentCampusByStream($campusId: ID) {
+    campuses(where: { id: $campusId }) {
       id
       name
       streams {
@@ -52,12 +52,12 @@ export const SET_EQUIPMENT_DEADLINE = gql`
   mutation SetEquipmentDeadline(
     $startDate: Date!
     $endDate: Date!
-    $gatheringServiceId: ID!
+    $campusId: ID!
   ) {
     SetEquipmentDeadline(
       startDate: $startDate
       endDate: $endDate
-      id: $gatheringServiceId
+      id: $campusId
     ) {
       id
     }
@@ -65,8 +65,8 @@ export const SET_EQUIPMENT_DEADLINE = gql`
 `
 
 export const EQUIPMENT_END_DATE = gql`
-  query equipmentEndDate($gatheringServiceId: ID) {
-    gatheringServices(where: { id: $gatheringServiceId }) {
+  query equipmentEndDate($campusId: ID) {
+    campuses(where: { id: $campusId }) {
       id
       equipmentEndDate
     }
@@ -74,10 +74,10 @@ export const EQUIPMENT_END_DATE = gql`
 `
 
 export const GATHERING_SERVICE_EQUIPMENT_DEFAULTERS_NUMBER_BY_CONSTITUENCY_AND_FELLOWSHIP = gql`
-  query gatheringServiceEquipmentDefaultersNumberByConstituencyAndFellowship(
-    $gatheringServiceId: ID
+  query campusEquipmentDefaultersNumberByConstituencyAndFellowship(
+    $campusId: ID
   ) {
-    gatheringServices(where: { id: $gatheringServiceId }) {
+    campuses(where: { id: $campusId }) {
       id
       constituencyCount
       constituencyEquipmentFilledCount
@@ -91,8 +91,8 @@ export const GATHERING_SERVICE_EQUIPMENT_DEFAULTERS_NUMBER_BY_CONSTITUENCY_AND_F
 `
 
 export const GATHERING_SERVICE_BY_STREAM_EQUIPMENT_DEFAULTERS = gql`
-  query equipmentGatheringServiceByStreamDefaulters($gatheringServiceId: ID) {
-    gatheringServices(where: { id: $gatheringServiceId }) {
+  query equipmentCampusByStreamDefaulters($campusId: ID) {
+    campuses(where: { id: $campusId }) {
       id
       name
       streams {
@@ -117,10 +117,8 @@ export const GATHERING_SERVICE_BY_STREAM_EQUIPMENT_DEFAULTERS = gql`
 `
 
 export const GATHERING_SERVICE_EQUIPMENT_DEFAULTERS_LIST_BY_CONSTITUENCY = gql`
-  query equipmentGatheringServiceDefaultersByConstituency(
-    $gatheringServiceId: ID
-  ) {
-    gatheringServices(where: { id: $gatheringServiceId }) {
+  query equipmentCampusDefaultersByConstituency($campusId: ID) {
+    campuses(where: { id: $campusId }) {
       id
       constituencyEquipmentNotFilled {
         id
@@ -138,10 +136,8 @@ export const GATHERING_SERVICE_EQUIPMENT_DEFAULTERS_LIST_BY_CONSTITUENCY = gql`
 `
 
 export const GATHERING_SERVICE_EQUIPMENT_DEFAULTERS_LIST_BY_FELLOWSHIP = gql`
-  query equipmentGatheringServiceDefaultersByFellowship(
-    $gatheringServiceId: ID
-  ) {
-    gatheringServices(where: { id: $gatheringServiceId }) {
+  query equipmentCampusDefaultersByFellowship($campusId: ID) {
+    campuses(where: { id: $campusId }) {
       id
       fellowshipEquipmentNotFilled {
         id

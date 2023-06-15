@@ -8,22 +8,22 @@ import CampaignChurchList from '../../CampaignChurchList'
 import { STREAM_LIST } from '../SwollenSundayQueries'
 
 const SwollenSundayStreamList = () => {
-  const { gatheringServiceId } = useContext(ChurchContext)
+  const { campusId } = useContext(ChurchContext)
 
   const { data, loading, error } = useQuery(STREAM_LIST, {
     variables: {
-      gatheringServiceId: gatheringServiceId,
+      campusId: campusId,
     },
   })
 
-  const streams = data?.gatheringServices[0]?.streams
+  const streams = data?.campuses[0]?.streams
 
   return (
     <ApolloWrapper loading={loading} error={error} data={data}>
       <div className="text-center">
         <HeadingPrimary>Swollen Sunday Campaign</HeadingPrimary>
         <HeadingSecondary>
-          {`${data?.gatheringServices[0]?.name} ${data?.gatheringServices[0]?.__typename}`}{' '}
+          {`${data?.campuses[0]?.name} ${data?.campuses[0]?.__typename}`}{' '}
           Streams
         </HeadingSecondary>
         <CampaignChurchList data={streams} page="swollen-sunday" />

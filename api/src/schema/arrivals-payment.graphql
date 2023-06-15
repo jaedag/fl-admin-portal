@@ -1,4 +1,4 @@
-extend type GatheringService {
+extend type Campus {
   vehiclesHaveBeenPaidCount(arrivalDate: String!): Int!
     @cypher(
       statement: """

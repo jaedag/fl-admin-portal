@@ -75,8 +75,8 @@ const RoleView = (props: RoleViewProps) => {
     if (
       (new Date().getDay() === 1 && new Date().getHours() >= 12) ||
       new Date().getDay() === 2 ||
-      [...permitArrivals('GatheringService'), ...permitAdmin('Stream')]?.some(
-        (r) => currentUser?.roles.includes(r)
+      [...permitArrivals('Campus'), ...permitAdmin('Stream')]?.some((r) =>
+        currentUser?.roles.includes(r)
       )
     ) {
       return true

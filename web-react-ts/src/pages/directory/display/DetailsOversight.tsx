@@ -31,8 +31,8 @@ const DetailsOversight = () => {
     { title: 'Pastors', number: oversight?.pastorCount || '0', link: '#' },
     {
       title: 'Gathering Services',
-      number: oversight?.gatheringServiceCount,
-      link: `/${`gatheringService`.toLowerCase()}/displayall`,
+      number: oversight?.campusCount,
+      link: `/${`campus`.toLowerCase()}/displayall`,
     },
     {
       title: 'Councils',
@@ -42,7 +42,7 @@ const DetailsOversight = () => {
     {
       title: 'Constituencies',
       number: oversight?.constituencyCount,
-      link: `/gatheringservice/constituencies`,
+      link: `/campus/constituencies`,
     },
     {
       title: 'Bacentas',
@@ -72,12 +72,12 @@ const DetailsOversight = () => {
         churchId={oversightId}
         leader={oversight?.leader}
         churchType={oversight?.__typename}
-        subChurch="GatheringService"
+        subChurch="Campus"
         details={details}
         editlink="/oversight/editoversight"
         editPermitted={permitMe('Denomination')}
         history={oversight?.history.length !== 0 && oversight?.history}
-        buttons={oversight?.gatheringServices ?? []}
+        buttons={oversight?.campuses ?? []}
         breadcrumb={breadcrumb && breadcrumb}
         loading={loading}
       />

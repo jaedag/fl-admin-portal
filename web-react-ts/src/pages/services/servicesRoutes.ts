@@ -88,17 +88,15 @@ const ServicesChurchList = lazy(
 )
 const ServicesMenu = lazy(() => import('pages/services/ServicesMenu'))
 const StreamReport = lazy(() => import('pages/services/graphs/StreamGraphs'))
-const GatheringServiceReport = lazy(
-  () => import('pages/services/graphs/GatheringServiceGraphs')
-)
+const CampusReport = lazy(() => import('pages/services/graphs/CampusGraphs'))
 const OversightReport = lazy(
   () => import('pages/services/graphs/OversightGraphs')
 )
 const StreamByCouncil = lazy(
   () => import('pages/services/defaulters/StreamByCouncil')
 )
-const GatheringServiceByStream = lazy(
-  () => import('pages/services/defaulters/GatheringServiceByStream')
+const CampusByStream = lazy(
+  () => import('pages/services/defaulters/CampusByStream')
 )
 const ConstituencyBankingSlipView = lazy(
   () => import('pages/services/banking/banking-slip/ConstituencyView')
@@ -120,20 +118,18 @@ const CouncilBankingSlipSubmission = lazy(
 )
 const CouncilJoint = lazy(() => import('pages/services/CouncilJoint'))
 const StreamJoint = lazy(() => import('pages/services/StreamJoint'))
-const GatheringServiceJoint = lazy(
-  () => import('pages/services/GatheringServiceJoint')
-)
+const CampusJoint = lazy(() => import('pages/services/CampusJoint'))
 const StreamService = lazy(
   () => import('pages/services/record-service/StreamService')
 )
 const StreamServiceDetails = lazy(
   () => import('pages/services/record-service/StreamServiceDetails')
 )
-const GatheringServiceService = lazy(
-  () => import('pages/services/record-service/GatheringServiceService')
+const CampusService = lazy(
+  () => import('pages/services/record-service/CampusService')
 )
-const GatheringServiceServiceDetails = lazy(
-  () => import('pages/services/record-service/GatheringServiceServiceDetails')
+const CampusServiceDetails = lazy(
+  () => import('pages/services/record-service/CampusServiceDetails')
 )
 const Defaulters = lazy(() => import('./defaulters/Defaulters'))
 const DefaultersDashboard = lazy(
@@ -201,9 +197,9 @@ export const services: LazyRouteTypes[] = [
     placeholder: true,
   },
   {
-    path: '/services/gatheringservice',
-    element: GatheringServiceJoint,
-    roles: permitLeaderAdmin('GatheringService'),
+    path: '/services/campus',
+    element: CampusJoint,
+    roles: permitLeaderAdmin('Campus'),
     placeholder: true,
   },
 
@@ -216,7 +212,7 @@ export const services: LazyRouteTypes[] = [
   {
     path: '/fellowship/banking-slip/submission',
     element: FellowshipBankingSlipSubmission,
-    roles: ['adminGatheringService'],
+    roles: ['adminCampus'],
     placeholder: true,
   },
   {
@@ -234,13 +230,13 @@ export const services: LazyRouteTypes[] = [
   {
     path: '/constituency/banking-slip/submission',
     element: ConstituencyBankingSlipSubmission,
-    roles: ['adminGatheringService'],
+    roles: ['adminCampus'],
     placeholder: true,
   },
   {
     path: '/council/banking-slip/submission',
     element: CouncilBankingSlipSubmission,
-    roles: ['adminGatheringService'],
+    roles: ['adminCampus'],
     placeholder: true,
   },
 
@@ -297,9 +293,9 @@ export const graphs: LazyRouteTypes[] = [
     placeholder: true,
   },
   {
-    path: '/gatheringservice/graphs',
-    element: GatheringServiceReport,
-    roles: permitLeaderAdminArrivals('GatheringService'),
+    path: '/campus/graphs',
+    element: CampusReport,
+    roles: permitLeaderAdminArrivals('Campus'),
     placeholder: true,
   },
   {
@@ -413,15 +409,15 @@ export const graphs: LazyRouteTypes[] = [
 
   //Gathering Service Services
   {
-    path: '/gatheringservice/record-service',
-    element: GatheringServiceService,
-    roles: permitLeaderAdmin('GatheringService'),
+    path: '/campus/record-service',
+    element: CampusService,
+    roles: permitLeaderAdmin('Campus'),
     placeholder: false,
   },
   {
-    path: '/gatheringservice/service-details',
-    element: GatheringServiceServiceDetails,
-    roles: permitLeaderAdmin('GatheringService'),
+    path: '/campus/service-details',
+    element: CampusServiceDetails,
+    roles: permitLeaderAdmin('Campus'),
     placeholder: false,
   },
 
@@ -510,9 +506,9 @@ export const graphs: LazyRouteTypes[] = [
   },
   //Gathering Service By Stream
   {
-    path: '/services/gatheringservice-by-stream',
-    element: GatheringServiceByStream,
-    roles: permitLeaderAdmin('GatheringService'),
+    path: '/services/campus-by-stream',
+    element: CampusByStream,
+    roles: permitLeaderAdmin('Campus'),
     placeholder: true,
   },
   //Stream By Council
@@ -524,8 +520,8 @@ export const graphs: LazyRouteTypes[] = [
   },
   //Gathering Service By Stream
   {
-    path: '/services/gatheringservice-by-streams',
-    element: GatheringServiceByStream,
+    path: '/services/campus-by-streams',
+    element: CampusByStream,
     roles: ['leaderFellowship'],
     placeholder: true,
   },

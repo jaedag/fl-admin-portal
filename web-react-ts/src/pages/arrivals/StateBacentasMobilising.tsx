@@ -8,7 +8,7 @@ import { Container } from 'react-bootstrap'
 import {
   CONSTITUENCY_BACENTAS_MOBILISING,
   COUNCIL_BACENTAS_MOBILISING,
-  GATHERINGSERVICE_BACENTAS_MOBILISING,
+  CAMPUS_BACENTAS_MOBILISING,
   STREAM_BACENTAS_MOBILISING,
 } from './bussingStatusQueries'
 import useChurchLevel from 'hooks/useChurchLevel'
@@ -39,12 +39,12 @@ const BacentasMobilising = () => {
       pollInterval: LONG_POLL_INTERVAL,
     }
   )
-  const [
-    gatheringServiceBacentasMobilising,
-    { refetch: gatheringServiceRefetch },
-  ] = useLazyQuery(GATHERINGSERVICE_BACENTAS_MOBILISING, {
-    pollInterval: LONG_POLL_INTERVAL,
-  })
+  const [campusBacentasMobilising, { refetch: campusRefetch }] = useLazyQuery(
+    CAMPUS_BACENTAS_MOBILISING,
+    {
+      pollInterval: LONG_POLL_INTERVAL,
+    }
+  )
 
   const data: ArrivalsUseChurchType = useChurchLevel({
     constituencyFunction: constituencyBacentasMobilising,
@@ -53,8 +53,8 @@ const BacentasMobilising = () => {
     councilRefetch,
     streamFunction: streamBacentasMobilising,
     streamRefetch,
-    gatheringServiceFunction: gatheringServiceBacentasMobilising,
-    gatheringServiceRefetch,
+    campusFunction: campusBacentasMobilising,
+    campusRefetch,
   })
   const { church, loading, error, refetch } = data
 

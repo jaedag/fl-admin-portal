@@ -10,7 +10,7 @@ import { RoleBasedSearch } from './formik-types'
 import { initialise } from './search-utils'
 import {
   COUNCIL_BACENTA_SEARCH,
-  GATHERINGSERVICE_BACENTA_SEARCH,
+  CAMPUS_BACENTA_SEARCH,
   STREAM_BACENTA_SEARCH,
   CONSTITUENCY_BACENTA_SEARCH,
   MEMBER_BACENTA_SEARCH,
@@ -22,13 +22,15 @@ const SearchBacenta = (props: RoleBasedSearch) => {
   const [suggestions, setSuggestions] = useState([])
   const [searchString, setSearchString] = useState(props.initialValue ?? '')
 
-  const [gatheringServiceSearch, { error: gatheringServiceError }] =
-    useLazyQuery(GATHERINGSERVICE_BACENTA_SEARCH, {
+  const [campusSearch, { error: campusError }] = useLazyQuery(
+    CAMPUS_BACENTA_SEARCH,
+    {
       onCompleted: (data) => {
-        setSuggestions(data.gatheringServices[0].bacentaSearch)
+        setSuggestions(data.campuses[0].bacentaSearch)
         return
       },
-    })
+    }
+  )
   const [streamSearch, { error: streamError }] = useLazyQuery(
     STREAM_BACENTA_SEARCH,
     {
@@ -70,7 +72,7 @@ const SearchBacenta = (props: RoleBasedSearch) => {
 
   const error =
     memberError ||
-    gatheringServiceError ||
+    campusError ||
     streamError ||
     councilError ||
     constituencyError
@@ -84,10 +86,10 @@ const SearchBacenta = (props: RoleBasedSearch) => {
       },
     })
     if (props.roleBased) {
-      if (isAuthorised(permitMe('GatheringService'), currentUser.roles)) {
-        gatheringServiceSearch({
+      if (isAuthorised(permitMe('Campus'), currentUser.roles)) {
+        campusSearch({
           variables: {
-            id: currentUser.gatheringService,
+            id: currentUser.campus,
             key: searchString?.trim(),
           },
         })

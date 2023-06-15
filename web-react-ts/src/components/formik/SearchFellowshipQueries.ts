@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client'
 
-export const GATHERINGSERVICE_FELLOWSHIP_SEARCH = gql`
+export const CAMPUS_FELLOWSHIP_SEARCH = gql`
   query gatheringFellowshipSearch($id: ID!, $key: String!) {
-    gatheringServices(where: { id: $id }) {
+    campuses(where: { id: $id }) {
       id
       fellowshipSearch(key: $key, limit: 5) {
         id

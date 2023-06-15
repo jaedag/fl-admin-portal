@@ -125,7 +125,7 @@ export const STREAM_AVG_WEEKDAY_STATS = gql`
         income
         attendance
       }
-      gatheringService {
+      campus {
         id
         name
         avgStreamBussingAttendance(days: $days)
@@ -139,8 +139,8 @@ export const STREAM_AVG_WEEKDAY_STATS = gql`
 `
 
 export const GATHERING_SERVICE_AVG_WEEKDAY_STATS = gql`
-  query gatheringServiceAvgWeekdayStats($gatheringServiceId: ID, $days: Int!) {
-    gatheringServices(where: { id: $gatheringServiceId }) {
+  query campusAvgWeekdayStats($campusId: ID, $days: Int!) {
+    campuses(where: { id: $campusId }) {
       id
       name
       avgBussingAttendance(days: $days)
@@ -156,8 +156,8 @@ export const GATHERING_SERVICE_AVG_WEEKDAY_STATS = gql`
       oversight {
         id
         name
-        avgGatheringServiceBussingAttendance(days: $days)
-        avgGatheringServiceWeekdayStats(days: $days) {
+        avgCampusBussingAttendance(days: $days)
+        avgCampusWeekdayStats(days: $days) {
           income
           attendance
         }

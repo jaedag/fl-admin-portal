@@ -112,7 +112,7 @@ export const arrivalsMutation = {
     MakeServant(
       context,
       args,
-      [...permitAdmin('Stream'), ...permitArrivals('GatheringService')],
+      [...permitAdmin('Stream'), ...permitArrivals('Campus')],
       'Stream',
       'ArrivalsAdmin'
     ),
@@ -120,32 +120,24 @@ export const arrivalsMutation = {
     RemoveServant(
       context,
       args,
-      [...permitAdmin('Stream'), ...permitArrivals('GatheringService')],
+      [...permitAdmin('Stream'), ...permitArrivals('Campus')],
       'Stream',
       'ArrivalsAdmin'
     ),
-  MakeGatheringServiceArrivalsAdmin: async (
-    object: any,
-    args: any,
-    context: Context
-  ) =>
+  MakeCampusArrivalsAdmin: async (object: any, args: any, context: Context) =>
     MakeServant(
       context,
       args,
-      [...permitAdmin('GatheringService'), ...permitArrivals('Oversight')],
-      'GatheringService',
+      [...permitAdmin('Campus'), ...permitArrivals('Oversight')],
+      'Campus',
       'ArrivalsAdmin'
     ),
-  RemoveGatheringServiceArrivalsAdmin: async (
-    object: any,
-    args: any,
-    context: Context
-  ) =>
+  RemoveCampusArrivalsAdmin: async (object: any, args: any, context: Context) =>
     RemoveServant(
       context,
       args,
-      [...permitAdmin('GatheringService'), ...permitArrivals('Oversight')],
-      'GatheringService',
+      [...permitAdmin('Campus'), ...permitArrivals('Oversight')],
+      'Campus',
       'ArrivalsAdmin'
     ),
 
@@ -185,7 +177,7 @@ export const arrivalsMutation = {
     MakeServant(
       context,
       args,
-      [...permitAdminArrivals('GatheringService')],
+      [...permitAdminArrivals('Campus')],
       'Council',
       'ArrivalsPayer'
     ),
@@ -197,7 +189,7 @@ export const arrivalsMutation = {
     RemoveServant(
       context,
       args,
-      [...permitAdminArrivals('GatheringService')],
+      [...permitAdminArrivals('Campus')],
       'Council',
       'ArrivalsPayer'
     ),
@@ -795,7 +787,7 @@ export const arrivalsMutation = {
     return vehicleRecord
   },
   SetSwellDate: async (object: any, args: any, context: Context) => {
-    isAuth(permitAdminArrivals('GatheringService'), context.auth.roles)
+    isAuth(permitAdminArrivals('Campus'), context.auth.roles)
 
     const session = context.executionContext.session()
 

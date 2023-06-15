@@ -147,14 +147,14 @@ export const UPDATE_STREAM_MUTATION = gql`
     $streamId: ID!
     $name: String!
     $bankAccount: String!
-    $gatheringServiceId: ID!
+    $campusId: ID!
     $meetingDay: String!
   ) {
     UpdateStreamDetails(
       streamId: $streamId
       name: $name
       bankAccount: $bankAccount
-      gatheringServiceId: $gatheringServiceId
+      campusId: $campusId
       meetingDay: $meetingDay
     ) {
       id
@@ -170,7 +170,7 @@ export const UPDATE_STREAM_MUTATION = gql`
         stream {
           id
           name
-          gatheringService {
+          campus {
             id
             streams {
               id
@@ -210,17 +210,17 @@ export const UPDATE_STREAM_MUTATION = gql`
   }
 `
 
-export const UPDATE_GATHERINGSERVICE_MUTATION = gql`
-  mutation UpdateGatheringService(
-    $gatheringServiceId: ID!
+export const UPDATE_CAMPUS_MUTATION = gql`
+  mutation UpdateCampus(
+    $campusId: ID!
     $name: String!
     $oversightId: ID!
     $noIncomeTracking: Boolean!
     $currency: String!
     $conversionRateToDollar: Float!
   ) {
-    UpdateGatheringServiceDetails(
-      gatheringServiceId: $gatheringServiceId
+    UpdateCampusDetails(
+      campusId: $campusId
       name: $name
       oversightId: $oversightId
       noIncomeTracking: $noIncomeTracking
@@ -235,12 +235,12 @@ export const UPDATE_GATHERINGSERVICE_MUTATION = gql`
       streams {
         id
         name
-        gatheringService {
+        campus {
           id
           name
           oversight {
             id
-            gatheringServices {
+            campuses {
               id
             }
           }
@@ -831,13 +831,13 @@ export const ADD_STREAM_COUNCILS = gql`
   }
 `
 
-export const ADD_GATHERINGSERVICE_STREAM = gql`
-  mutation AddGatheringServiceStream($gatheringServiceId: ID!, $streamId: ID!) {
-    updateGatheringServices(
-      where: { id: $gatheringServiceId }
+export const ADD_CAMPUS_STREAM = gql`
+  mutation AddCampusStream($campusId: ID!, $streamId: ID!) {
+    updateCampuses(
+      where: { id: $campusId }
       connect: { streams: { where: { node: { id: $streamId } } } }
     ) {
-      gatheringServices {
+      campuses {
         id
         name
         streams {
@@ -848,16 +848,13 @@ export const ADD_GATHERINGSERVICE_STREAM = gql`
   }
 `
 
-export const ADD_GATHERINGSERVICE_OVERSIGHT = gql`
-  mutation AddGatheringServiceOversight(
-    $gatheringServiceId: ID!
-    $oversightId: ID!
-  ) {
-    updateGatheringServices(
-      where: { id: $gatheringServiceId }
+export const ADD_CAMPUS_OVERSIGHT = gql`
+  mutation AddCampusOversight($campusId: ID!, $oversightId: ID!) {
+    updateCampuses(
+      where: { id: $campusId }
       connect: { oversight: { where: { node: { id: $oversightId } } } }
     ) {
-      gatheringServices {
+      campuses {
         id
         name
         oversight {
@@ -869,44 +866,36 @@ export const ADD_GATHERINGSERVICE_OVERSIGHT = gql`
   }
 `
 
-export const REMOVE_STREAM_GATHERINGSERVICE = gql`
-  mutation RemoveStreamGatheringService(
-    $higherChurch: ID!
-    $lowerChurch: [ID]!
-  ) {
+export const REMOVE_STREAM_CAMPUS = gql`
+  mutation RemoveStreamCampus($higherChurch: ID!, $lowerChurch: [ID]!) {
     updateStreams(
       where: { id_IN: $lowerChurch }
-      disconnect: {
-        gatheringService: { where: { node: { id: $higherChurch } } }
-      }
+      disconnect: { campus: { where: { node: { id: $higherChurch } } } }
     ) {
       streams {
         id
         name
-        gatheringService {
+        campus {
           id
           name
         }
       }
     }
-    updateGatheringServices(where: { id: $higherChurch }) {
-      gatheringServices {
+    updateCampuses(where: { id: $higherChurch }) {
+      campuses {
         id
         name
       }
     }
   }
 `
-export const REMOVE_GATHERINGSERVICE_OVERSIGHT = gql`
-  mutation RemoveGatheringServiceOversight(
-    $lowerChurch: [ID]!
-    $higherChurch: ID!
-  ) {
-    updateGatheringServices(
+export const REMOVE_CAMPUS_OVERSIGHT = gql`
+  mutation RemoveCampusOversight($lowerChurch: [ID]!, $higherChurch: ID!) {
+    updateCampuses(
       where: { id_IN: $lowerChurch }
       disconnect: { oversight: { where: { node: { id: $higherChurch } } } }
     ) {
-      gatheringServices {
+      campuses {
         id
         name
       }

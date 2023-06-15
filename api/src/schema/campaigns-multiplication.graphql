@@ -74,7 +74,7 @@ extend type TimeGraph {
     @relationship(type: "CRUSADE_HELD_ON", direction: IN)
 }
 
-extend type GatheringService {
+extend type Campus {
   multiplicationRecords(limit: Int): [MultiplicationRecord!]!
     @cypher(
       statement: """

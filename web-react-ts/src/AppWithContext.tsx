@@ -43,7 +43,7 @@ const AppWithContext = (props: AppPropsType) => {
     clickCard,
     church,
     memberId,
-    gatheringServiceId,
+    campusId,
     streamId,
     councilId,
     constituencyId,
@@ -62,7 +62,7 @@ const AppWithContext = (props: AppPropsType) => {
 
     //Set State
     setOversightId,
-    setGatheringServiceId,
+    setCampusId,
     setChurch,
     setStreamId,
     setCouncilId,
@@ -76,7 +76,7 @@ const AppWithContext = (props: AppPropsType) => {
 
   const doNotUse = {
     setOversightId,
-    setGatheringServiceId,
+    setCampusId,
     setChurch,
     setStreamId,
     setCouncilId,
@@ -127,7 +127,7 @@ const AppWithContext = (props: AppPropsType) => {
           setFilters,
           church,
           memberId,
-          gatheringServiceId,
+          campusId,
           streamId,
           councilId,
           constituencyId,

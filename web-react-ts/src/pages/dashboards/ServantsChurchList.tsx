@@ -77,8 +77,8 @@ const ServantsChurchList = () => {
     if (servant?.leadsStream?.length) {
       pushIntoChurch(servant?.leadsStream)
     }
-    if (servant?.leadsGatheringService?.length) {
-      pushIntoChurch(servant?.leadsGatheringService)
+    if (servant?.leadsCampus?.length) {
+      pushIntoChurch(servant?.leadsCampus)
     }
     if (servant?.leadsOversight?.length) {
       pushIntoChurch(servant?.leadsOversight)
@@ -90,8 +90,8 @@ const ServantsChurchList = () => {
     if (servant?.isAdminForConstituency?.length) {
       pushIntoChurch(servant?.isAdminForConstituency)
     }
-    if (servant?.isAdminForGatheringService?.length) {
-      pushIntoChurch(servant?.isAdminForGatheringService)
+    if (servant?.isAdminForCampus?.length) {
+      pushIntoChurch(servant?.isAdminForCampus)
     }
     if (servant?.isAdminForOversight?.length) {
       pushIntoChurch(servant?.isAdminForOversight)

@@ -25,7 +25,7 @@ export type ChurchLevel =
   | 'Constituency'
   | 'Council'
   | 'Stream'
-  | 'GatheringService'
+  | 'Campus'
   | 'Oversight'
   | 'Denomination'
   | 'Sonta'
@@ -40,7 +40,7 @@ export type ChurchLevelLower =
   | 'constituency'
   | 'council'
   | 'stream'
-  | 'gatheringService'
+  | 'campus'
   | 'oversight'
   | 'ministry'
   | 'hub'
@@ -175,18 +175,18 @@ export interface MemberWithChurches extends Member {
   isAdminForMinistry: Church[]
   isAdminForFederalministry: Church[]
 
-  leadsGatheringService: Church[]
+  leadsCampus: Church[]
   leadsOversight: Church[]
   isAdminForConstituency: Church[]
   isAdminForCouncil: Church[]
   isAdminForStream: Church[]
-  isAdminForGatheringService: Church[]
+  isAdminForCampus: Church[]
   isAdminForOversight: Church[]
 
   isArrivalsAdminForConstituency: Church[]
   isArrivalsAdminForCouncil: Church[]
   isArrivalsAdminForStream: Church[]
-  isArrivalsAdminForGatheringService: Church[]
+  isArrivalsAdminForCampus: Church[]
   isArrivalsAdminForOversight: Church[]
   isSheepSeekerForStream: Church[]
 }
@@ -245,18 +245,18 @@ export type Role =
   | 'leaderHub'
   | 'leaderMinistry'
   | 'leaderFederalministry'
-  | 'leaderGatheringService'
+  | 'leaderCampus'
   | 'leaderOversight'
   | 'leaderDenomination'
   | 'adminConstituency'
   | 'adminCouncil'
   | 'adminStream'
-  | 'adminGatheringService'
+  | 'adminCampus'
   | 'adminOversight'
   | 'adminDenomination'
   | 'adminMinistry'
   | 'adminFederalministry'
-  | 'arrivalsAdminGatheringService'
+  | 'arrivalsAdminCampus'
   | 'arrivalsAdminStream'
   | 'arrivalsAdminCouncil'
   | 'arrivalsAdminConstituency'

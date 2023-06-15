@@ -22,14 +22,14 @@ import {
   SERVANT_CONSTITUENCY_LEADER,
   SERVANT_COUNCIL_LEADER,
   SERVANT_STREAM_LEADER,
-  SERVANT_GATHERINGSERVICE_LEADER,
+  SERVANT_CAMPUS_LEADER,
   SERVANT_OVERSIGHT_LEADER,
   SERVANT_CONSTITUENCY_ADMIN,
   SERVANT_COUNCIL_ADMIN,
   SERVANTS_STREAM_ADMIN,
-  SERVANTS_GATHERINGSERVICE_ADMIN,
+  SERVANTS_CAMPUS_ADMIN,
   SERVANTS_OVERSIGHT_ADMIN,
-  SERVANTS_GATHERINGSERVICE_ARRIVALS_ADMIN,
+  SERVANTS_CAMPUS_ARRIVALS_ADMIN,
   SERVANTS_STREAM_ARRIVALS_ADMIN,
   SERVANTS_COUNCIL_ARRIVALS_ADMIN,
   SERVANTS_CONSTITUENCY_ARRIVALS_ADMIN,
@@ -68,17 +68,13 @@ const useComponentQuery = (props?: UseComponentQuery) => {
   const [constituencyLeaderQuery] = useLazyQuery(SERVANT_CONSTITUENCY_LEADER)
   const [councilLeaderQuery] = useLazyQuery(SERVANT_COUNCIL_LEADER)
   const [streamLeaderQuery] = useLazyQuery(SERVANT_STREAM_LEADER)
-  const [gatheringServiceLeaderQuery] = useLazyQuery(
-    SERVANT_GATHERINGSERVICE_LEADER
-  )
+  const [campusLeaderQuery] = useLazyQuery(SERVANT_CAMPUS_LEADER)
   const [oversightLeaderQuery] = useLazyQuery(SERVANT_OVERSIGHT_LEADER)
   //Admin Queries
   const [constituencyAdminQuery] = useLazyQuery(SERVANT_CONSTITUENCY_ADMIN)
   const [councilAdminQuery] = useLazyQuery(SERVANT_COUNCIL_ADMIN)
   const [streamAdminQuery] = useLazyQuery(SERVANTS_STREAM_ADMIN)
-  const [gatheringServiceAdminQuery] = useLazyQuery(
-    SERVANTS_GATHERINGSERVICE_ADMIN
-  )
+  const [campusAdminQuery] = useLazyQuery(SERVANTS_CAMPUS_ADMIN)
   const [oversightAdminQuery] = useLazyQuery(SERVANTS_OVERSIGHT_ADMIN)
   //Arrivals Admin Queries
   const [constituencyArrivalsAdminQuery] = useLazyQuery(
@@ -90,8 +86,8 @@ const useComponentQuery = (props?: UseComponentQuery) => {
   const [streamArrivalsAdminQuery] = useLazyQuery(
     SERVANTS_STREAM_ARRIVALS_ADMIN
   )
-  const [gatheringServiceArrivalsAdminQuery] = useLazyQuery(
-    SERVANTS_GATHERINGSERVICE_ARRIVALS_ADMIN
+  const [campusArrivalsAdminQuery] = useLazyQuery(
+    SERVANTS_CAMPUS_ARRIVALS_ADMIN
   )
   //Arrivals Helpers
   const [streamArrivalsCounterQuery] = useLazyQuery(
@@ -140,10 +136,10 @@ const useComponentQuery = (props?: UseComponentQuery) => {
       teller: streamTellerQuery,
       sheepseeker: sheepseekerStream,
     },
-    GatheringService: {
-      leader: gatheringServiceLeaderQuery,
-      admin: gatheringServiceAdminQuery,
-      arrivalsAdmin: gatheringServiceArrivalsAdminQuery,
+    Campus: {
+      leader: campusLeaderQuery,
+      admin: campusAdminQuery,
+      arrivalsAdmin: campusArrivalsAdminQuery,
     },
     Oversight: {
       leader: oversightLeaderQuery,

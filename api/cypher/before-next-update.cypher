@@ -25,26 +25,26 @@ MATCH (jd:Member {email: "jaedagy@gmail.com"})
 MERGE (jd)-[:LEADS]->(oversight)
 RETURN oversight, jd;
 
-// MATCH (g:GatheringService)<-[r:IS_ADMIN_FOR]-(jd:Member {email: "jaedagy@gmail.com"})
+// MATCH (g:Campus)<-[r:IS_ADMIN_FOR]-(jd:Member {email: "jaedagy@gmail.com"})
 // DELETE r
 
-MATCH (g:GatheringService)
+MATCH (g:Campus)
 SET g.conversionRateToDollar = 10 
 RETURN COUNT(g);
 
-// create a constraint so that every gatheringservice has to have the property noIncomeTracking 
+// create a constraint so that every campus has to have the property noIncomeTracking 
 
-// constraint to remove the noIncome property from all gatheringservices
-DROP CONSTRAINT gatheringServiceNeedsNoIncome;
+// constraint to remove the noIncome property from all campuses
+DROP CONSTRAINT campusNeedsNoIncome;
 
 
-MATCH (g:GatheringService)
+MATCH (g:Campus)
 WHERE g.noIncome IS NOT NULL
 SET g.noIncomeTracking = g.noIncome
 REMOVE g.noIncome
 RETURN g;
 
-CREATE CONSTRAINT gatheringServiceNeedsNoIncomeTracking IF NOT EXISTS ON (g:GatheringService) ASSERT exists(g.noIncomeTracking);
+CREATE CONSTRAINT campusNeedsNoIncomeTracking IF NOT EXISTS ON (g:Campus) ASSERT exists(g.noIncomeTracking);
 
 MATCH (member:Member) WHERE member.howYouJoined = 'Service With A Bishop'
 SET member.howYouJoined = 'Service With A Pastor'

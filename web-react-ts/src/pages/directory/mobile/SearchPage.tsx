@@ -5,7 +5,7 @@ import {
   STREAM_SEARCH,
   COUNCIL_SEARCH,
   CONSTITUENCY_SEARCH,
-  GATHERINGSERVICE_SEARCH,
+  CAMPUS_SEARCH,
   BACENTA_SEARCH,
   FELLOWSHIP_SEARCH,
   OVERSIGHT_SEARCH,
@@ -19,20 +19,20 @@ import { permitMe } from 'permission-utils'
 
 type OversightSearchResult = {
   oversightMemberSearch: MemberWithoutBioData[]
-  oversightGatheringServiceSearch: Church[]
+  oversightCampusSearch: Church[]
   oversightStreamSearch: Stream[]
   oversightCouncilSearch: Church[]
   oversightConstituencySearch: Church[]
   oversightBacentaSearch: Church[]
   oversightFellowshipSearch: Church[]
 }
-type GatheringServiceSearchResult = {
-  gatheringServiceMemberSearch: MemberWithoutBioData[]
-  gatheringServiceStreamSearch: Stream[]
-  gatheringServiceCouncilSearch: Church[]
-  gatheringServiceConstituencySearch: Church[]
-  gatheringServiceBacentaSearch: Church[]
-  gatheringServiceFellowshipSearch: Church[]
+type CampusSearchResult = {
+  campusMemberSearch: MemberWithoutBioData[]
+  campusStreamSearch: Stream[]
+  campusCouncilSearch: Church[]
+  campusConstituencySearch: Church[]
+  campusBacentaSearch: Church[]
+  campusFellowshipSearch: Church[]
 }
 
 type StreamSearchResult = {
@@ -80,7 +80,7 @@ const SearchPageMobile = () => {
     onCompleted: (data: OversightSearchResult) => {
       setCombinedData([
         ...data.oversightMemberSearch,
-        ...data.oversightGatheringServiceSearch,
+        ...data.oversightCampusSearch,
         ...data.oversightStreamSearch,
         ...data.oversightCouncilSearch,
         ...data.oversightConstituencySearch,
@@ -91,22 +91,20 @@ const SearchPageMobile = () => {
     },
   })
 
-  const [
-    gatheringServiceSearch,
-    { loading: gatheringServiceLoading, error: gatheringServiceError },
-  ] = useLazyQuery(GATHERINGSERVICE_SEARCH, {
-    onCompleted: (data: GatheringServiceSearchResult) => {
-      setCombinedData([
-        ...data.gatheringServiceMemberSearch,
-        ...data.gatheringServiceStreamSearch,
-        ...data.gatheringServiceCouncilSearch,
-        ...data.gatheringServiceConstituencySearch,
-        ...data.gatheringServiceBacentaSearch,
-        ...data.gatheringServiceFellowshipSearch,
-      ])
-      return
-    },
-  })
+  const [campusSearch, { loading: campusLoading, error: campusError }] =
+    useLazyQuery(CAMPUS_SEARCH, {
+      onCompleted: (data: CampusSearchResult) => {
+        setCombinedData([
+          ...data.campusMemberSearch,
+          ...data.campusStreamSearch,
+          ...data.campusCouncilSearch,
+          ...data.campusConstituencySearch,
+          ...data.campusBacentaSearch,
+          ...data.campusFellowshipSearch,
+        ])
+        return
+      },
+    })
 
   const [streamSearch, { loading: streamLoading, error: streamError }] =
     useLazyQuery(STREAM_SEARCH, {
@@ -170,7 +168,7 @@ const SearchPageMobile = () => {
   })
   const error =
     oversightError ||
-    gatheringServiceError ||
+    campusError ||
     streamError ||
     councilError ||
     constituencyError ||
@@ -181,7 +179,7 @@ const SearchPageMobile = () => {
 
   const loading =
     oversightLoading ||
-    gatheringServiceLoading ||
+    campusLoading ||
     streamLoading ||
     councilLoading ||
     constituencyLoading ||
@@ -197,12 +195,10 @@ const SearchPageMobile = () => {
             searchKey: searchString?.trim(),
           },
         })
-      } else if (
-        isAuthorised(permitMe('GatheringService'), currentUser.roles)
-      ) {
-        gatheringServiceSearch({
+      } else if (isAuthorised(permitMe('Campus'), currentUser.roles)) {
+        campusSearch({
           variables: {
-            gatheringId: currentUser.gatheringService,
+            gatheringId: currentUser.campus,
             searchKey: searchString?.trim(),
           },
         })
@@ -252,7 +248,7 @@ const SearchPageMobile = () => {
     constituencySearch,
     councilSearch,
     streamSearch,
-    gatheringServiceSearch,
+    campusSearch,
     fellowshipSearch,
   ])
 

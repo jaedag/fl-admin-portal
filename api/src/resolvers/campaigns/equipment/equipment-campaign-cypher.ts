@@ -1,10 +1,10 @@
 export const SetEquipmentDeadline = `
-MATCH (gatheringService:GatheringService {id: $id})
-SET gatheringService.equipmentStartDate = date($startDate),
-    gatheringService.equipmentEndDate = date($endDate)
+MATCH (campus:Campus {id: $id})
+SET campus.equipmentStartDate = date($startDate),
+    campus.equipmentEndDate = date($endDate)
 MERGE (equipmentDate:TimeGraph {date:date($startDate)})
 SET equipmentDate:EquipmentDate
-RETURN gatheringService
+RETURN campus
 `
 
 export const createFellowshipEquipmentRecord = `
@@ -50,19 +50,19 @@ RETURN record
 
 export const getEquipmentCampaign = `
 MATCH (church {id:$id}) WHERE church:Fellowship OR church:Constituency
-MATCH (church)<-[:HAS*1..5]-(gatheringService:GatheringService)
+MATCH (church)<-[:HAS*1..5]-(campus:Campus)
 MATCH (date:EquipmentDate)
-WITH DISTINCT max(date.date) as latestEquipmentDate, gatheringService
+WITH DISTINCT max(date.date) as latestEquipmentDate, campus
 RETURN 
     { 
     equipmentDate: toString(latestEquipmentDate),
-    equipmentEndDate: toString(gatheringService.equipmentEndDate),
-    equipmentStartDate: toString(gatheringService.equipmentStartDate)
+    equipmentEndDate: toString(campus.equipmentEndDate),
+    equipmentStartDate: toString(campus.equipmentStartDate)
     } as campaign
 `
 
-export const GatheringServiceFellowshipEquipment = `
-MATCH (this:GatheringService {id:$id})
+export const CampusFellowshipEquipment = `
+MATCH (this:Campus {id:$id})
 MATCH (n:EquipmentDate)
 WITH max(n.date) as latestEquipmentDate, this
 MATCH (this)-[:HAS]->(:Stream)-[:HAS]->(:Council)-[:HAS]->(:Constituency)-[:HAS]->(:Bacenta)-[:HAS]-(:Fellowship)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_EQUIPMENT_RECORD]->(record:EquipmentRecord)
@@ -74,8 +74,8 @@ bluetoothSpeakers: toInteger(sum(record.bluetoothSpeakers))
 } as fellowshipEquipment
 `
 
-export const GatheringServiceConstituencyEquipment = `
-MATCH (this:GatheringService {id:$id})
+export const CampusConstituencyEquipment = `
+MATCH (this:Campus {id:$id})
 MATCH (n:EquipmentDate)
 WITH max(n.date) as latestEquipmentDate, this
 MATCH (this)-[:HAS]->(:Stream)-[:HAS]->(:Council)-[:HAS]->(:Constituency)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_EQUIPMENT_RECORD]->(record:EquipmentRecord)
@@ -162,25 +162,25 @@ RETURN {
 `
 
 export const getConstituencyOverseersEmailsAndNumbers = `
-MATCH (this:GatheringService {id:$id})
+MATCH (this:Campus {id:$id})
 MATCH (this)-[:HAS]->(:Stream)-[:HAS]->(:Council)-[:HAS]->(constituencies:Constituency)<-[:LEADS]-(leader:Member)
 RETURN DISTINCT (leader.firstName +' '+ leader.lastName) as leader, leader.email, leader.phoneNumber
 `
 export const getFellowshipLeadersEmailsAndNumbers = `
-MATCH (this:GatheringService {id:$id})
+MATCH (this:Campus {id:$id})
 MATCH (this)-[:HAS]->(:Stream)-[:HAS]->(:Council)-[:HAS]->(:Constituency)-[:HAS]->(:Bacenta)-[:HAS]->(fellowship:Fellowship)
 MATCH (fellowship)<-[:LEADS]-(leader:Member)
 RETURN DISTINCT (leader.firstName +' '+ leader.lastName) as leader, leader.email, leader.phoneNumber
 `
 
 export const getEquipmentCampaignDate = `
-MATCH (gatheringService {id:$id})
+MATCH (campus {id:$id})
 MATCH (date:EquipmentDate)
-WITH DISTINCT max(date.date) as latestEquipmentDate, gatheringService
+WITH DISTINCT max(date.date) as latestEquipmentDate, campus
 RETURN 
     { 
     equipmentDate: toString(latestEquipmentDate),
-    equipmentEndDate: toString(gatheringService.equipmentEndDate),
-    equipmentStartDate: toString(gatheringService.equipmentStartDate)
+    equipmentEndDate: toString(campus.equipmentEndDate),
+    equipmentStartDate: toString(campus.equipmentStartDate)
     } as campaign
 `

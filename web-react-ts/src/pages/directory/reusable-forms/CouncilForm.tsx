@@ -91,7 +91,7 @@ const CouncilForm = ({
                   <Row className="row-cols-1 row-cols-md-2">
                     {/* <!-- Basic Info Div --> */}
                     <Col className="mb-2">
-                      <RoleView roles={permitAdmin('GatheringService')}>
+                      <RoleView roles={permitAdmin('Campus')}>
                         <Row className="form-row">
                           <Col>
                             <Select

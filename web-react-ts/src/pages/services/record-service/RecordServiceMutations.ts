@@ -561,11 +561,8 @@ export const DISPLAY_STREAM_SERVICE = gql`
   }
 `
 
-export const DISPLAY_GATHERINGSERVICE_SERVICE = gql`
-  query gatheringDisplayServiceRecords(
-    $serviceId: ID!
-    $gatheringServiceId: ID!
-  ) {
+export const DISPLAY_CAMPUS_SERVICE = gql`
+  query gatheringDisplayServiceRecords($serviceId: ID!, $campusId: ID!) {
     serviceRecords(where: { id: $serviceId }) {
       id
       createdAt
@@ -613,7 +610,7 @@ export const DISPLAY_GATHERINGSERVICE_SERVICE = gql`
         fullName
       }
     }
-    gatheringServices(where: { id: $gatheringServiceId }) {
+    campuses(where: { id: $campusId }) {
       id
       name
     }

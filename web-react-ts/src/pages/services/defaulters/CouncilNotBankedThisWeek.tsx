@@ -5,7 +5,7 @@ import PlaceholderCustom from 'components/Placeholder'
 import { getWeekNumber } from 'jd-date-utils'
 import { Col, Container, Row } from 'react-bootstrap'
 import {
-  GATHERINGSERVICE_SERVICES_COUNCIL_JOINT_DEFAULTERS_LIST,
+  CAMPUS_SERVICES_COUNCIL_JOINT_DEFAULTERS_LIST,
   STREAM_COUNCIL_JOINT_DEFAULTERS_LIST,
 } from './DefaultersQueries'
 import useChurchLevel from 'hooks/useChurchLevel'
@@ -18,16 +18,17 @@ import JointServiceDefaulterCard from './JointServiceDefaultersCard'
 const CouncilNotBankedThisWeek = () => {
   const [streamCouncilNotBankedThisWeek, { refetch: streamRefetch }] =
     useLazyQuery(STREAM_COUNCIL_JOINT_DEFAULTERS_LIST)
-  const [gatheringServiceThisWeek, { refetch: gatheringServiceRefetch }] =
-    useLazyQuery(GATHERINGSERVICE_SERVICES_COUNCIL_JOINT_DEFAULTERS_LIST)
+  const [campusThisWeek, { refetch: campusRefetch }] = useLazyQuery(
+    CAMPUS_SERVICES_COUNCIL_JOINT_DEFAULTERS_LIST
+  )
 
   const data: DefaultersUseChurchType = useChurchLevel({
     councilFunction: streamCouncilNotBankedThisWeek,
     councilRefetch: streamRefetch,
     streamFunction: streamCouncilNotBankedThisWeek,
     streamRefetch,
-    gatheringServiceFunction: gatheringServiceThisWeek,
-    gatheringServiceRefetch,
+    campusFunction: campusThisWeek,
+    campusRefetch,
   })
   const { church, loading, error, refetch } = data
 

@@ -7,7 +7,7 @@ extend type Oversight {
   campaigns: [String!]!
 }
 
-extend type GatheringService {
+extend type Campus {
   campaigns: [String!]!
 }
 

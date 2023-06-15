@@ -364,7 +364,7 @@ interface MemberWithChurchCount extends Member {
   leadsBacentaCount: number
   leadsAdminsCouncilCount: number
   leadsAdminsConstituencyCount: number
-  leadsAdminsGatheringServiceCount: number
+  leadsAdminsCampusCount: number
   leadsAdminsOversightCount: number
 
   //sonta
@@ -397,15 +397,15 @@ export const getChurchCount = (servant: MemberWithChurchCount) => {
     }
   }
 
-  if (servant?.leadsAdminsGatheringServiceCount) {
+  if (servant?.leadsAdminsCampusCount) {
     if (churchesCount) {
       churchesCount += ','
     }
 
-    if (servant.leadsAdminsGatheringServiceCount === 1) {
-      churchesCount = `${servant.leadsAdminsGatheringServiceCount} Gathering Service`
+    if (servant.leadsAdminsCampusCount === 1) {
+      churchesCount = `${servant.leadsAdminsCampusCount} Gathering Service`
     } else {
-      churchesCount = `${servant.leadsAdminsGatheringServiceCount} Gathering Services`
+      churchesCount = `${servant.leadsAdminsCampusCount} Gathering Services`
     }
   }
 
@@ -544,10 +544,10 @@ export const getSubChurchLevel = (churchType: ChurchLevel) => {
       return 'Constituency'
     case 'Stream':
       return 'Council'
-    case 'GatheringService':
+    case 'Campus':
       return 'Stream'
     case 'Oversight':
-      return 'GatheringService'
+      return 'Campus'
     case 'Federalministry':
       return 'Ministry'
     case 'Ministry':

@@ -73,9 +73,9 @@ export const STREAM_BACENTAS_NO_ACTIVITY = gql`
   }
 `
 
-export const GATHERINGSERVICE_BACENTAS_NO_ACTIVITY = gql`
+export const CAMPUS_BACENTAS_NO_ACTIVITY = gql`
   query gatheringBacentasNoActivity($id: ID!, $arrivalDate: String!) {
-    gatheringServices(where: { id: $id }, options: { limit: 1 }) {
+    campuses(where: { id: $id }, options: { limit: 1 }) {
       id
       name
 
@@ -178,9 +178,9 @@ export const STREAM_BACENTAS_MOBILISING = gql`
   }
 `
 
-export const GATHERINGSERVICE_BACENTAS_MOBILISING = gql`
+export const CAMPUS_BACENTAS_MOBILISING = gql`
   query gatheringBacentasMobilising($id: ID!, $arrivalDate: String!) {
-    gatheringServices(where: { id: $id }, options: { limit: 1 }) {
+    campuses(where: { id: $id }, options: { limit: 1 }) {
       id
       name
 
@@ -285,9 +285,9 @@ export const STREAM_BACENTAS_ON_THE_WAY = gql`
   }
 `
 
-export const GATHERINGSERVICE_BACENTAS_ON_THE_WAY = gql`
+export const CAMPUS_BACENTAS_ON_THE_WAY = gql`
   query gatheringBacentasOnTheWay($id: ID!, $arrivalDate: String!) {
-    gatheringServices(where: { id: $id }, options: { limit: 1 }) {
+    campuses(where: { id: $id }, options: { limit: 1 }) {
       id
       name
 
@@ -433,9 +433,9 @@ export const STREAM_BACENTAS_TO_COUNT = gql`
   }
 `
 
-export const GATHERINGSERVICE_BACENTAS_TO_COUNT = gql`
+export const CAMPUS_BACENTAS_TO_COUNT = gql`
   query gatheringBacentasToCount($id: ID!, $arrivalDate: String!) {
-    gatheringServices(where: { id: $id }, options: { limit: 1 }) {
+    campuses(where: { id: $id }, options: { limit: 1 }) {
       id
       name
 
@@ -544,9 +544,9 @@ export const STREAM_BACENTAS_ARRIVED = gql`
   }
 `
 
-export const GATHERINGSERVICES_BACENTAS_ARRIVED = gql`
+export const CAMPUSES_BACENTAS_ARRIVED = gql`
   query gatheringBacentasArrived($id: ID!, $arrivalDate: String!) {
-    gatheringServices(where: { id: $id }, options: { limit: 1 }) {
+    campuses(where: { id: $id }, options: { limit: 1 }) {
       id
       name
 
@@ -656,9 +656,9 @@ export const STREAM_BACENTAS_BELOW_8 = gql`
   }
 `
 
-export const GATHERINGSERVICE_BACENTAS_BELOW_8 = gql`
+export const CAMPUS_BACENTAS_BELOW_8 = gql`
   query gatheringBacentasBelow8($id: ID!, $arrivalDate: String!) {
-    gatheringServices(where: { id: $id }, options: { limit: 1 }) {
+    campuses(where: { id: $id }, options: { limit: 1 }) {
       id
       name
 

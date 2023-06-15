@@ -8,7 +8,7 @@ import {
   CONSTITUENCY_DEFAULTERS,
   COUNCIL_DEFAULTERS,
   STREAM_DEFAULTERS,
-  GATHERINGSERVICE_DEFAULTERS,
+  CAMPUS_DEFAULTERS,
 } from './DefaultersQueries'
 import PlaceholderCustom from 'components/Placeholder'
 import DefaulterInfoCard from './DefaulterInfoCard'
@@ -29,8 +29,8 @@ const DefaultersDashboard = () => {
     useLazyQuery(COUNCIL_DEFAULTERS)
   const [streamDefaulters, { refetch: streamRefetch }] =
     useLazyQuery(STREAM_DEFAULTERS)
-  const [gatheringServiceDefaulters, { refetch: gatheringServiceRefetch }] =
-    useLazyQuery(GATHERINGSERVICE_DEFAULTERS)
+  const [campusDefaulters, { refetch: campusRefetch }] =
+    useLazyQuery(CAMPUS_DEFAULTERS)
 
   let subChurch: ChurchLevel | string = ''
 
@@ -41,8 +41,8 @@ const DefaultersDashboard = () => {
     councilRefetch,
     streamFunction: streamDefaulters,
     streamRefetch,
-    gatheringServiceFunction: gatheringServiceDefaulters,
-    gatheringServiceRefetch,
+    campusFunction: campusDefaulters,
+    campusRefetch,
   })
 
   const { church, loading, error, refetch } = data
@@ -55,7 +55,7 @@ const DefaultersDashboard = () => {
       subChurch = 'Council'
       break
 
-    case 'GatheringService':
+    case 'Campus':
       subChurch = 'Stream'
       break
     default:

@@ -93,8 +93,8 @@ export const STREAM_SWOLLEN_DETAILS = gql`
 `
 
 export const GATHERING_SERVICE = gql`
-  query gatheringService($gatheringServiceId: ID!) {
-    gatheringServices(where: { id: $gatheringServiceId }) {
+  query campus($campusId: ID!) {
+    campuses(where: { id: $campusId }) {
       id
       name
     }
@@ -145,12 +145,12 @@ export const CONSTITUENCY_SWOLLEN_DETAILS = gql`
 `
 
 export const GATHERING_SERVICE_SWOLLEN_SUNDAY_GRAPHS = gql`
-  query gatheringServiceSwollenSundayGraphs(
-    $gatheringServiceId: ID!
+  query campusSwollenSundayGraphs(
+    $campusId: ID!
     $startDate: String!
     $endDate: String!
   ) {
-    gatheringServices(where: { id: $gatheringServiceId }) {
+    campuses(where: { id: $campusId }) {
       id
       name
       bacentaCount
@@ -174,8 +174,8 @@ export const GATHERING_SERVICE_SWOLLEN_SUNDAY_GRAPHS = gql`
 `
 
 export const GATHERING_SERVICE_SWOLLEN_DETAILS = gql`
-  query gatheringServiceSwollenDetails($gatheringServiceId: ID!) {
-    gatheringServices(where: { id: $gatheringServiceId }) {
+  query campusSwollenDetails($campusId: ID!) {
+    campuses(where: { id: $campusId }) {
       id
       name
       bacentaCount
@@ -294,8 +294,8 @@ export const SHARE_TARGET_BY_COUNCIL = gql`
 `
 
 export const STREAM_LIST = gql`
-  query streamList($gatheringServiceId: ID!) {
-    gatheringServices(where: { id: $gatheringServiceId }) {
+  query streamList($campusId: ID!) {
+    campuses(where: { id: $campusId }) {
       id
       name
       streams {

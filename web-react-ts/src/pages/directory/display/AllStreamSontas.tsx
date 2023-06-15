@@ -57,7 +57,7 @@ const DisplayAllStreamSontas = () => {
               </Link>
             ) : null}
           </Col>
-          <RoleView roles={permitAdmin('GatheringService')} directoryLock>
+          <RoleView roles={permitAdmin('Campus')} directoryLock>
             <Col className="col-auto">
               <Link to="/sonta/addsonta" className="btn btn-danger">
                 Add Sonta

@@ -299,7 +299,7 @@ const CouncilDashboard = () => {
 
                 <RoleView
                   roles={[
-                    ...permitArrivals('GatheringService'),
+                    ...permitArrivals('Campus'),
                     ...permitLeaderAdmin('Council'),
                   ]}
                 >

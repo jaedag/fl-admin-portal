@@ -14,7 +14,7 @@ const DetailsStream = () => {
   })
 
   const stream = data?.streams[0]
-  let breadcrumb = [stream?.gatheringService, stream]
+  let breadcrumb = [stream?.campus, stream]
   const details: DetailsArray = [
     {
       title: 'Members',
@@ -92,7 +92,7 @@ const DetailsStream = () => {
         churchType={stream?.__typename}
         details={details}
         editlink="/stream/editstream"
-        editPermitted={['adminGatheringService']}
+        editPermitted={['adminCampus']}
         history={stream?.history.length !== 0 && stream?.history}
         buttons={stream?.councils ?? []}
         breadcrumb={breadcrumb && breadcrumb}

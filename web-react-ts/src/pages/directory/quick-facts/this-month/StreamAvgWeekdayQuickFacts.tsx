@@ -23,7 +23,7 @@ const StreamAvgWeekdayQuickFacts = () => {
   const stream = data?.streams[0]
   const leadersName = `${stream?.leader?.firstName} ${stream?.leader?.lastName}`
   const churchName = `${stream?.name}`
-  const higherLevelName = `${stream?.gatheringService?.name} ${stream?.gatheringService?.__typename}`
+  const higherLevelName = `${stream?.campus?.name} ${stream?.campus?.__typename}`
 
   const attendanceDetails: AttendanceDetailsInterface[] = [
     {
@@ -32,7 +32,7 @@ const StreamAvgWeekdayQuickFacts = () => {
       leadersName: leadersName,
       churchName: churchName,
       churchAvgAttendanceThisMonth: `${stream?.avgWeekdayStats?.attendance}`,
-      avgHigherLevelAttendanceThisMonth: `${stream?.gatheringService?.avgStreamWeekdayStats?.attendance}`,
+      avgHigherLevelAttendanceThisMonth: `${stream?.campus?.avgStreamWeekdayStats?.attendance}`,
       higherLevelName: higherLevelName,
     },
   ]
@@ -45,7 +45,7 @@ const StreamAvgWeekdayQuickFacts = () => {
       churchName: churchName,
       currency: currentUser.currency,
       churchAvgIncomeThisMonth: `${stream?.avgWeekdayStats?.income}`,
-      avgHigherLevelIncomeThisMonth: `${stream?.gatheringService?.avgStreamWeekdayStats?.income}`,
+      avgHigherLevelIncomeThisMonth: `${stream?.campus?.avgStreamWeekdayStats?.income}`,
       higherLevelName: higherLevelName,
     },
   ]
@@ -57,7 +57,7 @@ const StreamAvgWeekdayQuickFacts = () => {
       leadersName: leadersName,
       churchName: churchName,
       churchBussingThisMonth: `${stream?.avgBussingAttendance}`,
-      avgHigherLevelBussingThisMonth: `${stream?.gatheringService?.avgStreamBussingAttendance}`,
+      avgHigherLevelBussingThisMonth: `${stream?.campus?.avgStreamBussingAttendance}`,
       higherLevelName: higherLevelName,
     },
   ]

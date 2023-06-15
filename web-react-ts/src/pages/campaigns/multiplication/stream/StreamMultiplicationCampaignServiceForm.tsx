@@ -11,7 +11,7 @@ const StreamMultiplicationCampaignServiceForm = () => {
   const { currentUser } = useContext(MemberContext)
 
   const church = currentUser.currentChurch
-  const { gatheringServiceId } = useContext(ChurchContext)
+  const { campusId } = useContext(ChurchContext)
   const [RecordMultiplicationEvent] = useMutation(RECORD_MULTIPLICATION_EVENT)
 
   return (
@@ -23,7 +23,7 @@ const StreamMultiplicationCampaignServiceForm = () => {
         <MultiplicationCampaignServiceForm
           RecordServiceMutation={RecordMultiplicationEvent}
           church={church}
-          churchId={gatheringServiceId}
+          churchId={campusId}
           churchType="Stream"
         />
       </Container>

@@ -248,12 +248,7 @@ const directoryMutation = {
       await RemoveServant(
         context,
         args,
-        [
-          'adminGatheringService',
-          'adminStream',
-          'adminCouncil',
-          'adminConstituency',
-        ],
+        ['adminCampus', 'adminStream', 'adminCouncil', 'adminConstituency'],
         'Fellowship',
         'Leader',
         true

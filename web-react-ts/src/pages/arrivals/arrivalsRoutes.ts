@@ -36,9 +36,7 @@ const MobilisationSubmission = lazy(
 const MobilisationPicture = lazy(() => import('./PreMobilisationPicture'))
 const BacentasMobilising = lazy(() => import('./StateBacentasMobilising'))
 const StreamDashboard = lazy(() => import('./DashboardStream'))
-const GatheringSerivceDashboard = lazy(
-  () => import('./DashboardGatheringService')
-)
+const GatheringSerivceDashboard = lazy(() => import('./DashboardCampus'))
 const BacentasHaveArrived = lazy(() => import('./StateBacentasArrived'))
 const ChurchBySubChurch = lazy(() => import('./ChurchBySubChurch'))
 const StateBacentasToCount = lazy(() => import('./StateBacentasToCount'))
@@ -94,8 +92,8 @@ export const arrivals: LazyRouteTypes[] = [
     placeholder: true,
   },
   {
-    path: '/arrivals/gatheringservice',
-    roles: permitLeaderAdminArrivals('GatheringService'),
+    path: '/arrivals/campus',
+    roles: permitLeaderAdminArrivals('Campus'),
     element: GatheringSerivceDashboard,
     placeholder: true,
   },
@@ -114,8 +112,8 @@ export const arrivals: LazyRouteTypes[] = [
     placeholder: true,
   },
   {
-    path: '/arrivals/gatheringservice-by-stream',
-    roles: permitLeaderAdminArrivals('GatheringService'),
+    path: '/arrivals/campus-by-stream',
+    roles: permitLeaderAdminArrivals('Campus'),
     element: ChurchBySubChurch,
     placeholder: true,
   },
@@ -230,7 +228,7 @@ export const arrivals: LazyRouteTypes[] = [
   },
   {
     path: '/council/arrivals-payers',
-    roles: permitAdminArrivals('GatheringService'),
+    roles: permitAdminArrivals('Campus'),
     element: ArrivalsPayerSelect,
   },
 

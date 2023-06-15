@@ -182,7 +182,7 @@ MATCH (higherChurch)-[:CURRENT_HISTORY]->(log:ServiceLog)
 MERGE (log)-[:HAS_TARGET]->(target)
 
 WITH higherChurch as lowerChurch
-MATCH (lowerChurch)<-[:HAS]-(higherChurch:GatheringService)
+MATCH (lowerChurch)<-[:HAS]-(higherChurch:Campus)
 MATCH (lowerChurch)-[:CURRENT_HISTORY]->(lowerLog:ServiceLog)-[:HAS_TARGET]->(target:Target)
 WHERE target.date = date($swellDate)
 

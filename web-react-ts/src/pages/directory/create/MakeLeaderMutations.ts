@@ -94,15 +94,12 @@ export const NEW_STREAM_LEADER = gql`
 `
 
 export const NEW_GATHERING_SERVICE_LEADER = gql`
-  mutation NewGatheringServiceLeader($gatheringServiceId: ID!, $leaderId: ID!) {
-    MakeGatheringServiceLeader(
-      gatheringServiceId: $gatheringServiceId
-      leaderId: $leaderId
-    ) {
+  mutation NewCampusLeader($campusId: ID!, $leaderId: ID!) {
+    MakeCampusLeader(campusId: $campusId, leaderId: $leaderId) {
       id
       firstName
       lastName
-      leadsGatheringService {
+      leadsCampus {
         id
         leader {
           id

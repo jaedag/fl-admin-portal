@@ -15,7 +15,7 @@ import { ArrivalsUseChurchType } from './arrivals-types'
 import {
   CONSTITUENCY_BACENTAS_ARRIVED,
   COUNCIL_BACENTAS_ARRIVED,
-  GATHERINGSERVICES_BACENTAS_ARRIVED,
+  CAMPUSES_BACENTAS_ARRIVED,
   STREAM_BACENTAS_ARRIVED,
 } from './bussingStatusQueries'
 import NoData from './CompNoData'
@@ -39,10 +39,9 @@ const BacentasHaveArrived = () => {
       pollInterval: LONG_POLL_INTERVAL,
     }
   )
-  const [
-    gatheringServiceBacentasArrived,
-    { refetch: gatheringServiceRefetch },
-  ] = useLazyQuery(GATHERINGSERVICES_BACENTAS_ARRIVED)
+  const [campusBacentasArrived, { refetch: campusRefetch }] = useLazyQuery(
+    CAMPUSES_BACENTAS_ARRIVED
+  )
 
   const data: ArrivalsUseChurchType = useChurchLevel({
     constituencyFunction: constituencyBacentasArrived,
@@ -51,8 +50,8 @@ const BacentasHaveArrived = () => {
     councilRefetch,
     streamFunction: streamBacentasArrived,
     streamRefetch,
-    gatheringServiceFunction: gatheringServiceBacentasArrived,
-    gatheringServiceRefetch,
+    campusFunction: campusBacentasArrived,
+    campusRefetch,
   })
   const { church, loading, error, refetch } = data
 

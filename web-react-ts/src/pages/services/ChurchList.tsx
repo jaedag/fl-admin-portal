@@ -45,7 +45,7 @@ const ChurchList = ({
                     'Constituency',
                     'Council',
                     'Stream',
-                    'GatheringService',
+                    'Campus',
                   ].includes(church.__typename)
                 ) {
                   return null
@@ -53,12 +53,9 @@ const ChurchList = ({
               }
               if (color === 'defaulters') {
                 if (
-                  ![
-                    'Constituency',
-                    'Council',
-                    'Stream',
-                    'GatheringService',
-                  ].includes(church.__typename)
+                  !['Constituency', 'Council', 'Stream', 'Campus'].includes(
+                    church.__typename
+                  )
                 ) {
                   return null
                 }
@@ -74,7 +71,7 @@ const ChurchList = ({
                   iconCaption={church.__typename}
                   onClick={() => {
                     clickCard(church)
-                    if (church.__typename === 'GatheringService') {
+                    if (church.__typename === 'Campus') {
                       setUserFinancials(church)
                     } else {
                       setUserChurch(church)

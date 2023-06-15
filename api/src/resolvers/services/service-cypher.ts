@@ -10,15 +10,15 @@ RETURN church.id AS id, church.name AS name, labels(church) AS labels, labels(hi
 `
 
 export const getCurrency = `
-MATCH (church {id: $churchId})<-[:HAS*0..5]-(gathering:GatheringService)
-WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:GatheringService
+MATCH (church {id: $churchId})<-[:HAS*0..5]-(gathering:Campus)
+WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:Campus
 
 RETURN gathering.currency AS currency, gathering.conversionRateToDollar AS conversionRateToDollar
 `
 
 export const absorbAllTransactions = `
 MATCH (serviceRecord:ServiceRecord {id: $serviceRecordId})<-[:HAS_SERVICE]-(:ServiceLog)<-[:CURRENT_HISTORY]-(church)
-WHERE church:Fellowship OR church:Constituency OR church:Council OR church:Stream OR church:GatheringService
+WHERE church:Fellowship OR church:Constituency OR church:Council OR church:Stream OR church:Campus
 MATCH (church)<-[r:GIVEN_AT]-(transaction:Transaction)
 DELETE r
 
@@ -171,7 +171,7 @@ export const aggregateServiceDataForBacenta = `
        aggregate.componentServiceIds = componentServiceIds,
          aggregate.numberOfServices = numberOfServices  
    WITH stream AS lowerChurch
-   MATCH (lowerChurch)<-[:HAS]-(gathering:GatheringService)
+   MATCH (lowerChurch)<-[:HAS]-(gathering:Campus)
    MATCH (gathering)-[:CURRENT_HISTORY|HAS_SERVICE|HAS*2..7]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph) 
    WHERE date.date.week = date().week AND date.date.year = date().year AND NOT record:NoService
    WITH DISTINCT gathering, record
@@ -258,7 +258,7 @@ export const aggregateServiceDataForConstituency = `
        aggregate.dollarIncome = totalDollarIncome,
        aggregate.componentServiceIds = componentServiceIds
    WITH stream AS lowerChurch
-   MATCH (lowerChurch)<-[:HAS]-(gathering:GatheringService)
+   MATCH (lowerChurch)<-[:HAS]-(gathering:Campus)
    MATCH (gathering)-[:CURRENT_HISTORY|HAS_SERVICE|HAS*2..7]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph) 
    WHERE date.date.week = date().week AND date.date.year = date().year AND NOT record:NoService
    WITH DISTINCT gathering, record
@@ -329,7 +329,7 @@ export const aggregateServiceDataForCouncil = `
        aggregate.dollarIncome = totalDollarIncome,
        aggregate.componentServiceIds = componentServiceIds
    WITH stream AS lowerChurch
-   MATCH (lowerChurch)<-[:HAS]-(gathering:GatheringService)
+   MATCH (lowerChurch)<-[:HAS]-(gathering:Campus)
    MATCH (gathering)-[:CURRENT_HISTORY|HAS_SERVICE|HAS*2..7]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph) 
    WHERE date.date.week = date().week AND date.date.year = date().year AND NOT record:NoService
    WITH DISTINCT gathering, record
@@ -387,7 +387,7 @@ export const aggregateServiceDataForStream = `
        aggregate.dollarIncome = totalDollarIncome,
        aggregate.componentServiceIds = componentServiceIds
    WITH stream AS lowerChurch
-   MATCH (lowerChurch)<-[:HAS]-(gathering:GatheringService)
+   MATCH (lowerChurch)<-[:HAS]-(gathering:Campus)
    MATCH (gathering)-[:CURRENT_HISTORY|HAS_SERVICE|HAS*2..7]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph) 
    WHERE date.date.week = date().week AND date.date.year = date().year AND NOT record:NoService
    WITH DISTINCT gathering, record
@@ -429,10 +429,10 @@ export const aggregateServiceDataForStream = `
    RETURN denomination,aggregate
 `
 
-export const aggregateServiceDataForGatheringService = `
+export const aggregateServiceDataForCampus = `
    MATCH (stream:Stream {id: $churchId}) 
    WITH stream AS lowerChurch
-   MATCH (lowerChurch)<-[:HAS]-(gathering:GatheringService)
+   MATCH (lowerChurch)<-[:HAS]-(gathering:Campus)
    MATCH (gathering)-[:CURRENT_HISTORY|HAS_SERVICE|HAS*2..7]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph) 
    WHERE date.date.week = date().week AND date.date.year = date().year AND NOT record:NoService
    WITH DISTINCT gathering, record
@@ -475,7 +475,7 @@ export const aggregateServiceDataForGatheringService = `
 `
 
 export const aggregateServiceDataForOversight = `
-   MATCH (gathering:GatheringService {id: $churchId}) 
+   MATCH (gathering:Campus {id: $churchId}) 
    WITH gathering AS lowerChurch
    MATCH (lowerChurch)<-[:HAS]-(oversight:Oversight)
    MATCH (oversight)-[:CURRENT_HISTORY|HAS_SERVICE|HAS*2..8]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph) 

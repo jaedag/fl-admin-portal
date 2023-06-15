@@ -102,13 +102,9 @@ export const MAKE_STREAM_ADMIN = gql`
 `
 
 export const MAKE_GATHERING_SERVICE_ADMIN = gql`
-  mutation MakeGatheringServiceAdmin(
-    $gatheringServiceId: ID!
-    $newAdminId: ID!
-    $oldAdminId: ID!
-  ) {
-    RemoveGatheringServiceAdmin(
-      gatheringServiceId: $gatheringServiceId
+  mutation MakeCampusAdmin($campusId: ID!, $newAdminId: ID!, $oldAdminId: ID!) {
+    RemoveCampusAdmin(
+      campusId: $campusId
       adminId: $oldAdminId
       newAdminId: $newAdminId
     ) {
@@ -116,15 +112,15 @@ export const MAKE_GATHERING_SERVICE_ADMIN = gql`
       firstName
       lastName
     }
-    MakeGatheringServiceAdmin(
-      gatheringServiceId: $gatheringServiceId
+    MakeCampusAdmin(
+      campusId: $campusId
       adminId: $newAdminId
       oldAdminId: $oldAdminId
     ) {
       id
       firstName
       lastName
-      isAdminForGatheringService {
+      isAdminForCampus {
         id
         admin {
           id

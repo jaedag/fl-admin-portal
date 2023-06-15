@@ -28,14 +28,14 @@ const MemberRoleList = ({
   //To Display Ranks on the Member Card
   let rank = {
     oversightLeader: [],
-    gatheringserviceLeader: [],
+    campusLeader: [],
     streamLeader: [],
     councilLeader: [],
     constituencyLeader: [],
     bacentaLeader: [],
     fellowshipLeader: [],
     oversightAdmin: [],
-    gatheringserviceAdmin: [],
+    campusAdmin: [],
     streamAdmin: [],
     councilAdmin: [],
     constituencyAdmin: [],
@@ -99,8 +99,8 @@ const MemberRoleList = ({
   if (memberLeader?.leadsStream[0]) {
     updateRank(memberLeader, 'stream')
   }
-  if (memberLeader?.leadsGatheringService[0]) {
-    updateRank(memberLeader, 'gatheringService')
+  if (memberLeader?.leadsCampus[0]) {
+    updateRank(memberLeader, 'campus')
   }
 
   if (memberAdmin.isAdminForConstituency[0]) {
@@ -112,8 +112,8 @@ const MemberRoleList = ({
   if (memberAdmin.isAdminForStream[0]) {
     updateRank(memberAdmin, 'stream')
   }
-  if (memberAdmin.isAdminForGatheringService[0]) {
-    updateRank(memberAdmin, 'gatheringService')
+  if (memberAdmin.isAdminForCampus[0]) {
+    updateRank(memberAdmin, 'campus')
   }
 
   if (memberLeader.leadsSonta[0]) {

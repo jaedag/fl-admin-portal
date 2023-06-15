@@ -27,7 +27,7 @@ extend type Member {
     @relationship(type: "DOES_ARRIVALS_FOR", direction: OUT)
   isArrivalsAdminForStream: [Stream!]!
     @relationship(type: "DOES_ARRIVALS_FOR", direction: OUT)
-  isArrivalsAdminForGatheringService: [GatheringService!]!
+  isArrivalsAdminForCampus: [Campus!]!
     @relationship(type: "DOES_ARRIVALS_FOR", direction: OUT)
   isArrivalsCounterForStream: [Stream!]!
     @relationship(type: "COUNTS_ARRIVALS_FOR", direction: OUT)
@@ -56,7 +56,7 @@ extend type Oversight {
     )
 }
 
-extend type GatheringService {
+extend type Campus {
   arrivalsAdmin: Member @relationship(type: "DOES_ARRIVALS_FOR", direction: IN)
   bacentasNoActivity(arrivalDate: String!): [Bacenta!]!
     @cypher(
@@ -1084,15 +1084,15 @@ extend type Mutation {
     newArrivalsAdminId: ID!
     streamId: ID!
   ): Member
-  MakeGatheringServiceArrivalsAdmin(
+  MakeCampusArrivalsAdmin(
     arrivalsAdminId: ID!
     newArrivalsAdminId: ID!
-    gatheringServiceId: ID!
+    campusId: ID!
   ): Member!
-  RemoveGatheringServiceArrivalsAdmin(
+  RemoveCampusArrivalsAdmin(
     arrivalsAdminId: ID!
     oldArrivalsAdminId: ID
-    gatheringServiceId: ID!
+    campusId: ID!
   ): Member
 
   MakeStreamArrivalsCounter(arrivalsCounterId: ID!, streamId: ID!): Member!
@@ -1101,15 +1101,7 @@ extend type Mutation {
   ## GENERATE CODE OF THE DAY
   GenerateCodeOfTheDay: String!
     @auth(
-      rules: [
-        {
-          roles: [
-            "adminStream"
-            "adminGatheringService"
-            "arrivalsAdminGatheringService"
-          ]
-        }
-      ]
+      rules: [{ roles: ["adminStream", "adminCampus", "arrivalsAdminCampus"] }]
     )
     @cypher(
       statement: """
@@ -1119,11 +1111,7 @@ extend type Mutation {
       """
     )
   SetCodeOfTheDay(code: String!): String!
-    @auth(
-      rules: [
-        { roles: ["adminGatheringService", "arrivalsAdminGatheringService"] }
-      ]
-    )
+    @auth(rules: [{ roles: ["adminCampus", "arrivalsAdminCampus"] }])
     @cypher(
       statement: """
       MATCH (arr:ArrivalsCodeOfTheDay)
@@ -1143,8 +1131,8 @@ extend type Mutation {
       rules: [
         {
           roles: [
-            "adminGatheringService"
-            "arrivalsAdminGatheringService"
+            "adminCampus"
+            "arrivalsAdminCampus"
             "adminStream"
             "arrivalsAdminStream"
           ]
@@ -1294,8 +1282,8 @@ extend type Mutation {
           roles: [
             "adminStream"
             "arrivalsAdminStream"
-            "adminGatheringService"
-            "arrivalsAdminGatheringService"
+            "adminCampus"
+            "arrivalsAdminCampus"
           ]
         }
       ]
@@ -1340,8 +1328,8 @@ extend type Mutation {
           roles: [
             "adminStream"
             "arrivalsAdminStream"
-            "adminGatheringService"
-            "arrivalsAdminGatheringService"
+            "adminCampus"
+            "arrivalsAdminCampus"
           ]
         }
       ]

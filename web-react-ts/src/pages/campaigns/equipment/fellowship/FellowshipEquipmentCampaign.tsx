@@ -23,7 +23,7 @@ const FellowshipEquipmentCampaign = () => {
   const church = currentUser.currentChurch
   const churchType = currentUser.currentChurch?.__typename
   const { fellowshipId } = useContext(ChurchContext)
-  const gatheringServiceId = currentUser?.gatheringService
+  const campusId = currentUser?.campus
 
   const { data, loading } = useQuery(FELLOWSHIP_LATEST_EQUIPMENT_RECORD, {
     variables: {
@@ -39,12 +39,11 @@ const FellowshipEquipmentCampaign = () => {
     error,
   } = useQuery(EQUIPMENT_END_DATE, {
     variables: {
-      gatheringServiceId: gatheringServiceId,
+      campusId: campusId,
     },
   })
 
-  const equipmentEndDate =
-    equipmentEndDateData?.gatheringServices[0]?.equipmentEndDate
+  const equipmentEndDate = equipmentEndDateData?.campuses[0]?.equipmentEndDate
 
   return (
     <ApolloWrapper

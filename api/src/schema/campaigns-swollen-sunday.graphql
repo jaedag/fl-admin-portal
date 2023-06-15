@@ -21,7 +21,7 @@ extend type Oversight {
     )
 }
 
-extend type GatheringService {
+extend type Campus {
   swellBussingRecords(startDate: String!, endDate: String!): [SwellStats!]!
     @cypher(
       statement: """

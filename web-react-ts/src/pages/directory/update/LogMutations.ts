@@ -164,16 +164,16 @@ export const LOG_STREAM_HISTORY = gql`
     $historyRecord: String!
     $oldLeaderId: ID
     $newLeaderId: ID
-    $oldGatheringServiceId: ID
-    $newGatheringServiceId: ID
+    $oldCampusId: ID
+    $newCampusId: ID
   ) {
     LogStreamHistory(
       streamId: $streamId
       historyRecord: $historyRecord
       newLeaderId: $newLeaderId
       oldLeaderId: $oldLeaderId
-      oldGatheringServiceId: $oldGatheringServiceId
-      newGatheringServiceId: $newGatheringServiceId
+      oldCampusId: $oldCampusId
+      newCampusId: $newCampusId
     ) {
       id
       name
@@ -198,17 +198,17 @@ export const LOG_STREAM_HISTORY = gql`
     }
   }
 `
-export const LOG_GATHERINGSERVICE_HISTORY = gql`
-  mutation LogGatheringServiceHistory(
-    $gatheringServiceId: ID!
+export const LOG_CAMPUS_HISTORY = gql`
+  mutation LogCampusHistory(
+    $campusId: ID!
     $historyRecord: String!
     $oldLeaderId: ID
     $newLeaderId: ID
     $oldOversightId: ID
     $newOversightId: ID
   ) {
-    LogGatheringServiceHistory(
-      gatheringServiceId: $gatheringServiceId
+    LogCampusHistory(
+      campusId: $campusId
       historyRecord: $historyRecord
       newLeaderId: $newLeaderId
       oldLeaderId: $oldLeaderId

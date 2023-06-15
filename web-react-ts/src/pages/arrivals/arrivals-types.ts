@@ -110,7 +110,7 @@ export interface BacentaWithArrivals extends Bacenta {
 }
 
 export interface HigherChurchWithArrivals extends Church {
-  __typename: 'Constituency' | 'Stream' | 'Council' | 'GatheringService'
+  __typename: 'Constituency' | 'Stream' | 'Council' | 'Campus'
   stream_name: StreamOptions
   stream: Stream
   arrivalsAdmin: Member

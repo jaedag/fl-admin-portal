@@ -299,7 +299,7 @@ WITH council AS lowerChurch
     aggregate.componentBussingIds = componentBussingIds
 
    WITH stream AS lowerChurch
-   MATCH (lowerChurch)<-[:HAS]-(gathering:GatheringService)
+   MATCH (lowerChurch)<-[:HAS]-(gathering:Campus)
    MATCH (gathering)-[:CURRENT_HISTORY]->(log:ServiceLog)
    MERGE (aggregate:AggregateBussingRecord {id: date().week + '-' + date().year + '-' + log.id, week: date().week, year: date().year})
    MERGE (log)-[:HAS_BUSSING_AGGREGATE]->(aggregate)
@@ -324,7 +324,7 @@ WITH council AS lowerChurch
    MERGE (log)-[:HAS_BUSSING_AGGREGATE]->(aggregate)
 
    WITH oversight, aggregate
-   MATCH (oversight)-[:HAS]->(:GatheringService)-[:HAS]->(:Stream)-[:HAS]->(:Council)-[:HAS]->(:Constituency)-[:HAS]->(bacentas:Bacenta)
+   MATCH (oversight)-[:HAS]->(:Campus)-[:HAS]->(:Stream)-[:HAS]->(:Council)-[:HAS]->(:Constituency)-[:HAS]->(bacentas:Bacenta)
    MATCH (bacentas)-[:CURRENT_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(record:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph) WHERE date.date.week = date().week AND date.date.year = date().year
    WITH DISTINCT oversight, aggregate, record
     WITH oversight, aggregate, collect(record.id) AS componentBussingIds, SUM(record.leaderDeclaration) AS leaderDeclaration, SUM(record.bussingCost) AS bussingCost, SUM(record.personalContribution) AS personalContribution, SUM(record.attendance) AS attendance, SUM(record.bussingTopUp) AS bussingTopUp
@@ -343,7 +343,7 @@ WITH council AS lowerChurch
    MERGE (log)-[:HAS_BUSSING_AGGREGATE]->(aggregate)
 
    WITH denomination, aggregate
-   MATCH (denomination)-[:HAS]->(:Oversight)-[:HAS]->(:GatheringService)-[:HAS]->(:Stream)-[:HAS]->(:Council)-[:HAS]->(:Constituency)-[:HAS]->(bacentas:Bacenta)
+   MATCH (denomination)-[:HAS]->(:Oversight)-[:HAS]->(:Campus)-[:HAS]->(:Stream)-[:HAS]->(:Council)-[:HAS]->(:Constituency)-[:HAS]->(bacentas:Bacenta)
    MATCH (bacentas)-[:CURRENT_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(record:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph) WHERE date.date.week = date().week AND date.date.year = date().year
    WITH DISTINCT denomination, aggregate, record
    WITH denomination, aggregate, collect(record.id) AS componentBussingIds, SUM(record.leaderDeclaration) AS leaderDeclaration, SUM(record.bussingCost) AS bussingCost, SUM(record.personalContribution) AS personalContribution, SUM(record.attendance) AS attendance, SUM(record.bussingTopUp) AS bussingTopUp

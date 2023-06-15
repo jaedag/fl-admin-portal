@@ -87,12 +87,12 @@ export const MAKE_STREAM_INACTIVE = gql`
   }
 `
 export const MAKE_GATHERING_SERVICE_INACTIVE = gql`
-  mutation CloseDownGatheringService($id: ID!) {
-    CloseDownGatheringService(gatheringServiceId: $id) {
+  mutation CloseDownCampus($id: ID!) {
+    CloseDownCampus(campusId: $id) {
       id
       name
 
-      gatheringServices {
+      campuses {
         id
       }
 

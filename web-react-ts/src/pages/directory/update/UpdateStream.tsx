@@ -2,11 +2,11 @@ import React, { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useQuery, useMutation } from '@apollo/client'
 import { alertMsg, throwToSentry } from '../../../global-utils'
-import { GET_GATHERINGSERVICE_STREAMS } from '../../../queries/ListQueries'
+import { GET_CAMPUS_STREAMS } from '../../../queries/ListQueries'
 import {
   UPDATE_STREAM_MUTATION,
-  ADD_GATHERINGSERVICE_STREAM,
-  REMOVE_STREAM_GATHERINGSERVICE,
+  ADD_CAMPUS_STREAM,
+  REMOVE_STREAM_CAMPUSE,
   REMOVE_COUNCIL_STREAM,
   ADD_STREAM_COUNCILS,
 } from './UpdateMutations'
@@ -38,7 +38,7 @@ const UpdateStream = () => {
     leaderEmail: stream?.leader?.email || '',
     bankAccount: stream?.bankAccount || '',
     meetingDay: stream?.meetingDay.day ?? '',
-    gatheringService: stream?.gatheringService?.id ?? '',
+    campus: stream?.campus?.id ?? '',
     councils: stream?.councils?.length ? stream.councils : [''],
   }
 
@@ -53,8 +53,8 @@ const UpdateStream = () => {
   const [UpdateStream] = useMutation(UPDATE_STREAM_MUTATION, {
     refetchQueries: [
       {
-        query: GET_GATHERINGSERVICE_STREAMS,
-        variables: { id: initialValues.gatheringService },
+        query: GET_CAMPUS_STREAMS,
+        variables: { id: initialValues.campus },
       },
     ],
   })
@@ -96,28 +96,24 @@ const UpdateStream = () => {
     },
   })
 
-  //Changes upwards. it. Changes to the GatheringService the Stream Campus is under
-  const [RemoveStreamGatheringService] = useMutation(
-    REMOVE_STREAM_GATHERINGSERVICE
-  )
-  const [AddStreamGatheringService] = useMutation(ADD_GATHERINGSERVICE_STREAM, {
+  //Changes upwards. it. Changes to the Campus the Stream Campus is under
+  const [RemoveStreamCampus] = useMutation(REMOVE_STREAM_CAMPUSE)
+  const [AddStreamCampus] = useMutation(ADD_CAMPUS_STREAM, {
     onCompleted: (data) => {
-      const oldGatheringService =
-        data.updateGatheringService.gatheringServices[0]
-      const newGatheringService = data.updateStreams.streams[0].gatheringService
+      const oldCampus = data.updateCampus.campuses[0]
+      const newCampus = data.updateStreams.streams[0].campus
 
-      let recordIfOldGatheringService = `${initialValues.name} Stream has been moved from ${oldGatheringService.name} GatheringService to ${newGatheringService.name} GatheringService`
+      let recordIfOldCampus = `${initialValues.name} Stream has been moved from ${oldCampus.name} Campus to ${newCampus.name} Campus`
 
-      //After Adding the stream to a gatheringService, then you log that change.
+      //After Adding the stream to a campus, then you log that change.
       LogStreamHistory({
         variables: {
           streamId: streamId,
           newLeaderId: '',
           oldLeaderId: '',
-          newGatheringServiceId:
-            data.updateStreams.streams[0].gatheringService.id,
-          oldGatheringServiceId: stream?.gatheringService.id,
-          historyRecord: recordIfOldGatheringService,
+          newCampusId: data.updateStreams.streams[0].campus.id,
+          oldCampusId: stream?.campus.id,
+          historyRecord: recordIfOldCampus,
         },
       })
     },
@@ -136,7 +132,7 @@ const UpdateStream = () => {
           streamId: streamId,
           name: values.name,
           bankAccount: values.bankAccount,
-          gatheringServiceId: values.gatheringService,
+          campusId: values.campus,
           meetingDay: values.meetingDay,
         },
       })
@@ -148,8 +144,8 @@ const UpdateStream = () => {
             streamId: streamId,
             newLeaderId: '',
             oldLeaderId: '',
-            oldGatheringServiceId: '',
-            newGatheringServiceId: '',
+            oldCampusId: '',
+            newCampusId: '',
             historyRecord: `Stream name has been changed from ${initialValues.name} to ${values.name}`,
           },
         })
@@ -180,19 +176,19 @@ const UpdateStream = () => {
         }
       }
 
-      //Log if GatheringService Changes
-      if (values.gatheringService !== initialValues.gatheringService) {
+      //Log if Campus Changes
+      if (values.campus !== initialValues.campus) {
         try {
-          await RemoveStreamGatheringService({
+          await RemoveStreamCampus({
             variables: {
-              higherChurch: initialValues.gatheringService,
+              higherChurch: initialValues.campus,
               lowerChurch: [streamId],
             },
           })
-          await AddStreamGatheringService({
+          await AddStreamCampus({
             variables: {
-              gatheringServiceId: values.gatheringService,
-              oldGatheringServiceId: initialValues.gatheringService,
+              campusId: values.campus,
+              oldCampusId: initialValues.campus,
               streamId: streamId,
             },
           })
@@ -229,7 +225,7 @@ const UpdateStream = () => {
         await addNewChurches(lists, mutations, args),
       ])
 
-      clickCard({ id: values.gatheringService, __typename: 'GatheringService' })
+      clickCard({ id: values.campus, __typename: 'Campus' })
       onSubmitProps.setSubmitting(false)
       onSubmitProps.resetForm()
       navigate(`/stream/displaydetails`)

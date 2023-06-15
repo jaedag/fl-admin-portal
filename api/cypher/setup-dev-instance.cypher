@@ -89,7 +89,7 @@ MATCH (member:Member)-[:BELONGS_TO]->(fellowship:Fellowship {id: 'e81bf51b-7ef5-
 MATCH (fellowship)<-[:HAS]-(bacenta:Bacenta)<-[:HAS]-(constituency:Constituency)<-[:HAS]-(council:Council)<-[:HAS]-(stream:Stream)<-[:HAS]-(gathering:Gathering)
 MERGE (member)-[:LEADS]->(gathering)
 RETURN member, gathering;
-MATCH (f) WHERE f:Fellowship OR f:Bacenta OR f:Constituency OR f:Council OR f:Stream OR f:GatheringService
+MATCH (f) WHERE f:Fellowship OR f:Bacenta OR f:Constituency OR f:Council OR f:Stream OR f:Campus
 MATCH (m:Member)
 MERGE (m)-[:LEADS]->(f)
 RETURN f,m;

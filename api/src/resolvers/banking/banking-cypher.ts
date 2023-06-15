@@ -1,12 +1,12 @@
 export const initiateServiceRecordTransaction = `
 MATCH (record:ServiceRecord {id: $serviceRecordId})<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(church)
-WHERE church:Fellowship OR church:Constituency OR church:Council OR church:Stream OR church:GatheringService
+WHERE church:Fellowship OR church:Constituency OR church:Council OR church:Stream OR church:Campus
 
 
 UNWIND labels(church) AS churchLevel 
 WITH record, church, churchLevel
 WHERE churchLevel = 'Fellowship' OR churchLevel = 'Bacenta' OR churchLevel = 'Constituency' 
-OR churchLevel = 'Council' OR churchLevel = 'Stream' OR churchLevel = 'GatheringService'
+OR churchLevel = 'Council' OR churchLevel = 'Stream' OR churchLevel = 'Campus'
 
 MATCH (author:Member {auth_id: $auth.jwt.sub})
 MATCH (record)-[:SERVICE_HELD_ON]->(date:TimeGraph)

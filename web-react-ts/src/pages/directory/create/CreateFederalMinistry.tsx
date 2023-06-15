@@ -20,7 +20,7 @@ const CreateFederalMinistry = () => {
     leaderName: '',
     leaderEmail: '',
     name: '',
-    gatheringService: '',
+    campus: '',
   }
 
   const [NewFederalministryLeader] = useMutation(NEW_FEDERAL_MINISTRY_LEADER)
@@ -40,7 +40,7 @@ const CreateFederalMinistry = () => {
 
       const res = await CreateFederalministry({
         variables: {
-          gatheringServiceId: values.gatheringService,
+          campusId: values.campus,
           leaderId: values.leaderId,
           name: values.name,
         },
@@ -54,8 +54,8 @@ const CreateFederalMinistry = () => {
       })
 
       clickCard({
-        id: values.gatheringService,
-        __typename: 'GatheringService',
+        id: values.campus,
+        __typename: 'Campus',
       })
       clickCard(res.data.CreateFederalministry)
       onSubmitProps.setSubmitting(false)

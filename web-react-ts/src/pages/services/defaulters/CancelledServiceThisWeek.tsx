@@ -9,7 +9,7 @@ import {
   CONSTITUENCY_CANCELLED_SERVICES_LIST,
   COUNCIL_CANCELLED_SERVICES_LIST,
   STREAM_CANCELLED_SERVICES_LIST,
-  GATHERINGSERVICE_CANCELLED_SERVICES_LIST,
+  CAMPUS_CANCELLED_SERVICES_LIST,
 } from './DefaultersQueries'
 import DefaulterCard from './DefaulterCard'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
@@ -27,10 +27,9 @@ const CancelledServicesThisWeek = () => {
   const [streamCancelledServices, { refetch: streamRefetch }] = useLazyQuery(
     STREAM_CANCELLED_SERVICES_LIST
   )
-  const [
-    gatheringServiceCancelledServices,
-    { refetch: gatheringServiceRefetch },
-  ] = useLazyQuery(GATHERINGSERVICE_CANCELLED_SERVICES_LIST)
+  const [campusCancelledServices, { refetch: campusRefetch }] = useLazyQuery(
+    CAMPUS_CANCELLED_SERVICES_LIST
+  )
 
   const data: DefaultersUseChurchType = useChurchLevel({
     constituencyFunction: constituencyCancelledServices,
@@ -39,8 +38,8 @@ const CancelledServicesThisWeek = () => {
     councilRefetch,
     streamFunction: streamCancelledServices,
     streamRefetch,
-    gatheringServiceFunction: gatheringServiceCancelledServices,
-    gatheringServiceRefetch,
+    campusFunction: campusCancelledServices,
+    campusRefetch,
   })
 
   const { church, loading, error, refetch } = data

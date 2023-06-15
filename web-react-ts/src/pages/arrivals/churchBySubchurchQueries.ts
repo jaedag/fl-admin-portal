@@ -69,9 +69,9 @@ export const STREAM_BY_COUNCIL_ARRIVALS = gql`
   }
 `
 
-export const GATHERINGSERVICE_BY_STREAM_ARRIVALS = gql`
+export const CAMPUS_BY_STREAM_ARRIVALS = gql`
   query gatheringByStreamArrivals($id: ID!, $arrivalDate: String!) {
-    gatheringServices(where: { id: $id }, options: { limit: 1 }) {
+    campuses(where: { id: $id }, options: { limit: 1 }) {
       id
       name
 

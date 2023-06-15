@@ -14,7 +14,7 @@ import {
   aggregateServiceDataForConstituency,
   aggregateServiceDataForCouncil,
   aggregateServiceDataForDenomination,
-  aggregateServiceDataForGatheringService,
+  aggregateServiceDataForCampus,
   aggregateServiceDataForOversight,
   aggregateServiceDataForStream,
   checkCurrentServiceLog,
@@ -140,8 +140,8 @@ const serviceMutation = {
       aggregateCypher = aggregateServiceDataForCouncil
     } else if (serviceCheck.higherChurchLabels?.includes('Stream')) {
       aggregateCypher = aggregateServiceDataForStream
-    } else if (serviceCheck.higherChurchLabels?.includes('GatheringService')) {
-      aggregateCypher = aggregateServiceDataForGatheringService
+    } else if (serviceCheck.higherChurchLabels?.includes('Campus')) {
+      aggregateCypher = aggregateServiceDataForCampus
     } else if (serviceCheck.higherChurchLabels?.includes('Oversight')) {
       aggregateCypher = aggregateServiceDataForOversight
     } else if (serviceCheck.higherChurchLabels?.includes('Denomination')) {

@@ -103,8 +103,8 @@ export const CONSTITUENCY_MULTIPLICATION_GRAPHS = gql`
 `
 
 export const GATHERING_SERVICE_MULTIPLICATION_GRAPHS = gql`
-  query GatheringServiceServiceMultiplicationGraphs($gatheringServiceId: ID!) {
-    gatheringServices(where: { id: $gatheringServiceId }) {
+  query CampusServiceMultiplicationGraphs($campusId: ID!) {
+    campuses(where: { id: $campusId }) {
       id
       name
       leader {
@@ -212,10 +212,8 @@ export const MULTIPLICATION_BANKING_SLIP_SUBMISSION = gql`
 `
 
 export const GATHERING_SERVICE_MULTIPLICATION_BANKING_SLIP_QUERY = gql`
-  query gatheringServiceMultiplicationBankingSlipQueries(
-    $gatheringServiceId: ID!
-  ) {
-    gatheringServices(where: { id: $gatheringServiceId }) {
+  query campusMultiplicationBankingSlipQueries($campusId: ID!) {
+    campuses(where: { id: $campusId }) {
       id
       name
       multiplicationRecords(limit: 20) {
@@ -322,8 +320,8 @@ export const CONSTITUENCY_MULTIPLICATION_BANKING_SLIP_QUERY = gql`
 `
 
 export const GATHERING_SERVICE_AGGREGATE_MEMBER_CONVERSION = gql`
-  query gatheringServiceAggregateMemberConversion($gatheringServiceId: ID!) {
-    gatheringServices(where: { id: $gatheringServiceId }) {
+  query campusAggregateMemberConversion($campusId: ID!) {
+    campuses(where: { id: $campusId }) {
       id
       name
       aggregateMemberConversion {

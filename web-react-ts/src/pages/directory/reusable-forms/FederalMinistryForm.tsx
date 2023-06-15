@@ -3,7 +3,7 @@ import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { Form, Formik, FormikHelpers } from 'formik'
 import * as Yup from 'yup'
 import { makeSelectOptions, throwToSentry } from 'global-utils'
-import { GET_GATHERINGSERVICES } from 'queries/ListQueries'
+import { GET_CAMPUSES } from 'queries/ListQueries'
 import React, { useContext, useState } from 'react'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { MAKE_FEDERAL_MINISTRY_INACTIVE } from 'pages/directory/update/CloseChurchMutations'
@@ -21,7 +21,7 @@ import { FormikInitialValues } from 'components/formik/formik-types'
 
 export interface FederalMinistryFormValues extends FormikInitialValues {
   name: string
-  gatheringService: string
+  campus: string
 }
 
 type FederalMinistryFormProps = {
@@ -45,16 +45,14 @@ const FederalMinistryForm = ({
   const { togglePopup, isOpen } = usePopup()
   const navigate = useNavigate()
 
-  const { data, loading, error } = useQuery(GET_GATHERINGSERVICES)
+  const { data, loading, error } = useQuery(GET_CAMPUSES)
   const [buttonLoading, setButtonLoading] = useState(false)
   const [CloseDownFederalMinistry] = useMutation(MAKE_FEDERAL_MINISTRY_INACTIVE)
 
-  const gatheringServiceOptions = makeSelectOptions(data?.gatheringServices)
+  const campusOptions = makeSelectOptions(data?.campuses)
 
   const validationSchema = Yup.object({
-    gatheringService: Yup.string().required(
-      `Gathering Service is a required field`
-    ),
+    campus: Yup.string().required(`Gathering Service is a required field`),
     name: Yup.string().required(`Federal Ministry Name is a required field`),
     leaderId: Yup.string().required(
       'Please choose a leader from the drop down'
@@ -81,9 +79,9 @@ const FederalMinistryForm = ({
                     {/* <!-- Basic Info Div --> */}
                     <Col className="mb-2">
                       <Select
-                        name="gatheringService"
+                        name="campus"
                         label="Select a Gathering Service"
-                        options={gatheringServiceOptions}
+                        options={campusOptions}
                         defaultOption="Select a Gathering Service"
                       />
 

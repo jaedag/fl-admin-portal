@@ -9,7 +9,7 @@ import './react-autosuggest.css'
 import { RoleBasedSearch } from './formik-types'
 import { initialise } from './search-utils'
 import {
-  GATHERINGSERVICE_COUNCIL_SEARCH,
+  CAMPUS_COUNCIL_SEARCH,
   STREAM_COUNCIL_SEARCH,
   MEMBER_COUNCIL_SEARCH,
 } from './SearchCouncilQueries'
@@ -20,13 +20,15 @@ const SearchCouncil = (props: RoleBasedSearch) => {
   const [suggestions, setSuggestions] = useState([])
   const [searchString, setSearchString] = useState(props.initialValue ?? '')
 
-  const [gatheringServiceSearch, { error: gatheringServiceError }] =
-    useLazyQuery(GATHERINGSERVICE_COUNCIL_SEARCH, {
+  const [campusSearch, { error: campusError }] = useLazyQuery(
+    CAMPUS_COUNCIL_SEARCH,
+    {
       onCompleted: (data) => {
-        setSuggestions(data.gatheringServices[0].councilSearch)
+        setSuggestions(data.campuses[0].councilSearch)
         return
       },
-    })
+    }
+  )
   const [streamSearch, { error: streamError }] = useLazyQuery(
     STREAM_COUNCIL_SEARCH,
     {
@@ -47,7 +49,7 @@ const SearchCouncil = (props: RoleBasedSearch) => {
     }
   )
 
-  const error = memberError || gatheringServiceError || streamError
+  const error = memberError || campusError || streamError
   throwToSentry('', error)
 
   const whichSearch = (searchString: string) => {
@@ -58,10 +60,10 @@ const SearchCouncil = (props: RoleBasedSearch) => {
       },
     })
     if (props.roleBased) {
-      if (isAuthorised(permitMe('GatheringService'), currentUser.roles)) {
-        gatheringServiceSearch({
+      if (isAuthorised(permitMe('Campus'), currentUser.roles)) {
+        campusSearch({
           variables: {
-            id: currentUser.gatheringService,
+            id: currentUser.campus,
             key: searchString?.trim(),
           },
         })

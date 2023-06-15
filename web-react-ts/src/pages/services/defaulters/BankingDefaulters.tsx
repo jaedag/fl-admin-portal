@@ -12,7 +12,7 @@ import {
   CONSTITUENCY_BANKING_DEFAULTERS_LIST,
   COUNCIL_BANKING_DEFAULTERS_LIST,
   STREAM_BANKING_DEFAULTERS_LIST,
-  GATHERINGSERVICE_BANKING_DEFAULTERS_LIST,
+  CAMPUS_BANKING_DEFAULTERS_LIST,
 } from './DefaultersQueries'
 import PlaceholderDefaulterList from './PlaceholderDefaulterList'
 import { DefaultersUseChurchType } from './defaulters-types'
@@ -27,10 +27,9 @@ const BankingDefaulters = () => {
   const [streamBankingDefaulters, { refetch: streamRefetch }] = useLazyQuery(
     STREAM_BANKING_DEFAULTERS_LIST
   )
-  const [
-    gatheringServiceBankingDefaulters,
-    { refetch: gatheringServiceRefetch },
-  ] = useLazyQuery(GATHERINGSERVICE_BANKING_DEFAULTERS_LIST)
+  const [campusBankingDefaulters, { refetch: campusRefetch }] = useLazyQuery(
+    CAMPUS_BANKING_DEFAULTERS_LIST
+  )
 
   const data: DefaultersUseChurchType = useChurchLevel({
     constituencyFunction: constituencyBankingDefaulters,
@@ -39,8 +38,8 @@ const BankingDefaulters = () => {
     councilRefetch,
     streamFunction: streamBankingDefaulters,
     streamRefetch,
-    gatheringServiceFunction: gatheringServiceBankingDefaulters,
-    gatheringServiceRefetch,
+    campusFunction: campusBankingDefaulters,
+    campusRefetch,
   })
 
   const { church, loading, error, refetch } = data

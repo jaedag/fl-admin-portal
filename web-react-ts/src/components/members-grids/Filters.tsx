@@ -7,7 +7,7 @@ import {
 import React, { useContext } from 'react'
 import { useLocation } from 'react-router-dom'
 import { Formik, Form, FormikHelpers } from 'formik'
-import { GET_GATHERINGSERVICE_MINISTRIES } from 'queries/ListQueries'
+import { GET_CAMPUS_MINISTRIES } from 'queries/ListQueries'
 import { Col, Row, Button } from 'react-bootstrap'
 import { MemberContext } from 'contexts/MemberContext'
 import './Filters.css'
@@ -30,7 +30,7 @@ const Filters = ({
   children: any
   eventKey: any
 }) => {
-  const { setFilters, filters, gatheringServiceId } = useContext(ChurchContext)
+  const { setFilters, filters, campusId } = useContext(ChurchContext)
   const { theme } = useContext(MemberContext)
   const location = useLocation()
   const atPastors = location.pathname === '/pastors'
@@ -88,12 +88,12 @@ const Filters = ({
                 <CheckboxWithQuery
                   name="ministry"
                   modifier="filter"
-                  optionsQuery={GET_GATHERINGSERVICE_MINISTRIES}
+                  optionsQuery={GET_CAMPUS_MINISTRIES}
                   queryVariable="id"
                   initialValue=""
                   dataset=""
-                  varValue={gatheringServiceId}
-                  nestedDataset={['gatheringServices', 'federalMinistries']}
+                  varValue={campusId}
+                  nestedDataset={['campuses', 'federalMinistries']}
                   label="Select a Ministry"
                 />
               </Col>

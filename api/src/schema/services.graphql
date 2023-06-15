@@ -4,7 +4,7 @@ type ServiceDay @auth(rules: [{ isAuthenticated: true }]) {
   fellowship: Fellowship @relationship(type: "MEETS_ON", direction: IN)
 }
 
-extend type GatheringService {
+extend type Campus {
   servicesThisWeek: [Fellowship!]!
     @cypher(
       statement: """
@@ -1378,7 +1378,7 @@ extend type Mutation {
       rules: [
         {
           roles: [
-            "adminGatheringService"
+            "adminCampus"
             "adminStream"
             "adminCouncil"
             "adminConstituency"

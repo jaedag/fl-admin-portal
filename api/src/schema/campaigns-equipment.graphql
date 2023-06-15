@@ -37,7 +37,7 @@ type FellowshipEquipment implements EquipmentRecord {
   createdAt: DateTime!
 }
 
-extend type GatheringService {
+extend type Campus {
   equipmentRecord: AggregatedEquipment!
   equipmentStartDate: Date
   equipmentEndDate: Date
@@ -654,11 +654,7 @@ extend type Fellowship {
 ###### CAMPAIGN TYPES #######
 
 extend type Mutation {
-  SetEquipmentDeadline(
-    startDate: Date!
-    endDate: Date!
-    id: ID!
-  ): GatheringService
+  SetEquipmentDeadline(startDate: Date!, endDate: Date!, id: ID!): Campus
   CreateFellowshipEquipmentRecord(
     id: ID!
     offeringBags: Int!

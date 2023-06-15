@@ -9,7 +9,7 @@ import {
   CONSTITUENCY_SERVICES_LIST,
   COUNCIL_SERVICES_LIST,
   STREAM_SERVICES_LIST,
-  GATHERINGSERVICE_SERVICES_LIST,
+  CAMPUS_SERVICES_LIST,
 } from './DefaultersQueries'
 import DefaulterCard from './DefaulterCard'
 import useChurchLevel from 'hooks/useChurchLevel'
@@ -26,8 +26,8 @@ const ServicesThisWeek = () => {
   )
   const [streamServicesThisWeek, { refetch: streamRefetch }] =
     useLazyQuery(STREAM_SERVICES_LIST)
-  const [gatheringServiceThisWeek, { refetch: gatheringServiceRefetch }] =
-    useLazyQuery(GATHERINGSERVICE_SERVICES_LIST)
+  const [campusThisWeek, { refetch: campusRefetch }] =
+    useLazyQuery(CAMPUS_SERVICES_LIST)
 
   const data: DefaultersUseChurchType = useChurchLevel({
     constituencyFunction: constituencyServicesThisWeek,
@@ -36,8 +36,8 @@ const ServicesThisWeek = () => {
     councilRefetch,
     streamFunction: streamServicesThisWeek,
     streamRefetch,
-    gatheringServiceFunction: gatheringServiceThisWeek,
-    gatheringServiceRefetch,
+    campusFunction: campusThisWeek,
+    campusRefetch,
   })
   const { church, loading, error, refetch } = data
 

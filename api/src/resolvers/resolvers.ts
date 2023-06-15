@@ -86,8 +86,8 @@ const resolvers = {
     ...campaignsResolvers.Stream,
     ...arrivalsResolvers.Stream,
   },
-  GatheringService: {
-    ...campaignsResolvers.GatheringService,
+  Campus: {
+    ...campaignsResolvers.Campus,
   },
 
   Mutation: {

@@ -18,7 +18,7 @@ import './Arrivals.css'
 import {
   COUNCIL_BY_CONSTITUENCY_ARRIVALS,
   STREAM_BY_COUNCIL_ARRIVALS,
-  GATHERINGSERVICE_BY_STREAM_ARRIVALS,
+  CAMPUS_BY_STREAM_ARRIVALS,
 } from './churchBySubchurchQueries'
 import ConstituencyDashboard from './DashboardConstituency'
 import { permitArrivals, permitLeaderAdmin } from 'permission-utils'
@@ -35,16 +35,17 @@ const ChurchBySubChurch = () => {
   const [streamByCouncil, { refetch: streamRefetch }] = useLazyQuery(
     STREAM_BY_COUNCIL_ARRIVALS
   )
-  const [gatheringServiceByStream, { refetch: gatheringServiceRefetch }] =
-    useLazyQuery(GATHERINGSERVICE_BY_STREAM_ARRIVALS)
+  const [campusByStream, { refetch: campusRefetch }] = useLazyQuery(
+    CAMPUS_BY_STREAM_ARRIVALS
+  )
   const currentChurch = currentUser?.currentChurch
   const data: ArrivalsUseChurchExt = useChurchLevel({
     councilFunction: councilByConstituency,
     councilRefetch,
     streamFunction: streamByCouncil,
     streamRefetch,
-    gatheringServiceFunction: gatheringServiceByStream,
-    gatheringServiceRefetch,
+    campusFunction: campusByStream,
+    campusRefetch,
   })
   const { church, subChurchLevel, loading, error, refetch } = data
 
@@ -170,7 +171,7 @@ const ChurchBySubChurch = () => {
 
                           <RoleView
                             roles={[
-                              ...permitArrivals('GatheringService'),
+                              ...permitArrivals('Campus'),
                               ...permitLeaderAdmin('Council'),
                             ]}
                           >

@@ -67,7 +67,7 @@ export const DISPLAY_MEMBER_LEADERSHIP = gql`
         id
         name
       }
-      leadsGatheringService {
+      leadsCampus {
         id
         name
       }
@@ -91,7 +91,7 @@ export const DISPLAY_MEMBER_ADMIN = gql`
       id
 
       #Admin Information
-      isAdminForGatheringService {
+      isAdminForCampus {
         id
         name
       }
@@ -443,7 +443,7 @@ export const DISPLAY_STREAM = gql`
         day
         dayNumber
       }
-      gatheringService {
+      campus {
         id
         name
       }
@@ -488,9 +488,9 @@ export const DISPLAY_STREAM = gql`
   }
 `
 
-export const DISPLAY_GATHERINGSERVICE = gql`
+export const DISPLAY_CAMPUS = gql`
   query displayGathering($id: ID!) {
-    gatheringServices(where: { id: $id }, options: { limit: 1 }) {
+    campuses(where: { id: $id }, options: { limit: 1 }) {
       id
       name
       noIncomeTracking
@@ -558,7 +558,7 @@ export const DISPLAY_OVERSIGHT = gql`
     oversights(where: { id: $id }, options: { limit: 1 }) {
       id
       name
-      gatheringServiceCount
+      campusCount
       streamCount
       councilCount
       constituencyCount
@@ -570,7 +570,7 @@ export const DISPLAY_OVERSIGHT = gql`
       vacationFellowshipCount
       activeIcBacentaCount
       vacationIcBacentaCount
-      gatheringServices {
+      campuses {
         id
         name
         noIncomeTracking
@@ -632,7 +632,7 @@ export const DISPLAY_FEDERAL_MINISTRY = gql`
         id
         name
       }
-      gatheringService {
+      campus {
         id
         name
       }
@@ -691,7 +691,7 @@ export const DISPLAY_MINISTRY = gql`
       federalMinistry {
         id
         name
-        gatheringService {
+        campus {
           id
           name
         }
@@ -735,7 +735,7 @@ export const DISPLAY_HUB = gql`
         federalMinistry {
           id
           name
-          gatheringService {
+          campus {
             id
             name
           }
@@ -772,7 +772,7 @@ export const DISPLAY_SONTA = gql`
           federalMinistry {
             id
             name
-            gatheringService {
+            campus {
               id
               name
             }

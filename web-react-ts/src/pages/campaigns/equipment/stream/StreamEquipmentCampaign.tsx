@@ -20,15 +20,15 @@ const StreamEquipmentCampaign = () => {
 
   const church = currentUser.currentChurch
   const churchType = currentUser.currentChurch?.__typename
-  const gatheringServiceId = currentUser?.gatheringService
+  const campusId = currentUser?.campus
 
   const { data, loading, error } = useQuery(EQUIPMENT_END_DATE, {
     variables: {
-      gatheringServiceId: gatheringServiceId,
+      campusId: campusId,
     },
   })
 
-  const equipmentEndDate = data?.gatheringServices[0]?.equipmentEndDate
+  const equipmentEndDate = data?.campuses[0]?.equipmentEndDate
 
   return (
     <ApolloWrapper data={data} loading={loading} error={error}>

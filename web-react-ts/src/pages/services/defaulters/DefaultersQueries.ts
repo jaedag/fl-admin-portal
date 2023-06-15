@@ -641,9 +641,9 @@ export const STREAM_BY_COUNCIL = gql`
   }
 `
 
-export const GATHERINGSERVICE_DEFAULTERS = gql`
-  query gatheringserviceDefaulters($id: ID!) {
-    gatheringServices(where: { id: $id }) {
+export const CAMPUS_DEFAULTERS = gql`
+  query campusDefaulters($id: ID!) {
+    campuses(where: { id: $id }) {
       id
       name
       streamCount
@@ -661,9 +661,9 @@ export const GATHERINGSERVICE_DEFAULTERS = gql`
   }
 `
 
-export const GATHERINGSERVICE_SERVICES_LIST = gql`
-  query gatheringServicesThisWeek($id: ID!) {
-    gatheringServices(where: { id: $id }) {
+export const CAMPUS_SERVICES_LIST = gql`
+  query campusesThisWeek($id: ID!) {
+    campuses(where: { id: $id }) {
       id
       name
 
@@ -699,9 +699,9 @@ export const GATHERINGSERVICE_SERVICES_LIST = gql`
   }
 `
 
-export const GATHERINGSERVICE_CANCELLED_SERVICES_LIST = gql`
+export const CAMPUS_CANCELLED_SERVICES_LIST = gql`
   query gatheringCancelledServicesThisWeek($id: ID!) {
-    gatheringServices(where: { id: $id }) {
+    campuses(where: { id: $id }) {
       id
       name
 
@@ -735,9 +735,9 @@ export const GATHERINGSERVICE_CANCELLED_SERVICES_LIST = gql`
   }
 `
 
-export const GATHERINGSERVICE_FORM_DEFAULTERS_LIST = gql`
+export const CAMPUS_FORM_DEFAULTERS_LIST = gql`
   query gatheringFormDefaulters($id: ID!) {
-    gatheringServices(where: { id: $id }) {
+    campuses(where: { id: $id }) {
       id
       name
 
@@ -767,9 +767,9 @@ export const GATHERINGSERVICE_FORM_DEFAULTERS_LIST = gql`
   }
 `
 
-export const GATHERINGSERVICE_BANKING_DEFAULTERS_LIST = gql`
+export const CAMPUS_BANKING_DEFAULTERS_LIST = gql`
   query gatheringBankingDefaulters($id: ID!) {
-    gatheringServices(where: { id: $id }) {
+    campuses(where: { id: $id }) {
       id
       name
 
@@ -804,9 +804,9 @@ export const GATHERINGSERVICE_BANKING_DEFAULTERS_LIST = gql`
   }
 `
 
-export const GATHERINGSERVICE_BANKED_LIST = gql`
+export const CAMPUS_BANKED_LIST = gql`
   query gatheringBanked($id: ID!) {
-    gatheringServices(where: { id: $id }) {
+    campuses(where: { id: $id }) {
       id
       name
 
@@ -841,9 +841,9 @@ export const GATHERINGSERVICE_BANKED_LIST = gql`
   }
 `
 
-export const GATHERINGSERVICE_BY_STREAM = gql`
-  query defaultersGatheringServiceByStream($id: ID!) {
-    gatheringServices(where: { id: $id }) {
+export const CAMPUS_BY_STREAM = gql`
+  query defaultersCampusByStream($id: ID!) {
+    campuses(where: { id: $id }) {
       id
       name
       streams {
@@ -868,9 +868,9 @@ export const GATHERINGSERVICE_BY_STREAM = gql`
   }
 `
 
-export const GATHERINGSERVICE_SERVICES_CONSTITUENCY_JOINT_DEFAULTERS_LIST = gql`
+export const CAMPUS_SERVICES_CONSTITUENCY_JOINT_DEFAULTERS_LIST = gql`
   query gatheringConstituencyJointServicesThisWeek($id: ID!) {
-    gatheringServices(where: { id: $id }) {
+    campuses(where: { id: $id }) {
       id
       name
 
@@ -905,9 +905,9 @@ export const GATHERINGSERVICE_SERVICES_CONSTITUENCY_JOINT_DEFAULTERS_LIST = gql`
   }
 `
 
-export const GATHERINGSERVICE_SERVICES_CONSTITUENCY_JOINT_BANKED_LIST = gql`
+export const CAMPUS_SERVICES_CONSTITUENCY_JOINT_BANKED_LIST = gql`
   query gatheringConstituencyJointServicesBankedThisWeek($id: ID!) {
-    gatheringServices(where: { id: $id }) {
+    campuses(where: { id: $id }) {
       id
       name
 
@@ -1090,9 +1090,9 @@ export const COUNCIL_CONSTITUENCY_JOINT_BANKED_LIST = gql`
   }
 `
 
-export const GATHERINGSERVICE_SERVICES_COUNCIL_JOINT_DEFAULTERS_LIST = gql`
+export const CAMPUS_SERVICES_COUNCIL_JOINT_DEFAULTERS_LIST = gql`
   query gatheringCouncilJointServicesDefaultersThisWeek($id: ID!) {
-    gatheringServices(where: { id: $id }) {
+    campuses(where: { id: $id }) {
       id
       name
 
@@ -1124,9 +1124,9 @@ export const GATHERINGSERVICE_SERVICES_COUNCIL_JOINT_DEFAULTERS_LIST = gql`
   }
 `
 
-export const GATHERINGSERVICE_SERVICES_COUNCIL_JOINT_BANKED_LIST = gql`
+export const CAMPUS_SERVICES_COUNCIL_JOINT_BANKED_LIST = gql`
   query gatheringCouncilJointServicesBankedThisWeek($id: ID!) {
-    gatheringServices(where: { id: $id }) {
+    campuses(where: { id: $id }) {
       id
       name
 

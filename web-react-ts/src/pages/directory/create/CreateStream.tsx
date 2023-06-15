@@ -11,7 +11,7 @@ import StreamForm, {
 import { FormikHelpers } from 'formik'
 
 const CreateStream = () => {
-  const { clickCard, gatheringServiceId } = useContext(ChurchContext)
+  const { clickCard, campusId } = useContext(ChurchContext)
 
   const navigate = useNavigate()
 
@@ -22,7 +22,7 @@ const CreateStream = () => {
     leaderName: '',
     bankAccount: 'manual',
     leaderEmail: '',
-    gatheringService: gatheringServiceId,
+    campus: campusId,
   }
 
   const [NewStreamLeader] = useMutation(NEW_STREAM_LEADER)
@@ -46,7 +46,7 @@ const CreateStream = () => {
           name: values.name,
           leaderId: values.leaderId,
           bankAccount: values.bankAccount,
-          gatheringServiceId: values.gatheringService,
+          campusId: values.campus,
           meetingDay: values.meetingDay,
         },
       })
@@ -58,7 +58,7 @@ const CreateStream = () => {
         },
       })
 
-      clickCard({ id: values.gatheringService, __typename: 'GatheringService' })
+      clickCard({ id: values.campus, __typename: 'Campus' })
       clickCard(res.data.CreateStream)
       onSubmitProps.setSubmitting(false)
       onSubmitProps.resetForm()

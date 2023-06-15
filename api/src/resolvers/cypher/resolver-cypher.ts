@@ -14,10 +14,10 @@ WITH apoc.cypher.runFirstColumn(
   RETURN council", {this: member}, true) | member_council { .id,.name }],
   leadsStream: [ member_stream IN apoc.cypher.runFirstColumn("MATCH (this)-[:LEADS]->(stream:Stream)
   RETURN stream", {this: member}, true) | member_stream { .id,.name }],
-  leadsGatheringService: [ member_gatheringService IN apoc.cypher.runFirstColumn("MATCH (this)-[:LEADS]->(gatheringService:GatheringService)
-  RETURN gatheringService", {this: member}, true) | member_gatheringService { .id,.name }],
-  isAdminForGatheringService: [ member_adminGatheringServices IN apoc.cypher.runFirstColumn("MATCH (this)-[:IS_ADMIN_FOR]->(adminGatheringService:GatheringService)
-  RETURN adminGatheringService", {this: member}, true) | member_adminGatheringServices { .id,.name }],
+  leadsCampus: [ member_campus IN apoc.cypher.runFirstColumn("MATCH (this)-[:LEADS]->(campus:Campus)
+  RETURN campus", {this: member}, true) | member_campus { .id,.name }],
+  isAdminForCampus: [ member_adminCampuses IN apoc.cypher.runFirstColumn("MATCH (this)-[:IS_ADMIN_FOR]->(adminCampus:Campus)
+  RETURN adminCampus", {this: member}, true) | member_adminCampuses { .id,.name }],
   isAdminForConstituency: [ member_adminConstituencies IN apoc.cypher.runFirstColumn("MATCH (this)-[:IS_ADMIN_FOR]->(adminConstituency:Constituency)
   RETURN adminConstituency", {this: member}, true) | member_adminConstituencies { .id,.name }],
   isAdminForCouncil: [ member_adminCouncils IN apoc.cypher.runFirstColumn("MATCH (this)-[:IS_ADMIN_FOR]->(adminCouncil:Council)
@@ -30,8 +30,8 @@ WITH apoc.cypher.runFirstColumn(
   RETURN arrivalsAdminCouncil", {this: member}, true) | member_arrivalsAdminCouncils { .id,.name}],
   isArrivalsAdminForStream: [ member_arrivalsAdminStreams IN apoc.cypher.runFirstColumn("MATCH (this)-[:DOES_ARRIVALS_FOR]->(arrivalsAdminStream:Stream)
   RETURN arrivalsAdminStream", {this: member}, true) | member_arrivalsAdminStreams { .id,.name}],
-  isArrivalsAdminForGatheringService: [ member_arrivalsAdminGatheringServices IN apoc.cypher.runFirstColumn("MATCH (this)-[:DOES_ARRIVALS_FOR]->(arrivalsAdminGatheringService:GatheringService)
-  RETURN arrivalsAdminGatheringService", {this: member}, true) | member_arrivalsAdminGatheringServices { .id,.name}],
+  isArrivalsAdminForCampus: [ member_arrivalsAdminCampuses IN apoc.cypher.runFirstColumn("MATCH (this)-[:DOES_ARRIVALS_FOR]->(arrivalsAdminCampus:Campus)
+  RETURN arrivalsAdminCampus", {this: member}, true) | member_arrivalsAdminCampuses { .id,.name}],
   isArrivalsCounterForStream: [ member_arrivalsCounterStreams IN apoc.cypher.runFirstColumn("MATCH (this)-[:COUNTS_ARRIVALS_FOR]->(arrivalsCounterStream:Stream)
   RETURN arrivalsCounterStream", {this: member}, true) | member_arrivalsCounterStreams { .id,.name}],
   isArrivalsPayerForCouncil: [ member_arrivalsPayerCouncils IN apoc.cypher.runFirstColumn("MATCH (this)-[:CONFIRMS_ARRIVALS_FOR]->(arrivalsPayerCouncil:Council)
@@ -59,7 +59,7 @@ export const matchMemberSheepSeekerQuery = `
 
 export const matchChurchQuery = `
   MATCH (church {id:$id}) 
-  WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:GatheringService OR church:Sonta OR church:Ministry OR church:Member 
+  WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:Campus OR church:Sonta OR church:Ministry OR church:Member 
   OR church:ClosedFellowship OR church:ClosedBacenta OR church:Federalministry OR church:Hub
   RETURN church.id AS id, church.name AS name, church.firstName AS firstName, church.lastName AS lastName, labels(church) AS type
   `

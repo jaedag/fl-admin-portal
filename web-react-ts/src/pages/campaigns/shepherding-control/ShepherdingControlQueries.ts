@@ -1,12 +1,12 @@
 import { gql } from '@apollo/client'
 
 export const GATHERING_SERVICE_STAT_FOR_YEAR_TILL_DATE = gql`
-  query gatheringServiceStatForYearTillDate(
-    $gatheringServiceId: ID
+  query campusStatForYearTillDate(
+    $campusId: ID
     $startDate: String!
     $endDate: String!
   ) {
-    gatheringServices(where: { id: $gatheringServiceId }) {
+    campuses(where: { id: $campusId }) {
       id
       name
       statsForYearTillDate(startDate: $startDate, endDate: $endDate) {

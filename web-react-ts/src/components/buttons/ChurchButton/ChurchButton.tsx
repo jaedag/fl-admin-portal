@@ -28,7 +28,7 @@ const ChurchButton = (props: ChurchButtonProps) => {
           className="card-buttons py-2 px-3 text-center text-nowrap text-white"
           onClick={() => {
             clickCard(church)
-            if (church.__typename === 'GatheringService') {
+            if (church.__typename === 'Campus') {
               setUserFinancials(church)
             }
           }}

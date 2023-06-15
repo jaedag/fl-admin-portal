@@ -13,7 +13,7 @@ extend type Mutation {
   ConfirmOfferingPayment(serviceRecordId: ID!): ServiceRecord!
   SubmitBankingSlip(serviceRecordId: ID!, bankingSlip: String!): ServiceRecord!
   ManuallyConfirmOfferingPayment(serviceRecordId: ID!): ServiceRecord!
-    @auth(rules: [{ roles: ["adminGatheringService"] }])
+    @auth(rules: [{ roles: ["adminCampus"] }])
     @cypher(
       statement: """
       MATCH (service:ServiceRecord)
@@ -550,7 +550,7 @@ extend type Stream {
     )
 }
 
-extend type GatheringService {
+extend type Campus {
   constituencyBankedThisWeek: [Constituency!]!
     @cypher(
       statement: """
@@ -879,7 +879,7 @@ extend type Oversight {
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(constituencies) WHERE constituencies:Constituency OR constituencies:ClosedConstituency
 
        WITH DISTINCT constituencies, this
-       MATCH (constituencies)<-[:HAS]-(:Council)<-[:HAS]-(:Stream)<-[:HAS]-(:GatheringService)<-[:HAS]-(this)
+       MATCH (constituencies)<-[:HAS]-(:Council)<-[:HAS]-(:Stream)<-[:HAS]-(:Campus)<-[:HAS]-(this)
 
       RETURN DISTINCT constituencies
       """
@@ -905,7 +905,7 @@ extend type Oversight {
         MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(constituencies) WHERE constituencies:Constituency OR constituencies:ClosedConstituency
 
         WITH DISTINCT constituencies, this
-        MATCH (constituencies)<-[:HAS]-(:Council)<-[:HAS]-(:Stream)<-[:HAS]-(:GatheringService)<-[:HAS]-(this)
+        MATCH (constituencies)<-[:HAS]-(:Council)<-[:HAS]-(:Stream)<-[:HAS]-(:Campus)<-[:HAS]-(this)
 
       WITH COUNT(DISTINCT constituencies) as count
        RETURN
@@ -937,7 +937,7 @@ extend type Oversight {
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(constituencies) WHERE constituencies:Constituency OR constituencies:ClosedConstituency
 
        WITH DISTINCT constituencies, this
-       MATCH (constituencies)<-[:HAS]-(:Council)<-[:HAS]-(:Stream)<-[:HAS]-(:GatheringService)<-[:HAS]-(this)
+       MATCH (constituencies)<-[:HAS]-(:Council)<-[:HAS]-(:Stream)<-[:HAS]-(:Campus)<-[:HAS]-(this)
 
       RETURN DISTINCT constituencies
       """
@@ -964,7 +964,7 @@ extend type Oversight {
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(constituencies) WHERE constituencies:Constituency OR constituencies:ClosedConstituency
 
        WITH DISTINCT constituencies, this
-       MATCH (constituencies)<-[:HAS]-(:Council)<-[:HAS]-(:Stream)<-[:HAS]-(:GatheringService)<-[:HAS]-(this)
+       MATCH (constituencies)<-[:HAS]-(:Council)<-[:HAS]-(:Stream)<-[:HAS]-(:Campus)<-[:HAS]-(this)
 
       WITH COUNT(DISTINCT constituencies) as count
       RETURN
@@ -978,7 +978,7 @@ extend type Oversight {
   constituencyBankingDefaulters: [Constituency!]!
     @cypher(
       statement: """
-      MATCH (this)-[:HAS]->(:GatheringService)-[:HAS]->(:Stream)-[:HAS]->(:Council)-[:HAS]->(constituencies)
+      MATCH (this)-[:HAS]->(:Campus)-[:HAS]->(:Stream)-[:HAS]->(:Council)-[:HAS]->(constituencies)
       WHERE constituencies:Constituency OR constituencies:ClosedConstituency
       MATCH (record:ServiceRecord)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(constituencies)
 
@@ -994,7 +994,7 @@ extend type Oversight {
   constituencyBankingDefaultersCount: Int
     @cypher(
       statement: """
-      MATCH (this)-[:HAS]->(:GatheringService)-[:HAS]->(:Stream)-[:HAS]->(:Council)-[:HAS]->(constituencies)
+      MATCH (this)-[:HAS]->(:Campus)-[:HAS]->(:Stream)-[:HAS]->(:Council)-[:HAS]->(constituencies)
       WHERE constituencies:Constituency OR constituencies:ClosedConstituency
        MATCH (record:ServiceRecord)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(constituencies)
 
@@ -1033,7 +1033,7 @@ extend type Oversight {
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(council) WHERE council:Council OR council:ClosedCouncil
 
        WITH DISTINCT council, this
-       MATCH (council:Council)<-[:HAS]-(:Stream)<-[:HAS]-(:GatheringService)<-[:HAS]-(this)
+       MATCH (council:Council)<-[:HAS]-(:Stream)<-[:HAS]-(:Campus)<-[:HAS]-(this)
 
       RETURN DISTINCT council
       """
@@ -1059,7 +1059,7 @@ extend type Oversight {
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(council) WHERE council:Council OR council:ClosedCouncil
 
        WITH DISTINCT council, this
-       MATCH (council:Council)<-[:HAS]-(:Stream)<-[:HAS]-(:GatheringService)<-[:HAS]-(this)
+       MATCH (council:Council)<-[:HAS]-(:Stream)<-[:HAS]-(:Campus)<-[:HAS]-(this)
 
       WITH COUNT(DISTINCT council) as count
       RETURN
@@ -1072,7 +1072,7 @@ extend type Oversight {
   councilBankingDefaulters: [Council!]!
     @cypher(
       statement: """
-      MATCH (this)-[:HAS]->(:GatheringService)-[:HAS]->(:Stream)-[:HAS]->(council) WHERE council:Council OR council:ClosedCouncil
+      MATCH (this)-[:HAS]->(:Campus)-[:HAS]->(:Stream)-[:HAS]->(council) WHERE council:Council OR council:ClosedCouncil
       MATCH (record:ServiceRecord)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(council)
 
       WHERE record.noServiceReason IS NULL
@@ -1087,7 +1087,7 @@ extend type Oversight {
   councilBankingDefaultersCount: Int
     @cypher(
       statement: """
-      MATCH (this)-[:HAS]->(:GatheringService)-[:HAS]->(:Stream)-[:HAS]->(council) WHERE council:Council OR council:ClosedCouncil
+      MATCH (this)-[:HAS]->(:Campus)-[:HAS]->(:Stream)-[:HAS]->(council) WHERE council:Council OR council:ClosedCouncil
       MATCH (record:ServiceRecord)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(council)
 
       WHERE record.noServiceReason IS NULL
@@ -1126,7 +1126,7 @@ extend type Oversight {
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(council) WHERE council:Council OR council:ClosedCouncil
 
        WITH DISTINCT council, this
-       MATCH (council:Council)<-[:HAS]-(:Stream)<-[:HAS]-(:GatheringService)<-[:HAS]-(this)
+       MATCH (council:Council)<-[:HAS]-(:Stream)<-[:HAS]-(:Campus)<-[:HAS]-(this)
 
       RETURN DISTINCT council
       """
@@ -1153,7 +1153,7 @@ extend type Oversight {
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(council) WHERE council:Council OR council:ClosedCouncil
 
        WITH DISTINCT council, this
-       MATCH (council:Council)<-[:HAS]-(:Stream)<-[:HAS]-(:GatheringService)<-[:HAS]-(this)
+       MATCH (council:Council)<-[:HAS]-(:Stream)<-[:HAS]-(:Campus)<-[:HAS]-(this)
 
       WITH COUNT(DISTINCT council) as count
       RETURN

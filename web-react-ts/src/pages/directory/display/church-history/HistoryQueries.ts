@@ -135,8 +135,8 @@ export const FELLOWSHIP_HISTORY = gql`
   }
 `
 export const GATHERING_SERVICE_HISTORY = gql`
-  query GatheringServiceHistory($id: ID!) {
-    gatheringServices(where: { id: $id }) {
+  query CampusHistory($id: ID!) {
+    campuses(where: { id: $id }) {
       id
       name
       history(limit: 10) {

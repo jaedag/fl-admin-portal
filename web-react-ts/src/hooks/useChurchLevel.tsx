@@ -17,8 +17,8 @@ type useChurchLevelProps = {
   councilRefetch: () => Promise<ApolloQueryResult<any>>
   streamFunction: LazyQueryExecFunction<any, OperationVariables>
   streamRefetch: () => Promise<ApolloQueryResult<any>>
-  gatheringServiceFunction: LazyQueryExecFunction<any, OperationVariables>
-  gatheringServiceRefetch: () => Promise<ApolloQueryResult<any>>
+  campusFunction: LazyQueryExecFunction<any, OperationVariables>
+  campusRefetch: () => Promise<ApolloQueryResult<any>>
 }
 
 const useChurchLevel = (props: useChurchLevelProps) => {
@@ -44,8 +44,8 @@ const useChurchLevel = (props: useChurchLevelProps) => {
         return props.councilRefetch
       case 'Stream':
         return props.streamRefetch
-      case 'GatheringService':
-        return props.gatheringServiceRefetch
+      case 'Campus':
+        return props.campusRefetch
       default:
         return props.councilRefetch
     }
@@ -97,16 +97,16 @@ const useChurchLevel = (props: useChurchLevelProps) => {
           }
           break
 
-        case 'GatheringService':
+        case 'Campus':
           {
-            const res = await props.gatheringServiceFunction({
+            const res = await props.campusFunction({
               variables: {
                 id: currentChurch?.id,
                 arrivalDate: arrivalDate,
               },
             })
 
-            setChurch(res?.data?.gatheringServices[0])
+            setChurch(res?.data?.campuses[0])
             setLoading(res.loading)
             setError(res.error)
           }

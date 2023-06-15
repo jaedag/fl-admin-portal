@@ -9,7 +9,7 @@ import {
   throwToSentry,
 } from 'global-utils'
 import { permitAdmin } from 'permission-utils'
-import { GET_GATHERINGSERVICES } from 'queries/ListQueries'
+import { GET_CAMPUSES } from 'queries/ListQueries'
 import React, { useContext, useState } from 'react'
 import { ChurchContext } from 'contexts/ChurchContext'
 import PlusSign from 'components/buttons/PlusMinusSign/PlusSign'
@@ -35,7 +35,7 @@ import { streamAccountType } from '@jaedag/admin-portal-types'
 export interface StreamFormValues extends FormikInitialValues {
   meetingDay: string
   bankAccount: streamAccountType
-  gatheringService: string
+  campus: string
   councils?: Church[]
 }
 
@@ -59,11 +59,11 @@ const StreamForm = ({
   const { theme } = useContext(MemberContext)
   const { togglePopup, isOpen } = usePopup()
   const navigate = useNavigate()
-  const { data, loading, error } = useQuery(GET_GATHERINGSERVICES)
+  const { data, loading, error } = useQuery(GET_CAMPUSES)
   const [buttonLoading, setButtonLoading] = useState(false)
   const [CloseDownStream] = useMutation(MAKE_STREAM_INACTIVE)
 
-  const gatheringServiceOptions = makeSelectOptions(data?.gatheringServices)
+  const campusOptions = makeSelectOptions(data?.campuses)
 
   const validationSchema = Yup.object({
     name: Yup.string().required(`Stream Name is a required field`),
@@ -97,13 +97,13 @@ const StreamForm = ({
                   <Row className="row-cols-1 row-cols-md-2">
                     {/* <!-- Basic Info Div --> */}
                     <Col className="mb-2">
-                      <RoleView roles={permitAdmin('GatheringService')}>
+                      <RoleView roles={permitAdmin('Campus')}>
                         <Row className="form-row">
                           <Col>
                             <Select
-                              name="gatheringService"
+                              name="campus"
                               label="Select a Gathering Service"
-                              options={gatheringServiceOptions}
+                              options={campusOptions}
                               defaultOption="Select a Gathering Service"
                             />
                           </Col>
@@ -129,7 +129,7 @@ const StreamForm = ({
                       />
 
                       <Row className="d-flex align-items-center mb-3">
-                        <RoleView roles={permitAdmin('GatheringService')}>
+                        <RoleView roles={permitAdmin('Campus')}>
                           <Col>
                             <SearchMember
                               name="leaderId"

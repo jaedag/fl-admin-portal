@@ -11,7 +11,7 @@ record.miracles = $miracles,
 record.crusadeLocation = $crusadeLocation
 WITH record
 
-MATCH (church {id: $churchId}) WHERE church:Constituency OR church:Council OR church:Stream OR church:GatheringService
+MATCH (church {id: $churchId}) WHERE church:Constituency OR church:Council OR church:Stream OR church:Campus
 MATCH (preacher:Member {id: $preacherId})
 MATCH (church)-[current:CURRENT_HISTORY]->(log:ServiceLog)
 MATCH (currentUser:Member {auth_id: $auth.jwt.sub})
@@ -45,7 +45,7 @@ RETURN record
 `
 export const aggregateMultiplicationDataOnHigherChurches = `
 MATCH (church {id: $churchId}) 
-WHERE church:Constituency OR church:Council OR church:Stream OR church:GatheringService OR church:Oversight OR church:Denomination
+WHERE church:Constituency OR church:Council OR church:Stream OR church:Campus OR church:Oversight OR church:Denomination
 
 WITH church AS lowerChurch
 MATCH (lowerChurch)<-[:HAS]-(council)
@@ -127,7 +127,7 @@ RETURN gathering,aggregate
 `
 export const getLastMultiplicationRecord = `
 MATCH (record:MultiplicationRecord {id: $multiplicationRecordId})-[:CRUSADE_HELD_ON]->(date:TimeGraph)
-MATCH (record)<-[:HAS_MULTIPLICATION_RECORD]-(:ServiceLog)<-[:HAS_HISTORY]-(church) WHERE church:Constituency OR church:Council OR church:Stream OR church:GatheringService
+MATCH (record)<-[:HAS_MULTIPLICATION_RECORD]-(:ServiceLog)<-[:HAS_HISTORY]-(church) WHERE church:Constituency OR church:Council OR church:Stream OR church:Campus
 MATCH (church)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_MULTIPLICATION_RECORD]->(otherRecords:MultiplicationRecord)-[:CRUSADE_HELD_ON]->(otherDate:TimeGraph)
 WHERE NOT (otherRecords:NoService) AND otherDate.date.week < date.date.week
 

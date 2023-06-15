@@ -5,46 +5,14 @@ import { MakeServant, RemoveServant } from './make-remove-servants'
 
 const MakeServantResolvers = {
   // Administrative Mutations
-  MakeGatheringServiceAdmin: async (
-    object: any,
-    args: Member,
-    context: Context
-  ) =>
-    MakeServant(
-      context,
-      args,
-      permitAdmin('Oversight'),
-      'GatheringService',
-      'Admin'
-    ),
-  RemoveGatheringServiceAdmin: async (
-    object: any,
-    args: Member,
-    context: Context
-  ) =>
-    RemoveServant(
-      context,
-      args,
-      permitAdmin('Oversight'),
-      'GatheringService',
-      'Admin'
-    ),
+  MakeCampusAdmin: async (object: any, args: Member, context: Context) =>
+    MakeServant(context, args, permitAdmin('Oversight'), 'Campus', 'Admin'),
+  RemoveCampusAdmin: async (object: any, args: Member, context: Context) =>
+    RemoveServant(context, args, permitAdmin('Oversight'), 'Campus', 'Admin'),
   MakeStreamAdmin: async (object: any, args: Member, context: Context) =>
-    MakeServant(
-      context,
-      args,
-      permitAdmin('GatheringService'),
-      'Stream',
-      'Admin'
-    ),
+    MakeServant(context, args, permitAdmin('Campus'), 'Stream', 'Admin'),
   RemoveStreamAdmin: async (object: any, args: Member, context: Context) =>
-    RemoveServant(
-      context,
-      args,
-      permitAdmin('GatheringService'),
-      'Stream',
-      'Admin'
-    ),
+    RemoveServant(context, args, permitAdmin('Campus'), 'Stream', 'Admin'),
   MakeCouncilAdmin: async (object: any, args: Member, context: Context) =>
     MakeServant(context, args, permitAdmin('Stream'), 'Council', 'Admin'),
   RemoveCouncilAdmin: async (object: any, args: Member, context: Context) =>
@@ -116,45 +84,13 @@ const MakeServantResolvers = {
   RemoveCouncilLeader: async (object: any, args: Member, context: Context) =>
     RemoveServant(context, args, permitAdmin('Stream'), 'Council', 'Leader'),
   MakeStreamLeader: async (object: any, args: Member, context: Context) =>
-    MakeServant(
-      context,
-      args,
-      permitAdmin('GatheringService'),
-      'Stream',
-      'Leader'
-    ),
+    MakeServant(context, args, permitAdmin('Campus'), 'Stream', 'Leader'),
   RemoveStreamLeader: async (object: any, args: Member, context: Context) =>
-    RemoveServant(
-      context,
-      args,
-      permitAdmin('GatheringService'),
-      'Stream',
-      'Leader'
-    ),
-  MakeGatheringServiceLeader: async (
-    object: any,
-    args: Member,
-    context: Context
-  ) =>
-    MakeServant(
-      context,
-      args,
-      permitAdmin('Oversight'),
-      'GatheringService',
-      'Leader'
-    ),
-  RemoveGatheringServiceLeader: async (
-    object: any,
-    args: Member,
-    context: Context
-  ) =>
-    RemoveServant(
-      context,
-      args,
-      permitAdmin('Oversight'),
-      'GatheringService',
-      'Leader'
-    ),
+    RemoveServant(context, args, permitAdmin('Campus'), 'Stream', 'Leader'),
+  MakeCampusLeader: async (object: any, args: Member, context: Context) =>
+    MakeServant(context, args, permitAdmin('Oversight'), 'Campus', 'Leader'),
+  RemoveCampusLeader: async (object: any, args: Member, context: Context) =>
+    RemoveServant(context, args, permitAdmin('Oversight'), 'Campus', 'Leader'),
   MakeFederalministryLeader: async (
     object: any,
     args: Member,
@@ -163,7 +99,7 @@ const MakeServantResolvers = {
     MakeServant(
       context,
       args,
-      permitAdmin('GatheringService'),
+      permitAdmin('Campus'),
       'Federalministry',
       'Leader'
     ),
@@ -175,7 +111,7 @@ const MakeServantResolvers = {
     RemoveServant(
       context,
       args,
-      permitAdmin('GatheringService'),
+      permitAdmin('Campus'),
       'Federalministry',
       'Leader'
     ),

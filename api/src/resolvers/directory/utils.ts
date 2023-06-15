@@ -61,8 +61,8 @@ export const formatting = (
     memberQuery = matchMemberSheepSeekerQuery
   }
 
-  if (churchType === 'GatheringService') {
-    churchLower = 'gatheringService'
+  if (churchType === 'Campus') {
+    churchLower = 'campus'
   }
 
   if (churchType === 'Federalministry') {

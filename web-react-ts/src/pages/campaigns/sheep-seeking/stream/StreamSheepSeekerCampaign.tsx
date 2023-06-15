@@ -35,13 +35,7 @@ const StreamSheepSeekerCampaign = () => {
               onClick={() => navigate('/campaigns/stream/sheepseeker-select')}
             />
           </RoleView>
-          <RoleView
-            roles={[
-              'sheepseekerStream',
-              'adminStream',
-              'adminGatheringService',
-            ]}
-          >
+          <RoleView roles={['sheepseekerStream', 'adminStream', 'adminCampus']}>
             <MenuButton
               title="Register Members"
               iconComponent={IoPersonAddOutline}
@@ -50,13 +44,7 @@ const StreamSheepSeekerCampaign = () => {
               onClick={() => navigate('/member/addmember')}
             />
           </RoleView>
-          <RoleView
-            roles={[
-              'sheepseekerStream',
-              'adminStream',
-              'adminGatheringService',
-            ]}
-          >
+          <RoleView roles={['sheepseekerStream', 'adminStream', 'adminCampus']}>
             <MenuButton
               title="View Membership"
               iconComponent={CiViewList}

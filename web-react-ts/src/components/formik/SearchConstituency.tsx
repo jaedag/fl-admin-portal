@@ -10,7 +10,7 @@ import { RoleBasedSearch } from './formik-types'
 import { initialise } from './search-utils'
 import {
   COUNCIL_CONSTITUENCY_SEARCH,
-  GATHERINGSERVICE_CONSTITUENCY_SEARCH,
+  CAMPUS_CONSTITUENCY_SEARCH,
   STREAM_CONSTITUENCY_SEARCH,
   MEMBER_CONSTITUENCY_SEARCH,
 } from './SearchConstituencyQueries'
@@ -21,13 +21,15 @@ const SearchConstituency = (props: RoleBasedSearch) => {
   const [suggestions, setSuggestions] = useState([])
   const [searchString, setSearchString] = useState(props.initialValue ?? '')
 
-  const [gatheringServiceSearch, { error: gatheringServiceError }] =
-    useLazyQuery(GATHERINGSERVICE_CONSTITUENCY_SEARCH, {
+  const [campusSearch, { error: campusError }] = useLazyQuery(
+    CAMPUS_CONSTITUENCY_SEARCH,
+    {
       onCompleted: (data) => {
-        setSuggestions(data.gatheringServices[0].constituencySearch)
+        setSuggestions(data.campuses[0].constituencySearch)
         return
       },
-    })
+    }
+  )
   const [streamSearch, { error: streamError }] = useLazyQuery(
     STREAM_CONSTITUENCY_SEARCH,
     {
@@ -57,8 +59,7 @@ const SearchConstituency = (props: RoleBasedSearch) => {
     }
   )
 
-  const error =
-    memberError || gatheringServiceError || streamError || councilError
+  const error = memberError || campusError || streamError || councilError
   throwToSentry('', error)
 
   const whichSearch = (searchString: string) => {
@@ -69,10 +70,10 @@ const SearchConstituency = (props: RoleBasedSearch) => {
       },
     })
     if (props.roleBased) {
-      if (isAuthorised(permitMe('GatheringService'), currentUser.roles)) {
-        gatheringServiceSearch({
+      if (isAuthorised(permitMe('Campus'), currentUser.roles)) {
+        campusSearch({
           variables: {
-            id: currentUser.gatheringService,
+            id: currentUser.campus,
             key: searchString?.trim(),
           },
         })

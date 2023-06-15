@@ -123,13 +123,13 @@ export const STREAM_ARRIVALS_DASHBOARD = gql`
   }
 `
 
-export const GATHERINGSERVICE_ARRIVALS_DASHBOARD = gql`
+export const CAMPUS_ARRIVALS_DASHBOARD = gql`
   query gatheringArrivalsDashboard(
     $id: ID!
     $date: Date!
     $arrivalDate: String!
   ) {
-    gatheringServices(where: { id: $id }, options: { limit: 1 }) {
+    campuses(where: { id: $id }, options: { limit: 1 }) {
       id
       name
 
@@ -263,9 +263,9 @@ export const CONFIRM_STREAM_ARRIVALS = gql`
   }
 `
 
-export const CONFIRM_GATHERINGSERVICE_ARRIVALS = gql`
+export const CONFIRM_CAMPUS_ARRIVALS = gql`
   query confirmGatheringArrivals($id: ID!, $arrivalDate: String!) {
-    gatheringServices(where: { id: $id }, options: { limit: 1 }) {
+    campuses(where: { id: $id }, options: { limit: 1 }) {
       id
       name
 
@@ -400,18 +400,18 @@ export const STREAM_LEADER_ARRIVALS = gql`
   }
 `
 
-export const GATHERINGSERVICE_LEADER_ARRIVALS = gql`
+export const CAMPUS_LEADER_ARRIVALS = gql`
   query gatheringLeaderArrivals($id: ID!) {
     members(where: { id: $id }, options: { limit: 1 }) {
       id
       firstName
       lastName
       fullName
-      leadsGatheringService {
+      leadsCampus {
         id
         name
       }
-      isAdminForGatheringService {
+      isAdminForCampus {
         id
         name
       }

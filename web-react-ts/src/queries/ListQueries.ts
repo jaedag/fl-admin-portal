@@ -159,7 +159,7 @@ export const GET_COUNCIL_CONSTITUENCIES = gql`
 `
 export const GET_GATHERING_SERVICE_CONSTITUENCIES = gql`
   query getGatheringConstituencies($id: ID!) {
-    gatheringServices(where: { id: $id }) {
+    campuses(where: { id: $id }) {
       id
       name
       noIncomeTracking
@@ -250,9 +250,9 @@ export const GET_STREAM_COUNCILS = gql`
   }
 `
 
-export const GET_GATHERINGSERVICE_STREAMS = gql`
+export const GET_CAMPUS_STREAMS = gql`
   query gatheringStreams($id: ID!) {
-    gatheringServices(where: { id: $id }) {
+    campuses(where: { id: $id }) {
       id
       name
       noIncomeTracking
@@ -299,8 +299,8 @@ export const GET_GATHERINGSERVICE_STREAMS = gql`
   }
 `
 
-export const GET_OVERSIGHT_GATHERINGSERVICES = gql`
-  query getOversightGatheringServices($id: ID!) {
+export const GET_OVERSIGHT_CAMPUSES = gql`
+  query getOversightCampuses($id: ID!) {
     oversights(where: { id: $id }) {
       id
       name
@@ -317,7 +317,7 @@ export const GET_OVERSIGHT_GATHERINGSERVICES = gql`
         lastName
         fullName
       }
-      gatheringServices {
+      campuses {
         name
         id
         currency
@@ -406,9 +406,9 @@ export const GET_STREAMS = gql`
   }
 `
 
-export const GET_GATHERINGSERVICES = gql`
-  query getGatheringServices {
-    gatheringServices {
+export const GET_CAMPUSES = gql`
+  query getCampuses {
+    campuses {
       id
       name
       streams {
@@ -423,7 +423,7 @@ export const GET_OVERSIGHTS = gql`
     oversights {
       id
       name
-      gatheringServices {
+      campuses {
         id
       }
     }
@@ -457,9 +457,9 @@ export const GET_HUBS = gql`
   }
 `
 
-export const GET_GATHERINGSERVICE_MINISTRIES = gql`
-  query getGatheringServiceMinistries($id: ID!) {
-    gatheringServices(where: { id: $id }) {
+export const GET_CAMPUS_MINISTRIES = gql`
+  query getCampusMinistries($id: ID!) {
+    campuses(where: { id: $id }) {
       id
       name
       federalMinistries {
@@ -753,9 +753,9 @@ export const GET_FEDERALMINISTRY_MINISTRIES = gql`
   }
 `
 
-export const GET_GATHERINGSERVICE_FEDERALMINISTRIES = gql`
-  query getGatheringServiceFederalMinistries($id: ID!) {
-    gatheringServices(where: { id: $id }) {
+export const GET_CAMPUS_FEDERALMINISTRIES = gql`
+  query getCampusFederalMinistries($id: ID!) {
+    campuses(where: { id: $id }) {
       id
       name
       noIncomeTracking

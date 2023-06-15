@@ -9,7 +9,7 @@ import {
   CONSTITUENCY_FORM_DEFAULTERS_LIST,
   COUNCIL_FORM_DEFAULTERS_LIST,
   STREAM_FORM_DEFAULTERS_LIST,
-  GATHERINGSERVICE_FORM_DEFAULTERS_LIST,
+  CAMPUS_FORM_DEFAULTERS_LIST,
 } from './DefaultersQueries'
 import DefaulterCard from './DefaulterCard'
 import useChurchLevel from 'hooks/useChurchLevel'
@@ -27,8 +27,9 @@ const FormDefaulters = () => {
   const [streamFormDefaulters, { refetch: streamRefetch }] = useLazyQuery(
     STREAM_FORM_DEFAULTERS_LIST
   )
-  const [gatheringServiceFormDefaulters, { refetch: gatheringServiceRefetch }] =
-    useLazyQuery(GATHERINGSERVICE_FORM_DEFAULTERS_LIST)
+  const [campusFormDefaulters, { refetch: campusRefetch }] = useLazyQuery(
+    CAMPUS_FORM_DEFAULTERS_LIST
+  )
 
   const data: DefaultersUseChurchType = useChurchLevel({
     constituencyFunction: constituencyFormDefaulters,
@@ -37,8 +38,8 @@ const FormDefaulters = () => {
     councilRefetch,
     streamFunction: streamFormDefaulters,
     streamRefetch,
-    gatheringServiceFunction: gatheringServiceFormDefaulters,
-    gatheringServiceRefetch,
+    campusFunction: campusFormDefaulters,
+    campusRefetch,
   })
 
   const { church, loading, error, refetch } = data

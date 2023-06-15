@@ -3,7 +3,7 @@ extend type ServiceRecord {
     @cypher(
       statement: """
       MATCH (this)<-[:HAS_SERVICE]-(:ServiceLog:HistoryLog)<-[:HAS_HISTORY]-(church)
-      WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:GatheringService
+      WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:Campus
       RETURN church.name
       """
     )
@@ -226,7 +226,8 @@ extend type Constituency {
       WITH COLLECT({howYouJoined:howYouJoined, percentage:conversion_percent, number: numberOfMembers}) AS data
       UNWIND data as row
       RETURN DISTINCT row
-      """    )
+      """
+    )
 }
 
 extend type Council {
@@ -457,7 +458,7 @@ extend type Stream {
     )
 }
 
-extend type GatheringService {
+extend type Campus {
   avgConstituencyBussingAttendance(days: Int!): Float
     @cypher(
       statement: """
@@ -590,13 +591,13 @@ extend type GatheringService {
       WITH total, howYouJoined, ROUND(100.0*numberOfMembers/total,2)  AS conversion_percent, numberOfMembers
       WITH COLLECT({howYouJoined:howYouJoined, percentage:conversion_percent, number: numberOfMembers}) AS data
       UNWIND data as row
-      RETURN DISTINCT row 
+      RETURN DISTINCT row
       """
     )
 }
 
 extend type Oversight {
-  avgGatheringServiceWeekdayStats(days: Int!): Stats!
+  avgCampusWeekdayStats(days: Int!): Stats!
     @cypher(
       statement: """
       MATCH (this)
@@ -604,10 +605,10 @@ extend type Oversight {
       WITH date(today) - duration({days: $days}) AS startDate, this
       WITH  range(date(startDate).week, date().week) as weeks, this
 
-      MATCH (this)-[:HAS]->(gatheringService:GatheringService)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(agg:AggregateServiceRecord)
+      MATCH (this)-[:HAS]->(campus:Campus)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(agg:AggregateServiceRecord)
       MATCH (agg)
       WHERE agg.week IN weeks and agg.year = date().year
-      WITH sum(agg.attendance) AS attendance, sum(agg.income) as income, gatheringService, agg.week as weeknumber
+      WITH sum(agg.attendance) AS attendance, sum(agg.income) as income, campus, agg.week as weeknumber
       RETURN  {
         attendance: round(avg(attendance)),
         income: round(avg(income), 2)
@@ -615,7 +616,7 @@ extend type Oversight {
       """
     )
 
-  avgGatheringServiceBussingAttendance(days: Int!): Float
+  avgCampusBussingAttendance(days: Int!): Float
     @cypher(
       statement: """
       MATCH (this)
@@ -623,10 +624,10 @@ extend type Oversight {
       WITH date(today) - duration({days: $days}) AS startDate, this
       WITH  range(date(startDate).week, date().week) as weeks, this
 
-      MATCH (this)-[:HAS]->(gatheringService:GatheringService)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING_AGGREGATE]->(agg:AggregateBussingRecord)
+      MATCH (this)-[:HAS]->(campus:Campus)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING_AGGREGATE]->(agg:AggregateBussingRecord)
       MATCH (agg)
       WHERE agg.week IN weeks and agg.year = date().year
-      WITH sum(agg.attendance) AS attendance, gatheringService, agg.week as weeknumber
+      WITH sum(agg.attendance) AS attendance, campus, agg.week as weeknumber
       RETURN round(avg(attendance)) AS average
       """
     )
@@ -642,7 +643,7 @@ extend type Oversight {
       WITH total, howYouJoined, ROUND(100.0*numberOfMembers/total,2)  AS conversion_percent, numberOfMembers
       WITH COLLECT({howYouJoined:howYouJoined, percentage:conversion_percent, number: numberOfMembers}) AS data
       UNWIND data as row
-      RETURN DISTINCT row 
+      RETURN DISTINCT row
       """
     )
 }

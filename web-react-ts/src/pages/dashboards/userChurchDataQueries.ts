@@ -116,11 +116,11 @@ export const SERVANT_STREAM_LEADER = gql`
   }
 `
 
-export const SERVANT_GATHERINGSERVICE_LEADER = gql`
-  query gatheringServiceLeader($id: ID!) {
+export const SERVANT_CAMPUS_LEADER = gql`
+  query campusLeader($id: ID!) {
     members(where: { id: $id }) {
       id
-      leadsGatheringService {
+      leadsCampus {
         id
         name
 
@@ -236,12 +236,12 @@ export const SERVANTS_STREAM_ADMIN = gql`
   }
 `
 
-export const SERVANTS_GATHERINGSERVICE_ADMIN = gql`
-  query gatheringServiceAdmin($id: ID!) {
+export const SERVANTS_CAMPUS_ADMIN = gql`
+  query campusAdmin($id: ID!) {
     members(where: { id: $id }) {
       id
 
-      isAdminForGatheringService {
+      isAdminForCampus {
         id
         name
 
@@ -355,12 +355,12 @@ export const SERVANTS_STREAM_ARRIVALS_ADMIN = gql`
   }
 `
 
-export const SERVANTS_GATHERINGSERVICE_ARRIVALS_ADMIN = gql`
-  query gatheringServiceArrivalsAdmin($id: ID!) {
+export const SERVANTS_CAMPUS_ARRIVALS_ADMIN = gql`
+  query campusArrivalsAdmin($id: ID!) {
     members(where: { id: $id }) {
       id
 
-      isArrivalsAdminForGatheringService {
+      isArrivalsAdminForCampus {
         id
         name
 

@@ -273,14 +273,14 @@ export const MAKE_STREAM_LEADER = gql`
   }
 `
 
-export const MAKE_GATHERINGSERVICE_LEADER = gql`
-  mutation MakeGatheringServiceLeader(
-    $gatheringServiceId: ID!
+export const MAKE_CAMPUS_LEADER = gql`
+  mutation MakeCampusLeader(
+    $campusId: ID!
     $newLeaderId: ID!
     $oldLeaderId: ID!
   ) {
-    RemoveGatheringServiceLeader(
-      gatheringServiceId: $gatheringServiceId
+    RemoveCampusLeader(
+      campusId: $campusId
       leaderId: $oldLeaderId
       newLeaderId: $newLeaderId
     ) {
@@ -288,8 +288,8 @@ export const MAKE_GATHERINGSERVICE_LEADER = gql`
       firstName
       lastName
     }
-    MakeGatheringServiceLeader(
-      gatheringServiceId: $gatheringServiceId
+    MakeCampusLeader(
+      campusId: $campusId
       leaderId: $newLeaderId
       oldLeaderId: $oldLeaderId
     ) {

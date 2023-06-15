@@ -2,10 +2,7 @@ import { gql } from '@apollo/client'
 
 export const OVERSIGHT_SEARCH = gql`
   query oversightSearch($searchKey: String!, $oversightId: ID!) {
-    oversightGatheringServiceSearch(
-      searchKey: $searchKey
-      oversightId: $oversightId
-    ) {
+    oversightCampusSearch(searchKey: $searchKey, oversightId: $oversightId) {
       id
       name
       noIncomeTracking
@@ -95,12 +92,9 @@ export const OVERSIGHT_SEARCH = gql`
   }
 `
 
-export const GATHERINGSERVICE_SEARCH = gql`
-  query gatheringServiceSearch($searchKey: String!, $gatheringId: ID!) {
-    gatheringServiceStreamSearch(
-      searchKey: $searchKey
-      gatheringId: $gatheringId
-    ) {
+export const CAMPUS_SEARCH = gql`
+  query campusSearch($searchKey: String!, $gatheringId: ID!) {
+    campusStreamSearch(searchKey: $searchKey, gatheringId: $gatheringId) {
       id
       name
       stream_name
@@ -110,10 +104,7 @@ export const GATHERINGSERVICE_SEARCH = gql`
         lastName
       }
     }
-    gatheringServiceCouncilSearch(
-      searchKey: $searchKey
-      gatheringId: $gatheringId
-    ) {
+    campusCouncilSearch(searchKey: $searchKey, gatheringId: $gatheringId) {
       id
       name
       stream_name
@@ -125,10 +116,7 @@ export const GATHERINGSERVICE_SEARCH = gql`
       }
     }
 
-    gatheringServiceConstituencySearch(
-      searchKey: $searchKey
-      gatheringId: $gatheringId
-    ) {
+    campusConstituencySearch(searchKey: $searchKey, gatheringId: $gatheringId) {
       id
       name
       stream_name
@@ -139,10 +127,7 @@ export const GATHERINGSERVICE_SEARCH = gql`
         nameWithTitle
       }
     }
-    gatheringServiceBacentaSearch(
-      searchKey: $searchKey
-      gatheringId: $gatheringId
-    ) {
+    campusBacentaSearch(searchKey: $searchKey, gatheringId: $gatheringId) {
       id
       name
       stream_name
@@ -153,10 +138,7 @@ export const GATHERINGSERVICE_SEARCH = gql`
         nameWithTitle
       }
     }
-    gatheringServiceFellowshipSearch(
-      searchKey: $searchKey
-      gatheringId: $gatheringId
-    ) {
+    campusFellowshipSearch(searchKey: $searchKey, gatheringId: $gatheringId) {
       id
       name
       stream_name
@@ -167,10 +149,7 @@ export const GATHERINGSERVICE_SEARCH = gql`
         nameWithTitle
       }
     }
-    gatheringServiceMemberSearch(
-      searchKey: $searchKey
-      gatheringId: $gatheringId
-    ) {
+    campusMemberSearch(searchKey: $searchKey, gatheringId: $gatheringId) {
       id
       firstName
       lastName

@@ -13,9 +13,9 @@ const useClickCard = () => {
       : ''
   )
 
-  const [gatheringServiceId, setGatheringServiceId] = useState(
-    sessionStorage.getItem('gatheringServiceId')
-      ? sessionStorage.getItem('gatheringServiceId')
+  const [campusId, setCampusId] = useState(
+    sessionStorage.getItem('campusId')
+      ? sessionStorage.getItem('campusId')
       : ''
   )
   const [streamId, setStreamId] = useState(
@@ -204,63 +204,51 @@ const useClickCard = () => {
         break
     }
 
-    //Setting the GatheringService for the different levels under GatheringService
+    //Setting the Campus for the different levels under Campus
     switch (card.__typename) {
       case 'Fellowship':
-        if (
-          card?.bacenta?.constituency?.council?.stream?.gatheringService?.id
-        ) {
-          setGatheringServiceId(
-            card?.bacenta?.constituency?.council?.stream?.gatheringService?.id
-          )
+        if (card?.bacenta?.constituency?.council?.stream?.campus?.id) {
+          setCampusId(card?.bacenta?.constituency?.council?.stream?.campus?.id)
           sessionStorage.setItem(
-            'gatheringServiceId',
-            card?.bacenta?.constituency?.council?.stream?.gatheringService?.id
+            'campusId',
+            card?.bacenta?.constituency?.council?.stream?.campus?.id
           )
         }
         break
       case 'Bacenta':
-        if (card?.constituency?.council?.stream?.gatheringService?.id) {
-          setGatheringServiceId(
-            card?.constituency?.council?.stream?.gatheringService?.id
-          )
+        if (card?.constituency?.council?.stream?.campus?.id) {
+          setCampusId(card?.constituency?.council?.stream?.campus?.id)
           sessionStorage.setItem(
-            'gatheringServiceId',
-            card?.constituency?.council?.stream?.gatheringService?.id
+            'campusId',
+            card?.constituency?.council?.stream?.campus?.id
           )
         }
         break
       case 'Constituency':
-        if (card?.council?.stream?.gatheringService?.id) {
-          setGatheringServiceId(card?.council?.stream?.gatheringService?.id)
+        if (card?.council?.stream?.campus?.id) {
+          setCampusId(card?.council?.stream?.campus?.id)
           sessionStorage.setItem(
-            'gatheringServiceId',
-            card?.council?.stream?.gatheringService?.id
+            'campusId',
+            card?.council?.stream?.campus?.id
           )
         }
         break
       case 'Council':
-        if (card?.stream?.gatheringService?.id) {
-          setGatheringServiceId(card?.stream?.gatheringService?.id)
-          sessionStorage.setItem(
-            'gatheringServiceId',
-            card?.stream?.gatheringService?.id
-          )
+        if (card?.stream?.campus?.id) {
+          setCampusId(card?.stream?.campus?.id)
+          sessionStorage.setItem('campusId', card?.stream?.campus?.id)
         }
         break
       case 'Stream':
-        if (card?.gatheringService?.id) {
-          setGatheringServiceId(card?.gatheringService?.id)
-          sessionStorage.setItem(
-            'gatheringServiceId',
-            card?.gatheringService?.id
-          )
+        if (card?.campus?.id) {
+          setCampusId(card?.campus?.id)
+          sessionStorage.setItem('campusId', card?.campus?.id)
         }
         break
-      case 'GatheringService':
+      case 'Campus':
         if (card.id) {
-          setGatheringServiceId(card?.id)
-          sessionStorage.setItem('gatheringServiceId', card?.id)
+          setCampusId(card?.id)
+          sessionStorage.setItem('campusId', card?.id)
         }
         break
       default:
@@ -271,61 +259,53 @@ const useClickCard = () => {
     switch (card.__typename) {
       case 'Fellowship':
         if (
-          card?.bacenta?.constituency?.council?.stream?.gatheringService
-            ?.oversight?.id
+          card?.bacenta?.constituency?.council?.stream?.campus?.oversight?.id
         ) {
           setOversightId(
-            card?.bacenta?.constituency?.council?.stream?.gatheringService
-              ?.oversight?.id
+            card?.bacenta?.constituency?.council?.stream?.campus?.oversight?.id
           )
           sessionStorage.setItem(
             'oversightId',
-            card?.bacenta?.constituency?.council?.stream?.gatheringService
-              ?.oversight?.id
+            card?.bacenta?.constituency?.council?.stream?.campus?.oversight?.id
           )
         }
         break
       case 'Bacenta':
-        if (
-          card?.constituency?.council?.stream?.gatheringService?.oversight?.id
-        ) {
+        if (card?.constituency?.council?.stream?.campus?.oversight?.id) {
           setOversightId(
-            card?.constituency?.council?.stream?.gatheringService?.oversight?.id
+            card?.constituency?.council?.stream?.campus?.oversight?.id
           )
           sessionStorage.setItem(
             'oversightId',
-            card?.constituency?.council?.stream?.gatheringService?.oversight?.id
+            card?.constituency?.council?.stream?.campus?.oversight?.id
           )
         }
         break
       case 'Constituency':
-        if (card?.council?.stream?.gatheringService?.oversight?.id) {
-          setOversightId(card?.council?.stream?.gatheringService?.oversight?.id)
+        if (card?.council?.stream?.campus?.oversight?.id) {
+          setOversightId(card?.council?.stream?.campus?.oversight?.id)
           sessionStorage.setItem(
             'oversightId',
-            card?.council?.stream?.gatheringService?.oversight?.id
+            card?.council?.stream?.campus?.oversight?.id
           )
         }
         break
       case 'Council':
-        if (card?.stream?.gatheringService?.oversight?.id) {
-          setOversightId(card?.stream?.gatheringService?.oversight?.id)
+        if (card?.stream?.campus?.oversight?.id) {
+          setOversightId(card?.stream?.campus?.oversight?.id)
           sessionStorage.setItem(
             'oversightId',
-            card?.stream?.gatheringService?.oversight?.id
+            card?.stream?.campus?.oversight?.id
           )
         }
         break
       case 'Stream':
-        if (card?.gatheringService?.oversight?.id) {
-          setOversightId(card?.gatheringService?.oversight?.id)
-          sessionStorage.setItem(
-            'oversightId',
-            card?.gatheringService?.oversight?.id
-          )
+        if (card?.campus?.oversight?.id) {
+          setOversightId(card?.campus?.oversight?.id)
+          sessionStorage.setItem('oversightId', card?.campus?.oversight?.id)
         }
         break
-      case 'GatheringService':
+      case 'Campus':
         if (card?.oversight?.id) {
           setOversightId(card?.oversight?.id)
           sessionStorage.setItem('oversightId', card?.oversight?.id)
@@ -391,9 +371,9 @@ const useClickCard = () => {
         setStreamId(card.id)
         sessionStorage.setItem('streamId', card.id)
         break
-      case 'GatheringService':
-        setGatheringServiceId(card.id)
-        sessionStorage.setItem('gatheringServiceId', card.id)
+      case 'Campus':
+        setCampusId(card.id)
+        sessionStorage.setItem('campusId', card.id)
         break
       case 'Oversight':
         setOversightId(card.id)
@@ -448,7 +428,7 @@ const useClickCard = () => {
     church,
     memberId,
     oversightId,
-    gatheringServiceId,
+    campusId,
     streamId,
     councilId,
     constituencyId,
@@ -466,7 +446,7 @@ const useClickCard = () => {
 
     //Set State
     setOversightId,
-    setGatheringServiceId,
+    setCampusId,
     setChurch,
     setStreamId,
     setCouncilId,

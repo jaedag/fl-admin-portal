@@ -41,7 +41,7 @@ export interface CouncilWithDefaulters extends Council {
 }
 
 export interface HigherChurchWithDefaulters extends Church {
-  __typename: 'Constituency' | 'Stream' | 'Council' | 'GatheringService'
+  __typename: 'Constituency' | 'Stream' | 'Council' | 'Campus'
   admin?: {
     id: string
     firstName: string

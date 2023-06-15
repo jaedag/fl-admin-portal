@@ -189,14 +189,14 @@ export const CREATE_STREAM_MUTATION = gql`
   mutation CreateStream(
     $name: String!
     $leaderId: ID!
-    $gatheringServiceId: ID!
+    $campusId: ID!
     $meetingDay: String!
     $bankAccount: String!
   ) {
     CreateStream(
       name: $name
       leaderId: $leaderId
-      gatheringServiceId: $gatheringServiceId
+      campusId: $campusId
       meetingDay: $meetingDay
       bankAccount: $bankAccount
     ) {
@@ -207,7 +207,7 @@ export const CREATE_STREAM_MUTATION = gql`
         dayNumber
       }
 
-      gatheringService {
+      campus {
         id
         streams {
           id
@@ -218,7 +218,7 @@ export const CREATE_STREAM_MUTATION = gql`
   }
 `
 export const CREATE_GATHERING_SERVICE_MUTATION = gql`
-  mutation CreateGatheringService(
+  mutation CreateCampus(
     $name: String!
     $leaderId: ID!
     $oversightId: ID!
@@ -226,7 +226,7 @@ export const CREATE_GATHERING_SERVICE_MUTATION = gql`
     $currency: String!
     $conversionRateToDollar: Float!
   ) {
-    CreateGatheringService(
+    CreateCampus(
       name: $name
       leaderId: $leaderId
       oversightId: $oversightId
@@ -242,7 +242,7 @@ export const CREATE_GATHERING_SERVICE_MUTATION = gql`
 
       oversight {
         id
-        gatheringServices {
+        campuses {
           id
           name
         }
@@ -255,12 +255,12 @@ export const CREATE_FEDERAL_MINISTRY_MUTATION = gql`
   mutation CreateFederalministry(
     $name: String!
     $leaderId: ID!
-    $gatheringServiceId: ID!
+    $campusId: ID!
   ) {
     CreateFederalministry(
       name: $name
       leaderId: $leaderId
-      gatheringServiceId: $gatheringServiceId
+      campusId: $campusId
     ) {
       id
       name
