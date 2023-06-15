@@ -10,6 +10,7 @@ import { Church, UserRole } from 'global-types'
 const ChurchList = ({
   color,
   link,
+  includeVacation,
 }: {
   color:
     | 'defaulters'
@@ -19,6 +20,7 @@ const ChurchList = ({
     | 'churches'
     | 'maps'
   link?: string
+  includeVacation?: boolean
 }) => {
   const { userJobs } = useContext(MemberContext)
   const { clickCard } = useContext(ChurchContext)
@@ -32,6 +34,7 @@ const ChurchList = ({
           role.church
             .filter((church: Church) => {
               if (color === 'campaigns') return true
+              if (includeVacation) return true
               return church?.vacationStatus !== 'Vacation'
             })
             .map((church: Church) => {

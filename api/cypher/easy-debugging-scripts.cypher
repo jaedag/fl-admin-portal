@@ -9,3 +9,7 @@ WITH record, fellowship, leader
 MERGE (record)-[r:OFFERING_BANKED_BY]->(leader)
 RETURN record.income, record.transactionReference;
 
+MATCH (fellowship:Fellowship {name: "Sozo"})
+SET fellowship:Vacation
+REMOVE fellowship:Active
+RETURN fellowship.name;

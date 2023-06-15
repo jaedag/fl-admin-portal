@@ -13,6 +13,7 @@ const ServicesChurchList = () => {
   const { currentUser, theme } = useContext(MemberContext)
 
   const navigate = useNavigate()
+
   return (
     <div className="d-flex align-items-center justify-content-center ">
       <Container>
@@ -22,7 +23,7 @@ const ServicesChurchList = () => {
             <p className={`${theme} menu-subheading`}>Services</p>
           </div>
         </PlaceholderCustom>
-        <ChurchList link="/services" color="churches" />
+        <ChurchList link="/services" color="churches" includeVacation />
         <div className="d-grid gap-2 mt-2 text-left">
           <RoleView roles={permitLeaderAdmin('Constituency')}>
             <MenuButton
