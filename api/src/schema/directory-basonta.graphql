@@ -292,7 +292,7 @@ extend type Mutation {
 
       CREATE (log:HistoryLog {id:apoc.create.uuid()})
         SET log.timestamp = datetime()
-        SET log.historyRecord = federalMinistry.name + ' federal ministry was closed down under' + campus.name +' gathering service'
+        SET log.historyRecord = federalMinistry.name + ' federal ministry was closed down under' + campus.name +' campus'
 
       MERGE (date:Timegraph {date:date()})
       MERGE (log)-[:LOGGED_BY]->(admin)

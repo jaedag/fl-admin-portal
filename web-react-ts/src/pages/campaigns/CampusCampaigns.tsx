@@ -22,7 +22,7 @@ const CampusCampaigns = () => {
       <div className="d-flex align-items-center justify-content-center ">
         <Container>
           <div className="text-center">
-            <HeadingPrimary>{`${data?.campuses[0]?.name} Gathering Service`}</HeadingPrimary>
+            <HeadingPrimary>{`${data?.campuses[0]?.name} Campus`}</HeadingPrimary>
             <HeadingSecondary>SSMG Campaigns</HeadingSecondary>
           </div>
           <div className="d-grid gap-2 mt-4 text-center px-4">

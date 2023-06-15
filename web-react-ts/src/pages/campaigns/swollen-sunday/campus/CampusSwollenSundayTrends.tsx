@@ -130,7 +130,7 @@ const CampusSwollenSundayTrends = () => {
       data={campusData}
     >
       <Container>
-        <h6>{church?.name} Gathering Service</h6>
+        <h6>{church?.name} Campus</h6>
         <HeadingSecondary>Swollen Sunday</HeadingSecondary>
         <SwollenSundayTrends churchBelow={churchBelow} church={church} />
         <Formik

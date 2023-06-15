@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client'
 
-//Gathering Service Queries and Mutations
+//Campus Queries and Mutations
 export const GATHERING_SERVICE_CAMPAIGN_LIST = gql`
   query campusCampaigns($campusId: ID) {
     campuses(where: { id: $campusId }) {

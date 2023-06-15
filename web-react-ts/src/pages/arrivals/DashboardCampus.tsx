@@ -118,7 +118,7 @@ const CampusDashboard = () => {
       .then(() => {
         togglePopup()
         onSubmitProps.setSubmitting(false)
-        alert('Gathering Service Arrivals Admin has been changed successfully')
+        alert('Campus Arrivals Admin has been changed successfully')
       })
       .catch((e) => throwToSentry(e))
   }
@@ -189,7 +189,7 @@ const CampusDashboard = () => {
       <ApolloWrapper data={data} loading={loading} error={error}>
         <Container>
           <HeadingPrimary loading={loading}>
-            {campus?.name} Gathering Service Arrivals Real Time Dashboard
+            {campus?.name} Campus Arrivals Real Time Dashboard
           </HeadingPrimary>
           <HeadingSecondary loading={loading}>
             Arrivals Admin: {campus?.arrivalsAdmin?.fullName}

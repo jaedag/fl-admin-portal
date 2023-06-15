@@ -278,7 +278,7 @@
 
 ##### New Features
 
-- implement currency switching on clicking gathering service card ([35a3419f](https://github.com/firstlovecenter/fl-pastoral-care/commit/35a3419f8564ef25ab52ed86d6443349e83eff92))
+- implement currency switching on clicking campus card ([35a3419f](https://github.com/firstlovecenter/fl-pastoral-care/commit/35a3419f8564ef25ab52ed86d6443349e83eff92))
 
 ##### Bug Fixes
 
@@ -304,7 +304,7 @@
 
 ##### New Features
 
-- implement currency switching on clicking gathering service card ([721546b1](https://github.com/firstlovecenter/fl-pastoral-care/commit/721546b1225162ebca873b28e5c512fe29deda96))
+- implement currency switching on clicking campus card ([721546b1](https://github.com/firstlovecenter/fl-pastoral-care/commit/721546b1225162ebca873b28e5c512fe29deda96))
 - update history limit property ([7cb49931](https://github.com/firstlovecenter/fl-pastoral-care/commit/7cb49931498b9452129268e10c1003da89d4d1d6))
 - admin-561 create separate history page ([33974fc7](https://github.com/firstlovecenter/fl-pastoral-care/commit/33974fc78ec25de057af7e408e3f8d42def7e4da))
 - admin-561 create separate history page ([fe888719](https://github.com/firstlovecenter/fl-pastoral-care/commit/fe8887195c4ec87704c62078a37eaa2ee6a642a6))
@@ -329,7 +329,7 @@
 
 ##### New Features
 
-- implement currency switching on clicking gathering service card ([35a3419f](https://github.com/firstlovecenter/fl-pastoral-care/commit/35a3419f8564ef25ab52ed86d6443349e83eff92))
+- implement currency switching on clicking campus card ([35a3419f](https://github.com/firstlovecenter/fl-pastoral-care/commit/35a3419f8564ef25ab52ed86d6443349e83eff92))
 - update history limit property ([7cb49931](https://github.com/firstlovecenter/fl-pastoral-care/commit/7cb49931498b9452129268e10c1003da89d4d1d6))
 - admin-561 create separate history page ([33974fc7](https://github.com/firstlovecenter/fl-pastoral-care/commit/33974fc78ec25de057af7e408e3f8d42def7e4da))
 - admin-561 create separate history page ([fe888719](https://github.com/firstlovecenter/fl-pastoral-care/commit/fe8887195c4ec87704c62078a37eaa2ee6a642a6))
@@ -356,7 +356,7 @@
 - update member howYouJoined options ([12322528](https://github.com/firstlovecenter/fl-pastoral-care/commit/123225285e3089928756f52e799def48a2863df4))
 - prevent aggregateServiceWithDollar graph bars from being clicked ([aeea9848](https://github.com/firstlovecenter/fl-pastoral-care/commit/aeea9848e343fc3aabee66ab0080d9976f3f7edf))
 - fix error writing dollar income ([a8427866](https://github.com/firstlovecenter/fl-pastoral-care/commit/a8427866c9c8dfe86c07ec67a3bb1ceaac8d2fa9))
-- implement graph on gathering service level to show dollars ([f0ed20a9](https://github.com/firstlovecenter/fl-pastoral-care/commit/f0ed20a910a98feacf55cc1f2329941f1f08d0b0))
+- implement graph on campus level to show dollars ([f0ed20a9](https://github.com/firstlovecenter/fl-pastoral-care/commit/f0ed20a910a98feacf55cc1f2329941f1f08d0b0))
 - aggregate dollar income on all church levels ([71c611ea](https://github.com/firstlovecenter/fl-pastoral-care/commit/71c611ea7f411037cee0dfaf257c14683e57aeb3))
 
 #### 7.5.9 (2023-04-22)
@@ -408,7 +408,7 @@
 
 ##### Bug Fixes
 
-- update the title of gathering service members page ([da0878bb](https://github.com/firstlovecenter/fl-pastoral-care/commit/da0878bb6b06a21b268cc4aaa8864ebbcc9588c0))
+- update the title of campus members page ([da0878bb](https://github.com/firstlovecenter/fl-pastoral-care/commit/da0878bb6b06a21b268cc4aaa8864ebbcc9588c0))
 
 #### 6.6.1 (2023-04-20)
 
@@ -828,7 +828,7 @@
 
 ##### Bug Fixes
 
-- implement permission for only gathering service admin to create bacentas ([95c778a5](https://github.com/firstlovecenter/fl-pastoral-care/commit/95c778a5b8e1e8af67b1139983383801864c9c58))
+- implement permission for only campus admin to create bacentas ([95c778a5](https://github.com/firstlovecenter/fl-pastoral-care/commit/95c778a5b8e1e8af67b1139983383801864c9c58))
 - update constituency bussing costs ([e8ceaf47](https://github.com/firstlovecenter/fl-pastoral-care/commit/e8ceaf474cee07587a8df565d400395a5870807f))
 - ensure that bussing data is added per week, and not per day ([608f91ae](https://github.com/firstlovecenter/fl-pastoral-care/commit/608f91ae662e30a6e681cf7737ad68115452295a))
 - optionally display foreign currency of a service ([6bbb68bb](https://github.com/firstlovecenter/fl-pastoral-care/commit/6bbb68bb86398acaf65b789351b73583076b7e17))
@@ -1205,7 +1205,7 @@
 ##### Bug Fixes
 
 - update visibility for council admins to view add member page ([f0f8b7c9](https://github.com/firstlovecenter/fl-pastoral-care/commit/f0f8b7c9b30db881233f4a029d18462ab7d5f994))
-- add permissions for gathering service and stream admins to register members ([e48b88e0](https://github.com/firstlovecenter/fl-pastoral-care/commit/e48b88e0fdca4e13c0abc57e67f9e897bf12f363))
+- add permissions for campus and stream admins to register members ([e48b88e0](https://github.com/firstlovecenter/fl-pastoral-care/commit/e48b88e0fdca4e13c0abc57e67f9e897bf12f363))
 - add permissions for campusAdmin and streamAdmins to create and edit members ([fa4b86a1](https://github.com/firstlovecenter/fl-pastoral-care/commit/fa4b86a135187e4e3b933a568c09c58d1fff8a1d))
 - enable editing of bacenta target after swollen sunday changes final ([43398bff](https://github.com/firstlovecenter/fl-pastoral-care/commit/43398bff5950ed0052b2e95a8557db3c28462d78))
 - enable editing of bacenta target after swollen sunday changes ([32672a12](https://github.com/firstlovecenter/fl-pastoral-care/commit/32672a12163a5a53a79c29f3cb7b4162f0e8daf3))
@@ -1231,7 +1231,7 @@
 ##### Bug Fixes
 
 - add missing permissions for fellowship leaders ([e16b7c1c](https://github.com/firstlovecenter/fl-pastoral-care/commit/e16b7c1ce69997848da4a4c1b42c455e9a2ea913))
-- add permissions for gathering service and stream admins to register members ([c94faf9e](https://github.com/firstlovecenter/fl-pastoral-care/commit/c94faf9e8299d96de2f2211aeeab98e40ed5bf18))
+- add permissions for campus and stream admins to register members ([c94faf9e](https://github.com/firstlovecenter/fl-pastoral-care/commit/c94faf9e8299d96de2f2211aeeab98e40ed5bf18))
 - add permissions for campusAdmin and streamAdmins to create and edit members ([08d6106c](https://github.com/firstlovecenter/fl-pastoral-care/commit/08d6106c7f5e0fd06dac3cc6f37e8ca6faa255f2))
 - update default bussing cost to be two way instead of one way ([42510815](https://github.com/firstlovecenter/fl-pastoral-care/commit/4251081509d3e34a86de22377de78f913ff32f24))
 
@@ -1251,7 +1251,7 @@
 - allow only sheep seekers add and delete members ([79e1441c](https://github.com/firstlovecenter/fl-pastoral-care/commit/79e1441cca7b936fe6341402834a5e3bf098e44c))
 - change register member icon ([86da6faf](https://github.com/firstlovecenter/fl-pastoral-care/commit/86da6fafae2ca75619c961a213485a808a2ed39d))
 - add sheep seeking to campaign list if user has stream or sheep seeking permissions ([ab86620d](https://github.com/firstlovecenter/fl-pastoral-care/commit/ab86620db0d9d85c38673961c91296ec36861be1))
-- add sheep seeking flow for gathering service ([8dad6e53](https://github.com/firstlovecenter/fl-pastoral-care/commit/8dad6e53c55840d3b2326d74dc8fbef932b9ae4e))
+- add sheep seeking flow for campus ([8dad6e53](https://github.com/firstlovecenter/fl-pastoral-care/commit/8dad6e53c55840d3b2326d74dc8fbef932b9ae4e))
 - admin-498 add sheep seeking interface for sheep seekers ([a1191b43](https://github.com/firstlovecenter/fl-pastoral-care/commit/a1191b431368061377f9c2082408e40d24d45762))
 - admin-503 add stream name to swollen sunday template ([ebafa9de](https://github.com/firstlovecenter/fl-pastoral-care/commit/ebafa9deeb8f4abdb9c3376d732f6c1e8fa710db))
 - update auth private keys for the different services accounts ([95146084](https://github.com/firstlovecenter/fl-pastoral-care/commit/95146084d07a2af43823f71f80aec126849374ff))
@@ -1259,8 +1259,8 @@
 ##### Bug Fixes
 
 - fix bug where a user could fill premobilisation multiple times ([74597cff](https://github.com/firstlovecenter/fl-pastoral-care/commit/74597cff15a7bb2efda225e4c047dfeb49c9f7ea))
-- allow gathering service admin view sheep seeking dashboard ([2dedb808](https://github.com/firstlovecenter/fl-pastoral-care/commit/2dedb808522d3c1105d5039fb27f688264d18a04))
-- fix bug where gathering service admin coesn't get shepherding control in list of campaigns ([0896a3c1](https://github.com/firstlovecenter/fl-pastoral-care/commit/0896a3c15aa8696f66af4d3055c7d2ce7a406a83))
+- allow campus admin view sheep seeking dashboard ([2dedb808](https://github.com/firstlovecenter/fl-pastoral-care/commit/2dedb808522d3c1105d5039fb27f688264d18a04))
+- fix bug where campus admin coesn't get shepherding control in list of campaigns ([0896a3c1](https://github.com/firstlovecenter/fl-pastoral-care/commit/0896a3c15aa8696f66af4d3055c7d2ce7a406a83))
 - remove redundant current history in uploadbacenta targets cypher ([b4bd53b6](https://github.com/firstlovecenter/fl-pastoral-care/commit/b4bd53b6b93cf369938913cba4afab447d462f91))
 - admin-509 fix target sharing ([6c2ccfab](https://github.com/firstlovecenter/fl-pastoral-care/commit/6c2ccfabb57f76fce6a98d2a4905f6bf13712729))
 - remove option for private car in bussing form ([7ba3f153](https://github.com/firstlovecenter/fl-pastoral-care/commit/7ba3f15376c817da112f0122befe898429e916da))
@@ -1274,7 +1274,7 @@
 
 ##### New Features
 
-- admin-504 implement gathering service swollen sunday drill down ([18653725](https://github.com/firstlovecenter/fl-pastoral-care/commit/18653725f0851486d502c72b89dac8e099ea1307))
+- admin-504 implement campus swollen sunday drill down ([18653725](https://github.com/firstlovecenter/fl-pastoral-care/commit/18653725f0851486d502c72b89dac8e099ea1307))
 - admin-488 add fields checker to upload targets mutation ([5844ee6c](https://github.com/firstlovecenter/fl-pastoral-care/commit/5844ee6c15927ac5ddd375e7e0a3140434b9f5d7))
 - admin-499 check frontend to ensure excel fields are not empty when uploading bacenta targets ([69058e65](https://github.com/firstlovecenter/fl-pastoral-care/commit/69058e65a05277106ebddc76e1d89f5397fbbb9a))
 - implement icons for all buttons on the campaign pages ([e30e9f05](https://github.com/firstlovecenter/fl-pastoral-care/commit/e30e9f05d37ac5f58bc4e303ebf86e37c1dcfb80))
@@ -2471,7 +2471,7 @@
 - implement pull to refresh for arrivals and defaulters ([de17a362](https://github.com/firstlovecenter/fl-pastoral-care/commit/de17a362158a3f18af043f4eb6ef0ddf38ae2f4e))
 - partway done with the pull to refresh feature ([0bb7dacf](https://github.com/firstlovecenter/fl-pastoral-care/commit/0bb7dacf217a8ae7e11b46d7ddb6335354b78f66))
 - implements defaulters flow for equipment campaign ([#240](https://github.com/firstlovecenter/fl-pastoral-care/pull/240)) ([e8044d7b](https://github.com/firstlovecenter/fl-pastoral-care/commit/e8044d7b367b806f4ada6dbb0f4001b5a91ba852))
-- implement adding gathering service admin ([ad3ed15d](https://github.com/firstlovecenter/fl-pastoral-care/commit/ad3ed15d4c9713808a9ee43d54a2fd58ed67f79b))
+- implement adding campus admin ([ad3ed15d](https://github.com/firstlovecenter/fl-pastoral-care/commit/ad3ed15d4c9713808a9ee43d54a2fd58ed67f79b))
 - admin-245 modify arrivals cypher and gql to follow new standard ([a4a7e964](https://github.com/firstlovecenter/fl-pastoral-care/commit/a4a7e9648901a8f4d3e07fc9ff442ab80e27ef8b))
 - admin-245 modify queries in the front end and graphs to reflect new aggregate data ([349981d2](https://github.com/firstlovecenter/fl-pastoral-care/commit/349981d2e5dbfd6e3dac459b465e6e2f74e75033))
 - admin-245 implement in resolver to write aggregate data to higher churches explicitly ([05c1e6e3](https://github.com/firstlovecenter/fl-pastoral-care/commit/05c1e6e335f392c0a9514553127fbb1ed526d35d))
@@ -2480,7 +2480,7 @@
 - add a ten minute buffer for arrival counting ([63979677](https://github.com/firstlovecenter/fl-pastoral-care/commit/6397967795fb5563a608e3195297ace2560b41d7))
 - recording arrival time aggregates data to put on the bussing record ([af88a379](https://github.com/firstlovecenter/fl-pastoral-care/commit/af88a3795f79135385ef7959d4c626fe9c573d0c))
 - implement feature for filtering bus type on counting screen ([000cf351](https://github.com/firstlovecenter/fl-pastoral-care/commit/000cf3519f0b7c07be3fbbfdaaea1d7fa2e521cd))
-- implement add and edit gathering service with mutations ([#223](https://github.com/firstlovecenter/fl-pastoral-care/pull/223)) ([6393fb26](https://github.com/firstlovecenter/fl-pastoral-care/commit/6393fb268392e87649f533788cb58daac50df1cd))
+- implement add and edit campus with mutations ([#223](https://github.com/firstlovecenter/fl-pastoral-care/pull/223)) ([6393fb26](https://github.com/firstlovecenter/fl-pastoral-care/commit/6393fb268392e87649f533788cb58daac50df1cd))
 - lock ministry to campus ([45feb2dc](https://github.com/firstlovecenter/fl-pastoral-care/commit/45feb2dc12532b9a6e45ddfa4864b28200a3ab8e))
 
 ##### Bug Fixes
@@ -2519,7 +2519,7 @@
 - revert bussing aggregate to use bussinng records ([7d4d83d8](https://github.com/firstlovecenter/fl-pastoral-care/commit/7d4d83d8b64b1029301f71b39a7c7632bd710368))
 - adjust arrivals summary data structure ([ae2232fd](https://github.com/firstlovecenter/fl-pastoral-care/commit/ae2232fdc481c2063de5034c557db23ffde87aeb))
 - adjust arrivals cypher to use bussing record ([77577be8](https://github.com/firstlovecenter/fl-pastoral-care/commit/77577be8bd32c9407b053a0a85b1cdc6b40512c0))
-- fix gathering service bussing calculations ([fc772123](https://github.com/firstlovecenter/fl-pastoral-care/commit/fc7721239420d7767aca97e4d38532b3d43fc5a7))
+- fix campus bussing calculations ([fc772123](https://github.com/firstlovecenter/fl-pastoral-care/commit/fc7721239420d7767aca97e4d38532b3d43fc5a7))
 - prevent creation of excess vehicle record nodes ([1fba9717](https://github.com/firstlovecenter/fl-pastoral-care/commit/1fba971748ffbb2817945550d397e5b2a40b4f00))
 - use leader declaration for on the way count ([179a97fa](https://github.com/firstlovecenter/fl-pastoral-care/commit/179a97fab74cd6e715646f219a1827d023cbfd4a))
 - added confirmation of in and out to counters ([18792ef7](https://github.com/firstlovecenter/fl-pastoral-care/commit/18792ef7989c5a0e675216e6eaf8220016d0b9b9))

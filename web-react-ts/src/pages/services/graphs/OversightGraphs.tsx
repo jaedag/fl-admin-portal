@@ -39,7 +39,7 @@ const OversightReport = () => {
             />
           </Col>
           <Col className="my-auto">
-            <h5 className="mb-0">{`${data?.oversights[0].name} Gathering Service`}</h5>{' '}
+            <h5 className="mb-0">{`${data?.oversights[0].name} Campus`}</h5>{' '}
             <p className="mb-0">
               <span className="text-secondary font-weight-bold">Leader: </span>
               {`${data?.oversights[0].leader.fullName}`}

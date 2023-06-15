@@ -407,7 +407,7 @@ export const graphs: LazyRouteTypes[] = [
     placeholder: false,
   },
 
-  //Gathering Service Services
+  //Campus Services
   {
     path: '/campus/record-service',
     element: CampusService,
@@ -504,7 +504,7 @@ export const graphs: LazyRouteTypes[] = [
     roles: permitLeaderAdmin('Stream'),
     placeholder: true,
   },
-  //Gathering Service By Stream
+  //Campus By Stream
   {
     path: '/services/campus-by-stream',
     element: CampusByStream,
@@ -518,7 +518,7 @@ export const graphs: LazyRouteTypes[] = [
     roles: ['leaderFellowship'],
     placeholder: true,
   },
-  //Gathering Service By Stream
+  //Campus By Stream
   {
     path: '/services/campus-by-streams',
     element: CampusByStream,

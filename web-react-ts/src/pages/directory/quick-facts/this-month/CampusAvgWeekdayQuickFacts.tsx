@@ -29,7 +29,7 @@ const CampusAvgWeekdayQuickFacts = () => {
 
   const attendanceDetails: AttendanceDetailsInterface[] = [
     {
-      churchType: 'Gathering Service',
+      churchType: 'Campus',
       cardType: 'Attendance',
       leadersName: leadersName,
       churchName: churchName,
@@ -41,7 +41,7 @@ const CampusAvgWeekdayQuickFacts = () => {
 
   const incomeDetails: IncomeDetailsInterface[] = [
     {
-      churchType: 'Gathering Service',
+      churchType: 'Campus',
       cardType: 'Income',
       leadersName: leadersName,
       churchName: churchName,
@@ -54,7 +54,7 @@ const CampusAvgWeekdayQuickFacts = () => {
 
   const bussingDetails = [
     {
-      churchType: 'Gathering Service',
+      churchType: 'Campus',
       cardType: 'Bussing',
       leadersName: leadersName,
       churchName: churchName,

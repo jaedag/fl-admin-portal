@@ -114,7 +114,7 @@ const MemberDisplayCard = (props: MemberDisplayCardProps) => {
       break
     case 'Campus':
       icon = 'stream'
-      name = member.name + ' Gathering Service'
+      name = member.name + ' Campus'
       details = [member?.leader?.nameWithTitle || '']
       break
     case 'Sonta':

@@ -68,7 +68,7 @@ const CreateCampus = () => {
       navigate(`/campus/displaydetails`)
     } catch (error: any) {
       onSubmitProps.setSubmitting(false)
-      throwToSentry('There was an error creating gathering service', error)
+      throwToSentry('There was an error creating campus', error)
     }
   }
 
@@ -76,7 +76,7 @@ const CreateCampus = () => {
     <CampusForm
       initialValues={initialValues}
       onSubmit={onSubmit}
-      title={`Create a New Gathering Service`}
+      title={`Create a New Campus`}
       newCampus
     />
   )

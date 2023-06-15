@@ -33,7 +33,7 @@ const CampusByStreamEquipmentDefaulters = () => {
       <div className="d-flex align-items-center justify-content-center ">
         <Container>
           <div className="text-center">
-            <HeadingPrimary>{`${church?.name} Gathering Service`}</HeadingPrimary>
+            <HeadingPrimary>{`${church?.name} Campus`}</HeadingPrimary>
             <HeadingSecondary>Equipment Campaign</HeadingSecondary>
           </div>
           <h6 className="mt-4">

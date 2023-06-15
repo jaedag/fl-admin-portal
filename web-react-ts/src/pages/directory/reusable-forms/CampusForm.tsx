@@ -67,7 +67,7 @@ const CampusForm = ({
 
   const oversightOptions = makeSelectOptions(data?.oversights)
   const validationSchema = Yup.object({
-    name: Yup.string().required(`Gathering Service Name is a required field`),
+    name: Yup.string().required(`Campus Name is a required field`),
     leaderId: Yup.string().required(
       'Please choose a leader from the drop down'
     ),
@@ -86,9 +86,7 @@ const CampusForm = ({
       <>
         <Container>
           <HeadingPrimary>{title}</HeadingPrimary>
-          <HeadingSecondary>
-            {initialValues.name + ' Gathering Service'}
-          </HeadingSecondary>
+          <HeadingSecondary>{initialValues.name + ' Campus'}</HeadingSecondary>
         </Container>
         <Formik
           initialValues={initialValues}
@@ -118,13 +116,13 @@ const CampusForm = ({
 
                       <Input
                         name="name"
-                        label={`Name of Gathering Service`}
-                        placeholder={`Name of Gathering Service`}
+                        label={`Name of Campus`}
+                        placeholder={`Name of Campus`}
                       />
 
                       <Select
                         name="incomeTracking"
-                        label="Will you be tracking income for this Gathering Service?"
+                        label="Will you be tracking income for this Campus?"
                         options={YES_NO_OPTIONS}
                         defaultOption="Choose One"
                       />
@@ -160,7 +158,7 @@ const CampusForm = ({
                       {!newCampus && (
                         <>
                           <small className="pt-2">
-                            {`Select any streams that are being moved to this Gathering Service`}
+                            {`Select any streams that are being moved to this Campus`}
                           </small>
                           <FieldArray name="streams">
                             {(fieldArrayProps) => {
@@ -236,7 +234,7 @@ const CampusForm = ({
                         .catch((error) => {
                           setButtonLoading(false)
                           throwToSentry(
-                            `There was an error closing down this gathering service`,
+                            `There was an error closing down this campus`,
                             error
                           )
                         })
@@ -262,7 +260,7 @@ const CampusForm = ({
                   className={`btn-secondary ${theme} mt-3`}
                   onClick={togglePopup}
                 >
-                  {`Close Down Gathering Service`}
+                  {`Close Down Campus`}
                 </Button>
               )}
             </Container>

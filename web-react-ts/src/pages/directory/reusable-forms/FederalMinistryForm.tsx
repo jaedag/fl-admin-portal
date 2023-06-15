@@ -52,7 +52,7 @@ const FederalMinistryForm = ({
   const campusOptions = makeSelectOptions(data?.campuses)
 
   const validationSchema = Yup.object({
-    campus: Yup.string().required(`Gathering Service is a required field`),
+    campus: Yup.string().required(`Campus is a required field`),
     name: Yup.string().required(`Federal Ministry Name is a required field`),
     leaderId: Yup.string().required(
       'Please choose a leader from the drop down'
@@ -80,9 +80,9 @@ const FederalMinistryForm = ({
                     <Col className="mb-2">
                       <Select
                         name="campus"
-                        label="Select a Gathering Service"
+                        label="Select a Campus"
                         options={campusOptions}
-                        defaultOption="Select a Gathering Service"
+                        defaultOption="Select a Campus"
                       />
 
                       <Input

@@ -28,7 +28,7 @@ const CampusByStream = () => {
         <Container>
           <HeadingPrimary
             loading={loading || !data?.campuses[0]?.name}
-          >{`${data?.campuses[0]?.name} Gathering Service By Streams`}</HeadingPrimary>
+          >{`${data?.campuses[0]?.name} Campus By Streams`}</HeadingPrimary>
 
           <Row>
             {data?.campuses.length ? (

@@ -82,7 +82,7 @@ const UpdateCampus = () => {
         //Bacenta has previous constituency which is not current constituency and is joining
         oldCampusId = prevCampus.id
         newCampusId = campusId
-        historyRecord = `${stream.name} Stream has been moved to ${initialValues.name} Gathering Service from ${prevCampus.name} Gathering Service`
+        historyRecord = `${stream.name} Stream has been moved to ${initialValues.name} Campus from ${prevCampus.name} Campus`
       }
 
       //After removing the bacenta from a constituency, then you log that change.
@@ -100,14 +100,14 @@ const UpdateCampus = () => {
   })
   const [CloseDownStream] = useMutation(MAKE_STREAM_INACTIVE)
 
-  //Changes upwards. it. Changes to the Oversight the Gathering Service Campus is under
+  //Changes upwards. it. Changes to the Oversight the Campus Campus is under
   const [RemoveCampusOversight] = useMutation(REMOVE_CAMPUS_OVERSIGHT)
   const [AddCampusOversight] = useMutation(ADD_CAMPUS_OVERSIGHT, {
     onCompleted: (data) => {
       const oldOversight = data.updateOversight.Oversight[0]
       const newOversight = data.UpdateCampus.campus[0].oversight
 
-      let recordIfOldOversight = `${initialValues.name} Gathering Service has been moved from ${oldOversight.name} Oversight to ${newOversight.name} Oversight`
+      let recordIfOldOversight = `${initialValues.name} Campus has been moved from ${oldOversight.name} Oversight to ${newOversight.name} Oversight`
 
       //After Adding the stream to a campus, then you log that change.
       LogCampusHistory({
@@ -144,7 +144,7 @@ const UpdateCampus = () => {
         },
       })
 
-      //Log if Gathering Services Name Changes
+      //Log if Campuss Name Changes
       if (values.name !== initialValues.name) {
         await LogCampusHistory({
           variables: {
@@ -153,7 +153,7 @@ const UpdateCampus = () => {
             oldLeaderId: '',
             oldOversightId: '',
             newOversightId: '',
-            historyRecord: `Gathering Service name has been changed from ${initialValues.name} to ${values.name}`,
+            historyRecord: `Campus name has been changed from ${initialValues.name} to ${values.name}`,
           },
         })
       }
@@ -237,7 +237,7 @@ const UpdateCampus = () => {
       onSubmitProps.resetForm()
       navigate(`/campus/displaydetails`)
     } catch (err: any) {
-      throwToSentry('There was a problem updating this gathering service', err)
+      throwToSentry('There was a problem updating this campus', err)
       onSubmitProps.setSubmitting(false)
     }
   }
@@ -250,7 +250,7 @@ const UpdateCampus = () => {
     <CampusForm
       initialValues={initialValues}
       onSubmit={onSubmit}
-      title={`Update Gathering Service Form`}
+      title={`Update Campus Form`}
       newCampus={false}
     />
   )

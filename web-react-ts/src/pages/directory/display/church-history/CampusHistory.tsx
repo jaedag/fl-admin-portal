@@ -20,7 +20,7 @@ function CampusHistory() {
       <>
         <div className="text-center mb-5">
           <HeadingPrimary>{`${campus?.name} ${campus?.__typename}`}</HeadingPrimary>
-          <HeadingSecondary>Gathering Service History</HeadingSecondary>
+          <HeadingSecondary>Campus History</HeadingSecondary>
         </div>
         <Container>
           <Timeline record={campus?.history} limit={10} />

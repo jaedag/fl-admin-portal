@@ -75,7 +75,7 @@ const CampusShepherdingControlYearTillDate = () => {
 
   return (
     <Container>
-      <h6>{church?.name} Gathering Service</h6>
+      <h6>{church?.name} Campus</h6>
       <h6 className="text-primary">Stats Till Date</h6>
       <Formik
         initialValues={initialValues}

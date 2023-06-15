@@ -60,7 +60,7 @@ const DisplayAllCampuses = () => {
           <RoleView roles={permitAdmin('Campus')} directoryLock>
             <Col className="col-auto">
               <Link to="/campus/addcampus" className="btn btn-danger">
-                Add Gathering Service
+                Add Campus
               </Link>
             </Col>
           </RoleView>

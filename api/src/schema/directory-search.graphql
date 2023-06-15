@@ -318,10 +318,7 @@ extend type Query {
       """
     )
 
-  campusMemberSearch(
-    searchKey: String!
-    gatheringId: ID!
-  ): [Member!]!
+  campusMemberSearch(searchKey: String!, gatheringId: ID!): [Member!]!
     @auth(
       rules: [{ roles: ["adminCampus", "leaderCampus", "arrivalsAdminCampus"] }]
     )
@@ -452,10 +449,7 @@ extend type Query {
       """
     )
 
-  campusFellowshipSearch(
-    searchKey: String!
-    gatheringId: ID!
-  ): [Fellowship!]!
+  campusFellowshipSearch(searchKey: String!, gatheringId: ID!): [Fellowship!]!
     @auth(
       rules: [{ roles: ["adminCampus", "leaderCampus", "arrivalsAdminCampus"] }]
     )
@@ -551,10 +545,7 @@ extend type Query {
       """
     )
 
-  campusBacentaSearch(
-    searchKey: String!
-    gatheringId: ID!
-  ): [Bacenta]
+  campusBacentaSearch(searchKey: String!, gatheringId: ID!): [Bacenta]
     @auth(
       rules: [{ roles: ["adminCampus", "leaderCampus", "arrivalsAdminCampus"] }]
     )
@@ -721,10 +712,7 @@ extend type Query {
       """
     )
 
-  campusCouncilSearch(
-    searchKey: String!
-    gatheringId: ID!
-  ): [Council!]!
+  campusCouncilSearch(searchKey: String!, gatheringId: ID!): [Council!]!
     @auth(
       rules: [{ roles: ["adminCampus", "leaderCampus", "arrivalsAdminCampus"] }]
     )
@@ -767,10 +755,7 @@ extend type Query {
       RETURN stream LIMIT 5
       """
     )
-  campusStreamSearch(
-    searchKey: String!
-    gatheringId: ID!
-  ): [Stream!]!
+  campusStreamSearch(searchKey: String!, gatheringId: ID!): [Stream!]!
     @auth(
       rules: [{ roles: ["adminCampus", "leaderCampus", "arrivalsAdminCampus"] }]
     )
@@ -783,7 +768,7 @@ extend type Query {
       """
     )
 
-  ### Gathering Service Search ###
+  ### Campus Search ###
   oversightCampusSearch(searchKey: String!, oversightId: ID!): [Campus!]!
     @auth(
       rules: [

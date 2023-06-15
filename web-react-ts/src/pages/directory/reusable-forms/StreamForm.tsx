@@ -102,9 +102,9 @@ const StreamForm = ({
                           <Col>
                             <Select
                               name="campus"
-                              label="Select a Gathering Service"
+                              label="Select a Campus"
                               options={campusOptions}
-                              defaultOption="Select a Gathering Service"
+                              defaultOption="Select a Campus"
                             />
                           </Col>
                         </Row>

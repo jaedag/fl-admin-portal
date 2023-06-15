@@ -1,15 +1,7 @@
 extend type Mutation {
   #resolver Mutations
-  MakeCampusAdmin(
-    adminId: ID!
-    oldAdminId: ID!
-    campusId: ID!
-  ): Member
-  RemoveCampusAdmin(
-    adminId: ID!
-    newAdminId: ID
-    campusId: ID!
-  ): Member
+  MakeCampusAdmin(adminId: ID!, oldAdminId: ID!, campusId: ID!): Member
+  RemoveCampusAdmin(adminId: ID!, newAdminId: ID, campusId: ID!): Member
   MakeStreamAdmin(adminId: ID!, oldAdminId: ID!, streamId: ID!): Member
   RemoveStreamAdmin(adminId: ID!, newAdminId: ID, streamId: ID!): Member
   MakeCouncilAdmin(adminId: ID!, oldAdminId: ID, councilId: ID!): Member
@@ -52,16 +44,8 @@ extend type Mutation {
   RemoveCouncilLeader(leaderId: ID!, newLeaderId: ID!, councilId: ID!): Member
   MakeStreamLeader(leaderId: ID!, streamId: ID!, oldLeaderId: ID): Member
   RemoveStreamLeader(leaderId: ID!, newLeaderId: ID!, streamId: ID!): Member
-  MakeCampusLeader(
-    leaderId: ID!
-    campusId: ID!
-    oldLeaderId: ID
-  ): Member
-  RemoveCampusLeader(
-    leaderId: ID!
-    newLeaderId: ID!
-    campusId: ID!
-  ): Member
+  MakeCampusLeader(leaderId: ID!, campusId: ID!, oldLeaderId: ID): Member
+  RemoveCampusLeader(leaderId: ID!, newLeaderId: ID!, campusId: ID!): Member
 }
 
 #### GO ON VACATION AND COME BACK ###
@@ -260,7 +244,7 @@ extend type Mutation {
         SET
         log.id =  apoc.create.uuid(),
         log.timeStamp = datetime(),
-        log.historyRecord =  $name +' Gathering Service History Begins'
+        log.historyRecord =  $name +' Campus History Begins'
 
       MERGE (oversight)-[:HAS]->(campus)
       MERGE (leader)-[:LEADS]->(campus)
@@ -859,7 +843,7 @@ extend type Mutation {
       WITH stream, campus
       CREATE (log:HistoryLog {id:apoc.create.uuid()})
         SET log.timeStamp = datetime(),
-        log.historyRecord = stream.name + ' Stream was closed down under ' + campus.name +' Gathering Service'
+        log.historyRecord = stream.name + ' Stream was closed down under ' + campus.name +' Campus'
 
       WITH stream, campus, log
       MATCH (admin:Active:Member {auth_id: $auth.jwt.sub})
@@ -886,7 +870,7 @@ extend type Mutation {
       WITH campus, oversight
       CREATE (log:HistoryLog {id:apoc.create.uuid()})
         SET log.timeStamp = datetime(),
-        log.historyRecord = campus.name + ' Gathering Service was closed down under ' + oversight.name +' Oversight'
+        log.historyRecord = campus.name + ' Campus was closed down under ' + oversight.name +' Oversight'
 
       WITH campus, oversight, log
       MATCH (admin:Active:Member {auth_id: $auth.jwt.sub})

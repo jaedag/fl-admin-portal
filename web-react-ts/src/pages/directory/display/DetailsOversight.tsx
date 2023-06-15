@@ -30,7 +30,7 @@ const DetailsOversight = () => {
     },
     { title: 'Pastors', number: oversight?.pastorCount || '0', link: '#' },
     {
-      title: 'Gathering Services',
+      title: 'Campuss',
       number: oversight?.campusCount,
       link: `/${`campus`.toLowerCase()}/displayall`,
     },

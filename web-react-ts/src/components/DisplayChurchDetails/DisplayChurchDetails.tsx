@@ -155,7 +155,7 @@ const DisplayChurchDetails = (props: DisplayChurchDetailsProps) => {
         .then(() => {
           togglePopup()
           setSubmitting(false)
-          alertMsg('Gathering Service Admin has been changed successfully')
+          alertMsg('Campus Admin has been changed successfully')
         })
         .catch((e: any) => throwToSentry(e))
     }

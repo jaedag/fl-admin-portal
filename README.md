@@ -40,7 +40,7 @@ All Contributors welcome. Go ahead and fork the project and submit a PR. Read th
 2.  Accepting all data from all services weekly.
     - Bacenta Fellowship
     - Constituency Joint Service
-    - First Love Federal Services (Gathering Service and Revival)
+    - First Love Federal Services (Campus and Revival)
 3.  Integrate a way of sending broadcast reminders (SMS/ WhatsApp) to leaders/admins who haven’t filled their forms and such
 4.  Monitor outstanding penalties for fellowships who default
 5.  A Way to Integrate with Bank to confirm if offering payments have been made??

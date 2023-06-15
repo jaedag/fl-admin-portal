@@ -470,7 +470,7 @@ export const getServantRoles = (servant: MemberWithChurches) => {
   if (servant?.leadsCampus?.length) {
     roleTitles.push('leaderCampus')
     userroles.push({
-      name: 'Gathering Service',
+      name: 'Campus',
       church: servant?.leadsCampus,
       number: servant?.leadsCampus?.length,
       link: authorisedLink(
@@ -483,7 +483,7 @@ export const getServantRoles = (servant: MemberWithChurches) => {
   if (servant?.isAdminForCampus?.length) {
     roleTitles.push('adminCampus')
     userroles.push({
-      name: 'Gathering Service Admin',
+      name: 'Campus Admin',
       church: servant?.isAdminForCampus,
       number: servant?.isAdminForCampus?.length,
       link: authorisedLink(
@@ -522,7 +522,7 @@ export const getServantRoles = (servant: MemberWithChurches) => {
   if (servant?.isArrivalsAdminForCampus?.length) {
     roleTitles.push('arrivalsAdminCampus')
     userroles.push({
-      name: 'Gathering Service Arrivals Admin',
+      name: 'Campus Arrivals Admin',
       church: servant?.isArrivalsAdminForCampus,
       number: servant?.isArrivalsAdminForCampus?.length,
       link: authorisedLink(
