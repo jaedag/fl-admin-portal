@@ -6,7 +6,7 @@ import { GET_CAMPUS_STREAMS } from '../../../queries/ListQueries'
 import {
   UPDATE_STREAM_MUTATION,
   ADD_CAMPUS_STREAM,
-  REMOVE_STREAM_CAMPUSE,
+  REMOVE_STREAM_CAMPUS,
   REMOVE_COUNCIL_STREAM,
   ADD_STREAM_COUNCILS,
 } from './UpdateMutations'
@@ -97,7 +97,7 @@ const UpdateStream = () => {
   })
 
   //Changes upwards. it. Changes to the Campus the Stream Campus is under
-  const [RemoveStreamCampus] = useMutation(REMOVE_STREAM_CAMPUSE)
+  const [RemoveStreamCampus] = useMutation(REMOVE_STREAM_CAMPUS)
   const [AddStreamCampus] = useMutation(ADD_CAMPUS_STREAM, {
     onCompleted: (data) => {
       const oldCampus = data.updateCampus.campuses[0]
