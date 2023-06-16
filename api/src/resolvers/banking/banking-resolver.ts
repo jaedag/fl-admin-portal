@@ -100,7 +100,7 @@ const bankingMutation = {
     )
 
     const { auth, subaccount } = getStreamFinancials(
-      transactionResponse?.stream.bankAccount
+      transactionResponse?.stream
     )
 
     await checkIfLastServiceBanked(args.serviceRecordId, context)
