@@ -166,7 +166,13 @@ const bankingMutation = {
         email: 'admin@firstlovecenter.com',
       } as Member,
       'Axios Req  Body',
-      JSON.stringify(payOffering)
+      JSON.stringify({
+        subaccount,
+        church_name: cypherResponse.churchName,
+        church_level: cypherResponse.churchLevel,
+        depositor_firstname: cypherResponse.author.firstName,
+        depositor_lastname: cypherResponse.author.lastName,
+      })
     )
     const updatePaystackCustomer = {
       method: 'put',
