@@ -43,7 +43,7 @@ type Stream = {
 
 export const getStreamFinancials = (stream: Stream) => {
   const auth = SECRETS.PAYSTACK_PRIVATE_KEY_WEEKDAY
-  let subaccount = 'no-subaccount'
+  let subaccount
 
   switch (stream.bankAccount) {
     case 'aes_account':

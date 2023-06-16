@@ -100,6 +100,11 @@ const bankingMutation = {
     const { auth, subaccount } = getStreamFinancials(
       transactionResponse?.stream
     )
+    if (!subaccount) {
+      throw new Error(
+        'There was an error with the payment. Please email admin@firstlovecenter.com'
+      )
+    }
 
     await checkIfLastServiceBanked(args.serviceRecordId, context)
 
