@@ -13,3 +13,7 @@ MATCH (fellowship:Fellowship {name: "Sozo"})
 SET fellowship:Vacation
 REMOVE fellowship:Active
 RETURN fellowship.name;
+
+MATCH (record:ServiceRecord)
+SET record.transactionStatus = "failed"
+RETURN COUNT(record);

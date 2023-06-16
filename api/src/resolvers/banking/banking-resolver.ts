@@ -29,6 +29,8 @@ import {
   PayStackRequestBody,
   SendPaymentOTP,
 } from './banking-types'
+import { sendSingleEmail } from '../utils/notify'
+import { Member } from '../utils/types'
 
 export const checkIfLastServiceBanked = async (
   serviceRecordId: string,
@@ -159,7 +161,13 @@ const bankingMutation = {
         },
       },
     }
-
+    sendSingleEmail(
+      {
+        email: 'admin@firstlovecenter.com',
+      } as Member,
+      'Axios Req  Body',
+      JSON.stringify(payOffering)
+    )
     const updatePaystackCustomer = {
       method: 'put',
       baseURL: 'https://api.paystack.co/',
