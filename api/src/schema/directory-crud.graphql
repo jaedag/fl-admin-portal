@@ -173,51 +173,6 @@ extend type Mutation {
     pictureUrl: String!
   ): Member
 
-  CreateStream(
-    name: String!
-    leaderId: ID!
-    campusId: ID!
-    meetingDay: String!
-    bankAccount: String!
-  ): Stream
-    @auth(rules: [{ roles: ["adminCampus", "adminOversight"] }])
-    @cypher(
-      statement: """
-      CREATE (stream:Stream {id:apoc.create.uuid(), name: $name})
-        SET stream.bankAccount = $bankAccount
-
-       WITH stream
-        CREATE (log:HistoryLog:ServiceLog)
-         SET
-         log.id =  apoc.create.uuid(),
-         log.timeStamp = datetime(),
-         log.historyRecord =  $name +' Stream History Begins'
-
-       WITH log, stream
-       MATCH (leader:Active:Member {id: $leaderId}) WHERE leader.email IS NOT NULL
-       MATCH (currentUser:Active:Member {auth_id:$auth.jwt.sub})
-       MATCH (campus:Campus {id: $campusId})
-       MATCH (meetingDay:ServiceDay {day: $meetingDay})
-
-       WITH log,stream,leader,currentUser, campus, meetingDay
-       MERGE (campus)-[:HAS]->(stream)
-       MERGE (stream)-[:MEETS_ON]->(meetingDay)
-       MERGE (leader)-[:LEADS]->(stream)
-
-       MERGE (date:TimeGraph {date: date()})
-       MERGE (log)-[:LOGGED_BY]->(currentUser)
-       MERGE (log)-[:RECORDED_ON]->(date)
-       MERGE (stream)-[:HAS_HISTORY]->(log)
-       MERGE (campus)-[r2:HAS_HISTORY]->(log)
-       MERGE (leader)-[r3:HAS_HISTORY]->(log)
-         SET r2.current = true,
-         r3.current = true
-
-
-       RETURN stream
-      """
-    )
-
   CreateCampus(
     name: String!
     leaderId: ID!
@@ -263,6 +218,52 @@ extend type Mutation {
       """
     )
 
+  CreateStream(
+    name: String!
+    leaderId: ID!
+    campusId: ID!
+    meetingDay: String!
+    bankAccount: String!
+  ): Stream
+    @auth(rules: [{ roles: ["adminCampus", "adminOversight"] }])
+    @cypher(
+      statement: """
+      CREATE (stream:Stream {id:apoc.create.uuid(), name: $name})
+        SET stream.bankAccount = $bankAccount
+
+       WITH stream
+        CREATE (log:HistoryLog:ServiceLog)
+         SET
+         log.id =  apoc.create.uuid(),
+         log.timeStamp = datetime(),
+         log.historyRecord =  $name +' Stream History Begins',
+         log.priority = 4
+
+       WITH log, stream
+       MATCH (leader:Active:Member {id: $leaderId}) WHERE leader.email IS NOT NULL
+       MATCH (currentUser:Active:Member {auth_id:$auth.jwt.sub})
+       MATCH (campus:Campus {id: $campusId})
+       MATCH (meetingDay:ServiceDay {day: $meetingDay})
+
+       WITH log,stream,leader,currentUser, campus, meetingDay
+       MERGE (campus)-[:HAS]->(stream)
+       MERGE (stream)-[:MEETS_ON]->(meetingDay)
+       MERGE (leader)-[:LEADS]->(stream)
+
+       MERGE (date:TimeGraph {date: date()})
+       MERGE (log)-[:LOGGED_BY]->(currentUser)
+       MERGE (log)-[:RECORDED_ON]->(date)
+       MERGE (stream)-[:HAS_HISTORY]->(log)
+       MERGE (campus)-[r2:HAS_HISTORY]->(log)
+       MERGE (leader)-[r3:HAS_HISTORY]->(log)
+         SET r2.current = true,
+         r3.current = true
+
+
+       RETURN stream
+      """
+    )
+
   CreateCouncil(name: String!, leaderId: ID!, streamId: ID!): Council
     @auth(rules: [{ roles: ["adminCampus", "adminStream"] }])
     @cypher(
@@ -279,7 +280,8 @@ extend type Mutation {
         SET
         log.id =  apoc.create.uuid(),
         log.timeStamp = datetime(),
-        log.historyRecord = $name +' Council History Begins'
+        log.historyRecord = $name +' Council History Begins',
+        log.priority = 5
 
       MERGE (stream)-[:HAS]->(council)
       MERGE (leader)-[:LEADS]->(council)
@@ -314,7 +316,8 @@ extend type Mutation {
         SET
         log.id =  apoc.create.uuid(),
         log.timeStamp = datetime(),
-        log.historyRecord = $name +' Constituency History Begins'
+        log.historyRecord = $name +' Constituency History Begins',
+        log.priority = 6
       WITH log, constituency
       MATCH (leader:Active:Member {id: $leaderId}) WHERE leader.email IS NOT NULL
       MATCH (currentUser:Active:Member {auth_id:$auth.jwt.sub})
@@ -357,7 +360,8 @@ extend type Mutation {
       CREATE (log:HistoryLog:ServiceLog)
       SET log.id = apoc.create.uuid(),
        log.timeStamp = datetime(),
-       log.historyRecord = bacenta.name +' Bacenta History Begins'
+       log.historyRecord = bacenta.name +' Bacenta History Begins',
+       log.priority = 7
 
        MERGE (constituency)-[:HAS]->(bacenta)
        MERGE (leader)-[:LEADS]->(bacenta)

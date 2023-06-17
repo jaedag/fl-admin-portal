@@ -9,3 +9,6 @@ WITH record, fellowship, leader
 MERGE (record)-[r:OFFERING_BANKED_BY]->(leader)
 RETURN record.income, record.transactionReference;
 
+
+MATCH (fellowship:Fellowship {id: "6ac0de3e-8719-4010-8bc1-a99c503c694a"})-[:CURRENT_HISTORY]->(log:ServiceLog)
+RETURN log.priority
