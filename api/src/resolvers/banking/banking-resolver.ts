@@ -84,7 +84,6 @@ const bankingMutation = {
     isAuth(permitLeaderAdmin('Fellowship'), context.auth.roles)
 
     const session = context.executionContext.session()
-
     // This code checks if there has already been a successful transaction
     const transactionResponse = rearrangeCypherObject(
       await session
@@ -97,97 +96,97 @@ const bankingMutation = {
         )
     )
 
-    const { auth, subaccount } = getStreamFinancials(
-      transactionResponse?.stream
-    )
-
-    if (!subaccount) {
-      throwToSentry(
-        'There was an error with the payment. Please email admin@firstlovecenter.com',
-        JSON.stringify({
-          transactionResponse,
-          args,
-          auth,
-          subaccount,
-        })
-      )
-    }
-
-    await checkIfLastServiceBanked(args.serviceRecordId, context)
-
-    const transactionStatus = transactionResponse?.record.transactionStatus
-    if (transactionStatus === 'success') {
-      throw new Error('Banking has already been done for this service')
-    }
-
-    if (transactionStatus === 'pending') {
-      throw new Error(
-        'Please confirm your initial payment before attempting another one'
-      )
-    }
-
-    const cypherResponse = rearrangeCypherObject(
-      await session
-        .run(initiateServiceRecordTransaction, {
-          auth: context.auth,
-          ...args,
-        })
-        .catch((error: any) =>
-          throwToSentry(
-            'There was an error setting serviceRecordTransactionReference',
-            error
-          )
-        )
-    )
-
-    const serviceRecord = cypherResponse.record.properties
-
-    const payOffering: DebitDataBody = {
-      method: 'post',
-      baseURL: 'https://api.paystack.co/',
-      url: `/charge`,
-      headers: {
-        'content-type': 'application/json',
-        Authorization: auth,
-      },
-      data: {
-        amount: Math.round((serviceRecord.cash / (1 - 0.0195) + 0.01) * 100),
-        email: cypherResponse.author.email,
-        currency: 'GHS',
-        subaccount,
-        mobile_money: {
-          phone: args.mobileNumber,
-          provider: getMobileCode(args.mobileNetwork),
-        },
-        metadata: {
-          custom_fields: [
-            {
-              church_name: cypherResponse.churchName,
-              church_level: cypherResponse.churchLevel,
-              depositor_firstname: cypherResponse.author.firstName,
-              depositor_lastname: cypherResponse.author.lastName,
-            },
-          ],
-        },
-      },
-    }
-
-    const updatePaystackCustomer = {
-      method: 'put',
-      baseURL: 'https://api.paystack.co/',
-      url: `/customer/${cypherResponse.author.email}`,
-      headers: {
-        'content-type': 'application/json',
-        Authorization: auth ?? '',
-      },
-      data: {
-        first_name: cypherResponse.author.firstName,
-        last_name: cypherResponse.author.lastName,
-        phone: cypherResponse.author.phoneNumber,
-      },
-    }
-
     try {
+      const { auth, subaccount } = getStreamFinancials(
+        transactionResponse?.stream
+      )
+
+      if (!subaccount) {
+        throwToSentry(
+          'There was an error with the payment. Please email admin@firstlovecenter.com',
+          JSON.stringify({
+            transactionResponse,
+            args,
+            auth,
+            subaccount,
+          })
+        )
+      }
+
+      await checkIfLastServiceBanked(args.serviceRecordId, context)
+
+      const transactionStatus = transactionResponse?.record.transactionStatus
+      if (transactionStatus === 'success') {
+        throw new Error('Banking has already been done for this service')
+      }
+
+      if (transactionStatus === 'pending') {
+        throw new Error(
+          'Please confirm your initial payment before attempting another one'
+        )
+      }
+
+      const cypherResponse = rearrangeCypherObject(
+        await session
+          .run(initiateServiceRecordTransaction, {
+            auth: context.auth,
+            ...args,
+          })
+          .catch((error: any) =>
+            throwToSentry(
+              'There was an error setting serviceRecordTransactionReference',
+              error
+            )
+          )
+      )
+
+      const serviceRecord = cypherResponse.record.properties
+
+      const payOffering: DebitDataBody = {
+        method: 'post',
+        baseURL: 'https://api.paystack.co/',
+        url: `/charge`,
+        headers: {
+          'content-type': 'application/json',
+          Authorization: auth,
+        },
+        data: {
+          amount: Math.round((serviceRecord.cash / (1 - 0.0195) + 0.01) * 100),
+          email: cypherResponse.author.email,
+          currency: 'GHS',
+          subaccount,
+          mobile_money: {
+            phone: args.mobileNumber,
+            provider: getMobileCode(args.mobileNetwork),
+          },
+          metadata: {
+            custom_fields: [
+              {
+                church_name: cypherResponse.churchName,
+                church_level: cypherResponse.churchLevel,
+                depositor_firstname: cypherResponse.author.firstName,
+                depositor_lastname: cypherResponse.author.lastName,
+              },
+            ],
+          },
+        },
+      }
+
+      const updatePaystackCustomer = {
+        method: 'put',
+        baseURL: 'https://api.paystack.co/',
+        url: `/customer/${cypherResponse.author.email}`,
+        headers: {
+          'content-type': 'application/json',
+          Authorization: auth ?? '',
+        },
+        data: {
+          first_name: cypherResponse.author.firstName,
+          last_name: cypherResponse.author.lastName,
+          phone: cypherResponse.author.phoneNumber,
+        },
+      }
+
       const paymentResponse = await axios(payOffering).catch((error: any) =>
         throwToSentry(
           'There was an error with the payment',
@@ -384,15 +383,15 @@ const bankingMutation = {
       async (error) => {
         throwToSentry(
           'There was an error confirming transaction - ',
-          error.response.data.message
+          JSON.stringify(error.response.data)
         )
-        if (error.response.data.status === false) {
-          record = rearrangeCypherObject(
-            await session.executeWrite((tx) =>
-              tx.run(setTransactionStatusFailed, args)
-            )
-          )
-        }
+        // if (error.response.data.status === false) {
+        //   record = rearrangeCypherObject(
+        //     await session.executeWrite((tx) =>
+        //       tx.run(setTransactionStatusFailed, args)
+        //     )
+        //   )
+        // }
       }
     )
 
@@ -426,10 +425,7 @@ const bankingMutation = {
       }
     }
 
-    if (
-      confirmationResponse?.data.data.status === 'failed' ||
-      confirmationResponse?.data.data.status === 'abandoned'
-    ) {
+    if (confirmationResponse?.data.data.status === 'failed') {
       record = rearrangeCypherObject(
         await session
           .run(setTransactionStatusFailed, args)

@@ -104,9 +104,10 @@ const ServiceDetails = ({ service, church, loading }: ServiceDetailsProps) => {
         {!currentUser.noIncomeTracking && service?.bankingSlipUploader && (
           <p className="fw-bold">{`Banking Slip Uploaded by ${service?.bankingSlipUploader.fullName}`}</p>
         )}
-        {!currentUser.noIncomeTracking && service?.offeringBankedBy && (
-          <p className="fw-bold">{`Offering Banked by ${service?.offeringBankedBy.fullName}`}</p>
-        )}
+        {!currentUser.noIncomeTracking &&
+          service?.transactionStatus === 'success' && (
+            <p className="fw-bold">{`Offering Banked by ${service?.offeringBankedBy.fullName}`}</p>
+          )}
         <RoleView roles={permitAdmin('Council')}>
           {!currentUser.noIncomeTracking && service?.bankingConfirmer && (
             <p className="fw-bold">{`Offering Confirmed by ${service?.bankingConfirmer.fullName}`}</p>
