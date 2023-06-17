@@ -178,9 +178,7 @@ extend type Mutation {
     @cypher(
       statement: """
       CREATE (oversight:Oversight {id:apoc.create.uuid(), name:$name})
-        SET oversight.noIncomeTracking = true,
-        oversight.currency = 'USD',
-        oversight.conversionRateToDollar = 1
+
 
       WITH oversight
       MATCH (leader:Active:Member {id: $leaderId}) WHERE leader.email IS NOT NULL
@@ -326,7 +324,7 @@ extend type Mutation {
       MERGE (log)-[:LOGGED_BY]->(currentUser)
       MERGE (log)-[:RECORDED_ON]->(date)
       MERGE (council)-[:HAS_HISTORY]->(log)
-      MERGE (council)-[:CURRENT_HISTORY)->(log)
+      MERGE (council)-[:CURRENT_HISTORY]->(log)
       MERGE (stream)-[:HAS_HISTORY]->(log)
       MERGE (leader)-[:HAS_HISTORY]->(log)
       MERGE (leader)-[:CURRENT_HISTORY]->(log)
