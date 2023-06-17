@@ -227,7 +227,10 @@ const bankingMutation = {
 
       return paymentCypherRes.record
     } catch (error: any) {
-      throwToSentry('There was an error processing your payment', error)
+      throwToSentry(
+        'There was an error processing your payment',
+        JSON.stringify(error)
+      )
     } finally {
       await session.close()
     }
@@ -357,6 +360,26 @@ const bankingMutation = {
     const banker = transactionResponse?.banker
     const stream = transactionResponse?.stream
     const { auth } = getStreamFinancials(stream.bankAccount)
+
+    // if transactionTime is within the last 1 minute then return the record
+    if (
+      record?.transactionTime &&
+      new Date().getTime() - new Date(record?.transactionTime).getTime() < 60000
+    ) {
+      console.log('transactionTime is within the last 1 minute')
+      return {
+        id: record.id,
+        cash: record.cash,
+        transactionReference: record.transactionReference,
+        transactionStatus: record.transactionStatus,
+        offeringBankedBy: {
+          id: banker.id,
+          firstName: banker.firstName,
+          lastName: banker.lastName,
+          fullName: `${banker.firstName} ${banker.fullName}`,
+        },
+      }
+    }
 
     if (!record?.transactionReference) {
       record = rearrangeCypherObject(
