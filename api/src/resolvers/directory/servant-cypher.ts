@@ -161,7 +161,8 @@ const servantCypher = {
    CREATE (log:HistoryLog)
      SET log.id = apoc.create.uuid(),
       log.timeStamp = datetime(),
-      log.historyRecord = $historyRecord
+      log.historyRecord = $historyRecord,
+      log.priority = $priority,
    
       RETURN log.id AS id
    `,

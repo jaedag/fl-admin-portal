@@ -73,7 +73,7 @@ export const MakeServant = async (
   const authToken = await getAuthToken()
   const authRoles = await getAuth0Roles(authToken)
   const terms = formatting(churchType, servantType)
-  const { verb, servantLower, churchLower, memberQuery } = terms
+  const { verb, servantLower, churchLower, memberQuery, priority } = terms
 
   const setUpArgs = {
     permittedRoles,
@@ -187,6 +187,7 @@ export const MakeServant = async (
         servant,
         oldServant,
         church,
+        priority,
       }),
       sendSingleEmail(
         servant,

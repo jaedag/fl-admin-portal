@@ -24,6 +24,40 @@ import {
   matchMemberSontaQuery,
 } from '../cypher/ministry-directory-cypher'
 
+export const setPriorityLevel = (churchType: ChurchLevel) => {
+  let priority = 0
+  switch (churchType) {
+    case 'Denomination':
+      priority = 1
+      break
+    case 'Oversight':
+      priority = 2
+      break
+    case 'Campus':
+      priority = 3
+      break
+    case 'Stream':
+      priority = 4
+      break
+    case 'Council':
+      priority = 5
+      break
+    case 'Constituency':
+      priority = 6
+      break
+    case 'Bacenta':
+      priority = 7
+      break
+    case 'Fellowship':
+      priority = 8
+      break
+    default:
+      priority = 0
+  }
+
+  return priority
+}
+
 export const formatting = (
   churchType: ChurchLevel,
   servantType: ServantType
@@ -82,11 +116,14 @@ export const formatting = (
     memberQuery = matchMemberSontaQuery
   }
 
+  const priority = setPriorityLevel(churchType)
+
   return {
     verb,
     servantLower,
     churchLower,
     memberQuery,
+    priority,
   }
 }
 
@@ -98,6 +135,7 @@ type MakeRemoveServantArgs = {
   church: { id: string; name: string }
   args?: { leaderId: string }
   oldServant?: MemberWithoutBioData
+  priority: number
 }
 
 export const removeServantCypher = async ({
@@ -161,6 +199,7 @@ export const makeServantCypher = async ({
   args,
   church,
   oldServant,
+  priority,
 }: MakeRemoveServantArgs) => {
   const terms = formatting(churchType, servantType)
   const { servantLower } = terms
@@ -201,6 +240,7 @@ export const makeServantCypher = async ({
         id: servant.id,
         churchType,
         historyRecord: historyRecordString(historyRecordStringArgs),
+        priority,
       })
       .catch((e: any) => throwToSentry(`Error Creating History Log`, e))
   )
