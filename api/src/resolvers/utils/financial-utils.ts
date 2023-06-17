@@ -42,7 +42,6 @@ type Stream = {
 }
 
 export const getStreamFinancials = (stream: Stream) => {
-  console.log('🚀 ~ file: financial-utils.ts:45 ~ stream:', stream)
   const auth = SECRETS.PAYSTACK_PRIVATE_KEY_WEEKDAY
   let subaccount
 
