@@ -244,7 +244,8 @@ extend type Mutation {
         SET
         log.id =  apoc.create.uuid(),
         log.timeStamp = datetime(),
-        log.historyRecord =  $name +' Campus History Begins'
+        log.historyRecord =  $name +' Campus History Begins',
+        log.priority = 3
 
       MERGE (oversight)-[:HAS]->(campus)
       MERGE (leader)-[:LEADS]->(campus)
