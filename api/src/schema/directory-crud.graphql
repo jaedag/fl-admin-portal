@@ -173,6 +173,44 @@ extend type Mutation {
     pictureUrl: String!
   ): Member
 
+  CreateOversight(name: String!, leaderId: ID!, denominationId: ID!): Oversight
+    @auth(rules: [{ roles: ["adminDenomination"] }])
+    @cypher(
+      statement: """
+      CREATE (oversight:Oversight {id:apoc.create.uuid(), name:$name})
+        SET oversight.noIncomeTracking = true,
+        oversight.currency = 'USD',
+        oversight.conversionRateToDollar = 1
+
+      WITH oversight
+      MATCH (leader:Active:Member {id: $leaderId}) WHERE leader.email IS NOT NULL
+      MATCH (currentUser:Active:Member {auth_id:$auth.jwt.sub})
+      MATCH (denomination:Denomination {id: $denominationId})
+
+
+        CREATE (log:HistoryLog:ServiceLog)
+          SET
+          log.id =  apoc.create.uuid(),
+          log.timeStamp = datetime(),
+          log.historyRecord =  $name +' Oversight History Begins',
+          log.priority = 2
+
+      MERGE (denomination)-[:HAS]->(oversight)
+      MERGE (leader)-[:LEADS]->(oversight)
+
+      MERGE (date:TimeGraph {date: date()})
+      MERGE (log)-[:LOGGED_BY]->(currentUser)
+      MERGE (log)-[:RECORDED_ON]->(date)
+      MERGE (oversight)-[:HAS_HISTORY]->(log)
+      MERGE (denomination)-[:HAS_HISTORY]->(log)
+      MERGE (leader)-[:HAS_HISTORY]->(log)
+      MERGE (oversight)-[:CURRENT_HISTORY]->(log)
+      MERGE (leader)-[:CURRENT_HISTORY]->(log)
+
+      RETURN oversight
+      """
+    )
+
   CreateCampus(
     name: String!
     leaderId: ID!
@@ -208,11 +246,10 @@ extend type Mutation {
       MERGE (log)-[:LOGGED_BY]->(currentUser)
       MERGE (log)-[:RECORDED_ON]->(date)
       MERGE (campus)-[:HAS_HISTORY]->(log)
-      MERGE (oversight)-[r2:HAS_HISTORY]->(log)
-      MERGE (leader)-[r3:HAS_HISTORY]->(log)
-        SET r2.current = true,
-        r3.current = true
-
+      MERGE (oversight)-[:HAS_HISTORY]->(log)
+      MERGE (leader)-[:HAS_HISTORY]->(log)
+      MERGE (campus)-[:CURRENT_HISTORY]->(log)
+      MERGE (leader)-[:CURRENT_HISTORY]->(log)
 
       RETURN campus
       """
@@ -254,11 +291,10 @@ extend type Mutation {
        MERGE (log)-[:LOGGED_BY]->(currentUser)
        MERGE (log)-[:RECORDED_ON]->(date)
        MERGE (stream)-[:HAS_HISTORY]->(log)
-       MERGE (campus)-[r2:HAS_HISTORY]->(log)
-       MERGE (leader)-[r3:HAS_HISTORY]->(log)
-         SET r2.current = true,
-         r3.current = true
-
+       MERGE (campus)-[:HAS_HISTORY]->(log)
+       MERGE (leader)-[:HAS_HISTORY]->(log)
+       MERGE (leader)-[:CURRENT_HISTORY]->(log)
+       MERGE (stream)-[:CURRENT_HISTORY]->(log)
 
        RETURN stream
       """
@@ -289,12 +325,11 @@ extend type Mutation {
       MERGE (date:TimeGraph {date: date()})
       MERGE (log)-[:LOGGED_BY]->(currentUser)
       MERGE (log)-[:RECORDED_ON]->(date)
-      MERGE (council)-[r1:HAS_HISTORY]->(log)
-      MERGE (stream)-[r2:HAS_HISTORY]->(log)
-      MERGE (leader)-[r3:HAS_HISTORY]->(log)
-        SET r1.current = true,
-        r2.current = true,
-        r3.current = true
+      MERGE (council)-[:HAS_HISTORY]->(log)
+      MERGE (council)-[:CURRENT_HISTORY)->(log)
+      MERGE (stream)-[:HAS_HISTORY]->(log)
+      MERGE (leader)-[:HAS_HISTORY]->(log)
+      MERGE (leader)-[:CURRENT_HISTORY]->(log)
 
 
       RETURN council
@@ -333,9 +368,6 @@ extend type Mutation {
       MERGE (council)-[r1:HAS_HISTORY]->(log)
       MERGE (constituency)-[r2:HAS_HISTORY]->(log)
       MERGE (leader)-[r3:HAS_HISTORY]->(log)
-        SET r1.current = true,
-        r2.current = true,
-        r3.current = true
 
       RETURN constituency
       """
