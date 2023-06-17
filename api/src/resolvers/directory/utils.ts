@@ -240,7 +240,6 @@ export const makeServantCypher = async ({
         id: servant.id,
         churchType,
         historyRecord: historyRecordString(historyRecordStringArgs),
-        priority,
       })
       .catch((e: any) => throwToSentry(`Error Creating History Log`, e))
   )
@@ -248,6 +247,7 @@ export const makeServantCypher = async ({
     await session
       .run(servantCypher.makeHistoryServiceLog, {
         logId: serviceLogRes.id,
+        priority,
       })
       .catch((e: any) =>
         throwToSentry(`Error Converting History to Service Log`, e)

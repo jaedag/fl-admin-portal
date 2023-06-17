@@ -161,8 +161,7 @@ const servantCypher = {
    CREATE (log:HistoryLog)
      SET log.id = apoc.create.uuid(),
       log.timeStamp = datetime(),
-      log.historyRecord = $historyRecord,
-      log.priority = $priority,
+      log.historyRecord = $historyRecord
    
       RETURN log.id AS id
    `,
@@ -171,7 +170,8 @@ const servantCypher = {
    MATCH (swellDate:SwellDate)
       WITH swellDate ORDER BY swellDate.date DESC LIMIT 1
    MATCH (log:HistoryLog {id: $logId})
-   SET log:ServiceLog
+   SET log:ServiceLog,
+   log.priority = $priority
 
    WITH log, swellDate
    CREATE (target:Target {id: apoc.create.uuid()})
