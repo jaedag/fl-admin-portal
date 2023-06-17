@@ -135,7 +135,6 @@ type MakeRemoveServantArgs = {
   church: { id: string; name: string }
   args?: { leaderId: string }
   oldServant?: MemberWithoutBioData
-  priority: number
 }
 
 export const removeServantCypher = async ({
@@ -199,10 +198,9 @@ export const makeServantCypher = async ({
   args,
   church,
   oldServant,
-  priority,
 }: MakeRemoveServantArgs) => {
   const terms = formatting(churchType, servantType)
-  const { servantLower } = terms
+  const { servantLower, priority } = terms
 
   const session = context.executionContext.session()
   // Connect Leader to Church

@@ -73,7 +73,7 @@ export const MakeServant = async (
   const authToken = await getAuthToken()
   const authRoles = await getAuth0Roles(authToken)
   const terms = formatting(churchType, servantType)
-  const { verb, servantLower, churchLower, memberQuery, priority } = terms
+  const { verb, servantLower, churchLower, memberQuery } = terms
 
   const setUpArgs = {
     permittedRoles,
@@ -149,7 +149,6 @@ export const MakeServant = async (
           args,
           church,
           oldServant,
-          priority,
         }),
       ]).then(() =>
         console.log(
@@ -188,7 +187,6 @@ export const MakeServant = async (
         servant,
         oldServant,
         church,
-        priority,
       }),
       sendSingleEmail(
         servant,
@@ -215,7 +213,7 @@ export const RemoveServant = async (
   const authToken: string = await getAuthToken()
   const authRoles = await getAuth0Roles(authToken)
   const terms = formatting(churchType, servantType)
-  const { verb, servantLower, churchLower, memberQuery, priority } = terms
+  const { verb, servantLower, churchLower, memberQuery } = terms
 
   const setUpArgs = {
     permittedRoles,
@@ -268,7 +266,6 @@ export const RemoveServant = async (
       servantType,
       servant,
       church,
-      priority,
     })
     return parseForCache(servant, church, verb, servantLower)
   }
@@ -287,7 +284,6 @@ export const RemoveServant = async (
         servantType,
         servant,
         church,
-        priority,
       }),
       // Send a Mail to That Effect
       sendSingleEmail(
@@ -331,7 +327,6 @@ export const RemoveServant = async (
       servantType,
       servant,
       church,
-      priority,
     })
     await session.executeWrite((tx) =>
       tx.run(removeMemberAuthId, {
@@ -370,7 +365,6 @@ export const RemoveServant = async (
       servantType,
       servant,
       church,
-      priority,
     })
     removeRoles(
       servant,
