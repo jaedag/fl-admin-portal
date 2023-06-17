@@ -1,98 +1,49 @@
-CREATE (day:ServiceDay)
-SET day.day = 'Sunday',
-day.dayNumber = 7
-RETURN day;
+MATCH (log:ServiceLog)
+ SET log.priority = 0
+RETURN COUNT(log);
 
-MATCH (stream:Stream)
-MATCH (day:ServiceDay)
-WHERE day.day = 'Sunday'
+MATCH (denomination:Denomination)-[:HAS_HISTORY]->(log:ServiceLog)
+ SET log.priority = 1
+RETURN COUNT(log);
 
-MERGE (stream)-[:MEETS_ON]->(day)
+MATCH (oversight:Oversight)-[:HAS_HISTORY]->(log:ServiceLog)
+ SET log.priority = 2
+RETURN COUNT(log);
 
-RETURN stream, day;
+MATCH (campus)-[:HAS_HISTORY]->(log:ServiceLog) WHERE campus:Campus OR campus:ClosedCampus
+ SET log.priority = 3
+RETURN COUNT(log);
 
-MATCH (stream:Stream) WHERE stream.name = 'Gospel Encounter' OR stream.name = 'Anagkazo Encounter'
-MATCH (stream)-[r:MEETS_ON]->(day:ServiceDay)
-DELETE r
-WITH stream
-MATCH (day:ServiceDay) WHERE day.day = 'Saturday'
-MERGE (stream)-[:MEETS_ON]->(day)
-RETURN stream, day;
+MATCH (stream)-[:HAS_HISTORY]->(log:ServiceLog) WHERE stream:Stream OR stream:ClosedStream
+ SET log.priority = 4
+RETURN COUNT(log);
 
+MATCH (council)-[:HAS_HISTORY]->(log:ServiceLog) WHERE council:Council OR council:ClosedCouncil
+ SET log.priority = 5
+RETURN COUNT(log);
 
-MATCH (oversight:Oversight)
-MATCH (jd:Member {email: "jaedagy@gmail.com"})
-MERGE (jd)-[:LEADS]->(oversight)
-RETURN oversight, jd;
+MATCH (constituency)-[:HAS_HISTORY]->(log:ServiceLog) WHERE constituency:Constituency OR constituency:ClosedConstituency
+ SET log.priority = 6
+RETURN COUNT(log);
 
-// MATCH (g:Campus)<-[r:IS_ADMIN_FOR]-(jd:Member {email: "jaedagy@gmail.com"})
-// DELETE r
+MATCH (bacenta)-[:HAS_HISTORY]->(log:ServiceLog) WHERE bacenta:Bacenta OR bacenta:ClosedBacenta
+ SET log.priority = 7
+RETURN COUNT(log);
 
-MATCH (g:Campus)
-SET g.conversionRateToDollar = 10 
-RETURN COUNT(g);
+MATCH (fellowship)-[:HAS_HISTORY]->(log:ServiceLog) WHERE fellowship:Fellowship OR fellowship:ClosedFellowship
+ SET log.priority = 8
+RETURN COUNT(log);
 
-// create a constraint so that every campus has to have the property noIncomeTracking 
-
-// constraint to remove the noIncome property from all campuses
-DROP CONSTRAINT campusNeedsNoIncome;
+CREATE CONSTRAINT serviceLogNeedsPriority ON (log:ServiceLog) ASSERT exists(log.priority);
 
 
-MATCH (g:Campus)
-WHERE g.noIncome IS NOT NULL
-SET g.noIncomeTracking = g.noIncome
-REMOVE g.noIncome
-RETURN g;
+DROP CONSTRAINT con_gathering_service_id;
+DROP CONSTRAINT gatheringServiceNeedsNoIncomeTracking;
+DROP INDEX ind_gathering_service_name;
 
-CREATE CONSTRAINT campusNeedsNoIncomeTracking IF NOT EXISTS ON (g:Campus) ASSERT exists(g.noIncomeTracking);
+CREATE INDEX ind_campus_name IF NOT EXISTS FOR (campus:Campus) ON (campus.name);
+CREATE CONSTRAINT con_campus_id ON (campus:Campus) ASSERT exists(campus.id);
 
-MATCH (member:Member) WHERE member.howYouJoined = 'Service With A Bishop'
-SET member.howYouJoined = 'Service With A Pastor'
-RETURN COUNT(member)
-
-MATCH (title:Title {name: "Bishop"})
-SET title.priority = 3
-RETURN title.name, title.priority;
-
-MATCH (title:Title {name: "Reverend"})
-SET title.priority = 2
-RETURN title.name, title.priority;
-
-MATCH (title:Title {name: "Pastor"})
-SET title.priority = 1
-RETURN title.name, title.priority;
-
-MATCH (title:Title )
-REMOVE title.weight
-RETURN COUNT(title);
-
-MATCH (stream:Stream {name: "Gospel Encounter"})
-SET stream.bankAccount = "ges_account"
-RETURN stream;
-
-MATCH (stream:Stream {name: "Anagkazo Encounter"})
-SET stream.bankAccount = "aes_account"
-RETURN stream;
-
-MATCH (stream:Stream {name: "Holy Ghost Encounter"})
-SET stream.bankAccount = "hge_account"
-RETURN stream;
-
-MATCH (stream:Stream) //WHERE stream.bankAccount IS NULL
-SET stream.bankAccount = "manual"
-RETURN stream;
-
-MATCH (stream:Stream)
-REMOVE stream.accountName
-RETURN stream;
-
-MATCH (record:ServiceRecord) WHERE record.cash IS NULL
-SET record.cash = record.income
-RETURN COUNT(record);
-
-MATCH (g:GatheringService)
-SET g:Campus
-REMOVE g:GatheringService
-RETURN COUNT(g);
-
-CREATE CONSTRAINT campusNeedsNoIncomeTracking IF NOT EXISTS ON (g:Campus) ASSERT exists(g.noIncomeTracking);
+MATCH p=(log:ServiceLog)<-[:HAS_HISTORY]-(church)
+ WHERE log.priority IS NULL
+ RETURN p LIMIT 1;
