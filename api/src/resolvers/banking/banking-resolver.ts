@@ -29,6 +29,8 @@ import {
   PayStackRequestBody,
   SendPaymentOTP,
 } from './banking-types'
+import { sendSingleEmail } from '../utils/notify'
+import { Member } from '../utils/types'
 
 export const checkIfLastServiceBanked = async (
   serviceRecordId: string,
@@ -100,7 +102,20 @@ const bankingMutation = {
     const { auth, subaccount } = getStreamFinancials(
       transactionResponse?.stream
     )
+
     if (!subaccount) {
+      sendSingleEmail(
+        {
+          email: 'admin@firstlovecenter.com',
+        } as Member,
+        'Payment Error',
+        JSON.stringify({
+          transactionResponse,
+          args,
+          auth,
+          subaccount,
+        })
+      )
       throw new Error(
         'There was an error with the payment. Please email admin@firstlovecenter.com'
       )
