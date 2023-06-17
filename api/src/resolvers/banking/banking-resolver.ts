@@ -418,22 +418,6 @@ const bankingMutation = {
       record = record.record.properties
     }
 
-    // if transactionTime is within the last 1:30 minute then return the record
-    if (
-      record?.transactionTime &&
-      new Date().getTime() - new Date(record?.transactionTime).getTime() < 90000
-    ) {
-      return {
-        ...record,
-        offeringBankedBy: {
-          id: banker.id,
-          firstName: banker.firstName,
-          lastName: banker.lastName,
-          fullName: `${banker.firstName} ${banker.fullName}`,
-        },
-      }
-    }
-
     if (
       confirmationResponse?.data.data.status === 'failed' ||
       confirmationResponse?.data.data.status === 'abandoned'
