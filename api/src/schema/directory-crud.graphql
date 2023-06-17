@@ -240,12 +240,11 @@ extend type Mutation {
       MATCH (oversight:Oversight {id: $oversightId})
 
 
-       CREATE (log:HistoryLog:ServiceLog)
+       CREATE (log:HistoryLog:ServiceLog {priority: 3})
         SET
         log.id =  apoc.create.uuid(),
         log.timeStamp = datetime(),
-        log.historyRecord =  $name +' Campus History Begins',
-        log.priority = 3
+        log.historyRecord =  $name +' Campus History Begins'
 
       MERGE (oversight)-[:HAS]->(campus)
       MERGE (leader)-[:LEADS]->(campus)
