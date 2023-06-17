@@ -149,6 +149,7 @@ export const MakeServant = async (
           args,
           church,
           oldServant,
+          priority,
         }),
       ]).then(() =>
         console.log(
@@ -214,7 +215,7 @@ export const RemoveServant = async (
   const authToken: string = await getAuthToken()
   const authRoles = await getAuth0Roles(authToken)
   const terms = formatting(churchType, servantType)
-  const { verb, servantLower, churchLower, memberQuery } = terms
+  const { verb, servantLower, churchLower, memberQuery, priority } = terms
 
   const setUpArgs = {
     permittedRoles,
@@ -267,6 +268,7 @@ export const RemoveServant = async (
       servantType,
       servant,
       church,
+      priority,
     })
     return parseForCache(servant, church, verb, servantLower)
   }
@@ -285,6 +287,7 @@ export const RemoveServant = async (
         servantType,
         servant,
         church,
+        priority,
       }),
       // Send a Mail to That Effect
       sendSingleEmail(
@@ -322,7 +325,14 @@ export const RemoveServant = async (
       `Auth0 Account successfully deleted for ${servant.firstName} ${servant.lastName}`
     )
     // Remove Auth0 ID of Leader from Neo4j DB
-    removeServantCypher({ context, churchType, servantType, servant, church })
+    removeServantCypher({
+      context,
+      churchType,
+      servantType,
+      servant,
+      church,
+      priority,
+    })
     await session.executeWrite((tx) =>
       tx.run(removeMemberAuthId, {
         log: `${servant.firstName} ${servant.lastName} was removed as a ${churchType} ${servantType}`,
@@ -354,7 +364,14 @@ export const RemoveServant = async (
     rolesToCompare.includes(`${servantLower}${churchType}`) &&
     roles.length > 1
   ) {
-    removeServantCypher({ context, churchType, servantType, servant, church })
+    removeServantCypher({
+      context,
+      churchType,
+      servantType,
+      servant,
+      church,
+      priority,
+    })
     removeRoles(
       servant,
       roles,
