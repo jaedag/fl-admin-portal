@@ -79,7 +79,8 @@ RETURN record {
 
 export const setTransactionStatusFailed = `
 MATCH (record:ServiceRecord {id: $serviceRecordId})
-SET record.transactionStatus = 'failed'
+SET record.transactionStatus = $status,
+record.transactionError = $error
 
 RETURN record
 `

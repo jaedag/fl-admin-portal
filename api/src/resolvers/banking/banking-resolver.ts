@@ -314,6 +314,8 @@ const bankingMutation = {
           .run(setTransactionStatusFailed, {
             id: args.serviceRecordId,
             reference: args.reference,
+            status: otpResponse.data.data.status,
+            error: otpResponse.data.data.gateway_response,
           })
           .catch((error: any) =>
             throwToSentry(
@@ -359,7 +361,11 @@ const bankingMutation = {
     if (!record?.transactionReference) {
       record = rearrangeCypherObject(
         await session
-          .run(setTransactionStatusFailed, args)
+          .run(setTransactionStatusFailed, {
+            ...args,
+            status: 'failed',
+            error: 'No Transaction Reference',
+          })
           .catch((error: any) =>
             throwToSentry('There was an error setting the transaction', error)
           )
@@ -398,7 +404,10 @@ const bankingMutation = {
     if (confirmationResponse?.data.data.status === 'success') {
       record = rearrangeCypherObject(
         await session
-          .run(setTransactionStatusSuccess, args)
+          .run(setTransactionStatusSuccess, {
+            ...args,
+            status: confirmationResponse?.data.data.status,
+          })
           .catch((error: any) =>
             throwToSentry(
               'There was an error setting the successful transaction',
@@ -425,10 +434,17 @@ const bankingMutation = {
       }
     }
 
-    if (confirmationResponse?.data.data.status === 'failed') {
+    if (
+      confirmationResponse?.data.data.status === 'failed' ||
+      confirmationResponse?.data.data.status === 'abandoned'
+    ) {
       record = rearrangeCypherObject(
         await session
-          .run(setTransactionStatusFailed, args)
+          .run(setTransactionStatusFailed, {
+            ...args,
+            status: confirmationResponse?.data.data.status,
+            error: confirmationResponse?.data.data.gateway_response,
+          })
           .catch((error: any) =>
             throwToSentry('There was an error setting the transaction', error)
           )

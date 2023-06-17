@@ -43,6 +43,7 @@ extend type ServiceRecord {
   transactionReference: ID
   transactionOTP: String
   transactionStatus: String
+  transactionError: String
   bankingProof: Boolean
     @cypher(
       statement: """

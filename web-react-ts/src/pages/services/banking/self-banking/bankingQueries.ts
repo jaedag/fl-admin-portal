@@ -126,6 +126,7 @@ export const SELF_BANKING_RECEIPT = gql`
       transactionReference
       transactionTime
       transactionStatus
+      transactionError
     }
   }
 `

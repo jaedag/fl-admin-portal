@@ -36,6 +36,10 @@ const ReceiptPage = () => {
     ['Time of Banking', parseNeoTime(service?.transactionTime)],
   ]
 
+  if (service?.transactionError) {
+    tablevalues.push(['Transaction Error', service?.transactionError])
+  }
+
   return (
     <ApolloWrapper data={data} loading={loading} error={error}>
       <Container>
