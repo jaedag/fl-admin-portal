@@ -15,6 +15,7 @@ SET record.sourceNumber = $mobileNumber,
     record.desc = church.name + ' ' + churchLevel + ' '  + date.date,
     record.transactionStatus = 'pending',
     record.transactionTime = datetime()
+REMOVE record.transactionError
 
 MERGE (author)<-[:OFFERING_BANKED_BY]-(record)
 
