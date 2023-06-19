@@ -299,6 +299,48 @@ export const GET_CAMPUS_STREAMS = gql`
   }
 `
 
+export const GET_DENOMINATION_OVERSIGHTS = gql`
+  query getDenominationOversights($id: ID!) {
+    denominations(where: { id: $id }) {
+      id
+      name
+      leader {
+        id
+        firstName
+        lastName
+        fullName
+      }
+      memberCount
+      admin {
+        id
+        firstName
+        lastName
+        fullName
+      }
+      oversights {
+        name
+        id
+
+        memberCount
+        councilCount
+        target
+        leader {
+          id
+          firstName
+          lastName
+          pictureUrl
+        }
+        admin {
+          id
+          firstName
+          lastName
+          fullName
+        }
+      }
+    }
+  }
+`
+
 export const GET_OVERSIGHT_CAMPUSES = gql`
   query getOversightCampuses($id: ID!) {
     oversights(where: { id: $id }) {

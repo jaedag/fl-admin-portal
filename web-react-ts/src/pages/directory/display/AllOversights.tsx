@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { useQuery } from '@apollo/client'
-import { GET_OVERSIGHT_CAMPUSES } from '../../../queries/ListQueries'
+import { GET_DENOMINATION_OVERSIGHTS } from '../../../queries/ListQueries'
 import { ChurchContext } from '../../../contexts/ChurchContext'
 import RoleView from '../../../auth/RoleView'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
@@ -10,15 +10,15 @@ import { permitAdmin } from 'permission-utils'
 import AllChurchesSummary from 'components/AllChurchesSummary'
 import ChurchSearch from 'components/ChurchSearch'
 
-const DisplayAllCampuses = () => {
-  const { clickCard, oversightId } = useContext(ChurchContext)
+const DisplayAllOversights = () => {
+  const { clickCard, denominationId } = useContext(ChurchContext)
 
-  const { data, loading, error } = useQuery(GET_OVERSIGHT_CAMPUSES, {
-    variables: { id: oversightId },
+  const { data, loading, error } = useQuery(GET_DENOMINATION_OVERSIGHTS, {
+    variables: { id: denominationId },
   })
 
-  const campuses = data?.oversights[0]?.campuses
-  const oversight = data?.oversights[0]
+  const oversights = data?.denominations[0]?.oversights
+  const denomination = data?.denominations[0]
 
   return (
     <ApolloWrapper data={data} loading={loading} error={error}>
@@ -28,55 +28,57 @@ const DisplayAllCampuses = () => {
             <Link
               to="/oversight/displaydetails"
               onClick={() => {
-                clickCard(oversight)
+                clickCard(denomination)
               }}
             >
-              <h4 className="text-white">{`${oversight?.name} Oversight`}</h4>
+              <h4 className="text-white">{`${denomination?.name} Denomination`}</h4>
             </Link>
             <Link
               to="/member/displaydetails"
               onClick={() => {
-                clickCard(oversight?.leader)
+                clickCard(denomination?.leader)
               }}
             >
               <h6 className="text-white text-small d-block ">
                 <span className="text-muted">Oversight Leader: </span>
-                {oversight?.leader ? ` ${oversight.leader.fullName}` : null}
+                {denomination?.leader
+                  ? ` ${denomination.leader.fullName}`
+                  : null}
               </h6>
             </Link>
-            {oversight?.admin ? (
+            {denomination?.admin ? (
               <Link
                 className="pb-4 text-white text-small"
                 to="/member/displaydetails"
                 onClick={() => {
-                  clickCard(oversight?.admin)
+                  clickCard(denomination?.admin)
                 }}
               >
                 <span className="text-muted">Admin :</span>{' '}
-                {`${oversight?.admin?.fullName}`}
+                {`${denomination?.admin?.fullName}`}
               </Link>
             ) : null}
           </Col>
-          <RoleView roles={permitAdmin('Oversight')} directoryLock>
+          <RoleView roles={permitAdmin('Denomination')} directoryLock>
             <Col className="col-auto">
-              <Link to="/campus/addcampus" className="btn btn-danger">
-                Add Campus
+              <Link to="/oversight/addoversight" className="btn btn-danger">
+                Add Oversight
               </Link>
             </Col>
           </RoleView>
         </Row>
 
         <AllChurchesSummary
-          church={campuses}
-          memberCount={oversight?.memberCount}
-          numberOfChurchesBelow={campuses?.length}
-          churchType="Campus"
-          route="oversight"
+          church={oversights}
+          memberCount={denomination?.memberCount}
+          numberOfChurchesBelow={oversights?.length}
+          churchType="Oversight"
+          route="denomination"
         />
-        <ChurchSearch data={campuses} churchType="Campus" />
+        <ChurchSearch data={oversights} churchType="Oversight" />
       </Container>
     </ApolloWrapper>
   )
 }
 
-export default DisplayAllCampuses
+export default DisplayAllOversights

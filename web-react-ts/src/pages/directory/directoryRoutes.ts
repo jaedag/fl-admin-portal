@@ -80,6 +80,9 @@ const DetailsMinistry = lazy(
 const DetailsFederalMinistry = lazy(
   () => import('pages/directory/display/DetailsFederalMinistry')
 )
+const DisplayAllOversights = lazy(
+  () => import('pages/directory/display/AllOversights')
+)
 const DisplayAllBacentas = lazy(
   () => import('pages/directory/display/AllBacentas')
 )
@@ -575,6 +578,12 @@ export const directory: LazyRouteTypes[] = [
     path: '/campus/displayall',
     element: DisplayAllCampuses,
     roles: permitLeaderAdmin('Oversight'),
+    placeholder: false,
+  },
+  {
+    path: '/oversight/displayall',
+    element: DisplayAllOversights,
+    roles: permitLeaderAdmin('Denomination'),
     placeholder: false,
   },
   //Creation Pages
