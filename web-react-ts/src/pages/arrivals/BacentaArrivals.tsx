@@ -160,7 +160,7 @@ const BacentaArrivals = () => {
               className={`btn-graphs ${theme}`}
               onClick={() => navigate(`/bacenta/graphs`)}
             >
-              View Graphs
+              View Last 4 Weeks
             </Button>
             <Modal
               className="arrivals-end"

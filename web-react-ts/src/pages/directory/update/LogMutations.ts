@@ -198,6 +198,7 @@ export const LOG_STREAM_HISTORY = gql`
     }
   }
 `
+
 export const LOG_CAMPUS_HISTORY = gql`
   mutation LogCampusHistory(
     $campusId: ID!
@@ -238,6 +239,48 @@ export const LOG_CAMPUS_HISTORY = gql`
     }
   }
 `
+
+export const LOG_OVERSIGHT_HISTORY = gql`
+  mutation LogOversightHistory(
+    $oversightId: ID!
+    $historyRecord: String!
+    $oldLeaderId: ID
+    $newLeaderId: ID
+    $oldDenominationId: ID
+    $newDenominationId: ID
+  ) {
+    LogCampusHistory(
+      oversightId: $oversightId
+      historyRecord: $historyRecord
+      newLeaderId: $newLeaderId
+      oldLeaderId: $oldLeaderId
+      oldDenominationId: $oldDenominationId
+      newDenominationId: $newDenominationId
+    ) {
+      id
+      name
+      leader {
+        id
+        firstName
+        lastName
+      }
+      history(limit: 5) {
+        id
+        timeStamp
+        createdAt {
+          date
+        }
+        loggedBy {
+          id
+          firstName
+          lastName
+        }
+        historyRecord
+      }
+    }
+  }
+`
+
 export const LOG_SONTA_HISTORY = gql`
   mutation LogSontaHistory(
     $sontaId: ID!

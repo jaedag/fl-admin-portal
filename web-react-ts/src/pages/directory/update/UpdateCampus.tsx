@@ -17,7 +17,7 @@ import { MAKE_CAMPUS_LEADER } from './ChangeLeaderMutations'
 import CampusForm, {
   CampusFormValues,
 } from 'pages/directory/reusable-forms/CampusForm'
-import { MAKE_STREAM_INACTIVE } from './CloseChurchMutations'
+import { MAKE_CAMPUS_INACTIVE } from './CloseChurchMutations'
 import { addNewChurches, removeOldChurches } from './directory-utils'
 import { FormikHelpers } from 'formik'
 import LoadingScreen from 'components/base-component/LoadingScreen'
@@ -98,7 +98,7 @@ const UpdateCampus = () => {
       })
     },
   })
-  const [CloseDownStream] = useMutation(MAKE_STREAM_INACTIVE)
+  const [CloseDownStream] = useMutation(MAKE_CAMPUS_INACTIVE)
 
   //Changes upwards. it. Changes to the Oversight the Campus Campus is under
   const [RemoveCampusOversight] = useMutation(REMOVE_CAMPUS_OVERSIGHT)

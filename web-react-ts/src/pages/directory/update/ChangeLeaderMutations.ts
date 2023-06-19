@@ -296,7 +296,42 @@ export const MAKE_CAMPUS_LEADER = gql`
       id
       firstName
       lastName
-      leadsStream {
+      leadsCampus {
+        id
+        leader {
+          id
+          firstName
+          lastName
+        }
+      }
+    }
+  }
+`
+
+export const MAKE_OVERSIGHT_LEADER = gql`
+  mutation MakeOversightLeader(
+    $oversightId: ID!
+    $newLeaderId: ID!
+    $oldLeaderId: ID!
+  ) {
+    RemoveOversightLeader(
+      oversightId: $oversightId
+      leaderId: $oldLeaderId
+      newLeaderId: $newLeaderId
+    ) {
+      id
+      firstName
+      lastName
+    }
+    MakeOversightLeader(
+      oversightId: $oversightId
+      leaderId: $newLeaderId
+      oldLeaderId: $oldLeaderId
+    ) {
+      id
+      firstName
+      lastName
+      leadsOversight {
         id
         leader {
           id

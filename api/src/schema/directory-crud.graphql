@@ -929,4 +929,32 @@ extend type Mutation {
       RETURN oversight
       """
     )
+
+  CloseDownOversight(oversightId: ID!): Denomination!
+    @cypher(
+      statement: """
+      MATCH (oversight:Oversight {id: $oversightId})<-[:HAS]-( denomination:Denomination)
+
+      WITH oversight, denomination 
+      CREATE (log:HistoryLog {id:apoc.create.uuid()})
+        SET log.timeStamp = datetime(),
+        log.historyRecord = oversight.name + ' oversight was closed down under ' +  denomination.name + ' Denomination'
+
+      WITH oversight, denomination, log
+      MATCH (admin:Active:Member {auth_id: $auth.jwt.sub})
+      OPTIONAL MATCH (oversight)-[:HAS]->(campus)-[:HAS]->(stream)-[:HAS]->(council)-[:HAS]->(constituencies)-[:HAS]->(bacentas)-[:HAS]->(fellowships)
+
+
+      MERGE (date:TimeGraph {date:date()})
+      MERGE (log)-[:LOGGED_BY]->(admin)
+      MERGE (log)-[:RECORDED_ON]->(date)
+      MERGE (oversight)-[:HAS_HISTORY]->(log)
+      MERGE (denomination)-[:HAS_HISTORY]->(log)
+
+      SET oversight:ClosedOversight, stream:ClosedStream, council:ClosedCouncil, constituencies:Closedconstituency, bacentas:ClosedBacenta, fellowships:ClosedFellowship
+      REMOVE oversight:ClosedOversight, stream:Stream, council:Council, constituencies:Constituency,bacentas:Bacenta,fellowships:Fellowship
+
+      RETURN denomination 
+      """
+    )
 }

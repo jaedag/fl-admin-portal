@@ -165,6 +165,9 @@ const CreateOversight = lazy(
 )
 const UpdateStream = lazy(() => import('pages/directory/update/UpdateStream'))
 const UpdateCampus = lazy(() => import('pages/directory/update/UpdateCampus'))
+const UpdateOversight = lazy(
+  () => import('pages/directory/update/UpdateOversight')
+)
 const CampusMembers = lazy(() => import('pages/directory/grids/CampusMembers'))
 const OversightMembers = lazy(
   () => import('pages/directory/grids/OversightMembers')
@@ -697,6 +700,12 @@ export const directory: LazyRouteTypes[] = [
   {
     path: '/campus/editcampus',
     element: UpdateCampus,
+    roles: permitAdmin('Oversight'),
+    placeholder: false,
+  },
+  {
+    path: '/oversight/editoversight',
+    element: UpdateOversight,
     roles: permitAdmin('Oversight'),
     placeholder: false,
   },

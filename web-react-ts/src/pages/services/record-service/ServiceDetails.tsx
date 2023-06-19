@@ -243,7 +243,7 @@ const ServiceDetails = ({ service, church, loading }: ServiceDetailsProps) => {
                       navigate(`/${church?.__typename.toLowerCase()}/graphs`)
                     }}
                   >
-                    View Graphs
+                    View Last 4 Weeks
                   </Button>
                 </div>
               </div>

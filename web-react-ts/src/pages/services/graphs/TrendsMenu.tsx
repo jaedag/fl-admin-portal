@@ -27,7 +27,7 @@ const TrendsMenu = () => {
         <div className="d-grid gap-2 mt-5 text-left">
           <MenuButton
             iconComponent={Charts}
-            title="Graphs"
+            title="Last 4 Weeks"
             color="members"
             onClick={() => navigate(`/${churchType.toLowerCase()}/graphs`)}
             caption={'Income and Attendance Graphs'}

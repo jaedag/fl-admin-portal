@@ -113,6 +113,33 @@ export const MAKE_CAMPUS_INACTIVE = gql`
   }
 `
 
+export const MAKE_OVERSIGHT_INACTIVE = gql`
+  mutation CloseDownOversight($id: ID!) {
+    CloseDownOversight(oversightId: $id) {
+      id
+      name
+
+      oversights {
+        id
+      }
+
+      history(limit: 5) {
+        id
+        timeStamp
+        createdAt {
+          date
+        }
+        loggedBy {
+          id
+          firstName
+          lastName
+        }
+        historyRecord
+      }
+    }
+  }
+`
+
 export const MAKE_SONTA_INACTIVE = gql`
   mutation CloseDownSonta($leaderId: ID!, $sontaId: ID!) {
     closeDownSonta(leaderId: $leaderId, sontaId: $sontaId) {
