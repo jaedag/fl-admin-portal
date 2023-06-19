@@ -124,7 +124,7 @@ export const GET_SERVANT_MEMBERS = gql`
   }
 `
 
-export const GET_GATHERING_SERVICE_MEMBERS = gql`
+export const GET_CAMPUS_MEMBERS = gql`
   query getGatheringMembers($id: ID!) {
     campuses(where: { id: $id }) {
       id

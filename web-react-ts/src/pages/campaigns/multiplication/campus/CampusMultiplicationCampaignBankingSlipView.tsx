@@ -3,13 +3,13 @@ import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { ChurchContext } from 'contexts/ChurchContext'
 import React, { useContext } from 'react'
 import MultiplicationCampaignBankingSlipView from '../MultiplicationCampaignBankingSlipView'
-import { GATHERING_SERVICE_MULTIPLICATION_BANKING_SLIP_QUERY } from '../MultiplicationQueries'
+import { CAMPUS_MULTIPLICATION_BANKING_SLIP_QUERY } from '../MultiplicationQueries'
 
 const CampusMultiplicationCampaignBankingSlipView = () => {
   const { campusId } = useContext(ChurchContext)
 
   const { data, loading, error } = useQuery(
-    GATHERING_SERVICE_MULTIPLICATION_BANKING_SLIP_QUERY,
+    CAMPUS_MULTIPLICATION_BANKING_SLIP_QUERY,
     {
       variables: { campusId: campusId },
     }

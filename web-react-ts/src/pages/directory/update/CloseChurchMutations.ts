@@ -86,7 +86,7 @@ export const MAKE_STREAM_INACTIVE = gql`
     }
   }
 `
-export const MAKE_GATHERING_SERVICE_INACTIVE = gql`
+export const MAKE_CAMPUS_INACTIVE = gql`
   mutation CloseDownCampus($id: ID!) {
     CloseDownCampus(campusId: $id) {
       id

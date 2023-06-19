@@ -9,7 +9,7 @@ import FloatingLabelFormControl from 'pages/campaigns/components/inputs/Floating
 import React, { useContext, useEffect } from 'react'
 import { Container, Row, Col } from 'react-bootstrap'
 import { Check2Circle } from 'react-bootstrap-icons'
-import { GATHERING_SERVICE_STAT_FOR_YEAR_TILL_DATE } from '../ShepherdingControlQueries'
+import { CAMPUS_STAT_FOR_YEAR_TILL_DATE } from '../ShepherdingControlQueries'
 import * as Yup from 'yup'
 
 type FormOptions = {
@@ -30,7 +30,7 @@ const CampusShepherdingControlYearTillDate = () => {
   }
 
   const [campusStatForYearTillDate, { data, loading, error }] = useLazyQuery(
-    GATHERING_SERVICE_STAT_FOR_YEAR_TILL_DATE
+    CAMPUS_STAT_FOR_YEAR_TILL_DATE
   )
 
   const onSubmit = (

@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client'
 
-export const GATHERING_SERVICE_STAT_FOR_YEAR_TILL_DATE = gql`
+export const CAMPUS_STAT_FOR_YEAR_TILL_DATE = gql`
   query campusStatForYearTillDate(
     $campusId: ID
     $startDate: String!

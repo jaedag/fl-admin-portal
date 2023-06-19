@@ -138,7 +138,7 @@ export const STREAM_AVG_WEEKDAY_STATS = gql`
   }
 `
 
-export const GATHERING_SERVICE_AVG_WEEKDAY_STATS = gql`
+export const CAMPUS_AVG_WEEKDAY_STATS = gql`
   query campusAvgWeekdayStats($campusId: ID, $days: Int!) {
     campuses(where: { id: $campusId }) {
       id

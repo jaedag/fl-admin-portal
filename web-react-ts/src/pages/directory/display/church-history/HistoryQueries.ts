@@ -134,7 +134,7 @@ export const FELLOWSHIP_HISTORY = gql`
     }
   }
 `
-export const GATHERING_SERVICE_HISTORY = gql`
+export const CAMPUS_HISTORY = gql`
   query CampusHistory($id: ID!) {
     campuses(where: { id: $id }) {
       id

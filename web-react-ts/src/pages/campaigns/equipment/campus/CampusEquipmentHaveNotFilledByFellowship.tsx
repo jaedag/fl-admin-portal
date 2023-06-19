@@ -6,7 +6,7 @@ import DefaultersCard, {
 import React, { useContext } from 'react'
 import { Container, Row } from 'react-bootstrap'
 import { useQuery } from '@apollo/client'
-import { GATHERING_SERVICE_EQUIPMENT_DEFAULTERS_LIST_BY_FELLOWSHIP } from 'pages/campaigns/CampaignQueries'
+import { CAMPUS_EQUIPMENT_DEFAULTERS_LIST_BY_FELLOWSHIP } from 'pages/campaigns/CampaignQueries'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import HeadingSecondary from 'components/HeadingSecondary'
@@ -19,7 +19,7 @@ const CampusEquipmentHaveNotFilledByFellowship = () => {
   const { campusId } = useContext(ChurchContext)
 
   const { data, loading, error, refetch } = useQuery(
-    GATHERING_SERVICE_EQUIPMENT_DEFAULTERS_LIST_BY_FELLOWSHIP,
+    CAMPUS_EQUIPMENT_DEFAULTERS_LIST_BY_FELLOWSHIP,
     {
       variables: {
         campusId: campusId,

@@ -1,12 +1,12 @@
 import React, { useContext } from 'react'
 import { useQuery } from '@apollo/client'
 import MembersGrid from '../../../components/members-grids/MembersGrid'
-import { GET_GATHERING_SERVICE_MEMBERS } from './GridQueries'
+import { GET_CAMPUS_MEMBERS } from './GridQueries'
 import { ChurchContext } from '../../../contexts/ChurchContext'
 
 const CampusMembers = () => {
   const { campusId } = useContext(ChurchContext)
-  const { data, loading, error } = useQuery(GET_GATHERING_SERVICE_MEMBERS, {
+  const { data, loading, error } = useQuery(GET_CAMPUS_MEMBERS, {
     variables: { id: campusId },
   })
 

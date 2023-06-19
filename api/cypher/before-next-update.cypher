@@ -37,9 +37,9 @@ RETURN COUNT(log);
 CREATE CONSTRAINT serviceLogNeedsPriority ON (log:ServiceLog) ASSERT exists(log.priority);
 
 
-DROP CONSTRAINT con_gathering_service_id;
+DROP CONSTRAINT con_campus_id;
 DROP CONSTRAINT gatheringServiceNeedsNoIncomeTracking;
-DROP INDEX ind_gathering_service_name;
+DROP INDEX ind_campus_name;
 
 CREATE INDEX ind_campus_name IF NOT EXISTS FOR (campus:Campus) ON (campus.name);
 CREATE CONSTRAINT con_campus_id ON (campus:Campus) ASSERT exists(campus.id);

@@ -101,7 +101,7 @@ export const MAKE_STREAM_ADMIN = gql`
   }
 `
 
-export const MAKE_GATHERING_SERVICE_ADMIN = gql`
+export const MAKE_CAMPUS_ADMIN = gql`
   mutation MakeCampusAdmin($campusId: ID!, $newAdminId: ID!, $oldAdminId: ID!) {
     RemoveCampusAdmin(
       campusId: $campusId

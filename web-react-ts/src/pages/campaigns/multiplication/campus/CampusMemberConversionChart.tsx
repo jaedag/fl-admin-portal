@@ -4,7 +4,7 @@ import { Container } from 'react-bootstrap'
 import MemberConversionChart from '../MemberConversionChart'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { useQuery } from '@apollo/client'
-import { GATHERING_SERVICE_AGGREGATE_MEMBER_CONVERSION } from '../MultiplicationQueries'
+import { CAMPUS_AGGREGATE_MEMBER_CONVERSION } from '../MultiplicationQueries'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 
@@ -12,7 +12,7 @@ const CampusMemberConversionChart = () => {
   const { campusId } = useContext(ChurchContext)
 
   const { data, loading, error } = useQuery(
-    GATHERING_SERVICE_AGGREGATE_MEMBER_CONVERSION,
+    CAMPUS_AGGREGATE_MEMBER_CONVERSION,
     {
       variables: {
         campusId: campusId,

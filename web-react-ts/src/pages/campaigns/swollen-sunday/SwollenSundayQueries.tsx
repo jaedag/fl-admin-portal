@@ -92,7 +92,7 @@ export const STREAM_SWOLLEN_DETAILS = gql`
   }
 `
 
-export const GATHERING_SERVICE = gql`
+export const CAMPUS = gql`
   query campus($campusId: ID!) {
     campuses(where: { id: $campusId }) {
       id
@@ -144,7 +144,7 @@ export const CONSTITUENCY_SWOLLEN_DETAILS = gql`
   }
 `
 
-export const GATHERING_SERVICE_SWOLLEN_SUNDAY_GRAPHS = gql`
+export const CAMPUS_SWOLLEN_SUNDAY_GRAPHS = gql`
   query campusSwollenSundayGraphs(
     $campusId: ID!
     $startDate: String!
@@ -173,7 +173,7 @@ export const GATHERING_SERVICE_SWOLLEN_SUNDAY_GRAPHS = gql`
   }
 `
 
-export const GATHERING_SERVICE_SWOLLEN_DETAILS = gql`
+export const CAMPUS_SWOLLEN_DETAILS = gql`
   query campusSwollenDetails($campusId: ID!) {
     campuses(where: { id: $campusId }) {
       id

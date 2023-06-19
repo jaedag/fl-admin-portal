@@ -4,7 +4,7 @@ import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import HeadingSecondary from 'components/HeadingSecondary'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { MemberContext } from 'contexts/MemberContext'
-import { GATHERING_SERVICE_BY_STREAM_EQUIPMENT_DEFAULTERS } from 'pages/campaigns/CampaignQueries'
+import { CAMPUS_BY_STREAM_EQUIPMENT_DEFAULTERS } from 'pages/campaigns/CampaignQueries'
 import DefaulterDetailsCard, {
   EquipmentDefaulters,
 } from 'pages/campaigns/components/cards/DefaulterDetailsCard'
@@ -18,7 +18,7 @@ const CampusByStreamEquipmentDefaulters = () => {
   const { campusId } = useContext(ChurchContext)
 
   const { data, loading, error } = useQuery(
-    GATHERING_SERVICE_BY_STREAM_EQUIPMENT_DEFAULTERS,
+    CAMPUS_BY_STREAM_EQUIPMENT_DEFAULTERS,
     {
       variables: {
         campusId: campusId,

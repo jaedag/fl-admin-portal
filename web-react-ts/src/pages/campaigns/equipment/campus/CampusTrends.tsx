@@ -3,7 +3,7 @@ import { Container } from 'react-bootstrap'
 import TrendsButton from '../../components/buttons/TrendsButton'
 import { MemberContext } from 'contexts/MemberContext'
 import { useQuery } from '@apollo/client'
-import { GATHERING_SERVICE_TRENDS } from '../../CampaignQueries'
+import { CAMPUS_TRENDS } from '../../CampaignQueries'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { useNavigate } from 'react-router'
@@ -17,7 +17,7 @@ const CampusTrends = () => {
 
   const church = currentUser.currentChurch
 
-  const { data, loading, error } = useQuery(GATHERING_SERVICE_TRENDS, {
+  const { data, loading, error } = useQuery(CAMPUS_TRENDS, {
     variables: { campusId: campusId },
   })
   const campuses = data?.campuses[0]

@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { Container } from 'react-bootstrap'
 import { useQuery } from '@apollo/client'
-import { GATHERING_SERVICE_BY_STREAM } from '../../CampaignQueries'
+import { CAMPUS_BY_STREAM } from '../../CampaignQueries'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { useNavigate } from 'react-router'
@@ -14,7 +14,7 @@ const CampusByStream = () => {
   const { campusId, clickCard } = useContext(ChurchContext)
   const navigate = useNavigate()
 
-  const { data, loading, error } = useQuery(GATHERING_SERVICE_BY_STREAM, {
+  const { data, loading, error } = useQuery(CAMPUS_BY_STREAM, {
     variables: { campusId: campusId },
   })
   const streams = data?.campuses[0]?.streams

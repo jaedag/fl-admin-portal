@@ -3,7 +3,7 @@ import '../QuickFacts.css'
 import { useQuery } from '@apollo/client'
 import { ChurchContext } from 'contexts/ChurchContext'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
-import { GATHERING_SERVICE_AVG_WEEKDAY_STATS } from '../QuickFactsQueries'
+import { CAMPUS_AVG_WEEKDAY_STATS } from '../QuickFactsQueries'
 import QuickFactsHeader from '../components/QuickFactsHeader'
 import QuickFactsSlider from '../components/QuickFactsSlider'
 import PlaceholderCustom from 'components/Placeholder'
@@ -15,12 +15,9 @@ const CampusAvgWeekdayQuickFacts = () => {
   const { campusId } = useContext(ChurchContext)
   const { currentUser } = useContext(MemberContext)
 
-  const { data, loading, error } = useQuery(
-    GATHERING_SERVICE_AVG_WEEKDAY_STATS,
-    {
-      variables: { campusId: campusId, days: 30 },
-    }
-  )
+  const { data, loading, error } = useQuery(CAMPUS_AVG_WEEKDAY_STATS, {
+    variables: { campusId: campusId, days: 30 },
+  })
 
   const campus = data?.campuses[0]
   const leadersName = `${campus?.leader?.firstName} ${campus?.leader?.lastName}`

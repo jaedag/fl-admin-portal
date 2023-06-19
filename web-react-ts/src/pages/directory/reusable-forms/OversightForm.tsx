@@ -9,7 +9,7 @@ import { ChurchContext } from 'contexts/ChurchContext'
 import { arrayError } from 'components/formik/formik-utils'
 import PlusSign from 'components/buttons/PlusMinusSign/PlusSign'
 import MinusSign from 'components/buttons/PlusMinusSign/MinusSign'
-import { MAKE_GATHERING_SERVICE_INACTIVE } from 'pages/directory/update/CloseChurchMutations'
+import { MAKE_CAMPUS_INACTIVE } from 'pages/directory/update/CloseChurchMutations'
 import { useNavigate } from 'react-router'
 import Popup from 'components/Popup/Popup'
 import RoleView from 'auth/RoleView'
@@ -55,7 +55,7 @@ const OversightForm = ({
   const navigate = useNavigate()
   const { data, loading, error } = useQuery(GET_DENOMINATIONS)
   const [buttonLoading, setButtonLoading] = useState(false)
-  const [CloseDownOversight] = useMutation(MAKE_GATHERING_SERVICE_INACTIVE)
+  const [CloseDownOversight] = useMutation(MAKE_CAMPUS_INACTIVE)
 
   const denominationOptions = makeSelectOptions(data?.denominations)
   const validationSchema = Yup.object({

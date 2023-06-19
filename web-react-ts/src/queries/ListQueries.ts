@@ -157,7 +157,7 @@ export const GET_COUNCIL_CONSTITUENCIES = gql`
     }
   }
 `
-export const GET_GATHERING_SERVICE_CONSTITUENCIES = gql`
+export const GET_CAMPUS_CONSTITUENCIES = gql`
   query getGatheringConstituencies($id: ID!) {
     campuses(where: { id: $id }) {
       id

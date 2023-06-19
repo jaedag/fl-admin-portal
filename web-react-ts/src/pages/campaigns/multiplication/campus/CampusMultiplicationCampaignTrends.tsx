@@ -8,7 +8,7 @@ import { useQuery } from '@apollo/client'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { getServiceGraphData } from 'pages/services/graphs/graphs-utils'
 import MultiplicationCampaignServiceTrends from '../MultiplicationCampaignServiceTrends'
-import { GATHERING_SERVICE_MULTIPLICATION_GRAPHS } from '../MultiplicationQueries'
+import { CAMPUS_MULTIPLICATION_GRAPHS } from '../MultiplicationQueries'
 
 const CampusMultiplicationCampaignTrends = () => {
   const { currentUser } = useContext(MemberContext)
@@ -17,21 +17,18 @@ const CampusMultiplicationCampaignTrends = () => {
   const { campusId } = useContext(ChurchContext)
 
   const [churchData, setChurchData] = useState<any[] | undefined>([])
-  const { data, loading, error } = useQuery(
-    GATHERING_SERVICE_MULTIPLICATION_GRAPHS,
-    {
-      variables: {
-        campusId,
-      },
-      onCompleted: (data) => {
-        if (!setChurchData) return
-        setChurchData(
-          getServiceGraphData(data?.campuses[0], 'multiplicationAggregate')
-        )
-      },
-      fetchPolicy: 'cache-and-network',
-    }
-  )
+  const { data, loading, error } = useQuery(CAMPUS_MULTIPLICATION_GRAPHS, {
+    variables: {
+      campusId,
+    },
+    onCompleted: (data) => {
+      if (!setChurchData) return
+      setChurchData(
+        getServiceGraphData(data?.campuses[0], 'multiplicationAggregate')
+      )
+    },
+    fetchPolicy: 'cache-and-network',
+  })
 
   const church = data?.campuses[0]
 

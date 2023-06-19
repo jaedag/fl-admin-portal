@@ -6,11 +6,11 @@ import { Container } from 'react-bootstrap'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { useQuery } from '@apollo/client'
 import Timeline from 'components/Timeline/Timeline'
-import { GATHERING_SERVICE_HISTORY } from './HistoryQueries'
+import { CAMPUS_HISTORY } from './HistoryQueries'
 
 function CampusHistory() {
   const { campusId } = useContext(ChurchContext)
-  const { data, loading, error } = useQuery(GATHERING_SERVICE_HISTORY, {
+  const { data, loading, error } = useQuery(CAMPUS_HISTORY, {
     variables: { id: campusId },
   })
 

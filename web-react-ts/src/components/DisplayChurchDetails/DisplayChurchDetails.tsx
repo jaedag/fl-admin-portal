@@ -14,7 +14,7 @@ import * as Yup from 'yup'
 import Popup from '../Popup/Popup'
 import { useMutation } from '@apollo/client'
 import {
-  MAKE_GATHERING_SERVICE_ADMIN,
+  MAKE_CAMPUS_ADMIN,
   MAKE_CONSTITUENCY_ADMIN,
   MAKE_COUNCIL_ADMIN,
   MAKE_STREAM_ADMIN,
@@ -120,7 +120,7 @@ const DisplayChurchDetails = (props: DisplayChurchDetailsProps) => {
   const [MakeConstituencyAdmin] = useMutation(MAKE_CONSTITUENCY_ADMIN)
   const [MakeCouncilAdmin] = useMutation(MAKE_COUNCIL_ADMIN)
   const [MakeStreamAdmin] = useMutation(MAKE_STREAM_ADMIN)
-  const [MakeCampusAdmin] = useMutation(MAKE_GATHERING_SERVICE_ADMIN)
+  const [MakeCampusAdmin] = useMutation(MAKE_CAMPUS_ADMIN)
 
   const initialValues: FormOptions = {
     adminName: props.admin

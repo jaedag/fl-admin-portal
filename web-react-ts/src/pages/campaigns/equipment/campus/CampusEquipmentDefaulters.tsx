@@ -5,7 +5,7 @@ import { MemberContext } from 'contexts/MemberContext'
 import { useNavigate } from 'react-router'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { useQuery } from '@apollo/client'
-import { GATHERING_SERVICE_EQUIPMENT_DEFAULTERS_NUMBER_BY_CONSTITUENCY_AND_FELLOWSHIP } from 'pages/campaigns/CampaignQueries'
+import { CAMPUS_EQUIPMENT_DEFAULTERS_NUMBER_BY_CONSTITUENCY_AND_FELLOWSHIP } from 'pages/campaigns/CampaignQueries'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import HeadingSecondary from 'components/HeadingSecondary'
@@ -21,7 +21,7 @@ const CampusEquipmentDefaulters = () => {
   const { campusId, clickCard } = useContext(ChurchContext)
 
   const { data, loading, error } = useQuery(
-    GATHERING_SERVICE_EQUIPMENT_DEFAULTERS_NUMBER_BY_CONSTITUENCY_AND_FELLOWSHIP,
+    CAMPUS_EQUIPMENT_DEFAULTERS_NUMBER_BY_CONSTITUENCY_AND_FELLOWSHIP,
     {
       variables: {
         campusId: campusId,

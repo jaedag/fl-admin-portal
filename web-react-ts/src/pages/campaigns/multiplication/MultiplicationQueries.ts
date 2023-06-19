@@ -102,7 +102,7 @@ export const CONSTITUENCY_MULTIPLICATION_GRAPHS = gql`
   }
 `
 
-export const GATHERING_SERVICE_MULTIPLICATION_GRAPHS = gql`
+export const CAMPUS_MULTIPLICATION_GRAPHS = gql`
   query CampusServiceMultiplicationGraphs($campusId: ID!) {
     campuses(where: { id: $campusId }) {
       id
@@ -211,7 +211,7 @@ export const MULTIPLICATION_BANKING_SLIP_SUBMISSION = gql`
   }
 `
 
-export const GATHERING_SERVICE_MULTIPLICATION_BANKING_SLIP_QUERY = gql`
+export const CAMPUS_MULTIPLICATION_BANKING_SLIP_QUERY = gql`
   query campusMultiplicationBankingSlipQueries($campusId: ID!) {
     campuses(where: { id: $campusId }) {
       id
@@ -319,7 +319,7 @@ export const CONSTITUENCY_MULTIPLICATION_BANKING_SLIP_QUERY = gql`
   }
 `
 
-export const GATHERING_SERVICE_AGGREGATE_MEMBER_CONVERSION = gql`
+export const CAMPUS_AGGREGATE_MEMBER_CONVERSION = gql`
   query campusAggregateMemberConversion($campusId: ID!) {
     campuses(where: { id: $campusId }) {
       id

@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client'
 
 //Campus Queries and Mutations
-export const GATHERING_SERVICE_CAMPAIGN_LIST = gql`
+export const CAMPUS_CAMPAIGN_LIST = gql`
   query campusCampaigns($campusId: ID) {
     campuses(where: { id: $campusId }) {
       id
@@ -11,7 +11,7 @@ export const GATHERING_SERVICE_CAMPAIGN_LIST = gql`
   }
 `
 
-export const GATHERING_SERVICE_TRENDS = gql`
+export const CAMPUS_TRENDS = gql`
   query campusTrends($campusId: ID) {
     campuses(where: { id: $campusId }) {
       id
@@ -28,7 +28,7 @@ export const GATHERING_SERVICE_TRENDS = gql`
   }
 `
 
-export const GATHERING_SERVICE_BY_STREAM = gql`
+export const CAMPUS_BY_STREAM = gql`
   query equipmentCampusByStream($campusId: ID) {
     campuses(where: { id: $campusId }) {
       id
@@ -73,7 +73,7 @@ export const EQUIPMENT_END_DATE = gql`
   }
 `
 
-export const GATHERING_SERVICE_EQUIPMENT_DEFAULTERS_NUMBER_BY_CONSTITUENCY_AND_FELLOWSHIP = gql`
+export const CAMPUS_EQUIPMENT_DEFAULTERS_NUMBER_BY_CONSTITUENCY_AND_FELLOWSHIP = gql`
   query campusEquipmentDefaultersNumberByConstituencyAndFellowship(
     $campusId: ID
   ) {
@@ -90,7 +90,7 @@ export const GATHERING_SERVICE_EQUIPMENT_DEFAULTERS_NUMBER_BY_CONSTITUENCY_AND_F
   }
 `
 
-export const GATHERING_SERVICE_BY_STREAM_EQUIPMENT_DEFAULTERS = gql`
+export const CAMPUS_BY_STREAM_EQUIPMENT_DEFAULTERS = gql`
   query equipmentCampusByStreamDefaulters($campusId: ID) {
     campuses(where: { id: $campusId }) {
       id
@@ -116,7 +116,7 @@ export const GATHERING_SERVICE_BY_STREAM_EQUIPMENT_DEFAULTERS = gql`
   }
 `
 
-export const GATHERING_SERVICE_EQUIPMENT_DEFAULTERS_LIST_BY_CONSTITUENCY = gql`
+export const CAMPUS_EQUIPMENT_DEFAULTERS_LIST_BY_CONSTITUENCY = gql`
   query equipmentCampusDefaultersByConstituency($campusId: ID) {
     campuses(where: { id: $campusId }) {
       id
@@ -135,7 +135,7 @@ export const GATHERING_SERVICE_EQUIPMENT_DEFAULTERS_LIST_BY_CONSTITUENCY = gql`
   }
 `
 
-export const GATHERING_SERVICE_EQUIPMENT_DEFAULTERS_LIST_BY_FELLOWSHIP = gql`
+export const CAMPUS_EQUIPMENT_DEFAULTERS_LIST_BY_FELLOWSHIP = gql`
   query equipmentCampusDefaultersByFellowship($campusId: ID) {
     campuses(where: { id: $campusId }) {
       id

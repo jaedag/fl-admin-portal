@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { Container } from 'react-bootstrap'
 import { useQuery } from '@apollo/client'
-import { GATHERING_SERVICE_CAMPAIGN_LIST } from './CampaignQueries'
+import { CAMPUS_CAMPAIGN_LIST } from './CampaignQueries'
 import { ChurchContext } from 'contexts/ChurchContext'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
@@ -11,7 +11,7 @@ import CampaignsWithIcons from './components/buttons/CampaignsWithIcons'
 const CampusCampaigns = () => {
   const { campusId } = useContext(ChurchContext)
 
-  const { data, loading, error } = useQuery(GATHERING_SERVICE_CAMPAIGN_LIST, {
+  const { data, loading, error } = useQuery(CAMPUS_CAMPAIGN_LIST, {
     variables: { campusId: campusId },
   })
 

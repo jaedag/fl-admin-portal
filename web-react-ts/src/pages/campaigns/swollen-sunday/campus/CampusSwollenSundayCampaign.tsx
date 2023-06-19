@@ -3,12 +3,12 @@ import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { useContext } from 'react'
 import SwollenSundayLandingPage from '../SwollenSundayLandingPage'
-import { GATHERING_SERVICE } from '../SwollenSundayQueries'
+import { CAMPUS } from '../SwollenSundayQueries'
 
 const CampusSwollenSundayCampaign = () => {
   const { campusId } = useContext(ChurchContext)
 
-  const { data, loading, error } = useQuery(GATHERING_SERVICE, {
+  const { data, loading, error } = useQuery(CAMPUS, {
     variables: {
       campusId: campusId,
     },

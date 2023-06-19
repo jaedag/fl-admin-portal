@@ -12,8 +12,8 @@ import { Col, Container, Row } from 'react-bootstrap'
 import { Check2Circle } from 'react-bootstrap-icons'
 import { useNavigate } from 'react-router'
 import {
-  GATHERING_SERVICE_SWOLLEN_DETAILS,
-  GATHERING_SERVICE_SWOLLEN_SUNDAY_GRAPHS,
+  CAMPUS_SWOLLEN_DETAILS,
+  CAMPUS_SWOLLEN_SUNDAY_GRAPHS,
 } from '../SwollenSundayQueries'
 import SwollenSundayTrends from '../SwollenSundayTrends'
 import * as Yup from 'yup'
@@ -39,14 +39,14 @@ const CampusSwollenSundayTrends = () => {
     data: campusData,
     loading: campusLoading,
     error: campusError,
-  } = useQuery(GATHERING_SERVICE_SWOLLEN_DETAILS, {
+  } = useQuery(CAMPUS_SWOLLEN_DETAILS, {
     variables: {
       campusId,
     },
   })
 
   const [campusSwollenSundayGraph, { loading }] = useLazyQuery(
-    GATHERING_SERVICE_SWOLLEN_SUNDAY_GRAPHS,
+    CAMPUS_SWOLLEN_SUNDAY_GRAPHS,
     {
       onCompleted: (data) => {
         if (!setChurchData) return

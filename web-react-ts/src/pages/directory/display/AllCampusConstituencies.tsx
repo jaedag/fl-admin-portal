@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { useQuery } from '@apollo/client'
-import { GET_GATHERING_SERVICE_CONSTITUENCIES } from '../../../queries/ListQueries'
+import { GET_CAMPUS_CONSTITUENCIES } from '../../../queries/ListQueries'
 import { ChurchContext } from '../../../contexts/ChurchContext'
 import RoleView from '../../../auth/RoleView'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
@@ -13,12 +13,9 @@ import ChurchSearch from 'components/ChurchSearch'
 const AllCampusConstituencies = () => {
   const { clickCard, campusId } = useContext(ChurchContext)
 
-  const { data, loading, error } = useQuery(
-    GET_GATHERING_SERVICE_CONSTITUENCIES,
-    {
-      variables: { id: campusId },
-    }
-  )
+  const { data, loading, error } = useQuery(GET_CAMPUS_CONSTITUENCIES, {
+    variables: { id: campusId },
+  })
 
   const constituencies = data?.campuses[0].constituencies
   const campus = data?.campuses[0]
