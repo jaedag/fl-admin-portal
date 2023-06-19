@@ -137,6 +137,9 @@ const DetailsCampus = lazy(
 const DetailsOversight = lazy(
   () => import('pages/directory/display/DetailsOversight')
 )
+const DetailsDenomination = lazy(
+  () => import('pages/directory/display/DetailsDenomination')
+)
 const DisplayAllCouncils = lazy(
   () => import('pages/directory/display/AllCouncils')
 )
@@ -437,6 +440,12 @@ export const directory: LazyRouteTypes[] = [
     path: '/oversight/displaydetails',
     element: DetailsOversight,
     roles: permitMe('Oversight'),
+    placeholder: false,
+  },
+  {
+    path: '/denomination/displaydetails',
+    element: DetailsDenomination,
+    roles: permitMe('Denomination'),
     placeholder: false,
   },
   {

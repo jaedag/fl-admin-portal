@@ -658,6 +658,60 @@ export const DISPLAY_FEDERAL_MINISTRY = gql`
   }
 `
 
+export const DISPLAY_DENOMINATION = gql`
+  query displayDenomination($id: ID!) {
+    denominations(where: { id: $id }, options: { limit: 1 }) {
+      id
+      name
+      campusCount
+      streamCount
+      councilCount
+      constituencyCount
+      activeBacentaCount
+      activeFellowshipCount
+      memberCount
+      pastorCount
+      vacationBacentaCount
+      vacationFellowshipCount
+
+      oversights {
+        id
+        name
+      }
+      admin {
+        id
+        firstName
+        lastName
+        fullName
+        stream_name
+      }
+      leader {
+        id
+        firstName
+        lastName
+        fullName
+        currentTitle
+        nameWithTitle
+        pictureUrl
+      }
+      history(limit: 5) {
+        id
+        timeStamp
+        createdAt {
+          date
+        }
+        loggedBy {
+          id
+          firstName
+          lastName
+          stream_name
+        }
+        historyRecord
+      }
+    }
+  }
+`
+
 export const DISPLAY_MINISTRY = gql`
   query DisplayMinistry($id: ID!) {
     ministries(where: { id: $id }, options: { limit: 1 }) {

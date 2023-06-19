@@ -67,6 +67,9 @@ const SetPermissions = ({
         oversight:
           data.memberByEmail?.fellowship?.bacenta.constituency?.council.stream
             .campus?.oversight.id,
+        denomination:
+          data.memberByEmail?.fellowship?.bacenta.constituency?.council.stream
+            .campus?.oversight.denomination.id,
       })
       sessionStorage.setItem('currentUser', JSON.stringify({ ...currentUser }))
     },
@@ -84,6 +87,8 @@ const SetPermissions = ({
   }, [servantChurchList, getLoggedInUser, user?.email, currentUser?.id])
 
   useEffect(() => {
+    doNotUse.setDenominationId(currentUser.denomination)
+
     if (isAuthenticated && currentUser.roles.length) {
       if (!isAuthorised(permitMe('Oversight'))) {
         doNotUse.setOversightId(currentUser.oversight)

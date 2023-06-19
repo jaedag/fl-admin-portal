@@ -519,6 +519,32 @@ export const getServantRoles = (servant: MemberWithChurches) => {
       ),
     })
   }
+  if (servant?.leadsDenomination?.length) {
+    roleTitles.push('leaderDenomination')
+    userroles.push({
+      name: 'Denomination',
+      church: servant?.leadsDenomination,
+      number: servant?.leadsDenomination?.length,
+      link: authorisedLink(
+        servant,
+        permitMe('Denomination'),
+        '/denomination/displaydetails'
+      ),
+    })
+  }
+  if (servant?.isAdminForDenomination?.length) {
+    roleTitles.push('adminDenomination')
+    userroles.push({
+      name: 'Denomination Admin',
+      church: servant?.isAdminForDenomination,
+      number: servant?.isAdminForDenomination?.length,
+      link: authorisedLink(
+        servant,
+        permitMe('Denomination'),
+        '/denomination/displaydetails'
+      ),
+    })
+  }
   if (servant?.isArrivalsAdminForCampus?.length) {
     roleTitles.push('arrivalsAdminCampus')
     userroles.push({

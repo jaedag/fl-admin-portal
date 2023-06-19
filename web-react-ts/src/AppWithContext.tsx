@@ -43,6 +43,8 @@ const AppWithContext = (props: AppPropsType) => {
     clickCard,
     church,
     memberId,
+    denominationId,
+    oversightId,
     campusId,
     streamId,
     councilId,
@@ -56,11 +58,12 @@ const AppWithContext = (props: AppPropsType) => {
     bussingRecordId,
     serviceRecordId,
     vehicleRecordId,
-    oversightId,
+
     multiplicationRecordId,
     arrivalDate,
 
     //Set State
+    setDenominationId,
     setOversightId,
     setCampusId,
     setChurch,
@@ -75,6 +78,7 @@ const AppWithContext = (props: AppPropsType) => {
   } = useClickCard()
 
   const doNotUse = {
+    setDenominationId,
     setOversightId,
     setCampusId,
     setChurch,
@@ -138,6 +142,7 @@ const AppWithContext = (props: AppPropsType) => {
           ministryId,
           federalMinistryId,
           oversightId,
+          denominationId,
           doNotUse,
           arrivalDate,
           setArrivalDate,

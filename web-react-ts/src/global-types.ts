@@ -177,11 +177,13 @@ export interface MemberWithChurches extends Member {
 
   leadsCampus: Church[]
   leadsOversight: Church[]
+  leadsDenomination: Church[]
   isAdminForConstituency: Church[]
   isAdminForCouncil: Church[]
   isAdminForStream: Church[]
   isAdminForCampus: Church[]
   isAdminForOversight: Church[]
+  isAdminForDenomination: Church[]
 
   isArrivalsAdminForConstituency: Church[]
   isArrivalsAdminForCouncil: Church[]

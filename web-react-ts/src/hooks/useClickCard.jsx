@@ -7,6 +7,12 @@ const useClickCard = () => {
       : { church: '', subChurch: '' }
   )
 
+  const [denominationId, setDenominationId] = useState(
+    sessionStorage.getItem('denominationId')
+      ? sessionStorage.getItem('denominationId')
+      : ''
+  )
+
   const [oversightId, setOversightId] = useState(
     sessionStorage.getItem('oversightId')
       ? sessionStorage.getItem('oversightId')
@@ -14,9 +20,7 @@ const useClickCard = () => {
   )
 
   const [campusId, setCampusId] = useState(
-    sessionStorage.getItem('campusId')
-      ? sessionStorage.getItem('campusId')
-      : ''
+    sessionStorage.getItem('campusId') ? sessionStorage.getItem('campusId') : ''
   )
   const [streamId, setStreamId] = useState(
     sessionStorage.getItem('streamId') ?? ''
@@ -227,10 +231,7 @@ const useClickCard = () => {
       case 'Constituency':
         if (card?.council?.stream?.campus?.id) {
           setCampusId(card?.council?.stream?.campus?.id)
-          sessionStorage.setItem(
-            'campusId',
-            card?.council?.stream?.campus?.id
-          )
+          sessionStorage.setItem('campusId', card?.council?.stream?.campus?.id)
         }
         break
       case 'Council':
@@ -379,6 +380,10 @@ const useClickCard = () => {
         setOversightId(card.id)
         sessionStorage.setItem('oversightId', card.id)
         break
+      case 'Denomination':
+        setDenominationId(card.id)
+        sessionStorage.setItem('denominationId', card.id)
+        break
       case 'Basonta':
         setSontaId(card.sonta.id)
         sessionStorage.setItem('sontaId', card.sonta.id)
@@ -427,6 +432,7 @@ const useClickCard = () => {
     clickCard,
     church,
     memberId,
+    denominationId,
     oversightId,
     campusId,
     streamId,
@@ -445,6 +451,7 @@ const useClickCard = () => {
     arrivalDate,
 
     //Set State
+    setDenominationId,
     setOversightId,
     setCampusId,
     setChurch,
