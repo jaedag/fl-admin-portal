@@ -160,6 +160,9 @@ const AllCampusConstituencies = lazy(
 const UpdateCouncil = lazy(() => import('pages/directory/update/UpdateCouncil'))
 const CreateStream = lazy(() => import('pages/directory/create/CreateStream'))
 const CreateCampus = lazy(() => import('pages/directory/create/CreateCampus'))
+const CreateOversight = lazy(
+  () => import('pages/directory/create/CreateOversight')
+)
 const UpdateStream = lazy(() => import('pages/directory/update/UpdateStream'))
 const UpdateCampus = lazy(() => import('pages/directory/update/UpdateCampus'))
 const CampusMembers = lazy(() => import('pages/directory/grids/CampusMembers'))
@@ -645,6 +648,12 @@ export const directory: LazyRouteTypes[] = [
     path: '/campus/addcampus',
     element: CreateCampus,
     roles: permitAdmin('Oversight'),
+    placeholder: false,
+  },
+  {
+    path: '/oversight/addoversight',
+    element: CreateOversight,
+    roles: permitAdmin('Denomination'),
     placeholder: false,
   },
 

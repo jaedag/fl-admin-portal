@@ -2,9 +2,9 @@ import React, { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useMutation } from '@apollo/client'
 import { throwToSentry } from '../../../global-utils'
-import { CREATE_GATHERING_SERVICE_MUTATION } from './CreateMutations'
+import { CREATE_CAMPUS_MUTATION } from './CreateMutations'
 import { ChurchContext } from '../../../contexts/ChurchContext'
-import { NEW_GATHERING_SERVICE_LEADER } from './MakeLeaderMutations'
+import { NEW_CAMPUS_LEADER } from './MakeLeaderMutations'
 import CampusForm, {
   CampusFormValues,
 } from 'pages/directory/reusable-forms/CampusForm'
@@ -26,8 +26,8 @@ const CreateCampus = () => {
     oversight: oversightId,
   }
 
-  const [NewCampusLeader] = useMutation(NEW_GATHERING_SERVICE_LEADER)
-  const [CreateCampus] = useMutation(CREATE_GATHERING_SERVICE_MUTATION)
+  const [NewCampusLeader] = useMutation(NEW_CAMPUS_LEADER)
+  const [CreateCampus] = useMutation(CREATE_CAMPUS_MUTATION)
 
   //onSubmit receives the form state as argument
   const onSubmit = async (

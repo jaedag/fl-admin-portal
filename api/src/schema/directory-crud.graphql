@@ -46,6 +46,12 @@ extend type Mutation {
   RemoveStreamLeader(leaderId: ID!, newLeaderId: ID!, streamId: ID!): Member
   MakeCampusLeader(leaderId: ID!, campusId: ID!, oldLeaderId: ID): Member
   RemoveCampusLeader(leaderId: ID!, newLeaderId: ID!, campusId: ID!): Member
+  MakeOversightLeader(leaderId: ID!, oversightId: ID!, oldLeaderId: ID): Member
+  RemoveOversightLeader(
+    leaderId: ID!
+    newLeaderId: ID!
+    oversightId: ID!
+  ): Member
 }
 
 #### GO ON VACATION AND COME BACK ###

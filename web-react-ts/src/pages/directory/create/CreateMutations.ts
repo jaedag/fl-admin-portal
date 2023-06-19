@@ -217,7 +217,8 @@ export const CREATE_STREAM_MUTATION = gql`
     }
   }
 `
-export const CREATE_GATHERING_SERVICE_MUTATION = gql`
+
+export const CREATE_CAMPUS_MUTATION = gql`
   mutation CreateCampus(
     $name: String!
     $leaderId: ID!
@@ -243,6 +244,31 @@ export const CREATE_GATHERING_SERVICE_MUTATION = gql`
       oversight {
         id
         campuses {
+          id
+          name
+        }
+      }
+    }
+  }
+`
+
+export const CREATE_OVERSIGHT_MUTATION = gql`
+  mutation CreateOversight(
+    $name: String!
+    $leaderId: ID!
+    $denominationId: ID!
+  ) {
+    CreateOversight(
+      name: $name
+      leaderId: $leaderId
+      denominationId: $denominationId
+    ) {
+      id
+      name
+
+      denomination {
+        id
+        oversights {
           id
           name
         }

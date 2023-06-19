@@ -93,13 +93,31 @@ export const NEW_STREAM_LEADER = gql`
   }
 `
 
-export const NEW_GATHERING_SERVICE_LEADER = gql`
+export const NEW_CAMPUS_LEADER = gql`
   mutation NewCampusLeader($campusId: ID!, $leaderId: ID!) {
     MakeCampusLeader(campusId: $campusId, leaderId: $leaderId) {
       id
       firstName
       lastName
       leadsCampus {
+        id
+        leader {
+          id
+          firstName
+          lastName
+        }
+      }
+    }
+  }
+`
+
+export const NEW_OVERSIGHT_LEADER = gql`
+  mutation NewOversightLeader($oversightId: ID!, $leaderId: ID!) {
+    MakeOversightLeader(oversightId: $oversightId, leaderId: $leaderId) {
+      id
+      firstName
+      lastName
+      leadsOversight {
         id
         leader {
           id

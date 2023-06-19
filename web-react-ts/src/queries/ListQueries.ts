@@ -472,6 +472,18 @@ export const GET_OVERSIGHTS = gql`
   }
 `
 
+export const GET_DENOMINATIONS = gql`
+  query getDenominations {
+    denominations {
+      id
+      name
+      campuses {
+        id
+      }
+    }
+  }
+`
+
 export const GET_FEDERALMINISTRIES = gql`
   query getFederalMinistries {
     federalministries {

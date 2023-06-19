@@ -104,8 +104,8 @@ const UpdateCampus = () => {
   const [RemoveCampusOversight] = useMutation(REMOVE_CAMPUS_OVERSIGHT)
   const [AddCampusOversight] = useMutation(ADD_CAMPUS_OVERSIGHT, {
     onCompleted: (data) => {
-      const oldOversight = data.updateOversight.Oversight[0]
-      const newOversight = data.UpdateCampus.campus[0].oversight
+      const oldOversight = data.updateOversight.oversight[0]
+      const newOversight = data.UpdateCampus.campuses[0].oversight
 
       let recordIfOldOversight = `${initialValues.name} Campus has been moved from ${oldOversight.name} Oversight to ${newOversight.name} Oversight`
 
@@ -194,7 +194,7 @@ const UpdateCampus = () => {
           })
           await AddCampusOversight({
             variables: {
-              OversightId: values.oversight,
+              oversightId: values.oversight,
               oldOversightd: initialValues.oversight,
               campusId: campusId,
             },
