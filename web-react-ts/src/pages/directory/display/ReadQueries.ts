@@ -570,6 +570,10 @@ export const DISPLAY_OVERSIGHT = gql`
       vacationFellowshipCount
       activeIcBacentaCount
       vacationIcBacentaCount
+      denomination {
+        id
+        name
+      }
       campuses {
         id
         name

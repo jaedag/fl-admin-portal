@@ -5,7 +5,6 @@ import React, { useContext } from 'react'
 import {
   DELETE_MEMBER_CATEGORY_OPTIONS,
   GENDER_OPTIONS,
-  HOW_YOU_JOINED_OPTIONS,
   isAuthorised,
   makeSelectOptions,
   MARITAL_STATUS_OPTIONS,

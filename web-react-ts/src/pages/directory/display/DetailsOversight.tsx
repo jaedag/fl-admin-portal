@@ -14,7 +14,7 @@ const DetailsOversight = () => {
   })
 
   const oversight = data?.oversights[0]
-  let breadcrumb = [oversight]
+  let breadcrumb = [oversight?.denomination, oversight]
 
   const details = [
     {
@@ -30,7 +30,7 @@ const DetailsOversight = () => {
     },
     { title: 'Pastors', number: oversight?.pastorCount || '0', link: '#' },
     {
-      title: 'Campuss',
+      title: 'Campuses',
       number: oversight?.campusCount,
       link: `/${`campus`.toLowerCase()}/displayall`,
     },
