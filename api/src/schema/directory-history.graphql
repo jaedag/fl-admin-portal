@@ -135,6 +135,74 @@ extend type Mutation {
       """
     )
 
+  LogOversightHistory(
+    oversightId: ID!
+    historyRecord: String!
+    newLeaderId: ID
+    oldLeaderId: ID
+    oldDenominationId: ID
+    newDenominationId: ID
+  ): Oversight!
+    @cypher(
+      statement: """
+      MATCH  (oversight:Oversight {id: $oversightId})
+      MATCH (admin:Active:Member {auth_id: $auth.jwt.sub})
+      CREATE (log:HistoryLog {id: apoc.create.uuid()})
+        SET log.historyRecord = $historyRecord,
+          log.timeStamp = datetime()
+      MERGE (date:TimeGraph {date: date()})
+      MERGE (oversight)-[r:HAS_HISTORY]->(log)
+      MERGE (log)-[:RECORDED_ON]->(date)
+      MERGE (log)-[:LOGGED_BY]->(admin)
+
+      WITH log,oversight
+      CALL{
+        WITH log
+        WITH log WHERE $newLeaderId IS NOT NULL
+      MATCH (newLeader:Active:Member {id: $newLeaderId})
+        SET log :ServiceLog
+        WITH log, newLeader
+      OPTIONAl MATCH ()-[r0:HAS_HISTORY]->(log)
+        SET r0.current = false
+        WITH log,newLeader
+      CREATE (newLeader)-[r:HAS_HISTORY]->(log)
+         SET r.current = true
+         WITH log
+      RETURN COUNT(log)
+      }
+
+      WITH log, oversight
+      CALL {
+        WITH log
+        WITH log WHERE $oldLeaderId IS NOT NULL
+        MATCH (oldLeader:Active:Member {id: $oldLeaderId})
+        CREATE (oldLeader)-[:HAS_HISTORY]->(log)
+        RETURN COUNT(log)
+      }
+
+
+      WITH log, oversight
+      CALL {
+        WITH log
+        WITH log WHERE $oldDenominationId IS NOT NULL
+        MATCH (denomination:Denomination {id: $oldDenominationId})
+        MERGE (denomination)-[:HAS_HISTORY]->(log)
+        RETURN COUNT(log)
+      }
+
+      WITH log, oversight
+      CALL {
+        WITH log
+        WITH log WHERE $newDenominationId IS NOT NULL
+        MATCH (denomination:Denomination {id: $newDenominationId})
+        MERGE (denomination)-[:HAS_HISTORY]->(log)
+        RETURN COUNT(log)
+      }
+
+      RETURN oversight
+      """
+    )
+
   LogMemberHistory(ids: [ID], historyRecord: String!): Member
     @cypher(
       statement: """

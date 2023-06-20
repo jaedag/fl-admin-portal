@@ -249,7 +249,7 @@ export const LOG_OVERSIGHT_HISTORY = gql`
     $oldDenominationId: ID
     $newDenominationId: ID
   ) {
-    LogCampusHistory(
+    LogOversightHistory(
       oversightId: $oversightId
       historyRecord: $historyRecord
       newLeaderId: $newLeaderId

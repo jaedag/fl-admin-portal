@@ -9,7 +9,7 @@ import { ChurchContext } from 'contexts/ChurchContext'
 import { arrayError } from 'components/formik/formik-utils'
 import PlusSign from 'components/buttons/PlusMinusSign/PlusSign'
 import MinusSign from 'components/buttons/PlusMinusSign/MinusSign'
-import { MAKE_CAMPUS_INACTIVE } from 'pages/directory/update/CloseChurchMutations'
+import { MAKE_OVERSIGHT_INACTIVE } from 'pages/directory/update/CloseChurchMutations'
 import { useNavigate } from 'react-router'
 import Popup from 'components/Popup/Popup'
 import RoleView from 'auth/RoleView'
@@ -23,13 +23,13 @@ import usePopup from 'hooks/usePopup'
 import Input from 'components/formik/Input'
 import Select from 'components/formik/Select'
 import SearchMember from 'components/formik/SearchMember'
-import SearchStream from 'components/formik/SearchStream'
+import SearchCampus from 'components/formik/SearchCampus'
 import { FormikInitialValues } from 'components/formik/formik-types'
 import { Church } from 'global-types'
 
 export interface OversightFormValues extends FormikInitialValues {
   denomination: string
-  streams?: Church[]
+  campuses?: Church[]
 }
 
 type OversightFormProps = {
@@ -55,7 +55,7 @@ const OversightForm = ({
   const navigate = useNavigate()
   const { data, loading, error } = useQuery(GET_DENOMINATIONS)
   const [buttonLoading, setButtonLoading] = useState(false)
-  const [CloseDownOversight] = useMutation(MAKE_CAMPUS_INACTIVE)
+  const [CloseDownOversight] = useMutation(MAKE_OVERSIGHT_INACTIVE)
 
   const denominationOptions = makeSelectOptions(data?.denominations)
   const validationSchema = Yup.object({
@@ -63,10 +63,10 @@ const OversightForm = ({
     leaderId: Yup.string().required(
       'Please choose a leader from the drop down'
     ),
-    streams: newOversight
+    campuses: newOversight
       ? Yup.array().nullable()
       : Yup.array().of(
-          Yup.object().required('Please pick a stream from the dropdown')
+          Yup.object().required('Please pick a campus from the dropdown')
         ),
   })
 
@@ -129,28 +129,28 @@ const OversightForm = ({
                       {!newOversight && (
                         <>
                           <small className="pt-2">
-                            {`Select any streams that are being moved to this Oversight`}
+                            {`Select any campuses that are being moved to this Oversight`}
                           </small>
-                          <FieldArray name="streams">
+                          <FieldArray name="campuses">
                             {(fieldArrayProps) => {
                               const { push, remove, form } = fieldArrayProps
                               const { values } = form
-                              const { streams } = values
+                              const { campuses } = values
 
                               return (
                                 <>
-                                  {streams.map(
-                                    (stream: Church, index: number) => (
+                                  {campuses.map(
+                                    (campus: Church, index: number) => (
                                       <Row key={index} className="form-row">
                                         <Col>
-                                          <SearchStream
-                                            name={`streams[${index}]`}
-                                            placeholder="Stream Name"
-                                            initialValue={stream?.name}
+                                          <SearchCampus
+                                            name={`campuses[${index}]`}
+                                            placeholder="Campus Name"
+                                            initialValue={campus?.name}
                                             setFieldValue={formik.setFieldValue}
-                                            aria-describedby="Stream Name"
+                                            aria-describedby="Campus Name"
                                             error={arrayError(
-                                              formik.errors.streams,
+                                              formik.errors.campuses,
                                               index
                                             )}
                                           />
@@ -158,7 +158,7 @@ const OversightForm = ({
                                         <Col className="col-auto d-flex">
                                           <PlusSign onClick={() => push('')} />
                                           {(index > 0 ||
-                                            streams?.length !== 1) && (
+                                            campuses?.length !== 1) && (
                                             <MinusSign
                                               onClick={() => remove(index)}
                                             />
@@ -182,7 +182,7 @@ const OversightForm = ({
 
               {isOpen && (
                 <Popup handleClose={togglePopup}>
-                  Are you sure you want to close down this fellowship?
+                  Are you sure you want to close down this oversight?
                   <Button
                     variant="primary"
                     type="submit"

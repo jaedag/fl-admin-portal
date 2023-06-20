@@ -1,5 +1,17 @@
 import { gql } from '@apollo/client'
 
+export const OVERSIGHT_BACENTA_SEARCH = gql`
+  query oversightBacentaSearch($id: ID!, $key: String!) {
+    oversights(where: { id: $id }) {
+      id
+      bacentaSearch(key: $key, limit: 5) {
+        id
+        name
+      }
+    }
+  }
+`
+
 export const CAMPUS_BACENTA_SEARCH = gql`
   query gatheringBacentaSearch($id: ID!, $key: String!) {
     campuses(where: { id: $id }) {

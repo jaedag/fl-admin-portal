@@ -5,9 +5,9 @@ import { alertMsg, throwToSentry } from '../../../global-utils'
 import { GET_DENOMINATION_OVERSIGHTS } from '../../../queries/ListQueries'
 import {
   UPDATE_OVERSIGHT_MUTATION,
-  ADD_OVERSIGHT_STREAM,
+  ADD_OVERSIGHT_CAMPUS,
   REMOVE_OVERSIGHT_DENOMINATION,
-  REMOVE_STREAM_OVERSIGHT,
+  REMOVE_CAMPUS_OVERSIGHT,
   ADD_OVERSIGHT_DENOMINATION,
 } from './UpdateMutations'
 import { DISPLAY_OVERSIGHT } from '../display/ReadQueries'
@@ -36,7 +36,7 @@ const UpdateOversight = () => {
     leaderId: oversight?.leader?.id || '',
     leaderEmail: oversight?.leader?.email || '',
     denomination: oversight?.denomination?.id,
-    streams: oversight?.streams?.length ? oversight.streams : [''],
+    campuses: oversight?.campuses?.length ? oversight.campuses : [''],
   }
   const [LogOversightHistory] = useMutation(LOG_OVERSIGHT_HISTORY, {
     refetchQueries: [
@@ -46,7 +46,7 @@ const UpdateOversight = () => {
       },
     ],
   })
-  const [LogStreamHistory] = useMutation(LOG_CAMPUS_HISTORY, {
+  const [LogCampusHistory] = useMutation(LOG_CAMPUS_HISTORY, {
     refetchQueries: [
       {
         query: DISPLAY_OVERSIGHT,
@@ -66,11 +66,11 @@ const UpdateOversight = () => {
   })
 
   //Changes downwards. ie. Bacenta Changes underneath constituency
-  const [AddOversightsStream] = useMutation(ADD_OVERSIGHT_STREAM)
-  const [RemoveStreamOversight] = useMutation(REMOVE_STREAM_OVERSIGHT, {
+  const [AddOversightsCampus] = useMutation(ADD_OVERSIGHT_CAMPUS)
+  const [RemoveCampusOversight] = useMutation(REMOVE_CAMPUS_OVERSIGHT, {
     onCompleted: (data) => {
       const prevOversight = data.updateOversight.oversights[0]
-      const stream = data.updateStream.streams[0]
+      const campus = data.updateCampus.campuses[0]
       let newOversightId = ''
       let oldOversightId = ''
       let historyRecord
@@ -79,13 +79,13 @@ const UpdateOversight = () => {
         //Bacenta has previous constituency which is not current constituency and is joining
         oldOversightId = prevOversight.id
         newOversightId = oversightId
-        historyRecord = `${stream.name} Stream has been moved to ${initialValues.name} Oversight from ${prevOversight.name} Oversight`
+        historyRecord = `${campus.name} Campus has been moved to ${initialValues.name} Oversight from ${prevOversight.name} Oversight`
       }
 
       //After removing the bacenta from a constituency, then you log that change.
-      LogStreamHistory({
+      LogCampusHistory({
         variables: {
-          stream: stream.id,
+          campus: campus.id,
           newLeaderId: '',
           oldLeaderId: '',
           newOversightId: newOversightId,
@@ -95,7 +95,7 @@ const UpdateOversight = () => {
       })
     },
   })
-  const [CloseDownStream] = useMutation(MAKE_OVERSIGHT_INACTIVE)
+  const [CloseDownCampus] = useMutation(MAKE_OVERSIGHT_INACTIVE)
 
   //Changes upwards. it. Changes to the Denomination the Oversight Oversight is under
   const [RemoveOversightDenomination] = useMutation(
@@ -108,7 +108,7 @@ const UpdateOversight = () => {
 
       let recordIfOldDenomination = `${initialValues.name} Oversight has been moved from ${oldDenomination.name} Denomination to ${newDenomination.name} Denomination`
 
-      //After Adding the stream to a oversight, then you log that change.
+      //After Adding the campus to a oversight, then you log that change.
       LogOversightHistory({
         variables: {
           oversightId: oversightId,
@@ -198,22 +198,23 @@ const UpdateOversight = () => {
         }
       }
 
-      //For the Adding and Removing of Streams
+      //For the Adding and Removing of Campuses
 
-      const oldStreamList = initialValues.streams?.map((stream) => stream) || []
+      const oldCampusList =
+        initialValues.campuses?.map((campus) => campus) || []
 
-      const newStreamList = values.streams?.map((stream) => stream) || []
+      const newCampusList = values.campuses?.map((campus) => campus) || []
 
       const lists = {
-        oldChurches: oldStreamList,
-        newChurches: newStreamList,
+        oldChurches: oldCampusList,
+        newChurches: newCampusList,
       }
 
       const mutations = {
-        closeDownChurch: CloseDownStream,
-        removeChurch: RemoveStreamOversight,
-        addChurch: AddOversightsStream,
-        logChurchHistory: LogStreamHistory,
+        closeDownChurch: CloseDownCampus,
+        removeChurch: RemoveCampusOversight,
+        addChurch: AddOversightsCampus,
+        logChurchHistory: LogCampusHistory,
       }
 
       const args = {

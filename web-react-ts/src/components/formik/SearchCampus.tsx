@@ -5,61 +5,39 @@ import { DEBOUNCE_TIMER, isAuthorised, throwToSentry } from 'global-utils'
 import { permitMe } from 'permission-utils'
 import React, { useContext, useEffect, useState } from 'react'
 import Autosuggest from 'react-autosuggest'
-import './react-autosuggest.css'
-import { RoleBasedSearch } from './formik-types'
 import { initialise } from './search-utils'
-import {
-  CAMPUS_CONSTITUENCY_SEARCH,
-  STREAM_CONSTITUENCY_SEARCH,
-  MEMBER_CONSTITUENCY_SEARCH,
-  COUNCIL_CONSTITUENCY_SEARCH,
-} from './SearchConstituencyQueries'
-import TextError from './TextError/TextError'
+import { MEMBER_CAMPUS_SEARCH } from './SearchCampusQueries'
 
-const SearchConstituency = (props: RoleBasedSearch) => {
+import { RoleBasedSearch } from './formik-types'
+
+import TextError from './TextError/TextError'
+import { CAMPUS_COUNCIL_SEARCH } from './SearchCouncilQueries'
+
+const SearchCampus = (props: RoleBasedSearch) => {
   const { currentUser } = useContext(MemberContext)
   const [suggestions, setSuggestions] = useState([])
   const [searchString, setSearchString] = useState(props.initialValue ?? '')
 
   const [campusSearch, { error: campusError }] = useLazyQuery(
-    CAMPUS_CONSTITUENCY_SEARCH,
+    CAMPUS_COUNCIL_SEARCH,
     {
       onCompleted: (data) => {
-        setSuggestions(data.campuses[0].constituencySearch)
+        setSuggestions(data.campuss[0].councilSearch)
         return
       },
     }
   )
-  const [streamSearch, { error: streamError }] = useLazyQuery(
-    STREAM_CONSTITUENCY_SEARCH,
-    {
-      onCompleted: (data) => {
-        setSuggestions(data.streams[0].constituencySearch)
-        return
-      },
-    }
-  )
-  const [councilSearch, { error: councilError }] = useLazyQuery(
-    COUNCIL_CONSTITUENCY_SEARCH,
-    {
-      onCompleted: (data) => {
-        setSuggestions(data.councils[0].constituencySearch)
-        return
-      },
-    }
-  )
-
   const [memberSearch, { error: memberError }] = useLazyQuery(
-    MEMBER_CONSTITUENCY_SEARCH,
+    MEMBER_CAMPUS_SEARCH,
     {
       onCompleted: (data) => {
-        setSuggestions(data.members[0].constituencySearch)
+        setSuggestions(data.members[0].campusSearch)
         return
       },
     }
   )
 
-  const error = memberError || campusError || streamError || councilError
+  const error = memberError || campusError || campusError
   throwToSentry('', error)
 
   const whichSearch = (searchString: string) => {
@@ -77,17 +55,10 @@ const SearchConstituency = (props: RoleBasedSearch) => {
             key: searchString?.trim(),
           },
         })
-      } else if (isAuthorised(permitMe('Stream'), currentUser.roles)) {
-        streamSearch({
+      } else if (isAuthorised(permitMe('Campus'), currentUser.roles)) {
+        campusSearch({
           variables: {
-            id: currentUser.stream,
-            key: searchString?.trim(),
-          },
-        })
-      } else if (isAuthorised(permitMe('Council'), currentUser.roles)) {
-        councilSearch({
-          variables: {
-            id: currentUser.council,
+            id: currentUser.campus,
             key: searchString?.trim(),
           },
         })
@@ -155,4 +126,4 @@ const SearchConstituency = (props: RoleBasedSearch) => {
   )
 }
 
-export default SearchConstituency
+export default SearchCampus

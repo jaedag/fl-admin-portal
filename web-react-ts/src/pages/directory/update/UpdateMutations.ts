@@ -210,6 +210,65 @@ export const UPDATE_STREAM_MUTATION = gql`
   }
 `
 
+export const UPDATE_OVERSIGHT_MUTATION = gql`
+  mutation UpdateOversight(
+    $oversightId: ID!
+    $name: String!
+    $denominationId: ID!
+  ) {
+    UpdateOversightDetails(
+      oversightId: $oversightId
+      name: $name
+      denominationId: $denominationId
+    ) {
+      id
+      name
+      campuses {
+        id
+        name
+        oversight {
+          id
+          name
+          denomination {
+            id
+            oversights {
+              id
+            }
+          }
+        }
+      }
+
+      admin {
+        id
+        firstName
+        lastName
+        fellowship {
+          id
+          stream_name
+        }
+      }
+      leader {
+        id
+        firstName
+        lastName
+      }
+      history(limit: 5) {
+        id
+        timeStamp
+        createdAt {
+          date
+        }
+        loggedBy {
+          id
+          firstName
+          lastName
+        }
+        historyRecord
+      }
+    }
+  }
+`
+
 export const UPDATE_CAMPUS_MUTATION = gql`
   mutation UpdateCampus(
     $campusId: ID!
@@ -865,6 +924,40 @@ export const ADD_CAMPUS_OVERSIGHT = gql`
     }
   }
 `
+export const ADD_OVERSIGHT_DENOMINATION = gql`
+  mutation AddOversightDenomination($oversightId: ID!, $denominationId: ID!) {
+    updateOversights(
+      where: { id: $oversightId }
+      connect: { denomination: { where: { node: { id: $denominationId } } } }
+    ) {
+      oversights {
+        id
+        name
+        denomination {
+          id
+          name
+        }
+      }
+    }
+  }
+`
+
+export const ADD_OVERSIGHT_CAMPUS = gql`
+  mutation AddOversightCampus($oversightId: ID!, $campusId: ID!) {
+    updateOversights(
+      where: { id: $oversightId }
+      connect: { campuses: { where: { node: { id: $campusId } } } }
+    ) {
+      oversights {
+        id
+        name
+        campuses {
+          id
+        }
+      }
+    }
+  }
+`
 
 export const REMOVE_STREAM_CAMPUS = gql`
   mutation RemoveStreamCampus($higherChurch: ID!, $lowerChurch: [ID]!) {
@@ -896,6 +989,23 @@ export const REMOVE_CAMPUS_OVERSIGHT = gql`
       disconnect: { oversight: { where: { node: { id: $higherChurch } } } }
     ) {
       campuses {
+        id
+        name
+      }
+    }
+  }
+`
+
+export const REMOVE_OVERSIGHT_DENOMINATION = gql`
+  mutation RemoveOversightDenomination(
+    $lowerChurch: [ID]!
+    $higherChurch: ID!
+  ) {
+    updateOversights(
+      where: { id_IN: $lowerChurch }
+      disconnect: { denomination: { where: { node: { id: $higherChurch } } } }
+    ) {
+      oversights {
         id
         name
       }

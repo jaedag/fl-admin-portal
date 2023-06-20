@@ -639,6 +639,34 @@ extend type Mutation {
       RETURN member
       """
     )
+
+  UpdateOversightDetails(
+    oversightId: ID!
+    name: String!
+    denominationId: ID!
+  ): Oversight!
+    @auth(rules: [{ roles: ["adminDenomination"] }])
+    @cypher(
+      statement: """
+      MATCH (oversight:Oversight {id: $oversightId})
+      	SET oversight.name = $name
+
+      WITH oversight
+         CALL {
+         	WITH oversight
+
+         	MATCH (denomination:Denomination {id: $denominationId})
+         	OPTIONAL MATCH (oversight)<-[r:HAS]-()
+         	DELETE r
+         	MERGE (denomination)-[:HAS]->(oversight)
+         	RETURN count(oversight)
+         	}
+
+      MATCH (oversight)<-[:LEADS]-(leader:Active:Member)
+      RETURN oversight
+      """
+    )
+
   UpdateCampusDetails(
     campusId: ID!
     name: String!
@@ -935,10 +963,10 @@ extend type Mutation {
       statement: """
       MATCH (oversight:Oversight {id: $oversightId})<-[:HAS]-( denomination:Denomination)
 
-      WITH oversight, denomination 
+      WITH oversight, denomination
       CREATE (log:HistoryLog {id:apoc.create.uuid()})
         SET log.timeStamp = datetime(),
-        log.historyRecord = oversight.name + ' oversight was closed down under ' +  denomination.name + ' Denomination'
+        log.historyRecord = oversight.name + ' Oversight was closed down under ' +  denomination.name + ' Denomination'
 
       WITH oversight, denomination, log
       MATCH (admin:Active:Member {auth_id: $auth.jwt.sub})
@@ -952,9 +980,9 @@ extend type Mutation {
       MERGE (denomination)-[:HAS_HISTORY]->(log)
 
       SET oversight:ClosedOversight, stream:ClosedStream, council:ClosedCouncil, constituencies:Closedconstituency, bacentas:ClosedBacenta, fellowships:ClosedFellowship
-      REMOVE oversight:ClosedOversight, stream:Stream, council:Council, constituencies:Constituency,bacentas:Bacenta,fellowships:Fellowship
+      REMOVE oversight:Oversight, stream:Stream, council:Council, constituencies:Constituency,bacentas:Bacenta,fellowships:Fellowship
 
-      RETURN denomination 
+      RETURN denomination
       """
     )
 }
