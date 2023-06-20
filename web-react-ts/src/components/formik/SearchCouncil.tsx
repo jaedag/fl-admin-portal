@@ -10,8 +10,8 @@ import { RoleBasedSearch } from './formik-types'
 import { initialise } from './search-utils'
 import {
   CAMPUS_COUNCIL_SEARCH,
-  STREAM_COUNCIL_SEARCH,
   MEMBER_COUNCIL_SEARCH,
+  STREAM_COUNCIL_SEARCH,
 } from './SearchCouncilQueries'
 import TextError from './TextError/TextError'
 

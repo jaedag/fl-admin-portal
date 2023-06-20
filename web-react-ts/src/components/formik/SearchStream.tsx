@@ -8,13 +8,13 @@ import Autosuggest from 'react-autosuggest'
 import { initialise } from './search-utils'
 import {
   CAMPUS_STREAM_SEARCH,
-  STREAM_COUNCIL_SEARCH,
   MEMBER_STREAM_SEARCH,
 } from './SearchStreamQueries'
 
 import { RoleBasedSearch } from './formik-types'
 
 import TextError from './TextError/TextError'
+import { STREAM_COUNCIL_SEARCH } from './SearchCouncilQueries'
 
 const SearchStream = (props: RoleBasedSearch) => {
   const { currentUser } = useContext(MemberContext)
