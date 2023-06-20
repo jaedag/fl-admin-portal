@@ -1,3 +1,61 @@
+### 7.7.0 (2023-06-20)
+
+##### New Features
+
+*  implement creating of new oversights ([8258191b](https://github.com/firstlovecenter/fl-pastoral-care/commit/8258191be09cb7b1c5bf8976784aaea2ff4f0620))
+*  set priority property on serviceLog nodes ([51222f5c](https://github.com/firstlovecenter/fl-pastoral-care/commit/51222f5c10d117ad071db3b7a46ccb7a4b25fe5a))
+
+##### Bug Fixes
+
+*  implement updateOversight ([065218ad](https://github.com/firstlovecenter/fl-pastoral-care/commit/065218adf7f2bdf912f14321c273be149d993aef))
+*  update button to show Last 4 Weeks ([28144572](https://github.com/firstlovecenter/fl-pastoral-care/commit/28144572a0fbe56e00b047c7212a2167ed6999fd))
+*  implement display all oversights page ([af002dc3](https://github.com/firstlovecenter/fl-pastoral-care/commit/af002dc380e94ac7fbd61e7312ad671a77dabc7b))
+*  implement denomination display page ([6d1e7bb3](https://github.com/firstlovecenter/fl-pastoral-care/commit/6d1e7bb3533cb88010c12ac133c9b3b4bf1b8ce3))
+*  implement breadcrumb that leads to denomination ([cf0a94b8](https://github.com/firstlovecenter/fl-pastoral-care/commit/cf0a94b8c0285f9f8571ca07f336200269fc9ca8))
+*  update banking-cypher.ts ([c9d7f4e4](https://github.com/firstlovecenter/fl-pastoral-care/commit/c9d7f4e4ee044ca3b9afc55f13b8df44e2395144))
+*  fix typo in creating council ([4b076346](https://github.com/firstlovecenter/fl-pastoral-care/commit/4b076346a8c264bdbaf39f0695bcf3d25869c3a7))
+*  update directory-crud cypher for creating churches ([df4605cc](https://github.com/firstlovecenter/fl-pastoral-care/commit/df4605cccc62521f7342ce30bac71c067a6a87ca))
+*  update cypher to add priority label when creating new churches ([d7197433](https://github.com/firstlovecenter/fl-pastoral-care/commit/d719743352db96c7fe8692ec3b883034b048a787))
+*  little updates for creating a new campus ([3b66805a](https://github.com/firstlovecenter/fl-pastoral-care/commit/3b66805aefd8e522767d7db10de01be10025ea88))
+*  little updates for creating a new campus ([042052e7](https://github.com/firstlovecenter/fl-pastoral-care/commit/042052e79ad4f78add7a01f18be13134924e1371))
+*  bring back delay on confirmation to enable time for webhook ([0e846b61](https://github.com/firstlovecenter/fl-pastoral-care/commit/0e846b610bbb091de8600a0b240eda39a6ad2cbb))
+*  update before-next-update-cypher ([7bcfcded](https://github.com/firstlovecenter/fl-pastoral-care/commit/7bcfcdedd228fec305d82fe5b161a7846714fc2f))
+*  update args in servantCypher fns ([2014d4cc](https://github.com/firstlovecenter/fl-pastoral-care/commit/2014d4cc1a3d2ed3b58d794886f6f0ade118d1ba))
+*  set priority number on history log node ([3ed231d7](https://github.com/firstlovecenter/fl-pastoral-care/commit/3ed231d7f6300c3c1a72e65007c153d2f948e627))
+*  remove delay timer on confirming payments ([29057593](https://github.com/firstlovecenter/fl-pastoral-care/commit/29057593a75e0266318210037499a19c3311b222))
+*  more directly relay information from paystack servers to the client ([6406b752](https://github.com/firstlovecenter/fl-pastoral-care/commit/6406b7526854a5c3424650bfbb9c3e8873876494))
+*  remove edge case conditions for setting transaction status failed ([ec4bc0d7](https://github.com/firstlovecenter/fl-pastoral-care/commit/ec4bc0d756fb01de123ff9d5e3f3ad6ce55ee19a))
+*  correct bug making constituency banking impossible ([9257fe83](https://github.com/firstlovecenter/fl-pastoral-care/commit/9257fe83b5068097fa3e39b58b4c56ab286e8e89))
+*  send debugging email ([1a131d22](https://github.com/firstlovecenter/fl-pastoral-care/commit/1a131d22ff414b1eea812fd49bc6128912ae919b))
+*  implement an error if the subaccount is empty ([aa9e8a96](https://github.com/firstlovecenter/fl-pastoral-care/commit/aa9e8a96b31d9b92e5f392cdfa05a777fec39f8b))
+*  remove unnecessary email sent ([d2573a64](https://github.com/firstlovecenter/fl-pastoral-care/commit/d2573a647f54d0bd1643160be9e029bfe1e28dee))
+*  update email sent ([e0e8233e](https://github.com/firstlovecenter/fl-pastoral-care/commit/e0e8233e483e6eb201e65a4220e986303c1499d2))
+*  fix bug where money was being sent to the wrong account ([d57dec07](https://github.com/firstlovecenter/fl-pastoral-care/commit/d57dec07452432e3fa94c984552f8850a9d6f5fc))
+*  mail axios req body to me ([dc0c7a62](https://github.com/firstlovecenter/fl-pastoral-care/commit/dc0c7a62336fdee91531b12c56efbe4a4dfd5910))
+*  vacation churches can now bank ([1c6a6023](https://github.com/firstlovecenter/fl-pastoral-care/commit/1c6a6023f31686653c1ae23a341af341798a5a08))
+*  duplicate members are completely removed as members ([83bd144f](https://github.com/firstlovecenter/fl-pastoral-care/commit/83bd144f900644ba1b11887e91b73cb7df9cba53))
+*  minor bug improvements to getLastServiceRecord fn ([f7d77889](https://github.com/firstlovecenter/fl-pastoral-care/commit/f7d7788921ff781ff04310866d22fd77eeb02cd4))
+*  only gs arrivals admins have free reign ([40783e9b](https://github.com/firstlovecenter/fl-pastoral-care/commit/40783e9b4f79e919efefa9877a29ab7cba410cff))
+*  allow arrivals admins to have free reign on all days of the week ([3b718824](https://github.com/firstlovecenter/fl-pastoral-care/commit/3b71882496b8b0e174aea0f74425a2fce16d38e8))
+*  minor fix on bussingThisWeek query ([f0d1c1b2](https://github.com/firstlovecenter/fl-pastoral-care/commit/f0d1c1b26dda354fc0b9b404e67bf5a175ebdd33))
+*  minor fix on bussingThisWeek query ([89ac44c3](https://github.com/firstlovecenter/fl-pastoral-care/commit/89ac44c358395aff07c477d3e2eab49a031edff2))
+*  allow council joint service to be filled more than once in a week ([abfa3a3b](https://github.com/firstlovecenter/fl-pastoral-care/commit/abfa3a3bf2fec7ff1f2cbb44f17f53ea85ce2f39))
+*  minor improvements to banking resolvers ([30389570](https://github.com/firstlovecenter/fl-pastoral-care/commit/303895704b6bd58fb6d3e35512c7eb3886640a50))
+*  return correct data from mutation ([2e6d07c7](https://github.com/firstlovecenter/fl-pastoral-care/commit/2e6d07c79e23508b21176fe29add50b36479bc57))
+
+##### Other Changes
+
+* //github.com/firstlovecenter/fl-admin-portal into deploy ([8ccc22b7](https://github.com/firstlovecenter/fl-pastoral-care/commit/8ccc22b7a81bc10ff3692193a9a4fd4486688b7d))
+
+##### Refactors
+
+*  change the word GATHERING_SERVICE to CAMPUS ([daf8a679](https://github.com/firstlovecenter/fl-pastoral-care/commit/daf8a679349ca3b57570edf5c5379a740a2b7f07))
+*  move computing of priority within makeServantCypher function ([161fef40](https://github.com/firstlovecenter/fl-pastoral-care/commit/161fef40cf81586eefc09a18148885c59d8c1c96))
+*  change 'gathering service' to 'campus' ([07dcab7c](https://github.com/firstlovecenter/fl-pastoral-care/commit/07dcab7c5358f8c8736fa1bd9d9f22a3fdf2d8f2))
+*  fix some spelling mistakes causing broken file imports ([5ed685b0](https://github.com/firstlovecenter/fl-pastoral-care/commit/5ed685b0fb688ac8fa19f6875b75994220be54bf))
+*  fix some spelling mistakes causing broken file imports ([ca7b010b](https://github.com/firstlovecenter/fl-pastoral-care/commit/ca7b010bb82b982b322e2907eaf4ffa061d1c530))
+*  change gatheringservice to campus ([6eb94b5a](https://github.com/firstlovecenter/fl-pastoral-care/commit/6eb94b5a5284279ff4aba8c673c84e91d85f361d))
+
 #### 7.6.17 (2023-06-09)
 
 ##### Bug Fixes
