@@ -15,7 +15,11 @@ import FellowshipForm, {
   FellowshipFormValues,
 } from 'pages/directory/reusable-forms/FellowshipForm'
 import { alertMsg, repackDecimals, throwToSentry } from 'global-utils'
-import { SET_VACATION_FELLOWSHIP, SET_ACTIVE_FELLOWSHIP } from './StatusChanges'
+import {
+  SET_VACATION_FELLOWSHIP,
+  SET_ACTIVE_FELLOWSHIP,
+  SET_ONLINE_FELLOWSHIP,
+} from './StatusChanges'
 import { FormikHelpers } from 'formik'
 import LoadingScreen from 'components/base-component/LoadingScreen'
 
@@ -57,6 +61,7 @@ const UpdateFellowship = () => {
   })
   const [SetFellowshipOnVacation] = useMutation(SET_VACATION_FELLOWSHIP)
   const [SetFellowshipActive] = useMutation(SET_ACTIVE_FELLOWSHIP)
+  const [SetOnlineFellowship] = useMutation(SET_ONLINE_FELLOWSHIP)
   const [RemoveFellowshipFromBacenta] = useMutation(REMOVE_FELLOWSHIP_BACENTA)
 
   const [AddFellowshipBacenta] = useMutation(ADD_FELLOWSHIP_BACENTA, {
@@ -154,6 +159,13 @@ const UpdateFellowship = () => {
         }
         if (values.vacationStatus === 'Active') {
           await SetFellowshipActive({
+            variables: {
+              fellowshipId: fellowshipId,
+            },
+          })
+        }
+        if (values.vacationStatus === 'Online') {
+          await SetOnlineFellowship({
             variables: {
               fellowshipId: fellowshipId,
             },

@@ -57,7 +57,7 @@ extend type Mutation {
 #### GO ON VACATION AND COME BACK ###
 extend type Mutation {
   #Set Fellowship to be 'OnVacation
-  SetVacationFellowship(fellowshipId: ID!): Fellowship
+  SetVacationFellowship(fellowshipId: ID!): Fellowship!
     @cypher(
       statement: """
       MATCH (fellowship:Fellowship {id:$fellowshipId})
@@ -76,13 +76,13 @@ extend type Mutation {
       MERGE (bacenta)-[:HAS_HISTORY]->(log)
 
       SET fellowship:Vacation
-      REMOVE fellowship:Active
+      REMOVE fellowship:Active, fellowship:Online
 
       RETURN fellowship
       """
     )
   #Set Bacenta to be 'OnVacation
-  SetVacationBacenta(bacentaId: ID!): Bacenta
+  SetVacationBacenta(bacentaId: ID!): Bacenta!
     @cypher(
       statement: """
       MATCH (bacenta:Bacenta {id:$bacentaId})
@@ -108,7 +108,7 @@ extend type Mutation {
     )
 
   #Set Fellowship to be 'Active
-  SetActiveFellowship(fellowshipId: ID!): Fellowship
+  SetActiveFellowship(fellowshipId: ID!): Fellowship!
     @cypher(
       statement: """
       MATCH (fellowship:Fellowship {id:$fellowshipId})
@@ -127,11 +127,37 @@ extend type Mutation {
       MERGE (bacenta)-[:HAS_HISTORY]->(log)
 
       SET fellowship:Active:Fellowship
-      REMOVE fellowship:Vacation
+      REMOVE fellowship:Vacation, fellowship:Online
 
       RETURN fellowship
       """
     )
+
+# Set fellowship to be 'Online'
+SetOnlineFellowship(fellowshipId: ID!): Fellowship!
+  @cypher(
+    statement: """
+    MATCH (fellowship:Fellowship {id:$fellowshipId})
+
+    CREATE (log:HistoryLog {id:apoc.create.uuid()})
+      SET log.timeStamp = datetime(),
+      log.historyRecord = fellowship.name + ' Fellowship was made an online fellowship'
+
+    WITH log,fellowship
+    MATCH (admin:Active:Member {auth_id: $auth.jwt.sub})
+    MATCH (fellowship)<-[:HAS]-(bacenta:Bacenta)
+    MERGE (date:TimeGraph {date:date()})
+    MERGE (log)-[:LOGGED_BY]->(admin)
+    MERGE (log)-[:RECORDED_ON]->(date)
+    MERGE (fellowship)-[:HAS_HISTORY]->(log)
+    MERGE (bacenta)-[:HAS_HISTORY]->(log)
+
+    SET fellowship:Online
+    REMOVE fellowship:Active, fellowship:Vacation
+
+    RETURN fellowship
+    """
+  )
 
   #Set Bacenta to be 'Active
   SetActiveBacenta(bacentaId: ID!): Bacenta

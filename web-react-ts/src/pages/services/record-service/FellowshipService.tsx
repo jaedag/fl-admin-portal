@@ -11,11 +11,9 @@ import ServiceForm from './ServiceForm'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { FELLOWSHIP_GRAPHS } from '../graphs/GraphsQueries'
 import ServiceFormNoIncome from './ServiceFormNoIncome'
-import { MemberContext } from '../../../contexts/MemberContext'
 
 const FellowshipService = () => {
   const { fellowshipId } = useContext(ChurchContext)
-  const { currentUser } = useContext(MemberContext)
   const { data, loading, error } = useQuery(DISPLAY_FELLOWSHIP, {
     variables: { id: fellowshipId },
   })
@@ -26,9 +24,13 @@ const FellowshipService = () => {
     refetchQueries: [{ query: FELLOWSHIP_GRAPHS }],
   })
 
+  const fellowship = data?.fellowships[0]
+  const shouldNotRecordIncome =
+    fellowship?.noIncomeTracking || fellowship?.vacationStatus === 'Online'
+
   return (
     <ApolloWrapper loading={loading} error={error} data={data}>
-      {currentUser.noIncomeTracking ? (
+      {shouldNotRecordIncome ? (
         <ServiceFormNoIncome
           RecordServiceMutation={RecordServiceNoIncome}
           church={data?.fellowships[0]}

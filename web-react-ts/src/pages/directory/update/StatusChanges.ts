@@ -28,6 +28,20 @@ export const SET_ACTIVE_FELLOWSHIP = gql`
   }
 `
 
+export const SET_ONLINE_FELLOWSHIP = gql`
+  mutation SetOnlineFellowship($fellowshipId: ID!) {
+    SetOnlineFellowship(fellowshipId: $fellowshipId) {
+      id
+      name
+      vacationStatus
+      history {
+        id
+        historyRecord
+      }
+    }
+  }
+`
+
 export const SET_VACATION_BACENTA = gql`
   mutation SetVacationBacenta($bacentaId: ID!) {
     SetVacationBacenta(bacentaId: $bacentaId) {

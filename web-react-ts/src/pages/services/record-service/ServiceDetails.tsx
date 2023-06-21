@@ -53,10 +53,12 @@ const ServiceDetails = ({ service, church, loading }: ServiceDetailsProps) => {
     ['Form Filled At', parseNeoTime(service?.createdAt) ?? ''],
   ]
   if (!service?.noServiceReason) {
+    // Service Wasn't Cancelled
     table.push(['Attendance', service?.attendance.toString()])
 
-    if (!currentUser.noIncomeTracking && church.__typename !== 'Sonta') {
-      table.push(['Number of Tithers', service?.numberOfTithers.toString()])
+    // There is income for service
+    if (service?.income) {
+      table.push(['Number of Tithers', service?.numberOfTithers?.toString()])
       if (service?.foreignCurrency) {
         table.push([
           'Foreign Currency',

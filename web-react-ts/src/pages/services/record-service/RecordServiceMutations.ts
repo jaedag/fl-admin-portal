@@ -232,6 +232,7 @@ export const DISPLAY_FELLOWSHIP_SERVICE = gql`
     fellowships(where: { id: $fellowshipId }) {
       id
       name
+      noIncomeTracking
     }
   }
 `

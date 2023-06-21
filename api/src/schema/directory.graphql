@@ -1070,7 +1070,7 @@ type Fellowship implements Church {
       statement: """
       MATCH (this)
       UNWIND labels(this) AS status
-      WITH status WHERE status = 'Active' OR status = 'Vacation'
+      WITH status WHERE status = 'Active' OR status = 'Vacation' OR status = 'Online'
       RETURN status
       """
     )

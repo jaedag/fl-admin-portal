@@ -3,9 +3,11 @@ import { Form, Formik, FormikHelpers } from 'formik'
 import * as Yup from 'yup'
 import {
   DECIMAL_NUM_REGEX,
+  isAuthorised,
   makeSelectOptions,
   SERVICE_DAY_OPTIONS,
   throwToSentry,
+  VACATION_ONLINE_OPTIONS,
   VACATION_OPTIONS,
 } from 'global-utils'
 import {
@@ -26,7 +28,7 @@ import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import HeadingSecondary from 'components/HeadingSecondary'
 import SubmitButton from 'components/formik/SubmitButton'
 import { DISPLAY_BACENTA } from 'pages/directory/display/ReadQueries'
-import { permitAdmin } from 'permission-utils'
+import { permitAdmin, permitMe } from 'permission-utils'
 import usePopup from 'hooks/usePopup'
 import Input from 'components/formik/Input'
 import SearchMember from 'components/formik/SearchMember'
@@ -72,7 +74,7 @@ const VerifyNotMe = ({
 
 const FellowshipForm = (props: FellowshipFormProps) => {
   const { fellowshipId, councilId, clickCard } = useContext(ChurchContext)
-  const { theme } = useContext(MemberContext)
+  const { theme, currentUser } = useContext(MemberContext)
   const { togglePopup, isOpen } = usePopup()
   const navigate = useNavigate()
 
@@ -124,6 +126,10 @@ const FellowshipForm = (props: FellowshipFormProps) => {
   const constituencyOptions = data
     ? makeSelectOptions(data.councils[0]?.constituencies)
     : []
+
+  const vacationOptions = isAuthorised(permitMe('Campus'), currentUser.roles)
+    ? VACATION_ONLINE_OPTIONS
+    : VACATION_OPTIONS
 
   let constituencyIdVar = props.initialValues.constituencySelect
 
@@ -208,7 +214,7 @@ const FellowshipForm = (props: FellowshipFormProps) => {
                               <Select
                                 label="Vacation Status"
                                 name="vacationStatus"
-                                options={VACATION_OPTIONS}
+                                options={vacationOptions}
                                 defaultOption="Select Vacation Status"
                               />
                             </Col>

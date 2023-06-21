@@ -40,6 +40,11 @@ export const VACATION_OPTIONS: FormikSelectOptions = [
   { key: 'Active', value: 'Active' },
   { key: 'Vacation', value: 'Vacation' },
 ]
+export const VACATION_ONLINE_OPTIONS: FormikSelectOptions = [
+  { key: 'Active', value: 'Active' },
+  { key: 'Vacation', value: 'Vacation' },
+  { key: 'Online', value: 'Online' },
+]
 
 export const TITLE_OPTIONS: FormikSelectOptions = [
   { key: 'Pastor', value: 'Pastor' },

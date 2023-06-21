@@ -85,7 +85,7 @@ const ServiceForm = ({
           clickCard(res.data.RecordSontaSundayMeeting)
           navigate(`/sonta/sunday-meeting-details`)
         } else {
-          clickCard(res.data.RecordService)
+          clickCard(res.data.RecordServiceNoIncome)
           navigate(`/${churchType}/service-details`)
         }
       })

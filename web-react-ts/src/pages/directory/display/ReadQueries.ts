@@ -168,6 +168,7 @@ export const DISPLAY_FELLOWSHIP = gql`
   query displayFellowship($id: ID!) {
     fellowships(where: { id: $id }, options: { limit: 1 }) {
       id
+      noIncomeTracking
       vacationStatus
       stream_name
       bankingCode
