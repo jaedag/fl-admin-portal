@@ -292,7 +292,7 @@ export type ServiceRecord = {
   attendance: number
   cash: number
   income: number
-  mobileMoney?: number
+  onlineGiving?: number
   numberOfTithers: number
   foreignCurrency: string
   week: number

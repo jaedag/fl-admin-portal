@@ -67,10 +67,10 @@ const ServiceDetails = ({ service, church, loading }: ServiceDetailsProps) => {
         ['Income', <CurrencySpan number={service?.income} />],
         ['Cash', <CurrencySpan number={service?.cash} />]
       )
-      if (service?.mobileMoney) {
+      if (service?.onlineGiving) {
         table.push([
-          'Mobile Money',
-          <CurrencySpan number={service?.mobileMoney} />,
+          'Online Giving',
+          <CurrencySpan number={service?.onlineGiving} />,
         ])
       }
       table.push(

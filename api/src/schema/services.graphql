@@ -1285,7 +1285,7 @@ type ServiceRecord implements Record @auth(rules: [{ isAuthenticated: true }]) {
   attendance: Int
   income: Float
   cash: Float
-  mobileMoney: Float
+  onlineGiving: Float
   numberOfTithers: Int
   foreignCurrency: String
   familyPicture: String

@@ -25,10 +25,10 @@ DELETE r
 WITH DISTINCT serviceRecord, transaction
 MERGE (transaction)-[:GIVEN_AT]->(serviceRecord)
 
-WITH DISTINCT serviceRecord, transaction WHERE transaction.status = 'success'
+WITH DISTINCT serviceRecord, transaction WHERE transaction.transactionStatus = 'success'
 
 WITH serviceRecord, SUM(transaction.amount) AS amount
-     SET serviceRecord.mobileMoney = amount,
+     SET serviceRecord.onlineGiving = amount,
      serviceRecord.cash = serviceRecord.income,
      serviceRecord.income = amount + serviceRecord.income
 
