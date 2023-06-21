@@ -57,7 +57,7 @@ const ServiceDetails = ({ service, church, loading }: ServiceDetailsProps) => {
     table.push(['Attendance', service?.attendance.toString()])
 
     // There is income for service
-    if (service?.income) {
+    if (service?.income && !service?.onlineGiving) {
       table.push(['Number of Tithers', service?.numberOfTithers?.toString()])
       if (service?.foreignCurrency) {
         table.push([
@@ -65,22 +65,26 @@ const ServiceDetails = ({ service, church, loading }: ServiceDetailsProps) => {
           service?.foreignCurrency?.toString() ?? '',
         ])
       }
+
       table.push(
         ['Income', <CurrencySpan number={service?.income} />],
         ['Cash', <CurrencySpan number={service?.cash} />]
       )
-      if (service?.onlineGiving) {
-        table.push([
-          'Online Giving',
-          <CurrencySpan number={service?.onlineGiving} />,
-        ])
-      }
+
       table.push(
         ...service?.treasurers.map((treasurer, i) => [
           `Treasurer ${i + 1}`,
           treasurer.fullName ?? '',
         ])
       )
+    }
+
+    if (service?.onlineGiving) {
+      table.push(['Income', <CurrencySpan number={service?.income} />])
+      table.push([
+        'Online Giving',
+        <CurrencySpan number={service?.onlineGiving} />,
+      ])
     }
   }
 
@@ -89,9 +93,10 @@ const ServiceDetails = ({ service, church, loading }: ServiceDetailsProps) => {
   }
 
   const noBankingProof =
-    !currentUser.noIncomeTracking &&
+    service.income &&
     !service?.bankingProof &&
-    !service?.bankingSlip
+    !service?.bankingSlip &&
+    !service?.onlineGiving
 
   return (
     <Container>
