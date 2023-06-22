@@ -236,6 +236,7 @@ extend type Campus {
         MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
         WHERE record.arrivalTime IS NULL
         AND record.attendance > 0
+        AND record.vehicle <> 'Car'
       RETURN COUNT(DISTINCT record)
       """
     )
@@ -248,6 +249,7 @@ extend type Campus {
         MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
         WHERE record.arrivalTime IS NOT NULL
         AND record.attendance > 0
+        AND record.vehicle <> 'Car'
       RETURN COUNT(DISTINCT record)
       """
     )
@@ -356,6 +358,7 @@ extend type Stream {
         MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
         WHERE record.arrivalTime IS NULL
         AND record.attendance > 0
+        AND record.vehicle <> 'Car'
       RETURN COUNT(DISTINCT record)
       """
     )
@@ -467,6 +470,7 @@ extend type Stream {
         MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
         WHERE record.arrivalTime IS NOT NULL
         AND record.attendance > 0
+        AND record.vehicle <> 'Car'
       RETURN COUNT(DISTINCT record)
       """
     )
@@ -573,6 +577,7 @@ extend type Council {
         MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
         WHERE record.arrivalTime IS NULL
         AND record.attendance > 0
+        AND record.vehicle <> 'Car'
       RETURN COUNT(DISTINCT record)
       """
     )
@@ -684,6 +689,7 @@ extend type Council {
         MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
         WHERE record.arrivalTime IS NOT NULL
         AND record.attendance > 0
+        AND record.vehicle <> 'Car'
       RETURN COUNT(DISTINCT record)
       """
     )
@@ -791,6 +797,7 @@ extend type Constituency {
         MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
         WHERE record.arrivalTime IS NULL
         AND record.attendance > 0
+        AND record.vehicle <> 'Car'
       RETURN COUNT(DISTINCT record)
       """
     )
@@ -902,6 +909,7 @@ extend type Constituency {
         MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
         WHERE record.arrivalTime IS NOT NULL
         AND record.attendance > 0
+        AND record.vehicle <> 'Car'
       RETURN COUNT(DISTINCT record)
       """
     )
