@@ -57,8 +57,16 @@ const ServiceDetails = ({ service, church, loading }: ServiceDetailsProps) => {
     // Service Wasn't Cancelled
     table.push(['Attendance', service?.attendance.toString()])
 
+    table.push(['Income', <CurrencySpan number={service?.income} />])
+    if (service?.onlineGiving) {
+      table.push([
+        'Online Giving',
+        <CurrencySpan number={service?.onlineGiving} />,
+      ])
+    }
     // There is income for service
-    if (service?.income && !service?.onlineGiving) {
+    if (service?.cash) {
+      table.push(['Cash', <CurrencySpan number={service?.cash} />])
       table.push(['Number of Tithers', service?.numberOfTithers?.toString()])
       if (service?.foreignCurrency) {
         table.push([
@@ -68,24 +76,11 @@ const ServiceDetails = ({ service, church, loading }: ServiceDetailsProps) => {
       }
 
       table.push(
-        ['Income', <CurrencySpan number={service?.income} />],
-        ['Cash', <CurrencySpan number={service?.cash} />]
-      )
-
-      table.push(
         ...service?.treasurers.map((treasurer, i) => [
           `Treasurer ${i + 1}`,
           treasurer.fullName ?? '',
         ])
       )
-    }
-
-    if (service?.onlineGiving) {
-      table.push(['Income', <CurrencySpan number={service?.income} />])
-      table.push([
-        'Online Giving',
-        <CurrencySpan number={service?.onlineGiving} />,
-      ])
     }
   }
 
@@ -94,7 +89,7 @@ const ServiceDetails = ({ service, church, loading }: ServiceDetailsProps) => {
   }
 
   const noBankingProof =
-    service.income &&
+    service?.income &&
     !service?.bankingProof &&
     !service?.bankingSlip &&
     !service?.onlineGiving

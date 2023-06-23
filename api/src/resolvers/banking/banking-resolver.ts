@@ -188,14 +188,15 @@ const bankingMutation = {
         },
       }
 
-      const paymentResponse = await axios(payOffering).catch((error: any) =>
-        throwToSentry(
-          'There was an error with the payment',
-          error?.response?.data?.data
-            ? JSON.stringify(error?.response?.data?.data)
-            : error
+      const paymentResponse = await axios(payOffering).catch((error: any) => {
+        throw new Error(
+          `There was an error with the payment ${
+            error?.response?.data?.data
+              ? JSON.stringify(error?.response?.data?.data)
+              : error
+          }`
         )
-      )
+      })
 
       axios(updatePaystackCustomer)
 
@@ -206,12 +207,11 @@ const bankingMutation = {
               id: serviceRecord.id,
               reference: paymentResponse.data.data.reference,
             })
-            .catch((error: any) =>
-              throwToSentry(
-                'There was an error setting serviceRecordTransactionReference',
-                error
+            .catch((error: any) => {
+              throw new Error(
+                `There was an error setting serviceRecordTransactionReference ${error}`
               )
-            )
+            })
         )
 
         return paymentCypherRes.record
