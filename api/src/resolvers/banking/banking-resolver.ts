@@ -102,14 +102,15 @@ const bankingMutation = {
       )
 
       if (!subaccount) {
-        throwToSentry(
-          'There was an error with the payment. Please email admin@firstlovecenter.com',
-          JSON.stringify({
-            transactionResponse,
-            args,
-            auth,
-            subaccount,
-          })
+        throw new Error(
+          `There was an error with the payment. Please email admin@firstlovecenter.com ${JSON.stringify(
+            {
+              transactionResponse,
+              args,
+              auth,
+              subaccount,
+            }
+          )}`
         )
       }
 

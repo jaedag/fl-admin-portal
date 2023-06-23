@@ -11,11 +11,12 @@ import React, { useContext } from 'react'
 import { Button, Container } from 'react-bootstrap'
 import { useNavigate } from 'react-router'
 import { SELF_BANKING_RECEIPT } from './bankingQueries'
+import ButtonConfirmPayment from './components/button/ConfirmPayment'
 
 const ReceiptPage = () => {
   const { serviceRecordId } = useContext(ServiceContext)
 
-  const { data, loading, error } = useQuery(SELF_BANKING_RECEIPT, {
+  const { data, loading, error, refetch } = useQuery(SELF_BANKING_RECEIPT, {
     variables: {
       id: serviceRecordId,
     },
@@ -47,6 +48,14 @@ const ReceiptPage = () => {
 
         <TableFromArrays tableArray={tablevalues} loading={false} />
         <div className="d-grid gap-2">
+          {service?.transactionStatus === 'pending' && (
+            <ButtonConfirmPayment
+              refetch={refetch}
+              service={{
+                id: serviceRecordId,
+              }}
+            />
+          )}
           <Button size="lg" onClick={() => navigate('/services/church-list')}>
             Go Home
           </Button>

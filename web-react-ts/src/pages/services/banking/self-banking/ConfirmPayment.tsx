@@ -19,7 +19,6 @@ const ConfirmPayment = () => {
   })
 
   const [countdown, setCountdown] = useState(15)
-  const service = data?.serviceRecords[0]
 
   useEffect(() => {
     countdown > 0 && setTimeout(() => setCountdown(countdown - 1), 1000)
@@ -42,7 +41,6 @@ const ConfirmPayment = () => {
                 disabled={countdown > 0}
                 service={{
                   id: serviceRecordId,
-                  stream_name: service?.stream_name,
                 }}
               />
 

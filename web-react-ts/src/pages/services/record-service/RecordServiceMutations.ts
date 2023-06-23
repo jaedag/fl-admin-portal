@@ -233,6 +233,7 @@ export const DISPLAY_FELLOWSHIP_SERVICE = gql`
       id
       name
       noIncomeTracking
+      stream_name
     }
   }
 `
@@ -304,6 +305,7 @@ export const DISPLAY_BACENTA_SERVICE = gql`
     bacentas(where: { id: $bacentaId }) {
       id
       name
+      stream_name
     }
   }
 `
@@ -442,6 +444,7 @@ export const DISPLAY_CONSTITUENCY_SERVICE = gql`
     constituencies(where: { id: $constituencyId }) {
       id
       name
+      stream_name
     }
   }
 `
@@ -500,6 +503,7 @@ export const DISPLAY_COUNCIL_SERVICE = gql`
     councils(where: { id: $councilId }) {
       id
       name
+      stream_name
     }
   }
 `
@@ -558,6 +562,7 @@ export const DISPLAY_STREAM_SERVICE = gql`
     streams(where: { id: $streamId }) {
       id
       name
+      stream_name
     }
   }
 `

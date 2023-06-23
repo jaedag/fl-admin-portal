@@ -53,6 +53,7 @@ export type TimeGraph = {
 export interface Church {
   id: string
   name: string
+  stream_name?: StreamOptions
   leader: {
     id: string
     firstName: string

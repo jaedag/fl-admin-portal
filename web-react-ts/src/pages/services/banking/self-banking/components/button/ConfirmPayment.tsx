@@ -1,6 +1,5 @@
 import { ApolloQueryResult, useMutation } from '@apollo/client'
 import { ChurchContext } from 'contexts/ChurchContext'
-import { StreamOptions } from 'global-types'
 import { alertMsg, throwToSentry } from 'global-utils'
 import { useContext, useState } from 'react'
 import { Button, Spinner } from 'react-bootstrap'
@@ -12,7 +11,6 @@ import {
 
 export type ConfirmPaymentServiceType = {
   id: string
-  stream_name: StreamOptions
   transactionStatus?: 'success' | 'pending' | 'failed' | 'abandoned'
 } | null
 
@@ -92,7 +90,6 @@ const ButtonConfirmPayment = (props: ButtonConfirmPaymentProps) => {
             const confirmationRes = await ConfirmOfferingPayment({
               variables: {
                 serviceRecordId: service?.id,
-                stream_name: service?.stream_name,
               },
               refetchQueries: [
                 {

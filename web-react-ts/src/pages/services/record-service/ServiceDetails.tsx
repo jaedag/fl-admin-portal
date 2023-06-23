@@ -29,6 +29,7 @@ type ServiceDetailsProps = {
 const ServiceDetails = ({ service, church, loading }: ServiceDetailsProps) => {
   const { theme, currentUser } = useContext(MemberContext)
   const navigate = useNavigate()
+
   const [ManuallyConfirmOfferingPayment] = useMutation(
     MANUALLY_CONFIRM_OFFERING_PAYMENT
   )
