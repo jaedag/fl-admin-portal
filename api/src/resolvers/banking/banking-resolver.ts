@@ -189,6 +189,7 @@ const bankingMutation = {
       }
 
       const paymentResponse = await axios(payOffering).catch((error: any) => {
+        console.error(JSON.stringify(error))
         throw new Error(
           `There was an error with the payment ${
             error?.response?.data?.data
