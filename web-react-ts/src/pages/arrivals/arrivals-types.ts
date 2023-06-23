@@ -111,7 +111,7 @@ export interface BacentaWithArrivals extends Bacenta {
 
 export interface HigherChurchWithArrivals extends Church {
   __typename: 'Constituency' | 'Stream' | 'Council' | 'Campus'
-  stream_name: StreamOptions
+  stream_name?: StreamOptions
   stream: Stream
   arrivalsAdmin: Member
   activeBacentaICCount: number

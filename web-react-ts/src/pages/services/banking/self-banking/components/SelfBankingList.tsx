@@ -106,7 +106,6 @@ const SelfBankingList = ({
 
               setConfirmService({
                 id: service.id,
-                stream_name: service.stream_name,
               })
               if (service.transactionStatus === 'pending') {
                 togglePopup()

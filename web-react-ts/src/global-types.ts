@@ -103,6 +103,7 @@ export interface Stream extends Church {
   id: string
   name: StreamOptions
   __typename: 'Stream'
+  stream_name?: StreamOptions
 }
 export interface Constituency extends Church {
   __typename: 'Constituency'
