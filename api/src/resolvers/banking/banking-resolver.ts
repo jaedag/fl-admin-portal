@@ -220,16 +220,6 @@ const bankingMutation = {
 
       return paymentCypherRes.record
     } catch (error: any) {
-      if (error?.response?.data?.data) {
-        throw new Error(error?.response?.data?.data)
-      }
-
-      if (error.code) {
-        throw new Error(`${error.code}`)
-      }
-
-      throw new Error(`${JSON.stringify(error)}`)
-
       throwToSentry('There was an error processing your payment', error)
     } finally {
       await session.close()

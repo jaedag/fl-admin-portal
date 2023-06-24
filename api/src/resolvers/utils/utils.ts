@@ -34,7 +34,6 @@ export const throwToSentry = (
   if (error) {
     errorVar = error
   }
-  console.error('🚀 ~ file: utils.ts:35 ~ error:', error)
 
   if (error?.response?.statusText) {
     errorVar = `${error.response.status} ${error.response.statusText}`
