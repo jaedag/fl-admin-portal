@@ -189,14 +189,6 @@ const bankingMutation = {
       }
 
       const paymentResponse = await axios(payOffering).catch((error) => {
-        console.error('🚀 ~ file: banking-resolver.ts:192 ~ error:', error)
-
-        console.error('🚀 ~ file: banking-resolver.ts:198 ~ code:', error.code)
-        console.error(
-          '🚀 ~ file: banking-resolver.ts:201 ~ error?.response?.data?.data:',
-          error?.response?.data?.data
-        )
-
         if (error?.response?.data?.data) {
           throw new Error(error?.response?.data?.data)
         }
@@ -239,10 +231,7 @@ const bankingMutation = {
       return paymentCypherRes.record
     } catch (error: any) {
       console.log('🚀 ~ file: banking-resolver.ts:244 ~ error:', error)
-      throwToSentry(
-        'There was an error processing your payment',
-        JSON.stringify(error)
-      )
+      throwToSentry('There was an error processing your payment', error)
     } finally {
       await session.close()
     }
