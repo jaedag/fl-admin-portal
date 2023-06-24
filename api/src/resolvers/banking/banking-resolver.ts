@@ -241,6 +241,7 @@ const bankingMutation = {
 
       return paymentCypherRes.record
     } catch (error: any) {
+      console.log('🚀 ~ file: banking-resolver.ts:244 ~ error:', error)
       throwToSentry(
         'There was an error processing your payment',
         JSON.stringify(error)
