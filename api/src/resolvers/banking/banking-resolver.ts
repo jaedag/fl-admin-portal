@@ -202,7 +202,7 @@ const bankingMutation = {
           )
         }
 
-        throw new Error(`${message} ${error}`)
+        throw new Error(`${message} ${JSON.stringify(error)}`)
       })
 
       axios(updatePaystackCustomer)
