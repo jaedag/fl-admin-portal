@@ -43,8 +43,8 @@ export const throwToSentry = (
     errorVar = error?.response?.data?.message
   }
 
-  if (error?.response.data.data) {
-    errorVar = JSON.stringify(error?.response.data.data)
+  if (error?.response?.data?.data) {
+    errorVar = JSON.stringify(error?.response?.data?.data)
   }
 
   // eslint-disable-next-line no-console
