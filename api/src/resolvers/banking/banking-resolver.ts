@@ -189,7 +189,6 @@ const bankingMutation = {
       }
 
       const paymentResponse = await axios(payOffering).catch((error) => {
-        const message = `There was an error with your payment`
         console.error('🚀 ~ file: banking-resolver.ts:192 ~ error:', error)
 
         console.error('🚀 ~ file: banking-resolver.ts:198 ~ code:', error.code)
@@ -198,17 +197,15 @@ const bankingMutation = {
           error?.response?.data?.data
         )
 
-        if (error.code) {
-          throw new Error(`${message} ${error.code}`)
-        }
-
         if (error?.response?.data?.data) {
-          throw new Error(
-            `${message} ${JSON.stringify(error?.response?.data?.data)}`
-          )
+          throw new Error(error?.response?.data?.data)
         }
 
-        throw new Error(`${message} ${JSON.stringify(error)}`)
+        if (error.code) {
+          throw new Error(`${error.code}`)
+        }
+
+        throw new Error(`${JSON.stringify(error)}`)
       })
 
       axios(updatePaystackCustomer)
