@@ -1,0 +1,32 @@
+{
+  "message": "Request failed with status code 400",
+  "name": "AxiosError",
+  "config": {
+    "transitional": {
+      "silentJSONParsing": true,
+      "forcedJSONParsing": true,
+      "clarifyTimeoutError": false
+    },
+    "transformRequest": [null],
+    "transformResponse": [null],
+    "timeout": 0,
+    "xsrfCookieName": "XSRF-TOKEN",
+    "xsrfHeaderName": "X-XSRF-TOKEN",
+    "maxContentLength": -1,
+    "maxBodyLength": -1,
+    "env": {},
+    "headers": {
+      "Accept": "application/json, text/plain, */*",
+      "Content-Type": "application/json",
+      "Authorization": "Bearer sk_live_018ee3f2428e0ad22ceea051939021ee4cb87e2f",
+      "User-Agent": "axios/0.27.2",
+      "Content-Length": 315
+    },
+    "method": "post",
+    "baseURL": "https://api.paystack.co/",
+    "url": "/charge",
+    "data": "{\"amount\":1021,\"email\":\"cranksonv@yahoo.com\",\"currency\":\"GHS\",\"subaccount\":\"ACCT_ptcw1ygjq8z8h0y\",\"mobile_money\":{\"phone\":\"0206406214\",\"provider\":\"vod\"},\"metadata\":{\"custom_fields\":[{\"church_name\":\"Haatso Phileo \",\"church_level\":\"Fellowship\",\"depositor_firstname\":\"Sarah Vanessa\",\"depositor_lastname\":\"Crankson\"}]}}"
+  },
+  "code": "ERR_BAD_REQUEST",
+  "status": 400
+}
