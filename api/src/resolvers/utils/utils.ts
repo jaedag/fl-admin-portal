@@ -44,7 +44,7 @@ export const throwToSentry = (
   }
 
   // eslint-disable-next-line no-console
-  console.error(message, errorVar)
+  console.error(`${message} ${JSON.stringify(errorVar)}`)
   captureException(error, {
     tags: {
       message,
