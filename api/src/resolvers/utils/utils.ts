@@ -36,16 +36,20 @@ export const throwToSentry = (
   }
   console.error('🚀 ~ file: utils.ts:35 ~ error:', error)
 
-  if (error?.response?.data?.message) {
-    errorVar = error?.response?.data?.message
-  }
-
   if (error?.response?.statusText) {
     errorVar = `${error.response.status} ${error.response.statusText}`
   }
 
+  if (error?.response?.data?.message) {
+    errorVar = error?.response?.data?.message
+  }
+
+  if (error?.response.data.data) {
+    errorVar = JSON.stringify(error?.response.data.data)
+  }
+
   // eslint-disable-next-line no-console
-  console.error(`${message} ${JSON.stringify(errorVar)}`)
+  console.error(`${message} ${JSON.stringify(error)}`)
   captureException(error, {
     tags: {
       message,
