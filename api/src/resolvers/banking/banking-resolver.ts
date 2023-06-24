@@ -188,17 +188,7 @@ const bankingMutation = {
         },
       }
 
-      const paymentResponse = await axios(payOffering).catch((error) => {
-        if (error?.response?.data?.data) {
-          throw new Error(error?.response?.data?.data)
-        }
-
-        if (error.code) {
-          throw new Error(`${error.code}`)
-        }
-
-        throw new Error(`${JSON.stringify(error)}`)
-      })
+      const paymentResponse = await axios(payOffering)
 
       axios(updatePaystackCustomer)
 
