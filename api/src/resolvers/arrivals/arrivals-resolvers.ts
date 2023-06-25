@@ -656,121 +656,114 @@ export const arrivalsMutation = {
     isAuth(permitArrivalsHelpers(), context.auth.roles)
     const session = context.executionContext.session()
 
-    const recordResponse = rearrangeCypherObject(
-      await session.executeRead((tx) => tx.run(checkTransactionReference, args))
-    )
-    const { auth } = getStreamFinancials(recordResponse.stream.properties)
+    try {
+      const recordResponse = rearrangeCypherObject(
+        await session.executeRead((tx) =>
+          tx.run(checkTransactionReference, args)
+        )
+      )
+      const { auth } = getStreamFinancials(recordResponse.stream.properties)
 
-    const vehicleRecord = recordResponse.record.properties
-    const bacenta = recordResponse.bacenta.properties
-    const leader = recordResponse.leader.properties
+      const vehicleRecord = recordResponse.record.properties
+      const bacenta = recordResponse.bacenta.properties
+      const leader = recordResponse.leader.properties
 
-    let recipient = vehicleRecord
+      let recipient = vehicleRecord
 
-    if (vehicleRecord?.transactionStatus === 'success') {
-      throw new Error('Money has already been sent to this bacenta')
-    } else if (
-      !vehicleRecord?.arrivalTime ||
-      vehicleRecord?.attendance < 8 ||
-      !vehicleRecord?.vehicleTopUp
-    ) {
-      // If record has not been confirmed, it will return null
-      throw new Error('This bacenta is not eligible to receive money')
-    }
+      if (vehicleRecord?.transactionStatus === 'success') {
+        throw new Error('Money has already been sent to this bacenta')
+      } else if (
+        !vehicleRecord?.arrivalTime ||
+        vehicleRecord?.attendance < 8 ||
+        !vehicleRecord?.vehicleTopUp
+      ) {
+        // If record has not been confirmed, it will return null
+        throw new Error('This bacenta is not eligible to receive money')
+      }
 
-    if (!vehicleRecord.recipientCode) {
-      const createRecipient: CreateTransferRecipientBody = {
+      if (!vehicleRecord.recipientCode) {
+        const createRecipient: CreateTransferRecipientBody = {
+          method: 'post',
+          baseURL: 'https://api.paystack.co/',
+          url: '/transferrecipient',
+          headers: {
+            'content-type': 'application/json',
+            Authorization: auth,
+          },
+          data: {
+            type: 'mobile_money',
+            name: `${leader.firstName} ${leader.lastName}`,
+            email: leader.email,
+            account_number: vehicleRecord.momoNumber,
+            bank_code: vehicleRecord.mobileNetwork,
+            currency: 'GHS',
+            metadata: {
+              momo: {
+                name: vehicleRecord.momoName,
+                number: vehicleRecord.momoNumber,
+              },
+              bacenta: {
+                id: bacenta.id,
+                name: bacenta.name,
+              },
+              leader: {
+                id: leader.id,
+                firstName: leader.firstName,
+                lastName: leader.lastName,
+                phoneNumber: leader.phoneNumber,
+                whatsappNumber: leader.whatsappNumber,
+              },
+            },
+          },
+        }
+
+        const recipientResponse = await axios(createRecipient)
+
+        await session.executeWrite((tx) =>
+          tx.run(setBacentaRecipientCode, {
+            bacentaId: bacenta.id,
+            vehicleRecordId: vehicleRecord.id,
+            recipientCode: recipientResponse.data.data.recipient_code,
+          })
+        )
+
+        recipient = {
+          ...recipientResponse.data.data,
+          recipientCode: recipientResponse.data.data.recipient_code,
+        }
+      }
+
+      const sendVehicleSupport: SendMoneyBody = {
         method: 'post',
         baseURL: 'https://api.paystack.co/',
-        url: '/transferrecipient',
+        url: '/transfer',
         headers: {
           'content-type': 'application/json',
           Authorization: auth,
         },
         data: {
-          type: 'mobile_money',
-          name: `${leader.firstName} ${leader.lastName}`,
-          email: leader.email,
-          account_number: vehicleRecord.momoNumber,
-          bank_code: vehicleRecord.mobileNetwork,
+          source: 'balance',
+          reason: `${bacenta.name} Bacenta bussed ${
+            vehicleRecord.attendance
+          } on ${getHumanReadableDate(new Date().toISOString())}`,
+          amount: vehicleRecord.vehicleTopUp * 100,
           currency: 'GHS',
-          metadata: {
-            momo: {
-              name: vehicleRecord.momoName,
-              number: vehicleRecord.momoNumber,
-            },
-            bacenta: {
-              id: bacenta.id,
-              name: bacenta.name,
-            },
-            leader: {
-              id: leader.id,
-              firstName: leader.firstName,
-              lastName: leader.lastName,
-              phoneNumber: leader.phoneNumber,
-              whatsappNumber: leader.whatsappNumber,
-            },
-          },
+          recipient: recipient.recipientCode,
         },
       }
 
-      const recipientResponse = await axios(createRecipient).catch((err) =>
-        throwToSentry('Error creating transfer recipient', err)
-      )
-
-      await session.executeWrite((tx) =>
-        tx.run(setBacentaRecipientCode, {
-          bacentaId: bacenta.id,
-          vehicleRecordId: vehicleRecord.id,
-          recipientCode: recipientResponse.data.data.recipient_code,
-        })
-      )
-
-      recipient = {
-        ...recipientResponse.data.data,
-        recipientCode: recipientResponse.data.data.recipient_code,
-      }
-    }
-
-    const sendVehicleSupport: SendMoneyBody = {
-      method: 'post',
-      baseURL: 'https://api.paystack.co/',
-      url: '/transfer',
-      headers: {
-        'content-type': 'application/json',
-        Authorization: auth,
-      },
-      data: {
-        source: 'balance',
-        reason: `${bacenta.name} Bacenta bussed ${
-          vehicleRecord.attendance
-        } on ${getHumanReadableDate(new Date().toISOString())}`,
-        amount: vehicleRecord.vehicleTopUp * 100,
-        currency: 'GHS',
-        recipient: recipient.recipientCode,
-      },
-    }
-
-    try {
       const res = await axios(sendVehicleSupport)
 
       const responseData = res.data.data
 
-      await session
-        .executeWrite((tx) =>
-          tx.run(setVehicleRecordTransactionSuccessful, {
-            ...args,
-            transactionReference: responseData.reference,
-            transferCode: responseData.transfer_code,
-            responseStatus: responseData.status,
-          })
-        )
-        .catch((error: any) =>
-          throwToSentry(
-            'There was an error setting Vehicle Record Transaction Status',
-            error
-          )
-        )
+      await session.executeWrite((tx) =>
+        tx.run(setVehicleRecordTransactionSuccessful, {
+          ...args,
+          transactionReference: responseData.reference,
+          transferCode: responseData.transfer_code,
+          responseStatus: responseData.status,
+        })
+      )
 
       console.log('Money Sent Successfully to', vehicleRecord.momoName)
 
@@ -784,7 +777,7 @@ export const arrivalsMutation = {
       await session.close()
     }
 
-    return vehicleRecord
+    return null
   },
   SetSwellDate: async (object: any, args: any, context: Context) => {
     isAuth(permitAdminArrivals('Campus'), context.auth.roles)
