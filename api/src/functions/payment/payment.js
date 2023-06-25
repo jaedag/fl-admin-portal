@@ -69,7 +69,8 @@ const handlePaystackReq = async (event, neoDriver) => {
   const { reference, status } = parsedBody.data
 
   const neoRes = await executeQuery(neoDriver, { reference, status })
-  const categories = neoRes.records[0].get('record').labels
+  console.log(JSON.stringify(neoRes))
+  const categories = neoRes.records[0]?.get('record').labels
 
   if (categories.includes('Offering')) {
     await db.collection('offerings').doc(reference).update({ status })
@@ -81,7 +82,7 @@ const handlePaystackReq = async (event, neoDriver) => {
     await db.collection('benmp').doc(reference).update({ status })
   }
 
-  return neoRes.records[0].get('record').properties
+  return neoRes.records[0]?.get('record').properties
 }
 
 // eslint-disable-next-line import/prefer-default-export
