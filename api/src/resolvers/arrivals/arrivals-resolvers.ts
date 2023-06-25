@@ -412,10 +412,6 @@ export const arrivalsMutation = {
 
     const adjustedArgs = args
 
-    if (args.attendance < 8) {
-      adjustedArgs.vehicle = 'Car'
-    }
-
     if (streamName === 'anagkazo encounter') {
       if (args.attendance < 20 && parseNeoNumber(numberOfVehicles) < 2) {
         adjustedArgs.attendance = 0
@@ -438,6 +434,10 @@ export const arrivalsMutation = {
         // One arrived vehicle but the combined attendance is less than 8
         adjustedArgs.attendance = 0
       }
+    }
+
+    if (args.attendance < 8) {
+      adjustedArgs.vehicle = 'Car'
     }
 
     const response = rearrangeCypherObject(
