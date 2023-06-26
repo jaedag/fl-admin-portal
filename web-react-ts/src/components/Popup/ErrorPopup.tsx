@@ -16,6 +16,11 @@ const ErrorPopup = (props: ErrorDialogProps) => {
   return (
     <Popup handleClose={togglePopup}>
       <Container>
+        <p>
+          Please make sure that you have enough funds in your mobile wallet, and
+          try again after 30 mins - 1 hour.
+        </p>
+
         <code className="text-white">{errorMessage}</code>
         <Button
           variant="danger"
