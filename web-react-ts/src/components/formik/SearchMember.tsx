@@ -1,7 +1,12 @@
 import { useLazyQuery } from '@apollo/client'
 import { MemberContext } from 'contexts/MemberContext'
 import { ErrorMessage } from 'formik'
-import { DEBOUNCE_TIMER, isAuthorised, throwToSentry } from 'global-utils'
+import {
+  DEBOUNCE_TIMER,
+  getFirstLetterInEveryWord,
+  isAuthorised,
+  throwToSentry,
+} from 'global-utils'
 import { permitMe } from 'permission-utils'
 import React, { useContext, useEffect, useState } from 'react'
 import { RoleBasedSearch } from './formik-types'
@@ -192,7 +197,13 @@ const SearchMember = (props: RoleBasedSearch) => {
           if (method === 'enter') {
             event.preventDefault()
           }
-          setSearchString(suggestion.firstName + ' ' + suggestion.lastName)
+          setSearchString(
+            suggestion.firstName +
+              ' ' +
+              suggestion.middleName +
+              ' ' +
+              suggestion.lastName
+          )
 
           props.setFieldValue(`${props.name}`, suggestion.id)
           props.setFieldValue('leaderEmail', suggestion?.email)
@@ -203,7 +214,11 @@ const SearchMember = (props: RoleBasedSearch) => {
         highlightFirstSuggestion={true}
         renderSuggestion={(suggestion: any) => (
           <div className="combobox-control">
-            {suggestion.firstName + ' ' + suggestion.lastName}
+            {suggestion.firstName +
+              ' ' +
+              getFirstLetterInEveryWord(suggestion.middleName) +
+              ' ' +
+              suggestion.lastName}
           </div>
         )}
       />
