@@ -91,9 +91,9 @@ const MakeServantResolvers = {
     MakeServant(context, args, permitAdmin('Oversight'), 'Campus', 'Leader'),
   RemoveCampusLeader: async (object: any, args: Member, context: Context) =>
     RemoveServant(context, args, permitAdmin('Oversight'), 'Campus', 'Leader'),
-  MakeCreativeArtLeader: async (object: any, args: Member, context: Context) =>
-    MakeServant(context, args, permitAdmin('Campus'), 'CreativeArt', 'Leader'),
-  RemoveCreativeArtLeader: async (
+  MakeCreativeArtsLeader: async (object: any, args: Member, context: Context) =>
+    MakeServant(context, args, permitAdmin('Campus'), 'CreativeArts', 'Leader'),
+  RemoveCreativeArtsLeader: async (
     object: any,
     args: Member,
     context: Context
@@ -102,14 +102,14 @@ const MakeServantResolvers = {
       context,
       args,
       permitAdmin('Campus'),
-      'CreativeArt',
+      'CreativeArts',
       'Leader'
     ),
   MakeMinistryLeader: async (object: any, args: Member, context: Context) =>
     MakeServant(
       context,
       args,
-      permitAdmin('CreativeArt'),
+      permitAdmin('CreativeArts'),
       'Ministry',
       'Leader'
     ),
@@ -117,7 +117,7 @@ const MakeServantResolvers = {
     RemoveServant(
       context,
       args,
-      permitAdmin('CreativeArt'),
+      permitAdmin('CreativeArts'),
       'Ministry',
       'Leader'
     ),

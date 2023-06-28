@@ -18,7 +18,7 @@ export type ChurchLevel =
   | 'Oversight'
   | 'Hub'
   | 'Ministry'
-  | 'CreativeArt'
+  | 'CreativeArts'
 
 export type ChurchLevelWithClosed = 'ClosedFellowship' | 'ClosedBacenta'
 
@@ -30,7 +30,7 @@ export type Role =
   | 'leaderStream'
   | 'leaderCampus'
   | 'leaderOversight'
-  | 'leaderCreativeArt'
+  | 'leaderCreativeArts'
   | 'leaderMinistry'
   | 'leaderHub'
   | 'adminConstituency'
@@ -38,7 +38,7 @@ export type Role =
   | 'adminStream'
   | 'adminCampus'
   | 'adminOversight'
-  | 'adminCreativeArt'
+  | 'adminCreativeArts'
   | 'adminMinistry'
   | 'arrivalsAdminCampus'
   | 'arrivalsAdminStream'

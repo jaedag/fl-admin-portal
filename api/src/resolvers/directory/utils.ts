@@ -18,7 +18,7 @@ import {
   matchMemberTellerQuery,
 } from '../cypher/resolver-cypher'
 import {
-  matchMemberCreativeArtQuery,
+  matchMemberCreativeArtsQuery,
   matchMemberHubQuery,
   matchMemberMinistryQuery,
 } from '../cypher/ministry-directory-cypher'
@@ -98,9 +98,9 @@ export const formatting = (
     churchLower = 'campus'
   }
 
-  if (churchType === 'CreativeArt') {
+  if (churchType === 'CreativeArts') {
     churchLower = 'creativeArt'
-    memberQuery = matchMemberCreativeArtQuery
+    memberQuery = matchMemberCreativeArtsQuery
   }
   if (churchType === 'Ministry') {
     churchLower = 'ministry'

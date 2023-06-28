@@ -9,12 +9,14 @@ import {
 
 import {
   recordSundayMinistryAttendance,
-  aggregateServiceDataForHub,
-  aggregateServiceDataForMinistry,
   recordHubRehearsalService,
-  aggregateServiceDataForCreativeArt,
   checkServiceFormFilledThisWeek,
   checkRehearsalFormFilledThisWeek,
+  aggregateMinistryMeetingDataForCreativeArts,
+  aggregateMinistryMeetingDataForHub,
+  aggregateMinistryMeetingDataForMinistry,
+  aggregateHubRehearsalDataForCreativeArts,
+  aggregateHubRehearsalDataForMinistry,
 } from './hub-fellowship-service-cypher'
 
 const errorMessage = require('../texts.json').error
@@ -64,7 +66,7 @@ export const checkServantHasCurrentHistory = async (
   }
 }
 
-const SontaServiceMutation = {
+const HubFellowshipServiceMutation = {
   RecordHubFellowshipSundayAttendance: async (
     object: any,
     args: RecordServiceArgs,
@@ -83,7 +85,7 @@ const SontaServiceMutation = {
 
     if (
       serviceCheck.alreadyFilled &&
-      !['Ministry', 'CreativeArt'].some((label) =>
+      !['Ministry', 'CreativeArts'].some((label) =>
         serviceCheck.higherChurchLabels?.includes(label)
       )
     ) {
@@ -98,11 +100,11 @@ const SontaServiceMutation = {
     let aggregateCypher = ''
 
     if (serviceCheck.higherChurchLabels?.includes('Hub')) {
-      aggregateCypher = aggregateServiceDataForHub
+      aggregateCypher = aggregateMinistryMeetingDataForHub
     } else if (serviceCheck.higherChurchLabels?.includes('Ministry')) {
-      aggregateCypher = aggregateServiceDataForMinistry
-    } else if (serviceCheck.higherChurchLabels?.includes('CreativeArt')) {
-      aggregateCypher = aggregateServiceDataForCreativeArt
+      aggregateCypher = aggregateMinistryMeetingDataForMinistry
+    } else if (serviceCheck.higherChurchLabels?.includes('CreativeArts')) {
+      aggregateCypher = aggregateMinistryMeetingDataForCreativeArts
     }
 
     const cypherResponse = await session
@@ -110,7 +112,9 @@ const SontaServiceMutation = {
         ...args,
         auth: context.auth,
       })
-      .catch((error: any) => throwToSentry('Error Recording Service', error))
+      .catch((error: any) =>
+        throwToSentry('Error fellowship ministry attendance meeting', error)
+      )
 
     secondSession
       .run(aggregateCypher, {
@@ -142,7 +146,7 @@ const SontaServiceMutation = {
 
     if (
       serviceCheck.alreadyFilled &&
-      !['Ministry', 'CreativeArt'].some((label) =>
+      !['Ministry', 'CreativeArts'].some((label) =>
         serviceCheck.higherChurchLabels?.includes(label)
       )
     ) {
@@ -157,9 +161,9 @@ const SontaServiceMutation = {
     let aggregateCypher = ''
 
     if (serviceCheck.higherChurchLabels?.includes('Ministry')) {
-      aggregateCypher = aggregateServiceDataForMinistry
-    } else if (serviceCheck.higherChurchLabels?.includes('CreativeArt')) {
-      aggregateCypher = aggregateServiceDataForCreativeArt
+      aggregateCypher = aggregateHubRehearsalDataForMinistry
+    } else if (serviceCheck.higherChurchLabels?.includes('CreativeArts')) {
+      aggregateCypher = aggregateHubRehearsalDataForCreativeArts
     }
 
     const cypherResponse = await session
@@ -187,4 +191,4 @@ const SontaServiceMutation = {
   },
 }
 
-export default SontaServiceMutation
+export default HubFellowshipServiceMutation

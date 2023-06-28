@@ -60,7 +60,7 @@ export const matchMemberSheepSeekerQuery = `
 export const matchChurchQuery = `
   MATCH (church {id:$id}) 
   WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:Campus OR church:Ministry
-  OR church:ClosedFellowship OR church:ClosedBacenta OR church:CreativeArt OR church:Hub
+  OR church:ClosedFellowship OR church:ClosedBacenta OR church:CreativeArts OR church:Hub
   RETURN church.id AS id, church.name AS name, church.firstName AS firstName, church.lastName AS lastName, labels(church) AS type
   `
 
@@ -216,7 +216,7 @@ CREATE (member:Active:Member:IDL:Deer {whatsappNumber:$whatsappNumber})
       CALL {
          	WITH member
          	WITH member  WHERE $ministry IS NOT NULL
-         	MATCH (ministry:CreativeArt {id:$ministry})
+         	MATCH (ministry:CreativeArts {id:$ministry})
       	MERGE (member)-[:BELONGS_TO]-> (ministry)
          	RETURN count(member) AS member_ministry
          	}
@@ -285,7 +285,7 @@ WITH member, fellowship
       CALL {
           WITH member
           WITH member  WHERE $ministry IS NOT NULL
-          MATCH (ministry:CreativeArt {id:$ministry})
+          MATCH (ministry:CreativeArts {id:$ministry})
         MERGE (member)-[:BELONGS_TO]-> (ministry)
           RETURN count(member) AS member_ministry
           }

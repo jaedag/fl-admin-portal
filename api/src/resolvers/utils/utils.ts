@@ -143,7 +143,7 @@ export const nextHigherChurch = (churchLevel: ChurchLevel) => {
     case 'Hub':
       return 'Ministry'
     case 'Ministry':
-      return 'CreativeArt'
+      return 'CreativeArts'
     default:
       return 'Oversight'
   }

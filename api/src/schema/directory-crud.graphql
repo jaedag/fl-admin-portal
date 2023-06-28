@@ -551,14 +551,14 @@ extend type Mutation {
     @cypher(
       statement: """
       MATCH (member:Active:Member {id: $memberId})
-      OPTIONAL MATCH (member)-[previous:BELONGS_TO]->(:CreativeArt)
+      OPTIONAL MATCH (member)-[previous:BELONGS_TO]->(:CreativeArts)
       DELETE previous
 
       WITH member
       CALL {
       	WITH member
       	WITH member  WHERE $ministryId <> 'None'
-        MATCH (ministry:CreativeArt {id: $ministryId})
+        MATCH (ministry:CreativeArts {id: $ministryId})
         MERGE (member)-[:BELONGS_TO]->(ministry)
 
         RETURN count(member)

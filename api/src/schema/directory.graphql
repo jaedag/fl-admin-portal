@@ -25,7 +25,7 @@ type Member @auth(rules: [{ isAuthenticated: true }]) {
   dob: TimeGraph @relationship(type: "WAS_BORN_ON", direction: OUT)
   title: [Title!]!
     @relationship(type: "HAS_TITLE", properties: "HasTitle", direction: OUT)
-  ministry: CreativeArt @relationship(type: "BELONGS_TO", direction: OUT)
+  ministry: CreativeArts @relationship(type: "BELONGS_TO", direction: OUT)
   occupation: Occupation @relationship(type: "HAS_OCCUPATION", direction: OUT)
   stream_name: String
     @cypher(
@@ -54,7 +54,7 @@ type Member @auth(rules: [{ isAuthenticated: true }]) {
     @cypher(
       statement: """
       MATCH (this)-[:LEADS|HAS|IS_ADMIN_FOR*1..6]->(:Fellowship)<-[:BELONGS_TO]-(members:Active:Member)
-      MATCH (members)-[:BELONGS_TO]->(:CreativeArt)
+      MATCH (members)-[:BELONGS_TO]->(:CreativeArts)
       RETURN DISTINCT members ORDER BY toLower(members.lastName), toLower(members.firstName)
       """
     )
@@ -62,7 +62,7 @@ type Member @auth(rules: [{ isAuthenticated: true }]) {
     @cypher(
       statement: """
       MATCH (this)-[:LEADS|HAS|IS_ADMIN_FOR*1..6]->(:Fellowship)<-[:BELONGS_TO]-(members:Active:Member)
-      MATCH (members)-[:BELONGS_TO]->(:CreativeArt)
+      MATCH (members)-[:BELONGS_TO]->(:CreativeArts)
       RETURN COUNT(DISTINCT members)
       """
     )
@@ -90,7 +90,7 @@ type Member @auth(rules: [{ isAuthenticated: true }]) {
     )
 
   ### BASONTA WORK ###
-  leadsFederalMinistry: [CreativeArt!]!
+  leadsFederalMinistry: [CreativeArts!]!
     @relationship(type: "LEADS", direction: OUT)
   leadsMinistry: [Ministry!]! @relationship(type: "LEADS", direction: OUT)
   leadsHub: [Hub!]! @relationship(type: "LEADS", direction: OUT)
@@ -291,7 +291,7 @@ type HistoryLog @auth(rules: [{ isAuthenticated: true }]) {
   basonta: [Basonta!]! @relationship(type: "HAS_HISTORY", direction: IN)
   ministry: [Ministry!]! @relationship(type: "HAS_HISTORY", direction: IN)
   hub: [Hub!]! @relationship(type: "HAS_HISTORY", direction: IN)
-  creativeArt: [CreativeArt!]!
+  creativeArt: [CreativeArts!]!
     @relationship(type: "HAS_HISTORY", direction: IN)
 }
 
@@ -539,7 +539,7 @@ type Campus implements Church {
   leader: Member @relationship(type: "LEADS", direction: IN)
   oversight: Oversight! @relationship(type: "HAS", direction: IN)
   streams: [Stream!]! @relationship(type: "HAS", direction: OUT)
-  creativeArts: [CreativeArt!]!
+  creativeArts: [CreativeArts!]!
     @relationship(type: "HAS_MINISTRY", direction: OUT)
 
   councils: [Council!]!
@@ -636,12 +636,12 @@ type Campus implements Church {
     )
   creativeArtCount: Int
     @cypher(
-      statement: "MATCH (this)-[:HAS_MINISTRY]->(creativeArt:CreativeArt) RETURN COUNT(creativeArt)"
+      statement: "MATCH (this)-[:HAS_MINISTRY]->(creativeArt:CreativeArts) RETURN COUNT(creativeArt)"
     )
 
   ministryCount: Int!
     @cypher(
-      statement: "MATCH (this)-[:HAS*2]->(ministry:CreativeArt) RETURN COUNT(ministry)"
+      statement: "MATCH (this)-[:HAS*2]->(ministry:CreativeArts) RETURN COUNT(ministry)"
     )
   hubCount: Int!
     @cypher(statement: "MATCH (this)-[:HAS*3]->(hub:Hub) RETURN COUNT(hub)")
@@ -1201,7 +1201,7 @@ type Hub {
   memberCount: Int!
     @cypher(
       statement: """
-      MATCH (this)<-[:HAS]->(ministry:CreativeArt)<-[:BELONGS_TO]-(members:Active:Member)
+      MATCH (this)<-[:HAS]->(ministry:CreativeArts)<-[:BELONGS_TO]-(members:Active:Member)
       RETURN COUNT(DISTINCT members)
       """
     )
@@ -1225,7 +1225,7 @@ type Ministry {
   memberCount: Int!
     @cypher(
       statement: """
-      MATCH (this)<-[:HAS]-(:CreativeArt)<-[:BELONGS_TO]-(members:Active:Member)
+      MATCH (this)<-[:HAS]-(:CreativeArts)<-[:BELONGS_TO]-(members:Active:Member)
       RETURN COUNT(DISTINCT members)
       """
     )
@@ -1251,7 +1251,7 @@ type Ministry {
   stream: Stream @relationship(type: "HAS_MINISTRY", direction: IN)
   history: [HistoryLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
   servicelogs: [ServiceLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
-  creativeArt: CreativeArt @relationship(type: "HAS", direction: IN)
+  creativeArt: CreativeArts @relationship(type: "HAS", direction: IN)
   hubFellowships: [Fellowship!]!
     @cypher(
       statement: 
@@ -1262,7 +1262,7 @@ type Ministry {
     )
 }
 
-type CreativeArt {
+type CreativeArts {
   memberCount: Int!
     @cypher(
       statement: """
