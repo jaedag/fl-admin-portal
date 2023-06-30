@@ -75,9 +75,9 @@ const handlePaystackReq = async (event, neoDriver) => {
   const { reference, status } = parsedBody.data
 
   const neoRes = await executeQuery(neoDriver, { reference, status })
-  console.log('🚀 ~ file: payment.js:78 ~ neoRes:', neoRes)
 
   const categories = neoRes.records[0]?.get('record').labels
+  console.log('🚀 ~ file: payment.js:80 ~ categories:', categories)
 
   if (categories.includes('Offering')) {
     await db.collection('offerings').doc(reference).update({ status })
