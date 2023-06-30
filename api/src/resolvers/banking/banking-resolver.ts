@@ -347,9 +347,10 @@ const bankingMutation = {
     // if transactionTime is within the last 1 minute then return the record
     if (
       record?.transactionTime &&
-      new Date().getTime() - new Date(record?.transactionTime).getTime() < 90000
+      new Date().getTime() - new Date(record?.transactionTime).getTime() <
+        180000
     ) {
-      console.log('transactionTime is within the last 1:30 minute')
+      console.log('transactionTime is within the last 2 minutes')
       return {
         id: record.id,
         cash: record.cash,

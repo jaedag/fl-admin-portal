@@ -1,7 +1,7 @@
 
-MATCH (record:ServiceRecord {id:  "b3dcf6a9-40d2-44de-a1e0-68485a93f21f"})
-MATCH (fellowship:Fellowship {id:  "e0cdda25-f865-4420-ada3-f4cba5aa879c"})<-[:LEADS]-(leader:Member)
-SET record.transactionReference = "zt2ocuuvbcrg481",
+MATCH (record:ServiceRecord {id: "67bf77c0-2edd-4b63-8e0c-fbcdb4fef276"})
+MATCH (fellowship:Fellowship {id: "f801a933-96f4-4e74-b354-741ad334d71e"})<-[:LEADS]-(leader:Member)
+SET record.transactionReference = "gtgq7t9afkyaynb",
     record.transactionStatus = "success"
 REMOVE record.transactionError
 WITH record, fellowship, leader
