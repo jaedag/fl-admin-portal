@@ -1,19 +1,9 @@
 
-
-MATCH (record:ServiceRecord {id: "651f6d51-33ee-45c8-a308-5f02a90a836a"})
-MATCH (fellowship:Fellowship {id: "f773dd22-c974-4012-b09d-4c80800c9a50"})<-[:LEADS]-(leader:Member)
-SET record.transactionReference = "cvwo7xsfvnrmgve",
+MATCH (record:ServiceRecord {id:  "b3dcf6a9-40d2-44de-a1e0-68485a93f21f"})
+MATCH (fellowship:Fellowship {id:  "e0cdda25-f865-4420-ada3-f4cba5aa879c"})<-[:LEADS]-(leader:Member)
+SET record.transactionReference = "zt2ocuuvbcrg481",
     record.transactionStatus = "success"
-
+REMOVE record.transactionError
 WITH record, fellowship, leader
 MERGE (record)-[r:OFFERING_BANKED_BY]->(leader)
 RETURN record.income, record.transactionReference;
-
-
-MATCH (fellowship:Fellowship {id: "6ac0de3e-8719-4010-8bc1-a99c503c694a"})-[:CURRENT_HISTORY]->(log:ServiceLog)
-RETURN log.priority;
-
-MATCH (fellowship:Fellowship)<-[r:LEADS]-(member:Member {email: "robertmelu22@gmail.com"})
-MATCH (bacenta:Bacenta {id: "d40efc9f-a118-4c4b-a137-71d2725ecab1"})
-MERGE (bacenta)-[:HAS]->(fellowship)
-RETURN fellowship.name, bacenta.name;

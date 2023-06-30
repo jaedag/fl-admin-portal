@@ -192,23 +192,6 @@ const bankingMutation = {
 
       axios(updatePaystackCustomer)
 
-      if (paymentResponse.data.data.status === 'send_otp') {
-        const paymentCypherRes = rearrangeCypherObject(
-          await session
-            .run(setRecordTransactionReferenceWithOTP, {
-              id: serviceRecord.id,
-              reference: paymentResponse.data.data.reference,
-            })
-            .catch((error: any) => {
-              throw new Error(
-                `There was an error setting serviceRecordTransactionReference ${error}`
-              )
-            })
-        )
-
-        return paymentCypherRes.record
-      }
-
       const paymentCypherRes = rearrangeCypherObject(
         await session.executeWrite((tx) =>
           tx.run(setRecordTransactionReference, {
@@ -217,6 +200,16 @@ const bankingMutation = {
           })
         )
       )
+
+      if (paymentResponse.data.data.status === 'send_otp') {
+        const otpCypherRes = rearrangeCypherObject(
+          await session.run(setRecordTransactionReferenceWithOTP, {
+            id: serviceRecord.id,
+          })
+        )
+
+        return otpCypherRes.record
+      }
 
       return paymentCypherRes.record
     } catch (error: any) {
