@@ -235,7 +235,7 @@ extend type Campus {
          WHERE date(date.date)=date($arrivalDate)
         MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
         WHERE record.arrivalTime IS NULL
-        AND record.attendance > 0
+        AND record.leaderDeclaration IS NOT NULL
         AND record.vehicle <> 'Car'
       RETURN COUNT(DISTINCT record)
       """
@@ -357,7 +357,7 @@ extend type Stream {
          WHERE date(date.date)=date($arrivalDate)
         MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
         WHERE record.arrivalTime IS NULL
-        AND record.attendance > 0
+        AND record.leaderDeclaration IS NOT NULL
         AND record.vehicle <> 'Car'
       RETURN COUNT(DISTINCT record)
       """
@@ -576,7 +576,7 @@ extend type Council {
          WHERE date(date.date)=date($arrivalDate)
         MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
         WHERE record.arrivalTime IS NULL
-        AND record.attendance > 0
+        AND record.leaderDeclaration IS NOT NULL
         AND record.vehicle <> 'Car'
       RETURN COUNT(DISTINCT record)
       """
@@ -796,7 +796,7 @@ extend type Constituency {
          WHERE date(date.date)=date($arrivalDate)
         MATCH (bussing)-[:INCLUDES_RECORD]->(record:VehicleRecord)
         WHERE record.arrivalTime IS NULL
-        AND record.attendance > 0
+        AND record.leaderDeclaration IS NOT NULL
         AND record.vehicle <> 'Car'
       RETURN COUNT(DISTINCT record)
       """
