@@ -7,3 +7,7 @@ REMOVE record.transactionError
 WITH record, fellowship, leader
 MERGE (record)-[r:OFFERING_BANKED_BY]->(leader)
 RETURN record.income, record.transactionReference;
+
+
+MATCH (record:ServiceRecord {id:  "95dcf0b3-7193-4ef8-801f-3d8997ac78f6"})
+DETACH DELETE record

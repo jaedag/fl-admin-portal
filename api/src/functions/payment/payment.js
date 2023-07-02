@@ -80,13 +80,22 @@ const handlePaystackReq = async (event, neoDriver) => {
   console.log('🚀 ~ file: payment.js:80 ~ categories:', categories)
 
   if (categories.includes('Offering')) {
-    await db.collection('offerings').doc(reference).update({ status })
+    await db
+      .collection('offerings')
+      .doc(reference)
+      .update({ transactionStatus: status })
   }
   if (categories.includes('Tithe')) {
-    await db.collection('tithes').doc(reference).update({ status })
+    await db
+      .collection('tithes')
+      .doc(reference)
+      .update({ transactionStatus: status })
   }
   if (categories.includes('BENMP')) {
-    await db.collection('benmp').doc(reference).update({ status })
+    await db
+      .collection('benmp')
+      .doc(reference)
+      .update({ transactionStatus: status })
   }
 
   return neoRes.records[0]?.get('record').properties
