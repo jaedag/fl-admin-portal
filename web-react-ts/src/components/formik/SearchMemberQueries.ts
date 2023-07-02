@@ -7,6 +7,7 @@ export const CAMPUS_MEMBER_SEARCH = gql`
       memberSearch(key: $key, limit: 5) {
         id
         firstName
+        middleName
         lastName
         email
       }
@@ -21,6 +22,7 @@ export const STREAM_MEMBER_SEARCH = gql`
       memberSearch(key: $key, limit: 5) {
         id
         firstName
+        middleName
         lastName
         email
       }
@@ -35,6 +37,7 @@ export const COUNCIL_MEMBER_SEARCH = gql`
       memberSearch(key: $key, limit: 5) {
         id
         firstName
+        middleName
         lastName
         email
       }
@@ -49,6 +52,7 @@ export const CONSTITUENCY_MEMBER_SEARCH = gql`
       memberSearch(key: $key, limit: 5) {
         id
         firstName
+        middleName
         lastName
         email
       }
@@ -63,6 +67,7 @@ export const BACENTA_MEMBER_SEARCH = gql`
       memberSearch(key: $key, limit: 5) {
         id
         firstName
+        middleName
         lastName
         email
       }
@@ -77,6 +82,7 @@ export const FELLOWSHIP_MEMBER_SEARCH = gql`
       memberSearch(key: $key, limit: 5) {
         id
         firstName
+        middleName
         lastName
         email
       }
@@ -91,6 +97,7 @@ export const MEMBER_MEMBER_SEARCH = gql`
       memberSearch(key: $key, limit: 5) {
         id
         firstName
+        middleName
         lastName
         email
         location {

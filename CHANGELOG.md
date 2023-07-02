@@ -1,3 +1,50 @@
+#### 7.7.1 (2023-06-26)
+
+##### New Features
+
+*  allow other people to confirm your transaction from the self banking receipt page ([3b62069c](https://github.com/firstlovecenter/fl-pastoral-care/commit/3b62069cfbd087176b47950444b54858d68df7b4))
+
+##### Bug Fixes
+
+*  add instructions on what to check when payment fails ([fef40cb4](https://github.com/firstlovecenter/fl-pastoral-care/commit/fef40cb4f693fab9a5d3776ff40872a58c6cf10b))
+*  update error message when transaction fails ([6016b3a6](https://github.com/firstlovecenter/fl-pastoral-care/commit/6016b3a6112ec443d65e2080263c61d1637f22bd))
+*  console.log results from payment function ([39895508](https://github.com/firstlovecenter/fl-pastoral-care/commit/3989550817ee29ce527bebe6e01fecde045320d6))
+*  vehicle less than 8 should not be counted ([8c76d4bb](https://github.com/firstlovecenter/fl-pastoral-care/commit/8c76d4bbd27241fca197d7287f31e6313d76235e))
+*  modify throwToSentry error 10 ([26f7d631](https://github.com/firstlovecenter/fl-pastoral-care/commit/26f7d6311d93ba012ae7cdb27bf1142ee99a9db1))
+*  modify throwToSentry error 9 ([8428f954](https://github.com/firstlovecenter/fl-pastoral-care/commit/8428f9545cf10c3c450ed8c62e67bf65927d0eed))
+*  modify throwToSentry error 8 ([84d662c8](https://github.com/firstlovecenter/fl-pastoral-care/commit/84d662c8984d4b60adc45ee491771929b9d6b031))
+*  modify throwToSentry error 7 ([2cc3474b](https://github.com/firstlovecenter/fl-pastoral-care/commit/2cc3474bf0af4a06bcccd8cc3fb224bc51d3a7c0))
+*  modify throwToSentry error 6 ([5206f457](https://github.com/firstlovecenter/fl-pastoral-care/commit/5206f4575c47ed2e6e550752639b63b07367040c))
+*  modify throwToSentry error 5 ([d31d27e1](https://github.com/firstlovecenter/fl-pastoral-care/commit/d31d27e14d78b4a4728f587c9e55fae6c1c36974))
+*  modify throwToSentry error 4 ([47af6f02](https://github.com/firstlovecenter/fl-pastoral-care/commit/47af6f0298c018e9964e33521c5661fde4c2d7da))
+*  modify throwToSentry error 3 ([de1574fa](https://github.com/firstlovecenter/fl-pastoral-care/commit/de1574fa87b61d83033cff84c5ac60412c43145b))
+*  modify throwToSentry error 2 ([e019bf37](https://github.com/firstlovecenter/fl-pastoral-care/commit/e019bf37f2261f20ae8fb40ed593d7bf42b7b98c))
+*  modify throwToSentry error ([d7a44944](https://github.com/firstlovecenter/fl-pastoral-care/commit/d7a4494403b69dba30aa741f1e07f4ded709a7fb))
+*  update errors logged to the console ([4b1ac3e2](https://github.com/firstlovecenter/fl-pastoral-care/commit/4b1ac3e2afa66e48bcc3cab479af6b7fd8abf24d))
+*  console.log error message from try-catch ([77fb9710](https://github.com/firstlovecenter/fl-pastoral-care/commit/77fb9710513ae42f168ee531730054e23a695b4a))
+*  console.error error message ([94605e1c](https://github.com/firstlovecenter/fl-pastoral-care/commit/94605e1cb90c6c25d047c200e1d7d69141c072c8))
+*  better handle paystack error ([1a9b8d71](https://github.com/firstlovecenter/fl-pastoral-care/commit/1a9b8d71a76b4f9f9e80f4ee0f0cb403cca98d77))
+*  better handle paystack error ([0cb3220c](https://github.com/firstlovecenter/fl-pastoral-care/commit/0cb3220cc96e2f91368baba5e4652b04bd875c58))
+*  console.error paymentResponse ([cf952b92](https://github.com/firstlovecenter/fl-pastoral-care/commit/cf952b92302d899f653f505c36fa47219f19e8de))
+*  remove unneeded stream_name var from confirm banking ([f8b1fde6](https://github.com/firstlovecenter/fl-pastoral-care/commit/f8b1fde61e288badd7c2a1ba29bf819c6cb352da))
+*  enable update of firestore database on payment function ([dd5fe694](https://github.com/firstlovecenter/fl-pastoral-care/commit/dd5fe69413e046acf43b775b8ee407e404a89483))
+*  return better error when there are problems with payment ([114c0303](https://github.com/firstlovecenter/fl-pastoral-care/commit/114c03030ddee5d126d8b498814582ba1ca3afda))
+*  rearrange table of service details ([9886c599](https://github.com/firstlovecenter/fl-pastoral-care/commit/9886c5991641c9c11dcb8a88df4b52006872418b))
+*  fix bug preventign some fields from showing up in offering ([a64a9f40](https://github.com/firstlovecenter/fl-pastoral-care/commit/a64a9f40dd52f55e53c653131dc049140cb81bc2))
+*  remove the count of cars from the bussesOnTheWay and bussesHaveArrived ([eac9cbda](https://github.com/firstlovecenter/fl-pastoral-care/commit/eac9cbdad42cc4cf372d10b1af79811984e8352d))
+*  update service details page ([7809458e](https://github.com/firstlovecenter/fl-pastoral-care/commit/7809458ee470e91fa145522b8ad5716f5dae4c64))
+*  create a new type of fellowship called online fellowship ([0ff5f3e4](https://github.com/firstlovecenter/fl-pastoral-care/commit/0ff5f3e4fa989680d78224ce9f3c3d8fda32ea75))
+*  fix bug causing servieRecord not to absorb online giving transactions ([edab6b18](https://github.com/firstlovecenter/fl-pastoral-care/commit/edab6b181428c014a45924d5b967293b46ff1de8))
+*  correct import of STREAM_COUNCIL_SEARCH ([f56999ee](https://github.com/firstlovecenter/fl-pastoral-care/commit/f56999ee7facea0f8729560e563e0b9db88fa396))
+
+##### Other Changes
+
+* //github.com/firstlovecenter/fl-admin-portal into deploy ([6b13ebde](https://github.com/firstlovecenter/fl-pastoral-care/commit/6b13ebdef88dfef9c551d3a68fd5575691fbc86e))
+
+##### Refactors
+
+*  rewrite SendVehicleSupport ([a3c7b3c6](https://github.com/firstlovecenter/fl-pastoral-care/commit/a3c7b3c6199fed19dc25b077afaceee816676d6c))
+
 ### 7.7.0 (2023-06-20)
 
 ##### New Features

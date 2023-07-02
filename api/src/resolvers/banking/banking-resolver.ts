@@ -192,23 +192,6 @@ const bankingMutation = {
 
       axios(updatePaystackCustomer)
 
-      if (paymentResponse.data.data.status === 'send_otp') {
-        const paymentCypherRes = rearrangeCypherObject(
-          await session
-            .run(setRecordTransactionReferenceWithOTP, {
-              id: serviceRecord.id,
-              reference: paymentResponse.data.data.reference,
-            })
-            .catch((error: any) => {
-              throw new Error(
-                `There was an error setting serviceRecordTransactionReference ${error}`
-              )
-            })
-        )
-
-        return paymentCypherRes.record
-      }
-
       const paymentCypherRes = rearrangeCypherObject(
         await session.executeWrite((tx) =>
           tx.run(setRecordTransactionReference, {
@@ -217,6 +200,16 @@ const bankingMutation = {
           })
         )
       )
+
+      if (paymentResponse.data.data.status === 'send_otp') {
+        const otpCypherRes = rearrangeCypherObject(
+          await session.run(setRecordTransactionReferenceWithOTP, {
+            id: serviceRecord.id,
+          })
+        )
+
+        return otpCypherRes.record
+      }
 
       return paymentCypherRes.record
     } catch (error: any) {
@@ -354,9 +347,10 @@ const bankingMutation = {
     // if transactionTime is within the last 1 minute then return the record
     if (
       record?.transactionTime &&
-      new Date().getTime() - new Date(record?.transactionTime).getTime() < 60000
+      new Date().getTime() - new Date(record?.transactionTime).getTime() <
+        180000
     ) {
-      console.log('transactionTime is within the last 1 minute')
+      console.log('transactionTime is within the last 2 minutes')
       return {
         id: record.id,
         cash: record.cash,

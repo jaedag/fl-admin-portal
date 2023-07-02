@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button } from 'react-bootstrap'
+import { Button, Container } from 'react-bootstrap'
 import Popup from './Popup'
 import { useNavigate } from 'react-router'
 
@@ -15,19 +15,26 @@ const ErrorPopup = (props: ErrorDialogProps) => {
 
   return (
     <Popup handleClose={togglePopup}>
-      <h6>{errorMessage}</h6>
-      <Button
-        variant="danger"
-        type="submit"
-        size="lg"
-        className={`w-100 mt-2`}
-        onClick={() => {
-          togglePopup()
-          if (link) navigate(link)
-        }}
-      >
-        Okay
-      </Button>
+      <Container>
+        <p>
+          Please make sure that you have enough funds in your mobile wallet, and
+          try again after 30 mins - 1 hour.
+        </p>
+
+        <code className="text-white">{errorMessage}</code>
+        <Button
+          variant="danger"
+          type="submit"
+          size="lg"
+          className={`w-100 mt-2`}
+          onClick={() => {
+            togglePopup()
+            if (link) navigate(link)
+          }}
+        >
+          Okay
+        </Button>
+      </Container>
     </Popup>
   )
 }

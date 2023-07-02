@@ -1,6 +1,5 @@
-import { db } from './firebase'
-
 const neo4j = require('neo4j-driver')
+const { db } = require('./firebase')
 const { loadSecrets } = require('./secrets')
 
 const SECRETS = loadSecrets()
@@ -35,12 +34,11 @@ const setTransactionStatusPending = `
     RETURN record
   `
 
-const executeQuery = (neoDriver, paymentResponse) => {
+const executeQuery = async (neoDriver, paymentResponse) => {
   const session = neoDriver.session()
   let response = ''
-
-  return session
-    .executeWrite((tx) => {
+  try {
+    const neoRes = await session.executeWrite(async (tx) => {
       const { reference, status } = paymentResponse
       let query = ''
 
@@ -57,8 +55,16 @@ const executeQuery = (neoDriver, paymentResponse) => {
 
       return tx.run(query, { reference })
     })
-    .then(() => console.log(response))
-    .finally(() => session.close())
+    console.log('🚀 ~ file: payment.js:40 ~ response:', response)
+
+    return neoRes
+  } catch (error) {
+    console.error('There was an error writing to db', error)
+  } finally {
+    session.close()
+  }
+
+  return null
 }
 
 const handlePaystackReq = async (event, neoDriver) => {
@@ -69,8 +75,9 @@ const handlePaystackReq = async (event, neoDriver) => {
   const { reference, status } = parsedBody.data
 
   const neoRes = await executeQuery(neoDriver, { reference, status })
-  console.log(JSON.stringify(neoRes))
+
   const categories = neoRes.records[0]?.get('record').labels
+  console.log('🚀 ~ file: payment.js:80 ~ categories:', categories)
 
   if (categories.includes('Offering')) {
     await db.collection('offerings').doc(reference).update({ status })

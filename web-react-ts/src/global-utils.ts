@@ -614,6 +614,17 @@ export const checkIfArrayHasRepeatingValues = (array: any[]) => {
   return false
 }
 
+export const getFirstLetterInEveryWord = (string: string) => {
+  if (string === null || string === undefined || string === '') return ''
+
+  const words = string.split(' ')
+  let initials = ''
+  words.forEach((word) => {
+    initials += word.charAt(0) + '. '
+  })
+  return initials
+}
+
 export const PIE_CHART_COLORS = [
   '#FF5733', // Coral
   '#FFC300', // Sunflower
