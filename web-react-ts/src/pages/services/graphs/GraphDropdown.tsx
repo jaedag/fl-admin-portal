@@ -69,7 +69,7 @@ const GraphDropdown = ({
               setChurchData(getServiceGraphData(data, 'serviceAggregate'))
             }}
           >
-            Services Total
+            Weekday Total
           </Dropdown.Item>
         )}
         {['Campus', 'Oversight', 'Denomination'].includes(churchLevel) && (
@@ -83,7 +83,7 @@ const GraphDropdown = ({
               )
             }}
           >
-            Services Total (USD)
+            Weekday Total (USD)
           </Dropdown.Item>
         )}
       </Dropdown.Menu>
