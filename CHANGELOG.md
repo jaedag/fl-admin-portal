@@ -1,3 +1,30 @@
+#### 7.7.2 (2023-07-04)
+
+##### New Features
+
+*  include middle initials in member search box ([87938934](https://github.com/firstlovecenter/fl-pastoral-care/commit/87938934097d5bd28c9e8695988fe8f002288ef5))
+
+##### Bug Fixes
+
+*  fix firestore update transactionStatus ([0f5dcc75](https://github.com/firstlovecenter/fl-pastoral-care/commit/0f5dcc750a8f67d3d7472edeb2686d7a2aed2b51))
+*  fix bug in bussesOnTheWayCount cypher ([fc920c8a](https://github.com/firstlovecenter/fl-pastoral-care/commit/fc920c8abca28ac7aea32fe99687c238500a0a0b))
+*  update code of the day to the end of August ([0ba15db2](https://github.com/firstlovecenter/fl-pastoral-care/commit/0ba15db27bb2d9aed505eb9138f600a0d3e258e5))
+*  increase transaction wait time to 2 mins ([428aeebb](https://github.com/firstlovecenter/fl-pastoral-care/commit/428aeebb6524116c4d9e1fe078feae1f30fa6877))
+*  set transactionRef as the first think in the banking resolver before checking OTP ([6663cd1b](https://github.com/firstlovecenter/fl-pastoral-care/commit/6663cd1bb9193c5effd34e981695df7f01a2fbf4))
+*  log out categories ([7d46875d](https://github.com/firstlovecenter/fl-pastoral-care/commit/7d46875d701c88876a07f6c8ca157d4e9a7b0d26))
+*  improve values returned in payment webhook ([9877959b](https://github.com/firstlovecenter/fl-pastoral-care/commit/9877959bc26445f7ffdcec814b8436455ba6a87b))
+*   increase wait time for confirm bankign to 90s ([02389ec2](https://github.com/firstlovecenter/fl-pastoral-care/commit/02389ec221ad30277edb3dd77cf6bb8ceca9d584))
+
+##### Other Changes
+
+* //github.com/firstlovecenter/fl-admin-portal into deploy ([a8ff38fb](https://github.com/firstlovecenter/fl-pastoral-care/commit/a8ff38fbccba77fc9afc97206d2950ab0d8b544f))
+
+##### Refactors
+
+*  change nomenclature at B Josh's request ([7128523d](https://github.com/firstlovecenter/fl-pastoral-care/commit/7128523d9ed07052503400c5b175557f3dd9fe7d))
+*  add the name synago to places ([7f4f87cd](https://github.com/firstlovecenter/fl-pastoral-care/commit/7f4f87cdb55f133f2efedc6e195236dc3a5d8de9))
+*  add the name synago to places ([97aac04b](https://github.com/firstlovecenter/fl-pastoral-care/commit/97aac04bf54c01b1b7a635368f596d9181360055))
+
 #### 7.7.1 (2023-06-26)
 
 ##### New Features
