@@ -130,7 +130,7 @@ export const MakeServant = async (
         // Send Mail to the Person after Password Change Ticket has been generated
         sendSingleEmail(
           servant,
-          'Your Account Has Been Created On The FL Admin Portal',
+          'Your Account Has Been Created On The FL Synago Admin Portal',
           undefined,
           `<p>Hi ${servant.firstName} ${servant.lastName},<br/><br/>Congratulations on being made the <b>${churchType} ${servantType}</b> for <b>${churchNameInEmail}</b>.<br/><br/>Your account has just been created on the First Love Church Administrative Portal. Please set up your password by clicking <b><a href=${passwordTicketResponse.data.ticket}>this link</a></b>. After setting up your password, you can log in by clicking <b>https://admin.firstlovecenter.com/</b><br/><br/>Please go through ${texts.html.helpdesk} to find guidelines and instructions on how to use it as well as answers to questions you may have.</p>${texts.html.subscription}`
         ),
@@ -343,7 +343,7 @@ export const RemoveServant = async (
       undefined,
       `Hi ${servant.firstName} ${
         servant.lastName
-      },<br/><br/>This is to inform you that your servant account has been deleted from the First Love Admin Portal. You will no longer have access to any data<br/><br/>his is due to the fact that you have been removed as a ${churchType} ${servantType} for ${churchInEmail(
+      },<br/><br/>This is to inform you that your servant account has been deleted from the First Love Synago Admin Portal. You will no longer have access to any data<br/><br/>his is due to the fact that you have been removed as a ${churchType} ${servantType} for ${churchInEmail(
         church
       )}.<br/><br/>We however encourage you to strive to serve the Lord faithfully. Do not be discouraged from loving God by this removal; we hope it is just temporary.${
         texts.html.subscription
