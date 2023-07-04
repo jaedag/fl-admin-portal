@@ -411,7 +411,7 @@ export const getChurchCount = (servant: MemberWithChurchCount) => {
     if (servant.leadsAdminsCampusCount === 1) {
       churchesCount = `${servant.leadsAdminsCampusCount} Campus`
     } else {
-      churchesCount = `${servant.leadsAdminsCampusCount} Campuss`
+      churchesCount = `${servant.leadsAdminsCampusCount} Campuses`
     }
   }
 

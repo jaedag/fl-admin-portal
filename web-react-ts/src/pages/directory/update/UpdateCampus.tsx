@@ -144,7 +144,7 @@ const UpdateCampus = () => {
         },
       })
 
-      //Log if Campuss Name Changes
+      //Log if Campus Name Changes
       if (values.name !== initialValues.name) {
         await LogCampusHistory({
           variables: {
