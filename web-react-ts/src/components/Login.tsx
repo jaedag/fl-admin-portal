@@ -54,7 +54,7 @@ const Login = () => {
                 </div>
               </Slider>
               <h2 className="mb-3 mt-3 text-white font-weight-bold">
-                FLC SERVANTS PORTAL
+                FLC SYNAGO
               </h2>
               <p>
                 <span className="mt-3 text-white">{catchPhrase}</span>
@@ -99,7 +99,7 @@ const Login = () => {
               </div>
             </Slider>
             <h3 className="mb-3 mt-3 text-white font-weight-bold">
-              FLC SERVANTS PORTAL
+              FLC SYNAGO
             </h3>
 
             <p>
