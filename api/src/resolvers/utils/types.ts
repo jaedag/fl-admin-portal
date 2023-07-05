@@ -16,6 +16,7 @@ export type ChurchLevel =
   | 'Stream'
   | 'Campus'
   | 'Oversight'
+  | 'Denomination'
   | 'Hub'
   | 'Ministry'
   | 'CreativeArts'
