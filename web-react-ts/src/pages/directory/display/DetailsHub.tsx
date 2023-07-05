@@ -22,8 +22,8 @@ const DetailsHub = () => {
   let breadcrumb: Church[]
 
   breadcrumb = [
-    hub?.ministry?.federalMinistry?.campus,
-    hub?.ministry?.federalMinistry,
+    hub?.ministry?.creativeArts?.campus,
+    hub?.ministry?.creativeArts,
     hub?.ministry,
     hub,
   ]

@@ -32,7 +32,7 @@ export type ChurchLevel =
   | 'Basonta'
   | 'Ministry'
   | 'Hub'
-  | 'Federalministry'
+  | 'CreativeArts'
 
 export type ChurchLevelLower =
   | 'fellowship'
@@ -172,9 +172,9 @@ export interface MemberWithChurches extends Member {
   //sonta
   leadsHub: Church[]
   leadsMinistry: Church[]
-  leadsFederalministry: Church[]
+  leadsCreativeArts: Church[]
   isAdminForMinistry: Church[]
-  isAdminForFederalministry: Church[]
+  isAdminForCreativeArts: Church[]
 
   leadsCampus: Church[]
   leadsOversight: Church[]
@@ -247,7 +247,7 @@ export type Role =
   | 'leaderSonta'
   | 'leaderHub'
   | 'leaderMinistry'
-  | 'leaderFederalministry'
+  | 'leaderCreativeArts'
   | 'leaderCampus'
   | 'leaderOversight'
   | 'leaderDenomination'
@@ -258,7 +258,7 @@ export type Role =
   | 'adminOversight'
   | 'adminDenomination'
   | 'adminMinistry'
-  | 'adminFederalministry'
+  | 'adminCreativeArts'
   | 'arrivalsAdminCampus'
   | 'arrivalsAdminStream'
   | 'arrivalsAdminCouncil'

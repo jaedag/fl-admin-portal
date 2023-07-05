@@ -278,16 +278,8 @@ export const CREATE_OVERSIGHT_MUTATION = gql`
 `
 
 export const CREATE_FEDERAL_MINISTRY_MUTATION = gql`
-  mutation CreateFederalministry(
-    $name: String!
-    $leaderId: ID!
-    $campusId: ID!
-  ) {
-    CreateFederalministry(
-      name: $name
-      leaderId: $leaderId
-      campusId: $campusId
-    ) {
+  mutation CreateCreativeArts($name: String!, $leaderId: ID!, $campusId: ID!) {
+    CreateCreativeArts(name: $name, leaderId: $leaderId, campusId: $campusId) {
       id
       name
     }
@@ -296,12 +288,12 @@ export const CREATE_FEDERAL_MINISTRY_MUTATION = gql`
 
 export const CREATE_MINISTRY_MUTATION = gql`
   mutation CreateMinistry(
-    $federalMinistryId: ID!
+    $creativeArtsId: ID!
     $leaderId: ID!
     $streamId: ID!
   ) {
     CreateMinistry(
-      federalMinistryId: $federalMinistryId
+      creativeArtsId: $creativeArtsId
       leaderId: $leaderId
       streamId: $streamId
     ) {

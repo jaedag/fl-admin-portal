@@ -99,13 +99,11 @@ const useComponentQuery = (props?: UseComponentQuery) => {
   //sonta
   const [hubLeaderQuery] = useLazyQuery(SERVANTS_HUB_LEADER)
   const [ministryLeaderQuery] = useLazyQuery(SERVANTS_MINISTRY_LEADER)
-  const [federalMinistryLeaderQuery] = useLazyQuery(
+  const [creativeArtsLeaderQuery] = useLazyQuery(
     SERVANTS_FEDERAL_MINISTRY_LEADER
   )
   const [ministryAdminQuery] = useLazyQuery(SERVANTS_MINISTRY_ADMIN)
-  const [federalMinistryAdminQuery] = useLazyQuery(
-    SERVANTS_FEDERAL_MINISTRY_ADMIN
-  )
+  const [creativeArtsAdminQuery] = useLazyQuery(SERVANTS_FEDERAL_MINISTRY_ADMIN)
 
   const church: {
     [key: string]: any
@@ -153,9 +151,9 @@ const useComponentQuery = (props?: UseComponentQuery) => {
       leader: ministryLeaderQuery,
       admin: ministryAdminQuery,
     },
-    Federalministry: {
-      leader: federalMinistryLeaderQuery,
-      admin: federalMinistryAdminQuery,
+    CreativeArts: {
+      leader: creativeArtsLeaderQuery,
+      admin: creativeArtsAdminQuery,
     },
   }
 

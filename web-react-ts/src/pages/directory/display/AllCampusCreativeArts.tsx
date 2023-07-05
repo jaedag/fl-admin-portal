@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { useQuery } from '@apollo/client'
-import { GET_CAMPUS_FEDERALMINISTRIES } from '../../../queries/ListQueries'
+import { GET_CAMPUS_CREATIVEARTS } from '../../../queries/ListQueries'
 import { ChurchContext } from '../../../contexts/ChurchContext'
 import RoleView from '../../../auth/RoleView'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
@@ -10,14 +10,14 @@ import { permitAdmin } from 'permission-utils'
 import AllChurchesSummary from 'components/AllChurchesSummary'
 import ChurchSearch from 'components/ChurchSearch'
 
-const DisplayAllCampusFederalMinistries = () => {
+const DisplayAllCampusCreativeArts = () => {
   const { clickCard, campusId } = useContext(ChurchContext)
 
-  const { data, loading, error } = useQuery(GET_CAMPUS_FEDERALMINISTRIES, {
+  const { data, loading, error } = useQuery(GET_CAMPUS_CREATIVEARTS, {
     variables: { id: campusId },
   })
 
-  const federalMinistries = data?.campuses[0]?.federalMinistries
+  const creativeArts = data?.campuses[0]?.creativeArts
   const campus = data?.campuses[0]
 
   return (
@@ -60,7 +60,7 @@ const DisplayAllCampusFederalMinistries = () => {
           <RoleView roles={permitAdmin('Campus')} directoryLock>
             <Col className="col-auto">
               <Link
-                to="/federalministry/addfederalministry"
+                to="/creativearts/addcreativearts"
                 className="btn btn-danger"
               >
                 Add Federal Ministry
@@ -70,16 +70,16 @@ const DisplayAllCampusFederalMinistries = () => {
         </Row>
 
         <AllChurchesSummary
-          church={federalMinistries}
+          church={creativeArts}
           memberCount={campus?.memberCount}
-          numberOfChurchesBelow={federalMinistries?.length}
-          churchType="Federalministry"
+          numberOfChurchesBelow={creativeArts?.length}
+          churchType="CreativeArts"
           route="campus"
         />
-        <ChurchSearch data={federalMinistries} churchType="Federalministry" />
+        <ChurchSearch data={creativeArts} churchType="CreativeArts" />
       </Container>
     </ApolloWrapper>
   )
 }
 
-export default DisplayAllCampusFederalMinistries
+export default DisplayAllCampusCreativeArts

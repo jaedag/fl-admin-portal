@@ -484,9 +484,9 @@ export const GET_DENOMINATIONS = gql`
   }
 `
 
-export const GET_FEDERALMINISTRIES = gql`
-  query getFederalMinistries {
-    federalministries {
+export const GET_CREATIVEARTS = gql`
+  query getCreativeArts {
+    creativeArts {
       id
       name
     }
@@ -516,7 +516,7 @@ export const GET_CAMPUS_MINISTRIES = gql`
     campuses(where: { id: $id }) {
       id
       name
-      federalMinistries {
+      creativeArts {
         id
         name
       }
@@ -763,8 +763,8 @@ export const GET_HUB_SONTAS = gql`
 `
 
 export const GET_FEDERALMINISTRY_MINISTRIES = gql`
-  query getFederalministryMinistries($id: ID!) {
-    federalministries(where: { id: $id }) {
+  query getCreativeArtsMinistries($id: ID!) {
+    creativearts(where: { id: $id }) {
       id
       name
 
@@ -807,8 +807,8 @@ export const GET_FEDERALMINISTRY_MINISTRIES = gql`
   }
 `
 
-export const GET_CAMPUS_FEDERALMINISTRIES = gql`
-  query getCampusFederalMinistries($id: ID!) {
+export const GET_CAMPUS_CREATIVEARTS = gql`
+  query getCampusCreativeArts($id: ID!) {
     campuses(where: { id: $id }) {
       id
       name
@@ -829,8 +829,8 @@ export const GET_CAMPUS_FEDERALMINISTRIES = gql`
         fullName
         stream_name
       }
-      federalMinistryCount
-      federalMinistries {
+      creativeArtsCount
+      creativeArts {
         name
         id
         memberCount

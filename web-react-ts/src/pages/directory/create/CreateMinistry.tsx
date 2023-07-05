@@ -20,7 +20,7 @@ const CreateMinistry = () => {
     leaderId: '',
     leaderName: '',
     leaderEmail: '',
-    federalMinistry: '',
+    creativeArts: '',
     stream: '',
   }
 
@@ -42,7 +42,7 @@ const CreateMinistry = () => {
 
       const res = await CreateMinistry({
         variables: {
-          federalMinistryId: values.federalMinistry,
+          creativeArtsId: values.creativeArts,
           leaderId: values.leaderId,
           streamId: values.stream,
         },
@@ -55,7 +55,7 @@ const CreateMinistry = () => {
         },
       })
 
-      clickCard({ id: values.federalMinistry, __typename: 'Federalministry' })
+      clickCard({ id: values.creativeArts, __typename: 'CreativeArts' })
       clickCard({ id: values.stream, __typename: 'Stream' })
       clickCard(res.data.CreateMinistry)
       onSubmitProps.setSubmitting(false)

@@ -11,14 +11,14 @@ import AllChurchesSummary from 'components/AllChurchesSummary'
 import ChurchSearch from 'components/ChurchSearch'
 
 const DisplayAllMinistries = () => {
-  const { clickCard, federalMinistryId } = useContext(ChurchContext)
+  const { clickCard, creativeArtsId } = useContext(ChurchContext)
 
   const { data, loading, error } = useQuery(GET_FEDERALMINISTRY_MINISTRIES, {
-    variables: { id: federalMinistryId },
+    variables: { id: creativeArtsId },
   })
 
-  const ministries = data?.federalministries[0]?.ministries
-  const federalMinistry = data?.federalministries[0]
+  const ministries = data?.creativearts[0]?.ministries
+  const creativeArts = data?.creativearts[0]
 
   return (
     <ApolloWrapper data={data} loading={loading} error={error}>
@@ -28,34 +28,34 @@ const DisplayAllMinistries = () => {
             <Link
               to="/ministry/displaydetails"
               onClick={() => {
-                clickCard(federalMinistry)
+                clickCard(creativeArts)
               }}
             >
-              <h4 className="text-white">{`${federalMinistry?.name} Ministries`}</h4>
+              <h4 className="text-white">{`${creativeArts?.name} Ministries`}</h4>
             </Link>
             <Link
               to="/member/displaydetails"
               onClick={() => {
-                clickCard(federalMinistry?.leader)
+                clickCard(creativeArts?.leader)
               }}
             >
               <h6 className="text-white text-small d-block ">
                 <span className="text-muted">Leader: </span>
-                {federalMinistry?.leader
-                  ? ` ${federalMinistry.leader.fullName}`
+                {creativeArts?.leader
+                  ? ` ${creativeArts.leader.fullName}`
                   : null}
               </h6>
             </Link>
-            {federalMinistry?.admin ? (
+            {creativeArts?.admin ? (
               <Link
                 className="pb-4 text-white text-small"
                 to="/member/displaydetails"
                 onClick={() => {
-                  clickCard(federalMinistry?.admin)
+                  clickCard(creativeArts?.admin)
                 }}
               >
                 <span className="text-muted">Admin :</span>{' '}
-                {`${federalMinistry?.admin?.fullName}`}
+                {`${creativeArts?.admin?.fullName}`}
               </Link>
             ) : null}
           </Col>
@@ -70,10 +70,10 @@ const DisplayAllMinistries = () => {
 
         <AllChurchesSummary
           church={ministries}
-          memberCount={federalMinistry?.memberCount}
+          memberCount={creativeArts?.memberCount}
           numberOfChurchesBelow={ministries?.length}
           churchType="Ministry"
-          route="federalministry"
+          route="creativearts"
         />
         <ChurchSearch data={ministries} churchType="Ministry" />
       </Container>

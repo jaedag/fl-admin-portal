@@ -3,7 +3,7 @@ import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { Form, Formik, FormikHelpers } from 'formik'
 import * as Yup from 'yup'
 import { makeSelectOptions, throwToSentry } from 'global-utils'
-import { GET_FEDERALMINISTRIES, GET_STREAMS } from 'queries/ListQueries'
+import { GET_CREATIVEARTS, GET_STREAMS } from 'queries/ListQueries'
 import React, { useContext, useState } from 'react'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { MAKE_MINISTRY_INACTIVE } from 'pages/directory/update/CloseChurchMutations'
@@ -19,7 +19,7 @@ import SearchMember from 'components/formik/SearchMember'
 import { FormikInitialValues } from 'components/formik/formik-types'
 
 export interface MinistryFormValues extends FormikInitialValues {
-  federalMinistry: string
+  creativeArts: string
   leaderId: string
   leaderName: string
   stream: string
@@ -47,10 +47,10 @@ const MinistryForm = ({
   const navigate = useNavigate()
 
   const {
-    data: federalMinistryData,
-    loading: federalMinistryLoading,
-    error: federalMinistryError,
-  } = useQuery(GET_FEDERALMINISTRIES)
+    data: creativeArtsData,
+    loading: creativeArtsLoading,
+    error: creativeArtsError,
+  } = useQuery(GET_CREATIVEARTS)
   const {
     data: streamData,
     loading: streamLoading,
@@ -59,16 +59,12 @@ const MinistryForm = ({
   const [buttonLoading, setButtonLoading] = useState(false)
   const [CloseDownMinistry] = useMutation(MAKE_MINISTRY_INACTIVE)
 
-  const federalMinistriesOptions = makeSelectOptions(
-    federalMinistryData?.federalministries
-  )
+  const creativeArtsOptions = makeSelectOptions(creativeArtsData?.creativearts)
 
   const streamsOptions = makeSelectOptions(streamData?.streams)
 
   const validationSchema = Yup.object({
-    federalMinistry: Yup.string().required(
-      `Federal Ministry is a required field`
-    ),
+    creativeArts: Yup.string().required(`Federal Ministry is a required field`),
     stream: Yup.string().required(`Stream is a required field`),
     leaderId: Yup.string().required(
       'Please choose a leader from the drop down'
@@ -77,9 +73,9 @@ const MinistryForm = ({
 
   return (
     <ApolloWrapper
-      loading={streamLoading && federalMinistryLoading}
-      error={streamError && federalMinistryError}
-      data={streamData && federalMinistryData && initialValues}
+      loading={streamLoading && creativeArtsLoading}
+      error={streamError && creativeArtsError}
+      data={streamData && creativeArtsData && initialValues}
     >
       <>
         <Container>
@@ -106,9 +102,9 @@ const MinistryForm = ({
                       />
 
                       <Select
-                        name="federalMinistry"
+                        name="creativeArts"
                         label="Select a Federal Ministry"
-                        options={federalMinistriesOptions}
+                        options={creativeArtsOptions}
                         defaultOption="Select a Federal Ministry"
                       />
 

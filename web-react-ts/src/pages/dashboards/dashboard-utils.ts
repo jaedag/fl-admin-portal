@@ -81,7 +81,7 @@ export const roles: {
   Basonta: ['leads'],
   Hub: ['leads'],
   Ministry: ['leads', 'isAdminFor'],
-  Federalministry: ['leads', 'isAdminFor'],
+  CreativeArts: ['leads', 'isAdminFor'],
 }
 
 export const parseRoles = (role: VerbTypes): VerbTypes => {
@@ -313,29 +313,29 @@ export const getServantRoles = (servant: MemberWithChurches) => {
       ),
     })
   }
-  if (servant?.leadsFederalministry?.length) {
-    roleTitles.push('leaderFederalministry')
+  if (servant?.leadsCreativeArts?.length) {
+    roleTitles.push('leaderCreativeArts')
     userroles.push({
       name: 'Federal Ministry',
-      church: servant?.leadsFederalministry,
-      number: servant?.leadsFederalministry?.length,
+      church: servant?.leadsCreativeArts,
+      number: servant?.leadsCreativeArts?.length,
       link: authorisedLink(
         servant,
-        permitMe('Federalministry'),
-        '/federalministry/displaydetails'
+        permitMe('CreativeArts'),
+        '/creativearts/displaydetails'
       ),
     })
   }
-  if (servant?.isAdminForFederalministry?.length) {
-    roleTitles.push('adminFederalministry')
+  if (servant?.isAdminForCreativeArts?.length) {
+    roleTitles.push('adminCreativeArts')
     userroles.push({
       name: 'Federal Ministry Admin',
-      church: servant?.isAdminForFederalministry,
-      number: servant?.isAdminForFederalministry?.length,
+      church: servant?.isAdminForCreativeArts,
+      number: servant?.isAdminForCreativeArts?.length,
       link: authorisedLink(
         servant,
-        permitMe('Federalministry'),
-        '/federalministry/displaydetails'
+        permitMe('CreativeArts'),
+        '/creativearts/displaydetails'
       ),
     })
   }

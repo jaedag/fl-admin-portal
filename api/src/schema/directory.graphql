@@ -634,9 +634,9 @@ type Campus implements Church {
       RETURN records ORDER BY date.date DESC LIMIT $limit
       """
     )
-  creativeArtCount: Int
+  creativeArtsCount: Int
     @cypher(
-      statement: "MATCH (this)-[:HAS_MINISTRY]->(creativeArt:CreativeArts) RETURN COUNT(creativeArt)"
+      statement: "MATCH (this)-[:HAS_MINISTRY]->(creativeArts:CreativeArts) RETURN COUNT(creativeArts)"
     )
 
   ministryCount: Int!
@@ -1254,7 +1254,7 @@ type Ministry {
   stream: Stream @relationship(type: "HAS_MINISTRY", direction: IN)
   history: [HistoryLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
   servicelogs: [ServiceLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
-  creativeArt: CreativeArts @relationship(type: "HAS", direction: IN)
+  creativeArts: CreativeArts @relationship(type: "HAS", direction: IN)
   hubFellowships: [Fellowship!]!
     @cypher(
       statement: """

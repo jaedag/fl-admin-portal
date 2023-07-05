@@ -6,7 +6,7 @@ export const churchLevels: ChurchLevel[] = [
   'Sonta',
   'Hub',
   'Ministry',
-  'Federalministry',
+  'CreativeArts',
   'Fellowship',
   'Bacenta',
   'Constituency',

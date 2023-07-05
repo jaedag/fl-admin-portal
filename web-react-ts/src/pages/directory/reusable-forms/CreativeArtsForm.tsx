@@ -19,27 +19,27 @@ import SearchMember from 'components/formik/SearchMember'
 import Input from 'components/formik/Input'
 import { FormikInitialValues } from 'components/formik/formik-types'
 
-export interface FederalMinistryFormValues extends FormikInitialValues {
+export interface CreativeArtsFormValues extends FormikInitialValues {
   name: string
   campus: string
 }
 
-type FederalMinistryFormProps = {
-  initialValues: FederalMinistryFormValues
+type CreativeArtsFormProps = {
+  initialValues: CreativeArtsFormValues
   onSubmit: (
-    values: FederalMinistryFormValues,
-    onSubmitProps: FormikHelpers<FederalMinistryFormValues>
+    values: CreativeArtsFormValues,
+    onSubmitProps: FormikHelpers<CreativeArtsFormValues>
   ) => void
   title: string
-  newFederalMinistry: boolean
+  newCreativeArts: boolean
 }
 
-const FederalMinistryForm = ({
+const CreativeArtsForm = ({
   initialValues,
   onSubmit,
   title,
-  newFederalMinistry,
-}: FederalMinistryFormProps) => {
+  newCreativeArts,
+}: CreativeArtsFormProps) => {
   const { clickCard, federalMinstryId } = useContext(ChurchContext)
   const { theme } = useContext(MemberContext)
   const { togglePopup, isOpen } = usePopup()
@@ -47,7 +47,7 @@ const FederalMinistryForm = ({
 
   const { data, loading, error } = useQuery(GET_CAMPUSES)
   const [buttonLoading, setButtonLoading] = useState(false)
-  const [CloseDownFederalMinistry] = useMutation(MAKE_FEDERAL_MINISTRY_INACTIVE)
+  const [CloseDownCreativeArts] = useMutation(MAKE_FEDERAL_MINISTRY_INACTIVE)
 
   const campusOptions = makeSelectOptions(data?.campuses)
 
@@ -121,7 +121,7 @@ const FederalMinistryForm = ({
                     className={`btn-main ${theme}`}
                     onClick={() => {
                       setButtonLoading(true)
-                      CloseDownFederalMinistry({
+                      CloseDownCreativeArts({
                         variables: {
                           id: federalMinstryId,
                           leaderId: initialValues.leaderId,
@@ -129,9 +129,9 @@ const FederalMinistryForm = ({
                       })
                         .then((res) => {
                           setButtonLoading(false)
-                          clickCard(res.data.CloseDownFederalMinistry)
+                          clickCard(res.data.CloseDownCreativeArts)
                           togglePopup()
-                          navigate(`/federalministry/displayall`)
+                          navigate(`/creativearts/displayall`)
                         })
                         .catch((error) => {
                           throwToSentry(
@@ -153,7 +153,7 @@ const FederalMinistryForm = ({
                 </Popup>
               )}
 
-              {!newFederalMinistry && (
+              {!newCreativeArts && (
                 <Button
                   variant="primary"
                   size="lg"
@@ -172,4 +172,4 @@ const FederalMinistryForm = ({
   )
 }
 
-export default FederalMinistryForm
+export default CreativeArtsForm

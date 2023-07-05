@@ -313,10 +313,7 @@ export const DISPLAY_CONSTITUENCY = gql`
           id
         }
       }
-      sontas {
-        id
-        name
-      }
+
       admin {
         id
         firstName
@@ -434,7 +431,6 @@ export const DISPLAY_STREAM = gql`
       activeIcBacentaCount
       vacationIcBacentaCount
       hubCount
-      sontaCount
       meetingDay {
         day
         dayNumber
@@ -504,7 +500,7 @@ export const DISPLAY_CAMPUS = gql`
       vacationFellowshipCount
       activeIcBacentaCount
       vacationIcBacentaCount
-      federalMinistryCount
+      creativeArtsCount
       oversight {
         id
         name
@@ -612,8 +608,8 @@ export const DISPLAY_OVERSIGHT = gql`
 `
 
 export const DISPLAY_FEDERAL_MINISTRY = gql`
-  query DisplayFederalMinistries($id: ID!) {
-    federalministries(where: { id: $id }, options: { limit: 1 }) {
+  query DisplayCreativeArts($id: ID!) {
+    creativeArts(where: { id: $id }, options: { limit: 1 }) {
       id
       name
       leader {
@@ -627,7 +623,6 @@ export const DISPLAY_FEDERAL_MINISTRY = gql`
       memberCount
       ministryCount
       hubCount
-      sontaCount
       ministries {
         id
         name
@@ -722,7 +717,6 @@ export const DISPLAY_MINISTRY = gql`
         pictureUrl
       }
       memberCount
-      sontaCount
       hubCount
       history {
         id
@@ -742,7 +736,7 @@ export const DISPLAY_MINISTRY = gql`
         id
         name
       }
-      federalMinistry {
+      creativeArts {
         id
         name
         campus {
@@ -767,7 +761,6 @@ export const DISPLAY_HUB = gql`
         nameWithTitle
         pictureUrl
       }
-      sontaCount
       memberCount
       history {
         id
@@ -786,7 +779,7 @@ export const DISPLAY_HUB = gql`
       ministry {
         id
         name
-        federalMinistry {
+        creativeArts {
           id
           name
           campus {
@@ -794,60 +787,6 @@ export const DISPLAY_HUB = gql`
             name
           }
         }
-      }
-      sontas {
-        id
-        name
-      }
-    }
-  }
-`
-
-export const DISPLAY_SONTA = gql`
-  query DisplaySonta($id: ID!) {
-    sontas(where: { id: $id }, options: { limit: 1 }) {
-      id
-      name
-      leader {
-        id
-        firstName
-        lastName
-        currentTitle
-        nameWithTitle
-        pictureUrl
-      }
-
-      hub {
-        id
-        name
-        ministry {
-          id
-          name
-          federalMinistry {
-            id
-            name
-            campus {
-              id
-              name
-            }
-          }
-        }
-      }
-
-      memberCount
-      history {
-        id
-        timeStamp
-        createdAt {
-          date
-        }
-        loggedBy {
-          id
-          firstName
-          lastName
-          stream_name
-        }
-        historyRecord
       }
     }
   }

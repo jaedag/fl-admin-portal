@@ -284,8 +284,8 @@ export const plural = (church: ChurchLevel | string) => {
       return 'ministries'
     case 'Ministry':
       return 'Ministries'
-    case 'Federalministry':
-      return 'Federal Ministries'
+    case 'CreativeArts':
+      return 'Creative Arts'
     case 'fellowship':
       return 'fellowships'
     case 'Fellowship':
@@ -376,7 +376,7 @@ interface MemberWithChurchCount extends Member {
   //sonta
   leadsHubCount: number
   leadsAdminsMinistryCount: number
-  leadsAdminsFederalMinistryCount: number
+  leadsAdminsCreativeArtsCount: number
 }
 export const getMemberCount = (servant: MemberWithChurchCount) => {
   if (!servant?.memberCount) {
@@ -506,19 +506,19 @@ export const getChurchCount = (servant: MemberWithChurchCount) => {
     }
   }
 
-  if (servant?.leadsAdminsFederalMinistryCount) {
+  if (servant?.leadsAdminsCreativeArtsCount) {
     if (churchesCount) {
       churchesCount += ','
 
-      if (servant.leadsAdminsFederalMinistryCount === 1) {
-        churchesCount = `${churchesCount} ${servant.leadsAdminsFederalMinistryCount} Federal Ministry`
+      if (servant.leadsAdminsCreativeArtsCount === 1) {
+        churchesCount = `${churchesCount} ${servant.leadsAdminsCreativeArtsCount} Creative Arts`
       } else {
-        churchesCount = `${churchesCount} ${servant.leadsAdminsFederalMinistryCount} Federal Ministries`
+        churchesCount = `${churchesCount} ${servant.leadsAdminsCreativeArtsCount} Creative Arts`
       }
-    } else if (servant.leadsAdminsFederalMinistryCount === 1) {
-      churchesCount = `${servant.leadsAdminsFederalMinistryCount} Federal Ministry`
+    } else if (servant.leadsAdminsCreativeArtsCount === 1) {
+      churchesCount = `${servant.leadsAdminsCreativeArtsCount} Creative Arts`
     } else {
-      churchesCount = `${servant.leadsAdminsFederalMinistryCount} Federal Ministries`
+      churchesCount = `${servant.leadsAdminsCreativeArtsCount} Creative Arts`
     }
   }
 
@@ -537,7 +537,7 @@ export const getSubChurchLevel = (churchType: ChurchLevel) => {
       return 'Stream'
     case 'Oversight':
       return 'Campus'
-    case 'Federalministry':
+    case 'CreativeArts':
       return 'Ministry'
     case 'Ministry':
       return 'Hub'

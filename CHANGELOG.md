@@ -1117,7 +1117,7 @@
 - permissions for create mutations ([#404](https://github.com/firstlovecenter/fl-pastoral-care/pull/404)) ([b1b4d9c6](https://github.com/firstlovecenter/fl-pastoral-care/commit/b1b4d9c6d9b152ebc94aa92c87ee92ce77864f82))
 - make leader mutations ([#402](https://github.com/firstlovecenter/fl-pastoral-care/pull/402)) ([612f61d7](https://github.com/firstlovecenter/fl-pastoral-care/commit/612f61d79da515d5cefd166866e1d83cc79fdbf2))
 - sonta count queries ([#401](https://github.com/firstlovecenter/fl-pastoral-care/pull/401)) ([c1379fa2](https://github.com/firstlovecenter/fl-pastoral-care/commit/c1379fa2ca463d68e39c363b1cb7e3a8e02f109d))
-- fix date on history log and standardised federalministry name ([b202561b](https://github.com/firstlovecenter/fl-pastoral-care/commit/b202561b82c60d7fe822d37485d06e193c99799f))
+- fix date on history log and standardised creativearts name ([b202561b](https://github.com/firstlovecenter/fl-pastoral-care/commit/b202561b82c60d7fe822d37485d06e193c99799f))
 - member basonta queries on member node ([#400](https://github.com/firstlovecenter/fl-pastoral-care/pull/400)) ([8764082e](https://github.com/firstlovecenter/fl-pastoral-care/commit/8764082e6a0edceed6a0120914d603717d8d1432))
 - admin-525 fix issue where upload target failswhen target value is 0 ([21409612](https://github.com/firstlovecenter/fl-pastoral-care/commit/21409612c1c8d153392e6cba7682a636024a6056))
 

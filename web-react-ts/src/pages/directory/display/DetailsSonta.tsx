@@ -22,8 +22,8 @@ const DetailsSonta = () => {
   let breadcrumb: Church[]
 
   breadcrumb = [
-    sonta?.hub[0]?.ministry?.federalMinistry?.campus,
-    sonta?.hub[0]?.ministry?.federalMinistry,
+    sonta?.hub[0]?.ministry?.creativeArts?.campus,
+    sonta?.hub[0]?.ministry?.creativeArts,
     sonta?.hub[0]?.ministry,
     sonta?.hub[0],
     sonta,

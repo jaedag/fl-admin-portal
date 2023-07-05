@@ -461,10 +461,10 @@ export const SERVANTS_MINISTRY_LEADER = gql`
 `
 
 export const SERVANTS_FEDERAL_MINISTRY_LEADER = gql`
-  query federalMinistryLeader($id: ID!) {
+  query creativeArtsLeader($id: ID!) {
     members(where: { id: $id }) {
       id
-      leadsFederalministry {
+      leadsCreativeArts {
         id
         name
       }
@@ -485,11 +485,11 @@ export const SERVANTS_MINISTRY_ADMIN = gql`
 `
 
 export const SERVANTS_FEDERAL_MINISTRY_ADMIN = gql`
-  query federalMinistryAdmin($id: ID!) {
+  query creativeArtsAdmin($id: ID!) {
     members(where: { id: $id }) {
       id
 
-      isAdminForFederalministry {
+      isAdminForCreativeArts {
         id
         name
       }

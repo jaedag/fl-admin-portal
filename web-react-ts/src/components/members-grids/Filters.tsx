@@ -93,7 +93,7 @@ const Filters = ({
                   initialValue=""
                   dataset=""
                   varValue={campusId}
-                  nestedDataset={['campuses', 'federalMinistries']}
+                  nestedDataset={['campuses', 'creativeArts']}
                   label="Select a Ministry"
                 />
               </Col>

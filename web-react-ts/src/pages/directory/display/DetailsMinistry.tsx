@@ -22,8 +22,8 @@ const DetailsMinistry = () => {
   let breadcrumb: Church[]
 
   breadcrumb = [
-    ministry?.federalMinistry?.campus,
-    ministry?.federalMinistry,
+    ministry?.creativeArts?.campus,
+    ministry?.creativeArts,
     ministry,
   ]
 
@@ -58,7 +58,7 @@ const DetailsMinistry = () => {
         loading={ministryLoading}
         name={ministry?.name}
         leaderTitle="Ministry Leader"
-        editPermitted={permitAdmin('Federalministry')}
+        editPermitted={permitAdmin('CreativeArts')}
         churchId={ministryId}
         leader={ministry?.leader}
         churchType="Ministry"

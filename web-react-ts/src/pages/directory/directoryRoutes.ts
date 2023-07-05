@@ -77,8 +77,8 @@ const DetailsHub = lazy(() => import('pages/directory/display/DetailsHub'))
 const DetailsMinistry = lazy(
   () => import('pages/directory/display/DetailsMinistry')
 )
-const DetailsFederalMinistry = lazy(
-  () => import('pages/directory/display/DetailsFederalMinistry')
+const DetailsCreativeArts = lazy(
+  () => import('pages/directory/display/DetailsCreativeArts')
 )
 const DisplayAllOversights = lazy(
   () => import('pages/directory/display/AllOversights')
@@ -109,8 +109,8 @@ const DisplayAllStreamSontas = lazy(
 const DisplayAllMinistrySontas = lazy(
   () => import('pages/directory/display/AllMinistrySontas')
 )
-const DisplayAllCampusFederalMinistries = lazy(
-  () => import('pages/directory/display/AllCampusFederalMinistries')
+const DisplayAllCampusCreativeArts = lazy(
+  () => import('pages/directory/display/AllCampusCreativeArts')
 )
 const CreateConstituency = lazy(
   () => import('pages/directory/create/CreateConstituency')
@@ -123,8 +123,8 @@ const CreateHub = lazy(() => import('pages/directory/create/CreateHub'))
 const CreateMinistry = lazy(
   () => import('pages/directory/create/CreateMinistry')
 )
-const CreateFederalMinistry = lazy(
-  () => import('pages/directory/create/CreateFederalMinistry')
+const CreateCreativeArts = lazy(
+  () => import('pages/directory/create/CreateCreativeArts')
 )
 const UpdateFellowship = lazy(
   () => import('pages/directory/update/UpdateFellowship')
@@ -487,9 +487,9 @@ export const directory: LazyRouteTypes[] = [
     placeholder: true,
   },
   {
-    path: '/federalministry/displaydetails',
-    element: DetailsFederalMinistry,
-    roles: permitMe('Federalministry'),
+    path: '/creativearts/displaydetails',
+    element: DetailsCreativeArts,
+    roles: permitMe('CreativeArts'),
     placeholder: true,
   },
 
@@ -549,9 +549,9 @@ export const directory: LazyRouteTypes[] = [
     placeholder: false,
   },
   {
-    path: '/campus/federalministries',
-    element: DisplayAllCampusFederalMinistries,
-    roles: permitMe('Federalministry'),
+    path: '/campus/creativearts',
+    element: DisplayAllCampusCreativeArts,
+    roles: permitMe('CreativeArts'),
     placeholder: false,
   },
   {
@@ -614,12 +614,12 @@ export const directory: LazyRouteTypes[] = [
   {
     path: '/ministry/addministry',
     element: CreateMinistry,
-    roles: permitAdmin('Federalministry'),
+    roles: permitAdmin('CreativeArts'),
     placeholder: false,
   },
   {
-    path: '/federalministry/addfederalministry',
-    element: CreateFederalMinistry,
+    path: '/creativearts/addcreativearts',
+    element: CreateCreativeArts,
     roles: permitAdmin('Campus'),
     placeholder: false,
   },

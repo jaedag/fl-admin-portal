@@ -210,9 +210,9 @@ export const MAKE_MINISTRY_INACTIVE = gql`
 `
 
 export const MAKE_FEDERAL_MINISTRY_INACTIVE = gql`
-  mutation CloseDownfederalMinistry($federalMinistryId: ID!, $leaderId: ID!) {
-    closeDownfederalMinistry(
-      federalMinistryId: $federalMinistryId
+  mutation CloseDowncreativeArts($creativeArtsId: ID!, $leaderId: ID!) {
+    closeDowncreativeArts(
+      creativeArtsId: $creativeArtsId
       leaderId: $leaderId
     ) {
       id

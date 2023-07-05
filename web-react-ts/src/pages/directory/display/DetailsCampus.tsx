@@ -62,8 +62,8 @@ const DetailsCampus = () => {
     },
     {
       title: 'Federal Ministries',
-      number: gathering?.federalMinistryCount,
-      link: '/campus/federalministries',
+      number: gathering?.creativeArtsCount,
+      link: '/campus/creativearts',
     },
     {
       title: 'Income Tracking',

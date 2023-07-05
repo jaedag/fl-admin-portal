@@ -130,15 +130,15 @@ export const NEW_OVERSIGHT_LEADER = gql`
 `
 
 export const NEW_FEDERAL_MINISTRY_LEADER = gql`
-  mutation NewFederalministryLeader($federalMinistryId: ID!, $leaderId: ID!) {
-    MakeFederalministryLeader(
-      federalMinistryId: $federalMinistryId
+  mutation NewCreativeArtsLeader($creativeArtsId: ID!, $leaderId: ID!) {
+    MakeCreativeArtsLeader(
+      creativeArtsId: $creativeArtsId
       leaderId: $leaderId
     ) {
       id
       firstName
       lastName
-      leadsFederalministry {
+      leadsCreativeArts {
         id
         leader {
           id

@@ -165,7 +165,7 @@ export const SERVANT_CHURCHES_COUNT = gql`
       leadsAdminsCampusCount
       leadsHubCount
       leadsAdminsMinistryCount
-      leadsAdminsFederalMinistryCount
+      leadsAdminsCreativeArtsCount
     }
   }
 `

@@ -54,7 +54,7 @@ const AppWithContext = (props: AppPropsType) => {
     sontaId,
     hubId,
     ministryId,
-    federalMinistryId,
+    creativeArtsId,
     bussingRecordId,
     serviceRecordId,
     vehicleRecordId,
@@ -73,7 +73,7 @@ const AppWithContext = (props: AppPropsType) => {
     setSontaId,
     setHubId,
     setMinistryId,
-    setFederalMinistryId,
+    setCreativeArtsId,
     setArrivalDate,
   } = useClickCard()
 
@@ -88,7 +88,7 @@ const AppWithContext = (props: AppPropsType) => {
     setSontaId,
     setHubId,
     setMinistryId,
-    setFederalMinistryId,
+    setCreativeArtsId,
   }
 
   const { user } = useAuth0()
@@ -140,7 +140,7 @@ const AppWithContext = (props: AppPropsType) => {
           sontaId,
           hubId,
           ministryId,
-          federalMinistryId,
+          creativeArtsId,
           oversightId,
           denominationId,
           doNotUse,
