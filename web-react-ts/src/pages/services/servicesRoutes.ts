@@ -50,7 +50,6 @@ const CouncilReport = lazy(() => import('pages/services/graphs/CouncilGraphs'))
 const FellowshipReport = lazy(
   () => import('pages/services/graphs/FellowshipGraphs')
 )
-const SontaReport = lazy(() => import('pages/services/graphs/SontaGraphs'))
 const BacentaJoint = lazy(() => import('pages/services/BacentaJoint'))
 
 const ConstituencyJoint = lazy(() => import('pages/services/ConstituencyJoint'))
@@ -267,12 +266,7 @@ export const graphs: LazyRouteTypes[] = [
     roles: permitLeaderAdminArrivals('Bacenta'),
     placeholder: true,
   },
-  {
-    path: '/sonta/graphs',
-    element: SontaReport,
-    roles: permitLeaderAdminArrivals('Sonta'),
-    placeholder: true,
-  },
+
   {
     path: '/constituency/graphs',
     element: ConstituencyReport,

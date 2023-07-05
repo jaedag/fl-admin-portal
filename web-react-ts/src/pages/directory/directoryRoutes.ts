@@ -56,7 +56,6 @@ const BacentaMembers = lazy(
 const FellowshipMembers = lazy(
   () => import('pages/directory/grids/FellowshipMembers')
 )
-const SontaMembers = lazy(() => import('pages/directory/grids/SontaMembers'))
 const DetailsFellowship = lazy(
   () => import('pages/directory/display/DetailsFellowship')
 )
@@ -294,11 +293,6 @@ export const memberGrids: LazyRouteTypes[] = [
     path: '/fellowship/members',
     element: FellowshipMembers,
     roles: permitLeaderAdmin('Fellowship'),
-  },
-  {
-    path: '/sonta/members',
-    element: SontaMembers,
-    roles: permitLeaderAdmin('Sonta'),
   },
 ]
 
