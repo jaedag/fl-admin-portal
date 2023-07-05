@@ -11,3 +11,8 @@ RETURN record.income, record.transactionReference;
 
 MATCH (record:ServiceRecord {id:  "95dcf0b3-7193-4ef8-801f-3d8997ac78f6"})
 DETACH DELETE record
+
+MATCH (campus:Campus)
+SET campus.currency = 'GHS',
+campus.conversionRateToDollar = 10
+RETURN COUNT(campus)

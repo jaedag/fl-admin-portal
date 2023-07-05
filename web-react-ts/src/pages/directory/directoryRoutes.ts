@@ -119,7 +119,6 @@ const CreateBacenta = lazy(() => import('pages/directory/create/CreateBacenta'))
 const CreateFellowship = lazy(
   () => import('pages/directory/create/CreateFellowship')
 )
-const CreateSonta = lazy(() => import('pages/directory/create/CreateSonta'))
 const CreateHub = lazy(() => import('pages/directory/create/CreateHub'))
 const CreateMinistry = lazy(
   () => import('pages/directory/create/CreateMinistry')
@@ -605,12 +604,7 @@ export const directory: LazyRouteTypes[] = [
     roles: permitAdminArrivals('Campus'),
     placeholder: false,
   },
-  {
-    path: '/sonta/addsonta',
-    element: CreateSonta,
-    roles: permitAdmin('Ministry'),
-    placeholder: false,
-  },
+
   {
     path: '/hub/addhub',
     element: CreateHub,

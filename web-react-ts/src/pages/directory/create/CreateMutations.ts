@@ -319,12 +319,3 @@ export const CREATE_HUB_MUTATION = gql`
     }
   }
 `
-
-export const CREATE_SONTA_MUTATION = gql`
-  mutation CreateSonta($ministryId: ID!, $hubId: ID!, $leaderId: ID!) {
-    CreateSonta(ministryId: $ministryId, hubId: $hubId, leaderId: $leaderId) {
-      id
-      name
-    }
-  }
-`
