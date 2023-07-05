@@ -1,3 +1,12 @@
+#### 7.7.3 (2023-07-05)
+
+##### Bug Fixes
+
+*  remove all mentions of leadSonta from the app ([1588245c](https://github.com/firstlovecenter/fl-pastoral-care/commit/1588245c0dc422a0bbf91dec4dd7e56cc755c6aa))
+*  add 'denomination' to churchLevel ([ffbff662](https://github.com/firstlovecenter/fl-pastoral-care/commit/ffbff662431bb44e1ad71a7de489c5c19a807c33))
+*  reorganise sonta church groups ([#438](https://github.com/firstlovecenter/fl-pastoral-care/pull/438)) ([1631cbad](https://github.com/firstlovecenter/fl-pastoral-care/commit/1631cbad90158e29c226453223438ab1892bfd33))
+*  fix spelling mistake  campuss ([eaf5313e](https://github.com/firstlovecenter/fl-pastoral-care/commit/eaf5313e1773b78b9f41eaa89f44cd37a7cef937))
+
 #### 7.7.2 (2023-07-04)
 
 ##### New Features
