@@ -369,6 +369,17 @@ extend type Fellowship {
     )
 }
 
+extend type HubFellowship {
+  memberSearch(key: String!, limit: Int!): [Member!]!
+    @cypher(
+      statement: """
+      MATCH (this)<-[:BELONGS_TO]-(members:Active:Member)
+      WHERE toLower(members.firstName+ ' ' + members.lastName) CONTAINS toLower($key)
+      RETURN DISTINCT members ORDER BY toLower(members.lastName), toLower(members.firstName)  LIMIT $limit
+      """
+    )
+}
+
 extend type Query {
   ###Member Searches%####
 

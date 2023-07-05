@@ -29,7 +29,7 @@ export type ChurchLevel =
   | 'Oversight'
   | 'Denomination'
   | 'Sonta'
-  | 'Basonta'
+  | 'HubFellowship'
   | 'Ministry'
   | 'Hub'
   | 'CreativeArts'

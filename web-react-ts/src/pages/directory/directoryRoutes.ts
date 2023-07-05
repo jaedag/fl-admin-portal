@@ -72,7 +72,6 @@ const DetailsCouncil = lazy(
 const DetailsStream = lazy(
   () => import('pages/directory/display/DetailsStream')
 )
-const DetailsSonta = lazy(() => import('pages/directory/display/DetailsSonta'))
 const DetailsHub = lazy(() => import('pages/directory/display/DetailsHub'))
 const DetailsMinistry = lazy(
   () => import('pages/directory/display/DetailsMinistry')
@@ -468,12 +467,7 @@ export const directory: LazyRouteTypes[] = [
     roles: permitMe('Stream'),
     placeholder: false,
   },
-  {
-    path: '/sonta/displaydetails',
-    element: DetailsSonta,
-    roles: permitMe('Sonta'),
-    placeholder: true,
-  },
+
   {
     path: '/hub/displaydetails',
     element: DetailsHub,

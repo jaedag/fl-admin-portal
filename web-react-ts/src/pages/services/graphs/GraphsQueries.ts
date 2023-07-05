@@ -76,23 +76,6 @@ export const BACENTA_GRAPHS = gql`
   }
 `
 
-export const SONTA_GRAPHS = gql`
-  query sontaGraphs($sontaId: ID!) {
-    sontas(where: { id: $sontaId }) {
-      id
-      name
-      leader {
-        id
-        firstName
-        lastName
-        fullName
-        pictureUrl
-      }
-      # memberCount
-    }
-  }
-`
-
 export const CONSTITUENCY_GRAPHS = gql`
   query constituencyGraphs($id: ID!) {
     constituencies(where: { id: $id }) {

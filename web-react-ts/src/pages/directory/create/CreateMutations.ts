@@ -304,8 +304,18 @@ export const CREATE_MINISTRY_MUTATION = gql`
 `
 
 export const CREATE_HUB_MUTATION = gql`
-  mutation CreateHub($name: String!, $leaderId: ID!, $ministryId: ID!) {
-    CreateHub(name: $name, leaderId: $leaderId, ministryId: $ministryId) {
+  mutation CreateHub(
+    $name: String!
+    $leaderId: ID!
+    $ministryId: ID!
+    $councilId: ID!
+  ) {
+    CreateHub(
+      name: $name
+      leaderId: $leaderId
+      ministryId: $ministryId
+      councilId: $councilId
+    ) {
       id
       name
     }

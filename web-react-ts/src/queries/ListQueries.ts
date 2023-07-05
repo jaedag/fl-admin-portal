@@ -29,15 +29,7 @@ export const GET_CONSTITUENCY_BACENTAS = gql`
       }
 
       memberCount
-      sontas {
-        id
-        name
-        leader {
-          id
-          firstName
-          lastName
-        }
-      }
+
       bacentas {
         id
         name
@@ -77,15 +69,7 @@ export const GET_CONSTITUENCY_ICBACENTAS = gql`
       }
 
       memberCount
-      sontas {
-        id
-        name
-        leader {
-          id
-          firstName
-          lastName
-        }
-      }
+
       icBacentas {
         id
         name
@@ -145,10 +129,7 @@ export const GET_COUNCIL_CONSTITUENCIES = gql`
           lastName
           stream_name
         }
-        sontas {
-          id
-          name
-        }
+
         bacentas {
           id
           name
@@ -583,7 +564,6 @@ export const GET_STREAM_MINISTRIES = gql`
         id
         memberCount
         hubCount
-        sontaCount
         leader {
           id
           firstName
@@ -620,7 +600,6 @@ export const GET_STREAM_HUBS = gql`
         name
         id
         memberCount
-        sontaCount
         leader {
           id
           firstName
@@ -645,7 +624,6 @@ export const GET_STREAM_SONTAS = gql`
         lastName
         fullName
       }
-      sontaCount
       memberCount
       admin {
         id
@@ -653,18 +631,6 @@ export const GET_STREAM_SONTAS = gql`
         lastName
         fullName
         stream_name
-      }
-      sontas {
-        name
-        id
-        memberCount
-        leader {
-          id
-          firstName
-          lastName
-          stream_name
-          pictureUrl
-        }
       }
     }
   }
@@ -688,7 +654,6 @@ export const GET_MINISTRY_HUBS = gql`
         name
         id
         memberCount
-        sontaCount
         leader {
           id
           firstName
@@ -714,20 +679,6 @@ export const GET_MINISTRY_SONTAS = gql`
         fullName
       }
       memberCount
-
-      sontas {
-        name
-        id
-        memberCount
-
-        leader {
-          id
-          firstName
-          lastName
-          stream_name
-          pictureUrl
-        }
-      }
     }
   }
 `
@@ -745,26 +696,13 @@ export const GET_HUB_SONTAS = gql`
         fullName
       }
       memberCount
-
-      sontas {
-        name
-        id
-        memberCount
-        leader {
-          id
-          firstName
-          lastName
-          stream_name
-          pictureUrl
-        }
-      }
     }
   }
 `
 
 export const GET_FEDERALMINISTRY_MINISTRIES = gql`
   query getCreativeArtsMinistries($id: ID!) {
-    creativearts(where: { id: $id }) {
+    creativeArts(where: { id: $id }) {
       id
       name
 
@@ -787,7 +725,6 @@ export const GET_FEDERALMINISTRY_MINISTRIES = gql`
         id
         memberCount
         hubCount
-        sontaCount
         leader {
           id
           firstName
@@ -835,7 +772,6 @@ export const GET_CAMPUS_CREATIVEARTS = gql`
         id
         memberCount
         hubCount
-        sontaCount
         ministryCount
         leader {
           id

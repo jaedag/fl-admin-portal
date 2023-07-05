@@ -30,10 +30,10 @@ const FellowshipServiceDetails = lazy(
   () => import('pages/services/record-service/FellowshipServiceDetails')
 )
 const SontaRehearsalService = lazy(
-  () => import('pages/services/record-service/SontaRehearsalService')
+  () => import('pages/services/record-service/HubFellowshipRehearsalService')
 )
 const SontaSundayMeeting = lazy(
-  () => import('pages/services/record-service/SontaSundayMeeting')
+  () => import('pages/services/record-service/HubFellowshipSundayMeeting')
 )
 const SontaRehearsalServiceDetails = lazy(
   () => import('pages/services/record-service/SontaRehearsalServiceDetails')

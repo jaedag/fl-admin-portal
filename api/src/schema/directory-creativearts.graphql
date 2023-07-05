@@ -1,3 +1,153 @@
+extend type Member {
+  leadscreativeArt: [CreativeArts!]!
+    @relationship(type: "LEADS", direction: OUT)
+  leadsHub: [Hub!]! @relationship(type: "LEADS", direction: OUT)
+  leadsHubFellowshipCount: Int!
+    @cypher(
+      statement: """
+      MATCH (this)-[:LEADS]->(fellowships:HubFellowship:Fellowship)
+      RETURN COUNT(fellowships)
+      """
+    )
+  leadsHubCount: Int!
+    @cypher(
+      statement: """
+      MATCH (this)-[:LEADS]->(hubs:Hub)
+      RETURN COUNT(hubs)
+      """
+    )
+  leadsMinistryCount: Int!
+    @cypher(
+      statement: """
+      MATCH (this)-[:LEADS]->(ministries:Ministry)
+      RETURN COUNT(ministries)
+      """
+    )
+  isAdminForMinistryCount: Int!
+    @cypher(
+      statement: """
+      MATCH (this)-[:IS_ADMIN_FOR]->(ministries:Ministry)
+      RETURN COUNT (ministries)
+      """
+    )
+  leadsAdminsMinistryCount: Int!
+    @cypher(
+      statement: """
+      MATCH (this)-[:LEADS|IS_ADMIN_FOR]->(ministries:Ministry)
+      RETURN COUNT(ministries)
+      """
+    )
+  leadscreativeArtCount: Int!
+    @cypher(
+      statement: """
+      MATCH (this)-[:LEADS]->(creativeArts:CreativeArts)
+      RETURN COUNT(creativeArts)
+      """
+    )
+  isAdminForcreativeArtCount: Int!
+    @cypher(
+      statement: """
+      MATCH (this)-[:IS_ADMIN_FOR]->(creativeArts:CreativeArts)
+      RETURN COUNT (creativeArts)
+      """
+    )
+  leadsAdminsCreativeArtsCount: Int!
+    @cypher(
+      statement: """
+      MATCH (this)-[:LEADS|IS_ADMIN_FOR]->(creativeArts:CreativeArts)
+      RETURN COUNT(creativeArts)
+      """
+    )
+  isAdminForMinistry: [Ministry!]!
+    @relationship(type: "IS_ADMIN_FOR", direction: OUT)
+
+  isAdminForCreativeArts: [CreativeArts!]!
+    @relationship(type: "IS_ADMIN_FOR", direction: OUT)
+}
+
+type HubFellowship implements Church {
+  id: ID @id
+  bankingCode: Int
+  name: String!
+  location: Point
+  stream_name: String
+    @cypher(
+      statement: """
+      MATCH (this)<-[:HAS*4]-(stream:Stream)
+      RETURN DISTINCT toLower(stream.name)
+      """
+    )
+  vacationStatus: String!
+    @cypher(
+      statement: """
+      MATCH (this)
+      UNWIND labels(this) AS status
+      WITH status WHERE status = 'Active' OR status = 'Vacation' OR status = 'Online'
+      RETURN status
+      """
+    )
+  bacenta: Bacenta @relationship(type: "HAS", direction: IN)
+  leader: Member @relationship(type: "LEADS", direction: IN)
+  members: [Member!]!
+    @cypher(
+      statement: """
+      MATCH (this)<-[:BELONGS_TO]-(members:Active:Member)
+      RETURN DISTINCT members ORDER BY toLower(members.lastName), toLower(members.firstName)
+      """
+    )
+  memberCount: Int!
+    @cypher(
+      statement: """
+      MATCH (this)<-[:BELONGS_TO]-(members:Active:Member)
+      RETURN COUNT(DISTINCT members)
+      """
+    )
+  ministryMemberCount: Int
+    @cypher(
+      statement: """
+      MATCH (this)<-[:BELONGS_TO]-(members:Active:Member)-[:BELONGS_TO]->(:Ministry)
+      RETURN COUNT(DISTINCT members)
+      """
+    )
+  pastorCount: Int
+    @cypher(
+      statement: """
+      MATCH (this)<-[:BELONGS_TO]-(pastors:Active:Member)-[:HAS_TITLE]->(:Title)
+      RETURN COUNT(DISTINCT pastors)
+      """
+    )
+  meetingDay: ServiceDay @relationship(type: "MEETS_ON", direction: OUT)
+  history(limit: Int! = 3): [HistoryLog!]!
+    @cypher(
+      statement: "MATCH (this)-[:HAS_HISTORY|OLD_HISTORY]->(log:HistoryLog) RETURN log ORDER BY log.timeStamp DESC LIMIT $limit"
+    )
+  serviceLogs: [ServiceLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
+  services(limit: Int!): [ServiceRecord!]!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(records:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
+      WITH DISTINCT records,date
+      RETURN records ORDER BY date.date DESC LIMIT $limit
+      """
+    )
+  labels: [String]
+    @cypher(
+      statement: """
+      MATCH (this)
+      RETURN labels(this)
+      """
+    )
+
+  council: Council
+    @cypher(
+      statement: """
+      MATCH (this)<-[:HAS*3]-(council:Council)
+      RETURN council
+      """
+    )
+  hub: [Hub!]! @relationship(type: "HAS", direction: IN)
+}
+
 extend type Mutation {
   CreateCreativeArts(name: String!, leaderId: ID!, campusId: ID!): CreativeArts
     @auth(rules: [{ roles: ["adminCampus"] }])
@@ -274,7 +424,7 @@ extend type Mutation {
 ## DELETE OPERATIONS
 
 extend type Mutation {
-  closeDowncreativeArt(creativeArtsId: ID!, leaderId: ID!): Campus
+  CloseDownCreativeArts(creativeArtsId: ID!, leaderId: ID!): Campus
     @cypher(
       statement: """
       MATCH (creativeArt:CreativeArts {id:$creativeArtsId})
@@ -345,73 +495,6 @@ extend type Mutation {
       RETURN ministry
       """
     )
-}
-
-extend type Member {
-  leadscreativeArt: [CreativeArts!]!
-    @relationship(type: "LEADS", direction: OUT)
-  leadsHub: [Hub!]! @relationship(type: "LEADS", direction: OUT)
-  leadsHubFellowshipCount: Int!
-    @cypher(
-      statement: """
-      MATCH (this)-[:LEADS]->(fellowships:HubFellowship:Fellowship)
-      RETURN COUNT(fellowships)
-      """
-    )
-  leadsHubCount: Int!
-    @cypher(
-      statement: """
-      MATCH (this)-[:LEADS]->(hubs:Hub)
-      RETURN COUNT(hubs)
-      """
-    )
-  leadsMinistryCount: Int!
-    @cypher(
-      statement: """
-      MATCH (this)-[:LEADS]->(ministries:Ministry)
-      RETURN COUNT(ministries)
-      """
-    )
-  isAdminForMinistryCount: Int!
-    @cypher(
-      statement: """
-      MATCH (this)-[:IS_ADMIN_FOR]->(ministries:Ministry)
-      RETURN COUNT (ministries)
-      """
-    )
-  leadsAdminsMinistryCount: Int!
-    @cypher(
-      statement: """
-      MATCH (this)-[:LEADS|IS_ADMIN_FOR]->(ministries:Ministry)
-      RETURN COUNT(ministries)
-      """
-    )
-  leadscreativeArtCount: Int!
-    @cypher(
-      statement: """
-      MATCH (this)-[:LEADS]->(creativeArts:CreativeArts)
-      RETURN COUNT(creativeArts)
-      """
-    )
-  isAdminForcreativeArtCount: Int!
-    @cypher(
-      statement: """
-      MATCH (this)-[:IS_ADMIN_FOR]->(creativeArts:CreativeArts)
-      RETURN COUNT (creativeArts)
-      """
-    )
-  leadsAdminscreativeArtCount: Int!
-    @cypher(
-      statement: """
-      MATCH (this)-[:LEADS|IS_ADMIN_FOR]->(creativeArts:CreativeArts)
-      RETURN COUNT(creativeArts)
-      """
-    )
-  isAdminForMinistry: [Ministry!]!
-    @relationship(type: "IS_ADMIN_FOR", direction: OUT)
-
-  isAdminForcreativeArt: [CreativeArts!]!
-    @relationship(type: "IS_ADMIN_FOR", direction: OUT)
 }
 
 extend type Mutation {

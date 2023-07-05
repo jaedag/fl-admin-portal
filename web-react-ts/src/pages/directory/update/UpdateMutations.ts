@@ -419,10 +419,7 @@ export const UPDATE_CONSTITUENCY_MUTATION = gql`
           }
         }
       }
-      sontas {
-        id
-        name
-      }
+
       admin {
         id
         firstName
@@ -502,41 +499,6 @@ export const UPDATE_BACENTA_MUTATION = gql`
         }
       }
       history(limit: 5) {
-        id
-        timeStamp
-        createdAt {
-          date
-        }
-        loggedBy {
-          id
-          firstName
-          lastName
-        }
-        historyRecord
-      }
-    }
-  }
-`
-
-export const UPDATE_SONTA_MUTATION = gql`
-  mutation UpdateSonta($sontaId: ID!, $sontaName: String!, $hubId: ID!) {
-    UpdateSontaDetails(
-      sontaId: $sontaId
-      sontaName: $sontaName
-      hubId: $hubId
-    ) {
-      id
-      name
-      leader {
-        id
-        firstName
-        lastName
-        whatsappNumber
-        title {
-          name
-        }
-      }
-      history {
         id
         timeStamp
         createdAt {

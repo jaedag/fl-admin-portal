@@ -47,7 +47,7 @@ const CreativeArtsForm = ({
 
   const { data, loading, error } = useQuery(GET_CAMPUSES)
   const [buttonLoading, setButtonLoading] = useState(false)
-  const [CloseDownCreativeArts] = useMutation(MAKE_FEDERAL_MINISTRY_INACTIVE)
+  const [CloseDownCreativeArtss] = useMutation(MAKE_FEDERAL_MINISTRY_INACTIVE)
 
   const campusOptions = makeSelectOptions(data?.campuses)
 
@@ -121,7 +121,7 @@ const CreativeArtsForm = ({
                     className={`btn-main ${theme}`}
                     onClick={() => {
                       setButtonLoading(true)
-                      CloseDownCreativeArts({
+                      CloseDownCreativeArtss({
                         variables: {
                           id: federalMinstryId,
                           leaderId: initialValues.leaderId,
@@ -129,7 +129,7 @@ const CreativeArtsForm = ({
                       })
                         .then((res) => {
                           setButtonLoading(false)
-                          clickCard(res.data.CloseDownCreativeArts)
+                          clickCard(res.data.CloseDownCreativeArtss)
                           togglePopup()
                           navigate(`/creativearts/displayall`)
                         })

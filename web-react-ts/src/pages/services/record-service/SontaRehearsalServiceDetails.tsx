@@ -2,17 +2,17 @@ import React, { useContext } from 'react'
 import { ChurchContext } from '../../../contexts/ChurchContext'
 
 import { useQuery } from '@apollo/client'
-import { DISPLAY_SONTA_REHEARSAL } from './RecordServiceMutations'
+import { DISPLAY_HUBFELLOWSHIP_REHEARSAL } from './RecordServiceMutations'
 import { ServiceContext } from 'contexts/ServiceContext'
 
 import ServiceDetails from './ServiceDetails'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 
-const SontaRehearsalServiceDetails = () => {
-  const { sontaId } = useContext(ChurchContext)
+const HubFellowshipRehearsalServiceDetails = () => {
+  const { hubfellowshipId } = useContext(ChurchContext)
   const { serviceRecordId } = useContext(ServiceContext)
-  const { data, loading, error } = useQuery(DISPLAY_SONTA_REHEARSAL, {
-    variables: { serviceId: serviceRecordId, sontaId: sontaId },
+  const { data, loading, error } = useQuery(DISPLAY_HUBFELLOWSHIP_REHEARSAL, {
+    variables: { serviceId: serviceRecordId, hubfellowshipId: hubfellowshipId },
   })
 
   return (
@@ -20,10 +20,10 @@ const SontaRehearsalServiceDetails = () => {
       <ServiceDetails
         loading={loading}
         service={data?.rehearsalRecords[0]}
-        church={data?.sontas[0]}
+        church={data?.hubfellowships[0]}
       />
     </ApolloWrapper>
   )
 }
 
-export default SontaRehearsalServiceDetails
+export default HubFellowshipRehearsalServiceDetails

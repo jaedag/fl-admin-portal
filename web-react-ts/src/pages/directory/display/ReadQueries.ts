@@ -197,6 +197,7 @@ export const DISPLAY_FELLOWSHIP = gql`
     }
   }
 `
+
 export const DISPLAY_FELLOWSHIP_HISTORY = gql`
   query displayFellowshipHistory($id: ID!) {
     fellowships(where: { id: $id }, options: { limit: 1 }) {
@@ -787,6 +788,45 @@ export const DISPLAY_HUB = gql`
             name
           }
         }
+      }
+    }
+  }
+`
+
+export const DISPLAY_HUBFELLOWSHIP = gql`
+  query displayHubFellowship($id: ID!) {
+    hubFellowships(where: { id: $id }, options: { limit: 1 }) {
+      id
+      noIncomeTracking
+      vacationStatus
+      stream_name
+      bankingCode
+      name
+      memberCount
+      location {
+        longitude
+        latitude
+      }
+      meetingDay {
+        day
+        dayNumber
+      }
+      bacenta {
+        id
+        name
+        constituency {
+          id
+          name
+        }
+      }
+      leader {
+        id
+        firstName
+        lastName
+        fullName
+        currentTitle
+        nameWithTitle
+        pictureUrl
       }
     }
   }

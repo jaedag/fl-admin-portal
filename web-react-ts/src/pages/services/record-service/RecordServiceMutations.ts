@@ -140,14 +140,14 @@ export const RECORD_SERVICE_NO_INCOME = gql`
   }
 `
 
-export const RECORD_SONTA_REHEARSAL_SERVICE = gql`
-  mutation RecordSontaRehearsalService(
+export const RECORD_HUBFELLOWSHIP_REHEARSAL_SERVICE = gql`
+  mutation RecordHubFellowshipRehearsalService(
     $churchId: ID!
     $attendance: Int!
     $familyPicture: String!
     $serviceDate: String!
   ) {
-    RecordSontaRehearsalService(
+    RecordHubRehearsalService(
       churchId: $churchId
       attendance: $attendance
       familyPicture: $familyPicture
@@ -159,14 +159,14 @@ export const RECORD_SONTA_REHEARSAL_SERVICE = gql`
   }
 `
 
-export const RECORD_SONTA_SUNDAY_MEETING = gql`
-  mutation RecordSontaSundayMeeting(
+export const RECORD_HUBFELLOWSHIP_SUNDAY_MEETING = gql`
+  mutation RecordHubFellowshipSundayMeeting(
     $churchId: ID!
     $serviceDate: String!
     $attendance: Int!
     $familyPicture: String!
   ) {
-    RecordSontaSundayMeeting(
+    RecordHubFellowshipSundayAttendance(
       churchId: $churchId
       serviceDate: $serviceDate
       attendance: $attendance
@@ -310,35 +310,11 @@ export const DISPLAY_BACENTA_SERVICE = gql`
   }
 `
 
-export const DISPLAY_SONTA_SERVICE = gql`
-  query sontaDisplayServiceRecords($serviceId: ID!, $sontaId: ID!) {
-    serviceRecords(where: { id: $serviceId }) {
-      id
-      createdAt
-      serviceDate {
-        date
-      }
-      attendance
-      income
-      foreignCurrency
-      treasurerSelfie
-      familyPicture
-      treasurers {
-        id
-        firstName
-        lastName
-        fullName
-      }
-    }
-    sontas(where: { id: $sontaId }) {
-      id
-      name
-    }
-  }
-`
-
-export const DISPLAY_SONTA_SUNDAY_MEETING = gql`
-  query sontaDisplaySundayMeetingRecords($serviceId: ID!, $sontaId: ID!) {
+export const DISPLAY_HUBFELLOWSHIP_SUNDAY_MEETING = gql`
+  query hubFellowshipDisplaySundayMeetingRecords(
+    $serviceId: ID!
+    $hubfellowshipId: ID!
+  ) {
     ministryAttendanceRecords(where: { id: $serviceId }) {
       id
       createdAt
@@ -355,15 +331,18 @@ export const DISPLAY_SONTA_SUNDAY_MEETING = gql`
         fullName
       }
     }
-    sontas(where: { id: $sontaId }) {
+    hubFellowships(where: { id: $hubfellowshipId }) {
       id
       name
     }
   }
 `
 
-export const DISPLAY_SONTA_REHEARSAL = gql`
-  query sontaDisplayRehearsalRecords($serviceId: ID!, $sontaId: ID!) {
+export const DISPLAY_HUBFELLOWSHIP_REHEARSAL = gql`
+  query hubfellowshipDisplayRehearsalRecords(
+    $serviceId: ID!
+    $hubfellowshipId: ID!
+  ) {
     rehearsalRecords(where: { id: $serviceId }) {
       id
       createdAt
@@ -380,7 +359,7 @@ export const DISPLAY_SONTA_REHEARSAL = gql`
         fullName
       }
     }
-    sontas(where: { id: $sontaId }) {
+    hubFellowships(where: { id: $hubfellowshipId }) {
       id
       name
     }

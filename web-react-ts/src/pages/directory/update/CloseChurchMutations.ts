@@ -139,30 +139,6 @@ export const MAKE_OVERSIGHT_INACTIVE = gql`
     }
   }
 `
-
-export const MAKE_SONTA_INACTIVE = gql`
-  mutation CloseDownSonta($leaderId: ID!, $sontaId: ID!) {
-    closeDownSonta(leaderId: $leaderId, sontaId: $sontaId) {
-      id
-      name
-
-      history {
-        id
-        timeStamp
-        createdAt {
-          date
-        }
-        loggedBy {
-          id
-          firstName
-          lastName
-        }
-        historyRecord
-      }
-    }
-  }
-`
-
 export const MAKE_HUB_INACTIVE = gql`
   mutation CloseDownHub($leaderId: ID!, $hubId: ID!) {
     closeDownHub(leaderId: $leaderId, hubId: $hubId) {
@@ -210,8 +186,8 @@ export const MAKE_MINISTRY_INACTIVE = gql`
 `
 
 export const MAKE_FEDERAL_MINISTRY_INACTIVE = gql`
-  mutation CloseDowncreativeArts($creativeArtsId: ID!, $leaderId: ID!) {
-    closeDowncreativeArts(
+  mutation CloseDownCreativeArtss($creativeArtsId: ID!, $leaderId: ID!) {
+    CloseDownCreativeArts(
       creativeArtsId: $creativeArtsId
       leaderId: $leaderId
     ) {

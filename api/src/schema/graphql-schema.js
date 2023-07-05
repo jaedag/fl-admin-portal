@@ -83,8 +83,8 @@ const shepherdingControlCampaign = fs
   .readFileSync(path.join(__dirname, './campaigns-shepherding-control.graphql'))
   .toString('utf-8')
 
-const basontaChurches = fs
-  .readFileSync(path.join(__dirname, './directory-basonta.graphql'))
+const creativeartsChurches = fs
+  .readFileSync(path.join(__dirname, './directory-creativearts.graphql'))
   .toString('utf-8')
 
 const maps = fs
@@ -111,7 +111,7 @@ const array = [
   multiplicationCampaign,
   swollenSundayCampaign,
   shepherdingControlCampaign,
-  basontaChurches,
+  creativeartsChurches,
   maps,
 ]
 

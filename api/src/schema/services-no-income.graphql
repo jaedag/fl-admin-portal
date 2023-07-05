@@ -16,3 +16,13 @@ extend type Fellowship {
       """
     )
 }
+
+extend type HubFellowship {
+  noIncomeTracking: Boolean!
+    @cypher(
+      statement: """
+      MATCH (this)<-[:HAS*5]-(campus:Campus)
+      RETURN campus.noIncomeTracking
+      """
+    )
+}
