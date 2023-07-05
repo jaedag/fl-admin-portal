@@ -64,9 +64,7 @@ const ServantsChurchList = () => {
     if (servant.leadsConstituency?.length) {
       pushIntoChurch(servant?.leadsConstituency)
     }
-    if (servant?.leadsSonta?.length) {
-      pushIntoChurch(servant?.leadsSonta)
-    }
+
     if (servant?.leadsMinistry?.length) {
       pushIntoChurch(servant?.leadsMinistry)
     }

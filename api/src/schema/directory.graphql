@@ -90,7 +90,7 @@ type Member @auth(rules: [{ isAuthenticated: true }]) {
     )
 
   ### BASONTA WORK ###
-  leadsFederalMinistry: [CreativeArts!]!
+  leadsCreativeArts: [CreativeArts!]!
     @relationship(type: "LEADS", direction: OUT)
   leadsMinistry: [Ministry!]! @relationship(type: "LEADS", direction: OUT)
   leadsHub: [Hub!]! @relationship(type: "LEADS", direction: OUT)
@@ -650,7 +650,9 @@ type Campus implements Church {
       statement: "MATCH (this)-[:HAS*4]->(fellowship:HubFellowship) RETURN COUNT(fellowship)"
     )
   hubFellowships: [Fellowship!]!
-    @cypher(statement: "MATCH (this)-[:HAS*4]->(fellowship:HubFellowship) RETURN fellowship")
+    @cypher(
+      statement: "MATCH (this)-[:HAS*4]->(fellowship:HubFellowship) RETURN fellowship"
+    )
   hubs: [Hub!]!
     @cypher(statement: "MATCH (this)-[:HAS*3]->(hub:Hub) RETURN hub")
 }
@@ -771,7 +773,9 @@ type Stream implements Church {
       statement: "MATCH (this)-[:HAS*3]->(fellowships:HubFellowship) RETURN COUNT(fellowships)"
     )
   hubFellowships: [Fellowship!]!
-    @cypher(statement: "MATCH (this)-[:HAS*3]->(fellowships:HubFellowship) RETURN fellowships")
+    @cypher(
+      statement: "MATCH (this)-[:HAS*3]->(fellowships:HubFellowship) RETURN fellowships"
+    )
   hubs: [Hub!]!
     @cypher(statement: "MATCH (this)-[:HAS*2]->(hub:Hub) RETURN hub")
 }
@@ -1048,9 +1052,9 @@ type Bacenta implements Church {
     )
   stream: Stream
     @cypher(statement: "MATCH (this)<-[:HAS*3]-(stream:Stream) RETURN stream")
-  
+
   hubs: [Hub!]!
-     @cypher(
+    @cypher(
       statement: """
       MATCH (this)<-[:HAS*2]-(council:Council)-[:HAS]->(hubs:Hub)
       RETURN hubs
@@ -1131,7 +1135,7 @@ type Fellowship implements Church {
       RETURN labels(this)
       """
     )
-    
+
   council: Council
     @cypher(
       statement: """
@@ -1140,7 +1144,6 @@ type Fellowship implements Church {
       """
     )
   hub: [Hub!]! @relationship(type: "HAS", direction: IN)
-
 }
 type ClosedFellowship {
   id: ID @id
@@ -1254,8 +1257,7 @@ type Ministry {
   creativeArt: CreativeArts @relationship(type: "HAS", direction: IN)
   hubFellowships: [Fellowship!]!
     @cypher(
-      statement: 
-      """
+      statement: """
       MATCH (this)-[:HAS*2]->(fellowship:HubFellowship:Fellowship)
       RETURN fellowship
       """

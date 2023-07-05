@@ -436,18 +436,6 @@ export const SERVANTS_SHEEP_SEEKER_STREAM = gql`
   }
 `
 
-export const SERVANTS_SONTA_LEADER = gql`
-  query sontaLeader($id: ID!) {
-    members(where: { id: $id }) {
-      id
-      leadsSonta {
-        id
-        name
-      }
-    }
-  }
-`
-
 export const SERVANTS_HUB_LEADER = gql`
   query hubLeader($id: ID!) {
     members(where: { id: $id }) {

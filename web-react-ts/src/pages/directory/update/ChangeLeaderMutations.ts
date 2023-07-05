@@ -85,50 +85,6 @@ export const MAKE_BACENTA_LEADER = gql`
   }
 `
 
-export const MAKE_SONTA_LEADER = gql`
-  mutation MakeSontaLeader(
-    $sontaId: ID!
-    $newLeaderId: ID!
-    $oldLeaderId: ID!
-  ) {
-    RemoveSontaLeader(
-      sontaId: $sontaId
-      leaderId: $oldLeaderId
-      newLeaderId: $newLeaderId
-    ) {
-      id
-      firstName
-      lastName
-    }
-    MakeSontaLeader(sontaId: $sontaId, leaderId: $newLeaderId) {
-      id
-      firstName
-      lastName
-      leadsSonta {
-        id
-        leader {
-          id
-          firstName
-          lastName
-        }
-        # history(limit: 5 ) {
-        #   id
-        #   timeStamp
-        #   createdAt {
-        #     date
-        #   }
-        #   loggedBy {
-        #     id
-        #     firstName
-        #     lastName
-        #   }
-        #   historyRecord
-        # }
-      }
-    }
-  }
-`
-
 export const MAKE_CONSTITUENCY_LEADER = gql`
   mutation MakeConstituencyLeader(
     $constituencyId: ID!

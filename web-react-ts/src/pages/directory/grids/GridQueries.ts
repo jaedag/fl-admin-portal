@@ -33,12 +33,7 @@ export const GET_FEDERAL_MEMBERS = gql`
       leadsMinistry {
         name
       }
-      leadsSonta {
-        name
-      }
-      leadsBasonta {
-        name
-      }
+
       leadsConstituency {
         name
       }
@@ -98,14 +93,7 @@ export const GET_SERVANT_MEMBERS = gql`
           id
           name
         }
-        leadsSonta {
-          id
-          name
-        }
-        leadsBasonta {
-          id
-          name
-        }
+
         leadsConstituency {
           id
           name
@@ -165,14 +153,7 @@ export const GET_CAMPUS_MEMBERS = gql`
           id
           name
         }
-        leadsSonta {
-          id
-          name
-        }
-        leadsBasonta {
-          id
-          name
-        }
+
         leadsConstituency {
           id
           name
@@ -231,14 +212,7 @@ export const GET_STREAM_MEMBERS = gql`
           id
           name
         }
-        leadsSonta {
-          id
-          name
-        }
-        leadsBasonta {
-          id
-          name
-        }
+
         leadsConstituency {
           id
           name
@@ -298,14 +272,7 @@ export const GET_OVERSIGHT_MEMBERS = gql`
           id
           name
         }
-        leadsSonta {
-          id
-          name
-        }
-        leadsBasonta {
-          id
-          name
-        }
+
         leadsConstituency {
           id
           name
@@ -365,14 +332,7 @@ export const GET_COUNCIL_MEMBERS = gql`
           id
           name
         }
-        leadsSonta {
-          id
-          name
-        }
-        leadsBasonta {
-          id
-          name
-        }
+
         leadsConstituency {
           id
           name
@@ -428,14 +388,7 @@ export const GET_CONSTITUENCY_MEMBERS = gql`
           id
           name
         }
-        leadsSonta {
-          id
-          name
-        }
-        leadsBasonta {
-          id
-          name
-        }
+
         leadsConstituency {
           id
           name
@@ -488,12 +441,7 @@ export const GET_BACENTA_MEMBERS = gql`
         leadsMinistry {
           name
         }
-        leadsSonta {
-          name
-        }
-        leadsBasonta {
-          name
-        }
+
         leadsConstituency {
           id
           name
@@ -550,14 +498,7 @@ export const GET_FELLOWSHIP_MEMBERS = gql`
           id
           name
         }
-        leadsSonta {
-          id
-          name
-        }
-        leadsBasonta {
-          id
-          name
-        }
+
         leadsConstituency {
           id
           name
@@ -610,12 +551,7 @@ export const GET_SONTA_MEMBERS = gql`
         leadsMinistry {
           name
         }
-        leadsSonta {
-          name
-        }
-        leadsBasonta {
-          name
-        }
+
         leadsConstituency {
           id
           name

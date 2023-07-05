@@ -278,16 +278,6 @@ export const getServantRoles = (servant: MemberWithChurches) => {
     })
   }
 
-  //sonta
-  if (servant?.leadsSonta?.length) {
-    roleTitles.push('leaderSonta')
-    userroles.push({
-      name: 'Sonta',
-      church: servant?.leadsSonta,
-      number: servant?.leadsSonta?.length,
-      link: authorisedLink(servant, permitMe('Sonta'), '/sonta/displaydetails'),
-    })
-  }
   if (servant?.leadsHub?.length) {
     roleTitles.push('leaderHub')
     userroles.push({

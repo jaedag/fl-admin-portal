@@ -170,7 +170,6 @@ export interface MemberWithChurches extends Member {
   leadsStream: Church[]
 
   //sonta
-  leadsSonta: Church[]
   leadsHub: Church[]
   leadsMinistry: Church[]
   leadsFederalministry: Church[]

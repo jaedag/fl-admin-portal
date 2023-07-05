@@ -185,21 +185,3 @@ export const NEW_HUB_LEADER = gql`
     }
   }
 `
-
-export const NEW_SONTA_LEADER = gql`
-  mutation NewSontaLeader($sontaId: ID!, $leaderId: ID!) {
-    MakeSontaLeader(sontaId: $sontaId, leaderId: $leaderId) {
-      id
-      firstName
-      lastName
-      leadsSonta {
-        id
-        leader {
-          id
-          firstName
-          lastName
-        }
-      }
-    }
-  }
-`

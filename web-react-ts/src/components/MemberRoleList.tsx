@@ -116,10 +116,6 @@ const MemberRoleList = ({
     updateRank(memberAdmin, 'campus')
   }
 
-  if (memberLeader.leadsSonta[0]) {
-    updateRank(memberLeader, 'sonta')
-  }
-
   if (memberLeader?.leadsMinistry[0]) {
     updateRank(memberLeader, 'ministry')
   }

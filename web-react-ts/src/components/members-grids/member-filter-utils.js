@@ -95,9 +95,8 @@ export const memberFilter = (memberData, filters) => {
   if (filters.leaderRank.includes('Basonta Leader')) {
     leaderData.basontaLeaders = filterFor(filteredData, 'leadsBasonta')
   }
-  if (filters.leaderRank.includes('Sonta Leader')) {
-    leaderData.sontaLeaders = filterFor(filteredData, 'leadsSonta')
-  }
+  //
+
   if (filters.leaderRank.includes('Fellowship Leader')) {
     leaderData.fellowshipLeaders = filterFor(filteredData, 'leadsFellowship')
   }

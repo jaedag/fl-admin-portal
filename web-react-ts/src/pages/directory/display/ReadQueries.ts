@@ -71,11 +71,6 @@ export const DISPLAY_MEMBER_LEADERSHIP = gql`
         id
         name
       }
-      leadsSonta {
-        id
-        name
-        stream_name
-      }
 
       leadsMinistry {
         id

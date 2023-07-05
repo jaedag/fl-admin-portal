@@ -134,12 +134,6 @@ export const SERVANT_CHURCH_LIST = gql`
         bankAccount
       }
 
-      #sonta
-      leadsSonta {
-        id
-        name
-      }
-
       leadsHub {
         id
         name
@@ -150,17 +144,7 @@ export const SERVANT_CHURCH_LIST = gql`
         name
       }
 
-      leadsFederalministry {
-        id
-        name
-      }
-
-      isAdminForMinistry {
-        id
-        name
-      }
-
-      isAdminForFederalministry {
+      leadsCreativeArts {
         id
         name
       }
@@ -179,7 +163,6 @@ export const SERVANT_CHURCHES_COUNT = gql`
       leadsAdminsConstituencyCount
       leadsAdminsCouncilCount
       leadsAdminsCampusCount
-      leadsSontaCount
       leadsHubCount
       leadsAdminsMinistryCount
       leadsAdminsFederalMinistryCount

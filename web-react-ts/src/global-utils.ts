@@ -374,7 +374,6 @@ interface MemberWithChurchCount extends Member {
   leadsAdminsOversightCount: number
 
   //sonta
-  leadsSontaCount: number
   leadsHubCount: number
   leadsAdminsMinistryCount: number
   leadsAdminsFederalMinistryCount: number
@@ -472,22 +471,6 @@ export const getChurchCount = (servant: MemberWithChurchCount) => {
       churchesCount = `${servant.leadsFellowshipCount} Fellowship`
     } else {
       churchesCount = `${servant.leadsFellowshipCount} Fellowships`
-    }
-  }
-
-  if (servant?.leadsSontaCount) {
-    if (churchesCount) {
-      churchesCount += ','
-
-      if (servant.leadsSontaCount === 1) {
-        churchesCount = `${churchesCount} ${servant.leadsSontaCount} Sonta`
-      } else {
-        churchesCount = `${churchesCount} ${servant.leadsSontaCount} Sontas`
-      }
-    } else if (servant.leadsSontaCount === 1) {
-      churchesCount = `${servant.leadsSontaCount} Sonta`
-    } else {
-      churchesCount = `${servant.leadsSontaCount} Sontas`
     }
   }
 
