@@ -78,7 +78,7 @@ export const roles: {
   Oversight: ['leads', 'isAdminFor'],
   Denomination: ['leads', 'isAdminFor'],
   Sonta: ['leads'],
-  Basonta: ['leads'],
+  HubFellowship: ['leads'],
   Hub: ['leads'],
   Ministry: ['leads', 'isAdminFor'],
   CreativeArts: ['leads', 'isAdminFor'],
