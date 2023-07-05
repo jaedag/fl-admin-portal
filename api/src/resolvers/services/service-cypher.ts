@@ -83,7 +83,7 @@ SET serviceRecord.id = apoc.create.uuid(),
 serviceRecord.noServiceReason = $noServiceReason
 
 WITH serviceRecord
-MATCH (church {id: $churchId}) WHERE church:Fellowship OR church:Sonta
+MATCH (church {id: $churchId}) WHERE church:Fellowship OR church:Hub
 MATCH (church)-[:CURRENT_HISTORY]->(log:ServiceLog)
 MATCH (leader:Active:Member {auth_id: $auth.jwt.sub})
 
@@ -98,17 +98,16 @@ RETURN serviceRecord
 export const checkCurrentServiceLog = `
 MATCH (church {id:$churchId}) 
 WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream
-OR church:Sonta OR church:Hub
+OR church:Hub
 MATCH (church)-[:CURRENT_HISTORY]->(log:ServiceLog)
 RETURN true AS exists
 `
 export const getServantAndChurch = `
 MATCH (church {id:$churchId}) 
-WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream 
-OR church:Sonta OR church:Hub
+WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:Hub
 MATCH (church)<-[:LEADS]-(servant:Active:Member)
 UNWIND labels(church) AS churchType 
-WITH churchType, church, servant WHERE churchType IN ['Fellowship', 'Bacenta', 'Constituency', 'Council', 'Stream', 'Sonta']
+WITH churchType, church, servant WHERE churchType IN ['Fellowship', 'Bacenta', 'Constituency', 'Council', 'Stream','Hub']
 RETURN church.id AS churchId, church.name AS churchName, servant.id AS servantId, servant.auth_id AS auth_id, servant.firstName AS firstName, servant.lastName AS lastName, churchType AS churchType
 `
 

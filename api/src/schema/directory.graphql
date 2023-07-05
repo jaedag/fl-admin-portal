@@ -25,7 +25,7 @@ type Member @auth(rules: [{ isAuthenticated: true }]) {
   dob: TimeGraph @relationship(type: "WAS_BORN_ON", direction: OUT)
   title: [Title!]!
     @relationship(type: "HAS_TITLE", properties: "HasTitle", direction: OUT)
-  ministry: Federalministry @relationship(type: "BELONGS_TO", direction: OUT)
+  ministry: CreativeArts @relationship(type: "BELONGS_TO", direction: OUT)
   occupation: Occupation @relationship(type: "HAS_OCCUPATION", direction: OUT)
   stream_name: String
     @cypher(
@@ -54,7 +54,7 @@ type Member @auth(rules: [{ isAuthenticated: true }]) {
     @cypher(
       statement: """
       MATCH (this)-[:LEADS|HAS|IS_ADMIN_FOR*1..6]->(:Fellowship)<-[:BELONGS_TO]-(members:Active:Member)
-      MATCH (members)-[:BELONGS_TO]->(:Federalministry)
+      MATCH (members)-[:BELONGS_TO]->(:CreativeArts)
       RETURN DISTINCT members ORDER BY toLower(members.lastName), toLower(members.firstName)
       """
     )
@@ -62,7 +62,7 @@ type Member @auth(rules: [{ isAuthenticated: true }]) {
     @cypher(
       statement: """
       MATCH (this)-[:LEADS|HAS|IS_ADMIN_FOR*1..6]->(:Fellowship)<-[:BELONGS_TO]-(members:Active:Member)
-      MATCH (members)-[:BELONGS_TO]->(:Federalministry)
+      MATCH (members)-[:BELONGS_TO]->(:CreativeArts)
       RETURN COUNT(DISTINCT members)
       """
     )
@@ -90,11 +90,10 @@ type Member @auth(rules: [{ isAuthenticated: true }]) {
     )
 
   ### BASONTA WORK ###
-  leadsFederalMinistry: [Federalministry!]!
+  leadsFederalMinistry: [CreativeArts!]!
     @relationship(type: "LEADS", direction: OUT)
   leadsMinistry: [Ministry!]! @relationship(type: "LEADS", direction: OUT)
   leadsHub: [Hub!]! @relationship(type: "LEADS", direction: OUT)
-  leadsSonta: [Sonta!]! @relationship(type: "LEADS", direction: OUT)
   leadsBasonta: [Basonta!]! @relationship(type: "LEADS", direction: OUT)
   leadsConstituency: [Constituency!]!
     @relationship(type: "LEADS", direction: OUT)
@@ -289,11 +288,10 @@ type HistoryLog @auth(rules: [{ isAuthenticated: true }]) {
   bacenta: [Bacenta!]! @relationship(type: "HAS_HISTORY", direction: IN)
   constituency: [Constituency!]!
     @relationship(type: "HAS_HISTORY", direction: IN)
-  sonta: [Sonta!]! @relationship(type: "HAS_HISTORY", direction: IN)
   basonta: [Basonta!]! @relationship(type: "HAS_HISTORY", direction: IN)
   ministry: [Ministry!]! @relationship(type: "HAS_HISTORY", direction: IN)
   hub: [Hub!]! @relationship(type: "HAS_HISTORY", direction: IN)
-  federalMinistry: [Federalministry!]!
+  creativeArt: [CreativeArts!]!
     @relationship(type: "HAS_HISTORY", direction: IN)
 }
 
@@ -541,7 +539,7 @@ type Campus implements Church {
   leader: Member @relationship(type: "LEADS", direction: IN)
   oversight: Oversight! @relationship(type: "HAS", direction: IN)
   streams: [Stream!]! @relationship(type: "HAS", direction: OUT)
-  federalMinistries: [Federalministry!]!
+  creativeArts: [CreativeArts!]!
     @relationship(type: "HAS_MINISTRY", direction: OUT)
 
   councils: [Council!]!
@@ -636,23 +634,23 @@ type Campus implements Church {
       RETURN records ORDER BY date.date DESC LIMIT $limit
       """
     )
-  federalMinistryCount: Int
+  creativeArtCount: Int
     @cypher(
-      statement: "MATCH (this)-[:HAS_MINISTRY]->(federalMinistry:Federalministry) RETURN COUNT(federalMinistry)"
+      statement: "MATCH (this)-[:HAS_MINISTRY]->(creativeArt:CreativeArts) RETURN COUNT(creativeArt)"
     )
 
   ministryCount: Int!
     @cypher(
-      statement: "MATCH (this)-[:HAS*2]->(ministry:Federalministry) RETURN COUNT(ministry)"
+      statement: "MATCH (this)-[:HAS*2]->(ministry:CreativeArts) RETURN COUNT(ministry)"
     )
   hubCount: Int!
     @cypher(statement: "MATCH (this)-[:HAS*3]->(hub:Hub) RETURN COUNT(hub)")
-  sontaCount: Int!
+  hubFellowshipCount: Int!
     @cypher(
-      statement: "MATCH (this)-[:HAS*4]->(sonta:Sonta) RETURN COUNT(sonta)"
+      statement: "MATCH (this)-[:HAS*4]->(fellowship:HubFellowship) RETURN COUNT(fellowship)"
     )
-  sontas: [Sonta!]!
-    @cypher(statement: "MATCH (this)-[:HAS*4]->(sonta:Sonta) RETURN sonta")
+  hubFellowships: [Fellowship!]!
+    @cypher(statement: "MATCH (this)-[:HAS*4]->(fellowship:HubFellowship) RETURN fellowship")
   hubs: [Hub!]!
     @cypher(statement: "MATCH (this)-[:HAS*3]->(hub:Hub) RETURN hub")
 }
@@ -768,12 +766,12 @@ type Stream implements Church {
     )
   hubCount: Int!
     @cypher(statement: "MATCH (this)-[:HAS*2]->(hub:Hub) RETURN COUNT(hub)")
-  sontaCount: Int!
+  hubFellowshipCount: Int!
     @cypher(
-      statement: "MATCH (this)-[:HAS*3]->(sonta:Sonta) RETURN COUNT(sonta)"
+      statement: "MATCH (this)-[:HAS*3]->(fellowships:HubFellowship) RETURN COUNT(fellowships)"
     )
-  sontas: [Sonta!]!
-    @cypher(statement: "MATCH (this)-[:HAS*3]->(sonta:Sonta) RETURN sonta")
+  hubFellowships: [Fellowship!]!
+    @cypher(statement: "MATCH (this)-[:HAS*3]->(fellowships:HubFellowship) RETURN fellowships")
   hubs: [Hub!]!
     @cypher(statement: "MATCH (this)-[:HAS*2]->(hub:Hub) RETURN hub")
 }
@@ -869,6 +867,7 @@ type Council implements Church {
       RETURN records ORDER BY date.date DESC LIMIT $limit
       """
     )
+  hubs: [Hub!]! @relationship(type: "HAS", direction: OUT)
 }
 
 type Constituency implements Church {
@@ -937,7 +936,6 @@ type Constituency implements Church {
     )
 
   leader: Member @relationship(type: "LEADS", direction: IN)
-  sontas: [Sonta!]! @relationship(type: "HAS_SONTA", direction: OUT)
   council: Council @relationship(type: "HAS", direction: IN)
 
   admin: Member @relationship(type: "IS_ADMIN_FOR", direction: IN)
@@ -1050,9 +1048,17 @@ type Bacenta implements Church {
     )
   stream: Stream
     @cypher(statement: "MATCH (this)<-[:HAS*3]-(stream:Stream) RETURN stream")
+  
+  hubs: [Hub!]!
+     @cypher(
+      statement: """
+      MATCH (this)<-[:HAS*2]-(council:Council)-[:HAS]->(hubs:Hub)
+      RETURN hubs
+      """
+    )
 }
 
-# Shared Units: Fellowship, Fellowship, Sonta
+# Shared Units: Fellowship, Fellowship
 type Fellowship implements Church {
   id: ID @id
   bankingCode: Int
@@ -1125,6 +1131,7 @@ type Fellowship implements Church {
       RETURN labels(this)
       """
     )
+    
   council: Council
     @cypher(
       statement: """
@@ -1132,6 +1139,8 @@ type Fellowship implements Church {
       RETURN council
       """
     )
+  hub: [Hub!]! @relationship(type: "HAS", direction: IN)
+
 }
 type ClosedFellowship {
   id: ID @id
@@ -1173,50 +1182,17 @@ type ClosedFellowship {
       RETURN council
       """
     )
+  hub: [Hub!]! @relationship(type: "HAS", direction: IN)
 }
 
 # union ChurchWithServices = Fellowship | Constituency | Council
 ###Basonta Church Types####
-
-type Sonta {
-  id: ID @id
-  name: String!
-  stream_name: String
-    @cypher(
-      statement: """
-      MATCH (this)<-[:HAS*4]-(stream:Stream)
-      RETURN DISTINCT toLower(stream.name)
-      """
-    )
-  memberCount: Int!
-    @cypher(
-      statement: """
-      MATCH (this)<-[:HAS*2]-(ministry:Federalministry)<-[:BELONGS_TO]-(members:Active:Member)
-      RETURN COUNT(DISTINCT members)
-      """
-    )
-  members: [Member!]!
-  leader: Member @relationship(type: "LEADS", direction: IN)
-  basonta: [Basonta!]! @relationship(type: "HAS", direction: OUT)
-  history: [HistoryLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
-  hub: [Hub!]! @relationship(type: "HAS", direction: IN)
-  serviceLogs: [ServiceLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
-  services(limit: Int!): [ServiceRecord!]!
-    @cypher(
-      statement: """
-      MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(records:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
-      WITH DISTINCT records, date
-      RETURN records ORDER BY date.date DESC LIMIT $limit
-      """
-    )
-}
 
 type Basonta {
   id: ID @id
   name: String!
   leader: Member @relationship(type: "LEADS", direction: IN)
   bacenta: Bacenta @relationship(type: "HAS_BASONTA", direction: IN)
-  sonta: Sonta @relationship(type: "HAS", direction: IN)
   historyLogs: [HistoryLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
   serviceLogs: [ServiceLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
 }
@@ -1225,22 +1201,22 @@ type Hub {
   memberCount: Int!
     @cypher(
       statement: """
-      MATCH (this)<-[:HAS]->(ministry:Federalministry)<-[:BELONGS_TO]-(members:Active:Member)
+      MATCH (this)<-[:HAS]->(ministry:CreativeArts)<-[:BELONGS_TO]-(members:Active:Member)
       RETURN COUNT(DISTINCT members)
       """
     )
-  sontaCount: Int!
+  hubFellowshipCount: Int!
     @cypher(
       statement: """
-      MATCH (this)-[:HAS]->(sontas:Sonta)
-      RETURN COUNT(DISTINCT sontas)
+      MATCH (this)-[:HAS]->(fellowships:HubFellowship:Fellowship)
+      RETURN COUNT(DISTINCT fellowships)
       """
     )
   id: ID @id
   name: String!
   leader: Member @relationship(type: "LEADS", direction: IN)
   history: [HistoryLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
-  sontas: [Sonta!]! @relationship(type: "HAS", direction: OUT)
+  hubFellowships: [Fellowship!]! @relationship(type: "HAS", direction: OUT)
   ministry: Ministry @relationship(type: "HAS", direction: IN)
   serviceLogs: [ServiceLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
 }
@@ -1249,15 +1225,15 @@ type Ministry {
   memberCount: Int!
     @cypher(
       statement: """
-      MATCH (this)<-[:HAS]-(:Federalministry)<-[:BELONGS_TO]-(members:Active:Member)
+      MATCH (this)<-[:HAS]-(:CreativeArts)<-[:BELONGS_TO]-(members:Active:Member)
       RETURN COUNT(DISTINCT members)
       """
     )
-  sontaCount: Int!
+  hubFellowshipCount: Int!
     @cypher(
       statement: """
-      MATCH (this)-[:HAS*2]->(sontas:Sonta)
-      RETURN COUNT(DISTINCT sontas)
+      MATCH (this)-[:HAS*2]->(fellowships:HubFellowship:Fellowship)
+      RETURN COUNT(DISTINCT fellowships)
       """
     )
   hubCount: Int!
@@ -1275,12 +1251,18 @@ type Ministry {
   stream: Stream @relationship(type: "HAS_MINISTRY", direction: IN)
   history: [HistoryLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
   servicelogs: [ServiceLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
-  federalMinistry: Federalministry @relationship(type: "HAS", direction: IN)
-  sontas: [Sonta!]!
-    @cypher(statement: "MATCH (this)-[:HAS*2]->(sonta:Sonta) RETURN sonta")
+  creativeArt: CreativeArts @relationship(type: "HAS", direction: IN)
+  hubFellowships: [Fellowship!]!
+    @cypher(
+      statement: 
+      """
+      MATCH (this)-[:HAS*2]->(fellowship:HubFellowship:Fellowship)
+      RETURN fellowship
+      """
+    )
 }
 
-type Federalministry {
+type CreativeArts {
   memberCount: Int!
     @cypher(
       statement: """
@@ -1288,11 +1270,11 @@ type Federalministry {
       RETURN COUNT(DISTINCT members)
       """
     )
-  sontaCount: Int!
+  hubFellowshipCount: Int!
     @cypher(
       statement: """
-      MATCH (this)-[:HAS*3]->(sontas:Sonta)
-      RETURN COUNT(DISTINCT sontas)
+      MATCH (this)-[:HAS*3]->(fellowships:HubFellowship:Fellowship)
+      RETURN COUNT(DISTINCT fellowships)
       """
     )
   hubCount: Int!

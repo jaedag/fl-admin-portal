@@ -91,19 +91,9 @@ const MakeServantResolvers = {
     MakeServant(context, args, permitAdmin('Oversight'), 'Campus', 'Leader'),
   RemoveCampusLeader: async (object: any, args: Member, context: Context) =>
     RemoveServant(context, args, permitAdmin('Oversight'), 'Campus', 'Leader'),
-  MakeFederalministryLeader: async (
-    object: any,
-    args: Member,
-    context: Context
-  ) =>
-    MakeServant(
-      context,
-      args,
-      permitAdmin('Campus'),
-      'Federalministry',
-      'Leader'
-    ),
-  RemoveFederalministryLeader: async (
+  MakeCreativeArtsLeader: async (object: any, args: Member, context: Context) =>
+    MakeServant(context, args, permitAdmin('Campus'), 'CreativeArts', 'Leader'),
+  RemoveCreativeArtsLeader: async (
     object: any,
     args: Member,
     context: Context
@@ -112,14 +102,14 @@ const MakeServantResolvers = {
       context,
       args,
       permitAdmin('Campus'),
-      'Federalministry',
+      'CreativeArts',
       'Leader'
     ),
   MakeMinistryLeader: async (object: any, args: Member, context: Context) =>
     MakeServant(
       context,
       args,
-      permitAdmin('Federalministry'),
+      permitAdmin('CreativeArts'),
       'Ministry',
       'Leader'
     ),
@@ -127,7 +117,7 @@ const MakeServantResolvers = {
     RemoveServant(
       context,
       args,
-      permitAdmin('Federalministry'),
+      permitAdmin('CreativeArts'),
       'Ministry',
       'Leader'
     ),
@@ -135,16 +125,6 @@ const MakeServantResolvers = {
     MakeServant(context, args, permitAdmin('Ministry'), 'Hub', 'Leader'),
   RemoveHubLeader: async (object: any, args: Member, context: Context) =>
     RemoveServant(context, args, permitAdmin('Ministry'), 'Hub', 'Leader'),
-  MakeSontaLeader: async (object: any, args: Member, context: Context) =>
-    MakeServant(context, args, permitAdmin('Constituency'), 'Sonta', 'Leader'),
-  RemoveSontaLeader: (object: any, args: Member, context: Context) =>
-    RemoveServant(
-      context,
-      args,
-      permitAdmin('Constituency'),
-      'Sonta',
-      'Leader'
-    ),
 }
 
 export default MakeServantResolvers

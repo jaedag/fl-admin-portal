@@ -18,10 +18,9 @@ import {
   matchMemberTellerQuery,
 } from '../cypher/resolver-cypher'
 import {
-  matchMemberFederalMinistryQuery,
+  matchMemberCreativeArtsQuery,
   matchMemberHubQuery,
   matchMemberMinistryQuery,
-  matchMemberSontaQuery,
 } from '../cypher/ministry-directory-cypher'
 
 export const setPriorityLevel = (churchType: ChurchLevel) => {
@@ -99,9 +98,9 @@ export const formatting = (
     churchLower = 'campus'
   }
 
-  if (churchType === 'Federalministry') {
-    churchLower = 'federalMinistry'
-    memberQuery = matchMemberFederalMinistryQuery
+  if (churchType === 'CreativeArts') {
+    churchLower = 'creativeArt'
+    memberQuery = matchMemberCreativeArtsQuery
   }
   if (churchType === 'Ministry') {
     churchLower = 'ministry'
@@ -110,10 +109,6 @@ export const formatting = (
   if (churchType === 'Hub') {
     churchLower = 'hub'
     memberQuery = matchMemberHubQuery
-  }
-  if (churchType === 'Sonta') {
-    churchLower = 'sonta'
-    memberQuery = matchMemberSontaQuery
   }
 
   const priority = setPriorityLevel(churchType)
