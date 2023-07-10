@@ -197,13 +197,7 @@ const SearchMember = (props: RoleBasedSearch) => {
           if (method === 'enter') {
             event.preventDefault()
           }
-          setSearchString(
-            suggestion.firstName +
-              ' ' +
-              suggestion.middleName +
-              ' ' +
-              suggestion.lastName
-          )
+          setSearchString(suggestion.firstName + ' ' + suggestion.lastName)
 
           props.setFieldValue(`${props.name}`, suggestion.id)
           props.setFieldValue('leaderEmail', suggestion?.email)

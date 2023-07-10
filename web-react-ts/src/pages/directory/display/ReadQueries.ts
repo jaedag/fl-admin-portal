@@ -482,7 +482,7 @@ export const DISPLAY_STREAM = gql`
 `
 
 export const DISPLAY_CAMPUS = gql`
-  query displayGathering($id: ID!) {
+  query displayCampus($id: ID!) {
     campuses(where: { id: $id }, options: { limit: 1 }) {
       id
       name
