@@ -77,6 +77,8 @@ const handlePaystackReq = async (event, neoDriver) => {
   const neoRes = await executeQuery(neoDriver, { reference, status })
 
   const categories = neoRes.records[0]?.get('record').labels
+  if (!categories) console.log('🚀 ~ file: payment.js:78 ~ neoRes:', neoRes)
+
   console.log('🚀 ~ file: payment.js:80 ~ categories:', categories)
 
   if (categories.includes('Offering')) {
