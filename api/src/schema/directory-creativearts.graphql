@@ -433,6 +433,7 @@ extend type Mutation {
 
       CREATE (log:HistoryLog {id:apoc.create.uuid()})
         SET log.timestamp = datetime()
+        SET log.priority = 0
         SET log.historyRecord = creativeArt.name + ' creative art was closed down under' + campus.name +' gathering service'
 
       OPTIONAL MATCH (creativeArt)-[:HAS]->(ministry)-[:HAS]->(hub)-[:HAS]->(fellowships)
@@ -456,6 +457,7 @@ extend type Mutation {
 
       CREATE (log:HistoryLog {id:apoc.create.uuid()})
         SET log.timestamp = datetime()
+        SET log.priority = 0
         SET log.historyRecord = ministry.name + ' ministry was closed down under' + creativeArt.name +' ministry'
 
       OPTIONAL MATCH (ministry)-[:HAS]->(hub)-[:HAS]->(fellowships)
@@ -479,6 +481,7 @@ extend type Mutation {
 
       CREATE (log:HistoryLog {id:apoc.create.uuid()})
         SET log.timestamp = datetime()
+        SET log.priority = 0
         SET log.historyRecord = hub.name + ' hub was closed down under ' + ministry.name +' ministry'
 
       WITH hub, ministry, log
