@@ -22,6 +22,60 @@ extend type Member {
   placesSearchByName(key: String!, limit: Int = 30): [Place!]!
 }
 
+interface Venue {
+  id: ID
+  createdAt: DateTime!
+}
+
+type IndoorVenue implements Venue{
+  id: ID!
+  stream_name: String
+    @cypher(
+      statement: """
+      MATCH (this)<-[:HAS]-(stream:Stream)
+      RETURN toLower(stream.name)
+      """
+    )
+  createdAt: DateTime!
+
+}
+
+type OutdoorVenue implements Venue{
+  id: ID!
+  stream_name: String
+    @cypher(
+      statement: """
+      MATCH (this)<-[:HAS]-(stream:Stream)
+      RETURN toLower(stream.name)
+      """
+    )
+  createdAt: DateTime!
+}
+
+type HostelVenue implements Venue{
+  id: ID!
+  stream_name: String
+    @cypher(
+      statement: """
+      MATCH (this)<-[:HAS]-(stream:Stream)
+      RETURN toLower(stream.name)
+      """
+    )
+  createdAt: DateTime!
+}
+
+type HighSchoolVenue implements Venue{
+  id: ID!
+  stream_name: String
+    @cypher(
+      statement: """
+      MATCH (this)<-[:HAS]-(stream:Stream)
+      RETURN toLower(stream.name)
+      """
+    )
+  createdAt: DateTime!
+}
+
 extend type Mutation {
   CreateIndoorVenue(name: String!, capacity: Int!, longitude:Float!, latitude:Float!, streamId: ID!): IndoorVenue
     @auth(rules: [{roles: ["adminFellowship", "adminStream", "adminConstituency"]}])
@@ -235,7 +289,7 @@ extend type Mutation {
 }
 
 extend type Mutation{
-  CloseDownIndoorVenue(indoorVenueId: ID!)
+  CloseDownIndoorVenue(indoorVenueId: ID!): Stream
     @auth(rules: [{roles: ["adminStream"]}])
     @cypher(
       statement: """
@@ -255,9 +309,10 @@ extend type Mutation{
       MERGE (stream)-[:HAS_HISTORY]->(log)
 
       DETACH DELETE indoorVenue
+      RETURN stream
       """
     )
-  CloseDownOutdoorVenue(outdoorVenueId: ID!)
+  CloseDownOutdoorVenue(outdoorVenueId: ID!): Stream
     @auth(rules: [{roles: ["adminStream"]}])
     @cypher(
       statement: """
@@ -277,10 +332,11 @@ extend type Mutation{
       MERGE (stream)-[:HAS_HISTORY]->(log)
 
       DETACH DELETE outdoorVenue
+      RETURN stream
       """
     )
 
-  CloseDownHostelVenue(hostelVenueId: ID!)
+  CloseDownHostelVenue(hostelVenueId: ID!): Stream
     @auth(rules: [{roles: ["adminStream"]}])
     @cypher(
       statement: """
@@ -300,9 +356,10 @@ extend type Mutation{
       MERGE (stream)-[:HAS_HISTORY]->(log)
 
       DETACH DELETE hostelVenue
+      RETURN stream
       """
     )
-  CloseDownHighSchoolVenue(highSchoolVenueId: ID!)
+  CloseDownHighSchoolVenue(highSchoolVenueId: ID!): Stream
     @auth(rules: [{roles: ["adminStream"]}])
     @cypher(
       statement: """
@@ -322,6 +379,8 @@ extend type Mutation{
       MERGE (stream)-[:HAS_HISTORY]->(log)
 
       DETACH DELETE highSchoolVenue
+      RETURN stream
+
       """
     )
 }
