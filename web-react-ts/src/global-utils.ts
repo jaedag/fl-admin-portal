@@ -308,6 +308,7 @@ export const parsePhoneNum = (phoneNumber: string) => {
     .replace(')', '')
     .replace('-', '')
 }
+
 export const repackDecimals = (decimal: string | number) => {
   if (decimal === 0 || decimal === '0.0') {
     return '0.0'
