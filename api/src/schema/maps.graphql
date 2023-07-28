@@ -1,7 +1,12 @@
-type Place {
+interface MapLocation{
   id: ID!
   name: String!
-  typename: String
+  location: Point!
+}
+
+type Place implements MapLocation{
+  id: ID!
+  name: String!
   firstName: String
   lastName: String
   latitude: Float!
@@ -21,9 +26,36 @@ extend type Member {
   ): [Place!]!
   placesSearchByName(key: String!, limit: Int = 30): [Place!]!
 }
+type IndoorVenue implements MapLocation{
+  id: ID!
+  name: String!
+  location: Point!
+  capacity: Int!
+}
+
+type OutdoorVenue implements MapLocation{
+  id: ID!
+  name: String!
+  location: Point!
+  capacity: Int!
+}
+
+type HostelVenue implements MapLocation{
+  id: ID!
+  name: String!
+  location: Point!
+  capacity: Int!
+}
+
+type HighSchoolVenue implements MapLocation{
+  id: ID!
+  name: String!
+  location: Point!
+  capacity: Int!
+}
 
 extend type Mutation {
-  CreateIndoorVenue(name: String!, capacity: Int!, longitude:Float!, latitude:Float!): Place
+  CreateIndoorVenue(name: String!, capacity: Int!, longitude:Float!, latitude:Float!): IndoorVenue
     @auth(rules: [{roles: ["adminCampus"]}])
     @cypher(
       statement: """
@@ -53,7 +85,7 @@ extend type Mutation {
       """
     )
 
-  CreateOutdoorVenue(name: String!, capacity: Int!, longitude:Float!, latitude:Float!): Place
+  CreateOutdoorVenue(name: String!, capacity: Int!, longitude:Float!, latitude:Float!): OutdoorVenue
     @auth(rules: [{roles: ["adminCampus"]}])
     @cypher(
       statement: """
@@ -84,7 +116,7 @@ extend type Mutation {
       """
     )
 
-  CreateHostelVenue(name:String!, capacity:Int!, latitude:Float!, longitude:Float!): Place
+  CreateHostelVenue(name:String!, capacity:Int!, latitude:Float!, longitude:Float!): HostelVenue
     @auth(rules: [{roles: ["adminCampus"]}])
     @cypher(
       statement: """
@@ -112,7 +144,7 @@ extend type Mutation {
       RETURN hostelVenue
       """
     )
-   CreateHighSchoolVenue(name:String!, capacity:Int!, latitude:Float!, longitude:Float!): Place
+   CreateHighSchoolVenue(name:String!, capacity:Int!, latitude:Float!, longitude:Float!): HighSchoolVenue
     @auth(rules: [{roles: ["adminCampus"]}])
     @cypher(
       statement: """
@@ -144,7 +176,7 @@ extend type Mutation {
 }
 
 extend type Mutation {
-  UpdateIndoorVenue(longitude: Float!, latitude:Float!, indoorVenueId: ID!, capacity: Int!, name: String!): Place
+  UpdateIndoorVenue(longitude: Float!, latitude:Float!, indoorVenueId: ID!, capacity: Int!, name: String!): IndoorVenue
     @auth(rules: [{roles: ["adminCampus"]}])
     @cypher(
       statement: """
@@ -156,7 +188,7 @@ extend type Mutation {
       RETURN indoorVenue
       """
     )
-  UpdateOutdoorVenue(longitude: Float!, latitude:Float!, outdoorVenueId: ID!, capacity: Int!, name:String!): Place
+  UpdateOutdoorVenue(longitude: Float!, latitude:Float!, outdoorVenueId: ID!, capacity: Int!, name:String!): OutdoorVenue
     @auth(rules: [{roles: ["adminCampus"]}])
     @cypher(
       statement: """
@@ -168,7 +200,7 @@ extend type Mutation {
       RETURN outdoorVenue
       """
     )
-  UpdateHostelVenue(longitude: Float!, latitude:Float!, hostelVenueId: ID!, name:String!, capacity: Int!): Place
+  UpdateHostelVenue(longitude: Float!, latitude:Float!, hostelVenueId: ID!, name:String!, capacity: Int!): HostelVenue
     @auth(rules: [{roles: ["adminCampus"]}])
     @cypher(
       statement: """
@@ -181,7 +213,7 @@ extend type Mutation {
       RETURN hostelVenue
       """
     )
-    UpdateHighSchoolVenue(longitude: Float!, latitude:Float!, highSchoolVenueId: ID!, name:String!, capacity:Int!): Place
+    UpdateHighSchoolVenue(longitude: Float!, latitude:Float!, highSchoolVenueId: ID!, name:String!, capacity:Int!): HighSchoolVenue
     @auth(rules: [{roles: ["adminCampus"]}])
     @cypher(
       statement: """
