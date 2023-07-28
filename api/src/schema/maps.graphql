@@ -22,179 +22,121 @@ extend type Member {
   placesSearchByName(key: String!, limit: Int = 30): [Place!]!
 }
 
-interface Venue {
-  id: ID
-  createdAt: DateTime!
-}
-
-type IndoorVenue implements Venue{
-  id: ID!
-  stream_name: String
-    @cypher(
-      statement: """
-      MATCH (this)<-[:HAS]-(stream:Stream)
-      RETURN toLower(stream.name)
-      """
-    )
-  createdAt: DateTime!
-
-}
-
-type OutdoorVenue implements Venue{
-  id: ID!
-  stream_name: String
-    @cypher(
-      statement: """
-      MATCH (this)<-[:HAS]-(stream:Stream)
-      RETURN toLower(stream.name)
-      """
-    )
-  createdAt: DateTime!
-}
-
-type HostelVenue implements Venue{
-  id: ID!
-  stream_name: String
-    @cypher(
-      statement: """
-      MATCH (this)<-[:HAS]-(stream:Stream)
-      RETURN toLower(stream.name)
-      """
-    )
-  createdAt: DateTime!
-}
-
-type HighSchoolVenue implements Venue{
-  id: ID!
-  stream_name: String
-    @cypher(
-      statement: """
-      MATCH (this)<-[:HAS]-(stream:Stream)
-      RETURN toLower(stream.name)
-      """
-    )
-  createdAt: DateTime!
-}
-
 extend type Mutation {
-  CreateIndoorVenue(name: String!, capacity: Int!, longitude:Float!, latitude:Float!, streamId: ID!): IndoorVenue
-    @auth(rules: [{roles: ["adminFellowship", "adminStream", "adminConstituency"]}])
+  CreateIndoorVenue(name: String!, capacity: Int!, longitude:Float!, latitude:Float!): Place
+    @auth(rules: [{roles: ["adminCampus"]}])
     @cypher(
       statement: """
-      CREATE (indoorVenue: IndoorVenue)
+      CREATE (indoorVenue:IndoorVenue:OutreachVenue)
         SET indoorVenue.id = apoc.create.uuid()
         SET indoorVenue.name = $name
+        SET indoorVenue.capacity = $capacity
+        SET indoorVenue.location = point({latitude: $latitude, longitude:$longitude})
 
       WITH indoorVenue
-      MATCH (stream:Stream {id: $streamId})
       MATCH (currentUser:Active:Member {auth_id: $auth.jwt.sub})
 
-      WITH indoorVenue, stream, currentUser
+      WITH indoorVenue, currentUser
       CREATE (log:HistoryLog)
         SET log.id = apoc.create.uuid(),
           log.timeStamp = datetime(),
           log.priority=0,
-          log.historyRecord = 'New indoor venue' + indoorVenue.name + 'created for' + stream.name
+          log.historyRecord = 'New indoor venue' + indoorVenue.name + 'created'
       
-      WITH indoorVenue, stream, currentUser, log
-      MERGE (stream)-[:HAS]->(indoorVenue)
+      WITH indoorVenue, currentUser, log
 
       MERGE (date:TimeGraph {date: date()})
       MERGE (log)-[:LOGGED_BY]->(currentUser)
       MERGE (log)-[:RECORDED_ON]->(date)
-      MERGE (stream)-[:HAS_HISTORY]->(log)
 
       RETURN indoorVenue
       """
     )
 
-  CreateOutdoorVenue(name: String!, capacity: Int!, longitude:Float!, latitude:Float!, streamId: ID!): OutdoorVenue
-    @auth(rules: [{roles: ["adminStream"]}])
+  CreateOutdoorVenue(name: String!, capacity: Int!, longitude:Float!, latitude:Float!): Place
+    @auth(rules: [{roles: ["adminCampus"]}])
     @cypher(
       statement: """
-      CREATE (outdoorVenue: OutdoorVenue)
+      CREATE (outdoorVenue:OutdoorVenue:OutreachVenue)
         SET outdoorVenue.id = apoc.create.uuid()
         SET outdoorVenue.name = $name
+        SET outdoorVenue.capacity = $capacity
+        SET outdoorVenue.location = point({latitude: $latitude, longitude:$longitude})
+
 
       WITH outdoorVenue
-      MATCH (stream:Stream {id: $streamId})
       MATCH (currentUser:Active:Member {auth_id: $auth.jwt.sub})
 
-      WITH outdoorVenue, stream, currentUser
+      WITH outdoorVenue, currentUser
       CREATE (log:HistoryLog)
         SET log.id = apoc.create.uuid(),
           log.timeStamp = datetime(),
           log.priority=0,
-          log.historyRecord = 'New outdoor venue' + outdoorVenue.name + 'created for' + stream.name
+          log.historyRecord = 'New outdoor venue' + outdoorVenue.name + 'created'
       
-      WITH outdoorVenue, stream, currentUser, log
-      MERGE (stream)-[:HAS]->(outdoorVenue)
+      WITH outdoorVenue, currentUser, log
 
       MERGE (date:TimeGraph {date: date()})
       MERGE (log)-[:LOGGED_BY]->(currentUser)
       MERGE (log)-[:RECORDED_ON]->(date)
-      MERGE (stream)-[:HAS_HISTORY]->(log)
 
       RETURN outdoorVenue
       """
     )
 
-  CreateHostelVenue(name:String!, capacity:Int!, latitude:Float!, longitude:Float!, streamId:ID!): HostelVenue
-    @auth(rules: [{roles: ["adminStream"]}])
+  CreateHostelVenue(name:String!, capacity:Int!, latitude:Float!, longitude:Float!): Place
+    @auth(rules: [{roles: ["adminCampus"]}])
     @cypher(
       statement: """
-      CREATE (hostelVenue: HostelVenue)
+      CREATE (hostelVenue:HostelVenue)
         SET hostelVenue.id = apoc.create.uuid()
         SET hostelVenue.name = $name 
+        SET hostelVenue.capacity = $capacity
+        SET hostelVenue.location = point({latitude: $latitude, longitude:$longitude})
 
       WITH hostelVenue, 
-      MATCH (stream:Stream {id: $streamId})
       MATCH (currentUser:Active:Member {auth_id: $auth.jwt.sub})
 
-      WITH hostelVenue, stream, currentUser 
-      CREATE (log:HistoryLog)
-        SET log.id = apoc.create.uuid()
-          log.timestamp = datetime()
-          log.priority = 0
-          log.historyRecord = 'New hostel venue' + hostelVenue.name + 'added for' + stream.name + 'stream'
+      WITH hostelVenue, currentUser 
+      CREATE (log:HistoryLog {id: apoc.create.uuid()})
+         SET log.timestamp = datetime()
+         SET log.priority = 0
+         SET log.historyRecord = 'New hostel venue' + hostelVenue.name + 'added'
 
-      WITH hostelVenue, stream, currentUser, log 
-      MERGE (stream)-[:HAS]->(hostelVenue)
+      WITH hostelVenue, currentUser, log 
       
       MERGE (date:TimeGraph {date: date()})
       MERGE (log)-[:LOGGED_BY]->(currentUser)
       MERGE (log)-[:RECORDED_ON]->(date)
-      MERGE (stream)-[:HAS_HISTORY]->(log)
 
       RETURN hostelVenue
       """
     )
-   CreateHighSchoolVenue(name:String!, capacity:Int!, latitude:Float!, longitude:Float!, streamId:ID!): HighSchoolVenue
-    @auth(rules: [{roles: ["adminStream"]}])
+   CreateHighSchoolVenue(name:String!, capacity:Int!, latitude:Float!, longitude:Float!): Place
+    @auth(rules: [{roles: ["adminCampus"]}])
     @cypher(
       statement: """
-      CREATE (highSchoolVenue: HighSchoolVenue)
+      CREATE (highSchoolVenue:HighSchoolVenue)
         SET highSchoolVenue.id = apoc.create.uuid()
         SET highSchoolVenue.name = $name 
+        SET highSchoolVenue.capacity = $capacity
+        SET highSchoolVenue.location = point({latitude: $latitude, longitude:$longitude})
 
       WITH highSchoolVenue, 
-      MATCH (stream:Stream {id: $streamId})
       MATCH (currentUser:Active:Member {auth_id: $auth.jwt.sub})
 
-      WITH highSchoolVenue, stream, currentUser 
+      WITH highSchoolVenue, currentUser 
       CREATE (log:HistoryLog)
         SET log.id = apoc.create.uuid()
-          log.timestamp = datetime()
-          log.priority = 0
-          log.historyRecord = 'New senior high school venue' + highSchoolVenue.name + 'added for' + stream.name + 'stream'
+        SET log.timestamp = datetime()
+        SET log.priority = 0
+        SET log.historyRecord = 'New senior high school venue' + highSchoolVenue.name + 'added'
 
-      WITH highSchoolVenue, stream, currentUser, log 
-      MERGE (stream)-[:HAS]->(highSchoolVenue)
+      WITH highSchoolVenue, currentUser, log 
       
       MERGE (date:TimeGraph {date: date()})
       MERGE (log)-[:LOGGED_BY]->(currentUser)
       MERGE (log)-[:RECORDED_ON]->(date)
-      MERGE (stream)-[:HAS_HISTORY]->(log)
 
       RETURN highSchoolVenue
       """
@@ -202,185 +144,142 @@ extend type Mutation {
 }
 
 extend type Mutation {
-  UpdateIndoorVenue(longitude: Float!, latitude:Float!, indoorVenueId: ID!, streamId: ID!): IndoorVenue
-    @auth(rules: [{roles: ["adminStream"]}])
+  UpdateIndoorVenue(longitude: Float!, latitude:Float!, indoorVenueId: ID!, capacity: Int!, name: String!): Place
+    @auth(rules: [{roles: ["adminCampus"]}])
     @cypher(
       statement: """
-      MATCH (indoorVenue: IndoorVenue {id: $indoorVenueId})
-      SET indoorVenue.longitude = $longitude
-          indoorVenue.latitude = $latitude 
-      
-      WITH indoorVenue
-          CALL {
-              WITH indoorVenue
-              MATCH (stream:Stream {id:$streamId})
-              OPTIONAL MATCH (stream)-[r:HAS]->(indoorVenue)
-              DELETE r
-              MERGE (stream)-[:HAS]->(indoorVenue)
-
-              RETURN count(indoorVenue)
-          }
+      MATCH (indoorVenue:IndoorVenue:OutreachVenue {id: $indoorVenueId})
+      SET indoorVenue.location = point({latitude:$latitude, longitude:$longitude})
+      SET indoorVenue.name = $name
+      SET indoorVenue.capacity = $capacity 
+              
       RETURN indoorVenue
       """
     )
-  UpdateOutdoorVenue(longitude: Float!, latitude:Float!, outdoorVenueId: ID!, streamId: ID!): OutdoorVenue
-    @auth(rules: [{roles: ["adminStream"]}])
+  UpdateOutdoorVenue(longitude: Float!, latitude:Float!, outdoorVenueId: ID!, capacity: Int!, name:String!): Place
+    @auth(rules: [{roles: ["adminCampus"]}])
     @cypher(
       statement: """
-      MATCH (outdoorVenue: OutdoorVenue {id: $outdoorVenueId})
-      SET outdoorVenue.longitude = $longitude
-          outdoorVenue.latitude = $latitude 
+      MATCH (outdoorVenue:OutdoorVenue:OutreachVenue {id: $outdoorVenueId})
+      SET outdoorVenue.location = point({latitude:$latitude, longitude:$longitude})
+      SET outdoorVenue.name = $name
+      SET outdoorVenue.capacity = $capacity 
       
-      WITH outdoorVenue
-          CALL {
-              WITH outdoorVenue
-              MATCH (stream:Stream {id:$streamId})
-              OPTIONAL MATCH (stream)-[r:HAS]->(outdoorVenue)
-              DELETE r
-              MERGE (stream)-[:HAS]->(outdoorVenue)
-
-              RETURN count(outdoorVenue)
-          }
       RETURN outdoorVenue
       """
     )
-  UpdateHostelVenue(longitude: Float!, latitude:Float!, hostelVenueId: ID!, streamId: ID!): HostelVenue
-    @auth(rules: [{roles: ["adminStream"]}])
+  UpdateHostelVenue(longitude: Float!, latitude:Float!, hostelVenueId: ID!, name:String!, capacity: Int!): Place
+    @auth(rules: [{roles: ["adminCampus"]}])
     @cypher(
       statement: """
-      MATCH (hostelVenue: HostelVenue {id: $hostelVenueId})
-      SET hostelVenue.longitude = $longitude
-          hostelVenue.latitude = $latitude 
+      MATCH (hostelVenue:HostelVenue {id: $hostelVenueId})
+      SET hostelVenue.location = point({latitude:$latitude, longitude:$longitude})
+          hostelVenue.name = $name
+          hostelVenue.capacity = $capacity 
       
-      WITH hostelVenue
-          CALL {
-              WITH hostelVenue
-              MATCH (stream:Stream {id:$streamId})
-              OPTIONAL MATCH (stream)-[r:HAS]->(hostelVenue)
-              DELETE r
-              MERGE (stream)-[:HAS]->(hostelVenue)
-
-              RETURN count(hostelVenue)
-          }
+      
       RETURN hostelVenue
       """
     )
-    UpdateHighSchoolVenue(longitude: Float!, latitude:Float!, highSchoolVenueId: ID!, streamId: ID!): HighSchoolVenue
-    @auth(rules: [{roles: ["adminStream"]}])
+    UpdateHighSchoolVenue(longitude: Float!, latitude:Float!, highSchoolVenueId: ID!, name:String!, capacity:Int!): Place
+    @auth(rules: [{roles: ["adminCampus"]}])
     @cypher(
       statement: """
-      MATCH (highSchoolVenue: HighSchoolVenue {id: $highSchoolVenueId})
-      SET highSchoolVenue.longitude = $longitude
-          highSchoolVenue.latitude = $latitude 
+      MATCH (highSchoolVenue:HighSchoolVenue {id: $highSchoolVenueId})
+      SET highSchoolVenue.location = point({latitude:$latitude, longitude:$longitude})
+          highSchoolVenue.name = $name
+          highSchoolVenue.capacity = $capacity 
       
-      WITH highSchoolVenue
-          CALL {
-              WITH highSchoolVenue
-              MATCH (stream:Stream {id:$streamId})
-              OPTIONAL MATCH (stream)-[r:HAS]->(highSchoolVenue)
-              DELETE r
-              MERGE (stream)-[:HAS]->(highSchoolVenue)
-
-              RETURN count(highSchoolVenue)
-          }
       RETURN highSchoolVenue
       """
     )
 }
 
 extend type Mutation{
-  CloseDownIndoorVenue(indoorVenueId: ID!): Stream
-    @auth(rules: [{roles: ["adminStream"]}])
+  CloseDownIndoorVenue(indoorVenueId: ID!): Boolean
+    @auth(rules: [{roles: ["adminCampus"]}])
     @cypher(
       statement: """
-      MATCH (indoorVenue:IndoorVenue {id: $indoorVenueId})
+      MATCH (indoorVenue:IndoorVenue:OutreachVenue {id: $indoorVenueId})
       MATCH (admin:Active:Member {auth_id: $auth.jwt.sub})
-      MATCH (indoorVenue)<-[:HAS]-(stream:Stream)
 
-      CREATE (log:HistoryLog {id: apoc.create.uuid()})
+      WITH indoorVenue, admin
+      CREATE (log:HistoryLog)
+       SET log.id = apoc.create.uuid()
         SET log.timestamp = datetime()
-            log.priority = 0
-            log.historyRecord = 'The indoor venue' + indoorVenue.name + 'for' + stream.name + 'has been removed'
-      
+        SET log.priority = 0
+        SET log.historyRecord = 'The indoor venue' + indoorVenue.name + 'has been deleted'
       
       MERGE (date:Timegraph {date:date()})
       MERGE (log)-[:LOGGED_BY]->(admin)
       MERGE (log)-[:RECORDED_ON]->(date)
-      MERGE (stream)-[:HAS_HISTORY]->(log)
 
       DETACH DELETE indoorVenue
-      RETURN stream
+      RETURN true
       """
     )
-  CloseDownOutdoorVenue(outdoorVenueId: ID!): Stream
-    @auth(rules: [{roles: ["adminStream"]}])
+  CloseDownOutdoorVenue(outdoorVenueId: ID!): Boolean
+    @auth(rules: [{roles: ["adminCampus"]}])
     @cypher(
       statement: """
-      MATCH (outdoorVenue:OutdoorVenue {id: $outdoorVenueId})
+      MATCH (outdoorVenue:OutdoorVenue:OutreachVenue {id: $outdoorVenueId})
       MATCH (admin:Active:Member {auth_id: $auth.jwt.sub})
-      MATCH (outdoorVenue)<-[:HAS]-(stream:Stream)
 
-      CREATE (log:HistoryLog {id: apoc.create.uuid()})
-        SET log.timestamp = datetime()
+      CREATE (log:HistoryLog)
+        SET log.id = apoc.create.uuid()
+            log.timestamp = datetime()
             log.priority = 0
-            log.historyRecord = 'The outdoor venue' + outdoorVenue.name + 'for' + stream.name + 'has been removed'
-      
+            log.historyRecord = 'The outdoor venue' + outdoorVenue.name + 'has been deleted'
       
       MERGE (date:Timegraph {date:date()})
       MERGE (log)-[:LOGGED_BY]->(admin)
       MERGE (log)-[:RECORDED_ON]->(date)
-      MERGE (stream)-[:HAS_HISTORY]->(log)
 
       DETACH DELETE outdoorVenue
-      RETURN stream
+      RETURN true
       """
     )
 
-  CloseDownHostelVenue(hostelVenueId: ID!): Stream
-    @auth(rules: [{roles: ["adminStream"]}])
+  CloseDownHostelVenue(hostelVenueId: ID!): Boolean
+    @auth(rules: [{roles: ["adminCampus"]}])
     @cypher(
       statement: """
       MATCH (hostelVenue:HostelVenue {id: $hostelVenueId})
       MATCH (admin:Active:Member {auth_id: $auth.jwt.sub})
-      MATCH (hostelVenue)<-[:HAS]-(stream:Stream)
 
       CREATE (log:HistoryLog {id: apoc.create.uuid()})
         SET log.timestamp = datetime()
             log.priority = 0
-            log.historyRecord = 'The hostel venue' + hostelVenue.name + 'for' + stream.name + 'has been removed'
+            log.historyRecord = 'The hostel venue' + hostelVenue.name + 'has been deleted'
       
       
       MERGE (date:Timegraph {date:date()})
       MERGE (log)-[:LOGGED_BY]->(admin)
       MERGE (log)-[:RECORDED_ON]->(date)
-      MERGE (stream)-[:HAS_HISTORY]->(log)
 
       DETACH DELETE hostelVenue
-      RETURN stream
+      RETURN true
       """
     )
-  CloseDownHighSchoolVenue(highSchoolVenueId: ID!): Stream
-    @auth(rules: [{roles: ["adminStream"]}])
+  CloseDownHighSchoolVenue(highSchoolVenueId: ID!): Boolean
+    @auth(rules: [{roles: ["adminCampus"]}])
     @cypher(
       statement: """
       MATCH (highSchoolVenue:HighSchoolVenue {id: $highSchoolVenueId})
       MATCH (admin:Active:Member {auth_id: $auth.jwt.sub})
-      MATCH (highSchoolVenue)<-[:HAS]-(stream:Stream)
 
       CREATE (log:HistoryLog {id: apoc.create.uuid()})
         SET log.timestamp = datetime()
             log.priority = 0
-            log.historyRecord = 'The high school venue' + highSchoolVenue.name + 'for' + stream.name + 'has been removed'
+            log.historyRecord = 'The high school venue' + highSchoolVenue.name + 'has been deleted'
       
       
       MERGE (date:Timegraph {date:date()})
       MERGE (log)-[:LOGGED_BY]->(admin)
       MERGE (log)-[:RECORDED_ON]->(date)
-      MERGE (stream)-[:HAS_HISTORY]->(log)
 
       DETACH DELETE highSchoolVenue
-      RETURN stream
-
+      RETURN true
       """
     )
 }
