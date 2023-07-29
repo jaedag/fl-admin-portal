@@ -1,6 +1,12 @@
 import { useMutation, useQuery } from '@apollo/client'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
-import { FieldArray, Form, Formik, FormikHelpers } from 'formik'
+import {
+  FieldArray,
+  FieldArrayRenderProps,
+  Form,
+  Formik,
+  FormikHelpers,
+} from 'formik'
 import * as Yup from 'yup'
 import { makeSelectOptions, throwToSentry } from 'global-utils'
 import { GET_DENOMINATIONS } from 'queries/ListQueries'
@@ -132,7 +138,7 @@ const OversightForm = ({
                             {`Select any campuses that are being moved to this Oversight`}
                           </small>
                           <FieldArray name="campuses">
-                            {(fieldArrayProps) => {
+                            {(fieldArrayProps: FieldArrayRenderProps) => {
                               const { push, remove, form } = fieldArrayProps
                               const { values } = form
                               const { campuses } = values

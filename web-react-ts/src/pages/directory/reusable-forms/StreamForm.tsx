@@ -1,6 +1,12 @@
 import { useMutation, useQuery } from '@apollo/client'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
-import { FieldArray, Form, Formik, FormikHelpers } from 'formik'
+import {
+  FieldArray,
+  FieldArrayRenderProps,
+  Form,
+  Formik,
+  FormikHelpers,
+} from 'formik'
 import * as Yup from 'yup'
 import {
   STREAM_ACCOUNT_OPTIONS,
@@ -149,7 +155,7 @@ const StreamForm = ({
                             {`Select any councils that are being moved to this Stream`}
                           </small>
                           <FieldArray name="councils">
-                            {(fieldArrayProps) => {
+                            {(fieldArrayProps: FieldArrayRenderProps) => {
                               const { push, remove, form } = fieldArrayProps
                               const { values } = form
                               const { councils } = values

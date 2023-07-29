@@ -1,4 +1,10 @@
-import { FieldArray, Form, Formik, FormikHelpers } from 'formik'
+import {
+  FieldArray,
+  FieldArrayRenderProps,
+  Form,
+  Formik,
+  FormikHelpers,
+} from 'formik'
 import * as Yup from 'yup'
 import React, { useContext } from 'react'
 import { useNavigate } from 'react-router'
@@ -206,7 +212,7 @@ const MultiplicationCampaignServiceForm = ({
                     <Input name="miracles" label="Number of Miracles*" />
                     <small className="label">Treasurers (minimum of 2)</small>
                     <FieldArray name="treasurers">
-                      {(fieldArrayProps) => {
+                      {(fieldArrayProps: FieldArrayRenderProps) => {
                         const { push, remove, form } = fieldArrayProps
                         const { values } = form
                         const { treasurers }: { treasurers: string[] } = values

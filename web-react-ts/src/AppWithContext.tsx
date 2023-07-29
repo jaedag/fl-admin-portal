@@ -4,7 +4,6 @@ import { MemberContext, SearchContext } from './contexts/MemberContext'
 import { ChurchContext } from './contexts/ChurchContext'
 import ProtectedRoute from './auth/ProtectedRoute'
 import ProtectedRouteHome from './auth/ProtectedRouteHome'
-import ServantsDashboard from 'pages/dashboards/ServantsDashboard'
 import ServantsChurchList from 'pages/dashboards/ServantsChurchList'
 import { ServiceContext } from 'contexts/ServiceContext'
 import MembersDirectoryRoute from './pages/directory/MembersDirectoryRoute'
@@ -36,6 +35,10 @@ type AppPropsType = {
     setTheme: Dispatch<React.SetStateAction<string>>
   }
 }
+
+const ServantsDashboard = React.lazy(
+  () => import('pages/dashboards/ServantsDashboard')
+)
 
 const AppWithContext = (props: AppPropsType) => {
   const { theme, setTheme } = props.themeOptions
