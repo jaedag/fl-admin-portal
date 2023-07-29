@@ -49,20 +49,31 @@ export const checkIfLastServiceBanked = async (
 
   if (!('lastService' in lastServiceRecord)) return true
 
-  const record = lastServiceRecord.lastService.properties
-  const date = lastServiceRecord.lastDate.properties
+  const lastService = lastServiceRecord.lastService.properties
+  const currentService = lastServiceRecord.record.properties
+  const date = lastServiceRecord.lastDate.prsoperties
+  const { church } = lastServiceRecord
 
   if (
     !(
-      'bankingSlip' in record ||
-      record.transactionStatus === 'success' ||
-      'tellerConfirmationTime' in record
+      'bankingSlip' in lastService ||
+      lastService.transactionStatus === 'success' ||
+      'tellerConfirmationTime' in lastService
     )
   ) {
     throw new Error(
       `Please bank outstanding offering for your service filled on ${getHumanReadableDate(
         date.date
       )} before attempting to bank this week's offering`
+    )
+  }
+
+  if (
+    !currentService.markedAttendance &&
+    church.labels.includes('Fellowship')
+  ) {
+    throw new Error(
+      'Please log in to the Poimen App to mark the service attendance before you will be allowed to bank your offering'
     )
   }
 

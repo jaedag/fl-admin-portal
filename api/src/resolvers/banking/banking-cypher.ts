@@ -103,8 +103,10 @@ WITH collect(otherRecords.id) AS recordIds, record.id AS currentServiceId
 
 WITH apoc.coll.indexOf(recordIds,currentServiceId) + 1 AS lastServiceIndex, recordIds WHERE lastServiceIndex >= 0
 MATCH (lastService:ServiceRecord {id: recordIds[lastServiceIndex]})-[:SERVICE_HELD_ON]->(lastDate:TimeGraph)
+MATCH (record:ServiceRecord {id: $serviceRecordId})<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(church)
+WHERE church:Fellowship OR church:Constituency OR church:Council
 
-RETURN lastService, lastDate
+RETURN lastService, lastDate, record, church
 `
 
 export const submitBankingSlip = `

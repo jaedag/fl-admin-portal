@@ -11,15 +11,20 @@ interface ErrorDialogProps {
 
 const ErrorPopup = (props: ErrorDialogProps) => {
   const { errorMessage, togglePopup, link } = props
+
   const navigate = useNavigate()
+
+  const isPoimenError = errorMessage.includes('Poimen')
 
   return (
     <Popup handleClose={togglePopup}>
       <Container>
-        <p>
-          Please make sure that you have enough funds in your mobile wallet, and
-          try again after 30 mins - 1 hour.
-        </p>
+        {!isPoimenError && (
+          <p>
+            Please make sure that you have enough funds in your mobile wallet,
+            and try again after 30 mins - 1 hour.
+          </p>
+        )}
 
         <code className="text-white">{errorMessage}</code>
         <Button
