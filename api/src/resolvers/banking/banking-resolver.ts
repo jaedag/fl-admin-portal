@@ -126,18 +126,18 @@ const bankingMutation = {
         transactionResponse?.stream
       )
 
-      // if (!subaccount) {
-      //   throw new Error(
-      //     `There was an error with the payment. Please email admin@firstlovecenter.com ${JSON.stringify(
-      //       {
-      //         transactionResponse,
-      //         args,
-      //         auth,
-      //         subaccount,
-      //       }
-      //     )}`
-      //   )
-      // }
+      if (!subaccount) {
+        throw new Error(
+          `There was an error with the payment. Please email admin@firstlovecenter.com ${JSON.stringify(
+            {
+              transactionResponse,
+              args,
+              auth,
+              subaccount,
+            }
+          )}`
+        )
+      }
 
       await checkIfLastServiceBanked(args.serviceRecordId, context)
 
