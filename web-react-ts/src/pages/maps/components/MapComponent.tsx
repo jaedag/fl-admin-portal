@@ -36,13 +36,7 @@ import { alertMsg } from 'global-utils'
 type LatLngLiteral = google.maps.LatLngLiteral
 type MapOptions = google.maps.MapOptions
 
-type LibrariesOptions = (
-  | 'places'
-  | 'drawing'
-  | 'geometry'
-  | 'localContext'
-  | 'visualization'
-)[]
+type LibrariesOptions = ('places' | 'drawing' | 'geometry' | 'visualization')[]
 
 type MapComponentProps = {
   memberSearch: LazyQueryExecFunction<any, OperationVariables>
@@ -71,7 +65,7 @@ const MapComponent = (props: MapComponentProps) => {
   const [libraries] = useState<LibrariesOptions>(['places'])
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY ?? '',
-    libraries,
+    libraries: libraries,
   })
 
   const [show, setShow] = useState(false)

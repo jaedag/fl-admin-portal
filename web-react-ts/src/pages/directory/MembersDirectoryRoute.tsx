@@ -1,15 +1,28 @@
 import React, { useContext } from 'react'
 import { MemberContext } from '../../contexts/MemberContext'
 import { ChurchContext } from '../../contexts/ChurchContext'
-import CouncilMembers from './grids/CouncilMembers'
-import ConstituencyMembers from './grids/ConstituencyMembers'
 import { isAuthorised } from '../../global-utils'
-import FellowshipMembers from 'pages/directory/grids/FellowshipMembers'
-import BacentaMembers from 'pages/directory/grids/BacentaMembers'
-import CampusMembers from 'pages/directory/grids/CampusMembers'
-import StreamMembers from './grids/StreamMembers'
 import { permitMe } from 'permission-utils'
 import { Role } from 'global-types'
+
+const CampusMembers = React.lazy(
+  () => import('pages/directory/grids/CampusMembers')
+)
+const StreamMembers = React.lazy(
+  () => import('pages/directory/grids/StreamMembers')
+)
+const CouncilMembers = React.lazy(
+  () => import('pages/directory/grids/CouncilMembers')
+)
+const ConstituencyMembers = React.lazy(
+  () => import('pages/directory/grids/ConstituencyMembers')
+)
+const BacentaMembers = React.lazy(
+  () => import('pages/directory/grids/BacentaMembers')
+)
+const FellowshipMembers = React.lazy(
+  () => import('pages/directory/grids/FellowshipMembers')
+)
 
 const MembersDirectoryRoute = ({
   children,

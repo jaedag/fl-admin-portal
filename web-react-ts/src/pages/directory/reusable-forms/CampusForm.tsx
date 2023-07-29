@@ -1,6 +1,12 @@
 import { useMutation, useQuery } from '@apollo/client'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
-import { FieldArray, Form, Formik, FormikHelpers } from 'formik'
+import {
+  FieldArray,
+  FieldArrayRenderProps,
+  Form,
+  Formik,
+  FormikHelpers,
+} from 'formik'
 import * as Yup from 'yup'
 import {
   CURRENCY_OPTIONS,
@@ -161,7 +167,7 @@ const CampusForm = ({
                             {`Select any streams that are being moved to this Campus`}
                           </small>
                           <FieldArray name="streams">
-                            {(fieldArrayProps) => {
+                            {(fieldArrayProps: FieldArrayRenderProps) => {
                               const { push, remove, form } = fieldArrayProps
                               const { values } = form
                               const { streams } = values

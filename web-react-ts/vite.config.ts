@@ -1,9 +1,11 @@
 import { defineConfig, loadEnv } from 'vite'
 import { sentryVitePlugin } from '@sentry/vite-plugin'
 import react from '@vitejs/plugin-react'
+import { VitePWA } from 'vite-plugin-pwa'
 import viteTsconfigPaths from 'vite-tsconfig-paths'
 import svgrPlugin from 'vite-plugin-svgr'
 import dns from 'dns'
+import * as manifest from './public/manifest.json'
 
 // https://vitejs.dev/config/
 
@@ -26,6 +28,11 @@ export default defineConfig(({ command, mode }) => {
       react(),
       viteTsconfigPaths(),
       svgrPlugin(),
+      VitePWA({
+        injectRegister: 'auto',
+        registerType: 'autoUpdate',
+        manifest: manifest,
+      }),
       // Put the Sentry vite plugin after all other plugins
       sentryVitePlugin({
         org: 'first-love-center',
