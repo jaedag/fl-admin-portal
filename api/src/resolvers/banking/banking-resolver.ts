@@ -23,6 +23,7 @@ import {
   setRecordTransactionReference,
   setRecordTransactionReferenceWithOTP,
   submitBankingSlip,
+  checkIfIMCLNotFilled,
 } from './banking-cypher'
 import {
   DebitDataBody,
@@ -35,17 +36,24 @@ export const checkIfLastServiceBanked = async (
   context: Context
 ) => {
   const session = context.executionContext.session()
+  const sessionTwo = context.executionContext.session()
 
   // this checks if the person has banked their last offering
-  const lastServiceResponse = await session
-    .run(getLastServiceRecord, {
+  const lastServiceResponse = await Promise.all([
+    session.run(getLastServiceRecord, {
       serviceRecordId,
       auth: context.auth,
-    })
-    .catch((error: any) =>
-      throwToSentry('There was a problem checking the lastService', error)
-    )
-  const lastServiceRecord: any = rearrangeCypherObject(lastServiceResponse)
+    }),
+    sessionTwo.run(checkIfIMCLNotFilled, {
+      serviceRecordId,
+      auth: context.auth,
+    }),
+  ]).catch((error: any) =>
+    throwToSentry('There was a problem checking the lastService', error)
+  )
+  const lastServiceRecord: any = rearrangeCypherObject(lastServiceResponse[0])
+  const imclNotFilled: boolean =
+    lastServiceResponse[1].records[0]?.get('imclNotFilled')
 
   if (!('lastService' in lastServiceRecord)) return true
 
@@ -74,6 +82,12 @@ export const checkIfLastServiceBanked = async (
   ) {
     throw new Error(
       'Please log in to the Poimen App to mark the service attendance before you will be allowed to bank your offering'
+    )
+  }
+
+  if (imclNotFilled) {
+    throw new Error(
+      'Please fill the IMCL form on the Poimen App before you will be allowed to bank your offering'
     )
   }
 
@@ -112,18 +126,18 @@ const bankingMutation = {
         transactionResponse?.stream
       )
 
-      if (!subaccount) {
-        throw new Error(
-          `There was an error with the payment. Please email admin@firstlovecenter.com ${JSON.stringify(
-            {
-              transactionResponse,
-              args,
-              auth,
-              subaccount,
-            }
-          )}`
-        )
-      }
+      // if (!subaccount) {
+      //   throw new Error(
+      //     `There was an error with the payment. Please email admin@firstlovecenter.com ${JSON.stringify(
+      //       {
+      //         transactionResponse,
+      //         args,
+      //         auth,
+      //         subaccount,
+      //       }
+      //     )}`
+      //   )
+      // }
 
       await checkIfLastServiceBanked(args.serviceRecordId, context)
 

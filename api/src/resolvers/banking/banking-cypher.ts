@@ -109,6 +109,14 @@ WHERE church:Fellowship OR church:Constituency OR church:Council
 RETURN lastService, lastDate, record, church
 `
 
+export const checkIfIMCLNotFilled = `
+    MATCH (record:ServiceRecord {id: $serviceRecordId})
+    OPTIONAL MATCH (record)<-[:ABSENT_FROM_SERVICE]-(absent:Member)
+    WHERE absent.imclChecked = false
+
+    RETURN true AS imclNotFilled
+`
+
 export const submitBankingSlip = `
 MATCH (record:ServiceRecord {id: $serviceRecordId})
 WHERE record.transactionStatus IS NULL

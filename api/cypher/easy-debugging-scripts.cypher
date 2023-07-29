@@ -9,6 +9,6 @@ MERGE (record)-[r:OFFERING_BANKED_BY]->(leader)
 RETURN record.income, record.transactionReference;
 
 
-MATCH (record:ServiceRecord {transactionReference: "tbjs2lzvbnvkocv"})
-SET record.transactionStatus = "failed"
+MATCH (record:ServiceRecord)
+SET record.markedAttendance = true
 RETURN record
