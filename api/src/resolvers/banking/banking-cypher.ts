@@ -114,7 +114,7 @@ export const checkIfIMCLNotFilled = `
     OPTIONAL MATCH (record)<-[:ABSENT_FROM_SERVICE]-(absent:Member)
     WHERE absent.imclChecked = false
 
-    RETURN true AS imclNotFilled
+    RETURN COUNT(absent) > 0 AS imclNotFilled
 `
 
 export const submitBankingSlip = `
