@@ -1,3 +1,45 @@
+#### 7.7.7 (2023-07-30)
+
+##### Chores
+
+*  update dependencies ([c91918b5](https://github.com/firstlovecenter/fl-pastoral-care/commit/c91918b5eadd38028905d2094a5da0c24989b42b))
+
+##### Documentation Changes
+
+*  update CHANGELOG.md ([72a8c309](https://github.com/firstlovecenter/fl-pastoral-care/commit/72a8c309628f7abc4f5d880fbc6a9d5a5e786e07))
+*  update CHANGELOG.md ([d53b9b73](https://github.com/firstlovecenter/fl-pastoral-care/commit/d53b9b73041d08a0f1819ebac43714ddb047553b))
+*  update CHANGELOG.md ([4184ded4](https://github.com/firstlovecenter/fl-pastoral-care/commit/4184ded450c9d6322622afb1633c53878a8ba65a))
+
+##### New Features
+
+*  prevent a person from  banking for a service if he has not filled poimen app ([9581a8ba](https://github.com/firstlovecenter/fl-pastoral-care/commit/9581a8ba299eb5579c8e75c3b81b0def292d90d6))
+
+##### Bug Fixes
+
+*  remove loophole for anagkazo to bank without filling on poimen app ([b133ccb0](https://github.com/firstlovecenter/fl-pastoral-care/commit/b133ccb0fde20420c7cc2a335828f70c54322e56))
+*  attempt to fix serviceWorker bug 1 ([2c841885](https://github.com/firstlovecenter/fl-pastoral-care/commit/2c8418851bc236099d06e8ca1287d28a71d1b3b7))
+*  update the condition check for imclNotFilled ([4fb3ea42](https://github.com/firstlovecenter/fl-pastoral-care/commit/4fb3ea42b1fb24388d85295128d1832ed52d2b1a))
+*  add IMCL as a condition for banking ([bd038484](https://github.com/firstlovecenter/fl-pastoral-care/commit/bd0384840b8714be529dfac63af5694d9aeda1a9))
+*  remove sentry error tracking from dev backend server ([f56f8ff6](https://github.com/firstlovecenter/fl-pastoral-care/commit/f56f8ff6d83f8d8ef457cdf4f5692b8c9c1480de))
+*  increase permission level needed to make arrivals admin ([9b47ea28](https://github.com/firstlovecenter/fl-pastoral-care/commit/9b47ea28eb1d62e8171d9c28d7f2dfe27642b855))
+*  minor changes ([b8927103](https://github.com/firstlovecenter/fl-pastoral-care/commit/b89271031f6d5077723f90bb5e00cb0627638efd))
+*  console.log neoRes from payment webhook ([17b89f34](https://github.com/firstlovecenter/fl-pastoral-care/commit/17b89f340bd044831ce8438d94010ee53d8c94f9))
+*  after selecting a leader name displayed should not include last name ([2150fbfd](https://github.com/firstlovecenter/fl-pastoral-care/commit/2150fbfdf554a30bf4a662caa36cd5e2696e5096))
+*  update peacock settings ([2d13366b](https://github.com/firstlovecenter/fl-pastoral-care/commit/2d13366b1eced0a55ce3a8d0f7ca7fdf2f8d6c2b))
+*  delete a few errant files 2 ([4f43340d](https://github.com/firstlovecenter/fl-pastoral-care/commit/4f43340da4598825e238815cacf7ea624725ee1a))
+*  delete a few errant files ([50df103e](https://github.com/firstlovecenter/fl-pastoral-care/commit/50df103e1ca18d574afb79ae46ae123020553753))
+*  bug fixes to make all creative arts aspects work ([de6f92e9](https://github.com/firstlovecenter/fl-pastoral-care/commit/de6f92e9587c28cf38ec50eee805fed6390302c7))
+*  edit all federal ministry mentions to creativeArts ([aeb0d9c0](https://github.com/firstlovecenter/fl-pastoral-care/commit/aeb0d9c0a50bb7907b9e75b055dca675d45da7f1))
+*  remove new sonta leader ([5daeba6b](https://github.com/firstlovecenter/fl-pastoral-care/commit/5daeba6b87f9bab0146837c42648c32ee9838a00))
+
+##### Other Changes
+
+* //github.com/firstlovecenter/fl-admin-portal into deploy ([cf2df1bb](https://github.com/firstlovecenter/fl-pastoral-care/commit/cf2df1bb5f65555a72a1b4135cd565104a3fcaee))
+
+##### Refactors
+
+*  convert PWA to vite compatible config ([1894d487](https://github.com/firstlovecenter/fl-pastoral-care/commit/1894d487b106e2d146f630a97c79392449cabbb6))
+
 #### 7.7.6 (2023-07-30)
 
 #### 7.7.5 (2023-07-30)
