@@ -1,3 +1,9 @@
+#### 7.7.8 (2023-07-30)
+
+##### Bug Fixes
+
+*  colour the backgroup of the table on the user dashboard ([44165d5b](https://github.com/firstlovecenter/fl-pastoral-care/commit/44165d5bc65f293f185ea6f81b2f71591e04fa14))
+
 #### 7.7.7 (2023-07-30)
 
 ##### Chores
