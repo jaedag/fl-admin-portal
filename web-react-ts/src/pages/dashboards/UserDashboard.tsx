@@ -35,7 +35,7 @@ const UserDashboard = () => {
           <h5 className="font-weight-bold roboto">{`${currentUser?.fullName}'s Dashboard`}</h5>
         </Placeholder>
         <div className="card-button-row">
-          <Table className="border-bottom-0">
+          <Table variant="dark" className="border-bottom-0">
             <tbody>
               <tr>
                 {userJobs ? (
