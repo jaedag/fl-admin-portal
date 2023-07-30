@@ -2,6 +2,7 @@
 import {
   isAuth,
   noEmptyArgsValidation,
+  parseNeoNumber,
   rearrangeCypherObject,
   throwToSentry,
 } from '../utils/utils'
@@ -45,11 +46,37 @@ const treasuryMutations = {
         )
     )
 
+    const checks = await Promise.all([
+      session.executeRead((tx) =>
+        tx.run(anagkazo.membershipAttendanceDefaultersCount, args)
+      ),
+      session.executeRead((tx) => tx.run(anagkazo.imclDefaultersCount, args)),
+    ])
+
+    const membershipAttendanceDefaultersCount = parseNeoNumber(
+      checks[0].records[0]?.get('defaulters')
+    )
+    const imclDefaultersCount = parseNeoNumber(
+      checks[1].records[0]?.get('defaulters')
+    )
+
     const formDefaultersCount = formDefaultersResponse.defaulters.low
 
     if (formDefaultersCount > 0) {
       throw new Error(
         'You cannot confirm this constituency until all the active fellowships have filled their forms'
+      )
+    }
+
+    if (membershipAttendanceDefaultersCount > 0) {
+      throw new Error(
+        'You cannot confirm this constituency until all the active fellowships have marked their attendance on the Poimen App'
+      )
+    }
+
+    if (imclDefaultersCount > 0) {
+      throw new Error(
+        'You cannot confirm this constituency until all the active fellowships have filled their IMCL forms on the Poimen App'
       )
     }
 

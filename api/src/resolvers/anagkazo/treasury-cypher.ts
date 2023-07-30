@@ -51,6 +51,49 @@ const anagkazo = {
 
        RETURN COUNT(DISTINCT defaulters) as defaulters
       `,
+  membershipAttendanceDefaultersCount: `
+      MATCH (this:Constituency {id: $constituencyId})
+      WITH date() as today, this
+      WITH  today.weekDay as theDay, today, this
+      WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
+      WITH [day in range(0, 5) | startDate + duration({days: day})] AS dates, this
+
+      MATCH (date:TimeGraph)
+      USING INDEX date:TimeGraph(date)
+      WHERE date.date IN dates
+      MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
+
+       WITH DISTINCT record, this
+       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships:Active:Fellowship)
+       WHERE record.markedAttendance = false
+
+       WITH collect(DISTINCT fellowships) as services, this
+       MATCH (defaulters:Active:Fellowship)<-[:HAS]-(:Bacenta)<-[:HAS]-(this)
+
+       RETURN COUNT(DISTINCT defaulters) as defaulters
+      `,
+  imclDefaultersCount: `
+      MATCH (this:Constituency {id: $constituencyId})
+      WITH date() as today, this
+      WITH  today.weekDay as theDay, today, this
+      WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
+      WITH [day in range(0, 5) | startDate + duration({days: day})] AS dates, this
+
+      MATCH (date:TimeGraph)
+      USING INDEX date:TimeGraph(date)
+      WHERE date.date IN dates
+      MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
+
+       WITH DISTINCT record, this
+       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships:Active:Fellowship)
+       OPTIONAL MATCH (record)<-[:ABSENT_FROM_SERVICE]-(absent:Member)
+       WHERE absent.imclChecked = false
+
+       WITH collect(DISTINCT fellowships) as services, this, COUNT(absent) > 0 AS imclNotFilled
+       MATCH (defaulters:Active:Fellowship)<-[:HAS]-(:Bacenta)<-[:HAS]-(this)
+
+       RETURN COUNT(DISTINCT defaulters) as defaulters, imclNotFilled
+       `,
   bankingDefaulersCount: `
     MATCH (this:Constituency {id: $constituencyId})
     WITH date() as today, this
