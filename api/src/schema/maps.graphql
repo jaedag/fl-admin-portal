@@ -1,10 +1,10 @@
-interface MapLocation{
+interface MapLocation {
   id: ID!
   name: String!
   location: Point!
 }
 
-type Place implements MapLocation{
+type Place implements MapLocation {
   id: ID!
   name: String!
   firstName: String
@@ -26,44 +26,53 @@ extend type Member {
   ): [Place!]!
   placesSearchByName(key: String!, limit: Int = 30): [Place!]!
 }
-type IndoorVenue implements MapLocation{
+
+type IndoorVenue implements MapLocation {
   id: ID!
   name: String!
   location: Point!
   capacity: Int!
 }
 
-type OutdoorVenue implements MapLocation{
+type OutdoorVenue implements MapLocation {
   id: ID!
   name: String!
   location: Point!
   capacity: Int!
 }
 
-type HostelVenue implements MapLocation{
+type Hostel implements MapLocation {
   id: ID!
   name: String!
   location: Point!
   capacity: Int!
+  school: String!
+  university: String! @cypher(statement: "MATCH (this) RETURN this.school")
 }
 
-type HighSchoolVenue implements MapLocation{
+type HighSchool implements MapLocation {
   id: ID!
   name: String!
   location: Point!
   capacity: Int!
+  school: String!
 }
 
 extend type Mutation {
-  CreateIndoorVenue(name: String!, capacity: Int!, longitude:Float!, latitude:Float!): IndoorVenue
-    @auth(rules: [{roles: ["adminCampus"]}])
+  CreateIndoorVenue(
+    name: String!
+    capacity: Int!
+    longitude: Float!
+    latitude: Float!
+  ): IndoorVenue!
+    @auth(rules: [{ roles: ["adminCampus"] }])
     @cypher(
       statement: """
       CREATE (indoorVenue:IndoorVenue:OutreachVenue)
-        SET indoorVenue.id = apoc.create.uuid()
-        SET indoorVenue.name = $name
-        SET indoorVenue.capacity = $capacity
-        SET indoorVenue.location = point({latitude: $latitude, longitude:$longitude})
+        SET indoorVenue.id = apoc.create.uuid(),
+         indoorVenue.name = $name,
+         indoorVenue.capacity = $capacity,
+         indoorVenue.location = point({latitude: $latitude, longitude:$longitude})
 
       WITH indoorVenue
       MATCH (currentUser:Active:Member {auth_id: $auth.jwt.sub})
@@ -73,8 +82,8 @@ extend type Mutation {
         SET log.id = apoc.create.uuid(),
           log.timeStamp = datetime(),
           log.priority=0,
-          log.historyRecord = 'New indoor venue' + indoorVenue.name + 'created'
-      
+          log.historyRecord = 'New Indoor Venue ' + indoorVenue.name + ' Created'
+
       WITH indoorVenue, currentUser, log
 
       MERGE (date:TimeGraph {date: date()})
@@ -85,8 +94,13 @@ extend type Mutation {
       """
     )
 
-  CreateOutdoorVenue(name: String!, capacity: Int!, longitude:Float!, latitude:Float!): OutdoorVenue
-    @auth(rules: [{roles: ["adminCampus"]}])
+  CreateOutdoorVenue(
+    name: String!
+    capacity: Int!
+    longitude: Float!
+    latitude: Float!
+  ): OutdoorVenue!
+    @auth(rules: [{ roles: ["adminCampus"] }])
     @cypher(
       statement: """
       CREATE (outdoorVenue:OutdoorVenue:OutreachVenue)
@@ -104,8 +118,8 @@ extend type Mutation {
         SET log.id = apoc.create.uuid(),
           log.timeStamp = datetime(),
           log.priority=0,
-          log.historyRecord = 'New outdoor venue' + outdoorVenue.name + 'created'
-      
+          log.historyRecord = 'New outdoor venue ' + outdoorVenue.name + ' created'
+
       WITH outdoorVenue, currentUser, log
 
       MERGE (date:TimeGraph {date: date()})
@@ -116,120 +130,160 @@ extend type Mutation {
       """
     )
 
-  CreateHostelVenue(name:String!, capacity:Int!, latitude:Float!, longitude:Float!): HostelVenue
-    @auth(rules: [{roles: ["adminCampus"]}])
+  CreateHostel(
+    name: String!
+    capacity: Int!
+    latitude: Float!
+    longitude: Float!
+    school: String!
+  ): Hostel!
+    @auth(rules: [{ roles: ["adminCampus"] }])
     @cypher(
       statement: """
-      CREATE (hostelVenue:HostelVenue)
-        SET hostelVenue.id = apoc.create.uuid()
-        SET hostelVenue.name = $name 
-        SET hostelVenue.capacity = $capacity
-        SET hostelVenue.location = point({latitude: $latitude, longitude:$longitude})
+      CREATE (hostel:Hostel)
+        SET hostel.id = apoc.create.uuid()
+        SET hostel.name = $name
+        SET hostel.capacity = $capacity
+        SET hostel.location = point({latitude: $latitude, longitude:$longitude})
+        SET hostel.school = $school
 
-      WITH hostelVenue, 
+      WITH hostel,
       MATCH (currentUser:Active:Member {auth_id: $auth.jwt.sub})
 
-      WITH hostelVenue, currentUser 
+      WITH hostel, currentUser
       CREATE (log:HistoryLog {id: apoc.create.uuid()})
          SET log.timestamp = datetime()
          SET log.priority = 0
-         SET log.historyRecord = 'New hostel venue' + hostelVenue.name + 'added'
+         SET log.historyRecord = 'New hostel venue' + hostel.name + 'added'
 
-      WITH hostelVenue, currentUser, log 
-      
+      WITH hostel, currentUser, log
+
       MERGE (date:TimeGraph {date: date()})
       MERGE (log)-[:LOGGED_BY]->(currentUser)
       MERGE (log)-[:RECORDED_ON]->(date)
 
-      RETURN hostelVenue
+      RETURN hostel
       """
     )
-   CreateHighSchoolVenue(name:String!, capacity:Int!, latitude:Float!, longitude:Float!): HighSchoolVenue
-    @auth(rules: [{roles: ["adminCampus"]}])
+  CreateHighSchool(
+    name: String!
+    capacity: Int!
+    latitude: Float!
+    longitude: Float!
+    school: String!
+  ): HighSchool!
+    @auth(rules: [{ roles: ["adminCampus"] }])
     @cypher(
       statement: """
-      CREATE (highSchoolVenue:HighSchoolVenue)
-        SET highSchoolVenue.id = apoc.create.uuid()
-        SET highSchoolVenue.name = $name 
-        SET highSchoolVenue.capacity = $capacity
-        SET highSchoolVenue.location = point({latitude: $latitude, longitude:$longitude})
+      CREATE (highSchool:HighSchool)
+        SET highSchool.id = apoc.create.uuid()
+        SET highSchool.name = $name
+        SET highSchool.capacity = $capacity
+        SET highSchool.location = point({latitude: $latitude, longitude:$longitude})
+        SET highSchool.school = $school
 
-      WITH highSchoolVenue, 
+      WITH highSchool,
       MATCH (currentUser:Active:Member {auth_id: $auth.jwt.sub})
 
-      WITH highSchoolVenue, currentUser 
+      WITH highSchool, currentUser
       CREATE (log:HistoryLog)
         SET log.id = apoc.create.uuid()
         SET log.timestamp = datetime()
         SET log.priority = 0
-        SET log.historyRecord = 'New senior high school venue' + highSchoolVenue.name + 'added'
+        SET log.historyRecord = 'New senior high school venue' + highSchool.name + 'added'
 
-      WITH highSchoolVenue, currentUser, log 
-      
+      WITH highSchool, currentUser, log
+
       MERGE (date:TimeGraph {date: date()})
       MERGE (log)-[:LOGGED_BY]->(currentUser)
       MERGE (log)-[:RECORDED_ON]->(date)
 
-      RETURN highSchoolVenue
+      RETURN highSchool
       """
     )
 }
 
 extend type Mutation {
-  UpdateIndoorVenue(longitude: Float!, latitude:Float!, indoorVenueId: ID!, capacity: Int!, name: String!): IndoorVenue
-    @auth(rules: [{roles: ["adminCampus"]}])
+  UpdateIndoorVenue(
+    longitude: Float!
+    latitude: Float!
+    indoorVenueId: ID!
+    capacity: Int!
+    name: String!
+  ): IndoorVenue!
+    @auth(rules: [{ roles: ["adminCampus"] }])
     @cypher(
       statement: """
       MATCH (indoorVenue:IndoorVenue:OutreachVenue {id: $indoorVenueId})
       SET indoorVenue.location = point({latitude:$latitude, longitude:$longitude})
       SET indoorVenue.name = $name
-      SET indoorVenue.capacity = $capacity 
-              
+      SET indoorVenue.capacity = $capacity
+
       RETURN indoorVenue
       """
     )
-  UpdateOutdoorVenue(longitude: Float!, latitude:Float!, outdoorVenueId: ID!, capacity: Int!, name:String!): OutdoorVenue
-    @auth(rules: [{roles: ["adminCampus"]}])
+  UpdateOutdoorVenue(
+    longitude: Float!
+    latitude: Float!
+    outdoorVenueId: ID!
+    capacity: Int!
+    name: String!
+  ): OutdoorVenue!
+    @auth(rules: [{ roles: ["adminCampus"] }])
     @cypher(
       statement: """
       MATCH (outdoorVenue:OutdoorVenue:OutreachVenue {id: $outdoorVenueId})
       SET outdoorVenue.location = point({latitude:$latitude, longitude:$longitude})
       SET outdoorVenue.name = $name
-      SET outdoorVenue.capacity = $capacity 
-      
+      SET outdoorVenue.capacity = $capacity
+
       RETURN outdoorVenue
       """
     )
-  UpdateHostelVenue(longitude: Float!, latitude:Float!, hostelVenueId: ID!, name:String!, capacity: Int!): HostelVenue
-    @auth(rules: [{roles: ["adminCampus"]}])
+  UpdateHostel(
+    longitude: Float!
+    latitude: Float!
+    hostelId: ID!
+    name: String!
+    capacity: Int!
+    university: String!
+  ): Hostel!
+    @auth(rules: [{ roles: ["adminCampus"] }])
     @cypher(
       statement: """
-      MATCH (hostelVenue:HostelVenue {id: $hostelVenueId})
-      SET hostelVenue.location = point({latitude:$latitude, longitude:$longitude})
-          hostelVenue.name = $name
-          hostelVenue.capacity = $capacity 
-      
-      
-      RETURN hostelVenue
+      MATCH (hostel:Hostel {id: $hostelId})
+      SET hostel.location = point({latitude:$latitude, longitude:$longitude}),
+          hostel.name = $name,
+          hostel.capacity = $capacity,
+          hostel.university = $university
+
+      RETURN hostel
       """
     )
-    UpdateHighSchoolVenue(longitude: Float!, latitude:Float!, highSchoolVenueId: ID!, name:String!, capacity:Int!): HighSchoolVenue
-    @auth(rules: [{roles: ["adminCampus"]}])
+  UpdateHighSchool(
+    longitude: Float!
+    latitude: Float!
+    highSchoolId: ID!
+    name: String!
+    capacity: Int!
+  ): HighSchool!
+    @auth(rules: [{ roles: ["adminCampus"] }])
     @cypher(
       statement: """
-      MATCH (highSchoolVenue:HighSchoolVenue {id: $highSchoolVenueId})
-      SET highSchoolVenue.location = point({latitude:$latitude, longitude:$longitude})
-          highSchoolVenue.name = $name
-          highSchoolVenue.capacity = $capacity 
-      
-      RETURN highSchoolVenue
+      MATCH (highSchool:HighSchool {id: $highSchoolId})
+      SET highSchool.location = point({latitude:$latitude, longitude:$longitude})
+          highSchool.name = $name
+          highSchool.capacity = $capacity,
+
+
+      RETURN highSchool
       """
     )
 }
 
-extend type Mutation{
-  CloseDownIndoorVenue(indoorVenueId: ID!): Boolean
-    @auth(rules: [{roles: ["adminCampus"]}])
+extend type Mutation {
+  CloseDownIndoorVenue(indoorVenueId: ID!): Boolean!
+    @auth(rules: [{ roles: ["adminCampus"] }])
     @cypher(
       statement: """
       MATCH (indoorVenue:IndoorVenue:OutreachVenue {id: $indoorVenueId})
@@ -241,7 +295,7 @@ extend type Mutation{
         SET log.timestamp = datetime()
         SET log.priority = 0
         SET log.historyRecord = 'The indoor venue' + indoorVenue.name + 'has been deleted'
-      
+
       MERGE (date:Timegraph {date:date()})
       MERGE (log)-[:LOGGED_BY]->(admin)
       MERGE (log)-[:RECORDED_ON]->(date)
@@ -250,8 +304,8 @@ extend type Mutation{
       RETURN true
       """
     )
-  CloseDownOutdoorVenue(outdoorVenueId: ID!): Boolean
-    @auth(rules: [{roles: ["adminCampus"]}])
+  CloseDownOutdoorVenue(outdoorVenueId: ID!): Boolean!
+    @auth(rules: [{ roles: ["adminCampus"] }])
     @cypher(
       statement: """
       MATCH (outdoorVenue:OutdoorVenue:OutreachVenue {id: $outdoorVenueId})
@@ -262,7 +316,7 @@ extend type Mutation{
             log.timestamp = datetime()
             log.priority = 0
             log.historyRecord = 'The outdoor venue' + outdoorVenue.name + 'has been deleted'
-      
+
       MERGE (date:Timegraph {date:date()})
       MERGE (log)-[:LOGGED_BY]->(admin)
       MERGE (log)-[:RECORDED_ON]->(date)
@@ -272,45 +326,45 @@ extend type Mutation{
       """
     )
 
-  CloseDownHostelVenue(hostelVenueId: ID!): Boolean
-    @auth(rules: [{roles: ["adminCampus"]}])
+  CloseDownHostel(hostelId: ID!): Boolean!
+    @auth(rules: [{ roles: ["adminCampus"] }])
     @cypher(
       statement: """
-      MATCH (hostelVenue:HostelVenue {id: $hostelVenueId})
+      MATCH (hostel:Hostel {id: $hostelId})
       MATCH (admin:Active:Member {auth_id: $auth.jwt.sub})
 
       CREATE (log:HistoryLog {id: apoc.create.uuid()})
         SET log.timestamp = datetime()
             log.priority = 0
-            log.historyRecord = 'The hostel venue' + hostelVenue.name + 'has been deleted'
-      
-      
+            log.historyRecord = 'The hostel venue' + hostel.name + 'has been deleted'
+
+
       MERGE (date:Timegraph {date:date()})
       MERGE (log)-[:LOGGED_BY]->(admin)
       MERGE (log)-[:RECORDED_ON]->(date)
 
-      DETACH DELETE hostelVenue
+      DETACH DELETE hostel
       RETURN true
       """
     )
-  CloseDownHighSchoolVenue(highSchoolVenueId: ID!): Boolean
-    @auth(rules: [{roles: ["adminCampus"]}])
+  CloseDownHighSchool(highSchoolId: ID!): Boolean!
+    @auth(rules: [{ roles: ["adminCampus"] }])
     @cypher(
       statement: """
-      MATCH (highSchoolVenue:HighSchoolVenue {id: $highSchoolVenueId})
+      MATCH (highSchool:HighSchool {id: $highSchoolId})
       MATCH (admin:Active:Member {auth_id: $auth.jwt.sub})
 
       CREATE (log:HistoryLog {id: apoc.create.uuid()})
         SET log.timestamp = datetime()
             log.priority = 0
-            log.historyRecord = 'The high school venue' + highSchoolVenue.name + 'has been deleted'
-      
-      
+            log.historyRecord = 'The high school venue' + highSchool.name + 'has been deleted'
+
+
       MERGE (date:Timegraph {date:date()})
       MERGE (log)-[:LOGGED_BY]->(admin)
       MERGE (log)-[:RECORDED_ON]->(date)
 
-      DETACH DELETE highSchoolVenue
+      DETACH DELETE highSchool
       RETURN true
       """
     )

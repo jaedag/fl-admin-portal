@@ -243,10 +243,12 @@ export const mapsResolvers = {
         throwToSentry('e', e)
       } finally {
         // Close the session
-        await session.close()
-        await sessionTwo.close()
-        await sessionThree.close()
-        await sessionFour.close()
+        await Promise.all([
+          session.close(),
+          sessionTwo.close(),
+          sessionThree.close(),
+          sessionFour.close(),
+        ])
       }
       return []
     },
@@ -331,10 +333,12 @@ export const mapsResolvers = {
         throwToSentry('e', e)
       } finally {
         // Close the session
-        await session.close()
-        await sessionTwo.close()
-        await sessionThree.close()
-        await sessionFour.close()
+        await Promise.all([
+          session.close(),
+          sessionTwo.close(),
+          sessionThree.close(),
+          sessionFour.close(),
+        ])
       }
       return []
     },
