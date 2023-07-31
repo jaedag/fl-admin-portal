@@ -6,6 +6,7 @@ interface MapLocation {
 
 type Place implements MapLocation {
   id: ID!
+  typename: String!
   name: String!
   firstName: String
   lastName: String

@@ -1,3 +1,10 @@
+#### 7.7.10 (2023-07-31)
+
+##### Bug Fixes
+
+*  update typo in object path ([cd08518a](https://github.com/firstlovecenter/fl-pastoral-care/commit/cd08518accb1e56beb77441b6cd83cf43161481b))
+*  minor improvements to typedefs for maps ([24079c3c](https://github.com/firstlovecenter/fl-pastoral-care/commit/24079c3cccab6cfa9bf62ea3f0010deb3212bb0e))
+
 #### 7.7.9 (2023-07-31)
 
 ##### Bug Fixes
