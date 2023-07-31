@@ -59,7 +59,7 @@ export const checkIfLastServiceBanked = async (
 
   const lastService = lastServiceRecord.lastService.properties
   const currentService = lastServiceRecord.record.properties
-  const date = lastServiceRecord.lastDate.prsoperties
+  const date = lastServiceRecord.lastDate.properties
   const { church } = lastServiceRecord
 
   if (
