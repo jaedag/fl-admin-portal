@@ -1,3 +1,10 @@
+#### 7.7.9 (2023-07-31)
+
+##### Bug Fixes
+
+*  remove table variant for user dashboard ([501033ba](https://github.com/firstlovecenter/fl-pastoral-care/commit/501033baac14e9c1444e3f413d655c14162dab5b))
+*  update color scheme with bootstrap dark mode v5.3 ([1cf1931d](https://github.com/firstlovecenter/fl-pastoral-care/commit/1cf1931dc4f1cfd6d46b41a5f5027f8cee372b47))
+
 #### 7.7.8 (2023-07-30)
 
 ##### Bug Fixes
