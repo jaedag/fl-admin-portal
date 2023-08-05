@@ -29,6 +29,7 @@ const treasuryMutations = {
   ): Promise<any> => {
     isAuth(permitTeller(), context?.auth.roles)
     const session = context.executionContext.session()
+    const sessionTwo = context.executionContext.session()
     noEmptyArgsValidation(['constituencyId'])
 
     // const today = new Date()
@@ -50,7 +51,9 @@ const treasuryMutations = {
       session.executeRead((tx) =>
         tx.run(anagkazo.membershipAttendanceDefaultersCount, args)
       ),
-      session.executeRead((tx) => tx.run(anagkazo.imclDefaultersCount, args)),
+      sessionTwo.executeRead((tx) =>
+        tx.run(anagkazo.imclDefaultersCount, args)
+      ),
     ])
 
     const membershipAttendanceDefaultersCount = parseNeoNumber(
@@ -116,7 +119,7 @@ const treasuryMutations = {
     } catch (error: any) {
       throwToSentry('There was a problem confirming the banking', error || '')
     }
-    await session.close()
+    await Promise.all([session.close(), sessionTwo.close()])
     return 'Confirmation Successful'
   },
 }
