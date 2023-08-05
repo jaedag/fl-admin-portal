@@ -6,7 +6,7 @@ export const FELLOWSHIP_BANKING_SLIP_QUERIES = gql`
       id
       bankingCode
       name
-      services(limit: 12) {
+      services(limit: 20) {
         id
         stream_name
         noServiceReason
