@@ -28,7 +28,10 @@ const CouncilBankingSlipView = () => {
 
       {data?.councils[0].services.map(
         (service: ServiceRecord, index: number) => {
-          if (service.noServiceReason) {
+          if (
+            service.noServiceReason ||
+            service.transactionStatus === 'success'
+          ) {
             if (index === 0) {
               return (
                 <NoDataComponent text="No services to bank. When you have a service, it will show up here" />
