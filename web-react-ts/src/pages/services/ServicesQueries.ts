@@ -1,12 +1,12 @@
 import { gql } from '@apollo/client'
 
 export const FELLOWSHIP_BANKING_SLIP_QUERIES = gql`
-  query fellowshipServices($fellowshipId: ID!) {
+  query fellowshipServices($fellowshipId: ID!, $skip: Int) {
     fellowships(where: { id: $fellowshipId }) {
       id
       bankingCode
       name
-      services(limit: 20) {
+      services(limit: 10, skip: $skip) {
         id
         stream_name
         noServiceReason

@@ -9,6 +9,7 @@ import SelfBankingList from './components/SelfBankingList'
 const ConstituencySelfBanking = () => {
   const { constituencyId } = useContext(ChurchContext)
   const { isOpen, togglePopup } = usePopup()
+  const [skip, setSkip] = useState<number>(0)
   const [confirmService, setConfirmService] =
     useState<ConfirmPaymentServiceType>(null)
   const { data, loading, error, refetch } = useQuery(
@@ -44,6 +45,8 @@ const ConstituencySelfBanking = () => {
         setConfirmService: setConfirmService,
       }}
       popupTools={{ isOpen: isOpen, togglePopup: togglePopup }}
+      skip={skip}
+      setSkip={setSkip}
     />
   )
 }

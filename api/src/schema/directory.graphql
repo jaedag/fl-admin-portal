@@ -310,7 +310,7 @@ interface Church @auth(rules: [{ isAuthenticated: true }]) {
       statement: "MATCH (this)-[:HAS_HISTORY|OLD_HISTORY]->(log:HistoryLog) RETURN log ORDER BY log.timeStamp DESC  LIMIT $limit"
     )
   serviceLogs: [ServiceLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
-  services(limit: Int!): [ServiceRecord!]!
+  services(limit: Int!, skip: Int = 0): [ServiceRecord!]!
 }
 
 type Denomination implements Church {
@@ -411,12 +411,12 @@ type Denomination implements Church {
       statement: "MATCH (this)-[:HAS_HISTORY|OLD_HISTORY]->(log:HistoryLog) RETURN log ORDER BY log.timeStamp DESC  LIMIT $limit"
     )
   serviceLogs: [ServiceLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
-  services(limit: Int!): [ServiceRecord!]!
+  services(limit: Int!, skip: Int = 0): [ServiceRecord!]!
     @cypher(
       statement: """
       MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(records:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
       WITH DISTINCT records, date
-      RETURN records ORDER BY date.date DESC LIMIT $limit
+      RETURN records ORDER BY date.date DESC SKIP $skip LIMIT $limit
       """
     )
 }
@@ -519,12 +519,12 @@ type Oversight implements Church {
       statement: "MATCH (this)-[:HAS_HISTORY|OLD_HISTORY]->(log:HistoryLog) RETURN log ORDER BY log.timeStamp DESC  LIMIT $limit"
     )
   serviceLogs: [ServiceLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
-  services(limit: Int!): [ServiceRecord!]!
+  services(limit: Int!, skip: Int = 0): [ServiceRecord!]!
     @cypher(
       statement: """
       MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(records:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
       WITH DISTINCT records, date
-      RETURN records ORDER BY date.date DESC LIMIT $limit
+      RETURN records ORDER BY date.date DESC SKIP $skip LIMIT $limit
       """
     )
 }
@@ -626,12 +626,12 @@ type Campus implements Church {
       statement: "MATCH (this)-[:HAS_HISTORY|OLD_HISTORY]->(log:HistoryLog) RETURN log ORDER BY log.timeStamp DESC  LIMIT $limit"
     )
   serviceLogs: [ServiceLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
-  services(limit: Int!): [ServiceRecord!]!
+  services(limit: Int!, skip: Int = 0): [ServiceRecord!]!
     @cypher(
       statement: """
       MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(records:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
       WITH DISTINCT records, date
-      RETURN records ORDER BY date.date DESC LIMIT $limit
+      RETURN records ORDER BY date.date DESC SKIP $skip LIMIT $limit
       """
     )
   creativeArtsCount: Int
@@ -754,12 +754,12 @@ type Stream implements Church {
   serviceRecord: [ServiceRecord!]!
     @relationship(type: "HAS_SERVICE", direction: OUT)
   serviceLogs: [ServiceLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
-  services(limit: Int!): [ServiceRecord!]!
+  services(limit: Int!, skip: Int = 0): [ServiceRecord!]!
     @cypher(
       statement: """
       MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(records:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
       WITH DISTINCT records, date
-      RETURN records ORDER BY date.date DESC LIMIT $limit
+      RETURN records ORDER BY date.date DESC SKIP $skip LIMIT $limit
       """
     )
   ministryCount: Int!
@@ -863,12 +863,12 @@ type Council implements Church {
   serviceRecord: [ServiceRecord!]!
     @relationship(type: "HAS_SERVICE", direction: OUT)
   serviceLogs: [ServiceLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
-  services(limit: Int!): [ServiceRecord!]!
+  services(limit: Int!, skip: Int = 0): [ServiceRecord!]!
     @cypher(
       statement: """
       MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(records:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
       WITH DISTINCT records, date
-      RETURN records ORDER BY date.date DESC LIMIT $limit
+      RETURN records ORDER BY date.date DESC SKIP $skip LIMIT $limit
       """
     )
   hubs: [Hub!]! @relationship(type: "HAS", direction: OUT)
@@ -950,12 +950,12 @@ type Constituency implements Church {
   serviceRecord: [ServiceRecord!]!
     @relationship(type: "HAS_SERVICE", direction: OUT)
   serviceLogs: [ServiceLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
-  services(limit: Int! = 12): [ServiceRecord!]!
+  services(limit: Int! = 12, skip: Int): [ServiceRecord!]!
     @cypher(
       statement: """
       MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(records:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
       WITH DISTINCT records, date
-      RETURN records ORDER BY date.date DESC LIMIT $limit
+      RETURN records ORDER BY date.date DESC SKIP $skip LIMIT $limit
       """
     )
 }
@@ -1034,12 +1034,12 @@ type Bacenta implements Church {
       statement: "MATCH (this)-[:HAS_HISTORY|OLD_HISTORY]->(log:HistoryLog) RETURN log ORDER BY log.timeStamp DESC LIMIT $limit"
     )
   serviceLogs: [ServiceLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
-  services(limit: Int! = 4): [ServiceRecord!]!
+  services(limit: Int! = 4, skip: Int): [ServiceRecord!]!
     @cypher(
       statement: """
       MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(services:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
       WITH DISTINCT services, date
-      RETURN services ORDER BY date.date DESC LIMIT $limit
+      RETURN services ORDER BY date.date DESC SKIP $skip LIMIT $limit
       """
     )
 
@@ -1120,12 +1120,12 @@ type Fellowship implements Church {
       statement: "MATCH (this)-[:HAS_HISTORY|OLD_HISTORY]->(log:HistoryLog) RETURN log ORDER BY log.timeStamp DESC LIMIT $limit"
     )
   serviceLogs: [ServiceLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
-  services(limit: Int!): [ServiceRecord!]!
+  services(limit: Int!, skip: Int = 0): [ServiceRecord!]!
     @cypher(
       statement: """
       MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(records:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
       WITH DISTINCT records,date
-      RETURN records ORDER BY date.date DESC LIMIT $limit
+      RETURN records ORDER BY date.date DESC SKIP $skip LIMIT $limit
       """
     )
   labels: [String]
@@ -1163,12 +1163,12 @@ type ClosedFellowship {
   meetingDay: ServiceDay @relationship(type: "MEETS_ON", direction: OUT)
   history: [HistoryLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
   serviceLogs: [ServiceLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
-  services(limit: Int!): [ServiceRecord!]!
+  services(limit: Int!, skip: Int = 0): [ServiceRecord!]!
     @cypher(
       statement: """
       MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(records:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
       WITH DISTINCT records, date
-      RETURN records ORDER BY date.date DESC LIMIT $limit
+      RETURN records ORDER BY date.date DESC SKIP $skip LIMIT $limit
       """
     )
   labels: [String]

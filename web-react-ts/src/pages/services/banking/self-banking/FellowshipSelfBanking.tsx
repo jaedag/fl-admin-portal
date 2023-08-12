@@ -9,13 +9,14 @@ import SelfBankingList from './components/SelfBankingList'
 const FellowshipSelfBanking = () => {
   const { fellowshipId } = useContext(ChurchContext)
   const { isOpen, togglePopup } = usePopup()
+  const [skip, setSkip] = useState<number>(0)
   const [confirmService, setConfirmService] =
     useState<ConfirmPaymentServiceType>(null)
 
   const { data, loading, error, refetch } = useQuery(
     FELLOWSHIP_BANKING_SLIP_QUERIES,
     {
-      variables: { fellowshipId: fellowshipId },
+      variables: { fellowshipId: fellowshipId, skip },
       onCompleted: (data) => {
         const fellowship = data?.fellowships[0]
         const service = fellowship?.services.find(
@@ -45,6 +46,8 @@ const FellowshipSelfBanking = () => {
         setConfirmService: setConfirmService,
       }}
       popupTools={{ isOpen: isOpen, togglePopup: togglePopup }}
+      skip={skip}
+      setSkip={setSkip}
     />
   )
 }

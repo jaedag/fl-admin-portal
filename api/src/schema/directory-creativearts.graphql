@@ -122,7 +122,7 @@ type HubFellowship implements Church {
       statement: "MATCH (this)-[:HAS_HISTORY|OLD_HISTORY]->(log:HistoryLog) RETURN log ORDER BY log.timeStamp DESC LIMIT $limit"
     )
   serviceLogs: [ServiceLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
-  services(limit: Int!): [ServiceRecord!]!
+  services(limit: Int!, skip: Int): [ServiceRecord!]!
     @cypher(
       statement: """
       MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(records:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)

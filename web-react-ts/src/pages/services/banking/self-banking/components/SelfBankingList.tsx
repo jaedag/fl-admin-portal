@@ -9,7 +9,7 @@ import { capitalise, throwToSentry } from 'global-utils'
 import { parseDate } from 'jd-date-utils'
 import NoDataComponent from 'pages/arrivals/CompNoData'
 import { useContext } from 'react'
-import { Card, Col, Container, Row } from 'react-bootstrap'
+import { Button, ButtonGroup, Card, Col, Row } from 'react-bootstrap'
 import { useNavigate } from 'react-router'
 import ConfirmPaymentButton, {
   ConfirmPaymentServiceType,
@@ -22,10 +22,14 @@ const SelfBankingList = ({
   refetch,
   confirmationTools,
   popupTools,
+  skip,
+  setSkip,
 }: {
   church: any
   loading: boolean
   error: ApolloError | undefined
+  skip: number
+  setSkip: (skip: number) => void
   refetch: (
     variables?:
       | Partial<{
@@ -55,8 +59,10 @@ const SelfBankingList = ({
     throwToSentry('', error)
   }
 
+  const skipValue = 10
+
   return (
-    <Container>
+    <>
       <HeadingPrimary loading={loading}>
         {church?.name} {church?.__typename}
       </HeadingPrimary>
@@ -85,6 +91,27 @@ const SelfBankingList = ({
           </div>
         </Popup>
       )}
+
+      <ButtonGroup className="mb-3">
+        <Button
+          disabled={skip - skipValue < 0}
+          onClick={() => {
+            setSkip(skip - skipValue)
+          }}
+        >
+          Previous
+        </Button>
+
+        <Button
+          disabled={church?.services?.length < skipValue}
+          onClick={() => {
+            if (church?.services?.length < skipValue) return
+            setSkip(skip + skipValue)
+          }}
+        >
+          Next
+        </Button>
+      </ButtonGroup>
 
       {church?.services?.map((service: ServiceRecord, index: number) => {
         if (service.noServiceReason || service.bankingSlip) {
@@ -167,7 +194,7 @@ const SelfBankingList = ({
             </Card.Body>
           </Card>
         ))}
-    </Container>
+    </>
   )
 }
 
