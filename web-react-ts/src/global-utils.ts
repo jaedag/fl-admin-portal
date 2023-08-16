@@ -135,8 +135,8 @@ export const STREAM_ACCOUNT_OPTIONS: FormikSelectOptions = [
   { key: 'Manual Finances', value: 'manual' },
   { key: 'FLE Account', value: 'fle_account' },
   { key: 'AES Account', value: 'aes_account' },
-  { key: 'GES Account', value: 'ges_account' },
-  { key: 'HGE Account', value: 'hge_account' },
+  { key: 'Kwabenya Account', value: 'kwabenya_account' },
+  { key: 'Adenta Account', value: 'adenta_account' },
 ]
 
 export const throwToSentry = (
