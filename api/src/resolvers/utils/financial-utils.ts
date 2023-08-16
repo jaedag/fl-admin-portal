@@ -35,8 +35,8 @@ export const padNumbers = (number: number): string => {
 type Stream = {
   bankAccount:
     | 'aes_account'
-    | 'ges_account'
-    | 'hge_account'
+    | 'kwabenya_account'
+    | 'adenta_account'
     | 'fle_account'
     | 'manual'
 }
@@ -51,11 +51,11 @@ export const getStreamFinancials = (stream: Stream) => {
         'Payment Error' +
           'Anagkazo has a different financial system. Thank you!'
       )
-    case 'ges_account':
-      subaccount = SECRETS.PAYSTACK_SUBACCOUNT_GES
+    case 'adenta_account':
+      subaccount = SECRETS.PAYSTACK_SUBACCOUNT_ADENTA
       break
-    case 'hge_account':
-      subaccount = SECRETS.PAYSTACK_SUBACCOUNT_HGE
+    case 'kwabenya_account':
+      subaccount = SECRETS.PAYSTACK_SUBACCOUNT_KWABENYA
       break
     case 'fle_account':
       subaccount = SECRETS.PAYSTACK_SUBACCOUNT_FLE
