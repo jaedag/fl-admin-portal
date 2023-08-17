@@ -310,7 +310,7 @@ interface Church @auth(rules: [{ isAuthenticated: true }]) {
       statement: "MATCH (this)-[:HAS_HISTORY|OLD_HISTORY]->(log:HistoryLog) RETURN log ORDER BY log.timeStamp DESC  LIMIT $limit"
     )
   serviceLogs: [ServiceLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
-  services(limit: Int!, skip: Int = 0): [ServiceRecord!]!
+  services(limit: Int!, skip: Int): [ServiceRecord!]!
 }
 
 type Denomination implements Church {
@@ -950,7 +950,7 @@ type Constituency implements Church {
   serviceRecord: [ServiceRecord!]!
     @relationship(type: "HAS_SERVICE", direction: OUT)
   serviceLogs: [ServiceLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
-  services(limit: Int! = 12, skip: Int): [ServiceRecord!]!
+  services(limit: Int! = 12, skip: Int = 0): [ServiceRecord!]!
     @cypher(
       statement: """
       MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(records:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
@@ -1034,7 +1034,7 @@ type Bacenta implements Church {
       statement: "MATCH (this)-[:HAS_HISTORY|OLD_HISTORY]->(log:HistoryLog) RETURN log ORDER BY log.timeStamp DESC LIMIT $limit"
     )
   serviceLogs: [ServiceLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
-  services(limit: Int! = 4, skip: Int): [ServiceRecord!]!
+  services(limit: Int! = 12, skip: Int = 0): [ServiceRecord!]!
     @cypher(
       statement: """
       MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(services:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
