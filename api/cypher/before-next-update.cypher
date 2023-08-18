@@ -47,3 +47,18 @@ CREATE CONSTRAINT con_campus_id ON (campus:Campus) ASSERT exists(campus.id);
 MATCH p=(log:ServiceLog)<-[:HAS_HISTORY]-(church)
  WHERE log.priority IS NULL
  RETURN p LIMIT 1;
+
+
+ // CREATE  a uniquenessconstraint on serviceRecord nodes for property transactionReference
+    CREATE CONSTRAINT serviceRecordNeedsTransactionReference ON (serviceRecord:ServiceRecord) ASSERT exists(serviceRecord.transactionReference);
+
+    MATCH (record:ServiceRecord {id: "87dcc504-b85f-4af3-9e99-8e44221d5816"})
+REMOVE record.transactionReference
+SET record.transactionStatus = 'failed', 
+record.transactionError = 'No Reference'
+
+RETURN record;
+
+CREATE CONSTRAINT serviceRecordNeedsTransactionReference IF NOT EXISTS
+FOR (n:ServiceRecord)
+REQUIRE n.transactionReference IS UNIQUE

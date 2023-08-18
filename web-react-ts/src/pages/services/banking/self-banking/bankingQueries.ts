@@ -130,3 +130,28 @@ export const SELF_BANKING_RECEIPT = gql`
     }
   }
 `
+
+export const SET_TRANSACTION_REFERENCE = gql`
+  mutation SetTransactionReference(
+    $serviceRecordId: ID!
+    $transactionReference: ID!
+    $currentUserId: ID!
+  ) {
+    updateServiceRecords(
+      where: { id: $serviceRecordId }
+      update: {
+        transactionReference: $transactionReference
+        transactionStatus: "pending"
+        transactionError: null
+        confirmedBy: $currentUserId
+      }
+    ) {
+      serviceRecords {
+        id
+        transactionReference
+        transactionStatus
+        transactionError
+      }
+    }
+  }
+`
