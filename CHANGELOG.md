@@ -1,3 +1,26 @@
+#### 7.7.10 (2023-08-18)
+
+##### New Features
+
+*  implement an input box for admin to re enter the transaction ref from frontend ([46dc7e85](https://github.com/firstlovecenter/fl-pastoral-care/commit/46dc7e8594d3a00fe0da239ec514876497240dd5))
+
+##### Bug Fixes
+
+*  add a script to clear IMCLs for this week ([3bdfb361](https://github.com/firstlovecenter/fl-pastoral-care/commit/3bdfb3614368f397894c062f3317be91ea1dad85))
+*  fix issue where some church graphs were not showing ([61fcb351](https://github.com/firstlovecenter/fl-pastoral-care/commit/61fcb3510049367d5e851c10bac10b101de71ff7))
+*  update dependencies ([4abce29e](https://github.com/firstlovecenter/fl-pastoral-care/commit/4abce29e8c2f545dca060eda626ee82f6cc21d2f))
+*  update dependencies ([52e55950](https://github.com/firstlovecenter/fl-pastoral-care/commit/52e559505c40eff30257f07c424fe769b578ae1c))
+*  update @neo4j/graphql package ([6d11f800](https://github.com/firstlovecenter/fl-pastoral-care/commit/6d11f8001a82275262687b3d3c20fba5e809d189))
+*  update  stream account options frontend ([48e6d5af](https://github.com/firstlovecenter/fl-pastoral-care/commit/48e6d5af0a0704d6a983a5d3e3fa508ac821ccdb))
+*  update kwabenya and adenta campus paystack accounts ([0339254c](https://github.com/firstlovecenter/fl-pastoral-care/commit/0339254cfd9f55e6476a1cc78b79467b4ed93465))
+*  implement filter on banking slip lists ([4f01f17f](https://github.com/firstlovecenter/fl-pastoral-care/commit/4f01f17f8995b1592caceff952cf450fb26b26a7))
+*  implement pagination on self banking service list ([6a21725e](https://github.com/firstlovecenter/fl-pastoral-care/commit/6a21725e6f6cbbb8a768d0d0e9742fc1e4a022a3))
+*  implement second session for anagkazo treasury resolver ([ae26d52a](https://github.com/firstlovecenter/fl-pastoral-care/commit/ae26d52af59cc39b55c06626baeee189a0407d59))
+*  increase limit of self banked services ([ac452e07](https://github.com/firstlovecenter/fl-pastoral-care/commit/ac452e07955dab63039acc043ccaedd86361362a))
+*  fix typename bug not allowing map markers to load ([007f8c8d](https://github.com/firstlovecenter/fl-pastoral-care/commit/007f8c8d225b7615a99ff99815007ecb6d8c3827))
+*  update typo in object path ([cd08518a](https://github.com/firstlovecenter/fl-pastoral-care/commit/cd08518accb1e56beb77441b6cd83cf43161481b))
+*  minor improvements to typedefs for maps ([24079c3c](https://github.com/firstlovecenter/fl-pastoral-care/commit/24079c3cccab6cfa9bf62ea3f0010deb3212bb0e))
+
 #### 7.7.10 (2023-07-31)
 
 ##### Bug Fixes
