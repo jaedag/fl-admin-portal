@@ -17,7 +17,7 @@ const DetailsCreativeArts = () => {
   } = useQuery(DISPLAY_FEDERAL_MINISTRY, {
     variables: { id: creativeArtsId },
   })
-  const creativeArts = creativeArtsData?.creativearts[0]
+  const creativeArts = creativeArtsData?.creativeArts[0]
 
   let breadcrumb: Church[]
 
@@ -58,7 +58,7 @@ const DetailsCreativeArts = () => {
         church={creativeArts}
         loading={creativeArtsLoading}
         name={creativeArts?.name}
-        leaderTitle="Federal Ministry Leader"
+        leaderTitle="Creative Arts Leader"
         editPermitted={['adminCampus']}
         churchId={creativeArtsId}
         leader={creativeArts?.leader}

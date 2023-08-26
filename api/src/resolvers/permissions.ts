@@ -54,7 +54,7 @@ export const permitLeader = (churchLevel: ChurchLevel) => {
     case 'oversight':
       permittedFor = ['leaderOversight']
       break
-    case 'creativeart':
+    case 'creativearts':
       permittedFor = ['leaderCampus', 'leaderCreativeArts']
       break
     case 'ministry':

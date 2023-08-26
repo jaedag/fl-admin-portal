@@ -61,7 +61,7 @@ const DetailsCampus = () => {
       link: '#',
     },
     {
-      title: 'Federal Ministries',
+      title: 'Creative Arts',
       number: gathering?.creativeArtsCount,
       link: '/campus/creativearts',
     },

@@ -31,7 +31,7 @@ const DisplayAllCampusCreativeArts = () => {
                 clickCard(campus)
               }}
             >
-              <h4 className="text-white">{`${campus?.name} Federal Ministries`}</h4>
+              <h4 className="text-white">{`${campus?.name} Creative Arts`}</h4>
             </Link>
             <Link
               to="/member/displaydetails"
@@ -63,7 +63,7 @@ const DisplayAllCampusCreativeArts = () => {
                 to="/creativearts/addcreativearts"
                 className="btn btn-danger"
               >
-                Add Federal Ministry
+                Add Creative Arts
               </Link>
             </Col>
           </RoleView>

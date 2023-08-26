@@ -348,7 +348,7 @@ const useClickCard = () => {
         setMinistryId(card.id)
         sessionStorage.setItem('ministryId', card.id)
         break
-      case '':
+      case 'CreativeArts':
         setCreativeArtsId(card.id)
         sessionStorage.setItem('creativeArtsId', card.id)
         break

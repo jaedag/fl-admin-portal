@@ -17,9 +17,9 @@ RETURN record;
 '
 
  MATCH (record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph) 
-   WHERE date.date.week = date().week-1 AND date.date.year = date().year
+   WHERE date.date.week = date().week AND date.date.year = date().year
 OPTIONAL MATCH (record)<-[:ABSENT_FROM_SERVICE]-(absent:Member)
    WHERE absent.imclChecked = false
 SET absent.imclChecked = true
 
-    RETURN absent;
+RETURN absent;

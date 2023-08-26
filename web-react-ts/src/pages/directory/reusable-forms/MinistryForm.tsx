@@ -64,7 +64,7 @@ const MinistryForm = ({
   const streamsOptions = makeSelectOptions(streamData?.streams)
 
   const validationSchema = Yup.object({
-    creativeArts: Yup.string().required(`Federal Ministry is a required field`),
+    creativeArts: Yup.string().required(`Creative Arts is a required field`),
     stream: Yup.string().required(`Stream is a required field`),
     leaderId: Yup.string().required(
       'Please choose a leader from the drop down'
@@ -103,9 +103,9 @@ const MinistryForm = ({
 
                       <Select
                         name="creativeArts"
-                        label="Select a Federal Ministry"
+                        label="Select a Creative Arts"
                         options={creativeArtsOptions}
-                        defaultOption="Select a Federal Ministry"
+                        defaultOption="Select a Creative Arts"
                       />
 
                       <Row className="d-flex align-items-center mb-3">

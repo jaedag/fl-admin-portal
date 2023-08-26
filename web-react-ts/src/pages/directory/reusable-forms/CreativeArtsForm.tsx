@@ -53,7 +53,7 @@ const CreativeArtsForm = ({
 
   const validationSchema = Yup.object({
     campus: Yup.string().required(`Campus is a required field`),
-    name: Yup.string().required(`Federal Ministry Name is a required field`),
+    name: Yup.string().required(`Creative Arts Name is a required field`),
     leaderId: Yup.string().required(
       'Please choose a leader from the drop down'
     ),
@@ -87,8 +87,8 @@ const CreativeArtsForm = ({
 
                       <Input
                         name="name"
-                        label={`Name of Federal Ministry`}
-                        placeholder={`Name of Federal Ministry`}
+                        label={`Name of Creative Arts`}
+                        placeholder={`Name of Creative Arts`}
                       />
 
                       <Row className="d-flex align-items-center mb-3">
@@ -113,7 +113,7 @@ const CreativeArtsForm = ({
 
               {isOpen && (
                 <Popup handleClose={togglePopup}>
-                  Are you sure you want to close down this Federal Ministry?
+                  Are you sure you want to close down this Creative Arts?
                   <Button
                     variant="primary"
                     type="submit"
@@ -135,7 +135,7 @@ const CreativeArtsForm = ({
                         })
                         .catch((error) => {
                           throwToSentry(
-                            `There was an error closing down this Federal Ministry`,
+                            `There was an error closing down this Creative Arts`,
                             error
                           )
                         })
@@ -161,7 +161,7 @@ const CreativeArtsForm = ({
                   className={`btn-secondary ${theme} mt-3`}
                   onClick={togglePopup}
                 >
-                  {`Close Down Federal Ministry`}
+                  {`Close Down Creative Arts`}
                 </Button>
               )}
             </Container>

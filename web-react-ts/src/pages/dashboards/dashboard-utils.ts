@@ -316,7 +316,7 @@ export const getServantRoles = (servant: MemberWithChurches) => {
   if (servant?.leadsCreativeArts?.length) {
     roleTitles.push('leaderCreativeArts')
     userroles.push({
-      name: 'Federal Ministry',
+      name: 'Creative Arts',
       church: servant?.leadsCreativeArts,
       number: servant?.leadsCreativeArts?.length,
       link: authorisedLink(
@@ -329,7 +329,7 @@ export const getServantRoles = (servant: MemberWithChurches) => {
   if (servant?.isAdminForCreativeArts?.length) {
     roleTitles.push('adminCreativeArts')
     userroles.push({
-      name: 'Federal Ministry Admin',
+      name: 'Creative Arts Admin',
       church: servant?.isAdminForCreativeArts,
       number: servant?.isAdminForCreativeArts?.length,
       link: authorisedLink(

@@ -36,9 +36,11 @@ export const setPriorityLevel = (churchType: ChurchLevel) => {
       priority = 3
       break
     case 'Stream':
+    case 'CreativeArts':
       priority = 4
       break
     case 'Council':
+    case 'Ministry':
       priority = 5
       break
     case 'Constituency':
@@ -99,7 +101,7 @@ export const formatting = (
   }
 
   if (churchType === 'CreativeArts') {
-    churchLower = 'creativeArt'
+    churchLower = 'creativeArts'
     memberQuery = matchMemberCreativeArtsQuery
   }
   if (churchType === 'Ministry') {

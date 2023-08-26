@@ -62,7 +62,7 @@ const CreateCreativeArts = () => {
       onSubmitProps.resetForm()
       navigate(`/creativearts/displaydetails`)
     } catch (error: unknown) {
-      throwToSentry('There was an error creating Federal Ministry', error)
+      throwToSentry('There was an error creating Creative Arts', error)
     }
   }
 
@@ -70,7 +70,7 @@ const CreateCreativeArts = () => {
     <CreativeArtsForm
       initialValues={initialValues}
       onSubmit={onSubmit}
-      title={`Create a New Federal Ministry`}
+      title={`Create a New Creative Arts`}
       newCreativeArts
     />
   )
