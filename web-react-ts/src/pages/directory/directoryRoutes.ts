@@ -124,6 +124,9 @@ const CreateMinistry = lazy(
 const CreateCreativeArts = lazy(
   () => import('pages/directory/create/CreateCreativeArts')
 )
+const MakeHubFellowship = lazy(
+  () => import('pages/directory/reusable-forms/MakeHubFellowship')
+)
 const UpdateFellowship = lazy(
   () => import('pages/directory/update/UpdateFellowship')
 )
@@ -647,6 +650,12 @@ export const directory: LazyRouteTypes[] = [
     path: '/fellowship/editfellowship',
     element: UpdateFellowship,
     roles: [...permitAdmin('Constituency'), 'leaderFellowship'],
+    placeholder: false,
+  },
+  {
+    path: 'fellowship/make-hub-fellowship',
+    element: MakeHubFellowship,
+    roles: permitAdmin('Hub'),
     placeholder: false,
   },
   {

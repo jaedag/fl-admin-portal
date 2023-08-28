@@ -69,3 +69,37 @@ export const SET_ACTIVE_BACENTA = gql`
     }
   }
 `
+
+export const SET_FELLOWSHIP_TO_HUB_FELLOWSHIP = gql`
+  mutation SetFellowshipToHubFellowship($fellowshipId: ID!, $hubId: ID!) {
+    SetFellowshipToHubFellowship(fellowshipId: $fellowshipId, hubId: $hubId) {
+      id
+      name
+      vacationStatus
+      history {
+        id
+        historyRecord
+      }
+    }
+  }
+`
+
+export const SET_HUB_FELLOWSHIP_TO_REGULAR_FELLOWSHIP = gql`
+  mutation SetHubFellowshipToRegularFellowship(
+    $fellowshipId: ID!
+    $hubId: ID!
+  ) {
+    SetHubFellowshipToRegularFellowship(
+      fellowshipId: $fellowshipId
+      hubId: $hubId
+    ) {
+      id
+      name
+      vacationStatus
+      history {
+        id
+        historyRecord
+      }
+    }
+  }
+`

@@ -5,7 +5,6 @@ import { MemberContext } from '../../contexts/MemberContext'
 import { ChurchContext } from '../../contexts/ChurchContext'
 import Timeline, { TimelineElement } from '../Timeline/Timeline'
 import EditButton from '../buttons/EditButton'
-import MemberDisplayCard from '../card/MemberDisplayCard'
 import ChurchButton from '../buttons/ChurchButton/ChurchButton'
 import './DisplayChurchDetails.css'
 import RoleView from '../../auth/RoleView'
@@ -559,83 +558,7 @@ const DisplayChurchDetails = (props: DisplayChurchDetailsProps) => {
           </RoleView>
         </Container>
       ) : null}
-      {props.subChurchBasonta === 'Sonta' ? (
-        <>
-          <div className="container">
-            <hr className="hr-line" />
 
-            <div className="row justify-content-between">
-              <div className="col">
-                <p className="text-secondary">{`${props.subChurchBasonta} Locations`}</p>
-              </div>
-              <div className="col-auto">
-                <Link
-                  className="card text-secondary px-1"
-                  to={`/${props.subChurchBasonta?.toLowerCase()}/displayall`}
-                >
-                  {`View All ${plural(props.subChurchBasonta)}`}
-                </Link>
-              </div>
-            </div>
-          </div>
-
-          <div className="container mb-4 card-button-row">
-            <table>
-              <tbody>
-                <tr>
-                  {props.buttonsSecondRow?.map((church, index) => {
-                    if (index > 4) {
-                      return null
-                    }
-                    return (
-                      <td className="col-auto" key={index}>
-                        <ChurchButton church={church} />{' '}
-                      </td>
-                    )
-                  })}
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </>
-      ) : null}
-      {props.subChurch && props.basontaLeaders?.length ? (
-        <>
-          <div className="container">
-            <hr className="hr-line" />
-
-            <div className="row justify-content-between">
-              <div className="col">
-                <p className="text-secondary">{`${props.subChurch}`}</p>
-              </div>
-              <div className="col-auto">
-                <Link
-                  className="card text-secondary px-1"
-                  to={`/${props.subChurch.toLowerCase()}/displayall`}
-                >
-                  View All
-                </Link>
-              </div>
-            </div>
-          </div>
-          <div className="container card-button-row">
-            <table>
-              <tbody>
-                <tr>
-                  {props.basontaLeaders &&
-                    props.basontaLeaders.map((leader, index) => {
-                      return (
-                        <td className="col-auto" key={index}>
-                          <MemberDisplayCard member={leader} />
-                        </td>
-                      )
-                    })}
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </>
-      ) : null}
       {props.history?.length && (
         <Container className="mt-5">
           <Row>

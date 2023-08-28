@@ -1255,6 +1255,13 @@ type Ministry {
   history: [HistoryLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
   servicelogs: [ServiceLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
   creativeArts: CreativeArts @relationship(type: "HAS", direction: IN)
+  councils: [Council!]!
+    @cypher(
+      statement: """
+      MATCH (this)<-[:HAS]-(stream:Stream)-[:HAS]->(councils:Council)
+      RETURN councils
+      """
+    )
   hubFellowships: [Fellowship!]!
     @cypher(
       statement: """

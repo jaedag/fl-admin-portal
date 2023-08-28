@@ -149,7 +149,11 @@ type HubFellowship implements Church {
 }
 
 extend type Mutation {
-  CreateCreativeArts(name: String!, leaderId: ID!, campusId: ID!): CreativeArts
+  CreateCreativeArts(
+    name: String!
+    leaderId: ID!
+    campusId: ID!
+  ): CreativeArts!
     @auth(rules: [{ roles: ["adminCampus"] }])
     @cypher(
       statement: """
@@ -178,7 +182,7 @@ extend type Mutation {
       RETURN creativeArt
       """
     )
-  CreateMinistry(leaderId: ID!, streamId: ID!, creativeArtsId: ID!): Ministry
+  CreateMinistry(leaderId: ID!, streamId: ID!, creativeArtsId: ID!): Ministry!
     @auth(
       rules: [{ roles: ["adminCampus", "adminStream", "adminCreativeArts"] }]
     )
@@ -202,7 +206,7 @@ extend type Mutation {
           log.historyRecord = ministry.name +' Ministry History Begins'
 
       WITH ministry, stream, leader, creativeArt, currentUser, log
-      MERGE (stream)-[:HAS]->(ministry)
+      MERGE (stream)-[:HAS_MINSITRY]->(ministry)
       MERGE (leader)-[:LEADS]->(ministry)
       MERGE (creativeArt)-[:HAS]->(ministry)
 
@@ -214,7 +218,12 @@ extend type Mutation {
       RETURN ministry
       """
     )
-  CreateHub(name: String!, leaderId: ID!, ministryId: ID!, councilId: ID!): Hub
+  CreateHub(
+    name: String!
+    leaderId: ID!
+    ministryId: ID!
+    councilId: ID!
+  ): Hub!
     @auth(
       rules: [
         {
@@ -246,7 +255,7 @@ extend type Mutation {
       MATCH (council:Council {id: $councilId})
 
       WITH hub, leader, ministry, currentUser, log, council
-      MERGE (council)-[:HAS]->(hub)
+      MERGE (council)-[:HAS_MINISTRY]->(hub)
       MERGE (ministry)-[:HAS]->(hub)
       MERGE (leader)-[:LEADS]->(hub)
 
@@ -261,11 +270,11 @@ extend type Mutation {
 }
 
 extend type Mutation {
-  UpdatecreativeArtDetails(
+  UpdateCreativeArtDetails(
     creativeArtsId: ID!
     campusId: ID!
     creativeArtName: String!
-  ): CreativeArts
+  ): CreativeArts!
     @auth(rules: [{ roles: ["adminCampus"] }])
     @cypher(
       statement: """
@@ -292,7 +301,7 @@ extend type Mutation {
     streamId: ID!
     ministryName: String!
     creativeArtsId: ID!
-  ): Ministry
+  ): Ministry!
     @auth(
       rules: [{ roles: ["adminCampus", "adminStream", "adminCreativeArts"] }]
     )
@@ -308,7 +317,7 @@ extend type Mutation {
               MATCH (creativeArt:CreativeArts {id:$creativeArtsId})
               OPTIONAL MATCH (ministry)-[r:HAS]->()
               DELETE r
-              MERGE (stream)-[:HAS]->(ministry)
+              MERGE (stream)-[:HAS_MINISTRY]->(ministry)
               MERGE (creativeArt)-[:HAS]->(ministry)
             RETURN COUNT(ministry)
           }
@@ -316,7 +325,7 @@ extend type Mutation {
       RETURN ministry
       """
     )
-  UpdateHubDetails(hubId: ID!, ministryId: ID!, hubName: String!): Hub
+  UpdateHubDetails(hubId: ID!, ministryId: ID!, hubName: String!): Hub!
     @auth(
       rules: [
         {
@@ -349,16 +358,14 @@ extend type Mutation {
     )
 
   #Set Fellowship to be 'HubFellowship'
-  SetActiveFellowshipToHubFellowship(
+  SetFellowshipToHubFellowship(
     fellowshipId: ID!
     hubId: ID!
-    ministryId: ID!
-  ): Fellowship
+  ): Fellowship!
     @cypher(
       statement: """
       MATCH (fellowship:Active:Fellowship {id:$fellowshipId})
-      MATCH (hub:Hub {id: $hubId})
-      MATCH (ministry:Ministry {id:$ministryId})
+      MATCH (hub:Hub {id: $hubId})<-[:HAS]-(ministry:Ministry)
 
       CREATE (log:HistoryLog {id:apoc.create.uuid()})
         SET log.timeStamp = datetime(),
@@ -378,7 +385,10 @@ extend type Mutation {
       """
     )
 
-  SetHubFellowshipToFellowship(fellowshipId: ID!, hubId: ID!): Fellowship
+  SetHubFellowshipToRegularFellowship(
+    fellowshipId: ID!
+    hubId: ID!
+  ): Fellowship!
     @auth(
       rules: [
         {
@@ -424,7 +434,7 @@ extend type Mutation {
 ## DELETE OPERATIONS
 
 extend type Mutation {
-  CloseDownCreativeArts(creativeArtsId: ID!, leaderId: ID!): Campus
+  CloseDownCreativeArts(creativeArtsId: ID!, leaderId: ID!): Campus!
     @cypher(
       statement: """
       MATCH (creativeArt:CreativeArts {id:$creativeArtsId})
@@ -448,7 +458,7 @@ extend type Mutation {
       RETURN campus
       """
     )
-  closeDownMinistry(ministryId: ID!, leaderId: ID!): CreativeArts
+  CloseDownMinistry(ministryId: ID!, leaderId: ID!): CreativeArts!
     @cypher(
       statement: """
       MATCH (ministry:Ministry {id:$ministryId})
@@ -472,7 +482,7 @@ extend type Mutation {
       RETURN creativeArt
       """
     )
-  closeDownHub(hubId: ID!, leaderId: ID!): Ministry
+  CloseDownHub(hubId: ID!, leaderId: ID!): Ministry!
     @cypher(
       statement: """
       MATCH (hub:Hub {id:$hubId})

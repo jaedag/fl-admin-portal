@@ -3,7 +3,6 @@ import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { Form, Formik, FormikHelpers } from 'formik'
 import * as Yup from 'yup'
 import { makeSelectOptions, throwToSentry } from 'global-utils'
-import { GET_MINISTRIES } from 'queries/ListQueries'
 import React, { useContext, useState } from 'react'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { MAKE_HUB_INACTIVE } from 'pages/directory/update/CloseChurchMutations'
@@ -18,10 +17,12 @@ import Select from 'components/formik/Select'
 import SearchMember from 'components/formik/SearchMember'
 import Input from 'components/formik/Input'
 import { FormikInitialValues } from 'components/formik/formik-types'
+import { GET_MINISTRY_COUNCILS } from './SontaListQueries'
 
 export interface HubFormValues extends FormikInitialValues {
   name: string
   ministry: string
+  council: string
   leaderId: string
   leaderName: string
 }
@@ -37,19 +38,24 @@ type HubFormProps = {
 }
 
 const HubForm = ({ initialValues, onSubmit, title, newHub }: HubFormProps) => {
-  const { clickCard, hubId } = useContext(ChurchContext)
+  const { clickCard, hubId, ministryId } = useContext(ChurchContext)
   const { theme } = useContext(MemberContext)
   const { togglePopup, isOpen } = usePopup()
   const navigate = useNavigate()
 
-  const { data, loading, error } = useQuery(GET_MINISTRIES)
+  const { data, loading, error } = useQuery(GET_MINISTRY_COUNCILS, {
+    variables: {
+      ministryId,
+    },
+  })
   const [buttonLoading, setButtonLoading] = useState(false)
   const [CloseDownHub] = useMutation(MAKE_HUB_INACTIVE)
 
-  const ministriesOptions = makeSelectOptions(data?.ministries)
+  const ministry = data?.ministries[0]
+  const councilsOptions = makeSelectOptions(data?.ministries[0].councils)
 
   const validationSchema = Yup.object({
-    ministry: Yup.string().required(`Ministry is a required field`),
+    council: Yup.string().required(`Council is a required field`),
     name: Yup.string().required(`Hub Name is a required field`),
     leaderId: Yup.string().required(
       'Please choose a leader from the drop down'
@@ -75,11 +81,12 @@ const HubForm = ({ initialValues, onSubmit, title, newHub }: HubFormProps) => {
                   <Row className="row-cols-1 row-cols-md-2">
                     {/* <!-- Basic Info Div --> */}
                     <Col className="mb-2">
+                      {ministry?.name}
                       <Select
-                        name="ministry"
-                        label="Select a Ministry"
-                        options={ministriesOptions}
-                        defaultOption="Select a Ministry"
+                        name="council"
+                        label="Select a Council"
+                        options={councilsOptions}
+                        defaultOption="Select a Council"
                       />
 
                       <Input

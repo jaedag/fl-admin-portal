@@ -59,7 +59,7 @@ const MinistryForm = ({
   const [buttonLoading, setButtonLoading] = useState(false)
   const [CloseDownMinistry] = useMutation(MAKE_MINISTRY_INACTIVE)
 
-  const creativeArtsOptions = makeSelectOptions(creativeArtsData?.creativearts)
+  const creativeArtsOptions = makeSelectOptions(creativeArtsData?.creativeArts)
 
   const streamsOptions = makeSelectOptions(streamData?.streams)
 

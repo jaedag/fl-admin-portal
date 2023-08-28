@@ -9,12 +9,13 @@ import { FormikHelpers } from 'formik'
 import HubForm, { HubFormValues } from '../reusable-forms/HubForm'
 
 const CreateHub = () => {
-  const { clickCard } = useContext(ChurchContext)
+  const { clickCard, ministryId } = useContext(ChurchContext)
 
   const navigate = useNavigate()
 
   const initialValues: HubFormValues = {
-    ministry: '',
+    ministry: ministryId,
+    council: '',
     leaderId: '',
     leaderName: '',
     leaderEmail: '',
@@ -39,6 +40,7 @@ const CreateHub = () => {
       const res = await CreateHub({
         variables: {
           ministryId: values.ministry,
+          councilId: values.council,
           leaderId: values.leaderId,
           name: values.name,
         },

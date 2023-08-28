@@ -38,7 +38,6 @@ import { FormikInitialValues } from 'components/formik/formik-types'
 
 export interface FellowshipFormValues extends FormikInitialValues {
   constituencySelect: string
-
   bacenta: string
   meetingDay: string
   vacationStatus: string
@@ -155,6 +154,16 @@ const FellowshipForm = (props: FellowshipFormProps) => {
               <div className="form-group">
                 <Row className="row-cols-1 row-cols-md-2">
                   {/* <!-- Basic Info Div --> */}
+                  <Container className="mb-4">
+                    <Button
+                      variant="warning"
+                      onClick={() => {
+                        navigate('/fellowship/make-hub-fellowship')
+                      }}
+                    >
+                      Hub Fellowship Options
+                    </Button>
+                  </Container>
                   <Col className="mb-2">
                     <Row className="form-row">
                       <RoleView roles={permitAdmin('Constituency')}>

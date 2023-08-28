@@ -54,7 +54,7 @@ const DetailsHub = () => {
         churchId={hubId}
         leader={hub?.leader}
         churchType="Hub"
-        subLevel="Sonta"
+        subLevel={undefined}
         editlink="/hub/edithub"
         history={hub?.history.length !== 0 && hub?.history}
         breadcrumb={breadcrumb && breadcrumb}
