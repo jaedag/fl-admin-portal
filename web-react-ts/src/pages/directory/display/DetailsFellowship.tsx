@@ -45,8 +45,8 @@ const DetailsFellowship = () => {
   ]
 
   const sontaCrumb = [
-    fellowship?.hub.ministry.creativeArts,
-    fellowship?.hub.ministry,
+    fellowship?.hub?.ministry?.creativeArts,
+    fellowship?.hub?.ministry,
     fellowship?.hub,
     fellowship,
   ]
