@@ -7,6 +7,8 @@ import { throwToSentry } from 'global-utils'
 import { last3Weeks } from 'jd-date-utils'
 import { permitAdmin } from 'permission-utils'
 import { ServiceRecord } from 'global-types'
+import Breadcrumb from 'components/DisplayChurchDetails/Breadcrumb'
+import { Container } from 'react-bootstrap'
 
 export type DetailsArray = {
   title: string
@@ -41,6 +43,14 @@ const DetailsFellowship = () => {
     fellowship?.bacenta,
     fellowship,
   ]
+
+  const sontaCrumb = [
+    fellowship?.hub.ministry.creativeArts,
+    fellowship?.hub.ministry,
+    fellowship?.hub,
+    fellowship,
+  ]
+
   if (!fellowship?.bacenta) {
     breadcrumb = [fellowship]
   }
@@ -116,23 +126,28 @@ const DetailsFellowship = () => {
   ]
 
   return (
-    <DisplayChurchDetails
-      details={details}
-      loading={fellowshipLoading}
-      name={fellowship?.name}
-      churchId={fellowshipId}
-      leaderTitle="Fellowship Leader"
-      leader={fellowship?.leader}
-      location={fellowship?.location}
-      churchType="Fellowship"
-      buttons={[]}
-      editlink="/fellowship/editfellowship"
-      editPermitted={[...permitAdmin('Constituency'), 'leaderFellowship']}
-      last3Weeks={fellowship && check}
-      vacation={fellowship?.vacationStatus}
-      history={history?.history.length && history?.history}
-      breadcrumb={breadcrumb && breadcrumb}
-    />
+    <>
+      <Container className="text-warning">
+        {fellowship?.hubStatus && <Breadcrumb breadcrumb={sontaCrumb} />}
+      </Container>
+      <DisplayChurchDetails
+        details={details}
+        loading={fellowshipLoading}
+        name={fellowship?.name}
+        churchId={fellowshipId}
+        leaderTitle="Fellowship Leader"
+        leader={fellowship?.leader}
+        location={fellowship?.location}
+        churchType="Fellowship"
+        buttons={[]}
+        editlink="/fellowship/editfellowship"
+        editPermitted={[...permitAdmin('Constituency'), 'leaderFellowship']}
+        last3Weeks={fellowship && check}
+        vacation={fellowship?.vacationStatus}
+        history={history?.history.length && history?.history}
+        breadcrumb={breadcrumb && breadcrumb}
+      />
+    </>
   )
 }
 

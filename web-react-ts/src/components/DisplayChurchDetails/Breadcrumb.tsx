@@ -32,12 +32,7 @@ const Breadcrumb = ({ breadcrumb }: { breadcrumb: BreadcrumbType[] }) => {
           return <div key={i}></div>
         }
 
-        let breadname
-        if (bread?.__typename === 'Sonta' && bread.constituency) {
-          breadname = bread.name.replace(bread.constituency.name, '')
-        } else {
-          breadname = bread.name
-        }
+        const breadname = bread.name
 
         return (
           <span
@@ -52,7 +47,7 @@ const Breadcrumb = ({ breadcrumb }: { breadcrumb: BreadcrumbType[] }) => {
                 )
               )
             }}
-            className="crumb label text-secondary"
+            className="crumb text-secondary"
           >
             {`${breadname} ${bread?.__typename}`}
             {i !== breadcrumb.length - 1 && ' > '}

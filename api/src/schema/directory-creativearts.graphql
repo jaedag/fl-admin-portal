@@ -65,6 +65,115 @@ extend type Member {
     @relationship(type: "IS_ADMIN_FOR", direction: OUT)
 }
 
+type CreativeArts {
+  memberCount: Int!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS]->(ministry:Ministry)<-[:BELONGS_TO]-(members:Active:Member)
+      RETURN COUNT(DISTINCT members)
+      """
+    )
+  hubFellowshipCount: Int!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS*3]->(fellowships:HubFellowship:Fellowship)
+      RETURN COUNT(DISTINCT fellowships)
+      """
+    )
+  hubCount: Int!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS*2]->(hubs:Hub)
+      RETURN COUNT(DISTINCT hubs)
+      """
+    )
+  ministryCount: Int!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS]->(ministries:Ministry)
+      RETURN COUNT(DISTINCT ministries)
+      """
+    )
+  id: ID @id
+  name: String!
+  leader: Member @relationship(type: "LEADS", direction: IN)
+  campus: Campus @relationship(type: "HAS_MINISTRY", direction: IN)
+  history: [HistoryLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
+  serviceLogs: [ServiceLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
+  ministries: [Ministry!]! @relationship(type: "HAS", direction: OUT)
+}
+
+type Ministry {
+  memberCount: Int!
+    @cypher(
+      statement: """
+      MATCH (this)<-[:HAS]-(:CreativeArts)<-[:BELONGS_TO]-(members:Active:Member)
+      RETURN COUNT(DISTINCT members)
+      """
+    )
+  hubFellowshipCount: Int!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS*2]->(fellowships:HubFellowship:Fellowship)
+      RETURN COUNT(DISTINCT fellowships)
+      """
+    )
+  hubCount: Int!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS]->(hubs:Hub)
+      RETURN COUNT(DISTINCT hubs)
+      """
+    )
+  id: ID @id
+  name: String!
+  leader: Member @relationship(type: "LEADS", direction: IN)
+  members: [Member!]! @relationship(type: "BELONGS_TO", direction: IN)
+  hubs: [Hub!]! @relationship(type: "HAS", direction: OUT)
+  stream: Stream @relationship(type: "HAS_MINISTRY", direction: IN)
+  history: [HistoryLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
+  servicelogs: [ServiceLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
+  creativeArts: CreativeArts @relationship(type: "HAS", direction: IN)
+  councils: [Council!]!
+    @cypher(
+      statement: """
+      MATCH (this)<-[:HAS]-(stream:Stream)-[:HAS]->(councils:Council)
+      RETURN councils
+      """
+    )
+  hubFellowships: [Fellowship!]!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS*2]->(fellowship:HubFellowship:Fellowship)
+      RETURN fellowship
+      """
+    )
+}
+
+type Hub {
+  memberCount: Int!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS]->(hubFellowship:Active:HubFellowship)<-[:BELONGS_TO]-(members:Active:Member)
+      RETURN COUNT(DISTINCT members)
+      """
+    )
+  hubFellowshipCount: Int!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS]->(fellowships:Active:HubFellowship)
+      RETURN COUNT(DISTINCT fellowships)
+      """
+    )
+  id: ID @id
+  name: String!
+  leader: Member @relationship(type: "LEADS", direction: IN)
+  history: [HistoryLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
+  hubFellowships: [Fellowship!]! @relationship(type: "HAS", direction: OUT)
+  ministry: Ministry @relationship(type: "HAS", direction: IN)
+  serviceLogs: [ServiceLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
+}
+
 extend type Fellowship {
   councilHubs: [Hub!]!
     @cypher(
@@ -377,7 +486,7 @@ extend type Mutation {
 
       CREATE (log:HistoryLog {id:apoc.create.uuid()})
         SET log.timeStamp = datetime(),
-        log.historyRecord = fellowship.name + ' Fellowship was made into a hub fellowship for' + ministry.name
+        log.historyRecord = fellowship.name + ' Fellowship was made into a hub fellowship for ' + ministry.name
 
       WITH log,fellowship, hub
       MATCH (admin:Active:Member {auth_id: $auth.jwt.sub})
@@ -386,6 +495,7 @@ extend type Mutation {
       MERGE (log)-[:LOGGED_BY]->(admin)
       MERGE (log)-[:RECORDED_ON]->(date)
       MERGE (fellowship)-[:HAS_HISTORY]->(log)
+      MERGE (hub)-[:HAS_HISTORY]->(log)
 
       SET fellowship:HubFellowship
 
@@ -415,7 +525,7 @@ extend type Mutation {
         log.historyRecord = fellowship.name + ' hub fellowship was made into a regular fellowship '
 
       WITH log,fellowship
-      
+
       MATCH (admin:Active:Member {auth_id: $auth.jwt.sub})
       MATCH (fellowship)<-[r:HAS]-(hub:Hub)
       DELETE r
@@ -424,6 +534,7 @@ extend type Mutation {
       MERGE (log)-[:LOGGED_BY]->(admin)
       MERGE (log)-[:RECORDED_ON]->(date)
       MERGE (fellowship)-[:HAS_HISTORY]->(log)
+      MERGE (hub)-[:HAS_HISTORY]->(log)
 
       REMOVE fellowship:HubFellowship
 

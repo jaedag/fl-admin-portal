@@ -36,8 +36,8 @@ const DetailsHub = () => {
       width: 12,
     },
     {
-      title: 'Sontas',
-      number: hub?.sontaCount,
+      title: 'Hub Fellowships',
+      number: hub?.hubFellowships.length,
       link: '/sonta/displayall',
     },
   ]
@@ -54,11 +54,11 @@ const DetailsHub = () => {
         churchId={hubId}
         leader={hub?.leader}
         churchType="Hub"
-        subLevel={undefined}
+        subLevel={'HubFellowship'}
         editlink="/hub/edithub"
         history={hub?.history.length !== 0 && hub?.history}
         breadcrumb={breadcrumb && breadcrumb}
-        buttons={hub?.sontas}
+        buttons={hub?.hubFellowships}
       />
     </ApolloWrapper>
   )

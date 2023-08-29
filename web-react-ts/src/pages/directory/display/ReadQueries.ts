@@ -178,6 +178,18 @@ export const DISPLAY_FELLOWSHIP = gql`
         day
         dayNumber
       }
+      hub {
+        id
+        name
+        ministry {
+          id
+          name
+          creativeArts {
+            id
+            name
+          }
+        }
+      }
       bacenta {
         id
         name
@@ -764,6 +776,10 @@ export const DISPLAY_HUB = gql`
         pictureUrl
       }
       memberCount
+      hubFellowships {
+        id
+        name
+      }
       history {
         id
         timeStamp

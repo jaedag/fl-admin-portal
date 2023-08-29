@@ -89,12 +89,11 @@ type Member @auth(rules: [{ isAuthenticated: true }]) {
       """
     )
 
-  ### BASONTA WORK ###
+  ### CREATIVE ARTS WORK ###
   leadsCreativeArts: [CreativeArts!]!
     @relationship(type: "LEADS", direction: OUT)
   leadsMinistry: [Ministry!]! @relationship(type: "LEADS", direction: OUT)
   leadsHub: [Hub!]! @relationship(type: "LEADS", direction: OUT)
-  leadsBasonta: [Basonta!]! @relationship(type: "LEADS", direction: OUT)
   leadsConstituency: [Constituency!]!
     @relationship(type: "LEADS", direction: OUT)
   leadsConstituencyCount: Int
@@ -288,9 +287,8 @@ type HistoryLog @auth(rules: [{ isAuthenticated: true }]) {
   bacenta: [Bacenta!]! @relationship(type: "HAS_HISTORY", direction: IN)
   constituency: [Constituency!]!
     @relationship(type: "HAS_HISTORY", direction: IN)
-  basonta: [Basonta!]! @relationship(type: "HAS_HISTORY", direction: IN)
   ministry: [Ministry!]! @relationship(type: "HAS_HISTORY", direction: IN)
-  hub: [Hub!]! @relationship(type: "HAS_HISTORY", direction: IN)
+  hub: Hub! @relationship(type: "HAS_HISTORY", direction: IN)
   creativeArt: [CreativeArts!]!
     @relationship(type: "HAS_HISTORY", direction: IN)
 }
@@ -1027,7 +1025,6 @@ type Bacenta implements Church {
       RETURN COUNT(DISTINCT fellowship)
       """
     )
-  basontas: Basonta @relationship(type: "HAS_BASONTA", direction: OUT)
   constituency: Constituency @relationship(type: "HAS", direction: IN)
   history(limit: Int! = 3): [HistoryLog!]!
     @cypher(
@@ -1145,7 +1142,7 @@ type Fellowship implements Church {
       RETURN council
       """
     )
-  hub: [Hub!]! @relationship(type: "HAS", direction: IN)
+  hub: Hub! @relationship(type: "HAS", direction: IN)
 }
 type ClosedFellowship {
   id: ID @id
@@ -1187,126 +1184,5 @@ type ClosedFellowship {
       RETURN council
       """
     )
-  hub: [Hub!]! @relationship(type: "HAS", direction: IN)
-}
-
-# union ChurchWithServices = Fellowship | Constituency | Council
-###Basonta Church Types####
-
-type Basonta {
-  id: ID @id
-  name: String!
-  leader: Member @relationship(type: "LEADS", direction: IN)
-  bacenta: Bacenta @relationship(type: "HAS_BASONTA", direction: IN)
-  historyLogs: [HistoryLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
-  serviceLogs: [ServiceLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
-}
-
-type Hub {
-  memberCount: Int!
-    @cypher(
-      statement: """
-      MATCH (this)<-[:HAS]->(ministry:CreativeArts)<-[:BELONGS_TO]-(members:Active:Member)
-      RETURN COUNT(DISTINCT members)
-      """
-    )
-  hubFellowshipCount: Int!
-    @cypher(
-      statement: """
-      MATCH (this)-[:HAS]->(fellowships:HubFellowship:Fellowship)
-      RETURN COUNT(DISTINCT fellowships)
-      """
-    )
-  id: ID @id
-  name: String!
-  leader: Member @relationship(type: "LEADS", direction: IN)
-  history: [HistoryLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
-  hubFellowships: [Fellowship!]! @relationship(type: "HAS", direction: OUT)
-  ministry: Ministry @relationship(type: "HAS", direction: IN)
-  serviceLogs: [ServiceLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
-}
-
-type Ministry {
-  memberCount: Int!
-    @cypher(
-      statement: """
-      MATCH (this)<-[:HAS]-(:CreativeArts)<-[:BELONGS_TO]-(members:Active:Member)
-      RETURN COUNT(DISTINCT members)
-      """
-    )
-  hubFellowshipCount: Int!
-    @cypher(
-      statement: """
-      MATCH (this)-[:HAS*2]->(fellowships:HubFellowship:Fellowship)
-      RETURN COUNT(DISTINCT fellowships)
-      """
-    )
-  hubCount: Int!
-    @cypher(
-      statement: """
-      MATCH (this)-[:HAS]->(hubs:Hub)
-      RETURN COUNT(DISTINCT hubs)
-      """
-    )
-  id: ID @id
-  name: String!
-  leader: Member @relationship(type: "LEADS", direction: IN)
-  members: [Member!]! @relationship(type: "BELONGS_TO", direction: IN)
-  hubs: [Hub!]! @relationship(type: "HAS", direction: OUT)
-  stream: Stream @relationship(type: "HAS_MINISTRY", direction: IN)
-  history: [HistoryLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
-  servicelogs: [ServiceLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
-  creativeArts: CreativeArts @relationship(type: "HAS", direction: IN)
-  councils: [Council!]!
-    @cypher(
-      statement: """
-      MATCH (this)<-[:HAS]-(stream:Stream)-[:HAS]->(councils:Council)
-      RETURN councils
-      """
-    )
-  hubFellowships: [Fellowship!]!
-    @cypher(
-      statement: """
-      MATCH (this)-[:HAS*2]->(fellowship:HubFellowship:Fellowship)
-      RETURN fellowship
-      """
-    )
-}
-
-type CreativeArts {
-  memberCount: Int!
-    @cypher(
-      statement: """
-      MATCH (this)-[:HAS]->(ministry:Ministry)<-[:BELONGS_TO]-(members:Active:Member)
-      RETURN COUNT(DISTINCT members)
-      """
-    )
-  hubFellowshipCount: Int!
-    @cypher(
-      statement: """
-      MATCH (this)-[:HAS*3]->(fellowships:HubFellowship:Fellowship)
-      RETURN COUNT(DISTINCT fellowships)
-      """
-    )
-  hubCount: Int!
-    @cypher(
-      statement: """
-      MATCH (this)-[:HAS*2]->(hubs:Hub)
-      RETURN COUNT(DISTINCT hubs)
-      """
-    )
-  ministryCount: Int!
-    @cypher(
-      statement: """
-      MATCH (this)-[:HAS]->(ministries:Ministry)
-      RETURN COUNT(DISTINCT ministries)
-      """
-    )
-  id: ID @id
-  name: String!
-  leader: Member @relationship(type: "LEADS", direction: IN)
-  campus: Campus @relationship(type: "HAS_MINISTRY", direction: IN)
-  history: [HistoryLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
-  serviceLogs: [ServiceLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
-  ministries: [Ministry!]! @relationship(type: "HAS", direction: OUT)
+  hub: Hub! @relationship(type: "HAS", direction: IN)
 }
