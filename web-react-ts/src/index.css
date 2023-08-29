@@ -93,10 +93,10 @@
 
 /* Component Styling */
 
-.card {
+/* .card {
   background-color: var(--card);
   border: 1px solid var(--border);
-}
+} */
 
 .member-info-card {
   background-color: var(--card);
@@ -208,6 +208,8 @@ input:-webkit-autofill:active {
 
 select {
   -webkit-appearance: none;
+  appearance: none;
+  appearance: none;
   -webkit-border-radius: 0;
   border-radius: 0;
 }

@@ -87,12 +87,6 @@ const AppWithApollo = () => {
     connectToDevTools: true,
   })
 
-  const [theme, setTheme] = useState('dark')
-  useEffect(() => {
-    if (theme === 'dark') document.body.style.backgroundColor = '#121212'
-    else document.body.style.backgroundColor = '#FFFFFF'
-  }, [theme])
-
   // if (new Date().getDay() === 1 && new Date().getHours() > 4) {
   //   return <Sabbath />
   // }
@@ -107,7 +101,7 @@ const AppWithApollo = () => {
 
   return (
     <ApolloProvider client={client}>
-      <AppWithContext token={accessToken} themeOptions={{ theme, setTheme }} />
+      <AppWithContext token={accessToken} />
     </ApolloProvider>
   )
 }
