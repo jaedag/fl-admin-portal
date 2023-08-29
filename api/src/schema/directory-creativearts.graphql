@@ -65,6 +65,17 @@ extend type Member {
     @relationship(type: "IS_ADMIN_FOR", direction: OUT)
 }
 
+extend type Fellowship {
+  councilHubs: [Hub!]!
+    @cypher(
+      statement: """
+      MATCH (this)<-[:HAS]-(:Bacenta)<-[:HAS]-(:Constituency)<-[:HAS]-(council:Council)
+      MATCH (council)-[:HAS_MINISTRY]->(hub:Hub)
+      RETURN hub
+      """
+    )
+}
+
 type HubFellowship implements Church {
   id: ID @id
   bankingCode: Int
@@ -358,10 +369,7 @@ extend type Mutation {
     )
 
   #Set Fellowship to be 'HubFellowship'
-  SetFellowshipToHubFellowship(
-    fellowshipId: ID!
-    hubId: ID!
-  ): Fellowship!
+  SetFellowshipToHubFellowship(fellowshipId: ID!, hubId: ID!): Fellowship!
     @cypher(
       statement: """
       MATCH (fellowship:Active:Fellowship {id:$fellowshipId})
@@ -385,10 +393,7 @@ extend type Mutation {
       """
     )
 
-  SetHubFellowshipToRegularFellowship(
-    fellowshipId: ID!
-    hubId: ID!
-  ): Fellowship!
+  SetHubFellowshipToRegularFellowship(fellowshipId: ID!): Fellowship!
     @auth(
       rules: [
         {
@@ -403,22 +408,18 @@ extend type Mutation {
     )
     @cypher(
       statement: """
-      MATCH (fellowship:Active:HubFellowship {id:$fellowshipId})
+      MATCH (fellowship:Active:HubFellowship {id: $fellowshipId})
 
       CREATE (log:HistoryLog {id:apoc.create.uuid()})
         SET log.timeStamp = datetime(),
-        log.historyRecord = fellowship.name + ' hub Fellowship was made into a fellowship '
+        log.historyRecord = fellowship.name + ' hub fellowship was made into a regular fellowship '
 
       WITH log,fellowship
-      WITH fellowship
-        CALL {
-          WITH fellowship
-          MATCH (hub:Hub {id: $hubId})
-          OPTIONAL MATCH (fellowship)-[r:HAS]-(hub)
-          DELETE r
-          RETURN COUNT(fellowship)
-        }
+      
       MATCH (admin:Active:Member {auth_id: $auth.jwt.sub})
+      MATCH (fellowship)<-[r:HAS]-(hub:Hub)
+      DELETE r
+
       MERGE (date:TimeGraph {date:date()})
       MERGE (log)-[:LOGGED_BY]->(admin)
       MERGE (log)-[:RECORDED_ON]->(date)

@@ -75,6 +75,7 @@ export const SET_FELLOWSHIP_TO_HUB_FELLOWSHIP = gql`
     SetFellowshipToHubFellowship(fellowshipId: $fellowshipId, hubId: $hubId) {
       id
       name
+      hubStatus
       vacationStatus
       history {
         id
@@ -85,16 +86,11 @@ export const SET_FELLOWSHIP_TO_HUB_FELLOWSHIP = gql`
 `
 
 export const SET_HUB_FELLOWSHIP_TO_REGULAR_FELLOWSHIP = gql`
-  mutation SetHubFellowshipToRegularFellowship(
-    $fellowshipId: ID!
-    $hubId: ID!
-  ) {
-    SetHubFellowshipToRegularFellowship(
-      fellowshipId: $fellowshipId
-      hubId: $hubId
-    ) {
+  mutation SetHubFellowshipToRegularFellowship($fellowshipId: ID!) {
+    SetHubFellowshipToRegularFellowship(fellowshipId: $fellowshipId) {
       id
       name
+      hubStatus
       vacationStatus
       history {
         id

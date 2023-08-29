@@ -141,7 +141,7 @@ export const MAKE_OVERSIGHT_INACTIVE = gql`
 `
 export const MAKE_HUB_INACTIVE = gql`
   mutation CloseDownHub($leaderId: ID!, $hubId: ID!) {
-    closeDownHub(leaderId: $leaderId, hubId: $hubId) {
+    CloseDownHub(leaderId: $leaderId, hubId: $hubId) {
       id
       name
 
@@ -164,7 +164,7 @@ export const MAKE_HUB_INACTIVE = gql`
 
 export const MAKE_MINISTRY_INACTIVE = gql`
   mutation CloseDownMinistry($ministryId: ID!, $leaderId: ID!) {
-    closeDownMinistry(ministryId: $ministryId, leaderId: $leaderId) {
+    CloseDownMinistry(ministryId: $ministryId, leaderId: $leaderId) {
       id
       name
 

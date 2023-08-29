@@ -12,3 +12,17 @@ export const GET_MINISTRY_COUNCILS = gql`
     }
   }
 `
+
+export const GET_FELLOWSHIP_COUNCIL_HUBS = gql`
+  query getFellowshipCouncilHubs($fellowshipId: ID!) {
+    fellowships(where: { id: $fellowshipId }) {
+      id
+      name
+      hubStatus
+      councilHubs {
+        id
+        name
+      }
+    }
+  }
+`

@@ -1084,6 +1084,8 @@ type Fellowship implements Church {
       RETURN status
       """
     )
+  hubStatus: Boolean!
+    @cypher(statement: "MATCH (this) RETURN EXISTS((this)<-[:HAS]-(:Hub))")
   bacenta: Bacenta @relationship(type: "HAS", direction: IN)
   leader: Member @relationship(type: "LEADS", direction: IN)
   members: [Member!]!

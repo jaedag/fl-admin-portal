@@ -164,6 +164,7 @@ export const DISPLAY_FELLOWSHIP = gql`
     fellowships(where: { id: $id }, options: { limit: 1 }) {
       id
       noIncomeTracking
+      hubStatus
       vacationStatus
       stream_name
       bankingCode
