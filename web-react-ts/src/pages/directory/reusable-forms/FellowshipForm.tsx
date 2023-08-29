@@ -154,16 +154,18 @@ const FellowshipForm = (props: FellowshipFormProps) => {
               <div className="form-group">
                 <Row className="row-cols-1 row-cols-md-2">
                   {/* <!-- Basic Info Div --> */}
-                  <Container className="mb-4">
-                    <Button
-                      variant="warning"
-                      onClick={() => {
-                        navigate('/fellowship/make-hub-fellowship')
-                      }}
-                    >
-                      Hub Fellowship Options
-                    </Button>
-                  </Container>
+                  <RoleView roles={permitAdmin('Ministry')}>
+                    <Container className="mb-4">
+                      <Button
+                        variant="warning"
+                        onClick={() => {
+                          navigate('/fellowship/make-hub-fellowship')
+                        }}
+                      >
+                        Hub Fellowship Options
+                      </Button>
+                    </Container>
+                  </RoleView>
                   <Col className="mb-2">
                     <Row className="form-row">
                       <RoleView roles={permitAdmin('Constituency')}>
