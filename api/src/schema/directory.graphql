@@ -1142,7 +1142,7 @@ type Fellowship implements Church {
       RETURN council
       """
     )
-  hub: Hub! @relationship(type: "HAS", direction: IN)
+  hub: Hub @relationship(type: "HAS", direction: IN)
 }
 type ClosedFellowship {
   id: ID @id
