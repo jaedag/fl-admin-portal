@@ -1,8 +1,7 @@
 import CloudinaryImage from 'components/CloudinaryImage'
 import PlaceholderCustom from 'components/Placeholder'
-import { MemberContext } from 'contexts/MemberContext'
 import { capitalise } from 'global-utils'
-import React, { useContext } from 'react'
+import React from 'react'
 import { Button, Col, Row } from 'react-bootstrap'
 import './MenuButton.css'
 
@@ -23,16 +22,16 @@ type MenuButtonProps = {
 }
 
 const MenuButton = (props: MenuButtonProps) => {
-  const { theme } = useContext(MemberContext)
-
   const icon = props.icon || props.iconComponent || props.avatar || props.number
+  const htmlElement = document.querySelector('html')
+  const currentTheme = htmlElement?.getAttribute('data-bs-theme')
 
   return (
     <Button
       onClick={props.onClick}
       variant="primary"
       size="lg"
-      className={`${theme} ${props.color} menu-buttons`}
+      className={`${currentTheme} ${props.color} menu-buttons`}
     >
       <Row>
         {icon && (
@@ -56,14 +55,14 @@ const MenuButton = (props: MenuButtonProps) => {
                   />
                 )}
                 {props.iconComponent && (
-                  <div className={`${theme} ${props.color}`}>
+                  <div className={`${currentTheme} ${props.color}`}>
                     <props.iconComponent />
                   </div>
                 )}
                 {props.number && <div className="fw-bold">{props.number}</div>}
               </div>
               {props.iconCaption && (
-                <small className={`${theme} icon-caption`}>
+                <small className={`${currentTheme} icon-caption`}>
                   {props.iconCaption}
                 </small>
               )}

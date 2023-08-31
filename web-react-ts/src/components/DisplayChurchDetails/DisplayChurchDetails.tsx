@@ -110,11 +110,13 @@ const DisplayChurchDetails = (props: DisplayChurchDetailsProps) => {
       break
   }
 
-  const { theme, currentUser } = useContext(MemberContext)
+  const { currentUser } = useContext(MemberContext)
   const [submitting, setSubmitting] = useState(false)
   const { clickCard, constituencyId, councilId, streamId, campusId } =
     useContext(ChurchContext)
   const { togglePopup, isOpen } = usePopup()
+  const htmlElement = document.querySelector('html')
+  const currentTheme = htmlElement?.getAttribute('data-bs-theme') || 'dark'
 
   //Change Admin Initialised
   const [MakeConstituencyAdmin] = useMutation(MAKE_CONSTITUENCY_ADMIN)
@@ -314,7 +316,7 @@ const DisplayChurchDetails = (props: DisplayChurchDetailsProps) => {
                       variant="primary"
                       size="lg"
                       type="submit"
-                      className={`btn-main ${theme}`}
+                      className={`btn-main ${currentTheme}`}
                       disabled={
                         !formik.isValid || formik.isSubmitting || submitting
                       }
@@ -418,11 +420,11 @@ const DisplayChurchDetails = (props: DisplayChurchDetailsProps) => {
             <div className="d-grid gap-2">
               <PlaceholderCustom
                 loading={props.loading}
-                className={`btn-graphs ${theme}`}
+                className={`btn-graphs ${currentTheme}`}
                 button="true"
               >
                 <Button
-                  className={`${theme}`}
+                  className={`${currentTheme}`}
                   onClick={() => {
                     navigate(`/${props.churchType.toLowerCase()}/editbussing`)
                   }}
@@ -437,11 +439,11 @@ const DisplayChurchDetails = (props: DisplayChurchDetailsProps) => {
         <div className="d-grid gap-2">
           <PlaceholderCustom
             loading={props.loading}
-            className={`btn-graphs ${theme}`}
+            className={`btn-graphs ${currentTheme}`}
             button="button"
           >
             <Button
-              className={`btn-graphs ${theme}`}
+              className={`btn-graphs ${currentTheme}`}
               onClick={() => {
                 setUserChurch({
                   id: props.churchId,
@@ -458,11 +460,11 @@ const DisplayChurchDetails = (props: DisplayChurchDetailsProps) => {
           {shouldFill() && (
             <PlaceholderCustom
               loading={props.loading}
-              className={`btn-graphs ${theme}`}
+              className={`btn-graphs ${currentTheme}`}
               button="button"
             >
               <Button
-                className={`btn-graphs ${theme}`}
+                className={`btn-graphs ${currentTheme}`}
                 onClick={() => {
                   setUserChurch({
                     id: props.churchId,
@@ -563,12 +565,12 @@ const DisplayChurchDetails = (props: DisplayChurchDetailsProps) => {
             <PlaceholderCustom
               loading={props.loading}
               className="btn-graphs"
-              variant={theme}
+              variant={currentTheme as 'dark' | 'light'}
               button="button"
             >
               <Button
                 className="btn-graphs"
-                variant={theme}
+                variant={currentTheme as 'dark' | 'light'}
                 onClick={() =>
                   navigate(
                     `/${props.subChurch?.toLowerCase()}/add${props.subChurch?.toLowerCase()}`
