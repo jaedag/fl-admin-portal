@@ -16,6 +16,7 @@ import SearchBox from 'components/SearchBox'
 import { ArrowClockwise, ChevronLeft, Moon, Sun } from 'react-bootstrap-icons'
 import './Navigation.css'
 import { useNavigate } from 'react-router-dom'
+import { useState } from 'react'
 
 const Navigator = () => {
   const navigate = useNavigate()
@@ -26,6 +27,13 @@ const Navigator = () => {
 
   const htmlElement = document.querySelector('html')
   const currentTheme = htmlElement?.getAttribute('data-bs-theme')
+
+  const [isDarkMode, setIsDarkMode] = useState(currentTheme === 'dark')
+
+  const toggleColorMode = () => {
+    setIsDarkMode(!isDarkMode)
+    htmlElement?.setAttribute('data-bs-theme', isDarkMode ? 'light' : 'dark')
+  }
 
   return (
     <Navbar collapseOnSelect bg="dark" expand={false} sticky="top">
@@ -86,10 +94,10 @@ const Navigator = () => {
                 </Col>
                 <Col>
                   <div className="d-flex justify-content-center align-items-center h-100">
-                    {currentTheme === 'light' ? (
-                      <Moon size={22} />
+                    {!isDarkMode ? (
+                      <Moon size={22} onClick={toggleColorMode} />
                     ) : (
-                      <Sun size={22} />
+                      <Sun size={22} onClick={toggleColorMode} />
                     )}
                   </div>
                 </Col>
