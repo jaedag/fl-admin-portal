@@ -1,5 +1,3 @@
-import { MemberContext } from 'contexts/MemberContext'
-import React, { useContext } from 'react'
 import { Button, Spinner } from 'react-bootstrap'
 type SubmitButtonProps = {
   formik: any
@@ -8,14 +6,13 @@ type SubmitButtonProps = {
 
 const SubmitButton = (props: SubmitButtonProps) => {
   const { formik, ...rest } = props
-  const { theme } = useContext(MemberContext)
 
   return (
     <Button
-      variant="primary"
+      variant="success"
       size="lg"
       type="submit"
-      className={`btn-main ${theme} ${!formik.isValid && 'invalid'}`}
+      className={`${!formik.isValid && 'invalid'}`}
       disabled={formik.isSubmitting}
       {...rest}
     >

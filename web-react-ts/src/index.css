@@ -78,9 +78,6 @@
   background-color: var(--text-box-inner);
 }
 
-.font-primary {
-  color: var(--text-primary);
-}
 
 .spinner-border-center {
   margin-left: auto;

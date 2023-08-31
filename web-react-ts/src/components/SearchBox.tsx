@@ -1,61 +1,35 @@
-import React, { useContext } from 'react'
-import { Formik, Form, FormikHelpers } from 'formik'
-import * as Yup from 'yup'
-import { Col, Button, Nav } from 'react-bootstrap'
-import './SearchBox.css'
+import { useContext } from 'react'
+import { Button, InputGroup, Form, Nav } from 'react-bootstrap'
 import { SearchContext } from 'contexts/MemberContext'
-import { useNavigate } from 'react-router'
-import Input from './formik/Input'
-
-type FormOptions = {
-  searchKeyVal: string
-}
+import './SearchBox.css'
+import { Link } from 'react-router-dom'
 
 const SearchBox = () => {
   const { setSearchKey } = useContext(SearchContext)
-  const navigate = useNavigate()
-  const initialValues: FormOptions = {
-    searchKeyVal: '',
-  }
-  const validationSchema = Yup.object({
-    searchKeyVal: Yup.string().required(''),
-  })
-
-  const onSubmit = (
-    values: FormOptions,
-    onSubmitProps: FormikHelpers<FormOptions>
-  ) => {
-    onSubmitProps.setSubmitting(true)
-    setSearchKey(values.searchKeyVal)
-    navigate('/search-results')
-    onSubmitProps.setSubmitting(false)
-  }
 
   return (
-    <Formik
-      initialValues={initialValues}
-      validationSchema={validationSchema}
-      onSubmit={onSubmit}
-    >
-      {() => (
-        <Form className="form-row">
-          <Col className="d-flex mt-2">
-            <Input
-              className="nav-search-box"
-              name="searchKeyVal"
-              placeholder="Search for anything..."
-              aria-describedby="Global Search"
-            />
-
-            <Nav.Link className="m-0 p-0" as="div" eventKey={10}>
-              <Button className="nav-search-btn" type="submit">
-                Search
-              </Button>
-            </Nav.Link>
-          </Col>
-        </Form>
-      )}
-    </Formik>
+    <Form onSubmit={(e) => e.preventDefault()}>
+      <InputGroup className="mt-4">
+        <Form.Control
+          name="searchKeyVal"
+          className="nav-search-box"
+          placeholder="Search for anything..."
+          aria-label="Search for anything..."
+          aria-describedby="submit-search"
+          onChange={(e) => setSearchKey(e.target.value)}
+        />
+        <Button id="submit-search" variant="success" type="submit">
+          <Nav.Link
+            as={Link}
+            eventKey={10}
+            to="/search-results"
+            className="p-0"
+          >
+            Search
+          </Nav.Link>
+        </Button>
+      </InputGroup>
+    </Form>
   )
 }
 
