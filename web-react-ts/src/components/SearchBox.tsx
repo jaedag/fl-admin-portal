@@ -4,7 +4,6 @@ import { SearchContext } from 'contexts/MemberContext'
 import './SearchBox.css'
 import { useNavigate } from 'react-router-dom'
 import { Form, Formik, FormikHelpers } from 'formik'
-import * as Yup from 'yup'
 
 const SearchBox = ({ handleShow }: { handleShow: () => void }) => {
   const { setSearchKey } = useContext(SearchContext)

@@ -1,4 +1,4 @@
-import { throwToSentry } from 'global-utils'
+import { showUserReportDialog } from 'global-utils'
 import useModal from 'hooks/useModal'
 import React from 'react'
 import { Button, Card, Container, Modal } from 'react-bootstrap'
@@ -146,7 +146,7 @@ const ErrorPage = ({ error }: ErrorScreenProps) => {
                 <Button
                   variant="outline-warning"
                   className="my-2"
-                  onClick={() => throwToSentry('', error)}
+                  onClick={() => showUserReportDialog}
                 >
                   Send Crash Report
                 </Button>
