@@ -29,7 +29,7 @@ const DetailsFellowship = () => {
     loading: fellowshipLoading,
     error: fellowshipError,
   } = useQuery(DISPLAY_FELLOWSHIP, {
-    variables: { sid: fellowshipId },
+    variables: { id: fellowshipId },
   })
   const { data: historyData } = useQuery(DISPLAY_FELLOWSHIP_HISTORY, {
     variables: { id: fellowshipId },
