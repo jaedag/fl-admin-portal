@@ -10,7 +10,6 @@ import {
   Button,
   Card,
 } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
 import { menuItems } from './dashboard-utils'
 import SearchBox from 'components/SearchBox'
 import { ArrowClockwise, ChevronLeft, Moon, Sun } from 'react-bootstrap-icons'
@@ -29,6 +28,9 @@ const Navigator = () => {
   const currentTheme = htmlElement?.getAttribute('data-bs-theme')
 
   const [isDarkMode, setIsDarkMode] = useState(currentTheme === 'dark')
+  const [show, setShow] = useState(false)
+
+  const handleShow = () => setShow(!show)
 
   const toggleColorMode = () => {
     setIsDarkMode(!isDarkMode)
@@ -38,7 +40,7 @@ const Navigator = () => {
   return (
     <Navbar collapseOnSelect bg="dark" expand={false} sticky="top">
       <Container fluid>
-        <Navbar.Toggle aria-controls="offcanvasNavbar" />
+        <Navbar.Toggle aria-controls="offcanvasNavbar" onClick={handleShow} />
         {isRunningStandalone() && (
           <Navbar.Brand>
             <button className="btn btn-transparent-outline">
@@ -57,6 +59,8 @@ const Navigator = () => {
           id="offcanvasNavbar"
           aria-labelledby="offcanvasNavbarLabel"
           placement="start"
+          show={show}
+          onHide={handleShow}
         >
           <Offcanvas.Header closeButton>
             <Offcanvas.Title id="offcanvasNavbarLabel"></Offcanvas.Title>
@@ -67,33 +71,31 @@ const Navigator = () => {
                 <RoleView key={index} roles={menuItem.roles}>
                   <Button
                     variant={`outline-${isDarkMode ? 'light' : 'dark'}`}
-                    className="my-1 p-0"
+                    className="my-1 nav-btn"
+                    onClick={() => {
+                      navigate(menuItem.to)
+                      handleShow()
+                    }}
                   >
-                    <Nav.Link
-                      as={Link}
-                      eventKey={index}
-                      to={menuItem.to}
-                      className="nav-btn"
-                    >
-                      {menuItem.name}
-                    </Nav.Link>
+                    {menuItem.name}
                   </Button>
                 </RoleView>
               ))}
-              <SearchBox />
             </Nav>
+            <SearchBox handleShow={handleShow} />
           </Offcanvas.Body>
           <Card>
             <Container className="footer p-3">
               <Row>
                 <Col>
-                  <Nav.Link
-                    as={Link}
-                    eventKey={menuItems.length}
-                    to="/user-profile"
+                  <div
+                    onClick={() => {
+                      handleShow()
+                      navigate('/user-profile')
+                    }}
                   >
                     <UserProfileIcon />
-                  </Nav.Link>
+                  </div>
                 </Col>
                 <Col>
                   <div className="d-flex justify-content-center align-items-center h-100">

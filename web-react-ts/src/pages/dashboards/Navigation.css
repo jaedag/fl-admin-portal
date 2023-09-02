@@ -15,18 +15,15 @@
 }
 
 .nav-btn {
-  padding: 12px 0px;
-  margin: 5px 0px;
+  padding: 17px 0px;
   text-align: center;
 }
+.nav-link:active {
+    background-color: none;
+    text-decoration: none;
+    user-select: none;
+  }
 
-.dark .nav-btn {
-  background-color: #302f2f;
-}
-
-.light .nav-btn {
-  background-color: #e6dfdfe0;
-}
 
 .footer.dark {
   background-color: #101010;
