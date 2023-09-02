@@ -146,7 +146,7 @@ const ErrorPage = ({ error }: ErrorScreenProps) => {
                 <Button
                   variant="outline-warning"
                   className="my-2"
-                  onClick={() => showUserReportDialog}
+                  onClick={showUserReportDialog}
                 >
                   Send Crash Report
                 </Button>
