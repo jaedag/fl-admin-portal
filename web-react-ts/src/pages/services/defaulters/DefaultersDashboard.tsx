@@ -97,7 +97,7 @@ const DefaultersDashboard = () => {
         : '#',
     },
     {
-      title: 'Canc. Service',
+      title: 'Cancelled Service',
       data: church?.cancelledServicesThisWeekCount,
       color: church?.cancelledServicesThisWeekCount ? 'bad' : 'good',
       link: church?.cancelledServicesThisWeekCount

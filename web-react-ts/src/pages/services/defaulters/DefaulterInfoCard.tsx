@@ -19,7 +19,7 @@ const DefaulterInfoCard = ({
   return (
     <Card className="text-center" onClick={() => navigate(defaulter.link)}>
       <Card.Header>
-        <div className=" text-nowrap text-truncate">{defaulter.title}</div>
+        <div className="text-nowrap text-truncate">{defaulter.title}</div>
       </Card.Header>
       <PlaceholderCustom
         loading={defaulter.data === undefined || defaulter.data === null}
