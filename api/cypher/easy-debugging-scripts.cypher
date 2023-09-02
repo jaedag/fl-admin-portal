@@ -32,3 +32,4 @@ record.cash = 3849.14,
 record.income = 37907.62
 
 RETURN record.cash, record.onlineGiving;
+

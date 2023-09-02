@@ -639,20 +639,20 @@ type Campus implements Church {
 
   ministryCount: Int!
     @cypher(
-      statement: "MATCH (this)-[:HAS*2]->(ministry:CreativeArts) RETURN COUNT(ministry)"
+      statement: "MATCH (this)-[:HAS_MINISTRY]->(creativeArts:CreativeArts)-[:HAS]->(ministry:Ministry) RETURN COUNT(ministry)"
     )
   hubCount: Int!
-    @cypher(statement: "MATCH (this)-[:HAS*3]->(hub:Hub) RETURN COUNT(hub)")
+    @cypher(statement: "MATCH (this)-[:HAS_MINISTRY]->(creativeArts:CreativeArts)-[:HAS*2]->(hubs:Hub) RETURN COUNT(hub)")
   hubFellowshipCount: Int!
     @cypher(
-      statement: "MATCH (this)-[:HAS*4]->(fellowship:HubFellowship) RETURN COUNT(fellowship)"
+      statement: "MATCH (this)-[:HAS_MINISTRY]->(creativeArts:CreativeArts)-[:HAS*3]->(fellowship:HubFellowship) RETURN COUNT(fellowship)"
     )
   hubFellowships: [Fellowship!]!
     @cypher(
       statement: "MATCH (this)-[:HAS*4]->(fellowship:HubFellowship) RETURN fellowship"
     )
   hubs: [Hub!]!
-    @cypher(statement: "MATCH (this)-[:HAS*3]->(hub:Hub) RETURN hub")
+    @cypher(statement: "MATCH (this)-[:HAS_MINISTRY]->(creativeArts:CreativeArts)-[:HAS*2]->(hub:Hub) RETURN hub")
 }
 
 type Stream implements Church {
@@ -762,10 +762,10 @@ type Stream implements Church {
     )
   ministryCount: Int!
     @cypher(
-      statement: "MATCH (this)-[:HAS]->(ministry:Ministry) RETURN COUNT(ministry)"
+      statement: "MATCH (this)-[:HAS_MINISTRY]->(ministry:Ministry) RETURN COUNT(ministry)"
     )
   hubCount: Int!
-    @cypher(statement: "MATCH (this)-[:HAS*2]->(hub:Hub) RETURN COUNT(hub)")
+    @cypher(statement: "MATCH (this)-[:HAS_MINISTRY]->(ministry:Ministry)-[:HAS]->(hubs:Hub) RETURN COUNT(hubs)")
   hubFellowshipCount: Int!
     @cypher(
       statement: "MATCH (this)-[:HAS*3]->(fellowships:HubFellowship) RETURN COUNT(fellowships)"
@@ -775,7 +775,7 @@ type Stream implements Church {
       statement: "MATCH (this)-[:HAS*3]->(fellowships:HubFellowship) RETURN fellowships"
     )
   hubs: [Hub!]!
-    @cypher(statement: "MATCH (this)-[:HAS*2]->(hub:Hub) RETURN hub")
+    @cypher(statement: "MATCH (this)-[:HAS_MINISTRY]->(ministry:Ministry)-[HAS]->(hubs:Hub) RETURN hubs")
 }
 
 type Council implements Church {
@@ -869,7 +869,7 @@ type Council implements Church {
       RETURN records ORDER BY date.date DESC SKIP $skip LIMIT $limit
       """
     )
-  hubs: [Hub!]! @relationship(type: "HAS", direction: OUT)
+  hubs: [Hub!]! @relationship(type: "HAS_MINISTRY", direction: OUT)
 }
 
 type Constituency implements Church {
@@ -1053,7 +1053,7 @@ type Bacenta implements Church {
   hubs: [Hub!]!
     @cypher(
       statement: """
-      MATCH (this)<-[:HAS*2]-(council:Council)-[:HAS]->(hubs:Hub)
+      MATCH (this)<-[:HAS*2]-(council:Council)-[:HAS_MINISTRY]->(hubs:Hub)
       RETURN hubs
       """
     )

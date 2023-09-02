@@ -137,7 +137,7 @@ type Ministry {
   councils: [Council!]!
     @cypher(
       statement: """
-      MATCH (this)<-[:HAS]-(stream:Stream)-[:HAS]->(councils:Council)
+      MATCH (this)<-[:HAS_MINISTRY]-(stream:Stream)-[:HAS]->(councils:Council)
       RETURN councils
       """
     )
@@ -326,7 +326,7 @@ extend type Mutation {
           log.historyRecord = ministry.name +' Ministry History Begins'
 
       WITH ministry, stream, leader, creativeArt, currentUser, log
-      MERGE (stream)-[:HAS_MINSITRY]->(ministry)
+      MERGE (stream)-[:HAS_MINISTRY]->(ministry)
       MERGE (leader)-[:LEADS]->(ministry)
       MERGE (creativeArt)-[:HAS]->(ministry)
 
