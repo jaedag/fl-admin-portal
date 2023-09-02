@@ -23,3 +23,12 @@ OPTIONAL MATCH (record)<-[:ABSENT_FROM_SERVICE]-(absent:Member)
 SET absent.imclChecked = true
 
 RETURN absent;
+
+
+// 37907.62 - 3849.14 - 19536.28 - 14522.2
+MATCH (record:ServiceRecord {id: "8001b4bd-9ffd-48dc-96e5-f12d3188b78c"})
+SET record.onlineGiving = 19536.28 + 14522.2,
+record.cash = 3849.14,
+record.income = 37907.62
+
+RETURN record.cash, record.onlineGiving;
