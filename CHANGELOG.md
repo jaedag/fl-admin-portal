@@ -1,3 +1,24 @@
+### 7.8.0 (2023-09-02)
+
+##### New Features
+
+*  update fellowship details screen to show creative arts breadcrumb ([ad560e12](https://github.com/firstlovecenter/fl-pastoral-care/commit/ad560e1283d599468fe6689a3b9ec4756c448229))
+*  implement feature to create hub fellowships ([90ba612e](https://github.com/firstlovecenter/fl-pastoral-care/commit/90ba612e60ed72cccbabd149cb4cef2ea7507da0))
+*  implement all create mutations ([3868c179](https://github.com/firstlovecenter/fl-pastoral-care/commit/3868c179f606d78b80db89820e77ad24d890af27))
+
+##### Bug Fixes
+
+*  implement truncating texts after 2 lines ([3b1bdf3a](https://github.com/firstlovecenter/fl-pastoral-care/commit/3b1bdf3ac86a5aad5ca7a1b9292cfda2f10a2ab5))
+*  update code of the day to end of September ([d305e61d](https://github.com/firstlovecenter/fl-pastoral-care/commit/d305e61d18ea1aa9abd353f7dc01be486b683897))
+*  minor improvement to return councils from ministry ([868f7790](https://github.com/firstlovecenter/fl-pastoral-care/commit/868f779074a59fe67a278b8dd4f469c7da8c0d9c))
+*  change creativeArts relationship name on main churches ([fe7036de](https://github.com/firstlovecenter/fl-pastoral-care/commit/fe7036dec4bfcbf9ba65191d1372b2869ea4ec95))
+*  make fellowship.hub nullable ([a031e762](https://github.com/firstlovecenter/fl-pastoral-care/commit/a031e762f2447801faaf2ceac37309481ebb9556))
+*  prevent normal fellowship details from breaking ([3d5545b2](https://github.com/firstlovecenter/fl-pastoral-care/commit/3d5545b2ed557b3a2e3478a3344a084be84bb1a0))
+*  add roleview on hub fellowship options ([016d88a6](https://github.com/firstlovecenter/fl-pastoral-care/commit/016d88a63979c8dc260a054237a7aeb3ee4649a4))
+*  fix bugs in creating creative arts ([75c1db8b](https://github.com/firstlovecenter/fl-pastoral-care/commit/75c1db8bdd2e6bc36db8c7d935bc085e0d24c1b3))
+*  fix typo ([bb508af9](https://github.com/firstlovecenter/fl-pastoral-care/commit/bb508af962fafec150d288ad188ab4268ed2fabd))
+*  add som e spaces ([c4da2a0e](https://github.com/firstlovecenter/fl-pastoral-care/commit/c4da2a0e729ad09141b40e60777d7516245bccb8))
+
 #### 7.7.10 (2023-08-18)
 
 ##### New Features
