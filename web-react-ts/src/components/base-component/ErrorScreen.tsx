@@ -55,10 +55,6 @@ interface ErrorScreenProps {
 }
 
 const ErrorPage = ({ error }: ErrorScreenProps) => {
-  if (error) {
-    throwToSentry('', error)
-  }
-
   const { show, handleShow, handleClose } = useModal()
 
   const { graphQLErrors, networkError } = error as ApolloError
@@ -146,6 +142,15 @@ const ErrorPage = ({ error }: ErrorScreenProps) => {
               <Button variant="danger" onClick={handleShow}>
                 Show Details
               </Button>
+              <div>
+                <Button
+                  variant="outline-warning"
+                  className="my-2"
+                  onClick={() => throwToSentry('', error)}
+                >
+                  Send Crash Report
+                </Button>
+              </div>
             </Container>
           </Card.Footer>
         </Card>
