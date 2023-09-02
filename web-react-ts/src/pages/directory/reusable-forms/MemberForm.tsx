@@ -57,14 +57,15 @@ const MemberForm = ({
 }: MemberFormProps) => {
   const { currentUser, memberId } = useContext(MemberContext)
   const { campusId } = useContext(ChurchContext)
-  const { data: ministriesData, loading: ministriesLoading } = useQuery(
-    GET_CAMPUS_MINISTRIES,
-    {
-      variables: {
-        id: campusId,
-      },
-    }
-  )
+  const {
+    data: ministriesData,
+    loading: ministriesLoading,
+    error: ministriesError,
+  } = useQuery(GET_CAMPUS_MINISTRIES, {
+    variables: {
+      id: campusId,
+    },
+  })
 
   const [MakeMemberInactive] = useMutation(MAKE_MEMBER_INACTIVE)
 
@@ -385,7 +386,7 @@ const MemberForm = ({
       </Formik>
     )
   } else {
-    return <ErrorScreen />
+    return <ErrorScreen error={ministriesError} />
   }
 }
 

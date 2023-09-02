@@ -31,6 +31,7 @@ import usePopup from 'hooks/usePopup'
 import { Church, ChurchLevel, MemberWithoutBioData, Role } from 'global-types'
 import { BacentaWithArrivals } from 'pages/arrivals/arrivals-types'
 import SearchMember from 'components/formik/SearchMember'
+import CloudinaryImage from 'components/CloudinaryImage'
 
 type DisplayChurchDetailsProps = {
   details: {
@@ -109,11 +110,13 @@ const DisplayChurchDetails = (props: DisplayChurchDetailsProps) => {
       break
   }
 
-  const { theme, currentUser } = useContext(MemberContext)
+  const { currentUser } = useContext(MemberContext)
   const [submitting, setSubmitting] = useState(false)
   const { clickCard, constituencyId, councilId, streamId, campusId } =
     useContext(ChurchContext)
   const { togglePopup, isOpen } = usePopup()
+  const htmlElement = document.querySelector('html')
+  const currentTheme = htmlElement?.getAttribute('data-bs-theme') || 'dark'
 
   //Change Admin Initialised
   const [MakeConstituencyAdmin] = useMutation(MAKE_CONSTITUENCY_ADMIN)
@@ -313,7 +316,7 @@ const DisplayChurchDetails = (props: DisplayChurchDetailsProps) => {
                       variant="primary"
                       size="lg"
                       type="submit"
-                      className={`btn-main ${theme}`}
+                      className={`btn-main ${currentTheme}`}
                       disabled={
                         !formik.isValid || formik.isSubmitting || submitting
                       }
@@ -341,13 +344,35 @@ const DisplayChurchDetails = (props: DisplayChurchDetailsProps) => {
             clickCard(props.leader)
           }}
         >
-          <DetailsCard
-            loading={props.loading}
-            heading={props.leaderTitle}
-            detail={props.leader && props.leader?.nameWithTitle}
-            img={props.leader?.pictureUrl}
-            bgNone
-          />
+          <Row className="my-2">
+            <Col xs="auto">
+              <PlaceholderCustom
+                className="img-search-placeholder"
+                as="div"
+                xs={12}
+                loading={props.loading}
+              >
+                <CloudinaryImage
+                  src={props.leader?.pictureUrl}
+                  className="img-search-placeholder"
+                />
+              </PlaceholderCustom>
+            </Col>
+            <Col>
+              <PlaceholderCustom loading={props.loading} as="span" xs={12}>
+                <span className={`card-heading text-secondary text-truncate`}>
+                  {props.leaderTitle}
+                </span>
+              </PlaceholderCustom>
+              <PlaceholderCustom loading={props.loading} as="h2" xs={12}>
+                <div className="d-flex justify-content-between">
+                  <h2 className={`card-detail`}>
+                    {props.leader?.nameWithTitle}
+                  </h2>
+                </div>
+              </PlaceholderCustom>
+            </Col>
+          </Row>
         </Link>
         {props.details?.length && (
           <Row>
@@ -395,11 +420,11 @@ const DisplayChurchDetails = (props: DisplayChurchDetailsProps) => {
             <div className="d-grid gap-2">
               <PlaceholderCustom
                 loading={props.loading}
-                className={`btn-graphs ${theme}`}
+                className={`btn-graphs ${currentTheme}`}
                 button="true"
               >
                 <Button
-                  className={`${theme}`}
+                  className={`${currentTheme}`}
                   onClick={() => {
                     navigate(`/${props.churchType.toLowerCase()}/editbussing`)
                   }}
@@ -414,11 +439,11 @@ const DisplayChurchDetails = (props: DisplayChurchDetailsProps) => {
         <div className="d-grid gap-2">
           <PlaceholderCustom
             loading={props.loading}
-            className={`btn-graphs ${theme}`}
+            className={`btn-graphs ${currentTheme}`}
             button="button"
           >
             <Button
-              className={`btn-graphs ${theme}`}
+              className={`btn-graphs ${currentTheme}`}
               onClick={() => {
                 setUserChurch({
                   id: props.churchId,
@@ -435,11 +460,11 @@ const DisplayChurchDetails = (props: DisplayChurchDetailsProps) => {
           {shouldFill() && (
             <PlaceholderCustom
               loading={props.loading}
-              className={`btn-graphs ${theme}`}
+              className={`btn-graphs ${currentTheme}`}
               button="button"
             >
               <Button
-                className={`btn-graphs ${theme}`}
+                className={`btn-graphs ${currentTheme}`}
                 onClick={() => {
                   setUserChurch({
                     id: props.churchId,
@@ -540,12 +565,12 @@ const DisplayChurchDetails = (props: DisplayChurchDetailsProps) => {
             <PlaceholderCustom
               loading={props.loading}
               className="btn-graphs"
-              variant={theme}
+              variant={currentTheme as 'dark' | 'light'}
               button="button"
             >
               <Button
                 className="btn-graphs"
-                variant={theme}
+                variant={currentTheme as 'dark' | 'light'}
                 onClick={() =>
                   navigate(
                     `/${props.subChurch?.toLowerCase()}/add${props.subChurch?.toLowerCase()}`

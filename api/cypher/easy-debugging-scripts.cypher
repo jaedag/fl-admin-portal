@@ -24,7 +24,12 @@ SET absent.imclChecked = true
 
 RETURN absent;
 
-     MATCH (this {id: '3185b8d0-4934-437c-9e42-1d063fd1402a'})<-[:HAS_MINISTRY]-(stream:Stream)
-     RETURN this.name, stream.name;
-     //-[:HAS]->(councils:Council)
-      RETURN councils
+
+// 37907.62 - 3849.14 - 19536.28 - 14522.2
+MATCH (record:ServiceRecord {id: "8001b4bd-9ffd-48dc-96e5-f12d3188b78c"})
+SET record.onlineGiving = 19536.28 + 14522.2,
+record.cash = 3849.14,
+record.income = 37907.62
+
+RETURN record.cash, record.onlineGiving;
+

@@ -1,20 +1,15 @@
-import React, { useContext } from 'react'
-import { Formik, Form, FormikHelpers } from 'formik'
-import * as Yup from 'yup'
-import { Col, Button, Nav } from 'react-bootstrap'
-import './SearchBox.css'
+import { useContext } from 'react'
+import { Button, InputGroup, Form as bsForm, Nav } from 'react-bootstrap'
 import { SearchContext } from 'contexts/MemberContext'
-import { useNavigate } from 'react-router'
-import Input from './formik/Input'
-
-type FormOptions = {
-  searchKeyVal: string
-}
+import './SearchBox.css'
+import { Link, useNavigate } from 'react-router-dom'
+import { Form, Formik, FormikHelpers } from 'formik'
+import * as Yup from 'yup'
 
 const SearchBox = () => {
   const { setSearchKey } = useContext(SearchContext)
   const navigate = useNavigate()
-  const initialValues: FormOptions = {
+  const initialValues = {
     searchKeyVal: '',
   }
   const validationSchema = Yup.object({
@@ -22,8 +17,8 @@ const SearchBox = () => {
   })
 
   const onSubmit = (
-    values: FormOptions,
-    onSubmitProps: FormikHelpers<FormOptions>
+    values: typeof initialValues,
+    onSubmitProps: FormikHelpers<typeof initialValues>
   ) => {
     onSubmitProps.setSubmitting(true)
     setSearchKey(values.searchKeyVal)
@@ -38,21 +33,27 @@ const SearchBox = () => {
       onSubmit={onSubmit}
     >
       {() => (
-        <Form className="form-row">
-          <Col className="d-flex mt-2">
-            <Input
-              className="nav-search-box"
+        <Form>
+          <InputGroup className="mt-4">
+            <bsForm.Control
               name="searchKeyVal"
+              className="nav-search-box"
               placeholder="Search for anything..."
-              aria-describedby="Global Search"
+              aria-label="Search for anything..."
+              aria-describedby="submit-search"
+              onChange={(e) => setSearchKey(e.target.value)}
             />
-
-            <Nav.Link className="m-0 p-0" as="div" eventKey={10}>
-              <Button className="nav-search-btn" type="submit">
+            <Button id="submit-search" variant="success" type="submit">
+              <Nav.Link
+                as={Link}
+                eventKey={10}
+                to="/search-results"
+                className="p-0"
+              >
                 Search
-              </Button>
-            </Nav.Link>
-          </Col>
+              </Nav.Link>
+            </Button>
+          </InputGroup>
         </Form>
       )}
     </Formik>

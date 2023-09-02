@@ -1,36 +1,44 @@
 import RoleView from 'auth/RoleView'
 import UserProfileIcon from 'components/UserProfileIcon/UserProfileIcon'
-import { MemberContext } from 'contexts/MemberContext'
-import { useContext } from 'react'
-import { Container, Nav, Navbar, Offcanvas, Row, Col } from 'react-bootstrap'
+import {
+  Container,
+  Nav,
+  Navbar,
+  Offcanvas,
+  Row,
+  Col,
+  Button,
+  Card,
+} from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import { menuItems } from './dashboard-utils'
 import SearchBox from 'components/SearchBox'
 import { ArrowClockwise, ChevronLeft, Moon, Sun } from 'react-bootstrap-icons'
 import './Navigation.css'
 import { useNavigate } from 'react-router-dom'
+import { useState } from 'react'
 
 const Navigator = () => {
-  const { theme, setTheme } = useContext(MemberContext)
   const navigate = useNavigate()
 
   const isRunningStandalone = () => {
     return window.matchMedia('(display-mode: standalone)').matches
   }
 
+  const htmlElement = document.querySelector('html')
+  const currentTheme = htmlElement?.getAttribute('data-bs-theme')
+
+  const [isDarkMode, setIsDarkMode] = useState(currentTheme === 'dark')
+
+  const toggleColorMode = () => {
+    setIsDarkMode(!isDarkMode)
+    htmlElement?.setAttribute('data-bs-theme', isDarkMode ? 'light' : 'dark')
+  }
+
   return (
-    <Navbar
-      collapseOnSelect
-      bg={theme}
-      variant={theme}
-      expand={false}
-      sticky="top"
-    >
+    <Navbar collapseOnSelect bg="dark" expand={false} sticky="top">
       <Container fluid>
-        <Navbar.Toggle
-          aria-controls="offcanvasNavbar"
-          className="nav-toggler"
-        />
+        <Navbar.Toggle aria-controls="offcanvasNavbar" />
         {isRunningStandalone() && (
           <Navbar.Brand>
             <button className="btn btn-transparent-outline">
@@ -50,58 +58,55 @@ const Navigator = () => {
           aria-labelledby="offcanvasNavbarLabel"
           placement="start"
         >
-          <Offcanvas.Header className={`${theme}`} closeButton>
+          <Offcanvas.Header closeButton>
             <Offcanvas.Title id="offcanvasNavbarLabel"></Offcanvas.Title>
           </Offcanvas.Header>
-          <Offcanvas.Body className={`${theme}`}>
-            <Nav className="justify-content-start flex-grow-1">
+          <Offcanvas.Body>
+            <Nav variant="pills" className="justify-content-start flex-grow-1">
               {menuItems.map((menuItem, index) => (
                 <RoleView key={index} roles={menuItem.roles}>
-                  <Nav.Link
-                    as={Link}
-                    eventKey={index}
-                    to={menuItem.to}
-                    className="font-primary nav-btn"
+                  <Button
+                    variant={`outline-${isDarkMode ? 'light' : 'dark'}`}
+                    className="my-1 p-0"
                   >
-                    {menuItem.name}
-                  </Nav.Link>
+                    <Nav.Link
+                      as={Link}
+                      eventKey={index}
+                      to={menuItem.to}
+                      className="nav-btn"
+                    >
+                      {menuItem.name}
+                    </Nav.Link>
+                  </Button>
                 </RoleView>
               ))}
+              <SearchBox />
             </Nav>
-            <SearchBox />
           </Offcanvas.Body>
-          <Container className={`footer ${theme}`}>
-            <Row>
-              <Col>
-                <Nav.Link
-                  as={Link}
-                  eventKey={menuItems.length}
-                  to="/user-profile"
-                >
-                  <UserProfileIcon />
-                </Nav.Link>
-              </Col>
-              <Col>
-                <div className="d-flex justify-content-center align-items-center h-100">
-                  {theme === 'light' ? (
-                    <Moon
-                      size={22}
-                      onClick={() => {
-                        theme === 'light' ? setTheme('dark') : setTheme('light')
-                      }}
-                    />
-                  ) : (
-                    <Sun
-                      size={22}
-                      onClick={() => {
-                        theme === 'dark' ? setTheme('light') : setTheme('dark')
-                      }}
-                    />
-                  )}
-                </div>
-              </Col>
-            </Row>
-          </Container>
+          <Card>
+            <Container className="footer p-3">
+              <Row>
+                <Col>
+                  <Nav.Link
+                    as={Link}
+                    eventKey={menuItems.length}
+                    to="/user-profile"
+                  >
+                    <UserProfileIcon />
+                  </Nav.Link>
+                </Col>
+                <Col>
+                  <div className="d-flex justify-content-center align-items-center h-100">
+                    {!isDarkMode ? (
+                      <Moon size={22} onClick={toggleColorMode} />
+                    ) : (
+                      <Sun size={22} onClick={toggleColorMode} />
+                    )}
+                  </div>
+                </Col>
+              </Row>
+            </Container>
+          </Card>
         </Navbar.Offcanvas>
       </Container>
     </Navbar>

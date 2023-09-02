@@ -9,6 +9,7 @@ import { permitAdmin } from 'permission-utils'
 import { ServiceRecord } from 'global-types'
 import Breadcrumb from 'components/DisplayChurchDetails/Breadcrumb'
 import { Container } from 'react-bootstrap'
+import ApolloWrapper from 'components/base-component/ApolloWrapper'
 
 export type DetailsArray = {
   title: string
@@ -28,7 +29,7 @@ const DetailsFellowship = () => {
     loading: fellowshipLoading,
     error: fellowshipError,
   } = useQuery(DISPLAY_FELLOWSHIP, {
-    variables: { id: fellowshipId },
+    variables: { sid: fellowshipId },
   })
   const { data: historyData } = useQuery(DISPLAY_FELLOWSHIP_HISTORY, {
     variables: { id: fellowshipId },
@@ -126,28 +127,34 @@ const DetailsFellowship = () => {
   ]
 
   return (
-    <>
-      <Container className="text-warning">
-        {fellowship?.hubStatus && <Breadcrumb breadcrumb={sontaCrumb} />}
-      </Container>
-      <DisplayChurchDetails
-        details={details}
-        loading={fellowshipLoading}
-        name={fellowship?.name}
-        churchId={fellowshipId}
-        leaderTitle="Fellowship Leader"
-        leader={fellowship?.leader}
-        location={fellowship?.location}
-        churchType="Fellowship"
-        buttons={[]}
-        editlink="/fellowship/editfellowship"
-        editPermitted={[...permitAdmin('Constituency'), 'leaderFellowship']}
-        last3Weeks={fellowship && check}
-        vacation={fellowship?.vacationStatus}
-        history={history?.history.length && history?.history}
-        breadcrumb={breadcrumb && breadcrumb}
-      />
-    </>
+    <ApolloWrapper
+      data={fellowshipData}
+      loading={fellowshipLoading}
+      error={fellowshipError}
+    >
+      <>
+        <Container className="text-warning">
+          {fellowship?.hubStatus && <Breadcrumb breadcrumb={sontaCrumb} />}
+        </Container>
+        <DisplayChurchDetails
+          details={details}
+          loading={fellowshipLoading}
+          name={fellowship?.name}
+          churchId={fellowshipId}
+          leaderTitle="Fellowship Leader"
+          leader={fellowship?.leader}
+          location={fellowship?.location}
+          churchType="Fellowship"
+          buttons={[]}
+          editlink="/fellowship/editfellowship"
+          editPermitted={[...permitAdmin('Constituency'), 'leaderFellowship']}
+          last3Weeks={fellowship && check}
+          vacation={fellowship?.vacationStatus}
+          history={history?.history.length && history?.history}
+          breadcrumb={breadcrumb && breadcrumb}
+        />
+      </>
+    </ApolloWrapper>
   )
 }
 

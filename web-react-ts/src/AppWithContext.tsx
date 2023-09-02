@@ -1,4 +1,4 @@
-import React, { Dispatch, Suspense, useState } from 'react'
+import React, { Suspense, useState } from 'react'
 import { Routes, BrowserRouter as Router, Route } from 'react-router-dom'
 import { MemberContext, SearchContext } from './contexts/MemberContext'
 import { ChurchContext } from './contexts/ChurchContext'
@@ -30,10 +30,6 @@ import { maps } from 'pages/maps/mapsRoutes'
 
 type AppPropsType = {
   token: string
-  themeOptions: {
-    theme: string
-    setTheme: Dispatch<React.SetStateAction<string>>
-  }
 }
 
 const ServantsDashboard = React.lazy(
@@ -41,7 +37,6 @@ const ServantsDashboard = React.lazy(
 )
 
 const AppWithContext = (props: AppPropsType) => {
-  const { theme, setTheme } = props.themeOptions
   const {
     clickCard,
     church,
@@ -156,8 +151,6 @@ const AppWithContext = (props: AppPropsType) => {
             memberId,
             currentUser,
             setCurrentUser,
-            theme,
-            setTheme,
             userJobs,
             setUserJobs,
           }}
@@ -174,37 +167,33 @@ const AppWithContext = (props: AppPropsType) => {
               <SetPermissions token={props.token}>
                 <>
                   <Navigation />
-                  <div className={`bg ${theme}`}>
-                    <Suspense fallback={<LoadingScreen />}>
-                      <SentryRoutes>
-                        {[
-                          ...dashboards,
-                          ...directory,
-                          ...services,
-                          ...arrivals,
-                          ...campaigns,
-                          ...reconciliation,
-                          ...graphs,
-                          ...maps,
-                        ].map((route, i) => (
-                          <Route
-                            key={i}
-                            path={route.path}
-                            element={
-                              <ProtectedRoute
-                                roles={route.roles ?? ['all']}
-                                placeholder={route.placeholder}
-                              >
-                                <route.element />
-                              </ProtectedRoute>
-                            }
-                          />
-                        ))}
-                        {[
-                          ...memberDirectory,
-                          ...memberGrids,
-                          ...quickFacts,
-                        ].map((route, i) => (
+                  <Suspense fallback={<LoadingScreen />}>
+                    <SentryRoutes>
+                      {[
+                        ...dashboards,
+                        ...directory,
+                        ...services,
+                        ...arrivals,
+                        ...campaigns,
+                        ...reconciliation,
+                        ...graphs,
+                        ...maps,
+                      ].map((route, i) => (
+                        <Route
+                          key={i}
+                          path={route.path}
+                          element={
+                            <ProtectedRoute
+                              roles={route.roles ?? ['all']}
+                              placeholder={route.placeholder}
+                            >
+                              <route.element />
+                            </ProtectedRoute>
+                          }
+                        />
+                      ))}
+                      {[...memberDirectory, ...memberGrids, ...quickFacts].map(
+                        (route, i) => (
                           <Route
                             key={i}
                             path={route.path}
@@ -214,32 +203,32 @@ const AppWithContext = (props: AppPropsType) => {
                               </MembersDirectoryRoute>
                             }
                           />
-                        ))}
+                        )
+                      )}
 
-                        <Route
-                          path="/dashboard/servants"
-                          element={
-                            <ProtectedRouteHome
-                              roles={permitMe('Fellowship')}
-                              component={<ServantsDashboard />}
-                            />
-                          }
-                        />
-                        <Route
-                          path="/servants/church-list"
-                          element={
-                            <ProtectedRoute
-                              roles={permitMe('Fellowship')}
-                              placeholder
-                            >
-                              <ServantsChurchList />
-                            </ProtectedRoute>
-                          }
-                        />
-                        <Route path="*" element={<PageNotFound />} />
-                      </SentryRoutes>
-                    </Suspense>
-                  </div>
+                      <Route
+                        path="/dashboard/servants"
+                        element={
+                          <ProtectedRouteHome
+                            roles={permitMe('Fellowship')}
+                            component={<ServantsDashboard />}
+                          />
+                        }
+                      />
+                      <Route
+                        path="/servants/church-list"
+                        element={
+                          <ProtectedRoute
+                            roles={permitMe('Fellowship')}
+                            placeholder
+                          >
+                            <ServantsChurchList />
+                          </ProtectedRoute>
+                        }
+                      />
+                      <Route path="*" element={<PageNotFound />} />
+                    </SentryRoutes>
+                  </Suspense>
                 </>
               </SetPermissions>
             </ServiceContext.Provider>

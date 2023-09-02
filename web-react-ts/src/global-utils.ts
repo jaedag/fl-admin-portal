@@ -161,8 +161,6 @@ export const throwToSentry = (
         userStream: user.stream_name,
       },
     })
-    // eslint-disable-next-line no-alert
-    alert(`${message}`)
     window.open('/', '_self')
     return
   }
@@ -179,8 +177,6 @@ export const throwToSentry = (
         userStream: user.stream_name,
       },
     })
-    // eslint-disable-next-line no-alert
-    alert(`${error}`)
 
     return
   }

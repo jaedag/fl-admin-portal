@@ -56,7 +56,7 @@ const ServantsDashboard = () => {
         </Placeholder>
 
         <div className="card-button-row">
-          <Table className="border-bottom-0">
+          <Table>
             <tbody>
               <tr /*className="row justify-content-start"*/>
                 {roles?.length ? (

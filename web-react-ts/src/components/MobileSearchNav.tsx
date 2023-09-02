@@ -1,48 +1,56 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { Formik, Form, FormikHelpers } from 'formik'
 import { SearchContext } from '../contexts/MemberContext'
 import './SearchBox.css'
-import { Col, Button, Container } from 'react-bootstrap'
-import Input from './formik/Input'
-
-type FormOptions = {
-  searchKeyVal: string
-}
+import {
+  Button,
+  Container,
+  InputGroup,
+  Spinner,
+  Form as bsForm,
+} from 'react-bootstrap'
 
 const MobileSearchNav = () => {
   const { searchKey, setSearchKey } = useContext(SearchContext)
+  const [ghostKey, setGhostKey] = useState<string>(searchKey ?? '')
 
-  const initialValues: FormOptions = {
-    searchKeyVal: searchKey ?? '',
+  const initialValues = {
+    ghostKey: searchKey ?? '',
   }
 
   const onSubmit = (
-    values: FormOptions,
-    onSubmitProps: FormikHelpers<FormOptions>
+    values: typeof initialValues,
+    onSubmitProps: FormikHelpers<typeof initialValues>
   ) => {
     onSubmitProps.setSubmitting(true)
-    setSearchKey(values.searchKeyVal)
+    setSearchKey(ghostKey)
     onSubmitProps.setSubmitting(false)
   }
 
   return (
     <Container>
       <Formik initialValues={initialValues} onSubmit={onSubmit}>
-        {() => (
+        {(formik) => (
           <Form>
-            <div className="form-row">
-              <Col className="col px-0 d-flex align-items-center">
-                <Input
-                  className="nav-search-box w-100"
-                  name="searchKeyVal"
-                  placeholder="Search for anything..."
-                  aria-describedby="Global Search"
-                />
-                <Button className="nav-search-btn" type="submit">
-                  Search
-                </Button>
-              </Col>
-            </div>
+            <InputGroup className="mt-4">
+              <bsForm.Control
+                name="ghostKey"
+                className="nav-search-box"
+                placeholder="Search for anything..."
+                aria-label="Search for anything..."
+                aria-describedby="submit-search"
+                value={ghostKey}
+                onChange={(e) => setGhostKey(e.target.value)}
+              />
+              <Button
+                id="submit-search"
+                variant="success"
+                type="submit"
+                disabled={formik.isSubmitting}
+              >
+                {formik.isSubmitting ? <Spinner /> : 'Search'}
+              </Button>
+            </InputGroup>
           </Form>
         )}
       </Formik>

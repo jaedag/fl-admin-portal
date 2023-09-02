@@ -30,7 +30,7 @@ const PlaceholderDefaulterList = () => {
               />
               <PlaceholderCustom
                 variant="success"
-                className="btn-whatsapp"
+                className="placeholder"
                 loading={true}
                 button="true"
               />
