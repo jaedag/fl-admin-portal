@@ -167,7 +167,7 @@ Sentry.init({
   ],
   beforeSend(event) {
     if (event.exception) {
-      Sentry.showReportDialog({ eventId: event.event_id })
+      sessionStorage.setItem('lastEventId', event.event_id ?? '')
     }
     return event
   },

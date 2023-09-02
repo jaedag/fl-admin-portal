@@ -1,5 +1,5 @@
 import { ApolloError } from '@apollo/client'
-import { captureException } from '@sentry/react'
+import { captureException, showReportDialog } from '@sentry/react'
 import {
   ChurchLevel,
   CurrentUser,
@@ -192,8 +192,12 @@ export const throwToSentry = (
       userStream: user.stream_name,
     },
   })
-  // eslint-disable-next-line no-alert
-  alert(`${message} ${error}`)
+}
+
+export const showUserReportDialog = () => {
+  showReportDialog({
+    eventId: sessionStorage.getItem('lastEventId') ?? undefined,
+  })
 }
 
 export const alertMsg = (message: string) => {
