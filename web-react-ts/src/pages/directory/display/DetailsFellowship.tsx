@@ -132,26 +132,28 @@ const DetailsFellowship = () => {
       loading={fellowshipLoading}
       error={fellowshipError}
     >
-      <Container className="text-warning">
-        {fellowship?.hubStatus && <Breadcrumb breadcrumb={sontaCrumb} />}
-      </Container>
-      <DisplayChurchDetails
-        details={details}
-        loading={fellowshipLoading}
-        name={fellowship?.name}
-        churchId={fellowshipId}
-        leaderTitle="Fellowship Leader"
-        leader={fellowship?.leader}
-        location={fellowship?.location}
-        churchType="Fellowship"
-        buttons={[]}
-        editlink="/fellowship/editfellowship"
-        editPermitted={[...permitAdmin('Constituency'), 'leaderFellowship']}
-        last3Weeks={fellowship && check}
-        vacation={fellowship?.vacationStatus}
-        history={history?.history.length && history?.history}
-        breadcrumb={breadcrumb && breadcrumb}
-      />
+      <>
+        <Container className="text-warning">
+          {fellowship?.hubStatus && <Breadcrumb breadcrumb={sontaCrumb} />}
+        </Container>
+        <DisplayChurchDetails
+          details={details}
+          loading={fellowshipLoading}
+          name={fellowship?.name}
+          churchId={fellowshipId}
+          leaderTitle="Fellowship Leader"
+          leader={fellowship?.leader}
+          location={fellowship?.location}
+          churchType="Fellowship"
+          buttons={[]}
+          editlink="/fellowship/editfellowship"
+          editPermitted={[...permitAdmin('Constituency'), 'leaderFellowship']}
+          last3Weeks={fellowship && check}
+          vacation={fellowship?.vacationStatus}
+          history={history?.history.length && history?.history}
+          breadcrumb={breadcrumb && breadcrumb}
+        />
+      </>
     </ApolloWrapper>
   )
 }
