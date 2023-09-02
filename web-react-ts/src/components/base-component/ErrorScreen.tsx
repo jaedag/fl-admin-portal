@@ -79,7 +79,7 @@ const ErrorPage = ({ error }: ErrorScreenProps) => {
   return (
     <>
       <Container className="100vh text-center mt-5">
-        <p className="mb-5">There seems to be an error loading data</p>
+        <p className="my-5">There seems to be an error loading data</p>
         <Card className="text-center">
           <Card.Header className="p3-4">
             <h4>{error?.name}</h4>
