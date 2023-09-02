@@ -1,6 +1,6 @@
 /* --Global color Variables */
 :root .dark {
-  --body-bg: #121212;
+  --bs-body-bg: #121212;
   --icon: #909090;
   --card: #1e1c1c;
   --icon-highlighted-color: white;
@@ -133,24 +133,23 @@
   height: 70px;
   margin-right: 10px;
 }
-
 .btn.dark {
   color: var(--text-primary);
   background-color: var(--accent-color);
   border-radius: 5px;
   border: 0px;
-}
+} 
 
-.btn-dark:hover,
+ .btn-dark:hover,
 .btn-dark:focus,
 .btn-dark:active,
 .open > .dropdown-toggle.btn-dark {
   color: var(--text-primary);
   background-color: #921b19;
   border-color: none;
-}
+} 
 
-.btn.light {
+ .btn.light {
   color: var(--text-primary);
   background-color: var(--accent-color);
   border-radius: 5px;
@@ -164,7 +163,7 @@
   color: var(--text-primary);
   background-color: #921b19;
   border-color: none;
-}
+} 
 
 .form-control {
   background-color: var(--text-box-inner);
@@ -219,7 +218,6 @@ select {
 }
 
 body {
-  max-width: 100vw;
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
     'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji',
@@ -264,6 +262,9 @@ body {
 .whatsapp-green {
   background-color: var(--whatsapp-green);
 }
+
+
+
 .placeholder {
   border-radius: 5px;
 }

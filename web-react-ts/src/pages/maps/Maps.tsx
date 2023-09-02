@@ -12,11 +12,11 @@ const Maps = () => {
       <HeadingPrimary>Maps</HeadingPrimary>
       <HeadingSecondary>Click on one of churches below</HeadingSecondary>
       <div className="py-3" />
-      <div className="d-grid gap-2 text-left">
+      <div className="d-grid gap-2">
         <Button
           size="lg"
           className="text-start py-4"
-          variant="dark"
+          variant="outline-primary"
           onClick={() => {
             navigate(`/maps/view-maps`)
           }}

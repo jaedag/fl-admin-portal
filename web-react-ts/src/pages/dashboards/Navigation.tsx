@@ -65,7 +65,10 @@ const Navigator = () => {
             <Nav variant="pills" className="justify-content-start flex-grow-1">
               {menuItems.map((menuItem, index) => (
                 <RoleView key={index} roles={menuItem.roles}>
-                  <Button variant="outline-secondary" className="my-1 p-0">
+                  <Button
+                    variant={`outline-${isDarkMode ? 'light' : 'dark'}`}
+                    className="my-1 p-0"
+                  >
                     <Nav.Link
                       as={Link}
                       eventKey={index}
