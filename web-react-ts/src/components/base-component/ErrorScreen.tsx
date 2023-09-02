@@ -2,6 +2,7 @@ import { throwToSentry } from 'global-utils'
 import useModal from 'hooks/useModal'
 import React from 'react'
 import { Button, Card, Container, Modal } from 'react-bootstrap'
+import './ErrorScreen.css'
 
 export interface ApolloError {
   name: string
@@ -93,7 +94,7 @@ const ErrorPage = ({ error }: ErrorScreenProps) => {
                       <p className="fw-bold text-danger">{`code: ${extensions.code}`}</p>
                       <p>{`Location: ${JSON.stringify(locations)}`}</p>
                       <p className="mb-3">{`Path: ${JSON.stringify(path)}`}</p>
-                      <Card.Text className="text-truncate">
+                      <Card.Text className="text-truncate truncate-2-lines">
                         {`[GraphQL error]: Message: ${message}`}
                       </Card.Text>
                     </>
