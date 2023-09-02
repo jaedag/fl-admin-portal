@@ -23,3 +23,8 @@ OPTIONAL MATCH (record)<-[:ABSENT_FROM_SERVICE]-(absent:Member)
 SET absent.imclChecked = true
 
 RETURN absent;
+
+     MATCH (this {id: '3185b8d0-4934-437c-9e42-1d063fd1402a'})<-[:HAS_MINISTRY]-(stream:Stream)
+     RETURN this.name, stream.name;
+     //-[:HAS]->(councils:Council)
+      RETURN councils

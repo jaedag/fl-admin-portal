@@ -137,7 +137,7 @@ type Ministry {
   councils: [Council!]!
     @cypher(
       statement: """
-      MATCH (this)<-[:HAS]-(stream:Stream)-[:HAS]->(councils:Council)
+      MATCH (this)<-[:HAS_MINISTRY]-(stream:Stream)-[:HAS]->(councils:Council)
       RETURN councils
       """
     )
