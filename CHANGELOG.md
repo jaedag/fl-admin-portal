@@ -1,3 +1,10 @@
+#### 7.8.1 (2023-09-02)
+
+##### Bug Fixes
+
+*  implement a button to send crash report ([33130688](https://github.com/firstlovecenter/fl-pastoral-care/commit/331306889f8532c80893ab9241bf3c6d54702d90))
+*  fix annoying blue link flash ([ff3d4cd4](https://github.com/firstlovecenter/fl-pastoral-care/commit/ff3d4cd4c287d98beba1d8c9fb47437c352fcd85))
+
 ### 7.8.0 (2023-09-02)
 
 ##### New Features
