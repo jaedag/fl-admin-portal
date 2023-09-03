@@ -295,30 +295,16 @@ export const HUB_GRAPHS = gql`
         numberOfServices
         week
       }
-      aggregateBussingRecords(limit: 4) {
-        id
-        attendance
-        week
-      }
-      services(limit: 4) {
+
+      rehearsals(limit: 4) {
         id
         createdAt
         attendance
-        income
         week
         serviceDate {
           date
         }
       }
-      #bussing(limit: 4) {
-      #  id
-      #  createdAt
-      #  attendance
-      #  week
-      #  serviceDate {
-      #    date
-      #  }
-      #}
 
       memberCount
     }

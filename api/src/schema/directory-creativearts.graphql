@@ -172,12 +172,12 @@ type Hub {
   hubFellowships: [Fellowship!]! @relationship(type: "HAS", direction: OUT)
   ministry: Ministry @relationship(type: "HAS", direction: IN)
   serviceLogs: [ServiceLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
-  services(limit: Int! = 12, skip: Int = 0): [ServiceRecord!]!
+  rehearsals(limit: Int!, skip: Int = 0): [RehearsalRecord!]!
     @cypher(
       statement: """
-      MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(services:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
-      WITH DISTINCT services, date
-      RETURN services ORDER BY date.date DESC SKIP $skip LIMIT $limit
+      MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(records:RehearsalRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
+      WITH DISTINCT records,date
+      RETURN records ORDER BY date.date DESC SKIP $skip LIMIT $limit
       """
     )
 }

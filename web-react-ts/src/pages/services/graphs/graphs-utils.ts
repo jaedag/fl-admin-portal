@@ -66,6 +66,7 @@ export const getServiceGraphData = (
     | {
         bussing: any[]
         services: any[]
+        rehearsals: any[]
         aggregateServiceRecords: any[]
         aggregateBussingRecords: any[]
         aggregateMultiplicationRecords: any[]
@@ -78,6 +79,8 @@ export const getServiceGraphData = (
     | 'serviceAggregate'
     | 'serviceAggregateWithDollar'
     | 'service'
+    | 'rehearsal'
+    | 'ministryMeeting'
     | 'multiplicationAggregate'
     | 'swellBussing'
 ) => {
@@ -88,20 +91,6 @@ export const getServiceGraphData = (
 
   const pushIntoData = (array: any[]) => {
     if (!array || array?.length === 0) {
-      return
-    }
-
-    if (array[0]?.__typename === 'Sonta') {
-      array.forEach((record) => {
-        data.push({
-          id: record?.id,
-          category,
-          date: record?.serviceDate,
-          week: record.week,
-          attendance: record.attendance,
-        })
-      })
-
       return
     }
 
@@ -121,6 +110,10 @@ export const getServiceGraphData = (
 
   if (category === 'service') {
     pushIntoData(church.services)
+  }
+
+  if (category === 'rehearsal') {
+    pushIntoData(church.rehearsals)
   }
 
   if (category === 'bussing') {

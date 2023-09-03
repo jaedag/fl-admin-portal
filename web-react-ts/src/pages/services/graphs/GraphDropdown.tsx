@@ -18,6 +18,8 @@ const GraphDropdown = ({
   const [selected, setSelected] = React.useState('Select Service')
   const churchLevel: ChurchLevel = data?.__typename
 
+  const sontaLevels = ['Hub', 'Ministry', 'CreativeArts']
+
   return (
     <Dropdown className="border-none">
       <Dropdown.Toggle variant="danger">{selected}</Dropdown.Toggle>
@@ -35,7 +37,8 @@ const GraphDropdown = ({
             Bussing
           </Dropdown.Item>
         )}
-        {churchLevel !== 'Bacenta' && (
+
+        {!['Bacenta', ...sontaLevels].includes(churchLevel) && (
           <Dropdown.Item
             className="py-3"
             onClick={() => {
@@ -48,7 +51,19 @@ const GraphDropdown = ({
           </Dropdown.Item>
         )}
 
-        {!(churchLevel === 'Bacenta' || churchLevel === 'Fellowship') && (
+        {['Hub'].includes(churchLevel) && (
+          <Dropdown.Item
+            className="py-3"
+            onClick={() => {
+              setBussing(false)
+              setSelected('Rehearsals')
+              setChurchData(getServiceGraphData(data, 'service'))
+            }}
+          >
+            {`${churchLevel} Rehearsals`}
+          </Dropdown.Item>
+        )}
+        {!['Bacenta', 'Fellowship', ...sontaLevels].includes(churchLevel) && (
           <Dropdown.Item
             className="py-3"
             onClick={() => {
