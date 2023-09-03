@@ -12,7 +12,7 @@ import 'components/AllChurchesSummary.css'
 import ChurchSearch from 'components/ChurchSearch'
 
 const DisplayAllICs = () => {
-  const { constituencyId, setBacentaId, setConstituencyId, clickCard } =
+  const { constituencyId, setConstituencyId, clickCard } =
     useContext(ChurchContext)
 
   const { data, loading, error } = useQuery(GET_CONSTITUENCY_ICBACENTAS, {
@@ -77,11 +77,7 @@ const DisplayAllICs = () => {
           route="constituency"
         />
 
-        <ChurchSearch
-          data={constituency?.icBacentas}
-          setter={setBacentaId}
-          churchType="Bacenta"
-        />
+        <ChurchSearch data={constituency?.icBacentas} churchType="Bacenta" />
       </Container>
     </ApolloWrapper>
   )

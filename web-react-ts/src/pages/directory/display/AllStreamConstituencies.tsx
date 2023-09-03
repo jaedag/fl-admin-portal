@@ -78,7 +78,7 @@ const AllStreamConstituencies = () => {
           churchType="Constituency"
           route="stream"
         />
-        <ChurchSearch data={constituencies} churchType="stream" />
+        <ChurchSearch data={constituencies} churchType="Stream" />
       </Container>
     </ApolloWrapper>
   )

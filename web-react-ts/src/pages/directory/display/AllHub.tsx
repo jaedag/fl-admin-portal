@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { useQuery } from '@apollo/client'
-import { GET_STREAM_SONTAS } from '../../../queries/ListQueries'
+import { GET_MINISTRY_HUBS } from '../../../queries/ListQueries'
 import { ChurchContext } from '../../../contexts/ChurchContext'
 import RoleView from '../../../auth/RoleView'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
@@ -10,15 +10,15 @@ import { permitAdmin } from 'permission-utils'
 import AllChurchesSummary from 'components/AllChurchesSummary'
 import ChurchSearch from 'components/ChurchSearch'
 
-const DisplayAllStreamSontas = () => {
-  const { clickCard, streamId } = useContext(ChurchContext)
+const DisplayAllHubs = () => {
+  const { clickCard, ministryId } = useContext(ChurchContext)
 
-  const { data, loading, error } = useQuery(GET_STREAM_SONTAS, {
-    variables: { id: streamId },
+  const { data, loading, error } = useQuery(GET_MINISTRY_HUBS, {
+    variables: { id: ministryId },
   })
 
-  const sontas = data?.streams[0]?.sontas
-  const stream = data?.streams[0]
+  const hubs = data?.ministrys[0]?.hubs
+  const ministry = data?.ministrys[0]
 
   return (
     <ApolloWrapper data={data} loading={loading} error={error}>
@@ -26,57 +26,57 @@ const DisplayAllStreamSontas = () => {
         <Row className="mb-2">
           <Col>
             <Link
-              to="/stream/displaydetails"
+              to="/ministry/displaydetails"
               onClick={() => {
-                clickCard(stream)
+                clickCard(ministry)
               }}
             >
-              <h4 className="text-white">{`${stream?.name} Sontas`}</h4>
+              <h4 className="text-white">{`${ministry?.name} Hubs`}</h4>
             </Link>
             <Link
               to="/member/displaydetails"
               onClick={() => {
-                clickCard(stream?.leader)
+                clickCard(ministry?.leader)
               }}
             >
               <h6 className="text-white text-small d-block ">
                 <span className="text-muted">Leader: </span>
-                {stream?.leader ? ` ${stream.leader.fullName}` : null}
+                {ministry?.leader ? ` ${ministry.leader.fullName}` : null}
               </h6>
             </Link>
-            {stream?.admin ? (
+            {ministry?.admin ? (
               <Link
                 className="pb-4 text-white text-small"
                 to="/member/displaydetails"
                 onClick={() => {
-                  clickCard(stream?.admin)
+                  clickCard(ministry?.admin)
                 }}
               >
                 <span className="text-muted">Admin :</span>{' '}
-                {`${stream?.admin?.fullName}`}
+                {`${ministry?.admin?.fullName}`}
               </Link>
             ) : null}
           </Col>
           <RoleView roles={permitAdmin('Campus')} directoryLock>
             <Col className="col-auto">
-              <Link to="/sonta/addsonta" className="btn btn-danger">
-                Add Sonta
+              <Link to="/hub/addhub" className="btn btn-danger">
+                Add Hub
               </Link>
             </Col>
           </RoleView>
         </Row>
 
         <AllChurchesSummary
-          church={sontas}
-          memberCount={stream?.memberCount}
-          numberOfChurchesBelow={sontas?.length}
-          churchType="Sonta"
-          route="stream"
+          church={hubs}
+          memberCount={ministry?.memberCount}
+          numberOfChurchesBelow={hubs?.length}
+          churchType="Hub"
+          route="ministry"
         />
-        <ChurchSearch data={sontas} churchType="Sonta" />
+        <ChurchSearch data={hubs} churchType="Ministry" />
       </Container>
     </ApolloWrapper>
   )
 }
 
-export default DisplayAllStreamSontas
+export default DisplayAllHubs
