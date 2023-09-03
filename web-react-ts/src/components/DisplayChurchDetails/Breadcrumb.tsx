@@ -47,7 +47,7 @@ const Breadcrumb = ({ breadcrumb }: { breadcrumb: BreadcrumbType[] }) => {
                 )
               )
             }}
-            className="crumb text-secondary"
+            className="crumb"
           >
             {`${breadname} ${bread?.__typename}`}
             {i !== breadcrumb.length - 1 && ' > '}

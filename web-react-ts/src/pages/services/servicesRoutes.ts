@@ -43,6 +43,7 @@ const SontaSundayMeetingDetails = lazy(
   () => import('pages/services/record-service/SontaSundayMeetingDetails')
 )
 const BacentaReport = lazy(() => import('pages/services/graphs/BacentaGraphs'))
+const HubReport = lazy(() => import('pages/services/graphs/HubGraphs'))
 const ConstituencyReport = lazy(
   () => import('pages/services/graphs/ConstituencyGraphs')
 )
@@ -297,6 +298,11 @@ export const graphs: LazyRouteTypes[] = [
     element: OversightReport,
     roles: permitLeaderAdminArrivals('Oversight'),
     placeholder: true,
+  },
+  {
+    path: '/hub/graphs/',
+    element: HubReport,
+    roles: permitLeaderAdminArrivals('Hub'),
   },
 
   //Fellowship Services

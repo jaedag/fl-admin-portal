@@ -17,6 +17,7 @@ import useSetUserChurch from 'hooks/useSetUserChurch'
 import { Church, ChurchLevel, MemberWithoutBioData, Role } from 'global-types'
 import { BacentaWithArrivals } from 'pages/arrivals/arrivals-types'
 import { plural } from 'global-utils'
+import CloudinaryImage from 'components/CloudinaryImage'
 
 type DisplayChurchDetailsProps = {
   details: {
@@ -77,13 +78,35 @@ const DisplaySontaDetails = (props: DisplayChurchDetailsProps) => {
             clickCard(props.leader)
           }}
         >
-          <DetailsCard
-            loading={props.loading}
-            heading={props.leaderTitle}
-            detail={props.leader && props.leader?.nameWithTitle}
-            img={props.leader?.pictureUrl}
-            bgNone
-          />
+          <Row className="my-2">
+            <Col xs="auto">
+              <PlaceholderCustom
+                className="img-search-placeholder"
+                as="div"
+                xs={12}
+                loading={props.loading}
+              >
+                <CloudinaryImage
+                  src={props.leader?.pictureUrl}
+                  className="img-search-placeholder"
+                />
+              </PlaceholderCustom>
+            </Col>
+            <Col>
+              <PlaceholderCustom loading={props.loading} as="span" xs={12}>
+                <span className={`card-heading text-secondary text-truncate`}>
+                  {props.leaderTitle}
+                </span>
+              </PlaceholderCustom>
+              <PlaceholderCustom loading={props.loading} as="h2" xs={12}>
+                <div className="d-flex justify-content-between">
+                  <h2 className={`card-detail`}>
+                    {props.leader?.nameWithTitle}
+                  </h2>
+                </div>
+              </PlaceholderCustom>
+            </Col>
+          </Row>
         </Link>
         {/* details section */}
         {props.details?.length && (

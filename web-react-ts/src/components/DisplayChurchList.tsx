@@ -32,7 +32,7 @@ const DisplayChurchList = (props: {
                   }}
                 >
                   <Card.Body>
-                    <Row>
+                    <Row className="px-3">
                       <Col
                         xs={3}
                         className="d-flex justify-content-center align-items-center"

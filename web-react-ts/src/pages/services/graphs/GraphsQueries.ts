@@ -275,3 +275,52 @@ export const OVERSIGHT_GRAPHS = gql`
     }
   }
 `
+
+export const HUB_GRAPHS = gql`
+  query hubGraphs($hubId: ID!) {
+    hubs(where: { id: $hubId }) {
+      id
+      name
+      leader {
+        id
+        firstName
+        lastName
+        fullName
+        pictureUrl
+      }
+      aggregateServiceRecords(limit: 4) {
+        id
+        attendance
+        income
+        numberOfServices
+        week
+      }
+      aggregateBussingRecords(limit: 4) {
+        id
+        attendance
+        week
+      }
+      services(limit: 4) {
+        id
+        createdAt
+        attendance
+        income
+        week
+        serviceDate {
+          date
+        }
+      }
+      #bussing(limit: 4) {
+      #  id
+      #  createdAt
+      #  attendance
+      #  week
+      #  serviceDate {
+      #    date
+      #  }
+      #}
+
+      memberCount
+    }
+  }
+`

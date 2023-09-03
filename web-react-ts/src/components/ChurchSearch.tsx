@@ -1,13 +1,20 @@
 import React, { useEffect, useState } from 'react'
-import { Formik, Form } from 'formik'
+import { Formik, Form, FormikHelpers } from 'formik'
 import ChurchList from './DisplayChurchList'
 import './ChurchSearch.css'
 import { Container } from 'react-bootstrap'
 import Input from './formik/Input'
+import { ChurchLevel } from '@jaedag/admin-portal-types'
+import { HigherChurch } from 'global-types'
 
-const ChurchSearch = (props) => {
+type ChurchSearchProps = {
+  data: HigherChurch[]
+  churchType: ChurchLevel
+}
+
+const ChurchSearch = (props: ChurchSearchProps) => {
   const churchDataLoaded = props.data
-  const [churchData, setChurchData] = useState([])
+  const [churchData, setChurchData] = useState<HigherChurch[]>([])
 
   useEffect(() => {
     setChurchData(churchDataLoaded)
@@ -17,11 +24,14 @@ const ChurchSearch = (props) => {
     churchSearch: '',
   }
 
-  const onSubmit = (values, onSubmitProps) => {
+  const onSubmit = (
+    values: typeof initialValues,
+    onSubmitProps: FormikHelpers<typeof initialValues>
+  ) => {
     onSubmitProps.setSubmitting(true)
     setChurchData(
       churchDataLoaded.filter(
-        (church) =>
+        (church: any) =>
           church.name
             .toLowerCase()
             .includes(values.churchSearch.toLowerCase()) ||

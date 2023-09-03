@@ -1,5 +1,5 @@
 .card-buttons {
-  background-color: var(--card);
+  background-color: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: 25px;
   min-width: 100px;

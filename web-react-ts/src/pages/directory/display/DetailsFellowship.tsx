@@ -133,7 +133,7 @@ const DetailsFellowship = () => {
       error={fellowshipError}
     >
       <>
-        <Container className="text-warning">
+        <Container className="yellow">
           {fellowship?.hubStatus && <Breadcrumb breadcrumb={sontaCrumb} />}
         </Container>
         <DisplayChurchDetails
