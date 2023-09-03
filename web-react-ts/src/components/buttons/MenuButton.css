@@ -19,90 +19,93 @@
   width: 25px;
 }
 
-.churches.dark {
+.churches{
   color: var(--churches-accent);
   fill: var(--churches-accent);
 }
 
-.arrivals.dark {
+.arrivals{
   color: var(--arrivals-accent);
   fill: var(--arrivals-accent);
 }
 
-.defaulters.dark {
+.defaulters{
   color: var(--defaulters-accent);
   fill: var(--defaulters-accent);
 }
-.campaigns.dark {
+.campaigns{
   color: var(--campaigns-accent);
   fill: var(--campaigns-accent);
 }
-.members.dark {
+.members{
   color: var(--members-accent);
   fill: var(--members-accent);
 }
 
-.banking.dark {
+.banking{
   color: var(--banking-accent);
   fill: var(--banking-accent);
 }
 
-.equipment.dark {
+.equipment{
   color: var(--equipment);
   fill: var(--equipment);
 }
 
-.equipment.dark {
+.equipment{
   color: var(--equipment);
   fill: var(--equipment);
 }
 
-.antibrutish.dark {
+.antibrutish{
   color: var(--antibrutish);
   fill: var(--antibrutish);
 }
 
-.multiplication.dark {
+.multiplication{
   color: var(--multiplication);
   fill: var(--multiplication);
 }
 
-.swollensunday.dark {
+.swollensunday{
   color: var(--swollensunday);
   fill: var(--swollensunday);
 }
 
-.shepherdingcontrol.dark {
+.shepherdingcontrol{
   color: var(--shepherdingcontrol);
   fill: var(--shepherdingcontrol);
 }
 
-.sheepseeking.dark {
+.sheepseeking{
   color: var(--sheepseeking);
   fill: var(--sheepseeking);
 }
 
-.quick-facts.dark {
+.quick-facts{
   color: var(--quickfacts-accent);
   fill: var(--quickfacts-accent);
 }
 
-.maps.dark {
+.maps{
   color: var(--maps-accent);
   fill: var(--maps-accent);
 }
 
-.danger.dark {
+.danger{
   color: var(--bad);
 }
 .menu-buttons {
   min-height: 74px;
   text-align: left;
   padding-left: 20px;
+  background-color: var(--bg-card);
+  border-color: var(--bg-card);
+  margin-top: 10px;
+  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2);
 }
-.menu-buttons.dark {
-  background-color: #1e1c1c;
-}
+
+
 
 .menu-buttons.center {
   text-align: center;

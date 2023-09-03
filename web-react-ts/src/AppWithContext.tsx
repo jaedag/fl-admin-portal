@@ -27,6 +27,7 @@ import { useAuth0 } from '@auth0/auth0-react'
 import LoadingScreen from 'components/base-component/LoadingScreen'
 import * as Sentry from '@sentry/react'
 import { maps } from 'pages/maps/mapsRoutes'
+import PageContainer from 'components/base-component/PageContainer'
 
 type AppPropsType = {
   token: string
@@ -168,32 +169,36 @@ const AppWithContext = (props: AppPropsType) => {
                 <>
                   <Navigation />
                   <Suspense fallback={<LoadingScreen />}>
-                    <SentryRoutes>
-                      {[
-                        ...dashboards,
-                        ...directory,
-                        ...services,
-                        ...arrivals,
-                        ...campaigns,
-                        ...reconciliation,
-                        ...graphs,
-                        ...maps,
-                      ].map((route, i) => (
-                        <Route
-                          key={i}
-                          path={route.path}
-                          element={
-                            <ProtectedRoute
-                              roles={route.roles ?? ['all']}
-                              placeholder={route.placeholder}
-                            >
-                              <route.element />
-                            </ProtectedRoute>
-                          }
-                        />
-                      ))}
-                      {[...memberDirectory, ...memberGrids, ...quickFacts].map(
-                        (route, i) => (
+                    <PageContainer>
+                      <SentryRoutes>
+                        {[
+                          ...dashboards,
+                          ...directory,
+                          ...services,
+                          ...arrivals,
+                          ...campaigns,
+                          ...reconciliation,
+                          ...graphs,
+                          ...maps,
+                        ].map((route, i) => (
+                          <Route
+                            key={i}
+                            path={route.path}
+                            element={
+                              <ProtectedRoute
+                                roles={route.roles ?? ['all']}
+                                placeholder={route.placeholder}
+                              >
+                                <route.element />
+                              </ProtectedRoute>
+                            }
+                          />
+                        ))}
+                        {[
+                          ...memberDirectory,
+                          ...memberGrids,
+                          ...quickFacts,
+                        ].map((route, i) => (
                           <Route
                             key={i}
                             path={route.path}
@@ -203,31 +208,31 @@ const AppWithContext = (props: AppPropsType) => {
                               </MembersDirectoryRoute>
                             }
                           />
-                        )
-                      )}
+                        ))}
 
-                      <Route
-                        path="/dashboard/servants"
-                        element={
-                          <ProtectedRouteHome
-                            roles={permitMe('Fellowship')}
-                            component={<ServantsDashboard />}
-                          />
-                        }
-                      />
-                      <Route
-                        path="/servants/church-list"
-                        element={
-                          <ProtectedRoute
-                            roles={permitMe('Fellowship')}
-                            placeholder
-                          >
-                            <ServantsChurchList />
-                          </ProtectedRoute>
-                        }
-                      />
-                      <Route path="*" element={<PageNotFound />} />
-                    </SentryRoutes>
+                        <Route
+                          path="/dashboard/servants"
+                          element={
+                            <ProtectedRouteHome
+                              roles={permitMe('Fellowship')}
+                              component={<ServantsDashboard />}
+                            />
+                          }
+                        />
+                        <Route
+                          path="/servants/church-list"
+                          element={
+                            <ProtectedRoute
+                              roles={permitMe('Fellowship')}
+                              placeholder
+                            >
+                              <ServantsChurchList />
+                            </ProtectedRoute>
+                          }
+                        />
+                        <Route path="*" element={<PageNotFound />} />
+                      </SentryRoutes>
+                    </PageContainer>
                   </Suspense>
                 </>
               </SetPermissions>

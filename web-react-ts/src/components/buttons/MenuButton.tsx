@@ -23,15 +23,12 @@ type MenuButtonProps = {
 
 const MenuButton = (props: MenuButtonProps) => {
   const icon = props.icon || props.iconComponent || props.avatar || props.number
-  const htmlElement = document.querySelector('html')
-  const currentTheme = htmlElement?.getAttribute('data-bs-theme')
 
   return (
     <Button
       onClick={props.onClick}
-      variant="primary"
       size="lg"
-      className={`${currentTheme} ${props.color} menu-buttons`}
+      className={`${props.color} menu-buttons`}
     >
       <Row>
         {icon && (
@@ -55,16 +52,14 @@ const MenuButton = (props: MenuButtonProps) => {
                   />
                 )}
                 {props.iconComponent && (
-                  <div className={`${currentTheme} ${props.color}`}>
+                  <div className={`${props.color}`}>
                     <props.iconComponent />
                   </div>
                 )}
                 {props.number && <div className="fw-bold">{props.number}</div>}
               </div>
               {props.iconCaption && (
-                <small className={`${currentTheme} icon-caption`}>
-                  {props.iconCaption}
-                </small>
+                <small className={`icon-caption`}>{props.iconCaption}</small>
               )}
             </PlaceholderCustom>
           </Col>

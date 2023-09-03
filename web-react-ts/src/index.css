@@ -412,7 +412,7 @@
 [data-bs-theme="dark"] {
   /* --bs-body-bg: #121212; */
   --icon: #909090;
-  --card: #1e1c1c;
+  --bg-card: #1e1c1c;
   --icon-highlighted-color: white;
   --text-focus: #bababa;
   --text-primary: #f5f5f5;
@@ -426,7 +426,7 @@
   --swollensunday: rgb(81, 193, 75);
   --shepherdingcontrol: rgba(204, 23, 117, 0.957);
   --sheepseeking: rgb(235, 118, 35);
-  --churches-accent: #a9e631;
+  --churches-accent: var(--chakra-colors-whatsapp-200);
   --arrivals-accent: var(--chakra-colors-pink-200);
   --defaulters-accent: var(--chakra-colors-purple-200);
   --quickfacts-accent: #efaa66;
@@ -435,7 +435,7 @@
   --maps-accent: #e6a678;
   --btn-submit: #136e02;
   --border: #1d1d1d;
-  --yellow: (--chakra-colors-yellow-200);
+  --yellow: var(--chakra-colors-yellow-200);
   --good: var(--chakra-colors-green-200);
   --facebook-blue: var(--chakra-colors-facebook-200);
   --whatsapp-green: var(--chakra-colors-whatsapp-200);
@@ -445,25 +445,35 @@
 
 [data-bs-theme="light"] {
   --bs-body-bg: var(--chakra-colors-gray-200);
-  --icon: #909090;
-  --card: #212121;
-  --icon-highlighted-color: white;
-  --text-focus: #bababa;
-  --text-primary: black;
-  --accent-color: #690c13;
-  --light-accent-color: #690c13;
-  --border: #3d3d3dc5;
-  --text-box-inner: var(--chakra-colors-gray-50);
-  --full-black: #000000;
+  --members-accent: #68e0d7;
+  --equipment: rgb(42, 159, 195);
+  --antibrutish: rgb(169, 32, 197);
+  --multiplication: rgb(224, 208, 30);
+  --swollensunday: rgb(81, 193, 75);
+  --shepherdingcontrol: rgba(204, 23, 117, 0.957);
+  --sheepseeking: rgb(235, 118, 35);
+  --churches-accent: var(--chakra-colors-whatsapp-500);
+  --arrivals-accent: var(--chakra-colors-pink-500);
+  --defaulters-accent: var(--chakra-colors-purple-500);
+  --quickfacts-accent: #efaa66;
+  --banking-accent: #e6dd78;
+  --campaigns-accent: #ebf785;
+  --maps-accent: #e6a678;
+  --btn-submit: #136e02;
   --border: #1d1d1d;
-  --yellow: (--chakra-colors-yellow-500);
+  --yellow: var(--chakra-colors-yellow-500);
   --good: var(--chakra-colors-green-500);
+  --facebook-blue: var(--chakra-colors-facebook-500);
   --whatsapp-green: var(--chakra-colors-whatsapp-500);
   --bad: var(--chakra-colors-red-500);
   --orange: var(--chakra-colors-orange-500);
 }
 
 /*--Global colors*/
+.page-container {
+  padding-top: 20px; 
+}
+
 .bg {
   padding-top: 20px;
   padding-bottom: 80px;
