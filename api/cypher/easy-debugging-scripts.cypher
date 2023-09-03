@@ -29,7 +29,11 @@ RETURN absent;
 MATCH (record:ServiceRecord {id: "8001b4bd-9ffd-48dc-96e5-f12d3188b78c"})
 SET record.onlineGiving = 19536.28 + 14522.2,
 record.cash = 3849.14,
-record.income = 37907.62
+record.income = 37907.62,
+record.dollarIncome = 3790.76
 
 RETURN record.cash, record.onlineGiving;
 
+MATCH (record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph) 
+   WHERE date.date.week = date().week AND date.date.year = date().year
+DETACH DELETE record

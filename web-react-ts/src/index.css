@@ -472,6 +472,7 @@
 /*--Global colors*/
 .page-container {
   padding-top: 20px; 
+  padding-bottom: 60px;
 }
 
 .bg {

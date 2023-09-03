@@ -1,7 +1,8 @@
 export const checkFormFilledThisWeek = `
 MATCH (church {id: $churchId})
 WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream 
-MATCH (church)<-[:HAS]-(higherChurch)
+MATCH (church)<-[:HAS]-(higherChurch) 
+WHERE higherChurch:Bacenta OR higherChurch:Constituency OR higherChurch:Council OR higherChurch:Stream OR higherChurch:Oversight OR higherChurch:Denomination
 
 OPTIONAL MATCH (church)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
 WHERE date(date.date).week = date().week AND date(date.date).year = date().year
@@ -522,4 +523,52 @@ export const aggregateServiceDataForDenomination = `
        aggregate.componentServiceIds = componentServiceIds
 
    RETURN denomination,aggregate
+`
+
+export const aggregateServiceDataForHub = `
+   MATCH (hubfellowship:HubFellowship {id: $churchId}) 
+   WITH hubfellowship AS lowerChurch
+   MATCH (lowerChurch)<-[:HAS]-(hub:Hub)
+   MATCH (hub)-[:CURRENT_HISTORY|HAS_SERVICE|HAS*2..3]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph) 
+   WHERE date.date.week = date().week AND date.date.year = date().year AND NOT record:NoService
+   WITH DISTINCT hub, record
+   MATCH (hub)-[:CURRENT_HISTORY]->(log:ServiceLog)
+   MERGE (aggregate:AggregateServiceRecord {id: date().week + '-' + date().year + '-' + log.id, week: date().week, year: date().year})
+   MERGE (log)-[:HAS_SERVICE_AGGREGATE]->(aggregate)
+   WITH hub, aggregate, collect(record.id) AS componentServiceIds,COUNT(DISTINCT record) AS numberOfServices, SUM(record.attendance) AS totalAttendance, SUM(record.income) AS totalIncome, SUM(record.dollarIncome) AS totalDollarIncome
+       SET aggregate.attendance = totalAttendance,
+       aggregate.income = totalIncome,
+         aggregate.dollarIncome = totalDollarIncome,
+        aggregate.componentServiceIds = componentServiceIds,
+        aggregate.numberOfServices = numberOfServices
+   WITH hub AS lowerChurch
+   MATCH (lowerChurch)<-[:HAS]-(ministry:Ministry)
+   MATCH (ministry)-[:CURRENT_HISTORY|HAS_SERVICE|HAS*2..4]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph) 
+   WHERE date.date.week = date().week AND date.date.year = date().year AND NOT record:NoService
+   WITH DISTINCT ministry, record
+   MATCH (ministry)-[:CURRENT_HISTORY]->(log:ServiceLog)
+   MERGE (aggregate:AggregateServiceRecord {id: date().week + '-' + date().year + '-' + log.id, week: date().week, year: date().year})
+   MERGE (log)-[:HAS_SERVICE_AGGREGATE]->(aggregate)
+   WITH ministry, aggregate, collect(record.id) AS componentServiceIds, COUNT(DISTINCT record) AS numberOfServices, SUM(record.attendance) AS totalAttendance, SUM(record.income) AS totalIncome, SUM(record.dollarIncome) AS totalDollarIncome
+       SET aggregate.attendance = totalAttendance,
+       aggregate.income = totalIncome,
+       aggregate.dollarIncome = totalDollarIncome,
+       aggregate.componentServiceIds = componentServiceIds,
+         aggregate.numberOfServices = numberOfServices
+   WITH ministry AS lowerChurch
+   MATCH (lowerChurch)<-[:HAS]-(creativearts:CreativeArts)
+   MATCH (creativearts)-[:CURRENT_HISTORY|HAS_SERVICE|HAS*2..5]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph) 
+   WHERE date.date.week = date().week AND date.date.year = date().year AND NOT record:NoService
+   WITH DISTINCT creativearts, record
+   MATCH (creativearts)-[:CURRENT_HISTORY]->(log:ServiceLog)
+   MERGE (aggregate:AggregateServiceRecord {id: date().week + '-' + date().year + '-' + log.id, week: date().week, year: date().year})
+   MERGE (log)-[:HAS_SERVICE_AGGREGATE]->(aggregate)
+   WITH creativearts, aggregate, collect(record.id) AS componentServiceIds, COUNT(DISTINCT record) AS numberOfServices, SUM(record.attendance) AS totalAttendance, SUM(record.income) AS totalIncome, SUM(record.dollarIncome) AS totalDollarIncome
+       SET aggregate.attendance = totalAttendance,
+       aggregate.income = totalIncome,
+       aggregate.dollarIncome = totalDollarIncome,
+       aggregate.componentServiceIds = componentServiceIds,
+       aggregate.numberOfServices = numberOfServices
+   
+   RETURN creativearts,aggregate
 `

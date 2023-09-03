@@ -253,7 +253,7 @@ const SearchPageMobile = () => {
   ])
 
   return (
-    <Container className="px-5">
+    <>
       <MobileSearchNav />
       {loading && (
         <Container className="text-center">
@@ -272,7 +272,7 @@ const SearchPageMobile = () => {
             return <MemberDisplayCard key={index} member={searchResult} />
           })}
       </Container>
-    </Container>
+    </>
   )
 }
 
