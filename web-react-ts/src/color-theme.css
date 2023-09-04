@@ -709,13 +709,13 @@
 }
 
 [data-bs-theme='dark'] .card {
-  --bs-card-color: var(--chakra-colors-gray-800);
+  --bs-card-color: var(--chakra-colors-white);
   --bs-card-bg: var(--chakra-colors-whiteAlpha-200);
   --bs-card-border-color: var(--chakra-colors-whiteAlpha-50);
 }
 
 [data-bs-theme='light'] .card {
-  --bs-card-color: var(--chakra-colors-white);
+  --bs-card-color: var(--chakra-colors-gray-800);
   --bs-card-bg: var(--chakra-colors-gray-100);
   --bs-card-border-color: var(--chakra-colors-gray-100);
 }
