@@ -1,3 +1,13 @@
+#### 7.8.3 (2023-09-04)
+
+##### Bug Fixes
+
+*  add some fun new loaders ([a210c9bd](https://github.com/firstlovecenter/fl-pastoral-care/commit/a210c9bde1655273d83ddf4250e931fd3c2ae7d7))
+*  update style in service forms ([563f3def](https://github.com/firstlovecenter/fl-pastoral-care/commit/563f3def81d8029f1b4f80acc0bd3560f33bd4ff))
+* **ui:**
+  *  fix text overflow on details card for bacenta details ([928a34b2](https://github.com/firstlovecenter/fl-pastoral-care/commit/928a34b2e9b630655a522658b03bf89f9ad9fd40))
+  *  fix colors on search page ([af7511f0](https://github.com/firstlovecenter/fl-pastoral-care/commit/af7511f0561215f3ad0ad227956e16052de5843d))
+
 #### 7.8.2 (2023-09-04)
 
 ##### Bug Fixes
