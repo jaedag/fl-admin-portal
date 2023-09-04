@@ -252,90 +252,88 @@ const DisplayChurchDetails = (props: DisplayChurchDetailsProps) => {
   return (
     <>
       <div className="py-2 top-heading title-bar">
-        <Container>
-          <Breadcrumb breadcrumb={props.breadcrumb} />
-          <hr />
-          <PlaceholderCustom as="h3" loading={!props.name} xs={12}>
-            <h3 className="mx-3 mt-3 font-weight-bold">
-              {`${props.name} ${props.churchType}`}
+        <Breadcrumb breadcrumb={props.breadcrumb} />
+        <hr />
+        <PlaceholderCustom as="h3" loading={!props.name} xs={12}>
+          <h3 className="mx-3 mt-3 font-weight-bold">
+            {`${props.name} ${props.churchType}`}
 
-              {directoryLock() && (
-                <RoleView roles={props.editPermitted} directoryLock>
-                  <EditButton link={props.editlink} />
-                </RoleView>
-              )}
-            </h3>
-          </PlaceholderCustom>
+            {directoryLock() && (
+              <RoleView roles={props.editPermitted} directoryLock>
+                <EditButton link={props.editlink} />
+              </RoleView>
+            )}
+          </h3>
+        </PlaceholderCustom>
 
-          {props.admin && (
-            <Link
-              to="/member/displaydetails"
-              onClick={() => {
-                clickCard(props.admin)
-              }}
-              className="mx-3 mb-2 text-muted font-weight-bold"
+        {props.admin && (
+          <Link
+            to="/member/displaydetails"
+            onClick={() => {
+              clickCard(props.admin)
+            }}
+            className="mx-3 mb-2 text-muted font-weight-bold"
+          >
+            {`Admin: ${props.admin.firstName} ${props.admin.lastName}`}
+          </Link>
+        )}
+
+        {needsAdmin && (
+          <RoleView roles={roles}>
+            <span className={`text-nowrap`} onClick={togglePopup}>
+              <PencilSquare />
+            </span>
+          </RoleView>
+        )}
+
+        {isOpen && (
+          <Popup handleClose={togglePopup}>
+            <b>Change {`${props.churchType}`} Admin</b>
+            <p>Please enter the name of the new administrator</p>
+
+            <Formik
+              initialValues={initialValues}
+              validationSchema={validationSchema}
+              onSubmit={onSubmit}
             >
-              {`Admin: ${props.admin.firstName} ${props.admin.lastName}`}
-            </Link>
-          )}
+              {(formik) => (
+                <Form>
+                  <Row className="form-row">
+                    <Col>
+                      <SearchMember
+                        name="adminSelect"
+                        initialValue={initialValues?.adminName}
+                        placeholder="Select an Admin"
+                        setFieldValue={formik.setFieldValue}
+                        aria-describedby="Member Search"
+                        error={formik.errors.adminSelect}
+                      />
+                    </Col>
+                  </Row>
 
-          {needsAdmin && (
-            <RoleView roles={roles}>
-              <span className={`text-nowrap`} onClick={togglePopup}>
-                <PencilSquare />
-              </span>
-            </RoleView>
-          )}
-
-          {isOpen && (
-            <Popup handleClose={togglePopup}>
-              <b>Change {`${props.churchType}`} Admin</b>
-              <p>Please enter the name of the new administrator</p>
-
-              <Formik
-                initialValues={initialValues}
-                validationSchema={validationSchema}
-                onSubmit={onSubmit}
-              >
-                {(formik) => (
-                  <Form>
-                    <Row className="form-row">
-                      <Col>
-                        <SearchMember
-                          name="adminSelect"
-                          initialValue={initialValues?.adminName}
-                          placeholder="Select an Admin"
-                          setFieldValue={formik.setFieldValue}
-                          aria-describedby="Member Search"
-                          error={formik.errors.adminSelect}
-                        />
-                      </Col>
-                    </Row>
-
-                    <Button
-                      variant="primary"
-                      size="lg"
-                      type="submit"
-                      className={`btn-main ${currentTheme}`}
-                      disabled={
-                        !formik.isValid || formik.isSubmitting || submitting
-                      }
-                    >
-                      {formik.isSubmitting || submitting ? (
-                        <>
-                          <Spinner animation="grow" size="sm" />
-                          <span> Submitting</span>
-                        </>
-                      ) : (
-                        'Submit'
-                      )}
-                    </Button>
-                  </Form>
-                )}
-              </Formik>
-            </Popup>
-          )}
-        </Container>
+                  <Button
+                    variant="primary"
+                    size="lg"
+                    type="submit"
+                    className={`btn-main ${currentTheme}`}
+                    disabled={
+                      !formik.isValid || formik.isSubmitting || submitting
+                    }
+                  >
+                    {formik.isSubmitting || submitting ? (
+                      <>
+                        <Spinner animation="grow" size="sm" />
+                        <span> Submitting</span>
+                      </>
+                    ) : (
+                      'Submit'
+                    )}
+                  </Button>
+                </Form>
+              )}
+            </Formik>
+          </Popup>
+        )}
       </div>
       <Container>
         <Link
@@ -439,7 +437,8 @@ const DisplayChurchDetails = (props: DisplayChurchDetailsProps) => {
         <div className="d-grid gap-2">
           <PlaceholderCustom
             loading={props.loading}
-            className={`btn-graphs ${currentTheme}`}
+            className={`btn-graphs`}
+            variant="brand"
             button="button"
           >
             <Button

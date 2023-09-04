@@ -16,3 +16,7 @@
 .not-filled {
   color: var(--bad);
 }
+
+.btn-graphs {
+  height: 46px;
+}

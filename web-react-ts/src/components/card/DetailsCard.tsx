@@ -27,9 +27,7 @@ const DetailsCard = (props: DetailsCardPropsType) => {
       <Row>
         <Col>
           <PlaceholderCustom loading={loading} as="span" xs={12}>
-            <span className={`card-heading text-secondary text-truncate`}>
-              {props.heading}
-            </span>
+            <span className={`text-secondary`}>{props.heading}</span>
           </PlaceholderCustom>
           <PlaceholderCustom loading={loading} as="h2" xs={12}>
             <div className="d-flex justify-content-between">

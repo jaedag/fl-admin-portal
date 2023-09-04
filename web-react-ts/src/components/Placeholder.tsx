@@ -22,6 +22,7 @@ type PlaceholderCustomProps = {
     | 'info'
     | 'light'
     | 'dark'
+    | 'brand'
   className?: string
   button?: boolean | string
   animation?: 'wave' | 'glow'
