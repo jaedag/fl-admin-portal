@@ -1,3 +1,24 @@
+#### 7.8.2 (2023-09-04)
+
+##### Bug Fixes
+
+*  fix bugs breaking the build 2 ([52067ebd](https://github.com/firstlovecenter/fl-pastoral-care/commit/52067ebd5d3013fa2c5601ab4bf9991358f9ce33))
+*  fix bugs breaking the build ([676664c0](https://github.com/firstlovecenter/fl-pastoral-care/commit/676664c096da36782d2d6b39724ff8b3537810e0))
+*  initial implementation for hub graph page ([bb03e26e](https://github.com/firstlovecenter/fl-pastoral-care/commit/bb03e26e64b1ac54c591dd14d78d0be28ddc5ba5))
+*  implement aggregation of hub fellowships on hub ([09fc8b67](https://github.com/firstlovecenter/fl-pastoral-care/commit/09fc8b671d6ed9fd6a73cc9dd1b5dd21802609b1))
+*  implement graphs on hub level churches ([911daed1](https://github.com/firstlovecenter/fl-pastoral-care/commit/911daed1680f5c03f6b077509a67c1ebe0d24206))
+*  add a page container and some extra styling for menu buttons in light mode ([b7ffe164](https://github.com/firstlovecenter/fl-pastoral-care/commit/b7ffe164d32c50f087124787431a71e41b17dd9b))
+*  implement chakra-ui style colours for theme ([ceec3b9b](https://github.com/firstlovecenter/fl-pastoral-care/commit/ceec3b9b2126b71059fd5b87b595b04dbe995288))
+*  fix bug preventing fellowships from displaying correctly ([7445b381](https://github.com/firstlovecenter/fl-pastoral-care/commit/7445b381189b63e35b32749832b046195ae4b814))
+*  fix bug on error screen button ([fabf595d](https://github.com/firstlovecenter/fl-pastoral-care/commit/fabf595da06e4c8b2896c5baee320c12011976c0))
+*  fix bug on error screen button ([f6370d3a](https://github.com/firstlovecenter/fl-pastoral-care/commit/f6370d3a21e103588e3b490220b45db30d5a4a7f))
+*  edit text on error screen ([b2c75ede](https://github.com/firstlovecenter/fl-pastoral-care/commit/b2c75ede8dbd617c75d5b9455da15502e235336f))
+*  remove errant a ([34566f83](https://github.com/firstlovecenter/fl-pastoral-care/commit/34566f832f94e87db96140b90d53fe23c6f0d78d))
+
+##### Refactors
+
+* **ui:**  revamped color scheme for entire frontend ([89ca0119](https://github.com/firstlovecenter/fl-pastoral-care/commit/89ca0119e623f1701ad3793824e4c4f5affcb105))
+
 #### 7.8.1 (2023-09-02)
 
 ##### Bug Fixes
