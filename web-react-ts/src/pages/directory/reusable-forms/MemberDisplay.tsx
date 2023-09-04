@@ -31,12 +31,18 @@ const MemberDisplay = ({ memberId }: { memberId: string }) => {
   const { data: churchData } = useQuery(DISPLAY_MEMBER_CHURCH, {
     variables: { id: memberId },
   })
-  const { data: leaderData } = useQuery(DISPLAY_MEMBER_LEADERSHIP, {
-    variables: { id: memberId },
-  })
-  const { data: adminData } = useQuery(DISPLAY_MEMBER_ADMIN, {
-    variables: { id: memberId },
-  })
+  const { data: leaderData, loading: leaderLoading } = useQuery(
+    DISPLAY_MEMBER_LEADERSHIP,
+    {
+      variables: { id: memberId },
+    }
+  )
+  const { data: adminData, loading: adminLoading } = useQuery(
+    DISPLAY_MEMBER_ADMIN,
+    {
+      variables: { id: memberId },
+    }
+  )
   const errorToThrow: any = error
   throwToSentry(errorToThrow)
 
@@ -78,7 +84,13 @@ const MemberDisplay = ({ memberId }: { memberId: string }) => {
         <PlaceholderCustom as="h3" loading={!member || loading}>
           <h3>{member?.nameWithTitle}</h3>
         </PlaceholderCustom>
-        <MemberRoleList memberLeader={memberLeader} memberAdmin={memberAdmin} />
+
+        <PlaceholderCustom as="h5" loading={adminLoading || leaderLoading}>
+          <MemberRoleList
+            memberLeader={memberLeader}
+            memberAdmin={memberAdmin}
+          />
+        </PlaceholderCustom>
       </div>
       <Row>
         <Col>

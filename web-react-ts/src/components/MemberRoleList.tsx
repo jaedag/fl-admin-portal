@@ -129,7 +129,8 @@ const MemberRoleList = ({
       <small className="mb-5">
         <Button
           onClick={() => navigate('/dashboard/servants')}
-          className="mb-3 view-graphs-button"
+          variant="brand"
+          className="mb-3 px-5"
         >
           View Graphs
         </Button>
