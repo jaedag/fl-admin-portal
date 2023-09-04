@@ -1,14 +1,15 @@
-import React from 'react'
-import { Spinner } from 'react-bootstrap'
+import { Container } from 'react-bootstrap'
 import './SpinnerPage.css'
+import { BarLoader } from 'react-spinners'
+import PageContainer from './base-component/PageContainer'
 
 const SpinnerPage = () => {
   return (
-    <div className="row align-items-center center-page">
-      <div className="col text-center">
-        <Spinner animation="border" className="spinner-large" variant="white" />
-      </div>
-    </div>
+    <PageContainer>
+      <Container className="center-page d-flex flex-column justify-content-center align-items-center">
+        <BarLoader color="grey" />
+      </Container>
+    </PageContainer>
   )
 }
 

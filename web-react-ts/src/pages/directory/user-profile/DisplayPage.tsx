@@ -68,7 +68,7 @@ const DisplayPage = () => {
             <Container className="px-5 mb-2">
               <div className="d-grid gap-2">
                 <Button
-                  className="dark"
+                  variant="brand"
                   onClick={() => navigate('/user-profile/edit')}
                 >
                   Edit Your Profile

@@ -155,10 +155,7 @@ const ErrorPage = ({ error }: ErrorScreenProps) => {
           </Card.Footer>
         </Card>
 
-        <Button
-          className="mt-5 facebook"
-          onClick={() => window.location.reload()}
-        >
+        <Button className="mt-5" onClick={() => window.location.reload()}>
           Reload Page
         </Button>
       </Container>

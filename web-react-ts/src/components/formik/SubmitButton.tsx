@@ -10,9 +10,8 @@ const SubmitButton = (props: SubmitButtonProps) => {
   return (
     <Button
       variant="success"
-      size="lg"
       type="submit"
-      className={`${!formik.isValid && 'invalid'}`}
+      className={`${!formik.isValid && 'invalid'} px-5`}
       disabled={formik.isSubmitting}
       {...rest}
     >

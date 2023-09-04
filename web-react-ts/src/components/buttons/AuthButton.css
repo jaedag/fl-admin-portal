@@ -7,16 +7,3 @@
 
 
 
-.logout {
-  background-color: #42061b;
-  opacity: 0.8;
-}
-
-.login:hover,
-.login:focus,
-.login:active {
-  background-color: #420706;
-  border: none;
-  outline: none;
-  box-shadow: 0 0 0 0.25rem rgba(182, 14, 11, 0.5);
-}

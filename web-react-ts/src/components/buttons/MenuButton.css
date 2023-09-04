@@ -19,93 +19,94 @@
   width: 25px;
 }
 
-.churches{
-  color: var(--churches-accent);
-  fill: var(--churches-accent);
-}
-
-.arrivals{
-  color: var(--arrivals-accent);
-  fill: var(--arrivals-accent);
-}
-
-.defaulters{
-  color: var(--defaulters-accent);
-  fill: var(--defaulters-accent);
-}
-.campaigns{
-  color: var(--campaigns-accent);
-  fill: var(--campaigns-accent);
-}
-.members{
-  color: var(--members-accent);
-  fill: var(--members-accent);
-}
-
-.banking{
-  color: var(--banking-accent);
-  fill: var(--banking-accent);
-}
-
-.equipment{
-  color: var(--equipment);
-  fill: var(--equipment);
-}
-
-.equipment{
-  color: var(--equipment);
-  fill: var(--equipment);
-}
-
-.antibrutish{
-  color: var(--antibrutish);
-  fill: var(--antibrutish);
-}
-
-.multiplication{
-  color: var(--multiplication);
-  fill: var(--multiplication);
-}
-
-.swollensunday{
-  color: var(--swollensunday);
-  fill: var(--swollensunday);
-}
-
-.shepherdingcontrol{
-  color: var(--shepherdingcontrol);
-  fill: var(--shepherdingcontrol);
-}
-
-.sheepseeking{
-  color: var(--sheepseeking);
-  fill: var(--sheepseeking);
-}
-
-.quick-facts{
-  color: var(--quickfacts-accent);
-  fill: var(--quickfacts-accent);
-}
-
-.maps{
-  color: var(--maps-accent);
-  fill: var(--maps-accent);
-}
-
-.danger{
-  color: var(--bad);
-}
-.menu-buttons {
+.menu-buttons,
+.menu-buttons:hover,
+.menu-buttons:focus,
+.menu-buttons:active {
   min-height: 74px;
   text-align: left;
   padding-left: 20px;
-  background-color: var(--bg-card);
   border-color: var(--bg-card);
   margin-top: 10px;
   box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2);
 }
 
+.churches {
+  color: var(--churches-accent) !important;
+  fill: var(--churches-accent) !important;
+}
 
+.arrivals {
+  color: var(--arrivals-accent) !important;
+  fill: var(--arrivals-accent) !important;
+}
+
+.defaulters {
+  color: var(--defaulters-accent) !important;
+  fill: var(--defaulters-accent) !important;
+}
+.campaigns {
+  color: var(--campaigns-accent) !important;
+  fill: var(--campaigns-accent) !important;
+}
+.members {
+  color: var(--members-accent) !important;
+  fill: var(--members-accent) !important;
+}
+
+.banking {
+  color: var(--banking-accent) !important;
+  fill: var(--banking-accent) !important;
+}
+
+.equipment {
+  color: var(--equipment) !important;
+  fill: var(--equipment) !important;
+}
+
+.equipment {
+  color: var(--equipment) !important;
+  fill: var(--equipment) !important;
+}
+
+.antibrutish {
+  color: var(--antibrutish) !important;
+  fill: var(--antibrutish) !important;
+}
+
+.multiplication {
+  color: var(--multiplication) !important;
+  fill: var(--multiplication) !important;
+}
+
+.swollensunday {
+  color: var(--swollensunday) !important;
+  fill: var(--swollensunday) !important;
+}
+
+.shepherdingcontrol {
+  color: var(--shepherdingcontrol) !important;
+  fill: var(--shepherdingcontrol) !important;
+}
+
+.sheepseeking {
+  color: var(--sheepseeking) !important;
+  fill: var(--sheepseeking) !important;
+}
+
+.quick-facts {
+  color: var(--quickfacts-accent) !important;
+  fill: var(--quickfacts-accent) !important;
+}
+
+.maps {
+  color: var(--maps-accent) !important;
+  fill: var(--maps-accent) !important;
+}
+
+.danger {
+  color: var(--bad) !important;
+}
 
 .menu-buttons.center {
   text-align: center;

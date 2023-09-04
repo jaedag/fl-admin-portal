@@ -28,6 +28,7 @@ const MenuButton = (props: MenuButtonProps) => {
     <Button
       onClick={props.onClick}
       size="lg"
+      variant="secondary"
       className={`${props.color} menu-buttons`}
     >
       <Row>

@@ -102,7 +102,7 @@
 }
 
 .quick-fact-card {
-  background-color: #242323;
+  background-color: var(--bs-card-bg);
   padding: 13px 22px;
 }
 .quick-facts-shadow {

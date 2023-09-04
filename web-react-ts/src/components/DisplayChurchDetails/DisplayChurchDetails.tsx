@@ -443,7 +443,8 @@ const DisplayChurchDetails = (props: DisplayChurchDetailsProps) => {
             button="button"
           >
             <Button
-              className={`btn-graphs ${currentTheme}`}
+              variant="brand"
+              size="lg"
               onClick={() => {
                 setUserChurch({
                   id: props.churchId,
@@ -460,11 +461,12 @@ const DisplayChurchDetails = (props: DisplayChurchDetailsProps) => {
           {shouldFill() && (
             <PlaceholderCustom
               loading={props.loading}
-              className={`btn-graphs ${currentTheme}`}
+              size="lg"
               button="button"
             >
               <Button
-                className={`btn-graphs ${currentTheme}`}
+                variant="brand"
+                size="lg"
                 onClick={() => {
                   setUserChurch({
                     id: props.churchId,

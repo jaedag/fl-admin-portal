@@ -23,9 +23,9 @@ import { beforeStreamArrivalsDeadline } from './arrivals-utils'
 import ErrorText from 'components/ErrorText'
 import PullToRefresh from 'react-simple-pull-to-refresh'
 import ArrivalsMenuDropdown from './ArrivalsMenuDropdown'
-import { AiOutlineSend } from 'react-icons/ai'
 import Input from 'components/formik/Input'
 import { ChurchContext } from 'contexts/ChurchContext'
+import ArrivalsDateSubmitBtn from './components/ArrivalsDateSubmitBtn'
 
 export type AdminFormOptions = {
   adminName: string
@@ -202,9 +202,7 @@ const ConstituencyDashboard = () => {
                       />
                     </Col>
                     <Col xs={2}>
-                      <SubmitButton formik={formik}>
-                        <AiOutlineSend size={23} />
-                      </SubmitButton>
+                      <ArrivalsDateSubmitBtn formik={formik} />
                     </Col>
                     <Col>
                       <RoleView

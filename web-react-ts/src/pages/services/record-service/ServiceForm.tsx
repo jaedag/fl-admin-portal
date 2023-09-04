@@ -210,7 +210,7 @@ const ServiceForm = ({
                         )
                       }}
                     </FieldArray>
-                    <Col className="my-2 mt-5">
+                    <Col className="my-2 mt-2">
                       <small>Upload Treasurer Selfie*</small>
                       <ImageUpload
                         name="treasurerSelfie"
@@ -235,7 +235,7 @@ const ServiceForm = ({
                         aria-describedby="UploadfamilyPicture"
                       />
                     </Col>
-                    <div className="d-flex justify-content-center mt-5">
+                    <div className="d-flex justify-content-center mt-3">
                       <SubmitButton formik={formik} />
                     </div>
                   </Col>

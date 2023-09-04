@@ -4,6 +4,7 @@ import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
 import './ChurchButton.css'
 import useSetUserChurch from 'hooks/useSetUserChurch'
+import { Button } from 'react-bootstrap'
 
 type ChurchButtonProps = {
   church: {
@@ -21,11 +22,12 @@ const ChurchButton = (props: ChurchButtonProps) => {
   return (
     <PlaceholderCustom
       as="div"
-      className="card-buttons py-2 px-3 text-center text-nowrap text-white"
+      className="card-buttons py-2 px-3 text-center text-nowrap"
     >
       <Link to={`/${church.__typename.toLowerCase()}/displaydetails`}>
-        <button
-          className="card-buttons py-2 px-3 text-center text-nowrap text-white"
+        <Button
+          variant="gray"
+          className="card-buttons py-2 px-3 text-center text-nowrap"
           onClick={() => {
             clickCard(church)
             if (church.__typename === 'Campus') {
@@ -34,7 +36,7 @@ const ChurchButton = (props: ChurchButtonProps) => {
           }}
         >
           {church.name}
-        </button>
+        </Button>
       </Link>
     </PlaceholderCustom>
   )

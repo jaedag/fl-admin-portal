@@ -18,11 +18,9 @@ const AuthButton = (props: AuthButtonPropsType) => {
     return (
       <Container className="d-grid gap-2">
         <Button
-          variant="primary"
+          variant="brand"
           size="lg"
-          className={`login auth-button ${
-            !mobileFullSize && `d-none d-md-inline`
-          }`}
+          className={`auth-button ${!mobileFullSize && `d-none d-md-inline`}`}
           onClick={() => loginWithRedirect()}
         >
           Log In
@@ -51,8 +49,8 @@ const AuthButton = (props: AuthButtonPropsType) => {
       <div className="d-grid gap-2">
         <Button
           size="lg"
-          variant="danger"
-          className={`auth-button logout text-nowrap ${
+          variant="brand"
+          className={`auth-button text-nowrap ${
             !mobileFullSize && `d-none d-md-inline`
           }`}
           onClick={togglePopup}
@@ -67,7 +65,7 @@ const AuthButton = (props: AuthButtonPropsType) => {
             <p className="mt-2">Are you sure you want to Log Out?</p>
             <div className="d-grid gap-2">
               <Button
-                className={`auth-button logout mt-3 ${
+                className={`auth-button mt-3 ${
                   !mobileFullSize && `d-none d-md-inline`
                 }`}
                 onClick={() => {

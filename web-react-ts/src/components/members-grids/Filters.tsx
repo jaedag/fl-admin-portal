@@ -9,7 +9,6 @@ import { useLocation } from 'react-router-dom'
 import { Formik, Form, FormikHelpers } from 'formik'
 import { GET_CAMPUS_MINISTRIES } from 'queries/ListQueries'
 import { Col, Row, Button } from 'react-bootstrap'
-import { MemberContext } from 'contexts/MemberContext'
 import './Filters.css'
 import CheckboxGroup from 'components/formik/CheckboxGroup'
 import CheckboxWithQuery from 'components/formik/CheckboxWithQuery'
@@ -31,7 +30,6 @@ const Filters = ({
   eventKey: any
 }) => {
   const { setFilters, filters, campusId } = useContext(ChurchContext)
-  const { theme } = useContext(MemberContext)
   const location = useLocation()
   const atPastors = location.pathname === '/pastors'
 
@@ -113,38 +111,34 @@ const Filters = ({
                 />
               </Col>
             </Row>
-            <div className="d-grid gap-2">
-              <Button
-                variant="primary"
-                size="lg"
-                type="reset"
-                className={`btn-secondary ${theme}`}
-                onClick={() => {
-                  setFilters({
-                    gender: [],
-                    maritalStatus: [],
-                    occupation: '',
-                    leaderTitle: [],
-                    leaderRank: [],
-                    ministry: [],
-                  })
-                }}
-              >
-                Reset Filters
-              </Button>
+            <Button
+              variant="primary"
+              type="reset"
+              className={`btn-secondary px-5`}
+              onClick={() => {
+                setFilters({
+                  gender: [],
+                  maritalStatus: [],
+                  occupation: '',
+                  leaderTitle: [],
+                  leaderRank: [],
+                  ministry: [],
+                })
+              }}
+            >
+              Reset Filters
+            </Button>
 
-              <ToggleAccordion>
-                <Button
-                  variant="primary"
-                  size="lg"
-                  type="submit"
-                  className={`btn-main ${theme}`}
-                  disabled={!formik.isValid || formik.isSubmitting}
-                >
-                  Apply Filters
-                </Button>
-              </ToggleAccordion>
-            </div>
+            <ToggleAccordion>
+              <Button
+                variant="success"
+                type="submit"
+                className={`px-5`}
+                disabled={!formik.isValid || formik.isSubmitting}
+              >
+                Apply Filters
+              </Button>
+            </ToggleAccordion>
           </div>
         </Form>
       )}

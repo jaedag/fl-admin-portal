@@ -23,7 +23,7 @@ const DetailsCard = (props: DetailsCardPropsType) => {
     !props.heading || props.loading || !currentUser.id || !props.detail
 
   return (
-    <Card bg="dark" border="dark" className="p-2 m-1" onClick={props.onClick}>
+    <Card className="p-2 m-1" onClick={props.onClick}>
       <Row>
         <Col>
           <PlaceholderCustom loading={loading} as="span" xs={12}>

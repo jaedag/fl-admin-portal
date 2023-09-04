@@ -31,8 +31,8 @@ import { StreamWithArrivals } from './arrivals-types'
 import ErrorText from 'components/ErrorText'
 import PullToRefresh from 'react-simple-pull-to-refresh'
 import Input from 'components/formik/Input'
-import { AiOutlineSend } from 'react-icons/ai'
 import { ChurchContext } from 'contexts/ChurchContext'
+import ArrivalsDateSubmitBtn from './components/ArrivalsDateSubmitBtn'
 
 type DateFormOptions = {
   arrivalDate: string
@@ -215,9 +215,7 @@ const StreamDashboard = () => {
                         />
                       </Col>
                       <Col xs={2}>
-                        <SubmitButton formik={formik}>
-                          <AiOutlineSend size={23} />
-                        </SubmitButton>
+                        <ArrivalsDateSubmitBtn formik={formik} />
                       </Col>
                       <Col>
                         <RoleView

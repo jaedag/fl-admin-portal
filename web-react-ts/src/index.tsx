@@ -14,6 +14,7 @@ import { Auth0Provider, useAuth0 } from '@auth0/auth0-react'
 import CacheBuster from 'CacheBuster'
 
 import 'bootstrap/dist/css/bootstrap.min.css'
+import './color-theme.css'
 import './index.css'
 import AppWithContext from 'AppWithContext'
 import Login from 'components/Login'

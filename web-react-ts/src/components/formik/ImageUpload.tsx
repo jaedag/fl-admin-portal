@@ -24,7 +24,7 @@ const ImageUpload = (props: ImageUploadProps) => {
     tags,
     ...rest
   } = props
-  const { theme, currentUser } = useContext(MemberContext)
+  const { currentUser } = useContext(MemberContext)
   const [loading, setLoading] = useState(false)
   const [image, setImage] = useState('')
 
@@ -101,7 +101,7 @@ const ImageUpload = (props: ImageUploadProps) => {
           {...rest}
         />
 
-        <p className={`btn btn-primary image ${theme}`}>{placeholder}</p>
+        <p className={`btn btn-primary image`}>{placeholder}</p>
       </label>
       {props.error && <TextError>{props.error}</TextError>}
       {!props.error ?? <ErrorMessage name={name} component={TextError} />}

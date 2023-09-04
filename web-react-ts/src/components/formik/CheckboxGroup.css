@@ -7,9 +7,9 @@
   margin: 2px;
 }
 
-.filter-chips.active.dark {
-  background: #da0218;
-  color: var(--text-primary);
+.filter-chips.active {
+  background: var(--bad);
+  color: var(--chakra-colors-gray-800);
   padding: 8px 12px;
   border-radius: 25px;
   border: none;
