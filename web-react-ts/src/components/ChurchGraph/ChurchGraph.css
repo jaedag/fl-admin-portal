@@ -19,3 +19,7 @@
 .chart-container {
   width: 100%;
 }
+
+.chart-loader {
+  height: 330px;
+}

@@ -126,7 +126,7 @@ const SetPermissions = ({
   }
 
   return (
-    <ApolloWrapper data={data} loading={loading} error={error}>
+    <ApolloWrapper data={data} loading={!loading} error={error}>
       {children}
     </ApolloWrapper>
   )
