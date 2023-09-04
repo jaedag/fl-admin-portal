@@ -437,7 +437,7 @@ const DisplayChurchDetails = (props: DisplayChurchDetailsProps) => {
         <div className="d-grid gap-2">
           <PlaceholderCustom
             loading={props.loading}
-            className={`btn-graphs`}
+            className="btn-graphs"
             variant="brand"
             button="button"
           >
@@ -460,6 +460,7 @@ const DisplayChurchDetails = (props: DisplayChurchDetailsProps) => {
           {shouldFill() && (
             <PlaceholderCustom
               loading={props.loading}
+              className="btn-graphs"
               size="lg"
               button="button"
             >

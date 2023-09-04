@@ -27,10 +27,10 @@ RETURN absent;
 
 // 37907.62 - 3849.14 - 19536.28 - 14522.2
 MATCH (record:ServiceRecord {id: "8001b4bd-9ffd-48dc-96e5-f12d3188b78c"})
-SET record.onlineGiving = 19536.28 + 14522.2,
+SET record.onlineGiving = 19536.28 + 14743.9,
 record.cash = 3849.14,
-record.income = 37907.62,
-record.dollarIncome = 3790.76
+record.income = 38129.32,
+record.dollarIncome = 3812.93
 
 RETURN record.cash, record.onlineGiving;
 
