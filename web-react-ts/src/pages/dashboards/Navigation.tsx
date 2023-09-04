@@ -97,13 +97,15 @@ const Navigator = () => {
                     <UserProfileIcon />
                   </div>
                 </Col>
-                <Col>
+                <Col className="col-auto">
                   <div className="d-flex justify-content-center align-items-center h-100">
-                    {!isDarkMode ? (
-                      <Moon size={22} onClick={toggleColorMode} />
-                    ) : (
-                      <Sun size={22} onClick={toggleColorMode} />
-                    )}
+                    <Button variant="gray">
+                      {!isDarkMode ? (
+                        <Moon size={22} onClick={toggleColorMode} />
+                      ) : (
+                        <Sun size={22} onClick={toggleColorMode} />
+                      )}
+                    </Button>
                   </div>
                 </Col>
               </Row>

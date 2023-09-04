@@ -10,9 +10,6 @@
   /* height: 50px; */
   width: 54px;
 }
-.rounded-circle.gradient-bg {
-  background-image: linear-gradient(#161f04, #242d0e);
-}
 
 .rounded-circle .square-img {
   height: 25px;
@@ -143,6 +140,9 @@
   padding: 5px;
   margin: 0px;
 }
-.rounded-circle.gradient-bg {
-  background-image: linear-gradient(#161f04, #242d0e);
+.gradient-bg {
+  border-radius: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  background-color: var(--bs-body-bg);
 }

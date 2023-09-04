@@ -515,33 +515,33 @@
 }
 
 .error {
-  color: var(--bad);
+  color: var(--bad) !important;
 }
 
 .yellow {
-  color: var(--yellow);
+  color: var(--yellow) !important;
 }
 
 .green {
-  color: var(--good);
+  color: var(--good) !important;
 }
 
 .good {
-  color: var(--good);
+  color: var(--good) !important;
 }
 
 .red {
-  color: var(--bad);
+  color: var(--bad) !important;
 }
 .bad {
-  color: var(--bad);
+  color: var(--bad) !important;
 }
 .orange {
-  color: var(--orange);
+  color: var(--orange) !important;
 }
 
 .whatsapp-green {
-  background-color: var(--whatsapp-green);
+  background-color: var(--whatsapp-green) !important;
 }
 
 [data-bs-theme='light'] .offcanvas {

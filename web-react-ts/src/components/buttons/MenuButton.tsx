@@ -37,9 +37,7 @@ const MenuButton = (props: MenuButtonProps) => {
             <PlaceholderCustom className="rounded-circle menu" as="div">
               <div
                 className={
-                  props.iconBg
-                    ? `rounded-circle menu gradient-bg ${props.color}`
-                    : ''
+                  props.iconBg ? ` menu gradient-bg ${props.color}` : ''
                 }
               >
                 {props.avatar && (
