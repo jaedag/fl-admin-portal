@@ -1,3 +1,11 @@
+#### 7.8.4 (2023-09-05)
+
+##### Bug Fixes
+
+*  fix bug where graphs wouldn't show even after loading ([ef1bfa1d](https://github.com/firstlovecenter/fl-pastoral-care/commit/ef1bfa1d029b65878f9727331c8346255b4a723b))
+*  update colors on arrivals ([cc9c2e15](https://github.com/firstlovecenter/fl-pastoral-care/commit/cc9c2e1514b7176553f590f3cdd83a0bd15c4890))
+*  fix loading of member display trends btn ([8a1b342c](https://github.com/firstlovecenter/fl-pastoral-care/commit/8a1b342c861d61f05affa52918bb60d74e17cab5))
+
 #### 7.8.3 (2023-09-04)
 
 ##### Bug Fixes
