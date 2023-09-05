@@ -133,12 +133,12 @@ const ChurchGraph = (props: ChurchGraphProps) => {
             <p className="chart-title church-name">{`${secondaryTitle}`}</p>
           </PlaceholderCustom>
         )}
-        {!loading && (
+        {loading && (
           <Container className="chart-loader d-flex align-items-center justify-content-center">
             <ScaleLoader color="gray" className="mt-5" />
           </Container>
         )}
-        {loading && (
+        {!loading && (
           <ResponsiveContainer width="100%" height={330}>
             <BarChart data={sortedData} margin={{ top: 20 }}>
               <defs>
