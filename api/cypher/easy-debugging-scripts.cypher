@@ -1,39 +1,13 @@
-
-MATCH (record:ServiceRecord {id: "fff053c7-4d9d-4e97-8a08-36253eb8e162"})
-MATCH (fellowship:Fellowship {id: "1c75347c-e51c-41bc-8e9d-2ffb99ac148e"})<-[:LEADS]-(leader:Member)
-SET record.transactionReference = "1vc9uj661zhcu6a",
-    record.transactionStatus = "success"
-REMOVE record.transactionError
-WITH record, fellowship, leader
-MERGE (record)-[r:OFFERING_BANKED_BY]->(leader)
-RETURN record.income, record.transactionReference;
-
-
-MATCH (record:ServiceRecord)
-SET record.markedAttendance = true
-RETURN record;
-
-
-'
-
- MATCH (record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph) 
-   WHERE date.date.week = date().week AND date.date.year = date().year
+// if someone says that 
+// If someone says he has filled IMCL but is still getting an error,
+//it means he filled it out of order and this must be run
+MATCH (record:ServiceRecord {id: "6cd1db21-2d9f-4c71-9cf4-233ed70e723e"})
 OPTIONAL MATCH (record)<-[:ABSENT_FROM_SERVICE]-(absent:Member)
    WHERE absent.imclChecked = false
 SET absent.imclChecked = true
 
-RETURN absent;
+RETURN record.attendance, absent;
 
 
-// 37907.62 - 3849.14 - 19536.28 - 14522.2
-MATCH (record:ServiceRecord {id: "8001b4bd-9ffd-48dc-96e5-f12d3188b78c"})
-SET record.onlineGiving = 19536.28 + 14743.9,
-record.cash = 3849.14,
-record.income = 38129.32,
-record.dollarIncome = 3812.93
 
-RETURN record.cash, record.onlineGiving;
 
-MATCH (record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph) 
-   WHERE date.date.week = date().week AND date.date.year = date().year
-DETACH DELETE record

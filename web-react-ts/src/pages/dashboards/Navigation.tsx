@@ -38,20 +38,20 @@ const Navigator = () => {
   }
 
   return (
-    <Navbar collapseOnSelect bg="dark" expand={false} sticky="top">
+    <Navbar collapseOnSelect expand={false} sticky="top">
       <Container fluid>
         <Navbar.Toggle aria-controls="offcanvasNavbar" onClick={handleShow} />
         {isRunningStandalone() && (
           <Navbar.Brand>
-            <button className="btn btn-transparent-outline">
+            <Button variant="transparent-outline">
               <ChevronLeft size={24} onClick={() => navigate(-1)} />
-            </button>
-            <button className="btn btn-transparent-outline">
+            </Button>
+            <Button variant="transparent-outline">
               <ArrowClockwise
                 size={24}
                 onClick={() => window.location.reload()}
               />
-            </button>
+            </Button>
           </Navbar.Brand>
         )}
 
