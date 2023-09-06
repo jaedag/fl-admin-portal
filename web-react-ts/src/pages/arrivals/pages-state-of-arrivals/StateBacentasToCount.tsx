@@ -12,15 +12,15 @@ import PlaceholderDefaulterList from 'pages/services/defaulters/PlaceholderDefau
 import { useContext, useEffect, useState } from 'react'
 import { Button, ButtonGroup, Container } from 'react-bootstrap'
 import PullToRefresh from 'react-simple-pull-to-refresh'
-import { ArrivalsUseChurchType, BacentaWithArrivals } from './arrivals-types'
+import { ArrivalsUseChurchType, BacentaWithArrivals } from '../arrivals-types'
 import {
   CONSTITUENCY_BACENTAS_TO_COUNT,
   COUNCIL_BACENTAS_TO_COUNT,
   CAMPUS_BACENTAS_TO_COUNT,
   STREAM_BACENTAS_TO_COUNT,
-} from './bussingStatusQueries'
-import NoData from './CompNoData'
-import VehicleButton from './components/VehicleButton'
+} from '../bussingStatusQueries'
+import NoData from '../CompNoData'
+import VehicleButton from '../components/VehicleButton'
 
 type FormOptions = {
   bacentaSearch: string
@@ -62,6 +62,7 @@ const StateBacentasToCount = () => {
     campusFunction: campusOnTheWay,
     campusRefetch,
   })
+
   const { church, loading, error, refetch } = data
 
   // Searching Feature

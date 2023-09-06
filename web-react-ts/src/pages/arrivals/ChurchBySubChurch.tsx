@@ -19,7 +19,7 @@ import {
   COUNCIL_BY_CONSTITUENCY_ARRIVALS,
   STREAM_BY_COUNCIL_ARRIVALS,
   CAMPUS_BY_STREAM_ARRIVALS,
-} from './churchBySubchurchQueries'
+} from './pages-breakdowns/churchBySubchurchQueries'
 import ConstituencyDashboard from './DashboardConstituency'
 import { permitArrivals, permitLeaderAdmin } from 'permission-utils'
 import RoleView from 'auth/RoleView'

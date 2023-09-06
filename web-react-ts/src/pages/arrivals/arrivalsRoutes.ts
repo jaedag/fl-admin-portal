@@ -11,41 +11,60 @@ import { lazy } from 'react'
 const Arrivals = lazy(() => import('pages/arrivals/Arrivals'))
 const BacentaArrivals = lazy(() => import('pages/arrivals/BacentaArrivals'))
 const StateBacentasNoActivity = lazy(
-  () => import('pages/arrivals/StateBacentasNoActivity')
+  () => import('./pages-state-of-arrivals/StateBacentasNoActivity')
 )
 const BacentasOnTheWay = lazy(
-  () => import('pages/arrivals/StateBacentasOnTheWay')
+  () => import('./pages-state-of-arrivals/StateBacentasOnTheWay')
 )
 const BusFormConfirmation = lazy(
-  () => import('pages/arrivals/FormAttendanceConfirmation')
+  () => import('./pages-forms/FormAttendanceConfirmation')
 )
 const PayVehicleRecord = lazy(
-  () => import('pages/arrivals/FormPayVehicleRecord')
+  () => import('./pages-forms/FormPayVehicleRecord')
 )
 const BusFormDetails = lazy(() => import('pages/arrivals/BusFormDetails'))
 const OnTheWaySubmission = lazy(
-  () => import('pages/arrivals/FormAddVehicleRecord')
+  () => import('pages/arrivals/pages-forms/FormAddVehicleRecord')
 )
 const ConstituencyDashboard = lazy(
-  () => import('pages/arrivals/DashboardConstituency')
+  () => import('./pages-dashboards/DashboardConstituency')
 )
-const CouncilDashboard = lazy(() => import('./DashboardCouncil'))
+const CouncilDashboard = lazy(
+  () => import('./pages-dashboards/DashboardCouncil')
+)
 const MobilisationSubmission = lazy(
-  () => import('./FormMobilisationSubmission')
+  () => import('./pages-forms/FormMobilisationSubmission')
 )
 const MobilisationPicture = lazy(() => import('./PreMobilisationPicture'))
-const BacentasMobilising = lazy(() => import('./StateBacentasMobilising'))
-const StreamDashboard = lazy(() => import('./DashboardStream'))
-const GatheringSerivceDashboard = lazy(() => import('./DashboardCampus'))
-const BacentasHaveArrived = lazy(() => import('./StateBacentasArrived'))
-const ChurchBySubChurch = lazy(() => import('./ChurchBySubChurch'))
-const StateBacentasToCount = lazy(() => import('./StateBacentasToCount'))
+const BacentasMobilising = lazy(
+  () => import('./pages-state-of-arrivals/StateBacentasMobilising')
+)
+const StreamDashboard = lazy(() => import('./pages-dashboards/DashboardStream'))
+const GatheringSerivceDashboard = lazy(
+  () => import('./pages-dashboards/DashboardCampus')
+)
+const BacentasHaveArrived = lazy(
+  () => import('./pages-state-of-arrivals/StateBacentasArrived')
+)
+const CampusByStream = lazy(() => import('./pages-breakdowns/CampusByStream'))
+const StreamByCouncil = lazy(() => import('./pages-breakdowns/StreamByCouncil'))
+const CouncilByConstituency = lazy(
+  () => import('./pages-breakdowns/CouncilByConstituency')
+)
+
+const StateBacentasToCount = lazy(
+  () => import('./pages-state-of-arrivals/StateBacentasToCount')
+)
 const SetArrivalsTime = lazy(() => import('./Times/SetArrivalsTimes'))
 const ArrivalTimes = lazy(() => import('./Times/ArrivalTimes'))
 const ArrivalsCounters = lazy(() => import('./Helpers/ArrivalsCounters'))
 const ArrivalsPayerSelect = lazy(() => import('./Helpers/ArrivalsPayers'))
-const BacentasBelow8 = lazy(() => import('./StateBacentasBelow8'))
-const VehiclesToBePaid = lazy(() => import('./StateVehiclesToBePaid'))
+const BacentasBelow8 = lazy(
+  () => import('./pages-state-of-arrivals/StateBacentasBelow8')
+)
+const VehiclesToBePaid = lazy(
+  () => import('./pages-state-of-arrivals/StateVehiclesToBePaid')
+)
 const BusVehicleFormDetails = lazy(() => import('./BusVehicleFormDetails'))
 const ArrivalsPaymentData = lazy(
   () => import('./arrival-payment-data/ArrivalsPaymentData')
@@ -102,19 +121,19 @@ export const arrivals: LazyRouteTypes[] = [
   {
     path: '/arrivals/council-by-constituency',
     roles: permitLeaderAdminArrivals('Council'),
-    element: ChurchBySubChurch,
+    element: CouncilByConstituency,
     placeholder: true,
   },
   {
     path: '/arrivals/stream-by-council',
     roles: permitLeaderAdminArrivals('Stream'),
-    element: ChurchBySubChurch,
+    element: StreamByCouncil,
     placeholder: true,
   },
   {
     path: '/arrivals/campus-by-stream',
     roles: permitLeaderAdminArrivals('Campus'),
-    element: ChurchBySubChurch,
+    element: CampusByStream,
     placeholder: true,
   },
 

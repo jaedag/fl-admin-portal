@@ -11,14 +11,14 @@ import React, { useContext } from 'react'
 import { Container } from 'react-bootstrap'
 import { useNavigate } from 'react-router'
 import PullToRefresh from 'react-simple-pull-to-refresh'
-import { ArrivalsUseChurchType } from './arrivals-types'
+import { ArrivalsUseChurchType } from '../arrivals-types'
 import {
   CONSTITUENCY_BACENTAS_ARRIVED,
   COUNCIL_BACENTAS_ARRIVED,
   CAMPUSES_BACENTAS_ARRIVED,
   STREAM_BACENTAS_ARRIVED,
-} from './bussingStatusQueries'
-import NoData from './CompNoData'
+} from '../bussingStatusQueries'
+import NoData from '../CompNoData'
 
 const BacentasHaveArrived = () => {
   const navigate = useNavigate()
