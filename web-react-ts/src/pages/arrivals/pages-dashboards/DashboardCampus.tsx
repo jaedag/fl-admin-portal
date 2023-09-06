@@ -7,8 +7,8 @@ import {
   MAKE_CAMPUSARRIVALS_ADMIN,
   SET_SWELL_DATE,
   SET_CODE_OF_THE_DAY,
-} from './arrivalsMutation'
-import { CAMPUS_ARRIVALS_DASHBOARD } from './arrivalsQueries'
+} from '../arrivalsMutation'
+import { CAMPUS_ARRIVALS_DASHBOARD } from '../arrivalsQueries'
 import { alertMsg, SHORT_POLL_INTERVAL, throwToSentry } from 'global-utils'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { Accordion, Col, Container, Row } from 'react-bootstrap'
@@ -27,13 +27,13 @@ import { getHumanReadableDate } from 'jd-date-utils'
 import DefaulterInfoCard from 'pages/services/defaulters/DefaulterInfoCard'
 import { MemberContext } from 'contexts/MemberContext'
 import usePopup from 'hooks/usePopup'
-import ArrivalsMenuDropdown from './ArrivalsMenuDropdown'
+import ArrivalsMenuDropdown from '../ArrivalsMenuDropdown'
 import { AdminFormOptions } from './DashboardConstituency'
 import SearchMember from 'components/formik/SearchMember'
 import PullToRefresh from 'react-simple-pull-to-refresh'
 import Input from 'components/formik/Input'
 import { ChurchContext } from 'contexts/ChurchContext'
-import ArrivalsDateSubmitBtn from './components/ArrivalsDateSubmitBtn'
+import ArrivalsDateSubmitBtn from '../components/ArrivalsDateSubmitBtn'
 
 type DateFormOptions = {
   arrivalDate: string
@@ -42,7 +42,7 @@ type DateFormOptions = {
 const CampusDashboard = () => {
   const { isOpen, togglePopup } = usePopup()
   const { currentUser } = useContext(MemberContext)
-  const { arrivalDate, setArrivalDate } = useContext(ChurchContext)
+  const { arrivalDate, setArrivalDate, campusId } = useContext(ChurchContext)
   const navigate = useNavigate()
   const today = new Date().toISOString().slice(0, 10)
   const { data, loading, error } = useQuery(CAMPUS_ARRIVALS_DASHBOARD, {
@@ -175,7 +175,7 @@ const CampusDashboard = () => {
     onSubmitProps.setSubmitting(true)
     gatheringArrivalsDashboard({
       variables: {
-        id: currentUser?.currentChurch.id,
+        id: campusId,
         arrivalDate: values.arrivalDate,
         date: values.arrivalDate,
       },
