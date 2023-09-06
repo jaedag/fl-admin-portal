@@ -1,13 +1,13 @@
-import { useLazyQuery, useMutation, useQuery } from '@apollo/client'
+import { useMutation, useQuery } from '@apollo/client'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import MenuButton from 'components/buttons/MenuButton'
 import SubmitButton from 'components/formik/SubmitButton'
 import Popup from 'components/Popup/Popup'
 import { Form, Formik, FormikHelpers } from 'formik'
 import * as Yup from 'yup'
-import { useContext, useEffect } from 'react'
+import { useContext } from 'react'
 import { Accordion, Col, Container, Row } from 'react-bootstrap'
-import { COUNCIL_ARRIVALS_DASHBOARD } from './arrivalsQueries'
+import { COUNCIL_ARRIVALS_DASHBOARD } from '../arrivalsQueries'
 import { useNavigate } from 'react-router'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import RoleView from 'auth/RoleView'
@@ -16,7 +16,7 @@ import {
   authorisedLink,
   throwToSentry,
 } from 'global-utils'
-import { MAKE_COUNCILARRIVALS_ADMIN } from './arrivalsMutation'
+import { MAKE_COUNCILARRIVALS_ADMIN } from '../arrivalsMutation'
 import {
   permitAdmin,
   permitArrivals,
@@ -25,17 +25,17 @@ import {
 } from 'permission-utils'
 import HeadingSecondary from 'components/HeadingSecondary'
 import DefaulterInfoCard from 'pages/services/defaulters/DefaulterInfoCard'
-import { MemberContext } from 'contexts/MemberContext'
 import usePopup from 'hooks/usePopup'
 import { AdminFormOptions } from './DashboardConstituency'
 import SearchMember from 'components/formik/SearchMember'
-import { beforeStreamArrivalsDeadline } from './arrivals-utils'
+import { beforeStreamArrivalsDeadline } from '../arrivals-utils'
 import ErrorText from 'components/ErrorText'
 import PullToRefresh from 'react-simple-pull-to-refresh'
-import ArrivalsMenuDropdown from './ArrivalsMenuDropdown'
+import ArrivalsMenuDropdown from '../ArrivalsMenuDropdown'
 import Input from 'components/formik/Input'
 import { ChurchContext } from 'contexts/ChurchContext'
-import ArrivalsDateSubmitBtn from './components/ArrivalsDateSubmitBtn'
+import ArrivalsDateSubmitBtn from '../components/ArrivalsDateSubmitBtn'
+import { MemberContext } from 'contexts/MemberContext'
 
 type DateFormOptions = {
   arrivalDate: string
@@ -44,29 +44,19 @@ type DateFormOptions = {
 const CouncilDashboard = () => {
   const { isOpen, togglePopup } = usePopup()
   const { currentUser } = useContext(MemberContext)
-  const { arrivalDate, setArrivalDate } = useContext(ChurchContext)
+  const { arrivalDate, setArrivalDate, councilId } = useContext(ChurchContext)
   const navigate = useNavigate()
   const today = new Date().toISOString().slice(0, 10)
-  const { data, loading, error } = useQuery(COUNCIL_ARRIVALS_DASHBOARD, {
-    variables: { id: currentUser?.currentChurch.id, arrivalDate: today },
-  })
-
-  const [
-    councilArrivalsDashboard,
+  const { data, loading, error, refetch } = useQuery(
+    COUNCIL_ARRIVALS_DASHBOARD,
     {
-      data: dashboardData,
-      loading: dashboardLoading,
-      error: dashboardError,
-      refetch,
-    },
-  ] = useLazyQuery(COUNCIL_ARRIVALS_DASHBOARD, {
-    variables: { id: currentUser?.currentChurch.id, arrivalDate: today },
-    pollInterval: SHORT_POLL_INTERVAL,
-    fetchPolicy: 'cache-and-network',
-  })
+      pollInterval: SHORT_POLL_INTERVAL,
+      variables: { id: councilId, arrivalDate: today },
+    }
+  )
 
   const [MakeCouncilArrivalsAdmin] = useMutation(MAKE_COUNCILARRIVALS_ADMIN)
-  const council = dashboardData?.councils[0]
+  const council = data?.councils[0]
 
   const initialValues: AdminFormOptions = {
     adminName: council?.arrivalsAdmin
@@ -88,7 +78,7 @@ const CouncilDashboard = () => {
 
     MakeCouncilArrivalsAdmin({
       variables: {
-        councilId: currentUser?.currentChurch.id,
+        councilId,
         newAdminId: values.adminSelect,
         oldAdminId: initialValues.adminSelect || 'no-old-admin',
       },
@@ -115,15 +105,6 @@ const CouncilDashboard = () => {
     },
   ]
 
-  useEffect(() => {
-    councilArrivalsDashboard({
-      variables: {
-        id: currentUser?.currentChurch.id,
-        arrivalDate: arrivalDate,
-      },
-    })
-  }, [])
-
   const dateValidationSchema = Yup.object({
     date: Yup.date().notRequired(),
   })
@@ -138,12 +119,6 @@ const CouncilDashboard = () => {
   ) => {
     onSubmitProps.setSubmitting(true)
 
-    councilArrivalsDashboard({
-      variables: {
-        id: currentUser?.currentChurch.id,
-        arrivalDate: arrivalDate,
-      },
-    })
     setArrivalDate(values.arrivalDate)
     onSubmitProps.setSubmitting(false)
   }
@@ -231,171 +206,160 @@ const CouncilDashboard = () => {
             {!beforeStreamArrivalsDeadline(council?.stream) && (
               <ErrorText>Arrival Deadline is up! Thank you very much</ErrorText>
             )}
-            <ApolloWrapper
-              loading={dashboardLoading}
-              data={dashboardData}
-              error={dashboardError}
-            >
-              <Accordion defaultActiveKey="0">
-                <Accordion.Item eventKey="0">
-                  <Accordion.Header>Bacenta Monitoring</Accordion.Header>
+
+            <Accordion defaultActiveKey="0">
+              <Accordion.Item eventKey="0">
+                <Accordion.Header>Bacenta Monitoring</Accordion.Header>
+                <Accordion.Body>
+                  <div className="d-grid gap-2">
+                    <MenuButton
+                      title="Bacentas With No Activity"
+                      onClick={() => navigate('/arrivals/bacentas-no-activity')}
+                      number={council?.bacentasNoActivityCount.toString()}
+                      color="red"
+                      iconBg
+                      noCaption
+                    />
+                    <MenuButton
+                      title="Bacentas Mobilising"
+                      onClick={() => navigate('/arrivals/bacentas-mobilising')}
+                      number={council?.bacentasMobilisingCount.toString()}
+                      color="orange"
+                      iconBg
+                      noCaption
+                    />
+                    <MenuButton
+                      title="Bacentas On The Way"
+                      onClick={() => navigate('/arrivals/bacentas-on-the-way')}
+                      number={council?.bacentasOnTheWayCount.toString()}
+                      color="yellow"
+                      iconBg
+                      noCaption
+                    />
+
+                    <MenuButton
+                      title="Bacentas That Didn't Bus"
+                      onClick={() => navigate('/arrivals/bacentas-below-8')}
+                      number={council?.bacentasBelow8Count.toString()}
+                      iconBg
+                      color="red"
+                      noCaption
+                    />
+
+                    <MenuButton
+                      title="Bacentas That Have Arrived"
+                      onClick={() =>
+                        navigate('/arrivals/bacentas-have-arrived')
+                      }
+                      number={council?.bacentasHaveArrivedCount.toString()}
+                      iconBg
+                      color="green"
+                      noCaption
+                    />
+                  </div>
+                </Accordion.Body>
+              </Accordion.Item>
+
+              <RoleView
+                roles={[
+                  ...permitArrivals('Campus'),
+                  ...permitLeaderAdmin('Council'),
+                ]}
+              >
+                <Accordion.Item eventKey="1">
+                  <Accordion.Header>Financial Data</Accordion.Header>
                   <Accordion.Body>
                     <div className="d-grid gap-2">
                       <MenuButton
-                        title="Bacentas With No Activity"
+                        title="Vehicles That Have Been Paid"
                         onClick={() =>
-                          navigate('/arrivals/bacentas-no-activity')
-                        }
-                        number={council?.bacentasNoActivityCount.toString()}
-                        color="red"
-                        iconBg
-                        noCaption
-                      />
-                      <MenuButton
-                        title="Bacentas Mobilising"
-                        onClick={() =>
-                          navigate('/arrivals/bacentas-mobilising')
-                        }
-                        number={council?.bacentasMobilisingCount.toString()}
-                        color="orange"
-                        iconBg
-                        noCaption
-                      />
-                      <MenuButton
-                        title="Bacentas On The Way"
-                        onClick={() =>
-                          navigate('/arrivals/bacentas-on-the-way')
-                        }
-                        number={council?.bacentasOnTheWayCount.toString()}
-                        color="yellow"
-                        iconBg
-                        noCaption
-                      />
-
-                      <MenuButton
-                        title="Bacentas That Didn't Bus"
-                        onClick={() => navigate('/arrivals/bacentas-below-8')}
-                        number={council?.bacentasBelow8Count.toString()}
-                        iconBg
-                        color="red"
-                        noCaption
-                      />
-
-                      <MenuButton
-                        title="Bacentas That Have Arrived"
-                        onClick={() =>
-                          navigate('/arrivals/bacentas-have-arrived')
-                        }
-                        number={council?.bacentasHaveArrivedCount.toString()}
-                        iconBg
-                        color="green"
-                        noCaption
-                      />
-                    </div>
-                  </Accordion.Body>
-                </Accordion.Item>
-
-                <RoleView
-                  roles={[
-                    ...permitArrivals('Campus'),
-                    ...permitLeaderAdmin('Council'),
-                  ]}
-                >
-                  <Accordion.Item eventKey="1">
-                    <Accordion.Header>Financial Data</Accordion.Header>
-                    <Accordion.Body>
-                      <div className="d-grid gap-2">
-                        <MenuButton
-                          title="Vehicles That Have Been Paid"
-                          onClick={() =>
-                            navigate(
-                              authorisedLink(
-                                currentUser,
-                                permitArrivalsPayer(),
-                                '/arrivals/vehicles-to-be-paid'
-                              )
+                          navigate(
+                            authorisedLink(
+                              currentUser,
+                              permitArrivalsPayer(),
+                              '/arrivals/vehicles-to-be-paid'
                             )
-                          }
-                          number={council?.vehiclesHaveBeenPaidCount.toString()}
-                          color="green"
-                          iconBg
-                          noCaption
-                        />
+                          )
+                        }
+                        number={council?.vehiclesHaveBeenPaidCount.toString()}
+                        color="green"
+                        iconBg
+                        noCaption
+                      />
 
-                        <MenuButton
-                          title="Vehicles To Be Paid"
-                          onClick={() =>
-                            navigate(
-                              authorisedLink(
-                                currentUser,
-                                permitArrivalsPayer(),
-                                '/arrivals/vehicles-to-be-paid'
-                              )
+                      <MenuButton
+                        title="Vehicles To Be Paid"
+                        onClick={() =>
+                          navigate(
+                            authorisedLink(
+                              currentUser,
+                              permitArrivalsPayer(),
+                              '/arrivals/vehicles-to-be-paid'
                             )
-                          }
-                          number={council?.vehiclesToBePaidCount.toString()}
-                          color="yellow"
-                          iconBg
-                          noCaption
-                        />
+                          )
+                        }
+                        number={council?.vehiclesToBePaidCount.toString()}
+                        color="yellow"
+                        iconBg
+                        noCaption
+                      />
 
-                        <MenuButton
-                          title="Amount That Has Been Paid"
-                          onClick={() => navigate('#')}
-                          number={council?.vehicleAmountHasBeenPaid.toString()}
-                          color="green"
-                          iconBg
-                          noCaption
-                        />
-                        <MenuButton
-                          title="Amount To Be Paid"
-                          onClick={() => navigate('#')}
-                          number={council?.vehicleAmountToBePaid.toString()}
-                          color="yellow"
-                          iconBg
-                          noCaption
-                        />
-                      </div>
-                    </Accordion.Body>
-                  </Accordion.Item>
-                </RoleView>
-                <Accordion.Item eventKey="2">
-                  <Accordion.Header>Bussing Data</Accordion.Header>
-                  <Accordion.Body>
-                    <div className="d-grid gap-2">
                       <MenuButton
-                        title="Members On The Way"
-                        number={council?.bussingMembersOnTheWayCount.toString()}
-                        color="yellow"
-                        iconBg
-                        noCaption
-                      />
-                      <MenuButton
-                        title="Members That Have Arrived"
-                        number={council?.bussingMembersHaveArrivedCount.toString()}
+                        title="Amount That Has Been Paid"
+                        onClick={() => navigate('#')}
+                        number={council?.vehicleAmountHasBeenPaid.toString()}
                         color="green"
                         iconBg
                         noCaption
                       />
                       <MenuButton
-                        title="Busses On The Way"
-                        number={council?.bussesOnTheWayCount.toString()}
+                        title="Amount To Be Paid"
+                        onClick={() => navigate('#')}
+                        number={council?.vehicleAmountToBePaid.toString()}
                         color="yellow"
-                        iconBg
-                        noCaption
-                      />
-                      <MenuButton
-                        title="Busses That Have Arrived"
-                        number={council?.bussesThatArrivedCount.toString()}
-                        color="green"
                         iconBg
                         noCaption
                       />
                     </div>
                   </Accordion.Body>
                 </Accordion.Item>
-              </Accordion>
-            </ApolloWrapper>
+              </RoleView>
+              <Accordion.Item eventKey="2">
+                <Accordion.Header>Bussing Data</Accordion.Header>
+                <Accordion.Body>
+                  <div className="d-grid gap-2">
+                    <MenuButton
+                      title="Members On The Way"
+                      number={council?.bussingMembersOnTheWayCount.toString()}
+                      color="yellow"
+                      iconBg
+                      noCaption
+                    />
+                    <MenuButton
+                      title="Members That Have Arrived"
+                      number={council?.bussingMembersHaveArrivedCount.toString()}
+                      color="green"
+                      iconBg
+                      noCaption
+                    />
+                    <MenuButton
+                      title="Busses On The Way"
+                      number={council?.bussesOnTheWayCount.toString()}
+                      color="yellow"
+                      iconBg
+                      noCaption
+                    />
+                    <MenuButton
+                      title="Busses That Have Arrived"
+                      number={council?.bussesThatArrivedCount.toString()}
+                      color="green"
+                      iconBg
+                      noCaption
+                    />
+                  </div>
+                </Accordion.Body>
+              </Accordion.Item>
+            </Accordion>
           </div>
         </Container>
       </ApolloWrapper>

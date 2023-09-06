@@ -10,6 +10,7 @@ import PullToRefresh from 'react-simple-pull-to-refresh'
 import '../Arrivals.css'
 import { COUNCIL_BY_CONSTITUENCY_ARRIVALS } from './churchBySubchurchQueries'
 import { HigherChurchWithArrivals } from '../arrivals-types'
+import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 
 const CouncilByConstituency = () => {
   const { clickCard, councilId, arrivalDate } = useContext(ChurchContext)
@@ -29,16 +30,16 @@ const CouncilByConstituency = () => {
     <PullToRefresh onRefresh={refetch}>
       <ApolloWrapper data={data} loading={loading} error={error} placeholder>
         <Container>
-          <div
-            className={`fw-bold large-number pb-3`}
-          >{`${council?.name} Council By Constituency`}</div>
+          <HeadingPrimary
+            loading={!council}
+          >{`${council?.name} Council By Constituency`}</HeadingPrimary>
           <Row>
             {council?.constituencies?.map(
               (constituency: HigherChurchWithArrivals, i: number) => {
                 const array = [
                   {
                     title: 'Active Bacentas',
-                    number: constituency.activeBacentaICCount,
+                    number: constituency.activeBacentaCount,
                     color: 'white',
                   },
                   {

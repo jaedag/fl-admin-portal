@@ -1,6 +1,6 @@
-import { useLazyQuery, useMutation, useQuery } from '@apollo/client'
+import { useMutation, useQuery } from '@apollo/client'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
-import React, { useContext, useEffect } from 'react'
+import { useContext } from 'react'
 import * as Yup from 'yup'
 import { useNavigate } from 'react-router'
 import {
@@ -25,7 +25,6 @@ import MenuButton from 'components/buttons/MenuButton'
 import HeadingSecondary from 'components/HeadingSecondary'
 import { getHumanReadableDate } from 'jd-date-utils'
 import DefaulterInfoCard from 'pages/services/defaulters/DefaulterInfoCard'
-import { MemberContext } from 'contexts/MemberContext'
 import usePopup from 'hooks/usePopup'
 import ArrivalsMenuDropdown from '../ArrivalsMenuDropdown'
 import { AdminFormOptions } from './DashboardConstituency'
@@ -41,40 +40,25 @@ type DateFormOptions = {
 
 const CampusDashboard = () => {
   const { isOpen, togglePopup } = usePopup()
-  const { currentUser } = useContext(MemberContext)
   const { arrivalDate, setArrivalDate, campusId } = useContext(ChurchContext)
   const navigate = useNavigate()
   const today = new Date().toISOString().slice(0, 10)
-  const { data, loading, error } = useQuery(CAMPUS_ARRIVALS_DASHBOARD, {
-    variables: {
-      id: currentUser?.currentChurch.id,
-      date: today,
-      arrivalDate: today,
-    },
-  })
-
-  const [
-    gatheringArrivalsDashboard,
+  const { data, loading, error, refetch } = useQuery(
+    CAMPUS_ARRIVALS_DASHBOARD,
     {
-      data: dashboardData,
-      loading: dashboardLoading,
-      error: dashboardError,
-      refetch,
-    },
-  ] = useLazyQuery(CAMPUS_ARRIVALS_DASHBOARD, {
-    variables: {
-      id: currentUser?.currentChurch.id,
-      date: today,
-      arrivalDate: today,
-    },
-    pollInterval: SHORT_POLL_INTERVAL,
-    fetchPolicy: 'cache-and-network',
-  })
+      variables: {
+        id: campusId,
+        date: today,
+        arrivalDate: today,
+      },
+      pollInterval: SHORT_POLL_INTERVAL,
+    }
+  )
 
   const [SetSwellDate] = useMutation(SET_SWELL_DATE)
   const [SetCodeOfTheDay] = useMutation(SET_CODE_OF_THE_DAY)
   const [MakeCampusArrivalsAdmin] = useMutation(MAKE_CAMPUSARRIVALS_ADMIN)
-  const campus = dashboardData?.campuses[0]
+  const campus = data?.campuses[0]
 
   const initialValues: AdminFormOptions = {
     adminName: campus?.arrivalsAdmin
@@ -110,7 +94,7 @@ const CampusDashboard = () => {
 
     MakeCampusArrivalsAdmin({
       variables: {
-        campusId: currentUser?.currentChurch.id,
+        campusId,
         newAdminId: values.adminSelect,
         oldAdminId: initialValues.adminSelect || 'no-old-admin',
       },
@@ -150,16 +134,6 @@ const CampusDashboard = () => {
     { title: 'Code of the Day', onClick: () => submitCodeOfTheDay() },
   ]
 
-  useEffect(() => {
-    gatheringArrivalsDashboard({
-      variables: {
-        id: currentUser?.currentChurch.id,
-        arrivalDate: arrivalDate,
-        date: arrivalDate,
-      },
-    })
-  }, [])
-
   const dateValidationSchema = Yup.object({
     date: Yup.date().notRequired(),
   })
@@ -173,13 +147,7 @@ const CampusDashboard = () => {
     onSubmitProps: FormikHelpers<DateFormOptions>
   ) => {
     onSubmitProps.setSubmitting(true)
-    gatheringArrivalsDashboard({
-      variables: {
-        id: campusId,
-        arrivalDate: values.arrivalDate,
-        date: values.arrivalDate,
-      },
-    })
+
     setArrivalDate(values.arrivalDate)
     onSubmitProps.setSubmitting(false)
   }
@@ -265,154 +233,142 @@ const CampusDashboard = () => {
             </Formik>
 
             <DefaulterInfoCard defaulter={aggregates} />
-            <ApolloWrapper
-              loading={dashboardLoading}
-              data={dashboardData}
-              error={dashboardError}
-            >
-              <Accordion defaultActiveKey="0">
-                <Accordion.Item eventKey="0">
-                  <Accordion.Header>Bacenta Monitoring</Accordion.Header>
+            <Accordion defaultActiveKey="0">
+              <Accordion.Item eventKey="0">
+                <Accordion.Header>Bacenta Monitoring</Accordion.Header>
+                <Accordion.Body>
+                  <div className="d-grid gap-2">
+                    <MenuButton
+                      title="Bacentas With No Activity"
+                      onClick={() => navigate('/arrivals/bacentas-no-activity')}
+                      number={campus?.bacentasNoActivityCount.toString()}
+                      color="red"
+                      iconBg
+                      noCaption
+                    />
+                    <MenuButton
+                      title="Bacentas Mobilising"
+                      onClick={() => navigate('/arrivals/bacentas-mobilising')}
+                      number={campus?.bacentasMobilisingCount.toString()}
+                      color="orange"
+                      iconBg
+                      noCaption
+                    />
+                    <MenuButton
+                      title="Bacentas On The Way"
+                      onClick={() => navigate('/arrivals/bacentas-on-the-way')}
+                      number={campus?.bacentasOnTheWayCount.toString()}
+                      color="yellow"
+                      iconBg
+                      noCaption
+                    />
+
+                    <MenuButton
+                      title="Bacentas That Didn't Bus"
+                      onClick={() => navigate('/arrivals/bacentas-below-8')}
+                      number={campus?.bacentasBelow8Count.toString()}
+                      iconBg
+                      color="red"
+                      noCaption
+                    />
+
+                    <MenuButton
+                      title="Bacentas That Have Arrived"
+                      onClick={() =>
+                        navigate('/arrivals/bacentas-have-arrived')
+                      }
+                      number={campus?.bacentasHaveArrivedCount.toString()}
+                      iconBg
+                      color="green"
+                      noCaption
+                    />
+                  </div>
+                </Accordion.Body>
+              </Accordion.Item>
+
+              <RoleView
+                roles={[
+                  ...permitArrivals('Campus'),
+                  ...permitLeaderAdmin('Campus'),
+                ]}
+              >
+                <Accordion.Item eventKey="1">
+                  <Accordion.Header>Financial Data</Accordion.Header>
                   <Accordion.Body>
                     <div className="d-grid gap-2">
                       <MenuButton
-                        title="Bacentas With No Activity"
-                        onClick={() =>
-                          navigate('/arrivals/bacentas-no-activity')
-                        }
-                        number={campus?.bacentasNoActivityCount.toString()}
-                        color="red"
+                        title="Vehicles That Have Been Paid"
+                        onClick={() => navigate('#')}
+                        number={campus?.vehiclesHaveBeenPaidCount.toString()}
+                        color="green"
                         iconBg
                         noCaption
                       />
                       <MenuButton
-                        title="Bacentas Mobilising"
-                        onClick={() =>
-                          navigate('/arrivals/bacentas-mobilising')
-                        }
-                        number={campus?.bacentasMobilisingCount.toString()}
-                        color="orange"
-                        iconBg
-                        noCaption
-                      />
-                      <MenuButton
-                        title="Bacentas On The Way"
-                        onClick={() =>
-                          navigate('/arrivals/bacentas-on-the-way')
-                        }
-                        number={campus?.bacentasOnTheWayCount.toString()}
+                        title="Vehicles To Be Paid"
+                        onClick={() => navigate('#')}
+                        number={campus?.vehiclesToBePaidCount.toString()}
                         color="yellow"
                         iconBg
                         noCaption
                       />
 
                       <MenuButton
-                        title="Bacentas That Didn't Bus"
-                        onClick={() => navigate('/arrivals/bacentas-below-8')}
-                        number={campus?.bacentasBelow8Count.toString()}
-                        iconBg
-                        color="red"
-                        noCaption
-                      />
-
-                      <MenuButton
-                        title="Bacentas That Have Arrived"
-                        onClick={() =>
-                          navigate('/arrivals/bacentas-have-arrived')
-                        }
-                        number={campus?.bacentasHaveArrivedCount.toString()}
-                        iconBg
+                        title="Amount That Has Been Paid"
+                        onClick={() => navigate('#')}
+                        number={campus?.vehicleAmountHasBeenPaid.toString()}
                         color="green"
                         noCaption
+                        iconBg
+                      />
+                      <MenuButton
+                        title="Amount To Be Paid"
+                        onClick={() => navigate('#')}
+                        number={campus?.vehicleAmountToBePaid.toString()}
+                        color="yellow"
+                        noCaption
+                        iconBg
                       />
                     </div>
                   </Accordion.Body>
                 </Accordion.Item>
-
-                <RoleView
-                  roles={[
-                    ...permitArrivals('Campus'),
-                    ...permitLeaderAdmin('Campus'),
-                  ]}
-                >
-                  <Accordion.Item eventKey="1">
-                    <Accordion.Header>Financial Data</Accordion.Header>
-                    <Accordion.Body>
-                      <div className="d-grid gap-2">
-                        <MenuButton
-                          title="Vehicles That Have Been Paid"
-                          onClick={() => navigate('#')}
-                          number={campus?.vehiclesHaveBeenPaidCount.toString()}
-                          color="green"
-                          iconBg
-                          noCaption
-                        />
-                        <MenuButton
-                          title="Vehicles To Be Paid"
-                          onClick={() => navigate('#')}
-                          number={campus?.vehiclesToBePaidCount.toString()}
-                          color="yellow"
-                          iconBg
-                          noCaption
-                        />
-
-                        <MenuButton
-                          title="Amount That Has Been Paid"
-                          onClick={() => navigate('#')}
-                          number={campus?.vehicleAmountHasBeenPaid.toString()}
-                          color="green"
-                          noCaption
-                          iconBg
-                        />
-                        <MenuButton
-                          title="Amount To Be Paid"
-                          onClick={() => navigate('#')}
-                          number={campus?.vehicleAmountToBePaid.toString()}
-                          color="yellow"
-                          noCaption
-                          iconBg
-                        />
-                      </div>
-                    </Accordion.Body>
-                  </Accordion.Item>
-                </RoleView>
-                <Accordion.Item eventKey="2">
-                  <Accordion.Header>Bussing Data</Accordion.Header>
-                  <Accordion.Body>
-                    <div className="d-grid gap-2">
-                      <MenuButton
-                        title="Members On The Way"
-                        number={campus?.bussingMembersOnTheWayCount.toString()}
-                        color="yellow"
-                        iconBg
-                        noCaption
-                      />
-                      <MenuButton
-                        title="Members That Have Arrived"
-                        number={campus?.bussingMembersHaveArrivedCount.toString()}
-                        color="green"
-                        iconBg
-                        noCaption
-                      />
-                      <MenuButton
-                        title="Busses On The Way"
-                        number={campus?.bussesOnTheWayCount.toString()}
-                        color="yellow"
-                        iconBg
-                        noCaption
-                      />
-                      <MenuButton
-                        title="Busses That Have Arrived"
-                        number={campus?.bussesThatArrivedCount.toString()}
-                        color="green"
-                        iconBg
-                        noCaption
-                      />
-                    </div>
-                  </Accordion.Body>
-                </Accordion.Item>
-              </Accordion>
-            </ApolloWrapper>
+              </RoleView>
+              <Accordion.Item eventKey="2">
+                <Accordion.Header>Bussing Data</Accordion.Header>
+                <Accordion.Body>
+                  <div className="d-grid gap-2">
+                    <MenuButton
+                      title="Members On The Way"
+                      number={campus?.bussingMembersOnTheWayCount.toString()}
+                      color="yellow"
+                      iconBg
+                      noCaption
+                    />
+                    <MenuButton
+                      title="Members That Have Arrived"
+                      number={campus?.bussingMembersHaveArrivedCount.toString()}
+                      color="green"
+                      iconBg
+                      noCaption
+                    />
+                    <MenuButton
+                      title="Busses On The Way"
+                      number={campus?.bussesOnTheWayCount.toString()}
+                      color="yellow"
+                      iconBg
+                      noCaption
+                    />
+                    <MenuButton
+                      title="Busses That Have Arrived"
+                      number={campus?.bussesThatArrivedCount.toString()}
+                      color="green"
+                      iconBg
+                      noCaption
+                    />
+                  </div>
+                </Accordion.Body>
+              </Accordion.Item>
+            </Accordion>
           </div>
         </Container>
       </ApolloWrapper>
