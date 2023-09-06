@@ -10,6 +10,7 @@ import PullToRefresh from 'react-simple-pull-to-refresh'
 import '../Arrivals.css'
 import { STREAM_BY_COUNCIL_ARRIVALS } from './churchBySubchurchQueries'
 import { HigherChurchWithArrivals } from '../arrivals-types'
+import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 
 const StreamByCouncil = () => {
   const { clickCard, streamId, arrivalDate } = useContext(ChurchContext)
@@ -19,7 +20,6 @@ const StreamByCouncil = () => {
     STREAM_BY_COUNCIL_ARRIVALS,
     {
       variables: { id: streamId, arrivalDate },
-
       pollInterval: SHORT_POLL_INTERVAL,
     }
   )
@@ -30,16 +30,16 @@ const StreamByCouncil = () => {
     <PullToRefresh onRefresh={refetch}>
       <ApolloWrapper data={data} loading={loading} error={error} placeholder>
         <Container>
-          <div
-            className={`fw-bold large-number pb-3`}
-          >{`${stream?.name} Stream By Council`}</div>
+          <HeadingPrimary
+            loading={!stream}
+          >{`${stream?.name} Stream By Council`}</HeadingPrimary>
           <Row>
             {stream?.councils?.map(
               (council: HigherChurchWithArrivals, i: number) => {
                 const array = [
                   {
                     title: 'Active Bacentas',
-                    number: council.activeBacentaICCount,
+                    number: council.activeBacentaCount,
                     color: 'white',
                   },
                   {

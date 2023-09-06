@@ -10,6 +10,7 @@ import PullToRefresh from 'react-simple-pull-to-refresh'
 import '../Arrivals.css'
 import { CAMPUS_BY_STREAM_ARRIVALS } from './churchBySubchurchQueries'
 import { HigherChurchWithArrivals } from '../arrivals-types'
+import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 
 const CampusByStream = () => {
   const { clickCard, campusId, arrivalDate } = useContext(ChurchContext)
@@ -23,22 +24,25 @@ const CampusByStream = () => {
     }
   )
 
-  const campus = data?.campuss[0]
+  const campus = data?.campuses[0]
 
   return (
     <PullToRefresh onRefresh={refetch}>
       <ApolloWrapper data={data} loading={loading} error={error} placeholder>
         <Container>
-          <div
+          <HeadingPrimary
+            loading={!campus}
             className={`fw-bold large-number pb-3`}
-          >{`${campus?.name} Campus By Stream`}</div>
+          >
+            Campus By Stream
+          </HeadingPrimary>
           <Row>
             {campus?.streams?.map(
               (stream: HigherChurchWithArrivals, i: number) => {
                 const array = [
                   {
                     title: 'Active Bacentas',
-                    number: stream.activeBacentaICCount,
+                    number: stream.activeBacentaCount,
                     color: 'white',
                   },
                   {
