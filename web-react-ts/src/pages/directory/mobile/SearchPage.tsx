@@ -13,9 +13,10 @@ import {
 import { MemberContext, SearchContext } from 'contexts/MemberContext'
 import MemberDisplayCard from 'components/card/MemberDisplayCard'
 import { isAuthorised, throwToSentry } from 'global-utils'
-import { Container, Spinner } from 'react-bootstrap'
+import { Container } from 'react-bootstrap'
 import { Church, MemberWithoutBioData, Stream } from 'global-types'
 import { permitMe } from 'permission-utils'
+import { ScaleLoader } from 'react-spinners'
 
 type OversightSearchResult = {
   oversightMemberSearch: MemberWithoutBioData[]
@@ -255,9 +256,9 @@ const SearchPageMobile = () => {
   return (
     <>
       <MobileSearchNav />
-      {loading && (
-        <Container className="text-center">
-          <Spinner animation="grow" className="mt-5" />
+      {!loading && (
+        <Container className="mt-5 pt-5 d-flex align-items-center justify-content-center">
+          <ScaleLoader color="gray" className="mt-5" />
         </Container>
       )}
 
@@ -267,7 +268,7 @@ const SearchPageMobile = () => {
             No results to display
           </Container>
         )}
-        {!loading &&
+        {loading &&
           combinedData.slice(0, 10).map((searchResult, index) => {
             return <MemberDisplayCard key={index} member={searchResult} />
           })}
