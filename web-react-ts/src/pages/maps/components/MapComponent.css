@@ -10,6 +10,19 @@
   color: white;
 } */
 
+.map {
+  margin-left: 0px;
+  margin-right: 0px;
+  padding-left: 0px;
+  padding-right: 0px;
+  width: 100%;
+}
+
+.page-container {
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
 .info-window-header {
   font-size: 16px;
   font-weight: bold;

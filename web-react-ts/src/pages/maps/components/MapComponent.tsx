@@ -219,14 +219,16 @@ const MapComponent = (props: MapComponentProps) => {
           setShowError(true)
         }
 
-        return response.data.members[0].memberLoadCouncilUnvisitedMembers.map(
-          (place: any) => ({
-            ...place,
-            position: {
-              lat: place.latitude,
-              lng: place.longitude,
-            },
-          })
+        return setPlaces(
+          response.data.members[0].memberLoadCouncilUnvisitedMembers.map(
+            (place: any) => ({
+              ...place,
+              position: {
+                lat: place.latitude,
+                lng: place.longitude,
+              },
+            })
+          )
         )
       }
     } catch (err: any) {
