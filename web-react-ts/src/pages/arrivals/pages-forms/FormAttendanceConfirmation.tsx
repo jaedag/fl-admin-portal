@@ -9,20 +9,20 @@ import { Formik, Form, FormikHelpers } from 'formik'
 import * as Yup from 'yup'
 import { useContext } from 'react'
 import { Card, Container } from 'react-bootstrap'
-import { DISPLAY_VEHICLE_RECORDS } from './arrivalsQueries'
+import { DISPLAY_VEHICLE_RECORDS } from '../arrivalsQueries'
 import {
   CONFIRM_VEHICLE_BY_ADMIN,
   SET_VEHICLE_SUPPORT,
-} from './arrivalsMutation'
+} from '../arrivalsMutation'
 import { useNavigate } from 'react-router'
 import SubmitButton from 'components/formik/SubmitButton'
 import { alertMsg, throwToSentry } from 'global-utils'
-import { BacentaWithArrivals, VehicleRecord } from './arrivals-types'
+import { BacentaWithArrivals, VehicleRecord } from '../arrivals-types'
 import Input from 'components/formik/Input'
 import Textarea from 'components/formik/Textarea'
 import CloudinaryImage from 'components/CloudinaryImage'
 import Select from 'components/formik/Select'
-import { VEHICLE_OPTIONS, VEHICLE_OPTIONS_WITH_CAR } from './arrivals-utils'
+import { VEHICLE_OPTIONS, VEHICLE_OPTIONS_WITH_CAR } from '../arrivals-utils'
 import './Arrivals.css'
 
 type FormOptions = {

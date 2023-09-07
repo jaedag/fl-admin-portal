@@ -8,15 +8,15 @@ import { Formik, Form, FormikHelpers } from 'formik'
 import * as Yup from 'yup'
 import { useContext } from 'react'
 import { Button, Card, Col, Container, Modal, Row } from 'react-bootstrap'
-import { DISPLAY_VEHICLE_PAYMENT_RECORDS } from './arrivalsQueries'
-import { SEND_VEHICLE_SUPPORT } from './arrivalsMutation'
+import { DISPLAY_VEHICLE_PAYMENT_RECORDS } from '../arrivalsQueries'
+import { SEND_VEHICLE_SUPPORT } from '../arrivalsMutation'
 import { useNavigate } from 'react-router'
 import SubmitButton from 'components/formik/SubmitButton'
 import { alertMsg } from 'global-utils'
-import { VehicleRecord } from './arrivals-types'
+import { VehicleRecord } from '../arrivals-types'
 import Input from 'components/formik/Input'
 import CloudinaryImage from 'components/CloudinaryImage'
-import './Arrivals.css'
+import '../Arrivals.css'
 import {
   convertOutboundToString,
   convertOutboundToBoolean,
@@ -25,7 +25,7 @@ import CurrencySpan from 'components/CurrencySpan'
 import TableFromArrays from 'components/TableFromArrays/TableFromArrays'
 import useModal from 'hooks/useModal'
 import RadioButtons from 'components/formik/RadioButtons'
-import { OUTBOUND_OPTIONS } from './arrivals-utils'
+import { OUTBOUND_OPTIONS } from '../arrivals-utils'
 
 type FormOptions = {
   momoNumber: string

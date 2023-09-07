@@ -10,11 +10,11 @@ import {
   COUNCIL_BACENTAS_NO_ACTIVITY,
   CAMPUS_BACENTAS_NO_ACTIVITY,
   STREAM_BACENTAS_NO_ACTIVITY,
-} from './bussingStatusQueries'
+} from '../bussingStatusQueries'
 import useChurchLevel from 'hooks/useChurchLevel'
-import NoData from './CompNoData'
+import NoData from '../CompNoData'
 import PlaceholderDefaulterList from 'pages/services/defaulters/PlaceholderDefaulterList'
-import { ArrivalsUseChurchType } from './arrivals-types'
+import { ArrivalsUseChurchType } from '../arrivals-types'
 import PullToRefresh from 'react-simple-pull-to-refresh'
 import { LONG_POLL_INTERVAL } from 'global-utils'
 

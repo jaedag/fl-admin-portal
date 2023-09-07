@@ -11,10 +11,10 @@ import PlaceholderDefaulterList from 'pages/services/defaulters/PlaceholderDefau
 import { useContext, useEffect, useState } from 'react'
 import { Button, ButtonGroup, Container } from 'react-bootstrap'
 import PullToRefresh from 'react-simple-pull-to-refresh'
-import { BacentaWithArrivals } from './arrivals-types'
-import { COUNCIL_VEHICLES_TO_BE_PAID } from './bussingStatusQueries'
-import NoData from './CompNoData'
-import VehicleButtonPayment from './components/VehiclePaymentButton'
+import { BacentaWithArrivals } from '../arrivals-types'
+import { COUNCIL_VEHICLES_TO_BE_PAID } from '../bussingStatusQueries'
+import NoData from '../CompNoData'
+import VehicleButtonPayment from '../components/VehiclePaymentButton'
 import { useNavigate } from 'react-router'
 
 type FormOptions = {

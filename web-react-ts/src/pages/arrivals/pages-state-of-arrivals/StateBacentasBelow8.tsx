@@ -10,13 +10,13 @@ import {
   COUNCIL_BACENTAS_BELOW_8,
   CAMPUS_BACENTAS_BELOW_8,
   STREAM_BACENTAS_BELOW_8,
-} from './bussingStatusQueries'
-import useChurchLevel from '../../hooks/useChurchLevel'
-import NoData from './CompNoData'
+} from '../bussingStatusQueries'
+import useChurchLevel from 'hooks/useChurchLevel'
+import NoData from '../CompNoData'
 import PlaceholderDefaulterList from 'pages/services/defaulters/PlaceholderDefaulterList'
 import { useNavigate } from 'react-router'
 import { ChurchContext } from 'contexts/ChurchContext'
-import { ArrivalsUseChurchType } from './arrivals-types'
+import { ArrivalsUseChurchType } from '../arrivals-types'
 import PullToRefresh from 'react-simple-pull-to-refresh'
 import { LONG_POLL_INTERVAL } from 'global-utils'
 
