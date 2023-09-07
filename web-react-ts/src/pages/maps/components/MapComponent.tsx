@@ -218,8 +218,15 @@ const MapComponent = (props: MapComponentProps) => {
           setToastError(response.error.message)
           setShowError(true)
         }
+        const position = { lat: 5.655949, lng: -0.167033 }
+        setCentre({
+          position: position,
+          name: 'First Love Center',
+          typename: 'Fellowship',
+          id: 'fellowship',
+        })
 
-        return setPlaces(
+        setPlaces(
           response.data.members[0].memberLoadCouncilUnvisitedMembers.map(
             (place: any) => ({
               ...place,
@@ -229,6 +236,16 @@ const MapComponent = (props: MapComponentProps) => {
               },
             })
           )
+        )
+
+        return response.data.members[0].memberLoadCouncilUnvisitedMembers.map(
+          (place: any) => ({
+            ...place,
+            position: {
+              lat: place.latitude,
+              lng: place.longitude,
+            },
+          })
         )
       }
     } catch (err: any) {

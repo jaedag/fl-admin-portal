@@ -32,3 +32,8 @@ MATCH (church:Fellowship {bankingCode: 113})-[:HAS*0..4]->(fellowships:Fellowshi
 WHERE date(transaction.createdAt) = date()
 
 RETURN DISTINCT church.name, fellowships.name, transaction.amount, transaction.id, date(transaction.createdAt);
+
+
+MATCH (member:Member)
+SET member.location = point({latitude: 5.655949, longitude: -0.167033})
+RETURN COUNT(member)
