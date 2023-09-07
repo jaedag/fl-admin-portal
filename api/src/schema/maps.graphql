@@ -26,6 +26,7 @@ extend type Member {
     limit: Int = 30
   ): [Place!]!
   placesSearchByName(key: String!, limit: Int = 30): [Place!]!
+  memberLoadCouncilUnvisitedMembers: [Place!]!
 }
 
 type IndoorVenue implements MapLocation {

@@ -8,7 +8,15 @@ import {
 } from '@react-google-maps/api'
 import { useState } from 'react'
 import '../Map.css'
-import { Button, Card, Col, Container, Offcanvas, Row } from 'react-bootstrap'
+import {
+  Button,
+  Card,
+  Col,
+  Container,
+  Offcanvas,
+  Row,
+  Toast,
+} from 'react-bootstrap'
 import { IoChevronUp } from 'react-icons/io5'
 import { GooglePlaces, MemberPlaces } from '../Places'
 import {
@@ -31,7 +39,9 @@ import { TelephoneFill, Whatsapp } from 'react-bootstrap-icons'
 import { ChurchIdAndName } from 'global-types'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { useNavigate } from 'react-router'
-import { alertMsg } from 'global-utils'
+import { alertMsg, throwToSentry } from 'global-utils'
+import { BiGroup } from 'react-icons/bi'
+import { ScaleLoader } from 'react-spinners'
 
 type LatLngLiteral = google.maps.LatLngLiteral
 type MapOptions = google.maps.MapOptions
@@ -42,6 +52,7 @@ type MapComponentProps = {
   memberSearch: LazyQueryExecFunction<any, OperationVariables>
   placesSearchByLocation: LazyQueryExecFunction<any, OperationVariables>
   placesSearchByName: LazyQueryExecFunction<any, OperationVariables>
+  loadAllUnvisitedMembers?: LazyQueryExecFunction<any, OperationVariables>
   loading: boolean
   error: ApolloError | undefined
 }
@@ -62,6 +73,7 @@ export type PlaceType = {
 }
 
 const MapComponent = (props: MapComponentProps) => {
+  const { loading } = props
   const [libraries] = useState<LibrariesOptions>(['places'])
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY ?? '',
@@ -69,6 +81,8 @@ const MapComponent = (props: MapComponentProps) => {
   })
 
   const [show, setShow] = useState(false)
+  const [showError, setShowError] = useState(false)
+  const [toastError, setToastError] = useState<string>('')
   const [selected, setCentre] = useState<PlaceType>()
   const [clickedMarker, setClickedMarker] = useState<PlaceType>()
   const [places, setPlaces] = useState<PlaceType[]>([])
@@ -94,6 +108,7 @@ const MapComponent = (props: MapComponentProps) => {
     }),
     []
   )
+
   const onLoad = useCallback((map: any) => (mapRef.current = map), [])
 
   const handleMarkerClick = (marker: PlaceType) => {
@@ -186,6 +201,39 @@ const MapComponent = (props: MapComponentProps) => {
     setPlaces(await searchByLocation(position))
     mapRef.current?.panTo(position)
     handleClose()
+  }
+
+  const loadAllMembers = async () => {
+    const { loadAllUnvisitedMembers } = props
+
+    try {
+      if (loadAllUnvisitedMembers) {
+        const response = await loadAllUnvisitedMembers({
+          variables: {
+            id: currentUser.id,
+          },
+        })
+
+        if (response.error) {
+          setToastError(response.error.message)
+          setShowError(true)
+        }
+
+        return response.data.members[0].memberLoadCouncilUnvisitedMembers.map(
+          (place: any) => ({
+            ...place,
+            position: {
+              lat: place.latitude,
+              lng: place.longitude,
+            },
+          })
+        )
+      }
+    } catch (err: any) {
+      throwToSentry('', err)
+    } finally {
+      handleClose()
+    }
   }
 
   const parseMemberDesc = (description: string) => {
@@ -457,7 +505,7 @@ const MapComponent = (props: MapComponentProps) => {
                         </Col>
                       )}
                       <Col>
-                        <p className=" fw-bold info-window-header">{`${getTypename(
+                        <p className="fw-bold info-window-header">{`${getTypename(
                           clickedMarker
                         )} ${clickedMarker.name}`}</p>
                         <div className="info-window-text">
@@ -495,6 +543,7 @@ const MapComponent = (props: MapComponentProps) => {
           </>
         )}
       </GoogleMap>
+
       <Offcanvas
         show={show}
         onHide={handleClose}
@@ -518,8 +567,8 @@ const MapComponent = (props: MapComponentProps) => {
             {...props}
           />
           <Row className="mt-4">
-            <div>Go to your location</div>
-            <Container>
+            <Col>
+              <div>Go to your location</div>
               <Button
                 onClick={handleMyLocationClick}
                 variant="dark"
@@ -527,9 +576,7 @@ const MapComponent = (props: MapComponentProps) => {
               >
                 My location <FaLocationArrow />
               </Button>
-            </Container>
-          </Row>
-          <Row className="mt-4">
+            </Col>
             <Col>
               <div>Go to First Love Center</div>
               <Button
@@ -541,7 +588,43 @@ const MapComponent = (props: MapComponentProps) => {
               </Button>
             </Col>
           </Row>
+          <Row className="mt-4">
+            <Col>
+              <div>Load All My Unvisited Members</div>
+              <Button
+                onClick={loadAllMembers}
+                variant="dark"
+                className="map-btn"
+              >
+                <BiGroup className="me-2" />
+                Load Members
+              </Button>
+            </Col>
+          </Row>
+
+          {loading && (
+            <Container className="mt-5 d-flex flex-column justify-content-center align-items-center">
+              <ScaleLoader color="gray" />
+            </Container>
+          )}
         </Offcanvas.Body>
+        <Container className="footer p-3">
+          <Toast
+            show={showError}
+            onClose={() => setShowError(false)}
+            bg="danger"
+          >
+            <Toast.Header>
+              <img
+                src="holder.js/20x20?text=%20"
+                className="rounded me-2"
+                alt=""
+              />
+              <strong className="me-auto">Error</strong>
+            </Toast.Header>
+            <Toast.Body>{toastError}</Toast.Body>
+          </Toast>
+        </Container>
       </Offcanvas>
       <div className="floating-action">
         <Button

@@ -38,3 +38,20 @@ export const MEMBER_PLACES_SEARCH_BY_NAME = gql`
     }
   }
 `
+
+export const LOAD_COUNCIL_UNVISITED_MEMBERS = gql`
+  query memberLoadCouncilUnvisitedMembers($id: ID!) {
+    members(where: { id: $id }) {
+      id
+      memberLoadCouncilUnvisitedMembers {
+        id
+        name
+        typename
+        description
+        picture
+        latitude
+        longitude
+      }
+    }
+  }
+`

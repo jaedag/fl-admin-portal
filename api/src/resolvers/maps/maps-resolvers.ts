@@ -10,6 +10,7 @@ import {
   indoorOutreachVenuesSearchByName,
   outdoorOutreachVenuesSearchByName,
   outdoorOutreachVenuesSearchByLocation,
+  memberLoadCouncilUnvisitedMembers,
 } from './maps-cypher'
 import {
   createFellowshipDescription,
@@ -170,6 +171,35 @@ const parseMapData = (
 
 export const mapsResolvers = {
   Member: {
+    memberLoadCouncilUnvisitedMembers: async (
+      source: Member,
+      args: any,
+      context: Context
+    ) => {
+      const session = context.executionContext.session()
+
+      try {
+        const res = await session.executeRead((tx: any) =>
+          tx.run(memberLoadCouncilUnvisitedMembers, {
+            id: source.id,
+            auth: context.auth,
+          })
+        )
+        const peopleRes: PeopleResultShape[] = rearrangeCypherObject(res, true)
+        const places = peopleRes
+
+        // return the 30 closest places
+        const formattedPlaces = places.map((place) => parseMapData(place))
+
+        return formattedPlaces
+      } catch (error: any) {
+        throwToSentry('e', error)
+      } finally {
+        await session.close()
+      }
+      return []
+    },
+
     placesSearchByName: async (source: Member, args: any, context: Context) => {
       const session = context.executionContext.session()
       const sessionTwo = context.executionContext.session()

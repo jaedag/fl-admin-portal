@@ -26,6 +26,45 @@ councilLeader {
 LIMIT toInteger($limit)
 `
 
+export const memberLoadCouncilUnvisitedMembers = `
+MATCH (this:Member {id: $id})-[:LEADS|IS_ADMIN_FOR]->(council:Council)-[:HAS]->(:Constituency)-[:HAS]->(:Bacenta)-[:HAS]->(:Fellowship)<-[:BELONGS_TO]-(member:Member)-[:LEADS|IS_ADMIN_FOR]->()
+MATCH (cycle:CouncilCycle {half: toInteger(ceil(toFloat(date().month)/toFloat(6))) - 1, year: date().year})
+MATCH (author:Member {auth_id: $auth.jwt.sub})-[:CURRENT_HISTORY]->(log:ServiceLog)<-[:CURRENT_HISTORY]-(council)
+WHERE NOT EXISTS {
+   MATCH (log)-[:PERFORMED_DUTY]->(visitation:VisitationActivity)
+   WHERE (visitation)-[:TOWARDS]->(member) AND (visitation)-[:DURING_CYCLE]->(cycle)
+}
+
+OPTIONAL MATCH (author)-[:LEADS]->(lowerChurch)-[:HAS*0..2]->(:Fellowship)<-[:BELONGS_TO]-(alreadyMember:Member)
+WHERE lowerChurch:Constituency OR lowerChurch:Bacenta OR lowerChurch:Fellowship
+WITH member, author, collect(DISTINCT alreadyMember) AS alreadyMembers WHERE NOT member IN alreadyMembers
+WITH member, author WHERE member <> author
+AND member.location IS NOT NULL
+
+WITH DISTINCT member
+MATCH (member)-[:BELONGS_TO]->(fellowship:Fellowship)<-[:HAS*3]-(council:Council)<-[:LEADS]-(pastor:Member)
+
+  RETURN DISTINCT member, 
+  fellowship {
+    .id,
+    .name,
+    .location
+  },
+  council {
+    .id,
+    .name
+  },
+    pastor {
+      .id,
+      .firstName,
+      .lastName,
+      .phoneNumber,
+      .whatsappNumber,
+      .pictureUrl
+    }
+   ORDER BY toLower(member.lastName), toLower(member.firstName)
+`
+
 export const memberMemberSearchByName = `
 MATCH (this:Member {id: $id})-[:LEADS|HAS|IS_ADMIN_FOR*1..7]->(:Fellowship)<-[:BELONGS_TO]-(member:Active:Member)
 WHERE toLower(member.firstName+ ' ' + member.lastName) CONTAINS toLower($key) AND member.location IS NOT NULL
