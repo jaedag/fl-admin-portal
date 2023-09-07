@@ -100,7 +100,7 @@ const MemberDisplay = ({ memberId }: { memberId: string }) => {
           <DetailsCard heading="Last Name" detail={member?.lastName || ''} />
         </Col>
         {member?.middleName && (
-          <Col sm={1} md="auto">
+          <Col sm={12}>
             <DetailsCard
               heading="Middle Name"
               detail={member?.middleName || ' '}
@@ -120,10 +120,10 @@ const MemberDisplay = ({ memberId }: { memberId: string }) => {
         </Col>
       </Row>
       <Row>
-        <Col sm={1} md="auto">
+        <Col sm={12}>
           <DetailsCard heading="Date of Birth" detail={memberBirthday || ''} />
         </Col>
-        <Col sm={1} md="auto">
+        <Col>
           <a href={`tel:${member?.phoneNumber}`}>
             <DetailsCard
               heading="Phone Number"
@@ -133,7 +133,7 @@ const MemberDisplay = ({ memberId }: { memberId: string }) => {
           </a>
         </Col>
 
-        <Col sm={1} md="auto">
+        <Col>
           <a href={`https://wa.me/${member?.whatsappNumber}`}>
             <DetailsCard
               heading="Whatsapp Number"
@@ -145,7 +145,7 @@ const MemberDisplay = ({ memberId }: { memberId: string }) => {
       </Row>
       <Row>
         {member?.occupation?.occupation && (
-          <Col sm={1} md="auto">
+          <Col sm={12}>
             <DetailsCard
               heading="Occupation"
               detail={member?.occupation?.occupation || ''}
@@ -153,12 +153,12 @@ const MemberDisplay = ({ memberId }: { memberId: string }) => {
           </Col>
         )}
         {member?.email && (
-          <Col sm={1} md="auto">
+          <Col sm={12}>
             <DetailsCard heading="Email Address" detail={member?.email} />
           </Col>
         )}
         {member?.visitationArea && (
-          <Col sm={1} md="auto">
+          <Col sm={12}>
             <DetailsCard
               heading="Location for IDL"
               detail={member?.visitationArea.toString()}
@@ -166,7 +166,7 @@ const MemberDisplay = ({ memberId }: { memberId: string }) => {
           </Col>
         )}
 
-        <Col sm={1} md="auto">
+        <Col sm={12}>
           <DetailsCard
             heading="Fellowship"
             detail={memberChurch?.fellowship?.name}
@@ -182,7 +182,7 @@ const MemberDisplay = ({ memberId }: { memberId: string }) => {
         )}
 
         {member?.titleConnection?.edges[0]?.node.title && (
-          <Col sm={1} md="auto">
+          <Col sm={12}>
             <DetailsCard heading="Pastoral Rank" detail={member.currentTitle} />
           </Col>
         )}

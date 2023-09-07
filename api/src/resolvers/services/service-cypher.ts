@@ -20,7 +20,7 @@ RETURN gathering.currency AS currency, gathering.conversionRateToDollar AS conve
 export const absorbAllTransactions = `
 MATCH (serviceRecord:ServiceRecord {id: $serviceRecordId})<-[:HAS_SERVICE]-(:ServiceLog)<-[:CURRENT_HISTORY]-(church)
 WHERE church:Fellowship OR church:Constituency OR church:Council OR church:Stream OR church:Campus
-MATCH (church)<-[r:GIVEN_AT]-(transaction:Transaction)
+MATCH (church)-[:HAS*0..4]->(fellowships:Fellowship)<-[r:GIVEN_AT]-(transaction:Transaction)
 DELETE r
 
 WITH DISTINCT serviceRecord, transaction

@@ -48,12 +48,7 @@ const PlaceholderCustom = (props: PlaceholderCustomProps) => {
     return (
       <>
         <Placeholder as={as ?? 'div'} animation="glow" {...rest}>
-          <Placeholder
-            xs={xs ?? 8}
-            size={size ?? 'lg'}
-            className="h-100"
-            bg="dark"
-          />
+          <Placeholder xs={xs ?? 8} size={size ?? 'lg'} bg="dark" />
         </Placeholder>
       </>
     )
