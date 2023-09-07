@@ -1,3 +1,22 @@
+#### 7.8.5 (2023-09-07)
+
+##### New Features
+
+*  remove the need for churchBySubchurch page in arrivals ([76cc1e4d](https://github.com/firstlovecenter/fl-pastoral-care/commit/76cc1e4dd1776008b34ee2361c02bfecdbcab32e))
+
+##### Bug Fixes
+
+*  fix bug preventing members from not displaying ([56da69e3](https://github.com/firstlovecenter/fl-pastoral-care/commit/56da69e367423486607fa6d721a61c1ddb9c8582))
+*  implement a button to load all unvisited members for a council ([07a17e85](https://github.com/firstlovecenter/fl-pastoral-care/commit/07a17e85e0c5e4023fe593f3b621fcb9f132b9ae))
+*  online giving is now counted during council services ([01c7b4f4](https://github.com/firstlovecenter/fl-pastoral-care/commit/01c7b4f4693255cbd4dacabd1f76a6f65048a4d9))
+*  fix ui issues with placeholder and member display page ([e0b90c49](https://github.com/firstlovecenter/fl-pastoral-care/commit/e0b90c49a782629389c7b780dfca1fdffc1282ad))
+*  correct wrong looading state on search page ([3f120846](https://github.com/firstlovecenter/fl-pastoral-care/commit/3f120846400d406644d6405c35004e8cbad9d869))
+*  update loader for search page ([6f0e66c7](https://github.com/firstlovecenter/fl-pastoral-care/commit/6f0e66c72ba0fdbe0aecacc86f83b264c1cfbc52))
+*  fix broken import statements 2 ([96f4bd69](https://github.com/firstlovecenter/fl-pastoral-care/commit/96f4bd69bc86ec84d18d236791991eceb1f9f307))
+*  fix broken import statements ([ca68bbab](https://github.com/firstlovecenter/fl-pastoral-care/commit/ca68bbabd7b5f66a8d6e1f78ca75ba18dbb8f77d))
+*  fix bug preventing back button in arrivals flow ([ae438dcb](https://github.com/firstlovecenter/fl-pastoral-care/commit/ae438dcb048c8af9dabb341c903742c7d3cfcfe8))
+*  navbar now toggles with light mode ([5badc001](https://github.com/firstlovecenter/fl-pastoral-care/commit/5badc001f6ee16a163f0c8cd737b3c71efe640be))
+
 #### 7.8.4 (2023-09-05)
 
 ##### Bug Fixes
