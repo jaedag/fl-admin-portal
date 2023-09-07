@@ -23,7 +23,7 @@ import Textarea from 'components/formik/Textarea'
 import CloudinaryImage from 'components/CloudinaryImage'
 import Select from 'components/formik/Select'
 import { VEHICLE_OPTIONS, VEHICLE_OPTIONS_WITH_CAR } from '../arrivals-utils'
-import './Arrivals.css'
+import '../Arrivals.css'
 
 type FormOptions = {
   attendance: string
