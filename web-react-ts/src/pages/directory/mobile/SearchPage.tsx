@@ -256,7 +256,7 @@ const SearchPageMobile = () => {
   return (
     <>
       <MobileSearchNav />
-      {!loading && (
+      {loading && (
         <Container className="mt-5 pt-5 d-flex align-items-center justify-content-center">
           <ScaleLoader color="gray" className="mt-5" />
         </Container>
@@ -268,7 +268,7 @@ const SearchPageMobile = () => {
             No results to display
           </Container>
         )}
-        {loading &&
+        {!loading &&
           combinedData.slice(0, 10).map((searchResult, index) => {
             return <MemberDisplayCard key={index} member={searchResult} />
           })}
