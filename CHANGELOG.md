@@ -1,3 +1,9 @@
+#### 7.8.6 (2023-09-07)
+
+##### Bug Fixes
+
+*  fix bug preventing members from not displaying ([fdefd96b](https://github.com/firstlovecenter/fl-pastoral-care/commit/fdefd96bd24b149b6007bb67c93b7c77da8fbe87))
+
 #### 7.8.5 (2023-09-07)
 
 ##### New Features
