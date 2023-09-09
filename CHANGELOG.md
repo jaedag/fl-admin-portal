@@ -1,3 +1,18 @@
+### 7.9.0 (2023-09-09)
+
+##### New Features
+
+*  design the flow for the creative arts admin ([61bb36c0](https://github.com/firstlovecenter/fl-pastoral-care/commit/61bb36c0f9818b47cfc93e9d68a0e5778ebd191e))
+*  implement functionality to assign creative arts admins and ministry admins ([b9fbd507](https://github.com/firstlovecenter/fl-pastoral-care/commit/b9fbd50710bcad9919e22befdfbce2bf3e1714a6))
+*  add better handling for loading state of member roles ([fe694a29](https://github.com/firstlovecenter/fl-pastoral-care/commit/fe694a298d204702d2338fe54de10c041562c68b))
+*  add creative arts roles to the memberrolelist ([dfb99f99](https://github.com/firstlovecenter/fl-pastoral-care/commit/dfb99f99c3f36220715be348bf3de8fae130e851))
+
+##### Bug Fixes
+
+*  implement member list for all creative arts levels ([6a3248de](https://github.com/firstlovecenter/fl-pastoral-care/commit/6a3248dedc5d1b230ed42a7e3064e45064d7bd61))
+*  update gql queries to show sonta roles on member display ([cc1fe2f9](https://github.com/firstlovecenter/fl-pastoral-care/commit/cc1fe2f983a6c9bfbb073583d15c81b84e5bd03c))
+*  update easy-debuggion cypher script ([b1e6b86b](https://github.com/firstlovecenter/fl-pastoral-care/commit/b1e6b86b278bbdd7d422cd53174b3fef3c1851fe))
+
 #### 7.8.6 (2023-09-07)
 
 ##### Bug Fixes
