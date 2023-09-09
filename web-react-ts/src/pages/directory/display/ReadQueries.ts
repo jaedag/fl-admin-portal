@@ -71,8 +71,17 @@ export const DISPLAY_MEMBER_LEADERSHIP = gql`
         id
         name
       }
+      leadsCreativeArts {
+        id
+        name
+      }
 
       leadsMinistry {
+        id
+        name
+      }
+
+      leadsHub {
         id
         name
       }
@@ -103,6 +112,15 @@ export const DISPLAY_MEMBER_ADMIN = gql`
         id
         name
         stream_name
+      }
+
+      isAdminForCreativeArts {
+        id
+        name
+      }
+      isAdminForMinistry {
+        id
+        name
       }
     }
   }
