@@ -639,7 +639,7 @@ export const DISPLAY_OVERSIGHT = gql`
   }
 `
 
-export const DISPLAY_FEDERAL_MINISTRY = gql`
+export const DISPLAY_CREATIVEARTS = gql`
   query DisplayCreativeArts($id: ID!) {
     creativeArts(where: { id: $id }, options: { limit: 1 }) {
       id
@@ -651,6 +651,11 @@ export const DISPLAY_FEDERAL_MINISTRY = gql`
         currentTitle
         nameWithTitle
         pictureUrl
+      }
+      admin {
+        id
+        firstName
+        lastName
       }
       memberCount
       ministryCount

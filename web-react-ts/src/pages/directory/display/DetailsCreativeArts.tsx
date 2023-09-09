@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import { useQuery } from '@apollo/client'
-import { DISPLAY_FEDERAL_MINISTRY } from './ReadQueries'
+import { DISPLAY_CREATIVEARTS } from './ReadQueries'
 import { ChurchContext } from '../../../contexts/ChurchContext'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { Church } from 'global-types'
@@ -14,7 +14,7 @@ const DetailsCreativeArts = () => {
     data: creativeArtsData,
     loading: creativeArtsLoading,
     error: creativeArtsError,
-  } = useQuery(DISPLAY_FEDERAL_MINISTRY, {
+  } = useQuery(DISPLAY_CREATIVEARTS, {
     variables: { id: creativeArtsId },
   })
   const creativeArts = creativeArtsData?.creativeArts[0]
@@ -62,6 +62,7 @@ const DetailsCreativeArts = () => {
         editPermitted={['adminCampus']}
         churchId={creativeArtsId}
         leader={creativeArts?.leader}
+        admin={creativeArts?.admin}
         churchType="CreativeArts"
         subLevel="Ministry"
         editlink="/creativearts/editcreativearts"

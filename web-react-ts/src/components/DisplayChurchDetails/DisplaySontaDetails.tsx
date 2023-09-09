@@ -8,7 +8,7 @@ import ChurchButton from '../buttons/ChurchButton/ChurchButton'
 import './DisplayChurchDetails.css'
 import RoleView from '../../auth/RoleView'
 import Breadcrumb from './Breadcrumb'
-import { Button, Col, Container, Row } from 'react-bootstrap'
+import { Button, Col, Container, Modal, Row } from 'react-bootstrap'
 import PlaceholderCustom from 'components/Placeholder'
 import { BsFillBarChartFill } from 'react-icons/bs'
 import { CgFileDocument } from 'react-icons/cg'
@@ -16,8 +16,21 @@ import ViewAll from 'components/buttons/ViewAll'
 import useSetUserChurch from 'hooks/useSetUserChurch'
 import { Church, ChurchLevel, MemberWithoutBioData, Role } from 'global-types'
 import { BacentaWithArrivals } from 'pages/arrivals/arrivals-types'
-import { plural } from 'global-utils'
+import { directoryLock, plural, throwToSentry } from 'global-utils'
 import CloudinaryImage from 'components/CloudinaryImage'
+import { useMutation } from '@apollo/client'
+import {
+  MAKE_CREATIVEARTS_ADMIN,
+  MAKE_MINISTRY_ADMIN,
+} from './CAAdminMutations'
+import * as Yup from 'yup'
+import { Form, Formik, FormikHelpers } from 'formik'
+import { permitAdmin } from 'permission-utils'
+import { MemberContext } from 'contexts/MemberContext'
+import { PencilSquare } from 'react-bootstrap-icons'
+import useModal from 'hooks/useModal'
+import SearchMember from 'components/formik/SearchMember'
+import SubmitButton from 'components/formik/SubmitButton'
 
 type DisplayChurchDetailsProps = {
   details: {
@@ -27,7 +40,7 @@ type DisplayChurchDetailsProps = {
     width?: number
   }[]
   loading: boolean
-  church?: BacentaWithArrivals
+  church: BacentaWithArrivals
   name: string
   leaderTitle: string
   leader: MemberWithoutBioData
@@ -51,8 +64,79 @@ type DisplayChurchDetailsProps = {
 const DisplaySontaDetails = (props: DisplayChurchDetailsProps) => {
   const { setUserChurch } = useSetUserChurch()
   const navigate = useNavigate()
+  let needsAdmin
+
+  let roles: Role[] = []
+
+  switch (props.churchType) {
+    case 'Hub':
+      needsAdmin = false
+      roles = permitAdmin('Hub')
+      break
+    case 'Ministry':
+      needsAdmin = true
+      roles = permitAdmin('Ministry')
+      break
+    case 'CreativeArts':
+      needsAdmin = true
+      roles = permitAdmin('CreativeArts')
+      break
+
+    default:
+      needsAdmin = false
+      break
+  }
 
   const { clickCard } = useContext(ChurchContext)
+  const { currentUser } = useContext(MemberContext)
+  const { show, handleShow, handleClose } = useModal()
+
+  //Change Admin Initialised
+  const [MakeMinistryAdmin] = useMutation(MAKE_MINISTRY_ADMIN)
+  const [MakeCreativeArtsAdmin] = useMutation(MAKE_CREATIVEARTS_ADMIN)
+
+  const initialValues = {
+    adminName: props.admin
+      ? `${props.admin?.firstName} ${props.admin?.lastName}`
+      : '',
+    adminSelect: props.admin?.id ?? '',
+  }
+  const validationSchema = Yup.object({
+    adminSelect: Yup.string().required(
+      'Please select an Admin from the dropdown'
+    ),
+  })
+
+  const onSubmit = async (
+    values: typeof initialValues,
+    onSubmitProps: FormikHelpers<typeof initialValues>
+  ) => {
+    onSubmitProps.setSubmitting(true)
+    try {
+      if (props.churchType === 'Ministry') {
+        await MakeMinistryAdmin({
+          variables: {
+            ministryId: props.church.id,
+            newAdminId: values.adminSelect,
+            oldAdminId: initialValues.adminSelect || 'no-old-admin',
+          },
+        })
+      } else if (props.churchType === 'CreativeArts') {
+        await MakeCreativeArtsAdmin({
+          variables: {
+            creativeArtsId: props.church.id,
+            newAdminId: values.adminSelect,
+            oldAdminId: initialValues.adminSelect || 'no-old-admin',
+          },
+        })
+      }
+    } catch (error) {
+      throwToSentry('', error)
+    } finally {
+      onSubmitProps.setSubmitting(false)
+      handleClose()
+    }
+  }
 
   return (
     <>
@@ -60,15 +144,66 @@ const DisplaySontaDetails = (props: DisplayChurchDetailsProps) => {
         <Container>
           <Breadcrumb breadcrumb={props.breadcrumb} />
           <hr />
-          <PlaceholderCustom as="h3" loading={!props.name} xs={12}>
-            <h3 className="mx-3 mt-3 font-weight-bold">
-              {`${props.name} ${props.churchType}`}
+          <Container>
+            <PlaceholderCustom as="h3" loading={!props.name} xs={12}>
+              <h3 className="mt-3 font-weight-bold">
+                {`${props.name} ${props.churchType}`}
 
-              <RoleView roles={props.editPermitted}>
-                <EditButton link={props.editlink} />
+                {directoryLock(currentUser, props.churchType) && (
+                  <RoleView roles={props.editPermitted} directoryLock>
+                    <EditButton link={props.editlink} />
+                  </RoleView>
+                )}
+              </h3>
+            </PlaceholderCustom>
+
+            {needsAdmin && (
+              <RoleView roles={roles}>
+                <span>
+                  {props.admin?.firstName + '  ' + props.admin?.lastName}
+                </span>
+                <Button className="p-1 small ms-2" onClick={handleShow}>
+                  <PencilSquare /> Change Admin
+                </Button>
               </RoleView>
-            </h3>
-          </PlaceholderCustom>
+            )}
+          </Container>
+          <Modal show={show} onHide={handleClose} centered>
+            <Modal.Header closeButton>
+              Change {`${props.churchType}`} Admin
+            </Modal.Header>
+            <Modal.Body>
+              <Formik
+                initialValues={initialValues}
+                validationSchema={validationSchema}
+                onSubmit={onSubmit}
+              >
+                {(formik) => (
+                  <Form>
+                    <Row className="form-row">
+                      <Col>
+                        <SearchMember
+                          name="adminSelect"
+                          initialValue={initialValues?.adminName}
+                          placeholder="Select an Admin"
+                          setFieldValue={formik.setFieldValue}
+                          aria-describedby="Member Search"
+                          error={formik.errors.adminSelect}
+                        />
+                      </Col>
+                    </Row>
+
+                    <SubmitButton formik={formik} />
+                  </Form>
+                )}
+              </Formik>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="primary" onClick={handleClose}>
+                Close
+              </Button>
+            </Modal.Footer>
+          </Modal>
         </Container>
       </div>
       <Container>

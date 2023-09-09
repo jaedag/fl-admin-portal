@@ -104,6 +104,7 @@ type CreativeArts {
   id: ID @id
   name: String!
   leader: Member @relationship(type: "LEADS", direction: IN)
+  admin: Member @relationship(type: "IS_ADMIN_FOR", direction: IN)
   campus: Campus @relationship(type: "HAS_MINISTRY", direction: IN)
   history: [HistoryLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
   serviceLogs: [ServiceLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
@@ -142,6 +143,7 @@ type Ministry {
   id: ID @id
   name: String!
   leader: Member @relationship(type: "LEADS", direction: IN)
+  admin: Member @relationship(type: "IS_ADMIN_FOR", direction: IN)
   hubs: [Hub!]! @relationship(type: "HAS", direction: OUT)
   stream: Stream @relationship(type: "HAS_MINISTRY", direction: IN)
   history: [HistoryLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
@@ -660,15 +662,23 @@ extend type Mutation {
     leaderId: ID!
     creativeArtsId: ID!
     newLeaderId: ID!
-  ): Member!
+  ): Member
   MakeMinistryLeader(leaderId: ID!, ministryId: ID!, oldLeaderId: ID): Member!
-  RemoveMinistryLeader(
-    leaderId: ID!
-    ministryId: ID!
-    newLeaderId: ID!
-  ): Member!
+  RemoveMinistryLeader(leaderId: ID!, ministryId: ID!, newLeaderId: ID!): Member
   MakeHubLeader(leaderId: ID!, hubId: ID!, oldLeaderId: ID): Member!
-  RemoveHubLeader(leaderId: ID!, hubId: ID!, newLeaderId: ID!): Member!
+  RemoveHubLeader(leaderId: ID!, hubId: ID!, newLeaderId: ID!): Member
+  MakeCreativeArtsAdmin(
+    adminId: ID!
+    creativeArtsId: ID!
+    oldAdminId: ID
+  ): Member!
+  RemoveCreativeArtsAdmin(
+    adminId: ID!
+    creativeArtsId: ID!
+    newAdminId: ID!
+  ): Member
+  MakeMinistryAdmin(adminId: ID!, ministryId: ID!, oldAdminId: ID): Member!
+  RemoveMinistryAdmin(adminId: ID!, ministryId: ID!, newAdminId: ID!): Member
 }
 
 type MinistryAttendanceRecord implements Record

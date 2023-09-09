@@ -96,12 +96,15 @@ const servantCypher = {
    RETURN church.id AS id, church.name AS name, higherChurch.id AS higherChurchId, higherChurch.name AS higherChurchName
    `,
   connectChurchAdmin: `
-   MATCH (church {id:$churchId})<-[:HAS]-(higherChurch)
+   MATCH (church {id:$churchId})
    WHERE church:Constituency OR church:Council OR church:Stream OR church:Campus
    OR church:CreativeArts OR church:Ministry
    MATCH (admin:Member {id:$adminId})
-      SET admin.auth_id =  $auth_id
+   SET admin.auth_id =  $auth_id
    MERGE (admin)-[:IS_ADMIN_FOR]->(church)
+
+   WITH church, admin
+   OPTIONAL MATCH (church)<-[:HAS]-(higherChurch)
    
    RETURN church.id AS id, church.name AS name, higherChurch.id AS higherChurchId, higherChurch.name AS higherChurchName
    `,

@@ -31,6 +31,36 @@ const MakeServantResolvers = {
       'Constituency',
       'Admin'
     ),
+  MakeCreativeArtsAdmin: async (object: any, args: Member, context: Context) =>
+    MakeServant(context, args, permitAdmin('Campus'), 'CreativeArts', 'Admin'),
+  RemoveCreativeArtsAdmin: async (
+    object: any,
+    args: Member,
+    context: Context
+  ) =>
+    RemoveServant(
+      context,
+      args,
+      permitAdmin('Campus'),
+      'CreativeArts',
+      'Admin'
+    ),
+  MakeMinistryAdmin: async (object: any, args: Member, context: Context) =>
+    MakeServant(
+      context,
+      args,
+      permitAdmin('CreativeArts'),
+      'Ministry',
+      'Admin'
+    ),
+  RemoveMinistryAdmin: async (object: any, args: Member, context: Context) =>
+    RemoveServant(
+      context,
+      args,
+      permitAdmin('CreativeArts'),
+      'Ministry',
+      'Admin'
+    ),
 
   // Pastoral Mutations
   MakeFellowshipLeader: async (object: any, args: Member, context: Context) =>

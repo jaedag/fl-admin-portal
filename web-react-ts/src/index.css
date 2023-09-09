@@ -1,8 +1,11 @@
-
 /*--Global colors*/
 .page-container {
-  padding-top: 20px; 
+  padding-top: 20px;
   padding-bottom: 60px;
+}
+
+.small {
+  font-size: 11px;
 }
 
 .bg {
@@ -30,7 +33,6 @@
 .text-box {
   background-color: var(--text-box-inner);
 }
-
 
 .spinner-border-center {
   margin-left: auto;
@@ -143,7 +145,6 @@ select {
   background-color: var(--icon-color);
 }
 
-
 .placeholder {
   border-radius: 5px;
 }
@@ -166,7 +167,6 @@ select {
 a {
   text-decoration: none;
 }
-
 
 .btn-main.dark {
   background-color: var(--btn-submit);
@@ -208,8 +208,6 @@ a {
 .accordion-item {
   color: var(--text-primary);
 }
-
-
 
 .text-muted.d-block .text-danger {
   padding: 0;

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import DetailsCard from '../card/DetailsCard'
 import { MemberContext } from '../../contexts/MemberContext'
@@ -10,7 +10,6 @@ import './DisplayChurchDetails.css'
 import RoleView from '../../auth/RoleView'
 import { Form, Formik, FormikHelpers } from 'formik'
 import * as Yup from 'yup'
-import Popup from '../Popup/Popup'
 import { useMutation } from '@apollo/client'
 import {
   MAKE_CAMPUS_ADMIN,
@@ -18,20 +17,26 @@ import {
   MAKE_COUNCIL_ADMIN,
   MAKE_STREAM_ADMIN,
 } from './AdminMutations'
-import { alertMsg, plural, throwToSentry } from '../../global-utils'
+import {
+  alertMsg,
+  directoryLock,
+  plural,
+  throwToSentry,
+} from '../../global-utils'
 import { getWeekNumber } from 'jd-date-utils'
 import Breadcrumb from './Breadcrumb'
-import { Button, Col, Container, Row, Spinner } from 'react-bootstrap'
+import { Button, Col, Container, Modal, Row } from 'react-bootstrap'
 import PlaceholderCustom from 'components/Placeholder'
 import { Geo, PencilSquare } from 'react-bootstrap-icons'
 import ViewAll from 'components/buttons/ViewAll'
-import { permitAdmin, permitAdminArrivals } from 'permission-utils'
+import { permitAdmin } from 'permission-utils'
 import useSetUserChurch from 'hooks/useSetUserChurch'
-import usePopup from 'hooks/usePopup'
 import { Church, ChurchLevel, MemberWithoutBioData, Role } from 'global-types'
 import { BacentaWithArrivals } from 'pages/arrivals/arrivals-types'
 import SearchMember from 'components/formik/SearchMember'
 import CloudinaryImage from 'components/CloudinaryImage'
+import useModal from 'hooks/useModal'
+import SubmitButton from 'components/formik/SubmitButton'
 
 type DisplayChurchDetailsProps = {
   details: {
@@ -111,10 +116,10 @@ const DisplayChurchDetails = (props: DisplayChurchDetailsProps) => {
   }
 
   const { currentUser } = useContext(MemberContext)
-  const [submitting, setSubmitting] = useState(false)
+  const { show, handleShow, handleClose } = useModal()
   const { clickCard, constituencyId, councilId, streamId, campusId } =
     useContext(ChurchContext)
-  const { togglePopup, isOpen } = usePopup()
+
   const htmlElement = document.querySelector('html')
   const currentTheme = htmlElement?.getAttribute('data-bs-theme') || 'dark'
 
@@ -136,7 +141,7 @@ const DisplayChurchDetails = (props: DisplayChurchDetailsProps) => {
     ),
   })
 
-  const onSubmit = (
+  const onSubmit = async (
     values: FormOptions,
     onSubmitProps: FormikHelpers<FormOptions>
   ) => {
@@ -144,70 +149,57 @@ const DisplayChurchDetails = (props: DisplayChurchDetailsProps) => {
       return
     }
 
-    setSubmitting(true)
-
-    if (props.churchType === 'Campus') {
-      MakeCampusAdmin({
-        variables: {
-          campusId: campusId,
-          newAdminId: values.adminSelect,
-          oldAdminId: initialValues.adminSelect || 'no-old-admin',
-        },
-      })
-        .then(() => {
-          togglePopup()
-          setSubmitting(false)
-          alertMsg('Campus Admin has been changed successfully')
+    try {
+      if (props.churchType === 'Campus') {
+        await MakeCampusAdmin({
+          variables: {
+            campusId: campusId,
+            newAdminId: values.adminSelect,
+            oldAdminId: initialValues.adminSelect || 'no-old-admin',
+          },
         })
-        .catch((e: any) => throwToSentry(e))
-    }
 
-    if (props.churchType === 'Stream') {
-      MakeStreamAdmin({
-        variables: {
-          streamId: streamId,
-          newAdminId: values.adminSelect,
-          oldAdminId: initialValues.adminSelect || 'no-old-admin',
-        },
-      })
-        .then(() => {
-          togglePopup()
-          setSubmitting(false)
-          alertMsg('Stream Admin has been changed successfully')
-        })
-        .catch((e) => throwToSentry(e))
-    }
+        alertMsg('Campus Admin has been changed successfully')
+      }
 
-    if (props.churchType === 'Council') {
-      MakeCouncilAdmin({
-        variables: {
-          councilId: councilId,
-          newAdminId: values.adminSelect,
-          oldAdminId: initialValues.adminSelect || 'no-old-admin',
-        },
-      })
-        .then(() => {
-          togglePopup()
-          setSubmitting(false)
-          alertMsg('Council Admin has been changed successfully')
+      if (props.churchType === 'Stream') {
+        await MakeStreamAdmin({
+          variables: {
+            streamId: streamId,
+            newAdminId: values.adminSelect,
+            oldAdminId: initialValues.adminSelect || 'no-old-admin',
+          },
         })
-        .catch((e) => throwToSentry(e))
-    }
 
-    if (props.churchType === 'Constituency') {
-      MakeConstituencyAdmin({
-        variables: {
-          constituencyId: constituencyId,
-          newAdminId: values.adminSelect,
-          oldAdminId: initialValues.adminSelect || 'no-old-admin',
-        },
-      })
-        .then(() => {
-          togglePopup()
-          setSubmitting(false)
-          alertMsg('Constituency Admin has been changed successfully')
+        alertMsg('Stream Admin has been changed successfully')
+      }
+
+      if (props.churchType === 'Council') {
+        await MakeCouncilAdmin({
+          variables: {
+            councilId: councilId,
+            newAdminId: values.adminSelect,
+            oldAdminId: initialValues.adminSelect || 'no-old-admin',
+          },
         })
-        .catch((e) => throwToSentry(e))
+
+        alertMsg('Council Admin has been changed successfully')
+      }
+
+      if (props.churchType === 'Constituency') {
+        await MakeConstituencyAdmin({
+          variables: {
+            constituencyId: constituencyId,
+            newAdminId: values.adminSelect,
+            oldAdminId: initialValues.adminSelect || 'no-old-admin',
+          },
+        })
+        alertMsg('Constituency Admin has been changed successfully')
+      }
+    } catch (e) {
+      throwToSentry('', e)
+    } finally {
+      handleClose()
     }
 
     onSubmitProps.resetForm()
@@ -233,64 +225,40 @@ const DisplayChurchDetails = (props: DisplayChurchDetailsProps) => {
     return shouldFill
   }
 
-  const directoryLock = () => {
-    if (
-      (new Date().getDay() === 1 && new Date().getHours() >= 12) ||
-      new Date().getDay() === 2 ||
-      permitAdminArrivals('Stream')?.some((r) =>
-        currentUser?.roles.includes(r)
-      ) ||
-      (props.churchType === 'Fellowship' &&
-        currentUser?.roles.includes('leaderFellowship'))
-    ) {
-      return true
-    }
-
-    return false
-  }
-
   return (
     <>
       <div className="py-2 top-heading title-bar">
         <Breadcrumb breadcrumb={props.breadcrumb} />
         <hr />
-        <PlaceholderCustom as="h3" loading={!props.name} xs={12}>
-          <h3 className="mx-3 mt-3 font-weight-bold">
-            {`${props.name} ${props.churchType}`}
+        <Container>
+          <PlaceholderCustom as="h3" loading={!props.name} xs={12}>
+            <h3 className="mt-3 font-weight-bold">
+              {`${props.name} ${props.churchType}`}
 
-            {directoryLock() && (
-              <RoleView roles={props.editPermitted} directoryLock>
-                <EditButton link={props.editlink} />
-              </RoleView>
-            )}
-          </h3>
-        </PlaceholderCustom>
+              {directoryLock(currentUser, props.churchType) && (
+                <RoleView roles={props.editPermitted} directoryLock>
+                  <EditButton link={props.editlink} />
+                </RoleView>
+              )}
+            </h3>
+          </PlaceholderCustom>
 
-        {props.admin && (
-          <Link
-            to="/member/displaydetails"
-            onClick={() => {
-              clickCard(props.admin)
-            }}
-            className="mx-3 mb-2 text-muted font-weight-bold"
-          >
-            {`Admin: ${props.admin.firstName} ${props.admin.lastName}`}
-          </Link>
-        )}
-
-        {needsAdmin && (
-          <RoleView roles={roles}>
-            <span className={`text-nowrap`} onClick={togglePopup}>
-              <PencilSquare />
-            </span>
-          </RoleView>
-        )}
-
-        {isOpen && (
-          <Popup handleClose={togglePopup}>
-            <b>Change {`${props.churchType}`} Admin</b>
-            <p>Please enter the name of the new administrator</p>
-
+          {needsAdmin && (
+            <RoleView roles={roles}>
+              <span>
+                {props.admin?.firstName + '  ' + props.admin?.lastName}
+              </span>
+              <Button className="p-1 small ms-2" onClick={handleShow}>
+                <PencilSquare /> Change Admin
+              </Button>
+            </RoleView>
+          )}
+        </Container>
+        <Modal show={show} onHide={handleClose} centered>
+          <Modal.Header closeButton>
+            Change {`${props.churchType}`} Admin
+          </Modal.Header>
+          <Modal.Body>
             <Formik
               initialValues={initialValues}
               validationSchema={validationSchema}
@@ -311,29 +279,17 @@ const DisplayChurchDetails = (props: DisplayChurchDetailsProps) => {
                     </Col>
                   </Row>
 
-                  <Button
-                    variant="primary"
-                    size="lg"
-                    type="submit"
-                    className={`btn-main ${currentTheme}`}
-                    disabled={
-                      !formik.isValid || formik.isSubmitting || submitting
-                    }
-                  >
-                    {formik.isSubmitting || submitting ? (
-                      <>
-                        <Spinner animation="grow" size="sm" />
-                        <span> Submitting</span>
-                      </>
-                    ) : (
-                      'Submit'
-                    )}
-                  </Button>
+                  <SubmitButton formik={formik} />
                 </Form>
               )}
             </Formik>
-          </Popup>
-        )}
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="primary" onClick={handleClose}>
+              Close
+            </Button>
+          </Modal.Footer>
+        </Modal>
       </div>
       <Container>
         <Link

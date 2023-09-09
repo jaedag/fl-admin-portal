@@ -708,6 +708,35 @@
   --bs-btn-disabled-border-color: var(--custom-color-accent-500);
 }
 
+[data-bs-theme='dark'] .btn-purple {
+  --bs-btn-color: var(--chakra-colors-gray-800);
+  --bs-btn-bg: var(--chakra-colors-purple-200);
+  --bs-btn-border-color: var(--chakra-colors-purple-200);
+  --bs-btn-hover-color: var(--chakra-colors-gray-800);
+  --bs-btn-hover-bg: var(--chakra-colors-purple-300);
+  --bs-btn-hover-border-color: var(--chakra-colors-purple-300);
+  --bs-btn-active-color: var(--chakra-colors-gray-800);
+  --bs-btn-active-bg: var(--chakra-colors-purple-400);
+  --bs-btn-active-border-color: var(--chakra-colors-purple-400);
+  --bs-btn-disabled-color: var(--chakra-colors-gray-800);
+  --bs-btn-disabled-bg: var(--chakra-colors-purple-300);
+}
+
+[data-bs-theme='light'] .btn-purple {
+  --bs-btn-color: var(--chakra-colors-white);
+  --bs-btn-bg: var(--chakra-colors-purple-500);
+  --bs-btn-border-color: var(--chakra-colors-purple-500);
+  --bs-btn-hover-color: var(--chakra-colors-white);
+  --bs-btn-hover-bg: var(--chakra-colors-purple-600);
+  --bs-btn-hover-border-color: var(--chakra-colors-purple-600);
+  --bs-btn-active-color: var(--chakra-colors-white);
+  --bs-btn-active-bg: var(--chakra-colors-purple-700);
+  --bs-btn-active-border-color: var(--chakra-colors-purple-700);
+  --bs-btn-disabled-color: var(--chakra-colors-white);
+  --bs-btn-disabled-bg: var(--chakra-colors-purple-500);
+  --bs-btn-disabled-border-color: var(--chakra-colors-purple-500);
+}
+
 [data-bs-theme='dark'] .card {
   --bs-card-color: var(--chakra-colors-white);
   --bs-card-bg: var(--chakra-colors-whiteAlpha-200);

@@ -1,13 +1,15 @@
 import React from 'react'
 import { PencilSquare } from 'react-bootstrap-icons'
 import { Link } from 'react-router-dom'
-import './EditButton.css'
+import { Button } from 'react-bootstrap'
 
 const EditButton = ({ link }: { link: string }) => {
   return (
-    <Link to={link} className="edit-button text-nowrap">
-      <PencilSquare />
-      Edit
+    <Link to={link}>
+      <Button size="sm" variant="success" className="ms-2 small">
+        <PencilSquare />
+        Edit
+      </Button>
     </Link>
   )
 }
