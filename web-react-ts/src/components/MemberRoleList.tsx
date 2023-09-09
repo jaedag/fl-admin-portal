@@ -39,9 +39,11 @@ const MemberRoleList = ({
     streamAdmin: [],
     councilAdmin: [],
     constituencyAdmin: [],
+    creativeArtsLeader: [],
     ministryLeader: [],
-    sontaLeader: [],
-    basontaLeader: [],
+    hubLeader: [],
+    creativeArtsAdmin: [],
+    ministryAdmin: [],
   }
   let isServant = false
 
@@ -116,8 +118,21 @@ const MemberRoleList = ({
     updateRank(memberAdmin, 'campus')
   }
 
+  if (memberLeader?.leadsCreativeArts[0]) {
+    updateRank(memberLeader, 'creativeArts')
+  }
   if (memberLeader?.leadsMinistry[0]) {
     updateRank(memberLeader, 'ministry')
+  }
+  if (memberLeader?.leadsHub[0]) {
+    updateRank(memberLeader, 'hub')
+  }
+
+  if (memberAdmin?.isAdminForCreativeArts[0]) {
+    updateRank(memberAdmin, 'creativeArts')
+  }
+  if (memberAdmin?.isAdminForMinistry[0]) {
+    updateRank(memberAdmin, 'ministry')
   }
 
   if (!isServant) {

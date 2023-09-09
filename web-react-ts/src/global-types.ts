@@ -42,10 +42,9 @@ export type ChurchLevelLower =
   | 'stream'
   | 'campus'
   | 'oversight'
+  | 'creativeArts'
   | 'ministry'
   | 'hub'
-  | 'sonta'
-  | 'basonta'
 
 export type TimeGraph = {
   date: Date
