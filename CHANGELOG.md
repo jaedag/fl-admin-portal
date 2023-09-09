@@ -1,3 +1,9 @@
+#### 7.9.2 (2023-09-09)
+
+##### Bug Fixes
+
+*  fix botched roles on allHubs.tsx ([4c3f3a49](https://github.com/firstlovecenter/fl-pastoral-care/commit/4c3f3a499895cd963e36d76baeee4b18212b9c89))
+
 #### 7.9.1 (2023-09-09)
 
 ##### Bug Fixes
