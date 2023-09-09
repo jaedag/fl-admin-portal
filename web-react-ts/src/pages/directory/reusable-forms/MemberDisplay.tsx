@@ -19,6 +19,7 @@ import ViewAll from 'components/buttons/ViewAll'
 import CloudinaryImage from 'components/CloudinaryImage'
 import { Member } from 'global-types'
 import { permitAdmin, permitLeader, permitSheepSeeker } from 'permission-utils'
+import { BarLoader } from 'react-spinners'
 
 const MemberDisplay = ({ memberId }: { memberId: string }) => {
   const {
@@ -85,6 +86,11 @@ const MemberDisplay = ({ memberId }: { memberId: string }) => {
           <h3>{member?.nameWithTitle}</h3>
         </PlaceholderCustom>
 
+        {(adminLoading || leaderLoading) && (
+          <Container className="d-flex flex-column justify-content-center align-items-center">
+            <BarLoader color="gray" />
+          </Container>
+        )}
         <PlaceholderCustom as="h5" loading={adminLoading || leaderLoading}>
           <MemberRoleList
             memberLeader={memberLeader}
