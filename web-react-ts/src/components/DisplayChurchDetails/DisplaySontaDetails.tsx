@@ -270,7 +270,9 @@ const DisplaySontaDetails = (props: DisplayChurchDetailsProps) => {
             button="button"
           >
             <Button
-              className={`btn-sonta w-100`}
+              className={`w-100`}
+              size="lg"
+              variant="purple"
               onClick={() => {
                 setUserChurch({
                   id: props.churchId,
