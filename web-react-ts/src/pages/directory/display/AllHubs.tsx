@@ -58,7 +58,8 @@ const DisplayAllHubs = () => {
             ) : null}
           </Col>
           {/*  TODO: Implement directoryLock */}
-          <RoleView roles={permitAdmin('Campus')}>
+
+          <RoleView roles={permitAdmin('CreativeArts')}>
             <Col className="col-auto">
               <Link to="/hub/addhub" className="btn btn-danger">
                 Add Hub
