@@ -509,8 +509,44 @@ export const GET_BACENTA_FELLOWSHIPS = gql`
   query getBacentaFellowships($id: ID!) {
     bacentas(where: { id: $id }) {
       id
+      name
       memberCount
       fellowships {
+        id
+        name
+        vacationStatus
+        memberCount
+        leader {
+          id
+          firstName
+          lastName
+          pictureUrl
+        }
+        bacenta {
+          id
+          name
+          leader {
+            id
+            firstName
+            lastName
+            fullName
+          }
+          constituency {
+            id
+          }
+        }
+      }
+    }
+  }
+`
+
+export const GET_HUB_HUBFELLOWSHIPS = gql`
+  query getHubFellowships($id: ID!) {
+    hubs(where: { id: $id }) {
+      id
+      name
+      memberCount
+      hubFellowships {
         id
         name
         vacationStatus

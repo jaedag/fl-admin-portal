@@ -159,9 +159,11 @@ const DisplaySontaDetails = (props: DisplayChurchDetailsProps) => {
 
             {needsAdmin && (
               <RoleView roles={roles}>
-                <span>
-                  {props.admin?.firstName + '  ' + props.admin?.lastName}
-                </span>
+                {!!props.admin && (
+                  <span>
+                    {props.admin?.firstName + '  ' + props.admin?.lastName}
+                  </span>
+                )}
                 <Button className="p-1 small ms-2" onClick={handleShow}>
                   <PencilSquare /> Change Admin
                 </Button>

@@ -148,6 +148,14 @@ export const SERVANT_CHURCH_LIST = gql`
         id
         name
       }
+      isAdminForMinistry {
+        id
+        name
+      }
+      isAdminForCreativeArts {
+        id
+        name
+      }
     }
   }
 `

@@ -95,10 +95,7 @@ export const permitLeader = (churchLevel: ChurchLevel) => {
 export const permitAdmin = (churchLevel: ChurchLevel) => {
   let permittedFor: Role[] = []
   switch (churchLevel) {
-    case 'Fellowship':
     case 'Bacenta':
-    case 'Sonta':
-    case 'Hub':
     case 'Constituency':
       permittedFor = [
         'adminOversight',
@@ -106,6 +103,20 @@ export const permitAdmin = (churchLevel: ChurchLevel) => {
         'adminStream',
         'adminCouncil',
         'adminConstituency',
+      ]
+      break
+
+    case 'Fellowship':
+    case 'Sonta':
+    case 'Hub':
+      permittedFor = [
+        'adminOversight',
+        'adminCampus',
+        'adminStream',
+        'adminCouncil',
+        'adminConstituency',
+        'adminMinistry',
+        'adminCreativeArts',
       ]
       break
     case 'Ministry':

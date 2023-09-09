@@ -91,12 +91,14 @@ const DisplayAllOversights = lazy(
 const DisplayAllBacentas = lazy(
   () => import('pages/directory/display/AllBacentas')
 )
-const DisplayAllSontas = lazy(() => import('pages/directory/display/AllHub'))
 const DisplayAllConstituencies = lazy(
   () => import('pages/directory/display/AllConstituencies')
 )
 const DisplayAllFellowships = lazy(
   () => import('pages/directory/display/AllFellowships')
+)
+const DisplayAllHubFellowships = lazy(
+  () => import('pages/directory/display/AllHubFellowships')
 )
 const DisplayAllHubs = lazy(() => import('pages/directory/display/AllHubs'))
 const DisplayAllStreamMinistries = lazy(
@@ -109,7 +111,7 @@ const DisplayAllStreamHubs = lazy(
   () => import('pages/directory/display/AllStreamHubs')
 )
 
-const DisplayAllMinistrySontas = lazy(
+const DisplayAllMinistryHubs = lazy(
   () => import('pages/directory/display/AllMinistryHubs')
 )
 const DisplayAllCampusCreativeArts = lazy(
@@ -519,9 +521,9 @@ export const directory: LazyRouteTypes[] = [
     placeholder: false,
   },
   {
-    path: '/sonta/displayall',
-    element: DisplayAllSontas,
-    roles: permitMe('Sonta'),
+    path: '/hubfellowship/displayall',
+    element: DisplayAllHubFellowships,
+    roles: permitMe('Hub'),
     placeholder: false,
   },
   {
@@ -550,9 +552,9 @@ export const directory: LazyRouteTypes[] = [
   },
 
   {
-    path: '/ministry/sontas',
-    element: DisplayAllMinistrySontas,
-    roles: permitMe('Sonta'),
+    path: '/ministry/hubs',
+    element: DisplayAllMinistryHubs,
+    roles: permitMe('Hub'),
     placeholder: false,
   },
   {

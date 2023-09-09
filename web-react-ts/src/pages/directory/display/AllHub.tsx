@@ -17,8 +17,8 @@ const DisplayAllHubs = () => {
     variables: { id: ministryId },
   })
 
-  const hubs = data?.ministrys[0]?.hubs
-  const ministry = data?.ministrys[0]
+  const hubs = data?.ministries[0]?.hubs
+  const ministry = data?.ministries[0]
 
   return (
     <ApolloWrapper data={data} loading={loading} error={error}>
