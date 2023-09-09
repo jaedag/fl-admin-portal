@@ -1,3 +1,10 @@
+#### 7.9.1 (2023-09-09)
+
+##### Bug Fixes
+
+*  remove directory lock for creattive arts admin ([01544f01](https://github.com/firstlovecenter/fl-pastoral-care/commit/01544f0163aab37595b897f5b74fe57cc000b343))
+*  change color of sonta view trends btn ([c6c06907](https://github.com/firstlovecenter/fl-pastoral-care/commit/c6c069073ec9c713bfa9fdf637473ed93d5c1776))
+
 ### 7.9.0 (2023-09-09)
 
 ##### New Features
