@@ -31,7 +31,7 @@ const DetailsMinistry = () => {
     {
       title: 'Members',
       number: ministry?.memberCount,
-      link: '#',
+      link: '/ministry/members',
       width: 12,
     },
     {

@@ -27,7 +27,7 @@ const DetailsCreativeArts = () => {
     {
       title: 'Members',
       number: creativeArts?.memberCount,
-      link: '#',
+      link: '/creativearts/members',
       width: 12,
     },
     {

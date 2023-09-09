@@ -32,13 +32,13 @@ const DetailsHub = () => {
     {
       title: 'Members',
       number: hub?.memberCount,
-      link: '#',
+      link: '/hub/members',
       width: 12,
     },
     {
       title: 'Hub Fellowships',
       number: hub?.hubFellowships.length,
-      link: '/sonta/displayall',
+      link: '/hubfellowship/displayall',
     },
   ]
 

@@ -56,6 +56,13 @@ const BacentaMembers = lazy(
 const FellowshipMembers = lazy(
   () => import('pages/directory/grids/FellowshipMembers')
 )
+const HubMembers = lazy(() => import('pages/directory/grids/HubMembers'))
+const MinistryMembers = lazy(
+  () => import('pages/directory/grids/MinistryMembers')
+)
+const CreativeArtsMembers = lazy(
+  () => import('pages/directory/grids/CreativeArtsMembers')
+)
 const DetailsFellowship = lazy(
   () => import('pages/directory/display/DetailsFellowship')
 )
@@ -294,6 +301,22 @@ export const memberGrids: LazyRouteTypes[] = [
     path: '/fellowship/members',
     element: FellowshipMembers,
     roles: permitLeaderAdmin('Fellowship'),
+  },
+
+  {
+    path: '/hub/members',
+    element: HubMembers,
+    roles: permitMe('Hub'),
+  },
+  {
+    path: '/ministry/members',
+    element: MinistryMembers,
+    roles: permitMe('Ministry'),
+  },
+  {
+    path: '/creativearts/members',
+    element: CreativeArtsMembers,
+    roles: permitMe('CreativeArts'),
   },
 ]
 

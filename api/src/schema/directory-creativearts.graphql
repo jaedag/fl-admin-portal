@@ -66,10 +66,17 @@ extend type Member {
 }
 
 type CreativeArts {
+  members: [Member!]!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS]->(:Ministry)-[:HAS]->(:Hub)-[:HAS]->(:HubFellowship)<-[:BELONGS_TO]-(members:Active:Member)
+      RETURN DISTINCT members ORDER BY toLower(members.lastName), toLower(members.firstName)
+      """
+    )
   memberCount: Int!
     @cypher(
       statement: """
-      MATCH (this)-[:HAS]->(ministry:Ministry)<-[:BELONGS_TO]-(members:Active:Member)
+      MATCH (this)-[:HAS]->(ministry:Ministry)-[:HAS]->(:Hub)-[:HAS]->(:HubFellowship)<-[:BELONGS_TO]-(members:Active:Member)
       RETURN COUNT(DISTINCT members)
       """
     )
@@ -104,10 +111,17 @@ type CreativeArts {
 }
 
 type Ministry {
+  members: [Member!]!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS]->(:Hub)-[:HAS]->(:HubFellowship)<-[:BELONGS_TO]-(members:Active:Member)
+      RETURN DISTINCT members ORDER BY toLower(members.lastName), toLower(members.firstName)
+      """
+    )
   memberCount: Int!
     @cypher(
       statement: """
-      MATCH (this)<-[:HAS]-(:CreativeArts)<-[:BELONGS_TO]-(members:Active:Member)
+      MATCH (this)-[:HAS]->(:Hub)-[:HAS]->(:HubFellowship)<-[:BELONGS_TO]-(members:Active:Member)
       RETURN COUNT(DISTINCT members)
       """
     )
@@ -128,7 +142,6 @@ type Ministry {
   id: ID @id
   name: String!
   leader: Member @relationship(type: "LEADS", direction: IN)
-  members: [Member!]! @relationship(type: "BELONGS_TO", direction: IN)
   hubs: [Hub!]! @relationship(type: "HAS", direction: OUT)
   stream: Stream @relationship(type: "HAS_MINISTRY", direction: IN)
   history: [HistoryLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
@@ -151,6 +164,13 @@ type Ministry {
 }
 
 type Hub {
+  members: [Member!]!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS]->(hubFellowship:Active:HubFellowship)<-[:BELONGS_TO]-(members:Active:Member)
+      RETURN DISTINCT members ORDER BY toLower(members.lastName), toLower(members.firstName)
+      """
+    )
   memberCount: Int!
     @cypher(
       statement: """

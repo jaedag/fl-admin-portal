@@ -28,13 +28,20 @@ export const GET_FEDERAL_MEMBERS = gql`
         name
       }
       leadsBacenta {
+        id
         name
       }
-      leadsMinistry {
+      leadsConstituency {
+        id
         name
       }
 
-      leadsConstituency {
+      leadsHub {
+        id
+        name
+      }
+      leadsMinistry {
+        id
         name
       }
 
@@ -89,12 +96,16 @@ export const GET_SERVANT_MEMBERS = gql`
           id
           name
         }
-        leadsMinistry {
+        leadsConstituency {
           id
           name
         }
 
-        leadsConstituency {
+        leadsHub {
+          id
+          name
+        }
+        leadsMinistry {
           id
           name
         }
@@ -104,6 +115,15 @@ export const GET_SERVANT_MEMBERS = gql`
           name
         }
         isAdminForConstituency {
+          id
+          name
+        }
+
+        isAdminForMinistry {
+          id
+          name
+        }
+        isAdminForCreativeArts {
           id
           name
         }
@@ -149,12 +169,16 @@ export const GET_CAMPUS_MEMBERS = gql`
           id
           name
         }
-        leadsMinistry {
+        leadsConstituency {
           id
           name
         }
 
-        leadsConstituency {
+        leadsHub {
+          id
+          name
+        }
+        leadsMinistry {
           id
           name
         }
@@ -164,6 +188,15 @@ export const GET_CAMPUS_MEMBERS = gql`
           name
         }
         isAdminForConstituency {
+          id
+          name
+        }
+
+        isAdminForMinistry {
+          id
+          name
+        }
+        isAdminForCreativeArts {
           id
           name
         }
@@ -208,21 +241,33 @@ export const GET_STREAM_MEMBERS = gql`
           id
           name
         }
-        leadsMinistry {
-          id
-          name
-        }
-
         leadsConstituency {
           id
           name
         }
 
+        leadsHub {
+          id
+          name
+        }
+        leadsMinistry {
+          id
+          name
+        }
         isAdminForCouncil {
           id
           name
         }
         isAdminForConstituency {
+          id
+          name
+        }
+
+        isAdminForMinistry {
+          id
+          name
+        }
+        isAdminForCreativeArts {
           id
           name
         }
@@ -268,21 +313,33 @@ export const GET_OVERSIGHT_MEMBERS = gql`
           id
           name
         }
-        leadsMinistry {
-          id
-          name
-        }
-
         leadsConstituency {
           id
           name
         }
 
+        leadsHub {
+          id
+          name
+        }
+        leadsMinistry {
+          id
+          name
+        }
         isAdminForCouncil {
           id
           name
         }
         isAdminForConstituency {
+          id
+          name
+        }
+
+        isAdminForMinistry {
+          id
+          name
+        }
+        isAdminForCreativeArts {
           id
           name
         }
@@ -328,12 +385,16 @@ export const GET_COUNCIL_MEMBERS = gql`
           id
           name
         }
-        leadsMinistry {
+        leadsConstituency {
           id
           name
         }
 
-        leadsConstituency {
+        leadsHub {
+          id
+          name
+        }
+        leadsMinistry {
           id
           name
         }
@@ -343,6 +404,24 @@ export const GET_COUNCIL_MEMBERS = gql`
           name
         }
         isAdminForConstituency {
+          id
+          name
+        }
+
+        isAdminForMinistry {
+          id
+          name
+        }
+        isAdminForCreativeArts {
+          id
+          name
+        }
+
+        isAdminForMinistry {
+          id
+          name
+        }
+        isAdminForCreativeArts {
           id
           name
         }
@@ -384,12 +463,16 @@ export const GET_CONSTITUENCY_MEMBERS = gql`
           id
           name
         }
-        leadsMinistry {
+        leadsConstituency {
           id
           name
         }
 
-        leadsConstituency {
+        leadsHub {
+          id
+          name
+        }
+        leadsMinistry {
           id
           name
         }
@@ -399,6 +482,15 @@ export const GET_CONSTITUENCY_MEMBERS = gql`
           name
         }
         isAdminForConstituency {
+          id
+          name
+        }
+
+        isAdminForMinistry {
+          id
+          name
+        }
+        isAdminForCreativeArts {
           id
           name
         }
@@ -436,22 +528,36 @@ export const GET_BACENTA_MEMBERS = gql`
           name
         }
         leadsBacenta {
+          id
           name
         }
-        leadsMinistry {
-          name
-        }
-
         leadsConstituency {
           id
           name
         }
 
+        leadsHub {
+          id
+          name
+        }
+        leadsMinistry {
+          id
+          name
+        }
         isAdminForCouncil {
           id
           name
         }
         isAdminForConstituency {
+          id
+          name
+        }
+
+        isAdminForMinistry {
+          id
+          name
+        }
+        isAdminForCreativeArts {
           id
           name
         }
@@ -494,12 +600,85 @@ export const GET_FELLOWSHIP_MEMBERS = gql`
           id
           name
         }
-        leadsMinistry {
+        leadsConstituency {
           id
           name
         }
 
+        leadsHub {
+          id
+          name
+        }
+        leadsMinistry {
+          id
+          name
+        }
+        isAdminForCouncil {
+          id
+          name
+        }
+        isAdminForConstituency {
+          id
+          name
+        }
+
+        isAdminForMinistry {
+          id
+          name
+        }
+        isAdminForCreativeArts {
+          id
+          name
+        }
+      }
+    }
+  }
+`
+
+export const GET_HUB_MEMBERS = gql`
+  query getHubMembers($id: ID!) {
+    hubs(where: { id: $id }) {
+      id
+      name
+      members {
+        id
+        firstName
+        lastName
+        pictureUrl
+        stream_name
+        fellowship {
+          name
+        }
+        ministry {
+          name
+        }
+        maritalStatus {
+          status
+        }
+        gender {
+          gender
+        }
+        title {
+          name
+        }
+        leadsFellowship {
+          id
+          name
+        }
+        leadsBacenta {
+          id
+          name
+        }
         leadsConstituency {
+          id
+          name
+        }
+
+        leadsHub {
+          id
+          name
+        }
+        leadsMinistry {
           id
           name
         }
@@ -509,6 +688,155 @@ export const GET_FELLOWSHIP_MEMBERS = gql`
           name
         }
         isAdminForConstituency {
+          id
+          name
+        }
+
+        isAdminForMinistry {
+          id
+          name
+        }
+        isAdminForCreativeArts {
+          id
+          name
+        }
+      }
+    }
+  }
+`
+
+export const GET_MINISTRY_MEMBERS = gql`
+  query getMinistryMembers($id: ID!) {
+    ministries(where: { id: $id }) {
+      id
+      name
+      members {
+        id
+        firstName
+        lastName
+        pictureUrl
+        stream_name
+        fellowship {
+          name
+        }
+        ministry {
+          name
+        }
+        maritalStatus {
+          status
+        }
+        gender {
+          gender
+        }
+        title {
+          name
+        }
+        leadsFellowship {
+          id
+          name
+        }
+        leadsBacenta {
+          id
+          name
+        }
+        leadsConstituency {
+          id
+          name
+        }
+
+        leadsHub {
+          id
+          name
+        }
+        leadsMinistry {
+          id
+          name
+        }
+
+        isAdminForCouncil {
+          id
+          name
+        }
+        isAdminForConstituency {
+          id
+          name
+        }
+
+        isAdminForMinistry {
+          id
+          name
+        }
+        isAdminForCreativeArts {
+          id
+          name
+        }
+      }
+    }
+  }
+`
+
+export const GET_CREATIVEARTS_MEMBERS = gql`
+  query getCreativeArtsMembers($id: ID!) {
+    creativeArts(where: { id: $id }) {
+      id
+      name
+      members {
+        id
+        firstName
+        lastName
+        pictureUrl
+        stream_name
+        fellowship {
+          name
+        }
+        ministry {
+          name
+        }
+        maritalStatus {
+          status
+        }
+        gender {
+          gender
+        }
+        title {
+          name
+        }
+        leadsFellowship {
+          id
+          name
+        }
+        leadsBacenta {
+          id
+          name
+        }
+        leadsConstituency {
+          id
+          name
+        }
+
+        leadsHub {
+          id
+          name
+        }
+        leadsMinistry {
+          id
+          name
+        }
+
+        isAdminForCouncil {
+          id
+          name
+        }
+        isAdminForConstituency {
+          id
+          name
+        }
+
+        isAdminForMinistry {
+          id
+          name
+        }
+        isAdminForCreativeArts {
           id
           name
         }
