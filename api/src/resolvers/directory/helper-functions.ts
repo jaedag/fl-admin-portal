@@ -14,7 +14,7 @@ import {
 } from '../utils/types'
 import { deleteUserRoles, setUserRoles } from '../utils/auth0'
 import { getAuth0Roles } from '../authenticate'
-import { permitAdminArrivals } from '../permissions'
+import { permitAdmin, permitAdminArrivals } from '../permissions'
 
 export type HistoryRecordArgs = {
   servant: MemberWithoutBioData
@@ -34,7 +34,9 @@ export const directoryLock = (userRoles: string[]) => {
   if (
     (new Date().getDay() === 1 && new Date().getHours() >= 12) ||
     new Date().getDay() === 2 ||
-    permitAdminArrivals('Stream')?.some((r) => userRoles.includes(r))
+    [...permitAdminArrivals('Stream'), ...permitAdmin('CreativeArts')]?.some(
+      (r) => userRoles.includes(r)
+    )
   ) {
     return false
   }

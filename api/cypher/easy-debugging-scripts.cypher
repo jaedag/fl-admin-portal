@@ -60,6 +60,11 @@ WHERE date(transaction.createdAt) = date()
 RETURN DISTINCT church.name, fellowships.name, transaction.amount, transaction.id, date(transaction.createdAt);
 
 
-MATCH (member:Member)
-SET member.location = point({latitude: 5.655949, longitude: -0.167033})
-RETURN COUNT(member)
+
+MATCH (this:Ministry {id: 'b924f47b-c838-43c1-8b53-127345501075'})<-[:HAS_MINISTRY]-(stream:Stream)-[:HAS]->(councils:Council)
+      RETURN councils.name
+MATCH (stream:Stream {name: "First Love Experience"})
+MERGE (this)<-[:HAS_MINISTRY]-(stream)
+      RETURN this.name
+      -[:HAS]->(councils:Council)
+      RETURN councils.name
