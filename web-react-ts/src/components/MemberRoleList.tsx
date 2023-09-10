@@ -42,7 +42,7 @@ const MemberRoleList = ({
     creativeArtsLeader: [],
     ministryLeader: [],
     hubLeader: [],
-    creativeArtsAdmin: [],
+    creativeartsAdmin: [],
     ministryAdmin: [],
   }
   let isServant = false
