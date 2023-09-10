@@ -1,3 +1,12 @@
+#### 7.9.3 (2023-09-10)
+
+##### Bug Fixes
+
+*  update hub view to show councils ([3638601d](https://github.com/firstlovecenter/fl-pastoral-care/commit/3638601d9d84c76a8fb40142dd4da16258a13517))
+*  update code-of-the-day function ([1c3e44dc](https://github.com/firstlovecenter/fl-pastoral-care/commit/1c3e44dc8908ed441d4d1dd69cd8acf91b7640a5))
+*  fix breaking change for memberrolelist with creativeArtsAdmins ([f89cf1e3](https://github.com/firstlovecenter/fl-pastoral-care/commit/f89cf1e364ef2282c9b68adea4d7c9c1419ded09))
+*  bring back the directory lock ([ec8dbb2c](https://github.com/firstlovecenter/fl-pastoral-care/commit/ec8dbb2ce2073c9c4e52f08ddae8ddb19c49515f))
+
 #### 7.9.2 (2023-09-09)
 
 ##### Bug Fixes
