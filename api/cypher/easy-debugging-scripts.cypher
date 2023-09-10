@@ -18,7 +18,7 @@ MERGE (record)<-[:ABSENT_FROM_SERVICE]-(members)
 RETURN fellowship.name, record.attendance, COUNT(members);
 
 // If Sunday Bussing is blocking
-MATCH (fellowship:Fellowship {bankingCode: 7535 })<-[:HAS]-(bacenta:Bacenta)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(record:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph {date: date("2023-08-27")})
+MATCH (fellowship:Fellowship {bankingCode: 7094 })<-[:HAS]-(bacenta:Bacenta)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(record:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph {date: date("2023-09-03")})
 MATCH (fellowship)<-[:BELONGS_TO]-(members:Member)
 MERGE (record)<-[:PRESENT_AT_SERVICE]-(members)
 MERGE (record)<-[:ABSENT_FROM_SERVICE]-(members)
@@ -36,6 +36,5 @@ OPTIONAL MATCH (record)<-[:PRESENT_AT_SERVICE|ABSENT_FROM_SERVICE]-(member:Membe
 RETURN fellowship.name, COUNT(member) > 0 AS filled;
 
 
-MATCH (record:ServiceRecord {id: "c81ca314-6a87-4ab0-bc54-c708cf88e098"})
-DETACH DELETE record;
+
 

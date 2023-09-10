@@ -232,6 +232,30 @@ extend type Campus {
       RETURN DISTINCT stream LIMIT $limit
       """
     )
+  creativeArtsSearch(key: String!, limit: Int!): [CreativeArts!]!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS_MINISTRY]->(creativeArts:CreativeArts)
+      WHERE toLower(creativeArts.name) CONTAINS toLower($key)
+      RETURN DISTINCT creativeArts LIMIT $limit
+      """
+    )
+  ministrySearch(key: String!, limit: Int!): [Ministry!]!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS_MINISTRY]->(creativeArts:CreativeArts)-[:HAS]->(ministry:Ministry)
+      WHERE toLower(ministry.name) CONTAINS toLower($key)
+      RETURN DISTINCT ministry LIMIT $limit
+      """
+    )
+  hubSearch(key: String!, limit: Int!): [Hub!]!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS_MINISTRY]->(creativeArts:CreativeArts)-[:HAS]->(ministry:Ministry)-[:HAS]->(hub:Hub)
+      WHERE toLower(hub.name) CONTAINS toLower($key)
+      RETURN DISTINCT hub LIMIT $limit
+      """
+    )
 }
 
 extend type Stream {
@@ -275,6 +299,22 @@ extend type Stream {
       RETURN DISTINCT council LIMIT $limit
       """
     )
+  ministrySearch(key: String!, limit: Int!): [Ministry!]!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS_MINISTRY]->(ministry:Ministry)
+      WHERE toLower(ministry.name) CONTAINS toLower($key)
+      RETURN DISTINCT ministry LIMIT $limit
+      """
+    )
+  hubSearch(key: String!, limit: Int!): [Hub!]!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS_MINISTRY]->(ministry:Ministry)-[:HAS]->(hub:Hub)
+      WHERE toLower(hub.name) CONTAINS toLower($key)
+      RETURN DISTINCT hub LIMIT $limit
+      """
+    )
 }
 
 extend type Council {
@@ -308,6 +348,14 @@ extend type Council {
       MATCH (this)-[:HAS]->(constituency:Constituency)
       WHERE toLower(constituency.name) CONTAINS toLower($key)
       RETURN DISTINCT constituency LIMIT $limit
+      """
+    )
+  hubSearch(key: String!, limit: Int!): [Hub!]!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS_MINISTRY]->(hub:Hub)
+      WHERE toLower(hub.name) CONTAINS toLower($key)
+      RETURN DISTINCT hub LIMIT $limit
       """
     )
 }
