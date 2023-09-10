@@ -9,6 +9,7 @@ import { Container, Row, Col } from 'react-bootstrap'
 import { permitAdmin } from 'permission-utils'
 import AllChurchesSummary from 'components/AllChurchesSummary'
 import DisplayChurchList from 'components/DisplayChurchList'
+import NoDataComponent from 'pages/arrivals/CompNoData'
 
 const DisplayAllHubs = () => {
   const { clickCard, ministryId } = useContext(ChurchContext)
@@ -79,14 +80,15 @@ const DisplayAllHubs = () => {
         />
 
         {ministry?.councils.map((council: any) => {
-          if (council.hubs.length === 0) return null
-
           return (
             <>
               <Container>
                 <p className="mb-0 fw-bold fs-5">
                   {council.name} Council: {council.hubs.length} Hubs
                 </p>
+                {council.hubs.length === 0 && (
+                  <NoDataComponent text="This Council has no hubs" />
+                )}
               </Container>
               <DisplayChurchList data={council.hubs} churchType="Ministry" />
             </>
