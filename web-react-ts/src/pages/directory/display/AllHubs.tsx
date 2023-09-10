@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { useQuery } from '@apollo/client'
 import { GET_MINISTRY_HUBS } from '../../../queries/ListQueries'
@@ -8,7 +8,7 @@ import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { Container, Row, Col } from 'react-bootstrap'
 import { permitAdmin } from 'permission-utils'
 import AllChurchesSummary from 'components/AllChurchesSummary'
-import ChurchSearch from 'components/ChurchSearch'
+import DisplayChurchList from 'components/DisplayChurchList'
 
 const DisplayAllHubs = () => {
   const { clickCard, ministryId } = useContext(ChurchContext)
@@ -17,7 +17,11 @@ const DisplayAllHubs = () => {
     variables: { id: ministryId },
   })
 
-  const hubs = data?.ministries[0]?.hubs
+  const hubs = data?.ministries[0]?.councils
+    .map((council: any) => {
+      return council.hubs
+    })
+    .flat()
   const ministry = data?.ministries[0]
 
   return (
@@ -73,7 +77,17 @@ const DisplayAllHubs = () => {
           churchType="Hub"
           route="ministry"
         />
-        <ChurchSearch data={hubs} churchType="Ministry" />
+
+        {ministry?.councils.map((council: any) => {
+          return (
+            <>
+              <Container>
+                <p className="mb-0 fw-bold fs-5">{council.name}</p>
+              </Container>
+              <DisplayChurchList data={council.hubs} churchType="Ministry" />
+            </>
+          )
+        })}
       </Container>
     </ApolloWrapper>
   )

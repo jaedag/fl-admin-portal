@@ -686,16 +686,20 @@ export const GET_MINISTRY_HUBS = gql`
       }
       memberCount
 
-      hubs {
-        name
+      councils {
         id
-        memberCount
-        leader {
+        name
+        hubs {
+          name
           id
-          firstName
-          lastName
-          stream_name
-          pictureUrl
+          memberCount
+          leader {
+            id
+            firstName
+            lastName
+            stream_name
+            pictureUrl
+          }
         }
       }
     }
