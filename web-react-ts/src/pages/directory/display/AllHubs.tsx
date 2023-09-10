@@ -79,10 +79,14 @@ const DisplayAllHubs = () => {
         />
 
         {ministry?.councils.map((council: any) => {
+          if (council.hubs.length === 0) return null
+
           return (
             <>
               <Container>
-                <p className="mb-0 fw-bold fs-5">{council.name}</p>
+                <p className="mb-0 fw-bold fs-5">
+                  {council.name} Council: {council.hubs.length} Hubs
+                </p>
               </Container>
               <DisplayChurchList data={council.hubs} churchType="Ministry" />
             </>
