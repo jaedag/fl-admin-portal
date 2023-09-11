@@ -43,8 +43,7 @@ const SetPermissions = ({
     variables: { email: user?.email },
     skip: !user?.email,
     onCompleted: (data) => {
-      console.log('🚀 ~ file: SetPermissions.tsx:46 ~ data:', data)
-      const doNotUse = data.memberByEmail.stream_name
+      const streamName = data.memberByEmail.stream_name
 
       setCurrentUser({
         ...currentUser,
@@ -55,7 +54,7 @@ const SetPermissions = ({
         council:
           data.memberByEmail?.fellowship?.bacenta.constituency?.council.id,
         constituency: data.memberByEmail?.fellowship?.bacenta.constituency?.id,
-        doNotUse: { doNotUse: doNotUse, subdoNotUse: 'bacenta' },
+        doNotUse: { doNotUse: streamName, subdoNotUse: 'bacenta' },
         stream_name: capitalise(data?.memberByEmail?.stream_name),
         stream:
           data.memberByEmail?.fellowship?.bacenta.constituency?.council.stream
@@ -80,7 +79,7 @@ const SetPermissions = ({
             .campus?.oversight.denomination.id,
 
         // Creative Arts
-        hub: data.memberByEmail?.fellowship?.hub.id,
+        hub: data.memberByEmail?.fellowship?.hub?.id,
         ministry: data.memberByEmail?.fellowship?.hub?.ministry.id,
         creativeArts:
           data.memberByEmail?.fellowship?.hub?.ministry?.creativeArts.id,
