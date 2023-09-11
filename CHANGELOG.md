@@ -1,3 +1,9 @@
+#### 7.9.9 (2023-09-11)
+
+##### Bug Fixes
+
+*  minor improvements ([b45b8218](https://github.com/firstlovecenter/fl-pastoral-care/commit/b45b82182795faa607c18d2d5ca5c515591174a6))
+
 #### 7.9.8 (2023-09-11)
 
 ##### Bug Fixes
