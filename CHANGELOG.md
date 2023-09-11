@@ -1,3 +1,9 @@
+#### 7.9.10 (2023-09-11)
+
+##### Bug Fixes
+
+*  fix bug preventing search from working ([e16794cd](https://github.com/firstlovecenter/fl-pastoral-care/commit/e16794cd19408ab8fa14cbc808588aab08b5bda6))
+
 #### 7.9.9 (2023-09-11)
 
 ##### Bug Fixes
