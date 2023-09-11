@@ -77,7 +77,7 @@ const SetPermissions = ({
         creativeArts:
           data.memberByEmail?.fellowship?.hub?.ministry?.creativeArts.id,
       })
-      sessionStorage.setItem('currentUser', JSON.stringify({ ...currentUser }))
+      sessionStorage.setItem('currentUser', JSON.stringify(currentUser))
     },
   })
 
