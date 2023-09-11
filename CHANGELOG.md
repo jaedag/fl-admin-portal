@@ -1,3 +1,14 @@
+#### 7.9.4 (2023-09-11)
+
+##### Bug Fixes
+
+*  fixed issue with arrivals backdating ([35b7cb12](https://github.com/firstlovecenter/fl-pastoral-care/commit/35b7cb12710b05daf4db18726487fdaebaa86300))
+*  fixed final bugs with creative arts search ([02d49d6c](https://github.com/firstlovecenter/fl-pastoral-care/commit/02d49d6c15ff279b34d2873b07fb3683c3883270))
+*  implement search functionality for all levels of creativearts ([fbbe9966](https://github.com/firstlovecenter/fl-pastoral-care/commit/fbbe9966e7cfbf0420a62fc1e594a915fa77a3a0))
+*  add a no data component for coucils ([322a6a96](https://github.com/firstlovecenter/fl-pastoral-care/commit/322a6a966379f604f4402162b412d354255f32a4))
+*  implement backend for searching for creative arts church groups ([10d3a17f](https://github.com/firstlovecenter/fl-pastoral-care/commit/10d3a17f83872d656c9121ed82390f3e58536994))
+*  add number of hubs to all hubs display ([8f937c33](https://github.com/firstlovecenter/fl-pastoral-care/commit/8f937c3313d6944f0d052dc20c18e87e73b36fed))
+
 #### 7.9.3 (2023-09-10)
 
 ##### Bug Fixes
