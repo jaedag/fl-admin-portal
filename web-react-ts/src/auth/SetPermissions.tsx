@@ -20,6 +20,7 @@ const SetPermissions = ({
   children: JSX.Element
 }) => {
   const { currentUser, setUserJobs, setCurrentUser } = useContext(MemberContext)
+  console.log('🚀 ~ file: SetPermissions.tsx:23 ~ currentUser:', currentUser)
   const { doNotUse } = useContext(ChurchContext)
 
   const { isAuthenticated, user } = useAuth0()
@@ -36,6 +37,7 @@ const SetPermissions = ({
   )
   const [getLoggedInUser] = useLazyQuery(GET_LOGGED_IN_USER, {
     onCompleted: (data) => {
+      console.log('🚀 ~ file: SetPermissions.tsx:39 ~ data:', data)
       const doNotUse = data.memberByEmail.stream_name
 
       setCurrentUser({
