@@ -1,10 +1,11 @@
 import React, { useContext, useState } from 'react'
 import { ErrorMessage } from 'formik'
 import TextError from './TextError/TextError'
-import { Container, Spinner } from 'react-bootstrap'
+import { Container } from 'react-bootstrap'
 import { MemberContext } from 'contexts/MemberContext'
 import './Formik.css'
 import { FormikComponentProps } from './formik-types'
+import { MoonLoader } from 'react-spinners'
 
 interface ImageUploadProps extends FormikComponentProps {
   uploadPreset?: string
@@ -81,16 +82,16 @@ const ImageUpload = (props: ImageUploadProps) => {
         </label>
       ) : null}
       {loading && (
-        <Container className="text-center my-3">
-          <Spinner animation="grow" />
+        <Container className="my-3 img-container d-flex justify-content-center align-items-center border">
+          <MoonLoader color="gray" />
         </Container>
       )}
       {(image || initialValue) && (
-        <>
+        <Container className="text-center img-container ">
           <img src={image || initialValue} className="img-preview" alt="" />
-        </>
+        </Container>
       )}
-      <label className="w-100">
+      <label className="w-100 text-center">
         <input
           id={name}
           name={name}
@@ -101,7 +102,7 @@ const ImageUpload = (props: ImageUploadProps) => {
           {...rest}
         />
 
-        <p className={`btn btn-primary image`}>{placeholder}</p>
+        <p className={`btn btn-primary px-5 image`}>{placeholder}</p>
       </label>
       {props.error && <TextError>{props.error}</TextError>}
       {!props.error ?? <ErrorMessage name={name} component={TextError} />}

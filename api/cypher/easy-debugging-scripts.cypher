@@ -10,7 +10,7 @@ RETURN record.attendance, absent;
 
 
 // If a fellowship service is Blocking 
-MATCH (fellowship:Fellowship {bankingCode: 7535 })-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph {date: date("2023-08-31")})
+MATCH (fellowship:Fellowship {bankingCode: 6563 })-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph {date: date("2023-08-31")})
 MATCH (fellowship)<-[:BELONGS_TO]-(members:Member)
 MERGE (record)<-[:PRESENT_AT_SERVICE]-(members)
 MERGE (record)<-[:ABSENT_FROM_SERVICE]-(members)
@@ -18,7 +18,7 @@ MERGE (record)<-[:ABSENT_FROM_SERVICE]-(members)
 RETURN fellowship.name, record.attendance, COUNT(members);
 
 // If Sunday Bussing is blocking
-MATCH (fellowship:Fellowship {bankingCode: 7094 })<-[:HAS]-(bacenta:Bacenta)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(record:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph {date: date("2023-09-03")})
+MATCH (fellowship:Fellowship {bankingCode: 6563 })<-[:HAS]-(bacenta:Bacenta)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(record:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph {date: date("2023-09-03")})
 MATCH (fellowship)<-[:BELONGS_TO]-(members:Member)
 MERGE (record)<-[:PRESENT_AT_SERVICE]-(members)
 MERGE (record)<-[:ABSENT_FROM_SERVICE]-(members)
@@ -38,3 +38,7 @@ RETURN fellowship.name, COUNT(member) > 0 AS filled;
 
 
 
+MATCH (m:Member {email: "jaedagy@gmail.com"})
+MATCH (f:Fellowship) WHERE f.name CONTAINS  "Hub"
+MERGE (m)-[:BELONGS_TO]->(f)
+RETURN m.firstName, f.name, f.id

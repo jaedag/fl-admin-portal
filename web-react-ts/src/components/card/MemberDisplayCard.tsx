@@ -72,8 +72,8 @@ const MemberDisplayCard = (props: MemberDisplayCardProps) => {
   const { setUserFinancials } = useSetUserChurch()
   const navigate = useNavigate()
   let icon: string = ''
-  let name: string | undefined
-  let details: string[] = []
+  let name: string = member.name + ' ' + member.__typename
+  let details: string[] = [member?.leader?.nameWithTitle || '']
 
   const noPicture = !member?.pictureUrl && !leader?.pictureUrl
   let picture = member?.pictureUrl || leader?.pictureUrl || USER_PLACEHOLDER
@@ -88,41 +88,31 @@ const MemberDisplayCard = (props: MemberDisplayCardProps) => {
       break
     case 'Fellowship':
       icon = 'fellowship'
-      name = member.name + ' Fellowship'
-      details = [member?.leader?.nameWithTitle || '']
       break
     case 'Bacenta':
       icon = 'bacenta'
-      name = member.name + ' Bacenta'
-      details = [member?.leader?.nameWithTitle || '']
       break
 
     case 'Constituency':
       icon = 'constituency'
-      name = member.name + ' Constituency'
-      details = [member?.leader?.nameWithTitle || '']
       break
+    case 'Hub':
     case 'Council':
       icon = 'council'
-      name = member.name + ' Council'
-      details = [member?.leader?.nameWithTitle || '']
       break
+    case 'Ministry':
     case 'Stream':
       icon = 'stream'
-      name = member.name + ' Stream'
-      details = [member?.leader?.nameWithTitle || '']
       break
+    case 'CreativeArts':
     case 'Campus':
       icon = 'stream'
-      name = member.name + ' Campus'
-      details = [member?.leader?.nameWithTitle || '']
       break
     case 'Sonta':
       icon = 'stream'
-      name = member.name + ' Sonta'
-      details = [member?.leader?.nameWithTitle || '']
       break
     default:
+      icon = 'stream'
       break
   }
 

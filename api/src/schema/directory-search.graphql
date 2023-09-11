@@ -444,13 +444,13 @@ extend type Query {
       """
     )
 
-  campusMemberSearch(searchKey: String!, gatheringId: ID!): [Member!]!
+  campusMemberSearch(searchKey: String!, campusId: ID!): [Member!]!
     @auth(
       rules: [{ roles: ["adminCampus", "leaderCampus", "arrivalsAdminCampus"] }]
     )
     @cypher(
       statement: """
-      MATCH (gathering:Campus {id: $gatheringId})-[:HAS]->(stream:Stream)-[:HAS]->(:Council)-[:HAS]->(:Constituency)-[:HAS]->(:Bacenta)-[:HAS]->(:Fellowship)<-[:BELONGS_TO]-(member:Active:Member)
+      MATCH (gathering:Campus {id: $campusId})-[:HAS]->(stream:Stream)-[:HAS]->(:Council)-[:HAS]->(:Constituency)-[:HAS]->(:Bacenta)-[:HAS]->(:Fellowship)<-[:BELONGS_TO]-(member:Active:Member)
       WHERE toLower(member.firstName) STARTS WITH toLower($searchKey)
       OR toLower(member.middleName) STARTS WITH toLower($searchKey)
       OR toLower(member.lastName) STARTS WITH toLower($searchKey)
@@ -553,6 +553,45 @@ extend type Query {
       RETURN member LIMIT 5
       """
     )
+  creativeArtsMemberSearch(searchKey: String!, creativeArtsId: ID!): [Member!]!
+    @auth(rules: [{ roles: ["leaderCreativeArts", "adminCreativeArts"] }])
+    @cypher(
+      statement: """
+      MATCH (creativeArts:CreativeArts {id: $creativeArtsId})-[:HAS]->(ministry:Ministry)-[:HAS]->(:Hub)-[:HAS]->(:HubFellowship)<-[:BELONGS_TO]-(member:Active:Member)
+      WHERE toLower(member.firstName) STARTS WITH toLower($searchKey)
+      OR toLower(member.middleName) STARTS WITH toLower($searchKey)
+      OR toLower(member.lastName) STARTS WITH toLower($searchKey)
+      OR toLower(member.firstName + ' ' + member.lastName) CONTAINS toLower($searchKey)
+      OR toLower(member.firstName + ' ' + member.middleName+ ' '+ member.lastName) CONTAINS toLower($searchKey)
+      RETURN member LIMIT 5
+      """
+    )
+  ministryMemberSearch(searchKey: String!, ministryId: ID!): [Member!]!
+    @auth(rules: [{ roles: ["leaderMinistry", "adminMinistry"] }])
+    @cypher(
+      statement: """
+      MATCH (ministry:Ministry {id: $ministryId})-[:HAS]->(:Hub)-[:HAS]->(:HubFellowship)<-[:BELONGS_TO]-(member:Active:Member)
+      WHERE toLower(member.firstName) STARTS WITH toLower($searchKey)
+      OR toLower(member.middleName) STARTS WITH toLower($searchKey)
+      OR toLower(member.lastName) STARTS WITH toLower($searchKey)
+      OR toLower(member.firstName + ' ' + member.lastName) CONTAINS toLower($searchKey)
+      OR toLower(member.firstName + ' ' + member.middleName+ ' '+ member.lastName) CONTAINS toLower($searchKey)
+      RETURN member LIMIT 5
+      """
+    )
+  hubMemberSearch(searchKey: String!, hubId: ID!): [Member!]!
+    @auth(rules: [{ roles: ["leaderHub", "adminHub"] }])
+    @cypher(
+      statement: """
+      MATCH (hub:Hub {id: $hubId})-[:HAS]->(:HubFellowship)<-[:BELONGS_TO]-(member:Active:Member)
+      WHERE toLower(member.firstName) STARTS WITH toLower($searchKey)
+      OR toLower(member.middleName) STARTS WITH toLower($searchKey)
+      OR toLower(member.lastName) STARTS WITH toLower($searchKey)
+      OR toLower(member.firstName + ' ' + member.lastName) CONTAINS toLower($searchKey)
+      OR toLower(member.firstName + ' ' + member.middleName+ ' '+ member.lastName) CONTAINS toLower($searchKey)
+      RETURN member LIMIT 5
+      """
+    )
 
   ### Fellowship Search ###
   oversightFellowshipSearch(
@@ -575,13 +614,13 @@ extend type Query {
       """
     )
 
-  campusFellowshipSearch(searchKey: String!, gatheringId: ID!): [Fellowship!]!
+  campusFellowshipSearch(searchKey: String!, campusId: ID!): [Fellowship!]!
     @auth(
       rules: [{ roles: ["adminCampus", "leaderCampus", "arrivalsAdminCampus"] }]
     )
     @cypher(
       statement: """
-      MATCH (gathering:Campus {id: $gatheringId})-[:HAS*5]->(fellowship:Fellowship)
+      MATCH (gathering:Campus {id: $campusId})-[:HAS*5]->(fellowship:Fellowship)
       WHERE toLower(fellowship.name) STARTS WITH toLower($searchKey)
       OR toLower(fellowship.name) CONTAINS toLower($searchKey)
       RETURN DISTINCT fellowship LIMIT 5
@@ -652,6 +691,20 @@ extend type Query {
       """
     )
 
+  creativeArtsHubFellowshipSearch(
+    searchKey: String!
+    creativeArtsId: ID!
+  ): [HubFellowship!]!
+    @auth(rules: [{ roles: ["leaderCreativeArts", "adminCreativeArts"] }])
+    @cypher(
+      statement: """
+      MATCH (creativeArts:CreativeArts {id: $creativeArtsId})-[:HAS]->(ministry:Ministry)-[:HAS]->(hub:Hub)-[:HAS]->(hubFellowship:HubFellowship)
+      WHERE toLower(hubFellowship.name) STARTS WITH toLower($searchKey)
+      OR toLower(hubFellowship.name) CONTAINS toLower($searchKey)
+      RETURN DISTINCT hubFellowship LIMIT 5
+      """
+    )
+
   ### Bacenta Search ###
 
   oversightBacentaSearch(searchKey: String!, oversightId: ID!): [Bacenta!]!
@@ -671,13 +724,13 @@ extend type Query {
       """
     )
 
-  campusBacentaSearch(searchKey: String!, gatheringId: ID!): [Bacenta]
+  campusBacentaSearch(searchKey: String!, campusId: ID!): [Bacenta]
     @auth(
       rules: [{ roles: ["adminCampus", "leaderCampus", "arrivalsAdminCampus"] }]
     )
     @cypher(
       statement: """
-      MATCH (gathering:Campus {id: $gatheringId})-[:HAS]->(stream:Stream)-[:HAS]->(:Council)-[:HAS]->(:Constituency)-[:HAS]->(bacenta:Bacenta)
+      MATCH (gathering:Campus {id: $campusId})-[:HAS]->(stream:Stream)-[:HAS]->(:Council)-[:HAS]->(:Constituency)-[:HAS]->(bacenta:Bacenta)
       WHERE toLower(bacenta.name) STARTS WITH toLower($searchKey)
       OR toLower(bacenta.name) CONTAINS toLower($searchKey)
       RETURN bacenta LIMIT 5
@@ -773,16 +826,13 @@ extend type Query {
       """
     )
 
-  campusConstituencySearch(
-    searchKey: String!
-    gatheringId: ID!
-  ): [Constituency!]!
+  campusConstituencySearch(searchKey: String!, campusId: ID!): [Constituency!]!
     @auth(
       rules: [{ roles: ["adminCampus", "leaderCampus", "arrivalsAdminCampus"] }]
     )
     @cypher(
       statement: """
-      MATCH (gathering:Campus {id: $gatheringId})-[:HAS]->(stream:Stream)-[:HAS]->(:Council)-[:HAS]->(constituency:Constituency)
+      MATCH (gathering:Campus {id: $campusId})-[:HAS]->(stream:Stream)-[:HAS]->(:Council)-[:HAS]->(constituency:Constituency)
       WHERE toLower(constituency.name) STARTS WITH toLower($searchKey)
       OR toLower(constituency.name) CONTAINS toLower($searchKey)
       RETURN constituency LIMIT 5
@@ -838,13 +888,13 @@ extend type Query {
       """
     )
 
-  campusCouncilSearch(searchKey: String!, gatheringId: ID!): [Council!]!
+  campusCouncilSearch(searchKey: String!, campusId: ID!): [Council!]!
     @auth(
       rules: [{ roles: ["adminCampus", "leaderCampus", "arrivalsAdminCampus"] }]
     )
     @cypher(
       statement: """
-      MATCH (gathering:Campus {id: $gatheringId})-[:HAS]->(stream:Stream)-[:HAS]->(council:Council)
+      MATCH (gathering:Campus {id: $campusId})-[:HAS]->(stream:Stream)-[:HAS]->(council:Council)
       WHERE toLower(council.name) STARTS WITH toLower($searchKey)
       OR toLower(council.name) CONTAINS toLower($searchKey)
       RETURN council LIMIT 5
@@ -881,13 +931,13 @@ extend type Query {
       RETURN stream LIMIT 5
       """
     )
-  campusStreamSearch(searchKey: String!, gatheringId: ID!): [Stream!]!
+  campusStreamSearch(searchKey: String!, campusId: ID!): [Stream!]!
     @auth(
       rules: [{ roles: ["adminCampus", "leaderCampus", "arrivalsAdminCampus"] }]
     )
     @cypher(
       statement: """
-      MATCH (gathering:Campus {id: $gatheringId})-[:HAS]->(stream:Stream)
+      MATCH (gathering:Campus {id: $campusId})-[:HAS]->(stream:Stream)
       WHERE toLower(stream.name) STARTS WITH toLower($searchKey)
       OR toLower(stream.name) CONTAINS toLower($searchKey)
       RETURN stream LIMIT 5
@@ -909,6 +959,105 @@ extend type Query {
       WHERE toLower(gathering.name) STARTS WITH toLower($searchKey)
       OR toLower(gathering.name) CONTAINS toLower($searchKey)
       RETURN gathering LIMIT 5
+      """
+    )
+
+  ### Creative Arts Search ###
+  campusCreativeArtsSearch(searchKey: String!, campusId: ID!): [CreativeArts!]!
+    @auth(rules: [{ roles: ["adminCampus", "leaderCampus"] }])
+    @cypher(
+      statement: """
+      MATCH (gathering:Campus {id: $campusId})-[:HAS_MINISTRY]->(creativeArts:CreativeArts)
+      WHERE toLower(creativeArts.name) STARTS WITH toLower($searchKey)
+      OR toLower(creativeArts.name) CONTAINS toLower($searchKey)
+      RETURN creativeArts LIMIT 5
+      """
+    )
+
+  ### Ministry Search ###
+  campusMinistrySearch(searchKey: String!, campusId: ID!): [Ministry!]!
+    @auth(rules: [{ roles: ["adminCampus", "leaderCampus"] }])
+    @cypher(
+      statement: """
+      MATCH (gathering:Campus {id: $campusId})-[:HAS_MINISTRY]->(creativeArts:CreativeArts)-[:HAS]->(ministry:Ministry)
+      WHERE toLower(ministry.name) STARTS WITH toLower($searchKey)
+      OR toLower(ministry.name) CONTAINS toLower($searchKey)
+      RETURN ministry LIMIT 5
+      """
+    )
+  streamMinistrySearch(searchKey: String!, streamId: ID!): [Ministry!]!
+    @auth(rules: [{ roles: ["adminStream", "leaderStream"] }])
+    @cypher(
+      statement: """
+      MATCH (stream:Stream {id: $streamId})-[:HAS_MINISTRY]->(creativeArts:CreativeArts)-[:HAS]->(ministry:Ministry)
+      WHERE toLower(ministry.name) STARTS WITH toLower($searchKey)
+      OR toLower(ministry.name) CONTAINS toLower($searchKey)
+      RETURN ministry LIMIT 5
+      """
+    )
+  creativeArtsMinistrySearch(
+    searchKey: String!
+    creativeArtsId: ID!
+  ): [Ministry!]!
+    @auth(rules: [{ roles: ["leaderCreativeArts", "adminCreativeArts"] }])
+    @cypher(
+      statement: """
+      MATCH (creativeArts:CreativeArts {id: $creativeArtsId})-[:HAS]->(ministry:Ministry)
+      WHERE toLower(ministry.name) STARTS WITH toLower($searchKey)
+      OR toLower(ministry.name) CONTAINS toLower($searchKey)
+      RETURN ministry LIMIT 5
+      """
+    )
+
+  ### Hub Search ###
+  campusHubSearch(searchKey: String!, campusId: ID!): [Hub!]!
+    @auth(rules: [{ roles: ["adminCampus", "leaderCampus"] }])
+    @cypher(
+      statement: """
+      MATCH (gathering:Campus {id: $campusId})-[:HAS_MINISTRY]->(creativeArts:CreativeArts)-[:HAS]->(ministry:Ministry)-[:HAS]->(hub:Hub)
+      WHERE toLower(hub.name) STARTS WITH toLower($searchKey)
+      OR toLower(hub.name) CONTAINS toLower($searchKey)
+      RETURN hub LIMIT 5
+      """
+    )
+  streamHubSearch(searchKey: String!, streamId: ID!): [Hub!]!
+    @auth(rules: [{ roles: ["adminStream", "leaderStream"] }])
+    @cypher(
+      statement: """
+      MATCH (stream:Stream {id: $streamId})-[:HAS_MINISTRY]->(ministry:Ministry)-[:HAS]->(hub:Hub)
+      WHERE toLower(hub.name) STARTS WITH toLower($searchKey)
+      OR toLower(hub.name) CONTAINS toLower($searchKey)
+      RETURN hub LIMIT 5
+      """
+    )
+  creativeArtsHubSearch(searchKey: String!, creativeArtsId: ID!): [Hub!]!
+    @auth(rules: [{ roles: ["leaderCreativeArts", "adminCreativeArts"] }])
+    @cypher(
+      statement: """
+      MATCH (creativeArts:CreativeArts {id: $creativeArtsId})-[:HAS]->(ministry:Ministry)-[:HAS]->(hub:Hub)
+      WHERE toLower(hub.name) STARTS WITH toLower($searchKey)
+      OR toLower(hub.name) CONTAINS toLower($searchKey)
+      RETURN hub LIMIT 5
+      """
+    )
+  ministryHubSearch(searchKey: String!, ministryId: ID!): [Hub!]!
+    @auth(rules: [{ roles: ["leaderMinistry", "adminMinistry"] }])
+    @cypher(
+      statement: """
+      MATCH (ministry:Ministry {id: $ministryId})-[:HAS]->(hub:Hub)
+      WHERE toLower(hub.name) STARTS WITH toLower($searchKey)
+      OR toLower(hub.name) CONTAINS toLower($searchKey)
+      RETURN hub LIMIT 5
+      """
+    )
+  councilHubSearch(searchKey: String!, councilId: ID!): [Hub!]!
+    @auth(rules: [{ roles: ["leaderCouncil", "adminCouncil"] }])
+    @cypher(
+      statement: """
+      MATCH (council:Council {id: $councilId})-[:HAS]->(hub:Hub)
+      WHERE toLower(hub.name) STARTS WITH toLower($searchKey)
+      OR toLower(hub.name) CONTAINS toLower($searchKey)
+      RETURN hub LIMIT 5
       """
     )
 }

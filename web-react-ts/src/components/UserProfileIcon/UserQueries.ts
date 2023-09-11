@@ -12,6 +12,15 @@ export const GET_LOGGED_IN_USER = gql`
       stream_name
       fellowship {
         id
+        hub {
+          id
+          ministry {
+            id
+            creativeArts {
+              id
+            }
+          }
+        }
         bacenta {
           id
           constituency {

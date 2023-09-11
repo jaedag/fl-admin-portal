@@ -70,6 +70,12 @@ const SetPermissions = ({
         denomination:
           data.memberByEmail?.fellowship?.bacenta.constituency?.council.stream
             .campus?.oversight.denomination.id,
+
+        // Creative Arts
+        hub: data.memberByEmail?.fellowship?.hub.id,
+        ministry: data.memberByEmail?.fellowship?.hub?.ministry.id,
+        creativeArts:
+          data.memberByEmail?.fellowship?.hub?.ministry?.creativeArts.id,
       })
       sessionStorage.setItem('currentUser', JSON.stringify({ ...currentUser }))
     },

@@ -57,7 +57,7 @@ const DisplayPage = () => {
             </Row>
           </div>
 
-          <div>
+          <>
             <PlaceholderCustom
               loading={!member?.nameWithTitle}
               as="h1"
@@ -65,15 +65,14 @@ const DisplayPage = () => {
             >
               <h1 className="text-center">{`${member?.nameWithTitle}`}</h1>
             </PlaceholderCustom>
-            <Container className="px-5 mb-2">
-              <div className="d-grid gap-2">
-                <Button
-                  variant="brand"
-                  onClick={() => navigate('/user-profile/edit')}
-                >
-                  Edit Your Profile
-                </Button>
-              </div>
+            <Container className="px-5 mb-2 text-center">
+              <Button
+                variant="brand"
+                className="px-5"
+                onClick={() => navigate('/user-profile/edit')}
+              >
+                Edit Your Profile
+              </Button>
             </Container>
 
             <PlaceholderCustom as="h6" className="text-center">
@@ -81,7 +80,7 @@ const DisplayPage = () => {
                 {memberChurch?.fellowship?.name}
               </h6>
             </PlaceholderCustom>
-          </div>
+          </>
           <div className="py-5">
             <Row className="d-flex justify-content-center">
               <Col lg={8}>

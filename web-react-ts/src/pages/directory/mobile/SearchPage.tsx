@@ -9,64 +9,30 @@ import {
   BACENTA_SEARCH,
   FELLOWSHIP_SEARCH,
   OVERSIGHT_SEARCH,
+  CREATIVEARTS_SEARCH,
+  MINISTRY_SEARCH,
+  HUB_SEARCH,
 } from './SearchQuery'
 import { MemberContext, SearchContext } from 'contexts/MemberContext'
 import MemberDisplayCard from 'components/card/MemberDisplayCard'
 import { isAuthorised, throwToSentry } from 'global-utils'
 import { Container } from 'react-bootstrap'
-import { Church, MemberWithoutBioData, Stream } from 'global-types'
+
 import { permitMe } from 'permission-utils'
 import { ScaleLoader } from 'react-spinners'
-
-type OversightSearchResult = {
-  oversightMemberSearch: MemberWithoutBioData[]
-  oversightCampusSearch: Church[]
-  oversightStreamSearch: Stream[]
-  oversightCouncilSearch: Church[]
-  oversightConstituencySearch: Church[]
-  oversightBacentaSearch: Church[]
-  oversightFellowshipSearch: Church[]
-}
-type CampusSearchResult = {
-  campusMemberSearch: MemberWithoutBioData[]
-  campusStreamSearch: Stream[]
-  campusCouncilSearch: Church[]
-  campusConstituencySearch: Church[]
-  campusBacentaSearch: Church[]
-  campusFellowshipSearch: Church[]
-}
-
-type StreamSearchResult = {
-  streamMemberSearch: MemberWithoutBioData[]
-  streamCouncilSearch: Church[]
-  streamConstituencySearch: Church[]
-  streamBacentaSearch: Church[]
-  streamFellowshipSearch: Church[]
-}
-
-type CouncilSearchResult = {
-  councilMemberSearch: MemberWithoutBioData[]
-  councilConstituencySearch: Church[]
-  councilBacentaSearch: Church[]
-  councilFellowshipSearch: Church[]
-}
-
-type ConstituencySearchResult = {
-  constituencyMemberSearch: MemberWithoutBioData[]
-  constituencyBacentaSearch: Church[]
-  constituencyFellowshipSearch: Church[]
-}
-
-type BacentaSearchResults = {
-  bacentaMemberSearch: MemberWithoutBioData[]
-  bacentaFellowshipSearch: Church[]
-}
-
-type FellowshipSearchResults = {
-  fellowshipMemberSearch: MemberWithoutBioData[]
-}
-
-type SearchResult = MemberWithoutBioData | Church
+import {
+  BacentaSearchResults,
+  CampusSearchResult,
+  ConstituencySearchResult,
+  CouncilSearchResult,
+  CreativeArtsSearchResult,
+  FellowshipSearchResults,
+  HubSearchResult,
+  MinistrySearchResult,
+  OversightSearchResult,
+  SearchResult,
+  StreamSearchResult,
+} from './search-types'
 
 const SearchPageMobile = () => {
   const { searchKey } = useContext(SearchContext)
@@ -102,6 +68,9 @@ const SearchPageMobile = () => {
           ...data.campusConstituencySearch,
           ...data.campusBacentaSearch,
           ...data.campusFellowshipSearch,
+          ...data.campusCreativeArtsSearch,
+          ...data.campusMinistrySearch,
+          ...data.campusHubSearch,
         ])
         return
       },
@@ -116,6 +85,8 @@ const SearchPageMobile = () => {
           ...data.streamConstituencySearch,
           ...data.streamBacentaSearch,
           ...data.streamFellowshipSearch,
+          ...data.streamMinistrySearch,
+          ...data.streamHubSearch,
         ])
         return
       },
@@ -129,10 +100,26 @@ const SearchPageMobile = () => {
           ...data.councilConstituencySearch,
           ...data.councilBacentaSearch,
           ...data.councilFellowshipSearch,
+          ...data.councilHubSearch,
         ])
         return
       },
     })
+  const [hubSearch, { loading: hubLoading, error: hubError }] = useLazyQuery(
+    HUB_SEARCH,
+    {
+      onCompleted: (data: HubSearchResult) => {
+        setCombinedData([
+          ...data.hubMemberSearch,
+          ...data.hubConstituencySearch,
+          ...data.hubBacentaSearch,
+          ...data.hubFellowshipSearch,
+        ])
+        return
+      },
+    }
+  )
+
   const [
     constituencySearch,
     { loading: constituencyLoading, error: constituencyError },
@@ -167,6 +154,41 @@ const SearchPageMobile = () => {
       return
     },
   })
+
+  const [
+    creativeArtsSearch,
+    { loading: creativeArtsLoading, error: creativeArtsError },
+  ] = useLazyQuery(CREATIVEARTS_SEARCH, {
+    onCompleted: (data: CreativeArtsSearchResult) => {
+      setCombinedData([
+        ...data.creativeArtsMemberSearch,
+        ...data.creativeArtsStreamSearch,
+        ...data.creativeArtsCouncilSearch,
+        ...data.creativeArtsConstituencySearch,
+        ...data.creativeArtsBacentaSearch,
+        ...data.creativeArtsFellowshipSearch,
+        ...data.creativeArtsMinistrySearch,
+        ...data.creativeArtsHubSearch,
+      ])
+      return
+    },
+  })
+
+  const [ministrySearch, { loading: ministryLoading, error: ministryError }] =
+    useLazyQuery(MINISTRY_SEARCH, {
+      onCompleted: (data: MinistrySearchResult) => {
+        setCombinedData([
+          ...data.ministryMemberSearch,
+          ...data.ministryCouncilSearch,
+          ...data.ministryConstituencySearch,
+          ...data.ministryBacentaSearch,
+          ...data.ministryFellowshipSearch,
+          ...data.ministryHubSearch,
+        ])
+        return
+      },
+    })
+
   const error =
     oversightError ||
     campusError ||
@@ -174,7 +196,10 @@ const SearchPageMobile = () => {
     councilError ||
     constituencyError ||
     bacentaError ||
-    fellowshipError
+    fellowshipError ||
+    creativeArtsError ||
+    ministryError ||
+    hubError
 
   throwToSentry('', error)
 
@@ -185,7 +210,10 @@ const SearchPageMobile = () => {
     councilLoading ||
     constituencyLoading ||
     bacentaLoading ||
-    fellowshipLoading
+    fellowshipLoading ||
+    creativeArtsLoading ||
+    ministryLoading ||
+    hubLoading
 
   useEffect(() => {
     const whichSearch = (searchString: string) => {
@@ -199,7 +227,14 @@ const SearchPageMobile = () => {
       } else if (isAuthorised(permitMe('Campus'), currentUser.roles)) {
         campusSearch({
           variables: {
-            gatheringId: currentUser.campus,
+            campusId: currentUser.campus,
+            searchKey: searchString?.trim(),
+          },
+        })
+      } else if (isAuthorised(permitMe('CreativeArts'), currentUser.roles)) {
+        creativeArtsSearch({
+          variables: {
+            creativeArtsId: currentUser.creativeArts,
             searchKey: searchString?.trim(),
           },
         })
@@ -210,10 +245,24 @@ const SearchPageMobile = () => {
             searchKey: searchString?.trim(),
           },
         })
+      } else if (isAuthorised(permitMe('Ministry'), currentUser.roles)) {
+        ministrySearch({
+          variables: {
+            ministryId: currentUser.ministry,
+            searchKey: searchString?.trim(),
+          },
+        })
       } else if (isAuthorised(permitMe('Council'), currentUser.roles)) {
         councilSearch({
           variables: {
             councilId: currentUser.council,
+            searchKey: searchString?.trim(),
+          },
+        })
+      } else if (isAuthorised(permitMe('Hub'), currentUser.roles)) {
+        hubSearch({
+          variables: {
+            hubId: currentUser.hub,
             searchKey: searchString?.trim(),
           },
         })

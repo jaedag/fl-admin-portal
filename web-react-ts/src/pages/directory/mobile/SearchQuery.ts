@@ -93,8 +93,8 @@ export const OVERSIGHT_SEARCH = gql`
 `
 
 export const CAMPUS_SEARCH = gql`
-  query campusSearch($searchKey: String!, $gatheringId: ID!) {
-    campusStreamSearch(searchKey: $searchKey, gatheringId: $gatheringId) {
+  query campusSearch($searchKey: String!, $campusId: ID!) {
+    campusStreamSearch(searchKey: $searchKey, campusId: $campusId) {
       id
       name
       stream_name
@@ -104,7 +104,7 @@ export const CAMPUS_SEARCH = gql`
         lastName
       }
     }
-    campusCouncilSearch(searchKey: $searchKey, gatheringId: $gatheringId) {
+    campusCouncilSearch(searchKey: $searchKey, campusId: $campusId) {
       id
       name
       stream_name
@@ -116,7 +116,7 @@ export const CAMPUS_SEARCH = gql`
       }
     }
 
-    campusConstituencySearch(searchKey: $searchKey, gatheringId: $gatheringId) {
+    campusConstituencySearch(searchKey: $searchKey, campusId: $campusId) {
       id
       name
       stream_name
@@ -127,7 +127,7 @@ export const CAMPUS_SEARCH = gql`
         nameWithTitle
       }
     }
-    campusBacentaSearch(searchKey: $searchKey, gatheringId: $gatheringId) {
+    campusBacentaSearch(searchKey: $searchKey, campusId: $campusId) {
       id
       name
       stream_name
@@ -138,7 +138,7 @@ export const CAMPUS_SEARCH = gql`
         nameWithTitle
       }
     }
-    campusFellowshipSearch(searchKey: $searchKey, gatheringId: $gatheringId) {
+    campusFellowshipSearch(searchKey: $searchKey, campusId: $campusId) {
       id
       name
       stream_name
@@ -149,7 +149,38 @@ export const CAMPUS_SEARCH = gql`
         nameWithTitle
       }
     }
-    campusMemberSearch(searchKey: $searchKey, gatheringId: $gatheringId) {
+    campusCreativeArtsSearch(searchKey: $searchKey, campusId: $campusId) {
+      id
+      name
+      leader {
+        id
+        firstName
+        lastName
+        nameWithTitle
+      }
+    }
+    campusMinistrySearch(searchKey: $searchKey, campusId: $campusId) {
+      id
+      name
+      leader {
+        id
+        firstName
+        lastName
+        nameWithTitle
+      }
+    }
+    campusHubSearch(searchKey: $searchKey, campusId: $campusId) {
+      id
+      name
+      leader {
+        id
+        firstName
+        lastName
+        nameWithTitle
+      }
+    }
+
+    campusMemberSearch(searchKey: $searchKey, campusId: $campusId) {
       id
       firstName
       lastName
@@ -214,6 +245,27 @@ export const STREAM_SEARCH = gql`
         nameWithTitle
       }
     }
+    streamMinistrySearch(searchKey: $searchKey, streamId: $streamId) {
+      id
+      name
+      leader {
+        id
+        firstName
+        lastName
+        nameWithTitle
+      }
+    }
+    streamHubSearch(searchKey: $searchKey, streamId: $streamId) {
+      id
+      name
+      leader {
+        id
+        firstName
+        lastName
+        nameWithTitle
+      }
+    }
+
     streamMemberSearch(searchKey: $searchKey, streamId: $streamId) {
       id
       firstName
@@ -265,6 +317,17 @@ export const COUNCIL_SEARCH = gql`
         nameWithTitle
       }
     }
+    councilHubSearch(searchKey: $searchKey, councilId: $councilId) {
+      id
+      name
+      leader {
+        id
+        firstName
+        lastName
+        nameWithTitle
+      }
+    }
+
     councilMemberSearch(searchKey: $searchKey, councilId: $councilId) {
       id
       firstName
@@ -368,6 +431,147 @@ export const BACENTA_SEARCH = gql`
 export const FELLOWSHIP_SEARCH = gql`
   query fellowshipSearch($searchKey: String!, $fellowshipId: ID!) {
     fellowshipMemberSearch(searchKey: $searchKey, fellowshipId: $fellowshipId) {
+      id
+      firstName
+      lastName
+      nameWithTitle
+      pictureUrl
+      stream_name
+      fellowship {
+        id
+        name
+      }
+      ministry {
+        id
+        name
+      }
+    }
+  }
+`
+
+export const CREATIVEARTS_SEARCH = gql`
+  query creativeArtsSearch($searchKey: String!, $creativeArtsId: ID!) {
+    creativeArtsMinistrySearch(
+      searchKey: $searchKey
+      creativeArtsId: $creativeArtsId
+    ) {
+      id
+      name
+      leader {
+        id
+        firstName
+        lastName
+        nameWithTitle
+      }
+    }
+    creativeArtsHubSearch(
+      searchKey: $searchKey
+      creativeArtsId: $creativeArtsId
+    ) {
+      id
+      name
+      leader {
+        id
+        firstName
+        lastName
+        nameWithTitle
+      }
+    }
+    creativeArtsHubFellowshipSearch(
+      searchKey: $searchKey
+      creativeArtsId: $creativeArtsId
+    ) {
+      id
+      name
+      leader {
+        id
+        firstName
+        lastName
+        nameWithTitle
+      }
+    }
+
+    creativeArtsMemberSearch(
+      searchKey: $searchKey
+      creativeArtsId: $creativeArtsId
+    ) {
+      id
+      firstName
+      lastName
+      nameWithTitle
+      pictureUrl
+      stream_name
+      fellowship {
+        id
+        name
+      }
+      ministry {
+        id
+        name
+      }
+    }
+  }
+`
+
+export const MINISTRY_SEARCH = gql`
+  query ministrySearch($searchKey: String!, $ministryId: ID!) {
+    ministryHubSearch(searchKey: $searchKey, ministryId: $ministryId) {
+      id
+      name
+      leader {
+        id
+        firstName
+        lastName
+        nameWithTitle
+      }
+    }
+    ministryHubFellowshipSearch(
+      searchKey: $searchKey
+      ministryId: $ministryId
+    ) {
+      id
+      name
+      leader {
+        id
+        firstName
+        lastName
+        nameWithTitle
+      }
+    }
+
+    ministryMemberSearch(searchKey: $searchKey, ministryId: $ministryId) {
+      id
+      firstName
+      lastName
+      nameWithTitle
+      pictureUrl
+      stream_name
+      fellowship {
+        id
+        name
+      }
+      ministry {
+        id
+        name
+      }
+    }
+  }
+`
+
+export const HUB_SEARCH = gql`
+  query hubSearch($searchKey: String!, $hubId: ID!) {
+    hubHubFellowshipSearch(searchKey: $searchKey, hubId: $hubId) {
+      id
+      name
+      leader {
+        id
+        firstName
+        lastName
+        nameWithTitle
+      }
+    }
+
+    hubMemberSearch(searchKey: $searchKey, hubId: $hubId) {
       id
       firstName
       lastName
