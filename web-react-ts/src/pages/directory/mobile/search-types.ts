@@ -23,11 +23,7 @@ export type CampusSearchResult = {
 
 export type CreativeArtsSearchResult = {
   creativeArtsMemberSearch: MemberWithoutBioData[]
-  creativeArtsStreamSearch: Stream[]
-  creativeArtsCouncilSearch: Church[]
-  creativeArtsConstituencySearch: Church[]
-  creativeArtsBacentaSearch: Church[]
-  creativeArtsFellowshipSearch: Church[]
+  creativeArtsHubFellowshipSearch: Church[]
   creativeArtsMinistrySearch: Church[]
   creativeArtsHubSearch: Church[]
 }
@@ -44,10 +40,7 @@ export type StreamSearchResult = {
 
 export type MinistrySearchResult = {
   ministryMemberSearch: MemberWithoutBioData[]
-  ministryCouncilSearch: Church[]
-  ministryConstituencySearch: Church[]
-  ministryBacentaSearch: Church[]
-  ministryFellowshipSearch: Church[]
+  ministryHubFellowshipSearch: Church[]
   ministryMinistrySearch: Church[]
   ministryHubSearch: Church[]
 }
@@ -64,8 +57,7 @@ export type HubSearchResult = {
   hubMemberSearch: MemberWithoutBioData[]
   hubConstituencySearch: Church[]
   hubBacentaSearch: Church[]
-  hubFellowshipSearch: Church[]
-  hubHubSearch: Church[]
+  hubHubFellowshipSearch: Church[]
 }
 
 export type ConstituencySearchResult = {

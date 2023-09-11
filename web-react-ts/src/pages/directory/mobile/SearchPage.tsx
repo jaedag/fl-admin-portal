@@ -105,20 +105,6 @@ const SearchPageMobile = () => {
         return
       },
     })
-  const [hubSearch, { loading: hubLoading, error: hubError }] = useLazyQuery(
-    HUB_SEARCH,
-    {
-      onCompleted: (data: HubSearchResult) => {
-        setCombinedData([
-          ...data.hubMemberSearch,
-          ...data.hubConstituencySearch,
-          ...data.hubBacentaSearch,
-          ...data.hubFellowshipSearch,
-        ])
-        return
-      },
-    }
-  )
 
   const [
     constituencySearch,
@@ -162,13 +148,9 @@ const SearchPageMobile = () => {
     onCompleted: (data: CreativeArtsSearchResult) => {
       setCombinedData([
         ...data.creativeArtsMemberSearch,
-        ...data.creativeArtsStreamSearch,
-        ...data.creativeArtsCouncilSearch,
-        ...data.creativeArtsConstituencySearch,
-        ...data.creativeArtsBacentaSearch,
-        ...data.creativeArtsFellowshipSearch,
         ...data.creativeArtsMinistrySearch,
         ...data.creativeArtsHubSearch,
+        ...data.creativeArtsHubFellowshipSearch,
       ])
       return
     },
@@ -179,15 +161,24 @@ const SearchPageMobile = () => {
       onCompleted: (data: MinistrySearchResult) => {
         setCombinedData([
           ...data.ministryMemberSearch,
-          ...data.ministryCouncilSearch,
-          ...data.ministryConstituencySearch,
-          ...data.ministryBacentaSearch,
-          ...data.ministryFellowshipSearch,
           ...data.ministryHubSearch,
+          ...data.ministryHubFellowshipSearch,
         ])
         return
       },
     })
+  const [hubSearch, { loading: hubLoading, error: hubError }] = useLazyQuery(
+    HUB_SEARCH,
+    {
+      onCompleted: (data: HubSearchResult) => {
+        setCombinedData([
+          ...data.hubMemberSearch,
+          ...data.hubHubFellowshipSearch,
+        ])
+        return
+      },
+    }
+  )
 
   const error =
     oversightError ||
@@ -300,6 +291,10 @@ const SearchPageMobile = () => {
     streamSearch,
     campusSearch,
     fellowshipSearch,
+    oversightSearch,
+    creativeArtsSearch,
+    ministrySearch,
+    hubSearch,
   ])
 
   return (

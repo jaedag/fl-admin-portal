@@ -580,7 +580,7 @@ extend type Query {
       """
     )
   hubMemberSearch(searchKey: String!, hubId: ID!): [Member!]!
-    @auth(rules: [{ roles: ["leaderHub", "adminHub"] }])
+    @auth(rules: [{ roles: ["leaderHub"] }])
     @cypher(
       statement: """
       MATCH (hub:Hub {id: $hubId})-[:HAS]->(:HubFellowship)<-[:BELONGS_TO]-(member:Active:Member)
@@ -699,6 +699,29 @@ extend type Query {
     @cypher(
       statement: """
       MATCH (creativeArts:CreativeArts {id: $creativeArtsId})-[:HAS]->(ministry:Ministry)-[:HAS]->(hub:Hub)-[:HAS]->(hubFellowship:HubFellowship)
+      WHERE toLower(hubFellowship.name) STARTS WITH toLower($searchKey)
+      OR toLower(hubFellowship.name) CONTAINS toLower($searchKey)
+      RETURN DISTINCT hubFellowship LIMIT 5
+      """
+    )
+  ministryHubFellowshipSearch(
+    searchKey: String!
+    ministryId: ID!
+  ): [HubFellowship!]!
+    @auth(rules: [{ roles: ["leaderMinistry", "adminMinistry"] }])
+    @cypher(
+      statement: """
+      MATCH (ministry:Ministry {id: $ministryId})-[:HAS]->(hub:Hub)-[:HAS]->(hubFellowship:HubFellowship)
+      WHERE toLower(hubFellowship.name) STARTS WITH toLower($searchKey)
+      OR toLower(hubFellowship.name) CONTAINS toLower($searchKey)
+      RETURN DISTINCT hubFellowship LIMIT 5
+      """
+    )
+  hubHubFellowshipSearch(searchKey: String!, hubId: ID!): [HubFellowship!]!
+    @auth(rules: [{ roles: ["leaderHub"] }])
+    @cypher(
+      statement: """
+      MATCH (hub:Hub {id: $hubId})-[:HAS]->(hubFellowship:HubFellowship)
       WHERE toLower(hubFellowship.name) STARTS WITH toLower($searchKey)
       OR toLower(hubFellowship.name) CONTAINS toLower($searchKey)
       RETURN DISTINCT hubFellowship LIMIT 5
