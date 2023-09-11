@@ -20,8 +20,7 @@ const ArrivalsDateSubmitBtn = (props: SubmitButtonProps) => {
     >
       {formik.isSubmitting ? (
         <>
-          <DotLoader size="sm" />
-          <span> Submitting</span>
+          <DotLoader size={23} />
         </>
       ) : (
         <AiOutlineSend size={23} />

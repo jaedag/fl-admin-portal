@@ -1,11 +1,11 @@
-import { useLazyQuery, useMutation, useQuery } from '@apollo/client'
+import { useMutation, useQuery } from '@apollo/client'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import MenuButton from 'components/buttons/MenuButton'
 import SubmitButton from 'components/formik/SubmitButton'
 import Popup from 'components/Popup/Popup'
 import { Form, Formik, FormikHelpers } from 'formik'
 import * as Yup from 'yup'
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useContext } from 'react'
 import { Col, Container, Row } from 'react-bootstrap'
 import { CONSTITUENCY_ARRIVALS_DASHBOARD } from '../arrivalsQueries'
@@ -16,7 +16,6 @@ import { SHORT_POLL_INTERVAL, throwToSentry } from 'global-utils'
 import { MAKE_CONSTITUENCYARRIVALS_ADMIN } from '../arrivalsMutation'
 import { permitAdmin, permitArrivals } from 'permission-utils'
 import HeadingSecondary from 'components/HeadingSecondary'
-import { MemberContext } from 'contexts/MemberContext'
 import usePopup from 'hooks/usePopup'
 import SearchMember from 'components/formik/SearchMember'
 import { beforeStreamArrivalsDeadline } from '../arrivals-utils'
@@ -38,38 +37,27 @@ type DateFormOptions = {
 
 const ConstituencyDashboard = () => {
   const { isOpen, togglePopup } = usePopup()
-  const { currentUser } = useContext(MemberContext)
   const navigate = useNavigate()
-  const { arrivalDate, setArrivalDate } = useContext(ChurchContext)
+  const { arrivalDate, setArrivalDate, constituencyId } =
+    useContext(ChurchContext)
   const today = new Date().toISOString().slice(0, 10)
-  const { data, loading, error } = useQuery(CONSTITUENCY_ARRIVALS_DASHBOARD, {
-    variables: { id: currentUser?.currentChurch?.id, arrivalDate: today },
-  })
-
-  useEffect(() => {
-    if (!currentUser?.currentChurch?.id) {
-      navigate('/arrivals')
-    }
-  }, [])
-
-  const [
-    constituencyArrivalsDashboard,
+  const { data, loading, error, refetch } = useQuery(
+    CONSTITUENCY_ARRIVALS_DASHBOARD,
     {
-      data: dashboardData,
-      loading: dashboardLoading,
-      error: dashboardError,
-      refetch,
-    },
-  ] = useLazyQuery(CONSTITUENCY_ARRIVALS_DASHBOARD, {
-    variables: { id: currentUser?.currentChurch?.id, arrivalDate: today },
-    pollInterval: SHORT_POLL_INTERVAL,
-    fetchPolicy: 'cache-and-network',
-  })
+      variables: {
+        id: constituencyId,
+        date: today,
+        arrivalDate: arrivalDate || today,
+      },
+      pollInterval: SHORT_POLL_INTERVAL,
+      fetchPolicy: 'cache-and-network',
+    }
+  )
 
   const [MakeConstituencyArrivalsAdmin] = useMutation(
     MAKE_CONSTITUENCYARRIVALS_ADMIN
   )
-  const constituency = dashboardData?.constituencies[0]
+  const constituency = data?.constituencies[0]
 
   const initialValues: AdminFormOptions = {
     adminName: constituency?.arrivalsAdmin
@@ -91,7 +79,7 @@ const ConstituencyDashboard = () => {
 
     MakeConstituencyArrivalsAdmin({
       variables: {
-        constituencyId: currentUser?.currentChurch?.id,
+        constituencyId,
         newAdminId: values.adminSelect,
         oldAdminId: initialValues.adminSelect || 'no-old-admin',
       },
@@ -108,15 +96,6 @@ const ConstituencyDashboard = () => {
     { title: 'Change Arrivals Admin', onClick: togglePopup },
   ]
 
-  useEffect(() => {
-    constituencyArrivalsDashboard({
-      variables: {
-        id: currentUser?.currentChurch?.id,
-        arrivalDate: arrivalDate,
-      },
-    })
-  }, [])
-
   const dateValidationSchema = Yup.object({
     date: Yup.date().notRequired(),
   })
@@ -131,12 +110,6 @@ const ConstituencyDashboard = () => {
   ) => {
     onSubmitProps.setSubmitting(true)
 
-    constituencyArrivalsDashboard({
-      variables: {
-        id: currentUser?.currentChurch?.id,
-        arrivalDate: values.arrivalDate,
-      },
-    })
     setArrivalDate(values.arrivalDate)
     onSubmitProps.setSubmitting(false)
   }
@@ -222,11 +195,7 @@ const ConstituencyDashboard = () => {
             {!beforeStreamArrivalsDeadline(constituency?.council.stream) && (
               <ErrorText>Arrival Deadline is up! Thank you very much</ErrorText>
             )}
-            <ApolloWrapper
-              loading={dashboardLoading}
-              data={dashboardData}
-              error={dashboardError}
-            >
+            <ApolloWrapper loading={loading} data={data} error={error}>
               <>
                 <MenuButton
                   title="Bacentas With No Activity"

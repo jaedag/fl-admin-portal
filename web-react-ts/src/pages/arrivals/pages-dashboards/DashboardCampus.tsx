@@ -49,9 +49,10 @@ const CampusDashboard = () => {
       variables: {
         id: campusId,
         date: today,
-        arrivalDate: today,
+        arrivalDate: arrivalDate || today,
       },
       pollInterval: SHORT_POLL_INTERVAL,
+      fetchPolicy: 'cache-and-network',
     }
   )
 
@@ -147,7 +148,6 @@ const CampusDashboard = () => {
     onSubmitProps: FormikHelpers<DateFormOptions>
   ) => {
     onSubmitProps.setSubmitting(true)
-
     setArrivalDate(values.arrivalDate)
     onSubmitProps.setSubmitting(false)
   }

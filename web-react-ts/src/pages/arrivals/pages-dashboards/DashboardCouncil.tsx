@@ -51,7 +51,8 @@ const CouncilDashboard = () => {
     COUNCIL_ARRIVALS_DASHBOARD,
     {
       pollInterval: SHORT_POLL_INTERVAL,
-      variables: { id: councilId, arrivalDate: today },
+      variables: { id: councilId, arrivalDate: arrivalDate || today },
+      fetchPolicy: 'cache-and-network',
     }
   )
 
