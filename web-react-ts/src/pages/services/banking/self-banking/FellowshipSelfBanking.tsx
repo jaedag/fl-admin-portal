@@ -2,13 +2,13 @@ import { useQuery } from '@apollo/client'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { useContext, useState } from 'react'
 import { FELLOWSHIP_BANKING_SLIP_QUERIES } from '../../ServicesQueries'
-import usePopup from 'hooks/usePopup'
 import { ConfirmPaymentServiceType } from './components/button/ConfirmPayment'
 import SelfBankingList from './components/SelfBankingList'
+import useModal from 'hooks/useModal'
 
 const FellowshipSelfBanking = () => {
   const { fellowshipId } = useContext(ChurchContext)
-  const { isOpen, togglePopup } = usePopup()
+  const { show, handleShow, handleClose } = useModal()
   const [skip, setSkip] = useState<number>(0)
   const [confirmService, setConfirmService] =
     useState<ConfirmPaymentServiceType>(null)
@@ -28,7 +28,7 @@ const FellowshipSelfBanking = () => {
         })
 
         if (service?.transactionStatus === 'pending') {
-          togglePopup()
+          handleShow()
         }
       },
     }
@@ -45,7 +45,7 @@ const FellowshipSelfBanking = () => {
         confirmService: confirmService,
         setConfirmService: setConfirmService,
       }}
-      popupTools={{ isOpen: isOpen, togglePopup: togglePopup }}
+      popupTools={{ show, handleClose, handleShow }}
       skip={skip}
       setSkip={setSkip}
     />

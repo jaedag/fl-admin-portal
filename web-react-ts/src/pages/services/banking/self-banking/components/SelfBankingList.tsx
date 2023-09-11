@@ -2,14 +2,13 @@ import { ApolloError, ApolloQueryResult } from '@apollo/client'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import HeadingSecondary from 'components/HeadingSecondary'
 import PlaceholderCustom from 'components/Placeholder'
-import Popup from 'components/Popup/Popup'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { ServiceRecord } from 'global-types'
 import { capitalise, throwToSentry } from 'global-utils'
 import { parseDate } from 'jd-date-utils'
 import NoDataComponent from 'pages/arrivals/CompNoData'
 import { useContext } from 'react'
-import { Button, ButtonGroup, Card, Col, Row } from 'react-bootstrap'
+import { Button, ButtonGroup, Card, Col, Modal, Row } from 'react-bootstrap'
 import { useNavigate } from 'react-router'
 import ConfirmPaymentButton, {
   ConfirmPaymentServiceType,
@@ -45,12 +44,13 @@ const SelfBankingList = ({
     setConfirmService: (service: ConfirmPaymentServiceType) => void
   }
   popupTools: {
-    isOpen: boolean
-    togglePopup: () => void
+    show: boolean
+    handleShow: () => void
+    handleClose: () => void
   }
 }) => {
   const { clickCard } = useContext(ChurchContext)
-  const { isOpen, togglePopup } = popupTools
+  const { show, handleShow, handleClose } = popupTools
   const { confirmService, setConfirmService } = confirmationTools
   const navigate = useNavigate()
   const placeholder = ['', '', '']
@@ -76,21 +76,24 @@ const SelfBankingList = ({
         Please click to bank any of these services
       </HeadingSecondary>
 
-      {isOpen && (
-        <Popup handleClose={togglePopup}>
+      <Modal show={show} onHide={handleClose} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Confirm Payment</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
           <div>
             Your transaction status is pending please press this button to
             confirm the status
           </div>
-          <div className="d-grid gap-2">
+          <div className="text-center">
             <ConfirmPaymentButton
               service={confirmService}
               refetch={refetch}
-              togglePopup={togglePopup}
+              handleClose={handleClose}
             />
           </div>
-        </Popup>
-      )}
+        </Modal.Body>
+      </Modal>
 
       <ButtonGroup className="mb-3">
         <Button
@@ -135,7 +138,7 @@ const SelfBankingList = ({
                 id: service.id,
               })
               if (service.transactionStatus === 'pending') {
-                togglePopup()
+                handleShow()
                 return
               }
 

@@ -1,13 +1,14 @@
 import { ApolloQueryResult, useMutation } from '@apollo/client'
 import { ChurchContext } from 'contexts/ChurchContext'
-import { alertMsg, throwToSentry } from 'global-utils'
+import { alertMsg } from 'global-utils'
 import { useContext, useState } from 'react'
-import { Button, Spinner } from 'react-bootstrap'
+import { Button } from 'react-bootstrap'
 import { useLocation, useNavigate } from 'react-router'
 import {
   CONFIRM_OFFERING_PAYMENT,
   SELF_BANKING_RECEIPT,
 } from '../../bankingQueries'
+import { DotLoader } from 'react-spinners'
 
 export type ConfirmPaymentServiceType = {
   id: string
@@ -28,11 +29,11 @@ type ButtonConfirmPaymentProps = {
   ) => Promise<ApolloQueryResult<any>>
   service: ConfirmPaymentServiceType
   disabled?: boolean
-  togglePopup?: () => void
+  handleClose?: () => void
 }
 
 const ButtonConfirmPayment = (props: ButtonConfirmPaymentProps) => {
-  const { refetch, service, togglePopup, ...rest } = props
+  const { refetch, service, handleClose, ...rest } = props
   const [sending, setSending] = useState(false)
   const navigate = useNavigate()
   const { fellowshipId, constituencyId, councilId, clickCard } =
@@ -42,9 +43,8 @@ const ButtonConfirmPayment = (props: ButtonConfirmPaymentProps) => {
 
   return (
     <Button
-      variant="secondary"
-      size="lg"
-      className="p-3 mt-5"
+      variant="warning"
+      className="mt-3"
       {...rest}
       onClick={async () => {
         setSending(true)
@@ -144,10 +144,10 @@ const ButtonConfirmPayment = (props: ButtonConfirmPaymentProps) => {
           }
         } catch (error: any) {
           navigate('/services/fellowship/self-banking')
-          throwToSentry(error)
+          alert('Something went wrong 😞' + JSON.stringify(error))
         } finally {
-          if (togglePopup) {
-            togglePopup()
+          if (handleClose) {
+            handleClose()
           }
           if (location.pathname === '/self-banking/confirm-payment') {
             navigate(-3)
@@ -156,7 +156,7 @@ const ButtonConfirmPayment = (props: ButtonConfirmPaymentProps) => {
         }
       }}
     >
-      Confirm Transaction {sending && <Spinner animation="grow" size="sm" />}
+      {sending && <DotLoader size={23} />} Confirm Transaction
     </Button>
   )
 }
