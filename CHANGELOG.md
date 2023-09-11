@@ -1,3 +1,9 @@
+#### 7.9.7 (2023-09-11)
+
+##### Bug Fixes
+
+*  log some vars to the console ([be387b72](https://github.com/firstlovecenter/fl-pastoral-care/commit/be387b72cb414762a56e35a8cbec89c1442c2d47))
+
 #### 7.9.6 (2023-09-11)
 
 ##### Bug Fixes
