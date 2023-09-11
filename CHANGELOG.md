@@ -1,3 +1,9 @@
+#### 7.9.5 (2023-09-11)
+
+##### Bug Fixes
+
+*  update styling of popup box ([c03f09e1](https://github.com/firstlovecenter/fl-pastoral-care/commit/c03f09e179f76623375c5af6546164c30ba11b29))
+
 #### 7.9.4 (2023-09-11)
 
 ##### Bug Fixes
