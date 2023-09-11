@@ -1,4 +1,4 @@
-import { useLazyQuery } from '@apollo/client'
+import { useQuery } from '@apollo/client'
 import { useAuth0 } from '@auth0/auth0-react'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import InitialLoading from 'components/base-component/InitialLoading'
@@ -20,24 +20,28 @@ const SetPermissions = ({
   children: JSX.Element
 }) => {
   const { currentUser, setUserJobs, setCurrentUser } = useContext(MemberContext)
-  console.log('🚀 ~ file: SetPermissions.tsx:23 ~ currentUser:', currentUser)
   const { doNotUse } = useContext(ChurchContext)
 
   const { isAuthenticated, user } = useAuth0()
   const { isAuthorised } = useAuth()
 
-  const [servantChurchList, { data, loading, error }] = useLazyQuery(
-    SERVANT_CHURCH_LIST,
-    {
-      onCompleted: (data) => {
-        const servant = { ...data?.members[0], ...currentUser }
-        setUserJobs(getUserServantRoles(servant))
-      },
-    }
-  )
-  const [getLoggedInUser] = useLazyQuery(GET_LOGGED_IN_USER, {
+  const { data, loading, error } = useQuery(SERVANT_CHURCH_LIST, {
+    variables: { id: currentUser.id },
+    skip: !currentUser.id,
     onCompleted: (data) => {
-      console.log('🚀 ~ file: SetPermissions.tsx:39 ~ data:', data)
+      const servant = { ...data?.members[0], ...currentUser }
+      setUserJobs(getUserServantRoles(servant))
+    },
+  })
+
+  const {
+    data: loggedInData,
+    loading: loggedInLoading,
+    error: loggedInError,
+  } = useQuery(GET_LOGGED_IN_USER, {
+    variables: { email: user?.email },
+    skip: !user?.email,
+    onCompleted: (data) => {
       const doNotUse = data.memberByEmail.stream_name
 
       setCurrentUser({
@@ -79,20 +83,9 @@ const SetPermissions = ({
         creativeArts:
           data.memberByEmail?.fellowship?.hub?.ministry?.creativeArts.id,
       })
-      sessionStorage.setItem('currentUser', JSON.stringify(currentUser))
+      sessionStorage.setItem('currentUser', JSON.stringify({ ...currentUser }))
     },
   })
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      await Promise.all([
-        servantChurchList({ variables: { id: currentUser.id } }),
-        getLoggedInUser({ variables: { email: user?.email } }),
-      ])
-    }
-
-    fetchUser()
-  }, [servantChurchList, getLoggedInUser, user?.email, currentUser?.id])
 
   useEffect(() => {
     doNotUse.setDenominationId(currentUser.denomination)
@@ -134,7 +127,11 @@ const SetPermissions = ({
   }
 
   return (
-    <ApolloWrapper data={data} loading={!loading} error={error}>
+    <ApolloWrapper
+      data={data || loggedInData}
+      loading={loading || loggedInLoading}
+      error={error || loggedInError}
+    >
       {children}
     </ApolloWrapper>
   )
