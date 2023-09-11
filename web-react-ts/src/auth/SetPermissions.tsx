@@ -20,6 +20,7 @@ const SetPermissions = ({
   children: JSX.Element
 }) => {
   const { currentUser, setUserJobs, setCurrentUser } = useContext(MemberContext)
+
   const { doNotUse } = useContext(ChurchContext)
 
   const { isAuthenticated, user } = useAuth0()
@@ -42,6 +43,7 @@ const SetPermissions = ({
     variables: { email: user?.email },
     skip: !user?.email,
     onCompleted: (data) => {
+      console.log('🚀 ~ file: SetPermissions.tsx:46 ~ data:', data)
       const doNotUse = data.memberByEmail.stream_name
 
       setCurrentUser({
@@ -83,6 +85,7 @@ const SetPermissions = ({
         creativeArts:
           data.memberByEmail?.fellowship?.hub?.ministry?.creativeArts.id,
       })
+
       sessionStorage.setItem('currentUser', JSON.stringify({ ...currentUser }))
     },
   })
