@@ -1,3 +1,9 @@
+#### 7.9.8 (2023-09-11)
+
+##### Bug Fixes
+
+*   refactor setPermissions to use useQuery instead of useLazyQuery ([ae113331](https://github.com/firstlovecenter/fl-pastoral-care/commit/ae11333110a21af32312fb1bad22e29bc2d5d210))
+
 #### 7.9.7 (2023-09-11)
 
 ##### Bug Fixes
