@@ -1,3 +1,9 @@
+#### 7.9.6 (2023-09-11)
+
+##### Bug Fixes
+
+*  fix bug in setPermissions ([741e2445](https://github.com/firstlovecenter/fl-pastoral-care/commit/741e244553f3804f7034daf9c2b7892f6f2ec293))
+
 #### 7.9.5 (2023-09-11)
 
 ##### Bug Fixes
