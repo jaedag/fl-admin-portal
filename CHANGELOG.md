@@ -1,3 +1,9 @@
+#### 7.9.11 (2023-09-12)
+
+##### Bug Fixes
+
+*  bring back alert for throwToSentry ([c46502ff](https://github.com/firstlovecenter/fl-pastoral-care/commit/c46502ffecefe7448367fcd63672214c1ff2a910))
+
 #### 7.9.10 (2023-09-11)
 
 ##### Bug Fixes
