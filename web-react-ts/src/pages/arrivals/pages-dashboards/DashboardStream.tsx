@@ -46,7 +46,7 @@ const StreamDashboard = () => {
     STREAM_ARRIVALS_DASHBOARD,
     {
       pollInterval: SHORT_POLL_INTERVAL,
-      variables: { id: streamId, arrivalDate: today },
+      variables: { id: streamId, arrivalDate: arrivalDate || today },
     }
   )
 
