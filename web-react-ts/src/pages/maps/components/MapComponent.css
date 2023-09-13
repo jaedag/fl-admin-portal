@@ -10,6 +10,12 @@
   color: white;
 } */
 
+[data-bs-theme='dark'] .card {
+  --bs-card-color: var(--chakra-colors-white);
+  --bs-card-bg: var(--chakra-colors-gray-800);
+  --bs-card-border-color: var(--chakra-colors-whiteAlpha-50);
+}
+
 .map {
   margin-left: 0px;
   margin-right: 0px;
