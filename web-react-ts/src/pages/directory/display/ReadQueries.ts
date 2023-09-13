@@ -398,6 +398,8 @@ export const DISPLAY_COUNCIL = gql`
       constituencyCount
       activeBacentaCount
       activeFellowshipCount
+      hubCount
+      hubFellowshipCount
       memberCount
       pastorCount
       vacationBacentaCount
@@ -462,7 +464,9 @@ export const DISPLAY_STREAM = gql`
       vacationFellowshipCount
       activeIcBacentaCount
       vacationIcBacentaCount
+      ministryCount
       hubCount
+      hubFellowshipCount
       meetingDay {
         day
         dayNumber
@@ -489,10 +493,6 @@ export const DISPLAY_STREAM = gql`
         currentTitle
         nameWithTitle
         pictureUrl
-      }
-      ministries {
-        id
-        name
       }
       history(limit: 5) {
         id

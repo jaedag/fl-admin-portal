@@ -13,6 +13,7 @@ type DetailsCardPropsType = {
   onClick?: () => void
   bgNone?: boolean
   img?: string
+  creativearts?: boolean
   vacationCount?: string
   vacationIcBacentaCount?: string
 }
@@ -23,7 +24,10 @@ const DetailsCard = (props: DetailsCardPropsType) => {
     !props.heading || props.loading || !currentUser.id || !props.detail
 
   return (
-    <Card className="p-2 m-1" onClick={props.onClick}>
+    <Card
+      className={`p-2 m-1 ${props.creativearts && 'creativearts'}`}
+      onClick={props.onClick}
+    >
       <Row>
         <Col>
           <PlaceholderCustom loading={loading} as="span" xs={12}>

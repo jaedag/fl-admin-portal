@@ -13,9 +13,10 @@ import ApolloWrapper from 'components/base-component/ApolloWrapper'
 
 export type DetailsArray = {
   title: string
-  number: number
+  number: number | string
   link: string
   width?: number
+  creativearts?: boolean
   vacationCount?: number
   activeIcBacentaCount?: number
   vacationIcBacentaCount?: number

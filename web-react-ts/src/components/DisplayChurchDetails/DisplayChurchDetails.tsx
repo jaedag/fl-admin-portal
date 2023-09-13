@@ -37,17 +37,10 @@ import SearchMember from 'components/formik/SearchMember'
 import CloudinaryImage from 'components/CloudinaryImage'
 import useModal from 'hooks/useModal'
 import SubmitButton from 'components/formik/SubmitButton'
+import { DetailsArray } from 'pages/directory/display/DetailsFellowship'
 
 type DisplayChurchDetailsProps = {
-  details: {
-    title: string
-    number: number | string
-    link: string
-    width?: number
-    vacationCount?: number
-    activeIcBacentaCount?: number
-    vacationIcBacentaCount?: number
-  }[]
+  details: DetailsArray
   loading: boolean
   church?: BacentaWithArrivals
   name: string
@@ -339,6 +332,7 @@ const DisplayChurchDetails = (props: DisplayChurchDetailsProps) => {
                 <DetailsCard
                   onClick={() => navigate(detail.link)}
                   heading={detail.title}
+                  creativearts={detail?.creativearts}
                   detail={
                     !props.loading ? detail?.number?.toString() || '0' : ''
                   }

@@ -53,6 +53,18 @@ const DetailsCouncil = () => {
       vacationCount: council?.vacationFellowshipCount,
       link: '#',
     },
+    {
+      title: 'Hubs',
+      number: council?.hubCount,
+      link: `/council/hubs`,
+      creativearts: true,
+    },
+    {
+      title: 'Hub Fellowships',
+      number: council?.hubFellowshipCount,
+      link: `#`,
+      creativearts: true,
+    },
   ]
 
   return (

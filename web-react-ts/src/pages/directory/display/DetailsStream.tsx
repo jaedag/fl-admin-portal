@@ -64,18 +64,21 @@ const DetailsStream = () => {
     },
     {
       title: 'Ministries',
-      number: stream?.ministries?.length || 0,
+      number: stream?.ministryCount,
       link: `/stream/ministries`,
+      creativearts: true,
     },
     {
       title: 'Hubs',
       number: stream?.hubCount || 0,
       link: `/stream/hubs`,
+      creativearts: true,
     },
     {
-      title: 'Sontas',
-      number: stream?.sontaCount || 0,
-      link: '/stream/sontas',
+      title: 'Hub Fellowships',
+      number: stream?.hubFellowshipCount || 0,
+      link: `#`,
+      creativearts: true,
     },
   ]
 
