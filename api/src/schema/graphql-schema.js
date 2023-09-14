@@ -91,6 +91,10 @@ const maps = fs
   .readFileSync(path.join(__dirname, './maps.graphql'))
   .toString('utf-8')
 
+const accounts = fs
+  .readFileSync(path.join(__dirname, './accounts.graphql'))
+  .toString('utf-8')
+
 const array = [
   schema,
   directory,
@@ -113,6 +117,7 @@ const array = [
   shepherdingControlCampaign,
   creativeartsChurches,
   maps,
+  accounts,
 ]
 
 exports.typeDefs = array.join(' ')

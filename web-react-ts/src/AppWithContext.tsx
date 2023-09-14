@@ -28,6 +28,7 @@ import LoadingScreen from 'components/base-component/LoadingScreen'
 import * as Sentry from '@sentry/react'
 import { maps } from 'pages/maps/mapsRoutes'
 import PageContainer from 'components/base-component/PageContainer'
+import { accountsRoutes } from 'pages/accounts/accountsRoutes'
 
 type AppPropsType = {
   token: string
@@ -180,6 +181,7 @@ const AppWithContext = (props: AppPropsType) => {
                           ...reconciliation,
                           ...graphs,
                           ...maps,
+                          ...accountsRoutes,
                         ].map((route, i) => (
                           <Route
                             key={i}

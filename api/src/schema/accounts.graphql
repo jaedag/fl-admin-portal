@@ -1,0 +1,4 @@
+extend type Council {
+  currentBalance: Float
+  bussingPurseBalance: Float
+}

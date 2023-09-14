@@ -19,6 +19,7 @@ const ChurchList = ({
     | 'quick-facts'
     | 'churches'
     | 'maps'
+    | 'accounts'
   link?: string
   includeVacation?: boolean
 }) => {
@@ -61,6 +62,12 @@ const ChurchList = ({
                 }
               }
 
+              if (color === 'accounts') {
+                if (!['Council', 'Campus'].includes(church.__typename)) {
+                  return null
+                }
+              }
+
               return (
                 <MenuButton
                   key={church.id}
@@ -87,6 +94,8 @@ const ChurchList = ({
                       navigate(`/campaigns/${church.__typename.toLowerCase()}`)
                     } else if (color === 'maps') {
                       navigate(`/maps/${church.__typename.toLowerCase()}`)
+                    } else if (color === 'accounts') {
+                      navigate('/accounts/dashboard')
                     } else {
                       navigate(link || '#')
                     }
