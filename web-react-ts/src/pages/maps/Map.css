@@ -22,7 +22,16 @@
 .offcanvas {
   height: 80vh !important;
 }
-
+.container {
+  --bs-gutter-x: 0px;
+  --bs-gutter-y: 0px;
+  width: 100%;
+  padding-right: 0px;
+  padding-left: 0px;
+  margin-right: auto;
+  margin-left: auto;
+  max-width: 100%;
+}
 .floating-action {
   position: absolute;
   bottom: 4rem;
