@@ -20,6 +20,7 @@ import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { DefaultersUseChurchType } from './defaulters-types'
 import { ChurchLevel } from 'global-types'
 import PullToRefresh from 'react-simple-pull-to-refresh'
+import { HUB_DEFAULTERS } from './DefaultersSontaQueries'
 
 const DefaultersDashboard = () => {
   const { currentUser } = useContext(MemberContext)
@@ -31,6 +32,7 @@ const DefaultersDashboard = () => {
     useLazyQuery(STREAM_DEFAULTERS)
   const [campusDefaulters, { refetch: campusRefetch }] =
     useLazyQuery(CAMPUS_DEFAULTERS)
+  const [hubDefaulters, { refetch: hubRefetch }] = useLazyQuery(HUB_DEFAULTERS)
 
   let subChurch: ChurchLevel | string = ''
 
@@ -43,6 +45,8 @@ const DefaultersDashboard = () => {
     streamRefetch,
     campusFunction: campusDefaulters,
     campusRefetch,
+    hubFunction: hubDefaulters,
+    hubRefetch,
   })
 
   const { church, loading, error, refetch } = data

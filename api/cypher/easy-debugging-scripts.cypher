@@ -42,3 +42,18 @@ MATCH (m:Member {email: "jaedagy@gmail.com"})
 MATCH (f:Fellowship) WHERE f.name CONTAINS  "Hub"
 MERGE (m)-[:BELONGS_TO]->(f)
 RETURN m.firstName, f.name, f.id
+
+
+// If Sunday Bussing is blocking
+MATCH (stream:Stream {name: "Anagkazo Encounter"})-[:HAS*3]->(bacenta:Bacenta)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(record:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph {date: date("2023-09-10")})
+
+MATCH (bacenta)-[:HAS]->(fellowship)<-[:BELONGS_TO]-(members:Member)
+MERGE (record)<-[:PRESENT_AT_SERVICE]-(members)
+MERGE (record)<-[:ABSENT_FROM_SERVICE]-(members)
+SET record.markedAttendance = true
+RETURN fellowship.name, record.attendance, COUNT(members);
+
+MATCH (hub:Hub)
+MATCH (m:Member {email: "jaedagy@gmail.com"})
+MERGE (m)-[:LEADS]->(hub)
+RETURN m, hub

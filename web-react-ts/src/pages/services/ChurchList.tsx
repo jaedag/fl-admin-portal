@@ -53,9 +53,15 @@ const ChurchList = ({
               }
               if (color === 'defaulters') {
                 if (
-                  !['Constituency', 'Council', 'Stream', 'Campus'].includes(
-                    church.__typename
-                  )
+                  ![
+                    'Constituency',
+                    'Council',
+                    'Stream',
+                    'Campus',
+                    'CreativeArts',
+                    'Ministry',
+                    'Hub',
+                  ].includes(church.__typename)
                 ) {
                   return null
                 }

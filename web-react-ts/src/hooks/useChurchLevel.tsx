@@ -19,6 +19,9 @@ type useChurchLevelProps = {
   streamRefetch: () => Promise<ApolloQueryResult<any>>
   campusFunction: LazyQueryExecFunction<any, OperationVariables>
   campusRefetch: () => Promise<ApolloQueryResult<any>>
+
+  hubFunction?: LazyQueryExecFunction<any, OperationVariables>
+  hubRefetch: () => Promise<ApolloQueryResult<any>>
 }
 
 const useChurchLevel = (props: useChurchLevelProps) => {
@@ -38,6 +41,8 @@ const useChurchLevel = (props: useChurchLevelProps) => {
 
   const chooseRefetch = () => {
     switch (churchLevel) {
+      case 'Hub':
+        return props.hubRefetch
       case 'Constituency':
         return props.constituencyRefetch || props.councilRefetch
       case 'Council':
@@ -53,6 +58,22 @@ const useChurchLevel = (props: useChurchLevelProps) => {
   useEffect(() => {
     const whichQuery = async () => {
       switch (churchLevel) {
+        case 'Hub':
+          {
+            if (!props.hubFunction) break
+
+            const res = await props.hubFunction({
+              variables: {
+                id: currentChurch?.id,
+                arrivalDate: arrivalDate,
+              },
+            })
+
+            setChurch(res?.data?.hubs[0])
+            setLoading(res.loading)
+            setError(res.error)
+          }
+          break
         case 'Constituency':
           {
             if (!props.constituencyFunction) break
