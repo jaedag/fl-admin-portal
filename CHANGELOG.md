@@ -1,3 +1,14 @@
+#### 7.9.12 (2023-09-14)
+
+##### New Features
+
+*  implement flows to creative arts at all church levels ([4286fcb0](https://github.com/firstlovecenter/fl-pastoral-care/commit/4286fcb0fc8e97e72c6602b4f971136813854e3c))
+
+##### Bug Fixes
+
+*  update stylinng  of map ([29dd0847](https://github.com/firstlovecenter/fl-pastoral-care/commit/29dd0847bc3938c18d0d89a27d52b24bcdbcae2d))
+*  bug with infowindow on map colouring ([c9f13593](https://github.com/firstlovecenter/fl-pastoral-care/commit/c9f135934d73ef10762dc98b816f69ecdd5703e6))
+
 #### 7.9.11 (2023-09-12)
 
 ##### Bug Fixes
