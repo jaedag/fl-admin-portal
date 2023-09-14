@@ -6,7 +6,7 @@ import { Container } from 'react-bootstrap'
 import { PencilSquare } from 'react-bootstrap-icons'
 import { useNavigate } from 'react-router'
 
-const SontaFormMenu = () => {
+const HubFormMenu = () => {
   const { currentUser, theme } = useContext(MemberContext)
   const navigate = useNavigate()
 
@@ -16,7 +16,7 @@ const SontaFormMenu = () => {
         <PlaceholderCustom xs={12} as="h1">
           <div className="text-center">
             <h1 className="mb-0  page-header">{`${currentUser.currentChurch?.name} ${currentUser.currentChurch?.__typename}`}</h1>
-            <p className={`${theme} menu-subheading`}>Sonta</p>
+            <p className={`${theme} menu-subheading`}>Hub</p>
           </div>
         </PlaceholderCustom>
 
@@ -25,14 +25,14 @@ const SontaFormMenu = () => {
             iconComponent={PencilSquare}
             title="Fill Rehearsals Form"
             color="members"
-            onClick={() => navigate(`/sonta/record-rehearsal`)}
+            onClick={() => navigate(`/hub/record-rehearsal`)}
             noCaption
           />
           <MenuButton
             iconComponent={PencilSquare}
             title="Fill Sunday Meeting Form"
             color="members"
-            onClick={() => navigate(`/sonta/record-sundayservice`)}
+            onClick={() => navigate(`/hub/record-sundayservice`)}
             noCaption
           />
         </div>
@@ -41,4 +41,4 @@ const SontaFormMenu = () => {
   )
 }
 
-export default SontaFormMenu
+export default HubFormMenu

@@ -286,7 +286,7 @@ const DisplaySontaDetails = (props: DisplayChurchDetailsProps) => {
             </Button>
           </PlaceholderCustom>
 
-          {props.churchType === 'Sonta' && (
+          {props.churchType === 'Hub' && (
             <PlaceholderCustom
               loading={props.loading}
               className={`btn-sonta w-100`}
@@ -351,29 +351,6 @@ const DisplaySontaDetails = (props: DisplayChurchDetailsProps) => {
             </table>
           </div>
         </>
-      ) : null}
-
-      {props.subLevel && !props.buttons?.length ? (
-        <Container className="d-grid gap-2 mt-2">
-          <RoleView roles={props.editPermitted}>
-            <PlaceholderCustom
-              loading={props.loading}
-              className={`btn-sonta w-100`}
-              button="button"
-            >
-              <Button
-                className={`btn-sonta w-100`}
-                onClick={() =>
-                  navigate(
-                    `/${props.subLevel?.toLowerCase()}/add${props.subLevel?.toLowerCase()}`
-                  )
-                }
-              >
-                {`Add New ${props.subLevel}`}
-              </Button>
-            </PlaceholderCustom>
-          </RoleView>
-        </Container>
       ) : null}
 
       {props.history?.length && (

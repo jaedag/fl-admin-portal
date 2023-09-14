@@ -824,3 +824,40 @@ export const GET_CAMPUS_CREATIVEARTS = gql`
     }
   }
 `
+
+export const GET_COUNCIL_HUBS = gql`
+  query getCouncilHubs($id: ID!) {
+    councils(where: { id: $id }) {
+      id
+      name
+
+      leader {
+        id
+        firstName
+        lastName
+        fullName
+      }
+      memberCount
+      admin {
+        id
+        firstName
+        lastName
+        fullName
+        stream_name
+      }
+      hubs {
+        name
+        id
+        memberCount
+        hubFellowshipCount
+        leader {
+          id
+          firstName
+          lastName
+          stream_name
+          pictureUrl
+        }
+      }
+    }
+  }
+`

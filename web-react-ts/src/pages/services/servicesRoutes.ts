@@ -29,18 +29,18 @@ const FellowshipServiceCancelled = lazy(
 const FellowshipServiceDetails = lazy(
   () => import('pages/services/record-service/FellowshipServiceDetails')
 )
-const SontaRehearsalService = lazy(
+const HubRehearsalService = lazy(
   () => import('pages/services/record-service/HubFellowshipRehearsalService')
 )
-const SontaSundayMeeting = lazy(
+const HubSundayMeeting = lazy(
   () => import('pages/services/record-service/HubFellowshipSundayMeeting')
 )
-const SontaRehearsalServiceDetails = lazy(
-  () => import('pages/services/record-service/SontaRehearsalServiceDetails')
+const HubRehearsalServiceDetails = lazy(
+  () => import('pages/services/record-service/HubRehearsalServiceDetails')
 )
 
-const SontaSundayMeetingDetails = lazy(
-  () => import('pages/services/record-service/SontaSundayMeetingDetails')
+const HubSundayMeetingDetails = lazy(
+  () => import('pages/services/record-service/HubSundayMeetingDetails')
 )
 const BacentaReport = lazy(() => import('pages/services/graphs/BacentaGraphs'))
 const HubReport = lazy(() => import('pages/services/graphs/HubGraphs'))
@@ -137,7 +137,7 @@ const DefaultersDashboard = lazy(
 )
 const TrendsMenu = lazy(() => import('./graphs/TrendsMenu'))
 
-const SontaFormMenu = lazy(() => import('./SontaFormMenu'))
+const HubFormMenu = lazy(() => import('./HubFormMenu'))
 const FellowshipBankingSlipSubmission = lazy(
   () => import('pages/services/banking/banking-slip/FellowshipSubmission')
 )
@@ -241,8 +241,8 @@ export const services: LazyRouteTypes[] = [
   },
 
   {
-    path: '/services/sonta',
-    element: SontaFormMenu,
+    path: '/services/hub',
+    element: HubFormMenu,
     roles: ['all'],
     placeholder: true,
   },
@@ -325,29 +325,29 @@ export const graphs: LazyRouteTypes[] = [
     placeholder: false,
   },
 
-  //Sonta Service Details
+  //Hub Service Details
   {
-    path: '/sonta/record-rehearsal',
-    element: SontaRehearsalService,
-    roles: permitLeaderAdmin('Sonta'),
+    path: '/hub/record-rehearsal',
+    element: HubRehearsalService,
+    roles: permitLeaderAdmin('Hub'),
     placeholder: false,
   },
   {
-    path: '/sonta/record-sundayservice',
-    element: SontaSundayMeeting,
-    roles: permitLeaderAdmin('Sonta'),
+    path: '/hub/record-sundayservice',
+    element: HubSundayMeeting,
+    roles: permitLeaderAdmin('Hub'),
     placeholder: false,
   },
   {
-    path: '/sonta/rehearsal-service-details',
-    element: SontaRehearsalServiceDetails,
-    roles: permitLeaderAdmin('Sonta'),
+    path: '/hub/rehearsal-service-details',
+    element: HubRehearsalServiceDetails,
+    roles: permitLeaderAdmin('Hub'),
     placeholder: false,
   },
   {
-    path: '/sonta/sunday-meeting-details',
-    element: SontaSundayMeetingDetails,
-    roles: permitLeaderAdmin('Sonta'),
+    path: '/hub/sunday-meeting-details',
+    element: HubSundayMeetingDetails,
+    roles: permitLeaderAdmin('Hub'),
     placeholder: false,
   },
 
