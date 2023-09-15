@@ -97,7 +97,7 @@ const servantCypher = {
       SET leader.auth_id =  $auth_id
    MERGE (leader)-[:LEADS]->(church)
    
-   WITH church, leader, higherChurch
+   WITH church, leader
    OPTIONAL MATCH (church)<-[:HAS]-(higherChurch)
 
    RETURN church.id AS id, church.name AS name, higherChurch.id AS higherChurchId, higherChurch.name AS higherChurchName
