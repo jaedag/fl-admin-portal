@@ -89,7 +89,7 @@ const servantCypher = {
 
   // Create Church Leader Connection
   connectChurchLeader: `
-   MATCH (church {id: $churchId})<-[:HAS]-(higherChurch)
+   MATCH (church {id: $churchId})
    WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream 
    OR church:Campus OR church:Oversight 
    OR church:CreativeArts OR church:Ministry OR church:Hub
@@ -97,6 +97,9 @@ const servantCypher = {
       SET leader.auth_id =  $auth_id
    MERGE (leader)-[:LEADS]->(church)
    
+   WITH church, leader, higherChurch
+   OPTIONAL MATCH (church)<-[:HAS]-(higherChurch)
+
    RETURN church.id AS id, church.name AS name, higherChurch.id AS higherChurchId, higherChurch.name AS higherChurchName
    `,
   connectChurchAdmin: `
