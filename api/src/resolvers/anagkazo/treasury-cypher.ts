@@ -49,7 +49,7 @@ const anagkazo = {
        MATCH (defaulters:Active:Fellowship)<-[:HAS]-(:Bacenta)<-[:HAS]-(this)
        WHERE NOT defaulters IN services
 
-       RETURN COUNT(DISTINCT defaulters) as defaulters
+       RETURN COUNT(DISTINCT defaulters) as defaulters, collect(defaulters.name) AS defaultersNames
       `,
   membershipAttendanceDefaultersCount: `
       MATCH (this:Constituency {id: $constituencyId})
@@ -70,7 +70,7 @@ const anagkazo = {
        WITH collect(DISTINCT fellowships) as services, this
        MATCH (defaulters:Active:Fellowship)<-[:HAS]-(:Bacenta)<-[:HAS]-(this)
 
-       RETURN COUNT(DISTINCT defaulters) as defaulters
+       RETURN COUNT(DISTINCT defaulters) as defaulters, collect(defaulters.name) AS defaultersNames
       `,
   imclDefaultersCount: `
       MATCH (this:Constituency {id: $constituencyId})
@@ -92,7 +92,7 @@ const anagkazo = {
        WITH collect(DISTINCT fellowships) as services, this, COUNT(absent) > 0 AS imclNotFilled
        MATCH (defaulters:Active:Fellowship)<-[:HAS]-(:Bacenta)<-[:HAS]-(this)
 
-       RETURN COUNT(DISTINCT defaulters) as defaulters, imclNotFilled
+       RETURN COUNT(DISTINCT defaulters) as defaulters, imclNotFilled, collect(defaulters.name) AS defaultersNames
        `,
   bankingDefaulersCount: `
     MATCH (this:Constituency {id: $constituencyId})

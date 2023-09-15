@@ -59,27 +59,38 @@ const treasuryMutations = {
     const membershipAttendanceDefaultersCount = parseNeoNumber(
       checks[0].records[0]?.get('defaulters')
     )
+    const membershipAttendanceDefaultersList =
+      checks[0].records[0]?.get('defaultersNames')
+
     const imclDefaultersCount = parseNeoNumber(
       checks[1].records[0]?.get('defaulters')
     )
+    const imcleDefaultersList = checks[1].records[0]?.get('defaultersNames')
 
     const formDefaultersCount = formDefaultersResponse.defaulters.low
+    const formDefaultersList = formDefaultersResponse.defaultersNames
 
     if (formDefaultersCount > 0) {
       throw new Error(
-        'You cannot confirm this constituency until all the active fellowships have filled their forms'
+        `You cannot confirm this constituency until all the active fellowships have filled their forms. Outstanding fellowships are: ${formDefaultersList.join(
+          ', '
+        )}`
       )
     }
 
     if (membershipAttendanceDefaultersCount > 0) {
       throw new Error(
-        'You cannot confirm this constituency until all the active fellowships have marked their attendance on the Poimen App'
+        `You cannot confirm this constituency until all the active fellowships have marked their attendance on the Poimen App. Outstanding fellowships are: ${membershipAttendanceDefaultersList.join(
+          ', '
+        )}`
       )
     }
 
     if (imclDefaultersCount > 0) {
       throw new Error(
-        'You cannot confirm this constituency until all the active fellowships have filled their IMCL forms on the Poimen App'
+        `You cannot confirm this constituency until all the active fellowships have filled their IMCL forms on the Poimen App. Oustanding fellowships are: ${imcleDefaultersList.join(
+          ', '
+        )}`
       )
     }
 
