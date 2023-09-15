@@ -294,7 +294,6 @@ type HistoryLog @auth(rules: [{ isAuthenticated: true }]) {
 }
 
 ##Church Types##
-
 interface Church @auth(rules: [{ isAuthenticated: true }]) {
   id: ID @id
   name: String!
@@ -857,7 +856,6 @@ type Council implements Church {
       RETURN records ORDER BY date.date DESC SKIP $skip LIMIT $limit
       """
     )
-
 }
 
 type Constituency implements Church {
