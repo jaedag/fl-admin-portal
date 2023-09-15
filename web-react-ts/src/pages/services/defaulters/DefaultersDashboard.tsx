@@ -15,12 +15,12 @@ import DefaulterInfoCard from './DefaulterInfoCard'
 import RoleView from 'auth/RoleView'
 import { permitLeaderAdmin } from 'permission-utils'
 import { MemberContext } from 'contexts/MemberContext'
-import useChurchLevel from 'hooks/useChurchLevel'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { DefaultersUseChurchType } from './defaulters-types'
 import { ChurchLevel } from 'global-types'
 import PullToRefresh from 'react-simple-pull-to-refresh'
 import { HUB_DEFAULTERS } from './DefaultersSontaQueries'
+import useSontaLevel from 'hooks/useSontaLevel'
 
 const DefaultersDashboard = () => {
   const { currentUser } = useContext(MemberContext)
@@ -36,7 +36,7 @@ const DefaultersDashboard = () => {
 
   let subChurch: ChurchLevel | string = ''
 
-  const data: DefaultersUseChurchType = useChurchLevel({
+  const data: DefaultersUseChurchType = useSontaLevel({
     constituencyFunction: constituencyDefaulters,
     constituencyRefetch,
     councilFunction: councilDefaulters,

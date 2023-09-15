@@ -10,7 +10,7 @@ import { ChurchLevel } from 'global-types'
 import { getSubChurchLevel } from 'global-utils'
 import { useContext, useEffect, useState } from 'react'
 
-type useChurchLevelProps = {
+type useSontaLevelProps = {
   constituencyFunction?: LazyQueryExecFunction<any, OperationVariables>
   constituencyRefetch?: () => Promise<ApolloQueryResult<any>>
   councilFunction: LazyQueryExecFunction<any, OperationVariables>
@@ -19,9 +19,12 @@ type useChurchLevelProps = {
   streamRefetch: () => Promise<ApolloQueryResult<any>>
   campusFunction: LazyQueryExecFunction<any, OperationVariables>
   campusRefetch: () => Promise<ApolloQueryResult<any>>
+
+  hubFunction?: LazyQueryExecFunction<any, OperationVariables>
+  hubRefetch: () => Promise<ApolloQueryResult<any>>
 }
 
-const useChurchLevel = (props: useChurchLevelProps) => {
+const useSontaLevel = (props: useSontaLevelProps) => {
   const { currentUser } = useContext(MemberContext)
 
   const currentChurch = currentUser?.currentChurch
@@ -38,6 +41,8 @@ const useChurchLevel = (props: useChurchLevelProps) => {
 
   const chooseRefetch = () => {
     switch (churchLevel) {
+      case 'Hub':
+        return props.hubRefetch
       case 'Constituency':
         return props.constituencyRefetch || props.councilRefetch
       case 'Council':
@@ -53,6 +58,22 @@ const useChurchLevel = (props: useChurchLevelProps) => {
   useEffect(() => {
     const whichQuery = async () => {
       switch (churchLevel) {
+        case 'Hub':
+          {
+            if (!props.hubFunction) break
+
+            const res = await props.hubFunction({
+              variables: {
+                id: currentChurch?.id,
+                arrivalDate: arrivalDate,
+              },
+            })
+
+            setChurch(res?.data?.hubs[0])
+            setLoading(res.loading)
+            setError(res.error)
+          }
+          break
         case 'Constituency':
           {
             if (!props.constituencyFunction) break
@@ -122,4 +143,4 @@ const useChurchLevel = (props: useChurchLevelProps) => {
   return { church, subChurchLevel, loading, error, refetch: chooseRefetch() }
 }
 
-export default useChurchLevel
+export default useSontaLevel
