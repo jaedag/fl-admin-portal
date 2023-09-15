@@ -91,6 +91,9 @@ const ImageUpload = (props: ImageUploadProps) => {
           <img src={image || initialValue} className="img-preview" alt="" />
         </Container>
       )}
+      {!image && !initialValue && !loading && (
+        <Container className="text-center img-container border my-3"></Container>
+      )}
       <label className="w-100 text-center">
         <input
           id={name}

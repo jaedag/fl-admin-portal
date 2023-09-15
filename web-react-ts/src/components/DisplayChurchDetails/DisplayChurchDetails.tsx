@@ -15,6 +15,7 @@ import {
   MAKE_CAMPUS_ADMIN,
   MAKE_CONSTITUENCY_ADMIN,
   MAKE_COUNCIL_ADMIN,
+  MAKE_OVERSIGHT_ADMIN,
   MAKE_STREAM_ADMIN,
 } from './AdminMutations'
 import {
@@ -103,6 +104,14 @@ const DisplayChurchDetails = (props: DisplayChurchDetailsProps) => {
       needsAdmin = true
       roles = permitAdmin('Oversight')
       break
+    case 'Oversight':
+      needsAdmin = true
+      roles = permitAdmin('Denomination')
+      break
+    case 'Denomination':
+      needsAdmin = true
+      roles = []
+      break
     default:
       needsAdmin = false
       break
@@ -121,6 +130,7 @@ const DisplayChurchDetails = (props: DisplayChurchDetailsProps) => {
   const [MakeCouncilAdmin] = useMutation(MAKE_COUNCIL_ADMIN)
   const [MakeStreamAdmin] = useMutation(MAKE_STREAM_ADMIN)
   const [MakeCampusAdmin] = useMutation(MAKE_CAMPUS_ADMIN)
+  const [MakeOversightAdmin] = useMutation(MAKE_OVERSIGHT_ADMIN)
 
   const initialValues: FormOptions = {
     adminName: props.admin
@@ -143,6 +153,17 @@ const DisplayChurchDetails = (props: DisplayChurchDetailsProps) => {
     }
 
     try {
+      if (props.churchType === 'Oversight') {
+        await MakeOversightAdmin({
+          variables: {
+            oversightId: props.churchId,
+            newAdminId: values.adminSelect,
+            oldAdminId: initialValues.adminSelect || 'no-old-admin',
+          },
+        })
+        alertMsg('Oversight Admin has been changed successfully')
+      }
+
       if (props.churchType === 'Campus') {
         await MakeCampusAdmin({
           variables: {

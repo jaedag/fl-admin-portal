@@ -1,5 +1,7 @@
 extend type Mutation {
   #resolver Mutations
+  MakeOversightAdmin(adminId: ID!, oversightId: ID!, oldAdminId: ID): Member
+  RemoveOversightAdmin(adminId: ID!, newAdminId: ID!, oversightId: ID!): Member
   MakeCampusAdmin(adminId: ID!, oldAdminId: ID!, campusId: ID!): Member
   RemoveCampusAdmin(adminId: ID!, newAdminId: ID, campusId: ID!): Member
   MakeStreamAdmin(adminId: ID!, oldAdminId: ID!, streamId: ID!): Member
@@ -133,31 +135,31 @@ extend type Mutation {
       """
     )
 
-# Set fellowship to be 'Online'
-SetOnlineFellowship(fellowshipId: ID!): Fellowship!
-  @cypher(
-    statement: """
-    MATCH (fellowship:Fellowship {id:$fellowshipId})
+  # Set fellowship to be 'Online'
+  SetOnlineFellowship(fellowshipId: ID!): Fellowship!
+    @cypher(
+      statement: """
+      MATCH (fellowship:Fellowship {id:$fellowshipId})
 
-    CREATE (log:HistoryLog {id:apoc.create.uuid()})
-      SET log.timeStamp = datetime(),
-      log.historyRecord = fellowship.name + ' Fellowship was made an online fellowship'
+      CREATE (log:HistoryLog {id:apoc.create.uuid()})
+        SET log.timeStamp = datetime(),
+        log.historyRecord = fellowship.name + ' Fellowship was made an online fellowship'
 
-    WITH log,fellowship
-    MATCH (admin:Active:Member {auth_id: $auth.jwt.sub})
-    MATCH (fellowship)<-[:HAS]-(bacenta:Bacenta)
-    MERGE (date:TimeGraph {date:date()})
-    MERGE (log)-[:LOGGED_BY]->(admin)
-    MERGE (log)-[:RECORDED_ON]->(date)
-    MERGE (fellowship)-[:HAS_HISTORY]->(log)
-    MERGE (bacenta)-[:HAS_HISTORY]->(log)
+      WITH log,fellowship
+      MATCH (admin:Active:Member {auth_id: $auth.jwt.sub})
+      MATCH (fellowship)<-[:HAS]-(bacenta:Bacenta)
+      MERGE (date:TimeGraph {date:date()})
+      MERGE (log)-[:LOGGED_BY]->(admin)
+      MERGE (log)-[:RECORDED_ON]->(date)
+      MERGE (fellowship)-[:HAS_HISTORY]->(log)
+      MERGE (bacenta)-[:HAS_HISTORY]->(log)
 
-    SET fellowship:Online
-    REMOVE fellowship:Active, fellowship:Vacation
+      SET fellowship:Online
+      REMOVE fellowship:Active, fellowship:Vacation
 
-    RETURN fellowship
-    """
-  )
+      RETURN fellowship
+      """
+    )
 
   #Set Bacenta to be 'Active
   SetActiveBacenta(bacentaId: ID!): Bacenta
@@ -971,8 +973,8 @@ extend type Mutation {
       MATCH (admin:Active:Member {auth_id: $auth.jwt.sub})
       OPTIONAL MATCH (campus)-[:HAS]->(stream)-[:HAS]->(council)-[:HAS]->(constituencies)-[:HAS]->(bacentas)-[:HAS]->(fellowships)
       OPTIONAL MATCH (campus)-[:HAS]->(stream)-[:HAS]->(council)-[:HAS]->(hubs:Hub)
-      
-      
+
+
       MERGE (date:TimeGraph {date:date()})
       MERGE (log)-[:LOGGED_BY]->(admin)
       MERGE (log)-[:RECORDED_ON]->(date)
