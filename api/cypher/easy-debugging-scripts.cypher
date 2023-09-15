@@ -37,3 +37,11 @@ RETURN fellowship.name, COUNT(member) > 0 AS filled;
 
 
 
+
+MATCH p=(m:Member {email: "jaedagy@gmail.com"})//-[]->()
+MATCH (art:CreativeArts {id: "a0ed24db-0007-438e-825d-d5a4f0018b1e"})
+MERGE (m)-[:LEADS]->(art)
+RETURN p, art
+
+MATCH p=(art:CreativeArts)<-[:LEADS]-(b:Member)//-[:LEADS]->(pastor:Member)
+RETURN art.name,b.firstName//, pastor.firstName

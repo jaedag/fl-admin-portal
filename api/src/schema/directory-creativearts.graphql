@@ -492,20 +492,21 @@ extend type Mutation {
     @cypher(
       statement: """
       MATCH (creativeArt:CreativeArts {id: $creativeArtsId})
-      SET creativeArt.name = $name
+        SET creativeArt.name = $name
 
       WITH creativeArt
-          CALL{
-            WITH creativeArt
+      CALL{
+        WITH creativeArt
+        WITH creativeArt WHERE $campusId IS NOT NULL
 
-              MATCH (campus:Campus {id: $campusId})
-              OPTIONAL MATCH (creativeArt)<-[r:HAS_MINISTRY]-()
-              DELETE r
-              MERGE (campus)-[:HAS_MINISTRY]->(creativeArt)
+          MATCH (campus:Campus {id: $campusId})
+          OPTIONAL MATCH (creativeArt)<-[r:HAS_MINISTRY]-()
+          DELETE r
+          MERGE (campus)-[:HAS_MINISTRY]->(creativeArt)
 
-            RETURN count(creativeArt)
-          }
-      MATCH (creativeArt)<-[:LEADS]-(leader:Active:Member)
+        RETURN count(creativeArt)
+      }
+
       RETURN creativeArt
       """
     )

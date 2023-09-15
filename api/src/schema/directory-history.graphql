@@ -468,5 +468,46 @@ extend type Mutation {
       """
     )
 
-  # New Church With History
+  LogCreativeArtsHistory(
+    creativeArtsId: ID!
+    historyRecord: String!
+    oldLeaderId: ID
+    newLeaderId: ID
+    oldCampusId: ID
+    newCampusId: ID
+  ): CreativeArts
+    @cypher(
+      statement: """
+      MATCH  (creativeArts:CreativeArts {id: $creativeArtsId})
+      MATCH (admin:Active:Member {auth_id: $auth.jwt.sub})
+      CREATE (log:HistoryLog {id: apoc.create.uuid()})
+        SET log.historyRecord = $historyRecord,
+          log.timeStamp = datetime()
+      MERGE (date:TimeGraph {date: date()})
+      MERGE (creativeArts)-[r:HAS_HISTORY]->(log)
+      MERGE (log)-[:RECORDED_ON]->(date)
+      MERGE (log)-[:LOGGED_BY]->(admin)
+
+
+      WITH log, creativeArts
+      CALL{
+        WITH log
+        WITH log WHERE $oldCampusId IS NOT NULL
+        MATCH (oldCampus:Campus {id: $oldCampusId})
+        MERGE (oldCampus)-[:HAS_HISTORY]->(log)
+        RETURN COUNT(log)
+      }
+
+      WITH log, creativeArts
+      CALL{
+        WITH log
+        WITH log WHERE $newCampusId IS NOT NULL
+        MATCH (newCampus:Campus {id: $newCampusId})
+        MERGE (newCampus)-[:HAS_HISTORY]->(log)
+        RETURN COUNT(log)
+      }
+
+      RETURN creativeArts
+      """
+    )
 }
