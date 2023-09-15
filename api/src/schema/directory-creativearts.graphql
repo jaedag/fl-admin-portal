@@ -426,7 +426,7 @@ extend type Mutation {
       MERGE (ministry)-[:HAS_HISTORY]->(log)
 
       RETURN ministry
-      """
+      """p
     )
   CreateHub(
     name: String!
@@ -483,13 +483,13 @@ extend type Mutation {
   UpdateCreativeArtDetails(
     creativeArtsId: ID!
     campusId: ID!
-    creativeArtName: String!
+    name: String!
   ): CreativeArts!
     @auth(rules: [{ roles: ["adminCampus"] }])
     @cypher(
       statement: """
       MATCH (creativeArt:CreativeArts {id: $creativeArtsId})
-      SET creativeArt.name = $creativeArtName
+      SET creativeArt.name = $name
 
       WITH creativeArt
           CALL{

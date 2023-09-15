@@ -460,7 +460,7 @@ export const SERVANTS_MINISTRY_LEADER = gql`
   }
 `
 
-export const SERVANTS_FEDERAL_MINISTRY_LEADER = gql`
+export const SERVANTS_CREATIVEARTS_LEADER = gql`
   query creativeArtsLeader($id: ID!) {
     members(where: { id: $id }) {
       id
@@ -484,7 +484,7 @@ export const SERVANTS_MINISTRY_ADMIN = gql`
   }
 `
 
-export const SERVANTS_FEDERAL_MINISTRY_ADMIN = gql`
+export const SERVANTS_CREATIVEARTS_ADMIN = gql`
   query creativeArtsAdmin($id: ID!) {
     members(where: { id: $id }) {
       id

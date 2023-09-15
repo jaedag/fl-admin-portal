@@ -129,7 +129,7 @@ export const NEW_OVERSIGHT_LEADER = gql`
   }
 `
 
-export const NEW_FEDERAL_MINISTRY_LEADER = gql`
+export const NEW_CREATIVEARTS_LEADER = gql`
   mutation NewCreativeArtsLeader($creativeArtsId: ID!, $leaderId: ID!) {
     MakeCreativeArtsLeader(
       creativeArtsId: $creativeArtsId

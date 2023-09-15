@@ -178,6 +178,10 @@ const UpdateCampus = lazy(() => import('pages/directory/update/UpdateCampus'))
 const UpdateOversight = lazy(
   () => import('pages/directory/update/UpdateOversight')
 )
+const UpdateCreativeArts = lazy(
+  () => import('pages/directory/update/UpdateCreativeArts')
+)
+
 const CampusMembers = lazy(() => import('pages/directory/grids/CampusMembers'))
 const OversightMembers = lazy(
   () => import('pages/directory/grids/OversightMembers')
@@ -726,5 +730,10 @@ export const directory: LazyRouteTypes[] = [
     element: UpdateOversight,
     roles: permitAdmin('Oversight'),
     placeholder: false,
+  },
+  {
+    path: '/creativeArts/editcreativeArts',
+    element: UpdateCreativeArts,
+    roles: permitAdmin('Campus'),
   },
 ]

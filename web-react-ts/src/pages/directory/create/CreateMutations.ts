@@ -277,7 +277,7 @@ export const CREATE_OVERSIGHT_MUTATION = gql`
   }
 `
 
-export const CREATE_FEDERAL_MINISTRY_MUTATION = gql`
+export const CREATE_CREATIVEARTS_MUTATION = gql`
   mutation CreateCreativeArts($name: String!, $leaderId: ID!, $campusId: ID!) {
     CreateCreativeArts(name: $name, leaderId: $leaderId, campusId: $campusId) {
       id

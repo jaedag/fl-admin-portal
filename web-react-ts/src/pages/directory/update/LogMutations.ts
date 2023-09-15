@@ -280,3 +280,44 @@ export const LOG_OVERSIGHT_HISTORY = gql`
     }
   }
 `
+
+export const LOG_CREATIVEARTS_HISTORY = gql`
+  mutation LogCreativeArtsHistory(
+    $creativeArtsId: ID!
+    $historyRecord: String!
+    $oldLeaderId: ID
+    $newLeaderId: ID
+    $oldOversightId: ID
+    $newOversightId: ID
+  ) {
+    LogCreativeArtsHistory(
+      creativeArtsId: $creativeArtsId
+      historyRecord: $historyRecord
+      newLeaderId: $newLeaderId
+      oldLeaderId: $oldLeaderId
+      oldOversightId: $oldOversightId
+      newOversightId: $newOversightId
+    ) {
+      id
+      name
+      leader {
+        id
+        firstName
+        lastName
+      }
+      history(limit: 5) {
+        id
+        timeStamp
+        createdAt {
+          date
+        }
+        loggedBy {
+          id
+          firstName
+          lastName
+        }
+        historyRecord
+      }
+    }
+  }
+`

@@ -185,7 +185,7 @@ export const MAKE_MINISTRY_INACTIVE = gql`
   }
 `
 
-export const MAKE_FEDERAL_MINISTRY_INACTIVE = gql`
+export const MAKE_CREATIVEARTS_INACTIVE = gql`
   mutation CloseDownCreativeArtss($creativeArtsId: ID!, $leaderId: ID!) {
     CloseDownCreativeArts(
       creativeArtsId: $creativeArtsId
