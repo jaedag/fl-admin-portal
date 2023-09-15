@@ -77,6 +77,7 @@ const ChurchList = ({
                   iconCaption={church.__typename}
                   onClick={() => {
                     clickCard(church)
+
                     if (church.__typename === 'Campus') {
                       setUserFinancials(church)
                     } else {

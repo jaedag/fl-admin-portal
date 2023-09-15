@@ -45,3 +45,29 @@ RETURN p, art
 
 MATCH p=(art:CreativeArts)<-[:LEADS]-(b:Member)//-[:LEADS]->(pastor:Member)
 RETURN art.name,b.firstName//, pastor.firstName
+
+MATCH (hub:Hub {id: "228ad6e7-7641-4991-83d9-64ff677ecfe1"})-[:HAS]->(defaulters:Active:HubFellowship)
+RETURN hub.name, defaulters.name
+
+ MATCH (this:Hub {id: "228ad6e7-7641-4991-83d9-64ff677ecfe1"})
+    WITH date() as today, this
+      WITH  today.weekDay as theDay, today, this
+      WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
+      WITH [day in range(0, 5) | startDate + duration({days: day})] AS dates, this
+
+      MATCH (date:TimeGraph)
+      USING INDEX date:TimeGraph(date)
+      WHERE date.date IN dates
+      OPTIONAL MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
+       WITH DISTINCT record, this
+
+       OPTIONAL MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships:Active:HubFellowship)-[:MEETS_ON]->(day:ServiceDay)
+       WITH collect(DISTINCT fellowships) as services, this
+       MATCH (defaulters:Active:HubFellowship)<-[:HAS]-(this)
+       WHERE NOT defaulters IN services
+
+       WITH defaulters, this
+       MATCH (defaulters)-[:MEETS_ON]->(day:ServiceDay)
+        WHERE day.dayNumber < date().dayOfWeek OR (day.dayNumber = date().dayOfWeek AND  time() > time('20:30'))
+       RETURN DISTINCT defaulters.name
+RETURN DISTINCT this.name

@@ -12,7 +12,7 @@ import { useContext, useEffect, useState } from 'react'
 
 type useSontaLevelProps = {
   constituencyFunction?: LazyQueryExecFunction<any, OperationVariables>
-  constituencyRefetch?: () => Promise<ApolloQueryResult<any>>
+  constituencyRefetch: () => Promise<ApolloQueryResult<any>>
   councilFunction: LazyQueryExecFunction<any, OperationVariables>
   councilRefetch: () => Promise<ApolloQueryResult<any>>
   streamFunction: LazyQueryExecFunction<any, OperationVariables>
@@ -22,6 +22,10 @@ type useSontaLevelProps = {
 
   hubFunction?: LazyQueryExecFunction<any, OperationVariables>
   hubRefetch: () => Promise<ApolloQueryResult<any>>
+  ministryFunction?: LazyQueryExecFunction<any, OperationVariables>
+  ministryRefetch: () => Promise<ApolloQueryResult<any>>
+  creativeArtsFunction?: LazyQueryExecFunction<any, OperationVariables>
+  creativeArtsRefetch: () => Promise<ApolloQueryResult<any>>
 }
 
 const useSontaLevel = (props: useSontaLevelProps) => {
@@ -41,10 +45,14 @@ const useSontaLevel = (props: useSontaLevelProps) => {
 
   const chooseRefetch = () => {
     switch (churchLevel) {
+      case 'CreativeArts':
+        return props.creativeArtsRefetch
+      case 'Ministry':
+        return props.ministryRefetch
       case 'Hub':
         return props.hubRefetch
       case 'Constituency':
-        return props.constituencyRefetch || props.councilRefetch
+        return props.constituencyRefetch
       case 'Council':
         return props.councilRefetch
       case 'Stream':
@@ -58,6 +66,36 @@ const useSontaLevel = (props: useSontaLevelProps) => {
   useEffect(() => {
     const whichQuery = async () => {
       switch (churchLevel) {
+        case 'CreativeArts':
+          {
+            if (!props.creativeArtsFunction) break
+            const res = await props.creativeArtsFunction({
+              variables: {
+                id: currentChurch?.id,
+                arrivalDate: arrivalDate,
+              },
+            })
+
+            setChurch(res?.data?.creativeArts[0])
+            setLoading(res.loading)
+            setError(res.error)
+          }
+          break
+        case 'Ministry':
+          {
+            if (!props.ministryFunction) break
+            const res = await props.ministryFunction({
+              variables: {
+                id: currentChurch?.id,
+                arrivalDate: arrivalDate,
+              },
+            })
+
+            setChurch(res?.data?.ministries[0])
+            setLoading(res.loading)
+            setError(res.error)
+          }
+          break
         case 'Hub':
           {
             if (!props.hubFunction) break

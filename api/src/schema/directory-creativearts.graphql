@@ -190,7 +190,7 @@ type Hub {
       RETURN COUNT(DISTINCT fellowships)
       """
     )
-  id: ID @id
+  id: ID! @id
   name: String!
   leader: Member @relationship(type: "LEADS", direction: IN)
   history: [HistoryLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)

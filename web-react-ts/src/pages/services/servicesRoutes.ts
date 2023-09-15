@@ -68,7 +68,10 @@ const CancelledServicesThisWeek = lazy(
   () => import('pages/services/defaulters/CancelledServiceThisWeek')
 )
 const CouncilByConstituency = lazy(
-  () => import('pages/services/defaulters/CouncilByConstituency')
+  () =>
+    import(
+      'pages/services/defaulters/church-by-subchurch/CouncilByConstituency'
+    )
 )
 const FormDefaulters = lazy(
   () => import('pages/services/defaulters/FormDefaulters')
@@ -99,10 +102,10 @@ const OversightReport = lazy(
   () => import('pages/services/graphs/OversightGraphs')
 )
 const StreamByCouncil = lazy(
-  () => import('pages/services/defaulters/StreamByCouncil')
+  () => import('pages/services/defaulters/church-by-subchurch/StreamByCouncil')
 )
 const CampusByStream = lazy(
-  () => import('pages/services/defaulters/CampusByStream')
+  () => import('pages/services/defaulters/church-by-subchurch/CampusByStream')
 )
 const ConstituencyBankingSlipView = lazy(
   () => import('pages/services/banking/banking-slip/ConstituencyView')
@@ -504,40 +507,27 @@ export const graphs: LazyRouteTypes[] = [
     roles: permitLeaderAdmin('Constituency'),
     placeholder: true,
   },
-
-  //Council By Constituency
-
   {
     path: '/services/council-by-constituency',
     element: CouncilByConstituency,
     roles: permitLeaderAdmin('Council'),
     placeholder: true,
   },
-  //Stream By Council
   {
     path: '/services/stream-by-council',
     element: StreamByCouncil,
     roles: permitLeaderAdmin('Stream'),
     placeholder: true,
   },
-  //Campus By Stream
   {
     path: '/services/campus-by-stream',
     element: CampusByStream,
     roles: permitLeaderAdmin('Campus'),
     placeholder: true,
   },
-  //Stream By Council
   {
     path: '/services/stream-by-council',
     element: StreamByCouncil,
-    roles: ['leaderFellowship'],
-    placeholder: true,
-  },
-  //Campus By Stream
-  {
-    path: '/services/campus-by-streams',
-    element: CampusByStream,
     roles: ['leaderFellowship'],
     placeholder: true,
   },

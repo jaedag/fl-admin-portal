@@ -8,10 +8,10 @@ import { Card, Col, Row, Button, Container } from 'react-bootstrap'
 import { TelephoneFill, Whatsapp } from 'react-bootstrap-icons'
 import { useNavigate } from 'react-router'
 import PullToRefresh from 'react-simple-pull-to-refresh'
-import { HigherChurchWithDefaulters } from './defaulters-types'
-import { messageForAdminsOfDefaulters } from './defaulters-utils'
-import { COUNCIL_BY_CONSTITUENCY } from './DefaultersQueries'
-import PlaceholderDefaulterList from './PlaceholderDefaulterList'
+import { HigherChurchWithDefaulters } from '../defaulters-types'
+import { messageForAdminsOfDefaulters } from '../defaulters-utils'
+import { COUNCIL_BY_CONSTITUENCY } from '../DefaultersQueries'
+import PlaceholderDefaulterList from '../PlaceholderDefaulterList'
 
 const CouncilByConstituency = () => {
   const { councilId, clickCard } = useContext(ChurchContext)
