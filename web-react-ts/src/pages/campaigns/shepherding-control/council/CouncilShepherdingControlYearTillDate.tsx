@@ -11,6 +11,7 @@ import { Col, Container, Row } from 'react-bootstrap'
 import { Check2Circle } from 'react-bootstrap-icons'
 import * as Yup from 'yup'
 import { COUNCIL_STAT_FOR_YEAR_TILL_DATE } from '../ShepherdingControlQueries'
+import { firstDayOfThisYear } from 'global-utils'
 
 type FormOptions = {
   startDate: string
@@ -25,7 +26,7 @@ const CouncilShepherdingControlYearTillDate = () => {
   const church = currentUser?.currentChurch
 
   const initialValues: FormOptions = {
-    startDate: '2022-01-01',
+    startDate: firstDayOfThisYear.toISOString().slice(0, 10),
     endDate: new Date().toISOString().slice(0, 10),
   }
 

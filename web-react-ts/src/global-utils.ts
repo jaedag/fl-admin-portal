@@ -656,3 +656,5 @@ export const directoryLock = (
 
   return false
 }
+
+export const firstDayOfThisYear = new Date(new Date().getFullYear(), 0, 1)
