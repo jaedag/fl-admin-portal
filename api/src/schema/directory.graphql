@@ -857,7 +857,7 @@ type Council implements Church {
       RETURN records ORDER BY date.date DESC SKIP $skip LIMIT $limit
       """
     )
-  hubs: [Hub!]! @relationship(type: "HAS_MINISTRY", direction: OUT)
+
 }
 
 type Constituency implements Church {

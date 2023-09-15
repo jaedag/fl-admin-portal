@@ -689,7 +689,7 @@ export const GET_MINISTRY_HUBS = gql`
       councils {
         id
         name
-        hubs {
+        hubsFromMinistry(ministryId: $id) {
           name
           id
           memberCount

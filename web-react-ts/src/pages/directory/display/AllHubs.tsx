@@ -20,7 +20,7 @@ const DisplayAllHubs = () => {
 
   const hubs = data?.ministries[0]?.councils
     .map((council: any) => {
-      return council.hubs
+      return council.hubsFromMinistry
     })
     .flat()
   const ministry = data?.ministries[0]
@@ -84,13 +84,16 @@ const DisplayAllHubs = () => {
             <>
               <Container>
                 <p className="mb-0 fw-bold fs-5">
-                  {council.name} Council: {council.hubs.length} Hubs
+                  {council.name} Council: {council.hubsFromMinistry.length} Hubs
                 </p>
-                {council.hubs.length === 0 && (
+                {council.hubsFromMinistry.length === 0 && (
                   <NoDataComponent text="This Council has no hubs" />
                 )}
               </Container>
-              <DisplayChurchList data={council.hubs} churchType="Ministry" />
+              <DisplayChurchList
+                data={council.hubsFromMinistry}
+                churchType="Ministry"
+              />
             </>
           )
         })}

@@ -239,6 +239,14 @@ extend type Stream {
 }
 
 extend type Council {
+  hubs: [Hub!]! @relationship(type: "HAS_MINISTRY", direction: OUT)
+  hubsFromMinistry(ministryId: ID!): [Hub!]!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS_MINISTRY]->(hubs:Hub)<-[:HAS]-(ministry:Ministry {id:$ministryId})
+      RETURN hubs
+      """
+    )
   hubCount: Int!
     @cypher(
       statement: """
