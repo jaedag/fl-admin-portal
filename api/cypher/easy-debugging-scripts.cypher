@@ -1,12 +1,12 @@
 // if someone says that 
 // If someone says he has filled IMCL but is still getting an error,
 //it means he filled it out of order and this must be run
-MATCH (record:ServiceRecord {id:"08bfe637-e65d-4cd9-8a51-cb4e9b4ba3bf"})
+MATCH (record:ServiceRecord {id:"48572a29-057d-4eec-94cd-99f84db92393"})
 OPTIONAL MATCH (record)<-[:ABSENT_FROM_SERVICE]-(absent:Member)
    WHERE absent.imclChecked = false
-SET absent.imclChecked = true
+// SET absent.imclChecked = true
 
-RETURN record.attendance, absent;
+RETURN record.attendance, absent.firstName, absent.lastName, absent.imclChecked;
 
 
 // If a fellowship service is Blocking 
