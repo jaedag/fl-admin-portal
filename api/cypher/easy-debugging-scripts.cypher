@@ -52,8 +52,3 @@ MERGE (record)<-[:PRESENT_AT_SERVICE]-(members)
 MERGE (record)<-[:ABSENT_FROM_SERVICE]-(members)
 SET record.markedAttendance = true
 RETURN fellowship.name, record.attendance, COUNT(members);
-
-MATCH (hub:Hub)
-MATCH (m:Member {email: "jaedagy@gmail.com"})
-MERGE (m)-[:LEADS]->(hub)
-RETURN m, hub
