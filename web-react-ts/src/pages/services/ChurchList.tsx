@@ -95,7 +95,9 @@ const ChurchList = ({
                     } else if (color === 'maps') {
                       navigate(`/maps/${church.__typename.toLowerCase()}`)
                     } else if (color === 'accounts') {
-                      navigate('/accounts/dashboard')
+                      navigate(
+                        `/accounts/${church.__typename.toLowerCase()}/dashboard`
+                      )
                     } else {
                       navigate(link || '#')
                     }

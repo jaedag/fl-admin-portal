@@ -17,3 +17,21 @@ export const COUNCIL_ACCOUNT_DASHBOARD = gql`
     }
   }
 `
+
+export const CAMPUS_ACCOUNT_DASHBOARD = gql`
+  query CampusAccountDashboard($id: ID!) {
+    campuses(where: { id: $id }) {
+      id
+      name
+      currentBalance
+      bussingPurseBalance
+
+      leader {
+        id
+        firstName
+        lastName
+        fullName
+      }
+    }
+  }
+`

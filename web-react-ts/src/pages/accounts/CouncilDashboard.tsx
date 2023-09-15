@@ -9,7 +9,7 @@ import HeadingSecondary from 'components/HeadingSecondary'
 import './accounts-colors.css'
 import { useNavigate } from 'react-router'
 
-const AccountsLandingPage = () => {
+const CouncilDashboard = () => {
   const { councilId } = useContext(ChurchContext)
   const navigate = useNavigate()
 
@@ -77,4 +77,4 @@ const AccountsLandingPage = () => {
   )
 }
 
-export default AccountsLandingPage
+export default CouncilDashboard

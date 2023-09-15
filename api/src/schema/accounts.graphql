@@ -1,4 +1,21 @@
+extend type Campus {
+  currentBalance: Float!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS*2]->(council:Council)
+      RETURN SUM(council.currentBalance)
+      """
+    )
+  bussingPurseBalance: Float!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS*2]->(council:Council)
+      RETURN SUM(council.bussingPurseBalance)
+      """
+    )
+}
+
 extend type Council {
-  currentBalance: Float
+  currentBalance: Float!
   bussingPurseBalance: Float
 }
