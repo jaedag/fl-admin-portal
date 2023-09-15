@@ -51,18 +51,6 @@ const GraphDropdown = ({
           </Dropdown.Item>
         )}
 
-        {['Hub'].includes(churchLevel) && (
-          <Dropdown.Item
-            className="py-3"
-            onClick={() => {
-              setBussing(false)
-              setSelected('Rehearsals')
-              setChurchData(getServiceGraphData(data, 'service'))
-            }}
-          >
-            {`${churchLevel} Rehearsals`}
-          </Dropdown.Item>
-        )}
         {!['Bacenta', 'Fellowship', ...sontaLevels].includes(churchLevel) && (
           <Dropdown.Item
             className="py-3"
@@ -99,6 +87,31 @@ const GraphDropdown = ({
             }}
           >
             Weekday Total (USD)
+          </Dropdown.Item>
+        )}
+
+        {['Ministry', 'CreativeArts'].includes(churchLevel) && (
+          <Dropdown.Item
+            className="py-3"
+            onClick={() => {
+              setBussing(false)
+              setSelected('Rehearsals')
+              setChurchData(getServiceGraphData(data, 'service'))
+            }}
+          >
+            {`${churchLevel} Rehearsals Total`}
+          </Dropdown.Item>
+        )}
+        {['Ministry', 'CreativeArts'].includes(churchLevel) && (
+          <Dropdown.Item
+            className="py-3"
+            onClick={() => {
+              setBussing(false)
+              setSelected('Rehearsals')
+              setChurchData(getServiceGraphData(data, 'service'))
+            }}
+          >
+            {`${churchLevel} Weekend Meeting Total`}
           </Dropdown.Item>
         )}
       </Dropdown.Menu>

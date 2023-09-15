@@ -137,11 +137,60 @@ extend type Oversight {
     )
 }
 
+type AggregateRehearsalRecord implements HadService
+  @auth(rules: [{ isAuthenticated: true }]) {
+  id: ID!
+  week: Int!
+  year: Int!
+  attendance: Int!
+  income: Float!
+  dollarIncome: Float!
+  numberOfServices: Int
+}
+
 extend type Hub {
   aggregateServiceRecords(limit: Int! = 4): [AggregateServiceRecord!]!
     @cypher(
       statement: """
       MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(aggregate:AggregateServiceRecord)
+      WHERE aggregate.year = date().year
+      RETURN aggregate ORDER BY aggregate.year, aggregate.week DESC LIMIT $limit
+      """
+    )
+}
+
+extend type Ministry {
+  aggregateServiceRecords(limit: Int! = 4): [AggregateServiceRecord!]!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(aggregate:AggregateServiceRecord)
+      WHERE aggregate.year = date().year
+      RETURN aggregate ORDER BY aggregate.year, aggregate.week DESC LIMIT $limit
+      """
+    )
+  aggregateRehearsalRecords(limit: Int! = 4): [AggregateRehearsalRecord!]!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(aggregate:AggregateRehearsalRecord)
+      WHERE aggregate.year = date().year
+      RETURN aggregate ORDER BY aggregate.year, aggregate.week DESC LIMIT $limit
+      """
+    )
+}
+
+extend type CreativeArts {
+  aggregateServiceRecords(limit: Int! = 4): [AggregateServiceRecord!]!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(aggregate:AggregateServiceRecord)
+      WHERE aggregate.year = date().year
+      RETURN aggregate ORDER BY aggregate.year, aggregate.week DESC LIMIT $limit
+      """
+    )
+  aggregateRehearsalRecords(limit: Int! = 4): [AggregateRehearsalRecord!]!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(aggregate:AggregateRehearsalRecord)
       WHERE aggregate.year = date().year
       RETURN aggregate ORDER BY aggregate.year, aggregate.week DESC LIMIT $limit
       """

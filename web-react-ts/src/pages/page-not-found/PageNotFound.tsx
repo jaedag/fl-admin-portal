@@ -1,6 +1,6 @@
 import FourOhFour from 'assets/FourOhFour'
 import React from 'react'
-import { Col, Row } from 'react-bootstrap'
+import { Button, Col, Row } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 
 const PageNotFound = () => {
@@ -21,7 +21,9 @@ const PageNotFound = () => {
           maintenance, or there may be some other problem.
         </div>
         <div className="text-center fixed-bottom pb-5">
-          <Link to="/">Go back to the dashboard</Link>
+          <Link to="/">
+            <Button>Go back to the dashboard</Button>
+          </Link>
         </div>
       </div>
     </div>
