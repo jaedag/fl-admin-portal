@@ -13,6 +13,7 @@ import { Context } from '../utils/neo4j-types'
 import { HistoryRecordArgs, historyRecordString } from './helper-functions'
 import servantCypher from './servant-cypher'
 import {
+  matchMemberOversightQuery,
   matchMemberQuery,
   matchMemberSheepSeekerQuery,
   matchMemberTellerQuery,
@@ -98,6 +99,9 @@ export const formatting = (
 
   if (churchType === 'Campus') {
     churchLower = 'campus'
+  }
+  if (churchType === 'Oversight') {
+    memberQuery = matchMemberOversightQuery
   }
 
   if (churchType === 'CreativeArts') {
