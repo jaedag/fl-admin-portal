@@ -1,3 +1,17 @@
+#### 7.9.13 (2023-09-15)
+
+##### New Features
+
+* **creativearts:**
+  *  initiate hub rehearsal and sunday meeting form ([b0710afb](https://github.com/firstlovecenter/fl-pastoral-care/commit/b0710afb616e67b577c755af32f94acb77f80505))
+  *  implement defaulters for hub leaders ([692d7cfd](https://github.com/firstlovecenter/fl-pastoral-care/commit/692d7cfd7560a913ba2354f1b941126dacf23cca))
+
+##### Bug Fixes
+
+* **creativearts:**  viewing all hubs is now restricted to the select ministry ([10339e33](https://github.com/firstlovecenter/fl-pastoral-care/commit/10339e3354f464a0daed67e305916202e6a07dd1))
+* **shepherding-control:**  all YTD data is now ACTUALLY YTD ([8ed8b571](https://github.com/firstlovecenter/fl-pastoral-care/commit/8ed8b57125e6669035a7a99910c5a9c64dfe0e28))
+* **imcl:**  update error handling of imcl lists for anagkazo ([268418e6](https://github.com/firstlovecenter/fl-pastoral-care/commit/268418e608698ed635b08aaf637fe1d2f956e299))
+
 #### 7.9.12 (2023-09-14)
 
 ##### New Features
