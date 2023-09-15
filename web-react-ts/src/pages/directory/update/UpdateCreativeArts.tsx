@@ -21,13 +21,14 @@ const UpdateCreativeArts = () => {
   })
 
   const navigate = useNavigate()
-  const creativeArts = data?.creativeArtses[0]
+  const creativeArts = data?.creativeArts[0]
+
   const initialValues: CreativeArtsFormValues = {
     name: creativeArts?.name,
     leaderName: creativeArts?.leader?.fullName ?? '',
     leaderId: creativeArts?.leader?.id || '',
     leaderEmail: creativeArts?.leader?.email || '',
-    campus: creativeArts?.campus,
+    campus: creativeArts?.campus.id || '',
   }
   const [LogCreativeArtsHistory] = useMutation(LOG_CREATIVEARTS_HISTORY, {
     refetchQueries: [
@@ -43,7 +44,7 @@ const UpdateCreativeArts = () => {
     refetchQueries: [
       {
         query: GET_CAMPUS_CREATIVEARTS,
-        variables: { id: creativeArts.oversight.id },
+        variables: { id: creativeArts?.campus.id },
       },
     ],
   })

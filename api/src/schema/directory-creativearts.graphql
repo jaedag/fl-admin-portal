@@ -106,7 +106,10 @@ type CreativeArts {
   leader: Member @relationship(type: "LEADS", direction: IN)
   admin: Member @relationship(type: "IS_ADMIN_FOR", direction: IN)
   campus: Campus @relationship(type: "HAS_MINISTRY", direction: IN)
-  history: [HistoryLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
+  history(limit: Int! = 3): [HistoryLog!]!
+    @cypher(
+      statement: "MATCH (this)-[:HAS_HISTORY|OLD_HISTORY]->(log:HistoryLog) RETURN log ORDER BY log.timeStamp DESC LIMIT $limit"
+    )
   serviceLogs: [ServiceLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
   ministries: [Ministry!]! @relationship(type: "HAS", direction: OUT)
 }
@@ -426,7 +429,7 @@ extend type Mutation {
       MERGE (ministry)-[:HAS_HISTORY]->(log)
 
       RETURN ministry
-      """p
+      """
     )
   CreateHub(
     name: String!
@@ -480,7 +483,7 @@ extend type Mutation {
 }
 
 extend type Mutation {
-  UpdateCreativeArtDetails(
+  UpdateCreativeArtsDetails(
     creativeArtsId: ID!
     campusId: ID!
     name: String!

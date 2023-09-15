@@ -648,6 +648,7 @@ export const DISPLAY_CREATIVEARTS = gql`
         id
         firstName
         lastName
+        fullName
         currentTitle
         nameWithTitle
         pictureUrl
