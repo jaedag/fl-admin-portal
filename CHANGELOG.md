@@ -1,3 +1,19 @@
+#### 7.9.14 (2023-09-15)
+
+##### New Features
+
+* **creativearts:**
+  *  finalise changes to update creative arts ([349c175d](https://github.com/firstlovecenter/fl-pastoral-care/commit/349c175d963f7b4f0cc5b1c3d4df0efe6b3ef151))
+  *  implement update creative arts  page ([cd962c95](https://github.com/firstlovecenter/fl-pastoral-care/commit/cd962c956010a301ac4a446a19ceda44652fa2a4))
+
+##### Bug Fixes
+
+*  add church oversight type to resolver cypher ([fc88e32c](https://github.com/firstlovecenter/fl-pastoral-care/commit/fc88e32cc496579426397cac376f2f791e6abf7c))
+*  add denomition to permission levels ([5e926e40](https://github.com/firstlovecenter/fl-pastoral-care/commit/5e926e40feda0a7cbe8c98bb1e1cfa0305a5f218))
+*  add admins to oversight and campus levels ([35e63608](https://github.com/firstlovecenter/fl-pastoral-care/commit/35e63608c39c1da214bf85af1218f481c26ea6e4))
+*  separate useChurchLevel and useSontaLevel ([4f38ebb6](https://github.com/firstlovecenter/fl-pastoral-care/commit/4f38ebb6c646b788a7f49636404e30b39dcd3fb2))
+* **outside-accra:**  implement resolver for oversight admin ([1b4569c1](https://github.com/firstlovecenter/fl-pastoral-care/commit/1b4569c1392438fe6803830231d6d140567ff21a))
+
 #### 7.9.13 (2023-09-15)
 
 ##### New Features
