@@ -1,3 +1,12 @@
+#### 7.9.15 (2023-09-15)
+
+##### Bug Fixes
+
+*  fix  issues  with sonta and oa ([29bbf0f8](https://github.com/firstlovecenter/fl-pastoral-care/commit/29bbf0f833f2f5d07b217e80f0837ca2fe7db1e7))
+* **outside-accra:**
+  *  add cypher query to connect leaders ([a89ae84c](https://github.com/firstlovecenter/fl-pastoral-care/commit/a89ae84c95d7913684c5fd36feacddc8179b94b0))
+  *  add cypher query to match Oversight member ([b2bda326](https://github.com/firstlovecenter/fl-pastoral-care/commit/b2bda326353bd27e89034795e57621575ea13709))
+
 #### 7.9.14 (2023-09-15)
 
 ##### New Features
