@@ -1,13 +1,14 @@
 import { useQuery } from '@apollo/client'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
-import React, { useContext } from 'react'
-import { Button, Card, Col, Container, Row } from 'react-bootstrap'
+import { useContext } from 'react'
+import { Button, Container } from 'react-bootstrap'
 import { COUNCIL_ACCOUNT_DASHBOARD } from './accountsGQL'
 import { ChurchContext } from 'contexts/ChurchContext'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import HeadingSecondary from 'components/HeadingSecondary'
 import './accounts-colors.css'
 import { useNavigate } from 'react-router'
+import AccountBalanceCard from './components/AccountBalanceCard'
 
 const CouncilDashboard = () => {
   const { councilId } = useContext(ChurchContext)
@@ -27,33 +28,8 @@ const CouncilDashboard = () => {
         <HeadingPrimary>{`${council?.name} ${council?.__typename}`}</HeadingPrimary>
         <HeadingSecondary>{council?.leader.fullName}</HeadingSecondary>
 
-        <Card className="current-balance mb-2">
-          <Card.Body>
-            <Row className="d-flex align-items-center">
-              <Col>Current Balance</Col>
-              <Col>
-                <p className="text-end mb-0">
-                  {(council?.currentBalance || 0.0).toLocaleString('en-US')}
-                </p>
-              </Col>
-            </Row>
-          </Card.Body>
-        </Card>
-
-        <Card className="bussing-purse">
-          <Card.Body>
-            <Row className="d-flex align-items-center">
-              <Col>Bussing Purse Balance</Col>
-              <Col>
-                <p className="text-end mb-0">
-                  {(council?.bussingPurseBalance || 0.0).toLocaleString(
-                    'en-US'
-                  )}
-                </p>
-              </Col>
-            </Row>
-          </Card.Body>
-        </Card>
+        <AccountBalanceCard church={council} variant="current-balance" />
+        <AccountBalanceCard church={council} variant="bussing-purse" />
 
         <hr />
 

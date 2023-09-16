@@ -35,3 +35,22 @@ export const CAMPUS_ACCOUNT_DASHBOARD = gql`
     }
   }
 `
+
+export const CAMPUS_BY_COUNCIL_ACCOUNTS = gql`
+  query CampusByCouncilAccounts($id: ID!) {
+    campuses(where: { id: $id }) {
+      id
+      name
+
+      streams {
+        id
+        name
+
+        councils {
+          id
+          name
+        }
+      }
+    }
+  }
+`

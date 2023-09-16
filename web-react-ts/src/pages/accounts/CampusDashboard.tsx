@@ -61,7 +61,7 @@ const CampusDashboard = () => {
             className="text-start py-3"
             onClick={() => navigate('/accounts/campus/councils')}
           >
-            List Councils
+            Update Balances
           </Button>
           <Button
             variant="secondary"

@@ -2,6 +2,7 @@ import { Button, Spinner } from 'react-bootstrap'
 type SubmitButtonProps = {
   formik: any
   children?: JSX.Element
+  onClick?: () => void
 }
 
 const SubmitButton = (props: SubmitButtonProps) => {

@@ -1,6 +1,6 @@
 import { lazy } from 'react'
 import { LazyRouteTypes } from 'global-types'
-import { permitLeader, permitLeaderAdmin } from 'permission-utils'
+import { permitAdmin, permitLeader, permitLeaderAdmin } from 'permission-utils'
 
 const LandingPage = lazy(() => import('pages/accounts/LandingPage'))
 const CouncilDashboard = lazy(() => import('pages/accounts/CouncilDashboard'))
@@ -8,6 +8,10 @@ const CampusDashboard = lazy(() => import('pages/accounts/CampusDashboard'))
 const ExpenseForm = lazy(
   () => import('pages/accounts/request-expense/ExpenseForm')
 )
+const MakeDepositForm = lazy(
+  () => import('pages/accounts/council-deposit/MakeDepositForm')
+)
+const CampusCouncilList = lazy(() => import('pages/accounts/CampusCouncilList'))
 
 export const accountsRoutes: LazyRouteTypes[] = [
   { path: '/accounts', element: LandingPage, roles: permitLeader('Council') },
@@ -25,5 +29,15 @@ export const accountsRoutes: LazyRouteTypes[] = [
     path: '/accounts/request-expense',
     element: ExpenseForm,
     roles: permitLeader('Council'),
+  },
+  {
+    path: '/accounts/campus/councils',
+    element: CampusCouncilList,
+    roles: permitLeaderAdmin('Campus'),
+  },
+  {
+    path: '/accounts/council/make-deposit',
+    element: MakeDepositForm,
+    roles: permitAdmin('Campus'),
   },
 ]
