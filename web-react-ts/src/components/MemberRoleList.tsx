@@ -39,7 +39,7 @@ const MemberRoleList = ({
     streamAdmin: [],
     councilAdmin: [],
     constituencyAdmin: [],
-    creativeArtsLeader: [],
+    creativeartsLeader: [],
     ministryLeader: [],
     hubLeader: [],
     creativeartsAdmin: [],
