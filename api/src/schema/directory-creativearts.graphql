@@ -575,7 +575,7 @@ extend type Mutation {
   SetFellowshipToHubFellowship(fellowshipId: ID!, hubId: ID!): Fellowship!
     @cypher(
       statement: """
-      MATCH (fellowship:Active:Fellowship {id:$fellowshipId})
+      MATCH (fellowship:Fellowship {id: $fellowshipId})
       MATCH (hub:Hub {id: $hubId})<-[:HAS]-(ministry:Ministry)
 
       CREATE (log:HistoryLog {id:apoc.create.uuid()})
@@ -612,7 +612,7 @@ extend type Mutation {
     )
     @cypher(
       statement: """
-      MATCH (fellowship:Active:HubFellowship {id: $fellowshipId})
+      MATCH (fellowship:HubFellowship {id: $fellowshipId})
 
       CREATE (log:HistoryLog {id:apoc.create.uuid()})
         SET log.timeStamp = datetime(),
