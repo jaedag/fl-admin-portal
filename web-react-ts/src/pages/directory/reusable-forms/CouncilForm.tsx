@@ -19,7 +19,14 @@ import { MAKE_COUNCIL_INACTIVE } from 'pages/directory/update/CloseChurchMutatio
 import { useNavigate } from 'react-router'
 import Popup from 'components/Popup/Popup'
 import RoleView from 'auth/RoleView'
-import { Button, Container, Row, Col } from 'react-bootstrap'
+import {
+  Button,
+  Container,
+  Row,
+  Col,
+  ButtonGroup,
+  Modal,
+} from 'react-bootstrap'
 import { MemberContext } from 'contexts/MemberContext'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import HeadingSecondary from 'components/HeadingSecondary'
@@ -56,6 +63,7 @@ const CouncilForm = ({
 }: CouncilFormProps) => {
   const { clickCard, councilId } = useContext(ChurchContext)
   const { togglePopup, isOpen } = usePopup()
+  const [constituencyModal, setConstituencyModal] = useState(false)
   const { theme } = useContext(MemberContext)
 
   const navigate = useNavigate()
@@ -83,6 +91,16 @@ const CouncilForm = ({
         <Container>
           <HeadingPrimary>{title}</HeadingPrimary>
           <HeadingSecondary>{initialValues.name + ' Council'}</HeadingSecondary>
+          <ButtonGroup className="mt-3">
+            <Button onClick={() => setConstituencyModal(true)}>
+              Add Constituency
+            </Button>
+            {!newCouncil && (
+              <Button variant="danger" onClick={togglePopup}>
+                {`Close Down Council`}
+              </Button>
+            )}
+          </ButtonGroup>
         </Container>
         <Formik
           initialValues={initialValues}
@@ -185,9 +203,28 @@ const CouncilForm = ({
                 <SubmitButton formik={formik} />
               </Form>
 
+              <Modal
+                show={constituencyModal}
+                onHide={() => setConstituencyModal(false)}
+                centered
+              >
+                <Modal.Header closeButton>{error?.name}</Modal.Header>
+                <Modal.Body>
+                  <p className="text-info">{JSON.stringify(error)}</p>
+                </Modal.Body>
+                <Modal.Footer>
+                  <Button
+                    variant="primary"
+                    onClick={() => setConstituencyModal(false)}
+                  >
+                    Close
+                  </Button>
+                </Modal.Footer>
+              </Modal>
+
               {isOpen && (
                 <Popup handleClose={togglePopup}>
-                  Are you sure you want to close down this fellowship?
+                  Are you sure you want to close down this council?
                   <Button
                     variant="primary"
                     type="submit"
@@ -226,18 +263,6 @@ const CouncilForm = ({
                     No, take me back
                   </Button>
                 </Popup>
-              )}
-
-              {!newCouncil && (
-                <Button
-                  variant="primary"
-                  size="lg"
-                  disabled={formik.isSubmitting}
-                  className={`btn-secondary ${theme} mt-3`}
-                  onClick={togglePopup}
-                >
-                  {`Close Down Council`}
-                </Button>
               )}
             </Container>
           )}

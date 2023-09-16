@@ -12,6 +12,7 @@ import { HigherChurchWithDefaulters } from '../defaulters-types'
 import { messageForAdminsOfDefaulters } from '../defaulters-utils'
 import { COUNCIL_BY_CONSTITUENCY } from '../DefaultersQueries'
 import PlaceholderDefaulterList from '../PlaceholderDefaulterList'
+import '../Defaulters.css'
 
 const CouncilByConstituency = () => {
   const { councilId, clickCard } = useContext(ChurchContext)
