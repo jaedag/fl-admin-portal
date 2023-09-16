@@ -484,3 +484,59 @@ export const CREATIVEARTS_BANKED_LIST = gql`
     }
   }
 `
+
+//  Church By Sub Church
+
+export const CREATIVEARTS_BY_MINISTRY = gql`
+  query creativeArtsByMinistry($id: ID!) {
+    creativeArts(where: { id: $id }) {
+      id
+      name
+      ministries {
+        id
+        name
+        admin {
+          id
+          firstName
+          lastName
+          fullName
+          phoneNumber
+          whatsappNumber
+        }
+        activeFellowshipCount
+        formDefaultersThisWeekCount
+        bankingDefaultersThisWeekCount
+        bankedThisWeekCount
+        servicesThisWeekCount
+        cancelledServicesThisWeekCount
+      }
+    }
+  }
+`
+
+export const MINISTRY_BY_HUB = gql`
+  query ministryByHub($id: ID!) {
+    ministries(where: { id: $id }) {
+      id
+      name
+      hubs {
+        id
+        name
+        leader {
+          id
+          firstName
+          lastName
+          fullName
+          phoneNumber
+          whatsappNumber
+        }
+        activeFellowshipCount
+        formDefaultersThisWeekCount
+        bankingDefaultersThisWeekCount
+        bankedThisWeekCount
+        servicesThisWeekCount
+        cancelledServicesThisWeekCount
+      }
+    }
+  }
+`

@@ -107,6 +107,12 @@ const StreamByCouncil = lazy(
 const CampusByStream = lazy(
   () => import('pages/services/defaulters/church-by-subchurch/CampusByStream')
 )
+const CreativeArtsByMinistry = lazy(
+  () => import('pages/services/defaulters/creative-arts/CreativeArtsByMinistry')
+)
+const MinistryByHub = lazy(
+  () => import('pages/services/defaulters/creative-arts/MinistryByHub')
+)
 const ConstituencyBankingSlipView = lazy(
   () => import('pages/services/banking/banking-slip/ConstituencyView')
 )
@@ -450,7 +456,7 @@ export const graphs: LazyRouteTypes[] = [
   {
     path: '/services/defaulters/dashboard',
     element: DefaultersDashboard,
-    roles: permitLeaderAdmin('Constituency'),
+    roles: permitLeaderAdmin('Hub'),
     placeholder: true,
   },
   {
@@ -529,6 +535,18 @@ export const graphs: LazyRouteTypes[] = [
     path: '/services/stream-by-council',
     element: StreamByCouncil,
     roles: ['leaderFellowship'],
+    placeholder: true,
+  },
+  {
+    path: '/services/creativearts-by-ministry',
+    element: CreativeArtsByMinistry,
+    roles: permitLeaderAdmin('CreativeArts'),
+    placeholder: true,
+  },
+  {
+    path: '/services/ministry-by-hub',
+    element: MinistryByHub,
+    roles: permitLeaderAdmin('Ministry'),
     placeholder: true,
   },
 ]
