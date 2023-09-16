@@ -1,3 +1,19 @@
+#### 7.9.16 (2023-09-16)
+
+##### New Features
+
+* **creativearts:**
+  *  implement defaulters dashboard for all creative arts levels ([f15be886](https://github.com/firstlovecenter/fl-pastoral-care/commit/f15be8869a34e6f4a91510611c881e192b902c9d))
+  *  scaffold pages for creative arts graphs ([4df2c484](https://github.com/firstlovecenter/fl-pastoral-care/commit/4df2c484f6303cff997ac843dcca2850c981d3f5))
+
+##### Bug Fixes
+
+*  fix broken import of css file ([02be4e94](https://github.com/firstlovecenter/fl-pastoral-care/commit/02be4e9488dc5031d02b4f9ce139aa1727e71ad0))
+*  fix bug on member role list for creativeArtsLeaders ([7bf8a532](https://github.com/firstlovecenter/fl-pastoral-care/commit/7bf8a532fef1d015078587b20d9933c7e90bb094))
+*  finish church by subchurch queries ([f992fa0a](https://github.com/firstlovecenter/fl-pastoral-care/commit/f992fa0a3cfea1469b2b189d29019af84d7be629))
+*  fix sonta bugs ([2724d184](https://github.com/firstlovecenter/fl-pastoral-care/commit/2724d18443ebc629b33e83af4bacc79d91bc76e6))
+*  cypher bug  in connectChurch ([879b3f3f](https://github.com/firstlovecenter/fl-pastoral-care/commit/879b3f3fb7884462b1573f519c461d829391a31f))
+
 #### 7.9.15 (2023-09-15)
 
 ##### Bug Fixes
