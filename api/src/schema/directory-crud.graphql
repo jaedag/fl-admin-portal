@@ -724,7 +724,6 @@ extend type Mutation {
                      	RETURN count(stream)
                      	}
 
-      MATCH (stream)<-[:LEADS]-(leader:Active:Member)
       RETURN stream
       """
     )
@@ -746,7 +745,6 @@ extend type Mutation {
            MATCH (constituency:Constituency {id: $constituencyId})
            	SET constituency.name = $name
 
-      MATCH (constituency)<-[:LEADS]-(leader:Active:Member)
       RETURN constituency
       """
     )
@@ -769,7 +767,6 @@ extend type Mutation {
       MATCH (bacenta:Bacenta {id: $bacentaId})
       	SET bacenta.name = $name
 
-      MATCH (bacenta)<-[:LEADS]-(leader:Active:Member)
       RETURN bacenta
       """
     )
