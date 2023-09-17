@@ -1,3 +1,10 @@
+#### 7.9.18 (2023-09-17)
+
+##### Bug Fixes
+
+*  remove unused vars for update church details mutations ([9ce6ac6a](https://github.com/firstlovecenter/fl-pastoral-care/commit/9ce6ac6a39e5288c94c96e2109b2ec061b1d887d))
+*  fix some invalid types breaking the build ([16ae71b7](https://github.com/firstlovecenter/fl-pastoral-care/commit/16ae71b752f4586efa4e3ae6389b66a511e2454a))
+
 #### 7.9.17 (2023-09-17)
 
 ##### Bug Fixes
