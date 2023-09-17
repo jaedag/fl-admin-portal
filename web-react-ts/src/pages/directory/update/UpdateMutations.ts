@@ -211,16 +211,8 @@ export const UPDATE_STREAM_MUTATION = gql`
 `
 
 export const UPDATE_OVERSIGHT_MUTATION = gql`
-  mutation UpdateOversight(
-    $oversightId: ID!
-    $name: String!
-    $denominationId: ID!
-  ) {
-    UpdateOversightDetails(
-      oversightId: $oversightId
-      name: $name
-      denominationId: $denominationId
-    ) {
+  mutation UpdateOversight($oversightId: ID!, $name: String!) {
+    UpdateOversightDetails(oversightId: $oversightId, name: $name) {
       id
       name
       campuses {
@@ -273,7 +265,6 @@ export const UPDATE_CAMPUS_MUTATION = gql`
   mutation UpdateCampus(
     $campusId: ID!
     $name: String!
-    $oversightId: ID!
     $noIncomeTracking: Boolean!
     $currency: String!
     $conversionRateToDollar: Float!
@@ -281,7 +272,6 @@ export const UPDATE_CAMPUS_MUTATION = gql`
     UpdateCampusDetails(
       campusId: $campusId
       name: $name
-      oversightId: $oversightId
       noIncomeTracking: $noIncomeTracking
       currency: $currency
       conversionRateToDollar: $conversionRateToDollar
@@ -338,12 +328,8 @@ export const UPDATE_CAMPUS_MUTATION = gql`
 `
 
 export const UPDATE_COUNCIL_MUTATION = gql`
-  mutation UpdateCouncil($councilId: ID!, $name: String!, $streamId: ID!) {
-    UpdateCouncilDetails(
-      councilId: $councilId
-      name: $name
-      streamId: $streamId
-    ) {
+  mutation UpdateCouncil($councilId: ID!, $name: String!) {
+    UpdateCouncilDetails(councilId: $councilId, name: $name) {
       id
       name
       constituencies {
@@ -393,16 +379,8 @@ export const UPDATE_COUNCIL_MUTATION = gql`
 `
 
 export const UPDATE_CONSTITUENCY_MUTATION = gql`
-  mutation UpdateConstituency(
-    $constituencyId: ID!
-    $name: String!
-    $councilId: ID!
-  ) {
-    UpdateConstituencyDetails(
-      constituencyId: $constituencyId
-      name: $name
-      councilId: $councilId
-    ) {
+  mutation UpdateConstituency($constituencyId: ID!, $name: String!) {
+    UpdateConstituencyDetails(constituencyId: $constituencyId, name: $name) {
       id
       name
       bacentas {
@@ -452,16 +430,8 @@ export const UPDATE_CONSTITUENCY_MUTATION = gql`
 `
 
 export const UPDATE_BACENTA_MUTATION = gql`
-  mutation UpdateBacenta(
-    $bacentaId: ID!
-    $name: String!
-    $constituencyId: ID!
-  ) {
-    UpdateBacentaDetails(
-      bacentaId: $bacentaId
-      name: $name
-      constituencyId: $constituencyId
-    ) {
+  mutation UpdateBacenta($bacentaId: ID!, $name: String!) {
+    UpdateBacentaDetails(bacentaId: $bacentaId, name: $name) {
       id
       name
       sprinterTopUp
