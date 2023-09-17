@@ -3,11 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useQuery, useMutation } from '@apollo/client'
 import { alertMsg, throwToSentry } from '../../../global-utils'
 import { GET_OVERSIGHT_CAMPUSES } from '../../../queries/ListQueries'
-import {
-  UPDATE_CAMPUS_MUTATION,
-  REMOVE_CAMPUS_OVERSIGHT,
-  ADD_CAMPUS_OVERSIGHT,
-} from './UpdateMutations'
+import { UPDATE_CAMPUS_MUTATION } from './UpdateMutations'
 import { ChurchContext } from '../../../contexts/ChurchContext'
 import { DISPLAY_CAMPUS } from '../display/ReadQueries'
 import { LOG_CAMPUS_HISTORY } from './LogMutations'
@@ -16,11 +12,11 @@ import CampusForm, {
   CampusFormValues,
 } from 'pages/directory/reusable-forms/CampusForm'
 import { FormikHelpers } from 'formik'
-import LoadingScreen from 'components/base-component/LoadingScreen'
+import ApolloWrapper from 'components/base-component/ApolloWrapper'
 
 const UpdateCampus = () => {
-  const { campusId, clickCard } = useContext(ChurchContext)
-  const { data, loading } = useQuery(DISPLAY_CAMPUS, {
+  const { campusId } = useContext(ChurchContext)
+  const { data, loading, error } = useQuery(DISPLAY_CAMPUS, {
     variables: { id: campusId },
   })
 
@@ -50,31 +46,9 @@ const UpdateCampus = () => {
     refetchQueries: [
       {
         query: GET_OVERSIGHT_CAMPUSES,
-        variables: { id: campus.oversight.id },
+        variables: { id: campus?.oversight.id },
       },
     ],
-  })
-  //Changes upwards. it. Changes to the Oversight the Campus Campus is under
-  const [RemoveCampusOversight] = useMutation(REMOVE_CAMPUS_OVERSIGHT)
-  const [AddCampusOversight] = useMutation(ADD_CAMPUS_OVERSIGHT, {
-    onCompleted: (data) => {
-      const oldOversight = data.updateOversight.oversight[0]
-      const newOversight = data.UpdateCampus.campuses[0].oversight
-
-      let recordIfOldOversight = `${initialValues.name} Campus has been moved from ${oldOversight.name} Oversight to ${newOversight.name} Oversight`
-
-      //After Adding the stream to a campus, then you log that change.
-      LogCampusHistory({
-        variables: {
-          campusId: campusId,
-          newLeaderId: '',
-          oldLeaderId: '',
-          newOversightId: data.UpdateCampus.campus[0].oversight.id,
-          oldOversight: campus?.oversight.id,
-          historyRecord: recordIfOldOversight,
-        },
-      })
-    },
   })
 
   //onSubmit receives the form state as argument
@@ -82,7 +56,8 @@ const UpdateCampus = () => {
     values: CampusFormValues,
     onSubmitProps: FormikHelpers<CampusFormValues>
   ) => {
-    onSubmitProps.setSubmitting(true)
+    const { setSubmitting, resetForm } = onSubmitProps
+    setSubmitting(true)
 
     try {
       await UpdateCampus({
@@ -137,48 +112,24 @@ const UpdateCampus = () => {
         }
       }
 
-      //Log if Campus Changes
-      if (values.oversight !== campus.oversight.id) {
-        try {
-          await RemoveCampusOversight({
-            variables: {
-              higherChurch: initialValues.oversight,
-              lowerChurch: [campusId],
-            },
-          })
-          await AddCampusOversight({
-            variables: {
-              oversightId: values.oversight,
-              oldOversightd: initialValues.oversight,
-              campusId: campusId,
-            },
-          })
-        } catch (error: any) {
-          throwToSentry(error)
-        }
-      }
-
-      clickCard({ id: values.oversight, __typename: 'Oversight' })
-      onSubmitProps.setSubmitting(false)
-      onSubmitProps.resetForm()
+      setSubmitting(false)
+      resetForm()
       navigate(`/campus/displaydetails`)
     } catch (err: any) {
       throwToSentry('There was a problem updating this campus', err)
-      onSubmitProps.setSubmitting(false)
+      setSubmitting(false)
     }
   }
 
-  if (loading) {
-    return <LoadingScreen />
-  }
-
   return (
-    <CampusForm
-      initialValues={initialValues}
-      onSubmit={onSubmit}
-      title={`Update Campus Form`}
-      newCampus={false}
-    />
+    <ApolloWrapper data={data} loading={loading} error={error}>
+      <CampusForm
+        initialValues={initialValues}
+        onSubmit={onSubmit}
+        title={`Update Campus Form`}
+        newCampus={false}
+      />
+    </ApolloWrapper>
   )
 }
 

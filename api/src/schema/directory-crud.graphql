@@ -894,6 +894,61 @@ extend type Mutation {
     adminId: ID!
   ): Council
 
+  MoveOversightToDenomination(
+    oversightId: ID!
+    denominationId: ID!
+  ): Oversight!
+    @cypher(
+      statement: """
+      MATCH (oversight:Oversight {id: $oversightId})
+      MATCH (denomination:Denomination {id: $denominationId})
+      OPTIONAL MATCH (oversight)<-[r:HAS]-(:Denomination)
+      DELETE r
+
+      MERGE (denomination)-[:HAS]->(oversight)
+      RETURN oversight
+      """
+    )
+
+  MoveCampusToOversight(campusId: ID!, oversightId: ID!): Campus!
+    @cypher(
+      statement: """
+      MATCH (campus:Campus {id: $campusId})
+      MATCH (oversight:Oversight {id: $oversightId})
+      OPTIONAL MATCH (campus)<-[r:HAS]-(:Oversight)
+      DELETE r
+
+      MERGE (oversight)-[:HAS]->(campus)
+      RETURN campus
+      """
+    )
+
+  MoveStreamToCampus(streamId: ID!, campusId: ID!): Stream!
+    @cypher(
+      statement: """
+      MATCH (stream:Stream {id: $streamId})
+      MATCH (campus:Campus {id: $campusId})
+      OPTIONAL MATCH (stream)<-[r:HAS]-(:Campus)
+      DELETE r
+
+      MERGE (campus)-[:HAS]->(stream)
+      RETURN stream
+      """
+    )
+
+  MoveCouncilToStream(councilId: ID!, streamId: ID!): Council!
+    @cypher(
+      statement: """
+      MATCH (council:Council {id: $councilId})
+      MATCH (stream:Stream {id: $streamId})
+      OPTIONAL MATCH (council)<-[r:HAS]-(:Stream)
+      DELETE r
+
+      MERGE (stream)-[:HAS]->(council)
+      RETURN council
+      """
+    )
+
   MoveConstituencyToCouncil(constituencyId: ID!, councilId: ID!): Constituency!
     @cypher(
       statement: """

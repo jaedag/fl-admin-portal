@@ -20,8 +20,8 @@ const CreateCampus = () => {
     leaderId: '',
     leaderName: '',
     leaderEmail: '',
-    incomeTracking: '',
-    currency: '',
+    incomeTracking: 'Yes',
+    currency: 'GHS',
     conversionRateToDollar: 0,
     oversight: oversightId,
   }
@@ -34,10 +34,11 @@ const CreateCampus = () => {
     values: CampusFormValues,
     onSubmitProps: FormikHelpers<CampusFormValues>
   ) => {
-    onSubmitProps.setSubmitting(true)
+    const { setSubmitting, resetForm } = onSubmitProps
+    setSubmitting(true)
     try {
       if (!values.leaderEmail) {
-        onSubmitProps.setSubmitting(false)
+        setSubmitting(false)
         throw new Error('Leader email is required')
       }
 
@@ -61,13 +62,12 @@ const CreateCampus = () => {
         },
       })
 
-      clickCard({ id: values.oversight, __typename: 'Oversight' })
       clickCard(res.data.CreateCampus)
-      onSubmitProps.setSubmitting(false)
-      onSubmitProps.resetForm()
+      setSubmitting(false)
+      resetForm()
       navigate(`/campus/displaydetails`)
     } catch (error: any) {
-      onSubmitProps.setSubmitting(false)
+      setSubmitting(false)
       throwToSentry('There was an error creating campus', error)
     }
   }

@@ -7,6 +7,10 @@ export const MEMBER_CAMPUS_SEARCH = gql`
       campusSearch(key: $key) {
         id
         name
+        oversight {
+          id
+          name
+        }
       }
     }
   }
@@ -19,6 +23,10 @@ export const OVERSIGHT_CAMPUS_SEARCH = gql`
       campusSearch(key: $key, limit: 5) {
         id
         name
+        oversight {
+          id
+          name
+        }
       }
     }
   }

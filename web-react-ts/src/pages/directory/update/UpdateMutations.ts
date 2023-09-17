@@ -577,410 +577,195 @@ export const UPDATE_FELLOWSHIP = gql`
   }
 `
 
-export const ADD_BACENTA_CONSTITUENCY = gql`
-  mutation AddBacentaConstituency(
-    $constituencyId: ID!
-    $bacentaId: ID!
-    $oldConstituencyId: ID!
-  ) {
-    updateBacentas(
-      where: { id: $bacentaId }
-      connect: { constituency: { where: { node: { id: $constituencyId } } } }
-    ) {
-      bacentas {
-        id
-        constituency {
-          id
-          name
-        }
-      }
-    }
-    updateConstituencies(where: { id: $oldConstituencyId }) {
-      constituencies {
-        id
-        name
-      }
-    }
-  }
-`
-
-export const REMOVE_BACENTA_CONSTITUENCY = gql`
-  mutation RemoveBacentaConstituency($higherChurch: ID!, $lowerChurch: [ID]!) {
-    updateBacentas(
-      where: { id_IN: $lowerChurch }
-      disconnect: { constituency: { where: { node: { id: $higherChurch } } } }
-    ) {
-      bacentas {
-        id
-        name
-        constituency {
-          id
-          name
-        }
-      }
-    }
-    updateConstituencies(where: { id: $higherChurch }) {
-      constituencies {
-        id
-        name
-      }
-    }
-  }
-`
-
-export const ADD_BACENTA_FELLOWSHIPS = gql`
-  mutation AddBacentaFellowships($bacentaId: ID!, $fellowshipId: [ID!]) {
-    updateBacentas(
-      where: { id: $bacentaId }
-      connect: { fellowships: { where: { node: { id_IN: $fellowshipId } } } }
-    ) {
-      bacentas {
-        id
-        fellowships {
-          id
-          name
-        }
-      }
-    }
-  }
-`
-export const REMOVE_BACENTA_FELLOWSHIPS = gql`
-  mutation RemoveBacentaFellowships($bacentaId: ID!, $fellowshipId: ID!) {
-    updateBacentas(
-      where: { id: $bacentaId }
-      disconnect: { fellowships: { where: { node: { id: $fellowshipId } } } }
-    ) {
-      bacentas {
-        id
-        fellowships {
-          id
-          name
-        }
-      }
-    }
-  }
-`
-
-export const REMOVE_FELLOWSHIP_BACENTA = gql`
-  mutation RemoveFellowshipFromBacenta(
-    $higherChurch: ID!
-    $lowerChurch: [ID!]
-  ) {
-    updateFellowships(
-      where: { id_IN: $lowerChurch }
-      disconnect: { bacenta: { where: { node: { id: $higherChurch } } } }
-    ) {
-      fellowships {
-        id
-        name
-      }
-    }
-    updateBacentas(where: { id: $higherChurch }) {
-      bacentas {
-        id
-        name
-        fellowships {
-          id
-        }
-        constituency {
-          id
-        }
-      }
-    }
-  }
-`
-
-export const ADD_FELLOWSHIP_BACENTA = gql`
-  mutation AddFellowshipBacenta($bacentaId: ID!, $fellowshipId: ID!) {
-    updateFellowships(
-      where: { id: $fellowshipId }
-      connect: { bacenta: { where: { node: { id: $bacentaId } } } }
-    ) {
-      fellowships {
-        id
-        bacenta {
-          id
-          name
-        }
-      }
-    }
-  }
-`
-
-//Updating Constituency Mutations
-export const ADD_CONSTITUENCY_COUNCIL = gql`
-  mutation AddConstituencyCouncil(
-    $constituencyId: ID!
-    $councilId: ID!
-    $oldCouncilId: ID!
-  ) {
-    updateConstituencies(
-      where: { id: $constituencyId }
-      connect: { council: { where: { node: { id: $councilId } } } }
-    ) {
-      constituencies {
-        id
-        name
-        council {
-          id
-          name
-          constituencies {
-            id
-          }
-        }
-      }
-    }
-    updateCouncils(where: { id: $oldCouncilId }) {
-      councils {
-        id
-        name
-      }
-    }
-  }
-`
-
-export const REMOVE_CONSTITUENCY_COUNCIL = gql`
-  mutation RemoveConstituencyCouncil($lowerChurch: [ID]!, $higherChurch: ID!) {
-    updateConstituencies(
-      where: { id_IN: $lowerChurch }
-      disconnect: { council: { where: { node: { id: $higherChurch } } } }
-    ) {
-      constituencies {
-        id
-        name
-      }
-    }
-  }
-`
-
-export const ADD_CONSTITUENCY_BACENTAS = gql`
-  mutation AddConstituencyBacentas($constituencyId: ID!, $bacentaId: [ID]!) {
-    updateConstituencies(
-      where: { id: $constituencyId }
-      connect: { bacentas: { where: { node: { id_IN: $bacentaId } } } }
-    ) {
-      constituencies {
-        id
-        name
-        bacentas {
-          id
-        }
-      }
-    }
-  }
-`
-
-//Update Council Mutations
-export const ADD_COUNCIL_CONSTITUENCIES = gql`
-  mutation AddCouncilConstituencies($councilId: ID!, $constituencyId: [ID]!) {
-    updateCouncils(
-      where: { id: $councilId }
-      connect: {
-        constituencies: { where: { node: { id_IN: $constituencyId } } }
-      }
-    ) {
-      councils {
-        id
-        name
-        constituencies {
-          id
-        }
-      }
-    }
-  }
-`
-
-export const ADD_COUNCIL_STREAM = gql`
-  mutation AddCouncilStream(
-    $councilId: ID!
-    $streamId: ID!
-    $oldStreamId: ID!
-  ) {
-    updateCouncils(
-      where: { id: $councilId }
-      connect: { stream: { where: { node: { id: $streamId } } } }
-    ) {
-      councils {
-        id
-        name
-        stream {
-          id
-          name
-        }
-      }
-    }
-    updateStreams(where: { id: $oldStreamId }) {
-      streams {
-        id
-        name
-      }
-    }
-  }
-`
-
-export const REMOVE_COUNCIL_STREAM = gql`
-  mutation RemoveCouncilStream($lowerChurch: [ID]!, $higherChurch: ID!) {
-    updateCouncils(
-      where: { id_IN: $lowerChurch }
-      disconnect: { stream: { where: { node: { id: $higherChurch } } } }
-    ) {
-      councils {
-        id
-        name
-      }
-    }
-  }
-`
-
-//Update Stream Mutations
-export const ADD_STREAM_COUNCILS = gql`
-  mutation AddStreamCouncils($streamId: ID!, $councilId: [ID]!) {
-    updateCouncils(
-      where: { id_IN: $councilId }
-      connect: { stream: { where: { node: { id: $streamId } } } }
-    ) {
-      councils {
-        id
-        stream {
-          id
-          councils {
-            id
-          }
-        }
-      }
-    }
-  }
-`
-
-export const ADD_CAMPUS_STREAM = gql`
-  mutation AddCampusStream($campusId: ID!, $streamId: ID!) {
-    updateCampuses(
-      where: { id: $campusId }
-      connect: { streams: { where: { node: { id: $streamId } } } }
-    ) {
-      campuses {
-        id
-        name
-        streams {
-          id
-        }
-      }
-    }
-  }
-`
-
-export const ADD_CAMPUS_OVERSIGHT = gql`
-  mutation AddCampusOversight($campusId: ID!, $oversightId: ID!) {
-    updateCampuses(
-      where: { id: $campusId }
-      connect: { oversight: { where: { node: { id: $oversightId } } } }
-    ) {
-      campuses {
-        id
-        name
-        oversight {
-          id
-          name
-        }
-      }
-    }
-  }
-`
-export const ADD_OVERSIGHT_DENOMINATION = gql`
-  mutation AddOversightDenomination($oversightId: ID!, $denominationId: ID!) {
-    updateOversights(
-      where: { id: $oversightId }
-      connect: { denomination: { where: { node: { id: $denominationId } } } }
-    ) {
-      oversights {
-        id
-        name
-        denomination {
-          id
-          name
-        }
-      }
-    }
-  }
-`
-
-export const ADD_OVERSIGHT_CAMPUS = gql`
-  mutation AddOversightCampus($oversightId: ID!, $campusId: ID!) {
-    updateOversights(
-      where: { id: $oversightId }
-      connect: { campuses: { where: { node: { id: $campusId } } } }
-    ) {
-      oversights {
-        id
-        name
-        campuses {
-          id
-        }
-      }
-    }
-  }
-`
-
-export const REMOVE_STREAM_CAMPUS = gql`
-  mutation RemoveStreamCampus($higherChurch: ID!, $lowerChurch: [ID]!) {
-    updateStreams(
-      where: { id_IN: $lowerChurch }
-      disconnect: { campus: { where: { node: { id: $higherChurch } } } }
-    ) {
-      streams {
-        id
-        name
-        campus {
-          id
-          name
-        }
-      }
-    }
-    updateCampuses(where: { id: $higherChurch }) {
-      campuses {
-        id
-        name
-      }
-    }
-  }
-`
-export const REMOVE_CAMPUS_OVERSIGHT = gql`
-  mutation RemoveCampusOversight($lowerChurch: [ID]!, $higherChurch: ID!) {
-    updateCampuses(
-      where: { id_IN: $lowerChurch }
-      disconnect: { oversight: { where: { node: { id: $higherChurch } } } }
-    ) {
-      campuses {
-        id
-        name
-      }
-    }
-  }
-`
-
-export const REMOVE_OVERSIGHT_DENOMINATION = gql`
-  mutation RemoveOversightDenomination(
-    $lowerChurch: [ID]!
-    $higherChurch: ID!
-  ) {
-    updateOversights(
-      where: { id_IN: $lowerChurch }
-      disconnect: { denomination: { where: { node: { id: $higherChurch } } } }
-    ) {
-      oversights {
-        id
-        name
-      }
-    }
-  }
-`
-
 export const MAKE_MEMBER_INACTIVE = gql`
   mutation MakeMemberInactive($memberId: ID!, $reason: String!) {
     MakeMemberInactive(id: $memberId, reason: $reason) {
       id
       firstName
       lastName
+    }
+  }
+`
+
+export const MOVE_OVERSIGHT_TO_DENOMINATION = gql`
+  mutation MoveOversightToDenomination(
+    $oversightId: ID!
+    $newDenominationId: ID!
+    $oldDenominationId: ID!
+    $historyRecord: String!
+  ) {
+    MoveOversightToDenomination(
+      oversightId: $oversightId
+      denominationId: $newDenominationId
+    ) {
+      id
+      name
+      denomination {
+        id
+        name
+        oversights {
+          id
+          name
+        }
+      }
+    }
+    LogOversightHistory(
+      oversightId: $oversightId
+      historyRecord: $historyRecord
+      oldDenominationId: $oldDenominationId
+      newDenominationId: $newDenominationId
+    ) {
+      id
+      name
+      history(limit: 5) {
+        id
+        timeStamp
+        createdAt {
+          date
+        }
+        loggedBy {
+          id
+          firstName
+          lastName
+          stream_name
+        }
+        historyRecord
+      }
+    }
+  }
+`
+
+export const MOVE_CAMPUS_TO_OVERSIGHT = gql`
+  mutation MoveCampusToOversight(
+    $campusId: ID!
+    $newOversightId: ID!
+    $oldOversightId: ID!
+    $historyRecord: String!
+  ) {
+    MoveCampusToOversight(campusId: $campusId, oversightId: $newOversightId) {
+      id
+      name
+      oversight {
+        id
+        name
+        campuses {
+          id
+          name
+        }
+      }
+    }
+    LogCampusHistory(
+      campusId: $campusId
+      historyRecord: $historyRecord
+      oldOversightId: $oldOversightId
+      newOversightId: $newOversightId
+    ) {
+      id
+      name
+      history(limit: 5) {
+        id
+        timeStamp
+        createdAt {
+          date
+        }
+        loggedBy {
+          id
+          firstName
+          lastName
+          stream_name
+        }
+        historyRecord
+      }
+    }
+  }
+`
+
+export const MOVE_STREAM_TO_CAMPUS = gql`
+  mutation MoveStreamToCampus(
+    $streamId: ID!
+    $newCampusId: ID!
+    $oldCampusId: ID!
+    $historyRecord: String!
+  ) {
+    MoveStreamToCampus(streamId: $streamId, campusId: $newCampusId) {
+      id
+      name
+      campus {
+        id
+        name
+        streams {
+          id
+          name
+        }
+      }
+    }
+    LogStreamHistory(
+      streamId: $streamId
+      historyRecord: $historyRecord
+      oldCampusId: $oldCampusId
+      newCampusId: $newCampusId
+    ) {
+      id
+      name
+      history(limit: 5) {
+        id
+        timeStamp
+        createdAt {
+          date
+        }
+        loggedBy {
+          id
+          firstName
+          lastName
+          stream_name
+        }
+        historyRecord
+      }
+    }
+  }
+`
+
+export const MOVE_COUNCIL_TO_STREAM = gql`
+  mutation MoveCouncilToStream(
+    $councilId: ID!
+    $newStreamId: ID!
+    $oldStreamId: ID!
+    $historyRecord: String!
+  ) {
+    MoveCouncilToStream(councilId: $councilId, streamId: $newStreamId) {
+      id
+      name
+      stream {
+        id
+        name
+        councils {
+          id
+          name
+        }
+      }
+    }
+    LogCouncilHistory(
+      councilId: $councilId
+      historyRecord: $historyRecord
+      oldStreamId: $oldStreamId
+      newStreamId: $newStreamId
+    ) {
+      id
+      name
+      history(limit: 5) {
+        id
+        timeStamp
+        createdAt {
+          date
+        }
+        loggedBy {
+          id
+          firstName
+          lastName
+          stream_name
+        }
+        historyRecord
+      }
     }
   }
 `

@@ -3,11 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useQuery, useMutation } from '@apollo/client'
 import { alertMsg, throwToSentry } from '../../../global-utils'
 import { GET_CAMPUS_STREAMS } from '../../../queries/ListQueries'
-import {
-  UPDATE_STREAM_MUTATION,
-  ADD_CAMPUS_STREAM,
-  REMOVE_STREAM_CAMPUS,
-} from './UpdateMutations'
+import { UPDATE_STREAM_MUTATION } from './UpdateMutations'
 import { ChurchContext } from '../../../contexts/ChurchContext'
 import { DISPLAY_STREAM } from '../display/ReadQueries'
 import { LOG_STREAM_HISTORY } from './LogMutations'
@@ -15,12 +11,12 @@ import { MAKE_STREAM_LEADER } from './ChangeLeaderMutations'
 import StreamForm, {
   StreamFormValues,
 } from 'pages/directory/reusable-forms/StreamForm'
-import LoadingScreen from 'components/base-component/LoadingScreen'
 import { FormikHelpers } from 'formik'
+import ApolloWrapper from 'components/base-component/ApolloWrapper'
 
 const UpdateStream = () => {
-  const { streamId, clickCard } = useContext(ChurchContext)
-  const { data, loading } = useQuery(DISPLAY_STREAM, {
+  const { streamId } = useContext(ChurchContext)
+  const { data, loading, error } = useQuery(DISPLAY_STREAM, {
     variables: { id: streamId },
   })
 
@@ -50,36 +46,13 @@ const UpdateStream = () => {
       },
     ],
   })
-
-  //Changes upwards. it. Changes to the Campus the Stream Campus is under
-  const [RemoveStreamCampus] = useMutation(REMOVE_STREAM_CAMPUS)
-  const [AddStreamCampus] = useMutation(ADD_CAMPUS_STREAM, {
-    onCompleted: (data) => {
-      const oldCampus = data.updateCampus.campuses[0]
-      const newCampus = data.updateStreams.streams[0].campus
-
-      let recordIfOldCampus = `${initialValues.name} Stream has been moved from ${oldCampus.name} Campus to ${newCampus.name} Campus`
-
-      //After Adding the stream to a campus, then you log that change.
-      LogStreamHistory({
-        variables: {
-          streamId: streamId,
-          newLeaderId: '',
-          oldLeaderId: '',
-          newCampusId: data.updateStreams.streams[0].campus.id,
-          oldCampusId: stream?.campus.id,
-          historyRecord: recordIfOldCampus,
-        },
-      })
-    },
-  })
-
   //onSubmit receives the form state as argument
   const onSubmit = async (
     values: StreamFormValues,
     onSubmitProps: FormikHelpers<StreamFormValues>
   ) => {
-    onSubmitProps.setSubmitting(true)
+    const { setSubmitting, resetForm } = onSubmitProps
+    setSubmitting(true)
 
     try {
       await UpdateStream({
@@ -131,48 +104,24 @@ const UpdateStream = () => {
         }
       }
 
-      //Log if Campus Changes
-      if (values.campus !== initialValues.campus) {
-        try {
-          await RemoveStreamCampus({
-            variables: {
-              higherChurch: initialValues.campus,
-              lowerChurch: [streamId],
-            },
-          })
-          await AddStreamCampus({
-            variables: {
-              campusId: values.campus,
-              oldCampusId: initialValues.campus,
-              streamId: streamId,
-            },
-          })
-        } catch (error: any) {
-          throwToSentry(error)
-        }
-      }
-
-      clickCard({ id: values.campus, __typename: 'Campus' })
-      onSubmitProps.setSubmitting(false)
-      onSubmitProps.resetForm()
+      resetForm()
       navigate(`/stream/displaydetails`)
     } catch (err: any) {
       throwToSentry('There was a problem updating this stream', err)
-      onSubmitProps.setSubmitting(false)
+    } finally {
+      setSubmitting(false)
     }
   }
 
-  if (loading) {
-    return <LoadingScreen />
-  }
-
   return (
-    <StreamForm
-      initialValues={initialValues}
-      onSubmit={onSubmit}
-      title={`Update Stream Form`}
-      newStream={false}
-    />
+    <ApolloWrapper data={data} loading={loading} error={error}>
+      <StreamForm
+        initialValues={initialValues}
+        onSubmit={onSubmit}
+        title={`Update Stream Form`}
+        newStream={false}
+      />
+    </ApolloWrapper>
   )
 }
 

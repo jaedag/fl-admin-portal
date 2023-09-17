@@ -18,7 +18,7 @@ const CreateStream = () => {
   const initialValues: StreamFormValues = {
     name: '',
     leaderId: '',
-    meetingDay: '',
+    meetingDay: 'Sunday',
     leaderName: '',
     bankAccount: 'manual',
     leaderEmail: '',
@@ -33,11 +33,12 @@ const CreateStream = () => {
     values: StreamFormValues,
     onSubmitProps: FormikHelpers<StreamFormValues>
   ) => {
+    const { setSubmitting, resetForm } = onSubmitProps
     try {
-      onSubmitProps.setSubmitting(true)
+      setSubmitting(true)
 
       if (!values.leaderEmail) {
-        onSubmitProps.setSubmitting(false)
+        setSubmitting(false)
         throw new Error('Leader email is required')
       }
 
@@ -58,14 +59,13 @@ const CreateStream = () => {
         },
       })
 
-      clickCard({ id: values.campus, __typename: 'Campus' })
       clickCard(res.data.CreateStream)
-      onSubmitProps.setSubmitting(false)
-      onSubmitProps.resetForm()
+      setSubmitting(false)
+      resetForm()
       navigate(`/stream/displaydetails`)
     } catch (error) {
       throwToSentry('There was an error creating stream', error)
-      onSubmitProps.setSubmitting(false)
+      setSubmitting(false)
     }
   }
 

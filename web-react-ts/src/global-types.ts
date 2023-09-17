@@ -100,11 +100,29 @@ export type StreamOptions =
   | 'First Love Experience'
 export type TitleOptions = 'Pastor' | 'Reverend' | 'Bishop'
 
+export interface Denomination extends Church {
+  __typename: 'Denomination'
+  oversight: Oversight
+}
+
+export interface Oversight extends Church {
+  __typename: 'Oversight'
+  streams: Stream
+}
+export interface Campus extends Church {
+  __typename: 'Campus'
+  streams: Stream
+  oversight: Oversight
+}
+
 export interface Stream extends Church {
   id: string
   name: StreamOptions
   __typename: 'Stream'
+  bankAccount: string
+  meetingDay: 'Friday' | 'Saturday' | 'Sunday'
   stream_name?: StreamOptions
+  campus: Campus
 }
 export interface Constituency extends Church {
   __typename: 'Constituency'

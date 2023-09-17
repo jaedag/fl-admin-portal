@@ -187,7 +187,6 @@ const CouncilForm = ({
 
                       clickCard(res.data.MoveConstituencyToCouncil)
                       setConstituencyModal(false)
-                      navigate(`/constituency/displayall`)
                     } catch (error) {
                       throwToSentry(
                         `There was an error moving this constituency to this council`,

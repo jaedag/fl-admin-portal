@@ -3,11 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useQuery, useMutation } from '@apollo/client'
 import { alertMsg, throwToSentry } from '../../../global-utils'
 import { GET_DENOMINATION_OVERSIGHTS } from '../../../queries/ListQueries'
-import {
-  UPDATE_OVERSIGHT_MUTATION,
-  REMOVE_OVERSIGHT_DENOMINATION,
-  ADD_OVERSIGHT_DENOMINATION,
-} from './UpdateMutations'
+import { UPDATE_OVERSIGHT_MUTATION } from './UpdateMutations'
 import { DISPLAY_OVERSIGHT } from '../display/ReadQueries'
 import { LOG_OVERSIGHT_HISTORY } from './LogMutations'
 import { MAKE_OVERSIGHT_LEADER } from './ChangeLeaderMutations'
@@ -15,12 +11,12 @@ import OversightForm, {
   OversightFormValues,
 } from 'pages/directory/reusable-forms/OversightForm'
 import { FormikHelpers } from 'formik'
-import LoadingScreen from 'components/base-component/LoadingScreen'
 import { ChurchContext } from 'contexts/ChurchContext'
+import ApolloWrapper from 'components/base-component/ApolloWrapper'
 
 const UpdateOversight = () => {
-  const { oversightId, clickCard } = useContext(ChurchContext)
-  const { data, loading } = useQuery(DISPLAY_OVERSIGHT, {
+  const { oversightId } = useContext(ChurchContext)
+  const { data, loading, error } = useQuery(DISPLAY_OVERSIGHT, {
     variables: { id: oversightId },
   })
 
@@ -48,34 +44,9 @@ const UpdateOversight = () => {
     refetchQueries: [
       {
         query: GET_DENOMINATION_OVERSIGHTS,
-        variables: { id: oversight.denomination.id },
+        variables: { id: oversight?.denomination.id },
       },
     ],
-  })
-
-  //Changes upwards. it. Changes to the Denomination the Oversight Oversight is under
-  const [RemoveOversightDenomination] = useMutation(
-    REMOVE_OVERSIGHT_DENOMINATION
-  )
-  const [AddOversightDenomination] = useMutation(ADD_OVERSIGHT_DENOMINATION, {
-    onCompleted: (data) => {
-      const oldDenomination = data.updateDenomination.denomination[0]
-      const newDenomination = data.UpdateOversight.oversights[0].denomination
-
-      let recordIfOldDenomination = `${initialValues.name} Oversight has been moved from ${oldDenomination.name} Denomination to ${newDenomination.name} Denomination`
-
-      //After Adding the campus to a oversight, then you log that change.
-      LogOversightHistory({
-        variables: {
-          oversightId: oversightId,
-          newLeaderId: '',
-          oldLeaderId: '',
-          newDenominationId: data.UpdateOversight.oversight[0].denomination.id,
-          oldDenomination: oversight?.denomination.id,
-          historyRecord: recordIfOldDenomination,
-        },
-      })
-    },
   })
 
   //onSubmit receives the form state as argument
@@ -83,7 +54,8 @@ const UpdateOversight = () => {
     values: OversightFormValues,
     onSubmitProps: FormikHelpers<OversightFormValues>
   ) => {
-    onSubmitProps.setSubmitting(true)
+    const { setSubmitting, resetForm } = onSubmitProps
+    setSubmitting(true)
 
     try {
       await UpdateOversight({
@@ -133,48 +105,24 @@ const UpdateOversight = () => {
         }
       }
 
-      //Log if Oversight Changes
-      if (values.denomination !== oversight.denomination.id) {
-        try {
-          await RemoveOversightDenomination({
-            variables: {
-              higherChurch: initialValues.denomination,
-              lowerChurch: [oversightId],
-            },
-          })
-          await AddOversightDenomination({
-            variables: {
-              denominationId: values.denomination,
-              oldDenominationd: initialValues.denomination,
-              oversightId: oversightId,
-            },
-          })
-        } catch (error: any) {
-          throwToSentry(error)
-        }
-      }
-
-      clickCard({ id: values.denomination, __typename: 'Denomination' })
-      onSubmitProps.setSubmitting(false)
-      onSubmitProps.resetForm()
+      setSubmitting(false)
+      resetForm()
       navigate(`/oversight/displaydetails`)
     } catch (err: any) {
       throwToSentry('There was a problem updating this oversight', err)
-      onSubmitProps.setSubmitting(false)
+      setSubmitting(false)
     }
   }
 
-  if (loading) {
-    return <LoadingScreen />
-  }
-
   return (
-    <OversightForm
-      initialValues={initialValues}
-      onSubmit={onSubmit}
-      title={`Update Oversight Form`}
-      newOversight={false}
-    />
+    <ApolloWrapper data={data} loading={loading} error={error}>
+      <OversightForm
+        initialValues={initialValues}
+        onSubmit={onSubmit}
+        title={`Update Oversight Form`}
+        newOversight={false}
+      />
+    </ApolloWrapper>
   )
 }
 
