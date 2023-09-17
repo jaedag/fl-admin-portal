@@ -7,15 +7,12 @@ import {
   Member,
   Constituency,
   Council,
+  Bacenta,
 } from 'global-types'
 
 export interface FellowshipWithDefaulters extends Fellowship {
   __typename: 'Fellowship'
-  bacenta: {
-    id: string
-    name: string
-    constituency: Church
-  }
+  bacenta: Bacenta
   services: ServiceRecord[]
 }
 export interface ConstituencyWithDefaulters extends Constituency {
