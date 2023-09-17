@@ -1,3 +1,23 @@
+#### 7.9.17 (2023-09-17)
+
+##### Bug Fixes
+
+*  fix directory pages for fellowship, bacenta, constituency, council ([a3b48e28](https://github.com/firstlovecenter/fl-pastoral-care/commit/a3b48e283d565b65cc5343157101e2796cc3193c))
+*  fix bug preventing stream admin from searching ([e5926497](https://github.com/firstlovecenter/fl-pastoral-care/commit/e59264973d85d08d4921aeb0fa956f797b907e81))
+*  make change admin modal nicer looking ([f57edf54](https://github.com/firstlovecenter/fl-pastoral-care/commit/f57edf545c0512bb1022cbb2ea14870226af608a))
+*  fix bug with anagkazo defaulters 4 ([f9ac1499](https://github.com/firstlovecenter/fl-pastoral-care/commit/f9ac1499a3333c4acb3bb208f410a1bf50c0096c))
+*  fix bug with anagkazo defaulters 3 ([09a28956](https://github.com/firstlovecenter/fl-pastoral-care/commit/09a28956fdb4cd01967fe9420802bfbb592d339e))
+*  fix bug with anagkazo defaulters 2 ([593a0ac3](https://github.com/firstlovecenter/fl-pastoral-care/commit/593a0ac36ee420a4a3a96458f7e39bfe1044578b))
+*  fix bug preventing annagkazo banking ([170a7186](https://github.com/firstlovecenter/fl-pastoral-care/commit/170a7186d04ee64eb83c8a5479519dc567b52864))
+*  implement modal for moving bacentas across constituencies ([ee15dbe7](https://github.com/firstlovecenter/fl-pastoral-care/commit/ee15dbe7d360eb5f66f0c74c5d8e6238dadd6b3d))
+*  implement modal for moving constituencies across councils ([8e0777af](https://github.com/firstlovecenter/fl-pastoral-care/commit/8e0777afd7f3166aed5108a849337c9dea1dc17c))
+*  update code-of-the-day function for sept ([1b6abe36](https://github.com/firstlovecenter/fl-pastoral-care/commit/1b6abe362607f312d9e67f930b49bed26daf6f81))
+*  make it possible for vacation fellowships to be made  into hub fellowships ([e17f79e1](https://github.com/firstlovecenter/fl-pastoral-care/commit/e17f79e127c407d6d87c990cce171f1b41479bca))
+
+##### Refactors
+
+*  refactor all directory pages for moving lower churches ([1510002f](https://github.com/firstlovecenter/fl-pastoral-care/commit/1510002f9330a561e619ff4936a3a15f6579eea7))
+
 #### 7.9.16 (2023-09-16)
 
 ##### New Features
