@@ -83,6 +83,7 @@ export interface Fellowship extends Church {
 
 export interface Bacenta extends Church {
   __typename: 'Bacenta'
+  constituency: Constituency
 }
 
 export type ChurchIdAndName = {

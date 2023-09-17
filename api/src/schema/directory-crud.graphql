@@ -906,6 +906,18 @@ extend type Mutation {
       RETURN constituency
       """
     )
+  MoveBacentaToConstituency(bacentaId: ID!, constituencyId: ID!): Bacenta!
+    @cypher(
+      statement: """
+      MATCH (bacenta:Bacenta {id: $bacentaId})
+      MATCH (constituency:Constituency {id: $constituencyId})
+      OPTIONAL MATCH (bacenta)<-[r:HAS]-(:Constituency)
+      DELETE r
+
+      MERGE (constituency)-[:HAS]->(bacenta)
+      RETURN bacenta
+      """
+    )
 
   CloseDownCouncil(councilId: ID!, leaderId: ID!): Stream
     @cypher(

@@ -26,6 +26,7 @@ import { FormikInitialValues } from 'components/formik/formik-types'
 import { Constituency } from 'global-types'
 import { MOVE_CONSTITUENCY_TO_COUNCIL } from '../update/UpdateMutations'
 import NoDataComponent from 'pages/arrivals/CompNoData'
+import { DISPLAY_COUNCIL } from '../display/ReadQueries'
 
 export interface CouncilFormValues extends FormikInitialValues {
   constituencies?: Constituency[]
@@ -55,7 +56,14 @@ const CouncilForm = ({
   const navigate = useNavigate()
   const [buttonLoading, setButtonLoading] = useState(false)
   const [CloseDownCouncil] = useMutation(MAKE_COUNCIL_INACTIVE)
-  const [MoveConstituencyToCouncil] = useMutation(MOVE_CONSTITUENCY_TO_COUNCIL)
+  const [MoveConstituencyToCouncil] = useMutation(
+    MOVE_CONSTITUENCY_TO_COUNCIL,
+    {
+      refetchQueries: [
+        { query: DISPLAY_COUNCIL, variables: { id: councilId } },
+      ],
+    }
+  )
 
   const validationSchema = Yup.object({
     name: Yup.string().required(`Council Name is a required field`),
@@ -123,7 +131,7 @@ const CouncilForm = ({
                             return <NoDataComponent text="No Constituencies" />
                           return (
                             <Button variant="secondary" className="text-start">
-                              {constituency.name}
+                              {constituency.name} Constituency
                             </Button>
                           )
                         }

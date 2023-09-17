@@ -1032,3 +1032,51 @@ export const MOVE_CONSTITUENCY_TO_COUNCIL = gql`
     }
   }
 `
+
+export const MOVE_BACENTA_TO_CONSTITUENCY = gql`
+  mutation MoveBacentaToConstituency(
+    $bacentaId: ID!
+    $newConstituencyId: ID!
+    $oldConstituencyId: ID!
+    $historyRecord: String!
+  ) {
+    MoveBacentaToConstituency(
+      bacentaId: $bacentaId
+      constituencyId: $newConstituencyId
+    ) {
+      id
+      name
+      constituency {
+        id
+        name
+        bacentas {
+          id
+          name
+        }
+      }
+    }
+    LogBacentaHistory(
+      bacentaId: $bacentaId
+      historyRecord: $historyRecord
+      oldConstituencyId: $oldConstituencyId
+      newConstituencyId: $newConstituencyId
+    ) {
+      id
+      name
+      history(limit: 5) {
+        id
+        timeStamp
+        createdAt {
+          date
+        }
+        loggedBy {
+          id
+          firstName
+          lastName
+          stream_name
+        }
+        historyRecord
+      }
+    }
+  }
+`
