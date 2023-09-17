@@ -27,8 +27,10 @@ import { Constituency } from 'global-types'
 import { MOVE_CONSTITUENCY_TO_COUNCIL } from '../update/UpdateMutations'
 import NoDataComponent from 'pages/arrivals/CompNoData'
 import { DISPLAY_COUNCIL } from '../display/ReadQueries'
+import { Stream } from '@jaedag/admin-portal-types'
 
 export interface CouncilFormValues extends FormikInitialValues {
+  stream?: Stream
   constituencies?: Constituency[]
   constituency?: Constituency
 }

@@ -23,12 +23,13 @@ import Input from 'components/formik/Input'
 import SearchMember from 'components/formik/SearchMember'
 import SearchBacenta from 'components/formik/SearchBacenta'
 import { FormikInitialValues } from 'components/formik/formik-types'
-import { Bacenta } from 'global-types'
+import { Bacenta, Council } from 'global-types'
 import { MOVE_BACENTA_TO_CONSTITUENCY } from '../update/UpdateMutations'
 import NoDataComponent from 'pages/arrivals/CompNoData'
 import { DISPLAY_CONSTITUENCY } from '../display/ReadQueries'
 
 export interface ConstituencyFormValues extends FormikInitialValues {
+  council?: Council
   bacentas?: Bacenta[]
   bacenta?: Bacenta
 }

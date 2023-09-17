@@ -1,24 +1,20 @@
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useQuery, useMutation } from '@apollo/client'
 import { alertMsg, throwToSentry } from '../../../global-utils'
 import { GET_OVERSIGHT_CAMPUSES } from '../../../queries/ListQueries'
 import {
   UPDATE_CAMPUS_MUTATION,
-  ADD_CAMPUS_STREAM,
   REMOVE_CAMPUS_OVERSIGHT,
-  REMOVE_STREAM_CAMPUS,
   ADD_CAMPUS_OVERSIGHT,
 } from './UpdateMutations'
 import { ChurchContext } from '../../../contexts/ChurchContext'
 import { DISPLAY_CAMPUS } from '../display/ReadQueries'
-import { LOG_CAMPUS_HISTORY, LOG_STREAM_HISTORY } from './LogMutations'
+import { LOG_CAMPUS_HISTORY } from './LogMutations'
 import { MAKE_CAMPUS_LEADER } from './ChangeLeaderMutations'
 import CampusForm, {
   CampusFormValues,
 } from 'pages/directory/reusable-forms/CampusForm'
-import { MAKE_CAMPUS_INACTIVE } from './CloseChurchMutations'
-import { addNewChurches, removeOldChurches } from './directory-utils'
 import { FormikHelpers } from 'formik'
 import LoadingScreen from 'components/base-component/LoadingScreen'
 
@@ -49,15 +45,6 @@ const UpdateCampus = () => {
       },
     ],
   })
-  const [LogStreamHistory] = useMutation(LOG_STREAM_HISTORY, {
-    refetchQueries: [
-      {
-        query: DISPLAY_CAMPUS,
-        variables: { id: campusId },
-      },
-    ],
-  })
-
   const [MakeCampusLeader] = useMutation(MAKE_CAMPUS_LEADER)
   const [UpdateCampus] = useMutation(UPDATE_CAMPUS_MUTATION, {
     refetchQueries: [
@@ -67,39 +54,6 @@ const UpdateCampus = () => {
       },
     ],
   })
-
-  //Changes downwards. ie. Bacenta Changes underneath constituency
-  const [AddCampusesStream] = useMutation(ADD_CAMPUS_STREAM)
-  const [RemoveStreamCampus] = useMutation(REMOVE_STREAM_CAMPUS, {
-    onCompleted: (data) => {
-      const prevCampus = data.updateCampus.campuses[0]
-      const stream = data.updateStream.streams[0]
-      let newCampusId = ''
-      let oldCampusId = ''
-      let historyRecord
-
-      if (prevCampus.id !== campusId) {
-        //Bacenta has previous constituency which is not current constituency and is joining
-        oldCampusId = prevCampus.id
-        newCampusId = campusId
-        historyRecord = `${stream.name} Stream has been moved to ${initialValues.name} Campus from ${prevCampus.name} Campus`
-      }
-
-      //After removing the bacenta from a constituency, then you log that change.
-      LogStreamHistory({
-        variables: {
-          stream: stream.id,
-          newLeaderId: '',
-          oldLeaderId: '',
-          newCampusId: newCampusId,
-          oldCampusId: oldCampusId,
-          historyRecord: historyRecord,
-        },
-      })
-    },
-  })
-  const [CloseDownStream] = useMutation(MAKE_CAMPUS_INACTIVE)
-
   //Changes upwards. it. Changes to the Oversight the Campus Campus is under
   const [RemoveCampusOversight] = useMutation(REMOVE_CAMPUS_OVERSIGHT)
   const [AddCampusOversight] = useMutation(ADD_CAMPUS_OVERSIGHT, {
@@ -203,34 +157,6 @@ const UpdateCampus = () => {
           throwToSentry(error)
         }
       }
-
-      //For the Adding and Removing of Streams
-
-      const oldStreamList = initialValues.streams?.map((stream) => stream) || []
-
-      const newStreamList = values.streams?.map((stream) => stream) || []
-
-      const lists = {
-        oldChurches: oldStreamList,
-        newChurches: newStreamList,
-      }
-
-      const mutations = {
-        closeDownChurch: CloseDownStream,
-        removeChurch: RemoveStreamCampus,
-        addChurch: AddCampusesStream,
-        logChurchHistory: LogStreamHistory,
-      }
-
-      const args = {
-        initialValues,
-        campusId,
-      }
-
-      Promise.all([
-        await removeOldChurches(lists, mutations),
-        await addNewChurches(lists, mutations, args),
-      ])
 
       clickCard({ id: values.oversight, __typename: 'Oversight' })
       onSubmitProps.setSubmitting(false)

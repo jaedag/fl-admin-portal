@@ -20,12 +20,7 @@ export interface FellowshipWithDefaulters extends Fellowship {
 }
 export interface ConstituencyWithDefaulters extends Constituency {
   __typename: 'Constituency'
-  council: {
-    __typename: string
-    id: string
-    name: string
-    stream: Church
-  }
+  council: Council
   services: ServiceRecord[]
 }
 
