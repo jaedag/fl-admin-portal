@@ -17,8 +17,6 @@ import { MemberContext, SearchContext } from 'contexts/MemberContext'
 import MemberDisplayCard from 'components/card/MemberDisplayCard'
 import { isAuthorised, throwToSentry } from 'global-utils'
 import { Container } from 'react-bootstrap'
-
-import { permitMe } from 'permission-utils'
 import { ScaleLoader } from 'react-spinners'
 import {
   BacentaSearchResults,
@@ -208,70 +206,90 @@ const SearchPageMobile = () => {
 
   useEffect(() => {
     const whichSearch = (searchString: string) => {
-      if (isAuthorised(permitMe('Oversight'), currentUser.roles)) {
+      if (
+        isAuthorised(['leaderOversight', 'adminOversight'], currentUser.roles)
+      ) {
         oversightSearch({
           variables: {
             oversightId: currentUser.oversight,
             searchKey: searchString?.trim(),
           },
         })
-      } else if (isAuthorised(permitMe('Campus'), currentUser.roles)) {
+      } else if (
+        isAuthorised(['leaderCampus', 'adminCampus'], currentUser.roles)
+      ) {
         campusSearch({
           variables: {
             campusId: currentUser.campus,
             searchKey: searchString?.trim(),
           },
         })
-      } else if (isAuthorised(permitMe('CreativeArts'), currentUser.roles)) {
+      } else if (
+        isAuthorised(
+          ['leaderCreativeArts', 'adminCreativeArts'],
+          currentUser.roles
+        )
+      ) {
         creativeArtsSearch({
           variables: {
             creativeArtsId: currentUser.creativeArts,
             searchKey: searchString?.trim(),
           },
         })
-      } else if (isAuthorised(permitMe('Stream'), currentUser.roles)) {
+      } else if (
+        isAuthorised(['leaderStream', 'adminStream'], currentUser.roles)
+      ) {
         streamSearch({
           variables: {
             streamId: currentUser.stream,
             searchKey: searchString?.trim(),
           },
         })
-      } else if (isAuthorised(permitMe('Ministry'), currentUser.roles)) {
+      } else if (
+        isAuthorised(['leaderMinistry', 'adminMinistry'], currentUser.roles)
+      ) {
         ministrySearch({
           variables: {
             ministryId: currentUser.ministry,
             searchKey: searchString?.trim(),
           },
         })
-      } else if (isAuthorised(permitMe('Council'), currentUser.roles)) {
+      } else if (
+        isAuthorised(['leaderCouncil', 'adminCouncil'], currentUser.roles)
+      ) {
         councilSearch({
           variables: {
             councilId: currentUser.council,
             searchKey: searchString?.trim(),
           },
         })
-      } else if (isAuthorised(permitMe('Hub'), currentUser.roles)) {
+      } else if (isAuthorised(['leaderHub'], currentUser.roles)) {
         hubSearch({
           variables: {
             hubId: currentUser.hub,
             searchKey: searchString?.trim(),
           },
         })
-      } else if (isAuthorised(permitMe('Constituency'), currentUser.roles)) {
+      } else if (
+        isAuthorised(
+          ['leaderConstituency', 'adminConstituency'],
+          currentUser.roles
+        )
+      ) {
         constituencySearch({
           variables: {
             constituencyId: currentUser.constituency,
             searchKey: searchString?.trim(),
           },
         })
-      } else if (isAuthorised(permitMe('Bacenta'), currentUser.roles)) {
+      } else if (isAuthorised(['leaderBacenta'], currentUser.roles)) {
         bacentaSearch({
           variables: {
             bacentaId: currentUser.bacenta,
             searchKey: searchString?.trim(),
           },
         })
-      } else if (isAuthorised(permitMe('Fellowship'), currentUser.roles)) {
+      } else if (isAuthorised(['leaderFellowship'], currentUser.roles)) {
         fellowshipSearch({
           variables: {
             fellowshipId: currentUser.fellowship,
