@@ -1,44 +1,43 @@
-import { useMutation, useQuery } from '@apollo/client'
+import { useMutation } from '@apollo/client'
 import { Form, Formik, FormikHelpers } from 'formik'
 import * as Yup from 'yup'
 import {
   DECIMAL_NUM_REGEX,
   isAuthorised,
-  makeSelectOptions,
   SERVICE_DAY_OPTIONS,
   throwToSentry,
   VACATION_ONLINE_OPTIONS,
   VACATION_OPTIONS,
 } from 'global-utils'
-import {
-  GET_COUNCIL_CONSTITUENCIES,
-  GET_CONSTITUENCY_BACENTAS,
-} from 'queries/ListQueries'
-import React, { useContext, useState } from 'react'
+import { useContext, useState } from 'react'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { MAKE_FELLOWSHIP_INACTIVE } from 'pages/directory/update/CloseChurchMutations'
 import { useNavigate } from 'react-router'
-import Popup from 'components/Popup/Popup'
 import RoleView from 'auth/RoleView'
-import { Container, Row, Col, Button, Spinner } from 'react-bootstrap'
+import {
+  Container,
+  Row,
+  Col,
+  Button,
+  Spinner,
+  ButtonGroup,
+  Modal,
+} from 'react-bootstrap'
 import { MemberContext } from 'contexts/MemberContext'
 import './Forms.css'
-import LoadingScreen from 'components/base-component/LoadingScreen'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import HeadingSecondary from 'components/HeadingSecondary'
 import SubmitButton from 'components/formik/SubmitButton'
 import { DISPLAY_BACENTA } from 'pages/directory/display/ReadQueries'
 import { permitAdmin, permitMe } from 'permission-utils'
-import usePopup from 'hooks/usePopup'
 import Input from 'components/formik/Input'
 import SearchMember from 'components/formik/SearchMember'
 import Select from 'components/formik/Select'
-import SelectWithQuery from 'components/formik/SelectWithQuery'
 import { FormikInitialValues } from 'components/formik/formik-types'
+import { Bacenta } from 'global-types'
 
 export interface FellowshipFormValues extends FormikInitialValues {
-  constituencySelect: string
-  bacenta: string
+  bacenta?: Bacenta
   meetingDay: string
   vacationStatus: string
   venueLatitude: string | number
@@ -72,28 +71,21 @@ const VerifyNotMe = ({
 }
 
 const FellowshipForm = (props: FellowshipFormProps) => {
-  const { fellowshipId, councilId, clickCard } = useContext(ChurchContext)
-  const { theme, currentUser } = useContext(MemberContext)
-  const { togglePopup, isOpen } = usePopup()
+  const { initialValues, onSubmit, title, newFellowship } = props
+  const { fellowshipId, clickCard } = useContext(ChurchContext)
+  const { currentUser } = useContext(MemberContext)
+  const [closeDown, setCloseDown] = useState(false)
   const navigate = useNavigate()
-
-  const { data, error } = useQuery(GET_COUNCIL_CONSTITUENCIES, {
-    variables: { id: councilId },
-  })
 
   const [buttonLoading, setButtonLoading] = useState(false)
   const [CloseDownFellowship] = useMutation(MAKE_FELLOWSHIP_INACTIVE, {
     refetchQueries: [
       {
         query: DISPLAY_BACENTA,
-        variables: { id: props.initialValues.bacenta },
+        variables: { id: initialValues.bacenta },
       },
     ],
   })
-
-  if (error) {
-    throwToSentry('', error)
-  }
 
   const validationSchema = Yup.object({
     name: Yup.string().required('Fellowship Name is a required field'),
@@ -122,30 +114,39 @@ const FellowshipForm = (props: FellowshipFormProps) => {
 
   const [positionLoading, setPositionLoading] = useState(false)
 
-  const constituencyOptions = data
-    ? makeSelectOptions(data.councils[0]?.constituencies)
-    : []
-
   const vacationOptions = isAuthorised(permitMe('Campus'), currentUser.roles)
     ? VACATION_ONLINE_OPTIONS
     : VACATION_OPTIONS
 
-  let constituencyIdVar = props.initialValues.constituencySelect
-
-  if (!props.initialValues.name && !props.newFellowship) {
-    return <LoadingScreen />
-  }
-
   return (
     <>
       <Container>
-        <HeadingPrimary>{props.title}</HeadingPrimary>
-        <HeadingSecondary>{props.initialValues.name}</HeadingSecondary>
+        <HeadingPrimary>{title}</HeadingPrimary>
+        <HeadingSecondary>{initialValues.name}</HeadingSecondary>
+        <ButtonGroup className="mt-3">
+          {!newFellowship && (
+            <>
+              <RoleView roles={permitAdmin('Ministry')}>
+                <Button
+                  variant="warning"
+                  onClick={() => {
+                    navigate('/fellowship/make-hub-fellowship')
+                  }}
+                >
+                  Hub Fellowship Options
+                </Button>
+              </RoleView>
+              <Button variant="danger" onClick={() => setCloseDown(true)}>
+                {`Close Down Fellowship`}
+              </Button>
+            </>
+          )}
+        </ButtonGroup>
       </Container>
       <Formik
-        initialValues={props.initialValues}
+        initialValues={initialValues}
         validationSchema={validationSchema}
-        onSubmit={props.onSubmit}
+        onSubmit={onSubmit}
         validateOnMount
       >
         {(formik) => (
@@ -157,53 +158,8 @@ const FellowshipForm = (props: FellowshipFormProps) => {
 
                   <Col className="mb-2">
                     <Row className="form-row">
-                      <RoleView roles={permitAdmin('Ministry')}>
-                        <Container className="mb-4">
-                          <Button
-                            variant="warning"
-                            onClick={() => {
-                              navigate('/fellowship/make-hub-fellowship')
-                            }}
-                          >
-                            Hub Fellowship Options
-                          </Button>
-                        </Container>
-                      </RoleView>
                       <RoleView roles={permitAdmin('Constituency')}>
-                        <Col>
-                          <Select
-                            label={`Constituency`}
-                            name="constituencySelect"
-                            options={constituencyOptions}
-                            onChange={(e: any) => {
-                              formik.setFieldValue(
-                                'constituencySelect',
-                                e.target.value
-                              )
-                              constituencyIdVar = e.target.value
-                            }}
-                            defaultOption={`Select a Constituency`}
-                          />
-
-                          <SelectWithQuery
-                            name="bacenta"
-                            label="Bacenta"
-                            optionsQuery={GET_CONSTITUENCY_BACENTAS}
-                            queryVariable="id"
-                            dataset="bacentas"
-                            varValue={
-                              constituencyIdVar || props.initialValues.bacenta
-                            }
-                            defaultOption="Select a Bacenta"
-                            initialValue={''}
-                          />
-                        </Col>
-                      </RoleView>
-                    </Row>
-
-                    <Row className="form-row">
-                      <RoleView roles={permitAdmin('Constituency')}>
-                        <VerifyNotMe leaderId={props.initialValues.leaderId}>
+                        <VerifyNotMe leaderId={initialValues.leaderId}>
                           <>
                             <Col sm={12}>
                               <Input
@@ -234,12 +190,12 @@ const FellowshipForm = (props: FellowshipFormProps) => {
                         </VerifyNotMe>
                       </RoleView>
                       <RoleView roles={permitAdmin('Constituency')}>
-                        <VerifyNotMe leaderId={props.initialValues.leaderId}>
+                        <VerifyNotMe leaderId={initialValues.leaderId}>
                           <Col sm={12}>
                             <SearchMember
                               name="leaderId"
                               label="Fellowship Leader"
-                              initialValue={props.initialValues.leaderName}
+                              initialValue={initialValues.leaderName}
                               placeholder="Select a Leader"
                               setFieldValue={formik.setFieldValue}
                               aria-describedby="Member Search Box"
@@ -309,63 +265,51 @@ const FellowshipForm = (props: FellowshipFormProps) => {
                 </Row>
               </div>
 
-              <SubmitButton formik={formik} />
+              <div className="text-center">
+                <SubmitButton formik={formik} />
+              </div>
             </Form>
-            {isOpen && (
-              <Popup handleClose={togglePopup}>
-                Are you sure you want to close down this fellowship?
+
+            <Modal show={closeDown} onHide={() => setCloseDown(false)} centered>
+              <Modal.Header closeButton>Close Down Fellowship</Modal.Header>
+              <Modal.Body>
+                <p className="text-info">
+                  Are you sure you want to close down this fellowship?
+                </p>
+              </Modal.Body>
+              <Modal.Footer>
                 <Button
                   variant="primary"
                   type="submit"
                   size="lg"
                   disabled={buttonLoading}
-                  className={`btn-main ${theme}`}
-                  onClick={() => {
-                    setButtonLoading(true)
-                    CloseDownFellowship({
-                      variables: {
-                        id: fellowshipId,
-                        leaderId: props.initialValues.leaderId,
-                      },
-                    })
-                      .then((res) => {
-                        setButtonLoading(false)
-                        clickCard(res.data.CloseDownFellowship)
-                        togglePopup()
-                        navigate('/bacenta/displaydetails')
+                  onClick={async () => {
+                    try {
+                      setButtonLoading(true)
+                      const res = await CloseDownFellowship({
+                        variables: {
+                          id: fellowshipId,
+                          leaderId: initialValues.leaderId,
+                        },
                       })
-                      .catch((error) => {
-                        setButtonLoading(false)
-                        throwToSentry(
-                          'There was an error closing down this fellowship',
-                          error
-                        )
-                      })
+
+                      setButtonLoading(false)
+                      clickCard(res.data.CloseDownFellowship)
+                      setCloseDown(false)
+                      navigate('/bacenta/displaydetails')
+                    } catch (error) {
+                      setButtonLoading(false)
+                      throwToSentry(
+                        'There was an error closing down this fellowship',
+                        error
+                      )
+                    }
                   }}
                 >
                   {buttonLoading ? `Submitting...` : `Yes, I'm sure`}
                 </Button>
-                <Button
-                  variant="primary"
-                  className={`btn-secondary mt-2 ${theme}`}
-                  onClick={togglePopup}
-                >
-                  No, take me back
-                </Button>
-              </Popup>
-            )}
-
-            {!props.newFellowship && (
-              <Button
-                variant="primary"
-                size="lg"
-                disabled={formik.isSubmitting}
-                className={`btn-secondary ${theme} mt-3`}
-                onClick={togglePopup}
-              >
-                Close Down Fellowship
-              </Button>
-            )}
+              </Modal.Footer>
+            </Modal>
           </Container>
         )}
       </Formik>

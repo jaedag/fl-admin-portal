@@ -26,7 +26,7 @@ import { FormikInitialValues } from 'components/formik/formik-types'
 import { Constituency } from 'global-types'
 import { MOVE_CONSTITUENCY_TO_COUNCIL } from '../update/UpdateMutations'
 import NoDataComponent from 'pages/arrivals/CompNoData'
-import { DISPLAY_COUNCIL } from '../display/ReadQueries'
+import { DISPLAY_COUNCIL, DISPLAY_STREAM } from '../display/ReadQueries'
 import { Stream } from '@jaedag/admin-portal-types'
 
 export interface CouncilFormValues extends FormikInitialValues {
@@ -57,7 +57,11 @@ const CouncilForm = ({
 
   const navigate = useNavigate()
   const [buttonLoading, setButtonLoading] = useState(false)
-  const [CloseDownCouncil] = useMutation(MAKE_COUNCIL_INACTIVE)
+  const [CloseDownCouncil] = useMutation(MAKE_COUNCIL_INACTIVE, {
+    refetchQueries: [
+      { query: DISPLAY_STREAM, variables: { id: initialValues.stream } },
+    ],
+  })
   const [MoveConstituencyToCouncil] = useMutation(
     MOVE_CONSTITUENCY_TO_COUNCIL,
     {

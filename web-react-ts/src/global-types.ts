@@ -75,6 +75,7 @@ export interface Sonta extends Church {
 
 export interface Fellowship extends Church {
   __typename: 'Fellowship'
+  bacenta: Bacenta
   bankingCode: number
   meetingDay: {
     day: 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday'

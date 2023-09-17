@@ -44,7 +44,8 @@ const UpdateCouncil = () => {
     values: CouncilFormValues,
     onSubmitProps: FormikHelpers<CouncilFormValues>
   ) => {
-    onSubmitProps.setSubmitting(true)
+    const { setSubmitting, resetForm } = onSubmitProps
+    setSubmitting(true)
 
     try {
       await UpdateCouncil({
@@ -93,12 +94,12 @@ const UpdateCouncil = () => {
         }
       }
 
-      onSubmitProps.setSubmitting(false)
-      onSubmitProps.resetForm()
+      setSubmitting(false)
+      resetForm()
       navigate(`/council/displaydetails`)
     } catch (error: any) {
       throwToSentry('There was a problem updating this council', error)
-      onSubmitProps.setSubmitting(false)
+      setSubmitting(false)
     }
   }
 

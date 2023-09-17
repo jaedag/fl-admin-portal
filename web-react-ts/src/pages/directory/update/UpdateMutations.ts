@@ -1080,3 +1080,51 @@ export const MOVE_BACENTA_TO_CONSTITUENCY = gql`
     }
   }
 `
+
+export const MOVE_FELLOWSHIP_TO_BACENTA = gql`
+  mutation MoveFellowshipToBacenta(
+    $fellowshipId: ID!
+    $newBacentaId: ID!
+    $oldBacentaId: ID!
+    $historyRecord: String!
+  ) {
+    MoveFellowshipToBacenta(
+      fellowshipId: $fellowshipId
+      bacentaId: $newBacentaId
+    ) {
+      id
+      name
+      bacenta {
+        id
+        name
+        fellowships {
+          id
+          name
+        }
+      }
+    }
+    LogFellowshipHistory(
+      fellowshipId: $fellowshipId
+      historyRecord: $historyRecord
+      oldBacentaId: $oldBacentaId
+      newBacentaId: $newBacentaId
+    ) {
+      id
+      name
+      history(limit: 5) {
+        id
+        timeStamp
+        createdAt {
+          date
+        }
+        loggedBy {
+          id
+          firstName
+          lastName
+          stream_name
+        }
+        historyRecord
+      }
+    }
+  }
+`

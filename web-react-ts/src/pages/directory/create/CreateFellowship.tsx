@@ -11,7 +11,7 @@ import { throwToSentry } from 'global-utils'
 import { FormikHelpers } from 'formik'
 
 const CreateFellowship = () => {
-  const { clickCard, constituencyId, bacentaId } = useContext(ChurchContext)
+  const { clickCard, bacentaId } = useContext(ChurchContext)
   const navigate = useNavigate()
 
   const initialValues: FellowshipFormValues = {
@@ -19,7 +19,6 @@ const CreateFellowship = () => {
     leaderId: '',
     leaderName: '',
     leaderEmail: '',
-    constituencySelect: constituencyId ?? '',
     bacenta: bacentaId ?? '',
     meetingDay: '',
     vacationStatus: '',
@@ -35,11 +34,12 @@ const CreateFellowship = () => {
     values: FellowshipFormValues,
     onSubmitProps: FormikHelpers<FellowshipFormValues>
   ) => {
-    onSubmitProps.setSubmitting(true)
+    const { setSubmitting, resetForm } = onSubmitProps
+    setSubmitting(true)
 
     try {
       if (!values.leaderEmail) {
-        onSubmitProps.setSubmitting(false)
+        setSubmitting(false)
         throw new Error('Leader email is required')
       }
 
@@ -62,12 +62,12 @@ const CreateFellowship = () => {
       })
 
       clickCard(res.data.CreateFellowship)
-      onSubmitProps.setSubmitting(false)
-      onSubmitProps.resetForm()
+      setSubmitting(false)
+      resetForm()
       navigate('/fellowship/displaydetails')
     } catch (error: any) {
       throwToSentry('There was an error creating fellowship', error)
-      onSubmitProps.setSubmitting(false)
+      setSubmitting(false)
     }
   }
 

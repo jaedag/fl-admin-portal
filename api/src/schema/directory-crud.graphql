@@ -919,6 +919,19 @@ extend type Mutation {
       """
     )
 
+  MoveFellowshipToBacenta(fellowshipId: ID!, bacentaId: ID!): Fellowship!
+    @cypher(
+      statement: """
+      MATCH (fellowship:Fellowship {id: $fellowshipId})
+      MATCH (bacenta:Bacenta {id: $bacentaId})
+      OPTIONAL MATCH (fellowship)<-[r:HAS]-(:Bacenta)
+      DELETE r
+
+      MERGE (bacenta)-[:HAS]->(fellowship)
+      RETURN fellowship
+      """
+    )
+
   CloseDownCouncil(councilId: ID!, leaderId: ID!): Stream
     @cypher(
       statement: """

@@ -26,7 +26,7 @@ import { FormikInitialValues } from 'components/formik/formik-types'
 import { Bacenta, Council } from 'global-types'
 import { MOVE_BACENTA_TO_CONSTITUENCY } from '../update/UpdateMutations'
 import NoDataComponent from 'pages/arrivals/CompNoData'
-import { DISPLAY_CONSTITUENCY } from '../display/ReadQueries'
+import { DISPLAY_CONSTITUENCY, DISPLAY_COUNCIL } from '../display/ReadQueries'
 
 export interface ConstituencyFormValues extends FormikInitialValues {
   council?: Council
@@ -56,7 +56,11 @@ const ConstituencyForm = ({
 
   const navigate = useNavigate()
   const [buttonLoading, setButtonLoading] = useState(false)
-  const [CloseDownConstituency] = useMutation(MAKE_CONSTITUENCY_INACTIVE)
+  const [CloseDownConstituency] = useMutation(MAKE_CONSTITUENCY_INACTIVE, {
+    refetchQueries: [
+      { query: DISPLAY_COUNCIL, variables: { id: constituencyId } },
+    ],
+  })
   const [MoveBacentaToConstituency] = useMutation(
     MOVE_BACENTA_TO_CONSTITUENCY,
     {
