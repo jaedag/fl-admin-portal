@@ -10,9 +10,7 @@ import { MAKE_COUNCIL_LEADER } from './ChangeLeaderMutations'
 import CouncilForm, {
   CouncilFormValues,
 } from 'pages/directory/reusable-forms/CouncilForm'
-
 import { FormikHelpers } from 'formik'
-import LoadingScreen from 'components/base-component/LoadingScreen'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 
 const UpdateCouncil = () => {
@@ -102,10 +100,6 @@ const UpdateCouncil = () => {
       throwToSentry('There was a problem updating this council', error)
       onSubmitProps.setSubmitting(false)
     }
-  }
-
-  if (loading) {
-    return <LoadingScreen />
   }
 
   return (

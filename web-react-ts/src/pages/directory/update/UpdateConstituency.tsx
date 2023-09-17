@@ -11,11 +11,11 @@ import ConstituencyForm, {
   ConstituencyFormValues,
 } from 'pages/directory/reusable-forms/ConstituencyForm'
 import { FormikHelpers } from 'formik'
-import LoadingScreen from 'components/base-component/LoadingScreen'
+import ApolloWrapper from 'components/base-component/ApolloWrapper'
 
 const UpdateConstituency = () => {
   const { constituencyId } = useContext(ChurchContext)
-  const { data, loading } = useQuery(DISPLAY_CONSTITUENCY, {
+  const { data, loading, error } = useQuery(DISPLAY_CONSTITUENCY, {
     variables: { id: constituencyId },
   })
 
@@ -44,7 +44,8 @@ const UpdateConstituency = () => {
     values: ConstituencyFormValues,
     onSubmitProps: FormikHelpers<ConstituencyFormValues>
   ) => {
-    onSubmitProps.setSubmitting(true)
+    const { setSubmitting, resetForm } = onSubmitProps
+    setSubmitting(true)
 
     try {
       await UpdateConstituency({
@@ -92,26 +93,24 @@ const UpdateConstituency = () => {
         }
       }
 
-      onSubmitProps.setSubmitting(false)
-      onSubmitProps.resetForm()
+      setSubmitting(false)
+      resetForm()
       navigate(`/constituency/displaydetails`)
     } catch (error: any) {
       throwToSentry('There was a problem updating this constituency', error)
-      onSubmitProps.setSubmitting(false)
+      setSubmitting(false)
     }
   }
 
-  if (loading) {
-    return <LoadingScreen />
-  }
-
   return (
-    <ConstituencyForm
-      initialValues={initialValues}
-      onSubmit={onSubmit}
-      title={`Update Constituency Form`}
-      newConstituency={false}
-    />
+    <ApolloWrapper data={data} loading={loading} error={error}>
+      <ConstituencyForm
+        initialValues={initialValues}
+        onSubmit={onSubmit}
+        title={`Update Constituency Form`}
+        newConstituency={false}
+      />
+    </ApolloWrapper>
   )
 }
 
