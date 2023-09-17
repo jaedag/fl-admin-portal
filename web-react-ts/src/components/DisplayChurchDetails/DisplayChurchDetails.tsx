@@ -273,17 +273,17 @@ const DisplayChurchDetails = (props: DisplayChurchDetailsProps) => {
           )}
         </Container>
         <Modal show={show} onHide={handleClose} centered>
-          <Modal.Header closeButton>
-            Change {`${props.churchType}`} Admin
-          </Modal.Header>
-          <Modal.Body>
-            <Formik
-              initialValues={initialValues}
-              validationSchema={validationSchema}
-              onSubmit={onSubmit}
-            >
-              {(formik) => (
-                <Form>
+          <Formik
+            initialValues={initialValues}
+            validationSchema={validationSchema}
+            onSubmit={onSubmit}
+          >
+            {(formik) => (
+              <Form>
+                <Modal.Header closeButton>
+                  Change {`${props.churchType}`} Admin
+                </Modal.Header>
+                <Modal.Body>
                   <Row className="form-row">
                     <Col>
                       <SearchMember
@@ -296,17 +296,16 @@ const DisplayChurchDetails = (props: DisplayChurchDetailsProps) => {
                       />
                     </Col>
                   </Row>
-
+                </Modal.Body>
+                <Modal.Footer>
                   <SubmitButton formik={formik} />
-                </Form>
-              )}
-            </Formik>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="primary" onClick={handleClose}>
-              Close
-            </Button>
-          </Modal.Footer>
+                  <Button variant="primary" onClick={handleClose}>
+                    Close
+                  </Button>
+                </Modal.Footer>
+              </Form>
+            )}
+          </Formik>
         </Modal>
       </div>
       <Container>
