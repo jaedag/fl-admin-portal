@@ -984,3 +984,51 @@ export const MAKE_MEMBER_INACTIVE = gql`
     }
   }
 `
+
+export const MOVE_CONSTITUENCY_TO_COUNCIL = gql`
+  mutation MoveConstituencyToCouncil(
+    $constituencyId: ID!
+    $newCouncilId: ID!
+    $oldCouncilId: ID!
+    $historyRecord: String!
+  ) {
+    MoveConstituencyToCouncil(
+      constituencyId: $constituencyId
+      councilId: $newCouncilId
+    ) {
+      id
+      name
+      council {
+        id
+        name
+        constituencies {
+          id
+          name
+        }
+      }
+    }
+    LogConstituencyHistory(
+      constituencyId: $constituencyId
+      historyRecord: $historyRecord
+      oldCouncilId: $oldCouncilId
+      newCouncilId: $newCouncilId
+    ) {
+      id
+      name
+      history(limit: 5) {
+        id
+        timeStamp
+        createdAt {
+          date
+        }
+        loggedBy {
+          id
+          firstName
+          lastName
+          stream_name
+        }
+        historyRecord
+      }
+    }
+  }
+`

@@ -107,6 +107,7 @@ export interface Stream extends Church {
 export interface Constituency extends Church {
   __typename: 'Constituency'
   stream: Stream
+  council: Council
 }
 
 export interface Council extends Church {

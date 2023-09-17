@@ -342,7 +342,7 @@ extend type Mutation {
   ): Constituency
     @cypher(
       statement: """
-      MATCH  (constituency:Constituency {id: $constituencyId})
+      MATCH (constituency:Constituency {id: $constituencyId})
       MATCH (admin:Active:Member {auth_id: $auth.jwt.sub})
       CREATE (log:HistoryLog {id: apoc.create.uuid()})
         SET log.historyRecord = $historyRecord,
@@ -357,7 +357,7 @@ extend type Mutation {
         WITH log
         WITH log WHERE $newLeaderId IS NOT NULL
       MATCH (newLeader:Active:Member {id: $newLeaderId})
-        SET log :ServiceLog
+        SET log:ServiceLog
         WITH log, newLeader
       OPTIONAl MATCH ()-[r0:HAS_HISTORY]->(log)
         SET r0.current = false

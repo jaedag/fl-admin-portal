@@ -735,7 +735,8 @@ extend type Mutation {
   ): Stream
     @auth(rules: [{ roles: ["adminCampus"] }])
     @cypher(
-      statement: """yd           MATCH (stream:Stream {id: $streamId})
+      statement: """
+      yd           MATCH (stream:Stream {id: $streamId})
            	SET stream.name = $name,
             stream.bankAccount = $bankAccount
 
@@ -765,24 +766,13 @@ extend type Mutation {
       RETURN stream
       """
     )
-  UpdateCouncilDetails(councilId: ID!, name: String!, streamId: ID!): Council
+  UpdateCouncilDetails(councilId: ID!, name: String!): Council
     @auth(rules: [{ roles: ["adminCampus", "adminStream"] }])
     @cypher(
       statement: """
            MATCH (council:Council {id: $councilId})
            	SET council.name = $name
 
-           WITH council
-              CALL {
-              	WITH council
-
-                  MATCH (stream:Stream {id: $streamId})
-                  OPTIONAL MATCH (council)<-[r:HAS]-()
-                  DELETE r
-                  MERGE (stream)-[:HAS]->(council)
-              	RETURN count(council)
-              	}
-      MATCH (council)<-[:LEADS]-(leader:Active:Member)
       RETURN council
       """
     )
@@ -903,6 +893,19 @@ extend type Mutation {
     leaderId: ID!
     adminId: ID!
   ): Council
+
+  MoveConstituencyToCouncil(constituencyId: ID!, councilId: ID!): Constituency!
+    @cypher(
+      statement: """
+      MATCH (constituency:Constituency {id: $constituencyId})
+      MATCH (council:Council {id: $councilId})
+      OPTIONAL MATCH (constituency)<-[r:HAS]-(:Council)
+      DELETE r
+
+      MERGE (council)-[:HAS]->(constituency)
+      RETURN constituency
+      """
+    )
 
   CloseDownCouncil(councilId: ID!, leaderId: ID!): Stream
     @cypher(
