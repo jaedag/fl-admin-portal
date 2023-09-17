@@ -8,6 +8,8 @@
 // import {
 //   VACATION_OPTIONS,
 // } from 'global-utils'
+import { FormikInitialValues } from 'components/formik/formik-types'
+import { Church } from 'global-types'
 // import { permitAdminArrivals } from 'permission-utils'
 // import { useContext, useState } from 'react'
 // import { ChurchContext } from 'contexts/ChurchContext'
@@ -25,12 +27,12 @@
 // import { FormikInitialValues } from 'components/formik/formik-types'
 // import { Church } from 'global-types'
 
-// export interface BacentaFormValues extends FormikInitialValues {
-//   constituency: string
-//   graduationStatus: string
-//   vacationStatus: string
-//   fellowships?: Church[]
-// }
+export interface BacentaFormValues extends FormikInitialValues {
+  constituency: string
+  graduationStatus: string
+  vacationStatus: string
+  fellowships?: Church[]
+}
 
 // type BacentaFormProps = {
 //   initialValues: BacentaFormValues
@@ -159,8 +161,6 @@
 // }
 
 // export default BacentaForm
-
-import React from 'react'
 
 const BacentaForm = () => {
   return <div>BacentaForm</div>
