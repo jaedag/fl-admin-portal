@@ -28,7 +28,6 @@ const ProtectedRouteHome = ({
         'adminConstituency',
         'leaderConstituency',
         'leaderBacenta',
-        'leaderSonta',
         'leaderFellowship',
       ],
       currentUser.roles
