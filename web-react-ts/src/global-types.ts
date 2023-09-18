@@ -264,7 +264,6 @@ export type Role =
   | 'leaderConstituency'
   | 'leaderCouncil'
   | 'leaderStream'
-  | 'leaderSonta'
   | 'leaderHub'
   | 'leaderMinistry'
   | 'leaderCreativeArts'
