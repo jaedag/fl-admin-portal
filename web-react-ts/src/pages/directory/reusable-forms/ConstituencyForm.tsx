@@ -114,7 +114,7 @@ const ConstituencyForm = ({
                     />
 
                     <Row className="d-flex align-items-center mb-3">
-                      <RoleView roles={permitAdmin('Stream')}>
+                      <RoleView roles={permitAdmin('Council')}>
                         <Col>
                           <SearchMember
                             name="leaderId"
