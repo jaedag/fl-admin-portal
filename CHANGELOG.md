@@ -1,3 +1,11 @@
+#### 7.9.20 (2023-09-18)
+
+##### Bug Fixes
+
+*  fix broken permissions on Constituency form ([83c59463](https://github.com/firstlovecenter/fl-pastoral-care/commit/83c5946381aad995a6b366793f117762c03cdb6f))
+*  update permissions for defaulters dashboard ([b3dbd39f](https://github.com/firstlovecenter/fl-pastoral-care/commit/b3dbd39f6472461ecb54768d5541514203d377ed))
+*  implement old_history log to prevent confusion ([88061bcc](https://github.com/firstlovecenter/fl-pastoral-care/commit/88061bcc73ee9eb25e135693ccee2367e0a13f03))
+
 #### 7.9.19 (2023-09-18)
 
 ##### Bug Fixes
