@@ -50,7 +50,7 @@ extend type Mutation {
         WITH log
         WITH log WHERE $oldCampusId IS NOT NULL
         MATCH (campus:Campus {id: $oldCampusId})
-        MERGE (campus)-[:HAS_HISTORY]->(log)
+        MERGE (campus)-[:OLD_HISTORY]->(log)
         RETURN COUNT(log)
       }
 
@@ -108,7 +108,7 @@ extend type Mutation {
         WITH log
         WITH log WHERE $oldLeaderId IS NOT NULL
         MATCH (oldLeader:Active:Member {id: $oldLeaderId})
-        CREATE (oldLeader)-[:HAS_HISTORY]->(log)
+        CREATE (oldLeader)-[:OLD_HISTORY]->(log)
         RETURN COUNT(log)
       }
 
@@ -176,7 +176,7 @@ extend type Mutation {
         WITH log
         WITH log WHERE $oldLeaderId IS NOT NULL
         MATCH (oldLeader:Active:Member {id: $oldLeaderId})
-        CREATE (oldLeader)-[:HAS_HISTORY]->(log)
+        CREATE (oldLeader)-[:OLD_HISTORY]->(log)
         RETURN COUNT(log)
       }
 
@@ -257,7 +257,7 @@ extend type Mutation {
         WITH log
         WITH log WHERE $oldBacentaId IS NOT NULL
         MATCH (oldBacenta:Bacenta {id: $oldBacentaId})
-        MERGE (oldBacenta)-[:HAS_HISTORY]->(log)
+        MERGE (oldBacenta)-[:OLD_HISTORY]->(log)
         RETURN COUNT(log)
       }
 
@@ -316,7 +316,7 @@ extend type Mutation {
          WITH log
          WITH log WHERE $oldConstituencyId IS NOT NULL
          MATCH (oldconstituency:Constituency {id: $oldConstituencyId})
-         MERGE (oldconstituency)-[:HAS_HISTORY]->(log)
+         MERGE (oldconstituency)-[:OLD_HISTORY]->(log)
          RETURN COUNT(log)
        }
 
@@ -383,7 +383,7 @@ extend type Mutation {
         WITH log
         WITH log WHERE $oldCouncilId IS NOT NULL
         MATCH (council:Council {id: $oldCouncilId})
-        MERGE (council)-[:HAS_HISTORY]->(log)
+        MERGE (council)-[:OLD_HISTORY]->(log)
         RETURN COUNT(log)
       }
 
@@ -451,7 +451,7 @@ extend type Mutation {
         WITH log
         WITH log WHERE $oldStreamId IS NOT NULL
         MATCH (council:Council {id: $oldStreamId})
-        MERGE (council)-[:HAS_HISTORY]->(log)
+        MERGE (council)-[:OLD_HISTORY]->(log)
         RETURN COUNT(log)
       }
 
@@ -494,7 +494,7 @@ extend type Mutation {
         WITH log
         WITH log WHERE $oldCampusId IS NOT NULL
         MATCH (oldCampus:Campus {id: $oldCampusId})
-        MERGE (oldCampus)-[:HAS_HISTORY]->(log)
+        MERGE (oldCampus)-[:OLD_HISTORY]->(log)
         RETURN COUNT(log)
       }
 
