@@ -1,3 +1,11 @@
+#### 7.9.19 (2023-09-18)
+
+##### Bug Fixes
+
+*  remove unused duplicate mutations ([d197cea7](https://github.com/firstlovecenter/fl-pastoral-care/commit/d197cea7dab59d7903758b10624c158542df4e8f))
+*  minor updates to data display in ui ([49448971](https://github.com/firstlovecenter/fl-pastoral-care/commit/49448971feece934fa13ec6a40bd57badaf552ca))
+*  fix bugs in directory cypher ([a6d2bd7a](https://github.com/firstlovecenter/fl-pastoral-care/commit/a6d2bd7a976123b2fa02225e94b50e75589c628c))
+
 #### 7.9.18 (2023-09-17)
 
 ##### Bug Fixes
