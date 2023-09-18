@@ -233,7 +233,7 @@ const CouncilForm = ({
                       setButtonLoading(false)
                       clickCard(res.data.CloseDownCouncil)
                       setCloseDown(false)
-                      navigate(`/constituency/displayall`)
+                      navigate(`/council/displayall`)
                     } catch (error) {
                       setButtonLoading(false)
                       throwToSentry(

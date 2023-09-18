@@ -94,7 +94,7 @@ const BacentaForm = ({
             </Button>
 
             <Button variant="danger" onClick={() => setCloseDown(true)}>
-              {`Close Down Constituency`}
+              {`Close Down Bacenta`}
             </Button>
           </>
         )}
@@ -255,7 +255,7 @@ const BacentaForm = ({
                       })
 
                       setButtonLoading(false)
-                      clickCard(res.data.CloseDownConstituency)
+                      clickCard(res.data.CloseDownBacenta)
                       setCloseDown(false)
                       navigate(`/constituency/displayall`)
                     } catch (error) {

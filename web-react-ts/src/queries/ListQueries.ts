@@ -210,6 +210,8 @@ export const GET_STREAM_COUNCILS = gql`
         stream_name
         memberCount
         target
+        constituencyCount
+        fellowshipCount
         constituencies {
           id
         }

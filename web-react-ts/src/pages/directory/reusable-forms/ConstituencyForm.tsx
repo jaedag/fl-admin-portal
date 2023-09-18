@@ -231,7 +231,7 @@ const ConstituencyForm = ({
                       setButtonLoading(false)
                       clickCard(res.data.CloseDownConstituency)
                       setCloseDown(false)
-                      navigate(`/council/displayall`)
+                      navigate(`/constituency/displayall`)
                     } catch (error) {
                       setButtonLoading(false)
                       throwToSentry(

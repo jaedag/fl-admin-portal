@@ -296,7 +296,7 @@ const FellowshipForm = (props: FellowshipFormProps) => {
                       setButtonLoading(false)
                       clickCard(res.data.CloseDownFellowship)
                       setCloseDown(false)
-                      navigate('/bacenta/displaydetails')
+                      navigate('/fellowship/displayall')
                     } catch (error) {
                       setButtonLoading(false)
                       throwToSentry(

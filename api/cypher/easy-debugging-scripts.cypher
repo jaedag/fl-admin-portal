@@ -66,3 +66,4 @@ RETURN member.firstName
 MATCH (member:Member) 
 SET member.imclChecked = true
 RETURN COUNT(member)
+
