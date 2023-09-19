@@ -16,6 +16,7 @@ import CloudinaryImage from 'components/CloudinaryImage'
 import { USER_PLACEHOLDER } from 'global-utils'
 import { ChurchLevel } from 'global-types'
 import useSetUserChurch from 'hooks/useSetUserChurch'
+import { BsEyeFill } from 'react-icons/bs'
 
 type MemberDisplayCardProps = {
   member: {
@@ -60,6 +61,7 @@ const Icons = ({ icon, className }: { icon: string; className: string }) => {
       {icon === 'constituency' && <ConstituencyIcon />}
       {icon === 'council' && <CouncilIcon />}
       {icon === 'stream' && <StreamIcon />}
+      {icon === 'oversight' && <BsEyeFill />}
       {icon === 'bus' && <BusIcon />}
     </div>
   )
@@ -108,8 +110,8 @@ const MemberDisplayCard = (props: MemberDisplayCardProps) => {
     case 'Campus':
       icon = 'stream'
       break
-    case 'Sonta':
-      icon = 'stream'
+    case 'Oversight':
+      icon = 'oversight'
       break
     default:
       icon = 'stream'

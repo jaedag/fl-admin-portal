@@ -67,3 +67,9 @@ MATCH (member:Member)
 SET member.imclChecked = true
 RETURN COUNT(member)
 
+
+  MATCH (this:Member {email: "jaedagy@gmail.com"})-[:LEADS|HAS|HAS_MINISTRY|IS_ADMIN_FOR*1..4]->(church:CreativeArts)
+      WHERE toLower(church.name) CONTAINS toLower("choir")
+      RETURN DISTINCT church LIMIT 5
+
+      
