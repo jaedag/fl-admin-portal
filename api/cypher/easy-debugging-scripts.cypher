@@ -73,3 +73,7 @@ RETURN COUNT(member)
       RETURN DISTINCT church LIMIT 5
 
       
+           MATCH (this:Member {email: "jaedagy@gmail.com"})-[:LEADS|HAS|DOES_ARRIVALS_FOR|IS_ADMIN_FOR|IS_SHEEP_SEEKER_FOR*1..8]->(:Fellowship)<-[:BELONGS_TO]-(members:Active:Member)
+      WHERE toLower(members.firstName+ ' ' + members.middleName + ' ' + members.lastName) CONTAINS toLower("sandra quay")
+         OR toLower(members.firstName + ' ' + members.lastName) CONTAINS toLower("sandra quay")
+      RETURN DISTINCT members ORDER BY toLower(members.lastName), toLower(members.firstName) 
