@@ -1,3 +1,11 @@
+#### 7.9.26 (2023-09-19)
+
+##### Bug Fixes
+
+*  fix bug where navigating to sub churches still shows you your highest level churches ([f5d2782b](https://github.com/firstlovecenter/fl-pastoral-care/commit/f5d2782be3c4520fc78012de675d24970789c8bf))
+*  remove all unnecessary mentions of sonta from the app ([ae6ae351](https://github.com/firstlovecenter/fl-pastoral-care/commit/ae6ae351f3fbe6a092055cdd63b494fc0fe40461))
+*  add middle name to search parameters ([eccca01f](https://github.com/firstlovecenter/fl-pastoral-care/commit/eccca01f79aefb545d8eed21753f429ac0dbb7ad))
+
 #### 7.9.25 (2023-09-19)
 
 ##### Bug Fixes
