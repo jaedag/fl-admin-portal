@@ -7,6 +7,9 @@
 .small {
   font-size: 11px;
 }
+.nav-opacity {
+  opacity: 0.7;
+}
 
 .bg {
   padding-top: 20px;

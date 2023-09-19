@@ -38,7 +38,13 @@ const Navigator = () => {
   }
 
   return (
-    <Navbar collapseOnSelect expand={false} sticky="top">
+    <Navbar
+      collapseOnSelect
+      expand={false}
+      sticky="top"
+      bg={currentTheme ?? 'dark'}
+      className="nav-opacity"
+    >
       <Container fluid>
         <Navbar.Toggle aria-controls="offcanvasNavbar" onClick={handleShow} />
         {isRunningStandalone() && (
