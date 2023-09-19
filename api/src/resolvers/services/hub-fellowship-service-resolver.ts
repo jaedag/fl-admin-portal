@@ -66,13 +66,13 @@ export const checkServantHasCurrentHistory = async (
   }
 }
 
-const HubFellowshipServiceMutation = {
-  RecordHubFellowshipSundayAttendance: async (
+const HubServiceMutation = {
+  RecordHubSundayAttendance: async (
     object: any,
     args: RecordServiceArgs,
     context: Context
   ) => {
-    isAuth(permitLeaderAdmin('Fellowship'), context.auth.roles)
+    isAuth(permitLeaderAdmin('Hub'), context.auth.roles)
     const session = context.executionContext.session()
 
     await checkServantHasCurrentHistory(session, context, {
@@ -191,4 +191,4 @@ const HubFellowshipServiceMutation = {
   },
 }
 
-export default HubFellowshipServiceMutation
+export default HubServiceMutation

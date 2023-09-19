@@ -29,7 +29,7 @@ export const recordSundayMinistryAttendance = `
         ministryAttendanceRecord.familyPicture = $familyPicture
     
     WITH ministryAttendanceRecord
-    MATCH (church {id: $churchId}) WHERE church:HubFellowship
+    MATCH (church {id: $churchId}) WHERE church:Hub
     MATCH (church)-[current:CURRENT_HISTORY]->(log:ServiceLog)
     MATCH (leader:Member {auth_id: $auth.jwt.sub})
 
