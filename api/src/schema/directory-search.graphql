@@ -820,21 +820,6 @@ extend type Query {
       RETURN bacenta LIMIT 5
       """
     )
-  councilSontaSearch(searchKey: String!, councilId: ID!): [Bacenta]
-    @auth(
-      rules: [
-        { roles: ["adminCouncil", "leaderCouncil", "arrivalsAdminCouncil"] }
-      ]
-    )
-    @cypher(
-      statement: """
-      MATCH (council:Council {id: $councilId})-[:HAS*2]->(bacenta:Bacenta)
-
-      WHERE toLower(bacenta.name) STARTS WITH toLower($searchKey)
-      OR toLower(bacenta.name) CONTAINS toLower($searchKey)
-      RETURN bacenta LIMIT 5
-      """
-    )
   constituencyBacentaSearch(
     searchKey: String!
     constituencyId: ID!

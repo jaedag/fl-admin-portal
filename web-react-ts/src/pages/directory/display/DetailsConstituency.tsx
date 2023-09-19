@@ -57,7 +57,7 @@ const DetailsConstituency = () => {
         churchType={`Constituency`}
         subChurch={`Bacenta`}
         buttons={data?.constituencies[0]?.bacentas}
-        buttonsSecondRow={data?.constituencies[0]?.sontas}
+        buttonsSecondRow={data?.constituencies[0]?.hubFellowships}
         editlink="/constituency/editconstituency"
         editPermitted={permitAdminArrivals('Council')}
         history={

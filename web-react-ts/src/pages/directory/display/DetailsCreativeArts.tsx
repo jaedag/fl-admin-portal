@@ -41,8 +41,8 @@ const DetailsCreativeArts = () => {
       link: '#',
     },
     {
-      title: 'Sontas',
-      number: creativeArts?.sontaCount,
+      title: 'Hub Fellowships',
+      number: creativeArts?.hubFellowshipCount,
       link: '#',
     },
   ]

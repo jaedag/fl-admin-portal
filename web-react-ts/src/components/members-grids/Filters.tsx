@@ -45,9 +45,7 @@ const Filters = ({
   const LEADER_OPTIONS = [
     { key: 'CO', value: 'CO' },
     { key: 'Bacenta Leader', value: 'Bacenta Leader' },
-    { key: 'Sonta Leader', value: 'Sonta Leader' },
     { key: 'Fellowship Leader', value: 'Fellowship Leader' },
-    { key: 'Basonta Leader', value: 'Basonta Leader' },
     { key: 'Admin', value: 'Admin' },
   ]
 

@@ -40,9 +40,9 @@ const DetailsMinistry = () => {
       link: '/hub/displayall',
     },
     {
-      title: 'Sontas',
-      number: ministry?.sontaCount,
-      link: '/ministry/sontas',
+      title: 'Hub Fellowships',
+      number: ministry?.hubFellowshipCount,
+      link: '/ministry/hubfellowships',
     },
   ]
 

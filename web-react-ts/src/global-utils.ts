@@ -278,10 +278,6 @@ export const plural = (church: ChurchLevel | string) => {
       return 'bacentas'
     case 'Bacenta':
       return 'Bacentas'
-    case 'sonta':
-      return 'sontas'
-    case 'Sonta':
-      return 'Sontas'
     case 'hub':
       return 'hubs'
     case 'Hub':
@@ -549,8 +545,7 @@ export const getSubChurchLevel = (churchType: ChurchLevel) => {
       return 'Ministry'
     case 'Ministry':
       return 'Hub'
-    case 'Hub':
-      return 'Sonta'
+
     default:
       return 'Fellowship'
   }

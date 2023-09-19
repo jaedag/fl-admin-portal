@@ -52,9 +52,6 @@ const useClickCard = () => {
     sessionStorage.getItem('multiplicationRecordId') ?? ''
   )
 
-  const [sontaId, setSontaId] = useState(
-    sessionStorage.getItem('sontaId') ?? ''
-  )
   const [hubId, setHubId] = useState(sessionStorage.getItem('hubId') ?? '')
   const [ministryId, setMinistryId] = useState(
     sessionStorage.getItem('ministryId') ?? ''
@@ -336,10 +333,7 @@ const useClickCard = () => {
         setMemberId(card.id)
         sessionStorage.setItem('memberId', card.id)
         break
-      case 'Sonta':
-        setSontaId(card.id)
-        sessionStorage.setItem('sontaId', card.id)
-        break
+
       case 'Hub':
         setHubId(card.id)
         sessionStorage.setItem('hubId', card.id)
@@ -384,10 +378,7 @@ const useClickCard = () => {
         setDenominationId(card.id)
         sessionStorage.setItem('denominationId', card.id)
         break
-      case 'Basonta':
-        setSontaId(card.sonta.id)
-        sessionStorage.setItem('sontaId', card.sonta.id)
-        break
+
       case 'ServiceRecord':
         setServiceRecordId(card.id)
         sessionStorage.setItem('serviceRecordId', card.id)
@@ -420,10 +411,6 @@ const useClickCard = () => {
         break
     }
 
-    if (card.__typename === 'Basonta') {
-      card.link = '/sonta/displaydetails'
-    }
-
     if (card.link === '' || card.constituency === true) {
       card.link = `/${card.__typename.toLowerCase()}/displaydetails`
     }
@@ -440,7 +427,6 @@ const useClickCard = () => {
     constituencyId,
     bacentaId,
     fellowshipId,
-    sontaId,
     hubId,
     ministryId,
     creativeArtsId,
@@ -458,7 +444,6 @@ const useClickCard = () => {
     setStreamId,
     setCouncilId,
     setConstituencyId,
-    setSontaId,
     setHubId,
     setMinistryId,
     setCreativeArtsId,

@@ -145,7 +145,6 @@ const useComponentQuery = (props?: UseComponentQuery) => {
     Hub: {
       leader: hubLeaderQuery,
     },
-    Basonta: {},
     Ministry: {
       leader: ministryLeaderQuery,
       admin: ministryAdminQuery,

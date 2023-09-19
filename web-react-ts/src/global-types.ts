@@ -28,7 +28,6 @@ export type ChurchLevel =
   | 'Campus'
   | 'Oversight'
   | 'Denomination'
-  | 'Sonta'
   | 'HubFellowship'
   | 'Ministry'
   | 'Hub'
@@ -66,11 +65,6 @@ export interface Church {
   }
   vacationStatus?: 'Vacation' | 'Active'
   __typename: ChurchLevel
-  sontas?: Sonta[]
-}
-
-export interface Sonta extends Church {
-  __typename: 'Sonta'
 }
 
 export interface Fellowship extends Church {
@@ -189,7 +183,6 @@ export interface MemberWithChurches extends Member {
   leadsCouncil: Church[]
   leadsStream: Church[]
 
-  //sonta
   leadsHub: Church[]
   leadsMinistry: Church[]
   leadsCreativeArts: Church[]
@@ -367,7 +360,6 @@ export interface HigherChurch extends Church {
   streamCount: number
   memberCount: number
   hubCount: number
-  sontaCount: number
   ministryCount: number
   target: number
 }
