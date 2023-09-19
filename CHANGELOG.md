@@ -1,3 +1,12 @@
+#### 7.9.24 (2023-09-19)
+
+##### Bug Fixes
+
+*  add some solid color and opacity to navbar ([76fd6750](https://github.com/firstlovecenter/fl-pastoral-care/commit/76fd675006c3039994934360046179a20ff1799d))
+*  minor ui changes to autosuggest box ([6ed0467c](https://github.com/firstlovecenter/fl-pastoral-care/commit/6ed0467c57853beb698c9fa775363287971befd7))
+*  modify search to bring results of all members and churches you have access to ([dae26e53](https://github.com/firstlovecenter/fl-pastoral-care/commit/dae26e5368a5e23f28267105995e3b50563e481f))
+*  remove leaderSonta from protectedroute ([826ee475](https://github.com/firstlovecenter/fl-pastoral-care/commit/826ee47578b5bec9e2532040f0de61ee2bceddd3))
+
 #### 7.9.23 (2023-09-18)
 
 #### 7.9.22 (2023-09-18)
