@@ -64,6 +64,7 @@ export interface Church {
     pictureUrl: string
   }
   vacationStatus?: 'Vacation' | 'Active'
+  hubs?: Church[]
   __typename: ChurchLevel
 }
 
