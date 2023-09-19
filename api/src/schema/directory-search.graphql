@@ -42,7 +42,7 @@ extend type Member {
   streamSearch(key: String!, limit: Int! = 5): [Stream!]!
     @cypher(
       statement: """
-      MATCH (this)-[:LEADS|HAS|DOES_ARRIVALS_FOR|IS_ADMIN_FOR|IS_SHEEP_SEEKER_FOR*1..2]->(stream:Stream)
+      MATCH (this)-[:LEADS|HAS|DOES_ARRIVALS_FOR|IS_ADMIN_FOR|IS_SHEEP_SEEKER_FOR*1..3]->(stream:Stream)
       WHERE toLower(stream.name) CONTAINS toLower($key)
       RETURN DISTINCT stream LIMIT $limit
       """
@@ -50,9 +50,42 @@ extend type Member {
   campusSearch(key: String!, limit: Int! = 5): [Campus!]!
     @cypher(
       statement: """
-      MATCH (this)-[:LEADS|HAS|DOES_ARRIVALS_FOR|IS_ADMIN_FOR|IS_SHEEP_SEEKER_FOR*1..1]->(campus:Campus)
+      MATCH (this)-[:LEADS|HAS|DOES_ARRIVALS_FOR|IS_ADMIN_FOR*1..2]->(campus:Campus)
       WHERE toLower(campus.name) CONTAINS toLower($key)
       RETURN DISTINCT campus LIMIT $limit
+      """
+    )
+  oversightSearch(key: String!, limit: Int! = 5): [Oversight!]!
+    @cypher(
+      statement: """
+      MATCH (this)-[:LEADS|HAS|IS_ADMIN_FOR]->(oversight:Oversight)
+      WHERE toLower(oversight.name) CONTAINS toLower($key)
+      RETURN DISTINCT oversight LIMIT $limit
+      """
+    )
+
+  creativeArtsSearch(key: String!, limit: Int! = 5): [CreativeArts!]!
+    @cypher(
+      statement: """
+      MATCH (this)-[:LEADS|HAS|IS_ADMIN_FOR*1..4]->(creativeArts:CreativeArts)
+      WHERE toLower(creativeArts.name) CONTAINS toLower($key)
+      RETURN DISTINCT creativeArts LIMIT $limit
+      """
+    )
+  ministrySearch(key: String!, limit: Int! = 5): [Ministry!]!
+    @cypher(
+      statement: """
+      MATCH (this)-[:LEADS|HAS|IS_ADMIN_FOR*1..5]->(ministry:Ministry)
+      WHERE toLower(ministry.name) CONTAINS toLower($key)
+      RETURN DISTINCT ministry LIMIT $limit
+      """
+    )
+  hubSearch(key: String!, limit: Int! = 5): [Hub!]!
+    @cypher(
+      statement: """
+      MATCH (this)-[:LEADS|HAS|IS_ADMIN_FOR*1..6]->(hub:Hub)
+      WHERE toLower(hub.name) CONTAINS toLower($key)
+      RETURN DISTINCT hub LIMIT $limit
       """
     )
 }

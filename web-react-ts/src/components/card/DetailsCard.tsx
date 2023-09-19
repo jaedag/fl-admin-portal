@@ -16,52 +16,51 @@ type DetailsCardPropsType = {
   creativearts?: boolean
   vacationCount?: string
   vacationIcBacentaCount?: string
+  leading?: JSX.Element
+  trailing?: JSX.Element
 }
 
 const DetailsCard = (props: DetailsCardPropsType) => {
   const { currentUser } = useContext(MemberContext)
-  const loading =
-    !props.heading || props.loading || !currentUser.id || !props.detail
+  const { leading, trailing, detail, heading, onClick, creativearts } = props
+  const loading = !heading || props.loading || !currentUser.id || !detail
 
   return (
     <Card
-      className={`p-2 m-1 ${props.creativearts && 'creativearts'}`}
-      onClick={props.onClick}
+      className={`p-2 m-1 ${creativearts && 'creativearts'}`}
+      onClick={onClick}
     >
       <Row>
         <Col>
           <PlaceholderCustom loading={loading} as="span" xs={12}>
-            <span className={`text-secondary`}>{props.heading}</span>
+            <span className={`text-secondary`}>{heading}</span>
           </PlaceholderCustom>
           <PlaceholderCustom loading={loading} as="h2" xs={12}>
-            <div className="d-flex justify-content-between">
-              <h2 className={`card-detail`}>
-                {props.detail?.replace(currentUser.currency, '')}{' '}
-                <small>{props.detail?.match(currentUser.currency)}</small>
-              </h2>
-              <div>
-                {props.heading === 'IC Bacentas' &&
-                  props?.vacationIcBacentaCount !== '0' && (
-                    <>
-                      <Badge bg="danger" className="badge-vacation mt-auto">
-                        <span className="font-danger">{`+ `}</span>
-                        {`${props?.vacationIcBacentaCount} on Vacation`}
-                      </Badge>
-                    </>
-                  )}
-              </div>
-              <div>
-                {(props.heading === 'Bacentas' ||
-                  props.heading === 'Fellowships') &&
-                  props?.vacationCount !== '0' && (
-                    <>
-                      <Badge bg="danger" className="badge-vacation mt-auto">
-                        <span className="font-danger">{`+ `}</span>
-                        {`${props?.vacationCount} on Vacation`}
-                      </Badge>
-                    </>
-                  )}
-              </div>
+            <div className="d-flex justify-content-between align-items-center">
+              {!!leading && <>{leading}</>}
+              <h3 className={`card-detail`}>
+                {detail?.replace(currentUser.currency, '')}{' '}
+                <small>{detail?.match(currentUser.currency)}</small>
+              </h3>
+              {!!trailing && <>{trailing}</>}
+              {heading === 'IC Bacentas' &&
+                props?.vacationIcBacentaCount !== '0' && (
+                  <div>
+                    <Badge bg="danger" className="badge-vacation mt-auto">
+                      <span className="font-danger">{`+ `}</span>
+                      {`${props?.vacationIcBacentaCount} on Vacation`}
+                    </Badge>
+                  </div>
+                )}
+              {(heading === 'Bacentas' || heading === 'Fellowships') &&
+                props?.vacationCount !== '0' && (
+                  <div>
+                    <Badge bg="danger" className="badge-vacation mt-auto">
+                      <span className="font-danger">{`+ `}</span>
+                      {`${props?.vacationCount} on Vacation`}
+                    </Badge>
+                  </div>
+                )}
             </div>
           </PlaceholderCustom>
         </Col>

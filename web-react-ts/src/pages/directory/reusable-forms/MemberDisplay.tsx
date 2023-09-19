@@ -10,7 +10,7 @@ import {
   DISPLAY_MEMBER_CHURCH,
   DISPLAY_MEMBER_LEADERSHIP,
 } from 'pages/directory/display/ReadQueries'
-import { Col, Container, Row } from 'react-bootstrap'
+import { Button, Col, Container, Row } from 'react-bootstrap'
 import PlaceholderCustom from 'components/Placeholder'
 import DetailsCard from 'components/card/DetailsCard'
 import EditButton from 'components/buttons/EditButton'
@@ -20,6 +20,8 @@ import CloudinaryImage from 'components/CloudinaryImage'
 import { Member } from 'global-types'
 import { permitAdmin, permitLeader, permitSheepSeeker } from 'permission-utils'
 import { BarLoader } from 'react-spinners'
+import { FaPhone } from 'react-icons/fa'
+import { Whatsapp } from 'react-bootstrap-icons'
 
 const MemberDisplay = ({ memberId }: { memberId: string }) => {
   const {
@@ -135,6 +137,11 @@ const MemberDisplay = ({ memberId }: { memberId: string }) => {
               heading="Phone Number"
               loading={!member?.phoneNumber}
               detail={'+' + member?.phoneNumber}
+              trailing={
+                <Button size="sm" className="rounded-btn">
+                  <FaPhone />
+                </Button>
+              }
             />
           </a>
         </Col>
@@ -145,6 +152,11 @@ const MemberDisplay = ({ memberId }: { memberId: string }) => {
               heading="Whatsapp Number"
               loading={!member?.whatsappNumber}
               detail={'+' + member?.whatsappNumber}
+              trailing={
+                <Button size="sm" variant="success" className="rounded-btn">
+                  <Whatsapp />
+                </Button>
+              }
             />
           </a>
         </Col>

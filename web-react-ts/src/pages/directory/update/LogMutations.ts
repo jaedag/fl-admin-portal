@@ -287,16 +287,16 @@ export const LOG_CREATIVEARTS_HISTORY = gql`
     $historyRecord: String!
     $oldLeaderId: ID
     $newLeaderId: ID
-    $oldOversightId: ID
-    $newOversightId: ID
+    $oldCampusId: ID
+    $newCampusId: ID
   ) {
     LogCreativeArtsHistory(
       creativeArtsId: $creativeArtsId
       historyRecord: $historyRecord
       newLeaderId: $newLeaderId
       oldLeaderId: $oldLeaderId
-      oldOversightId: $oldOversightId
-      newOversightId: $newOversightId
+      oldCampusId: $oldCampusId
+      newCampusId: $newCampusId
     ) {
       id
       name
