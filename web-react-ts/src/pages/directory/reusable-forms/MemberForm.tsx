@@ -14,7 +14,7 @@ import {
 import { GET_CAMPUS_MINISTRIES } from 'queries/ListQueries'
 import ErrorScreen from 'components/base-component/ErrorScreen'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
-import { Button, Col, Container, Row } from 'react-bootstrap'
+import { Button, ButtonGroup, Col, Container, Row } from 'react-bootstrap'
 import LoadingScreen from 'components/base-component/LoadingScreen'
 import { permitAdmin } from 'permission-utils'
 import SubmitButton from 'components/formik/SubmitButton'
@@ -213,16 +213,32 @@ const MemberForm = ({
 
                   <div className="form-row row-cols-1 row-cols-md-2 justify-content-center">
                     <HeadingPrimary>Basic Info</HeadingPrimary>
-                    <RoleView roles={permitAdmin('Denomination')}>
-                      <Button
-                        variant="success"
-                        size="lg"
-                        className="my-2 mb-4"
-                        onClick={() => navigate('/member/title-form')}
-                      >
-                        Add Title
-                      </Button>
-                    </RoleView>
+                    <ButtonGroup className="my-2 mb-4">
+                      <RoleView roles={permitAdmin('Denomination')}>
+                        <Button
+                          variant="success"
+                          onClick={() => navigate('/member/title-form')}
+                        >
+                          Add Title
+                        </Button>
+                      </RoleView>
+                      {update && (
+                        <RoleView
+                          roles={[
+                            'sheepseekerStream',
+                            'adminStream',
+                            'adminCampus',
+                          ]}
+                        >
+                          <Button
+                            onClick={() => togglePopup()}
+                            variant="danger"
+                          >
+                            Delete Member
+                          </Button>
+                        </RoleView>
+                      )}
+                    </ButtonGroup>
                     <Col sm={10}>
                       <Input
                         label="First Name*"
@@ -361,23 +377,9 @@ const MemberForm = ({
                   </div>
                 </div>
                 <Col>
-                  <SubmitButton formik={formik} />
-                  {update && (
-                    <RoleView
-                      roles={[
-                        'sheepseekerStream',
-                        'adminStream',
-                        'adminCampus',
-                      ]}
-                    >
-                      <Button
-                        onClick={() => togglePopup()}
-                        className={`btn-graphs btn dark image mt-3`}
-                      >
-                        Delete Member
-                      </Button>
-                    </RoleView>
-                  )}
+                  <div className="text-center">
+                    <SubmitButton formik={formik} />
+                  </div>
                 </Col>
               </Row>
             </Form>
