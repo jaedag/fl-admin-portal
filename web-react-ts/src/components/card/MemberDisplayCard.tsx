@@ -8,7 +8,6 @@ import ConstituencyIcon from 'assets/icons/ConstituencyIcon'
 import CouncilIcon from 'assets/icons/CouncilIcon'
 import StreamIcon from 'assets/icons/StreamIcon'
 import { Button, Card } from 'react-bootstrap'
-import { MemberContext } from 'contexts/MemberContext'
 import '../../components/members-grids/MemberTable.css'
 import './MemberDisplayCard.css'
 import { TelephoneFill, Whatsapp } from 'react-bootstrap-icons'
@@ -16,7 +15,7 @@ import CloudinaryImage from 'components/CloudinaryImage'
 import { USER_PLACEHOLDER } from 'global-utils'
 import { ChurchLevel } from 'global-types'
 import useSetUserChurch from 'hooks/useSetUserChurch'
-import { BsEyeFill } from 'react-icons/bs'
+import { BsEyeFill, BsMusicNote } from 'react-icons/bs'
 
 type MemberDisplayCardProps = {
   member: {
@@ -38,6 +37,7 @@ type MemberDisplayCardProps = {
     leader?: {
       id: string
       nameWithTitle: string
+      pictureUrl?: string
     }
   }
   leader?: {
@@ -62,6 +62,7 @@ const Icons = ({ icon, className }: { icon: string; className: string }) => {
       {icon === 'council' && <CouncilIcon />}
       {icon === 'stream' && <StreamIcon />}
       {icon === 'oversight' && <BsEyeFill />}
+      {icon === 'hubfellowship' && <BsMusicNote />}
       {icon === 'bus' && <BusIcon />}
     </div>
   )
@@ -70,15 +71,19 @@ const Icons = ({ icon, className }: { icon: string; className: string }) => {
 const MemberDisplayCard = (props: MemberDisplayCardProps) => {
   const { member, leader, children, ...rest } = props
   const { clickCard } = useContext(ChurchContext)
-  const { theme } = useContext(MemberContext)
   const { setUserFinancials } = useSetUserChurch()
   const navigate = useNavigate()
   let icon: string = ''
   let name: string = member.name + ' ' + member.__typename
   let details: string[] = [member?.leader?.nameWithTitle || '']
 
-  const noPicture = !member?.pictureUrl && !leader?.pictureUrl
-  let picture = member?.pictureUrl || leader?.pictureUrl || USER_PLACEHOLDER
+  const noPicture =
+    !member?.pictureUrl && !leader?.pictureUrl && !member?.leader?.pictureUrl
+  let picture =
+    member?.pictureUrl ||
+    leader?.pictureUrl ||
+    member?.leader?.pictureUrl ||
+    USER_PLACEHOLDER
 
   switch (member.__typename) {
     case 'Member':
@@ -97,6 +102,9 @@ const MemberDisplayCard = (props: MemberDisplayCardProps) => {
 
     case 'Constituency':
       icon = 'constituency'
+      break
+    case 'HubFellowship':
+      icon = 'hubfellowship'
       break
     case 'Hub':
     case 'Council':
@@ -146,7 +154,7 @@ const MemberDisplayCard = (props: MemberDisplayCardProps) => {
           </div>
           <div className="flex-grow-1 ms-3">
             <Card.Title>{name}</Card.Title>
-            <div className={`text-secondary mb-0 ${theme}`}>
+            <div className={`text-secondary mb-0 `}>
               {details?.length &&
                 details.map((detail, i) => (
                   <div key={i}>

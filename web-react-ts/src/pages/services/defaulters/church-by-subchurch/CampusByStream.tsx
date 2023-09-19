@@ -20,8 +20,8 @@ const CampusByStream = () => {
       id: campusId,
     },
   })
-
   const navigate = useNavigate()
+
   return (
     <PullToRefresh onRefresh={refetch}>
       <ApolloWrapper data={data} loading={loading} error={error} placeholder>

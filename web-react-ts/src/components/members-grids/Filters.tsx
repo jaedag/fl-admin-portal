@@ -30,6 +30,7 @@ const Filters = ({
   eventKey: any
 }) => {
   const { setFilters, filters, campusId } = useContext(ChurchContext)
+
   const location = useLocation()
   const atPastors = location.pathname === '/pastors'
 
@@ -46,6 +47,10 @@ const Filters = ({
     { key: 'CO', value: 'CO' },
     { key: 'Bacenta Leader', value: 'Bacenta Leader' },
     { key: 'Fellowship Leader', value: 'Fellowship Leader' },
+    { key: 'Hub Fellowship Leader', value: 'Hub Fellowship Leader' },
+    { key: 'Hub Leader', value: 'Hub Leader' },
+    { key: 'Ministry Leader', value: 'Ministry Leader' },
+    { key: 'Creative Arts Overseer', value: 'Creative Arts Overseer' },
     { key: 'Admin', value: 'Admin' },
   ]
 

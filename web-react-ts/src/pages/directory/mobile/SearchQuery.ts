@@ -27,6 +27,8 @@ export const MEMBER_SEARCH = gql`
           id
           firstName
           lastName
+          nameWithTitle
+          pictureUrl
         }
       }
 
@@ -40,6 +42,8 @@ export const MEMBER_SEARCH = gql`
           id
           firstName
           lastName
+          nameWithTitle
+          pictureUrl
         }
       }
       streamSearch(key: $key, limit: $limit) {
@@ -49,6 +53,8 @@ export const MEMBER_SEARCH = gql`
           id
           firstName
           lastName
+          nameWithTitle
+          pictureUrl
         }
       }
       councilSearch(key: $key, limit: $limit) {
@@ -58,6 +64,8 @@ export const MEMBER_SEARCH = gql`
           id
           firstName
           lastName
+          nameWithTitle
+          pictureUrl
         }
       }
       constituencySearch(key: $key, limit: $limit) {
@@ -67,6 +75,8 @@ export const MEMBER_SEARCH = gql`
           id
           firstName
           lastName
+          nameWithTitle
+          pictureUrl
         }
       }
       bacentaSearch(key: $key, limit: $limit) {
@@ -76,6 +86,8 @@ export const MEMBER_SEARCH = gql`
           id
           firstName
           lastName
+          nameWithTitle
+          pictureUrl
         }
       }
       fellowshipSearch(key: $key, limit: $limit) {
@@ -85,6 +97,8 @@ export const MEMBER_SEARCH = gql`
           id
           firstName
           lastName
+          nameWithTitle
+          pictureUrl
         }
       }
       creativeArtsSearch(key: $key, limit: $limit) {
@@ -94,6 +108,8 @@ export const MEMBER_SEARCH = gql`
           id
           firstName
           lastName
+          nameWithTitle
+          pictureUrl
         }
       }
       ministrySearch(key: $key, limit: $limit) {
@@ -103,6 +119,8 @@ export const MEMBER_SEARCH = gql`
           id
           firstName
           lastName
+          nameWithTitle
+          pictureUrl
         }
       }
       hubSearch(key: $key, limit: $limit) {
@@ -112,6 +130,8 @@ export const MEMBER_SEARCH = gql`
           id
           firstName
           lastName
+          nameWithTitle
+          pictureUrl
         }
       }
     }

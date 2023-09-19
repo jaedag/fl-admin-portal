@@ -93,6 +93,13 @@ export const memberFilter = (memberData, filters) => {
       return null
     })
   }
+
+  if (filters.leaderRank.includes('Hub Fellowship Leader')) {
+    leaderData.hubFellowshipLeaders = filterFor(
+      filteredData,
+      'leadsHubFellowship'
+    )
+  }
   if (filters.leaderRank.includes('Hub Leader')) {
     leaderData.basontaLeaders = filterFor(filteredData, 'leadsHub')
   }

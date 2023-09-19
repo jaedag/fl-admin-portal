@@ -11,10 +11,12 @@ import '../Arrivals.css'
 import { CAMPUS_BY_STREAM_ARRIVALS } from './churchBySubchurchQueries'
 import { HigherChurchWithArrivals } from '../arrivals-types'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
+import useSetUserChurch from 'hooks/useSetUserChurch'
 
 const CampusByStream = () => {
   const { clickCard, campusId, arrivalDate } = useContext(ChurchContext)
   const navigate = useNavigate()
+  const { setUserChurch } = useSetUserChurch()
 
   const { data, loading, error, refetch } = useQuery(
     CAMPUS_BY_STREAM_ARRIVALS,
@@ -99,6 +101,7 @@ const CampusByStream = () => {
                       <Card.Body
                         onClick={() => {
                           clickCard(stream)
+                          setUserChurch(stream)
                           navigate(`/arrivals/stream`)
                         }}
                       >

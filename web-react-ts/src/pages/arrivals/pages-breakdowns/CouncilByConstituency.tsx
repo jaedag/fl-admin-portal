@@ -11,10 +11,12 @@ import '../Arrivals.css'
 import { COUNCIL_BY_CONSTITUENCY_ARRIVALS } from './churchBySubchurchQueries'
 import { HigherChurchWithArrivals } from '../arrivals-types'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
+import useSetUserChurch from 'hooks/useSetUserChurch'
 
 const CouncilByConstituency = () => {
   const { clickCard, councilId, arrivalDate } = useContext(ChurchContext)
   const navigate = useNavigate()
+  const { setUserChurch } = useSetUserChurch()
 
   const { data, loading, error, refetch } = useQuery(
     COUNCIL_BY_CONSTITUENCY_ARRIVALS,
@@ -96,6 +98,7 @@ const CouncilByConstituency = () => {
                       <Card.Body
                         onClick={() => {
                           clickCard(constituency)
+                          setUserChurch(constituency)
                           navigate(`/arrivals/constituency`)
                         }}
                       >
