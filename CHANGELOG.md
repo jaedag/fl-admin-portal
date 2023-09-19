@@ -1,3 +1,10 @@
+#### 7.9.25 (2023-09-19)
+
+##### Bug Fixes
+
+*  allow closing of constituencies by passing adminId ([3f08c7eb](https://github.com/firstlovecenter/fl-pastoral-care/commit/3f08c7ebd343435dea9c213dd615bc4350e922bd))
+*  update search to provide good results for creative arts and oversight ([0478cfca](https://github.com/firstlovecenter/fl-pastoral-care/commit/0478cfcab809723fe4bf4153fc8b9d28be0fc057))
+
 #### 7.9.24 (2023-09-19)
 
 ##### Bug Fixes
