@@ -225,6 +225,7 @@ const ConstituencyForm = ({
                         variables: {
                           id: constituencyId,
                           leaderId: initialValues.leaderId,
+                          adminId: initialValues?.adminId,
                         },
                       })
 
