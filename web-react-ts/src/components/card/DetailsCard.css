@@ -39,7 +39,7 @@
 }
 
 :root {
-  --creativearts-border-color: var(--chakra-colors-orange-500);
+  --creativearts-border-color: var(--chakra-colors-orange-300);
   --creativearts-border-width: 2px;
 }
 

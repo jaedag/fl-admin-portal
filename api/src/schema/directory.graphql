@@ -665,7 +665,7 @@ type Stream implements Church {
   leader: Member @relationship(type: "LEADS", direction: IN)
   councils: [Council!]! @relationship(type: "HAS", direction: OUT)
   campus: Campus @relationship(type: "HAS", direction: IN)
-  ministries: [Ministry!]! @relationship(type: "HAS", direction: OUT)
+  ministries: [Ministry!]! @relationship(type: "HAS_MINISTRY", direction: OUT)
   meetingDay: ServiceDay @relationship(type: "MEETS_ON", direction: OUT)
 
   stream_name: String
