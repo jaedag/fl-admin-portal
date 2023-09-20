@@ -9,7 +9,10 @@ import HeadingSecondary from 'components/HeadingSecondary'
 import CurrencySpan from 'components/CurrencySpan'
 import { CSVLink } from 'react-csv'
 import { useNavigate } from 'react-router'
-import { AccountLog } from './transaction-types'
+import { AccountTransaction } from './transaction-types'
+import { BiCheckCircle } from 'react-icons/bi'
+import { QuestionCircleFill } from 'react-bootstrap-icons'
+import { BsXCircleFill } from 'react-icons/bs'
 
 const CouncilTransactionHistory = () => {
   const { councilId, clickCard } = useContext(ChurchContext)
@@ -23,19 +26,21 @@ const CouncilTransactionHistory = () => {
   const csvHeaders = [
     { label: 'Date', key: 'date' },
     { label: 'Type', key: 'type' },
+    { label: 'Status', key: 'success' },
     { label: 'Credit', key: 'credit' },
     { label: 'Debit', key: 'debit' },
     { label: 'Deposited By', key: 'depositedBy' },
-    { label: 'History Record', key: 'historyRecord' },
+    { label: 'Description', key: 'description' },
   ]
 
   const csvData = council?.transactions.map((transaction: any) => ({
     date: new Date(transaction.timestamp).toISOString(),
     type: transaction.category,
+    success: transaction.status,
     credit: transaction.category === 'Deposit' ? transaction.amount : null,
     debit: transaction.category !== 'Deposit' ? transaction.amount : null,
     depositedBy: transaction.depositedBy?.fullName,
-    historyRecord: transaction.historyRecord,
+    description: transaction.description,
   }))
 
   return (
@@ -65,11 +70,12 @@ const CouncilTransactionHistory = () => {
               <Col>Date</Col>
               <Col>Type</Col>
               <Col>Amount</Col>
+              <Col className="col-2 text-truncate">Status</Col>
             </Row>
           </Card.Header>
         </Card>
 
-        {council?.transactions.map((transaction: AccountLog) => (
+        {council?.transactions.map((transaction: AccountTransaction) => (
           <>
             <Card
               className="mb-1"
@@ -96,6 +102,19 @@ const CouncilTransactionHistory = () => {
                         transaction.category === 'Deposit' ? 'good' : 'bad'
                       }
                     />
+                  </Col>
+                  <Col className="col-2">
+                    {transaction?.status === 'success' && (
+                      <BiCheckCircle color="green" />
+                    )}
+
+                    {transaction?.status === 'pending approval' && (
+                      <QuestionCircleFill color="yellow" />
+                    )}
+
+                    {transaction?.status === 'declined' && (
+                      <BsXCircleFill color="red" />
+                    )}
                   </Col>
                 </Row>
               </Card.Body>

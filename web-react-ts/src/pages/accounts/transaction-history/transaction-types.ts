@@ -1,10 +1,11 @@
 import { Member } from '@jaedag/admin-portal-types'
 
-export interface AccountLog {
+export interface AccountTransaction {
   id: string
   timestamp: string
-  historyRecord: string
+  description: string
   amount: number
+  status: 'success' | 'pending approval' | 'declined'
   category: 'Deposit'
   loggedBy: Member
 }

@@ -9,6 +9,7 @@ import HeadingSecondary from 'components/HeadingSecondary'
 import './accounts-colors.css'
 import { useNavigate } from 'react-router'
 import AccountBalanceCard from './components/AccountBalanceCard'
+import RoleView from 'auth/RoleView'
 
 const CouncilDashboard = () => {
   const { councilId } = useContext(ChurchContext)
@@ -34,13 +35,15 @@ const CouncilDashboard = () => {
         <hr />
 
         <div className="d-grid gap-2">
-          <Button
-            variant="secondary"
-            className="text-start py-3"
-            onClick={() => navigate('/accounts/request-expense')}
-          >
-            Request Expense
-          </Button>
+          <RoleView roles={['leaderCouncil', 'arrivalsAdminCampus']}>
+            <Button
+              variant="secondary"
+              className="text-start py-3"
+              onClick={() => navigate('/accounts/request-expense')}
+            >
+              Request Expense
+            </Button>
+          </RoleView>
           <Button
             variant="secondary"
             className="text-start py-3"

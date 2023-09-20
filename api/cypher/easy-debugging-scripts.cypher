@@ -37,5 +37,5 @@ RETURN fellowship.name, COUNT(member) > 0 AS filled;
 
 
 
-MATCH (account:AccountLog) WHERE  account.amount IS NULL
+MATCH (account:AccountTransaction) WHERE  account.amount IS NULL
 DETACH DELETE account;

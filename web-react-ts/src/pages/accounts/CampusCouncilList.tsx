@@ -9,7 +9,11 @@ import { CouncilForAccounts, StreamForAccounts } from './accounts-types'
 import HeadingSecondary from 'components/HeadingSecondary'
 import { useNavigate } from 'react-router'
 
-const CampusCouncilList = () => {
+const CampusCouncilList = ({
+  link,
+}: {
+  link: '/accounts/council/make-deposit' | '/accounts/council/dashboard'
+}) => {
   const { campusId, clickCard } = useContext(ChurchContext)
   const navigate = useNavigate()
 
@@ -42,7 +46,7 @@ const CampusCouncilList = () => {
                   className="text-start py-3 "
                   onClick={() => {
                     clickCard(council)
-                    navigate('/accounts/council/make-deposit')
+                    navigate(link)
                   }}
                 >
                   {council.name}

@@ -18,8 +18,8 @@ export const DEPOSIT_INTO_COUNCIL_CURRENT_ACCOUNTS = gql`
         timestamp
         amount
         category
-        historyRecord
-        depositedBy {
+        description
+        loggedBy {
           id
           firstName
           lastName
@@ -48,8 +48,8 @@ export const DEPOSIT_INTO_COUNCIL_BUSSING_PURSE = gql`
         timestamp
         amount
         category
-        historyRecord
-        depositedBy {
+        description
+        loggedBy {
           id
           firstName
           lastName

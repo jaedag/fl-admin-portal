@@ -10,7 +10,8 @@ export const GET_COUNCIL_TRANSACTION_HISTORY = gql`
         timestamp
         amount
         category
-        historyRecord
+        description
+        status
         loggedBy {
           id
           firstName
@@ -24,12 +25,13 @@ export const GET_COUNCIL_TRANSACTION_HISTORY = gql`
 
 export const GET_TRANSACTION_DETAILS = gql`
   query getTransactionDetails($id: ID!) {
-    accountLogs(where: { id: $id }) {
+    accountTransactions(where: { id: $id }) {
       id
       timestamp
       amount
       category
-      historyRecord
+      description
+      status
       loggedBy {
         id
         firstName

@@ -1,9 +1,10 @@
-type AccountLog {
+type AccountTransaction {
   id: ID!
   timestamp: DateTime!
-  historyRecord: String!
+  description: String!
   amount: Float!
   category: String!
+  status: String!
   loggedBy: Member! @relationship(type: "LOGGED_BY", direction: OUT)
 }
 
@@ -27,8 +28,8 @@ extend type Campus {
 extend type Council {
   currentBalance: Float!
   bussingPurseBalance: Float
-  transactions: [AccountLog!]!
-    @relationship(type: "HAS_ACCOUNT", direction: OUT)
+  transactions: [AccountTransaction!]!
+    @relationship(type: "HAS_TRANSACTION", direction: OUT)
 }
 
 extend type Mutation {
@@ -45,13 +46,14 @@ extend type Mutation {
 
       WITH council, depositor
 
-      CREATE (currentLog:AccountLog {id: randomUUID()})
-        SET currentLog.historyRecord = depositor.firstName +  ' ' + depositor.lastName +  ' deposited ' + $currentBalanceDepositAmount + ' into the current balance',
+      CREATE (currentLog:AccountTransaction {id: randomUUID()})
+        SET currentLog.description = depositor.firstName +  ' ' + depositor.lastName +  ' deposited ' + $currentBalanceDepositAmount + ' into the current balance',
         currentLog.amount = $currentBalanceDepositAmount,
         currentLog.category = 'Deposit',
-        currentLog.timestamp = datetime()
+        currentLog.timestamp = datetime(),
+        bussingLog.status = 'success'
 
-      MERGE (council)-[:HAS_ACCOUNT]->(currentLog)
+      MERGE (council)-[:HAS_TRANSACTION]->(currentLog)
       MERGE (depositor)<-[:LOGGED_BY]-(currentLog)
 
       RETURN council
@@ -71,16 +73,51 @@ extend type Mutation {
 
       WITH council, depositor
 
-      CREATE (bussingLog:AccountLog {id: randomUUID()})
-        SET bussingLog.historyRecord = depositor.firstName +  ' ' + depositor.lastName +  ' deposited ' + $bussingPurseDepositAmount + ' into the bussing purse',
+      CREATE (bussingLog:AccountTransaction {id: randomUUID()})
+        SET bussingLog.description = depositor.firstName +  ' ' + depositor.lastName +  ' deposited ' + $bussingPurseDepositAmount + ' into the bussing purse',
         bussingLog.amount = $bussingPurseDepositAmount,
         bussingLog.category = 'Deposit',
-        bussingLog.timestamp = datetime()
+        bussingLog.timestamp = datetime(),
+        bussingLog.status = 'success'
 
-      MERGE (council)-[:HAS_ACCOUNT]->(bussingLog)
+      MERGE (council)-[:HAS_TRANSACTION]->(bussingLog)
       MERGE (depositor)<-[:LOGGED_BY]-(bussingLog)
 
       RETURN council
       """
     )
+
+  ExpenseRequest(
+    councilId: ID!
+    expenseAmount: Float!
+    expenseCategory: String!
+    description: String!
+  ): AccountTransaction!
+    @auth(rules: [{ roles: ["leaderCouncil", "adminCampus"] }])
+    @cypher(
+      statement: """
+      MATCH  (council:Council {id: $councilId})
+      MATCH (requester:Member {auth_id: $auth.jwt.sub})
+
+      WITH council, requester
+
+      CREATE (transaction:AccountTransaction {id: randomUUID()})
+        SET transaction.description = $description,
+        transaction.amount = $expenseAmount,
+        transaction.category = $expenseCategory,
+        transaction.status = 'pending approval',
+        transaction.timestamp = datetime()
+
+      MERGE (council)-[:HAS_TRANSACTION]->(transaction)
+      MERGE (requester)<-[:LOGGED_BY]-(transaction)
+
+      RETURN transaction
+      """
+    )
+
+  ApproveExpense(
+    councilId: ID!
+    expenseAmount: Float!
+    expenseCategory: String!
+  ): AccountTransaction!
 }

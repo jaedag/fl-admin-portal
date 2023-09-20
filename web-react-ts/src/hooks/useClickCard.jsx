@@ -336,7 +336,7 @@ const useClickCard = () => {
     determineStream(card)
 
     switch (card.__typename) {
-      case 'AccountLog':
+      case 'AccountTransaction':
         setTransactionId(card.id)
         sessionStorage.setItem('transactionId', card.id)
         break

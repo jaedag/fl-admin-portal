@@ -113,7 +113,7 @@ const MakeDepositForm = () => {
                 <RoleView roles={['adminCampus']}>
                   <Input
                     name="currentBalanceDepositAmount"
-                    label="Current Balace Deposit Amount"
+                    label="Current Balance Deposit Amount"
                     placeholder="Enter an amount"
                   />
                 </RoleView>

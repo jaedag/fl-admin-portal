@@ -17,7 +17,12 @@ const CouncilTransactionHistory = lazy(
 const TransactionDetails = lazy(
   () => import('pages/accounts/transaction-history/TransactionDetails')
 )
-const CampusCouncilList = lazy(() => import('pages/accounts/CampusCouncilList'))
+const CampusCouncilListForDeposits = lazy(
+  () => import('pages/accounts/council-deposit/CampusCouncilListForDeposits')
+)
+const CampusCouncilListForAccounts = lazy(
+  () => import('pages/accounts/CampusCouncilListForViewingAccounts')
+)
 
 export const accountsRoutes: LazyRouteTypes[] = [
   { path: '/accounts', element: LandingPage, roles: permitLeader('Council') },
@@ -37,8 +42,8 @@ export const accountsRoutes: LazyRouteTypes[] = [
     roles: permitLeader('Council'),
   },
   {
-    path: '/accounts/campus/councils',
-    element: CampusCouncilList,
+    path: '/accounts/campus/councils-for-deposits',
+    element: CampusCouncilListForDeposits,
     roles: permitLeaderAdmin('Campus'),
   },
   {
@@ -55,5 +60,10 @@ export const accountsRoutes: LazyRouteTypes[] = [
     path: '/accounts/transaction-details/',
     element: TransactionDetails,
     roles: [...permitLeader('Council'), ...permitAdmin('Campus')],
+  },
+  {
+    path: '/accounts/campus/council/view-accounts',
+    element: CampusCouncilListForAccounts,
+    roles: permitLeaderAdmin('Campus'),
   },
 ]
