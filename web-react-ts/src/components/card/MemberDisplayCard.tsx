@@ -7,7 +7,7 @@ import BacentaIcon from 'assets/icons/BacentaIcon'
 import ConstituencyIcon from 'assets/icons/ConstituencyIcon'
 import CouncilIcon from 'assets/icons/CouncilIcon'
 import StreamIcon from 'assets/icons/StreamIcon'
-import { Button, Card } from 'react-bootstrap'
+import { Badge, Button, Card } from 'react-bootstrap'
 import '../../components/members-grids/MemberTable.css'
 import './MemberDisplayCard.css'
 import { TelephoneFill, Whatsapp } from 'react-bootstrap-icons'
@@ -16,30 +16,33 @@ import { USER_PLACEHOLDER } from 'global-utils'
 import { ChurchLevel } from 'global-types'
 import useSetUserChurch from 'hooks/useSetUserChurch'
 import { BsEyeFill, BsMusicNote } from 'react-icons/bs'
+import SearchBadgeIcon from './SearchBadgeIcon'
+
+type CardMember = {
+  __typename: string | ChurchLevel
+  id: string
+  name?: string
+  firstName?: string
+  lastName?: string
+  nameWithTitle?: string
+  pictureUrl?: string
+  fellowship?: {
+    id: string
+    name: string
+  }
+  ministry?: {
+    id: string
+    name: string
+  }
+  leader?: {
+    id: string
+    nameWithTitle: string
+    pictureUrl?: string
+  }
+}
 
 type MemberDisplayCardProps = {
-  member: {
-    __typename: string | ChurchLevel
-    id: string
-    name?: string
-    firstName?: string
-    lastName?: string
-    nameWithTitle?: string
-    pictureUrl?: string
-    fellowship?: {
-      id: string
-      name: string
-    }
-    ministry?: {
-      id: string
-      name: string
-    }
-    leader?: {
-      id: string
-      nameWithTitle: string
-      pictureUrl?: string
-    }
-  }
+  member: CardMember
   leader?: {
     id: string
     nameWithTitle: string
@@ -53,18 +56,58 @@ type MemberDisplayCardProps = {
   children?: React.ReactNode
 }
 
-const Icons = ({ icon, className }: { icon: string; className: string }) => {
+const Icons = ({
+  member,
+  picture,
+  noPicture,
+}: {
+  member: CardMember
+  picture: string
+  noPicture: boolean
+}) => {
+  if (member.leader?.pictureUrl) {
+    return (
+      <div>
+        <CloudinaryImage
+          src={picture}
+          alt={member.nameWithTitle}
+          className={`img-search`}
+        />
+        <Badge
+          pill
+          className={`position-absolute search-badge ${member.__typename.toLowerCase()}`}
+        >
+          <SearchBadgeIcon
+            category={member.__typename as ChurchLevel}
+            size={20}
+          />{' '}
+          {member.__typename}
+        </Badge>
+      </div>
+    )
+  }
+
+  if (noPicture) {
+    return (
+      <div className={`${picture && 'rounded-circle'} img-search`}>
+        {member.__typename === 'Fellowship' && <FellowshipIcon />}
+        {member.__typename === 'Bacenta' && <BacentaIcon />}
+        {member.__typename === 'Constituency' && <ConstituencyIcon />}
+        {member.__typename === 'Council' && <CouncilIcon />}
+        {member.__typename === 'Stream' && <StreamIcon />}
+        {member.__typename === 'Oversight' && <BsEyeFill />}
+        {member.__typename === 'HubFellowship' && <BsMusicNote />}
+        {member.__typename === 'Bus' && <BusIcon />}
+      </div>
+    )
+  }
+
   return (
-    <div className={className}>
-      {icon === 'fellowship' && <FellowshipIcon />}
-      {icon === 'bacenta' && <BacentaIcon />}
-      {icon === 'constituency' && <ConstituencyIcon />}
-      {icon === 'council' && <CouncilIcon />}
-      {icon === 'stream' && <StreamIcon />}
-      {icon === 'oversight' && <BsEyeFill />}
-      {icon === 'hubfellowship' && <BsMusicNote />}
-      {icon === 'bus' && <BusIcon />}
-    </div>
+    <CloudinaryImage
+      src={picture}
+      alt={member.nameWithTitle}
+      className={`${picture && 'rounded-circle'} img-search`}
+    />
   )
 }
 
@@ -73,12 +116,11 @@ const MemberDisplayCard = (props: MemberDisplayCardProps) => {
   const { clickCard } = useContext(ChurchContext)
   const { setUserFinancials } = useSetUserChurch()
   const navigate = useNavigate()
-  let icon: string = ''
   let name: string = member.name + ' ' + member.__typename
   let details: string[] = [member?.leader?.nameWithTitle || '']
 
-  const noPicture =
-    !member?.pictureUrl && !leader?.pictureUrl && !member?.leader?.pictureUrl
+  const noPicture = !member?.pictureUrl && !leader?.pictureUrl
+
   let picture =
     member?.pictureUrl ||
     leader?.pictureUrl ||
@@ -93,36 +135,8 @@ const MemberDisplayCard = (props: MemberDisplayCardProps) => {
         member.ministry ? member.ministry.name : '',
       ]
       break
-    case 'Fellowship':
-      icon = 'fellowship'
-      break
-    case 'Bacenta':
-      icon = 'bacenta'
-      break
 
-    case 'Constituency':
-      icon = 'constituency'
-      break
-    case 'HubFellowship':
-      icon = 'hubfellowship'
-      break
-    case 'Hub':
-    case 'Council':
-      icon = 'council'
-      break
-    case 'Ministry':
-    case 'Stream':
-      icon = 'stream'
-      break
-    case 'CreativeArts':
-    case 'Campus':
-      icon = 'stream'
-      break
-    case 'Oversight':
-      icon = 'oversight'
-      break
     default:
-      icon = 'stream'
       break
   }
 
@@ -139,18 +153,7 @@ const MemberDisplayCard = (props: MemberDisplayCardProps) => {
       <Card.Body {...rest} onClick={props.onClick || clickFunction}>
         <div className="d-flex align-items-center">
           <div className="flex-shrink-0">
-            {noPicture && member.__typename !== 'Member' ? (
-              <Icons
-                className={`${picture && 'rounded-circle'} img-search`}
-                icon={icon}
-              />
-            ) : (
-              <CloudinaryImage
-                src={picture}
-                alt={member.nameWithTitle}
-                className={`${picture && 'rounded-circle'} img-search`}
-              />
-            )}
+            <Icons noPicture={noPicture} picture={picture} member={member} />
           </div>
           <div className="flex-grow-1 ms-3">
             <Card.Title>{name}</Card.Title>

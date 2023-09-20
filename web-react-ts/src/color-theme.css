@@ -443,6 +443,12 @@
   --bs-card-border-color: var(--chakra-colors-whiteAlpha-100);
 
   --bs-body-bg: var(--chakra-colors-chakra-body-bg);
+
+  --bs-bg-opacity: 1;
+  
+  --bs-success-rgb: var(--chakra-colors-green-200);
+  --bs-primary-rgb: var(--chakra-colors-blue-200);
+
   --icon: #909090;
   --bg-card: #1e1c1c;
   --icon-highlighted-color: white;
@@ -489,6 +495,8 @@
   --bs-card-border-color: var(--chakra-colors-gray-100);
 
   --bs-body-bg: var(--chakra-colors-chakra-body-bg);
+  --bs-success-rgb: var(--chakra-colors-green-200);
+
   --members-accent: #68e0d7;
   --equipment: rgb(42, 159, 195);
   --antibrutish: rgb(169, 32, 197);
