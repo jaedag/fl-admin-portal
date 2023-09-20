@@ -41,8 +41,12 @@ const CouncilDashboard = () => {
           >
             Request Expense
           </Button>
-          <Button variant="secondary" className="text-start py-3">
-            Expense History
+          <Button
+            variant="secondary"
+            className="text-start py-3"
+            onClick={() => navigate('/accounts/council/transaction-history')}
+          >
+            Transaction History
           </Button>
           <Button variant="secondary" className="text-start py-3">
             Download Expense Report

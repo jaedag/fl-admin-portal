@@ -1,3 +1,12 @@
+type AccountLog {
+  id: ID!
+  timestamp: DateTime!
+  historyRecord: String!
+  amount: Float!
+  category: String!
+  loggedBy: Member! @relationship(type: "LOGGED_BY", direction: OUT)
+}
+
 extend type Campus {
   currentBalance: Float!
     @cypher(
@@ -18,4 +27,60 @@ extend type Campus {
 extend type Council {
   currentBalance: Float!
   bussingPurseBalance: Float
+  transactions: [AccountLog!]!
+    @relationship(type: "HAS_ACCOUNT", direction: OUT)
+}
+
+extend type Mutation {
+  depositIntoCouncilCurrentAccount(
+    councilId: ID!
+    currentBalanceDepositAmount: Float!
+  ): Council!
+    @auth(rules: [{ roles: ["adminCampus"] }])
+    @cypher(
+      statement: """
+      MATCH (council:Council {id: $councilId})
+      MATCH (depositor:Member {auth_id: $auth.jwt.sub})
+        SET council.currentBalance = council.currentBalance + $currentBalanceDepositAmount
+
+      WITH council, depositor
+
+      CREATE (currentLog:AccountLog {id: randomUUID()})
+        SET currentLog.historyRecord = depositor.firstName +  ' ' + depositor.lastName +  ' deposited ' + $currentBalanceDepositAmount + ' into the current balance',
+        currentLog.amount = $currentBalanceDepositAmount,
+        currentLog.category = 'Deposit',
+        currentLog.timestamp = datetime()
+
+      MERGE (council)-[:HAS_ACCOUNT]->(currentLog)
+      MERGE (depositor)<-[:LOGGED_BY]-(currentLog)
+
+      RETURN council
+      """
+    )
+
+  depositIntoCouncilBussingPurse(
+    councilId: ID!
+    bussingPurseDepositAmount: Float!
+  ): Council!
+    @auth(rules: [{ roles: ["arrivalsAdminCampus"] }])
+    @cypher(
+      statement: """
+      MATCH (council:Council {id: $councilId})
+      MATCH (depositor:Member {auth_id: $auth.jwt.sub})
+        SET council.bussingPurseBalance = council.bussingPurseBalance + $bussingPurseDepositAmount
+
+      WITH council, depositor
+
+      CREATE (bussingLog:AccountLog {id: randomUUID()})
+        SET bussingLog.historyRecord = depositor.firstName +  ' ' + depositor.lastName +  ' deposited ' + $bussingPurseDepositAmount + ' into the bussing purse',
+        bussingLog.amount = $bussingPurseDepositAmount,
+        bussingLog.category = 'Deposit',
+        bussingLog.timestamp = datetime()
+
+      MERGE (council)-[:HAS_ACCOUNT]->(bussingLog)
+      MERGE (depositor)<-[:LOGGED_BY]-(bussingLog)
+
+      RETURN council
+      """
+    )
 }

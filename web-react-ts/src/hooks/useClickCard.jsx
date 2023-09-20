@@ -68,6 +68,10 @@ const useClickCard = () => {
       new Date().toISOString().slice(0, 10)
   )
 
+  const [transactionId, setTransactionId] = useState(
+    sessionStorage.getItem('transactionId') ?? ''
+  )
+
   const [memberId, setMemberId] = useState(
     sessionStorage.getItem('memberId') ?? ''
   )
@@ -332,6 +336,11 @@ const useClickCard = () => {
     determineStream(card)
 
     switch (card.__typename) {
+      case 'AccountLog':
+        setTransactionId(card.id)
+        sessionStorage.setItem('transactionId', card.id)
+        break
+
       case 'Member':
         setMemberId(card.id)
         sessionStorage.setItem('memberId', card.id)
@@ -449,6 +458,7 @@ const useClickCard = () => {
     serviceRecordId,
     multiplicationRecordId,
     arrivalDate,
+    transactionId,
 
     //Set State
     setDenominationId,
@@ -463,6 +473,7 @@ const useClickCard = () => {
     setMinistryId,
     setCreativeArtsId,
     setArrivalDate,
+    setTransactionId,
   }
 }
 

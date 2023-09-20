@@ -61,6 +61,7 @@ const AppWithContext = (props: AppPropsType) => {
 
     multiplicationRecordId,
     arrivalDate,
+    transactionId,
 
     //Set State
     setDenominationId,
@@ -146,6 +147,7 @@ const AppWithContext = (props: AppPropsType) => {
           doNotUse,
           arrivalDate,
           setArrivalDate,
+          transactionId,
         }}
       >
         <MemberContext.Provider

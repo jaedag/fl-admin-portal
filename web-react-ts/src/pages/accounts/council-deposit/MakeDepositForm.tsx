@@ -1,4 +1,4 @@
-import { useQuery } from '@apollo/client'
+import { useMutation, useQuery } from '@apollo/client'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { useContext } from 'react'
 import { useNavigate } from 'react-router'
@@ -12,6 +12,12 @@ import * as Yup from 'yup'
 import Input from 'components/formik/Input'
 import SubmitButton from 'components/formik/SubmitButton'
 import useModal from 'hooks/useModal'
+import {
+  DEPOSIT_INTO_COUNCIL_BUSSING_PURSE,
+  DEPOSIT_INTO_COUNCIL_CURRENT_ACCOUNTS,
+} from './depositGQL'
+import { throwToSentry } from 'global-utils'
+import RoleView from 'auth/RoleView'
 
 const MakeDepositForm = () => {
   const { councilId } = useContext(ChurchContext)
@@ -23,12 +29,18 @@ const MakeDepositForm = () => {
       id: councilId,
     },
   })
+  const [depositIntoCouncilCurrentAccount] = useMutation(
+    DEPOSIT_INTO_COUNCIL_CURRENT_ACCOUNTS
+  )
+  const [depositIntoCouncilBussingPurse] = useMutation(
+    DEPOSIT_INTO_COUNCIL_BUSSING_PURSE
+  )
 
   const council = data?.councils[0]
 
   const initialValues = {
-    currentBalanceDepositAmount: '',
-    bussingPurseDepositAmount: '',
+    currentBalanceDepositAmount: '0.0',
+    bussingPurseDepositAmount: '0.0',
   }
   const validationSchema = Yup.object({
     currentBalanceDepositAmount: Yup.number()
@@ -39,17 +51,49 @@ const MakeDepositForm = () => {
       .required('This is a required field'),
   })
 
-  const onSubmit = (
+  const onSubmit = async (
     values: typeof initialValues,
     onSubmitProps: FormikHelpers<typeof initialValues>
   ) => {
     const { setSubmitting } = onSubmitProps
 
     setSubmitting(true)
-    console.log('🚀 ~ file: MakeDepositForm.tsx:46 ~ values:', values)
+    try {
+      const mutations = []
 
-    navigate('#')
-    setSubmitting(false)
+      if (parseFloat(values.currentBalanceDepositAmount) > 0) {
+        mutations.push(
+          depositIntoCouncilCurrentAccount({
+            variables: {
+              councilId: councilId,
+              currentBalanceDepositAmount: parseFloat(
+                values.currentBalanceDepositAmount
+              ),
+            },
+          })
+        )
+      }
+
+      if (parseFloat(values.bussingPurseDepositAmount) > 0) {
+        mutations.push(
+          depositIntoCouncilBussingPurse({
+            variables: {
+              councilId: councilId,
+              bussingPurseDepositAmount: parseFloat(
+                values.bussingPurseDepositAmount
+              ),
+            },
+          })
+        )
+      }
+
+      await Promise.all(mutations)
+      navigate('/accounts/council/dashboard')
+    } catch (err) {
+      throwToSentry('Error Depositing into Council Account', err)
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   return (
@@ -66,17 +110,20 @@ const MakeDepositForm = () => {
           {(formik) => (
             <Form>
               <Container className="mb-4">
-                <Input
-                  name="currentBalanceDepositAmount"
-                  label="Current Balace Deposit Amount"
-                  placeholder="Enter an amount"
-                />
-                <Input
-                  name="bussingPurseDepositAmount"
-                  label="Bussing Purse Deposit Amount"
-                  placeholder="Enter an amount"
-                />
-
+                <RoleView roles={['adminCampus']}>
+                  <Input
+                    name="currentBalanceDepositAmount"
+                    label="Current Balace Deposit Amount"
+                    placeholder="Enter an amount"
+                  />
+                </RoleView>
+                <RoleView roles={['arrivalsAdminCampus']}>
+                  <Input
+                    name="bussingPurseDepositAmount"
+                    label="Bussing Purse Deposit Amount"
+                    placeholder="Enter an amount"
+                  />
+                </RoleView>
                 <Modal show={show} onHide={handleClose} centered scrollable>
                   <Modal.Header closeButton>
                     Please confirm the amounts to deposit

@@ -63,15 +63,9 @@ const CampusDashboard = () => {
           >
             Update Balances
           </Button>
-          <Button
-            variant="secondary"
-            className="text-start py-3"
-            onClick={() => navigate('/accounts/request-expense')}
-          >
-            Request Expense
-          </Button>
+
           <Button variant="secondary" className="text-start py-3">
-            Expense History
+            Transaction History
           </Button>
           <Button variant="secondary" className="text-start py-3">
             Download Expense Report
