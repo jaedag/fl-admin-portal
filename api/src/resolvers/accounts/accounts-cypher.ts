@@ -7,7 +7,8 @@ RETURN council, transaction, leader
 export const debitBussingExpense = `
 MATCH (transaction:AccountTransaction {id: $transactionId})<-[:HAS_TRANSACTION]-(council:Council)
 MATCH (transaction)-[:LOGGED_BY]->(depositor:Member)
-  SET council.bussingPurseBalance = council.bussingPurseBalance - transaction.amount
+  SET council.bussingPurseBalance = council.bussingPurseBalance + transaction.amount
+  SET council.currentBalance = council.currentBalance - transaction.amount
   SET transaction.status = 'success'
 
 RETURN council, transaction, depositor

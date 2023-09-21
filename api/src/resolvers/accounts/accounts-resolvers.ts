@@ -29,12 +29,16 @@ export const accountsMutations = {
         councilBalancesResult.records[0].get('leader').properties
       const transaction: AccountTransaction =
         councilBalancesResult.records[0].get('transaction').properties
-      const message = `Dear ${leader.firstName}, your expense request of ${transaction.amount} GHS from ${council.name} Council account for ${transaction.category} has been approved.`
 
       if (transaction.category === 'Bussing') {
-        if (council.bussingPurseBalance < transaction.amount) {
+        if (council.currentBalance < transaction.amount) {
           throw new Error('Insufficient bussing funds')
         }
+        const currentAmountRemaining =
+          council.currentBalance - transaction.amount
+
+        const amountRemaining = council.bussingPurseBalance + transaction.amount
+        const message = `Dear ${leader.firstName}, your expense request of ${transaction.amount} GHS from ${council.name} Council account for ${transaction.category} has been approved. Balance remaining is ${currentAmountRemaining} GHS. Bussing Purse Balance is ${amountRemaining} GHS`
 
         const debitRes = await Promise.all([
           session.run(debitBussingExpense, args),
@@ -53,6 +57,9 @@ export const accountsMutations = {
       if (council.currentBalance < transaction.amount) {
         throw new Error('Insufficient Funds')
       }
+
+      const amountRemaining = council.bussingPurseBalance - transaction.amount
+      const message = `Dear ${leader.firstName}, your expense request of ${transaction.amount} GHS from ${council.name} Council account for ${transaction.category} has been approved. Balance remaining is ${amountRemaining} GHS`
 
       const debitRes = await Promise.all([
         session.run(approveExpense, args),
