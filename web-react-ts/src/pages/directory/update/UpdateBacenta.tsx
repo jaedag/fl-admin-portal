@@ -1,37 +1,25 @@
 import { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useQuery, useMutation } from '@apollo/client'
-import { alertMsg, capitalise, throwToSentry } from '../../../global-utils'
-
+import { alertMsg, throwToSentry } from '../../../global-utils'
 import { GET_CONSTITUENCY_BACENTAS } from '../../../queries/ListQueries'
-import {
-  ADD_BACENTA_FELLOWSHIPS,
-  REMOVE_BACENTA_CONSTITUENCY,
-  UPDATE_BACENTA_MUTATION,
-  REMOVE_FELLOWSHIP_BACENTA,
-  ADD_BACENTA_CONSTITUENCY,
-} from './UpdateMutations'
+import { UPDATE_BACENTA_MUTATION } from './UpdateMutations'
 import { ChurchContext } from '../../../contexts/ChurchContext'
 import { DISPLAY_BACENTA } from '../display/ReadQueries'
-import { LOG_BACENTA_HISTORY, LOG_FELLOWSHIP_HISTORY } from './LogMutations'
+import { LOG_BACENTA_HISTORY } from './LogMutations'
 import { MAKE_BACENTA_LEADER } from './ChangeLeaderMutations'
 import BacentaForm, { BacentaFormValues } from '../reusable-forms/BacentaForm'
-import { MAKE_FELLOWSHIP_INACTIVE } from './CloseChurchMutations'
 import { SET_ACTIVE_BACENTA, SET_VACATION_BACENTA } from './StatusChanges'
-import { addNewChurches, removeOldChurches } from './directory-utils'
-import LoadingScreen from 'components/base-component/LoadingScreen'
 import { FormikHelpers } from 'formik'
+import ApolloWrapper from 'components/base-component/ApolloWrapper'
 
 const UpdateBacenta = () => {
-  const { bacentaId, clickCard } = useContext(ChurchContext)
-  const { data: bacentaData, loading: bacentaLoading } = useQuery(
-    DISPLAY_BACENTA,
-    {
-      variables: { id: bacentaId },
-    }
-  )
+  const { bacentaId } = useContext(ChurchContext)
+  const { data, loading, error } = useQuery(DISPLAY_BACENTA, {
+    variables: { id: bacentaId },
+  })
   const navigate = useNavigate()
-  const bacenta = bacentaData?.bacentas[0]
+  const bacenta = data?.bacentas[0]
 
   const initialValues: BacentaFormValues = {
     name: bacenta?.name,
@@ -45,9 +33,7 @@ const UpdateBacenta = () => {
     graduationStatus: bacenta?.graduationStatus,
   }
 
-  const [LogBacentaHistory] = useMutation(LOG_BACENTA_HISTORY)
-
-  const [LogFellowshipHistory] = useMutation(LOG_FELLOWSHIP_HISTORY, {
+  const [LogBacentaHistory] = useMutation(LOG_BACENTA_HISTORY, {
     refetchQueries: [{ query: DISPLAY_BACENTA, variables: { id: bacentaId } }],
   })
 
@@ -63,73 +49,13 @@ const UpdateBacenta = () => {
     ],
   })
 
-  //Changes downwards.ie. Changes to the Fellowships underneath the Bacenta
-  const [AddBacentaFellowships] = useMutation(ADD_BACENTA_FELLOWSHIPS)
-  const [CloseDownFellowship] = useMutation(MAKE_FELLOWSHIP_INACTIVE)
-  const [RemoveFellowshipFromBacenta] = useMutation(REMOVE_FELLOWSHIP_BACENTA, {
-    onCompleted: (data) => {
-      let prevBacenta = data.updateBacentas.bacentas[0]
-      let fellowship = data.updateFellowships.fellowships[0]
-      let newBacentaId = ''
-      let oldBacentaId = ''
-      let historyRecord
-
-      if (prevBacenta.id === bacentaId) {
-        //Fellowship has previous bacenta which is current bacenta and is going
-        oldBacentaId = bacentaId
-        newBacentaId = ''
-        historyRecord = `${fellowship.name} Fellowship has been closed down under ${initialValues.name} Bacenta`
-      } else if (prevBacenta.id !== bacentaId) {
-        //Fellowship has previous bacenta which is not current bacenta and is joining
-        oldBacentaId = prevBacenta.id
-        newBacentaId = bacentaId
-        historyRecord = `${fellowship.name} Fellowship has been moved to ${initialValues.name} Bacenta from ${prevBacenta.name} Bacenta`
-      }
-
-      //After removing the fellowship from a bacenta, then you log that change.
-      LogFellowshipHistory({
-        variables: {
-          fellowshipId: fellowship.id,
-          newLeaderId: '',
-          oldLeaderId: '',
-          newBacentaId: newBacentaId,
-          oldBacentaId: oldBacentaId,
-          historyRecord: historyRecord,
-        },
-      })
-    },
-  })
-
-  //Changes upwards. ie. Changes to the Constituency the Bacenta is under
-  const [RemoveBacentaConstituency] = useMutation(REMOVE_BACENTA_CONSTITUENCY)
-
-  const [AddBacentaConstituency] = useMutation(ADD_BACENTA_CONSTITUENCY, {
-    onCompleted: (data) => {
-      const oldConstituency = data.updateConstituencies.constituencies[0]
-      const newConstituency = data.updateBacentas.bacentas[0].constituency
-
-      let recordIfoldConstituency = `${initialValues.name} Bacenta has been moved from ${oldConstituency.name} Constituency to ${newConstituency.name} Constituency`
-
-      //After Adding the bacenta to a constituency, then you log that change.
-      LogBacentaHistory({
-        variables: {
-          bacentaId: bacentaId,
-          newLeaderId: '',
-          oldLeaderId: '',
-          newConstituencyId: newConstituency.id,
-          oldConstituencyId: oldConstituency.id,
-          historyRecord: recordIfoldConstituency,
-        },
-      })
-    },
-  })
-
   //onSubmit receives the form state as argument
   const onSubmit = async (
     values: BacentaFormValues,
     onSubmitProps: FormikHelpers<BacentaFormValues>
   ) => {
-    onSubmitProps.setSubmitting(true)
+    const { setSubmitting, resetForm } = onSubmitProps
+    setSubmitting(true)
     try {
       await UpdateBacenta({
         variables: {
@@ -197,73 +123,24 @@ const UpdateBacenta = () => {
         }
       }
 
-      //Log If The Constituency Changes
-      if (values.constituency !== initialValues.constituency) {
-        await RemoveBacentaConstituency({
-          variables: {
-            higherChurch: initialValues.constituency,
-            lowerChurch: [bacentaId],
-          },
-        })
-        await AddBacentaConstituency({
-          variables: {
-            constituencyId: values.constituency,
-            oldConstituencyId: initialValues.constituency,
-            bacentaId: bacentaId,
-          },
-        })
-      }
-
-      //For the adding and removing of fellowships
-      const oldFellowships =
-        initialValues.fellowships?.map((fellowship) => fellowship) || []
-
-      const newFellowships =
-        values.fellowships?.map((fellowship) => fellowship) || []
-
-      const lists = {
-        oldChurches: oldFellowships,
-        newChurches: newFellowships,
-      }
-
-      const mutations = {
-        closeDownChurch: CloseDownFellowship,
-        removeChurch: RemoveFellowshipFromBacenta,
-        addChurch: AddBacentaFellowships,
-        logChurchHistory: LogFellowshipHistory,
-      }
-
-      const args = {
-        initialValues,
-        bacentaId,
-      }
-
-      Promise.all([
-        await removeOldChurches(lists, mutations),
-        await addNewChurches(lists, mutations, args),
-      ])
-
-      clickCard({ id: values.constituency, __typename: 'Constituency' })
-      onSubmitProps.setSubmitting(false)
-      onSubmitProps.resetForm()
-
+      resetForm()
       navigate(`/bacenta/displaydetails`)
     } catch (error: any) {
       throwToSentry(error)
-      onSubmitProps.setSubmitting(false)
+    } finally {
+      setSubmitting(false)
     }
-  }
-  if (bacentaLoading) {
-    return <LoadingScreen />
   }
 
   return (
-    <BacentaForm
-      initialValues={initialValues}
-      onSubmit={onSubmit}
-      title={`${capitalise(bacenta?.__typename)} Update Form`}
-      newBacenta={false}
-    />
+    <ApolloWrapper data={data} loading={loading} error={error}>
+      <BacentaForm
+        initialValues={initialValues}
+        onSubmit={onSubmit}
+        title="Update Bacenta Form"
+        newBacenta={false}
+      />
+    </ApolloWrapper>
   )
 }
 

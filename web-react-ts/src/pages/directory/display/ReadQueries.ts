@@ -648,6 +648,7 @@ export const DISPLAY_CREATIVEARTS = gql`
         id
         firstName
         lastName
+        fullName
         currentTitle
         nameWithTitle
         pictureUrl
@@ -660,6 +661,7 @@ export const DISPLAY_CREATIVEARTS = gql`
       memberCount
       ministryCount
       hubCount
+      hubFellowshipCount
       ministries {
         id
         name
@@ -755,6 +757,7 @@ export const DISPLAY_MINISTRY = gql`
       }
       memberCount
       hubCount
+      hubFellowshipCount
       history {
         id
         timeStamp

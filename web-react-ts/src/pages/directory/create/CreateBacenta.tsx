@@ -30,11 +30,12 @@ const CreateBacenta = () => {
     values: BacentaFormValues,
     onSubmitProps: FormikHelpers<BacentaFormValues>
   ) => {
-    onSubmitProps.setSubmitting(true)
+    const { setSubmitting, resetForm } = onSubmitProps
+    setSubmitting(true)
 
     try {
       if (!values.leaderEmail) {
-        onSubmitProps.setSubmitting(false)
+        setSubmitting(false)
         throw new Error('Leader email is required')
       }
 
@@ -53,14 +54,13 @@ const CreateBacenta = () => {
         },
       })
 
-      clickCard({ id: values.constituency, __typename: 'Bacenta' })
       clickCard(res.data.CreateBacenta)
-      onSubmitProps.setSubmitting(false)
-      onSubmitProps.resetForm()
+      setSubmitting(false)
+      resetForm()
       navigate('/bacenta/displaydetails')
     } catch (error: any) {
       throwToSentry('There was an error creating bacenta', error)
-      onSubmitProps.setSubmitting(false)
+      setSubmitting(false)
     }
   }
 
@@ -73,4 +73,5 @@ const CreateBacenta = () => {
     />
   )
 }
+
 export default CreateBacenta

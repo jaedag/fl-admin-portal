@@ -39,6 +39,17 @@ WITH apoc.cypher.runFirstColumn(
   } AS member
   `
 
+export const matchMemberOversightQuery = `
+WITH apoc.cypher.runFirstColumn(  
+  "MATCH (member:Member {id:$id})
+  RETURN member", {offset:0, first:5, id: $id}, True) AS x UNWIND x AS member
+  RETURN member { .id,.auth_id, .firstName,.lastName,.email,.phoneNumber,.whatsappNumber,.pictureUrl,
+  leadsOversight: [ member_oversight IN apoc.cypher.runFirstColumn("MATCH (this)-[:LEADS]->(oversight:Oversight)
+  RETURN oversight", {this:member}, true) | member_oversight {.id, .name}],
+  isAdminForOversight: [ member_oversight IN apoc.cypher.runFirstColumn("MATCH (this)-[:IS_ADMIN_FOR]->(oversight:Oversight)
+  RETURN oversight", {this:member}, true) | member_oversight {.id, .name}]} AS member
+    `
+
 export const matchMemberTellerQuery = `
   WITH apoc.cypher.runFirstColumn(
     "MATCH (member:Member {id:$id})
@@ -59,7 +70,7 @@ export const matchMemberSheepSeekerQuery = `
 
 export const matchChurchQuery = `
   MATCH (church {id:$id}) 
-  WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:Campus OR church:Ministry
+  WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:Campus OR church:Oversight OR church:Ministry
   OR church:ClosedFellowship OR church:ClosedBacenta OR church:CreativeArts OR church:Hub
   RETURN church.id AS id, church.name AS name, church.firstName AS firstName, church.lastName AS lastName, labels(church) AS type
   `

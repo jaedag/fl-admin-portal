@@ -2,11 +2,7 @@ import React, { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useQuery, useMutation } from '@apollo/client'
 import { GET_BACENTA_FELLOWSHIPS } from '../../../queries/ListQueries'
-import {
-  ADD_FELLOWSHIP_BACENTA,
-  REMOVE_FELLOWSHIP_BACENTA,
-  UPDATE_FELLOWSHIP,
-} from './UpdateMutations'
+import { UPDATE_FELLOWSHIP } from './UpdateMutations'
 import { ChurchContext } from '../../../contexts/ChurchContext'
 import { DISPLAY_FELLOWSHIP } from '../display/ReadQueries'
 import { LOG_FELLOWSHIP_HISTORY } from './LogMutations'
@@ -21,34 +17,30 @@ import {
   SET_ONLINE_FELLOWSHIP,
 } from './StatusChanges'
 import { FormikHelpers } from 'formik'
-import LoadingScreen from 'components/base-component/LoadingScreen'
+import ApolloWrapper from 'components/base-component/ApolloWrapper'
 
 const UpdateFellowship = () => {
-  const { clickCard, fellowshipId } = useContext(ChurchContext)
-  const {
-    data: fellowshipData,
-    loading: fellowshipLoading,
-    // error: fellowshipError,
-  } = useQuery(DISPLAY_FELLOWSHIP, {
+  const { fellowshipId } = useContext(ChurchContext)
+  const { data, loading, error } = useQuery(DISPLAY_FELLOWSHIP, {
     variables: { id: fellowshipId },
   })
 
   const navigate = useNavigate()
 
-  const fellowship = fellowshipData?.fellowships[0]
+  const fellowship = data?.fellowships[0]
 
   const initialValues: FellowshipFormValues = {
     name: fellowship?.name,
     leaderId: fellowship?.leader?.id,
     leaderName: `${fellowship?.leader?.firstName} ${fellowship?.leader?.lastName} `,
     leaderEmail: fellowship?.leader?.email,
-    constituencySelect: fellowship?.bacenta?.constituency?.id,
     bacenta: fellowship?.bacenta?.id,
     meetingDay: fellowship?.meetingDay?.day,
     vacationStatus: fellowship?.vacationStatus,
-    venueLatitude: repackDecimals(fellowship?.location?.latitude),
-    venueLongitude: repackDecimals(fellowship?.location?.longitude),
+    venueLatitude: repackDecimals(fellowship?.location?.latitude) ?? '',
+    venueLongitude: repackDecimals(fellowship?.location?.longitude) ?? '',
   }
+
   const [LogFellowshipHistory] = useMutation(LOG_FELLOWSHIP_HISTORY)
   const [MakeFellowshipLeader] = useMutation(MAKE_FELLOWSHIP_LEADER)
   const [UpdateFellowship] = useMutation(UPDATE_FELLOWSHIP, {
@@ -62,30 +54,14 @@ const UpdateFellowship = () => {
   const [SetFellowshipOnVacation] = useMutation(SET_VACATION_FELLOWSHIP)
   const [SetFellowshipActive] = useMutation(SET_ACTIVE_FELLOWSHIP)
   const [SetOnlineFellowship] = useMutation(SET_ONLINE_FELLOWSHIP)
-  const [RemoveFellowshipFromBacenta] = useMutation(REMOVE_FELLOWSHIP_BACENTA)
-
-  const [AddFellowshipBacenta] = useMutation(ADD_FELLOWSHIP_BACENTA, {
-    onCompleted: async (data) => {
-      //After Adding the fellowship to a bacenta, then you log that change.
-      await LogFellowshipHistory({
-        variables: {
-          fellowshipId: fellowshipId,
-          newLeaderId: '',
-          oldLeaderId: '',
-          newBacentaId: data.updateFellowships.fellowships[0]?.bacenta.id ?? '',
-          oldBacentaId: fellowship?.bacenta ? fellowship?.bacenta.id : null,
-          historyRecord: `${initialValues.name} Fellowship has been moved from ${fellowship?.bacenta.name} Bacenta to ${data.updateFellowships.fellowships[0]?.bacenta.name} Bacenta`,
-        },
-      })
-    },
-  })
 
   //onSubmit receives the form state as argument
   const onSubmit = async (
     values: FellowshipFormValues,
     onSubmitProps: FormikHelpers<FellowshipFormValues>
   ) => {
-    onSubmitProps.setSubmitting(true)
+    const { setSubmitting, resetForm } = onSubmitProps
+    setSubmitting(true)
 
     values.venueLongitude = parseFloat(values.venueLongitude.toString())
     values.venueLatitude = parseFloat(values.venueLatitude.toString())
@@ -101,22 +77,6 @@ const UpdateFellowship = () => {
           venueLatitude: values.venueLatitude,
         },
       })
-
-      //Log If The Bacenta Changes
-      if (values.bacenta !== initialValues.bacenta) {
-        await RemoveFellowshipFromBacenta({
-          variables: {
-            higherChurch: initialValues.bacenta,
-            lowerChurch: [fellowshipId],
-          },
-        })
-        await AddFellowshipBacenta({
-          variables: {
-            bacentaId: values.bacenta,
-            fellowshipId: fellowshipId,
-          },
-        })
-      }
 
       //Log if the Fellowship Name Changes
       if (values.name !== initialValues.name) {
@@ -205,9 +165,7 @@ const UpdateFellowship = () => {
         alertMsg('Leader Changed Successfully')
       }
 
-      clickCard({ id: values.bacenta, __typename: 'Bacenta' })
-      onSubmitProps.setSubmitting(false)
-      onSubmitProps.resetForm()
+      resetForm()
       navigate(`/fellowship/displaydetails`)
     } catch (error: any) {
       const errorArray = error.toString().replace('Error: ', '').split('\n')
@@ -216,21 +174,20 @@ const UpdateFellowship = () => {
       } else {
         throwToSentry('There was an error updating this fellowship', error)
       }
-      onSubmitProps.setSubmitting(false)
+    } finally {
+      setSubmitting(false)
     }
   }
 
-  if (fellowshipLoading) {
-    return <LoadingScreen />
-  }
-
   return (
-    <FellowshipForm
-      title="Update Fellowship"
-      initialValues={initialValues}
-      onSubmit={onSubmit}
-      newFellowship={false}
-    />
+    <ApolloWrapper data={data} loading={loading} error={error}>
+      <FellowshipForm
+        title="Update Fellowship"
+        initialValues={initialValues}
+        onSubmit={onSubmit}
+        newFellowship={false}
+      />
+    </ApolloWrapper>
   )
 }
 

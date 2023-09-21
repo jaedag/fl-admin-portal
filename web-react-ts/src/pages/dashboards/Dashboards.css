@@ -27,11 +27,17 @@
   background-image: linear-gradient(#3c096f, #2c0b53, #1b0e36);
 }
 
+.colour-hub,
+.colour-hubs {
+  background-image: linear-gradient(#3c096f, #2c0b53, #1b0e36);
+}
 .colour-council,
 .colour-councils {
   background-image: linear-gradient(#3c096f, #2c0b53, #1b0e36);
 }
 
+.colour-ministry,
+.colour-ministries,
 .colour-stream,
 .colour-streams {
   background-image: linear-gradient(#3c096f, #2c0b53, #1b0e36);

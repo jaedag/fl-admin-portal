@@ -36,6 +36,10 @@ export const GET_FEDERAL_MEMBERS = gql`
         name
       }
 
+      leadsHubFellowship {
+        id
+        name
+      }
       leadsHub {
         id
         name
@@ -101,6 +105,10 @@ export const GET_SERVANT_MEMBERS = gql`
           name
         }
 
+        leadsHubFellowship {
+          id
+          name
+        }
         leadsHub {
           id
           name
@@ -174,6 +182,10 @@ export const GET_CAMPUS_MEMBERS = gql`
           name
         }
 
+        leadsHubFellowship {
+          id
+          name
+        }
         leadsHub {
           id
           name
@@ -246,6 +258,10 @@ export const GET_STREAM_MEMBERS = gql`
           name
         }
 
+        leadsHubFellowship {
+          id
+          name
+        }
         leadsHub {
           id
           name
@@ -318,6 +334,10 @@ export const GET_OVERSIGHT_MEMBERS = gql`
           name
         }
 
+        leadsHubFellowship {
+          id
+          name
+        }
         leadsHub {
           id
           name
@@ -390,6 +410,10 @@ export const GET_COUNCIL_MEMBERS = gql`
           name
         }
 
+        leadsHubFellowship {
+          id
+          name
+        }
         leadsHub {
           id
           name
@@ -468,6 +492,10 @@ export const GET_CONSTITUENCY_MEMBERS = gql`
           name
         }
 
+        leadsHubFellowship {
+          id
+          name
+        }
         leadsHub {
           id
           name
@@ -536,6 +564,10 @@ export const GET_BACENTA_MEMBERS = gql`
           name
         }
 
+        leadsHubFellowship {
+          id
+          name
+        }
         leadsHub {
           id
           name
@@ -605,6 +637,10 @@ export const GET_FELLOWSHIP_MEMBERS = gql`
           name
         }
 
+        leadsHubFellowship {
+          id
+          name
+        }
         leadsHub {
           id
           name
@@ -674,6 +710,10 @@ export const GET_HUB_MEMBERS = gql`
           name
         }
 
+        leadsHubFellowship {
+          id
+          name
+        }
         leadsHub {
           id
           name
@@ -744,6 +784,10 @@ export const GET_MINISTRY_MEMBERS = gql`
           name
         }
 
+        leadsHubFellowship {
+          id
+          name
+        }
         leadsHub {
           id
           name
@@ -814,6 +858,10 @@ export const GET_CREATIVEARTS_MEMBERS = gql`
           name
         }
 
+        leadsHubFellowship {
+          id
+          name
+        }
         leadsHub {
           id
           name

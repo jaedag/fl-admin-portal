@@ -6,7 +6,7 @@ import { makeSelectOptions, throwToSentry } from 'global-utils'
 import { GET_CAMPUSES } from 'queries/ListQueries'
 import React, { useContext, useState } from 'react'
 import { ChurchContext } from 'contexts/ChurchContext'
-import { MAKE_FEDERAL_MINISTRY_INACTIVE } from 'pages/directory/update/CloseChurchMutations'
+import { MAKE_CREATIVEARTS_INACTIVE } from 'pages/directory/update/CloseChurchMutations'
 import { useNavigate } from 'react-router'
 import Popup from 'components/Popup/Popup'
 import { Button, Container, Row, Col } from 'react-bootstrap'
@@ -47,7 +47,7 @@ const CreativeArtsForm = ({
 
   const { data, loading, error } = useQuery(GET_CAMPUSES)
   const [buttonLoading, setButtonLoading] = useState(false)
-  const [CloseDownCreativeArtss] = useMutation(MAKE_FEDERAL_MINISTRY_INACTIVE)
+  const [CloseDownCreativeArtss] = useMutation(MAKE_CREATIVEARTS_INACTIVE)
 
   const campusOptions = makeSelectOptions(data?.campuses)
 

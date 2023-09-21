@@ -131,3 +131,38 @@ export const MAKE_CAMPUS_ADMIN = gql`
     }
   }
 `
+
+export const MAKE_OVERSIGHT_ADMIN = gql`
+  mutation MakeOversightAdmin(
+    $oversightId: ID!
+    $newAdminId: ID!
+    $oldAdminId: ID!
+  ) {
+    RemoveOversightAdmin(
+      oversightId: $oversightId
+      adminId: $oldAdminId
+      newAdminId: $newAdminId
+    ) {
+      id
+      firstName
+      lastName
+    }
+    MakeOversightAdmin(
+      oversightId: $oversightId
+      adminId: $newAdminId
+      oldAdminId: $oldAdminId
+    ) {
+      id
+      firstName
+      lastName
+      isAdminForOversight {
+        id
+        admin {
+          id
+          firstName
+          lastName
+        }
+      }
+    }
+  }
+`

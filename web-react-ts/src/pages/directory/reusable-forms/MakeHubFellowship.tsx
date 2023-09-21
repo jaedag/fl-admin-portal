@@ -60,7 +60,7 @@ const MakeHubFellowship = () => {
       clickCard(fellowshipId)
       navigate('/fellowship/displaydetails')
     } catch (error) {
-      throwToSentry('Error Making Hub Fellowhsip ', error)
+      throwToSentry('Error Making Hub Fellowship ', error)
     } finally {
       onSubmitProps.setSubmitting(false)
     }

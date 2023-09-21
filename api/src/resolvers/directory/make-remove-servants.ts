@@ -100,6 +100,7 @@ export const MakeServant = async (
       id: args[`${servantLower}Id`],
     })
   )
+
   const oldServantRes = await session.executeRead((tx) =>
     tx.run(memberQuery, {
       id: args[`old${servantType}Id`] ?? '',

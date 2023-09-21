@@ -71,6 +71,7 @@ const DetailsOversight = () => {
         leaderTitle="Lead Pastor"
         churchId={oversightId}
         leader={oversight?.leader}
+        admin={oversight?.admin}
         churchType={oversight?.__typename}
         subChurch="Campus"
         details={details}

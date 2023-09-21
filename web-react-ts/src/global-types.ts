@@ -28,7 +28,6 @@ export type ChurchLevel =
   | 'Campus'
   | 'Oversight'
   | 'Denomination'
-  | 'Sonta'
   | 'HubFellowship'
   | 'Ministry'
   | 'Hub'
@@ -65,16 +64,13 @@ export interface Church {
     pictureUrl: string
   }
   vacationStatus?: 'Vacation' | 'Active'
+  hubs?: Church[]
   __typename: ChurchLevel
-  sontas?: Sonta[]
-}
-
-export interface Sonta extends Church {
-  __typename: 'Sonta'
 }
 
 export interface Fellowship extends Church {
   __typename: 'Fellowship'
+  bacenta: Bacenta
   bankingCode: number
   meetingDay: {
     day: 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday'
@@ -83,6 +79,7 @@ export interface Fellowship extends Church {
 
 export interface Bacenta extends Church {
   __typename: 'Bacenta'
+  constituency: Constituency
 }
 
 export type ChurchIdAndName = {
@@ -98,15 +95,34 @@ export type StreamOptions =
   | 'First Love Experience'
 export type TitleOptions = 'Pastor' | 'Reverend' | 'Bishop'
 
+export interface Denomination extends Church {
+  __typename: 'Denomination'
+  oversight: Oversight
+}
+
+export interface Oversight extends Church {
+  __typename: 'Oversight'
+  streams: Stream
+}
+export interface Campus extends Church {
+  __typename: 'Campus'
+  streams: Stream
+  oversight: Oversight
+}
+
 export interface Stream extends Church {
   id: string
   name: StreamOptions
   __typename: 'Stream'
+  bankAccount: string
+  meetingDay: 'Friday' | 'Saturday' | 'Sunday'
   stream_name?: StreamOptions
+  campus: Campus
 }
 export interface Constituency extends Church {
   __typename: 'Constituency'
   stream: Stream
+  council: Council
 }
 
 export interface Council extends Church {
@@ -168,7 +184,6 @@ export interface MemberWithChurches extends Member {
   leadsCouncil: Church[]
   leadsStream: Church[]
 
-  //sonta
   leadsHub: Church[]
   leadsMinistry: Church[]
   leadsCreativeArts: Church[]
@@ -243,7 +258,6 @@ export type Role =
   | 'leaderConstituency'
   | 'leaderCouncil'
   | 'leaderStream'
-  | 'leaderSonta'
   | 'leaderHub'
   | 'leaderMinistry'
   | 'leaderCreativeArts'
@@ -347,7 +361,6 @@ export interface HigherChurch extends Church {
   streamCount: number
   memberCount: number
   hubCount: number
-  sontaCount: number
   ministryCount: number
   target: number
 }

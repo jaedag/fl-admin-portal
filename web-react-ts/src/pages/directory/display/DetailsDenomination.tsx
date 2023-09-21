@@ -71,6 +71,7 @@ const DetailsDenomination = () => {
         leaderTitle="Lead Pastor"
         churchId={denominationId}
         leader={denomination?.leader}
+        admin={denomination?.admin}
         churchType={denomination?.__typename}
         subChurch="Oversight"
         details={details}

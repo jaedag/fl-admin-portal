@@ -310,3 +310,67 @@ export const HUB_GRAPHS = gql`
     }
   }
 `
+
+export const MINISTRY_GRAPHS = gql`
+  query ministryGraphs($ministryId: ID!) {
+    ministries(where: { id: $ministryId }) {
+      id
+      name
+      leader {
+        id
+        firstName
+        lastName
+        fullName
+        pictureUrl
+      }
+      aggregateServiceRecords(limit: 4) {
+        id
+        attendance
+        income
+        numberOfServices
+        week
+      }
+
+      aggregateRehearsalRecords(limit: 4) {
+        id
+        attendance
+        numberOfServices
+        week
+      }
+
+      memberCount
+    }
+  }
+`
+
+export const CREATIVEARTS_GRAPHS = gql`
+  query creativeArtsGraphs($creativeArtsId: ID!) {
+    creativeArts(where: { id: $creativeArtsId }) {
+      id
+      name
+      leader {
+        id
+        firstName
+        lastName
+        fullName
+        pictureUrl
+      }
+      aggregateServiceRecords(limit: 4) {
+        id
+        attendance
+        income
+        numberOfServices
+        week
+      }
+
+      aggregateRehearsalRecords(limit: 4) {
+        id
+        attendance
+        numberOfServices
+        week
+      }
+
+      memberCount
+    }
+  }
+`

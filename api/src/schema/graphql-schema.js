@@ -35,6 +35,9 @@ const services = fs
 const servicesNoIncome = fs.readFileSync(
   path.join(__dirname, 'services-no-income.graphql')
 )
+const servicesCreativeArts = fs.readFileSync(
+  path.join(__dirname, 'services-creativearts.graphql')
+)
 
 const banking = fs
   .readFileSync(path.join(__dirname, './banking.graphql'))
@@ -110,6 +113,7 @@ const array = [
   campaigns,
   quickFacts,
   servicesNoIncome,
+  servicesCreativeArts,
   equipmentCampaign,
   sheepSeeking,
   multiplicationCampaign,

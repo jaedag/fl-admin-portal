@@ -104,6 +104,9 @@ const DisplayAllHubs = lazy(() => import('pages/directory/display/AllHubs'))
 const DisplayAllStreamMinistries = lazy(
   () => import('pages/directory/display/AllStreamMinistries')
 )
+const DisplayAllCouncilHubs = lazy(
+  () => import('pages/directory/display/AllCouncilHubs')
+)
 const DisplayAllMinistries = lazy(
   () => import('pages/directory/display/AllMinistries')
 )
@@ -175,6 +178,10 @@ const UpdateCampus = lazy(() => import('pages/directory/update/UpdateCampus'))
 const UpdateOversight = lazy(
   () => import('pages/directory/update/UpdateOversight')
 )
+const UpdateCreativeArts = lazy(
+  () => import('pages/directory/update/UpdateCreativeArts')
+)
+
 const CampusMembers = lazy(() => import('pages/directory/grids/CampusMembers'))
 const OversightMembers = lazy(
   () => import('pages/directory/grids/OversightMembers')
@@ -533,6 +540,12 @@ export const directory: LazyRouteTypes[] = [
     placeholder: false,
   },
   {
+    path: '/council/hubs',
+    element: DisplayAllCouncilHubs,
+    roles: permitMe('Ministry'),
+    placeholder: false,
+  },
+  {
     path: '/stream/ministries',
     element: DisplayAllStreamMinistries,
     roles: permitMe('Ministry'),
@@ -717,5 +730,10 @@ export const directory: LazyRouteTypes[] = [
     element: UpdateOversight,
     roles: permitAdmin('Oversight'),
     placeholder: false,
+  },
+  {
+    path: '/creativeArts/editcreativeArts',
+    element: UpdateCreativeArts,
+    roles: permitAdmin('Campus'),
   },
 ]

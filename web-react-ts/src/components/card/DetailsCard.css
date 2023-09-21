@@ -12,7 +12,11 @@
 
 .card-detail {
   margin-bottom: 0px;
-  font-size: 22px;
+  font-size: 20px;
+}
+
+.rounded-btn {
+  border-radius: 50px;
 }
 
 .badge-vacation {
@@ -35,7 +39,7 @@
 }
 
 :root {
-  --creativearts-border-color: var(--chakra-colors-orange-500);
+  --creativearts-border-color: var(--chakra-colors-orange-300);
   --creativearts-border-width: 2px;
 }
 

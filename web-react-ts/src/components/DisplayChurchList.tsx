@@ -60,22 +60,19 @@ const DisplayChurchList = (props: {
                           </Row>
                           <Row className="text-muted d-block">
                             {church.fellowshipCount
-                              ? `${church?.fellowshipCount} Fellowships`
+                              ? `| ${church?.fellowshipCount} Fellowships`
                               : null}{' '}
                             {church.bacentaCount
-                              ? `${church?.bacentaCount} Bacentas`
+                              ? `| ${church?.bacentaCount} Bacentas`
                               : null}{' '}
                             {church.constituencyCount
-                              ? `${church?.constituencyCount} Constituencies`
+                              ? `| ${church?.constituencyCount} Constituencies`
                               : null}{' '}
                             {church.councilCount
-                              ? `${church?.councilCount} Councils`
+                              ? `| ${church?.councilCount} Councils`
                               : null}{' '}
                             {church.streamCount
-                              ? `${church?.streamCount} Streams`
-                              : null}{' '}
-                            {church.sontaCount
-                              ? `| ${church?.sontaCount} Sontas`
+                              ? `| ${church?.streamCount} Streams`
                               : null}{' '}
                             {church.hubCount
                               ? `| ${church?.hubCount} Hubs`

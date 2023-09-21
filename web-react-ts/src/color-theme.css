@@ -443,6 +443,12 @@
   --bs-card-border-color: var(--chakra-colors-whiteAlpha-100);
 
   --bs-body-bg: var(--chakra-colors-chakra-body-bg);
+
+  --bs-bg-opacity: 1;
+  
+  --bs-success-rgb: var(--chakra-colors-green-200);
+  --bs-primary-rgb: var(--chakra-colors-blue-200);
+
   --icon: #909090;
   --bg-card: #1e1c1c;
   --icon-highlighted-color: white;
@@ -489,6 +495,8 @@
   --bs-card-border-color: var(--chakra-colors-gray-100);
 
   --bs-body-bg: var(--chakra-colors-chakra-body-bg);
+  --bs-success-rgb: var(--chakra-colors-green-200);
+
   --members-accent: #68e0d7;
   --equipment: rgb(42, 159, 195);
   --antibrutish: rgb(169, 32, 197);
@@ -590,6 +598,35 @@
   --bs-btn-disabled-color: var(--chakra-colors-white);
   --bs-btn-disabled-bg: var(--chakra-colors-green-500);
   --bs-btn-disabled-border-color: var(--chakra-colors-green-500);
+}
+
+[data-bs-theme='dark'] .btn-danger {
+  --bs-btn-color: var(--chakra-colors-gray-800);
+  --bs-btn-bg: var(--chakra-colors-red-200);
+  --bs-btn-border-color: var(--chakra-colors-red-200);
+  --bs-btn-hover-color: var(--chakra-colors-gray-800);
+  --bs-btn-hover-bg: var(--chakra-colors-red-300);
+  --bs-btn-hover-border-color: var(--chakra-colors-red-300);
+  --bs-btn-active-color: var(--chakra-colors-gray-800);
+  --bs-btn-active-bg: var(--chakra-colors-red-400);
+  --bs-btn-active-border-color: var(--chakra-colors-red-400);
+  --bs-btn-disabled-color: var(--chakra-colors-gray-800);
+  --bs-btn-disabled-bg: var(--chakra-colors-red-300);
+}
+
+[data-bs-theme='light'] .btn-danger {
+  --bs-btn-color: var(--chakra-colors-white);
+  --bs-btn-bg: var(--chakra-colors-red-500);
+  --bs-btn-border-color: var(--chakra-colors-red-500);
+  --bs-btn-hover-color: var(--chakra-colors-white);
+  --bs-btn-hover-bg: var(--chakra-colors-red-600);
+  --bs-btn-hover-border-color: var(--chakra-colors-red-600);
+  --bs-btn-active-color: var(--chakra-colors-white);
+  --bs-btn-active-bg: var(--chakra-colors-red-700);
+  --bs-btn-active-border-color: var(--chakra-colors-red-700);
+  --bs-btn-disabled-color: var(--chakra-colors-white);
+  --bs-btn-disabled-bg: var(--chakra-colors-red-500);
+  --bs-btn-disabled-border-color: var(--chakra-colors-red-500);
 }
 
 [data-bs-theme='dark'] .btn-primary {

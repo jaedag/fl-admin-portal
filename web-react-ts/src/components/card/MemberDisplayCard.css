@@ -9,3 +9,62 @@
   margin-top: 10px;
   margin-bottom: 10px;
 }
+
+.search-badge {
+  left: 0 !important;
+  bottom: 0 !important;
+}
+
+.badge {
+  color: var(--chakra-colors-gray-200) !important;
+}
+
+.badge.oversight {
+  background-color: var(--chakra-colors-facebook-800) !important;
+  border: 5px solid var(--chakra-colors-facebook-200) !important;
+}
+
+.badge.campus {
+  background-color: var(--chakra-colors-purple-800) !important;
+  border: 5px solid var(--chakra-colors-purple-200) !important;
+}
+
+.badge.stream {
+  background-color: var(--chakra-colors-red-800) !important;
+  border: 5px solid var(--chakra-colors-red-200) !important;
+}
+
+.badge.council {
+  background-color: var(--chakra-colors-orange-800) !important;
+  border: 5px solid var(--chakra-colors-orange-200) !important;
+}
+
+.badge.constituency {
+  background-color: var(--chakra-colors-teal-800) !important;
+  border: 5px solid var(--chakra-colors-teal-200) !important;
+}
+
+.badge.bacenta {
+  background-color: var(--chakra-colors-green-800) !important;
+  border: 5px solid var(--chakra-colors-green-200) !important;
+}
+
+.badge.fellowship {
+  background-color: var(--chakra-colors-blue-800) !important;
+  border: 5px solid var(--chakra-colors-blue-200) !important;
+}
+
+.badge.creativearts {
+  background-color: var(--chakra-colors-yellow-800) !important;
+  border: 5px solid var(--chakra-colors-yellow-200) !important;
+}
+
+.badge.ministry {
+  background-color: var(--chakra-colors-cyan-800) !important;
+  border: 5px solid var(--chakra-colors-cyan-200) !important;
+}
+
+.badge.hub {
+  background-color: var(--chakra-colors-pink-800) !important;
+  border: 5px solid var(--chakra-colors-pink-200) !important;
+}

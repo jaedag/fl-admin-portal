@@ -2,9 +2,9 @@ import React, { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useMutation } from '@apollo/client'
 import { throwToSentry } from '../../../global-utils'
-import { CREATE_FEDERAL_MINISTRY_MUTATION } from './CreateMutations'
+import { CREATE_CREATIVEARTS_MUTATION } from './CreateMutations'
 import { ChurchContext } from '../../../contexts/ChurchContext'
-import { NEW_FEDERAL_MINISTRY_LEADER } from './MakeLeaderMutations'
+import { NEW_CREATIVEARTS_LEADER } from './MakeLeaderMutations'
 import { FormikHelpers } from 'formik'
 import CreativeArtsForm, {
   CreativeArtsFormValues,
@@ -23,8 +23,8 @@ const CreateCreativeArts = () => {
     campus: '',
   }
 
-  const [NewCreativeArtsLeader] = useMutation(NEW_FEDERAL_MINISTRY_LEADER)
-  const [CreateCreativeArts] = useMutation(CREATE_FEDERAL_MINISTRY_MUTATION)
+  const [NewCreativeArtsLeader] = useMutation(NEW_CREATIVEARTS_LEADER)
+  const [CreateCreativeArts] = useMutation(CREATE_CREATIVEARTS_MUTATION)
 
   //onSubmit receives the form state as argument
   const onSubmit = async (

@@ -5,104 +5,104 @@ import React, { useContext } from 'react'
 import { Card, Col, Row, Button, Container } from 'react-bootstrap'
 import { TelephoneFill, Whatsapp } from 'react-bootstrap-icons'
 import { useNavigate } from 'react-router'
-import { CAMPUS_BY_STREAM } from './DefaultersQueries'
-import './Defaulters.css'
+import '../Defaulters.css'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
-import PlaceholderDefaulterList from './PlaceholderDefaulterList'
-import { HigherChurchWithDefaulters } from './defaulters-types'
+import PlaceholderDefaulterList from '../PlaceholderDefaulterList'
+import { HigherChurchWithDefaulters } from '../defaulters-types'
 import PullToRefresh from 'react-simple-pull-to-refresh'
-import { messageForAdminsOfDefaulters } from './defaulters-utils'
+import { messageForAdminsOfDefaulters } from '../defaulters-utils'
+import { MINISTRY_BY_HUB } from './DefaultersSontaQueries'
+import useSetUserChurch from 'hooks/useSetUserChurch'
 
-const CampusByStream = () => {
-  const { campusId, clickCard } = useContext(ChurchContext)
-  const { data, loading, error, refetch } = useQuery(CAMPUS_BY_STREAM, {
+const MinistryByHub = () => {
+  const { ministryId, clickCard } = useContext(ChurchContext)
+  const { setUserChurch } = useSetUserChurch()
+  const { data, loading, error, refetch } = useQuery(MINISTRY_BY_HUB, {
     variables: {
-      id: campusId,
+      id: ministryId,
     },
   })
 
   const navigate = useNavigate()
+
   return (
     <PullToRefresh onRefresh={refetch}>
       <ApolloWrapper data={data} loading={loading} error={error} placeholder>
         <Container>
-          <HeadingPrimary
-            loading={loading || !data?.campuses[0]?.name}
-          >{`${data?.campuses[0]?.name} Campus By Streams`}</HeadingPrimary>
-
+          <HeadingPrimary loading={loading || !data?.ministries[0]?.name}>
+            {`${data?.ministries[0].name} Ministry By Hub`}
+          </HeadingPrimary>
           <Row>
-            {data?.campuses.length ? (
-              data?.campuses[0]?.streams.map(
-                (stream: HigherChurchWithDefaulters, i: number) => (
+            {data?.ministries.length ? (
+              data?.ministries[0].hubs.map(
+                (hub: HigherChurchWithDefaulters, i: number) => (
                   <Col key={i} xs={12} className="mb-3">
                     <Card>
-                      <Card.Header className="fw-bold">{`${stream.name} Stream`}</Card.Header>
+                      <Card.Header className="fw-bold">{`${hub.name} Hub`}</Card.Header>
                       <Card.Body
                         onClick={() => {
-                          clickCard(stream)
-                          navigate('/services/stream-by-council')
+                          clickCard(hub)
+                          setUserChurch(hub)
+
+                          navigate('/services/defaulters/dashboard')
                         }}
                       >
                         <div className="fw-bold">
-                          Active Fellowships {stream.activeFellowshipCount}
+                          Active Fellowships {hub.activeFellowshipCount}
                         </div>
                         <div className="good">
-                          Services This Week {stream.servicesThisWeekCount}
+                          Services This Week {hub.servicesThisWeekCount}
                         </div>
                         <div
                           className={
-                            stream.formDefaultersThisWeekCount ? 'bad' : 'good'
+                            hub.formDefaultersThisWeekCount ? 'bad' : 'good'
                           }
                         >
                           Form Not Filled This Week{' '}
-                          {stream.formDefaultersThisWeekCount}
+                          {hub.formDefaultersThisWeekCount}
                         </div>
                         <div
                           className={
-                            stream.bankedThisWeekCount ===
-                            stream.servicesThisWeekCount
+                            hub.bankedThisWeekCount ===
+                            hub.servicesThisWeekCount
                               ? 'good'
-                              : stream.bankedThisWeekCount > 0
+                              : hub.bankedThisWeekCount > 0
                               ? 'yellow'
                               : 'bad'
                           }
                         >
-                          Banked This Week {stream.bankedThisWeekCount}
+                          Banked This Week {hub.bankedThisWeekCount}
                         </div>
                         <div
                           className={
-                            stream.bankingDefaultersThisWeekCount
-                              ? 'bad'
-                              : 'good'
+                            hub.bankingDefaultersThisWeekCount ? 'bad' : 'good'
                           }
                         >
                           Not Banked This Week{' '}
-                          {stream.bankingDefaultersThisWeekCount}
+                          {hub.bankingDefaultersThisWeekCount}
                         </div>
                         <div
                           className={
-                            stream.cancelledServicesThisWeekCount
-                              ? 'bad'
-                              : 'good'
+                            hub.cancelledServicesThisWeekCount ? 'bad' : 'good'
                           }
                         >
                           Cancelled Services This Week{' '}
-                          {stream.cancelledServicesThisWeekCount}
+                          {hub.cancelledServicesThisWeekCount}
                         </div>
                       </Card.Body>
                       <Card.Footer>
                         <div className="mb-2">
-                          Contact Admin: {stream?.admin?.fullName}
+                          Contact Admin: {hub?.admin?.fullName}
                         </div>
-                        <a href={`tel:${stream?.admin?.phoneNumber}`}>
+                        <a href={`tel:${hub?.admin?.phoneNumber}`}>
                           <Button variant="primary">
                             <TelephoneFill /> Call
                           </Button>
                         </a>
                         <a
                           href={`https://wa.me/${
-                            stream?.admin?.whatsappNumber
-                          }?text=${messageForAdminsOfDefaulters(stream)}`}
+                            hub?.admin?.whatsappNumber
+                          }?text=${messageForAdminsOfDefaulters(hub)}`}
                           className="ms-3"
                         >
                           <Button variant="success">
@@ -124,4 +124,4 @@ const CampusByStream = () => {
   )
 }
 
-export default CampusByStream
+export default MinistryByHub

@@ -11,10 +11,12 @@ import '../Arrivals.css'
 import { STREAM_BY_COUNCIL_ARRIVALS } from './churchBySubchurchQueries'
 import { HigherChurchWithArrivals } from '../arrivals-types'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
+import useSetUserChurch from 'hooks/useSetUserChurch'
 
 const StreamByCouncil = () => {
   const { clickCard, streamId, arrivalDate } = useContext(ChurchContext)
   const navigate = useNavigate()
+  const { setUserChurch } = useSetUserChurch()
 
   const { data, loading, error, refetch } = useQuery(
     STREAM_BY_COUNCIL_ARRIVALS,
@@ -96,6 +98,7 @@ const StreamByCouncil = () => {
                       <Card.Body
                         onClick={() => {
                           clickCard(council)
+                          setUserChurch(council)
                           navigate(`/arrivals/council`)
                         }}
                       >

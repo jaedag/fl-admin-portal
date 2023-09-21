@@ -82,7 +82,7 @@ export type VehicleRecord = {
   transactionStatus?: string
 }
 
-export interface StreamWithArrivals extends Stream, HigherChurchWithArrivals {
+export interface StreamWithArrivals extends Church, HigherChurchWithArrivals {
   __typename: 'Stream'
   name: StreamOptions
   meetingDay: {

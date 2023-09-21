@@ -83,7 +83,6 @@ export const roles: {
   Campus: ['leads', 'isAdminFor', 'isArrivalsAdminFor'],
   Oversight: ['leads', 'isAdminFor'],
   Denomination: ['leads', 'isAdminFor'],
-  Sonta: ['leads'],
   HubFellowship: ['leads'],
   Hub: ['leads'],
   Ministry: ['leads', 'isAdminFor'],

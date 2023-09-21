@@ -1,30 +1,22 @@
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useQuery, useMutation } from '@apollo/client'
 import { alertMsg, throwToSentry } from '../../../global-utils'
 import { GET_DENOMINATION_OVERSIGHTS } from '../../../queries/ListQueries'
-import {
-  UPDATE_OVERSIGHT_MUTATION,
-  ADD_OVERSIGHT_CAMPUS,
-  REMOVE_OVERSIGHT_DENOMINATION,
-  REMOVE_CAMPUS_OVERSIGHT,
-  ADD_OVERSIGHT_DENOMINATION,
-} from './UpdateMutations'
+import { UPDATE_OVERSIGHT_MUTATION } from './UpdateMutations'
 import { DISPLAY_OVERSIGHT } from '../display/ReadQueries'
-import { LOG_OVERSIGHT_HISTORY, LOG_CAMPUS_HISTORY } from './LogMutations'
+import { LOG_OVERSIGHT_HISTORY } from './LogMutations'
 import { MAKE_OVERSIGHT_LEADER } from './ChangeLeaderMutations'
 import OversightForm, {
   OversightFormValues,
 } from 'pages/directory/reusable-forms/OversightForm'
-import { MAKE_OVERSIGHT_INACTIVE } from './CloseChurchMutations'
-import { addNewChurches, removeOldChurches } from './directory-utils'
 import { FormikHelpers } from 'formik'
-import LoadingScreen from 'components/base-component/LoadingScreen'
 import { ChurchContext } from 'contexts/ChurchContext'
+import ApolloWrapper from 'components/base-component/ApolloWrapper'
 
 const UpdateOversight = () => {
-  const { oversightId, clickCard } = useContext(ChurchContext)
-  const { data, loading } = useQuery(DISPLAY_OVERSIGHT, {
+  const { oversightId } = useContext(ChurchContext)
+  const { data, loading, error } = useQuery(DISPLAY_OVERSIGHT, {
     variables: { id: oversightId },
   })
 
@@ -46,80 +38,15 @@ const UpdateOversight = () => {
       },
     ],
   })
-  const [LogCampusHistory] = useMutation(LOG_CAMPUS_HISTORY, {
-    refetchQueries: [
-      {
-        query: DISPLAY_OVERSIGHT,
-        variables: { id: oversightId },
-      },
-    ],
-  })
 
   const [MakeOversightLeader] = useMutation(MAKE_OVERSIGHT_LEADER)
   const [UpdateOversight] = useMutation(UPDATE_OVERSIGHT_MUTATION, {
     refetchQueries: [
       {
         query: GET_DENOMINATION_OVERSIGHTS,
-        variables: { id: oversight.denomination.id },
+        variables: { id: oversight?.denomination.id },
       },
     ],
-  })
-
-  //Changes downwards. ie. Bacenta Changes underneath constituency
-  const [AddOversightsCampus] = useMutation(ADD_OVERSIGHT_CAMPUS)
-  const [RemoveCampusOversight] = useMutation(REMOVE_CAMPUS_OVERSIGHT, {
-    onCompleted: (data) => {
-      const prevOversight = data.updateOversight.oversights[0]
-      const campus = data.updateCampus.campuses[0]
-      let newOversightId = ''
-      let oldOversightId = ''
-      let historyRecord
-
-      if (prevOversight.id !== oversightId) {
-        //Bacenta has previous constituency which is not current constituency and is joining
-        oldOversightId = prevOversight.id
-        newOversightId = oversightId
-        historyRecord = `${campus.name} Campus has been moved to ${initialValues.name} Oversight from ${prevOversight.name} Oversight`
-      }
-
-      //After removing the bacenta from a constituency, then you log that change.
-      LogCampusHistory({
-        variables: {
-          campus: campus.id,
-          newLeaderId: '',
-          oldLeaderId: '',
-          newOversightId: newOversightId,
-          oldOversightId: oldOversightId,
-          historyRecord: historyRecord,
-        },
-      })
-    },
-  })
-  const [CloseDownCampus] = useMutation(MAKE_OVERSIGHT_INACTIVE)
-
-  //Changes upwards. it. Changes to the Denomination the Oversight Oversight is under
-  const [RemoveOversightDenomination] = useMutation(
-    REMOVE_OVERSIGHT_DENOMINATION
-  )
-  const [AddOversightDenomination] = useMutation(ADD_OVERSIGHT_DENOMINATION, {
-    onCompleted: (data) => {
-      const oldDenomination = data.updateDenomination.denomination[0]
-      const newDenomination = data.UpdateOversight.oversights[0].denomination
-
-      let recordIfOldDenomination = `${initialValues.name} Oversight has been moved from ${oldDenomination.name} Denomination to ${newDenomination.name} Denomination`
-
-      //After Adding the campus to a oversight, then you log that change.
-      LogOversightHistory({
-        variables: {
-          oversightId: oversightId,
-          newLeaderId: '',
-          oldLeaderId: '',
-          newDenominationId: data.UpdateOversight.oversight[0].denomination.id,
-          oldDenomination: oversight?.denomination.id,
-          historyRecord: recordIfOldDenomination,
-        },
-      })
-    },
   })
 
   //onSubmit receives the form state as argument
@@ -127,7 +54,8 @@ const UpdateOversight = () => {
     values: OversightFormValues,
     onSubmitProps: FormikHelpers<OversightFormValues>
   ) => {
-    onSubmitProps.setSubmitting(true)
+    const { setSubmitting, resetForm } = onSubmitProps
+    setSubmitting(true)
 
     try {
       await UpdateOversight({
@@ -177,77 +105,24 @@ const UpdateOversight = () => {
         }
       }
 
-      //Log if Oversight Changes
-      if (values.denomination !== oversight.denomination.id) {
-        try {
-          await RemoveOversightDenomination({
-            variables: {
-              higherChurch: initialValues.denomination,
-              lowerChurch: [oversightId],
-            },
-          })
-          await AddOversightDenomination({
-            variables: {
-              denominationId: values.denomination,
-              oldDenominationd: initialValues.denomination,
-              oversightId: oversightId,
-            },
-          })
-        } catch (error: any) {
-          throwToSentry(error)
-        }
-      }
-
-      //For the Adding and Removing of Campuses
-
-      const oldCampusList =
-        initialValues.campuses?.map((campus) => campus) || []
-
-      const newCampusList = values.campuses?.map((campus) => campus) || []
-
-      const lists = {
-        oldChurches: oldCampusList,
-        newChurches: newCampusList,
-      }
-
-      const mutations = {
-        closeDownChurch: CloseDownCampus,
-        removeChurch: RemoveCampusOversight,
-        addChurch: AddOversightsCampus,
-        logChurchHistory: LogCampusHistory,
-      }
-
-      const args = {
-        initialValues,
-        oversightId,
-      }
-
-      Promise.all([
-        await removeOldChurches(lists, mutations),
-        await addNewChurches(lists, mutations, args),
-      ])
-
-      clickCard({ id: values.denomination, __typename: 'Denomination' })
-      onSubmitProps.setSubmitting(false)
-      onSubmitProps.resetForm()
+      setSubmitting(false)
+      resetForm()
       navigate(`/oversight/displaydetails`)
     } catch (err: any) {
       throwToSentry('There was a problem updating this oversight', err)
-      onSubmitProps.setSubmitting(false)
+      setSubmitting(false)
     }
   }
 
-  if (loading) {
-    return <LoadingScreen />
-  }
-
   return (
-    <OversightForm
-      initialValues={initialValues}
-      onSubmit={onSubmit}
-      title={`Update Oversight Form`}
-      newOversight={false}
-    />
+    <ApolloWrapper data={data} loading={loading} error={error}>
+      <OversightForm
+        initialValues={initialValues}
+        onSubmit={onSubmit}
+        title={`Update Oversight Form`}
+        newOversight={false}
+      />
+    </ApolloWrapper>
   )
 }
 

@@ -3,10 +3,10 @@ export const matchMemberCreativeArtsQuery = `
     "MATCH (member:Member {id:$id})
     RETURN member", {offset:0, first:5, id: $id}, True) AS x UNWIND x AS member
     RETURN member { .id,.auth_id, .firstName,.lastName,.email,.phoneNumber,.whatsappNumber,.pictureUrl,
-    leadsCreativeArts: [ member_creativeArt IN apoc.cypher.runFirstColumn("MATCH (this)-[:LEADS]->(creativeArt:CreativeArts)
-    RETURN creativeArt", {this:member}, true) | member_creativeArt {.id, .name}],
-    isAdminForCreativeArts: [ member_creativeArt IN apoc.cypher.runFirstColumn("MATCH (this)-[:IS_ADMIN_FOR]->(creativeArt:CreativeArts)
-    RETURN creativeArt", {this:member}, true) | member_creativeArt {.id, .name}]} AS member
+    leadsCreativeArts: [ member_creativeArts IN apoc.cypher.runFirstColumn("MATCH (this)-[:LEADS]->(creativeArts:CreativeArts)
+    RETURN creativeArts", {this:member}, true) | member_creativeArts {.id, .name}],
+    isAdminForCreativeArts: [ member_creativeArts IN apoc.cypher.runFirstColumn("MATCH (this)-[:IS_ADMIN_FOR]->(creativeArts:CreativeArts)
+    RETURN creativeArts", {this:member}, true) | member_creativeArts {.id, .name}]} AS member
   `
 
 export const matchMemberMinistryQuery = `

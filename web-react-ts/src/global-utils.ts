@@ -278,10 +278,6 @@ export const plural = (church: ChurchLevel | string) => {
       return 'bacentas'
     case 'Bacenta':
       return 'Bacentas'
-    case 'sonta':
-      return 'sontas'
-    case 'Sonta':
-      return 'Sontas'
     case 'hub':
       return 'hubs'
     case 'Hub':
@@ -316,6 +312,7 @@ export const parsePhoneNum = (phoneNumber: string) => {
 }
 
 export const repackDecimals = (decimal: string | number) => {
+  if (!decimal) return
   if (decimal === 0 || decimal === '0.0') {
     return '0.0'
   }
@@ -548,8 +545,7 @@ export const getSubChurchLevel = (churchType: ChurchLevel) => {
       return 'Ministry'
     case 'Ministry':
       return 'Hub'
-    case 'Hub':
-      return 'Sonta'
+
     default:
       return 'Fellowship'
   }
@@ -656,3 +652,5 @@ export const directoryLock = (
 
   return false
 }
+
+export const firstDayOfThisYear = new Date(new Date().getFullYear(), 0, 1)

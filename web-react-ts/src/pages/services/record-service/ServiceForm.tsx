@@ -102,12 +102,13 @@ const ServiceForm = ({
     values: FormOptions,
     onSubmitProps: FormikHelpers<FormOptions>
   ) => {
+    const { setSubmitting, resetForm } = onSubmitProps
     if (checkIfArrayHasRepeatingValues(values.treasurers)) {
       throwToSentry('You cannot choose the same treasurer twice!')
-      onSubmitProps.setSubmitting(false)
+      setSubmitting(false)
       return
     } else {
-      onSubmitProps.setSubmitting(true)
+      setSubmitting(true)
       RecordServiceMutation({
         variables: {
           churchId: churchId,
@@ -122,13 +123,13 @@ const ServiceForm = ({
         },
       })
         .then((res) => {
-          onSubmitProps.setSubmitting(false)
-          onSubmitProps.resetForm()
+          setSubmitting(false)
+          resetForm()
           clickCard(res.data.RecordService)
           navigate(`/${churchType.toLowerCase()}/service-details`)
         })
         .catch((error) => {
-          onSubmitProps.setSubmitting(false)
+          setSubmitting(false)
           throwToSentry('', error)
         })
     }

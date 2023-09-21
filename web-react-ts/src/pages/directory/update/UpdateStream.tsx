@@ -1,30 +1,22 @@
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useQuery, useMutation } from '@apollo/client'
 import { alertMsg, throwToSentry } from '../../../global-utils'
 import { GET_CAMPUS_STREAMS } from '../../../queries/ListQueries'
-import {
-  UPDATE_STREAM_MUTATION,
-  ADD_CAMPUS_STREAM,
-  REMOVE_STREAM_CAMPUS,
-  REMOVE_COUNCIL_STREAM,
-  ADD_STREAM_COUNCILS,
-} from './UpdateMutations'
+import { UPDATE_STREAM_MUTATION } from './UpdateMutations'
 import { ChurchContext } from '../../../contexts/ChurchContext'
 import { DISPLAY_STREAM } from '../display/ReadQueries'
-import { LOG_STREAM_HISTORY, LOG_COUNCIL_HISTORY } from './LogMutations'
+import { LOG_STREAM_HISTORY } from './LogMutations'
 import { MAKE_STREAM_LEADER } from './ChangeLeaderMutations'
 import StreamForm, {
   StreamFormValues,
 } from 'pages/directory/reusable-forms/StreamForm'
-import { addNewChurches, removeOldChurches } from './directory-utils'
-import { MAKE_COUNCIL_INACTIVE } from './CloseChurchMutations'
-import LoadingScreen from 'components/base-component/LoadingScreen'
 import { FormikHelpers } from 'formik'
+import ApolloWrapper from 'components/base-component/ApolloWrapper'
 
 const UpdateStream = () => {
-  const { streamId, clickCard } = useContext(ChurchContext)
-  const { data, loading } = useQuery(DISPLAY_STREAM, {
+  const { streamId } = useContext(ChurchContext)
+  const { data, loading, error } = useQuery(DISPLAY_STREAM, {
     variables: { id: streamId },
   })
 
@@ -45,10 +37,6 @@ const UpdateStream = () => {
   const [LogStreamHistory] = useMutation(LOG_STREAM_HISTORY, {
     refetchQueries: [{ query: DISPLAY_STREAM, variables: { id: streamId } }],
   })
-  const [LogCouncilHistory] = useMutation(LOG_COUNCIL_HISTORY, {
-    refetchQueries: [{ query: DISPLAY_STREAM, variables: { id: streamId } }],
-  })
-
   const [MakeStreamLeader] = useMutation(MAKE_STREAM_LEADER)
   const [UpdateStream] = useMutation(UPDATE_STREAM_MUTATION, {
     refetchQueries: [
@@ -58,73 +46,13 @@ const UpdateStream = () => {
       },
     ],
   })
-
-  //Changes downwards. ie. Council Changes underneath stream
-  const [CloseDownCouncil] = useMutation(MAKE_COUNCIL_INACTIVE)
-  const [AddStreamCouncils] = useMutation(ADD_STREAM_COUNCILS)
-  const [RemoveCouncilStream] = useMutation(REMOVE_COUNCIL_STREAM, {
-    onCompleted: (data) => {
-      const prevStream = data.updateCouncils.councils[0]
-      const council = data.updateCouncils.councils[0]
-      let newStreamId = ''
-      let oldStreamId = ''
-      let historyRecord
-
-      if (prevStream?.id === streamId) {
-        //Council has previous stream which is current stream and is going
-        oldStreamId = streamId
-        newStreamId = ''
-        historyRecord = `${council.name} Council has been closed down under ${initialValues.name} Stream`
-      } else if (prevStream.id !== streamId) {
-        //Council has previous stream which is not current stream and is joining
-        oldStreamId = prevStream.id
-        newStreamId = streamId
-        historyRecord = `${council.name} Council has been moved to ${initialValues.name} Stream from ${prevStream.name} Stream`
-      }
-
-      //After removing the council from a stream, then you log that change.
-      LogCouncilHistory({
-        variables: {
-          councilId: council.id,
-          newLeaderId: '',
-          oldLeaderId: '',
-          newstreamId: newStreamId,
-          oldstreamId: oldStreamId,
-          historyRecord: historyRecord,
-        },
-      })
-    },
-  })
-
-  //Changes upwards. it. Changes to the Campus the Stream Campus is under
-  const [RemoveStreamCampus] = useMutation(REMOVE_STREAM_CAMPUS)
-  const [AddStreamCampus] = useMutation(ADD_CAMPUS_STREAM, {
-    onCompleted: (data) => {
-      const oldCampus = data.updateCampus.campuses[0]
-      const newCampus = data.updateStreams.streams[0].campus
-
-      let recordIfOldCampus = `${initialValues.name} Stream has been moved from ${oldCampus.name} Campus to ${newCampus.name} Campus`
-
-      //After Adding the stream to a campus, then you log that change.
-      LogStreamHistory({
-        variables: {
-          streamId: streamId,
-          newLeaderId: '',
-          oldLeaderId: '',
-          newCampusId: data.updateStreams.streams[0].campus.id,
-          oldCampusId: stream?.campus.id,
-          historyRecord: recordIfOldCampus,
-        },
-      })
-    },
-  })
-
   //onSubmit receives the form state as argument
   const onSubmit = async (
     values: StreamFormValues,
     onSubmitProps: FormikHelpers<StreamFormValues>
   ) => {
-    onSubmitProps.setSubmitting(true)
+    const { setSubmitting, resetForm } = onSubmitProps
+    setSubmitting(true)
 
     try {
       await UpdateStream({
@@ -176,76 +104,24 @@ const UpdateStream = () => {
         }
       }
 
-      //Log if Campus Changes
-      if (values.campus !== initialValues.campus) {
-        try {
-          await RemoveStreamCampus({
-            variables: {
-              higherChurch: initialValues.campus,
-              lowerChurch: [streamId],
-            },
-          })
-          await AddStreamCampus({
-            variables: {
-              campusId: values.campus,
-              oldCampusId: initialValues.campus,
-              streamId: streamId,
-            },
-          })
-        } catch (error: any) {
-          throwToSentry(error)
-        }
-      }
-
-      //For the Adding and Removing of Councils
-      const oldCouncilList =
-        initialValues.councils?.map((council) => council) || []
-
-      const newCouncilList = values.councils?.map((council) => council) || []
-
-      const lists = {
-        oldChurches: oldCouncilList,
-        newChurches: newCouncilList,
-      }
-
-      const mutations = {
-        closeDownChurch: CloseDownCouncil,
-        removeChurch: RemoveCouncilStream,
-        addChurch: AddStreamCouncils,
-        logChurchHistory: LogCouncilHistory,
-      }
-
-      const args = {
-        initialValues,
-        streamId,
-      }
-
-      Promise.all([
-        await removeOldChurches(lists, mutations),
-        await addNewChurches(lists, mutations, args),
-      ])
-
-      clickCard({ id: values.campus, __typename: 'Campus' })
-      onSubmitProps.setSubmitting(false)
-      onSubmitProps.resetForm()
+      resetForm()
       navigate(`/stream/displaydetails`)
     } catch (err: any) {
       throwToSentry('There was a problem updating this stream', err)
-      onSubmitProps.setSubmitting(false)
+    } finally {
+      setSubmitting(false)
     }
   }
 
-  if (loading) {
-    return <LoadingScreen />
-  }
-
   return (
-    <StreamForm
-      initialValues={initialValues}
-      onSubmit={onSubmit}
-      title={`Update Stream Form`}
-      newStream={false}
-    />
+    <ApolloWrapper data={data} loading={loading} error={error}>
+      <StreamForm
+        initialValues={initialValues}
+        onSubmit={onSubmit}
+        title={`Update Stream Form`}
+        newStream={false}
+      />
+    </ApolloWrapper>
   )
 }
 

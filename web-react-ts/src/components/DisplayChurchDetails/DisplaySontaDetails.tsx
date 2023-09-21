@@ -88,6 +88,8 @@ const DisplaySontaDetails = (props: DisplayChurchDetailsProps) => {
   }
 
   const { clickCard } = useContext(ChurchContext)
+  const htmlElement = document.querySelector('html')
+  const currentTheme = htmlElement?.getAttribute('data-bs-theme') || 'dark'
   const { currentUser } = useContext(MemberContext)
   const { show, handleShow, handleClose } = useModal()
 
@@ -286,7 +288,7 @@ const DisplaySontaDetails = (props: DisplayChurchDetailsProps) => {
             </Button>
           </PlaceholderCustom>
 
-          {props.churchType === 'Sonta' && (
+          {props.churchType === 'Hub' && (
             <PlaceholderCustom
               loading={props.loading}
               className={`btn-sonta w-100`}
@@ -358,11 +360,13 @@ const DisplaySontaDetails = (props: DisplayChurchDetailsProps) => {
           <RoleView roles={props.editPermitted}>
             <PlaceholderCustom
               loading={props.loading}
-              className={`btn-sonta w-100`}
+              className="btn-graphs"
+              variant={currentTheme as 'dark' | 'light'}
               button="button"
             >
               <Button
-                className={`btn-sonta w-100`}
+                className="btn-graphs"
+                variant={currentTheme as 'dark' | 'light'}
                 onClick={() =>
                   navigate(
                     `/${props.subLevel?.toLowerCase()}/add${props.subLevel?.toLowerCase()}`

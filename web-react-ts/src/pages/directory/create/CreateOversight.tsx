@@ -31,10 +31,12 @@ const CreateOversight = () => {
     values: OversightFormValues,
     onSubmitProps: FormikHelpers<OversightFormValues>
   ) => {
-    onSubmitProps.setSubmitting(true)
+    const { setSubmitting, resetForm } = onSubmitProps
+
+    setSubmitting(true)
     try {
       if (!values.leaderEmail) {
-        onSubmitProps.setSubmitting(false)
+        setSubmitting(false)
         throw new Error('Leader email is required')
       }
 
@@ -53,13 +55,12 @@ const CreateOversight = () => {
         },
       })
 
-      clickCard({ id: values.denomination, __typename: 'Denomination' })
       clickCard(res.data.CreateOversight)
-      onSubmitProps.setSubmitting(false)
-      onSubmitProps.resetForm()
+      setSubmitting(false)
+      resetForm()
       navigate(`/oversight/displaydetails`)
     } catch (error: any) {
-      onSubmitProps.setSubmitting(false)
+      setSubmitting(false)
       throwToSentry('There was an error creating oversight', error)
     }
   }

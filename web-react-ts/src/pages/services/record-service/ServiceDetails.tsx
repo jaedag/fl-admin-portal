@@ -189,12 +189,12 @@ const ServiceDetails = ({ service, church, loading }: ServiceDetailsProps) => {
                     </div>
                   </>
                 )}{' '}
-                {noBankingProof && church.__typename !== 'Sonta' && (
+                {noBankingProof && church.__typename !== 'Hub' && (
                   <p className="fw-bold text-danger">
                     You Have Not Submitted Your Banking Slip!!!
                   </p>
                 )}
-                {noBankingProof && church.__typename !== 'Sonta' && (
+                {noBankingProof && church.__typename !== 'Hub' && (
                   <div className="d-grid gap-2">
                     <RoleView roles={permitAdmin('Oversight')}>
                       <Button

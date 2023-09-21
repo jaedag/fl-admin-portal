@@ -15,11 +15,16 @@ import DefaulterInfoCard from './DefaulterInfoCard'
 import RoleView from 'auth/RoleView'
 import { permitLeaderAdmin } from 'permission-utils'
 import { MemberContext } from 'contexts/MemberContext'
-import useChurchLevel from 'hooks/useChurchLevel'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { DefaultersUseChurchType } from './defaulters-types'
 import { ChurchLevel } from 'global-types'
 import PullToRefresh from 'react-simple-pull-to-refresh'
+import {
+  CREATIVEARTS_DEFAULTERS,
+  HUB_DEFAULTERS,
+  MINISTRY_DEFAULTERS,
+} from './creative-arts/DefaultersSontaQueries'
+import useSontaLevel from 'hooks/useSontaLevel'
 
 const DefaultersDashboard = () => {
   const { currentUser } = useContext(MemberContext)
@@ -31,10 +36,15 @@ const DefaultersDashboard = () => {
     useLazyQuery(STREAM_DEFAULTERS)
   const [campusDefaulters, { refetch: campusRefetch }] =
     useLazyQuery(CAMPUS_DEFAULTERS)
+  const [hubDefaulters, { refetch: hubRefetch }] = useLazyQuery(HUB_DEFAULTERS)
+  const [ministryDefaulters, { refetch: ministryRefetch }] =
+    useLazyQuery(MINISTRY_DEFAULTERS)
+  const [creativeArtsDefaulters, { refetch: creativeArtsRefetch }] =
+    useLazyQuery(CREATIVEARTS_DEFAULTERS)
 
   let subChurch: ChurchLevel | string = ''
 
-  const data: DefaultersUseChurchType = useChurchLevel({
+  const data: DefaultersUseChurchType = useSontaLevel({
     constituencyFunction: constituencyDefaulters,
     constituencyRefetch,
     councilFunction: councilDefaulters,
@@ -43,6 +53,12 @@ const DefaultersDashboard = () => {
     streamRefetch,
     campusFunction: campusDefaulters,
     campusRefetch,
+    hubFunction: hubDefaulters,
+    hubRefetch,
+    ministryFunction: ministryDefaulters,
+    ministryRefetch,
+    creativeArtsFunction: creativeArtsDefaulters,
+    creativeArtsRefetch,
   })
 
   const { church, loading, error, refetch } = data
@@ -57,6 +73,12 @@ const DefaultersDashboard = () => {
 
     case 'Campus':
       subChurch = 'Stream'
+      break
+    case 'Ministry':
+      subChurch = 'Hub'
+      break
+    case 'CreativeArts':
+      subChurch = 'Ministry'
       break
     default:
       break

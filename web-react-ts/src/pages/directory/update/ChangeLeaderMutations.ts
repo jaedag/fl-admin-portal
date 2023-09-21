@@ -298,3 +298,38 @@ export const MAKE_OVERSIGHT_LEADER = gql`
     }
   }
 `
+
+export const MAKE_CREATIVEARTS_LEADER = gql`
+  mutation MakeCreativeArtsLeader(
+    $creativeArtsId: ID!
+    $newLeaderId: ID!
+    $oldLeaderId: ID!
+  ) {
+    RemoveCreativeArtsLeader(
+      creativeArtsId: $creativeArtsId
+      leaderId: $oldLeaderId
+      newLeaderId: $newLeaderId
+    ) {
+      id
+      firstName
+      lastName
+    }
+    MakeCreativeArtsLeader(
+      creativeArtsId: $creativeArtsId
+      leaderId: $newLeaderId
+      oldLeaderId: $oldLeaderId
+    ) {
+      id
+      firstName
+      lastName
+      leadsCreativeArts {
+        id
+        leader {
+          id
+          firstName
+          lastName
+        }
+      }
+    }
+  }
+`

@@ -1,3 +1,142 @@
+#### 7.9.26 (2023-09-19)
+
+##### Bug Fixes
+
+*  fix bug where navigating to sub churches still shows you your highest level churches ([f5d2782b](https://github.com/firstlovecenter/fl-pastoral-care/commit/f5d2782be3c4520fc78012de675d24970789c8bf))
+*  remove all unnecessary mentions of sonta from the app ([ae6ae351](https://github.com/firstlovecenter/fl-pastoral-care/commit/ae6ae351f3fbe6a092055cdd63b494fc0fe40461))
+*  add middle name to search parameters ([eccca01f](https://github.com/firstlovecenter/fl-pastoral-care/commit/eccca01f79aefb545d8eed21753f429ac0dbb7ad))
+
+#### 7.9.25 (2023-09-19)
+
+##### Bug Fixes
+
+*  allow closing of constituencies by passing adminId ([3f08c7eb](https://github.com/firstlovecenter/fl-pastoral-care/commit/3f08c7ebd343435dea9c213dd615bc4350e922bd))
+*  update search to provide good results for creative arts and oversight ([0478cfca](https://github.com/firstlovecenter/fl-pastoral-care/commit/0478cfcab809723fe4bf4153fc8b9d28be0fc057))
+
+#### 7.9.24 (2023-09-19)
+
+##### Bug Fixes
+
+*  add some solid color and opacity to navbar ([76fd6750](https://github.com/firstlovecenter/fl-pastoral-care/commit/76fd675006c3039994934360046179a20ff1799d))
+*  minor ui changes to autosuggest box ([6ed0467c](https://github.com/firstlovecenter/fl-pastoral-care/commit/6ed0467c57853beb698c9fa775363287971befd7))
+*  modify search to bring results of all members and churches you have access to ([dae26e53](https://github.com/firstlovecenter/fl-pastoral-care/commit/dae26e5368a5e23f28267105995e3b50563e481f))
+*  remove leaderSonta from protectedroute ([826ee475](https://github.com/firstlovecenter/fl-pastoral-care/commit/826ee47578b5bec9e2532040f0de61ee2bceddd3))
+
+#### 7.9.23 (2023-09-18)
+
+#### 7.9.22 (2023-09-18)
+
+#### 7.9.21 (2023-09-18)
+
+#### 7.9.20 (2023-09-18)
+
+##### Bug Fixes
+
+*  fix broken permissions on Constituency form ([83c59463](https://github.com/firstlovecenter/fl-pastoral-care/commit/83c5946381aad995a6b366793f117762c03cdb6f))
+*  update permissions for defaulters dashboard ([b3dbd39f](https://github.com/firstlovecenter/fl-pastoral-care/commit/b3dbd39f6472461ecb54768d5541514203d377ed))
+*  implement old_history log to prevent confusion ([88061bcc](https://github.com/firstlovecenter/fl-pastoral-care/commit/88061bcc73ee9eb25e135693ccee2367e0a13f03))
+
+#### 7.9.19 (2023-09-18)
+
+##### Bug Fixes
+
+*  remove unused duplicate mutations ([d197cea7](https://github.com/firstlovecenter/fl-pastoral-care/commit/d197cea7dab59d7903758b10624c158542df4e8f))
+*  minor updates to data display in ui ([49448971](https://github.com/firstlovecenter/fl-pastoral-care/commit/49448971feece934fa13ec6a40bd57badaf552ca))
+*  fix bugs in directory cypher ([a6d2bd7a](https://github.com/firstlovecenter/fl-pastoral-care/commit/a6d2bd7a976123b2fa02225e94b50e75589c628c))
+
+#### 7.9.18 (2023-09-17)
+
+##### Bug Fixes
+
+*  remove unused vars for update church details mutations ([9ce6ac6a](https://github.com/firstlovecenter/fl-pastoral-care/commit/9ce6ac6a39e5288c94c96e2109b2ec061b1d887d))
+*  fix some invalid types breaking the build ([16ae71b7](https://github.com/firstlovecenter/fl-pastoral-care/commit/16ae71b752f4586efa4e3ae6389b66a511e2454a))
+
+#### 7.9.17 (2023-09-17)
+
+##### Bug Fixes
+
+*  fix directory pages for fellowship, bacenta, constituency, council ([a3b48e28](https://github.com/firstlovecenter/fl-pastoral-care/commit/a3b48e283d565b65cc5343157101e2796cc3193c))
+*  fix bug preventing stream admin from searching ([e5926497](https://github.com/firstlovecenter/fl-pastoral-care/commit/e59264973d85d08d4921aeb0fa956f797b907e81))
+*  make change admin modal nicer looking ([f57edf54](https://github.com/firstlovecenter/fl-pastoral-care/commit/f57edf545c0512bb1022cbb2ea14870226af608a))
+*  fix bug with anagkazo defaulters 4 ([f9ac1499](https://github.com/firstlovecenter/fl-pastoral-care/commit/f9ac1499a3333c4acb3bb208f410a1bf50c0096c))
+*  fix bug with anagkazo defaulters 3 ([09a28956](https://github.com/firstlovecenter/fl-pastoral-care/commit/09a28956fdb4cd01967fe9420802bfbb592d339e))
+*  fix bug with anagkazo defaulters 2 ([593a0ac3](https://github.com/firstlovecenter/fl-pastoral-care/commit/593a0ac36ee420a4a3a96458f7e39bfe1044578b))
+*  fix bug preventing annagkazo banking ([170a7186](https://github.com/firstlovecenter/fl-pastoral-care/commit/170a7186d04ee64eb83c8a5479519dc567b52864))
+*  implement modal for moving bacentas across constituencies ([ee15dbe7](https://github.com/firstlovecenter/fl-pastoral-care/commit/ee15dbe7d360eb5f66f0c74c5d8e6238dadd6b3d))
+*  implement modal for moving constituencies across councils ([8e0777af](https://github.com/firstlovecenter/fl-pastoral-care/commit/8e0777afd7f3166aed5108a849337c9dea1dc17c))
+*  update code-of-the-day function for sept ([1b6abe36](https://github.com/firstlovecenter/fl-pastoral-care/commit/1b6abe362607f312d9e67f930b49bed26daf6f81))
+*  make it possible for vacation fellowships to be made  into hub fellowships ([e17f79e1](https://github.com/firstlovecenter/fl-pastoral-care/commit/e17f79e127c407d6d87c990cce171f1b41479bca))
+
+##### Refactors
+
+*  refactor all directory pages for moving lower churches ([1510002f](https://github.com/firstlovecenter/fl-pastoral-care/commit/1510002f9330a561e619ff4936a3a15f6579eea7))
+
+#### 7.9.16 (2023-09-16)
+
+##### New Features
+
+* **creativearts:**
+  *  implement defaulters dashboard for all creative arts levels ([f15be886](https://github.com/firstlovecenter/fl-pastoral-care/commit/f15be8869a34e6f4a91510611c881e192b902c9d))
+  *  scaffold pages for creative arts graphs ([4df2c484](https://github.com/firstlovecenter/fl-pastoral-care/commit/4df2c484f6303cff997ac843dcca2850c981d3f5))
+
+##### Bug Fixes
+
+*  fix broken import of css file ([02be4e94](https://github.com/firstlovecenter/fl-pastoral-care/commit/02be4e9488dc5031d02b4f9ce139aa1727e71ad0))
+*  fix bug on member role list for creativeArtsLeaders ([7bf8a532](https://github.com/firstlovecenter/fl-pastoral-care/commit/7bf8a532fef1d015078587b20d9933c7e90bb094))
+*  finish church by subchurch queries ([f992fa0a](https://github.com/firstlovecenter/fl-pastoral-care/commit/f992fa0a3cfea1469b2b189d29019af84d7be629))
+*  fix sonta bugs ([2724d184](https://github.com/firstlovecenter/fl-pastoral-care/commit/2724d18443ebc629b33e83af4bacc79d91bc76e6))
+*  cypher bug  in connectChurch ([879b3f3f](https://github.com/firstlovecenter/fl-pastoral-care/commit/879b3f3fb7884462b1573f519c461d829391a31f))
+
+#### 7.9.15 (2023-09-15)
+
+##### Bug Fixes
+
+*  fix  issues  with sonta and oa ([29bbf0f8](https://github.com/firstlovecenter/fl-pastoral-care/commit/29bbf0f833f2f5d07b217e80f0837ca2fe7db1e7))
+* **outside-accra:**
+  *  add cypher query to connect leaders ([a89ae84c](https://github.com/firstlovecenter/fl-pastoral-care/commit/a89ae84c95d7913684c5fd36feacddc8179b94b0))
+  *  add cypher query to match Oversight member ([b2bda326](https://github.com/firstlovecenter/fl-pastoral-care/commit/b2bda326353bd27e89034795e57621575ea13709))
+
+#### 7.9.14 (2023-09-15)
+
+##### New Features
+
+* **creativearts:**
+  *  finalise changes to update creative arts ([349c175d](https://github.com/firstlovecenter/fl-pastoral-care/commit/349c175d963f7b4f0cc5b1c3d4df0efe6b3ef151))
+  *  implement update creative arts  page ([cd962c95](https://github.com/firstlovecenter/fl-pastoral-care/commit/cd962c956010a301ac4a446a19ceda44652fa2a4))
+
+##### Bug Fixes
+
+*  add church oversight type to resolver cypher ([fc88e32c](https://github.com/firstlovecenter/fl-pastoral-care/commit/fc88e32cc496579426397cac376f2f791e6abf7c))
+*  add denomition to permission levels ([5e926e40](https://github.com/firstlovecenter/fl-pastoral-care/commit/5e926e40feda0a7cbe8c98bb1e1cfa0305a5f218))
+*  add admins to oversight and campus levels ([35e63608](https://github.com/firstlovecenter/fl-pastoral-care/commit/35e63608c39c1da214bf85af1218f481c26ea6e4))
+*  separate useChurchLevel and useSontaLevel ([4f38ebb6](https://github.com/firstlovecenter/fl-pastoral-care/commit/4f38ebb6c646b788a7f49636404e30b39dcd3fb2))
+* **outside-accra:**  implement resolver for oversight admin ([1b4569c1](https://github.com/firstlovecenter/fl-pastoral-care/commit/1b4569c1392438fe6803830231d6d140567ff21a))
+
+#### 7.9.13 (2023-09-15)
+
+##### New Features
+
+* **creativearts:**
+  *  initiate hub rehearsal and sunday meeting form ([b0710afb](https://github.com/firstlovecenter/fl-pastoral-care/commit/b0710afb616e67b577c755af32f94acb77f80505))
+  *  implement defaulters for hub leaders ([692d7cfd](https://github.com/firstlovecenter/fl-pastoral-care/commit/692d7cfd7560a913ba2354f1b941126dacf23cca))
+
+##### Bug Fixes
+
+* **creativearts:**  viewing all hubs is now restricted to the select ministry ([10339e33](https://github.com/firstlovecenter/fl-pastoral-care/commit/10339e3354f464a0daed67e305916202e6a07dd1))
+* **shepherding-control:**  all YTD data is now ACTUALLY YTD ([8ed8b571](https://github.com/firstlovecenter/fl-pastoral-care/commit/8ed8b57125e6669035a7a99910c5a9c64dfe0e28))
+* **imcl:**  update error handling of imcl lists for anagkazo ([268418e6](https://github.com/firstlovecenter/fl-pastoral-care/commit/268418e608698ed635b08aaf637fe1d2f956e299))
+
+#### 7.9.12 (2023-09-14)
+
+##### New Features
+
+*  implement flows to creative arts at all church levels ([4286fcb0](https://github.com/firstlovecenter/fl-pastoral-care/commit/4286fcb0fc8e97e72c6602b4f971136813854e3c))
+
+##### Bug Fixes
+
+*  update stylinng  of map ([29dd0847](https://github.com/firstlovecenter/fl-pastoral-care/commit/29dd0847bc3938c18d0d89a27d52b24bcdbcae2d))
+*  bug with infowindow on map colouring ([c9f13593](https://github.com/firstlovecenter/fl-pastoral-care/commit/c9f135934d73ef10762dc98b816f69ecdd5703e6))
+
 #### 7.9.11 (2023-09-12)
 
 ##### Bug Fixes

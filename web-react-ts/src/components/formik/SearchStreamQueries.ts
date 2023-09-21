@@ -19,6 +19,10 @@ export const MEMBER_STREAM_SEARCH = gql`
       streamSearch(key: $key) {
         id
         name
+        campus {
+          id
+          name
+        }
       }
     }
   }

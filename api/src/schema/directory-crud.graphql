@@ -1,5 +1,7 @@
 extend type Mutation {
   #resolver Mutations
+  MakeOversightAdmin(adminId: ID!, oversightId: ID!, oldAdminId: ID): Member
+  RemoveOversightAdmin(adminId: ID!, newAdminId: ID!, oversightId: ID!): Member
   MakeCampusAdmin(adminId: ID!, oldAdminId: ID!, campusId: ID!): Member
   RemoveCampusAdmin(adminId: ID!, newAdminId: ID, campusId: ID!): Member
   MakeStreamAdmin(adminId: ID!, oldAdminId: ID!, streamId: ID!): Member
@@ -133,31 +135,31 @@ extend type Mutation {
       """
     )
 
-# Set fellowship to be 'Online'
-SetOnlineFellowship(fellowshipId: ID!): Fellowship!
-  @cypher(
-    statement: """
-    MATCH (fellowship:Fellowship {id:$fellowshipId})
+  # Set fellowship to be 'Online'
+  SetOnlineFellowship(fellowshipId: ID!): Fellowship!
+    @cypher(
+      statement: """
+      MATCH (fellowship:Fellowship {id:$fellowshipId})
 
-    CREATE (log:HistoryLog {id:apoc.create.uuid()})
-      SET log.timeStamp = datetime(),
-      log.historyRecord = fellowship.name + ' Fellowship was made an online fellowship'
+      CREATE (log:HistoryLog {id:apoc.create.uuid()})
+        SET log.timeStamp = datetime(),
+        log.historyRecord = fellowship.name + ' Fellowship was made an online fellowship'
 
-    WITH log,fellowship
-    MATCH (admin:Active:Member {auth_id: $auth.jwt.sub})
-    MATCH (fellowship)<-[:HAS]-(bacenta:Bacenta)
-    MERGE (date:TimeGraph {date:date()})
-    MERGE (log)-[:LOGGED_BY]->(admin)
-    MERGE (log)-[:RECORDED_ON]->(date)
-    MERGE (fellowship)-[:HAS_HISTORY]->(log)
-    MERGE (bacenta)-[:HAS_HISTORY]->(log)
+      WITH log,fellowship
+      MATCH (admin:Active:Member {auth_id: $auth.jwt.sub})
+      MATCH (fellowship)<-[:HAS]-(bacenta:Bacenta)
+      MERGE (date:TimeGraph {date:date()})
+      MERGE (log)-[:LOGGED_BY]->(admin)
+      MERGE (log)-[:RECORDED_ON]->(date)
+      MERGE (fellowship)-[:HAS_HISTORY]->(log)
+      MERGE (bacenta)-[:HAS_HISTORY]->(log)
 
-    SET fellowship:Online
-    REMOVE fellowship:Active, fellowship:Vacation
+      SET fellowship:Online
+      REMOVE fellowship:Active, fellowship:Vacation
 
-    RETURN fellowship
-    """
-  )
+      RETURN fellowship
+      """
+    )
 
   #Set Bacenta to be 'Active
   SetActiveBacenta(bacentaId: ID!): Bacenta
@@ -668,27 +670,12 @@ extend type Mutation {
       """
     )
 
-  UpdateOversightDetails(
-    oversightId: ID!
-    name: String!
-    denominationId: ID!
-  ): Oversight!
+  UpdateOversightDetails(oversightId: ID!, name: String!): Oversight!
     @auth(rules: [{ roles: ["adminDenomination"] }])
     @cypher(
       statement: """
       MATCH (oversight:Oversight {id: $oversightId})
       	SET oversight.name = $name
-
-      WITH oversight
-         CALL {
-         	WITH oversight
-
-         	MATCH (denomination:Denomination {id: $denominationId})
-         	OPTIONAL MATCH (oversight)<-[r:HAS]-()
-         	DELETE r
-         	MERGE (denomination)-[:HAS]->(oversight)
-         	RETURN count(oversight)
-         	}
 
       MATCH (oversight)<-[:LEADS]-(leader:Active:Member)
       RETURN oversight
@@ -698,7 +685,6 @@ extend type Mutation {
   UpdateCampusDetails(
     campusId: ID!
     name: String!
-    oversightId: ID!
     noIncomeTracking: Boolean!
     currency: String!
     conversionRateToDollar: Float!
@@ -712,16 +698,6 @@ extend type Mutation {
             campus.currency = $currency,
             campus.conversionRateToDollar = $conversionRateToDollar
 
-           WITH campus
-              CALL {
-              	WITH campus
-
-                  MATCH (oversight:Oversight {id: $oversightId})
-                  OPTIONAL MATCH (campus)<-[r:HAS]-()
-                  DELETE r
-                  MERGE (oversight)-[:HAS]->(campus)
-              	RETURN count(campus)
-              	}
       MATCH (campus)<-[:LEADS]-(leader:Active:Member)
       RETURN campus
       """
@@ -730,27 +706,15 @@ extend type Mutation {
     streamId: ID!
     name: String!
     bankAccount: String!
-    campusId: ID!
     meetingDay: String!
   ): Stream
     @auth(rules: [{ roles: ["adminCampus"] }])
     @cypher(
       statement: """
-           MATCH (stream:Stream {id: $streamId})
+      yd           MATCH (stream:Stream {id: $streamId})
            	SET stream.name = $name,
             stream.bankAccount = $bankAccount
 
-           WITH stream
-              CALL {
-              	WITH stream
-                WITH stream WHERE $campusId IS NOT NULL
-
-                  MATCH (campus:Campus {id: $campusId})
-                  OPTIONAL MATCH (stream)<-[r:HAS]-()
-                  DELETE r
-                  MERGE (campus)-[:HAS]->(stream)
-              	RETURN count(stream)
-              	}
             WITH stream
                     CALL {
                      	WITH stream
@@ -762,62 +726,31 @@ extend type Mutation {
                      	RETURN count(stream)
                      	}
 
-      MATCH (stream)<-[:LEADS]-(leader:Active:Member)
       RETURN stream
       """
     )
-  UpdateCouncilDetails(councilId: ID!, name: String!, streamId: ID!): Council
+  UpdateCouncilDetails(councilId: ID!, name: String!): Council
     @auth(rules: [{ roles: ["adminCampus", "adminStream"] }])
     @cypher(
       statement: """
            MATCH (council:Council {id: $councilId})
            	SET council.name = $name
 
-           WITH council
-              CALL {
-              	WITH council
-
-                  MATCH (stream:Stream {id: $streamId})
-                  OPTIONAL MATCH (council)<-[r:HAS]-()
-                  DELETE r
-                  MERGE (stream)-[:HAS]->(council)
-              	RETURN count(council)
-              	}
-      MATCH (council)<-[:LEADS]-(leader:Active:Member)
       RETURN council
       """
     )
 
-  UpdateConstituencyDetails(
-    constituencyId: ID!
-    name: String!
-    councilId: ID!
-  ): Constituency
+  UpdateConstituencyDetails(constituencyId: ID!, name: String!): Constituency
     @auth(rules: [{ roles: ["adminCampus", "adminStream", "adminCouncil"] }])
     @cypher(
       statement: """
            MATCH (constituency:Constituency {id: $constituencyId})
            	SET constituency.name = $name
 
-           WITH constituency
-              CALL {
-              	WITH constituency
-
-                  MATCH (council:Council {id: $councilId})
-                  OPTIONAL MATCH (constituency)<-[r:HAS]-()
-                  DELETE r
-                  MERGE (council)-[:HAS]->(constituency)
-              	RETURN count(constituency)
-              	}
-      MATCH (constituency)<-[:LEADS]-(leader:Active:Member)
       RETURN constituency
       """
     )
-  UpdateBacentaDetails(
-    bacentaId: ID!
-    name: String!
-    constituencyId: ID!
-  ): Bacenta
+  UpdateBacentaDetails(bacentaId: ID!, name: String!): Bacenta
     @auth(
       rules: [
         {
@@ -836,17 +769,6 @@ extend type Mutation {
       MATCH (bacenta:Bacenta {id: $bacentaId})
       	SET bacenta.name = $name
 
-      WITH bacenta
-         CALL {
-         	WITH bacenta
-      		OPTIONAL MATCH (constituency:Constituency {id: $constituencyId})
-
-            OPTIONAL MATCH (bacenta)<-[r:HAS]-()
-            DELETE r
-            MERGE (constituency)-[:HAS]->(bacenta)
-         	RETURN count(bacenta)
-         	}
-      MATCH (bacenta)<-[:LEADS]-(leader:Active:Member)
       RETURN bacenta
       """
     )
@@ -904,6 +826,99 @@ extend type Mutation {
     leaderId: ID!
     adminId: ID!
   ): Council
+
+  MoveOversightToDenomination(
+    oversightId: ID!
+    denominationId: ID!
+  ): Oversight!
+    @cypher(
+      statement: """
+      MATCH (oversight:Oversight {id: $oversightId})
+      MATCH (denomination:Denomination {id: $denominationId})
+      OPTIONAL MATCH (oversight)<-[r:HAS]-(:Denomination)
+      DELETE r
+
+      MERGE (denomination)-[:HAS]->(oversight)
+      RETURN oversight
+      """
+    )
+
+  MoveCampusToOversight(campusId: ID!, oversightId: ID!): Campus!
+    @cypher(
+      statement: """
+      MATCH (campus:Campus {id: $campusId})
+      MATCH (oversight:Oversight {id: $oversightId})
+      OPTIONAL MATCH (campus)<-[r:HAS]-(:Oversight)
+      DELETE r
+
+      MERGE (oversight)-[:HAS]->(campus)
+      RETURN campus
+      """
+    )
+
+  MoveStreamToCampus(streamId: ID!, campusId: ID!): Stream!
+    @cypher(
+      statement: """
+      MATCH (stream:Stream {id: $streamId})
+      MATCH (campus:Campus {id: $campusId})
+      OPTIONAL MATCH (stream)<-[r:HAS]-(:Campus)
+      DELETE r
+
+      MERGE (campus)-[:HAS]->(stream)
+      RETURN stream
+      """
+    )
+
+  MoveCouncilToStream(councilId: ID!, streamId: ID!): Council!
+    @cypher(
+      statement: """
+      MATCH (council:Council {id: $councilId})
+      MATCH (stream:Stream {id: $streamId})
+      OPTIONAL MATCH (council)<-[r:HAS]-(:Stream)
+      DELETE r
+
+      MERGE (stream)-[:HAS]->(council)
+      RETURN council
+      """
+    )
+
+  MoveConstituencyToCouncil(constituencyId: ID!, councilId: ID!): Constituency!
+    @cypher(
+      statement: """
+      MATCH (constituency:Constituency {id: $constituencyId})
+      MATCH (council:Council {id: $councilId})
+      OPTIONAL MATCH (constituency)<-[r:HAS]-(:Council)
+      DELETE r
+
+      MERGE (council)-[:HAS]->(constituency)
+      RETURN constituency
+      """
+    )
+  MoveBacentaToConstituency(bacentaId: ID!, constituencyId: ID!): Bacenta!
+    @cypher(
+      statement: """
+      MATCH (bacenta:Bacenta {id: $bacentaId})
+      MATCH (constituency:Constituency {id: $constituencyId})
+      OPTIONAL MATCH (bacenta)<-[r:HAS]-(:Constituency)
+      DELETE r
+
+      MERGE (constituency)-[:HAS]->(bacenta)
+      RETURN bacenta
+      """
+    )
+
+  MoveFellowshipToBacenta(fellowshipId: ID!, bacentaId: ID!): Fellowship!
+    @cypher(
+      statement: """
+      MATCH (fellowship:Fellowship {id: $fellowshipId})
+      MATCH (bacenta:Bacenta {id: $bacentaId})
+      OPTIONAL MATCH (fellowship)<-[r:HAS]-(:Bacenta)
+      DELETE r
+
+      MERGE (bacenta)-[:HAS]->(fellowship)
+      RETURN fellowship
+      """
+    )
 
   CloseDownCouncil(councilId: ID!, leaderId: ID!): Stream
     @cypher(
@@ -973,8 +988,8 @@ extend type Mutation {
       MATCH (admin:Active:Member {auth_id: $auth.jwt.sub})
       OPTIONAL MATCH (campus)-[:HAS]->(stream)-[:HAS]->(council)-[:HAS]->(constituencies)-[:HAS]->(bacentas)-[:HAS]->(fellowships)
       OPTIONAL MATCH (campus)-[:HAS]->(stream)-[:HAS]->(council)-[:HAS]->(hubs:Hub)
-      
-      
+
+
       MERGE (date:TimeGraph {date:date()})
       MERGE (log)-[:LOGGED_BY]->(admin)
       MERGE (log)-[:RECORDED_ON]->(date)

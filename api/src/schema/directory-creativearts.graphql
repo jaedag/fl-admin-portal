@@ -2,6 +2,8 @@ extend type Member {
   leadscreativeArt: [CreativeArts!]!
     @relationship(type: "LEADS", direction: OUT)
   leadsHub: [Hub!]! @relationship(type: "LEADS", direction: OUT)
+  leadsHubFellowship: [HubFellowship!]!
+    @relationship(type: "LEADS", direction: OUT)
   leadsHubFellowshipCount: Int!
     @cypher(
       statement: """
@@ -106,7 +108,10 @@ type CreativeArts {
   leader: Member @relationship(type: "LEADS", direction: IN)
   admin: Member @relationship(type: "IS_ADMIN_FOR", direction: IN)
   campus: Campus @relationship(type: "HAS_MINISTRY", direction: IN)
-  history: [HistoryLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
+  history(limit: Int! = 3): [HistoryLog!]!
+    @cypher(
+      statement: "MATCH (this)-[:HAS_HISTORY|OLD_HISTORY]->(log:HistoryLog) RETURN log ORDER BY log.timeStamp DESC LIMIT $limit"
+    )
   serviceLogs: [ServiceLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
   ministries: [Ministry!]! @relationship(type: "HAS", direction: OUT)
 }
@@ -187,7 +192,7 @@ type Hub {
       RETURN COUNT(DISTINCT fellowships)
       """
     )
-  id: ID @id
+  id: ID! @id
   name: String!
   leader: Member @relationship(type: "LEADS", direction: IN)
   history: [HistoryLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
@@ -239,6 +244,14 @@ extend type Stream {
 }
 
 extend type Council {
+  hubs: [Hub!]! @relationship(type: "HAS_MINISTRY", direction: OUT)
+  hubsFromMinistry(ministryId: ID!): [Hub!]!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS_MINISTRY]->(hubs:Hub)<-[:HAS]-(ministry:Ministry {id:$ministryId})
+      RETURN hubs
+      """
+    )
   hubCount: Int!
     @cypher(
       statement: """
@@ -472,29 +485,30 @@ extend type Mutation {
 }
 
 extend type Mutation {
-  UpdateCreativeArtDetails(
+  UpdateCreativeArtsDetails(
     creativeArtsId: ID!
     campusId: ID!
-    creativeArtName: String!
+    name: String!
   ): CreativeArts!
     @auth(rules: [{ roles: ["adminCampus"] }])
     @cypher(
       statement: """
       MATCH (creativeArt:CreativeArts {id: $creativeArtsId})
-      SET creativeArt.name = $creativeArtName
+        SET creativeArt.name = $name
 
       WITH creativeArt
-          CALL{
-            WITH creativeArt
+      CALL{
+        WITH creativeArt
+        WITH creativeArt WHERE $campusId IS NOT NULL
 
-              MATCH (campus:Campus {id: $campusId})
-              OPTIONAL MATCH (creativeArt)<-[r:HAS_MINISTRY]-()
-              DELETE r
-              MERGE (campus)-[:HAS_MINISTRY]->(creativeArt)
+          MATCH (campus:Campus {id: $campusId})
+          OPTIONAL MATCH (creativeArt)<-[r:HAS_MINISTRY]-()
+          DELETE r
+          MERGE (campus)-[:HAS_MINISTRY]->(creativeArt)
 
-            RETURN count(creativeArt)
-          }
-      MATCH (creativeArt)<-[:LEADS]-(leader:Active:Member)
+        RETURN count(creativeArt)
+      }
+
       RETURN creativeArt
       """
     )
@@ -563,7 +577,7 @@ extend type Mutation {
   SetFellowshipToHubFellowship(fellowshipId: ID!, hubId: ID!): Fellowship!
     @cypher(
       statement: """
-      MATCH (fellowship:Active:Fellowship {id:$fellowshipId})
+      MATCH (fellowship:Fellowship {id: $fellowshipId})
       MATCH (hub:Hub {id: $hubId})<-[:HAS]-(ministry:Ministry)
 
       CREATE (log:HistoryLog {id:apoc.create.uuid()})
@@ -600,7 +614,7 @@ extend type Mutation {
     )
     @cypher(
       statement: """
-      MATCH (fellowship:Active:HubFellowship {id: $fellowshipId})
+      MATCH (fellowship:HubFellowship {id: $fellowshipId})
 
       CREATE (log:HistoryLog {id:apoc.create.uuid()})
         SET log.timeStamp = datetime(),

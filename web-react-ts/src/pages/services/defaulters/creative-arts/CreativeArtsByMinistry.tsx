@@ -5,19 +5,19 @@ import React, { useContext } from 'react'
 import { Card, Col, Row, Button, Container } from 'react-bootstrap'
 import { TelephoneFill, Whatsapp } from 'react-bootstrap-icons'
 import { useNavigate } from 'react-router'
-import { STREAM_BY_COUNCIL } from './DefaultersQueries'
-import './Defaulters.css'
+import '../Defaulters.css'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
-import PlaceholderDefaulterList from './PlaceholderDefaulterList'
-import { HigherChurchWithDefaulters } from './defaulters-types'
+import PlaceholderDefaulterList from '../PlaceholderDefaulterList'
+import { HigherChurchWithDefaulters } from '../defaulters-types'
 import PullToRefresh from 'react-simple-pull-to-refresh'
-import { messageForAdminsOfDefaulters } from './defaulters-utils'
+import { messageForAdminsOfDefaulters } from '../defaulters-utils'
+import { CREATIVEARTS_BY_MINISTRY } from './DefaultersSontaQueries'
 
-const StreamByCouncil = () => {
-  const { streamId, clickCard } = useContext(ChurchContext)
-  const { data, loading, error, refetch } = useQuery(STREAM_BY_COUNCIL, {
+const CreativeArtsByMinistry = () => {
+  const { creativeArtsId, clickCard } = useContext(ChurchContext)
+  const { data, loading, error, refetch } = useQuery(CREATIVEARTS_BY_MINISTRY, {
     variables: {
-      id: streamId,
+      id: creativeArtsId,
     },
   })
 
@@ -27,82 +27,84 @@ const StreamByCouncil = () => {
     <PullToRefresh onRefresh={refetch}>
       <ApolloWrapper data={data} loading={loading} error={error} placeholder>
         <Container>
-          <HeadingPrimary loading={loading || !data?.streams[0]?.name}>
-            {`${data?.streams[0].name} Stream By Council`}
+          <HeadingPrimary loading={loading || !data?.creativeArts[0]?.name}>
+            {`${data?.creativeArts[0].name} CreativeArts By Ministry`}
           </HeadingPrimary>
           <Row>
-            {data?.streams.length ? (
-              data?.streams[0].councils.map(
-                (council: HigherChurchWithDefaulters, i: number) => (
+            {data?.creativeArts.length ? (
+              data?.creativeArts[0].ministries.map(
+                (ministry: HigherChurchWithDefaulters, i: number) => (
                   <Col key={i} xs={12} className="mb-3">
                     <Card>
-                      <Card.Header className="fw-bold">{`${council.name} Council`}</Card.Header>
+                      <Card.Header className="fw-bold">{`${ministry.name} Ministry`}</Card.Header>
                       <Card.Body
                         onClick={() => {
-                          clickCard(council)
-                          navigate('/services/council-by-constituency')
+                          clickCard(ministry)
+                          navigate('/services/ministry-by-hub')
                         }}
                       >
                         <div className="fw-bold">
-                          Active Fellowships {council.activeFellowshipCount}
+                          Active Fellowships {ministry.activeFellowshipCount}
                         </div>
                         <div className="good">
-                          Services This Week {council.servicesThisWeekCount}
+                          Services This Week {ministry.servicesThisWeekCount}
                         </div>
                         <div
                           className={
-                            council.formDefaultersThisWeekCount ? 'bad' : 'good'
+                            ministry.formDefaultersThisWeekCount
+                              ? 'bad'
+                              : 'good'
                           }
                         >
                           Form Not Filled This Week{' '}
-                          {council.formDefaultersThisWeekCount}
+                          {ministry.formDefaultersThisWeekCount}
                         </div>
                         <div
                           className={
-                            council.bankedThisWeekCount ===
-                            council.servicesThisWeekCount
+                            ministry.bankedThisWeekCount ===
+                            ministry.servicesThisWeekCount
                               ? 'good'
-                              : council.bankedThisWeekCount > 0
+                              : ministry.bankedThisWeekCount > 0
                               ? 'yellow'
                               : 'bad'
                           }
                         >
-                          Banked This Week {council.bankedThisWeekCount}
+                          Banked This Week {ministry.bankedThisWeekCount}
                         </div>
                         <div
                           className={
-                            council.bankingDefaultersThisWeekCount
+                            ministry.bankingDefaultersThisWeekCount
                               ? 'bad'
                               : 'good'
                           }
                         >
                           Not Banked This Week{' '}
-                          {council.bankingDefaultersThisWeekCount}
+                          {ministry.bankingDefaultersThisWeekCount}
                         </div>
                         <div
                           className={
-                            council.cancelledServicesThisWeekCount
+                            ministry.cancelledServicesThisWeekCount
                               ? 'bad'
                               : 'good'
                           }
                         >
                           Cancelled Services This Week{' '}
-                          {council.cancelledServicesThisWeekCount}
+                          {ministry.cancelledServicesThisWeekCount}
                         </div>
                       </Card.Body>
                       <Card.Footer>
                         <div className="mb-2">
-                          Contact Admin: {council?.admin?.fullName}
+                          Contact Admin: {ministry?.admin?.fullName}
                         </div>
-                        <a href={`tel:${council?.admin?.phoneNumber}`}>
+                        <a href={`tel:${ministry?.admin?.phoneNumber}`}>
                           <Button variant="primary">
                             <TelephoneFill /> Call
                           </Button>
                         </a>
                         <a
                           href={`https://wa.me/${
-                            council?.admin?.whatsappNumber
-                          }?text=${messageForAdminsOfDefaulters(council)}`}
+                            ministry?.admin?.whatsappNumber
+                          }?text=${messageForAdminsOfDefaulters(ministry)}`}
                           className="ms-3"
                         >
                           <Button variant="success">
@@ -124,4 +126,4 @@ const StreamByCouncil = () => {
   )
 }
 
-export default StreamByCouncil
+export default CreativeArtsByMinistry
