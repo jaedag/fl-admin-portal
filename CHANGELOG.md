@@ -1,3 +1,19 @@
+### 7.10.0 (2023-09-21)
+
+##### New Features
+
+* **accounts:**  implement a preset HR Amount from GS Admin ([0f0a8257](https://github.com/firstlovecenter/fl-pastoral-care/commit/0f0a8257f3369841488c3b7df71d3ad4fd7be436))
+
+##### Bug Fixes
+
+*  implement preset bussing amounts ([838c9121](https://github.com/firstlovecenter/fl-pastoral-care/commit/838c912111cb884e3f23734601690cefc19d50d8))
+*  rounded edges of search image picture ([8840a092](https://github.com/firstlovecenter/fl-pastoral-care/commit/8840a092fc8605b95cc27d7b1ab79d28243f7dd4))
+*  fix issue  where stream  ministries weren't appearing ([ad0b0c61](https://github.com/firstlovecenter/fl-pastoral-care/commit/ad0b0c611b8e60de7fd2059f4e19c75316af4bd0))
+*  update display of search results ([b2c8ccf8](https://github.com/firstlovecenter/fl-pastoral-care/commit/b2c8ccf80e456298d6c41fef357ccd764a5272d6))
+*  make coloring autosuggest drop down better ([baf32c3e](https://github.com/firstlovecenter/fl-pastoral-care/commit/baf32c3ee1e1c746712596e6e8b7b29e86aa43a7))
+*  update query to search for members ([4d372e90](https://github.com/firstlovecenter/fl-pastoral-care/commit/4d372e9042b179313a57c4db59ceb7147ba1c906))
+*  fix incorrect types on ServiceDetails.tsx ([fa6343b4](https://github.com/firstlovecenter/fl-pastoral-care/commit/fa6343b41e0e7e1f5c8f7a1730a9d58e3b05426b))
+
 #### 7.9.26 (2023-09-19)
 
 ##### Bug Fixes
