@@ -40,7 +40,8 @@ CREATE (transaction:AccountTransaction {id: randomUUID()})
   transaction.description = 'Bussing Expense',
   transaction.category = $expenseCategory,
   transaction.status = 'success',
-  transaction.timestamp = datetime()
+  transaction.timestamp = datetime(),
+  council.bussingAmount = $expenseAmount
 
 SET council.bussingPurseBalance = council.bussingPurseBalance - $expenseAmount
 

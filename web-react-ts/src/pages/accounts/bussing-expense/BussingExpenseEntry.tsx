@@ -14,6 +14,7 @@ import Input from 'components/formik/Input'
 import SubmitButton from 'components/formik/SubmitButton'
 import { throwToSentry } from 'global-utils'
 import { DEBIT_BUSSING_PURSE } from '../request-expense/expenseGQL'
+import { CouncilForAccounts } from '../accounts-types'
 
 const BussingExpenseEntry = () => {
   const { councilId, clickCard } = useContext(ChurchContext)
@@ -27,10 +28,10 @@ const BussingExpenseEntry = () => {
   })
   const [DebitBussingPurse] = useMutation(DEBIT_BUSSING_PURSE)
 
-  const council = data?.councils[0]
+  const council: CouncilForAccounts = data?.councils[0]
 
   const initialValues = {
-    amountSpent: '',
+    amountSpent: council.bussingAmount ?? '',
   }
 
   const validationSchema = Yup.object({
@@ -50,7 +51,7 @@ const BussingExpenseEntry = () => {
       const res = await DebitBussingPurse({
         variables: {
           councilId,
-          expenseAmount: parseFloat(values.amountSpent),
+          expenseAmount: parseFloat(values.amountSpent.toString()),
           expenseCategory: 'Bussing',
         },
       })
@@ -96,9 +97,9 @@ const BussingExpenseEntry = () => {
                       AmountSpent:{' '}
                       <span className="text-info">
                         GHS{' '}
-                        {parseFloat(formik.values.amountSpent).toLocaleString(
-                          'en-US'
-                        )}
+                        {parseFloat(
+                          formik.values.amountSpent.toString()
+                        ).toLocaleString('en-US')}
                       </span>
                     </p>
 

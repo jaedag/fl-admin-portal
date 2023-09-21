@@ -6,6 +6,7 @@ export const COUNCIL_ACCOUNT_DASHBOARD = gql`
       id
       name
       hrAmount
+      bussingAmount
       currentBalance
       bussingPurseBalance
 

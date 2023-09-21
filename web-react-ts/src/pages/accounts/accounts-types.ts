@@ -7,6 +7,8 @@ export interface StreamForAccounts extends ChurchIdAndName {
 
 export interface CouncilForAccounts extends Council {
   hrAmount: number
+  amountSpent: number
+  bussingAmount: number
   currentBalance: number
   bussingPurseBalance: number
   transactions: AccountTransaction[]

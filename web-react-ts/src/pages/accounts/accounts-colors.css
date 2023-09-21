@@ -9,3 +9,6 @@
 .bussing-purse {
   background-color: #255f6b;
 }
+.badge {
+  color: var(--chakra-colors-gray-800);
+}

@@ -16,6 +16,13 @@ extend type Campus {
       RETURN SUM(council.hrAmount)
       """
     )
+  bussingAmount: Float!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS*2]->(council:Council)
+      RETURN SUM(council.bussingAmount)
+      """
+    )
   currentBalance: Float!
     @cypher(
       statement: """
@@ -34,6 +41,7 @@ extend type Campus {
 
 extend type Council {
   hrAmount: Float
+  bussingAmount: Float
   currentBalance: Float!
   bussingPurseBalance: Float
   transactions: [AccountTransaction!]!

@@ -13,17 +13,17 @@ const AccountBalanceCard = ({
     <Card className={`${variant} mb-2`}>
       <Card.Body>
         {variant === 'current-balance' && (
-          <Row className="d-flex align-items-center">
+          <Row className="d-flex align-items-center text-light">
             <Col>Current Balance</Col>
             <Col>
-              <p className="text-end mb-0">
+              <p className="text-end mb-0 ">
                 {(church?.currentBalance || 0.0).toLocaleString('en-US')}
               </p>
             </Col>
           </Row>
         )}
         {variant === 'bussing-purse' && (
-          <Row className="d-flex align-items-center">
+          <Row className="d-flex align-items-center text-light">
             <Col>Bussing Purse Balance</Col>
             <Col>
               <p className="text-end mb-0">

@@ -444,10 +444,10 @@
 
   --bs-body-bg: var(--chakra-colors-chakra-body-bg);
 
-  --bs-bg-opacity: 1;
-  
-  --bs-success-rgb: var(--chakra-colors-green-200);
-  --bs-primary-rgb: var(--chakra-colors-blue-200);
+  --bs-primary-rgb: 144, 205, 244;
+  --bs-warning-gdb: 250, 240, 137;
+  --bs-success-rgb: 154, 230, 180;
+  --bs-danger-rgb: 254, 178, 178;
 
   --icon: #909090;
   --bg-card: #1e1c1c;
@@ -495,7 +495,11 @@
   --bs-card-border-color: var(--chakra-colors-gray-100);
 
   --bs-body-bg: var(--chakra-colors-chakra-body-bg);
-  --bs-success-rgb: var(--chakra-colors-green-200);
+
+  --bs-primary-rgb: 49, 130, 206;
+  --bs-warning-gdb: 214, 158, 46;
+  --bs-success-rgb: 56, 161, 105;
+  --bs-danger-rgb: 229, 62, 62;
 
   --members-accent: #68e0d7;
   --equipment: rgb(42, 159, 195);
@@ -731,18 +735,17 @@
 }
 
 [data-bs-theme='light'] .btn-secondary {
-  --bs-btn-color: var(--chakra-colors-white);
-  --bs-btn-bg: var(--chakra-colors-whiteAlpha-500);
-  --bs-btn-border-color: var(--chakra-colors-whiteAlpha-500);
-  --bs-btn-hover-color: var(--chakra-colors-white);
-  --bs-btn-hover-bg: var(--chakra-colors-whiteAlpha-600);
-  --bs-btn-hover-border-color: var(--chakra-colors-whiteAlpha-600);
-  --bs-btn-active-color: var(--chakra-colors-white);
-  --bs-btn-active-bg: var(--chakra-colors-whiteAlpha-700);
-  --bs-btn-active-border-color: var(--chakra-colors-whiteAlpha-700);
-  --bs-btn-disabled-color: var(--chakra-colors-white);
-  --bs-btn-disabled-bg: var(--chakra-colors-whiteAlpha-500);
-  --bs-btn-disabled-border-color: var(--chakra-colors-whiteAlpha-500);
+  --bs-btn-color: var(--chakra-colors-gray-800);
+  --bs-btn-bg: var(--chakra-colors-blackAlpha-200);
+  --bs-btn-border-color: var(--chakra-colors-blackAlpha-200);
+  --bs-btn-hover-color: var(--chakra-colors-gray-800);
+  --bs-btn-hover-bg: var(--chakra-colors-blackAlpha-300);
+  --bs-btn-hover-border-color: var(--chakra-colors-blackAlpha-300);
+  --bs-btn-active-color: var(--chakra-colors-gray-800);
+  --bs-btn-active-bg: var(--chakra-colors-blackAlpha-400);
+  --bs-btn-active-border-color: var(--chakra-colors-blackAlpha-400);
+  --bs-btn-disabled-color: var(--chakra-colors-gray-800);
+  --bs-btn-disabled-bg: var(--chakra-colors-blackAlpha-300);
 }
 
 [data-bs-theme='dark'] .btn-brand {

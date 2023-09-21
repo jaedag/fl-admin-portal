@@ -95,6 +95,8 @@ const ExpenseForm = () => {
                     value={
                       formik.values.category === 'HR'
                         ? council.hrAmount
+                        : formik.values.category === 'Bussing'
+                        ? council.bussingAmount
                         : formik.values.requestedAmount
                     }
                   />

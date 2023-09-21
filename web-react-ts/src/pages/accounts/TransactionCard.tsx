@@ -5,6 +5,8 @@ import { AccountTransaction } from './transaction-history/transaction-types'
 import CurrencySpan from 'components/CurrencySpan'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { useNavigate } from 'react-router'
+import './accounts-colors.css'
+import { Color } from 'react-bootstrap/esm/types'
 
 const TransactionCard = ({
   transaction,
@@ -13,6 +15,9 @@ const TransactionCard = ({
 }) => {
   const { clickCard } = useContext(ChurchContext)
   const navigate = useNavigate()
+  const htmlElement = document.querySelector('html')
+  const currentTheme = htmlElement?.getAttribute('data-bs-theme')
+
   return (
     <Card
       onClick={() => {
@@ -51,9 +56,7 @@ const TransactionCard = ({
           <Col>
             <Badge
               className="text-uppercase"
-              text={
-                transaction?.status === 'pending approval' ? 'dark' : 'light'
-              }
+              text={currentTheme as Color}
               bg={
                 transaction?.status === 'pending approval'
                   ? 'warning'
