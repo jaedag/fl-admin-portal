@@ -8,6 +8,12 @@ import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import HeadingSecondary from 'components/HeadingSecondary'
 import './accounts-colors.css'
 import { useNavigate } from 'react-router'
+import RoleView from 'auth/RoleView'
+import {
+  permitAdmin,
+  permitArrivals,
+  permitLeaderAdmin,
+} from 'permission-utils'
 
 const CampusDashboard = () => {
   const { campusId } = useContext(ChurchContext)
@@ -71,14 +77,28 @@ const CampusDashboard = () => {
           >
             View Council Balances
           </Button>
-
-          <Button
-            variant="secondary"
-            className="text-start py-3"
-            onClick={() => navigate('/accounts/campus/approvals')}
+          <RoleView roles={permitLeaderAdmin('Campus')}>
+            <Button
+              variant="secondary"
+              className="text-start py-3"
+              onClick={() => navigate('/accounts/campus/approvals')}
+            >
+              Approvals
+            </Button>
+          </RoleView>
+          <RoleView
+            roles={[...permitAdmin('Campus'), ...permitArrivals('Campus')]}
           >
-            Approvals
-          </Button>
+            <Button
+              variant="secondary"
+              className="text-start py-3"
+              onClick={() =>
+                navigate('/accounts/campus/councils-for-bussing-expense')
+              }
+            >
+              Weekend Bussing Expense Entry
+            </Button>
+          </RoleView>
         </div>
       </Container>
     </ApolloWrapper>

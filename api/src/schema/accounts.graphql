@@ -127,4 +127,10 @@ extend type Mutation {
       RETURN transaction
       """
     )
+
+  DebitBussingPurse(
+    councilId: ID!
+    expenseAmount: Float!
+    expenseCategory: String!
+  ): AccountTransaction!
 }

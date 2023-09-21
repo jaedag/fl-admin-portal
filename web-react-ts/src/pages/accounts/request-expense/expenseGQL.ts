@@ -27,3 +27,29 @@ export const EXPENSE_REQUEST = gql`
     }
   }
 `
+
+export const DEBIT_BUSSING_PURSE = gql`
+  mutation DebitBussingPurse(
+    $councilId: ID!
+    $expenseAmount: Float!
+    $expenseCategory: String!
+  ) {
+    DebitBussingPurse(
+      councilId: $councilId
+      expenseAmount: $expenseAmount
+      expenseCategory: $expenseCategory
+    ) {
+      id
+      timestamp
+      amount
+      category
+      description
+      loggedBy {
+        id
+        firstName
+        lastName
+        fullName
+      }
+    }
+  }
+`

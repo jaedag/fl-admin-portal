@@ -1,6 +1,11 @@
 import { lazy } from 'react'
 import { LazyRouteTypes } from 'global-types'
-import { permitAdmin, permitLeader, permitLeaderAdmin } from 'permission-utils'
+import {
+  permitAdmin,
+  permitArrivals,
+  permitLeader,
+  permitLeaderAdmin,
+} from 'permission-utils'
 
 const LandingPage = lazy(() => import('pages/accounts/LandingPage'))
 const CouncilDashboard = lazy(() => import('pages/accounts/CouncilDashboard'))
@@ -24,6 +29,13 @@ const CampusCouncilListForAccounts = lazy(
   () => import('pages/accounts/CampusCouncilListForViewingAccounts')
 )
 const Approvals = lazy(() => import('pages/accounts/approvals/Approvals'))
+const CampusCouncilListForBussingExpense = lazy(
+  () =>
+    import('pages/accounts/bussing-expense/CampusCouncilListForBussingExpense')
+)
+const BussingExpenseEntry = lazy(
+  () => import('pages/accounts/bussing-expense/BussingExpenseEntry')
+)
 
 export const accountsRoutes: LazyRouteTypes[] = [
   { path: '/accounts', element: LandingPage, roles: permitLeader('Council') },
@@ -71,5 +83,15 @@ export const accountsRoutes: LazyRouteTypes[] = [
     path: '/accounts/campus/approvals',
     element: Approvals,
     roles: permitLeaderAdmin('Campus'),
+  },
+  {
+    path: '/accounts/campus/councils-for-bussing-expense',
+    element: CampusCouncilListForBussingExpense,
+    roles: [...permitAdmin('Campus'), ...permitArrivals('Campus')],
+  },
+  {
+    path: '/accounts/campus/bussing-expense-entry',
+    element: BussingExpenseEntry,
+    roles: [...permitAdmin('Campus'), ...permitArrivals('Campus')],
   },
 ]

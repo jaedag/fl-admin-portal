@@ -28,7 +28,7 @@ const CouncilTransactionHistory = () => {
     { label: 'Status', key: 'success' },
     { label: 'Credit', key: 'credit' },
     { label: 'Debit', key: 'debit' },
-    { label: 'Deposited By', key: 'depositedBy' },
+    { label: 'Recorded By', key: 'depositedBy' },
     { label: 'Description', key: 'description' },
   ]
 
@@ -38,7 +38,7 @@ const CouncilTransactionHistory = () => {
     success: transaction.status,
     credit: transaction.category === 'Deposit' ? transaction.amount : null,
     debit: transaction.category !== 'Deposit' ? transaction.amount : null,
-    depositedBy: transaction.depositedBy?.fullName,
+    depositedBy: transaction.loggedBy?.fullName,
     description: transaction.description,
   }))
 

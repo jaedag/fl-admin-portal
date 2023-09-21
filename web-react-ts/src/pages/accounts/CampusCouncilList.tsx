@@ -12,7 +12,10 @@ import { useNavigate } from 'react-router'
 const CampusCouncilList = ({
   link,
 }: {
-  link: '/accounts/council/make-deposit' | '/accounts/council/dashboard'
+  link:
+    | '/accounts/council/make-deposit'
+    | '/accounts/council/dashboard'
+    | '/accounts/campus/bussing-expense-entry'
 }) => {
   const { campusId, clickCard } = useContext(ChurchContext)
   const navigate = useNavigate()

@@ -3,9 +3,11 @@ import { sendBulkSMS } from '../utils/notify'
 import { Member } from '../utils/types'
 import { isAuth, throwToSentry } from '../utils/utils'
 import {
-  debitBussingExpense,
+  approveBussingExpense,
   approveExpense,
+  debitBussingPurse,
   getCouncilBalances,
+  getCouncilBalancesWithTransaction,
 } from './accounts-cypher'
 import { AccountTransaction, CouncilForAccounts } from './accounts-types'
 
@@ -21,7 +23,10 @@ export const accountsMutations = {
     isAuth(['arrivalsAdminCampus', 'adminCampus'], context.auth.roles)
 
     try {
-      const councilBalancesResult = await session.run(getCouncilBalances, args)
+      const councilBalancesResult = await session.run(
+        getCouncilBalancesWithTransaction,
+        args
+      )
 
       const council: CouncilForAccounts =
         councilBalancesResult.records[0].get('council').properties
@@ -41,7 +46,7 @@ export const accountsMutations = {
         const message = `Dear ${leader.firstName}, your expense request of ${transaction.amount} GHS from ${council.name} Council account for ${transaction.category} has been approved. Balance remaining is ${currentAmountRemaining} GHS. Bussing Purse Balance is ${amountRemaining} GHS`
 
         const debitRes = await Promise.all([
-          session.run(debitBussingExpense, args),
+          session.run(approveBussingExpense, args),
           sendBulkSMS([leader.phoneNumber], message),
         ])
 
@@ -75,6 +80,52 @@ export const accountsMutations = {
       }
     } catch (error: any) {
       throwToSentry('', error.message)
+    } finally {
+      await session.close()
+    }
+
+    return null
+  },
+  DebitBussingPurse: async (
+    object: unknown,
+    args: {
+      councilId: string
+      expenseAmount: number
+      expenseCategory: string
+    },
+    context: Context
+  ) => {
+    const session = context.executionContext.session()
+    isAuth(['arrivalsAdminCampus', 'adminCampus'], context.auth.roles)
+
+    try {
+      const councilBalancesResult = await session.run(getCouncilBalances, args)
+      const council: CouncilForAccounts =
+        councilBalancesResult.records[0].get('council').properties
+      const leader: Member =
+        councilBalancesResult.records[0].get('leader').properties
+
+      if (council.bussingPurseBalance < args.expenseAmount) {
+        throw new Error('Insufficient Funds')
+      }
+
+      const amountRemaining = council.bussingPurseBalance - args.expenseAmount
+      const message = `Dear ${leader.firstName}, your council ${council.name} Council spent ${args.expenseAmount} GHS on bussing. Bussing Society Balance remaining is ${amountRemaining} GHS`
+
+      const debitRes = await Promise.all([
+        session.run(debitBussingPurse, { ...args, auth: context.auth }),
+        sendBulkSMS([leader.phoneNumber], message),
+      ])
+
+      const trans = debitRes[0].records[0].get('transaction').properties
+      const depositor = debitRes[0].records[0].get('requester').properties
+
+      return {
+        ...trans,
+        loggedBy: { ...depositor },
+      }
+    } catch (err) {
+      throwToSentry('There was an error debiting bussing purse', err)
     } finally {
       await session.close()
     }
