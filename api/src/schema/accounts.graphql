@@ -51,7 +51,7 @@ extend type Mutation {
         currentLog.amount = $currentBalanceDepositAmount,
         currentLog.category = 'Deposit',
         currentLog.timestamp = datetime(),
-        bussingLog.status = 'success'
+        currentLog.status = 'success'
 
       MERGE (council)-[:HAS_TRANSACTION]->(currentLog)
       MERGE (depositor)<-[:LOGGED_BY]-(currentLog)
@@ -115,9 +115,16 @@ extend type Mutation {
       """
     )
 
-  ApproveExpense(
-    councilId: ID!
-    expenseAmount: Float!
-    expenseCategory: String!
-  ): AccountTransaction!
+  ApproveExpense(transactionId: ID!): AccountTransaction!
+
+  DeclineExpense(transactionId: ID!): AccountTransaction!
+    @auth(rules: [{ roles: ["adminCampus", "leaderCampus"] }])
+    @cypher(
+      statement: """
+      MATCH (transaction:AccountTransaction {id: $transactionId})
+      SET transaction.status = 'declined'
+
+      RETURN transaction
+      """
+    )
 }

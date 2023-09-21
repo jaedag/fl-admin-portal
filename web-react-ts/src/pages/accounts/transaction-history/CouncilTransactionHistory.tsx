@@ -10,9 +10,8 @@ import CurrencySpan from 'components/CurrencySpan'
 import { CSVLink } from 'react-csv'
 import { useNavigate } from 'react-router'
 import { AccountTransaction } from './transaction-types'
-import { BiCheckCircle } from 'react-icons/bi'
 import { QuestionCircleFill } from 'react-bootstrap-icons'
-import { BsXCircleFill } from 'react-icons/bs'
+import { BsCheckCircleFill, BsXCircleFill } from 'react-icons/bs'
 
 const CouncilTransactionHistory = () => {
   const { councilId, clickCard } = useContext(ChurchContext)
@@ -105,7 +104,7 @@ const CouncilTransactionHistory = () => {
                   </Col>
                   <Col className="col-2">
                     {transaction?.status === 'success' && (
-                      <BiCheckCircle color="green" />
+                      <BsCheckCircleFill color="green" />
                     )}
 
                     {transaction?.status === 'pending approval' && (

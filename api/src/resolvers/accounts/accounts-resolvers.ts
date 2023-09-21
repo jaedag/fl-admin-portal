@@ -1,46 +1,78 @@
 import { Context } from '../utils/neo4j-types'
-import { isAuth } from '../utils/utils'
+import { sendBulkSMS } from '../utils/notify'
+import { Member } from '../utils/types'
+import { isAuth, throwToSentry } from '../utils/utils'
 import {
   debitBussingExpense,
-  debitExpense,
+  approveExpense,
   getCouncilBalances,
 } from './accounts-cypher'
-import { ExpenseCategory } from './accounts-types'
+import { AccountTransaction, CouncilForAccounts } from './accounts-types'
 
 export const accountsMutations = {
   ApproveExpense: async (
     object: unknown,
     args: {
-      councilId: string
-      expenseAmount: number
-      expenseCategory: ExpenseCategory
+      transactionId: string
     },
     context: Context
   ) => {
     const session = context.executionContext.session()
     isAuth(['arrivalsAdminCampus', 'adminCampus'], context.auth.roles)
 
-    const councilBalancesResult = await session.run(getCouncilBalances, args)
+    try {
+      const councilBalancesResult = await session.run(getCouncilBalances, args)
 
-    const council = councilBalancesResult.records[0].get('council').properties
+      const council: CouncilForAccounts =
+        councilBalancesResult.records[0].get('council').properties
+      const leader: Member =
+        councilBalancesResult.records[0].get('leader').properties
+      const transaction: AccountTransaction =
+        councilBalancesResult.records[0].get('transaction').properties
+      const message = `Dear ${leader.firstName}, your expense request of ${transaction.amount} GHS from ${council.name} Council account for ${transaction.category} has been approved.`
 
-    if (args.expenseCategory === 'bussing') {
-      if (council.bussingPurseBalance < args.expenseAmount) {
-        throw new Error('Insufficient funds')
+      if (transaction.category === 'Bussing') {
+        if (council.bussingPurseBalance < transaction.amount) {
+          throw new Error('Insufficient bussing funds')
+        }
+
+        const debitRes = await Promise.all([
+          session.run(debitBussingExpense, args),
+          sendBulkSMS([leader.phoneNumber], message),
+        ])
+
+        const trans = debitRes[0].records[0].get('transaction').properties
+        const depositor = debitRes[0].records[0].get('depositor').properties
+
+        return {
+          ...trans,
+          loggedBy: { ...depositor },
+        }
       }
 
-      const debitRes = await session.run(debitBussingExpense, args)
+      if (council.currentBalance < transaction.amount) {
+        throw new Error('Insufficient Funds')
+      }
 
-      return debitRes.records[0].get('transaction').properties
+      const debitRes = await Promise.all([
+        session.run(approveExpense, args),
+        sendBulkSMS([leader.phoneNumber], message),
+      ])
+
+      const trans = debitRes[0].records[0].get('transaction').properties
+      const depositor = debitRes[0].records[0].get('depositor').properties
+
+      return {
+        ...trans,
+        loggedBy: { ...depositor },
+      }
+    } catch (error: any) {
+      throwToSentry('', error.message)
+    } finally {
+      await session.close()
     }
 
-    if (args.expenseAmount < council.currentBalance) {
-      throw new Error('Insufficient Funds')
-    }
-
-    const debitRes = await session.run(debitExpense, args)
-
-    return debitRes.records[0].get('transaction').properties
+    return null
   },
 }
 

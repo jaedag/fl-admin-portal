@@ -71,6 +71,14 @@ const CampusDashboard = () => {
           >
             View Council Balances
           </Button>
+
+          <Button
+            variant="secondary"
+            className="text-start py-3"
+            onClick={() => navigate('/accounts/campus/approvals')}
+          >
+            Approvals
+          </Button>
         </div>
       </Container>
     </ApolloWrapper>

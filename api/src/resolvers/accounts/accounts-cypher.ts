@@ -1,39 +1,23 @@
 export const getCouncilBalances = `
-MATCH (council:Council {id: $councilId})
-RETURN council
+MATCH (transaction:AccountTransaction {id: $transactionId})<-[:HAS_TRANSACTION]-(council:Council)
+MATCH (council)<-[:LEADS]-(leader:Member)
+RETURN council, transaction, leader
 `
 
 export const debitBussingExpense = `
-MATCH (council:Council {id: $councilId})
-MATCH (depositor:Member {auth_id: $auth.jwt.sub})
-  SET council.bussingPurseBalance = council.bussingPurseBalance - $expenseAmount
+MATCH (transaction:AccountTransaction {id: $transactionId})<-[:HAS_TRANSACTION]-(council:Council)
+MATCH (transaction)-[:LOGGED_BY]->(depositor:Member)
+  SET council.bussingPurseBalance = council.bussingPurseBalance - transaction.amount
+  SET transaction.status = 'success'
 
-WITH council, depositor
-
-CREATE (transaction:AccountTransaction {id: randomUUID()})
-  SET transaction.historyRecord = depositor.firstName +  ' ' + depositor.lastName +  ' debited ' + $expenseAmount + ' from the '+ council.name + ' Council account',
-  transaction.amount = $expenseAmount,
-  transaction.category = $expenseCategory,
-  transaction.status = 'success',
-  transaction.timestamp = datetime()
-
-RETURN council, transaction
+RETURN council, transaction, depositor
 `
 
-export const debitExpense = `
-MATCH (council:Council {id: $councilId})
-MATCH (depositor:Member {auth_id: $auth.jwt.sub})
-  SET council.currentBalance = council.currentBalance - $expenseAmount
+export const approveExpense = `
+MATCH (transaction:AccountTransaction {id: $transactionId})<-[:HAS_TRANSACTION]-(council:Council)
+MATCH (transaction)-[:LOGGED_BY]->(depositor:Member)
+  SET council.currentBalance = council.currentBalance - transaction.amount
+  SET transaction.status = 'success'
 
-WITH council, depositor
-
-CREATE (transaction:AccountTransaction {id: randomUUID()})
-  SET transaction.historyRecord = depositor.firstName +  ' ' + depositor.lastName +  ' debited ' + $expenseAmount + ' from the '+ council.name + ' Council account',
-  transaction.amount = $expenseAmount,
-  transaction.category = $expenseCategory,
-  transaction.status = 'success',
-  transaction.timestamp = datetime()
-
-
-RETURN council, transaction
+RETURN transaction, depositor
 `

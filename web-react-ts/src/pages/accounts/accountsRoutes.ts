@@ -23,6 +23,7 @@ const CampusCouncilListForDeposits = lazy(
 const CampusCouncilListForAccounts = lazy(
   () => import('pages/accounts/CampusCouncilListForViewingAccounts')
 )
+const Approvals = lazy(() => import('pages/accounts/approvals/Approvals'))
 
 export const accountsRoutes: LazyRouteTypes[] = [
   { path: '/accounts', element: LandingPage, roles: permitLeader('Council') },
@@ -64,6 +65,11 @@ export const accountsRoutes: LazyRouteTypes[] = [
   {
     path: '/accounts/campus/council/view-accounts',
     element: CampusCouncilListForAccounts,
+    roles: permitLeaderAdmin('Campus'),
+  },
+  {
+    path: '/accounts/campus/approvals',
+    element: Approvals,
     roles: permitLeaderAdmin('Campus'),
   },
 ]
