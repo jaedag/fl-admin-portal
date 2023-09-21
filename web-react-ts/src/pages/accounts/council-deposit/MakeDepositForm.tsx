@@ -15,9 +15,11 @@ import useModal from 'hooks/useModal'
 import {
   DEPOSIT_INTO_COUNCIL_BUSSING_PURSE,
   DEPOSIT_INTO_COUNCIL_CURRENT_ACCOUNTS,
+  SET_HR_AMOUNT,
 } from './depositGQL'
 import { throwToSentry } from 'global-utils'
 import RoleView from 'auth/RoleView'
+import { CouncilForAccounts } from '../accounts-types'
 
 const MakeDepositForm = () => {
   const { councilId } = useContext(ChurchContext)
@@ -35,14 +37,19 @@ const MakeDepositForm = () => {
   const [depositIntoCouncilBussingPurse] = useMutation(
     DEPOSIT_INTO_COUNCIL_BUSSING_PURSE
   )
+  const [setHRAmount] = useMutation(SET_HR_AMOUNT)
 
-  const council = data?.councils[0]
+  const council: CouncilForAccounts = data?.councils[0]
 
   const initialValues = {
+    hrAmount: council?.hrAmount?.toString() ?? '0.0',
     currentBalanceDepositAmount: '0.0',
     bussingPurseDepositAmount: '0.0',
   }
   const validationSchema = Yup.object({
+    hrAmount: Yup.number()
+      .typeError('Please enter a valid number')
+      .required('This is a required field'),
     currentBalanceDepositAmount: Yup.number()
       .typeError('Please enter a valid number')
       .required('This is a required field'),
@@ -69,6 +76,17 @@ const MakeDepositForm = () => {
               currentBalanceDepositAmount: parseFloat(
                 values.currentBalanceDepositAmount
               ),
+            },
+          })
+        )
+      }
+
+      if (parseFloat(values.hrAmount) > 0) {
+        mutations.push(
+          setHRAmount({
+            variables: {
+              councilId: councilId,
+              amount: parseFloat(values.hrAmount),
             },
           })
         )
@@ -116,6 +134,11 @@ const MakeDepositForm = () => {
                     label="Current Balance Deposit Amount"
                     placeholder="Enter an amount"
                   />
+                  <Input
+                    name="hrAmount"
+                    label="HR Amount"
+                    placeholder="Enter an amount"
+                  />
                 </RoleView>
                 <RoleView roles={['arrivalsAdminCampus']}>
                   <Input
@@ -136,6 +159,16 @@ const MakeDepositForm = () => {
                         {parseFloat(
                           formik.values.currentBalanceDepositAmount
                         ).toLocaleString('en-US')}
+                      </span>
+                    </p>
+
+                    <p>
+                      HR Amount:{' '}
+                      <span className="text-info">
+                        GHS{' '}
+                        {parseFloat(formik.values.hrAmount).toLocaleString(
+                          'en-US'
+                        )}
                       </span>
                     </p>
 

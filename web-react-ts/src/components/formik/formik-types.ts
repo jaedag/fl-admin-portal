@@ -1,6 +1,7 @@
+import { FieldAttributes } from 'formik'
 import { DocumentNode } from 'graphql'
 
-export interface FormikComponentProps {
+export interface FormikComponentProps extends FieldAttributes<any> {
   label?: string
   name: string
   className?: string

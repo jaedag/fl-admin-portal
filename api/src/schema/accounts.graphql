@@ -9,6 +9,13 @@ type AccountTransaction {
 }
 
 extend type Campus {
+  hrAmount: Float!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS*2]->(council:Council)
+      RETURN SUM(council.hrAmount)
+      """
+    )
   currentBalance: Float!
     @cypher(
       statement: """
@@ -26,6 +33,7 @@ extend type Campus {
 }
 
 extend type Council {
+  hrAmount: Float
   currentBalance: Float!
   bussingPurseBalance: Float
   transactions: [AccountTransaction!]!
@@ -33,6 +41,15 @@ extend type Council {
 }
 
 extend type Mutation {
+  SetCouncilHRAmount(councilId: ID!, amount: Float!): Council!
+    @auth(rules: [{ roles: ["adminCampus"] }])
+    @cypher(
+      statement: """
+      MATCH (council:Council {id: $councilId})
+        SET council.hrAmount = $amount
+      RETURN council
+      """
+    )
   depositIntoCouncilCurrentAccount(
     councilId: ID!
     currentBalanceDepositAmount: Float!

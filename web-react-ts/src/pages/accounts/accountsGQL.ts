@@ -5,6 +5,7 @@ export const COUNCIL_ACCOUNT_DASHBOARD = gql`
     councils(where: { id: $id }) {
       id
       name
+      hrAmount
       currentBalance
       bussingPurseBalance
 

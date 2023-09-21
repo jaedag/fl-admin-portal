@@ -16,6 +16,7 @@ import { throwToSentry } from 'global-utils'
 import RadioButtons from 'components/formik/RadioButtons'
 import Textarea from 'components/formik/Textarea'
 import { EXPENSE_REQUEST } from './expenseGQL'
+import { CouncilForAccounts } from '../accounts-types'
 
 const ExpenseForm = () => {
   const { councilId, clickCard } = useContext(ChurchContext)
@@ -29,7 +30,7 @@ const ExpenseForm = () => {
   })
   const [ExpenseRequest] = useMutation(EXPENSE_REQUEST)
 
-  const council = data?.councils[0]
+  const council: CouncilForAccounts = data?.councils[0]
 
   const initialValues = {
     requestedAmount: '',
@@ -91,8 +92,14 @@ const ExpenseForm = () => {
                     name="requestedAmount"
                     label="How much are you requesting"
                     placeholder="Enter an amount"
+                    value={
+                      formik.values.category === 'HR'
+                        ? council.hrAmount
+                        : formik.values.requestedAmount
+                    }
                   />
                 </div>
+
                 <div className="mb-4">
                   <RadioButtons
                     name="category"
