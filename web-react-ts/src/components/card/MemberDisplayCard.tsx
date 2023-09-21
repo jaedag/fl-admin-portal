@@ -71,7 +71,7 @@ const Icons = ({
         <CloudinaryImage
           src={picture}
           alt={member.nameWithTitle}
-          className={`img-search`}
+          className={`img-search rounded`}
         />
         <Badge
           pill

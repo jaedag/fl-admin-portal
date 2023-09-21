@@ -15,13 +15,13 @@ const SearchPageMobile = () => {
   const { currentUser } = useContext(MemberContext)
 
   const [combinedData, setCombinedData] = useState<SearchResult[]>([])
-
+  const LIMIT = 10
   const { data, loading, error } = useQuery(MEMBER_SEARCH, {
     skip: !searchKey,
     variables: {
       id: currentUser.id,
       key: searchKey?.trim(),
-      limit: 10,
+      limit: LIMIT,
     },
     onCompleted: (data) => {
       const member = data.members[0]
