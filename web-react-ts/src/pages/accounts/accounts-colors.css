@@ -1,0 +1,11 @@
+:root {
+  --current-balance-bg: #3d4ea8;
+}
+
+.current-balance {
+  background-color: var(--current-balance-bg);
+}
+
+.bussing-purse {
+  background-color: #255f6b;
+}

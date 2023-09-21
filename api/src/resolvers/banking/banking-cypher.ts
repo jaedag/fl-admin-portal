@@ -111,7 +111,7 @@ RETURN lastService, lastDate, record, church
 
 export const checkIfIMCLNotFilled = `
     MATCH (record:ServiceRecord {id: $serviceRecordId})
-    OPTIONAL MATCH (record)<-[:ABSENT_FROM_SERVICE]-(absent:Member)
+    OPTIONAL MATCH (record)<-[:ABSENT_FROM_SERVICE]-(absent:IMCL)
     WHERE absent.imclChecked = false
 
     RETURN COUNT(absent) > 0 AS imclNotFilled

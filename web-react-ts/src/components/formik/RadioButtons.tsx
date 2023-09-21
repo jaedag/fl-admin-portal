@@ -12,13 +12,11 @@ const RadioButtons = (props: RadioButtonProps) => {
   return (
     <div>
       {label ? (
-        <div>
-          <label className="font-weight-bold" htmlFor={name}>
-            {label}
-          </label>
-        </div>
+        <label className="fw-bold" htmlFor={name}>
+          {label}
+        </label>
       ) : null}
-      <Field name={name} className="row row-cols-2 form-control" {...rest}>
+      <Field name={name} className="form-control" {...rest}>
         {({ field }: any) => {
           return options?.map((option) => {
             return (

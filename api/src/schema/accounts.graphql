@@ -1,0 +1,136 @@
+type AccountTransaction {
+  id: ID!
+  timestamp: DateTime!
+  description: String!
+  amount: Float!
+  category: String!
+  status: String!
+  loggedBy: Member! @relationship(type: "LOGGED_BY", direction: OUT)
+}
+
+extend type Campus {
+  currentBalance: Float!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS*2]->(council:Council)
+      RETURN SUM(council.currentBalance)
+      """
+    )
+  bussingPurseBalance: Float!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS*2]->(council:Council)
+      RETURN SUM(council.bussingPurseBalance)
+      """
+    )
+}
+
+extend type Council {
+  currentBalance: Float!
+  bussingPurseBalance: Float
+  transactions: [AccountTransaction!]!
+    @relationship(type: "HAS_TRANSACTION", direction: OUT)
+}
+
+extend type Mutation {
+  depositIntoCouncilCurrentAccount(
+    councilId: ID!
+    currentBalanceDepositAmount: Float!
+  ): Council!
+    @auth(rules: [{ roles: ["adminCampus"] }])
+    @cypher(
+      statement: """
+      MATCH (council:Council {id: $councilId})
+      MATCH (depositor:Member {auth_id: $auth.jwt.sub})
+        SET council.currentBalance = council.currentBalance + $currentBalanceDepositAmount
+
+      WITH council, depositor
+
+      CREATE (currentLog:AccountTransaction {id: randomUUID()})
+        SET currentLog.description = depositor.firstName +  ' ' + depositor.lastName +  ' deposited ' + $currentBalanceDepositAmount + ' into the current balance',
+        currentLog.amount = $currentBalanceDepositAmount,
+        currentLog.category = 'Deposit',
+        currentLog.timestamp = datetime(),
+        currentLog.status = 'success'
+
+      MERGE (council)-[:HAS_TRANSACTION]->(currentLog)
+      MERGE (depositor)<-[:LOGGED_BY]-(currentLog)
+
+      RETURN council
+      """
+    )
+
+  depositIntoCouncilBussingPurse(
+    councilId: ID!
+    bussingPurseDepositAmount: Float!
+  ): Council!
+    @auth(rules: [{ roles: ["arrivalsAdminCampus"] }])
+    @cypher(
+      statement: """
+      MATCH (council:Council {id: $councilId})
+      MATCH (depositor:Member {auth_id: $auth.jwt.sub})
+        SET council.bussingPurseBalance = council.bussingPurseBalance + $bussingPurseDepositAmount
+
+      WITH council, depositor
+
+      CREATE (bussingLog:AccountTransaction {id: randomUUID()})
+        SET bussingLog.description = depositor.firstName +  ' ' + depositor.lastName +  ' deposited ' + $bussingPurseDepositAmount + ' into the bussing purse',
+        bussingLog.amount = $bussingPurseDepositAmount,
+        bussingLog.category = 'Deposit',
+        bussingLog.timestamp = datetime(),
+        bussingLog.status = 'success'
+
+      MERGE (council)-[:HAS_TRANSACTION]->(bussingLog)
+      MERGE (depositor)<-[:LOGGED_BY]-(bussingLog)
+
+      RETURN council
+      """
+    )
+
+  ExpenseRequest(
+    councilId: ID!
+    expenseAmount: Float!
+    expenseCategory: String!
+    description: String!
+  ): AccountTransaction!
+    @auth(rules: [{ roles: ["leaderCouncil", "adminCampus"] }])
+    @cypher(
+      statement: """
+      MATCH  (council:Council {id: $councilId})
+      MATCH (requester:Member {auth_id: $auth.jwt.sub})
+
+      WITH council, requester
+
+      CREATE (transaction:AccountTransaction {id: randomUUID()})
+        SET transaction.description = $description,
+        transaction.amount = $expenseAmount,
+        transaction.category = $expenseCategory,
+        transaction.status = 'pending approval',
+        transaction.timestamp = datetime()
+
+      MERGE (council)-[:HAS_TRANSACTION]->(transaction)
+      MERGE (requester)<-[:LOGGED_BY]-(transaction)
+
+      RETURN transaction
+      """
+    )
+
+  ApproveExpense(transactionId: ID!): AccountTransaction!
+
+  DeclineExpense(transactionId: ID!): AccountTransaction!
+    @auth(rules: [{ roles: ["adminCampus", "leaderCampus"] }])
+    @cypher(
+      statement: """
+      MATCH (transaction:AccountTransaction {id: $transactionId})
+      SET transaction.status = 'declined'
+
+      RETURN transaction
+      """
+    )
+
+  DebitBussingPurse(
+    councilId: ID!
+    expenseAmount: Float!
+    expenseCategory: String!
+  ): AccountTransaction!
+}

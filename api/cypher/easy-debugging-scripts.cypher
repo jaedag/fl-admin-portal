@@ -1,12 +1,14 @@
 // if someone says that 
 // If someone says he has filled IMCL but is still getting an error,
 //it means he filled it out of order and this must be run
+
 MATCH (record:ServiceRecord {id: "8a056f3e-a1cc-4ba8-9551-faaa7cff41bc"})
+
 OPTIONAL MATCH (record)<-[:ABSENT_FROM_SERVICE]-(absent:Member)
    WHERE absent.imclChecked = false
-SET absent.imclChecked = true
+// SET absent.imclChecked = true
 
-RETURN record.attendance, absent;
+RETURN record.attendance, absent.firstName, absent.lastName, absent.imclChecked;
 
 
 MATCH (stream:Stream {name: "Anagkazo Encounter"})-[:HAS*4]->(fellowship:Fellowship)
@@ -22,7 +24,9 @@ RETURN member.name, member.imclChecked;
 
 
 // If a fellowship service is Blocking 
+
 MATCH (fellowship:Fellowship {bankingCode: 7035 })-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph {date: date("2023-08-27")})
+
 MATCH (fellowship)<-[:BELONGS_TO]-(members:Member)
 MERGE (record)<-[:PRESENT_AT_SERVICE]-(members)
 MERGE (record)<-[:ABSENT_FROM_SERVICE]-(members)
@@ -30,7 +34,9 @@ MERGE (record)<-[:ABSENT_FROM_SERVICE]-(members)
 RETURN fellowship.name, record.attendance, COUNT(members);
 
 // If Sunday Bussing is blocking
+
 MATCH (fellowship:Fellowship {bankingCode: 7035 })<-[:HAS]-(bacenta:Bacenta)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(record:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph {date: date("2023-08-27")})
+
 MATCH (fellowship)<-[:BELONGS_TO]-(members:Member)
 MERGE (record)<-[:PRESENT_AT_SERVICE]-(members)
 MERGE (record)<-[:ABSENT_FROM_SERVICE]-(members)
@@ -68,12 +74,4 @@ SET member.imclChecked = true
 RETURN COUNT(member)
 
 
-  MATCH (this:Member {email: "jaedagy@gmail.com"})-[:LEADS|HAS|HAS_MINISTRY|IS_ADMIN_FOR*1..4]->(church:CreativeArts)
-      WHERE toLower(church.name) CONTAINS toLower("choir")
-      RETURN DISTINCT church LIMIT 5
 
-      
-           MATCH (this:Member {email: "jaedagy@gmail.com"})-[:LEADS|HAS|DOES_ARRIVALS_FOR|IS_ADMIN_FOR|IS_SHEEP_SEEKER_FOR*1..8]->(:Fellowship)<-[:BELONGS_TO]-(members:Active:Member)
-      WHERE toLower(members.firstName+ ' ' + members.middleName + ' ' + members.lastName) CONTAINS toLower("sandra quay")
-         OR toLower(members.firstName + ' ' + members.lastName) CONTAINS toLower("sandra quay")
-      RETURN DISTINCT members ORDER BY toLower(members.lastName), toLower(members.firstName) 

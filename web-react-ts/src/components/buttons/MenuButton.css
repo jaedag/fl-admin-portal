@@ -101,6 +101,11 @@
   fill: var(--maps-accent) !important;
 }
 
+.accounts {
+  color: var(--good) !important;
+  fill: var(--good) !important;
+}
+
 .danger {
   color: var(--bad) !important;
 }
