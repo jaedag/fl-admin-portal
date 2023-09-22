@@ -1,3 +1,10 @@
+#### 7.10.2 (2023-09-22)
+
+##### Bug Fixes
+
+*  update permissions for nav menu accounts ([876892ef](https://github.com/firstlovecenter/fl-pastoral-care/commit/876892ef960fd0b44d21788f942a9baa9ac35622))
+*  update permissions for nav menu accounts ([2d858f74](https://github.com/firstlovecenter/fl-pastoral-care/commit/2d858f74122b03c91f8fe16b187efe8aac97f068))
+
 #### 7.10.1 (2023-09-22)
 
 ##### Bug Fixes
