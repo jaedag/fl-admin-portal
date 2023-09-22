@@ -9,6 +9,7 @@ import {
 import { authorisedLink, plural } from 'global-utils'
 import { churchLevels } from 'pages/directory/update/directory-utils'
 import {
+  permitAdmin,
   permitArrivals,
   permitArrivalsHelpers,
   permitLeader,
@@ -56,7 +57,11 @@ export const menuItems: MenuItem[] = [
   {
     name: 'Accounts',
     to: '/accounts',
-    roles: permitLeader('Council'),
+    roles: [
+      ...permitLeader('Council'),
+      ...permitArrivals('Campus'),
+      ...permitAdmin('Campus'),
+    ],
   },
   {
     name: 'Maps',
