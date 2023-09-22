@@ -50,7 +50,11 @@ export const accountsRoutes: LazyRouteTypes[] = [
   {
     path: '/accounts/council/dashboard',
     element: CouncilDashboard,
-    roles: permitLeader('Council'),
+    roles: [
+      ...permitLeader('Council'),
+      ...permitAdmin('Campus'),
+      ...permitArrivals('Campus'),
+    ],
   },
   {
     path: '/accounts/campus/dashboard',
