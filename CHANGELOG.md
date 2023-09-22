@@ -1,3 +1,9 @@
+#### 7.10.1 (2023-09-22)
+
+##### Bug Fixes
+
+*  fix permissions for defaulters ([ebf542ac](https://github.com/firstlovecenter/fl-pastoral-care/commit/ebf542ac534728fd1ab925c04cec82fdf862973e))
+
 ### 7.10.0 (2023-09-21)
 
 ##### New Features
