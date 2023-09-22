@@ -52,7 +52,7 @@ const CampusCouncilList = ({
                     navigate(link)
                   }}
                 >
-                  {council.name}
+                  {council.name} - {council.leader.fullName}
                 </Button>
               ))}
             </div>

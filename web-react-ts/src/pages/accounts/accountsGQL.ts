@@ -51,6 +51,13 @@ export const CAMPUS_BY_COUNCIL_ACCOUNTS = gql`
         councils {
           id
           name
+
+          leader {
+            id
+            firstName
+            lastName
+            fullName
+          }
         }
       }
     }
