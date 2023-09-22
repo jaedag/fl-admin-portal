@@ -1,4 +1,5 @@
 import {
+  permitLeader,
   permitLeaderAdmin,
   permitLeaderAdminArrivals,
   permitTellerStream,
@@ -450,25 +451,25 @@ export const graphs: LazyRouteTypes[] = [
   {
     path: '/services/defaulters',
     element: Defaulters,
-    roles: permitLeaderAdmin('Constituency'),
+    roles: [...permitLeaderAdmin('Constituency'), ...permitLeader('Hub')],
     placeholder: true,
   },
   {
     path: '/services/defaulters/dashboard',
     element: DefaultersDashboard,
-    roles: permitLeaderAdmin('Hub'),
+    roles: [...permitLeaderAdmin('Constituency'), ...permitLeader('Hub')],
     placeholder: true,
   },
   {
     path: '/services/form-defaulters',
     element: FormDefaulters,
-    roles: permitLeaderAdmin('Constituency'),
+    roles: [...permitLeaderAdmin('Constituency'), ...permitLeader('Hub')],
     placeholder: true,
   },
   {
     path: '/services/banking-defaulters',
     element: BankingDefaulters,
-    roles: permitLeaderAdmin('Constituency'),
+    roles: [...permitLeaderAdmin('Constituency'), ...permitLeader('Hub')],
     placeholder: true,
   },
   {
@@ -498,19 +499,19 @@ export const graphs: LazyRouteTypes[] = [
   {
     path: '/services/banked',
     element: Banked,
-    roles: permitLeaderAdmin('Constituency'),
+    roles: [...permitLeaderAdmin('Constituency'), ...permitLeader('Hub')],
     placeholder: true,
   },
   {
     path: '/services/filled-services',
     element: ServicesThisWeek,
-    roles: permitLeaderAdmin('Constituency'),
+    roles: [...permitLeaderAdmin('Constituency'), ...permitLeader('Hub')],
     placeholder: true,
   },
   {
     path: '/services/cancelled-services',
     element: CancelledServicesThisWeek,
-    roles: permitLeaderAdmin('Constituency'),
+    roles: [...permitLeaderAdmin('Constituency'), ...permitLeader('Hub')],
     placeholder: true,
   },
   {
