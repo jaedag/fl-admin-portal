@@ -281,6 +281,7 @@ export type Role =
   | 'tellerStream'
   | 'sheepseekerStream'
   | 'all'
+  | 'fishers'
 
 export type VerbTypes =
   | 'leader'
