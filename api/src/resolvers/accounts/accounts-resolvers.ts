@@ -6,12 +6,112 @@ import {
   approveBussingExpense,
   approveExpense,
   debitBussingPurse,
+  depositIntoCoucilBussingPurse,
+  depositIntoCouncilCurrentAccount,
   getCouncilBalances,
   getCouncilBalancesWithTransaction,
 } from './accounts-cypher'
 import { AccountTransaction, CouncilForAccounts } from './accounts-types'
 
 export const accountsMutations = {
+  DepositIntoCouncilCurrentAccount: async (
+    object: unknown,
+    args: {
+      councilId: string
+      currentBalanceDepositAmount: number
+    },
+    context: Context
+  ) => {
+    const session = context.executionContext.session()
+    isAuth(['adminCampus'], context.auth.roles)
+
+    try {
+      const councilBalancesResult = await session.run(getCouncilBalances, args)
+
+      const council: CouncilForAccounts =
+        councilBalancesResult.records[0].get('council').properties
+
+      const leader: Member =
+        councilBalancesResult.records[0].get('leader').properties
+
+      const message = `Dear ${leader.firstName}, an amount of ${
+        args.currentBalanceDepositAmount
+      } GHS has been deposited into your council account. Your current balance is ${
+        council.currentBalance + args.currentBalanceDepositAmount
+      } GHS and bussing purse is ${council.bussingPurseBalance} GHS`
+
+      const debitRes = await Promise.all([
+        session.run(depositIntoCouncilCurrentAccount, {
+          auth: context.auth,
+          ...args,
+        }),
+        sendBulkSMS([leader.phoneNumber], message),
+      ])
+
+      const trans = debitRes[0].records[0].get('transaction').properties
+      const depositor = debitRes[0].records[0].get('depositor').properties
+
+      return {
+        ...trans,
+        loggedBy: { ...depositor },
+      }
+    } catch (error) {
+      throwToSentry('', error)
+    } finally {
+      await session.close()
+    }
+
+    return null
+  },
+  DepositIntoCouncilBussingPurse: async (
+    object: unknown,
+    args: {
+      councilId: string
+      bussingPurseDepositAmount: number
+    },
+    context: Context
+  ) => {
+    const session = context.executionContext.session()
+    isAuth(['arrivalsAdminCampus'], context.auth.roles)
+
+    try {
+      const councilBalancesResult = await session.run(getCouncilBalances, args)
+
+      const council: CouncilForAccounts =
+        councilBalancesResult.records[0].get('council').properties
+
+      const leader: Member =
+        councilBalancesResult.records[0].get('leader').properties
+
+      const message = `Dear ${leader.firstName}, an amount of ${
+        args.bussingPurseDepositAmount
+      } GHS has been deposited into your council bussing purse. Your current bussing purse balance is ${
+        council.bussingPurseBalance + args.bussingPurseDepositAmount
+      } GHS`
+
+      const debitRes = await Promise.all([
+        session.run(depositIntoCoucilBussingPurse, {
+          auth: context.auth,
+          ...args,
+        }),
+        sendBulkSMS([leader.phoneNumber], message),
+      ])
+
+      const trans = debitRes[0].records[0].get('transaction').properties
+      const depositor = debitRes[0].records[0].get('depositor').properties
+
+      return {
+        ...trans,
+        loggedBy: { ...depositor },
+      }
+    } catch (error) {
+      throwToSentry('', error)
+    } finally {
+      await session.close()
+    }
+
+    return null
+  },
   ApproveExpense: async (
     object: unknown,
     args: {
@@ -39,6 +139,7 @@ export const accountsMutations = {
         if (council.currentBalance < transaction.amount) {
           throw new Error('Insufficient bussing funds')
         }
+
         const currentAmountRemaining =
           council.currentBalance - transaction.amount
 
@@ -110,7 +211,7 @@ export const accountsMutations = {
       }
 
       const amountRemaining = council.bussingPurseBalance - args.expenseAmount
-      const message = `Dear ${leader.firstName}, your council ${council.name} Council spent ${args.expenseAmount} GHS on bussing. Bussing Society Balance remaining is ${amountRemaining} GHS`
+      const message = `Dear ${leader.firstName}, ${council.name} Council spent ${args.expenseAmount} GHS on bussing. Bussing Purse Balance remaining is ${amountRemaining} GHS`
 
       const debitRes = await Promise.all([
         session.run(debitBussingPurse, { ...args, auth: context.auth }),

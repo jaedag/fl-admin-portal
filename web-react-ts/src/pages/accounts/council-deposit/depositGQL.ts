@@ -1,60 +1,48 @@
 import { gql } from '@apollo/client'
 
 export const DEPOSIT_INTO_COUNCIL_CURRENT_ACCOUNTS = gql`
-  mutation depositIntoCouncilCurrentAccounts(
+  mutation DepositIntoCouncilCurrentAccounts(
     $councilId: ID!
     $currentBalanceDepositAmount: Float!
   ) {
-    depositIntoCouncilCurrentAccount(
+    DepositIntoCouncilCurrentAccount(
       councilId: $councilId
       currentBalanceDepositAmount: $currentBalanceDepositAmount
     ) {
       id
-      name
-      currentBalance
-
-      transactions {
+      timestamp
+      amount
+      category
+      description
+      loggedBy {
         id
-        timestamp
-        amount
-        category
-        description
-        loggedBy {
-          id
-          firstName
-          lastName
-          fullName
-        }
+        firstName
+        lastName
+        fullName
       }
     }
   }
 `
 
 export const DEPOSIT_INTO_COUNCIL_BUSSING_PURSE = gql`
-  mutation depositIntoCouncilBussingPurse(
+  mutation DepositIntoCouncilBussingPurse(
     $councilId: ID!
     $bussingPurseDepositAmount: Float!
   ) {
-    depositIntoCouncilBussingPurse(
+    DepositIntoCouncilBussingPurse(
       councilId: $councilId
       bussingPurseDepositAmount: $bussingPurseDepositAmount
     ) {
       id
-      name
-      bussingPurseBalance
-
-      transactions {
+      timestamp
+      amount
+      category
+      description
+      loggedBy {
         id
-        timestamp
-        amount
-        category
-        description
-        loggedBy {
-          id
-          firstName
-          lastName
-          fullName
-        }
+        firstName
+        lastName
+        fullName
       }
     }
   }

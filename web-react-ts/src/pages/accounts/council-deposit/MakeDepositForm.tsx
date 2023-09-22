@@ -20,24 +20,41 @@ import {
 import { throwToSentry } from 'global-utils'
 import RoleView from 'auth/RoleView'
 import { CouncilForAccounts } from '../accounts-types'
+import useClickCard from 'hooks/useClickCard'
 
 const MakeDepositForm = () => {
   const { councilId } = useContext(ChurchContext)
   const { show, handleClose, handleShow } = useModal()
   const navigate = useNavigate()
+  const { clickCard } = useClickCard()
 
   const { data, loading, error } = useQuery(COUNCIL_ACCOUNT_DASHBOARD, {
     variables: {
       id: councilId,
     },
   })
-  const [depositIntoCouncilCurrentAccount] = useMutation(
-    DEPOSIT_INTO_COUNCIL_CURRENT_ACCOUNTS
+  const [DepositIntoCouncilCurrentAccount] = useMutation(
+    DEPOSIT_INTO_COUNCIL_CURRENT_ACCOUNTS,
+    {
+      refetchQueries: [
+        { query: COUNCIL_ACCOUNT_DASHBOARD, variables: { id: councilId } },
+      ],
+    }
   )
-  const [depositIntoCouncilBussingPurse] = useMutation(
-    DEPOSIT_INTO_COUNCIL_BUSSING_PURSE
+
+  const [DepositIntoCouncilBussingPurse] = useMutation(
+    DEPOSIT_INTO_COUNCIL_BUSSING_PURSE,
+    {
+      refetchQueries: [
+        { query: COUNCIL_ACCOUNT_DASHBOARD, variables: { id: councilId } },
+      ],
+    }
   )
-  const [setHRAmount] = useMutation(SET_HR_AMOUNT)
+  const [setHRAmount] = useMutation(SET_HR_AMOUNT, {
+    refetchQueries: [
+      { query: COUNCIL_ACCOUNT_DASHBOARD, variables: { id: councilId } },
+    ],
+  })
 
   const council: CouncilForAccounts = data?.councils[0]
 
@@ -70,7 +87,7 @@ const MakeDepositForm = () => {
 
       if (parseFloat(values.currentBalanceDepositAmount) > 0) {
         mutations.push(
-          depositIntoCouncilCurrentAccount({
+          DepositIntoCouncilCurrentAccount({
             variables: {
               councilId: councilId,
               currentBalanceDepositAmount: parseFloat(
@@ -81,7 +98,7 @@ const MakeDepositForm = () => {
         )
       }
 
-      if (parseFloat(values.hrAmount) > 0) {
+      if (parseFloat(values.hrAmount) !== council?.hrAmount) {
         mutations.push(
           setHRAmount({
             variables: {
@@ -94,7 +111,7 @@ const MakeDepositForm = () => {
 
       if (parseFloat(values.bussingPurseDepositAmount) > 0) {
         mutations.push(
-          depositIntoCouncilBussingPurse({
+          DepositIntoCouncilBussingPurse({
             variables: {
               councilId: councilId,
               bussingPurseDepositAmount: parseFloat(
@@ -105,8 +122,29 @@ const MakeDepositForm = () => {
         )
       }
 
-      await Promise.all(mutations)
-      navigate('/accounts/council/dashboard')
+      const res = await Promise.all(mutations)
+
+      res.map((response) => {
+        if (response.data?.setHRAmount) {
+          clickCard(response.data?.setHRAmount)
+        }
+
+        if (response.data?.DepositIntoCouncilBussingPurse) {
+          clickCard(response.data?.DepositIntoCouncilBussingPurse)
+        }
+
+        if (response.data?.DepositIntoCouncilCurrentAccount) {
+          clickCard(response.data?.DepositIntoCouncilCurrentAccount)
+        }
+
+        return null
+      })
+
+      if (parseFloat(values.hrAmount) !== council?.hrAmount) {
+        navigate('/accounts/council/dashboard')
+      } else {
+        navigate('/accounts/transaction-details/')
+      }
     } catch (err) {
       throwToSentry('Error Depositing into Council Account', err)
     } finally {

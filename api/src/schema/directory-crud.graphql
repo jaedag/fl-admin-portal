@@ -205,7 +205,7 @@ extend type Mutation {
     fellowship: String!
     ministry: String
     pictureUrl: String!
-  ): Member
+  ): Member!
 
   CreateOversight(name: String!, leaderId: ID!, denominationId: ID!): Oversight
     @auth(rules: [{ roles: ["adminDenomination"] }])

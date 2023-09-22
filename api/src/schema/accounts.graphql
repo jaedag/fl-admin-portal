@@ -58,59 +58,15 @@ extend type Mutation {
       RETURN council
       """
     )
-  depositIntoCouncilCurrentAccount(
+  DepositIntoCouncilCurrentAccount(
     councilId: ID!
     currentBalanceDepositAmount: Float!
-  ): Council!
-    @auth(rules: [{ roles: ["adminCampus"] }])
-    @cypher(
-      statement: """
-      MATCH (council:Council {id: $councilId})
-      MATCH (depositor:Member {auth_id: $auth.jwt.sub})
-        SET council.currentBalance = council.currentBalance + $currentBalanceDepositAmount
+  ): AccountTransaction!
 
-      WITH council, depositor
-
-      CREATE (currentLog:AccountTransaction {id: randomUUID()})
-        SET currentLog.description = depositor.firstName +  ' ' + depositor.lastName +  ' deposited ' + $currentBalanceDepositAmount + ' into the current balance',
-        currentLog.amount = $currentBalanceDepositAmount,
-        currentLog.category = 'Deposit',
-        currentLog.timestamp = datetime(),
-        currentLog.status = 'success'
-
-      MERGE (council)-[:HAS_TRANSACTION]->(currentLog)
-      MERGE (depositor)<-[:LOGGED_BY]-(currentLog)
-
-      RETURN council
-      """
-    )
-
-  depositIntoCouncilBussingPurse(
+  DepositIntoCouncilBussingPurse(
     councilId: ID!
     bussingPurseDepositAmount: Float!
-  ): Council!
-    @auth(rules: [{ roles: ["arrivalsAdminCampus"] }])
-    @cypher(
-      statement: """
-      MATCH (council:Council {id: $councilId})
-      MATCH (depositor:Member {auth_id: $auth.jwt.sub})
-        SET council.bussingPurseBalance = council.bussingPurseBalance + $bussingPurseDepositAmount
-
-      WITH council, depositor
-
-      CREATE (bussingLog:AccountTransaction {id: randomUUID()})
-        SET bussingLog.description = depositor.firstName +  ' ' + depositor.lastName +  ' deposited ' + $bussingPurseDepositAmount + ' into the bussing purse',
-        bussingLog.amount = $bussingPurseDepositAmount,
-        bussingLog.category = 'Deposit',
-        bussingLog.timestamp = datetime(),
-        bussingLog.status = 'success'
-
-      MERGE (council)-[:HAS_TRANSACTION]->(bussingLog)
-      MERGE (depositor)<-[:LOGGED_BY]-(bussingLog)
-
-      RETURN council
-      """
-    )
+  ): AccountTransaction!
 
   ExpenseRequest(
     councilId: ID!
@@ -147,7 +103,7 @@ extend type Mutation {
     @cypher(
       statement: """
       MATCH (transaction:AccountTransaction {id: $transactionId})
-      SET transaction.status = 'declined'
+        SET transaction.status = 'declined'
 
       RETURN transaction
       """

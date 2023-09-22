@@ -65,7 +65,7 @@ export const sendBulkSMS = async (recipient: string[], message: string) => {
       recipient: SECRETS.TEST_PHONE_NUMBER
         ? [SECRETS.TEST_PHONE_NUMBER, '0594760323']
         : recipient,
-      sender: 'FLC Admin',
+      sender: 'FLC',
       message,
       is_schedule: 'false',
       schedule_date: '',
@@ -81,7 +81,9 @@ export const sendBulkSMS = async (recipient: string[], message: string) => {
       return 'Message sent successfully'
     }
 
-    throw new Error('There was a problem sending your SMS')
+    throw new Error(
+      `There was a problem sending your SMS ${JSON.stringify(res.data)}`
+    )
   } catch (error: any) {
     throwToSentry('There was a problem sending your message', error)
   }

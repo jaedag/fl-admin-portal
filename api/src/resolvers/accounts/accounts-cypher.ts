@@ -49,3 +49,43 @@ MERGE (council)-[:HAS_TRANSACTION]->(transaction)
 MERGE (requester)<-[:LOGGED_BY]-(transaction)
 
 RETURN transaction, requester`
+
+export const depositIntoCouncilCurrentAccount = `
+MATCH (council:Council {id: $councilId})
+MATCH (depositor:Member {auth_id: $auth.jwt.sub})
+  SET council.currentBalance = council.currentBalance + $currentBalanceDepositAmount
+
+WITH council, depositor
+
+CREATE (transaction:AccountTransaction {id: randomUUID()})
+  SET transaction.description = depositor.firstName +  ' ' + depositor.lastName +  ' deposited ' + $currentBalanceDepositAmount + ' into the current balance',
+  transaction.amount = $currentBalanceDepositAmount,
+  transaction.category = 'Deposit',
+  transaction.timestamp = datetime(),
+  transaction.status = 'success'
+
+MERGE (council)-[:HAS_TRANSACTION]->(transaction)
+MERGE (depositor)<-[:LOGGED_BY]-(transaction)
+
+RETURN council, transaction, depositor
+`
+
+export const depositIntoCoucilBussingPurse = `
+      MATCH (council:Council {id: $councilId})
+      MATCH (depositor:Member {auth_id: $auth.jwt.sub})
+        SET council.bussingPurseBalance = council.bussingPurseBalance + $bussingPurseDepositAmount
+
+      WITH council, depositor
+
+      CREATE (transaction:AccountTransaction {id: randomUUID()})
+        SET transaction.description = depositor.firstName +  ' ' + depositor.lastName +  ' deposited ' + $bussingPurseDepositAmount + ' into the bussing purse',
+        transaction.amount = $bussingPurseDepositAmount,
+        transaction.category = 'Deposit',
+        transaction.timestamp = datetime(),
+        transaction.status = 'success'
+
+      MERGE (council)-[:HAS_TRANSACTION]->(transaction)
+      MERGE (depositor)<-[:LOGGED_BY]-(transaction)
+
+      RETURN council, transaction, depositor
+      `
