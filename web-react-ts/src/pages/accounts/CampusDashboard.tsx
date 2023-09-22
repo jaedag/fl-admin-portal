@@ -1,7 +1,7 @@
 import { useQuery } from '@apollo/client'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
-import React, { useContext } from 'react'
-import { Button, Card, Col, Container, Row } from 'react-bootstrap'
+import { useContext } from 'react'
+import { Button, Container } from 'react-bootstrap'
 import { CAMPUS_ACCOUNT_DASHBOARD } from './accountsGQL'
 import { ChurchContext } from 'contexts/ChurchContext'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
@@ -14,6 +14,7 @@ import {
   permitArrivals,
   permitLeaderAdmin,
 } from 'permission-utils'
+import AccountBalanceCard from './components/AccountBalanceCard'
 
 const CampusDashboard = () => {
   const { campusId } = useContext(ChurchContext)
@@ -33,31 +34,8 @@ const CampusDashboard = () => {
         <HeadingPrimary>{`${campus?.name} ${campus?.__typename}`}</HeadingPrimary>
         <HeadingSecondary>{campus?.leader.fullName}</HeadingSecondary>
 
-        <Card className="current-balance mb-2">
-          <Card.Body>
-            <Row className="d-flex align-items-center">
-              <Col>Current Balance</Col>
-              <Col>
-                <p className="text-end mb-0">
-                  {(campus?.currentBalance || 0.0).toLocaleString('en-US')}
-                </p>
-              </Col>
-            </Row>
-          </Card.Body>
-        </Card>
-
-        <Card className="bussing-purse">
-          <Card.Body>
-            <Row className="d-flex align-items-center">
-              <Col>Bussing Purse Balance</Col>
-              <Col>
-                <p className="text-end mb-0">
-                  {(campus?.bussingPurseBalance || 0.0).toLocaleString('en-US')}
-                </p>
-              </Col>
-            </Row>
-          </Card.Body>
-        </Card>
+        <AccountBalanceCard church={campus} variant="current-balance" />
+        <AccountBalanceCard church={campus} variant="bussing-purse" />
 
         <hr />
 
