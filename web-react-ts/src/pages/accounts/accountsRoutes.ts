@@ -38,7 +38,15 @@ const BussingExpenseEntry = lazy(
 )
 
 export const accountsRoutes: LazyRouteTypes[] = [
-  { path: '/accounts', element: LandingPage, roles: permitLeader('Council') },
+  {
+    path: '/accounts',
+    element: LandingPage,
+    roles: [
+      ...permitLeader('Council'),
+      ...permitAdmin('Campus'),
+      ...permitArrivals('Campus'),
+    ],
+  },
   {
     path: '/accounts/council/dashboard',
     element: CouncilDashboard,
@@ -47,37 +55,57 @@ export const accountsRoutes: LazyRouteTypes[] = [
   {
     path: '/accounts/campus/dashboard',
     element: CampusDashboard,
-    roles: permitLeaderAdmin('Campus'),
+    roles: [
+      ...permitLeader('Campus'),
+      ...permitAdmin('Campus'),
+      ...permitArrivals('Campus'),
+    ],
   },
   {
     path: '/accounts/request-expense',
     element: ExpenseForm,
-    roles: permitLeader('Council'),
+    roles: [
+      ...permitLeader('Council'),
+      ...permitAdmin('Campus'),
+      ...permitArrivals('Campus'),
+    ],
   },
   {
     path: '/accounts/campus/councils-for-deposits',
     element: CampusCouncilListForDeposits,
-    roles: permitLeaderAdmin('Campus'),
+    roles: [...permitAdmin('Campus'), ...permitArrivals('Campus')],
   },
   {
     path: '/accounts/council/make-deposit',
     element: MakeDepositForm,
-    roles: permitAdmin('Campus'),
+    roles: [...permitAdmin('Campus'), ...permitArrivals('Campus')],
   },
   {
     path: '/accounts/council/transaction-history',
     element: CouncilTransactionHistory,
-    roles: permitAdmin('Council'),
+    roles: [
+      ...permitLeader('Council'),
+      ...permitAdmin('Campus'),
+      ...permitArrivals('Campus'),
+    ],
   },
   {
     path: '/accounts/transaction-details/',
     element: TransactionDetails,
-    roles: [...permitLeader('Council'), ...permitAdmin('Campus')],
+    roles: [
+      ...permitLeader('Council'),
+      ...permitAdmin('Campus'),
+      ...permitArrivals('Campus'),
+    ],
   },
   {
     path: '/accounts/campus/council/view-accounts',
     element: CampusCouncilListForAccounts,
-    roles: permitLeaderAdmin('Campus'),
+    roles: [
+      ...permitLeader('Council'),
+      ...permitAdmin('Campus'),
+      ...permitArrivals('Campus'),
+    ],
   },
   {
     path: '/accounts/campus/approvals',
