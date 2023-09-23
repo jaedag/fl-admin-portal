@@ -159,3 +159,28 @@ export type ServiceRecord = {
     date: string
   }
 }
+
+type HigherChurchesForAgggregation = {
+  typename: string
+  labels: string[]
+  properties: {
+    [key: string]: string | number | boolean | string[]
+  }
+  cypher: string
+}
+
+export type HigherChurches = {
+  bacenta?: HigherChurchesForAgggregation
+  constituency?: HigherChurchesForAgggregation
+  council?: HigherChurchesForAgggregation
+  stream?: HigherChurchesForAgggregation
+  campus?: HigherChurchesForAgggregation
+  oversight?: HigherChurchesForAgggregation
+  denomination?: HigherChurchesForAgggregation
+}
+
+export type SontaHigherChurches = {
+  hub: HigherChurchesForAgggregation
+  ministry: HigherChurchesForAgggregation
+  creativeArts: HigherChurchesForAgggregation
+}

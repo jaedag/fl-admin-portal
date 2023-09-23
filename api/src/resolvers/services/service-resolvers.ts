@@ -1,4 +1,4 @@
-import { Session } from 'neo4j-driver'
+import { QueryResult, RecordShape, Session } from 'neo4j-driver'
 import { makeServantCypher } from '../directory/utils'
 import { permitLeaderAdmin } from '../permissions'
 import { Context } from '../utils/neo4j-types'
@@ -10,21 +10,18 @@ import {
 } from '../utils/utils'
 import {
   absorbAllTransactions,
-  aggregateServiceDataForBacenta,
-  aggregateServiceDataForConstituency,
-  aggregateServiceDataForCouncil,
-  aggregateServiceDataForDenomination,
-  aggregateServiceDataForCampus,
-  aggregateServiceDataForOversight,
-  aggregateServiceDataForStream,
   checkCurrentServiceLog,
   checkFormFilledThisWeek,
   getCurrency,
   getServantAndChurch as getServantAndChurchCypher,
   recordCancelledService,
   recordService,
-  aggregateServiceDataForHub,
+  getHigherChurches,
 } from './service-cypher'
+import {
+  getAggregateMutations,
+  getServiceHigherChurches,
+} from './service-utils'
 
 const errorMessage = require('../texts.json').error
 
@@ -101,6 +98,13 @@ const serviceMutation = {
     const session = context.executionContext.session()
     const sessionTwo = context.executionContext.session()
     const sessionThree = context.executionContext.session()
+    const sessionFour = context.executionContext.session()
+    const sessionFive = context.executionContext.session()
+    const sessionSix = context.executionContext.session()
+    const sessionSeven = context.executionContext.session()
+    const sessionEight = context.executionContext.session()
+    const sessionNine = context.executionContext.session()
+    const sessionTen = context.executionContext.session()
 
     try {
       if (checkIfArrayHasRepeatingValues(args.treasurers)) {
@@ -114,12 +118,16 @@ const serviceMutation = {
       const promises = [
         session.executeRead((tx) => tx.run(checkFormFilledThisWeek, args)),
         sessionTwo.executeRead((tx) => tx.run(getCurrency, args)),
+        sessionThree.executeRead((tx) => tx.run(getHigherChurches, args)),
       ]
 
       const serviceCheckRes = await Promise.all(promises)
 
       const serviceCheck = rearrangeCypherObject(serviceCheckRes[0])
       const currencyCheck = rearrangeCypherObject(serviceCheckRes[1])
+      const higherChurches = getServiceHigherChurches(
+        serviceCheckRes[2]?.records
+      )
 
       if (
         serviceCheck.alreadyFilled &&
@@ -131,24 +139,6 @@ const serviceMutation = {
       }
       if (serviceCheck.labels?.includes('Vacation')) {
         throw new Error(errorMessage.vacation_cannot_fill_service)
-      }
-
-      let aggregateCypher = ''
-
-      if (serviceCheck.higherChurchLabels?.includes('Bacenta')) {
-        aggregateCypher = aggregateServiceDataForBacenta
-      } else if (serviceCheck.higherChurchLabels?.includes('Constituency')) {
-        aggregateCypher = aggregateServiceDataForConstituency
-      } else if (serviceCheck.higherChurchLabels?.includes('Council')) {
-        aggregateCypher = aggregateServiceDataForCouncil
-      } else if (serviceCheck.higherChurchLabels?.includes('Stream')) {
-        aggregateCypher = aggregateServiceDataForStream
-      } else if (serviceCheck.higherChurchLabels?.includes('Campus')) {
-        aggregateCypher = aggregateServiceDataForCampus
-      } else if (serviceCheck.higherChurchLabels?.includes('Oversight')) {
-        aggregateCypher = aggregateServiceDataForOversight
-      } else if (serviceCheck.higherChurchLabels?.includes('Denomination')) {
-        aggregateCypher = aggregateServiceDataForDenomination
       }
 
       const cypherResponse = await session
@@ -171,25 +161,23 @@ const serviceMutation = {
         })
       )
 
-      const aggregatePromises = [
-        sessionTwo.executeWrite((tx) =>
-          tx.run(aggregateCypher, {
-            churchId: args.churchId,
-          })
-        ),
-      ]
-
-      if (serviceCheck.labels?.includes('HubFellowship')) {
-        aggregatePromises.push(
-          sessionThree.executeWrite((tx) =>
-            tx.run(aggregateServiceDataForHub, {
-              churchId: args.churchId,
-            })
-          )
-        )
+      const sessions = {
+        one: session,
+        two: sessionTwo,
+        three: sessionThree,
+        four: sessionFour,
+        five: sessionFive,
+        six: sessionSix,
+        seven: sessionSeven,
+        eight: sessionEight,
+        nine: sessionNine,
+        ten: sessionTen,
       }
 
-      await Promise.all(aggregatePromises).catch((error: any) =>
+      const aggregateMutations: Promise<QueryResult<RecordShape>>[] =
+        getAggregateMutations(context, higherChurches, args.churchId, sessions)
+
+      await Promise.all(aggregateMutations).catch((error: any) =>
         throwToSentry('Error Aggregating Service', error)
       )
 
@@ -202,6 +190,13 @@ const serviceMutation = {
       await session.close()
       await sessionTwo.close()
       await sessionThree.close()
+      await sessionFour.close()
+      await sessionFive.close()
+      await sessionSix.close()
+      await sessionSeven.close()
+      await sessionEight.close()
+      await sessionNine.close()
+      await sessionTen.close()
     }
     return null
   },
