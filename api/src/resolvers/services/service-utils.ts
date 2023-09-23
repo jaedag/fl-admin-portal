@@ -110,7 +110,7 @@ export const getAggregateMutations = (
     aggregateMutations.push(
       sessions.one.executeWrite((tx) =>
         tx.run(aggregateServiceDataForBacenta, {
-          churchId: higherChurches.fellowship?.properties.id,
+          churchId,
         })
       )
     )
