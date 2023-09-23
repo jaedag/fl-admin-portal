@@ -37,7 +37,12 @@ const CouncilByConstituency = () => {
                 (constituency: HigherChurchWithDefaulters, i: number) => (
                   <Col key={i} xs={12} className="mb-3">
                     <Card>
-                      <Card.Header className="fw-bold">{`${constituency.name} Constituency`}</Card.Header>
+                      <Card.Header className="fw-bold">
+                        <div>{`${constituency.name} Constituency`}</div>
+                        <div className="text-secondary">
+                          {constituency.leader.fullName}
+                        </div>
+                      </Card.Header>
                       <Card.Body
                         onClick={() => {
                           clickCard(constituency)

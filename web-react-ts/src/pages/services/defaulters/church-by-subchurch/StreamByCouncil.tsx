@@ -36,7 +36,12 @@ const StreamByCouncil = () => {
                 (council: HigherChurchWithDefaulters, i: number) => (
                   <Col key={i} xs={12} className="mb-3">
                     <Card>
-                      <Card.Header className="fw-bold">{`${council.name} Council`}</Card.Header>
+                      <Card.Header className="fw-bold">
+                        <div>{`${council.name} Council`}</div>
+                        <div className="text-secondary">
+                          {council.leader.fullName}
+                        </div>
+                      </Card.Header>
                       <Card.Body
                         onClick={() => {
                           clickCard(council)

@@ -367,6 +367,12 @@ export const COUNCIL_BY_CONSTITUENCY = gql`
       constituencies {
         id
         name
+        leader {
+          id
+          firstName
+          lastName
+          fullName
+        }
         admin {
           id
           firstName
@@ -622,6 +628,12 @@ export const STREAM_BY_COUNCIL = gql`
       councils {
         id
         name
+        leader {
+          id
+          firstName
+          lastName
+          fullName
+        }
         admin {
           id
           firstName
@@ -849,6 +861,12 @@ export const CAMPUS_BY_STREAM = gql`
       streams {
         id
         name
+        leader {
+          id
+          firstName
+          lastName
+          fullName
+        }
         admin {
           id
           firstName

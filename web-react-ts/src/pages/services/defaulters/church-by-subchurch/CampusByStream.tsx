@@ -36,7 +36,12 @@ const CampusByStream = () => {
                 (stream: HigherChurchWithDefaulters, i: number) => (
                   <Col key={i} xs={12} className="mb-3">
                     <Card>
-                      <Card.Header className="fw-bold">{`${stream.name} Stream`}</Card.Header>
+                      <Card.Header className="fw-bold">
+                        <div>{`${stream.name} Stream`}</div>
+                        <div className="text-secondary">
+                          {stream.leader.fullName}
+                        </div>
+                      </Card.Header>
                       <Card.Body
                         onClick={() => {
                           clickCard(stream)
