@@ -98,40 +98,40 @@ const ServiceForm = ({
       .of(Yup.string().required('Please pick a name from the dropdown')),
   })
 
-  const onSubmit = (
+  const onSubmit = async (
     values: FormOptions,
     onSubmitProps: FormikHelpers<FormOptions>
   ) => {
-    const { setSubmitting, resetForm } = onSubmitProps
+    const { setSubmitting } = onSubmitProps
+    setSubmitting(true)
     if (checkIfArrayHasRepeatingValues(values.treasurers)) {
       throwToSentry('You cannot choose the same treasurer twice!')
       setSubmitting(false)
       return
     } else {
-      setSubmitting(true)
-      RecordServiceMutation({
-        variables: {
-          churchId: churchId,
-          serviceDate: values.serviceDate,
-          attendance: parseInt(values.attendance),
-          income: parseFloat(values.cediIncome),
-          foreignCurrency: parseForeignCurrency(values.foreignCurrency),
-          numberOfTithers: parseInt(values.numberOfTithers),
-          treasurers: values?.treasurers,
-          treasurerSelfie: values.treasurerSelfie,
-          familyPicture: values.familyPicture,
-        },
-      })
-        .then((res) => {
-          setSubmitting(false)
-          resetForm()
-          clickCard(res.data.RecordService)
-          navigate(`/${churchType.toLowerCase()}/service-details`)
+      try {
+        const res = await RecordServiceMutation({
+          variables: {
+            churchId: churchId,
+            serviceDate: values.serviceDate,
+            attendance: parseInt(values.attendance),
+            income: parseFloat(values.cediIncome),
+            foreignCurrency: parseForeignCurrency(values.foreignCurrency),
+            numberOfTithers: parseInt(values.numberOfTithers),
+            treasurers: values?.treasurers,
+            treasurerSelfie: values.treasurerSelfie,
+            familyPicture: values.familyPicture,
+          },
         })
-        .catch((error) => {
-          setSubmitting(false)
-          throwToSentry('', error)
-        })
+
+        clickCard(res.data.RecordService)
+        navigate(`/${churchType.toLowerCase()}/service-details`)
+      } catch (error) {
+        setSubmitting(false)
+        throwToSentry('', error)
+      } finally {
+        setSubmitting(false)
+      }
     }
   }
 
