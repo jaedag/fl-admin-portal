@@ -494,12 +494,12 @@ export const GET_HUBS = gql`
   }
 `
 
-export const GET_CAMPUS_MINISTRIES = gql`
-  query getCampusMinistries($id: ID!) {
+export const GET_CAMPUS_BASONTAS = gql`
+  query getCampusBasontas($id: ID!) {
     campuses(where: { id: $id }) {
       id
       name
-      creativeArts {
+      basontas {
         id
         name
       }

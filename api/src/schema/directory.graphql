@@ -25,7 +25,7 @@ type Member @auth(rules: [{ isAuthenticated: true }]) {
   dob: TimeGraph @relationship(type: "WAS_BORN_ON", direction: OUT)
   title: [Title!]!
     @relationship(type: "HAS_TITLE", properties: "HasTitle", direction: OUT)
-  ministry: CreativeArts @relationship(type: "BELONGS_TO", direction: OUT)
+  ministry: Basonta @relationship(type: "BELONGS_TO", direction: OUT)
   occupation: Occupation @relationship(type: "HAS_OCCUPATION", direction: OUT)
   stream_name: String
     @cypher(
@@ -54,7 +54,7 @@ type Member @auth(rules: [{ isAuthenticated: true }]) {
     @cypher(
       statement: """
       MATCH (this)-[:LEADS|HAS|IS_ADMIN_FOR*1..6]->(:Fellowship)<-[:BELONGS_TO]-(members:Active:Member)
-      MATCH (members)-[:BELONGS_TO]->(:CreativeArts)
+      MATCH (members)-[:BELONGS_TO]->(:Basonta)
       RETURN DISTINCT members ORDER BY toLower(members.lastName), toLower(members.firstName)
       """
     )
@@ -62,7 +62,7 @@ type Member @auth(rules: [{ isAuthenticated: true }]) {
     @cypher(
       statement: """
       MATCH (this)-[:LEADS|HAS|IS_ADMIN_FOR*1..6]->(:Fellowship)<-[:BELONGS_TO]-(members:Active:Member)
-      MATCH (members)-[:BELONGS_TO]->(:CreativeArts)
+      MATCH (members)-[:BELONGS_TO]->(:Basonta)
       RETURN COUNT(DISTINCT members)
       """
     )

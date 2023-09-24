@@ -400,7 +400,7 @@ extend type Mutation {
     @auth(rules: [{ roles: ["adminCampus"] }])
     @cypher(
       statement: """
-      CREATE (creativeArt:CreativeArts {name:$name})
+      CREATE (creativeArt:CreativeArts:Basonta {name:$name})
         SET creativeArt.id = apoc.create.uuid()
 
       WITH creativeArt

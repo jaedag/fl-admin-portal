@@ -149,7 +149,7 @@ const MemberForm = ({
     return <LoadingScreen />
   } else if (ministriesData) {
     const ministryArray =
-      makeSelectOptions(ministriesData.campuses[0]?.creativeArts) || []
+      makeSelectOptions(ministriesData.campuses[0]?.basontas) || []
     const ministryOptions = [{ key: 'None', value: 'None' }, ...ministryArray]
 
     return (
