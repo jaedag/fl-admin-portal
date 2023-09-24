@@ -59,19 +59,19 @@ export const memberFilter = (memberData, filters) => {
 
   //Filter for Ministry
 
-  if (filters.ministry.length > 0) {
-    let filteredByMinistry = []
+  if (filters.basonta.length > 0) {
+    let filteredByBasonta = []
 
-    filters.ministry.forEach((ministryToFilter) => {
-      filteredByMinistry = [
+    filters.basonta.forEach((ministryToFilter) => {
+      filteredByBasonta = [
         ...new Set([
-          ...filteredByMinistry,
+          ...filteredByBasonta,
           ...filterFor(filteredData, 'ministry', 'name', ministryToFilter),
         ]),
       ]
     })
 
-    filteredData = filteredByMinistry
+    filteredData = filteredByBasonta
   }
 
   //Filter for Leadership Rank

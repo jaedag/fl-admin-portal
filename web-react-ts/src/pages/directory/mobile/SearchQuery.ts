@@ -15,7 +15,7 @@ export const MEMBER_SEARCH = gql`
           id
           name
         }
-        ministry {
+        basonta {
           id
           name
         }

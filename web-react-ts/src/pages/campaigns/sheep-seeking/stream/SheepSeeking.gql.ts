@@ -15,7 +15,7 @@ export const STREAM_SHEEP_SEEKERS = gql`
           id
           name
         }
-        ministry {
+        basonta {
           id
           name
         }

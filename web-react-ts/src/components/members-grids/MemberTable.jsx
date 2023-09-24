@@ -125,9 +125,9 @@ const MemberTable = (props) => {
                         {' - '}
                       </span>
                     ) : null}
-                    {soul?.ministry && (
+                    {soul?.basonta && (
                       <span className={`text-secondary card-subinfo ${theme}`}>
-                        {soul?.ministry.name}
+                        {soul?.basonta.name}
                       </span>
                     )}
                   </div>

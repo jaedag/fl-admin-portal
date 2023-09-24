@@ -30,7 +30,7 @@ type CardMember = {
     id: string
     name: string
   }
-  ministry?: {
+  basonta?: {
     id: string
     name: string
   }
@@ -132,7 +132,7 @@ const MemberDisplayCard = (props: MemberDisplayCardProps) => {
       name = member?.nameWithTitle || member.firstName + ' ' + member.lastName
       details = [
         member.fellowship ? member.fellowship.name + ' Fellowship' : '',
-        member.ministry ? member.ministry.name : '',
+        member.basonta ? member.basonta.name : '',
       ]
       break
 

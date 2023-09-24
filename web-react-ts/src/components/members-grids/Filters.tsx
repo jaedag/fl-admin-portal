@@ -19,7 +19,7 @@ type FormOptions = {
   occupation: string
   leaderTitle: string[]
   leaderRank: string[]
-  ministry: string[]
+  basonta: string[]
 }
 
 const Filters = ({
@@ -40,7 +40,7 @@ const Filters = ({
     occupation: filters.occupation || '',
     leaderTitle: atPastors ? ['Pastor'] : filters.leaderTitle || [],
     leaderRank: filters.leaderRank || [],
-    ministry: filters.ministry || [],
+    basonta: filters.basonta || [],
   }
 
   const LEADER_OPTIONS = [
@@ -87,7 +87,7 @@ const Filters = ({
 
               <Col className="filter-col">
                 <CheckboxWithQuery
-                  name="ministry"
+                  name="basonta"
                   modifier="filter"
                   optionsQuery={GET_CAMPUS_BASONTAS}
                   queryVariable="id"
@@ -125,7 +125,7 @@ const Filters = ({
                   occupation: '',
                   leaderTitle: [],
                   leaderRank: [],
-                  ministry: [],
+                  basonta: [],
                 })
               }}
             >

@@ -16,7 +16,7 @@ export const STREAM_BANK_TELLERS = gql`
           id
           name
         }
-        ministry {
+        basonta {
           id
           name
         }

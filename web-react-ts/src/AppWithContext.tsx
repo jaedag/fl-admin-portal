@@ -115,7 +115,7 @@ const AppWithContext = (props: AppPropsType) => {
     occupation: '',
     leaderTitle: [],
     leaderRank: [],
-    ministry: [],
+    basonta: [],
   })
 
   const SentryRoutes = Sentry.withSentryReactRouterV6Routing(Routes)

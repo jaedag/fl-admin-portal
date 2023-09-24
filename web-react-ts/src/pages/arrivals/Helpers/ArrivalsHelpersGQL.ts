@@ -16,7 +16,7 @@ export const STREAM_ARRIVALS_HELPERS = gql`
           id
           name
         }
-        ministry {
+        basonta {
           id
           name
         }
@@ -72,7 +72,7 @@ export const COUNCIL_ARRIVALSPAYERS = gql`
           id
           name
         }
-        ministry {
+        basonta {
           id
           name
         }
