@@ -1,3 +1,33 @@
+#### 7.10.3 (2023-09-24)
+
+##### Bug Fixes
+
+*  order council names in alphabetical order ([2252de75](https://github.com/firstlovecenter/fl-pastoral-care/commit/2252de755717fc724390c732733c4ac43d3a7c87))
+*  change mentions of basonta to ministry which were breaking the build ([a89d2492](https://github.com/firstlovecenter/fl-pastoral-care/commit/a89d24927ebcc1b60f211183e6a8ec555dd329fe))
+*  make all creativearts also have label Basonta ([66bc3b97](https://github.com/firstlovecenter/fl-pastoral-care/commit/66bc3b97d76abd8cfeb263663370db8185cc9d78))
+*  mark all creativeArts as Basonta ([cac96e14](https://github.com/firstlovecenter/fl-pastoral-care/commit/cac96e14448ee35c3ad1118feeadc141e4d935d7))
+*  hide 'Add title' button onn member form ([e132857f](https://github.com/firstlovecenter/fl-pastoral-care/commit/e132857fb1df7fd0f2a91ca75bfa6dcbc8155171))
+*  don't display  both old image and new image when uploading image ([305b354b](https://github.com/firstlovecenter/fl-pastoral-care/commit/305b354b8ccc025deee82ad7013e577808a14205))
+*  remove errant comma from createcouncil ([720ab36c](https://github.com/firstlovecenter/fl-pastoral-care/commit/720ab36c5294f939dbc61188df93cdc8396d24fa))
+*  update hubfellowships on stream deatils ([8c22dc11](https://github.com/firstlovecenter/fl-pastoral-care/commit/8c22dc115eae267bd13544a478f7158a4a6bcbaf))
+*  fix bug preventing updating weekend bussing entry ([9dd990cf](https://github.com/firstlovecenter/fl-pastoral-care/commit/9dd990cf2136dfceb6b69e7653fbccb0f87e2511))
+*  update arrivals payment sheet to have council head name ([da8f74f0](https://github.com/firstlovecenter/fl-pastoral-care/commit/da8f74f03a62046928035102d40a7bf93b755660))
+*  bug with aggregate service cypher ([2d748cb2](https://github.com/firstlovecenter/fl-pastoral-care/commit/2d748cb26d3c1f38d27ed3d52094c0ef6286eee9))
+*  add number of services to all aggregate church levels ([5e51d258](https://github.com/firstlovecenter/fl-pastoral-care/commit/5e51d258bfcdb31f0fde1573a00e9040f6fe4245))
+*  correct args for service utils ([2cb2d623](https://github.com/firstlovecenter/fl-pastoral-care/commit/2cb2d62370ce761f94c9766d75c36e4fb77968b6))
+*  prevent double form filling for council services ([1173a760](https://github.com/firstlovecenter/fl-pastoral-care/commit/1173a76081f881ed33471a1bbbc9686d3130f711))
+*  add leader names to the defaulters churchBySubchurch ([c2629ec4](https://github.com/firstlovecenter/fl-pastoral-care/commit/c2629ec4adee1bc9836097dcaaa99b03202840a1))
+*  update  sender id for notify function ([aee4e17d](https://github.com/firstlovecenter/fl-pastoral-care/commit/aee4e17d86dbf6ae74072f2204eab55c01f67f3f))
+*  implement sending sms on council deposit ([7dbdb706](https://github.com/firstlovecenter/fl-pastoral-care/commit/7dbdb706fc9510c7837b6fd81892722f34ae7efd))
+*  change accountbalancecard on campus dashboard ([1330cfd5](https://github.com/firstlovecenter/fl-pastoral-care/commit/1330cfd56a9ceb391661042c19f2091e0785b22a))
+*  add council leader names to council names ([f041eca2](https://github.com/firstlovecenter/fl-pastoral-care/commit/f041eca2c3af054cf7182964299026035ec19a59))
+*  update permissions for council dashboard ([e35aa0c9](https://github.com/firstlovecenter/fl-pastoral-care/commit/e35aa0c9922440df99e4e3716e853d1f55b2a4bb))
+*  update permissions for accountsRoutes ([0ebf0032](https://github.com/firstlovecenter/fl-pastoral-care/commit/0ebf0032c7d59e4c8423b829c68cd0fae7149962))
+
+##### Refactors
+
+*  refactor service aggregation flow for higherChurch levels ([8697292b](https://github.com/firstlovecenter/fl-pastoral-care/commit/8697292be22078a1149f70121d984b0baed7968a))
+
 #### 7.10.2 (2023-09-22)
 
 ##### Bug Fixes
