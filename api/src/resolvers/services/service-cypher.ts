@@ -13,7 +13,7 @@ MATCH (church {id: $churchId})
 WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream
 MATCH (church)<-[:HAS*1..7]-(higherChurch) 
 WHERE higherChurch:Bacenta OR higherChurch:Constituency OR higherChurch:Council OR higherChurch:Stream OR higherChurch:Campus OR higherChurch:Oversight OR higherChurch:Denomination
-OR higherChurch:Hub
+OR higherChurch:Hub OR higherChurch:Ministry OR higherChurch:CreativeArts
 
 RETURN DISTINCT higherChurch
 `

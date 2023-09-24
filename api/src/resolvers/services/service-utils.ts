@@ -1,6 +1,6 @@
 import { Session } from 'neo4j-driver'
 import { Context } from '../utils/neo4j-types'
-import { HigherChurches } from '../utils/types'
+import { HigherChurches, SontaHigherChurches } from '../utils/types'
 import {
   aggregateServiceDataForBacenta,
   aggregateServiceDataForCampus,
@@ -89,7 +89,7 @@ export const getServiceHigherChurches = (records: any) => {
 
 export const getAggregateMutations = (
   context: Context,
-  higherChurches: HigherChurches,
+  higherChurches: HigherChurches | SontaHigherChurches,
   churchId: string,
   sessions: {
     one: Session
@@ -117,7 +117,7 @@ export const getAggregateMutations = (
     aggregateMutations.push(
       sessions.two.executeWrite((tx) =>
         tx.run(aggregateServiceDataForConstituency, {
-          churchId,
+          churchId: higherChurches.bacenta?.properties.id,
         })
       )
     )
@@ -125,7 +125,7 @@ export const getAggregateMutations = (
     aggregateMutations.push(
       sessions.three.executeWrite((tx) =>
         tx.run(aggregateServiceDataForCouncil, {
-          churchId,
+          churchId: higherChurches.constituency?.properties.id,
         })
       )
     )
@@ -133,7 +133,7 @@ export const getAggregateMutations = (
     aggregateMutations.push(
       sessions.seven.executeWrite((tx) =>
         tx.run(aggregateServiceDataForStream, {
-          churchId,
+          churchId: higherChurches.council?.properties.id,
         })
       )
     )
@@ -141,7 +141,7 @@ export const getAggregateMutations = (
     aggregateMutations.push(
       sessions.five.executeWrite((tx) =>
         tx.run(aggregateServiceDataForCampus, {
-          churchId,
+          churchId: higherChurches.stream?.properties.id,
         })
       )
     )
@@ -149,7 +149,7 @@ export const getAggregateMutations = (
     aggregateMutations.push(
       sessions.six.executeWrite((tx) =>
         tx.run(aggregateServiceDataForOversight, {
-          churchId,
+          churchId: higherChurches.campus?.properties.id,
         })
       )
     )
@@ -157,7 +157,7 @@ export const getAggregateMutations = (
     aggregateMutations.push(
       sessions.four.executeWrite((tx) =>
         tx.run(aggregateServiceDataForDenomination, {
-          churchId,
+          churchId: higherChurches.oversight?.properties.id,
         })
       )
     )
@@ -173,7 +173,7 @@ export const getAggregateMutations = (
     aggregateMutations.push(
       sessions.three.executeWrite((tx) =>
         tx.run(aggregateServiceDataForCouncil, {
-          churchId,
+          churchId: higherChurches.constituency?.properties.id,
         })
       )
     )
@@ -181,7 +181,7 @@ export const getAggregateMutations = (
     aggregateMutations.push(
       sessions.seven.executeWrite((tx) =>
         tx.run(aggregateServiceDataForStream, {
-          churchId,
+          churchId: higherChurches.council?.properties.id,
         })
       )
     )
@@ -189,7 +189,7 @@ export const getAggregateMutations = (
     aggregateMutations.push(
       sessions.five.executeWrite((tx) =>
         tx.run(aggregateServiceDataForCampus, {
-          churchId,
+          churchId: higherChurches.stream?.properties.id,
         })
       )
     )
@@ -197,7 +197,7 @@ export const getAggregateMutations = (
     aggregateMutations.push(
       sessions.six.executeWrite((tx) =>
         tx.run(aggregateServiceDataForOversight, {
-          churchId,
+          churchId: higherChurches.campus?.properties.id,
         })
       )
     )
@@ -205,7 +205,7 @@ export const getAggregateMutations = (
     aggregateMutations.push(
       sessions.four.executeWrite((tx) =>
         tx.run(aggregateServiceDataForDenomination, {
-          churchId,
+          churchId: higherChurches.oversight?.properties.id,
         })
       )
     )
@@ -221,7 +221,7 @@ export const getAggregateMutations = (
     aggregateMutations.push(
       sessions.seven.executeWrite((tx) =>
         tx.run(aggregateServiceDataForStream, {
-          churchId,
+          churchId: higherChurches.council?.properties.id,
         })
       )
     )
@@ -229,7 +229,7 @@ export const getAggregateMutations = (
     aggregateMutations.push(
       sessions.five.executeWrite((tx) =>
         tx.run(aggregateServiceDataForCampus, {
-          churchId,
+          churchId: higherChurches.stream?.properties.id,
         })
       )
     )
@@ -237,7 +237,7 @@ export const getAggregateMutations = (
     aggregateMutations.push(
       sessions.six.executeWrite((tx) =>
         tx.run(aggregateServiceDataForOversight, {
-          churchId,
+          churchId: higherChurches.campus?.properties.id,
         })
       )
     )
@@ -245,7 +245,7 @@ export const getAggregateMutations = (
     aggregateMutations.push(
       sessions.four.executeWrite((tx) =>
         tx.run(aggregateServiceDataForDenomination, {
-          churchId,
+          churchId: higherChurches.oversight?.properties.id,
         })
       )
     )
@@ -261,7 +261,7 @@ export const getAggregateMutations = (
     aggregateMutations.push(
       sessions.five.executeWrite((tx) =>
         tx.run(aggregateServiceDataForCampus, {
-          churchId,
+          churchId: higherChurches.stream?.properties.id,
         })
       )
     )
@@ -269,7 +269,7 @@ export const getAggregateMutations = (
     aggregateMutations.push(
       sessions.six.executeWrite((tx) =>
         tx.run(aggregateServiceDataForOversight, {
-          churchId,
+          churchId: higherChurches.campus?.properties.id,
         })
       )
     )
@@ -277,7 +277,7 @@ export const getAggregateMutations = (
     aggregateMutations.push(
       sessions.four.executeWrite((tx) =>
         tx.run(aggregateServiceDataForDenomination, {
-          churchId,
+          churchId: higherChurches.oversight?.properties.id,
         })
       )
     )
@@ -293,7 +293,7 @@ export const getAggregateMutations = (
     aggregateMutations.push(
       sessions.six.executeWrite((tx) =>
         tx.run(aggregateServiceDataForOversight, {
-          churchId,
+          churchId: higherChurches.campus?.properties.id,
         })
       )
     )
@@ -301,7 +301,7 @@ export const getAggregateMutations = (
     aggregateMutations.push(
       sessions.four.executeWrite((tx) =>
         tx.run(aggregateServiceDataForDenomination, {
-          churchId,
+          churchId: higherChurches.oversight?.properties.id,
         })
       )
     )
@@ -317,7 +317,7 @@ export const getAggregateMutations = (
     aggregateMutations.push(
       sessions.four.executeWrite((tx) =>
         tx.run(aggregateServiceDataForDenomination, {
-          churchId,
+          churchId: higherChurches.oversight?.properties.id,
         })
       )
     )
@@ -325,7 +325,7 @@ export const getAggregateMutations = (
     aggregateMutations.push(
       sessions.four.executeWrite((tx) =>
         tx.run(aggregateServiceDataForDenomination, {
-          churchId,
+          churchId: higherChurches.denomination?.properties.id,
         })
       )
     )
@@ -343,7 +343,7 @@ export const getAggregateMutations = (
     aggregateMutations.push(
       sessions.nine.executeWrite((tx) =>
         tx.run(aggregateServiceDataForMinistry, {
-          churchId,
+          churchId: higherChurches.hub?.properties.id,
         })
       )
     )
@@ -351,7 +351,7 @@ export const getAggregateMutations = (
     aggregateMutations.push(
       sessions.ten.executeWrite((tx) =>
         tx.run(aggregateServiceDataForCreativeArts, {
-          churchId,
+          churchId: higherChurches.ministry?.properties.id,
         })
       )
     )
