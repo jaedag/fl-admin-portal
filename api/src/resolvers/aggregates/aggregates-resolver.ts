@@ -12,7 +12,7 @@ export const aggregatesResolvers = {
   Member: {
     aggregateServiceRecords: async (
       source: Member,
-      args: any,
+      args: { limit: number },
       context: Context
     ) => {
       const session = context.executionContext.session()
@@ -44,6 +44,7 @@ export const aggregatesResolvers = {
         const recordsRes = await session.executeRead((tx) =>
           tx.run(getServiceRecordsForThePastYear, {
             logIds: getLogIds(highestLogPriorityLogs),
+            limit: args.limit,
           })
         )
 
@@ -67,7 +68,7 @@ export const aggregatesResolvers = {
   },
   aggregateBussingRecords: async (
     source: Member,
-    args: any,
+    args: { limit: number },
     context: Context
   ) => {
     const session = context.executionContext.session()
@@ -99,6 +100,7 @@ export const aggregatesResolvers = {
       const recordsRes = await session.executeRead((tx) =>
         tx.run(getBussingRecordsForThePastYear, {
           logIds: getLogIds(highestLogPriorityLogs),
+          limit: args.limit,
         })
       )
 
