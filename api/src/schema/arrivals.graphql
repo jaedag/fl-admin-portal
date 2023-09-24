@@ -1347,6 +1347,7 @@ extend type Mutation {
 type ArrivalsSheetData {
   date: Date
   stream: String
+  councilHead: String
   bacenta: String
   leader: String
   bacentaCode: String

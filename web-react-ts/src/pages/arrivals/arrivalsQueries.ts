@@ -608,6 +608,7 @@ export const DISPLAY_ARRIVALS_PAYMENT_DATA = gql`
       arrivalsPaymentData(arrivalsDate: $arrivalsDate) {
         stream
         bacenta
+        councilHead
         leader
         bacentaCode
         attendance

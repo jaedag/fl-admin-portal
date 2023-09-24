@@ -13,6 +13,9 @@ import NoDataComponent from '../CompNoData'
 interface ArrivalPaymentData {
   stream: string
   bacenta: string
+  council: string
+  councilHead: string
+  constituency: string
   leader: string
   bacentaCode: string
   attendance: number
@@ -24,8 +27,6 @@ interface ArrivalPaymentData {
   momoNumber: number
   momoName: string
   comments: string
-  council: string
-  constituency: string
   society: string
   date: string
   arrivalTime: string
@@ -38,6 +39,9 @@ const ArrivalsPaymentData = () => {
   const headers = [
     { label: 'Date', key: 'date' },
     { label: 'Stream', key: 'stream' },
+    { label: 'Council', key: 'council' },
+    { label: 'Council Head', key: 'councilHead' },
+    { label: 'Constituency', key: 'constituency' },
     { label: 'Bacenta', key: 'bacenta' },
     { label: 'Leader', key: 'leader' },
     { label: 'Bacenta Code', key: 'bacentaCode' },
@@ -50,8 +54,6 @@ const ArrivalsPaymentData = () => {
     { label: 'Momo Number', key: 'momoNumber' },
     { label: 'Momo Name', key: 'momoName' },
     { label: 'Comments', key: 'comments' },
-    { label: 'Council', key: 'council' },
-    { label: 'Constituency', key: 'constituency' },
     { label: 'Society', key: 'society' },
     { label: 'Arrival Time', key: 'arrivalTime' },
   ]
@@ -83,6 +85,9 @@ const ArrivalsPaymentData = () => {
                     <th scope="col">#</th>
                     <th scope="col">Date</th>
                     <th scope="col">Stream</th>
+                    <th scope="col">Council</th>
+                    <th scope="col">Council Head</th>
+                    <th scope="col">Constituency</th>
                     <th scope="col">Bacenta</th>
                     <th scope="col">Leader</th>
                     <th scope="col">Bacenta Code</th>
@@ -95,8 +100,6 @@ const ArrivalsPaymentData = () => {
                     <th scope="col">Momo Number</th>
                     <th scope="col">Momo Name</th>
                     <th scope="col">Comments</th>
-                    <th scope="col">Council</th>
-                    <th scope="col">Constituency</th>
                     <th scope="col">Society</th>
                     <th scope="col">Arrival Time</th>
                   </tr>
@@ -109,6 +112,9 @@ const ArrivalsPaymentData = () => {
                         <th scope="row">{index}</th>
                         <td>{data?.date}</td>
                         <td>{data?.stream}</td>
+                        <td>{data?.council}</td>
+                        <td>{data?.councilHead}</td>
+                        <td>{data?.constituency}</td>
                         <td>{data?.bacenta}</td>
                         <td>{data?.leader}</td>
                         <td>{data?.bacentaCode}</td>
@@ -121,8 +127,6 @@ const ArrivalsPaymentData = () => {
                         <td>{data?.momoNumber}</td>
                         <td>{data?.momoName}</td>
                         <td>{data?.comments}</td>
-                        <td>{data?.council}</td>
-                        <td>{data?.constituency}</td>
                         <td>{data?.society}</td>
                         <td>{data?.arrivalTime}</td>
                       </tr>
