@@ -11,7 +11,7 @@ import {
   PHONE_NUM_REGEX,
   throwToSentry,
 } from 'global-utils'
-import { GET_CAMPUS_MINISTRIES } from 'queries/ListQueries'
+import { GET_CAMPUS_BASONTAS } from 'queries/ListQueries'
 import ErrorScreen from 'components/base-component/ErrorScreen'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import { Button, ButtonGroup, Col, Container, Row } from 'react-bootstrap'
@@ -58,10 +58,10 @@ const MemberForm = ({
   const { currentUser, memberId } = useContext(MemberContext)
   const { campusId } = useContext(ChurchContext)
   const {
-    data: ministriesData,
-    loading: ministriesLoading,
-    error: ministriesError,
-  } = useQuery(GET_CAMPUS_MINISTRIES, {
+    data: basontasData,
+    loading: basontasLoading,
+    error: basontasError,
+  } = useQuery(GET_CAMPUS_BASONTAS, {
     variables: {
       id: campusId,
     },
@@ -145,12 +145,12 @@ const MemberForm = ({
     ),
   })
 
-  if (ministriesLoading || loading) {
+  if (basontasLoading || loading) {
     return <LoadingScreen />
-  } else if (ministriesData) {
-    const ministryArray =
-      makeSelectOptions(ministriesData.campuses[0]?.basontas) || []
-    const ministryOptions = [{ key: 'None', value: 'None' }, ...ministryArray]
+  } else if (basontasData) {
+    const basontaArray =
+      makeSelectOptions(basontasData.campuses[0]?.basontas) || []
+    const basontaOptions = [{ key: 'None', value: 'None' }, ...basontaArray]
 
     return (
       <Formik
@@ -371,10 +371,10 @@ const MemberForm = ({
                     </Col>
                     <Col sm={10}>
                       <Select
-                        label="Ministry"
-                        name="ministry"
-                        options={ministryOptions}
-                        defaultOption="Ministry"
+                        label="Basonta"
+                        name="basonta"
+                        options={basontaOptions}
+                        defaultOption="Basonta"
                       />
                     </Col>
                   </div>
@@ -391,7 +391,7 @@ const MemberForm = ({
       </Formik>
     )
   } else {
-    return <ErrorScreen error={ministriesError} />
+    return <ErrorScreen error={basontasError} />
   }
 }
 

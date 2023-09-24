@@ -190,11 +190,11 @@ const MemberDisplay = ({ memberId }: { memberId: string }) => {
             detail={memberChurch?.fellowship?.name}
           />
         </Col>
-        {memberChurch?.ministry && (
+        {memberChurch?.basonta && (
           <Col>
             <DetailsCard
-              heading="Ministry"
-              detail={memberChurch?.ministry?.name}
+              heading="Basonta"
+              detail={memberChurch?.basonta?.name}
             />
           </Col>
         )}

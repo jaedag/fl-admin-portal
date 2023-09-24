@@ -132,7 +132,7 @@ export const DISPLAY_MEMBER_CHURCH = gql`
       id
       #church info
       stream_name
-      ministry {
+      basonta {
         id
         name
         leader {

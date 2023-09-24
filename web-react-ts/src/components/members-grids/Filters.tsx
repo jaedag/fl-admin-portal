@@ -7,7 +7,7 @@ import {
 import React, { useContext } from 'react'
 import { useLocation } from 'react-router-dom'
 import { Formik, Form, FormikHelpers } from 'formik'
-import { GET_CAMPUS_MINISTRIES } from 'queries/ListQueries'
+import { GET_CAMPUS_BASONTAS } from 'queries/ListQueries'
 import { Col, Row, Button } from 'react-bootstrap'
 import './Filters.css'
 import CheckboxGroup from 'components/formik/CheckboxGroup'
@@ -89,12 +89,12 @@ const Filters = ({
                 <CheckboxWithQuery
                   name="ministry"
                   modifier="filter"
-                  optionsQuery={GET_CAMPUS_MINISTRIES}
+                  optionsQuery={GET_CAMPUS_BASONTAS}
                   queryVariable="id"
                   initialValue=""
                   dataset=""
                   varValue={campusId}
-                  nestedDataset={['campuses', 'creativeArts']}
+                  nestedDataset={['campuses', 'basontas']}
                   label="Select a Ministry"
                 />
               </Col>

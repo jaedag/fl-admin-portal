@@ -14,7 +14,7 @@ export const CREATE_MEMBER_MUTATION = gql`
     $occupation: String
     $fellowship: String!
     $visitationArea: String!
-    $ministry: String
+    $basonta: String
     $pictureUrl: String!
   ) {
     CreateMember(
@@ -30,7 +30,7 @@ export const CREATE_MEMBER_MUTATION = gql`
       occupation: $occupation
       visitationArea: $visitationArea
       fellowship: $fellowship
-      ministry: $ministry
+      basonta: $basonta
       pictureUrl: $pictureUrl
     ) {
       id

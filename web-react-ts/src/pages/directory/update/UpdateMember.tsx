@@ -7,7 +7,7 @@ import {
   LOG_MEMBER_HISTORY,
   UPDATE_MEMBER_EMAIL,
   UPDATE_MEMBER_FELLOWSHIP,
-  UPDATE_MEMBER_MINISTRY,
+  UPDATE_MEMBER_BASONTA,
   UPDATE_MEMBER_MUTATION,
 } from './UpdateMutations'
 import {
@@ -51,7 +51,7 @@ const UpdateMember = () => {
     pictureUrl: member?.pictureUrl ?? '',
     visitationArea: member?.visitationArea ?? 'no-location',
     fellowship: memberChurch?.fellowship,
-    ministry: memberChurch?.ministry?.id ?? '',
+    basonta: memberChurch?.basonta?.id ?? '',
   }
 
   const navigate = useNavigate()
@@ -64,7 +64,7 @@ const UpdateMember = () => {
   })
   const [UpdateMemberEmail] = useMutation(UPDATE_MEMBER_EMAIL)
   const [UpdateMemberFellowship] = useMutation(UPDATE_MEMBER_FELLOWSHIP)
-  const [UpdateMemberMinistry] = useMutation(UPDATE_MEMBER_MINISTRY)
+  const [UpdateMemberBasonta] = useMutation(UPDATE_MEMBER_BASONTA)
   const [LogMemberHistory] = useMutation(LOG_MEMBER_HISTORY)
 
   const onSubmit = async (
@@ -101,32 +101,32 @@ const UpdateMember = () => {
         })
       }
 
-      if (memberChurch?.ministry?.id !== values.ministry) {
-        const res = await UpdateMemberMinistry({
+      if (memberChurch?.basonta?.id !== values.basonta) {
+        const res = await UpdateMemberBasonta({
           variables: {
             memberId,
-            ministryId: values.ministry,
+            basontaId: values.basonta,
           },
         })
 
-        const newMinistry = res.data.UpdateMemberMinistry?.ministry
-        let ministryHistoryLog = `${member.firstName} ${member.lastName} joined ${newMinistry?.name} Ministry`
-        if (initialValues.ministry) {
-          ministryHistoryLog = `${member.firstName} ${member.lastName} moved from ${memberChurch?.ministry.name} Ministry to ${newMinistry?.name} Ministry`
+        const newBasonta = res.data.UpdateMemberBasonta?.basonta
+        let basontaHistoryLog = `${member.firstName} ${member.lastName} joined ${newBasonta?.name} Basonta`
+        if (initialValues.basonta) {
+          basontaHistoryLog = `${member.firstName} ${member.lastName} moved from ${memberChurch?.basonta.name} Basonta to ${newBasonta?.name} Basonta`
         }
 
         if (
-          (values.ministry === 'None' || !values.ministry) &&
-          memberChurch?.ministry
+          (values.basonta === 'None' || !values.basonta) &&
+          memberChurch?.basonta
         ) {
-          ministryHistoryLog = `${member.firstName} ${member.lastName} left ${memberChurch?.ministry.name} Ministry`
+          basontaHistoryLog = `${member.firstName} ${member.lastName} left ${memberChurch?.basonta.name} Basonta`
         }
 
-        if (values.ministry && memberChurch?.ministry) {
+        if (values.basonta && memberChurch?.basonta) {
           await LogMemberHistory({
             variables: {
-              ids: [memberId, newMinistry?.name, memberChurch?.ministry?.id],
-              historyRecord: ministryHistoryLog,
+              ids: [memberId, newBasonta?.name, memberChurch?.basonta?.id],
+              historyRecord: basontaHistoryLog,
             },
           })
         }

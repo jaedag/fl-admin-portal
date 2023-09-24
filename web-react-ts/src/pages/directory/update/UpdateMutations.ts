@@ -67,13 +67,13 @@ export const UPDATE_MEMBER_EMAIL = gql`
     }
   }
 `
-export const UPDATE_MEMBER_MINISTRY = gql`
-  mutation UpdateMemberMinistry($memberId: ID!, $ministryId: ID!) {
-    UpdateMemberMinistry(memberId: $memberId, ministryId: $ministryId) {
+export const UPDATE_MEMBER_BASONTA = gql`
+  mutation UpdateMemberBasonta($memberId: ID!, $basontaId: ID!) {
+    UpdateMemberBasonta(memberId: $memberId, basontaId: $basontaId) {
       id
       firstName
       lastName
-      ministry {
+      basonta {
         id
         name
       }

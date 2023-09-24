@@ -203,7 +203,7 @@ extend type Mutation {
     occupation: String
     visitationArea: String!
     fellowship: String!
-    ministry: String
+    basonta: String
     pictureUrl: String!
   ): Member!
 
@@ -553,18 +553,18 @@ extend type Mutation {
       """
     )
 
-  UpdateMemberMinistry(memberId: ID!, ministryId: ID!): Member
+  UpdateMemberBasonta(memberId: ID!, basontaId: ID!): Member
     @cypher(
       statement: """
       MATCH (member:Active:Member {id: $memberId})
-      OPTIONAL MATCH (member)-[previous:BELONGS_TO]->(:CreativeArts)
+      OPTIONAL MATCH (member)-[previous:BELONGS_TO]->(:Basonta)
       DELETE previous
 
       WITH member
       CALL {
       	WITH member
-      	WITH member  WHERE $ministryId <> 'None'
-        MATCH (ministry:CreativeArts {id: $ministryId})
+      	WITH member  WHERE $basontaId <> 'None'
+        MATCH (ministry:Basonta {id: $basontaId})
         MERGE (member)-[:BELONGS_TO]->(ministry)
 
         RETURN count(member)

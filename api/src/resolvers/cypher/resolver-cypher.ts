@@ -226,10 +226,10 @@ CREATE (member:Active:Member:IDL:Deer {whatsappNumber:$whatsappNumber})
       WITH member
       CALL {
          	WITH member
-         	WITH member  WHERE $ministry IS NOT NULL
-         	MATCH (ministry:CreativeArts {id:$ministry})
-      	MERGE (member)-[:BELONGS_TO]-> (ministry)
-         	RETURN count(member) AS member_ministry
+         	WITH member  WHERE $basonta IS NOT NULL
+         	MATCH (basonta:Basonta {id:$basonta})
+      	MERGE (member)-[:BELONGS_TO]-> (basonta)
+         	RETURN count(member) AS member_basonta
          	}
 
            MATCH (fellowship:Fellowship {id: $fellowship})

@@ -111,7 +111,7 @@ export interface Member {
   visitationArea?: string
   occupation: string
   fellowship: string
-  ministry: string
+  basonta: string
 }
 
 export interface MemberWithoutBioData {

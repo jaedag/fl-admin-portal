@@ -25,7 +25,7 @@ type Member @auth(rules: [{ isAuthenticated: true }]) {
   dob: TimeGraph @relationship(type: "WAS_BORN_ON", direction: OUT)
   title: [Title!]!
     @relationship(type: "HAS_TITLE", properties: "HasTitle", direction: OUT)
-  ministry: Basonta @relationship(type: "BELONGS_TO", direction: OUT)
+  basonta: Basonta @relationship(type: "BELONGS_TO", direction: OUT)
   occupation: Occupation @relationship(type: "HAS_OCCUPATION", direction: OUT)
   stream_name: String
     @cypher(

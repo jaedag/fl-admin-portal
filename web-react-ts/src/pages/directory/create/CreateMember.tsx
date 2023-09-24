@@ -22,7 +22,7 @@ export type CreateMemberFormOptions = {
   pictureUrl: string
   visitationArea: string
   fellowship: Fellowship | { [key: string]: any }
-  ministry: string
+  basonta: string
 }
 
 const CreateMember = () => {
@@ -40,7 +40,7 @@ const CreateMember = () => {
     pictureUrl: '',
     visitationArea: '',
     fellowship: '' as unknown as Fellowship,
-    ministry: '',
+    basonta: '',
   }
 
   const { clickCard } = useContext(ChurchContext)
@@ -80,7 +80,7 @@ const CreateMember = () => {
 
           visitationArea: values.visitationArea,
           fellowship: values.fellowship?.id,
-          ministry: values.ministry,
+          basonta: values.basonta,
         },
       })
       setSubmitting(false)
