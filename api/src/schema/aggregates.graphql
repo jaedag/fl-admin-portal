@@ -23,6 +23,11 @@ type AggregateBussingRecord @auth(rules: [{ isAuthenticated: true }]) {
   bussingTopUp: Float
 }
 
+extend type Member {
+  aggregateServiceRecords(limit: Int! = 4): [AggregateServiceRecord!]!
+  aggregateBussingRecords(limit: Int! = 4): [AggregateBussingRecord!]!
+}
+
 extend type Bacenta {
   aggregateServiceRecords(limit: Int! = 4): [AggregateServiceRecord!]!
     @cypher(

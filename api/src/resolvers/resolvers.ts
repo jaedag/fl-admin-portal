@@ -11,6 +11,7 @@ import bankingMutation from './banking/banking-resolver'
 import campaignsResolvers from './campaigns/campaigns-resolver'
 import campaignMutations from './campaigns/campaign-mutations'
 import { accountsMutations } from './accounts/accounts-resolvers'
+import { aggregatesResolvers } from './aggregates/aggregates-resolver'
 import { mapsResolvers } from './maps/maps-resolvers'
 import HubFellowshipServiceMutation from './services/hub-fellowship-service-resolver'
 import { Context } from './utils/neo4j-types'
@@ -70,6 +71,7 @@ const resolvers = {
       return `${shortTitle}${source.firstName} ${source.lastName}`
     },
     ...mapsResolvers.Member,
+    ...aggregatesResolvers.Member,
   },
   Fellowship: {
     ...campaignsResolvers.Fellowship,
