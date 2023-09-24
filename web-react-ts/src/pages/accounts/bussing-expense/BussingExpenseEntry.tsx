@@ -31,7 +31,7 @@ const BussingExpenseEntry = () => {
   const council: CouncilForAccounts = data?.councils[0]
 
   const initialValues = {
-    amountSpent: council.bussingAmount ?? '',
+    amountSpent: council?.bussingAmount ?? '',
   }
 
   const validationSchema = Yup.object({
@@ -83,7 +83,7 @@ const BussingExpenseEntry = () => {
                 <div className="my-4">
                   <Input
                     name="amountSpent"
-                    label="How much are you requesting"
+                    label="How much are was spent on bussing today?"
                     placeholder="Enter an amount"
                   />
                 </div>

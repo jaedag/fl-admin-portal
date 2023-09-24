@@ -6,5 +6,5 @@ CREATE CONSTRAINT accountTransactionUniqueId FOR (log:AccountTransaction) REQUIR
 
 MATCH (council:Council)
 SET council.currentBalance  = 0.0,
-council.bussingPurseBalance = 0.0
+council.bussingPurseBalance = 0.0,
 RETURN council.name, council.currentBalance, council.bussingPurseBalance;

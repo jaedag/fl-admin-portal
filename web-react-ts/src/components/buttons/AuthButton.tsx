@@ -16,18 +16,20 @@ const AuthButton = (props: AuthButtonPropsType) => {
 
   if (!isAuthenticated) {
     return (
-      <Container className="d-grid gap-2">
+      <Container>
         <Button
           variant="brand"
           size="lg"
-          className={`auth-button ${!mobileFullSize && `d-none d-md-inline`}`}
+          className={`auth-button px-5 ${
+            !mobileFullSize && `d-none d-md-inline`
+          }`}
           onClick={() => loginWithRedirect()}
         >
           Log In
         </Button>
         {!mobileFullSize && (
           <i
-            className="fas fa-sign-in-alt fa-2x d-md-none"
+            className="fas fa-sign-in-alt fa-2x d-md-none px-5"
             onClick={() => loginWithRedirect()}
           />
         )}
