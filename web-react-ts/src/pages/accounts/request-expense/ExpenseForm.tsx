@@ -109,6 +109,7 @@ const ExpenseForm = () => {
                     options={[
                       { key: 'Bussing', value: 'Bussing' },
                       { key: 'HR', value: 'HR' },
+                      { key: 'Construction', value: 'Construction' },
                       { key: 'Ministry Expense', value: 'Ministry Expense' },
                     ]}
                   />
