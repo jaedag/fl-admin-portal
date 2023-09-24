@@ -631,31 +631,6 @@ type Campus implements Church {
       RETURN records ORDER BY date.date DESC SKIP $skip LIMIT $limit
       """
     )
-  creativeArtsCount: Int
-    @cypher(
-      statement: "MATCH (this)-[:HAS_MINISTRY]->(creativeArts:CreativeArts) RETURN COUNT(creativeArts)"
-    )
-
-  ministryCount: Int!
-    @cypher(
-      statement: "MATCH (this)-[:HAS_MINISTRY]->(creativeArts:CreativeArts)-[:HAS]->(ministry:Ministry) RETURN COUNT(ministry)"
-    )
-  hubCount: Int!
-    @cypher(
-      statement: "MATCH (this)-[:HAS_MINISTRY]->(creativeArts:CreativeArts)-[:HAS*2]->(hubs:Hub) RETURN COUNT(hub)"
-    )
-  hubFellowshipCount: Int!
-    @cypher(
-      statement: "MATCH (this)-[:HAS_MINISTRY]->(creativeArts:CreativeArts)-[:HAS*3]->(fellowship:HubFellowship) RETURN COUNT(fellowship)"
-    )
-  hubFellowships: [Fellowship!]!
-    @cypher(
-      statement: "MATCH (this)-[:HAS*4]->(fellowship:HubFellowship) RETURN fellowship"
-    )
-  hubs: [Hub!]!
-    @cypher(
-      statement: "MATCH (this)-[:HAS_MINISTRY]->(creativeArts:CreativeArts)-[:HAS*2]->(hub:Hub) RETURN hub"
-    )
 }
 
 type Stream implements Church {

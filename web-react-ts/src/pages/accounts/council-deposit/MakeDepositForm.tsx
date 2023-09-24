@@ -169,7 +169,7 @@ const MakeDepositForm = () => {
                 <RoleView roles={['adminCampus']}>
                   <Input
                     name="currentBalanceDepositAmount"
-                    label="Current Balance Deposit Amount"
+                    label="Weekday Account Balance Deposit Amount"
                     placeholder="Enter an amount"
                   />
                   <Input
@@ -191,7 +191,7 @@ const MakeDepositForm = () => {
                   </Modal.Header>
                   <Modal.Body>
                     <p>
-                      Current Balance:{' '}
+                      Weekday Income Amount:{' '}
                       <span className="text-info">
                         GHS{' '}
                         {parseFloat(

@@ -209,13 +209,52 @@ type Hub {
     )
 }
 
+extend type Campus {
+  creativeArtsCount: Int
+    @cypher(
+      statement: "MATCH (this)-[:HAS_MINISTRY]->(creativeArts:CreativeArts) RETURN COUNT(creativeArts)"
+    )
+
+  ministryCount: Int!
+    @cypher(
+      statement: "MATCH (this)-[:HAS_MINISTRY]->(creativeArts:CreativeArts)-[:HAS]->(ministry:Ministry) RETURN COUNT(ministry)"
+    )
+  hubCount: Int!
+    @cypher(
+      statement: "MATCH (this)-[:HAS_MINISTRY]->(creativeArts:CreativeArts)-[:HAS*2]->(hubs:Hub) RETURN COUNT(hub)"
+    )
+  hubFellowshipCount: Int!
+    @cypher(
+      statement: "MATCH (this)-[:HAS_MINISTRY]->(creativeArts:CreativeArts)-[:HAS*3]->(fellowship:HubFellowship) RETURN COUNT(fellowship)"
+    )
+  hubFellowships: [Fellowship!]!
+    @cypher(
+      statement: "MATCH (this)-[:HAS*4]->(fellowship:HubFellowship) RETURN fellowship"
+    )
+  hubs: [Hub!]!
+    @cypher(
+      statement: "MATCH (this)-[:HAS_MINISTRY]->(creativeArts:CreativeArts)-[:HAS*2]->(hub:Hub) RETURN hub"
+    )
+}
+
 extend type Stream {
+  ministries: [Ministry!]!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS_MINISTRY]->(ministry:Ministry)
+      RETURN ministry
+      """
+    )
   ministryCount: Int!
     @cypher(
       statement: """
       MATCH (this)-[:HAS_MINISTRY]->(ministry:Ministry)
       RETURN COUNT(ministry)
       """
+    )
+  hubs: [Hub!]!
+    @cypher(
+      statement: "MATCH (this)-[:HAS_MINISTRY]->(ministry:Ministry)-[HAS]->(hubs:Hub) RETURN hubs"
     )
   hubCount: Int!
     @cypher(
@@ -229,17 +268,12 @@ extend type Stream {
       """
     )
 
-  hubFellowshipCount: Int!
-    @cypher(
-      statement: "MATCH (this)-[:HAS*3]->(fellowships:HubFellowship) RETURN COUNT(fellowships)"
-    )
   hubFellowships: [Fellowship!]!
     @cypher(
-      statement: "MATCH (this)-[:HAS*3]->(fellowships:HubFellowship) RETURN fellowships"
-    )
-  hubs: [Hub!]!
-    @cypher(
-      statement: "MATCH (this)-[:HAS_MINISTRY]->(ministry:Ministry)-[HAS]->(hubs:Hub) RETURN hubs"
+      statement: """
+      MATCH (this)-[:HAS_MINISTRY]->(:Ministry)-[:HAS]->(:Hub)-[:HAS]->(hubFellowships:HubFellowship)
+      RETURN hubFellowships
+      """
     )
 }
 
