@@ -338,7 +338,9 @@ extend type Mutation {
       statement: """
        CREATE (council:Council {id:apoc.create.uuid(), name:$name})
         SET council.currentBalance  = 0.0,
-          council.bussingPurseBalance = 0.0
+          council.bussingPurseBalance = 0.0,
+          council.hrAmount = 0.0,
+          council.bussingAmount = 0.0
 
       WITH council
       MATCH (leader:Active:Member {id: $leaderId}) WHERE leader.email IS NOT NULL

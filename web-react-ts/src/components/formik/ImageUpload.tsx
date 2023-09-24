@@ -86,7 +86,7 @@ const ImageUpload = (props: ImageUploadProps) => {
           <MoonLoader color="gray" />
         </Container>
       )}
-      {(image || initialValue) && (
+      {(image || initialValue) && !loading && (
         <Container className="text-center img-container ">
           <img src={image || initialValue} className="img-preview" alt="" />
         </Container>
