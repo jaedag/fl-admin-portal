@@ -8,6 +8,7 @@ import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import { CouncilForAccounts, StreamForAccounts } from './accounts-types'
 import HeadingSecondary from 'components/HeadingSecondary'
 import { useNavigate } from 'react-router'
+import CurrencySpan from 'components/CurrencySpan'
 
 const CampusCouncilList = ({
   link,
@@ -35,6 +36,24 @@ const CampusCouncilList = ({
         <HeadingSecondary>{`${campus?.name} ${campus?.__typename}`}</HeadingSecondary>
 
         {campus?.streams.map((stream: StreamForAccounts) => {
+          // arrange in alphabetical order of council.leader.fullName and council.name
+          const councils = [...stream.councils].sort(
+            (a: CouncilForAccounts, b: CouncilForAccounts) => {
+              if (a.leader.fullName < b.leader.fullName) {
+                return -1
+              }
+              if (a.leader.fullName > b.leader.fullName) {
+                return 1
+              }
+              return 0
+            }
+          )
+
+          console.log(
+            '🚀 ~ file: CampusCouncilList.tsx:50 ~ councils:',
+            councils
+          )
+
           return (
             <div className="d-grid gap-2">
               <div className="fs-4 text-info">{stream.name} Councils</div>
@@ -44,15 +63,24 @@ const CampusCouncilList = ({
                 </Button>
               )}
 
-              {stream.councils.map((council: CouncilForAccounts) => (
+              {councils.map((council: CouncilForAccounts) => (
                 <Button
-                  className="text-start py-3 "
+                  className="text-start py-3"
                   onClick={() => {
                     clickCard(council)
                     navigate(link)
                   }}
                 >
                   {council.name} - {council.leader.fullName}
+                  <hr />
+                  <div>
+                    Weekday Account -{' '}
+                    <CurrencySpan number={council.currentBalance} />
+                  </div>
+                  <div>
+                    Bussing Purse -{' '}
+                    <CurrencySpan number={council.bussingPurseBalance} />
+                  </div>
                 </Button>
               ))}
             </div>

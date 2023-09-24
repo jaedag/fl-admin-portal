@@ -52,6 +52,9 @@ export const CAMPUS_BY_COUNCIL_ACCOUNTS = gql`
           id
           name
 
+          currentBalance
+          bussingPurseBalance
+
           leader {
             id
             firstName
