@@ -49,11 +49,6 @@ const CampusCouncilList = ({
             }
           )
 
-          console.log(
-            '🚀 ~ file: CampusCouncilList.tsx:50 ~ councils:',
-            councils
-          )
-
           return (
             <div className="d-grid gap-2">
               <div className="fs-4 text-info">{stream.name} Councils</div>
