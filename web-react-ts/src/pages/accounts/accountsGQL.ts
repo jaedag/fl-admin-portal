@@ -48,7 +48,7 @@ export const CAMPUS_BY_COUNCIL_ACCOUNTS = gql`
         id
         name
 
-        councils {
+        councils(options: { sort: { name: ASC } }) {
           id
           name
 
