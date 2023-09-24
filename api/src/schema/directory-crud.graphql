@@ -336,7 +336,7 @@ extend type Mutation {
     @auth(rules: [{ roles: ["adminCampus", "adminStream"] }])
     @cypher(
       statement: """
-       CREATE (council:Council {id:apoc.create.uuid(), name:$name}),
+       CREATE (council:Council {id:apoc.create.uuid(), name:$name})
         SET council.currentBalance  = 0.0,
           council.bussingPurseBalance = 0.0
 

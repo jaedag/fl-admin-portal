@@ -238,13 +238,7 @@ extend type Campus {
 }
 
 extend type Stream {
-  ministries: [Ministry!]!
-    @cypher(
-      statement: """
-      MATCH (this)-[:HAS_MINISTRY]->(ministry:Ministry)
-      RETURN ministry
-      """
-    )
+  ministries: [Ministry!]! @relationship(type: "HAS_MINISTRY", direction: OUT)
   ministryCount: Int!
     @cypher(
       statement: """
