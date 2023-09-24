@@ -214,29 +214,32 @@ const MemberForm = ({
                   <div className="form-row row-cols-1 row-cols-md-2 justify-content-center">
                     <HeadingPrimary>Basic Info</HeadingPrimary>
                     <ButtonGroup className="my-2 mb-4">
-                      <RoleView roles={permitAdmin('Denomination')}>
-                        <Button
-                          variant="success"
-                          onClick={() => navigate('/member/title-form')}
-                        >
-                          Add Title
-                        </Button>
-                      </RoleView>
                       {update && (
-                        <RoleView
-                          roles={[
-                            'sheepseekerStream',
-                            'adminStream',
-                            'adminCampus',
-                          ]}
-                        >
-                          <Button
-                            onClick={() => togglePopup()}
-                            variant="danger"
+                        <>
+                          {' '}
+                          <RoleView roles={permitAdmin('Denomination')}>
+                            <Button
+                              variant="success"
+                              onClick={() => navigate('/member/title-form')}
+                            >
+                              Add Title
+                            </Button>
+                          </RoleView>
+                          <RoleView
+                            roles={[
+                              'sheepseekerStream',
+                              'adminStream',
+                              'adminCampus',
+                            ]}
                           >
-                            Delete Member
-                          </Button>
-                        </RoleView>
+                            <Button
+                              onClick={() => togglePopup()}
+                              variant="danger"
+                            >
+                              Delete Member
+                            </Button>
+                          </RoleView>
+                        </>
                       )}
                     </ButtonGroup>
                     <Col sm={10}>
