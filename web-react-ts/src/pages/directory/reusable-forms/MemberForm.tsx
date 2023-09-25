@@ -107,7 +107,7 @@ const MemberForm = ({
 
       togglePopup()
       alertMsg('Member has been deleted successfully')
-      navigate('/directory/members')
+      navigate('/fellowship/displaydetails')
     } catch (e) {
       throwToSentry('Cannot delete member', e)
     } finally {
