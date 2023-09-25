@@ -9,7 +9,7 @@ import { capitalise } from 'global-utils'
 import { getUserServantRoles } from 'pages/dashboards/dashboard-utils'
 import { SERVANT_CHURCH_LIST } from 'pages/dashboards/DashboardQueries'
 import { permitMe } from 'permission-utils'
-import React, { useContext, useEffect } from 'react'
+import { useContext, useEffect } from 'react'
 import useAuth from './useAuth'
 
 const SetPermissions = ({
@@ -45,27 +45,59 @@ const SetPermissions = ({
     onCompleted: (data) => {
       const streamName = data.memberByEmail.stream_name
 
-      doNotUse.setOversightId(currentUser.oversight)
-      doNotUse.setCampusId(currentUser.campus)
-      doNotUse.setChurch(currentUser.church)
-      doNotUse.setStreamId(currentUser.stream)
-      doNotUse.setCouncilId(currentUser.council)
-      doNotUse.setConstituencyId(currentUser.constituency)
+      const denominationId =
+        data.memberByEmail?.fellowship?.bacenta.constituency?.council.stream
+          .campus?.oversight?.denomination.id
+      const oversightId =
+        data.memberByEmail?.fellowship?.bacenta.constituency?.council.stream
+          .campus?.oversight.id
+      const campusId =
+        data.memberByEmail?.fellowship?.bacenta.constituency?.council.stream
+          .campus?.id
+      const streamId =
+        data.memberByEmail?.fellowship?.bacenta.constituency?.council.stream.id
+      const councilId =
+        data.memberByEmail?.fellowship?.bacenta.constituency?.council.id
+      const constituencyId =
+        data.memberByEmail?.fellowship?.bacenta.constituency?.id
+      const hubId = data.memberByEmail?.fellowship?.hub?.id
+      const ministryId = data.memberByEmail?.fellowship?.hub?.ministry.id
+      const creativeArtsId =
+        data.memberByEmail?.fellowship?.hub?.ministry?.creativeArts.id
+
+      doNotUse.setDenominationId(denominationId)
+      doNotUse.setOversightId(oversightId)
+      doNotUse.setCampusId(campusId)
+      doNotUse.setStreamId(streamId)
+      doNotUse.setCouncilId(councilId)
+      doNotUse.setConstituencyId(constituencyId)
+      doNotUse.setHubId(hubId)
+      doNotUse.setMinistryId(ministryId)
+      doNotUse.setCreativeArtsId(creativeArtsId)
 
       setCurrentUser({
         ...currentUser,
         id: data.memberByEmail.id,
         nameWithTitle: data.memberByEmail.nameWithTitle,
+
+        // Bacenta Levels
         fellowship: data.memberByEmail?.fellowship.id,
         bacenta: data.memberByEmail?.fellowship?.bacenta?.id,
-        council:
-          data.memberByEmail?.fellowship?.bacenta.constituency?.council.id,
-        constituency: data.memberByEmail?.fellowship?.bacenta.constituency?.id,
+        constituency: constituencyId,
+        council: councilId,
+        stream: streamId,
+        campus: campusId,
+        oversight: oversightId,
+        denomination: denominationId,
+
+        // Creative Arts
+        hub: hubId,
+        ministry: ministryId,
+        creativeArts: creativeArtsId,
+
+        // Other Details
         doNotUse: { doNotUse: streamName, subdoNotUse: 'bacenta' },
         stream_name: capitalise(data?.memberByEmail?.stream_name),
-        stream:
-          data.memberByEmail?.fellowship?.bacenta.constituency?.council.stream
-            .id,
         noIncomeTracking:
           data.memberByEmail?.fellowship?.bacenta.constituency?.council.stream
             .campus?.noIncomeTracking,
@@ -75,23 +107,9 @@ const SetPermissions = ({
         conversionRateToDollar:
           data.memberByEmail?.fellowship?.bacenta.constituency?.council.stream
             .campus?.conversionRateToDollar,
-        campus:
-          data.memberByEmail?.fellowship?.bacenta.constituency?.council.stream
-            .campus?.id,
-        oversight:
-          data.memberByEmail?.fellowship?.bacenta.constituency?.council.stream
-            .campus?.oversight.id,
-        denomination:
-          data.memberByEmail?.fellowship?.bacenta.constituency?.council.stream
-            .campus?.oversight.denomination.id,
-
-        // Creative Arts
-        hub: data.memberByEmail?.fellowship?.hub?.id,
-        ministry: data.memberByEmail?.fellowship?.hub?.ministry.id,
-        creativeArts:
-          data.memberByEmail?.fellowship?.hub?.ministry?.creativeArts.id,
       })
 
+      doNotUse.setChurch(currentUser.church)
       sessionStorage.setItem('currentUser', JSON.stringify({ ...currentUser }))
     },
   })
