@@ -1,3 +1,15 @@
+#### 7.10.4 (2023-09-25)
+
+##### Bug Fixes
+
+*  change redirection of MemberForm.tsx to fellowship details ([585e69de](https://github.com/firstlovecenter/fl-pastoral-care/commit/585e69de1360c8cf5ef4fc3525967754e83f7990))
+*  properly set ids in setPermissions component ([2728d13a](https://github.com/firstlovecenter/fl-pastoral-care/commit/2728d13a45e5294a4efb9e6ec82e670880aeb7a6))
+*  instead of adding the deposited amount, they just update the latest balance ([49942766](https://github.com/firstlovecenter/fl-pastoral-care/commit/49942766c24e13202682d0b4aff7544dab2997a3))
+*  remove console.log ([fa991b72](https://github.com/firstlovecenter/fl-pastoral-care/commit/fa991b7282bd0f27d2aa7496a0a26295ad4ea6f8))
+*  add construction as an option of category ([76feea35](https://github.com/firstlovecenter/fl-pastoral-care/commit/76feea3553e062908d7a459d37720679bf230aa3))
+*  bring balances to front of council list ([601bb13a](https://github.com/firstlovecenter/fl-pastoral-care/commit/601bb13a9bcafe8c0ca52c357f3000078d592096))
+*  change ministry to basonta on usereditpage ([ee7ad20a](https://github.com/firstlovecenter/fl-pastoral-care/commit/ee7ad20a42fc2ff9da890d6c05c990105da78d16))
+
 #### 7.10.3 (2023-09-24)
 
 ##### Bug Fixes
