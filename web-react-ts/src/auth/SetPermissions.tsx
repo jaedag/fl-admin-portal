@@ -45,6 +45,13 @@ const SetPermissions = ({
     onCompleted: (data) => {
       const streamName = data.memberByEmail.stream_name
 
+      doNotUse.setOversightId(currentUser.oversight)
+      doNotUse.setCampusId(currentUser.campus)
+      doNotUse.setChurch(currentUser.church)
+      doNotUse.setStreamId(currentUser.stream)
+      doNotUse.setCouncilId(currentUser.council)
+      doNotUse.setConstituencyId(currentUser.constituency)
+
       setCurrentUser({
         ...currentUser,
         id: data.memberByEmail.id,

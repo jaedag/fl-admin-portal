@@ -20,13 +20,11 @@ import {
 import { throwToSentry } from 'global-utils'
 import RoleView from 'auth/RoleView'
 import { CouncilForAccounts } from '../accounts-types'
-import useClickCard from 'hooks/useClickCard'
 
 const MakeDepositForm = () => {
-  const { councilId } = useContext(ChurchContext)
+  const { councilId, clickCard } = useContext(ChurchContext)
   const { show, handleClose, handleShow } = useModal()
   const navigate = useNavigate()
-  const { clickCard } = useClickCard()
 
   const { data, loading, error } = useQuery(COUNCIL_ACCOUNT_DASHBOARD, {
     variables: {
@@ -59,9 +57,9 @@ const MakeDepositForm = () => {
   const council: CouncilForAccounts = data?.councils[0]
 
   const initialValues = {
-    hrAmount: council?.hrAmount?.toString() ?? '0.0',
-    currentBalanceDepositAmount: '0.0',
-    bussingPurseDepositAmount: '0.0',
+    hrAmount: council?.hrAmount?.toString() ?? '',
+    currentBalanceDepositAmount: '',
+    bussingPurseBalance: council?.bussingPurseBalance?.toString() ?? '',
   }
   const validationSchema = Yup.object({
     hrAmount: Yup.number()
@@ -70,7 +68,7 @@ const MakeDepositForm = () => {
     currentBalanceDepositAmount: Yup.number()
       .typeError('Please enter a valid number')
       .required('This is a required field'),
-    bussingPurseDepositAmount: Yup.number()
+    bussingPurseBalance: Yup.number()
       .typeError('Please enter a valid number')
       .required('This is a required field'),
   })
@@ -109,14 +107,12 @@ const MakeDepositForm = () => {
         )
       }
 
-      if (parseFloat(values.bussingPurseDepositAmount) > 0) {
+      if (parseFloat(values.bussingPurseBalance) > 0) {
         mutations.push(
           DepositIntoCouncilBussingPurse({
             variables: {
               councilId: councilId,
-              bussingPurseDepositAmount: parseFloat(
-                values.bussingPurseDepositAmount
-              ),
+              bussingPurseBalance: parseFloat(values.bussingPurseBalance),
             },
           })
         )
@@ -129,12 +125,12 @@ const MakeDepositForm = () => {
           clickCard(response.data?.setHRAmount)
         }
 
-        if (response.data?.DepositIntoCouncilBussingPurse) {
-          clickCard(response.data?.DepositIntoCouncilBussingPurse)
-        }
-
         if (response.data?.DepositIntoCouncilCurrentAccount) {
           clickCard(response.data?.DepositIntoCouncilCurrentAccount)
+        }
+
+        if (response.data?.DepositIntoCouncilBussingPurse) {
+          clickCard(response.data?.DepositIntoCouncilBussingPurse)
         }
 
         return null
@@ -178,9 +174,9 @@ const MakeDepositForm = () => {
                     placeholder="Enter an amount"
                   />
                 </RoleView>
-                <RoleView roles={['arrivalsAdminCampus']}>
+                <RoleView roles={['arrivalsAdminCampus', 'adminCampus']}>
                   <Input
-                    name="bussingPurseDepositAmount"
+                    name="bussingPurseBalance"
                     label="Bussing Purse Deposit Amount"
                     placeholder="Enter an amount"
                   />
@@ -215,7 +211,7 @@ const MakeDepositForm = () => {
                       <span className="text-info">
                         GHS{' '}
                         {parseFloat(
-                          formik.values.bussingPurseDepositAmount
+                          formik.values.bussingPurseBalance
                         ).toLocaleString('en-US')}
                       </span>
                     </p>
@@ -233,7 +229,18 @@ const MakeDepositForm = () => {
                 </Modal>
 
                 <div className="text-center mt-5">
-                  <Button onClick={handleShow} className="px-5">
+                  <Button
+                    onClick={() => {
+                      if (formik.values.bussingPurseBalance === '') {
+                        formik.setFieldValue('bussingPurseBalance', '0')
+                      }
+                      if (formik.values.currentBalanceDepositAmount === '') {
+                        formik.setFieldValue('currentBalanceDepositAmount', '0')
+                      }
+                      handleShow()
+                    }}
+                    className="px-5"
+                  >
                     Submit
                   </Button>
                 </div>

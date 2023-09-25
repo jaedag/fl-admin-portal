@@ -50,7 +50,7 @@ const CampusCouncilList = ({
           )
 
           return (
-            <div className="d-grid gap-2">
+            <div key={stream.id} className="d-grid gap-2">
               <div className="fs-4 text-info">{stream.name} Councils</div>
               {stream.councils.length === 0 && (
                 <Button className="text-start py-3" disabled>
@@ -60,6 +60,7 @@ const CampusCouncilList = ({
 
               {councils.map((council: CouncilForAccounts) => (
                 <Button
+                  key={council.id}
                   className="text-start py-3"
                   onClick={() => {
                     clickCard(council)

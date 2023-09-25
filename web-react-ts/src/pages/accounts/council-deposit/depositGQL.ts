@@ -27,11 +27,11 @@ export const DEPOSIT_INTO_COUNCIL_CURRENT_ACCOUNTS = gql`
 export const DEPOSIT_INTO_COUNCIL_BUSSING_PURSE = gql`
   mutation DepositIntoCouncilBussingPurse(
     $councilId: ID!
-    $bussingPurseDepositAmount: Float!
+    $bussingPurseBalance: Float!
   ) {
     DepositIntoCouncilBussingPurse(
       councilId: $councilId
-      bussingPurseDepositAmount: $bussingPurseDepositAmount
+      bussingPurseBalance: $bussingPurseBalance
     ) {
       id
       timestamp

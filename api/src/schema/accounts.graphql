@@ -65,7 +65,7 @@ extend type Mutation {
 
   DepositIntoCouncilBussingPurse(
     councilId: ID!
-    bussingPurseDepositAmount: Float!
+    bussingPurseBalance: Float!
   ): AccountTransaction!
 
   ExpenseRequest(

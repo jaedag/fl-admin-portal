@@ -67,12 +67,12 @@ export const accountsMutations = {
     object: unknown,
     args: {
       councilId: string
-      bussingPurseDepositAmount: number
+      bussingPurseBalance: number
     },
     context: Context
   ) => {
     const session = context.executionContext.session()
-    isAuth(['arrivalsAdminCampus'], context.auth.roles)
+    // isAuth(['arrivalsAdminCampus'], context.auth.roles)
 
     try {
       const councilBalancesResult = await session.run(getCouncilBalances, args)
@@ -83,16 +83,16 @@ export const accountsMutations = {
       const leader: Member =
         councilBalancesResult.records[0].get('leader').properties
 
-      const message = `Dear ${leader.firstName}, an amount of ${
-        args.bussingPurseDepositAmount
-      } GHS has been deposited into your council bussing purse. Your current bussing purse balance is ${
-        council.bussingPurseBalance + args.bussingPurseDepositAmount
-      } GHS`
+      const depositAmount =
+        args.bussingPurseBalance - council.bussingPurseBalance
+
+      const message = `Dear ${leader.firstName}, an amount of ${depositAmount} GHS has been deposited into your council bussing purse. Your current bussing purse balance is ${args.bussingPurseBalance} GHS`
 
       const debitRes = await Promise.all([
         session.run(depositIntoCoucilBussingPurse, {
           auth: context.auth,
           ...args,
+          bussingPurseDepositAmount: depositAmount,
         }),
         sendBulkSMS([leader.phoneNumber], message),
       ])
