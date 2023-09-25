@@ -1,3 +1,9 @@
+#### 7.10.5 (2023-09-25)
+
+##### Bug Fixes
+
+*  change link ([74fafe6f](https://github.com/firstlovecenter/fl-pastoral-care/commit/74fafe6f24adf575dde0e552873a5b458ee257f8))
+
 #### 7.10.4 (2023-09-25)
 
 ##### Bug Fixes
