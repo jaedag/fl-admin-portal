@@ -3,6 +3,7 @@ import { Form, Formik, FormikHelpers } from 'formik'
 import * as Yup from 'yup'
 import React, { useContext } from 'react'
 import {
+  alertMsg,
   DELETE_MEMBER_CATEGORY_OPTIONS,
   GENDER_OPTIONS,
   isAuthorised,
@@ -56,7 +57,7 @@ const MemberForm = ({
   update,
 }: MemberFormProps) => {
   const { currentUser, memberId } = useContext(MemberContext)
-  const { campusId } = useContext(ChurchContext)
+  const { campusId, clickCard } = useContext(ChurchContext)
   const {
     data: basontasData,
     loading: basontasLoading,
@@ -68,7 +69,6 @@ const MemberForm = ({
   })
 
   const [MakeMemberInactive] = useMutation(MAKE_MEMBER_INACTIVE)
-
   const { isOpen, togglePopup } = usePopup()
 
   const navigate = useNavigate()
@@ -85,25 +85,34 @@ const MemberForm = ({
     reasonCategory: '',
   }
 
-  const onDelete = (
+  const onDelete = async (
     values: DeleteMemberProp,
     onSubmitProps: FormikHelpers<DeleteMemberProp>
   ) => {
-    onSubmitProps.setSubmitting(true)
+    const { setSubmitting } = onSubmitProps
 
-    MakeMemberInactive({
-      variables: {
-        memberId: memberId,
-        reason: `${values.reasonCategory}: ${initialValues.firstName} ${initialValues.lastName} ${values.reason}`,
-      },
-    })
-      .then(() => {
-        togglePopup()
-        onSubmitProps.setSubmitting(false)
-        alert('Member has been deleted successfully')
-        navigate('/directory/members')
+    setSubmitting(true)
+    try {
+      await MakeMemberInactive({
+        variables: {
+          memberId: memberId,
+          reason: `${values.reasonCategory}: ${initialValues.firstName} ${initialValues.lastName} ${values.reason}`,
+        },
       })
-      .catch((e) => throwToSentry('Cannot delete member', e))
+
+      clickCard({
+        __typename: 'Fellowship',
+        id: initialValues.fellowship.id,
+      })
+
+      togglePopup()
+      alertMsg('Member has been deleted successfully')
+      navigate('/directory/members')
+    } catch (e) {
+      throwToSentry('Cannot delete member', e)
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   const canChangeEmail = () => {
