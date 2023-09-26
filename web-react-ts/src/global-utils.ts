@@ -7,7 +7,6 @@ import {
   MemberWithChurches,
   Role,
 } from 'global-types'
-import { permitAdminArrivals } from 'permission-utils'
 
 //Global Constants
 export const PHONE_NUM_REGEX = /^[+][(]{0,1}[1-9]{1,4}[)]{0,1}[-\s/0-9]*$/
@@ -641,11 +640,9 @@ export const directoryLock = (
   if (
     (new Date().getDay() === 1 && new Date().getHours() >= 12) ||
     new Date().getDay() === 2 ||
-    permitAdminArrivals('Stream')?.some((r) =>
-      currentUser?.roles?.includes(r)
-    ) ||
+    ['fishers']?.some((r) => currentUser?.roles?.includes(r as Role)) ||
     (churchType === 'Fellowship' &&
-      currentUser?.roles?.includes('leaderFellowship'))
+      currentUser?.roles?.includes('leaderFellowship' as Role))
   ) {
     return true
   }

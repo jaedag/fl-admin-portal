@@ -59,25 +59,27 @@ const CampusCouncilList = ({
               )}
 
               {councils.map((council: CouncilForAccounts) => (
-                <Button
+                <div
                   key={council.id}
-                  className="text-start py-3"
                   onClick={() => {
                     clickCard(council)
                     navigate(link)
                   }}
+                  className="d-grid"
                 >
-                  {council.name} - {council.leader.fullName}
-                  <hr />
-                  <div>
+                  <Button className="text-start">
+                    {council.name} - {council.leader.fullName}
+                  </Button>
+
+                  <Button variant="outline-light" className="text-start">
                     Weekday Account -{' '}
                     <CurrencySpan number={council.currentBalance} />
-                  </div>
-                  <div>
-                    Bussing Purse -{' '}
-                    <CurrencySpan number={council.bussingPurseBalance} />
-                  </div>
-                </Button>
+                    <div>
+                      Bussing Purse -{' '}
+                      <CurrencySpan number={council.bussingPurseBalance} />
+                    </div>
+                  </Button>
+                </div>
               ))}
             </div>
           )

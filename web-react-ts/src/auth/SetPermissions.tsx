@@ -65,15 +65,23 @@ const SetPermissions = ({
       const creativeArtsId =
         data.memberByEmail?.fellowship?.hub?.ministry?.creativeArts.id
 
-      doNotUse.setDenominationId(denominationId)
-      doNotUse.setOversightId(oversightId)
-      doNotUse.setCampusId(campusId)
-      doNotUse.setStreamId(streamId)
-      doNotUse.setCouncilId(councilId)
-      doNotUse.setConstituencyId(constituencyId)
-      doNotUse.setHubId(hubId)
-      doNotUse.setMinistryId(ministryId)
-      doNotUse.setCreativeArtsId(creativeArtsId)
+      doNotUse.setDenominationId(
+        sessionStorage.getItem('denominationId') ?? denominationId
+      )
+      doNotUse.setOversightId(
+        sessionStorage.getItem('oversightId') ?? oversightId
+      )
+      doNotUse.setCampusId(sessionStorage.getItem('campusId') ?? campusId)
+      doNotUse.setStreamId(sessionStorage.getItem('streamId') ?? streamId)
+      doNotUse.setCouncilId(sessionStorage.getItem('councilId') ?? councilId)
+      doNotUse.setConstituencyId(
+        sessionStorage.getItem('constituencyId') ?? constituencyId
+      )
+      doNotUse.setHubId(sessionStorage.getItem('hubId') ?? hubId)
+      doNotUse.setMinistryId(sessionStorage.getItem('ministryId') ?? ministryId)
+      doNotUse.setCreativeArtsId(
+        sessionStorage.getItem('creativeArtsId') ?? creativeArtsId
+      )
 
       setCurrentUser({
         ...currentUser,

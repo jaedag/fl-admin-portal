@@ -280,8 +280,8 @@ export type Role =
   | 'arrivalsPayerCouncil'
   | 'tellerStream'
   | 'sheepseekerStream'
-  | 'all'
   | 'fishers'
+  | 'all'
 
 export type VerbTypes =
   | 'leader'
