@@ -22,7 +22,7 @@ const servantCypher = {
 
   disconnectChurchAdmin: `
    MATCH (church {id: $churchId}) 
-   WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream 
+   WHERE church:Constituency OR church:Council OR church:Stream 
    OR church:Campus OR church:Oversight 
    OR church:CreativeArts OR church:Ministry
    MATCH (church)<-[oldAdmin:IS_ADMIN_FOR]-(admin:Member)
@@ -192,7 +192,7 @@ const servantCypher = {
    RETURN log AS log
    `,
 
-  // Connect log to leader, new church, and old leader
+  // Connect log  leader, new church, and old leader
   connectServiceLog: `
    MATCH (church {id: $churchId}) 
    WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream 
