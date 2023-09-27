@@ -759,9 +759,6 @@ export const DISPLAY_MINISTRY = gql`
         id
         firstName
         lastName
-        currentTitle
-        nameWithTitle
-        pictureUrl
       }
       memberCount
       hubCount
