@@ -38,6 +38,8 @@ type Stream = {
     | 'kwabenya_account'
     | 'adenta_account'
     | 'fle_account'
+    | 'kumasi_account'
+    | 'kwabenya_morning_account'
     | 'manual'
 }
 
@@ -52,13 +54,19 @@ export const getStreamFinancials = (stream: Stream) => {
           'Anagkazo has a different financial system. Thank you!'
       )
     case 'adenta_account':
-      subaccount = SECRETS.PAYSTACK_SUBACCOUNT_ADENTA
+      subaccount = SECRETS.PS_SUBACCOUNT_ADENTA
       break
     case 'kwabenya_account':
-      subaccount = SECRETS.PAYSTACK_SUBACCOUNT_KWABENYA
+      subaccount = SECRETS.PS_SUBACCOUNT_KWABENYA
+      break
+    case 'kwabenya_morning_account':
+      subaccount = SECRETS.PS_SUBACCOUNT_MORNING_KWABENYA
       break
     case 'fle_account':
-      subaccount = SECRETS.PAYSTACK_SUBACCOUNT_FLE
+      subaccount = SECRETS.PS_SUBACCOUNT_FLE
+      break
+    case 'kumasi_account':
+      subaccount = SECRETS.PS_SUBACCOUNT_KUMASI
       break
 
     default:
