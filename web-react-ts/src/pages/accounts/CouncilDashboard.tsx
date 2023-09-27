@@ -35,7 +35,9 @@ const CouncilDashboard = () => {
         <hr />
 
         <div className="d-grid gap-2">
-          <RoleView roles={['leaderCouncil', 'arrivalsAdminCampus']}>
+          <RoleView
+            roles={['leaderCouncil', 'arrivalsAdminCampus', 'adminCampus']}
+          >
             <Button
               variant="secondary"
               className="text-start py-3"
