@@ -1,3 +1,15 @@
+#### 7.10.6 (2023-09-27)
+
+##### Bug Fixes
+
+*  updated account details ([2c98ef3f](https://github.com/firstlovecenter/fl-pastoral-care/commit/2c98ef3f1e5e0c8058a7e2bac8a8d3b0cc8e3ee7))
+*  remove unnecessary fields for admin ([da10fde8](https://github.com/firstlovecenter/fl-pastoral-care/commit/da10fde8f7a94d71cff210cbf1d8ca9ec1971595))
+*  show the admin for the ministry level ([404a99fb](https://github.com/firstlovecenter/fl-pastoral-care/commit/404a99fb17a27545cfa824f42894e341feebf7d5))
+*  update change admin modal for sonnta churches ([ed5ae637](https://github.com/firstlovecenter/fl-pastoral-care/commit/ed5ae63749064197b8a2bd7bf29747a5841e0904))
+*  add a description to member deletion ([bd3e1e74](https://github.com/firstlovecenter/fl-pastoral-care/commit/bd3e1e74ecb2d7a6111c1ef0275342cf009a426f))
+*  remove duplicate CURRENT_HISTORY on some church levels ([4c70a94f](https://github.com/firstlovecenter/fl-pastoral-care/commit/4c70a94f5fa940326ad6acbec0f9ca962fba135f))
+*  minor upgrades ([9cf259a9](https://github.com/firstlovecenter/fl-pastoral-care/commit/9cf259a9a6f1c6c253c201de1f14f3fdc9b4a515))
+
 #### 7.10.5 (2023-09-25)
 
 ##### Bug Fixes
