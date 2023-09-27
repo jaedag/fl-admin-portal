@@ -755,6 +755,14 @@ export const DISPLAY_MINISTRY = gql`
         nameWithTitle
         pictureUrl
       }
+      admin {
+        id
+        firstName
+        lastName
+        currentTitle
+        nameWithTitle
+        pictureUrl
+      }
       memberCount
       hubCount
       hubFellowshipCount
