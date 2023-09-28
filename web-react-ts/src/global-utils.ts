@@ -88,8 +88,8 @@ export const DELETE_MEMBER_CATEGORY_OPTIONS: FormikSelectOptions = [
     value: 'Duplicate Member',
   },
   {
-    key: 'Deceased',
-    value: 'Deceased',
+    key: 'Finished Anagkazo School',
+    value: 'Finished Anagkazo School',
   },
 ]
 

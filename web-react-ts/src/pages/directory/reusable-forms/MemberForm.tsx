@@ -96,7 +96,7 @@ const MemberForm = ({
       await MakeMemberInactive({
         variables: {
           memberId: memberId,
-          reason: `Member Deleted  - ${values.reasonCategory}: ${initialValues.firstName} ${initialValues.lastName} ${values.reason}`,
+          reason: `${initialValues.firstName} ${initialValues.lastName} was deleted: ${values.reasonCategory} - ${values.reason}`,
         },
       })
 
