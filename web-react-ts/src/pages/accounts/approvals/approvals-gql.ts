@@ -10,6 +10,7 @@ export const GET_COUNCIL_PENDING_APPROVAL_TRANSACTIONS = gql`
           id
           timestamp
           amount
+          account
           category
           description
           status
@@ -31,6 +32,7 @@ export const APPROVE_EXPENSE = gql`
       id
       timestamp
       amount
+      account
       category
       description
       status

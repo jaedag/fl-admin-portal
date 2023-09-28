@@ -67,3 +67,8 @@ MATCH (record:ServiceRecord)-[r:SERVICE_HELD_ON]->(date:TimeGraph)
 WHERE date.date.week = date().week
 DETACH DELETE record
 RETURN date().week
+
+MATCH (tran:AccountTransaction) WHERE tran.account IS NULL
+SET tran.account = '??'
+RETURN tran;
+

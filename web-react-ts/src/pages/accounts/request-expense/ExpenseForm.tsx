@@ -59,6 +59,9 @@ const ExpenseForm = () => {
           councilId,
           expenseAmount: parseFloat(values.requestedAmount),
           expenseCategory: values.category,
+          accountType:
+            values.category === 'Bussing' ? 'Bussing Purse' : 'Weekday Account',
+
           description: values.description,
         },
       })
@@ -94,9 +97,11 @@ const ExpenseForm = () => {
                     placeholder="Enter an amount"
                     value={
                       formik.values.category === 'HR'
-                        ? council.hrAmount
+                        ? (formik.values.requestedAmount =
+                            council?.hrAmount.toString())
                         : formik.values.category === 'Bussing'
-                        ? council.bussingAmount
+                        ? (formik.values.requestedAmount =
+                            council.bussingAmount.toString())
                         : formik.values.requestedAmount
                     }
                   />

@@ -39,6 +39,7 @@ CREATE (transaction:AccountTransaction {id: randomUUID()})
   SET transaction.amount = $expenseAmount,
   transaction.description = 'Bussing Expense',
   transaction.category = $expenseCategory,
+  transaction.account = 'Bussing Purse',
   transaction.status = 'success',
   transaction.timestamp = datetime(),
   council.bussingAmount = $expenseAmount
@@ -58,8 +59,9 @@ MATCH (depositor:Member {auth_id: $auth.jwt.sub})
 WITH council, depositor
 
 CREATE (transaction:AccountTransaction {id: randomUUID()})
-  SET transaction.description = depositor.firstName +  ' ' + depositor.lastName +  ' deposited ' + $currentBalanceDepositAmount + ' into the current balance',
+  SET transaction.description = depositor.firstName +  ' ' + depositor.lastName +  ' deposited ' + $currentBalanceDepositAmount + ' into the weekday account',
   transaction.amount = $currentBalanceDepositAmount,
+  transaction.account = 'Weekday Account',
   transaction.category = 'Deposit',
   transaction.timestamp = datetime(),
   transaction.status = 'success'
@@ -81,6 +83,7 @@ export const depositIntoCoucilBussingPurse = `
         SET transaction.description = depositor.firstName +  ' ' + depositor.lastName +  ' deposited ' + $bussingPurseDepositAmount + ' into the bussing purse',
         transaction.amount = $bussingPurseDepositAmount,
         transaction.category = 'Deposit',
+        transaction.account = 'Bussing Purse',
         transaction.timestamp = datetime(),
         transaction.status = 'success'
 

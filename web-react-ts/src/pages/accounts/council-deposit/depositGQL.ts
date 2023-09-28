@@ -12,6 +12,7 @@ export const DEPOSIT_INTO_COUNCIL_CURRENT_ACCOUNTS = gql`
       id
       timestamp
       amount
+      account
       category
       description
       loggedBy {
@@ -36,6 +37,7 @@ export const DEPOSIT_INTO_COUNCIL_BUSSING_PURSE = gql`
       id
       timestamp
       amount
+      account
       category
       description
       loggedBy {

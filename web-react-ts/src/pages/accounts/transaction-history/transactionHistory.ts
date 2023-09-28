@@ -9,6 +9,7 @@ export const GET_COUNCIL_TRANSACTION_HISTORY = gql`
         id
         timestamp
         amount
+        account
         category
         description
         status
@@ -29,6 +30,7 @@ export const GET_TRANSACTION_DETAILS = gql`
       id
       timestamp
       amount
+      account
       category
       description
       status

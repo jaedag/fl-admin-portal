@@ -2,6 +2,7 @@ type AccountTransaction {
   id: ID!
   timestamp: DateTime!
   description: String!
+  account: String!
   amount: Float!
   category: String!
   status: String!
@@ -72,6 +73,7 @@ extend type Mutation {
     councilId: ID!
     expenseAmount: Float!
     expenseCategory: String!
+    accountType: String!
     description: String!
   ): AccountTransaction!
     @auth(rules: [{ roles: ["leaderCouncil", "adminCampus"] }])
@@ -85,6 +87,7 @@ extend type Mutation {
       CREATE (transaction:AccountTransaction {id: randomUUID()})
         SET transaction.description = $description,
         transaction.amount = $expenseAmount,
+        transaction.account = $accountType,
         transaction.category = $expenseCategory,
         transaction.status = 'pending approval',
         transaction.timestamp = datetime()

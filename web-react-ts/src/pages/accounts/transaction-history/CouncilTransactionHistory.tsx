@@ -25,6 +25,7 @@ const CouncilTransactionHistory = () => {
   const csvHeaders = [
     { label: 'Date', key: 'date' },
     { label: 'Type', key: 'type' },
+    { label: 'Account', key: 'account' },
     { label: 'Status', key: 'success' },
     { label: 'Credit', key: 'credit' },
     { label: 'Debit', key: 'debit' },
@@ -35,6 +36,7 @@ const CouncilTransactionHistory = () => {
   const csvData = council?.transactions.map((transaction: any) => ({
     date: new Date(transaction.timestamp).toISOString(),
     type: transaction.category,
+    account: transaction.account,
     success: transaction.status,
     credit: transaction.category === 'Deposit' ? transaction.amount : null,
     debit: transaction.category !== 'Deposit' ? transaction.amount : null,
@@ -68,6 +70,7 @@ const CouncilTransactionHistory = () => {
             <Row>
               <Col>Date</Col>
               <Col>Type</Col>
+              <Col>Account</Col>
               <Col>Amount</Col>
               <Col className="col-2 text-truncate">Status</Col>
             </Row>
@@ -90,6 +93,9 @@ const CouncilTransactionHistory = () => {
                       'en-US',
                       { day: 'numeric', month: 'short', year: '2-digit' }
                     )}
+                  </Col>
+                  <Col>
+                    <span>{transaction.account}</span>
                   </Col>
                   <Col>
                     <span>{transaction.category}</span>

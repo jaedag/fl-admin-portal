@@ -36,7 +36,9 @@ export const accountsMutations = {
 
       const message = `Dear ${leader.firstName}, an amount of ${
         args.currentBalanceDepositAmount
-      } GHS has been deposited into your council account. Your current balance is ${
+      } GHS has been deposited into your weekday account for ${
+        council.name
+      }. Your current balance is ${
         council.currentBalance + args.currentBalanceDepositAmount
       } GHS and bussing purse is ${council.bussingPurseBalance} GHS`
 
@@ -86,7 +88,7 @@ export const accountsMutations = {
       const depositAmount =
         args.bussingPurseBalance - council.bussingPurseBalance
 
-      const message = `Dear ${leader.firstName}, an amount of ${depositAmount} GHS has been deposited into your council bussing purse. Your current bussing purse balance is ${args.bussingPurseBalance} GHS`
+      const message = `Dear ${leader.firstName}, an amount of ${depositAmount} GHS has been deposited into your bussing purse for ${council.name}. Your current bussing purse balance is ${args.bussingPurseBalance} GHS`
 
       const debitRes = await Promise.all([
         session.run(depositIntoCoucilBussingPurse, {
@@ -144,7 +146,7 @@ export const accountsMutations = {
           council.currentBalance - transaction.amount
 
         const amountRemaining = council.bussingPurseBalance + transaction.amount
-        const message = `Dear ${leader.firstName}, your expense request of ${transaction.amount} GHS from ${council.name} Council account for ${transaction.category} has been approved. Balance remaining is ${currentAmountRemaining} GHS. Bussing Purse Balance is ${amountRemaining} GHS`
+        const message = `Dear ${leader.firstName}, your expense request of ${transaction.amount} GHS from ${council.name} weekday account for ${transaction.category} has been approved. Balance remaining is ${currentAmountRemaining} GHS. Bussing Purse Balance is ${amountRemaining} GHS`
 
         const debitRes = await Promise.all([
           session.run(approveBussingExpense, args),
@@ -165,7 +167,7 @@ export const accountsMutations = {
       }
 
       const amountRemaining = council.bussingPurseBalance - transaction.amount
-      const message = `Dear ${leader.firstName}, your expense request of ${transaction.amount} GHS from ${council.name} Council account for ${transaction.category} has been approved. Balance remaining is ${amountRemaining} GHS`
+      const message = `Dear ${leader.firstName}, your expense request of ${transaction.amount} GHS from ${council.name} weekday account for ${transaction.category} has been approved. Balance remaining is ${amountRemaining} GHS`
 
       const debitRes = await Promise.all([
         session.run(approveExpense, args),

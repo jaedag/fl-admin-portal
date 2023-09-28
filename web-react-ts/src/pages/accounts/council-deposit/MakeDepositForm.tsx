@@ -83,7 +83,7 @@ const MakeDepositForm = () => {
     try {
       const mutations = []
 
-      if (parseFloat(values.currentBalanceDepositAmount) > 0) {
+      if (parseFloat(values.currentBalanceDepositAmount) > 0.0) {
         mutations.push(
           DepositIntoCouncilCurrentAccount({
             variables: {
@@ -107,7 +107,9 @@ const MakeDepositForm = () => {
         )
       }
 
-      if (parseFloat(values.bussingPurseBalance) > 0) {
+      if (
+        parseFloat(values.bussingPurseBalance) !== council?.bussingPurseBalance
+      ) {
         mutations.push(
           DepositIntoCouncilBussingPurse({
             variables: {

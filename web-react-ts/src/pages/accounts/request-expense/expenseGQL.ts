@@ -6,16 +6,19 @@ export const EXPENSE_REQUEST = gql`
     $expenseAmount: Float!
     $expenseCategory: String!
     $description: String!
+    $accountType: String!
   ) {
     ExpenseRequest(
       councilId: $councilId
       expenseAmount: $expenseAmount
       expenseCategory: $expenseCategory
       description: $description
+      accountType: $accountType
     ) {
       id
       timestamp
       amount
+      account
       category
       description
       loggedBy {
@@ -42,6 +45,7 @@ export const DEBIT_BUSSING_PURSE = gql`
       id
       timestamp
       amount
+      account
       category
       description
       loggedBy {

@@ -35,6 +35,10 @@ const TransactionCard = ({
           <Col>{transaction?.loggedBy.fullName}</Col>
         </Row>
         <Row className="mb-3 d-flex align-items-center">
+          <Col className="text-secondary col-4">Account Involved</Col>
+          <Col>{transaction?.account}</Col>
+        </Row>
+        <Row className="mb-3 d-flex align-items-center">
           <Col className="text-secondary col-4">Amount</Col>
           <Col>
             <CurrencySpan
