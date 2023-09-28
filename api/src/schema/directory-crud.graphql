@@ -704,7 +704,7 @@ extend type Mutation {
     @auth(rules: [{ roles: ["adminCampus"] }])
     @cypher(
       statement: """
-      yd           MATCH (stream:Stream {id: $streamId})
+				    MATCH (stream:Stream {id: $streamId})
            	SET stream.name = $name,
             stream.bankAccount = $bankAccount
 
