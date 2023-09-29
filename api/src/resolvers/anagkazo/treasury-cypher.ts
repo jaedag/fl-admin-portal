@@ -74,7 +74,8 @@ const anagkazo = {
       `,
   imclDefaultersCount: `
     MATCH (this:Constituency {id: $constituencyId})-[:HAS]->(bacenta:Bacenta)-[:HAS]->(defaulters:Fellowship)
-    MATCH (defaulters)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)
+    MATCH (defaulters)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
+    WHERE date.date.week = date().week
     MATCH (record)<-[:ABSENT_FROM_SERVICE]-(absent:Member) WHERE NOT absent:Lost
         AND absent.imclChecked = false
     WITH defaulters, this, COUNT(absent) > 0 AS imclNotFilled
