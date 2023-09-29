@@ -76,7 +76,7 @@ const anagkazo = {
     MATCH (this:Constituency {id: $constituencyId})-[:HAS]->(bacenta:Bacenta)-[:HAS]->(defaulters:Fellowship)
     MATCH (defaulters)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)
     MATCH (record)<-[:ABSENT_FROM_SERVICE]-(absent:Member) WHERE NOT absent:Lost
-        WHERE absent.imclChecked = false
+        AND absent.imclChecked = false
     WITH defaulters, this, COUNT(absent) > 0 AS imclNotFilled
     RETURN COUNT(DISTINCT defaulters) as defaulters, imclNotFilled, collect(defaulters.name) AS defaultersNames
        `,
