@@ -85,6 +85,7 @@ export const roles: {
   Denomination: ['leads', 'isAdminFor'],
   HubFellowship: ['leads'],
   Hub: ['leads'],
+  HubCouncil: ['leads'],
   Ministry: ['leads', 'isAdminFor'],
   CreativeArts: ['leads', 'isAdminFor'],
 }

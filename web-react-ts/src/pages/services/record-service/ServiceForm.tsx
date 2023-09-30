@@ -31,7 +31,7 @@ type ServiceFormProps = {
   church: Church
   churchId: string
   churchType: ChurchLevel
-  recordType: 'RehearsalRecord' | 'MinistryAttendanceRecord' | 'ServiceRecord'
+  recordType?: 'RehearsalRecord' | 'MinistryAttendanceRecord' | 'ServiceRecord'
   RecordServiceMutation: MutationFunction
 }
 
