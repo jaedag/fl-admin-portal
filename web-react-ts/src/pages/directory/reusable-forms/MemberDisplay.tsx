@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { useQuery } from '@apollo/client'
 import Timeline from 'components/Timeline/Timeline'
 import MemberRoleList from 'components/MemberRoleList'
@@ -22,6 +22,8 @@ import { permitAdmin, permitLeader, permitSheepSeeker } from 'permission-utils'
 import { BarLoader } from 'react-spinners'
 import { FaPhone } from 'react-icons/fa'
 import { Whatsapp } from 'react-bootstrap-icons'
+import { ChurchContext } from 'contexts/ChurchContext'
+import { useNavigate } from 'react-router'
 
 const MemberDisplay = ({ memberId }: { memberId: string }) => {
   const {
@@ -46,6 +48,8 @@ const MemberDisplay = ({ memberId }: { memberId: string }) => {
       variables: { id: memberId },
     }
   )
+  const { clickCard } = useContext(ChurchContext)
+  const navigate = useNavigate()
   const errorToThrow: any = error
   throwToSentry(errorToThrow)
 
@@ -185,10 +189,17 @@ const MemberDisplay = ({ memberId }: { memberId: string }) => {
         )}
 
         <Col sm={12}>
-          <DetailsCard
-            heading="Fellowship"
-            detail={memberChurch?.fellowship?.name}
-          />
+          <div
+            onClick={() => {
+              clickCard(memberChurch?.fellowship)
+              navigate('/fellowship/displaydetails')
+            }}
+          >
+            <DetailsCard
+              heading="Fellowship"
+              detail={memberChurch?.fellowship?.name}
+            />
+          </div>
         </Col>
         {memberChurch?.basonta && (
           <Col>
