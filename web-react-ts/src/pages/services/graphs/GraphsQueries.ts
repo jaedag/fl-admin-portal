@@ -300,6 +300,7 @@ export const HUB_GRAPHS = gql`
         id
         createdAt
         attendance
+        income
         week
         serviceDate {
           date
@@ -334,6 +335,7 @@ export const MINISTRY_GRAPHS = gql`
       aggregateRehearsalRecords(limit: 4) {
         id
         attendance
+        income
         numberOfServices
         week
       }
@@ -366,6 +368,7 @@ export const CREATIVEARTS_GRAPHS = gql`
       aggregateRehearsalRecords(limit: 4) {
         id
         attendance
+        income
         numberOfServices
         week
       }

@@ -21,11 +21,11 @@ RETURN DISTINCT higherChurch
 `
 
 export const getCurrency = `
-MATCH (church {id: $churchId})<-[:HAS*0..5]-(campus:Campus)
+MATCH (church {id: $churchId})<-[:HAS|HAS_MINISTRY*0..5]-(campus:Campus)
 WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:Campus
 OR church:Hub OR church:Ministry OR church:CreativeArts
 
-RETURN campus.currency AS currency, campus.conversionRateToDollar AS conversionRateToDollar
+RETURN DISTINCT campus.name, campus.currency AS currency, campus.conversionRateToDollar AS conversionRateToDollar
 `
 
 export const absorbAllTransactions = `

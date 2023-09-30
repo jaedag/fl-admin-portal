@@ -120,6 +120,7 @@ const MembersGrid = (props) => {
                 roles={[
                   'sheepseekerStream',
                   ...permitLeaderAdmin('Fellowship'),
+                  ...permitLeaderAdmin('Hub'),
                 ]}
               >
                 <Link to="/member/addmember" className="just-text-btn">

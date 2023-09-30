@@ -189,7 +189,7 @@ const ServiceDetails = ({ service, church, loading }: ServiceDetailsProps) => {
                     </div>
                   </>
                 )}{' '}
-                {noBankingProof && church.__typename !== 'Hub' && (
+                {noBankingProof && (
                   <p className="fw-bold text-danger">
                     You Have Not Submitted Your Banking Slip!!!
                   </p>

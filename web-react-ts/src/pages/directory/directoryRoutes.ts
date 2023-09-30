@@ -337,12 +337,12 @@ export const directory: LazyRouteTypes[] = [
     path: '/directory',
     element: Directory,
     placeholder: true,
-    roles: permitMe('Fellowship'),
+    roles: [...permitMe('Fellowship'), ...permitMe('Hub')],
   },
   {
     path: '/directory/churches',
     element: Churches,
-    roles: permitMe('Fellowship'),
+    roles: [...permitMe('Fellowship'), ...permitMe('Hub')],
   },
   // Member Display and Edit Pages
   {
@@ -396,7 +396,7 @@ export const directory: LazyRouteTypes[] = [
   {
     path: '/member/displaydetails',
     element: DisplayMember,
-    roles: permitMe('Fellowship'),
+    roles: [...permitMe('Fellowship'), ...permitMe('Hub')],
     placeholder: true,
   },
   {
@@ -408,7 +408,11 @@ export const directory: LazyRouteTypes[] = [
   {
     path: '/member/addmember',
     element: CreateMember,
-    roles: [...permitLeaderAdmin('Fellowship'), ...permitSheepSeeker()],
+    roles: [
+      ...permitLeaderAdmin('Fellowship'),
+      ...permitSheepSeeker(),
+      ...permitLeaderAdmin('Hub'),
+    ],
     placeholder: true,
   },
   {

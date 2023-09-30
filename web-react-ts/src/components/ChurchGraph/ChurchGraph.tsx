@@ -41,6 +41,7 @@ const ChurchGraph = (props: ChurchGraphProps) => {
     income,
     swollenSunday,
   } = props
+  console.log('🚀 ~ file: ChurchGraph.tsx:44 ~ churchData:', churchData)
   const { clickCard } = useContext(ChurchContext)
   const navigate = useNavigate()
 

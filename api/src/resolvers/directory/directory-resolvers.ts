@@ -8,6 +8,7 @@ import {
   permitAdmin,
   permitLeaderAdmin,
   permitAdminArrivals,
+  permitLeader,
 } from '../permissions'
 import { RemoveServant } from './make-remove-servants'
 
@@ -28,7 +29,11 @@ const closeChurchCypher = require('../cypher/close-church-cypher')
 const directoryMutation = {
   CreateMember: async (object: any, args: Member, context: Context) => {
     isAuth(
-      [...permitSheepSeeker(), ...permitLeaderAdmin('Fellowship')],
+      [
+        ...permitSheepSeeker(),
+        ...permitLeaderAdmin('Fellowship'),
+        ...permitLeader('Hub'),
+      ],
       context?.auth.roles
     )
 

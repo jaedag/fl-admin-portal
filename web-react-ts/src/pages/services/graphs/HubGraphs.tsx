@@ -15,7 +15,8 @@ import CloudinaryImage from 'components/CloudinaryImage'
 
 export const HubGraphs = () => {
   const { hubId } = useContext(ChurchContext)
-  const [bussing, setBussing] = useState(true)
+  const [rehearsal, setRehearsal] = useState(true)
+  const [ministryMeeting, setMinistryMeeting] = useState(false)
   const { currentUser } = useContext(MemberContext)
 
   const [churchData, setChurchData] = useState<any[] | undefined>([])
@@ -23,7 +24,7 @@ export const HubGraphs = () => {
     variables: { hubId: hubId },
     onCompleted: (data) => {
       if (!setChurchData) return
-      setChurchData(getServiceGraphData(data?.hubs[0], 'bussing'))
+      setChurchData(getServiceGraphData(data?.hubs[0], 'rehearsal'))
     },
   })
 
@@ -56,7 +57,8 @@ export const HubGraphs = () => {
           </Col>
           <Col>
             <GraphDropdown
-              setBussing={setBussing}
+              setRehearsal={setRehearsal}
+              setMinistryMeeting={setMinistryMeeting}
               setChurchData={setChurchData}
               data={data?.hubs[0]}
             />
@@ -65,11 +67,11 @@ export const HubGraphs = () => {
         <Row className="mt-3">
           <Col>
             <StatDisplay
-              title={`Avg Weekly ${bussing ? 'Bussing' : 'Attendance'}`}
+              title={`Avg Weekly ${rehearsal ? 'Rehearsal' : 'Attendance'}`}
               statistic={getMonthlyStatAverage(churchData, 'attendance')}
             />
           </Col>
-          {((!bussing && !currentUser.noIncomeTracking) || loading) && (
+          {((!rehearsal && !currentUser.noIncomeTracking) || loading) && (
             <Col>
               <StatDisplay
                 title="Avg Weekly Income"
@@ -82,10 +84,9 @@ export const HubGraphs = () => {
         {!currentUser.noIncomeTracking ? (
           <ChurchGraph
             stat1="attendance"
-            stat2={!bussing ? 'income' : null}
+            stat2={ministryMeeting ? null : 'income'}
             churchData={churchData || []}
             church="hub"
-            bussing={bussing}
             income={true}
           />
         ) : (
@@ -94,7 +95,6 @@ export const HubGraphs = () => {
             stat2={null}
             churchData={churchData || []}
             church="hub"
-            bussing={bussing}
             income={false}
           />
         )}

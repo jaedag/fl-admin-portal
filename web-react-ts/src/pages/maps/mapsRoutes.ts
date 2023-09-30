@@ -1,5 +1,5 @@
 import { LazyRouteTypes } from 'global-types'
-import { permitLeaderAdminArrivals } from 'permission-utils'
+import { permitMe } from 'permission-utils'
 import { lazy } from 'react'
 
 const Maps = lazy(() => import('pages/maps/Maps'))
@@ -16,6 +16,6 @@ export const maps: LazyRouteTypes[] = [
     path: '/maps/view-maps',
     element: ViewMaps,
     placeholder: false,
-    roles: permitLeaderAdminArrivals('Fellowship'),
+    roles: [...permitMe('Fellowship'), ...permitMe('Hub')],
   },
 ]
