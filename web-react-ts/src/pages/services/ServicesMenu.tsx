@@ -45,6 +45,15 @@ const Services = () => {
                 noCaption
               />
             )}
+          {churchType === 'Hub' && church?.vacationStatus === 'Active' && (
+            <MenuButton
+              iconComponent={Book}
+              title="Fill Forms"
+              color="members"
+              onClick={() => navigate(`/services/hub`)}
+              noCaption
+            />
+          )}
           {churchType === 'Bacenta' && (
             <MenuButton
               iconComponent={Book}
@@ -104,6 +113,7 @@ const Services = () => {
                 />
               </>
             )}
+
           {church?.bankAccount === 'manual' &&
             church.__typename === 'Stream' && (
               <>

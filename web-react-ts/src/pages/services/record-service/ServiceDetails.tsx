@@ -255,7 +255,7 @@ const ServiceDetails = ({ service, church, loading }: ServiceDetailsProps) => {
           {service?.noServiceReason && (
             <Card>
               <Card.Body>
-                <div>{`Cancelled Service was held on ${new Date(
+                <div>{`Service Cancelled on ${new Date(
                   service?.serviceDate.date
                 ).toDateString()}`}</div>
                 <div>{`Reason: ${service?.noServiceReason}`}</div>

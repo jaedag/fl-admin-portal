@@ -1,10 +1,11 @@
 export const checkFormFilledThisWeek = `
 MATCH (church {id: $churchId})
 WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream 
+OR church:Hub
 
-OPTIONAL MATCH (church)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
-WHERE date(date.date).week = date().week AND date(date.date).year = date().year
-        
+OPTIONAL MATCH (church)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(record)-[:SERVICE_HELD_ON]->(date:TimeGraph)
+WHERE date(date.date).week = date().week AND date(date.date).year = date().year AND (record:ServiceRecord OR record:RehearsalRecord)
+
 RETURN church.id AS id, church.name AS name, labels(church) AS labels, record IS NOT NULL AS alreadyFilled
 `
 
@@ -94,7 +95,7 @@ SET serviceRecord.id = apoc.create.uuid(),
 serviceRecord.noServiceReason = $noServiceReason
 
 WITH serviceRecord
-MATCH (church {id: $churchId}) WHERE church:Fellowship OR church:Hub
+MATCH (church {id: $churchId}) WHERE church:Fellowship
 MATCH (church)-[:CURRENT_HISTORY]->(log:ServiceLog)
 MATCH (leader:Active:Member {auth_id: $auth.jwt.sub})
 

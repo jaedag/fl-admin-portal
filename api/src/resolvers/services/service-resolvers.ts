@@ -19,6 +19,7 @@ import {
   getHigherChurches,
   aggregateServiceDataForHub,
 } from './service-cypher'
+import { recordCancelledService as cancelRehearsal } from './rehearsal-cypher'
 import { getServiceHigherChurches } from './service-utils'
 import { HigherChurches } from '../utils/types'
 
@@ -257,8 +258,14 @@ const serviceMutation = {
       throw new Error(errorMessage.vacation_cannot_fill_service)
     }
 
+    let cypher = recordCancelledService
+
+    if (serviceCheck.labels?.includes('Hub')) {
+      cypher = cancelRehearsal
+    }
+
     const cypherResponse = await session.executeWrite((tx) =>
-      tx.run(recordCancelledService, {
+      tx.run(cypher, {
         ...args,
         auth: context.auth,
       })
@@ -267,6 +274,10 @@ const serviceMutation = {
     await session.close()
 
     const serviceDetails = rearrangeCypherObject(cypherResponse)
+    console.log(
+      '🚀 ~ file: service-resolvers.ts:270 ~ serviceDetails:',
+      serviceDetails
+    )
 
     return serviceDetails.serviceRecord.properties
   },

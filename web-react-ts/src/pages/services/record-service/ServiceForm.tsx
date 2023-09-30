@@ -128,7 +128,7 @@ const ServiceForm = ({
 
         if (recordType === 'RehearsalRecord') {
           clickCard(res.data.RecordHubRehearsalService)
-          navigate(`/hub/rehearsal-service-details`)
+          navigate(`/hub/service-details`)
         } else {
           clickCard(res.data.RecordService)
           navigate(`/${churchType.toLowerCase()}/service-details`)

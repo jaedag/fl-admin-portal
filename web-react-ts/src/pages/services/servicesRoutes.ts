@@ -30,6 +30,9 @@ const FellowshipServiceCancelled = lazy(
 const FellowshipServiceDetails = lazy(
   () => import('pages/services/record-service/FellowshipServiceDetails')
 )
+const HubRehearsalCancelled = lazy(
+  () => import('pages/services/record-service/HubRehearsalCancelled')
+)
 const HubRehearsalService = lazy(
   () => import('pages/services/record-service/HubRehearsalService')
 )
@@ -167,13 +170,21 @@ export const services: LazyRouteTypes[] = [
   {
     path: '/services',
     element: ServicesMenu,
-    roles: [...permitLeaderAdmin('Fellowship'), ...permitTellerStream()],
+    roles: [
+      ...permitLeaderAdmin('Fellowship'),
+      ...permitTellerStream(),
+      ...permitLeader('Hub'),
+    ],
     placeholder: true,
   },
   {
     path: '/services/church-list',
     element: ServicesChurchList,
-    roles: [...permitLeaderAdmin('Fellowship'), ...permitTellerStream()],
+    roles: [
+      ...permitLeaderAdmin('Fellowship'),
+      ...permitTellerStream(),
+      ...permitLeader('Hub'),
+    ],
     placeholder: true,
   },
   {
@@ -359,13 +370,19 @@ export const graphs: LazyRouteTypes[] = [
     placeholder: false,
   },
   {
+    path: '/hub/cancel-rehearsal',
+    element: HubRehearsalCancelled,
+    roles: permitLeaderAdmin('Hub'),
+    placeholder: true,
+  },
+  {
     path: '/hub/record-sundayservice',
     element: HubSundayMeeting,
     roles: permitLeaderAdmin('Hub'),
     placeholder: false,
   },
   {
-    path: '/hub/rehearsal-service-details',
+    path: '/hub/service-details',
     element: HubRehearsalServiceDetails,
     roles: permitLeaderAdmin('Hub'),
     placeholder: false,

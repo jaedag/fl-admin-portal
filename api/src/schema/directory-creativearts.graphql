@@ -206,6 +206,15 @@ type Hub {
   name: String!
   leader: Member @relationship(type: "LEADS", direction: IN)
   history: [HistoryLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
+  vacationStatus: String!
+    @cypher(
+      statement: """
+      MATCH (this)
+      UNWIND labels(this) AS status
+      WITH status WHERE status = 'Active' OR status = 'Vacation' OR status = 'Online'
+      RETURN status
+      """
+    )
   hubFellowships: [Fellowship!]! @relationship(type: "HAS", direction: OUT)
   ministry: Ministry @relationship(type: "HAS", direction: IN)
   serviceLogs: [ServiceLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
@@ -492,7 +501,7 @@ extend type Mutation {
     )
     @cypher(
       statement: """
-      CREATE (hub:Hub {name: $name})
+      CREATE (hub:Active:Hub {name: $name})
         SET hub.id = apoc.create.uuid()
 
       WITH hub

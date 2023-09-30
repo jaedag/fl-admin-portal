@@ -37,7 +37,11 @@ export const menuItems: MenuItem[] = [
   {
     name: 'Services',
     to: '/services/church-list',
-    roles: [...permitLeaderAdmin('Fellowship'), ...permitTellerStream()],
+    roles: [
+      ...permitLeaderAdmin('Fellowship'),
+      ...permitTellerStream(),
+      ...permitLeaderAdmin('Hub'),
+    ],
   },
   {
     name: 'Arrivals',
@@ -61,7 +65,10 @@ export const menuItems: MenuItem[] = [
   {
     name: 'Maps',
     to: '/maps',
-    roles: permitLeaderAdminArrivals('Fellowship'),
+    roles: [
+      ...permitLeaderAdminArrivals('Fellowship'),
+      ...permitLeaderAdmin('Hub'),
+    ],
   },
 ]
 

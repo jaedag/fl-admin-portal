@@ -94,6 +94,24 @@ MERGE (treasurer)-[:WAS_TREASURER_FOR]->(rehearsalRecord)
 RETURN rehearsalRecord
 `
 
+export const recordCancelledService = `
+CREATE (serviceRecord:RehearsalRecord:NoService {createdAt:datetime()})
+SET serviceRecord.id = apoc.create.uuid(),
+serviceRecord.noServiceReason = $noServiceReason
+
+WITH serviceRecord
+MATCH (church {id: $churchId}) WHERE church:Hub
+MATCH (church)-[:CURRENT_HISTORY]->(log:ServiceLog)
+MATCH (leader:Active:Member {auth_id: $auth.jwt.sub})
+
+MERGE (serviceDate:TimeGraph {date: date($serviceDate)})
+MERGE (serviceRecord)-[:LOGGED_BY]->(leader)
+MERGE (serviceRecord)-[:SERVICE_HELD_ON]->(serviceDate)
+MERGE (log)-[:HAS_SERVICE]->(serviceRecord)
+
+RETURN serviceRecord
+`
+
 export const aggregateServiceDataForHub = `
     MATCH (fellowship:HubFellowship {id: $churchId})
     WITH fellowship as lowerChurch

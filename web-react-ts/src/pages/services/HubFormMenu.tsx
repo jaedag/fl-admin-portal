@@ -1,9 +1,10 @@
 import MenuButton from 'components/buttons/MenuButton'
+import HeadingSecondary from 'components/HeadingSecondary'
 import PlaceholderCustom from 'components/Placeholder'
 import { MemberContext } from 'contexts/MemberContext'
 import React, { useContext } from 'react'
 import { Container } from 'react-bootstrap'
-import { PencilSquare } from 'react-bootstrap-icons'
+import { PencilSquare, X } from 'react-bootstrap-icons'
 import { useNavigate } from 'react-router'
 
 const HubFormMenu = () => {
@@ -21,6 +22,7 @@ const HubFormMenu = () => {
         </PlaceholderCustom>
 
         <div className="d-grid gap-2 mt-5 text-left">
+          <HeadingSecondary>Rehearsals</HeadingSecondary>
           <MenuButton
             iconComponent={PencilSquare}
             title="Fill Rehearsals Form"
@@ -29,9 +31,19 @@ const HubFormMenu = () => {
             noCaption
           />
           <MenuButton
+            iconComponent={X}
+            title="Cancel Rehearsal"
+            color="red"
+            onClick={() => navigate(`/hub/cancel-rehearsal`)}
+            noCaption
+          />
+
+          <hr />
+          <HeadingSecondary>Weekend Ministry Meeting</HeadingSecondary>
+          <MenuButton
             iconComponent={PencilSquare}
             title="Fill Sunday Meeting Form"
-            color="members"
+            color="green"
             onClick={() => navigate(`/hub/record-sundayservice`)}
             noCaption
           />
