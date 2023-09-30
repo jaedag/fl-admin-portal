@@ -1,5 +1,4 @@
 extend type Member {
-
   leadscreativeArt: [CreativeArts!]!
     @relationship(type: "LEADS", direction: OUT)
   leadsHub: [Hub!]! @relationship(type: "LEADS", direction: OUT)
@@ -829,16 +828,36 @@ type RehearsalRecord implements Record
       """
     )
   attendance: Int
+  income: Float
+  cash: Float
+  onlineGiving: Float
+  numberOfTithers: Int
+  foreignCurrency: String
   familyPicture: String
+  treasurerSelfie: String
+  bankingSlip: String
+  bankingSlipUploader: Member
+    @relationship(type: "UPLOADED_SLIP_FOR", direction: IN)
+  transactionId: ID #deprecated
+  treasurers: [Member!]! @relationship(type: "WAS_TREASURER_FOR", direction: IN)
   serviceLog: ServiceLog! @relationship(type: "HAS_SERVICE", direction: IN)
   noServiceReason: String
   stream_name: String
     @cypher(
       statement: """
       MATCH (this)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(church)
-      WHERE church:HubFellowship
+      WHERE church:Fellowship OR church:Constituency OR church:Council OR church:Stream
       MATCH (church)<-[:HAS*1..4]-(stream:Stream)
       RETURN stream.name
+      """
+    )
+  bankedBy: Member
+    @cypher(
+      statement: """
+      MATCH (this)
+      WHERE NOT  (this:NoService)
+      MATCH (this)<-[:CONFIRMED_BANKING_FOR | :UPLOADED_SLIP_FOR | :OFFERING_BANKED_BY]-(member:Member)
+      RETURN member
       """
     )
 }
@@ -855,6 +874,11 @@ extend type Mutation {
     churchId: ID!
     serviceDate: String!
     attendance: Int!
+    income: Float!
+    foreignCurrency: String
+    numberOfTithers: Int
+    treasurers: [ID]!
+    treasurerSelfie: String!
     familyPicture: String!
   ): RehearsalRecord!
 }

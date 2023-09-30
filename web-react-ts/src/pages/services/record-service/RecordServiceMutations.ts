@@ -140,33 +140,46 @@ export const RECORD_SERVICE_NO_INCOME = gql`
   }
 `
 
-export const RECORD_HUBFELLOWSHIP_REHEARSAL_SERVICE = gql`
-  mutation RecordHubFellowshipRehearsalService(
+export const RECORD_HUB_REHEARSAL_SERVICE = gql`
+  mutation RecordHubRehearsalService(
     $churchId: ID!
-    $attendance: Int!
-    $familyPicture: String!
     $serviceDate: String!
+    $attendance: Int!
+    $income: Float!
+    $foreignCurrency: String
+    $numberOfTithers: Int!
+    $treasurers: [ID]!
+    $treasurerSelfie: String!
+    $familyPicture: String!
   ) {
     RecordHubRehearsalService(
       churchId: $churchId
-      attendance: $attendance
-      familyPicture: $familyPicture
       serviceDate: $serviceDate
+      attendance: $attendance
+      income: $income
+      foreignCurrency: $foreignCurrency
+      numberOfTithers: $numberOfTithers
+      treasurers: $treasurers
+      treasurerSelfie: $treasurerSelfie
+      familyPicture: $familyPicture
     ) {
       id
       week
+      attendance
+      income
+      onlineGiving
     }
   }
 `
 
-export const RECORD_HUBFELLOWSHIP_SUNDAY_MEETING = gql`
-  mutation RecordHubFellowshipSundayMeeting(
+export const RECORD_HUB_SUNDAY_MEETING = gql`
+  mutation RecordHubSundayMeeting(
     $churchId: ID!
     $serviceDate: String!
     $attendance: Int!
     $familyPicture: String!
   ) {
-    RecordHubFellowshipSundayAttendance(
+    RecordHubSundayAttendance(
       churchId: $churchId
       serviceDate: $serviceDate
       attendance: $attendance
@@ -338,28 +351,53 @@ export const DISPLAY_HUBFELLOWSHIP_SUNDAY_MEETING = gql`
   }
 `
 
-export const DISPLAY_HUBFELLOWSHIP_REHEARSAL = gql`
-  query hubfellowshipDisplayRehearsalRecords(
-    $serviceId: ID!
-    $hubfellowshipId: ID!
-  ) {
+export const DISPLAY_HUB_REHEARSAL = gql`
+  query hubDisplayRehearsalRecords($serviceId: ID!, $hubId: ID!) {
     rehearsalRecords(where: { id: $serviceId }) {
       id
       createdAt
-      serviceDate {
-        date
-      }
-      attendance
-      familyPicture
-      week
       created_by {
         id
         firstName
         lastName
         fullName
       }
+      serviceDate {
+        date
+      }
+      noServiceReason
+      attendance
+      income
+      cash
+      onlineGiving
+      numberOfTithers
+      foreignCurrency
+      transactionId
+      treasurerSelfie
+      familyPicture
+      bankingProof
+      bankingSlip
+      bankingSlipUploader {
+        id
+        firstName
+        lastName
+        fullName
+      }
+      offeringBankedBy {
+        id
+        firstName
+        lastName
+        fullName
+      }
+
+      treasurers {
+        id
+        firstName
+        lastName
+        fullName
+      }
     }
-    hubFellowships(where: { id: $hubfellowshipId }) {
+    hubs(where: { id: $hubId }) {
       id
       name
     }

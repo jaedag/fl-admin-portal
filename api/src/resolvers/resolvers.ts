@@ -12,7 +12,7 @@ import campaignsResolvers from './campaigns/campaigns-resolver'
 import campaignMutations from './campaigns/campaign-mutations'
 import { accountsMutations } from './accounts/accounts-resolvers'
 import { mapsResolvers } from './maps/maps-resolvers'
-import HubFellowshipServiceMutation from './services/hub-fellowship-service-resolver'
+import HubFellowshipServiceMutation from './services/rehearsal-resolver'
 import { Context } from './utils/neo4j-types'
 import MakeServantResolvers from './directory/make-servant-resolvers'
 

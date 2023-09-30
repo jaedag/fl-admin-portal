@@ -20,6 +20,7 @@ import {
   aggregateServiceDataForHub,
 } from './service-cypher'
 import { getServiceHigherChurches } from './service-utils'
+import { HigherChurches } from '../utils/types'
 
 const errorMessage = require('../texts.json').error
 
@@ -57,14 +58,6 @@ export const checkServantHasCurrentHistory = async (
       await session.executeRead((tx) =>
         tx.run(getServantAndChurchCypher, { churchId: args.churchId })
       )
-    )
-    console.log(
-      '🚀 ~ file: service-resolvers.ts:61 ~  args.churchId:',
-      args.churchId
-    )
-    console.log(
-      '🚀 ~ file: service-resolvers.ts:63 ~ getServantAndChurch:',
-      getServantAndChurch
     )
 
     if (Object.keys(getServantAndChurch).length === 0) {
@@ -126,7 +119,7 @@ const serviceMutation = {
       const currencyCheck = rearrangeCypherObject(serviceCheckRes[1])
       const higherChurches = getServiceHigherChurches(
         serviceCheckRes[2]?.records
-      )
+      ) as HigherChurches
 
       if (
         serviceCheck.alreadyFilled &&
@@ -143,7 +136,7 @@ const serviceMutation = {
       let aggregateCypher = ''
 
       if (higherChurches?.bacenta) {
-        aggregateCypher = higherChurches.bacenta.cypher
+        aggregateCypher = higherChurches.bacenta?.cypher
       } else if (higherChurches?.constituency) {
         aggregateCypher = higherChurches.constituency.cypher
       } else if (higherChurches?.council) {

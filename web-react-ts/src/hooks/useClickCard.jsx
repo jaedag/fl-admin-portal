@@ -52,7 +52,13 @@ const useClickCard = () => {
     sessionStorage.getItem('multiplicationRecordId') ?? ''
   )
 
+  const [hubFellowshipId, setHubFellowshipId] = useState(
+    sessionStorage.getItem('hubFellowshipId') ?? ''
+  )
   const [hubId, setHubId] = useState(sessionStorage.getItem('hubId') ?? '')
+  const [hubCouncilId, setHubCouncilId] = useState(
+    sessionStorage.getItem('hubCouncilId') ?? ''
+  )
   const [ministryId, setMinistryId] = useState(
     sessionStorage.getItem('ministryId') ?? ''
   )
@@ -343,14 +349,24 @@ const useClickCard = () => {
         sessionStorage.setItem('memberId', card.id)
         break
 
+      case 'HubFellowship':
+        setHubFellowshipId(card.id)
+        sessionStorage.setItem('hubFellowshipId', card.id)
+        break
+
       case 'Hub':
         setHubId(card.id)
         sessionStorage.setItem('hubId', card.id)
+        break
+      case 'HubCouncil':
+        setHubCouncilId(card.id)
+        sessionStorage.setItem('hubCouncilId', card.id)
         break
       case 'Ministry':
         setMinistryId(card.id)
         sessionStorage.setItem('ministryId', card.id)
         break
+
       case 'CreativeArts':
         setCreativeArtsId(card.id)
         sessionStorage.setItem('creativeArtsId', card.id)
@@ -436,7 +452,9 @@ const useClickCard = () => {
     constituencyId,
     bacentaId,
     fellowshipId,
+    hubFellowshipId,
     hubId,
+    hubCouncilId,
     ministryId,
     creativeArtsId,
     bussingRecordId,
@@ -454,7 +472,9 @@ const useClickCard = () => {
     setStreamId,
     setCouncilId,
     setConstituencyId,
+    setHubFellowshipId,
     setHubId,
+    setHubCouncilId,
     setMinistryId,
     setCreativeArtsId,
     setArrivalDate,

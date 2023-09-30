@@ -11,7 +11,8 @@ RETURN church.id AS id, church.name AS name, labels(church) AS labels, record IS
 export const getHigherChurches = `
 MATCH (church {id: $churchId})
 WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream
-MATCH (church)<-[:HAS*1..7]-(higherChurch) 
+OR church:Hub OR church:Ministry OR church:CreativeArts
+MATCH (church)<-[:HAS*1..7]-(higherChurch)
 WHERE higherChurch:Bacenta OR higherChurch:Constituency OR higherChurch:Council OR higherChurch:Stream OR higherChurch:Campus OR higherChurch:Oversight OR higherChurch:Denomination
 OR higherChurch:Hub OR higherChurch:Ministry OR higherChurch:CreativeArts
 
@@ -21,6 +22,7 @@ RETURN DISTINCT higherChurch
 export const getCurrency = `
 MATCH (church {id: $churchId})<-[:HAS*0..5]-(campus:Campus)
 WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:Campus
+OR church:Hub OR church:Ministry OR church:CreativeArts
 
 RETURN campus.currency AS currency, campus.conversionRateToDollar AS conversionRateToDollar
 `

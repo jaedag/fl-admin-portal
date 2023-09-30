@@ -1,4 +1,10 @@
-import { HigherChurches } from '../utils/types'
+import { HigherChurches, SontaHigherChurches } from '../utils/types'
+import {
+  aggregateHubRehearsalDataForCreativeArts,
+  aggregateHubRehearsalDataForMinistry,
+  aggregateMinistryMeetingDataForCreativeArts,
+  aggregateMinistryMeetingDataForMinistry,
+} from './rehearsal-cypher'
 import {
   aggregateServiceDataForBacenta,
   aggregateServiceDataForCampus,
@@ -11,6 +17,7 @@ import {
 
 export const getServiceHigherChurches = (records: any) => {
   const higherChurches: HigherChurches = {}
+  const sontaHigherChurches: SontaHigherChurches = {}
 
   records?.map((record: any) => {
     if (record?.get('higherChurch').labels.includes('Bacenta')) {
@@ -76,8 +83,41 @@ export const getServiceHigherChurches = (records: any) => {
       }
     }
 
+    if (record?.get('higherChurch').labels.includes('HubCouncil')) {
+      sontaHigherChurches.hubCouncil = {
+        typename: 'HubCouncil',
+        labels: record?.get('higherChurch').labels,
+        properties: record.get('higherChurch').properties,
+        rehearsalCypher: aggregateHubRehearsalDataForMinistry,
+        ministryMeetingCypher: aggregateMinistryMeetingDataForMinistry,
+      }
+    }
+    if (record?.get('higherChurch').labels.includes('Ministry')) {
+      sontaHigherChurches.ministry = {
+        typename: 'Ministry',
+        labels: record?.get('higherChurch').labels,
+        properties: record.get('higherChurch').properties,
+        rehearsalCypher: aggregateHubRehearsalDataForMinistry,
+        ministryMeetingCypher: aggregateMinistryMeetingDataForMinistry,
+      }
+    }
+
+    if (record?.get('higherChurch').labels.includes('CreativeArts')) {
+      sontaHigherChurches.creativeArts = {
+        typename: 'CreativeArts',
+        labels: record?.get('higherChurch').labels,
+        properties: record.get('higherChurch').properties,
+        rehearsalCypher: aggregateHubRehearsalDataForCreativeArts,
+        ministryMeetingCypher: aggregateMinistryMeetingDataForCreativeArts,
+      }
+    }
+
     return null
   })
+
+  if (Object.keys(sontaHigherChurches).length > 0) {
+    return sontaHigherChurches
+  }
 
   return higherChurches
 }

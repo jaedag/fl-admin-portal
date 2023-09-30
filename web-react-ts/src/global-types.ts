@@ -31,6 +31,7 @@ export type ChurchLevel =
   | 'HubFellowship'
   | 'Ministry'
   | 'Hub'
+  | 'HubCouncil'
   | 'CreativeArts'
 
 export type ChurchLevelLower =

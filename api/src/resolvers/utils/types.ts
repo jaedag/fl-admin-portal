@@ -160,13 +160,20 @@ export type ServiceRecord = {
   }
 }
 
-type HigherChurchesForAgggregation = {
+interface ChurchesForAggregateion {
   typename: string
   labels: string[]
   properties: {
     [key: string]: string | number | boolean | string[]
   }
+}
+interface HigherChurchesForAgggregation extends ChurchesForAggregateion {
   cypher: string
+}
+
+interface SontaHigherChurchesForAgggregation extends ChurchesForAggregateion {
+  rehearsalCypher: string
+  ministryMeetingCypher: string
 }
 
 export type HigherChurches = {
@@ -180,7 +187,8 @@ export type HigherChurches = {
 }
 
 export type SontaHigherChurches = {
-  hub: HigherChurchesForAgggregation
-  ministry: HigherChurchesForAgggregation
-  creativeArts: HigherChurchesForAgggregation
+  hub?: SontaHigherChurchesForAgggregation
+  hubCouncil?: SontaHigherChurchesForAgggregation
+  ministry?: SontaHigherChurchesForAgggregation
+  creativeArts?: SontaHigherChurchesForAgggregation
 }

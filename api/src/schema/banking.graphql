@@ -28,6 +28,34 @@ extend type Mutation {
     )
 }
 
+extend type RehearsalRecord {
+  offeringBankedBy: Member
+    @relationship(type: "OFFERING_BANKED_BY", direction: OUT)
+  sourceNumber: String
+  sourceNetwork: String
+  desc: String
+  transactionTime: DateTime
+}
+
+extend type RehearsalRecord {
+  transactionTime: DateTime
+  transactionReference: ID
+  transactionOTP: String
+  transactionStatus: String
+  transactionError: String
+  confirmedBy: ID!
+  bankingProof: Boolean
+    @cypher(
+      statement: """
+      MATCH (this)
+      WITH this WHERE this.bankingSlip IS NOT NULL
+      OR  this.transactionStatus = 'success'
+      OR this.tellerConfirmationTime IS NOT NULL
+      RETURN true
+      """
+    )
+}
+
 extend type ServiceRecord {
   # Self Banking Properties
   offeringBankedBy: Member

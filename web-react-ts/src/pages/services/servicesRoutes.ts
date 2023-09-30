@@ -31,7 +31,7 @@ const FellowshipServiceDetails = lazy(
   () => import('pages/services/record-service/FellowshipServiceDetails')
 )
 const HubRehearsalService = lazy(
-  () => import('pages/services/record-service/HubFellowshipRehearsalService')
+  () => import('pages/services/record-service/HubRehearsalService')
 )
 const HubSundayMeeting = lazy(
   () => import('pages/services/record-service/HubFellowshipSundayMeeting')

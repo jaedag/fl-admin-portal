@@ -23,9 +23,7 @@ type ServiceFormProps = {
 
 type FormOptions = {
   serviceDate: string
-
   attendance: string
-
   familyPicture: string
 }
 
@@ -62,34 +60,34 @@ const ServiceForm = ({
     ),
   })
 
-  const onSubmit = (
+  const onSubmit = async (
     values: FormOptions,
     onSubmitProps: FormikHelpers<FormOptions>
   ) => {
-    onSubmitProps.setSubmitting(true)
-    RecordServiceMutation({
-      variables: {
-        churchId: churchId,
-        serviceDate: values.serviceDate,
-        attendance: parseInt(values.attendance),
-        familyPicture: values.familyPicture,
-      },
-    })
-      .then((res) => {
-        onSubmitProps.setSubmitting(false)
-        onSubmitProps.resetForm()
-        if (recordType === 'RehearsalRecord') {
-          clickCard(res.data.RecordSontaRehearsalService)
-          navigate(`/sonta/rehearsal-service-details`)
-        } else if (recordType === 'MinistryAttendanceRecord') {
-          clickCard(res.data.RecordSontaSundayMeeting)
-          navigate(`/sonta/sunday-meeting-details`)
-        } else {
-          clickCard(res.data.RecordServiceNoIncome)
-          navigate(`/${churchType}/service-details`)
-        }
+    const { setSubmitting } = onSubmitProps
+    setSubmitting(true)
+    try {
+      const res = await RecordServiceMutation({
+        variables: {
+          churchId: churchId,
+          serviceDate: values.serviceDate,
+          attendance: parseInt(values.attendance),
+          familyPicture: values.familyPicture,
+        },
       })
-      .catch((error) => throwToSentry('', error))
+
+      if (recordType === 'MinistryAttendanceRecord') {
+        clickCard(res.data.RecordSontaSundayMeeting)
+        navigate(`/sonta/sunday-meeting-details`)
+      } else {
+        clickCard(res.data.RecordServiceNoIncome)
+        navigate(`/${churchType}/service-details`)
+      }
+    } catch (error) {
+      throwToSentry('', error)
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   return (

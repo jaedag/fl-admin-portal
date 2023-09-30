@@ -157,6 +157,7 @@ extend type Hub {
       RETURN aggregate ORDER BY aggregate.year, aggregate.week DESC LIMIT $limit
       """
     )
+    
 }
 
 extend type Ministry {

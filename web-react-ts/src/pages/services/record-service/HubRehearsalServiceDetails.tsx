@@ -1,18 +1,16 @@
 import React, { useContext } from 'react'
 import { ChurchContext } from '../../../contexts/ChurchContext'
-
 import { useQuery } from '@apollo/client'
-import { DISPLAY_HUBFELLOWSHIP_REHEARSAL } from './RecordServiceMutations'
+import { DISPLAY_HUB_REHEARSAL } from './RecordServiceMutations'
 import { ServiceContext } from 'contexts/ServiceContext'
-
 import ServiceDetails from './ServiceDetails'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 
 const HubFellowshipRehearsalServiceDetails = () => {
-  const { hubfellowshipId } = useContext(ChurchContext)
+  const { hubId } = useContext(ChurchContext)
   const { serviceRecordId } = useContext(ServiceContext)
-  const { data, loading, error } = useQuery(DISPLAY_HUBFELLOWSHIP_REHEARSAL, {
-    variables: { serviceId: serviceRecordId, hubfellowshipId: hubfellowshipId },
+  const { data, loading, error } = useQuery(DISPLAY_HUB_REHEARSAL, {
+    variables: { serviceId: serviceRecordId, hubId },
   })
 
   return (
@@ -20,7 +18,7 @@ const HubFellowshipRehearsalServiceDetails = () => {
       <ServiceDetails
         loading={loading}
         service={data?.rehearsalRecords[0]}
-        church={data?.hubfellowships[0]}
+        church={data?.hubs[0]}
       />
     </ApolloWrapper>
   )

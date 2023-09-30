@@ -73,9 +73,13 @@ SET tran.account = '??'
 RETURN tran;
 
 
-MATCH (record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
+MATCH (record:RehearsalRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
 WHERE date.date.week = date().week AND date.date.year = date().year
 DETACH DELETE record
 
 MATCH (record:ServiceRecord {id: "28b2d549-f4c3-49d0-b994-89399375f125"})
 DETACH  DELETE record
+
+MATCH (record {id: "9c55a9b4-5d44-4dd2-a4fe-9de8ddc9f5b8"})
+
+RETURN record
