@@ -1,7 +1,6 @@
 import React, { useContext } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import DetailsCard from '../card/DetailsCard'
-import { ChurchContext } from '../../contexts/ChurchContext'
 import Timeline, { TimelineElement } from '../Timeline/Timeline'
 import EditButton from '../buttons/EditButton'
 import ChurchButton from '../buttons/ChurchButton/ChurchButton'
@@ -17,7 +16,6 @@ import useSetUserChurch from 'hooks/useSetUserChurch'
 import { Church, ChurchLevel, MemberWithoutBioData, Role } from 'global-types'
 import { BacentaWithArrivals } from 'pages/arrivals/arrivals-types'
 import { directoryLock, plural, throwToSentry } from 'global-utils'
-import CloudinaryImage from 'components/CloudinaryImage'
 import { useMutation } from '@apollo/client'
 import {
   MAKE_CREATIVEARTS_ADMIN,
@@ -31,6 +29,7 @@ import { PencilSquare } from 'react-bootstrap-icons'
 import useModal from 'hooks/useModal'
 import SearchMember from 'components/formik/SearchMember'
 import SubmitButton from 'components/formik/SubmitButton'
+import LeaderAvatar from 'components/LeaderAvatar/LeaderAvatar'
 
 type DisplayChurchDetailsProps = {
   details: {
@@ -87,7 +86,6 @@ const DisplaySontaDetails = (props: DisplayChurchDetailsProps) => {
       break
   }
 
-  const { clickCard } = useContext(ChurchContext)
   const htmlElement = document.querySelector('html')
   const currentTheme = htmlElement?.getAttribute('data-bs-theme') || 'dark'
   const { currentUser } = useContext(MemberContext)
@@ -210,42 +208,7 @@ const DisplaySontaDetails = (props: DisplayChurchDetailsProps) => {
         </Container>
       </div>
       <Container>
-        <Link
-          to="/member/displaydetails"
-          onClick={() => {
-            clickCard(props.leader)
-          }}
-        >
-          <Row className="my-2">
-            <Col xs="auto">
-              <PlaceholderCustom
-                className="img-search-placeholder"
-                as="div"
-                xs={12}
-                loading={props.loading}
-              >
-                <CloudinaryImage
-                  src={props.leader?.pictureUrl}
-                  className="img-search-placeholder"
-                />
-              </PlaceholderCustom>
-            </Col>
-            <Col>
-              <PlaceholderCustom loading={props.loading} as="span" xs={12}>
-                <span className={`card-heading text-secondary text-truncate`}>
-                  {props.leaderTitle}
-                </span>
-              </PlaceholderCustom>
-              <PlaceholderCustom loading={props.loading} as="h2" xs={12}>
-                <div className="d-flex justify-content-between">
-                  <h2 className={`card-detail`}>
-                    {props.leader?.nameWithTitle}
-                  </h2>
-                </div>
-              </PlaceholderCustom>
-            </Col>
-          </Row>
-        </Link>
+        <LeaderAvatar leader={props.leader} leaderTitle={props.leaderTitle} />
         {/* details section */}
         {props.details?.length && (
           <Row>

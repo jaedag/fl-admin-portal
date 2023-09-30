@@ -11,7 +11,7 @@ import { Col, Container, Row } from 'react-bootstrap'
 import { ChurchContext } from 'contexts/ChurchContext'
 import GraphDropdown from './GraphDropdown'
 import { MemberContext } from 'contexts/MemberContext'
-import CloudinaryImage from 'components/CloudinaryImage'
+import LeaderAvatar from 'components/LeaderAvatar/LeaderAvatar'
 
 const CouncilReport = () => {
   const { councilId } = useContext(ChurchContext)
@@ -30,21 +30,10 @@ const CouncilReport = () => {
   return (
     <ApolloWrapper loading={loading} error={error} data={data}>
       <Container>
-        <Row className=" my-3">
-          <Col className="col-auto">
-            <CloudinaryImage
-              src={data?.councils[0].leader.pictureUrl}
-              className="rounded-circle graph-user-image"
-            />
-          </Col>
-          <Col className="my-auto">
-            <h5 className="mb-0">{`${data?.councils[0].name} Council`}</h5>{' '}
-            <p className="mb-0">
-              <span className="text-secondary font-weight-bold">Leader: </span>
-              {`${data?.councils[0].leader.fullName}`}
-            </p>
-          </Col>
-        </Row>
+        <LeaderAvatar
+          leader={data?.councils[0].leader}
+          leaderTitle="Council Leader"
+        />
 
         <Row className="row-cols-2 mt-3">
           <Col>

@@ -35,10 +35,10 @@ import useSetUserChurch from 'hooks/useSetUserChurch'
 import { Church, ChurchLevel, MemberWithoutBioData, Role } from 'global-types'
 import { BacentaWithArrivals } from 'pages/arrivals/arrivals-types'
 import SearchMember from 'components/formik/SearchMember'
-import CloudinaryImage from 'components/CloudinaryImage'
 import useModal from 'hooks/useModal'
 import SubmitButton from 'components/formik/SubmitButton'
 import { DetailsArray } from 'pages/directory/display/DetailsFellowship'
+import LeaderAvatar from 'components/LeaderAvatar/LeaderAvatar'
 
 type DisplayChurchDetailsProps = {
   details: DetailsArray
@@ -119,7 +119,7 @@ const DisplayChurchDetails = (props: DisplayChurchDetailsProps) => {
 
   const { currentUser } = useContext(MemberContext)
   const { show, handleShow, handleClose } = useModal()
-  const { clickCard, constituencyId, councilId, streamId, campusId } =
+  const { constituencyId, councilId, streamId, campusId } =
     useContext(ChurchContext)
 
   const htmlElement = document.querySelector('html')
@@ -309,42 +309,7 @@ const DisplayChurchDetails = (props: DisplayChurchDetailsProps) => {
         </Modal>
       </div>
       <Container>
-        <Link
-          to="/member/displaydetails"
-          onClick={() => {
-            clickCard(props.leader)
-          }}
-        >
-          <Row className="my-2">
-            <Col xs="auto">
-              <PlaceholderCustom
-                className="img-search-placeholder"
-                as="div"
-                xs={12}
-                loading={props.loading}
-              >
-                <CloudinaryImage
-                  src={props.leader?.pictureUrl}
-                  className="img-search-placeholder"
-                />
-              </PlaceholderCustom>
-            </Col>
-            <Col>
-              <PlaceholderCustom loading={props.loading} as="span" xs={12}>
-                <span className={`card-heading text-secondary text-truncate`}>
-                  {props.leaderTitle}
-                </span>
-              </PlaceholderCustom>
-              <PlaceholderCustom loading={props.loading} as="h2" xs={12}>
-                <div className="d-flex justify-content-between">
-                  <h2 className={`card-detail`}>
-                    {props.leader?.nameWithTitle}
-                  </h2>
-                </div>
-              </PlaceholderCustom>
-            </Col>
-          </Row>
-        </Link>
+        <LeaderAvatar leader={props.leader} leaderTitle={props.leaderTitle} />
         {props.details?.length && (
           <Row>
             {props.details.map((detail, i) => (

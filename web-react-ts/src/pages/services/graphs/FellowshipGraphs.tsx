@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 
 import { ChurchContext } from '../../../contexts/ChurchContext'
 import { useQuery } from '@apollo/client'
@@ -9,8 +9,8 @@ import MembershipCard from './CompMembershipCard'
 import StatDisplay from './CompStatDisplay'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { MemberContext } from 'contexts/MemberContext'
-import { Col, Container, Row } from 'react-bootstrap'
-import CloudinaryImage from 'components/CloudinaryImage'
+import { Container } from 'react-bootstrap'
+import LeaderAvatar from 'components/LeaderAvatar/LeaderAvatar'
 
 export const FellowshipReport = () => {
   const { fellowshipId } = useContext(ChurchContext)
@@ -25,21 +25,10 @@ export const FellowshipReport = () => {
   return (
     <ApolloWrapper loading={loading} error={error} data={data}>
       <Container>
-        <Row className=" my-3">
-          <Col className="col-auto">
-            <CloudinaryImage
-              src={data?.fellowships[0].leader.pictureUrl}
-              className="rounded-circle graph-user-image"
-            />
-          </Col>
-          <Col className="my-auto">
-            <h5 className="mb-0">{`${data?.fellowships[0].name} Fellowship`}</h5>{' '}
-            <p className="mb-0">
-              <span className="text-secondary font-weight-bold">Leader: </span>
-              {`${data?.fellowships[0].leader.fullName}`}
-            </p>
-          </Col>
-        </Row>
+        <LeaderAvatar
+          leader={data?.fellowships[0].leader}
+          leaderTitle="Fellowship Leader"
+        />
 
         <div className="row">
           <div className="col">

@@ -11,7 +11,7 @@ import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { Col, Container, Row } from 'react-bootstrap'
 import GraphDropdown from './GraphDropdown'
 import { MemberContext } from 'contexts/MemberContext'
-import CloudinaryImage from 'components/CloudinaryImage'
+import LeaderAvatar from 'components/LeaderAvatar/LeaderAvatar'
 
 export const HubGraphs = () => {
   const { hubId } = useContext(ChurchContext)
@@ -31,21 +31,7 @@ export const HubGraphs = () => {
   return (
     <ApolloWrapper loading={loading} error={error} data={data}>
       <Container>
-        <Row className=" my-3">
-          <Col className="col-auto">
-            <CloudinaryImage
-              src={data?.hubs[0].leader.pictureUrl}
-              className="rounded-circle graph-user-image"
-            />
-          </Col>
-          <Col className="my-auto">
-            <h5 className="mb-0">{`${data?.hubs[0].name} Hub`}</h5>{' '}
-            <p className="mb-0">
-              <span className="text-secondary font-weight-bold">Leader: </span>
-              {`${data?.hubs[0].leader.fullName}`}
-            </p>
-          </Col>
-        </Row>
+        <LeaderAvatar leader={data?.hubs[0].leader} leaderTitle="Hub Leader" />
 
         <Row className="row-cols-2">
           <Col>
