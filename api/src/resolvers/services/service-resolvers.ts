@@ -60,6 +60,10 @@ export const checkServantHasCurrentHistory = async (
         tx.run(getServantAndChurchCypher, { churchId: args.churchId })
       )
     )
+    console.log(
+      '🚀 ~ file: service-resolvers.ts:63 ~ getServantAndChurch:',
+      getServantAndChurch
+    )
 
     if (Object.keys(getServantAndChurch).length === 0) {
       throw new Error(

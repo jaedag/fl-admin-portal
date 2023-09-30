@@ -112,7 +112,7 @@ MATCH (church)-[:CURRENT_HISTORY]->(log:ServiceLog)
 RETURN true AS exists
 `
 export const getServantAndChurch = `
-MATCH (church {id:$churchId}) 
+MATCH (church {id: $churchId}) 
 WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:Hub
 MATCH (church)<-[:LEADS]-(servant:Active:Member)
 UNWIND labels(church) AS churchType 
@@ -153,7 +153,8 @@ export const aggregateServiceDataForConstituency = `
        SET aggregate.attendance = totalAttendance,
        aggregate.income = totalIncome,
        aggregate.dollarIncome = totalDollarIncome,
-       aggregate.componentServiceIds = componentServiceIds
+       aggregate.componentServiceIds = componentServiceIds,
+       aggregate.numberOfServices = numberOfServices
    RETURN constituency AS lowerChurch
 `
 
@@ -171,7 +172,8 @@ export const aggregateServiceDataForCouncil = `
        SET aggregate.attendance = totalAttendance,
        aggregate.income = totalIncome,
        aggregate.dollarIncome = totalDollarIncome,
-       aggregate.componentServiceIds = componentServiceIds
+       aggregate.componentServiceIds = componentServiceIds,
+       aggregate.numberOfServices = numberOfServices
    RETURN council AS lowerChurch
 `
 
@@ -189,7 +191,8 @@ export const aggregateServiceDataForStream = `
        SET aggregate.attendance = totalAttendance,
        aggregate.income = totalIncome,
        aggregate.dollarIncome = totalDollarIncome,
-       aggregate.componentServiceIds = componentServiceIds
+       aggregate.componentServiceIds = componentServiceIds,
+       aggregate.numberOfServices = numberOfServices
    RETURN stream AS lowerChurch
 `
 
@@ -207,7 +210,8 @@ export const aggregateServiceDataForCampus = `
        SET aggregate.attendance = totalAttendance,
        aggregate.income = totalIncome,
        aggregate.dollarIncome = totalDollarIncome,
-       aggregate.componentServiceIds = componentServiceIds
+       aggregate.componentServiceIds = componentServiceIds,
+       aggregate.numberOfServices = numberOfServices
    RETURN campus AS lowerChurch
 `
 
@@ -225,7 +229,8 @@ export const aggregateServiceDataForOversight = `
        SET aggregate.attendance = totalAttendance,
        aggregate.income = totalDollarIncome,
        aggregate.dollarIncome = totalDollarIncome,
-       aggregate.componentServiceIds = componentServiceIds
+       aggregate.componentServiceIds = componentServiceIds,
+       aggregate.numberOfServices = numberOfServices
    RETURN oversight AS lowerChurch
 `
 
@@ -243,7 +248,8 @@ export const aggregateServiceDataForDenomination = `
        SET aggregate.attendance = totalAttendance,
        aggregate.income = totalDollarIncome,
        aggregate.dollarIncome = totalDollarIncome,
-       aggregate.componentServiceIds = componentServiceIds
+       aggregate.componentServiceIds = componentServiceIds,
+       aggregate.numberOfServices = numberOfServices
 
    RETURN denomination,aggregate
 `

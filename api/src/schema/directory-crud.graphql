@@ -234,7 +234,6 @@ extend type Mutation {
       MERGE (log)-[:LOGGED_BY]->(currentUser)
       MERGE (log)-[:RECORDED_ON]->(date)
       MERGE (oversight)-[:HAS_HISTORY]->(log)
-      MERGE (denomination)-[:HAS_HISTORY]->(log)
       MERGE (leader)-[:HAS_HISTORY]->(log)
 
       RETURN oversight
@@ -276,7 +275,6 @@ extend type Mutation {
       MERGE (log)-[:LOGGED_BY]->(currentUser)
       MERGE (log)-[:RECORDED_ON]->(date)
       MERGE (campus)-[:HAS_HISTORY]->(log)
-      MERGE (oversight)-[:HAS_HISTORY]->(log)
       MERGE (leader)-[:HAS_HISTORY]->(log)
 
       RETURN campus
@@ -319,7 +317,6 @@ extend type Mutation {
        MERGE (log)-[:LOGGED_BY]->(currentUser)
        MERGE (log)-[:RECORDED_ON]->(date)
        MERGE (stream)-[:HAS_HISTORY]->(log)
-       MERGE (campus)-[:HAS_HISTORY]->(log)
        MERGE (leader)-[:HAS_HISTORY]->(log)
 
        RETURN stream
@@ -356,7 +353,6 @@ extend type Mutation {
       MERGE (log)-[:LOGGED_BY]->(currentUser)
       MERGE (log)-[:RECORDED_ON]->(date)
       MERGE (council)-[:HAS_HISTORY]->(log)
-      MERGE (stream)-[:HAS_HISTORY]->(log)
       MERGE (leader)-[:HAS_HISTORY]->(log)
 
       RETURN council
@@ -392,9 +388,8 @@ extend type Mutation {
       MERGE (date:TimeGraph {date: date()})
       MERGE (log)-[:LOGGED_BY]->(currentUser)
       MERGE (log)-[:RECORDED_ON]->(date)
-      MERGE (council)-[r1:HAS_HISTORY]->(log)
-      MERGE (constituency)-[r2:HAS_HISTORY]->(log)
-      MERGE (leader)-[r3:HAS_HISTORY]->(log)
+      MERGE (council)-[:HAS_HISTORY]->(log)
+      MERGE (leader)-[:HAS_HISTORY]->(log)
 
       RETURN constituency
       """
@@ -428,7 +423,6 @@ extend type Mutation {
        MERGE (date:TimeGraph {date: date()})
        MERGE (log)-[:LOGGED_BY]->(currentUser)
        MERGE (log)-[:RECORDED_ON]->(date)
-       MERGE (constituency)-[r1:HAS_HISTORY]->(log)
 
        WITH bacenta
        MATCH (lastCode:LastBacentaCode)
