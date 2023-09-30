@@ -1,4 +1,4 @@
-import { QueryResult, RecordShape, Session } from 'neo4j-driver'
+import { Session } from 'neo4j-driver'
 import { makeServantCypher } from '../directory/utils'
 import { permitLeaderAdmin } from '../permissions'
 import { Context } from '../utils/neo4j-types'
@@ -17,11 +17,9 @@ import {
   recordCancelledService,
   recordService,
   getHigherChurches,
+  aggregateServiceDataForHub,
 } from './service-cypher'
-import {
-  getAggregateMutations,
-  getServiceHigherChurches,
-} from './service-utils'
+import { getServiceHigherChurches } from './service-utils'
 
 const errorMessage = require('../texts.json').error
 
@@ -106,13 +104,6 @@ const serviceMutation = {
     const session = context.executionContext.session()
     const sessionTwo = context.executionContext.session()
     const sessionThree = context.executionContext.session()
-    const sessionFour = context.executionContext.session()
-    const sessionFive = context.executionContext.session()
-    const sessionSix = context.executionContext.session()
-    const sessionSeven = context.executionContext.session()
-    const sessionEight = context.executionContext.session()
-    const sessionNine = context.executionContext.session()
-    const sessionTen = context.executionContext.session()
 
     try {
       if (checkIfArrayHasRepeatingValues(args.treasurers)) {
@@ -130,10 +121,6 @@ const serviceMutation = {
       ]
 
       const serviceCheckRes = await Promise.all(promises)
-      console.log(
-        '🚀 ~ file: service-resolvers.ts:133 ~ serviceCheckRes:',
-        JSON.stringify(serviceCheckRes)
-      )
 
       const serviceCheck = rearrangeCypherObject(serviceCheckRes[0])
       const currencyCheck = rearrangeCypherObject(serviceCheckRes[1])
@@ -151,6 +138,24 @@ const serviceMutation = {
       }
       if (serviceCheck.labels?.includes('Vacation')) {
         throw new Error(errorMessage.vacation_cannot_fill_service)
+      }
+
+      let aggregateCypher = ''
+
+      if (higherChurches?.bacenta) {
+        aggregateCypher = higherChurches.bacenta.cypher
+      } else if (higherChurches?.constituency) {
+        aggregateCypher = higherChurches.constituency.cypher
+      } else if (higherChurches?.council) {
+        aggregateCypher = higherChurches.council.cypher
+      } else if (higherChurches?.stream) {
+        aggregateCypher = higherChurches.stream.cypher
+      } else if (higherChurches?.campus) {
+        aggregateCypher = higherChurches.campus.cypher
+      } else if (higherChurches?.oversight) {
+        aggregateCypher = higherChurches.oversight.cypher
+      } else if (higherChurches?.denomination) {
+        aggregateCypher = higherChurches.denomination.cypher
       }
 
       const cypherResponse = await session
@@ -173,23 +178,25 @@ const serviceMutation = {
         })
       )
 
-      const sessions = {
-        one: session,
-        two: sessionTwo,
-        three: sessionThree,
-        four: sessionFour,
-        five: sessionFive,
-        six: sessionSix,
-        seven: sessionSeven,
-        eight: sessionEight,
-        nine: sessionNine,
-        ten: sessionTen,
+      const aggregatePromises = [
+        sessionTwo.executeWrite((tx) =>
+          tx.run(aggregateCypher, {
+            churchId: args.churchId,
+          })
+        ),
+      ]
+
+      if (serviceCheck.labels?.includes('HubFellowship')) {
+        aggregatePromises.push(
+          sessionThree.executeWrite((tx) =>
+            tx.run(aggregateServiceDataForHub, {
+              churchId: args.churchId,
+            })
+          )
+        )
       }
 
-      const aggregateMutations: Promise<QueryResult<RecordShape>>[] =
-        getAggregateMutations(context, higherChurches, args.churchId, sessions)
-
-      await Promise.all(aggregateMutations).catch((error: any) =>
+      await Promise.all(aggregatePromises).catch((error: any) =>
         throwToSentry('Error Aggregating Service', error)
       )
 
@@ -202,14 +209,8 @@ const serviceMutation = {
       await session.close()
       await sessionTwo.close()
       await sessionThree.close()
-      await sessionFour.close()
-      await sessionFive.close()
-      await sessionSix.close()
-      await sessionSeven.close()
-      await sessionEight.close()
-      await sessionNine.close()
-      await sessionTen.close()
     }
+
     return null
   },
   RecordCancelledService: async (
