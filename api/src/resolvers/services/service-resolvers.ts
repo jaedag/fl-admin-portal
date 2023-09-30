@@ -61,6 +61,10 @@ export const checkServantHasCurrentHistory = async (
       )
     )
     console.log(
+      '🚀 ~ file: service-resolvers.ts:61 ~  args.churchId:',
+      args.churchId
+    )
+    console.log(
       '🚀 ~ file: service-resolvers.ts:63 ~ getServantAndChurch:',
       getServantAndChurch
     )
@@ -126,6 +130,10 @@ const serviceMutation = {
       ]
 
       const serviceCheckRes = await Promise.all(promises)
+      console.log(
+        '🚀 ~ file: service-resolvers.ts:133 ~ serviceCheckRes:',
+        JSON.stringify(serviceCheckRes)
+      )
 
       const serviceCheck = rearrangeCypherObject(serviceCheckRes[0])
       const currencyCheck = rearrangeCypherObject(serviceCheckRes[1])

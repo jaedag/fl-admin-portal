@@ -287,7 +287,8 @@ export const aggregateServiceDataForMinistry = `
          SET aggregate.attendance = totalAttendance,
          aggregate.income = totalIncome,
          aggregate.dollarIncome = totalDollarIncome,
-         aggregate.componentServiceIds = componentServiceIds
+         aggregate.componentServiceIds = componentServiceIds,
+         aggregate.numberOfServices = numberOfServices
     RETURN ministry AS lowerChurch
 `
 
@@ -305,6 +306,7 @@ export const aggregateServiceDataForCreativeArts = `
          SET aggregate.attendance = totalAttendance,
          aggregate.income = totalIncome,
          aggregate.dollarIncome = totalDollarIncome,
-         aggregate.componentServiceIds = componentServiceIds
+         aggregate.componentServiceIds = componentServiceIds,
+         aggregate.numberOfServices = numberOfServices
     RETURN creativeArts AS lowerChurch
 `
