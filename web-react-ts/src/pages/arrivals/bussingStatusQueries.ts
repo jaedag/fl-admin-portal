@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client'
 
-//No Activity Queries
+// No Activity Queries
 export const CONSTITUENCY_BACENTAS_NO_ACTIVITY = gql`
   query constituencyBacentasNoActivity($id: ID!, $arrivalDate: String!) {
     constituencies(where: { id: $id }, options: { limit: 1 }) {

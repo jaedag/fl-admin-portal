@@ -35,7 +35,7 @@ RETURN fellowship.name, record.attendance, COUNT(members);
 
 // If Sunday Bussing is blocking
 
-MATCH (fellowship:Fellowship {bankingCode: 7035 })<-[:HAS]-(bacenta:Bacenta)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(record:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph {date: date("2023-09-17")})
+MATCH (fellowship:Fellowship {bankingCode: 6982 })<-[:HAS]-(bacenta:Bacenta)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(record:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph {date: date("2023-09-24")})
 
 MATCH (fellowship)<-[:BELONGS_TO]-(members:Member)
 MERGE (record)<-[:PRESENT_AT_SERVICE]-(members)
@@ -68,16 +68,4 @@ WHERE date.date.week = date().week
 DETACH DELETE record
 RETURN date().week
 
-MATCH (tran:AccountTransaction) WHERE tran.account IS NULL
-SET tran.account = '??'
-RETURN tran;
 
-
-MATCH (record:NoService)
-// WHERE date.date.week = date().week AND date.date.year = date().year
-DETACH DELETE record
-
-
-MATCH (hub:Hub)
-SET  hub:Active
-RETURN hub.name
