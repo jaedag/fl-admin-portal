@@ -1,5 +1,6 @@
 const neo4j = require('neo4j-driver')
 const { schedule } = require('@netlify/functions')
+const { default: axios } = require('axios')
 const { loadSecrets } = require('./secrets.js')
 
 const SECRETS = loadSecrets()
@@ -19,19 +20,19 @@ const executeQuery = async (neoDriver) => {
       code: 'TRANSFORM',
     },
     {
-      date: '2023-10-07',
+      date: '2023-10-08',
       code: 'PRAYER',
     },
     {
-      date: '2023-10-14',
+      date: '2023-10-15',
       code: 'VISITATION',
     },
     {
-      date: '2023-10-21',
+      date: '2023-10-22',
       code: 'TEACHING',
     },
     {
-      date: '2023-10-28',
+      date: '2023-10-29',
       code: 'INTERACTION',
     },
   ]
@@ -48,12 +49,19 @@ const executeQuery = async (neoDriver) => {
       const year = today.getFullYear()
       const date = `${year}-${pad(month)}-${pad(day)}`
 
-      const code = codeOfTheDay.filter((item) => item.date <= date).pop()
+      const code = codeOfTheDay.filter((item) => item.date === date).pop()
 
-      console.log('code', code)
+      const res = await axios({
+        method: 'get',
+        url: 'https://random-word-api.herokuapp.com/word',
+      })
+
+      const dictionaryCode = res.json()[0].toUpperCase()
+
+      console.log('code', code?.code ?? dictionaryCode)
 
       return tx.run(setCodeOfTheDay, {
-        code: code.code,
+        code: code?.code ?? dictionaryCode,
       })
     })
   } catch (error) {
