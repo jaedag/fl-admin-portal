@@ -15,6 +15,9 @@ import TransactionCard from '../TransactionCard'
 import { CheckCircleFill, XCircleFill } from 'react-bootstrap-icons'
 import { throwToSentry } from 'global-utils'
 import NoDataComponent from 'pages/arrivals/CompNoData'
+import Input from 'components/formik/Input'
+import SubmitButton from 'components/formik/SubmitButton'
+import { Formik, Form } from 'formik'
 
 const Approvals = () => {
   const { campusId } = useContext(ChurchContext)
@@ -53,15 +56,18 @@ const Approvals = () => {
                     <div className="mb-4">
                       <TransactionCard transaction={transaction} />
                       <div className="text-center mt-4">
-                        <Button
-                          className="px-3 me-2"
-                          variant="success"
-                          disabled={submitting}
-                          onClick={async () => {
+                        <Formik
+                          initialValues={{ charge: '' }}
+                          onSubmit={async (values, onSubmitProps) => {
+                            const { setSubmitting, resetForm } = onSubmitProps
+
                             try {
                               setSubmitting(true)
                               await approveExpense({
-                                variables: { transactionId: transaction.id },
+                                variables: {
+                                  transactionId: transaction.id,
+                                  charge: parseFloat(values.charge),
+                                },
                               })
                               await refetch()
                             } catch (err) {
@@ -70,48 +76,59 @@ const Approvals = () => {
                                 err
                               )
                             } finally {
+                              resetForm()
                               setSubmitting(false)
                             }
                           }}
                         >
-                          {submitting ? (
-                            'Loading'
-                          ) : (
-                            <>
-                              Approve <CheckCircleFill />
-                            </>
+                          {(formik) => (
+                            <Form>
+                              <Input
+                                name="charge"
+                                label="Charge"
+                                placeholder="in GHS"
+                              />
+                              <SubmitButton formik={formik}>
+                                <div>
+                                  Approve <CheckCircleFill />
+                                </div>
+                              </SubmitButton>
+                              <Button
+                                className="px-3 ms-2"
+                                variant="danger"
+                                disabled={submitting}
+                                onClick={async () => {
+                                  try {
+                                    setSubmitting(true)
+                                    await declineExpense({
+                                      variables: {
+                                        transactionId: transaction.id,
+                                      },
+                                    })
+                                    await refetch()
+                                  } catch (err) {
+                                    throwToSentry(
+                                      'There was an error declining the transaction',
+                                      err
+                                    )
+                                  } finally {
+                                    setSubmitting(false)
+                                  }
+                                }}
+                              >
+                                {submitting ? (
+                                  'Loading'
+                                ) : (
+                                  <>
+                                    Decline <XCircleFill />
+                                  </>
+                                )}
+                              </Button>
+                            </Form>
                           )}
-                        </Button>
-                        <Button
-                          className="px-3"
-                          variant="danger"
-                          disabled={submitting}
-                          onClick={async () => {
-                            try {
-                              setSubmitting(true)
-                              await declineExpense({
-                                variables: { transactionId: transaction.id },
-                              })
-                              await refetch()
-                            } catch (err) {
-                              throwToSentry(
-                                'There was an error declining the transaction',
-                                err
-                              )
-                            } finally {
-                              setSubmitting(false)
-                            }
-                          }}
-                        >
-                          {submitting ? (
-                            'Loading'
-                          ) : (
-                            <>
-                              Decline <XCircleFill />
-                            </>
-                          )}
-                        </Button>
+                        </Formik>
                       </div>
+                      <hr />
                     </div>
                   ))}
                 </div>

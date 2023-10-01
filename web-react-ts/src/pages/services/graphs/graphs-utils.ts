@@ -115,7 +115,6 @@ export const getServiceGraphData = (
   if (category === 'rehearsal') {
     pushIntoData(church.rehearsals)
   }
-  console.log('🚀 ~ file: graphs-utils.ts:117 ~ church:', church)
 
   if (category === 'bussing') {
     pushIntoData(church.bussing)

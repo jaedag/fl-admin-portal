@@ -14,8 +14,9 @@ export const approveBussingExpense = `
 MATCH (transaction:AccountTransaction {id: $transactionId})<-[:HAS_TRANSACTION]-(council:Council)
 MATCH (transaction)-[:LOGGED_BY]->(depositor:Member)
   SET council.bussingPurseBalance = council.bussingPurseBalance + transaction.amount
-  SET council.currentBalance = council.currentBalance - transaction.amount
+  SET council.currentBalance = council.currentBalance - transaction.amount - toFloat($charge)
   SET transaction.status = 'success'
+  SET transaction.charge = $charge
 
 RETURN council, transaction, depositor
 `
@@ -23,7 +24,8 @@ RETURN council, transaction, depositor
 export const approveExpense = `
 MATCH (transaction:AccountTransaction {id: $transactionId})<-[:HAS_TRANSACTION]-(council:Council)
 MATCH (transaction)-[:LOGGED_BY]->(depositor:Member)
-  SET council.currentBalance = council.currentBalance - transaction.amount
+  SET council.currentBalance = council.currentBalance - transaction.amount - toFloat($charge)
+  SET transaction.charge = $charge
   SET transaction.status = 'success'
 
 RETURN transaction, depositor

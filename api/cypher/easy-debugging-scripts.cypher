@@ -77,3 +77,7 @@ MATCH (record:NoService)
 // WHERE date.date.week = date().week AND date.date.year = date().year
 DETACH DELETE record
 
+
+MATCH (hub:Hub)
+SET  hub:Active
+RETURN hub.name

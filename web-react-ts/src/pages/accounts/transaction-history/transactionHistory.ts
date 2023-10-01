@@ -10,6 +10,7 @@ export const GET_COUNCIL_TRANSACTION_HISTORY = gql`
         timestamp
         amount
         account
+        charge
         category
         description
         status
@@ -32,6 +33,7 @@ export const GET_TRANSACTION_DETAILS = gql`
       amount
       account
       category
+      charge
       description
       status
       loggedBy {

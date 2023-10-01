@@ -47,6 +47,17 @@ const TransactionCard = ({
             />
           </Col>
         </Row>
+        {transaction?.charge && (
+          <Row className="mb-3 d-flex align-items-center">
+            <Col className="text-secondary col-4">Charge</Col>
+            <Col>
+              <CurrencySpan
+                number={transaction?.charge}
+                className="text-primary"
+              />
+            </Col>
+          </Row>
+        )}
         <Row className="mb-3 d-flex align-items-center">
           <Col className="text-secondary col-4">Category</Col>
           <Col>{transaction?.category}</Col>

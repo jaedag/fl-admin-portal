@@ -5,6 +5,7 @@ export interface AccountTransaction {
   timestamp: string
   description: string
   amount: number
+  charge?: number
   account: 'Bussing Purse' | 'Current Account'
   status: 'success' | 'pending approval' | 'declined'
   category: 'Deposit'

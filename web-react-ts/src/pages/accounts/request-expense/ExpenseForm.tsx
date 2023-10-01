@@ -34,6 +34,7 @@ const ExpenseForm = () => {
 
   const initialValues = {
     requestedAmount: '',
+    ghostBussingPurse: '0',
     category: '',
     description: '',
   }
@@ -93,18 +94,22 @@ const ExpenseForm = () => {
                 <div className="my-4">
                   <Input
                     name="requestedAmount"
-                    label="How much are you requesting"
+                    label="How much are you requesting from your weekday account"
                     placeholder="Enter an amount"
                     value={
                       formik.values.category === 'HR'
                         ? (formik.values.requestedAmount =
                             council?.hrAmount.toString())
-                        : formik.values.category === 'Bussing'
-                        ? (formik.values.requestedAmount =
-                            council.bussingAmount.toString())
                         : formik.values.requestedAmount
                     }
                   />
+                  {formik.values.category === 'Bussing' && (
+                    <Input
+                      name="ghostBussingPurse"
+                      label="How much from your bussing purse?"
+                      placeholder="Enter an amount"
+                    />
+                  )}
                 </div>
 
                 <div className="mb-4">
@@ -135,8 +140,9 @@ const ExpenseForm = () => {
                       Requested Amount:{' '}
                       <span className="text-info">
                         GHS{' '}
-                        {parseFloat(
-                          formik.values.requestedAmount
+                        {(
+                          parseFloat(formik.values.requestedAmount) +
+                          parseFloat(formik.values.ghostBussingPurse ?? '0')
                         ).toLocaleString('en-US')}
                       </span>
                     </p>

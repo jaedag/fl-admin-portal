@@ -27,8 +27,8 @@ export const GET_COUNCIL_PENDING_APPROVAL_TRANSACTIONS = gql`
 `
 
 export const APPROVE_EXPENSE = gql`
-  mutation ApproveExpense($transactionId: ID!) {
-    ApproveExpense(transactionId: $transactionId) {
+  mutation ApproveExpense($transactionId: ID!, $charge: Float!) {
+    ApproveExpense(transactionId: $transactionId, charge: $charge) {
       id
       timestamp
       amount

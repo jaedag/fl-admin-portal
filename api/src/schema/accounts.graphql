@@ -4,6 +4,7 @@ type AccountTransaction {
   description: String!
   account: String!
   amount: Float!
+  charge: Float
   category: String!
   status: String!
   loggedBy: Member! @relationship(type: "LOGGED_BY", direction: OUT)
@@ -99,7 +100,7 @@ extend type Mutation {
       """
     )
 
-  ApproveExpense(transactionId: ID!): AccountTransaction!
+  ApproveExpense(transactionId: ID!, charge: Float!): AccountTransaction!
 
   DeclineExpense(transactionId: ID!): AccountTransaction!
     @auth(rules: [{ roles: ["adminCampus", "leaderCampus"] }])

@@ -38,7 +38,7 @@ export const accountsMutations = {
         args.currentBalanceDepositAmount
       } GHS has been deposited into your weekday account for ${
         council.name
-      }. Your current balance is ${
+      }. Your weekday account balance is ${
         council.currentBalance + args.currentBalanceDepositAmount
       } GHS and bussing purse is ${council.bussingPurseBalance} GHS`
 
@@ -118,6 +118,7 @@ export const accountsMutations = {
     object: unknown,
     args: {
       transactionId: string
+      charge: number
     },
     context: Context
   ) => {
@@ -143,7 +144,7 @@ export const accountsMutations = {
         }
 
         const currentAmountRemaining =
-          council.currentBalance - transaction.amount
+          council.currentBalance - transaction.amount - args.charge
 
         const amountRemaining = council.bussingPurseBalance + transaction.amount
         const message = `Dear ${leader.firstName}, your expense request of ${transaction.amount} GHS from ${council.name} weekday account for ${transaction.category} has been approved. Balance remaining is ${currentAmountRemaining} GHS. Bussing Purse Balance is ${amountRemaining} GHS`
@@ -166,8 +167,9 @@ export const accountsMutations = {
         throw new Error('Insufficient Funds')
       }
 
-      const amountRemaining = council.bussingPurseBalance - transaction.amount
-      const message = `Dear ${leader.firstName}, your expense request of ${transaction.amount} GHS from ${council.name} weekday account for ${transaction.category} has been approved. Balance remaining is ${amountRemaining} GHS`
+      const amountRemaining =
+        council.currentBalance - transaction.amount - args.charge
+      const message = `Dear ${leader.firstName}, your expense request of ${transaction.amount} GHS (Charges: ${args.charge} GHS) from ${council.name} weekday account for ${transaction.category} has been approved. Balance remaining is ${amountRemaining} GHS`
 
       const debitRes = await Promise.all([
         session.run(approveExpense, args),
