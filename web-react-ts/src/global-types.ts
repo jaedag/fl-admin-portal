@@ -73,6 +73,7 @@ export interface Fellowship extends Church {
   __typename: 'Fellowship'
   bacenta: Bacenta
   bankingCode: number
+  services: ServiceRecord[]
   meetingDay: {
     day: 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday'
   }

@@ -8,6 +8,7 @@ import { banking } from './banking/self-banking/selfBankingRoutes'
 import { anagkazoRoutes } from './banking/anagkazo/anagkazoBankingRoutes'
 import { LazyRouteTypes } from 'global-types'
 import { lazy } from 'react'
+import { downloadReports } from './download-reports/downloadReportsRoutes'
 
 const BacentaService = lazy(
   () => import('pages/services/record-service/BacentaService')
@@ -165,6 +166,7 @@ const FellowshipBankingSlipView = lazy(
 )
 
 export const services: LazyRouteTypes[] = [
+  ...downloadReports,
   ...anagkazoRoutes,
   ...banking,
   {
