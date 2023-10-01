@@ -685,7 +685,6 @@ extend type Mutation {
             campus.currency = $currency,
             campus.conversionRateToDollar = $conversionRateToDollar
 
-      MATCH (campus)<-[:LEADS]-(leader:Active:Member)
       RETURN campus
       """
     )
@@ -698,7 +697,7 @@ extend type Mutation {
     @auth(rules: [{ roles: ["adminCampus"] }])
     @cypher(
       statement: """
-				    MATCH (stream:Stream {id: $streamId})
+        MATCH (stream:Stream {id: $streamId})
            	SET stream.name = $name,
             stream.bankAccount = $bankAccount
 
