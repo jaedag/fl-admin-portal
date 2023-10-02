@@ -16,6 +16,7 @@ const LeaderAvatar = ({
   loading?: boolean
 }) => {
   const { clickCard } = useContext(ChurchContext)
+  const isLoading = loading || !leader
 
   return (
     <Link
@@ -30,7 +31,7 @@ const LeaderAvatar = ({
             className="img-search-placeholder"
             as="div"
             xs={12}
-            loading={loading}
+            loading={isLoading}
           >
             <CloudinaryImage
               src={leader?.pictureUrl}
@@ -39,12 +40,12 @@ const LeaderAvatar = ({
           </PlaceholderCustom>
         </Col>
         <Col>
-          <PlaceholderCustom loading={loading} as="span" xs={12}>
+          <PlaceholderCustom loading={isLoading} as="span" xs={12}>
             <span className={`card-heading text-secondary text-truncate`}>
               {leaderTitle}
             </span>
           </PlaceholderCustom>
-          <PlaceholderCustom loading={loading} as="h2" xs={12}>
+          <PlaceholderCustom loading={isLoading} as="h2" xs={12}>
             <div className="d-flex justify-content-between">
               <h2 className={`card-detail`}>{leader?.nameWithTitle}</h2>
             </div>
