@@ -36,12 +36,18 @@ import { MOVE_COUNCIL_TO_STREAM } from '../update/UpdateMutations'
 export interface StreamFormValues extends FormikInitialValues {
   campus?: Campus
   bankAccount:
-    | 'fle_account'
+    | 'manual'
+    | 'aes_account'
     | 'kwabenya_account'
     | 'adenta_account'
-    | 'manual'
-    | 'kumasi_account'
+    | 'fle_account'
     | 'kwabenya_morning_account'
+    | 'oa_kumasi'
+    | 'oa_ghnorth'
+    | 'oa_ghsouth'
+    | 'oa_gheast'
+    | 'oa_ghwest'
+    | 'oa_tarkwa'
   meetingDay: 'Friday' | 'Saturday' | 'Sunday'
   councils?: Council[]
   council?: Council

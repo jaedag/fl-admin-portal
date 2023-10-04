@@ -69,3 +69,11 @@ DETACH DELETE record
 RETURN date().week
 
 
+
+MATCH (council:Council {name: "Acts"})
+SET council.bussingPurseBalance = 5330.34 + 2500
+RETURN council.name, council.bussingPurseBalance
+
+MATCH (stream:Stream) WHERE stream.bankAccount = 'kumasi_account'
+set stream.bankAccount = 'oa_kumasi'
+RETURN stream.name, stream.bankAccount

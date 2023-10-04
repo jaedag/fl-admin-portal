@@ -138,7 +138,12 @@ export const STREAM_ACCOUNT_OPTIONS: FormikSelectOptions = [
   { key: 'Kwabenya Account', value: 'kwabenya_account' },
   { key: 'Kwabenya Morning Account', value: 'kwabenya_morning_account' },
   { key: 'Adenta Account', value: 'adenta_account' },
-  { key: 'Kumasi Account', value: 'kumasi_account' },
+  { key: 'Kumasi Account', value: 'oa_kumasi' },
+  { key: 'OA GH North', value: 'oa_ghnorth' },
+  { key: 'OA GH South', value: 'oa_ghsouth' },
+  { key: 'OA GH East', value: 'oa_gheast' },
+  { key: 'OA GH West', value: 'oa_ghwest' },
+  { key: 'OA Tarkwa', value: 'oa_tarkwa' },
 ]
 
 export const throwToSentry = (

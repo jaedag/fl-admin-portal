@@ -121,7 +121,7 @@ RETURN COUNT(p) as relationshipCount
 
 export const makeMemberInactive = `
 MATCH (member:Member {id:$id})
-WITH member, ["Active"] as labels
+WITH member, ['Active'] as labels
 CALL apoc.create.removeLabels(member, labels)
 YIELD node
 WITH node

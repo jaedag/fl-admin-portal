@@ -34,13 +34,18 @@ export const padNumbers = (number: number): string => {
 }
 type Stream = {
   bankAccount:
+    | 'manual'
     | 'aes_account'
     | 'kwabenya_account'
     | 'adenta_account'
     | 'fle_account'
-    | 'kumasi_account'
+    | 'oa_kumasi'
     | 'kwabenya_morning_account'
-    | 'manual'
+    | 'oa_ghnorth'
+    | 'oa_ghsouth'
+    | 'oa_gheast'
+    | 'oa_ghwest'
+    | 'oa_tarkwa'
 }
 
 export const getStreamFinancials = (stream: Stream) => {
@@ -65,8 +70,23 @@ export const getStreamFinancials = (stream: Stream) => {
     case 'fle_account':
       subaccount = SECRETS.PS_SUBACCOUNT_FLE
       break
-    case 'kumasi_account':
+    case 'oa_kumasi':
       subaccount = SECRETS.PS_SUBACCOUNT_KUMASI
+      break
+    case 'oa_gheast':
+      subaccount = SECRETS.PS_SUBACCOUNT_OA_GHEAST
+      break
+    case 'oa_ghnorth':
+      subaccount = SECRETS.PS_SUBACCOUNT_OA_GHNORTH
+      break
+    case 'oa_ghsouth':
+      subaccount = SECRETS.PS_SUBACCOUNT_OA_GHSOUTH
+      break
+    case 'oa_ghwest':
+      subaccount = SECRETS.PS_SUBACCOUNT_OA_GHWEST
+      break
+    case 'oa_tarkwa':
+      subaccount = SECRETS.PS_SUBACCOUNT_OA_TARKWA
       break
 
     default:
