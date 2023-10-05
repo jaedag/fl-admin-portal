@@ -24,7 +24,7 @@ const AccountBalanceCard = ({
         )}
         {variant === 'bussing-purse' && (
           <Row className="d-flex align-items-center text-light">
-            <Col>Bussing Purse Balance</Col>
+            <Col>Bussing Society Balance</Col>
             <Col>
               <p className="text-end mb-0">
                 {(church?.bussingPurseBalance || 0.0).toLocaleString('en-US')}
