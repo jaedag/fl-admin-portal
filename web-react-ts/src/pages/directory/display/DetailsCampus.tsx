@@ -24,14 +24,14 @@ const DetailsCampus = () => {
       link: `/${gathering?.__typename?.toLowerCase()}/members`,
       width: 12,
     },
+    { title: 'Target', number: gathering?.target, link: '#' },
+    { title: 'Pastors', number: gathering?.pastorCount || '0', link: '#' },
 
     {
       title: 'Streams',
       number: gathering?.streamCount || 0,
       link: `/${`Stream`.toLowerCase()}/displayall`,
     },
-    { title: 'Target', number: gathering?.target, link: '#' },
-    { title: 'Pastors', number: gathering?.pastorCount || '0', link: '#' },
     {
       title: 'Councils',
       number: gathering?.councilCount,
