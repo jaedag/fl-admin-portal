@@ -16,17 +16,16 @@ import {
 
 import {
   recordSundayMinistryAttendance,
-  recordHubRehearsalService,
+  recordRehearsalService,
   checkServiceFormFilledThisWeek,
   checkRehearsalFormFilledThisWeek,
   aggregateMinistryMeetingDataForCreativeArts,
   aggregateMinistryMeetingDataForHub,
   aggregateMinistryMeetingDataForMinistry,
-  aggregateHubRehearsalDataForCreativeArts,
-  aggregateHubRehearsalDataForMinistry,
+  cancelLowerChurchRehearsals,
 } from './rehearsal-cypher'
 import { SontaHigherChurches } from '../utils/types'
-import { getServiceHigherChurches } from './service-utils'
+import { getServiceSontaHigherChurches } from './service-utils'
 
 const errorMessage = require('../texts.json').error
 
@@ -142,7 +141,7 @@ const HubFellowshipServiceMutation = {
 
     return serviceDetails.ministryAttendanceRecord.properties
   },
-  RecordHubRehearsalService: async (
+  RecordRehearsalService: async (
     object: any,
     args: RecordServiceArgs,
     context: Context
@@ -173,7 +172,7 @@ const HubFellowshipServiceMutation = {
       const serviceCheck = rearrangeCypherObject(serviceCheckRes[0])
 
       const currencyCheck = rearrangeCypherObject(serviceCheckRes[1])
-      const higherChurches = getServiceHigherChurches(
+      const higherChurches = getServiceSontaHigherChurches(
         serviceCheckRes[2]?.records
       ) as SontaHigherChurches
 
@@ -192,14 +191,16 @@ const HubFellowshipServiceMutation = {
 
       let aggregateCypher = ''
 
-      if (higherChurches?.ministry) {
-        aggregateCypher = aggregateHubRehearsalDataForMinistry
-      } else if (serviceCheck.higherChurchLabels?.includes('CreativeArts')) {
-        aggregateCypher = aggregateHubRehearsalDataForCreativeArts
+      if (higherChurches?.hubCouncil) {
+        aggregateCypher = higherChurches?.hubCouncil.rehearsalCypher
+      } else if (higherChurches?.ministry) {
+        aggregateCypher = higherChurches?.ministry.rehearsalCypher
+      } else if (higherChurches?.creativeArts) {
+        aggregateCypher = higherChurches?.creativeArts.rehearsalCypher
       }
 
       const cypherResponse = await session
-        .run(recordHubRehearsalService, {
+        .run(recordRehearsalService, {
           ...args,
           conversionRateToDollar: currencyCheck.conversionRateToDollar,
           auth: context.auth,
@@ -217,14 +218,27 @@ const HubFellowshipServiceMutation = {
       ]
 
       await Promise.all(aggregatePromises).catch((error: any) =>
-        throwToSentry('Error Aggregating Hub Rehearsals', error)
+        throwToSentry('Error Aggregating Rehearsals', error)
       )
+
+      if (
+        ['Ministry', 'HubCouncil'].some((label) =>
+          serviceCheck.labels?.includes(label)
+        )
+      ) {
+        await sessionThree.executeWrite((tx) =>
+          tx.run(cancelLowerChurchRehearsals, {
+            ...args,
+            auth: context.auth,
+          })
+        )
+      }
 
       const serviceDetails = rearrangeCypherObject(cypherResponse)
 
       return serviceDetails.rehearsalRecord.properties
     } catch (error) {
-      throwToSentry('Error Recording hub rehearsal Service', error)
+      throwToSentry('Error Recording rehearsal Service', error)
     } finally {
       await session.close()
       await sessionTwo.close()
