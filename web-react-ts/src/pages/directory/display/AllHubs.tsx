@@ -8,8 +8,8 @@ import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { Container, Row, Col } from 'react-bootstrap'
 import { permitAdmin } from 'permission-utils'
 import AllChurchesSummary from 'components/AllChurchesSummary'
-import DisplayChurchList from 'components/DisplayChurchList'
 import NoDataComponent from 'pages/arrivals/CompNoData'
+import ChurchSearch from 'components/ChurchSearch'
 
 const DisplayAllHubs = () => {
   const { clickCard, hubCouncilId } = useContext(ChurchContext)
@@ -43,7 +43,7 @@ const DisplayAllHubs = () => {
             >
               <h6 className="text-white text-small d-block ">
                 <span className="text-muted">Leader: </span>
-                {hubCouncil?.leader ? ` ${hubCouncil.leader.fullName}` : null}
+                {hubCouncil?.leader ? ` ${hubCouncil?.leader.fullName}` : null}
               </h6>
             </Link>
             {hubCouncil?.admin ? (
@@ -67,7 +67,6 @@ const DisplayAllHubs = () => {
             </Col>
           </RoleView>
         </Row>
-
         <AllChurchesSummary
           church={hubs}
           memberCount={hubCouncil?.memberCount}
@@ -76,25 +75,10 @@ const DisplayAllHubs = () => {
           route="hubCouncil"
         />
 
-        {hubCouncil?.councils.map((council: any) => {
-          return (
-            <>
-              <Container>
-                <p className="mb-0 fw-bold fs-5">
-                  {council.name} Council: {council.hubsFromhubCouncil.length}{' '}
-                  Hubs
-                </p>
-                {council.hubsFromhubCouncil.length === 0 && (
-                  <NoDataComponent text="This Council has no hubs" />
-                )}
-              </Container>
-              <DisplayChurchList
-                data={council.hubsFromhubCouncil}
-                churchType="HubCouncil"
-              />
-            </>
-          )
-        })}
+        {hubs.length === 0 && (
+          <NoDataComponent text="This Council has no hubs" />
+        )}
+        <ChurchSearch data={hubs} churchType="Hub" />
       </Container>
     </ApolloWrapper>
   )
