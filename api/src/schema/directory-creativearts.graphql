@@ -96,7 +96,21 @@ type CreativeArts {
   hubFellowshipCount: Int!
     @cypher(
       statement: """
-      MATCH (this)-[:HAS*4]->(fellowships:HubFellowship:Fellowship)
+      MATCH (this)-[:HAS*4]->(fellowships:HubFellowship)
+      RETURN COUNT(DISTINCT fellowships)
+      """
+    )
+  activeHubFellowshipCount: Int!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS*4]->(fellowships:HubFellowship:Active)
+      RETURN COUNT(DISTINCT fellowships)
+      """
+    )
+  vacationHubFellowshipCount: Int!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS*4]->(fellowships:HubFellowship:Vacation)
       RETURN COUNT(DISTINCT fellowships)
       """
     )
@@ -152,7 +166,21 @@ type Ministry {
   hubFellowshipCount: Int!
     @cypher(
       statement: """
+      MATCH (this)-[:HAS*3]->(fellowships:HubFellowship)
+      RETURN COUNT(DISTINCT fellowships)
+      """
+    )
+  activeHubFellowshipCount: Int!
+    @cypher(
+      statement: """
       MATCH (this)-[:HAS*3]->(fellowships:Active:HubFellowship)
+      RETURN COUNT(DISTINCT fellowships)
+      """
+    )
+  vacationHubFellowshipCount: Int!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS*3]->(fellowships:Vacation:HubFellowship)
       RETURN COUNT(DISTINCT fellowships)
       """
     )
@@ -189,7 +217,7 @@ type Ministry {
   hubFellowships: [Fellowship!]!
     @cypher(
       statement: """
-      MATCH (this)-[:HAS*3]->(fellowships:Active:HubFellowship)
+      MATCH (this)-[:HAS*3]->(fellowships:HubFellowship)
       RETURN fellowship
       """
     )
@@ -218,6 +246,13 @@ type HubCouncil {
       """
     )
   hubFellowshipCount: Int!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS]->(:Hub)-[:HAS]->(fellowships:HubFellowship)
+      RETURN COUNT(DISTINCT fellowships)
+      """
+    )
+  activeHubFellowshipCount: Int!
     @cypher(
       statement: """
       MATCH (this)-[:HAS]->(:Hub)-[:HAS]->(fellowships:Active:HubFellowship)

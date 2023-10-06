@@ -42,7 +42,7 @@ const DetailsHubCouncil = () => {
     },
     {
       title: 'Hub Fellowship',
-      number: hubCouncil?.hubFellowshipCount,
+      number: hubCouncil?.activeHubFellowshipCount,
       vacationCount: hubCouncil?.vacationHubFellowshipCount,
       link: '/hub/displayall',
     },

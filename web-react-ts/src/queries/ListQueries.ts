@@ -857,8 +857,8 @@ export const GET_CAMPUS_CREATIVEARTS = gql`
   }
 `
 
-export const GET_COUNCIL_HUBS = gql`
-  query getCouncilHubs($id: ID!) {
+export const GET_COUNCIL_HUBCOUNCILS = gql`
+  query getCouncilHubCouncils($id: ID!) {
     councils(where: { id: $id }) {
       id
       name
@@ -877,7 +877,7 @@ export const GET_COUNCIL_HUBS = gql`
         fullName
         stream_name
       }
-      hubs {
+      hubCouncils {
         name
         id
         memberCount

@@ -47,7 +47,8 @@ const DetailsCreativeArts = () => {
     },
     {
       title: 'Hub Fellowships',
-      number: creativeArts?.hubFellowshipCount,
+      number: creativeArts?.activeHubFellowshipCount,
+      vacationCount: creativeArts?.vacationHubFellowshipCount,
       link: '#',
     },
   ]

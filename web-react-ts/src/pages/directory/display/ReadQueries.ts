@@ -666,7 +666,8 @@ export const DISPLAY_CREATIVEARTS = gql`
       ministryCount
       hubCouncilCount
       hubCount
-      hubFellowshipCount
+      activeHubFellowshipCount
+      vacationHubFellowshipCount
       ministries {
         id
         name
@@ -768,7 +769,10 @@ export const DISPLAY_MINISTRY = gql`
       memberCount
       hubCouncilCount
       hubCount
-      hubFellowshipCount
+
+      activeHubFellowshipCount
+      vacationHubFellowshipCount
+
       history {
         id
         timeStamp
@@ -813,7 +817,7 @@ export const DISPLAY_HUBCOUNCIL = gql`
         pictureUrl
       }
       hubCount
-      hubFellowshipCount
+      activeHubFellowshipCount
       vacationHubFellowshipCount
       memberCount
       hubs {
