@@ -518,7 +518,7 @@ export const directory: LazyRouteTypes[] = [
   {
     path: '/hubcouncil/displaydetails',
     element: DetailsHubCouncil,
-    roles: permitMe('HubCouncil'),
+    roles: [...permitMe('HubCouncil'), ...permitMe('Council')],
     placeholder: true,
   },
   {
@@ -562,7 +562,7 @@ export const directory: LazyRouteTypes[] = [
   {
     path: '/hubcouncil/displayall',
     element: DisplayAllHubCouncils,
-    roles: permitMe('HubCouncil'),
+    roles: [...permitMe('HubCouncil'), ...permitMe('Council')],
     placeholder: false,
   },
   {
