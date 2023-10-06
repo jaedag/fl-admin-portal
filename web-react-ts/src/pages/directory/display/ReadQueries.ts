@@ -749,7 +749,7 @@ export const DISPLAY_DENOMINATION = gql`
 `
 
 export const DISPLAY_MINISTRY = gql`
-  query DisplayMinistry($id: ID!) {
+  query displayMinistry($id: ID!) {
     ministries(where: { id: $id }, options: { limit: 1 }) {
       id
       name
@@ -757,6 +757,7 @@ export const DISPLAY_MINISTRY = gql`
         id
         firstName
         lastName
+        fullName
         currentTitle
         nameWithTitle
         pictureUrl
@@ -812,6 +813,7 @@ export const DISPLAY_HUBCOUNCIL = gql`
         id
         firstName
         lastName
+        fullName
         currentTitle
         nameWithTitle
         pictureUrl
@@ -863,6 +865,7 @@ export const DISPLAY_HUB = gql`
         id
         firstName
         lastName
+        fullName
         currentTitle
         nameWithTitle
         pictureUrl

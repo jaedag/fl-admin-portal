@@ -76,7 +76,6 @@ const CreativeArtsForm = ({
   )
 
   const validationSchema = Yup.object({
-    creativearts: Yup.string().required(`CreativeArts is a required field`),
     name: Yup.string().required(`Creative Arts Name is a required field`),
     leaderId: Yup.string().required(
       'Please choose a leader from the drop down'

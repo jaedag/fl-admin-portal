@@ -893,3 +893,34 @@ export const GET_COUNCIL_HUBCOUNCILS = gql`
     }
   }
 `
+
+export const GET_CREATIVEARTS_MINISTRIES = gql`
+  query getCreativeArtsMinistries($id: ID!) {
+    creativeArts(where: { id: $id }) {
+      id
+      name
+
+      leader {
+        id
+        firstName
+        lastName
+        fullName
+      }
+      memberCount
+
+      ministries {
+        name
+        id
+        memberCount
+        hubCount
+        leader {
+          id
+          firstName
+          lastName
+          stream_name
+          pictureUrl
+        }
+      }
+    }
+  }
+`

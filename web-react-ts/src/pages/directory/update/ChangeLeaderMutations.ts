@@ -333,3 +333,104 @@ export const MAKE_CREATIVEARTS_LEADER = gql`
     }
   }
 `
+
+export const MAKE_MINISTRY_LEADER = gql`
+  mutation MakeMinistryLeader(
+    $ministryId: ID!
+    $newLeaderId: ID!
+    $oldLeaderId: ID!
+  ) {
+    RemoveMinistryLeader(
+      ministryId: $ministryId
+      leaderId: $oldLeaderId
+      newLeaderId: $newLeaderId
+    ) {
+      id
+      firstName
+      lastName
+    }
+    MakeMinistryLeader(
+      ministryId: $ministryId
+      leaderId: $newLeaderId
+      oldLeaderId: $oldLeaderId
+    ) {
+      id
+      firstName
+      lastName
+      leadsMinistry {
+        id
+        leader {
+          id
+          firstName
+          lastName
+        }
+      }
+    }
+  }
+`
+
+export const MAKE_HUBCOUNCIL_LEADER = gql`
+  mutation MakeHubCouncilLeader(
+    $hubCouncilId: ID!
+    $newLeaderId: ID!
+    $oldLeaderId: ID!
+  ) {
+    RemoveHubCouncilLeader(
+      hubCouncilId: $hubCouncilId
+      leaderId: $oldLeaderId
+      newLeaderId: $newLeaderId
+    ) {
+      id
+      firstName
+      lastName
+    }
+    MakeHubCouncilLeader(
+      hubCouncilId: $hubCouncilId
+      leaderId: $newLeaderId
+      oldLeaderId: $oldLeaderId
+    ) {
+      id
+      firstName
+      lastName
+      leadsHubCouncil {
+        id
+        leader {
+          id
+          firstName
+          lastName
+        }
+      }
+    }
+  }
+`
+
+export const MAKE_HUB_LEADER = gql`
+  mutation MakeHubLeader($hubId: ID!, $newLeaderId: ID!, $oldLeaderId: ID!) {
+    RemoveHubLeader(
+      hubId: $hubId
+      leaderId: $oldLeaderId
+      newLeaderId: $newLeaderId
+    ) {
+      id
+      firstName
+      lastName
+    }
+    MakeHubLeader(
+      hubId: $hubId
+      leaderId: $newLeaderId
+      oldLeaderId: $oldLeaderId
+    ) {
+      id
+      firstName
+      lastName
+      leadsHub {
+        id
+        leader {
+          id
+          firstName
+          lastName
+        }
+      }
+    }
+  }
+`

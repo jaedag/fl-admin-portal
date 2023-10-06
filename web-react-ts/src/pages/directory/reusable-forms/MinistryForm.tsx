@@ -1,28 +1,36 @@
-import { useMutation, useQuery } from '@apollo/client'
-import ApolloWrapper from 'components/base-component/ApolloWrapper'
+import { useMutation } from '@apollo/client'
 import { Form, Formik, FormikHelpers } from 'formik'
 import * as Yup from 'yup'
-import { makeSelectOptions, throwToSentry } from 'global-utils'
-import { GET_CREATIVEARTS, GET_STREAMS } from 'queries/ListQueries'
-import React, { useContext, useState } from 'react'
+import { throwToSentry } from 'global-utils'
+import { useContext, useState } from 'react'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { MAKE_MINISTRY_INACTIVE } from 'pages/directory/update/CloseChurchMutations'
 import { useNavigate } from 'react-router'
-import Popup from 'components/Popup/Popup'
-import { Button, Container, Row, Col } from 'react-bootstrap'
-import { MemberContext } from 'contexts/MemberContext'
+import {
+  Button,
+  Container,
+  Row,
+  Col,
+  ButtonGroup,
+  Modal,
+} from 'react-bootstrap'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import SubmitButton from 'components/formik/SubmitButton'
-import usePopup from 'hooks/usePopup'
-import Select from 'components/formik/Select'
 import SearchMember from 'components/formik/SearchMember'
+import Input from 'components/formik/Input'
 import { FormikInitialValues } from 'components/formik/formik-types'
+import { HubCouncil } from 'global-types'
+import { DISPLAY_MINISTRY } from '../display/ReadQueries'
+import HeadingSecondary from 'components/HeadingSecondary'
+import SearchHubCouncil from 'components/formik/SearchHubCouncil'
+import { MOVE_HUBCOUNCIL_TO_MINISTRY } from '../update/UpdateMutations'
+import NoDataComponent from 'pages/arrivals/CompNoData'
 
 export interface MinistryFormValues extends FormikInitialValues {
-  creativeArts: string
-  leaderId: string
-  leaderName: string
-  stream: string
+  name: string
+  ministry?: string
+  hubCouncil?: HubCouncil
+  hubCouncils?: HubCouncil[]
 }
 
 type MinistryFormProps = {
@@ -42,45 +50,55 @@ const MinistryForm = ({
   newMinistry,
 }: MinistryFormProps) => {
   const { clickCard, ministryId } = useContext(ChurchContext)
-  const { theme } = useContext(MemberContext)
-  const { togglePopup, isOpen } = usePopup()
+  const [hubCouncilModal, setHubCouncilModal] = useState(false)
+  const [closeDown, setCloseDown] = useState(false)
   const navigate = useNavigate()
 
-  const {
-    data: creativeArtsData,
-    loading: creativeArtsLoading,
-    error: creativeArtsError,
-  } = useQuery(GET_CREATIVEARTS)
-  const {
-    data: streamData,
-    loading: streamLoading,
-    error: streamError,
-  } = useQuery(GET_STREAMS)
   const [buttonLoading, setButtonLoading] = useState(false)
-  const [CloseDownMinistry] = useMutation(MAKE_MINISTRY_INACTIVE)
-
-  const creativeArtsOptions = makeSelectOptions(creativeArtsData?.creativeArts)
-
-  const streamsOptions = makeSelectOptions(streamData?.streams)
+  const [CloseDownMinistry] = useMutation(MAKE_MINISTRY_INACTIVE, {
+    refetchQueries: [
+      {
+        query: DISPLAY_MINISTRY,
+        variables: { id: ministryId },
+      },
+    ],
+  })
+  const [MoveHubCouncilToMinistry] = useMutation(MOVE_HUBCOUNCIL_TO_MINISTRY, {
+    refetchQueries: [
+      {
+        query: DISPLAY_MINISTRY,
+        variables: { id: ministryId },
+      },
+    ],
+  })
 
   const validationSchema = Yup.object({
-    creativeArts: Yup.string().required(`Creative Arts is a required field`),
-    stream: Yup.string().required(`Stream is a required field`),
+    name: Yup.string().required(`Ministry Name is a required field`),
     leaderId: Yup.string().required(
       'Please choose a leader from the drop down'
     ),
   })
 
   return (
-    <ApolloWrapper
-      loading={streamLoading && creativeArtsLoading}
-      error={streamError && creativeArtsError}
-      data={streamData && creativeArtsData && initialValues}
-    >
-      <>
-        <Container>
-          <HeadingPrimary>{title}</HeadingPrimary>
-        </Container>
+    <>
+      <Container>
+        <HeadingPrimary>{title}</HeadingPrimary>
+        <HeadingSecondary>
+          {initialValues.name + ' Creative Arts'}
+        </HeadingSecondary>
+        <ButtonGroup className="mt-3">
+          {!newMinistry && (
+            <>
+              <Button onClick={() => setHubCouncilModal(true)}>
+                Add HubCouncil
+              </Button>
+              <Button variant="success" onClick={() => setCloseDown(true)}>
+                {`Close Down Creative Arts`}
+              </Button>
+            </>
+          )}
+        </ButtonGroup>
+
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}
@@ -94,18 +112,10 @@ const MinistryForm = ({
                   <Row className="row-cols-1 row-cols-md-2">
                     {/* <!-- Basic Info Div --> */}
                     <Col className="mb-2">
-                      <Select
-                        name="stream"
-                        label="Select a Stream"
-                        options={streamsOptions}
-                        defaultOption="Select a Stream"
-                      />
-
-                      <Select
-                        name="creativeArts"
-                        label="Select a Creative Arts"
-                        options={creativeArtsOptions}
-                        defaultOption="Select a Creative Arts"
+                      <Input
+                        name="name"
+                        label={`Name of Creative Arts`}
+                        placeholder={`Name of Creative Arts`}
                       />
 
                       <Row className="d-flex align-items-center mb-3">
@@ -121,71 +131,136 @@ const MinistryForm = ({
                           />
                         </Col>
                       </Row>
+                      <div className="d-grid gap-2">
+                        {initialValues.hubCouncils?.length === 0 ? (
+                          <NoDataComponent text="No Hub Councils" />
+                        ) : (
+                          <p className="fw-bold fs-5">Hub Councils</p>
+                        )}
+
+                        {initialValues.hubCouncils?.map((hubCouncil, index) => (
+                          <Button variant="secondary" className="text-start">
+                            {hubCouncil.name} HubCouncil
+                          </Button>
+                        ))}
+                      </div>
                     </Col>
                   </Row>
                 </div>
 
-                <SubmitButton formik={formik} />
+                <div className="text-center mt-5">
+                  <SubmitButton formik={formik} />
+                </div>
               </Form>
 
-              {isOpen && (
-                <Popup handleClose={togglePopup}>
-                  Are you sure you want to close down this Ministry?
+              <Modal
+                show={hubCouncilModal}
+                onHide={() => setHubCouncilModal(false)}
+                centered
+              >
+                <Modal.Header closeButton>Add A HubCouncil</Modal.Header>
+                <Modal.Body>
+                  <p>Choose a hubCouncil to move to this ministry</p>
+                  <SearchHubCouncil
+                    name={`hubCouncil`}
+                    placeholder="HubCouncil Name"
+                    initialValue=""
+                    setFieldValue={formik.setFieldValue}
+                    aria-describedby="HubCouncil Name"
+                  />
+                </Modal.Body>
+                <Modal.Footer>
                   <Button
-                    variant="primary"
+                    variant="success"
                     type="submit"
-                    disabled={buttonLoading}
-                    className={`btn-main ${theme}`}
-                    onClick={() => {
-                      setButtonLoading(true)
-                      CloseDownMinistry({
-                        variables: {
-                          id: ministryId,
-                          leaderId: initialValues.leaderId,
-                        },
-                      })
-                        .then((res) => {
-                          setButtonLoading(false)
-                          clickCard(res.data.CloseDownMinistry)
-                          togglePopup()
-                          navigate(`/ministry/displayall`)
+                    disabled={buttonLoading || !formik.values.hubCouncil}
+                    onClick={async () => {
+                      try {
+                        setButtonLoading(true)
+                        const res = await MoveHubCouncilToMinistry({
+                          variables: {
+                            hubCouncilId: formik.values.hubCouncil?.id,
+                            historyRecord: `${formik.values.hubCouncil?.name} HubCouncil has been moved to ${formik.values.name} Ministry from ${formik.values.hubCouncil?.ministry.name} Ministry`,
+                            newMinistryId: ministryId,
+                            oldMinistryId:
+                              formik.values.hubCouncil?.ministry.id,
+                          },
                         })
-                        .catch((error) => {
-                          throwToSentry(
-                            `There was an error closing down this Ministry`,
-                            error
-                          )
-                        })
+
+                        clickCard(res.data.MoveHubCouncilToMinistry)
+                        setHubCouncilModal(false)
+                      } catch (error) {
+                        throwToSentry(
+                          `There was an error moving this hubCouncil to this ministry`,
+                          error
+                        )
+                      } finally {
+                        setButtonLoading(false)
+                      }
                     }}
                   >
                     {buttonLoading ? `Submitting...` : `Yes, I'm sure`}
                   </Button>
                   <Button
                     variant="primary"
-                    className={`btn-secondary mt-2 ${theme}`}
-                    onClick={togglePopup}
+                    onClick={() => setHubCouncilModal(false)}
                   >
+                    Close
+                  </Button>
+                </Modal.Footer>
+              </Modal>
+
+              <Modal
+                show={closeDown}
+                onHide={() => setCloseDown(false)}
+                centered
+              >
+                <Modal.Header closeButton>Close Down Ministry</Modal.Header>
+                <Modal.Body>
+                  <p className="text-info">
+                    Are you sure you want to close down this ministry?
+                  </p>
+                </Modal.Body>
+                <Modal.Footer>
+                  <Button
+                    variant="success"
+                    type="submit"
+                    disabled={buttonLoading}
+                    onClick={async () => {
+                      try {
+                        setButtonLoading(true)
+                        const res = await CloseDownMinistry({
+                          variables: {
+                            id: ministryId,
+                            leaderId: initialValues.leaderId,
+                          },
+                        })
+
+                        setButtonLoading(false)
+                        clickCard(res.data.CloseDownMinistry)
+                        setCloseDown(false)
+                        navigate(`/stream/displayall`)
+                      } catch (error) {
+                        setButtonLoading(false)
+                        throwToSentry(
+                          `There was an error closing down this ministry`,
+                          error
+                        )
+                      }
+                    }}
+                  >
+                    {buttonLoading ? `Submitting...` : `Yes, I'm sure`}
+                  </Button>
+                  <Button variant="primary" onClick={() => setCloseDown(false)}>
                     No, take me back
                   </Button>
-                </Popup>
-              )}
-
-              {!newMinistry && (
-                <Button
-                  variant="primary"
-                  size="lg"
-                  disabled={formik.isSubmitting}
-                  className={`btn-secondary ${theme} mt-3`}
-                  onClick={togglePopup}
-                >
-                  {`Close Down Ministry`}
-                </Button>
-              )}
+                </Modal.Footer>
+              </Modal>
             </Container>
           )}
         </Formik>
-      </>
-    </ApolloWrapper>
+      </Container>
+    </>
   )
 }
 
