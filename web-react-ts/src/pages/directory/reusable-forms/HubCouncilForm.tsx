@@ -19,7 +19,7 @@ import SubmitButton from 'components/formik/SubmitButton'
 import SearchMember from 'components/formik/SearchMember'
 import Input from 'components/formik/Input'
 import { FormikInitialValues } from 'components/formik/formik-types'
-import { Hub } from 'global-types'
+import { Hub, Ministry } from 'global-types'
 import { DISPLAY_HUBCOUNCIL } from '../display/ReadQueries'
 import HeadingSecondary from 'components/HeadingSecondary'
 import SearchHub from 'components/formik/SearchHub'
@@ -28,7 +28,8 @@ import NoDataComponent from 'pages/arrivals/CompNoData'
 
 export interface HubCouncilFormValues extends FormikInitialValues {
   name: string
-  hubCouncil?: string
+  council: string
+  ministry?: Ministry
   hub?: Hub
   hubs?: Hub[]
 }

@@ -19,7 +19,7 @@ import SubmitButton from 'components/formik/SubmitButton'
 import SearchMember from 'components/formik/SearchMember'
 import Input from 'components/formik/Input'
 import { FormikInitialValues } from 'components/formik/formik-types'
-import { HubCouncil } from 'global-types'
+import { CreativeArts, HubCouncil } from 'global-types'
 import { DISPLAY_MINISTRY } from '../display/ReadQueries'
 import HeadingSecondary from 'components/HeadingSecondary'
 import SearchHubCouncil from 'components/formik/SearchHubCouncil'
@@ -28,7 +28,8 @@ import NoDataComponent from 'pages/arrivals/CompNoData'
 
 export interface MinistryFormValues extends FormikInitialValues {
   name: string
-  ministry?: string
+  stream: string
+  creativeArts?: CreativeArts
   hubCouncil?: HubCouncil
   hubCouncils?: HubCouncil[]
 }

@@ -17,6 +17,7 @@ const CreateHub = () => {
     hubCouncil: '',
     leaderId: '',
     leaderName: '',
+    vacationStatus: 'Active',
     leaderEmail: '',
     name: '',
   }

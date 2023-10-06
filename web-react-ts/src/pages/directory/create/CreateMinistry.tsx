@@ -9,9 +9,10 @@ import { FormikHelpers } from 'formik'
 import MinistryForm, {
   MinistryFormValues,
 } from '../reusable-forms/MinistryForm'
+import { CreativeArts } from 'global-types'
 
 const CreateMinistry = () => {
-  const { clickCard } = useContext(ChurchContext)
+  const { clickCard, creativeArtsId } = useContext(ChurchContext)
 
   const navigate = useNavigate()
 
@@ -20,7 +21,7 @@ const CreateMinistry = () => {
     leaderId: '',
     leaderName: '',
     leaderEmail: '',
-    creativeArts: '',
+    creativeArts: (creativeArtsId ?? '') as CreativeArts,
     stream: '',
   }
 

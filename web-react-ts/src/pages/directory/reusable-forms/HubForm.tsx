@@ -19,7 +19,7 @@ import SubmitButton from 'components/formik/SubmitButton'
 import SearchMember from 'components/formik/SearchMember'
 import Input from 'components/formik/Input'
 import { FormikInitialValues } from 'components/formik/formik-types'
-import { HubFellowship } from 'global-types'
+import { HubFellowship, Ministry } from 'global-types'
 import { DISPLAY_HUB } from '../display/ReadQueries'
 import HeadingSecondary from 'components/HeadingSecondary'
 import { MOVE_HUBFELLOWSHIP_TO_HUB } from '../update/UpdateMutations'
@@ -28,7 +28,7 @@ import SearchHubFellowship from 'components/formik/SearchHubFellowship'
 
 export interface HubFormValues extends FormikInitialValues {
   name: string
-  hubCouncil?: string
+  hubCouncil?: Ministry
   vacationStatus: 'Active' | 'Vacation'
   hubFellowship?: HubFellowship
   hubFellowships?: HubFellowship[]
