@@ -28,7 +28,7 @@ import NoDataComponent from 'pages/arrivals/CompNoData'
 
 export interface MinistryFormValues extends FormikInitialValues {
   name: string
-  stream: string
+  stream?: string
   creativeArts?: CreativeArts
   hubCouncil?: HubCouncil
   hubCouncils?: HubCouncil[]

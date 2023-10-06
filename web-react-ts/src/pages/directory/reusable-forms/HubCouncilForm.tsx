@@ -28,7 +28,7 @@ import NoDataComponent from 'pages/arrivals/CompNoData'
 
 export interface HubCouncilFormValues extends FormikInitialValues {
   name: string
-  council: string
+  council?: string
   ministry?: Ministry
   hub?: Hub
   hubs?: Hub[]

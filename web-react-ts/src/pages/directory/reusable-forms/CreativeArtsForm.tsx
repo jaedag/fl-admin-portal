@@ -19,7 +19,7 @@ import SubmitButton from 'components/formik/SubmitButton'
 import SearchMember from 'components/formik/SearchMember'
 import Input from 'components/formik/Input'
 import { FormikInitialValues } from 'components/formik/formik-types'
-import { Campus, Ministry } from 'global-types'
+import { Ministry } from 'global-types'
 import { DISPLAY_CREATIVEARTS } from '../display/ReadQueries'
 import HeadingSecondary from 'components/HeadingSecondary'
 import SearchMinistry from 'components/formik/SearchMinistry'
@@ -28,7 +28,7 @@ import NoDataComponent from 'pages/arrivals/CompNoData'
 
 export interface CreativeArtsFormValues extends FormikInitialValues {
   name: string
-  campus: Campus
+  campus?: string
   creativeArts?: string
   ministry?: Ministry
   ministries?: Ministry[]
