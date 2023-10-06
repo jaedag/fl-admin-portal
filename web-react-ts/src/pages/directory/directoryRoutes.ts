@@ -79,6 +79,9 @@ const DetailsStream = lazy(
   () => import('pages/directory/display/DetailsStream')
 )
 const DetailsHub = lazy(() => import('pages/directory/display/DetailsHub'))
+const DetailsHubCouncil = lazy(
+  () => import('pages/directory/display/DetailsHubCouncil')
+)
 const DetailsMinistry = lazy(
   () => import('pages/directory/display/DetailsMinistry')
 )
@@ -101,6 +104,10 @@ const DisplayAllHubFellowships = lazy(
   () => import('pages/directory/display/AllHubFellowships')
 )
 const DisplayAllHubs = lazy(() => import('pages/directory/display/AllHubs'))
+const DisplayAllHubCouncils = lazy(
+  () => import('pages/directory/display/AllHubCouncils')
+)
+
 const DisplayAllStreamMinistries = lazy(
   () => import('pages/directory/display/AllStreamMinistries')
 )
@@ -128,6 +135,9 @@ const CreateFellowship = lazy(
   () => import('pages/directory/create/CreateFellowship')
 )
 const CreateHub = lazy(() => import('pages/directory/create/CreateHub'))
+const CreateHubCouncil = lazy(
+  () => import('pages/directory/create/CreateHubCouncil')
+)
 const CreateMinistry = lazy(
   () => import('pages/directory/create/CreateMinistry')
 )
@@ -506,6 +516,12 @@ export const directory: LazyRouteTypes[] = [
     placeholder: true,
   },
   {
+    path: '/hubcouncil/displaydetails',
+    element: DetailsHubCouncil,
+    roles: permitMe('HubCouncil'),
+    placeholder: true,
+  },
+  {
     path: '/ministry/displaydetails',
     element: DetailsMinistry,
     roles: permitMe('Ministry'),
@@ -541,6 +557,12 @@ export const directory: LazyRouteTypes[] = [
     path: '/hub/displayall',
     element: DisplayAllHubs,
     roles: permitMe('Hub'),
+    placeholder: false,
+  },
+  {
+    path: '/hubcouncil/displayall',
+    element: DisplayAllHubCouncils,
+    roles: permitMe('HubCouncil'),
     placeholder: false,
   },
   {
@@ -634,6 +656,12 @@ export const directory: LazyRouteTypes[] = [
   {
     path: '/hub/addhub',
     element: CreateHub,
+    roles: permitAdmin('Ministry'),
+    placeholder: false,
+  },
+  {
+    path: '/hubcouncil/addhubcouncil',
+    element: CreateHubCouncil,
     roles: permitAdmin('Ministry'),
     placeholder: false,
   },

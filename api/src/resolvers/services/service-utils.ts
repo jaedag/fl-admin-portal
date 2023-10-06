@@ -17,7 +17,6 @@ import {
 
 export const getServiceHigherChurches = (records: any) => {
   const higherChurches: HigherChurches = {}
-  const sontaHigherChurches: SontaHigherChurches = {}
 
   records?.map((record: any) => {
     if (record?.get('higherChurch').labels.includes('Bacenta')) {
@@ -83,6 +82,16 @@ export const getServiceHigherChurches = (records: any) => {
       }
     }
 
+    return null
+  })
+
+  return higherChurches
+}
+
+export const getServiceSontaHigherChurches = (records: any) => {
+  const sontaHigherChurches: SontaHigherChurches = {}
+
+  records?.map((record: any) => {
     if (record?.get('higherChurch').labels.includes('HubCouncil')) {
       sontaHigherChurches.hubCouncil = {
         typename: 'HubCouncil',
@@ -115,11 +124,5 @@ export const getServiceHigherChurches = (records: any) => {
     return null
   })
 
-  if (Object.keys(sontaHigherChurches).length > 0) {
-    return sontaHigherChurches
-  }
-
-  return higherChurches
+  return sontaHigherChurches
 }
-
-export default getServiceHigherChurches

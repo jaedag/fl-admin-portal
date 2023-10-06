@@ -5,7 +5,7 @@ import * as Yup from 'yup'
 import { makeSelectOptions, throwToSentry } from 'global-utils'
 import React, { useContext, useState } from 'react'
 import { ChurchContext } from 'contexts/ChurchContext'
-import { MAKE_HUB_INACTIVE } from 'pages/directory/update/CloseChurchMutations'
+import { MAKE_HUBCOUNCIL_INACTIVE } from 'pages/directory/update/CloseChurchMutations'
 import { useNavigate } from 'react-router'
 import Popup from 'components/Popup/Popup'
 import { Button, Container, Row, Col } from 'react-bootstrap'
@@ -14,46 +14,49 @@ import SubmitButton from 'components/formik/SubmitButton'
 import usePopup from 'hooks/usePopup'
 import Select from 'components/formik/Select'
 import SearchMember from 'components/formik/SearchMember'
-import Input from 'components/formik/Input'
 import { FormikInitialValues } from 'components/formik/formik-types'
-import { GET_MINISTRY_HUBCOUNCILS } from './SontaListQueries'
+import { GET_MINISTRY_COUNCILS } from './SontaListQueries'
 
-export interface HubFormValues extends FormikInitialValues {
-  name: string
-  hubCouncil: string
+export interface HubCouncilFormValues extends FormikInitialValues {
+  ministry: string
+  council: string
   leaderId: string
   leaderName: string
 }
 
-type HubFormProps = {
-  initialValues: HubFormValues
+type HubCouncilFormProps = {
+  initialValues: HubCouncilFormValues
   onSubmit: (
-    values: HubFormValues,
-    onSubmitProps: FormikHelpers<HubFormValues>
+    values: HubCouncilFormValues,
+    onSubmitProps: FormikHelpers<HubCouncilFormValues>
   ) => void
   title: string
-  newHub: boolean
+  newHubCouncil: boolean
 }
 
-const HubForm = ({ initialValues, onSubmit, title, newHub }: HubFormProps) => {
-  const { clickCard, hubId, ministryId } = useContext(ChurchContext)
+const HubCouncilForm = ({
+  initialValues,
+  onSubmit,
+  title,
+  newHubCouncil,
+}: HubCouncilFormProps) => {
+  const { clickCard, hubcouncilId, ministryId } = useContext(ChurchContext)
   const { togglePopup, isOpen } = usePopup()
   const navigate = useNavigate()
 
-  const { data, loading, error } = useQuery(GET_MINISTRY_HUBCOUNCILS, {
+  const { data, loading, error } = useQuery(GET_MINISTRY_COUNCILS, {
     variables: {
       ministryId,
     },
   })
   const [buttonLoading, setButtonLoading] = useState(false)
-  const [CloseDownHub] = useMutation(MAKE_HUB_INACTIVE)
+  const [CloseDownHubCouncil] = useMutation(MAKE_HUBCOUNCIL_INACTIVE)
 
   const ministry = data?.ministries[0]
-  const councilsOptions = makeSelectOptions(data?.ministries[0].hubCouncils)
+  const councilsOptions = makeSelectOptions(data?.ministries[0].councils)
 
   const validationSchema = Yup.object({
-    hubCouncil: Yup.string().required(`Council is a required field`),
-    name: Yup.string().required(`Hub Name is a required field`),
+    council: Yup.string().required(`Council is a required field`),
     leaderId: Yup.string().required(
       'Please choose a leader from the drop down'
     ),
@@ -80,16 +83,10 @@ const HubForm = ({ initialValues, onSubmit, title, newHub }: HubFormProps) => {
                     <Col className="mb-2">
                       {ministry?.name}
                       <Select
-                        name="hubCouncil"
+                        name="council"
                         label="Select a Council"
                         options={councilsOptions}
                         defaultOption="Select a Council"
-                      />
-
-                      <Input
-                        name="name"
-                        label={`Name of Hub`}
-                        placeholder={`Name of Hub`}
                       />
 
                       <Row className="d-flex align-items-center mb-3">
@@ -114,7 +111,7 @@ const HubForm = ({ initialValues, onSubmit, title, newHub }: HubFormProps) => {
 
               {isOpen && (
                 <Popup handleClose={togglePopup}>
-                  Are you sure you want to close down this hub?
+                  Are you sure you want to close down this hubcouncil?
                   <Button
                     variant="primary"
                     type="submit"
@@ -122,21 +119,21 @@ const HubForm = ({ initialValues, onSubmit, title, newHub }: HubFormProps) => {
                     className={`btn-main `}
                     onClick={() => {
                       setButtonLoading(true)
-                      CloseDownHub({
+                      CloseDownHubCouncil({
                         variables: {
-                          id: hubId,
+                          id: hubcouncilId,
                           leaderId: initialValues.leaderId,
                         },
                       })
                         .then((res) => {
                           setButtonLoading(false)
-                          clickCard(res.data.CloseDownHub)
+                          clickCard(res.data.CloseDownHubCouncil)
                           togglePopup()
-                          navigate(`/hub/displayall`)
+                          navigate(`/hubcouncil/displayall`)
                         })
                         .catch((error) => {
                           throwToSentry(
-                            `There was an error closing down this Hub`,
+                            `There was an error closing down this HubCouncil`,
                             error
                           )
                         })
@@ -154,15 +151,15 @@ const HubForm = ({ initialValues, onSubmit, title, newHub }: HubFormProps) => {
                 </Popup>
               )}
 
-              {!newHub && (
+              {!newHubCouncil && (
                 <Button
                   variant="primary"
                   size="lg"
                   disabled={formik.isSubmitting}
-                  className={`btn-secondary  mt-3`}
+                  className={`btn-secondary mt-3`}
                   onClick={togglePopup}
                 >
-                  {`Close Down Hub`}
+                  {`Close Down HubCouncil`}
                 </Button>
               )}
             </Container>
@@ -173,4 +170,4 @@ const HubForm = ({ initialValues, onSubmit, title, newHub }: HubFormProps) => {
   )
 }
 
-export default HubForm
+export default HubCouncilForm

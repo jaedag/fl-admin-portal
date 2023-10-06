@@ -116,10 +116,10 @@ RETURN true AS exists
 `
 export const getServantAndChurch = `
 MATCH (church {id: $churchId}) 
-WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:Hub
+WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:Hub OR church:HubCouncil
 MATCH (church)<-[:LEADS]-(servant:Active:Member)
 UNWIND labels(church) AS churchType 
-WITH churchType, church, servant WHERE churchType IN ['Fellowship', 'Bacenta', 'Constituency', 'Council', 'Stream','Hub']
+WITH churchType, church, servant WHERE churchType IN ['Fellowship', 'Bacenta', 'Constituency', 'Council', 'Stream','Hub', 'HubCouncil']
 RETURN church.id AS churchId, church.name AS churchName, servant.id AS servantId, servant.auth_id AS auth_id, servant.firstName AS firstName, servant.lastName AS lastName, churchType AS churchType
 `
 export const aggregateServiceDataForBacenta = `
@@ -573,8 +573,22 @@ export const aggregateServiceDataForHub = `
         aggregate.componentServiceIds = componentServiceIds,
         aggregate.numberOfServices = numberOfServices
    WITH hub AS lowerChurch
+   MATCH (lowerChurch)<-[:HAS]-(hubCouncil:HubCouncil)
+   MATCH (hubCouncil)-[:CURRENT_HISTORY|HAS_SERVICE|HAS*2..4]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph) 
+   WHERE date.date.week = date().week AND date.date.year = date().year AND NOT record:NoService
+   WITH DISTINCT hubCouncil, record
+   WITH hubCouncil, collect(record.id) AS componentServiceIds,COUNT(DISTINCT record) AS numberOfServices, SUM(record.attendance) AS totalAttendance, SUM(record.income) AS totalIncome, SUM(record.dollarIncome) AS totalDollarIncome
+   MATCH (hubCouncil)-[:CURRENT_HISTORY]->(log:ServiceLog)
+   MERGE (aggregate:AggregateServiceRecord {id: date().week + '-' + date().year + '-' + log.id, week: date().week, year: date().year})
+   MERGE (log)-[:HAS_SERVICE_AGGREGATE]->(aggregate)
+       SET aggregate.attendance = totalAttendance,
+       aggregate.income = totalIncome,
+         aggregate.dollarIncome = totalDollarIncome,
+        aggregate.componentServiceIds = componentServiceIds,
+        aggregate.numberOfServices = numberOfServices
+   WITH hubCouncil AS lowerChurch
    MATCH (lowerChurch)<-[:HAS]-(ministry:Ministry)
-   MATCH (ministry)-[:CURRENT_HISTORY|HAS_SERVICE|HAS*2..4]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph) 
+   MATCH (ministry)-[:CURRENT_HISTORY|HAS_SERVICE|HAS*2..5]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph) 
    WHERE date.date.week = date().week AND date.date.year = date().year AND NOT record:NoService
    WITH DISTINCT ministry, record
    WITH ministry, collect(record.id) AS componentServiceIds,COUNT(DISTINCT record) AS numberOfServices, SUM(record.attendance) AS totalAttendance, SUM(record.income) AS totalIncome, SUM(record.dollarIncome) AS totalDollarIncome
@@ -588,7 +602,7 @@ export const aggregateServiceDataForHub = `
          aggregate.numberOfServices = numberOfServices
    WITH ministry AS lowerChurch
    MATCH (lowerChurch)<-[:HAS]-(creativearts:CreativeArts)
-   MATCH (creativearts)-[:CURRENT_HISTORY|HAS_SERVICE|HAS*2..5]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph) 
+   MATCH (creativearts)-[:CURRENT_HISTORY|HAS_SERVICE|HAS*2..6]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph) 
    WHERE date.date.week = date().week AND date.date.year = date().year AND NOT record:NoService
    WITH DISTINCT creativearts, record
    WITH creativearts, collect(record.id) AS componentServiceIds,COUNT(DISTINCT record) AS numberOfServices, SUM(record.attendance) AS totalAttendance, SUM(record.income) AS totalIncome, SUM(record.dollarIncome) AS totalDollarIncome

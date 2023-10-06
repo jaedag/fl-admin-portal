@@ -3,7 +3,7 @@ const servantCypher = {
    MATCH (church {id: $churchId}) 
    WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream 
    OR church:Campus OR church:Oversight 
-   OR church:CreativeArts OR church:Ministry OR church:Hub
+   OR church:CreativeArts OR church:Ministry OR church:HubCouncil OR church:Hub
    MATCH (church)<-[oldLeads:LEADS]-(leader:Member)
    DELETE oldLeads
    
@@ -92,7 +92,7 @@ const servantCypher = {
    MATCH (church {id: $churchId})
    WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream 
    OR church:Campus OR church:Oversight 
-   OR church:CreativeArts OR church:Ministry OR church:Hub
+   OR church:CreativeArts OR church:Ministry OR church:HubCouncil OR church:Hub
    MATCH (leader:Member {id:$leaderId})
       SET leader.auth_id =  $auth_id
    MERGE (leader)-[:LEADS]->(church)
@@ -197,7 +197,7 @@ const servantCypher = {
    MATCH (church {id: $churchId}) 
    WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream 
    OR church:Campus OR church:Oversight 
-   OR church:CreativeArts OR church:Ministry OR church:Hub
+   OR church:CreativeArts OR church:Ministry OR church:HubCouncil OR church:Hub
    OR church:ClosedFellowship OR church:ClosedBacenta
    MATCH (leader:Member {id: $servantId})
    MATCH (currentUser:Member {auth_id: $auth.jwt.sub}) 
@@ -234,7 +234,7 @@ const servantCypher = {
    MATCH (church {id:$churchId}) 
    WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream 
    OR church:Campus OR church:Oversight 
-   OR church:CreativeArts OR church:Ministry OR church:Hub
+   OR church:CreativeArts OR church:Ministry OR church:HubCouncil OR church:Hub
    OR church:ClosedFellowship OR church:ClosedBacenta
    MATCH (leader:Member {id: $servantId})
    MATCH (currentUser:Member {auth_id: $auth.jwt.sub}) 

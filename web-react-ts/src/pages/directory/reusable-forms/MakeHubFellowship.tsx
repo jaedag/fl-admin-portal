@@ -12,24 +12,15 @@ import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import HeadingSecondary from 'components/HeadingSecondary'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import { Form, Formik, FormikHelpers } from 'formik'
-import { makeSelectOptions, throwToSentry } from 'global-utils'
-import { GET_FELLOWSHIP_COUNCIL_HUBS } from './SontaListQueries'
-import Select from 'components/formik/Select'
+import { throwToSentry } from 'global-utils'
 import SubmitButton from 'components/formik/SubmitButton'
+import SearchHub from 'components/formik/SearchHub'
+import { Church } from '@jaedag/admin-portal-types'
 
 const MakeHubFellowship = () => {
   const { clickCard, fellowshipId } = useContext(ChurchContext)
   const { data, loading, error } = useQuery(DISPLAY_FELLOWSHIP, {
     variables: { id: fellowshipId },
-  })
-  const {
-    data: hubData,
-    loading: hubLoading,
-    error: hubError,
-  } = useQuery(GET_FELLOWSHIP_COUNCIL_HUBS, {
-    variables: {
-      fellowshipId,
-    },
   })
 
   const [MakeHubFellowship] = useMutation(SET_FELLOWSHIP_TO_HUB_FELLOWSHIP)
@@ -40,8 +31,11 @@ const MakeHubFellowship = () => {
   const navigate = useNavigate()
   const fellowship = data?.fellowships[0]
 
-  const initialValues = {
-    hub: '',
+  const initialValues: {
+    hub: Church
+    fellowship: string
+  } = {
+    hub: {} as Church,
     fellowship: fellowshipId,
   }
 
@@ -54,7 +48,7 @@ const MakeHubFellowship = () => {
       await MakeHubFellowship({
         variables: {
           fellowshipId: fellowshipId,
-          hubId: values.hub,
+          hubId: values.hub.id,
         },
       })
       clickCard(fellowshipId)
@@ -84,14 +78,8 @@ const MakeHubFellowship = () => {
   }
   const [btnLoading, setBtnLoading] = React.useState(false)
 
-  const hubOptions = makeSelectOptions(hubData?.fellowships[0].councilHubs)
-
   return (
-    <ApolloWrapper
-      data={data && hubData}
-      loading={loading && hubLoading}
-      error={error && hubError}
-    >
+    <ApolloWrapper data={data} loading={loading} error={error}>
       <Container>
         <HeadingPrimary>Change Hub Fellowship Status</HeadingPrimary>
         <HeadingSecondary>{`${fellowship?.name} ${fellowship?.__typename}`}</HeadingSecondary>
@@ -119,7 +107,12 @@ const MakeHubFellowship = () => {
           >
             {(formik) => (
               <Form>
-                <Select name="hub" label="Hub" options={hubOptions} />
+                <SearchHub
+                  name="hub"
+                  label="Hub"
+                  placeholder="Search for Hub"
+                  setFieldValue={formik.setFieldValue}
+                />
                 <SubmitButton formik={formik} />
               </Form>
             )}

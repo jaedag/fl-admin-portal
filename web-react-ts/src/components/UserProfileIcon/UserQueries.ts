@@ -14,10 +14,13 @@ export const GET_LOGGED_IN_USER = gql`
         id
         hub {
           id
-          ministry {
+          hubCouncil {
             id
-            creativeArts {
+            ministry {
               id
+              creativeArts {
+                id
+              }
             }
           }
         }

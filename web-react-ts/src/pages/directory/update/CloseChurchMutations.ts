@@ -162,6 +162,29 @@ export const MAKE_HUB_INACTIVE = gql`
   }
 `
 
+export const MAKE_HUBCOUNCIL_INACTIVE = gql`
+  mutation CloseDownHubCouncil($leaderId: ID!, $hubId: ID!) {
+    CloseDownHubCouncil(leaderId: $leaderId, hubId: $hubId) {
+      id
+      name
+
+      history {
+        id
+        timeStamp
+        createdAt {
+          date
+        }
+        loggedBy {
+          id
+          firstName
+          lastName
+        }
+        historyRecord
+      }
+    }
+  }
+`
+
 export const MAKE_MINISTRY_INACTIVE = gql`
   mutation CloseDownMinistry($ministryId: ID!, $leaderId: ID!) {
     CloseDownMinistry(ministryId: $ministryId, leaderId: $leaderId) {

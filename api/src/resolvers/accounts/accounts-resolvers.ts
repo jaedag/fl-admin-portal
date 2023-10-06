@@ -18,7 +18,7 @@ export const accountsMutations = {
     object: unknown,
     args: {
       councilId: string
-      currentBalanceDepositAmount: number
+      weekdayBalanceDepositAmount: number
     },
     context: Context
   ) => {
@@ -35,12 +35,12 @@ export const accountsMutations = {
         councilBalancesResult.records[0].get('leader').properties
 
       const message = `Dear ${leader.firstName}, an amount of ${
-        args.currentBalanceDepositAmount
+        args.weekdayBalanceDepositAmount
       } GHS has been deposited into your weekday account for ${
         council.name
       }. Your weekday account balance is ${
-        council.currentBalance + args.currentBalanceDepositAmount
-      } GHS and bussing purse is ${council.bussingPurseBalance} GHS`
+        council.weekdayBalance + args.weekdayBalanceDepositAmount
+      } GHS and bussing purse is ${council.bussingSocietyBalance} GHS`
 
       const debitRes = await Promise.all([
         session.run(depositIntoCouncilCurrentAccount, {
@@ -69,7 +69,7 @@ export const accountsMutations = {
     object: unknown,
     args: {
       councilId: string
-      bussingPurseBalance: number
+      bussingSocietyBalance: number
     },
     context: Context
   ) => {
@@ -86,9 +86,9 @@ export const accountsMutations = {
         councilBalancesResult.records[0].get('leader').properties
 
       const depositAmount =
-        args.bussingPurseBalance - council.bussingPurseBalance
+        args.bussingSocietyBalance - council.bussingSocietyBalance
 
-      const message = `Dear ${leader.firstName}, an amount of ${depositAmount} GHS has been deposited into your bussing purse for ${council.name}. Your current bussing purse balance is ${args.bussingPurseBalance} GHS`
+      const message = `Dear ${leader.firstName}, an amount of ${depositAmount} GHS has been deposited into your bussing purse for ${council.name}. Your current bussing purse balance is ${args.bussingSocietyBalance} GHS`
 
       const debitRes = await Promise.all([
         session.run(depositIntoCoucilBussingPurse, {
@@ -139,14 +139,15 @@ export const accountsMutations = {
         councilBalancesResult.records[0].get('transaction').properties
 
       if (transaction.category === 'Bussing') {
-        if (council.currentBalance < transaction.amount) {
+        if (council.weekdayBalance < transaction.amount) {
           throw new Error('Insufficient bussing funds')
         }
 
         const currentAmountRemaining =
-          council.currentBalance - transaction.amount - args.charge
+          council.weekdayBalance - transaction.amount - args.charge
 
-        const amountRemaining = council.bussingPurseBalance + transaction.amount
+        const amountRemaining =
+          council.bussingSocietyBalance + transaction.amount
         const message = `Dear ${leader.firstName}, your expense request of ${transaction.amount} GHS from ${council.name} weekday account for ${transaction.category} has been approved. Balance remaining is ${currentAmountRemaining} GHS. Bussing Purse Balance is ${amountRemaining} GHS`
 
         const debitRes = await Promise.all([
@@ -163,12 +164,12 @@ export const accountsMutations = {
         }
       }
 
-      if (council.currentBalance < transaction.amount) {
+      if (council.weekdayBalance < transaction.amount) {
         throw new Error('Insufficient Funds')
       }
 
       const amountRemaining =
-        council.currentBalance - transaction.amount - args.charge
+        council.weekdayBalance - transaction.amount - args.charge
       const message = `Dear ${leader.firstName}, your expense request of ${transaction.amount} GHS (Charges: ${args.charge} GHS) from ${council.name} weekday account for ${transaction.category} has been approved. Balance remaining is ${amountRemaining} GHS`
 
       const debitRes = await Promise.all([
@@ -210,11 +211,11 @@ export const accountsMutations = {
       const leader: Member =
         councilBalancesResult.records[0].get('leader').properties
 
-      if (council.bussingPurseBalance < args.expenseAmount) {
+      if (council.bussingSocietyBalance < args.expenseAmount) {
         throw new Error('Insufficient Funds')
       }
 
-      const amountRemaining = council.bussingPurseBalance - args.expenseAmount
+      const amountRemaining = council.bussingSocietyBalance - args.expenseAmount
       const message = `Dear ${leader.firstName}, ${council.name} Council spent ${args.expenseAmount} GHS on bussing. Bussing Purse Balance remaining is ${amountRemaining} GHS`
 
       const debitRes = await Promise.all([

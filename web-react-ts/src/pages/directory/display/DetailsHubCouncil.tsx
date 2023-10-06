@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import { useQuery } from '@apollo/client'
-import { DISPLAY_HUB } from './ReadQueries'
+import { DISPLAY_HUBCOUNCIL } from './ReadQueries'
 import { ChurchContext } from '../../../contexts/ChurchContext'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { Church } from 'global-types'
@@ -8,38 +8,37 @@ import DisplaySontaDetails from 'components/DisplayChurchDetails/DisplaySontaDet
 import { DetailsArray } from './DetailsFellowship'
 import { permitAdmin } from 'permission-utils'
 
-const DetailsHub = () => {
-  const { hubId } = useContext(ChurchContext)
+const DetailsHubCouncil = () => {
+  const { hubCouncilId } = useContext(ChurchContext)
 
   const {
     data: hubData,
     loading: hubLoading,
     error: hubError,
-  } = useQuery(DISPLAY_HUB, {
-    variables: { id: hubId },
+  } = useQuery(DISPLAY_HUBCOUNCIL, {
+    variables: { id: hubCouncilId },
   })
-  const hub = hubData?.hubs[0]
+  const hubCouncil = hubData?.hubCouncils[0]
   let breadcrumb: Church[]
 
   breadcrumb = [
-    hub?.hubCouncil.ministry?.creativeArts?.campus,
-    hub?.hubCouncil.ministry?.creativeArts,
-    hub?.hubCouncil.ministry,
-    hub?.hubCouncil,
-    hub,
+    hubCouncil?.ministry?.creativeArts?.campus,
+    hubCouncil?.ministry?.creativeArts,
+    hubCouncil?.ministry,
+    hubCouncil,
   ]
 
   const details: DetailsArray = [
     {
       title: 'Members',
-      number: hub?.memberCount,
+      number: hubCouncil?.memberCount,
       link: '/hub/members',
       width: 12,
     },
     {
-      title: 'Hub Fellowships',
-      number: hub?.hubFellowships.length,
-      link: '/hubfellowship/displayall',
+      title: 'Hubs',
+      number: hubCouncil?.hubs.length,
+      link: '/hub/displayall',
     },
   ]
 
@@ -47,22 +46,22 @@ const DetailsHub = () => {
     <ApolloWrapper loading={hubLoading} error={hubError} data={hubData}>
       <DisplaySontaDetails
         details={details}
-        church={hub}
+        church={hubCouncil}
         loading={hubLoading}
-        name={hub?.name}
-        leaderTitle="Hub Leader"
+        name={hubCouncil?.name}
+        leaderTitle="Hub Council Leader"
         editPermitted={permitAdmin('Ministry')}
-        churchId={hubId}
-        leader={hub?.leader}
-        churchType="Hub"
-        subLevel={'HubFellowship'}
-        editlink="/hub/edithub"
-        history={hub?.history.length !== 0 && hub?.history}
+        churchId={hubCouncilId}
+        leader={hubCouncil?.leader}
+        churchType="HubCouncil"
+        subLevel={'Hub'}
+        editlink="/hubcouncil/edithubcouncil"
+        history={hubCouncil?.history.length !== 0 && hubCouncil?.history}
         breadcrumb={breadcrumb && breadcrumb}
-        buttons={hub?.hubFellowships}
+        buttons={hubCouncil?.hubs}
       />
     </ApolloWrapper>
   )
 }
 
-export default DetailsHub
+export default DetailsHubCouncil

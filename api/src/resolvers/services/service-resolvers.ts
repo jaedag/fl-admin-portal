@@ -121,6 +121,10 @@ const serviceMutation = {
       const higherChurches = getServiceHigherChurches(
         serviceCheckRes[2]?.records
       ) as HigherChurches
+      console.log(
+        '🚀 ~ file: service-resolvers.ts:124 ~ higherChurches:',
+        higherChurches
+      )
 
       if (
         serviceCheck.alreadyFilled &&

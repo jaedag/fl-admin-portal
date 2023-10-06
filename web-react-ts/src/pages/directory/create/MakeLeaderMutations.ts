@@ -168,6 +168,24 @@ export const NEW_MINISTRY_LEADER = gql`
   }
 `
 
+export const NEW_HUBCOUNCIL_LEADER = gql`
+  mutation NewHubCouncilLeader($hubCouncilId: ID!, $leaderId: ID!) {
+    MakeHubCouncilLeader(hubCouncilId: $hubCouncilId, leaderId: $leaderId) {
+      id
+      firstName
+      lastName
+      leadsHubCouncil {
+        id
+        leader {
+          id
+          firstName
+          lastName
+        }
+      }
+    }
+  }
+`
+
 export const NEW_HUB_LEADER = gql`
   mutation NewHubLeader($hubId: ID!, $leaderId: ID!) {
     MakeHubLeader(hubId: $hubId, leaderId: $leaderId) {
