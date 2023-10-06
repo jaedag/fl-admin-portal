@@ -131,7 +131,7 @@ const HubForm = ({ initialValues, onSubmit, title, newHub }: HubFormProps) => {
                         {initialValues.hubFellowships?.length === 0 ? (
                           <NoDataComponent text="No Hub Fellowships" />
                         ) : (
-                          <p className="fw-bold fs-5">Hub Councils</p>
+                          <p className="fw-bold fs-5">Hub Fellowships</p>
                         )}
 
                         {initialValues.hubFellowships?.map((hubFellowship) => (

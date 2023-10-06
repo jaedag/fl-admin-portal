@@ -113,8 +113,8 @@ const HubCouncilForm = ({
                     <Col className="mb-2">
                       <Input
                         name="name"
-                        label={`Name of Creative Arts`}
-                        placeholder={`Name of Creative Arts`}
+                        label={`Name of Hub Council`}
+                        placeholder={`Name of Hub Council`}
                       />
 
                       <Row className="d-flex align-items-center mb-3">
