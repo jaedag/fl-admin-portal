@@ -674,8 +674,38 @@ export const GET_STREAM_SONTAS = gql`
   }
 `
 
+export const GET_HUBCOUNCIL_HUBS = gql`
+  query getHubCouncilHubs($id: ID!) {
+    hubs(where: { id: $id }) {
+      id
+      name
+
+      leader {
+        id
+        firstName
+        lastName
+        fullName
+      }
+      memberCount
+
+      hubs {
+        name
+        id
+        memberCount
+        leader {
+          id
+          firstName
+          lastName
+          stream_name
+          pictureUrl
+        }
+      }
+    }
+  }
+`
+
 export const GET_MINISTRY_HUBCOUNCILS = gql`
-  query getMinistryHubs($id: ID!) {
+  query getMinistryHubCouncils($id: ID!) {
     ministries(where: { id: $id }) {
       id
       name

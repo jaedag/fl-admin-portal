@@ -7,9 +7,6 @@ export const EXPENSE_REQUEST = gql`
     $expenseCategory: String!
     $description: String!
     $accountType: String!
-    $momoNumber: String!
-    $momoName: String!
-    $invoiceUrl: String!
   ) {
     ExpenseRequest(
       councilId: $councilId
@@ -17,9 +14,6 @@ export const EXPENSE_REQUEST = gql`
       expenseCategory: $expenseCategory
       description: $description
       accountType: $accountType
-      momoNumber: $momoNumber
-      momoName: $momoName
-      invoiceUrl: $invoiceUrl
     ) {
       id
       timestamp
@@ -27,10 +21,6 @@ export const EXPENSE_REQUEST = gql`
       account
       category
       description
-
-      momoNumber
-      momoName
-      invoiceUrl
 
       loggedBy {
         id

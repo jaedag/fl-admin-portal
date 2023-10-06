@@ -1,7 +1,7 @@
 import { useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { useQuery } from '@apollo/client'
-import { GET_MINISTRY_HUBS } from '../../../queries/ListQueries'
+import { GET_HUBCOUNCIL_HUBS } from '../../../queries/ListQueries'
 import { ChurchContext } from '../../../contexts/ChurchContext'
 import RoleView from '../../../auth/RoleView'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
@@ -12,18 +12,15 @@ import DisplayChurchList from 'components/DisplayChurchList'
 import NoDataComponent from 'pages/arrivals/CompNoData'
 
 const DisplayAllHubs = () => {
-  const { clickCard, ministryId } = useContext(ChurchContext)
+  const { clickCard, hubCouncilId } = useContext(ChurchContext)
 
-  const { data, loading, error } = useQuery(GET_MINISTRY_HUBS, {
-    variables: { id: ministryId },
+  const { data, loading, error } = useQuery(GET_HUBCOUNCIL_HUBS, {
+    variables: { id: hubCouncilId },
   })
 
-  const hubs = data?.ministries[0]?.councils
-    .map((council: any) => {
-      return council.hubsFromMinistry
-    })
-    .flat()
-  const ministry = data?.ministries[0]
+  const hubs = data?.hubCouncils[0]?.hubs
+
+  const hubCouncil = data?.hubCouncils[0]
 
   return (
     <ApolloWrapper data={data} loading={loading} error={error}>
@@ -31,34 +28,34 @@ const DisplayAllHubs = () => {
         <Row className="mb-2">
           <Col>
             <Link
-              to="/ministry/displaydetails"
+              to="/hubCouncil/displaydetails"
               onClick={() => {
-                clickCard(ministry)
+                clickCard(hubCouncil)
               }}
             >
-              <h4 className="text-white">{`${ministry?.name} Hubs`}</h4>
+              <h4 className="text-white">{`${hubCouncil?.name} Hubs`}</h4>
             </Link>
             <Link
               to="/member/displaydetails"
               onClick={() => {
-                clickCard(ministry?.leader)
+                clickCard(hubCouncil?.leader)
               }}
             >
               <h6 className="text-white text-small d-block ">
                 <span className="text-muted">Leader: </span>
-                {ministry?.leader ? ` ${ministry.leader.fullName}` : null}
+                {hubCouncil?.leader ? ` ${hubCouncil.leader.fullName}` : null}
               </h6>
             </Link>
-            {ministry?.admin ? (
+            {hubCouncil?.admin ? (
               <Link
                 className="pb-4 text-white text-small"
                 to="/member/displaydetails"
                 onClick={() => {
-                  clickCard(ministry?.admin)
+                  clickCard(hubCouncil?.admin)
                 }}
               >
                 <span className="text-muted">Admin :</span>{' '}
-                {`${ministry?.admin?.fullName}`}
+                {`${hubCouncil?.admin?.fullName}`}
               </Link>
             ) : null}
           </Col>
@@ -73,26 +70,27 @@ const DisplayAllHubs = () => {
 
         <AllChurchesSummary
           church={hubs}
-          memberCount={ministry?.memberCount}
+          memberCount={hubCouncil?.memberCount}
           numberOfChurchesBelow={hubs?.length}
           churchType="Hub"
-          route="ministry"
+          route="hubCouncil"
         />
 
-        {ministry?.councils.map((council: any) => {
+        {hubCouncil?.councils.map((council: any) => {
           return (
             <>
               <Container>
                 <p className="mb-0 fw-bold fs-5">
-                  {council.name} Council: {council.hubsFromMinistry.length} Hubs
+                  {council.name} Council: {council.hubsFromhubCouncil.length}{' '}
+                  Hubs
                 </p>
-                {council.hubsFromMinistry.length === 0 && (
+                {council.hubsFromhubCouncil.length === 0 && (
                   <NoDataComponent text="This Council has no hubs" />
                 )}
               </Container>
               <DisplayChurchList
-                data={council.hubsFromMinistry}
-                churchType="Ministry"
+                data={council.hubsFromhubCouncil}
+                churchType="HubCouncil"
               />
             </>
           )
