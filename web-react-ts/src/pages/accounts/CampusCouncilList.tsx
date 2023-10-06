@@ -75,7 +75,7 @@ const CampusCouncilList = ({
                     Weekday Account -{' '}
                     <CurrencySpan number={council.weekdayBalance} />
                     <div>
-                      Bussing Purse -{' '}
+                      Bussing Society -{' '}
                       <CurrencySpan number={council.bussingSocietyBalance} />
                     </div>
                   </Button>

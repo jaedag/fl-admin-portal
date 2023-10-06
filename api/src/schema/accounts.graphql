@@ -7,6 +7,11 @@ type AccountTransaction {
   charge: Float
   category: String!
   status: String!
+
+  momoNumber: String
+  momoName: String
+  invoiceUrl: String
+
   loggedBy: Member! @relationship(type: "LOGGED_BY", direction: OUT)
 }
 
@@ -65,7 +70,7 @@ extend type Mutation {
     weekdayBalanceDepositAmount: Float!
   ): AccountTransaction!
 
-  DepositIntoCouncilBussingPurse(
+  DepositIntoCouncilBussingSociety(
     councilId: ID!
     bussingSocietyBalance: Float!
   ): AccountTransaction!
@@ -76,6 +81,9 @@ extend type Mutation {
     expenseCategory: String!
     accountType: String!
     description: String!
+    momoNumber: String!
+    momoName: String!
+    invoiceUrl: String!
   ): AccountTransaction!
     @auth(rules: [{ roles: ["leaderCouncil", "adminCampus"] }])
     @cypher(
@@ -91,7 +99,10 @@ extend type Mutation {
         transaction.account = $accountType,
         transaction.category = $expenseCategory,
         transaction.status = 'pending approval',
-        transaction.timestamp = datetime()
+        transaction.timestamp = datetime(),
+        transaction.momoNumber = $momoNumber,
+        transaction.momoName = $momoName,
+        transaction.invoiceUrl = $invoiceUrl
 
       MERGE (council)-[:HAS_TRANSACTION]->(transaction)
       MERGE (requester)<-[:LOGGED_BY]-(transaction)
@@ -113,7 +124,7 @@ extend type Mutation {
       """
     )
 
-  DebitBussingPurse(
+  DebitBussingSociety(
     councilId: ID!
     expenseAmount: Float!
     expenseCategory: String!

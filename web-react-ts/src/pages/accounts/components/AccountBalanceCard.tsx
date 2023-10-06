@@ -7,7 +7,7 @@ const AccountBalanceCard = ({
   variant,
 }: {
   church: CouncilForAccounts
-  variant: 'current-balance' | 'bussing-purse'
+  variant: 'current-balance' | 'bussing-society'
 }) => {
   return (
     <Card className={`${variant} mb-2`}>
@@ -22,7 +22,7 @@ const AccountBalanceCard = ({
             </Col>
           </Row>
         )}
-        {variant === 'bussing-purse' && (
+        {variant === 'bussing-society' && (
           <Row className="d-flex align-items-center text-light">
             <Col>Bussing Society Balance</Col>
             <Col>

@@ -5,8 +5,8 @@ import { isAuth, throwToSentry } from '../utils/utils'
 import {
   approveBussingExpense,
   approveExpense,
-  debitBussingPurse,
-  depositIntoCoucilBussingPurse,
+  debitBussingSociety,
+  depositIntoCoucilBussingSociety,
   depositIntoCouncilCurrentAccount,
   getCouncilBalances,
   getCouncilBalancesWithTransaction,
@@ -30,6 +30,7 @@ export const accountsMutations = {
 
       const council: CouncilForAccounts =
         councilBalancesResult.records[0].get('council').properties
+      console.log('🚀 ~ file: accounts-resolvers.ts:32 ~ council:', council)
 
       const leader: Member =
         councilBalancesResult.records[0].get('leader').properties
@@ -40,7 +41,7 @@ export const accountsMutations = {
         council.name
       }. Your weekday account balance is ${
         council.weekdayBalance + args.weekdayBalanceDepositAmount
-      } GHS and bussing purse is ${council.bussingSocietyBalance} GHS`
+      } GHS and bussing society is ${council.bussingSocietyBalance} GHS`
 
       const debitRes = await Promise.all([
         session.run(depositIntoCouncilCurrentAccount, {
@@ -65,7 +66,7 @@ export const accountsMutations = {
 
     return null
   },
-  DepositIntoCouncilBussingPurse: async (
+  DepositIntoCouncilBussingSociety: async (
     object: unknown,
     args: {
       councilId: string
@@ -88,13 +89,13 @@ export const accountsMutations = {
       const depositAmount =
         args.bussingSocietyBalance - council.bussingSocietyBalance
 
-      const message = `Dear ${leader.firstName}, an amount of ${depositAmount} GHS has been deposited into your bussing purse for ${council.name}. Your current bussing purse balance is ${args.bussingSocietyBalance} GHS`
+      const message = `Dear ${leader.firstName}, an amount of ${depositAmount} GHS has been deposited into your bussing society for ${council.name}. Your current bussing society balance is ${args.bussingSocietyBalance} GHS`
 
       const debitRes = await Promise.all([
-        session.run(depositIntoCoucilBussingPurse, {
+        session.run(depositIntoCoucilBussingSociety, {
           auth: context.auth,
           ...args,
-          bussingPurseDepositAmount: depositAmount,
+          bussingSocietyDepositAmount: depositAmount,
         }),
         sendBulkSMS([leader.phoneNumber], message),
       ])
@@ -148,7 +149,7 @@ export const accountsMutations = {
 
         const amountRemaining =
           council.bussingSocietyBalance + transaction.amount
-        const message = `Dear ${leader.firstName}, your expense request of ${transaction.amount} GHS from ${council.name} weekday account for ${transaction.category} has been approved. Balance remaining is ${currentAmountRemaining} GHS. Bussing Purse Balance is ${amountRemaining} GHS`
+        const message = `Dear ${leader.firstName}, your expense request of ${transaction.amount} GHS from ${council.name} weekday account for ${transaction.category} has been approved. Balance remaining is ${currentAmountRemaining} GHS. Bussing Society Balance is ${amountRemaining} GHS`
 
         const debitRes = await Promise.all([
           session.run(approveBussingExpense, args),
@@ -192,7 +193,7 @@ export const accountsMutations = {
 
     return null
   },
-  DebitBussingPurse: async (
+  DebitBussingSociety: async (
     object: unknown,
     args: {
       councilId: string
@@ -216,10 +217,10 @@ export const accountsMutations = {
       }
 
       const amountRemaining = council.bussingSocietyBalance - args.expenseAmount
-      const message = `Dear ${leader.firstName}, ${council.name} Council spent ${args.expenseAmount} GHS on bussing. Bussing Purse Balance remaining is ${amountRemaining} GHS`
+      const message = `Dear ${leader.firstName}, ${council.name} Council spent ${args.expenseAmount} GHS on bussing. Bussing Society Balance remaining is ${amountRemaining} GHS`
 
       const debitRes = await Promise.all([
-        session.run(debitBussingPurse, { ...args, auth: context.auth }),
+        session.run(debitBussingSociety, { ...args, auth: context.auth }),
         sendBulkSMS([leader.phoneNumber], message),
       ])
 
@@ -231,7 +232,7 @@ export const accountsMutations = {
         loggedBy: { ...depositor },
       }
     } catch (err) {
-      throwToSentry('There was an error debiting bussing purse', err)
+      throwToSentry('There was an error debiting bussing society', err)
     } finally {
       await session.close()
     }

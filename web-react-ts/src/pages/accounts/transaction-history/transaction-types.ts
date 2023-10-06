@@ -6,7 +6,7 @@ export interface AccountTransaction {
   description: string
   amount: number
   charge?: number
-  account: 'Bussing Purse' | 'Current Account'
+  account: 'Bussing Society' | 'Current Account'
   status: 'success' | 'pending approval' | 'declined'
   category: 'Deposit'
   loggedBy: Member

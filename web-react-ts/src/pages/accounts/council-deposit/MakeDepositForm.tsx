@@ -13,7 +13,7 @@ import Input from 'components/formik/Input'
 import SubmitButton from 'components/formik/SubmitButton'
 import useModal from 'hooks/useModal'
 import {
-  DEPOSIT_INTO_COUNCIL_BUSSING_PURSE,
+  DEPOSIT_INTO_COUNCIL_BUSSING_SOCIETY,
   DEPOSIT_INTO_COUNCIL_CURRENT_ACCOUNTS,
   SET_HR_AMOUNT,
 } from './depositGQL'
@@ -40,8 +40,8 @@ const MakeDepositForm = () => {
     }
   )
 
-  const [DepositIntoCouncilBussingPurse] = useMutation(
-    DEPOSIT_INTO_COUNCIL_BUSSING_PURSE,
+  const [DepositIntoCouncilBussingSociety] = useMutation(
+    DEPOSIT_INTO_COUNCIL_BUSSING_SOCIETY,
     {
       refetchQueries: [
         { query: COUNCIL_ACCOUNT_DASHBOARD, variables: { id: councilId } },
@@ -112,7 +112,7 @@ const MakeDepositForm = () => {
         council?.bussingSocietyBalance
       ) {
         mutations.push(
-          DepositIntoCouncilBussingPurse({
+          DepositIntoCouncilBussingSociety({
             variables: {
               councilId: councilId,
               bussingSocietyBalance: parseFloat(values.bussingSocietyBalance),
@@ -132,8 +132,8 @@ const MakeDepositForm = () => {
           clickCard(response.data?.DepositIntoCouncilCurrentAccount)
         }
 
-        if (response.data?.DepositIntoCouncilBussingPurse) {
-          clickCard(response.data?.DepositIntoCouncilBussingPurse)
+        if (response.data?.DepositIntoCouncilBussingSociety) {
+          clickCard(response.data?.DepositIntoCouncilBussingSociety)
         }
 
         return null
@@ -180,7 +180,7 @@ const MakeDepositForm = () => {
                 <RoleView roles={['arrivalsAdminCampus']}>
                   <Input
                     name="bussingSocietyBalance"
-                    label="Current Bussing Purse Balance"
+                    label="Current Bussing Society Balance"
                     placeholder="Enter an amount"
                   />
                 </RoleView>
@@ -210,7 +210,7 @@ const MakeDepositForm = () => {
                     </p>
 
                     <p>
-                      Bussing Purse Balance:{' '}
+                      Bussing Society Balance:{' '}
                       <span className="text-info">
                         GHS{' '}
                         {parseFloat(

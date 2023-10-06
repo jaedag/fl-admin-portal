@@ -35,7 +35,7 @@ const CampusDashboard = () => {
         <HeadingSecondary>{campus?.leader.fullName}</HeadingSecondary>
 
         <AccountBalanceCard church={campus} variant="current-balance" />
-        <AccountBalanceCard church={campus} variant="bussing-purse" />
+        <AccountBalanceCard church={campus} variant="bussing-society" />
 
         <hr />
 

@@ -31,7 +31,7 @@ MATCH (transaction)-[:LOGGED_BY]->(depositor:Member)
 RETURN transaction, depositor
 `
 
-export const debitBussingPurse = `
+export const debitBussingSociety = `
 MATCH  (council:Council {id: $councilId})
 MATCH (requester:Member {auth_id: $auth.jwt.sub})
 
@@ -41,7 +41,7 @@ CREATE (transaction:AccountTransaction {id: randomUUID()})
   SET transaction.amount = $expenseAmount,
   transaction.description = 'Bussing Expense',
   transaction.category = $expenseCategory,
-  transaction.account = 'Bussing Purse',
+  transaction.account = 'Bussing Society',
   transaction.status = 'success',
   transaction.timestamp = datetime(),
   council.bussingAmount = $expenseAmount
@@ -74,18 +74,18 @@ MERGE (depositor)<-[:LOGGED_BY]-(transaction)
 RETURN council, transaction, depositor
 `
 
-export const depositIntoCoucilBussingPurse = `
+export const depositIntoCoucilBussingSociety = `
       MATCH (council:Council {id: $councilId})
       MATCH (depositor:Member {auth_id: $auth.jwt.sub})
-        SET council.bussingSocietyBalance = council.bussingSocietyBalance + $bussingPurseDepositAmount
+        SET council.bussingSocietyBalance = council.bussingSocietyBalance + $bussingSocietyDepositAmount
 
       WITH council, depositor
 
       CREATE (transaction:AccountTransaction {id: randomUUID()})
-        SET transaction.description = depositor.firstName +  ' ' + depositor.lastName +  ' deposited ' + $bussingPurseDepositAmount + ' into the bussing purse',
-        transaction.amount = $bussingPurseDepositAmount,
+        SET transaction.description = depositor.firstName +  ' ' + depositor.lastName +  ' deposited ' + $bussingSocietyDepositAmount + ' into the bussing society',
+        transaction.amount = $bussingSocietyDepositAmount,
         transaction.category = 'Deposit',
-        transaction.account = 'Bussing Purse',
+        transaction.account = 'Bussing Society',
         transaction.timestamp = datetime(),
         transaction.status = 'success'
 

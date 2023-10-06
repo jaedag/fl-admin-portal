@@ -30,7 +30,7 @@ const CouncilDashboard = () => {
         <HeadingSecondary>{council?.leader.fullName}</HeadingSecondary>
 
         <AccountBalanceCard church={council} variant="current-balance" />
-        <AccountBalanceCard church={council} variant="bussing-purse" />
+        <AccountBalanceCard church={council} variant="bussing-society" />
 
         <hr />
 

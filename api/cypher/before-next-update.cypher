@@ -11,9 +11,9 @@ RETURN 1;
 
 
 MATCH (council:Council)
-REMOVE council.bussingPurseBalance, council.currentBalance
-SET council.weekdayBalance = 0,
-council.bussingSocietyBalance = 0
+// REMOVE council.bussingSocietyBalance, council.currentBalance
+SET council.weekdayBalance = 0.0,
+council.bussingSocietyBalance = 0.0
 RETURN council.name, council.weekdayBalance, council.bussingSocietyBalance;
 
 MATCH (trans:AccountTransaction)

@@ -25,12 +25,12 @@ export const DEPOSIT_INTO_COUNCIL_CURRENT_ACCOUNTS = gql`
   }
 `
 
-export const DEPOSIT_INTO_COUNCIL_BUSSING_PURSE = gql`
-  mutation DepositIntoCouncilBussingPurse(
+export const DEPOSIT_INTO_COUNCIL_BUSSING_SOCIETY = gql`
+  mutation DepositIntoCouncilBussingSociety(
     $councilId: ID!
     $bussingSocietyBalance: Float!
   ) {
-    DepositIntoCouncilBussingPurse(
+    DepositIntoCouncilBussingSociety(
       councilId: $councilId
       bussingSocietyBalance: $bussingSocietyBalance
     ) {

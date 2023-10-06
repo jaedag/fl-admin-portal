@@ -13,7 +13,7 @@ import * as Yup from 'yup'
 import Input from 'components/formik/Input'
 import SubmitButton from 'components/formik/SubmitButton'
 import { throwToSentry } from 'global-utils'
-import { DEBIT_BUSSING_PURSE } from '../request-expense/expenseGQL'
+import { DEBIT_BUSSING_SOCIETY } from '../request-expense/expenseGQL'
 import { CouncilForAccounts } from '../accounts-types'
 
 const BussingExpenseEntry = () => {
@@ -26,7 +26,7 @@ const BussingExpenseEntry = () => {
       id: councilId,
     },
   })
-  const [DebitBussingPurse] = useMutation(DEBIT_BUSSING_PURSE)
+  const [DebitBussingSociety] = useMutation(DEBIT_BUSSING_SOCIETY)
 
   const council: CouncilForAccounts = data?.councils[0]
 
@@ -48,7 +48,7 @@ const BussingExpenseEntry = () => {
 
     setSubmitting(true)
     try {
-      const res = await DebitBussingPurse({
+      const res = await DebitBussingSociety({
         variables: {
           councilId,
           expenseAmount: parseFloat(values.amountSpent.toString()),
@@ -56,7 +56,7 @@ const BussingExpenseEntry = () => {
         },
       })
 
-      clickCard(res.data.DebitBussingPurse)
+      clickCard(res.data.DebitBussingSociety)
       navigate('/accounts/transaction-details/')
     } catch (err) {
       throwToSentry('Error Making Expense Request', err)
