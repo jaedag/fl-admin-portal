@@ -116,10 +116,10 @@ RETURN true AS exists
 `
 export const getServantAndChurch = `
 MATCH (church {id: $churchId}) 
-WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:Hub OR church:HubCouncil
+WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:Hub OR church:HubCouncil OR church:Ministry
 MATCH (church)<-[:LEADS]-(servant:Active:Member)
 UNWIND labels(church) AS churchType 
-WITH churchType, church, servant WHERE churchType IN ['Fellowship', 'Bacenta', 'Constituency', 'Council', 'Stream','Hub', 'HubCouncil']
+WITH churchType, church, servant WHERE churchType IN ['Fellowship', 'Bacenta', 'Constituency', 'Council', 'Stream','Hub', 'HubCouncil', 'Ministry']
 RETURN church.id AS churchId, church.name AS churchName, servant.id AS servantId, servant.auth_id AS auth_id, servant.firstName AS firstName, servant.lastName AS lastName, churchType AS churchType
 `
 export const aggregateServiceDataForBacenta = `
