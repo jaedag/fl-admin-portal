@@ -369,16 +369,16 @@ export const LOG_HUBCOUNCIL_HISTORY = gql`
     $historyRecord: String!
     $oldLeaderId: ID
     $newLeaderId: ID
-    $oldHubId: ID
-    $newHubId: ID
+    $oldMinistryId: ID
+    $newMinistryId: ID
   ) {
     LogHubCouncilHistory(
       hubCouncilId: $hubCouncilId
       historyRecord: $historyRecord
       newLeaderId: $newLeaderId
       oldLeaderId: $oldLeaderId
-      oldHubId: $oldHubId
-      newHubId: $newHubId
+      oldMinistryId: $oldMinistryId
+      newMinistryId: $newMinistryId
     ) {
       id
       name
@@ -386,10 +386,6 @@ export const LOG_HUBCOUNCIL_HISTORY = gql`
         id
         firstName
         lastName
-      }
-      hub {
-        id
-        name
       }
       history(limit: 5) {
         id

@@ -552,7 +552,7 @@ type HubFellowship implements Church {
       RETURN council
       """
     )
-  hub: [Hub!]! @relationship(type: "HAS", direction: IN)
+  hub: Hub! @relationship(type: "HAS", direction: IN)
 }
 
 extend type Mutation {
@@ -725,19 +725,19 @@ extend type Mutation {
       RETURN creativeArt
       """
     )
-  UpdateMinistryDetails(ministryId: ID!, ministryName: String!): Ministry!
+  UpdateMinistryDetails(ministryId: ID!, name: String!): Ministry!
     @auth(
       rules: [{ roles: ["adminCampus", "adminStream", "adminCreativeArts"] }]
     )
     @cypher(
       statement: """
        MATCH (ministry:Ministry {id:$ministryId})
-        SET ministry.name = $ministryName
+        SET ministry.name = $name
 
       RETURN ministry
       """
     )
-  UpdateHubCouncilDetails(hubCouncilId: ID!, hubName: String!): HubCouncil!
+  UpdateHubCouncilDetails(hubCouncilId: ID!, name: String!): HubCouncil!
     @auth(
       rules: [
         {
@@ -753,12 +753,12 @@ extend type Mutation {
     @cypher(
       statement: """
       MATCH (hub:HubCouncil {id:$hubId})
-        SET hub.name = $hubName
+        SET hub.name = $name
 
       RETURN hub
       """
     )
-  UpdateHubDetails(hubId: ID!, ministryId: ID!, hubName: String!): Hub!
+  UpdateHubDetails(hubId: ID!, ministryId: ID!, name: String!): Hub!
     @auth(
       rules: [
         {
@@ -774,7 +774,7 @@ extend type Mutation {
     @cypher(
       statement: """
       MATCH (hub:Hub {id:$hubId})
-        SET hub.name = $hubName
+        SET hub.name = $name
 
       RETURN hub
       """

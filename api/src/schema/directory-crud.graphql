@@ -134,6 +134,54 @@ extend type Mutation {
       RETURN fellowship
       """
     )
+  SetActiveHub(hubId: ID!): Hub!
+    @cypher(
+      statement: """
+      MATCH (hub:Hub {id:$hubId})
+
+      CREATE (log:HistoryLog {id:apoc.create.uuid()})
+        SET log.timeStamp = datetime(),
+        log.historyRecord = hub.name + ' Hub was made active again'
+
+      WITH log,hub
+      MATCH (admin:Active:Member {auth_id: $auth.jwt.sub})
+      MATCH (hub)<-[:HAS]-(fellowship:Fellowship)
+      MERGE (date:TimeGraph {date:date()})
+      MERGE (log)-[:LOGGED_BY]->(admin)
+      MERGE (log)-[:RECORDED_ON]->(date)
+      MERGE (hub)-[:HAS_HISTORY]->(log)
+      MERGE (fellowship)-[:HAS_HISTORY]->(log)
+
+      SET hub:Active:Hub
+      REMOVE hub:Vacation, hub:Online
+
+      RETURN hub
+      """
+    )
+  SetVacationHub(hubId: ID!): Hub!
+    @cypher(
+      statement: """
+      MATCH (hub:Hub {id:$hubId})
+
+      CREATE (log:HistoryLog {id:apoc.create.uuid()})
+        SET log.timeStamp = datetime(),
+        log.historyRecord = hub.name + ' Hub went on vacation mode'
+
+      WITH log,hub
+      MATCH (admin:Active:Member {auth_id: $auth.jwt.sub})
+      MATCH (hub)<-[:HAS]-(fellowship:Fellowship)
+      MERGE (date:TimeGraph {date:date()})
+      MERGE (log)-[:LOGGED_BY]->(admin)
+      MERGE (log)-[:RECORDED_ON]->(date)
+      MERGE (hub)-[:HAS_HISTORY]->(log)
+      MERGE (fellowship)-[:HAS_HISTORY]->(log)
+
+      SET hub:Vacation
+      REMOVE hub:Active, hub:Online
+
+      RETURN hub
+      """
+    )
 
   # Set fellowship to be 'Online'
   SetOnlineFellowship(fellowshipId: ID!): Fellowship!

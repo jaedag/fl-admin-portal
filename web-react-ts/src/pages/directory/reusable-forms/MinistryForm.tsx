@@ -93,7 +93,7 @@ const MinistryForm = ({
                 Add HubCouncil
               </Button>
               <Button variant="success" onClick={() => setCloseDown(true)}>
-                {`Close Down Creative Arts`}
+                {`Close Down Ministry`}
               </Button>
             </>
           )}

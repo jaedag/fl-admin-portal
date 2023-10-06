@@ -1,13 +1,13 @@
 import { gql } from '@apollo/client'
 
-export const MEMBER_HUBCOUNCIL_SEARCH = gql`
-  query memberHubCouncilSearch($id: ID!, $key: String!) {
+export const MEMBER_HUBFELLOWSHIP_SEARCH = gql`
+  query memberHubFellowshipSearch($id: ID!, $key: String!) {
     members(where: { id: $id }) {
       id
-      hubCouncilSearch(key: $key) {
+      hubFellowshipSearch(key: $key) {
         id
         name
-        ministry {
+        hub {
           id
           name
         }

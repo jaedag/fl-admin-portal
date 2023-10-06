@@ -4,71 +4,71 @@ import { useQuery, useMutation } from '@apollo/client'
 import { alertMsg, throwToSentry } from '../../../global-utils'
 import { GET_CREATIVEARTS_MINISTRIES } from '../../../queries/ListQueries'
 import { ChurchContext } from '../../../contexts/ChurchContext'
-import { DISPLAY_MINISTRY } from '../display/ReadQueries'
-import { LOG_MINISTRY_HISTORY } from './LogMutations'
-import MinistryForm, {
-  MinistryFormValues,
-} from 'pages/directory/reusable-forms/MinistryForm'
+import { DISPLAY_HUBCOUNCIL } from '../display/ReadQueries'
+import { LOG_HUBCOUNCIL_HISTORY } from './LogMutations'
+import HubCouncilForm, {
+  HubCouncilFormValues,
+} from 'pages/directory/reusable-forms/HubCouncilForm'
 import { FormikHelpers } from 'formik'
 import LoadingScreen from 'components/base-component/LoadingScreen'
-import { UPDATE_MINISTRY_MUTATION } from './UpdateSontaMutations'
-import { MAKE_MINISTRY_LEADER } from './ChangeLeaderMutations'
+import { UPDATE_HUBCOUNCIL_MUTATION } from './UpdateSontaMutations'
+import { MAKE_HUBCOUNCIL_LEADER } from './ChangeLeaderMutations'
 
-const UpdateMinistry = () => {
-  const { ministryId } = useContext(ChurchContext)
-  const { data, loading } = useQuery(DISPLAY_MINISTRY, {
-    variables: { id: ministryId },
+const UpdateHubCouncil = () => {
+  const { hubCouncilId } = useContext(ChurchContext)
+  const { data, loading } = useQuery(DISPLAY_HUBCOUNCIL, {
+    variables: { id: hubCouncilId },
   })
 
   const navigate = useNavigate()
-  const ministry = data?.ministry[0]
+  const hubCouncil = data?.hubCouncil[0]
 
-  const initialValues: MinistryFormValues = {
-    name: ministry?.name,
-    leaderName: ministry?.leader?.fullName ?? '',
-    leaderId: ministry?.leader?.id || '',
-    leaderEmail: ministry?.leader?.email || '',
-    hubCouncils: ministry?.hubCouncils,
+  const initialValues: HubCouncilFormValues = {
+    name: hubCouncil?.name,
+    leaderName: hubCouncil?.leader?.fullName ?? '',
+    leaderId: hubCouncil?.leader?.id || '',
+    leaderEmail: hubCouncil?.leader?.email || '',
+    hubs: hubCouncil?.hubs,
   }
-  const [LogMinistryHistory] = useMutation(LOG_MINISTRY_HISTORY, {
+  const [LogHubCouncilHistory] = useMutation(LOG_HUBCOUNCIL_HISTORY, {
     refetchQueries: [
       {
-        query: DISPLAY_MINISTRY,
-        variables: { id: ministryId },
+        query: DISPLAY_HUBCOUNCIL,
+        variables: { id: hubCouncilId },
       },
     ],
   })
 
-  const [MakeMinistryLeader] = useMutation(MAKE_MINISTRY_LEADER)
-  const [UpdateMinistry] = useMutation(UPDATE_MINISTRY_MUTATION, {
+  const [MakeHubCouncilLeader] = useMutation(MAKE_HUBCOUNCIL_LEADER)
+  const [UpdateHubCouncil] = useMutation(UPDATE_HUBCOUNCIL_MUTATION, {
     refetchQueries: [
       {
         query: GET_CREATIVEARTS_MINISTRIES,
-        variables: { id: ministry?.creativeArts.id },
+        variables: { id: hubCouncil?.creativeArts.id },
       },
     ],
   })
 
   //onSubmit receives the form state as argument
   const onSubmit = async (
-    values: MinistryFormValues,
-    onSubmitProps: FormikHelpers<MinistryFormValues>
+    values: HubCouncilFormValues,
+    onSubmitProps: FormikHelpers<HubCouncilFormValues>
   ) => {
     onSubmitProps.setSubmitting(true)
 
     try {
-      await UpdateMinistry({
+      await UpdateHubCouncil({
         variables: {
-          ministryId: ministryId,
+          hubCouncilId: hubCouncilId,
           name: values.name,
         },
       })
 
-      //Log if Ministry Name Changes
+      //Log if HubCouncil Name Changes
       if (values.name !== initialValues.name) {
-        await LogMinistryHistory({
+        await LogHubCouncilHistory({
           variables: {
-            ministryId: ministryId,
+            hubCouncilId: hubCouncilId,
             newLeaderId: '',
             oldLeaderId: '',
             oldOversightId: '',
@@ -81,15 +81,15 @@ const UpdateMinistry = () => {
       //Log if the Leader Changes
       if (values.leaderId !== initialValues.leaderId) {
         try {
-          await MakeMinistryLeader({
+          await MakeHubCouncilLeader({
             variables: {
               oldLeaderId: initialValues.leaderId || 'old-leader',
               newLeaderId: values.leaderId,
-              ministryId: ministryId,
+              hubCouncilId: hubCouncilId,
             },
           })
           alertMsg('Leader Changed Successfully')
-          navigate(`/ministry/displaydetails`)
+          navigate(`/hubCouncil/displaydetails`)
         } catch (err: any) {
           const errorArray = err.toString().replace('Error: ', '').split('\n')
           if (errorArray[0] === errorArray[1]) {
@@ -104,9 +104,9 @@ const UpdateMinistry = () => {
       }
       onSubmitProps.setSubmitting(false)
       onSubmitProps.resetForm()
-      navigate(`/ministry/displaydetails`)
+      navigate(`/hubCouncil/displaydetails`)
     } catch (err: any) {
-      throwToSentry('There was a problem updating this ministry', err)
+      throwToSentry('There was a problem updating this hubCouncil', err)
       onSubmitProps.setSubmitting(false)
     }
   }
@@ -116,13 +116,13 @@ const UpdateMinistry = () => {
   }
 
   return (
-    <MinistryForm
+    <HubCouncilForm
       initialValues={initialValues}
       onSubmit={onSubmit}
-      title={`Update Ministry Form`}
-      newMinistry={false}
+      title={`Update HubCouncil Form`}
+      newHubCouncil={false}
     />
   )
 }
 
-export default UpdateMinistry
+export default UpdateHubCouncil

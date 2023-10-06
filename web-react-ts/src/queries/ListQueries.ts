@@ -895,7 +895,7 @@ export const GET_COUNCIL_HUBCOUNCILS = gql`
 `
 
 export const GET_CREATIVEARTS_MINISTRIES = gql`
-  query getCreativeArtsMinistries($id: ID!) {
+  query getCreativeArtsMinistriesList($id: ID!) {
     creativeArts(where: { id: $id }) {
       id
       name

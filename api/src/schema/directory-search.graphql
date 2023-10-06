@@ -81,7 +81,7 @@ extend type Member {
       RETURN DISTINCT ministry LIMIT $limit
       """
     )
-  hubCouncilSearch(key: String!, limit: Int! = 5): [Hub!]!
+  hubCouncilSearch(key: String!, limit: Int! = 5): [HubCouncil!]!
     @cypher(
       statement: """
       MATCH (this)-[:LEADS|HAS|HAS_MINISTRY|IS_ADMIN_FOR*1..6]->(hub:HubCouncil)
@@ -93,6 +93,14 @@ extend type Member {
     @cypher(
       statement: """
       MATCH (this)-[:LEADS|HAS|HAS_MINISTRY|IS_ADMIN_FOR*1..7]->(hub:Hub)
+      WHERE toLower(hub.name) CONTAINS toLower($key)
+      RETURN DISTINCT hub LIMIT $limit
+      """
+    )
+  hubFellowshipSearch(key: String!, limit: Int! = 5): [HubFellowship!]!
+    @cypher(
+      statement: """
+      MATCH (this)-[:LEADS|HAS|HAS_MINISTRY|IS_ADMIN_FOR*1..8]->(hub:HubFellowship)
       WHERE toLower(hub.name) CONTAINS toLower($key)
       RETURN DISTINCT hub LIMIT $limit
       """
