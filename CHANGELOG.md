@@ -1,3 +1,13 @@
+#### 7.10.8 (2023-10-06)
+
+##### Bug Fixes
+
+*  implement optional types on sonta form values ([f7415106](https://github.com/firstlovecenter/fl-pastoral-care/commit/f741510609b74e365a6e55ef5a03e4ff055819ad))
+*  fix bugs breaking the build ([70807ea9](https://github.com/firstlovecenter/fl-pastoral-care/commit/70807ea97402b6afaf687c4f6399ada4b2486108))
+*  tweak colours for role card ([42e7895e](https://github.com/firstlovecenter/fl-pastoral-care/commit/42e7895ec539ef5157c02f91aff86233ec0cfbaa))
+*  tweak permissions to allow viewing of hubcouncil details ([9ef02d41](https://github.com/firstlovecenter/fl-pastoral-care/commit/9ef02d417d4e543f421a5c15f7f8ea5240e4f2fb))
+*  fix bug breaking allhubs paages ([01ad5d15](https://github.com/firstlovecenter/fl-pastoral-care/commit/01ad5d150e0ccf854c03a89ea0955a01d77a934f))
+
 #### 7.10.7 (2023-10-06)
 
 ##### Bug Fixes
