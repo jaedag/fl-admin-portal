@@ -40,6 +40,12 @@ const DetailsHubCouncil = () => {
       number: hubCouncil?.hubs.length,
       link: '/hub/displayall',
     },
+    {
+      title: 'Hub Fellowship',
+      number: hubCouncil?.hubFellowshipCount,
+      vacationCount: hubCouncil?.vacationHubFellowshipCount,
+      link: '/hub/displayall',
+    },
   ]
 
   return (

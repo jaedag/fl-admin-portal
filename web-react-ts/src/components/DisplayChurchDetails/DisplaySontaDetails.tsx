@@ -30,14 +30,10 @@ import useModal from 'hooks/useModal'
 import SearchMember from 'components/formik/SearchMember'
 import SubmitButton from 'components/formik/SubmitButton'
 import LeaderAvatar from 'components/LeaderAvatar/LeaderAvatar'
+import { DetailsArray } from 'pages/directory/display/DetailsFellowship'
 
 type DisplayChurchDetailsProps = {
-  details: {
-    title: string
-    number: number | string
-    link: string
-    width?: number
-  }[]
+  details: DetailsArray
   loading: boolean
   church: BacentaWithArrivals
   name: string
@@ -219,6 +215,11 @@ const DisplaySontaDetails = (props: DisplayChurchDetailsProps) => {
                   heading={detail.title}
                   detail={
                     !props.loading ? detail?.number?.toString() || '0' : ''
+                  }
+                  vacationCount={
+                    !props.loading
+                      ? detail?.vacationCount?.toString() || '0'
+                      : ''
                   }
                 />
               </Col>
