@@ -75,7 +75,7 @@ const DisplayAllHubs = () => {
           route="hubCouncil"
         />
 
-        {hubs.length === 0 && (
+        {hubs?.length === 0 && (
           <NoDataComponent text="This Council has no hubs" />
         )}
         <ChurchSearch data={hubs} churchType="Hub" />
