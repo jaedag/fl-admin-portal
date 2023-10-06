@@ -61,6 +61,7 @@ const SetPermissions = ({
       const constituencyId =
         data.memberByEmail?.fellowship?.bacenta.constituency?.id
       const hubId = data.memberByEmail?.fellowship?.hub?.id
+      const hubCouncilId = data.memberByEmail?.fellowship?.hub?.hubCouncil.id
       const ministryId = data.memberByEmail?.fellowship?.hub?.ministry.id
       const creativeArtsId =
         data.memberByEmail?.fellowship?.hub?.ministry?.creativeArts.id
@@ -78,6 +79,9 @@ const SetPermissions = ({
         sessionStorage.getItem('constituencyId') ?? constituencyId
       )
       doNotUse.setHubId(sessionStorage.getItem('hubId') ?? hubId)
+      doNotUse.setHubCouncilId(
+        sessionStorage.getItem('hubCouncilId') ?? hubCouncilId
+      )
       doNotUse.setMinistryId(sessionStorage.getItem('ministryId') ?? ministryId)
       doNotUse.setCreativeArtsId(
         sessionStorage.getItem('creativeArtsId') ?? creativeArtsId
@@ -100,6 +104,7 @@ const SetPermissions = ({
 
         // Creative Arts
         hub: hubId,
+        hubCouncil: hubCouncilId,
         ministry: ministryId,
         creativeArts: creativeArtsId,
 

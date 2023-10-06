@@ -18,6 +18,8 @@
   background-image: linear-gradient(#770e0b, #4e0a09, #2b0707);
 }
 
+.colour-hub,
+.colour-hubs,
 .colour-constituencies,
 .colour-constituency {
   background-image: linear-gradient(#3c096f, #2c0b53, #1b0e36);
@@ -27,27 +29,23 @@
   background-image: linear-gradient(#3c096f, #2c0b53, #1b0e36);
 }
 
-.colour-hub,
-.colour-hubs {
-  background-image: linear-gradient(#3c096f, #2c0b53, #1b0e36);
-}
 .colour-council,
 .colour-councils {
-  background-image: linear-gradient(#3c096f, #2c0b53, #1b0e36);
+  background-image: linear-gradient(#075e6f, #054552, #042e37);
 }
 
 .colour-ministry,
 .colour-ministries,
 .colour-stream,
 .colour-streams {
-  background-image: linear-gradient(#3c096f, #2c0b53, #1b0e36);
+  background-image: linear-gradient(#005e93, #012c48, #004471);
 }
 
 .colour-campus,
 .colour-campuses,
 .colour-creativearts,
 .colour-creativeart {
-  background-image: linear-gradient(#3c096f, #2c0b53, #1b0e36);
+  background-image: linear-gradient(#25456d, #233958, #11223b);
 }
 
 .colour-oversight,

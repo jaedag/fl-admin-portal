@@ -328,8 +328,8 @@ extend type Mutation {
     @cypher(
       statement: """
        CREATE (council:Council {id:apoc.create.uuid(), name:$name})
-        SET council.currentBalance  = 0.0,
-          council.bussingPurseBalance = 0.0,
+        SET council.weekdayBalance  = 0.0,
+          council.bussingSocietyBalance = 0.0,
           council.hrAmount = 0.0,
           council.bussingAmount = 0.0
 

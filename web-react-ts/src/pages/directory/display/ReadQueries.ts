@@ -199,12 +199,16 @@ export const DISPLAY_FELLOWSHIP = gql`
       hub {
         id
         name
-        ministry {
+        hubCouncil {
           id
           name
-          creativeArts {
+          ministry {
             id
             name
+            creativeArts {
+              id
+              name
+            }
           }
         }
       }
@@ -398,7 +402,7 @@ export const DISPLAY_COUNCIL = gql`
       constituencyCount
       activeBacentaCount
       activeFellowshipCount
-      hubCount
+      hubCouncilCount
       hubFellowshipCount
       memberCount
       pastorCount
@@ -466,7 +470,7 @@ export const DISPLAY_STREAM = gql`
       vacationIcBacentaCount
       ministryCount
       hubCount
-      hubFellowshipCount
+      hubCouncilCount
       meetingDay {
         day
         dayNumber
@@ -761,6 +765,7 @@ export const DISPLAY_MINISTRY = gql`
         lastName
       }
       memberCount
+      hubCouncilCount
       hubCount
       hubFellowshipCount
       history {
@@ -777,7 +782,7 @@ export const DISPLAY_MINISTRY = gql`
         }
         historyRecord
       }
-      hubs {
+      hubCouncils {
         id
         name
       }
@@ -787,6 +792,55 @@ export const DISPLAY_MINISTRY = gql`
         campus {
           id
           name
+        }
+      }
+    }
+  }
+`
+
+export const DISPLAY_HUBCOUNCIL = gql`
+  query DisplayHubCouncil($id: ID!) {
+    hubCouncils(where: { id: $id }, options: { limit: 1 }) {
+      id
+      name
+      leader {
+        id
+        firstName
+        lastName
+        currentTitle
+        nameWithTitle
+        pictureUrl
+      }
+      hubFellowshipCount
+      memberCount
+      hubs {
+        id
+        name
+      }
+      history {
+        id
+        timeStamp
+        createdAt {
+          date
+        }
+        loggedBy {
+          id
+          firstName
+          lastName
+          stream_name
+        }
+        historyRecord
+      }
+      ministry {
+        id
+        name
+        creativeArts {
+          id
+          name
+          campus {
+            id
+            name
+          }
         }
       }
     }
@@ -825,15 +879,20 @@ export const DISPLAY_HUB = gql`
         }
         historyRecord
       }
-      ministry {
+      hubCouncil {
         id
         name
-        creativeArts {
+
+        ministry {
           id
           name
-          campus {
+          creativeArts {
             id
             name
+            campus {
+              id
+              name
+            }
           }
         }
       }

@@ -73,10 +73,10 @@ const CampusCouncilList = ({
 
                   <Button variant="outline-light" className="text-start">
                     Weekday Account -{' '}
-                    <CurrencySpan number={council.currentBalance} />
+                    <CurrencySpan number={council.weekdayBalance} />
                     <div>
                       Bussing Purse -{' '}
-                      <CurrencySpan number={council.bussingPurseBalance} />
+                      <CurrencySpan number={council.bussingSocietyBalance} />
                     </div>
                   </Button>
                 </div>

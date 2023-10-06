@@ -58,17 +58,17 @@ const MakeDepositForm = () => {
 
   const initialValues = {
     hrAmount: council?.hrAmount?.toString() ?? '',
-    currentBalanceDepositAmount: '',
-    bussingPurseBalance: council?.bussingPurseBalance?.toString() ?? '',
+    weekdayBalanceDepositAmount: '',
+    bussingSocietyBalance: council?.bussingSocietyBalance?.toString() ?? '',
   }
   const validationSchema = Yup.object({
     hrAmount: Yup.number()
       .typeError('Please enter a valid number')
       .required('This is a required field'),
-    currentBalanceDepositAmount: Yup.number()
+    weekdayBalanceDepositAmount: Yup.number()
       .typeError('Please enter a valid number')
       .required('This is a required field'),
-    bussingPurseBalance: Yup.number()
+    bussingSocietyBalance: Yup.number()
       .typeError('Please enter a valid number')
       .required('This is a required field'),
   })
@@ -83,13 +83,13 @@ const MakeDepositForm = () => {
     try {
       const mutations = []
 
-      if (parseFloat(values.currentBalanceDepositAmount) > 0.0) {
+      if (parseFloat(values.weekdayBalanceDepositAmount) > 0.0) {
         mutations.push(
           DepositIntoCouncilCurrentAccount({
             variables: {
               councilId: councilId,
-              currentBalanceDepositAmount: parseFloat(
-                values.currentBalanceDepositAmount
+              weekdayBalanceDepositAmount: parseFloat(
+                values.weekdayBalanceDepositAmount
               ),
             },
           })
@@ -108,13 +108,14 @@ const MakeDepositForm = () => {
       }
 
       if (
-        parseFloat(values.bussingPurseBalance) !== council?.bussingPurseBalance
+        parseFloat(values.bussingSocietyBalance) !==
+        council?.bussingSocietyBalance
       ) {
         mutations.push(
           DepositIntoCouncilBussingPurse({
             variables: {
               councilId: councilId,
-              bussingPurseBalance: parseFloat(values.bussingPurseBalance),
+              bussingSocietyBalance: parseFloat(values.bussingSocietyBalance),
             },
           })
         )
@@ -166,7 +167,7 @@ const MakeDepositForm = () => {
               <Container className="mb-4">
                 <RoleView roles={['adminCampus']}>
                   <Input
-                    name="currentBalanceDepositAmount"
+                    name="weekdayBalanceDepositAmount"
                     label="Weekday Account Balance Deposit Amount"
                     placeholder="Enter an amount"
                   />
@@ -178,7 +179,7 @@ const MakeDepositForm = () => {
                 </RoleView>
                 <RoleView roles={['arrivalsAdminCampus']}>
                   <Input
-                    name="bussingPurseBalance"
+                    name="bussingSocietyBalance"
                     label="Current Bussing Purse Balance"
                     placeholder="Enter an amount"
                   />
@@ -193,7 +194,7 @@ const MakeDepositForm = () => {
                       <span className="text-info">
                         GHS{' '}
                         {parseFloat(
-                          formik.values.currentBalanceDepositAmount
+                          formik.values.weekdayBalanceDepositAmount
                         ).toLocaleString('en-US')}
                       </span>
                     </p>
@@ -213,7 +214,7 @@ const MakeDepositForm = () => {
                       <span className="text-info">
                         GHS{' '}
                         {parseFloat(
-                          formik.values.bussingPurseBalance
+                          formik.values.bussingSocietyBalance
                         ).toLocaleString('en-US')}
                       </span>
                     </p>
@@ -233,11 +234,11 @@ const MakeDepositForm = () => {
                 <div className="text-center mt-5">
                   <Button
                     onClick={() => {
-                      if (formik.values.bussingPurseBalance === '') {
-                        formik.setFieldValue('bussingPurseBalance', '0')
+                      if (formik.values.bussingSocietyBalance === '') {
+                        formik.setFieldValue('bussingSocietyBalance', '0')
                       }
-                      if (formik.values.currentBalanceDepositAmount === '') {
-                        formik.setFieldValue('currentBalanceDepositAmount', '0')
+                      if (formik.values.weekdayBalanceDepositAmount === '') {
+                        formik.setFieldValue('weekdayBalanceDepositAmount', '0')
                       }
                       handleShow()
                     }}

@@ -14,7 +14,7 @@ export interface AccountTransaction {
 
 export interface CouncilForAccounts extends ChurchIdAndName {
   hrAmount: number
-  currentBalance: number
-  bussingPurseBalance: number
+  weekdayBalance: number
+  bussingSocietyBalance: number
   transactions: AccountTransaction[]
 }

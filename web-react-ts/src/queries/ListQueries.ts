@@ -674,7 +674,7 @@ export const GET_STREAM_SONTAS = gql`
   }
 `
 
-export const GET_MINISTRY_HUBS = gql`
+export const GET_MINISTRY_HUBCOUNCILS = gql`
   query getMinistryHubs($id: ID!) {
     ministries(where: { id: $id }) {
       id
@@ -691,7 +691,7 @@ export const GET_MINISTRY_HUBS = gql`
       councils {
         id
         name
-        hubsFromMinistry(ministryId: $id) {
+        hubCouncils {
           name
           id
           memberCount

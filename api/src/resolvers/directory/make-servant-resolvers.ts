@@ -167,10 +167,38 @@ const MakeServantResolvers = {
       'Ministry',
       'Leader'
     ),
+  MakeHubCouncilLeader: async (object: any, args: Member, context: Context) =>
+    MakeServant(
+      context,
+      args,
+      [...permitAdmin('Ministry'), ...permitAdmin('Council')],
+      'HubCouncil',
+      'Leader'
+    ),
+  RemoveHubCouncilLeader: async (object: any, args: Member, context: Context) =>
+    RemoveServant(
+      context,
+      args,
+      [...permitAdmin('Ministry'), ...permitAdmin('Council')],
+      'HubCouncil',
+      'Leader'
+    ),
   MakeHubLeader: async (object: any, args: Member, context: Context) =>
-    MakeServant(context, args, permitAdmin('Ministry'), 'Hub', 'Leader'),
+    MakeServant(
+      context,
+      args,
+      [...permitAdmin('Ministry'), ...permitAdmin('Council')],
+      'Hub',
+      'Leader'
+    ),
   RemoveHubLeader: async (object: any, args: Member, context: Context) =>
-    RemoveServant(context, args, permitAdmin('Ministry'), 'Hub', 'Leader'),
+    RemoveServant(
+      context,
+      args,
+      [...permitAdmin('Ministry'), ...permitAdmin('Council')],
+      'Hub',
+      'Leader'
+    ),
 }
 
 export default MakeServantResolvers

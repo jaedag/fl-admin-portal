@@ -13,8 +13,8 @@ RETURN council, leader
 export const approveBussingExpense = `
 MATCH (transaction:AccountTransaction {id: $transactionId})<-[:HAS_TRANSACTION]-(council:Council)
 MATCH (transaction)-[:LOGGED_BY]->(depositor:Member)
-  SET council.bussingPurseBalance = council.bussingPurseBalance + transaction.amount
-  SET council.currentBalance = council.currentBalance - transaction.amount - toFloat($charge)
+  SET council.bussingSocietyBalance = council.bussingSocietyBalance + transaction.amount
+  SET council.weekdayBalance = council.weekdayBalance - transaction.amount - toFloat($charge)
   SET transaction.status = 'success'
   SET transaction.charge = $charge
 
@@ -24,7 +24,7 @@ RETURN council, transaction, depositor
 export const approveExpense = `
 MATCH (transaction:AccountTransaction {id: $transactionId})<-[:HAS_TRANSACTION]-(council:Council)
 MATCH (transaction)-[:LOGGED_BY]->(depositor:Member)
-  SET council.currentBalance = council.currentBalance - transaction.amount - toFloat($charge)
+  SET council.weekdayBalance = council.weekdayBalance - transaction.amount - toFloat($charge)
   SET transaction.charge = $charge
   SET transaction.status = 'success'
 
@@ -46,7 +46,7 @@ CREATE (transaction:AccountTransaction {id: randomUUID()})
   transaction.timestamp = datetime(),
   council.bussingAmount = $expenseAmount
 
-SET council.bussingPurseBalance = council.bussingPurseBalance - $expenseAmount
+SET council.bussingSocietyBalance = council.bussingSocietyBalance - $expenseAmount
 
 MERGE (council)-[:HAS_TRANSACTION]->(transaction)
 MERGE (requester)<-[:LOGGED_BY]-(transaction)
@@ -56,13 +56,13 @@ RETURN transaction, requester`
 export const depositIntoCouncilCurrentAccount = `
 MATCH (council:Council {id: $councilId})
 MATCH (depositor:Member {auth_id: $auth.jwt.sub})
-  SET council.currentBalance = council.currentBalance + $currentBalanceDepositAmount
+  SET council.weekdayBalance = council.weekdayBalance + $weekdayBalanceDepositAmount
 
 WITH council, depositor
 
 CREATE (transaction:AccountTransaction {id: randomUUID()})
-  SET transaction.description = depositor.firstName +  ' ' + depositor.lastName +  ' deposited ' + $currentBalanceDepositAmount + ' into the weekday account',
-  transaction.amount = $currentBalanceDepositAmount,
+  SET transaction.description = depositor.firstName +  ' ' + depositor.lastName +  ' deposited ' + $weekdayBalanceDepositAmount + ' into the weekday account',
+  transaction.amount = $weekdayBalanceDepositAmount,
   transaction.account = 'Weekday Account',
   transaction.category = 'Deposit',
   transaction.timestamp = datetime(),
@@ -77,7 +77,7 @@ RETURN council, transaction, depositor
 export const depositIntoCoucilBussingPurse = `
       MATCH (council:Council {id: $councilId})
       MATCH (depositor:Member {auth_id: $auth.jwt.sub})
-        SET council.bussingPurseBalance = council.bussingPurseBalance + $bussingPurseDepositAmount
+        SET council.bussingSocietyBalance = council.bussingSocietyBalance + $bussingPurseDepositAmount
 
       WITH council, depositor
 

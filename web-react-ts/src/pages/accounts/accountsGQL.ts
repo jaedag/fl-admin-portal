@@ -7,8 +7,8 @@ export const COUNCIL_ACCOUNT_DASHBOARD = gql`
       name
       hrAmount
       bussingAmount
-      currentBalance
-      bussingPurseBalance
+      weekdayBalance
+      bussingSocietyBalance
 
       leader {
         id
@@ -25,8 +25,8 @@ export const CAMPUS_ACCOUNT_DASHBOARD = gql`
     campuses(where: { id: $id }) {
       id
       name
-      currentBalance
-      bussingPurseBalance
+      weekdayBalance
+      bussingSocietyBalance
 
       leader {
         id
@@ -52,8 +52,8 @@ export const CAMPUS_BY_COUNCIL_ACCOUNTS = gql`
           id
           name
 
-          currentBalance
-          bussingPurseBalance
+          weekdayBalance
+          bussingSocietyBalance
 
           leader {
             id

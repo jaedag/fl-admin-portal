@@ -35,6 +35,11 @@ const DetailsMinistry = () => {
       width: 12,
     },
     {
+      title: 'Hub Councils',
+      number: ministry?.hubCouncilCount,
+      link: 'hubcouncil/displayall',
+    },
+    {
       title: 'Hubs',
       number: ministry?.hubCount,
       link: '/hub/displayall',
@@ -63,11 +68,11 @@ const DetailsMinistry = () => {
         leader={ministry?.leader}
         admin={ministry?.admin}
         churchType="Ministry"
-        subLevel="Hub"
+        subLevel="HubCouncil"
         editlink="/ministry/editministry"
         history={ministry?.history.length !== 0 && ministry?.history}
         breadcrumb={breadcrumb && breadcrumb}
-        buttons={ministry?.hubs}
+        buttons={ministry?.hubCouncils}
       />
     </ApolloWrapper>
   )

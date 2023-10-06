@@ -54,9 +54,9 @@ const DetailsCouncil = () => {
       link: '#',
     },
     {
-      title: 'Hubs',
-      number: council?.hubCount,
-      link: `/council/hubs`,
+      title: 'Hub Councils',
+      number: council?.hubCouncilCount,
+      link: `/council/hubcouncils`,
       creativearts: true,
     },
     {

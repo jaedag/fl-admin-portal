@@ -20,6 +20,7 @@ import {
 } from '../cypher/resolver-cypher'
 import {
   matchMemberCreativeArtsQuery,
+  matchMemberHubCouncilQuery,
   matchMemberHubQuery,
   matchMemberMinistryQuery,
 } from '../cypher/ministry-directory-cypher'
@@ -44,9 +45,11 @@ export const setPriorityLevel = (churchType: ChurchLevel) => {
     case 'Ministry':
       priority = 5
       break
+    case 'HubCouncil':
     case 'Constituency':
       priority = 6
       break
+    case 'Hub':
     case 'Bacenta':
       priority = 7
       break
@@ -111,6 +114,10 @@ export const formatting = (
   if (churchType === 'Ministry') {
     churchLower = 'ministry'
     memberQuery = matchMemberMinistryQuery
+  }
+  if (churchType === 'HubCouncil') {
+    churchLower = 'hubCouncil'
+    memberQuery = matchMemberHubCouncilQuery
   }
   if (churchType === 'Hub') {
     churchLower = 'hub'

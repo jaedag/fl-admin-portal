@@ -25,18 +25,18 @@ extend type Campus {
       RETURN SUM(council.bussingAmount)
       """
     )
-  currentBalance: Float!
+  weekdayBalance: Float!
     @cypher(
       statement: """
       MATCH (this)-[:HAS*2]->(council:Council)
-      RETURN SUM(council.currentBalance)
+      RETURN SUM(council.weekdayBalance)
       """
     )
-  bussingPurseBalance: Float!
+  bussingSocietyBalance: Float!
     @cypher(
       statement: """
       MATCH (this)-[:HAS*2]->(council:Council)
-      RETURN SUM(council.bussingPurseBalance)
+      RETURN SUM(council.bussingSocietyBalance)
       """
     )
 }
@@ -44,8 +44,8 @@ extend type Campus {
 extend type Council {
   hrAmount: Float!
   bussingAmount: Float!
-  currentBalance: Float!
-  bussingPurseBalance: Float
+  weekdayBalance: Float!
+  bussingSocietyBalance: Float
   transactions: [AccountTransaction!]!
     @relationship(type: "HAS_TRANSACTION", direction: OUT)
 }
@@ -62,12 +62,12 @@ extend type Mutation {
     )
   DepositIntoCouncilCurrentAccount(
     councilId: ID!
-    currentBalanceDepositAmount: Float!
+    weekdayBalanceDepositAmount: Float!
   ): AccountTransaction!
 
   DepositIntoCouncilBussingPurse(
     councilId: ID!
-    bussingPurseBalance: Float!
+    bussingSocietyBalance: Float!
   ): AccountTransaction!
 
   ExpenseRequest(

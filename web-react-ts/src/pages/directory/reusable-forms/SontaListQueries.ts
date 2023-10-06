@@ -1,11 +1,11 @@
 import { gql } from '@apollo/client'
 
-export const GET_MINISTRY_COUNCILS = gql`
-  query getMinistryCouncils($ministryId: ID!) {
+export const GET_MINISTRY_HUBCOUNCILS = gql`
+  query getMinistryHubCouncils($ministryId: ID!) {
     ministries(where: { id: $ministryId }) {
       id
       name
-      councils {
+      hubCouncils {
         id
         name
       }
@@ -13,13 +13,12 @@ export const GET_MINISTRY_COUNCILS = gql`
   }
 `
 
-export const GET_FELLOWSHIP_COUNCIL_HUBS = gql`
-  query getFellowshipCouncilHubs($fellowshipId: ID!) {
-    fellowships(where: { id: $fellowshipId }) {
+export const GET_MINISTRY_COUNCILS = gql`
+  query getMinistryCouncils($ministryId: ID!) {
+    ministries(where: { id: $ministryId }) {
       id
       name
-      hubStatus
-      councilHubs {
+      councils {
         id
         name
       }

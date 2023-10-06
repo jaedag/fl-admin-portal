@@ -3,11 +3,11 @@ import { gql } from '@apollo/client'
 export const DEPOSIT_INTO_COUNCIL_CURRENT_ACCOUNTS = gql`
   mutation DepositIntoCouncilCurrentAccounts(
     $councilId: ID!
-    $currentBalanceDepositAmount: Float!
+    $weekdayBalanceDepositAmount: Float!
   ) {
     DepositIntoCouncilCurrentAccount(
       councilId: $councilId
-      currentBalanceDepositAmount: $currentBalanceDepositAmount
+      weekdayBalanceDepositAmount: $weekdayBalanceDepositAmount
     ) {
       id
       timestamp
@@ -28,11 +28,11 @@ export const DEPOSIT_INTO_COUNCIL_CURRENT_ACCOUNTS = gql`
 export const DEPOSIT_INTO_COUNCIL_BUSSING_PURSE = gql`
   mutation DepositIntoCouncilBussingPurse(
     $councilId: ID!
-    $bussingPurseBalance: Float!
+    $bussingSocietyBalance: Float!
   ) {
     DepositIntoCouncilBussingPurse(
       councilId: $councilId
-      bussingPurseBalance: $bussingPurseBalance
+      bussingSocietyBalance: $bussingSocietyBalance
     ) {
       id
       timestamp

@@ -17,7 +17,7 @@ const AccountBalanceCard = ({
             <Col>Weekday Account Balance</Col>
             <Col>
               <p className="text-end mb-0 ">
-                {(church?.currentBalance || 0.0).toLocaleString('en-US')}
+                {(church?.weekdayBalance || 0.0).toLocaleString('en-US')}
               </p>
             </Col>
           </Row>
@@ -27,7 +27,7 @@ const AccountBalanceCard = ({
             <Col>Bussing Society Balance</Col>
             <Col>
               <p className="text-end mb-0">
-                {(church?.bussingPurseBalance || 0.0).toLocaleString('en-US')}
+                {(church?.bussingSocietyBalance || 0.0).toLocaleString('en-US')}
               </p>
             </Col>
           </Row>
