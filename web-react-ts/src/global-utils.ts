@@ -65,10 +65,6 @@ export const STREAM_SERVICE_DAY_OPTIONS: FormikSelectOptions = [
   { key: 'Saturday', value: 'Saturday' },
   { key: 'Sunday', value: 'Sunday' },
 ]
-export const SORT_BY_OPTIONS: FormikSelectOptions = [
-  { key: 'Name', value: 'Name' },
-  { key: 'Capacity', value: 'Capacity' },
-]
 
 export const CURRENCY_OPTIONS: FormikSelectOptions = [
   { key: 'Ghanaian Cedis (GHS)', value: 'GHS' },

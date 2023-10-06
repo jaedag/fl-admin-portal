@@ -1,14 +1,15 @@
 import { useMutation } from '@apollo/client'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
-import { Formik, FormikHelpers, Form, Field, ErrorMessage } from 'formik'
+import { Formik, FormikHelpers, Form } from 'formik'
 import { useContext } from 'react'
 import { Button, Col, Container, Row } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
 import * as Yup from 'yup'
-import { CREATE_OUTDOOR_OUTREACH_VENUE_MUTATION } from '../GraphQl/VenueMutations'
+import { CREATE_OUTDOOR_OUTREACH_VENUE_MUTATION } from '../../mutations/Mutations'
 import { throwToSentry } from 'global-utils'
 import { ChurchContext } from 'contexts/ChurchContext'
-import { GET_OUTDOOR_VENUES } from '../GraphQl/VenueQueries'
+import { GET_OUTDOOR_VENUES } from '../../queries/Queries'
+import Input from 'components/formik/Input'
 
 export interface FormOptions {
   venueName: string
@@ -77,8 +78,8 @@ const AddIndoorVenue = () => {
 
   return (
     <Container>
-      <HeadingPrimary className="text-capitalize d-flex justify-content-center mb-5">
-        add outdoor outreach venue
+      <HeadingPrimary className="d-flex justify-content-center mb-5">
+        Add Outdoor Outreach Venue
       </HeadingPrimary>
       <Formik
         initialValues={initialValues}
@@ -89,57 +90,41 @@ const AddIndoorVenue = () => {
           <Form className="form-group">
             <Row>
               <Col className="mb-3">
-                <label className="form-label">Venue Name</label>
-                <Field
+                <small className="form-text label">Venue Name</small>
+                <Input
                   name="venueName"
-                  type="text"
                   className="form-control"
                   placeholder="Enter name of venue"
                 />
-                <span className="text-danger">
-                  <ErrorMessage name="venueName" />
-                </span>
               </Col>
             </Row>
             <Row>
               <Col className="mb-3">
-                <label className="form-label">Capacity</label>
-                <Field
+                <small className="form-text label">Capacity</small>
+                <Input
                   name="capacity"
-                  type="text"
                   className="form-control"
                   placeholder="Enter number of seats"
                 />
-                <span className="text-danger">
-                  <ErrorMessage name="capacity" />
-                </span>
               </Col>
             </Row>
             <Row>
               <Col>
-                <label className="form-label">Location</label>
-                <Field
+                <small className="form-text label">Location</small>
+                <Input
                   name="latitude"
-                  type="text"
                   className="form-control"
                   placeholder="Latitude"
                 />
-                <span className="text-danger">
-                  <ErrorMessage name="latitude" />
-                </span>
               </Col>
             </Row>
             <Row className="mb-4">
               <Col>
-                <Field
+                <Input
                   name="longitude"
-                  type="text"
                   className="form-control"
                   placeholder="Longitude"
                 />
-                <span className="text-danger">
-                  <ErrorMessage name="longitude" />
-                </span>
               </Col>
             </Row>
             <Button type="submit" variant="success" className="w-100 mb-2 fs-5">

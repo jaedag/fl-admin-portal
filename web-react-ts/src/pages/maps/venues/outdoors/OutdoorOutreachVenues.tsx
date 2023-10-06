@@ -5,12 +5,12 @@ import { Button, Container, Row, Card, ButtonGroup } from 'react-bootstrap'
 import { AiOutlinePlusCircle } from 'react-icons/ai'
 import { useNavigate } from 'react-router'
 import { useQuery } from '@apollo/client'
-import { GET_OUTDOOR_VENUES } from '../GraphQl/VenueQueries'
+import { GET_OUTDOOR_VENUES } from '../../queries/Queries'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { useMemo, useState } from 'react'
 import Input from 'components/formik/Input'
 import Select from 'components/formik/Select'
-import { SORT_BY_OPTIONS } from 'global-utils'
+import { SORT_BY_SELECT_OPTIONS } from '../../map-utils'
 import '../Venues.css'
 
 interface FormOptions {
@@ -42,8 +42,8 @@ const OutdoorOutreachVenues = () => {
   const onSubmit = () => {}
   return (
     <Container>
-      <HeadingPrimary className="text-capitalize d-flex justify-content-center mb-5">
-        outdoor outreach venues
+      <HeadingPrimary className="d-flex justify-content-center mb-5">
+        Outdoor Outreach Venues
       </HeadingPrimary>
       <Formik initialValues={initialValues} onSubmit={onSubmit}>
         {() => (
@@ -54,7 +54,7 @@ const OutdoorOutreachVenues = () => {
               </div>
               <div className="col-4 d-flex align-items-center">
                 <Select
-                  options={SORT_BY_OPTIONS}
+                  options={SORT_BY_SELECT_OPTIONS}
                   name="sortBy"
                   defaultOption="Sort by"
                 />
