@@ -906,6 +906,55 @@ extend type Mutation {
       """
     )
 
+  MoveMinistryToCreativeArts(ministryId: ID!, creativeArtsId: ID!): Ministry!
+    @cypher(
+      statement: """
+      MATCH (ministry:Ministry {id: $ministryId})
+      MATCH (creativeArts:CreativeArts {id: $creativeArtsId})
+      OPTIONAL MATCH (ministry)<-[r:HAS]-(:CreativeArts)
+      DELETE r
+
+      MERGE (creativeArts)-[:HAS]->(ministry)
+      RETURN ministry
+      """
+    )
+  MoveHubCouncilToMinistry(hubCouncilId: ID!, ministryId: ID!): HubCouncil!
+    @cypher(
+      statement: """
+      MATCH (hubCouncil:HubCouncil {id: $hubCouncilId})
+      MATCH (ministry:Ministry {id: $ministryId})
+      OPTIONAL MATCH (hubCouncil)<-[r:HAS]-(:Ministry)
+      DELETE r
+
+      MERGE (ministry)-[:HAS]->(hubCouncil)
+      RETURN hubCouncil
+      """
+    )
+  MoveHubToHubCouncil(hubId: ID!, hubCouncilId: ID!): Hub!
+    @cypher(
+      statement: """
+      MATCH (hub:Hub {id: $hubId})
+      MATCH (hubCouncil:HubCouncil {id: $hubCouncilId})
+      OPTIONAL MATCH (hub)<-[r:HAS]-(:HubCouncil)
+      DELETE r
+
+      MERGE (hubCouncil)-[:HAS]->(hub)
+      RETURN hub
+      """
+    )
+  MoveHubFellowshipToHub(hubFellowshipId: ID!, hubId: ID!): HubFellowship!
+    @cypher(
+      statement: """
+      MATCH (hubFellowship:HubFellowship {id: $hubFellowshipId})
+      MATCH (hub:Hub {id: $hubId})
+      OPTIONAL MATCH (hubFellowship)<-[r:HAS]-(:Hub)
+      DELETE r
+
+      MERGE (hub)-[:HAS]->(hubFellowship)
+      RETURN hubFellowship
+      """
+    )
+
   CloseDownCouncil(councilId: ID!, leaderId: ID!): Stream
     @cypher(
       statement: """
@@ -982,8 +1031,8 @@ extend type Mutation {
       MERGE (campus)-[:HAS_HISTORY]->(log)
       MERGE (oversight)-[:HAS_HISTORY]->(log)
 
-      SET campus:ClosedCampus, stream:ClosedStream, council:ClosedCouncil, constituencies:Closedconstituency, bacentas:ClosedBacenta, fellowships:ClosedFellowship, hubs:ClosedHub
-      REMOVE campus:ClosedCampus, stream:Stream, council:Council, constituencies:Constituency,bacentas:Bacenta,fellowships:Fellowship, hubs:Hub
+      SET campus:ClosedCampus, stream:ClosedStream, council:ClosedCouncil, constituencies:ClosedConstituency, bacentas:ClosedBacenta, fellowships:ClosedFellowship, hubs:ClosedHub
+      REMOVE campus:Campus, stream:Stream, council:Council, constituencies:Constituency,bacentas:Bacenta,fellowships:Fellowship, hubs:Hub
 
       RETURN oversight
       """

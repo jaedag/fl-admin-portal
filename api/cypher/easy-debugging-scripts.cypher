@@ -79,5 +79,14 @@ set stream.bankAccount = 'oa_kumasi'
 RETURN stream.name, stream.bankAccount
 
 
-MATCH (record:ServiceRecord) WHERE date(record.createdAt).week = date().week
-DETACH DELETE record
+
+MATCH (ministry:Ministry)
+WHERE NOT EXISTS {
+   MATCH (ministry)<-[:HAS]-(creativeArts:CreativeArts)
+}
+DETACH DELETE ministry
+
+
+   MATCH (this {email: "jaedagy@gmail.com"})-[:LEADS|HAS|HAS_MINISTRY|IS_ADMIN_FOR*1..5]->(ministry:Ministry)
+  MATCH (ministry:Ministry)<-[:HAS]-(creativeArts:CreativeArts) 
+   RETURN DISTINCT ministry.name , labels(ministry)

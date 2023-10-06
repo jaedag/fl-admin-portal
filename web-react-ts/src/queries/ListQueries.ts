@@ -676,7 +676,7 @@ export const GET_STREAM_SONTAS = gql`
 
 export const GET_HUBCOUNCIL_HUBS = gql`
   query getHubCouncilHubs($id: ID!) {
-    hubs(where: { id: $id }) {
+    hubCouncils(where: { id: $id }) {
       id
       name
 

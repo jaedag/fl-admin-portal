@@ -3,7 +3,6 @@ import { gql } from '@apollo/client'
 export const MAKE_FELLOWSHIP_INACTIVE = gql`
   mutation CloseDownFellowship($id: ID!, $leaderId: ID!) {
     CloseDownFellowship(fellowshipId: $id, leaderId: $leaderId) {
-      #Returns Bacenta
       id
       name
 
@@ -18,7 +17,6 @@ export const MAKE_FELLOWSHIP_INACTIVE = gql`
 export const MAKE_BACENTA_INACTIVE = gql`
   mutation CloseDownBacenta($id: ID!, $leaderId: ID!) {
     CloseDownBacenta(bacentaId: $id, leaderId: $leaderId) {
-      # Returns Constituency
       id
       name
 
@@ -31,7 +29,7 @@ export const MAKE_BACENTA_INACTIVE = gql`
 `
 
 export const MAKE_CONSTITUENCY_INACTIVE = gql`
-  mutation CloseDownConstituency($id: ID!, $leaderId: ID!, $adminId: ID!) {
+  mutation CloseDownConstituency($id: ID!, $adminId: ID!, $leaderId: ID!) {
     CloseDownConstituency(
       constituencyId: $id
       leaderId: $leaderId
@@ -140,8 +138,8 @@ export const MAKE_OVERSIGHT_INACTIVE = gql`
   }
 `
 export const MAKE_HUB_INACTIVE = gql`
-  mutation CloseDownHub($leaderId: ID!, $hubId: ID!) {
-    CloseDownHub(leaderId: $leaderId, hubId: $hubId) {
+  mutation CloseDownHub($hubId: ID!) {
+    CloseDownHub(hubId: $hubId) {
       id
       name
 
@@ -163,8 +161,8 @@ export const MAKE_HUB_INACTIVE = gql`
 `
 
 export const MAKE_HUBCOUNCIL_INACTIVE = gql`
-  mutation CloseDownHubCouncil($leaderId: ID!, $hubId: ID!) {
-    CloseDownHubCouncil(leaderId: $leaderId, hubId: $hubId) {
+  mutation CloseDownHubCouncil($hubCouncilId: ID!) {
+    CloseDownHubCouncil(hubCouncilId: $hubCouncilId) {
       id
       name
 
@@ -186,8 +184,8 @@ export const MAKE_HUBCOUNCIL_INACTIVE = gql`
 `
 
 export const MAKE_MINISTRY_INACTIVE = gql`
-  mutation CloseDownMinistry($ministryId: ID!, $leaderId: ID!) {
-    CloseDownMinistry(ministryId: $ministryId, leaderId: $leaderId) {
+  mutation CloseDownMinistry($ministryId: ID!) {
+    CloseDownMinistry(ministryId: $ministryId) {
       id
       name
 
@@ -209,11 +207,8 @@ export const MAKE_MINISTRY_INACTIVE = gql`
 `
 
 export const MAKE_CREATIVEARTS_INACTIVE = gql`
-  mutation CloseDownCreativeArtss($creativeArtsId: ID!, $leaderId: ID!) {
-    CloseDownCreativeArts(
-      creativeArtsId: $creativeArtsId
-      leaderId: $leaderId
-    ) {
+  mutation CloseDownCreativeArtss($creativeArtsId: ID!) {
+    CloseDownCreativeArts(creativeArtsId: $creativeArtsId) {
       id
       name
       history {

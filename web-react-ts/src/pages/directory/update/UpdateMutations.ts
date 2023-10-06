@@ -881,3 +881,216 @@ export const MOVE_FELLOWSHIP_TO_BACENTA = gql`
     }
   }
 `
+
+export const MOVE_MINISTRY_TO_CREATIVEARTS = gql`
+  mutation MoveMinistryToCreativeArts(
+    $ministryId: ID!
+    $newCreativeArtsId: ID!
+    $oldCreativeArtsId: ID!
+    $historyRecord: String!
+  ) {
+    MoveMinistryToCreativeArts(
+      ministryId: $ministryId
+      creativeArtsId: $newCreativeArtsId
+    ) {
+      id
+      name
+      hubCouncils {
+        id
+        name
+        hubs {
+          id
+          name
+        }
+      }
+    }
+    LogMinistryHistory(
+      ministryId: $ministryId
+      historyRecord: $historyRecord
+      oldCreativeArtsId: $oldCreativeArtsId
+      newCreativeArtsId: $newCreativeArtsId
+    ) {
+      id
+      name
+      history(limit: 5) {
+        id
+        timeStamp
+        createdAt {
+          date
+        }
+        loggedBy {
+          id
+          firstName
+          lastName
+          stream_name
+        }
+        historyRecord
+      }
+    }
+  }
+`
+
+export const MOVE_HUBCOUNCIL_TO_MINISTRY = gql`
+  mutation MoveHubCouncilToMinistry(
+    $hubCouncilId: ID!
+    $newMinistryId: ID!
+    $oldMinistryId: ID!
+    $historyRecord: String!
+  ) {
+    MoveHubCouncilToMinistry(
+      hubCouncilId: $hubCouncilId
+      ministryId: $newMinistryId
+    ) {
+      id
+      name
+      ministry {
+        id
+        name
+        hubCouncils {
+          id
+          name
+        }
+      }
+    }
+    LogHubCouncilHistory(
+      hubCouncilId: $hubCouncilId
+      historyRecord: $historyRecord
+      oldMinistryId: $oldMinistryId
+      newMinistryId: $newMinistryId
+    ) {
+      id
+      name
+      ministry {
+        id
+        name
+        hubCouncils {
+          id
+          name
+        }
+      }
+      history(limit: 5) {
+        id
+        timeStamp
+        createdAt {
+          date
+        }
+        loggedBy {
+          id
+          stream_name
+          firstName
+          lastName
+        }
+        historyRecord
+      }
+    }
+  }
+`
+
+export const MOVE_HUB_TO_HUBCOUNCIL = gql`
+  mutation MoveHubsToHubCouncils(
+    $hubId: ID!
+    $newHubCouncilId: ID!
+    $oldHubCouncilId: ID!
+    $historyRecord: String!
+  ) {
+    MoveHubToHubCouncil(hubId: $hubId, hubCouncilId: $newHubCouncilId) {
+      id
+      name
+      hubCouncil {
+        id
+        name
+        hubs {
+          id
+          name
+        }
+      }
+    }
+    LogHubHistory(
+      hubId: $hubId
+      historyRecord: $historyRecord
+      oldHubCouncilId: $oldHubCouncilId
+      newHubCouncilId: $newHubCouncilId
+    ) {
+      id
+      name
+      hubCouncil {
+        id
+        name
+        hubs {
+          id
+          name
+        }
+      }
+      history(limit: 5) {
+        id
+        timeStamp
+        createdAt {
+          date
+        }
+        loggedBy {
+          id
+          stream_name
+          firstName
+          lastName
+        }
+        historyRecord
+      }
+    }
+  }
+`
+
+export const MOVE_HUBFELLOWSHIP_TO_HUB = gql`
+  mutation MoveHubFellowshipToHub(
+    $hubFellowshipId: ID!
+    $newHubId: ID!
+    $oldHubId: ID!
+    $historyRecord: String!
+  ) {
+    MoveHubFellowshipToHub(
+      hubFellowshipId: $hubFellowshipId
+      hubId: $newHubId
+    ) {
+      id
+      name
+      hub {
+        id
+        name
+        hubFellowships {
+          id
+          name
+        }
+      }
+    }
+    LogHubFellowshipHistory(
+      hubFellowshipId: $hubFellowshipId
+      historyRecord: $historyRecord
+      oldHubId: $oldHubId
+      newHubId: $newHubId
+    ) {
+      id
+      name
+      hub {
+        id
+        name
+        hubFellowships {
+          id
+          name
+        }
+      }
+      history(limit: 5) {
+        id
+        timeStamp
+        createdAt {
+          date
+        }
+        loggedBy {
+          id
+          stream_name
+          firstName
+          lastName
+        }
+        historyRecord
+      }
+    }
+  }
+`

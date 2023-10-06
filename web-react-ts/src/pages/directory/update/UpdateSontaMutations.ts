@@ -1,16 +1,8 @@
 import { gql } from '@apollo/client'
 
 export const UPDATE_CREATIVEARTS_MUTATION = gql`
-  mutation UpdateCreativeArts(
-    $creativeArtsId: ID!
-    $name: String!
-    $campusId: ID!
-  ) {
-    UpdateCreativeArtsDetails(
-      creativeArtsId: $creativeArtsId
-      name: $name
-      campusId: $campusId
-    ) {
+  mutation UpdateCreativeArts($creativeArtsId: ID!, $name: String!) {
+    UpdateCreativeArtsDetails(creativeArtsId: $creativeArtsId, name: $name) {
       id
       name
 

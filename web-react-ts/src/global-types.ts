@@ -133,6 +133,38 @@ export interface Council extends Church {
   stream: Stream
 }
 
+export interface CreativeArts extends Church {
+  __typename: 'CreativeArts'
+  campus: Campus
+  ministries?: Ministry[]
+}
+
+export interface Ministry extends Church {
+  id: string
+  __typename: 'Ministry'
+  name: string
+  creativeArts: Campus
+  hubCouncils?: HubCouncil[]
+}
+
+export interface HubCouncil extends Church {
+  __typename: 'HubCouncil'
+  hub: Hub
+  ministry: Ministry
+}
+
+export interface Hub extends Church {
+  __typename: 'Hub'
+  hubCouncils?: HubCouncil[]
+  hubCouncil: HubCouncil
+  creativeArts: Campus
+}
+
+export interface HubFellowship extends Church {
+  __typename: 'HubFellowship'
+  hub: Hub
+}
+
 //MEMBERSHIP
 export interface MemberWithoutBioData {
   __typename: 'Member'

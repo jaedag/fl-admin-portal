@@ -28,7 +28,7 @@ const UpdateCreativeArts = () => {
     leaderName: creativeArts?.leader?.fullName ?? '',
     leaderId: creativeArts?.leader?.id || '',
     leaderEmail: creativeArts?.leader?.email || '',
-    campus: creativeArts?.campus.id || '',
+    ministries: creativeArts?.ministries,
   }
   const [LogCreativeArtsHistory] = useMutation(LOG_CREATIVEARTS_HISTORY, {
     refetchQueries: [
@@ -61,7 +61,6 @@ const UpdateCreativeArts = () => {
         variables: {
           creativeArtsId: creativeArtsId,
           name: values.name,
-          campusId: values.campus,
         },
       })
 
