@@ -4,8 +4,7 @@ import ChurchList from './DisplayChurchList'
 import './ChurchSearch.css'
 import { Container } from 'react-bootstrap'
 import Input from './formik/Input'
-import { ChurchLevel } from '@jaedag/admin-portal-types'
-import { HigherChurch } from 'global-types'
+import { ChurchLevel, HigherChurch } from 'global-types'
 
 type ChurchSearchProps = {
   data: HigherChurch[]
