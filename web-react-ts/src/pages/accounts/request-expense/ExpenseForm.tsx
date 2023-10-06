@@ -12,13 +12,11 @@ import { Form, Formik, FormikHelpers } from 'formik'
 import * as Yup from 'yup'
 import Input from 'components/formik/Input'
 import SubmitButton from 'components/formik/SubmitButton'
-import { MOMO_NUM_REGEX, throwToSentry } from 'global-utils'
+import { throwToSentry } from 'global-utils'
 import RadioButtons from 'components/formik/RadioButtons'
 import Textarea from 'components/formik/Textarea'
 import { EXPENSE_REQUEST } from './expenseGQL'
 import { CouncilForAccounts } from '../accounts-types'
-import FileUpload from 'components/formik/FileUpload'
-import ImageUpload from 'components/formik/ImageUpload'
 
 const ExpenseForm = () => {
   const { councilId, clickCard } = useContext(ChurchContext)
@@ -39,9 +37,6 @@ const ExpenseForm = () => {
     ghostBussingSociety: '0',
     category: '',
     description: '',
-    momoNumber: '',
-    momoName: '',
-    invoiceUrl: '',
   }
 
   const validationSchema = Yup.object({
@@ -50,14 +45,6 @@ const ExpenseForm = () => {
       .required('This is a required field'),
     category: Yup.string().required('This is a required field'),
     description: Yup.string().required('This is a required field'),
-    momoNumber: Yup.string().matches(
-      MOMO_NUM_REGEX,
-      `Enter a valid MoMo Number without spaces. eg. (02XXXXXXXX)`
-    ),
-    momoName: Yup.string().when('momoNumber', {
-      is: (momoNumber: string) => momoNumber && momoNumber.length > 0,
-      then: Yup.string().required('Please enter the Momo Name'),
-    }),
   })
 
   const onSubmit = async (
@@ -137,23 +124,6 @@ const ExpenseForm = () => {
                       { key: 'Construction', value: 'Construction' },
                       { key: 'Ministry Expense', value: 'Ministry Expense' },
                     ]}
-                  />
-                  <Input
-                    name="momoNumber"
-                    label="Momo Number to Send To"
-                    placeholder="Enter an amount"
-                  />
-                  <Input
-                    name="momoName"
-                    label="Name of Momo Account Holder"
-                    placeholder="Enter a name"
-                  />
-                  <ImageUpload
-                    name="invoiceUrl"
-                    label="Invoice"
-                    placeholder="Upload an invoice"
-                    uploadPreset="developer-tests"
-                    setFieldValue={formik.setFieldValue}
                   />
                 </div>
                 <div className="mb-4">
