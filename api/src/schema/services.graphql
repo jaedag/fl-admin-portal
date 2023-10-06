@@ -1352,6 +1352,7 @@ type ServiceLog @auth(rules: [{ isAuthenticated: true }]) {
   council: [Council!]! @relationship(type: "HAS_HISTORY", direction: IN)
   ministry: [Ministry!]! @relationship(type: "HAS_HISTORY", direction: IN)
   hub: [Hub!]! @relationship(type: "HAS_HISTORY", direction: IN)
+  hubCouncil:[HubCouncil!]! @relationship(type: "HAS_HISTORY", direction: IN)
 }
 
 extend type Mutation {

@@ -970,7 +970,7 @@ extend type Mutation {
     familyPicture: String!
   ): MinistryAttendanceRecord!
 
-  RecordHubRehearsalService(
+  RecordRehearsalService(
     churchId: ID!
     serviceDate: String!
     attendance: Int!

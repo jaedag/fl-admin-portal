@@ -1,8 +1,10 @@
 import { HigherChurches, SontaHigherChurches } from '../utils/types'
 import {
   aggregateHubRehearsalDataForCreativeArts,
+  aggregateHubRehearsalDataForHubCouncil,
   aggregateHubRehearsalDataForMinistry,
   aggregateMinistryMeetingDataForCreativeArts,
+  aggregateMinistryMeetingDataForHubCouncil,
   aggregateMinistryMeetingDataForMinistry,
 } from './rehearsal-cypher'
 import {
@@ -97,8 +99,8 @@ export const getServiceSontaHigherChurches = (records: any) => {
         typename: 'HubCouncil',
         labels: record?.get('higherChurch').labels,
         properties: record.get('higherChurch').properties,
-        rehearsalCypher: aggregateHubRehearsalDataForMinistry,
-        ministryMeetingCypher: aggregateMinistryMeetingDataForMinistry,
+        rehearsalCypher: aggregateHubRehearsalDataForHubCouncil,
+        ministryMeetingCypher: aggregateMinistryMeetingDataForHubCouncil,
       }
     }
     if (record?.get('higherChurch').labels.includes('Ministry')) {
