@@ -36,13 +36,19 @@ const DetailsCreativeArts = () => {
       link: '/ministry/displayall',
     },
     {
+      title: 'Hub Councils',
+      number: creativeArts?.hubCouncilCount,
+      link: '#',
+    },
+    {
       title: 'Hubs',
       number: creativeArts?.hubCount,
       link: '#',
     },
     {
       title: 'Hub Fellowships',
-      number: creativeArts?.hubFellowshipCount,
+      number: creativeArts?.activeHubFellowshipCount,
+      vacationCount: creativeArts?.vacationHubFellowshipCount,
       link: '#',
     },
   ]

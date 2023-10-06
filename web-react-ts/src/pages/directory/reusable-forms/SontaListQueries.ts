@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client'
 
 export const GET_MINISTRY_HUBCOUNCILS = gql`
-  query getMinistryHubCouncils($ministryId: ID!) {
+  query getMinistryHubCouncilsList($ministryId: ID!) {
     ministries(where: { id: $ministryId }) {
       id
       name

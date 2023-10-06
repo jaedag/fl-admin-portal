@@ -46,7 +46,8 @@ const DetailsMinistry = () => {
     },
     {
       title: 'Hub Fellowships',
-      number: ministry?.hubFellowshipCount,
+      number: ministry?.activeHubFellowshipCount,
+      vacationCount: ministry?.vacationHubFellowshipCount,
       link: '/ministry/hubfellowships',
     },
   ]

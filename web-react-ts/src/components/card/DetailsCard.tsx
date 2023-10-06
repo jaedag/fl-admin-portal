@@ -52,15 +52,14 @@ const DetailsCard = (props: DetailsCardPropsType) => {
                     </Badge>
                   </div>
                 )}
-              {(heading === 'Bacentas' || heading === 'Fellowships') &&
-                props?.vacationCount !== '0' && (
-                  <div>
-                    <Badge bg="danger" className="badge-vacation mt-auto">
-                      <span className="font-danger">{`+ `}</span>
-                      {`${props?.vacationCount} on Vacation`}
-                    </Badge>
-                  </div>
-                )}
+              {parseFloat(props?.vacationCount?.toString() || '0') !== 0.0 && (
+                <div>
+                  <Badge bg="danger" className="badge-vacation mt-auto">
+                    <span className="font-danger">{`+ `}</span>
+                    {`${props?.vacationCount} on Vacation`}
+                  </Badge>
+                </div>
+              )}
             </div>
           </PlaceholderCustom>
         </Col>

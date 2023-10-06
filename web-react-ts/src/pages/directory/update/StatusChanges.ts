@@ -70,12 +70,39 @@ export const SET_ACTIVE_BACENTA = gql`
   }
 `
 
+export const SET_ACTIVE_HUB = gql`
+  mutation SetActiveHub($hubId: ID!) {
+    SetActiveHub(hubId: $hubId) {
+      id
+      name
+      vacationStatus
+      history {
+        id
+        historyRecord
+      }
+    }
+  }
+`
+
+export const SET_VACATION_HUB = gql`
+  mutation SetVacationHub($hubId: ID!) {
+    SetVacationHub(hubId: $hubId) {
+      id
+      name
+      vacationStatus
+      history {
+        id
+        historyRecord
+      }
+    }
+  }
+`
+
 export const SET_FELLOWSHIP_TO_HUB_FELLOWSHIP = gql`
   mutation SetFellowshipToHubFellowship($fellowshipId: ID!, $hubId: ID!) {
     SetFellowshipToHubFellowship(fellowshipId: $fellowshipId, hubId: $hubId) {
       id
       name
-      hubStatus
       vacationStatus
       history {
         id

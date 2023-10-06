@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { useQuery } from '@apollo/client'
-import { GET_COUNCIL_HUBS } from '../../../queries/ListQueries'
+import { GET_COUNCIL_HUBCOUNCILS } from '../../../queries/ListQueries'
 import { ChurchContext } from '../../../contexts/ChurchContext'
 import RoleView from '../../../auth/RoleView'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
@@ -13,11 +13,11 @@ import ChurchSearch from 'components/ChurchSearch'
 const DisplayAllCouncilHubs = () => {
   const { clickCard, councilId } = useContext(ChurchContext)
 
-  const { data, loading, error } = useQuery(GET_COUNCIL_HUBS, {
+  const { data, loading, error } = useQuery(GET_COUNCIL_HUBCOUNCILS, {
     variables: { id: councilId },
   })
 
-  const hubs = data?.councils[0]?.hubs
+  const hubs = data?.councils[0]?.hubCouncils
   const council = data?.councils[0]
 
   return (
@@ -59,8 +59,8 @@ const DisplayAllCouncilHubs = () => {
           </Col>
           <RoleView roles={permitAdmin('Campus')} directoryLock>
             <Col className="col-auto">
-              <Link to="/hub/addhub" className="btn btn-danger">
-                Add Hub
+              <Link to="/hubcouncil/addhubcouncil" className="btn btn-danger">
+                Add Hub Council
               </Link>
             </Col>
           </RoleView>
@@ -70,10 +70,10 @@ const DisplayAllCouncilHubs = () => {
           church={hubs}
           memberCount={council?.memberCount}
           numberOfChurchesBelow={hubs?.length}
-          churchType="Hub"
+          churchType="HubCouncil"
           route="council"
         />
-        <ChurchSearch data={hubs} churchType="Hub" />
+        <ChurchSearch data={hubs} churchType="HubCouncil" />
       </Container>
     </ApolloWrapper>
   )

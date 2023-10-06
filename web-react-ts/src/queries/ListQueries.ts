@@ -676,7 +676,7 @@ export const GET_STREAM_SONTAS = gql`
 
 export const GET_HUBCOUNCIL_HUBS = gql`
   query getHubCouncilHubs($id: ID!) {
-    hubs(where: { id: $id }) {
+    hubCouncils(where: { id: $id }) {
       id
       name
 
@@ -857,8 +857,8 @@ export const GET_CAMPUS_CREATIVEARTS = gql`
   }
 `
 
-export const GET_COUNCIL_HUBS = gql`
-  query getCouncilHubs($id: ID!) {
+export const GET_COUNCIL_HUBCOUNCILS = gql`
+  query getCouncilHubCouncils($id: ID!) {
     councils(where: { id: $id }) {
       id
       name
@@ -877,11 +877,42 @@ export const GET_COUNCIL_HUBS = gql`
         fullName
         stream_name
       }
-      hubs {
+      hubCouncils {
         name
         id
         memberCount
         hubFellowshipCount
+        leader {
+          id
+          firstName
+          lastName
+          stream_name
+          pictureUrl
+        }
+      }
+    }
+  }
+`
+
+export const GET_CREATIVEARTS_MINISTRIES = gql`
+  query getCreativeArtsMinistriesList($id: ID!) {
+    creativeArts(where: { id: $id }) {
+      id
+      name
+
+      leader {
+        id
+        firstName
+        lastName
+        fullName
+      }
+      memberCount
+
+      ministries {
+        name
+        id
+        memberCount
+        hubCount
         leader {
           id
           firstName

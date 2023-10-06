@@ -2,73 +2,73 @@ import React, { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useQuery, useMutation } from '@apollo/client'
 import { alertMsg, throwToSentry } from '../../../global-utils'
-import { GET_CAMPUS_CREATIVEARTS } from '../../../queries/ListQueries'
+import { GET_CREATIVEARTS_MINISTRIES } from '../../../queries/ListQueries'
 import { ChurchContext } from '../../../contexts/ChurchContext'
-import { DISPLAY_CREATIVEARTS } from '../display/ReadQueries'
-import { LOG_CREATIVEARTS_HISTORY } from './LogMutations'
-import CreativeArtsForm, {
-  CreativeArtsFormValues,
-} from 'pages/directory/reusable-forms/CreativeArtsForm'
+import { DISPLAY_MINISTRY } from '../display/ReadQueries'
+import { LOG_MINISTRY_HISTORY } from './LogMutations'
+import MinistryForm, {
+  MinistryFormValues,
+} from 'pages/directory/reusable-forms/MinistryForm'
 import { FormikHelpers } from 'formik'
 import LoadingScreen from 'components/base-component/LoadingScreen'
-import { UPDATE_CREATIVEARTS_MUTATION } from './UpdateSontaMutations'
-import { MAKE_CREATIVEARTS_LEADER } from './ChangeLeaderMutations'
+import { UPDATE_MINISTRY_MUTATION } from './UpdateSontaMutations'
+import { MAKE_MINISTRY_LEADER } from './ChangeLeaderMutations'
 
-const UpdateCreativeArts = () => {
-  const { creativeArtsId } = useContext(ChurchContext)
-  const { data, loading } = useQuery(DISPLAY_CREATIVEARTS, {
-    variables: { id: creativeArtsId },
+const UpdateMinistry = () => {
+  const { ministryId } = useContext(ChurchContext)
+  const { data, loading } = useQuery(DISPLAY_MINISTRY, {
+    variables: { id: ministryId },
   })
 
   const navigate = useNavigate()
-  const creativeArts = data?.creativeArts[0]
+  const ministry = data?.ministries[0]
 
-  const initialValues: CreativeArtsFormValues = {
-    name: creativeArts?.name,
-    leaderName: creativeArts?.leader?.fullName ?? '',
-    leaderId: creativeArts?.leader?.id || '',
-    leaderEmail: creativeArts?.leader?.email || '',
-    ministries: creativeArts?.ministries,
+  const initialValues: MinistryFormValues = {
+    name: ministry?.name,
+    leaderName: ministry?.leader?.fullName ?? '',
+    leaderId: ministry?.leader?.id || '',
+    leaderEmail: ministry?.leader?.email || '',
+    hubCouncils: ministry?.hubCouncils,
   }
-  const [LogCreativeArtsHistory] = useMutation(LOG_CREATIVEARTS_HISTORY, {
+  const [LogMinistryHistory] = useMutation(LOG_MINISTRY_HISTORY, {
     refetchQueries: [
       {
-        query: DISPLAY_CREATIVEARTS,
-        variables: { id: creativeArtsId },
+        query: DISPLAY_MINISTRY,
+        variables: { id: ministryId },
       },
     ],
   })
 
-  const [MakeCreativeArtsLeader] = useMutation(MAKE_CREATIVEARTS_LEADER)
-  const [UpdateCreativeArts] = useMutation(UPDATE_CREATIVEARTS_MUTATION, {
+  const [MakeMinistryLeader] = useMutation(MAKE_MINISTRY_LEADER)
+  const [UpdateMinistry] = useMutation(UPDATE_MINISTRY_MUTATION, {
     refetchQueries: [
       {
-        query: GET_CAMPUS_CREATIVEARTS,
-        variables: { id: creativeArts?.campus.id },
+        query: GET_CREATIVEARTS_MINISTRIES,
+        variables: { id: ministry?.creativeArts.id },
       },
     ],
   })
 
   //onSubmit receives the form state as argument
   const onSubmit = async (
-    values: CreativeArtsFormValues,
-    onSubmitProps: FormikHelpers<CreativeArtsFormValues>
+    values: MinistryFormValues,
+    onSubmitProps: FormikHelpers<MinistryFormValues>
   ) => {
     onSubmitProps.setSubmitting(true)
 
     try {
-      await UpdateCreativeArts({
+      await UpdateMinistry({
         variables: {
-          creativeArtsId: creativeArtsId,
+          ministryId: ministryId,
           name: values.name,
         },
       })
 
-      //Log if CreativeArts Name Changes
+      //Log if Ministry Name Changes
       if (values.name !== initialValues.name) {
-        await LogCreativeArtsHistory({
+        await LogMinistryHistory({
           variables: {
-            creativeArtsId: creativeArtsId,
+            ministryId: ministryId,
             newLeaderId: '',
             oldLeaderId: '',
             oldOversightId: '',
@@ -81,15 +81,15 @@ const UpdateCreativeArts = () => {
       //Log if the Leader Changes
       if (values.leaderId !== initialValues.leaderId) {
         try {
-          await MakeCreativeArtsLeader({
+          await MakeMinistryLeader({
             variables: {
               oldLeaderId: initialValues.leaderId || 'old-leader',
               newLeaderId: values.leaderId,
-              creativeArtsId: creativeArtsId,
+              ministryId: ministryId,
             },
           })
           alertMsg('Leader Changed Successfully')
-          navigate(`/creativeArts/displaydetails`)
+          navigate(`/ministry/displaydetails`)
         } catch (err: any) {
           const errorArray = err.toString().replace('Error: ', '').split('\n')
           if (errorArray[0] === errorArray[1]) {
@@ -104,9 +104,9 @@ const UpdateCreativeArts = () => {
       }
       onSubmitProps.setSubmitting(false)
       onSubmitProps.resetForm()
-      navigate(`/creativeArts/displaydetails`)
+      navigate(`/ministry/displaydetails`)
     } catch (err: any) {
-      throwToSentry('There was a problem updating this creativeArts', err)
+      throwToSentry('There was a problem updating this ministry', err)
       onSubmitProps.setSubmitting(false)
     }
   }
@@ -116,13 +116,13 @@ const UpdateCreativeArts = () => {
   }
 
   return (
-    <CreativeArtsForm
+    <MinistryForm
       initialValues={initialValues}
       onSubmit={onSubmit}
-      title={`Update CreativeArts Form`}
-      newCreativeArts={false}
+      title={`Update Ministry Form`}
+      newMinistry={false}
     />
   )
 }
 
-export default UpdateCreativeArts
+export default UpdateMinistry

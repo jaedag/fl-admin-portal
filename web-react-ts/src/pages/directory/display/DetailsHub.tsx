@@ -38,7 +38,8 @@ const DetailsHub = () => {
     },
     {
       title: 'Hub Fellowships',
-      number: hub?.hubFellowships.length,
+      number: hub?.activeHubFellowshipCount,
+      vacationCount: hub?.vacationHubFellowshipCount,
       link: '/hubfellowship/displayall',
     },
   ]

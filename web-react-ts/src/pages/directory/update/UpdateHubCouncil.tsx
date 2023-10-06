@@ -2,73 +2,73 @@ import React, { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useQuery, useMutation } from '@apollo/client'
 import { alertMsg, throwToSentry } from '../../../global-utils'
-import { GET_CAMPUS_CREATIVEARTS } from '../../../queries/ListQueries'
+import { GET_CREATIVEARTS_MINISTRIES } from '../../../queries/ListQueries'
 import { ChurchContext } from '../../../contexts/ChurchContext'
-import { DISPLAY_CREATIVEARTS } from '../display/ReadQueries'
-import { LOG_CREATIVEARTS_HISTORY } from './LogMutations'
-import CreativeArtsForm, {
-  CreativeArtsFormValues,
-} from 'pages/directory/reusable-forms/CreativeArtsForm'
+import { DISPLAY_HUBCOUNCIL } from '../display/ReadQueries'
+import { LOG_HUBCOUNCIL_HISTORY } from './LogMutations'
+import HubCouncilForm, {
+  HubCouncilFormValues,
+} from 'pages/directory/reusable-forms/HubCouncilForm'
 import { FormikHelpers } from 'formik'
 import LoadingScreen from 'components/base-component/LoadingScreen'
-import { UPDATE_CREATIVEARTS_MUTATION } from './UpdateSontaMutations'
-import { MAKE_CREATIVEARTS_LEADER } from './ChangeLeaderMutations'
+import { UPDATE_HUBCOUNCIL_MUTATION } from './UpdateSontaMutations'
+import { MAKE_HUBCOUNCIL_LEADER } from './ChangeLeaderMutations'
 
-const UpdateCreativeArts = () => {
-  const { creativeArtsId } = useContext(ChurchContext)
-  const { data, loading } = useQuery(DISPLAY_CREATIVEARTS, {
-    variables: { id: creativeArtsId },
+const UpdateHubCouncil = () => {
+  const { hubCouncilId } = useContext(ChurchContext)
+  const { data, loading } = useQuery(DISPLAY_HUBCOUNCIL, {
+    variables: { id: hubCouncilId },
   })
 
   const navigate = useNavigate()
-  const creativeArts = data?.creativeArts[0]
+  const hubCouncil = data?.hubCouncil[0]
 
-  const initialValues: CreativeArtsFormValues = {
-    name: creativeArts?.name,
-    leaderName: creativeArts?.leader?.fullName ?? '',
-    leaderId: creativeArts?.leader?.id || '',
-    leaderEmail: creativeArts?.leader?.email || '',
-    ministries: creativeArts?.ministries,
+  const initialValues: HubCouncilFormValues = {
+    name: hubCouncil?.name,
+    leaderName: hubCouncil?.leader?.fullName ?? '',
+    leaderId: hubCouncil?.leader?.id || '',
+    leaderEmail: hubCouncil?.leader?.email || '',
+    hubs: hubCouncil?.hubs,
   }
-  const [LogCreativeArtsHistory] = useMutation(LOG_CREATIVEARTS_HISTORY, {
+  const [LogHubCouncilHistory] = useMutation(LOG_HUBCOUNCIL_HISTORY, {
     refetchQueries: [
       {
-        query: DISPLAY_CREATIVEARTS,
-        variables: { id: creativeArtsId },
+        query: DISPLAY_HUBCOUNCIL,
+        variables: { id: hubCouncilId },
       },
     ],
   })
 
-  const [MakeCreativeArtsLeader] = useMutation(MAKE_CREATIVEARTS_LEADER)
-  const [UpdateCreativeArts] = useMutation(UPDATE_CREATIVEARTS_MUTATION, {
+  const [MakeHubCouncilLeader] = useMutation(MAKE_HUBCOUNCIL_LEADER)
+  const [UpdateHubCouncil] = useMutation(UPDATE_HUBCOUNCIL_MUTATION, {
     refetchQueries: [
       {
-        query: GET_CAMPUS_CREATIVEARTS,
-        variables: { id: creativeArts?.campus.id },
+        query: GET_CREATIVEARTS_MINISTRIES,
+        variables: { id: hubCouncil?.creativeArts.id },
       },
     ],
   })
 
   //onSubmit receives the form state as argument
   const onSubmit = async (
-    values: CreativeArtsFormValues,
-    onSubmitProps: FormikHelpers<CreativeArtsFormValues>
+    values: HubCouncilFormValues,
+    onSubmitProps: FormikHelpers<HubCouncilFormValues>
   ) => {
     onSubmitProps.setSubmitting(true)
 
     try {
-      await UpdateCreativeArts({
+      await UpdateHubCouncil({
         variables: {
-          creativeArtsId: creativeArtsId,
+          hubCouncilId: hubCouncilId,
           name: values.name,
         },
       })
 
-      //Log if CreativeArts Name Changes
+      //Log if HubCouncil Name Changes
       if (values.name !== initialValues.name) {
-        await LogCreativeArtsHistory({
+        await LogHubCouncilHistory({
           variables: {
-            creativeArtsId: creativeArtsId,
+            hubCouncilId: hubCouncilId,
             newLeaderId: '',
             oldLeaderId: '',
             oldOversightId: '',
@@ -81,15 +81,15 @@ const UpdateCreativeArts = () => {
       //Log if the Leader Changes
       if (values.leaderId !== initialValues.leaderId) {
         try {
-          await MakeCreativeArtsLeader({
+          await MakeHubCouncilLeader({
             variables: {
               oldLeaderId: initialValues.leaderId || 'old-leader',
               newLeaderId: values.leaderId,
-              creativeArtsId: creativeArtsId,
+              hubCouncilId: hubCouncilId,
             },
           })
           alertMsg('Leader Changed Successfully')
-          navigate(`/creativeArts/displaydetails`)
+          navigate(`/hubCouncil/displaydetails`)
         } catch (err: any) {
           const errorArray = err.toString().replace('Error: ', '').split('\n')
           if (errorArray[0] === errorArray[1]) {
@@ -104,9 +104,9 @@ const UpdateCreativeArts = () => {
       }
       onSubmitProps.setSubmitting(false)
       onSubmitProps.resetForm()
-      navigate(`/creativeArts/displaydetails`)
+      navigate(`/hubCouncil/displaydetails`)
     } catch (err: any) {
-      throwToSentry('There was a problem updating this creativeArts', err)
+      throwToSentry('There was a problem updating this hubCouncil', err)
       onSubmitProps.setSubmitting(false)
     }
   }
@@ -116,13 +116,13 @@ const UpdateCreativeArts = () => {
   }
 
   return (
-    <CreativeArtsForm
+    <HubCouncilForm
       initialValues={initialValues}
       onSubmit={onSubmit}
-      title={`Update CreativeArts Form`}
-      newCreativeArts={false}
+      title={`Update HubCouncil Form`}
+      newHubCouncil={false}
     />
   )
 }
 
-export default UpdateCreativeArts
+export default UpdateHubCouncil

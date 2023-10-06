@@ -1,28 +1,37 @@
-import { useMutation, useQuery } from '@apollo/client'
-import ApolloWrapper from 'components/base-component/ApolloWrapper'
+import { useMutation } from '@apollo/client'
 import { Form, Formik, FormikHelpers } from 'formik'
 import * as Yup from 'yup'
-import { makeSelectOptions, throwToSentry } from 'global-utils'
-import React, { useContext, useState } from 'react'
+import { throwToSentry } from 'global-utils'
+import { useContext, useState } from 'react'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { MAKE_HUB_INACTIVE } from 'pages/directory/update/CloseChurchMutations'
 import { useNavigate } from 'react-router'
-import Popup from 'components/Popup/Popup'
-import { Button, Container, Row, Col } from 'react-bootstrap'
+import {
+  Button,
+  Container,
+  Row,
+  Col,
+  ButtonGroup,
+  Modal,
+} from 'react-bootstrap'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import SubmitButton from 'components/formik/SubmitButton'
-import usePopup from 'hooks/usePopup'
-import Select from 'components/formik/Select'
 import SearchMember from 'components/formik/SearchMember'
 import Input from 'components/formik/Input'
 import { FormikInitialValues } from 'components/formik/formik-types'
-import { GET_MINISTRY_HUBCOUNCILS } from './SontaListQueries'
+import { HubFellowship } from 'global-types'
+import { DISPLAY_HUB } from '../display/ReadQueries'
+import HeadingSecondary from 'components/HeadingSecondary'
+import { MOVE_HUBFELLOWSHIP_TO_HUB } from '../update/UpdateMutations'
+import NoDataComponent from 'pages/arrivals/CompNoData'
+import SearchHubFellowship from 'components/formik/SearchHubFellowship'
 
 export interface HubFormValues extends FormikInitialValues {
   name: string
-  hubCouncil: string
-  leaderId: string
-  leaderName: string
+  hubCouncil?: string
+  vacationStatus: 'Active' | 'Vacation'
+  hubFellowship?: HubFellowship
+  hubFellowships?: HubFellowship[]
 }
 
 type HubFormProps = {
@@ -36,23 +45,30 @@ type HubFormProps = {
 }
 
 const HubForm = ({ initialValues, onSubmit, title, newHub }: HubFormProps) => {
-  const { clickCard, hubId, ministryId } = useContext(ChurchContext)
-  const { togglePopup, isOpen } = usePopup()
+  const { clickCard, hubId } = useContext(ChurchContext)
+  const [hubFellowshipModal, setHubFellowshipModal] = useState(false)
+  const [closeDown, setCloseDown] = useState(false)
   const navigate = useNavigate()
 
-  const { data, loading, error } = useQuery(GET_MINISTRY_HUBCOUNCILS, {
-    variables: {
-      ministryId,
-    },
-  })
   const [buttonLoading, setButtonLoading] = useState(false)
-  const [CloseDownHub] = useMutation(MAKE_HUB_INACTIVE)
-
-  const ministry = data?.ministries[0]
-  const councilsOptions = makeSelectOptions(data?.ministries[0].hubCouncils)
+  const [CloseDownHub] = useMutation(MAKE_HUB_INACTIVE, {
+    refetchQueries: [
+      {
+        query: DISPLAY_HUB,
+        variables: { id: hubId },
+      },
+    ],
+  })
+  const [MoveHubFellowshipToHub] = useMutation(MOVE_HUBFELLOWSHIP_TO_HUB, {
+    refetchQueries: [
+      {
+        query: DISPLAY_HUB,
+        variables: { id: hubId },
+      },
+    ],
+  })
 
   const validationSchema = Yup.object({
-    hubCouncil: Yup.string().required(`Council is a required field`),
     name: Yup.string().required(`Hub Name is a required field`),
     leaderId: Yup.string().required(
       'Please choose a leader from the drop down'
@@ -60,11 +76,25 @@ const HubForm = ({ initialValues, onSubmit, title, newHub }: HubFormProps) => {
   })
 
   return (
-    <ApolloWrapper loading={loading} error={error} data={data && initialValues}>
-      <>
-        <Container>
-          <HeadingPrimary>{title}</HeadingPrimary>
-        </Container>
+    <>
+      <Container>
+        <HeadingPrimary>{title}</HeadingPrimary>
+        <HeadingSecondary>
+          {initialValues.name + ' Creative Arts'}
+        </HeadingSecondary>
+        <ButtonGroup className="mt-3">
+          {!newHub && (
+            <>
+              <Button onClick={() => setHubFellowshipModal(true)}>
+                Add Hub
+              </Button>
+              <Button variant="success" onClick={() => setCloseDown(true)}>
+                {`Close Down Hub`}
+              </Button>
+            </>
+          )}
+        </ButtonGroup>
+
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}
@@ -78,18 +108,10 @@ const HubForm = ({ initialValues, onSubmit, title, newHub }: HubFormProps) => {
                   <Row className="row-cols-1 row-cols-md-2">
                     {/* <!-- Basic Info Div --> */}
                     <Col className="mb-2">
-                      {ministry?.name}
-                      <Select
-                        name="hubCouncil"
-                        label="Select a Council"
-                        options={councilsOptions}
-                        defaultOption="Select a Council"
-                      />
-
                       <Input
                         name="name"
-                        label={`Name of Hub`}
-                        placeholder={`Name of Hub`}
+                        label={`Name of Creative Arts`}
+                        placeholder={`Name of Creative Arts`}
                       />
 
                       <Row className="d-flex align-items-center mb-3">
@@ -105,71 +127,139 @@ const HubForm = ({ initialValues, onSubmit, title, newHub }: HubFormProps) => {
                           />
                         </Col>
                       </Row>
+                      <div className="d-grid gap-2">
+                        {initialValues.hubFellowships?.length === 0 ? (
+                          <NoDataComponent text="No Hub Fellowships" />
+                        ) : (
+                          <p className="fw-bold fs-5">Hub Councils</p>
+                        )}
+
+                        {initialValues.hubFellowships?.map((hubFellowship) => (
+                          <Button
+                            key={hubFellowship.id}
+                            variant="secondary"
+                            className="text-start"
+                          >
+                            {hubFellowship.name} Hub Fellowship
+                          </Button>
+                        ))}
+                      </div>
                     </Col>
                   </Row>
                 </div>
 
-                <SubmitButton formik={formik} />
+                <div className="text-center mt-5">
+                  <SubmitButton formik={formik} />
+                </div>
               </Form>
 
-              {isOpen && (
-                <Popup handleClose={togglePopup}>
-                  Are you sure you want to close down this hub?
+              <Modal
+                show={hubFellowshipModal}
+                onHide={() => setHubFellowshipModal(false)}
+                centered
+              >
+                <Modal.Header closeButton>Add A Hub</Modal.Header>
+                <Modal.Body>
+                  <p>Choose a hubFellowship to move to this hub</p>
+                  <SearchHubFellowship
+                    name={`hubFellowship`}
+                    placeholder="Hub Fellowship Name"
+                    initialValue=""
+                    setFieldValue={formik.setFieldValue}
+                    aria-describedby="Hub Fellowship Name"
+                  />
+                </Modal.Body>
+                <Modal.Footer>
                   <Button
-                    variant="primary"
+                    variant="success"
                     type="submit"
-                    disabled={buttonLoading}
-                    className={`btn-main `}
-                    onClick={() => {
-                      setButtonLoading(true)
-                      CloseDownHub({
-                        variables: {
-                          id: hubId,
-                          leaderId: initialValues.leaderId,
-                        },
-                      })
-                        .then((res) => {
-                          setButtonLoading(false)
-                          clickCard(res.data.CloseDownHub)
-                          togglePopup()
-                          navigate(`/hub/displayall`)
+                    disabled={buttonLoading || !formik.values.hubFellowship}
+                    onClick={async () => {
+                      try {
+                        setButtonLoading(true)
+                        const res = await MoveHubFellowshipToHub({
+                          variables: {
+                            hubFellowshipId: formik.values.hubFellowship?.id,
+                            historyRecord: `${formik.values.hubFellowship?.name} Hub has been moved to ${formik.values.name} Hub from ${formik.values.hubFellowship?.hub.name} Hub`,
+                            newHubId: hubId,
+                            oldHubId: formik.values.hubFellowship?.hub.id,
+                          },
                         })
-                        .catch((error) => {
-                          throwToSentry(
-                            `There was an error closing down this Hub`,
-                            error
-                          )
-                        })
+
+                        clickCard(res.data.MoveHubFellowshipToHub)
+                        setHubFellowshipModal(false)
+                      } catch (error) {
+                        throwToSentry(
+                          `There was an error moving this hubFellowship to this hub`,
+                          error
+                        )
+                      } finally {
+                        setButtonLoading(false)
+                      }
                     }}
                   >
                     {buttonLoading ? `Submitting...` : `Yes, I'm sure`}
                   </Button>
                   <Button
                     variant="primary"
-                    className={`btn-secondary mt-2 `}
-                    onClick={togglePopup}
+                    onClick={() => setHubFellowshipModal(false)}
                   >
+                    Close
+                  </Button>
+                </Modal.Footer>
+              </Modal>
+
+              <Modal
+                show={closeDown}
+                onHide={() => setCloseDown(false)}
+                centered
+              >
+                <Modal.Header closeButton>Close Down Hub</Modal.Header>
+                <Modal.Body>
+                  <p className="text-info">
+                    Are you sure you want to close down this hub?
+                  </p>
+                </Modal.Body>
+                <Modal.Footer>
+                  <Button
+                    variant="success"
+                    type="submit"
+                    disabled={buttonLoading}
+                    onClick={async () => {
+                      try {
+                        setButtonLoading(true)
+                        const res = await CloseDownHub({
+                          variables: {
+                            id: hubId,
+                            leaderId: initialValues.leaderId,
+                          },
+                        })
+
+                        setButtonLoading(false)
+                        clickCard(res.data.CloseDownHub)
+                        setCloseDown(false)
+                        navigate(`/stream/displayall`)
+                      } catch (error) {
+                        setButtonLoading(false)
+                        throwToSentry(
+                          `There was an error closing down this hub`,
+                          error
+                        )
+                      }
+                    }}
+                  >
+                    {buttonLoading ? `Submitting...` : `Yes, I'm sure`}
+                  </Button>
+                  <Button variant="primary" onClick={() => setCloseDown(false)}>
                     No, take me back
                   </Button>
-                </Popup>
-              )}
-
-              {!newHub && (
-                <Button
-                  variant="primary"
-                  size="lg"
-                  disabled={formik.isSubmitting}
-                  className={`btn-secondary  mt-3`}
-                  onClick={togglePopup}
-                >
-                  {`Close Down Hub`}
-                </Button>
-              )}
+                </Modal.Footer>
+              </Modal>
             </Container>
           )}
         </Formik>
-      </>
-    </ApolloWrapper>
+      </Container>
+    </>
   )
 }
 
