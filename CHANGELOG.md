@@ -1,3 +1,9 @@
+#### 7.10.10 (2023-10-06)
+
+##### Bug Fixes
+
+*  refactor allhubs page for correct display ([5d306f63](https://github.com/firstlovecenter/fl-pastoral-care/commit/5d306f63974e40aff31544aa3d410ab1fdd35a13))
+
 #### 7.10.9 (2023-10-06)
 
 #### 7.10.8 (2023-10-06)
