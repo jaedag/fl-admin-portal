@@ -1,7 +1,7 @@
-import { useMutation } from '@apollo/client'
+import { useMutation, useQuery } from '@apollo/client'
 import { Form, Formik, FormikHelpers } from 'formik'
 import * as Yup from 'yup'
-import { throwToSentry } from 'global-utils'
+import { makeSelectOptions, throwToSentry } from 'global-utils'
 import { useContext, useState } from 'react'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { MAKE_HUBCOUNCIL_INACTIVE } from 'pages/directory/update/CloseChurchMutations'
@@ -25,6 +25,9 @@ import HeadingSecondary from 'components/HeadingSecondary'
 import SearchHub from 'components/formik/SearchHub'
 import { MOVE_HUB_TO_HUBCOUNCIL } from '../update/UpdateMutations'
 import NoDataComponent from 'pages/arrivals/CompNoData'
+import Select from 'components/formik/Select'
+import { GET_MINISTRY_COUNCILS } from './SontaListQueries'
+import ApolloWrapper from 'components/base-component/ApolloWrapper'
 
 export interface HubCouncilFormValues extends FormikInitialValues {
   name: string
@@ -50,12 +53,17 @@ const HubCouncilForm = ({
   title,
   newHubCouncil,
 }: HubCouncilFormProps) => {
-  const { clickCard, hubCouncilId } = useContext(ChurchContext)
+  const { clickCard, hubCouncilId, ministryId } = useContext(ChurchContext)
   const [hubModal, setHubModal] = useState(false)
   const [closeDown, setCloseDown] = useState(false)
   const navigate = useNavigate()
 
   const [buttonLoading, setButtonLoading] = useState(false)
+  const { data, loading, error } = useQuery(GET_MINISTRY_COUNCILS, {
+    variables: {
+      ministryId,
+    },
+  })
   const [CloseDownHubCouncil] = useMutation(MAKE_HUBCOUNCIL_INACTIVE, {
     refetchQueries: [
       {
@@ -72,8 +80,10 @@ const HubCouncilForm = ({
       },
     ],
   })
+  const councilsOptions = makeSelectOptions(data?.ministries[0].councils)
 
   const validationSchema = Yup.object({
+    council: Yup.string().required(`Council is a required field`),
     name: Yup.string().required(`Hub Council Name is a required field`),
     leaderId: Yup.string().required(
       'Please choose a leader from the drop down'
@@ -81,7 +91,7 @@ const HubCouncilForm = ({
   })
 
   return (
-    <>
+    <ApolloWrapper data={data} loading={loading} error={error}>
       <Container>
         <HeadingPrimary>{title}</HeadingPrimary>
         <HeadingSecondary>
@@ -111,6 +121,12 @@ const HubCouncilForm = ({
                   <Row className="row-cols-1 row-cols-md-2">
                     {/* <!-- Basic Info Div --> */}
                     <Col className="mb-2">
+                      <Select
+                        name="council"
+                        label="Select a Council"
+                        options={councilsOptions}
+                        defaultOption="Select a Council"
+                      />
                       <Input
                         name="name"
                         label={`Name of Hub Council`}
@@ -132,9 +148,9 @@ const HubCouncilForm = ({
                       </Row>
                       <div className="d-grid gap-2">
                         {initialValues.hubs?.length === 0 ? (
-                          <NoDataComponent text="No Hub Councils" />
+                          <NoDataComponent text="No Hubs" />
                         ) : (
-                          <p className="fw-bold fs-5">Hub Councils</p>
+                          <p className="fw-bold fs-5">Hubs</p>
                         )}
 
                         {initialValues.hubs?.map((hub, index) => (
@@ -251,7 +267,7 @@ const HubCouncilForm = ({
           )}
         </Formik>
       </Container>
-    </>
+    </ApolloWrapper>
   )
 }
 
