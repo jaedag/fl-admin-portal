@@ -9,11 +9,7 @@ import HeadingSecondary from 'components/HeadingSecondary'
 import './accounts-colors.css'
 import { useNavigate } from 'react-router'
 import RoleView from 'auth/RoleView'
-import {
-  permitAdmin,
-  permitArrivals,
-  permitLeaderAdmin,
-} from 'permission-utils'
+import { permitArrivals, permitLeaderAdmin } from 'permission-utils'
 import AccountBalanceCard from './components/AccountBalanceCard'
 
 const CampusDashboard = () => {
@@ -64,9 +60,7 @@ const CampusDashboard = () => {
               Approvals
             </Button>
           </RoleView>
-          <RoleView
-            roles={[...permitAdmin('Campus'), ...permitArrivals('Campus')]}
-          >
+          <RoleView roles={[...permitArrivals('Campus')]}>
             <Button
               variant="secondary"
               className="text-start py-3"

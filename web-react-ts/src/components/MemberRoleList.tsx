@@ -41,6 +41,7 @@ const MemberRoleList = ({
     constituencyAdmin: [],
     creativeartsLeader: [],
     ministryLeader: [],
+    hubcouncilLeader: [],
     hubLeader: [],
     creativeartsAdmin: [],
     ministryAdmin: [],
@@ -126,6 +127,10 @@ const MemberRoleList = ({
   }
   if (memberLeader?.leadsHub[0]) {
     updateRank(memberLeader, 'hub')
+  }
+
+  if (memberLeader?.leadsHubCouncil[0]) {
+    updateRank(memberLeader, 'hubCouncil')
   }
 
   if (memberAdmin?.isAdminForCreativeArts[0]) {

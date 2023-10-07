@@ -80,6 +80,10 @@ export const DISPLAY_MEMBER_LEADERSHIP = gql`
         id
         name
       }
+      leadsHubCouncil {
+        id
+        name
+      }
 
       leadsHub {
         id

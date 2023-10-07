@@ -45,6 +45,7 @@ export type ChurchLevelLower =
   | 'oversight'
   | 'creativeArts'
   | 'ministry'
+  | 'hubCouncil'
   | 'hub'
 
 export type TimeGraph = {
