@@ -1,3 +1,13 @@
+#### 7.10.11 (2023-10-07)
+
+##### Bug Fixes
+
+*  update field on hubCouncil form ([c810cffa](https://github.com/firstlovecenter/fl-pastoral-care/commit/c810cffa32be65dbd84a42614ba4cdedd5aa6613))
+*  show hub council on memberrole list ([925bc5a1](https://github.com/firstlovecenter/fl-pastoral-care/commit/925bc5a10edd27a36bae70b9322b8d88b9c62894))
+*  change label for sonta forms ([e0d35c6d](https://github.com/firstlovecenter/fl-pastoral-care/commit/e0d35c6d192fc7f3c4092e3c41365fe87ce5837d))
+*  correctly pass hubCouncilId when creating hub ([6d926be8](https://github.com/firstlovecenter/fl-pastoral-care/commit/6d926be88908999e8cb2164bb01778dd9dbd4ab8))
+*  add a conditional to check if there are no hubs for all hubs page ([a0800656](https://github.com/firstlovecenter/fl-pastoral-care/commit/a08006565871cb019c15f43e88cbdea832b35a9b))
+
 #### 7.10.10 (2023-10-06)
 
 ##### Bug Fixes
