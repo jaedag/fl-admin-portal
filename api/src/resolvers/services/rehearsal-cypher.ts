@@ -119,7 +119,7 @@ SET serviceRecord.id = apoc.create.uuid(),
 serviceRecord.noServiceReason = 'Joint Rehearsal'
 
 WITH serviceRecord
-MATCH (church)-[:HAS*2]->(lowerChurch)
+MATCH (church)-[:HAS*2]->(lowerChurch) WHERE lowerChurch:Hub OR lowerChurch:HubCouncil
 MATCH (lowerChurch)-[:CURRENT_HISTORY]->(log:ServiceLog)
 MATCH (leader:Active:Member {auth_id: $auth.jwt.sub})
 
