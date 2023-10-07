@@ -12,7 +12,7 @@ import MinistryForm, {
 import { CreativeArts } from 'global-types'
 
 const CreateMinistry = () => {
-  const { clickCard, creativeArtsId } = useContext(ChurchContext)
+  const { clickCard, creativeArtsId, streamId } = useContext(ChurchContext)
 
   const navigate = useNavigate()
 
@@ -22,7 +22,7 @@ const CreateMinistry = () => {
     leaderName: '',
     leaderEmail: '',
     creativeArts: (creativeArtsId ?? '') as CreativeArts,
-    stream: '',
+    stream: streamId ?? '',
   }
 
   const [NewMinistryLeader] = useMutation(NEW_MINISTRY_LEADER)

@@ -11,7 +11,7 @@ import CreativeArtsForm, {
 } from '../reusable-forms/CreativeArtsForm'
 
 const CreateCreativeArts = () => {
-  const { clickCard } = useContext(ChurchContext)
+  const { clickCard, campusId } = useContext(ChurchContext)
 
   const navigate = useNavigate()
 
@@ -20,7 +20,7 @@ const CreateCreativeArts = () => {
     leaderName: '',
     leaderEmail: '',
     name: '',
-    campus: '',
+    campus: campusId ?? '',
   }
 
   const [NewCreativeArtsLeader] = useMutation(NEW_CREATIVEARTS_LEADER)

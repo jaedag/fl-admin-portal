@@ -11,13 +11,13 @@ import HubCouncilForm, {
 } from '../reusable-forms/HubCouncilForm'
 
 const CreateHubCouncil = () => {
-  const { clickCard, ministryId } = useContext(ChurchContext)
+  const { clickCard, ministryId, councilId } = useContext(ChurchContext)
 
   const navigate = useNavigate()
 
   const initialValues: HubCouncilFormValues = {
     ministry: ministryId,
-    council: '',
+    council: councilId ?? '',
     leaderId: '',
     leaderName: '',
     leaderEmail: '',
