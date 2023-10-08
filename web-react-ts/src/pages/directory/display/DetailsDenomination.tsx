@@ -4,7 +4,6 @@ import DisplayChurchDetails from 'components/DisplayChurchDetails/DisplayChurchD
 import { ChurchContext } from 'contexts/ChurchContext'
 import React, { useContext } from 'react'
 import { DISPLAY_DENOMINATION } from './ReadQueries'
-import { permitMe } from 'permission-utils'
 
 const DetailsDenomination = () => {
   const { denominationId } = useContext(ChurchContext)
@@ -76,7 +75,7 @@ const DetailsDenomination = () => {
         subChurch="Oversight"
         details={details}
         editlink="/denomination/editdenomination"
-        editPermitted={permitMe('Denomination')}
+        editPermitted={['fishers']}
         history={denomination?.history.length !== 0 && denomination?.history}
         buttons={denomination?.oversights ?? []}
         breadcrumb={breadcrumb && breadcrumb}

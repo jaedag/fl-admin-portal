@@ -185,21 +185,46 @@ type Member @auth(rules: [{ isAuthenticated: true }]) {
       RETURN COUNT(DISTINCT oversight)
       """
     )
-  leadsOversightCount: Int
+  leadsOversightCount: Int!
     @cypher(
       statement: """
       MATCH (this)-[:LEADS]->(oversight:Oversight)
       RETURN COUNT(DISTINCT oversight)
       """
     )
-  leadsAdminsOversight: Int
+  leadsAdminsOversight: Int!
     @cypher(
       statement: """
       MATCH (this)-[:LEADS|IS_ADMIN_FOR]->(oversight:Oversight)
       RETURN COUNT(DISTINCT oversight)
       """
     )
+  leadsDenomination: [Denomination!]!
+    @relationship(type: "LEADS", direction: OUT)
+  isAdminForDenominationCount: Int!
+    @cypher(
+      statement: """
+      MATCH (this)-[:IS_ADMIN_FOR]->(denomination:Denomination)
+      RETURN COUNT(DISTINCT denomination)
+      """
+    )
+  leadsDenominationCount: Int!
+    @cypher(
+      statement: """
+      MATCH (this)-[:LEADS]->(denomination:Denomination)
+      RETURN COUNT(DISTINCT denomination)
+      """
+    )
+  leadsAdminsDenominationCount: Int!
+    @cypher(
+      statement: """
+      MATCH (this)-[:LEADS|IS_ADMIN_FOR]->(denomination:Denomination)
+      RETURN COUNT(DISTINCT denomination)
+      """
+    )
 
+  isAdminForDenomination: [Denomination!]!
+    @relationship(type: "IS_ADMIN_FOR", direction: OUT)
   isAdminForOversight: [Oversight!]!
     @relationship(type: "IS_ADMIN_FOR", direction: OUT)
   isAdminForCampus: [Campus!]!

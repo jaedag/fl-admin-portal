@@ -53,6 +53,7 @@ export type Role =
   | 'arrivalsPayerStream'
   | 'tellerStream'
   | 'sheepseekerStream'
+  | 'fishers'
   | 'all'
 
 export type VerbTypes =

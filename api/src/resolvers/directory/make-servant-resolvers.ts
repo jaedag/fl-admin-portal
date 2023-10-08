@@ -137,6 +137,29 @@ const MakeServantResolvers = {
     MakeServant(context, args, permitAdmin('Oversight'), 'Campus', 'Leader'),
   RemoveCampusLeader: async (object: any, args: Member, context: Context) =>
     RemoveServant(context, args, permitAdmin('Oversight'), 'Campus', 'Leader'),
+  MakeOversightLeader: async (object: any, args: Member, context: Context) =>
+    MakeServant(
+      context,
+      args,
+      permitAdmin('Denomination'),
+      'Oversight',
+      'Leader'
+    ),
+  RemoveOversightLeader: async (object: any, args: Member, context: Context) =>
+    RemoveServant(
+      context,
+      args,
+      permitAdmin('Denomination'),
+      'Oversight',
+      'Leader'
+    ),
+  MakeDenominationLeader: async (object: any, args: Member, context: Context) =>
+    MakeServant(context, args, ['fishers'], 'Denomination', 'Leader'),
+  RemoveDenominationLeader: async (
+    object: any,
+    args: Member,
+    context: Context
+  ) => RemoveServant(context, args, ['fishers'], 'Denomination', 'Leader'),
   MakeCreativeArtsLeader: async (object: any, args: Member, context: Context) =>
     MakeServant(context, args, permitAdmin('Campus'), 'CreativeArts', 'Leader'),
   RemoveCreativeArtsLeader: async (

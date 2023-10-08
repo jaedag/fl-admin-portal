@@ -259,6 +259,51 @@ export const UPDATE_OVERSIGHT_MUTATION = gql`
   }
 `
 
+export const UPDATE_DENOMINATION_MUTATION = gql`
+  mutation UpdateDenomination($denominationId: ID!, $name: String!) {
+    UpdateDenominationDetails(denominationId: $denominationId, name: $name) {
+      id
+      name
+      oversights {
+        id
+        name
+        denomination {
+          id
+          name
+        }
+      }
+
+      admin {
+        id
+        firstName
+        lastName
+        fellowship {
+          id
+          stream_name
+        }
+      }
+      leader {
+        id
+        firstName
+        lastName
+      }
+      history(limit: 5) {
+        id
+        timeStamp
+        createdAt {
+          date
+        }
+        loggedBy {
+          id
+          firstName
+          lastName
+        }
+        historyRecord
+      }
+    }
+  }
+`
+
 export const UPDATE_CAMPUS_MUTATION = gql`
   mutation UpdateCampus(
     $campusId: ID!

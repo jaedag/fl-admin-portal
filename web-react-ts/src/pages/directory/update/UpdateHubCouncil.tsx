@@ -2,7 +2,6 @@ import React, { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useQuery, useMutation } from '@apollo/client'
 import { alertMsg, throwToSentry } from '../../../global-utils'
-import { GET_CREATIVEARTS_MINISTRIES } from '../../../queries/ListQueries'
 import { ChurchContext } from '../../../contexts/ChurchContext'
 import { DISPLAY_HUBCOUNCIL } from '../display/ReadQueries'
 import { LOG_HUBCOUNCIL_HISTORY } from './LogMutations'
@@ -13,6 +12,7 @@ import { FormikHelpers } from 'formik'
 import LoadingScreen from 'components/base-component/LoadingScreen'
 import { UPDATE_HUBCOUNCIL_MUTATION } from './UpdateSontaMutations'
 import { MAKE_HUBCOUNCIL_LEADER } from './ChangeLeaderMutations'
+import { GET_MINISTRY_HUBCOUNCILS } from '../reusable-forms/SontaListQueries'
 
 const UpdateHubCouncil = () => {
   const { hubCouncilId } = useContext(ChurchContext)
@@ -21,10 +21,11 @@ const UpdateHubCouncil = () => {
   })
 
   const navigate = useNavigate()
-  const hubCouncil = data?.hubCouncil[0]
+  const hubCouncil = data?.hubCouncils[0]
 
   const initialValues: HubCouncilFormValues = {
     name: hubCouncil?.name,
+    council: hubCouncil?.council.name,
     leaderName: hubCouncil?.leader?.fullName ?? '',
     leaderId: hubCouncil?.leader?.id || '',
     leaderEmail: hubCouncil?.leader?.email || '',
@@ -43,8 +44,8 @@ const UpdateHubCouncil = () => {
   const [UpdateHubCouncil] = useMutation(UPDATE_HUBCOUNCIL_MUTATION, {
     refetchQueries: [
       {
-        query: GET_CREATIVEARTS_MINISTRIES,
-        variables: { id: hubCouncil?.creativeArts.id },
+        query: GET_MINISTRY_HUBCOUNCILS,
+        variables: { id: hubCouncil?.ministry.id },
       },
     ],
   })

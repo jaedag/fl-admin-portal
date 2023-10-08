@@ -826,6 +826,10 @@ export const DISPLAY_HUBCOUNCIL = gql`
       activeHubFellowshipCount
       vacationHubFellowshipCount
       memberCount
+      council {
+        id
+        name
+      }
       hubs {
         id
         name

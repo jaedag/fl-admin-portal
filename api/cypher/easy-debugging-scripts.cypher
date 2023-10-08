@@ -90,3 +90,10 @@ DETACH DELETE ministry
    MATCH (this {email: "jaedagy@gmail.com"})-[:LEADS|HAS|HAS_MINISTRY|IS_ADMIN_FOR*1..5]->(ministry:Ministry)
   MATCH (ministry:Ministry)<-[:HAS]-(creativeArts:CreativeArts) 
    RETURN DISTINCT ministry.name , labels(ministry)
+
+
+   MATCH (church:Hub) WHERE NOT toLower(church.name) CONTAINS "test"
+   RETURN church.name;
+
+      MATCH (church:Hub) WHERE NOT toLower(church.name) CONTAINS "test"
+   DETACH DELETE church;
