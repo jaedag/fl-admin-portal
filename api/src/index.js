@@ -11,6 +11,7 @@ import { Neo4jGraphQLAuthJWTPlugin } from '@neo4j/graphql-plugin-auth'
 import { typeDefs } from './schema/graphql-schema'
 import resolvers from './resolvers/resolvers'
 import SECRETS from './resolvers/getSecrets'
+import axios from 'axios'
 
 const app = express()
 const httpServer = http.createServer(app)

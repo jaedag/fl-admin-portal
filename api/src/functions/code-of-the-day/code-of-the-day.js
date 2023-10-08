@@ -56,7 +56,7 @@ const executeQuery = async (neoDriver) => {
         url: 'https://random-word-api.herokuapp.com/word',
       })
 
-      const dictionaryCode = res.json()[0].toUpperCase()
+      const dictionaryCode = res.data[0].toUpperCase()
 
       console.log('code', code?.code ?? dictionaryCode)
 
