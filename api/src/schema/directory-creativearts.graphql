@@ -286,7 +286,8 @@ type HubCouncil {
       """
     )
   hubs: [Hub!]! @relationship(type: "HAS", direction: OUT)
-  ministry: Ministry @relationship(type: "HAS", direction: IN)
+  ministry: Ministry! @relationship(type: "HAS", direction: IN)
+  council: Council! @relationship(type: "HAS_MINISTRY", direction: IN)
   serviceLogs: [ServiceLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
   rehearsals(limit: Int!, skip: Int = 0): [RehearsalRecord!]!
     @cypher(
@@ -752,7 +753,7 @@ extend type Mutation {
     )
     @cypher(
       statement: """
-      MATCH (hub:HubCouncil {id:$hubId})
+      MATCH (hub:HubCouncil {id:$hubCouncilId})
         SET hub.name = $name
 
       RETURN hub

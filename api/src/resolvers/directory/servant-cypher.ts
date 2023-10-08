@@ -2,7 +2,7 @@ const servantCypher = {
   disconnectChurchLeader: `
    MATCH (church {id: $churchId}) 
    WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream 
-   OR church:Campus OR church:Oversight 
+   OR church:Campus OR church:Oversight OR church:Denomination
    OR church:CreativeArts OR church:Ministry OR church:HubCouncil OR church:Hub
    MATCH (church)<-[oldLeads:LEADS]-(leader:Member)
    DELETE oldLeads
@@ -23,7 +23,7 @@ const servantCypher = {
   disconnectChurchAdmin: `
    MATCH (church {id: $churchId}) 
    WHERE church:Constituency OR church:Council OR church:Stream 
-   OR church:Campus OR church:Oversight 
+   OR church:Campus OR church:Oversight OR church:Denomination 
    OR church:CreativeArts OR church:Ministry
    MATCH (church)<-[oldAdmin:IS_ADMIN_FOR]-(admin:Member)
    DELETE oldAdmin
@@ -91,7 +91,7 @@ const servantCypher = {
   connectChurchLeader: `
    MATCH (church {id: $churchId})
    WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream 
-   OR church:Campus OR church:Oversight 
+   OR church:Campus OR church:Oversight OR church:Denomination
    OR church:CreativeArts OR church:Ministry OR church:HubCouncil OR church:Hub
    MATCH (leader:Member {id:$leaderId})
       SET leader.auth_id =  $auth_id
@@ -105,7 +105,7 @@ const servantCypher = {
   connectChurchAdmin: `
    MATCH (church {id:$churchId})
    WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream 
-   OR church:Campus OR church:Oversight 
+   OR church:Campus OR church:Oversight OR church:Denomination
    OR church:CreativeArts OR church:Ministry
    MATCH (admin:Member {id:$adminId})
    SET admin.auth_id =  $auth_id

@@ -1,20 +1,90 @@
-// delete all hubs and remove all hub fellowships
-MATCH (hub:Hub)
-MATCH (fellowship:HubFellowship)
-DETACH DELETE hub
-REMOVE fellowship:HubFellowship
-RETURN 1;
+CREATE CONSTRAINT uniqueServiceDayid FOR (n:ServiceDay) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT uniqueTitleid FOR (n:Title) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT uniqueMaritalStatusid FOR (n:MaritalStatus) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT uniqueGenderid FOR (n:Gender) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT uniqueMinistryid FOR (n:Ministry) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT uniqueMemberid FOR (n:Member) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT uniqueTimeGraphid FOR (n:TimeGraph) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT uniqueCampusid FOR (n:Campus) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT uniqueBacentaid FOR (n:Bacenta) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT uniqueSontaid FOR (n:Sonta) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT uniqueBasontaid FOR (n:Basonta) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT uniqueHistoryLogid FOR (n:HistoryLog) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT uniqueUserid FOR (n:User) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT uniqueOccupationid FOR (n:Occupation) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT uniqueServiceLogid FOR (n:ServiceLog) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT uniqueServiceRecordid FOR (n:ServiceRecord) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT uniqueClosedBacentaid FOR (n:ClosedBacenta) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT uniqueNoServiceid FOR (n:NoService) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT uniqueCouncilid FOR (n:Council) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT uniqueStreamid FOR (n:Stream) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT uniqueConstituencyid FOR (n:Constituency) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT uniqueLastBankingCodeid FOR (n:LastBankingCode) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT uniqueFellowshipid FOR (n:Fellowship) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT uniqueClosedFellowshipid FOR (n:ClosedFellowship) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT uniqueClosedConstituencyid FOR (n:ClosedConstituency) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT uniqueICid FOR (n:IC) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT uniqueBussingRecordid FOR (n:BussingRecord) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT uniqueArrivalsCodeOfTheDayid FOR (n:ArrivalsCodeOfTheDay) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT uniqueActiveid FOR (n:Active) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT uniqueGraduatedid FOR (n:Graduated) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT uniqueRegistrationLogid FOR (n:RegistrationLog) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT uniqueSwellDateid FOR (n:SwellDate) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT uniqueSheepid FOR (n:Sheep) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT uniqueDeerid FOR (n:Deer) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT uniqueDenominationid FOR (n:Denomination) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT uniqueGoatid FOR (n:Goat) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT uniqueClosedCouncilid FOR (n:ClosedCouncil) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT uniqueOversightid FOR (n:Oversight) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT uniqueEquipmentRecordid FOR (n:EquipmentRecord) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT uniqueVehicleRecordid FOR (n:VehicleRecord) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT uniqueEquipmentDateid FOR (n:EquipmentDate) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT uniqueAggregateServiceRecordid FOR (n:AggregateServiceRecord) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT uniqueAggregateBussingRecordid FOR (n:AggregateBussingRecord) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT uniqueInactiveid FOR (n:Inactive) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT uniqueIDLid FOR (n:IDL) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT uniqueIMCLid FOR (n:IMCL) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT uniquePastoralCommentid FOR (n:PastoralComment) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT uniqueMissedChurchCommentid FOR (n:MissedChurchComment) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT uniqueBacentaCycleid FOR (n:BacentaCycle) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT uniqueConstituencyCycleid FOR (n:ConstituencyCycle) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT uniqueCouncilCycleid FOR (n:CouncilCycle) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT uniqueStreamCycleid FOR (n:StreamCycle) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT uniqueLastBacentaCodeid FOR (n:LastBacentaCode) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT uniqueBussingSocietyid FOR (n:BussingSociety) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT uniqueMultiplicationRecordid FOR (n:MultiplicationRecord) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT uniqueAggregateMultiplicationRecordid FOR (n:AggregateMultiplicationRecord) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT uniqueTargetid FOR (n:Target) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT uniquePastoralCycleid FOR (n:PastoralCycle) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT uniqueVisitationActivityid FOR (n:VisitationActivity) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT uniqueTelepastoringActivityid FOR (n:TelepastoringActivity) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT uniquePrayerActivityid FOR (n:PrayerActivity) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT uniqueHubid FOR (n:Hub) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT uniqueLostid FOR (n:Lost) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT uniqueTimegraphid FOR (n:Timegraph) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT uniqueClosedHubid FOR (n:ClosedHub) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT uniqueCommentid FOR (n:Comment) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT uniqueUniversityVenueid FOR (n:UniversityVenue) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT uniqueOutreachVenueid FOR (n:OutreachVenue) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT uniqueIndoorVenueid FOR (n:IndoorVenue) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT uniqueOutdoorVenueid FOR (n:OutdoorVenue) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT uniqueMinistryAttendanceRecordid FOR (n:MinistryAttendanceRecord) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT uniqueRehearsalRecordid FOR (n:RehearsalRecord) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT uniqueTransactionid FOR (n:Transaction) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT uniqueOfferingid FOR (n:Offering) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT uniqueHubFellowshipid FOR (n:HubFellowship) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT uniqueCreativeArtid FOR (n:CreativeArt) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT uniqueClosedOversightid FOR (n:ClosedOversight) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT uniqueMembershipDataid FOR (n:MembershipData) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT uniqueSpiritualProgressionid FOR (n:SpiritualProgression) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT uniqueLifeProgressionid FOR (n:LifeProgression) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT uniqueCreativeArtsid FOR (n:CreativeArts) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT uniqueTitheid FOR (n:Tithe) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT uniqueAccountLogid FOR (n:AccountLog) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT uniqueAccountTransactionid FOR (n:AccountTransaction) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT uniqueAggregateRehearsalRecordid FOR (n:AggregateRehearsalRecord) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT uniqueHubCouncilid FOR (n:HubCouncil) REQUIRE n.id IS UNIQUE;
 
 
-
-
-
-
-MATCH (council:Council)
-// REMOVE council.bussingSocietyBalance, council.currentBalance
-SET council.weekdayBalance = 0.0,
-council.bussingSocietyBalance = 0.0
-RETURN council.name, council.weekdayBalance, council.bussingSocietyBalance;
-
-MATCH (trans:AccountTransaction)
-DETACH DELETE trans;
+CREATE CONSTRAINT uniqueMemberEmail FOR (n:Member) REQUIRE n.email IS UNIQUE;
+CREATE CONSTRAINT uniqueMemberWhatsappNumber FOR (n:Member) REQUIRE n.whatsappNumber IS UNIQUE;

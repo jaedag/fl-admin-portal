@@ -281,6 +281,43 @@ export const LOG_OVERSIGHT_HISTORY = gql`
   }
 `
 
+export const LOG_DENOMINATION_HISTORY = gql`
+  mutation LogDenominationHistory(
+    $denominationId: ID!
+    $historyRecord: String!
+    $oldLeaderId: ID
+    $newLeaderId: ID
+  ) {
+    LogDenominationHistory(
+      denominationId: $denominationId
+      historyRecord: $historyRecord
+      newLeaderId: $newLeaderId
+      oldLeaderId: $oldLeaderId
+    ) {
+      id
+      name
+      leader {
+        id
+        firstName
+        lastName
+      }
+      history(limit: 5) {
+        id
+        timeStamp
+        createdAt {
+          date
+        }
+        loggedBy {
+          id
+          firstName
+          lastName
+        }
+        historyRecord
+      }
+    }
+  }
+`
+
 export const LOG_CREATIVEARTS_HISTORY = gql`
   mutation LogCreativeArtsHistory(
     $creativeArtsId: ID!

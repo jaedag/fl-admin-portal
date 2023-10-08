@@ -54,6 +54,16 @@ extend type Mutation {
     newLeaderId: ID!
     oversightId: ID!
   ): Member
+  MakeDenominationLeader(
+    leaderId: ID!
+    denominationId: ID!
+    oldLeaderId: ID
+  ): Member
+  RemoveDenominationLeader(
+    leaderId: ID!
+    newLeaderId: ID!
+    denominationId: ID!
+  ): Member
 }
 
 #### GO ON VACATION AND COME BACK ###
@@ -705,6 +715,16 @@ extend type Mutation {
       """
     )
 
+  UpdateDenominationDetails(denominationId: ID!, name: String!): Denomination
+    @auth(rules: [{ roles: ["adminDenomination"] }])
+    @cypher(
+      statement: """
+      MATCH (denomination:Denomination {id: $denominationId})
+      	SET denomination.name = $name
+
+      RETURN denomination
+      """
+    )
   UpdateOversightDetails(oversightId: ID!, name: String!): Oversight!
     @auth(rules: [{ roles: ["adminDenomination"] }])
     @cypher(
@@ -712,7 +732,6 @@ extend type Mutation {
       MATCH (oversight:Oversight {id: $oversightId})
       	SET oversight.name = $name
 
-      MATCH (oversight)<-[:LEADS]-(leader:Active:Member)
       RETURN oversight
       """
     )
@@ -724,7 +743,7 @@ extend type Mutation {
     currency: String!
     conversionRateToDollar: Float!
   ): Campus
-    @auth(rules: [{ roles: ["adminOversight"] }])
+    @auth(rules: [{ roles: ["adminOversight", "adminDenomination"] }])
     @cypher(
       statement: """
            MATCH (campus:Campus {id: $campusId})

@@ -299,6 +299,41 @@ export const MAKE_OVERSIGHT_LEADER = gql`
   }
 `
 
+export const MAKE_DENOMINATION_LEADER = gql`
+  mutation MakeDenominationLeader(
+    $denominationId: ID!
+    $newLeaderId: ID!
+    $oldLeaderId: ID!
+  ) {
+    RemoveDenominationLeader(
+      denominationId: $denominationId
+      leaderId: $oldLeaderId
+      newLeaderId: $newLeaderId
+    ) {
+      id
+      firstName
+      lastName
+    }
+    MakeDenominationLeader(
+      denominationId: $denominationId
+      leaderId: $newLeaderId
+      oldLeaderId: $oldLeaderId
+    ) {
+      id
+      firstName
+      lastName
+      leadsDenomination {
+        id
+        leader {
+          id
+          firstName
+          lastName
+        }
+      }
+    }
+  }
+`
+
 export const MAKE_CREATIVEARTS_LEADER = gql`
   mutation MakeCreativeArtsLeader(
     $creativeArtsId: ID!

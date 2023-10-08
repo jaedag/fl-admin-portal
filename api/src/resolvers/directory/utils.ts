@@ -13,6 +13,7 @@ import { Context } from '../utils/neo4j-types'
 import { HistoryRecordArgs, historyRecordString } from './helper-functions'
 import servantCypher from './servant-cypher'
 import {
+  matchMemberDenominationQuery,
   matchMemberOversightQuery,
   matchMemberQuery,
   matchMemberSheepSeekerQuery,
@@ -105,6 +106,9 @@ export const formatting = (
   }
   if (churchType === 'Oversight') {
     memberQuery = matchMemberOversightQuery
+  }
+  if (churchType === 'Denomination') {
+    memberQuery = matchMemberDenominationQuery
   }
 
   if (churchType === 'CreativeArts') {
