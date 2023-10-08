@@ -58,7 +58,7 @@ const DisplayAllICs = () => {
               </Link>
             ) : null}
           </Col>
-          <RoleView roles={permitArrivals('Campus')}>
+          <RoleView roles={permitArrivals('Stream')}>
             <Col className="col-auto">
               <Link
                 to="/bacenta/addbacenta"
