@@ -36,10 +36,10 @@ const DisplayPage = () => {
   const memberBirthday = getMemberDob(member)
 
   return (
-    <div className="scroll-bottom text-center">
+    <div className="scroll-bottom">
       <ApolloWrapper loading={loading} error={error} data={bioData} placeholder>
         <div className="py-5">
-          <div className="pt-5">
+          <div className="pt-5 text-center">
             <Row className="d-flex justify-content-center">
               <Col xs={6} md={6} lg={2}>
                 <PlaceholderCustom

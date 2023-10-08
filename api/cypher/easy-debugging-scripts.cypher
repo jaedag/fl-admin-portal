@@ -102,11 +102,11 @@ DETACH DELETE ministry
   // get first letter in each word in a string  
 
 
+MATCH (stream:Campus)-[r:HAS_MINISTRY]->()
+DELETE r
 
-UNWIND split("Greater Love Choir"," ") as  words
-WITH COLLECT(LEFT(words, 1)) AS firstLetters
-RETURN REDUCE(s = "", letter in firstLetters | s + letter) AS concatenatedString
- 
 
- MATCH (record:RehearsalRecord)
- DETACH DELETE record
+MATCH (stream:Council)
+MATCH (ministry:HubCouncil) 
+MERGE (stream)-[:HAS_MINISTRY]->(ministry)
+RETURN stream.name, ministry.name;

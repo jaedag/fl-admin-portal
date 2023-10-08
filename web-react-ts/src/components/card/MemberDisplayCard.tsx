@@ -60,10 +60,12 @@ const Icons = ({
   member,
   picture,
   noPicture,
+  contact,
 }: {
   member: CardMember
   picture: string
   noPicture: boolean
+  contact?: boolean
 }) => {
   if (member.leader?.pictureUrl) {
     return (
@@ -75,7 +77,9 @@ const Icons = ({
         />
         <Badge
           pill
-          className={`position-absolute search-badge ${member.__typename.toLowerCase()}`}
+          className={`position-absolute ${
+            contact ? 'search-badge-top' : 'search-badge'
+          } ${member.__typename.toLowerCase()}`}
         >
           <SearchBadgeIcon
             category={member.__typename as ChurchLevel}
@@ -112,7 +116,7 @@ const Icons = ({
 }
 
 const MemberDisplayCard = (props: MemberDisplayCardProps) => {
-  const { member, leader, children, ...rest } = props
+  const { member, leader, children, contact, ...rest } = props
   const { clickCard } = useContext(ChurchContext)
   const { setUserFinancials } = useSetUserChurch()
   const navigate = useNavigate()
@@ -153,7 +157,12 @@ const MemberDisplayCard = (props: MemberDisplayCardProps) => {
       <Card.Body {...rest} onClick={props.onClick || clickFunction}>
         <div className="d-flex align-items-center">
           <div className="flex-shrink-0">
-            <Icons noPicture={noPicture} picture={picture} member={member} />
+            <Icons
+              noPicture={noPicture}
+              picture={picture}
+              member={member}
+              contact={!!contact}
+            />
           </div>
           <div className="flex-grow-1 ms-3">
             <Card.Title>{name}</Card.Title>

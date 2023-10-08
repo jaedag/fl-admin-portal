@@ -604,6 +604,40 @@
   --bs-btn-disabled-border-color: var(--chakra-colors-green-500);
 }
 
+[data-bs-theme='light'] .btn-outline-success {
+  --bs-btn-color: var(--chakra-colors-green-500);
+  --bs-btn-border-color: var(--chakra-colors-green-500);
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: var(--chakra-colors-green-500);
+  --bs-btn-hover-border-color: var(--chakra-colors-green-500);
+  --bs-btn-focus-shadow-rgb: 25, 135, 84;
+  --bs-btn-active-color: #fff;
+  --bs-btn-active-bg: var(--chakra-colors-green-500);
+  --bs-btn-active-border-color: var(--chakra-colors-green-500);
+  --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+  --bs-btn-disabled-color: var(--chakra-colors-green-500);
+  --bs-btn-disabled-bg: transparent;
+  --bs-btn-disabled-border-color: var(--chakra-colors-green-500);
+  --bs-gradient: none;
+}
+
+[data-bs-theme='dark'] .btn-outline-success {
+  --bs-btn-color: var(--chakra-colors-green-200);
+  --bs-btn-border-color: var(--chakra-colors-green-200);
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: var(--chakra-colors-green-200);
+  --bs-btn-hover-border-color: var(--chakra-colors-green-200);
+  --bs-btn-focus-shadow-rgb: 25, 135, 84;
+  --bs-btn-active-color: #fff;
+  --bs-btn-active-bg: var(--chakra-colors-green-200);
+  --bs-btn-active-border-color: var(--chakra-colors-green-200);
+  --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+  --bs-btn-disabled-color: var(--chakra-colors-green-200);
+  --bs-btn-disabled-bg: transparent;
+  --bs-btn-disabled-border-color: var(--chakra-colors-green-200);
+  --bs-gradient: none;
+}
+
 [data-bs-theme='dark'] .btn-danger {
   --bs-btn-color: var(--chakra-colors-gray-800);
   --bs-btn-bg: var(--chakra-colors-red-200);

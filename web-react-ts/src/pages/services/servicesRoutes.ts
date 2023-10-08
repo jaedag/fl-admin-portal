@@ -287,7 +287,10 @@ export const graphs: LazyRouteTypes[] = [
   {
     path: '/fellowship/graphs',
     element: FellowshipReport,
-    roles: permitLeaderAdminArrivals('Fellowship'),
+    roles: [
+      ...permitLeaderAdminArrivals('Fellowship'),
+      ...permitLeaderAdmin('Hub'),
+    ],
     placeholder: true,
   },
   {
