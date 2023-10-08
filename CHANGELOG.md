@@ -1,3 +1,16 @@
+#### 7.10.12 (2023-10-08)
+
+##### Bug Fixes
+
+*  minor changes to ui ([6c3d5455](https://github.com/firstlovecenter/fl-pastoral-care/commit/6c3d5455483d3d759f7360b0420434e2e6217d5b))
+*  aggregate hub rehearsal workign properly now ([3984bb1f](https://github.com/firstlovecenter/fl-pastoral-care/commit/3984bb1fc502a8259d46e81035e811d9da9dd188))
+*  logging out now clears session storage ([36d8e169](https://github.com/firstlovecenter/fl-pastoral-care/commit/36d8e1699f162bd15a9a4449fe3302187bbcb590))
+*  permission for stream admins  to create bacentas ([a497d390](https://github.com/firstlovecenter/fl-pastoral-care/commit/a497d390f87c659b83c719fa7bc60f5dc143283c))
+*  add whitespace to readme ([4cd36b1b](https://github.com/firstlovecenter/fl-pastoral-care/commit/4cd36b1b43feaca80af53551ac94c1d56e41688c))
+*  implement hub council leader user flow ([0b7c951b](https://github.com/firstlovecenter/fl-pastoral-care/commit/0b7c951b8832c33b485768b943356be37201d41b))
+*  fix bug in code-of-the-day function ([63d651f2](https://github.com/firstlovecenter/fl-pastoral-care/commit/63d651f299a6c771f37c190565d68dc875e4214c))
+*  fixed bugs in updating denomination and hubcouncil ([2631d519](https://github.com/firstlovecenter/fl-pastoral-care/commit/2631d5194c8b52ba37f9bb4cef91789f2092f7ed))
+
 #### 7.10.11 (2023-10-07)
 
 ##### Bug Fixes
