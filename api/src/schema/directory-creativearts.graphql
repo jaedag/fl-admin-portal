@@ -686,7 +686,12 @@ extend type Mutation {
     )
     @cypher(
       statement: """
-      CREATE (hub:Active:Hub {name: $name})
+      MATCH (council:HubCouncil {id: $hubCouncilId})<-[:HAS]-(:Ministry)<-[:HAS]-(creative:CreativeArts)
+      UNWIND split(creative.name, ' ') AS creativeName
+      WITH COLLECT(LEFT(creativeName, 1)) AS firstLetters
+      WITH REDUCE(s = '', letter in firstLetters | s + letter) AS concatenatedString
+
+      CREATE (hub:Active:Hub {name: concatenatedString + ' ' + $name})
         SET hub.id = apoc.create.uuid()
 
       WITH hub

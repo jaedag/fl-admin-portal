@@ -167,7 +167,6 @@ const useComponentQuery = (props?: UseComponentQuery) => {
     }) => {
       if (!user.roles.length) return
       const { highestLevel, highestVerb } = getHighestRole(user.roles)
-
       const response = await church[`${highestLevel}`][`${highestVerb}`]({
         variables: { id: user.id },
       })
