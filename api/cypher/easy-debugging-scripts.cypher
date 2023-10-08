@@ -92,8 +92,10 @@ DETACH DELETE ministry
    RETURN DISTINCT ministry.name , labels(ministry)
 
 
-   MATCH (church:Hub) WHERE NOT toLower(church.name) CONTAINS "test"
+   MATCH (church:Basonta) WHERE NOT toLower(church.name) CONTAINS "test"
    RETURN church.name;
 
-      MATCH (church:Hub) WHERE NOT toLower(church.name) CONTAINS "test"
+      MATCH (church:Basonta) WHERE NOT toLower(church.name) CONTAINS "test"
    DETACH DELETE church;
+
+  
