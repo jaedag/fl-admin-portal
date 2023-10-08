@@ -21,14 +21,19 @@ export const getHighestRole = (roles: Role[]) => {
   let highestVerb: VerbTypes = 'leader'
 
   for (let i = churchLevels.length; i >= 0; i--) {
-    const churchLevelLower = churchLevels[i]?.toLowerCase()
+    const churchLevelLower = churchLevels[i]
+      ?.toLowerCase()
+      .replace('leader', '')
+      .replace('admin', '')
     let breakCheck = false
 
     for (let j = 0; j < roles.length; j++) {
-      const roleLower = roles[j]?.toLowerCase()
-      console.log('🚀 ~ file: directory-utils.ts:29 ~ roleLower:', roleLower)
+      const roleLower = roles[j]
+        ?.toLowerCase()
+        .replace('leader', '')
+        .replace('admin', '')
 
-      if (roleLower.includes(churchLevelLower)) {
+      if (roleLower === churchLevelLower) {
         breakCheck = true
         highestRole = roles[j]
         highestLevel = churchLevels[i]

@@ -230,7 +230,7 @@ const HubForm = ({ initialValues, onSubmit, title, newHub }: HubFormProps) => {
                         setButtonLoading(true)
                         const res = await CloseDownHub({
                           variables: {
-                            id: hubId,
+                            hubId,
                             leaderId: initialValues.leaderId,
                           },
                         })

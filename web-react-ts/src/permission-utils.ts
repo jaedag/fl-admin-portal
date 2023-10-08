@@ -32,6 +32,7 @@ export const permitLeader = (churchLevel: ChurchLevel) => {
         'leaderStream',
         'leaderCouncil',
         'leaderHub',
+        'leaderHubCouncil',
         'leaderMinistry',
         'leaderCreativeArts',
       ]
