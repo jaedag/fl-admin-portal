@@ -1,6 +1,7 @@
 import { HigherChurches, SontaHigherChurches } from '../utils/types'
 import {
   aggregateHubRehearsalDataForCreativeArts,
+  aggregateHubRehearsalDataForHubCouncil,
   aggregateHubRehearsalDataForMinistry,
   aggregateMinistryMeetingDataForCreativeArts,
   aggregateMinistryMeetingDataForMinistry,
@@ -97,7 +98,7 @@ export const getServiceSontaHigherChurches = (records: any) => {
         typename: 'HubCouncil',
         labels: record?.get('higherChurch').labels,
         properties: record.get('higherChurch').properties,
-        rehearsalCypher: aggregateHubRehearsalDataForMinistry,
+        rehearsalCypher: aggregateHubRehearsalDataForHubCouncil,
         ministryMeetingCypher: aggregateMinistryMeetingDataForMinistry,
       }
     }

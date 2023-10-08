@@ -107,3 +107,6 @@ UNWIND split("Greater Love Choir"," ") as  words
 WITH COLLECT(LEFT(words, 1)) AS firstLetters
 RETURN REDUCE(s = "", letter in firstLetters | s + letter) AS concatenatedString
  
+
+ MATCH (record:RehearsalRecord)
+ DETACH DELETE record

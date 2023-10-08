@@ -22,11 +22,9 @@ import {
   aggregateMinistryMeetingDataForCreativeArts,
   aggregateMinistryMeetingDataForHub,
   aggregateMinistryMeetingDataForMinistry,
-  aggregateHubRehearsalDataForCreativeArts,
-  aggregateHubRehearsalDataForMinistry,
 } from './rehearsal-cypher'
 import { SontaHigherChurches } from '../utils/types'
-import { getServiceHigherChurches } from './service-utils'
+import { getServiceSontaHigherChurches } from './service-utils'
 
 const errorMessage = require('../texts.json').error
 
@@ -173,7 +171,7 @@ const HubFellowshipServiceMutation = {
       const serviceCheck = rearrangeCypherObject(serviceCheckRes[0])
 
       const currencyCheck = rearrangeCypherObject(serviceCheckRes[1])
-      const higherChurches = getServiceHigherChurches(
+      const higherChurches = getServiceSontaHigherChurches(
         serviceCheckRes[2]?.records
       ) as SontaHigherChurches
 
@@ -192,10 +190,12 @@ const HubFellowshipServiceMutation = {
 
       let aggregateCypher = ''
 
-      if (higherChurches?.ministry) {
-        aggregateCypher = aggregateHubRehearsalDataForMinistry
-      } else if (serviceCheck.higherChurchLabels?.includes('CreativeArts')) {
-        aggregateCypher = aggregateHubRehearsalDataForCreativeArts
+      if (higherChurches?.hubCouncil) {
+        aggregateCypher = higherChurches.hubCouncil.rehearsalCypher
+      } else if (higherChurches?.ministry) {
+        aggregateCypher = higherChurches.ministry.rehearsalCypher
+      } else if (higherChurches?.creativeArts) {
+        aggregateCypher = higherChurches.creativeArts.rehearsalCypher
       }
 
       const cypherResponse = await session

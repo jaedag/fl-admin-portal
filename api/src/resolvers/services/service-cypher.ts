@@ -10,12 +10,12 @@ RETURN church.id AS id, church.name AS name, labels(church) AS labels, record IS
 `
 
 export const getHigherChurches = `
-MATCH (church {id: $churchId})
+MATCH (church {id: '1414805f-4ec3-4373-9bb0-49b9f9d09c21'})
 WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream
-OR church:Hub OR church:Ministry OR church:CreativeArts
+OR church:Hub OR church:HubCouncil OR church:Ministry OR church:CreativeArts
 MATCH (church)<-[:HAS*1..7]-(higherChurch)
 WHERE higherChurch:Bacenta OR higherChurch:Constituency OR higherChurch:Council OR higherChurch:Stream OR higherChurch:Campus OR higherChurch:Oversight OR higherChurch:Denomination
-OR higherChurch:Hub OR higherChurch:Ministry OR higherChurch:CreativeArts
+OR higherChurch:Hub OR higherChurch:HubCouncil OR higherChurch:Ministry OR higherChurch:CreativeArts
 
 RETURN DISTINCT higherChurch
 `
