@@ -48,37 +48,33 @@ const AuthButton = (props: AuthButtonPropsType) => {
 
   return (
     <Container>
-      <div className="d-grid gap-2">
-        <Button
-          size="lg"
-          variant="brand"
-          className={`auth-button text-nowrap ${
-            !mobileFullSize && `d-none d-md-inline`
-          }`}
-          onClick={togglePopup}
-        >
-          Log Out <BoxArrowRight />
-        </Button>
-      </div>
+      <Button
+        variant="brand"
+        className={`auth-button text-nowrap ${
+          !mobileFullSize && `d-none d-md-inline`
+        }`}
+        onClick={togglePopup}
+      >
+        Log Out <BoxArrowRight />
+      </Button>
+
       {isOpen && (
         <Popup handleClose={togglePopup}>
           <>
             <b>Confirm Log Out</b>
             <p className="mt-2">Are you sure you want to Log Out?</p>
-            <div className="d-grid gap-2">
-              <Button
-                className={`auth-button mt-3 ${
-                  !mobileFullSize && `d-none d-md-inline`
-                }`}
-                onClick={() => {
-                  logout({ returnTo: window.location.origin })
-                  sessionStorage.clear()
-                  togglePopup()
-                }}
-              >
-                Log Out
-              </Button>
-            </div>
+            <Button
+              className={`auth-button mt-3 ${
+                !mobileFullSize && `d-none d-md-inline`
+              }`}
+              onClick={() => {
+                logout({ returnTo: window.location.origin })
+                sessionStorage.clear()
+                togglePopup()
+              }}
+            >
+              Log Out
+            </Button>
           </>
         </Popup>
       )}

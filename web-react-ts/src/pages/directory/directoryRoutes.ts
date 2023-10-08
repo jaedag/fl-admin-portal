@@ -460,7 +460,7 @@ export const directory: LazyRouteTypes[] = [
   {
     path: '/fellowship/displaydetails',
     element: DetailsFellowship,
-    roles: permitLeaderAdmin('Fellowship'),
+    roles: [...permitLeaderAdmin('Fellowship'), ...permitLeaderAdmin('Hub')],
     placeholder: true,
   },
   {
@@ -659,7 +659,7 @@ export const directory: LazyRouteTypes[] = [
   {
     path: '/bacenta/addbacenta',
     element: CreateBacenta,
-    roles: permitAdminArrivals('Campus'),
+    roles: permitAdminArrivals('Stream'),
     placeholder: false,
   },
 

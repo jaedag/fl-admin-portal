@@ -36,7 +36,7 @@ const DisplayPage = () => {
   const memberBirthday = getMemberDob(member)
 
   return (
-    <div className="scroll-bottom">
+    <div className="scroll-bottom text-center">
       <ApolloWrapper loading={loading} error={error} data={bioData} placeholder>
         <div className="py-5">
           <div className="pt-5">

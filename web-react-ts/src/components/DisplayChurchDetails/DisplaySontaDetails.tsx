@@ -228,15 +228,13 @@ const DisplaySontaDetails = (props: DisplayChurchDetailsProps) => {
         )}
         <hr />
         {/* Two buttons */}
-        <div className="d-flex gap-2">
+        <div className="d-flex gap-2 text-center">
           <PlaceholderCustom
             loading={props.loading}
             className={`btn-sonta w-100`}
             button="button"
           >
             <Button
-              className={`w-100`}
-              size="lg"
               variant="purple"
               onClick={() => {
                 setUserChurch({
@@ -258,7 +256,6 @@ const DisplaySontaDetails = (props: DisplayChurchDetailsProps) => {
               button="button"
             >
               <Button
-                className={`btn-sonta w-100`}
                 onClick={() => {
                   setUserChurch({
                     id: props.churchId,
