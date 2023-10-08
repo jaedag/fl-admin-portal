@@ -5,10 +5,10 @@ import { useContext } from 'react'
 import { Button, Col, Container, Row } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
 import * as Yup from 'yup'
-import { CREATE_INDOOR_OUTREACH_VENUE_MUTATION } from '../../mutations/Mutations'
+import { CREATE_INDOOR_OUTREACH_VENUE_MUTATION } from '../../Mutations'
 import { throwToSentry } from 'global-utils'
 import { ChurchContext } from 'contexts/ChurchContext'
-import { GET_INDOOR_VENUES } from '../../queries/Queries'
+import { GET_INDOOR_VENUES } from '../../Queries'
 import Input from 'components/formik/Input'
 
 export interface FormOptions {
