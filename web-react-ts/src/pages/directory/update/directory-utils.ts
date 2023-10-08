@@ -2,6 +2,7 @@ import { Church, ChurchLevel, Role, VerbTypes } from 'global-types'
 
 export const churchLevels: ChurchLevel[] = [
   'Hub',
+  'HubCouncil',
   'Ministry',
   'CreativeArts',
   'Fellowship',
@@ -25,6 +26,7 @@ export const getHighestRole = (roles: Role[]) => {
 
     for (let j = 0; j < roles.length; j++) {
       const roleLower = roles[j]?.toLowerCase()
+      console.log('🚀 ~ file: directory-utils.ts:29 ~ roleLower:', roleLower)
 
       if (roleLower.includes(churchLevelLower)) {
         breakCheck = true

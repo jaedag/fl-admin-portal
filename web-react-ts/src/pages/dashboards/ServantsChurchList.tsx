@@ -65,10 +65,6 @@ const ServantsChurchList = () => {
       pushIntoChurch(servant?.leadsConstituency)
     }
 
-    if (servant?.leadsMinistry?.length) {
-      pushIntoChurch(servant?.leadsMinistry)
-    }
-
     if (servant?.leadsCouncil?.length) {
       pushIntoChurch(servant?.leadsCouncil)
     }
@@ -81,6 +77,14 @@ const ServantsChurchList = () => {
     if (servant?.leadsOversight?.length) {
       pushIntoChurch(servant?.leadsOversight)
     }
+    // Creative Arts
+    if (servant?.leadsHubCouncil?.length) {
+      pushIntoChurch(servant?.leadsHubCouncil)
+    }
+    if (servant?.leadsMinistry?.length) {
+      pushIntoChurch(servant?.leadsMinistry)
+    }
+
     //Administrative
     if (servant?.isAdminForCouncil?.length) {
       pushIntoChurch(servant?.isAdminForCouncil)

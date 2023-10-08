@@ -140,6 +140,11 @@ export const SERVANT_CHURCH_LIST = gql`
         vacationStatus
       }
 
+      leadsHubCouncil {
+        id
+        name
+      }
+
       leadsMinistry {
         id
         name
