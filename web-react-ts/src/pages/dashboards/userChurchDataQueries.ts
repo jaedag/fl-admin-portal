@@ -448,6 +448,18 @@ export const SERVANTS_HUB_LEADER = gql`
   }
 `
 
+export const SERVANTS_HUBCOUNCIL_LEADER = gql`
+  query hubLeader($id: ID!) {
+    members(where: { id: $id }) {
+      id
+      leadsHubCouncil {
+        id
+        name
+      }
+    }
+  }
+`
+
 export const SERVANTS_MINISTRY_LEADER = gql`
   query ministryLeader($id: ID!) {
     members(where: { id: $id }) {

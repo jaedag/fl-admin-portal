@@ -41,6 +41,7 @@ import {
   SERVANTS_CREATIVEARTS_LEADER,
   SERVANTS_MINISTRY_ADMIN,
   SERVANTS_CREATIVEARTS_ADMIN,
+  SERVANTS_HUBCOUNCIL_LEADER,
 } from './userChurchDataQueries'
 
 type DashboardChurchType = {
@@ -99,6 +100,7 @@ const useComponentQuery = (props?: UseComponentQuery) => {
 
   //sonta
   const [hubLeaderQuery] = useLazyQuery(SERVANTS_HUB_LEADER)
+  const [hubCouncilLeaderQuery] = useLazyQuery(SERVANTS_HUBCOUNCIL_LEADER)
   const [ministryLeaderQuery] = useLazyQuery(SERVANTS_MINISTRY_LEADER)
   const [creativeArtsLeaderQuery] = useLazyQuery(SERVANTS_CREATIVEARTS_LEADER)
   const [ministryAdminQuery] = useLazyQuery(SERVANTS_MINISTRY_ADMIN)
@@ -144,6 +146,9 @@ const useComponentQuery = (props?: UseComponentQuery) => {
 
     Hub: {
       leader: hubLeaderQuery,
+    },
+    HubCouncil: {
+      leader: hubCouncilLeaderQuery,
     },
     Ministry: {
       leader: ministryLeaderQuery,

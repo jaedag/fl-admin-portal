@@ -221,8 +221,10 @@ export interface MemberWithChurches extends Member {
   leadsStream: Church[]
 
   leadsHub: Church[]
+  leadsHubCouncil: Church[]
   leadsMinistry: Church[]
   leadsCreativeArts: Church[]
+  isAdminForHubCouncil: Church[]
   isAdminForMinistry: Church[]
   isAdminForCreativeArts: Church[]
 
