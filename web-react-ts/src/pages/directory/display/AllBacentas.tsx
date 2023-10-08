@@ -58,7 +58,7 @@ const DisplayAllBacentas = () => {
               </Link>
             ) : null}
           </Col>
-          <RoleView roles={permitAdminArrivals('Campus')}>
+          <RoleView roles={permitAdminArrivals('Stream')}>
             <Col className="col-auto">
               <Link
                 to="/bacenta/addbacenta"

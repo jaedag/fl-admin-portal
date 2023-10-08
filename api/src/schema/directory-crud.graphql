@@ -1,18 +1,18 @@
 extend type Mutation {
   #resolver Mutations
-  MakeOversightAdmin(adminId: ID!, oversightId: ID!, oldAdminId: ID): Member
+  MakeOversightAdmin(adminId: ID!, oversightId: ID!, oldAdminId: ID): Member!
   RemoveOversightAdmin(adminId: ID!, newAdminId: ID!, oversightId: ID!): Member
-  MakeCampusAdmin(adminId: ID!, oldAdminId: ID!, campusId: ID!): Member
+  MakeCampusAdmin(adminId: ID!, oldAdminId: ID!, campusId: ID!): Member!
   RemoveCampusAdmin(adminId: ID!, newAdminId: ID, campusId: ID!): Member
-  MakeStreamAdmin(adminId: ID!, oldAdminId: ID!, streamId: ID!): Member
+  MakeStreamAdmin(adminId: ID!, oldAdminId: ID!, streamId: ID!): Member!
   RemoveStreamAdmin(adminId: ID!, newAdminId: ID, streamId: ID!): Member
-  MakeCouncilAdmin(adminId: ID!, oldAdminId: ID, councilId: ID!): Member
+  MakeCouncilAdmin(adminId: ID!, oldAdminId: ID, councilId: ID!): Member!
   RemoveCouncilAdmin(adminId: ID!, newAdminId: ID!, councilId: ID!): Member
   MakeConstituencyAdmin(
     adminId: ID!
     oldAdminId: ID
     constituencyId: ID!
-  ): Member
+  ): Member!
   RemoveConstituencyAdmin(
     adminId: ID!
     newAdminId: ID!
@@ -24,31 +24,31 @@ extend type Mutation {
     leaderId: ID!
     fellowshipId: ID!
     oldLeaderId: ID
-  ): Member
+  ): Member!
   RemoveFellowshipLeader(
     leaderId: ID!
     newLeaderId: ID!
     fellowshipId: ID!
   ): Member
-  MakeBacentaLeader(leaderId: ID!, bacentaId: ID!, oldLeaderId: ID): Member
+  MakeBacentaLeader(leaderId: ID!, bacentaId: ID!, oldLeaderId: ID): Member!
   RemoveBacentaLeader(leaderId: ID!, newLeaderId: ID!, bacentaId: ID!): Member
   MakeConstituencyLeader(
     leaderId: ID!
     constituencyId: ID!
     oldLeaderId: ID
-  ): Member
+  ): Member!
   RemoveConstituencyLeader(
     leaderId: ID!
     newLeaderId: ID!
     constituencyId: ID!
   ): Member
-  MakeCouncilLeader(leaderId: ID!, councilId: ID!, oldLeaderId: ID): Member
+  MakeCouncilLeader(leaderId: ID!, councilId: ID!, oldLeaderId: ID): Member!
   RemoveCouncilLeader(leaderId: ID!, newLeaderId: ID!, councilId: ID!): Member
-  MakeStreamLeader(leaderId: ID!, streamId: ID!, oldLeaderId: ID): Member
+  MakeStreamLeader(leaderId: ID!, streamId: ID!, oldLeaderId: ID): Member!
   RemoveStreamLeader(leaderId: ID!, newLeaderId: ID!, streamId: ID!): Member
-  MakeCampusLeader(leaderId: ID!, campusId: ID!, oldLeaderId: ID): Member
+  MakeCampusLeader(leaderId: ID!, campusId: ID!, oldLeaderId: ID): Member!
   RemoveCampusLeader(leaderId: ID!, newLeaderId: ID!, campusId: ID!): Member
-  MakeOversightLeader(leaderId: ID!, oversightId: ID!, oldLeaderId: ID): Member
+  MakeOversightLeader(leaderId: ID!, oversightId: ID!, oldLeaderId: ID): Member!
   RemoveOversightLeader(
     leaderId: ID!
     newLeaderId: ID!
@@ -58,7 +58,7 @@ extend type Mutation {
     leaderId: ID!
     denominationId: ID!
     oldLeaderId: ID
-  ): Member
+  ): Member!
   RemoveDenominationLeader(
     leaderId: ID!
     newLeaderId: ID!
