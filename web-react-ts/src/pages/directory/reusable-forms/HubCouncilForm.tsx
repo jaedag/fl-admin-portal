@@ -238,7 +238,7 @@ const HubCouncilForm = ({
                         setButtonLoading(true)
                         const res = await CloseDownHubCouncil({
                           variables: {
-                            id: hubCouncilId,
+                            hubCouncilId: hubCouncilId,
                             leaderId: initialValues.leaderId,
                           },
                         })

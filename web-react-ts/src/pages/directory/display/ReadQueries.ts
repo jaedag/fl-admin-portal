@@ -757,6 +757,10 @@ export const DISPLAY_MINISTRY = gql`
     ministries(where: { id: $id }, options: { limit: 1 }) {
       id
       name
+      stream {
+        id
+        name
+      }
       leader {
         id
         firstName

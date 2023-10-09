@@ -68,6 +68,7 @@ export interface Church {
   }
   vacationStatus?: 'Vacation' | 'Active'
   hubs?: Church[]
+  lowerChurch?: Church[]
   __typename: ChurchLevel
 }
 
@@ -132,6 +133,7 @@ export interface Constituency extends Church {
 export interface Council extends Church {
   __typename: 'Council'
   stream: Stream
+  hubCouncilsFromMinistry?: HubCouncil[]
 }
 
 export interface CreativeArts extends Church {
@@ -140,11 +142,12 @@ export interface CreativeArts extends Church {
   ministries?: Ministry[]
 }
 
-export interface Ministry extends Church {
+export interface Ministry extends HigherChurch {
   id: string
   __typename: 'Ministry'
   name: string
   creativeArts: Campus
+  councils: Council[]
   hubCouncils?: HubCouncil[]
 }
 

@@ -25,3 +25,16 @@ export const GET_MINISTRY_COUNCILS = gql`
     }
   }
 `
+
+export const GET_CREATIVEARTS_STREAMS = gql`
+  query getCreativeArtsStreams($creativeArtsId: ID!) {
+    creativeArts(where: { id: $creativeArtsId }) {
+      id
+      name
+      streams {
+        id
+        name
+      }
+    }
+  }
+`

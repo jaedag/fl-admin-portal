@@ -7,6 +7,8 @@ import { Church } from 'global-types'
 import DisplaySontaDetails from 'components/DisplayChurchDetails/DisplaySontaDetails'
 import { DetailsArray } from './DetailsFellowship'
 import { permitAdmin } from 'permission-utils'
+import { Container } from 'react-bootstrap'
+import Breadcrumb from 'components/DisplayChurchDetails/Breadcrumb'
 
 const DetailsMinistry = () => {
   const { ministryId } = useContext(ChurchContext)
@@ -26,6 +28,8 @@ const DetailsMinistry = () => {
     ministry?.creativeArts,
     ministry,
   ]
+
+  const churchCrumb = [ministry?.stream, ministry]
 
   const details: DetailsArray = [
     {
@@ -58,23 +62,28 @@ const DetailsMinistry = () => {
       error={ministryError}
       data={ministryData}
     >
-      <DisplaySontaDetails
-        details={details}
-        church={ministry}
-        loading={ministryLoading}
-        name={ministry?.name}
-        leaderTitle="Ministry Leader"
-        editPermitted={permitAdmin('CreativeArts')}
-        churchId={ministryId}
-        leader={ministry?.leader}
-        admin={ministry?.admin}
-        churchType="Ministry"
-        subLevel="HubCouncil"
-        editlink="/ministry/editministry"
-        history={ministry?.history.length !== 0 && ministry?.history}
-        breadcrumb={breadcrumb && breadcrumb}
-        buttons={ministry?.hubCouncils}
-      />
+      <>
+        <Container className="green">
+          {ministry?.stream && <Breadcrumb breadcrumb={churchCrumb} />}
+        </Container>
+        <DisplaySontaDetails
+          details={details}
+          church={ministry}
+          loading={ministryLoading}
+          name={ministry?.name}
+          leaderTitle="Ministry Leader"
+          editPermitted={permitAdmin('CreativeArts')}
+          churchId={ministryId}
+          leader={ministry?.leader}
+          admin={ministry?.admin}
+          churchType="Ministry"
+          subLevel="HubCouncil"
+          editlink="/ministry/editministry"
+          history={ministry?.history.length !== 0 && ministry?.history}
+          breadcrumb={breadcrumb && breadcrumb}
+          buttons={ministry?.hubCouncils}
+        />
+      </>
     </ApolloWrapper>
   )
 }

@@ -146,6 +146,13 @@ type CreativeArts {
     )
   serviceLogs: [ServiceLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
   ministries: [Ministry!]! @relationship(type: "HAS", direction: OUT)
+  streams: [Stream!]!
+    @cypher(
+      statement: """
+      MATCH (this)<-[:HAS_MINISTRY]-(:Campus)-[:HAS]->(stream:Stream)
+      RETURN stream
+      """
+    )
 }
 
 type Ministry {

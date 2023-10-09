@@ -10,6 +10,7 @@ import AllChurchesSummary from 'components/AllChurchesSummary'
 import DisplayChurchList from 'components/DisplayChurchList'
 import NoDataComponent from 'pages/arrivals/CompNoData'
 import { GET_MINISTRY_HUBCOUNCILS } from 'queries/ListQueries'
+import { HubCouncil, Ministry } from 'global-types'
 
 const DisplayAllHubCouncils = () => {
   const { clickCard, ministryId } = useContext(ChurchContext)
@@ -18,7 +19,14 @@ const DisplayAllHubCouncils = () => {
     variables: { id: ministryId },
   })
 
-  const ministry = data?.ministries[0]
+  const ministry: Ministry = data?.ministries[0]
+  const hubCouncils: HubCouncil[] = []
+
+  ministry?.councils.map((council) =>
+    council?.hubCouncilsFromMinistry?.map((hubCouncil) =>
+      hubCouncils.push(hubCouncil)
+    )
+  )
 
   return (
     <ApolloWrapper data={data} loading={loading} error={error}>
@@ -67,10 +75,11 @@ const DisplayAllHubCouncils = () => {
         </Row>
 
         <AllChurchesSummary
-          church={ministry?.hubCouncils}
+          church={{ ...ministry, lowerChurch: hubCouncils }}
           memberCount={ministry?.memberCount}
           numberOfChurchesBelow={ministry?.councils.reduce(
-            (acc: any, council: any) => acc + council.hubCouncils.length,
+            (acc: any, council: any) =>
+              acc + council.hubCouncilsFromMinistry.length,
             0
           )}
           churchType="HubCouncil"
@@ -82,15 +91,15 @@ const DisplayAllHubCouncils = () => {
             <>
               <Container>
                 <p className="mb-0 fw-bold fs-5">
-                  {council.name} Council: {council.hubCouncils.length}{' '}
-                  HubCouncils
+                  {council.name} Council:{' '}
+                  {council.hubCouncilsFromMinistry.length} HubCouncils
                 </p>
-                {council.hubCouncils.length === 0 && (
+                {council.hubCouncilsFromMinistry.length === 0 && (
                   <NoDataComponent text="This Council has no hubcouncils" />
                 )}
               </Container>
               <DisplayChurchList
-                data={council.hubCouncils}
+                data={council.hubCouncilsFromMinistry}
                 churchType="Ministry"
               />
             </>

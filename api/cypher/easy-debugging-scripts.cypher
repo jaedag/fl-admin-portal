@@ -25,7 +25,7 @@ RETURN member.name, member.imclChecked;
 
 // If a fellowship service is Blocking 
 
-MATCH (fellowship:Fellowship {bankingCode: 7035 })-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph {date: date("2023-08-27")})
+MATCH (fellowship:Fellowship {bankingCode: 7323 })-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph {date: date("2023-08-27")})
 
 MATCH (fellowship)<-[:BELONGS_TO]-(members:Member)
 MERGE (record)<-[:PRESENT_AT_SERVICE]-(members)
@@ -35,7 +35,7 @@ RETURN fellowship.name, record.attendance, COUNT(members);
 
 // If Sunday Bussing is blocking
 
-MATCH (fellowship:Fellowship {bankingCode: 6982 })<-[:HAS]-(bacenta:Bacenta)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(record:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph {date: date("2023-09-24")})
+MATCH (fellowship:Fellowship {bankingCode: 7323 })<-[:HAS]-(bacenta:Bacenta)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(record:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph {date: date("2023-09-30")})
 
 MATCH (fellowship)<-[:BELONGS_TO]-(members:Member)
 MERGE (record)<-[:PRESENT_AT_SERVICE]-(members)
@@ -53,49 +53,3 @@ MATCH (fellowship:Fellowship {bankingCode: 7517 })<-[:HAS]-(bacenta:Bacenta)-[:H
 OPTIONAL MATCH (record)<-[:PRESENT_AT_SERVICE|ABSENT_FROM_SERVICE]-(member:Member)-[:BELONGS_TO]->(fellowship)
 RETURN fellowship.name, COUNT(member) > 0 AS filled;
 
-// If Sunday Bussing is blocking
-MATCH (stream:Stream {name: "Anagkazo Encounter"})-[:HAS*4]->(fellowship:Fellowship)
-MATCH (fellowship)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph {date: date("2023-09-14")})
-MATCH (fellowship)<-[:BELONGS_TO]-(members:Member)
-MERGE (record)<-[:PRESENT_AT_SERVICE]-(members)
-MERGE (record)<-[:ABSENT_FROM_SERVICE]-(members)
-SET record.markedAttendance = true
-RETURN fellowship.name, record.attendance, COUNT(members);
-
-
-MATCH (record:ServiceRecord)-[r:SERVICE_HELD_ON]->(date:TimeGraph)
-WHERE date.date.week = date().week
-DETACH DELETE record
-RETURN date().week
-
-
-
-MATCH (council:Council {name: "Acts"})
-SET council.bussingSocietyBalance = 5330.34 + 2500
-RETURN council.name, council.bussingSocietyBalance
-
-MATCH (stream:Stream) WHERE stream.bankAccount = 'kumasi_account'
-set stream.bankAccount = 'oa_kumasi'
-RETURN stream.name, stream.bankAccount
-
-
-
-MATCH (ministry:Ministry)
-WHERE NOT EXISTS {
-   MATCH (ministry)<-[:HAS]-(creativeArts:CreativeArts)
-}
-DETACH DELETE ministry
-
-
-   MATCH (this {email: "jaedagy@gmail.com"})-[:LEADS|HAS|HAS_MINISTRY|IS_ADMIN_FOR*1..5]->(ministry:Ministry)
-  MATCH (ministry:Ministry)<-[:HAS]-(creativeArts:CreativeArts) 
-   RETURN DISTINCT ministry.name , labels(ministry)
-
-
-   MATCH (church:Basonta) WHERE NOT toLower(church.name) CONTAINS "test"
-   RETURN church.name;
-
-      MATCH (church:Basonta) WHERE NOT toLower(church.name) CONTAINS "test"
-   DETACH DELETE church;
-
-  

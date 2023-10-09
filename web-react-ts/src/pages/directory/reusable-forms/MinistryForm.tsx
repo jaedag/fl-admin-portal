@@ -1,7 +1,7 @@
-import { useMutation } from '@apollo/client'
+import { useMutation, useQuery } from '@apollo/client'
 import { Form, Formik, FormikHelpers } from 'formik'
 import * as Yup from 'yup'
-import { throwToSentry } from 'global-utils'
+import { makeSelectOptions, throwToSentry } from 'global-utils'
 import { useContext, useState } from 'react'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { MAKE_MINISTRY_INACTIVE } from 'pages/directory/update/CloseChurchMutations'
@@ -25,6 +25,9 @@ import HeadingSecondary from 'components/HeadingSecondary'
 import SearchHubCouncil from 'components/formik/SearchHubCouncil'
 import { MOVE_HUBCOUNCIL_TO_MINISTRY } from '../update/UpdateMutations'
 import NoDataComponent from 'pages/arrivals/CompNoData'
+import Select from 'components/formik/Select'
+import { GET_CREATIVEARTS_STREAMS } from './SontaListQueries'
+import ApolloWrapper from 'components/base-component/ApolloWrapper'
 
 export interface MinistryFormValues extends FormikInitialValues {
   name: string
@@ -50,12 +53,17 @@ const MinistryForm = ({
   title,
   newMinistry,
 }: MinistryFormProps) => {
-  const { clickCard, ministryId } = useContext(ChurchContext)
+  const { clickCard, creativeArtsId, ministryId } = useContext(ChurchContext)
   const [hubCouncilModal, setHubCouncilModal] = useState(false)
   const [closeDown, setCloseDown] = useState(false)
   const navigate = useNavigate()
 
   const [buttonLoading, setButtonLoading] = useState(false)
+  const { data, loading, error } = useQuery(GET_CREATIVEARTS_STREAMS, {
+    variables: {
+      creativeArtsId,
+    },
+  })
   const [CloseDownMinistry] = useMutation(MAKE_MINISTRY_INACTIVE, {
     refetchQueries: [
       {
@@ -79,9 +87,10 @@ const MinistryForm = ({
       'Please choose a leader from the drop down'
     ),
   })
+  const streamOptions = makeSelectOptions(data?.creativeArts[0].streams)
 
   return (
-    <>
+    <ApolloWrapper data={data} loading={loading} error={error}>
       <Container>
         <HeadingPrimary>{title}</HeadingPrimary>
         <HeadingSecondary>
@@ -113,6 +122,12 @@ const MinistryForm = ({
                   <Row className="row-cols-1 row-cols-md-2">
                     {/* <!-- Basic Info Div --> */}
                     <Col className="mb-2">
+                      <Select
+                        name="stream"
+                        label="Select a Stream"
+                        options={streamOptions}
+                        defaultOption="Select a Stream"
+                      />
                       <Input
                         name="name"
                         label={`Name of Ministry`}
@@ -261,7 +276,7 @@ const MinistryForm = ({
           )}
         </Formik>
       </Container>
-    </>
+    </ApolloWrapper>
   )
 }
 
