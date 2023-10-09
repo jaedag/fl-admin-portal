@@ -5,10 +5,10 @@ import { useContext } from 'react'
 import { Button, Col, Container, Row } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
 import * as Yup from 'yup'
-import { CREATE_INDOOR_OUTREACH_VENUE_MUTATION } from '../venuesMutations'
+import { CREATE_SENIOR_HIGH_SCHOOL_MUTATION } from '../venuesMutations'
 import { throwToSentry } from 'global-utils'
 import { ChurchContext } from 'contexts/ChurchContext'
-import { GET_INDOOR_VENUES } from '../venuesQueries'
+import { GET_SENIOR_HIGH_SCHOOLS } from '../venuesQueries'
 import Input from 'components/formik/Input'
 import SubmitButton from 'components/formik/SubmitButton'
 
@@ -17,14 +17,13 @@ export interface FormOptions {
   capacity: string
   longitude: string
   latitude: string
+  school: string
 }
 
-const AddIndoorVenue = () => {
-  const [CreateIndoorVenue] = useMutation(
-    CREATE_INDOOR_OUTREACH_VENUE_MUTATION,
-    { refetchQueries: [{ query: GET_INDOOR_VENUES }] }
-  )
-
+const AddSeniorHighSchool = () => {
+  const [CreateHighSchool] = useMutation(CREATE_SENIOR_HIGH_SCHOOL_MUTATION, {
+    refetchQueries: [{ query: GET_SENIOR_HIGH_SCHOOLS }],
+  })
   const { clickCard } = useContext(ChurchContext)
 
   const initialValues: FormOptions = {
@@ -32,9 +31,11 @@ const AddIndoorVenue = () => {
     capacity: '',
     latitude: '',
     longitude: '',
+    school: '',
   }
   const validationSchema = Yup.object({
-    venueName: Yup.string().required('Venue Name is required'),
+    venueName: Yup.string().required('Venue name is required'),
+    school: Yup.string().required('School name is required'),
     capacity: Yup.number()
       .required('Cannot submit without entering number of seats')
       .integer('Cannot enter decimals')
@@ -54,22 +55,23 @@ const AddIndoorVenue = () => {
   const navigate = useNavigate()
 
   const onSubmit = async (
-    { venueName, capacity, longitude, latitude }: FormOptions,
+    { venueName, capacity, longitude, latitude, school }: FormOptions,
     onSubmitProps: FormikHelpers<FormOptions>
   ) => {
     const { setSubmitting } = onSubmitProps
     setSubmitting(true)
     try {
-      const res = await CreateIndoorVenue({
+      const res = await CreateHighSchool({
         variables: {
           name: venueName,
           capacity: parseInt(capacity),
           longitude: parseFloat(longitude),
           latitude: parseFloat(latitude),
+          school: school,
         },
       })
-      clickCard(res.data.CreateOutdoorVenue)
-      navigate(`/maps/indoor-outreach-venues`)
+      clickCard(res.data.CreateHighSchool)
+      navigate(`/maps/senior-high-schools`)
     } catch (err) {
       setSubmitting(false)
       throwToSentry('', err)
@@ -81,7 +83,7 @@ const AddIndoorVenue = () => {
   return (
     <Container>
       <HeadingPrimary className="d-flex justify-content-center mb-5">
-        Add Indoor Outreach Venue
+        Add Senior High School
       </HeadingPrimary>
       <Formik
         initialValues={initialValues}
@@ -102,7 +104,7 @@ const AddIndoorVenue = () => {
             </Row>
             <Row>
               <Col className="mb-3">
-                <label className="form-text label">Capacity</label>
+                <small className="form-text label">Capacity</small>
                 <Input
                   name="capacity"
                   className="form-control"
@@ -111,8 +113,18 @@ const AddIndoorVenue = () => {
               </Col>
             </Row>
             <Row>
+              <Col className="mb-3">
+                <small className="form-text label">School</small>
+                <Input
+                  name="school"
+                  className="form-control"
+                  placeholder="Enter name of school"
+                />
+              </Col>
+            </Row>
+            <Row>
               <Col>
-                <label className="form-label">Location</label>
+                <small className="form-text label">Location</small>
                 <Input
                   name="latitude"
                   className="form-control"
@@ -136,7 +148,7 @@ const AddIndoorVenue = () => {
               variant="danger"
               className="w-100 fs-5"
               onClick={() => {
-                navigate(`/maps/indoor-outreach-venues`)
+                navigate(`/maps/senior-high-schools`)
               }}
             >
               Cancel
@@ -148,4 +160,4 @@ const AddIndoorVenue = () => {
   )
 }
 
-export default AddIndoorVenue
+export default AddSeniorHighSchool

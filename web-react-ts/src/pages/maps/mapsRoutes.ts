@@ -16,6 +16,18 @@ const OutdoorOutreachVenues = lazy(
 const AddOutdoorVenue = lazy(
   () => import('pages/maps/venues/outdoors/AddOutdoorOutreachVenue')
 )
+const AddHostelInformation = lazy(
+  () => import('pages/maps/venues/hostels/AddHostelInformation')
+)
+const HostelInformation = lazy(
+  () => import('pages/maps/venues/hostels/HostelInformation')
+)
+const AddSeniorHighSchool = lazy(
+  () => import('pages/maps/venues/high-schools/AddSeniorHighSchool')
+)
+const SeniorHighSchools = lazy(
+  () => import('pages/maps/venues/high-schools/SeniorHighSchools')
+)
 
 export const maps: LazyRouteTypes[] = [
   {
@@ -51,6 +63,30 @@ export const maps: LazyRouteTypes[] = [
   {
     path: '/maps/outdoor-outreach-venues/add',
     element: AddOutdoorVenue,
+    placeholder: false,
+    roles: permitLeaderAdminArrivals('Fellowship'),
+  },
+  {
+    path: '/maps/hostel-information/add',
+    element: AddHostelInformation,
+    placeholder: false,
+    roles: permitLeaderAdminArrivals('Fellowship'),
+  },
+  {
+    path: '/maps/hostel-information',
+    element: HostelInformation,
+    placeholder: false,
+    roles: permitLeaderAdminArrivals('Fellowship'),
+  },
+  {
+    path: '/maps/senior-high-schools',
+    element: SeniorHighSchools,
+    placeholder: false,
+    roles: permitLeaderAdminArrivals('Fellowship'),
+  },
+  {
+    path: '/maps/senior-high-schools/add',
+    element: AddSeniorHighSchool,
     placeholder: false,
     roles: permitLeaderAdminArrivals('Fellowship'),
   },

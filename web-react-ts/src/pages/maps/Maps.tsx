@@ -26,7 +26,7 @@ const Maps = () => {
     {
       id: 4,
       name: 'senior high school information',
-      path: `/maps/senior-high-school-information`,
+      path: `/maps/senior-high-schools`,
     },
   ]
 

@@ -5,7 +5,10 @@ import { useContext } from 'react'
 import { Button, Col, Container, Row } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
 import * as Yup from 'yup'
-import { CREATE_INDOOR_OUTREACH_VENUE_MUTATION } from '../venuesMutations'
+import {
+  CREATE_HOSTEL_INFORMATION_MUTATION,
+  CREATE_INDOOR_OUTREACH_VENUE_MUTATION,
+} from '../venuesMutations'
 import { throwToSentry } from 'global-utils'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { GET_INDOOR_VENUES } from '../venuesQueries'
@@ -17,13 +20,13 @@ export interface FormOptions {
   capacity: string
   longitude: string
   latitude: string
+  school: string
 }
 
-const AddIndoorVenue = () => {
-  const [CreateIndoorVenue] = useMutation(
-    CREATE_INDOOR_OUTREACH_VENUE_MUTATION,
-    { refetchQueries: [{ query: GET_INDOOR_VENUES }] }
-  )
+const AddHostelInformation = () => {
+  const [CreateHostel] = useMutation(CREATE_HOSTEL_INFORMATION_MUTATION, {
+    refetchQueries: [{ query: GET_INDOOR_VENUES }],
+  })
 
   const { clickCard } = useContext(ChurchContext)
 
@@ -32,9 +35,11 @@ const AddIndoorVenue = () => {
     capacity: '',
     latitude: '',
     longitude: '',
+    school: '',
   }
   const validationSchema = Yup.object({
     venueName: Yup.string().required('Venue Name is required'),
+    school: Yup.string().required('School name is required'),
     capacity: Yup.number()
       .required('Cannot submit without entering number of seats')
       .integer('Cannot enter decimals')
@@ -54,22 +59,23 @@ const AddIndoorVenue = () => {
   const navigate = useNavigate()
 
   const onSubmit = async (
-    { venueName, capacity, longitude, latitude }: FormOptions,
+    { venueName, capacity, longitude, latitude, school }: FormOptions,
     onSubmitProps: FormikHelpers<FormOptions>
   ) => {
     const { setSubmitting } = onSubmitProps
     setSubmitting(true)
     try {
-      const res = await CreateIndoorVenue({
+      const res = await CreateHostel({
         variables: {
           name: venueName,
           capacity: parseInt(capacity),
           longitude: parseFloat(longitude),
           latitude: parseFloat(latitude),
+          school: school,
         },
       })
-      clickCard(res.data.CreateOutdoorVenue)
-      navigate(`/maps/indoor-outreach-venues`)
+      clickCard(res.data.CreateHostel)
+      navigate(`/maps/hostel-information`)
     } catch (err) {
       setSubmitting(false)
       throwToSentry('', err)
@@ -81,7 +87,7 @@ const AddIndoorVenue = () => {
   return (
     <Container>
       <HeadingPrimary className="d-flex justify-content-center mb-5">
-        Add Indoor Outreach Venue
+        Add Hostel Information
       </HeadingPrimary>
       <Formik
         initialValues={initialValues}
@@ -111,6 +117,16 @@ const AddIndoorVenue = () => {
               </Col>
             </Row>
             <Row>
+              <Col className="mb-3">
+                <label className="form-text label">School</label>
+                <Input
+                  name="school"
+                  className="form-control"
+                  placeholder="Enter name of school"
+                />
+              </Col>
+            </Row>
+            <Row>
               <Col>
                 <label className="form-label">Location</label>
                 <Input
@@ -136,7 +152,7 @@ const AddIndoorVenue = () => {
               variant="danger"
               className="w-100 fs-5"
               onClick={() => {
-                navigate(`/maps/indoor-outreach-venues`)
+                navigate(`/maps/hostel-information`)
               }}
             >
               Cancel
@@ -148,4 +164,4 @@ const AddIndoorVenue = () => {
   )
 }
 
-export default AddIndoorVenue
+export default AddHostelInformation

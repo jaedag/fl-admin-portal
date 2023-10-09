@@ -5,23 +5,22 @@ import { Button, Container, Row, Card, ButtonGroup } from 'react-bootstrap'
 import { AiOutlinePlusCircle } from 'react-icons/ai'
 import { useNavigate } from 'react-router'
 import { useQuery } from '@apollo/client'
-import { GET_INDOOR_VENUES } from '../venuesQueries'
+import { GET_SENIOR_HIGH_SCHOOLS } from '../venuesQueries'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { useState, useMemo } from 'react'
 import Select from 'components/formik/Select'
 import { SORT_BY_SELECT_OPTIONS } from '../../map-utils'
-import Input from 'components/formik/Input'
 import '../Venues.css'
 
 interface FormOptions {
   mapSearch: string
 }
-interface VenueOptions {
+interface SchoolOptions {
   name: ''
   capacity: ''
 }
 
-const IndoorOutreachVenues = () => {
+const SeniorHighSchools = () => {
   const [offset, setOffset] = useState(0)
   const [searchQuery, setSearchQuery] = useState('')
   const [sortBy, setSortBy] = useState({})
@@ -30,7 +29,7 @@ const IndoorOutreachVenues = () => {
   const initialValues: FormOptions = {
     mapSearch: '',
   }
-  const { loading, error, data } = useQuery(GET_INDOOR_VENUES, {
+  const { loading, error, data } = useQuery(GET_SENIOR_HIGH_SCHOOLS, {
     variables: {
       options: {
         limit,
@@ -39,16 +38,16 @@ const IndoorOutreachVenues = () => {
       },
     },
   })
-  const venues = useMemo(() => data?.indoorVenues, [data, offset])
+  const schools = useMemo(() => data?.highSchools, [data, offset])
 
-  const filteredVenues = useMemo(() => {
+  const filteredSchools = useMemo(() => {
     if (!searchQuery) {
-      return venues
+      return schools
     }
-    return venues.filter((venue: VenueOptions) =>
+    return schools.filter((venue: SchoolOptions) =>
       venue.name.toLowerCase().includes(searchQuery.toLowerCase())
     )
-  }, [venues, searchQuery])
+  }, [schools, searchQuery])
 
   const HandleSortBy = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value
@@ -74,7 +73,7 @@ const IndoorOutreachVenues = () => {
   return (
     <Container>
       <HeadingPrimary className="d-flex justify-content-center mb-5">
-        Indoor Outreach Venues
+        Senior High Schools
       </HeadingPrimary>
       <Formik initialValues={initialValues} onSubmit={handleSubmit}>
         {({ values }) => (
@@ -104,7 +103,7 @@ const IndoorOutreachVenues = () => {
         variant="primary"
         className="p-2 d-flex justify-content-center align-items-center text-center gap-2 w-100"
         onClick={() => {
-          navigate(`/maps/indoor-outreach-venues/add`)
+          navigate(`/maps/senior-high-schools/add`)
         }}
       >
         <AiOutlinePlusCircle />
@@ -113,15 +112,15 @@ const IndoorOutreachVenues = () => {
       <hr />
       <ApolloWrapper loading={loading} error={error} data={data}>
         <div>
-          {filteredVenues?.map((venue: VenueOptions, index: number) => (
+          {filteredSchools?.map((school: SchoolOptions, index: number) => (
             <Card className="mb-2" key={index}>
               <Card.Body className="venue-font">
                 <div className="mb-1">
-                  <span>{venue?.name}</span>
+                  <span>{school?.name}</span>
                 </div>
                 <div className="mb-1">
                   <FiUsers color="grey" className="fs-6 me-2" />
-                  <span>{venue?.capacity}</span>
+                  <span>{school?.capacity}</span>
                 </div>
               </Card.Body>
             </Card>
@@ -140,7 +139,7 @@ const IndoorOutreachVenues = () => {
         <Button
           className="px-4"
           variant="primary"
-          disabled={!(venues && venues.length >= limit)}
+          disabled={!(schools && schools.length >= limit)}
           onClick={() => setOffset((prev) => prev + 1)}
         >
           Next
@@ -150,4 +149,4 @@ const IndoorOutreachVenues = () => {
   )
 }
 
-export default IndoorOutreachVenues
+export default SeniorHighSchools

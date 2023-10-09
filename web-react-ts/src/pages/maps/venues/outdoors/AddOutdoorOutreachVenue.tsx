@@ -5,11 +5,12 @@ import { useContext } from 'react'
 import { Button, Col, Container, Row } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
 import * as Yup from 'yup'
-import { CREATE_OUTDOOR_OUTREACH_VENUE_MUTATION } from '../../Mutations'
+import { CREATE_OUTDOOR_OUTREACH_VENUE_MUTATION } from '../venuesMutations'
 import { throwToSentry } from 'global-utils'
 import { ChurchContext } from 'contexts/ChurchContext'
-import { GET_OUTDOOR_VENUES } from '../../Queries'
+import { GET_OUTDOOR_VENUES } from '../venuesQueries'
 import Input from 'components/formik/Input'
+import SubmitButton from 'components/formik/SubmitButton'
 
 export interface FormOptions {
   venueName: string
@@ -127,9 +128,9 @@ const AddIndoorVenue = () => {
                 />
               </Col>
             </Row>
-            <Button type="submit" variant="success" className="w-100 mb-2 fs-5">
-              Save
-            </Button>
+            <SubmitButton formik={formik} className="w-100 mb-2 fs-5">
+              <span>Save</span>
+            </SubmitButton>
             <Button
               variant="danger"
               className="w-100 fs-5"
