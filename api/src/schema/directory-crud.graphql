@@ -636,14 +636,26 @@ extend type Mutation {
       rules: [
         {
           roles: [
+            "adminDenomination"
             "adminOversight"
             "adminCampus"
             "adminStream"
             "adminCouncil"
             "adminConstituency"
-            "leaderFellowship"
-            "leaderBacenta"
+            "leaderDenomination"
+            "leaderOversight"
+            "leaderCampus"
+            "leaderStream"
+            "leaderCouncil"
             "leaderConstituency"
+            "leaderBacenta"
+            "leaderFellowship"
+            "leaderCreativeArts"
+            "leaderMinistry"
+            "leaderHubCouncil"
+            "leaderHub"
+            "adminCreativeArts"
+            "adminMinistry"
           ]
         }
       ]

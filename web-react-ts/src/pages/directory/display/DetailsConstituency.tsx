@@ -50,7 +50,7 @@ const DetailsConstituency = () => {
         details={details}
         loading={loading}
         name={data?.constituencies[0]?.name}
-        leaderTitle={'Constituency Overseer'}
+        leaderTitle={'Constituency Leader'}
         leader={data?.constituencies[0]?.leader}
         churchId={constituencyId}
         admin={data?.constituencies[0]?.admin}

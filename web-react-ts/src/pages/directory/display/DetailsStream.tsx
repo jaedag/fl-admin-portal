@@ -88,7 +88,7 @@ const DetailsStream = () => {
         name={stream?.name}
         church={stream}
         subChurch="Council"
-        leaderTitle={'Stream Overseer'}
+        leaderTitle={'Stream Leader'}
         leader={stream?.leader}
         admin={stream?.admin}
         churchId={streamId}

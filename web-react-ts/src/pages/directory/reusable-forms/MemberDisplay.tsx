@@ -65,6 +65,7 @@ const MemberDisplay = ({ memberId }: { memberId: string }) => {
         roles={[
           ...permitSheepSeeker(),
           ...permitAdmin('Constituency'),
+          ...permitAdmin('Ministry'),
           ...permitLeader('Fellowship'),
         ]}
       >

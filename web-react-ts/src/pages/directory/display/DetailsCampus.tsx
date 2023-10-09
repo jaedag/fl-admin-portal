@@ -94,7 +94,7 @@ const DetailsCampus = () => {
     <ApolloWrapper loading={loading} error={error} data={data} placeholder>
       <DisplayChurchDetails
         name={gathering?.name}
-        leaderTitle={'Lead Pastor'}
+        leaderTitle="Campus Leader"
         church={gathering}
         churchId={campusId}
         leader={gathering?.leader}

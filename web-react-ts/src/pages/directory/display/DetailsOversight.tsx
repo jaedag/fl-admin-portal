@@ -68,7 +68,7 @@ const DetailsOversight = () => {
     <ApolloWrapper loading={loading} error={error} data={data} placeholder>
       <DisplayChurchDetails
         name={oversight?.name}
-        leaderTitle="Lead Pastor"
+        leaderTitle="Oversight Leader"
         churchId={oversightId}
         leader={oversight?.leader}
         admin={oversight?.admin}

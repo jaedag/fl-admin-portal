@@ -88,29 +88,27 @@ function CheckboxWithQuery(props: CheckBoxWithQueryProps) {
         {({ field }: any) => {
           return options?.map((option, index) => {
             return (
-              <>
-                <button
-                  key={index}
-                  type="button"
-                  className={`filter-chips ${theme} ${
-                    field.value.includes(option.key) && 'active'
-                  }`}
-                >
-                  <div key={option.key} className="ml-2">
-                    <input
-                      className="d-none"
-                      type="checkbox"
-                      id={option.value}
-                      {...field}
-                      value={modifier === 'filter' ? option.key : option.value}
-                      checked={field.value.includes(option.key)}
-                    />
-                    <label className="pl-4" htmlFor={option.value}>
-                      {option.key}
-                    </label>
-                  </div>
-                </button>
-              </>
+              <button
+                key={index}
+                type="button"
+                className={`filter-chips ${theme} ${
+                  field.value.includes(option.key) && 'active'
+                }`}
+              >
+                <div key={option.key} className="ml-2">
+                  <input
+                    className="d-none"
+                    type="checkbox"
+                    id={option.value}
+                    {...field}
+                    value={modifier === 'filter' ? option.key : option.value}
+                    checked={field.value.includes(option.key)}
+                  />
+                  <label className="pl-4" htmlFor={option.value}>
+                    {option.key}
+                  </label>
+                </div>
+              </button>
             )
           })
         }}

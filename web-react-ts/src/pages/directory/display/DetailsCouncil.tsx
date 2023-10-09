@@ -72,7 +72,7 @@ const DetailsCouncil = () => {
       <DisplayChurchDetails
         loading={loading}
         name={council?.name}
-        leaderTitle={'Council Overseer'}
+        leaderTitle={'Council Leader'}
         churchId={councilId}
         leader={council?.leader}
         admin={council?.admin}

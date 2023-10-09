@@ -607,7 +607,7 @@
 [data-bs-theme='light'] .btn-outline-success {
   --bs-btn-color: var(--chakra-colors-green-500);
   --bs-btn-border-color: var(--chakra-colors-green-500);
-  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-color: var(--chakra-colors-black);
   --bs-btn-hover-bg: var(--chakra-colors-green-500);
   --bs-btn-hover-border-color: var(--chakra-colors-green-500);
   --bs-btn-focus-shadow-rgb: 25, 135, 84;
@@ -624,7 +624,7 @@
 [data-bs-theme='dark'] .btn-outline-success {
   --bs-btn-color: var(--chakra-colors-green-200);
   --bs-btn-border-color: var(--chakra-colors-green-200);
-  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-color: var(--chakra-colors-black);
   --bs-btn-hover-bg: var(--chakra-colors-green-200);
   --bs-btn-hover-border-color: var(--chakra-colors-green-200);
   --bs-btn-focus-shadow-rgb: 25, 135, 84;

@@ -2,7 +2,7 @@
 // If someone says he has filled IMCL but is still getting an error,
 //it means he filled it out of order and this must be run
 
-MATCH (record:ServiceRecord {id: "38ec9b84-1293-4c53-b497-f83f44e6d61c"})
+MATCH (record:ServiceRecord {id: "586c09a6-b329-4302-837e-07d57aff76bf"})
 
 OPTIONAL MATCH (record)<-[:ABSENT_FROM_SERVICE]-(absent:Member)
    WHERE absent.imclChecked = false
