@@ -50,7 +50,8 @@
   "lint-staged": {
     "*.{ts,tsx}": [
       "prettier --write",
-      "eslint --cache --fix --max-warnings=0"
+      "eslint --cache --fix --max-warnings=0",
+      "tsc --noEmit"
     ]
   },
   "eslintIgnore": [
