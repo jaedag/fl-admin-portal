@@ -1,3 +1,13 @@
+#### 7.10.13 (2023-10-09)
+
+##### Bug Fixes
+
+*  fix bug preventing changing of hub leader ([2bb64d89](https://github.com/firstlovecenter/fl-pastoral-care/commit/2bb64d899f29d48d25444142ec05b7ac8910f6d7))
+*  fix little itches with creating ministries and hubcouncils ([c973e9fe](https://github.com/firstlovecenter/fl-pastoral-care/commit/c973e9fe8593c9c0a78d93f93f0e248150284b4b))
+*  implement directory lock for  creating bacentas ([d6ae1a64](https://github.com/firstlovecenter/fl-pastoral-care/commit/d6ae1a6456b27578fb362ca9fd678190caa0e6a7))
+*  improve permissions ministry admin ([8e9cb31c](https://github.com/firstlovecenter/fl-pastoral-care/commit/8e9cb31cbddb08d629817238ff360c4f1c4c97bd))
+*  change view all history button to outline success ([ed3de8e0](https://github.com/firstlovecenter/fl-pastoral-care/commit/ed3de8e0043ac5f491aa37223a5560204cb705e9))
+
 #### 7.10.12 (2023-10-08)
 
 ##### Bug Fixes
