@@ -454,7 +454,9 @@ extend type Mutation {
     )
 
   CreateBacenta(name: String!, constituencyId: ID!, leaderId: ID!): Bacenta  #Return constituency and drill down to get bacenta info
-    @auth(rules: [{ roles: ["adminCampus", "arrivalsAdminCampus"] }])
+    @auth(
+      rules: [{ roles: ["adminStream", "adminCampus", "arrivalsAdminCampus"] }]
+    )
     @cypher(
       statement: """
       CREATE (bacenta:Bacenta:Graduated:Active {name:$name})

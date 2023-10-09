@@ -99,14 +99,3 @@ DETACH DELETE ministry
    DETACH DELETE church;
 
   
-  // get first letter in each word in a string  
-
-
-MATCH (stream:Campus)-[r:HAS_MINISTRY]->()
-DELETE r
-
-
-MATCH (stream:Council)
-MATCH (ministry:HubCouncil) 
-MERGE (stream)-[:HAS_MINISTRY]->(ministry)
-RETURN stream.name, ministry.name;

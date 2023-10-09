@@ -58,7 +58,7 @@ const DisplayAllICs = () => {
               </Link>
             ) : null}
           </Col>
-          <RoleView roles={permitArrivals('Stream')}>
+          <RoleView roles={permitArrivals('Stream')} directoryLock>
             <Col className="col-auto">
               <Link
                 to="/bacenta/addbacenta"
