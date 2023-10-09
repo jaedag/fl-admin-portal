@@ -84,7 +84,13 @@ export const matchChurchQuery = `
   WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:Campus OR church:Oversight OR church:Denomination
   OR church:ClosedFellowship OR church:ClosedBacenta 
   OR church:CreativeArts OR church:Ministry OR church:HubCouncil OR church:Hub
-  RETURN church.id AS id, church.name AS name, church.firstName AS firstName, church.lastName AS lastName, labels(church) AS type
+
+  WITH church, labels(church) as labels 
+  UNWIND labels AS label 
+  WITH church, label WHERE label IN ['Fellowship','Bacenta', 'Constituency', 'Council', 
+  'Stream', 'Campus', 'Oversight', 'Denomination', 'ClosedFellowship', 'ClosedBacenta', 'CreativeArts', 'Ministry', 'HubCouncil', 'Hub']
+
+  RETURN church.id AS id, church.name AS name, church.firstName AS firstName, church.lastName AS lastName, label AS type
   `
 
 export const setMemberAuthId = `

@@ -93,7 +93,7 @@ export const MakeServant = async (
     })
   )
   const church = rearrangeCypherObject(churchRes)
-  const churchNameInEmail = `${church.name} ${church.type[0]}`
+  const churchNameInEmail = `${church.name} ${church.type}`
 
   const servantRes = await session.executeRead((tx) =>
     tx.run(memberQuery, {

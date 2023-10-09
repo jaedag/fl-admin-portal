@@ -133,18 +133,18 @@ export const assignRoles = async (
 }
 
 export const churchInEmail = (church: {
-  type: ChurchLevelWithClosed[]
+  type: ChurchLevelWithClosed
   name: string
 }) => {
-  if (church.type[0] === 'ClosedFellowship') {
+  if (church.type === 'ClosedFellowship') {
     return `${church.name} Fellowship which has been closed`
   }
 
-  if (church.type[0] === 'ClosedBacenta') {
+  if (church.type === 'ClosedBacenta') {
     return `${church.name} Bacenta which has been closed`
   }
 
-  return `${church.name} ${church.type[0]}`
+  return `${church.name} ${church.type}`
 }
 export const servantInEmail = (servant: Member) => {
   return servant

@@ -108,3 +108,36 @@ export const UPDATE_HUBCOUNCIL_MUTATION = gql`
     }
   }
 `
+
+export const UPDATE_HUB_MUTATION = gql`
+  mutation UpdateHub($hubId: ID!, $name: String!) {
+    UpdateHubDetails(hubId: $hubId, name: $name) {
+      id
+      name
+
+      hubCouncil {
+        id
+        name
+      }
+
+      leader {
+        id
+        firstName
+        lastName
+      }
+      history(limit: 5) {
+        id
+        timeStamp
+        createdAt {
+          date
+        }
+        loggedBy {
+          id
+          firstName
+          lastName
+        }
+        historyRecord
+      }
+    }
+  }
+`

@@ -771,7 +771,7 @@ extend type Mutation {
       RETURN hub
       """
     )
-  UpdateHubDetails(hubId: ID!, ministryId: ID!, name: String!): Hub!
+  UpdateHubDetails(hubId: ID!, name: String!): Hub!
     @auth(
       rules: [
         {

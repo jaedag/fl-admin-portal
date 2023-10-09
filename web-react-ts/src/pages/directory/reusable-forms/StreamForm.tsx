@@ -32,6 +32,7 @@ import NoDataComponent from 'pages/arrivals/CompNoData'
 import { DISPLAY_STREAM, DISPLAY_CAMPUS } from '../display/ReadQueries'
 import Select from 'components/formik/Select'
 import { MOVE_COUNCIL_TO_STREAM } from '../update/UpdateMutations'
+import BtnSubmitText from 'components/formik/BtnSubmitText'
 
 export interface StreamFormValues extends FormikInitialValues {
   campus?: Campus
@@ -218,7 +219,7 @@ const StreamForm = ({
                     }
                   }}
                 >
-                  {buttonLoading ? `Submitting...` : `Yes, I'm sure`}
+                  <BtnSubmitText loading={buttonLoading} />
                 </Button>
                 <Button
                   variant="primary"
@@ -264,7 +265,7 @@ const StreamForm = ({
                     }
                   }}
                 >
-                  {buttonLoading ? `Submitting...` : `Yes, I'm sure`}
+                  <BtnSubmitText loading={buttonLoading} />
                 </Button>
                 <Button variant="primary" onClick={() => setCloseDown(false)}>
                   No, take me back

@@ -35,6 +35,7 @@ import SearchMember from 'components/formik/SearchMember'
 import Select from 'components/formik/Select'
 import { FormikInitialValues } from 'components/formik/formik-types'
 import { Bacenta } from 'global-types'
+import BtnSubmitText from 'components/formik/BtnSubmitText'
 
 export interface FellowshipFormValues extends FormikInitialValues {
   bacenta?: Bacenta
@@ -306,7 +307,7 @@ const FellowshipForm = (props: FellowshipFormProps) => {
                     }
                   }}
                 >
-                  {buttonLoading ? `Submitting...` : `Yes, I'm sure`}
+                  <BtnSubmitText loading={buttonLoading} />
                 </Button>
               </Modal.Footer>
             </Modal>

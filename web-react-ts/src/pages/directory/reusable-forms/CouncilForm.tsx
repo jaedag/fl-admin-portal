@@ -28,6 +28,7 @@ import { MOVE_CONSTITUENCY_TO_COUNCIL } from '../update/UpdateMutations'
 import NoDataComponent from 'pages/arrivals/CompNoData'
 import { DISPLAY_COUNCIL, DISPLAY_STREAM } from '../display/ReadQueries'
 import { Stream } from '@jaedag/admin-portal-types'
+import BtnSubmitText from 'components/formik/BtnSubmitText'
 
 export interface CouncilFormValues extends FormikInitialValues {
   stream?: Stream
@@ -197,7 +198,7 @@ const CouncilForm = ({
                     }
                   }}
                 >
-                  {buttonLoading ? `Submitting...` : `Yes, I'm sure`}
+                  <BtnSubmitText loading={buttonLoading} />
                 </Button>
                 <Button
                   variant="primary"
@@ -243,7 +244,7 @@ const CouncilForm = ({
                     }
                   }}
                 >
-                  {buttonLoading ? `Submitting...` : `Yes, I'm sure`}
+                  <BtnSubmitText loading={buttonLoading} />
                 </Button>
                 <Button variant="primary" onClick={() => setCloseDown(false)}>
                   No, take me back

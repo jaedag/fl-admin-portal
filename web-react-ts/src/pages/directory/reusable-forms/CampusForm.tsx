@@ -28,6 +28,7 @@ import { MOVE_STREAM_TO_CAMPUS } from '../update/UpdateMutations'
 import NoDataComponent from 'pages/arrivals/CompNoData'
 import { DISPLAY_CAMPUS, DISPLAY_OVERSIGHT } from '../display/ReadQueries'
 import Select from 'components/formik/Select'
+import BtnSubmitText from 'components/formik/BtnSubmitText'
 
 export interface CampusFormValues extends FormikInitialValues {
   oversight?: Oversight
@@ -211,7 +212,7 @@ const CampusForm = ({
                     }
                   }}
                 >
-                  {buttonLoading ? `Submitting...` : `Yes, I'm sure`}
+                  <BtnSubmitText loading={buttonLoading} />
                 </Button>
                 <Button variant="primary" onClick={() => setStreamModal(false)}>
                   Close
@@ -254,7 +255,7 @@ const CampusForm = ({
                     }
                   }}
                 >
-                  {buttonLoading ? `Submitting...` : `Yes, I'm sure`}
+                  <BtnSubmitText loading={buttonLoading} />
                 </Button>
                 <Button variant="primary" onClick={() => setCloseDown(false)}>
                   No, take me back

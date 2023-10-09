@@ -31,6 +31,7 @@ import SearchMember from 'components/formik/SearchMember'
 import NoDataComponent from 'pages/arrivals/CompNoData'
 import SearchFellowship from 'components/formik/SearchFellowship'
 import { MOVE_FELLOWSHIP_TO_BACENTA } from '../update/UpdateMutations'
+import BtnSubmitText from 'components/formik/BtnSubmitText'
 
 export interface BacentaFormValues extends FormikInitialValues {
   constituency?: Constituency
@@ -221,7 +222,7 @@ const BacentaForm = ({
                     }
                   }}
                 >
-                  {buttonLoading ? `Submitting...` : `Yes, I'm sure`}
+                  <BtnSubmitText loading={buttonLoading} />
                 </Button>
                 <Button
                   variant="primary"
@@ -267,7 +268,7 @@ const BacentaForm = ({
                     }
                   }}
                 >
-                  {buttonLoading ? `Submitting...` : `Yes, I'm sure`}
+                  <BtnSubmitText loading={buttonLoading} />
                 </Button>
                 <Button variant="primary" onClick={() => setCloseDown(false)}>
                   No, take me back

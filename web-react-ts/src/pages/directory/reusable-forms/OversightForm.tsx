@@ -27,6 +27,7 @@ import { Campus, Denomination } from 'global-types'
 import { MOVE_CAMPUS_TO_OVERSIGHT } from '../update/UpdateMutations'
 import NoDataComponent from 'pages/arrivals/CompNoData'
 import { DISPLAY_OVERSIGHT, DISPLAY_DENOMINATION } from '../display/ReadQueries'
+import BtnSubmitText from 'components/formik/BtnSubmitText'
 
 export interface OversightFormValues extends FormikInitialValues {
   denomination?: Denomination
@@ -192,7 +193,7 @@ const OversightForm = ({
                     }
                   }}
                 >
-                  {buttonLoading ? `Submitting...` : `Yes, I'm sure`}
+                  <BtnSubmitText loading={buttonLoading} />
                 </Button>
                 <Button variant="primary" onClick={() => setCampusModal(false)}>
                   Close
@@ -235,7 +236,7 @@ const OversightForm = ({
                     }
                   }}
                 >
-                  {buttonLoading ? `Submitting...` : `Yes, I'm sure`}
+                  <BtnSubmitText loading={buttonLoading} />
                 </Button>
                 <Button variant="primary" onClick={() => setCloseDown(false)}>
                   No, take me back

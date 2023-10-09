@@ -25,6 +25,7 @@ import HeadingSecondary from 'components/HeadingSecondary'
 import { MOVE_HUBFELLOWSHIP_TO_HUB } from '../update/UpdateMutations'
 import NoDataComponent from 'pages/arrivals/CompNoData'
 import SearchHubFellowship from 'components/formik/SearchHubFellowship'
+import BtnSubmitText from 'components/formik/BtnSubmitText'
 
 export interface HubFormValues extends FormikInitialValues {
   name: string
@@ -198,7 +199,7 @@ const HubForm = ({ initialValues, onSubmit, title, newHub }: HubFormProps) => {
                       }
                     }}
                   >
-                    {buttonLoading ? `Submitting...` : `Yes, I'm sure`}
+                    <BtnSubmitText loading={buttonLoading} />
                   </Button>
                   <Button
                     variant="primary"
@@ -248,7 +249,7 @@ const HubForm = ({ initialValues, onSubmit, title, newHub }: HubFormProps) => {
                       }
                     }}
                   >
-                    {buttonLoading ? `Submitting...` : `Yes, I'm sure`}
+                    <BtnSubmitText loading={buttonLoading} />
                   </Button>
                   <Button variant="primary" onClick={() => setCloseDown(false)}>
                     No, take me back

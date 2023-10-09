@@ -25,6 +25,7 @@ import HeadingSecondary from 'components/HeadingSecondary'
 import SearchMinistry from 'components/formik/SearchMinistry'
 import { MOVE_MINISTRY_TO_CREATIVEARTS } from '../update/UpdateMutations'
 import NoDataComponent from 'pages/arrivals/CompNoData'
+import BtnSubmitText from 'components/formik/BtnSubmitText'
 
 export interface CreativeArtsFormValues extends FormikInitialValues {
   name: string
@@ -203,7 +204,7 @@ const CreativeArtsForm = ({
                       }
                     }}
                   >
-                    {buttonLoading ? `Submitting...` : `Yes, I'm sure`}
+                    <BtnSubmitText loading={buttonLoading} />
                   </Button>
                   <Button
                     variant="primary"
@@ -253,7 +254,7 @@ const CreativeArtsForm = ({
                       }
                     }}
                   >
-                    {buttonLoading ? `Submitting...` : `Yes, I'm sure`}
+                    <BtnSubmitText loading={buttonLoading} />
                   </Button>
                   <Button variant="primary" onClick={() => setCloseDown(false)}>
                     No, take me back

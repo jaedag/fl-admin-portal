@@ -28,6 +28,7 @@ import NoDataComponent from 'pages/arrivals/CompNoData'
 import Select from 'components/formik/Select'
 import { GET_MINISTRY_COUNCILS } from './SontaListQueries'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
+import BtnSubmitText from 'components/formik/BtnSubmitText'
 
 export interface HubCouncilFormValues extends FormikInitialValues {
   name: string
@@ -209,7 +210,7 @@ const HubCouncilForm = ({
                       }
                     }}
                   >
-                    {buttonLoading ? `Submitting...` : `Yes, I'm sure`}
+                    <BtnSubmitText loading={buttonLoading} />
                   </Button>
                   <Button variant="primary" onClick={() => setHubModal(false)}>
                     Close
@@ -250,13 +251,13 @@ const HubCouncilForm = ({
                       } catch (error) {
                         setButtonLoading(false)
                         throwToSentry(
-                          `There was an error closing down this hubCouncil`,
+                          `There was an error closing down this Hub Council`,
                           error
                         )
                       }
                     }}
                   >
-                    {buttonLoading ? `Submitting...` : `Yes, I'm sure`}
+                    <BtnSubmitText loading={buttonLoading} />
                   </Button>
                   <Button variant="primary" onClick={() => setCloseDown(false)}>
                     No, take me back

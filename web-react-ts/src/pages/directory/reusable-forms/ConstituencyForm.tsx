@@ -27,6 +27,7 @@ import { Bacenta, Council } from 'global-types'
 import { MOVE_BACENTA_TO_CONSTITUENCY } from '../update/UpdateMutations'
 import NoDataComponent from 'pages/arrivals/CompNoData'
 import { DISPLAY_CONSTITUENCY, DISPLAY_COUNCIL } from '../display/ReadQueries'
+import BtnSubmitText from 'components/formik/BtnSubmitText'
 
 export interface ConstituencyFormValues extends FormikInitialValues {
   council?: Council
@@ -195,7 +196,7 @@ const ConstituencyForm = ({
                     }
                   }}
                 >
-                  {buttonLoading ? `Submitting...` : `Yes, I'm sure`}
+                  <BtnSubmitText loading={buttonLoading} />
                 </Button>
                 <Button
                   variant="primary"
@@ -242,7 +243,7 @@ const ConstituencyForm = ({
                     }
                   }}
                 >
-                  {buttonLoading ? `Submitting...` : `Yes, I'm sure`}
+                  <BtnSubmitText loading={buttonLoading} />
                 </Button>
                 <Button variant="primary" onClick={() => setCloseDown(false)}>
                   No, take me back

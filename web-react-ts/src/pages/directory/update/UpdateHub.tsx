@@ -10,8 +10,8 @@ import HubForm, { HubFormValues } from '../reusable-forms/HubForm'
 import { SET_ACTIVE_HUB, SET_VACATION_HUB } from './StatusChanges'
 import { FormikHelpers } from 'formik'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
-import { UPDATE_HUBCOUNCIL_MUTATION } from './UpdateSontaMutations'
 import { GET_HUBCOUNCIL_HUBS } from 'queries/ListQueries'
+import { UPDATE_HUB_MUTATION } from './UpdateSontaMutations'
 
 const UpdateHub = () => {
   const { hubId } = useContext(ChurchContext)
@@ -38,7 +38,7 @@ const UpdateHub = () => {
   const [MakeHubLeader] = useMutation(MAKE_HUB_LEADER)
   const [SetHubOnVacation] = useMutation(SET_VACATION_HUB)
   const [SetHubActive] = useMutation(SET_ACTIVE_HUB)
-  const [UpdateHub] = useMutation(UPDATE_HUBCOUNCIL_MUTATION, {
+  const [UpdateHub] = useMutation(UPDATE_HUB_MUTATION, {
     refetchQueries: [
       {
         query: GET_HUBCOUNCIL_HUBS,

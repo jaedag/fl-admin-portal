@@ -28,6 +28,7 @@ import NoDataComponent from 'pages/arrivals/CompNoData'
 import Select from 'components/formik/Select'
 import { GET_CREATIVEARTS_STREAMS } from './SontaListQueries'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
+import BtnSubmitText from 'components/formik/BtnSubmitText'
 
 export interface MinistryFormValues extends FormikInitialValues {
   name: string
@@ -215,7 +216,7 @@ const MinistryForm = ({
                       }
                     }}
                   >
-                    {buttonLoading ? `Submitting...` : `Yes, I'm sure`}
+                    <BtnSubmitText loading={buttonLoading} />
                   </Button>
                   <Button
                     variant="primary"
@@ -265,7 +266,7 @@ const MinistryForm = ({
                       }
                     }}
                   >
-                    {buttonLoading ? `Submitting...` : `Yes, I'm sure`}
+                    <BtnSubmitText loading={buttonLoading} />
                   </Button>
                   <Button variant="primary" onClick={() => setCloseDown(false)}>
                     No, take me back
