@@ -14,6 +14,7 @@ import { FiUsers } from 'react-icons/fi'
 import '../Venues.css'
 
 interface FormOptions {
+  venueSearch: string
   sort: string
 }
 interface VenueOptions {

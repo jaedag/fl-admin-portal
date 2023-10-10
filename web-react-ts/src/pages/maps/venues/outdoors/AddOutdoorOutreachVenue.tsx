@@ -1,14 +1,14 @@
-import { useMutation } from '@apollo/client'
-import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
-import { Formik, FormikHelpers, Form } from 'formik'
 import { useContext } from 'react'
-import { Button, Col, Container, Row } from 'react-bootstrap'
-import { useNavigate } from 'react-router-dom'
-import * as Yup from 'yup'
-import { CREATE_OUTDOOR_OUTREACH_VENUE_MUTATION } from '../venuesMutations'
-import { throwToSentry } from 'global-utils'
 import { ChurchContext } from 'contexts/ChurchContext'
+import { useNavigate } from 'react-router-dom'
+import { useMutation } from '@apollo/client'
+import { CREATE_OUTDOOR_OUTREACH_VENUE_MUTATION } from '../venuesMutations'
 import { GET_OUTDOOR_VENUES } from '../venuesQueries'
+import { throwToSentry } from 'global-utils'
+import * as Yup from 'yup'
+import { Formik, FormikHelpers, Form } from 'formik'
+import { Button, Col, Container, Row } from 'react-bootstrap'
+import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import Input from 'components/formik/Input'
 import SubmitButton from 'components/formik/SubmitButton'
 
@@ -20,11 +20,12 @@ export interface FormOptions {
 }
 
 const AddIndoorVenue = () => {
+  const navigate = useNavigate()
+  const { clickCard } = useContext(ChurchContext)
   const [CreateOutdoorVenue] = useMutation(
     CREATE_OUTDOOR_OUTREACH_VENUE_MUTATION,
     { refetchQueries: [{ query: GET_OUTDOOR_VENUES }] }
   )
-  const { clickCard } = useContext(ChurchContext)
 
   const initialValues: FormOptions = {
     venueName: '',
@@ -50,13 +51,10 @@ const AddIndoorVenue = () => {
       .typeError('Please enter a valid longitude'),
   })
 
-  const navigate = useNavigate()
-
   const onSubmit = async (
     { venueName, capacity, longitude, latitude }: FormOptions,
-    onSubmitProps: FormikHelpers<FormOptions>
+    { setSubmitting }: FormikHelpers<FormOptions>
   ) => {
-    const { setSubmitting } = onSubmitProps
     setSubmitting(true)
     try {
       const res = await CreateOutdoorVenue({
@@ -82,6 +80,7 @@ const AddIndoorVenue = () => {
       <HeadingPrimary className="d-flex justify-content-center mb-5">
         Add Outdoor Outreach Venue
       </HeadingPrimary>
+
       <Formik
         initialValues={initialValues}
         onSubmit={onSubmit}
@@ -128,18 +127,20 @@ const AddIndoorVenue = () => {
                 />
               </Col>
             </Row>
-            <SubmitButton formik={formik} className="w-100 mb-2 fs-5">
-              <span>Save</span>
-            </SubmitButton>
-            <Button
-              variant="danger"
-              className="w-100 fs-5"
-              onClick={() => {
-                navigate(`/maps/outdoor-outreach-venues`)
-              }}
-            >
-              Cancel
-            </Button>
+            <div className="d-grid gap-2">
+              <SubmitButton formik={formik}>
+                <span>Save</span>
+              </SubmitButton>
+              <Button
+                variant="danger"
+                className="w-100 fs-5"
+                onClick={() => {
+                  navigate(`/maps/outdoor-outreach-venues`)
+                }}
+              >
+                Cancel
+              </Button>
+            </div>
           </Form>
         )}
       </Formik>

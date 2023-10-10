@@ -1,19 +1,21 @@
-import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
-import { Form, Formik, FormikHelpers } from 'formik'
-import { FiUsers } from 'react-icons/fi'
-import { Button, Container, Row, Card, ButtonGroup } from 'react-bootstrap'
-import { AiOutlinePlusCircle } from 'react-icons/ai'
+import { useState, useMemo, useEffect } from 'react'
 import { useNavigate } from 'react-router'
 import { useQuery } from '@apollo/client'
 import { GET_SENIOR_HIGH_SCHOOLS } from '../venuesQueries'
-import ApolloWrapper from 'components/base-component/ApolloWrapper'
-import { useState, useMemo } from 'react'
-import Select from 'components/formik/Select'
 import { SORT_BY_SELECT_OPTIONS } from '../../map-utils'
+import ApolloWrapper from 'components/base-component/ApolloWrapper'
+import { Form, Formik, FormikHelpers } from 'formik'
+import Select from 'components/formik/Select'
+import Input from 'components/formik/Input'
+import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
+import { Button, Container, Row, Card, ButtonGroup } from 'react-bootstrap'
+import { AiOutlinePlusCircle } from 'react-icons/ai'
+import { FiUsers } from 'react-icons/fi'
 import '../Venues.css'
 
 interface FormOptions {
-  mapSearch: string
+  schoolSearch: string
+  sort: string
 }
 interface SchoolOptions {
   name: ''
@@ -22,13 +24,17 @@ interface SchoolOptions {
 
 const SeniorHighSchools = () => {
   const [offset, setOffset] = useState(0)
-  const [searchQuery, setSearchQuery] = useState('')
   const [sortBy, setSortBy] = useState({})
+  const [selectedValue, setSelectedValue] = useState('')
+  const [searchQuery, setSearchQuery] = useState('')
   const navigate = useNavigate()
   const limit = 20
+
   const initialValues: FormOptions = {
-    mapSearch: '',
+    schoolSearch: '',
+    sort: '',
   }
+
   const { loading, error, data } = useQuery(GET_SENIOR_HIGH_SCHOOLS, {
     variables: {
       options: {
@@ -38,20 +44,14 @@ const SeniorHighSchools = () => {
       },
     },
   })
-  const schools = useMemo(() => data?.highSchools, [data, offset])
 
-  const filteredSchools = useMemo(() => {
-    if (!searchQuery) {
-      return schools
-    }
-    return schools.filter((venue: SchoolOptions) =>
-      venue.name.toLowerCase().includes(searchQuery.toLowerCase())
-    )
-  }, [schools, searchQuery])
+  const schools: SchoolOptions[] = useMemo(
+    () => data?.highSchools,
+    [data, offset]
+  )
 
-  const HandleSortBy = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value
-    switch (value) {
+  const sortSchools = (sort: string) => {
+    switch (sort) {
       case 'Name':
         setSortBy({ name: 'ASC' })
         break
@@ -64,41 +64,54 @@ const SeniorHighSchools = () => {
     }
   }
 
+  useEffect(() => {
+    selectedValue && sortSchools(selectedValue)
+  }, [selectedValue])
+
   const handleSubmit = (
     values: FormOptions,
     { setSubmitting }: FormikHelpers<FormOptions>
-  ) => {
-    setSubmitting(false)
-  }
+  ) => setSubmitting(false)
+
+  const filteredSchools = useMemo(() => {
+    if (!searchQuery) return schools
+    return schools.filter((venue: SchoolOptions) =>
+      venue.name.toLowerCase().includes(searchQuery.toLowerCase())
+    )
+  }, [schools, searchQuery])
   return (
     <Container>
       <HeadingPrimary className="d-flex justify-content-center mb-5">
         Senior High Schools
       </HeadingPrimary>
+
       <Formik initialValues={initialValues} onSubmit={handleSubmit}>
-        {({ values }) => (
-          <Form className="mb-2">
-            <Row>
-              <div className="col">
-                <input
-                  name="venueSearch"
-                  className="form-control"
-                  placeholder="Search..."
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                />
-              </div>
-              <div className="col-4 d-grid align-items-center gap-2">
-                <Select
-                  options={SORT_BY_SELECT_OPTIONS}
-                  name="sortBy"
-                  defaultOption="Sort by"
-                  onChange={HandleSortBy}
-                />
-              </div>
-            </Row>
-          </Form>
-        )}
+        {({ values }) => {
+          setSearchQuery(values?.schoolSearch)
+          setSelectedValue(values?.sort)
+          return (
+            <Form className="mb-2">
+              <Row>
+                <div className="col">
+                  <Input
+                    name="schoolSearch"
+                    className="form-control"
+                    placeholder="Search..."
+                  />
+                </div>
+                <div className="col-4 d-grid align-items-center gap-2">
+                  <Select
+                    options={SORT_BY_SELECT_OPTIONS}
+                    name="sort"
+                    defaultOption="Sort by"
+                  />
+                </div>
+              </Row>
+            </Form>
+          )
+        }}
       </Formik>
+
       <Button
         variant="primary"
         className="p-2 d-flex justify-content-center align-items-center text-center gap-2 w-100"
