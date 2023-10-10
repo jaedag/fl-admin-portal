@@ -1,89 +1,19 @@
 import { useLazyQuery } from '@apollo/client'
 import { MemberContext } from 'contexts/MemberContext'
 import { ErrorMessage } from 'formik'
-import {
-  DEBOUNCE_TIMER,
-  getFirstLetterInEveryWord,
-  isAuthorised,
-  throwToSentry,
-} from 'global-utils'
-import { permitMe } from 'permission-utils'
-import React, { useContext, useEffect, useState } from 'react'
+import { DEBOUNCE_TIMER, throwToSentry } from 'global-utils'
+import { useContext, useEffect, useState } from 'react'
 import { RoleBasedSearch } from './formik-types'
 import Autosuggest from 'react-autosuggest'
 import './react-autosuggest.css'
-import {
-  COUNCIL_MEMBER_SEARCH,
-  CAMPUS_MEMBER_SEARCH,
-  STREAM_MEMBER_SEARCH,
-  CONSTITUENCY_MEMBER_SEARCH,
-  BACENTA_MEMBER_SEARCH,
-  FELLOWSHIP_MEMBER_SEARCH,
-  MEMBER_MEMBER_SEARCH,
-} from './SearchMemberQueries'
+import { MEMBER_MEMBER_SEARCH } from './SearchMemberQueries'
 import TextError from './TextError/TextError'
+import MemberAvatarWithName from 'components/LeaderAvatar/MemberAvatarWithName'
 
 const SearchMember = (props: RoleBasedSearch) => {
   const { currentUser } = useContext(MemberContext)
   const [suggestions, setSuggestions] = useState([])
   const [searchString, setSearchString] = useState(props.initialValue ?? '')
-
-  const [campusSearch, { error: campusError }] = useLazyQuery(
-    CAMPUS_MEMBER_SEARCH,
-    {
-      onCompleted: (data) => {
-        setSuggestions(data.campuses[0].memberSearch)
-        return
-      },
-    }
-  )
-  const [streamSearch, { error: streamError }] = useLazyQuery(
-    STREAM_MEMBER_SEARCH,
-    {
-      onCompleted: (data) => {
-        setSuggestions(data.streams[0].memberSearch)
-        return
-      },
-    }
-  )
-  const [councilSearch, { error: councilError }] = useLazyQuery(
-    COUNCIL_MEMBER_SEARCH,
-    {
-      onCompleted: (data) => {
-        setSuggestions(data.councils[0].memberSearch)
-        return
-      },
-    }
-  )
-
-  const [constituencySearch, { error: constituencyError }] = useLazyQuery(
-    CONSTITUENCY_MEMBER_SEARCH,
-    {
-      onCompleted: (data) => {
-        setSuggestions(data.constituencies[0].memberSearch)
-        return
-      },
-    }
-  )
-  const [bacentaSearch, { error: bacentaError }] = useLazyQuery(
-    BACENTA_MEMBER_SEARCH,
-    {
-      onCompleted: (data) => {
-        setSuggestions(data.bacentas[0].memberSearch)
-        return
-      },
-    }
-  )
-  const [fellowshipSearch, { error: fellowshipError }] = useLazyQuery(
-    FELLOWSHIP_MEMBER_SEARCH,
-    {
-      onCompleted: (data) => {
-        setSuggestions(data.fellowships[0].memberSearch)
-        return
-      },
-    }
-  )
-
   const [memberSearch, { error: memberError }] = useLazyQuery(
     MEMBER_MEMBER_SEARCH,
     {
@@ -94,14 +24,7 @@ const SearchMember = (props: RoleBasedSearch) => {
     }
   )
 
-  const error =
-    campusError ||
-    streamError ||
-    councilError ||
-    constituencyError ||
-    bacentaError ||
-    fellowshipError ||
-    memberError
+  const error = memberError
   throwToSentry('', error)
 
   const whichSearch = (searchString: string) => {
@@ -111,51 +34,6 @@ const SearchMember = (props: RoleBasedSearch) => {
         key: searchString?.trim(),
       },
     })
-    if (props.roleBased) {
-      if (isAuthorised(permitMe('Campus'), currentUser.roles)) {
-        campusSearch({
-          variables: {
-            id: currentUser.campus,
-            key: searchString?.trim(),
-          },
-        })
-      } else if (isAuthorised(permitMe('Stream'), currentUser.roles)) {
-        streamSearch({
-          variables: {
-            id: currentUser.stream,
-            key: searchString?.trim(),
-          },
-        })
-      } else if (isAuthorised(permitMe('Council'), currentUser.roles)) {
-        councilSearch({
-          variables: {
-            id: currentUser.council,
-            key: searchString?.trim(),
-          },
-        })
-      } else if (isAuthorised(permitMe('Constituency'), currentUser.roles)) {
-        constituencySearch({
-          variables: {
-            id: currentUser.constituency,
-            key: searchString?.trim(),
-          },
-        })
-      } else if (isAuthorised(permitMe('Bacenta'), currentUser.roles)) {
-        bacentaSearch({
-          variables: {
-            id: currentUser.bacenta,
-            key: searchString?.trim(),
-          },
-        })
-      } else if (isAuthorised(permitMe('Fellowship'), currentUser.roles)) {
-        fellowshipSearch({
-          variables: {
-            id: currentUser.fellowship,
-            key: searchString?.trim(),
-          },
-        })
-      }
-    }
   }
 
   useEffect(() => {
@@ -208,11 +86,11 @@ const SearchMember = (props: RoleBasedSearch) => {
         highlightFirstSuggestion={true}
         renderSuggestion={(suggestion: any) => (
           <div className="combobox-control">
-            {suggestion.firstName +
-              ' ' +
-              getFirstLetterInEveryWord(suggestion.middleName) +
-              ' ' +
-              suggestion.lastName}
+            <MemberAvatarWithName
+              member={suggestion}
+              loading={!suggestion}
+              size="small"
+            />
           </div>
         )}
       />

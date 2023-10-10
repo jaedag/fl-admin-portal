@@ -10,17 +10,19 @@ import { thumbnail, fill, scale } from '@cloudinary/url-gen/actions/resize'
 import { focusOn } from '@cloudinary/url-gen/qualifiers/gravity'
 import { FocusOn } from '@cloudinary/url-gen/qualifiers/focusOn'
 
+export type CloudinaryImageProps = {
+  src: string
+  size?: 'small' | 'large' | 'respond' | 'fullWidth'
+  className?: string
+  [key: string]: any
+}
+
 const CloudinaryImage = ({
   src,
   size,
   className,
   ...rest
-}: {
-  src: string
-  size?: string
-  className?: string
-  [key: string]: any
-}) => {
+}: CloudinaryImageProps) => {
   const getPublicId = (url: string) => {
     if (!url) {
       return 'v1627893621/user_qvwhs7webp'
@@ -62,6 +64,14 @@ const CloudinaryImage = ({
       image.resize(fill().gravity(focusOn(FocusOn.face())))
       break
     case 'large':
+      image.resize(
+        fill()
+          .width(dimensions.width)
+          .height(dimensions.height)
+          .gravity(focusOn(FocusOn.face()))
+      )
+      break
+    case 'small':
       image.resize(
         fill()
           .width(dimensions.width)

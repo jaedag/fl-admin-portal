@@ -606,7 +606,7 @@ export const checkIfArrayHasRepeatingValues = (array: any[]) => {
   return false
 }
 
-export const getFirstLetterInEveryWord = (string: string) => {
+export const getFirstLetterInEveryWord = (string?: string) => {
   if (string === null || string === undefined || string === '') return ''
 
   const words = string.split(' ')

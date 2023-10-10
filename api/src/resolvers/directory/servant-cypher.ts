@@ -181,7 +181,7 @@ const servantCypher = {
    MATCH (swellDate:SwellDate)
       WITH swellDate ORDER BY swellDate.date DESC LIMIT 1
    MATCH (log:HistoryLog {id: $logId})
-   SET log.priority=0
+   SET log.priority= $priority
    SET log:ServiceLog
 
    WITH log, swellDate

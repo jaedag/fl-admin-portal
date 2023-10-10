@@ -176,6 +176,7 @@ export interface MemberWithoutBioData {
   // eslint-disable-next-line camelcase
   auth_id?: string
   firstName: string
+  middleName?: string
   lastName: string
   fullName: string
   pictureUrl: string

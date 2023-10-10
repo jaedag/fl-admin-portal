@@ -12,7 +12,7 @@ const LeaderAvatar = ({
   leaderTitle,
 }: {
   leader: MemberWithoutBioData
-  leaderTitle: string
+  leaderTitle?: string
   loading?: boolean
 }) => {
   const { clickCard } = useContext(ChurchContext)

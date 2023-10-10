@@ -39,6 +39,7 @@ import useModal from 'hooks/useModal'
 import SubmitButton from 'components/formik/SubmitButton'
 import { DetailsArray } from 'pages/directory/display/DetailsFellowship'
 import LeaderAvatar from 'components/LeaderAvatar/LeaderAvatar'
+import MemberAvatarWithName from 'components/LeaderAvatar/MemberAvatarWithName'
 
 type DisplayChurchDetailsProps = {
   details: DetailsArray
@@ -259,16 +260,18 @@ const DisplayChurchDetails = (props: DisplayChurchDetailsProps) => {
 
           {needsAdmin && (
             <RoleView roles={roles}>
-              <span>
-                {!!props.admin && (
-                  <span>
-                    {props.admin?.firstName + '  ' + props.admin?.lastName}
-                  </span>
-                )}
-              </span>
-              <Button className="p-1 small ms-2" onClick={handleShow}>
-                <PencilSquare /> Change Admin
-              </Button>
+              <Row className="g-0 d-flex align-items-center">
+                <Col className="col-auto">
+                  {!!props.admin && (
+                    <MemberAvatarWithName member={props.admin} />
+                  )}
+                </Col>
+                <Col>
+                  <Button className="p-1 small ms-2" onClick={handleShow}>
+                    <PencilSquare /> Change Admin
+                  </Button>
+                </Col>
+              </Row>
             </RoleView>
           )}
         </Container>

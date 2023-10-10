@@ -427,6 +427,7 @@ export const DISPLAY_COUNCIL = gql`
       admin {
         id
         firstName
+        pictureUrl
         lastName
       }
       leader {
