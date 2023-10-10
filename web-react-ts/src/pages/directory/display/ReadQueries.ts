@@ -358,6 +358,7 @@ export const DISPLAY_CONSTITUENCY = gql`
         id
         firstName
         lastName
+        pictureUrl
       }
       council {
         id
@@ -427,8 +428,8 @@ export const DISPLAY_COUNCIL = gql`
       admin {
         id
         firstName
-        pictureUrl
         lastName
+        pictureUrl
       }
       leader {
         id
@@ -494,7 +495,7 @@ export const DISPLAY_STREAM = gql`
         id
         firstName
         lastName
-        stream_name
+        pictureUrl
       }
       leader {
         id
@@ -557,8 +558,7 @@ export const DISPLAY_CAMPUS = gql`
         id
         firstName
         lastName
-        fullName
-        stream_name
+        pictureUrl
       }
       leader {
         id
@@ -619,8 +619,7 @@ export const DISPLAY_OVERSIGHT = gql`
         id
         firstName
         lastName
-        fullName
-        stream_name
+        pictureUrl
       }
       leader {
         id
@@ -667,6 +666,7 @@ export const DISPLAY_CREATIVEARTS = gql`
         id
         firstName
         lastName
+        pictureUrl
       }
       memberCount
       ministryCount
@@ -724,8 +724,7 @@ export const DISPLAY_DENOMINATION = gql`
         id
         firstName
         lastName
-        fullName
-        stream_name
+        pictureUrl
       }
       leader {
         id
@@ -776,6 +775,7 @@ export const DISPLAY_MINISTRY = gql`
         id
         firstName
         lastName
+        pictureUrl
       }
       memberCount
       hubCouncilCount
