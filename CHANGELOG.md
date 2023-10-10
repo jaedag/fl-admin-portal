@@ -1,3 +1,10 @@
+#### 7.10.14 (2023-10-10)
+
+##### Bug Fixes
+
+*  add member image to member search component ([19470fd1](https://github.com/firstlovecenter/fl-pastoral-care/commit/19470fd1b72e74fbb9dd98404b36eb7be879d892))
+*  fix hubFellowship counts on stream and council ([79c2409e](https://github.com/firstlovecenter/fl-pastoral-care/commit/79c2409e996f9fe2d73753937045aabaaf675837))
+
 #### 7.10.13 (2023-10-09)
 
 ##### Bug Fixes
