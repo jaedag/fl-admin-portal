@@ -78,6 +78,13 @@
       "no-console": "warn"
     }
   },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "prettier --write",
+      "eslint --cache --fix --max-warnings=0",
+      "bash -c tsc -p tsconfig.json --noEmit"
+    ]
+  },
   "overrides": {
     "autoprefixer": "10.4.5"
   },

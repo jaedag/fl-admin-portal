@@ -1,20 +1,20 @@
-import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
-import { Formik, FormikHelpers, Form, useFormik } from 'formik'
-import { FiUsers } from 'react-icons/fi'
-import { Button, Container, Row, Card, ButtonGroup } from 'react-bootstrap'
-import { AiOutlinePlusCircle } from 'react-icons/ai'
+import { useMemo, useState, useEffect } from 'react'
 import { useNavigate } from 'react-router'
 import { useQuery } from '@apollo/client'
 import { GET_OUTDOOR_VENUES } from '../venuesQueries'
+import { SORT_BY_SELECT_OPTIONS } from '../../map-utils'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
-import React, { useMemo, useState } from 'react'
+import { Formik, FormikHelpers, Form } from 'formik'
 import Input from 'components/formik/Input'
 import Select from 'components/formik/Select'
-import { SORT_BY_SELECT_OPTIONS } from '../../map-utils'
+import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
+import { Button, Container, Row, Card, ButtonGroup } from 'react-bootstrap'
+import { AiOutlinePlusCircle } from 'react-icons/ai'
+import { FiUsers } from 'react-icons/fi'
 import '../Venues.css'
 
 interface FormOptions {
-  venueSearch: string
+  sort: string
 }
 interface VenueOptions {
   name: ''
@@ -24,11 +24,14 @@ interface VenueOptions {
 const OutdoorOutreachVenues = () => {
   const [offset, setOffset] = useState(0)
   const [sortBy, setSortBy] = useState({})
+  const [selectedValue, setSelectedValue] = useState('')
   const [searchQuery, setSearchQuery] = useState('')
   const navigate = useNavigate()
   const limit = 20
+
   const initialValues: FormOptions = {
     venueSearch: '',
+    sort: '',
   }
 
   const { loading, error, data } = useQuery(GET_OUTDOOR_VENUES, {
@@ -40,14 +43,14 @@ const OutdoorOutreachVenues = () => {
       },
     },
   })
+
   const venues: VenueOptions[] = useMemo(
     () => data?.outdoorVenues,
     [data, offset]
   )
 
-  const HandleSortBy = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value
-    switch (value) {
+  const sortVenues = (sort: string) => {
+    switch (sort) {
       case 'Name':
         setSortBy({ name: 'ASC' })
         break
@@ -59,48 +62,53 @@ const OutdoorOutreachVenues = () => {
         break
     }
   }
+
+  useEffect(() => {
+    selectedValue && sortVenues(selectedValue)
+  }, [selectedValue])
+
   const handleSubmit = (
     values: FormOptions,
     { setSubmitting }: FormikHelpers<FormOptions>
-  ) => {
-    setSubmitting(false)
-  }
+  ) => setSubmitting(false)
+
   const filteredVenues = useMemo(() => {
-    if (!searchQuery) {
-      return venues
-    }
+    if (!searchQuery) return venues
     return venues.filter((venue: VenueOptions) =>
       venue.name.toLowerCase().includes(searchQuery.toLowerCase())
     )
   }, [venues, searchQuery])
+
   return (
     <Container>
       <HeadingPrimary className="d-flex justify-content-center mb-5">
         Outdoor Outreach Venues
       </HeadingPrimary>
       <Formik initialValues={initialValues} onSubmit={handleSubmit}>
-        {({ values }) => (
-          <Form className="mb-2">
-            <Row>
-              <div className="col">
-                <input
-                  name="venueSearch"
-                  className="form-control"
-                  placeholder="Search..."
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                />
-              </div>
-              <div className="col-4 d-grid align-items-center gap-2">
-                <Select
-                  options={SORT_BY_SELECT_OPTIONS}
-                  name="sortBy"
-                  defaultOption="Sort by"
-                  onChange={HandleSortBy}
-                />
-              </div>
-            </Row>
-          </Form>
-        )}
+        {({ values }) => {
+          setSearchQuery(values?.venueSearch)
+          setSelectedValue(values?.sort)
+          return (
+            <Form className="mb-2">
+              <Row>
+                <div className="col">
+                  <Input
+                    name="venueSearch"
+                    className="form-control"
+                    placeholder="Search..."
+                  />
+                </div>
+                <div className="col-4 d-grid align-items-center gap-2">
+                  <Select
+                    options={SORT_BY_SELECT_OPTIONS}
+                    name="sort"
+                    defaultOption="Sort by"
+                  />
+                </div>
+              </Row>
+            </Form>
+          )
+        }}
       </Formik>
       <Button
         variant="primary"
