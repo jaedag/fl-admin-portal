@@ -466,6 +466,7 @@ export const DISPLAY_STREAM = gql`
       constituencyCount
       activeBacentaCount
       activeFellowshipCount
+      hubFellowshipCount
       memberCount
       pastorCount
       vacationBacentaCount

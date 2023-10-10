@@ -388,7 +388,7 @@ extend type Campus {
     )
   hubFellowshipCount: Int!
     @cypher(
-      statement: "MATCH (this)-[:HAS_MINISTRY]->(creativeArts:CreativeArts)-[:HAS*3]->(fellowship:HubFellowship) RETURN COUNT(fellowship)"
+      statement: "MATCH (this)-[:HAS_MINISTRY]->(creativeArts:CreativeArts)-[:HAS*4]->(fellowship:HubFellowship) RETURN COUNT(fellowship)"
     )
   hubFellowships: [Fellowship!]!
     @cypher(
@@ -428,7 +428,7 @@ extend type Stream {
   hubFellowshipCount: Int!
     @cypher(
       statement: """
-      MATCH (this)-[:HAS_MINISTRY]->(:Ministry)-[:HAS]->(:Hub)-[:HAS*2]->(hubFellowships:HubFellowship)
+      MATCH (this)-[:HAS_MINISTRY]->(:Ministry)-[:HAS*2]->(:Hub)-[:HAS]->(hubFellowships:HubFellowship)
       RETURN COUNT(hubFellowships)
       """
     )
@@ -436,7 +436,7 @@ extend type Stream {
   hubFellowships: [Fellowship!]!
     @cypher(
       statement: """
-      MATCH (this)-[:HAS_MINISTRY]->(:Ministry)-[:HAS]->(:Hub)-[:HAS*2]->(hubFellowships:HubFellowship)
+      MATCH (this)-[:HAS_MINISTRY]->(:Ministry)-[:HAS*2]->(:Hub)-[:HAS]->(hubFellowships:HubFellowship)
       RETURN hubFellowships
       """
     )
@@ -462,7 +462,7 @@ extend type Council {
   hubFellowshipCount: Int!
     @cypher(
       statement: """
-      MATCH (this)-[:HAS_MINISTRY]->(:Hub)-[:HAS]->(fellowship:HubFellowship)
+      MATCH (this)-[:HAS_MINISTRY]->(:HubCouncil)-[:HAS*2]->(fellowship:HubFellowship)
       RETURN COUNT(fellowship)
       """
     )
