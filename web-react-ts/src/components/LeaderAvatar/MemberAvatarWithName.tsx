@@ -9,16 +9,17 @@ import { Col, Row } from 'react-bootstrap'
 const MemberAvatarWithName = ({
   member,
   loading,
-
+  onClick,
   ...rest
 }: {
   member: MemberWithoutBioData
   loading?: boolean
+  onClick?: () => void
 } & Omit<CloudinaryImageProps, 'src'>) => {
   const isLoading = loading || !member
 
   return (
-    <Row className="g-0">
+    <Row className="g-0" onClick={onClick}>
       <Col xs="auto" className="pe-2">
         <PlaceholderCustom
           className="img-search-placeholder"

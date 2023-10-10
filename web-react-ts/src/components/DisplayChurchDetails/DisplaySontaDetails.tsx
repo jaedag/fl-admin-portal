@@ -31,6 +31,8 @@ import SearchMember from 'components/formik/SearchMember'
 import SubmitButton from 'components/formik/SubmitButton'
 import LeaderAvatar from 'components/LeaderAvatar/LeaderAvatar'
 import { DetailsArray } from 'pages/directory/display/DetailsFellowship'
+import MemberAvatarWithName from 'components/LeaderAvatar/MemberAvatarWithName'
+import { ChurchContext } from 'contexts/ChurchContext'
 
 type DisplayChurchDetailsProps = {
   details: DetailsArray
@@ -58,6 +60,7 @@ type DisplayChurchDetailsProps = {
 
 const DisplaySontaDetails = (props: DisplayChurchDetailsProps) => {
   const { setUserChurch } = useSetUserChurch()
+  const { clickCard } = useContext(ChurchContext)
   const navigate = useNavigate()
   let needsAdmin
 
@@ -155,14 +158,24 @@ const DisplaySontaDetails = (props: DisplayChurchDetailsProps) => {
 
             {needsAdmin && (
               <RoleView roles={roles}>
-                {!!props.admin && (
-                  <span>
-                    {props.admin?.firstName + '  ' + props.admin?.lastName}
-                  </span>
-                )}
-                <Button className="p-1 small ms-2" onClick={handleShow}>
-                  <PencilSquare /> Change Admin
-                </Button>
+                <Row className="g-0 d-flex align-items-center">
+                  <Col className="col-auto">
+                    {!!props.admin && (
+                      <MemberAvatarWithName
+                        member={props.admin}
+                        onClick={() => {
+                          clickCard(props.admin)
+                          navigate('/member/displaydetails')
+                        }}
+                      />
+                    )}
+                  </Col>
+                  <Col>
+                    <Button className="p-1 small ms-2" onClick={handleShow}>
+                      <PencilSquare /> Change Admin
+                    </Button>
+                  </Col>
+                </Row>
               </RoleView>
             )}
           </Container>

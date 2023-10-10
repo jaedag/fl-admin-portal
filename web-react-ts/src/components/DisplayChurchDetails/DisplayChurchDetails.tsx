@@ -120,7 +120,7 @@ const DisplayChurchDetails = (props: DisplayChurchDetailsProps) => {
 
   const { currentUser } = useContext(MemberContext)
   const { show, handleShow, handleClose } = useModal()
-  const { constituencyId, councilId, streamId, campusId } =
+  const { constituencyId, councilId, streamId, campusId, clickCard } =
     useContext(ChurchContext)
 
   const htmlElement = document.querySelector('html')
@@ -263,7 +263,13 @@ const DisplayChurchDetails = (props: DisplayChurchDetailsProps) => {
               <Row className="g-0 d-flex align-items-center">
                 <Col className="col-auto">
                   {!!props.admin && (
-                    <MemberAvatarWithName member={props.admin} />
+                    <MemberAvatarWithName
+                      member={props.admin}
+                      onClick={() => {
+                        clickCard(props.admin)
+                        navigate('/member/displaydetails')
+                      }}
+                    />
                   )}
                 </Col>
                 <Col>
