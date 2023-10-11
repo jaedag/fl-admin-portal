@@ -31,6 +31,7 @@ import SearchMember from 'components/formik/SearchMember'
 import SubmitButton from 'components/formik/SubmitButton'
 import LeaderAvatar from 'components/LeaderAvatar/LeaderAvatar'
 import { DetailsArray } from 'pages/directory/display/DetailsFellowship'
+import { getWeekNumber } from 'jd-date-utils'
 
 type DisplayChurchDetailsProps = {
   details: DetailsArray
@@ -134,6 +135,25 @@ const DisplaySontaDetails = (props: DisplayChurchDetailsProps) => {
     }
   }
 
+  const shouldFill = () => {
+    let shouldFill = true
+
+    // If the have filled their form this week, they shouldn't fill again
+    const filledThisWeek = props.last3Weeks?.filter(
+      (week) => week.number === getWeekNumber()
+    )
+    if (filledThisWeek?.length && filledThisWeek[0].filled === true) {
+      shouldFill = false
+    }
+
+    //If the church is on vacation, they shouldn't fill
+    if (props.vacation === 'Vacation') {
+      shouldFill = false
+    }
+
+    return shouldFill
+  }
+
   return (
     <>
       <div className="py-2 top-heading title-bar">
@@ -228,7 +248,7 @@ const DisplaySontaDetails = (props: DisplayChurchDetailsProps) => {
         )}
         <hr />
         {/* Two buttons */}
-        <div className="d-flex gap-2">
+        <div className="d-grid gap-2">
           <PlaceholderCustom
             loading={props.loading}
             className={`btn-sonta w-100`}
@@ -251,14 +271,16 @@ const DisplaySontaDetails = (props: DisplayChurchDetailsProps) => {
             </Button>
           </PlaceholderCustom>
 
-          {props.churchType === 'Hub' && (
+          {shouldFill() && (
             <PlaceholderCustom
               loading={props.loading}
-              className={`btn-sonta w-100`}
+              className="btn-graphs"
+              size="lg"
               button="button"
             >
               <Button
-                className={`btn-sonta w-100`}
+                variant="purple"
+                size="lg"
                 onClick={() => {
                   setUserChurch({
                     id: props.churchId,
@@ -269,11 +291,35 @@ const DisplaySontaDetails = (props: DisplayChurchDetailsProps) => {
                   navigate(`/services/${props.churchType.toLowerCase()}`)
                 }}
               >
-                <CgFileDocument /> Meeting Forms
+                Service Forms
               </Button>
             </PlaceholderCustom>
           )}
         </div>
+
+        {props.churchType === 'Hub' && (
+          <PlaceholderCustom
+            loading={props.loading}
+            className={`btn-sonta w-100`}
+            button="button"
+          >
+            <Button
+              className={`btn-sonta w-100`}
+              onClick={() => {
+                setUserChurch({
+                  id: props.churchId,
+                  name: props.name,
+                  __typename: props.churchType,
+                })
+
+                navigate(`/services/${props.churchType.toLowerCase()}`)
+              }}
+            >
+              <CgFileDocument /> Meeting Forms
+            </Button>
+          </PlaceholderCustom>
+        )}
+
         {/* End two buttons */}
       </Container>
 

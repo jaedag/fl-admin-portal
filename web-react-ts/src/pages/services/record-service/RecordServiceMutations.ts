@@ -639,3 +639,31 @@ export const DISPLAY_CAMPUS_SERVICE = gql`
     }
   }
 `
+export const RECORD_JOINT_REHEARSAL = gql`
+  mutation RecordRehearsalService(
+    $churchId: ID!
+    $serviceDate: String!
+    $attendance: Int!
+    $income: Float!
+    $treasurers: [ID]!
+    $treasurerSelfie: String!
+    $familyPicture: String!
+  ) {
+    RecordRehearsalService(
+      churchId: $churchId
+      serviceDate: $serviceDate
+      attendance: $attendance
+      income: $income
+      treasurers: $treasurers
+      treasurerSelfie: $treasurerSelfie
+      familyPicture: $familyPicture
+    ) {
+      attendance
+      id
+      income
+      serviceDate {
+        date
+      }
+    }
+  }
+`

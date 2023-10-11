@@ -139,6 +139,10 @@ const CouncilBankingSlipSubmission = lazy(
 const CouncilJoint = lazy(() => import('pages/services/CouncilJoint'))
 const StreamJoint = lazy(() => import('pages/services/StreamJoint'))
 const CampusJoint = lazy(() => import('pages/services/CampusJoint'))
+const MinistryJoint = lazy(() => import('pages/services/MinistryJoint'))
+const MinistryJointRehearsal = lazy(
+  () => import('pages/services/record-service/MinistryJointRehearsal')
+)
 const StreamService = lazy(
   () => import('pages/services/record-service/StreamService')
 )
@@ -229,6 +233,18 @@ export const services: LazyRouteTypes[] = [
     path: '/services/campus',
     element: CampusJoint,
     roles: permitLeaderAdmin('Campus'),
+    placeholder: true,
+  },
+  {
+    path: '/services/ministry',
+    element: MinistryJoint,
+    roles: permitLeaderAdmin('Ministry'),
+    placeholder: true,
+  },
+  {
+    path: '/ministry/record-rehearsal',
+    element: MinistryJointRehearsal,
+    roles: permitLeaderAdmin('Ministry'),
     placeholder: true,
   },
 
