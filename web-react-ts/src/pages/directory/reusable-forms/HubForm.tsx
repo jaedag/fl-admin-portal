@@ -353,7 +353,7 @@ const HubForm = ({ initialValues, onSubmit, title, newHub }: HubFormProps) => {
                         setButtonLoading(false)
                         clickCard(res.data.CloseDownHub)
                         setCloseDown(false)
-                        navigate(`/stream/displayall`)
+                        navigate(`/hub/displayall`)
                       } catch (error) {
                         setButtonLoading(false)
                         throwToSentry(
