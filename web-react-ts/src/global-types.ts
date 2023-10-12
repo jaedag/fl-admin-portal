@@ -55,20 +55,12 @@ export interface Church {
   id: string
   name: string
   stream_name?: StreamOptions
-  leader: {
-    id: string
-    firstName: string
-    lastName: string
-    fullName: string
-    currentTitle: 'Pastor' | 'Reverend' | 'Bishop'
-    nameWithTitle: string
-    phoneNumber: string
-    whatsappNumber: string
-    pictureUrl: string
-  }
+  leader: Member
+  admin?: Member
   vacationStatus?: 'Vacation' | 'Active'
   hubs?: Church[]
   lowerChurch?: Church[]
+  memberCount: number
   __typename: ChurchLevel
 }
 
@@ -111,8 +103,9 @@ export interface Oversight extends Church {
 }
 export interface Campus extends Church {
   __typename: 'Campus'
-  streams: Stream
+  streams?: Stream[]
   oversight: Oversight
+  creativeArts?: CreativeArts[]
 }
 
 export interface Stream extends Church {
@@ -123,6 +116,8 @@ export interface Stream extends Church {
   meetingDay: 'Friday' | 'Saturday' | 'Sunday'
   stream_name?: StreamOptions
   campus: Campus
+  ministries?: Ministry[]
+  councils?: Council[]
 }
 export interface Constituency extends Church {
   __typename: 'Constituency'
@@ -133,6 +128,8 @@ export interface Constituency extends Church {
 export interface Council extends Church {
   __typename: 'Council'
   stream: Stream
+  hubCouncils?: HubCouncil[]
+  constituencies?: Constituency[]
   hubCouncilsFromMinistry?: HubCouncil[]
 }
 

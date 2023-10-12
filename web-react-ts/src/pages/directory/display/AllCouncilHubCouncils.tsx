@@ -9,6 +9,7 @@ import { Container, Row, Col } from 'react-bootstrap'
 import { permitAdmin } from 'permission-utils'
 import AllChurchesSummary from 'components/AllChurchesSummary'
 import ChurchSearch from 'components/ChurchSearch'
+import { Council } from 'global-types'
 
 const DisplayAllCouncilHubs = () => {
   const { clickCard, councilId } = useContext(ChurchContext)
@@ -17,8 +18,10 @@ const DisplayAllCouncilHubs = () => {
     variables: { id: councilId },
   })
 
-  const hubs = data?.councils[0]?.hubCouncils
-  const council = data?.councils[0]
+  const council: Council = data?.councils[0]
+  const hubs = council?.hubCouncils ?? []
+
+  const memberCount = hubs?.reduce((acc, curr) => acc + curr?.memberCount, 0)
 
   return (
     <ApolloWrapper data={data} loading={loading} error={error}>
@@ -67,9 +70,9 @@ const DisplayAllCouncilHubs = () => {
         </Row>
 
         <AllChurchesSummary
-          church={hubs}
-          memberCount={council?.memberCount}
-          numberOfChurchesBelow={hubs?.length}
+          church={hubs && hubs[0]}
+          memberCount={memberCount ?? 0}
+          numberOfChurchesBelow={hubs?.length ?? 0}
           churchType="HubCouncil"
           route="council"
         />

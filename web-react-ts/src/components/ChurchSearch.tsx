@@ -4,16 +4,16 @@ import ChurchList from './DisplayChurchList'
 import './ChurchSearch.css'
 import { Container } from 'react-bootstrap'
 import Input from './formik/Input'
-import { ChurchLevel, HigherChurch } from 'global-types'
+import { Church, ChurchLevel, HigherChurch } from 'global-types'
 
 type ChurchSearchProps = {
-  data: HigherChurch[]
+  data: Church[]
   churchType: ChurchLevel
 }
 
 const ChurchSearch = (props: ChurchSearchProps) => {
   const churchDataLoaded = props.data
-  const [churchData, setChurchData] = useState<HigherChurch[]>([])
+  const [churchData, setChurchData] = useState<Church[]>([])
 
   useEffect(() => {
     setChurchData(churchDataLoaded)
@@ -65,7 +65,10 @@ const ChurchSearch = (props: ChurchSearchProps) => {
         </Formik>
       </Container>
 
-      <ChurchList data={churchData} churchType={props.churchType} />
+      <ChurchList
+        data={churchData as unknown as HigherChurch[]}
+        churchType={props.churchType}
+      />
     </div>
   )
 }

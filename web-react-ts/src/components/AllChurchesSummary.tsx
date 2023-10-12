@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 import './AllChurchesSummary.css'
 
 type AllChurchesSummaryProps = {
-  church: Church
+  church?: Church
   churchType: ChurchLevel | 'IC Bacenta'
   numberOfChurchesBelow: number
   route: string
@@ -43,7 +43,7 @@ const AllChurchesSummary = (props: AllChurchesSummaryProps) => {
               <Link to="/hub/displayall">
                 <Card.Body className="summary-padding">
                   <Row className="text-muted text-small">Hubs</Row>
-                  <Row className="number">{church.hubs?.length}</Row>
+                  <Row className="number">{church?.hubs?.length}</Row>
                 </Card.Body>
               </Link>
             </Card>

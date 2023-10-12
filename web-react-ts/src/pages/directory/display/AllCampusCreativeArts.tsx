@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { useQuery } from '@apollo/client'
 import { GET_CAMPUS_CREATIVEARTS } from '../../../queries/ListQueries'
@@ -9,6 +9,7 @@ import { Container, Row, Col } from 'react-bootstrap'
 import { permitAdmin } from 'permission-utils'
 import AllChurchesSummary from 'components/AllChurchesSummary'
 import ChurchSearch from 'components/ChurchSearch'
+import { Campus } from 'global-types'
 
 const DisplayAllCampusCreativeArts = () => {
   const { clickCard, campusId } = useContext(ChurchContext)
@@ -17,8 +18,13 @@ const DisplayAllCampusCreativeArts = () => {
     variables: { id: campusId },
   })
 
-  const creativeArts = data?.campuses[0]?.creativeArts
-  const campus = data?.campuses[0]
+  const campus: Campus = data?.campuses[0]
+  const creativeArts = campus?.creativeArts ?? []
+
+  const memberCount = creativeArts?.reduce(
+    (acc, curr) => acc + curr?.memberCount,
+    0
+  )
 
   return (
     <ApolloWrapper data={data} loading={loading} error={error}>
@@ -70,9 +76,9 @@ const DisplayAllCampusCreativeArts = () => {
         </Row>
 
         <AllChurchesSummary
-          church={creativeArts}
-          memberCount={campus?.memberCount}
-          numberOfChurchesBelow={creativeArts?.length}
+          church={creativeArts && creativeArts[0]}
+          memberCount={memberCount ?? 0}
+          numberOfChurchesBelow={creativeArts?.length ?? 0}
           churchType="CreativeArts"
           route="campus"
         />

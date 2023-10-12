@@ -9,6 +9,7 @@ import { Container, Row, Col } from 'react-bootstrap'
 import { permitAdmin } from 'permission-utils'
 import AllChurchesSummary from 'components/AllChurchesSummary'
 import ChurchSearch from 'components/ChurchSearch'
+import { Stream } from 'global-types'
 
 const DisplayAllStreamMinistries = () => {
   const { clickCard, streamId } = useContext(ChurchContext)
@@ -17,8 +18,13 @@ const DisplayAllStreamMinistries = () => {
     variables: { id: streamId },
   })
 
-  const ministries = data?.streams[0]?.ministries
-  const stream = data?.streams[0]
+  const stream: Stream = data?.streams[0]
+  const ministries = stream?.ministries ?? []
+
+  const memberCount = ministries?.reduce(
+    (acc, curr) => acc + curr?.memberCount,
+    0
+  )
 
   return (
     <ApolloWrapper data={data} loading={loading} error={error}>
@@ -67,8 +73,8 @@ const DisplayAllStreamMinistries = () => {
         </Row>
 
         <AllChurchesSummary
-          church={ministries}
-          memberCount={stream?.memberCount}
+          church={ministries && ministries[0]}
+          memberCount={memberCount}
           numberOfChurchesBelow={ministries?.length}
           churchType="Ministry"
           route="stream"
