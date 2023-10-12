@@ -1,3 +1,16 @@
+#### 7.10.15 (2023-10-12)
+
+##### Bug Fixes
+
+*  update delete member category ([36e157c8](https://github.com/firstlovecenter/fl-pastoral-care/commit/36e157c80031cec55a7800375c6984a9cb312471))
+*  correct types in arrivals state pages ([5263af80](https://github.com/firstlovecenter/fl-pastoral-care/commit/5263af80341a6fb019cb6079cd5a51ada9a63961))
+*  fix types after enforcing for member places ([10a657e4](https://github.com/firstlovecenter/fl-pastoral-care/commit/10a657e4a6617f9f41a2c9efe3206e5288539c2f))
+*  fix member count on displayAll pages from bacenta side ([05cd5ebc](https://github.com/firstlovecenter/fl-pastoral-care/commit/05cd5ebc0bb96d05391b2360ef4c026d9f54f776))
+*  fix bug where allhubcouncil page links hubCouncil to hub display page ([9f31f296](https://github.com/firstlovecenter/fl-pastoral-care/commit/9f31f296cc2623f369771301432bbec08e563409))
+*  correct use of churchId variable in getting higher Churches ([45c499f0](https://github.com/firstlovecenter/fl-pastoral-care/commit/45c499f082c8bde86594d9cf43614fbd3f6a3d2b))
+*  allow clicking of admin on church details page ([2f0c42f8](https://github.com/firstlovecenter/fl-pastoral-care/commit/2f0c42f8b6f31f772204482327a2b0e23520e29f))
+*  add picture to the admin name on church details ([ead623ac](https://github.com/firstlovecenter/fl-pastoral-care/commit/ead623aca3bb8d78058531baaa5b918103e4b3d8))
+
 #### 7.10.14 (2023-10-10)
 
 ##### Bug Fixes
