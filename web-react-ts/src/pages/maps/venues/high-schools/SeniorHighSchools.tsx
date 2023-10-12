@@ -87,8 +87,6 @@ const SeniorHighSchools = () => {
 
       <Formik initialValues={initialValues} onSubmit={handleSubmit}>
         {({ values }) => {
-          setSearchQuery(values?.schoolSearch)
-          setSelectedValue(values?.sort)
           return (
             <Form className="mb-2">
               <Row>
@@ -104,6 +102,10 @@ const SeniorHighSchools = () => {
                     options={SORT_BY_SELECT_OPTIONS}
                     name="sort"
                     defaultOption="Sort by"
+                    onChange={(e: any) => {
+                      setSearchQuery(values?.schoolSearch)
+                      setSelectedValue(e.target.value)
+                    }}
                   />
                 </div>
               </Row>

@@ -84,8 +84,6 @@ const HostelInformation = () => {
       </HeadingPrimary>
       <Formik initialValues={initialValues} onSubmit={handleSubmit}>
         {({ values }) => {
-          setSearchQuery(values?.hostelSearch)
-          setSelectedValue(values?.sort)
           return (
             <Form className="mb-2">
               <Row>
@@ -101,6 +99,10 @@ const HostelInformation = () => {
                     options={SORT_BY_SELECT_OPTIONS}
                     name="sortBy"
                     defaultOption="Sort by"
+                    onChange={(e: any) => {
+                      setSearchQuery(values?.hostelSearch)
+                      setSelectedValue(e.target.value)
+                    }}
                   />
                 </div>
               </Row>

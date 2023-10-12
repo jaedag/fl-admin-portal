@@ -87,8 +87,6 @@ const OutdoorOutreachVenues = () => {
       </HeadingPrimary>
       <Formik initialValues={initialValues} onSubmit={handleSubmit}>
         {({ values }) => {
-          setSearchQuery(values?.venueSearch)
-          setSelectedValue(values?.sort)
           return (
             <Form className="mb-2">
               <Row>
@@ -104,6 +102,10 @@ const OutdoorOutreachVenues = () => {
                     options={SORT_BY_SELECT_OPTIONS}
                     name="sort"
                     defaultOption="Sort by"
+                    onChange={(e: any) => {
+                      setSearchQuery(values?.venueSearch)
+                      setSelectedValue(e.target.value)
+                    }}
                   />
                 </div>
               </Row>
