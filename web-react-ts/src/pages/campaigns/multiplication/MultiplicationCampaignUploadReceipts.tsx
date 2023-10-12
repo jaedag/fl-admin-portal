@@ -109,6 +109,8 @@ const MultiplicationCampaignUploadReceipts = ({
                     setFieldValue={formik.setFieldValue}
                     aria-describedby="UploadBankingSlip"
                   />
+                </Col>
+                <Col className="mb-2">
                   <SubmitButton formik={formik} />
                 </Col>
               </Row>

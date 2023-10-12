@@ -84,6 +84,10 @@ export const DELETE_MEMBER_CATEGORY_OPTIONS: FormikSelectOptions = [
     value: 'Left the Church In Spite of Calls and Visits',
   },
   {
+    key: 'Deceased',
+    value: 'Deceased',
+  },
+  {
     key: 'Duplicate Member',
     value: 'Duplicate Member',
   },

@@ -99,12 +99,13 @@ const FellowshipBankingSlipSubmission = () => {
                     <ImageUpload
                       label="Upload a Picture of Your Banking Slip"
                       name="bankingSlip"
-                      error={formik.errors.bankingSlip}
                       uploadPreset={import.meta.env.VITE_CLOUDINARY_BANKING}
                       placeholder="Choose"
                       setFieldValue={formik.setFieldValue}
                       aria-describedby="UploadBankingSlip"
                     />
+                  </Col>
+                  <Col className="mb-2">
                     <SubmitButton formik={formik} />
                   </Col>
                 </Row>
