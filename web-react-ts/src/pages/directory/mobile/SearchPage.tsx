@@ -9,6 +9,7 @@ import { ScaleLoader } from 'react-spinners'
 import { SearchResult } from './search-types'
 import NoDataComponent from 'pages/arrivals/CompNoData'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
+import { MemberWithoutBioData } from 'global-types'
 
 const SearchPageMobile = () => {
   const { searchKey } = useContext(SearchContext)
@@ -60,7 +61,12 @@ const SearchPageMobile = () => {
         )}
         {!loading &&
           combinedData.map((searchResult, index) => {
-            return <MemberDisplayCard key={index} member={searchResult} />
+            return (
+              <MemberDisplayCard
+                key={index}
+                member={searchResult as MemberWithoutBioData}
+              />
+            )
           })}
       </Container>
     </ApolloWrapper>

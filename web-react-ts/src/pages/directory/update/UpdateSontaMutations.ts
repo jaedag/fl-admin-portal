@@ -110,20 +110,37 @@ export const UPDATE_HUBCOUNCIL_MUTATION = gql`
 `
 
 export const UPDATE_HUB_MUTATION = gql`
-  mutation UpdateHub($hubId: ID!, $name: String!) {
-    UpdateHubDetails(hubId: $hubId, name: $name) {
+  mutation UpdateHub(
+    $hubId: ID!
+    $name: String!
+    $meetingDay: String
+    $venueLatitude: Float
+    $venueLongitude: Float
+  ) {
+    UpdateHubDetails(
+      hubId: $hubId
+      name: $name
+      meetingDay: $meetingDay
+      venueLatitude: $venueLatitude
+      venueLongitude: $venueLongitude
+    ) {
       id
       name
-
-      hubCouncil {
-        id
-        name
+      location {
+        longitude
+        latitude
+      }
+      meetingDay {
+        day
+        dayNumber
       }
 
       leader {
         id
         firstName
         lastName
+        fullName
+        pictureUrl
       }
       history(limit: 5) {
         id

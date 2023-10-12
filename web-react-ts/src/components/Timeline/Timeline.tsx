@@ -3,16 +3,9 @@ import { useNavigate } from 'react-router-dom'
 import { ChurchContext } from '../../contexts/ChurchContext'
 import './Timeline.css'
 import { parseDate, parseNeoTime } from 'jd-date-utils'
-import { Member } from 'global-types'
+import { HistoryLog } from 'global-types'
 
-export type TimelineElement = {
-  historyRecord: string
-  loggedBy: Member
-  timeStamp: string
-  createdAt: {
-    date: string
-  }
-}
+export type TimelineElement = HistoryLog
 
 type TimelineProps = {
   limit: number

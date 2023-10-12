@@ -349,6 +349,7 @@ type Hub {
     @cypher(
       statement: "MATCH (this)-[:HAS_HISTORY|OLD_HISTORY]->(log:HistoryLog) RETURN log ORDER BY log.timeStamp DESC  LIMIT $limit"
     )
+  meetingDay: ServiceDay! @relationship(type: "MEETS_ON", direction: OUT)
   vacationStatus: String!
     @cypher(
       statement: """

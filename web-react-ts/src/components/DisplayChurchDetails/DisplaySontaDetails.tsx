@@ -14,7 +14,6 @@ import { CgFileDocument } from 'react-icons/cg'
 import ViewAll from 'components/buttons/ViewAll'
 import useSetUserChurch from 'hooks/useSetUserChurch'
 import { Church, ChurchLevel, MemberWithoutBioData, Role } from 'global-types'
-import { BacentaWithArrivals } from 'pages/arrivals/arrivals-types'
 import { directoryLock, plural, throwToSentry } from 'global-utils'
 import { useMutation } from '@apollo/client'
 import {
@@ -25,7 +24,7 @@ import * as Yup from 'yup'
 import { Form, Formik, FormikHelpers } from 'formik'
 import { permitAdmin } from 'permission-utils'
 import { MemberContext } from 'contexts/MemberContext'
-import { PencilSquare } from 'react-bootstrap-icons'
+import { Geo, PencilSquare } from 'react-bootstrap-icons'
 import useModal from 'hooks/useModal'
 import SearchMember from 'components/formik/SearchMember'
 import SubmitButton from 'components/formik/SubmitButton'
@@ -33,11 +32,15 @@ import LeaderAvatar from 'components/LeaderAvatar/LeaderAvatar'
 import { DetailsArray } from 'pages/directory/display/DetailsFellowship'
 import MemberAvatarWithName from 'components/LeaderAvatar/MemberAvatarWithName'
 import { ChurchContext } from 'contexts/ChurchContext'
+import Last3WeeksCard, {
+  Last3WeeksCardProps,
+  shouldFill,
+} from 'components/Last3WeeksCard'
 
 type DisplayChurchDetailsProps = {
   details: DetailsArray
   loading: boolean
-  church: BacentaWithArrivals
+  church: Church
   name: string
   leaderTitle: string
   leader: MemberWithoutBioData
@@ -51,11 +54,11 @@ type DisplayChurchDetailsProps = {
   breadcrumb: Church[]
   buttons: { id: string; name: string; __typename: string }[]
   vacation?: 'Active' | 'Vacation'
-  last3Weeks?: {
-    number: number
-    filled: boolean
-    banked: boolean | 'No Service'
-  }[]
+  location?: {
+    longitude: number
+    latitude: number
+  }
+  last3Weeks?: Last3WeeksCardProps['last3Weeks']
 }
 
 const DisplaySontaDetails = (props: DisplayChurchDetailsProps) => {
@@ -262,31 +265,50 @@ const DisplaySontaDetails = (props: DisplayChurchDetailsProps) => {
             </Button>
           </PlaceholderCustom>
 
-          {props.churchType === 'Hub' && (
-            <PlaceholderCustom
-              loading={props.loading}
-              className={`btn-sonta w-100`}
-              button="button"
-            >
-              <Button
-                onClick={() => {
-                  setUserChurch({
-                    id: props.churchId,
-                    name: props.name,
-                    __typename: props.churchType,
-                  })
-
-                  navigate(`/services/${props.churchType.toLowerCase()}`)
-                }}
+          {props.churchType === 'Hub' &&
+            shouldFill({
+              vacation: props.vacation ?? 'Active',
+              last3Weeks: props.last3Weeks ?? [],
+            }) && (
+              <PlaceholderCustom
+                loading={props.loading}
+                className={`btn-sonta w-100`}
+                button="button"
               >
-                <CgFileDocument /> Meeting Forms
-              </Button>
-            </PlaceholderCustom>
-          )}
+                <Button
+                  onClick={() => {
+                    setUserChurch({
+                      id: props.churchId,
+                      name: props.name,
+                      __typename: props.churchType,
+                    })
+
+                    navigate(`/services/${props.churchType.toLowerCase()}`)
+                  }}
+                >
+                  <CgFileDocument /> Meeting Forms
+                </Button>
+              </PlaceholderCustom>
+            )}
         </div>
         {/* End two buttons */}
       </Container>
+      {props?.location && props.location?.latitude !== 0 && (
+        <Container className="mt-4 text-center">
+          <h3>LOCATION</h3>
+          <p>Click here for directions</p>
+          <a
+            className="btn p-3"
+            href={`https://www.google.com/maps/search/?api=1&query=${props?.location?.latitude}%2C${props?.location?.longitude}`}
+          >
+            <Geo size="75" />
+          </a>
+        </Container>
+      )}
 
+      {props.last3Weeks && props.details[2].number === 'Active' && (
+        <Last3WeeksCard last3Weeks={props.last3Weeks} />
+      )}
       {props.subLevel && props.buttons?.length ? (
         <>
           <Container>
@@ -327,7 +349,6 @@ const DisplaySontaDetails = (props: DisplayChurchDetailsProps) => {
           </div>
         </>
       ) : null}
-
       {props.subLevel && !props.buttons?.length ? (
         <Container className="d-grid gap-2 mt-2">
           <RoleView roles={props.editPermitted}>
@@ -352,7 +373,6 @@ const DisplaySontaDetails = (props: DisplayChurchDetailsProps) => {
           </RoleView>
         </Container>
       ) : null}
-
       {props.history?.length && (
         <Container className="mt-5">
           <Row>

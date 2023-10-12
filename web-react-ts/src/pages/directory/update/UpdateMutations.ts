@@ -557,14 +557,7 @@ export const UPDATE_FELLOWSHIP = gql`
         day
         dayNumber
       }
-      bacenta {
-        id
-        name
-        constituency {
-          id
-          name
-        }
-      }
+
       leader {
         id
         firstName

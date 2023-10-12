@@ -17,9 +17,12 @@ const CreateHub = () => {
     hubCouncil: hubCouncilId ?? '',
     leaderId: '',
     leaderName: '',
-    vacationStatus: 'Active',
     leaderEmail: '',
     name: '',
+    meetingDay: '',
+    vacationStatus: 'Active',
+    venueLatitude: '',
+    venueLongitude: '',
   }
 
   const [NewHubLeader] = useMutation(NEW_HUB_LEADER)

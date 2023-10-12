@@ -8,6 +8,7 @@ import {
   Constituency,
   Council,
   Bacenta,
+  MemberWithoutBioData,
 } from 'global-types'
 
 export interface FellowshipWithDefaulters extends Fellowship {
@@ -34,7 +35,7 @@ export interface CouncilWithDefaulters extends Council {
 
 export interface HigherChurchWithDefaulters extends Church {
   __typename: 'Constituency' | 'Stream' | 'Council' | 'Campus'
-  admin?: Member
+  admin?: MemberWithoutBioData
   stream_name: StreamOptions
   servicesThisWeek: FellowshipWithDefaulters[]
   formDefaultersThisWeek: FellowshipWithDefaulters[]

@@ -1,4 +1,5 @@
 import { ApolloError } from '@apollo/client'
+import { last3Weeks } from '@jaedag/admin-portal-types'
 import { captureException, showReportDialog } from '@sentry/react'
 import {
   ChurchLevel,
@@ -662,3 +663,54 @@ export const directoryLock = (
 }
 
 export const firstDayOfThisYear = new Date(new Date().getFullYear(), 0, 1)
+
+export const check = (fellowship: any) => {
+  let serviceType: 'services' | 'rehearsals' = 'services'
+  if (fellowship.__typename === 'Hub') serviceType = 'rehearsals'
+
+  const lastFilled = fellowship?.[serviceType].map(
+    ({
+      bankingProof,
+      noServiceReason,
+      week,
+    }: {
+      bankingProof: boolean
+      noServiceReason: string
+      week: number
+    }) => ({
+      bankingProof,
+      noServiceReason,
+      week,
+    })
+  )
+
+  return last3Weeks()?.map((number) => {
+    if (lastFilled?.some((service: any) => service.week === number)) {
+      const service = lastFilled?.find(
+        ({ week }: { week: number }) => week === number
+      )
+
+      if (!service?.noServiceReason) {
+        return {
+          number: number,
+          filled: true,
+          banked: service?.bankingProof ? true : false,
+        }
+      } else if (service?.noServiceReason) {
+        return {
+          number: number,
+          filled: true,
+          banked: 'No Service',
+        }
+      }
+
+      return null
+    } else {
+      return {
+        number: number,
+        filled: false,
+        banked: 'No Service',
+      }
+    }
+  })
+}

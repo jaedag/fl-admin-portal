@@ -36,6 +36,7 @@ import Select from 'components/formik/Select'
 import { FormikInitialValues } from 'components/formik/formik-types'
 import { Bacenta } from 'global-types'
 import BtnSubmitText from 'components/formik/BtnSubmitText'
+import VerifyNotMe from 'auth/VerifyNotMe'
 
 export interface FellowshipFormValues extends FormikInitialValues {
   bacenta?: Bacenta
@@ -53,22 +54,6 @@ type FellowshipFormProps = {
     values: FellowshipFormValues,
     onSubmitProps: FormikHelpers<FellowshipFormValues>
   ) => void
-}
-
-const VerifyNotMe = ({
-  leaderId,
-  children,
-}: {
-  leaderId: string
-  children: JSX.Element
-}) => {
-  const { currentUser } = useContext(MemberContext)
-
-  if (currentUser?.id === leaderId) {
-    return <></>
-  }
-
-  return children
 }
 
 const FellowshipForm = (props: FellowshipFormProps) => {
