@@ -48,6 +48,8 @@ export type ChurchLevelLower =
   | 'hubCouncil'
   | 'hub'
 
+type VacationStatusOptions = 'Vacation' | 'Active'
+
 export type TimeGraph = {
   date: Date
 }
@@ -57,7 +59,6 @@ export interface Church {
   stream_name?: StreamOptions
   leader: Member
   admin?: Member
-  vacationStatus?: 'Vacation' | 'Active'
   hubs?: Church[]
   lowerChurch?: Church[]
   memberCount: number
@@ -69,6 +70,7 @@ export interface Fellowship extends Church {
   bacenta: Bacenta
   bankingCode: number
   services: ServiceRecord[]
+  vacationStatus?: VacationStatusOptions
   meetingDay: {
     day: 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday'
   }
@@ -159,6 +161,10 @@ export interface Hub extends Church {
   hubCouncils?: HubCouncil[]
   hubCouncil: HubCouncil
   creativeArts: Campus
+  vacationStatus: VacationStatusOptions
+  meetingDay: {
+    day: 'Wednesday' | 'Friday' | 'Saturday'
+  }
 }
 
 export interface HubFellowship extends Church {

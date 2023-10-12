@@ -30,7 +30,10 @@ import BtnSubmitText from 'components/formik/BtnSubmitText'
 export interface HubFormValues extends FormikInitialValues {
   name: string
   hubCouncil?: string
+  meetingDay: string
   vacationStatus: 'Active' | 'Vacation'
+  venueLatitude: string | number
+  venueLongitude: string | number
   hubFellowship?: HubFellowship
   hubFellowships?: HubFellowship[]
 }
@@ -74,6 +77,24 @@ const HubForm = ({ initialValues, onSubmit, title, newHub }: HubFormProps) => {
     leaderId: Yup.string().required(
       'Please choose a leader from the drop down'
     ),
+    meetingDay: Yup.string().required('Meeting Day is a required field'),
+    vacationStatus: Yup.string().required(
+      'Vacation Status is a required field'
+    ),
+    venueLatitude: Yup.string()
+      .required('Please fill in your location info')
+      .test(
+        'is-decimal',
+        'Please enter valid coordinates',
+        (value) => !!(value + '').match(DECIMAL_NUM_REGEX)
+      ),
+    venueLongitude: Yup.string()
+      .required('Please fill in your location info')
+      .test(
+        'is-decimal',
+        'Please enter valid coordinates',
+        (value) => !!(value + '').match(DECIMAL_NUM_REGEX)
+      ),
   })
 
   return (
