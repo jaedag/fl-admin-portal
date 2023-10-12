@@ -38,6 +38,7 @@ const SearchPageMobile = () => {
         ...member.fellowshipSearch,
         ...member.creativeArtsSearch,
         ...member.ministrySearch,
+        ...member.hubCouncilSearch,
         ...member.hubSearch,
       ])
       return

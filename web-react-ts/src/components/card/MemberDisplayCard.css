@@ -68,6 +68,11 @@
   border: 5px solid var(--chakra-colors-cyan-200) !important;
 }
 
+.badge.hubcouncil {
+  background-color: var(--chakra-colors-whatsapp-800) !important;
+  border: 5px solid var(--chakra-colors-whatsapp-200) !important;
+}
+
 .badge.hub {
   background-color: var(--chakra-colors-pink-800) !important;
   border: 5px solid var(--chakra-colors-pink-200) !important;

@@ -123,6 +123,17 @@ export const MEMBER_SEARCH = gql`
           pictureUrl
         }
       }
+      hubCouncilSearch(key: $key, limit: $limit) {
+        id
+        name
+        leader {
+          id
+          firstName
+          lastName
+          nameWithTitle
+          pictureUrl
+        }
+      }
       hubSearch(key: $key, limit: $limit) {
         id
         name
