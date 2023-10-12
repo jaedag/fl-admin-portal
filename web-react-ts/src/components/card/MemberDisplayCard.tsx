@@ -39,13 +39,7 @@ type CardMember = {
 
 type MemberDisplayCardProps = {
   member: CardMember
-  leader?: {
-    id: string
-    nameWithTitle: string
-    phoneNumber: string
-    whatsappNumber: string
-    pictureUrl: string
-  }
+  leader?: Member
   attendance?: number
   onClick?: () => void
   contact?: boolean
