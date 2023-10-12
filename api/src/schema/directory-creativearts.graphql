@@ -344,6 +344,7 @@ type Hub {
     )
   id: ID! @id
   name: String!
+  location: Point
   leader: Member @relationship(type: "LEADS", direction: IN)
   history(limit: Int! = 3): [HistoryLog!]!
     @cypher(
@@ -679,11 +680,19 @@ extend type Mutation {
       RETURN hub
       """
     )
-  CreateHub(name: String!, leaderId: ID!, hubCouncilId: ID!): Hub!
+  CreateHub(
+    name: String!
+    leaderId: ID!
+    hubCouncilId: ID!
+    meetingDay: String!
+    venueLongitude: Float
+    venueLatitude: Float
+  ): Hub!
     @auth(
       rules: [
         {
           roles: [
+            "adminCouncil"
             "adminCampus"
             "adminStream"
             "adminCreativeArts"
@@ -701,6 +710,7 @@ extend type Mutation {
 
       CREATE (hub:Active:Hub {name: concatenatedString + ' ' + $name})
         SET hub.id = apoc.create.uuid()
+        SET hub.location = point({latitude:toFloat($venueLatitude), longitude:toFloat($venueLongitude), crs:'WGS-84'})
 
       WITH hub
       CREATE (log:HistoryLog:ServiceLog)
@@ -713,10 +723,12 @@ extend type Mutation {
       MATCH (leader:Active:Member {id: $leaderId})  WHERE leader.email IS NOT NULL
       MATCH (currentUser:Active:Member {auth_id: $auth.jwt.sub})
       MATCH (council:HubCouncil {id: $hubCouncilId})
+      MATCH (meetingDay:ServiceDay {day: $meetingDay})
 
-      WITH hub, leader, currentUser, log, council
+      WITH hub, leader, currentUser, log, council, meetingDay
       MERGE (council)-[:HAS]->(hub)
       MERGE (leader)-[:LEADS]->(hub)
+      MERGE (hub)-[:MEETS_ON]->(meetingDay)
 
       MERGE (date:TimeGraph {date: date()})
       MERGE (log)-[:LOGGED_BY]->(currentUser)
@@ -772,7 +784,13 @@ extend type Mutation {
       RETURN hub
       """
     )
-  UpdateHubDetails(hubId: ID!, name: String!): Hub!
+  UpdateHubDetails(
+    hubId: ID!
+    name: String!
+    meetingDay: String
+    venueLongitude: Float
+    venueLatitude: Float
+  ): Hub!
     @auth(
       rules: [
         {
@@ -788,7 +806,19 @@ extend type Mutation {
     @cypher(
       statement: """
       MATCH (hub:Hub {id:$hubId})
-        SET hub.name = $name
+        SET hub.name = $name,
+        hub.location = point({latitude:toFloat($venueLatitude), longitude:toFloat($venueLongitude), crs:'WGS-84'})
+
+      WITH hub
+           CALL {
+             WITH hub
+             WITH hub WHERE $meetingDay IS NOT NULL
+             MATCH (meetingDay:ServiceDay {day: $meetingDay})
+             OPTIONAL MATCH (hub)-[r:MEETS_ON]->()
+             DELETE r
+             MERGE (hub)-[:MEETS_ON]->(meetingDay)
+            	RETURN count(hub)
+            }
 
       RETURN hub
       """

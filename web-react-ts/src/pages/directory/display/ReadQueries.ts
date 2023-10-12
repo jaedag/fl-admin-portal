@@ -879,6 +879,10 @@ export const DISPLAY_HUB = gql`
       meetingDay {
         day
       }
+      location {
+        longitude
+        latitude
+      }
       leader {
         id
         firstName

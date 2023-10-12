@@ -317,8 +317,22 @@ export const CREATE_HUBCOUNCIL_MUTATION = gql`
 `
 
 export const CREATE_HUB_MUTATION = gql`
-  mutation CreateHub($name: String!, $leaderId: ID!, $hubCouncilId: ID!) {
-    CreateHub(name: $name, leaderId: $leaderId, hubCouncilId: $hubCouncilId) {
+  mutation CreateHub(
+    $name: String!
+    $leaderId: ID!
+    $hubCouncilId: ID!
+    $meetingDay: String!
+    $venueLongitude: Float
+    $venueLatitude: Float
+  ) {
+    CreateHub(
+      name: $name
+      leaderId: $leaderId
+      hubCouncilId: $hubCouncilId
+      meetingDay: $meetingDay
+      venueLongitude: $venueLongitude
+      venueLatitude: $venueLatitude
+    ) {
       id
       name
     }

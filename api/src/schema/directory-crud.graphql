@@ -155,7 +155,7 @@ extend type Mutation {
 
       WITH log,hub
       MATCH (admin:Active:Member {auth_id: $auth.jwt.sub})
-      MATCH (hub)<-[:HAS]-(fellowship:Fellowship)
+      MATCH (hub)<-[:HAS]-(fellowship:HubCouncil)
       MERGE (date:TimeGraph {date:date()})
       MERGE (log)-[:LOGGED_BY]->(admin)
       MERGE (log)-[:RECORDED_ON]->(date)
@@ -179,12 +179,12 @@ extend type Mutation {
 
       WITH log,hub
       MATCH (admin:Active:Member {auth_id: $auth.jwt.sub})
-      MATCH (hub)<-[:HAS]-(fellowship:Fellowship)
+      MATCH (hub)<-[:HAS]-(hubCouncil:HubCouncil)
       MERGE (date:TimeGraph {date:date()})
       MERGE (log)-[:LOGGED_BY]->(admin)
       MERGE (log)-[:RECORDED_ON]->(date)
       MERGE (hub)-[:HAS_HISTORY]->(log)
-      MERGE (fellowship)-[:HAS_HISTORY]->(log)
+      MERGE (hubCouncil)-[:HAS_HISTORY]->(log)
 
       SET hub:Vacation
       REMOVE hub:Active, hub:Online
@@ -502,7 +502,7 @@ extend type Mutation {
     meetingDay: String!
     venueLongitude: Float
     venueLatitude: Float
-  ): Fellowship
+  ): Fellowship!
     @auth(
       rules: [
         {

@@ -169,6 +169,10 @@ export interface HubCouncil extends Church {
 
 export interface Hub extends Church {
   __typename: 'Hub'
+  location: {
+    latitude: number
+    longitude: number
+  }
   hubFellowships?: HubFellowship[]
   activeHubFellowshipCount: number
   vacationHubFellowshipCount: number

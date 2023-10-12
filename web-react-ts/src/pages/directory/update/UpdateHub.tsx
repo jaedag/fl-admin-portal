@@ -58,12 +58,19 @@ const UpdateHub = () => {
   ) => {
     const { setSubmitting, resetForm } = onSubmitProps
     setSubmitting(true)
+
+    values.venueLongitude = parseFloat(values.venueLongitude.toString())
+    values.venueLatitude = parseFloat(values.venueLatitude.toString())
+
     try {
       await UpdateHub({
         variables: {
           hubId: hubId,
           name: values.name,
           leaderId: values.leaderId,
+          meetingDay: values.meetingDay,
+          venueLongitude: values.venueLongitude,
+          venueLatitude: values.venueLatitude,
         },
       })
 
@@ -122,6 +129,26 @@ const UpdateHub = () => {
             throwToSentry('There was a problem changing the leader', err)
           }
         }
+      }
+
+      //Log if the Venue Changes
+      if (
+        repackDecimals(values.venueLongitude) !==
+          repackDecimals(initialValues.venueLongitude) ||
+        repackDecimals(values.venueLatitude) !==
+          repackDecimals(initialValues.venueLatitude)
+      ) {
+        await LogHubHistory({
+          variables: {
+            hubId,
+            newLeaderId: '',
+            oldLeaderId: '',
+            oldBacentaId: '',
+            newBacentaId: '',
+
+            historyRecord: `${values.name} Hub has changed their venue`,
+          },
+        })
       }
 
       resetForm()

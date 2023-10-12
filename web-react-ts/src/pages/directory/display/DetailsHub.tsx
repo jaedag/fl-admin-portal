@@ -70,6 +70,7 @@ const DetailsHub = () => {
         editPermitted={permitAdmin('Ministry')}
         churchId={hubId}
         leader={hub?.leader}
+        location={hub?.location}
         churchType="Hub"
         subLevel={'HubFellowship'}
         editlink="/hub/edithub"

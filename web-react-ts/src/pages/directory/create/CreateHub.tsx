@@ -21,8 +21,8 @@ const CreateHub = () => {
     name: '',
     meetingDay: '',
     vacationStatus: 'Active',
-    venueLatitude: '',
-    venueLongitude: '',
+    venueLatitude: '0.0',
+    venueLongitude: '0.0',
   }
 
   const [NewHubLeader] = useMutation(NEW_HUB_LEADER)
@@ -45,6 +45,9 @@ const CreateHub = () => {
           hubCouncilId: values.hubCouncil,
           leaderId: values.leaderId,
           name: values.name,
+          meetingDay: values.meetingDay,
+          venueLongitude: parseFloat(values.venueLongitude.toString()),
+          venueLatitude: parseFloat(values.venueLatitude.toString()),
         },
       })
 

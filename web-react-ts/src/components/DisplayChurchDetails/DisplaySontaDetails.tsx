@@ -292,9 +292,11 @@ const DisplaySontaDetails = (props: DisplayChurchDetailsProps) => {
             )}
         </div>
         {/* End two buttons */}
+        <hr className="hr-line" />
       </Container>
+
       {props?.location && props.location?.latitude !== 0 && (
-        <Container className="mt-4 text-center">
+        <Container className="my-4 text-center">
           <h3>LOCATION</h3>
           <p>Click here for directions</p>
           <a
@@ -312,8 +314,6 @@ const DisplaySontaDetails = (props: DisplayChurchDetailsProps) => {
       {props.subLevel && props.buttons?.length ? (
         <>
           <Container>
-            <hr className="hr-line" />
-
             <div className="row justify-content-between">
               <div className="col">
                 <p className="text-secondary">{`${props.subLevel} Locations`}</p>
