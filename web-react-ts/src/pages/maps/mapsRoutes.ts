@@ -1,5 +1,5 @@
 import { LazyRouteTypes } from 'global-types'
-import { permitMe } from 'permission-utils'
+import { permitLeaderAdminArrivals, permitMe } from 'permission-utils'
 import { lazy } from 'react'
 
 const Maps = lazy(() => import('pages/maps/Maps'))
