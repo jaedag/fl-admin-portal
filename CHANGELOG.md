@@ -1,3 +1,13 @@
+#### 7.10.16 (2023-10-12)
+
+##### New Features
+
+* **venues:**  add venue form and display venues ([#448](https://github.com/firstlovecenter/fl-pastoral-care/pull/448)) ([b6f734af](https://github.com/firstlovecenter/fl-pastoral-care/commit/b6f734afe0a34432190d0fbafe4407a9ccdcd5a6))
+
+##### Bug Fixes
+
+*  add missing import of permitLeaderAdminArrivals ([58545e61](https://github.com/firstlovecenter/fl-pastoral-care/commit/58545e6113ed769b4025450a97647acd325225d4))
+
 #### 7.10.15 (2023-10-12)
 
 ##### Bug Fixes
