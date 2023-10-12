@@ -102,7 +102,7 @@ const DetailsFellowship = () => {
           buttons={[]}
           editlink="/fellowship/editfellowship"
           editPermitted={[...permitAdmin('Constituency'), 'leaderFellowship']}
-          last3Weeks={fellowship && check(history)}
+          last3Weeks={history && check(history)}
           vacation={fellowship?.vacationStatus}
           history={history?.history.length && history?.history}
           breadcrumb={breadcrumb && breadcrumb}
