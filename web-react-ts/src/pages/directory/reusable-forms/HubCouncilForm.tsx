@@ -96,7 +96,7 @@ const HubCouncilForm = ({
       <Container>
         <HeadingPrimary>{title}</HeadingPrimary>
         <HeadingSecondary>
-          {initialValues.name + ' Creative Arts'}
+          {initialValues.name + ' Hub Council'}
         </HeadingSecondary>
         <ButtonGroup className="mt-3">
           {!newHubCouncil && (
@@ -247,7 +247,7 @@ const HubCouncilForm = ({
                         setButtonLoading(false)
                         clickCard(res.data.CloseDownHubCouncil)
                         setCloseDown(false)
-                        navigate(`/stream/displayall`)
+                        navigate(`/hubcouncil/displayall`)
                       } catch (error) {
                         setButtonLoading(false)
                         throwToSentry(

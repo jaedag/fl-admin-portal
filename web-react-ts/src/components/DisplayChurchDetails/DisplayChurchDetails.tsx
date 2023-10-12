@@ -24,7 +24,6 @@ import {
   plural,
   throwToSentry,
 } from '../../global-utils'
-import { getWeekNumber } from 'jd-date-utils'
 import Breadcrumb from './Breadcrumb'
 import { Button, Col, Container, Modal, Row } from 'react-bootstrap'
 import PlaceholderCustom from 'components/Placeholder'
@@ -32,7 +31,13 @@ import { Geo, PencilSquare } from 'react-bootstrap-icons'
 import ViewAll from 'components/buttons/ViewAll'
 import { permitAdmin } from 'permission-utils'
 import useSetUserChurch from 'hooks/useSetUserChurch'
-import { Church, ChurchLevel, MemberWithoutBioData, Role } from 'global-types'
+import {
+  Church,
+  ChurchLevel,
+  MemberWithoutBioData,
+  Role,
+  VacationStatusOptions,
+} from 'global-types'
 import { BacentaWithArrivals } from 'pages/arrivals/arrivals-types'
 import SearchMember from 'components/formik/SearchMember'
 import useModal from 'hooks/useModal'
@@ -40,6 +45,10 @@ import SubmitButton from 'components/formik/SubmitButton'
 import { DetailsArray } from 'pages/directory/display/DetailsFellowship'
 import LeaderAvatar from 'components/LeaderAvatar/LeaderAvatar'
 import MemberAvatarWithName from 'components/LeaderAvatar/MemberAvatarWithName'
+import Last3WeeksCard, {
+  Last3WeeksCardProps,
+  shouldFill,
+} from 'components/Last3WeeksCard'
 
 type DisplayChurchDetailsProps = {
   details: DetailsArray
@@ -57,7 +66,7 @@ type DisplayChurchDetailsProps = {
   history: TimelineElement[]
   breadcrumb: Church[]
   buttons: Church[]
-  vacation?: 'Active' | 'Vacation'
+  vacation?: VacationStatusOptions
   vacationCount?: number
 
   buttonsSecondRow?: Church[]
@@ -69,11 +78,7 @@ type DisplayChurchDetailsProps = {
     longitude: number
     latitude: number
   }
-  last3Weeks?: {
-    number: number
-    filled: boolean
-    banked: boolean | 'No Service'
-  }[]
+  last3Weeks?: Last3WeeksCardProps['last3Weeks']
 }
 
 type FormOptions = {
@@ -220,25 +225,6 @@ const DisplayChurchDetails = (props: DisplayChurchDetailsProps) => {
     onSubmitProps.resetForm()
   }
   //End of Admin Change
-
-  const shouldFill = () => {
-    let shouldFill = true
-
-    // If the have filled their form this week, they shouldn't fill again
-    const filledThisWeek = props.last3Weeks?.filter(
-      (week) => week.number === getWeekNumber()
-    )
-    if (filledThisWeek?.length && filledThisWeek[0].filled === true) {
-      shouldFill = false
-    }
-
-    //If the church is on vacation, they shouldn't fill
-    if (props.vacation === 'Vacation') {
-      shouldFill = false
-    }
-
-    return shouldFill
-  }
 
   return (
     <>
@@ -405,7 +391,10 @@ const DisplayChurchDetails = (props: DisplayChurchDetailsProps) => {
             </Button>
           </PlaceholderCustom>
 
-          {shouldFill() && (
+          {shouldFill({
+            last3Weeks: props.last3Weeks ?? [],
+            vacation: props.vacation ?? 'Active',
+          }) && (
             <PlaceholderCustom
               loading={props.loading}
               className="btn-graphs"
@@ -444,28 +433,7 @@ const DisplayChurchDetails = (props: DisplayChurchDetailsProps) => {
         )}
 
         {props.last3Weeks && props.details[2].number === 'Active' && (
-          <>
-            <h3 className="mt-4">FORMS</h3>
-            {props.last3Weeks.map((week, i) => (
-              <Container key={i} className="mt-4">
-                <div className="text-secondary">{`WEEK ${week.number}`}</div>
-                <p className="mb-0">
-                  Income Form -{' '}
-                  <span
-                    className={`${week.filled ? 'filled' : 'not-filled'}`}
-                  >{`${week.filled ? 'Filled' : 'Not Filled'}`}</span>
-                </p>
-                {week.filled && week.banked !== 'No Service' && (
-                  <p>
-                    Banking Slip -{' '}
-                    <span
-                      className={`${week.banked ? 'filled' : 'not-filled'}`}
-                    >{`${week.banked ? 'Submitted' : 'Not Submitted'}`}</span>
-                  </p>
-                )}
-              </Container>
-            ))}
-          </>
+          <Last3WeeksCard last3Weeks={props.last3Weeks} />
         )}
       </Container>
 

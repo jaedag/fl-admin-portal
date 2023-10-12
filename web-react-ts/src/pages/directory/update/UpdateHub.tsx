@@ -12,6 +12,7 @@ import { FormikHelpers } from 'formik'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { GET_HUBCOUNCIL_HUBS } from 'queries/ListQueries'
 import { UPDATE_HUB_MUTATION } from './UpdateSontaMutations'
+import { repackDecimals } from '@jaedag/admin-portal-types'
 
 const UpdateHub = () => {
   const { hubId } = useContext(ChurchContext)
@@ -27,8 +28,11 @@ const UpdateHub = () => {
     leaderId: hub?.leader?.id || '',
     leaderEmail: hub?.leader?.email ?? '',
     hubCouncil: hub?.hubCouncil?.id,
+    meetingDay: hub?.meetingDay?.day,
     hubFellowships: hub?.hubFellowships.length ? hub?.hubFellowships : [],
     vacationStatus: hub?.vacationStatus,
+    venueLatitude: repackDecimals(hub?.location?.latitude) ?? '',
+    venueLongitude: repackDecimals(hub?.location?.longitude) ?? '',
   }
 
   const [LogHubHistory] = useMutation(LOG_HUB_HISTORY, {
@@ -54,12 +58,19 @@ const UpdateHub = () => {
   ) => {
     const { setSubmitting, resetForm } = onSubmitProps
     setSubmitting(true)
+
+    values.venueLongitude = parseFloat(values.venueLongitude.toString())
+    values.venueLatitude = parseFloat(values.venueLatitude.toString())
+
     try {
       await UpdateHub({
         variables: {
           hubId: hubId,
           name: values.name,
           leaderId: values.leaderId,
+          meetingDay: values.meetingDay,
+          venueLongitude: values.venueLongitude,
+          venueLatitude: values.venueLatitude,
         },
       })
 
@@ -118,6 +129,26 @@ const UpdateHub = () => {
             throwToSentry('There was a problem changing the leader', err)
           }
         }
+      }
+
+      //Log if the Venue Changes
+      if (
+        repackDecimals(values.venueLongitude) !==
+          repackDecimals(initialValues.venueLongitude) ||
+        repackDecimals(values.venueLatitude) !==
+          repackDecimals(initialValues.venueLatitude)
+      ) {
+        await LogHubHistory({
+          variables: {
+            hubId,
+            newLeaderId: '',
+            oldLeaderId: '',
+            oldBacentaId: '',
+            newBacentaId: '',
+
+            historyRecord: `${values.name} Hub has changed their venue`,
+          },
+        })
       }
 
       resetForm()

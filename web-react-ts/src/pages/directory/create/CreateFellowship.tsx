@@ -20,10 +20,10 @@ const CreateFellowship = () => {
     leaderName: '',
     leaderEmail: '',
     bacenta: bacentaId ?? '',
-    meetingDay: '',
-    vacationStatus: '',
-    venueLatitude: '',
-    venueLongitude: '',
+    meetingDay: 'Thursday',
+    vacationStatus: 'Active',
+    venueLatitude: '0.0',
+    venueLongitude: '0.0',
   }
 
   const [NewFellowshipLeader] = useMutation(NEW_FELLOWSHIP_LEADER)

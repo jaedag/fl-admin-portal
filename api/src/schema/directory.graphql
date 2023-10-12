@@ -666,7 +666,7 @@ type Stream implements Church {
   councils: [Council!]! @relationship(type: "HAS", direction: OUT)
   campus: Campus @relationship(type: "HAS", direction: IN)
   ministries: [Ministry!]! @relationship(type: "HAS_MINISTRY", direction: OUT)
-  meetingDay: ServiceDay @relationship(type: "MEETS_ON", direction: OUT)
+  meetingDay: ServiceDay! @relationship(type: "MEETS_ON", direction: OUT)
 
   stream_name: String
     @cypher(
@@ -1099,7 +1099,7 @@ type Fellowship implements Church {
       RETURN COUNT(DISTINCT pastors)
       """
     )
-  meetingDay: ServiceDay @relationship(type: "MEETS_ON", direction: OUT)
+  meetingDay: ServiceDay! @relationship(type: "MEETS_ON", direction: OUT)
   history(limit: Int! = 3): [HistoryLog!]!
     @cypher(
       statement: "MATCH (this)-[:HAS_HISTORY|OLD_HISTORY]->(log:HistoryLog) RETURN log ORDER BY log.timeStamp DESC LIMIT $limit"

@@ -94,9 +94,7 @@ const MinistryForm = ({
     <ApolloWrapper data={data} loading={loading} error={error}>
       <Container>
         <HeadingPrimary>{title}</HeadingPrimary>
-        <HeadingSecondary>
-          {initialValues.name + ' Creative Arts'}
-        </HeadingSecondary>
+        <HeadingSecondary>{initialValues.name + ' Ministry'}</HeadingSecondary>
         <ButtonGroup className="mt-3">
           {!newMinistry && (
             <>
@@ -256,7 +254,7 @@ const MinistryForm = ({
                         setButtonLoading(false)
                         clickCard(res.data.CloseDownMinistry)
                         setCloseDown(false)
-                        navigate(`/stream/displayall`)
+                        navigate(`/ministry/displayall`)
                       } catch (error) {
                         setButtonLoading(false)
                         throwToSentry(

@@ -875,6 +875,14 @@ export const DISPLAY_HUB = gql`
     hubs(where: { id: $id }, options: { limit: 1 }) {
       id
       name
+      vacationStatus
+      meetingDay {
+        day
+      }
+      location {
+        longitude
+        latitude
+      }
       leader {
         id
         firstName
@@ -922,6 +930,34 @@ export const DISPLAY_HUB = gql`
             }
           }
         }
+      }
+    }
+  }
+`
+
+export const DISPLAY_HUB_HISTORY = gql`
+  query displayHubHistory($id: ID!) {
+    hubs(where: { id: $id }, options: { limit: 1 }) {
+      id
+      rehearsals(limit: 5) {
+        id
+        bankingProof
+        week
+        noServiceReason
+      }
+      history(limit: 5) {
+        id
+        timeStamp
+        createdAt {
+          date
+        }
+        loggedBy {
+          id
+          firstName
+          lastName
+          stream_name
+        }
+        historyRecord
       }
     }
   }

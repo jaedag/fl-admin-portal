@@ -1,12 +1,10 @@
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { useQuery } from '@apollo/client'
 import DisplayChurchDetails from 'components/DisplayChurchDetails/DisplayChurchDetails'
 import { DISPLAY_FELLOWSHIP, DISPLAY_FELLOWSHIP_HISTORY } from './ReadQueries'
 import { ChurchContext } from 'contexts/ChurchContext'
-import { throwToSentry } from 'global-utils'
-import { last3Weeks } from 'jd-date-utils'
+import { check, throwToSentry } from 'global-utils'
 import { permitAdmin } from 'permission-utils'
-import { ServiceRecord } from 'global-types'
 import Breadcrumb from 'components/DisplayChurchDetails/Breadcrumb'
 import { Container } from 'react-bootstrap'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
@@ -58,52 +56,6 @@ const DetailsFellowship = () => {
     breadcrumb = [fellowship]
   }
 
-  const lastFilled = history?.services.map(
-    ({
-      bankingProof,
-      noServiceReason,
-      week,
-    }: {
-      bankingProof: boolean
-      noServiceReason: string
-      week: number
-    }) => ({
-      bankingProof,
-      noServiceReason,
-      week,
-    })
-  )
-
-  const check = last3Weeks()?.map((number) => {
-    if (lastFilled?.some((service: ServiceRecord) => service.week === number)) {
-      const service = lastFilled?.find(
-        ({ week }: { week: number }) => week === number
-      )
-
-      if (!service?.noServiceReason) {
-        return {
-          number: number,
-          filled: true,
-          banked: service.bankingProof ? true : false,
-        }
-      } else if (service?.noServiceReason) {
-        return {
-          number: number,
-          filled: true,
-          banked: 'No Service',
-        }
-      }
-
-      return null
-    } else {
-      return {
-        number: number,
-        filled: false,
-        banked: 'No Service',
-      }
-    }
-  })
-
   const details: DetailsArray = [
     {
       title: 'Members',
@@ -150,7 +102,7 @@ const DetailsFellowship = () => {
           buttons={[]}
           editlink="/fellowship/editfellowship"
           editPermitted={[...permitAdmin('Constituency'), 'leaderFellowship']}
-          last3Weeks={fellowship && check}
+          last3Weeks={fellowship && check(history)}
           vacation={fellowship?.vacationStatus}
           history={history?.history.length && history?.history}
           breadcrumb={breadcrumb && breadcrumb}

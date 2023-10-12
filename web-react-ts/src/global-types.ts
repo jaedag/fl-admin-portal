@@ -48,19 +48,31 @@ export type ChurchLevelLower =
   | 'hubCouncil'
   | 'hub'
 
+export type VacationStatusOptions = 'Vacation' | 'Active'
+
 export type TimeGraph = {
-  date: Date
+  date: string
+}
+
+export type HistoryLog = {
+  __typename: 'HistoryLog'
+  id: string
+  timeStamp: string
+  historyRecord: string
+  createdAt: TimeGraph
+  loggedBy: MemberWithoutBioData
 }
 export interface Church {
   id: string
   name: string
+  vacationStatus?: VacationStatusOptions
   stream_name?: StreamOptions
-  leader: Member
-  admin?: Member
-  vacationStatus?: 'Vacation' | 'Active'
+  leader: MemberWithoutBioData
+  admin?: MemberWithoutBioData
   hubs?: Church[]
   lowerChurch?: Church[]
   memberCount: number
+  history: HistoryLog[]
   __typename: ChurchLevel
 }
 
@@ -69,6 +81,7 @@ export interface Fellowship extends Church {
   bacenta: Bacenta
   bankingCode: number
   services: ServiceRecord[]
+  vacationStatus: VacationStatusOptions
   meetingDay: {
     day: 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday'
   }
@@ -143,7 +156,7 @@ export interface Ministry extends HigherChurch {
   id: string
   __typename: 'Ministry'
   name: string
-  creativeArts: Campus
+  creativeArts: CreativeArts
   councils: Council[]
   hubCouncils?: HubCouncil[]
 }
@@ -156,9 +169,19 @@ export interface HubCouncil extends Church {
 
 export interface Hub extends Church {
   __typename: 'Hub'
-  hubCouncils?: HubCouncil[]
+  location: {
+    latitude: number
+    longitude: number
+  }
+  hubFellowships?: HubFellowship[]
+  activeHubFellowshipCount: number
+  vacationHubFellowshipCount: number
   hubCouncil: HubCouncil
   creativeArts: Campus
+  vacationStatus: VacationStatusOptions
+  meetingDay: {
+    day: 'Wednesday' | 'Friday' | 'Saturday'
+  }
 }
 
 export interface HubFellowship extends Church {
@@ -179,6 +202,8 @@ export interface MemberWithoutBioData {
   pictureUrl: string
   currentTitle: TitleOptions
   nameWithTitle: string
+  phoneNumber: string
+  whatsappNumber: string
 }
 
 export interface Member {
@@ -394,7 +419,8 @@ export type EquipmentRecord = {
 }
 export interface HigherChurch extends Church {
   stream_name: StreamOptions
-  admin: Member
+  vacationStatus?: VacationStatusOptions
+  admin: MemberWithoutBioData
   fellowshipCount: number
   bacentaCount: number
   constituencyCount: number

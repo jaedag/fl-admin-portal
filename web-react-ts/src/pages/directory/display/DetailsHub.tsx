@@ -1,12 +1,13 @@
 import React, { useContext } from 'react'
 import { useQuery } from '@apollo/client'
-import { DISPLAY_HUB } from './ReadQueries'
+import { DISPLAY_HUB, DISPLAY_HUB_HISTORY } from './ReadQueries'
 import { ChurchContext } from '../../../contexts/ChurchContext'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
-import { Church } from 'global-types'
+import { Church, Hub } from 'global-types'
 import DisplaySontaDetails from 'components/DisplayChurchDetails/DisplaySontaDetails'
 import { DetailsArray } from './DetailsFellowship'
 import { permitAdmin } from 'permission-utils'
+import { check } from 'global-utils'
 
 const DetailsHub = () => {
   const { hubId } = useContext(ChurchContext)
@@ -18,7 +19,11 @@ const DetailsHub = () => {
   } = useQuery(DISPLAY_HUB, {
     variables: { id: hubId },
   })
-  const hub = hubData?.hubs[0]
+  const { data: historyData } = useQuery(DISPLAY_HUB_HISTORY, {
+    variables: { id: hubId },
+  })
+  const hub: Hub = hubData?.hubs[0]
+  const history = historyData?.hubs[0]
   let breadcrumb: Church[]
 
   breadcrumb = [
@@ -35,6 +40,16 @@ const DetailsHub = () => {
       number: hub?.memberCount,
       link: '/hub/members',
       width: 12,
+    },
+    {
+      title: 'Meeting Day',
+      number: hub?.meetingDay?.day,
+      link: '#',
+    },
+    {
+      title: 'Status',
+      number: hub?.vacationStatus,
+      link: '#',
     },
     {
       title: 'Hub Fellowships',
@@ -55,12 +70,14 @@ const DetailsHub = () => {
         editPermitted={permitAdmin('Ministry')}
         churchId={hubId}
         leader={hub?.leader}
+        location={hub?.location}
         churchType="Hub"
         subLevel={'HubFellowship'}
         editlink="/hub/edithub"
-        history={hub?.history.length !== 0 && hub?.history}
+        history={hub?.history.length !== 0 ? hub?.history : []}
+        last3Weeks={history && check(history)}
         breadcrumb={breadcrumb && breadcrumb}
-        buttons={hub?.hubFellowships}
+        buttons={hub?.hubFellowships ?? []}
       />
     </ApolloWrapper>
   )

@@ -1,7 +1,14 @@
 import { useMutation } from '@apollo/client'
 import { Form, Formik, FormikHelpers } from 'formik'
 import * as Yup from 'yup'
-import { throwToSentry } from 'global-utils'
+import {
+  DECIMAL_NUM_REGEX,
+  SERVICE_DAY_OPTIONS,
+  VACATION_ONLINE_OPTIONS,
+  VACATION_OPTIONS,
+  isAuthorised,
+  throwToSentry,
+} from 'global-utils'
 import { useContext, useState } from 'react'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { MAKE_HUB_INACTIVE } from 'pages/directory/update/CloseChurchMutations'
@@ -13,6 +20,7 @@ import {
   Col,
   ButtonGroup,
   Modal,
+  Spinner,
 } from 'react-bootstrap'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import SubmitButton from 'components/formik/SubmitButton'
@@ -23,14 +31,21 @@ import { HubFellowship } from 'global-types'
 import { DISPLAY_HUB } from '../display/ReadQueries'
 import HeadingSecondary from 'components/HeadingSecondary'
 import { MOVE_HUBFELLOWSHIP_TO_HUB } from '../update/UpdateMutations'
-import NoDataComponent from 'pages/arrivals/CompNoData'
 import SearchHubFellowship from 'components/formik/SearchHubFellowship'
 import BtnSubmitText from 'components/formik/BtnSubmitText'
+import { permitAdmin, permitMe } from 'permission-utils'
+import { MemberContext } from 'contexts/MemberContext'
+import RoleView from 'auth/RoleView'
+import Select from 'components/formik/Select'
+import VerifyNotMe from 'auth/VerifyNotMe'
 
 export interface HubFormValues extends FormikInitialValues {
   name: string
   hubCouncil?: string
+  meetingDay: string
   vacationStatus: 'Active' | 'Vacation'
+  venueLatitude: string | number
+  venueLongitude: string | number
   hubFellowship?: HubFellowship
   hubFellowships?: HubFellowship[]
 }
@@ -47,6 +62,7 @@ type HubFormProps = {
 
 const HubForm = ({ initialValues, onSubmit, title, newHub }: HubFormProps) => {
   const { clickCard, hubId } = useContext(ChurchContext)
+  const { currentUser } = useContext(MemberContext)
   const [hubFellowshipModal, setHubFellowshipModal] = useState(false)
   const [closeDown, setCloseDown] = useState(false)
   const navigate = useNavigate()
@@ -74,15 +90,40 @@ const HubForm = ({ initialValues, onSubmit, title, newHub }: HubFormProps) => {
     leaderId: Yup.string().required(
       'Please choose a leader from the drop down'
     ),
+    meetingDay: Yup.string().required('Meeting Day is a required field'),
+    vacationStatus: Yup.string().required(
+      'Vacation Status is a required field'
+    ),
+    venueLatitude: Yup.string()
+      .required('Please fill in your location info')
+      .test(
+        'is-decimal',
+        'Please enter valid coordinates',
+        (value) => !!(value + '').match(DECIMAL_NUM_REGEX)
+      ),
+    venueLongitude: Yup.string()
+      .required('Please fill in your location info')
+      .test(
+        'is-decimal',
+        'Please enter valid coordinates',
+        (value) => !!(value + '').match(DECIMAL_NUM_REGEX)
+      ),
   })
+
+  const [positionLoading, setPositionLoading] = useState(false)
+
+  const vacationOptions = isAuthorised(
+    permitMe('Denomination'),
+    currentUser.roles
+  )
+    ? VACATION_ONLINE_OPTIONS
+    : VACATION_OPTIONS
 
   return (
     <>
       <Container>
         <HeadingPrimary>{title}</HeadingPrimary>
-        <HeadingSecondary>
-          {initialValues.name + ' Creative Arts'}
-        </HeadingSecondary>
+        <HeadingSecondary>{initialValues.name + ' Hub'}</HeadingSecondary>
         <ButtonGroup className="mt-3">
           {!newHub && (
             <>
@@ -108,52 +149,125 @@ const HubForm = ({ initialValues, onSubmit, title, newHub }: HubFormProps) => {
                 <div className="form-group">
                   <Row className="row-cols-1 row-cols-md-2">
                     {/* <!-- Basic Info Div --> */}
-                    <Col className="mb-2">
-                      <Input
-                        name="name"
-                        label={`Name of Hub`}
-                        placeholder={`Name of Hub`}
-                      />
 
-                      <Row className="d-flex align-items-center mb-3">
+                    <Col className="mb-2">
+                      <Row className="form-row">
+                        <RoleView roles={permitAdmin('Constituency')}>
+                          <VerifyNotMe leaderId={initialValues.leaderId}>
+                            <>
+                              <Col sm={12}>
+                                <Input
+                                  name="name"
+                                  label="Name of Fellowship"
+                                  placeholder="Name of Fellowship"
+                                />
+                              </Col>
+
+                              <Col sm={12}>
+                                <Select
+                                  label="Meeting Day"
+                                  name="meetingDay"
+                                  options={SERVICE_DAY_OPTIONS}
+                                  defaultOption="Pick a Service Day"
+                                />
+                              </Col>
+
+                              <Col sm={12}>
+                                <Select
+                                  label="Vacation Status"
+                                  name="vacationStatus"
+                                  options={vacationOptions}
+                                  defaultOption="Select Vacation Status"
+                                />
+                              </Col>
+                            </>
+                          </VerifyNotMe>
+                        </RoleView>
+                        <RoleView roles={permitAdmin('Ministry')}>
+                          <VerifyNotMe leaderId={initialValues.leaderId}>
+                            <Col sm={12}>
+                              <SearchMember
+                                name="leaderId"
+                                label="Fellowship Leader"
+                                initialValue={initialValues.leaderName}
+                                placeholder="Select a Leader"
+                                setFieldValue={formik.setFieldValue}
+                                aria-describedby="Member Search Box"
+                                error={formik.errors.leaderId}
+                              />
+                            </Col>
+                          </VerifyNotMe>
+                        </RoleView>
+                      </Row>
+                      <small className="text-muted">
+                        Enter The Coordinates for the Service Venue
+                      </small>
+
+                      <Row className="row-cols-2 d-flex align-items-center">
                         <Col>
-                          <SearchMember
-                            name="leaderId"
-                            label="Choose a Leader"
-                            placeholder="Start typing..."
-                            initialValue={initialValues?.leaderName}
-                            setFieldValue={formik.setFieldValue}
-                            aria-describedby="Member Search Box"
-                            error={formik.errors.leaderId}
+                          <Input name="venueLatitude" placeholder="Latitude" />
+                        </Col>
+                        <Col>
+                          <Input
+                            name="venueLongitude"
+                            placeholder="Longitude"
                           />
                         </Col>
-                      </Row>
-                      <div className="d-grid gap-2">
-                        {initialValues.hubFellowships?.length === 0 ? (
-                          <NoDataComponent text="No Hub Fellowships" />
-                        ) : (
-                          <p className="fw-bold fs-5">Hub Fellowships</p>
-                        )}
-
-                        {initialValues.hubFellowships?.map((hubFellowship) => (
+                        <Col className="my-2">
                           <Button
-                            key={hubFellowship.id}
-                            variant="secondary"
-                            className="text-start"
+                            variant="primary"
+                            className="btn-loading"
+                            disabled={positionLoading}
+                            onClick={() => {
+                              setPositionLoading(true)
+
+                              window.navigator.geolocation.getCurrentPosition(
+                                (position) => {
+                                  formik.setFieldValue(
+                                    'venueLatitude',
+                                    position.coords.latitude
+                                  )
+                                  formik.setFieldValue(
+                                    'venueLongitude',
+                                    position.coords.longitude
+                                  )
+                                  document
+                                    .getElementById('venueLongitude')
+                                    ?.focus()
+                                  document
+                                    .getElementById('venueLatitude')
+                                    ?.focus()
+                                  document
+                                    .getElementById('venueLatitude')
+                                    ?.blur()
+                                  setPositionLoading(false)
+                                }
+                              )
+                            }}
                           >
-                            {hubFellowship.name} Hub Fellowship
+                            {positionLoading ? (
+                              <>
+                                <Spinner animation="grow" size="sm" />
+                                <span> Loading</span>
+                              </>
+                            ) : (
+                              'Locate Me Now'
+                            )}
                           </Button>
-                        ))}
-                      </div>
+                        </Col>
+                      </Row>
+                      <small className="text-muted">
+                        Click this button if you are currently at your
+                        fellowship service venue
+                      </small>
                     </Col>
                   </Row>
                 </div>
 
-                <div className="text-center mt-5">
+                <div className="text-center">
                   <SubmitButton formik={formik} />
                 </div>
               </Form>
-
               <Modal
                 show={hubFellowshipModal}
                 onHide={() => setHubFellowshipModal(false)}
@@ -239,7 +353,7 @@ const HubForm = ({ initialValues, onSubmit, title, newHub }: HubFormProps) => {
                         setButtonLoading(false)
                         clickCard(res.data.CloseDownHub)
                         setCloseDown(false)
-                        navigate(`/stream/displayall`)
+                        navigate(`/hub/displayall`)
                       } catch (error) {
                         setButtonLoading(false)
                         throwToSentry(

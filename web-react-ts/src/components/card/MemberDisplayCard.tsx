@@ -13,10 +13,11 @@ import './MemberDisplayCard.css'
 import { TelephoneFill, Whatsapp } from 'react-bootstrap-icons'
 import CloudinaryImage from 'components/CloudinaryImage'
 import { USER_PLACEHOLDER } from 'global-utils'
-import { ChurchLevel, Member } from 'global-types'
+import { ChurchLevel, Member, MemberWithoutBioData } from 'global-types'
 import useSetUserChurch from 'hooks/useSetUserChurch'
 import { BsEyeFill, BsMusicNote } from 'react-icons/bs'
 import SearchBadgeIcon from './SearchBadgeIcon'
+import { BacentaWithArrivals } from 'pages/arrivals/arrivals-types'
 
 type CardMember = {
   __typename: string | ChurchLevel
@@ -38,8 +39,8 @@ type CardMember = {
 }
 
 type MemberDisplayCardProps = {
-  member: CardMember
-  leader?: Member
+  member: CardMember | BacentaWithArrivals
+  leader?: MemberWithoutBioData
   attendance?: number
   onClick?: () => void
   contact?: boolean
@@ -113,12 +114,12 @@ const MemberDisplayCard = (props: MemberDisplayCardProps) => {
   let name: string = member.name + ' ' + member.__typename
   let details: string[] = [member?.leader?.nameWithTitle || '']
 
-  const noPicture = !member?.pictureUrl && !leader?.pictureUrl
+  const noPicture = !(member as CardMember)?.pictureUrl && !leader?.pictureUrl
 
-  let picture =
-    member?.pictureUrl ||
-    leader?.pictureUrl ||
-    member?.leader?.pictureUrl ||
+  let picture: string =
+    (member as CardMember)?.pictureUrl ??
+    leader?.pictureUrl ??
+    member?.leader?.pictureUrl ??
     USER_PLACEHOLDER
 
   switch (member.__typename) {
@@ -150,7 +151,7 @@ const MemberDisplayCard = (props: MemberDisplayCardProps) => {
             <Icons
               noPicture={noPicture}
               picture={picture}
-              member={member}
+              member={member as Member}
               contact={!!contact}
             />
           </div>

@@ -244,7 +244,7 @@ const CreativeArtsForm = ({
                         setButtonLoading(false)
                         clickCard(res.data.CloseDownCreativeArts)
                         setCloseDown(false)
-                        navigate(`/stream/displayall`)
+                        navigate(`/creativearts/displayall`)
                       } catch (error) {
                         setButtonLoading(false)
                         throwToSentry(
