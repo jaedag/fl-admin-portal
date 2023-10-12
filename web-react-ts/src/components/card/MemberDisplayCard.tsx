@@ -13,7 +13,7 @@ import './MemberDisplayCard.css'
 import { TelephoneFill, Whatsapp } from 'react-bootstrap-icons'
 import CloudinaryImage from 'components/CloudinaryImage'
 import { USER_PLACEHOLDER } from 'global-utils'
-import { ChurchLevel } from 'global-types'
+import { ChurchLevel, Member } from 'global-types'
 import useSetUserChurch from 'hooks/useSetUserChurch'
 import { BsEyeFill, BsMusicNote } from 'react-icons/bs'
 import SearchBadgeIcon from './SearchBadgeIcon'
@@ -34,11 +34,7 @@ type CardMember = {
     id: string
     name: string
   }
-  leader?: {
-    id: string
-    nameWithTitle: string
-    pictureUrl?: string
-  }
+  leader?: Member
 }
 
 type MemberDisplayCardProps = {

@@ -34,14 +34,7 @@ export interface CouncilWithDefaulters extends Council {
 
 export interface HigherChurchWithDefaulters extends Church {
   __typename: 'Constituency' | 'Stream' | 'Council' | 'Campus'
-  admin?: {
-    id: string
-    firstName: string
-    lastName: string
-    fullName: string
-    phoneNumber: string
-    whatsappNumber: string
-  }
+  admin?: Member
   stream_name: StreamOptions
   servicesThisWeek: FellowshipWithDefaulters[]
   formDefaultersThisWeek: FellowshipWithDefaulters[]
