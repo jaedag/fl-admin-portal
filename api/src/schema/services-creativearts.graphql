@@ -1859,10 +1859,10 @@ extend type CreativeArts {
   activeMinistryCount: Int!
     @cypher(
       statement: """
-      MATCH (this)-[:HAS]->(ministry:Ministry:Active) RETURN COUNT(DISTINCT ministry)
+      MATCH (this)-[:HAS]->(ministry:Ministry) RETURN COUNT(DISTINCT ministry)
       """
     )
-  ministrieservicesThisWeek: [Ministry!]!
+  ministryServicesThisWeek: [Ministry!]!
     @cypher(
       statement: """
       MATCH (this)
@@ -1878,7 +1878,7 @@ extend type CreativeArts {
       RETURN DISTINCT ministries
       """
     )
-  ministrieservicesThisWeekCount: Int!
+  ministryServicesThisWeekCount: Int!
     @cypher(
       statement: """
       MATCH (this)
