@@ -67,7 +67,7 @@ const BacentaForm = ({
     refetchQueries: [
       {
         query: DISPLAY_CONSTITUENCY,
-        variables: { id: initialValues.constituency },
+        variables: { id: initialValues.constituency?.id },
       },
     ],
   })

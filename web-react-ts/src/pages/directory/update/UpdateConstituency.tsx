@@ -29,6 +29,7 @@ const UpdateConstituency = () => {
     adminId: constituency?.admin?.id || '',
     leaderId: constituency?.leader?.id || '',
     leaderEmail: constituency?.leader?.email || '',
+    council: constituency?.council,
     bacentas: constituency?.bacentas?.length ? constituency.bacentas : [''],
   }
   const [LogConstituencyHistory] = useMutation(LOG_CONSTITUENCY_HISTORY, {

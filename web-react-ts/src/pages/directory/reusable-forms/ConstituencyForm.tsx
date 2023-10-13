@@ -59,7 +59,7 @@ const ConstituencyForm = ({
   const [buttonLoading, setButtonLoading] = useState(false)
   const [CloseDownConstituency] = useMutation(MAKE_CONSTITUENCY_INACTIVE, {
     refetchQueries: [
-      { query: DISPLAY_COUNCIL, variables: { id: constituencyId } },
+      { query: DISPLAY_COUNCIL, variables: { id: initialValues.council?.id } },
     ],
   })
   const [MoveBacentaToConstituency] = useMutation(

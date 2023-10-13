@@ -247,25 +247,27 @@ const DefaultersDashboard = () => {
               </Col>
             </RoleView>
 
-            {streamDefaultersArray.length && (
-              <Col xs={12} className="mb-3">
+            {['Campus', 'Oversight', 'Denomination'].includes(
+              church?.__typename ?? ''
+            ) && (
+              <>
                 <hr />
                 <HeadingSecondary>Stream Services</HeadingSecondary>
                 <PlaceholderCustom as="h6" loading={!church}>
                   <h6>{`Active Streams: ${church?.activeStreamCount}`}</h6>
                 </PlaceholderCustom>
-              </Col>
+                {streamDefaultersArray.map((defaulter, i) => (
+                  <Col key={i} xs={6} className="mb-3">
+                    <DefaulterInfoCard defaulter={defaulter} />
+                  </Col>
+                ))}
+              </>
             )}
-            {streamDefaultersArray.map((defaulter, i) => (
-              <Col key={i} xs={6} className="mb-3">
-                <DefaulterInfoCard defaulter={defaulter} />
-              </Col>
-            ))}
 
             {['Campus', 'Stream', 'Council', 'Constituency'].includes(
               church?.__typename ?? ''
             ) && (
-              <Col xs={12} className="mb-3">
+              <>
                 <hr />
                 <HeadingSecondary>Fellowship Services</HeadingSecondary>
                 <PlaceholderCustom as="h6" loading={!church}>
@@ -277,7 +279,7 @@ const DefaultersDashboard = () => {
                   </Col>
                 ))}
                 <hr />
-              </Col>
+              </>
             )}
 
             {jointServiceDefaulters.map((defaulter, i) => {
