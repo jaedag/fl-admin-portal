@@ -1,3 +1,17 @@
+#### 7.10.17 (2023-10-13)
+
+##### New Features
+
+*  implement church by subchurch from denomination to constituency ([3fdbcb68](https://github.com/firstlovecenter/fl-pastoral-care/commit/3fdbcb68fb5d729e62b3eff26061e3ae3d3258a8))
+
+##### Bug Fixes
+
+*  optioally render stream defaulters ([fc8d5265](https://github.com/firstlovecenter/fl-pastoral-care/commit/fc8d5265f4d2ba74d691ac0ba969c2c4cc8092e2))
+*  implement defaulters dashboards for oversight and denomination ([16bb5412](https://github.com/firstlovecenter/fl-pastoral-care/commit/16bb5412120b5776b3e9b7581827a186ae6e1f6f))
+*  implement pages for stream service defaulters onn campus level ([72d1e283](https://github.com/firstlovecenter/fl-pastoral-care/commit/72d1e2832b39537157dcb2c4aae350f1ebcbc089))
+*   fix error with showing services filled on detailsfellowship ([1bab61fc](https://github.com/firstlovecenter/fl-pastoral-care/commit/1bab61fc0e8f1f46d69ccb5993456c2ea6eb4972))
+*  include hub council in search results ([c46aeff8](https://github.com/firstlovecenter/fl-pastoral-care/commit/c46aeff8e95d9ccb998f8f95533b2e8be278b3d9))
+
 #### 7.10.16 (2023-10-12)
 
 ##### New Features
