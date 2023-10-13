@@ -1,3 +1,12 @@
+#### 7.10.18 (2023-10-13)
+
+##### Bug Fixes
+
+*  remove linkto hub page in DetailsHubCouncil ([c4babbce](https://github.com/firstlovecenter/fl-pastoral-care/commit/c4babbcedcf0bc6540eca5e9feb3d932cce92b5a))
+*  merge from admin-616 ([92389734](https://github.com/firstlovecenter/fl-pastoral-care/commit/92389734263f7ba80dd8445a427563ca33d55fb7))
+*  fix permissions for defaulters dashboard ([5b332f8e](https://github.com/firstlovecenter/fl-pastoral-care/commit/5b332f8eca8285ffbb52b4c35178f3877780a48a))
+*  rearrage order of church levels ([1d973892](https://github.com/firstlovecenter/fl-pastoral-care/commit/1d9738925b4b91b3ffde524fcc79b333d27558ac))
+
 #### 7.10.17 (2023-10-13)
 
 ##### New Features
