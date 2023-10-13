@@ -9,7 +9,6 @@ import { anagkazoRoutes } from './banking/anagkazo/anagkazoBankingRoutes'
 import { LazyRouteTypes } from 'global-types'
 import { lazy } from 'react'
 import { downloadReports } from './download-reports/downloadReportsRoutes'
-import { streamServicesRoutes } from './defaulters/stream-services/streamDefaultersRoutes'
 
 const BacentaService = lazy(
   () => import('pages/services/record-service/BacentaService')
@@ -28,9 +27,6 @@ const FellowshipService = lazy(
 )
 const FellowshipServiceCancelled = lazy(
   () => import('pages/services/record-service/FellowshipServiceCancelled')
-)
-const StreamServiceCancelled = lazy(
-  () => import('pages/services/record-service/StreamServiceCancelled')
 )
 const FellowshipServiceDetails = lazy(
   () => import('pages/services/record-service/FellowshipServiceDetails')
@@ -116,10 +112,6 @@ const StreamByCouncil = lazy(
 const CampusByStream = lazy(
   () => import('pages/services/defaulters/church-by-subchurch/CampusByStream')
 )
-const OversightByCampus = lazy(
-  () =>
-    import('pages/services/defaulters/church-by-subchurch/OversightByCampus')
-)
 const CreativeArtsByMinistry = lazy(
   () => import('pages/services/defaulters/creative-arts/CreativeArtsByMinistry')
 )
@@ -177,7 +169,6 @@ export const services: LazyRouteTypes[] = [
   ...downloadReports,
   ...anagkazoRoutes,
   ...banking,
-  ...streamServicesRoutes,
   {
     path: '/services',
     element: ServicesMenu,
@@ -463,12 +454,6 @@ export const graphs: LazyRouteTypes[] = [
     roles: permitLeaderAdmin('Stream'),
     placeholder: false,
   },
-  {
-    path: '/services/stream/no-service',
-    element: StreamServiceCancelled,
-    roles: permitLeaderAdmin('Stream'),
-    placeholder: true,
-  },
 
   //Campus Services
   {
@@ -488,25 +473,25 @@ export const graphs: LazyRouteTypes[] = [
   {
     path: '/services/defaulters',
     element: Defaulters,
-    roles: [...permitLeaderAdmin('Constituency'), ...permitLeader('Hub')],
+    roles: [...permitLeaderAdmin('Constituency'), ...permitLeaderAdmin('Hub')],
     placeholder: true,
   },
   {
     path: '/services/defaulters/dashboard',
     element: DefaultersDashboard,
-    roles: [...permitLeaderAdmin('Constituency'), ...permitLeader('Hub')],
+    roles: [...permitLeaderAdmin('Constituency'), ...permitLeaderAdmin('Hub')],
     placeholder: true,
   },
   {
     path: '/services/form-defaulters',
     element: FormDefaulters,
-    roles: [...permitLeaderAdmin('Constituency'), ...permitLeader('Hub')],
+    roles: [...permitLeaderAdmin('Constituency'), ...permitLeaderAdmin('Hub')],
     placeholder: true,
   },
   {
     path: '/services/banking-defaulters',
     element: BankingDefaulters,
-    roles: [...permitLeaderAdmin('Constituency'), ...permitLeader('Hub')],
+    roles: [...permitLeaderAdmin('Constituency'), ...permitLeaderAdmin('Hub')],
     placeholder: true,
   },
   {
@@ -567,12 +552,6 @@ export const graphs: LazyRouteTypes[] = [
     path: '/services/campus-by-stream',
     element: CampusByStream,
     roles: permitLeaderAdmin('Campus'),
-    placeholder: true,
-  },
-  {
-    path: '/services/oversight-by-campus',
-    element: OversightByCampus,
-    roles: permitLeaderAdmin('Oversight'),
     placeholder: true,
   },
   {

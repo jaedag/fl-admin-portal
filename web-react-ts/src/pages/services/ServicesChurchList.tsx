@@ -25,7 +25,12 @@ const ServicesChurchList = () => {
         </PlaceholderCustom>
         <ChurchList link="/services" color="churches" includeVacation />
         <div className="d-grid gap-2 mt-2 text-left">
-          <RoleView roles={permitLeaderAdmin('Constituency')}>
+          <RoleView
+            roles={[
+              ...permitLeaderAdmin('Constituency'),
+              ...permitLeaderAdmin('Hub'),
+            ]}
+          >
             <MenuButton
               title="Defaulters"
               color="danger"

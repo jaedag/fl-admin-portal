@@ -251,11 +251,14 @@ const DefaultersDashboard = () => {
               church?.__typename ?? ''
             ) && (
               <>
-                <hr />
-                <HeadingSecondary>Stream Services</HeadingSecondary>
-                <PlaceholderCustom as="h6" loading={!church}>
-                  <h6>{`Active Streams: ${church?.activeStreamCount}`}</h6>
-                </PlaceholderCustom>
+                <Col xs={12} className="mb-3">
+                  <hr />
+                  <HeadingSecondary>Stream Services</HeadingSecondary>
+                  <PlaceholderCustom as="h6" loading={!church}>
+                    <h6>{`Active Streams: ${church?.activeStreamCount}`}</h6>
+                  </PlaceholderCustom>
+                </Col>
+
                 {streamDefaultersArray.map((defaulter, i) => (
                   <Col key={i} xs={6} className="mb-3">
                     <DefaulterInfoCard defaulter={defaulter} />
@@ -264,9 +267,16 @@ const DefaultersDashboard = () => {
               </>
             )}
 
-            {['Campus', 'Stream', 'Council', 'Constituency'].includes(
-              church?.__typename ?? ''
-            ) && (
+            {[
+              'Campus',
+              'Stream',
+              'Council',
+              'Constituency',
+              'Hub',
+              'HubCouncil',
+              'Ministry',
+              'CreativeArts',
+            ].includes(church?.__typename ?? '') && (
               <>
                 <hr />
                 <HeadingSecondary>Fellowship Services</HeadingSecondary>
