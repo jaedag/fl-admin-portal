@@ -44,7 +44,7 @@ const DetailsHubCouncil = () => {
       title: 'Hub Fellowship',
       number: hubCouncil?.activeHubFellowshipCount,
       vacationCount: hubCouncil?.vacationHubFellowshipCount,
-      link: '/hub/displayall',
+      link: '#',
     },
   ]
 

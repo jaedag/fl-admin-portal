@@ -231,7 +231,7 @@ const DefaultersDashboard = () => {
 
   return (
     <PullToRefresh onRefresh={refetch}>
-      <ApolloWrapper data={church} loading={loading} error={error} placeholder>
+      <ApolloWrapper data={church} loading={loading} error={error}>
         <Container>
           <HeadingPrimary
             loading={!church}
