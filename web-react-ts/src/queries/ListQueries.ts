@@ -262,6 +262,7 @@ export const GET_CAMPUS_STREAMS = gql`
         stream_name
         memberCount
         councilCount
+        vacationStatus
         target
         leader {
           id

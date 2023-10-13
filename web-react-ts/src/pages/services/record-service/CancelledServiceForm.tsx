@@ -44,7 +44,7 @@ const CancelledServiceForm = ({
     serviceDate: Yup.date()
       .max(new Date(), 'Service could not possibly have happened after today')
       .required('Date is a required field'),
-    noServiceReason: Yup.string().required('You must take give a reason'),
+    noServiceReason: Yup.string().required('You must give a reason'),
   })
 
   const onSubmit = (

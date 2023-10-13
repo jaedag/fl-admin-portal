@@ -61,6 +61,13 @@ export const OVERSIGHT_BY_CAMPUS = gql`
         streamBankedThisWeekCount
         streamServicesThisWeekCount
         streamCancelledServicesThisWeekCount
+
+        activeFellowshipCount
+        formDefaultersThisWeekCount
+        bankingDefaultersThisWeekCount
+        bankedThisWeekCount
+        servicesThisWeekCount
+        cancelledServicesThisWeekCount
       }
     }
   }

@@ -4,6 +4,7 @@ import * as Yup from 'yup'
 import {
   STREAM_ACCOUNT_OPTIONS,
   STREAM_SERVICE_DAY_OPTIONS,
+  VACATION_OPTIONS,
   throwToSentry,
 } from 'global-utils'
 import { useContext, useState } from 'react'
@@ -27,7 +28,7 @@ import Input from 'components/formik/Input'
 import SearchMember from 'components/formik/SearchMember'
 import SearchCouncil from 'components/formik/SearchCouncil'
 import { FormikInitialValues } from 'components/formik/formik-types'
-import { Council, Campus } from 'global-types'
+import { Council, Campus, VacationStatusOptions } from 'global-types'
 import NoDataComponent from 'pages/arrivals/CompNoData'
 import { DISPLAY_STREAM, DISPLAY_CAMPUS } from '../display/ReadQueries'
 import Select from 'components/formik/Select'
@@ -50,6 +51,7 @@ export interface StreamFormValues extends FormikInitialValues {
     | 'oa_ghwest'
     | 'oa_tarkwa'
   meetingDay: 'Friday' | 'Saturday' | 'Sunday'
+  vacationStatus: VacationStatusOptions
   councils?: Council[]
   council?: Council
 }
@@ -90,6 +92,10 @@ const StreamForm = ({
     leaderId: Yup.string().required(
       'Please choose a leader from the drop down'
     ),
+    vacationStatus: Yup.string().required(
+      'Vacation Status is a required field'
+    ),
+    meetingDay: Yup.string().required('Meeting Day is a required field'),
   })
 
   return (
@@ -131,6 +137,12 @@ const StreamForm = ({
                       name="meetingDay"
                       options={STREAM_SERVICE_DAY_OPTIONS}
                       defaultOption="Pick a Service Day"
+                    />
+                    <Select
+                      label="Vacation Status"
+                      name="vacationStatus"
+                      options={VACATION_OPTIONS}
+                      defaultOption="Select Vacation Status"
                     />
                     <Select
                       label="Stream Account"
