@@ -287,7 +287,7 @@ extend type Ministry {
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships) WHERE fellowships:HubFellowship OR fellowships:ClosedFellowship
 
        WITH DISTINCT fellowships, this
-       MATCH (fellowships)<-[:HAS]-(:Hub)<-[:HAS]-(this)
+       MATCH (fellowships)<-[:HAS]-(:Hub)<-[:HAS]-(:HubCouncil)<-[:HAS]-(this)
 
       RETURN DISTINCT fellowships
       """
@@ -311,7 +311,7 @@ extend type Ministry {
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships) WHERE fellowships:HubFellowship OR fellowships:ClosedFellowship
 
        WITH DISTINCT fellowships, this
-       MATCH (fellowships)<-[:HAS]-(:Hub)<-[:HAS]-(this)
+       MATCH (fellowships)<-[:HAS]-(:Hub)<-[:HAS]-(:HubCouncil)<-[:HAS]-(this)
 
       RETURN COUNT(DISTINCT fellowships)
       """
@@ -335,7 +335,7 @@ extend type Ministry {
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships) WHERE fellowships:HubFellowship OR fellowships:ClosedFellowship
 
        WITH DISTINCT fellowships, this
-       MATCH (fellowships)<-[:HAS]-(:Hub)<-[:HAS]-(this)
+       MATCH (fellowships)<-[:HAS]-(:Hub)<-[:HAS]-(:HubCouncil)<-[:HAS]-(this)
 
       RETURN DISTINCT fellowships
       """
@@ -359,7 +359,7 @@ extend type Ministry {
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships) WHERE fellowships:HubFellowship OR fellowships:ClosedFellowship
 
        WITH DISTINCT fellowships, this
-       MATCH (fellowships)<-[:HAS]-(:Hub)<-[:HAS]-(this)
+       MATCH (fellowships)<-[:HAS]-(:Hub)<-[:HAS]-(:HubCouncil)<-[:HAS]-(this)
 
       RETURN COUNT(DISTINCT fellowships)
       """
@@ -381,7 +381,7 @@ extend type Ministry {
 
       OPTIONAL MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships:Active:HubFellowship)-[:MEETS_ON]->(day:ServiceDay)
       WITH collect(DISTINCT fellowships) as services, this
-      MATCH (defaulters:Active:HubFellowship)<-[:HAS]-(:Hub)<-[:HAS]-(this)
+      MATCH (defaulters:Active:HubFellowship)<-[:HAS]<-[:HAS]-(:Hub)<-[:HAS]-(:HubCouncil)<-[:HAS]-(this)
       WHERE NOT defaulters IN services
 
       WITH defaulters, this
@@ -407,7 +407,7 @@ extend type Ministry {
 
        OPTIONAL MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships:Active:HubFellowship)-[:MEETS_ON]->(day:ServiceDay)
        WITH collect(DISTINCT fellowships) as services, this
-       MATCH (defaulters:Active:HubFellowship)<-[:HAS]-(:Hub)<-[:HAS]-(this)
+       MATCH (defaulters:Active:HubFellowship)<-[:HAS]-(:Hub)<-[:HAS]-(:HubCouncil)<-[:HAS]-(this)
        WHERE NOT defaulters IN services
 
        WITH defaulters, this
@@ -438,7 +438,7 @@ extend type Ministry {
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships) WHERE fellowships:HubFellowship OR fellowships:ClosedFellowship
 
        WITH DISTINCT fellowships, this
-       MATCH (fellowships)<-[:HAS]-(:Hub)<-[:HAS]-(this)
+       MATCH (fellowships)<-[:HAS]-(:Hub)<-[:HAS]-(:HubCouncil)<-[:HAS]-(this)
 
       RETURN DISTINCT fellowships
       """
@@ -465,7 +465,7 @@ extend type Ministry {
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships) WHERE fellowships:HubFellowship OR fellowships:ClosedFellowship
 
        WITH DISTINCT fellowships, this
-       MATCH (fellowships)<-[:HAS]-(:Hub)<-[:HAS]-(this)
+       MATCH (fellowships)<-[:HAS]-(:Hub)<-[:HAS]-(:HubCouncil)<-[:HAS]-(this)
 
       RETURN COUNT(DISTINCT fellowships)
       """
@@ -490,7 +490,7 @@ extend type Ministry {
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships) WHERE fellowships:HubFellowship OR fellowships:ClosedFellowship
 
        WITH DISTINCT fellowships, this
-       MATCH (fellowships)<-[:HAS]-(:Hub)<-[:HAS]-(this)
+       MATCH (fellowships)<-[:HAS]-(:Hub)<-[:HAS]-(:HubCouncil)<-[:HAS]-(this)
 
       RETURN DISTINCT fellowships
       """
@@ -515,13 +515,12 @@ extend type Ministry {
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships) WHERE fellowships:HubFellowship OR fellowships:ClosedFellowship
 
        WITH DISTINCT fellowships, this
-       MATCH (fellowships)<-[:HAS]-(:Hub)<-[:HAS]-(this)
+       MATCH (fellowships)<-[:HAS]-(:Hub)<-[:HAS]-(:HubCouncil)<-[:HAS]-(this)
 
       RETURN COUNT(DISTINCT fellowships)
       """
     )
 }
-
 
 extend type CreativeArts {
   activeFellowshipCount: Int!
@@ -550,7 +549,7 @@ extend type CreativeArts {
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships) WHERE fellowships:HubFellowship OR fellowships:ClosedFellowship
 
        WITH DISTINCT fellowships, this
-       MATCH (fellowships)<-[:HAS]-(:Hub)<-[:HAS]-(:Ministry)<-[:HAS]-(this)
+       MATCH (fellowships)<-[:HAS]-(:Hub)<-[:HAS]-(:HubCouncil)<-[:HAS]-(:Ministry)<-[:HAS]-(this)
 
       RETURN DISTINCT fellowships
       """
@@ -574,7 +573,7 @@ extend type CreativeArts {
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships) WHERE fellowships:HubFellowship OR fellowships:ClosedFellowship
 
        WITH DISTINCT fellowships, this
-       MATCH (fellowships)<-[:HAS]-(:Hub)<-[:HAS]-(:Ministry)<-[:HAS]-(this)
+       MATCH (fellowships)<-[:HAS]-(:Hub)<-[:HAS]-(:HubCouncil)<-[:HAS]-(:Ministry)<-[:HAS]-(this)
 
       RETURN COUNT(DISTINCT fellowships)
       """
@@ -598,7 +597,7 @@ extend type CreativeArts {
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships) WHERE fellowships:HubFellowship OR fellowships:ClosedFellowship
 
        WITH DISTINCT fellowships, this
-       MATCH (fellowships)<-[:HAS]-(:Hub)<-[:HAS]-(:Ministry)<-[:HAS]-(this)
+       MATCH (fellowships)<-[:HAS]-(:Hub)<-[:HAS]-(:HubCouncil)<-[:HAS]-(:Ministry)<-[:HAS]-(this)
 
       RETURN DISTINCT fellowships
       """
@@ -622,7 +621,7 @@ extend type CreativeArts {
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships) WHERE fellowships:HubFellowship OR fellowships:ClosedFellowship
 
        WITH DISTINCT fellowships, this
-       MATCH (fellowships)<-[:HAS]-(:Hub)<-[:HAS]-(:Ministry)<-[:HAS]-(this)
+       MATCH (fellowships)<-[:HAS]-(:Hub)<-[:HAS]-(:HubCouncil)<-[:HAS]-(:Ministry)<-[:HAS]-(this)
 
       RETURN COUNT(DISTINCT fellowships)
       """
@@ -644,7 +643,7 @@ extend type CreativeArts {
 
       OPTIONAL MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships:Active:HubFellowship)-[:MEETS_ON]->(day:ServiceDay)
       WITH collect(DISTINCT fellowships) as services, this
-      MATCH (defaulters:Active:HubFellowship)<-[:HAS]-(:Hub)<-[:HAS]-(:Ministry)<-[:HAS]-(this)
+      MATCH (defaulters:Active:HubFellowship)<-[:HAS]-(:Hub)<-[:HAS]-(:HubCouncil)<-[:HAS]-(:Ministry)<-[:HAS]-(this)
       WHERE NOT defaulters IN services
 
       WITH defaulters, this
@@ -670,7 +669,7 @@ extend type CreativeArts {
 
        OPTIONAL MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships:Active:HubFellowship)-[:MEETS_ON]->(day:ServiceDay)
        WITH collect(DISTINCT fellowships) as services, this
-       MATCH (defaulters:Active:HubFellowship)<-[:HAS]-(:Hub)<-[:HAS]-(:Ministry)<-[:HAS]-(this)
+       MATCH (defaulters:Active:HubFellowship)<-[:HAS]-(:Hub)<-[:HAS]-(:HubCouncil)<-[:HAS]-(:Ministry)<-[:HAS]-(this)
        WHERE NOT defaulters IN services
 
        WITH defaulters, this
@@ -701,7 +700,7 @@ extend type CreativeArts {
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships) WHERE fellowships:HubFellowship OR fellowships:ClosedFellowship
 
        WITH DISTINCT fellowships, this
-       MATCH (fellowships)<-[:HAS]-(:Hub)<-[:HAS]-(:Ministry)<-[:HAS]-(this)
+       MATCH (fellowships)<-[:HAS]-(:Hub)<-[:HAS]-(:HubCouncil)<-[:HAS]-(:Ministry)<-[:HAS]-(this)
 
       RETURN DISTINCT fellowships
       """
@@ -728,7 +727,7 @@ extend type CreativeArts {
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships) WHERE fellowships:HubFellowship OR fellowships:ClosedFellowship
 
        WITH DISTINCT fellowships, this
-       MATCH (fellowships)<-[:HAS]-(:Hub)<-[:HAS]-(:Ministry)<-[:HAS]-(this)
+       MATCH (fellowships)<-[:HAS]-(:Hub)<-[:HAS]-(:HubCouncil)<-[:HAS]-(:Ministry)<-[:HAS]-(this)
 
       RETURN COUNT(DISTINCT fellowships)
       """
@@ -753,7 +752,7 @@ extend type CreativeArts {
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships) WHERE fellowships:HubFellowship OR fellowships:ClosedFellowship
 
        WITH DISTINCT fellowships, this
-       MATCH (fellowships)<-[:HAS]-(:Hub)<-[:HAS]-(:Ministry)<-[:HAS]-(this)
+       MATCH (fellowships)<-[:HAS]-(:Hub)<-[:HAS]-(:HubCouncil)<-[:HAS]-(:Ministry)<-[:HAS]-(this)
 
       RETURN DISTINCT fellowships
       """
@@ -778,9 +777,504 @@ extend type CreativeArts {
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships) WHERE fellowships:HubFellowship OR fellowships:ClosedFellowship
 
        WITH DISTINCT fellowships, this
-       MATCH (fellowships)<-[:HAS]-(:Hub)<-[:HAS]-(:Ministry)<-[:HAS]-(this)
+       MATCH (fellowships)<-[:HAS]-(:Hub)<-[:HAS]-(:HubCouncil)<-[:HAS]-(:Ministry)<-[:HAS]-(this)
 
       RETURN COUNT(DISTINCT fellowships)
+      """
+    )
+}
+
+extend type CreativeArts {
+   hubRehearsalsThisWeek: [Hub!]!
+    @cypher(
+      statement: """
+      MATCH (this)
+      WITH date() as today, this
+      WITH  today.weekDay as theDay, today, this
+      WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
+      WITH [day in range(0, 5) | startDate + duration({days: day})] AS dates, this
+
+      MATCH (date:TimeGraph)
+      USING INDEX date:TimeGraph(date)
+      WHERE date.date IN dates
+      MATCH (date)<-[:SERVICE_HELD_ON]-(record:RehearsalRecord)
+
+       WITH DISTINCT this, record WHERE record.attendance IS NOT NULL
+       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(hubs) WHERE hubs:Hub OR hubs:ClosedHub
+
+       WITH DISTINCT hubs, this
+       MATCH (hubs)<-[:HAS]-(:HubCouncil)<-[:HAS]-(:Ministry)<-[:HAS]-(this)
+
+      RETURN DISTINCT hubs
+      """
+    )
+  hubRehearsalsThisWeek: Int
+    @cypher(
+      statement: """
+      MATCH (this)
+      WITH date() as today, this
+      WITH  today.weekDay as theDay, today, this
+      WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
+      WITH [day in range(0, 5) | startDate + duration({days: day})] AS dates, this
+
+      MATCH (date:TimeGraph)
+      USING INDEX date:TimeGraph(date)
+      WHERE date.date IN dates
+      MATCH (date)<-[:SERVICE_HELD_ON]-(record:RehearsalRecord)
+
+       WITH DISTINCT this, record WHERE record.attendance IS NOT NULL
+       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(hubs) WHERE hubs:Hub OR hubs:ClosedHub
+
+       WITH DISTINCT hubs, this
+       MATCH (hubs)<-[:HAS]-(:HubCouncil)<-[:HAS]-(:Ministry)<-[:HAS]-(this)
+
+      RETURN COUNT(DISTINCT hubs)
+      """
+    )
+
+    hubCancelledRehearsalsThisWeek: [Hub!]!
+    @cypher(
+      statement: """
+      MATCH (this)
+      WITH date() as today, this
+      WITH  today.weekDay as theDay, today, this
+      WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
+      WITH [day in range(0, 5) | startDate + duration({days: day})] AS dates, this
+
+      MATCH (date:TimeGraph)
+      USING INDEX date:TimeGraph(date)
+      WHERE date.date IN dates
+      MATCH (date)<-[:SERVICE_HELD_ON]-(record:RehearsalRecord)
+
+       WITH DISTINCT record, this
+       WHERE record.noServiceReason IS NOT NULL
+       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(hubs) WHERE hubs:Hub OR hubs:ClosedHub
+
+       WITH DISTINCT hubs, this
+       MATCH (hubs)<-[:HAS]-(hubCouncil:HubCouncil)<-[:HAS]-(ministry:Ministry)<-[:HAS]-(this)
+
+      RETURN DISTINCT hubs
+      """
+    )
+  hubCancelledRehearsalsThisWeekCount: Int
+    @cypher(
+      statement: """
+       MATCH (this)
+      WITH date() as today, this
+      WITH  today.weekDay as theDay, today, this
+      WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
+      WITH [day in range(0, 5) | startDate + duration({days: day})] AS dates, this
+
+      MATCH (date:TimeGraph)
+      USING INDEX date:TimeGraph(date)
+      WHERE date.date IN dates
+      MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
+
+       WITH DISTINCT record, this
+       WHERE record.noServiceReason IS NOT NULL
+       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(hubs) WHERE hubs:Hub OR hubs:ClosedHub
+
+       WITH DISTINCT hubs, this
+       MATCH (hubs)<-[:HAS]-(hubCouncil:HubCouncil)<-[:HAS]-(ministry:Ministry)<-[:HAS]-(this)
+
+      RETURN COUNT(DISTINCT hubs)
+      """
+    )
+  hubFormDefaultersThisWeek: [Hub!]!
+    @cypher(
+      statement: """
+      MATCH (this)
+      WITH date() as today, this
+      WITH  today.weekDay as theDay, today, this
+      WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
+      WITH [day in range(0, 5) | startDate + duration({days: day})] AS dates, this
+
+      MATCH (date:TimeGraph)
+      USING INDEX date:TimeGraph(date)
+      WHERE date.date IN dates
+      MATCH (date)<-[:SERVICE_HELD_ON]-(record:RehearsalRecord)
+
+       WITH DISTINCT record, this
+       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(hubs:Active:Hub)
+       MATCH (hubs)-[:MEETS_ON]->(day:ServiceDay)
+
+       WITH collect(DISTINCT hubs) as services, this
+       MATCH (defaulters:Active:Hub)<-[:HAS]-(hubCouncil:HubCouncil)<-[:HAS]-(ministry:Ministry)<-[:HAS]-(this)
+       WHERE NOT defaulters IN services
+
+       WITH defaulters, this
+       MATCH (defaulters)-[:MEETS_ON]->(day:ServiceDay)
+        WHERE day.dayNumber < date().dayOfWeek OR (day.dayNumber = date().dayOfWeek AND  time() > time('20:30'))
+       RETURN DISTINCT defaulters
+      """
+    )
+  hubFormDefaultersThisWeekCount: Int
+    @cypher(
+      statement: """
+      MATCH (this)
+      WITH date() as today, this
+      WITH  today.weekDay as theDay, today, this
+      WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
+      WITH [day in range(0, 5) | startDate + duration({days: day})] AS dates, this
+
+      MATCH (date:TimeGraph)
+      USING INDEX date:TimeGraph(date)
+      WHERE date.date IN dates
+      MATCH (date)<-[:SERVICE_HELD_ON]-(record:RehearsalRecord)
+
+       WITH DISTINCT record, this
+       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(hubs:Active:Hub)
+       MATCH (hubs)-[:MEETS_ON]->(day:ServiceDay)
+
+       WITH collect(DISTINCT hubs) as services, this
+       MATCH (defaulters:Active:Hub)<-[:HAS]-(hubCouncil:HubCouncil)<-[:HAS]-(ministry:Ministry)<-[:HAS]-(this)
+       WHERE NOT defaulters IN services
+
+       WITH defaulters, this
+       MATCH (defaulters)-[:MEETS_ON]->(day:ServiceDay)
+        WHERE day.dayNumber < date().dayOfWeek OR (day.dayNumber = date().dayOfWeek AND  time() > time('20:30'))
+       RETURN COUNT(DISTINCT defaulters)
+      """
+    )
+  hubBankingDefaultersThisWeek: [Hub!]!
+    @cypher(
+      statement: """
+      MATCH (this)
+      WITH date() as today, this
+      WITH  today.weekDay as theDay, today, this
+      WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
+      WITH [day in range(0, 5) | startDate + duration({days: day})] AS dates, this
+
+      MATCH (date:TimeGraph)
+      USING INDEX date:TimeGraph(date)
+      WHERE date.date IN dates
+      MATCH (date)<-[:SERVICE_HELD_ON]-(record:RehearsalRecord)
+
+       WITH DISTINCT record, this
+        WHERE record.noServiceReason IS NULL
+          AND record.bankingSlip IS NULL
+          AND (record.transactionStatus IS NULL OR record.transactionStatus <> 'success')
+          AND record.tellerConfirmationTime IS NULL
+       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(hubs) WHERE hubs:Hub OR hubs:ClosedHub
+
+       WITH DISTINCT hubs, this
+       MATCH (hubs)<-[:HAS]-(hubCouncil:HubCouncil)<-[:HAS]-(ministry:Ministry)<-[:HAS]-(this)
+
+      RETURN DISTINCT hubs
+      """
+    )
+  hubBankingDefaultersThisWeekCount: Int
+    @cypher(
+      statement: """
+      MATCH (this)
+      WITH date() as today, this
+      WITH  today.weekDay as theDay, today, this
+      WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
+      WITH [day in range(0, 5) | startDate + duration({days: day})] AS dates, this
+
+      MATCH (date:TimeGraph)
+      USING INDEX date:TimeGraph(date)
+      WHERE date.date IN dates
+      MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
+
+       WITH DISTINCT record, this
+        WHERE record.noServiceReason IS NULL
+          AND record.bankingSlip IS NULL
+          AND (record.transactionStatus IS NULL OR record.transactionStatus <> 'success')
+          AND record.tellerConfirmationTime IS NULL
+       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(hubs) WHERE hubs:Hub OR hubs:ClosedHub
+
+       WITH DISTINCT hubs, this
+       MATCH (hubs)<-[:HAS]-(hubCouncil:HubCouncil)<-[:HAS]-(ministry:Ministry)<-[:HAS]-(this)
+
+      RETURN COUNT(DISTINCT hubs)
+      """
+    )
+  hubsbankedThisWeek: [Hub!]!
+    @cypher(
+      statement: """
+      MATCH (this)
+      WITH date() as today, this
+      WITH  today.weekDay as theDay, today, this
+      WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
+      WITH [day in range(0, 5) | startDate + duration({days: day})] AS dates, this
+
+      MATCH (date:TimeGraph)
+      USING INDEX date:TimeGraph(date)
+      WHERE date.date IN dates
+      MATCH (date)<-[:SERVICE_HELD_ON]-(record:RehearsalRecord)
+
+       WITH DISTINCT record, this
+        WHERE record.noServiceReason IS NULL
+         AND (record.bankingSlip IS NOT NULL OR record.transactionStatus ='success' OR record.tellerConfirmationTime IS NOT NULL)
+       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(hubs) WHERE hubs:Hub OR hubs:ClosedHub
+
+       WITH DISTINCT hubs, this
+       MATCH (hubs)<-[:HAS]-(hubCouncil:HubCouncil)<-[:HAS]-(ministry:Ministry)<-[:HAS]-(this)
+
+      RETURN DISTINCT hubs
+      """
+    )
+  hubsbankedThisWeekCount: Int
+    @cypher(
+      statement: """
+      MATCH (this)
+      WITH date() as today, this
+      WITH  today.weekDay as theDay, today, this
+      WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
+      WITH [day in range(0, 5) | startDate + duration({days: day})] AS dates, this
+
+      MATCH (date:TimeGraph)
+      USING INDEX date:TimeGraph(date)
+      WHERE date.date IN dates
+      MATCH (date)<-[:SERVICE_HELD_ON]-(record:RehearsalRecord)
+
+       WITH DISTINCT record, this
+        WHERE record.noServiceReason IS NULL
+         AND (record.bankingSlip IS NOT NULL OR record.transactionStatus ='success' OR record.tellerConfirmationTime IS NOT NULL)
+       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(hubs) WHERE hubs:Hub OR hubs:ClosedHub
+
+       WITH DISTINCT hubs, this
+       MATCH (hubs)<-[:HAS]-(hubCouncil:HubCouncil)<-[:HAS]-(ministry:Ministry)<-[:HAS]-(this)
+
+      RETURN COUNT(DISTINCT hubs)
+      """
+    )
+
+    hubCouncilServicesThisWeek: [HubCouncil!]!
+    @cypher(
+      statement: """
+      MATCH (this)
+      WITH date() as today, this
+      WITH  today.weekDay as theDay, today, this
+      WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
+      WITH [day in range(0, 5) | startDate + duration({days: day})] AS dates, this
+
+      MATCH (date:TimeGraph)
+      USING INDEX date:TimeGraph(date)
+      WHERE date.date IN dates
+      MATCH (date)<-[:SERVICE_HELD_ON]-(record:RehearsalRecord)
+
+       WITH DISTINCT this, record WHERE record.attendance IS NOT NULL
+       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(councils) WHERE hubCouncils:HubCouncil OR councils:ClosedHubCouncil
+
+       WITH DISTINCT hubCouncils, this
+       MATCH (councils)<-[:HAS]-(:Ministry)<-[:HAS]-(this)
+
+      RETURN DISTINCT councils
+      """
+    )
+  hubCouncilServicesThisWeekCount: Int
+    @cypher(
+      statement: """
+      MATCH (this)
+      WITH date() as today, this
+      WITH  today.weekDay as theDay, today, this
+      WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
+      WITH [day in range(0, 5) | startDate + duration({days: day})] AS dates, this
+
+      MATCH (date:TimeGraph)
+      USING INDEX date:TimeGraph(date)
+      WHERE date.date IN dates
+      MATCH (date)<-[:SERVICE_HELD_ON]-(record:RehearsalRecord)
+
+       WITH DISTINCT this, record WHERE record.attendance IS NOT NULL
+       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(hubCouncils) WHERE hubCouncils:HubCouncil OR hubCouncils:ClosedHubCouncil
+
+       WITH DISTINCT hubCouncils, this
+       MATCH (hubCouncils)<-[:HAS]-(:Ministry)<-[:HAS]-(this)
+
+      RETURN COUNT(DISTINCT hubCouncils)
+      """
+    )
+    activeMinistryCount: Int!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS]->(ministry:Ministry:Active) RETURN COUNT(DISTINCT ministry)
+      """
+    )
+  ministrieservicesThisWeek: [Ministry!]!
+    @cypher(
+      statement: """
+      MATCH (this)
+      MATCH (date:TimeGraph) WHERE date.date.week = date().week
+      MATCH (date)<-[:SERVICE_HELD_ON]-(record:RehearsalRecord)
+
+       WITH DISTINCT record, this WHERE record.attendance IS NOT NULL
+       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(ministries) WHERE ministries:Stream OR ministries:ClosedStream
+
+       WITH DISTINCT ministries, this
+       MATCH (ministries)<-[:HAS]-(this)
+
+      RETURN DISTINCT ministries
+      """
+    )
+  ministrieservicesThisWeekCount: Int!
+    @cypher(
+      statement: """
+      MATCH (this)
+      MATCH (date:TimeGraph) WHERE date.date.week = date().week
+      MATCH (date)<-[:SERVICE_HELD_ON]-(record:RehearsalRecord)
+
+       WITH DISTINCT record, this WHERE record.attendance IS NOT NULL
+       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(ministries) WHERE ministries:Stream OR ministries:ClosedStream
+
+       WITH DISTINCT ministries, this
+       MATCH (ministries)<-[:HAS]-(this)
+
+      RETURN COUNT(DISTINCT ministries)
+      """
+    )
+  ministryCancelledServicesThisWeek: [Ministry!]!
+    @cypher(
+      statement: """
+      MATCH (this)
+      MATCH (date:TimeGraph) WHERE date.date.week = date().week
+      MATCH (date)<-[:SERVICE_HELD_ON]-(record:RehearsalRecord)
+
+       WITH DISTINCT record, this WHERE record.noServiceReason IS NOT NULL
+       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(ministries) WHERE ministries:Stream OR ministries:ClosedStream
+
+       WITH DISTINCT ministries, this
+       MATCH (ministries)<-[:HAS]-(this)
+
+
+      RETURN DISTINCT ministries
+      """
+    )
+  ministryCancelledServicesThisWeekCount: Int
+    @cypher(
+      statement: """
+      MATCH (this)
+      MATCH (date:TimeGraph) WHERE date.date.week = date().week
+      MATCH (date)<-[:SERVICE_HELD_ON]-(record:RehearsalRecord)
+
+       WITH DISTINCT record, this WHERE record.noServiceReason IS NOT NULL
+       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(ministries) WHERE ministries:Stream OR ministries:ClosedStream
+
+       WITH DISTINCT ministries, this
+       MATCH (ministries)<-[:HAS]-(this)
+
+      RETURN COUNT(DISTINCT ministries)
+      """
+    )
+  ministryFormDefaultersThisWeek: [Ministry!]!
+    @cypher(
+      statement: """
+      MATCH (this)
+      MATCH (date:TimeGraph) WHERE date.date.week = date().week
+
+      MATCH (date)<-[:SERVICE_HELD_ON]-(record:RehearsalRecord)
+
+       WITH DISTINCT record, this
+       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(ministries:Active:Ministry)
+       MATCH (ministries)-[:MEETS_ON]->(day:ServiceDay)
+
+       WITH collect(DISTINCT ministries) as services, this
+       MATCH (defaulters:Active:Ministry)<-[:HAS]-(this)
+       WHERE NOT defaulters IN services
+
+       WITH defaulters, this
+       MATCH (defaulters)-[:MEETS_ON]->(day:ServiceDay)
+        WHERE day.dayNumber < date().dayOfWeek OR (day.dayNumber = date().dayOfWeek)
+       RETURN DISTINCT defaulters
+      """
+    )
+  ministryFormDefaultersThisWeekCount: Int
+    @cypher(
+      statement: """
+      MATCH (this)
+      MATCH (date:TimeGraph) WHERE date.date.week = date().week
+      MATCH (date)<-[:SERVICE_HELD_ON]-(record:RehearsalRecord)
+
+       WITH DISTINCT record, this
+       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(ministries:Active:Ministry)
+       MATCH (ministries)-[:MEETS_ON]->(day:ServiceDay)
+
+       WITH collect(DISTINCT ministries) as services, this
+       MATCH (defaulters:Active:Ministry)<-[:HAS]-(this)
+       WHERE NOT defaulters IN services
+
+       WITH defaulters, this
+       MATCH (defaulters)-[:MEETS_ON]->(day:ServiceDay)
+        WHERE day.dayNumber < date().dayOfWeek OR (day.dayNumber = date().dayOfWeek)
+       RETURN COUNT(DISTINCT defaulters)
+      """
+    )
+  ministryBankingDefaultersThisWeek: [Ministry!]!
+    @cypher(
+      statement: """
+      MATCH (this)
+      MATCH (date:TimeGraph) WHERE date.date.week = date().week
+      MATCH (date)<-[:SERVICE_HELD_ON]-(record:RehearsalRecord)
+
+       WITH DISTINCT record, this
+        WHERE record.noServiceReason IS NULL
+          AND record.bankingSlip IS NULL
+          AND (record.transactionStatus IS NULL OR record.transactionStatus <> 'success')
+          AND record.tellerConfirmationTime IS NULL
+       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(ministries) WHERE ministries:Ministry OR ministries:ClosedMinistry
+
+       WITH DISTINCT ministries, this
+       MATCH (ministries)<-[:HAS]-(this)
+
+      RETURN DISTINCT ministries
+      """
+    )
+  ministryBankingDefaultersThisWeekCount: Int
+    @cypher(
+      statement: """
+      MATCH (this)
+      MATCH (date:TimeGraph) WHERE date.date.week = date().week
+      MATCH (date)<-[:SERVICE_HELD_ON]-(record:RehearsalRecord)
+
+       WITH DISTINCT record, this
+        WHERE record.noServiceReason IS NULL
+          AND record.bankingSlip IS NULL
+          AND (record.transactionStatus IS NULL OR record.transactionStatus <> 'success')
+          AND record.tellerConfirmationTime IS NULL
+       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(ministries) WHERE ministries:Ministry OR ministries:ClosedMinistry
+
+       WITH DISTINCT ministries, this
+       MATCH (ministries)<-[:HAS]-(this)
+
+      RETURN COUNT(DISTINCT ministries)
+      """
+    )
+  ministriesBankedThisWeek: [Ministry!]!
+    @cypher(
+      statement: """
+      MATCH (this)
+      MATCH (date:TimeGraph) WHERE date.date.week = date().week
+      MATCH (date)<-[:SERVICE_HELD_ON]-(record:RehearsalRecord)
+
+       WITH DISTINCT record, this
+        WHERE record.noServiceReason IS NULL
+         AND (record.bankingSlip IS NOT NULL OR record.transactionStatus ='success' OR record.tellerConfirmationTime IS NOT NULL)
+       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(ministries) WHERE ministries:Stream OR ministries:ClosedStream
+
+       WITH DISTINCT ministries, this
+       MATCH (ministries)<-[:HAS]-(this)
+
+      RETURN DISTINCT ministries
+      """
+    )
+  ministriesBankedThisWeekCount: Int
+    @cypher(
+      statement: """
+      MATCH (this)
+      MATCH (date:TimeGraph) WHERE date.date.week = date().week
+      MATCH (date)<-[:SERVICE_HELD_ON]-(record:RehearsalRecord)
+
+       WITH DISTINCT record, this
+        WHERE record.noServiceReason IS NULL
+         AND (record.bankingSlip IS NOT NULL OR record.transactionStatus ='success' OR record.tellerConfirmationTime IS NOT NULL)
+       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(ministries) WHERE ministries:Stream OR ministries:ClosedStream
+
+       WITH DISTINCT ministries, this
+       MATCH (ministries)<-[:HAS]-(this)
+
+      RETURN COUNT(DISTINCT ministries)
       """
     )
 }
