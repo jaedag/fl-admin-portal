@@ -11,11 +11,21 @@ import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import PlaceholderDefaulterList from '../PlaceholderDefaulterList'
 import { DefaultersUseChurchType } from '../defaulters-types'
 import PullToRefresh from 'react-simple-pull-to-refresh'
-import { CAMPUS_STREAM_SERVICES_LIST } from './StreamDefaultersQueries'
+import {
+  CAMPUS_STREAM_SERVICES_LIST,
+  DENOMINATION_STREAM_SERVICES_LIST,
+  OVERSIGHT_STREAM_SERVICES_LIST,
+} from './StreamDefaultersQueries'
 
 const StreamServicesThisWeek = () => {
   const [campusThisWeek, { refetch: campusRefetch }] = useLazyQuery(
     CAMPUS_STREAM_SERVICES_LIST
+  )
+  const [oversightThisWeek, { refetch: oversightRefetch }] = useLazyQuery(
+    OVERSIGHT_STREAM_SERVICES_LIST
+  )
+  const [denominationThisWeek, { refetch: denominationRefetch }] = useLazyQuery(
+    DENOMINATION_STREAM_SERVICES_LIST
   )
 
   const data = useChurchLevel({
@@ -27,6 +37,10 @@ const StreamServicesThisWeek = () => {
     streamRefetch: campusRefetch,
     campusFunction: campusThisWeek,
     campusRefetch,
+    oversightFunction: oversightThisWeek,
+    oversightRefetch,
+    denominationFunction: denominationThisWeek,
+    denominationRefetch,
   })
   const { church, loading, error, refetch } = data as DefaultersUseChurchType
 

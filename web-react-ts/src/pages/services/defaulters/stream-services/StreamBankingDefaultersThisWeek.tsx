@@ -11,12 +11,20 @@ import DefaulterCard from '../DefaulterCard'
 import PlaceholderDefaulterList from '../PlaceholderDefaulterList'
 import { DefaultersUseChurchType } from '../defaulters-types'
 import PullToRefresh from 'react-simple-pull-to-refresh'
-import { CAMPUS_STREAM_BANKING_DEFAULTERS_LIST } from './StreamDefaultersQueries'
+import {
+  CAMPUS_STREAM_BANKING_DEFAULTERS_LIST,
+  DENOMINATION_STREAM_BANKING_DEFAULTERS_LIST,
+  OVERSIGHT_STREAM_BANKING_DEFAULTERS_LIST,
+} from './StreamDefaultersQueries'
 
 const StreamBankingDefaulters = () => {
   const [campusBankingDefaulters, { refetch: campusRefetch }] = useLazyQuery(
     CAMPUS_STREAM_BANKING_DEFAULTERS_LIST
   )
+  const [oversightBankingDefaulters, { refetch: oversightRefetch }] =
+    useLazyQuery(OVERSIGHT_STREAM_BANKING_DEFAULTERS_LIST)
+  const [denominationBankingDefaulters, { refetch: denominationRefetch }] =
+    useLazyQuery(DENOMINATION_STREAM_BANKING_DEFAULTERS_LIST)
 
   const data = useChurchLevel({
     constituencyFunction: campusBankingDefaulters,
@@ -27,6 +35,10 @@ const StreamBankingDefaulters = () => {
     streamRefetch: campusRefetch,
     campusFunction: campusBankingDefaulters,
     campusRefetch,
+    oversightFunction: oversightBankingDefaulters,
+    oversightRefetch,
+    denominationFunction: denominationBankingDefaulters,
+    denominationRefetch,
   })
 
   const { church, loading, error, refetch } = data as DefaultersUseChurchType

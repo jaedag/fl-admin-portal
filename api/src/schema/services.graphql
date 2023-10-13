@@ -1588,3 +1588,389 @@ extend type Campus {
       """
     )
 }
+
+extend type Oversight {
+  activeStreamCount: Int!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS*2]->(stream:Stream:Active) RETURN COUNT(DISTINCT stream)
+      """
+    )
+  streamServicesThisWeek: [Stream!]!
+    @cypher(
+      statement: """
+      MATCH (this)
+      MATCH (date:TimeGraph) WHERE date.date.week = date().week
+      MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
+
+       WITH DISTINCT record, this WHERE record.attendance IS NOT NULL
+       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(streams) WHERE streams:Stream OR streams:ClosedStream
+
+       WITH DISTINCT streams, this
+       MATCH (streams)<-[:HAS*2]-(this)
+
+      RETURN DISTINCT streams
+      """
+    )
+  streamServicesThisWeekCount: Int!
+    @cypher(
+      statement: """
+      MATCH (this)
+      MATCH (date:TimeGraph) WHERE date.date.week = date().week
+      MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
+
+       WITH DISTINCT record, this WHERE record.attendance IS NOT NULL
+       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(streams) WHERE streams:Stream OR streams:ClosedStream
+
+       WITH DISTINCT streams, this
+       MATCH (streams)<-[:HAS*2]-(this)
+
+      RETURN COUNT(DISTINCT streams)
+      """
+    )
+  streamCancelledServicesThisWeek: [Stream!]!
+    @cypher(
+      statement: """
+      MATCH (this)
+      MATCH (date:TimeGraph) WHERE date.date.week = date().week
+      MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
+
+       WITH DISTINCT record, this WHERE record.noServiceReason IS NOT NULL
+       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(streams) WHERE streams:Stream OR streams:ClosedStream
+
+       WITH DISTINCT streams, this
+       MATCH (streams)<-[:HAS*2]-(this)
+
+
+      RETURN DISTINCT streams
+      """
+    )
+  streamCancelledServicesThisWeekCount: Int
+    @cypher(
+      statement: """
+      MATCH (this)
+      MATCH (date:TimeGraph) WHERE date.date.week = date().week
+      MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
+
+       WITH DISTINCT record, this WHERE record.noServiceReason IS NOT NULL
+       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(streams) WHERE streams:Stream OR streams:ClosedStream
+
+       WITH DISTINCT streams, this
+       MATCH (streams)<-[:HAS*2]-(this)
+
+      RETURN COUNT(DISTINCT streams)
+      """
+    )
+  streamFormDefaultersThisWeek: [Stream!]!
+    @cypher(
+      statement: """
+      MATCH (this)
+      MATCH (date:TimeGraph) WHERE date.date.week = date().week
+
+      MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
+
+       WITH DISTINCT record, this
+       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(streams:Active:Stream)
+       MATCH (streams)-[:MEETS_ON]->(day:ServiceDay)
+
+       WITH collect(DISTINCT streams) as services, this
+       MATCH (defaulters:Active:Stream)<-[:HAS*2]-(this)
+       WHERE NOT defaulters IN services
+
+       WITH defaulters, this
+       MATCH (defaulters)-[:MEETS_ON]->(day:ServiceDay)
+        WHERE day.dayNumber < date().dayOfWeek OR (day.dayNumber = date().dayOfWeek)
+       RETURN DISTINCT defaulters
+      """
+    )
+  streamFormDefaultersThisWeekCount: Int
+    @cypher(
+      statement: """
+      MATCH (this)
+      MATCH (date:TimeGraph) WHERE date.date.week = date().week
+      MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
+
+       WITH DISTINCT record, this
+       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(streams:Active:Stream)
+       MATCH (streams)-[:MEETS_ON]->(day:ServiceDay)
+
+       WITH collect(DISTINCT streams) as services, this
+       MATCH (defaulters:Active:Stream)<-[:HAS*2]-(this)
+       WHERE NOT defaulters IN services
+
+       WITH defaulters, this
+       MATCH (defaulters)-[:MEETS_ON]->(day:ServiceDay)
+        WHERE day.dayNumber < date().dayOfWeek OR (day.dayNumber = date().dayOfWeek)
+       RETURN COUNT(DISTINCT defaulters)
+      """
+    )
+  streamBankingDefaultersThisWeek: [Stream!]!
+    @cypher(
+      statement: """
+      MATCH (this)
+      MATCH (date:TimeGraph) WHERE date.date.week = date().week
+      MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
+
+       WITH DISTINCT record, this
+        WHERE record.noServiceReason IS NULL
+          AND record.bankingSlip IS NULL
+          AND (record.transactionStatus IS NULL OR record.transactionStatus <> 'success')
+          AND record.tellerConfirmationTime IS NULL
+       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(streams) WHERE streams:Stream OR streams:ClosedStream
+
+       WITH DISTINCT streams, this
+       MATCH (streams)<-[:HAS*2]-(this)
+
+      RETURN DISTINCT streams
+      """
+    )
+  streamBankingDefaultersThisWeekCount: Int
+    @cypher(
+      statement: """
+      MATCH (this)
+      MATCH (date:TimeGraph) WHERE date.date.week = date().week
+      MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
+
+       WITH DISTINCT record, this
+        WHERE record.noServiceReason IS NULL
+          AND record.bankingSlip IS NULL
+          AND (record.transactionStatus IS NULL OR record.transactionStatus <> 'success')
+          AND record.tellerConfirmationTime IS NULL
+       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(streams) WHERE streams:Stream OR streams:ClosedStream
+
+       WITH DISTINCT streams, this
+       MATCH (streams)<-[:HAS*2]-(this)
+
+      RETURN COUNT(DISTINCT streams)
+      """
+    )
+  streamBankedThisWeek: [Stream!]!
+    @cypher(
+      statement: """
+      MATCH (this)
+      MATCH (date:TimeGraph) WHERE date.date.week = date().week
+      MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
+
+       WITH DISTINCT record, this
+        WHERE record.noServiceReason IS NULL
+         AND (record.bankingSlip IS NOT NULL OR record.transactionStatus ='success' OR record.tellerConfirmationTime IS NOT NULL)
+       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(streams) WHERE streams:Stream OR streams:ClosedStream
+
+       WITH DISTINCT streams, this
+       MATCH (streams)<-[:HAS*2]-(this)
+
+      RETURN DISTINCT streams
+      """
+    )
+  streamBankedThisWeekCount: Int
+    @cypher(
+      statement: """
+      MATCH (this)
+      MATCH (date:TimeGraph) WHERE date.date.week = date().week
+      MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
+
+       WITH DISTINCT record, this
+        WHERE record.noServiceReason IS NULL
+         AND (record.bankingSlip IS NOT NULL OR record.transactionStatus ='success' OR record.tellerConfirmationTime IS NOT NULL)
+       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(streams) WHERE streams:Stream OR streams:ClosedStream
+
+       WITH DISTINCT streams, this
+       MATCH (streams)<-[:HAS*2]-(this)
+
+      RETURN COUNT(DISTINCT streams)
+      """
+    )
+}
+
+extend type Denomination {
+  activeStreamCount: Int!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS*3]->(stream:Stream:Active) RETURN COUNT(DISTINCT stream)
+      """
+    )
+  streamServicesThisWeek: [Stream!]!
+    @cypher(
+      statement: """
+      MATCH (this)
+      MATCH (date:TimeGraph) WHERE date.date.week = date().week
+      MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
+
+       WITH DISTINCT record, this WHERE record.attendance IS NOT NULL
+       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(streams) WHERE streams:Stream OR streams:ClosedStream
+
+       WITH DISTINCT streams, this
+       MATCH (streams)<-[:HAS*3]-(this)
+
+      RETURN DISTINCT streams
+      """
+    )
+  streamServicesThisWeekCount: Int!
+    @cypher(
+      statement: """
+      MATCH (this)
+      MATCH (date:TimeGraph) WHERE date.date.week = date().week
+      MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
+
+       WITH DISTINCT record, this WHERE record.attendance IS NOT NULL
+       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(streams) WHERE streams:Stream OR streams:ClosedStream
+
+       WITH DISTINCT streams, this
+       MATCH (streams)<-[:HAS*3]-(this)
+
+      RETURN COUNT(DISTINCT streams)
+      """
+    )
+  streamCancelledServicesThisWeek: [Stream!]!
+    @cypher(
+      statement: """
+      MATCH (this)
+      MATCH (date:TimeGraph) WHERE date.date.week = date().week
+      MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
+
+       WITH DISTINCT record, this WHERE record.noServiceReason IS NOT NULL
+       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(streams) WHERE streams:Stream OR streams:ClosedStream
+
+       WITH DISTINCT streams, this
+       MATCH (streams)<-[:HAS*3]-(this)
+
+
+      RETURN DISTINCT streams
+      """
+    )
+  streamCancelledServicesThisWeekCount: Int
+    @cypher(
+      statement: """
+      MATCH (this)
+      MATCH (date:TimeGraph) WHERE date.date.week = date().week
+      MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
+
+       WITH DISTINCT record, this WHERE record.noServiceReason IS NOT NULL
+       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(streams) WHERE streams:Stream OR streams:ClosedStream
+
+       WITH DISTINCT streams, this
+       MATCH (streams)<-[:HAS*3]-(this)
+
+      RETURN COUNT(DISTINCT streams)
+      """
+    )
+  streamFormDefaultersThisWeek: [Stream!]!
+    @cypher(
+      statement: """
+      MATCH (this)
+      MATCH (date:TimeGraph) WHERE date.date.week = date().week
+
+      MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
+
+       WITH DISTINCT record, this
+       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(streams:Active:Stream)
+       MATCH (streams)-[:MEETS_ON]->(day:ServiceDay)
+
+       WITH collect(DISTINCT streams) as services, this
+       MATCH (defaulters:Active:Stream)<-[:HAS*3]-(this)
+       WHERE NOT defaulters IN services
+
+       WITH defaulters, this
+       MATCH (defaulters)-[:MEETS_ON]->(day:ServiceDay)
+        WHERE day.dayNumber < date().dayOfWeek OR (day.dayNumber = date().dayOfWeek)
+       RETURN DISTINCT defaulters
+      """
+    )
+  streamFormDefaultersThisWeekCount: Int
+    @cypher(
+      statement: """
+      MATCH (this)
+      MATCH (date:TimeGraph) WHERE date.date.week = date().week
+      MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
+
+       WITH DISTINCT record, this
+       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(streams:Active:Stream)
+       MATCH (streams)-[:MEETS_ON]->(day:ServiceDay)
+
+       WITH collect(DISTINCT streams) as services, this
+       MATCH (defaulters:Active:Stream)<-[:HAS*3]-(this)
+       WHERE NOT defaulters IN services
+
+       WITH defaulters, this
+       MATCH (defaulters)-[:MEETS_ON]->(day:ServiceDay)
+        WHERE day.dayNumber < date().dayOfWeek OR (day.dayNumber = date().dayOfWeek)
+       RETURN COUNT(DISTINCT defaulters)
+      """
+    )
+  streamBankingDefaultersThisWeek: [Stream!]!
+    @cypher(
+      statement: """
+      MATCH (this)
+      MATCH (date:TimeGraph) WHERE date.date.week = date().week
+      MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
+
+       WITH DISTINCT record, this
+        WHERE record.noServiceReason IS NULL
+          AND record.bankingSlip IS NULL
+          AND (record.transactionStatus IS NULL OR record.transactionStatus <> 'success')
+          AND record.tellerConfirmationTime IS NULL
+       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(streams) WHERE streams:Stream OR streams:ClosedStream
+
+       WITH DISTINCT streams, this
+       MATCH (streams)<-[:HAS*3]-(this)
+
+      RETURN DISTINCT streams
+      """
+    )
+  streamBankingDefaultersThisWeekCount: Int
+    @cypher(
+      statement: """
+      MATCH (this)
+      MATCH (date:TimeGraph) WHERE date.date.week = date().week
+      MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
+
+       WITH DISTINCT record, this
+        WHERE record.noServiceReason IS NULL
+          AND record.bankingSlip IS NULL
+          AND (record.transactionStatus IS NULL OR record.transactionStatus <> 'success')
+          AND record.tellerConfirmationTime IS NULL
+       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(streams) WHERE streams:Stream OR streams:ClosedStream
+
+       WITH DISTINCT streams, this
+       MATCH (streams)<-[:HAS*3]-(this)
+
+      RETURN COUNT(DISTINCT streams)
+      """
+    )
+  streamBankedThisWeek: [Stream!]!
+    @cypher(
+      statement: """
+      MATCH (this)
+      MATCH (date:TimeGraph) WHERE date.date.week = date().week
+      MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
+
+       WITH DISTINCT record, this
+        WHERE record.noServiceReason IS NULL
+         AND (record.bankingSlip IS NOT NULL OR record.transactionStatus ='success' OR record.tellerConfirmationTime IS NOT NULL)
+       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(streams) WHERE streams:Stream OR streams:ClosedStream
+
+       WITH DISTINCT streams, this
+       MATCH (streams)<-[:HAS*3]-(this)
+
+      RETURN DISTINCT streams
+      """
+    )
+  streamBankedThisWeekCount: Int
+    @cypher(
+      statement: """
+      MATCH (this)
+      MATCH (date:TimeGraph) WHERE date.date.week = date().week
+      MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
+
+       WITH DISTINCT record, this
+        WHERE record.noServiceReason IS NULL
+         AND (record.bankingSlip IS NOT NULL OR record.transactionStatus ='success' OR record.tellerConfirmationTime IS NOT NULL)
+       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(streams) WHERE streams:Stream OR streams:ClosedStream
+
+       WITH DISTINCT streams, this
+       MATCH (streams)<-[:HAS*3]-(this)
+
+      RETURN COUNT(DISTINCT streams)
+      """
+    )
+}

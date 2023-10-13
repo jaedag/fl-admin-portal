@@ -11,12 +11,20 @@ import useChurchLevel from 'hooks/useChurchLevel'
 import PlaceholderDefaulterList from '../PlaceholderDefaulterList'
 import { DefaultersUseChurchType } from '../defaulters-types'
 import PullToRefresh from 'react-simple-pull-to-refresh'
-import { CAMPUS_STREAM_CANCELLED_SERVICES_LIST } from './StreamDefaultersQueries'
+import {
+  CAMPUS_STREAM_CANCELLED_SERVICES_LIST,
+  DENOMINATION_STREAM_CANCELLED_SERVICES_LIST,
+  OVERSIGHT_STREAM_CANCELLED_SERVICES_LIST,
+} from './StreamDefaultersQueries'
 
 const StreamCancelledServicesThisWeek = () => {
   const [campusCancelledServices, { refetch: campusRefetch }] = useLazyQuery(
     CAMPUS_STREAM_CANCELLED_SERVICES_LIST
   )
+  const [oversightCancelledServices, { refetch: oversightRefetch }] =
+    useLazyQuery(OVERSIGHT_STREAM_CANCELLED_SERVICES_LIST)
+  const [denominationCancelledServices, { refetch: denominationRefetch }] =
+    useLazyQuery(DENOMINATION_STREAM_CANCELLED_SERVICES_LIST)
 
   const data = useChurchLevel({
     constituencyFunction: campusCancelledServices,
@@ -27,6 +35,10 @@ const StreamCancelledServicesThisWeek = () => {
     streamRefetch: campusRefetch,
     campusFunction: campusCancelledServices,
     campusRefetch,
+    oversightFunction: oversightCancelledServices,
+    oversightRefetch,
+    denominationFunction: denominationCancelledServices,
+    denominationRefetch,
   })
 
   const { church, loading, error, refetch } = data as DefaultersUseChurchType
