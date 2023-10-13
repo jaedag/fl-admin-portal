@@ -84,7 +84,54 @@ const DefaultersDashboard = () => {
       break
   }
 
-  const defaulters = [
+  const streamDefaultersArray = [
+    {
+      title: 'Services This Week',
+      data: church?.streamServicesThisWeekCount,
+      color: church?.streamServicesThisWeekCount ? 'good' : 'bad',
+      link: church?.streamServicesThisWeekCount
+        ? '/stream-services/filled-services'
+        : '#',
+    },
+    {
+      title: 'Not Filled Forms',
+      data: church?.streamFormDefaultersThisWeekCount,
+      color: church?.streamFormDefaultersThisWeekCount ? 'bad' : 'good',
+      link: church?.streamFormDefaultersThisWeekCount
+        ? '/stream-services/form-defaulters'
+        : '#',
+    },
+    {
+      title: 'Have Banked',
+      data: church?.streamBankedThisWeekCount,
+      color:
+        church?.streamBankedThisWeekCount ===
+        church?.streamServicesThisWeekCount
+          ? 'good'
+          : (church?.streamBankedThisWeekCount || 0) > 0
+          ? 'yellow'
+          : 'bad',
+      link: church?.streamBankedThisWeekCount ? '/stream-services/banked' : '#',
+    },
+    {
+      title: 'Have Not Banked',
+      data: church?.streamBankingDefaultersThisWeekCount,
+      color: church?.streamBankingDefaultersThisWeekCount ? 'bad' : 'good',
+      link: church?.streamBankingDefaultersThisWeekCount
+        ? '/stream-services/banking-defaulters'
+        : '#',
+    },
+    {
+      title: 'Cancelled Service',
+      data: church?.streamCancelledServicesThisWeekCount,
+      color: church?.streamCancelledServicesThisWeekCount ? 'bad' : 'good',
+      link: church?.streamCancelledServicesThisWeekCount
+        ? '/stream-services/cancelled-services'
+        : '#',
+    },
+  ]
+
+  const fellowshipDefaulters = [
     {
       title: 'Services This Week',
       data: church?.servicesThisWeekCount,
@@ -180,10 +227,6 @@ const DefaultersDashboard = () => {
           >{`${church?.name} ${church?.__typename}`}</HeadingPrimary>
           <HeadingSecondary>Defaulters Page</HeadingSecondary>
 
-          <PlaceholderCustom as="h6" loading={!church}>
-            <h6>{`Total Number of Fellowships: ${church?.activeFellowshipCount}`}</h6>
-          </PlaceholderCustom>
-
           <Row>
             <RoleView roles={permitLeaderAdmin('Council')}>
               <Col xs={12} className="mb-3">
@@ -192,7 +235,32 @@ const DefaultersDashboard = () => {
                 )}
               </Col>
             </RoleView>
-            {defaulters.map((defaulter, i) => (
+
+            {streamDefaultersArray.length && (
+              <Col xs={12} className="mb-3">
+                <hr />
+                <HeadingSecondary>Stream Services</HeadingSecondary>
+                <PlaceholderCustom as="h6" loading={!church}>
+                  <h6>{`Active Streams: ${church?.activeStreamCount}`}</h6>
+                </PlaceholderCustom>
+              </Col>
+            )}
+            {streamDefaultersArray.map((defaulter, i) => (
+              <Col key={i} xs={6} className="mb-3">
+                <DefaulterInfoCard defaulter={defaulter} />
+              </Col>
+            ))}
+
+            {fellowshipDefaulters.length && (
+              <Col xs={12} className="mb-3">
+                <hr />
+                <HeadingSecondary>Fellowship Services</HeadingSecondary>
+                <PlaceholderCustom as="h6" loading={!church}>
+                  <h6>{`Active Fellowships: ${church?.activeFellowshipCount}`}</h6>
+                </PlaceholderCustom>
+              </Col>
+            )}
+            {fellowshipDefaulters.map((defaulter, i) => (
               <Col key={i} xs={6} className="mb-3">
                 <DefaulterInfoCard defaulter={defaulter} />
               </Col>

@@ -349,7 +349,7 @@ extend type Mutation {
     @auth(rules: [{ roles: ["adminCampus", "adminOversight"] }])
     @cypher(
       statement: """
-      CREATE (stream:Stream {id:apoc.create.uuid(), name: $name})
+      CREATE (stream:Active:Stream {id:apoc.create.uuid(), name: $name})
         SET stream.bankAccount = $bankAccount
 
        WITH stream

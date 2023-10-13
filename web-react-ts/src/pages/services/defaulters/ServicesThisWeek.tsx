@@ -29,7 +29,7 @@ const ServicesThisWeek = () => {
   const [campusThisWeek, { refetch: campusRefetch }] =
     useLazyQuery(CAMPUS_SERVICES_LIST)
 
-  const data: DefaultersUseChurchType = useChurchLevel({
+  const data = useChurchLevel({
     constituencyFunction: constituencyServicesThisWeek,
     constituencyRefetch,
     councilFunction: councilServicesThisWeek,
@@ -39,7 +39,7 @@ const ServicesThisWeek = () => {
     campusFunction: campusThisWeek,
     campusRefetch,
   })
-  const { church, loading, error, refetch } = data
+  const { church, loading, error, refetch } = data as DefaultersUseChurchType
 
   return (
     <PullToRefresh onRefresh={refetch}>

@@ -659,6 +659,14 @@ export const CAMPUS_DEFAULTERS = gql`
       id
       name
       streamCount
+      activeStreamCount
+
+      streamFormDefaultersThisWeekCount
+      streamBankingDefaultersThisWeekCount
+      streamBankedThisWeekCount
+      streamServicesThisWeekCount
+      streamCancelledServicesThisWeekCount
+
       activeFellowshipCount
       formDefaultersThisWeekCount
       bankingDefaultersThisWeekCount

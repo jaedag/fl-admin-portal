@@ -25,7 +25,7 @@ const ConstituencyNotBankedThisWeek = () => {
     CAMPUS_SERVICES_CONSTITUENCY_JOINT_DEFAULTERS_LIST
   )
 
-  const data: DefaultersUseChurchType = useChurchLevel({
+  const data = useChurchLevel({
     councilFunction: councilConstituencyNotBankedThisWeek,
     councilRefetch,
     streamFunction: streamConstituencyNotBankedThisWeek,
@@ -33,7 +33,7 @@ const ConstituencyNotBankedThisWeek = () => {
     campusFunction: campusThisWeek,
     campusRefetch,
   })
-  const { church, loading, error, refetch } = data
+  const { church, loading, error, refetch } = data as DefaultersUseChurchType
 
   return (
     <PullToRefresh onRefresh={refetch}>

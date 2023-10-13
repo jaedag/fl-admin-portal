@@ -13,12 +13,15 @@ import {
 } from 'react-bootstrap-icons'
 import { useNavigate } from 'react-router'
 import { UNDO_CANCELLED_SERVICE } from '../record-service/RecordServiceMutations'
-import { FellowshipWithDefaulters } from './defaulters-types'
+import {
+  FellowshipWithDefaulters,
+  StreamWithDefaulters,
+} from './defaulters-types'
 import './Defaulters.css'
 import { MemberContext } from 'contexts/MemberContext'
 
 type DefaulterCardProps = {
-  defaulter: FellowshipWithDefaulters
+  defaulter: FellowshipWithDefaulters | StreamWithDefaulters
   link?: string
 }
 
@@ -47,10 +50,20 @@ const DefaulterCard = ({ defaulter, link }: DefaulterCardProps) => {
         >
           {`${defaulter?.name} ${defaulter?.__typename}`}
           <br />
-          {defaulter?.bacenta?.constituency?.name && (
-            <span className="text-secondary">
-              {`${defaulter?.bacenta?.constituency?.name} ${defaulter?.bacenta?.constituency?.__typename}`}
-            </span>
+
+          {defaulter?.__typename === 'Fellowship' &&
+            defaulter?.bacenta?.constituency?.name && (
+              <span className="text-secondary">
+                {`${defaulter?.bacenta?.constituency?.name} ${defaulter?.bacenta?.constituency?.__typename}`}
+              </span>
+            )}
+
+          {defaulter?.__typename === 'Stream' && defaulter?.campus && (
+            <>
+              <span className="text-secondary">
+                {`${defaulter?.campus?.name} ${defaulter?.campus?.__typename}`}
+              </span>
+            </>
           )}
         </Card.Header>
         <Card.Body>

@@ -7,35 +7,24 @@ import { getWeekNumber } from 'jd-date-utils'
 import useChurchLevel from 'hooks/useChurchLevel'
 import React from 'react'
 import { Container, Row, Col } from 'react-bootstrap'
-import DefaulterCard from './DefaulterCard'
-import {
-  CONSTITUENCY_BANKED_LIST,
-  COUNCIL_BANKED_LIST,
-  STREAM_BANKED_LIST,
-  CAMPUS_BANKED_LIST,
-} from './DefaultersQueries'
-import PlaceholderDefaulterList from './PlaceholderDefaulterList'
-import { DefaultersUseChurchType } from './defaulters-types'
+import DefaulterCard from '../DefaulterCard'
+import PlaceholderDefaulterList from '../PlaceholderDefaulterList'
+import { DefaultersUseChurchType } from '../defaulters-types'
 import PullToRefresh from 'react-simple-pull-to-refresh'
+import { CAMPUS_STREAM_BANKED_LIST } from './StreamDefaultersQueries'
 
-const Banked = () => {
-  const [constituencyBanked, { refetch: constituencyRefetch }] = useLazyQuery(
-    CONSTITUENCY_BANKED_LIST
+const StreamBanked = () => {
+  const [campusBanked, { refetch: campusRefetch }] = useLazyQuery(
+    CAMPUS_STREAM_BANKED_LIST
   )
-  const [councilBanked, { refetch: councilRefetch }] =
-    useLazyQuery(COUNCIL_BANKED_LIST)
-  const [streamBanked, { refetch: streamRefetch }] =
-    useLazyQuery(STREAM_BANKED_LIST)
-  const [campusBanked, { refetch: campusRefetch }] =
-    useLazyQuery(CAMPUS_BANKED_LIST)
 
   const data = useChurchLevel({
-    constituencyFunction: constituencyBanked,
-    constituencyRefetch,
-    councilFunction: councilBanked,
-    councilRefetch,
-    streamFunction: streamBanked,
-    streamRefetch,
+    constituencyFunction: campusBanked,
+    constituencyRefetch: campusRefetch,
+    councilFunction: campusBanked,
+    councilRefetch: campusRefetch,
+    streamFunction: campusBanked,
+    streamRefetch: campusRefetch,
     campusFunction: campusBanked,
     campusRefetch,
   })
@@ -50,19 +39,22 @@ const Banked = () => {
             loading={!church}
           >{`${church?.name} ${church?.__typename}`}</HeadingPrimary>
           <HeadingSecondary>
-            {`Fellowships That Have Banked This Week (Week ${getWeekNumber()})`}
+            {`Churches That Have Banked This Week (Week ${getWeekNumber()})`}
           </HeadingSecondary>
 
-          <PlaceholderCustom as="h6" loading={!church?.bankedThisWeek.length}>
-            <h6>{`Number Who Have Banked: ${church?.bankedThisWeek.length}`}</h6>
+          <PlaceholderCustom
+            as="h6"
+            loading={!church?.streamBankedThisWeek?.length}
+          >
+            <h6>{`Number Who Have Banked: ${church?.streamBankedThisWeek?.length}`}</h6>
           </PlaceholderCustom>
 
           <Row>
-            {church?.bankedThisWeek.map((defaulter, i) => (
+            {church?.streamBankedThisWeek?.map((defaulter, i) => (
               <Col key={i} xs={12} className="mb-3">
                 <DefaulterCard
                   defaulter={defaulter}
-                  link="/fellowship/service-details"
+                  link="/stream/service-details"
                 />
               </Col>
             ))}
@@ -74,4 +66,4 @@ const Banked = () => {
   )
 }
 
-export default Banked
+export default StreamBanked
