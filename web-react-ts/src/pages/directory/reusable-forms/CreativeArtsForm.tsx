@@ -236,7 +236,7 @@ const CreativeArtsForm = ({
                         setButtonLoading(true)
                         const res = await CloseDownCreativeArts({
                           variables: {
-                            id: creativeArtsId,
+                            creativeArtsId,
                             leaderId: initialValues.leaderId,
                           },
                         })

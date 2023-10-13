@@ -246,7 +246,7 @@ const MinistryForm = ({
                         setButtonLoading(true)
                         const res = await CloseDownMinistry({
                           variables: {
-                            id: ministryId,
+                            ministryId,
                             leaderId: initialValues.leaderId,
                           },
                         })
