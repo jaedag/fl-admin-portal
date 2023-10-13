@@ -9,6 +9,7 @@ import {
   COUNCIL_DEFAULTERS,
   STREAM_DEFAULTERS,
   CAMPUS_DEFAULTERS,
+  OVERSIGHT_DEFAULTERS,
 } from './DefaultersQueries'
 import PlaceholderCustom from 'components/Placeholder'
 import DefaulterInfoCard from './DefaulterInfoCard'
@@ -36,6 +37,8 @@ const DefaultersDashboard = () => {
     useLazyQuery(STREAM_DEFAULTERS)
   const [campusDefaulters, { refetch: campusRefetch }] =
     useLazyQuery(CAMPUS_DEFAULTERS)
+  const [oversightDefaulters, { refetch: oversightRefetch }] =
+    useLazyQuery(OVERSIGHT_DEFAULTERS)
   const [hubDefaulters, { refetch: hubRefetch }] = useLazyQuery(HUB_DEFAULTERS)
   const [ministryDefaulters, { refetch: ministryRefetch }] =
     useLazyQuery(MINISTRY_DEFAULTERS)
@@ -44,7 +47,7 @@ const DefaultersDashboard = () => {
 
   let subChurch: ChurchLevel | string = ''
 
-  const data: DefaultersUseChurchType = useSontaLevel({
+  const data = useSontaLevel({
     constituencyFunction: constituencyDefaulters,
     constituencyRefetch,
     councilFunction: councilDefaulters,
@@ -53,6 +56,8 @@ const DefaultersDashboard = () => {
     streamRefetch,
     campusFunction: campusDefaulters,
     campusRefetch,
+    oversightFunction: oversightDefaulters,
+    oversightRefetch,
     hubFunction: hubDefaulters,
     hubRefetch,
     ministryFunction: ministryDefaulters,
@@ -61,7 +66,7 @@ const DefaultersDashboard = () => {
     creativeArtsRefetch,
   })
 
-  const { church, loading, error, refetch } = data
+  const { church, loading, error, refetch } = data as DefaultersUseChurchType
 
   switch (currentUser?.currentChurch?.__typename) {
     case 'Council':
@@ -73,6 +78,12 @@ const DefaultersDashboard = () => {
 
     case 'Campus':
       subChurch = 'Stream'
+      break
+    case 'Oversight':
+      subChurch = 'Campus'
+      break
+    case 'Denomination':
+      subChurch = 'Oversight'
       break
     case 'Ministry':
       subChurch = 'Hub'
@@ -251,24 +262,23 @@ const DefaultersDashboard = () => {
               </Col>
             ))}
 
-            {fellowshipDefaulters.length && (
+            {['Campus', 'Stream', 'Council', 'Constituency'].includes(
+              church?.__typename ?? ''
+            ) && (
               <Col xs={12} className="mb-3">
                 <hr />
                 <HeadingSecondary>Fellowship Services</HeadingSecondary>
                 <PlaceholderCustom as="h6" loading={!church}>
                   <h6>{`Active Fellowships: ${church?.activeFellowshipCount}`}</h6>
                 </PlaceholderCustom>
+                {fellowshipDefaulters.map((defaulter, i) => (
+                  <Col key={i} xs={6} className="mb-3">
+                    <DefaulterInfoCard defaulter={defaulter} />
+                  </Col>
+                ))}
+                <hr />
               </Col>
             )}
-            {fellowshipDefaulters.map((defaulter, i) => (
-              <Col key={i} xs={6} className="mb-3">
-                <DefaulterInfoCard defaulter={defaulter} />
-              </Col>
-            ))}
-
-            <Col xs={12} className="mb-3">
-              <hr />
-            </Col>
 
             {jointServiceDefaulters.map((defaulter, i) => {
               if (!defaulter.data) return null

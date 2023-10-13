@@ -10,12 +10,20 @@ import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import PlaceholderDefaulterList from '../PlaceholderDefaulterList'
 import { DefaultersUseChurchType } from '../defaulters-types'
 import PullToRefresh from 'react-simple-pull-to-refresh'
-import { CAMPUS_STREAM_FORM_DEFAULTERS_LIST } from './StreamDefaultersQueries'
+import {
+  CAMPUS_STREAM_FORM_DEFAULTERS_LIST,
+  DENOMINATION_STREAM_FORM_DEFAULTERS_LIST,
+  OVERSIGHT_STREAM_FORM_DEFAULTERS_LIST,
+} from './StreamDefaultersQueries'
 
 const StreamFormDefaulters = () => {
   const [campusStreamFormDefaulters, { refetch: campusRefetch }] = useLazyQuery(
     CAMPUS_STREAM_FORM_DEFAULTERS_LIST
   )
+  const [oversightStreamFormDefaulters, { refetch: oversightRefetch }] =
+    useLazyQuery(OVERSIGHT_STREAM_FORM_DEFAULTERS_LIST)
+  const [denominationStreamFormDefaulters, { refetch: denominationRefetch }] =
+    useLazyQuery(DENOMINATION_STREAM_FORM_DEFAULTERS_LIST)
 
   const data = useChurchLevel({
     constituencyFunction: campusStreamFormDefaulters,
@@ -26,6 +34,10 @@ const StreamFormDefaulters = () => {
     streamRefetch: campusRefetch,
     campusFunction: campusStreamFormDefaulters,
     campusRefetch,
+    oversightFunction: oversightStreamFormDefaulters,
+    oversightRefetch,
+    denominationFunction: denominationStreamFormDefaulters,
+    denominationRefetch,
   })
 
   const { church, loading, error, refetch } = data as DefaultersUseChurchType

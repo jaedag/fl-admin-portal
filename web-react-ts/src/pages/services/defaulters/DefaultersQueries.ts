@@ -1249,3 +1249,20 @@ export const STREAM_COUNCIL_JOINT_BANKED_LIST = gql`
     }
   }
 `
+
+export const OVERSIGHT_DEFAULTERS = gql`
+  query oversightDefaulters($id: ID!) {
+    oversights(where: { id: $id }) {
+      id
+      name
+      campusCount
+      activeStreamCount
+
+      streamFormDefaultersThisWeekCount
+      streamBankingDefaultersThisWeekCount
+      streamBankedThisWeekCount
+      streamServicesThisWeekCount
+      streamCancelledServicesThisWeekCount
+    }
+  }
+`

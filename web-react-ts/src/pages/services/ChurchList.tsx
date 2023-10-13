@@ -60,6 +60,7 @@ const ChurchList = ({
                     'Stream',
                     'Campus',
                     'Oversight',
+                    'Denomination',
                     'CreativeArts',
                     'Ministry',
                     'Hub',
