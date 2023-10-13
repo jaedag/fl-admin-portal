@@ -52,7 +52,7 @@ const StateBacentasToCount = () => {
   const [seeCars, setSeeCars] = useState(true)
   const [seeBusses, setSeeBusses] = useState(true)
 
-  const data: ArrivalsUseChurchType = useChurchLevel({
+  const data = useChurchLevel({
     constituencyFunction: constituencyOnTheWay,
     constituencyRefetch,
     councilFunction: councilOnTheWay,
@@ -63,7 +63,7 @@ const StateBacentasToCount = () => {
     campusRefetch,
   })
 
-  const { church, loading, error, refetch } = data
+  const { church, loading, error, refetch } = data as ArrivalsUseChurchType
 
   // Searching Feature
   const initialValues: FormOptions = {

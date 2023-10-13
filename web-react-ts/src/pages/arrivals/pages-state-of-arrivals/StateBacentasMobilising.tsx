@@ -46,7 +46,7 @@ const BacentasMobilising = () => {
     }
   )
 
-  const data: ArrivalsUseChurchType = useChurchLevel({
+  const data = useChurchLevel({
     constituencyFunction: constituencyBacentasMobilising,
     constituencyRefetch,
     councilFunction: councilBacentasMobilising,
@@ -56,7 +56,7 @@ const BacentasMobilising = () => {
     campusFunction: campusBacentasMobilising,
     campusRefetch,
   })
-  const { church, loading, error, refetch } = data
+  const { church, loading, error, refetch } = data as ArrivalsUseChurchType
 
   return (
     <PullToRefresh onRefresh={refetch}>

@@ -59,6 +59,7 @@ const ChurchList = ({
                     'Council',
                     'Stream',
                     'Campus',
+                    'Oversight',
                     'CreativeArts',
                     'Ministry',
                     'Hub',

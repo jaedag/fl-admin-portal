@@ -48,7 +48,7 @@ const BacentasOnTheWay = () => {
     }
   )
 
-  const data: ArrivalsUseChurchType = useChurchLevel({
+  const data = useChurchLevel({
     constituencyFunction: constituencyOnTheWay,
     constituencyRefetch,
     councilFunction: councilOnTheWay,
@@ -58,7 +58,7 @@ const BacentasOnTheWay = () => {
     campusFunction: campusOnTheWay,
     campusRefetch,
   })
-  const { church, loading, error, refetch } = data
+  const { church, loading, error, refetch } = data as ArrivalsUseChurchType
 
   return (
     <PullToRefresh onRefresh={refetch}>

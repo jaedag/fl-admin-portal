@@ -126,7 +126,7 @@ export interface Stream extends Church {
   name: StreamOptions
   __typename: 'Stream'
   bankAccount: string
-  meetingDay: 'Friday' | 'Saturday' | 'Sunday'
+  meetingDay: { day: 'Friday' | 'Saturday' | 'Sunday' }
   stream_name?: StreamOptions
   campus: Campus
   ministries?: Ministry[]

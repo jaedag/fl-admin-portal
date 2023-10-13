@@ -3,30 +3,28 @@ import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import HeadingSecondary from 'components/HeadingSecondary'
 import PlaceholderCustom from 'components/Placeholder'
 import { getWeekNumber } from 'jd-date-utils'
+import React from 'react'
 import { Col, Container, Row } from 'react-bootstrap'
-import {
-  CAMPUS_SERVICES_COUNCIL_JOINT_DEFAULTERS_LIST,
-  STREAM_COUNCIL_JOINT_DEFAULTERS_LIST,
-} from './DefaultersQueries'
+import DefaulterCard from '../DefaulterCard'
 import useChurchLevel from 'hooks/useChurchLevel'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
-import PlaceholderDefaulterList from './PlaceholderDefaulterList'
-import { DefaultersUseChurchType } from './defaulters-types'
+import PlaceholderDefaulterList from '../PlaceholderDefaulterList'
+import { DefaultersUseChurchType } from '../defaulters-types'
 import PullToRefresh from 'react-simple-pull-to-refresh'
-import JointServiceDefaulterCard from './JointServiceDefaultersCard'
+import { CAMPUS_STREAM_SERVICES_LIST } from './StreamDefaultersQueries'
 
-const CouncilNotBankedThisWeek = () => {
-  const [streamCouncilNotBankedThisWeek, { refetch: streamRefetch }] =
-    useLazyQuery(STREAM_COUNCIL_JOINT_DEFAULTERS_LIST)
+const StreamServicesThisWeek = () => {
   const [campusThisWeek, { refetch: campusRefetch }] = useLazyQuery(
-    CAMPUS_SERVICES_COUNCIL_JOINT_DEFAULTERS_LIST
+    CAMPUS_STREAM_SERVICES_LIST
   )
 
   const data = useChurchLevel({
-    councilFunction: streamCouncilNotBankedThisWeek,
-    councilRefetch: streamRefetch,
-    streamFunction: streamCouncilNotBankedThisWeek,
-    streamRefetch,
+    constituencyFunction: campusThisWeek,
+    constituencyRefetch: campusRefetch,
+    councilFunction: campusThisWeek,
+    councilRefetch: campusRefetch,
+    streamFunction: campusThisWeek,
+    streamRefetch: campusRefetch,
     campusFunction: campusThisWeek,
     campusRefetch,
   })
@@ -43,17 +41,17 @@ const CouncilNotBankedThisWeek = () => {
 
           <PlaceholderCustom
             as="h6"
-            loading={!church?.councilBankingDefaultersThisWeek.length}
+            loading={!church?.streamServicesThisWeek?.length}
           >
-            <h6>{`Forms Filled This Week: ${church?.councilBankingDefaultersThisWeek.length}`}</h6>
+            <h6>{`Forms Filled This Week: ${church?.streamServicesThisWeek?.length}`}</h6>
           </PlaceholderCustom>
 
           <Row>
-            {church?.councilBankingDefaultersThisWeek.map((service, i) => (
+            {church?.streamServicesThisWeek?.map((service, i) => (
               <Col key={i} xs={12} className="mb-3">
-                <JointServiceDefaulterCard
+                <DefaulterCard
                   defaulter={service}
-                  link="/council/service-details"
+                  link="/stream/service-details"
                 />
               </Col>
             ))}
@@ -65,4 +63,4 @@ const CouncilNotBankedThisWeek = () => {
   )
 }
 
-export default CouncilNotBankedThisWeek
+export default StreamServicesThisWeek

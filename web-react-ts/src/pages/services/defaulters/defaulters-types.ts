@@ -9,6 +9,8 @@ import {
   Council,
   Bacenta,
   MemberWithoutBioData,
+  Campus,
+  Stream,
 } from 'global-types'
 
 export interface FellowshipWithDefaulters extends Fellowship {
@@ -32,7 +34,11 @@ export interface CouncilWithDefaulters extends Council {
   }
   services: ServiceRecord[]
 }
-
+export interface StreamWithDefaulters extends Stream {
+  __typename: 'Stream'
+  campus: Campus
+  services: ServiceRecord[]
+}
 export interface HigherChurchWithDefaulters extends Church {
   __typename: 'Constituency' | 'Stream' | 'Council' | 'Campus'
   admin?: MemberWithoutBioData
@@ -46,6 +52,18 @@ export interface HigherChurchWithDefaulters extends Church {
   councilBankingDefaultersThisWeek: CouncilWithDefaulters[]
   constituencyBankedThisWeek: ConstituencyWithDefaulters[]
   councilBankedThisWeek: CouncilWithDefaulters[]
+
+  streamServicesThisWeek?: StreamWithDefaulters[]
+  streamFormDefaultersThisWeek?: StreamWithDefaulters[]
+  streamBankedThisWeek?: StreamWithDefaulters[]
+  streamBankingDefaultersThisWeek?: StreamWithDefaulters[]
+  streamCancelledServicesThisWeek?: StreamWithDefaulters[]
+  streamServicesThisWeekCount?: number
+  streamFormDefaultersThisWeekCount?: number
+  streamBankedThisWeekCount?: number
+  streamBankingDefaultersThisWeekCount?: number
+  streamCancelledServicesThisWeekCount?: number
+  streamConstituencyBankingDefaultersThisWeekCount?: number
 
   bankedBy: Member
   servicesThisWeekCount: number

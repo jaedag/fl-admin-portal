@@ -31,7 +31,7 @@ const FormDefaulters = () => {
     CAMPUS_FORM_DEFAULTERS_LIST
   )
 
-  const data: DefaultersUseChurchType = useChurchLevel({
+  const data = useChurchLevel({
     constituencyFunction: constituencyFormDefaulters,
     constituencyRefetch,
     councilFunction: councilFormDefaulters,
@@ -42,7 +42,7 @@ const FormDefaulters = () => {
     campusRefetch,
   })
 
-  const { church, loading, error, refetch } = data
+  const { church, loading, error, refetch } = data as DefaultersUseChurchType
 
   return (
     <PullToRefresh onRefresh={refetch}>
