@@ -157,24 +157,11 @@ export const UPDATE_STREAM_MUTATION = gql`
     ) {
       id
       name
+      vacationStatus
       bankAccount
       meetingDay {
         day
         dayNumber
-      }
-      councils {
-        id
-        name
-        stream {
-          id
-          name
-          campus {
-            id
-            streams {
-              id
-            }
-          }
-        }
       }
 
       admin {

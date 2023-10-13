@@ -5,6 +5,7 @@ import { ChurchContext } from 'contexts/ChurchContext'
 import React, { useContext } from 'react'
 import { DetailsArray } from './DetailsFellowship'
 import { DISPLAY_STREAM } from './ReadQueries'
+import { permitAdmin } from 'permission-utils'
 
 const DetailsStream = () => {
   const { streamId } = useContext(ChurchContext)
@@ -25,6 +26,11 @@ const DetailsStream = () => {
     {
       title: 'Meeting Day',
       number: stream?.meetingDay.day,
+      link: '#',
+    },
+    {
+      title: 'Vacation Status',
+      number: stream?.vacationStatus,
       link: '#',
     },
     {
@@ -95,7 +101,7 @@ const DetailsStream = () => {
         churchType={stream?.__typename}
         details={details}
         editlink="/stream/editstream"
-        editPermitted={['adminCampus']}
+        editPermitted={permitAdmin('Campus')}
         history={stream?.history.length !== 0 && stream?.history}
         buttons={stream?.councils ?? []}
         breadcrumb={breadcrumb && breadcrumb}

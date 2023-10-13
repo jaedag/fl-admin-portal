@@ -662,6 +662,15 @@ type Stream implements Church {
   id: ID @id
   name: String!
   bankAccount: String!
+  vacationStatus: String!
+    @cypher(
+      statement: """
+      MATCH (this)
+      UNWIND labels(this) AS status
+      WITH status WHERE status = 'Active' OR status = 'Vacation'
+      RETURN status
+      """
+    )
   leader: Member @relationship(type: "LEADS", direction: IN)
   councils: [Council!]! @relationship(type: "HAS", direction: OUT)
   campus: Campus @relationship(type: "HAS", direction: IN)

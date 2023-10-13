@@ -1,13 +1,71 @@
 import { gql } from '@apollo/client'
 
+export const SET_VACATION_STREAM = gql`
+  mutation SetVacationStream($streamId: ID!) {
+    SetVacationStream(streamId: $streamId) {
+      id
+      name
+      vacationStatus
+      history(limit: 5) {
+        id
+        timeStamp
+        createdAt {
+          date
+        }
+        loggedBy {
+          id
+          firstName
+          lastName
+          stream_name
+        }
+        historyRecord
+      }
+    }
+  }
+`
+
+export const SET_ACTIVE_STREAM = gql`
+  mutation SetActiveStream($streamId: ID!) {
+    SetActiveStream(streamId: $streamId) {
+      id
+      name
+      vacationStatus
+      history(limit: 5) {
+        id
+        timeStamp
+        createdAt {
+          date
+        }
+        loggedBy {
+          id
+          firstName
+          lastName
+          stream_name
+        }
+        historyRecord
+      }
+    }
+  }
+`
+
 export const SET_VACATION_FELLOWSHIP = gql`
   mutation SetVacationFellowship($fellowshipId: ID!) {
     SetVacationFellowship(fellowshipId: $fellowshipId) {
       id
       name
       vacationStatus
-      history {
+      history(limit: 5) {
         id
+        timeStamp
+        createdAt {
+          date
+        }
+        loggedBy {
+          id
+          firstName
+          lastName
+          stream_name
+        }
         historyRecord
       }
     }
@@ -20,8 +78,18 @@ export const SET_ACTIVE_FELLOWSHIP = gql`
       id
       name
       vacationStatus
-      history {
+      history(limit: 5) {
         id
+        timeStamp
+        createdAt {
+          date
+        }
+        loggedBy {
+          id
+          firstName
+          lastName
+          stream_name
+        }
         historyRecord
       }
     }
@@ -34,8 +102,18 @@ export const SET_ONLINE_FELLOWSHIP = gql`
       id
       name
       vacationStatus
-      history {
+      history(limit: 5) {
         id
+        timeStamp
+        createdAt {
+          date
+        }
+        loggedBy {
+          id
+          firstName
+          lastName
+          stream_name
+        }
         historyRecord
       }
     }
@@ -48,8 +126,18 @@ export const SET_VACATION_BACENTA = gql`
       id
       name
       vacationStatus
-      history {
+      history(limit: 5) {
         id
+        timeStamp
+        createdAt {
+          date
+        }
+        loggedBy {
+          id
+          firstName
+          lastName
+          stream_name
+        }
         historyRecord
       }
     }
@@ -62,8 +150,18 @@ export const SET_ACTIVE_BACENTA = gql`
       id
       name
       vacationStatus
-      history {
+      history(limit: 5) {
         id
+        timeStamp
+        createdAt {
+          date
+        }
+        loggedBy {
+          id
+          firstName
+          lastName
+          stream_name
+        }
         historyRecord
       }
     }
@@ -76,8 +174,18 @@ export const SET_ACTIVE_HUB = gql`
       id
       name
       vacationStatus
-      history {
+      history(limit: 5) {
         id
+        timeStamp
+        createdAt {
+          date
+        }
+        loggedBy {
+          id
+          firstName
+          lastName
+          stream_name
+        }
         historyRecord
       }
     }
@@ -90,8 +198,18 @@ export const SET_VACATION_HUB = gql`
       id
       name
       vacationStatus
-      history {
+      history(limit: 5) {
         id
+        timeStamp
+        createdAt {
+          date
+        }
+        loggedBy {
+          id
+          firstName
+          lastName
+          stream_name
+        }
         historyRecord
       }
     }
@@ -104,8 +222,18 @@ export const SET_FELLOWSHIP_TO_HUB_FELLOWSHIP = gql`
       id
       name
       vacationStatus
-      history {
+      history(limit: 5) {
         id
+        timeStamp
+        createdAt {
+          date
+        }
+        loggedBy {
+          id
+          firstName
+          lastName
+          stream_name
+        }
         historyRecord
       }
     }
@@ -119,8 +247,18 @@ export const SET_HUB_FELLOWSHIP_TO_REGULAR_FELLOWSHIP = gql`
       name
       hubStatus
       vacationStatus
-      history {
+      history(limit: 5) {
         id
+        timeStamp
+        createdAt {
+          date
+        }
+        loggedBy {
+          id
+          firstName
+          lastName
+          stream_name
+        }
         historyRecord
       }
     }

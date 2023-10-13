@@ -21,6 +21,7 @@ const CreateStream = () => {
     meetingDay: 'Sunday',
     leaderName: '',
     bankAccount: 'manual',
+    vacationStatus: 'Active',
     leaderEmail: '',
     campus: campusId,
   }

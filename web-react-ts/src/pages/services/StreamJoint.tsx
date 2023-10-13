@@ -3,7 +3,7 @@ import PlaceholderCustom from 'components/Placeholder'
 import { MemberContext } from 'contexts/MemberContext'
 import React, { useContext } from 'react'
 import { Container } from 'react-bootstrap'
-import { PencilSquare } from 'react-bootstrap-icons'
+import { PencilSquare, XCircleFill } from 'react-bootstrap-icons'
 import { useNavigate } from 'react-router'
 
 const StreamJoint = () => {
@@ -21,6 +21,20 @@ const StreamJoint = () => {
         </PlaceholderCustom>
 
         <div className="d-grid gap-2 mt-5 text-left">
+          <MenuButton
+            iconComponent={PencilSquare}
+            title="Fill Service Form"
+            color="members"
+            onClick={() => navigate(`/stream/record-service`)}
+            noCaption
+          />
+          <MenuButton
+            iconComponent={XCircleFill}
+            title="Cancel Service"
+            color="members"
+            onClick={() => navigate(`/services/stream/no-service`)}
+            noCaption
+          />
           <MenuButton
             iconComponent={PencilSquare}
             title="Fill Joint Service Form"

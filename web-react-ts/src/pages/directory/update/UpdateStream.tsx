@@ -13,6 +13,7 @@ import StreamForm, {
 } from 'pages/directory/reusable-forms/StreamForm'
 import { FormikHelpers } from 'formik'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
+import { SET_ACTIVE_STREAM, SET_VACATION_STREAM } from './StatusChanges'
 
 const UpdateStream = () => {
   const { streamId } = useContext(ChurchContext)
@@ -30,6 +31,7 @@ const UpdateStream = () => {
     leaderEmail: stream?.leader?.email || '',
     bankAccount: stream?.bankAccount || '',
     meetingDay: stream?.meetingDay.day ?? '',
+    vacationStatus: stream?.vacationStatus ?? '',
     campus: stream?.campus?.id ?? '',
     councils: stream?.councils?.length ? stream.councils : [''],
   }
@@ -38,6 +40,9 @@ const UpdateStream = () => {
     refetchQueries: [{ query: DISPLAY_STREAM, variables: { id: streamId } }],
   })
   const [MakeStreamLeader] = useMutation(MAKE_STREAM_LEADER)
+  const [SetStreamActive] = useMutation(SET_ACTIVE_STREAM)
+  const [SetStreamOnVacation] = useMutation(SET_VACATION_STREAM)
+
   const [UpdateStream] = useMutation(UPDATE_STREAM_MUTATION, {
     refetchQueries: [
       {
@@ -101,6 +106,23 @@ const UpdateStream = () => {
           } else {
             throwToSentry('There was a problem changing the leader', err)
           }
+        }
+      }
+
+      if (values.vacationStatus !== initialValues.vacationStatus) {
+        if (values.vacationStatus === 'Vacation') {
+          await SetStreamOnVacation({
+            variables: {
+              streamId,
+            },
+          })
+        }
+        if (values.vacationStatus === 'Active') {
+          await SetStreamActive({
+            variables: {
+              streamId,
+            },
+          })
         }
       }
 
