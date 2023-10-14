@@ -11,7 +11,7 @@ import PlaceholderDefaulterList from '../PlaceholderDefaulterList'
 import { HigherChurchWithDefaulters } from '../defaulters-types'
 import PullToRefresh from 'react-simple-pull-to-refresh'
 import { messageForAdminsOfDefaulters } from '../defaulters-utils'
-import { CREATIVEARTS_BY_MINISTRY } from './DefaultersSontaQueries'
+import { CREATIVEARTS_BY_MINISTRY } from './SontaDefaultersQueries'
 
 const CreativeArtsByMinistry = () => {
   const { creativeArtsId, clickCard } = useContext(ChurchContext)

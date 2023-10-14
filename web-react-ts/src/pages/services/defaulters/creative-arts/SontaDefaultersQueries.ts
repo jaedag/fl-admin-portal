@@ -178,7 +178,7 @@ export const HUBCOUNCIL_DEFAULTERS = gql`
       activeHubCount
       hubFormDefaultersThisWeekCount
       hubBankingDefaultersThisWeekCount
-      hubBankedThisWeekCount
+      hubsBankedThisWeekCount
       hubRehearsalsThisWeekCount
       hubCancelledRehearsalsThisWeekCount
     }
@@ -347,7 +347,7 @@ export const MINISTRY_DEFAULTERS = gql`
       activeHubCount
       hubFormDefaultersThisWeekCount
       hubBankingDefaultersThisWeekCount
-      hubBankedThisWeekCount
+      hubsBankedThisWeekCount
       hubRehearsalsThisWeekCount
       hubCancelledRehearsalsThisWeekCount
     }
@@ -516,7 +516,7 @@ export const CREATIVEARTS_DEFAULTERS = gql`
       activeHubCount
       hubFormDefaultersThisWeekCount
       hubBankingDefaultersThisWeekCount
-      hubBankedThisWeekCount
+      hubsBankedThisWeekCount
       hubRehearsalsThisWeekCount
       hubCancelledRehearsalsThisWeekCount
     }
@@ -697,12 +697,12 @@ export const CREATIVEARTS_BY_MINISTRY = gql`
   }
 `
 
-export const MINISTRY_BY_HUB = gql`
-  query ministryByHub($id: ID!) {
+export const MINISTRY_BY_HUBCOUNCIL = gql`
+  query ministryByHubCouncil($id: ID!) {
     ministries(where: { id: $id }) {
       id
       name
-      hubs {
+      hubCouncils {
         id
         name
         leader {
