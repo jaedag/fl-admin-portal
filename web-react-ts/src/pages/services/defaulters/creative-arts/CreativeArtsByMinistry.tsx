@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router'
 import '../Defaulters.css'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import PlaceholderDefaulterList from '../PlaceholderDefaulterList'
-import { HigherChurchWithDefaulters } from '../defaulters-types'
+import { HigherSontaChurchWithDefaulters } from '../defaulters-types'
 import PullToRefresh from 'react-simple-pull-to-refresh'
 import { messageForAdminsOfDefaulters } from '../defaulters-utils'
 import { CREATIVEARTS_BY_MINISTRY } from './SontaDefaultersQueries'
@@ -33,16 +33,66 @@ const CreativeArtsByMinistry = () => {
           <Row>
             {data?.creativeArts.length ? (
               data?.creativeArts[0].ministries.map(
-                (ministry: HigherChurchWithDefaulters, i: number) => (
+                (ministry: HigherSontaChurchWithDefaulters, i: number) => (
                   <Col key={i} xs={12} className="mb-3">
                     <Card>
                       <Card.Header className="fw-bold">{`${ministry.name} Ministry`}</Card.Header>
                       <Card.Body
                         onClick={() => {
                           clickCard(ministry)
-                          navigate('/services/ministry-by-hub')
+                          navigate('/services/ministry-by-hubcouncil')
                         }}
                       >
+                        <div className="fw-bold">
+                          Active Hubs {ministry.activeHubCount}
+                        </div>
+                        <div className="good">
+                          Rehearsals This Week{' '}
+                          {ministry.rehearsalsThisWeekCount}
+                        </div>
+                        <div
+                          className={
+                            ministry.hubFormDefaultersThisWeekCount
+                              ? 'bad'
+                              : 'good'
+                          }
+                        >
+                          Form Not Filled This Week{' '}
+                          {ministry.hubFormDefaultersThisWeekCount}
+                        </div>
+                        <div
+                          className={
+                            ministry.hubsBankedThisWeekCount ===
+                            ministry.hubRehearsalsThisWeekCount
+                              ? 'good'
+                              : ministry.hubsBankedThisWeekCount > 0
+                              ? 'yellow'
+                              : 'bad'
+                          }
+                        >
+                          Banked This Week {ministry.hubsBankedThisWeekCount}
+                        </div>
+                        <div
+                          className={
+                            ministry.hubBankingDefaultersThisWeekCount
+                              ? 'bad'
+                              : 'good'
+                          }
+                        >
+                          Not Banked This Week{' '}
+                          {ministry.hubBankingDefaultersThisWeekCount}
+                        </div>
+                        <div
+                          className={
+                            ministry.hubCancelledRehearsalsThisWeekCount
+                              ? 'bad'
+                              : 'good'
+                          }
+                        >
+                          Cancelled Services This Week{' '}
+                          {ministry.hubCancelledRehearsalsThisWeekCount}
+                        </div>
+                        <hr />
                         <div className="fw-bold">
                           Active Fellowships {ministry.activeFellowshipCount}
                         </div>

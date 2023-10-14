@@ -119,8 +119,8 @@ const OversightByCampus = lazy(
 const CreativeArtsByMinistry = lazy(
   () => import('pages/services/defaulters/creative-arts/CreativeArtsByMinistry')
 )
-const MinistryByHub = lazy(
-  () => import('pages/services/defaulters/creative-arts/MinistryByHub')
+const MinistryByHubCouncil = lazy(
+  () => import('pages/services/defaulters/creative-arts/MinistryByHubCouncil')
 )
 const ConstituencyBankingSlipView = lazy(
   () => import('pages/services/banking/banking-slip/ConstituencyView')
@@ -577,8 +577,8 @@ export const graphs: LazyRouteTypes[] = [
     placeholder: true,
   },
   {
-    path: '/services/ministry-by-hub',
-    element: MinistryByHub,
+    path: '/services/ministry-by-hubcouncil',
+    element: MinistryByHubCouncil,
     roles: permitLeaderAdmin('Ministry'),
     placeholder: true,
   },
