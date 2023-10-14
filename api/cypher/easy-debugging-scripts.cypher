@@ -18,3 +18,5 @@ MATCH (this:Campus)
        RETURN COUNT(DISTINCT defaulters);
 
    
+  MATCH (service:ServiceRecord {id: "e30ae146-7d11-4848-8d22-bc36fa0821fc"})
+  DETACH DELETE service
