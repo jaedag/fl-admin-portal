@@ -671,6 +671,41 @@ export const CREATIVEARTS_BANKED_LIST = gql`
 
 //  Church By Sub Church
 
+export const CAMPUS_BY_CREATIVEARTS = gql`
+  query campusByCreativeArts($id: ID!) {
+    campuses(where: { id: $id }) {
+      id
+      name
+      creativeArts {
+        id
+        name
+        admin {
+          id
+          firstName
+          lastName
+          fullName
+          phoneNumber
+          whatsappNumber
+        }
+
+        activeHubCount
+        hubFormDefaultersThisWeekCount
+        hubBankingDefaultersThisWeekCount
+        hubsBankedThisWeekCount
+        hubRehearsalsThisWeekCount
+        hubCancelledRehearsalsThisWeekCount
+
+        activeFellowshipCount
+        formDefaultersThisWeekCount
+        bankingDefaultersThisWeekCount
+        bankedThisWeekCount
+        servicesThisWeekCount
+        cancelledServicesThisWeekCount
+      }
+    }
+  }
+`
+
 export const CREATIVEARTS_BY_MINISTRY = gql`
   query creativeArtsByMinistry($id: ID!) {
     creativeArts(where: { id: $id }) {

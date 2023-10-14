@@ -659,6 +659,7 @@ export const CAMPUS_DEFAULTERS = gql`
       id
       name
       streamCount
+      creativeArtsCount
       activeStreamCount
 
       streamFormDefaultersThisWeekCount
@@ -677,6 +678,13 @@ export const CAMPUS_DEFAULTERS = gql`
       constituencyBankingDefaultersThisWeekCount
       councilBankedThisWeekCount
       councilBankingDefaultersThisWeekCount
+
+      activeHubCount
+      hubFormDefaultersThisWeekCount
+      hubBankingDefaultersThisWeekCount
+      hubsBankedThisWeekCount
+      hubRehearsalsThisWeekCount
+      hubCancelledRehearsalsThisWeekCount
     }
   }
 `

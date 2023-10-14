@@ -381,6 +381,36 @@ const DefaultersDashboard = () => {
               </>
             )}
 
+            {['Campus'].includes(church?.__typename ?? '') && (
+              <>
+                <RoleView roles={['leaderCampus', 'adminCampus']}>
+                  <Col xs={12} className="mb-3">
+                    {aggregates?.title && (
+                      <DefaulterInfoCard
+                        defaulter={{
+                          title: 'Creative Arts',
+                          data: church?.creativeArtsCount,
+                          link: `/services/campus-by-creativearts`,
+                        }}
+                      />
+                    )}
+                  </Col>
+                </RoleView>
+                <Col xs={12} className="mb-3">
+                  <HeadingSecondary>Rehearsals</HeadingSecondary>
+                  <PlaceholderCustom as="h6" loading={!church}>
+                    <h6>{`Active Hubs: ${church?.activeHubCount}`}</h6>
+                  </PlaceholderCustom>
+                </Col>
+
+                {rehearsalDefaulters.map((defaulter, i) => (
+                  <Col key={i} xs={6} className="mb-3">
+                    <DefaulterInfoCard defaulter={defaulter} />
+                  </Col>
+                ))}
+              </>
+            )}
+
             {jointServiceDefaulters.map((defaulter, i) => {
               if (!defaulter.data) return null
 
