@@ -380,6 +380,16 @@ const DefaultersDashboard = () => {
                 <hr />
               </>
             )}
+            {jointServiceDefaulters.map((defaulter, i) => {
+              if (!defaulter.data) return null
+
+              return (
+                <Col key={i} xs={6} className="mb-3">
+                  <DefaulterInfoCard defaulter={defaulter} />
+                  <hr />
+                </Col>
+              )
+            })}
 
             {['Campus'].includes(church?.__typename ?? '') && (
               <>
@@ -410,16 +420,6 @@ const DefaultersDashboard = () => {
                 ))}
               </>
             )}
-
-            {jointServiceDefaulters.map((defaulter, i) => {
-              if (!defaulter.data) return null
-
-              return (
-                <Col key={i} xs={6} className="mb-3">
-                  <DefaulterInfoCard defaulter={defaulter} />
-                </Col>
-              )
-            })}
           </Row>
         </Container>
       </ApolloWrapper>
