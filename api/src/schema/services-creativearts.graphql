@@ -764,7 +764,7 @@ extend type Ministry {
   activeFellowshipCount: Int!
     @cypher(
       statement: """
-      MATCH (this)-[:HAS]->(:Hub)-[:HAS]->(fellowships:Active:HubFellowship)
+      MATCH (this)-[:HAS]->(:HubCouncil)-[:HAS]->(:Hub)-[:HAS]->(fellowships:Active:HubFellowship)
       RETURN COUNT(DISTINCT fellowships)
       """
     )

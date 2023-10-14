@@ -687,6 +687,14 @@ export const CREATIVEARTS_BY_MINISTRY = gql`
           phoneNumber
           whatsappNumber
         }
+
+        activeHubCount
+        hubFormDefaultersThisWeekCount
+        hubBankingDefaultersThisWeekCount
+        hubsBankedThisWeekCount
+        hubRehearsalsThisWeekCount
+        hubCancelledRehearsalsThisWeekCount
+
         activeFellowshipCount
         formDefaultersThisWeekCount
         bankingDefaultersThisWeekCount
@@ -714,6 +722,42 @@ export const MINISTRY_BY_HUBCOUNCIL = gql`
           phoneNumber
           whatsappNumber
         }
+
+        activeHubCount
+        hubFormDefaultersThisWeekCount
+        hubBankingDefaultersThisWeekCount
+        hubsBankedThisWeekCount
+        hubRehearsalsThisWeekCount
+        hubCancelledRehearsalsThisWeekCount
+
+        activeFellowshipCount
+        formDefaultersThisWeekCount
+        bankingDefaultersThisWeekCount
+        bankedThisWeekCount
+        servicesThisWeekCount
+        cancelledServicesThisWeekCount
+      }
+    }
+  }
+`
+
+export const HUBCOUNCIL_BY_HUB = gql`
+  query hubCouncilByHub($id: ID!) {
+    hubCouncils(where: { id: $id }) {
+      id
+      name
+      hubs {
+        id
+        name
+        leader {
+          id
+          firstName
+          lastName
+          fullName
+          phoneNumber
+          whatsappNumber
+        }
+
         activeFellowshipCount
         formDefaultersThisWeekCount
         bankingDefaultersThisWeekCount
