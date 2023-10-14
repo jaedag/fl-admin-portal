@@ -1,3 +1,23 @@
+#### 7.10.19 (2023-10-14)
+
+##### New Features
+
+*  implement campus by creative arts defaulter pages ([2b4fd01d](https://github.com/firstlovecenter/fl-pastoral-care/commit/2b4fd01d922862ac086c72f9de7638d0439e70d3))
+*  sonta defaulter queries ([4f4e8a77](https://github.com/firstlovecenter/fl-pastoral-care/commit/4f4e8a7766c5af3fa5fd3a12fb399cb4337bc95c))
+
+##### Bug Fixes
+
+*   implement lists of defaulters on clicking  card ([6413d204](https://github.com/firstlovecenter/fl-pastoral-care/commit/6413d20421e54a086e33f9838a19512aa8402038))
+*  update joint service order on defaulters dashboard ([cecb9869](https://github.com/firstlovecenter/fl-pastoral-care/commit/cecb986988388aaa459a0ef9a964850a01033372))
+*  implement church by subchurch for creative arts defaulters ([a6005f7b](https://github.com/firstlovecenter/fl-pastoral-care/commit/a6005f7bb6616bf29256cc8b41d5d9e3b0c7d2c9))
+*  add sonta queries to campus church level ([77bc548c](https://github.com/firstlovecenter/fl-pastoral-care/commit/77bc548c37ee1cdb46dab21d367b6aef45b71bc5))
+*  implement defaulter dashboard for all sonta levels ([14e0f7ce](https://github.com/firstlovecenter/fl-pastoral-care/commit/14e0f7ce33c4838a07700d2a58b00197301f9b37))
+*  update defaulters dashboard for rehearsal queries ([6f8ee4bd](https://github.com/firstlovecenter/fl-pastoral-care/commit/6f8ee4bdf56bb714495ec3d0156429b16d0ff2ff))
+*  initial implementation of sonta  quireis ([2645898e](https://github.com/firstlovecenter/fl-pastoral-care/commit/2645898ea9a9cccd95def2102954cf7739d6dede))
+*  errors on sonta defaulters queries ([9554b2d7](https://github.com/firstlovecenter/fl-pastoral-care/commit/9554b2d7c76036490db4017ce9c6cf4a05c3818c))
+*  update church  sonta details permissions ([8992a1a0](https://github.com/firstlovecenter/fl-pastoral-care/commit/8992a1a029ab1830360b72cd1be933ffc9928435))
+*  fix bug with CloseDown CA and ministry ([c5c83d82](https://github.com/firstlovecenter/fl-pastoral-care/commit/c5c83d823aa229aa96615b27b0f9ecd9393989fc))
+
 #### 7.10.18 (2023-10-13)
 
 ##### Bug Fixes
