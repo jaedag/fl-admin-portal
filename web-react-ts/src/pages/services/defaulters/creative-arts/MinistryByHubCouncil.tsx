@@ -51,7 +51,7 @@ const MinistryByHubCouncil = () => {
                           Active Hubs {hub.activeHubCount}
                         </div>
                         <div className="good">
-                          Rehearsals This Week {hub.rehearsalsThisWeekCount}
+                          Rehearsals This Week {hub.hubRehearsalsThisWeekCount}
                         </div>
                         <div
                           className={

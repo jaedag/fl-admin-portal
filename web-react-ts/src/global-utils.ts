@@ -559,6 +559,8 @@ export const getSubChurchLevel = (churchType: ChurchLevel) => {
     case 'CreativeArts':
       return 'Ministry'
     case 'Ministry':
+      return 'HubCouncil'
+    case 'HubCouncil':
       return 'Hub'
 
     default:

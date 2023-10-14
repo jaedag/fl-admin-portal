@@ -118,7 +118,7 @@ export interface HigherSontaChurchWithDefaulters
   hubCancelledRehearsalsThisWeekCount: number
   hubConstituencyBankingDefaultersThisWeekCount: number
 
-  [key: string]: any
+  // [key: string]: any
 }
 
 export interface DefaultersUseChurchType {

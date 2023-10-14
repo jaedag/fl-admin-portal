@@ -48,7 +48,7 @@ const CreativeArtsByMinistry = () => {
                         </div>
                         <div className="good">
                           Rehearsals This Week{' '}
-                          {ministry.rehearsalsThisWeekCount}
+                          {ministry.hubRehearsalsThisWeekCount}
                         </div>
                         <div
                           className={

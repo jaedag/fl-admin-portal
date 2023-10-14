@@ -14,12 +14,12 @@ import { useContext, useEffect, useState } from 'react'
 
 type useSontaLevelProps = {
   constituencyFunction?: LazyQueryExecFunction<any, OperationVariables>
-  constituencyRefetch: () => Promise<ApolloQueryResult<any>>
-  councilFunction: LazyQueryExecFunction<any, OperationVariables>
-  councilRefetch: () => Promise<ApolloQueryResult<any>>
-  streamFunction: LazyQueryExecFunction<any, OperationVariables>
-  streamRefetch: () => Promise<ApolloQueryResult<any>>
-  campusFunction: LazyQueryExecFunction<any, OperationVariables>
+  constituencyRefetch?: () => Promise<ApolloQueryResult<any>>
+  councilFunction?: LazyQueryExecFunction<any, OperationVariables>
+  councilRefetch?: () => Promise<ApolloQueryResult<any>>
+  streamFunction?: LazyQueryExecFunction<any, OperationVariables>
+  streamRefetch?: () => Promise<ApolloQueryResult<any>>
+  campusFunction?: LazyQueryExecFunction<any, OperationVariables>
   campusRefetch: () => Promise<ApolloQueryResult<any>>
   oversightFunction?: LazyQueryExecFunction<any, OperationVariables>
   oversightRefetch?: () => Promise<ApolloQueryResult<any>>
@@ -160,6 +160,7 @@ const useSontaLevel = (props: useSontaLevelProps) => {
           break
         case 'Council':
           {
+            if (!props.councilFunction) break
             const res = await props.councilFunction({
               variables: {
                 id: currentChurch?.id,
@@ -175,6 +176,7 @@ const useSontaLevel = (props: useSontaLevelProps) => {
           break
         case 'Stream':
           {
+            if (!props.streamFunction) break
             const res = await props.streamFunction({
               variables: {
                 id: currentChurch?.id,
@@ -189,6 +191,7 @@ const useSontaLevel = (props: useSontaLevelProps) => {
 
         case 'Campus':
           {
+            if (!props.campusFunction) break
             const res = await props.campusFunction({
               variables: {
                 id: currentChurch?.id,

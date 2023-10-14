@@ -1312,7 +1312,7 @@ extend type CreativeArts {
   activeFellowshipCount: Int!
     @cypher(
       statement: """
-      MATCH (this)-[:HAS]->(:Ministry)-[:HAS]->(:Hub)-[:HAS]->(fellowships:Active:HubFellowship)
+      MATCH (this)-[:HAS]->(:Ministry)-[:HAS]->(:HubCouncil)-[:HAS]->(:Hub)-[:HAS]->(fellowships:Active:HubFellowship)
       RETURN COUNT(DISTINCT fellowships)
       """
     )

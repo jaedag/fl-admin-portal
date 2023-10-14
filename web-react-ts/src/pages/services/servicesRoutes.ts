@@ -171,6 +171,13 @@ const FellowshipBankingSlipSubmission = lazy(
 const FellowshipBankingSlipView = lazy(
   () => import('pages/services/banking/banking-slip/FellowshipView')
 )
+const HubRehearsalsThisWeek = lazy(
+  () => import('pages/services/defaulters/creative-arts/HubRehearsalsThisWeek')
+)
+const HubFormDefaultersThisWeek = lazy(
+  () =>
+    import('pages/services/defaulters/creative-arts/HubFormDefaultersThisWeek')
+)
 
 export const services: LazyRouteTypes[] = [
   ...downloadReports,
@@ -589,6 +596,19 @@ export const graphs: LazyRouteTypes[] = [
     path: '/services/ministry-by-hubcouncil',
     element: MinistryByHubCouncil,
     roles: permitLeaderAdmin('Ministry'),
+    placeholder: true,
+  },
+  // rehearsal defaulters
+  {
+    path: '/rehearsal/form-defaulters',
+    element: HubFormDefaultersThisWeek,
+    roles: permitLeaderAdmin('HubCouncil'),
+    placeholder: true,
+  },
+  {
+    path: '/rehearsal/rehearsal-this-week',
+    element: HubRehearsalsThisWeek,
+    roles: permitLeaderAdmin('HubCouncil'),
     placeholder: true,
   },
 ]
