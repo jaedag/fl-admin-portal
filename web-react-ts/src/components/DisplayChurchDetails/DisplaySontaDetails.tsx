@@ -74,6 +74,10 @@ const DisplaySontaDetails = (props: DisplayChurchDetailsProps) => {
       needsAdmin = false
       roles = permitAdmin('Hub')
       break
+    case 'HubCouncil':
+      needsAdmin = false
+      roles = permitAdmin('HubCouncil')
+      break
     case 'Ministry':
       needsAdmin = true
       roles = permitAdmin('Ministry')

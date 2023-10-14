@@ -33,7 +33,7 @@ const servantCypher = {
    `,
   disconnectChurchArrivalsAdmin: `
    MATCH (church {id: $churchId}) 
-   WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream 
+   WHERE church:Constituency OR church:Council OR church:Stream 
    OR church:Campus OR church:Oversight 
    OR church:CreativeArts OR church:Ministry
    MATCH (church)<-[oldAdmin:DOES_ARRIVALS_FOR]-(admin:Member)
