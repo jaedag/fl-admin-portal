@@ -336,17 +336,21 @@ const DefaultersDashboard = () => {
               ) && (
                 <>
                   <Accordion.Header>
-                    <HeadingSecondary>Stream Services</HeadingSecondary>
-                    <PlaceholderCustom as="h6" loading={!church}>
-                      <h6>{`Active Streams: ${church?.activeStreamCount}`}</h6>
-                    </PlaceholderCustom>
+                    <div>
+                      <HeadingSecondary>Stream Services</HeadingSecondary>
+                      <PlaceholderCustom as="h6" loading={!church}>
+                        <h6>{`Active Streams: ${church?.activeStreamCount}`}</h6>
+                      </PlaceholderCustom>
+                    </div>
                   </Accordion.Header>
                   <Accordion.Body>
-                    {streamDefaultersArray.map((defaulter, i) => (
-                      <Col key={i} xs={6} className="mb-3">
-                        <DefaulterInfoCard defaulter={defaulter} />
-                      </Col>
-                    ))}
+                    <Row>
+                      {streamDefaultersArray.map((defaulter, i) => (
+                        <Col key={i} xs={6} className="mb-3">
+                          <DefaulterInfoCard defaulter={defaulter} />
+                        </Col>
+                      ))}
+                    </Row>
                   </Accordion.Body>
                 </>
               )}
@@ -417,16 +421,18 @@ const DefaultersDashboard = () => {
                 <>
                   <Accordion.Header>Joint Services</Accordion.Header>
                   <Accordion.Body>
-                    {jointServiceDefaulters.map((defaulter, i) => {
-                      if (!defaulter.data) return null
+                    <Row>
+                      {jointServiceDefaulters.map((defaulter, i) => {
+                        if (!defaulter.data) return null
 
-                      return (
-                        <Col key={i} xs={6} className="mb-3">
-                          <DefaulterInfoCard defaulter={defaulter} />
-                          <hr />
-                        </Col>
-                      )
-                    })}
+                        return (
+                          <Col key={i} xs={6} className="mb-3">
+                            <DefaulterInfoCard defaulter={defaulter} />
+                            <hr />
+                          </Col>
+                        )
+                      })}
+                    </Row>
                   </Accordion.Body>
                 </>
               )}
@@ -446,25 +452,27 @@ const DefaultersDashboard = () => {
                     </div>
                   </Accordion.Header>
                   <Accordion.Body>
-                    <RoleView roles={['leaderCampus', 'adminCampus']}>
-                      <Col xs={12} className="mb-3">
-                        {aggregates?.title && (
-                          <DefaulterInfoCard
-                            defaulter={{
-                              title: 'Creative Arts',
-                              data: church?.creativeArtsCount,
-                              link: `/services/campus-by-creativearts`,
-                            }}
-                          />
-                        )}
-                      </Col>
-                    </RoleView>
+                    <Row>
+                      <RoleView roles={['leaderCampus', 'adminCampus']}>
+                        <Col xs={12} className="mb-3">
+                          {aggregates?.title && (
+                            <DefaulterInfoCard
+                              defaulter={{
+                                title: 'Creative Arts',
+                                data: church?.creativeArtsCount,
+                                link: `/services/campus-by-creativearts`,
+                              }}
+                            />
+                          )}
+                        </Col>
+                      </RoleView>
 
-                    {rehearsalDefaulters.map((defaulter, i) => (
-                      <Col key={i} xs={6} className="mb-3">
-                        <DefaulterInfoCard defaulter={defaulter} />
-                      </Col>
-                    ))}
+                      {rehearsalDefaulters.map((defaulter, i) => (
+                        <Col key={i} xs={6} className="mb-3">
+                          <DefaulterInfoCard defaulter={defaulter} />
+                        </Col>
+                      ))}
+                    </Row>
                   </Accordion.Body>
                 </>
               )}
@@ -472,7 +480,7 @@ const DefaultersDashboard = () => {
           </Accordion>
           <Row>
             {loading && (
-              <>
+              <Row>
                 {[1, 2, 3, 4, 5].map((number: number) => (
                   <Col key={number} xs={6} className="mb-3">
                     <DefaulterInfoCard
@@ -480,7 +488,7 @@ const DefaultersDashboard = () => {
                     />
                   </Col>
                 ))}
-              </>
+              </Row>
             )}
           </Row>
         </Container>
