@@ -86,11 +86,33 @@ const ServantsChurchList = () => {
     }
 
     //Administrative
+    if (servant?.isArrivalsAdminForConstituency?.length) {
+      pushIntoChurch(servant?.isArrivalsAdminForConstituency)
+    }
+    if (servant?.isArrivalsAdminForCouncil?.length) {
+      pushIntoChurch(servant?.isArrivalsAdminForCouncil)
+    }
+    if (servant?.isArrivalsAdminForStream?.length) {
+      pushIntoChurch(servant?.isArrivalsAdminForStream)
+    }
+    if (servant?.isArrivalsAdminForCampus?.length) {
+      pushIntoChurch(servant?.isArrivalsAdminForCampus)
+    }
+    if (servant?.isArrivalsAdminForOversight?.length) {
+      pushIntoChurch(servant?.isArrivalsAdminForOversight)
+    }
+    if (servant?.isSheepSeekerForStream?.length) {
+      pushIntoChurch(servant?.isSheepSeekerForStream)
+    }
+
     if (servant?.isAdminForCouncil?.length) {
       pushIntoChurch(servant?.isAdminForCouncil)
     }
     if (servant?.isAdminForConstituency?.length) {
       pushIntoChurch(servant?.isAdminForConstituency)
+    }
+    if (servant?.isAdminForStream?.length) {
+      pushIntoChurch(servant?.isAdminForStream)
     }
     if (servant?.isAdminForCampus?.length) {
       pushIntoChurch(servant?.isAdminForCampus)
@@ -98,6 +120,27 @@ const ServantsChurchList = () => {
     if (servant?.isAdminForOversight?.length) {
       pushIntoChurch(servant?.isAdminForOversight)
     }
+
+    // Creative Arts
+    if (servant?.leadsHub.length) {
+      pushIntoChurch(servant?.leadsHub)
+    }
+    if (servant?.leadsHubCouncil.length) {
+      pushIntoChurch(servant?.leadsHubCouncil)
+    }
+    if (servant?.leadsMinistry.length) {
+      pushIntoChurch(servant?.leadsMinistry)
+    }
+    if (servant?.leadsCreativeArts.length) {
+      pushIntoChurch(servant?.leadsCreativeArts)
+    }
+    if (servant?.isAdminForMinistry?.length) {
+      pushIntoChurch(servant?.isAdminForMinistry)
+    }
+    if (servant?.isAdminForCreativeArts?.length) {
+      pushIntoChurch(servant?.isAdminForCreativeArts)
+    }
+
     //run the get graph function after all checking is done to avoid multiple unnecessary runs
     return churches
   }

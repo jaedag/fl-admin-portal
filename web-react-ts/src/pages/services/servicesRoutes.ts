@@ -112,6 +112,10 @@ const StreamByCouncil = lazy(
 const CampusByStream = lazy(
   () => import('pages/services/defaulters/church-by-subchurch/CampusByStream')
 )
+const OversightByCampus = lazy(
+  () =>
+    import('pages/services/defaulters/church-by-subchurch/OversightByCampus')
+)
 const CreativeArtsByMinistry = lazy(
   () => import('pages/services/defaulters/creative-arts/CreativeArtsByMinistry')
 )
@@ -552,6 +556,12 @@ export const graphs: LazyRouteTypes[] = [
     path: '/services/campus-by-stream',
     element: CampusByStream,
     roles: permitLeaderAdmin('Campus'),
+    placeholder: true,
+  },
+  {
+    path: '/services/oversight-by-council',
+    element: OversightByCampus,
+    roles: permitLeaderAdmin('Oversight'),
     placeholder: true,
   },
   {

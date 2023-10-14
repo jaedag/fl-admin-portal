@@ -250,7 +250,6 @@ export interface MemberWithChurches extends Member {
   leadsHubCouncil: Church[]
   leadsMinistry: Church[]
   leadsCreativeArts: Church[]
-  isAdminForHubCouncil: Church[]
   isAdminForMinistry: Church[]
   isAdminForCreativeArts: Church[]
 

@@ -63,6 +63,7 @@ const ChurchList = ({
                     'Denomination',
                     'CreativeArts',
                     'Ministry',
+                    'HubCouncil',
                     'Hub',
                   ].includes(church.__typename)
                 ) {

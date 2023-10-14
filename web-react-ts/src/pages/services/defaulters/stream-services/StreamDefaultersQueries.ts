@@ -22,12 +22,6 @@ export const CAMPUS_BY_STREAM = gql`
           phoneNumber
           whatsappNumber
         }
-        activeStreamCount
-        streamFormDefaultersThisWeekCount
-        streamBankingDefaultersThisWeekCount
-        streamBankedThisWeekCount
-        streamServicesThisWeekCount
-        streamCancelledServicesThisWeekCount
       }
     }
   }
@@ -75,7 +69,7 @@ export const OVERSIGHT_BY_CAMPUS = gql`
 
 export const DENOMINATION_BY_OVERSIGHT = gql`
   query defaultersDeominationByOversightForStreamServices($id: ID!) {
-    denomination(where: { id: $id }) {
+    denominations(where: { id: $id }) {
       id
       name
       oversights {

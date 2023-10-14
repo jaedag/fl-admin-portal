@@ -4,6 +4,8 @@ import HeadingSecondary from 'components/HeadingSecondary'
 import { useNavigate } from 'react-router'
 import { BiMap } from 'react-icons/bi'
 import { IoIosArrowForward } from 'react-icons/io'
+import RoleView from 'auth/RoleView'
+import { permitAdmin } from 'permission-utils'
 
 const Maps = () => {
   const navigate = useNavigate()
@@ -47,23 +49,26 @@ const Maps = () => {
           <BiMap /> View Map
         </Button>
       </div>
-      {lists.map((list) => (
-        <div className="d-grid" key={list.id}>
-          <Button
-            size="lg"
-            className="text-start text-capitalize py-4 d-flex justify-content-between px-5 mb-2 fs-6"
-            variant="gray"
-            onClick={() => {
-              navigate(`${list.path}`)
-            }}
-          >
-            <span>{list.name}</span>
-            <div>
-              <IoIosArrowForward />
-            </div>
-          </Button>
-        </div>
-      ))}
+
+      <RoleView roles={permitAdmin('Campus')}>
+        {lists.map((list) => (
+          <div className="d-grid" key={list.id}>
+            <Button
+              size="lg"
+              className="text-start text-capitalize py-4 d-flex justify-content-between px-5 mb-2 fs-6"
+              variant="gray"
+              onClick={() => {
+                navigate(`${list.path}`)
+              }}
+            >
+              <span>{list.name}</span>
+              <div>
+                <IoIosArrowForward />
+              </div>
+            </Button>
+          </div>
+        ))}
+      </RoleView>
     </Container>
   )
 }

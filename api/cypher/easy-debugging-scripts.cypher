@@ -8,4 +8,5 @@ MATCH (this:Ministry)
        WITH defaulters, this
        MATCH (defaulters)-[:MEETS_ON]->(day:ServiceDay)
         WHERE day.dayNumber < date().dayOfWeek OR (day.dayNumber = date().dayOfWeek)
-       RETURN COUNT(defaulters) 
+       RETURN COUNT(defaulters);
+
