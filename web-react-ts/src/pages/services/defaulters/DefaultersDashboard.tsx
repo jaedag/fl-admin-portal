@@ -1,7 +1,7 @@
 import { useLazyQuery } from '@apollo/client'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import HeadingSecondary from 'components/HeadingSecondary'
-import { plural } from 'global-utils'
+import { capitalise, plural } from 'global-utils'
 import React, { useContext } from 'react'
 import { Col, Container, Row } from 'react-bootstrap'
 import {
@@ -76,26 +76,27 @@ const DefaultersDashboard = () => {
 
   switch (currentUser?.currentChurch?.__typename) {
     case 'Council':
-      subChurch = 'Constituency'
+      subChurch = 'constituency'
       break
     case 'Stream':
-      subChurch = 'Council'
+      subChurch = 'council'
       break
 
     case 'Campus':
-      subChurch = 'Stream'
+      subChurch = 'stream'
       break
     case 'Oversight':
-      subChurch = 'Campus'
+      subChurch = 'campus'
       break
     case 'Denomination':
-      subChurch = 'Oversight'
+      subChurch = 'oversight'
       break
+
     case 'Ministry':
-      subChurch = 'Hub'
+      subChurch = 'hubCouncil'
       break
     case 'CreativeArts':
-      subChurch = 'Ministry'
+      subChurch = 'ministry'
       break
     default:
       break
@@ -276,11 +277,10 @@ const DefaultersDashboard = () => {
   ]
 
   const aggregates = {
-    title: plural(subChurch),
-    data: church ? church[`${subChurch?.toLowerCase()}Count`] : null,
+    title: capitalise(plural(subChurch)),
+    data: church ? church[`${subChurch}Count`] : null,
     link: `/services/${church?.__typename?.toLowerCase()}-by-${subChurch?.toLowerCase()}`,
   }
-
   return (
     <PullToRefresh onRefresh={refetch}>
       <ApolloWrapper data={church} loading={loading} error={error} placeholder>
@@ -291,13 +291,30 @@ const DefaultersDashboard = () => {
           <HeadingSecondary>Defaulters Page</HeadingSecondary>
 
           <Row>
-            <RoleView roles={permitLeaderAdmin('Council')}>
+            <RoleView
+              roles={[
+                ...permitLeaderAdmin('Council'),
+                ...permitLeaderAdmin('HubCouncil'),
+              ]}
+            >
               <Col xs={12} className="mb-3">
                 {aggregates?.title && (
                   <DefaulterInfoCard defaulter={aggregates} />
                 )}
               </Col>
             </RoleView>
+
+            {loading && (
+              <>
+                {[1, 2, 3, 4, 5].map(() => (
+                  <Col xs={6} className="mb-3">
+                    <DefaulterInfoCard
+                      defaulter={{ title: '-', data: undefined, link: '#' }}
+                    />
+                  </Col>
+                ))}
+              </>
+            )}
 
             {['Campus', 'Oversight', 'Denomination'].includes(
               church?.__typename ?? ''

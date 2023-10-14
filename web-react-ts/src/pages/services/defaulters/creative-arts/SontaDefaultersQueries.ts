@@ -336,7 +336,7 @@ export const MINISTRY_DEFAULTERS = gql`
       id
       name
 
-      hubCount
+      hubCouncilCount
       activeFellowshipCount
       formDefaultersThisWeekCount
       bankingDefaultersThisWeekCount
@@ -506,6 +506,7 @@ export const CREATIVEARTS_DEFAULTERS = gql`
       name
 
       ministryCount
+      activeHubCount
       activeFellowshipCount
       formDefaultersThisWeekCount
       bankingDefaultersThisWeekCount

@@ -449,7 +449,7 @@ export const SERVANTS_HUB_LEADER = gql`
 `
 
 export const SERVANTS_HUBCOUNCIL_LEADER = gql`
-  query hubLeader($id: ID!) {
+  query hubCouncilLeader($id: ID!) {
     members(where: { id: $id }) {
       id
       leadsHubCouncil {

@@ -293,6 +293,10 @@ export const plural = (church: ChurchLevel | string) => {
       return 'hubs'
     case 'Hub':
       return 'Hubs'
+    case 'HubCouncil':
+      return 'Hub Councils'
+    case 'hubCouncil':
+      return 'hub councils'
     case 'ministry':
       return 'ministries'
     case 'Ministry':
