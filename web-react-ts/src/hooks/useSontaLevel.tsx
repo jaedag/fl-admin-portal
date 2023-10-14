@@ -28,6 +28,8 @@ type useSontaLevelProps = {
 
   hubFunction?: LazyQueryExecFunction<any, OperationVariables>
   hubRefetch: () => Promise<ApolloQueryResult<any>>
+  hubCouncilFunction?: LazyQueryExecFunction<any, OperationVariables>
+  hubCouncilRefetch: () => Promise<ApolloQueryResult<any>>
   ministryFunction?: LazyQueryExecFunction<any, OperationVariables>
   ministryRefetch: () => Promise<ApolloQueryResult<any>>
   creativeArtsFunction?: LazyQueryExecFunction<any, OperationVariables>
@@ -57,6 +59,8 @@ const useSontaLevel = (props: useSontaLevelProps) => {
         return props.creativeArtsRefetch
       case 'Ministry':
         return props.ministryRefetch
+      case 'HubCouncil':
+        return props.hubCouncilRefetch
       case 'Hub':
         return props.hubRefetch
       case 'Constituency':
@@ -104,6 +108,21 @@ const useSontaLevel = (props: useSontaLevelProps) => {
             })
 
             setChurch(res?.data?.ministries[0])
+            setLoading(res.loading)
+            setError(res.error)
+          }
+          break
+        case 'HubCouncil':
+          {
+            if (!props.hubCouncilFunction) break
+            const res = await props.hubCouncilFunction({
+              variables: {
+                id: currentChurch?.id,
+                arrivalDate: arrivalDate,
+              },
+            })
+
+            setChurch(res?.data?.hubCouncils[0])
             setLoading(res.loading)
             setError(res.error)
           }

@@ -22,6 +22,7 @@ import { ChurchLevel } from 'global-types'
 import PullToRefresh from 'react-simple-pull-to-refresh'
 import {
   CREATIVEARTS_DEFAULTERS,
+  HUBCOUNCIL_DEFAULTERS,
   HUB_DEFAULTERS,
   MINISTRY_DEFAULTERS,
 } from './creative-arts/DefaultersSontaQueries'
@@ -40,6 +41,9 @@ const DefaultersDashboard = () => {
   const [oversightDefaulters, { refetch: oversightRefetch }] =
     useLazyQuery(OVERSIGHT_DEFAULTERS)
   const [hubDefaulters, { refetch: hubRefetch }] = useLazyQuery(HUB_DEFAULTERS)
+  const [hubCouncilDefaulters, { refetch: hubCouncilRefetch }] = useLazyQuery(
+    HUBCOUNCIL_DEFAULTERS
+  )
   const [ministryDefaulters, { refetch: ministryRefetch }] =
     useLazyQuery(MINISTRY_DEFAULTERS)
   const [creativeArtsDefaulters, { refetch: creativeArtsRefetch }] =
@@ -60,6 +64,8 @@ const DefaultersDashboard = () => {
     oversightRefetch,
     hubFunction: hubDefaulters,
     hubRefetch,
+    hubCouncilFunction: hubCouncilDefaulters,
+    hubCouncilRefetch,
     ministryFunction: ministryDefaulters,
     ministryRefetch,
     creativeArtsFunction: creativeArtsDefaulters,
@@ -94,6 +100,17 @@ const DefaultersDashboard = () => {
     default:
       break
   }
+
+  const rehearsalDefaulters = [
+    {
+      title: 'Rehearsal This Week',
+      data: church?.hubRehearsalsThisWeekCount,
+      color: church?.hubRehearsalsThisWeekCount ? 'good' : 'bad',
+      link: church?.hubRehearsalsThisWeekCount
+        ? '/creative-arts/rehearsal-defaulters'
+        : '#',
+    },
+  ]
 
   const streamDefaultersArray = [
     {
@@ -260,6 +277,26 @@ const DefaultersDashboard = () => {
                 </Col>
 
                 {streamDefaultersArray.map((defaulter, i) => (
+                  <Col key={i} xs={6} className="mb-3">
+                    <DefaulterInfoCard defaulter={defaulter} />
+                  </Col>
+                ))}
+              </>
+            )}
+
+            {['CreativeArts', 'Ministry', 'HubCouncil'].includes(
+              church?.__typename ?? ''
+            ) && (
+              <>
+                <Col xs={12} className="mb-3">
+                  <hr />
+                  <HeadingSecondary>Stream Services</HeadingSecondary>
+                  <PlaceholderCustom as="h6" loading={!church}>
+                    <h6>{`Active Streams: ${church?.activeStreamCount}`}</h6>
+                  </PlaceholderCustom>
+                </Col>
+
+                {rehearsalDefaulters.map((defaulter, i) => (
                   <Col key={i} xs={6} className="mb-3">
                     <DefaulterInfoCard defaulter={defaulter} />
                   </Col>
