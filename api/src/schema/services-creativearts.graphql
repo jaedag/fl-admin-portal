@@ -626,11 +626,23 @@ extend type HubCouncil {
     @cypher(
       statement: """
       MATCH (this)
-      MATCH (this)-[:HAS]->(defaulters:Active:Hub)
-       WHERE NOT EXISTS {
-            MATCH (defaulters)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(rehearsal:RehearsalRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
-            WHERE date.date.week = date().dayOfWeek
-       }
+      WITH date() as today, this
+      WITH  today.weekDay as theDay, today, this
+      WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
+      WITH [day in range(0, 5) | startDate + duration({days: day})] AS dates, this
+
+      MATCH (date:TimeGraph)
+      USING INDEX date:TimeGraph(date)
+      WHERE date.date IN dates
+      MATCH (date)<-[:SERVICE_HELD_ON]-(record:RehearsalRecord)
+
+       WITH DISTINCT record, this
+       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(hubs:Active:Hub)
+       MATCH (hubs)-[:MEETS_ON]->(day:ServiceDay)
+
+       WITH collect(DISTINCT hubs) as services, this
+       MATCH (defaulters:Active:Hub)<-[:HAS]-(this)
+       WHERE NOT defaulters IN services
 
        WITH defaulters, this
        MATCH (defaulters)-[:MEETS_ON]->(day:ServiceDay)
@@ -642,11 +654,23 @@ extend type HubCouncil {
     @cypher(
       statement: """
       MATCH (this)
-      MATCH (this)-[:HAS]->(defaulters:Active:Hub)
-       WHERE NOT EXISTS {
-            MATCH (defaulters)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(rehearsal:RehearsalRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
-            WHERE date.date.week = date().dayOfWeek
-       }
+      WITH date() as today, this
+      WITH  today.weekDay as theDay, today, this
+      WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
+      WITH [day in range(0, 5) | startDate + duration({days: day})] AS dates, this
+
+      MATCH (date:TimeGraph)
+      USING INDEX date:TimeGraph(date)
+      WHERE date.date IN dates
+      MATCH (date)<-[:SERVICE_HELD_ON]-(record:RehearsalRecord)
+
+       WITH DISTINCT record, this
+       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(hubs:Active:Hub)
+       MATCH (hubs)-[:MEETS_ON]->(day:ServiceDay)
+
+       WITH collect(DISTINCT hubs) as services, this
+       MATCH (defaulters:Active:Hub)<-[:HAS]-(this)
+       WHERE NOT defaulters IN services
 
        WITH defaulters, this
        MATCH (defaulters)-[:MEETS_ON]->(day:ServiceDay)
@@ -1127,27 +1151,51 @@ extend type Ministry {
     @cypher(
       statement: """
       MATCH (this)
-      MATCH (this)-[:HAS]->(:HubCouncil)-[:HAS]->(defaulters:Active:Hub)
-       WHERE NOT EXISTS {
-            MATCH (defaulters)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(rehearsal:RehearsalRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
-            WHERE date.date.week = date().dayOfWeek
-       }
+      WITH date() as today, this
+      WITH  today.weekDay as theDay, today, this
+      WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
+      WITH [day in range(0, 5) | startDate + duration({days: day})] AS dates, this
+
+      MATCH (date:TimeGraph)
+      USING INDEX date:TimeGraph(date)
+      WHERE date.date IN dates
+      MATCH (date)<-[:SERVICE_HELD_ON]-(record:RehearsalRecord)
+
+       WITH DISTINCT record, this
+       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(hubs:Active:Hub)
+       MATCH (hubs)-[:MEETS_ON]->(day:ServiceDay)
+
+       WITH collect(DISTINCT hubs) as services, this
+       MATCH (defaulters:Active:Hub)<-[:HAS]-(hubCouncil:HubCouncil)<-[:HAS]-(this)
+       WHERE NOT defaulters IN services
 
        WITH defaulters, this
        MATCH (defaulters)-[:MEETS_ON]->(day:ServiceDay)
         WHERE day.dayNumber < date().dayOfWeek OR (day.dayNumber = date().dayOfWeek)
-      RETURN DISTINCT defaulters
+       RETURN DISTINCT defaulters
       """
     )
   hubFormDefaultersThisWeekCount: Int!
     @cypher(
       statement: """
       MATCH (this)
-      MATCH (this)-[:HAS]->(:HubCouncil)-[:HAS]->(defaulters:Active:Hub)
-       WHERE NOT EXISTS {
-            MATCH (defaulters)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(rehearsal:RehearsalRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
-            WHERE date.date.week = date().dayOfWeek
-       }
+      WITH date() as today, this
+      WITH  today.weekDay as theDay, today, this
+      WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
+      WITH [day in range(0, 5) | startDate + duration({days: day})] AS dates, this
+
+      MATCH (date:TimeGraph)
+      USING INDEX date:TimeGraph(date)
+      WHERE date.date IN dates
+      MATCH (date)<-[:SERVICE_HELD_ON]-(record:RehearsalRecord)
+
+       WITH DISTINCT record, this
+       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(hubs:Active:Hub)
+       MATCH (hubs)-[:MEETS_ON]->(day:ServiceDay)
+
+       WITH collect(DISTINCT hubs) as services, this
+       MATCH (defaulters:Active:Hub)<-[:HAS]-(hubCouncil:HubCouncil)<-[:HAS]-(this)
+       WHERE NOT defaulters IN services
 
        WITH defaulters, this
        MATCH (defaulters)-[:MEETS_ON]->(day:ServiceDay)
@@ -1677,11 +1725,23 @@ extend type CreativeArts {
     @cypher(
       statement: """
       MATCH (this)
-      MATCH (this)-[:HAS]->(:Ministry)-[:HAS]->(:HubCouncil)-[:HAS]->(defaulters:Active:Hub)
-       WHERE NOT EXISTS {
-            MATCH (defaulters)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(rehearsal:RehearsalRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
-            WHERE date.date.week = date().dayOfWeek
-       }
+      WITH date() as today, this
+      WITH  today.weekDay as theDay, today, this
+      WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
+      WITH [day in range(0, 5) | startDate + duration({days: day})] AS dates, this
+
+      MATCH (date:TimeGraph)
+      USING INDEX date:TimeGraph(date)
+      WHERE date.date IN dates
+      MATCH (date)<-[:SERVICE_HELD_ON]-(record:RehearsalRecord)
+
+       WITH DISTINCT record, this
+       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(hubs:Active:Hub)
+       MATCH (hubs)-[:MEETS_ON]->(day:ServiceDay)
+
+       WITH collect(DISTINCT hubs) as services, this
+       MATCH (defaulters:Active:Hub)<-[:HAS]-(hubCouncil:HubCouncil)<-[:HAS]-(:Ministry)<-[:HAS]-(this)
+       WHERE NOT defaulters IN services
 
        WITH defaulters, this
        MATCH (defaulters)-[:MEETS_ON]->(day:ServiceDay)
@@ -1693,11 +1753,23 @@ extend type CreativeArts {
     @cypher(
       statement: """
       MATCH (this)
-      MATCH (this)-[:HAS]->(:Ministry)-[:HAS]->(:HubCouncil)-[:HAS]->(defaulters:Active:Hub)
-       WHERE NOT EXISTS {
-            MATCH (defaulters)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(rehearsal:RehearsalRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
-            WHERE date.date.week = date().dayOfWeek
-       }
+      WITH date() as today, this
+      WITH  today.weekDay as theDay, today, this
+      WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
+      WITH [day in range(0, 5) | startDate + duration({days: day})] AS dates, this
+
+      MATCH (date:TimeGraph)
+      USING INDEX date:TimeGraph(date)
+      WHERE date.date IN dates
+      MATCH (date)<-[:SERVICE_HELD_ON]-(record:RehearsalRecord)
+
+       WITH DISTINCT record, this
+       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(hubs:Active:Hub)
+       MATCH (hubs)-[:MEETS_ON]->(day:ServiceDay)
+
+       WITH collect(DISTINCT hubs) as services, this
+       MATCH (defaulters:Active:Hub)<-[:HAS]-(hubCouncil:HubCouncil)<-[:HAS]-(:Ministry)<-[:HAS]-(this)
+       WHERE NOT defaulters IN services
 
        WITH defaulters, this
        MATCH (defaulters)-[:MEETS_ON]->(day:ServiceDay)
@@ -2080,7 +2152,7 @@ extend type Campus {
       RETURN DISTINCT hubs
       """
     )
-  hubRehearsalsThisWeekCount: Int
+  hubRehearsalsThisWeekCount: Int!
     @cypher(
       statement: """
       MATCH (this)
@@ -2156,11 +2228,23 @@ extend type Campus {
     @cypher(
       statement: """
       MATCH (this)
-      MATCH (this)-[:HAS_MINISTRY]->(:CreativeArts)-[:HAS]->(:Ministry)-[:HAS]->(:HubCouncil)-[:HAS]->(defaulters:Active:Hub)
-       WHERE NOT EXISTS {
-            MATCH (defaulters)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(rehearsal:RehearsalRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
-            WHERE date.date.week = date().dayOfWeek
-       }
+      WITH date() as today, this
+      WITH  today.weekDay as theDay, today, this
+      WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
+      WITH [day in range(0, 5) | startDate + duration({days: day})] AS dates, this
+
+      MATCH (date:TimeGraph)
+      USING INDEX date:TimeGraph(date)
+      WHERE date.date IN dates
+      MATCH (date)<-[:SERVICE_HELD_ON]-(record:RehearsalRecord)
+
+       WITH DISTINCT record, this
+       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(hubs:Active:Hub)
+       MATCH (hubs)-[:MEETS_ON]->(day:ServiceDay)
+
+       WITH collect(DISTINCT hubs) as services, this
+       MATCH (defaulters:Active:Hub)<-[:HAS]-(hubCouncil:HubCouncil)<-[:HAS]-(ministry:Ministry)<-[:HAS]-(creativeArts:CreativeArts)<-[:HAS_MINISTRY]-(this)
+       WHERE NOT defaulters IN services
 
        WITH defaulters, this
        MATCH (defaulters)-[:MEETS_ON]->(day:ServiceDay)
@@ -2168,15 +2252,27 @@ extend type Campus {
       RETURN DISTINCT defaulters
       """
     )
-  hubFormDefaultersThisWeekCount: Int
+  hubFormDefaultersThisWeekCount: Int!
     @cypher(
       statement: """
       MATCH (this)
-      MATCH (this)-[:HAS_MINISTRY]->(:CreativeArts)-[:HAS]->(:Ministry)-[:HAS]->(:HubCouncil)-[:HAS]->(defaulters:Active:Hub)
-       WHERE NOT EXISTS {
-            MATCH (defaulters)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(rehearsal:RehearsalRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
-            WHERE date.date.week = date().dayOfWeek
-       }
+      WITH date() as today, this
+      WITH  today.weekDay as theDay, today, this
+      WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
+      WITH [day in range(0, 5) | startDate + duration({days: day})] AS dates, this
+
+      MATCH (date:TimeGraph)
+      USING INDEX date:TimeGraph(date)
+      WHERE date.date IN dates
+      MATCH (date)<-[:SERVICE_HELD_ON]-(record:RehearsalRecord)
+
+       WITH DISTINCT record, this
+       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(hubs:Active:Hub)
+       MATCH (hubs)-[:MEETS_ON]->(day:ServiceDay)
+
+       WITH collect(DISTINCT hubs) as services, this
+       MATCH (defaulters:Active:Hub)<-[:HAS]-(hubCouncil:HubCouncil)<-[:HAS]-(ministry:Ministry)<-[:HAS]-(creativeArts:CreativeArts)<-[:HAS_MINISTRY]-(this)
+       WHERE NOT defaulters IN services
 
        WITH defaulters, this
        MATCH (defaulters)-[:MEETS_ON]->(day:ServiceDay)
@@ -2211,7 +2307,7 @@ extend type Campus {
       RETURN DISTINCT hubs
       """
     )
-  hubBankingDefaultersThisWeekCount: Int
+  hubBankingDefaultersThisWeekCount: Int!
     @cypher(
       statement: """
       MATCH (this)
@@ -2263,7 +2359,7 @@ extend type Campus {
       RETURN DISTINCT hubs
       """
     )
-  hubsBankedThisWeekCount: Int
+  hubsBankedThisWeekCount: Int!
     @cypher(
       statement: """
       MATCH (this)
@@ -2312,7 +2408,7 @@ extend type Campus {
       RETURN DISTINCT hubCouncils
       """
     )
-  hubCouncilServicesThisWeekCount: Int
+  hubCouncilServicesThisWeekCount: Int!
     @cypher(
       statement: """
       MATCH (this)
@@ -2390,7 +2486,7 @@ extend type Campus {
       RETURN DISTINCT ministries
       """
     )
-  ministryCancelledServicesThisWeekCount: Int
+  ministryCancelledServicesThisWeekCount: Int!
     @cypher(
       statement: """
       MATCH (this)
@@ -2428,7 +2524,7 @@ extend type Campus {
        RETURN DISTINCT defaulters
       """
     )
-  ministryFormDefaultersThisWeekCount: Int
+  ministryFormDefaultersThisWeekCount: Int!
     @cypher(
       statement: """
       MATCH (this)
@@ -2469,7 +2565,7 @@ extend type Campus {
       RETURN DISTINCT ministries
       """
     )
-  ministryBankingDefaultersThisWeekCount: Int
+  ministryBankingDefaultersThisWeekCount: Int!
     @cypher(
       statement: """
       MATCH (this)
@@ -2507,7 +2603,7 @@ extend type Campus {
       RETURN DISTINCT ministries
       """
     )
-  ministriesBankedThisWeekCount: Int
+  ministriesBankedThisWeekCount: Int!
     @cypher(
       statement: """
       MATCH (this)
