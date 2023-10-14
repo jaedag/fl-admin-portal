@@ -25,7 +25,7 @@ import {
   HUBCOUNCIL_DEFAULTERS,
   HUB_DEFAULTERS,
   MINISTRY_DEFAULTERS,
-} from './creative-arts/DefaultersSontaQueries'
+} from './creative-arts/SontaDefaultersQueries'
 import useSontaLevel from 'hooks/useSontaLevel'
 
 const DefaultersDashboard = () => {
@@ -103,11 +103,46 @@ const DefaultersDashboard = () => {
 
   const rehearsalDefaulters = [
     {
-      title: 'Rehearsal This Week',
+      title: 'Rehearsals This Week',
       data: church?.hubRehearsalsThisWeekCount,
       color: church?.hubRehearsalsThisWeekCount ? 'good' : 'bad',
       link: church?.hubRehearsalsThisWeekCount
         ? '/creative-arts/rehearsal-defaulters'
+        : '#',
+    },
+    {
+      title: 'Not Filled Forms',
+      data: church?.hubFormDefaultersThisWeekCount,
+      color: church?.hubFormDefaultersThisWeekCount ? 'bad' : 'good',
+      link: church?.hubFormDefaultersThisWeekCount
+        ? '/creative-arts/form-defaulters'
+        : '#',
+    },
+    {
+      title: 'Have Banked',
+      data: church?.hubsBankedThisWeekCount,
+      color:
+        church?.hubsBankedThisWeekCount === church?.hubRehearsalsThisWeekCount
+          ? 'good'
+          : (church?.hubsBankedThisWeekCount || 0) > 0
+          ? 'yellow'
+          : 'bad',
+      link: church?.hubsBankedThisWeekCount ? '/creative-arts/banked' : '#',
+    },
+    {
+      title: 'Have Not Banked',
+      data: church?.hubBankingDefaultersThisWeekCount,
+      color: church?.hubBankingDefaultersThisWeekCount ? 'bad' : 'good',
+      link: church?.hubBankingDefaultersThisWeekCount
+        ? '/creative-arts/banking-defaulters'
+        : '#',
+    },
+    {
+      title: 'Cancelled Rehearsal',
+      data: church?.hubCancelledRehearsalsThisWeekCount,
+      color: church?.hubCancelledRehearsalsThisWeekCount ? 'bad' : 'good',
+      link: church?.hubCancelledRehearsalsThisWeekCount
+        ? '/creative-arts/cancelled-rehearsals'
         : '#',
     },
   ]
@@ -290,9 +325,9 @@ const DefaultersDashboard = () => {
               <>
                 <Col xs={12} className="mb-3">
                   <hr />
-                  <HeadingSecondary>Stream Services</HeadingSecondary>
+                  <HeadingSecondary>Rehearsals</HeadingSecondary>
                   <PlaceholderCustom as="h6" loading={!church}>
-                    <h6>{`Active Streams: ${church?.activeStreamCount}`}</h6>
+                    <h6>{`Active Hubs: ${church?.activeHubCount}`}</h6>
                   </PlaceholderCustom>
                 </Col>
 

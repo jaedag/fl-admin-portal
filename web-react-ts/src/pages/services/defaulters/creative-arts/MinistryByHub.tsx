@@ -11,13 +11,13 @@ import PlaceholderDefaulterList from '../PlaceholderDefaulterList'
 import { HigherChurchWithDefaulters } from '../defaulters-types'
 import PullToRefresh from 'react-simple-pull-to-refresh'
 import { messageForAdminsOfDefaulters } from '../defaulters-utils'
-import { MINISTRY_BY_HUB } from './DefaultersSontaQueries'
+import { MINISTRY_BY_HUBCOUNCIL } from './SontaDefaultersQueries'
 import useSetUserChurch from 'hooks/useSetUserChurch'
 
 const MinistryByHub = () => {
   const { ministryId, clickCard } = useContext(ChurchContext)
   const { setUserChurch } = useSetUserChurch()
-  const { data, loading, error, refetch } = useQuery(MINISTRY_BY_HUB, {
+  const { data, loading, error, refetch } = useQuery(MINISTRY_BY_HUBCOUNCIL, {
     variables: {
       id: ministryId,
     },
@@ -34,7 +34,7 @@ const MinistryByHub = () => {
           </HeadingPrimary>
           <Row>
             {data?.ministries.length ? (
-              data?.ministries[0].hubs.map(
+              data?.ministries[0].hubCouncils.map(
                 (hub: HigherChurchWithDefaulters, i: number) => (
                   <Col key={i} xs={12} className="mb-3">
                     <Card>
