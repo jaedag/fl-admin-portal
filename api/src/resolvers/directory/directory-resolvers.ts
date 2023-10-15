@@ -9,6 +9,7 @@ import {
   permitLeaderAdmin,
   permitAdminArrivals,
   permitLeader,
+  permitMe,
 } from '../permissions'
 import { RemoveServant } from './make-remove-servants'
 
@@ -129,7 +130,7 @@ const directoryMutation = {
     context: Context
   ) => {
     isAuth(
-      [...permitAdmin('Fellowship'), ...permitSheepSeeker()],
+      [...permitMe('Fellowship'), ...permitMe('Hub'), ...permitSheepSeeker()],
       context.auth.roles
     )
 

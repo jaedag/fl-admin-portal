@@ -590,7 +590,7 @@ extend type Mutation {
 
 ### UPDATE OPERATIONS ###
 extend type Mutation {
-  UpdateMemberEmail(id: ID!, email: String!): Member
+  UpdateMemberEmail(id: ID!, email: String!): Member!
   UpdateMemberAppointmentDate(id: ID!, appointmentDate: String): Member!
     @auth(rules: [{ roles: ["adminDenomination"] }])
     @cypher(
