@@ -610,7 +610,7 @@ extend type HubCouncil {
       MATCH (date:TimeGraph)
       USING INDEX date:TimeGraph(date)
       WHERE date.date IN dates
-      MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
+      MATCH (date)<-[:SERVICE_HELD_ON]-(record:RehearsalRecord)
 
        WITH DISTINCT record, this
        WHERE record.noServiceReason IS NOT NULL
@@ -717,7 +717,7 @@ extend type HubCouncil {
       MATCH (date:TimeGraph)
       USING INDEX date:TimeGraph(date)
       WHERE date.date IN dates
-      MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
+      MATCH (date)<-[:SERVICE_HELD_ON]-(record:RehearsalRecord)
 
        WITH DISTINCT record, this
         WHERE record.noServiceReason IS NULL
@@ -1135,7 +1135,7 @@ extend type Ministry {
       MATCH (date:TimeGraph)
       USING INDEX date:TimeGraph(date)
       WHERE date.date IN dates
-      MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
+      MATCH (date)<-[:SERVICE_HELD_ON]-(record:RehearsalRecord)
 
        WITH DISTINCT record, this
        WHERE record.noServiceReason IS NOT NULL
@@ -1242,7 +1242,7 @@ extend type Ministry {
       MATCH (date:TimeGraph)
       USING INDEX date:TimeGraph(date)
       WHERE date.date IN dates
-      MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
+      MATCH (date)<-[:SERVICE_HELD_ON]-(record:RehearsalRecord)
 
        WITH DISTINCT record, this
         WHERE record.noServiceReason IS NULL
@@ -1709,7 +1709,7 @@ extend type CreativeArts {
       MATCH (date:TimeGraph)
       USING INDEX date:TimeGraph(date)
       WHERE date.date IN dates
-      MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
+      MATCH (date)<-[:SERVICE_HELD_ON]-(record:RehearsalRecord)
 
        WITH DISTINCT record, this
        WHERE record.noServiceReason IS NOT NULL
@@ -1816,7 +1816,7 @@ extend type CreativeArts {
       MATCH (date:TimeGraph)
       USING INDEX date:TimeGraph(date)
       WHERE date.date IN dates
-      MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
+      MATCH (date)<-[:SERVICE_HELD_ON]-(record:RehearsalRecord)
 
        WITH DISTINCT record, this
         WHERE record.noServiceReason IS NULL
@@ -2212,7 +2212,7 @@ extend type Campus {
       MATCH (date:TimeGraph)
       USING INDEX date:TimeGraph(date)
       WHERE date.date IN dates
-      MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
+      MATCH (date)<-[:SERVICE_HELD_ON]-(record:RehearsalRecord)
 
        WITH DISTINCT record, this
        WHERE record.noServiceReason IS NOT NULL
@@ -2319,7 +2319,7 @@ extend type Campus {
       MATCH (date:TimeGraph)
       USING INDEX date:TimeGraph(date)
       WHERE date.date IN dates
-      MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
+      MATCH (date)<-[:SERVICE_HELD_ON]-(record:RehearsalRecord)
 
        WITH DISTINCT record, this
         WHERE record.noServiceReason IS NULL
