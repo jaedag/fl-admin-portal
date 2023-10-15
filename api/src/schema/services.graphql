@@ -754,7 +754,7 @@ extend type Constituency {
     @cypher(
       statement: """
       MATCH (this)
-      MATCH (this-[:HAS]->(:Bacenta)-[:HAS]->(defaulters:Active:Fellowship)
+      MATCH (this)-[:HAS]->(:Bacenta)-[:HAS]->(defaulters:Active:Fellowship)
       WHERE NOT EXISTS {
             MATCH (defaulters)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(rehearsal:RehearsalRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
             WHERE date.date.week = date().dayOfWeek
@@ -770,7 +770,7 @@ extend type Constituency {
     @cypher(
       statement: """
       MATCH (this)
-      MATCH (this-[:HAS]->(:Bacenta)-[:HAS]->(defaulters:Active:Fellowship)
+      MATCH (this)-[:HAS]->(:Bacenta)-[:HAS]->(defaulters:Active:Fellowship)
       WHERE NOT EXISTS {
             MATCH (defaulters)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(rehearsal:RehearsalRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
             WHERE date.date.week = date().dayOfWeek
