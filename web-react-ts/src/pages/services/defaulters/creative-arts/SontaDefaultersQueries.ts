@@ -696,6 +696,7 @@ export const CAMPUS_BY_CREATIVEARTS = gql`
         hubCancelledRehearsalsThisWeekCount
 
         activeFellowshipCount
+        servicesThisWeekCount
         formDefaultersThisWeekCount
         bankingDefaultersThisWeekCount
         bankedThisWeekCount
@@ -731,6 +732,7 @@ export const CREATIVEARTS_BY_MINISTRY = gql`
         hubCancelledRehearsalsThisWeekCount
 
         activeFellowshipCount
+        servicesThisWeekCount
         formDefaultersThisWeekCount
         bankingDefaultersThisWeekCount
         bankedThisWeekCount
@@ -766,6 +768,7 @@ export const MINISTRY_BY_HUBCOUNCIL = gql`
         hubCancelledRehearsalsThisWeekCount
 
         activeFellowshipCount
+        servicesThisWeekCount
         formDefaultersThisWeekCount
         bankingDefaultersThisWeekCount
         bankedThisWeekCount
@@ -794,6 +797,7 @@ export const HUBCOUNCIL_BY_HUB = gql`
         }
 
         activeFellowshipCount
+        servicesThisWeekCount
         formDefaultersThisWeekCount
         bankingDefaultersThisWeekCount
         bankedThisWeekCount
