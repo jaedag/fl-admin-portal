@@ -100,7 +100,10 @@ const FellowshipForm = (props: FellowshipFormProps) => {
 
   const [positionLoading, setPositionLoading] = useState(false)
 
-  const vacationOptions = isAuthorised(permitMe('Campus'), currentUser.roles)
+  const vacationOptions = isAuthorised(
+    permitMe('Denomination'),
+    currentUser.roles
+  )
     ? VACATION_ONLINE_OPTIONS
     : VACATION_OPTIONS
 
