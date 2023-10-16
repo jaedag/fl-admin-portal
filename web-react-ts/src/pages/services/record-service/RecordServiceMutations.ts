@@ -639,6 +639,45 @@ export const DISPLAY_CAMPUS_SERVICE = gql`
     }
   }
 `
+
+export const DISPLAY_JOINT_REHEARSALS = gql`
+  query RehearsalRecords($where: RehearsalRecordWhere) {
+    rehearsalRecords(where: $where) {
+      id
+      createdAt
+      created_by {
+        firstName
+        lastName
+      }
+      serviceDate {
+        date
+      }
+      noServiceReason
+      attendance
+      income
+      onlineGiving
+      numberOfTithers
+      foreignCurrency
+      transactionId
+      treasurerSelfie
+      familyPicture
+      bankingProof
+      bankingSlipUploader {
+        id
+        firstName
+        lastName
+        fullName
+      }
+      offeringBankedBy {
+        id
+        firstName
+        lastName
+        fullName
+      }
+    }
+  }
+`
+
 export const RECORD_JOINT_REHEARSAL = gql`
   mutation RecordRehearsalService(
     $churchId: ID!
@@ -648,6 +687,8 @@ export const RECORD_JOINT_REHEARSAL = gql`
     $treasurers: [ID]!
     $treasurerSelfie: String!
     $familyPicture: String!
+    $foreignCurrency: String
+    $numberOfTithers: Int
   ) {
     RecordRehearsalService(
       churchId: $churchId
@@ -657,6 +698,8 @@ export const RECORD_JOINT_REHEARSAL = gql`
       treasurers: $treasurers
       treasurerSelfie: $treasurerSelfie
       familyPicture: $familyPicture
+      foreignCurrency: $foreignCurrency
+      numberOfTithers: $numberOfTithers
     ) {
       attendance
       id

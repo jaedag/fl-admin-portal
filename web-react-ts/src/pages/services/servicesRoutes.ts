@@ -143,6 +143,9 @@ const MinistryJoint = lazy(() => import('pages/services/MinistryJoint'))
 const MinistryJointRehearsal = lazy(
   () => import('pages/services/record-service/MinistryJointRehearsal')
 )
+const MinistryJointRehearsalDetails = lazy(
+  () => import('pages/services/record-service/MinistryJointRehearsalDetails')
+)
 const StreamService = lazy(
   () => import('pages/services/record-service/StreamService')
 )
@@ -241,13 +244,6 @@ export const services: LazyRouteTypes[] = [
     roles: permitLeaderAdmin('Ministry'),
     placeholder: true,
   },
-  {
-    path: '/ministry/record-rehearsal',
-    element: MinistryJointRehearsal,
-    roles: permitLeaderAdmin('Ministry'),
-    placeholder: true,
-  },
-
   {
     path: '/services/fellowship/banking-slips',
     element: FellowshipBankingSlipView,
@@ -479,6 +475,20 @@ export const graphs: LazyRouteTypes[] = [
     path: '/campus/service-details',
     element: CampusServiceDetails,
     roles: permitLeaderAdmin('Campus'),
+    placeholder: false,
+  },
+
+  //Ministry Joint Rehearsals
+  {
+    path: '/ministry/record-rehearsal',
+    element: MinistryJointRehearsal,
+    roles: permitLeaderAdmin('Ministry'),
+    placeholder: true,
+  },
+  {
+    path: '/ministry/service-details',
+    element: MinistryJointRehearsalDetails,
+    roles: permitLeaderAdmin('Ministry'),
     placeholder: false,
   },
 

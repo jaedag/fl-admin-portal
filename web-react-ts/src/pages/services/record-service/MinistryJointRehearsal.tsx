@@ -3,15 +3,25 @@ import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { DISPLAY_MINISTRY } from 'pages/directory/display/ReadQueries'
 import { useContext } from 'react'
-import { RECORD_JOINT_REHEARSAL } from './RecordServiceMutations'
+import {
+  DISPLAY_JOINT_REHEARSALS,
+  RECORD_JOINT_REHEARSAL,
+} from './RecordServiceMutations'
 import ServiceForm from './ServiceForm'
 
 const MinistryJointRehearsal = () => {
-  const { ministryId } = useContext(ChurchContext)
+  const { ministryId, churchId } = useContext(ChurchContext)
   const { data, loading, error } = useQuery(DISPLAY_MINISTRY, {
     variables: { id: ministryId },
   })
-  const [RecordRehearsalService] = useMutation(RECORD_JOINT_REHEARSAL)
+  const [RecordRehearsalService] = useMutation(RECORD_JOINT_REHEARSAL, {
+    refetchQueries: [
+      {
+        query: DISPLAY_JOINT_REHEARSALS,
+        variables: { where: { id: churchId } },
+      },
+    ],
+  })
   return (
     <ApolloWrapper loading={loading} error={error} data={data}>
       <ServiceForm
