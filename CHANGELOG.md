@@ -1,3 +1,15 @@
+#### 7.10.20 (2023-10-16)
+
+##### Bug Fixes
+
+*  remove online options from fellowship  form ([369cd128](https://github.com/firstlovecenter/fl-pastoral-care/commit/369cd1286d8c22237fbb00719045484dbdd4525b))
+*  fix bug in cypher query for form defaulters ([902ad89f](https://github.com/firstlovecenter/fl-pastoral-care/commit/902ad89f50738f0ca1e8feed51c3476bca2ce858))
+*  update sonta defaulters queries ([28a29a64](https://github.com/firstlovecenter/fl-pastoral-care/commit/28a29a644cb938eaf6a519b6d6170924843c080f))
+*  rearrange member lists ([c0f43c95](https://github.com/firstlovecenter/fl-pastoral-care/commit/c0f43c95e0b8705e8f016d6929da179487f5dc63))
+*  update permissions for updating mmember emails ([9502e58e](https://github.com/firstlovecenter/fl-pastoral-care/commit/9502e58e5e6304827ce7b75d38ebf17efe68e9c2))
+*  fix query finding out hubs left to have rehearsals ([458cf21e](https://github.com/firstlovecenter/fl-pastoral-care/commit/458cf21e9d35fcbe157aad319387c8f05a723b7a))
+*  implement column wrapping in defaultters  dashboard accordion ([7c45fe9c](https://github.com/firstlovecenter/fl-pastoral-care/commit/7c45fe9c64ce527aad67d86464a793b1d94c54e6))
+
 #### 7.10.19 (2023-10-14)
 
 ##### New Features
