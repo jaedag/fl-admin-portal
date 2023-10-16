@@ -653,7 +653,7 @@ export const arrivalsMutation = {
     },
     context: Context
   ) => {
-    isAuth(permitArrivalsHelpers(), context.auth.roles)
+    isAuth(permitArrivalsHelpers('Stream'), context.auth.roles)
     const session = context.executionContext.session()
 
     try {
