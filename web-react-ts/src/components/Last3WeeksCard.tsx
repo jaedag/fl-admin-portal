@@ -44,10 +44,10 @@ const Last3WeeksCard = ({ last3Weeks }: Last3WeeksCardProps) => {
         {last3Weeks.map((week, i) => {
           if (week.banked === 'No Service')
             return (
-              <>
+              <Container key={i} className="mt-4">
                 <div className="text-secondary">{`WEEK ${week.number}`}</div>
                 <p className="fw-bold">No Service</p>
-              </>
+              </Container>
             )
 
           return (
