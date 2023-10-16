@@ -7,7 +7,7 @@ import {
   throwToSentry,
 } from '../utils/utils'
 import { MakeServant, RemoveServant } from '../directory/make-remove-servants'
-import { permitTeller, permitAdmin } from '../permissions'
+import { permitAdmin, permitTellerStream } from '../permissions'
 import { Context } from '../utils/neo4j-types'
 import anagkazo from './treasury-cypher'
 
@@ -27,7 +27,7 @@ const treasuryMutations = {
     args: { constituencyId: string },
     context: Context
   ): Promise<any> => {
-    isAuth(permitTeller(), context?.auth.roles)
+    isAuth(permitTellerStream(), context?.auth.roles)
     const session = context.executionContext.session()
     const sessionTwo = context.executionContext.session()
     noEmptyArgsValidation(['constituencyId'])
