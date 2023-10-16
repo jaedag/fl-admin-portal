@@ -5,7 +5,7 @@ MATCH (church)<-[:HAS]-(higherChurch)
 MATCH (date:TimeGraph) WHERE date(date.date).week = date().week AND date(date.date).year = date().year
 
 OPTIONAL MATCH (church)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(rehearsal:RehearsalRecord)-[:SERVICE_HELD_ON]->(date)
-     
+    RETURN rehearsal 
 RETURN church.id AS id, church.name AS name, labels(church) AS labels, labels(higherChurch) AS higherChurchLabels, higherChurch.id AS higherChurchId, rehearsal IS NOT NULL AS alreadyFilled
 `
 

@@ -826,6 +826,19 @@ extend type Mutation {
 
   #Set Fellowship to be 'HubFellowship'
   SetFellowshipToHubFellowship(fellowshipId: ID!, hubId: ID!): Fellowship!
+    @auth(
+      rules: [
+        {
+          roles: [
+            "adminCampus"
+            "adminStream"
+            "adminCouncil"
+            "adminCreativeArts"
+            "adminMinistry"
+          ]
+        }
+      ]
+    )
     @cypher(
       statement: """
       MATCH (fellowship:Fellowship {id: $fellowshipId})
@@ -857,6 +870,7 @@ extend type Mutation {
           roles: [
             "adminCampus"
             "adminStream"
+            "adminCouncil"
             "adminCreativeArts"
             "adminMinistry"
           ]

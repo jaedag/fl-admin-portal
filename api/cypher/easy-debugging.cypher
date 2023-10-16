@@ -16,5 +16,8 @@ MATCH (this:Campus {name: "Accra"})
       MATCH (fellowship)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)
       MERGE (record)<-[:PRESENT_AT_SERVICE]-(member)
 SET record.markedAttendance = true
-        RETURN COUNT(DISTINCT member)
+        RETURN COUNT(DISTINCT member);
+
+MATCH (basonta:Basonta)
+RETURN DISTINCT basonta.name;
         

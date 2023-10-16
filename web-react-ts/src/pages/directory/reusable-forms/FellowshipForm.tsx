@@ -115,7 +115,7 @@ const FellowshipForm = (props: FellowshipFormProps) => {
         <ButtonGroup className="mt-3">
           {!newFellowship && (
             <>
-              <RoleView roles={permitAdmin('Ministry')}>
+              <RoleView roles={permitAdmin('Council')}>
                 <Button
                   variant="warning"
                   onClick={() => {

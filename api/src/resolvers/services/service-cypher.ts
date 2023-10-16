@@ -207,7 +207,7 @@ export const aggregateServiceDataForBacenta = `
        aggregate.income = totalDollarIncome,
        aggregate.dollarIncome = totalDollarIncome,
        aggregate.componentServiceIds = componentServiceIds,
-        aggregate.numberOfServices = numberOfServices
+       aggregate.numberOfServices = numberOfServices
    WITH oversight AS lowerChurch
    MATCH (lowerChurch)<-[:HAS]-(denomination:Denomination)
    MATCH (denomination)-[:CURRENT_HISTORY|HAS_SERVICE|HAS*2..9]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph) 
