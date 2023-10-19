@@ -246,7 +246,7 @@ export const HUBCOUNCIL_CANCELLED_HUBREHEARSALS_LIST = gql`
 `
 
 export const HUBCOUNCIL_HUB_FORM_DEFAULTERS_LIST = gql`
-  query hubCouncilFormDefaulters($id: ID!) {
+  query hubCouncilHubFormDefaulters($id: ID!) {
     hubCouncils(where: { id: $id }) {
       id
       name
@@ -270,8 +270,8 @@ export const HUBCOUNCIL_HUB_FORM_DEFAULTERS_LIST = gql`
   }
 `
 
-export const HUBCOUNCIL_BANKING_DEFAULTERS_LIST = gql`
-  query hubCouncilBankingDefaulters($id: ID!) {
+export const HUBCOUNCIL_HUB_BANKING_DEFAULTERS_LIST = gql`
+  query hubCouncilHubBankingDefaulters($id: ID!) {
     hubCouncils(where: { id: $id }) {
       id
       name
@@ -300,8 +300,8 @@ export const HUBCOUNCIL_BANKING_DEFAULTERS_LIST = gql`
   }
 `
 
-export const HUBCOUNCIL_BANKED_LIST = gql`
-  query hubCouncilBanked($id: ID!) {
+export const HUBCOUNCIL_HUB_BANKED_LIST = gql`
+  query hubCouncilHubBanked($id: ID!) {
     hubCouncils(where: { id: $id }) {
       id
       name
@@ -415,7 +415,7 @@ export const MINISTRY_CANCELLED_HUBREHEARSALS_LIST = gql`
 `
 
 export const MINISTRY_HUB_FORM_DEFAULTERS_LIST = gql`
-  query ministryFormDefaulters($id: ID!) {
+  query ministryHubFormDefaulters($id: ID!) {
     ministries(where: { id: $id }) {
       id
       name
@@ -439,8 +439,8 @@ export const MINISTRY_HUB_FORM_DEFAULTERS_LIST = gql`
   }
 `
 
-export const MINISTRY_BANKING_DEFAULTERS_LIST = gql`
-  query ministryBankingDefaulters($id: ID!) {
+export const MINISTRY_HUB_BANKING_DEFAULTERS_LIST = gql`
+  query ministryHubBankingDefaulters($id: ID!) {
     ministries(where: { id: $id }) {
       id
       name
@@ -469,8 +469,8 @@ export const MINISTRY_BANKING_DEFAULTERS_LIST = gql`
   }
 `
 
-export const MINISTRY_BANKED_LIST = gql`
-  query ministryBanked($id: ID!) {
+export const MINISTRY_HUB_BANKED_LIST = gql`
+  query ministryHubBanked($id: ID!) {
     ministries(where: { id: $id }) {
       id
       name
@@ -585,7 +585,7 @@ export const CREATIVEARTS_CANCELLED_HUBREHEARSALS_LIST = gql`
 `
 
 export const CREATIVEARTS_HUB_FORM_DEFAULTERS_LIST = gql`
-  query creativeArtsFormDefaulters($id: ID!) {
+  query creativeArtsHubFormDefaulters($id: ID!) {
     creativeArts(where: { id: $id }) {
       id
       name
@@ -609,8 +609,8 @@ export const CREATIVEARTS_HUB_FORM_DEFAULTERS_LIST = gql`
   }
 `
 
-export const CREATIVEARTS_BANKING_DEFAULTERS_LIST = gql`
-  query creativeArtsBankingDefaulters($id: ID!) {
+export const CREATIVEARTS_HUB_BANKING_DEFAULTERS_LIST = gql`
+  query creativeArtsHubBankingDefaulters($id: ID!) {
     creativeArts(where: { id: $id }) {
       id
       name
@@ -639,8 +639,8 @@ export const CREATIVEARTS_BANKING_DEFAULTERS_LIST = gql`
   }
 `
 
-export const CREATIVEARTS_BANKED_LIST = gql`
-  query creativeArtsBanked($id: ID!) {
+export const CREATIVEARTS_HUB_BANKED_LIST = gql`
+  query creativeArtsHubBanked($id: ID!) {
     creativeArts(where: { id: $id }) {
       id
       name
@@ -867,7 +867,7 @@ export const CAMPUS_CANCELLED_HUBREHEARSALS_LIST = gql`
 `
 
 export const CAMPUS_HUB_FORM_DEFAULTERS_LIST = gql`
-  query campusFormDefaulters($id: ID!) {
+  query campusHubFormDefaulters($id: ID!) {
     campuses(where: { id: $id }) {
       id
       name
@@ -921,8 +921,8 @@ export const CAMPUS_BANKING_DEFAULTERS_LIST = gql`
   }
 `
 
-export const CAMPUS_BANKED_LIST = gql`
-  query campusBanked($id: ID!) {
+export const CAMPUS_HUB_BANKED_LIST = gql`
+  query campusHubBanked($id: ID!) {
     campuses(where: { id: $id }) {
       id
       name
@@ -945,6 +945,445 @@ export const CAMPUS_BANKED_LIST = gql`
           id
           attendance
           income
+        }
+      }
+    }
+  }
+`
+
+export const CREATIVE_ARTS_SERVICES_LIST = gql`
+  query creativeArtsServicesThisWeek($id: ID!) {
+    creativeArts(where: { id: $id }) {
+      id
+      name
+
+      servicesThisWeek {
+        id
+        name
+        leader {
+          id
+          firstName
+          lastName
+          fullName
+          phoneNumber
+          whatsappNumber
+        }
+
+        meetingDay {
+          day
+        }
+        services(limit: 1) {
+          id
+          noServiceReason
+          attendance
+          income
+        }
+      }
+    }
+  }
+`
+
+export const CREATIVEARTS_FORM_DEFAULTERS_LIST = gql`
+  query creativeArtsFormDefaulters($id: ID!) {
+    creativeArts(where: { id: $id }) {
+      id
+      name
+
+      formDefaultersThisWeek {
+        id
+        name
+        leader {
+          id
+          firstName
+          lastName
+          fullName
+          phoneNumber
+          whatsappNumber
+        }
+        meetingDay {
+          day
+        }
+      }
+    }
+  }
+`
+
+export const CREATIVEARTS_BANKING_DEFAULTERS_LIST = gql`
+  query creativeArtsBankingDefaulters($id: ID!) {
+    creativeArts(where: { id: $id }) {
+      id
+      name
+
+      bankingDefaultersThisWeek {
+        id
+        name
+        leader {
+          id
+          firstName
+          lastName
+          fullName
+          phoneNumber
+          whatsappNumber
+        }
+        meetingDay {
+          day
+        }
+        services(limit: 1) {
+          id
+          attendance
+          income
+        }
+      }
+    }
+  }
+`
+
+export const CREATIVEARTS_BANKED_LIST = gql`
+  query creativeArtsBanked($id: ID!) {
+    creativeArts(where: { id: $id }) {
+      id
+      name
+
+      bankedThisWeek {
+        id
+        name
+        leader {
+          id
+          firstName
+          lastName
+          fullName
+          phoneNumber
+          whatsappNumber
+        }
+        meetingDay {
+          day
+        }
+        services(limit: 1) {
+          id
+          attendance
+          income
+        }
+      }
+    }
+  }
+`
+
+export const CREATIVEARTS_CANCELLED_SERVICES_LIST = gql`
+  query creativeArtsCancelledServicesThisWeek($id: ID!) {
+    creativeArts(where: { id: $id }) {
+      id
+      name
+
+      cancelledServicesThisWeek {
+        id
+        name
+        leader {
+          id
+          firstName
+          lastName
+          fullName
+          phoneNumber
+          whatsappNumber
+        }
+
+        meetingDay {
+          day
+        }
+        services(limit: 1) {
+          id
+          noServiceReason
+        }
+      }
+    }
+  }
+`
+
+export const MINISTRY_SERVICES_LIST = gql`
+  query ministryServicesThisWeek($id: ID!) {
+    ministries(where: { id: $id }) {
+      id
+      name
+
+      servicesThisWeek {
+        id
+        name
+        leader {
+          id
+          firstName
+          lastName
+          fullName
+          phoneNumber
+          whatsappNumber
+        }
+
+        meetingDay {
+          day
+        }
+        services(limit: 1) {
+          id
+          noServiceReason
+          attendance
+          income
+        }
+      }
+    }
+  }
+`
+
+export const MINISTRY_FORM_DEFAULTERS_LIST = gql`
+  query ministryFormDefaulters($id: ID!) {
+    ministries(where: { id: $id }) {
+      id
+      name
+
+      formDefaultersThisWeek {
+        id
+        name
+        leader {
+          id
+          firstName
+          lastName
+          fullName
+          phoneNumber
+          whatsappNumber
+        }
+        meetingDay {
+          day
+        }
+      }
+    }
+  }
+`
+
+export const MINISTRY_BANKING_DEFAULTERS_LIST = gql`
+  query ministryBankingDefaulters($id: ID!) {
+    ministries(where: { id: $id }) {
+      id
+      name
+
+      bankingDefaultersThisWeek {
+        id
+        name
+        leader {
+          id
+          firstName
+          lastName
+          fullName
+          phoneNumber
+          whatsappNumber
+        }
+        meetingDay {
+          day
+        }
+        services(limit: 1) {
+          id
+          attendance
+          income
+        }
+      }
+    }
+  }
+`
+
+export const MINISTRY_BANKED_LIST = gql`
+  query ministryBanked($id: ID!) {
+    ministries(where: { id: $id }) {
+      id
+      name
+
+      bankedThisWeek {
+        id
+        name
+        leader {
+          id
+          firstName
+          lastName
+          fullName
+          phoneNumber
+          whatsappNumber
+        }
+        meetingDay {
+          day
+        }
+        services(limit: 1) {
+          id
+          attendance
+          income
+        }
+      }
+    }
+  }
+`
+
+export const MINISTRY_CANCELLED_SERVICES_LIST = gql`
+  query ministryCancelledServicesThisWeek($id: ID!) {
+    ministries(where: { id: $id }) {
+      id
+      name
+
+      cancelledServicesThisWeek {
+        id
+        name
+        leader {
+          id
+          firstName
+          lastName
+          fullName
+          phoneNumber
+          whatsappNumber
+        }
+
+        meetingDay {
+          day
+        }
+        services(limit: 1) {
+          id
+          noServiceReason
+        }
+      }
+    }
+  }
+`
+
+export const HUBCOUNCIL_SERVICES_LIST = gql`
+  query hubCouncilServicesThisWeek($id: ID!) {
+    hubCouncils(where: { id: $id }) {
+      id
+      name
+
+      servicesThisWeek {
+        id
+        name
+        leader {
+          id
+          firstName
+          lastName
+          fullName
+          phoneNumber
+          whatsappNumber
+        }
+
+        meetingDay {
+          day
+        }
+        services(limit: 1) {
+          id
+          noServiceReason
+          attendance
+          income
+        }
+      }
+    }
+  }
+`
+export const HUBCOUNCIL_FORM_DEFAULTERS_LIST = gql`
+  query hubCouncilFormDefaulters($id: ID!) {
+    hubCouncils(where: { id: $id }) {
+      id
+      name
+
+      formDefaultersThisWeek {
+        id
+        name
+        leader {
+          id
+          firstName
+          lastName
+          fullName
+          phoneNumber
+          whatsappNumber
+        }
+        meetingDay {
+          day
+        }
+      }
+    }
+  }
+`
+
+export const HUBCOUNCIL_BANKING_DEFAULTERS_LIST = gql`
+  query hubCouncilBankingDefaulters($id: ID!) {
+    hubCouncils(where: { id: $id }) {
+      id
+      name
+
+      bankingDefaultersThisWeek {
+        id
+        name
+        leader {
+          id
+          firstName
+          lastName
+          fullName
+          phoneNumber
+          whatsappNumber
+        }
+        meetingDay {
+          day
+        }
+        services(limit: 1) {
+          id
+          attendance
+          income
+        }
+      }
+    }
+  }
+`
+
+export const HUBCOUNCIL_BANKED_LIST = gql`
+  query hubCouncilBanked($id: ID!) {
+    hubCouncils(where: { id: $id }) {
+      id
+      name
+
+      bankedThisWeek {
+        id
+        name
+        leader {
+          id
+          firstName
+          lastName
+          fullName
+          phoneNumber
+          whatsappNumber
+        }
+        meetingDay {
+          day
+        }
+        services(limit: 1) {
+          id
+          attendance
+          income
+        }
+      }
+    }
+  }
+`
+export const HUBCOUNCIL_CANCELLED_SERVICES_LIST = gql`
+  query hubCouncilCancelledServicesThisWeek($id: ID!) {
+    hubCouncils(where: { id: $id }) {
+      id
+      name
+
+      cancelledServicesThisWeek {
+        id
+        name
+        leader {
+          id
+          firstName
+          lastName
+          fullName
+          phoneNumber
+          whatsappNumber
+        }
+
+        meetingDay {
+          day
+        }
+        services(limit: 1) {
+          id
+          noServiceReason
         }
       }
     }

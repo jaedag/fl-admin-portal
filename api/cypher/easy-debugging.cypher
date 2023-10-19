@@ -1,23 +1,85 @@
-MATCH (this:Campus {name: "Accra"})
-      MATCH (date:TimeGraph) WHERE date.date.week = date().week
-      MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
 
-       WITH DISTINCT record, this
-        WHERE record.noServiceReason IS NULL
-         AND (record.bankingSlip IS NOT NULL OR record.transactionStatus ='success' OR record.tellerConfirmationTime IS NOT NULL)
-       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(streams) WHERE streams:Stream OR streams:ClosedStream
+export const HUBCOUNCIL_FORM_DEFAULTERS_LIST = gql`
+  query hubCouncilFormDefaulters($id: ID!) {
+    hubCouncils(where: { id: $id }) {
+      id
+      name
 
-       WITH DISTINCT streams, this
-       MATCH (streams)<-[:HAS]-(this)
+      formDefaultersThisWeek {
+        id
+        name
+        leader {
+          id
+          firstName
+          lastName
+          fullName
+          phoneNumber
+          whatsappNumber
+        }
+        meetingDay {
+          day
+        }
+      }
+    }
+  }
+`
 
-      RETURN COUNT(DISTINCT streams)
+export const HUBCOUNCIL_BANKING_DEFAULTERS_LIST = gql`
+  query hubCouncilBankingDefaulters($id: ID!) {
+    hubCouncils(where: { id: $id }) {
+      id
+      name
 
-      MATCH (fellowship:BACNE {id: "311831f6-a13d-42ae-a803-e0593c60a48a"})<-[:BELONGS_TO]-(member:Member)
-      MATCH (fellowship)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)
-      MERGE (record)<-[:PRESENT_AT_SERVICE]-(member)
-SET record.markedAttendance = true
-        RETURN COUNT(DISTINCT member);
+      bankingDefaultersThisWeek {
+        id
+        name
+        leader {
+          id
+          firstName
+          lastName
+          fullName
+          phoneNumber
+          whatsappNumber
+        }
+        meetingDay {
+          day
+        }
+        services(limit: 1) {
+          id
+          attendance
+          income
+        }
+      }
+    }
+  }
+`
 
-MATCH (basonta:Basonta)
-RETURN DISTINCT basonta.name;
-        
+export const HUBCOUNCIL_BANKED_LIST = gql`
+  query hubCouncilBanked($id: ID!) {
+    hubCouncils(where: { id: $id }) {
+      id
+      name
+
+      bankedThisWeek {
+        id
+        name
+        leader {
+          id
+          firstName
+          lastName
+          fullName
+          phoneNumber
+          whatsappNumber
+        }
+        meetingDay {
+          day
+        }
+        services(limit: 1) {
+          id
+          attendance
+          income
+        }
+      }
+    }
+  }
+`

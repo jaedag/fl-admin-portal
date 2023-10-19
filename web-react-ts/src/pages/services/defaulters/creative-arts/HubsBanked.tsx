@@ -13,22 +13,24 @@ import {
 } from '../defaulters-types'
 import PullToRefresh from 'react-simple-pull-to-refresh'
 import {
-  CREATIVEARTS_BANKED_LIST,
-  HUBCOUNCIL_BANKED_LIST,
-  MINISTRY_BANKED_LIST,
-  CAMPUS_BANKED_LIST,
+  CREATIVEARTS_HUB_BANKED_LIST,
+  HUBCOUNCIL_HUB_BANKED_LIST,
+  MINISTRY_HUB_BANKED_LIST,
+  CAMPUS_HUB_BANKED_LIST,
 } from './SontaDefaultersQueries'
 import useSontaLevel from 'hooks/useSontaLevel'
 
 const Banked = () => {
   const [hubCouncilBankedThisWeeek, { refetch: hubCouncilRefetch }] =
-    useLazyQuery(HUBCOUNCIL_BANKED_LIST)
-  const [ministryBankedThisWeek, { refetch: ministryRefetch }] =
-    useLazyQuery(MINISTRY_BANKED_LIST)
+    useLazyQuery(HUBCOUNCIL_HUB_BANKED_LIST)
+  const [ministryBankedThisWeek, { refetch: ministryRefetch }] = useLazyQuery(
+    MINISTRY_HUB_BANKED_LIST
+  )
   const [creativeArtsBankedThisWeek, { refetch: creativeArtsRefetch }] =
-    useLazyQuery(CREATIVEARTS_BANKED_LIST)
-  const [campusBankedThisWeek, { refetch: campusRefetch }] =
-    useLazyQuery(CAMPUS_BANKED_LIST)
+    useLazyQuery(CREATIVEARTS_HUB_BANKED_LIST)
+  const [campusBankedThisWeek, { refetch: campusRefetch }] = useLazyQuery(
+    CAMPUS_HUB_BANKED_LIST
+  )
 
   const data = useSontaLevel({
     hubRefetch: hubCouncilRefetch,

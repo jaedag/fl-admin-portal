@@ -4,7 +4,6 @@ import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import HeadingSecondary from 'components/HeadingSecondary'
 import PlaceholderCustom from 'components/Placeholder'
 import { getWeekNumber } from 'jd-date-utils'
-import useChurchLevel from 'hooks/useChurchLevel'
 import React from 'react'
 import { Container, Row, Col } from 'react-bootstrap'
 import DefaulterCard from './DefaulterCard'
@@ -17,6 +16,13 @@ import {
 import PlaceholderDefaulterList from './PlaceholderDefaulterList'
 import { DefaultersUseChurchType } from './defaulters-types'
 import PullToRefresh from 'react-simple-pull-to-refresh'
+import {
+  CREATIVEARTS_BANKED_LIST,
+  HUBCOUNCIL_BANKED_LIST,
+  HUB_BANKED_LIST,
+  MINISTRY_BANKED_LIST,
+} from './creative-arts/SontaDefaultersQueries'
+import useSontaLevel from 'hooks/useSontaLevel'
 
 const Banked = () => {
   const [constituencyBanked, { refetch: constituencyRefetch }] = useLazyQuery(
@@ -28,8 +34,17 @@ const Banked = () => {
     useLazyQuery(STREAM_BANKED_LIST)
   const [campusBanked, { refetch: campusRefetch }] =
     useLazyQuery(CAMPUS_BANKED_LIST)
+  const [creativeArtsBanked, { refetch: creativeArtsRefetch }] = useLazyQuery(
+    CREATIVEARTS_BANKED_LIST
+  )
+  const [ministryBanked, { refetch: ministryRefetch }] =
+    useLazyQuery(MINISTRY_BANKED_LIST)
+  const [hubCouncilBanked, { refetch: hubCouncilRefetch }] = useLazyQuery(
+    HUBCOUNCIL_BANKED_LIST
+  )
+  const [hubBanked, { refetch: hubRefetch }] = useLazyQuery(HUB_BANKED_LIST)
 
-  const data = useChurchLevel({
+  const data = useSontaLevel({
     constituencyFunction: constituencyBanked,
     constituencyRefetch,
     councilFunction: councilBanked,
@@ -38,6 +53,14 @@ const Banked = () => {
     streamRefetch,
     campusFunction: campusBanked,
     campusRefetch,
+    creativeArtsFunction: creativeArtsBanked,
+    creativeArtsRefetch,
+    ministryFunction: ministryBanked,
+    ministryRefetch,
+    hubCouncilFunction: hubCouncilBanked,
+    hubCouncilRefetch,
+    hubFunction: hubBanked,
+    hubRefetch,
   })
 
   const { church, loading, error, refetch } = data as DefaultersUseChurchType

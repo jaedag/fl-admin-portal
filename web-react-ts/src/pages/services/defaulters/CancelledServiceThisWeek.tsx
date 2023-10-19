@@ -13,10 +13,16 @@ import {
 } from './DefaultersQueries'
 import DefaulterCard from './DefaulterCard'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
-import useChurchLevel from 'hooks/useChurchLevel'
 import PlaceholderDefaulterList from './PlaceholderDefaulterList'
 import { DefaultersUseChurchType } from './defaulters-types'
 import PullToRefresh from 'react-simple-pull-to-refresh'
+import {
+  CREATIVEARTS_CANCELLED_SERVICES_LIST,
+  HUBCOUNCIL_CANCELLED_SERVICES_LIST,
+  HUB_CANCELLED_SERVICES_LIST,
+  MINISTRY_CANCELLED_SERVICES_LIST,
+} from './creative-arts/SontaDefaultersQueries'
+import useSontaLevel from 'hooks/useSontaLevel'
 
 const CancelledServicesThisWeek = () => {
   const [constituencyCancelledServices, { refetch: constituencyRefetch }] =
@@ -30,8 +36,17 @@ const CancelledServicesThisWeek = () => {
   const [campusCancelledServices, { refetch: campusRefetch }] = useLazyQuery(
     CAMPUS_CANCELLED_SERVICES_LIST
   )
+  const [creativeArtsCancelledServices, { refetch: creativeArtsRefetch }] =
+    useLazyQuery(CREATIVEARTS_CANCELLED_SERVICES_LIST)
+  const [ministryCancelledServices, { refetch: ministryRefetch }] =
+    useLazyQuery(MINISTRY_CANCELLED_SERVICES_LIST)
+  const [hubCouncilCancelledServices, { refetch: hubCouncilRefetch }] =
+    useLazyQuery(HUBCOUNCIL_CANCELLED_SERVICES_LIST)
+  const [hubCancelledServices, { refetch: hubRefetch }] = useLazyQuery(
+    HUB_CANCELLED_SERVICES_LIST
+  )
 
-  const data = useChurchLevel({
+  const data = useSontaLevel({
     constituencyFunction: constituencyCancelledServices,
     constituencyRefetch,
     councilFunction: councilCancelledServices,
@@ -40,6 +55,14 @@ const CancelledServicesThisWeek = () => {
     streamRefetch,
     campusFunction: campusCancelledServices,
     campusRefetch,
+    creativeArtsFunction: creativeArtsCancelledServices,
+    creativeArtsRefetch,
+    ministryFunction: ministryCancelledServices,
+    ministryRefetch,
+    hubCouncilFunction: hubCouncilCancelledServices,
+    hubCouncilRefetch,
+    hubFunction: hubCancelledServices,
+    hubRefetch,
   })
 
   const { church, loading, error, refetch } = data as DefaultersUseChurchType
