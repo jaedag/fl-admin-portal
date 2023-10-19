@@ -51,6 +51,7 @@ type DashboardChurchType = {
   bussing: BussingRecord[]
   services: ServiceRecord[]
   rehearsals: ServiceRecord[]
+  aggregateRehearsalRecords: AggregateServiceRecord[]
   aggregateServiceRecords: AggregateServiceRecord[]
   aggregateBussingRecords: AggregateBussingRecords[]
   aggregateMultiplicationRecords: AggregateServiceRecord[]

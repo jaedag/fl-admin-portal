@@ -122,10 +122,11 @@ const ChurchGraph = (props: ChurchGraphProps) => {
       <div className="col">
         <PlaceholderCustom loading={loading} as="p">
           <p className="chart-title font-weight-bold m-0">
-            {stat2 && `${capitalise(stat1)} and ${capitalise(stat2)}`}
-            {!stat2 &&
-              income &&
-              `${graphType === 'bussing'} ${capitalise(stat1)} Graph`}
+            {stat2 &&
+              `${capitalise(graphType)} ${capitalise(stat1)} and ${capitalise(
+                stat2
+              )}`}
+            {!stat2 && income && `${graphType} ${capitalise(stat1)} Graph`}
             {!income && `${capitalise(stat1)}`}
           </p>
         </PlaceholderCustom>

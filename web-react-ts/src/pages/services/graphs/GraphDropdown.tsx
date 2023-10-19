@@ -108,7 +108,7 @@ const GraphDropdown = ({
               setChurchData(getServiceGraphData(data, 'rehearsal'))
             }}
           >
-            {`${churchLevel} Rehearsals Total`}
+            {`${churchLevel} Rehearsals`}
           </Dropdown.Item>
         )}
 
@@ -118,8 +118,8 @@ const GraphDropdown = ({
             onClick={() => {
               setBussing && setBussing(false)
               setRehearsal && setRehearsal(true)
-              setSelected('Rehearsals')
-              setChurchData(getServiceGraphData(data, 'service'))
+              setSelected('Rehearsals Total')
+              setChurchData(getServiceGraphData(data, 'rehearsalAggregate'))
             }}
           >
             {`${churchLevel} Rehearsals Total`}

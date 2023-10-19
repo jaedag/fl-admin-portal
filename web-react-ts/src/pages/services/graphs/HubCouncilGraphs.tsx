@@ -24,7 +24,9 @@ export const HubCouncilGraphs = () => {
     variables: { hubCouncilId },
     onCompleted: (data) => {
       if (!setChurchData) return
-      setChurchData(getServiceGraphData(data?.hubCouncils[0], 'rehearsal'))
+      setChurchData(
+        getServiceGraphData(data?.hubCouncils[0], 'rehearsalAggregate')
+      )
     },
   })
 

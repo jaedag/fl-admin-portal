@@ -67,6 +67,7 @@ export const getServiceGraphData = (
         bussing: any[]
         services: any[]
         rehearsals: any[]
+        aggregateRehearsalRecords: any[]
         aggregateServiceRecords: any[]
         aggregateBussingRecords: any[]
         aggregateMultiplicationRecords: any[]
@@ -80,6 +81,7 @@ export const getServiceGraphData = (
     | 'serviceAggregateWithDollar'
     | 'service'
     | 'rehearsal'
+    | 'rehearsalAggregate'
     | 'ministryMeeting'
     | 'multiplicationAggregate'
     | 'swellBussing'
@@ -114,6 +116,9 @@ export const getServiceGraphData = (
 
   if (category === 'rehearsal') {
     pushIntoData(church.rehearsals)
+  }
+  if (category === 'rehearsalAggregate') {
+    pushIntoData(church.aggregateRehearsalRecords)
   }
 
   if (category === 'bussing') {

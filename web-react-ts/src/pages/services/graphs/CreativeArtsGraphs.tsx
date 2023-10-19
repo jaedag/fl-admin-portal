@@ -24,7 +24,9 @@ export const CreativeArtsGraphs = () => {
     variables: { creativeArtsId: creativeArtsId },
     onCompleted: (data) => {
       if (!setChurchData) return
-      setChurchData(getServiceGraphData(data?.creativeArts[0], 'bussing'))
+      setChurchData(
+        getServiceGraphData(data?.creativeArts[0], 'rehearsalAggregate')
+      )
     },
   })
 

@@ -169,10 +169,6 @@ const HubFellowshipServiceMutation = {
       const serviceCheckRes = await Promise.all(promises)
 
       const serviceCheck = rearrangeCypherObject(serviceCheckRes[0])
-      console.log(
-        '🚀 ~ file: rehearsal-resolver.ts:172 ~ serviceCheck:',
-        serviceCheck
-      )
 
       const currencyCheck = rearrangeCypherObject(serviceCheckRes[1])
       const higherChurches = getServiceSontaHigherChurches(

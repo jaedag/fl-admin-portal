@@ -340,6 +340,13 @@ export const HUBCOUNCIL_GRAPHS = gql`
         numberOfServices
         week
       }
+      aggregateRehearsalRecords(limit: 4) {
+        id
+        attendance
+        income
+        numberOfServices
+        week
+      }
 
       rehearsals(limit: 4) {
         id

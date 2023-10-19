@@ -24,7 +24,9 @@ export const MinistryGraphs = () => {
     variables: { ministryId: ministryId },
     onCompleted: (data) => {
       if (!setChurchData) return
-      setChurchData(getServiceGraphData(data?.ministries[0], 'bussing'))
+      setChurchData(
+        getServiceGraphData(data?.ministries[0], 'rehearsalAggregate')
+      )
     },
   })
 
@@ -49,7 +51,7 @@ export const MinistryGraphs = () => {
               setRehearsal={setRehearsal}
               setMinistryMeeting={setMinistryMeeting}
               setChurchData={setChurchData}
-              data={data?.hubs[0]}
+              data={data?.ministries[0]}
             />
           </Col>
         </Row>
