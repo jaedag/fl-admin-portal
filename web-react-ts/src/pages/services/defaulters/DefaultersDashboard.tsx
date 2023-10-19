@@ -437,9 +437,7 @@ const DefaultersDashboard = () => {
                 </>
               )}
             </Accordion.Item>
-          </Accordion>
 
-          <Accordion>
             <Accordion.Item eventKey="4">
               {['Campus'].includes(church?.__typename ?? '') && (
                 <>

@@ -26,6 +26,10 @@ type MenuItem = {
   exact?: 'true'
 }
 
+export const arrayDiff = (a1: any[], a2: any[]) => {
+  return a1.filter((i) => a2.indexOf(i) < 0)
+}
+
 export const menuItems: MenuItem[] = [
   { name: 'Home', to: '/', roles: ['all'] },
   {
@@ -46,21 +50,30 @@ export const menuItems: MenuItem[] = [
   {
     name: 'Arrivals',
     to: '/arrivals',
-    roles: [
-      ...permitLeaderAdmin('Bacenta'),
-      ...permitArrivals('Bacenta'),
-      ...permitArrivalsHelpers('Stream'),
-    ],
+    roles: arrayDiff(
+      [
+        ...permitLeaderAdmin('Bacenta'),
+        ...permitArrivals('Bacenta'),
+        ...permitArrivalsHelpers('Stream'),
+      ],
+      permitLeaderAdminArrivals('Oversight')
+    ),
   },
   {
     name: 'Campaigns',
     to: '/campaigns/churchlist',
-    roles: [...permitLeaderAdmin('Fellowship'), ...permitSheepSeeker()],
+    roles: arrayDiff(
+      [...permitLeaderAdmin('Fellowship'), ...permitSheepSeeker()],
+      permitLeaderAdminArrivals('Oversight')
+    ),
   },
   {
     name: 'Accounts',
     to: '/accounts',
-    roles: [...permitLeader('Council'), 'fishers'],
+    roles: arrayDiff(
+      [...permitLeader('Council'), 'fishers'],
+      permitLeaderAdminArrivals('Oversight')
+    ),
   },
   {
     name: 'Maps',

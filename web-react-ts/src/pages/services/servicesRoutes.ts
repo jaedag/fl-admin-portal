@@ -568,6 +568,7 @@ export const graphs: LazyRouteTypes[] = [
     roles: permitLeaderAdmin('Campus'),
     placeholder: true,
   },
+
   {
     path: '/services/campus-by-creativearts',
     element: CampusByCreativeArts,
@@ -575,7 +576,7 @@ export const graphs: LazyRouteTypes[] = [
     placeholder: true,
   },
   {
-    path: '/services/oversight-by-council',
+    path: '/services/oversight-by-campus',
     element: OversightByCampus,
     roles: permitLeaderAdmin('Oversight'),
     placeholder: true,

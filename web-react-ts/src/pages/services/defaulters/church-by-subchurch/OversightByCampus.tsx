@@ -28,7 +28,7 @@ const OversightByCampus = () => {
         <Container>
           <HeadingPrimary
             loading={loading || !data?.oversights[0]?.name}
-          >{`${data?.oversights[0]?.name} Oversight By Campuss`}</HeadingPrimary>
+          >{`${data?.oversights[0]?.name} Oversight By Campus`}</HeadingPrimary>
 
           <Row>
             {data?.oversights.length ? (
@@ -45,7 +45,7 @@ const OversightByCampus = () => {
                       <Card.Body
                         onClick={() => {
                           clickCard(campus)
-                          navigate('/services/cammpus-by-stream')
+                          navigate('/services/campus-by-stream')
                         }}
                       >
                         <div className="fw-bold">
