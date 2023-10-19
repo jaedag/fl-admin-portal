@@ -27,7 +27,7 @@ const UpdateCampus = () => {
     leaderName: campus?.leader?.fullName ?? '',
     leaderId: campus?.leader?.id || '',
     leaderEmail: campus?.leader?.email || '',
-    oversight: campus?.oversight?.id,
+    oversight: campus?.oversight,
     incomeTracking: campus?.noIncomeTracking ? 'No' : 'Yes',
     currency: campus?.currency,
     conversionRateToDollar: campus?.conversionRateToDollar,

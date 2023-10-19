@@ -80,7 +80,7 @@ const StreamForm = ({
   const [buttonLoading, setButtonLoading] = useState(false)
   const [CloseDownStream] = useMutation(MAKE_STREAM_INACTIVE, {
     refetchQueries: [
-      { query: DISPLAY_CAMPUS, variables: { id: initialValues.campus } },
+      { query: DISPLAY_CAMPUS, variables: { id: initialValues?.campus?.id } },
     ],
   })
   const [MoveCouncilToStream] = useMutation(MOVE_COUNCIL_TO_STREAM, {

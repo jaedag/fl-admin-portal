@@ -61,7 +61,7 @@ const OversightForm = ({
     refetchQueries: [
       {
         query: DISPLAY_DENOMINATION,
-        variables: { id: initialValues.denomination },
+        variables: { id: initialValues?.denomination?.id },
       },
     ],
   })

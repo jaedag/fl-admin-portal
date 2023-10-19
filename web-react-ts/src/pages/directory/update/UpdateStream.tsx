@@ -32,7 +32,7 @@ const UpdateStream = () => {
     bankAccount: stream?.bankAccount || '',
     meetingDay: stream?.meetingDay.day ?? '',
     vacationStatus: stream?.vacationStatus ?? '',
-    campus: stream?.campus?.id ?? '',
+    campus: stream?.campus ?? '',
     councils: stream?.councils?.length ? stream.councils : [''],
   }
 

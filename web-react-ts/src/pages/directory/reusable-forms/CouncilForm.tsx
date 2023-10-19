@@ -60,7 +60,7 @@ const CouncilForm = ({
   const [buttonLoading, setButtonLoading] = useState(false)
   const [CloseDownCouncil] = useMutation(MAKE_COUNCIL_INACTIVE, {
     refetchQueries: [
-      { query: DISPLAY_STREAM, variables: { id: initialValues.stream } },
+      { query: DISPLAY_STREAM, variables: { id: initialValues?.stream?.id } },
     ],
   })
   const [MoveConstituencyToCouncil] = useMutation(

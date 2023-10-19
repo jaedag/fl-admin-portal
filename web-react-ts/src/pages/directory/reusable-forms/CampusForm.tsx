@@ -63,7 +63,10 @@ const CampusForm = ({
   const [buttonLoading, setButtonLoading] = useState(false)
   const [CloseDownCampus] = useMutation(MAKE_CAMPUS_INACTIVE, {
     refetchQueries: [
-      { query: DISPLAY_OVERSIGHT, variables: { id: initialValues.oversight } },
+      {
+        query: DISPLAY_OVERSIGHT,
+        variables: { id: initialValues?.oversight?.id },
+      },
     ],
   })
   const [MoveStreamToCampus] = useMutation(MOVE_STREAM_TO_CAMPUS, {

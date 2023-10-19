@@ -27,7 +27,7 @@ const UpdateOversight = () => {
     leaderName: oversight?.leader?.fullName ?? '',
     leaderId: oversight?.leader?.id || '',
     leaderEmail: oversight?.leader?.email || '',
-    denomination: oversight?.denomination?.id,
+    denomination: oversight?.denomination,
     campuses: oversight?.campuses?.length ? oversight.campuses : [''],
   }
   const [LogOversightHistory] = useMutation(LOG_OVERSIGHT_HISTORY, {
