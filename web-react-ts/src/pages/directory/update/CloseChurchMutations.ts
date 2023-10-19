@@ -46,8 +46,8 @@ export const MAKE_CONSTITUENCY_INACTIVE = gql`
 `
 
 export const MAKE_COUNCIL_INACTIVE = gql`
-  mutation CloseDownCouncil($id: ID!, $leaderId: ID!) {
-    CloseDownCouncil(councilId: $id, leaderId: $leaderId) {
+  mutation CloseDownCouncil($id: ID!, $leaderId: ID!, $adminId: ID!) {
+    CloseDownCouncil(councilId: $id, leaderId: $leaderId, adminId: $adminId) {
       id
       name
       councils {
@@ -59,8 +59,8 @@ export const MAKE_COUNCIL_INACTIVE = gql`
 `
 
 export const MAKE_STREAM_INACTIVE = gql`
-  mutation CloseDownStream($id: ID!) {
-    CloseDownStream(streamId: $id) {
+  mutation CloseDownStream($id: ID!, $leaderId: ID!, $adminId: ID!) {
+    CloseDownStream(streamId: $id, leaderId: $leaderId, adminId: $adminId) {
       id
       name
 
@@ -85,8 +85,8 @@ export const MAKE_STREAM_INACTIVE = gql`
   }
 `
 export const MAKE_CAMPUS_INACTIVE = gql`
-  mutation CloseDownCampus($id: ID!) {
-    CloseDownCampus(campusId: $id) {
+  mutation CloseDownCampus($id: ID!, $leaderId: ID!, $adminId: ID!) {
+    CloseDownCampus(campusId: $id, leaderId: $leaderId, adminId: $adminId) {
       id
       name
 
@@ -112,8 +112,12 @@ export const MAKE_CAMPUS_INACTIVE = gql`
 `
 
 export const MAKE_OVERSIGHT_INACTIVE = gql`
-  mutation CloseDownOversight($id: ID!) {
-    CloseDownOversight(oversightId: $id) {
+  mutation CloseDownOversight($id: ID!, $leaderId: ID!, $adminId: ID!) {
+    CloseDownOversight(
+      oversightId: $id
+      leaderId: $leaderId
+      adminId: $adminId
+    ) {
       id
       name
 
@@ -138,8 +142,8 @@ export const MAKE_OVERSIGHT_INACTIVE = gql`
   }
 `
 export const MAKE_HUB_INACTIVE = gql`
-  mutation CloseDownHub($hubId: ID!) {
-    CloseDownHub(hubId: $hubId) {
+  mutation CloseDownHub($hubId: ID!, $leaderId: ID!) {
+    CloseDownHub(hubId: $hubId, leaderId: $leaderId) {
       id
       name
 
@@ -161,8 +165,8 @@ export const MAKE_HUB_INACTIVE = gql`
 `
 
 export const MAKE_HUBCOUNCIL_INACTIVE = gql`
-  mutation CloseDownHubCouncil($hubCouncilId: ID!) {
-    CloseDownHubCouncil(hubCouncilId: $hubCouncilId) {
+  mutation CloseDownHubCouncil($hubCouncilId: ID!, $leaderId: ID!) {
+    CloseDownHubCouncil(hubCouncilId: $hubCouncilId, leaderId: $leaderId) {
       id
       name
 
@@ -184,8 +188,12 @@ export const MAKE_HUBCOUNCIL_INACTIVE = gql`
 `
 
 export const MAKE_MINISTRY_INACTIVE = gql`
-  mutation CloseDownMinistry($ministryId: ID!) {
-    CloseDownMinistry(ministryId: $ministryId) {
+  mutation CloseDownMinistry($ministryId: ID!, $leaderId: ID!, $adminId: ID!) {
+    CloseDownMinistry(
+      ministryId: $ministryId
+      leaderId: $leaderId
+      adminId: $adminId
+    ) {
       id
       name
 
@@ -207,8 +215,16 @@ export const MAKE_MINISTRY_INACTIVE = gql`
 `
 
 export const MAKE_CREATIVEARTS_INACTIVE = gql`
-  mutation CloseDownCreativeArtss($creativeArtsId: ID!) {
-    CloseDownCreativeArts(creativeArtsId: $creativeArtsId) {
+  mutation CloseDownCreativeArtss(
+    $creativeArtsId: ID!
+    $leaderId: ID!
+    $adminId: ID!
+  ) {
+    CloseDownCreativeArts(
+      creativeArtsId: $creativeArtsId
+      leaderId: $leaderId
+      adminId: $adminId
+    ) {
       id
       name
       history {

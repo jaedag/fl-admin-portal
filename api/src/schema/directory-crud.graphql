@@ -947,13 +947,21 @@ extend type Mutation {
 extend type Mutation {
   # In the context of church data we never delete, we only render inactive
   MakeMemberInactive(id: ID!, reason: String!): Member
-  CloseDownFellowship(fellowshipId: ID!, leaderId: ID!): Bacenta
-  CloseDownBacenta(bacentaId: ID!, leaderId: ID!): Constituency
+  CloseDownFellowship(fellowshipId: ID!, leaderId: ID!): Bacenta!
+  CloseDownBacenta(bacentaId: ID!, leaderId: ID!): Constituency!
   CloseDownConstituency(
     constituencyId: ID!
     leaderId: ID!
     adminId: ID!
-  ): Council
+  ): Council!
+  CloseDownCouncil(councilId: ID!, leaderId: ID!, adminId: ID!): Stream!
+  CloseDownStream(streamId: ID!, leaderId: ID!, adminId: ID!): Campus!
+  CloseDownCampus(campusId: ID!, leaderId: ID!, adminId: ID!): Oversight!
+  CloseDownOversight(
+    oversightId: ID!
+    leaderId: ID!
+    adminId: ID!
+  ): Denomination!
 
   MoveOversightToDenomination(
     oversightId: ID!
@@ -1094,117 +1102,6 @@ extend type Mutation {
 
       MERGE (hub)-[:HAS]->(hubFellowship)
       RETURN hubFellowship
-      """
-    )
-
-  CloseDownCouncil(councilId: ID!, leaderId: ID!): Stream
-    @cypher(
-      statement: """
-      MATCH (council:Council {id: $councilId})<-[:HAS]-(stream:Stream)
-
-      WITH council, stream
-      CREATE (log:HistoryLog {id:apoc.create.uuid()})
-        SET log.timeStamp = datetime(),
-        log.historyRecord = council.name + ' Council was closed down under ' + stream.name +' Stream'
-
-      WITH council, stream, log
-      MATCH (admin:Active:Member {auth_id: $auth.jwt.sub})
-      OPTIONAL MATCH (council)-[:HAS]->(constituencies:Constituency)-[:HAS]->(bacentas)-[:HAS]->(fellowships)
-      OPTIONAL MATCH (council)-[:HAS]->(hubs:Hub)
-      MERGE (date:TimeGraph {date:date()})
-      MERGE (log)-[:LOGGED_BY]->(admin)
-      MERGE (log)-[:RECORDED_ON]->(date)
-      MERGE (stream)-[:HAS_HISTORY]->(log)
-      MERGE (council)-[:HAS_HISTORY]->(log)
-
-      SET council:ClosedCouncil, constituencies:ClosedConstituency, bacentas:ClosedBacenta, fellowships:ClosedFellowship, hubs:ClosedHub
-      REMOVE council:Council,constituencies:Constituency,bacentas:Bacenta, fellowships:Fellowship, hubs:Hub
-
-      RETURN stream
-      """
-    )
-  CloseDownStream(streamId: ID!,  leaderId: ID!): Campus
-    @cypher(
-      statement: """
-      MATCH (stream:Stream {id: $streamId})<-[:HAS]-(campus:Campus)
-
-      WITH stream, campus
-      CREATE (log:HistoryLog {id:apoc.create.uuid()})
-        SET log.timeStamp = datetime(),
-        log.historyRecord = stream.name + ' Stream was closed down under ' + campus.name +' Campus'
-
-      WITH stream, campus, log
-      MATCH (admin:Active:Member {auth_id: $auth.jwt.sub})
-      OPTIONAL MATCH (stream)-[:HAS]->(council)-[:HAS]->(constituencies)-[:HAS]->(bacentas)-[:HAS]->(fellowships)
-      OPTIONAL MATCH (stream)-[:HAS]->(council)-[:HAS]->(hubs:Hub)
-
-      MERGE (date:TimeGraph {date:date()})
-      MERGE (log)-[:LOGGED_BY]->(admin)
-      MERGE (log)-[:RECORDED_ON]->(date)
-      MERGE (stream)-[:HAS_HISTORY]->(log)
-      MERGE (campus)-[:HAS_HISTORY]->(log)
-
-      SET stream:ClosedStream, council:ClosedCouncil, constituencies:Closedconstituency, bacentas:ClosedBacenta, fellowships:ClosedFellowship, hubs:ClosedHub
-      REMOVE stream:Stream, council:Council, constituencies:Constituency,bacentas:Bacenta,fellowships:Fellowship, hubs:Hub
-
-      RETURN campus
-      """
-    )
-
-  CloseDownCampus(campusId: ID!,  leaderId: ID!): Oversight
-    @cypher(
-      statement: """
-      MATCH (campus:Campus {id: $campusId})<-[:HAS]-(oversight:Oversight)
-
-      WITH campus, oversight
-      CREATE (log:HistoryLog {id:apoc.create.uuid()})
-        SET log.timeStamp = datetime(),
-        log.historyRecord = campus.name + ' Campus was closed down under ' + oversight.name +' Oversight'
-
-      WITH campus, oversight, log
-      MATCH (admin:Active:Member {auth_id: $auth.jwt.sub})
-      OPTIONAL MATCH (campus)-[:HAS]->(stream)-[:HAS]->(council)-[:HAS]->(constituencies)-[:HAS]->(bacentas)-[:HAS]->(fellowships)
-      OPTIONAL MATCH (campus)-[:HAS]->(stream)-[:HAS]->(council)-[:HAS]->(hubs:Hub)
-
-
-      MERGE (date:TimeGraph {date:date()})
-      MERGE (log)-[:LOGGED_BY]->(admin)
-      MERGE (log)-[:RECORDED_ON]->(date)
-      MERGE (campus)-[:HAS_HISTORY]->(log)
-      MERGE (oversight)-[:HAS_HISTORY]->(log)
-
-      SET campus:ClosedCampus, stream:ClosedStream, council:ClosedCouncil, constituencies:ClosedConstituency, bacentas:ClosedBacenta, fellowships:ClosedFellowship, hubs:ClosedHub
-      REMOVE campus:Campus, stream:Stream, council:Council, constituencies:Constituency,bacentas:Bacenta,fellowships:Fellowship, hubs:Hub
-
-      RETURN oversight
-      """
-    )
-
-  CloseDownOversight(oversightId: ID!,  leaderId: ID!): Denomination!
-    @cypher(
-      statement: """
-      MATCH (oversight:Oversight {id: $oversightId})<-[:HAS]-( denomination:Denomination)
-
-      WITH oversight, denomination
-      CREATE (log:HistoryLog {id:apoc.create.uuid()})
-        SET log.timeStamp = datetime(),
-        log.historyRecord = oversight.name + ' Oversight was closed down under ' +  denomination.name + ' Denomination'
-
-      WITH oversight, denomination, log
-      MATCH (admin:Active:Member {auth_id: $auth.jwt.sub})
-      OPTIONAL MATCH (oversight)-[:HAS]->(campus)-[:HAS]->(stream)-[:HAS]->(council)-[:HAS]->(constituencies)-[:HAS]->(bacentas)-[:HAS]->(fellowships)
-
-
-      MERGE (date:TimeGraph {date:date()})
-      MERGE (log)-[:LOGGED_BY]->(admin)
-      MERGE (log)-[:RECORDED_ON]->(date)
-      MERGE (oversight)-[:HAS_HISTORY]->(log)
-      MERGE (denomination)-[:HAS_HISTORY]->(log)
-
-      SET oversight:ClosedOversight, stream:ClosedStream, council:ClosedCouncil, constituencies:Closedconstituency, bacentas:ClosedBacenta, fellowships:ClosedFellowship
-      REMOVE oversight:Oversight, stream:Stream, council:Council, constituencies:Constituency,bacentas:Bacenta,fellowships:Fellowship
-
-      RETURN denomination
       """
     )
 }

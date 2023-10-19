@@ -220,6 +220,7 @@ const OversightForm = ({
                         variables: {
                           id: oversightId,
                           leaderId: initialValues.leaderId,
+                          adminId: initialValues?.adminId,
                         },
                       })
 
