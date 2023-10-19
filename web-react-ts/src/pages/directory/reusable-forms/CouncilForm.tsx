@@ -228,6 +228,7 @@ const CouncilForm = ({
                         variables: {
                           id: councilId,
                           leaderId: initialValues.leaderId,
+                          adminId: initialValues?.adminId,
                         },
                       })
 

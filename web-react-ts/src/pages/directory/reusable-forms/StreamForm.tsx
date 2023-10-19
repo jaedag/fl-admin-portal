@@ -261,6 +261,7 @@ const StreamForm = ({
                         variables: {
                           id: streamId,
                           leaderId: initialValues.leaderId,
+                          adminId: initialValues?.adminId,
                         },
                       })
 

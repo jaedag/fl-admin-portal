@@ -248,6 +248,7 @@ const MinistryForm = ({
                           variables: {
                             ministryId,
                             leaderId: initialValues.leaderId,
+                            adminId: initialValues?.adminId,
                           },
                         })
 

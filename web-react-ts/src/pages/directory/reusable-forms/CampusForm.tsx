@@ -242,6 +242,7 @@ const CampusForm = ({
                         variables: {
                           id: campusId,
                           leaderId: initialValues.leaderId,
+                          adminId: initialValues?.adminId,
                         },
                       })
 
