@@ -7,6 +7,8 @@ import { Church } from 'global-types'
 import DisplaySontaDetails from 'components/DisplayChurchDetails/DisplaySontaDetails'
 import { DetailsArray } from './DetailsFellowship'
 import { permitAdmin } from 'permission-utils'
+import { Container } from 'react-bootstrap'
+import Breadcrumb from 'components/DisplayChurchDetails/Breadcrumb'
 
 const DetailsHubCouncil = () => {
   const { hubCouncilId } = useContext(ChurchContext)
@@ -27,6 +29,7 @@ const DetailsHubCouncil = () => {
     hubCouncil?.ministry,
     hubCouncil,
   ]
+  const churchCrumb = [hubCouncil?.council, hubCouncil]
 
   const details: DetailsArray = [
     {
@@ -50,22 +53,27 @@ const DetailsHubCouncil = () => {
 
   return (
     <ApolloWrapper loading={hubLoading} error={hubError} data={hubData}>
-      <DisplaySontaDetails
-        details={details}
-        church={hubCouncil}
-        loading={hubLoading}
-        name={hubCouncil?.name}
-        leaderTitle="Hub Council Leader"
-        editPermitted={permitAdmin('Ministry')}
-        churchId={hubCouncilId}
-        leader={hubCouncil?.leader}
-        churchType="HubCouncil"
-        subLevel={'Hub'}
-        editlink="/hubcouncil/edithubcouncil"
-        history={hubCouncil?.history.length !== 0 && hubCouncil?.history}
-        breadcrumb={breadcrumb && breadcrumb}
-        buttons={hubCouncil?.hubs}
-      />
+      <>
+        <Container className="green">
+          {hubCouncil?.council && <Breadcrumb breadcrumb={churchCrumb} />}
+        </Container>
+        <DisplaySontaDetails
+          details={details}
+          church={hubCouncil}
+          loading={hubLoading}
+          name={hubCouncil?.name}
+          leaderTitle="Hub Council Leader"
+          editPermitted={permitAdmin('Ministry')}
+          churchId={hubCouncilId}
+          leader={hubCouncil?.leader}
+          churchType="HubCouncil"
+          subLevel={'Hub'}
+          editlink="/hubcouncil/edithubcouncil"
+          history={hubCouncil?.history.length !== 0 && hubCouncil?.history}
+          breadcrumb={breadcrumb && breadcrumb}
+          buttons={hubCouncil?.hubs}
+        />
+      </>
     </ApolloWrapper>
   )
 }
