@@ -506,7 +506,7 @@ const DisplayChurchDetails = (props: DisplayChurchDetailsProps) => {
         <Container className="mt-5">
           <Row>
             <Col>
-              <h3>CHURCH HISTORY</h3>
+              <h3 className="mb-0">CHURCH HISTORY</h3>
             </Col>
             <Col className="col-auto">
               <ViewAll to={`/${props.churchType.toLowerCase()}/history`} />

@@ -220,7 +220,7 @@ const MemberDisplay = ({ memberId }: { memberId: string }) => {
         <Row className="mt-5">
           <Col>
             <PlaceholderCustom>
-              <h3>Church History</h3>
+              <h3 className="mb-0">CHURCH HISTORY</h3>
             </PlaceholderCustom>
           </Col>
           <Col className="col-auto">
