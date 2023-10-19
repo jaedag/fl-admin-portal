@@ -44,7 +44,7 @@ const CouncilEquipmentCampaign = () => {
           </Placeholder>
           <div className="d-grid gap-2 mt-4 text-center px-4">
             <MenuButton
-              iconComponent={BarChartFill}
+              iconComponent={<BarChartFill />}
               title="View Trends"
               color="equipment"
               onClick={() => navigate(`/campaigns/council/equipment/trends`)}
@@ -52,7 +52,7 @@ const CouncilEquipmentCampaign = () => {
             />
             <RoleView roles={permitAdmin('Council')}>
               <MenuButton
-                iconComponent={EmojiFrown}
+                iconComponent={<EmojiFrown />}
                 color="danger"
                 title="Defaulters"
                 onClick={() =>

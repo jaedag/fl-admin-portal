@@ -29,7 +29,7 @@ const CampusMultiplicationCampaign = () => {
         <div className="d-grid gap-2 mt-4 text-center px-4">
           <MenuButton
             title="Fill Multiplication Event"
-            iconComponent={PencilSquare}
+            iconComponent={<PencilSquare />}
             color="multiplication"
             onClick={() =>
               navigate(`/campaigns/campus/multiplication/service-form`)
@@ -39,7 +39,7 @@ const CampusMultiplicationCampaign = () => {
           <MenuButton
             title="Upload Receipts"
             color="multiplication"
-            iconComponent={FileEarmarkArrowUpFill}
+            iconComponent={<FileEarmarkArrowUpFill />}
             onClick={() =>
               navigate(`/campaigns/campus/multiplication/banking-slips`)
             }
@@ -47,13 +47,13 @@ const CampusMultiplicationCampaign = () => {
           />
           <MenuButton
             color="multiplication"
-            iconComponent={BarChartFill}
+            iconComponent={<BarChartFill />}
             title="View Trends"
             onClick={() => navigate(`/campaigns/campus/multiplication/trends`)}
             noCaption
           />
           <MenuButton
-            iconComponent={PieChartFill}
+            iconComponent={<PieChartFill />}
             title="Member Conversion Chart"
             color="multiplication"
             noCaption

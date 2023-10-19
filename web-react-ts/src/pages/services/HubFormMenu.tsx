@@ -24,14 +24,14 @@ const HubFormMenu = () => {
         <div className="d-grid gap-2 mt-5 text-left">
           <HeadingSecondary>Rehearsals</HeadingSecondary>
           <MenuButton
-            iconComponent={PencilSquare}
+            iconComponent={<PencilSquare />}
             title="Fill Rehearsals Form"
             color="members"
             onClick={() => navigate(`/hub/record-rehearsal`)}
             noCaption
           />
           <MenuButton
-            iconComponent={X}
+            iconComponent={<X />}
             title="Cancel Rehearsal"
             color="red"
             onClick={() => navigate(`/hub/cancel-rehearsal`)}
@@ -41,7 +41,7 @@ const HubFormMenu = () => {
           <hr />
           <HeadingSecondary>Weekend Ministry Meeting</HeadingSecondary>
           <MenuButton
-            iconComponent={PencilSquare}
+            iconComponent={<PencilSquare />}
             title="Fill Sunday Meeting Form"
             color="green"
             onClick={() => navigate(`/hub/record-sundayservice`)}

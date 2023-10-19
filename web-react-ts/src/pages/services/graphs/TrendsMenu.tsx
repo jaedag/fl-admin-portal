@@ -28,14 +28,14 @@ const TrendsMenu = () => {
         </PlaceholderCustom>
         <div className="d-grid gap-2 mt-5 text-left">
           <MenuButton
-            iconComponent={Charts}
+            iconComponent={<Charts />}
             title="Last 4 Weeks"
             color="members"
             onClick={() => navigate(`/${churchType.toLowerCase()}/graphs`)}
             caption={'Income and Attendance Graphs'}
           />
           <MenuButton
-            iconComponent={Stars}
+            iconComponent={<Stars />}
             title="Quick Facts"
             color="quick-facts"
             onClick={() =>
@@ -49,7 +49,7 @@ const TrendsMenu = () => {
             <MenuButton
               title="Download Reports"
               color="green"
-              iconComponent={Download}
+              iconComponent={<Download />}
               onClick={() =>
                 navigate(`/download-reports/${church.__typename.toLowerCase()}`)
               }
@@ -57,7 +57,7 @@ const TrendsMenu = () => {
             />
           </RoleView>
           <MenuButton
-            iconComponent={PieChart}
+            iconComponent={<PieChart />}
             title="Member Conversion Chart"
             color="multiplication"
             onClick={() =>

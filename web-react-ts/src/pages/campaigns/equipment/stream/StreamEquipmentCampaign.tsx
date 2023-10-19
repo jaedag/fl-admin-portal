@@ -45,7 +45,7 @@ const StreamEquipmentCampaign = () => {
           </Placeholder>
           <div className="d-grid gap-2 mt-4 text-center px-4">
             <MenuButton
-              iconComponent={BarChartFill}
+              iconComponent={<BarChartFill />}
               title="View Trends"
               color="equipment"
               onClick={() => navigate(`/campaigns/stream/equipment/trends`)}
@@ -53,7 +53,7 @@ const StreamEquipmentCampaign = () => {
             />
             <RoleView roles={permitAdmin('Stream')}>
               <MenuButton
-                iconComponent={EmojiFrown}
+                iconComponent={<EmojiFrown />}
                 color="danger"
                 title="Defaulters"
                 onClick={() =>

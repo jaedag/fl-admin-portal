@@ -9,8 +9,7 @@ type MenuButtonProps = {
   className?: string
   onClick?: () => void
   icon?: string
-  iconComponent?: React.ComponentType
-
+  iconComponent?: JSX.Element
   iconCaption?: string
   iconBg?: boolean
   avatar?: string
@@ -51,9 +50,7 @@ const MenuButton = (props: MenuButtonProps) => {
                   />
                 )}
                 {props.iconComponent && (
-                  <div className={`${props.color}`}>
-                    <props.iconComponent />
-                  </div>
+                  <div className={`${props.color}`}>{props.iconComponent}</div>
                 )}
                 {props.number && <div className="fw-bold">{props.number}</div>}
               </div>

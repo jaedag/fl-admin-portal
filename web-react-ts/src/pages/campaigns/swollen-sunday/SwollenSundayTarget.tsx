@@ -75,7 +75,7 @@ const SwollenSundayTarget = ({
           <MenuButton
             title="Upload Bacenta Targets"
             color="swollensunday"
-            iconComponent={Upload}
+            iconComponent={<Upload />}
             onClick={() =>
               navigate(
                 `/campaigns/${churchType.toLowerCase()}/swollen-sunday/upload-targets`
@@ -86,7 +86,7 @@ const SwollenSundayTarget = ({
           {churchType === 'Stream' && (
             <MenuButton
               title="Share Target By Council"
-              iconComponent={ShareFill}
+              iconComponent={<ShareFill />}
               noCaption
               color="swollensunday"
               onClick={() =>

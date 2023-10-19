@@ -70,7 +70,7 @@ const FellowshipEquipmentCampaign = () => {
             {fellowshipEquipmentRecord === null && (
               <MenuButton
                 title="Fill Campaign Form"
-                iconComponent={PencilSquare}
+                iconComponent={<PencilSquare />}
                 color="equipment"
                 onClick={() => navigate(`/campaigns/fellowship/equipment/form`)}
                 noCaption
@@ -80,7 +80,7 @@ const FellowshipEquipmentCampaign = () => {
             <MenuButton
               title="View Trends"
               color="equipment"
-              iconComponent={BarChartFill}
+              iconComponent={<BarChartFill />}
               onClick={() => navigate(`/campaigns/fellowship/equipment/trends`)}
               noCaption
             />

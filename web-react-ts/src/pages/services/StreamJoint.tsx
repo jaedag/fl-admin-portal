@@ -22,21 +22,21 @@ const StreamJoint = () => {
 
         <div className="d-grid gap-2 mt-5 text-left">
           <MenuButton
-            iconComponent={PencilSquare}
+            iconComponent={<PencilSquare />}
             title="Fill Service Form"
             color="members"
             onClick={() => navigate(`/stream/record-service`)}
             noCaption
           />
           <MenuButton
-            iconComponent={XCircleFill}
+            iconComponent={<XCircleFill />}
             title="Cancel Service"
             color="members"
             onClick={() => navigate(`/services/stream/no-service`)}
             noCaption
           />
           <MenuButton
-            iconComponent={PencilSquare}
+            iconComponent={<PencilSquare />}
             title="Fill Joint Service Form"
             color="members"
             noCaption

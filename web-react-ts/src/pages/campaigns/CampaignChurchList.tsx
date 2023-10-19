@@ -71,7 +71,7 @@ const CampaignChurchList = ({ data, page }: SwollenSundayChurchProps) => {
               <MenuButton
                 key={church.id}
                 title={church.name}
-                iconComponent={People2Icon}
+                iconComponent={<People2Icon />}
                 iconBg={true}
                 noCaption
                 iconCaption={church.__typename}
@@ -85,7 +85,7 @@ const CampaignChurchList = ({ data, page }: SwollenSundayChurchProps) => {
                     )
                   } else if (page === 'swollen-sunday-dashboard') {
                     navigate(`/campaigns/stream/swollen-sunday`)
-                  }else if (page === 'sheep-seeking') {
+                  } else if (page === 'sheep-seeking') {
                     navigate(`/campaigns/stream/sheep-seeking`)
                   } else {
                     navigate('#')

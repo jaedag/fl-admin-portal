@@ -30,7 +30,7 @@ const ConstituencyMultiplicationCampaign = () => {
           <MenuButton
             title="Fill Multiplication Event"
             color="multiplication"
-            iconComponent={PencilSquare}
+            iconComponent={<PencilSquare />}
             noCaption
             onClick={() =>
               navigate(`/campaigns/constituency/multiplication/service-form`)
@@ -39,14 +39,14 @@ const ConstituencyMultiplicationCampaign = () => {
           <MenuButton
             title="Upload Receipts"
             color="multiplication"
-            iconComponent={FileEarmarkArrowUpFill}
+            iconComponent={<FileEarmarkArrowUpFill />}
             noCaption
             onClick={() =>
               navigate(`/campaigns/constituency/multiplication/banking-slips`)
             }
           />
           <MenuButton
-            iconComponent={BarChartFill}
+            iconComponent={<BarChartFill />}
             title="View Trends"
             color="multiplication"
             noCaption
@@ -55,7 +55,7 @@ const ConstituencyMultiplicationCampaign = () => {
             }
           />
           <MenuButton
-            iconComponent={PieChartFill}
+            iconComponent={<PieChartFill />}
             title="Member Conversion Chart"
             color="multiplication"
             noCaption

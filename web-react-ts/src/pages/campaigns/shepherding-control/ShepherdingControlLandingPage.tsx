@@ -26,7 +26,7 @@ const ShepherdingControlLandingPage = () => {
           <MenuButton
             title="Stats for Year Till Date"
             color="shepherdingcontrol"
-            iconComponent={GraphDown}
+            iconComponent={<GraphDown />}
             noCaption
             onClick={() =>
               navigate(
@@ -38,7 +38,7 @@ const ShepherdingControlLandingPage = () => {
           <MenuButton
             title="Swollen Sunday"
             color="swollensunday"
-            iconComponent={GiHumanPyramid}
+            iconComponent={<GiHumanPyramid />}
             noCaption
             onClick={() =>
               navigate(`/campaigns/${churchType.toLowerCase()}/swollen-sunday`)

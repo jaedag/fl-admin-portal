@@ -47,14 +47,14 @@ type MemberDisplayCardProps = {
   children?: React.ReactNode
 }
 
-const Icons = ({
+export const Icons = ({
   member,
   picture,
   noPicture,
   contact,
 }: {
   member: CardMember
-  picture: string
+  picture?: string
   noPicture: boolean
   contact?: boolean
 }) => {
@@ -62,7 +62,7 @@ const Icons = ({
     return (
       <div>
         <CloudinaryImage
-          src={picture}
+          src={picture ?? ''}
           alt={member.nameWithTitle}
           className={`img-search rounded`}
         />
@@ -99,7 +99,7 @@ const Icons = ({
 
   return (
     <CloudinaryImage
-      src={picture}
+      src={picture ?? ''}
       alt={member.nameWithTitle}
       className={`${picture && 'rounded-circle'} img-search`}
     />

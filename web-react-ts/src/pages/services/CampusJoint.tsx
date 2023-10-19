@@ -22,7 +22,7 @@ const CampusJoint = () => {
 
         <div className="d-grid gap-2 mt-5 text-left">
           <MenuButton
-            iconComponent={PencilSquare}
+            iconComponent={<PencilSquare />}
             title="Fill Joint Service Form"
             color="members"
             noCaption

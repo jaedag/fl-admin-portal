@@ -29,7 +29,7 @@ const CouncilMultiplicationCampaign = () => {
         <div className="d-grid gap-2 mt-4 text-center px-4">
           <MenuButton
             title="Fill Multiplication Event"
-            iconComponent={PencilSquare}
+            iconComponent={<PencilSquare />}
             noCaption
             color="multiplication"
             onClick={() =>
@@ -38,7 +38,7 @@ const CouncilMultiplicationCampaign = () => {
           />
           <MenuButton
             title="Upload Receipts"
-            iconComponent={FileEarmarkArrowUpFill}
+            iconComponent={<FileEarmarkArrowUpFill />}
             noCaption
             color="multiplication"
             onClick={() =>
@@ -46,14 +46,14 @@ const CouncilMultiplicationCampaign = () => {
             }
           />
           <MenuButton
-            iconComponent={BarChartFill}
+            iconComponent={<BarChartFill />}
             title="View Trends"
             color="multiplication"
             noCaption
             onClick={() => navigate(`/campaigns/council/multiplication/trends`)}
           />
           <MenuButton
-            iconComponent={PieChartFill}
+            iconComponent={<PieChartFill />}
             title="Member Conversion Chart"
             color="multiplication"
             noCaption

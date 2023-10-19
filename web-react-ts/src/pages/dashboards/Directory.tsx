@@ -30,21 +30,21 @@ const Directory = () => {
 
         <div className="d-grid gap-2 mt-5 text-left">
           <MenuButton
-            iconComponent={People}
+            iconComponent={<People />}
             title="members"
             caption={getMemberCount(data?.members[0])}
             color="members"
             onClick={() => navigate(`/directory/members`)}
           />
           <MenuButton
-            iconComponent={Church}
+            iconComponent={<Church />}
             title="churches"
             caption={getChurchCount(data?.members[0])}
             color="churches"
             onClick={() => navigate(`/directory/churches`)}
           />
           <MenuButton
-            iconComponent={Stars}
+            iconComponent={<Stars />}
             title="quick facts"
             caption={'Quick facts about your church'}
             color="quick-facts"

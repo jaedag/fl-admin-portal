@@ -42,7 +42,7 @@ const BacentaEquipmentCampaign = () => {
           </Placeholder>
           <div className="d-grid gap-2 mt-4 text-center px-4">
             <MenuButton
-              iconComponent={BarChartFill}
+              iconComponent={<BarChartFill />}
               title="View Trends"
               onClick={() => navigate(`/campaigns/bacenta/equipment/trends`)}
               noCaption

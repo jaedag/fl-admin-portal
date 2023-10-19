@@ -4,9 +4,9 @@ import { MemberContext } from 'contexts/MemberContext'
 import React, { useContext } from 'react'
 import { Container } from 'react-bootstrap'
 import { useNavigate } from 'react-router'
-import People2Icon from 'assets/icons/People2'
 import { Church, UserRole } from 'global-types'
 import PlaceholderCustom from 'components/Placeholder'
+import SearchBadgeIcon from 'components/card/SearchBadgeIcon'
 
 const Churches = () => {
   const { currentUser, userJobs } = useContext(MemberContext)
@@ -34,7 +34,9 @@ const Churches = () => {
                   key={church.id}
                   title={church.name}
                   noCaption
-                  iconComponent={People2Icon}
+                  iconComponent={
+                    <SearchBadgeIcon category={church.__typename} size={20} />
+                  }
                   iconBg
                   iconCaption={church.__typename}
                   onClick={() => {

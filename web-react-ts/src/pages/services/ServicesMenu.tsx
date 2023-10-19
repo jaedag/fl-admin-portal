@@ -38,7 +38,7 @@ const Services = () => {
           {churchType === 'Fellowship' &&
             church?.vacationStatus === 'Active' && (
               <MenuButton
-                iconComponent={Book}
+                iconComponent={<Book />}
                 title="Fellowship Service"
                 color="members"
                 onClick={() => navigate(`/services/fellowship`)}
@@ -47,7 +47,7 @@ const Services = () => {
             )}
           {churchType === 'Hub' && church?.vacationStatus === 'Active' && (
             <MenuButton
-              iconComponent={Book}
+              iconComponent={<Book />}
               title="Fill Forms"
               color="members"
               onClick={() => navigate(`/services/hub`)}
@@ -56,7 +56,7 @@ const Services = () => {
           )}
           {churchType === 'Bacenta' && (
             <MenuButton
-              iconComponent={Book}
+              iconComponent={<Book />}
               title="Bacenta Service"
               color="members"
               onClick={() => navigate(`/services/bacenta`)}
@@ -65,7 +65,7 @@ const Services = () => {
           )}
           {['Stream', 'Constituency', 'Council'].includes(churchType) && (
             <MenuButton
-              iconComponent={Book}
+              iconComponent={<Book />}
               title={`${churchType} Joint Service`}
               color="members"
               noCaption
@@ -75,7 +75,7 @@ const Services = () => {
             />
           )}
           <MenuButton
-            iconComponent={BarChartFill}
+            iconComponent={<BarChartFill />}
             title="Trends"
             color="members"
             noCaption
@@ -88,7 +88,7 @@ const Services = () => {
             church?.bankAccount !== 'manual' && (
               <>
                 <MenuButton
-                  iconComponent={FileEarmarkArrowUpFill}
+                  iconComponent={<FileEarmarkArrowUpFill />}
                   title="Banking Slips"
                   color="banking"
                   noCaption
@@ -101,7 +101,7 @@ const Services = () => {
                 />
 
                 <MenuButton
-                  iconComponent={Coin}
+                  iconComponent={<Coin />}
                   title="Self Banking Option"
                   color="banking"
                   noCaption
@@ -119,7 +119,7 @@ const Services = () => {
               <>
                 <RoleView roles={permitAdmin('Stream')}>
                   <MenuButton
-                    iconComponent={PersonPlus}
+                    iconComponent={<PersonPlus />}
                     title="Add Treasurers"
                     color="banking"
                     onClick={() => navigate(`/anagkazo/treasurer-select`)}
@@ -129,7 +129,7 @@ const Services = () => {
 
                 <RoleView roles={permitTellerStream()}>
                   <MenuButton
-                    iconComponent={CashCoin}
+                    iconComponent={<CashCoin />}
                     title="Receive Midweek Offering"
                     color="banking"
                     onClick={() => navigate(`/anagkazo/receive-banking`)}

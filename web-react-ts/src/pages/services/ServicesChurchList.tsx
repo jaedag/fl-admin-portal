@@ -34,7 +34,7 @@ const ServicesChurchList = () => {
             <MenuButton
               title="Defaulters"
               color="danger"
-              iconComponent={EmojiFrown}
+              iconComponent={<EmojiFrown />}
               onClick={() => navigate('/services/defaulters')}
               noCaption
             />

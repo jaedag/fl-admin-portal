@@ -72,7 +72,7 @@ const ConstituencyEquipmentCampaign = () => {
             {constituencyEquipmentRecord?.pulpits === null && (
               <MenuButton
                 title="Fill Campaign Form"
-                iconComponent={PencilSquare}
+                iconComponent={<PencilSquare />}
                 onClick={() =>
                   navigate(`/campaigns/constituency/equipment/form`)
                 }
@@ -84,7 +84,7 @@ const ConstituencyEquipmentCampaign = () => {
             <MenuButton
               title="View Trends"
               color="equipment"
-              iconComponent={BarChartFill}
+              iconComponent={<BarChartFill />}
               onClick={() =>
                 navigate(`/campaigns/constituency/equipment/trends`)
               }
@@ -94,7 +94,7 @@ const ConstituencyEquipmentCampaign = () => {
               <MenuButton
                 title="Defaulters"
                 color="danger"
-                iconComponent={EmojiFrown}
+                iconComponent={<EmojiFrown />}
                 onClick={() =>
                   navigate('/campaigns/constituency/equipment/defaulters')
                 }

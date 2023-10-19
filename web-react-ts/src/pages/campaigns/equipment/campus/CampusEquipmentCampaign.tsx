@@ -44,14 +44,14 @@ const CampusEquipmentCampaign = () => {
           </Placeholder>
           <div className="d-grid gap-2 mt-4 text-center px-4">
             <MenuButton
-              iconComponent={BarChartFill}
+              iconComponent={<BarChartFill />}
               title="View Trends"
               color="equipment"
               onClick={() => navigate(`/campaigns/campus/equipment/trends`)}
               noCaption
             />
             <MenuButton
-              iconComponent={Alarm}
+              iconComponent={<Alarm />}
               title="Set Deadline"
               color="equipment"
               onClick={() =>
@@ -61,7 +61,7 @@ const CampusEquipmentCampaign = () => {
             />
             <RoleView roles={permitAdmin('Campus')}>
               <MenuButton
-                iconComponent={EmojiFrown}
+                iconComponent={<EmojiFrown />}
                 color="danger"
                 title="Defaulters"
                 onClick={() =>

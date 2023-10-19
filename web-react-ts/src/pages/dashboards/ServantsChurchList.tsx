@@ -159,7 +159,7 @@ const ServantsChurchList = () => {
             <MenuButton
               key={i}
               avatar={church.leaderPic}
-              iconComponent={People2Icon}
+              iconComponent={<People2Icon />}
               iconBg={true}
               iconCaption={church.__typename}
               title={`${church.name} ${church.__typename}`}

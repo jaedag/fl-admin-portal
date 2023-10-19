@@ -24,7 +24,7 @@ const CampaignsWithIcons = ({
         return (
           <MenuButton
             title={campaign}
-            iconComponent={FaTools}
+            iconComponent={<FaTools />}
             noCaption
             color="equipment"
             onClick={() =>
@@ -41,7 +41,7 @@ const CampaignsWithIcons = ({
         return (
           <MenuButton
             title={campaign}
-            iconComponent={FaPray}
+            iconComponent={<FaPray />}
             noCaption
             color="antibrutish"
             onClick={() =>
@@ -58,7 +58,7 @@ const CampaignsWithIcons = ({
         return (
           <MenuButton
             title={campaign}
-            iconComponent={BiSelectMultiple}
+            iconComponent={<BiSelectMultiple />}
             noCaption
             color="multiplication"
             onClick={() =>
@@ -75,7 +75,7 @@ const CampaignsWithIcons = ({
         return (
           <MenuButton
             title={campaign}
-            iconComponent={GiHumanPyramid}
+            iconComponent={<GiHumanPyramid />}
             noCaption
             color="swollensunday"
             onClick={() =>
@@ -94,7 +94,7 @@ const CampaignsWithIcons = ({
             title={campaign}
             noCaption
             color="shepherdingcontrol"
-            iconComponent={IoStatsChartOutline}
+            iconComponent={<IoStatsChartOutline />}
             onClick={() =>
               navigate(
                 `/campaigns/${churchLevel.toLowerCase()}/${campaign.toLowerCase()}`.replace(
@@ -111,7 +111,7 @@ const CampaignsWithIcons = ({
             title={campaign}
             noCaption
             color="sheepseeking"
-            iconComponent={GiSheep}
+            iconComponent={<GiSheep />}
             onClick={() =>
               navigate(
                 `/campaigns/${churchLevel.toLowerCase()}/${campaign.toLowerCase()}`.replace(

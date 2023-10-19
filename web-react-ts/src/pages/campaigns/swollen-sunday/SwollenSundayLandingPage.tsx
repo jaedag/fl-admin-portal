@@ -31,7 +31,7 @@ const SwollenSundayLandingPage = ({ churchLevel, churchName }: Props) => {
           <MenuButton
             title="View Trends"
             color="swollensunday"
-            iconComponent={BarChartFill}
+            iconComponent={<BarChartFill />}
             noCaption
             onClick={() =>
               navigate(
@@ -43,7 +43,7 @@ const SwollenSundayLandingPage = ({ churchLevel, churchName }: Props) => {
             <MenuButton
               title="Import Target"
               color="swollensunday"
-              iconComponent={Download}
+              iconComponent={<Download />}
               noCaption
               onClick={() =>
                 navigate(
@@ -56,7 +56,7 @@ const SwollenSundayLandingPage = ({ churchLevel, churchName }: Props) => {
             <MenuButton
               title="Import Target"
               color="swollensunday"
-              iconComponent={Download}
+              iconComponent={<Download />}
               noCaption
               onClick={() =>
                 navigate(`/campaigns/campus/swollen-sunday/streams`)

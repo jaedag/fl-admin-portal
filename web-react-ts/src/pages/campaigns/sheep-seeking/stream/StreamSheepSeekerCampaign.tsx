@@ -29,7 +29,7 @@ const StreamSheepSeekerCampaign = () => {
           <RoleView roles={permitAdmin('Stream')}>
             <MenuButton
               title="Make Sheep Seeker"
-              iconComponent={PersonAdd}
+              iconComponent={<PersonAdd />}
               color="sheepseeking"
               noCaption
               onClick={() => navigate('/campaigns/stream/sheepseeker-select')}
@@ -38,7 +38,7 @@ const StreamSheepSeekerCampaign = () => {
           <RoleView roles={['sheepseekerStream', 'adminStream', 'adminCampus']}>
             <MenuButton
               title="Register Members"
-              iconComponent={IoPersonAddOutline}
+              iconComponent={<IoPersonAddOutline />}
               color="sheepseeking"
               noCaption
               onClick={() => navigate('/member/addmember')}
@@ -47,7 +47,7 @@ const StreamSheepSeekerCampaign = () => {
           <RoleView roles={['sheepseekerStream', 'adminStream', 'adminCampus']}>
             <MenuButton
               title="View Membership"
-              iconComponent={CiViewList}
+              iconComponent={<CiViewList />}
               color="sheepseeking"
               noCaption
               onClick={() => navigate('/directory/members')}

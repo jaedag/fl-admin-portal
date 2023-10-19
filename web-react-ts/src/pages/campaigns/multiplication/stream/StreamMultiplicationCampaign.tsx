@@ -29,7 +29,7 @@ const StreamMultiplicationCampaign = () => {
         <div className="d-grid gap-2 mt-4 text-center px-4">
           <MenuButton
             title="Fill Multiplication Event"
-            iconComponent={PencilSquare}
+            iconComponent={<PencilSquare />}
             color="multiplication"
             noCaption
             onClick={() =>
@@ -38,7 +38,7 @@ const StreamMultiplicationCampaign = () => {
           />
           <MenuButton
             title="Upload Receipts"
-            iconComponent={FileEarmarkArrowUpFill}
+            iconComponent={<FileEarmarkArrowUpFill />}
             noCaption
             color="multiplication"
             onClick={() =>
@@ -46,14 +46,14 @@ const StreamMultiplicationCampaign = () => {
             }
           />
           <MenuButton
-            iconComponent={BarChartFill}
+            iconComponent={<BarChartFill />}
             title="View Trends"
             color="multiplication"
             noCaption
             onClick={() => navigate(`/campaigns/stream/multiplication/trends`)}
           />
           <MenuButton
-            iconComponent={PieChartFill}
+            iconComponent={<PieChartFill />}
             title="Member Conversion Chart"
             color="multiplication"
             noCaption

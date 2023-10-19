@@ -4,8 +4,8 @@ import { MemberContext } from 'contexts/MemberContext'
 import useSetUserChurch from 'hooks/useSetUserChurch'
 import React, { useContext } from 'react'
 import { useNavigate } from 'react-router'
-import People2Icon from 'assets/icons/People2'
 import { Church, UserRole } from 'global-types'
+import SearchBadgeIcon from 'components/card/SearchBadgeIcon'
 
 const ChurchList = ({
   color,
@@ -81,7 +81,9 @@ const ChurchList = ({
                 <MenuButton
                   key={church.id}
                   title={church.name}
-                  iconComponent={People2Icon}
+                  iconComponent={
+                    <SearchBadgeIcon category={church.__typename} size={20} />
+                  }
                   iconBg={true}
                   noCaption
                   iconCaption={church.__typename}
