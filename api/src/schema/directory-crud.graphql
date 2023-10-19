@@ -1123,7 +1123,7 @@ extend type Mutation {
       RETURN stream
       """
     )
-  CloseDownStream(streamId: ID!): Campus
+  CloseDownStream(streamId: ID!,  leaderId: ID!): Campus
     @cypher(
       statement: """
       MATCH (stream:Stream {id: $streamId})<-[:HAS]-(campus:Campus)
@@ -1151,7 +1151,7 @@ extend type Mutation {
       """
     )
 
-  CloseDownCampus(campusId: ID!): Oversight
+  CloseDownCampus(campusId: ID!,  leaderId: ID!): Oversight
     @cypher(
       statement: """
       MATCH (campus:Campus {id: $campusId})<-[:HAS]-(oversight:Oversight)
@@ -1180,7 +1180,7 @@ extend type Mutation {
       """
     )
 
-  CloseDownOversight(oversightId: ID!): Denomination!
+  CloseDownOversight(oversightId: ID!,  leaderId: ID!): Denomination!
     @cypher(
       statement: """
       MATCH (oversight:Oversight {id: $oversightId})<-[:HAS]-( denomination:Denomination)
