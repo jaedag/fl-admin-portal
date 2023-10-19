@@ -26,6 +26,13 @@
       "no-relative-import-paths/no-relative-import-paths": "off"
     }
   },
+  "lint-staged": {
+    "*.{ts}": [
+      "prettier --write",
+      "eslint --cache --fix --max-warnings=0",
+      "bash -c tsc -p tsconfig.json --noEmit"
+    ]
+  },
   "dependencies": {
     "@apollo/client": "^3.2.5",
     "@apollo/server": "^4.7.0",
