@@ -412,6 +412,344 @@ const directoryMutation = {
     }
     return null
   },
+
+  CloseDownCouncil: async (object: any, args: any, context: Context) => {
+    isAuth(permitAdmin('Stream'), context.auth.roles)
+
+    const session = context.executionContext.session()
+    const sessionTwo = context.executionContext.session()
+
+    const res: any = await Promise.all([
+      session.run(closeChurchCypher.checkCouncilHasNoMembers, args),
+      sessionTwo.run(closeChurchCypher.getLastServiceRecord, {
+        churchId: args.councilId,
+      }),
+    ]).catch((error: any) => {
+      throwToSentry(
+        'There was an error running checkCouncilHasNoMembers',
+        error
+      )
+    })
+
+    const councilCheck = rearrangeCypherObject(res[0])
+    const lastServiceRecord = rearrangeCypherObject(res[1])
+
+    if (councilCheck.memberCount) {
+      throw new Error(
+        `${councilCheck?.name} Council has ${councilCheck?.constituencyCount} active constituencies. Please close down all constituencies and try again.`
+      )
+    }
+
+    const record = lastServiceRecord.lastService?.properties ?? {
+      bankingSlip: null,
+    }
+
+    if (
+      !(
+        'bankingSlip' in record ||
+        record.transactionStatus === 'success' ||
+        'tellerConfirmationTime' in record
+      )
+    ) {
+      throw new Error(
+        `Please bank outstanding offering for your service filled on ${getHumanReadableDate(
+          record.createdAt
+        )} before attempting to close down this council`
+      )
+    }
+
+    try {
+      // Council Leader must be removed since the Council is being closed down
+      await Promise.all([
+        RemoveServant(
+          context,
+          args,
+          permitAdmin('Stream'),
+          'Council',
+          'Leader',
+          true
+        ),
+        args.adminId
+          ? RemoveServant(
+              context,
+              args,
+              permitAdmin('Stream'),
+              'Council',
+              'Admin'
+            )
+          : null,
+      ])
+
+      const closeCouncilResponse = await session.run(
+        closeChurchCypher.closeDownCouncil,
+        {
+          auth: context.auth,
+          councilId: args.councilId,
+        }
+      )
+
+      const councilResponse = rearrangeCypherObject(closeCouncilResponse)
+      return councilResponse.stream
+    } catch (error: any) {
+      throwToSentry('There was an error closing down this council', error)
+    } finally {
+      await session.close()
+      await sessionTwo.close()
+    }
+    return null
+  },
+
+  CloseDownStream: async (object: any, args: any, context: Context) => {
+    isAuth(permitAdmin('Campus'), context.auth.roles)
+
+    const session = context.executionContext.session()
+    const sessionTwo = context.executionContext.session()
+
+    const res: any = await Promise.all([
+      session.run(closeChurchCypher.checkStreamHasNoMembers, args),
+      sessionTwo.run(closeChurchCypher.getLastServiceRecord, {
+        churchId: args.streamId,
+      }),
+    ]).catch((error: any) => {
+      throwToSentry('There was an error running checkStreamHasNoMembers', error)
+    })
+
+    const streamCheck = rearrangeCypherObject(res[0])
+    const lastServiceRecord = rearrangeCypherObject(res[1])
+
+    if (streamCheck.memberCount) {
+      throw new Error(
+        `${streamCheck?.name} Stream has ${streamCheck?.councilCount} active councils. Please close down all councils and try again.`
+      )
+    }
+
+    const record = lastServiceRecord.lastService?.properties ?? {
+      bankingSlip: null,
+    }
+
+    if (
+      !(
+        'bankingSlip' in record ||
+        record.transactionStatus === 'success' ||
+        'tellerConfirmationTime' in record
+      )
+    ) {
+      throw new Error(
+        `Please bank outstanding offering for your service filled on ${getHumanReadableDate(
+          record.createdAt
+        )} before attempting to close down this stream`
+      )
+    }
+
+    try {
+      // Stream Leader must be removed since the Stream is being closed down
+      await Promise.all([
+        RemoveServant(
+          context,
+          args,
+          permitAdmin('Campus'),
+          'Stream',
+          'Leader',
+          true
+        ),
+        args.adminId
+          ? RemoveServant(
+              context,
+              args,
+              permitAdmin('Campus'),
+              'Stream',
+              'Admin'
+            )
+          : null,
+      ])
+
+      const closeStreamResponse = await session.run(
+        closeChurchCypher.closeDownStream,
+        {
+          auth: context.auth,
+          streamId: args.streamId,
+        }
+      )
+
+      const streamResponse = rearrangeCypherObject(closeStreamResponse)
+      return streamResponse.campus
+    } catch (error: any) {
+      throwToSentry('There was an error closing down this stream', error)
+    } finally {
+      await session.close()
+      await sessionTwo.close()
+    }
+    return null
+  },
+
+  CloseDownCampus: async (object: any, args: any, context: Context) => {
+    isAuth(permitAdmin('Oversight'), context.auth.roles)
+
+    const session = context.executionContext.session()
+    const sessionTwo = context.executionContext.session()
+
+    const res: any = await Promise.all([
+      session.run(closeChurchCypher.checkCampusHasNoMembers, args),
+      sessionTwo.run(closeChurchCypher.getLastServiceRecord, {
+        churchId: args.campusId,
+      }),
+    ]).catch((error: any) => {
+      throwToSentry('There was an error running checkCampusHasNoMembers', error)
+    })
+
+    const campusCheck = rearrangeCypherObject(res[0])
+    const lastServiceRecord = rearrangeCypherObject(res[1])
+
+    if (campusCheck.memberCount) {
+      throw new Error(
+        `${campusCheck?.name} Campus has ${campusCheck?.streamCount} active streams. Please close down all streams and try again.`
+      )
+    }
+
+    const record = lastServiceRecord.lastService?.properties ?? {
+      bankingSlip: null,
+    }
+
+    if (
+      !(
+        'bankingSlip' in record ||
+        record.transactionStatus === 'success' ||
+        'tellerConfirmationTime' in record
+      )
+    ) {
+      throw new Error(
+        `Please bank outstanding offering for your service filled on ${getHumanReadableDate(
+          record.createdAt
+        )} before attempting to close down this campus`
+      )
+    }
+
+    try {
+      // Stream Leader must be removed since the Stream is being closed down
+      await Promise.all([
+        RemoveServant(
+          context,
+          args,
+          permitAdmin('Oversight'),
+          'Campus',
+          'Leader',
+          true
+        ),
+        args.adminId
+          ? RemoveServant(
+              context,
+              args,
+              permitAdmin('Oversight'),
+              'Campus',
+              'Admin'
+            )
+          : null,
+      ])
+
+      const closeCampusResponse = await session.run(
+        closeChurchCypher.closeDownCampus,
+        {
+          auth: context.auth,
+          campusId: args.campusId,
+        }
+      )
+
+      const campusResponse = rearrangeCypherObject(closeCampusResponse)
+      return campusResponse.oversight
+    } catch (error: any) {
+      throwToSentry('There was an error closing down this campus', error)
+    } finally {
+      await session.close()
+      await sessionTwo.close()
+    }
+    return null
+  },
+
+  CloseDownOversight: async (object: any, args: any, context: Context) => {
+    isAuth(permitAdmin('Denomination'), context.auth.roles)
+
+    const session = context.executionContext.session()
+    const sessionTwo = context.executionContext.session()
+
+    const res: any = await Promise.all([
+      session.run(closeChurchCypher.checkOversightHasNoMembers, args),
+      sessionTwo.run(closeChurchCypher.getLastServiceRecord, {
+        churchId: args.oversightId,
+      }),
+    ]).catch((error: any) => {
+      throwToSentry(
+        'There was an error running checkOversightHasNoMembers',
+        error
+      )
+    })
+
+    const oversightCheck = rearrangeCypherObject(res[0])
+    const lastServiceRecord = rearrangeCypherObject(res[1])
+
+    if (oversightCheck.memberCount) {
+      throw new Error(
+        `${oversightCheck?.name} Oversight has ${oversightCheck?.campusCount} active campuses. Please close down all campuses and try again.`
+      )
+    }
+
+    const record = lastServiceRecord.lastService?.properties ?? {
+      bankingSlip: null,
+    }
+
+    if (
+      !(
+        'bankingSlip' in record ||
+        record.transactionStatus === 'success' ||
+        'tellerConfirmationTime' in record
+      )
+    ) {
+      throw new Error(
+        `Please bank outstanding offering for your service filled on ${getHumanReadableDate(
+          record.createdAt
+        )} before attempting to close down this campus`
+      )
+    }
+
+    try {
+      // Stream Leader must be removed since the Stream is being closed down
+      await Promise.all([
+        RemoveServant(
+          context,
+          args,
+          permitAdmin('Denomination'),
+          'Oversight',
+          'Leader',
+          true
+        ),
+        args.adminId
+          ? RemoveServant(
+              context,
+              args,
+              permitAdmin('Denomination'),
+              'Oversight',
+              'Admin'
+            )
+          : null,
+      ])
+
+      const closeOversightResponse = await session.run(
+        closeChurchCypher.closeDownOversight,
+        {
+          auth: context.auth,
+          oversightId: args.oversightId,
+        }
+      )
+
+      const oversightResponse = rearrangeCypherObject(closeOversightResponse)
+      return oversightResponse.denomination
+    } catch (error: any) {
+      throwToSentry('There was an error closing down this Oversight', error)
+    } finally {
+      await session.close()
+      await sessionTwo.close()
+    }
+    return null
+  },
 }
 
 export default directoryMutation
