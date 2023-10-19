@@ -25,7 +25,6 @@ type FormOptions = {
 const BacentaSwollenSundayTrends = () => {
   const { bacentaId } = useContext(ChurchContext)
 
-  const [bussing] = useState(true)
   const [selectedView, setSelectedView] = useState('BussingVsTarget')
 
   const initialValues: FormOptions = {
@@ -170,7 +169,7 @@ const BacentaSwollenSundayTrends = () => {
                   stat2={selectedView === 'Bussing' ? null : 'target'}
                   churchData={churchData || []}
                   church={church?.__typename?.toLowerCase()}
-                  bussing={bussing}
+                  graphType="bussing"
                   income={true}
                 />
               </div>

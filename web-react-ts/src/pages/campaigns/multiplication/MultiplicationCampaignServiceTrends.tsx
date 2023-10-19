@@ -56,7 +56,7 @@ const MultiplicationCampaignServiceTrends = ({
         stat2="income"
         churchData={churchData || []}
         church={churchType.toLowerCase()}
-        bussing={false}
+        graphType="service"
         income={true}
       />
     </div>

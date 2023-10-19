@@ -24,7 +24,7 @@ type ChurchGraphProps = {
   stat2: 'attendance' | 'income' | 'target' | null
   churchData: any[]
   secondaryTitle?: string
-  bussing?: boolean
+  graphType: 'service' | 'bussing' | 'rehearsal' | 'ministryMeeting'
   income: boolean
   church: ChurchLevelLower | string
   swollenSunday?: boolean
@@ -37,12 +37,13 @@ const ChurchGraph = (props: ChurchGraphProps) => {
     stat2,
     churchData,
     secondaryTitle,
-    bussing,
     income,
+    graphType,
     swollenSunday,
   } = props
   const { clickCard } = useContext(ChurchContext)
   const navigate = useNavigate()
+  const isRehearsal = graphType === 'rehearsal'
 
   const [sortedData, setSortedData] = useState<any[]>([])
   const [dataMax, setDataMax] = useState<{
@@ -124,7 +125,7 @@ const ChurchGraph = (props: ChurchGraphProps) => {
             {stat2 && `${capitalise(stat1)} and ${capitalise(stat2)}`}
             {!stat2 &&
               income &&
-              `${bussing && 'Bussing'} ${capitalise(stat1)} Graph`}
+              `${graphType === 'bussing'} ${capitalise(stat1)} Graph`}
             {!income && `${capitalise(stat1)}`}
           </p>
         </PlaceholderCustom>
@@ -154,15 +155,19 @@ const ChurchGraph = (props: ChurchGraphProps) => {
                     stopColor={
                       swollenSunday
                         ? 'var(--chart-swollen-bussing-attendance-color)'
+                        : isRehearsal
+                        ? 'var(--chart-hub-attendance-color)'
                         : 'var(--chart-primary-color)'
                     }
                     stopOpacity="1"
                   />
                   <stop
-                    offset="80%"
+                    offset="90%"
                     stopColor={
                       swollenSunday
                         ? 'var(--chart-swollen-bussing-attendance-color)'
+                        : isRehearsal
+                        ? 'var(--chart-hub-attendance-color)'
                         : 'var(--chart-primary-color)'
                     }
                     stopOpacity="0.1"
@@ -180,6 +185,8 @@ const ChurchGraph = (props: ChurchGraphProps) => {
                     stopColor={
                       swollenSunday
                         ? 'var(--chart-swollen-bussing-target-color)'
+                        : isRehearsal
+                        ? 'var(--chart-hub-income-color)'
                         : 'var(--chart-secondary-color)'
                     }
                     stopOpacity="1"
@@ -189,6 +196,8 @@ const ChurchGraph = (props: ChurchGraphProps) => {
                     stopColor={
                       swollenSunday
                         ? 'var(--chart-swollen-bussing-target-color)'
+                        : isRehearsal
+                        ? 'var(--chart-hub-income-color)'
                         : 'var(--chart-secondary-color)'
                     }
                     stopOpacity="0.1"
@@ -207,7 +216,7 @@ const ChurchGraph = (props: ChurchGraphProps) => {
                     return
                   }
 
-                  if (data.id && bussing) {
+                  if (data.id && graphType === 'bussing') {
                     clickCard({ ...data, __typename: 'BussingRecord' })
                     navigate(`/${props.church}/bussing-details`)
                   } else if (data.id) {
@@ -235,7 +244,7 @@ const ChurchGraph = (props: ChurchGraphProps) => {
                       return
                     }
 
-                    if (data.id && bussing) {
+                    if (data.id && graphType === 'bussing') {
                       clickCard({ ...data, __typename: 'BussingRecord' })
                       navigate(`/${props.church}/bussing-details`)
                     } else if (data.id) {

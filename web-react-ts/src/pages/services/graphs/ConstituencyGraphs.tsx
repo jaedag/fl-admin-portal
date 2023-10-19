@@ -78,7 +78,7 @@ export const ConstituencyGraphs = () => {
             stat2={!bussing ? 'income' : null}
             churchData={churchData || []}
             church="constituency"
-            bussing={bussing}
+            graphType={bussing ? 'bussing' : 'service'}
             income={true}
           />
         ) : (
@@ -87,7 +87,7 @@ export const ConstituencyGraphs = () => {
             stat2={null}
             churchData={churchData || []}
             church="constituency"
-            bussing={bussing}
+            graphType={bussing ? 'bussing' : 'service'}
             income={false}
           />
         )}

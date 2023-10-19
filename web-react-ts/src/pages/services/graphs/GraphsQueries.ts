@@ -320,6 +320,43 @@ export const HUB_GRAPHS = gql`
   }
 `
 
+export const HUBCOUNCIL_GRAPHS = gql`
+  query hubCouncilGraphs($hubCouncilId: ID!) {
+    hubCouncils(where: { id: $hubCouncilId }) {
+      id
+      name
+      leader {
+        id
+        firstName
+        lastName
+        fullName
+        nameWithTitle
+        pictureUrl
+      }
+      aggregateServiceRecords(limit: 4) {
+        id
+        attendance
+        income
+        numberOfServices
+        week
+      }
+
+      rehearsals(limit: 4) {
+        id
+        createdAt
+        attendance
+        income
+        week
+        serviceDate {
+          date
+        }
+      }
+
+      memberCount
+    }
+  }
+`
+
 export const MINISTRY_GRAPHS = gql`
   query ministryGraphs($ministryId: ID!) {
     ministries(where: { id: $ministryId }) {

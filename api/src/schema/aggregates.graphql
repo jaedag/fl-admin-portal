@@ -157,7 +157,25 @@ extend type Hub {
       RETURN aggregate ORDER BY aggregate.year, aggregate.week DESC LIMIT $limit
       """
     )
-    
+}
+
+extend type HubCouncil {
+  aggregateServiceRecords(limit: Int! = 4): [AggregateServiceRecord!]!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(aggregate:AggregateServiceRecord)
+      WHERE aggregate.year = date().year
+      RETURN aggregate ORDER BY aggregate.year, aggregate.week DESC LIMIT $limit
+      """
+    )
+  aggregateRehearsalRecords(limit: Int! = 4): [AggregateRehearsalRecord!]!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(aggregate:AggregateRehearsalRecord)
+      WHERE aggregate.year = date().year
+      RETURN aggregate ORDER BY aggregate.year, aggregate.week DESC LIMIT $limit
+      """
+    )
 }
 
 extend type Ministry {

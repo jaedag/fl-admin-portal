@@ -122,7 +122,7 @@ const ServiceForm = ({
 
                     <Col className="my-2">
                       <small className="mb-3">
-                        Upload a Picture of Your Service*
+                        Upload Your Family Picture*
                       </small>
                       <ImageUpload
                         name="familyPicture"

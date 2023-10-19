@@ -53,11 +53,11 @@ export const HubGraphs = () => {
         <Row className="mt-3">
           <Col>
             <StatDisplay
-              title={`Avg Weekly ${rehearsal ? 'Rehearsal' : 'Attendance'}`}
+              title="Avg Weekly Attendance"
               statistic={getMonthlyStatAverage(churchData, 'attendance')}
             />
           </Col>
-          {((!rehearsal && !currentUser.noIncomeTracking) || loading) && (
+          {(!currentUser.noIncomeTracking || loading) && (
             <Col>
               <StatDisplay
                 title="Avg Weekly Income"
@@ -72,6 +72,7 @@ export const HubGraphs = () => {
             stat1="attendance"
             stat2={ministryMeeting ? null : 'income'}
             churchData={churchData || []}
+            graphType={rehearsal ? 'rehearsal' : 'service'}
             church="hub"
             income={true}
           />
@@ -81,6 +82,7 @@ export const HubGraphs = () => {
             stat2={null}
             churchData={churchData || []}
             church="hub"
+            graphType={rehearsal ? 'rehearsal' : 'service'}
             income={false}
           />
         )}

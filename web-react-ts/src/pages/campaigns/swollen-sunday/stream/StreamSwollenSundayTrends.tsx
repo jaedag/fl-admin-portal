@@ -26,7 +26,6 @@ type FormOptions = {
 const StreamSwollenSundayTrends = () => {
   const { streamId } = useContext(ChurchContext)
   const navigate = useNavigate()
-  const [bussing] = useState(true)
   const [selectedView, setSelectedView] = useState('BussingVsTarget')
 
   const initialValues: FormOptions = {
@@ -184,7 +183,7 @@ const StreamSwollenSundayTrends = () => {
                   stat2={selectedView === 'Bussing' ? null : 'target'}
                   churchData={churchData || []}
                   church={church?.__typename?.toLowerCase()}
-                  bussing={bussing}
+                  graphType="bussing"
                   income={true}
                 />
               </div>

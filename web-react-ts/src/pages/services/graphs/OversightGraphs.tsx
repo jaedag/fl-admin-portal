@@ -78,7 +78,7 @@ const OversightReport = () => {
             stat2={!bussing ? 'income' : null}
             churchData={churchData || []}
             church="oversight"
-            bussing={bussing}
+            graphType={bussing ? 'bussing' : 'service'}
             income={true}
           />
         ) : (
@@ -88,7 +88,7 @@ const OversightReport = () => {
             stat2={!bussing ? 'income' : null}
             churchData={churchData || []}
             church="oversight"
-            bussing={bussing}
+            graphType={bussing ? 'bussing' : 'service'}
             income={false}
           />
         )}

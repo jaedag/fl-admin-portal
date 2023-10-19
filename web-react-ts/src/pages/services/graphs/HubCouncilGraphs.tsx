@@ -4,7 +4,7 @@ import { ChurchContext } from '../../../contexts/ChurchContext'
 import { useQuery } from '@apollo/client'
 import { getServiceGraphData, getMonthlyStatAverage } from './graphs-utils'
 import ChurchGraph from '../../../components/ChurchGraph/ChurchGraph'
-import { CAMPUS_GRAPHS } from './GraphsQueries'
+import { HUBCOUNCIL_GRAPHS } from './GraphsQueries'
 import MembershipCard from './CompMembershipCard'
 import StatDisplay from './CompStatDisplay'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
@@ -13,16 +13,18 @@ import GraphDropdown from './GraphDropdown'
 import { MemberContext } from 'contexts/MemberContext'
 import LeaderAvatar from 'components/LeaderAvatar/LeaderAvatar'
 
-const CampusReport = () => {
-  const { campusId } = useContext(ChurchContext)
+export const HubCouncilGraphs = () => {
+  const { hubCouncilId } = useContext(ChurchContext)
+  const [rehearsal, setRehearsal] = useState(true)
+  const [ministryMeeting, setMinistryMeeting] = useState(false)
   const { currentUser } = useContext(MemberContext)
-  const [bussing, setBussing] = useState(true)
+
   const [churchData, setChurchData] = useState<any[] | undefined>([])
-  const { data, loading, error } = useQuery(CAMPUS_GRAPHS, {
-    variables: { campusId },
+  const { data, loading, error } = useQuery(HUBCOUNCIL_GRAPHS, {
+    variables: { hubCouncilId },
     onCompleted: (data) => {
       if (!setChurchData) return
-      setChurchData(getServiceGraphData(data?.campuses[0], 'bussingAggregate'))
+      setChurchData(getServiceGraphData(data?.hubCouncils[0], 'rehearsal'))
     },
   })
 
@@ -30,36 +32,35 @@ const CampusReport = () => {
     <ApolloWrapper loading={loading} error={error} data={data}>
       <Container>
         <LeaderAvatar
-          leader={data?.campuses[0].leader}
-          leaderTitle="Campus Leader"
+          leader={data?.hubCouncils[0].leader}
+          leaderTitle="Hub Leader"
         />
 
-        <Row className="mt-3 row-cols-2">
+        <Row className="row-cols-2">
           <Col>
             <MembershipCard
-              link="/campus/members"
+              link="/hub/members"
               title="Membership"
-              count={data?.campuses[0]?.memberCount}
+              count={data?.hubCouncils[0].memberCount}
             />
           </Col>
-
           <Col>
             <GraphDropdown
-              setBussing={setBussing}
+              setRehearsal={setRehearsal}
+              setMinistryMeeting={setMinistryMeeting}
               setChurchData={setChurchData}
-              data={data?.campuses[0]}
+              data={data?.hubCouncils[0]}
             />
           </Col>
         </Row>
         <Row className="mt-3">
           <Col>
             <StatDisplay
-              title={`Avg Weekly ${bussing ? 'Bussing' : 'Attendance'}`}
+              title="Avg Weekly Attendance"
               statistic={getMonthlyStatAverage(churchData, 'attendance')}
             />
           </Col>
-
-          {((!bussing && !currentUser.noIncomeTracking) || loading) && (
+          {(!currentUser.noIncomeTracking || loading) && (
             <Col>
               <StatDisplay
                 title="Avg Weekly Income"
@@ -71,22 +72,20 @@ const CampusReport = () => {
 
         {!currentUser.noIncomeTracking ? (
           <ChurchGraph
-            loading={loading}
             stat1="attendance"
-            stat2={!bussing ? 'income' : null}
+            stat2={ministryMeeting ? null : 'income'}
             churchData={churchData || []}
-            church="campus"
-            graphType={bussing ? 'bussing' : 'service'}
+            graphType={rehearsal ? 'rehearsal' : 'service'}
+            church="hub"
             income={true}
           />
         ) : (
           <ChurchGraph
-            loading={loading}
             stat1="attendance"
-            stat2={!bussing ? 'income' : null}
+            stat2={null}
             churchData={churchData || []}
-            church="campus"
-            graphType={bussing ? 'bussing' : 'service'}
+            church="hub"
+            graphType={rehearsal ? 'rehearsal' : 'service'}
             income={false}
           />
         )}
@@ -95,4 +94,4 @@ const CampusReport = () => {
   )
 }
 
-export default CampusReport
+export default HubCouncilGraphs

@@ -63,6 +63,7 @@ export const FellowshipReport = () => {
             stat2="income"
             income={true}
             churchData={serviceData || []}
+            graphType="service"
             church="fellowship"
           />
         ) : (
@@ -71,6 +72,7 @@ export const FellowshipReport = () => {
             stat2={null}
             income={false}
             churchData={serviceData || []}
+            graphType="service"
             church="fellowship"
           />
         )}

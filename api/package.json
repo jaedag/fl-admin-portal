@@ -30,7 +30,7 @@
     "*.{ts, js}": [
       "prettier --write",
       "eslint --cache --fix --max-warnings=0",
-      "bash -c tsc -p tsconfig.json --noEmit"
+      "bash -c cd src/resolvers && tsc -p tsconfig.json --noEmit"
     ]
   },
   "dependencies": {

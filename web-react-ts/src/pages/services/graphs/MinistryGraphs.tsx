@@ -15,7 +15,8 @@ import LeaderAvatar from 'components/LeaderAvatar/LeaderAvatar'
 
 export const MinistryGraphs = () => {
   const { ministryId } = useContext(ChurchContext)
-  const [bussing, setBussing] = useState(true)
+  const [rehearsal, setRehearsal] = useState(true)
+  const [ministryMeeting, setMinistryMeeting] = useState(false)
   const { currentUser } = useContext(MemberContext)
 
   const [churchData, setChurchData] = useState<any[] | undefined>([])
@@ -45,20 +46,21 @@ export const MinistryGraphs = () => {
           </Col>
           <Col>
             <GraphDropdown
-              setBussing={setBussing}
+              setRehearsal={setRehearsal}
+              setMinistryMeeting={setMinistryMeeting}
               setChurchData={setChurchData}
-              data={data?.ministries[0]}
+              data={data?.hubs[0]}
             />
           </Col>
         </Row>
         <Row className="mt-3">
           <Col>
             <StatDisplay
-              title={`Avg Weekly ${bussing ? 'Bussing' : 'Attendance'}`}
+              title="Avg Weekly Attendance"
               statistic={getMonthlyStatAverage(churchData, 'attendance')}
             />
           </Col>
-          {((!bussing && !currentUser.noIncomeTracking) || loading) && (
+          {(!currentUser.noIncomeTracking || loading) && (
             <Col>
               <StatDisplay
                 title="Avg Weekly Income"
@@ -71,10 +73,10 @@ export const MinistryGraphs = () => {
         {!currentUser.noIncomeTracking ? (
           <ChurchGraph
             stat1="attendance"
-            stat2={!bussing ? 'income' : null}
+            stat2={ministryMeeting ? null : 'income'}
             churchData={churchData || []}
             church="ministry"
-            bussing={bussing}
+            graphType={rehearsal ? 'rehearsal' : 'service'}
             income={true}
           />
         ) : (
@@ -83,7 +85,7 @@ export const MinistryGraphs = () => {
             stat2={null}
             churchData={churchData || []}
             church="ministry"
-            bussing={bussing}
+            graphType={rehearsal ? 'rehearsal' : 'service'}
             income={false}
           />
         )}

@@ -49,6 +49,9 @@ const HubSundayMeetingDetails = lazy(
 )
 const BacentaReport = lazy(() => import('pages/services/graphs/BacentaGraphs'))
 const HubReport = lazy(() => import('pages/services/graphs/HubGraphs'))
+const HubCouncilReport = lazy(
+  () => import('pages/services/graphs/HubCouncilGraphs')
+)
 const MinistryReport = lazy(
   () => import('pages/services/graphs/MinistryGraphs')
 )
@@ -349,6 +352,11 @@ export const graphs: LazyRouteTypes[] = [
     path: '/hub/graphs/',
     element: HubReport,
     roles: permitLeaderAdminArrivals('Hub'),
+  },
+  {
+    path: '/hubcouncil/graphs/',
+    element: HubCouncilReport,
+    roles: permitLeaderAdminArrivals('HubCouncil'),
   },
   {
     path: '/ministry/graphs/',

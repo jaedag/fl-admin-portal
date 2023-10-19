@@ -77,7 +77,7 @@ const CouncilReport = () => {
             stat2={!bussing ? 'income' : null}
             churchData={churchData || []}
             church="council"
-            bussing={bussing}
+            graphType={bussing ? 'bussing' : 'service'}
             income={true}
           />
         ) : (
@@ -87,7 +87,7 @@ const CouncilReport = () => {
             stat2={null}
             churchData={churchData || []}
             church="council"
-            bussing={bussing}
+            graphType={bussing ? 'bussing' : 'service'}
             income={false}
           />
         )}

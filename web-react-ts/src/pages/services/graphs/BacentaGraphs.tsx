@@ -74,7 +74,7 @@ export const BacentaGraphs = () => {
             stat2={!bussing ? 'income' : null}
             churchData={churchData || []}
             church="bacenta"
-            bussing={bussing}
+            graphType={bussing ? 'bussing' : 'service'}
             income={true}
           />
         ) : (
@@ -83,7 +83,7 @@ export const BacentaGraphs = () => {
             stat2={null}
             churchData={churchData || []}
             church="bacenta"
-            bussing={bussing}
+            graphType={bussing ? 'bussing' : 'service'}
             income={false}
           />
         )}

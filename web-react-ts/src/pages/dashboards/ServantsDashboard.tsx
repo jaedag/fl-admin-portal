@@ -124,6 +124,7 @@ const ServantsDashboard = () => {
             income={true}
             church={assessmentChurch?.__typename.toLowerCase() || ''}
             churchData={assessmentChurchData || []}
+            graphType="service"
             secondaryTitle={`${assessmentChurch?.name} ${assessmentChurch?.__typename}`}
           />
         </>
