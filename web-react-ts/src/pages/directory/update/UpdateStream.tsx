@@ -27,6 +27,7 @@ const UpdateStream = () => {
   const initialValues: StreamFormValues = {
     name: stream?.name,
     leaderName: stream?.leader?.firstName + ' ' + stream?.leader.lastName ?? '',
+    adminId: stream?.admin?.id || '',
     leaderId: stream?.leader?.id || '',
     leaderEmail: stream?.leader?.email || '',
     bankAccount: stream?.bankAccount || '',

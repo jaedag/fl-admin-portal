@@ -26,6 +26,7 @@ const UpdateCreativeArts = () => {
   const initialValues: CreativeArtsFormValues = {
     name: creativeArts?.name,
     leaderName: creativeArts?.leader?.fullName ?? '',
+    adminId: creativeArts?.admin?.id || '',
     leaderId: creativeArts?.leader?.id || '',
     leaderEmail: creativeArts?.leader?.email || '',
     ministries: creativeArts?.ministries,
