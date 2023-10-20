@@ -25,6 +25,7 @@ const UpdateDenomination = () => {
   const initialValues: DenominationFormValues = {
     name: denomination?.name,
     leaderName: denomination?.leader?.fullName ?? '',
+    adminId: denomination?.admin?.id || '',
     leaderId: denomination?.leader?.id || '',
     leaderEmail: denomination?.leader?.email || '',
     oversights: denomination?.oversights?.length

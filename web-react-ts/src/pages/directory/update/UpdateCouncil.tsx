@@ -26,6 +26,7 @@ const UpdateCouncil = () => {
     name: council?.name,
     leaderName:
       council?.leader?.firstName + ' ' + council?.leader?.lastName ?? '',
+    adminId: council?.admin?.id || '',
     leaderId: council?.leader?.id || '',
     leaderEmail: council?.leader?.email || '',
     constituencies: council?.constituencies?.length

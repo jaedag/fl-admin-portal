@@ -26,6 +26,7 @@ const UpdateMinistry = () => {
   const initialValues: MinistryFormValues = {
     name: ministry?.name,
     leaderName: ministry?.leader?.fullName ?? '',
+    adminId: ministry?.admin?.id || '',
     leaderId: ministry?.leader?.id || '',
     leaderEmail: ministry?.leader?.email || '',
     hubCouncils: ministry?.hubCouncils,

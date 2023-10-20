@@ -25,6 +25,7 @@ const UpdateOversight = () => {
   const initialValues: OversightFormValues = {
     name: oversight?.name,
     leaderName: oversight?.leader?.fullName ?? '',
+    adminId: oversight?.admin?.id || '',
     leaderId: oversight?.leader?.id || '',
     leaderEmail: oversight?.leader?.email || '',
     denomination: oversight?.denomination?.id,

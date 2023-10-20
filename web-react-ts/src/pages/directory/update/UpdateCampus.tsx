@@ -25,6 +25,7 @@ const UpdateCampus = () => {
   const initialValues: CampusFormValues = {
     name: campus?.name,
     leaderName: campus?.leader?.fullName ?? '',
+    adminId: campus?.admin?.id || '',
     leaderId: campus?.leader?.id || '',
     leaderEmail: campus?.leader?.email || '',
     oversight: campus?.oversight?.id,
