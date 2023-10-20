@@ -44,7 +44,7 @@ const UpdateBacenta = () => {
     refetchQueries: [
       {
         query: GET_CONSTITUENCY_BACENTAS,
-        variables: { id: initialValues.constituency },
+        variables: { id: initialValues?.constituency?.id },
       },
     ],
   })
