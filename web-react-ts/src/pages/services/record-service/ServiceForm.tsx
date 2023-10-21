@@ -25,7 +25,7 @@ import { MutationFunction } from '@apollo/client'
 import Input from 'components/formik/Input'
 import ImageUpload from 'components/formik/ImageUpload'
 import { MemberContext } from 'contexts/MemberContext'
-import SearchHubMember from 'components/formik/SearchHubMember'
+import SearchMember from 'components/formik/SearchMember'
 
 type ServiceFormProps = {
   church: Church
@@ -192,10 +192,11 @@ const ServiceForm = ({
                             {treasurers.map((treasurer, index) => (
                               <Row key={index} className="form-row">
                                 <Col>
-                                  <SearchHubMember
+                                  <SearchMember
                                     name={`treasurers[${index}]`}
                                     placeholder="Start typing"
                                     setFieldValue={formik.setFieldValue}
+                                    creativeArts={churchType === 'Hub'}
                                     aria-describedby="Member List"
                                     error={
                                       !Array.isArray(formik.errors.treasurers)
