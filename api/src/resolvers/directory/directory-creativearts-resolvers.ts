@@ -5,52 +5,51 @@ import { permitAdmin } from '../permissions'
 
 import { RemoveServant } from './make-remove-servants'
 
-const closeChurchCypher = require('../cypher/close-church-creativerarts-cypher')
+const closeChurchCypher = require('../cypher/close-church-creativearts-cypher')
 
 const directoryCreativeArtsMutation = {
-  CloseDownHub: async (object: any, args: any, context: Context) => {
+  CloseDownHub: async (object: unknown, args: any, context: Context) => {
     isAuth(permitAdmin('HubCouncil'), context.auth.roles)
 
     const session = context.executionContext.session()
     const sessionTwo = context.executionContext.session()
-
-    const res: any = await Promise.all([
-      session.run(closeChurchCypher.checkHubHasNoMembers, args),
-      sessionTwo.run(closeChurchCypher.getLastServiceRecord, {
-        churchId: args.hubId,
-      }),
-    ]).catch((error: any) => {
-      throwToSentry('There was an error running checkHubHasNoMembers', error)
-    })
-
-    const hubCheck = rearrangeCypherObject(res[0])
-    const lastServiceRecord = rearrangeCypherObject(res[1])
-
-    if (hubCheck.memberCount) {
-      throw new Error(
-        `${hubCheck?.name} Hub has ${hubCheck?.fellowshipCount} active fellowships. Please close down all fellowships and try again.`
-      )
-    }
-
-    const record = lastServiceRecord.lastService?.properties ?? {
-      bankingSlip: null,
-    }
-
-    if (
-      !(
-        'bankingSlip' in record ||
-        record.transactionStatus === 'success' ||
-        'tellerConfirmationTime' in record
-      )
-    ) {
-      throw new Error(
-        `Please bank outstanding offering for your service filled on ${getHumanReadableDate(
-          record.createdAt
-        )} before attempting to close down this hub`
-      )
-    }
-
     try {
+      const res: any = await Promise.all([
+        session.run(closeChurchCypher.checkHubHasNoMembers, args),
+        sessionTwo.run(closeChurchCypher.getLastServiceRecord, {
+          churchId: args.hubId,
+        }),
+      ]).catch((error: any) => {
+        throwToSentry('There was an error running checkHubHasNoMembers', error)
+      })
+
+      const hubCheck = rearrangeCypherObject(res[0])
+      const lastServiceRecord = rearrangeCypherObject(res[1])
+
+      if (hubCheck.memberCount) {
+        throw new Error(
+          `${hubCheck?.name} Hub has ${hubCheck?.fellowshipCount} active fellowships. Please close down all fellowships and try again.`
+        )
+      }
+
+      const record = lastServiceRecord.lastService?.properties ?? {
+        bankingSlip: null,
+      }
+
+      if (
+        !(
+          'bankingSlip' in record ||
+          record.transactionStatus === 'success' ||
+          'tellerConfirmationTime' in record
+        )
+      ) {
+        throw new Error(
+          `Please bank outstanding offering for your service filled on ${getHumanReadableDate(
+            record.createdAt
+          )} before attempting to close down this hub`
+        )
+      }
+
       // Hub  Leader must be removed since the Hub is being closed down
       await Promise.all([
         RemoveServant(
@@ -96,48 +95,46 @@ const directoryCreativeArtsMutation = {
 
     const session = context.executionContext.session()
     const sessionTwo = context.executionContext.session()
-
-    const res: any = await Promise.all([
-      session.run(closeChurchCypher.checkHubCouncilHasNoMembers, args),
-      sessionTwo.run(closeChurchCypher.getLastServiceRecord, {
-        churchId: args.hubCouncilId,
-      }),
-    ]).catch((error: any) => {
-      throwToSentry(
-        'There was an error running checkHubCouncilHasNoMembers',
-        error
-      )
-    })
-
-    const hubcouncilCheck = rearrangeCypherObject(res[0])
-    const lastServiceRecord = rearrangeCypherObject(res[1])
-
-    if (hubcouncilCheck.memberCount) {
-      throw new Error(
-        `${hubcouncilCheck?.name} HubCouncil has ${hubcouncilCheck?.hubCount} active hubs. Please close down all hubs and try again.`
-      )
-    }
-
-    const record = lastServiceRecord.lastService?.properties ?? {
-      bankingSlip: null,
-    }
-
-    if (
-      !(
-        'bankingSlip' in record ||
-        record.transactionStatus === 'success' ||
-        'tellerConfirmationTime' in record
-      )
-    ) {
-      throw new Error(
-        `Please bank outstanding offering for your service filled on ${getHumanReadableDate(
-          record.createdAt
-        )} before attempting to close down this hub council`
-      )
-    }
-
     try {
-      // creative arts Leader must be removed since the creative art is being closed down
+      const res: any = await Promise.all([
+        session.run(closeChurchCypher.checkHubCouncilHasNoMembers, args),
+        sessionTwo.run(closeChurchCypher.getLastServiceRecord, {
+          churchId: args.hubCouncilId,
+        }),
+      ]).catch((error: any) => {
+        throwToSentry(
+          'There was an error running checkHubCouncilHasNoMembers',
+          error
+        )
+      })
+
+      const hubcouncilCheck = rearrangeCypherObject(res[0])
+      const lastServiceRecord = rearrangeCypherObject(res[1])
+
+      if (hubcouncilCheck.memberCount) {
+        throw new Error(
+          `${hubcouncilCheck?.name} HubCouncil has ${hubcouncilCheck?.hubCount} active hubs. Please close down all hubs and try again.`
+        )
+      }
+
+      const record = lastServiceRecord.lastService?.properties ?? {
+        bankingSlip: null,
+      }
+
+      if (
+        !(
+          'bankingSlip' in record ||
+          record.transactionStatus === 'success' ||
+          'tellerConfirmationTime' in record
+        )
+      ) {
+        throw new Error(
+          `Please bank outstanding offering for your service filled on ${getHumanReadableDate(
+            record.createdAt
+          )} before attempting to close down this hub council`
+        )
+      }
+
       await Promise.all([
         RemoveServant(
           context,
