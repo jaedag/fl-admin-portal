@@ -434,9 +434,15 @@ const directoryMutation = {
     const councilCheck = rearrangeCypherObject(res[0])
     const lastServiceRecord = rearrangeCypherObject(res[1])
 
-    if (councilCheck.memberCount) {
+    if (councilCheck.memberCount > 0) {
       throw new Error(
         `${councilCheck?.name} Council has ${councilCheck?.constituencyCount} active constituencies. Please close down all constituencies and try again.`
+      )
+    }
+
+    if (councilCheck.hubCouncilLeaderCount > 0) {
+      throw new Error(
+        `${councilCheck?.name} Council has ${councilCheck?.hubCouncilCount} active hub councils. Please close down all hub councils and try again.`
       )
     }
 
@@ -517,9 +523,15 @@ const directoryMutation = {
     const streamCheck = rearrangeCypherObject(res[0])
     const lastServiceRecord = rearrangeCypherObject(res[1])
 
-    if (streamCheck.memberCount) {
+    if (streamCheck.memberCount > 0) {
       throw new Error(
         `${streamCheck?.name} Stream has ${streamCheck?.councilCount} active councils. Please close down all councils and try again.`
+      )
+    }
+
+    if (streamCheck.ministryLeaderCount > 0) {
+      throw new Error(
+        `${streamCheck?.name} Stream has ${streamCheck?.ministryCount} active ministries. Please close down all ministries and try again.`
       )
     }
 
@@ -600,9 +612,15 @@ const directoryMutation = {
     const campusCheck = rearrangeCypherObject(res[0])
     const lastServiceRecord = rearrangeCypherObject(res[1])
 
-    if (campusCheck.memberCount) {
+    if (campusCheck.memberCount > 0) {
       throw new Error(
         `${campusCheck?.name} Campus has ${campusCheck?.streamCount} active streams. Please close down all streams and try again.`
+      )
+    }
+
+    if (campusCheck.leaderCount > 0) {
+      throw new Error(
+        `${campusCheck?.name} Campus has ${campusCheck?.creativeArtsCount} active creativeArts. Please close down all creativeArts and try again.`
       )
     }
 

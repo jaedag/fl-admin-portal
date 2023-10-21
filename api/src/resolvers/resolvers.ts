@@ -3,6 +3,7 @@ import serviceMutation from './services/service-resolvers'
 import { Member } from './utils/types'
 import treasuryMutations from './anagkazo/treasury-resolvers'
 import directoryMutation from './directory/directory-resolvers'
+import directoryCreativeArtsMutation from './directory/directory-creativearts-resolvers'
 import {
   arrivalsMutation,
   arrivalsResolvers,
@@ -102,6 +103,7 @@ const resolvers = {
     ...campaignMutations,
     ...HubFellowshipServiceMutation,
     ...accountsMutations,
+    ...directoryCreativeArtsMutation,
   },
 }
 

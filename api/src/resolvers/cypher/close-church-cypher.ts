@@ -28,19 +28,22 @@ RETURN constituency.name AS name, COUNT(member) AS memberCount, COUNT(bacentas) 
 `
 export const checkCouncilHasNoMembers = `
 MATCH (council:Council {id:$councilId})
-MATCH (council)-[:HAS]->(constituencies:Constituency)<-[:LEADS]-(member:Active:Member)
-RETURN council.name AS name, COUNT(member) AS memberCount, COUNT(constituencies) AS constituencyCount
+OPTIONAL MATCH (council)-[:HAS]->(constituencies:Constituency)<-[:LEADS]-(member:Active:Member)
+OPTIONAL MATCH (council)-[:HAS_MINISTRY]->(hubCouncils:HubCouncil)<-[:LEADS]-(leader:Active:Member)
+RETURN council.name AS name, COUNT(member) AS memberCount, COUNT(constituencies) AS constituencyCount, COUNT(leader) AS hubCouncilLeaderCount, COUNT(hubCouncils) AS hubCouncilCount
 `
 
 export const checkStreamHasNoMembers = `
 MATCH (stream:Stream {id:$streamId})
-MATCH (stream)-[:HAS]->(councils:Council)<-[:LEADS]-(member:Active:Member)
-RETURN stream.name AS name, COUNT(member) AS memberCount, COUNT(councils) AS councilCount
+OPTIONAL MATCH (stream)-[:HAS]->(councils:Council)<-[:LEADS]-(member:Active:Member)
+OPTIONAL MATCH (stream)-[:HAS_MINISTRY]->(ministries:Ministry)<-[:LEADS]-(leader:Active:Member)
+RETURN stream.name AS name, COUNT(member) AS memberCount, COUNT(councils) AS councilCount, COUNT(leader) AS ministryLeaderCount, COUNT(ministries) as ministryCount
 `
 export const checkCampusHasNoMembers = `
 MATCH (campus:Campus {id:$campusId})
-MATCH (campus)-[:HAS]->(streams:Stream)<-[:LEADS]-(member:Active:Member)
-RETURN campus.name AS name, COUNT(member) AS memberCount, COUNT(streams) AS streamCount
+OPTIONAL MATCH (campus)-[:HAS]->(streams:Stream)<-[:LEADS]-(member:Active:Member)
+OPTIONAL MATCH (campus)-[:HAS_MINISTRY]->(creativeArts:CreativeArts)<-[:LEADS]-(leader:Active:Member)
+RETURN campus.name AS name, COUNT(member) AS memberCount, COUNT(streams) AS streamCount, COUNT(leader) AS leaderCount, COUNT(creativeArts) AS creativeArtsCount
 `
 export const checkOversightHasNoMembers = `
 MATCH (oversight:Oversight {id:$oversightId})
@@ -205,8 +208,8 @@ MERGE (log)-[:LOGGED_BY]->(admin)
 MERGE (log)-[:RECORDED_ON]->(date)
 MERGE (oversight)-[:HAS_HISTORY]->(log)
 
-SET  campus:ClosedCampus streams:ClosedStream, councils:ClosedCouncil, constituencies:ClosedConstituency, bacentas:ClosedBacenta, fellowships:ClosedFellowship
-REMOVE campus:Campus, streams:Stream, councils:Council, constituencies:Constituency, bacentas:Bacenta,fellowships:Fellowship
+SET  campus:ClosedCampus, streams:ClosedStream, councils:ClosedCouncil, constituencies:ClosedConstituency, bacentas:ClosedBacenta, fellowships:ClosedFellowship
+REMOVE campus:Campus, streams:Stream, councils:Council, constituencies:Constituency, bacentas:Bacenta, fellowships:Fellowship
 
 RETURN oversight {
   .id, .name,
