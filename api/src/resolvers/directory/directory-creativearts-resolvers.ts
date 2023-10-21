@@ -253,7 +253,7 @@ const directoryCreativeArtsMutation = {
       )
 
       const ministryResponse = rearrangeCypherObject(closeMinistryResponse)
-      return ministryResponse.creativeArt
+      return ministryResponse.creativeArts
     } catch (error: any) {
       throwToSentry('There was an error closing down this ministry', error)
     } finally {
