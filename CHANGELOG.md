@@ -1,3 +1,9 @@
+#### 7.10.25 (2023-10-21)
+
+##### Bug Fixes
+
+*  bug preventing membersearch ([2129d23d](https://github.com/firstlovecenter/fl-pastoral-care/commit/2129d23dc889723a477deb02b6b3adb4cd278c3c))
+
 #### 7.10.24 (2023-10-21)
 
 ##### Bug Fixes
