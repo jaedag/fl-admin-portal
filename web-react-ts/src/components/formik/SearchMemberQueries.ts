@@ -19,3 +19,23 @@ export const MEMBER_MEMBER_SEARCH = gql`
     }
   }
 `
+
+export const HUB_MEMBER_SEARCH = gql`
+  query hubMemberSearch($id: ID!, $key: String!) {
+    hubs(where: { id: $id }) {
+      id
+      memberSearch(key: $key, limit: 5) {
+        id
+        firstName
+        middleName
+        lastName
+        pictureUrl
+        email
+        location {
+          latitude
+          longitude
+        }
+      }
+    }
+  }
+`
