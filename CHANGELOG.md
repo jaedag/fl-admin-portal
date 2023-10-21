@@ -1,3 +1,25 @@
+#### 7.10.24 (2023-10-21)
+
+##### Bug Fixes
+
+*  implement a search member from hubcouncil ([f891e54e](https://github.com/firstlovecenter/fl-pastoral-care/commit/f891e54e051b0d411c6db877ef25d18d5d60f5bf))
+*  fix bug with vars for  getConstituencyBacentas ([baba446a](https://github.com/firstlovecenter/fl-pastoral-care/commit/baba446a1823bcf6accc04cb2a12e2bc39323958))
+*  fix bug with cypher to show form defaulters at constituency level ([aed4bf39](https://github.com/firstlovecenter/fl-pastoral-care/commit/aed4bf39f832ec31725399219d610bf022257232))
+*  fix bug with refetch after closing down churches ([ba162695](https://github.com/firstlovecenter/fl-pastoral-care/commit/ba1626952879ec6b828da934cc91669efd43843b))
+*  minor changes to church history heading ([a059efc9](https://github.com/firstlovecenter/fl-pastoral-care/commit/a059efc9c34d52182a9a00fbc0c72b421b06c4b6))
+*  correct resolvers incorrectly creative agg reherasal records ([86a534f4](https://github.com/firstlovecenter/fl-pastoral-care/commit/86a534f47b46055e115e22fcf6e035dd5eae49c8))
+*  implement graphs for all sonta levels ([0e0f7e96](https://github.com/firstlovecenter/fl-pastoral-care/commit/0e0f7e962de9bc5125e5725b76fbb44277436df6))
+*  allow creative arts leaders to see the corresponding bacenta level ([e0df20b4](https://github.com/firstlovecenter/fl-pastoral-care/commit/e0df20b472e5cd6cd13e3defadaf3221e125fd0c))
+*  implement fellowship defaulters lists for all sonta levels ([cf211a75](https://github.com/firstlovecenter/fl-pastoral-care/commit/cf211a752217a3159d40514e5d65264bc5961277))
+*  customise church icon in church list components ([edc49d29](https://github.com/firstlovecenter/fl-pastoral-care/commit/edc49d29bfcd3edd61414d69d6be4281f4bab8e1))
+*  implement lint staged in api package.json ([d36c43fa](https://github.com/firstlovecenter/fl-pastoral-care/commit/d36c43fa9f5f756a37ec0f81216518a25417b6e3))
+*  implement lint staged in api package.json ([06935adf](https://github.com/firstlovecenter/fl-pastoral-care/commit/06935adfbe9b327493efdae17058826f9226d45a))
+*  fix minor bugs for oversight admin view ([fd152676](https://github.com/firstlovecenter/fl-pastoral-care/commit/fd1526766cfe3486c38996e490e2ddc3817ed07a))
+*  fix errors in compilation 2 ([9f5ccce0](https://github.com/firstlovecenter/fl-pastoral-care/commit/9f5ccce0928f57d6f449e08eccabe49ad0745c4a))
+*  fix errors in compilation ([f1f6da4e](https://github.com/firstlovecenter/fl-pastoral-care/commit/f1f6da4e9d8f3aa6bca37b30594ff8667fd15313))
+*  give council admins the ability to create a hub fellowship ([56ea0acd](https://github.com/firstlovecenter/fl-pastoral-care/commit/56ea0acda803f228a221009e2edf5c435b5d2953))
+*  add padding to weeks onn display church details page ([bda17a17](https://github.com/firstlovecenter/fl-pastoral-care/commit/bda17a17239c8ea3abb822b06aa91d45179d97e8))
+
 #### 7.10.23 (2023-10-16)
 
 ##### Documentation Changes
