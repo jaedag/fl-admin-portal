@@ -9,7 +9,7 @@ const closeChurchCypher = require('../cypher/close-church-creativearts-cypher')
 
 const directoryCreativeArtsMutation = {
   CloseDownHub: async (object: unknown, args: any, context: Context) => {
-    isAuth(permitAdmin('HubCouncil'), context.auth.roles)
+    isAuth(permitAdmin('Hub'), context.auth.roles)
 
     const session = context.executionContext.session()
     const sessionTwo = context.executionContext.session()
@@ -52,22 +52,9 @@ const directoryCreativeArtsMutation = {
 
       // Hub  Leader must be removed since the Hub is being closed down
       await Promise.all([
-        RemoveServant(
-          context,
-          args,
-          permitAdmin('Ministry'),
-          'HubCouncil',
-          'Leader',
-          true
-        ),
+        RemoveServant(context, args, permitAdmin('Hub'), 'Hub', 'Leader', true),
         args.adminId
-          ? RemoveServant(
-              context,
-              args,
-              permitAdmin('Ministry'),
-              'HubCouncil',
-              'Admin'
-            )
+          ? RemoveServant(context, args, permitAdmin('Hub'), 'Hub', 'Admin')
           : null,
       ])
 
@@ -91,7 +78,7 @@ const directoryCreativeArtsMutation = {
   },
 
   CloseDownHubCouncil: async (object: any, args: any, context: Context) => {
-    isAuth(permitAdmin('Ministry'), context.auth.roles)
+    isAuth(permitAdmin('HubCouncil'), context.auth.roles)
 
     const session = context.executionContext.session()
     const sessionTwo = context.executionContext.session()
@@ -139,7 +126,7 @@ const directoryCreativeArtsMutation = {
         RemoveServant(
           context,
           args,
-          permitAdmin('Ministry'),
+          permitAdmin('HubCouncil'),
           'HubCouncil',
           'Leader',
           true
@@ -148,7 +135,7 @@ const directoryCreativeArtsMutation = {
           ? RemoveServant(
               context,
               args,
-              permitAdmin('Ministry'),
+              permitAdmin('HubCouncil'),
               'HubCouncil',
               'Admin'
             )
@@ -175,7 +162,7 @@ const directoryCreativeArtsMutation = {
   },
 
   CloseDownMinistry: async (object: any, args: any, context: Context) => {
-    isAuth(permitAdmin('CreativeArts'), context.auth.roles)
+    isAuth(permitAdmin('Ministry'), context.auth.roles)
 
     const session = context.executionContext.session()
     const sessionTwo = context.executionContext.session()
@@ -225,7 +212,7 @@ const directoryCreativeArtsMutation = {
         RemoveServant(
           context,
           args,
-          permitAdmin('CreativeArts'),
+          permitAdmin('Ministry'),
           'Ministry',
           'Leader',
           true
@@ -234,7 +221,7 @@ const directoryCreativeArtsMutation = {
           ? RemoveServant(
               context,
               args,
-              permitAdmin('CreativeArts'),
+              permitAdmin('Ministry'),
               'Ministry',
               'Admin'
             )
@@ -261,7 +248,7 @@ const directoryCreativeArtsMutation = {
   },
 
   CloseDownCreativeArts: async (object: any, args: any, context: Context) => {
-    isAuth(permitAdmin('Campus'), context.auth.roles)
+    isAuth(permitAdmin('CreativeArts'), context.auth.roles)
 
     const session = context.executionContext.session()
     const sessionTwo = context.executionContext.session()
@@ -311,7 +298,7 @@ const directoryCreativeArtsMutation = {
         RemoveServant(
           context,
           args,
-          permitAdmin('Campus'),
+          permitAdmin('CreativeArts'),
           'CreativeArts',
           'Leader',
           true
@@ -320,7 +307,7 @@ const directoryCreativeArtsMutation = {
           ? RemoveServant(
               context,
               args,
-              permitAdmin('Campus'),
+              permitAdmin('CreativeArts'),
               'CreativeArts',
               'Admin'
             )
