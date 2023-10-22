@@ -227,7 +227,10 @@ const AppWithContext = (props: AppPropsType) => {
                           path="/servants/church-list"
                           element={
                             <ProtectedRoute
-                              roles={permitMe('Fellowship')}
+                              roles={[
+                                ...permitMe('Fellowship'),
+                                ...permitMe('Hub'),
+                              ]}
                               placeholder
                             >
                               <ServantsChurchList />
