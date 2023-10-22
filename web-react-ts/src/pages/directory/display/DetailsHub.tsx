@@ -67,7 +67,7 @@ const DetailsHub = () => {
         loading={hubLoading}
         name={hub?.name}
         leaderTitle="Hub Leader"
-        editPermitted={permitAdmin('Ministry')}
+        editPermitted={[...permitAdmin('Stream'), ...permitAdmin('Ministry')]}
         churchId={hubId}
         leader={hub?.leader}
         location={hub?.location}
