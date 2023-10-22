@@ -666,19 +666,19 @@ export const directory: LazyRouteTypes[] = [
   {
     path: '/hub/addhub',
     element: CreateHub,
-    roles: permitAdmin('Ministry'),
+    roles: [...permitAdmin('Council'), ...permitAdmin('Ministry')],
     placeholder: false,
   },
   {
     path: '/hubcouncil/addhubcouncil',
     element: CreateHubCouncil,
-    roles: permitAdmin('Ministry'),
+    roles: [...permitAdmin('Stream'), ...permitAdmin('Ministry')],
     placeholder: false,
   },
   {
     path: '/ministry/addministry',
     element: CreateMinistry,
-    roles: permitAdmin('CreativeArts'),
+    roles: [...permitAdmin('Stream'), ...permitAdmin('CreativeArts')],
     placeholder: false,
   },
   {

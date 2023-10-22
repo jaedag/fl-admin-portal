@@ -158,8 +158,8 @@ const HubForm = ({ initialValues, onSubmit, title, newHub }: HubFormProps) => {
                               <Col sm={12}>
                                 <Input
                                   name="name"
-                                  label="Name of Fellowship"
-                                  placeholder="Name of Fellowship"
+                                  label="Name of Hub"
+                                  placeholder="Name of Hub"
                                 />
                               </Col>
 
@@ -183,12 +183,17 @@ const HubForm = ({ initialValues, onSubmit, title, newHub }: HubFormProps) => {
                             </>
                           </VerifyNotMe>
                         </RoleView>
-                        <RoleView roles={permitAdmin('Ministry')}>
+                        <RoleView
+                          roles={[
+                            ...permitAdmin('Stream'),
+                            ...permitAdmin('Ministry'),
+                          ]}
+                        >
                           <VerifyNotMe leaderId={initialValues.leaderId}>
                             <Col sm={12}>
                               <SearchMember
                                 name="leaderId"
-                                label="Fellowship Leader"
+                                label="Hub Leader"
                                 initialValue={initialValues.leaderName}
                                 placeholder="Select a Leader"
                                 setFieldValue={formik.setFieldValue}
