@@ -15,7 +15,6 @@ import RoleView from 'auth/RoleView'
 import { SHORT_POLL_INTERVAL, throwToSentry } from 'global-utils'
 import { MAKE_CONSTITUENCYARRIVALS_ADMIN } from '../arrivalsMutation'
 import { permitAdmin, permitArrivals } from 'permission-utils'
-import HeadingSecondary from 'components/HeadingSecondary'
 import usePopup from 'hooks/usePopup'
 import SearchMember from 'components/formik/SearchMember'
 import { beforeStreamArrivalsDeadline } from '../arrivals-utils'
@@ -25,6 +24,7 @@ import ArrivalsMenuDropdown from '../ArrivalsMenuDropdown'
 import Input from 'components/formik/Input'
 import { ChurchContext } from 'contexts/ChurchContext'
 import ArrivalsDateSubmitBtn from '../components/ArrivalsDateSubmitBtn'
+import MemberAvatarWithName from 'components/LeaderAvatar/MemberAvatarWithName'
 
 export type AdminFormOptions = {
   adminName: string
@@ -121,9 +121,16 @@ const ConstituencyDashboard = () => {
           <HeadingPrimary loading={loading}>
             {constituency?.name} Constituency Arrivals Real Time Dashboard
           </HeadingPrimary>
-          <HeadingSecondary>{`Arrivals Rep: ${
-            constituency?.arrivalsAdmin?.fullName ?? 'None'
-          }`}</HeadingSecondary>
+          {constituency?.arrivalsAdmin && (
+            <>
+              <hr className="m-2" />
+              <div className="ps-4">
+                <div className="text-warning">Arrivals Admin</div>
+                <MemberAvatarWithName member={constituency?.arrivalsAdmin} />
+              </div>
+              <hr className="m-2" />
+            </>
+          )}
           {isOpen && (
             <Popup handleClose={togglePopup}>
               <b>Change Arrivals Admin</b>

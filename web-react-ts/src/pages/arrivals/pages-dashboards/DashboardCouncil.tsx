@@ -23,7 +23,6 @@ import {
   permitArrivalsPayer,
   permitLeaderAdmin,
 } from 'permission-utils'
-import HeadingSecondary from 'components/HeadingSecondary'
 import DefaulterInfoCard from 'pages/services/defaulters/DefaulterInfoCard'
 import usePopup from 'hooks/usePopup'
 import { AdminFormOptions } from './DashboardConstituency'
@@ -36,6 +35,7 @@ import Input from 'components/formik/Input'
 import { ChurchContext } from 'contexts/ChurchContext'
 import ArrivalsDateSubmitBtn from '../components/ArrivalsDateSubmitBtn'
 import { MemberContext } from 'contexts/MemberContext'
+import MemberAvatarWithName from 'components/LeaderAvatar/MemberAvatarWithName'
 
 type DateFormOptions = {
   arrivalDate: string
@@ -130,9 +130,18 @@ const CouncilDashboard = () => {
           <HeadingPrimary loading={loading}>
             {council?.name} Council Arrivals Real Time Dashboard
           </HeadingPrimary>
-          <HeadingSecondary>{`Arrivals Rep: ${
-            council?.arrivalsAdmin?.fullName ?? 'None'
-          }`}</HeadingSecondary>
+
+          {council?.arrivalsAdmin && (
+            <>
+              <hr className="m-2" />
+              <div className="ps-4">
+                <div className="text-warning">Arrivals Admin</div>
+                <MemberAvatarWithName member={council?.arrivalsAdmin} />
+              </div>
+              <hr className="m-2" />
+            </>
+          )}
+
           {isOpen && (
             <Popup handleClose={togglePopup}>
               <b>Change Arrivals Admin</b>
@@ -265,6 +274,7 @@ const CouncilDashboard = () => {
                 roles={[
                   ...permitArrivals('Campus'),
                   ...permitLeaderAdmin('Council'),
+                  ...permitArrivalsPayer(),
                 ]}
               >
                 <Accordion.Item eventKey="1">

@@ -97,7 +97,7 @@ export const arrivals: LazyRouteTypes[] = [
 
   {
     path: '/arrivals/council',
-    roles: permitLeaderAdminArrivals('Council'),
+    roles: [...permitLeaderAdminArrivals('Council'), ...permitArrivalsPayer()],
     element: CouncilDashboard,
     placeholder: true,
   },

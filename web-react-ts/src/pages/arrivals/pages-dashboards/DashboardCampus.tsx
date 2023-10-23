@@ -22,7 +22,6 @@ import {
   permitLeaderAdmin,
 } from 'permission-utils'
 import MenuButton from 'components/buttons/MenuButton'
-import HeadingSecondary from 'components/HeadingSecondary'
 import { getHumanReadableDate } from 'jd-date-utils'
 import DefaulterInfoCard from 'pages/services/defaulters/DefaulterInfoCard'
 import usePopup from 'hooks/usePopup'
@@ -33,6 +32,7 @@ import PullToRefresh from 'react-simple-pull-to-refresh'
 import Input from 'components/formik/Input'
 import { ChurchContext } from 'contexts/ChurchContext'
 import ArrivalsDateSubmitBtn from '../components/ArrivalsDateSubmitBtn'
+import MemberAvatarWithName from 'components/LeaderAvatar/MemberAvatarWithName'
 
 type DateFormOptions = {
   arrivalDate: string
@@ -159,9 +159,16 @@ const CampusDashboard = () => {
           <HeadingPrimary loading={loading}>
             {campus?.name} Campus Arrivals Real Time Dashboard
           </HeadingPrimary>
-          <HeadingSecondary loading={loading}>
-            Arrivals Admin: {campus?.arrivalsAdmin?.fullName}
-          </HeadingSecondary>
+          {campus?.arrivalsAdmin && (
+            <>
+              <hr className="m-2" />
+              <div className="ps-4">
+                <div className="text-warning">Arrivals Admin</div>
+                <MemberAvatarWithName member={campus?.arrivalsAdmin} />
+              </div>
+              <hr className="m-2" />
+            </>
+          )}
           {isOpen && (
             <Popup handleClose={togglePopup}>
               <b>Change Arrivals Admin</b>
@@ -193,14 +200,12 @@ const CampusDashboard = () => {
               </Formik>
             </Popup>
           )}
-
           {data?.timeGraphs.length ? (
             <>
               <h4>{getHumanReadableDate(data?.timeGraphs[0]?.date, true)}</h4>
               <h5>{data?.timeGraphs[0].swell && `Swollen Weekend!`}</h5>
             </>
           ) : null}
-
           <div className="d-grid gap-2">
             <Formik
               initialValues={dateInitialValues}

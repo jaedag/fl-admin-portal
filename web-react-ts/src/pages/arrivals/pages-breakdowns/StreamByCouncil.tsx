@@ -12,6 +12,7 @@ import { STREAM_BY_COUNCIL_ARRIVALS } from './churchBySubchurchQueries'
 import { HigherChurchWithArrivals } from '../arrivals-types'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import useSetUserChurch from 'hooks/useSetUserChurch'
+import MemberAvatarWithName from 'components/LeaderAvatar/MemberAvatarWithName'
 
 const StreamByCouncil = () => {
   const { clickCard, streamId, arrivalDate } = useContext(ChurchContext)
@@ -93,7 +94,9 @@ const StreamByCouncil = () => {
                     <Card>
                       <Card.Header>
                         <div className="fw-bold">{`${council.name} ${council.__typename}`}</div>
-                        <div className="text-secondary">{`Leader: ${council.leader.nameWithTitle}`}</div>
+                        <div className="text-secondary">
+                          <MemberAvatarWithName member={council.leader} />
+                        </div>
                       </Card.Header>
                       <Card.Body
                         onClick={() => {

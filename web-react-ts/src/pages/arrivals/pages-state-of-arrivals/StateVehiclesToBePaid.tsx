@@ -22,12 +22,13 @@ type FormOptions = {
 }
 
 const StateBacentasToBePaid = () => {
-  const { councilId, clickCard } = useContext(ChurchContext)
+  const { councilId, clickCard, arrivalDate } = useContext(ChurchContext)
   const { data, loading, error, refetch } = useQuery(
     COUNCIL_VEHICLES_TO_BE_PAID,
     {
       variables: {
         id: councilId,
+        arrivalDate,
       },
       pollInterval: SHORT_POLL_INTERVAL,
     }
@@ -166,6 +167,10 @@ const StateBacentasToBePaid = () => {
 
           {!church?.bacentasToBePaid.length && loading && (
             <PlaceholderDefaulterList />
+          )}
+
+          {!bacentaData?.length && (
+            <NoData text="There are no bacentas to be paid" />
           )}
         </Container>
       </ApolloWrapper>

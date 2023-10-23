@@ -12,6 +12,7 @@ import { CAMPUS_BY_STREAM_ARRIVALS } from './churchBySubchurchQueries'
 import { HigherChurchWithArrivals } from '../arrivals-types'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import useSetUserChurch from 'hooks/useSetUserChurch'
+import MemberAvatarWithName from 'components/LeaderAvatar/MemberAvatarWithName'
 
 const CampusByStream = () => {
   const { clickCard, campusId, arrivalDate } = useContext(ChurchContext)
@@ -96,7 +97,10 @@ const CampusByStream = () => {
                     <Card>
                       <Card.Header>
                         <div className="fw-bold">{`${stream.name} ${stream.__typename}`}</div>
-                        <div className="text-secondary">{`Leader: ${stream.leader.nameWithTitle}`}</div>
+
+                        <div className="text-secondary">
+                          <MemberAvatarWithName member={stream.leader} />
+                        </div>
                       </Card.Header>
                       <Card.Body
                         onClick={() => {

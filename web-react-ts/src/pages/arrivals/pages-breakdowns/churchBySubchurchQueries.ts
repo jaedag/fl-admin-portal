@@ -15,6 +15,7 @@ export const COUNCIL_BY_CONSTITUENCY_ARRIVALS = gql`
           lastName
           currentTitle
           nameWithTitle
+          pictureUrl
         }
         activeBacentaCount
         bacentasNoActivityCount(arrivalDate: $arrivalDate)
@@ -47,6 +48,7 @@ export const STREAM_BY_COUNCIL_ARRIVALS = gql`
           lastName
           currentTitle
           nameWithTitle
+          pictureUrl
         }
         activeBacentaCount
         bacentasNoActivityCount(arrivalDate: $arrivalDate)
@@ -84,6 +86,7 @@ export const CAMPUS_BY_STREAM_ARRIVALS = gql`
           lastName
           currentTitle
           nameWithTitle
+          pictureUrl
         }
 
         activeBacentaCount

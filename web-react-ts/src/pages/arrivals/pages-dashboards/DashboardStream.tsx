@@ -21,7 +21,6 @@ import {
 import MenuButton from 'components/buttons/MenuButton'
 import DefaulterInfoCard from 'pages/services/defaulters/DefaulterInfoCard'
 import usePopup from 'hooks/usePopup'
-import HeadingSecondary from 'components/HeadingSecondary'
 import { AdminFormOptions } from './DashboardConstituency'
 import SearchMember from 'components/formik/SearchMember'
 import ArrivalsMenuDropdown from '../ArrivalsMenuDropdown'
@@ -32,6 +31,7 @@ import PullToRefresh from 'react-simple-pull-to-refresh'
 import Input from 'components/formik/Input'
 import { ChurchContext } from 'contexts/ChurchContext'
 import ArrivalsDateSubmitBtn from '../components/ArrivalsDateSubmitBtn'
+import MemberAvatarWithName from 'components/LeaderAvatar/MemberAvatarWithName'
 
 type DateFormOptions = {
   arrivalDate: string
@@ -134,9 +134,16 @@ const StreamDashboard = () => {
             <HeadingPrimary loading={loading}>
               {stream?.name} Stream Arrivals Real Time Dashboard
             </HeadingPrimary>
-            <HeadingSecondary loading={loading}>
-              Arrivals Admin: {stream?.arrivalsAdmin?.fullName}
-            </HeadingSecondary>
+            {stream?.arrivalsAdmin && (
+              <>
+                <hr className="m-2" />
+                <div className="ps-4">
+                  <div className="text-warning">Arrivals Admin</div>
+                  <MemberAvatarWithName member={stream?.arrivalsAdmin} />
+                </div>
+                <hr className="m-2" />
+              </>
+            )}
             {isOpen && (
               <Popup handleClose={togglePopup}>
                 <b>Change Arrivals Admin</b>

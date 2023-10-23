@@ -36,7 +36,7 @@ export const menuItems: MenuItem[] = [
     name: 'Directory',
     exact: 'true',
     to: '/directory',
-    roles: ['all'],
+    roles: [...permitMe('Fellowship'), ...permitMe('Hub')],
   },
   {
     name: 'Services',

@@ -2,9 +2,12 @@ import CloudinaryImage, {
   CloudinaryImageProps,
 } from 'components/CloudinaryImage'
 import PlaceholderCustom from 'components/Placeholder'
+import { ChurchContext } from 'contexts/ChurchContext'
 import { MemberWithoutBioData } from 'global-types'
 import { getFirstLetterInEveryWord } from 'global-utils'
+import { useContext } from 'react'
 import { Col, Row } from 'react-bootstrap'
+import { useNavigate } from 'react-router'
 
 const MemberAvatarWithName = ({
   member,
@@ -17,9 +20,15 @@ const MemberAvatarWithName = ({
   onClick?: () => void
 } & Omit<CloudinaryImageProps, 'src'>) => {
   const isLoading = loading || !member
+  const { clickCard } = useContext(ChurchContext)
+  const navigate = useNavigate()
+  const defaultNav = () => {
+    clickCard(member)
+    navigate('/member/displaydetails')
+  }
 
   return (
-    <Row className="g-0" onClick={onClick}>
+    <Row className="g-0" onClick={onClick ?? defaultNav}>
       <Col xs="auto" className="pe-2">
         <PlaceholderCustom
           className="img-search-placeholder"

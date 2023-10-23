@@ -217,7 +217,7 @@ export interface Member {
   fullName: string
   visitationArea?: string
   location?: string
-  nameWithTitle?: string
+  nameWithTitle: string
   currentTitle: TitleOptions
   titleConnection?: any
   email: string

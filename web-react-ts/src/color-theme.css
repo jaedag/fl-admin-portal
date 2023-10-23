@@ -445,7 +445,7 @@
   --bs-body-bg: var(--chakra-colors-chakra-body-bg);
 
   --bs-primary-rgb: 144, 205, 244;
-  --bs-warning-gdb: 250, 240, 137;
+  --bs-warning-rgb: 250, 240, 137;
   --bs-success-rgb: 154, 230, 180;
   --bs-danger-rgb: 254, 178, 178;
 
@@ -497,7 +497,7 @@
   --bs-body-bg: var(--chakra-colors-chakra-body-bg);
 
   --bs-primary-rgb: 49, 130, 206;
-  --bs-warning-gdb: 214, 158, 46;
+  --bs-warning-rgb: 214, 158, 46;
   --bs-success-rgb: 56, 161, 105;
   --bs-danger-rgb: 229, 62, 62;
 

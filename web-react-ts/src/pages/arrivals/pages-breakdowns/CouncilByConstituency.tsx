@@ -12,6 +12,7 @@ import { COUNCIL_BY_CONSTITUENCY_ARRIVALS } from './churchBySubchurchQueries'
 import { HigherChurchWithArrivals } from '../arrivals-types'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import useSetUserChurch from 'hooks/useSetUserChurch'
+import MemberAvatarWithName from 'components/LeaderAvatar/MemberAvatarWithName'
 
 const CouncilByConstituency = () => {
   const { clickCard, councilId, arrivalDate } = useContext(ChurchContext)
@@ -93,7 +94,9 @@ const CouncilByConstituency = () => {
                     <Card>
                       <Card.Header>
                         <div className="fw-bold">{`${constituency.name} ${constituency.__typename}`}</div>
-                        <div className="text-secondary">{`Leader: ${constituency.leader.nameWithTitle}`}</div>
+                        <div className="text-secondary">
+                          <MemberAvatarWithName member={constituency.leader} />
+                        </div>
                       </Card.Header>
                       <Card.Body
                         onClick={() => {
