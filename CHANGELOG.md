@@ -1,3 +1,23 @@
+#### 7.10.26 (2023-10-23)
+
+##### New Features
+
+*  close down creative arts churches ([ce2336ac](https://github.com/firstlovecenter/fl-pastoral-care/commit/ce2336ac9aca96a044dd99aacf145f2d6da21259))
+
+##### Bug Fixes
+
+*  show name input box for  creating hub ([936e0b27](https://github.com/firstlovecenter/fl-pastoral-care/commit/936e0b27c1082dae46b762968f01025bda92f384))
+*  allow council heads to view the hubs and hubcouncils ([d63430f1](https://github.com/firstlovecenter/fl-pastoral-care/commit/d63430f12f7c5778bd9e7da4f9c4fb828597f05b))
+*  permissions for closing creative arts churches ([f38e0a05](https://github.com/firstlovecenter/fl-pastoral-care/commit/f38e0a059ba94da7b08b3a1c91660b19a1f40bd4))
+*  update permissions for closing down  creativearts ([362eecd5](https://github.com/firstlovecenter/fl-pastoral-care/commit/362eecd5970569dcf1bc995b3ae9443b208d7017))
+*  bugs preventing CloseDownMinistry from not returning correctly ([cde7bf57](https://github.com/firstlovecenter/fl-pastoral-care/commit/cde7bf57d8a022e95620de45221667a3ac8c7f00))
+*  close down creative arts ([e3914170](https://github.com/firstlovecenter/fl-pastoral-care/commit/e3914170ab6ee90866f9462ee67bcbd507bf3396))
+*  set campusId to initialValues  for  CreateCreativeArts ([4a2d3a59](https://github.com/firstlovecenter/fl-pastoral-care/commit/4a2d3a59dcfccae3249e6d7847bd01369215ca02))
+*  store adminId in initialValues  for updateforms ([5f97c96b](https://github.com/firstlovecenter/fl-pastoral-care/commit/5f97c96b1a312244d4542cc06dc60e2c6feea6a0))
+*  refactor frontend to pass leaderId and adminId ([6be2cb7c](https://github.com/firstlovecenter/fl-pastoral-care/commit/6be2cb7c9ab6976bb9da28ea24e25d629fcaad1b))
+*  type definitions ([d1b04007](https://github.com/firstlovecenter/fl-pastoral-care/commit/d1b04007d7beaf9a5c6ae478e5a85445efe9ab01))
+*  resolver for closing overight, streams, campuses and councils ([818c3a5f](https://github.com/firstlovecenter/fl-pastoral-care/commit/818c3a5f95efb51eb0f1e3e21db38b60f0f2db63))
+
 #### 7.10.25 (2023-10-21)
 
 ##### Bug Fixes
