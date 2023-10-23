@@ -41,11 +41,15 @@ const DisplayPage = () => {
         <div className="py-5">
           <div className="pt-5 text-center">
             <Row className="d-flex justify-content-center">
-              <Col xs={6} md={6} lg={2}>
+              <Col
+                className="d-flex justify-content-center"
+                xs={6}
+                md={6}
+                lg={2}
+              >
                 <PlaceholderCustom
-                  xs={12}
-                  loading={member?.pictureUrl}
-                  className="img bg-secondary m-2"
+                  loading={!member?.pictureUrl}
+                  className="img bg-secondary m-2 rounded-circle"
                 >
                   <CloudinaryImage
                     src={member?.pictureUrl || USER_PLACEHOLDER}
