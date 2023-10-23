@@ -44,7 +44,7 @@ const DisplayPage = () => {
               <Col xs={6} md={6} lg={2}>
                 <PlaceholderCustom
                   xs={12}
-                  loading={!member?.pictureUrl}
+                  loading={member?.pictureUrl}
                   className="img bg-secondary m-2"
                 >
                   <CloudinaryImage

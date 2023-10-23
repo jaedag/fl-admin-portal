@@ -152,7 +152,12 @@ const HubForm = ({ initialValues, onSubmit, title, newHub }: HubFormProps) => {
 
                     <Col className="mb-2">
                       <Row className="form-row">
-                        <RoleView roles={permitAdmin('Constituency')}>
+                        <RoleView
+                          roles={[
+                            ...permitAdmin('Stream'),
+                            ...permitAdmin('Ministry'),
+                          ]}
+                        >
                           <VerifyNotMe leaderId={initialValues.leaderId}>
                             <>
                               <Col sm={12}>

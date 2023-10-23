@@ -172,6 +172,10 @@ export const permitAdmin = (churchLevel: ChurchLevel) => {
     case 'Ministry':
       permittedFor = ['adminStream', 'adminCreativeArts', 'adminMinistry']
       break
+    case 'HubCouncil':
+      permittedFor = ['adminStream', 'adminCreativeArts', 'adminMinistry']
+      break
+
     default:
       permittedFor = []
       break
