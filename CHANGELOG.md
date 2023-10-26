@@ -1,3 +1,9 @@
+#### 7.10.28 (2023-10-26)
+
+##### Bug Fixes
+
+*  remove onclick from search member avatar suggestion comp ([9af8ba0b](https://github.com/firstlovecenter/fl-pastoral-care/commit/9af8ba0b24310f959217ffdee5fc2ead04cda245))
+
 #### 7.10.27 (2023-10-26)
 
 ##### Bug Fixes
