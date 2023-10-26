@@ -90,6 +90,7 @@ const SearchHubMember = (props: RoleBasedSearch) => {
               member={suggestion}
               loading={!suggestion}
               size="small"
+              onClick={() => null}
             />
           </div>
         )}

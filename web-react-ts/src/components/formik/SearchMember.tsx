@@ -107,6 +107,7 @@ const SearchMember = (props: RoleBasedSearch) => {
               member={suggestion}
               loading={!suggestion}
               size="small"
+              onClick={() => null}
             />
           </div>
         )}
