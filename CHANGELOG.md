@@ -1,3 +1,9 @@
+#### 7.10.29 (2023-10-26)
+
+##### Bug Fixes
+
+*  implement uploading banking slip for stream services ([77412112](https://github.com/firstlovecenter/fl-pastoral-care/commit/77412112c236148fc67adc6c212a8d9f03cb6d75))
+
 #### 7.10.28 (2023-10-26)
 
 ##### Bug Fixes
