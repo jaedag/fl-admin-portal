@@ -1,3 +1,11 @@
+#### 7.10.27 (2023-10-26)
+
+##### Bug Fixes
+
+*  update permissions for ministry levels ([aa394989](https://github.com/firstlovecenter/fl-pastoral-care/commit/aa3949890b0b73506c5635b0a7d2c2bef6f3d456))
+*  add picture of arrivals admin ([dcd09c85](https://github.com/firstlovecenter/fl-pastoral-care/commit/dcd09c85d64c009fee2928789a2bdd15a3093b5c))
+*  center loading placeholder on user display page ([3a65a85a](https://github.com/firstlovecenter/fl-pastoral-care/commit/3a65a85aa599eb9902fda6a795d8992326538a96))
+
 #### 7.10.26 (2023-10-23)
 
 ##### New Features
