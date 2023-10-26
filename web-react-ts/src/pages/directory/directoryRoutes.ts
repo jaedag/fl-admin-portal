@@ -534,7 +534,7 @@ export const directory: LazyRouteTypes[] = [
   {
     path: '/ministry/displaydetails',
     element: DetailsMinistry,
-    roles: permitMe('Ministry'),
+    roles: [...permitMe('Ministry'), ...permitMe('Stream')],
     placeholder: true,
   },
   {
@@ -584,13 +584,13 @@ export const directory: LazyRouteTypes[] = [
   {
     path: '/stream/ministries',
     element: DisplayAllStreamMinistries,
-    roles: permitMe('Ministry'),
+    roles: [...permitMe('Ministry'), ...permitMe('Stream')],
     placeholder: false,
   },
   {
     path: '/ministry/displayall',
     element: DisplayAllMinistries,
-    roles: permitMe('Ministry'),
+    roles: [...permitMe('Ministry'), ...permitMe('Stream')],
     placeholder: false,
   },
   {
