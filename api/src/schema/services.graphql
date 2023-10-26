@@ -775,7 +775,7 @@ extend type Constituency {
        WITH defaulters, this
        MATCH (defaulters)-[:MEETS_ON]->(day:ServiceDay)
         WHERE day.dayNumber < date().dayOfWeek OR (day.dayNumber = date().dayOfWeek AND  time() > time('20:30'))
-        
+
        RETURN DISTINCT defaulters
       """
     )
@@ -1006,6 +1006,7 @@ type ServiceLog @auth(rules: [{ isAuthenticated: true }]) {
   constituency: [Constituency!]!
     @relationship(type: "HAS_HISTORY", direction: IN)
   council: [Council!]! @relationship(type: "HAS_HISTORY", direction: IN)
+  stream: [Stream!]! @relationship(type: "HAS_HISTORY", direction: IN)
   ministry: [Ministry!]! @relationship(type: "HAS_HISTORY", direction: IN)
   hub: [Hub!]! @relationship(type: "HAS_HISTORY", direction: IN)
 }

@@ -107,6 +107,49 @@ export const CONSTITUENCY_BANKING_SLIP_QUERIES = gql`
   }
 `
 
+export const STREAM_BANKING_SLIP_QUERIES = gql`
+  query streamServices($streamId: ID!) {
+    streams(where: { id: $streamId }) {
+      id
+
+      name
+      services(limit: 20) {
+        id
+        stream_name
+        noServiceReason
+        createdAt
+        serviceDate {
+          date
+        }
+        created_by {
+          id
+          firstName
+          lastName
+          fullName
+        }
+        bankingProof
+        bankingSlip
+        bankingSlipUploader {
+          id
+          firstName
+          lastName
+          fullName
+        }
+        offeringBankedBy {
+          id
+          firstName
+          lastName
+          fullName
+        }
+        income
+        cash
+        transactionId
+        transactionStatus
+      }
+    }
+  }
+`
+
 export const COUNCIL_BANKING_SLIP_QUERIES = gql`
   query councilServices($councilId: ID!) {
     councils(where: { id: $councilId }) {
@@ -213,6 +256,34 @@ export const COUNCIL_SERVICE_RECORDS = gql`
       id
       serviceLog {
         council {
+          id
+          name
+        }
+      }
+      createdAt
+      created_by {
+        id
+        firstName
+        lastName
+        fullName
+      }
+      serviceDate {
+        date
+      }
+      attendance
+      income
+      cash
+      foreignCurrency
+    }
+  }
+`
+
+export const STREAM_SERVICE_RECORDS = gql`
+  query streamServiceRecords($serviceId: ID!) {
+    serviceRecords(where: { id: $serviceId }) {
+      id
+      serviceLog {
+        stream {
           id
           name
         }

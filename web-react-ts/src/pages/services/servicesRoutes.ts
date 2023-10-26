@@ -146,6 +146,9 @@ const CouncilBankingSlipView = lazy(
 const CouncilBankingSlipSubmission = lazy(
   () => import('pages/services/banking/banking-slip/CouncilSubmission')
 )
+const StreamBankingSlipSubmission = lazy(
+  () => import('pages/services/banking/banking-slip/StreamSubmission')
+)
 const CouncilJoint = lazy(() => import('pages/services/CouncilJoint'))
 const StreamJoint = lazy(() => import('pages/services/StreamJoint'))
 const CampusJoint = lazy(() => import('pages/services/CampusJoint'))
@@ -258,13 +261,13 @@ export const services: LazyRouteTypes[] = [
   {
     path: '/fellowship/banking-slip/submission',
     element: FellowshipBankingSlipSubmission,
-    roles: ['adminCampus'],
+    roles: permitLeaderAdmin('Campus'),
     placeholder: true,
   },
   {
     path: '/services/constituency/banking-slips',
     element: ConstituencyBankingSlipView,
-    roles: permitLeaderAdmin('Constituency'),
+    roles: permitLeaderAdmin('Campus'),
     placeholder: true,
   },
   {
@@ -276,14 +279,19 @@ export const services: LazyRouteTypes[] = [
   {
     path: '/constituency/banking-slip/submission',
     element: ConstituencyBankingSlipSubmission,
-    roles: ['adminCampus'],
+    roles: permitLeaderAdmin('Campus'),
     placeholder: true,
   },
   {
     path: '/council/banking-slip/submission',
     element: CouncilBankingSlipSubmission,
-    roles: ['adminCampus'],
+    roles: permitLeaderAdmin('Campus'),
     placeholder: true,
+  },
+  {
+    path: '/stream/banking-slip/submission',
+    element: StreamBankingSlipSubmission,
+    roles: permitLeaderAdmin('Campus'),
   },
 
   {
