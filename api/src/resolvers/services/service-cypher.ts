@@ -42,7 +42,8 @@ WITH DISTINCT serviceRecord, transaction WHERE transaction.transactionStatus = '
 WITH serviceRecord, SUM(transaction.amount) AS amount
      SET serviceRecord.onlineGiving = amount,
      serviceRecord.cash = serviceRecord.income,
-     serviceRecord.income = amount + serviceRecord.income
+     serviceRecord.income = amount + serviceRecord.income,
+     serviceRecord.dollarIncome = round(toFloat(serviceRecord.income / $conversionRateToDollar), 2)
 
 RETURN serviceRecord
 `

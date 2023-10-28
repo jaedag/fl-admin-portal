@@ -168,6 +168,7 @@ const serviceMutation = {
       await session.executeWrite((tx) =>
         tx.run(absorbAllTransactions, {
           ...args,
+          conversionRateToDollar: currencyCheck.conversionRateToDollar,
           serviceRecordId,
         })
       )
