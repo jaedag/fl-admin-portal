@@ -84,7 +84,6 @@ export const permitLeader = (churchLevel: ChurchLevel) => {
         'leaderStream',
         'leaderMinistry',
         'leaderHubCouncil',
-        'leaderHub',
       ]
       break
     case 'hub':

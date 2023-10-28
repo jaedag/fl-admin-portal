@@ -179,7 +179,7 @@ export const RECORD_HUB_SUNDAY_MEETING = gql`
     $attendance: Int!
     $familyPicture: String!
   ) {
-    RecordHubSundayAttendance(
+    RecordHubFellowshipSundayAttendance(
       churchId: $churchId
       serviceDate: $serviceDate
       attendance: $attendance
