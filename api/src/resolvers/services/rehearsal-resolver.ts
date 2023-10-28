@@ -17,11 +17,11 @@ import {
 import {
   recordSundayMinistryAttendance,
   recordHubRehearsalService,
-  checkServiceFormFilledThisWeek,
+  checkMinistryAttendanceFormFilledThisWeek,
   checkRehearsalFormFilledThisWeek,
   aggregateMinistryMeetingDataForCreativeArts,
-  aggregateMinistryMeetingDataForHub,
   aggregateMinistryMeetingDataForMinistry,
+  aggregateMinistryMeetingDataForHubCouncil,
 } from './rehearsal-cypher'
 import { SontaHigherChurches } from '../utils/types'
 import { getServiceSontaHigherChurches } from './service-utils'
@@ -92,7 +92,7 @@ const HubFellowshipServiceMutation = {
     })
 
     const serviceCheck = rearrangeCypherObject(
-      await session.run(checkServiceFormFilledThisWeek, args)
+      await session.run(checkMinistryAttendanceFormFilledThisWeek, args)
     )
 
     if (
@@ -111,8 +111,8 @@ const HubFellowshipServiceMutation = {
     const secondSession = context.executionContext.session()
     let aggregateCypher = ''
 
-    if (serviceCheck.higherChurchLabels?.includes('Hub')) {
-      aggregateCypher = aggregateMinistryMeetingDataForHub
+    if (serviceCheck.higherChurchLabels?.includes('HubCouncil')) {
+      aggregateCypher = aggregateMinistryMeetingDataForHubCouncil
     } else if (serviceCheck.higherChurchLabels?.includes('Ministry')) {
       aggregateCypher = aggregateMinistryMeetingDataForMinistry
     } else if (serviceCheck.higherChurchLabels?.includes('CreativeArts')) {
