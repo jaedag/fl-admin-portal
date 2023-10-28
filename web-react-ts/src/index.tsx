@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { createRoot } from 'react-dom/client'
 import { RetryLink } from '@apollo/client/link/retry'
-
+import { onError } from '@apollo/client/link/error'
 import {
   ApolloClient,
   ApolloProvider,
@@ -28,6 +28,7 @@ import {
   matchRoutes,
 } from 'react-router-dom'
 import { BrowserTracing } from '@sentry/tracing'
+import { Toast, ToastContainer } from 'react-bootstrap'
 
 const AppWithApollo = () => {
   const [accessToken, setAccessToken] = useState<string>('')
@@ -80,11 +81,59 @@ const AppWithApollo = () => {
     },
   })
 
+  const errorLink = onError(({ graphQLErrors, networkError }) => {
+    if (graphQLErrors)
+      return (
+        <ToastContainer>
+          <>
+            {graphQLErrors &&
+              graphQLErrors.forEach(({ message, locations, path }) => (
+                <Toast bg="danger" className="text-white" autohide>
+                  <Toast.Header>GraphQL error</Toast.Header>
+                  <Toast.Body>
+                    {' '}
+                    <p>{`Message: ${message}`}</p>
+                    <p>{`Location: ${JSON.stringify(locations, null, 2)}`}</p>
+                    <p>{`Path: ${path}`}</p>
+                  </Toast.Body>
+                </Toast>
+              ))}
+          </>
+        </ToastContainer>
+      )
+    // if (networkError)
+    // toast({
+    //   title: 'Network error',
+    //   description: (
+    //     <>
+    //       <p>{`Message: ${networkError?.message}`}</p>
+    //       <p>{`Stack: ${networkError?.stack}`}</p>
+    //     </>
+    //   ),
+    //   status: 'error',
+    //   duration: 9000,
+    //   isClosable: true,
+    // })
+  })
+
+  const errorPolicy = 'all'
+
   const client = new ApolloClient({
     uri: import.meta.env.VITE_GRAPHQL_URI || '/graphql',
-    link: from([retryLink, authLink.concat(httpLink)]),
+    link: from([retryLink, errorLink, authLink.concat(httpLink)]),
     cache: new InMemoryCache(),
     connectToDevTools: true,
+    defaultOptions: {
+      watchQuery: {
+        errorPolicy: errorPolicy,
+      },
+      query: {
+        errorPolicy: errorPolicy,
+      },
+      mutate: {
+        errorPolicy: errorPolicy,
+      },
+    },
   })
 
   // if (new Date().getDay() === 1 && new Date().getHours() > 4) {
