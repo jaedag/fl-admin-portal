@@ -27,7 +27,7 @@ const SetPermissions = ({
   const { isAuthorised } = useAuth()
 
   const { data, loading, error } = useQuery(SERVANT_CHURCH_LIST, {
-    variables: { id: currentUser.id },
+    variables: { id: null },
     skip: !currentUser.id,
     onCompleted: (data) => {
       const servant = { ...data?.members[0], ...currentUser }

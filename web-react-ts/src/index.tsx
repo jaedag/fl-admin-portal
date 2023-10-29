@@ -28,7 +28,8 @@ import {
   matchRoutes,
 } from 'react-router-dom'
 import { BrowserTracing } from '@sentry/tracing'
-import { Toast, ToastContainer } from 'react-bootstrap'
+import { SnackbarProvider, enqueueSnackbar } from 'notistack'
+import { Card } from 'react-bootstrap'
 
 const AppWithApollo = () => {
   const [accessToken, setAccessToken] = useState<string>('')
@@ -82,38 +83,47 @@ const AppWithApollo = () => {
   })
 
   const errorLink = onError(({ graphQLErrors, networkError }) => {
-    if (graphQLErrors)
-      return (
-        <ToastContainer>
-          <>
-            {graphQLErrors &&
-              graphQLErrors.forEach(({ message, locations, path }) => (
-                <Toast bg="danger" className="text-white" autohide>
-                  <Toast.Header>GraphQL error</Toast.Header>
-                  <Toast.Body>
-                    {' '}
-                    <p>{`Message: ${message}`}</p>
-                    <p>{`Location: ${JSON.stringify(locations, null, 2)}`}</p>
-                    <p>{`Path: ${path}`}</p>
-                  </Toast.Body>
-                </Toast>
-              ))}
-          </>
-        </ToastContainer>
+    if (graphQLErrors) {
+      graphQLErrors.forEach(({ message, locations, path }) =>
+        enqueueSnackbar(
+          <Card>
+            <Card.Header className="fw-bold">GraphQL Error</Card.Header>
+            <Card.Body>
+              <div>{`Message: ${message}`}</div>
+              <div>{`Location: ${JSON.stringify(locations, null, 2)}`}</div>
+              <div>{`Path: ${path}`}</div>
+            </Card.Body>
+          </Card>,
+          {
+            variant: 'error',
+            autoHideDuration: 4000,
+            anchorOrigin: {
+              vertical: 'bottom',
+              horizontal: 'right',
+            },
+          }
+        )
       )
-    // if (networkError)
-    // toast({
-    //   title: 'Network error',
-    //   description: (
-    //     <>
-    //       <p>{`Message: ${networkError?.message}`}</p>
-    //       <p>{`Stack: ${networkError?.stack}`}</p>
-    //     </>
-    //   ),
-    //   status: 'error',
-    //   duration: 9000,
-    //   isClosable: true,
-    // })
+    }
+
+    if (networkError)
+      enqueueSnackbar(
+        <Card>
+          <Card.Header>Network Error</Card.Header>
+          <Card.Body>
+            <div>{`Message: ${networkError?.message}`}</div>
+            <div>{`Stack: ${networkError?.stack}`}</div>
+          </Card.Body>
+        </Card>,
+        {
+          variant: 'error',
+          autoHideDuration: 9000,
+          anchorOrigin: {
+            vertical: 'bottom',
+            horizontal: 'right',
+          },
+        }
+      )
   })
 
   const errorPolicy = 'all'
@@ -150,6 +160,7 @@ const AppWithApollo = () => {
 
   return (
     <ApolloProvider client={client}>
+      <SnackbarProvider />
       <AppWithContext token={accessToken} />
     </ApolloProvider>
   )
