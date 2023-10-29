@@ -48,7 +48,7 @@ const UpdateStream = () => {
     refetchQueries: [
       {
         query: GET_CAMPUS_STREAMS,
-        variables: { id: initialValues.campus },
+        variables: { id: initialValues.campus?.id },
       },
     ],
   })
