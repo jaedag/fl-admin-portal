@@ -1,3 +1,11 @@
+#### 7.10.31 (2023-10-29)
+
+##### Bug Fixes
+
+*  fix gatheringStreams query ([37ef0c97](https://github.com/firstlovecenter/fl-pastoral-care/commit/37ef0c9741534b76be708b209879a88e1f45e636))
+*  implement cancelling stream service ([1db95dbf](https://github.com/firstlovecenter/fl-pastoral-care/commit/1db95dbf806602a45a84bb28b1fe8f7a49fe5f25))
+*  increase arrivals counting buffer to 15 minutes ([fd313495](https://github.com/firstlovecenter/fl-pastoral-care/commit/fd313495e124318df84f53cb275a67507160918a))
+
 #### 7.10.30 (2023-10-29)
 
 ##### New Features
