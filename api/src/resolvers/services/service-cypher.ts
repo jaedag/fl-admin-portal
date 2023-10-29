@@ -96,7 +96,7 @@ SET serviceRecord.id = apoc.create.uuid(),
 serviceRecord.noServiceReason = $noServiceReason
 
 WITH serviceRecord
-MATCH (church {id: $churchId}) WHERE church:Fellowship
+MATCH (church {id: $churchId}) WHERE church:Fellowship OR church:Stream
 MATCH (church)-[:CURRENT_HISTORY]->(log:ServiceLog)
 MATCH (leader:Active:Member {auth_id: $auth.jwt.sub})
 
