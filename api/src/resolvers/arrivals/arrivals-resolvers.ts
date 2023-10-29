@@ -56,9 +56,9 @@ const arrivalEndTimeCalculator = (arrivalEndTime: string) => {
     new Date().toISOString().slice(0, 10) + arrivalEndTime.slice(10)
   )
 
-  const TwentyMinBuffer = 20 * 60 * 1000
+  const COUNTINGBUFFER = 15 * 60 * 1000
 
-  const endTime = new Date(endTimeToday.getTime() + TwentyMinBuffer)
+  const endTime = new Date(endTimeToday.getTime() + COUNTINGBUFFER)
 
   return endTime
 }

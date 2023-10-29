@@ -78,7 +78,7 @@ export const beforeCountingDeadline = (
     getTodayTime(church?.stream.arrivalStartTime)
   )
   const arrivalEndTime = new Date(getTodayTime(church?.stream.arrivalEndTime))
-  const countingEndTime = addMinutes(arrivalEndTime.toString(), 10)
+  const countingEndTime = addMinutes(arrivalEndTime.toString(), 15)
 
   if (
     isArrivalsToday(church) &&
