@@ -174,8 +174,8 @@ export const throwToSentry = (
       },
     })
     // eslint-disable-next-line no-alert
-    alert(`${message}`)
-    window.open('/', '_self')
+    // alert(`${message}`)
+    // window.open('/', '_self')
     return
   }
 

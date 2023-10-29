@@ -12,4 +12,15 @@ DETACH DELETE rehearsal;
 
 MATCH (ministry:Ministry)
 MATCH (ministry)-[:CURRENT_HISTORY]->(log:ServiceLog)
-RETURN ministry.id, log.id, log.historyRecord LIMIT 5
+RETURN ministry.id, log.id, log.historyRecord LIMIT 5;
+
+MATCH (record:ServiceRecord {id: "128cc59f-2f7f-4d54-9fe8-3a17ae082a17"})
+DETACH DELETE record
+
+CREATE (basonta:Basonta {id: randomUUID()})
+SET basonta.name = "Lovelets"
+
+WITH basonta
+MATCH (campus:Campus {name: "Accra"})
+MERGE (campus)-[:HAS_MINISTRY]->(basonta)
+RETURN basonta.name, campus.name;

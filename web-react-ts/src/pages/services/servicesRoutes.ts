@@ -29,6 +29,9 @@ const FellowshipService = lazy(
 const FellowshipServiceCancelled = lazy(
   () => import('pages/services/record-service/FellowshipServiceCancelled')
 )
+const StreamServiceCancelled = lazy(
+  () => import('pages/services/record-service/StreamServiceCancelled')
+)
 const FellowshipServiceDetails = lazy(
   () => import('pages/services/record-service/FellowshipServiceDetails')
 )
@@ -483,6 +486,12 @@ export const graphs: LazyRouteTypes[] = [
   {
     path: '/stream/service-details',
     element: StreamServiceDetails,
+    roles: permitLeaderAdmin('Stream'),
+    placeholder: false,
+  },
+  {
+    path: '/services/stream/no-service',
+    element: StreamServiceCancelled,
     roles: permitLeaderAdmin('Stream'),
     placeholder: false,
   },
