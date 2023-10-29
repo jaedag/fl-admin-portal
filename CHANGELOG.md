@@ -1,3 +1,16 @@
+#### 7.10.30 (2023-10-29)
+
+##### New Features
+
+*  implement error toast on all apollo errors ([ae5de8e1](https://github.com/firstlovecenter/fl-pastoral-care/commit/ae5de8e1ad6cd9ac607273c23b5fb411a02ef15a))
+
+##### Bug Fixes
+
+*  implement routes for all stream services ([9a3a1c0a](https://github.com/firstlovecenter/fl-pastoral-care/commit/9a3a1c0ae3f92b92cd700f86adaae30677dc88ca))
+*   fix currentUser.id ([a141d51b](https://github.com/firstlovecenter/fl-pastoral-care/commit/a141d51b4498b21c1d0392322183f3dca8724333))
+*  initial implementation showing toast on all apollo error ([6376c841](https://github.com/firstlovecenter/fl-pastoral-care/commit/6376c84168d584d9fdb45f98f580aba59d257166))
+*  after absorbing transactions, dollar income should reflect ([d9a55efd](https://github.com/firstlovecenter/fl-pastoral-care/commit/d9a55efd12f0065ef4fef470a5b27fb96a7ff8ca))
+
 #### 7.10.29 (2023-10-26)
 
 ##### Bug Fixes
