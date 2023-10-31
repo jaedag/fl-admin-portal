@@ -17,6 +17,8 @@ export const permitLeader = (churchLevel: ChurchLevel) => {
         'leaderHub',
         'leaderMinistry',
         'leaderCreativeArts',
+        'adminMinistry',
+        'adminCreativeArts',
       ]
       break
     case 'bacenta':
@@ -28,6 +30,8 @@ export const permitLeader = (churchLevel: ChurchLevel) => {
         'leaderCouncil',
         'leaderConstituency',
         'leaderBacenta',
+        'adminMinistry',
+        'adminCreativeArts',
       ]
       break
     case 'constituency':
@@ -38,6 +42,8 @@ export const permitLeader = (churchLevel: ChurchLevel) => {
         'leaderStream',
         'leaderCouncil',
         'leaderConstituency',
+        'adminMinistry',
+        'adminCreativeArts',
       ]
       break
     case 'council':
@@ -48,6 +54,8 @@ export const permitLeader = (churchLevel: ChurchLevel) => {
         'leaderStream',
         'leaderCouncil',
         'leaderHubCouncil',
+        'adminMinistry',
+        'adminCreativeArts',
       ]
       break
     case 'stream':
@@ -57,6 +65,8 @@ export const permitLeader = (churchLevel: ChurchLevel) => {
         'leaderCampus',
         'leaderStream',
         'leaderMinistry',
+        'adminMinistry',
+        'adminCreativeArts',
       ]
       break
     case 'campus':
@@ -65,6 +75,7 @@ export const permitLeader = (churchLevel: ChurchLevel) => {
         'leaderOversight',
         'leaderCampus',
         'leaderCreativeArts',
+        'adminCreativeArts',
       ]
       break
     case 'oversight':
