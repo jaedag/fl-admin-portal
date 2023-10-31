@@ -1,3 +1,12 @@
+#### 7.10.32 (2023-10-31)
+
+##### Bug Fixes
+
+*  allow ministry and creativearts admims to look at the bacenta directory ([93706182](https://github.com/firstlovecenter/fl-pastoral-care/commit/937061826a1665cadb8d7a32701487700d8148d2))
+*  update dismiss button on error snackbar ([f4d2d18e](https://github.com/firstlovecenter/fl-pastoral-care/commit/f4d2d18e4422e5371309d585773cea7eccd21e0f))
+*  ministry meetings  mutations ([5079f2c1](https://github.com/firstlovecenter/fl-pastoral-care/commit/5079f2c174b4c15755d556a98e73b222810a6807))
+*  enable cancelling of stream services ([5e93c48b](https://github.com/firstlovecenter/fl-pastoral-care/commit/5e93c48ba1864040e3bc37f3565d5263db3490b4))
+
 #### 7.10.31 (2023-10-29)
 
 ##### Bug Fixes
