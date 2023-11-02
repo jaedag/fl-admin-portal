@@ -907,6 +907,62 @@ export const MOVE_FELLOWSHIP_TO_BACENTA = gql`
   }
 `
 
+export const MOVE_CREATIVEARTS_TO_CAMPUS = gql`
+  mutation MoveCreativeArtsToCampus(
+    $creativeArtsId: ID!
+    $newCampusId: ID!
+    $oldCampusId: ID!
+    $historyRecord: String!
+  ) {
+    MoveCreativeArtsToCampus(
+      creativeArtsId: $creativeArtsId
+      campusId: $newCampusId
+    ) {
+      id
+      name
+      campus {
+        id
+        name
+        creativeArts {
+          id
+          name
+        }
+      }
+    }
+    LogCreativeArtsHistory(
+      creativeArtsId: $creativeArtsId
+      historyRecord: $historyRecord
+      oldCampusId: $oldCampusId
+      newCampusId: $newCampusId
+    ) {
+      id
+      name
+      campus {
+        id
+        name
+        creativeArts {
+          id
+          name
+        }
+      }
+      history(limit: 5) {
+        id
+        timeStamp
+        createdAt {
+          date
+        }
+        loggedBy {
+          id
+          stream_name
+          firstName
+          lastName
+        }
+        historyRecord
+      }
+    }
+  }
+`
+
 export const MOVE_MINISTRY_TO_CREATIVEARTS = gql`
   mutation MoveMinistryToCreativeArts(
     $ministryId: ID!
@@ -948,6 +1004,59 @@ export const MOVE_MINISTRY_TO_CREATIVEARTS = gql`
           firstName
           lastName
           stream_name
+        }
+        historyRecord
+      }
+    }
+  }
+`
+
+export const MOVE_MINISTRY_TO_STREAM = gql`
+  mutation MoveMinistryToStream(
+    $ministryId: ID!
+    $newStreamId: ID!
+    $oldStreamId: ID!
+    $historyRecord: String!
+  ) {
+    MoveMinistryToStream(ministryId: $ministryId, streamId: $newStreamId) {
+      id
+      name
+      stream {
+        id
+        name
+        ministries {
+          id
+          name
+        }
+      }
+    }
+    LogMinistryHistoryWithStream(
+      ministryId: $ministryId
+      historyRecord: $historyRecord
+      oldStreamId: $oldStreamId
+      newStreamId: $newStreamId
+    ) {
+      id
+      name
+      stream {
+        id
+        name
+        ministries {
+          id
+          name
+        }
+      }
+      history(limit: 5) {
+        id
+        timeStamp
+        createdAt {
+          date
+        }
+        loggedBy {
+          id
+          stream_name
+          firstName
+          lastName
         }
         historyRecord
       }
@@ -1011,6 +1120,62 @@ export const MOVE_HUBCOUNCIL_TO_MINISTRY = gql`
   }
 `
 
+export const MOVE_HUBCOUNCIL_TO_COUNCIL = gql`
+  mutation MoveHubCouncilToCouncil(
+    $hubCouncilId: ID!
+    $newCouncilId: ID!
+    $oldCouncilId: ID!
+    $historyRecord: String!
+  ) {
+    MoveHubCouncilToCouncil(
+      hubCouncilId: $hubCouncilId
+      councilId: $newCouncilId
+    ) {
+      id
+      name
+      council {
+        id
+        name
+        hubCouncils {
+          id
+          name
+        }
+      }
+    }
+    LogHubCouncilHistoryWithCouncil(
+      hubCouncilId: $hubCouncilId
+      historyRecord: $historyRecord
+      oldCouncilId: $oldCouncilId
+      newCouncilId: $newCouncilId
+    ) {
+      id
+      name
+      council {
+        id
+        name
+        hubCouncils {
+          id
+          name
+        }
+      }
+      history(limit: 5) {
+        id
+        timeStamp
+        createdAt {
+          date
+        }
+        loggedBy {
+          id
+          stream_name
+          firstName
+          lastName
+        }
+        historyRecord
+      }
+    }
+  }
+`
+
 export const MOVE_HUB_TO_HUBCOUNCIL = gql`
   mutation MoveHubsToHubCouncils(
     $hubId: ID!
@@ -1039,6 +1204,59 @@ export const MOVE_HUB_TO_HUBCOUNCIL = gql`
       id
       name
       hubCouncil {
+        id
+        name
+        hubs {
+          id
+          name
+        }
+      }
+      history(limit: 5) {
+        id
+        timeStamp
+        createdAt {
+          date
+        }
+        loggedBy {
+          id
+          stream_name
+          firstName
+          lastName
+        }
+        historyRecord
+      }
+    }
+  }
+`
+
+export const MOVE_HUB_TO_CONSTITUENCY = gql`
+  mutation MoveHubToConstituency(
+    $hubId: ID!
+    $newConstituencyId: ID!
+    $oldConstituencyId: ID!
+    $historyRecord: String!
+  ) {
+    MoveHubToConstituency(hubId: $hubId, constituencyId: $newConstituencyId) {
+      id
+      name
+      constituency {
+        id
+        name
+        hubs {
+          id
+          name
+        }
+      }
+    }
+    LogHubHistoryWithConstituency(
+      hubId: $hubId
+      historyRecord: $historyRecord
+      oldConstituencyId: $oldConstituencyId
+      newConstituencyId: $newConstituencyId
+    ) {
+      id
+      name
+      constituency {
         id
         name
         hubs {
