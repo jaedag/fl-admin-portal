@@ -23,6 +23,10 @@ export const MEMBER_MINISTRY_SEARCH = gql`
           id
           name
         }
+        stream {
+          id
+          name
+        }
       }
     }
   }

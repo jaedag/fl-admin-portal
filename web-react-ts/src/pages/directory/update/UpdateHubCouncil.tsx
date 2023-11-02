@@ -31,6 +31,7 @@ const UpdateHubCouncil = () => {
     leaderEmail: hubCouncil?.leader?.email || '',
     hubs: hubCouncil?.hubs,
   }
+
   const [LogHubCouncilHistory] = useMutation(LOG_HUBCOUNCIL_HISTORY, {
     refetchQueries: [
       {
