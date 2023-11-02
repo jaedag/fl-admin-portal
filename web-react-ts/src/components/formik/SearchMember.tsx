@@ -6,7 +6,10 @@ import { useContext, useEffect, useState } from 'react'
 import { RoleBasedSearch } from './formik-types'
 import Autosuggest from 'react-autosuggest'
 import './react-autosuggest.css'
-import { HUB_MEMBER_SEARCH, MEMBER_MEMBER_SEARCH } from './SearchMemberQueries'
+import {
+  BASONTA_MEMBER_SEARCH_FROM_HUB,
+  MEMBER_MEMBER_SEARCH,
+} from './SearchMemberQueries'
 import TextError from './TextError/TextError'
 import MemberAvatarWithName from 'components/LeaderAvatar/MemberAvatarWithName'
 import { ChurchContext } from 'contexts/ChurchContext'
@@ -25,11 +28,11 @@ const SearchMember = (props: RoleBasedSearch) => {
       },
     }
   )
-  const [hubMemberSearch, { error: hubMemberError }] = useLazyQuery(
-    HUB_MEMBER_SEARCH,
+  const [basontaMemberSearch, { error: hubMemberError }] = useLazyQuery(
+    BASONTA_MEMBER_SEARCH_FROM_HUB,
     {
       onCompleted: (data) => {
-        setSuggestions(data.hubs[0].memberSearch)
+        setSuggestions(data.members[0].basontaMemberSearchFromHub)
         return
       },
     }
@@ -40,8 +43,8 @@ const SearchMember = (props: RoleBasedSearch) => {
 
   const whichSearch = (searchString: string) => {
     if (props.creativeArts) {
-      hubMemberSearch({
-        variables: { id: hubId, key: searchString?.trim() },
+      basontaMemberSearch({
+        variables: { id: currentUser.id, key: searchString?.trim(), hubId },
       })
     } else {
       memberSearch({

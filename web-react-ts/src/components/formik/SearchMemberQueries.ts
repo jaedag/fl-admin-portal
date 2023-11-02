@@ -20,11 +20,31 @@ export const MEMBER_MEMBER_SEARCH = gql`
   }
 `
 
-export const HUB_MEMBER_SEARCH = gql`
-  query hubMemberSearch($id: ID!, $key: String!) {
-    hubs(where: { id: $id }) {
+export const BASONTA_MEMBER_SEARCH = gql`
+  query basontaMemberSearch($id: ID!, $key: String!) {
+    members(where: { id: $id }) {
       id
-      memberSearch(key: $key, limit: 5) {
+      basontaMemberSearch(key: $key, limit: 5) {
+        id
+        firstName
+        middleName
+        lastName
+        pictureUrl
+        email
+        location {
+          latitude
+          longitude
+        }
+      }
+    }
+  }
+`
+
+export const BASONTA_MEMBER_SEARCH_FROM_HUB = gql`
+  query basontaMemberSearchFromHub($id: ID!, $key: String!, $hubId: ID!) {
+    members(where: { id: $id }) {
+      id
+      basontaMemberSearchFromHub(hubId: $hubId, key: $key, limit: 5) {
         id
         firstName
         middleName

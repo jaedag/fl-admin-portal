@@ -7,8 +7,8 @@ import Autosuggest from 'react-autosuggest'
 import './react-autosuggest.css'
 import { RoleBasedSearch } from './formik-types'
 import { initialise } from './search-utils'
-import { MEMBER_HUB_SEARCH } from './SearchHubQueries'
 import TextError from './TextError/TextError'
+import { MEMBER_HUB_SEARCH } from './SearchHubQueries'
 
 const SearchHub = (props: RoleBasedSearch) => {
   const { currentUser } = useContext(MemberContext)
