@@ -31,6 +31,7 @@ const UpdateConstituency = () => {
     leaderEmail: constituency?.leader?.email || '',
     council: constituency?.council,
     bacentas: constituency?.bacentas?.length ? constituency.bacentas : [''],
+    hubs: constituency?.hubs?.length ? constituency.hubs : [''],
   }
   const [LogConstituencyHistory] = useMutation(LOG_CONSTITUENCY_HISTORY, {
     refetchQueries: [

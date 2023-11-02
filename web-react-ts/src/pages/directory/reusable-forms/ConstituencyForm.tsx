@@ -23,15 +23,21 @@ import Input from 'components/formik/Input'
 import SearchMember from 'components/formik/SearchMember'
 import SearchBacenta from 'components/formik/SearchBacenta'
 import { FormikInitialValues } from 'components/formik/formik-types'
-import { Bacenta, Council } from 'global-types'
-import { MOVE_BACENTA_TO_CONSTITUENCY } from '../update/UpdateMutations'
+import { Bacenta, Council, Hub } from 'global-types'
+import {
+  MOVE_BACENTA_TO_CONSTITUENCY,
+  MOVE_HUB_TO_CONSTITUENCY,
+} from '../update/UpdateMutations'
 import NoDataComponent from 'pages/arrivals/CompNoData'
 import { DISPLAY_CONSTITUENCY, DISPLAY_COUNCIL } from '../display/ReadQueries'
 import BtnSubmitText from 'components/formik/BtnSubmitText'
+import SearchHub from 'components/formik/SearchHub'
 
 export interface ConstituencyFormValues extends FormikInitialValues {
   council?: Council
   bacentas?: Bacenta[]
+  hubs?: Hub[]
+  hub?: Hub
   bacenta?: Bacenta
 }
 
@@ -53,6 +59,7 @@ const ConstituencyForm = ({
 }: ConstituencyFormProps) => {
   const { clickCard, constituencyId } = useContext(ChurchContext)
   const [bacentaModal, setBacentaModal] = useState(false)
+  const [hubModal, setHubModal] = useState(false)
   const [closeDown, setCloseDown] = useState(false)
 
   const navigate = useNavigate()
@@ -70,6 +77,11 @@ const ConstituencyForm = ({
       ],
     }
   )
+  const [MoveHubToConstituency] = useMutation(MOVE_HUB_TO_CONSTITUENCY, {
+    refetchQueries: [
+      { query: DISPLAY_CONSTITUENCY, variables: { id: constituencyId } },
+    ],
+  })
 
   const validationSchema = Yup.object({
     name: Yup.string().required(`Constituency Name is a required field`),
@@ -88,6 +100,9 @@ const ConstituencyForm = ({
         {!newConstituency && (
           <>
             <Button onClick={() => setBacentaModal(true)}>Add Bacenta</Button>
+            <Button variant="warning" onClick={() => setHubModal(true)}>
+              Add Hub
+            </Button>
             <Button variant="success" onClick={() => setCloseDown(true)}>
               {`Close Down Constituency`}
             </Button>
@@ -130,8 +145,25 @@ const ConstituencyForm = ({
                       </RoleView>
                     </Row>
                     <div className="d-grid gap-2">
-                      <p className="fw-bold fs-5">Bacentas</p>
+                      {initialValues.bacentas?.length && (
+                        <p className="fw-bold fs-5">Bacentas</p>
+                      )}
                       {initialValues.bacentas?.map((bacenta, index) => {
+                        if (!bacenta && !index)
+                          return <NoDataComponent text="No Bacentas" />
+                        return (
+                          <Button variant="secondary" className="text-start">
+                            {bacenta.name} {bacenta.__typename}
+                          </Button>
+                        )
+                      })}
+                    </div>
+
+                    <div className="d-grid gap-2 mt-3">
+                      {initialValues.hubs?.length && (
+                        <p className="fw-bold fs-5">Hubs</p>
+                      )}
+                      {initialValues.hubs?.map((bacenta, index) => {
                         if (!bacenta && !index)
                           return <NoDataComponent text="No Bacentas" />
                         return (
@@ -202,6 +234,55 @@ const ConstituencyForm = ({
                   variant="primary"
                   onClick={() => setBacentaModal(false)}
                 >
+                  Close
+                </Button>
+              </Modal.Footer>
+            </Modal>
+
+            <Modal show={hubModal} onHide={() => setHubModal(false)} centered>
+              <Modal.Header closeButton>Add A Hub</Modal.Header>
+              <Modal.Body>
+                <p>Choose a hub to move to this constituency</p>
+                <SearchHub
+                  name={`hub`}
+                  placeholder="Hub Name"
+                  initialValue=""
+                  setFieldValue={formik.setFieldValue}
+                  aria-describedby="Hub Name"
+                />
+              </Modal.Body>
+              <Modal.Footer>
+                <Button
+                  variant="success"
+                  type="submit"
+                  disabled={buttonLoading || !formik.values.hub}
+                  onClick={async () => {
+                    try {
+                      setButtonLoading(true)
+                      const res = await MoveHubToConstituency({
+                        variables: {
+                          hubId: formik.values.hub?.id,
+                          historyRecord: `${formik.values.hub?.name} Hub has been moved to ${formik.values.name} Constituency from ${formik.values.hub?.constituency.name} Constituency`,
+                          newConstituencyId: constituencyId,
+                          oldConstituencyId: formik.values.hub?.constituency.id,
+                        },
+                      })
+
+                      clickCard(res.data.MoveHubToConstituency)
+                      setHubModal(false)
+                    } catch (error) {
+                      throwToSentry(
+                        `There was an error moving this hub to this constituency`,
+                        error
+                      )
+                    } finally {
+                      setButtonLoading(false)
+                    }
+                  }}
+                >
+                  <BtnSubmitText loading={buttonLoading} />
+                </Button>
+                <Button variant="primary" onClick={() => setHubModal(false)}>
                   Close
                 </Button>
               </Modal.Footer>

@@ -79,5 +79,5 @@ set stream.bankAccount = 'oa_kumasi'
 RETURN stream.name, stream.bankAccount
 
 
-MATCH (record:ServiceRecord) WHERE date(record.createdAt).week = date().week
-DETACH DELETE record
+MATCH (hub:Hub)-[]-(constituency:Constituency)
+RETURN hub.name, constituency.name

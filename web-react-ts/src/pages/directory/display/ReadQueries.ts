@@ -353,6 +353,13 @@ export const DISPLAY_CONSTITUENCY = gql`
           id
         }
       }
+      hubs(options: { limit: 5 }) {
+        id
+        name
+        leader {
+          id
+        }
+      }
 
       admin {
         id

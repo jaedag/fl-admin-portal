@@ -1,11 +1,5 @@
-MATCH (stream:Stream)
-SET stream:Active
-RETURN COUNT(stream);
 
-
-MATCH (stream:Stream)
-MATCH (day:ServiceDay) WHERE day.day = "Sunday"
-MERGE (stream)-[:MEETS_ON]->(day)
-RETURN COUNT(stream),  day.day;
-
-MATCH ()
+MATCH (hub:Hub)<-[:HAS]-(hubCouncil:HubCouncil)<-[:HAS_MINISTRY]-(council:Council)
+MATCH (council)-[:HAS]->(constituency)
+MERGE (constituency)-[:HAS_MINISTRY]->(hub)
+RETURN hub.name, constituency.name

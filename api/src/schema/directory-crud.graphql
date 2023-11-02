@@ -1056,6 +1056,19 @@ extend type Mutation {
       """
     )
 
+  MoveCreativeArtsToCampus(creativeArtsId: ID!, campusId: ID!): CreativeArts!
+    @cypher(
+      statement: """
+      MATCH (creativeArts:CreativeArts {id: $creativeArtsId})
+      MATCH (campus:Campus {id: $campusId})
+      OPTIONAL MATCH (creativeArts)<-[r:HAS_MINISTRY]-(:Campus)
+      DELETE r
+
+      MERGE (campus)-[:HAS_MINISTRY]->(creativeArts)
+      RETURN creativeArts
+      """
+    )
+
   MoveMinistryToCreativeArts(ministryId: ID!, creativeArtsId: ID!): Ministry!
     @cypher(
       statement: """
@@ -1065,6 +1078,18 @@ extend type Mutation {
       DELETE r
 
       MERGE (creativeArts)-[:HAS]->(ministry)
+      RETURN ministry
+      """
+    )
+  MoveMinistryToStream(ministryId: ID!, streamId: ID!): Ministry!
+    @cypher(
+      statement: """
+      MATCH (ministry:Ministry {id: $ministryId})
+      MATCH (stream:Stream {id: $streamId})
+      OPTIONAL MATCH (ministry)<-[r:HAS_MINISTRY]-(:Stream)
+      DELETE r
+
+      MERGE (stream)-[:HAS_MINISTRY]->(ministry)
       RETURN ministry
       """
     )
@@ -1080,6 +1105,18 @@ extend type Mutation {
       RETURN hubCouncil
       """
     )
+  MoveHubCouncilToCouncil(hubCouncilId: ID!, councilId: ID!): HubCouncil!
+    @cypher(
+      statement: """
+      MATCH (hubCouncil:HubCouncil {id: $hubCouncilId})
+      MATCH (council:Council {id: $councilId})
+      OPTIONAL MATCH (hubCouncil)<-[r:HAS_MINISTRY]-(:Council)
+      DELETE r
+
+      MERGE (council)-[:HAS_MINISTRY]->(hubCouncil)
+      RETURN hubCouncil
+      """
+    )
   MoveHubToHubCouncil(hubId: ID!, hubCouncilId: ID!): Hub!
     @cypher(
       statement: """
@@ -1089,6 +1126,18 @@ extend type Mutation {
       DELETE r
 
       MERGE (hubCouncil)-[:HAS]->(hub)
+      RETURN hub
+      """
+    )
+  MoveHubToConstituency(hubId: ID!, constituencyId: ID!): Hub!
+    @cypher(
+      statement: """
+      MATCH (hub:Hub {id: $hubId})
+      MATCH (constituency:Constituency {id: $constituencyId})
+      OPTIONAL MATCH (hub)<-[r:HAS_MINISTRY]-(:Constituency)
+      DELETE r
+
+      MERGE (constituency)-[:HAS_MINISTRY]->(hub)
       RETURN hub
       """
     )
