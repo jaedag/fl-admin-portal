@@ -23,17 +23,23 @@ import Input from 'components/formik/Input'
 import SearchMember from 'components/formik/SearchMember'
 import SearchConstituency from 'components/formik/SearchConstituency'
 import { FormikInitialValues } from 'components/formik/formik-types'
-import { Constituency } from 'global-types'
-import { MOVE_CONSTITUENCY_TO_COUNCIL } from '../update/UpdateMutations'
+import { Constituency, HubCouncil } from 'global-types'
+import {
+  MOVE_CONSTITUENCY_TO_COUNCIL,
+  MOVE_HUBCOUNCIL_TO_COUNCIL,
+} from '../update/UpdateMutations'
 import NoDataComponent from 'pages/arrivals/CompNoData'
 import { DISPLAY_COUNCIL, DISPLAY_STREAM } from '../display/ReadQueries'
 import { Stream } from '@jaedag/admin-portal-types'
 import BtnSubmitText from 'components/formik/BtnSubmitText'
+import SearchHubCouncil from 'components/formik/SearchHubCouncil'
 
 export interface CouncilFormValues extends FormikInitialValues {
   stream?: Stream
   constituencies?: Constituency[]
   constituency?: Constituency
+  hubCouncil?: HubCouncil
+  hubCouncils?: HubCouncil[]
 }
 
 type CouncilFormProps = {
@@ -54,6 +60,7 @@ const CouncilForm = ({
 }: CouncilFormProps) => {
   const { clickCard, councilId } = useContext(ChurchContext)
   const [constituencyModal, setConstituencyModal] = useState(false)
+  const [hubCouncilModal, setHubCouncilModal] = useState(false)
   const [closeDown, setCloseDown] = useState(false)
 
   const navigate = useNavigate()
@@ -71,6 +78,9 @@ const CouncilForm = ({
       ],
     }
   )
+  const [MoveHubCouncilToCouncil] = useMutation(MOVE_HUBCOUNCIL_TO_COUNCIL, {
+    refetchQueries: [{ query: DISPLAY_COUNCIL, variables: { id: councilId } }],
+  })
 
   const validationSchema = Yup.object({
     name: Yup.string().required(`Council Name is a required field`),
@@ -88,6 +98,9 @@ const CouncilForm = ({
           <>
             <Button onClick={() => setConstituencyModal(true)}>
               Add Constituency
+            </Button>
+            <Button variant="warning" onClick={() => setHubCouncilModal(true)}>
+              Add Hub Council
             </Button>
             <Button variant="success" onClick={() => setCloseDown(true)}>
               {`Close Down Council`}
@@ -131,7 +144,10 @@ const CouncilForm = ({
                       </RoleView>
                     </Row>
                     <div className="d-grid gap-2">
-                      <p className="fw-bold fs-5">Constituencies</p>
+                      {initialValues.constituencies?.length && (
+                        <p className="fw-bold fs-5">Constituencies</p>
+                      )}
+
                       {initialValues.constituencies?.map(
                         (constituency, index) => {
                           if (!constituency && !index)
@@ -143,6 +159,22 @@ const CouncilForm = ({
                           )
                         }
                       )}
+                    </div>
+
+                    <div className="d-grid gap-2 mt-3">
+                      {initialValues.hubCouncils?.length && (
+                        <p className="fw-bold fs-5">Hub Councils</p>
+                      )}
+
+                      {initialValues.hubCouncils?.map((hubCouncil, index) => {
+                        if (!hubCouncil && !index)
+                          return <NoDataComponent text="No Hub Councils" />
+                        return (
+                          <Button variant="secondary" className="text-start">
+                            {hubCouncil.name} Hub Council
+                          </Button>
+                        )
+                      })}
                     </div>
                   </Col>
                 </Row>
@@ -203,6 +235,62 @@ const CouncilForm = ({
                 <Button
                   variant="primary"
                   onClick={() => setConstituencyModal(false)}
+                >
+                  Close
+                </Button>
+              </Modal.Footer>
+            </Modal>
+
+            <Modal
+              show={hubCouncilModal}
+              onHide={() => setHubCouncilModal(false)}
+              centered
+            >
+              <Modal.Header closeButton>Add A Hub Council</Modal.Header>
+              <Modal.Body>
+                <p>Choose a hub council to move to this council</p>
+                <SearchHubCouncil
+                  name={`hubCouncil`}
+                  placeholder="Hub Council Name"
+                  initialValue=""
+                  setFieldValue={formik.setFieldValue}
+                  aria-describedby="Hub Council Name"
+                />
+              </Modal.Body>
+              <Modal.Footer>
+                <Button
+                  variant="success"
+                  type="submit"
+                  disabled={buttonLoading || !formik.values.hubCouncil}
+                  onClick={async () => {
+                    try {
+                      setButtonLoading(true)
+                      const res = await MoveHubCouncilToCouncil({
+                        variables: {
+                          hubCouncilId: formik.values.hubCouncil?.id,
+                          historyRecord: `${formik.values.hubCouncil?.name} Hub Council has been moved to ${formik.values.name} Council from ${formik.values.hubCouncil?.council.name} Council`,
+                          newCouncilId: councilId,
+                          oldCouncilId: formik.values.hubCouncil?.council.id,
+                        },
+                      })
+
+                      clickCard(res.data.MoveHubCouncilToCouncil)
+                      setHubCouncilModal(false)
+                    } catch (error) {
+                      throwToSentry(
+                        `There was an error moving this hub council to this council`,
+                        error
+                      )
+                    } finally {
+                      setButtonLoading(false)
+                    }
+                  }}
+                >
+                  <BtnSubmitText loading={buttonLoading} />
+                </Button>
+                <Button
+                  variant="primary"
+                  onClick={() => setHubCouncilModal(false)}
                 >
                   Close
                 </Button>

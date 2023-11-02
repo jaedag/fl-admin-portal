@@ -11,6 +11,10 @@ export const MEMBER_HUBCOUNCIL_SEARCH = gql`
           id
           name
         }
+        council {
+          id
+          name
+        }
       }
     }
   }

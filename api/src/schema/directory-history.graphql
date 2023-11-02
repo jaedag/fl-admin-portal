@@ -530,7 +530,7 @@ extend type Mutation {
       MERGE (log)-[:RECORDED_ON]->(date)
       MERGE (log)-[:LOGGED_BY]->(admin)
 
-      WITH logcreativeArts,
+      WITH log, creativeArts
       CALL{
         WITH log
         WITH log WHERE $newLeaderId IS NOT NULL

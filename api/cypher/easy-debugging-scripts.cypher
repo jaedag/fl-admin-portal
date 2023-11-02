@@ -79,5 +79,11 @@ set stream.bankAccount = 'oa_kumasi'
 RETURN stream.name, stream.bankAccount
 
 
-MATCH (hub:Hub)-[]-(constituency:Constituency)
-RETURN hub.name, constituency.name
+MATCH (hub:HubCouncil)<-[r:HAS]-(constituency:Ministry)
+RETURN hub.name, constituency.name, r
+
+MATCH (hub:HubCouncil)
+WHERE NOT EXISTS {
+   MATCH (hub)<-[:HAS]-(constituency:Ministry)
+}
+DETACH DELETE hub

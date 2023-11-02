@@ -429,7 +429,11 @@ export const DISPLAY_COUNCIL = gql`
       constituencies(options: { limit: 5 }) {
         id
         name
-        stream_name
+      }
+
+      hubCouncils(options: { limit: 5 }) {
+        id
+        name
       }
 
       admin {
@@ -498,6 +502,10 @@ export const DISPLAY_STREAM = gql`
         id
         name
       }
+      ministries(options: { limit: 5 }) {
+        id
+        name
+      }
 
       admin {
         id
@@ -560,6 +568,10 @@ export const DISPLAY_CAMPUS = gql`
         id
         name
         stream_name
+      }
+      creativeArts(options: { limit: 5 }) {
+        id
+        name
       }
 
       admin {

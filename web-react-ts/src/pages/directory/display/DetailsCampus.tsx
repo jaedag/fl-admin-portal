@@ -77,7 +77,7 @@ const DetailsCampus = () => {
       link: `#`,
     },
     {
-      title: 'Converstion Rate ($)',
+      title: 'Conversion Rate ($)',
       number: gathering?.conversionRateToDollar,
       link: `#`,
     },

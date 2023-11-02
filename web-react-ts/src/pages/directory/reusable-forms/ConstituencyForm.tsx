@@ -96,6 +96,7 @@ const ConstituencyForm = ({
       <HeadingSecondary>
         {initialValues.name + ' Constituency'}
       </HeadingSecondary>
+
       <ButtonGroup className="mt-3">
         {!newConstituency && (
           <>
