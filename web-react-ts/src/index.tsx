@@ -28,8 +28,13 @@ import {
   matchRoutes,
 } from 'react-router-dom'
 import { BrowserTracing } from '@sentry/tracing'
-import { SnackbarProvider, enqueueSnackbar } from 'notistack'
-import { Card } from 'react-bootstrap'
+import {
+  SnackbarKey,
+  SnackbarProvider,
+  closeSnackbar,
+  enqueueSnackbar,
+} from 'notistack'
+import { Button, Card } from 'react-bootstrap'
 
 const AppWithApollo = () => {
   const [accessToken, setAccessToken] = useState<string>('')
@@ -82,6 +87,17 @@ const AppWithApollo = () => {
     },
   })
 
+  const action = (snackbarId: SnackbarKey | undefined) => (
+    <Button
+      variant="outline-light"
+      onClick={() => {
+        closeSnackbar(snackbarId)
+      }}
+    >
+      Dismiss
+    </Button>
+  )
+
   const errorLink = onError(({ graphQLErrors, networkError }) => {
     if (graphQLErrors) {
       graphQLErrors.forEach(({ message, locations, path }) =>
@@ -95,8 +111,11 @@ const AppWithApollo = () => {
             </Card.Body>
           </Card>,
           {
+            action,
+            preventDuplicate: true,
             variant: 'error',
-            autoHideDuration: 4000,
+            autoHideDuration: 20000,
+            hideIconVariant: true,
             anchorOrigin: {
               vertical: 'bottom',
               horizontal: 'right',
@@ -116,8 +135,11 @@ const AppWithApollo = () => {
           </Card.Body>
         </Card>,
         {
+          action,
+          preventDuplicate: true,
           variant: 'error',
-          autoHideDuration: 9000,
+          autoHideDuration: 20000,
+          hideIconVariant: true,
           anchorOrigin: {
             vertical: 'bottom',
             horizontal: 'right',
