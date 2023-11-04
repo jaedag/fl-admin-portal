@@ -35,6 +35,22 @@ const executeQuery = async (neoDriver) => {
       date: '2023-10-29',
       code: 'INTERACTION',
     },
+    {
+      date: '2023-11-05',
+      code: 'CELEBRATE',
+    },
+    {
+      date: '2023-11-12',
+      code: 'INCREASE',
+    },
+    {
+      date: '2023-11-19',
+      code: 'GLORY',
+    },
+    {
+      date: '2023-11-26',
+      code: 'VICTORY',
+    },
   ]
 
   try {
