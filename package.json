@@ -59,7 +59,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git://github.com/firstlovecenter/fl-pastoral-care.git"
+    "url": "git://github.com/firstlovecenter/fl-admin-portalgit"
   },
   "license": "Apache-2.0"
 }
