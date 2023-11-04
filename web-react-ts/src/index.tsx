@@ -34,7 +34,7 @@ import {
   closeSnackbar,
   enqueueSnackbar,
 } from 'notistack'
-import { Button, Card } from 'react-bootstrap'
+import { Button, Card, Container } from 'react-bootstrap'
 
 const AppWithApollo = () => {
   const [accessToken, setAccessToken] = useState<string>('')
@@ -105,7 +105,7 @@ const AppWithApollo = () => {
           <Card>
             <Card.Header className="fw-bold">GraphQL Error</Card.Header>
             <Card.Body>
-              <div>{`Message: ${message}`}</div>
+              <Container>{`Message: ${message}`}</Container>
               <div>{`Location: ${JSON.stringify(locations, null, 2)}`}</div>
               <div>{`Path: ${path}`}</div>
             </Card.Body>

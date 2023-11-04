@@ -111,9 +111,10 @@ const PayOffering = (props: PayOfferingProps) => {
           momoName: values.momoName,
         },
       })
-
-      if (
-        paymentRes.data.BankServiceOffering.transactionStatus === 'send OTP'
+      if (paymentRes.errors) {
+        throw new Error(paymentRes.errors[0]?.message)
+      } else if (
+        paymentRes.data?.BankServiceOffering.transactionStatus === 'send OTP'
       ) {
         handleShow()
       } else {
