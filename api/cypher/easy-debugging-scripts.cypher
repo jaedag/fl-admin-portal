@@ -82,8 +82,11 @@ RETURN stream.name, stream.bankAccount
 MATCH (hub:HubCouncil)<-[r:HAS]-(constituency:Ministry)
 RETURN hub.name, constituency.name, r
 
+// Delete hubs that don't have ministries
 MATCH (hub:HubCouncil)
 WHERE NOT EXISTS {
    MATCH (hub)<-[:HAS]-(constituency:Ministry)
 }
-DETACH DELETE hub
+DETACH DELETE hub;
+
+
