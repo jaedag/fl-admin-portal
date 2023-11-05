@@ -341,12 +341,20 @@ export const DISPLAY_CONSTITUENCY = gql`
       name
       target
       stream_name
+      hubCount
       activeBacentaCount
       vacationBacentaCount
       vacationFellowshipCount
       activeIcBacentaCount
       vacationIcBacentaCount
       bacentas(options: { limit: 5 }) {
+        id
+        name
+        leader {
+          id
+        }
+      }
+      hubs(options: { limit: 5 }) {
         id
         name
         leader {
@@ -408,6 +416,7 @@ export const DISPLAY_COUNCIL = gql`
       activeBacentaCount
       activeFellowshipCount
       hubCouncilCount
+      hubCount
       hubFellowshipCount
       memberCount
       pastorCount
@@ -422,7 +431,11 @@ export const DISPLAY_COUNCIL = gql`
       constituencies(options: { limit: 5 }) {
         id
         name
-        stream_name
+      }
+
+      hubCouncils(options: { limit: 5 }) {
+        id
+        name
       }
 
       admin {
@@ -491,6 +504,10 @@ export const DISPLAY_STREAM = gql`
         id
         name
       }
+      ministries(options: { limit: 5 }) {
+        id
+        name
+      }
 
       admin {
         id
@@ -553,6 +570,10 @@ export const DISPLAY_CAMPUS = gql`
         id
         name
         stream_name
+      }
+      creativeArts(options: { limit: 5 }) {
+        id
+        name
       }
 
       admin {
@@ -883,6 +904,10 @@ export const DISPLAY_HUB = gql`
       location {
         longitude
         latitude
+      }
+      constituency {
+        id
+        name
       }
       leader {
         id

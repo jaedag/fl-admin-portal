@@ -530,7 +530,7 @@ extend type Mutation {
       MERGE (log)-[:RECORDED_ON]->(date)
       MERGE (log)-[:LOGGED_BY]->(admin)
 
-      WITH logcreativeArts,
+      WITH log, creativeArts
       CALL{
         WITH log
         WITH log WHERE $newLeaderId IS NOT NULL
@@ -576,6 +576,7 @@ extend type Mutation {
       RETURN creativeArts
       """
     )
+
   LogMinistryHistory(
     ministryId: ID!
     historyRecord: String!
@@ -635,6 +636,71 @@ extend type Mutation {
           WITH log WHERE $newCreativeArtsId IS NOT NULL
           MATCH (creativeArts:CreativeArts {id: $newCreativeArtsId})
           MERGE (creativeArts)-[:HAS_HISTORY]->(log)
+          RETURN COUNT(log)
+        }
+
+      RETURN ministry
+      """
+    )
+  LogMinistryHistoryWithStream(
+    ministryId: ID!
+    historyRecord: String!
+    newLeaderId: ID
+    oldLeaderId: ID
+    newStreamId: ID
+    oldStreamId: ID
+  ): Ministry!
+    @cypher(
+      statement: """
+        MATCH  (ministry:Ministry {id: $ministryId})
+        MATCH (admin:Active:Member {auth_id: $auth.jwt.sub})
+        CREATE (log:HistoryLog {id: apoc.create.uuid()})
+          SET log.historyRecord = $historyRecord,
+            log.timeStamp = datetime()
+        MERGE (date:TimeGraph {date: date()})
+        MERGE (ministry)-[r:HAS_HISTORY]->(log)
+        MERGE (log)-[:RECORDED_ON]->(date)
+        MERGE (log)-[:LOGGED_BY]->(admin)
+
+        WITH log,ministry
+        CALL{
+          WITH log
+          WITH log WHERE $newLeaderId IS NOT NULL
+        MATCH (newLeader:Active:Member {id: $newLeaderId})
+          SET log :ServiceLog
+          WITH log, newLeader
+        OPTIONAl MATCH ()-[r0:HAS_HISTORY]->(log)
+          WITH log,newLeader
+        CREATE (newLeader)-[r:HAS_HISTORY]->(log)
+           SET r.current = true
+           WITH log
+        RETURN COUNT(log)
+        }
+
+        WITH log, ministry
+        CALL {
+          WITH log
+          WITH log WHERE $oldLeaderId IS NOT NULL
+          MATCH (oldLeader:Active:Member {id: $oldLeaderId})
+          CREATE (oldLeader)-[:HAS_HISTORY]->(log)
+          RETURN COUNT(log)
+        }
+
+        WITH log, ministry
+        CALL {
+          WITH log
+          WITH log WHERE $oldStreamId IS NOT NULL
+          MATCH (stream:Stream {id: $oldStreamId})
+          MERGE (stream)-[:OLD_HISTORY]->(log)
+          RETURN COUNT(log)
+        }
+
+        WITH log, ministry
+        CALL {
+          WITH log
+          WITH log WHERE $newStreamId IS NOT NULL
+          MATCH (stream:Stream {id: $newStreamId})
+          MERGE (stream)-[:HAS_HISTORY]->(log)
           RETURN COUNT(log)
         }
 
@@ -706,6 +772,72 @@ extend type Mutation {
       RETURN hubCouncil
       """
     )
+  LogHubCouncilHistoryWithCouncil(
+    hubCouncilId: ID!
+    historyRecord: String!
+    newLeaderId: ID
+    oldLeaderId: ID
+    newCouncilId: ID
+    oldCouncilId: ID
+  ): HubCouncil!
+    @cypher(
+      statement: """
+        MATCH  (hubCouncil:HubCouncil {id: $hubCouncilId})
+        MATCH (admin:Active:Member {auth_id: $auth.jwt.sub})
+        CREATE (log:HistoryLog {id: apoc.create.uuid()})
+          SET log.historyRecord = $historyRecord,
+            log.timeStamp = datetime()
+        MERGE (date:TimeGraph {date: date()})
+        MERGE (hubCouncil)-[r:HAS_HISTORY]->(log)
+        MERGE (log)-[:RECORDED_ON]->(date)
+        MERGE (log)-[:LOGGED_BY]->(admin)
+
+        WITH log,hubCouncil
+        CALL{
+          WITH log
+          WITH log WHERE $newLeaderId IS NOT NULL
+        MATCH (newLeader:Active:Member {id: $newLeaderId})
+          SET log :ServiceLog
+          WITH log, newLeader
+        OPTIONAl MATCH ()-[r0:HAS_HISTORY]->(log)
+          WITH log,newLeader
+        CREATE (newLeader)-[r:HAS_HISTORY]->(log)
+           SET r.current = true
+           WITH log
+        RETURN COUNT(log)
+        }
+
+        WITH log, hubCouncil
+        CALL {
+          WITH log
+          WITH log WHERE $oldLeaderId IS NOT NULL
+          MATCH (oldLeader:Active:Member {id: $oldLeaderId})
+          CREATE (oldLeader)-[:HAS_HISTORY]->(log)
+          RETURN COUNT(log)
+        }
+
+        WITH log, hubCouncil
+        CALL {
+          WITH log
+          WITH log WHERE $oldCouncilId IS NOT NULL
+          MATCH (council:Council {id: $oldCouncilId})
+          MERGE (council)-[:OLD_HISTORY]->(log)
+          RETURN COUNT(log)
+        }
+
+        WITH log, hubCouncil
+        CALL {
+          WITH log
+          WITH log WHERE $newCouncilId IS NOT NULL
+          MATCH (council:Council {id: $newCouncilId})
+          MERGE (council)-[:HAS_HISTORY]->(log)
+          RETURN COUNT(log)
+        }
+
+      RETURN hubCouncil
+      """
+    )
+
   LogHubHistory(
     hubId: ID!
     historyRecord: String!
@@ -765,6 +897,71 @@ extend type Mutation {
           WITH log WHERE $newHubCouncilId IS NOT NULL
           MATCH (hubCouncil:HubCouncil {id: $newHubCouncilId})
           MERGE (hubCouncil)-[:HAS_HISTORY]->(log)
+          RETURN COUNT(log)
+        }
+
+      RETURN hub
+      """
+    )
+  LogHubHistoryWithConstituency(
+    hubId: ID!
+    historyRecord: String!
+    newLeaderId: ID
+    oldLeaderId: ID
+    newConstituencyId: ID
+    oldConstituencyId: ID
+  ): Hub!
+    @cypher(
+      statement: """
+      MATCH  (hub:Hub {id: $hubId})
+        MATCH (admin:Active:Member {auth_id: $auth.jwt.sub})
+        CREATE (log:HistoryLog {id: apoc.create.uuid()})
+          SET log.historyRecord = $historyRecord,
+            log.timeStamp = datetime()
+        MERGE (date:TimeGraph {date: date()})
+        MERGE (hub)-[r:HAS_HISTORY]->(log)
+        MERGE (log)-[:RECORDED_ON]->(date)
+        MERGE (log)-[:LOGGED_BY]->(admin)
+
+        WITH log,hub
+        CALL{
+          WITH log
+          WITH log WHERE $newLeaderId IS NOT NULL
+        MATCH (newLeader:Active:Member {id: $newLeaderId})
+          SET log :ServiceLog
+          WITH log, newLeader
+        OPTIONAl MATCH ()-[r0:HAS_HISTORY]->(log)
+          WITH log,newLeader
+        CREATE (newLeader)-[r:HAS_HISTORY]->(log)
+           SET r.current = true
+           WITH log
+        RETURN COUNT(log)
+        }
+
+        WITH log, hub
+        CALL {
+          WITH log
+          WITH log WHERE $oldLeaderId IS NOT NULL
+          MATCH (oldLeader:Active:Member {id: $oldLeaderId})
+          CREATE (oldLeader)-[:HAS_HISTORY]->(log)
+          RETURN COUNT(log)
+        }
+
+        WITH log, hub
+        CALL {
+          WITH log
+          WITH log WHERE $oldConstituencyId IS NOT NULL
+          MATCH (constituency:Constituency {id: $oldConstituencyId})
+          MERGE (constituency)-[:OLD_HISTORY]->(log)
+          RETURN COUNT(log)
+        }
+
+        WITH log, hub
+        CALL {
+          WITH log
+          WITH log WHERE $newConstituencyId IS NOT NULL
+          MATCH (constituency:Constituency {id: $newConstituencyId})
+          MERGE (constituency)-[:HAS_HISTORY]->(log)
           RETURN COUNT(log)
         }
 

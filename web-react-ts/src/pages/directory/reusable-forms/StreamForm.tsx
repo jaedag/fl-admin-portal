@@ -28,12 +28,16 @@ import Input from 'components/formik/Input'
 import SearchMember from 'components/formik/SearchMember'
 import SearchCouncil from 'components/formik/SearchCouncil'
 import { FormikInitialValues } from 'components/formik/formik-types'
-import { Council, Campus, VacationStatusOptions } from 'global-types'
+import { Council, Campus, VacationStatusOptions, Ministry } from 'global-types'
 import NoDataComponent from 'pages/arrivals/CompNoData'
 import { DISPLAY_STREAM, DISPLAY_CAMPUS } from '../display/ReadQueries'
 import Select from 'components/formik/Select'
-import { MOVE_COUNCIL_TO_STREAM } from '../update/UpdateMutations'
+import {
+  MOVE_COUNCIL_TO_STREAM,
+  MOVE_MINISTRY_TO_STREAM,
+} from '../update/UpdateMutations'
 import BtnSubmitText from 'components/formik/BtnSubmitText'
+import SearchMinistry from 'components/formik/SearchMinistry'
 
 export interface StreamFormValues extends FormikInitialValues {
   campus?: Campus
@@ -54,6 +58,8 @@ export interface StreamFormValues extends FormikInitialValues {
   vacationStatus: VacationStatusOptions
   councils?: Council[]
   council?: Council
+  ministry?: Ministry
+  ministries?: Ministry[]
 }
 
 type StreamFormProps = {
@@ -74,6 +80,7 @@ const StreamForm = ({
 }: StreamFormProps) => {
   const { clickCard, streamId } = useContext(ChurchContext)
   const [councilModal, setCouncilModal] = useState(false)
+  const [ministryModal, setMinistryModal] = useState(false)
   const [closeDown, setCloseDown] = useState(false)
 
   const navigate = useNavigate()
@@ -84,6 +91,9 @@ const StreamForm = ({
     ],
   })
   const [MoveCouncilToStream] = useMutation(MOVE_COUNCIL_TO_STREAM, {
+    refetchQueries: [{ query: DISPLAY_STREAM, variables: { id: streamId } }],
+  })
+  const [MoveMinistryToStream] = useMutation(MOVE_MINISTRY_TO_STREAM, {
     refetchQueries: [{ query: DISPLAY_STREAM, variables: { id: streamId } }],
   })
 
@@ -106,6 +116,9 @@ const StreamForm = ({
         {!newStream && (
           <>
             <Button onClick={() => setCouncilModal(true)}>Add Council</Button>
+            <Button variant="warning" onClick={() => setMinistryModal(true)}>
+              Add Ministry
+            </Button>
             <Button variant="success" onClick={() => setCloseDown(true)}>
               {`Close Down Stream`}
             </Button>
@@ -166,13 +179,31 @@ const StreamForm = ({
                       </RoleView>
                     </Row>
                     <div className="d-grid gap-2">
-                      <p className="fw-bold fs-5">Councils</p>
+                      {initialValues.councils?.length && (
+                        <p className="fw-bold fs-5">Councils</p>
+                      )}
                       {initialValues.councils?.map((council, index) => {
                         if (!council && !index)
                           return <NoDataComponent text="No Councils" />
                         return (
                           <Button variant="secondary" className="text-start">
                             {council.name} Council
+                          </Button>
+                        )
+                      })}
+                    </div>
+
+                    <div className="d-grid gap-2 mt-3">
+                      {initialValues.ministries?.length && (
+                        <p className="fw-bold fs-5">Ministries</p>
+                      )}
+
+                      {initialValues.ministries?.map((ministry, index) => {
+                        if (!ministry && !index)
+                          return <NoDataComponent text="No Ministries" />
+                        return (
+                          <Button variant="secondary" className="text-start">
+                            {ministry.name} Ministry
                           </Button>
                         )
                       })}
@@ -236,6 +267,58 @@ const StreamForm = ({
                 <Button
                   variant="primary"
                   onClick={() => setCouncilModal(false)}
+                >
+                  Close
+                </Button>
+              </Modal.Footer>
+            </Modal>
+
+            <Modal show={ministryModal} onHide={() => setMinistryModal(false)}>
+              <Modal.Header closeButton>Add A Ministry</Modal.Header>
+              <Modal.Body>
+                <p>Choose a ministry to move to this stream</p>
+                <SearchMinistry
+                  name={`ministry`}
+                  placeholder="Ministry Name"
+                  initialValue=""
+                  setFieldValue={formik.setFieldValue}
+                  aria-describedby="Ministry Name"
+                />
+              </Modal.Body>
+              <Modal.Footer>
+                <Button
+                  variant="success"
+                  type="submit"
+                  disabled={buttonLoading || !formik.values.ministry}
+                  onClick={async () => {
+                    try {
+                      setButtonLoading(true)
+                      const res = await MoveMinistryToStream({
+                        variables: {
+                          ministryId: formik.values.ministry?.id,
+                          historyRecord: `${formik.values.ministry?.name} Ministry has been moved to ${formik.values.name} Stream from ${formik.values.ministry?.stream.name} Stream`,
+                          newStreamId: streamId,
+                          oldStreamId: formik.values.ministry?.stream.id,
+                        },
+                      })
+
+                      clickCard(res.data.MoveMinistryToStream)
+                      setMinistryModal(false)
+                    } catch (error) {
+                      throwToSentry(
+                        `There was an error moving this ministry to this stream`,
+                        error
+                      )
+                    } finally {
+                      setButtonLoading(false)
+                    }
+                  }}
+                >
+                  <BtnSubmitText loading={buttonLoading} />
+                </Button>
+                <Button
+                  variant="primary"
+                  onClick={() => setMinistryModal(false)}
                 >
                   Close
                 </Button>

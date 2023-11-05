@@ -1,5 +1,5 @@
 {
-  "version": "7.10.31",
+  "version": "7.10.33",
   "devDependencies": {
     "@commitlint/cli": "^16.1.0",
     "@commitlint/config-conventional": "^16.0.0",
@@ -59,7 +59,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git://github.com/firstlovecenter/fl-pastoral-care.git"
+    "url": "git://github.com/firstlovecenter/fl-admin-portalgit"
   },
   "license": "Apache-2.0"
 }

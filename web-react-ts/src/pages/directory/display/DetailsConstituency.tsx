@@ -27,7 +27,7 @@ const DetailsConstituency = () => {
     {
       title: 'Bacentas',
       number: constituency?.activeBacentaCount || 0,
-      link: `/${`Bacenta`.toLowerCase()}/displayall`,
+      link: `/bacenta/displayall`,
       vacationCount: constituency?.vacationBacentaCount,
     },
     {
@@ -35,6 +35,12 @@ const DetailsConstituency = () => {
       number: constituency?.activeIcBacentaCount,
       vacationCount: constituency?.vacationIcBacentaCount,
       link: '/ic/displayall',
+    },
+    {
+      title: 'Hubs',
+      number: constituency?.hubCount,
+      link: '/constituency/hubs',
+      creativearts: true,
     },
     {
       title: 'Fellowships',

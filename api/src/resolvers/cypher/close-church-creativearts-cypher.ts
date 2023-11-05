@@ -1,5 +1,5 @@
 export const getLastServiceRecord = `
-MATCH (church {id: $churchId}) WHERE church:Hub OR church:Ministry OR church:CreativeArts
+MATCH (church {id: $churchId}) WHERE church:Hub OR church:Ministry OR church:HubCouncil
 MATCH (church)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(otherRecords:RehearsalRecord)-[:SERVICE_HELD_ON]->(otherDate:TimeGraph)
 WHERE NOT (otherRecords:NoService) AND duration.between(otherDate.date, date()).weeks < 52
 
@@ -55,6 +55,11 @@ REMOVE hub:Hub, hubFellowships:HubFellowship
 
 RETURN hubCouncil {
   .id, .name, 
+  history: [log {
+    .id, 
+    .timeStamp,
+    .historyRecord
+  }],
   hubs:[hubs {.id,.name}]
 }
 `
@@ -83,6 +88,11 @@ REMOVE hubCouncil:HubCouncil, hubs:Hub, hubFellowships:HubFellowship
 
 RETURN ministry {
   .id, .name, 
+  history: [log {
+    .id, 
+    .timeStamp,
+    .historyRecord
+  }],
   hubCouncils:[hubCouncils {.id, .name}]
 }
 `
@@ -111,6 +121,11 @@ REMOVE ministry:Ministry, hubCouncils:HubCouncil, hubs:Hub, hubFellowships:HubFe
 
 RETURN creativeArts {
   .id, .name,
+  history: [log {
+    .id, 
+    .timeStamp,
+    .historyRecord
+  }],
   ministries: [ministries {.id, .name}]
 }
 `
@@ -136,9 +151,13 @@ MERGE (campus)-[:HAS_HISTORY]->(log)
 SET creativeArt:ClosedCreativeArts, ministries:ClosedMinistry, hubCouncils:ClosedHubCouncil, hubs:ClosedHub
 REMOVE creativeArt:CreativeArts, ministries:Ministry, hubCouncils:HubCouncil, hubs:Hub, hubFellowships:HubFellowship
 
-
 RETURN campus {
   .id, .name,
+  history: [log {
+    .id, 
+    .timeStamp,
+    .historyRecord
+  }],
   creativeArts: [creativeArts {.id, .name}]
 }
 `

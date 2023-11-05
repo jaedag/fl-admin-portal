@@ -255,9 +255,6 @@ const directoryCreativeArtsMutation = {
 
     const res: any = await Promise.all([
       session.run(closeChurchCypher.checkCreativeArtsHasNoMembers, args),
-      sessionTwo.run(closeChurchCypher.getLastServiceRecord, {
-        churchId: args.creativeArtsId,
-      }),
     ]).catch((error: any) => {
       throwToSentry(
         'There was an error running checkCreativeArtsHasNoMembers',
@@ -266,29 +263,10 @@ const directoryCreativeArtsMutation = {
     })
 
     const creativeArtsCheck = rearrangeCypherObject(res[0])
-    const lastServiceRecord = rearrangeCypherObject(res[1])
 
     if (creativeArtsCheck.memberCount) {
       throw new Error(
         `${creativeArtsCheck?.name} CreativeArt has ${creativeArtsCheck?.ministryCount} active ministries. Please close down all ministries and try again.`
-      )
-    }
-
-    const record = lastServiceRecord.lastService?.properties ?? {
-      bankingSlip: null,
-    }
-
-    if (
-      !(
-        'bankingSlip' in record ||
-        record.transactionStatus === 'success' ||
-        'tellerConfirmationTime' in record
-      )
-    ) {
-      throw new Error(
-        `Please bank outstanding offering for your service filled on ${getHumanReadableDate(
-          record.createdAt
-        )} before attempting to close down this creative arts`
       )
     }
 

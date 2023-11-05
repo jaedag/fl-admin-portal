@@ -157,6 +157,7 @@ export interface Ministry extends HigherChurch {
   __typename: 'Ministry'
   name: string
   creativeArts: CreativeArts
+  stream: Stream
   councils: Council[]
   hubCouncils?: HubCouncil[]
 }
@@ -164,6 +165,7 @@ export interface Ministry extends HigherChurch {
 export interface HubCouncil extends Church {
   __typename: 'HubCouncil'
   hub: Hub
+  council: Council
   ministry: Ministry
 }
 
@@ -177,6 +179,7 @@ export interface Hub extends Church {
   activeHubFellowshipCount: number
   vacationHubFellowshipCount: number
   hubCouncil: HubCouncil
+  constituency: Constituency
   creativeArts: Campus
   vacationStatus: VacationStatusOptions
   meetingDay: {

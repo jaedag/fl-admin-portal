@@ -895,6 +895,36 @@ export const GET_COUNCIL_HUBCOUNCILS = gql`
   }
 `
 
+export const GET_CONSTITUENCY_HUBS = gql`
+  query getConstituencyHubs($id: ID!) {
+    constituencies(where: { id: $id }) {
+      id
+      name
+
+      leader {
+        id
+        firstName
+        lastName
+        fullName
+      }
+      memberCount
+
+      hubs {
+        name
+        id
+        memberCount
+        leader {
+          id
+          firstName
+          lastName
+          stream_name
+          pictureUrl
+        }
+      }
+    }
+  }
+`
+
 export const GET_CREATIVEARTS_MINISTRIES = gql`
   query getCreativeArtsMinistriesList($id: ID!) {
     creativeArts(where: { id: $id }) {

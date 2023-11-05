@@ -35,7 +35,7 @@ RETURN fellowship.name, record.attendance, COUNT(members);
 
 // If Sunday Bussing is blocking
 
-MATCH (fellowship:Fellowship {bankingCode: 7470 })<-[:HAS]-(bacenta:Bacenta)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(record:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
+MATCH (fellowship:Fellowship {bankingCode: 7413 })<-[:HAS]-(bacenta:Bacenta)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(record:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph {date: date("2023-08-06")})
 
 MATCH (fellowship)<-[:BELONGS_TO]-(members:Member)
 MERGE (record)<-[:PRESENT_AT_SERVICE]-(members)
@@ -79,5 +79,13 @@ set stream.bankAccount = 'oa_kumasi'
 RETURN stream.name, stream.bankAccount
 
 
-MATCH (record:ServiceRecord) WHERE date(record.createdAt).week = date().week
-DETACH DELETE record
+MATCH (hub:HubCouncil)<-[r:HAS]-(constituency:Ministry)
+RETURN hub.name, constituency.name, r
+
+// Delete hubs that don't have ministries
+MATCH (hub:HubCouncil)
+WHERE NOT EXISTS {
+   MATCH (hub)<-[:HAS]-(constituency:Ministry)
+}
+DETACH DELETE hub;
+

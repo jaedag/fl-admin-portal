@@ -82,14 +82,16 @@ type CreativeArts {
   members: [Member!]!
     @cypher(
       statement: """
-      MATCH (this)-[:HAS]->(:Ministry)-[:HAS]->(:HubCouncil)-[:HAS]->(:Hub)-[:HAS]->(:HubFellowship)<-[:BELONGS_TO]-(members:Active:Member)
+      MATCH (this)<-[:HAS_MINISTRY]-(campus:Campus)-[:HAS]->(:Stream)-[:HAS]->(:Council)-[:HAS]->(:Constituency)-[:HAS]->(:Bacenta)-[:HAS]->(:Fellowship)<-[:BELONGS_TO]-(members:Active:Member)
+      MATCH (members)-[:BELONGS_TO]->(this)
       RETURN DISTINCT members ORDER BY toLower(members.lastName), toLower(members.firstName)
       """
     )
   memberCount: Int!
     @cypher(
       statement: """
-      MATCH (this)-[:HAS]->(:Ministry)-[:HAS]->(:HubCouncil)-[:HAS]->(:Hub)-[:HAS]->(:HubFellowship)<-[:BELONGS_TO]-(members:Active:Member)
+      MATCH (this)<-[:HAS_MINISTRY]-(campus:Campus)-[:HAS]->(:Stream)-[:HAS]->(:Council)-[:HAS]->(:Constituency)-[:HAS]->(:Bacenta)-[:HAS]->(:Fellowship)<-[:BELONGS_TO]-(members:Active:Member)
+      MATCH (members)-[:BELONGS_TO]->(this)
       RETURN COUNT(DISTINCT members)
       """
     )
@@ -159,14 +161,18 @@ type Ministry {
   members: [Member!]!
     @cypher(
       statement: """
-      MATCH (this)-[:HAS]->(:HubCouncil)-[:HAS]->(:Hub)-[:HAS]->(:HubFellowship)<-[:BELONGS_TO]-(members:Active:Member)
+      MATCH (this)<-[:HAS]-(creativeArts:CreativeArts)
+      MATCH (this)<-[:HAS_MINISTRY]-(stream:Stream)-[:HAS]->(:Council)-[:HAS]->(:Constituency)-[:HAS]->(:Bacenta)-[:HAS]->(:Fellowship)<-[:BELONGS_TO]-(members:Active:Member)
+      MATCH (members)-[:BELONGS_TO]->(creativeArts)
       RETURN DISTINCT members ORDER BY toLower(members.lastName), toLower(members.firstName)
       """
     )
   memberCount: Int!
     @cypher(
       statement: """
-      MATCH (this)-[:HAS]->(:HubCouncil)-[:HAS]->(:Hub)-[:HAS]->(:HubFellowship)<-[:BELONGS_TO]-(members:Active:Member)
+      MATCH (this)<-[:HAS]-(creativeArts:CreativeArts)
+      MATCH (this)<-[:HAS_MINISTRY]-(stream:Stream)-[:HAS]->(:Council)-[:HAS]->(:Constituency)-[:HAS]->(:Bacenta)-[:HAS]->(:Fellowship)<-[:BELONGS_TO]-(members:Active:Member)
+      MATCH (members)-[:BELONGS_TO]->(creativeArts)
       RETURN COUNT(DISTINCT members)
       """
     )
@@ -237,14 +243,18 @@ type HubCouncil {
   members: [Member!]!
     @cypher(
       statement: """
-      MATCH (this)-[:HAS]->(:Hub)-[:HAS]->(hubFellowship:Active:HubFellowship)<-[:BELONGS_TO]-(members:Active:Member)
+      MATCH (this)<-[:HAS]-(:Ministry)<-[:HAS]-(creativeArts:CreativeArts)
+      MATCH (this)<-[:HAS_MINISTRY]-(council:Council)-[:HAS]->(:Constituency)-[:HAS]->(:Bacenta)-[:HAS]->(:Fellowship)<-[:BELONGS_TO]-(members:Active:Member)
+      MATCH (members)-[:BELONGS_TO]->(creativeArts)
       RETURN DISTINCT members ORDER BY toLower(members.lastName), toLower(members.firstName)
       """
     )
   memberCount: Int!
     @cypher(
       statement: """
-      MATCH (this)-[:HAS]->(:Hub)-[:HAS]->(hubFellowship:Active:HubFellowship)<-[:BELONGS_TO]-(members:Active:Member)
+      MATCH (this)<-[:HAS]-(:Ministry)<-[:HAS]-(creativeArts:CreativeArts)
+      MATCH (this)<-[:HAS_MINISTRY]-(council:Council)-[:HAS]->(:Constituency)-[:HAS]->(:Bacenta)-[:HAS]->(:Fellowship)<-[:BELONGS_TO]-(members:Active:Member)
+      MATCH (members)-[:BELONGS_TO]->(creativeArts)
       RETURN COUNT(DISTINCT members)
       """
     )
@@ -310,14 +320,18 @@ type Hub {
   members: [Member!]!
     @cypher(
       statement: """
-      MATCH (this)-[:HAS]->(hubFellowship:HubFellowship)<-[:BELONGS_TO]-(members:Active:Member)
+      MATCH (this)<-[:HAS]-(:HubCouncil)<-[:HAS]-(:Ministry)<-[:HAS]-(creativeArts:CreativeArts)
+      MATCH (this)<-[:HAS_MINISTRY]-(constituency:Constituency)-[:HAS]->(:Bacenta)-[:HAS]->(:Fellowship)<-[:BELONGS_TO]-(members:Active:Member)
+      MATCH (members)-[:BELONGS_TO]->(creativeArts)
       RETURN DISTINCT members ORDER BY toLower(members.lastName), toLower(members.firstName)
       """
     )
   memberCount: Int!
     @cypher(
       statement: """
-      MATCH (this)-[:HAS]->(hubFellowship:HubFellowship)<-[:BELONGS_TO]-(members:Active:Member)
+      MATCH (this)<-[:HAS]-(:HubCouncil)<-[:HAS]-(:Ministry)<-[:HAS]-(creativeArts:CreativeArts)
+      MATCH (this)<-[:HAS_MINISTRY]-(constituency:Constituency)-[:HAS]->(:Bacenta)-[:HAS]->(:Fellowship)<-[:BELONGS_TO]-(members:Active:Member)
+      MATCH (members)-[:BELONGS_TO]->(creativeArts)
       RETURN COUNT(DISTINCT members)
       """
     )
@@ -362,6 +376,7 @@ type Hub {
     )
   hubFellowships: [Fellowship!]! @relationship(type: "HAS", direction: OUT)
   hubCouncil: HubCouncil! @relationship(type: "HAS", direction: IN)
+  constituency: Constituency! @relationship(type: "HAS_MINISTRY", direction: IN)
   serviceLogs: [ServiceLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
   rehearsals(limit: Int!, skip: Int = 0): [RehearsalRecord!]!
     @cypher(
@@ -461,10 +476,35 @@ extend type Council {
       RETURN COUNT(hubs)
       """
     )
+  hubCount: Int!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS_MINISTRY]->(:HubCouncil)-[:HAS]->(hubs:Hub)
+      RETURN COUNT(hubs)
+      """
+    )
   hubFellowshipCount: Int!
     @cypher(
       statement: """
       MATCH (this)-[:HAS_MINISTRY]->(:HubCouncil)-[:HAS*2]->(fellowship:HubFellowship)
+      RETURN COUNT(fellowship)
+      """
+    )
+}
+
+extend type Constituency {
+  hubs: [Hub!]! @relationship(type: "HAS_MINISTRY", direction: OUT)
+  hubCount: Int!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS_MINISTRY]->(hubs:Hub)
+      RETURN COUNT(hubs)
+      """
+    )
+  hubFellowshipCount: Int!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS_MINISTRY]->(:Hub)-[:HAS]->(fellowship:HubFellowship)
       RETURN COUNT(fellowship)
       """
     )
@@ -1042,8 +1082,12 @@ extend type Mutation {
 
 ## DELETE OPERATIONS
 extend type Mutation {
-  CloseDownCreativeArts(creativeArtsId: ID!,  leaderId: ID!, adminId:ID!): Campus!
-  CloseDownMinistry(ministryId: ID!, leaderId: ID!,adminId:ID!): CreativeArts!
+  CloseDownCreativeArts(
+    creativeArtsId: ID!
+    leaderId: ID!
+    adminId: ID!
+  ): Campus!
+  CloseDownMinistry(ministryId: ID!, leaderId: ID!, adminId: ID!): CreativeArts!
   CloseDownHubCouncil(hubCouncilId: ID!, leaderId: ID!): Ministry!
   CloseDownHub(hubId: ID!, leaderId: ID!): HubCouncil!
 }

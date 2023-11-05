@@ -1,3 +1,25 @@
+#### 7.10.33 (2023-11-05)
+
+##### Bug Fixes
+
+*  updated the easy debugging script ([f4b000ca](https://github.com/firstlovecenter/fl-admin-portalgit/commit/f4b000ca0a69a49a52e7ce09978ef8bafef673e1))
+*  tweak member search to show all members from the creative arts of the hub ([a87dd861](https://github.com/firstlovecenter/fl-admin-portalgit/commit/a87dd861ceef5fedbf0646807247524c782bfcb1))
+*  implement ability to move creative arts levels across bacenta levels ([9d5c30d7](https://github.com/firstlovecenter/fl-admin-portalgit/commit/9d5c30d7f56024fcced04a1eeadd666e8dfe56d6))
+*  enable movement of hubs across constituencies ([78953de5](https://github.com/firstlovecenter/fl-admin-portalgit/commit/78953de5670c4c7c2e1eb8c8c85ef5fdc0ee947c))
+*  update code of the day for november ([0e5d3175](https://github.com/firstlovecenter/fl-admin-portalgit/commit/0e5d31751421974858192d1f5b0fffec9e4634cc))
+*  fix issue with bankServiceOffering error display ([5eb1544b](https://github.com/firstlovecenter/fl-admin-portalgit/commit/5eb1544b34c6cb14f63a731d163d98d8e5350bc4))
+*  add history to sonta churches ([61fcba8d](https://github.com/firstlovecenter/fl-admin-portalgit/commit/61fcba8d122dafd43335d9529898fdb21276be62))
+*  update permissions for hubcouncil graphs pages ([ebe79c5b](https://github.com/firstlovecenter/fl-admin-portalgit/commit/ebe79c5b46a7e7348852eee83b306a5629a81225))
+
+#### 7.10.32 (2023-10-31)
+
+##### Bug Fixes
+
+*  allow ministry and creativearts admims to look at the bacenta directory ([93706182](https://github.com/firstlovecenter/fl-pastoral-care/commit/937061826a1665cadb8d7a32701487700d8148d2))
+*  update dismiss button on error snackbar ([f4d2d18e](https://github.com/firstlovecenter/fl-pastoral-care/commit/f4d2d18e4422e5371309d585773cea7eccd21e0f))
+*  ministry meetings  mutations ([5079f2c1](https://github.com/firstlovecenter/fl-pastoral-care/commit/5079f2c174b4c15755d556a98e73b222810a6807))
+*  enable cancelling of stream services ([5e93c48b](https://github.com/firstlovecenter/fl-pastoral-care/commit/5e93c48ba1864040e3bc37f3565d5263db3490b4))
+
 #### 7.10.31 (2023-10-29)
 
 ##### Bug Fixes

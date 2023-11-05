@@ -35,6 +35,7 @@ const UpdateStream = () => {
     vacationStatus: stream?.vacationStatus ?? '',
     campus: stream?.campus ?? '',
     councils: stream?.councils?.length ? stream.councils : [''],
+    ministries: stream?.ministries?.length ? stream.ministries : [''],
   }
 
   const [LogStreamHistory] = useMutation(LOG_STREAM_HISTORY, {

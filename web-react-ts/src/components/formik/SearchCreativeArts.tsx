@@ -1,24 +1,25 @@
 import { useLazyQuery } from '@apollo/client'
+import { MemberContext } from 'contexts/MemberContext'
 import { ErrorMessage } from 'formik'
 import { DEBOUNCE_TIMER, throwToSentry } from 'global-utils'
 import { useContext, useEffect, useState } from 'react'
-import { RoleBasedSearch } from './formik-types'
 import Autosuggest from 'react-autosuggest'
-import './react-autosuggest.css'
-import TextError from './TextError/TextError'
-import MemberAvatarWithName from 'components/LeaderAvatar/MemberAvatarWithName'
-import { HUB_MEMBER_SEARCH } from './SearchMemberQueries'
-import { ChurchContext } from 'contexts/ChurchContext'
+import { initialise } from './search-utils'
+import { RoleBasedSearch } from './formik-types'
 
-const SearchHubMember = (props: RoleBasedSearch) => {
-  const { hubId } = useContext(ChurchContext)
+import TextError from './TextError/TextError'
+import { MEMBER_CREATIVEARTS_SEARCH } from './SearchCreativeArtsQueries'
+
+const SearchCreativeArts = (props: RoleBasedSearch) => {
+  const { currentUser } = useContext(MemberContext)
   const [suggestions, setSuggestions] = useState([])
   const [searchString, setSearchString] = useState(props.initialValue ?? '')
+
   const [memberSearch, { error: memberError }] = useLazyQuery(
-    HUB_MEMBER_SEARCH,
+    MEMBER_CREATIVEARTS_SEARCH,
     {
       onCompleted: (data) => {
-        setSuggestions(data.hubs[0].memberSearch)
+        setSuggestions(data.members[0].creativeArtsSearch)
         return
       },
     }
@@ -30,11 +31,15 @@ const SearchHubMember = (props: RoleBasedSearch) => {
   const whichSearch = (searchString: string) => {
     memberSearch({
       variables: {
-        id: hubId,
+        id: currentUser.id,
         key: searchString?.trim(),
       },
     })
   }
+
+  useEffect(() => {
+    setSearchString(initialise(searchString, props.initialValue))
+  }, [props.initialValue])
 
   useEffect(() => {
     const timerId = setTimeout(() => {
@@ -75,24 +80,13 @@ const SearchHubMember = (props: RoleBasedSearch) => {
           if (method === 'enter') {
             event.preventDefault()
           }
-          setSearchString(suggestion.firstName + ' ' + suggestion.lastName)
-
-          props.setFieldValue(`${props.name}`, suggestion.id)
-          props.setFieldValue('leaderEmail', suggestion?.email)
+          setSearchString(suggestion.name)
+          props.setFieldValue(`${props.name}`, suggestion)
         }}
-        getSuggestionValue={(suggestion) =>
-          suggestion.firstName + ' ' + suggestion.lastName
-        }
+        getSuggestionValue={(suggestion) => suggestion.name}
         highlightFirstSuggestion={true}
         renderSuggestion={(suggestion: any) => (
-          <div className="combobox-control">
-            <MemberAvatarWithName
-              member={suggestion}
-              loading={!suggestion}
-              size="small"
-              onClick={() => null}
-            />
-          </div>
+          <div className="combobox-control">{suggestion.name}</div>
         )}
       />
 
@@ -103,4 +97,4 @@ const SearchHubMember = (props: RoleBasedSearch) => {
   )
 }
 
-export default SearchHubMember
+export default SearchCreativeArts

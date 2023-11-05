@@ -7,6 +7,11 @@ export const MEMBER_HUB_SEARCH = gql`
       hubSearch(key: $key) {
         id
         name
+
+        constituency {
+          id
+          name
+        }
       }
     }
   }
