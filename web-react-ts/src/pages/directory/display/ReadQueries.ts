@@ -903,6 +903,10 @@ export const DISPLAY_HUB = gql`
         longitude
         latitude
       }
+      constituency {
+        id
+        name
+      }
       leader {
         id
         firstName

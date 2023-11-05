@@ -243,7 +243,7 @@ type HubCouncil {
   members: [Member!]!
     @cypher(
       statement: """
-      MATCH (this)<-[:HAS]-(:Stream)<-[:HAS]-(creativeArts:CreativeArts)
+      MATCH (this)<-[:HAS]-(:Ministry)<-[:HAS]-(creativeArts:CreativeArts)
       MATCH (this)<-[:HAS_MINISTRY]-(council:Council)-[:HAS]->(:Constituency)-[:HAS]->(:Bacenta)-[:HAS]->(:Fellowship)<-[:BELONGS_TO]-(members:Active:Member)
       MATCH (members)-[:BELONGS_TO]->(creativeArts)
       RETURN DISTINCT members ORDER BY toLower(members.lastName), toLower(members.firstName)
@@ -252,7 +252,7 @@ type HubCouncil {
   memberCount: Int!
     @cypher(
       statement: """
-      MATCH (this)<-[:HAS]-(:Stream)<-[:HAS]-(creativeArts:CreativeArts)
+      MATCH (this)<-[:HAS]-(:Ministry)<-[:HAS]-(creativeArts:CreativeArts)
       MATCH (this)<-[:HAS_MINISTRY]-(council:Council)-[:HAS]->(:Constituency)-[:HAS]->(:Bacenta)-[:HAS]->(:Fellowship)<-[:BELONGS_TO]-(members:Active:Member)
       MATCH (members)-[:BELONGS_TO]->(creativeArts)
       RETURN COUNT(DISTINCT members)
@@ -320,7 +320,7 @@ type Hub {
   members: [Member!]!
     @cypher(
       statement: """
-      MATCH (this)<-[:HAS]-(:HubCouncil)<-[:HAS]-(:Stream)<-[:HAS]-(creativeArts:CreativeArts)
+      MATCH (this)<-[:HAS]-(:HubCouncil)<-[:HAS]-(:Ministry)<-[:HAS]-(creativeArts:CreativeArts)
       MATCH (this)<-[:HAS_MINISTRY]-(constituency:Constituency)-[:HAS]->(:Bacenta)-[:HAS]->(:Fellowship)<-[:BELONGS_TO]-(members:Active:Member)
       MATCH (members)-[:BELONGS_TO]->(creativeArts)
       RETURN DISTINCT members ORDER BY toLower(members.lastName), toLower(members.firstName)
@@ -329,7 +329,7 @@ type Hub {
   memberCount: Int!
     @cypher(
       statement: """
-      MATCH (this)<-[:HAS]-(:HubCouncil)<-[:HAS]-(:Stream)<-[:HAS]-(creativeArts:CreativeArts)
+      MATCH (this)<-[:HAS]-(:HubCouncil)<-[:HAS]-(:Ministry)<-[:HAS]-(creativeArts:CreativeArts)
       MATCH (this)<-[:HAS_MINISTRY]-(constituency:Constituency)-[:HAS]->(:Bacenta)-[:HAS]->(:Fellowship)<-[:BELONGS_TO]-(members:Active:Member)
       MATCH (members)-[:BELONGS_TO]->(creativeArts)
       RETURN COUNT(DISTINCT members)

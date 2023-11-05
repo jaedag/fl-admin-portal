@@ -89,4 +89,3 @@ WHERE NOT EXISTS {
 }
 DETACH DELETE hub;
 
-

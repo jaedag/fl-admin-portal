@@ -8,6 +8,8 @@ import DisplaySontaDetails from 'components/DisplayChurchDetails/DisplaySontaDet
 import { DetailsArray } from './DetailsFellowship'
 import { permitAdmin } from 'permission-utils'
 import { check } from 'global-utils'
+import { Container } from 'react-bootstrap'
+import Breadcrumb from 'components/DisplayChurchDetails/Breadcrumb'
 
 const DetailsHub = () => {
   const { hubId } = useContext(ChurchContext)
@@ -33,6 +35,8 @@ const DetailsHub = () => {
     hub?.hubCouncil,
     hub,
   ]
+
+  const churchCrumb = [hub?.constituency, hub]
 
   const details: DetailsArray = [
     {
@@ -61,24 +65,29 @@ const DetailsHub = () => {
 
   return (
     <ApolloWrapper loading={hubLoading} error={hubError} data={hubData}>
-      <DisplaySontaDetails
-        details={details}
-        church={hub}
-        loading={hubLoading}
-        name={hub?.name}
-        leaderTitle="Hub Leader"
-        editPermitted={[...permitAdmin('Stream'), ...permitAdmin('Ministry')]}
-        churchId={hubId}
-        leader={hub?.leader}
-        location={hub?.location}
-        churchType="Hub"
-        subLevel={'HubFellowship'}
-        editlink="/hub/edithub"
-        history={hub?.history.length !== 0 ? hub?.history : []}
-        last3Weeks={history && check(history)}
-        breadcrumb={breadcrumb && breadcrumb}
-        buttons={hub?.hubFellowships ?? []}
-      />
+      <>
+        <Container className="green">
+          {hub?.constituency && <Breadcrumb breadcrumb={churchCrumb} />}
+        </Container>
+        <DisplaySontaDetails
+          details={details}
+          church={hub}
+          loading={hubLoading}
+          name={hub?.name}
+          leaderTitle="Hub Leader"
+          editPermitted={[...permitAdmin('Stream'), ...permitAdmin('Ministry')]}
+          churchId={hubId}
+          leader={hub?.leader}
+          location={hub?.location}
+          churchType="Hub"
+          subLevel={'HubFellowship'}
+          editlink="/hub/edithub"
+          history={hub?.history.length !== 0 ? hub?.history : []}
+          last3Weeks={history && check(history)}
+          breadcrumb={breadcrumb && breadcrumb}
+          buttons={hub?.hubFellowships ?? []}
+        />
+      </>
     </ApolloWrapper>
   )
 }
