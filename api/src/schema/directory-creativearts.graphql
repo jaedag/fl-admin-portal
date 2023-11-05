@@ -476,6 +476,13 @@ extend type Council {
       RETURN COUNT(hubs)
       """
     )
+  hubCount: Int!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS_MINISTRY]->(:HubCouncil)-[:HAS]->(hubs:Hub)
+      RETURN COUNT(hubs)
+      """
+    )
   hubFellowshipCount: Int!
     @cypher(
       statement: """

@@ -341,6 +341,7 @@ export const DISPLAY_CONSTITUENCY = gql`
       name
       target
       stream_name
+      hubCount
       activeBacentaCount
       vacationBacentaCount
       vacationFellowshipCount
@@ -415,6 +416,7 @@ export const DISPLAY_COUNCIL = gql`
       activeBacentaCount
       activeFellowshipCount
       hubCouncilCount
+      hubCount
       hubFellowshipCount
       memberCount
       pastorCount

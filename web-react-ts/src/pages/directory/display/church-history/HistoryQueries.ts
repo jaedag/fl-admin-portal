@@ -112,6 +112,96 @@ export const BACENTA_HISTORY = gql`
     }
   }
 `
+
+export const HUB_COUNCIL_HISTORY = gql`
+  query HubCouncilsHistory($id: ID!) {
+    hubCouncils(where: { id: $id }) {
+      id
+      name
+      history(limit: 10) {
+        id
+        timeStamp
+        createdAt {
+          date
+        }
+        loggedBy {
+          id
+          firstName
+          lastName
+          stream_name
+        }
+        historyRecord
+      }
+    }
+  }
+`
+export const HUB_HISTORY = gql`
+  query HubHistory($id: ID!) {
+    hubs(where: { id: $id }) {
+      id
+      name
+      history(limit: 10) {
+        id
+        timeStamp
+        createdAt {
+          date
+        }
+        loggedBy {
+          id
+          firstName
+          lastName
+          stream_name
+        }
+        historyRecord
+      }
+    }
+  }
+`
+export const MINISTRY_HISTORY = gql`
+  query MinistryHistory($id: ID!) {
+    ministries(where: { id: $id }) {
+      id
+      name
+      history(limit: 10) {
+        id
+        timeStamp
+        createdAt {
+          date
+        }
+        loggedBy {
+          id
+          firstName
+          lastName
+          stream_name
+        }
+        historyRecord
+      }
+    }
+  }
+`
+
+export const CREATIVE_ARTS_HISTORY = gql`
+  query CreativeArtsHistory($id: ID!) {
+    creativeArts(where: { id: $id }) {
+      id
+      name
+      history(limit: 10) {
+        id
+        timeStamp
+        createdAt {
+          date
+        }
+        loggedBy {
+          id
+          firstName
+          lastName
+          stream_name
+        }
+        historyRecord
+      }
+    }
+  }
+`
 export const FELLOWSHIP_HISTORY = gql`
   query FellowshipsHistory($id: ID!) {
     fellowships(where: { id: $id }) {

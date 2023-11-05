@@ -60,6 +60,12 @@ const DetailsCouncil = () => {
       creativearts: true,
     },
     {
+      title: 'Hubs',
+      number: council?.hubCount,
+      link: '#',
+      creativearts: true,
+    },
+    {
       title: 'Hub Fellowships',
       number: council?.hubFellowshipCount,
       link: `#`,
