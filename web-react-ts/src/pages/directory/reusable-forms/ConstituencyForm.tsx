@@ -166,7 +166,7 @@ const ConstituencyForm = ({
                       )}
                       {initialValues.hubs?.map((bacenta, index) => {
                         if (!bacenta && !index)
-                          return <NoDataComponent text="No Bacentas" />
+                          return <NoDataComponent text="No Hubs" />
                         return (
                           <Button variant="secondary" className="text-start">
                             {bacenta.name} {bacenta.__typename}
