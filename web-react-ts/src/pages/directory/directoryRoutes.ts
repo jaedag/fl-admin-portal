@@ -114,6 +114,9 @@ const DisplayAllStreamMinistries = lazy(
 const DisplayAllCouncilHubs = lazy(
   () => import('pages/directory/display/AllCouncilHubCouncils')
 )
+const DisplayAllConstituencyHubs = lazy(
+  () => import('pages/directory/display/AllConstituencyHubs')
+)
 const DisplayAllMinistries = lazy(
   () => import('pages/directory/display/AllMinistries')
 )
@@ -573,6 +576,12 @@ export const directory: LazyRouteTypes[] = [
     path: '/hubcouncil/displayall',
     element: DisplayAllHubCouncils,
     roles: [...permitMe('HubCouncil'), ...permitMe('Council')],
+    placeholder: false,
+  },
+  {
+    path: '/constituency/hubs',
+    element: DisplayAllConstituencyHubs,
+    roles: [...permitMe('Constituency'), ...permitMe('Hub')],
     placeholder: false,
   },
   {
