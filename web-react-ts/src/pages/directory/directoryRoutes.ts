@@ -29,6 +29,34 @@ const FellowshipHistory = lazy(
 const BacentaHistory = lazy(
   () => import('pages/directory/display/church-history/BacentaHistory')
 )
+
+//CREATIVE ARTS PAGES START
+
+const CreateArtsHistory = lazy(
+  () =>
+    import(
+      'pages/directory/display/church-history/creative-arts/CreativeArtsHistory'
+    )
+)
+const HubCouncilHistory = lazy(
+  () =>
+    import(
+      'pages/directory/display/church-history/creative-arts/HubCouncilHistory'
+    )
+)
+const HubHistory = lazy(
+  () =>
+    import('pages/directory/display/church-history/creative-arts/HubHistory')
+)
+const MinistryHistory = lazy(
+  () =>
+    import(
+      'pages/directory/display/church-history/creative-arts/MinistryHistory'
+    )
+)
+
+//CREATIVE ARTS PAGES END
+
 const CampusHistory = lazy(
   () => import('pages/directory/display/church-history/CampusHistory')
 )
@@ -410,6 +438,36 @@ export const directory: LazyRouteTypes[] = [
     roles: ['all'],
     placeholder: true,
   },
+
+  //CREATIVE ARTS ROUTE PATH STARTS
+
+  {
+    path: '/creativearts/history',
+    element: CreateArtsHistory,
+    roles: ['all'],
+    placeholder: true,
+  },
+  {
+    path: '/hubcouncil/history',
+    element: HubCouncilHistory,
+    roles: ['all'],
+    placeholder: true,
+  },
+  {
+    path: '/hub/history',
+    element: HubHistory,
+    roles: ['all'],
+    placeholder: true,
+  },
+  {
+    path: '/ministry/history',
+    element: MinistryHistory,
+    roles: ['all'],
+    placeholder: true,
+  },
+
+  //CREATIVE ARTS ROUTE PATH ENDS
+
   {
     path: '/campus/history',
     element: CampusHistory,
