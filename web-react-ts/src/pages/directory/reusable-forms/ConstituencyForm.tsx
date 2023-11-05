@@ -164,12 +164,12 @@ const ConstituencyForm = ({
                       {initialValues.hubs?.length && (
                         <p className="fw-bold fs-5">Hubs</p>
                       )}
-                      {initialValues.hubs?.map((bacenta, index) => {
-                        if (!bacenta && !index)
+                      {initialValues.hubs?.map((hub, index) => {
+                        if (!hub && !index)
                           return <NoDataComponent text="No Hubs" />
                         return (
                           <Button variant="secondary" className="text-start">
-                            {bacenta.name} {bacenta.__typename}
+                            {hub.name} {hub.__typename}
                           </Button>
                         )
                       })}
