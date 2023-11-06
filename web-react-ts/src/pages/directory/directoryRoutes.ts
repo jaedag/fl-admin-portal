@@ -85,6 +85,9 @@ const FellowshipMembers = lazy(
   () => import('pages/directory/grids/FellowshipMembers')
 )
 const HubMembers = lazy(() => import('pages/directory/grids/HubMembers'))
+const HubCouncilMembers = lazy(
+  () => import('pages/directory/grids/HubCouncilMembers')
+)
 const MinistryMembers = lazy(
   () => import('pages/directory/grids/MinistryMembers')
 )
@@ -367,6 +370,11 @@ export const memberGrids: LazyRouteTypes[] = [
     path: '/hub/members',
     element: HubMembers,
     roles: permitMe('Hub'),
+  },
+  {
+    path: '/hubcouncil/members',
+    element: HubCouncilMembers,
+    roles: permitMe('HubCouncil'),
   },
   {
     path: '/ministry/members',

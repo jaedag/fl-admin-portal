@@ -745,6 +745,80 @@ export const GET_HUB_MEMBERS = gql`
   }
 `
 
+export const GET_HUBCOUNCIL_MEMBERS = gql`
+  query getHubCouncilMembers($id: ID!) {
+    hubCouncils(where: { id: $id }) {
+      id
+      name
+      members {
+        id
+        firstName
+        lastName
+        pictureUrl
+        stream_name
+        fellowship {
+          name
+        }
+        basonta {
+          name
+        }
+        maritalStatus {
+          status
+        }
+        gender {
+          gender
+        }
+        title {
+          name
+        }
+        leadsFellowship {
+          id
+          name
+        }
+        leadsBacenta {
+          id
+          name
+        }
+        leadsConstituency {
+          id
+          name
+        }
+
+        leadsHubFellowship {
+          id
+          name
+        }
+        leadsHub {
+          id
+          name
+        }
+        leadsMinistry {
+          id
+          name
+        }
+
+        isAdminForCouncil {
+          id
+          name
+        }
+        isAdminForConstituency {
+          id
+          name
+        }
+
+        isAdminForMinistry {
+          id
+          name
+        }
+        isAdminForCreativeArts {
+          id
+          name
+        }
+      }
+    }
+  }
+`
+
 export const GET_MINISTRY_MEMBERS = gql`
   query getMinistryMembers($id: ID!) {
     ministries(where: { id: $id }) {

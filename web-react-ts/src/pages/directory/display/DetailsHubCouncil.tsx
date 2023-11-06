@@ -35,7 +35,7 @@ const DetailsHubCouncil = () => {
     {
       title: 'Members',
       number: hubCouncil?.memberCount,
-      link: '/hub/members',
+      link: '/hubcouncil/members',
       width: 12,
     },
     {
