@@ -1,3 +1,25 @@
+#### 7.10.34 (2023-11-06)
+
+##### Chores
+
+*  Finish Sonta History Pages ([#463](https://github.com/firstlovecenter/fl-admin-portalgit/pull/463)) ([9ebf85fe](https://github.com/firstlovecenter/fl-admin-portalgit/commit/9ebf85fe7094a3dd0dd29dc7ada04e4f6d9bcb8d))
+
+##### Bug Fixes
+
+*  refactor reusable forms to conditionally render select options based on new form flag ([41d8f352](https://github.com/firstlovecenter/fl-admin-portalgit/commit/41d8f352c68513c72871ca7a104b1264f6c658de))
+*  add creativeArts prop to leader search component in reusable forms ([fd503630](https://github.com/firstlovecenter/fl-admin-portalgit/commit/fd5036307481097dadabb7cede4c03f3a121a772))
+*  update hub creation and search functionality ([9aeafa85](https://github.com/firstlovecenter/fl-admin-portalgit/commit/9aeafa85670db4f85d3279f173dd3892f94586fc))
+*  add authentication check to SetPermissions component ([1b818426](https://github.com/firstlovecenter/fl-admin-portalgit/commit/1b81842636f731950652458e7c2e682af8519746))
+*  add Hub Council members grid and update Hub Council details link ([93b72cef](https://github.com/firstlovecenter/fl-admin-portalgit/commit/93b72cef9803deb03fa098fa2d22f0d510e3f778))
+*  allow constituencies to see hubs attached to them ([737bce86](https://github.com/firstlovecenter/fl-admin-portalgit/commit/737bce86330509aae27305b0db7597c88c7555a6))
+*  correct typo in constituency form 2 ([b3da3717](https://github.com/firstlovecenter/fl-admin-portalgit/commit/b3da3717943f0b85df302be44ff9458142cf5ee6))
+*  correct typo in constituency form ([a53db58f](https://github.com/firstlovecenter/fl-admin-portalgit/commit/a53db58f90fc3ba400580ca1f5a8e8307393fbf4))
+*  implement breadcrumb on hub level ([c349e7bf](https://github.com/firstlovecenter/fl-admin-portalgit/commit/c349e7bf3166c1a223b374a80f2a5a15a0d914c0))
+
+##### Other Changes
+
+* //github.com/firstlovecenter/fl-admin-portal into deploy ([9c9edf72](https://github.com/firstlovecenter/fl-admin-portalgit/commit/9c9edf721f47ec6340dfd83545916eedd762d8c4))
+
 #### 7.10.33 (2023-11-05)
 
 ##### Bug Fixes
