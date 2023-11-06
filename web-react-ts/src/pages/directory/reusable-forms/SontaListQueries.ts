@@ -13,6 +13,19 @@ export const GET_MINISTRY_HUBCOUNCILS = gql`
   }
 `
 
+export const GET_HUBCOUNCIL_CONSTITUENCIES = gql`
+  query getHubCouncilConstituencies($hubCouncilId: ID!) {
+    hubCouncils(where: { id: $hubCouncilId }) {
+      id
+      name
+      constituencies {
+        id
+        name
+      }
+    }
+  }
+`
+
 export const GET_MINISTRY_COUNCILS = gql`
   query getMinistryCouncils($ministryId: ID!) {
     ministries(where: { id: $ministryId }) {

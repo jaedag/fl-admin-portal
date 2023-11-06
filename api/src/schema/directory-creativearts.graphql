@@ -305,6 +305,13 @@ type HubCouncil {
   hubs: [Hub!]! @relationship(type: "HAS", direction: OUT)
   ministry: Ministry! @relationship(type: "HAS", direction: IN)
   council: Council! @relationship(type: "HAS_MINISTRY", direction: IN)
+  constituencies: [Constituency!]!
+    @cypher(
+      statement: """
+      MATCH (this)<-[:HAS_MINISTRY]-(council:Council)-[:HAS]->(constituencies:Constituency)
+      RETURN constituencies
+      """
+    )
   serviceLogs: [ServiceLog!]! @relationship(type: "HAS_HISTORY", direction: OUT)
   rehearsals(limit: Int!, skip: Int = 0): [RehearsalRecord!]!
     @cypher(
@@ -724,6 +731,7 @@ extend type Mutation {
     name: String!
     leaderId: ID!
     hubCouncilId: ID!
+    constituencyId: ID!
     meetingDay: String!
     venueLongitude: Float
     venueLatitude: Float
@@ -744,11 +752,12 @@ extend type Mutation {
     @cypher(
       statement: """
       MATCH (council:HubCouncil {id: $hubCouncilId})<-[:HAS]-(:Ministry)<-[:HAS]-(creative:CreativeArts)
+      MATCH (constituency:Constituency {id: $constituencyId})
       UNWIND split(creative.name, ' ') AS creativeName
-      WITH COLLECT(LEFT(creativeName, 1)) AS firstLetters
-      WITH REDUCE(s = '', letter in firstLetters | s + letter) AS concatenatedString
+      WITH COLLECT(LEFT(creativeName, 1)) AS firstLetters, constituency.name AS constituencyName
+      WITH REDUCE(s = '', letter in firstLetters | s + letter) AS concatenatedString, constituencyName
 
-      CREATE (hub:Active:Hub {name: concatenatedString + ' ' + $name})
+      CREATE (hub:Active:Hub {name: concatenatedString + ' ' + constituencyName + ' ' + $name})
         SET hub.id = apoc.create.uuid()
         SET hub.location = point({latitude:toFloat($venueLatitude), longitude:toFloat($venueLongitude), crs:'WGS-84'})
 
@@ -763,10 +772,12 @@ extend type Mutation {
       MATCH (leader:Active:Member {id: $leaderId})  WHERE leader.email IS NOT NULL
       MATCH (currentUser:Active:Member {auth_id: $auth.jwt.sub})
       MATCH (council:HubCouncil {id: $hubCouncilId})
+      MATCH (constituency:Constituency {id: $constituencyId})
       MATCH (meetingDay:ServiceDay {day: $meetingDay})
 
-      WITH hub, leader, currentUser, log, council, meetingDay
+      WITH hub, leader, currentUser, log, council, meetingDay, constituency
       MERGE (council)-[:HAS]->(hub)
+      MERGE (constituency)-[:HAS_MINISTRY]->(hub)
       MERGE (leader)-[:LEADS]->(hub)
       MERGE (hub)-[:MEETS_ON]->(meetingDay)
 

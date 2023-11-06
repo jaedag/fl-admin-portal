@@ -1,4 +1,4 @@
-import { useMutation } from '@apollo/client'
+import { useMutation, useQuery } from '@apollo/client'
 import { Form, Formik, FormikHelpers } from 'formik'
 import * as Yup from 'yup'
 import {
@@ -7,6 +7,7 @@ import {
   VACATION_ONLINE_OPTIONS,
   VACATION_OPTIONS,
   isAuthorised,
+  makeSelectOptions,
   throwToSentry,
 } from 'global-utils'
 import { useContext, useState } from 'react'
@@ -38,10 +39,13 @@ import { MemberContext } from 'contexts/MemberContext'
 import RoleView from 'auth/RoleView'
 import Select from 'components/formik/Select'
 import VerifyNotMe from 'auth/VerifyNotMe'
+import { GET_HUBCOUNCIL_CONSTITUENCIES } from './SontaListQueries'
+import ApolloWrapper from 'components/base-component/ApolloWrapper'
 
 export interface HubFormValues extends FormikInitialValues {
   name: string
   hubCouncil?: string
+  constituency?: string
   meetingDay: string
   vacationStatus: 'Active' | 'Vacation'
   venueLatitude: string | number
@@ -68,6 +72,9 @@ const HubForm = ({ initialValues, onSubmit, title, newHub }: HubFormProps) => {
   const navigate = useNavigate()
 
   const [buttonLoading, setButtonLoading] = useState(false)
+  const { data, loading, error } = useQuery(GET_HUBCOUNCIL_CONSTITUENCIES, {
+    variables: { hubCouncilId: initialValues.hubCouncil },
+  })
   const [CloseDownHub] = useMutation(MAKE_HUB_INACTIVE, {
     refetchQueries: [
       {
@@ -85,7 +92,14 @@ const HubForm = ({ initialValues, onSubmit, title, newHub }: HubFormProps) => {
     ],
   })
 
+  const constituencyOptions = makeSelectOptions(
+    data?.hubCouncils[0].constituencies
+  )
+
   const validationSchema = Yup.object({
+    constituency: Yup.string().required(
+      'Please choose a constituency from the drop down'
+    ),
     name: Yup.string().required(`Hub Name is a required field`),
     leaderId: Yup.string().required(
       'Please choose a leader from the drop down'
@@ -120,7 +134,7 @@ const HubForm = ({ initialValues, onSubmit, title, newHub }: HubFormProps) => {
     : VACATION_OPTIONS
 
   return (
-    <>
+    <ApolloWrapper data={data} loading={loading} error={error}>
       <Container>
         <HeadingPrimary>{title}</HeadingPrimary>
         <HeadingSecondary>{initialValues.name + ' Hub'}</HeadingSecondary>
@@ -152,6 +166,15 @@ const HubForm = ({ initialValues, onSubmit, title, newHub }: HubFormProps) => {
 
                     <Col className="mb-2">
                       <Row className="form-row">
+                        <Col sm={12}>
+                          <Select
+                            name="constituency"
+                            label="Select a Constituency"
+                            options={constituencyOptions}
+                            defaultOption="Select a Constituency"
+                          />
+                        </Col>
+
                         <RoleView
                           roles={[
                             ...permitAdmin('Stream'),
@@ -204,6 +227,7 @@ const HubForm = ({ initialValues, onSubmit, title, newHub }: HubFormProps) => {
                                 setFieldValue={formik.setFieldValue}
                                 aria-describedby="Member Search Box"
                                 error={formik.errors.leaderId}
+                                creativeArts={true}
                               />
                             </Col>
                           </VerifyNotMe>
@@ -384,7 +408,7 @@ const HubForm = ({ initialValues, onSubmit, title, newHub }: HubFormProps) => {
           )}
         </Formik>
       </Container>
-    </>
+    </ApolloWrapper>
   )
 }
 

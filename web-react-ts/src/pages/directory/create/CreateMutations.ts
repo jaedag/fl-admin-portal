@@ -321,6 +321,7 @@ export const CREATE_HUB_MUTATION = gql`
     $name: String!
     $leaderId: ID!
     $hubCouncilId: ID!
+    $constituencyId: ID!
     $meetingDay: String!
     $venueLongitude: Float
     $venueLatitude: Float
@@ -329,6 +330,7 @@ export const CREATE_HUB_MUTATION = gql`
       name: $name
       leaderId: $leaderId
       hubCouncilId: $hubCouncilId
+      constituencyId: $constituencyId
       meetingDay: $meetingDay
       venueLongitude: $venueLongitude
       venueLatitude: $venueLatitude

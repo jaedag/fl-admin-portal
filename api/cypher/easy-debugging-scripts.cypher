@@ -83,9 +83,15 @@ MATCH (hub:HubCouncil)<-[r:HAS]-(constituency:Ministry)
 RETURN hub.name, constituency.name, r
 
 // Delete hubs that don't have ministries
-MATCH (hub:HubCouncil)
+MATCH (hub:Hub)
 WHERE NOT EXISTS {
-   MATCH (hub)<-[:HAS]-(constituency:Ministry)
+   MATCH (hub)<-[:HAS_MINISTRY]-(constituency:Constituency)
 }
-DETACH DELETE hub;
+DETACH DELETE hub
+
+// MATCH (hub)<-[:LEADS]-(leader:Member)-[:BELONGS_TO]->(fellowship:Fellowship)
+// MATCH (fellowship)<-[:HAS*2]-(constituency:Constituency)
+// MERGE (constituency)-[:HAS_MINISTRY]->(hub)
+
+RETURN hub.name
 
