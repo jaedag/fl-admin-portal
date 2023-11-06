@@ -28,7 +28,7 @@ const SetPermissions = ({
 
   const { data, loading, error } = useQuery(SERVANT_CHURCH_LIST, {
     variables: { id: currentUser.id },
-    skip: !currentUser.id,
+    skip: !currentUser.id || !isAuthenticated,
     onCompleted: (data) => {
       const servant = { ...data?.members[0], ...currentUser }
       setUserJobs(getUserServantRoles(servant))
@@ -41,7 +41,7 @@ const SetPermissions = ({
     error: loggedInError,
   } = useQuery(GET_LOGGED_IN_USER, {
     variables: { email: user?.email },
-    skip: !user?.email,
+    skip: !user?.email || !isAuthenticated,
     onCompleted: (data) => {
       try {
         const streamName = data.memberByEmail.stream_name
