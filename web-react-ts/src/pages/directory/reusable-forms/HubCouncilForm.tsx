@@ -144,6 +144,7 @@ const HubCouncilForm = ({
                             setFieldValue={formik.setFieldValue}
                             aria-describedby="Member Search Box"
                             error={formik.errors.leaderId}
+                            creativeArts={true}
                           />
                         </Col>
                       </Row>
