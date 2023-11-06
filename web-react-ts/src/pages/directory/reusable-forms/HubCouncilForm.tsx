@@ -122,12 +122,15 @@ const HubCouncilForm = ({
                   <Row className="row-cols-1 row-cols-md-2">
                     {/* <!-- Basic Info Div --> */}
                     <Col className="mb-2">
-                      <Select
-                        name="council"
-                        label="Select a Council"
-                        options={councilsOptions}
-                        defaultOption="Select a Council"
-                      />
+                      {newHubCouncil && (
+                        <Select
+                          name="council"
+                          label="Select a Council"
+                          options={councilsOptions}
+                          defaultOption="Select a Council"
+                        />
+                      )}
+
                       <Input
                         name="name"
                         label={`Name of Hub Council`}

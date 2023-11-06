@@ -166,14 +166,16 @@ const HubForm = ({ initialValues, onSubmit, title, newHub }: HubFormProps) => {
 
                     <Col className="mb-2">
                       <Row className="form-row">
-                        <Col sm={12}>
-                          <Select
-                            name="constituency"
-                            label="Select a Constituency"
-                            options={constituencyOptions}
-                            defaultOption="Select a Constituency"
-                          />
-                        </Col>
+                        {newHub && (
+                          <Col sm={12}>
+                            <Select
+                              name="constituency"
+                              label="Select a Constituency"
+                              options={constituencyOptions}
+                              defaultOption="Select a Constituency"
+                            />
+                          </Col>
+                        )}
 
                         <RoleView
                           roles={[

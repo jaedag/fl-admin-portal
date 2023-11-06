@@ -121,12 +121,15 @@ const MinistryForm = ({
                   <Row className="row-cols-1 row-cols-md-2">
                     {/* <!-- Basic Info Div --> */}
                     <Col className="mb-2">
-                      <Select
-                        name="stream"
-                        label="Select a Stream"
-                        options={streamOptions}
-                        defaultOption="Select a Stream"
-                      />
+                      {newMinistry && (
+                        <Select
+                          name="stream"
+                          label="Select a Stream"
+                          options={streamOptions}
+                          defaultOption="Select a Stream"
+                        />
+                      )}
+
                       <Input
                         name="name"
                         label={`Name of Ministry`}
