@@ -12,11 +12,12 @@ extend type Member {
     @cypher(
       statement: """
       MATCH (this)-[:BELONGS_TO]->(basonta:Basonta)
-      MATCH (this)-[:LEADS|HAS|DOES_ARRIVALS_FOR|IS_ADMIN_FOR|IS_SHEEP_SEEKER_FOR*1..8]->(:Fellowship)<-[:BELONGS_TO]-(members:Active:Member)
+      MATCH (this)-[:LEADS|IS_ADMIN_FOR]->(creativeLevel)<-[:HAS_MINISTRY]-(bacentaLevel)-[:HAS*2..5]->(:Fellowship)<-[:BELONGS_TO]-(members:Active:Member)
+      WHERE creativeLevel:Hub OR creativeLevel:HubCouncil OR creativeLevel:Ministry OR creativeLevel:CreativeArts
       MATCH (members)-[:BELONGS_TO]->(basonta)
       WHERE toLower(members.firstName+ ' ' + members.middleName + ' ' + members.lastName) CONTAINS toLower($key)
       OR toLower(members.firstName + ' ' + members.lastName) CONTAINS toLower($key)
-      RETURN DISTINCT members ORDER BY toLower(members.lastName), toLower(members.firstName) LIMIT $limit
+      RETURN DISTINCT members.firstName,  members.lastName,basonta.name ORDER BY toLower(members.lastName), toLower(members.firstName) LIMIT $limit
       """
     )
   basontaMemberSearchFromHub(

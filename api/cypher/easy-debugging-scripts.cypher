@@ -95,3 +95,11 @@ DETACH DELETE hub
 
 RETURN hub.name
 
+
+MATCH (this:Member {id: "dca6e371-e814-41ef-b46d-606d54bd89b2"})-[:BELONGS_TO]->(basonta:Basonta)
+MATCH (this)-[:LEADS|IS_ADMIN_FOR]->(creativeLevel)<-[:HAS_MINISTRY]-(bacentaLevel)-[:HAS*1..6]->(:Fellowship)<-[:BELONGS_TO]-(members:Active:Member)
+WHERE creativeLevel:Hub OR creativeLevel:HubCouncil OR creativeLevel:Ministry OR creativeLevel:CreativeArts
+MATCH (members)-[:BELONGS_TO]->(basonta)
+WHERE toLower(members.firstName+ ' ' + members.middleName + ' ' + members.lastName) CONTAINS toLower($key)
+OR toLower(members.firstName + ' ' + members.lastName) CONTAINS toLower($key)
+RETURN DISTINCT members.firstName,  members.lastName,basonta.name ORDER BY toLower(members.lastName), toLower(members.firstName) LIMIT $limit
