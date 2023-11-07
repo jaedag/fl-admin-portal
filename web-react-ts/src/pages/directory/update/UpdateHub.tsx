@@ -28,6 +28,7 @@ const UpdateHub = () => {
     leaderId: hub?.leader?.id || '',
     leaderEmail: hub?.leader?.email ?? '',
     hubCouncil: hub?.hubCouncil?.id,
+    constituency: hub?.constituency?.id ?? '',
     meetingDay: hub?.meetingDay?.day,
     hubFellowships: hub?.hubFellowships.length ? hub?.hubFellowships : [],
     vacationStatus: hub?.vacationStatus,
