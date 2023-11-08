@@ -66,7 +66,7 @@ export const memberFilter = (memberData, filters) => {
       filteredByBasonta = [
         ...new Set([
           ...filteredByBasonta,
-          ...filterFor(filteredData, 'ministry', 'name', ministryToFilter),
+          ...filterFor(filteredData, 'basonta', 'name', ministryToFilter),
         ]),
       ]
     })

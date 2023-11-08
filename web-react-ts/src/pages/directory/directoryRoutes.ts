@@ -369,22 +369,22 @@ export const memberGrids: LazyRouteTypes[] = [
   {
     path: '/hub/members',
     element: HubMembers,
-    roles: permitMe('Hub'),
+    roles: [...permitMe('Hub'), ...permitMe('Constituency')],
   },
   {
     path: '/hubcouncil/members',
     element: HubCouncilMembers,
-    roles: permitMe('HubCouncil'),
+    roles: [...permitMe('HubCouncil'), ...permitMe('Council')],
   },
   {
     path: '/ministry/members',
     element: MinistryMembers,
-    roles: permitMe('Ministry'),
+    roles: [...permitMe('Ministry'), ...permitMe('Stream')],
   },
   {
     path: '/creativearts/members',
     element: CreativeArtsMembers,
-    roles: permitMe('CreativeArts'),
+    roles: [...permitMe('CreativeArts'), ...permitMe('Campus')],
   },
 ]
 

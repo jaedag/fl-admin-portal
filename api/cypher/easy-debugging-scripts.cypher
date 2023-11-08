@@ -103,3 +103,4 @@ MATCH (members)-[:BELONGS_TO]->(basonta)
 WHERE toLower(members.firstName+ ' ' + members.middleName + ' ' + members.lastName) CONTAINS toLower($key)
 OR toLower(members.firstName + ' ' + members.lastName) CONTAINS toLower($key)
 RETURN DISTINCT members.firstName,  members.lastName,basonta.name ORDER BY toLower(members.lastName), toLower(members.firstName) LIMIT $limit
+

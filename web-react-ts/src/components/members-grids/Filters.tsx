@@ -49,6 +49,7 @@ const Filters = ({
     { key: 'Fellowship Leader', value: 'Fellowship Leader' },
     { key: 'Hub Fellowship Leader', value: 'Hub Fellowship Leader' },
     { key: 'Hub Leader', value: 'Hub Leader' },
+    { key: 'Hub Council Leader', value: 'Hub Council Leader' },
     { key: 'Ministry Leader', value: 'Ministry Leader' },
     { key: 'Creative Arts Overseer', value: 'Creative Arts Overseer' },
     { key: 'Admin', value: 'Admin' },
