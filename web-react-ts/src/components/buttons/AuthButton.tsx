@@ -69,7 +69,7 @@ const AuthButton = (props: AuthButtonPropsType) => {
               }`}
               onClick={() => {
                 logout({ returnTo: window.location.origin })
-                sessionStorage.clear()
+                sessionStorage.removeItem('currentUser')
                 togglePopup()
               }}
             >
