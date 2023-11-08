@@ -1,3 +1,13 @@
+#### 7.10.35 (2023-11-08)
+
+##### Bug Fixes
+
+*  add new filters and update member data ([2fd8c05b](https://github.com/firstlovecenter/fl-admin-portalgit/commit/2fd8c05b4fa4db1e52cc19d3fd296d6e0413787c))
+*  update UpdateHub.tsx ([cd7f6017](https://github.com/firstlovecenter/fl-admin-portalgit/commit/cd7f60172e0d7281a0912e12bb42d13e3f4bd7af))
+*  udate SearchHubQueries.ts ([a7e08ce5](https://github.com/firstlovecenter/fl-admin-portalgit/commit/a7e08ce592e6f73df431f20cce379ce863583cca))
+*  refactor directory search query to return full member object ([df864689](https://github.com/firstlovecenter/fl-admin-portalgit/commit/df86468993964d2dc6b0f26fe302625e5044c8f9))
+*  refactor directory search Cypher query to include creative levels ([463a8089](https://github.com/firstlovecenter/fl-admin-portalgit/commit/463a80894e2b8cccf335611341fe7ac712dcee9f))
+
 #### 7.10.34 (2023-11-06)
 
 ##### Chores
