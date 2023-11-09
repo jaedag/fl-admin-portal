@@ -53,9 +53,6 @@ const CouncilDashboard = () => {
           >
             Transaction History
           </Button>
-          <Button variant="secondary" className="text-start py-3">
-            Download Expense Report
-          </Button>
         </div>
       </Container>
     </ApolloWrapper>

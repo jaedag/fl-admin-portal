@@ -34,7 +34,7 @@ import {
   closeSnackbar,
   enqueueSnackbar,
 } from 'notistack'
-import { Button, Card, Container } from 'react-bootstrap'
+import { Button, Card } from 'react-bootstrap'
 
 const AppWithApollo = () => {
   const [accessToken, setAccessToken] = useState<string>('')
@@ -105,7 +105,7 @@ const AppWithApollo = () => {
           <Card>
             <Card.Header className="fw-bold">GraphQL Error</Card.Header>
             <Card.Body>
-              <Container>{`Message: ${message}`}</Container>
+              <div>{`Message: ${message}`}</div>
               <div>{`Location: ${JSON.stringify(locations, null, 2)}`}</div>
               <div>{`Path: ${path}`}</div>
             </Card.Body>
@@ -128,10 +128,10 @@ const AppWithApollo = () => {
     if (networkError)
       enqueueSnackbar(
         <Card>
-          <Card.Header>Network Error</Card.Header>
+          <Card.Header className="fw-bold">Network Error</Card.Header>
           <Card.Body>
             <div>{`Message: ${networkError?.message}`}</div>
-            <div>{`Stack: ${networkError?.stack}`}</div>
+            {/* <div>{`Stack: ${JSON.stringify(networkError?.stack)}`}</div> */}
           </Card.Body>
         </Card>,
         {

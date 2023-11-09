@@ -12,6 +12,7 @@ type AccountTransaction {
   momoName: String
   invoiceUrl: String
 
+  council: Council! @relationship(type: "HAS_TRANSACTION", direction: IN)
   loggedBy: Member! @relationship(type: "LOGGED_BY", direction: OUT)
 }
 
@@ -42,6 +43,14 @@ extend type Campus {
       statement: """
       MATCH (this)-[:HAS*2]->(council:Council)
       RETURN SUM(council.bussingSocietyBalance)
+      """
+    )
+  transactions: [AccountTransaction!]!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS*2]->(council:Council)
+      MATCH (council)-[:HAS_TRANSACTION]->(transaction:AccountTransaction)
+      RETURN transaction ORDER BY transaction.timestamp DESC
       """
     )
 }
@@ -80,10 +89,8 @@ extend type Mutation {
     expenseAmount: Float!
     expenseCategory: String!
     accountType: String!
-    description: String!
-  ): #momoNumber: String!
-  #momoName: String!
-  #invoiceUrl: String!
+    description: String! #momoNumber: String! #momoName: String!
+  ): #invoiceUrl: String!
   AccountTransaction!
     @auth(rules: [{ roles: ["leaderCouncil", "adminCampus"] }])
     @cypher(

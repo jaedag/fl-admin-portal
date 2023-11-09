@@ -19,6 +19,9 @@ const MakeDepositForm = lazy(
 const CouncilTransactionHistory = lazy(
   () => import('pages/accounts/transaction-history/CouncilTransactionHistory')
 )
+const CampusTransactionHistory = lazy(
+  () => import('pages/accounts/transaction-history/CampusTransactionHistory')
+)
 const TransactionDetails = lazy(
   () => import('pages/accounts/transaction-history/TransactionDetails')
 )
@@ -92,6 +95,11 @@ export const accountsRoutes: LazyRouteTypes[] = [
       ...permitAdmin('Campus'),
       ...permitArrivals('Campus'),
     ],
+  },
+  {
+    path: '/accounts/campus/transaction-history',
+    element: CampusTransactionHistory,
+    roles: [...permitLeader('Campus'), ...permitAdmin('Campus')],
   },
   {
     path: '/accounts/transaction-details/',

@@ -71,6 +71,15 @@ const CampusDashboard = () => {
               Weekend Bussing Expense Entry
             </Button>
           </RoleView>
+          <RoleView roles={permitLeaderAdmin('Campus')}>
+            <Button
+              variant="secondary"
+              className="text-start py-3"
+              onClick={() => navigate('/accounts/campus/transaction-history')}
+            >
+              Transaction History
+            </Button>
+          </RoleView>
         </div>
       </Container>
     </ApolloWrapper>
