@@ -12,6 +12,7 @@ import { useNavigate } from 'react-router'
 import { AccountTransaction } from './transaction-types'
 import { QuestionCircleFill } from 'react-bootstrap-icons'
 import { BsCheckCircleFill, BsXCircleFill } from 'react-icons/bs'
+import { BiCheckDouble } from 'react-icons/bi'
 
 const CampusTransactionHistory = () => {
   const { campusId, clickCard } = useContext(ChurchContext)
@@ -72,12 +73,13 @@ const CampusTransactionHistory = () => {
         <Card className="mb-1 fw-bold">
           <Card.Header>
             <Row>
-              <Col>Date</Col>
+              <Col xs={2}>Date</Col>
               <Col>Council</Col>
-              <Col>Type</Col>
               <Col>Account</Col>
-              <Col>Amount</Col>
-              <Col className="col-2 text-truncate">Status</Col>
+              <Col xs={3}>Amount</Col>
+              <Col xs={1}>
+                <BiCheckDouble />
+              </Col>
             </Row>
           </Card.Header>
         </Card>
@@ -92,21 +94,23 @@ const CampusTransactionHistory = () => {
               }}
             >
               <Card.Body className="py-1">
-                <Row>
-                  <Col>
+                <Row className="row-cols-4">
+                  <Col xs={2}>
                     {new Date(transaction.timestamp).toLocaleDateString(
                       'en-US',
                       { day: 'numeric', month: 'short', year: '2-digit' }
                     )}
                   </Col>
-                  <Col>{transaction.council.name}</Col>
-                  <Col>
+                  <Col className="text-truncate">
+                    {transaction.council.name}
+                  </Col>
+                  <Col className="text-truncate">
                     <span>{transaction.account}</span>
                   </Col>
-                  <Col>
+                  {/* <Col xs={1}>
                     <span>{transaction.category}</span>
-                  </Col>
-                  <Col>
+                  </Col> */}
+                  <Col xs={3}>
                     <CurrencySpan
                       number={transaction.amount}
                       className={
@@ -115,7 +119,7 @@ const CampusTransactionHistory = () => {
                       negative
                     />
                   </Col>
-                  <Col className="col-2">
+                  <Col xs={1}>
                     {transaction?.status === 'success' && (
                       <BsCheckCircleFill color="green" />
                     )}

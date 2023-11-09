@@ -12,6 +12,7 @@ import { useNavigate } from 'react-router'
 import { AccountTransaction } from './transaction-types'
 import { QuestionCircleFill } from 'react-bootstrap-icons'
 import { BsCheckCircleFill, BsXCircleFill } from 'react-icons/bs'
+import { BiCheckDouble } from 'react-icons/bi'
 
 const CouncilTransactionHistory = () => {
   const { councilId, clickCard } = useContext(ChurchContext)
@@ -68,11 +69,13 @@ const CouncilTransactionHistory = () => {
         <Card className="mb-1 fw-bold">
           <Card.Header>
             <Row>
-              <Col>Date</Col>
-              <Col>Type</Col>
+              <Col xs={2}>Date</Col>
               <Col>Account</Col>
-              <Col>Amount</Col>
-              <Col className="col-2 text-truncate">Status</Col>
+              <Col>Type</Col>
+              <Col xs={3}>Amount</Col>
+              <Col xs={1}>
+                <BiCheckDouble />
+              </Col>
             </Row>
           </Card.Header>
         </Card>
@@ -88,7 +91,7 @@ const CouncilTransactionHistory = () => {
             >
               <Card.Body className="py-1">
                 <Row>
-                  <Col>
+                  <Col xs={2}>
                     {new Date(transaction.timestamp).toLocaleDateString(
                       'en-US',
                       { day: 'numeric', month: 'short', year: '2-digit' }
@@ -100,7 +103,7 @@ const CouncilTransactionHistory = () => {
                   <Col>
                     <span>{transaction.category}</span>
                   </Col>
-                  <Col>
+                  <Col xs={3}>
                     <CurrencySpan
                       number={transaction.amount}
                       className={
@@ -109,7 +112,7 @@ const CouncilTransactionHistory = () => {
                       negative
                     />
                   </Col>
-                  <Col className="col-2">
+                  <Col className="col-2" xs={1}>
                     {transaction?.status === 'success' && (
                       <BsCheckCircleFill color="green" />
                     )}
