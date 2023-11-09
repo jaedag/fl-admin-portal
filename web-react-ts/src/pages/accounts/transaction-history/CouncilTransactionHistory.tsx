@@ -106,6 +106,7 @@ const CouncilTransactionHistory = () => {
                       className={
                         transaction.category === 'Deposit' ? 'good' : 'bad'
                       }
+                      negative
                     />
                   </Col>
                   <Col className="col-2">

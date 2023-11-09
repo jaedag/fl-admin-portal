@@ -82,9 +82,9 @@ export const depositIntoCoucilBussingSociety = `
       WITH council, depositor
 
       CREATE (transaction:AccountTransaction {id: randomUUID()})
-        SET transaction.description = depositor.firstName +  ' ' + depositor.lastName +  ' deposited ' + $bussingSocietyDepositAmount + ' into the bussing society',
+        SET transaction.description = depositor.firstName +  ' ' + depositor.lastName + $transactionDescription ,
         transaction.amount = $bussingSocietyDepositAmount,
-        transaction.category = 'Deposit',
+        transaction.category = $transactionType,
         transaction.account = 'Bussing Society',
         transaction.timestamp = datetime(),
         transaction.status = 'success'

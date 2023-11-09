@@ -44,6 +44,7 @@ const TransactionCard = ({
             <CurrencySpan
               number={transaction?.amount}
               className="text-primary"
+              negative
             />
           </Col>
         </Row>

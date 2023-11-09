@@ -30,7 +30,6 @@ export const accountsMutations = {
 
       const council: CouncilForAccounts =
         councilBalancesResult.records[0].get('council').properties
-      console.log('🚀 ~ file: accounts-resolvers.ts:32 ~ council:', council)
 
       const leader: Member =
         councilBalancesResult.records[0].get('leader').properties
@@ -89,12 +88,24 @@ export const accountsMutations = {
       const depositAmount =
         args.bussingSocietyBalance - council.bussingSocietyBalance
 
-      const message = `Dear ${leader.firstName}, an amount of ${depositAmount} GHS has been deposited into your bussing society for ${council.name}. Your current bussing society balance is ${args.bussingSocietyBalance} GHS`
+      let transactionDescription = ` made a deposit of ${depositAmount} into the bussing society`
+      let transactionType = 'Deposit'
+      let transactionSMS = `an amount of ${depositAmount} GHS has been deposited into your bussing society`
+
+      if (depositAmount < 0) {
+        transactionDescription = ` marked a debt of ${depositAmount} on your bussing society`
+        transactionType = 'Debt'
+        transactionSMS = `a debt of ${depositAmount} GHS has been marked on your bussing society`
+      }
+
+      const message = `Dear ${leader.firstName}, ${transactionSMS} for ${council.name}. Your current bussing society balance is ${args.bussingSocietyBalance} GHS`
 
       const debitRes = await Promise.all([
         session.run(depositIntoCoucilBussingSociety, {
           auth: context.auth,
           ...args,
+          transactionDescription,
+          transactionType,
           bussingSocietyDepositAmount: depositAmount,
         }),
         sendBulkSMS([leader.phoneNumber], message),
