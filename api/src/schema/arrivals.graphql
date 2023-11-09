@@ -1094,12 +1094,12 @@ extend type Mutation {
   ): Member
   MakeCampusArrivalsAdmin(
     arrivalsAdminId: ID!
-    newArrivalsAdminId: ID!
+    oldArrivalsAdminId: ID!
     campusId: ID!
   ): Member!
   RemoveCampusArrivalsAdmin(
     arrivalsAdminId: ID!
-    oldArrivalsAdminId: ID
+    newArrivalsAdminId: ID
     campusId: ID!
   ): Member
 

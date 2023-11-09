@@ -92,6 +92,7 @@ export const MakeServant = async (
       id: args[`${churchLower}Id`],
     })
   )
+
   const church = rearrangeCypherObject(churchRes)
   const churchNameInEmail = `${church.name} ${church.type}`
 
@@ -112,6 +113,7 @@ export const MakeServant = async (
 
   // Check for AuthID of servant
   const authIdResponse = await axios(getAuthIdConfig(servant, authToken))
+
   servant.auth_id = authIdResponse.data[0]?.user_id
 
   if (!servant.auth_id) {

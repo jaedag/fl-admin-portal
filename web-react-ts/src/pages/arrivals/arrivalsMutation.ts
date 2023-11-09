@@ -116,8 +116,8 @@ export const MAKE_CAMPUSARRIVALS_ADMIN = gql`
   ) {
     RemoveCampusArrivalsAdmin(
       campusId: $campusId
-      oldArrivalsAdminId: $oldAdminId
-      arrivalsAdminId: $newAdminId
+      arrivalsAdminId: $oldAdminId
+      newArrivalsAdminId: $newAdminId
     ) {
       id
       firstName
@@ -125,8 +125,8 @@ export const MAKE_CAMPUSARRIVALS_ADMIN = gql`
     }
     MakeCampusArrivalsAdmin(
       campusId: $campusId
-      newArrivalsAdminId: $newAdminId
-      arrivalsAdminId: $oldAdminId
+      arrivalsAdminId: $newAdminId
+      oldArrivalsAdminId: $oldAdminId
     ) {
       id
       firstName
