@@ -1,3 +1,16 @@
+#### 7.10.36 (2023-11-09)
+
+##### Chores
+
+*  update package versions to 7.10.35 ([4b91e6bf](https://github.com/firstlovecenter/fl-admin-portalgit/commit/4b91e6bf7f6de3cb2050e7c1ef1559af50c408dc))
+
+##### Bug Fixes
+
+*  remove download expense report button and add transaction history button to Campus Dashboard ([dccac2be](https://github.com/firstlovecenter/fl-admin-portalgit/commit/dccac2be57c0aad444d1d089f46d1e05b9f01506))
+*  bussing society balance can go into debt ([e5fd6d8f](https://github.com/firstlovecenter/fl-admin-portalgit/commit/e5fd6d8fe932ae99cb2f38f7ce7bc5ea24654873))
+*  servant authentication and campus arrivals admin mutation ([c0bc3f01](https://github.com/firstlovecenter/fl-admin-portalgit/commit/c0bc3f01fcd35c9276bdd89cbc6b5dbadc7e9558))
+*  remove currentUser from sessionStorage when logging out ([b4bf1428](https://github.com/firstlovecenter/fl-admin-portalgit/commit/b4bf142832b7124b818cf5faa57abc578c76f336))
+
 #### 7.10.35 (2023-11-08)
 
 ##### Bug Fixes
