@@ -10,7 +10,7 @@ const app = express()
 const router = express.Router()
 
 router.post('/send-sms', async (request, response) => {
-  const { recipient, message } = JSON.parse(request.body)
+  const { recipient, message } = request.body
   console.log('🚀 ~ file: notify.js:14 ~ equest.body:', request.body)
 
   if (!recipient) {
