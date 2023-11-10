@@ -80,56 +80,58 @@ const CouncilTransactionHistory = () => {
           </Card.Header>
         </Card>
 
-        {council?.transactions.map((transaction: AccountTransaction) => (
-          <>
-            <Card
-              className="mb-1"
-              onClick={() => {
-                clickCard(transaction)
-                navigate('/accounts/transaction-details')
-              }}
-            >
-              <Card.Body className="py-1">
-                <Row>
-                  <Col xs={2}>
-                    {new Date(transaction.timestamp).toLocaleDateString(
-                      'en-US',
-                      { day: 'numeric', month: 'short', year: '2-digit' }
-                    )}
-                  </Col>
-                  <Col>
-                    <span>{transaction.account}</span>
-                  </Col>
-                  <Col>
-                    <span>{transaction.category}</span>
-                  </Col>
-                  <Col xs={3}>
-                    <CurrencySpan
-                      number={transaction.amount}
-                      className={
-                        transaction.category === 'Deposit' ? 'good' : 'bad'
-                      }
-                      negative
-                    />
-                  </Col>
-                  <Col className="col-2" xs={1}>
-                    {transaction?.status === 'success' && (
-                      <BsCheckCircleFill color="green" />
-                    )}
+        {council?.transactions
+          .slice(0, 30)
+          .map((transaction: AccountTransaction) => (
+            <>
+              <Card
+                className="mb-1"
+                onClick={() => {
+                  clickCard(transaction)
+                  navigate('/accounts/transaction-details')
+                }}
+              >
+                <Card.Body className="py-1">
+                  <Row>
+                    <Col xs={2}>
+                      {new Date(transaction.timestamp).toLocaleDateString(
+                        'en-US',
+                        { day: 'numeric', month: 'short', year: '2-digit' }
+                      )}
+                    </Col>
+                    <Col>
+                      <span>{transaction.account}</span>
+                    </Col>
+                    <Col>
+                      <span>{transaction.category}</span>
+                    </Col>
+                    <Col xs={3}>
+                      <CurrencySpan
+                        number={transaction.amount}
+                        className={
+                          transaction.category === 'Deposit' ? 'good' : 'bad'
+                        }
+                        negative
+                      />
+                    </Col>
+                    <Col className="col-2" xs={1}>
+                      {transaction?.status === 'success' && (
+                        <BsCheckCircleFill color="green" />
+                      )}
 
-                    {transaction?.status === 'pending approval' && (
-                      <QuestionCircleFill color="yellow" />
-                    )}
+                      {transaction?.status === 'pending approval' && (
+                        <QuestionCircleFill color="yellow" />
+                      )}
 
-                    {transaction?.status === 'declined' && (
-                      <BsXCircleFill color="red" />
-                    )}
-                  </Col>
-                </Row>
-              </Card.Body>
-            </Card>
-          </>
-        ))}
+                      {transaction?.status === 'declined' && (
+                        <BsXCircleFill color="red" />
+                      )}
+                    </Col>
+                  </Row>
+                </Card.Body>
+              </Card>
+            </>
+          ))}
       </Container>
     </ApolloWrapper>
   )

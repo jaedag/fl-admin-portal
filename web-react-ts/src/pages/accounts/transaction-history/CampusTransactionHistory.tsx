@@ -84,59 +84,61 @@ const CampusTransactionHistory = () => {
           </Card.Header>
         </Card>
 
-        {campus?.transactions.map((transaction: AccountTransaction) => (
-          <>
-            <Card
-              className="mb-1"
-              onClick={() => {
-                clickCard(transaction)
-                navigate('/accounts/transaction-details')
-              }}
-            >
-              <Card.Body className="py-1">
-                <Row className="row-cols-4">
-                  <Col xs={2}>
-                    {new Date(transaction.timestamp).toLocaleDateString(
-                      'en-US',
-                      { day: 'numeric', month: 'short', year: '2-digit' }
-                    )}
-                  </Col>
-                  <Col className="text-truncate">
-                    {transaction.council.name}
-                  </Col>
-                  {/* <Col className="text-truncate">
+        {campus?.transactions
+          .slice(0, 30)
+          .map((transaction: AccountTransaction) => (
+            <>
+              <Card
+                className="mb-1"
+                onClick={() => {
+                  clickCard(transaction)
+                  navigate('/accounts/transaction-details')
+                }}
+              >
+                <Card.Body className="py-1">
+                  <Row className="row-cols-4">
+                    <Col xs={2}>
+                      {new Date(transaction.timestamp).toLocaleDateString(
+                        'en-US',
+                        { day: 'numeric', month: 'short', year: '2-digit' }
+                      )}
+                    </Col>
+                    <Col className="text-truncate">
+                      {transaction.council.name}
+                    </Col>
+                    {/* <Col className="text-truncate">
                     <span>{transaction.account}</span>
                   </Col> */}
-                  <Col>
-                    <span>{transaction.category}</span>
-                  </Col>
-                  <Col xs={3}>
-                    <CurrencySpan
-                      number={transaction.amount}
-                      className={
-                        transaction.category === 'Deposit' ? 'good' : 'bad'
-                      }
-                      negative
-                    />
-                  </Col>
-                  <Col xs={1}>
-                    {transaction?.status === 'success' && (
-                      <BsCheckCircleFill color="green" />
-                    )}
+                    <Col>
+                      <span>{transaction.category}</span>
+                    </Col>
+                    <Col xs={3}>
+                      <CurrencySpan
+                        number={transaction.amount}
+                        className={
+                          transaction.category === 'Deposit' ? 'good' : 'bad'
+                        }
+                        negative
+                      />
+                    </Col>
+                    <Col xs={1}>
+                      {transaction?.status === 'success' && (
+                        <BsCheckCircleFill color="green" />
+                      )}
 
-                    {transaction?.status === 'pending approval' && (
-                      <QuestionCircleFill color="yellow" />
-                    )}
+                      {transaction?.status === 'pending approval' && (
+                        <QuestionCircleFill color="yellow" />
+                      )}
 
-                    {transaction?.status === 'declined' && (
-                      <BsXCircleFill color="red" />
-                    )}
-                  </Col>
-                </Row>
-              </Card.Body>
-            </Card>
-          </>
-        ))}
+                      {transaction?.status === 'declined' && (
+                        <BsXCircleFill color="red" />
+                      )}
+                    </Col>
+                  </Row>
+                </Card.Body>
+              </Card>
+            </>
+          ))}
       </Container>
     </ApolloWrapper>
   )
