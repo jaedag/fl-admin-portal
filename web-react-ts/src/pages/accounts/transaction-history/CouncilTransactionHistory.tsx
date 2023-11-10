@@ -81,7 +81,7 @@ const CouncilTransactionHistory = () => {
         </Card>
 
         {council?.transactions
-          .slice(0, 30)
+          .slice(0, 50)
           .map((transaction: AccountTransaction) => (
             <>
               <Card
