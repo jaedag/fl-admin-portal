@@ -23,7 +23,7 @@ All Contributors welcome. Go ahead and fork the project and submit a PR. Read th
 - [PHASE 1: Directory (State of the Flock Part 1) ✅](#phase-1-directory-state-of-the-flock-part-1-)
 - [PHASE 2: Attendance and Income Records (State of the Flock Part 2) ✅](#phase-2-attendance-and-income-records-state-of-the-flock-part-2-)
 - [PHASE 3: Records of the Campaigns (SSMG) ✅](#phase-3-records-of-the-campaigns-ssmg-)
-- [PHASE 4: Geolocation (Google Earth Replacement) (Sheep Seeking)](#phase-4-geolocation-google-earth-replacement-sheep-seeking)
+- [PHASE 4: Geolocation (Google Earth Replacement) (Sheep Seeking) ✅](#phase-4-geolocation-google-earth-replacement-sheep-seeking-)
 - [PHASE 5: Bussing Registration and Monitoring (Bacenta Proliferation) ✅](#phase-5-bussing-registration-and-monitoring-bacenta-proliferation-)
 - [PHASE 6: Future Ideas](#phase-6-future-ideas)
 
@@ -64,7 +64,7 @@ All Contributors welcome. Go ahead and fork the project and submit a PR. Read th
 4. Understanding School Data per member
    <br/>
 
-## PHASE 4: Geolocation (Google Earth Replacement) (Sheep Seeking)
+## PHASE 4: Geolocation (Google Earth Replacement) (Sheep Seeking) ✅
 
 1. Plot fellowships, bacentas, and centres on a map
 2. Plot all members on a map
