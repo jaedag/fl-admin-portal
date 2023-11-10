@@ -11,9 +11,14 @@ const router = express.Router()
 
 router.post('/send-sms', async (request, response) => {
   const { recipient, message } = JSON.parse(request.body)
+  console.log('🚀 ~ file: notify.js:14 ~ equest.body:', request.body)
 
-  if (!recipient || !message) {
-    response.status(400).send('Missing recipient or message')
+  if (!recipient) {
+    response.status(400).send('Missing message')
+    return
+  }
+  if (!message) {
+    response.status(400).send('Missing message')
     return
   }
 
