@@ -71,7 +71,7 @@ const CouncilTransactionHistory = () => {
             <Row>
               <Col xs={2}>Date</Col>
               <Col>Account</Col>
-              <Col>Type</Col>
+              <Col>Category</Col>
               <Col xs={3}>Amount</Col>
               <Col xs={1}>
                 <BiCheckDouble />

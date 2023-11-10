@@ -48,7 +48,7 @@ const TransactionCard = ({
             />
           </Col>
         </Row>
-        {transaction?.charge && (
+        {!!transaction?.charge && (
           <Row className="mb-3 d-flex align-items-center">
             <Col className="text-secondary col-4">Charge</Col>
             <Col>

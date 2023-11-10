@@ -15,14 +15,14 @@ const CurrencySpan = ({
   if (number !== null && number >= 0) {
     return (
       <span className={className}>
-        <span>{number} </span>
+        <span>{number.toFixed(2)} </span>
         <span className="small">{currentUser.currency}</span>
       </span>
     )
   } else if (negative) {
     return (
       <span className={className + ' red'}>
-        <span>{number} </span>
+        <span>{number.toFixed(2)} </span>
         <span className="small">{currentUser.currency}</span>
       </span>
     )

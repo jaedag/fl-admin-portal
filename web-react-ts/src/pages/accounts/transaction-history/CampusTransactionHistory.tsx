@@ -64,7 +64,7 @@ const CampusTransactionHistory = () => {
               headers={csvHeaders}
               data={csvData}
             >
-              <span className="good">Export CSV</span>
+              <span className="good">Download CSV</span>
             </CSVLink>
           </Button>
         </div>
@@ -74,8 +74,8 @@ const CampusTransactionHistory = () => {
           <Card.Header>
             <Row>
               <Col xs={2}>Date</Col>
-              <Col>Council</Col>
-              <Col>Account</Col>
+              <Col className="text-truncate">Council</Col>
+              <Col>Category</Col>
               <Col xs={3}>Amount</Col>
               <Col xs={1}>
                 <BiCheckDouble />
@@ -104,12 +104,12 @@ const CampusTransactionHistory = () => {
                   <Col className="text-truncate">
                     {transaction.council.name}
                   </Col>
-                  <Col className="text-truncate">
+                  {/* <Col className="text-truncate">
                     <span>{transaction.account}</span>
-                  </Col>
-                  {/* <Col xs={1}>
-                    <span>{transaction.category}</span>
                   </Col> */}
+                  <Col>
+                    <span>{transaction.category}</span>
+                  </Col>
                   <Col xs={3}>
                     <CurrencySpan
                       number={transaction.amount}
