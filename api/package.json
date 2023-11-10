@@ -56,7 +56,8 @@
     "jd-date-utils": "^1.0.9",
     "mailgun.js": "^7.0.0",
     "neo4j-driver": "^5.7.0",
-    "node-fetch": "^3.3.2"
+    "node-fetch": "^3.3.2",
+    "serverless-http": "^3.2.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.8.4",
