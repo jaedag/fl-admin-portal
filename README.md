@@ -5,7 +5,9 @@
 This project was built using [GRANDstack](https://grandstack.io) (GraphQL, React, Apollo, Neo4j Database) application.
 <br/><br/>
 
-# [![First Love Logo](/img/flc-logo-small.webp)](https://www.firstlovecenter.com) Where Are We Going?
+[![First Love Logo](/img/flc-logo-small.png)](https://www.firstlovecenter.com)
+
+# Where Are We Going?
 
 <br/>
 
