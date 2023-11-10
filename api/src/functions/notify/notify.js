@@ -11,10 +11,9 @@ const router = express.Router()
 
 router.post('/send-sms', async (request, response) => {
   const { recipient, message } = request.body
-  console.log('🚀 ~ file: notify.js:14 ~ equest.body:', request.body)
 
   if (!recipient) {
-    response.status(400).send('Missing message')
+    response.status(400).send('Missing recipient')
     return
   }
   if (!message) {
@@ -50,11 +49,13 @@ router.post('/send-sms', async (request, response) => {
         .send(
           `There was a problem sending your SMS ${JSON.stringify(res.data)}`
         )
+      return
     }
 
     response
       .status(400)
       .send(`There was a problem sending your SMS ${JSON.stringify(res.data)}`)
+    return
   } catch (error) {
     console.error('There was a problem sending your message', error)
     response.status(502).send('There was a problem sending your message')
