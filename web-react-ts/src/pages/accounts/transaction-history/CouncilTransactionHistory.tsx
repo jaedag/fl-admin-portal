@@ -60,7 +60,7 @@ const CouncilTransactionHistory = () => {
               headers={csvHeaders}
               data={csvData}
             >
-              <span className="good">Export CSV</span>
+              <span className="good">Download CSV</span>
             </CSVLink>
           </Button>
         </div>
