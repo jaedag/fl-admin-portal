@@ -57,6 +57,6 @@ router.post('/send-sms', async (request, response) => {
 })
 
 app.use(cors({ origin: true }), bodyParser.json(), router)
-app.use('/.netlify/functions/server', router)
+app.use('/.netlify/functions/notify', router)
 
 module.exports.handler = serverless(app)
