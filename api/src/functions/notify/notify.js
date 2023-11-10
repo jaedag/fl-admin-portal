@@ -1,15 +1,23 @@
 const { default: axios } = require('axios')
 const { loadSecrets } = require('./secrets.js')
 const express = require('express')
+const serverless = require('serverless-http')
 const cors = require('cors')
+const bodyParser = require('body-parser')
 
 const SECRETS = loadSecrets()
 const app = express()
 
 app.use(cors({ origin: true }))
+app.use(bodyParser.json())
 
 app.post('/send-sms', async (request, response) => {
   const { recipient, message } = JSON.parse(request.body)
+
+  if (!recipient || !message) {
+    response.status(400).send('Missing recipient or message')
+    return
+  }
 
   const sendMessage = {
     method: 'post',
@@ -39,7 +47,6 @@ app.post('/send-sms', async (request, response) => {
         .send(
           `There was a problem sending your SMS ${JSON.stringify(res.data)}`
         )
-      return 'Message sent successfully'
     }
 
     response
@@ -49,6 +56,6 @@ app.post('/send-sms', async (request, response) => {
     console.error('There was a problem sending your message', error)
     response.status(502).send('There was a problem sending your message')
   }
-
-  return 'Message sent successfully'
 })
+
+module.exports.handler = serverless(app)
