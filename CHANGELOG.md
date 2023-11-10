@@ -1,3 +1,25 @@
+#### 7.10.37 (2023-11-10)
+
+##### Bug Fixes
+
+*  update CSV export button text ([1ede4b01](https://github.com/firstlovecenter/fl-admin-portalgit/commit/1ede4b01f49121b202c51b91ac6cd5b0b156ac54))
+*  formatting and naming inconsistencies in transaction history components ([ae82d352](https://github.com/firstlovecenter/fl-admin-portalgit/commit/ae82d3525b877319ca009882373a5e3cef4e6893))
+*  missing recipient error in notify.js ([92ae8b1b](https://github.com/firstlovecenter/fl-admin-portalgit/commit/92ae8b1be00310800c506cbc851aec8af3aa6027))
+*  missing message validation in send-sms endpoint ([715f304e](https://github.com/firstlovecenter/fl-admin-portalgit/commit/715f304e789365f4bf23c5f7d0e2adb1c585b696))
+*  update API endpoint path for SMS notifications ([bb4f0b18](https://github.com/firstlovecenter/fl-admin-portalgit/commit/bb4f0b1835b2a0f38497767ae3fe8a62b74b9a09))
+*  refactor notify.js to use express router ([426dbf28](https://github.com/firstlovecenter/fl-admin-portalgit/commit/426dbf282961be8e950fdd97ab0203c98340bf6b))
+*  add serverless-http package to dependencies ([7c2e0de2](https://github.com/firstlovecenter/fl-admin-portalgit/commit/7c2e0de26f85217eacb24d3a88fb9c80edc4cb45))
+*  add body-parser middleware and use serverless-http for deployment ([a5e1dc3d](https://github.com/firstlovecenter/fl-admin-portalgit/commit/a5e1dc3d0c16a6565c2566d07ba42762822ad9e9))
+*  add notification function and update secrets path ([8c3e2e80](https://github.com/firstlovecenter/fl-admin-portalgit/commit/8c3e2e80566342e70cceae397ee2c4e627df87b2))
+*  add checkmark icon to transaction history table ([b4626381](https://github.com/firstlovecenter/fl-admin-portalgit/commit/b4626381cac0e2e73c7adf3dc109283689fff6c7))
+
+##### Refactors
+
+*  transaction history display ([c2ac9838](https://github.com/firstlovecenter/fl-admin-portalgit/commit/c2ac9838b9aacd188a896bd6d3d0346287eb6cb8))
+*  request body parsing in notify.js ([e09716cc](https://github.com/firstlovecenter/fl-admin-portalgit/commit/e09716cc14badd80d4c0701ca380ccecbebaac37))
+*  notify.js to simplify middleware usage ([7929f1f6](https://github.com/firstlovecenter/fl-admin-portalgit/commit/7929f1f69cc9f7afcab69435741d98c5e179a659))
+*  notify.js to use middleware ([b60d6b1b](https://github.com/firstlovecenter/fl-admin-portalgit/commit/b60d6b1b3782a2467c09d1c0387386d26a80966f))
+
 #### 7.10.36 (2023-11-09)
 
 ##### Chores
