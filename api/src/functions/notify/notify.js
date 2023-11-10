@@ -7,11 +7,9 @@ const bodyParser = require('body-parser')
 
 const SECRETS = loadSecrets()
 const app = express()
+const router = express.Router()
 
-app.use(cors({ origin: true }))
-app.use(bodyParser.json())
-
-app.post('/send-sms', async (request, response) => {
+router.post('/send-sms', async (request, response) => {
   const { recipient, message } = JSON.parse(request.body)
 
   if (!recipient || !message) {
@@ -57,5 +55,9 @@ app.post('/send-sms', async (request, response) => {
     response.status(502).send('There was a problem sending your message')
   }
 })
+
+app.use(cors({ origin: true }))
+app.use(bodyParser.json())
+app.use('/.netlify/functions/notify', router)
 
 module.exports.handler = serverless(app)
