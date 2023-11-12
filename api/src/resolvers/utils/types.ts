@@ -177,6 +177,7 @@ interface HigherChurchesForAgggregation extends ChurchesForAggregateion {
 interface SontaHigherChurchesForAgggregation extends ChurchesForAggregateion {
   rehearsalCypher: string
   ministryMeetingCypher: string
+  ministryStagePerformanceCypher: string
 }
 
 export type HigherChurches = {

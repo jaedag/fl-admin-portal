@@ -5,6 +5,7 @@ import {
   aggregateHubRehearsalDataForMinistry,
   aggregateMinistryMeetingDataForCreativeArts,
   aggregateMinistryMeetingDataForMinistry,
+  aggregateStageAttendanceDataForCreativeArts,
 } from './rehearsal-cypher'
 import {
   aggregateServiceDataForBacenta,
@@ -100,6 +101,8 @@ export const getServiceSontaHigherChurches = (records: any) => {
         properties: record.get('higherChurch').properties,
         rehearsalCypher: aggregateHubRehearsalDataForHubCouncil,
         ministryMeetingCypher: aggregateMinistryMeetingDataForMinistry,
+        ministryStagePerformanceCypher:
+          aggregateStageAttendanceDataForCreativeArts,
       }
     }
     if (record?.get('higherChurch').labels.includes('Ministry')) {
@@ -109,6 +112,8 @@ export const getServiceSontaHigherChurches = (records: any) => {
         properties: record.get('higherChurch').properties,
         rehearsalCypher: aggregateHubRehearsalDataForMinistry,
         ministryMeetingCypher: aggregateMinistryMeetingDataForMinistry,
+        ministryStagePerformanceCypher:
+          aggregateStageAttendanceDataForCreativeArts,
       }
     }
 
@@ -119,6 +124,8 @@ export const getServiceSontaHigherChurches = (records: any) => {
         properties: record.get('higherChurch').properties,
         rehearsalCypher: aggregateHubRehearsalDataForCreativeArts,
         ministryMeetingCypher: aggregateMinistryMeetingDataForCreativeArts,
+        ministryStagePerformanceCypher:
+          aggregateStageAttendanceDataForCreativeArts,
       }
     }
 

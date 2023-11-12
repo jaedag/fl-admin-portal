@@ -1022,6 +1022,34 @@ type MinistryAttendanceRecord implements Record
     )
 }
 
+type MinistryStageAttendanceRecord implements Record
+  @auth(rules: [{ isAuthenticated: true }]) {
+  id: ID!
+  createdAt: DateTime!
+  created_by: Member
+  serviceDate: TimeGraph @relationship(type: "SERVICE_HELD_ON", direction: OUT)
+  week: Int
+    @cypher(
+      statement: """
+      MATCH (this)-[:SERVICE_HELD_ON]->(date:TimeGraph)
+      RETURN date(date.date).week
+      """
+    )
+  attendance: Int!
+  onStagePictures: [String!]!
+  serviceLog: ServiceLog! @relationship(type: "HAS_SERVICE", direction: IN)
+  noStagePerformanceReason: String
+  stream_name: String
+    @cypher(
+      statement: """
+      MATCH (this)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(church)
+      WHERE church:Ministry
+      MATCH (church)<-[:HAS_MINISTRY]-(stream:Stream)
+      RETURN stream.name
+      """
+    )
+}
+
 type RehearsalRecord implements Record
   @auth(rules: [{ isAuthenticated: true }]) {
   id: ID!
@@ -1089,6 +1117,14 @@ extend type Mutation {
     treasurerSelfie: String!
     familyPicture: String!
   ): RehearsalRecord!
+
+  RecordMinistryOnStageAttendance(
+    churchId: ID!
+    serviceDate: String!
+    attendance: Int!
+    onStagePictures: [String!]!
+  ):MinistryStageAttendanceRecord
+
 }
 
 ## DELETE OPERATIONS
