@@ -1,3 +1,15 @@
+#### 7.10.38 (2023-11-12)
+
+##### Bug Fixes
+
+*  fix bussing expense transaction and comment out insufficient funds check ([a951d46f](https://github.com/firstlovecenter/fl-admin-portalgit/commit/a951d46f73b406f9cb08c11b60de2d821081ec6a))
+*  add pictureUrl to member query, update accountType in ExpenseForm, and adjust transaction amounts in GraphQL schema and CouncilTransactionHistory ([0bbe8535](https://github.com/firstlovecenter/fl-admin-portalgit/commit/0bbe8535bb37f360f92603f93fb90f025ee59a3d))
+*  remove unused secrets.build call ([bc11ee20](https://github.com/firstlovecenter/fl-admin-portalgit/commit/bc11ee20b5e5e38b32b1c2b54c862889e27dc6fa))
+*  remove notify function and dependencies ([76073f84](https://github.com/firstlovecenter/fl-admin-portalgit/commit/76073f843747fd6cfcba190945272b71cb5ab2eb))
+*  update README.md with completed Phase 4 of project ([ba2a4109](https://github.com/firstlovecenter/fl-admin-portalgit/commit/ba2a4109857ce0b63a3e2018e6c952be39f7f5e2))
+*  update First Love logo and heading in README.md ([8334e137](https://github.com/firstlovecenter/fl-admin-portalgit/commit/8334e13756be2a44284b42ef1ead64da5b428309))
+*  increase number of transactions displayed in CampusTransactionHistory and CouncilTransactionHistory ([33173cf9](https://github.com/firstlovecenter/fl-admin-portalgit/commit/33173cf92a1ea6821fbf9be6be0a1b08e68fa1d3))
+
 #### 7.10.37 (2023-11-10)
 
 ##### Bug Fixes
