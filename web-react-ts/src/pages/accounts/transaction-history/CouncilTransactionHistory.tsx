@@ -68,12 +68,18 @@ const CouncilTransactionHistory = () => {
 
         <Card className="mb-1 fw-bold">
           <Card.Header>
-            <Row>
-              <Col xs={2}>Date</Col>
-              <Col>Account</Col>
-              <Col>Category</Col>
+            <Row className="row-cols-4">
+              <Col xs={3} className="text-truncate">
+                Date
+              </Col>
+              <Col xs={2} className="text-truncate">
+                Account
+              </Col>
+              <Col xs={2} className="text-truncate">
+                Category
+              </Col>
               <Col xs={3}>Amount</Col>
-              <Col xs={1}>
+              <Col className="col-auto">
                 <BiCheckDouble />
               </Col>
             </Row>
@@ -92,17 +98,17 @@ const CouncilTransactionHistory = () => {
                 }}
               >
                 <Card.Body className="py-1">
-                  <Row>
-                    <Col xs={2}>
+                  <Row className="row-cols-4">
+                    <Col xs={3}>
                       {new Date(transaction.timestamp).toLocaleDateString(
                         'en-US',
-                        { day: 'numeric', month: 'short', year: '2-digit' }
+                        { day: 'numeric', month: 'short' }
                       )}
                     </Col>
-                    <Col>
+                    <Col className="text-truncate" xs={2}>
                       <span>{transaction.account}</span>
                     </Col>
-                    <Col>
+                    <Col xs={2}>
                       <span>{transaction.category}</span>
                     </Col>
                     <Col xs={3}>

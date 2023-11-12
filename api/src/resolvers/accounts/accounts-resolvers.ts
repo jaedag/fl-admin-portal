@@ -5,6 +5,7 @@ import { isAuth, throwToSentry } from '../utils/utils'
 import {
   approveBussingExpense,
   approveExpense,
+  creditBussingSocietyFromWeekday,
   debitBussingSociety,
   depositIntoCoucilBussingSociety,
   depositIntoCouncilCurrentAccount,
@@ -135,7 +136,8 @@ export const accountsMutations = {
     context: Context
   ) => {
     const session = context.executionContext.session()
-    isAuth(['arrivalsAdminCampus', 'adminCampus'], context.auth.roles)
+    const sessionTwo = context.executionContext.session()
+    isAuth(['adminCampus'], context.auth.roles)
 
     try {
       const councilBalancesResult = await session.run(
@@ -150,20 +152,26 @@ export const accountsMutations = {
       const transaction: AccountTransaction =
         councilBalancesResult.records[0].get('transaction').properties
 
+      const transactionAmount = transaction.amount * -1
+
       if (transaction.category === 'Bussing') {
-        if (council.weekdayBalance < transaction.amount) {
+        if (council.weekdayBalance < transactionAmount) {
           throw new Error('Insufficient bussing funds')
         }
 
         const currentAmountRemaining =
-          council.weekdayBalance - transaction.amount - args.charge
+          council.weekdayBalance - transactionAmount - args.charge
 
         const amountRemaining =
-          council.bussingSocietyBalance + transaction.amount
-        const message = `Dear ${leader.firstName}, your expense request of ${transaction.amount} GHS from ${council.name} weekday account for ${transaction.category} has been approved. Balance remaining is ${currentAmountRemaining} GHS. Bussing Society Balance is ${amountRemaining} GHS`
+          council.bussingSocietyBalance + transactionAmount
+        const message = `Dear ${leader.firstName}, your expense request of ${transactionAmount} GHS from ${council.name} weekday account for ${transaction.category} has been approved. Balance remaining is ${currentAmountRemaining} GHS. Bussing Society Balance is ${amountRemaining} GHS`
 
         const debitRes = await Promise.all([
           session.run(approveBussingExpense, args),
+          sessionTwo.run(creditBussingSocietyFromWeekday, {
+            ...args,
+            auth: context.auth,
+          }),
           sendBulkSMS([leader.phoneNumber], message),
         ])
 
@@ -176,13 +184,13 @@ export const accountsMutations = {
         }
       }
 
-      if (council.weekdayBalance < transaction.amount) {
+      if (council.weekdayBalance < transactionAmount) {
         throw new Error('Insufficient Funds')
       }
 
       const amountRemaining =
-        council.weekdayBalance - transaction.amount - args.charge
-      const message = `Dear ${leader.firstName}, your expense request of ${transaction.amount} GHS (Charges: ${args.charge} GHS) from ${council.name} weekday account for ${transaction.category} has been approved. Balance remaining is ${amountRemaining} GHS`
+        council.weekdayBalance - transactionAmount - args.charge
+      const message = `Dear ${leader.firstName}, your expense request of ${transactionAmount} GHS (Charges: ${args.charge} GHS) from ${council.name} weekday account for ${transaction.category} has been approved. Balance remaining is ${amountRemaining} GHS`
 
       const debitRes = await Promise.all([
         session.run(approveExpense, args),
@@ -199,7 +207,7 @@ export const accountsMutations = {
     } catch (error: any) {
       throwToSentry('', error.message)
     } finally {
-      await session.close()
+      await Promise.all([session.close(), sessionTwo.close()])
     }
 
     return null

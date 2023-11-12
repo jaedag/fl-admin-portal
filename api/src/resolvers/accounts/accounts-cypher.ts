@@ -13,18 +13,41 @@ RETURN council, leader
 export const approveBussingExpense = `
 MATCH (transaction:AccountTransaction {id: $transactionId})<-[:HAS_TRANSACTION]-(council:Council)
 MATCH (transaction)-[:LOGGED_BY]->(depositor:Member)
-  SET council.bussingSocietyBalance = council.bussingSocietyBalance + transaction.amount
-  SET council.weekdayBalance = council.weekdayBalance - transaction.amount - toFloat($charge)
+  SET council.bussingSocietyBalance = council.bussingSocietyBalance + (-1 * transaction.amount)
+  SET council.weekdayBalance = council.weekdayBalance - (-1 * transaction.amount) - toFloat($charge)
   SET transaction.status = 'success'
   SET transaction.charge = $charge
 
 RETURN council, transaction, depositor
 `
 
+export const creditBussingSocietyFromWeekday = `
+ MATCH (weekdayTrans:AccountTransaction {id: $transactionId})<-[:HAS_TRANSACTION]-(council:Council)
+ MATCH (requester:Member {auth_id: $auth.jwt.sub})
+
+ WITH council, requester, weekdayTrans
+
+ CREATE (transaction:AccountTransaction {id: randomUUID()})
+   SET transaction.description = weekdayTrans.description,
+   transaction.amount = weekdayTrans.amount * -1,
+   transaction.account = 'Bussing Society',
+   transaction.category = 'Deposit',
+   transaction.status = 'success',
+   transaction.timestamp = datetime()
+   // transaction.momoNumber = $momoNumber,
+   // transaction.momoName = $momoName,
+   // transaction.invoiceUrl = $invoiceUrl
+
+ MERGE (council)-[:HAS_TRANSACTION]->(transaction)
+ MERGE (requester)<-[:LOGGED_BY]-(transaction)
+
+ RETURN transaction
+ `
+
 export const approveExpense = `
 MATCH (transaction:AccountTransaction {id: $transactionId})<-[:HAS_TRANSACTION]-(council:Council)
 MATCH (transaction)-[:LOGGED_BY]->(depositor:Member)
-  SET council.weekdayBalance = council.weekdayBalance - transaction.amount - toFloat($charge)
+  SET council.weekdayBalance = council.weekdayBalance - (-1 * transaction.amount) - toFloat($charge)
   SET transaction.charge = $charge
   SET transaction.status = 'success'
 

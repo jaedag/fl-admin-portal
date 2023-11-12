@@ -60,10 +60,7 @@ const ExpenseForm = () => {
           councilId,
           expenseAmount: parseFloat(values.requestedAmount),
           expenseCategory: values.category,
-          accountType:
-            values.category === 'Bussing'
-              ? 'Bussing Society'
-              : 'Weekday Account',
+          accountType: 'Weekday Account',
 
           description: values.description,
         },

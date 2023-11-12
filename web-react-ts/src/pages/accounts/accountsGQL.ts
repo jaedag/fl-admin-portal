@@ -59,6 +59,7 @@ export const CAMPUS_BY_COUNCIL_ACCOUNTS = gql`
             id
             firstName
             lastName
+            pictureUrl
             fullName
           }
         }

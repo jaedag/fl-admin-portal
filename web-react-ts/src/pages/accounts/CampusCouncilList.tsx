@@ -1,6 +1,6 @@
 import { useQuery } from '@apollo/client'
 import { ChurchContext } from 'contexts/ChurchContext'
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { CAMPUS_BY_COUNCIL_ACCOUNTS } from './accountsGQL'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { Button, Container } from 'react-bootstrap'
@@ -9,6 +9,9 @@ import { CouncilForAccounts, StreamForAccounts } from './accounts-types'
 import HeadingSecondary from 'components/HeadingSecondary'
 import { useNavigate } from 'react-router'
 import CurrencySpan from 'components/CurrencySpan'
+import MemberAvatarWithName from 'components/LeaderAvatar/MemberAvatarWithName'
+import { Form, Formik } from 'formik'
+import Input from 'components/formik/Input'
 
 const CampusCouncilList = ({
   link,
@@ -29,11 +32,65 @@ const CampusCouncilList = ({
 
   const campus = data?.campuses[0]
 
+  const [councilList, setCouncilList] = useState<CouncilForAccounts[]>([])
+
+  useEffect(() => {
+    if (campus) {
+      const councils = campus.streams
+        .map((stream: StreamForAccounts) => stream.councils)
+        .flat()
+      setCouncilList(councils)
+    }
+  }, [campus])
+
+  const initialValues = {
+    councilSearch: '',
+  }
+
+  const onSubmit = (values: typeof initialValues, onSubmitProps: any) => {
+    onSubmitProps.setSubmitting(true)
+    const councils = campus.streams
+      .map((stream: StreamForAccounts) => stream.councils)
+      .flat()
+
+    setCouncilList(
+      councils.filter(
+        (council: any) =>
+          council.name
+            .toLowerCase()
+            .includes(values.councilSearch.toLowerCase()) ||
+          council.leader.firstName
+            .toLowerCase()
+            .includes(values.councilSearch.toLowerCase()) ||
+          council.leader.lastName
+            .toLowerCase()
+            .includes(values.councilSearch.toLowerCase())
+      )
+    )
+
+    onSubmitProps.setSubmitting(false)
+  }
+
   return (
     <ApolloWrapper data={data} loading={loading} error={error}>
       <Container>
         <HeadingPrimary>Update Council Balances</HeadingPrimary>
         <HeadingSecondary>{`${campus?.name} ${campus?.__typename}`}</HeadingSecondary>
+
+        <Formik initialValues={initialValues} onSubmit={onSubmit}>
+          {() => (
+            <Form>
+              <div>
+                <Input
+                  className="form-control church-search search-center"
+                  name="councilSearch"
+                  placeholder="Search Councils or Leader"
+                  aria-describedby="Council Search"
+                />
+              </div>
+            </Form>
+          )}
+        </Formik>
 
         {campus?.streams.map((stream: StreamForAccounts) => {
           // arrange in alphabetical order of council.leader.fullName and council.name
@@ -49,6 +106,10 @@ const CampusCouncilList = ({
             }
           )
 
+          const showCouncils = councils.filter((council) =>
+            councilList.includes(council)
+          )
+
           return (
             <div key={stream.id} className="d-grid gap-2">
               <div className="fs-4 text-info">{stream.name} Councils</div>
@@ -58,7 +119,7 @@ const CampusCouncilList = ({
                 </Button>
               )}
 
-              {councils.map((council: CouncilForAccounts) => (
+              {showCouncils.map((council: CouncilForAccounts) => (
                 <div
                   key={council.id}
                   onClick={() => {
@@ -68,7 +129,8 @@ const CampusCouncilList = ({
                   className="d-grid"
                 >
                   <Button className="text-start">
-                    {council.name} - {council.leader.fullName}
+                    <MemberAvatarWithName member={council.leader} />
+                    {council.name} Council
                   </Button>
 
                   <Button variant="outline-light" className="text-start">
