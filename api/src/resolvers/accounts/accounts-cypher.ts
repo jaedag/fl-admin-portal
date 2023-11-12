@@ -61,7 +61,7 @@ MATCH (requester:Member {auth_id: $auth.jwt.sub})
 WITH council, requester
 
 CREATE (transaction:AccountTransaction {id: randomUUID()})
-  SET transaction.amount = $expenseAmount,
+  SET transaction.amount = -1 * $expenseAmount,
   transaction.description = 'Bussing Expense',
   transaction.category = $expenseCategory,
   transaction.account = 'Bussing Society',

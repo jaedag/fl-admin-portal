@@ -231,10 +231,6 @@ export const accountsMutations = {
       const leader: Member =
         councilBalancesResult.records[0].get('leader').properties
 
-      if (council.bussingSocietyBalance < args.expenseAmount) {
-        throw new Error('Insufficient Funds')
-      }
-
       const amountRemaining = council.bussingSocietyBalance - args.expenseAmount
       const message = `Dear ${leader.firstName}, ${council.name} Council spent ${args.expenseAmount} GHS on bussing. Bussing Society Balance remaining is ${amountRemaining} GHS`
 

@@ -31,7 +31,7 @@ const BussingExpenseEntry = () => {
   const council: CouncilForAccounts = data?.councils[0]
 
   const initialValues = {
-    amountSpent: council?.bussingAmount ?? '',
+    amountSpent: '',
   }
 
   const validationSchema = Yup.object({
@@ -55,6 +55,8 @@ const BussingExpenseEntry = () => {
           expenseCategory: 'Bussing',
         },
       })
+
+      if (!res.data?.DebitBussingSociety) return
 
       clickCard(res.data.DebitBussingSociety)
       navigate('/accounts/transaction-details/')
@@ -94,7 +96,7 @@ const BussingExpenseEntry = () => {
                   </Modal.Header>
                   <Modal.Body>
                     <p>
-                      AmountSpent:{' '}
+                      Amount Spent:{' '}
                       <span className="text-info">
                         GHS{' '}
                         {parseFloat(
@@ -104,8 +106,28 @@ const BussingExpenseEntry = () => {
                     </p>
 
                     <p>
+                      Bussing Society Balance:{' '}
+                      <span className="text-info">
+                        GHS{' '}
+                        {parseFloat(
+                          council?.bussingSocietyBalance.toString()
+                        ).toLocaleString('en-US')}
+                      </span>
+                    </p>
+
+                    <p>
                       Category: <span className="text-info">Bussing</span>
                     </p>
+                    {council.bussingSocietyBalance <
+                      parseFloat(formik.values.amountSpent) && (
+                      <span className="text-danger fw-bold">
+                        Submitting this will send {council.name} Council balance
+                        into negative balance of{' '}
+                        {council.bussingSocietyBalance -
+                          parseFloat(formik.values.amountSpent)}{' '}
+                        GHS
+                      </span>
+                    )}
                   </Modal.Body>
 
                   <Modal.Footer>
