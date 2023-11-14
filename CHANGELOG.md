@@ -1,3 +1,10 @@
+#### 7.10.40 (2023-11-14)
+
+##### Bug Fixes
+
+*  remove duplicate prop ([a7546b2d](https://github.com/firstlovecenter/fl-admin-portalgit/commit/a7546b2d3bd0ba5c59c966cd1ea5ebc5124a5c27))
+*  charge calculation in account transactions and display charge in transaction history ([fcf2136e](https://github.com/firstlovecenter/fl-admin-portalgit/commit/fcf2136e08cf4bc8840d1e71f3186eab06a17753))
+
 #### 7.10.39 (2023-11-14)
 
 ##### Refactors
