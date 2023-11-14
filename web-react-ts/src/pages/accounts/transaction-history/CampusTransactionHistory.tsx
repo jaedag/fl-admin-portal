@@ -32,6 +32,7 @@ const CampusTransactionHistory = () => {
     { label: 'Status', key: 'success' },
     { label: 'Credit', key: 'credit' },
     { label: 'Debit', key: 'debit' },
+    { label: 'Charge', key: 'charge' },
     { label: 'Recorded By', key: 'depositedBy' },
     { label: 'Description', key: 'description' },
   ]
@@ -45,6 +46,7 @@ const CampusTransactionHistory = () => {
     success: transaction.status,
     credit: transaction.category === 'Deposit' ? transaction.amount : null,
     debit: transaction.category !== 'Deposit' ? transaction.amount : null,
+    charge: transaction.charge,
     depositedBy: transaction.loggedBy?.fullName,
     description: transaction.description,
   }))
@@ -100,21 +102,18 @@ const CampusTransactionHistory = () => {
                     <Col xs={2}>
                       {new Date(transaction.timestamp).toLocaleDateString(
                         'en-US',
-                        { day: 'numeric', month: 'short', year: '2-digit' }
+                        { day: 'numeric', month: 'short' }
                       )}
                     </Col>
                     <Col className="text-truncate">
                       {transaction.council.name}
                     </Col>
-                    {/* <Col className="text-truncate">
-                    <span>{transaction.account}</span>
-                  </Col> */}
                     <Col>
                       <span>{transaction.category}</span>
                     </Col>
                     <Col xs={3}>
                       <CurrencySpan
-                        number={transaction.amount}
+                        number={transaction.amount + (transaction.charge ?? 0)}
                         className={
                           transaction.category === 'Deposit' ? 'good' : 'bad'
                         }
