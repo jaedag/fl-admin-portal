@@ -1,7 +1,11 @@
 import { useLazyQuery } from '@apollo/client'
 import { MemberContext } from 'contexts/MemberContext'
 import { ErrorMessage } from 'formik'
-import { DEBOUNCE_TIMER, throwToSentry } from 'global-utils'
+import {
+  DEBOUNCE_TIMER,
+  getFirstLetterInEveryWord,
+  throwToSentry,
+} from 'global-utils'
 import { useContext, useEffect, useState } from 'react'
 import { RoleBasedSearch } from './formik-types'
 import Autosuggest from 'react-autosuggest'
@@ -11,7 +15,6 @@ import {
   MEMBER_MEMBER_SEARCH,
 } from './SearchMemberQueries'
 import TextError from './TextError/TextError'
-import MemberAvatarWithName from 'components/LeaderAvatar/MemberAvatarWithName'
 import { ChurchContext } from 'contexts/ChurchContext'
 
 const SearchMember = (props: RoleBasedSearch) => {
@@ -106,12 +109,11 @@ const SearchMember = (props: RoleBasedSearch) => {
         highlightFirstSuggestion={true}
         renderSuggestion={(suggestion: any) => (
           <div className="combobox-control">
-            <MemberAvatarWithName
-              member={suggestion}
-              loading={!suggestion}
-              size="small"
-              onClick={() => null}
-            />
+            {suggestion?.firstName +
+              ' ' +
+              getFirstLetterInEveryWord(suggestion?.middleName) +
+              ' ' +
+              suggestion?.lastName}
           </div>
         )}
       />
