@@ -1,3 +1,9 @@
+#### 7.10.39 (2023-11-14)
+
+##### Refactors
+
+*  searchMember component to improve performance and readability. ([72b6705b](https://github.com/firstlovecenter/fl-admin-portalgit/commit/72b6705b04cd1f3a37b9ba4d7ce51c2b73daf944))
+
 #### 7.10.38 (2023-11-12)
 
 ##### Bug Fixes
