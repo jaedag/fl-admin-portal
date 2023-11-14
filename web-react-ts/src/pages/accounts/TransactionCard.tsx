@@ -54,6 +54,7 @@ const TransactionCard = ({
             <Col>
               <CurrencySpan
                 number={transaction?.charge}
+                negative
                 className="text-primary"
               />
             </Col>

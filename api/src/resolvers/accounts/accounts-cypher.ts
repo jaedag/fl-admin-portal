@@ -16,7 +16,7 @@ MATCH (transaction)-[:LOGGED_BY]->(depositor:Member)
   SET council.bussingSocietyBalance = council.bussingSocietyBalance + (-1 * transaction.amount)
   SET council.weekdayBalance = council.weekdayBalance - (-1 * transaction.amount) - toFloat($charge)
   SET transaction.status = 'success'
-  SET transaction.charge = $charge
+  SET transaction.charge = toFloat($charge) * -1
 
 RETURN council, transaction, depositor
 `
@@ -48,7 +48,7 @@ export const approveExpense = `
 MATCH (transaction:AccountTransaction {id: $transactionId})<-[:HAS_TRANSACTION]-(council:Council)
 MATCH (transaction)-[:LOGGED_BY]->(depositor:Member)
   SET council.weekdayBalance = council.weekdayBalance - (-1 * transaction.amount) - toFloat($charge)
-  SET transaction.charge = $charge
+  SET transaction.charge = $charge * -1
   SET transaction.status = 'success'
 
 RETURN transaction, depositor

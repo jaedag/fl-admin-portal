@@ -30,6 +30,7 @@ const CouncilTransactionHistory = () => {
     { label: 'Status', key: 'success' },
     { label: 'Credit', key: 'credit' },
     { label: 'Debit', key: 'debit' },
+    { label: 'Charge', key: 'charge' },
     { label: 'Recorded By', key: 'depositedBy' },
     { label: 'Description', key: 'description' },
   ]
@@ -41,6 +42,7 @@ const CouncilTransactionHistory = () => {
     success: transaction.status,
     credit: transaction.category === 'Deposit' ? transaction.amount : null,
     debit: transaction.category !== 'Deposit' ? transaction.amount : null,
+    charge: transaction.charge,
     depositedBy: transaction.loggedBy?.fullName,
     description: transaction.description,
   }))
@@ -113,7 +115,7 @@ const CouncilTransactionHistory = () => {
                     </Col>
                     <Col xs={3}>
                       <CurrencySpan
-                        number={transaction.amount}
+                        number={transaction.amount + (transaction.charge ?? 0)}
                         className={
                           transaction.category === 'Deposit' ? 'good' : 'bad'
                         }
