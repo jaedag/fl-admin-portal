@@ -1,3 +1,14 @@
+### 7.11.0 (2023-11-15)
+
+##### New Features
+
+*  implement account lock on expense form ([f0ff8df2](https://github.com/firstlovecenter/fl-admin-portalgit/commit/f0ff8df21bf4076b909ee812464b5de02218dee7))
+
+##### Bug Fixes
+
+*  sstart account lock ([9ea9fb09](https://github.com/firstlovecenter/fl-admin-portalgit/commit/9ea9fb094a60dc5b7cc6ac6bed0ecee103620f50))
+*  update Campus Council List heading to display campus name ([d9f1f915](https://github.com/firstlovecenter/fl-admin-portalgit/commit/d9f1f915d83f985a5631b6a15b04a8e40a32bbb6))
+
 #### 7.10.41 (2023-11-15)
 
 ##### New Features
