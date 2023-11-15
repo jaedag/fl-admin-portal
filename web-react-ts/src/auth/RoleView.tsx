@@ -11,7 +11,6 @@ type RoleViewProps = {
   permittedStream?: StreamOptions[]
   noIncomeTracking?: boolean
   directoryLock?: boolean
-  accountLock?: boolean
 }
 
 const RoleView = (props: RoleViewProps) => {
@@ -23,7 +22,6 @@ const RoleView = (props: RoleViewProps) => {
     permittedStream,
     noIncomeTracking,
     directoryLock,
-    accountLock,
   } = props
   const { currentUser } = useContext(MemberContext)
   const { isAuthorised } = useAuth()
@@ -81,34 +79,13 @@ const RoleView = (props: RoleViewProps) => {
     }
   }
 
-  const lockAccount = (accountLock?: boolean) => {
-    if (!accountLock) {
-      return true
-    }
-
-    const isThursday = new Date().getDay() === 4
-    const isWednesday = new Date().getDay() === 3 && new Date().getHours() <= 10
-
-    const validDays = [6, 0, 1, 2]
-    const currentHour = new Date().getHours()
-
-    if (isThursday && currentHour >= 6 && currentHour < 18) {
-      return true
-    }
-
-    if (validDays.includes(new Date().getDay()) || isWednesday) {
-      return true
-    }
-  }
-
   if (
     isAuthorised(roles) &&
     verify(verifyId) &&
     verifyNot(verifyNotId) &&
     permitStream(permittedStream) &&
     includeIncome(noIncomeTracking) &&
-    lockDirectory(directoryLock) &&
-    lockAccount(accountLock)
+    lockDirectory(directoryLock)
   ) {
     return <>{children}</>
   } else {
