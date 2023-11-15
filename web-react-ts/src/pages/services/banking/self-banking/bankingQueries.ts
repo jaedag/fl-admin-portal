@@ -27,6 +27,15 @@ export const COUNCIL_SERVICE_PAYMENT = gql`
   }
 `
 
+export const STREAM_SERVICE_PAYMENT = gql`
+  query streamServicePayment($id: ID!) {
+    streams(where: { id: $id }) {
+      id
+      name
+    }
+  }
+`
+
 export const DISPLAY_OFFERING_DETAILS = gql`
   query displayOfferingDetails($serviceRecordId: ID!) {
     serviceRecords(where: { id: $serviceRecordId }) {

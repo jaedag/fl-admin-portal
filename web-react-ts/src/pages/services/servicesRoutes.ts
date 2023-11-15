@@ -147,6 +147,9 @@ const CouncilServiceDetails = lazy(
 const CouncilBankingSlipView = lazy(
   () => import('pages/services/banking/banking-slip/CouncilView')
 )
+const StreamBankingSlipView = lazy(
+  () => import('pages/services/banking/banking-slip/StreamView')
+)
 const CouncilBankingSlipSubmission = lazy(
   () => import('pages/services/banking/banking-slip/CouncilSubmission')
 )
@@ -279,6 +282,12 @@ export const services: LazyRouteTypes[] = [
     path: '/services/council/banking-slips',
     element: CouncilBankingSlipView,
     roles: permitLeaderAdmin('Council'),
+    placeholder: true,
+  },
+  {
+    path: '/services/stream/banking-slips',
+    element: StreamBankingSlipView,
+    roles: permitLeaderAdmin('Stream'),
     placeholder: true,
   },
   {

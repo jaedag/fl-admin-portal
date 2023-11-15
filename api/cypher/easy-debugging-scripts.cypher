@@ -104,3 +104,7 @@ WHERE toLower(members.firstName+ ' ' + members.middleName + ' ' + members.lastNa
 OR toLower(members.firstName + ' ' + members.lastName) CONTAINS toLower($key)
 RETURN DISTINCT members.firstName,  members.lastName,basonta.name ORDER BY toLower(members.lastName), toLower(members.firstName) LIMIT $limit
 
+MATCH (member:Member {email: "glendertetteh212@gmail.com"})
+MATCH (member)-[r:IS_ADMIN_FOR]->(church)
+DELETE r
+RETURN member, church

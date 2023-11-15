@@ -84,7 +84,9 @@ const Services = () => {
               navigate(`/trends`)
             }}
           />
-          {['Council', 'Constituency', 'Fellowship'].includes(churchType) &&
+          {['Stream', 'Council', 'Constituency', 'Fellowship'].includes(
+            churchType
+          ) &&
             church?.bankAccount !== 'manual' && (
               <>
                 <MenuButton

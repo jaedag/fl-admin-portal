@@ -3,9 +3,11 @@ import { permitMe } from 'permission-utils'
 import { lazy } from 'react'
 
 const ConfirmPayment = lazy(() => import('./ConfirmPayment'))
+const StreamSelfBanking = lazy(() => import('./StreamSelfBanking'))
 const CouncilSelfBanking = lazy(() => import('./CouncilSelfBanking'))
 const ConstituencySelfBanking = lazy(() => import('./ConstituencySelfBanking'))
 const FellowshipSelfBanking = lazy(() => import('./FellowshipSelfBanking'))
+const PayStreamOffering = lazy(() => import('./PayStreamOffering'))
 const PayCouncilOffering = lazy(() => import('./PayCouncilOffering'))
 const PayConstituencyOffering = lazy(() => import('./PayConstituencyOffering'))
 const PayFellowshipOffering = lazy(() => import('./PayFellowshipOffering'))
@@ -32,6 +34,12 @@ export const banking: LazyRouteTypes[] = [
     placeholder: true,
   },
   {
+    path: '/services/stream/self-banking',
+    element: StreamSelfBanking,
+    roles: ['leaderStream', 'adminStream'],
+    placeholder: true,
+  },
+  {
     path: '/services/fellowship/self-banking/pay',
     element: PayFellowshipOffering,
     roles: ['leaderFellowship'],
@@ -45,6 +53,11 @@ export const banking: LazyRouteTypes[] = [
     path: '/services/council/self-banking/pay',
     element: PayCouncilOffering,
     roles: ['leaderCouncil', 'adminCouncil'],
+  },
+  {
+    path: '/services/stream/self-banking/pay',
+    element: PayStreamOffering,
+    roles: ['leaderStream', 'adminStream'],
   },
   {
     path: '/self-banking/confirm-payment',
