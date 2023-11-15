@@ -17,6 +17,7 @@ import RadioButtons from 'components/formik/RadioButtons'
 import Textarea from 'components/formik/Textarea'
 import { EXPENSE_REQUEST } from './expenseGQL'
 import { CouncilForAccounts } from '../accounts-types'
+import RoleView from 'auth/RoleView'
 
 const ExpenseForm = () => {
   const { councilId, clickCard } = useContext(ChurchContext)
@@ -77,111 +78,113 @@ const ExpenseForm = () => {
 
   return (
     <ApolloWrapper data={data} loading={loading} error={error}>
-      <Container>
-        <HeadingPrimary>{`${council?.name} ${council?.__typename} Expense Form`}</HeadingPrimary>
-        <HeadingSecondary>
-          Fill Out This Form For Any Expense You Need
-        </HeadingSecondary>
-        <Formik
-          initialValues={initialValues}
-          validationSchema={validationSchema}
-          onSubmit={onSubmit}
-        >
-          {(formik) => (
-            <Form>
-              <Container className="mb-4">
-                <div className="my-4">
-                  <Input
-                    name="requestedAmount"
-                    label="How much are you requesting from your weekday account"
-                    placeholder="Enter an amount"
-                    value={
-                      formik.values.category === 'HR'
-                        ? (formik.values.requestedAmount =
-                            council?.hrAmount.toString())
-                        : formik.values.requestedAmount
-                    }
-                  />
-                  {formik.values.category === 'Bussing' && (
+      <RoleView roles={['leaderCouncil', 'adminCampus']} accountLock>
+        <Container>
+          <HeadingPrimary>{`${council?.name} ${council?.__typename} Expense Form`}</HeadingPrimary>
+          <HeadingSecondary>
+            Fill Out This Form For Any Expense You Need
+          </HeadingSecondary>
+          <Formik
+            initialValues={initialValues}
+            validationSchema={validationSchema}
+            onSubmit={onSubmit}
+          >
+            {(formik) => (
+              <Form>
+                <Container className="mb-4">
+                  <div className="my-4">
                     <Input
-                      name="ghostBussingSociety"
-                      label="How much from your bussing society?"
+                      name="requestedAmount"
+                      label="How much are you requesting from your weekday account"
                       placeholder="Enter an amount"
+                      value={
+                        formik.values.category === 'HR'
+                          ? (formik.values.requestedAmount =
+                              council?.hrAmount.toString())
+                          : formik.values.requestedAmount
+                      }
                     />
-                  )}
-                </div>
+                    {formik.values.category === 'Bussing' && (
+                      <Input
+                        name="ghostBussingSociety"
+                        label="How much from your bussing society?"
+                        placeholder="Enter an amount"
+                      />
+                    )}
+                  </div>
 
-                <div className="mb-4">
-                  <RadioButtons
-                    name="category"
-                    label="Category of Expense"
-                    options={[
-                      { key: 'Bussing', value: 'Bussing' },
-                      { key: 'HR', value: 'HR' },
-                      { key: 'Construction', value: 'Construction' },
-                      { key: 'Ministry Expense', value: 'Ministry Expense' },
-                    ]}
-                  />
-                </div>
-                <div className="mb-4">
-                  <Textarea
-                    name="description"
-                    label="Description"
-                    placeholder="Enter a description"
-                  />
-                </div>
-                <Modal show={show} onHide={handleClose} centered scrollable>
-                  <Modal.Header closeButton>
-                    Please confirm the amounts to deposit
-                  </Modal.Header>
-                  <Modal.Body>
-                    <p>
-                      Requested Amount:{' '}
-                      <span className="text-info">
-                        GHS{' '}
-                        {(
-                          parseFloat(formik.values.requestedAmount) +
-                          parseFloat(formik.values.ghostBussingSociety ?? '0')
-                        ).toLocaleString('en-US')}
-                      </span>
-                    </p>
-
-                    <p>
-                      Category:{' '}
-                      <span className="text-info">
-                        {formik.values.category}
-                      </span>
-                    </p>
-
-                    <p>
-                      Description:{' '}
-                      <span className="text-info">
-                        {formik.values.description}
-                      </span>
-                    </p>
-                  </Modal.Body>
-
-                  <Modal.Footer>
-                    <SubmitButton
-                      onClick={formik.handleSubmit}
-                      formik={formik}
+                  <div className="mb-4">
+                    <RadioButtons
+                      name="category"
+                      label="Category of Expense"
+                      options={[
+                        { key: 'Bussing', value: 'Bussing' },
+                        { key: 'HR', value: 'HR' },
+                        { key: 'Construction', value: 'Construction' },
+                        { key: 'Ministry Expense', value: 'Ministry Expense' },
+                      ]}
                     />
-                    <Button variant="primary" onClick={handleClose}>
-                      Close
+                  </div>
+                  <div className="mb-4">
+                    <Textarea
+                      name="description"
+                      label="Description"
+                      placeholder="Enter a description"
+                    />
+                  </div>
+                  <Modal show={show} onHide={handleClose} centered scrollable>
+                    <Modal.Header closeButton>
+                      Please confirm the amounts to deposit
+                    </Modal.Header>
+                    <Modal.Body>
+                      <p>
+                        Requested Amount:{' '}
+                        <span className="text-info">
+                          GHS{' '}
+                          {(
+                            parseFloat(formik.values.requestedAmount) +
+                            parseFloat(formik.values.ghostBussingSociety ?? '0')
+                          ).toLocaleString('en-US')}
+                        </span>
+                      </p>
+
+                      <p>
+                        Category:{' '}
+                        <span className="text-info">
+                          {formik.values.category}
+                        </span>
+                      </p>
+
+                      <p>
+                        Description:{' '}
+                        <span className="text-info">
+                          {formik.values.description}
+                        </span>
+                      </p>
+                    </Modal.Body>
+
+                    <Modal.Footer>
+                      <SubmitButton
+                        onClick={formik.handleSubmit}
+                        formik={formik}
+                      />
+                      <Button variant="primary" onClick={handleClose}>
+                        Close
+                      </Button>
+                    </Modal.Footer>
+                  </Modal>
+
+                  <div className="text-center mt-5">
+                    <Button onClick={handleShow} className="px-5">
+                      Submit
                     </Button>
-                  </Modal.Footer>
-                </Modal>
-
-                <div className="text-center mt-5">
-                  <Button onClick={handleShow} className="px-5">
-                    Submit
-                  </Button>
-                </div>
-              </Container>
-            </Form>
-          )}
-        </Formik>
-      </Container>
+                  </div>
+                </Container>
+              </Form>
+            )}
+          </Formik>
+        </Container>
+      </RoleView>
     </ApolloWrapper>
   )
 }
