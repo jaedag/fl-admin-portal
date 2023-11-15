@@ -1,3 +1,9 @@
+#### 7.10.41 (2023-11-15)
+
+##### New Features
+
+*  implement self banking for stream ([687ee3ea](https://github.com/firstlovecenter/fl-admin-portalgit/commit/687ee3ead4d361f92cc692b2679e303163bafb4d))
+
 #### 7.10.40 (2023-11-14)
 
 ##### Bug Fixes
