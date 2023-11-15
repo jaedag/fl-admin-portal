@@ -74,7 +74,7 @@ const CampusCouncilList = ({
   return (
     <ApolloWrapper data={data} loading={loading} error={error}>
       <Container>
-        <HeadingPrimary>Update Council Balances</HeadingPrimary>
+        <HeadingPrimary>{campus?.name} Campus Councils</HeadingPrimary>
         <HeadingSecondary>{`${campus?.name} ${campus?.__typename}`}</HeadingSecondary>
 
         <Formik initialValues={initialValues} onSubmit={onSubmit}>
