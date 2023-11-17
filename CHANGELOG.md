@@ -1,3 +1,9 @@
+#### 7.14.1 (2023-11-17)
+
+##### Refactors
+
+*  noBankingProof condition in ServiceDetails component ([a3d0b29e](https://github.com/firstlovecenter/fl-admin-portalgit/commit/a3d0b29ea04f5c20a3f12f009100a88221baeb1e))
+
 ### 7.14.0 (2023-11-15)
 
 ### 7.13.0 (2023-11-15)
