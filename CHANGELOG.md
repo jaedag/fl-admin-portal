@@ -1,3 +1,14 @@
+#### 7.14.2 (2023-11-17)
+
+##### Bug Fixes
+
+*  transaction status check in ReceiptPage component ([23df391f](https://github.com/firstlovecenter/fl-admin-portalgit/commit/23df391fd38c1d5a76879f242443835dec70f839))
+*  update expected income field to cash field in banking slip submissions ([e012adbb](https://github.com/firstlovecenter/fl-admin-portalgit/commit/e012adbb268b52018d929af717baa514902b6533))
+
+##### Refactors
+
+*  getLastServiceRecord query to include additional church types ([4e5c1c5d](https://github.com/firstlovecenter/fl-admin-portalgit/commit/4e5c1c5d533beda1535ded3a29c79db7b513c0b9))
+
 #### 7.14.1 (2023-11-17)
 
 ##### Refactors
