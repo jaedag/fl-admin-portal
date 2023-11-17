@@ -90,7 +90,7 @@ const ReceiptPage = () => {
         <TableFromArrays tableArray={tablevalues} loading={false} />
 
         <RoleView roles={permitAdmin('Campus')}>
-          {service?.transactionStatus === 'failed' && (
+          {!['success', 'pending'].includes(service?.transactionStatus) && (
             <Formik
               initialValues={{
                 transactionReference: '',
