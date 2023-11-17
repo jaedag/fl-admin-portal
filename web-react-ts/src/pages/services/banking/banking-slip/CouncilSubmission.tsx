@@ -91,7 +91,7 @@ const CouncilBankingSlipSubmission = () => {
                   true
                 )}
               </p>
-              <p>Expected Income: {data.serviceRecords[0].income}</p>
+              <p>Expected Income: {data.serviceRecords[0].cash}</p>
               <Form>
                 <Row className="row-cols-1 row-cols-md-2 mt-5">
                   <Col className="mb-2">
