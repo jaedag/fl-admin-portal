@@ -89,10 +89,7 @@ const ServiceDetails = ({ service, church, loading }: ServiceDetailsProps) => {
   }
 
   const noBankingProof =
-    service?.income &&
-    !service?.bankingProof &&
-    !service?.bankingSlip &&
-    !service?.onlineGiving
+    service?.cash && !service?.bankingProof && !service?.bankingSlip
 
   return (
     <Container>
