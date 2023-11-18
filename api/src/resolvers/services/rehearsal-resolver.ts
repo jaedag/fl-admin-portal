@@ -22,6 +22,7 @@ import {
   aggregateMinistryMeetingDataForHubCouncil,
   recordOnStageAttendance,
   checkMinistryStageAttendanceFormFilledThisWeek,
+  recordCancelledOnStagePerformance,
 } from './rehearsal-cypher'
 
 import { SontaHigherChurches } from '../utils/types'
@@ -46,6 +47,12 @@ type RecordStageAttendanceArgs = {
   serviceDate: string
   attendance: number
   onStagePictures: string[]
+}
+
+type RecordCancelledOnstageMinistryPerformanceArgs = {
+  churchId: string
+  serviceDate: string
+  noServiceReason: string
 }
 
 export const checkServantHasCurrentHistory = async (
@@ -275,7 +282,7 @@ const SontaServiceMutation = {
       const streamServiceDayCheck = rearrangeCypherObject(serviceCheckRes[2])
 
       if (!streamServiceDayCheck.serviceDay) {
-        throw new Error(errorMessage.non_stream_service_day)
+        throw new Error(errorMessage.not_stream_service_day)
       }
 
       if (
@@ -283,10 +290,6 @@ const SontaServiceMutation = {
         !['CreativeArts'].some((label) => serviceCheck.labels?.includes(label))
       ) {
         throw new Error(errorMessage.no_double_form_filling)
-      }
-
-      if (serviceCheck.labels?.includes('Vacation')) {
-        throw new Error(errorMessage.vacation_cannot_fill_service)
       }
 
       let aggregateCypher = ''
@@ -326,6 +329,67 @@ const SontaServiceMutation = {
       await session.close()
       await sessionTwo.close()
       await sessionThree.close()
+    }
+    return null
+  },
+
+  RecordCancelledOnstagePerformance: async (
+    object: any,
+    args: RecordCancelledOnstageMinistryPerformanceArgs,
+    context: Context
+  ) => {
+    isAuth(permitLeaderAdmin('Ministry'), context.auth.roles)
+    const session = context.executionContext.session()
+    const sessionTwo = context.executionContext.session()
+    try {
+      await checkServantHasCurrentHistory(session, context, {
+        churchId: args.churchId,
+      })
+
+      const promises = [
+        session.executeRead((tx) =>
+          tx.run(checkMinistryStageAttendanceFormFilledThisWeek, args)
+        ),
+        sessionTwo.executeRead((tx) => tx.run(checkStreamServiceDay, args)),
+      ]
+
+      const serviceCheckRes = await Promise.all(promises)
+
+      const serviceCheck = rearrangeCypherObject(serviceCheckRes[0])
+
+      const streamServiceDayCheck = rearrangeCypherObject(serviceCheckRes[2])
+
+      if (!streamServiceDayCheck.serviceDay) {
+        throw new Error(errorMessage.not_stream_service_day)
+      }
+
+      if (
+        serviceCheck.alreadyFilled &&
+        !['CreativeArts'].some((label) => serviceCheck.labels?.includes(label))
+      ) {
+        throw new Error(errorMessage.no_double_form_filling)
+      }
+
+      const cypherResponse = await session
+        .run(recordCancelledOnStagePerformance, {
+          ...args,
+          auth: context.auth,
+        })
+        .catch((error: any) =>
+          throwToSentry(
+            'Error Cancelling OnStage Performance attendance',
+            error
+          )
+        )
+
+      const serviceDetails = rearrangeCypherObject(cypherResponse)
+
+      return serviceDetails.stagePerformanceRecord.properties
+    } catch (error) {
+      throwToSentry('Error cancelling OnStage performance', error)
+    } finally {
+      await session.close()
+      await sessionTwo.close()
     }
     return null
   },

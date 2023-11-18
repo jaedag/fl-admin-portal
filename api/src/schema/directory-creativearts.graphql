@@ -1125,6 +1125,12 @@ extend type Mutation {
     onStagePictures: [String!]!
   ):MinistryStageAttendanceRecord
 
+   RecordCancelledOnstagePerformance(
+    churchId: ID!
+    serviceDate: String!
+    noStagePerformanceReason: String!
+  ):MinistryStageAttendanceRecord
+
 }
 
 ## DELETE OPERATIONS

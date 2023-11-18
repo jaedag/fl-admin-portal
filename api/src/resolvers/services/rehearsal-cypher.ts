@@ -168,6 +168,23 @@ MERGE (log)-[:HAS_SERVICE]->(serviceRecord)
 
 RETURN serviceRecord
 `
+export const recordCancelledOnStagePerformance = `
+CREATE (stagePerformanceRecord:MinistryStageAttendanceRecord:NoService {createdAt:datetime()})
+SET stagePerformanceRecord.id = apoc.create.uuid(),
+stagePerformanceRecord.noStagePerformanceReason = $noStagePerformanceReason
+
+WITH stagePerformanceRecord
+MATCH (church {id: $churchId}) WHERE church:Ministry
+MATCH (church)-[:CURRENT_HISTORY]->(log:ServiceLog)
+MATCH (leader:Active:Member {auth_id: $auth.jwt.sub})
+
+MERGE (serviceDate:TimeGraph {date: date($serviceDate)})
+MERGE (stagePerformanceRecord)-[:LOGGED_BY]->(leader)
+MERGE (stagePerformanceRecord)-[:SERVICE_HELD_ON]->(serviceDate)
+MERGE (log)-[:HAS_SERVICE]->(stagePerformanceRecord)
+
+RETURN stagePerformanceRecord
+`
 
 export const aggregateMinistryMeetingDataForHub = `
     MATCH (fellowship:HubFellowship {id: $churchId})
