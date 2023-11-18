@@ -132,7 +132,6 @@ const bankingMutation = {
             {
               transactionResponse,
               args,
-              auth,
               subaccount,
             }
           )}`
