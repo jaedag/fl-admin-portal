@@ -141,7 +141,7 @@ export const RECORD_SERVICE_NO_INCOME = gql`
 `
 
 export const RECORD_HUB_REHEARSAL_SERVICE = gql`
-  mutation RecordHubRehearsalService(
+  mutation RecordRehearsalService(
     $churchId: ID!
     $serviceDate: String!
     $attendance: Int!
@@ -152,7 +152,7 @@ export const RECORD_HUB_REHEARSAL_SERVICE = gql`
     $treasurerSelfie: String!
     $familyPicture: String!
   ) {
-    RecordHubRehearsalService(
+    RecordRehearsalService(
       churchId: $churchId
       serviceDate: $serviceDate
       attendance: $attendance
