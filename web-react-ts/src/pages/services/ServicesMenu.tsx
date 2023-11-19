@@ -18,7 +18,7 @@ import RoleView from 'auth/RoleView'
 import { permitAdmin, permitTellerStream } from 'permission-utils'
 
 const Services = () => {
-  const { currentUser, theme } = useContext(MemberContext)
+  const { currentUser } = useContext(MemberContext)
   const navigate = useNavigate()
   const { clickCard } = useContext(ChurchContext)
 
@@ -31,7 +31,7 @@ const Services = () => {
         <PlaceholderCustom xs={12} as="h1">
           <div className="text-center">
             <h1 className="mb-0  page-header">{`${church?.name} ${churchType}`}</h1>
-            <p className={`${theme} menu-subheading`}>Services</p>
+            <p className={`menu-subheading`}>Services</p>
           </div>
         </PlaceholderCustom>
         <div className="d-grid gap-2 mt-5 text-left">
