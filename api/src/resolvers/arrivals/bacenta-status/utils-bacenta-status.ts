@@ -26,7 +26,7 @@ export const setBacentaICStatus = async (
   leaderPhoneNumber: string,
   bacentaName: string
 ) => {
-  if (last4Bussing.every((bussing) => bussing < 8)) {
+  if (last4Bussing.every((bussing) => bussing < 8 || !last4Bussing.length)) {
     await Promise.all([
       session.executeWrite((tx) => tx.run(setBacentaIC, { bacentaId })),
       sendBulkSMS(
@@ -87,10 +87,6 @@ export const setBacentaStatus = async (
     name: last4ServicesResponse[0].bacentaName,
     __typename: last4ServicesResponse[0].bacentaStatus,
     bussingRecord: last4ServicesResponse[0].bussingRecord,
-  }
-
-  if (last4ServicesResponse.length < 4) {
-    return bacentaName
   }
 
   const last4Bussing = last4ServicesResponse.map(
