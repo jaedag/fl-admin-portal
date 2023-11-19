@@ -1,3 +1,18 @@
+#### 7.14.7 (2023-11-19)
+
+##### Documentation Changes
+
+*  update CHANGELOG.md ([c8c7e843](https://github.com/firstlovecenter/fl-admin-portalgit/commit/c8c7e84339967b7db56afba2b9a569b642aa831f))
+*  update CHANGELOG.md ([cc2214f1](https://github.com/firstlovecenter/fl-admin-portalgit/commit/cc2214f19d966560dee6f699f3e86c00daa7fe02))
+*  update CHANGELOG.md ([c1f6903a](https://github.com/firstlovecenter/fl-admin-portalgit/commit/c1f6903ada27e3c1d7bd57583b828bb8e4ac170e))
+*  update CHANGELOG.md ([91e236e3](https://github.com/firstlovecenter/fl-admin-portalgit/commit/91e236e3529564a636b54835e8882a871d7058f0))
+
+##### Bug Fixes
+
+*  fix roleview ([a75a05e3](https://github.com/firstlovecenter/fl-admin-portalgit/commit/a75a05e3802628a233c1c42caad3c8c004a26ab0))
+*  update roleview ([81cc9fad](https://github.com/firstlovecenter/fl-admin-portalgit/commit/81cc9fad13cfa4295221f0ba9fc051fab2e06f98))
+*  remove unused 'auth' variable ([11e89a67](https://github.com/firstlovecenter/fl-admin-portalgit/commit/11e89a672b2b83dd4af832cfc3f0d16df8f72aca))
+
 #### 7.14.6 (2023-11-19)
 
 #### 7.14.5 (2023-11-19)
