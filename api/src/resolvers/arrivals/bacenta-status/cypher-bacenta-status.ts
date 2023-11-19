@@ -1,6 +1,7 @@
 export const getBacentaLastFourBussing = `
 MATCH (bacenta:Bacenta  {id: $bacentaId})
 MATCH (bacenta)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(bussing:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
+WHERE date.date >= date() - duration('P4W')
 WITH bacenta, bussing, date ORDER BY date.date DESC 
 LIMIT 4
 RETURN bacenta.id AS id, bacenta.name AS bacentaName, bussing.attendance AS bussingRecord, labels(bacenta) AS bacentaStatus, date.date AS date   
@@ -16,8 +17,6 @@ CREATE (log:HistoryLog)
         log.id =  apoc.create.uuid(),
         log.timeStamp = datetime(),
         log.historyRecord = bacenta.name + ' Bacenta has been demoted to IC status'
-
-
         
 MERGE (date:TimeGraph {date: date()})
 WITH bacenta, log, date
