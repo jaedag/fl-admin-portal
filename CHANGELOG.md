@@ -1,3 +1,10 @@
+#### 7.14.3 (2023-11-19)
+
+##### Bug Fixes
+
+*  fix roleview ([1e42bfb4](https://github.com/firstlovecenter/fl-admin-portalgit/commit/1e42bfb45ded76f765d730f530e927886a0210e8))
+*  update roleview ([c80507d3](https://github.com/firstlovecenter/fl-admin-portalgit/commit/c80507d3075b6e2613289358fd6d86cd5e9252ad))
+
 #### 7.14.2 (2023-11-17)
 
 ##### Bug Fixes
