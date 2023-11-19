@@ -2,6 +2,7 @@ import { Role, StreamOptions } from 'global-types'
 import React, { useContext } from 'react'
 import { MemberContext } from '../contexts/MemberContext'
 import useAuth from './useAuth'
+import { permitAdmin, permitArrivals } from 'permission-utils'
 
 type RoleViewProps = {
   roles: Role[]
@@ -73,7 +74,10 @@ const RoleView = (props: RoleViewProps) => {
 
     if (
       (new Date().getDay() === 1 && new Date().getHours() >= 12) ||
-      new Date().getDay() === 2
+      new Date().getDay() === 2 ||
+      [...permitArrivals('Campus'), ...permitAdmin('Stream')]?.some((r) =>
+        currentUser?.roles.includes(r)
+      )
     ) {
       return true
     }
