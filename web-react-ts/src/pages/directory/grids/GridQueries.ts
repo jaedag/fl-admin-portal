@@ -681,7 +681,6 @@ export const GET_HUB_MEMBERS = gql`
         firstName
         lastName
         pictureUrl
-        stream_name
         fellowship {
           name
         }

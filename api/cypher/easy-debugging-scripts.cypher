@@ -108,3 +108,15 @@ MATCH (member:Member {email: "glendertetteh212@gmail.com"})
 MATCH (member)-[r:IS_ADMIN_FOR]->(church)
 DELETE r
 RETURN member, church
+
+
+      MATCH (this:Member {email: "mccorlays@gmail.com"})-[:LEADS|IS_ADMIN_FOR]->(creativeChurch)<-[:HAS_MINISTRY]-(bacentaChurch)-[:HAS*2..5]->(:Fellowship)<-[:BELONGS_TO]-(members:Active:Member)
+      WHERE creativeChurch:Hub OR creativeChurch:HubCouncil OR creativeChurch:Ministry OR creativeChurch:CreativeArts
+      AND bacentaChurch:Constituency OR bacentaChurch:Council OR bacentaChurch:Stream OR bacentaChurch:Campus
+
+      MATCH (hub:Hub {id: $hubId})<-[:HAS]-(:HubCouncil)<-[:HAS]-(:Ministry)<-[:HAS]-(creative:CreativeArts)
+      MATCH (members:Active:Member)-[:BELONGS_TO]->(creative)
+RETURN members.firstName, members.lastName
+      WHERE toLower(members.firstName+ ' ' + members.middleName + ' ' + members.lastName) CONTAINS toLower($key)
+      OR toLower(members.firstName + ' ' + members.lastName) CONTAINS toLower($key)
+      RETURN DISTINCT members ORDER BY toLower(members.lastName), toLower(members.firstName) LIMIT $limit
