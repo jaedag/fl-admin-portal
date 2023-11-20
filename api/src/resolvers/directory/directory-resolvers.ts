@@ -346,9 +346,14 @@ const directoryMutation = {
     const constituencyCheck = rearrangeCypherObject(res[0])
     const lastServiceRecord = rearrangeCypherObject(res[1])
 
-    if (constituencyCheck.memberCount) {
+    if (constituencyCheck.bacentaCount) {
       throw new Error(
         `${constituencyCheck?.name} Constituency has ${constituencyCheck?.bacentaCount} active bacentas. Please close down all bacentas and try again.`
+      )
+    }
+    if (constituencyCheck.hubCount) {
+      throw new Error(
+        `${constituencyCheck?.name} Constituency has ${constituencyCheck?.hubCount} active hubs. Please close down all hubs and try again.`
       )
     }
 
