@@ -1,3 +1,15 @@
+#### 7.14.8 (2023-11-20)
+
+##### Bug Fixes
+
+*  fix constituency and hub count check in close-church-cypher.ts ([6fe13103](https://github.com/firstlovecenter/fl-admin-portalgit/commit/6fe13103f307348d8605e6ffdbeea20e5c9bd37f))
+*  fix condition in setBacentaICStatus function ([884b6a6f](https://github.com/firstlovecenter/fl-admin-portalgit/commit/884b6a6f8b4951a024e861e8a4eca453d8d97c89))
+*  return only bussing records from last 4 weeks ([99f8257e](https://github.com/firstlovecenter/fl-admin-portalgit/commit/99f8257eef041313d417b35bfe43cf4f80c32da4))
+
+##### Refactors
+
+*  refactor directory search query and update member search query ([85f63c2d](https://github.com/firstlovecenter/fl-admin-portalgit/commit/85f63c2d2fce18e58c0dc05a9099d6f1be50e0e2))
+
 #### 7.14.7 (2023-11-19)
 
 ##### Documentation Changes
