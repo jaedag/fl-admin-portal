@@ -11,7 +11,7 @@ import { RoleBasedSearch } from './formik-types'
 import Autosuggest from 'react-autosuggest'
 import './react-autosuggest.css'
 import {
-  BASONTA_MEMBER_SEARCH,
+  BASONTA_MEMBER_SEARCH_FROM_HUB,
   MEMBER_MEMBER_SEARCH,
 } from './SearchMemberQueries'
 import TextError from './TextError/TextError'
@@ -31,11 +31,11 @@ const SearchMember = (props: RoleBasedSearch) => {
       },
     }
   )
-  const [basontaMemberSearch, { error: hubMemberError }] = useLazyQuery(
-    BASONTA_MEMBER_SEARCH,
+  const [basontaMemberSearchFromHub, { error: hubMemberError }] = useLazyQuery(
+    BASONTA_MEMBER_SEARCH_FROM_HUB,
     {
       onCompleted: (data) => {
-        setSuggestions(data.members[0].basontaMemberSearch)
+        setSuggestions(data.members[0].basontaMemberSearchFromHub)
         return
       },
     }
@@ -46,7 +46,7 @@ const SearchMember = (props: RoleBasedSearch) => {
 
   const whichSearch = (searchString: string) => {
     if (props.creativeArts) {
-      basontaMemberSearch({
+      basontaMemberSearchFromHub({
         variables: { id: currentUser.id, key: searchString?.trim(), hubId },
       })
     } else {
