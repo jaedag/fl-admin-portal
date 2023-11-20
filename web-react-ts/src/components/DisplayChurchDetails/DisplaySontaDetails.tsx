@@ -312,9 +312,6 @@ const DisplaySontaDetails = (props: DisplayChurchDetailsProps) => {
         </Container>
       )}
 
-      {props.last3Weeks && props.details[2].number === 'Active' && (
-        <Last3WeeksCard last3Weeks={props.last3Weeks} />
-      )}
       {props.subLevel && props.buttons?.length ? (
         <>
           <Container>
@@ -353,6 +350,10 @@ const DisplaySontaDetails = (props: DisplayChurchDetailsProps) => {
           </div>
         </>
       ) : null}
+
+      {props.last3Weeks && props.details[2].number === 'Active' && (
+        <Last3WeeksCard last3Weeks={props.last3Weeks} />
+      )}
       {props.subLevel && !props.buttons?.length ? (
         <Container className="d-grid gap-2 mt-2">
           <RoleView roles={props.editPermitted}>
