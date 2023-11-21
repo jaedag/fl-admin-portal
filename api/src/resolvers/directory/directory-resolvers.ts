@@ -292,7 +292,7 @@ const directoryMutation = {
       )
       const bacentaCheck = rearrangeCypherObject(bacentaCheckResponse)
 
-      if (bacentaCheck.memberCount.toNumber()) {
+      if (bacentaCheck.memberCount) {
         throw new Error(
           `${bacentaCheck?.name} Bacenta has ${bacentaCheck?.fellowshipCount} active fellowships. Please close down all fellowships and try again.`
         )
