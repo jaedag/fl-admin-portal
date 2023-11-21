@@ -120,3 +120,8 @@ RETURN members.firstName, members.lastName
       WHERE toLower(members.firstName+ ' ' + members.middleName + ' ' + members.lastName) CONTAINS toLower($key)
       OR toLower(members.firstName + ' ' + members.lastName) CONTAINS toLower($key)
       RETURN DISTINCT members ORDER BY toLower(members.lastName), toLower(members.firstName) LIMIT $limit
+
+      MATCH (constituency:Constituency {name:  "UPSA HOSTEL "})
+OPTIONAL MATCH (constituency)-[:HAS]->(bacentas:Bacenta)<-[:LEADS]-(member:Active:Member)
+OPTIONAL MATCH (constituency)-[:HAS_MINISTRY]->(hub:Active:Hub)
+RETURN constituency.name AS name, COUNT(member) AS memberCount, COUNT(bacentas) AS bacentaCount,  COUNT(hub) AS hubCount 

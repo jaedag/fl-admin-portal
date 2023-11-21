@@ -23,9 +23,9 @@ RETURN bacenta.name AS name, COUNT(member) AS memberCount, COUNT(fellowships) AS
 
 export const checkConstituencyHasNoMembers = `
 MATCH (constituency:Constituency {id:$constituencyId})
-OPTIONAL MATCH (constituency)-[:HAS]->(bacentas:Bacenta)<-[:LEADS]-(member:Active:Member)
-OPTIONAL MATCH (constituency)-[:HAS_MINISTRY]->(hub:Active:Hub)
-RETURN constituency.name AS name, COUNT(member) AS memberCount, COUNT(bacentas) AS bacentaCount,  COUNT(hub) AS hubCount
+OPTIONAL MATCH (constituency)-[:HAS]->(bacentas:Bacenta)
+OPTIONAL MATCH (constituency)-[:HAS_MINISTRY]->(hub:Hub)
+RETURN constituency.name AS name,  COUNT(bacentas) AS bacentaCount,  COUNT(hub) AS hubCount
 `
 export const checkCouncilHasNoMembers = `
 MATCH (council:Council {id:$councilId})

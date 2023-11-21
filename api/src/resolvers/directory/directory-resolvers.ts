@@ -292,7 +292,7 @@ const directoryMutation = {
       )
       const bacentaCheck = rearrangeCypherObject(bacentaCheckResponse)
 
-      if (bacentaCheck.memberCount) {
+      if (bacentaCheck.memberCount.toNumber()) {
         throw new Error(
           `${bacentaCheck?.name} Bacenta has ${bacentaCheck?.fellowshipCount} active fellowships. Please close down all fellowships and try again.`
         )
@@ -346,12 +346,12 @@ const directoryMutation = {
     const constituencyCheck = rearrangeCypherObject(res[0])
     const lastServiceRecord = rearrangeCypherObject(res[1])
 
-    if (constituencyCheck.bacentaCount) {
+    if (constituencyCheck.bacentaCount.toNumber()) {
       throw new Error(
         `${constituencyCheck?.name} Constituency has ${constituencyCheck?.bacentaCount} active bacentas. Please close down all bacentas and try again.`
       )
     }
-    if (constituencyCheck.hubCount) {
+    if (constituencyCheck.hubCount.toNumber()) {
       throw new Error(
         `${constituencyCheck?.name} Constituency has ${constituencyCheck?.hubCount} active hubs. Please close down all hubs and try again.`
       )
@@ -439,13 +439,13 @@ const directoryMutation = {
     const councilCheck = rearrangeCypherObject(res[0])
     const lastServiceRecord = rearrangeCypherObject(res[1])
 
-    if (councilCheck.memberCount > 0) {
+    if (councilCheck.constituencyCount.toNumber()) {
       throw new Error(
         `${councilCheck?.name} Council has ${councilCheck?.constituencyCount} active constituencies. Please close down all constituencies and try again.`
       )
     }
 
-    if (councilCheck.hubCouncilLeaderCount > 0) {
+    if (councilCheck.hubCouncilLeaderCount.toNumber()) {
       throw new Error(
         `${councilCheck?.name} Council has ${councilCheck?.hubCouncilCount} active hub councils. Please close down all hub councils and try again.`
       )
