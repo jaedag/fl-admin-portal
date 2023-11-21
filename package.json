@@ -59,7 +59,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git://github.com/firstlovecenter/fl-admin-portalgit"
+    "url": "git://github.com/firstlovecenter/fl-admin-portal.git"
   },
   "license": "Apache-2.0"
 }
