@@ -143,8 +143,12 @@ const MinistryJoint = lazy(() => import('pages/services/MinistryJoint'))
 const MinistryJointRehearsal = lazy(
   () => import('pages/services/record-service/MinistryJointRehearsal')
 )
+
 const MinistryJointRehearsalDetails = lazy(
   () => import('pages/services/record-service/MinistryJointRehearsalDetails')
+)
+const HubCouncilJointRehearsalDetails = lazy(
+  () => import('pages/services/record-service/HubCouncilJointRehearsalDetails')
 )
 const StreamService = lazy(
   () => import('pages/services/record-service/StreamService')
@@ -165,6 +169,7 @@ const DefaultersDashboard = lazy(
 const TrendsMenu = lazy(() => import('./graphs/TrendsMenu'))
 
 const HubFormMenu = lazy(() => import('./HubFormMenu'))
+const HubCouncilFormMenu = lazy(() => import('./HubCouncilFormMenu'))
 const FellowshipBankingSlipSubmission = lazy(
   () => import('pages/services/banking/banking-slip/FellowshipSubmission')
 )
@@ -284,8 +289,12 @@ export const services: LazyRouteTypes[] = [
   {
     path: '/services/hub',
     element: HubFormMenu,
-    roles: ['all'],
-    placeholder: true,
+    roles: permitLeaderAdmin('Hub'),
+  },
+  {
+    path: '/services/hubcouncil',
+    element: HubCouncilFormMenu,
+    roles: permitLeaderAdmin('HubCouncil'),
   },
 ]
 
@@ -490,6 +499,16 @@ export const graphs: LazyRouteTypes[] = [
     element: MinistryJointRehearsalDetails,
     roles: permitLeaderAdmin('Ministry'),
     placeholder: false,
+  },
+  {
+    path: '/hubcouncil/service-details',
+    element: HubCouncilJointRehearsalDetails,
+    roles: permitLeaderAdmin('HubCouncil'),
+  },
+  {
+    path: '/hubcouncil/record-rehearsal',
+    element: HubCouncilJointRehearsalDetails,
+    roles: permitLeaderAdmin('HubCouncil'),
   },
 
   //Defaulters Flow
