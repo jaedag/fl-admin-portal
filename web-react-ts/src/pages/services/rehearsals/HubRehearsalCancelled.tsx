@@ -3,7 +3,7 @@ import { ChurchContext } from '../../../contexts/ChurchContext'
 
 import { useQuery } from '@apollo/client'
 import { DISPLAY_HUB } from '../../directory/display/ReadQueries'
-import CancelledServiceForm from './CancelledServiceForm'
+import CancelledServiceForm from '../record-service/CancelledServiceForm'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 
 const HubServiceCancelled = () => {

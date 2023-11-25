@@ -17,6 +17,7 @@ type ServiceFormProps = {
   church: Church
   churchId: string
   churchType: ChurchLevel
+  event?: string
   RecordServiceMutation: MutationFunction
   recordType?: string
 }
@@ -31,6 +32,7 @@ const ServiceForm = ({
   church,
   churchId,
   churchType,
+  event,
   RecordServiceMutation,
   recordType,
 }: ServiceFormProps) => {
@@ -99,7 +101,9 @@ const ServiceForm = ({
     >
       {(formik) => (
         <Container>
-          <HeadingPrimary>Record Your Service Details</HeadingPrimary>
+          <HeadingPrimary>
+            Record Your {event || 'Service'} Details
+          </HeadingPrimary>
           <h5 className="text-secondary">{`${church?.name} ${church?.__typename}`}</h5>
 
           <Form className="form-group">

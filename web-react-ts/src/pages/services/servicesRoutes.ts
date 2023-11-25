@@ -37,20 +37,20 @@ const FellowshipServiceDetails = lazy(
   () => import('pages/services/record-service/FellowshipServiceDetails')
 )
 const HubRehearsalCancelled = lazy(
-  () => import('pages/services/record-service/HubRehearsalCancelled')
+  () => import('pages/services/rehearsals/HubRehearsalCancelled')
 )
 const HubRehearsalService = lazy(
-  () => import('pages/services/record-service/HubRehearsalService')
+  () => import('pages/services/rehearsals/HubRehearsalService')
 )
 const HubSundayMeeting = lazy(
-  () => import('pages/services/record-service/HubSundayMeeting')
+  () => import('pages/services/ministry-meeting/HubSundayMeeting')
 )
 const HubRehearsalServiceDetails = lazy(
-  () => import('pages/services/record-service/HubRehearsalServiceDetails')
+  () => import('pages/services/rehearsals/HubRehearsalServiceDetails')
 )
 
 const HubSundayMeetingDetails = lazy(
-  () => import('pages/services/record-service/HubSundayMeetingDetails')
+  () => import('pages/services/ministry-meeting/HubSundayMeetingDetails')
 )
 const BacentaReport = lazy(() => import('pages/services/graphs/BacentaGraphs'))
 const HubReport = lazy(() => import('pages/services/graphs/HubGraphs'))

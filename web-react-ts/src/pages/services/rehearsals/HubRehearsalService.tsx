@@ -2,10 +2,10 @@ import React, { useContext } from 'react'
 import { ChurchContext } from '../../../contexts/ChurchContext'
 
 import { useMutation, useQuery } from '@apollo/client'
-import { RECORD_HUB_REHEARSAL_SERVICE } from './RecordServiceMutations'
+import { RECORD_HUB_REHEARSAL_SERVICE } from '../record-service/RecordServiceMutations'
 import { DISPLAY_HUB } from '../../directory/display/ReadQueries'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
-import ServiceForm from './ServiceForm'
+import ServiceForm from '../record-service/ServiceForm'
 
 const HubRehearsalService = () => {
   const { hubId } = useContext(ChurchContext)
