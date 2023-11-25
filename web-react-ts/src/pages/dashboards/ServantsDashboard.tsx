@@ -74,6 +74,7 @@ const ServantsDashboard = () => {
                         <RoleCard
                           number={role.number}
                           loading={!roles}
+                          authRoles={role.authRoles}
                           role={role.name as Role}
                         />
                       </td>
@@ -84,6 +85,7 @@ const ServantsDashboard = () => {
                     <RoleCard
                       loading={!assessmentChurchData}
                       number={''}
+                      authRoles=""
                       role={'leaderFellowship'}
                     />
                   </td>

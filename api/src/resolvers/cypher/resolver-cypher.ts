@@ -1,3 +1,8 @@
+export const matchMemberFromAuthId = `
+ MATCH (member:Member  {auth_id: $auth.jwt.sub})
+ RETURN member
+`
+
 export const matchMemberQuery = `
 
 WITH apoc.cypher.runFirstColumn(

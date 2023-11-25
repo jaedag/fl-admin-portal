@@ -152,11 +152,12 @@ type ServantRolesArgs = {
   servantType: VerbTypes
   churchType: ChurchLevel
   verb: string
+  authRoles: string
   userroles: UserJobs[]
 }
 
 const setServantRoles = (args: ServantRolesArgs) => {
-  const { servant, servantType, churchType, verb, userroles } = args
+  const { servant, servantType, churchType, verb, authRoles, userroles } = args
   if (!servant) return
 
   const permittedForLink = permitMe(churchType)
@@ -170,6 +171,7 @@ const setServantRoles = (args: ServantRolesArgs) => {
       name: adminsOneChurch
         ? churchType + ' ' + parseRoles(servantType)
         : plural(churchType) + ' ' + parseRoles(servantType),
+      authRoles,
       church: servant[`${verb}`],
       number: servant[`${verb}`]?.length,
       link: authorisedLink(servant, permittedForLink, `/arrivals`),
@@ -181,6 +183,7 @@ const setServantRoles = (args: ServantRolesArgs) => {
   if (servantType === 'isTellerFor') {
     const adminsOneChurch = servant[`${verb}`]?.length === 1 ?? false
     userroles.push({
+      authRoles,
       name: adminsOneChurch
         ? churchType + ' ' + parseRoles(servantType)
         : plural(churchType) + ' ' + parseRoles(servantType),
@@ -195,6 +198,7 @@ const setServantRoles = (args: ServantRolesArgs) => {
   if (servantType === 'isSheepSeekerFor') {
     const adminsOneChurch = servant[`${verb}`]?.length === 1 ?? false
     userroles.push({
+      authRoles,
       name: adminsOneChurch
         ? churchType + ' ' + parseRoles(servantType)
         : plural(churchType) + ' ' + parseRoles(servantType),
@@ -213,6 +217,7 @@ const setServantRoles = (args: ServantRolesArgs) => {
   if (servantType === 'isAdminFor' || servantType === 'isArrivalsAdminFor') {
     const adminsOneChurch = servant[`${verb}`]?.length === 1 ?? false
     userroles.push({
+      authRoles,
       name: adminsOneChurch
         ? churchType + ' ' + parseRoles(servantType)
         : plural(churchType) + ' ' + parseRoles(servantType),
@@ -234,6 +239,7 @@ const setServantRoles = (args: ServantRolesArgs) => {
   const leadsOneChurch = servant[`${verb}`]?.length === 1 ?? false
 
   userroles.push({
+    authRoles,
     name: leadsOneChurch ? churchType : plural(churchType),
     church: servant[`${verb}`],
     number: servant[`${verb}`]?.length,
@@ -263,6 +269,7 @@ export const getUserServantRoles = (servant: Servant) => {
           servantType: verb,
           churchType: level,
           verb: verb + level,
+          authRoles: `${parseRoles(verb)}${level}`,
           userroles,
         }
         setServantRoles(args)
@@ -280,6 +287,7 @@ export const getServantRoles = (servant: MemberWithChurches) => {
   if (servant?.leadsFellowship?.length) {
     roleTitles.push('leaderFellowship')
     userroles.push({
+      authRoles: 'leaderFellowship',
       name: 'Fellowship',
       church: servant?.leadsFellowship,
       number: servant?.leadsFellowship?.length,
@@ -293,6 +301,7 @@ export const getServantRoles = (servant: MemberWithChurches) => {
   if (servant?.leadsBacenta?.length) {
     roleTitles.push('leaderBacenta')
     userroles.push({
+      authRoles: 'leaderBacenta',
       name: 'Bacenta',
       church: servant?.leadsBacenta,
       number: servant?.leadsBacenta?.length,
@@ -307,6 +316,7 @@ export const getServantRoles = (servant: MemberWithChurches) => {
   if (servant?.leadsHub?.length) {
     roleTitles.push('leaderHub')
     userroles.push({
+      authRoles: 'leaderHub',
       name: 'Hub',
       church: servant?.leadsHub,
       number: servant?.leadsHub?.length,
@@ -316,6 +326,7 @@ export const getServantRoles = (servant: MemberWithChurches) => {
   if (servant?.leadsMinistry?.length) {
     roleTitles.push('leaderMinistry')
     userroles.push({
+      authRoles: 'leaderMinistry',
       name: 'Ministry',
       church: servant?.leadsMinistry,
       number: servant?.leadsMinistry?.length,
@@ -329,6 +340,7 @@ export const getServantRoles = (servant: MemberWithChurches) => {
   if (servant?.isAdminForMinistry?.length) {
     roleTitles.push('adminMinistry')
     userroles.push({
+      authRoles: 'adminMinistry',
       name: 'Ministry Admin',
       church: servant?.isAdminForMinistry,
       number: servant?.isAdminForMinistry?.length,
@@ -342,6 +354,7 @@ export const getServantRoles = (servant: MemberWithChurches) => {
   if (servant?.leadsCreativeArts?.length) {
     roleTitles.push('leaderCreativeArts')
     userroles.push({
+      authRoles: 'leaderCreativeArts',
       name: 'Creative Arts',
       church: servant?.leadsCreativeArts,
       number: servant?.leadsCreativeArts?.length,
@@ -355,6 +368,7 @@ export const getServantRoles = (servant: MemberWithChurches) => {
   if (servant?.isAdminForCreativeArts?.length) {
     roleTitles.push('adminCreativeArts')
     userroles.push({
+      authRoles: 'adminCreativeArts',
       name: 'Creative Arts Admin',
       church: servant?.isAdminForCreativeArts,
       number: servant?.isAdminForCreativeArts?.length,
@@ -369,6 +383,7 @@ export const getServantRoles = (servant: MemberWithChurches) => {
   if (servant?.leadsConstituency?.length) {
     roleTitles.push('leaderConstituency')
     userroles.push({
+      authRoles: 'leaderConstituency',
       name: 'Constituency',
       church: servant?.leadsConstituency,
       number: servant?.leadsConstituency?.length,
@@ -382,6 +397,7 @@ export const getServantRoles = (servant: MemberWithChurches) => {
   if (servant?.isAdminForConstituency?.length) {
     roleTitles.push('adminConstituency')
     userroles.push({
+      authRoles: 'adminConstituency',
       name: 'Constituency Admin',
       church: servant?.isAdminForConstituency,
       number: servant?.isAdminForConstituency?.length,
@@ -395,6 +411,7 @@ export const getServantRoles = (servant: MemberWithChurches) => {
   if (servant?.isArrivalsAdminForConstituency?.length) {
     roleTitles.push('arrivalsAdminConstituency')
     userroles.push({
+      authRoles: 'arrivalsAdminConstituency',
       name: 'Constituency Arrivals Admin',
       church: servant?.isArrivalsAdminForConstituency,
       number: servant?.isArrivalsAdminForConstituency?.length,
@@ -408,6 +425,7 @@ export const getServantRoles = (servant: MemberWithChurches) => {
   if (servant?.leadsCouncil?.length) {
     roleTitles.push('leaderCouncil')
     userroles.push({
+      authRoles: 'leaderCouncil',
       name: 'Council',
       church: servant?.leadsCouncil,
       number: servant?.leadsCouncil?.length,
@@ -421,6 +439,7 @@ export const getServantRoles = (servant: MemberWithChurches) => {
   if (servant?.isAdminForCouncil?.length) {
     roleTitles.push('adminCouncil')
     userroles.push({
+      authRoles: 'adminCouncil',
       name: 'Council Admin',
       church: servant?.isAdminForCouncil,
       number: servant?.isAdminForCouncil?.length,
@@ -434,6 +453,7 @@ export const getServantRoles = (servant: MemberWithChurches) => {
   if (servant?.isArrivalsAdminForCouncil?.length) {
     roleTitles.push('arrivalsAdminCouncil')
     userroles.push({
+      authRoles: 'arrivalsAdminCouncil',
       name: 'Council Arrivals Admin',
       church: servant?.isArrivalsAdminForCouncil,
       number: servant?.isArrivalsAdminForCouncil?.length,
@@ -447,6 +467,7 @@ export const getServantRoles = (servant: MemberWithChurches) => {
   if (servant?.leadsStream?.length) {
     roleTitles.push('leaderStream')
     userroles.push({
+      authRoles: 'leaderStream',
       name: 'Stream',
       church: servant?.leadsStream,
       number: servant?.leadsStream?.length,
@@ -460,6 +481,7 @@ export const getServantRoles = (servant: MemberWithChurches) => {
   if (servant?.isAdminForStream?.length) {
     roleTitles.push('adminStream')
     userroles.push({
+      authRoles: 'adminStream',
       name: 'Stream Admin',
       church: servant?.isAdminForStream,
       number: servant?.isAdminForStream?.length,
@@ -473,6 +495,7 @@ export const getServantRoles = (servant: MemberWithChurches) => {
   if (servant?.isArrivalsAdminForStream?.length) {
     roleTitles.push('arrivalsAdminStream')
     userroles.push({
+      authRoles: 'arrivalsAdminStream',
       name: 'Stream Arrivals Admin',
       church: servant?.isArrivalsAdminForStream,
       number: servant?.isArrivalsAdminForStream?.length,
@@ -486,6 +509,7 @@ export const getServantRoles = (servant: MemberWithChurches) => {
   if (servant?.leadsCampus?.length) {
     roleTitles.push('leaderCampus')
     userroles.push({
+      authRoles: 'leaderCampus',
       name: 'Campus',
       church: servant?.leadsCampus,
       number: servant?.leadsCampus?.length,
@@ -499,6 +523,7 @@ export const getServantRoles = (servant: MemberWithChurches) => {
   if (servant?.isAdminForCampus?.length) {
     roleTitles.push('adminCampus')
     userroles.push({
+      authRoles: 'adminCampus',
       name: 'Campus Admin',
       church: servant?.isAdminForCampus,
       number: servant?.isAdminForCampus?.length,
@@ -512,6 +537,7 @@ export const getServantRoles = (servant: MemberWithChurches) => {
   if (servant?.leadsOversight?.length) {
     roleTitles.push('leaderOversight')
     userroles.push({
+      authRoles: 'leaderOversight',
       name: 'Oversight',
       church: servant?.leadsOversight,
       number: servant?.leadsOversight?.length,
@@ -525,6 +551,7 @@ export const getServantRoles = (servant: MemberWithChurches) => {
   if (servant?.isAdminForOversight?.length) {
     roleTitles.push('adminOversight')
     userroles.push({
+      authRoles: 'adminOversight',
       name: 'Oversight Admin',
       church: servant?.isAdminForOversight,
       number: servant?.isAdminForOversight?.length,
@@ -538,6 +565,7 @@ export const getServantRoles = (servant: MemberWithChurches) => {
   if (servant?.leadsDenomination?.length) {
     roleTitles.push('leaderDenomination')
     userroles.push({
+      authRoles: 'leaderDenomination',
       name: 'Denomination',
       church: servant?.leadsDenomination,
       number: servant?.leadsDenomination?.length,
@@ -551,6 +579,7 @@ export const getServantRoles = (servant: MemberWithChurches) => {
   if (servant?.isAdminForDenomination?.length) {
     roleTitles.push('adminDenomination')
     userroles.push({
+      authRoles: 'adminDenomination',
       name: 'Denomination Admin',
       church: servant?.isAdminForDenomination,
       number: servant?.isAdminForDenomination?.length,
@@ -564,6 +593,7 @@ export const getServantRoles = (servant: MemberWithChurches) => {
   if (servant?.isArrivalsAdminForCampus?.length) {
     roleTitles.push('arrivalsAdminCampus')
     userroles.push({
+      authRoles: 'arrivalsAdminCampus',
       name: 'Campus Arrivals Admin',
       church: servant?.isArrivalsAdminForCampus,
       number: servant?.isArrivalsAdminForCampus?.length,
@@ -577,6 +607,7 @@ export const getServantRoles = (servant: MemberWithChurches) => {
   if (servant?.isSheepSeekerForStream?.length) {
     roleTitles.push('sheepseekerStream')
     userroles.push({
+      authRoles: 'sheepseekerStream',
       name: 'Sheep Seeker',
       church: servant?.isSheepSeekerForStream,
       number: servant?.isSheepSeekerForStream?.length,

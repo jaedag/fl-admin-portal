@@ -1,4 +1,5 @@
 extend type Mutation {
+  RemoveRoleFromMember(role: String!): Boolean!
   #resolver Mutations
   MakeOversightAdmin(adminId: ID!, oversightId: ID!, oldAdminId: ID): Member!
   RemoveOversightAdmin(adminId: ID!, newAdminId: ID!, oversightId: ID!): Member

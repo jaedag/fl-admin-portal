@@ -1,15 +1,34 @@
+import { useMutation } from '@apollo/client'
 import PlaceholderCustom from 'components/Placeholder'
 import { Role } from 'global-types'
-import React from 'react'
+import React, { useEffect } from 'react'
+import { REMOVE_USER_ROLE } from './DashboardQueries'
 
 type RoleCardProps = {
   number: number | string
   role: Role
+  authRoles: string
   loading: boolean
 }
 
-const RoleCard = ({ number, role, loading }: RoleCardProps) => {
+const RoleCard = ({ number, role, authRoles, loading }: RoleCardProps) => {
   const isString = typeof number === 'string' && true
+
+  const [RemoveRole] = useMutation(REMOVE_USER_ROLE)
+
+  useEffect(() => {
+    const removeRole = async () => {
+      await RemoveRole({
+        variables: {
+          role: authRoles,
+        },
+      })
+    }
+
+    if (number === 0) {
+      removeRole()
+    }
+  }, [])
 
   return (
     <div

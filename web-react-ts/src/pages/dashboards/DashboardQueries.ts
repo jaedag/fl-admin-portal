@@ -1,5 +1,11 @@
 import { gql } from '@apollo/client'
 
+export const REMOVE_USER_ROLE = gql`
+  mutation RemoveRoleFromMember($role: String!) {
+    RemoveRoleFromMember(role: $role)
+  }
+`
+
 export const FELLOWSHIP_LEADER_DASHBOARD = gql`
   query fellowshipLeaderDashboard($fellowshipId: ID!) {
     fellowships(where: { id: $fellowshipId }) {

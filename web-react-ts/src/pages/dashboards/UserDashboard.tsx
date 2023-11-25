@@ -52,6 +52,7 @@ const UserDashboard = () => {
                     >
                       <RoleCard
                         number={role.number}
+                        authRoles={role.authRoles}
                         role={role.name as Role}
                         loading={!userJobs}
                       />
@@ -62,6 +63,7 @@ const UserDashboard = () => {
                     <RoleCard
                       loading={!userJobs}
                       number={''}
+                      authRoles=""
                       role={'leaderFellowship'}
                     />
                   </td>

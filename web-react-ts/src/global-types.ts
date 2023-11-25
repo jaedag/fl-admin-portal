@@ -308,6 +308,7 @@ export type UserJobs = {
   name: string
   church: Church[]
   number: number
+  authRoles: string
   link: string
 }
 

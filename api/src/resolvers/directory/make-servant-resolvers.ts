@@ -1,9 +1,48 @@
+import axios from 'axios'
 import { Context } from '../utils/neo4j-types'
-import { Member } from '../utils/types'
+import { Member, Role } from '../utils/types'
 import { permitAdmin, permitAdminArrivals } from '../permissions'
 import { MakeServant, RemoveServant } from './make-remove-servants'
+import { removeRoles } from './helper-functions'
+import { getAuth0Roles, getAuthToken } from '../authenticate'
+import { matchMemberFromAuthId } from '../cypher/resolver-cypher'
+import { Auth0RoleObject, getUserRoles } from '../utils/auth0'
 
 const MakeServantResolvers = {
+  RemoveRoleFromMember: async (
+    object: any,
+    args: { role: Role },
+    context: Context
+  ) => {
+    const session = context.executionContext.session()
+
+    try {
+      const authToken = await getAuthToken()
+      const authRoles = await getAuth0Roles(authToken)
+
+      const servantRes = await session.executeRead((tx) =>
+        tx.run(matchMemberFromAuthId, {
+          auth: context.auth,
+        })
+      )
+      const userRoleResponse = await axios(
+        getUserRoles(context.auth.jwt.sub, authToken)
+      )
+      const roles: Role[] = userRoleResponse.data.map(
+        (role: Auth0RoleObject) => role.name
+      )
+
+      const servant = servantRes.records[0].get('member').properties
+
+      await removeRoles(servant, roles, authRoles[args.role].id, authToken)
+
+      return true
+    } catch (err) {
+      console.log(err)
+    }
+
+    return false
+  },
   // Administrative Mutations
   MakeOversightAdmin: async (object: any, args: Member, context: Context) =>
     MakeServant(
