@@ -48,20 +48,33 @@ export const checkServantHasCurrentHistory = async (
   context: Context,
   args: { churchId: string }
 ) => {
-  const relationshipCheck = rearrangeCypherObject(
-    await session.executeRead((tx) =>
-      tx.run(checkCurrentServiceLog, { churchId: args.churchId })
-    )
+  const relationshipCheck = await session.executeRead((tx) =>
+    tx.run(checkCurrentServiceLog, { churchId: args.churchId })
   )
-  if (!relationshipCheck.exists) {
+
+  const relationExists = relationshipCheck.records[0]?.get('exists')
+  console.log(
+    '🚀 ~ file: service-resolvers.ts:56 ~ relationExists:',
+    relationExists
+  )
+
+  if (!relationExists) {
     // Checks if the church has a current history record otherwise creates it
-    const getServantAndChurch = rearrangeCypherObject(
-      await session.executeRead((tx) =>
-        tx.run(getServantAndChurchCypher, { churchId: args.churchId })
-      )
+    const getServantAndChurch = await session.executeRead((tx) =>
+      tx.run(getServantAndChurchCypher, { churchId: args.churchId })
     )
 
-    if (Object.keys(getServantAndChurch).length === 0) {
+    const servantAndChurch = {
+      churchId: getServantAndChurch.records[0]?.get('churchId'),
+      churchName: getServantAndChurch.records[0]?.get('churchName'),
+      churchType: getServantAndChurch.records[0]?.get('churchType'),
+      servantId: getServantAndChurch.records[0]?.get('servantId'),
+      auth_id: getServantAndChurch.records[0]?.get('auth_id'),
+      firstName: getServantAndChurch.records[0]?.get('firstName'),
+      lastName: getServantAndChurch.records[0]?.get('lastName'),
+    }
+
+    if (Object.keys(servantAndChurch).length === 0) {
       throw new Error(
         'You must set a leader over this church before you can fill this form'
       )
@@ -69,20 +82,20 @@ export const checkServantHasCurrentHistory = async (
 
     await makeServantCypher({
       context,
-      churchType: getServantAndChurch.churchType,
+      churchType: servantAndChurch.churchType,
       servantType: 'Leader',
       servant: {
-        id: getServantAndChurch.servantId,
-        auth_id: getServantAndChurch.auth_id,
-        firstName: getServantAndChurch.firstName,
-        lastName: getServantAndChurch.lastName,
+        id: servantAndChurch.servantId,
+        auth_id: servantAndChurch.auth_id,
+        firstName: servantAndChurch.firstName,
+        lastName: servantAndChurch.lastName,
       },
       args: {
-        leaderId: getServantAndChurch.servantId,
+        leaderId: servantAndChurch.servantId,
       },
       church: {
-        id: getServantAndChurch.churchId,
-        name: getServantAndChurch.churchName,
+        id: servantAndChurch.churchId,
+        name: servantAndChurch.churchName,
       },
     })
   }
