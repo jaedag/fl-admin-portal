@@ -258,6 +258,7 @@ const SontaServiceMutation = {
     const session = context.executionContext.session()
     const sessionTwo = context.executionContext.session()
     const sessionThree = context.executionContext.session()
+
     try {
       await checkServantHasCurrentHistory(session, context, {
         churchId: args.churchId,
