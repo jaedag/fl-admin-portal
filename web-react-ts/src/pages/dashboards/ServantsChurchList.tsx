@@ -77,13 +77,6 @@ const ServantsChurchList = () => {
     if (servant?.leadsOversight?.length) {
       pushIntoChurch(servant?.leadsOversight)
     }
-    // Creative Arts
-    if (servant?.leadsHubCouncil?.length) {
-      pushIntoChurch(servant?.leadsHubCouncil)
-    }
-    if (servant?.leadsMinistry?.length) {
-      pushIntoChurch(servant?.leadsMinistry)
-    }
 
     //Administrative
     if (servant?.isArrivalsAdminForConstituency?.length) {
