@@ -269,7 +269,7 @@ const DisplaySontaDetails = (props: DisplayChurchDetailsProps) => {
             </Button>
           </PlaceholderCustom>
 
-          {props.churchType === 'Hub' &&
+          {['Hub', 'HubCouncil', 'Ministry'].includes(props.churchType) &&
             shouldFill({
               vacation: props.vacation ?? 'Active',
               last3Weeks: props.last3Weeks ?? [],
