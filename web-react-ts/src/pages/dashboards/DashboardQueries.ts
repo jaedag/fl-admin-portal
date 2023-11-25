@@ -152,6 +152,7 @@ export const SERVANT_CHURCH_LIST = gql`
       leadsMinistry {
         id
         name
+        vacationStatus
       }
 
       leadsCreativeArts {

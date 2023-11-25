@@ -39,6 +39,11 @@ const DetailsMinistry = () => {
       width: 12,
     },
     {
+      title: 'Vacation Status',
+      number: ministry?.vacationStatus,
+      link: '#',
+    },
+    {
       title: 'Hub Councils',
       number: ministry?.hubCouncilCount,
       link: 'hubcouncil/displayall',

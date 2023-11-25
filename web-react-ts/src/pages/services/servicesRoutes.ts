@@ -107,7 +107,7 @@ const Fellowship = lazy(() => import('pages/services/Fellowship'))
 const ServicesChurchList = lazy(
   () => import('pages/services/ServicesChurchList')
 )
-const ServicesMenu = lazy(() => import('pages/services/ServicesMenu'))
+const ServicesMenu = lazy(() => import('pages/services/menus/ServicesMenu'))
 const StreamReport = lazy(() => import('pages/services/graphs/StreamGraphs'))
 const CampusReport = lazy(() => import('pages/services/graphs/CampusGraphs'))
 const OversightReport = lazy(
@@ -174,7 +174,8 @@ const DefaultersDashboard = lazy(
 )
 const TrendsMenu = lazy(() => import('./graphs/TrendsMenu'))
 
-const HubFormMenu = lazy(() => import('./HubFormMenu'))
+const HubFormMenu = lazy(() => import('./menus/HubFormMenu'))
+const MinistryMenu = lazy(() => import('./menus/MinistryMenu'))
 const FellowshipBankingSlipSubmission = lazy(
   () => import('pages/services/banking/banking-slip/FellowshipSubmission')
 )
@@ -302,7 +303,13 @@ export const services: LazyRouteTypes[] = [
   {
     path: '/services/hub',
     element: HubFormMenu,
-    roles: ['all'],
+    roles: permitLeaderAdmin('Hub'),
+    placeholder: true,
+  },
+  {
+    path: '/services/ministry',
+    element: MinistryMenu,
+    roles: permitLeaderAdmin('Ministry'),
     placeholder: true,
   },
 ]
