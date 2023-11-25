@@ -12,6 +12,7 @@ import Input from 'components/formik/Input'
 import { Church, ChurchLevel } from 'global-types'
 import { MutationFunction } from '@apollo/client'
 import ImageUpload from 'components/formik/ImageUpload'
+import MultiImageUpload from 'components/formik/MultiImageUpload'
 
 type StageAttendanceFormProps = {
   church: Church
@@ -124,6 +125,15 @@ const StageAttendanceForm = ({
                       <small className="mb-3">
                         Upload Your Stage Pictures*
                       </small>
+                      <MultiImageUpload
+                        name="familyPicture"
+                        uploadPreset={import.meta.env.VITE_CLOUDINARY_SERVICES}
+                        placeholder="Choose"
+                        setFieldValue={formik.setFieldValue}
+                        aria-describedby="upload pictures"
+                        error={formik.errors.onStagePictures}
+                      />
+
                       <ImageUpload
                         name="familyPicture"
                         uploadPreset={import.meta.env.VITE_CLOUDINARY_SERVICES}
@@ -132,6 +142,7 @@ const StageAttendanceForm = ({
                         aria-describedby="UploadfamilyPicture"
                       />
                     </Col>
+
                     <div className="d-flex justify-content-center mt-5">
                       <SubmitButton formik={formik} />
                     </div>
