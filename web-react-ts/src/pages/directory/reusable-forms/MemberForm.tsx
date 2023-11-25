@@ -115,11 +115,14 @@ const MemberForm = ({
     }
   }
 
-  const canChangeEmail = () => {
+  const canChangeUniques = () => {
     if (!update) {
       return true
     }
-    if (update && isAuthorised(permitAdmin('Fellowship'), currentUser.roles)) {
+    if (
+      update &&
+      isAuthorised(permitAdmin('Constituency'), currentUser.roles)
+    ) {
       return true
     }
 
@@ -277,21 +280,26 @@ const MemberForm = ({
                         options={GENDER_OPTIONS}
                         defaultOption="Gender"
                       />
-                    </Col>
-                    <Col sm={10}>
-                      <Input
-                        label="Phone Number*"
-                        placeholder="Eg. +233 241 23 456"
-                        name="phoneNumber"
-                      />
-                    </Col>
-                    <Col sm={10}>
-                      <Input
-                        label="WhatsApp Number*"
-                        placeholder="Eg. +233 241 23 456"
-                        name="whatsappNumber"
-                      />
-                    </Col>
+                    </Col>{' '}
+                    {canChangeUniques() && (
+                      <>
+                        <Col sm={10}>
+                          <Input
+                            label="Phone Number*"
+                            placeholder="Eg. +233 241 23 456"
+                            name="phoneNumber"
+                          />
+                        </Col>
+
+                        <Col sm={10}>
+                          <Input
+                            label="WhatsApp Number*"
+                            placeholder="Eg. +233 241 23 456"
+                            name="whatsappNumber"
+                          />
+                        </Col>
+                      </>
+                    )}
                   </div>
 
                   <div className="form-row row-cols-1 row-cols-md-2 justify-content-center">
@@ -315,7 +323,7 @@ const MemberForm = ({
                   </div>
 
                   <div className="form-row justify-content-center">
-                    {canChangeEmail() && (
+                    {canChangeUniques() && (
                       <Col sm={10}>
                         <Input
                           label={`Email Address ${
