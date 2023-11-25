@@ -60,7 +60,7 @@ rehearsalRecord.treasurerSelfie = $treasurerSelfie,
 rehearsalRecord.familyPicture = $familyPicture
 WITH rehearsalRecord
 
-MATCH (church {id: $churchId}) WHERE church:Hub OR church:HubCouncil
+MATCH (church {id: $churchId}) WHERE church:Hub OR church:HubCouncil OR church:Ministry
 MATCH (church)-[current:CURRENT_HISTORY]->(log:ServiceLog)
 MATCH (leader:Member {auth_id: $auth.jwt.sub})
 
@@ -361,4 +361,23 @@ export const aggregateHubRehearsalDataForCreativeArts = `
         aggregate.numberOfServices = numberOfServices 
 
     RETURN creativearts, aggregate
+`
+
+export const cancelLowerChurchRehearsals = `
+MATCH (church {id: $churchId}) WHERE church:HubCouncil OR church:Ministry
+CREATE (serviceRecord:RehearsalRecord:NoService {createdAt:datetime()})
+SET serviceRecord.id = apoc.create.uuid(),
+serviceRecord.noServiceReason = 'Joint Rehearsal'
+
+WITH serviceRecord
+MATCH (church)-[:HAS*2]->(lowerChurch) WHERE lowerChurch:Hub OR lowerChurch:HubCouncil
+MATCH (lowerChurch)-[:CURRENT_HISTORY]->(log:ServiceLog)
+MATCH (leader:Active:Member {auth_id: $auth.jwt.sub})
+
+MERGE (serviceDate:TimeGraph {date: date($serviceDate)})
+MERGE (serviceRecord)-[:LOGGED_BY]->(leader)
+MERGE (serviceRecord)-[:SERVICE_HELD_ON]->(serviceDate)
+MERGE (log)-[:HAS_SERVICE]->(serviceRecord)
+
+RETURN serviceRecord
 `
