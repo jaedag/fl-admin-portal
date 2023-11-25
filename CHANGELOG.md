@@ -1,3 +1,23 @@
+#### 7.14.9 (2023-11-25)
+
+##### Bug Fixes
+
+*  limit fields that can be edited by a leader ([4adfcc9f](https://github.com/firstlovecenter/fl-admin-portal/commit/4adfcc9fe3bccdf1f25a619f9be2a9d20364eca8))
+*  only an admin can change the unique details of phoneNumber, whatsapp and email ([6756332c](https://github.com/firstlovecenter/fl-admin-portal/commit/6756332c502f37dd5dfba00f2a4fb4604a004a0a))
+*  remove roles from users who don't  actually havethem ([50f0ab82](https://github.com/firstlovecenter/fl-admin-portal/commit/50f0ab82710b129a562f594558fe5360e7452388))
+*  update manifest.json with new portal name ([11097b2f](https://github.com/firstlovecenter/fl-admin-portal/commit/11097b2fd5a7fdc3b3a74fa2883d9e3bbca38e3a))
+*  update login URL in email template ([40d9c44c](https://github.com/firstlovecenter/fl-admin-portal/commit/40d9c44cee84aa0e6ae0d7d372a4471eb17e535b))
+*  members can only be deleted by campus admins ([bcef869f](https://github.com/firstlovecenter/fl-admin-portal/commit/bcef869f2c5538df2183ccca09c3dfbbc0e31722))
+*  fix account open validation for valid days ([079bfc18](https://github.com/firstlovecenter/fl-admin-portal/commit/079bfc18b2adb52d105c86883fdeae6cb690904f))
+*   fix cypher queries and add optional matches for constituency ([5e637e56](https://github.com/firstlovecenter/fl-admin-portal/commit/5e637e562a97ebbf5124a20fb33a7dbcf435c81f))
+*  typo in repository URL ([b2e7cb4e](https://github.com/firstlovecenter/fl-admin-portal/commit/b2e7cb4ee430d055b1676b53bf141f5f0723e4ed))
+*  fix directory search query ([6aaea648](https://github.com/firstlovecenter/fl-admin-portal/commit/6aaea648cb0562a83ab70b9e0a18a9d0f3b4d5ad))
+*  update directory search queries ([0473dd23](https://github.com/firstlovecenter/fl-admin-portal/commit/0473dd232d22c98d0a5b240646cf702d913bd37d))
+
+##### Refactors
+
+*  reposition Last3WeeksCard component ([c70e5216](https://github.com/firstlovecenter/fl-admin-portal/commit/c70e5216ca8b229282ced7205481b88d08cc5710))
+
 #### 7.14.8 (2023-11-20)
 
 ##### Bug Fixes
