@@ -248,41 +248,41 @@ const MemberForm = ({
                         </>
                       )}
                     </ButtonGroup>
-                    <Col sm={10}>
-                      <Input
-                        label="First Name*"
-                        name="firstName"
-                        placeholder="First Name"
-                        aria-describedby="firstNameHelp"
-                      />
-                    </Col>
-                    <Col sm={10}>
-                      <Input
-                        label="Middle Name"
-                        name="middleName"
-                        placeholder="Other Names"
-                        aria-describedby="middleNameHelp"
-                      />
-                    </Col>
-                    <Col sm={10}>
-                      <Input
-                        label="Last Name*"
-                        name="lastName"
-                        placeholder="Last Name"
-                        aria-describedby="lastNameHelp"
-                      />
-                    </Col>
-                    <Col sm={10}>
-                      <Select
-                        label="Gender*"
-                        name="gender"
-                        placeholder="Gender"
-                        options={GENDER_OPTIONS}
-                        defaultOption="Gender"
-                      />
-                    </Col>{' '}
                     {canChangeUniques() && (
                       <>
+                        <Col sm={10}>
+                          <Input
+                            label="First Name*"
+                            name="firstName"
+                            placeholder="First Name"
+                            aria-describedby="firstNameHelp"
+                          />
+                        </Col>
+                        <Col sm={10}>
+                          <Input
+                            label="Middle Name"
+                            name="middleName"
+                            placeholder="Other Names"
+                            aria-describedby="middleNameHelp"
+                          />
+                        </Col>
+                        <Col sm={10}>
+                          <Input
+                            label="Last Name*"
+                            name="lastName"
+                            placeholder="Last Name"
+                            aria-describedby="lastNameHelp"
+                          />
+                        </Col>
+                        <Col sm={10}>
+                          <Select
+                            label="Gender*"
+                            name="gender"
+                            placeholder="Gender"
+                            options={GENDER_OPTIONS}
+                            defaultOption="Gender"
+                          />
+                        </Col>{' '}
                         <Col sm={10}>
                           <Input
                             label="Phone Number*"
@@ -290,7 +290,6 @@ const MemberForm = ({
                             name="phoneNumber"
                           />
                         </Col>
-
                         <Col sm={10}>
                           <Input
                             label="WhatsApp Number*"
@@ -324,30 +323,31 @@ const MemberForm = ({
 
                   <div className="form-row justify-content-center">
                     {canChangeUniques() && (
-                      <Col sm={10}>
-                        <Input
-                          label={`Email Address ${
-                            !update ? '(Optional)' : '*'
-                          }`}
-                          name="email"
-                          placeholder="Enter Email Address"
-                          aria-describedby="emailHelp"
-                        />
-                      </Col>
+                      <>
+                        <Col sm={10}>
+                          <Input
+                            label={`Email Address ${
+                              !update ? '(Optional)' : '*'
+                            }`}
+                            name="email"
+                            placeholder="Enter Email Address"
+                            aria-describedby="emailHelp"
+                          />
+                        </Col>
+                        <Col sm={10}>
+                          <small className="form-text ">
+                            Date of Birth*{' '}
+                            <i className="text-secondary">(Day/Month/Year)</i>
+                          </small>
+                          <Input
+                            name="dob"
+                            type="date"
+                            placeholder="dd/mm/yyyy"
+                            aria-describedby="dateofbirth"
+                          />
+                        </Col>{' '}
+                      </>
                     )}
-
-                    <Col sm={10}>
-                      <small className="form-text ">
-                        Date of Birth*{' '}
-                        <i className="text-secondary">(Day/Month/Year)</i>
-                      </small>
-                      <Input
-                        name="dob"
-                        type="date"
-                        placeholder="dd/mm/yyyy"
-                        aria-describedby="dateofbirth"
-                      />
-                    </Col>
                   </div>
                 </Col>
                 {/* <!--End of Basic Info Section--> */}
