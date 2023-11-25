@@ -104,3 +104,8 @@ WHERE toLower(members.firstName+ ' ' + members.middleName + ' ' + members.lastNa
 OR toLower(members.firstName + ' ' + members.lastName) CONTAINS toLower($key)
 RETURN DISTINCT members.firstName,  members.lastName,basonta.name ORDER BY toLower(members.lastName), toLower(members.firstName) LIMIT $limit
 
+
+MATCH (hub:Hub {id: "73be1398-598e-44a5-b65d-581077110a7d"})
+MATCH (constituency:Constituency {id: "bac4271f-3057-458b-8db6-da60cbeb6e16"})
+MERGE (constituency)-[:HAS_MINISTRY]->(hub)
+RETURN hub.name, constituency.name;

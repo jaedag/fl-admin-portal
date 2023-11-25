@@ -11,7 +11,7 @@ export const RECORD_MINISTRY_ON_STAGE_ATTENDANCE = gql`
       churchId: $churchId
       serviceDate: $serviceDate
       attendance: $attendance
-      pictures: $pictures
+      onStagePictures: $pictures
     ) {
       id
       week
