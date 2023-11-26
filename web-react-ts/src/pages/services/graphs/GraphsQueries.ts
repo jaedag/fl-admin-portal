@@ -377,6 +377,11 @@ export const MINISTRY_GRAPHS = gql`
         pictureUrl
         nameWithTitle
       }
+      onStageAttendanceRecords(limit: 4) {
+        id
+        attendance
+        week
+      }
       aggregateServiceRecords(limit: 4) {
         id
         attendance
@@ -423,6 +428,12 @@ export const CREATIVEARTS_GRAPHS = gql`
         id
         attendance
         income
+        numberOfServices
+        week
+      }
+      aggregateStageAttendanceRecords(limit: 4) {
+        id
+        attendance
         numberOfServices
         week
       }

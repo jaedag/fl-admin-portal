@@ -2,7 +2,11 @@ import React, { useContext, useState } from 'react'
 
 import { ChurchContext } from '../../../contexts/ChurchContext'
 import { useQuery } from '@apollo/client'
-import { getServiceGraphData, getMonthlyStatAverage } from './graphs-utils'
+import {
+  getServiceGraphData,
+  getMonthlyStatAverage,
+  GraphTypes,
+} from './graphs-utils'
 import ChurchGraph from '../../../components/ChurchGraph/ChurchGraph'
 import { CAMPUS_GRAPHS } from './GraphsQueries'
 import MembershipCard from './CompMembershipCard'
@@ -12,17 +16,18 @@ import { Col, Container, Row } from 'react-bootstrap'
 import GraphDropdown from './GraphDropdown'
 import { MemberContext } from 'contexts/MemberContext'
 import LeaderAvatar from 'components/LeaderAvatar/LeaderAvatar'
+import { isIncomeGraph } from 'global-utils'
 
 const CampusReport = () => {
   const { campusId } = useContext(ChurchContext)
   const { currentUser } = useContext(MemberContext)
-  const [bussing, setBussing] = useState(true)
+  const [graphs, setGraphs] = useState<GraphTypes>('bussingAggregate')
   const [churchData, setChurchData] = useState<any[] | undefined>([])
   const { data, loading, error } = useQuery(CAMPUS_GRAPHS, {
     variables: { campusId },
     onCompleted: (data) => {
       if (!setChurchData) return
-      setChurchData(getServiceGraphData(data?.campuses[0], 'bussingAggregate'))
+      setChurchData(getServiceGraphData(data?.campuses[0], graphs))
     },
   })
 
@@ -45,7 +50,8 @@ const CampusReport = () => {
 
           <Col>
             <GraphDropdown
-              setBussing={setBussing}
+              graphs={graphs}
+              setGraphs={setGraphs}
               setChurchData={setChurchData}
               data={data?.campuses[0]}
             />
@@ -54,12 +60,12 @@ const CampusReport = () => {
         <Row className="mt-3">
           <Col>
             <StatDisplay
-              title={`Avg Weekly ${bussing ? 'Bussing' : 'Attendance'}`}
+              title={`Avg Weekly Attendance`}
               statistic={getMonthlyStatAverage(churchData, 'attendance')}
             />
           </Col>
 
-          {((!bussing && !currentUser.noIncomeTracking) || loading) && (
+          {isIncomeGraph(graphs, currentUser) && (
             <Col>
               <StatDisplay
                 title="Avg Weekly Income"
@@ -73,20 +79,20 @@ const CampusReport = () => {
           <ChurchGraph
             loading={loading}
             stat1="attendance"
-            stat2={!bussing ? 'income' : null}
+            stat2={!isIncomeGraph(graphs, currentUser) ? null : 'income'}
             churchData={churchData || []}
             church="campus"
-            graphType={bussing ? 'bussing' : 'service'}
+            graphType={graphs}
             income={true}
           />
         ) : (
           <ChurchGraph
             loading={loading}
             stat1="attendance"
-            stat2={!bussing ? 'income' : null}
+            stat2={null}
             churchData={churchData || []}
             church="campus"
-            graphType={bussing ? 'bussing' : 'service'}
+            graphType={graphs}
             income={false}
           />
         )}

@@ -2,7 +2,11 @@ import React, { useContext, useState } from 'react'
 
 import { ChurchContext } from '../../../contexts/ChurchContext'
 import { useQuery } from '@apollo/client'
-import { getServiceGraphData, getMonthlyStatAverage } from './graphs-utils'
+import {
+  getServiceGraphData,
+  getMonthlyStatAverage,
+  GraphTypes,
+} from './graphs-utils'
 import ChurchGraph from '../../../components/ChurchGraph/ChurchGraph'
 import { STREAM_GRAPHS } from './GraphsQueries'
 import MembershipCard from './CompMembershipCard'
@@ -12,18 +16,19 @@ import { Col, Container, Row } from 'react-bootstrap'
 import GraphDropdown from './GraphDropdown'
 import { MemberContext } from 'contexts/MemberContext'
 import LeaderAvatar from 'components/LeaderAvatar/LeaderAvatar'
+import { isIncomeGraph } from 'global-utils'
 
 const StreamReport = () => {
   const { currentUser } = useContext(MemberContext)
 
   const { streamId } = useContext(ChurchContext)
-  const [bussing, setBussing] = useState(true)
+  const [graphs, setGraphs] = useState<GraphTypes>('services')
   const [churchData, setChurchData] = useState<any[] | undefined>([])
   const { data, loading, error } = useQuery(STREAM_GRAPHS, {
     variables: { streamId: streamId },
     onCompleted: (data) => {
       if (!setChurchData) return
-      setChurchData(getServiceGraphData(data?.streams[0], 'bussingAggregate'))
+      setChurchData(getServiceGraphData(data?.streams[0], graphs))
     },
   })
 
@@ -46,7 +51,8 @@ const StreamReport = () => {
 
           <Col>
             <GraphDropdown
-              setBussing={setBussing}
+              graphs={graphs}
+              setGraphs={setGraphs}
               setChurchData={setChurchData}
               data={data?.streams[0]}
             />
@@ -60,7 +66,7 @@ const StreamReport = () => {
             />
           </Col>
 
-          {((!bussing && !currentUser.noIncomeTracking) || loading) && (
+          {isIncomeGraph(graphs, currentUser) && (
             <Col>
               <StatDisplay
                 title="Avg Weekly Income"
@@ -74,10 +80,10 @@ const StreamReport = () => {
           <ChurchGraph
             loading={loading}
             stat1="attendance"
-            stat2={!bussing ? 'income' : null}
+            stat2={!isIncomeGraph(graphs, currentUser) ? null : 'income'}
             churchData={churchData || []}
             church="stream"
-            graphType={bussing ? 'bussing' : 'service'}
+            graphType={graphs}
             income={true}
           />
         ) : (
@@ -87,7 +93,7 @@ const StreamReport = () => {
             stat2={null}
             churchData={churchData || []}
             church="stream"
-            graphType={bussing ? 'bussing' : 'service'}
+            graphType={graphs}
             income={false}
           />
         )}

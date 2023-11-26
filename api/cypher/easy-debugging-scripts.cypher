@@ -134,3 +134,6 @@ RETURN hub.name, constituency.name;
 
 MATCH (r:StageAttendanceRecord)
 DETACH DELETE r
+
+MATCH (agg:AggregateServiceRecord) WhERE agg.income IS NULL
+DETACH DELETE agg

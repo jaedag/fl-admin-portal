@@ -1,28 +1,35 @@
-import React from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { Dropdown } from 'react-bootstrap'
-import { getServiceGraphData } from './graphs-utils'
+import { GraphTypes, getServiceGraphData } from './graphs-utils'
 import './GraphDropdown.css'
 import { ChurchLevel } from 'global-types'
 
 type GraphDropdownProps = {
-  setBussing?: React.Dispatch<React.SetStateAction<boolean>>
   setChurchData: React.Dispatch<React.SetStateAction<any>>
-  setRehearsal?: React.Dispatch<React.SetStateAction<boolean>>
-  setMinistryMeeting?: React.Dispatch<React.SetStateAction<boolean>>
+  setGraphs: React.Dispatch<React.SetStateAction<GraphTypes>>
+  graphs: GraphTypes
   data: any
 }
 
 const GraphDropdown = ({
-  setBussing,
-  setRehearsal,
-  setMinistryMeeting,
   setChurchData,
+  graphs,
+  setGraphs,
   data,
 }: GraphDropdownProps) => {
   const [selected, setSelected] = React.useState('Select Service')
   const churchLevel: ChurchLevel = data?.__typename
 
   const sontaLevels = ['Hub', 'HubCouncil', 'Ministry', 'CreativeArts']
+
+  const churchData = useMemo(
+    () => getServiceGraphData(data, graphs),
+    [data, graphs]
+  )
+
+  useEffect(() => {
+    setChurchData(churchData)
+  }, [churchData])
 
   return (
     <Dropdown className="border-none">
@@ -33,10 +40,8 @@ const GraphDropdown = ({
           <Dropdown.Item
             className="py-3"
             onClick={() => {
-              setBussing && setBussing(true)
-              setRehearsal && setRehearsal(false)
               setSelected('Bussing')
-              setChurchData(getServiceGraphData(data, 'bussing'))
+              setGraphs('bussing')
             }}
           >
             Bussing
@@ -47,13 +52,33 @@ const GraphDropdown = ({
           <Dropdown.Item
             className="py-3"
             onClick={() => {
-              setBussing && setBussing(false)
-              setRehearsal && setRehearsal(false)
               setSelected('Services')
-              setChurchData(getServiceGraphData(data, 'service'))
+              setGraphs('services')
             }}
           >
             {`${churchLevel} Services`}
+          </Dropdown.Item>
+        )}
+        {['CreativeArts'].includes(churchLevel) && (
+          <Dropdown.Item
+            className="py-3"
+            onClick={() => {
+              setSelected('OnStage Attendance')
+              setGraphs('onStageAttendanceAggregate')
+            }}
+          >
+            {`On Stage Attendance Total`}
+          </Dropdown.Item>
+        )}
+        {['Ministry'].includes(churchLevel) && (
+          <Dropdown.Item
+            className="py-3"
+            onClick={() => {
+              setSelected('OnStage Attendance')
+              setGraphs('onStageAttendance')
+            }}
+          >
+            {`On Stage Attendance`}
           </Dropdown.Item>
         )}
 
@@ -61,10 +86,8 @@ const GraphDropdown = ({
           <Dropdown.Item
             className="py-3"
             onClick={() => {
-              setBussing && setBussing(false)
-              setRehearsal && setRehearsal(false)
               setSelected('Bussing Total')
-              setChurchData(getServiceGraphData(data, 'bussingAggregate'))
+              setGraphs('bussingAggregate')
             }}
           >
             Bussing Total
@@ -74,10 +97,8 @@ const GraphDropdown = ({
           <Dropdown.Item
             className="py-3"
             onClick={() => {
-              setBussing && setBussing(false)
-              setRehearsal && setRehearsal(false)
               setSelected('Fellowship Total')
-              setChurchData(getServiceGraphData(data, 'serviceAggregate'))
+              setGraphs('serviceAggregate')
             }}
           >
             Weekday Total
@@ -87,12 +108,8 @@ const GraphDropdown = ({
           <Dropdown.Item
             className="py-3"
             onClick={() => {
-              setBussing && setBussing(false)
-              setRehearsal && setRehearsal(false)
               setSelected('Services Total (USD)')
-              setChurchData(
-                getServiceGraphData(data, 'serviceAggregateWithDollar')
-              )
+              setGraphs('serviceAggregateWithDollar')
             }}
           >
             Weekday Total (USD)
@@ -103,9 +120,8 @@ const GraphDropdown = ({
           <Dropdown.Item
             className="py-3"
             onClick={() => {
-              setRehearsal && setRehearsal(true)
               setSelected('Rehearsals')
-              setChurchData(getServiceGraphData(data, 'rehearsal'))
+              setGraphs('rehearsals')
             }}
           >
             {`${churchLevel} Rehearsals`}
@@ -116,10 +132,8 @@ const GraphDropdown = ({
           <Dropdown.Item
             className="py-3"
             onClick={() => {
-              setBussing && setBussing(false)
-              setRehearsal && setRehearsal(true)
               setSelected('Rehearsals Total')
-              setChurchData(getServiceGraphData(data, 'rehearsalAggregate'))
+              setGraphs('rehearsalAggregate')
             }}
           >
             {`${churchLevel} Rehearsals Total`}
@@ -129,9 +143,8 @@ const GraphDropdown = ({
           <Dropdown.Item
             className="py-3"
             onClick={() => {
-              setBussing && setBussing(false)
               setSelected('Rehearsals')
-              setChurchData(getServiceGraphData(data, 'service'))
+              setGraphs('ministryMeeting')
             }}
           >
             {`${churchLevel} Weekend Meeting Total`}

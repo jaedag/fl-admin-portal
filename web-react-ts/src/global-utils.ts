@@ -8,6 +8,7 @@ import {
   MemberWithChurches,
   Role,
 } from 'global-types'
+import { GraphTypes } from 'pages/services/graphs/graphs-utils'
 
 //Global Constants
 export const PHONE_NUM_REGEX = /^[+][(]{0,1}[1-9]{1,4}[)]{0,1}[-\s/0-9]*$/
@@ -18,6 +19,15 @@ export const USER_PLACEHOLDER = 'v1627893621/user_qvwhs7webp'
 export const DEBOUNCE_TIMER = 500
 export const LONG_POLL_INTERVAL = 60000
 export const SHORT_POLL_INTERVAL = 30000
+export const isIncomeGraph = (graphs: GraphTypes, currentUser: any) => {
+  const noIncomeGraphLevels = [
+    'onStageAttendance',
+    'bussing',
+    'bussingAggregate',
+  ]
+
+  return !currentUser.noIncomeTracking && !noIncomeGraphLevels.includes(graphs)
+}
 
 export type FormikSelectOptions = {
   key: string

@@ -2,7 +2,11 @@ import React, { useContext, useState } from 'react'
 
 import { ChurchContext } from '../../../contexts/ChurchContext'
 import { useQuery } from '@apollo/client'
-import { getServiceGraphData, getMonthlyStatAverage } from './graphs-utils'
+import {
+  getServiceGraphData,
+  getMonthlyStatAverage,
+  GraphTypes,
+} from './graphs-utils'
 import ChurchGraph from '../../../components/ChurchGraph/ChurchGraph'
 import { HUB_GRAPHS } from './GraphsQueries'
 import MembershipCard from './CompMembershipCard'
@@ -12,11 +16,11 @@ import { Col, Container, Row } from 'react-bootstrap'
 import GraphDropdown from './GraphDropdown'
 import { MemberContext } from 'contexts/MemberContext'
 import LeaderAvatar from 'components/LeaderAvatar/LeaderAvatar'
+import { isIncomeGraph } from 'global-utils'
 
 export const HubGraphs = () => {
   const { hubId } = useContext(ChurchContext)
-  const [rehearsal, setRehearsal] = useState(true)
-  const [ministryMeeting, setMinistryMeeting] = useState(false)
+  const [graphs, setGraphs] = useState<GraphTypes>('rehearsals')
   const { currentUser } = useContext(MemberContext)
 
   const [churchData, setChurchData] = useState<any[] | undefined>([])
@@ -24,7 +28,7 @@ export const HubGraphs = () => {
     variables: { hubId: hubId },
     onCompleted: (data) => {
       if (!setChurchData) return
-      setChurchData(getServiceGraphData(data?.hubs[0], 'rehearsal'))
+      setChurchData(getServiceGraphData(data?.hubs[0], 'rehearsals'))
     },
   })
 
@@ -43,13 +47,14 @@ export const HubGraphs = () => {
           </Col>
           <Col>
             <GraphDropdown
-              setRehearsal={setRehearsal}
-              setMinistryMeeting={setMinistryMeeting}
+              graphs={graphs}
+              setGraphs={setGraphs}
               setChurchData={setChurchData}
               data={data?.hubs[0]}
             />
           </Col>
         </Row>
+
         <Row className="mt-3">
           <Col>
             <StatDisplay
@@ -57,7 +62,7 @@ export const HubGraphs = () => {
               statistic={getMonthlyStatAverage(churchData, 'attendance')}
             />
           </Col>
-          {(!currentUser.noIncomeTracking || loading) && (
+          {isIncomeGraph(graphs, currentUser) && (
             <Col>
               <StatDisplay
                 title="Avg Weekly Income"
@@ -70,9 +75,9 @@ export const HubGraphs = () => {
         {!currentUser.noIncomeTracking ? (
           <ChurchGraph
             stat1="attendance"
-            stat2={ministryMeeting ? null : 'income'}
+            stat2={!isIncomeGraph(graphs, currentUser) ? null : 'income'}
             churchData={churchData || []}
-            graphType={rehearsal ? 'rehearsal' : 'service'}
+            graphType={graphs}
             church="hub"
             income={true}
           />
@@ -82,7 +87,7 @@ export const HubGraphs = () => {
             stat2={null}
             churchData={churchData || []}
             church="hub"
-            graphType={rehearsal ? 'rehearsal' : 'service'}
+            graphType={graphs}
             income={false}
           />
         )}

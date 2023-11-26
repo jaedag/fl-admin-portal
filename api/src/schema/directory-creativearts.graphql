@@ -246,6 +246,17 @@ type Ministry {
       RETURN fellowship
       """
     )
+  onStageAttendanceRecords(
+    limit: Int!
+    skip: Int = 0
+  ): [StageAttendanceRecord!]!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(records:StageAttendanceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
+      WITH DISTINCT records,date
+      RETURN records ORDER BY date.date DESC SKIP $skip LIMIT $limit
+      """
+    )
 }
 
 type HubCouncil {

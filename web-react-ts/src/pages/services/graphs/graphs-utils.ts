@@ -61,12 +61,28 @@ const extractServiceDataWithDollars = (arr: any[]) =>
     week,
   }))
 
+export type GraphTypes =
+  | 'bussing'
+  | 'bussingAggregate'
+  | 'serviceAggregate'
+  | 'serviceAggregateWithDollar'
+  | 'services'
+  | 'rehearsals'
+  | 'rehearsalAggregate'
+  | 'ministryMeeting'
+  | 'onStageAttendance'
+  | 'onStageAttendanceAggregate'
+  | 'multiplicationAggregate'
+  | 'swellBussing'
+
 export const getServiceGraphData = (
   church:
     | {
         bussing: any[]
         services: any[]
         rehearsals: any[]
+        onStageAttendanceRecords: any[]
+        aggregateStageAttendanceRecords: any[]
         aggregateRehearsalRecords: any[]
         aggregateServiceRecords: any[]
         aggregateBussingRecords: any[]
@@ -74,17 +90,7 @@ export const getServiceGraphData = (
         swellBussingRecords: any[]
       }
     | undefined,
-  category:
-    | 'bussing'
-    | 'bussingAggregate'
-    | 'serviceAggregate'
-    | 'serviceAggregateWithDollar'
-    | 'service'
-    | 'rehearsal'
-    | 'rehearsalAggregate'
-    | 'ministryMeeting'
-    | 'multiplicationAggregate'
-    | 'swellBussing'
+  category: GraphTypes
 ) => {
   if (!church) {
     return
@@ -110,15 +116,22 @@ export const getServiceGraphData = (
     })
   }
 
-  if (category === 'service') {
+  if (category === 'services') {
     pushIntoData(church.services)
   }
 
-  if (category === 'rehearsal') {
+  if (category === 'rehearsals') {
     pushIntoData(church.rehearsals)
   }
   if (category === 'rehearsalAggregate') {
     pushIntoData(church.aggregateRehearsalRecords)
+  }
+
+  if (category === 'onStageAttendance') {
+    pushIntoData(church.onStageAttendanceRecords)
+  }
+  if (category === 'onStageAttendanceAggregate') {
+    pushIntoData(church.aggregateStageAttendanceRecords)
   }
 
   if (category === 'bussing') {

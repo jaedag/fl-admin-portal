@@ -17,6 +17,7 @@ import {
 import { capitalise } from '../../global-utils'
 import './ChurchGraph.css'
 import { ScaleLoader } from 'react-spinners'
+import { GraphTypes } from 'pages/services/graphs/graphs-utils'
 
 type ChurchGraphProps = {
   loading?: boolean
@@ -24,7 +25,7 @@ type ChurchGraphProps = {
   stat2: 'attendance' | 'income' | 'target' | null
   churchData: any[]
   secondaryTitle?: string
-  graphType: 'service' | 'bussing' | 'rehearsal' | 'ministryMeeting'
+  graphType: GraphTypes
   income: boolean
   church: ChurchLevelLower | string
   swollenSunday?: boolean
@@ -39,12 +40,9 @@ const ChurchGraph = (props: ChurchGraphProps) => {
     secondaryTitle,
     income,
     graphType,
-    swollenSunday,
   } = props
   const { clickCard } = useContext(ChurchContext)
   const navigate = useNavigate()
-  const isRehearsal = graphType === 'rehearsal'
-
   const [sortedData, setSortedData] = useState<any[]>([])
   const [dataMax, setDataMax] = useState<{
     attendance: number
@@ -117,6 +115,40 @@ const ChurchGraph = (props: ChurchGraphProps) => {
     return null
   }
 
+  const primaryColor: { [key in GraphTypes]: string } = {
+    bussing: 'var(--chart-primary-color)',
+    bussingAggregate: 'var(--chart-primary-color)',
+    services: 'var(--chart-primary-color)',
+    serviceAggregate: 'var(--chart-primary-color)',
+    serviceAggregateWithDollar: 'var(--chart-primary-color)',
+
+    swellBussing: 'var(--chart-swollen-bussing-attendance-color)',
+    rehearsals: 'var(--chart-hub-attendance-color)',
+    rehearsalAggregate: 'var(--chart-hub-attendance-color)',
+    ministryMeeting: 'var(--chart-hub-attendance-color)',
+    onStageAttendance: 'var(--chart-onstage-attendance-color)',
+    onStageAttendanceAggregate: 'var(--chart-onstage-attendance-color)',
+
+    multiplicationAggregate: 'var(--chart-primary-color)',
+  }
+
+  const secondaryColor: { [key in GraphTypes]: string } = {
+    bussing: 'var(--chart-secondary-color)',
+    bussingAggregate: 'var(--chart-secondary-color)',
+    services: 'var(--chart-secondary-color)',
+    serviceAggregate: 'var(--chart-secondary-color)',
+    serviceAggregateWithDollar: 'var(--chart-secondary-color)',
+
+    swellBussing: 'var(--chart-swollen-bussing-attendance-color)',
+    rehearsals: 'var(--chart-hub-income-color)',
+    rehearsalAggregate: 'var(--chart-hub-income-color)',
+    ministryMeeting: 'var(--chart-hub-income-color)',
+    onStageAttendance: 'var(--chart-onstage-attendance-color)',
+    onStageAttendanceAggregate: 'var(--chart-onstage-attendance-color)',
+
+    multiplicationAggregate: 'var(--chart-secondary-color)',
+  }
+
   return (
     <div className="row mt-2">
       <div className="col">
@@ -153,24 +185,12 @@ const ChurchGraph = (props: ChurchGraphProps) => {
                 >
                   <stop
                     offset="0%"
-                    stopColor={
-                      swollenSunday
-                        ? 'var(--chart-swollen-bussing-attendance-color)'
-                        : isRehearsal
-                        ? 'var(--chart-hub-attendance-color)'
-                        : 'var(--chart-primary-color)'
-                    }
+                    stopColor={primaryColor[graphType]}
                     stopOpacity="1"
                   />
                   <stop
                     offset="90%"
-                    stopColor={
-                      swollenSunday
-                        ? 'var(--chart-swollen-bussing-attendance-color)'
-                        : isRehearsal
-                        ? 'var(--chart-hub-attendance-color)'
-                        : 'var(--chart-primary-color)'
-                    }
+                    stopColor={primaryColor[graphType]}
                     stopOpacity="0.1"
                   />
                 </linearGradient>
@@ -183,24 +203,12 @@ const ChurchGraph = (props: ChurchGraphProps) => {
                 >
                   <stop
                     offset="0%"
-                    stopColor={
-                      swollenSunday
-                        ? 'var(--chart-swollen-bussing-target-color)'
-                        : isRehearsal
-                        ? 'var(--chart-hub-income-color)'
-                        : 'var(--chart-secondary-color)'
-                    }
+                    stopColor={secondaryColor[graphType]}
                     stopOpacity="1"
                   />
                   <stop
                     offset="80%"
-                    stopColor={
-                      swollenSunday
-                        ? 'var(--chart-swollen-bussing-target-color)'
-                        : isRehearsal
-                        ? 'var(--chart-hub-income-color)'
-                        : 'var(--chart-secondary-color)'
-                    }
+                    stopColor={secondaryColor[graphType]}
                     stopOpacity="0.1"
                   />
                 </linearGradient>
@@ -213,17 +221,31 @@ const ChurchGraph = (props: ChurchGraphProps) => {
                 yAxisId="left"
                 fill="url(#colorPrimary)"
                 onClick={(data) => {
-                  if (data.category.includes('Aggregate')) {
+                  const graphTypeActions: {
+                    [key in string]: { typename: string; route: string }
+                  } = {
+                    bussing: {
+                      typename: 'BussingRecord',
+                      route: 'bussing-details',
+                    },
+                    onStageAttendance: {
+                      typename: 'StageAttendanceRecord',
+                      route: 'onstage-attendance-details',
+                    },
+                    default: {
+                      typename: 'ServiceRecord',
+                      route: 'service-details',
+                    },
+                  }
+
+                  if (data.category.includes('Aggregate') || !data.id) {
                     return
                   }
 
-                  if (data.id && graphType === 'bussing') {
-                    clickCard({ ...data, __typename: 'BussingRecord' })
-                    navigate(`/${props.church}/bussing-details`)
-                  } else if (data.id) {
-                    clickCard({ ...data, __typename: 'ServiceRecord' })
-                    navigate(`/${props.church}/service-details`)
-                  }
+                  const action =
+                    graphTypeActions[graphType] || graphTypeActions['default']
+                  clickCard({ ...data, __typename: action.typename })
+                  navigate(`/${props.church}/${action.route}`)
                 }}
               >
                 <LabelList
