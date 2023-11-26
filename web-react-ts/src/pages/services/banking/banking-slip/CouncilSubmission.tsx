@@ -104,7 +104,7 @@ const CouncilBankingSlipSubmission = () => {
                       aria-describedby="UploadBankingSlip"
                     />
                   </Col>
-                  <Col className="mb-2">
+                  <Col className="mb-2 text-center">
                     <SubmitButton formik={formik} />
                   </Col>
                 </Row>
