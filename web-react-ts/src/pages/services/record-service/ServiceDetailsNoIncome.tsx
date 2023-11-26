@@ -12,6 +12,7 @@ import { Col, Container, Row, Button, Card } from 'react-bootstrap'
 import { useNavigate } from 'react-router'
 import './ServiceDetails.css'
 import CurrencySpan from 'components/CurrencySpan'
+import CloudinaryImage from 'components/CloudinaryImage'
 
 type ServiceDetailsProps = {
   service: ServiceRecord
@@ -97,17 +98,17 @@ const ServiceDetailsNoIncome = ({
                 )}
 
                 {service?.onStagePictures?.length && (
-                  <div className="container mb-4 card-button-row vw-75">
-                    <table>
+                  <div className="container mb-4 card-button-row multi d-flex align-items-center">
+                    <table className="card-button-row">
                       <tbody>
                         <tr>
                           {service?.onStagePictures?.map((image) => (
-                            <td className="col-auto" key={image}>
+                            <td className="img-container" key={image}>
                               {image && (
-                                <Container className="d-flex align-items-center justify-content-center text-center img-container">
-                                  <img
+                                <Container className="">
+                                  <CloudinaryImage
                                     src={image}
-                                    className="img-preview"
+                                    size="large"
                                     alt="on stage attendance"
                                   />
                                 </Container>

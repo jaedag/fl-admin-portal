@@ -95,7 +95,7 @@ const UserDashboard = () => {
               stat1="attendance"
               stat2="income"
               income={true}
-              graphType="service"
+              graphType="services"
               church={assessmentChurch?.__typename.toLowerCase() || ''}
               churchData={assessmentData}
               secondaryTitle={`${assessmentChurch?.name} ${assessmentChurch?.__typename}`}
@@ -105,7 +105,7 @@ const UserDashboard = () => {
               loading={!assessmentChurch}
               stat1="attendance"
               income={false}
-              graphType="service"
+              graphType="services"
               church={assessmentChurch?.__typename.toLowerCase() || ''}
               churchData={assessmentData}
               secondaryTitle={`${assessmentChurch?.name} ${assessmentChurch?.__typename}`}

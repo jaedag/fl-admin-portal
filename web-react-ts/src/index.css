@@ -63,8 +63,9 @@
   padding-left: 0px;
   overflow-x: auto;
 }
-.card-button-row.vw-75 {
-  width: 75vw;
+.card-button-row.multi {
+  /* width: 75vw; */
+  height: 350px;
 }
 
 .card-title {

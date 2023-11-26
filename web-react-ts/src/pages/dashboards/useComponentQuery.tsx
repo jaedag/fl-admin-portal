@@ -56,6 +56,8 @@ type DashboardChurchType = {
   aggregateBussingRecords: AggregateBussingRecords[]
   aggregateMultiplicationRecords: AggregateServiceRecord[]
   swellBussingRecords: SwellBussingRecords[]
+  onStageAttendanceRecords: AggregateBussingRecords[]
+  aggregateStageAttendanceRecords: AggregateBussingRecords[]
 }
 
 type UseComponentQuery = {
