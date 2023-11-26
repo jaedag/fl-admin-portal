@@ -21,6 +21,7 @@ const HubRehearsalService = () => {
         church={data?.hubs[0]}
         churchId={hubId}
         churchType="Hub"
+        event="Rehearsal"
         recordType="RehearsalRecord"
       />
     </ApolloWrapper>
