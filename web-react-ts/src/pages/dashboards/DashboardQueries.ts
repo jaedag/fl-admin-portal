@@ -75,6 +75,10 @@ export const SERVANT_CHURCH_LIST = gql`
         id
         name
       }
+      leadsDenomination {
+        id
+        name
+      }
       isAdminForConstituency {
         id
         name
@@ -98,6 +102,10 @@ export const SERVANT_CHURCH_LIST = gql`
       }
 
       isAdminForOversight {
+        id
+        name
+      }
+      isAdminForDenomination {
         id
         name
       }

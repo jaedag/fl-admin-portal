@@ -8,7 +8,7 @@ import {
   GraphTypes,
 } from './graphs-utils'
 import ChurchGraph from '../../../components/ChurchGraph/ChurchGraph'
-import { OVERSIGHT_GRAPHS } from './GraphsQueries'
+import { DENOMINATION_GRAPHS } from './GraphsQueries'
 import MembershipCard from './CompMembershipCard'
 import StatDisplay from './CompStatDisplay'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
@@ -18,16 +18,16 @@ import { MemberContext } from 'contexts/MemberContext'
 import LeaderAvatar from 'components/LeaderAvatar/LeaderAvatar'
 import { isIncomeGraph } from 'global-utils'
 
-const OversightReport = () => {
-  const { oversightId } = useContext(ChurchContext)
+const DenominationReport = () => {
+  const { denominationId } = useContext(ChurchContext)
   const { currentUser } = useContext(MemberContext)
   const [graphs, setGraphs] = useState<GraphTypes>('serviceAggregateWithDollar')
   const [churchData, setChurchData] = useState<any[] | undefined>([])
-  const { data, loading, error } = useQuery(OVERSIGHT_GRAPHS, {
-    variables: { oversightId },
+  const { data, loading, error } = useQuery(DENOMINATION_GRAPHS, {
+    variables: { denominationId },
     onCompleted: (data) => {
       if (!setChurchData) return
-      setChurchData(getServiceGraphData(data?.oversights[0], graphs))
+      setChurchData(getServiceGraphData(data?.denominations[0], graphs))
     },
   })
 
@@ -35,16 +35,16 @@ const OversightReport = () => {
     <ApolloWrapper loading={loading} error={error} data={data}>
       <Container>
         <LeaderAvatar
-          leader={data?.oversights[0].leader}
-          leaderTitle="Oversight Leader"
+          leader={data?.denominations[0].leader}
+          leaderTitle="Denomination Leader"
         />
 
         <Row className="mt-3 row-cols-2">
           <Col>
             <MembershipCard
-              link="/oversight/members"
+              link="/denomination/members"
               title="Membership"
-              count={data?.oversights[0]?.memberCount}
+              count={data?.denominations[0]?.memberCount}
             />
           </Col>
 
@@ -53,7 +53,7 @@ const OversightReport = () => {
               graphs={graphs}
               setGraphs={setGraphs}
               setChurchData={setChurchData}
-              data={data?.oversights[0]}
+              data={data?.denominations[0]}
             />
           </Col>
         </Row>
@@ -81,7 +81,7 @@ const OversightReport = () => {
             stat1="attendance"
             stat2={!isIncomeGraph(graphs, currentUser) ? null : 'income'}
             churchData={churchData || []}
-            church="oversight"
+            church="denomination"
             graphType={graphs}
             income={true}
           />
@@ -91,7 +91,7 @@ const OversightReport = () => {
             stat1="attendance"
             stat2={null}
             churchData={churchData || []}
-            church="oversight"
+            church="denomination"
             graphType={graphs}
             income={false}
           />
@@ -101,4 +101,4 @@ const OversightReport = () => {
   )
 }
 
-export default OversightReport
+export default DenominationReport

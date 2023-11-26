@@ -93,7 +93,7 @@ const GraphDropdown = ({
             Bussing Total
           </Dropdown.Item>
         )}
-        {!['Fellowship'].includes(churchLevel) && (
+        {!['Fellowship', 'Oversight', 'Denomination'].includes(churchLevel) && (
           <Dropdown.Item
             className="py-3"
             onClick={() => {

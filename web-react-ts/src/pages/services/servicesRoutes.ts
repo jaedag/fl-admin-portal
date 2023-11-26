@@ -114,6 +114,9 @@ const CampusReport = lazy(() => import('pages/services/graphs/CampusGraphs'))
 const OversightReport = lazy(
   () => import('pages/services/graphs/OversightGraphs')
 )
+const DenominationReport = lazy(
+  () => import('pages/services/graphs/DenominationGraphs')
+)
 const StreamByCouncil = lazy(
   () => import('pages/services/defaulters/church-by-subchurch/StreamByCouncil')
 )
@@ -377,6 +380,12 @@ export const graphs: LazyRouteTypes[] = [
     path: '/oversight/graphs',
     element: OversightReport,
     roles: permitLeaderAdminArrivals('Oversight'),
+    placeholder: true,
+  },
+  {
+    path: '/denomination/graphs',
+    element: DenominationReport,
+    roles: permitLeaderAdminArrivals('Denomination'),
     placeholder: true,
   },
   {
