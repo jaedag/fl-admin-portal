@@ -26,6 +26,7 @@ export const getHighestRole = (roles: Role[]) => {
       ?.toLowerCase()
       .replace('leader', '')
       .replace('admin', '')
+      .replace('arrivalsadmin', '')
     let breakCheck = false
 
     for (let j = 0; j < roles.length; j++) {
@@ -33,6 +34,7 @@ export const getHighestRole = (roles: Role[]) => {
         ?.toLowerCase()
         .replace('leader', '')
         .replace('admin', '')
+        .replace('arrivals', '')
 
       if (roleLower === churchLevelLower) {
         breakCheck = true

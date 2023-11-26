@@ -5,6 +5,7 @@ import './Dashboards.css'
 import { MemberContext } from 'contexts/MemberContext'
 import RoleCard from './RoleCard'
 import {
+  GraphTypes,
   getMonthlyStatAverage,
   getServiceGraphData,
 } from '../services/graphs/graphs-utils'
@@ -22,8 +23,25 @@ const UserDashboard = () => {
   const { setUserChurch } = useSetUserChurch()
   const navigate = useNavigate()
   const { assessmentChurch } = useComponentQuery()
-  const assessmentData =
-    getServiceGraphData(assessmentChurch, 'serviceAggregate') || []
+
+  let graphType: GraphTypes = 'serviceAggregate'
+
+  if (assessmentChurch?.__typename === 'Fellowship') {
+    graphType = 'services'
+  }
+  if (assessmentChurch?.__typename === 'Hub') {
+    graphType = 'rehearsals'
+  }
+
+  if (assessmentChurch && 'aggregateBussingRecords' in assessmentChurch) {
+    graphType = 'bussingAggregate'
+  }
+
+  if (assessmentChurch && 'aggregateRehearsalRecords' in assessmentChurch) {
+    graphType = 'rehearsalAggregate'
+  }
+
+  const assessmentData = getServiceGraphData(assessmentChurch, graphType) || []
 
   return (
     <>
@@ -95,7 +113,7 @@ const UserDashboard = () => {
               stat1="attendance"
               stat2="income"
               income={true}
-              graphType="services"
+              graphType={graphType}
               church={assessmentChurch?.__typename.toLowerCase() || ''}
               churchData={assessmentData}
               secondaryTitle={`${assessmentChurch?.name} ${assessmentChurch?.__typename}`}
@@ -105,7 +123,7 @@ const UserDashboard = () => {
               loading={!assessmentChurch}
               stat1="attendance"
               income={false}
-              graphType="services"
+              graphType={graphType}
               church={assessmentChurch?.__typename.toLowerCase() || ''}
               churchData={assessmentData}
               secondaryTitle={`${assessmentChurch?.name} ${assessmentChurch?.__typename}`}

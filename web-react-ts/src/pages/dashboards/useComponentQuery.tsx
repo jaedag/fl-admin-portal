@@ -42,6 +42,8 @@ import {
   SERVANTS_MINISTRY_ADMIN,
   SERVANTS_CREATIVEARTS_ADMIN,
   SERVANTS_HUBCOUNCIL_LEADER,
+  SERVANT_DENOMINATION_LEADER,
+  SERVANTS_DENOMINATION_ADMIN,
 } from './userChurchDataQueries'
 
 type DashboardChurchType = {
@@ -74,12 +76,14 @@ const useComponentQuery = (props?: UseComponentQuery) => {
   const [streamLeaderQuery] = useLazyQuery(SERVANT_STREAM_LEADER)
   const [campusLeaderQuery] = useLazyQuery(SERVANT_CAMPUS_LEADER)
   const [oversightLeaderQuery] = useLazyQuery(SERVANT_OVERSIGHT_LEADER)
+  const [denominationLeaderQuery] = useLazyQuery(SERVANT_DENOMINATION_LEADER)
   //Admin Queries
   const [constituencyAdminQuery] = useLazyQuery(SERVANT_CONSTITUENCY_ADMIN)
   const [councilAdminQuery] = useLazyQuery(SERVANT_COUNCIL_ADMIN)
   const [streamAdminQuery] = useLazyQuery(SERVANTS_STREAM_ADMIN)
   const [campusAdminQuery] = useLazyQuery(SERVANTS_CAMPUS_ADMIN)
   const [oversightAdminQuery] = useLazyQuery(SERVANTS_OVERSIGHT_ADMIN)
+  const [denominationAdminQuery] = useLazyQuery(SERVANTS_DENOMINATION_ADMIN)
   //Arrivals Admin Queries
   const [constituencyArrivalsAdminQuery] = useLazyQuery(
     SERVANTS_CONSTITUENCY_ARRIVALS_ADMIN
@@ -146,6 +150,11 @@ const useComponentQuery = (props?: UseComponentQuery) => {
       admin: oversightAdminQuery,
       arrivalsAdmin: '',
     },
+    Denomination: {
+      leader: denominationLeaderQuery,
+      admin: denominationAdminQuery,
+      arrivalsAdmin: '',
+    },
 
     Hub: {
       leader: hubLeaderQuery,
@@ -170,6 +179,7 @@ const useComponentQuery = (props?: UseComponentQuery) => {
     }) => {
       if (!user.roles.length) return
       const { highestLevel, highestVerb } = getHighestRole(user.roles)
+
       const response = await church[`${highestLevel}`][`${highestVerb}`]({
         variables: { id: user.id },
       })
