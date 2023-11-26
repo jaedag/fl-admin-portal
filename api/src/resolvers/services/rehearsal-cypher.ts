@@ -45,7 +45,7 @@ WHERE church:Ministry
 MATCH (church)<-[:HAS]-(higherChurch) WHERE higherChurch:CreativeArts
 
 OPTIONAL MATCH (church)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(record)-[:SERVICE_HELD_ON]->(date)    
-WHERE date(date.date).week = date().week AND date(date.date).year = date().year AND (record:MinistryStageAttendanceRecord)
+WHERE date(date.date).week = date().week AND date(date.date).year = date().year AND (record:StageAttendanceRecord)
 RETURN church.id AS id, church.name AS name, labels(church) AS labels, labels(higherChurch) AS higherChurchLabels, higherChurch.id AS higherChurchId, record IS NOT NULL AS alreadyFilled
 `
 
@@ -123,32 +123,32 @@ RETURN rehearsalRecord
 `
 
 export const recordOnStageAttendance = `
-    CREATE (ministryStageAttendanceRecord:MinistryStageAttendanceRecord {id: apoc.create.uuid()})
-        SET ministryStageAttendanceRecord.createdAt = datetime(), 
-        ministryStageAttendanceRecord.attendance = $attendance, 
-        ministryStageAttendanceRecord.onStagePictures = $onStagePictures
+    CREATE (stageAttendanceRecord:StageAttendanceRecord {id: apoc.create.uuid()})
+        SET stageAttendanceRecord.createdAt = datetime(), 
+        stageAttendanceRecord.attendance = $attendance, 
+        stageAttendanceRecord.onStagePictures = $onStagePictures
     
-    WITH ministryStageAttendanceRecord
+    WITH stageAttendanceRecord
     MATCH (church {id: $churchId}) WHERE church:Ministry
     MATCH (church)-[current:CURRENT_HISTORY]->(log:ServiceLog)
     MATCH (leader:Member {auth_id: $auth.jwt.sub})
 
     MERGE (serviceDate:TimeGraph {date: date($serviceDate)})
 
-    WITH DISTINCT ministryStageAttendanceRecord, leader, serviceDate, log 
-    MERGE (ministryStageAttendanceRecord)-[:LOGGED_BY]->(leader)
-    MERGE (ministryStageAttendanceRecord)-[:SERVICE_HELD_ON]->(serviceDate)
-    MERGE (log)-[:HAS_SERVICE]->(ministryStageAttendanceRecord)
+    WITH DISTINCT stageAttendanceRecord, leader, serviceDate, log 
+    MERGE (stageAttendanceRecord)-[:LOGGED_BY]->(leader)
+    MERGE (stageAttendanceRecord)-[:SERVICE_HELD_ON]->(serviceDate)
+    MERGE (log)-[:HAS_SERVICE]->(stageAttendanceRecord)
 
-    WITH log, ministryStageAttendanceRecord
+    WITH log, stageAttendanceRecord
     MERGE (aggregate:AggregateRehearsalRecord {id: date().week + '-' + date().year + '-' + log.id, week: date().week, year: date().year})
     MERGE (log)-[:HAS_SERVICE_AGGREGATE]->(aggregate)
 
-    WITH ministryStageAttendanceRecord, aggregate, SUM(ministryStageAttendanceRecord.attendance) AS attendance, SUM(aggregate.attendance) AS aggregateAttendance
+    WITH stageAttendanceRecord, aggregate, SUM(stageAttendanceRecord.attendance) AS attendance, SUM(aggregate.attendance) AS aggregateAttendance
     MATCH (aggregate)
     SET aggregate.attendance = aggregateAttendance + attendance
     
-    RETURN ministryStageAttendanceRecord
+    RETURN stageAttendanceRecord
 `
 
 export const recordCancelledService = `
@@ -169,7 +169,7 @@ MERGE (log)-[:HAS_SERVICE]->(serviceRecord)
 RETURN serviceRecord
 `
 export const recordCancelledOnStagePerformance = `
-CREATE (stagePerformanceRecord:MinistryStageAttendanceRecord:NoService {createdAt:datetime()})
+CREATE (stagePerformanceRecord:StageAttendanceRecord:NoService {createdAt:datetime()})
 SET stagePerformanceRecord.id = apoc.create.uuid(),
 stagePerformanceRecord.noStagePerformanceReason = $noStagePerformanceReason
 
@@ -445,7 +445,7 @@ export const aggregateStageAttendanceDataForCreativeArts = `
     WITH ministry as lowerChurch
 
     MATCH (lowerChurch)<-[:HAS]-(creativeArts:CreativeArts)
-    MATCH (creativeArts)-[:CURRENT_HISTORY|HAS_SERVICE|HAS*2..6]->(record:MinistryStageAttendanceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
+    MATCH (creativeArts)-[:CURRENT_HISTORY|HAS_SERVICE|HAS*2..6]->(record:StageAttendanceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
     WHERE date.date.week = date().week AND date.date.year = date().year AND NOT record:NoService
     WITH DISTINCT creativeArts, record
     MATCH (creativeArts)-[:CURRENT_HISTORY]->(log:ServiceLog)

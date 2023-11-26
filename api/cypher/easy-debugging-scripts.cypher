@@ -109,3 +109,7 @@ MATCH (hub:Hub {id: "73be1398-598e-44a5-b65d-581077110a7d"})
 MATCH (constituency:Constituency {id: "bac4271f-3057-458b-8db6-da60cbeb6e16"})
 MERGE (constituency)-[:HAS_MINISTRY]->(hub)
 RETURN hub.name, constituency.name;
+
+
+MATCH (r:StageAttendanceRecord)
+DETACH DELETE r

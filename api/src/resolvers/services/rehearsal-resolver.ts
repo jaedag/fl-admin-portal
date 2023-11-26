@@ -321,9 +321,11 @@ const SontaServiceMutation = {
         throwToSentry('Error Aggregating OnStage Performance', error)
       )
 
-      const serviceDetails = rearrangeCypherObject(cypherResponse)
+      const serviceDetails = cypherResponse.records[0].get(
+        'stageAttendanceRecord'
+      ).properties
 
-      return serviceDetails.ministryStageAttendanceRecord.properties
+      return serviceDetails
     } catch (error) {
       throwToSentry('Error recording OnStage attendance', error)
     } finally {

@@ -3,7 +3,7 @@ import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { DISPLAY_MINISTRY } from 'pages/directory/display/ReadQueries'
 import React, { useContext } from 'react'
-import { RECORD_MINISTRY_ON_STAGE_ATTENDANCE } from './onstageMutations'
+import { RECORD_MINISTRY_ON_STAGE_ATTENDANCE } from './onstageGQL'
 import StageAttendanceForm from './StageAttendanceForm'
 
 const RecordMinistryOnStageAttendance = () => {

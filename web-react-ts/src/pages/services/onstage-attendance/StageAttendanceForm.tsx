@@ -5,13 +5,11 @@ import { useNavigate } from 'react-router'
 import { Col, Container, Row } from 'react-bootstrap'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import SubmitButton from 'components/formik/SubmitButton'
-import { throwToSentry } from 'global-utils'
 import { getMondayThisWeek } from 'jd-date-utils'
 import { ChurchContext } from 'contexts/ChurchContext'
 import Input from 'components/formik/Input'
 import { Church, ChurchLevel } from 'global-types'
 import { MutationFunction } from '@apollo/client'
-import ImageUpload from 'components/formik/ImageUpload'
 import MultiImageUpload from 'components/formik/MultiImageUpload'
 
 type StageAttendanceFormProps = {
@@ -80,10 +78,11 @@ const StageAttendanceForm = ({
         },
       })
 
-      clickCard(res.data.RecordServiceNoIncome)
-      navigate(`/${churchType}/service-details`)
+      clickCard(res.data.RecordMinistryOnStageAttendance)
+      navigate(`/${churchType}/onstage-attendance-details`)
     } catch (error) {
-      throwToSentry('', error)
+      // eslint-disable-next-line no-console
+      console.error(error)
     } finally {
       setSubmitting(false)
     }
@@ -121,25 +120,23 @@ const StageAttendanceForm = ({
                     />
                     <Input name="attendance" label="Attendance*" />
 
-                    <Col className="my-2">
-                      <small className="mb-3">
+                    <Col>
+                      <small className="mb-3 ">
                         Upload Your Stage Pictures*
                       </small>
+
+                      <div className="text-secondary fst-italic">
+                        <small>
+                          You can upload multiple pictures (as many as needed)
+                        </small>
+                      </div>
                       <MultiImageUpload
-                        name="familyPicture"
+                        name="onStagePictures"
                         uploadPreset={import.meta.env.VITE_CLOUDINARY_SERVICES}
                         placeholder="Choose"
                         setFieldValue={formik.setFieldValue}
                         aria-describedby="upload pictures"
                         error={formik.errors.onStagePictures}
-                      />
-
-                      <ImageUpload
-                        name="familyPicture"
-                        uploadPreset={import.meta.env.VITE_CLOUDINARY_SERVICES}
-                        placeholder="Choose"
-                        setFieldValue={formik.setFieldValue}
-                        aria-describedby="UploadfamilyPicture"
                       />
                     </Col>
 

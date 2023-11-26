@@ -63,6 +63,9 @@
   padding-left: 0px;
   overflow-x: auto;
 }
+.card-button-row.vw-75 {
+  width: 75vw;
+}
 
 .card-title {
   font-weight: bold;
