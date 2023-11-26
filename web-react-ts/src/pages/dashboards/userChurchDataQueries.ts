@@ -154,6 +154,25 @@ export const SERVANT_OVERSIGHT_LEADER = gql`
   }
 `
 
+export const SERVANT_DENOMINATION_LEADER = gql`
+  query denominationLeader($id: ID!) {
+    members(where: { id: $id }) {
+      id
+      leadsDenomination {
+        id
+        name
+
+        aggregateServiceRecords(limit: 4) {
+          id
+          attendance
+          income
+          week
+        }
+      }
+    }
+  }
+`
+
 export const SERVANT_CONSTITUENCY_ADMIN = gql`
   query constituencyAdmin($id: ID!) {
     members(where: { id: $id }) {
@@ -278,6 +297,27 @@ export const SERVANTS_OVERSIGHT_ADMIN = gql`
   }
 `
 
+export const SERVANTS_DENOMINATION_ADMIN = gql`
+  query denominationAdmin($id: ID!) {
+    members(where: { id: $id }) {
+      id
+
+      isAdminForDenomination {
+        id
+        name
+
+        aggregateServiceRecords(limit: 4) {
+          id
+          attendance
+          income
+          dollarIncome
+          week
+        }
+      }
+    }
+  }
+`
+
 export const SERVANTS_CONSTITUENCY_ARRIVALS_ADMIN = gql`
   query constituencyArrivalsAdmin($id: ID!) {
     members(where: { id: $id }) {
@@ -286,7 +326,6 @@ export const SERVANTS_CONSTITUENCY_ARRIVALS_ADMIN = gql`
       isArrivalsAdminForConstituency {
         id
         name
-        stream_name
 
         leader {
           id
@@ -443,6 +482,17 @@ export const SERVANTS_HUB_LEADER = gql`
       leadsHub {
         id
         name
+
+        rehearsals(limit: 4) {
+          id
+          createdAt
+          attendance
+          income
+          week
+          serviceDate {
+            date
+          }
+        }
       }
     }
   }
@@ -455,6 +505,13 @@ export const SERVANTS_HUBCOUNCIL_LEADER = gql`
       leadsHubCouncil {
         id
         name
+
+        aggregateRehearsalRecords(limit: 4) {
+          id
+          attendance
+          income
+          week
+        }
       }
     }
   }
@@ -467,6 +524,13 @@ export const SERVANTS_MINISTRY_LEADER = gql`
       leadsMinistry {
         id
         name
+
+        aggregateRehearsalRecords(limit: 4) {
+          id
+          attendance
+          income
+          week
+        }
       }
     }
   }
@@ -479,6 +543,13 @@ export const SERVANTS_CREATIVEARTS_LEADER = gql`
       leadsCreativeArts {
         id
         name
+
+        aggregateRehearsalRecords(limit: 4) {
+          id
+          attendance
+          income
+          week
+        }
       }
     }
   }
@@ -491,6 +562,13 @@ export const SERVANTS_MINISTRY_ADMIN = gql`
       isAdminForMinistry {
         id
         name
+
+        aggregateRehearsalRecords(limit: 4) {
+          id
+          attendance
+          income
+          week
+        }
       }
     }
   }
@@ -504,6 +582,13 @@ export const SERVANTS_CREATIVEARTS_ADMIN = gql`
       isAdminForCreativeArts {
         id
         name
+
+        aggregateRehearsalRecords(limit: 4) {
+          id
+          attendance
+          income
+          week
+        }
       }
     }
   }
