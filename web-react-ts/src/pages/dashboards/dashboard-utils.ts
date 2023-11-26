@@ -56,7 +56,7 @@ export const menuItems: MenuItem[] = [
         ...permitArrivals('Bacenta'),
         ...permitArrivalsHelpers('Stream'),
       ],
-      [...permitLeaderAdminArrivals('Oversight'), ...permitLeaderAdmin('Hub')]
+      [...permitLeaderAdminArrivals('Oversight')]
     ),
   },
   {
