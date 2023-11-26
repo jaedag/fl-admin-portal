@@ -242,6 +242,7 @@ export const CAMPUS_GRAPHS = gql`
     }
   }
 `
+
 export const OVERSIGHT_GRAPHS = gql`
   query oversightGraphs($oversightId: ID!) {
     oversights(where: { id: $oversightId }) {
@@ -276,6 +277,38 @@ export const OVERSIGHT_GRAPHS = gql`
         serviceDate {
           date
         }
+      }
+
+      memberCount
+    }
+  }
+`
+
+export const DENOMINATION_GRAPHS = gql`
+  query denominationGraphs($denominationId: ID!) {
+    denominations(where: { id: $denominationId }) {
+      id
+      name
+      leader {
+        id
+        firstName
+        lastName
+        fullName
+        pictureUrl
+        nameWithTitle
+      }
+      aggregateServiceRecords(limit: 4) {
+        id
+        attendance
+        income
+        dollarIncome
+        numberOfServices
+        week
+      }
+      aggregateBussingRecords(limit: 4) {
+        id
+        attendance
+        week
       }
 
       memberCount

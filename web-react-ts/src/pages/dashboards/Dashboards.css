@@ -55,6 +55,11 @@
   background-image: linear-gradient(#7c1769, #320c1f, #44123a);
 }
 
+.colour-denomination,
+.colour-denominations {
+  background-image: linear-gradient(#177c3e, #0c321d, #12442d);
+}
+
 .church-number {
   font-size: 3.7rem;
   font-weight: bold;
