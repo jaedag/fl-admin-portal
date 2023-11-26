@@ -1,3 +1,38 @@
+#### 7.14.10 (2023-11-26)
+
+##### Chores
+
+*  update CSS and UserDashboard component ([7e75699d](https://github.com/firstlovecenter/fl-admin-portal/commit/7e75699d9b6865df01fef4fd5b0c7cce89100286))
+*  merge admin 636 story/on stage attendance ([484daa50](https://github.com/firstlovecenter/fl-admin-portal/commit/484daa50a84264c907617a140950b0353f393b85))
+
+##### New Features
+
+*  implement graphs for denomination level ([bf420ce2](https://github.com/firstlovecenter/fl-admin-portal/commit/bf420ce22b15f8c68cb6bdf947e13c243516d926))
+*  implement graphs for denomination level ([2864b3c9](https://github.com/firstlovecenter/fl-admin-portal/commit/2864b3c9de8c9e956e925edc24ba541e82c52dcb))
+*  add event prop to ServiceForm component ([25956766](https://github.com/firstlovecenter/fl-admin-portal/commit/25956766dae8c63bc8b43e69c05904858363baca))
+*  finish implementation of stage attendance form ([20693c23](https://github.com/firstlovecenter/fl-admin-portal/commit/20693c23deeed88dbc181e6b8b01f04876d806af))
+*  add vacationStatus field to SERVANT_CHURCH_LIST and DISPLAY_MINISTRY queries ([a0ede809](https://github.com/firstlovecenter/fl-admin-portal/commit/a0ede8094956a97625891e3b71dff281e39181b5))
+*  on stage attendance ([87da1f87](https://github.com/firstlovecenter/fl-admin-portal/commit/87da1f8706d4383975d750c505f7d57d178a516a))
+*  on stage attendance ([1334ffc2](https://github.com/firstlovecenter/fl-admin-portal/commit/1334ffc2ddd9b9dcb462cfb5d80584f99c6d80c3))
+
+##### Bug Fixes
+
+*  customise userdashboard graphs per role ([c550b775](https://github.com/firstlovecenter/fl-admin-portal/commit/c550b775050762e90fa2428ccf99e356d5e2a171))
+*  add text-center class to Col component in banking-slip pages ([83ae46db](https://github.com/firstlovecenter/fl-admin-portal/commit/83ae46dbfa749b5cee617adf4298dec30c7ba3ea))
+*  fix relationship check and create current history record if necessary ([34bc737b](https://github.com/firstlovecenter/fl-admin-portal/commit/34bc737beb8d5b6490b7992a99a50edca04b1061))
+*  remove unused code for Creative Arts ([c9e2c3a7](https://github.com/firstlovecenter/fl-admin-portal/commit/c9e2c3a722bf2db31070f70b7c64d5c43bd89566))
+*  add MultiImageUpload component to StageAttendanceForm ([be04356f](https://github.com/firstlovecenter/fl-admin-portal/commit/be04356f6d285406afc6f3e959c3a01ed31609e4))
+*  fix ministry stage attendance record type ([a4f263b7](https://github.com/firstlovecenter/fl-admin-portal/commit/a4f263b7cb6284b2c3799d159c156d24760ba1f0))
+*  fix church type condition and add ministry on stage attendance route ([1f191c39](https://github.com/firstlovecenter/fl-admin-portal/commit/1f191c39d60be04a111d6930938fb4098ab5230d))
+*  add vacationStatus query in Ministry type ([cf29939d](https://github.com/firstlovecenter/fl-admin-portal/commit/cf29939ddeb5187f643122b6ecbee6ea961cd6f4))
+
+##### Refactors
+
+*  refactor all church graphs ([c36fb017](https://github.com/firstlovecenter/fl-admin-portal/commit/c36fb017e428d30931d21ca9a7717acf177d6690))
+*  refactor all church graphs ([592e9192](https://github.com/firstlovecenter/fl-admin-portal/commit/592e91929d00e944a8e6c193ec1c6edfc589d420))
+*  variable names in rehearsal-cypher.ts ([743a2d25](https://github.com/firstlovecenter/fl-admin-portal/commit/743a2d25b09f96574495cf4907f4296acadb4d24))
+*  create sub sections for service recording ([96938a1f](https://github.com/firstlovecenter/fl-admin-portal/commit/96938a1f4f00153327245526c1a9f4c95cd9c881))
+
 #### 7.14.9 (2023-11-25)
 
 ##### Bug Fixes
