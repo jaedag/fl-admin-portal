@@ -780,6 +780,7 @@ export const DISPLAY_MINISTRY = gql`
     ministries(where: { id: $id }, options: { limit: 1 }) {
       id
       name
+      vacationStatus
       stream {
         id
         name

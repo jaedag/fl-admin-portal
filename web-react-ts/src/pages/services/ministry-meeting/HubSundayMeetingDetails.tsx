@@ -2,10 +2,10 @@ import React, { useContext } from 'react'
 import { ChurchContext } from '../../../contexts/ChurchContext'
 
 import { useQuery } from '@apollo/client'
-import { DISPLAY_HUBFELLOWSHIP_SUNDAY_MEETING } from './RecordServiceMutations'
+import { DISPLAY_HUBFELLOWSHIP_SUNDAY_MEETING } from '../record-service/RecordServiceMutations'
 import { ServiceContext } from 'contexts/ServiceContext'
 
-import ServiceDetails from './ServiceDetails'
+import ServiceDetails from '../record-service/ServiceDetails'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 
 const HubFellowshipSundayMeetingDetails = () => {

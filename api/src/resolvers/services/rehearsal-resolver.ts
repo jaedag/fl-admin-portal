@@ -7,14 +7,12 @@ import {
   rearrangeCypherObject,
   throwToSentry,
 } from '../utils/utils'
-import {
-  checkCurrentServiceLog,
-  getCurrency,
-  getHigherChurches,
-  getServantAndChurch as getServantAndChurchCypher,
-} from './service-cypher'
+import { getCurrency, getHigherChurches } from './service-cypher'
 
 import {
+  checkCurrentServiceLog,
+  getServantAndChurch as getServantAndChurchCypher,
+  checkStreamServiceDay,
   recordSundayMinistryAttendance,
   recordHubRehearsalService,
   checkMinistryAttendanceFormFilledThisWeek,
@@ -22,7 +20,11 @@ import {
   aggregateMinistryMeetingDataForCreativeArts,
   aggregateMinistryMeetingDataForMinistry,
   aggregateMinistryMeetingDataForHubCouncil,
+  recordOnStageAttendance,
+  checkMinistryStageAttendanceFormFilledThisWeek,
+  recordCancelledOnStagePerformance,
 } from './rehearsal-cypher'
+
 import { SontaHigherChurches } from '../utils/types'
 import { getServiceSontaHigherChurches } from './service-utils'
 
@@ -38,6 +40,19 @@ type RecordServiceArgs = {
   treasurers: string[]
   treasurerSelfie: string
   familyPicture: string
+}
+
+type RecordStageAttendanceArgs = {
+  churchId: string
+  serviceDate: string
+  attendance: number
+  onStagePictures: string[]
+}
+
+type RecordCancelledOnstageMinistryPerformanceArgs = {
+  churchId: string
+  serviceDate: string
+  noServiceReason: string
 }
 
 export const checkServantHasCurrentHistory = async (
@@ -78,7 +93,7 @@ export const checkServantHasCurrentHistory = async (
   }
 }
 
-const HubFellowshipServiceMutation = {
+const SontaServiceMutation = {
   RecordHubFellowshipSundayAttendance: async (
     object: any,
     args: RecordServiceArgs,
@@ -140,6 +155,7 @@ const HubFellowshipServiceMutation = {
 
     return serviceDetails.ministryAttendanceRecord.properties
   },
+
   RecordHubRehearsalService: async (
     object: any,
     args: RecordServiceArgs,
@@ -232,6 +248,154 @@ const HubFellowshipServiceMutation = {
     }
     return null
   },
+
+  RecordMinistryOnStageAttendance: async (
+    object: any,
+    args: RecordStageAttendanceArgs,
+    context: Context
+  ) => {
+    isAuth(permitLeaderAdmin('Ministry'), context.auth.roles)
+    const session = context.executionContext.session()
+    const sessionTwo = context.executionContext.session()
+    const sessionThree = context.executionContext.session()
+
+    try {
+      await checkServantHasCurrentHistory(session, context, {
+        churchId: args.churchId,
+      })
+
+      const promises = [
+        session.executeRead((tx) =>
+          tx.run(checkMinistryStageAttendanceFormFilledThisWeek, args)
+        ),
+        sessionTwo.executeRead((tx) => tx.run(getHigherChurches, args)),
+        sessionThree.executeRead((tx) => tx.run(checkStreamServiceDay, args)),
+      ]
+
+      const serviceCheckRes = await Promise.all(promises)
+
+      const serviceCheck = rearrangeCypherObject(serviceCheckRes[0])
+
+      const higherChurches = getServiceSontaHigherChurches(
+        serviceCheckRes[1]?.records
+      ) as SontaHigherChurches
+
+      const streamServiceDayCheck = rearrangeCypherObject(serviceCheckRes[2])
+
+      if (!streamServiceDayCheck.serviceDay) {
+        throw new Error(errorMessage.not_stream_service_day)
+      }
+
+      if (
+        serviceCheck.alreadyFilled &&
+        !['CreativeArts'].some((label) => serviceCheck.labels?.includes(label))
+      ) {
+        throw new Error(errorMessage.no_double_form_filling)
+      }
+
+      let aggregateCypher = ''
+
+      if (higherChurches?.creativeArts) {
+        aggregateCypher =
+          higherChurches.creativeArts.ministryStagePerformanceCypher
+      }
+
+      const cypherResponse = await session
+        .run(recordOnStageAttendance, {
+          ...args,
+          auth: context.auth,
+        })
+        .catch((error: any) =>
+          throwToSentry('Error Recording OnStage Performance attendance', error)
+        )
+
+      const aggregatePromises = [
+        sessionTwo.executeWrite((tx) =>
+          tx.run(aggregateCypher, {
+            churchId: args.churchId,
+          })
+        ),
+      ]
+
+      await Promise.all(aggregatePromises).catch((error: any) =>
+        throwToSentry('Error Aggregating OnStage Performance', error)
+      )
+
+      const serviceDetails = cypherResponse.records[0].get(
+        'stageAttendanceRecord'
+      ).properties
+
+      return serviceDetails
+    } catch (error) {
+      throwToSentry('Error recording OnStage attendance', error)
+    } finally {
+      await session.close()
+      await sessionTwo.close()
+      await sessionThree.close()
+    }
+    return null
+  },
+
+  RecordCancelledOnstagePerformance: async (
+    object: any,
+    args: RecordCancelledOnstageMinistryPerformanceArgs,
+    context: Context
+  ) => {
+    isAuth(permitLeaderAdmin('Ministry'), context.auth.roles)
+    const session = context.executionContext.session()
+    const sessionTwo = context.executionContext.session()
+    try {
+      await checkServantHasCurrentHistory(session, context, {
+        churchId: args.churchId,
+      })
+
+      const promises = [
+        session.executeRead((tx) =>
+          tx.run(checkMinistryStageAttendanceFormFilledThisWeek, args)
+        ),
+        sessionTwo.executeRead((tx) => tx.run(checkStreamServiceDay, args)),
+      ]
+
+      const serviceCheckRes = await Promise.all(promises)
+
+      const serviceCheck = rearrangeCypherObject(serviceCheckRes[0])
+
+      const streamServiceDayCheck = rearrangeCypherObject(serviceCheckRes[2])
+
+      if (!streamServiceDayCheck.serviceDay) {
+        throw new Error(errorMessage.not_stream_service_day)
+      }
+
+      if (
+        serviceCheck.alreadyFilled &&
+        !['CreativeArts'].some((label) => serviceCheck.labels?.includes(label))
+      ) {
+        throw new Error(errorMessage.no_double_form_filling)
+      }
+
+      const cypherResponse = await session
+        .run(recordCancelledOnStagePerformance, {
+          ...args,
+          auth: context.auth,
+        })
+        .catch((error: any) =>
+          throwToSentry(
+            'Error Cancelling OnStage Performance attendance',
+            error
+          )
+        )
+
+      const serviceDetails = rearrangeCypherObject(cypherResponse)
+
+      return serviceDetails.stagePerformanceRecord.properties
+    } catch (error) {
+      throwToSentry('Error cancelling OnStage performance', error)
+    } finally {
+      await session.close()
+      await sessionTwo.close()
+    }
+    return null
+  },
 }
 
-export default HubFellowshipServiceMutation
+export default SontaServiceMutation

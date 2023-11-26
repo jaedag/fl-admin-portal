@@ -1,10 +1,11 @@
 import React, { useContext, useState } from 'react'
 import { ErrorMessage } from 'formik'
 import TextError from './TextError/TextError'
-import { Container, Spinner } from 'react-bootstrap'
+import { Container } from 'react-bootstrap'
 import { MemberContext } from 'contexts/MemberContext'
 import './Formik.css'
 import { FormikComponentProps } from './formik-types'
+import { MoonLoader } from 'react-spinners'
 
 interface ImageUploadProps extends FormikComponentProps {
   uploadPreset?: string
@@ -24,7 +25,7 @@ const MultiImageUpload = (props: ImageUploadProps) => {
     tags,
     ...rest
   } = props
-  const { theme, currentUser } = useContext(MemberContext)
+  const { currentUser } = useContext(MemberContext)
   const [loading, setLoading] = useState(false)
 
   const [uploadedImages, setUploadedImages] = useState<string[]>([])
@@ -82,22 +83,29 @@ const MultiImageUpload = (props: ImageUploadProps) => {
         </label>
       ) : null}
       {loading && (
-        <Container className="text-center my-3">
-          <Spinner animation="grow" />
+        <Container className="my-3 img-container d-flex justify-content-center align-items-center border">
+          <MoonLoader color="gray" />
         </Container>
       )}
 
-      <div className="container mb-4 card-button-row">
+      <div className="container mb-4 card-button-row vw-75">
         <table>
           <tbody>
             <tr>
+              {!uploadedImages.length && !initialValue && !loading && (
+                <p className="text-center img-container border my-3"></p>
+              )}
               {uploadedImages?.map((image, index) => (
                 <td className="col-auto" key={index}>
-                  <img
-                    src={image || initialValue}
-                    className="multiimage-preview"
-                    alt=""
-                  />
+                  {(image || initialValue) && !loading && (
+                    <Container className="d-flex align-items-center justify-content-center text-center img-container">
+                      <img
+                        src={image || initialValue}
+                        className="img-preview"
+                        alt="on stage attendance"
+                      />
+                    </Container>
+                  )}
                 </td>
               ))}
             </tr>
@@ -105,7 +113,7 @@ const MultiImageUpload = (props: ImageUploadProps) => {
         </table>
       </div>
 
-      <label className="w-100">
+      <label className="w-100 text-center">
         <input
           style={{ display: 'none' }}
           type="file"
@@ -115,7 +123,7 @@ const MultiImageUpload = (props: ImageUploadProps) => {
           {...rest}
         />
 
-        <p className={`btn btn-primary image ${theme}`}>{placeholder}</p>
+        <p className={`btn btn-primary image px-5`}>{placeholder}</p>
       </label>
       {props.error && <TextError>{props.error}</TextError>}
       {!props.error ?? <ErrorMessage name={name} component={TextError} />}

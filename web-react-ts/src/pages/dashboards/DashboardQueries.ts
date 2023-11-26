@@ -61,6 +61,7 @@ export const SERVANT_CHURCH_LIST = gql`
       leadsStream {
         id
         name
+        vacationStatus
         bankAccount
       }
       leadsCampus {
@@ -85,6 +86,7 @@ export const SERVANT_CHURCH_LIST = gql`
       isAdminForStream {
         id
         name
+        vacationStatus
         bankAccount
       }
       isAdminForCampus {
@@ -107,6 +109,7 @@ export const SERVANT_CHURCH_LIST = gql`
       isArrivalsAdminForStream {
         id
         name
+        vacationStatus
       }
       isArrivalsAdminForCampus {
         id
@@ -126,6 +129,7 @@ export const SERVANT_CHURCH_LIST = gql`
       isTellerForStream {
         id
         name
+        vacationStatus
         bankAccount
       }
       isArrivalsPayerForCouncil {
@@ -154,6 +158,7 @@ export const SERVANT_CHURCH_LIST = gql`
       leadsMinistry {
         id
         name
+        vacationStatus
       }
 
       leadsCreativeArts {
@@ -163,6 +168,7 @@ export const SERVANT_CHURCH_LIST = gql`
       isAdminForMinistry {
         id
         name
+        vacationStatus
       }
       isAdminForCreativeArts {
         id

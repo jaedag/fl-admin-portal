@@ -148,6 +148,16 @@ type AggregateRehearsalRecord implements HadService
   numberOfServices: Int
 }
 
+type AggregateStageAttendanceRecord 
+  @auth(rules: [{ isAuthenticated: true }]) {
+  id: ID!
+  week: Int!
+  year: Int!
+  attendance: Int!
+  numberOfServices: Int
+}
+
+
 extend type Hub {
   aggregateServiceRecords(limit: Int! = 4): [AggregateServiceRecord!]!
     @cypher(
@@ -210,6 +220,14 @@ extend type CreativeArts {
     @cypher(
       statement: """
       MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(aggregate:AggregateRehearsalRecord)
+      WHERE aggregate.year = date().year
+      RETURN aggregate ORDER BY aggregate.year, aggregate.week DESC LIMIT $limit
+      """
+    )
+  aggregateStageAttendanceRecords(limit: Int! = 4): [AggregateStageAttendanceRecord!]!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(aggregate:AggregateStageAttendanceRecord)
       WHERE aggregate.year = date().year
       RETURN aggregate ORDER BY aggregate.year, aggregate.week DESC LIMIT $limit
       """

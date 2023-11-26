@@ -45,15 +45,18 @@ const Services = () => {
                 noCaption
               />
             )}
-          {churchType === 'Hub' && church?.vacationStatus === 'Active' && (
-            <MenuButton
-              iconComponent={<Book />}
-              title="Fill Forms"
-              color="members"
-              onClick={() => navigate(`/services/hub`)}
-              noCaption
-            />
-          )}
+          {['Hub', 'Ministry'].includes(churchType) &&
+            church?.vacationStatus === 'Active' && (
+              <MenuButton
+                iconComponent={<Book />}
+                title="Fill Forms"
+                color="members"
+                onClick={() =>
+                  navigate(`/services/${churchType.toLowerCase()}`)
+                }
+                noCaption
+              />
+            )}
           {churchType === 'Bacenta' && (
             <MenuButton
               iconComponent={<Book />}

@@ -5,15 +5,14 @@ import { useNavigate } from 'react-router'
 import { Col, Container, Row } from 'react-bootstrap'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import SubmitButton from 'components/formik/SubmitButton'
-import { throwToSentry } from 'global-utils'
 import { getMondayThisWeek } from 'jd-date-utils'
 import { ChurchContext } from 'contexts/ChurchContext'
 import Input from 'components/formik/Input'
 import { Church, ChurchLevel } from 'global-types'
 import { MutationFunction } from '@apollo/client'
-import ImageUpload from 'components/formik/ImageUpload'
+import MultiImageUpload from 'components/formik/MultiImageUpload'
 
-type ServiceFormProps = {
+type StageAttendanceFormProps = {
   church: Church
   churchId: string
   churchType: ChurchLevel
@@ -25,24 +24,24 @@ type ServiceFormProps = {
 type FormOptions = {
   serviceDate: string
   attendance: string
-  familyPicture: string
+  onStagePictures: string[]
 }
 
-const ServiceForm = ({
+const StageAttendanceForm = ({
   church,
   churchId,
   churchType,
   event,
   RecordServiceMutation,
   recordType,
-}: ServiceFormProps) => {
+}: StageAttendanceFormProps) => {
   const { clickCard } = useContext(ChurchContext)
   const navigate = useNavigate()
 
   const initialValues: FormOptions = {
     serviceDate: new Date().toISOString().slice(0, 10),
     attendance: '',
-    familyPicture: '',
+    onStagePictures: [''],
   }
 
   const today = new Date()
@@ -57,8 +56,9 @@ const ServiceForm = ({
       .positive()
       .integer('You cannot have attendance with decimals!')
       .required('You cannot submit this form without entering your attendance'),
-    familyPicture: Yup.string().required(
-      'Please submit a picture of your service'
+    onStagePictures: Yup.array().min(
+      1,
+      'You must have at least two treasurers'
     ),
   })
 
@@ -74,19 +74,15 @@ const ServiceForm = ({
           churchId: churchId,
           serviceDate: values.serviceDate,
           attendance: parseInt(values.attendance),
-          familyPicture: values.familyPicture,
+          onStagePictures: values.onStagePictures,
         },
       })
 
-      if (recordType === 'MinistryAttendanceRecord') {
-        clickCard(res.data.RecordSontaSundayMeeting)
-        navigate(`/sonta/sunday-meeting-details`)
-      } else {
-        clickCard(res.data.RecordServiceNoIncome)
-        navigate(`/${churchType}/service-details`)
-      }
+      clickCard(res.data.RecordMinistryOnStageAttendance)
+      navigate(`/${churchType}/onstage-attendance-details`)
     } catch (error) {
-      throwToSentry('', error)
+      // eslint-disable-next-line no-console
+      console.error(error)
     } finally {
       setSubmitting(false)
     }
@@ -124,18 +120,26 @@ const ServiceForm = ({
                     />
                     <Input name="attendance" label="Attendance*" />
 
-                    <Col className="my-2">
-                      <small className="mb-3">
-                        Upload Your Family Picture*
+                    <Col>
+                      <small className="mb-3 ">
+                        Upload Your Stage Pictures*
                       </small>
-                      <ImageUpload
-                        name="familyPicture"
+
+                      <div className="text-secondary fst-italic">
+                        <small>
+                          You can upload multiple pictures (as many as needed)
+                        </small>
+                      </div>
+                      <MultiImageUpload
+                        name="onStagePictures"
                         uploadPreset={import.meta.env.VITE_CLOUDINARY_SERVICES}
                         placeholder="Choose"
                         setFieldValue={formik.setFieldValue}
-                        aria-describedby="UploadfamilyPicture"
+                        aria-describedby="upload pictures"
+                        error={formik.errors.onStagePictures}
                       />
                     </Col>
+
                     <div className="d-flex justify-content-center mt-5">
                       <SubmitButton formik={formik} />
                     </div>
@@ -150,4 +154,4 @@ const ServiceForm = ({
   )
 }
 
-export default ServiceForm
+export default StageAttendanceForm

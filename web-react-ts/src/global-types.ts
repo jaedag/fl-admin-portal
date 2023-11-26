@@ -368,7 +368,7 @@ export type VerbTypes =
   | 'isSheepSeekerFor'
 
 export type ServiceRecord = {
-  __typename: 'ServiceRecord' | 'RehearsalRecord'
+  __typename: 'ServiceRecord' | 'RehearsalRecord' | 'StageAttendanceRecord'
   id: string
   createdAt: string
   created_by: Member
@@ -380,6 +380,7 @@ export type ServiceRecord = {
   foreignCurrency: string
   week: number
   familyPicture: string
+  onStagePictures?: string[]
   treasurers: Member[]
   stream_name: StreamOptions
   noServiceReason: string

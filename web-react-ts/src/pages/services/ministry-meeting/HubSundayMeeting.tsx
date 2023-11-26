@@ -2,9 +2,9 @@ import React, { useContext } from 'react'
 import { ChurchContext } from '../../../contexts/ChurchContext'
 
 import { useMutation, useQuery } from '@apollo/client'
-import { RECORD_HUB_SUNDAY_MEETING } from './RecordServiceMutations'
+import { RECORD_HUB_SUNDAY_MEETING } from '../record-service/RecordServiceMutations'
 import { DISPLAY_HUB } from '../../directory/display/ReadQueries'
-import ServiceFormNoOffering from './ServiceFormNoIncome'
+import ServiceFormNoOffering from '../record-service/ServiceFormNoIncome'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 
 const HubSundayMeeting = () => {

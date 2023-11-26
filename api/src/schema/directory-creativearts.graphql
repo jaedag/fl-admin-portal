@@ -158,6 +158,15 @@ type CreativeArts {
 }
 
 type Ministry {
+  vacationStatus: String!
+    @cypher(
+      statement: """
+      MATCH (this)<-[:HAS_MINISTRY]-(stream:Stream)
+      UNWIND labels(stream) AS status
+      WITH status WHERE status = 'Active' OR status = 'Vacation' OR status = 'Online'
+      RETURN status
+      """
+    )
   members: [Member!]!
     @cypher(
       statement: """
@@ -1022,6 +1031,25 @@ type MinistryAttendanceRecord implements Record
     )
 }
 
+type StageAttendanceRecord implements Record
+  @auth(rules: [{ isAuthenticated: true }]) {
+  id: ID!
+  createdAt: DateTime!
+  created_by: Member
+  serviceDate: TimeGraph @relationship(type: "SERVICE_HELD_ON", direction: OUT)
+  week: Int
+    @cypher(
+      statement: """
+      MATCH (this)-[:SERVICE_HELD_ON]->(date:TimeGraph)
+      RETURN date(date.date).week
+      """
+    )
+  attendance: Int!
+  onStagePictures: [String!]!
+  serviceLog: ServiceLog! @relationship(type: "HAS_SERVICE", direction: IN)
+  noStagePerformanceReason: String
+}
+
 type RehearsalRecord implements Record
   @auth(rules: [{ isAuthenticated: true }]) {
   id: ID!
@@ -1089,6 +1117,19 @@ extend type Mutation {
     treasurerSelfie: String!
     familyPicture: String!
   ): RehearsalRecord!
+
+  RecordMinistryOnStageAttendance(
+    churchId: ID!
+    serviceDate: String!
+    attendance: Int!
+    onStagePictures: [String!]!
+  ): StageAttendanceRecord!
+
+  RecordCancelledOnstagePerformance(
+    churchId: ID!
+    serviceDate: String!
+    noStagePerformanceReason: String!
+  ): StageAttendanceRecord!
 }
 
 ## DELETE OPERATIONS

@@ -27,7 +27,7 @@ type ServiceDetailsProps = {
 }
 
 const ServiceDetails = ({ service, church, loading }: ServiceDetailsProps) => {
-  const { theme, currentUser } = useContext(MemberContext)
+  const { currentUser } = useContext(MemberContext)
   const navigate = useNavigate()
 
   const [ManuallyConfirmOfferingPayment] = useMutation(
@@ -238,7 +238,7 @@ const ServiceDetails = ({ service, church, loading }: ServiceDetailsProps) => {
                 )}
                 <div className="d-grid gap-2">
                   <Button
-                    className={`btn-graphs ${theme}`}
+                    className="btn-graphs"
                     onClick={() => {
                       navigate(`/${church?.__typename.toLowerCase()}/graphs`)
                     }}

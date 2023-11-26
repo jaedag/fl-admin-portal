@@ -10,6 +10,7 @@ import { LazyRouteTypes } from 'global-types'
 import { lazy } from 'react'
 import { downloadReports } from './download-reports/downloadReportsRoutes'
 import { streamServicesRoutes } from './defaulters/stream-services/streamDefaultersRoutes'
+import { onStageRoutes } from './onstage-attendance/onStageRoutes'
 
 const BacentaService = lazy(
   () => import('pages/services/record-service/BacentaService')
@@ -36,20 +37,20 @@ const FellowshipServiceDetails = lazy(
   () => import('pages/services/record-service/FellowshipServiceDetails')
 )
 const HubRehearsalCancelled = lazy(
-  () => import('pages/services/record-service/HubRehearsalCancelled')
+  () => import('pages/services/rehearsals/HubRehearsalCancelled')
 )
 const HubRehearsalService = lazy(
-  () => import('pages/services/record-service/HubRehearsalService')
+  () => import('pages/services/rehearsals/HubRehearsalService')
 )
 const HubSundayMeeting = lazy(
-  () => import('pages/services/record-service/HubSundayMeeting')
+  () => import('pages/services/ministry-meeting/HubSundayMeeting')
 )
 const HubRehearsalServiceDetails = lazy(
-  () => import('pages/services/record-service/HubRehearsalServiceDetails')
+  () => import('pages/services/rehearsals/HubRehearsalServiceDetails')
 )
 
 const HubSundayMeetingDetails = lazy(
-  () => import('pages/services/record-service/HubSundayMeetingDetails')
+  () => import('pages/services/ministry-meeting/HubSundayMeetingDetails')
 )
 const BacentaReport = lazy(() => import('pages/services/graphs/BacentaGraphs'))
 const HubReport = lazy(() => import('pages/services/graphs/HubGraphs'))
@@ -107,7 +108,7 @@ const Fellowship = lazy(() => import('pages/services/Fellowship'))
 const ServicesChurchList = lazy(
   () => import('pages/services/ServicesChurchList')
 )
-const ServicesMenu = lazy(() => import('pages/services/ServicesMenu'))
+const ServicesMenu = lazy(() => import('pages/services/menus/ServicesMenu'))
 const StreamReport = lazy(() => import('pages/services/graphs/StreamGraphs'))
 const CampusReport = lazy(() => import('pages/services/graphs/CampusGraphs'))
 const OversightReport = lazy(
@@ -177,7 +178,8 @@ const DefaultersDashboard = lazy(
 )
 const TrendsMenu = lazy(() => import('./graphs/TrendsMenu'))
 
-const HubFormMenu = lazy(() => import('./HubFormMenu'))
+const HubFormMenu = lazy(() => import('./menus/HubFormMenu'))
+const MinistryMenu = lazy(() => import('./menus/MinistryMenu'))
 const FellowshipBankingSlipSubmission = lazy(
   () => import('pages/services/banking/banking-slip/FellowshipSubmission')
 )
@@ -197,6 +199,7 @@ export const services: LazyRouteTypes[] = [
   ...streamServicesRoutes,
   ...anagkazoRoutes,
   ...banking,
+  ...onStageRoutes,
   {
     path: '/services',
     element: ServicesMenu,
@@ -311,7 +314,13 @@ export const services: LazyRouteTypes[] = [
   {
     path: '/services/hub',
     element: HubFormMenu,
-    roles: ['all'],
+    roles: permitLeaderAdmin('Hub'),
+    placeholder: true,
+  },
+  {
+    path: '/services/ministry',
+    element: MinistryMenu,
+    roles: permitLeaderAdmin('Ministry'),
     placeholder: true,
   },
 ]
