@@ -41,7 +41,7 @@ export const GET_COUNCIL_TRANSACTION_HISTORY = gql`
     councils(where: { id: $councilId }) {
       id
       name
-      transactions(options: { sort: { createdAt: DESC } }) {
+      transactions(options: { sort: { lastModified: DESC } }) {
         id
         createdAt
         lastModified

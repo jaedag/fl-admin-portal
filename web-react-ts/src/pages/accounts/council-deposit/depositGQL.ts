@@ -11,6 +11,7 @@ export const DEPOSIT_INTO_COUNCIL_CURRENT_ACCOUNTS = gql`
     ) {
       id
       createdAt
+      lastModified
       amount
       account
       category
@@ -36,6 +37,7 @@ export const DEPOSIT_INTO_COUNCIL_BUSSING_SOCIETY = gql`
     ) {
       id
       createdAt
+      lastModified
       amount
       account
       category
@@ -49,7 +51,6 @@ export const DEPOSIT_INTO_COUNCIL_BUSSING_SOCIETY = gql`
     }
   }
 `
-
 export const SET_HR_AMOUNT = gql`
   mutation setHrAmount($councilId: ID!, $amount: Float!) {
     SetCouncilHRAmount(councilId: $councilId, amount: $amount) {

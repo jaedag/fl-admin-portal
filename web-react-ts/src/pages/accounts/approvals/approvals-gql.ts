@@ -9,6 +9,7 @@ export const GET_COUNCIL_PENDING_APPROVAL_TRANSACTIONS = gql`
         transactions(where: { status: "pending approval" }) {
           id
           createdAt
+          lastModified
           amount
           account
           category
@@ -31,6 +32,7 @@ export const APPROVE_EXPENSE = gql`
     ApproveExpense(transactionId: $transactionId, charge: $charge) {
       id
       createdAt
+      lastModified
       amount
       account
       category
@@ -51,6 +53,7 @@ export const DECLINE_EXPENSE = gql`
     DeclineExpense(transactionId: $transactionId) {
       id
       createdAt
+      lastModified
       amount
       category
       description

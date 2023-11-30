@@ -91,7 +91,7 @@ const CampusTransactionHistory = () => {
         {campus?.transactions
           .slice(0, 50)
           .map((transaction: AccountTransaction) => (
-            <>
+            <div key={transaction.id}>
               <Card
                 className="mb-1"
                 onClick={() => {
@@ -139,7 +139,7 @@ const CampusTransactionHistory = () => {
                   </Row>
                 </Card.Body>
               </Card>
-            </>
+            </div>
           ))}
       </Container>
     </ApolloWrapper>

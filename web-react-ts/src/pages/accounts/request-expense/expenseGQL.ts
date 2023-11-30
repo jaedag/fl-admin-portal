@@ -17,6 +17,7 @@ export const EXPENSE_REQUEST = gql`
     ) {
       id
       createdAt
+      lastModified
       amount
       account
       category
@@ -44,7 +45,8 @@ export const DEBIT_BUSSING_SOCIETY = gql`
       expenseCategory: $expenseCategory
     ) {
       id
-      timestamp
+      createdAt
+      lastModified
       amount
       account
       category

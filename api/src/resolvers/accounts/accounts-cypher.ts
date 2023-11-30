@@ -33,7 +33,8 @@ export const creditBussingSocietyFromWeekday = `
    transaction.account = 'Bussing Society',
    transaction.category = 'Deposit',
    transaction.status = 'success',
-   transaction.createdAt = datetime()
+   transaction.createdAt = datetime(),
+   transaction.lastModified = datetime()
    // transaction.momoNumber = $momoNumber,
    // transaction.momoName = $momoName,
    // transaction.invoiceUrl = $invoiceUrl
@@ -68,6 +69,7 @@ CREATE (transaction:AccountTransaction {id: randomUUID()})
   transaction.account = 'Bussing Society',
   transaction.status = 'success',
   transaction.createdAt = datetime(),
+  transaction.lastModified = datetime(),
   council.bussingAmount = $expenseAmount
 
 SET council.bussingSocietyBalance = council.bussingSocietyBalance - $expenseAmount
@@ -90,6 +92,7 @@ CREATE (transaction:AccountTransaction {id: randomUUID()})
   transaction.account = 'Weekday Account',
   transaction.category = 'Deposit',
   transaction.createdAt = datetime(),
+  transaction.lastModified = datetime(),
   transaction.status = 'success'
 
 MERGE (council)-[:HAS_TRANSACTION]->(transaction)
@@ -111,6 +114,7 @@ export const depositIntoCoucilBussingSociety = `
         transaction.category = $transactionType,
         transaction.account = 'Bussing Society',
         transaction.createdAt = datetime(),
+        transaction.lastModified = datetime(),
         transaction.status = 'success'
 
       MERGE (council)-[:HAS_TRANSACTION]->(transaction)
