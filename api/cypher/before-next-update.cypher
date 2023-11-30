@@ -1,5 +1,13 @@
 
-MATCH (hub:Hub)<-[:HAS]-(hubCouncil:HubCouncil)<-[:HAS_MINISTRY]-(council:Council)
-MATCH (council)-[:HAS]->(constituency)
-MERGE (constituency)-[:HAS_MINISTRY]->(hub)
-RETURN hub.name, constituency.name
+
+MATCH (trans:AccountTransaction)
+SET trans.createdAt = trans.timestamp,
+trans.lastModified = trans.timestamp
+// REMOVE trans.timestamp
+RETURN COUNT(trans);
+
+
+MATCH (trans:AccountTransaction)
+SET trans.createdAt = datetime()
+SET trans.lastModified = datetime()
+RETURN trans.createdAt

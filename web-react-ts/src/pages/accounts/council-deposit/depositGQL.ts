@@ -10,7 +10,7 @@ export const DEPOSIT_INTO_COUNCIL_CURRENT_ACCOUNTS = gql`
       weekdayBalanceDepositAmount: $weekdayBalanceDepositAmount
     ) {
       id
-      timestamp
+      createdAt
       amount
       account
       category
@@ -35,7 +35,7 @@ export const DEPOSIT_INTO_COUNCIL_BUSSING_SOCIETY = gql`
       bussingSocietyBalance: $bussingSocietyBalance
     ) {
       id
-      timestamp
+      createdAt
       amount
       account
       category
@@ -49,6 +49,7 @@ export const DEPOSIT_INTO_COUNCIL_BUSSING_SOCIETY = gql`
     }
   }
 `
+
 export const SET_HR_AMOUNT = gql`
   mutation setHrAmount($councilId: ID!, $amount: Float!) {
     SetCouncilHRAmount(councilId: $councilId, amount: $amount) {

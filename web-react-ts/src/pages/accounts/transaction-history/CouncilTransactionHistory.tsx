@@ -24,8 +24,8 @@ const CouncilTransactionHistory = () => {
   const council = data?.councils[0]
 
   const csvHeaders = [
-    { label: 'Date', key: 'date' },
-    { label: 'Type', key: 'type' },
+    { label: 'Created At', key: 'createdAt' },
+    { label: 'Last Modified', key: 'lastModified' },
     { label: 'Account', key: 'account' },
     { label: 'Status', key: 'success' },
     { label: 'Credit', key: 'credit' },
@@ -36,7 +36,8 @@ const CouncilTransactionHistory = () => {
   ]
 
   const csvData = council?.transactions.map((transaction: any) => ({
-    date: new Date(transaction.timestamp).toISOString(),
+    createdAt: new Date(transaction.createdAt).toISOString(),
+    lastModified: new Date(transaction.lastModified).toISOString(),
     type: transaction.category,
     account: transaction.account,
     success: transaction.status,
@@ -91,7 +92,7 @@ const CouncilTransactionHistory = () => {
         {council?.transactions
           .slice(0, 50)
           .map((transaction: AccountTransaction) => (
-            <>
+            <div key={transaction.id}>
               <Card
                 className="mb-1"
                 onClick={() => {
@@ -102,7 +103,7 @@ const CouncilTransactionHistory = () => {
                 <Card.Body className="py-1">
                   <Row className="row-cols-4">
                     <Col xs={3}>
-                      {new Date(transaction.timestamp).toLocaleDateString(
+                      {new Date(transaction.lastModified).toLocaleDateString(
                         'en-US',
                         { day: 'numeric', month: 'short' }
                       )}
@@ -138,7 +139,7 @@ const CouncilTransactionHistory = () => {
                   </Row>
                 </Card.Body>
               </Card>
-            </>
+            </div>
           ))}
       </Container>
     </ApolloWrapper>

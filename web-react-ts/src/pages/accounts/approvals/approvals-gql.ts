@@ -8,7 +8,7 @@ export const GET_COUNCIL_PENDING_APPROVAL_TRANSACTIONS = gql`
         name
         transactions(where: { status: "pending approval" }) {
           id
-          timestamp
+          createdAt
           amount
           account
           category
@@ -30,7 +30,7 @@ export const APPROVE_EXPENSE = gql`
   mutation ApproveExpense($transactionId: ID!, $charge: Float!) {
     ApproveExpense(transactionId: $transactionId, charge: $charge) {
       id
-      timestamp
+      createdAt
       amount
       account
       category
@@ -50,7 +50,7 @@ export const DECLINE_EXPENSE = gql`
   mutation DeclineExpense($transactionId: ID!) {
     DeclineExpense(transactionId: $transactionId) {
       id
-      timestamp
+      createdAt
       amount
       category
       description

@@ -24,7 +24,8 @@ const CampusTransactionHistory = () => {
   const campus = data?.campuses[0]
 
   const csvHeaders = [
-    { label: 'Date', key: 'date' },
+    { label: 'Created At', key: 'createdAt' },
+    { label: 'Last Modified', key: 'lastModified' },
     { label: 'Council', key: 'council' },
     { label: 'Leader', key: 'leader' },
     { label: 'Type', key: 'type' },
@@ -38,7 +39,8 @@ const CampusTransactionHistory = () => {
   ]
 
   const csvData = campus?.transactions.map((transaction: any) => ({
-    date: new Date(transaction.timestamp).toISOString(),
+    createdAt: new Date(transaction.createdAt).toISOString(),
+    lastModified: new Date(transaction.lastModified).toISOString(),
     council: transaction.council.name,
     leader: transaction.council.leader.fullName,
     type: transaction.category,
@@ -75,7 +77,7 @@ const CampusTransactionHistory = () => {
         <Card className="mb-1 fw-bold">
           <Card.Header>
             <Row>
-              <Col xs={2}>Date</Col>
+              <Col xs={2}>Last Modified</Col>
               <Col className="text-truncate">Council</Col>
               <Col>Category</Col>
               <Col xs={3}>Amount</Col>
@@ -100,11 +102,12 @@ const CampusTransactionHistory = () => {
                 <Card.Body className="py-1">
                   <Row className="row-cols-4">
                     <Col xs={2}>
-                      {new Date(transaction.timestamp).toLocaleDateString(
+                      {new Date(transaction.lastModified).toLocaleDateString(
                         'en-US',
                         { day: 'numeric', month: 'short' }
                       )}
                     </Col>
+
                     <Col className="text-truncate">
                       {transaction.council.name}
                     </Col>

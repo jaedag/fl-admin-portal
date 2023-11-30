@@ -3,7 +3,8 @@ import { Council } from 'global-types'
 
 export interface AccountTransaction {
   id: string
-  timestamp: string
+  createdAt: string
+  lastModified: string
   council: Council
   description: string
   amount: number

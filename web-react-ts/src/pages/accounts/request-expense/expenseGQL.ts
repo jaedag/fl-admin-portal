@@ -16,7 +16,7 @@ export const EXPENSE_REQUEST = gql`
       accountType: $accountType
     ) {
       id
-      timestamp
+      createdAt
       amount
       account
       category

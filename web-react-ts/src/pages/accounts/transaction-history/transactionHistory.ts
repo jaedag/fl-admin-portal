@@ -17,7 +17,8 @@ export const GET_CAMPUS_TRANSACTION_HISTORY = gql`
             fullName
           }
         }
-        timestamp
+        createdAt
+        lastModified
         amount
         account
         charge
@@ -40,9 +41,10 @@ export const GET_COUNCIL_TRANSACTION_HISTORY = gql`
     councils(where: { id: $councilId }) {
       id
       name
-      transactions(options: { sort: { timestamp: DESC } }) {
+      transactions(options: { sort: { createdAt: DESC } }) {
         id
-        timestamp
+        createdAt
+        lastModified
         amount
         account
         charge
@@ -64,7 +66,8 @@ export const GET_TRANSACTION_DETAILS = gql`
   query getTransactionDetails($id: ID!) {
     accountTransactions(where: { id: $id }) {
       id
-      timestamp
+      createdAt
+      lastModified
       amount
       account
       category

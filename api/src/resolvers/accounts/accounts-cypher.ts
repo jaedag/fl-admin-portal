@@ -33,7 +33,7 @@ export const creditBussingSocietyFromWeekday = `
    transaction.account = 'Bussing Society',
    transaction.category = 'Deposit',
    transaction.status = 'success',
-   transaction.timestamp = datetime()
+   transaction.createdAt = datetime()
    // transaction.momoNumber = $momoNumber,
    // transaction.momoName = $momoName,
    // transaction.invoiceUrl = $invoiceUrl
@@ -50,6 +50,7 @@ MATCH (transaction)-[:LOGGED_BY]->(depositor:Member)
   SET council.weekdayBalance = council.weekdayBalance - (-1 * transaction.amount) - toFloat($charge)
   SET transaction.charge = $charge * -1
   SET transaction.status = 'success'
+  SET transaction.lastModified = datetime()
 
 RETURN transaction, depositor
 `
@@ -66,7 +67,7 @@ CREATE (transaction:AccountTransaction {id: randomUUID()})
   transaction.category = $expenseCategory,
   transaction.account = 'Bussing Society',
   transaction.status = 'success',
-  transaction.timestamp = datetime(),
+  transaction.createdAt = datetime(),
   council.bussingAmount = $expenseAmount
 
 SET council.bussingSocietyBalance = council.bussingSocietyBalance - $expenseAmount
@@ -88,7 +89,7 @@ CREATE (transaction:AccountTransaction {id: randomUUID()})
   transaction.amount = $weekdayBalanceDepositAmount,
   transaction.account = 'Weekday Account',
   transaction.category = 'Deposit',
-  transaction.timestamp = datetime(),
+  transaction.createdAt = datetime(),
   transaction.status = 'success'
 
 MERGE (council)-[:HAS_TRANSACTION]->(transaction)
@@ -109,7 +110,7 @@ export const depositIntoCoucilBussingSociety = `
         transaction.amount = $bussingSocietyDepositAmount,
         transaction.category = $transactionType,
         transaction.account = 'Bussing Society',
-        transaction.timestamp = datetime(),
+        transaction.createdAt = datetime(),
         transaction.status = 'success'
 
       MERGE (council)-[:HAS_TRANSACTION]->(transaction)

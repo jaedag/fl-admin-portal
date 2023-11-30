@@ -27,9 +27,15 @@ const TransactionCard = ({
     >
       <Card.Body>
         <Row className="mb-3 d-flex align-items-center">
-          <Col className="text-secondary col-4">Date</Col>
-          <Col>{getHumanReadableDateTime(transaction?.timestamp)}</Col>
+          <Col className="text-secondary col-4">Created At</Col>
+          <Col>{getHumanReadableDateTime(transaction?.createdAt)}</Col>
         </Row>
+        {transaction?.createdAt !== transaction?.lastModified && (
+          <Row className="mb-3 d-flex align-items-center">
+            <Col className="text-secondary col-4">Last Modified</Col>
+            <Col>{getHumanReadableDateTime(transaction?.lastModified)}</Col>
+          </Row>
+        )}
         <Row className="mb-3 d-flex align-items-center">
           <Col className="text-secondary col-4">Created By</Col>
           <Col>{transaction?.loggedBy.fullName}</Col>
