@@ -1,6 +1,6 @@
 {
   "name": "admin-portal-react-frontend",
-  "version": "7.12.8",
+  "version": "7.14.11",
   "description": "React Client for FL Admin Portal",
   "private": true,
   "dependencies": {
