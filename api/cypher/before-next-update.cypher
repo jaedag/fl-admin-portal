@@ -8,6 +8,6 @@ RETURN COUNT(trans);
 
 
 MATCH (trans:AccountTransaction)
-SET trans.createdAt = datetime()
-SET trans.lastModified = datetime()
+SET trans.createdAt = trans.timestamp 
+SET trans.lastModified = trans.timestamp 
 RETURN trans.createdAt
