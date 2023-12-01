@@ -634,20 +634,9 @@ extend type Mutation {
       RETURN member
       """
     )
-  UpdateMemberFellowship(memberId: ID!, fellowshipId: ID!): Member
-    @cypher(
-      statement: """
-      MATCH (member:Active:Member {id: $memberId})
-      MATCH (fellowship:Fellowship {id: $fellowshipId})
+  UpdateMemberFellowship(memberId: ID!, fellowshipId: ID!): Member!
 
-      OPTIONAL MATCH (member)-[previous:BELONGS_TO]-> (:Fellowship)
-      DELETE previous
-      MERGE (member)-[:BELONGS_TO]-> (fellowship)
-      RETURN member
-      """
-    )
-
-  UpdateMemberBasonta(memberId: ID!, basontaId: ID!): Member
+  UpdateMemberBasonta(memberId: ID!, basontaId: ID!): Member!
     @cypher(
       statement: """
       MATCH (member:Active:Member {id: $memberId})

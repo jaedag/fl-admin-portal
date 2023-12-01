@@ -3,6 +3,21 @@ export const matchMemberFromAuthId = `
  RETURN member
 `
 
+export const matchMemberAndIMCLStatus = `
+MATCH (member:Member {id: $id})
+RETURN member
+`
+export const updateMemberFellowship = `
+  MATCH (member:Active:Member {id: $id}) 
+  MATCH (fellowship:Fellowship {id: $fellowshipId})
+
+  OPTIONAL MATCH (member)-[previous:BELONGS_TO]-> (:Fellowship)
+  DELETE previous
+
+  MERGE (member)-[:BELONGS_TO]-> (fellowship)
+  RETURN member
+  `
+
 export const matchMemberQuery = `
 
 WITH apoc.cypher.runFirstColumn(

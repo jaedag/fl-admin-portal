@@ -21,6 +21,8 @@ import {
   createMember,
   activateInactiveMember,
   removeDuplicateMember,
+  matchMemberAndIMCLStatus,
+  updateMemberFellowship,
 } from '../cypher/resolver-cypher'
 import { getAuthToken } from '../authenticate'
 
@@ -123,6 +125,43 @@ const directoryMutation = {
     await session.close()
 
     return member
+  },
+  UpdateMemberFellowship: async (
+    object: Member,
+    args: { memberId: string; fellowshipId: string },
+    context: Context
+  ) => {
+    isAuth(
+      [...permitMe('Fellowship'), ...permitMe('Hub'), ...permitSheepSeeker()],
+      context.auth.roles
+    )
+
+    const session = context.executionContext.session()
+
+    const memberRes = await session.executeRead((tx) =>
+      tx.run(matchMemberAndIMCLStatus, {
+        id: args.memberId,
+      })
+    )
+
+    const member = memberRes.records[0]?.get('member').properties
+
+    if (!member?.imclChecked) {
+      throw new Error(
+        'You cannot move this member without filling IMCL details for them'
+      )
+    }
+
+    const moveRes = await session.executeWrite((tx) =>
+      tx.run(updateMemberFellowship, {
+        id: args.memberId,
+        fellowshipId: args.fellowshipId,
+      })
+    )
+
+    const updatedMember = moveRes.records[0]?.get('member').properties
+
+    return updatedMember
   },
   UpdateMemberEmail: async (
     object: Member,
