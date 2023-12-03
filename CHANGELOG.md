@@ -1,3 +1,16 @@
+#### 7.14.12 (2023-12-03)
+
+##### Chores
+
+*  update trans.createdAt and trans.lastModified to use trans.timestamp ([9c73ea9d](https://github.com/firstlovecenter/fl-admin-portal/commit/9c73ea9d3ab04c3f1734804b400631264a924551))
+*  update package versions ([b7b11421](https://github.com/firstlovecenter/fl-admin-portal/commit/b7b11421fcfb2c4ae06db1efeca54fd03dcd616b))
+
+##### Bug Fixes
+
+*  typo and update transaction description and type ([044b69ab](https://github.com/firstlovecenter/fl-admin-portal/commit/044b69ab27ea2d70645bcd622f19a72112363b1a))
+*  add new code of the day entries ([2fe9ae37](https://github.com/firstlovecenter/fl-admin-portal/commit/2fe9ae377602e3f7c8cd14d1cdf5628005043196))
+*  fix IMCL check in banking-cypher and add UpdateMemberFellowship mutation ([04bd2ebf](https://github.com/firstlovecenter/fl-admin-portal/commit/04bd2ebf0b79f7b0c7342d3b7de5e4db55c6c5c1))
+
 #### 7.14.11 (2023-11-30)
 
 ##### New Features
