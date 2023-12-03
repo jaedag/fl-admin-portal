@@ -94,9 +94,9 @@ export const accountsMutations = {
       let transactionSMS = `an amount of ${depositAmount} GHS has been deposited into your bussing society`
 
       if (depositAmount < 0) {
-        transactionDescription = ` marked a debt of ${depositAmount} on your bussing society`
-        transactionType = 'Debt'
-        transactionSMS = `a debt of ${depositAmount} GHS has been marked on your bussing society`
+        transactionDescription = ` marked a deduction of ${depositAmount} on your bussing society`
+        transactionType = 'Debit'
+        transactionSMS = `a debit of ${depositAmount} GHS has been marked on your bussing society`
       }
 
       const message = `Dear ${leader.firstName}, ${transactionSMS} for ${council.name}. Your current bussing society balance is ${args.bussingSocietyBalance} GHS`
