@@ -24,6 +24,7 @@ import {
   setRecordTransactionReferenceWithOTP,
   submitBankingSlip,
   checkIfIMCLNotFilled,
+  manuallyConfirmOfferingPayment,
 } from './banking-cypher'
 import {
   DebitDataBody,
@@ -499,6 +500,34 @@ const bankingMutation = {
         .run(submitBankingSlip, { ...args, auth: context.auth })
         .catch((error: any) =>
           throwToSentry('There was an error submitting banking slip', error)
+        )
+    )
+
+    return submissionResponse.record.properties
+  },
+
+  ManuallyConfirmOfferingPayment: async (
+    object: any,
+    args: { serviceRecordId: string; bankingSlip: string },
+    context: Context
+  ) => {
+    isAuth(permitAdmin('Campus'), context.auth.roles)
+    const session = context.executionContext.session()
+
+    await checkIfLastServiceBanked(args.serviceRecordId, context).catch(
+      (error: any) => {
+        throwToSentry(
+          'There was an error checking if last service banked',
+          error
+        )
+      }
+    )
+
+    const submissionResponse = rearrangeCypherObject(
+      await session
+        .run(manuallyConfirmOfferingPayment, { ...args, auth: context.auth })
+        .catch((error: any) =>
+          throwToSentry('There was an error confirming offering payment', error)
         )
     )
 
