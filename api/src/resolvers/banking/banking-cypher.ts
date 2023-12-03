@@ -135,3 +135,13 @@ MATCH (record:ServiceRecord {id: $serviceRecordId})
 WHERE record.transactionStatus = 'pending' OR record.transactionStatus = 'send OTP'
 RETURN record
 `
+
+export const manuallyConfirmOfferingPayment = `
+MATCH (record:ServiceRecord {id: $serviceRecordId})
+SET service.tellerConfirmationTime = datetime()
+
+WITH service
+MATCH (author:Member {auth_id: $auth.jwt.sub})
+MERGE (service)<-[:CONFIRMED_BANKING_FOR]-(author)
+RETURN service
+`
