@@ -53,10 +53,6 @@ export const checkServantHasCurrentHistory = async (
   )
 
   const relationExists = relationshipCheck.records[0]?.get('exists')
-  console.log(
-    '🚀 ~ file: service-resolvers.ts:56 ~ relationExists:',
-    relationExists
-  )
 
   if (!relationExists) {
     // Checks if the church has a current history record otherwise creates it
@@ -288,10 +284,6 @@ const serviceMutation = {
     await session.close()
 
     const serviceDetails = rearrangeCypherObject(cypherResponse)
-    console.log(
-      '🚀 ~ file: service-resolvers.ts:270 ~ serviceDetails:',
-      serviceDetails
-    )
 
     return serviceDetails.serviceRecord.properties
   },

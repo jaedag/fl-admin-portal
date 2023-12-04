@@ -142,3 +142,18 @@ MATCH (trans:AccountTransaction )
 WHERE trans.weekdayBalance IS NULL
 SET trans.weekdayBalance = 0.0
 RETURN trans;
+
+
+MATCH (agg:AggregateBussingRecord)
+UNWIND agg.componentBussingIds AS components
+WITH agg, components
+MATCH (component:BussingRecord {id: components})
+
+WITH agg, component, SUM(component.numberOfSprinters) AS numberOfSprinters, SUM(component.numberOfUrvans) AS numberOfUrvans, SUM(component.numberOfCars) AS numberOfCars
+
+SET agg.numberOfSprinters = numberOfSprinters, 
+agg.numberOfUrvans = numberOfUrvans,
+agg.numberOfCars = numberOfCars
+
+RETURN agg.attendance, SUM(component.numberOfSprinters)
+

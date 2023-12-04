@@ -127,9 +127,7 @@ const FormMobilisationSubmission = () => {
                   />
                 </Col>
                 <Col>
-                  <div className="d-grid gap-2">
-                    <SubmitButton formik={formik} />
-                  </div>
+                  <SubmitButton formik={formik} />
                 </Col>
               </Row>
             </Form>

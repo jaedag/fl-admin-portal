@@ -26,6 +26,7 @@ import Input from 'components/formik/Input'
 import ImageUpload from 'components/formik/ImageUpload'
 import { MemberContext } from 'contexts/MemberContext'
 import SearchMember from 'components/formik/SearchMember'
+import Textarea from 'components/formik/Textarea'
 
 type ServiceFormProps = {
   church: Church
@@ -186,9 +187,10 @@ const ServiceForm = ({
                       name="cediIncome"
                       label={`Income (in ${currentUser.currency})*`}
                     />
-                    <Input
+                    <Textarea
                       name="foreignCurrency"
                       label="Foreign Currency (if any) (Optional)"
+                      rows={2}
                     />
                     <Input name="numberOfTithers" label="Number of Tithers*" />
                     <small className="label">Treasurers (minimum of 2)</small>
