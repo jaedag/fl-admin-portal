@@ -29,21 +29,27 @@ RETURN DISTINCT campus.name, campus.currency AS currency, campus.conversionRateT
 `
 
 export const absorbAllTransactions = `
-MATCH (serviceRecord:ServiceRecord {id: $serviceRecordId})<-[:HAS_SERVICE]-(:ServiceLog)<-[:CURRENT_HISTORY]-(church)
+MATCH (serviceRecord:ServiceRecord {id: $serviceRecordId})<-[:HAS_SERVICE]-(log:ServiceLog)<-[:CURRENT_HISTORY]-(church)
 WHERE church:Fellowship OR church:Constituency OR church:Council OR church:Stream OR church:Campus
 MATCH (church)-[:HAS*0..4]->(fellowships:Fellowship)<-[r:GIVEN_AT]-(transaction:Transaction)
 DELETE r
 
-WITH DISTINCT serviceRecord, transaction
+WITH DISTINCT serviceRecord, transaction, log
 MERGE (transaction)-[:GIVEN_AT]->(serviceRecord)
 
-WITH DISTINCT serviceRecord, transaction WHERE transaction.transactionStatus = 'success'
+WITH DISTINCT log, serviceRecord, transaction WHERE transaction.transactionStatus = 'success'
 
 WITH serviceRecord, SUM(transaction.amount) AS amount
      SET serviceRecord.onlineGiving = amount,
      serviceRecord.cash = serviceRecord.income,
      serviceRecord.income = amount + serviceRecord.income,
      serviceRecord.dollarIncome = round(toFloat(serviceRecord.income / $conversionRateToDollar), 2)
+
+WITH serviceRecord, log
+MATCH (aggregate:AggregateServiceRecord {id: date().week + '-' + date().year + '-' + log.id})
+SET aggregate.onlineGiving = aggregate.onlineGiving + serviceRecord.onlineGiving,
+    aggregate.income = aggregate.income + serviceRecord.income,
+    aggregate.dollarIncome = aggregate.dollarIncome + serviceRecord.dollarIncome
 
 RETURN serviceRecord
 `
