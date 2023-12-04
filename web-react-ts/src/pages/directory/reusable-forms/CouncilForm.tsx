@@ -162,7 +162,7 @@ const CouncilForm = ({
                     </div>
 
                     <div className="d-grid gap-2 mt-3">
-                      {initialValues.hubCouncils?.length && (
+                      {!!initialValues.hubCouncils?.length && (
                         <p className="fw-bold fs-5">Hub Councils</p>
                       )}
 

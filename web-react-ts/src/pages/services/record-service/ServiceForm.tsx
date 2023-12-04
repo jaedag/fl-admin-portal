@@ -70,12 +70,19 @@ const ServiceForm = ({
     familyPicture: '',
   }
 
-  const today = new Date()
+  const todayStartOfDay = new Date()
+  const lastWeek = new Date()
+  lastWeek.setDate(lastWeek.getDate() - 7)
 
   const validationSchema = Yup.object({
     serviceDate: Yup.date()
       .max(new Date(), 'Service could not possibly have happened after today')
-      .min(getMondayThisWeek(today), 'You can only fill forms for this week')
+      .min(
+        currentUser.roles.includes('fishers')
+          ? lastWeek
+          : getMondayThisWeek(todayStartOfDay),
+        'You can only fill forms for this week'
+      )
       .required('Date is a required field'),
     cediIncome: Yup.number()
       .typeError('Please enter a valid number')
