@@ -25,6 +25,10 @@ export const GET_CAMPUS_TRANSACTION_HISTORY = gql`
         category
         description
         status
+
+        bussingSocietyBalance
+        weekdayBalance
+
         loggedBy {
           id
           firstName
@@ -51,6 +55,10 @@ export const GET_COUNCIL_TRANSACTION_HISTORY = gql`
         category
         description
         status
+
+        bussingSocietyBalance
+        weekdayBalance
+
         loggedBy {
           id
           firstName

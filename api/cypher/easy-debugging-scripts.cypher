@@ -138,6 +138,7 @@ DETACH DELETE r
 MATCH (agg:AggregateServiceRecord) WhERE agg.income IS NULL
 DETACH DELETE agg;
 
-MATCH (trans:AccountTransaction {id: "7b5dd5e7-b293-4fa0-96de-b6cc76d8b6c4"})
-SET trans.createdAt = datetime("2023-10-30T16:48:58.943Z")
+MATCH (trans:AccountTransaction )
+WHERE trans.weekdayBalance IS NULL
+SET trans.weekdayBalance = 0.0
 RETURN trans;

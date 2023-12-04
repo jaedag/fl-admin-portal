@@ -31,6 +31,8 @@ const CouncilTransactionHistory = () => {
     { label: 'Credit', key: 'credit' },
     { label: 'Debit', key: 'debit' },
     { label: 'Charge', key: 'charge' },
+    { label: 'Weekday Balance', key: 'weekdayBalance' },
+    { label: 'Bussing Society Balance', key: 'bussingSocietyBalance' },
     { label: 'Recorded By', key: 'depositedBy' },
     { label: 'Description', key: 'description' },
   ]
@@ -44,6 +46,8 @@ const CouncilTransactionHistory = () => {
     credit: transaction.category === 'Deposit' ? transaction.amount : null,
     debit: transaction.category !== 'Deposit' ? transaction.amount : null,
     charge: transaction.charge,
+    weekdayBalance: transaction.weekdayBalance,
+    bussingSocietyBalance: transaction.bussingSocietyBalance,
     depositedBy: transaction.loggedBy?.fullName,
     description: transaction.description,
   }))
