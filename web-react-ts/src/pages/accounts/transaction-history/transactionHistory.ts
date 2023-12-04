@@ -68,6 +68,8 @@ export const GET_TRANSACTION_DETAILS = gql`
       id
       createdAt
       lastModified
+      bussingSocietyBalance
+      weekdayBalance
       amount
       account
       category

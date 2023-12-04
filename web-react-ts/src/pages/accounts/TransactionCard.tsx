@@ -92,6 +92,21 @@ const TransactionCard = ({
             </Badge>
           </Col>
         </Row>
+        {transaction?.weekdayBalance && transaction?.bussingSocietyBalance && (
+          <hr />
+        )}
+        {!!transaction?.weekdayBalance && (
+          <Row className="mb-3 d-flex align-items-center">
+            <Col className="text-secondary col-4">Weekday Balance</Col>
+            <Col>{transaction?.weekdayBalance}</Col>
+          </Row>
+        )}
+        {!!transaction?.bussingSocietyBalance && (
+          <Row className="mb-3 d-flex align-items-center">
+            <Col className="text-secondary col-4">Bussing Society Balance</Col>
+            <Col>{transaction?.bussingSocietyBalance}</Col>
+          </Row>
+        )}
       </Card.Body>
     </Card>
   )

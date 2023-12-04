@@ -10,4 +10,10 @@ RETURN COUNT(trans);
 MATCH (trans:AccountTransaction)
 SET trans.createdAt = trans.timestamp 
 SET trans.lastModified = trans.timestamp 
-RETURN trans.createdAt
+RETURN trans.createdAt;
+
+MATCH (trans:AccountTransaction)<-[:HAS_TRANSACTION]-(council:Council)
+SET trans.bussingSocietyBalance = council.bussingSocietyBalance,
+trans.weekdayBalance = council.weekdayBalance
+
+RETURN COUNT(trans)

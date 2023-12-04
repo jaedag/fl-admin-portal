@@ -15,6 +15,9 @@ type AccountTransaction {
 
   council: Council! @relationship(type: "HAS_TRANSACTION", direction: IN)
   loggedBy: Member! @relationship(type: "LOGGED_BY", direction: OUT)
+
+  bussingSocietyBalance: Float!
+  weekdayBalance: Float!
 }
 
 extend type Campus {
@@ -107,7 +110,9 @@ extend type Mutation {
         transaction.category = $expenseCategory,
         transaction.status = 'pending approval',
         transaction.createdAt = datetime(),
-        transaction.lastModified = datetime()
+        transaction.lastModified = datetime(),
+        transaction.bussingSocietyBalance = council.bussingSocietyBalance,
+        transaction.weekdayBalance = council.weekdayBalance
         // transaction.momoNumber = $momoNumber,
         // transaction.momoName = $momoName,
         // transaction.invoiceUrl = $invoiceUrl
