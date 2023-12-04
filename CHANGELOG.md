@@ -1,3 +1,10 @@
+### 7.15.0 (2023-12-04)
+
+##### New Features
+
+*  correct transaction history when transferring from weekday to bussing ([95e3da23](https://github.com/firstlovecenter/fl-admin-portal/commit/95e3da23a294811a8c37b4a6da9f964f0c942bf8))
+*  implement account balances on each transaction ([d532262c](https://github.com/firstlovecenter/fl-admin-portal/commit/d532262c3ac3e77349549a6461fddea720b329b6))
+
 #### 7.14.12 (2023-12-03)
 
 ##### Chores
