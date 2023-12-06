@@ -39,7 +39,7 @@ MERGE (transaction)-[:GIVEN_AT]->(serviceRecord)
 
 WITH DISTINCT log, serviceRecord, transaction WHERE transaction.transactionStatus = 'success'
 
-WITH serviceRecord, SUM(transaction.amount) AS amount
+WITH serviceRecord, log, SUM(transaction.amount) AS amount
      SET serviceRecord.onlineGiving = amount,
      serviceRecord.cash = serviceRecord.income,
      serviceRecord.income = amount + serviceRecord.income,
