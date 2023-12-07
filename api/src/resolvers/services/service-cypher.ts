@@ -30,7 +30,7 @@ RETURN DISTINCT campus.name, campus.currency AS currency, campus.conversionRateT
 
 export const absorbAllTransactions = `
 MATCH (serviceRecord:ServiceRecord {id: $serviceRecordId})<-[:HAS_SERVICE]-(log:ServiceLog)<-[:CURRENT_HISTORY]-(church)
-WHERE church:Fellowship OR church:Constituency OR church:Council OR church:Stream OR church:Campus
+WHERE church:Fellowship OR church:Constituency OR church:Council // OR church:Stream OR church:Campus
 MATCH (church)-[:HAS*0..4]->(fellowships:Fellowship)<-[r:GIVEN_AT]-(transaction:Transaction)
 DELETE r
 
