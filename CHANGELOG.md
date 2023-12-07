@@ -1,3 +1,25 @@
+#### 7.15.2 (2023-12-07)
+
+##### Documentation Changes
+
+*  add completed year to README ([8164f464](https://github.com/firstlovecenter/fl-admin-portal/commit/8164f4640525752ab379c5d28e0966d7a643a453))
+
+##### New Features
+
+*  add IMCL checking and attendance recording logic ([6aab6585](https://github.com/firstlovecenter/fl-admin-portal/commit/6aab65853815774154d54c3a23929d4d38489ee7))
+*  implement number of vehicles in bussing aggregate graphs ([0a7cef5d](https://github.com/firstlovecenter/fl-admin-portal/commit/0a7cef5de8b1e05a425af9c5299ee76d8ddc428e))
+
+##### Bug Fixes
+
+*  stream admins should delete members ([0389ac7d](https://github.com/firstlovecenter/fl-admin-portal/commit/0389ac7d5134704816d0c4ec1da57c2d6b2237f5))
+*  exclude stream services when absorbing transaction ([763b71ff](https://github.com/firstlovecenter/fl-admin-portal/commit/763b71ff245f6423c0e9ad4304e7362c4d2c85cf))
+*  fix clickCard function calls in ServiceForm ([19fee919](https://github.com/firstlovecenter/fl-admin-portal/commit/19fee9193a67dbb42b735c93021b5a9bfc03be93))
+*  fix IMCL check condition in directory mutation ([8da2def0](https://github.com/firstlovecenter/fl-admin-portal/commit/8da2def05d084b54fa75f36e0416959b25ff38d4))
+
+##### Refactors
+
+*  service-cypher.ts to absorb all transactions and update aggregate records ([df6fe3c8](https://github.com/firstlovecenter/fl-admin-portal/commit/df6fe3c897ad6dd92a49fb07c5fd6b272b600d63))
+
 #### 7.15.1 (2023-12-04)
 
 ##### New Features
