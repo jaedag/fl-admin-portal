@@ -137,10 +137,10 @@ const ServiceForm = ({
         })
 
         if (recordType === 'RehearsalRecord') {
-          clickCard(res.data.RecordHubRehearsalService)
+          clickCard(res.data?.RecordHubRehearsalService)
           navigate(`/hub/service-details`)
         } else {
-          clickCard(res.data.RecordService)
+          clickCard(res.data?.RecordService)
           navigate(`/${churchType.toLowerCase()}/service-details`)
         }
       } catch (error) {
