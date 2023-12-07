@@ -237,7 +237,7 @@ const MemberForm = ({
                               Add Title
                             </Button>
                           </RoleView>
-                          <RoleView roles={['adminCampus']}>
+                          <RoleView roles={['adminStream']}>
                             <Button
                               onClick={() => togglePopup()}
                               variant="danger"
