@@ -46,8 +46,9 @@ const CouncilTransactionHistory = () => {
     credit: transaction.category === 'Deposit' ? transaction.amount : null,
     debit: transaction.category !== 'Deposit' ? transaction.amount : null,
     charge: transaction.charge,
-    weekdayBalance: transaction.weekdayBalance,
-    bussingSocietyBalance: transaction.bussingSocietyBalance,
+    weekdayBalance: transaction.weekdayBalance.toLocaleString('en-US'),
+    bussingSocietyBalance:
+      transaction.bussingSocietyBalance.toLocaleString('en-US'),
     depositedBy: transaction.loggedBy?.fullName,
     description: transaction.description,
   }))
