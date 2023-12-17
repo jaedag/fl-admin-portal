@@ -35,7 +35,7 @@ RETURN fellowship.name, record.attendance, COUNT(members);
 
 // If Sunday Bussing is blocking
 //! NUCLEAR OPTION
-MATCH (fellowship:Fellowship {bankingCode: 218 })<-[:HAS]-(bacenta:Bacenta)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(record:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
+MATCH (fellowship:Fellowship {bankingCode: 6161 })<-[:HAS]-(bacenta:Bacenta)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(record:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
 
 MATCH (fellowship)<-[:BELONGS_TO]-(members:Member)
 MERGE (record)<-[:PRESENT_AT_SERVICE]-(members)
@@ -61,17 +61,3 @@ MERGE (record)<-[:PRESENT_AT_SERVICE]-(members)
 MERGE (record)<-[:ABSENT_FROM_SERVICE]-(members)
 SET record.markedAttendance = true
 RETURN fellowship.name, record.attendance, COUNT(members);
-
-
-MATCH (record:ServiceRecord {id: "f6fc9113-f079-400f-b90c-c66f83cc8925"})
-SET record.cash = 122
-SET record.income = 122 + record.onlineGiving
-RETURN record.cash, record.income;
-
-MATCH (record:ServiceRecord {id: "f6fc9113-f079-400f-b90c-c66f83cc8925"})<-[:HAS_SERVICE]-(log:ServiceLog)<-[:HAS_HISTORY]-(church)
-MERGE (aggregate:AggregateServiceRecord {id: date().week + '-' + date().year + '-' + log.id, week: date().week, year: date().year})
-SET  aggregate.cash = record.cash,
-   aggregate.onlineGiving = record.onlineGiving,
-   aggregate.dollarIncome  = record.dollarIncome
-
-RETURN aggregate;
