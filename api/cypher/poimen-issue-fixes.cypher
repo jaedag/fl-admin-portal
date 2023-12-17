@@ -35,10 +35,8 @@ RETURN fellowship.name, record.attendance, COUNT(members);
 
 // If Sunday Bussing is blocking
 //! NUCLEAR OPTION
-MATCH (fellowship:Fellowship {bankingCode: 6161 })<-[:HAS]-(bacenta:Bacenta)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(record:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
-
+MATCH (fellowship:Fellowship {bankingCode: 7178 })<-[:HAS]-(bacenta:Bacenta)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(record:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
 MATCH (fellowship)<-[:BELONGS_TO]-(members:Member)
-MERGE (record)<-[:PRESENT_AT_SERVICE]-(members)
 MERGE (record)<-[:ABSENT_FROM_SERVICE]-(members)
 SET record.markedAttendance = true
 RETURN fellowship.name, record.attendance, COUNT(members);
