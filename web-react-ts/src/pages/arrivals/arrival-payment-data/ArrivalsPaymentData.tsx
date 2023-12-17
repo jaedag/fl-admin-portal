@@ -9,6 +9,7 @@ import { Container, Button } from 'react-bootstrap'
 import { CSVLink } from 'react-csv'
 import { DISPLAY_ARRIVALS_PAYMENT_DATA } from '../arrivalsQueries'
 import NoDataComponent from '../CompNoData'
+import { ChurchContext } from 'contexts/ChurchContext'
 
 interface ArrivalPaymentData {
   stream: string
@@ -35,6 +36,7 @@ interface ArrivalPaymentData {
 const ArrivalsPaymentData = () => {
   const today = new Date().toISOString().slice(0, 10).toString()
   const { currentUser } = useContext(MemberContext)
+  const { arrivalDate } = useContext(ChurchContext)
   const church = currentUser?.currentChurch
   const headers = [
     { label: 'Date', key: 'date' },
@@ -61,7 +63,7 @@ const ArrivalsPaymentData = () => {
   const { data, loading, error } = useQuery(DISPLAY_ARRIVALS_PAYMENT_DATA, {
     variables: {
       streamId: currentUser?.currentChurch.id,
-      arrivalsDate: today,
+      arrivalsDate: arrivalDate || today,
     },
   })
 
