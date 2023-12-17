@@ -1,3 +1,18 @@
+#### 7.15.3 (2023-12-17)
+
+##### New Features
+
+*  arrivalDate is used to retrieve payment data and not today's date ([94e8932f](https://github.com/firstlovecenter/fl-admin-portal/commit/94e8932f598d2abe5d418c03d4719e6676b68529))
+*  update bussing data aggregation to add numberOfCars ([f5341962](https://github.com/firstlovecenter/fl-admin-portal/commit/f53419621edb352640d3ff970fbc177e3115a422))
+
+##### Bug Fixes
+
+*  service record and bussing issues ([4991bc33](https://github.com/firstlovecenter/fl-admin-portal/commit/4991bc33a067c686fb856ea416d7c6d5190bb8fe))
+*  update role check in MemberForm component ([0b1a90f3](https://github.com/firstlovecenter/fl-admin-portal/commit/0b1a90f3a0ffab340bad89c2a989add76930e63e))
+*  update transaction balance formatting ([094f5237](https://github.com/firstlovecenter/fl-admin-portal/commit/094f523710c70438aac8ddfeaafdc596b30ff74a))
+*  update balance display format in TransactionCard ([7f5403a4](https://github.com/firstlovecenter/fl-admin-portal/commit/7f5403a4b24e13e84c6304ca63aff7266ff06341))
+*  issues with service records and add debugging scripts ([78fc2e30](https://github.com/firstlovecenter/fl-admin-portal/commit/78fc2e30dd508032fad69e4618732ab7ea4e149a))
+
 #### 7.15.2 (2023-12-07)
 
 ##### Documentation Changes
