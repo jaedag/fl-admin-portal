@@ -17,3 +17,7 @@ DETACH DELETE record;
 MATCH (record:ServiceRecord  {id: "f6fc9113-f079-400f-b90c-c66f83cc8925"})
 SET record.cash = toFloat(record.cash)
 RETURN record.income, record.cash;
+
+MATCH (record:ServiceRecord {id: "3441dee2-9e46-4bf3-bbf1-bb0a41687fc9"})
+REMOVE record.bankingSlip
+RETURN record;
