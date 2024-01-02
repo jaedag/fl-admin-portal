@@ -28,7 +28,7 @@ extend type Bacenta {
     @cypher(
       statement: """
       MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(aggregate:AggregateServiceRecord)
-      WHERE aggregate.year = date().year
+      WHERE aggregate.year = date().year OR aggregate.year = date().year -1
       RETURN aggregate ORDER BY aggregate.year, aggregate.week DESC LIMIT $limit
       """
     )
@@ -36,7 +36,7 @@ extend type Bacenta {
     @cypher(
       statement: """
       MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING_AGGREGATE]->(aggregate:AggregateBussingRecord)
-      WHERE aggregate.year = date().year
+      WHERE aggregate.year = date().year OR aggregate.year = date().year -1
       RETURN aggregate ORDER BY aggregate.year, aggregate.week DESC LIMIT $limit
       """
     )
@@ -47,7 +47,7 @@ extend type Constituency {
     @cypher(
       statement: """
       MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(aggregate:AggregateServiceRecord)
-      WHERE aggregate.year = date().year
+      WHERE aggregate.year = date().year OR aggregate.year = date().year -1
       RETURN aggregate ORDER BY aggregate.year, aggregate.week DESC LIMIT $limit
       """
     )
@@ -55,7 +55,7 @@ extend type Constituency {
     @cypher(
       statement: """
       MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING_AGGREGATE]->(aggregate:AggregateBussingRecord)
-      WHERE aggregate.year = date().year
+      WHERE aggregate.year = date().year OR aggregate.year = date().year -1
       RETURN aggregate ORDER BY aggregate.year, aggregate.week DESC LIMIT $limit
       """
     )
@@ -66,7 +66,7 @@ extend type Council {
     @cypher(
       statement: """
       MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(aggregate:AggregateServiceRecord)
-      WHERE aggregate.year = date().year
+      WHERE aggregate.year = date().year OR aggregate.year = date().year -1
       RETURN aggregate ORDER BY aggregate.year, aggregate.week DESC LIMIT $limit
       """
     )
@@ -74,7 +74,7 @@ extend type Council {
     @cypher(
       statement: """
       MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING_AGGREGATE]->(aggregate:AggregateBussingRecord)
-      WHERE aggregate.year = date().year
+      WHERE aggregate.year = date().year OR aggregate.year = date().year -1
       RETURN aggregate ORDER BY aggregate.year, aggregate.week DESC LIMIT $limit
       """
     )
@@ -85,7 +85,7 @@ extend type Stream {
     @cypher(
       statement: """
       MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(aggregate:AggregateServiceRecord)
-      WHERE aggregate.year = date().year
+      WHERE aggregate.year = date().year OR aggregate.year = date().year -1
       RETURN aggregate ORDER BY aggregate.year, aggregate.week DESC LIMIT $limit
       """
     )
@@ -93,7 +93,7 @@ extend type Stream {
     @cypher(
       statement: """
       MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING_AGGREGATE]->(aggregate:AggregateBussingRecord)
-      WHERE aggregate.year = date().year
+      WHERE aggregate.year = date().year OR aggregate.year = date().year -1
       RETURN aggregate ORDER BY aggregate.year, aggregate.week DESC LIMIT $limit
       """
     )
@@ -104,7 +104,7 @@ extend type Campus {
     @cypher(
       statement: """
       MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(aggregate:AggregateServiceRecord)
-      WHERE aggregate.year = date().year
+      WHERE aggregate.year = date().year OR aggregate.year = date().year -1
       RETURN aggregate ORDER BY aggregate.year, aggregate.week DESC LIMIT $limit
       """
     )
@@ -112,7 +112,7 @@ extend type Campus {
     @cypher(
       statement: """
       MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING_AGGREGATE]->(aggregate:AggregateBussingRecord)
-      WHERE aggregate.year = date().year
+      WHERE aggregate.year = date().year OR aggregate.year = date().year -1
       RETURN aggregate ORDER BY aggregate.year, aggregate.week DESC LIMIT $limit
       """
     )
@@ -123,7 +123,7 @@ extend type Oversight {
     @cypher(
       statement: """
       MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(aggregate:AggregateServiceRecord)
-      WHERE aggregate.year = date().year
+      WHERE aggregate.year = date().year OR aggregate.year = date().year -1
       RETURN aggregate ORDER BY aggregate.year, aggregate.week DESC LIMIT $limit
       """
     )
@@ -131,7 +131,7 @@ extend type Oversight {
     @cypher(
       statement: """
       MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING_AGGREGATE]->(aggregate:AggregateBussingRecord)
-      WHERE aggregate.year = date().year
+      WHERE aggregate.year = date().year OR aggregate.year = date().year -1
       RETURN aggregate ORDER BY aggregate.year, aggregate.week DESC LIMIT $limit
       """
     )
@@ -142,7 +142,7 @@ extend type Denomination {
     @cypher(
       statement: """
       MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(aggregate:AggregateServiceRecord)
-      WHERE aggregate.year = date().year
+      WHERE aggregate.year = date().year OR aggregate.year = date().year -1
       RETURN aggregate ORDER BY aggregate.year, aggregate.week DESC LIMIT $limit
       """
     )
@@ -150,7 +150,7 @@ extend type Denomination {
     @cypher(
       statement: """
       MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING_AGGREGATE]->(aggregate:AggregateBussingRecord)
-      WHERE aggregate.year = date().year
+      WHERE aggregate.year = date().year OR aggregate.year = date().year -1
       RETURN aggregate ORDER BY aggregate.year, aggregate.week DESC LIMIT $limit
       """
     )
@@ -180,7 +180,7 @@ extend type Hub {
     @cypher(
       statement: """
       MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(aggregate:AggregateServiceRecord)
-      WHERE aggregate.year = date().year
+      WHERE aggregate.year = date().year OR aggregate.year = date().year -1
       RETURN aggregate ORDER BY aggregate.year, aggregate.week DESC LIMIT $limit
       """
     )
@@ -191,7 +191,7 @@ extend type HubCouncil {
     @cypher(
       statement: """
       MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(aggregate:AggregateServiceRecord)
-      WHERE aggregate.year = date().year
+      WHERE aggregate.year = date().year OR aggregate.year = date().year -1
       RETURN aggregate ORDER BY aggregate.year, aggregate.week DESC LIMIT $limit
       """
     )
@@ -199,7 +199,7 @@ extend type HubCouncil {
     @cypher(
       statement: """
       MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(aggregate:AggregateRehearsalRecord)
-      WHERE aggregate.year = date().year
+      WHERE aggregate.year = date().year OR aggregate.year = date().year -1
       RETURN aggregate ORDER BY aggregate.year, aggregate.week DESC LIMIT $limit
       """
     )
@@ -210,7 +210,7 @@ extend type Ministry {
     @cypher(
       statement: """
       MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(aggregate:AggregateServiceRecord)
-      WHERE aggregate.year = date().year
+      WHERE aggregate.year = date().year OR aggregate.year = date().year -1
       RETURN aggregate ORDER BY aggregate.year, aggregate.week DESC LIMIT $limit
       """
     )
@@ -218,7 +218,7 @@ extend type Ministry {
     @cypher(
       statement: """
       MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(aggregate:AggregateRehearsalRecord)
-      WHERE aggregate.year = date().year
+      WHERE aggregate.year = date().year OR aggregate.year = date().year -1
       RETURN aggregate ORDER BY aggregate.year, aggregate.week DESC LIMIT $limit
       """
     )
@@ -229,7 +229,7 @@ extend type CreativeArts {
     @cypher(
       statement: """
       MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(aggregate:AggregateServiceRecord)
-      WHERE aggregate.year = date().year
+      WHERE aggregate.year = date().year OR aggregate.year = date().year -1
       RETURN aggregate ORDER BY aggregate.year, aggregate.week DESC LIMIT $limit
       """
     )
@@ -237,7 +237,7 @@ extend type CreativeArts {
     @cypher(
       statement: """
       MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(aggregate:AggregateRehearsalRecord)
-      WHERE aggregate.year = date().year
+      WHERE aggregate.year = date().year OR aggregate.year = date().year -1
       RETURN aggregate ORDER BY aggregate.year, aggregate.week DESC LIMIT $limit
       """
     )
@@ -247,7 +247,7 @@ extend type CreativeArts {
     @cypher(
       statement: """
       MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(aggregate:AggregateStageAttendanceRecord)
-      WHERE aggregate.year = date().year
+      WHERE aggregate.year = date().year OR aggregate.year = date().year -1
       RETURN aggregate ORDER BY aggregate.year, aggregate.week DESC LIMIT $limit
       """
     )
