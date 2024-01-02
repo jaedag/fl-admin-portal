@@ -1,3 +1,16 @@
+#### 7.15.6 (2024-01-02)
+
+##### Bug Fixes
+
+*  update year filter in GraphQL queries ([e7e7c9f5](https://github.com/firstlovecenter/fl-admin-portal/commit/e7e7c9f56c25eadb7bfc0937c3d2e271c5e84fcf))
+*  add debugging scripts and update service resolvers ([a93f3b74](https://github.com/firstlovecenter/fl-admin-portal/commit/a93f3b747f69001a834b9d3910ebcf16deb4d2ff))
+*  update service-resolvers.ts to include 'Council' label in the condition ([e46e5ea9](https://github.com/firstlovecenter/fl-admin-portal/commit/e46e5ea91126fc2b4f9def1623b2cd95ddcda469))
+*  attendance recording for Sunday bussing ([d50cf9ba](https://github.com/firstlovecenter/fl-admin-portal/commit/d50cf9baedf6e631897f3610f36d0d3a95d5b142))
+
+##### Refactors
+
+*  refactor service label check in serviceMutation ([79834ce9](https://github.com/firstlovecenter/fl-admin-portal/commit/79834ce98f7017a8c309fbb84b6913570fbdfce4))
+
 #### 7.15.5 (2023-12-17)
 
 #### 7.15.4 (2023-12-17)
